@@ -148,12 +148,13 @@ typedef void
  * There is no default xlink callbacks, if one want to get link
  * recognition activated, those call backs must be provided before parsing.
  */
-typedef struct xlinkHandler {
+typedef struct _xlinkHandler xlinkHandler;
+typedef xlinkHandler *xlinkHandlerPtr;
+struct _xlinkHandler {
     xlinkSimpleLinkFunk simple;
     xlinkExtendedLinkFunk extended;
     xlinkExtendedLinkSetFunk set;
-} xlinkHandler;
-typedef xlinkHandler *xlinkHandlerPtr;
+};
 
 /**
  * the default detection routine, can be overriden, they call the default

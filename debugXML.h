@@ -64,7 +64,9 @@ typedef char * (* xmlShellReadlineFunc)(char *prompt);
  * The shell context itself
  * TODO: add the defined function tables.
  */
-typedef struct xmlShellCtxt {
+typedef struct _xmlShellCtxt xmlShellCtxt;
+typedef xmlShellCtxt *xmlShellCtxtPtr;
+struct _xmlShellCtxt {
     char *filename;
     xmlDocPtr doc;
     xmlNodePtr node;
@@ -72,7 +74,7 @@ typedef struct xmlShellCtxt {
     int loaded;
     FILE *output;
     xmlShellReadlineFunc input;
-} xmlShellCtxt, *xmlShellCtxtPtr;
+};
 
 /**
  * xmlShellCmd:

@@ -18,16 +18,21 @@
 extern "C" {
 #endif
 
-typedef struct xmlXPathParserContext *xmlXPathParserContextPtr;
+typedef struct _xmlXPathContext xmlXPathContext;
+typedef xmlXPathContext *xmlXPathContextPtr;
+typedef struct _xmlXPathParserContext xmlXPathParserContext;
+typedef xmlXPathParserContext *xmlXPathParserContextPtr;
 
 /*
  * A node-set (an unordered collection of nodes without duplicates) 
  */
-typedef struct xmlNodeSet {
+typedef struct _xmlNodeSet xmlNodeSet;
+typedef xmlNodeSet *xmlNodeSetPtr;
+struct _xmlNodeSet {
     int nodeNr;			/* # of node in the set */
     int nodeMax;		/* allocated space */
     xmlNodePtr *nodeTab;	/* array of nodes in no particular order */
-} xmlNodeSet, *xmlNodeSetPtr;
+};
 
 /*
  * An expression is evaluated to yield an object, which
@@ -45,14 +50,16 @@ typedef struct xmlNodeSet {
 #define XPATH_STRING	4
 #define XPATH_USERS	5
 
-typedef struct xmlXPathObject {
+typedef struct _xmlXPathObject xmlXPathObject;
+typedef xmlXPathObject *xmlXPathObjectPtr;
+struct _xmlXPathObject {
     int type;
     xmlNodeSetPtr nodesetval;
     int boolval;
     double floatval;
     xmlChar *stringval;
     void *user;
-} xmlXPathObject, *xmlXPathObjectPtr;
+};
 
 /*
  * A conversion function is associated to a type and used to cast
@@ -64,19 +71,23 @@ typedef int (*xmlXPathConvertFunc) (xmlXPathObjectPtr obj, int type);
  * Extra type: a name and a conversion function.
  */
 
-typedef struct xmlXPathType {
+typedef struct _xmlXPathType xmlXPathType;
+typedef xmlXPathType *xmlXPathTypePtr;
+struct _xmlXPathType {
     const xmlChar         *name;		/* the type name */
     xmlXPathConvertFunc func;		/* the conversion function */
-} xmlXPathType, *xmlXPathTypePtr;
+};
 
 /*
  * Extra variable: a name and a value.
  */
 
-typedef struct xmlXPathVariable {
+typedef struct _xmlXPathVariable xmlXPathVariable;
+typedef xmlXPathVariable *xmlXPathVariablePtr;
+struct _xmlXPathVariable {
     const xmlChar       *name;		/* the variable name */
     xmlXPathObjectPtr value;		/* the value */
-} xmlXPathVariable, *xmlXPathVariablePtr;
+};
 
 /*
  * an evaluation function, the parameters are on the context stack
@@ -88,10 +99,12 @@ typedef void (*xmlXPathEvalFunc)(xmlXPathParserContextPtr ctxt, int nargs);
  * Extra function: a name and a evaluation function.
  */
 
-typedef struct xmlXPathFunct {
+typedef struct _xmlXPathFunct xmlXPathFunct;
+typedef xmlXPathFunct *xmlXPathFuncPtr;
+struct _xmlXPathFunct {
     const xmlChar      *name;		/* the function name */
     xmlXPathEvalFunc func;		/* the evaluation function */
-} xmlXPathFunc, *xmlXPathFuncPtr;
+};
 
 /*
  * An axis traversal function. To traverse an axis, the engine calls
@@ -106,10 +119,12 @@ typedef xmlXPathObjectPtr (*xmlXPathAxisFunc)	(xmlXPathParserContextPtr ctxt,
  * Extra axis: a name and an axis function.
  */
 
-typedef struct xmlXPathAxis {
+typedef struct _xmlXPathAxis xmlXPathAxis;
+typedef xmlXPathAxis *xmlXPathAxisPtr;
+struct _xmlXPathAxis {
     const xmlChar      *name;		/* the axis name */
     xmlXPathAxisFunc func;		/* the search function */
-} xmlXPathAxis, *xmlXPathAxisPtr;
+};
 
 /* 
  * Expression evaluation occurs with respect to a context.
@@ -121,7 +136,7 @@ typedef struct xmlXPathAxis {
  *    - the set of namespace declarations in scope for the expression 
  */
 
-typedef struct xmlXPathContext {
+struct _xmlXPathContext {
     xmlDocPtr doc;			/* The current document */
     xmlNodePtr node;			/* The current node */
     xmlNodeSetPtr nodelist;		/* The current node list */
@@ -146,13 +161,13 @@ typedef struct xmlXPathContext {
     xmlNsPtr *namespaces;		/* The namespaces lookup */
     int nsNr;				/* the current Namespace index */
     void *user;				/* user defined extra info */
-} xmlXPathContext, *xmlXPathContextPtr;
+};
 
 /*
  * An XPath parser context, it contains pure parsing informations,
  * an xmlXPathContext, and the stack of objects.
  */
-typedef struct xmlXPathParserContext {
+struct _xmlXPathParserContext {
     const xmlChar *cur;			/* the current char being parsed */
     const xmlChar *base;			/* the full expression */
 
@@ -163,7 +178,7 @@ typedef struct xmlXPathParserContext {
     int                 valueNr;	/* number of values stacked */
     int                valueMax;	/* max number of values stacked */
     xmlXPathObjectPtr *valueTab;	/* stack of values */
-} xmlXPathParserContext;
+};
 
 /*
  * An XPath function

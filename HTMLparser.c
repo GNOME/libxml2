@@ -1391,6 +1391,7 @@ htmlParseName(htmlParserCtxtPtr ctxt) {
 
 xmlChar *
 htmlParseHTMLAttribute(htmlParserCtxtPtr ctxt, const xmlChar stop) {
+#if 0
     xmlChar buf[HTML_MAX_NAMELEN];
     int len = 0;
 
@@ -1410,6 +1411,84 @@ htmlParseHTMLAttribute(htmlParserCtxtPtr ctxt, const xmlChar stop) {
 	}
     }
     return(xmlStrndup(buf, len));
+#else    
+    xmlChar *buffer = NULL;
+    int buffer_size = 0;
+    xmlChar *out = NULL;
+    xmlChar *name = NULL;
+
+    xmlChar *cur = NULL;
+    htmlEntityDescPtr ent;
+
+    /*
+     * allocate a translation buffer.
+     */
+    buffer_size = HTML_PARSER_BIG_BUFFER_SIZE;
+    buffer = (xmlChar *) xmlMalloc(buffer_size * sizeof(xmlChar));
+    if (buffer == NULL) {
+	perror("htmlParseHTMLAttribute: malloc failed");
+	return(NULL);
+    }
+    out = buffer;
+
+    /*
+     * Ok loop until we reach one of the ending chars
+     */
+    while ((CUR != 0) && (CUR != stop) && (CUR != '>')) {
+	if ((stop == 0) && (IS_BLANK(CUR))) break;
+        if (CUR == '&') {
+	    if (NXT(1) == '#') {
+		int val = htmlParseCharRef(ctxt);
+		*out++ = val;
+	    } else {
+		ent = htmlParseEntityRef(ctxt, &name);
+		if (name == NULL) {
+		    *out++ = '&';
+		    if (out - buffer > buffer_size - 100) {
+			int index = out - buffer;
+
+			growBuffer(buffer);
+			out = &buffer[index];
+		    }
+		} else if ((ent == NULL) || (ent->value <= 0) ||
+		           (ent->value >= 255)) {
+		    *out++ = '&';
+		    cur = name;
+		    while (*cur != 0) {
+			if (out - buffer > buffer_size - 100) {
+			    int index = out - buffer;
+
+			    growBuffer(buffer);
+			    out = &buffer[index];
+			}
+			*out++ = *cur++;
+		    }
+		    xmlFree(name);
+		} else {
+		    *out++ = ent->value;
+		    if (out - buffer > buffer_size - 100) {
+			int index = out - buffer;
+
+			growBuffer(buffer);
+			out = &buffer[index];
+		    }
+		    xmlFree(name);
+		}
+	    }
+	} else {
+	    *out++ = CUR;
+	    if (out - buffer > buffer_size - 100) {
+	      int index = out - buffer;
+	      
+	      growBuffer(buffer);
+	      out = &buffer[index];
+	    }
+	    NEXT;
+	}
+    }
+    *out++ = 0;
+    return(buffer);
+#endif
 }
 
 /**
@@ -1477,23 +1556,19 @@ htmlParseEntityRef(htmlParserCtxtPtr ctxt, xmlChar **str) {
 	} else {
 	    GROW;
 	    if (CUR == ';') {
-	        NEXT;
 		*str = name;
 
 		/*
 		 * Lookup the entity in the table.
 		 */
 		ent = htmlEntityLookup(name);
+		if (ent != NULL) /* OK that's ugly !!! */
+		    NEXT;
 	    } else {
 		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		    ctxt->sax->error(ctxt->userData,
 		                     "htmlParseEntityRef: expecting ';'\n");
-		ctxt->wellFormed = 0;
-		if (ctxt->sax->characters != NULL) {
-		    ctxt->sax->characters(ctxt->userData, BAD_CAST "&", 1);
-		    ctxt->sax->characters(ctxt->userData, name, xmlStrlen(name));
-		}
-		xmlFree(name);
+		*str = name;
 	    }
 	}
     }
@@ -2321,12 +2396,15 @@ htmlParseReference(htmlParserCtxtPtr ctxt) {
 	    ctxt->sax->characters(ctxt->userData, out, 1);
     } else {
 	ent = htmlParseEntityRef(ctxt, &name);
-	if (name == NULL) return; /* Shall we output & anyway ? */
+	if (name == NULL) {
+	    ctxt->sax->characters(ctxt->userData, BAD_CAST "&", 1);
+	    return;
+	}
 	if ((ent == NULL) || (ent->value <= 0) || (ent->value >= 255)) {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->characters != NULL)) {
 		ctxt->sax->characters(ctxt->userData, BAD_CAST "&", 1);
 		ctxt->sax->characters(ctxt->userData, name, xmlStrlen(name));
-		ctxt->sax->characters(ctxt->userData, BAD_CAST ";", 1);
+		/* ctxt->sax->characters(ctxt->userData, BAD_CAST ";", 1); */
 	    }
 	} else {
 	    /* invalid for UTF-8 variable encoding !!!!! */
@@ -2903,15 +2981,16 @@ htmlParseLookupSequence(htmlParserCtxtPtr ctxt, xmlChar first,
 }
 
 /**
- * htmlParseTry:
+ * htmlParseTryOrFinish:
  * @ctxt:  an HTML parser context
+ * @terminate:  last chunk indicator
  *
  * Try to progress on parsing
  *
  * Returns zero if no parsing was possible
  */
 int
-htmlParseTry(htmlParserCtxtPtr ctxt) {
+htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
     int ret = 0;
     htmlParserInputPtr in;
     int avail;
@@ -2990,7 +3069,8 @@ htmlParseTry(htmlParserCtxtPtr ctxt) {
 		    (UPP(4) == 'C') && (UPP(5) == 'T') &&
 		    (UPP(6) == 'Y') && (UPP(7) == 'P') &&
 		    (UPP(8) == 'E')) {
-		    if (htmlParseLookupSequence(ctxt, '>', 0, 0) < 0) 
+		    if ((!terminate) &&
+		        (htmlParseLookupSequence(ctxt, '>', 0, 0) < 0))
 			goto done;
 #ifdef DEBUG_PUSH
 		    fprintf(stderr, "HPP: Parsing internal subset\n");
@@ -3020,7 +3100,8 @@ htmlParseTry(htmlParserCtxtPtr ctxt) {
 		next = in->cur[1];
 	        if ((cur == '<') && (next == '!') &&
 		    (in->cur[2] == '-') && (in->cur[3] == '-')) {
-		    if (htmlParseLookupSequence(ctxt, '-', '-', '>') < 0) 
+		    if ((!terminate) &&
+		        (htmlParseLookupSequence(ctxt, '-', '-', '>') < 0))
 			goto done;
 #ifdef DEBUG_PUSH
 		    fprintf(stderr, "HPP: Parsing Comment\n");
@@ -3032,7 +3113,8 @@ htmlParseTry(htmlParserCtxtPtr ctxt) {
 		    (UPP(4) == 'C') && (UPP(5) == 'T') &&
 		    (UPP(6) == 'Y') && (UPP(7) == 'P') &&
 		    (UPP(8) == 'E')) {
-		    if (htmlParseLookupSequence(ctxt, '>', 0, 0) < 0) 
+		    if ((!terminate) &&
+		        (htmlParseLookupSequence(ctxt, '>', 0, 0) < 0))
 			goto done;
 #ifdef DEBUG_PUSH
 		    fprintf(stderr, "HPP: Parsing internal subset\n");
@@ -3064,7 +3146,8 @@ htmlParseTry(htmlParserCtxtPtr ctxt) {
 		next = in->cur[1];
 		if ((cur == '<') && (next == '!') &&
 		    (in->cur[2] == '-') && (in->cur[3] == '-')) {
-		    if (htmlParseLookupSequence(ctxt, '-', '-', '>') < 0) 
+		    if ((!terminate) &&
+		        (htmlParseLookupSequence(ctxt, '-', '-', '>') < 0))
 			goto done;
 #ifdef DEBUG_PUSH
 		    fprintf(stderr, "HPP: Parsing Comment\n");
@@ -3093,7 +3176,8 @@ htmlParseTry(htmlParserCtxtPtr ctxt) {
 		next = in->cur[1];
 	        if ((cur == '<') && (next == '!') &&
 		    (in->cur[2] == '-') && (in->cur[3] == '-')) {
-		    if (htmlParseLookupSequence(ctxt, '-', '-', '>') < 0) 
+		    if ((!terminate) &&
+		        (htmlParseLookupSequence(ctxt, '-', '-', '>') < 0))
 			goto done;
 #ifdef DEBUG_PUSH
 		    fprintf(stderr, "HPP: Parsing Comment\n");
@@ -3133,7 +3217,8 @@ htmlParseTry(htmlParserCtxtPtr ctxt) {
 #endif
 		    break;
 		}
-		if (htmlParseLookupSequence(ctxt, '>', 0, 0) < 0) 
+		if ((!terminate) &&
+		    (htmlParseLookupSequence(ctxt, '>', 0, 0) < 0))
 		    goto done;
 
 		oldname = xmlStrdup(ctxt->name);
@@ -3268,7 +3353,8 @@ htmlParseTry(htmlParserCtxtPtr ctxt) {
 		next = in->cur[1];
 	        if ((cur == '<') && (next == '!') &&
 		    (in->cur[2] == '-') && (in->cur[3] == '-')) {
-		    if (htmlParseLookupSequence(ctxt, '-', '-', '>') < 0) 
+		    if ((!terminate) &&
+		        (htmlParseLookupSequence(ctxt, '-', '-', '>') < 0))
 			goto done;
 #ifdef DEBUG_PUSH
 		    fprintf(stderr, "HPP: Parsing Comment\n");
@@ -3292,7 +3378,8 @@ htmlParseTry(htmlParserCtxtPtr ctxt) {
 #endif
 		    break;
 		} else if (cur == '&') {
-		    if (htmlParseLookupSequence(ctxt, ';', 0, 0) < 0) 
+		    if ((!terminate) &&
+		        (htmlParseLookupSequence(ctxt, ';', 0, 0) < 0))
 			goto done;
 #ifdef DEBUG_PUSH
 		    fprintf(stderr, "HPP: Parsing Reference\n");
@@ -3308,7 +3395,8 @@ htmlParseTry(htmlParserCtxtPtr ctxt) {
 		     */
 		    if ((ctxt->inputNr == 1) &&
 		        (avail < HTML_PARSER_BIG_BUFFER_SIZE)) {
-			if (htmlParseLookupSequence(ctxt, '<', 0, 0) < 0) 
+			if ((!terminate) &&
+			    (htmlParseLookupSequence(ctxt, '<', 0, 0) < 0))
 			    goto done;
                     }
 		    ctxt->checkIndex = 0;
@@ -3321,7 +3409,8 @@ htmlParseTry(htmlParserCtxtPtr ctxt) {
             case XML_PARSER_END_TAG:
 		if (avail < 2)
 		    goto done;
-		if (htmlParseLookupSequence(ctxt, '>', 0, 0) < 0) 
+		if ((!terminate) &&
+		    (htmlParseLookupSequence(ctxt, '>', 0, 0) < 0))
 		    goto done;
 		htmlParseEndTag(ctxt);
 		if (ctxt->nameNr == 0) {
@@ -3400,6 +3489,19 @@ done:
 }
 
 /**
+ * htmlParseTry:
+ * @ctxt:  an HTML parser context
+ *
+ * Try to progress on parsing
+ *
+ * Returns zero if no parsing was possible
+ */
+int
+htmlParseTry(htmlParserCtxtPtr ctxt) {
+    return(htmlParseTryOrFinish(ctxt, 0));
+}
+
+/**
  * htmlParseChunk:
  * @ctxt:  an XML parser context
  * @chunk:  an char array
@@ -3425,9 +3527,9 @@ htmlParseChunk(htmlParserCtxtPtr ctxt, const char *chunk, int size,
 	fprintf(stderr, "HPP: pushed %d\n", size);
 #endif
 
-        htmlParseTry(ctxt);
+        htmlParseTryOrFinish(ctxt, terminate);
     } else if (ctxt->instate != XML_PARSER_EOF)
-        htmlParseTry(ctxt);
+        htmlParseTryOrFinish(ctxt, terminate);
     if (terminate) {
 	if ((ctxt->instate != XML_PARSER_EOF) &&
 	    (ctxt->instate != XML_PARSER_EPILOG) &&

@@ -4,7 +4,7 @@
 >tree</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.33"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.44"><LINK
 REL="HOME"
 TITLE="Gnome XML Library Reference Manual"
 HREF="book1.html"><LINK
@@ -20,6 +20,9 @@ HREF="gnome-xml-entities.html"></HEAD
 ><BODY
 BGCOLOR="#FFFFFF"
 TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -111,19 +114,22 @@ SIZE="3"
 ></TABLE
 ></DIV
 ><H1
->tree</H1
+><A
+NAME="GNOME-XML-TREE"
+>tree</A
+></H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN2965"
+NAME="AEN2831"
 ></A
 ><H2
 >Name</H2
->tree &#8212; </DIV
+>tree&nbsp;--&nbsp;</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN2968"
+NAME="AEN2834"
 ></A
 ><H2
 >Synopsis</H2
@@ -218,19 +224,7 @@ typedef     <A
 HREF="gnome-xml-tree.html#XMLREFPTR"
 >xmlRefPtr</A
 >;
-enum        <A
-HREF="gnome-xml-tree.html#XMLBUFFERALLOCATIONSCHEME"
->xmlBufferAllocationScheme</A
->;
-typedef     <A
-HREF="gnome-xml-tree.html#XMLBUFFER"
->xmlBuffer</A
->;
-typedef     <A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
->xmlBufferPtr</A
->;
-typedef     <A
+struct      <A
 HREF="gnome-xml-tree.html#XMLNODE"
 >xmlNode</A
 >;
@@ -238,13 +232,21 @@ typedef     <A
 HREF="gnome-xml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >;
-typedef     <A
+struct      <A
 HREF="gnome-xml-tree.html#XMLDOC"
 >xmlDoc</A
 >;
 typedef     <A
 HREF="gnome-xml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
+>;
+struct      <A
+HREF="gnome-xml-tree.html#XMLBUFFER"
+>xmlBuffer</A
+>;
+typedef     <A
+HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+>xmlBufferPtr</A
 >;
 extern      xmlNsPtr <A
 HREF="gnome-xml-tree.html#BASEDTD"
@@ -258,10 +260,6 @@ extern      int <A
 HREF="gnome-xml-tree.html#XMLINDENTTREEOUTPUT"
 >xmlIndentTreeOutput</A
 >;
-extern      xmlBufferAllocationScheme <A
-HREF="gnome-xml-tree.html#XMLBUFFERALLOCSCHEME"
->xmlBufferAllocScheme</A
->;
 <A
 HREF="gnome-xml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
@@ -269,16 +267,6 @@ HREF="gnome-xml-tree.html#XMLBUFFERPTR"
 HREF="gnome-xml-tree.html#XMLBUFFERCREATE"
 >xmlBufferCreate</A
 >                (void);
-<A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
->xmlBufferPtr</A
-> <A
-HREF="gnome-xml-tree.html#XMLBUFFERCREATESIZE"
->xmlBufferCreateSize</A
->            (<GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> size);
 void        <A
 HREF="gnome-xml-tree.html#XMLBUFFERFREE"
 >xmlBufferFree</A
@@ -340,41 +328,6 @@ void        <A
 HREF="gnome-xml-tree.html#XMLBUFFEREMPTY"
 >xmlBufferEmpty</A
 >                  (<A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
->xmlBufferPtr</A
-> buf);
-const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
->xmlChar</A
->* <A
-HREF="gnome-xml-tree.html#XMLBUFFERCONTENT"
->xmlBufferContent</A
->             (const <A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
->xmlBufferPtr</A
-> buf);
-int         <A
-HREF="gnome-xml-tree.html#XMLBUFFERUSE"
->xmlBufferUse</A
->                    (const <A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
->xmlBufferPtr</A
-> buf);
-void        <A
-HREF="gnome-xml-tree.html#XMLBUFFERSETALLOCATIONSCHEME"
->xmlBufferSetAllocationScheme</A
->    (<A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
->xmlBufferPtr</A
-> buf,
-                                             <A
-HREF="gnome-xml-tree.html#XMLBUFFERALLOCATIONSCHEME"
->xmlBufferAllocationScheme</A
-> scheme);
-int         <A
-HREF="gnome-xml-tree.html#XMLBUFFERLENGTH"
->xmlBufferLength</A
->                 (const <A
 HREF="gnome-xml-tree.html#XMLBUFFERPTR"
 >xmlBufferPtr</A
 > buf);
@@ -636,28 +589,6 @@ HREF="gnome-xml-tree.html#XMLCHAR"
 HREF="gnome-xml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  <A
-HREF="gnome-xml-tree.html#XMLNEWDOCRAWNODE"
->xmlNewDocRawNode</A
->                (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
->xmlDocPtr</A
-> doc,
-                                             <A
-HREF="gnome-xml-tree.html#XMLNSPTR"
->xmlNsPtr</A
-> ns,
-                                             const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
->xmlChar</A
-> *name,
-                                             const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
->xmlChar</A
-> *content);
-<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
->  <A
 HREF="gnome-xml-tree.html#XMLNEWNODE"
 >xmlNewNode</A
 >                      (<A
@@ -675,28 +606,6 @@ HREF="gnome-xml-tree.html#XMLNODEPTR"
 HREF="gnome-xml-tree.html#XMLNEWCHILD"
 >xmlNewChild</A
 >                     (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
-> parent,
-                                             <A
-HREF="gnome-xml-tree.html#XMLNSPTR"
->xmlNsPtr</A
-> ns,
-                                             const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
->xmlChar</A
-> *name,
-                                             const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
->xmlChar</A
-> *content);
-<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
->  <A
-HREF="gnome-xml-tree.html#XMLNEWTEXTCHILD"
->xmlNewTextChild</A
->                 (<A
 HREF="gnome-xml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > parent,
@@ -854,16 +763,6 @@ HREF="gnome-xml-tree.html#XMLNODEPTR"
 HREF="gnome-xml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  <A
-HREF="gnome-xml-tree.html#XMLDOCGETROOTELEMENT"
->xmlDocGetRootElement</A
->            (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
->xmlDocPtr</A
-> doc);
-<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
->  <A
 HREF="gnome-xml-tree.html#XMLGETLASTCHILD"
 >xmlGetLastChild</A
 >                 (<A
@@ -877,31 +776,6 @@ HREF="gnome-xml-tree.html#XMLNODEISTEXT"
 HREF="gnome-xml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > node);
-<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
->  <A
-HREF="gnome-xml-tree.html#XMLDOCSETROOTELEMENT"
->xmlDocSetRootElement</A
->            (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
->xmlDocPtr</A
-> doc,
-                                             <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
-> root);
-void        <A
-HREF="gnome-xml-tree.html#XMLNODESETNAME"
->xmlNodeSetName</A
->                  (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
-> cur,
-                                             const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
->xmlChar</A
-> *name);
 <A
 HREF="gnome-xml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
@@ -920,51 +794,9 @@ HREF="gnome-xml-tree.html#XMLNODEPTR"
 HREF="gnome-xml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  <A
-HREF="gnome-xml-tree.html#XMLREPLACENODE"
->xmlReplaceNode</A
->                  (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
-> old,
-                                             <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
-> cur);
-<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
->  <A
 HREF="gnome-xml-tree.html#XMLADDSIBLING"
 >xmlAddSibling</A
 >                   (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
-> cur,
-                                             <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
-> elem);
-<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
->  <A
-HREF="gnome-xml-tree.html#XMLADDPREVSIBLING"
->xmlAddPrevSibling</A
->               (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
-> cur,
-                                             <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
-> elem);
-<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
->  <A
-HREF="gnome-xml-tree.html#XMLADDNEXTSIBLING"
->xmlAddNextSibling</A
->               (<A
 HREF="gnome-xml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur,
@@ -1018,13 +850,6 @@ HREF="gnome-xml-tree.html#XMLFREENODE"
 >                     (<A
 HREF="gnome-xml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
-> cur);
-int         <A
-HREF="gnome-xml-tree.html#XMLREMOVEPROP"
->xmlRemoveProp</A
->                   (<A
-HREF="gnome-xml-tree.html#XMLATTRPTR"
->xmlAttrPtr</A
 > cur);
 <A
 HREF="gnome-xml-tree.html#XMLNSPTR"
@@ -1139,24 +964,6 @@ HREF="gnome-xml-tree.html#XMLNODEPTR"
 HREF="gnome-xml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name);
-<A
-HREF="gnome-xml-tree.html#XMLCHAR"
->xmlChar</A
->*    <A
-HREF="gnome-xml-tree.html#XMLGETNSPROP"
->xmlGetNsProp</A
->                    (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
-> node,
-                                             const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
->xmlChar</A
-> *name,
-                                             const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
->xmlChar</A
-> *nameSpace);
 <A
 HREF="gnome-xml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
@@ -1278,19 +1085,12 @@ HREF="gnome-xml-tree.html#XMLNODEPTR"
 HREF="gnome-xml-tree.html#XMLCHAR"
 >xmlChar</A
 > *lang);
-<A
-HREF="gnome-xml-tree.html#XMLCHAR"
->xmlChar</A
->*    <A
-HREF="gnome-xml-tree.html#XMLNODEGETBASE"
->xmlNodeGetBase</A
->                  (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
->xmlDocPtr</A
-> doc,
-                                             <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
+int         <A
+HREF="gnome-xml-tree.html#XMLREMOVEPROP"
+>xmlRemoveProp</A
+>                   (<A
+HREF="gnome-xml-tree.html#XMLATTRPTR"
+>xmlAttrPtr</A
 > cur);
 int         <A
 HREF="gnome-xml-tree.html#XMLREMOVENODE"
@@ -1352,21 +1152,6 @@ HREF="FILE"
 HREF="gnome-xml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > cur);
-void        <A
-HREF="gnome-xml-tree.html#XMLELEMDUMP"
->xmlElemDump</A
->                     (<GTKDOCLINK
-HREF="FILE"
->FILE</GTKDOCLINK
-> *f,
-                                             <A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
->xmlDocPtr</A
-> cur,
-                                             <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
-> elem);
 int         <A
 HREF="gnome-xml-tree.html#XMLSAVEFILE"
 >xmlSaveFile</A
@@ -1405,7 +1190,7 @@ HREF="gnome-xml-tree.html#XMLSETCOMPRESSMODE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN3318"
+NAME="AEN3122"
 ></A
 ><H2
 >Description</H2
@@ -1415,14 +1200,14 @@ NAME="AEN3318"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN3321"
+NAME="AEN3125"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3323"
+NAME="AEN3127"
 ></A
 ><H3
 ><A
@@ -1462,7 +1247,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3328"
+NAME="AEN3132"
 ></A
 ><H3
 ><A
@@ -1475,7 +1260,7 @@ NAME="XMLCHAR"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3332"
+NAME="AEN3136"
 ></A
 ><H3
 ><A
@@ -1491,7 +1276,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define CHAR xmlChar</PRE
+>#define     CHAR</PRE
 ></TD
 ></TR
 ></TABLE
@@ -1501,7 +1286,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3337"
+NAME="AEN3141"
 ></A
 ><H3
 ><A
@@ -1517,7 +1302,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define BAD_CAST (xmlChar *)</PRE
+>#define     BAD_CAST</PRE
 ></TD
 ></TR
 ></TABLE
@@ -1527,33 +1312,20 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3342"
+NAME="AEN3146"
 ></A
 ><H3
 ><A
 NAME="XMLNOTATIONPTR"
 ></A
 >xmlNotationPtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlNotation *xmlNotationPtr;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3347"
+NAME="AEN3150"
 ></A
 ><H3
 ><A
@@ -1590,7 +1362,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3352"
+NAME="AEN3155"
 ></A
 ><H3
 ><A
@@ -1621,59 +1393,33 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3357"
+NAME="AEN3160"
 ></A
 ><H3
 ><A
 NAME="XMLENUMERATIONPTR"
 ></A
 >xmlEnumerationPtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlEnumeration *xmlEnumerationPtr;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3362"
+NAME="AEN3164"
 ></A
 ><H3
 ><A
 NAME="XMLATTRIBUTEPTR"
 ></A
 >xmlAttributePtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlAttribute *xmlAttributePtr;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3367"
+NAME="AEN3168"
 ></A
 ><H3
 ><A
@@ -1704,7 +1450,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3372"
+NAME="AEN3173"
 ></A
 ><H3
 ><A
@@ -1735,33 +1481,20 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3377"
+NAME="AEN3178"
 ></A
 ><H3
 ><A
 NAME="XMLELEMENTCONTENTPTR"
 ></A
 >xmlElementContentPtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlElementContent *xmlElementContentPtr;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3382"
+NAME="AEN3182"
 ></A
 ><H3
 ><A
@@ -1792,33 +1525,20 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3387"
+NAME="AEN3187"
 ></A
 ><H3
 ><A
 NAME="XMLELEMENTPTR"
 ></A
 >xmlElementPtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlElement *xmlElementPtr;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3392"
+NAME="AEN3191"
 ></A
 ><H3
 ><A
@@ -1847,226 +1567,78 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3397"
+NAME="AEN3196"
 ></A
 ><H3
 ><A
 NAME="XMLNSPTR"
 ></A
 >xmlNsPtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlNs *xmlNsPtr;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3402"
+NAME="AEN3200"
 ></A
 ><H3
 ><A
 NAME="XMLDTDPTR"
 ></A
 >xmlDtdPtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlDtd *xmlDtdPtr;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3407"
+NAME="AEN3204"
 ></A
 ><H3
 ><A
 NAME="XMLATTRPTR"
 ></A
 >xmlAttrPtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlAttr *xmlAttrPtr;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3412"
+NAME="AEN3208"
 ></A
 ><H3
 ><A
 NAME="XMLIDPTR"
 ></A
 >xmlIDPtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlID *xmlIDPtr;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3417"
+NAME="AEN3212"
 ></A
 ><H3
 ><A
 NAME="XMLREFPTR"
 ></A
 >xmlRefPtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlRef *xmlRefPtr;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3422"
-></A
-><H3
-><A
-NAME="XMLBUFFERALLOCATIONSCHEME"
-></A
->enum xmlBufferAllocationScheme</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef enum {
-    XML_BUFFER_ALLOC_DOUBLEIT,
-    XML_BUFFER_ALLOC_EXACT
-} xmlBufferAllocationScheme;</PRE
-></TD
-></TR
-></TABLE
-><P
->Sets the allocation scheme for this buffer</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN3428"
-></A
-><H3
-><A
-NAME="XMLBUFFER"
-></A
->xmlBuffer</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef _xmlBuffer xmlBuffer;</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN3433"
-></A
-><H3
-><A
-NAME="XMLBUFFERPTR"
-></A
->xmlBufferPtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlBuffer *xmlBufferPtr;</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN3438"
+NAME="AEN3216"
 ></A
 ><H3
 ><A
 NAME="XMLNODE"
 ></A
->xmlNode</H3
+>struct xmlNode</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -2076,7 +1648,28 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->typedef _xmlNode xmlNode;</PRE
+>struct xmlNode {
+#ifndef XML_WITHOUT_CORBA
+    void           *_private;	/* for Corba, must be first ! */
+    void           *vepv;	/* for Corba, must be next ! */
+#endif
+    xmlElementType  type;	/* type number in the DTD, must be third ! */
+    struct _xmlDoc  *doc;	/* the containing document */
+    struct _xmlNode *parent;	/* child-&gt;parent link */
+    struct _xmlNode *next;	/* next sibling link  */
+    struct _xmlNode *prev;	/* previous sibling link  */
+    struct _xmlNode *childs;	/* parent-&gt;childs link */
+    struct _xmlNode *last;	/* last child link */
+    struct _xmlAttr *properties;/* properties list */
+    const xmlChar  *name;       /* the name of the node, or the entity */
+    xmlNs          *ns;         /* pointer to the associated namespace */
+    xmlNs          *nsDef;      /* namespace definitions on this node */
+#ifndef XML_USE_BUFFER_CONTENT    
+    xmlChar        *content;    /* the content */
+#else
+    xmlBufferPtr   content;     /* the content in a buffer */
+#endif
+};</PRE
 ></TD
 ></TR
 ></TABLE
@@ -2086,39 +1679,26 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3443"
+NAME="AEN3221"
 ></A
 ><H3
 ><A
 NAME="XMLNODEPTR"
 ></A
 >xmlNodePtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef _xmlNode *xmlNodePtr;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3448"
+NAME="AEN3225"
 ></A
 ><H3
 ><A
 NAME="XMLDOC"
 ></A
->xmlDoc</H3
+>struct xmlDoc</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -2128,7 +1708,24 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->typedef _xmlDoc xmlDoc;</PRE
+>struct xmlDoc {
+#ifndef XML_WITHOUT_CORBA
+    void           *_private;	/* for Corba, must be first ! */
+    void           *vepv;	/* for Corba, must be next ! */
+#endif
+    xmlElementType  type;       /* XML_DOCUMENT_NODE, must be second ! */
+    char           *name;	/* name/filename/URI of the document */
+    const xmlChar  *version;	/* the XML version string */
+    const xmlChar  *encoding;   /* encoding, if any */
+    int             compression;/* level of zlib compression */
+    int             standalone; /* standalone document (no external refs) */
+    struct _xmlDtd  *intSubset;	/* the document internal subset */
+    struct _xmlDtd  *extSubset;	/* the document external subset */
+    struct _xmlNs   *oldNs;	/* Global namespace, the old way */
+    struct _xmlNode *root;	/* the document tree */
+    void           *ids;        /* Hash table for ID attributes if any */
+    void           *refs;       /* Hash table for IDREFs attributes if any */
+};</PRE
 ></TD
 ></TR
 ></TABLE
@@ -2138,13 +1735,26 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3453"
+NAME="AEN3230"
 ></A
 ><H3
 ><A
 NAME="XMLDOCPTR"
 ></A
 >xmlDocPtr</H3
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3234"
+></A
+><H3
+><A
+NAME="XMLBUFFER"
+></A
+>struct xmlBuffer</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -2154,7 +1764,12 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->typedef xmlDoc *xmlDocPtr;</PRE
+>struct xmlBuffer {
+    xmlChar *content;		/* The buffer content UTF8 */
+    unsigned int use;		/* The buffer size used */
+    unsigned int size;		/* The buffer size */
+    xmlBufferAllocationScheme alloc; /* The realloc method */
+};</PRE
 ></TD
 ></TR
 ></TABLE
@@ -2164,7 +1779,20 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3458"
+NAME="AEN3239"
+></A
+><H3
+><A
+NAME="XMLBUFFERPTR"
+></A
+>xmlBufferPtr</H3
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3243"
 ></A
 ><H3
 ><A
@@ -2190,7 +1818,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3463"
+NAME="AEN3248"
 ></A
 ><H3
 ><A
@@ -2216,7 +1844,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3468"
+NAME="AEN3253"
 ></A
 ><H3
 ><A
@@ -2242,33 +1870,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3473"
-></A
-><H3
-><A
-NAME="XMLBUFFERALLOCSCHEME"
-></A
->xmlBufferAllocScheme</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->extern xmlBufferAllocationScheme xmlBufferAllocScheme; /* alloc scheme to use */</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN3478"
+NAME="AEN3258"
 ></A
 ><H3
 ><A
@@ -2319,7 +1921,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the new structure.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -2329,88 +1931,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3494"
-></A
-><H3
-><A
-NAME="XMLBUFFERCREATESIZE"
-></A
->xmlBufferCreateSize ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
->xmlBufferPtr</A
-> xmlBufferCreateSize            (<GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> size);</PRE
-></TD
-></TR
-></TABLE
-><P
->routine to create an XML buffer.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->size</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> initial size of buffer</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><I
-CLASS="EMPHASIS"
->Returns</I
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the new structure.</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN3515"
+NAME="AEN3274"
 ></A
 ><H3
 ><A
@@ -2463,7 +1984,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the buffer to free</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -2473,7 +1994,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3531"
+NAME="AEN3290"
 ></A
 ><H3
 ><A
@@ -2530,7 +2051,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the file output</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2547,7 +2068,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the buffer to dump</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2562,7 +2083,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the number of xmlChar written</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -2572,7 +2093,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3556"
+NAME="AEN3315"
 ></A
 ><H3
 ><A
@@ -2601,8 +2122,7 @@ HREF="gnome-xml-tree.html#XMLCHAR"
 ></TR
 ></TABLE
 ><P
->Add a string range to an XML buffer. if len == -1, the lenght of
-str is recomputed.</P
+>Add a string range to an XML buffer.</P
 ><P
 ></P
 ><DIV
@@ -2631,7 +2151,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the buffer to dump</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2648,7 +2168,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the xmlChar string</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2665,7 +2185,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the number of xmlChar to add</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -2675,7 +2195,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3581"
+NAME="AEN3340"
 ></A
 ><H3
 ><A
@@ -2732,7 +2252,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the buffer to dump</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2749,7 +2269,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the xmlChar string</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -2759,7 +2279,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3602"
+NAME="AEN3361"
 ></A
 ><H3
 ><A
@@ -2813,7 +2333,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the buffer to dump</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2830,7 +2350,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the C char string</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -2840,7 +2360,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3622"
+NAME="AEN3381"
 ></A
 ><H3
 ><A
@@ -2894,7 +2414,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the buffer to dump</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2911,7 +2431,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the number of xmlChar to remove</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2926,7 +2446,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the number of xmlChar removed, or -1 in case of failure.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -2936,7 +2456,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3646"
+NAME="AEN3405"
 ></A
 ><H3
 ><A
@@ -2989,163 +2509,6 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the buffer</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN3662"
-></A
-><H3
-><A
-NAME="XMLBUFFERCONTENT"
-></A
->xmlBufferContent ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
->xmlChar</A
->* xmlBufferContent             (const <A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
->xmlBufferPtr</A
-> buf);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->buf</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the buffer to resize</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><I
-CLASS="EMPHASIS"
->Returns</I
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the internal content</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN3683"
-></A
-><H3
-><A
-NAME="XMLBUFFERUSE"
-></A
->xmlBufferUse ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlBufferUse                    (const <A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
->xmlBufferPtr</A
-> buf);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->buf</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><I
-CLASS="EMPHASIS"
->Returns</I
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ></TR
 ></TABLE
@@ -3156,167 +2519,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3702"
-></A
-><H3
-><A
-NAME="XMLBUFFERSETALLOCATIONSCHEME"
-></A
->xmlBufferSetAllocationScheme ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlBufferSetAllocationScheme    (<A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
->xmlBufferPtr</A
-> buf,
-                                             <A
-HREF="gnome-xml-tree.html#XMLBUFFERALLOCATIONSCHEME"
->xmlBufferAllocationScheme</A
-> scheme);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->buf</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->scheme</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN3722"
-></A
-><H3
-><A
-NAME="XMLBUFFERLENGTH"
-></A
->xmlBufferLength ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlBufferLength                 (const <A
-HREF="gnome-xml-tree.html#XMLBUFFERPTR"
->xmlBufferPtr</A
-> buf);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->buf</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the buffer </TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><I
-CLASS="EMPHASIS"
->Returns</I
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the length of data in the internal content</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN3742"
+NAME="AEN3421"
 ></A
 ><H3
 ><A
@@ -3384,7 +2587,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document pointer</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3401,7 +2604,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the DTD name</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3418,7 +2621,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the external ID</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3435,7 +2638,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the system ID</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3450,7 +2653,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the new DTD structure</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -3460,7 +2663,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3778"
+NAME="AEN3457"
 ></A
 ><H3
 ><A
@@ -3528,7 +2731,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document pointer</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3545,7 +2748,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the DTD name</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3562,7 +2765,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the external ID</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3579,7 +2782,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the system ID</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3594,7 +2797,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the new DTD structure</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -3604,7 +2807,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3814"
+NAME="AEN3493"
 ></A
 ><H3
 ><A
@@ -3657,7 +2860,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the DTD structure to free up</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -3667,7 +2870,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3830"
+NAME="AEN3509"
 ></A
 ><H3
 ><A
@@ -3702,9 +2905,7 @@ HREF="gnome-xml-tree.html#XMLCHAR"
 ></TR
 ></TABLE
 ><P
->Creation of a Namespace, the old way using PI and without scoping
-DEPRECATED !!!
-Will be removed at next major release !</P
+>Creation of a Namespace, the old way using PI and without scoping, to AVOID.</P
 ><P
 ></P
 ><DIV
@@ -3733,7 +2934,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document carrying the namespace</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3750,7 +2951,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the URI associated</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3767,7 +2968,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the prefix for the namespace</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3782,7 +2983,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->NULL this functionnality had been removed</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -3792,7 +2993,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3861"
+NAME="AEN3540"
 ></A
 ><H3
 ><A
@@ -3827,9 +3028,7 @@ HREF="gnome-xml-tree.html#XMLCHAR"
 ></TR
 ></TABLE
 ><P
->Creation of a new Namespace. This function will refuse to create
-a namespace with a similar prefix than an existing one present on this
-node.</P
+>Creation of a new Namespace.</P
 ><P
 ></P
 ><DIV
@@ -3858,7 +3057,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the element carrying the namespace</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3875,7 +3074,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the URI associated</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3892,7 +3091,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the prefix for the namespace</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3907,7 +3106,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->returns a new namespace pointer or NULL</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -3917,7 +3116,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3892"
+NAME="AEN3571"
 ></A
 ><H3
 ><A
@@ -3970,7 +3169,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the namespace pointer</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -3980,7 +3179,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3908"
+NAME="AEN3587"
 ></A
 ><H3
 ><A
@@ -4036,7 +3235,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  xmlChar string giving the version of XML "1.0"</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4051,7 +3250,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a new document</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -4061,7 +3260,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3929"
+NAME="AEN3608"
 ></A
 ><H3
 ><A
@@ -4114,8 +3313,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  pointer to the document
-@:  </TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -4125,7 +3323,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3945"
+NAME="AEN3624"
 ></A
 ><H3
 ><A
@@ -4189,7 +3387,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4206,7 +3404,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the name of the attribute</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4223,7 +3421,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the value of the attribute</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4238,7 +3436,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the attribute</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -4248,7 +3446,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3976"
+NAME="AEN3655"
 ></A
 ><H3
 ><A
@@ -4312,7 +3510,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the holding node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4329,7 +3527,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the name of the attribute</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4346,7 +3544,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the value of the attribute</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4361,7 +3559,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the attribute</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -4371,7 +3569,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4007"
+NAME="AEN3686"
 ></A
 ><H3
 ><A
@@ -4439,7 +3637,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the holding node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4456,7 +3654,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the namespace</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4473,7 +3671,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the name of the attribute</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4490,7 +3688,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the value of the attribute</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4505,7 +3703,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the attribute</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -4515,7 +3713,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4043"
+NAME="AEN3722"
 ></A
 ><H3
 ><A
@@ -4568,7 +3766,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the first property in the list</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -4578,7 +3776,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4059"
+NAME="AEN3738"
 ></A
 ><H3
 ><A
@@ -4602,7 +3800,7 @@ HREF="gnome-xml-tree.html#XMLATTRPTR"
 ></TR
 ></TABLE
 ><P
->Free one attribute, all the content is freed too</P
+>Free one property, all the childs are freed too.</P
 ><P
 ></P
 ><DIV
@@ -4631,7 +3829,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an attribute</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -4641,7 +3839,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4075"
+NAME="AEN3754"
 ></A
 ><H3
 ><A
@@ -4701,7 +3899,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the element where the attribute will be grafted</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4718,7 +3916,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the attribute</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4733,7 +3931,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> a new xmlAttrPtr, or NULL in case of error.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -4743,7 +3941,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4101"
+NAME="AEN3780"
 ></A
 ><H3
 ><A
@@ -4803,7 +4001,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the element where the attributes will be grafted</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4820,7 +4018,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the first attribute</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4835,7 +4033,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> a new xmlAttrPtr, or NULL in case of error.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -4845,7 +4043,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4127"
+NAME="AEN3806"
 ></A
 ><H3
 ><A
@@ -4901,7 +4099,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the dtd</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4916,7 +4114,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> a new xmlDtdPtr, or NULL in case of error.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -4926,7 +4124,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4148"
+NAME="AEN3827"
 ></A
 ><H3
 ><A
@@ -4984,7 +4182,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5001,7 +4199,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  if 1 do a recursive copy.</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5016,7 +4214,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> a new xmlDocPtr, or NULL in case of error.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -5026,7 +4224,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4173"
+NAME="AEN3852"
 ></A
 ><H3
 ><A
@@ -5046,176 +4244,6 @@ CLASS="PROGRAMLISTING"
 HREF="gnome-xml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  xmlNewDocNode                   (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
->xmlDocPtr</A
-> doc,
-                                             <A
-HREF="gnome-xml-tree.html#XMLNSPTR"
->xmlNsPtr</A
-> ns,
-                                             const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
->xmlChar</A
-> *name,
-                                             const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
->xmlChar</A
-> *content);</PRE
-></TD
-></TR
-></TABLE
-><P
->Creation of a new node element within a document. <TT
-CLASS="PARAMETER"
-><I
->ns</I
-></TT
-> and <TT
-CLASS="PARAMETER"
-><I
->content</I
-></TT
->
-are optionnal (NULL).
-NOTE: <TT
-CLASS="PARAMETER"
-><I
->content</I
-></TT
-> is supposed to be a piece of XML CDATA, so it allow entities
-references, but XML special chars need to be escaped first by using
-<A
-HREF="gnome-xml-entities.html#XMLENCODEENTITIESREENTRANT"
->xmlEncodeEntitiesReentrant</A
->(). Use <A
-HREF="gnome-xml-tree.html#XMLNEWDOCRAWNODE"
->xmlNewDocRawNode</A
->() if you don't
-need entities support.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->doc</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the document</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ns</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  namespace if any</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->name</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the node name</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->content</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the XML text content if any</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><I
-CLASS="EMPHASIS"
->Returns</I
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->a pointer to the new node object.</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN4214"
-></A
-><H3
-><A
-NAME="XMLNEWDOCRAWNODE"
-></A
->xmlNewDocRawNode ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
->  xmlNewDocRawNode                (<A
 HREF="gnome-xml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > doc,
@@ -5275,7 +4303,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5292,7 +4320,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  namespace if any</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5309,7 +4337,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node name</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5326,7 +4354,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the text content if any</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5341,7 +4369,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the new node object.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -5351,7 +4379,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4252"
+NAME="AEN3890"
 ></A
 ><H3
 ><A
@@ -5423,7 +4451,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  namespace if any</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5440,7 +4468,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node name</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5455,7 +4483,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the new node object.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -5465,7 +4493,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4280"
+NAME="AEN3918"
 ></A
 ><H3
 ><A
@@ -5521,22 +4549,7 @@ CLASS="PARAMETER"
 >content</I
 ></TT
 > parameters are optionnal (NULL). If content is non NULL,
-a child list containing the TEXTs and ENTITY_REFs node will be created.
-NOTE: <TT
-CLASS="PARAMETER"
-><I
->content</I
-></TT
-> is supposed to be a piece of XML CDATA, so it allow entities
-references, but XML special chars need to be escaped first by using
-<A
-HREF="gnome-xml-entities.html#XMLENCODEENTITIESREENTRANT"
->xmlEncodeEntitiesReentrant</A
->(). Use <A
-HREF="gnome-xml-tree.html#XMLNEWTEXTCHILD"
->xmlNewTextChild</A
->() if entities
-support is not needed.</P
+a child list containing the TEXTs and ENTITY_REFs node will be created.</P
 ><P
 ></P
 ><DIV
@@ -5565,7 +4578,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the parent node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5582,7 +4595,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a namespace if any</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5599,7 +4612,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the name of the child</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5616,7 +4629,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the XML content of the child if any.</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5631,7 +4644,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the new node object.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -5641,168 +4654,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4322"
-></A
-><H3
-><A
-NAME="XMLNEWTEXTCHILD"
-></A
->xmlNewTextChild ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
->  xmlNewTextChild                 (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
-> parent,
-                                             <A
-HREF="gnome-xml-tree.html#XMLNSPTR"
->xmlNsPtr</A
-> ns,
-                                             const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
->xmlChar</A
-> *name,
-                                             const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
->xmlChar</A
-> *content);</PRE
-></TD
-></TR
-></TABLE
-><P
->Creation of a new child element, added at the end of <TT
-CLASS="PARAMETER"
-><I
->parent</I
-></TT
-> childs list.
-<TT
-CLASS="PARAMETER"
-><I
->ns</I
-></TT
-> and <TT
-CLASS="PARAMETER"
-><I
->content</I
-></TT
-> parameters are optionnal (NULL). If content is non NULL,
-a child TEXT node will be created containing the string content.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->parent</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the parent node</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ns</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  a namespace if any</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->name</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the name of the child</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->content</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the text content of the child if any.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><I
-CLASS="EMPHASIS"
->Returns</I
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->a pointer to the new node object.</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN4361"
+NAME="AEN3957"
 ></A
 ><H3
 ><A
@@ -5862,7 +4714,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5879,7 +4731,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the text content</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5894,7 +4746,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the new node object.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -5904,7 +4756,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4387"
+NAME="AEN3983"
 ></A
 ><H3
 ><A
@@ -5960,7 +4812,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the text content</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5975,7 +4827,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the new node object.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -5985,7 +4837,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4408"
+NAME="AEN4004"
 ></A
 ><H3
 ><A
@@ -6045,7 +4897,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the processing instruction name</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6062,7 +4914,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the PI content</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6077,7 +4929,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the new node object.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -6087,7 +4939,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4434"
+NAME="AEN4030"
 ></A
 ><H3
 ><A
@@ -6149,7 +5001,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6166,7 +5018,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the text content</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6183,7 +5035,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the text len.</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6198,7 +5050,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the new node object.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -6208,7 +5060,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4464"
+NAME="AEN4060"
 ></A
 ><H3
 ><A
@@ -6265,7 +5117,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the text content</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6282,7 +5134,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the text len.</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6297,7 +5149,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the new node object.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -6307,7 +5159,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4489"
+NAME="AEN4085"
 ></A
 ><H3
 ><A
@@ -6367,7 +5219,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6384,7 +5236,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the comment content</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6399,7 +5251,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the new node object.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -6409,7 +5261,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4515"
+NAME="AEN4111"
 ></A
 ><H3
 ><A
@@ -6465,7 +5317,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the comment content</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6480,7 +5332,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the new node object.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -6490,7 +5342,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4536"
+NAME="AEN4132"
 ></A
 ><H3
 ><A
@@ -6551,7 +5403,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6568,7 +5420,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the CData block content content</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6585,7 +5437,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the length of the block</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6600,7 +5452,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the new node object.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -6610,7 +5462,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4566"
+NAME="AEN4162"
 ></A
 ><H3
 ><A
@@ -6670,7 +5522,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6687,7 +5539,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the reference name, or the reference string with &amp; and ;</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6702,7 +5554,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the new node object.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -6712,7 +5564,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4592"
+NAME="AEN4188"
 ></A
 ><H3
 ><A
@@ -6769,7 +5621,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6786,7 +5638,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  if 1 do a recursive copy.</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6801,7 +5653,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> a new xmlNodePtr, or NULL in case of error.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -6811,7 +5663,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4617"
+NAME="AEN4213"
 ></A
 ><H3
 ><A
@@ -6867,7 +5719,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the first node in the list.</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6882,7 +5734,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> a new xmlNodePtr, or NULL in case of error.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -6892,89 +5744,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4638"
-></A
-><H3
-><A
-NAME="XMLDOCGETROOTELEMENT"
-></A
->xmlDocGetRootElement ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
->  xmlDocGetRootElement            (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
->xmlDocPtr</A
-> doc);</PRE
-></TD
-></TR
-></TABLE
-><P
->Get the root element of the document (doc-&gt;root is a list
-containing possibly comments, PIs, etc ...).</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->doc</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the document</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><I
-CLASS="EMPHASIS"
->Returns</I
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the xmlNodePtr for the root or NULL</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN4659"
+NAME="AEN4234"
 ></A
 ><H3
 ><A
@@ -7030,7 +5800,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the parent node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -7045,7 +5815,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the last child or NULL if none.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -7055,7 +5825,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4680"
+NAME="AEN4255"
 ></A
 ><H3
 ><A
@@ -7108,7 +5878,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -7123,7 +5893,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->1 yes, 0 no</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -7133,195 +5903,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4700"
-></A
-><H3
-><A
-NAME="XMLDOCSETROOTELEMENT"
-></A
->xmlDocSetRootElement ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
->  xmlDocSetRootElement            (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
->xmlDocPtr</A
-> doc,
-                                             <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
-> root);</PRE
-></TD
-></TR
-></TABLE
-><P
->Set the root element of the document (doc-&gt;root is a list
-containing possibly comments, PIs, etc ...).</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->doc</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the document</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->root</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the new document root element</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><I
-CLASS="EMPHASIS"
->Returns</I
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the old root element if any was found</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN4726"
-></A
-><H3
-><A
-NAME="XMLNODESETNAME"
-></A
->xmlNodeSetName ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlNodeSetName                  (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
-> cur,
-                                             const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
->xmlChar</A
-> *name);</PRE
-></TD
-></TR
-></TABLE
-><P
->Searches the language of a node, i.e. the values of the xml:lang
-attribute or the one carried by the nearest ancestor.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->cur</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the node being changed</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->name</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the new tag name</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN4747"
+NAME="AEN4275"
 ></A
 ><H3
 ><A
@@ -7386,7 +5968,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the parent node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -7403,7 +5985,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the child node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -7418,7 +6000,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the child or NULL in case of error.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -7428,111 +6010,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4774"
-></A
-><H3
-><A
-NAME="XMLREPLACENODE"
-></A
->xmlReplaceNode ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
->  xmlReplaceNode                  (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
-> old,
-                                             <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
-> cur);</PRE
-></TD
-></TR
-></TABLE
-><P
->Unlink the old node from it's current context, prune the new one
-at the same place. If cur was already inserted in a document it is
-first unlinked from its existing context.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->old</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the old node</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->cur</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the node</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><I
-CLASS="EMPHASIS"
->Returns</I
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the old node</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN4800"
+NAME="AEN4302"
 ></A
 ><H3
 ><A
@@ -7563,19 +6041,12 @@ HREF="gnome-xml-tree.html#XMLNODEPTR"
 ></TR
 ></TABLE
 ><P
->Add a new element <TT
-CLASS="PARAMETER"
-><I
->elem</I
-></TT
-> to the list of siblings of <TT
+>Add a new element to the list of siblings of <TT
 CLASS="PARAMETER"
 ><I
 >cur</I
 ></TT
->
-If the new element was already inserted in a document it is
-first unlinked from its existing context.</P
+></P
 ><P
 ></P
 ><DIV
@@ -7604,7 +6075,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the child node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -7621,7 +6092,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the new node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -7636,7 +6107,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the new element or NULL in case of error.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -7646,235 +6117,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4828"
-></A
-><H3
-><A
-NAME="XMLADDPREVSIBLING"
-></A
->xmlAddPrevSibling ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
->  xmlAddPrevSibling               (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
-> cur,
-                                             <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
-> elem);</PRE
-></TD
-></TR
-></TABLE
-><P
->Add a new element <TT
-CLASS="PARAMETER"
-><I
->elem</I
-></TT
-> as the previous siblings of <TT
-CLASS="PARAMETER"
-><I
->cur</I
-></TT
->
-If the new element was already inserted in a document it is
-first unlinked from its existing context.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->cur</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the child node</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->elem</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the new node</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><I
-CLASS="EMPHASIS"
->Returns</I
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the new element or NULL in case of error.</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN4856"
-></A
-><H3
-><A
-NAME="XMLADDNEXTSIBLING"
-></A
->xmlAddNextSibling ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
->  xmlAddNextSibling               (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
-> cur,
-                                             <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
-> elem);</PRE
-></TD
-></TR
-></TABLE
-><P
->Add a new element <TT
-CLASS="PARAMETER"
-><I
->elem</I
-></TT
-> as the next siblings of <TT
-CLASS="PARAMETER"
-><I
->cur</I
-></TT
->
-If the new element was already inserted in a document it is
-first unlinked from its existing context.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->cur</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the child node</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->elem</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the new node</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><I
-CLASS="EMPHASIS"
->Returns</I
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the new element or NULL in case of error.</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN4884"
+NAME="AEN4329"
 ></A
 ><H3
 ><A
@@ -7927,7 +6170,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -7937,7 +6180,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4900"
+NAME="AEN4345"
 ></A
 ><H3
 ><A
@@ -7997,7 +6240,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the first text node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -8014,7 +6257,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the second text node being merged</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -8029,7 +6272,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the first text node augmented</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -8039,7 +6282,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4926"
+NAME="AEN4371"
 ></A
 ><H3
 ><A
@@ -8097,7 +6340,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -8114,7 +6357,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the content</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -8131,12 +6374,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  <TT
-CLASS="PARAMETER"
-><I
->content</I
-></TT
-> lenght</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -8146,7 +6384,7 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4952"
+NAME="AEN4396"
 ></A
 ><H3
 ><A
@@ -8200,7 +6438,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the first node in the list</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -8210,7 +6448,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4968"
+NAME="AEN4412"
 ></A
 ><H3
 ><A
@@ -8263,7 +6501,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -8273,86 +6511,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4984"
-></A
-><H3
-><A
-NAME="XMLREMOVEPROP"
-></A
->xmlRemoveProp ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlRemoveProp                   (<A
-HREF="gnome-xml-tree.html#XMLATTRPTR"
->xmlAttrPtr</A
-> cur);</PRE
-></TD
-></TR
-></TABLE
-><P
->Unlink and free one attribute, all the content is freed too
-Note this doesn't work for namespace definition attributes</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->cur</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  an attribute</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><I
-CLASS="EMPHASIS"
->Returns</I
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->0 if success and -1 in case of error.</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN5004"
+NAME="AEN4428"
 ></A
 ><H3
 ><A
@@ -8424,7 +6583,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -8441,7 +6600,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the current node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -8458,7 +6617,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the namespace string</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -8473,7 +6632,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the namespace pointer or NULL.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -8483,7 +6642,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5036"
+NAME="AEN4460"
 ></A
 ><H3
 ><A
@@ -8548,7 +6707,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -8565,7 +6724,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the current node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -8582,7 +6741,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the namespace value</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -8597,7 +6756,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the namespace pointer or NULL.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -8607,7 +6766,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5067"
+NAME="AEN4491"
 ></A
 ><H3
 ><A
@@ -8667,7 +6826,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -8684,7 +6843,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the current node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -8699,9 +6858,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->an NULL terminated array of all the xmlNsPtr found
-that need to be freed by the caller or NULL if no
-namespace if defined</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -8711,7 +6868,7 @@ namespace if defined</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5093"
+NAME="AEN4517"
 ></A
 ><H3
 ><A
@@ -8768,7 +6925,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a node in the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -8785,7 +6942,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a namespace pointer</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -8795,7 +6952,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5114"
+NAME="AEN4538"
 ></A
 ><H3
 ><A
@@ -8851,7 +7008,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the namespace</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -8866,7 +7023,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> a new xmlNsPtr, or NULL in case of error.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -8876,7 +7033,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5135"
+NAME="AEN4559"
 ></A
 ><H3
 ><A
@@ -8932,7 +7089,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the first namespace</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -8947,7 +7104,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> a new xmlNsPtr, or NULL in case of error.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -8957,7 +7114,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5156"
+NAME="AEN4580"
 ></A
 ><H3
 ><A
@@ -9021,7 +7178,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -9038,7 +7195,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the attribute name</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -9055,7 +7212,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the attribute value</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -9070,7 +7227,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the attribute pointer.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -9080,7 +7237,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5187"
+NAME="AEN4611"
 ></A
 ><H3
 ><A
@@ -9112,12 +7269,7 @@ HREF="gnome-xml-tree.html#XMLCHAR"
 ></TABLE
 ><P
 >Search and get the value of an attribute associated to a node
-This does the entity substitution.
-This function looks in DTD attribute declaration for <GTKDOCLINK
-HREF="FIXED"
->FIXED</GTKDOCLINK
-> or
-default declaration values unless DTD use has been turned off.</P
+This does the entity substitution.</P
 ><P
 ></P
 ><DIV
@@ -9146,7 +7298,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -9163,7 +7315,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the attribute name</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -9178,8 +7330,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the attribute value or NULL if not found.
-It's up to the caller to free the memory.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -9189,138 +7340,7 @@ It's up to the caller to free the memory.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5214"
-></A
-><H3
-><A
-NAME="XMLGETNSPROP"
-></A
->xmlGetNsProp ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><A
-HREF="gnome-xml-tree.html#XMLCHAR"
->xmlChar</A
->*    xmlGetNsProp                    (<A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
-> node,
-                                             const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
->xmlChar</A
-> *name,
-                                             const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
->xmlChar</A
-> *nameSpace);</PRE
-></TD
-></TR
-></TABLE
-><P
->Search and get the value of an attribute associated to a node
-This attribute has to be anchored in the namespace specified.
-This does the entity substitution.
-This function looks in DTD attribute declaration for <GTKDOCLINK
-HREF="FIXED"
->FIXED</GTKDOCLINK
-> or
-default declaration values unless DTD use has been turned off.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->node</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the node</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->name</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the attribute name</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->nameSpace</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the URI of the namespace</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><I
-CLASS="EMPHASIS"
->Returns</I
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the attribute value or NULL if not found.
-It's up to the caller to free the memory.</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN5246"
+NAME="AEN4637"
 ></A
 ><H3
 ><A
@@ -9381,7 +7401,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -9398,7 +7418,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the value of the attribute</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -9413,7 +7433,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the first child</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -9423,7 +7443,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5272"
+NAME="AEN4663"
 ></A
 ><H3
 ><A
@@ -9485,7 +7505,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -9502,7 +7522,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the value of the text</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -9519,7 +7539,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the length of the string value</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -9534,7 +7554,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the first child</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -9544,7 +7564,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5302"
+NAME="AEN4693"
 ></A
 ><H3
 ><A
@@ -9606,7 +7626,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -9623,7 +7643,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a Node list</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -9640,7 +7660,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  should we replace entity contents or show their external form</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -9655,7 +7675,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the string copy, the calller must free it.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -9665,7 +7685,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5332"
+NAME="AEN4723"
 ></A
 ><H3
 ><A
@@ -9722,7 +7742,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node being modified</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -9739,7 +7759,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the new value of the content</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -9749,7 +7769,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5353"
+NAME="AEN4744"
 ></A
 ><H3
 ><A
@@ -9807,7 +7827,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node being modified</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -9824,7 +7844,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the new value of the content</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -9841,12 +7861,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the size of <TT
-CLASS="PARAMETER"
-><I
->content</I
-></TT
-></TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -9856,7 +7871,7 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5379"
+NAME="AEN4769"
 ></A
 ><H3
 ><A
@@ -9913,7 +7928,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node being modified</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -9930,7 +7945,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  extra content</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -9940,7 +7955,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5400"
+NAME="AEN4790"
 ></A
 ><H3
 ><A
@@ -9998,7 +8013,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node being modified</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -10015,7 +8030,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  extra content</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -10032,12 +8047,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the size of <TT
-CLASS="PARAMETER"
-><I
->content</I
-></TT
-></TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -10047,7 +8057,7 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5426"
+NAME="AEN4815"
 ></A
 ><H3
 ><A
@@ -10106,7 +8116,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node being read</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -10121,8 +8131,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a new xmlChar * or NULL if no content is available.
-It's up to the caller to free the memory.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -10132,7 +8141,7 @@ It's up to the caller to free the memory.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5447"
+NAME="AEN4836"
 ></A
 ><H3
 ><A
@@ -10189,7 +8198,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node being checked</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -10204,8 +8213,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the lang value, or NULL if not found
-It's up to the caller to free the memory.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -10215,7 +8223,7 @@ It's up to the caller to free the memory.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5468"
+NAME="AEN4857"
 ></A
 ><H3
 ><A
@@ -10243,8 +8251,8 @@ HREF="gnome-xml-tree.html#XMLCHAR"
 ></TR
 ></TABLE
 ><P
->Set the language of a node, i.e. the values of the xml:lang
-attribute.</P
+>Searches the language of a node, i.e. the values of the xml:lang
+attribute or the one carried by the nearest ancestor.</P
 ><P
 ></P
 ><DIV
@@ -10273,7 +8281,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node being changed</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -10290,7 +8298,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the langage description</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -10300,13 +8308,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5489"
+NAME="AEN4878"
 ></A
 ><H3
 ><A
-NAME="XMLNODEGETBASE"
+NAME="XMLREMOVEPROP"
 ></A
->xmlNodeGetBase ()</H3
+>xmlRemoveProp ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -10316,23 +8324,16 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
-><A
-HREF="gnome-xml-tree.html#XMLCHAR"
->xmlChar</A
->*    xmlNodeGetBase                  (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
->xmlDocPtr</A
-> doc,
-                                             <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
+>int         xmlRemoveProp                   (<A
+HREF="gnome-xml-tree.html#XMLATTRPTR"
+>xmlAttrPtr</A
 > cur);</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
->Searches for the BASE URL. The code should work on both XML
-and HTML document even if base mechanisms are completely different.</P
+>Unlink and free one attribute, all the content is freed too
+Note this doesn't work for namespace definition attributes</P
 ><P
 ></P
 ><DIV
@@ -10354,23 +8355,6 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->doc</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the document the node pertains to</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
 >cur</I
 ></TT
 >&nbsp;:</TD
@@ -10378,7 +8362,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the node being checked</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -10393,8 +8377,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the base URL, or NULL if not found
-It's up to the caller to free the memory.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -10404,7 +8387,7 @@ It's up to the caller to free the memory.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5515"
+NAME="AEN4898"
 ></A
 ><H3
 ><A
@@ -10480,7 +8463,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5534"
+NAME="AEN4917"
 ></A
 ><H3
 ><A
@@ -10538,7 +8521,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the XML buffer</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -10555,7 +8538,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the string to add</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -10565,7 +8548,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5555"
+NAME="AEN4938"
 ></A
 ><H3
 ><A
@@ -10620,7 +8603,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the XML buffer output</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -10637,7 +8620,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the string to add</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -10647,7 +8630,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5575"
+NAME="AEN4958"
 ></A
 ><H3
 ><A
@@ -10706,7 +8689,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the XML buffer output</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -10723,7 +8706,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the string to add</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -10733,7 +8716,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5596"
+NAME="AEN4979"
 ></A
 ><H3
 ><A
@@ -10792,7 +8775,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -10809,7 +8792,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  OUT: the memory pointer</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -10826,7 +8809,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  OUT: the memory lenght</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -10836,7 +8819,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5621"
+NAME="AEN5004"
 ></A
 ><H3
 ><A
@@ -10893,94 +8876,6 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the FILE*</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->cur</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the document</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN5642"
-></A
-><H3
-><A
-NAME="XMLELEMDUMP"
-></A
->xmlElemDump ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlElemDump                     (<GTKDOCLINK
-HREF="FILE"
->FILE</GTKDOCLINK
-> *f,
-                                             <A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
->xmlDocPtr</A
-> cur,
-                                             <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
-> elem);</PRE
-></TD
-></TR
-></TABLE
-><P
->Dump an XML/HTML node, recursive behaviour,children are printed too.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->f</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ></TR
 ><TR
@@ -10998,23 +8893,6 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the current node</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->elem</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ></TR
 ></TABLE
@@ -11025,7 +8903,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5668"
+NAME="AEN5025"
 ></A
 ><H3
 ><A
@@ -11051,13 +8929,7 @@ HREF="gnome-xml-tree.html#XMLDOCPTR"
 ></TABLE
 ><P
 >Dump an XML document to a file. Will use compression if
-compiled in and enabled. If <TT
-CLASS="PARAMETER"
-><I
->filename</I
-></TT
-> is "-" the stdout file is
-used.</P
+compiled in and enabled.</P
 ><P
 ></P
 ><DIV
@@ -11086,7 +8958,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the filename</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -11103,7 +8975,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -11118,7 +8990,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the number of file written or -1 in case of failure.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -11128,7 +9000,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5693"
+NAME="AEN5049"
 ></A
 ><H3
 ><A
@@ -11181,7 +9053,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -11196,7 +9068,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->0 (uncompressed) to 9 (max compression)</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -11206,7 +9078,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5713"
+NAME="AEN5069"
 ></A
 ><H3
 ><A
@@ -11261,7 +9133,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -11278,7 +9150,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the compression ratio</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -11288,7 +9160,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5733"
+NAME="AEN5089"
 ></A
 ><H3
 ><A
@@ -11336,7 +9208,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->0 (uncompressed) to 9 (max compression)</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -11346,7 +9218,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5748"
+NAME="AEN5104"
 ></A
 ><H3
 ><A
@@ -11397,7 +9269,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the compression ratio</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P

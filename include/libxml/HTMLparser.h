@@ -30,7 +30,9 @@ typedef xmlNodePtr htmlNodePtr;
 /*
  * Internal description of an HTML element
  */
-typedef struct htmlElemDesc {
+typedef struct _htmlElemDesc htmlElemDesc;
+typedef htmlElemDesc *htmlElemDescPtr;
+struct _htmlElemDesc {
     const char *name;	/* The tag name */
     int startTag;       /* Whether the start tag can be implied */
     int endTag;         /* Whether the end tag can be implied */
@@ -38,16 +40,18 @@ typedef struct htmlElemDesc {
     int depr;           /* Is this a deprecated element ? */
     int dtd;            /* 1: only in Loose DTD, 2: only Frameset one */
     const char *desc;   /* the description */
-} htmlElemDesc, *htmlElemDescPtr;
+};
 
 /*
  * Internal description of an HTML entity
  */
-typedef struct htmlEntityDesc {
+typedef struct _htmlEntityDesc htmlEntityDesc;
+typedef htmlEntityDesc *htmlEntityDescPtr;
+struct _htmlEntityDesc {
     int value;		/* the UNICODE value for the character */
     const char *name;	/* The entity name */
     const char *desc;   /* the description */
-} htmlEntityDesc, *htmlEntityDescPtr;
+};
 
 /*
  * There is only few public functions.

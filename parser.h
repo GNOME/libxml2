@@ -34,7 +34,9 @@ extern "C" {
  */
 
 typedef void (* xmlParserInputDeallocate)(xmlChar *);
-typedef struct xmlParserInput {
+typedef struct _xmlParserInput xmlParserInput;
+typedef xmlParserInput *xmlParserInputPtr;
+struct _xmlParserInput {
     /* Input buffer */
     xmlParserInputBufferPtr buf;      /* UTF-8 encoded buffer */
 
@@ -47,35 +49,36 @@ typedef struct xmlParserInput {
     int col;                          /* Current column */
     int consumed;                     /* How many xmlChars already consumed */
     xmlParserInputDeallocate free;    /* function to deallocate the base */
-} xmlParserInput;
-typedef xmlParserInput *xmlParserInputPtr;
+};
 
 /**
  * the parser can be asked to collect Node informations, i.e. at what
  * place in the file they were detected. 
  * NOTE: This is off by default and not very well tested.
  */
-typedef struct _xmlParserNodeInfo {
-  const struct xmlNode* node;
+typedef struct _xmlParserNodeInfo xmlParserNodeInfo;
+typedef xmlParserNodeInfo *xmlParserNodeInfoPtr;
+
+struct _xmlParserNodeInfo {
+  const struct _xmlNode* node;
   /* Position & line # that text that created the node begins & ends on */
   unsigned long begin_pos;
   unsigned long begin_line;
   unsigned long end_pos;
   unsigned long end_line;
-} _xmlParserNodeInfo;
-typedef _xmlParserNodeInfo xmlParserNodeInfo;
+};
 
-typedef struct xmlParserNodeInfoSeq {
+typedef struct _xmlParserNodeInfoSeq xmlParserNodeInfoSeq;
+typedef xmlParserNodeInfoSeq *xmlParserNodeInfoSeqPtr;
+struct _xmlParserNodeInfoSeq {
   unsigned long maximum;
   unsigned long length;
   xmlParserNodeInfo* buffer;
-} _xmlParserNodeInfoSeq;
-typedef _xmlParserNodeInfoSeq xmlParserNodeInfoSeq;
-typedef xmlParserNodeInfoSeq *xmlParserNodeInfoSeqPtr;
+};
 
 /**
- * The parser is not (yet) a state based parser, but we need to maintain
- * minimum state informations, especially for entities processing.
+ * The parser is now working also as a state based parser
+ * The recursive one use the stagte info for entities processing
  */
 typedef enum {
     XML_PARSER_EOF = -1,	/* nothing is to be parsed */
@@ -105,8 +108,10 @@ typedef enum {
  *      takes as the only argument the parser context pointer, so migrating
  *      to a state based parser for progressive parsing shouldn't be too hard.
  */
-typedef struct _xmlParserCtxt {
-    struct xmlSAXHandler *sax;        /* The SAX handler */
+typedef struct _xmlParserCtxt xmlParserCtxt;
+typedef xmlParserCtxt *xmlParserCtxtPtr;
+struct _xmlParserCtxt {
+    struct _xmlSAXHandler *sax;       /* The SAX handler */
     void            *userData;        /* the document being built */
     xmlDocPtr           myDoc;        /* the document being built */
     int            wellFormed;        /* is the document well formed */
@@ -154,21 +159,19 @@ typedef struct _xmlParserCtxt {
 
     long               nbChars;       /* number of xmlChar processed */
     long            checkIndex;       /* used by progressive parsing lookup */
-} _xmlParserCtxt;
-typedef _xmlParserCtxt xmlParserCtxt;
-typedef xmlParserCtxt *xmlParserCtxtPtr;
+};
 
 /**
  * a SAX Locator.
  */
-typedef struct xmlSAXLocator {
+typedef struct _xmlSAXLocator xmlSAXLocator;
+typedef xmlSAXLocator *xmlSAXLocatorPtr;
+struct _xmlSAXLocator {
     const xmlChar *(*getPublicId)(void *ctx);
     const xmlChar *(*getSystemId)(void *ctx);
     int (*getLineNumber)(void *ctx);
     int (*getColumnNumber)(void *ctx);
-} _xmlSAXLocator;
-typedef _xmlSAXLocator xmlSAXLocator;
-typedef xmlSAXLocator *xmlSAXLocatorPtr;
+};
 
 /**
  * a SAX handler is bunch of callbacks called by the parser when processing
@@ -221,7 +224,9 @@ typedef int (*isStandaloneSAXFunc) (void *ctx);
 typedef int (*hasInternalSubsetSAXFunc) (void *ctx);
 typedef int (*hasExternalSubsetSAXFunc) (void *ctx);
 
-typedef struct xmlSAXHandler {
+typedef struct _xmlSAXHandler xmlSAXHandler;
+typedef xmlSAXHandler *xmlSAXHandlerPtr;
+struct _xmlSAXHandler {
     internalSubsetSAXFunc internalSubset;
     isStandaloneSAXFunc isStandalone;
     hasInternalSubsetSAXFunc hasInternalSubset;
@@ -248,8 +253,7 @@ typedef struct xmlSAXHandler {
     fatalErrorSAXFunc fatalError;
     getParameterEntitySAXFunc getParameterEntity;
     cdataBlockSAXFunc cdataBlock;
-} xmlSAXHandler;
-typedef xmlSAXHandler *xmlSAXHandlerPtr;
+};
 
 /**
  * External entity loaders types

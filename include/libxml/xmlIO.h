@@ -18,7 +18,9 @@
 extern "C" {
 #endif
 
-typedef struct xmlParserInputBuffer {
+typedef struct _xmlParserInputBuffer xmlParserInputBuffer;
+typedef xmlParserInputBuffer *xmlParserInputBufferPtr;
+struct _xmlParserInputBuffer {
     /* Inputs */
     FILE          *file;    /* Input on file handler */
     void*        gzfile;    /* Input on a compressed stream */
@@ -29,9 +31,8 @@ typedef struct xmlParserInputBuffer {
     
     xmlBufferPtr buffer;    /* Local buffer encoded in  UTF-8 */
 
-} xmlParserInputBuffer;
+};
 
-typedef xmlParserInputBuffer *xmlParserInputBufferPtr;
 
 /*
  * Interfaces

@@ -5,7 +5,7 @@ AM_CONFIG_HEADER(config.h)
 
 LIBXML_MAJOR_VERSION=1
 LIBXML_MINOR_VERSION=8
-LIBXML_MICRO_VERSION=2
+LIBXML_MICRO_VERSION=3
 LIBXML_VERSION=$LIBXML_MAJOR_VERSION.$LIBXML_MINOR_VERSION.$LIBXML_MICRO_VERSION
 LIBXML_VERSION_INFO=`expr $LIBXML_MAJOR_VERSION + $LIBXML_MINOR_VERSION`:$LIBXML_MICRO_VERSION:$LIBXML_MINOR_VERSION
 
@@ -33,18 +33,39 @@ AM_PROG_LIBTOOL
 
 AM_MAINTAINER_MODE
 
-dnl Checks for libraries.
-Z_LIBS= 
-AC_CHECK_LIB(z, inflate,
-  AC_CHECK_HEADER(zlib.h,
-    Z_LIBS="-lz";  AC_DEFINE(HAVE_LIBZ)))
+dnl Checks for zlib library.
+_cppflags="${CPPFLAGS}"
+_ldflags="${LDFLAGS}"
 
+AC_ARG_WITH(zlib,
+[  --with-zlib[=DIR]       use libz in DIR],[
+  if test "$withval" != "no"; then
+    Z_DIR=$withval
+    CPPFLAGS="${CPPFLAGS} -I$withval/include"
+    LDFLAGS="${LDFLAGS} -L$withval/lib"
+  fi
+])
+
+AC_CHECK_HEADER(zlib.h,
+    AC_CHECK_LIB(z, gzread,[
+	AC_DEFINE(HAVE_LIBZ)
+        if test "x${Z_DIR}" != "x"; then
+            Z_CFLAGS="-I${Z_DIR}/include"
+            Z_LIBS="-L${Z_DIR}/lib -lz"
+        else
+            Z_LIBS="-lz"
+        fi]))
+AC_SUBST(Z_CFLAGS)
+AC_SUBST(Z_LIBS)
+
+CPPFLAGS=${_cppflags}
+LDFLAGS=${_ldflags}
 
 dnl Checks for header files.
 AC_HEADER_DIRENT
 AC_HEADER_STDC
 AC_CHECK_HEADERS(fcntl.h unistd.h ctype.h dirent.h errno.h malloc.h)
-AC_CHECK_HEADERS(stdarg.h sys/stat.h sys/types.h time.h zlib.h)
+AC_CHECK_HEADERS(stdarg.h sys/stat.h sys/types.h time.h)
 AC_CHECK_HEADERS(ieeefp.h nan.h math.h fp_class.h float.h)
 AC_CHECK_HEADERS(stdlib.h sys/socket.h netinet/in.h arpa/inet.h)
 AC_CHECK_HEADERS(netdb.h sys/time.h sys/select.h)
@@ -71,33 +92,20 @@ AC_SUBST(CORBA_CFLAGS)
 dnl Checks for library functions.
 AC_FUNC_STRFTIME
 AC_CHECK_FUNCS(strdup strndup strerror snprintf)
-AC_CHECK_FUNCS(finite isinf isnan isnand fp_class class fpclass finite)
+AC_CHECK_FUNCS(finite isnand fp_class class fpclass)
 AC_CHECK_FUNCS(strftime localtime)
 
 dnl Checks for inet libraries:
-AC_CHECK_LIB(socket, socket)
-AC_CHECK_LIB(inet, connect)
-AC_CHECK_LIB(nsl, t_accept)
+AC_CHECK_FUNC(gethostent, , AC_CHECK_LIB(nsl, gethostent))
+AC_CHECK_FUNC(setsockopt, , AC_CHECK_LIB(socket, setsockopt))
+AC_CHECK_FUNC(connect, , AC_CHECK_LIB(inet, connect))
 
 dnl Checks for isnan in libm if not in libc
-M_LIBS= 
-if test "$ac_cv_func_isnan" != "yes"
-then
-AC_CHECK_LIB(m, isnan,
-             M_LIBS="-lm";  AC_DEFINE(HAVE_ISNAN))
-fi
+AC_CHECK_FUNC(isnan, , AC_CHECK_LIB(m, isnan,
+  [M_LIBS="-lm"; AC_DEFINE(HAVE_ISNAN)]))
 
-dnl Checks for isinf in libm if not in libc
-if test "$ac_cv_func_isinf" != "yes"
-then
-M2_LIBS=""
-AC_CHECK_LIB(m, isinf,
-             M2_LIBS="-lm";  AC_DEFINE(HAVE_ISINF))
-if test "$M2_LIBS" != ""
-then
-    M_LIBS="$M2_LIBS"
-fi
-fi
+AC_CHECK_FUNC(isinf, , AC_CHECK_LIB(m, isinf,
+  [M_LIBS="-lm"; AC_DEFINE(HAVE_ISINF)]))
 
 XML_LIBDIR='-L${libdir}'
 XML_INCLUDEDIR='-I${includedir}/gnome-xml'
@@ -149,7 +157,6 @@ AC_SUBST(HTML_DIR)
 AC_SUBST(HAVE_ISNAN)
 AC_SUBST(HAVE_ISINF)
 
-AC_SUBST(Z_LIBS)
 AC_SUBST(M_LIBS)
 AC_SUBST(RDL_LIBS)
 AC_OUTPUT(libxml.spec Makefile doc/Makefile example/Makefile xml-config win32config.h)

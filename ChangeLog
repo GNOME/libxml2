@@ -1,3 +1,24 @@
+Wed Jan  5 17:08:43 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* acconfig.h: readline and history patch
+	* valid.[ch]: added xmlRemoveID() and xmlRemoveRef()
+	* tree.c: added check and handling when possibly removing an ID
+	* tree.c, HTMLparser.h, HTMLtree.h: fixed entities parsing
+	     and saving.
+	* test/HTML/entities.html result/HTML/entities.html* : test for
+	     various entities reference cases
+	* result/HTML/* : as a result output of some testcase have
+	     changed
+	* HTMLparser.c, parser.c: fixed a bug in the push mode triggered
+	     by previous example. added xmlParseTryOrFinish().
+	* xpath.h tree.h parser.h valid.h xmlIO.h xlink.h encoding.h
+	  entities.h debugXML.h HTMLparser.h: changed the way struct are 
+	  declared to allow gtk-doc to expose those
+	* parser.c: closed bug #4960  
+	* Makefile.am configure.in: Applied patch from 
+	  Albert Chin-A-Young <china@thewrittenword.com> for better zlib
+	  and math/socket libs detection
+
 Mon Jan  3 18:29:43 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* configure.in, Makefile.am: link tester against readline

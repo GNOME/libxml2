@@ -12,6 +12,8 @@
 #undef HAVE_LIBM
 #undef HAVE_ISINF
 #undef HAVE_ISNAN
+#undef HAVE_LIBHISTORY
+#undef HAVE_LIBREADLINE
 
 /* Define if you have the class function.  */
 #undef HAVE_CLASS
@@ -24,12 +26,6 @@
 
 /* Define if you have the fpclass function.  */
 #undef HAVE_FPCLASS
-
-/* Define if you have the isinf function.  */
-#undef HAVE_ISINF
-
-/* Define if you have the isnan function.  */
-#undef HAVE_ISNAN
 
 /* Define if you have the isnand function.  */
 #undef HAVE_ISNAND
@@ -127,20 +123,11 @@
 /* Define if you have the <unistd.h> header file.  */
 #undef HAVE_UNISTD_H
 
-/* Define if you have the <zlib.h> header file.  */
-#undef HAVE_ZLIB_H
-
-/* Define if you have the history library (-lhistory).  */
-#undef HAVE_LIBHISTORY
-
 /* Define if you have the inet library (-linet).  */
 #undef HAVE_LIBINET
 
 /* Define if you have the nsl library (-lnsl).  */
 #undef HAVE_LIBNSL
-
-/* Define if you have the readline library (-lreadline).  */
-#undef HAVE_LIBREADLINE
 
 /* Define if you have the socket library (-lsocket).  */
 #undef HAVE_LIBSOCKET

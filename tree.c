@@ -690,7 +690,7 @@ xmlNodeListGetString(xmlDocPtr doc, xmlNodePtr list, int inLine) {
 
     while (node != NULL) {
         if (node->type == XML_TEXT_NODE) {
-	    if ((inLine) || (doc->type == XML_HTML_DOCUMENT_NODE)) {
+	    if (inLine) {
 #ifndef XML_USE_BUFFER_CONTENT
 		ret = xmlStrcat(ret, node->content);
 #else
@@ -941,6 +941,10 @@ xmlFreeProp(xmlAttrPtr cur) {
         fprintf(stderr, "xmlFreeProp : property == NULL\n");
 	return;
     }
+    /* Check for ID removal -> leading to invalid references ! */
+    if ((cur->node != NULL) && 
+        (xmlIsID(cur->node->doc, cur->node, cur)))
+        xmlRemoveID(cur->node->doc, cur);
     if (cur->name != NULL) xmlFree((char *) cur->name);
     if (cur->val != NULL) xmlFreeNodeList(cur->val);
     memset(cur, -1, sizeof(xmlAttr));

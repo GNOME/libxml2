@@ -4832,14 +4832,29 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
     /*
      * Skip up to the end of the conditionnal section.
      */
-    while ((CUR != 0) && ((CUR != ']') || (NXT(1) != ']') || (NXT(2) != '>')))
+    while ((CUR != 0) && ((CUR != ']') || (NXT(1) != ']') || (NXT(2) != '>'))) {
 	NEXT;
+	/*
+	 * Pop-up of finished entities.
+	 */
+	while ((CUR == 0) && (ctxt->inputNr > 1))
+	    xmlPopInput(ctxt);
+
+	if (CUR == 0)
+	    GROW;
+    }
+
+    if (CUR == 0)
+        SHRINK;
+
     if (CUR == 0) {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt->userData,
 	        "XML conditional section not closed\n");
 	ctxt->errNo = XML_ERR_CONDSEC_NOT_FINISHED;
 	ctxt->wellFormed = 0;
+    } else {
+        SKIP(3);
     }
 }
 
@@ -7013,15 +7028,16 @@ xmlParseLookupSequence(xmlParserCtxtPtr ctxt, xmlChar first,
 }
 
 /**
- * xmlParseTry:
+ * xmlParseTryOrFinish:
  * @ctxt:  an XML parser context
+ * @terminate:  last chunk indicator
  *
  * Try to progress on parsing
  *
  * Returns zero if no parsing was possible
  */
 int
-xmlParseTry(xmlParserCtxtPtr ctxt) {
+xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
     int ret = 0;
     xmlParserInputPtr in;
     int avail;
@@ -7128,7 +7144,8 @@ xmlParseTry(xmlParserCtxtPtr ctxt) {
 	        if ((cur == '<') && (next == '?')) {
 		    /* PI or XML decl */
 		    if (avail < 5) return(ret);
-		    if (xmlParseLookupSequence(ctxt, '?', '>', 0) < 0) 
+		    if ((!terminate) &&
+		        (xmlParseLookupSequence(ctxt, '?', '>', 0) < 0))
 			return(ret);
 		    if ((ctxt->sax) && (ctxt->sax->setDocumentLocator))
 			ctxt->sax->setDocumentLocator(ctxt->userData,
@@ -7181,7 +7198,8 @@ xmlParseTry(xmlParserCtxtPtr ctxt) {
 		cur = in->cur[0];
 		next = in->cur[1];
 	        if ((cur == '<') && (next == '?')) {
-		    if (xmlParseLookupSequence(ctxt, '?', '>', 0) < 0) 
+		    if ((!terminate) &&
+		        (xmlParseLookupSequence(ctxt, '?', '>', 0) < 0))
 			goto done;
 #ifdef DEBUG_PUSH
 		    fprintf(stderr, "PP: Parsing PI\n");
@@ -7189,7 +7207,8 @@ xmlParseTry(xmlParserCtxtPtr ctxt) {
 		    xmlParsePI(ctxt);
 		} else if ((cur == '<') && (next == '!') &&
 		    (in->cur[2] == '-') && (in->cur[3] == '-')) {
-		    if (xmlParseLookupSequence(ctxt, '-', '-', '>') < 0) 
+		    if ((!terminate) &&
+		        (xmlParseLookupSequence(ctxt, '-', '-', '>') < 0))
 			goto done;
 #ifdef DEBUG_PUSH
 		    fprintf(stderr, "PP: Parsing Comment\n");
@@ -7201,7 +7220,8 @@ xmlParseTry(xmlParserCtxtPtr ctxt) {
 		    (in->cur[4] == 'C') && (in->cur[5] == 'T') &&
 		    (in->cur[6] == 'Y') && (in->cur[7] == 'P') &&
 		    (in->cur[8] == 'E')) {
-		    if (xmlParseLookupSequence(ctxt, '>', 0, 0) < 0) 
+		    if ((!terminate) &&
+		        (xmlParseLookupSequence(ctxt, '>', 0, 0) < 0))
 			goto done;
 #ifdef DEBUG_PUSH
 		    fprintf(stderr, "PP: Parsing internal subset\n");
@@ -7239,7 +7259,8 @@ xmlParseTry(xmlParserCtxtPtr ctxt) {
 		cur = in->cur[0];
 		next = in->cur[1];
 	        if ((cur == '<') && (next == '?')) {
-		    if (xmlParseLookupSequence(ctxt, '?', '>', 0) < 0) 
+		    if ((!terminate) &&
+		        (xmlParseLookupSequence(ctxt, '?', '>', 0) < 0))
 			goto done;
 #ifdef DEBUG_PUSH
 		    fprintf(stderr, "PP: Parsing PI\n");
@@ -7247,7 +7268,8 @@ xmlParseTry(xmlParserCtxtPtr ctxt) {
 		    xmlParsePI(ctxt);
 		} else if ((cur == '<') && (next == '!') &&
 		    (in->cur[2] == '-') && (in->cur[3] == '-')) {
-		    if (xmlParseLookupSequence(ctxt, '-', '-', '>') < 0) 
+		    if ((!terminate) &&
+		        (xmlParseLookupSequence(ctxt, '-', '-', '>') < 0))
 			goto done;
 #ifdef DEBUG_PUSH
 		    fprintf(stderr, "PP: Parsing Comment\n");
@@ -7275,7 +7297,8 @@ xmlParseTry(xmlParserCtxtPtr ctxt) {
 		cur = in->cur[0];
 		next = in->cur[1];
 	        if ((cur == '<') && (next == '?')) {
-		    if (xmlParseLookupSequence(ctxt, '?', '>', 0) < 0) 
+		    if ((!terminate) &&
+		        (xmlParseLookupSequence(ctxt, '?', '>', 0) < 0))
 			goto done;
 #ifdef DEBUG_PUSH
 		    fprintf(stderr, "PP: Parsing PI\n");
@@ -7284,7 +7307,8 @@ xmlParseTry(xmlParserCtxtPtr ctxt) {
 		    ctxt->instate = XML_PARSER_EPILOG;
 		} else if ((cur == '<') && (next == '!') &&
 		    (in->cur[2] == '-') && (in->cur[3] == '-')) {
-		    if (xmlParseLookupSequence(ctxt, '-', '-', '>') < 0) 
+		    if ((!terminate) &&
+		        (xmlParseLookupSequence(ctxt, '-', '-', '>') < 0))
 			goto done;
 #ifdef DEBUG_PUSH
 		    fprintf(stderr, "PP: Parsing Comment\n");
@@ -7329,7 +7353,8 @@ xmlParseTry(xmlParserCtxtPtr ctxt) {
 			ctxt->sax->endDocument(ctxt->userData);
 		    goto done;
 		}
-		if (xmlParseLookupSequence(ctxt, '>', 0, 0) < 0) 
+		if ((!terminate) &&
+		    (xmlParseLookupSequence(ctxt, '>', 0, 0) < 0))
 		    goto done;
 		name = xmlParseStartTag(ctxt);
 		if (name == NULL) {
@@ -7426,7 +7451,8 @@ xmlParseTry(xmlParserCtxtPtr ctxt) {
 		cur = in->cur[0];
 		next = in->cur[1];
 	        if ((cur == '<') && (next == '?')) {
-		    if (xmlParseLookupSequence(ctxt, '?', '>', 0) < 0) 
+		    if ((!terminate) &&
+		        (xmlParseLookupSequence(ctxt, '?', '>', 0) < 0))
 			goto done;
 #ifdef DEBUG_PUSH
 		    fprintf(stderr, "PP: Parsing PI\n");
@@ -7434,7 +7460,8 @@ xmlParseTry(xmlParserCtxtPtr ctxt) {
 		    xmlParsePI(ctxt);
 		} else if ((cur == '<') && (next == '!') &&
 		           (in->cur[2] == '-') && (in->cur[3] == '-')) {
-		    if (xmlParseLookupSequence(ctxt, '-', '-', '>') < 0) 
+		    if ((!terminate) &&
+		        (xmlParseLookupSequence(ctxt, '-', '-', '>') < 0))
 			goto done;
 #ifdef DEBUG_PUSH
 		    fprintf(stderr, "PP: Parsing Comment\n");
@@ -7468,7 +7495,8 @@ xmlParseTry(xmlParserCtxtPtr ctxt) {
 #endif
 		    break;
 		} else if (cur == '&') {
-		    if (xmlParseLookupSequence(ctxt, ';', 0, 0) < 0) 
+		    if ((!terminate) &&
+		        (xmlParseLookupSequence(ctxt, ';', 0, 0) < 0))
 			goto done;
 #ifdef DEBUG_PUSH
 		    fprintf(stderr, "PP: Parsing Reference\n");
@@ -7490,7 +7518,8 @@ xmlParseTry(xmlParserCtxtPtr ctxt) {
 		     */
 		    if ((ctxt->inputNr == 1) &&
 		        (avail < XML_PARSER_BIG_BUFFER_SIZE)) {
-			if (xmlParseLookupSequence(ctxt, '<', 0, 0) < 0) 
+			if ((!terminate) &&
+			    (xmlParseLookupSequence(ctxt, '<', 0, 0) < 0))
 			    goto done;
                     }
 		    ctxt->checkIndex = 0;
@@ -7543,7 +7572,8 @@ xmlParseTry(xmlParserCtxtPtr ctxt) {
             case XML_PARSER_END_TAG:
 		if (avail < 2)
 		    goto done;
-		if (xmlParseLookupSequence(ctxt, '>', 0, 0) < 0) 
+		if ((!terminate) &&
+		    (xmlParseLookupSequence(ctxt, '>', 0, 0) < 0))
 		    goto done;
 		xmlParseEndTag(ctxt);
 		if (ctxt->name == NULL) {
@@ -7672,6 +7702,19 @@ done:
 }
 
 /**
+ * xmlParseTry:
+ * @ctxt:  an XML parser context
+ *
+ * Try to progress on parsing
+ *
+ * Returns zero if no parsing was possible
+ */
+int
+xmlParseTry(xmlParserCtxtPtr ctxt) {
+    return(xmlParseTryOrFinish(ctxt, 0));
+}
+
+/**
  * xmlParseChunk:
  * @ctxt:  an XML parser context
  * @chunk:  an char array
@@ -7697,9 +7740,9 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
 	fprintf(stderr, "PP: pushed %d\n", size);
 #endif
 
-        xmlParseTry(ctxt);
+        xmlParseTryOrFinish(ctxt, terminate);
     } else if (ctxt->instate != XML_PARSER_EOF)
-        xmlParseTry(ctxt);
+        xmlParseTryOrFinish(ctxt, terminate);
     if (terminate) {
 	if ((ctxt->instate != XML_PARSER_EOF) &&
 	    (ctxt->instate != XML_PARSER_EPILOG)) {

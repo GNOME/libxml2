@@ -713,7 +713,7 @@ xmlScanAttributeDecl(xmlDtdPtr dtd, const xmlChar *elem) {
  * @ctxt:  the validation context
  * @elem:  the element name
  *
- * Veryfy that the element don't have too many ID attributes
+ * Verify that the element don't have too many ID attributes
  * declared.
  *
  * Returns the number of ID attributes found.
@@ -1504,7 +1504,7 @@ xmlFreeIDTable(xmlIDTablePtr table) {
 }
 
 /**
- * xmlIsID
+ * xmlIsID:
  * @doc:  the document
  * @elem:  the element carrying the attribute
  * @attr:  the attribute
@@ -1517,13 +1517,21 @@ xmlFreeIDTable(xmlIDTablePtr table) {
  */
 int
 xmlIsID(xmlDocPtr doc, xmlNodePtr elem, xmlAttrPtr attr) {
+    if (doc == NULL) return(0);
+    if (attr == NULL) return(0);
     if ((doc->intSubset == NULL) && (doc->extSubset == NULL)) {
         if (((attr->name[0] == 'I') || (attr->name[0] == 'i')) &&
             ((attr->name[1] == 'D') || (attr->name[1] == 'd')) &&
 	    (attr->name[2] == 0)) return(1);
+    } else if (doc->type == XML_HTML_DOCUMENT_NODE) {
+        if ((!xmlStrcmp(BAD_CAST "id", attr->name)) ||
+	    (!xmlStrcmp(BAD_CAST "name", attr->name)))
+	    return(1);
+	return(0);    
     } else {
 	xmlAttributePtr attrDecl;
 
+	if (elem == NULL) return(0);
 	attrDecl = xmlGetDtdAttrDesc(doc->intSubset, elem->name, attr->name);
 	if ((attrDecl == NULL) && (doc->extSubset != NULL))
 	    attrDecl = xmlGetDtdAttrDesc(doc->extSubset, elem->name,
@@ -1533,6 +1541,42 @@ xmlIsID(xmlDocPtr doc, xmlNodePtr elem, xmlAttrPtr attr) {
 	    return(1);
     }
     return(0);
+}
+
+/**
+ * xmlRemoveID
+ * @doc:  the document
+ * @attr:  the attribute
+ *
+ * Remove the given attribute from the ID table maintained internally.
+ *
+ * Returns -1 if the lookup failed and 0 otherwise
+ */
+int
+xmlRemoveID(xmlDocPtr doc, xmlAttrPtr attr) {
+    xmlIDPtr cur;
+    xmlIDTablePtr table;
+    int i;
+
+    if (doc == NULL) return(-1);
+    if (attr == NULL) return(-1);
+    table = doc->ids;
+    if (table == NULL) 
+        return(-1);
+
+    /*
+     * Search the ID list.
+     */
+    for (i = 0;i < table->nb_ids;i++) {
+        cur = table->table[i];
+	if (cur->attr == attr) {
+	    table->nb_ids--;
+	    memmove(&table->table[i], &table->table[i+1],
+	            (table->nb_ids - i) * sizeof(xmlIDPtr));
+	    return(0);
+	}
+    }
+    return(-1);
 }
 
 /**
@@ -1723,7 +1767,7 @@ xmlFreeRefTable(xmlRefTablePtr table) {
 }
 
 /**
- * xmlIsRef
+ * xmlIsRef:
  * @doc:  the document
  * @elem:  the element carrying the attribute
  * @attr:  the attribute
@@ -1758,11 +1802,47 @@ xmlIsRef(xmlDocPtr doc, xmlNodePtr elem, xmlAttrPtr attr) {
 }
 
 /**
+ * xmlRemoveRef
+ * @doc:  the document
+ * @attr:  the attribute
+ *
+ * Remove the given attribute from the Ref table maintained internally.
+ *
+ * Returns -1 if the lookup failed and 0 otherwise
+ */
+int
+xmlRemoveRef(xmlDocPtr doc, xmlAttrPtr attr) {
+    xmlRefPtr cur;
+    xmlRefTablePtr table;
+    int i;
+
+    if (doc == NULL) return(-1);
+    if (attr == NULL) return(-1);
+    table = doc->refs;
+    if (table == NULL) 
+        return(-1);
+
+    /*
+     * Search the Ref list.
+     */
+    for (i = 0;i < table->nb_refs;i++) {
+        cur = table->table[i];
+	if (cur->attr == attr) {
+	    table->nb_refs--;
+	    memmove(&table->table[i], &table->table[i+1],
+	            (table->nb_refs - i) * sizeof(xmlRefPtr));
+	    return(0);
+	}
+    }
+    return(-1);
+}
+
+/**
  * xmlGetRef:
  * @doc:  pointer to the document
  * @Ref:  the Ref value
  *
- * Search the attribute declaring the given Ref
+ * Search the next attribute declaring the given Ref
  *
  * Returns NULL if not found, otherwise the xmlAttrPtr defining the Ref
  */

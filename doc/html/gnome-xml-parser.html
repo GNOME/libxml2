@@ -4,7 +4,7 @@
 >parser</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.33"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.44"><LINK
 REL="HOME"
 TITLE="Gnome XML Library Reference Manual"
 HREF="book1.html"><LINK
@@ -20,6 +20,9 @@ HREF="gnome-xml-sax.html"></HEAD
 ><BODY
 BGCOLOR="#FFFFFF"
 TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -111,7 +114,10 @@ SIZE="3"
 ></TABLE
 ></DIV
 ><H1
->parser</H1
+><A
+NAME="GNOME-XML-PARSER"
+>parser</A
+></H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
@@ -119,7 +125,7 @@ NAME="AEN31"
 ></A
 ><H2
 >Name</H2
->parser &#8212; </DIV
+>parser&nbsp;--&nbsp;</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
@@ -153,11 +159,24 @@ typedef     <A
 HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
 >xmlParserInputPtr</A
 >;
-typedef     <A
+<A
+HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
+>xmlParserInputPtr</A
+> (<A
+HREF="gnome-xml-parser.html#XMLEXTERNALENTITYLOADER"
+>*xmlExternalEntityLoader</A
+>)
+                                            (const char *URL,
+                                             const char *ID,
+                                             <A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> context);
+struct      <A
 HREF="gnome-xml-parser.html#XMLPARSERNODEINFO"
 >xmlParserNodeInfo</A
 >;
-typedef     <A
+struct      <A
 HREF="gnome-xml-parser.html#XMLPARSERNODEINFOSEQ"
 >xmlParserNodeInfoSeq</A
 >;
@@ -169,7 +188,7 @@ enum        <A
 HREF="gnome-xml-parser.html#XMLPARSERINPUTSTATE"
 >xmlParserInputState</A
 >;
-typedef     <A
+struct      <A
 HREF="gnome-xml-parser.html#XMLPARSERCTXT"
 >xmlParserCtxt</A
 >;
@@ -177,7 +196,7 @@ typedef     <A
 HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 >;
-typedef     <A
+struct      <A
 HREF="gnome-xml-parser.html#XMLSAXLOCATOR"
 >xmlSAXLocator</A
 >;
@@ -467,19 +486,6 @@ typedef     <A
 HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 >;
-<A
-HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
->xmlParserInputPtr</A
-> (<A
-HREF="gnome-xml-parser.html#XMLEXTERNALENTITYLOADER"
->*xmlExternalEntityLoader</A
->)
-                                            (const char *URL,
-                                             const char *ID,
-                                             <A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> context);
 extern      const char *<A
 HREF="gnome-xml-parser.html#XMLPARSERVERSION"
 >xmlParserVersion</A
@@ -500,10 +506,6 @@ extern      int <A
 HREF="gnome-xml-parser.html#XMLSUBSTITUTEENTITIESDEFAULTVALUE"
 >xmlSubstituteEntitiesDefaultValue</A
 >;
-void        <A
-HREF="gnome-xml-parser.html#XMLCLEANUPPARSER"
->xmlCleanupParser</A
->                (void);
 int         <A
 HREF="gnome-xml-parser.html#XMLPARSERINPUTREAD"
 >xmlParserInputRead</A
@@ -793,14 +795,6 @@ HREF="gnome-xml-tree.html#XMLCHAR"
 >xmlChar</A
 > *SystemID);
 void        <A
-HREF="gnome-xml-parser.html#XMLDEFAULTSAXHANDLERINIT"
->xmlDefaultSAXHandlerInit</A
->        (void);
-void        <A
-HREF="gnome-xml-parser.html#HTMLDEFAULTSAXHANDLERINIT"
->htmlDefaultSAXHandlerInit</A
->       (void);
-void        <A
 HREF="gnome-xml-parser.html#XMLINITPARSERCTXT"
 >xmlInitParserCtxt</A
 >               (<A
@@ -811,13 +805,6 @@ void        <A
 HREF="gnome-xml-parser.html#XMLCLEARPARSERCTXT"
 >xmlClearParserCtxt</A
 >              (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt);
-void        <A
-HREF="gnome-xml-parser.html#XMLFREEPARSERCTXT"
->xmlFreeParserCtxt</A
->               (<A
 HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
@@ -833,40 +820,14 @@ HREF="gnome-xml-tree.html#XMLCHAR"
 >xmlChar</A
 > *buffer,
                                              const char *filename);
-<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> <A
-HREF="gnome-xml-parser.html#XMLCREATEDOCPARSERCTXT"
->xmlCreateDocParserCtxt</A
->     (<A
-HREF="gnome-xml-tree.html#XMLCHAR"
->xmlChar</A
-> *cur);
-<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> <A
-HREF="gnome-xml-parser.html#XMLCREATEPUSHPARSERCTXT"
->xmlCreatePushParserCtxt</A
->    (<A
-HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
->xmlSAXHandlerPtr</A
-> sax,
-                                             void *user_data,
-                                             const char *chunk,
-                                             int size,
-                                             const char *filename);
-int         <A
-HREF="gnome-xml-parser.html#XMLPARSECHUNK"
->xmlParseChunk</A
->                   (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt,
-                                             const char *chunk,
-                                             int size,
-                                             int terminate);
+void        <A
+HREF="gnome-xml-parser.html#XMLDEFAULTSAXHANDLERINIT"
+>xmlDefaultSAXHandlerInit</A
+>        (void);
+void        <A
+HREF="gnome-xml-parser.html#HTMLDEFAULTSAXHANDLERINIT"
+>htmlDefaultSAXHandlerInit</A
+>       (void);
 const <A
 HREF="gnome-xml-parser.html#XMLPARSERNODEINFO"
 >xmlParserNodeInfo</A
@@ -955,7 +916,7 @@ HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN244"
+NAME="AEN233"
 ></A
 ><H2
 >Description</H2
@@ -965,14 +926,14 @@ NAME="AEN244"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN247"
+NAME="AEN236"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN249"
+NAME="AEN238"
 ></A
 ><H3
 ><A
@@ -988,7 +949,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XML_DEFAULT_VERSION	"1.0"</PRE
+>#define     XML_DEFAULT_VERSION</PRE
 ></TD
 ></TR
 ></TABLE
@@ -998,7 +959,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN254"
+NAME="AEN243"
 ></A
 ><H3
 ><A
@@ -1059,13 +1020,26 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN269"
+NAME="AEN258"
 ></A
 ><H3
 ><A
 NAME="XMLPARSERINPUTPTR"
 ></A
 >xmlParserInputPtr</H3
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN262"
+></A
+><H3
+><A
+NAME="XMLEXTERNALENTITYLOADER"
+></A
+>xmlExternalEntityLoader ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1075,23 +1049,113 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->typedef xmlParserInput *xmlParserInputPtr;</PRE
+><A
+HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
+>xmlParserInputPtr</A
+> (*xmlExternalEntityLoader)
+                                            (const char *URL,
+                                             const char *ID,
+                                             <A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> context);</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
 ></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>URL</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ID</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>context</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN274"
+NAME="AEN290"
 ></A
 ><H3
 ><A
 NAME="XMLPARSERNODEINFO"
 ></A
->xmlParserNodeInfo</H3
+>struct xmlParserNodeInfo</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1101,7 +1165,14 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->typedef _xmlParserNodeInfo xmlParserNodeInfo;</PRE
+>struct xmlParserNodeInfo {
+  const struct _xmlNode* node;
+  /* Position &amp; line # that text that created the node begins &amp; ends on */
+  unsigned long begin_pos;
+  unsigned long begin_line;
+  unsigned long end_pos;
+  unsigned long end_line;
+};</PRE
 ></TD
 ></TR
 ></TABLE
@@ -1111,13 +1182,13 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN279"
+NAME="AEN295"
 ></A
 ><H3
 ><A
 NAME="XMLPARSERNODEINFOSEQ"
 ></A
->xmlParserNodeInfoSeq</H3
+>struct xmlParserNodeInfoSeq</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1127,7 +1198,11 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->typedef _xmlParserNodeInfoSeq xmlParserNodeInfoSeq;</PRE
+>struct xmlParserNodeInfoSeq {
+  unsigned long maximum;
+  unsigned long length;
+  xmlParserNodeInfo* buffer;
+};</PRE
 ></TD
 ></TR
 ></TABLE
@@ -1137,33 +1212,20 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN284"
+NAME="AEN300"
 ></A
 ><H3
 ><A
 NAME="XMLPARSERNODEINFOSEQPTR"
 ></A
 >xmlParserNodeInfoSeqPtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlParserNodeInfoSeq *xmlParserNodeInfoSeqPtr;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN289"
+NAME="AEN304"
 ></A
 ><H3
 ><A
@@ -1205,13 +1267,13 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN294"
+NAME="AEN309"
 ></A
 ><H3
 ><A
 NAME="XMLPARSERCTXT"
 ></A
->xmlParserCtxt</H3
+>struct xmlParserCtxt</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1221,85 +1283,56 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->typedef _xmlParserCtxt xmlParserCtxt;</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN299"
-></A
-><H3
-><A
-NAME="XMLPARSERCTXTPTR"
-></A
->xmlParserCtxtPtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlParserCtxt *xmlParserCtxtPtr;</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN304"
-></A
-><H3
-><A
-NAME="XMLSAXLOCATOR"
-></A
->xmlSAXLocator</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef _xmlSAXLocator xmlSAXLocator;</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN309"
-></A
-><H3
-><A
-NAME="XMLSAXLOCATORPTR"
-></A
->xmlSAXLocatorPtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlSAXLocator *xmlSAXLocatorPtr;</PRE
+>struct xmlParserCtxt {
+    struct _xmlSAXHandler *sax;       /* The SAX handler */
+    void            *userData;        /* the document being built */
+    xmlDocPtr           myDoc;        /* the document being built */
+    int            wellFormed;        /* is the document well formed */
+    int       replaceEntities;        /* shall we replace entities ? */
+    const xmlChar       *version;        /* the XML version string */
+    const xmlChar      *encoding;        /* encoding, if any */
+    int            standalone;        /* standalone document */
+    int                  html;        /* are we parsing an HTML document */
+
+    /* Input stream stack */
+    xmlParserInputPtr  input;         /* Current input stream */
+    int                inputNr;       /* Number of current input streams */
+    int                inputMax;      /* Max number of input streams */
+    xmlParserInputPtr *inputTab;      /* stack of inputs */
+
+    /* Node analysis stack only used for DOM building */
+    xmlNodePtr         node;          /* Current parsed Node */
+    int                nodeNr;        /* Depth of the parsing stack */
+    int                nodeMax;       /* Max depth of the parsing stack */
+    xmlNodePtr        *nodeTab;       /* array of nodes */
+
+    int record_info;                  /* Whether node info should be kept */
+    xmlParserNodeInfoSeq node_seq;    /* info about each node parsed */
+
+    int errNo;                        /* error code */
+
+    int     hasExternalSubset;        /* reference and external subset */
+    int             hasPErefs;        /* the internal subset has PE refs */
+    int              external;        /* are we parsing an external entity */
+
+    int                 valid;        /* is the document valid */
+    int              validate;        /* shall we try to validate ? */
+    xmlValidCtxt        vctxt;        /* The validity context */
+
+    xmlParserInputState instate;      /* current type of input */
+    int                 token;        /* next char look-ahead */    
+
+    char           *directory;        /* the data directory */
+
+    /* Node name stack only used for HTML parsing */
+    xmlChar           *name;          /* Current parsed Node */
+    int                nameNr;        /* Depth of the parsing stack */
+    int                nameMax;       /* Max depth of the parsing stack */
+    xmlChar *         *nameTab;       /* array of nodes */
+
+    long               nbChars;       /* number of xmlChar processed */
+    long            checkIndex;       /* used by progressive parsing lookup */
+};</PRE
 ></TD
 ></TR
 ></TABLE
@@ -1310,6 +1343,63 @@ CLASS="PROGRAMLISTING"
 CLASS="REFSECT2"
 ><A
 NAME="AEN314"
+></A
+><H3
+><A
+NAME="XMLPARSERCTXTPTR"
+></A
+>xmlParserCtxtPtr</H3
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN318"
+></A
+><H3
+><A
+NAME="XMLSAXLOCATOR"
+></A
+>struct xmlSAXLocator</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>struct xmlSAXLocator {
+    const xmlChar *(*getPublicId)(void *ctx);
+    const xmlChar *(*getSystemId)(void *ctx);
+    int (*getLineNumber)(void *ctx);
+    int (*getColumnNumber)(void *ctx);
+};</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN323"
+></A
+><H3
+><A
+NAME="XMLSAXLOCATORPTR"
+></A
+>xmlSAXLocatorPtr</H3
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN327"
 ></A
 ><H3
 ><A
@@ -1427,7 +1517,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN343"
+NAME="AEN356"
 ></A
 ><H3
 ><A
@@ -1548,7 +1638,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN372"
+NAME="AEN385"
 ></A
 ><H3
 ><A
@@ -1645,7 +1735,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN396"
+NAME="AEN409"
 ></A
 ><H3
 ><A
@@ -1742,7 +1832,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN420"
+NAME="AEN433"
 ></A
 ><H3
 ><A
@@ -1902,7 +1992,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN458"
+NAME="AEN471"
 ></A
 ><H3
 ><A
@@ -2023,7 +2113,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN487"
+NAME="AEN500"
 ></A
 ><H3
 ><A
@@ -2201,7 +2291,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN529"
+NAME="AEN542"
 ></A
 ><H3
 ><A
@@ -2319,7 +2409,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN557"
+NAME="AEN570"
 ></A
 ><H3
 ><A
@@ -2461,7 +2551,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN591"
+NAME="AEN604"
 ></A
 ><H3
 ><A
@@ -2540,7 +2630,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN610"
+NAME="AEN623"
 ></A
 ><H3
 ><A
@@ -2598,7 +2688,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN624"
+NAME="AEN637"
 ></A
 ><H3
 ><A
@@ -2656,7 +2746,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN638"
+NAME="AEN651"
 ></A
 ><H3
 ><A
@@ -2756,7 +2846,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN662"
+NAME="AEN675"
 ></A
 ><H3
 ><A
@@ -2835,7 +2925,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN681"
+NAME="AEN694"
 ></A
 ><H3
 ><A
@@ -2935,7 +3025,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN705"
+NAME="AEN718"
 ></A
 ><H3
 ><A
@@ -3014,7 +3104,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN724"
+NAME="AEN737"
 ></A
 ><H3
 ><A
@@ -3111,7 +3201,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN747"
+NAME="AEN760"
 ></A
 ><H3
 ><A
@@ -3208,7 +3298,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN770"
+NAME="AEN783"
 ></A
 ><H3
 ><A
@@ -3308,7 +3398,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN794"
+NAME="AEN807"
 ></A
 ><H3
 ><A
@@ -3387,7 +3477,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN813"
+NAME="AEN826"
 ></A
 ><H3
 ><A
@@ -3484,7 +3574,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN836"
+NAME="AEN849"
 ></A
 ><H3
 ><A
@@ -3578,7 +3668,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN858"
+NAME="AEN871"
 ></A
 ><H3
 ><A
@@ -3672,7 +3762,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN880"
+NAME="AEN893"
 ></A
 ><H3
 ><A
@@ -3766,7 +3856,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN902"
+NAME="AEN915"
 ></A
 ><H3
 ><A
@@ -3839,7 +3929,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN920"
+NAME="AEN933"
 ></A
 ><H3
 ><A
@@ -3912,7 +4002,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN938"
+NAME="AEN951"
 ></A
 ><H3
 ><A
@@ -3985,149 +4075,20 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN956"
+NAME="AEN969"
 ></A
 ><H3
 ><A
 NAME="XMLSAXHANDLERPTR"
 ></A
 >xmlSAXHandlerPtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlSAXHandler *xmlSAXHandlerPtr;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN961"
-></A
-><H3
-><A
-NAME="XMLEXTERNALENTITYLOADER"
-></A
->xmlExternalEntityLoader ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><A
-HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
->xmlParserInputPtr</A
-> (*xmlExternalEntityLoader)
-                                            (const char *URL,
-                                             const char *ID,
-                                             <A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> context);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->URL</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ID</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->context</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><I
-CLASS="EMPHASIS"
->Returns</I
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN989"
+NAME="AEN973"
 ></A
 ><H3
 ><A
@@ -4153,7 +4114,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN994"
+NAME="AEN978"
 ></A
 ><H3
 ><A
@@ -4179,7 +4140,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN999"
+NAME="AEN983"
 ></A
 ><H3
 ><A
@@ -4205,7 +4166,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1004"
+NAME="AEN988"
 ></A
 ><H3
 ><A
@@ -4231,7 +4192,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1009"
+NAME="AEN993"
 ></A
 ><H3
 ><A
@@ -4257,38 +4218,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1014"
-></A
-><H3
-><A
-NAME="XMLCLEANUPPARSER"
-></A
->xmlCleanupParser ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlCleanupParser                (void);</PRE
-></TD
-></TR
-></TABLE
-><P
->Cleanup function for the XML parser. It tries to reclaim all
-parsing related global memory allocated for the parser processing.
-It doesn't deallocate any document related memory. Calling this
-function should not prevent reusing the parser.</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN1020"
+NAME="AEN998"
 ></A
 ><H3
 ><A
@@ -4343,7 +4273,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an XML parser input</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4360,7 +4290,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an indicative size for the lookahead</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4375,8 +4305,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the number of xmlChars read, or -1 in case of error, 0 indicate the
-end of this entity</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -4386,7 +4315,7 @@ end of this entity</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1044"
+NAME="AEN1022"
 ></A
 ><H3
 ><A
@@ -4441,7 +4370,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an XML parser input</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4458,7 +4387,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an indicative size for the lookahead</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4473,8 +4402,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the number of xmlChars read, or -1 in case of error, 0 indicate the
-end of this entity</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -4484,7 +4412,7 @@ end of this entity</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1068"
+NAME="AEN1046"
 ></A
 ><H3
 ><A
@@ -4540,7 +4468,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the input xmlChar *</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4555,7 +4483,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a new xmlChar * or NULL</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -4565,7 +4493,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1089"
+NAME="AEN1067"
 ></A
 ><H3
 ><A
@@ -4622,7 +4550,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the input xmlChar *</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4639,12 +4567,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the len of <TT
-CLASS="PARAMETER"
-><I
->cur</I
-></TT
-></TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4659,7 +4582,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a new xmlChar * or NULL</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -4669,7 +4592,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1115"
+NAME="AEN1092"
 ></A
 ><H3
 ><A
@@ -4727,7 +4650,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the xmlChar * array (haystack)</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4744,7 +4667,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the index of the first char (zero based)</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4761,7 +4684,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the length of the substring</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4776,7 +4699,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the xmlChar * for the first occurence or NULL.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -4786,7 +4709,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1144"
+NAME="AEN1121"
 ></A
 ><H3
 ><A
@@ -4846,7 +4769,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the xmlChar * array</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4863,7 +4786,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the xmlChar to search</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4878,7 +4801,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the xmlChar * for the first occurence or NULL.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -4888,7 +4811,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1170"
+NAME="AEN1147"
 ></A
 ><H3
 ><A
@@ -4948,7 +4871,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the xmlChar * array (haystack)</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4965,7 +4888,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the xmlChar to search (needle)</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4980,7 +4903,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the xmlChar * for the first occurence or NULL.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -4990,7 +4913,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1196"
+NAME="AEN1173"
 ></A
 ><H3
 ><A
@@ -5047,7 +4970,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the first xmlChar *</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5064,7 +4987,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the second xmlChar *</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5079,7 +5002,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the integer result of the comparison</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -5089,7 +5012,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1221"
+NAME="AEN1198"
 ></A
 ><H3
 ><A
@@ -5147,7 +5070,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the first xmlChar *</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5164,7 +5087,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the second xmlChar *</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5181,7 +5104,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the max comparison length</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5196,7 +5119,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the integer result of the comparison</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -5206,7 +5129,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1250"
+NAME="AEN1227"
 ></A
 ><H3
 ><A
@@ -5230,7 +5153,7 @@ HREF="gnome-xml-tree.html#XMLCHAR"
 ></TR
 ></TABLE
 ><P
->length of a xmlChar's string</P
+>lenght of a xmlChar's string</P
 ><P
 ></P
 ><DIV
@@ -5259,7 +5182,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the xmlChar * array</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5274,7 +5197,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the number of xmlChar contained in the ARRAY.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -5284,7 +5207,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1270"
+NAME="AEN1247"
 ></A
 ><H3
 ><A
@@ -5344,7 +5267,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the original xmlChar * array</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5361,7 +5284,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the xmlChar * array added</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5376,7 +5299,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a new xmlChar * containing the concatenated string.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -5386,7 +5309,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1296"
+NAME="AEN1273"
 ></A
 ><H3
 ><A
@@ -5447,7 +5370,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the original xmlChar * array</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5464,7 +5387,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the xmlChar * array added</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5481,12 +5404,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the length of <TT
-CLASS="PARAMETER"
-><I
->add</I
-></TT
-></TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5501,7 +5419,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a new xmlChar * containing the concatenated string.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -5511,7 +5429,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1327"
+NAME="AEN1303"
 ></A
 ><H3
 ><A
@@ -5567,7 +5485,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a pointer to an array of xmlChar</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5582,7 +5500,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the resulting document tree</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -5592,7 +5510,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1348"
+NAME="AEN1324"
 ></A
 ><H3
 ><A
@@ -5646,7 +5564,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an pointer to a char array</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5663,7 +5581,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the size of the array</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5678,7 +5596,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the resulting document tree</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -5688,7 +5606,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1372"
+NAME="AEN1348"
 ></A
 ><H3
 ><A
@@ -5742,7 +5660,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the filename</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5757,7 +5675,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the resulting document tree</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -5767,7 +5685,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1392"
+NAME="AEN1368"
 ></A
 ><H3
 ><A
@@ -5825,7 +5743,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  int 0 or 1 </TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5840,7 +5758,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the last value for 0 for no substitution, 1 for substitution.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -5850,7 +5768,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1412"
+NAME="AEN1388"
 ></A
 ><H3
 ><A
@@ -5907,7 +5825,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a pointer to an array of xmlChar</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5922,7 +5840,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the resulting document tree</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -5932,7 +5850,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1433"
+NAME="AEN1409"
 ></A
 ><H3
 ><A
@@ -5987,7 +5905,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an pointer to a char array</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6004,7 +5922,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the size of the array</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6019,7 +5937,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the resulting document tree</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -6029,7 +5947,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1457"
+NAME="AEN1433"
 ></A
 ><H3
 ><A
@@ -6084,7 +6002,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the filename</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6099,7 +6017,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the resulting document tree</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -6109,7 +6027,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1477"
+NAME="AEN1453"
 ></A
 ><H3
 ><A
@@ -6167,7 +6085,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an XML parser context</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6182,8 +6100,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->0, -1 in case of error. the parser context is augmented
-as a result of the parsing.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -6193,7 +6110,7 @@ as a result of the parsing.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1499"
+NAME="AEN1475"
 ></A
 ><H3
 ><A
@@ -6256,7 +6173,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the SAX handler block</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6273,7 +6190,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a pointer to an array of xmlChar</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6290,8 +6207,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  work in recovery mode, i.e. tries to read no Well Formed
-documents</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6306,7 +6222,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the resulting document tree</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -6316,7 +6232,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1529"
+NAME="AEN1505"
 ></A
 ><H3
 ><A
@@ -6372,7 +6288,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a SAX handler</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6389,7 +6305,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  The user data returned on SAX callbacks</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6406,7 +6322,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a file name</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6421,7 +6337,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->0 in case of success or a error number otherwise</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -6431,7 +6347,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1557"
+NAME="AEN1533"
 ></A
 ><H3
 ><A
@@ -6488,7 +6404,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a SAX handler</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6505,7 +6421,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  The user data returned on SAX callbacks</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6522,7 +6438,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an in-memory XML document input</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6539,7 +6455,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the length of the XML document in bytes</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6554,7 +6470,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->0 in case of success or a error number otherwise</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -6564,7 +6480,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1589"
+NAME="AEN1565"
 ></A
 ><H3
 ><A
@@ -6625,7 +6541,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the SAX handler block</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6642,7 +6558,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an pointer to a char array</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6659,7 +6575,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the size of the array</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6676,8 +6592,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  work in recovery mode, i.e. tries to read not Well Formed
-documents</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6692,7 +6607,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the resulting document tree</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -6702,7 +6617,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1622"
+NAME="AEN1598"
 ></A
 ><H3
 ><A
@@ -6763,7 +6678,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the SAX handler block</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6780,7 +6695,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the filename</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6797,8 +6712,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  work in recovery mode, i.e. tries to read no Well Formed
-documents</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6813,7 +6727,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the resulting document tree</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -6823,7 +6737,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1651"
+NAME="AEN1627"
 ></A
 ><H3
 ><A
@@ -6883,7 +6797,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a NAME* containing the External ID of the DTD</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6900,7 +6814,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a NAME* containing the URL to the DTD</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -6915,7 +6829,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the resulting xmlDtdPtr or NULL in case of error.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -6925,7 +6839,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1677"
+NAME="AEN1653"
 ></A
 ><H3
 ><A
@@ -6989,7 +6903,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the SAX handler block</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -7006,7 +6920,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a NAME* containing the External ID of the DTD</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -7023,7 +6937,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a NAME* containing the URL to the DTD</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -7038,7 +6952,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the resulting xmlDtdPtr or NULL in case of error.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -7048,63 +6962,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1708"
-></A
-><H3
-><A
-NAME="XMLDEFAULTSAXHANDLERINIT"
-></A
->xmlDefaultSAXHandlerInit ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlDefaultSAXHandlerInit        (void);</PRE
-></TD
-></TR
-></TABLE
-><P
->Initialize the default SAX handler</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN1714"
-></A
-><H3
-><A
-NAME="HTMLDEFAULTSAXHANDLERINIT"
-></A
->htmlDefaultSAXHandlerInit ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        htmlDefaultSAXHandlerInit       (void);</PRE
-></TD
-></TR
-></TABLE
-><P
->Initialize the default SAX handler</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN1720"
+NAME="AEN1684"
 ></A
 ><H3
 ><A
@@ -7157,7 +7015,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an HTML parser context</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -7167,7 +7025,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1736"
+NAME="AEN1700"
 ></A
 ><H3
 ><A
@@ -7220,7 +7078,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an XML parser context</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -7230,71 +7088,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1752"
-></A
-><H3
-><A
-NAME="XMLFREEPARSERCTXT"
-></A
->xmlFreeParserCtxt ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlFreeParserCtxt               (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt);</PRE
-></TD
-></TR
-></TABLE
-><P
->Free all the memory used by a parser context. However the parsed
-document in ctxt-&gt;myDoc is not freed.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctxt</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  an XML parser context</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN1768"
+NAME="AEN1716"
 ></A
 ><H3
 ><A
@@ -7354,7 +7148,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an XML parser context</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -7371,7 +7165,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a xmlChar * buffer</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -7388,7 +7182,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a file name</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -7398,13 +7192,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1793"
+NAME="AEN1741"
 ></A
 ><H3
 ><A
-NAME="XMLCREATEDOCPARSERCTXT"
+NAME="XMLDEFAULTSAXHANDLERINIT"
 ></A
->xmlCreateDocParserCtxt ()</H3
+>xmlDefaultSAXHandlerInit ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -7414,78 +7208,25 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
-><A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> xmlCreateDocParserCtxt     (<A
-HREF="gnome-xml-tree.html#XMLCHAR"
->xmlChar</A
-> *cur);</PRE
+>void        xmlDefaultSAXHandlerInit        (void);</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
->Create a parser context for an XML in-memory document.</P
+>Initialize the default SAX handler</P
 ><P
 ></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->cur</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  a pointer to an array of xmlChar</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><I
-CLASS="EMPHASIS"
->Returns</I
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the new parser context or NULL</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1814"
+NAME="AEN1747"
 ></A
 ><H3
 ><A
-NAME="XMLCREATEPUSHPARSERCTXT"
+NAME="HTMLDEFAULTSAXHANDLERINIT"
 ></A
->xmlCreatePushParserCtxt ()</H3
+>htmlDefaultSAXHandlerInit ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -7495,289 +7236,19 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
-><A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> xmlCreatePushParserCtxt    (<A
-HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
->xmlSAXHandlerPtr</A
-> sax,
-                                             void *user_data,
-                                             const char *chunk,
-                                             int size,
-                                             const char *filename);</PRE
+>void        htmlDefaultSAXHandlerInit       (void);</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
->Create a parser context for using the XML parser in push mode
-To allow content encoding detection, <TT
-CLASS="PARAMETER"
-><I
->size</I
-></TT
-> should be &gt;= 4
-The value of <TT
-CLASS="PARAMETER"
-><I
->filename</I
-></TT
-> is used for fetching external entities
-and error/warning reports.</P
+>Initialize the default SAX handler</P
 ><P
 ></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->sax</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  a SAX handler</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->user_data</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  The user data returned on SAX callbacks</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->chunk</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  a pointer to an array of chars</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->size</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  number of chars in the array</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->filename</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  an optional file name or URI</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><I
-CLASS="EMPHASIS"
->Returns</I
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the new parser context or NULL</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1853"
-></A
-><H3
-><A
-NAME="XMLPARSECHUNK"
-></A
->xmlParseChunk ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlParseChunk                   (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt,
-                                             const char *chunk,
-                                             int size,
-                                             int terminate);</PRE
-></TD
-></TR
-></TABLE
-><P
->Parse a Chunk of memory</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctxt</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  an XML parser context</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->chunk</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  an char array</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->size</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the size in byte of the chunk</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->terminate</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  last chunk indicator</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><I
-CLASS="EMPHASIS"
->Returns</I
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->zero if no error, the xmlParserErrors otherwise.</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN1885"
+NAME="AEN1753"
 ></A
 ><H3
 ><A
@@ -7838,7 +7309,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an XML parser context</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -7855,7 +7326,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an XML node within the tree</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -7870,7 +7341,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->an xmlParserNodeInfo block pointer or NULL</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -7880,7 +7351,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1911"
+NAME="AEN1779"
 ></A
 ><H3
 ><A
@@ -7933,7 +7404,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a node info sequence pointer</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -7943,7 +7414,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1927"
+NAME="AEN1795"
 ></A
 ><H3
 ><A
@@ -7997,7 +7468,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a node info sequence pointer</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -8007,7 +7478,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1943"
+NAME="AEN1811"
 ></A
 ><H3
 ><A
@@ -8068,7 +7539,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a node info sequence pointer</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -8085,7 +7556,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an XML node pointer</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -8100,7 +7571,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a long indicating the position of the record</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -8110,7 +7581,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1969"
+NAME="AEN1837"
 ></A
 ><H3
 ><A
@@ -8167,7 +7638,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an XML parser context</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -8184,7 +7655,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a node info sequence pointer</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -8194,7 +7665,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1990"
+NAME="AEN1858"
 ></A
 ><H3
 ><A
@@ -8255,7 +7726,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2005"
+NAME="AEN1873"
 ></A
 ><H3
 ><A
@@ -8315,7 +7786,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2020"
+NAME="AEN1888"
 ></A
 ><H3
 ><A

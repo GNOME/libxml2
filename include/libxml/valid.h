@@ -23,11 +23,13 @@ extern "C" {
 typedef void (*xmlValidityErrorFunc) (void *ctx, const char *msg, ...);
 typedef void (*xmlValidityWarningFunc) (void *ctx, const char *msg, ...);
 
-typedef struct xmlValidCtxt {
+typedef struct _xmlValidCtxt xmlValidCtxt;
+typedef xmlValidCtxt *xmlValidCtxtPtr;
+struct _xmlValidCtxt {
     void *userData;			/* user specific data block */
     xmlValidityErrorFunc error;		/* the callback in case of errors */
     xmlValidityWarningFunc warning;	/* the callback in case of warning */
-} xmlValidCtxt, *xmlValidCtxtPtr;
+};
 
 /*
  * ALl notation declarations are stored in a table
@@ -36,12 +38,13 @@ typedef struct xmlValidCtxt {
 
 #define XML_MIN_NOTATION_TABLE	32
 
-typedef struct xmlNotationTable {
+typedef struct _xmlNotationTable xmlNotationTable;
+typedef xmlNotationTable *xmlNotationTablePtr;
+struct _xmlNotationTable {
     int nb_notations;		/* number of notations stored */
     int max_notations;		/* maximum number of notations */
     xmlNotationPtr *table;	/* the table of attributes */
-} xmlNotationTable;
-typedef xmlNotationTable *xmlNotationTablePtr;
+};
 
 /*
  * ALl element declarations are stored in a table
@@ -50,12 +53,13 @@ typedef xmlNotationTable *xmlNotationTablePtr;
 
 #define XML_MIN_ELEMENT_TABLE	32
 
-typedef struct xmlElementTable {
+typedef struct _xmlElementTable xmlElementTable;
+typedef xmlElementTable *xmlElementTablePtr;
+struct _xmlElementTable {
     int nb_elements;		/* number of elements stored */
     int max_elements;		/* maximum number of elements */
     xmlElementPtr *table;	/* the table of elements */
-} xmlElementTable;
-typedef xmlElementTable *xmlElementTablePtr;
+};
 
 /*
  * ALl attribute declarations are stored in a table
@@ -64,12 +68,13 @@ typedef xmlElementTable *xmlElementTablePtr;
 
 #define XML_MIN_ATTRIBUTE_TABLE	32
 
-typedef struct xmlAttributeTable {
+typedef struct _xmlAttributeTable xmlAttributeTable;
+typedef xmlAttributeTable *xmlAttributeTablePtr;
+struct _xmlAttributeTable {
     int nb_attributes;		/* number of attributes stored */
     int max_attributes;		/* maximum number of attributes */
     xmlAttributePtr *table;	/* the table of attributes */
-} xmlAttributeTable;
-typedef xmlAttributeTable *xmlAttributeTablePtr;
+};
 
 /*
  * ALl IDs attributes are stored in a table
@@ -78,12 +83,13 @@ typedef xmlAttributeTable *xmlAttributeTablePtr;
 
 #define XML_MIN_ID_TABLE	32
 
-typedef struct xmlIDTable {
+typedef struct _xmlIDTable xmlIDTable;
+typedef xmlIDTable *xmlIDTablePtr;
+struct _xmlIDTable {
     int nb_ids;			/* number of ids stored */
     int max_ids;		/* maximum number of ids */
     xmlIDPtr *table;		/* the table of ids */
-} xmlIDTable;
-typedef xmlIDTable *xmlIDTablePtr;
+};
 
 /*
  * ALl Refs attributes are stored in a table
@@ -92,12 +98,13 @@ typedef xmlIDTable *xmlIDTablePtr;
 
 #define XML_MIN_REF_TABLE	32
 
-typedef struct xmlRefTable {
+typedef struct _xmlRefTable xmlRefTable;
+typedef xmlRefTable *xmlRefTablePtr;
+struct _xmlRefTable {
     int nb_refs;			/* number of refs stored */
     int max_refs;		/* maximum number of refs */
     xmlRefPtr *table;		/* the table of refs */
-} xmlRefTable;
-typedef xmlRefTable *xmlRefTablePtr;
+};
 
 /* Notation */
 xmlNotationPtr	    xmlAddNotationDecl	(xmlValidCtxtPtr ctxt,
@@ -158,6 +165,7 @@ xmlAttrPtr	xmlGetID	(xmlDocPtr doc,
 int		xmlIsID		(xmlDocPtr doc,
 				 xmlNodePtr elem,
 				 xmlAttrPtr attr);
+int		xmlRemoveID	(xmlDocPtr doc, xmlAttrPtr attr);
 
 /* IDREFs */
 xmlRefPtr	xmlAddRef	(xmlValidCtxtPtr ctxt,
@@ -169,6 +177,7 @@ void		xmlFreeRefTable	(xmlRefTablePtr table);
 int		xmlIsRef	(xmlDocPtr doc,
 				 xmlNodePtr elem,
 				 xmlAttrPtr attr);
+int		xmlRemoveRef	(xmlDocPtr doc, xmlAttrPtr attr);
 
 /**
  * The public function calls related to validity checking

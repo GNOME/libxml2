@@ -90,12 +90,13 @@ typedef int (* xmlCharEncodingOutputFunc)(unsigned char* out, int outlen,
  * Block defining the handlers for non UTF-8 encodings.
  */
 
-typedef struct xmlCharEncodingHandler {
+typedef struct _xmlCharEncodingHandler xmlCharEncodingHandler;
+typedef xmlCharEncodingHandler *xmlCharEncodingHandlerPtr;
+struct _xmlCharEncodingHandler {
     char                       *name;
     xmlCharEncodingInputFunc   input;
     xmlCharEncodingOutputFunc output;
-} xmlCharEncodingHandler;
-typedef xmlCharEncodingHandler *xmlCharEncodingHandlerPtr;
+};
 
 void	xmlInitCharEncodingHandlers	(void);
 void	xmlCleanupCharEncodingHandlers	(void);

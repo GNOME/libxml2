@@ -27,7 +27,9 @@ extern "C" {
  * and the linkind data needed for the linking in the hash table.
  */
 
-typedef struct xmlEntity {
+typedef struct _xmlEntity xmlEntity;
+typedef xmlEntity *xmlEntityPtr;
+struct _xmlEntity {
     int type;			/* The entity type */
     int len;			/* The lenght of the name */
     const xmlChar  *name;	/* Name of the entity */
@@ -36,8 +38,7 @@ typedef struct xmlEntity {
     xmlChar *content;		/* The entity content or ndata if unparsed */
     int length;			/* the content length */
     xmlChar *orig;		/* The entity cont without ref substitution */
-} xmlEntity;
-typedef xmlEntity *xmlEntityPtr;
+};
 
 /*
  * ALl entities are stored in a table there is one table per DTD
@@ -46,12 +47,13 @@ typedef xmlEntity *xmlEntityPtr;
 
 #define XML_MIN_ENTITIES_TABLE	32
 
-typedef struct xmlEntitiesTable {
+typedef struct _xmlEntitiesTable xmlEntitiesTable;
+typedef xmlEntitiesTable *xmlEntitiesTablePtr;
+struct _xmlEntitiesTable {
     int nb_entities;		/* number of elements stored */
     int max_entities;		/* maximum number of elements */
     xmlEntityPtr table;	        /* the table of entities */
-} xmlEntitiesTable;
-typedef xmlEntitiesTable *xmlEntitiesTablePtr;
+};
 
 
 /*

@@ -1,3 +1,8 @@
+Wed Feb 25 13:33:07 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* valid.c HTMLparser.c: avoid ID error message if using
+	  HTML_PARSE_NOERROR should fix #130762
+
 Wed Feb 25 12:50:53 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* debugXML.c relaxng.c valid.c xinclude.c xmllint.c xmlreader.c:

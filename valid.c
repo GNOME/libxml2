@@ -2477,7 +2477,7 @@ xmlAddID(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const xmlChar *value,
 	/*
 	 * The id is already defined in this DTD.
 	 */
-	if (ctxt != NULL) {
+	if ((ctxt != NULL) && (ctxt->error != NULL)) {
 	    xmlErrValidNode(ctxt, attr->parent, XML_DTD_ID_REDEFINED,
 	                    "ID %s already defined\n",
 			    value, NULL, NULL);

@@ -5507,22 +5507,28 @@ htmlCtxtUseOptions(htmlParserCtxtPtr ctxt, int options)
 {
     if (options & HTML_PARSE_NOWARNING) {
         ctxt->sax->warning = NULL;
+        ctxt->vctxt.warning = NULL;
         options -= XML_PARSE_NOWARNING;
+	ctxt->options |= XML_PARSE_NOWARNING;
     }
     if (options & HTML_PARSE_NOERROR) {
         ctxt->sax->error = NULL;
+        ctxt->vctxt.error = NULL;
         ctxt->sax->fatalError = NULL;
         options -= XML_PARSE_NOERROR;
+	ctxt->options |= XML_PARSE_NOERROR;
     }
     if (options & HTML_PARSE_PEDANTIC) {
         ctxt->pedantic = 1;
         options -= XML_PARSE_PEDANTIC;
+	ctxt->options |= XML_PARSE_PEDANTIC;
     } else
         ctxt->pedantic = 0;
     if (options & XML_PARSE_NOBLANKS) {
         ctxt->keepBlanks = 0;
         ctxt->sax->ignorableWhitespace = xmlSAX2IgnorableWhitespace;
         options -= XML_PARSE_NOBLANKS;
+	ctxt->options |= XML_PARSE_NOBLANKS;
     } else
         ctxt->keepBlanks = 1;
     ctxt->dictNames = 0;

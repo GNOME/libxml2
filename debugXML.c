@@ -695,11 +695,7 @@ xmlDebugDumpOneNode(FILE * output, xmlNodePtr node, int depth)
             shift[2 * i + 2] = shift[2 * i + 3] = 0;
             fprintf(output, shift);
             fprintf(output, "content=");
-#ifndef XML_USE_BUFFER_CONTENT
             xmlDebugDumpString(output, node->content);
-#else
-            xmlDebugDumpString(output, xmlBufferContent(node->content));
-#endif
             fprintf(output, "\n");
         }
     } else {
@@ -1105,11 +1101,7 @@ xmlLsCountNode(xmlNodePtr node) {
 	case XML_PI_NODE:
 	case XML_COMMENT_NODE:
 	    if (node->content != NULL) {
-#ifndef XML_USE_BUFFER_CONTENT	    
 		ret = xmlStrlen(node->content);
-#else
-		ret = xmlBufferLength(node->content);
-#endif
             }
 	    break;
 	case XML_ENTITY_REF_NODE:
@@ -1215,11 +1207,7 @@ xmlLsOneNode(FILE *output, xmlNodePtr node) {
 	    break;
 	case XML_TEXT_NODE:
 	    if (node->content != NULL) {
-#ifndef XML_USE_BUFFER_CONTENT	    
 		xmlDebugDumpString(output, node->content);
-#else
-		xmlDebugDumpString(output, xmlBufferContent(node->content));
-#endif
             }
 	    break;
 	case XML_CDATA_SECTION_NODE:

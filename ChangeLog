@@ -1,3 +1,12 @@
+Mon Mar 11 10:10:30 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* c14n.c: Fixing #74186, made sure all boolean expressions
+	  get fully parenthesized, ran indent on the output
+	* configure.in HTMLtree.c SAX.c c14n.c debugXML.c tree.c xpointer.c
+	  include/libxml/tree.h: also #74186 related, removed the
+	  --with-buffers option, and all the preprocessor conditional
+	  sections that were resulting from it.
+
 Sun Mar 10 17:47:58 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* valid.c: applied patch from Dodji Seketeli fixing an

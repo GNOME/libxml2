@@ -439,11 +439,7 @@ struct _xmlNode {
 
     /* End of common part */
     xmlNs           *ns;        /* pointer to the associated namespace */
-#ifndef XML_USE_BUFFER_CONTENT    
     xmlChar         *content;   /* the content */
-#else
-    xmlBufferPtr     content;   /* the content in a buffer */
-#endif
     struct _xmlAttr *properties;/* properties list */
     xmlNs           *nsDef;     /* namespace definitions on this node */
 };

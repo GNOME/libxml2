@@ -1453,18 +1453,15 @@ characters(void *ctx, const xmlChar *ch, int len)
     if (lastChild == NULL) {
 	/* first node, first time */
 	xmlNodeAddContentLen(ctxt->node, ch, len);
-#ifndef XML_USE_BUFFER_CONTENT
 	if (ctxt->node->children != NULL) {
 	    ctxt->nodelen = len;
 	    ctxt->nodemem = len + 1;
 	}
-#endif
     } else {
 	int coalesceText = (lastChild != NULL) &&
 	    (lastChild->type == XML_TEXT_NODE) &&
 	    (lastChild->name == xmlStringText);
 	if ((coalesceText) && (ctxt->nodemem != 0)) {
-#ifndef XML_USE_BUFFER_CONTENT
 	    /*
 	     * The whole point of maintaining nodelen and nodemem,
 	     * xmlTextConcat is too costly, i.e. compute length,
@@ -1491,9 +1488,6 @@ characters(void *ctx, const xmlChar *ch, int len)
 	    memcpy(&lastChild->content[ctxt->nodelen], ch, len);
 	    ctxt->nodelen += len;
 	    lastChild->content[ctxt->nodelen] = 0;
-#else
-	    xmlTextConcat(lastChild, ch, len);
-#endif
 	} else if (coalesceText) {
 	    xmlTextConcat(lastChild, ch, len);
 	    if (ctxt->node->children != NULL) {
@@ -1504,12 +1498,10 @@ characters(void *ctx, const xmlChar *ch, int len)
 	    /* Mixed content, first time */
 	    lastChild = xmlNewTextLen(ch, len);
 	    xmlAddChild(ctxt->node, lastChild);
-#ifndef XML_USE_BUFFER_CONTENT
 	    if (ctxt->node->children != NULL) {
 		ctxt->nodelen = len;
 		ctxt->nodemem = len + 1;
 	    }
-#endif
 	}
     }
 }

@@ -102,11 +102,7 @@ found_meta:
 		    if ((attr->children != NULL) &&
 		        (attr->children->type == XML_TEXT_NODE) &&
 		        (attr->children->next == NULL)) {
-#ifndef XML_USE_BUFFER_CONTENT
 			value = attr->children->content;
-#else
-			value = xmlBufferContent(attr->children->content);
-#endif
 			if ((!xmlStrcasecmp(attr->name, BAD_CAST"http-equiv"))
 			 && (!xmlStrcasecmp(value, BAD_CAST"Content-Type")))
 			    http = 1;
@@ -249,11 +245,7 @@ found_meta:
 		    if ((attr->children != NULL) &&
 		        (attr->children->type == XML_TEXT_NODE) &&
 		        (attr->children->next == NULL)) {
-#ifndef XML_USE_BUFFER_CONTENT
 			value = attr->children->content;
-#else
-			value = xmlBufferContent(attr->children->content);
-#endif
 			if ((!xmlStrcasecmp(attr->name, BAD_CAST"http-equiv"))
 			 && (!xmlStrcasecmp(value, BAD_CAST"Content-Type")))
 			    http = 1;
@@ -449,12 +441,7 @@ htmlNodeDumpFormat(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
 		 (!xmlStrEqual(cur->parent->name, BAD_CAST "script")))) {
 		xmlChar *buffer;
 
-#ifndef XML_USE_BUFFER_CONTENT
 		buffer = xmlEncodeEntitiesReentrant(doc, cur->content);
-#else
-		buffer = xmlEncodeEntitiesReentrant(doc, 
-					    xmlBufferContent(cur->content));
-#endif 
 		if (buffer != NULL) {
 		    xmlBufferWriteCHAR(buf, buffer);
 		    xmlFree(buffer);
@@ -468,11 +455,7 @@ htmlNodeDumpFormat(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
     if (cur->type == HTML_COMMENT_NODE) {
 	if (cur->content != NULL) {
 	    xmlBufferWriteChar(buf, "<!--");
-#ifndef XML_USE_BUFFER_CONTENT
 	    xmlBufferWriteCHAR(buf, cur->content);
-#else
-	    xmlBufferWriteCHAR(buf, xmlBufferContent(cur->content));
-#endif
 	    xmlBufferWriteChar(buf, "-->");
 	}
 	return;
@@ -484,11 +467,7 @@ htmlNodeDumpFormat(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
 	xmlBufferWriteCHAR(buf, cur->name);
 	if (cur->content != NULL) {
 	    xmlBufferWriteChar(buf, " ");
-#ifndef XML_USE_BUFFER_CONTENT
 	    xmlBufferWriteCHAR(buf, cur->content);
-#else
-	    xmlBufferWriteCHAR(buf, xmlBufferContent(cur->content));
-#endif
 	}
 	xmlBufferWriteChar(buf, ">");
 	return;
@@ -501,11 +480,7 @@ htmlNodeDumpFormat(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
     }
     if (cur->type == HTML_PRESERVE_NODE) {
 	if (cur->content != NULL) {
-#ifndef XML_USE_BUFFER_CONTENT
 	    xmlBufferWriteCHAR(buf, cur->content);
-#else
-	    xmlBufferWriteCHAR(buf, xmlBufferContent(cur->content));
-#endif
 	}
 	return;
     }
@@ -553,12 +528,7 @@ htmlNodeDumpFormat(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
     if ((cur->type != XML_ELEMENT_NODE) && (cur->content != NULL)) {
 	xmlChar *buffer;
 
-#ifndef XML_USE_BUFFER_CONTENT
 	buffer = xmlEncodeEntitiesReentrant(doc, cur->content);
-#else
-	buffer = xmlEncodeEntitiesReentrant(doc, 
-			    xmlBufferContent(cur->content));
-#endif
 	if (buffer != NULL) {
 	    xmlBufferWriteCHAR(buf, buffer);
 	    xmlFree(buffer);
@@ -944,12 +914,7 @@ htmlNodeDumpFormatOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
 		 (!xmlStrEqual(cur->parent->name, BAD_CAST "script")))) {
 		xmlChar *buffer;
 
-#ifndef XML_USE_BUFFER_CONTENT
 		buffer = xmlEncodeEntitiesReentrant(doc, cur->content);
-#else
-		buffer = xmlEncodeEntitiesReentrant(doc, 
-					    xmlBufferContent(cur->content));
-#endif 
 		if (buffer != NULL) {
 		    xmlOutputBufferWriteString(buf, (const char *)buffer);
 		    xmlFree(buffer);
@@ -963,12 +928,7 @@ htmlNodeDumpFormatOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
     if (cur->type == HTML_COMMENT_NODE) {
 	if (cur->content != NULL) {
 	    xmlOutputBufferWriteString(buf, "<!--");
-#ifndef XML_USE_BUFFER_CONTENT
 	    xmlOutputBufferWriteString(buf, (const char *)cur->content);
-#else
-	    xmlOutputBufferWriteString(buf, (const char *)
-		                       xmlBufferContent(cur->content));
-#endif
 	    xmlOutputBufferWriteString(buf, "-->");
 	}
 	return;
@@ -980,12 +940,7 @@ htmlNodeDumpFormatOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
 	xmlOutputBufferWriteString(buf, (const char *)cur->name);
 	if (cur->content != NULL) {
 	    xmlOutputBufferWriteString(buf, " ");
-#ifndef XML_USE_BUFFER_CONTENT
 	    xmlOutputBufferWriteString(buf, (const char *)cur->content);
-#else
-	    xmlOutputBufferWriteString(buf, (const char *)
-		                       xmlBufferContent(cur->content));
-#endif
 	}
 	xmlOutputBufferWriteString(buf, ">");
 	return;
@@ -998,12 +953,7 @@ htmlNodeDumpFormatOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
     }
     if (cur->type == HTML_PRESERVE_NODE) {
 	if (cur->content != NULL) {
-#ifndef XML_USE_BUFFER_CONTENT
 	    xmlOutputBufferWriteString(buf, (const char *)cur->content);
-#else
-	    xmlOutputBufferWriteString(buf, (const char *)
-		                       xmlBufferContent(cur->content));
-#endif
 	}
 	return;
     }
@@ -1058,12 +1008,7 @@ htmlNodeDumpFormatOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
 	     * invalids to charrefs
 	     */
 
-#ifndef XML_USE_BUFFER_CONTENT
             xmlOutputBufferWriteString(buf, (const char *) cur->content);
-#else
-            xmlOutputBufferWriteString(buf, 
-		           (const char *) xmlBufferContent(cur->content));
-#endif 
     }
     if (cur->children != NULL) {
         if ((format) && (info != NULL) && (!info->isinline) &&

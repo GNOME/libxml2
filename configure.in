@@ -233,17 +233,6 @@ if test "$with_python" != "no" ; then
 fi
 AM_CONDITIONAL(WITH_PYTHON, test "$PYTHON_INCLUDES" != "")
 
-
-dnl
-dnl Use buffers for content
-dnl
-
-AC_ARG_WITH(buffers, [  --with-buffers          Use buffers for node content])
-if test "$with_buffers" = "yes" ; then
-    CFLAGS="${CFLAGS} -DXML_USE_BUFFER_CONTENT"
-    XML_CFLAGS="${XML_CFLAGS}  -DXML_USE_BUFFER_CONTENT"
-fi
-
 dnl
 dnl Tester makes use of readline if present
 dnl

@@ -1589,7 +1589,7 @@ xmlTextReaderNext(xmlTextReaderPtr reader) {
     cur = reader->node;
     if ((cur == NULL) || (cur->type != XML_ELEMENT_NODE))
         return(xmlTextReaderRead(reader));
-    if (reader->state == XML_TEXTREADER_END)
+    if (reader->state == XML_TEXTREADER_END || reader->state == XML_TEXTREADER_BACKTRACK)
         return(xmlTextReaderRead(reader));
     if (cur->extra & NODE_IS_EMPTY)
         return(xmlTextReaderRead(reader));

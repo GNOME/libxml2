@@ -148,7 +148,7 @@ AC_CHECK_FUNC(isinf, AC_DEFINE(HAVE_ISINF) , AC_CHECK_LIB(m, isinf,
   [AC_DEFINE(HAVE_ISINF)]))
 
 XML_LIBDIR='-L${libdir}'
-XML_INCLUDEDIR='-I${includedir}/libxml2/libxml -I${includedir}/libxml2'
+XML_INCLUDEDIR='-I${includedir}/libxml2'
 
 dnl
 dnl Extra flags

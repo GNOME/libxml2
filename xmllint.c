@@ -10,7 +10,6 @@
 
 #include <string.h>
 #include <stdarg.h>
-
 #include <assert.h>
 
 #if defined (_WIN32) && !defined(__CYGWIN__)
@@ -18,18 +17,15 @@
 #include <winsock2.h>
 #pragma comment(lib, "ws2_32.lib")
 #define gettimeofday(p1,p2)
-#include <time.h>
-#else /* _MSC_VER */
-#include <sys/time.h>
 #endif /* _MSC_VER */
-#else /* _WIN32 */
+#endif /* _WIN32 */
+
 #ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>
 #endif
 #ifdef HAVE_TIME_H
 #include <time.h>
 #endif
-#endif /* _WIN32 */
 
 #ifdef __MINGW32__
 #define _WINSOCKAPI_
@@ -38,7 +34,6 @@
 #undef SOCKLEN_T
 #define SOCKLEN_T unsigned int
 #endif
-
 
 #ifdef HAVE_SYS_TIMEB_H
 #include <sys/timeb.h>

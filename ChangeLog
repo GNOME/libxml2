@@ -1,3 +1,7 @@
+Thu Aug 28 14:31:13 CEST 2003 Igor Zlatkovic <igor@zlatkovic.com>
+
+	* xmllint.c: fixed time inclusion for various compilers
+
 Thu Aug 28 12:32:59 CEST 2003 Igor Zlatkovic <igor@zlatkovic.com>
 
 	* parser.c parserInternals.c DOCBparser.c HTMLparser.c: added

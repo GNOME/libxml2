@@ -6304,7 +6304,10 @@ xmlValidateDocumentFinal(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
  *
  * Try to validate the document against the dtd instance
  *
- * basically it does check all the definitions in the DtD.
+ * Basically it does check all the definitions in the DtD.
+ * Note the the internal subset (if present) is de-coupled
+ * (i.e. not used), which could give problems if ID or IDREF
+ * is present.
  *
  * returns 1 if valid or 0 otherwise
  */
@@ -6312,16 +6315,19 @@ xmlValidateDocumentFinal(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
 int
 xmlValidateDtd(xmlValidCtxtPtr ctxt, xmlDocPtr doc, xmlDtdPtr dtd) {
     int ret;
-    xmlDtdPtr oldExt;
+    xmlDtdPtr oldExt, oldInt;
     xmlNodePtr root;
 
     if (dtd == NULL) return(0);
     if (doc == NULL) return(0);
     oldExt = doc->extSubset;
+    oldInt = doc->intSubset;
     doc->extSubset = dtd;
+    doc->intSubset = NULL;
     ret = xmlValidateRoot(ctxt, doc);
     if (ret == 0) {
 	doc->extSubset = oldExt;
+	doc->intSubset = oldInt;
 	return(ret);
     }
     if (doc->ids != NULL) {
@@ -6336,6 +6342,7 @@ xmlValidateDtd(xmlValidCtxtPtr ctxt, xmlDocPtr doc, xmlDtdPtr dtd) {
     ret = xmlValidateElement(ctxt, doc, root);
     ret &= xmlValidateDocumentFinal(ctxt, doc);
     doc->extSubset = oldExt;
+    doc->intSubset = oldInt;
     return(ret);
 }
 

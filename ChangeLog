@@ -1,3 +1,10 @@
+Sat Oct 23 11:07:41 PDT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* valid.c: unlinked the internal subset within xmlValidateDtd
+	  (bug 141827)
+	* configure.in: added -Wall to developer's flags
+	* doc/examples/reader4.res: added to CVS
+
 Fri Oct 22 16:36:50 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: added support for HTML PIs #156087

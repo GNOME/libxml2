@@ -14,5 +14,11 @@
       <arg name='ns_uri' type='xmlChar *' info='the namespace or NULL'/>
       <arg name='f' type='pythonObject' info='the python function'/>
     </function>
+    <function name='xmlRegisterErrorHandler' file='python'>
+      <info>Register a Python written function to for error reporting. The function is called back as f(ctx, error).</info>
+      <return type='int' info="1 in case of success, 0 or -1 in case of error"/>
+      <arg name='f' type='pythonObject' info='the python function'/>
+      <arg name='ctx' type='pythonObject' info='a context for the callback'/>
+    </function>
   </symbols>
 </api>

@@ -4,6 +4,7 @@ TESTS=		\
     tst.py	\
     tstxpath.py	\
     xpathext.py	\
+    error.py	\
     xpath.py
 
 XMLS=		\
@@ -13,7 +14,7 @@ EXTRA_DIST = $(TESTS) $(XMLS)
 
 if WITH_PYTHON
 tests: $(TESTS)
-	-@(CLASSPATH=".." ; export CLASSPATH; \
+	-@(PYTHONPATH=".." ; export PYTHONPATH; \
 	   for test in $(TESTS) ; do echo "-- $$test" ; $(PYTHON) $$test ; done)
 else
 tests:

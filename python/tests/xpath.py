@@ -3,10 +3,23 @@
 # this test exercise the XPath basic engine, parser, etc, and
 # allows to detect memory leaks
 #
+import sys
 import libxml2
 
 doc = libxml2.parseFile("tst.xml")
-print doc
+if doc.name != "tst.xml":
+    print "doc.name error"
+    sys.exit(1);
+
+ctxt = doc.xpathNewContext()
+res = ctxt.xpathEval("//*")
+if len(res) != 2:
+    print "xpath query: wrong node set size"
+    sys.exit(1)
+if res[0].name != "doc" or res[1].name != "foo":
+    print "xpath query: wrong node set value"
+    sys.exit(1)
+doc.freeDoc()
 i = 1000
 while i > 0:
     doc = libxml2.parseFile("tst.xml")
@@ -14,8 +27,4 @@ while i > 0:
     res = ctxt.xpathEval("//*")
     doc.freeDoc()
     i = i -1
-doc = libxml2.parseFile("tst.xml")
-ctxt = doc.xpathNewContext()
-res = ctxt.xpathEval("//*")
-print res
-doc.freeDoc()
+print "OK"

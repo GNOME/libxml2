@@ -7,7 +7,6 @@ Things to do:
 
 - handling of node.content
 - SAX interfaces
-- error redirections and preformat
 - memory debug interfaces
 - enums -> libxml.py
 - access to XPath variables
@@ -41,5 +40,6 @@ Done:
 - spec file: automatically generate for pythonX.Y if found
   Done, a bit ugly by running new makes in %install for each level
   found.
+- error redirections and preformat
 
 Daniel Veillard

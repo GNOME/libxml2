@@ -4,12 +4,14 @@
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 #include <libxml/xpath.h>
+#include <libxml/xmlerror.h>
 #include <libxml/xpathInternals.h>
 #include "libxml_wrap.h"
 #include "libxml2-py.h"
 
 /* #define DEBUG */
 /* #define DEBUG_XPATH */
+/* #define DEBUG_ERROR */
 
 /************************************************************************
  *									*
@@ -284,6 +286,110 @@ libxml_xmlXPathObjectPtrConvert(PyObject * obj) {
     }
     Py_DECREF(obj);
     return(ret);
+}
+
+/************************************************************************
+ *									*
+ *			Error message callback				*
+ *									*
+ ************************************************************************/
+
+static PyObject *libxml_xmlPythonErrorFuncHandler = NULL;
+static PyObject *libxml_xmlPythonErrorFuncCtxt = NULL;
+
+static void
+libxml_xmlErrorFuncHandler(void *ctx, const char *msg, ...) {
+    int       size;
+    int       chars;
+    char     *larger;
+    va_list   ap;
+    char     *str;
+    PyObject *list;
+    PyObject *message;
+    PyObject *result;
+
+#ifdef DEBUG_ERROR
+    printf("libxml_xmlErrorFuncHandler(%p, %s, ...) called\n", ctx, msg);
+#endif
+
+
+    if (libxml_xmlPythonErrorFuncHandler == NULL) {
+	va_start(ap, msg);
+	vfprintf(stdout, msg, ap);
+	va_end(ap);
+    } else {
+	str = (char *) xmlMalloc(150);
+	if (str == NULL) 
+	    return;
+
+	size = 150;
+
+	while (1) {
+	    va_start(ap, msg);
+	    chars = vsnprintf(str, size, msg, ap);
+	    va_end(ap);
+	    if ((chars > -1) && (chars < size))
+		break;
+	    if (chars > -1)
+		size += chars + 1;
+	    else
+		size += 100;
+	    if ((larger = (char *) xmlRealloc(str, size)) == NULL) {
+		xmlFree(str);
+		return;
+	    }
+	    str = larger;
+	}
+
+	list = PyTuple_New(2);
+	PyTuple_SetItem(list, 0, libxml_xmlPythonErrorFuncCtxt);
+	Py_XINCREF(libxml_xmlPythonErrorFuncCtxt);
+	message = libxml_charPtrWrap(str);
+	PyTuple_SetItem(list, 1, message);
+	result = PyEval_CallObject(libxml_xmlPythonErrorFuncHandler, list);
+	Py_XDECREF(list);
+	Py_XDECREF(result);
+    }
+}
+
+static void
+libxml_xmlErrorInitialize(void) {
+#ifdef DEBUG_ERROR
+    printf("libxml_xmlErrorInitialize() called\n");
+#endif
+    xmlSetGenericErrorFunc(NULL, libxml_xmlErrorFuncHandler);
+}
+
+PyObject *
+libxml_xmlRegisterErrorHandler(PyObject *self, PyObject *args) {
+    PyObject *py_retval;
+    PyObject *pyobj_f;
+    PyObject *pyobj_ctx;
+
+    if (!PyArg_ParseTuple(args, "OO:xmlRegisterErrorHandler", &pyobj_f,
+		          &pyobj_ctx))
+        return(NULL);
+
+#ifdef DEBUG_ERROR
+    printf("libxml_registerXPathFunction(%p, %p) called\n", pyobj_ctx, pyobj_f);
+#endif
+
+    if (libxml_xmlPythonErrorFuncHandler != NULL) {
+	Py_XDECREF(libxml_xmlPythonErrorFuncHandler);
+    }
+    if (libxml_xmlPythonErrorFuncCtxt != NULL) {
+	Py_XDECREF(libxml_xmlPythonErrorFuncCtxt);
+    }
+
+    Py_XINCREF(pyobj_ctx);
+    Py_XINCREF(pyobj_f);
+
+    /* TODO: check f is a function ! */
+    libxml_xmlPythonErrorFuncHandler = pyobj_f;
+    libxml_xmlPythonErrorFuncCtxt = pyobj_ctx;
+
+    py_retval = libxml_intWrap(1);
+    return(py_retval);
 }
 /************************************************************************
  *									*
@@ -954,5 +1060,6 @@ void init_libxml(void) {
     d = PyModule_GetDict(m);
     PyDict_SetItemString(d, "xmlNodeType", (PyObject *)&PyxmlNode_Type);
     PyDict_SetItemString(d, "xmlXPathContextType", (PyObject *)&PyxmlXPathContext_Type);
+    libxml_xmlErrorInitialize();
 }
 

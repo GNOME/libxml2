@@ -99,6 +99,9 @@ isIdeographic()
 isLetter()
 isPubidChar()
 
+# functions from module python
+registerErrorHandler()
+
 # functions from module tree
 compressMode()
 newComment()

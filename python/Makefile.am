@@ -2,7 +2,7 @@ SUBDIRS= . tests
 
 LIBS=-L../.libs -L.. $(XML_LIBS)
 INCLUDES=-I/usr/include/python$(PYTHON_VERSION) -I$(PYTHON_INCLUDES) -I$(top_srcdir)/include
-SHCFLAGS=$(INCLUDES) -Wall -fPIC
+SHCFLAGS=$(INCLUDES) -Wall -fPIC -g
 LINK_FLAGS= -shared
 DOCS_DIR = $(prefix)/share/doc/libxml2-python-$(LIBXML_VERSION)
 

@@ -1,3 +1,8 @@
+Sat Jul  6 19:44:56 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* valid.c: fixing bug #79331 in one path the lookup for
+	  ID attributes on a namespaced node wasn't handled correctly :-\
+
 Fri Jul  5 20:07:43 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: trying to fix 87235 about discarded white

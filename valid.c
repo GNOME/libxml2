@@ -1928,10 +1928,31 @@ xmlIsID(xmlDocPtr doc, xmlNodePtr elem, xmlAttrPtr attr) {
 	xmlAttributePtr attrDecl;
 
 	if (elem == NULL) return(0);
-	attrDecl = xmlGetDtdAttrDesc(doc->intSubset, elem->name, attr->name);
-	if ((attrDecl == NULL) && (doc->extSubset != NULL))
-	    attrDecl = xmlGetDtdAttrDesc(doc->extSubset, elem->name,
-	                                 attr->name);
+	if ((elem->ns != NULL) && (elem->ns->prefix != NULL)) {
+	    /*
+	     * TODO: this sucks ... recomputing this every time is stupid
+	     */
+	    int len = xmlStrlen(elem->name) + xmlStrlen(elem->ns->prefix) + 2;
+	    xmlChar *fullname;
+
+	    fullname = xmlMalloc(len);
+	    if (fullname == NULL)
+		return(0);
+	    snprintf((char *) fullname, len, "%s:%s", (char *) elem->ns->prefix,
+		     (char *) elem->name);
+	    attrDecl = xmlGetDtdAttrDesc(doc->intSubset, fullname,
+		                         attr->name);
+	    if ((attrDecl == NULL) && (doc->extSubset != NULL))
+		attrDecl = xmlGetDtdAttrDesc(doc->extSubset, fullname,
+					     attr->name);
+	    xmlFree(fullname);
+	} else {
+	    attrDecl = xmlGetDtdAttrDesc(doc->intSubset, elem->name,
+		                         attr->name);
+	    if ((attrDecl == NULL) && (doc->extSubset != NULL))
+		attrDecl = xmlGetDtdAttrDesc(doc->extSubset, elem->name,
+					     attr->name);
+	}
 
         if ((attrDecl != NULL) && (attrDecl->atype == XML_ATTRIBUTE_ID))
 	    return(1);

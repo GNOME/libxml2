@@ -1,3 +1,9 @@
+Wed Dec 11 20:26:15 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in: preparing release of 2.4.29
+	* doc/*: rebuilt the docs and API
+	* xmlreader.c: a few more fixes for the XmlTextReader API
+
 Wed Dec 11 18:01:15 CET 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
 
 	* include/win32config.h: applied mingw patch from Magnus Henoch

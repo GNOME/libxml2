@@ -4339,20 +4339,20 @@ actually an xmlCharEncoding'/>
       <info>Do a complete resolution lookup of an External Identifier</info>
       <return type='xmlChar *' info='the URI of the resource or NULL if not found, it must be freed by the caller.'/>
       <arg name='catal' type='xmlCatalogPtr' info='a Catalog'/>
-      <arg name='pubID' type='const xmlChar *' info=''/>
-      <arg name='sysID' type='const xmlChar *' info=''/>
+      <arg name='pubID' type='const xmlChar *' info='the public ID string'/>
+      <arg name='sysID' type='const xmlChar *' info='the system ID string'/>
     </function>
     <function name='xmlACatalogResolvePublic' file='catalog'>
       <info>Try to lookup the system ID associated to a public ID in that catalog</info>
       <return type='xmlChar *' info='the system ID if found or NULL otherwise, the value returned must be freed by the caller.'/>
       <arg name='catal' type='xmlCatalogPtr' info='a Catalog'/>
-      <arg name='pubID' type='const xmlChar *' info=''/>
+      <arg name='pubID' type='const xmlChar *' info='the public ID string'/>
     </function>
     <function name='xmlACatalogResolveSystem' file='catalog'>
       <info>Try to lookup the catalog resource for a system ID</info>
       <return type='xmlChar *' info='the system ID if found or NULL otherwise, the value returned must be freed by the caller.'/>
       <arg name='catal' type='xmlCatalogPtr' info='a Catalog'/>
-      <arg name='sysID' type='const xmlChar *' info=''/>
+      <arg name='sysID' type='const xmlChar *' info='the public ID string'/>
     </function>
     <function name='xmlACatalogResolveURI' file='catalog'>
       <info>Do a complete resolution lookup of an URI</info>
@@ -4769,12 +4769,12 @@ actually an xmlCharEncoding'/>
     <function name='xmlCatalogGetPublic' file='catalog'>
       <info>Try to lookup the system ID associated to a public ID DEPRECATED, use xmlCatalogResolvePublic()</info>
       <return type='const xmlChar *' info='the system ID if found or NULL otherwise.'/>
-      <arg name='pubID' type='const xmlChar *' info=''/>
+      <arg name='pubID' type='const xmlChar *' info='the public ID string'/>
     </function>
     <function name='xmlCatalogGetSystem' file='catalog'>
       <info>Try to lookup the system ID associated to a public ID DEPRECATED, use xmlCatalogResolveSystem()</info>
       <return type='const xmlChar *' info='the system ID if found or NULL otherwise.'/>
-      <arg name='sysID' type='const xmlChar *' info=''/>
+      <arg name='sysID' type='const xmlChar *' info='the system ID string'/>
     </function>
     <function name='xmlCatalogIsEmpty' file='catalog'>
       <info>Check is a catalog is empty</info>
@@ -4785,8 +4785,8 @@ actually an xmlCharEncoding'/>
       <info>Do a complete resolution lookup of an External Identifier using a document&apos;s private catalog list</info>
       <return type='xmlChar *' info='the URI of the resource or NULL if not found, it must be freed by the caller.'/>
       <arg name='catalogs' type='void *' info='a document&apos;s list of catalogs'/>
-      <arg name='pubID' type='const xmlChar *' info=''/>
-      <arg name='sysID' type='const xmlChar *' info=''/>
+      <arg name='pubID' type='const xmlChar *' info='the public ID string'/>
+      <arg name='sysID' type='const xmlChar *' info='the system ID string'/>
     </function>
     <function name='xmlCatalogLocalResolveURI' file='catalog'>
       <info>Do a complete resolution lookup of an URI using a document&apos;s private catalog list</info>
@@ -4802,18 +4802,18 @@ actually an xmlCharEncoding'/>
     <function name='xmlCatalogResolve' file='catalog'>
       <info>Do a complete resolution lookup of an External Identifier</info>
       <return type='xmlChar *' info='the URI of the resource or NULL if not found, it must be freed by the caller.'/>
-      <arg name='pubID' type='const xmlChar *' info=''/>
-      <arg name='sysID' type='const xmlChar *' info=''/>
+      <arg name='pubID' type='const xmlChar *' info='the public ID string'/>
+      <arg name='sysID' type='const xmlChar *' info='the system ID string'/>
     </function>
     <function name='xmlCatalogResolvePublic' file='catalog'>
       <info>Try to lookup the system ID associated to a public ID</info>
       <return type='xmlChar *' info='the system ID if found or NULL otherwise, the value returned must be freed by the caller.'/>
-      <arg name='pubID' type='const xmlChar *' info=''/>
+      <arg name='pubID' type='const xmlChar *' info='the public ID string'/>
     </function>
     <function name='xmlCatalogResolveSystem' file='catalog'>
       <info>Try to lookup the catalog resource for a system ID</info>
       <return type='xmlChar *' info='the system ID if found or NULL otherwise, the value returned must be freed by the caller.'/>
-      <arg name='sysID' type='const xmlChar *' info=''/>
+      <arg name='sysID' type='const xmlChar *' info='the public ID string'/>
     </function>
     <function name='xmlCatalogResolveURI' file='catalog'>
       <info>Do a complete resolution lookup of an URI</info>
@@ -6274,7 +6274,7 @@ actually an xmlCharEncoding'/>
     <function name='xmlLoadCatalogs' file='catalog'>
       <info>Load the catalogs and makes their definitions effective for the default external entity loader. this function is not thread safe, catalog initialization should preferably be done once at startup</info>
       <return type='void'/>
-      <arg name='pathss' type='const char *' info=''/>
+      <arg name='pathss' type='const char *' info='a list of directories separated by a colon or a space.'/>
     </function>
     <function name='xmlLoadExternalEntity' file='parser'>
       <info>Load an external entity, note that the use of this function for unparsed entities may generate problems TODO: a more generic External entity API must be designed</info>
@@ -8452,9 +8452,9 @@ actually an xmlCharEncoding'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
     </function>
     <function name='xmlTextReaderIsDefault' file='xmlreader'>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='reader' type='xmlTextReaderPtr' info=''/>
+      <info>Whether an Attribute  node was generated from the default value defined in the DTD or schema.</info>
+      <return type='int' info='0 if not defaulted, 1 if defaulted, and -1 in case of error'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
     </function>
     <function name='xmlTextReaderIsEmptyElement' file='xmlreader'>
       <info>Check if the current node is empty</info>
@@ -8487,9 +8487,9 @@ actually an xmlCharEncoding'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
     </function>
     <function name='xmlTextReaderQuoteChar' file='xmlreader'>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='reader' type='xmlTextReaderPtr' info=''/>
+      <info>The quotation mark character used to enclose the value of an attribute.</info>
+      <return type='int' info='&quot; or &apos; and -1 in case of error'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
     </function>
     <function name='xmlTextReaderRead' file='xmlreader'>
       <info>Moves the position of the current instance to the next node in the stream, exposing its properties.</info>
@@ -8497,9 +8497,9 @@ actually an xmlCharEncoding'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
     </function>
     <function name='xmlTextReaderValue' file='xmlreader'>
-      <info></info>
-      <return type='xmlChar *' info=''/>
-      <arg name='reader' type='xmlTextReaderPtr' info=''/>
+      <info>Provides the text value of the node if present</info>
+      <return type='xmlChar *' info='the string or NULL if not available. The retsult must be deallocated with xmlFree()'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
     </function>
     <function name='xmlTextReaderXmlLang' file='xmlreader'>
       <info>The xml:lang scope within which the node resides.</info>

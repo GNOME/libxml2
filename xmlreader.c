@@ -604,7 +604,7 @@ xmlTextReaderLocalName(xmlTextReaderPtr reader) {
 	return(NULL);
     if ((reader->node->type != XML_ELEMENT_NODE) &&
 	(reader->node->type != XML_ATTRIBUTE_NODE))
-	return(NULL);
+	return(xmlTextReaderName(reader));
     return(xmlStrdup(reader->node->name));
 }
 
@@ -622,16 +622,51 @@ xmlTextReaderName(xmlTextReaderPtr reader) {
 
     if ((reader == NULL) || (reader->node == NULL))
 	return(NULL);
-    if ((reader->node->type != XML_ELEMENT_NODE) &&
-	(reader->node->type != XML_ATTRIBUTE_NODE))
-	return(NULL);
-    if ((reader->node->ns == NULL) || (reader->node->ns->prefix == NULL))
-	return(xmlStrdup(reader->node->name));
-    
-    ret = xmlStrdup(reader->node->ns->prefix);
-    ret = xmlStrcat(ret, BAD_CAST ":");
-    ret = xmlStrcat(ret, reader->node->name);
-    return(ret);
+    switch (reader->node->type) {
+        case XML_ELEMENT_NODE:
+        case XML_ATTRIBUTE_NODE:
+	    if ((reader->node->ns == NULL) ||
+		(reader->node->ns->prefix == NULL))
+		return(xmlStrdup(reader->node->name));
+	    
+	    ret = xmlStrdup(reader->node->ns->prefix);
+	    ret = xmlStrcat(ret, BAD_CAST ":");
+	    ret = xmlStrcat(ret, reader->node->name);
+	    return(ret);
+        case XML_TEXT_NODE:
+	    return(xmlStrdup(BAD_CAST "#text"));
+        case XML_CDATA_SECTION_NODE:
+	    return(xmlStrdup(BAD_CAST "#cdata-section"));
+        case XML_ENTITY_NODE:
+        case XML_ENTITY_REF_NODE:
+	    return(xmlStrdup(reader->node->name));
+        case XML_PI_NODE:
+	    return(xmlStrdup(reader->node->name));
+        case XML_COMMENT_NODE:
+	    return(xmlStrdup(BAD_CAST "#comment"));
+        case XML_DOCUMENT_NODE:
+        case XML_HTML_DOCUMENT_NODE:
+#ifdef LIBXML_DOCB_ENABLED
+        case XML_DOCB_DOCUMENT_NODE:
+#endif
+	    return(xmlStrdup(BAD_CAST "#document"));
+        case XML_DOCUMENT_FRAG_NODE:
+	    return(xmlStrdup(BAD_CAST "#document-fragment"));
+        case XML_NOTATION_NODE:
+	    return(xmlStrdup(reader->node->name));
+        case XML_DOCUMENT_TYPE_NODE:
+        case XML_DTD_NODE:
+	    return(xmlStrdup(reader->node->name));
+
+        case XML_ELEMENT_DECL:
+        case XML_ATTRIBUTE_DECL:
+        case XML_ENTITY_DECL:
+        case XML_NAMESPACE_DECL:
+        case XML_XINCLUDE_START:
+        case XML_XINCLUDE_END:
+	    return(NULL);
+    }
+    return(NULL);
 }
 
 /**
@@ -744,15 +779,89 @@ xmlTextReaderHasValue(xmlTextReaderPtr reader) {
     if (reader->node == NULL)
 	return(0);
 
-    TODO
+    switch (reader->node->type) {
+        case XML_ATTRIBUTE_NODE:
+        case XML_TEXT_NODE:
+        case XML_CDATA_SECTION_NODE:
+        case XML_PI_NODE:
+        case XML_COMMENT_NODE:
+	    return(1);
+	default:
+	    return(0);
+    }
     return(0);
 }
 
-/*
-int		xmlTextReaderIsDefault	(xmlTextReaderPtr reader);
-int		xmlTextReaderQuoteChar	(xmlTextReaderPtr reader);
-xmlChar *	xmlTextReaderValue	(xmlTextReaderPtr reader);
+/**
+ * xmlTextReaderValue:
+ * @reader:  the xmlTextReaderPtr used
+ *
+ * Provides the text value of the node if present
+ *
+ * Returns the string or NULL if not available. The retsult must be deallocated
+ *     with xmlFree()
  */
+xmlChar *
+xmlTextReaderValue(xmlTextReaderPtr reader) {
+    if (reader == NULL)
+	return(NULL);
+    if (reader->node == NULL)
+	return(NULL);
+
+    switch (reader->node->type) {
+        case XML_ATTRIBUTE_NODE:{
+	    xmlAttrPtr attr = (xmlAttrPtr) reader->node;
+
+	    if (attr->parent != NULL)
+		return (xmlNodeListGetString
+			(attr->parent->doc, attr->children, 1));
+	    else
+		return (xmlNodeListGetString(NULL, attr->children, 1));
+	    break;
+	}
+        case XML_TEXT_NODE:
+        case XML_CDATA_SECTION_NODE:
+        case XML_PI_NODE:
+        case XML_COMMENT_NODE:
+            if (reader->node->content != NULL)
+                return (xmlStrdup(reader->node->content));
+	default:
+	    return(NULL);
+    }
+    return(NULL);
+}
+
+/**
+ * xmlTextReaderIsDefault:
+ * @reader:  the xmlTextReaderPtr used
+ *
+ * Whether an Attribute  node was generated from the default value
+ * defined in the DTD or schema.
+ *
+ * Returns 0 if not defaulted, 1 if defaulted, and -1 in case of error
+ */
+int
+xmlTextReaderIsDefault(xmlTextReaderPtr reader) {
+    if (reader == NULL)
+	return(-1);
+    return(0);
+}
+
+/**
+ * xmlTextReaderQuoteChar:
+ * @reader:  the xmlTextReaderPtr used
+ *
+ * The quotation mark character used to enclose the value of an attribute.
+ *
+ * Returns " or ' and -1 in case of error
+ */
+int
+xmlTextReaderQuoteChar(xmlTextReaderPtr reader) {
+    if (reader == NULL)
+	return(-1);
+    /* TODO maybe lookup the attribute value for " first */
+    return((int) '"');
+}
 
 /**
  * xmlTextReaderXmlLang:

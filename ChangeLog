@@ -1,3 +1,8 @@
+Fri Jun 15 07:08:57 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* HTMLtree.[ch]: more work on the HTML serialization routnes,
+	  cleanup, encoding support.
+
 Thu Jun 14 10:31:17 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xpath.c: Thomas Broyer suggested a better patch for the / arg

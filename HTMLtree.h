@@ -75,7 +75,7 @@ void		htmlNodeDump		(xmlBufferPtr buf,
 void		htmlNodeDumpFile	(FILE *out,
 					 xmlDocPtr doc,
 					 xmlNodePtr cur);
-void		htmlNodeDumpFileFormat	(FILE *out,
+int		htmlNodeDumpFileFormat	(FILE *out,
 					 xmlDocPtr doc,
 					 xmlNodePtr cur,
 					 const char *encoding,

@@ -294,6 +294,9 @@ found_meta:
  *									*
  ************************************************************************/
 
+void htmlNodeDumpFormatOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
+	                xmlNodePtr cur, const char *encoding, int format);
+
 static void
 htmlDocContentDump(xmlBufferPtr buf, xmlDocPtr cur, int format);
 
@@ -616,18 +619,46 @@ htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
  *
  * Dump an HTML node, recursive behaviour,children are printed too.
  *
- * TODO: handle the encoding not used yet
+ * TODO: if encoding == NULL try to save in the doc encoding
+ *
+ * returns: the number of byte written or -1 in case of failure.
  */
-void
-htmlNodeDumpFileFormat(FILE *out, xmlDocPtr doc, xmlNodePtr cur,
-	               const char *encoding ATTRIBUTE_UNUSED, int format) {
-    xmlBufferPtr buf;
+int
+htmlNodeDumpFileFormat(FILE *out, xmlDocPtr doc,
+	               xmlNodePtr cur, const char *encoding, int format) {
+    xmlOutputBufferPtr buf;
+    xmlCharEncodingHandlerPtr handler = NULL;
+    int ret;
 
-    buf = xmlBufferCreate();
-    if (buf == NULL) return;
-    htmlNodeDumpFormat(buf, doc, cur, format);
-    xmlBufferDump(out, buf);
-    xmlBufferFree(buf);
+    if (encoding != NULL) {
+	xmlCharEncoding enc;
+
+	enc = xmlParseCharEncoding(encoding);
+	if (enc != XML_CHAR_ENCODING_UTF8) {
+	    handler = xmlFindCharEncodingHandler(encoding);
+	    if (handler == NULL)
+		return(-1);
+	}
+    }
+
+    /*
+     * Fallback to HTML or ASCII when the encoding is unspecified
+     */
+    if (handler == NULL)
+	handler = xmlFindCharEncodingHandler("HTML");
+    if (handler == NULL)
+	handler = xmlFindCharEncodingHandler("ascii");
+
+    /* 
+     * save the content to a temp buffer.
+     */
+    buf = xmlOutputBufferCreateFile(out, handler);
+    if (buf == NULL) return(0);
+
+    htmlNodeDumpFormatOutput(buf, doc, cur, encoding, format);
+
+    ret = xmlOutputBufferClose(buf);
+    return(ret);
 }
 
 /**
@@ -861,9 +892,6 @@ htmlAttrListDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur, co
 
 void htmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
 	                xmlNodePtr cur, const char *encoding);
-
-void htmlNodeDumpFormatOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
-	                xmlNodePtr cur, const char *encoding, int format);
 
 /**
  * htmlNodeListDumpOutput:

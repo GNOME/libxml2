@@ -1069,53 +1069,56 @@ process_external_subset:
 	     * internal subset are not overriden by definitions in the
 	     * external subset.
 	     */
-	    if ((attr->defaultValue != NULL) &&
-		(xmlGetDtdQAttrDesc(ctxt->myDoc->extSubset,
-				    attr->elem, attr->name,
-				    attr->prefix) == attr) &&
-		(xmlGetDtdQAttrDesc(ctxt->myDoc->intSubset,
-				    attr->elem, attr->name,
-				    attr->prefix) == NULL)) {
+	    if (attr->defaultValue != NULL) {
 		/*
 		 * the element should be instantiated in the tree if:
 		 *  - this is a namespace prefix
 		 *  - the user required for completion in the tree
 		 *    like XSLT
+		 *  - there isn't already an attribute definition 
+		 *    in the internal subset overriding it.
 		 */
 		if (((attr->prefix != NULL) &&
 		     (xmlStrEqual(attr->prefix, BAD_CAST "xmlns"))) ||
 		    ((attr->prefix == NULL) &&
 		     (xmlStrEqual(attr->name, BAD_CAST "xmlns"))) ||
 		    (ctxt->loadsubset & XML_COMPLETE_ATTRS)) {
-		    xmlChar *fulln;
+		    xmlAttributePtr tst;
 
-		    if (attr->prefix != NULL) {
-			fulln = xmlStrdup(attr->prefix);
-			fulln = xmlStrcat(fulln, BAD_CAST ":");
-			fulln = xmlStrcat(fulln, attr->name);
-		    } else {
-			fulln = xmlStrdup(attr->name);
-		    }
+		    tst = xmlGetDtdQAttrDesc(ctxt->myDoc->intSubset,
+					     attr->elem, attr->name,
+					     attr->prefix);
+		    if ((tst == attr) || (tst == NULL)) {
+			xmlChar *fulln;
 
-		    /*
-		     * Check that the attribute is not declared in the
-		     * serialization
-		     */
-		    att = NULL;
-		    if (atts != NULL) {
-			i = 0;
-			att = atts[i];
-			while (att != NULL) {
-			    if (xmlStrEqual(att, fulln))
-				break;
-			    i += 2;
-			    att = atts[i];
+			if (attr->prefix != NULL) {
+			    fulln = xmlStrdup(attr->prefix);
+			    fulln = xmlStrcat(fulln, BAD_CAST ":");
+			    fulln = xmlStrcat(fulln, attr->name);
+			} else {
+			    fulln = xmlStrdup(attr->name);
 			}
+
+			/*
+			 * Check that the attribute is not declared in the
+			 * serialization
+			 */
+			att = NULL;
+			if (atts != NULL) {
+			    i = 0;
+			    att = atts[i];
+			    while (att != NULL) {
+				if (xmlStrEqual(att, fulln))
+				    break;
+				i += 2;
+				att = atts[i];
+			    }
+			}
+			if (att == NULL) {
+			    attribute(ctxt, fulln, attr->defaultValue);
+			}
+			xmlFree(fulln);
 		    }
-		    if (att == NULL) {
-			attribute(ctxt, fulln, attr->defaultValue);
-		    }
-		    xmlFree(fulln);
 		}
 	    }
 	    attr = attr->nexth;

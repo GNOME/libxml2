@@ -1,3 +1,7 @@
+Tue Feb 19 22:49:36 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* SAX.c: oops broke automatic defaulting of namespaces attributes.
+
 Tue Feb 19 22:01:35 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/parserInternals.h parser.c: had to change

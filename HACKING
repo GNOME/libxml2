@@ -1,3 +1,11 @@
+NOTE: 
+  - the head of this module is package libxml-2 . There is incompatibilities
+    with the old libxml-1 headers. I posted on gnome-hackers a recipe to
+    change your code to compile with both, check it out ! Also read
+    http://xmlsoft.org/upgrade.html
+  - in the meantime the old 1.x code has been tagged with LIB_XML_1_X
+    extract this version and drop me a mail if you want me to take care of
+    the update of your module to libxml-2 <veillard@w3.org>
 
      Rules for commits on the gnome-xml module
      =========================================

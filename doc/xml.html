@@ -3,7 +3,7 @@
 <html>
 <head>
   <title>The XML library for Gnome</title>
-  <meta name="GENERATOR" content="amaya V2.4">
+  <meta name="GENERATOR" content="amaya V3.0">
   <meta http-equiv="Content-Type" content="text/html">
 </head>
 
@@ -184,17 +184,18 @@ for really accurate description</h3>
 <ul>
   <li>working on HTML and XML links recognition layers, get in touch with me
     if you want to test those.</li>
-  <li>So far the feedback on the libxml2 beta is positive</li>
 </ul>
 
-<h3>2.0.0: Apr 3 2000</h3>
+<h3>2.0.0: Apr 12 2000</h3>
 <ul>
   <li>First public release of libxml2. If you are using libxml, it's a good
-    idea to check the 1.x to 2.x upgrade instructions</li>
+    idea to check the 1.x to 2.x upgrade instructions. NOTE: while initally
+    scheduled for Apr 3 the relase occured only on Apr 12 due to massive
+    workload.</li>
   <li>The include are now located under $prefix/include/libxml (instead of
-    $prefix/include/gnome-xml), they also are referenced by 
+    $prefix/include/gnome-xml), they also are referenced by
     <pre>#include &lt;libxml/xxx.h></pre>
-    <p>instead of </p>
+    <p>instead of</p>
     <pre>#include "xxx.h"</pre>
   </li>
   <li>a new URI module for parsing URIs and following strictly RFC 2396</li>
@@ -203,10 +204,15 @@ for really accurate description</h3>
   <li>The previously CVS only tool tester has been renamed
     <strong>xmllint</strong> and is now installed as part of the libxml2
     package</li>
-  <li></li>
+  <li>The I/O interface has been revamped. There is now ways to plug in
+    specific I/O modules, either at the URI scheme detection level using
+    xmlRegisterInputCallbacks()  or by passing I/O functions when creating a
+    parser context using xmlCreateIOParserCtxt()</li>
+  <li>there is a C preprocessor macro LIBXML_VERSION providing the version
+    number of the libxml module in use</li>
+  <li>a number of optional features of libxml can now be excluded at configure
+    time (FTP/HTTP/HTML/XPath/Debug)</li>
 </ul>
-
-<p> </p>
 
 <h3>2.0.0beta: Mar 14 2000</h3>
 <ul>
@@ -1132,6 +1138,6 @@ base under gnome-xml/example</p>
 
 <p><a href="mailto:Daniel.Veillard@w3.org">Daniel Veillard</a></p>
 
-<p>$Id: xml.html,v 1.31 2000/03/24 13:41:54 veillard Exp $</p>
+<p>$Id: xml.html,v 1.32 2000/04/03 19:48:13 veillard Exp $</p>
 </body>
 </html>

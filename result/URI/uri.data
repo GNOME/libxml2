@@ -1,0 +1,13 @@
+http://foo.com/path/to/index.html#help
+http://foo.com/path/to/
+http://foo.com/path/to/bar
+http://foo.com/path/to/bar#baz
+http://foo.com/path/to/bar?baz
+http://foo.com/path/to/index.html#baz
+http://foo.com/path/to/index.html?baz
+http://foo.com/path/up.a.notch.html#wow
+http://foo.com/path/up.a.notch.html?wow
+http://foo.com/root.cgi#OK
+http://foo.com/root.cgi?OK
+https://elsewhere.com/#deep
+https://elsewhere.com/?deep

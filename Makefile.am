@@ -98,7 +98,7 @@ $(libxml_la_SOURCES): $(srcdir)/libxml
 
 testall : tests SVGtests SAXtests XPathtests
 
-tests: XMLtests XMLenttests HTMLtests Validtests
+tests: XMLtests XMLenttests HTMLtests Validtests URItests
 
 HTMLtests : testHTML
 	@(rm -f .memdump ; touch .memdump)
@@ -212,6 +212,25 @@ XMLenttests : xmllint
 	      $(top_builddir)/xmllint --noent result.$$name > result2.$$name ; \
 	      diff result.$$name result2.$$name ; \
 	      rm result.$$name result2.$$name ; \
+	  fi ; fi ; done)
+
+URItests : testURI
+	@(rm -f .memdump ; touch .memdump)
+	@echo "##"
+	@echo "## URI module regression tests"
+	@echo "##"
+	@(for i in $(srcdir)/test/URI/*.data ; do \
+	  name=`basename $$i`; \
+	  if [ ! -d $$i ] ; then \
+	  if [ ! -f $(srcdir)/result/URI/$$name ] ; then \
+	      echo New test file $$name ; \
+	      $(top_builddir)/testURI -base 'http://foo.com/path/to/index.html#help' < $$i > $(srcdir)/result/URI/$$name ; \
+	  else \
+	      echo Testing $$name ; \
+	      $(top_builddir)/testURI -base 'http://foo.com/path/to/index.html#help' < $$i > result.$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
+	      diff $(srcdir)/result/URI/$$name result.$$name ; \
+	      rm result.$$name ; \
 	  fi ; fi ; done)
 
 XPathtests : testXPath

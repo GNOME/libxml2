@@ -58,17 +58,24 @@ int main(int argc, char **argv) {
 		i--;
 		str[i] = 0;
 	    }
-	    if (i <= 0)
-		continue;
 
-	    ret = xmlParseURIReference(uri, str);
-	    if (ret != 0)
-		printf("%s : error %d\n", str, ret);
-	    else {
-		xmlPrintURI(stdout, uri);
-		printf("\n");
+	    if (base == NULL) {
+		ret = xmlParseURIReference(uri, str);
+		if (ret != 0)
+		    printf("%s : error %d\n", str, ret);
+		else {
+		    xmlPrintURI(stdout, uri);
+		    printf("\n");
+		}
+	    } else {
+		composite = xmlBuildURI((xmlChar *)str, (xmlChar *) base);
+		if (composite != NULL) {
+		    printf("%s\n", composite);
+		    xmlFree(composite);
+		}
+		else
+		    printf("::ERROR::\n");
 	    }
-
         }
     } else {
 	while (argv[arg] != NULL) {

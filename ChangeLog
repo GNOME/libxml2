@@ -1,4 +1,10 @@
-Sun Sep  3 19:19:29 CEST 2000
+Mon Sep  4 13:01:45 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* uri.c testUri.c: applied Wayne Davidson patches
+	* test/URI/uri.data result/URI/uri.data: first set of tests/results
+	* Makefile.in: added URItest and included thenin "make tests"
+
+Sun Sep  3 19:19:29 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* xmlversion.h.in: closed bug 22941
 

@@ -1216,7 +1216,7 @@ xmlParseRelativeURI(xmlURIPtr uri, const char **str) {
     } else if (cur[0] == '/') {
 	cur++;
 	ret = xmlParseURIPathSegments(uri, &cur, 1);
-    } else {
+    } else if (cur[0] != '#' && cur[0] != '?') {
 	ret = xmlParseURIRelSegment(uri, &cur);
 	if (ret != 0)
 	    return(ret);
@@ -1467,7 +1467,6 @@ xmlBuildURI(const xmlChar *URI, const xmlChar *base) {
     xmlURIPtr bas = NULL;
     xmlURIPtr res = NULL;
 
-
     /*
      * 1) The URI reference is parsed into the potential four components and
      *    fragment identifier, as described in Section 4.3.
@@ -1475,9 +1474,11 @@ xmlBuildURI(const xmlChar *URI, const xmlChar *base) {
     ref = xmlCreateURI();
     if (ref == NULL)
 	goto done;
-    ret = xmlParseURIReference(ref, (const char *) URI);
-    if (ret != 0)
-	goto done;
+    if (*URI) {
+	ret = xmlParseURIReference(ref, (const char *) URI);
+	if (ret != 0)
+	    goto done;
+    }
     bas = xmlCreateURI();
     if (bas == NULL)
 	goto done;
@@ -1488,22 +1489,29 @@ xmlBuildURI(const xmlChar *URI, const xmlChar *base) {
     /*
      * 2) If the path component is empty and the scheme, authority, and
      *    query components are undefined, then it is a reference to the
-     *    current document and we are done.  Otherwise, the reference URI's
-     *    query and fragment components are defined as found (or not found)
-     *    within the URI reference and not inherited from the base URI.
+     *    current document.  However, since we need to inherit these
+     *    values from the base, we keep on going.
+     *
+     *  NOTE: this is a divergence from the RFC which says:
+     *     current document and we are done.  Otherwise, the reference URI's
+     *     query and fragment components are defined as found (or not found)
+     *     within the URI reference and not inherited from the base URI.
      */
     res = xmlCreateURI();
     if (res == NULL)
 	goto done;
+#if 0
     if ((ref->scheme == NULL) && (ref->path == NULL) &&
 	((ref->authority == NULL) && (ref->server == NULL)) &&
 	(ref->query == NULL)) {
 	if (ref->fragment == NULL)
 	    goto done;
-        res->fragment = xmlMemStrdup(ref->fragment);
+	res->fragment = xmlMemStrdup(ref->fragment);
 	val = xmlSaveUri(res);
 	goto done;
     }
+#endif
+ 
 
     /*
      * 3) If the scheme component is defined, indicating that the reference
@@ -1517,8 +1525,6 @@ xmlBuildURI(const xmlChar *URI, const xmlChar *base) {
     }
     if (bas->scheme != NULL)
 	res->scheme = xmlMemStrdup(bas->scheme);
-    else
-	res->scheme = NULL;
 
     /*
      * 4) If the authority component is defined, then the reference is a
@@ -1556,8 +1562,27 @@ xmlBuildURI(const xmlChar *URI, const xmlChar *base) {
     /*
      * 5) If the path component begins with a slash character ("/"), then
      *    the reference is an absolute-path and we skip to step 7.
+     *
+     *    If it is not defined, inherit the whole path from the base.
+     *    The query and the fragment are inherited too, unless specified
+     *    in the reference.
      */
-    if ((ref->path != NULL) && (ref->path[0] == '/')) {
+    if (ref->path == NULL) {
+	res->path = xmlMemStrdup(bas->path);
+	if (ref->query == NULL && ref->fragment == NULL) {
+	    if (bas->query != NULL)
+		res->query = xmlMemStrdup(bas->query);
+	    if (bas->fragment != NULL)
+		res->fragment = xmlMemStrdup(bas->fragment);
+	} else {
+	    if (ref->query != NULL)
+		res->query = xmlMemStrdup(ref->query);
+	    if (ref->fragment != NULL)
+		res->fragment = xmlMemStrdup(ref->fragment);
+	}
+	goto step_7;
+    }
+    if (ref->path[0] == '/') {
 	res->path = xmlMemStrdup(ref->path);
 	if (ref->query != NULL)
 	    res->query = xmlMemStrdup(ref->query);
@@ -1633,6 +1658,11 @@ xmlBuildURI(const xmlChar *URI, const xmlChar *base) {
      * Steps c) to h) are really path normalization steps
      */
     xmlNormalizeURIPath(res->path);
+
+    if (ref->query != NULL)
+	res->query = xmlMemStrdup(ref->query);
+    if (ref->fragment != NULL)
+	res->fragment = xmlMemStrdup(ref->fragment);
 
 step_7:
 

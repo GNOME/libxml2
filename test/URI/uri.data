@@ -1,0 +1,13 @@
+
+.
+bar
+bar#baz
+bar?baz
+#baz
+?baz
+../up.a.notch.html#wow
+../up.a.notch.html?wow
+/root.cgi#OK
+/root.cgi?OK
+https://elsewhere.com/#deep
+https://elsewhere.com/?deep

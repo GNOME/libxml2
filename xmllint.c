@@ -655,11 +655,13 @@ int main(int argc, char **argv) {
 	    xmlGetWarningsDefaultValue = 1;
 	    xmlPedanticParserDefault(1);
         }
+#ifdef LIBXML_DEBUG_ENABLED
 	else if ((!strcmp(argv[i], "-debugent")) ||
 		 (!strcmp(argv[i], "--debugent"))) {
 	    debugent++;
 	    xmlParserDebugEntities = 1;
 	} 
+#endif
 	else if ((!strcmp(argv[i], "-encode")) ||
 	         (!strcmp(argv[i], "--encode"))) {
 	    i++;

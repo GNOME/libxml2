@@ -1,3 +1,7 @@
+Fri Sep 22 18:06:08 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* xmlint.c: closing bug #25000
+
 Fri Sep 22 14:17:53 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* xmlIO.h tree.h: made xmlNodeDump() and xmlNodeDumpOutput() public

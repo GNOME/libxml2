@@ -1,3 +1,8 @@
+Sat Jan 27 19:58:22 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* Makefile.am configure.in libxml-2.0.pc.in: started working on getting
+	  libxml2-devel installable in // as libxml-devel.
+
 Sat Jan 27 18:49:02 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* doc/Makefile.am: fixed make rebuild in doc

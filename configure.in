@@ -145,7 +145,7 @@ AC_CHECK_FUNC(isinf, , AC_CHECK_LIB(m, isinf,
 
 XML_LIBDIR='-L${libdir}'
 XML_INCLUDEDIR='-I${includedir}/libxml -I${includedir}'
-XML_LIBS="-lxml $Z_LIBS $M_LIBS $LIBS"
+XML_LIBS="-lxml2 $Z_LIBS $M_LIBS $LIBS"
 
 dnl
 dnl Extra flags

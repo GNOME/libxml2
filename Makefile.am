@@ -11,11 +11,11 @@ bin_PROGRAMS = xmllint
 bin_SCRIPTS=xml-config
 
 lib_LTLIBRARIES = libxml.la
-libxml_la_LIBADD = @Z_LIBS@
+libxml2_la_LIBADD = @Z_LIBS@
 
-libxml_la_LDFLAGS = -version-info @LIBXML_VERSION_INFO@
+libxml2_la_LDFLAGS = -version-info @LIBXML_VERSION_INFO@
 
-libxml_la_SOURCES = \
+libxml2_la_SOURCES = \
 		SAX.c \
 		entities.c \
 		encoding.c \
@@ -38,8 +38,8 @@ libxml_la_SOURCES = \
 		nanohttp.c \
 		nanoftp.c
 
-DEPS = $(top_builddir)/libxml.la
-LDADDS = $(top_builddir)/libxml.la @Z_LIBS@ @M_LIBS@
+DEPS = $(top_builddir)/libxml2.la
+LDADDS = $(top_builddir)/libxml2.la @Z_LIBS@ @M_LIBS@
 
 man_MANS = xmllint.1 xml-config.1 libxml.4
 
@@ -79,7 +79,7 @@ $(srcdir)/libxml:
 
 install-data: $(srcdir)/libxml
 
-$(libxml_la_SOURCES): $(srcdir)/libxml
+$(libxml2_la_SOURCES): $(srcdir)/libxml
 
 testall : tests SVGtests SAXtests
 

@@ -1,3 +1,8 @@
+Tue Nov  6 23:49:09 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c test/HTML/lt.html result/HTML/lt.html*:
+	  handle the case of < in quoted attributes, Bastian Kleineidam
+
 Tue Nov  6 16:21:33 CET 2001 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in include/libxml/xmlwin32version.h: releasing 2.4.9

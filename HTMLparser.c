@@ -1970,7 +1970,8 @@ htmlParseHTMLAttribute(htmlParserCtxtPtr ctxt, const xmlChar stop) {
     /*
      * Ok loop until we reach one of the ending chars
      */
-    while ((CUR != 0) && (CUR != stop) && (CUR != '>')) {
+    while ((CUR != 0) && (CUR != stop)) {
+	if ((stop == 0) && (CUR == '>')) break;
 	if ((stop == 0) && (IS_BLANK(CUR))) break;
         if (CUR == '&') {
 	    if (NXT(1) == '#') {

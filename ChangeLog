@@ -1,3 +1,8 @@
+Sat Sep 30 16:35:54 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* configure.in xml-config.in: patch from "Ben Taylor"
+	  <sol7x86@hotmail.com> for solaris shared libs lookup
+
 2000-09-30  Martin Baulig  <baulig@suse.de>
 
 	* libxml.pc.in: Provide pkg-config script.

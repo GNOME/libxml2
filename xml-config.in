@@ -3,6 +3,7 @@
 prefix=@prefix@
 exec_prefix=@exec_prefix@
 includedir=@includedir@
+libdir=@libdir@
 
 usage()
 {
@@ -57,7 +58,7 @@ while test $# -gt 0; do
        	;;
 
     --libs)
-       	echo -L@libdir@ @XML_LIBS@ @LIBS@
+       	echo @XML_LIBDIR@ @XML_LIBS@ @LIBS@
        	;;
 
     *)

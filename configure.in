@@ -111,6 +111,14 @@ XML_LIBDIR='-L${libdir}'
 XML_INCLUDEDIR='-I${includedir}/gnome-xml'
 XML_LIBS="-lxml $Z_LIBS $M_LIBS $LIBS"
 
+AC_CANONICAL_HOST
+
+case $host in
+*-*-solaris*)
+        XML_LIBDIR="${XML_LIBDIR} -R${libdir}"
+        ;;
+esac
+
 dnl
 dnl Extra flags
 dnl

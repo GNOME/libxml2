@@ -1,3 +1,8 @@
+Sun Jul  8 20:34:35 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xmlIO.c: fixed an old bug raised by Bernhard Zwisch, the I/O
+	  layer should URI-Unescape before trying to open resources.
+
 Sun Jul  8 16:26:00 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xpath.c: fix the name() bug for elements in the default 

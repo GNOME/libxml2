@@ -62,6 +62,7 @@
 #include <libxml/parser.h>
 #include <libxml/parserInternals.h>
 #include <libxml/xmlIO.h>
+#include <libxml/uri.h>
 #include <libxml/nanohttp.h>
 #include <libxml/nanoftp.h>
 #include <libxml/xmlerror.h>
@@ -883,8 +884,9 @@ xmlParserInputBufferCreateFilename
 #endif
 (const char *URI, xmlCharEncoding enc) {
     xmlParserInputBufferPtr ret;
-    int i;
+    int i = 0;
     void *context = NULL;
+    char *unescaped;
 
     if (xmlInputCallbackInitialized == 0)
 	xmlRegisterDefaultInputCallbacks();
@@ -894,13 +896,33 @@ xmlParserInputBufferCreateFilename
     /*
      * Try to find one of the input accept method accepting taht scheme
      * Go in reverse to give precedence to user defined handlers.
+     * try with an unescaped version of the URI
      */
-    for (i = xmlInputCallbackNr - 1;i >= 0;i--) {
-	if ((xmlInputCallbackTable[i].matchcallback != NULL) &&
-	    (xmlInputCallbackTable[i].matchcallback(URI) != 0)) {
-	    context = xmlInputCallbackTable[i].opencallback(URI);
-	    if (context != NULL)
-		break;
+    unescaped = xmlURIUnescapeString(URI, 0, NULL);
+    if (unescaped != NULL) {
+	for (i = xmlInputCallbackNr - 1;i >= 0;i--) {
+	    if ((xmlInputCallbackTable[i].matchcallback != NULL) &&
+		(xmlInputCallbackTable[i].matchcallback(unescaped) != 0)) {
+		context = xmlInputCallbackTable[i].opencallback(unescaped);
+		if (context != NULL)
+		    break;
+	    }
+	}
+	xmlFree(unescaped);
+    }
+
+    /*
+     * If this failed try with a non-escaped URI this may be a strange
+     * filename
+     */
+    if (context == NULL) {
+	for (i = xmlInputCallbackNr - 1;i >= 0;i--) {
+	    if ((xmlInputCallbackTable[i].matchcallback != NULL) &&
+		(xmlInputCallbackTable[i].matchcallback(URI) != 0)) {
+		context = xmlInputCallbackTable[i].opencallback(URI);
+		if (context != NULL)
+		    break;
+	    }
 	}
     }
     if (context == NULL) {

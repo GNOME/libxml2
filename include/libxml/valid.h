@@ -54,8 +54,8 @@ typedef struct xmlAttributeTable {
 typedef xmlAttributeTable *xmlAttributeTablePtr;
 
 /* Notation */
-xmlNotationPtr xmlAddNotationDecl(xmlDtdPtr dtd, CHAR *name,
-	       CHAR *PublicID, CHAR *SystemID);
+xmlNotationPtr xmlAddNotationDecl(xmlDtdPtr dtd, const CHAR *name,
+	       const CHAR *PublicID, const CHAR *SystemID);
 xmlNotationTablePtr xmlCopyNotationTable(xmlNotationTablePtr table);
 void xmlFreeNotationTable(xmlNotationTablePtr table);
 void xmlDumpNotationTable(xmlNotationTablePtr table);
@@ -66,7 +66,7 @@ xmlElementContentPtr xmlCopyElementContent(xmlElementContentPtr content);
 void xmlFreeElementContent(xmlElementContentPtr cur);
 
 /* Element */
-xmlElementPtr xmlAddElementDecl(xmlDtdPtr dtd, CHAR *name, int type, 
+xmlElementPtr xmlAddElementDecl(xmlDtdPtr dtd, const CHAR *name, int type, 
                                        xmlElementContentPtr content);
 xmlElementTablePtr xmlCopyElementTable(xmlElementTablePtr table);
 void xmlFreeElementTable(xmlElementTablePtr table);
@@ -78,9 +78,9 @@ void xmlFreeEnumeration(xmlEnumerationPtr cur);
 xmlEnumerationPtr xmlCopyEnumeration(xmlEnumerationPtr cur);
 
 /* Attribute */
-xmlAttributePtr xmlAddAttributeDecl(xmlDtdPtr dtd, CHAR *elem,
-	       CHAR *name, int type, int def,
-	       CHAR *defaultValue, xmlEnumerationPtr tree);
+xmlAttributePtr xmlAddAttributeDecl(xmlDtdPtr dtd, const CHAR *elem,
+	       const CHAR *name, int type, int def,
+	       const CHAR *defaultValue, xmlEnumerationPtr tree);
 xmlAttributeTablePtr xmlCopyAttributeTable(xmlAttributeTablePtr table);
 void xmlFreeAttributeTable(xmlAttributeTablePtr table);
 void xmlDumpAttributeTable(xmlAttributeTablePtr table);

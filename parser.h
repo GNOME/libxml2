@@ -51,8 +51,12 @@ typedef xmlParserNodeInfoSeq *xmlParserNodeInfoSeqPtr;
 
 typedef struct _xmlParserCtxt {
     struct xmlSAXHandler *sax;        /* The SAX handler */
-    xmlDocPtr doc;                    /* the document being built */
+    void            *userData;        /* the document being built */
+    xmlDocPtr           myDoc;        /* the document being built */
     int            wellFormed;        /* is the document well formed */
+    const CHAR     *version;	      /* the XML version string */
+    const CHAR     *encoding;         /* encoding, if any */
+    int             standalone;       /* standalone document */
 
     /* Input stream stack */
     xmlParserInputPtr  input;         /* Current input stream */
@@ -89,10 +93,24 @@ typedef xmlSAXLocator *xmlSAXLocatorPtr;
  * a SAX Exception.
  */
 
+#include "entities.h"
+
 typedef xmlParserInputPtr (*resolveEntitySAXFunc) (xmlParserCtxtPtr ctxt,
 			    const CHAR *publicId, const CHAR *systemId);
+typedef void (*internalSubsetSAXFunc) (xmlParserCtxtPtr ctxt, const CHAR *name,
+                            const CHAR *ExternalID, const CHAR *SystemID);
+typedef xmlEntityPtr (*getEntitySAXFunc) (xmlParserCtxtPtr ctxt,
+                            const CHAR *name);
+typedef void (*entityDeclSAXFunc) (xmlParserCtxtPtr ctxt,
+                            const CHAR *name, int type, const CHAR *publicId,
+			    const CHAR *systemId, CHAR *content);
 typedef void (*notationDeclSAXFunc)(xmlParserCtxtPtr ctxt, const CHAR *name,
 			    const CHAR *publicId, const CHAR *systemId);
+typedef void (*attributeDeclSAXFunc)(xmlParserCtxtPtr ctxt, const CHAR *elem,
+                            const CHAR *name, int type, int def,
+			    const CHAR *defaultValue, xmlEnumerationPtr tree);
+typedef void (*elementDeclSAXFunc)(xmlParserCtxtPtr ctxt, const CHAR *name,
+			    int type, xmlElementContentPtr content);
 typedef void (*unparsedEntityDeclSAXFunc)(xmlParserCtxtPtr ctxt,
                             const CHAR *name, const CHAR *publicId,
 			    const CHAR *systemId, const CHAR *notationName);
@@ -100,33 +118,48 @@ typedef void (*setDocumentLocatorSAXFunc) (xmlParserCtxtPtr ctxt,
                             xmlSAXLocatorPtr loc);
 typedef void (*startDocumentSAXFunc) (xmlParserCtxtPtr ctxt);
 typedef void (*endDocumentSAXFunc) (xmlParserCtxtPtr ctxt);
-typedef void (*startElementSAXFunc) (xmlParserCtxtPtr ctxt, const CHAR *name);
+typedef void (*startElementSAXFunc) (xmlParserCtxtPtr ctxt, const CHAR *name,
+                            const CHAR **atts);
 typedef void (*endElementSAXFunc) (xmlParserCtxtPtr ctxt, const CHAR *name);
 typedef void (*attributeSAXFunc) (xmlParserCtxtPtr ctxt, const CHAR *name,
                                   const CHAR *value);
+typedef void (*referenceSAXFunc) (xmlParserCtxtPtr ctxt, const CHAR *name);
 typedef void (*charactersSAXFunc) (xmlParserCtxtPtr ctxt, const CHAR *ch,
-		            int start, int len);
+		            int len);
 typedef void (*ignorableWhitespaceSAXFunc) (xmlParserCtxtPtr ctxt,
-			    const CHAR *ch, int start, int len);
+			    const CHAR *ch, int len);
 typedef void (*processingInstructionSAXFunc) (xmlParserCtxtPtr ctxt,
                             const CHAR *target, const CHAR *data);
+typedef void (*commentSAXFunc) (xmlParserCtxtPtr ctxt, const CHAR *value);
 typedef void (*warningSAXFunc) (xmlParserCtxtPtr ctxt, const char *msg, ...);
 typedef void (*errorSAXFunc) (xmlParserCtxtPtr ctxt, const char *msg, ...);
 typedef void (*fatalErrorSAXFunc) (xmlParserCtxtPtr ctxt, const char *msg, ...);
+typedef int (*isStandaloneSAXFunc) (xmlParserCtxtPtr ctxt);
+typedef int (*hasInternalSubsetSAXFunc) (xmlParserCtxtPtr ctxt);
+typedef int (*hasExternalSubsetSAXFunc) (xmlParserCtxtPtr ctxt);
 
 typedef struct xmlSAXHandler {
+    internalSubsetSAXFunc internalSubset;
+    isStandaloneSAXFunc isStandalone;
+    hasInternalSubsetSAXFunc hasInternalSubset;
+    hasExternalSubsetSAXFunc hasExternalSubset;
     resolveEntitySAXFunc resolveEntity;
+    getEntitySAXFunc getEntity;
+    entityDeclSAXFunc entityDecl;
     notationDeclSAXFunc notationDecl;
+    attributeDeclSAXFunc attributeDecl;
+    elementDeclSAXFunc elementDecl;
     unparsedEntityDeclSAXFunc unparsedEntityDecl;
     setDocumentLocatorSAXFunc setDocumentLocator;
     startDocumentSAXFunc startDocument;
     endDocumentSAXFunc endDocument;
     startElementSAXFunc startElement;
     endElementSAXFunc endElement;
-    attributeSAXFunc attribute;
+    referenceSAXFunc reference;
     charactersSAXFunc characters;
     ignorableWhitespaceSAXFunc ignorableWhitespace;
     processingInstructionSAXFunc processingInstruction;
+    commentSAXFunc comment;
     warningSAXFunc warning;
     errorSAXFunc error;
     fatalErrorSAXFunc fatalError;

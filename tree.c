@@ -1088,7 +1088,7 @@ xmlNewDocTextLen(xmlDocPtr doc, const CHAR *content, int len) {
  * Returns a pointer to the new node object.
  */
 xmlNodePtr
-xmlNewComment(CHAR *content) {
+xmlNewComment(const CHAR *content) {
     xmlNodePtr cur;
 
     /*
@@ -1128,7 +1128,7 @@ xmlNewComment(CHAR *content) {
  * Returns a pointer to the new node object.
  */
 xmlNodePtr
-xmlNewDocComment(xmlDocPtr doc, CHAR *content) {
+xmlNewDocComment(xmlDocPtr doc, const CHAR *content) {
     xmlNodePtr cur;
 
     cur = xmlNewComment(content);

@@ -43,7 +43,7 @@
  */
 
 #define PUSH_AND_POP(type, name)					\
-int name##Push(xmlParserCtxtPtr ctxt, type value) {			\
+extern int name##Push(xmlParserCtxtPtr ctxt, type value) {		\
     if (ctxt->name##Nr >= ctxt->name##Max) {				\
 	ctxt->name##Max *= 2;						\
         ctxt->name##Tab = (void *) realloc(ctxt->name##Tab,		\
@@ -57,7 +57,7 @@ int name##Push(xmlParserCtxtPtr ctxt, type value) {			\
     ctxt->name = value;							\
     return(ctxt->name##Nr++);						\
 }									\
-type name##Pop(xmlParserCtxtPtr ctxt) {					\
+extern type name##Pop(xmlParserCtxtPtr ctxt) {				\
     type ret;								\
     if (ctxt->name##Nr <= 0) return(0);					\
     ctxt->name##Nr--;							\
@@ -496,6 +496,7 @@ static int areBlanks(xmlParserCtxtPtr ctxt, const CHAR *str, int len) {
         if (!(IS_BLANK(str[i]))) return(0);
 
     if (CUR != '<') return(0);
+    if (ctxt->node == NULL) return(0);
     lastChild = xmlGetLastChild(ctxt->node);
     if (lastChild == NULL) {
         if (ctxt->node->content != NULL) return(0);
@@ -540,15 +541,14 @@ handle_as_char:
     /*
      * Just handle the content as a set of chars.
      */
-    if (ctxt->sax != NULL)
-	ctxt->sax->characters(ctxt, entity->content, 0, len);
+    if ((ctxt->sax != NULL) && (ctxt->sax->characters != NULL))
+	ctxt->sax->characters(ctxt, entity->content, len);
 
 }
 
 /*
  * Forward definition for recusive behaviour.
  */
-xmlNodePtr xmlParseElement(xmlParserCtxtPtr ctxt);
 CHAR *xmlParsePEReference(xmlParserCtxtPtr ctxt);
 CHAR *xmlParseReference(xmlParserCtxtPtr ctxt);
 
@@ -625,6 +625,61 @@ xmlNamespaceParseQName(xmlParserCtxtPtr ctxt, CHAR **prefix) {
     return(ret);
 }
 
+/**
+ * xmlSplitQName:
+ * @name:  an XML parser context
+ * @prefix:  a CHAR ** 
+ *
+ * parse an XML qualified name string
+ *
+ * [NS 5] QName ::= (Prefix ':')? LocalPart
+ *
+ * [NS 6] Prefix ::= NCName
+ *
+ * [NS 7] LocalPart ::= NCName
+ *
+ * Returns the function returns the local part, and prefix is updated
+ *   to get the Prefix if any.
+ */
+
+CHAR *
+xmlSplitQName(const CHAR *name, CHAR **prefix) {
+    CHAR *ret = NULL;
+    const CHAR *q;
+    const CHAR *cur = name;
+
+    *prefix = NULL;
+    if (!IS_LETTER(*cur) && (*cur != '_')) return(NULL);
+    q = cur++;
+
+    while ((IS_LETTER(*cur)) || (IS_DIGIT(*cur)) ||
+           (*cur == '.') || (*cur == '-') ||
+	   (*cur == '_') ||
+	   (IS_COMBINING(*cur)) ||
+	   (IS_EXTENDER(*cur)))
+	cur++;
+    
+    ret = xmlStrndup(q, cur - q);
+
+    if (*cur == ':') {
+	cur++;
+	if (!IS_LETTER(*cur) && (*cur != '_')) return(ret);
+        *prefix = ret;
+
+	q = cur++;
+
+	while ((IS_LETTER(*cur)) || (IS_DIGIT(*cur)) ||
+	       (*cur == '.') || (*cur == '-') ||
+	       (*cur == '_') ||
+	       (IS_COMBINING(*cur)) ||
+	       (IS_EXTENDER(*cur)))
+	    cur++;
+	
+	ret = xmlStrndup(q, cur - q);
+    }
+
+    return(ret);
+}
 /**
  * xmlNamespaceParseNSDef:
  * @ctxt:  an XML parser context
@@ -789,9 +844,10 @@ xmlParseNamespace(xmlParserCtxtPtr ctxt) {
 
     /*
      * Register the DTD.
-     */
     if (href != NULL)
-        xmlNewGlobalNs(ctxt->doc, href, prefix);
+	if ((ctxt->sax != NULL) && (ctxt->sax->globalNamespace != NULL))
+	    ctxt->sax->globalNamespace(ctxt, href, prefix);
+     */
 
     if (prefix != NULL) free(prefix);
     if (href != NULL) free(href);
@@ -1228,10 +1284,13 @@ xmlParseCharData(xmlParserCtxtPtr ctxt, int cdata) {
      * Ok the segment [q CUR_PTR] is to be consumed as chars.
      */
     if (ctxt->sax != NULL) {
-	if (areBlanks(ctxt, q, CUR_PTR - q))
-	    ctxt->sax->ignorableWhitespace(ctxt, q, 0, CUR_PTR - q);
-	else
-	    ctxt->sax->characters(ctxt, q, 0, CUR_PTR - q);
+	if (areBlanks(ctxt, q, CUR_PTR - q)) {
+	    if (ctxt->sax->ignorableWhitespace != NULL)
+		ctxt->sax->ignorableWhitespace(ctxt, q, CUR_PTR - q);
+	} else {
+	    if (ctxt->sax->characters != NULL)
+		ctxt->sax->characters(ctxt, q, CUR_PTR - q);
+        }
     }
 }
 
@@ -1342,15 +1401,9 @@ xmlParseExternalID(xmlParserCtxtPtr ctxt, CHAR **publicID, int strict) {
  *  must not occur within comments. "
  *
  * [15] Comment ::= '<!--' ((Char - '-') | ('-' (Char - '-')))* '-->'
- *
- * TODO: this should call a SAX function which will handle (or not) the
- *       creation of the comment !
- *
- * Returns the comment node, or NULL
  */
-xmlNodePtr
+void
 xmlParseComment(xmlParserCtxtPtr ctxt, int create) {
-    xmlNodePtr ret = NULL;
     const CHAR *q, *start;
     const CHAR *r;
     CHAR *val;
@@ -1359,7 +1412,7 @@ xmlParseComment(xmlParserCtxtPtr ctxt, int create) {
      * Check that there is a comment right here.
      */
     if ((CUR != '<') || (NXT(1) != '!') ||
-        (NXT(2) != '-') || (NXT(3) != '-')) return(NULL);
+        (NXT(2) != '-') || (NXT(3) != '-')) return;
 
     SKIP(4);
     start = q = CUR_PTR;
@@ -1385,11 +1438,11 @@ xmlParseComment(xmlParserCtxtPtr ctxt, int create) {
         NEXT;
 	if (create) {
 	    val = xmlStrndup(start, q - start);
-	    ret = xmlNewDocComment(ctxt->doc, val);
+	    if ((ctxt->sax != NULL) && (ctxt->sax->comment != NULL))
+		ctxt->sax->comment(ctxt, val);
 	    free(val);
 	}
     }
-    return(ret);
 }
 
 /**
@@ -1449,54 +1502,29 @@ xmlParsePI(xmlParserCtxtPtr ctxt) {
 	 */
         target = xmlParsePITarget(ctxt);
 	if (target != NULL) {
-	    /*
-	     * Support for the old Processing Instruction related to namespace.
-	     */
-	    if ((target[0] == 'n') && (target[1] == 'a') &&
-		(target[2] == 'm') && (target[3] == 'e') &&
-		(target[4] == 's') && (target[5] == 'p') &&
-		(target[6] == 'a') && (target[7] == 'c') &&
-		(target[8] == 'e')) {
-		xmlParseNamespace(ctxt);
-	    } else if ((target[0] == 'x') && (target[1] == 'm') &&
-		       (target[2] == 'l') && (target[3] == ':') &&
-		       (target[4] == 'n') && (target[5] == 'a') &&
-		       (target[6] == 'm') && (target[7] == 'e') &&
-		       (target[8] == 's') && (target[9] == 'p') &&
-		       (target[10] == 'a') && (target[11] == 'c') &&
-		       (target[12] == 'e')) {
-		xmlParseNamespace(ctxt);
+	    const CHAR *q = CUR_PTR;
+
+	    while (IS_CHAR(CUR) &&
+		   ((CUR != '?') || (NXT(1) != '>')))
+		NEXT;
+	    if (!IS_CHAR(CUR)) {
+		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		    ctxt->sax->error(ctxt,
+		      "xmlParsePI: PI %s never end ...\n", target);
+		ctxt->wellFormed = 0;
 	    } else {
-	        const CHAR *q = CUR_PTR;
+		CHAR *data;
 
-		while (IS_CHAR(CUR) &&
-		       ((CUR != '?') || (NXT(1) != '>')))
-		    NEXT;
-		if (!IS_CHAR(CUR)) {
-		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		        ctxt->sax->error(ctxt,
-			  "xmlParsePI: PI %s never end ...\n", target);
-		    ctxt->wellFormed = 0;
-		} else {
-		    CHAR *data;
+		data = xmlStrndup(q, CUR_PTR - q);
+		SKIP(2);
 
-		    data = xmlStrndup(CUR_PTR, CUR_PTR - q);
-		    SKIP(2);
-
-		    /*
-		     * SAX: PI detected.
-		     */
-		    if (ctxt->sax) 
-			ctxt->sax->processingInstruction(ctxt, target, data);
-		    /*
-		     * Unknown PI, ignore it !
-		     */
-		    else 
-			xmlParserWarning(ctxt,
-		           "xmlParsePI : skipping unknown PI %s\n",
-				         target);
-	            free(data);
-                }
+		/*
+		 * SAX: PI detected.
+		 */
+		if ((ctxt->sax) &&
+		    (ctxt->sax->processingInstruction != NULL))
+		    ctxt->sax->processingInstruction(ctxt, target, data);
+		free(data);
 	    }
 	    free(target);
 	} else {
@@ -1577,7 +1605,8 @@ xmlParseNotationDecl(xmlParserCtxtPtr ctxt) {
 
 	if (CUR == '>') {
 	    NEXT;
-	    xmlAddNotationDecl(ctxt->doc->intSubset, name, Pubid, Systemid);
+	    if ((ctxt->sax != NULL) && (ctxt->sax->notationDecl != NULL))
+		ctxt->sax->notationDecl(ctxt, name, Pubid, Systemid);
 	} else {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		ctxt->sax->error(ctxt,
@@ -1662,14 +1691,16 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 	    if ((CUR == '"') || (CUR == '\''))
 	        value = xmlParseEntityValue(ctxt);
 		if (value) {
-		    xmlAddDocEntity(ctxt->doc, name,
+		    if ((ctxt->sax != NULL) && (ctxt->sax->entityDecl != NULL))
+			ctxt->sax->entityDecl(ctxt, name,
 		                    XML_INTERNAL_PARAMETER_ENTITY,
 				    NULL, NULL, value);
 		}
 	    else {
 	        URI = xmlParseExternalID(ctxt, &literal, 1);
 		if (URI) {
-		    xmlAddDocEntity(ctxt->doc, name,
+		    if ((ctxt->sax != NULL) && (ctxt->sax->entityDecl != NULL))
+			ctxt->sax->entityDecl(ctxt, name,
 		                    XML_EXTERNAL_PARAMETER_ENTITY,
 				    literal, URI, NULL);
 		}
@@ -1677,7 +1708,8 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 	} else {
 	    if ((CUR == '"') || (CUR == '\'')) {
 	        value = xmlParseEntityValue(ctxt);
-		xmlAddDocEntity(ctxt->doc, name,
+		if ((ctxt->sax != NULL) && (ctxt->sax->entityDecl != NULL))
+		    ctxt->sax->entityDecl(ctxt, name,
 				XML_INTERNAL_GENERAL_ENTITY,
 				NULL, NULL, value);
 	    } else {
@@ -1701,11 +1733,13 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 		    }
 		    SKIP_BLANKS;
 		    ndata = xmlParseName(ctxt);
-		    xmlAddDocEntity(ctxt->doc, name,
+		    if ((ctxt->sax != NULL) && (ctxt->sax->entityDecl != NULL))
+			ctxt->sax->entityDecl(ctxt, name,
 				    XML_EXTERNAL_GENERAL_UNPARSED_ENTITY,
 				    literal, URI, ndata);
 		} else {
-		    xmlAddDocEntity(ctxt->doc, name,
+		    if ((ctxt->sax != NULL) && (ctxt->sax->entityDecl != NULL))
+			ctxt->sax->entityDecl(ctxt, name,
 				    XML_EXTERNAL_GENERAL_PARSED_ENTITY,
 				    literal, URI, NULL);
 		}
@@ -2087,7 +2121,8 @@ xmlParseAttributeListDecl(xmlParserCtxtPtr ctxt) {
 		    "xmlParseAttributeListDecl: detected internal error\n");
 		break;
 	    }
-	    xmlAddAttributeDecl(ctxt->doc->intSubset, elemName, attrName,
+	    if ((ctxt->sax != NULL) && (ctxt->sax->attributeDecl != NULL))
+		ctxt->sax->attributeDecl(ctxt, elemName, attrName,
 	                        type, def, defaultValue, tree);
 	    if (attrName != NULL)
 		free(attrName);
@@ -2511,7 +2546,8 @@ xmlParseElementDecl(xmlParserCtxtPtr ctxt) {
 	    ctxt->wellFormed = 0;
 	} else {
 	    NEXT;
-	    xmlAddElementDecl(ctxt->doc->intSubset, name, ret, content);
+	    if ((ctxt->sax != NULL) && (ctxt->sax->elementDecl != NULL))
+	        ctxt->sax->elementDecl(ctxt, name, ret, content);
 	}
 	if (name != NULL) {
 	    free(name);
@@ -2632,7 +2668,7 @@ xmlParseEntityRef(xmlParserCtxtPtr ctxt) {
     CHAR *ret = NULL;
     const CHAR *q;
     CHAR *name;
-    xmlEntityPtr ent;
+    xmlEntityPtr ent = NULL;
     xmlParserInputPtr input = NULL;
 
     q = CUR_PTR;
@@ -2655,19 +2691,28 @@ xmlParseEntityRef(xmlParserCtxtPtr ctxt) {
 		 * then
 		 *   the entity referenced must have been declared
 		 *
-		 * TODO: to be double checked !!!
+		 * TODO: to be double checked !!! This is wrong !
 		 */
-		ent = xmlGetDocEntity(ctxt->doc, name);
-		if ((ctxt->doc->standalone == 1) ||
-		    ((ctxt->doc->intSubset == NULL) &&
-		     (ctxt->doc->extSubset == NULL))) {
-		    if (ent == NULL) {
-			if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-			    ctxt->sax->error(ctxt, 
-			         "Entity '%s' not defined\n", name);
-			ctxt->wellFormed = 0;
+		if (ctxt->sax != NULL) {
+		    if (ctxt->sax->getEntity != NULL)
+			ent = ctxt->sax->getEntity(ctxt, name);
+
+		    if (((ctxt->sax->isStandalone != NULL) &&
+		         ctxt->sax->isStandalone(ctxt) == 1) ||
+			(((ctxt->sax->hasInternalSubset == NULL) ||
+			  ctxt->sax->hasInternalSubset(ctxt) == 0) &&
+			 ((ctxt->sax->hasExternalSubset == NULL) ||
+			  ctxt->sax->hasExternalSubset(ctxt) == 0))) {
+			if (ent == NULL) {
+			    if ((ctxt->sax != NULL) &&
+			        (ctxt->sax->error != NULL))
+				ctxt->sax->error(ctxt, 
+				     "Entity '%s' not defined\n", name);
+			    ctxt->wellFormed = 0;
+			}
 		    }
-		}
+		} else
+		    ctxt->wellFormed = 0;
 
 		/*
 		 * Well Formedness Constraint :
@@ -2703,7 +2748,7 @@ xmlParseEntityRef(xmlParserCtxtPtr ctxt) {
 		 *   - get a new input stream
 		 *   - or keep the reference inline
 		 */
-		if (ctxt->sax)
+		if ((ctxt->sax) && (ctxt->sax->resolveEntity != NULL))
 		    input = ctxt->sax->resolveEntity(ctxt, NULL, name);
 		if (input != NULL)
 		    xmlPushInput(ctxt, input);
@@ -2768,7 +2813,7 @@ CHAR *
 xmlParsePEReference(xmlParserCtxtPtr ctxt) {
     CHAR *ret = NULL;
     CHAR *name;
-    xmlEntityPtr entity;
+    xmlEntityPtr entity = NULL;
     xmlParserInputPtr input;
 
     if (CUR == '%') {
@@ -2781,7 +2826,9 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt) {
 	} else {
 	    if (CUR == ';') {
 	        NEXT;
-		entity = xmlGetDtdEntity(ctxt->doc, name);
+		if ((ctxt->sax != NULL) && (ctxt->sax->getEntity != NULL))
+			entity = ctxt->sax->getEntity(ctxt, name);
+		/* TODO !!!! Must check that it's of the proper type !!! */
 		if (entity == NULL) {
 		    if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
 		        ctxt->sax->warning(ctxt,
@@ -2818,7 +2865,6 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt) {
 
 void
 xmlParseDocTypeDecl(xmlParserCtxtPtr ctxt) {
-    xmlDtdPtr dtd;
     CHAR *name;
     CHAR *ExternalID = NULL;
     CHAR *URI = NULL;
@@ -2848,7 +2894,8 @@ xmlParseDocTypeDecl(xmlParserCtxtPtr ctxt) {
     URI = xmlParseExternalID(ctxt, &ExternalID, 1);
     SKIP_BLANKS;
 
-    dtd = xmlCreateIntSubset(ctxt->doc, name, ExternalID, URI);
+    if ((ctxt->sax != NULL) && (ctxt->sax->internalSubset != NULL))
+	ctxt->sax->internalSubset(ctxt, name, ExternalID, URI);
 
     /*
      * Is there any DTD definition ?
@@ -2901,7 +2948,7 @@ xmlParseDocTypeDecl(xmlParserCtxtPtr ctxt) {
 /**
  * xmlParseAttribute:
  * @ctxt:  an XML parser context
- * @node:  the node carrying the attribute
+ * @value:  a CHAR ** used to store the value of the attribute
  *
  * parse an attribute
  *
@@ -2916,17 +2963,15 @@ xmlParseDocTypeDecl(xmlParserCtxtPtr ctxt) {
  * Also the case QName == xmlns:??? is handled independently as a namespace
  * definition.
  *
- * Returns the attribute just parsed of NULL in case of error.
+ * Returns the attribute name, and the value in *value.
  */
 
-xmlAttrPtr
-xmlParseAttribute(xmlParserCtxtPtr ctxt, xmlNodePtr node) {
+CHAR *
+xmlParseAttribute(xmlParserCtxtPtr ctxt, CHAR **value) {
     CHAR *name, *val;
-    CHAR *ns;
-    CHAR *value = NULL;
-    xmlAttrPtr ret;
 
-    name = xmlNamespaceParseQName(ctxt, &ns);
+    *value = NULL;
+    name = xmlParseName(ctxt);
     if (name == NULL) {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt, "error parsing attribute name\n");
@@ -2941,61 +2986,17 @@ xmlParseAttribute(xmlParserCtxtPtr ctxt, xmlNodePtr node) {
     if (CUR == '=') {
         NEXT;
 	SKIP_BLANKS;
-	value = xmlParseAttValue(ctxt);
+	val = xmlParseAttValue(ctxt);
     } else {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt,
 	       "Specification mandate value for attribute %s\n", name);
 	ctxt->wellFormed = 0;
-    }
-
-    /*
-     * Check whether it's a namespace definition
-     */
-    if ((ns == NULL) &&
-        (name[0] == 'x') && (name[1] == 'm') && (name[2] == 'l') &&
-        (name[3] == 'n') && (name[4] == 's') && (name[5] == 0)) {
-	/* a default namespace definition */
-	xmlNewNs(node, value, NULL);
-	if (name != NULL) 
-	    free(name);
-	if (value != NULL)
-	    free(value);
-	return(NULL);
-    }
-    if ((ns != NULL) && (ns[0] == 'x') && (ns[1] == 'm') && (ns[2] == 'l') &&
-        (ns[3] == 'n') && (ns[4] == 's') && (ns[5] == 0)) {
-	/* a standard namespace definition */
-	xmlNewNs(node, value, name);
-	free(ns);
-	if (name != NULL) 
-	    free(name);
-	if (value != NULL)
-	    free(value);
 	return(NULL);
     }
 
-    /*
-     * Well formedness requires at most one declaration of an attribute
-     */
-    if ((val = xmlGetProp(ctxt->node, name)) != NULL) {
-        free(val);
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt, "Attribute %s redefined\n", name);
-	ctxt->wellFormed = 0;
-	ret = NULL;
-    } else {
-	ret = xmlNewProp(ctxt->node, name, NULL);
-	if (ret != NULL)
-	    ret->val = xmlStringGetNodeList(ctxt->doc, value);
-    }
-
-    if (ns != NULL)
-      free(ns);
-    if (value != NULL)
-	free(value);
-    free(name);
-    return(ret);
+    *value = val;
+    return(name);
 }
 
 /**
@@ -3014,46 +3015,29 @@ xmlParseAttribute(xmlParserCtxtPtr ctxt, xmlNodePtr node) {
  * [NS 8] STag ::= '<' QName (S Attribute)* S? '>'
  *
  * [NS 10] EmptyElement ::= '<' QName (S Attribute)* S? '/>'
- *
- * Returns the XML new node or NULL.
  */
 
-xmlNodePtr
+void
 xmlParseStartTag(xmlParserCtxtPtr ctxt) {
-    CHAR *namespace, *name;
-    xmlNsPtr ns = NULL;
-    xmlNodePtr ret = NULL;
-    xmlNodePtr parent = ctxt->node;
+    CHAR *name;
+    CHAR *attname;
+    CHAR *attvalue;
+    const CHAR **atts = NULL;
+    int nbatts = 0;
+    int maxatts = 0;
+    int i;
 
-    if (CUR != '<') return(NULL);
+    if (CUR != '<') return;
     NEXT;
 
-    name = xmlNamespaceParseQName(ctxt, &namespace);
+    name = xmlParseName(ctxt);
     if (name == NULL) {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt, 
 	     "xmlParseStartTag: invalid element name\n");
 	ctxt->wellFormed = 0;
-        return(NULL);
+        return;
     }
-
-    /*
-     * Note : the namespace resolution is deferred until the end of the
-     *        attributes parsing, since local namespace can be defined as
-     *        an attribute at this level.
-     */
-    ret = xmlNewDocNode(ctxt->doc, ns, name, NULL);
-    if (ret == NULL) {
-	if (namespace != NULL)
-	    free(namespace);
-	free(name);
-        return(NULL);
-    }
-
-    /*
-     * We are parsing a new node.
-     */
-    nodePush(ctxt, ret);
 
     /*
      * Now parse the attributes, it ends up with the ending
@@ -3066,9 +3050,50 @@ xmlParseStartTag(xmlParserCtxtPtr ctxt) {
 	   ((CUR != '/') || (NXT(1) != '>'))) {
 	const CHAR *q = CUR_PTR;
 
-	xmlParseAttribute(ctxt, ret);
-	SKIP_BLANKS;
+	attname = xmlParseAttribute(ctxt, &attvalue);
+        if ((attname != NULL) && (attvalue != NULL)) {
+	    /*
+	     * Well formedness requires at most one declaration of an attribute
+	     */
+	    for (i = 0; i < nbatts;i += 2) {
+	        if (!xmlStrcmp(atts[i], attname)) {
+		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+			ctxt->sax->error(ctxt, "Attribute %s redefined\n",
+			                 name);
+		    ctxt->wellFormed = 0;
+		    free(attname);
+		    free(attvalue);
+		    break;
+		}
+	    }
 
+	    /*
+	     * Add the pair to atts
+	     */
+	    if (atts == NULL) {
+	        maxatts = 10;
+	        atts = (const CHAR **) malloc(maxatts * sizeof(CHAR *));
+		if (atts == NULL) {
+		    fprintf(stderr, "malloc of %d byte failed\n",
+			    maxatts * sizeof(CHAR *));
+		    return;
+		}
+	    } else if (nbatts + 2 < maxatts) {
+	        maxatts *= 2;
+	        atts = (const CHAR **) realloc(atts, maxatts * sizeof(CHAR *));
+		if (atts == NULL) {
+		    fprintf(stderr, "realloc of %d byte failed\n",
+			    maxatts * sizeof(CHAR *));
+		    return;
+		}
+	    }
+	    atts[nbatts++] = attname;
+	    atts[nbatts++] = attvalue;
+	    atts[nbatts] = NULL;
+	    atts[nbatts + 1] = NULL;
+	}
+
+	SKIP_BLANKS;
         if (q == CUR_PTR) {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	        ctxt->sax->error(ctxt, 
@@ -3079,38 +3104,21 @@ xmlParseStartTag(xmlParserCtxtPtr ctxt) {
     }
 
     /*
-     * Search the namespace
-     */
-    ns = xmlSearchNs(ctxt->doc, ret, namespace);
-    if (ns == NULL) /* ret still doesn't have a parent yet ! */
-	ns = xmlSearchNs(ctxt->doc, parent, namespace);
-    xmlSetNs(ret, ns);
-    if (namespace != NULL)
-	free(namespace);
-
-    /*
      * SAX: Start of Element !
      */
-    if (ctxt->sax != NULL)
-        ctxt->sax->startElement(ctxt, name);
+    if ((ctxt->sax != NULL) && (ctxt->sax->startElement != NULL))
+        ctxt->sax->startElement(ctxt, name, atts);
+
     free(name);
-
-    /*
-     * Link the child element
-     */
-    if (ctxt->nodeNr < 2) return(ret);
-    parent = ctxt->nodeTab[ctxt->nodeNr - 2];
-    if (parent != NULL)
-	xmlAddChild(parent, ctxt->node);
-
-    return(ret);
+    if (atts != NULL) {
+        for (i = 0;i < nbatts;i++) free((CHAR *) atts[i]);
+	free(atts);
+    }
 }
 
 /**
  * xmlParseEndTag:
  * @ctxt:  an XML parser context
- * @nsPtr:  the current node namespace definition
- * @tagPtr:  CHAR** receive the tag value
  *
  * parse an end of tag
  *
@@ -3118,18 +3126,12 @@ xmlParseStartTag(xmlParserCtxtPtr ctxt) {
  *
  * With namespace
  *
- * [9] ETag ::= '</' QName S? '>'
- *    
- * tagPtr receive the tag name just read
+ * [NS 9] ETag ::= '</' QName S? '>'
  */
 
 void
-xmlParseEndTag(xmlParserCtxtPtr ctxt, xmlNsPtr *nsPtr, CHAR **tagPtr) {
-    CHAR *namespace, *name;
-    xmlNsPtr ns = NULL;
-
-    *nsPtr = NULL;
-    *tagPtr = NULL;
+xmlParseEndTag(xmlParserCtxtPtr ctxt) {
+    CHAR *name;
 
     if ((CUR != '<') || (NXT(1) != '/')) {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
@@ -3139,17 +3141,7 @@ xmlParseEndTag(xmlParserCtxtPtr ctxt, xmlNsPtr *nsPtr, CHAR **tagPtr) {
     }
     SKIP(2);
 
-    name = xmlNamespaceParseQName(ctxt, &namespace);
-
-    /*
-     * Search the namespace
-     */
-    ns = xmlSearchNs(ctxt->doc, ctxt->node, namespace);
-    if (namespace != NULL)
-	free(namespace);
-
-    *nsPtr = ns;
-    *tagPtr = name;
+    name = xmlParseName(ctxt);
 
     /*
      * We should definitely be at the ending "S? '>'" part
@@ -3161,6 +3153,15 @@ xmlParseEndTag(xmlParserCtxtPtr ctxt, xmlNsPtr *nsPtr, CHAR **tagPtr) {
 	ctxt->wellFormed = 0;
     } else
 	NEXT;
+
+    /*
+     * SAX: End of Tag
+     */
+    if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
+        ctxt->sax->endElement(ctxt, name);
+
+    if (name != NULL)
+	free(name);
 
     return;
 }
@@ -3221,10 +3222,14 @@ xmlParseCDSect(xmlParserCtxtPtr ctxt) {
      * Ok the segment [base CUR_PTR] is to be consumed as chars.
      */
     if (ctxt->sax != NULL) {
-	if (areBlanks(ctxt, base, CUR_PTR - base))
-	    ctxt->sax->ignorableWhitespace(ctxt, base, 0, (CUR_PTR - base) - 2);
-	else
-	    ctxt->sax->characters(ctxt, base, 0, (CUR_PTR - base) - 2);
+	if (areBlanks(ctxt, base, CUR_PTR - base)) {
+	    if (ctxt->sax->ignorableWhitespace != NULL)
+		ctxt->sax->ignorableWhitespace(ctxt, base,
+		                               (CUR_PTR - base) - 2);
+	 } else {
+	    if (ctxt->sax->characters != NULL)
+		ctxt->sax->characters(ctxt, base, (CUR_PTR - base) - 2);
+	 }
     }
 }
 
@@ -3239,11 +3244,8 @@ xmlParseCDSect(xmlParserCtxtPtr ctxt) {
 
 void
 xmlParseContent(xmlParserCtxtPtr ctxt) {
-    xmlNodePtr ret = NULL;
-
     while ((CUR != '<') || (NXT(1) != '/')) {
 	const CHAR *test = CUR_PTR;
-        ret = NULL;
 
 	/*
 	 * First case : a Processing Instruction.
@@ -3251,6 +3253,7 @@ xmlParseContent(xmlParserCtxtPtr ctxt) {
 	if ((CUR == '<') && (NXT(1) == '?')) {
 	    xmlParsePI(ctxt);
 	}
+
 	/*
 	 * Second case : a CDSection
 	 */
@@ -3261,19 +3264,22 @@ xmlParseContent(xmlParserCtxtPtr ctxt) {
 	    (NXT(8) == '[')) {
 	    xmlParseCDSect(ctxt);
 	}
+
 	/*
 	 * Third case :  a comment
 	 */
 	else if ((CUR == '<') && (NXT(1) == '!') &&
 		 (NXT(2) == '-') && (NXT(3) == '-')) {
-	    ret = xmlParseComment(ctxt, 1);
+	    xmlParseComment(ctxt, 1);
 	}
+
 	/*
 	 * Fourth case :  a sub-element.
 	 */
 	else if (CUR == '<') {
-	    ret = xmlParseElement(ctxt);
+	    xmlParseElement(ctxt);
 	}
+
 	/*
 	 * Fifth case : a reference. If if has not been resolved,
 	 *    parsing returns it's Name, create the node 
@@ -3285,19 +3291,19 @@ xmlParseContent(xmlParserCtxtPtr ctxt) {
 		    /*
 		     * inline predefined entity.
 		     */
-                    if (ctxt->sax != NULL)
-			ctxt->sax->characters(ctxt, val, 0, xmlStrlen(val));
+                    if ((ctxt->sax != NULL) && (ctxt->sax->characters != NULL))
+			ctxt->sax->characters(ctxt, val, xmlStrlen(val));
 		} else {
 		    /*
 		     * user defined entity, create a node.
 		     */
-		    ret = xmlNewReference(ctxt->doc, val);
-		    xmlAddChild(ctxt->node, ret);
-		    ret = NULL;
+                    if ((ctxt->sax != NULL) && (ctxt->sax->reference != NULL))
+			ctxt->sax->reference(ctxt, val);
 		}
 		free(val);
 	    }
 	}
+
 	/*
 	 * Last case, text. Note that References are handled directly.
 	 */
@@ -3330,42 +3336,27 @@ xmlParseContent(xmlParserCtxtPtr ctxt) {
  * [39] element ::= EmptyElemTag | STag content ETag
  *
  * [41] Attribute ::= Name Eq AttValue
- *
- * Returns the XML new node or NULL
  */
 
-
-xmlNodePtr
+void
 xmlParseElement(xmlParserCtxtPtr ctxt) {
-    xmlNodePtr ret;
     const CHAR *openTag = CUR_PTR;
     xmlParserNodeInfo node_info;
-    CHAR *endTag;
-    xmlNsPtr endNs;
 
     /* Capture start position */
     node_info.begin_pos = CUR_PTR - ctxt->input->base;
     node_info.begin_line = ctxt->input->line;
 
-    ret = xmlParseStartTag(ctxt);
-    if (ret == NULL) {
-        return(NULL);
-    }
+    xmlParseStartTag(ctxt);
 
     /*
      * Check for an Empty Element.
      */
     if ((CUR == '/') && (NXT(1) == '>')) {
         SKIP(2);
-	if (ctxt->sax != NULL)
-	    ctxt->sax->endElement(ctxt, ret->name);
-
-	/*
-	 * end of parsing of this node.
-	 */
-	nodePop(ctxt);
-
-	return(ret);
+	if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
+	    ctxt->sax->endElement(ctxt, NULL);
+	return;
     }
     if (CUR == '>') NEXT;
     else {
@@ -3376,10 +3367,11 @@ xmlParseElement(xmlParserCtxtPtr ctxt) {
 
 	/*
 	 * end of parsing of this node.
+	 * TODO !!!!!!!! check the macro in case of non DOM parsing
 	 */
 	nodePop(ctxt);
 
-	return(NULL);
+	return;
     }
 
     /*
@@ -3394,61 +3386,17 @@ xmlParseElement(xmlParserCtxtPtr ctxt) {
 
 	/*
 	 * end of parsing of this node.
+	 * TODO !!!!!!!! check the macro in case of non DOM parsing
 	 */
 	nodePop(ctxt);
 
-	return(NULL);
+	return;
     }
 
     /*
      * parse the end of tag: '</' should be here.
      */
-    xmlParseEndTag(ctxt, &endNs, &endTag);
-
-    /*
-     * Check that the Name in the ETag is the same as in the STag.
-     */
-    if (endNs != ret->ns) {
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt, 
-	    "Start and End tags don't use the same namespace\n%.30s\n%.30s\n",
-	               openTag, endTag);
-	ctxt->wellFormed = 0;
-    }
-    if (endTag == NULL ) {
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt, "The End tag has no name\n%.30s\n", openTag);
-	ctxt->wellFormed = 0;
-    } else if (xmlStrcmp(ret->name, endTag)) {
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt, 
-	    "Start and End tags don't use the same name\n%.30s\n%.30s\n",
-	               openTag, endTag);
-	ctxt->wellFormed = 0;
-    }
-    /*
-     * SAX: End of Tag
-     */
-    else if (ctxt->sax != NULL)
-        ctxt->sax->endElement(ctxt, endTag);
-
-    if (endTag != NULL)
-	free(endTag);
-
-    /* Capture end position and add node */
-    if ( ret != NULL && ctxt->record_info ) {
-      node_info.end_pos = CUR_PTR - ctxt->input->base;
-      node_info.end_line = ctxt->input->line;
-      node_info.node = ret;
-      xmlParserAddNodeInfo(ctxt, &node_info);
-    }
-
-    /*
-     * end of parsing of this node.
-     */
-    nodePop(ctxt);
-
-    return(ret);
+    xmlParseEndTag(ctxt);
 }
 
 /**
@@ -3746,7 +3694,7 @@ xmlParseXMLDecl(xmlParserCtxtPtr ctxt) {
     version = xmlParseVersionInfo(ctxt);
     if (version == NULL)
 	version = xmlCharStrdup(XML_DEFAULT_VERSION);
-    ctxt->doc = xmlNewDoc(version);
+    ctxt->version = xmlStrdup(version);
     free(version);
 
     /*
@@ -3761,12 +3709,12 @@ xmlParseXMLDecl(xmlParserCtxtPtr ctxt) {
 	    ctxt->sax->error(ctxt, "Blank needed here\n");
 	ctxt->wellFormed = 0;
     }
-    ctxt->doc->encoding = xmlParseEncodingDecl(ctxt);
+    ctxt->encoding = xmlParseEncodingDecl(ctxt);
 
     /*
      * We may have the standalone status.
      */
-    if ((ctxt->doc->encoding != NULL) && (!IS_BLANK(CUR))) {
+    if ((ctxt->encoding != NULL) && (!IS_BLANK(CUR))) {
         if ((CUR == '?') && (NXT(1) == '>')) {
 	    SKIP(2);
 	    return;
@@ -3776,7 +3724,7 @@ xmlParseXMLDecl(xmlParserCtxtPtr ctxt) {
 	ctxt->wellFormed = 0;
     }
     SKIP_BLANKS;
-    ctxt->doc->standalone = xmlParseSDDecl(ctxt);
+    ctxt->standalone = xmlParseSDDecl(ctxt);
 
     SKIP_BLANKS;
     if ((CUR == '?') && (NXT(1) == '>')) {
@@ -3842,10 +3790,8 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
     /*
      * SAX: beginning of the document processing.
      */
-    if (ctxt->sax) 
+    if ((ctxt->sax) && (ctxt->sax->setDocumentLocator))
         ctxt->sax->setDocumentLocator(ctxt, &xmlDefaultSAXLocator);
-    if (ctxt->sax)
-        ctxt->sax->startDocument(ctxt);
 
     /*
      * We should check for encoding here and plug-in some
@@ -3889,12 +3835,10 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
 	/* SKIP_EOL(cur); */
 	SKIP_BLANKS;
     } else {
-	CHAR *version;
-
-	version = xmlCharStrdup(XML_DEFAULT_VERSION);
-	ctxt->doc = xmlNewDoc(version);
-	free(version);
+	ctxt->version = xmlCharStrdup(XML_DEFAULT_VERSION);
     }
+    if ((ctxt->sax) && (ctxt->sax->startDocument))
+        ctxt->sax->startDocument(ctxt);
 
     /*
      * The Misc part of the Prolog
@@ -3917,7 +3861,7 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
     /*
      * Time to start parsing the tree itself
      */
-    ctxt->doc->root = xmlParseElement(ctxt);
+    xmlParseElement(ctxt);
 
     /*
      * The Misc part at the end
@@ -3934,7 +3878,7 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
     /*
      * SAX: end of the document processing.
      */
-    if (ctxt->sax) 
+    if ((ctxt->sax) && (ctxt->sax->endDocument != NULL))
         ctxt->sax->endDocument(ctxt);
     if (! ctxt->wellFormed) return(-1);
     return(0);
@@ -4004,11 +3948,11 @@ xmlSAXParseDoc(xmlSAXHandlerPtr sax, CHAR *cur, int recovery) {
     if (sax != NULL) ctxt->sax = sax;
 
     xmlParseDocument(ctxt);
-    if ((ctxt->wellFormed) || recovery) ret = ctxt->doc;
+    if ((ctxt->wellFormed) || recovery) ret = ctxt->myDoc;
     else {
        ret = NULL;
-       xmlFreeDoc(ctxt->doc);
-       ctxt->doc = NULL;
+       xmlFreeDoc(ctxt->myDoc);
+       ctxt->myDoc = NULL;
     }
     xmlFreeParserCtxt(ctxt);
     
@@ -4187,11 +4131,11 @@ xmlDocPtr xmlSAXParseFile(xmlSAXHandlerPtr sax, const char *filename,
 
     xmlParseDocument(ctxt);
 
-    if ((ctxt->wellFormed) || recovery) ret = ctxt->doc;
+    if ((ctxt->wellFormed) || recovery) ret = ctxt->myDoc;
     else {
        ret = NULL;
-       xmlFreeDoc(ctxt->doc);
-       ctxt->doc = NULL;
+       xmlFreeDoc(ctxt->myDoc);
+       ctxt->myDoc = NULL;
     }
     xmlFreeParserCtxt(ctxt);
     
@@ -4300,11 +4244,11 @@ xmlSAXParseMemory(xmlSAXHandlerPtr sax, char *buffer, int size, int recovery) {
 
     xmlParseDocument(ctxt);
 
-    if ((ctxt->wellFormed) || recovery) ret = ctxt->doc;
+    if ((ctxt->wellFormed) || recovery) ret = ctxt->myDoc;
     else {
        ret = NULL;
-       xmlFreeDoc(ctxt->doc);
-       ctxt->doc = NULL;
+       xmlFreeDoc(ctxt->myDoc);
+       ctxt->myDoc = NULL;
     }
     xmlFreeParserCtxt(ctxt);
     
@@ -4355,6 +4299,9 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
     ctxt->inputNr = 0;
     ctxt->inputMax = 5;
     ctxt->input = NULL;
+    ctxt->version = NULL;
+    ctxt->encoding = NULL;
+    ctxt->standalone = -1;
 
     /* Allocate the Node stack */
     ctxt->nodeTab = (xmlNodePtr *) malloc(10 * sizeof(xmlNodePtr));
@@ -4363,7 +4310,7 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
     ctxt->node = NULL;
 
     ctxt->sax = &xmlDefaultSAXHandler;
-    ctxt->doc = NULL;
+    ctxt->myDoc = NULL;
     ctxt->wellFormed = 1;
     ctxt->record_info = 0;
     xmlInitNodeInfoSeq(&ctxt->node_seq);
@@ -4374,7 +4321,7 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
  * @ctxt:  an XML parser context
  *
  * Free all the memory used by a parser context. However the parsed
- * document in ctxt->doc is not freed.
+ * document in ctxt->myDoc is not freed.
  */
 
 void
@@ -4390,6 +4337,7 @@ xmlFreeParserCtxt(xmlParserCtxtPtr ctxt)
 
     if (ctxt->nodeTab != NULL) free(ctxt->nodeTab);
     if (ctxt->inputTab != NULL) free(ctxt->inputTab);
+    if (ctxt->version != NULL) free(ctxt->version);
     free(ctxt);
 }
 

@@ -216,7 +216,7 @@ xmlCreateElementTable(void) {
  * Returns NULL if not, othervise the entity
  */
 xmlElementPtr
-xmlAddElementDecl(xmlDtdPtr dtd, CHAR *name, int type, 
+xmlAddElementDecl(xmlDtdPtr dtd, const CHAR *name, int type, 
                   xmlElementContentPtr content) {
     xmlElementPtr ret, cur;
     xmlElementTablePtr table;
@@ -560,8 +560,9 @@ xmlCreateAttributeTable(void) {
  * Returns NULL if not, othervise the entity
  */
 xmlAttributePtr
-xmlAddAttributeDecl(xmlDtdPtr dtd, CHAR *elem, CHAR *name, int type, int def,
-                    CHAR *defaultValue, xmlEnumerationPtr tree) {
+xmlAddAttributeDecl(xmlDtdPtr dtd, const CHAR *elem, const CHAR *name,
+                    int type, int def, const CHAR *defaultValue,
+		    xmlEnumerationPtr tree) {
     xmlAttributePtr ret, cur;
     xmlAttributeTablePtr table;
     int i;
@@ -890,7 +891,8 @@ xmlCreateNotationTable(void) {
  * Returns NULL if not, othervise the entity
  */
 xmlNotationPtr
-xmlAddNotationDecl(xmlDtdPtr dtd, CHAR *name, CHAR *PublicID, CHAR *SystemID) {
+xmlAddNotationDecl(xmlDtdPtr dtd, const CHAR *name, const CHAR *PublicID,
+                   const CHAR *SystemID) {
     xmlNotationPtr ret, cur;
     xmlNotationTablePtr table;
     int i;

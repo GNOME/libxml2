@@ -9,7 +9,7 @@
 #ifndef __XML_ENTITIES_H__
 #define __XML_ENTITIES_H__
 
-#include "parser.h"
+#include "tree.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -55,6 +55,8 @@ typedef xmlEntitiesTable *xmlEntitiesTablePtr;
 /*
  * External functions :
  */
+
+#include "parser.h"
 
 void xmlAddDocEntity(xmlDocPtr doc, const CHAR *name, int type,
               const CHAR *ExternalID, const CHAR *SystemID, CHAR *content);

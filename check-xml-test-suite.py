@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import sys
+import time
 import os
 import string
 sys.path.append("python")
@@ -358,6 +359,8 @@ profile = testsuite.prop('PROFILE')
 if profile != None:
     print profile
 
+start = time.time()
+
 case = testsuite.children
 while case != None:
     global test_nr
@@ -379,5 +382,5 @@ while case != None:
 conf.freeDoc()
 log.close()
 
-print "Ran %d tests: %d suceeded, %d failed and %d generated an error" % (
-      test_nr, test_succeed, test_failed, test_error)
+print "Ran %d tests: %d suceeded, %d failed and %d generated an error in %.2f s." % (
+      test_nr, test_succeed, test_failed, test_error, time.time() - start)

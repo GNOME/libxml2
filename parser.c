@@ -6246,6 +6246,7 @@ xmlParseAttribute(xmlParserCtxtPtr ctxt, xmlChar **value) {
     xmlChar *name, *val;
 
     *value = NULL;
+    GROW;
     name = xmlParseName(ctxt);
     if (name == NULL) {
 	ctxt->errNo = XML_ERR_NAME_REQUIRED;

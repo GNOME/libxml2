@@ -979,6 +979,127 @@ attribute(void *ctx, const xmlChar *fullname, const xmlChar *value)
 	xmlFree(ns);
 }
 
+/*
+ * xmlCheckDefaultedAttributes:
+ *
+ * Check defaulted attributes from the DTD
+ */
+static void
+xmlCheckDefaultedAttributesFromDtd(xmlParserCtxtPtr ctxt,
+	xmlDtdPtr dtd, const xmlChar *name,
+	const xmlChar *prefix, const xmlChar **atts) {
+    xmlElementPtr elemDecl;
+    const xmlChar *att;
+    int i;
+
+    if ((dtd == NULL) || (name == NULL))
+	return;
+    elemDecl = xmlGetDtdQElementDesc(dtd, name, prefix);
+    if (elemDecl != NULL) {
+	xmlAttributePtr attr = elemDecl->attributes;
+	/*
+	 * Check against defaulted attributes from the external subset
+	 * if the document is stamped as standalone
+	 */
+	if ((ctxt->myDoc->standalone == 1) &&
+	    (ctxt->myDoc->extSubset != NULL) &&
+	    (ctxt->validate)) {
+	    while (attr != NULL) {
+		if ((attr->defaultValue != NULL) &&
+		    (xmlGetDtdQAttrDesc(ctxt->myDoc->extSubset,
+					attr->elem, attr->name,
+					attr->prefix) == attr)) {
+		    xmlChar *fulln;
+
+		    if (attr->prefix != NULL) {
+			fulln = xmlStrdup(attr->prefix);
+			fulln = xmlStrcat(fulln, BAD_CAST ":");
+			fulln = xmlStrcat(fulln, attr->name);
+		    } else {
+			fulln = xmlStrdup(attr->name);
+		    }
+
+		    /*
+		     * Check that the attribute is not declared in the
+		     * serialization
+		     */
+		    att = NULL;
+		    if (atts != NULL) {
+			i = 0;
+			att = atts[i];
+			while (att != NULL) {
+			    if (xmlStrEqual(att, fulln))
+				break;
+			    i += 2;
+			    att = atts[i];
+			}
+		    }
+		    if (att == NULL) {
+			if (ctxt->vctxt.error != NULL)
+			    ctxt->vctxt.error(ctxt->vctxt.userData,
+      "standalone: attribute %s on %s defaulted from external subset\n",
+					      fulln, attr->elem);
+			/* Waiting on the XML Core WG decision on this
+			ctxt->valid = 0;
+			 */
+		    }
+		}
+		attr = attr->nexth;
+	    }
+	}
+
+	/*
+	 * Actually insert defaulted values when needed
+	 */
+	attr = elemDecl->attributes;
+	while (attr != NULL) {
+	    if (attr->defaultValue != NULL) {
+		/*
+		 * the element should be instantiated in the tree if:
+		 *  - this is a namespace prefix
+		 *  - the user required for completion in the tree
+		 *    like XSLT
+		 */
+		if (((attr->prefix != NULL) &&
+		     (xmlStrEqual(attr->prefix, BAD_CAST "xmlns"))) ||
+		    ((attr->prefix == NULL) &&
+		     (xmlStrEqual(attr->name, BAD_CAST "xmlns"))) ||
+		    (ctxt->loadsubset & XML_COMPLETE_ATTRS)) {
+		    xmlChar *fulln;
+
+		    if (attr->prefix != NULL) {
+			fulln = xmlStrdup(attr->prefix);
+			fulln = xmlStrcat(fulln, BAD_CAST ":");
+			fulln = xmlStrcat(fulln, attr->name);
+		    } else {
+			fulln = xmlStrdup(attr->name);
+		    }
+
+		    /*
+		     * Check that the attribute is not declared in the
+		     * serialization
+		     */
+		    att = NULL;
+		    if (atts != NULL) {
+			i = 0;
+			att = atts[i];
+			while (att != NULL) {
+			    if (xmlStrEqual(att, fulln))
+				break;
+			    i += 2;
+			    att = atts[i];
+			}
+		    }
+		    if (att == NULL)
+			attribute(ctxt, fulln, attr->defaultValue);
+		    xmlFree(fulln);
+		}
+	    }
+	    attr = attr->nexth;
+	}
+    }
+}
+
 /**
  * startElement:
  * @ctx: the user data (XML parser context)
@@ -1085,71 +1206,12 @@ startElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
     if ((!ctxt->html) &&
 	((ctxt->myDoc->intSubset != NULL) ||
 	 (ctxt->myDoc->extSubset != NULL))) {
-	xmlElementPtr elemDecl = NULL;
-
-	if (prefix != NULL) {
-	    if (ctxt->myDoc->intSubset != NULL)
-		elemDecl = xmlGetDtdQElementDesc(ctxt->myDoc->intSubset,
-			                         name, prefix);
-	    if ((elemDecl == NULL) && (ctxt->myDoc->extSubset != NULL))
-		elemDecl = xmlGetDtdQElementDesc(ctxt->myDoc->extSubset,
-			                         name, prefix);
-	} else {
-	    if (ctxt->myDoc->intSubset != NULL)
-		elemDecl = xmlGetDtdQElementDesc(ctxt->myDoc->intSubset,
-			                         name, prefix);
-	    if ((elemDecl == NULL) && (ctxt->myDoc->extSubset != NULL))
-		elemDecl = xmlGetDtdQElementDesc(ctxt->myDoc->extSubset,
-			                         name, prefix);
-	}
-	if (elemDecl != NULL) {
-	    xmlAttributePtr  attr = elemDecl->attributes;
-	    while (attr != NULL) {
-		if (attr->defaultValue != NULL) {
-		    /*
-		     * the element should be instantiated in the tree if:
-		     *  - this is a namespace prefix
-		     *  - the user required for completion in the tree
-		     *    like XSLT
-		     */
-		    if (((attr->prefix != NULL) &&
-			 (xmlStrEqual(attr->prefix, BAD_CAST "xmlns"))) ||
-		        ((attr->prefix == NULL) &&
-			 (xmlStrEqual(attr->name, BAD_CAST "xmlns"))) ||
-			(ctxt->loadsubset & XML_COMPLETE_ATTRS)) {
-			xmlChar *fulln;
-
-			if (attr->prefix != NULL) {
-			    fulln = xmlStrdup(attr->prefix);
-			    fulln = xmlStrcat(fulln, BAD_CAST ":");
-			    fulln = xmlStrcat(fulln, attr->name);
-			} else {
-			    fulln = xmlStrdup(attr->name);
-			}
-
-			/*
-			 * Check that the attribute is not declared in the
-			 * serialization
-			 */
-			att = NULL;
-			if (atts != NULL) {
-			    i = 0;
-			    att = atts[i];
-			    while (att != NULL) {
-				if (xmlStrEqual(att, fulln))
-				    break;
-				i += 2;
-				att = atts[i];
-			    }
-			}
-			if (att == NULL)
-			    attribute(ctxt, fulln, attr->defaultValue);
-			xmlFree(fulln);
-		    }
-		}
-		attr = attr->nexth;
-	    }
-	}
+	if (ctxt->myDoc->intSubset != NULL)
+	    xmlCheckDefaultedAttributesFromDtd(ctxt, ctxt->myDoc->intSubset,
+		                               name, prefix, atts);
+	if (ctxt->myDoc->extSubset != NULL)
+	    xmlCheckDefaultedAttributesFromDtd(ctxt, ctxt->myDoc->extSubset,
+		                               name, prefix, atts);
     }
 
     /*

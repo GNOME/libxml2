@@ -2892,6 +2892,18 @@ xmlValidateAttributeValue2(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 	    xmlEntityPtr ent;
 
 	    ent = xmlGetDocEntity(doc, value);
+	    if ((ent == NULL) && (doc->standalone == 1)) {
+		doc->standalone = 0;
+		ent = xmlGetDocEntity(doc, value);
+		if (ent != NULL) {
+		    VERROR(ctxt->userData, 
+"standalone problem: attribute %s reference entity \"%s\" in external subset\n",
+			   name, value);
+		    /* WAIT to get answer from the Core WG on this 
+		    ret = 0;
+		     */
+		}
+	    } 
 	    if (ent == NULL) {
 		VERROR(ctxt->userData, 
    "ENTITY attribute %s reference an unknown entity \"%s\"\n",
@@ -4797,12 +4809,12 @@ xmlValidateNotationCallback(xmlEntityPtr cur, xmlValidCtxtPtr ctxt,
     if (cur->etype == XML_EXTERNAL_GENERAL_UNPARSED_ENTITY) {
 	xmlChar *notation = cur->content;
 
-	if (cur != NULL) {
+	if (notation != NULL) {
 	    int ret;
 
 	    ret = xmlValidateNotationUse(ctxt, cur->doc, notation);
 	    if (ret != 1) {
-		ctxt->valid = -1;
+		ctxt->valid = 0;
 	    }
 	}
     }
@@ -4812,6 +4824,8 @@ static void
 xmlValidateAttributeCallback(xmlAttributePtr cur, xmlValidCtxtPtr ctxt,
 	                    const xmlChar *name ATTRIBUTE_UNUSED) {
     int ret;
+    xmlDocPtr doc;
+    xmlElementPtr elem;
 
     if (cur == NULL)
 	return;
@@ -4844,6 +4858,30 @@ xmlValidateAttributeCallback(xmlAttributePtr cur, xmlValidCtxtPtr ctxt,
 		    tree = tree->next;
 		}
 	    }
+    }
+    if (cur->atype == XML_ATTRIBUTE_NOTATION) {
+	doc = cur->doc;
+	if ((doc == NULL) || (cur->elem == NULL)) {
+	    VERROR(ctxt->userData, 
+		   "xmlValidateAttributeCallback(%s): internal error\n",
+		   cur->name);
+	    return;
+	}
+	elem = xmlGetDtdElementDesc(doc->intSubset, cur->elem);
+	if (elem == NULL)
+	    elem = xmlGetDtdElementDesc(doc->extSubset, cur->elem);
+	if (elem == NULL) {
+	    VERROR(ctxt->userData, 
+		   "attribute %s: could not find decl for element %s\n",
+		   cur->name, cur->elem);
+	    return;
+	}
+	if (elem->etype == XML_ELEMENT_TYPE_EMPTY) {
+	    VERROR(ctxt->userData, 
+		   "NOTATION attribute %s declared on EMPTY element %s\n",
+		   cur->name, cur->elem);
+	    ctxt->valid = 0;
+	}
     }
 }
 
@@ -4879,6 +4917,8 @@ xmlValidateDtdFinal(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
     if ((dtd != NULL) && (dtd->attributes != NULL)) {
 	table = (xmlAttributeTablePtr) dtd->attributes;
 	xmlHashScan(table, (xmlHashScanner) xmlValidateAttributeCallback, ctxt);
+    }
+    if ((dtd != NULL) && (dtd->entities != NULL)) {
 	entities = (xmlEntitiesTablePtr) dtd->entities;
 	xmlHashScan(entities, (xmlHashScanner) xmlValidateNotationCallback,
 		    ctxt);
@@ -4887,6 +4927,8 @@ xmlValidateDtdFinal(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
     if ((dtd != NULL) && (dtd->attributes != NULL)) {
 	table = (xmlAttributeTablePtr) dtd->attributes;
 	xmlHashScan(table, (xmlHashScanner) xmlValidateAttributeCallback, ctxt);
+    }
+    if ((dtd != NULL) && (dtd->entities != NULL)) {
 	entities = (xmlEntitiesTablePtr) dtd->entities;
 	xmlHashScan(entities, (xmlHashScanner) xmlValidateNotationCallback,
 		    ctxt);

@@ -1,3 +1,8 @@
+Tue Feb 19 14:44:53 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* SAX.c parser.c valid.c: more validation test fixups
+	* check-xml-test-suite.py: added duration info for the tests
+
 Mon Feb 18 23:25:08 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c valid.c: a couple of errors were reported but not

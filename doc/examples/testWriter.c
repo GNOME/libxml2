@@ -7,7 +7,7 @@
  *          do encoding string conversions too. The resulting
  *          documents are then serialized.
  * usage: testWriter
- * test: testWriter ; for i in 1 2 3 4 ; do diff writer.xml writer$$i.out ; done ; rm writer*.out
+ * test: testWriter ; for i in 1 2 3 4 ; do diff writer.xml writer$$i.res ; done ; rm writer*.res
  * author: Alfred Mickautsch
  * copy: see Copyright for the status of this software.
  */
@@ -28,16 +28,16 @@ int
 main(void)
 {
     /* first, the file version */
-    testXmlwriterFilename("writer1.out");
+    testXmlwriterFilename("writer1.res");
 
     /* next, the memory version */
-    testXmlwriterMemory("writer2.out");
+    testXmlwriterMemory("writer2.res");
 
     /* next, the DOM version */
-    testXmlwriterDoc("writer3.out");
+    testXmlwriterDoc("writer3.res");
 
     /* next, the tree version */
-    testXmlwriterTree("writer4.out");
+    testXmlwriterTree("writer4.res");
 
     return 0;
 }

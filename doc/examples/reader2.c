@@ -5,7 +5,7 @@
  *          validating the content in the process and activating options
  *          like entities substitution, and DTD attributes defaulting
  * usage: reader2 <valid_xml_filename>
- * test: reader2 test2.xml > reader1.tmp ; diff reader1.tmp reader1.out ; rm reader1.tmp
+ * test: reader2 test2.xml > reader1.tmp ; diff reader1.tmp reader1.res ; rm reader1.tmp
  * author: Daniel Veillard
  * copy: see Copyright for the status of this software.
  */

@@ -5,7 +5,7 @@
  *          to parse an XML file with the xmlReader while collecting
  *          only some subparts of the document
  * usage: reader3
- * test: reader3 > reader3.tmp ; diff reader3.tmp reader3.out ; rm reader3.tmp
+ * test: reader3 > reader3.tmp ; diff reader3.tmp reader3.res ; rm reader3.tmp
  * author: Daniel Veillard
  * copy: see Copyright for the status of this software.
  */

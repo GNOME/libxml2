@@ -1,13 +1,17 @@
+Wed Dec 17 16:07:33 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* doc/examples/*: don't call the result files .out but .res as
+	  the Makefiles tend to try generating binaries for .out targets...
+
 Tue Dec 16 20:53:54 MST 2003 John Fleck <jfleck@inkstain.net>
 
-	* doc/html/libxml-pattern.html - cvs add API docs for new
+	* doc/html/libxml-pattern.html: - cvs add API docs for new
 	pattern stuff
-
 
 Tue Dec 16 20:40:40 MST 2003 John Fleck <jfleck@inkstain.net>
 
 	* tree.c
-	* doc/*
+	* doc/*:
 	Elaborate in documentation discussion of xmlNewChild
 	and xmlNewTextChild. Thanks to Steve Lenti for pointing
 	out the usefulness of a more explicit explanation of the

@@ -82,7 +82,7 @@
     <synopsis>Navigates a tree to print element names</synopsis>
     <purpose>Parse a file to a tree, use xmlDocGetRootElement() to get the root element, then walk the document and print all the element name in document order.</purpose>
     <usage>tree1 filename_or_URL</usage>
-    <test>tree1 test2.xml &gt; tree1.tmp ; diff tree1.tmp tree1.out ; rm tree1.tmp</test>
+    <test>tree1 test2.xml &gt; tree1.tmp ; diff tree1.tmp tree1.res ; rm tree1.tmp</test>
     <author>Dodji Seketeli</author>
     <copy>see Copyright for the status of this software. </copy>
     <section>Tree</section>
@@ -103,7 +103,7 @@
     <synopsis>Creates a tree</synopsis>
     <purpose>Shows how to create document, nodes and dump it to stdout or file.</purpose>
     <usage>tree2 &lt;filename&gt;  -Default output: stdout</usage>
-    <test>tree2 &gt; tree2.tmp ; diff tree2.tmp tree2.out ; rm tree2.tmp</test>
+    <test>tree2 &gt; tree2.tmp ; diff tree2.tmp tree2.res ; rm tree2.tmp</test>
     <author>Lucas Brasilino &lt;brasilino@recife.pe.gov.br&gt;</author>
     <copy>see Copyright for the status of this software </copy>
     <section>Tree</section>
@@ -130,7 +130,7 @@
     <synopsis>use various APIs for the xmlWriter</synopsis>
     <purpose>tests a number of APIs for the xmlWriter, especially the various methods to write to a filename, to a memory buffer, to a new document, or to a subtree. It shows how to do encoding string conversions too. The resulting documents are then serialized.</purpose>
     <usage>testWriter</usage>
-    <test>testWriter ; for i in 1 2 3 4 ; do diff writer.xml writer$$i.out ; done ; rm writer*.out</test>
+    <test>testWriter ; for i in 1 2 3 4 ; do diff writer.xml writer$$i.res ; done ; rm writer*.res</test>
     <author>Alfred Mickautsch</author>
     <copy>see Copyright for the status of this software. </copy>
     <section>xmlWriter</section>
@@ -175,7 +175,7 @@
     <synopsis>Parse an XML file with an xmlReader</synopsis>
     <purpose>Demonstrate the use of xmlReaderForFile() to parse an XML file and dump the informations about the nodes found in the process</purpose>
     <usage>reader1 &lt;filename&gt;</usage>
-    <test>reader1 test2.xml &gt; reader1.tmp ; diff reader1.tmp reader1.out ; rm reader1.tmp</test>
+    <test>reader1 test2.xml &gt; reader1.tmp ; diff reader1.tmp reader1.res ; rm reader1.tmp</test>
     <author>Daniel Veillard</author>
     <copy>see Copyright for the status of this software. </copy>
     <section>xmlReader</section>
@@ -202,7 +202,7 @@
     <synopsis>Parse and validate an XML file with an xmlReader</synopsis>
     <purpose>Demonstrate the use of xmlReaderForFile() to parse an XML file validating the content in the process and activating options like entities substitution, and DTD attributes defaulting</purpose>
     <usage>reader2 &lt;valid_xml_filename&gt;</usage>
-    <test>reader2 test2.xml &gt; reader1.tmp ; diff reader1.tmp reader1.out ; rm reader1.tmp</test>
+    <test>reader2 test2.xml &gt; reader1.tmp ; diff reader1.tmp reader1.res ; rm reader1.tmp</test>
     <author>Daniel Veillard</author>
     <copy>see Copyright for the status of this software. </copy>
     <section>xmlReader</section>
@@ -231,7 +231,7 @@
     <synopsis>Show how to extract subdocuments with xmlReader</synopsis>
     <purpose>Demonstrate the use of xmlTextReaderPreservePattern() to parse an XML file with the xmlReader while collecting only some subparts of the document</purpose>
     <usage>reader3</usage>
-    <test>reader3 &gt; reader3.tmp ; diff reader3.tmp reader3.out ; rm reader3.tmp</test>
+    <test>reader3 &gt; reader3.tmp ; diff reader3.tmp reader3.res ; rm reader3.tmp</test>
     <author>Daniel Veillard</author>
     <copy>see Copyright for the status of this software. </copy>
     <section>xmlReader</section>

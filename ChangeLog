@@ -1,3 +1,8 @@
+Tue Jul  8 16:02:19 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* globals.c threads.c: fixes some problem when freeing unititialized
+	  mutexes
+
 Tue Jul  8 14:15:07 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* nanoftp.c nanohttp.c: the modules should not import <config.h>

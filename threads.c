@@ -134,6 +134,8 @@ xmlNewMutex(void)
 void
 xmlFreeMutex(xmlMutexPtr tok)
 {
+    if (tok == NULL) return;
+
 #ifdef HAVE_PTHREAD_H
     pthread_mutex_destroy(&tok->lock);
 #elif defined HAVE_WIN32_THREADS

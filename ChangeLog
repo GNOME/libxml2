@@ -1,3 +1,8 @@
+Tue Dec  9 15:18:32 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in Makefile.am: another patch from Kenneth Haley
+	  for Mingw, c.f. #128787
+
 Tue Dec  9 15:07:09 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/xmlexports.h: applied patch from Kenneth Haley

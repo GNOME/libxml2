@@ -39,6 +39,7 @@ dnl Make sure we have an ANSI compiler
 AM_C_PROTOTYPES
 test "x$U" != "x" && AC_MSG_ERROR(Compiler not ANSI compliant)
 
+AC_LIBTOOL_WIN32_DLL
 AM_PROG_LIBTOOL
 
 # AM_MAINTAINER_MODE
@@ -248,7 +249,7 @@ fi
 dnl ******************************End IPv6 checks******************************
 
 dnl Checks for isnan in libm if not in libc
-AC_CHECK_FUNC(isnan, , AC_CHECK_LIB(m, isnan,
+AC_CHECK_FUNC(isnan, AC_DEFINE([HAVE_ISNAN],[], [Define if isnan is there]) , AC_CHECK_LIB(m, isnan,
   [AC_DEFINE([HAVE_ISNAN],[], [Define if isnan is there])]))
 
 AC_CHECK_FUNC(isinf, AC_DEFINE([HAVE_ISINF], [], [Define if isinf is there]) , AC_CHECK_LIB(m, isinf,
@@ -458,6 +459,7 @@ THREAD_LIBS=""
 WITH_THREADS=0
 THREAD_CFLAGS=""
 TEST_THREADS=""
+THREADS_W32=""
 
 AC_ARG_WITH(threads,
 [  --with-threads          add multithread support(on)])
@@ -476,7 +478,12 @@ else
 	   AC_DEFINE([HAVE_LIBPTHREAD], [], [Define if pthread library is there (-lpthread)])
 	   AC_DEFINE([HAVE_PTHREAD_H], [], [Define if <pthread.h> is there])
 	   WITH_THREADS="1"]))
-
+    case $host_os in
+       *mingw32*) WITH_THREADS="1"
+           THREADS_W32="Win32"
+	   THREAD_CFLAGS="$THREAD_CFLAGS -DHAVE_WIN32_THREADS"
+       ;;
+    esac
     if test "$WITH_THREADS" = "1" ; then
 	THREAD_CFLAGS="$THREAD_CFLAGS -D_REENTRANT"
 	TEST_THREADS="Threadtests"
@@ -496,6 +503,7 @@ AC_SUBST(THREAD_LIBS)
 AC_SUBST(WITH_THREADS)
 AC_SUBST(THREAD_CFLAGS)
 AC_SUBST(TEST_THREADS)
+AC_SUBST(THREADS_W32)
 
 AC_ARG_WITH(history,
 [  --with-history          add history support to xmllint shell(off)])
@@ -905,7 +913,12 @@ iconv (cd, NULL, NULL, NULL, NULL);],[
 		LIBS="${_libs}"
 		LDFLAGS="${_ldflags}"])]))
 fi
-M_LIBS="-lm"
+case "$host" in
+	*mingw*) M_LIBS=""
+	;;
+	*) M_LIBS="-lm"
+	;;
+esac
 XML_LIBS="-lxml2 $Z_LIBS $THREAD_LIBS $ICONV_LIBS $M_LIBS $LIBS"
 XML_LIBTOOLLIBS="libxml2.la"
 AC_SUBST(WITH_ICONV)
@@ -1000,7 +1013,8 @@ WIN32_EXTRA_LIBADD=
 WIN32_EXTRA_LDFLAGS=
 case "$host" in
  *-*-mingw*)
- WIN32_EXTRA_LIBADD="-lwsock32"
+ CPPFLAGS="$CPPFLAGS -DWIN32"
+ WIN32_EXTRA_LIBADD="-lws2_32"
  WIN32_EXTRA_LDFLAGS="-no-undefined"
  AC_DEFINE([_WINSOCKAPI_],1,[Using the Win32 Socket implementation])
  AC_DEFINE([snprintf],[_snprintf],[Win32 Std C name mangling work-around])
@@ -1010,7 +1024,7 @@ esac
 AC_SUBST(WIN32_EXTRA_LIBADD)
 AC_SUBST(WIN32_EXTRA_LDFLAGS)
 
-
+AC_SUBST(CPPFLAGS)
 AC_SUBST(CFLAGS)
 AC_SUBST(XML_CFLAGS)
 

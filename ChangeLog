@@ -1,3 +1,11 @@
+Thu Nov 28 12:53:22 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* uri.c: Johann Richard pointed out some XPointer problems for
+	  URN based URI references in XInclude. Modified the URI parsing
+	  and saving routines to allow correct parsing and saving of 
+	  XPointers, especially when attached to "opaque" scheme accordingly
+	  to RFC 2396
+
 Wed Nov 27 20:36:08 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLtree.c include/libxml/HTMLtree.h: applied the same kind

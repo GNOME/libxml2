@@ -777,7 +777,7 @@ typedef enum {
     XML_CHECK_WRONG_PARENT,/* 5029 */
     XML_CHECK_NS_SCOPE, /* 5030 */
     XML_CHECK_NS_ANCESTOR, /* 5031 */
-    XML_CHECK_ /* 5032 */
+    XML_CHECK_NOT_UTF8 /* 5032 */
 #if 0
     XML_CHECK_, /* 5033 */
     XML_CHECK_X /* 503 */

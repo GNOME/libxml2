@@ -1,3 +1,8 @@
+Fri Oct 15 10:48:30 EDT 2004 Daniel Veillard <daniel@veillard.com>
+
+	* debugXML.c include/libxml/xmlerror.h: added UTF-8 string checking,
+	  raise a problem, need debug
+
 Wed Oct 13 02:17:36 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* python/Makefile.am: applied patch from Thomas Fitzsimmons fixing

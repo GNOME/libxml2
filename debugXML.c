@@ -164,7 +164,7 @@ xmlDebugErr2(xmlDebugCtxtPtr ctxt, int error, const char *msg, int extra)
 		    msg, extra);
 }
 static void
-xmlDebugErr3(xmlDebugCtxtPtr ctxt, int error, const char *msg, char *extra)
+xmlDebugErr3(xmlDebugCtxtPtr ctxt, int error, const char *msg, const char *extra)
 {
     ctxt->errors++;
     __xmlRaiseError(NULL, NULL, NULL,
@@ -205,6 +205,25 @@ xmlCtxtNsCheckScope(xmlDebugCtxtPtr ctxt, xmlNodePtr node, xmlNsPtr ns)
 	    xmlDebugErr3(ctxt, XML_CHECK_NS_ANCESTOR,
 			 "Reference to namespace '%s' not on ancestor\n",
 			 (char *) ns->prefix);
+    }
+}
+
+/**
+ * xmlCtxtCheckString:
+ * @ctxt: the debug context
+ * @str: the string
+ *
+ * Do debugging on the string, currently it just checks the UTF-8 content
+ */
+static void
+xmlCtxtCheckString(xmlDebugCtxtPtr ctxt, const xmlChar * str)
+{
+    if (str == NULL) return;
+    if (ctxt->check) {
+        if (!xmlCheckUTF8(str)) {
+	    xmlDebugErr3(ctxt, XML_CHECK_NOT_DTD,
+			 "String is not UTF-8 %s", (const char *) str);
+	}
     }
 }
 
@@ -263,6 +282,12 @@ xmlCtxtGenericNodeCheck(xmlDebugCtxtPtr ctxt, xmlNodePtr node) {
 	    xmlCtxtNsCheckScope(ctxt, node, node->ns);
     }
 
+    if ((node->type != XML_ELEMENT_NODE) &&
+        (node->type != XML_HTML_DOCUMENT_NODE) &&
+        (node->type != XML_DOCUMENT_NODE)) {
+	if (node->content != NULL)
+	    xmlCtxtCheckString(ctxt, (const char *) node->content);
+    }
 }
 
 static void
@@ -270,8 +295,9 @@ xmlCtxtDumpString(xmlDebugCtxtPtr ctxt, const xmlChar * str)
 {
     int i;
 
-    if (ctxt->check)
+    if (ctxt->check) {
         return;
+    }
     /* TODO: check UTF8 content of the string */
     if (str == NULL) {
         fprintf(ctxt->output, "(NULL)");

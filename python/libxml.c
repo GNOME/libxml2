@@ -79,6 +79,18 @@ static void
 libxml_xmlErrorInitialize(void); /* forward declare */
 
 PyObject *
+libxml_xmlMemoryUsed(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
+{
+    long ret;
+    PyObject *py_retval;
+
+    ret = xmlMemUsed();
+
+    py_retval = libxml_longWrap(ret);
+    return (py_retval);
+}
+
+PyObject *
 libxml_xmlDebugMemory(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
 {
     int activate;

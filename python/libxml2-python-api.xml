@@ -310,5 +310,9 @@
       <info>Cleanup function for the XML library. It tries to reclaim all parsing related global memory allocated for the library processing. It doesn't deallocate any document related memory. Calling this function should not prevent reusing the library but one should call xmlCleanupParser() only when the process has finished using the library or XML document built with it.</info>
       <return type='void'/>
     </function>
+    <function name='xmlMemoryUsed' file='python'>
+      <info>Returns the total amount of memory allocated by libxml2</info>
+      <return type='int' info='number of bytes allocated'/>
+    </function>
   </symbols>
 </api>

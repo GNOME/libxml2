@@ -1,3 +1,9 @@
+Fri Jul  2 14:22:14 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xmlmemory.c python/libxml.c python/libxml2-python-api.xml:
+	  some updates with memory debugging facilities while messing
+	  with libxslt python bindings
+
 Thu Jul  1 14:53:36 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* python/libxml.c python/generator.py python/libxml.py

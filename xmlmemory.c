@@ -310,6 +310,9 @@ xmlReallocLoc(void *ptr,size_t size, const char * file, int line)
 {
     MEMHDR *p;
     unsigned long number;
+#ifdef DEBUG_MEMORY
+    size_t oldsize;
+#endif
 
     if (ptr == NULL)
         return(xmlMallocLoc(size, file, line));
@@ -326,6 +329,9 @@ xmlReallocLoc(void *ptr,size_t size, const char * file, int line)
     p->mh_tag = ~MEMTAG;
     xmlMutexLock(xmlMemMutex);
     debugMemSize -= p->mh_size;
+#ifdef DEBUG_MEMORY
+    oldsize = p->mh_size;
+#endif
 #ifdef MEM_LIST
     debugmem_list_delete(p);
 #endif
@@ -357,6 +363,10 @@ xmlReallocLoc(void *ptr,size_t size, const char * file, int line)
 
     TEST_POINT
 
+#ifdef DEBUG_MEMORY
+    xmlGenericError(xmlGenericErrorContext,
+	    "Realloced(%d to %d) Ok\n", oldsize, size);
+#endif
     return(HDR_2_CLIENT(p));
     
 error:    
@@ -389,6 +399,9 @@ xmlMemFree(void *ptr)
 {
     MEMHDR *p;
     char *target;
+#ifdef DEBUG_MEMORY
+    size_t size;
+#endif
 
     if (ptr == (void *) -1) {
 	xmlGenericError(xmlGenericErrorContext,
@@ -415,6 +428,9 @@ xmlMemFree(void *ptr)
     memset(target, -1, p->mh_size);
     xmlMutexLock(xmlMemMutex);
     debugMemSize -= p->mh_size;
+#ifdef DEBUG_MEMORY
+    size = p->mh_size;
+#endif
 #ifdef MEM_LIST
     debugmem_list_delete(p);
 #endif
@@ -424,6 +440,11 @@ xmlMemFree(void *ptr)
 
     TEST_POINT
 
+#ifdef DEBUG_MEMORY
+    xmlGenericError(xmlGenericErrorContext,
+	    "Freed(%d) Ok\n", size);
+#endif
+    
     return;
     
 error:    
@@ -619,12 +640,15 @@ xmlMemDisplay(FILE *fp)
         switch (p->mh_type) {
            case STRDUP_TYPE:fprintf(fp,"strdup()  in ");break;
            case MALLOC_TYPE:fprintf(fp,"malloc()  in ");break;
-          case REALLOC_TYPE:fprintf(fp,"realloc() in ");break;
+           case REALLOC_TYPE:fprintf(fp,"realloc() in ");break;
            case MALLOC_ATOMIC_TYPE:fprintf(fp,"atomicmalloc()  in ");break;
-          case REALLOC_ATOMIC_TYPE:fprintf(fp,"atomicrealloc() in ");break;
-                    default:fprintf(fp,"   ???    in ");break;
+           case REALLOC_ATOMIC_TYPE:fprintf(fp,"atomicrealloc() in ");break;
+           default:
+	        fprintf(fp,"Unknow memory block, corruped maybe");
+		xmlMutexUnlock(xmlMemMutex);
+		return;
         }
-	  if (p->mh_file != NULL) fprintf(fp,"%s(%d)", p->mh_file, p->mh_line);
+	if (p->mh_file != NULL) fprintf(fp,"%s(%d)", p->mh_file, p->mh_line);
         if (p->mh_tag != MEMTAG)
 	      fprintf(fp,"  INVALID");
         nb++;

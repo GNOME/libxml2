@@ -81,10 +81,10 @@ typedef xmlParserCtxt *xmlParserCtxtPtr;
  */
 
 typedef struct xmlSAXLocator {
-    const CHAR *(*getPublicId)(xmlParserCtxtPtr ctxt);
-    const CHAR *(*getSystemId)(xmlParserCtxtPtr ctxt);
-    int (*getLineNumber)(xmlParserCtxtPtr ctxt);
-    int (*getColumnNumber)(xmlParserCtxtPtr ctxt);
+    const CHAR *(*getPublicId)(void *ctx);
+    const CHAR *(*getSystemId)(void *ctx);
+    int (*getLineNumber)(void *ctx);
+    int (*getColumnNumber)(void *ctx);
 } _xmlSAXLocator;
 typedef _xmlSAXLocator xmlSAXLocator;
 typedef xmlSAXLocator *xmlSAXLocatorPtr;
@@ -95,48 +95,48 @@ typedef xmlSAXLocator *xmlSAXLocatorPtr;
 
 #include "entities.h"
 
-typedef xmlParserInputPtr (*resolveEntitySAXFunc) (xmlParserCtxtPtr ctxt,
+typedef xmlParserInputPtr (*resolveEntitySAXFunc) (void *ctx,
 			    const CHAR *publicId, const CHAR *systemId);
-typedef void (*internalSubsetSAXFunc) (xmlParserCtxtPtr ctxt, const CHAR *name,
+typedef void (*internalSubsetSAXFunc) (void *ctx, const CHAR *name,
                             const CHAR *ExternalID, const CHAR *SystemID);
-typedef xmlEntityPtr (*getEntitySAXFunc) (xmlParserCtxtPtr ctxt,
+typedef xmlEntityPtr (*getEntitySAXFunc) (void *ctx,
                             const CHAR *name);
-typedef void (*entityDeclSAXFunc) (xmlParserCtxtPtr ctxt,
+typedef void (*entityDeclSAXFunc) (void *ctx,
                             const CHAR *name, int type, const CHAR *publicId,
 			    const CHAR *systemId, CHAR *content);
-typedef void (*notationDeclSAXFunc)(xmlParserCtxtPtr ctxt, const CHAR *name,
+typedef void (*notationDeclSAXFunc)(void *ctx, const CHAR *name,
 			    const CHAR *publicId, const CHAR *systemId);
-typedef void (*attributeDeclSAXFunc)(xmlParserCtxtPtr ctxt, const CHAR *elem,
+typedef void (*attributeDeclSAXFunc)(void *ctx, const CHAR *elem,
                             const CHAR *name, int type, int def,
 			    const CHAR *defaultValue, xmlEnumerationPtr tree);
-typedef void (*elementDeclSAXFunc)(xmlParserCtxtPtr ctxt, const CHAR *name,
+typedef void (*elementDeclSAXFunc)(void *ctx, const CHAR *name,
 			    int type, xmlElementContentPtr content);
-typedef void (*unparsedEntityDeclSAXFunc)(xmlParserCtxtPtr ctxt,
+typedef void (*unparsedEntityDeclSAXFunc)(void *ctx,
                             const CHAR *name, const CHAR *publicId,
 			    const CHAR *systemId, const CHAR *notationName);
-typedef void (*setDocumentLocatorSAXFunc) (xmlParserCtxtPtr ctxt,
+typedef void (*setDocumentLocatorSAXFunc) (void *ctx,
                             xmlSAXLocatorPtr loc);
-typedef void (*startDocumentSAXFunc) (xmlParserCtxtPtr ctxt);
-typedef void (*endDocumentSAXFunc) (xmlParserCtxtPtr ctxt);
-typedef void (*startElementSAXFunc) (xmlParserCtxtPtr ctxt, const CHAR *name,
+typedef void (*startDocumentSAXFunc) (void *ctx);
+typedef void (*endDocumentSAXFunc) (void *ctx);
+typedef void (*startElementSAXFunc) (void *ctx, const CHAR *name,
                             const CHAR **atts);
-typedef void (*endElementSAXFunc) (xmlParserCtxtPtr ctxt, const CHAR *name);
-typedef void (*attributeSAXFunc) (xmlParserCtxtPtr ctxt, const CHAR *name,
+typedef void (*endElementSAXFunc) (void *ctx, const CHAR *name);
+typedef void (*attributeSAXFunc) (void *ctx, const CHAR *name,
                                   const CHAR *value);
-typedef void (*referenceSAXFunc) (xmlParserCtxtPtr ctxt, const CHAR *name);
-typedef void (*charactersSAXFunc) (xmlParserCtxtPtr ctxt, const CHAR *ch,
+typedef void (*referenceSAXFunc) (void *ctx, const CHAR *name);
+typedef void (*charactersSAXFunc) (void *ctx, const CHAR *ch,
 		            int len);
-typedef void (*ignorableWhitespaceSAXFunc) (xmlParserCtxtPtr ctxt,
+typedef void (*ignorableWhitespaceSAXFunc) (void *ctx,
 			    const CHAR *ch, int len);
-typedef void (*processingInstructionSAXFunc) (xmlParserCtxtPtr ctxt,
+typedef void (*processingInstructionSAXFunc) (void *ctx,
                             const CHAR *target, const CHAR *data);
-typedef void (*commentSAXFunc) (xmlParserCtxtPtr ctxt, const CHAR *value);
-typedef void (*warningSAXFunc) (xmlParserCtxtPtr ctxt, const char *msg, ...);
-typedef void (*errorSAXFunc) (xmlParserCtxtPtr ctxt, const char *msg, ...);
-typedef void (*fatalErrorSAXFunc) (xmlParserCtxtPtr ctxt, const char *msg, ...);
-typedef int (*isStandaloneSAXFunc) (xmlParserCtxtPtr ctxt);
-typedef int (*hasInternalSubsetSAXFunc) (xmlParserCtxtPtr ctxt);
-typedef int (*hasExternalSubsetSAXFunc) (xmlParserCtxtPtr ctxt);
+typedef void (*commentSAXFunc) (void *ctx, const CHAR *value);
+typedef void (*warningSAXFunc) (void *ctx, const char *msg, ...);
+typedef void (*errorSAXFunc) (void *ctx, const char *msg, ...);
+typedef void (*fatalErrorSAXFunc) (void *ctx, const char *msg, ...);
+typedef int (*isStandaloneSAXFunc) (void *ctx);
+typedef int (*hasInternalSubsetSAXFunc) (void *ctx);
+typedef int (*hasExternalSubsetSAXFunc) (void *ctx);
 
 typedef struct xmlSAXHandler {
     internalSubsetSAXFunc internalSubset;

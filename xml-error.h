@@ -3,6 +3,6 @@
 
 #include "parser.h"
 
-void xmlParserError(xmlParserCtxtPtr ctxt, const char *msg, ...);
-void xmlParserWarning(xmlParserCtxtPtr ctxt, const char *msg, ...);
+void xmlParserError(void *ctx, const char *msg, ...);
+void xmlParserWarning(void *ctx, const char *msg, ...);
 #endif

@@ -19,6 +19,7 @@
  * Daniel.Veillard@w3.org
  */
 
+#include <ctype.h>
 #include "encoding.h"
 
 /*
@@ -204,3 +205,109 @@ UTF8ToUTF16(unsigned short* out, int outlen, unsigned char* in, int inlen)
 }
 
 
+/**
+ * xmlDetectCharEncoding:
+ * @in:  a pointer to the first bytes of the XML entity, must be at least
+ *       4 bytes long.
+ *
+ * Guess the encoding of the entity using the first bytes of the entity content
+ * accordingly of the non-normative appendix F of the XML-1.0 recommendation.
+ * 
+ * Returns one of the XML_CHAR_ENCODING_... values.
+ */
+xmlCharEncoding
+xmlDetectCharEncoding(unsigned char* in)
+{
+    if ((in[0] == 0x00) && (in[1] == 0x00) &&
+        (in[2] == 0x00) && (in[3] == 0x3C))
+	return(XML_CHAR_ENCODING_UCS4BE);
+    if ((in[0] == 0x3C) && (in[1] == 0x00) &&
+        (in[2] == 0x00) && (in[3] == 0x00))
+	return(XML_CHAR_ENCODING_UCS4LE);
+    if ((in[0] == 0x00) && (in[1] == 0x00) &&
+        (in[2] == 0x3C) && (in[3] == 0x00))
+	return(XML_CHAR_ENCODING_UCS4_2143);
+    if ((in[0] == 0x00) && (in[1] == 0x3C) &&
+        (in[2] == 0x00) && (in[3] == 0x00))
+	return(XML_CHAR_ENCODING_UCS4_3412);
+    if ((in[0] == 0xFE) && (in[1] == 0xFF))
+	return(XML_CHAR_ENCODING_UTF16BE);
+    if ((in[0] == 0xFF) && (in[1] == 0xFE))
+	return(XML_CHAR_ENCODING_UTF16LE);
+    if ((in[0] == 0x4C) && (in[1] == 0x6F) &&
+        (in[2] == 0xA7) && (in[3] == 0x94))
+	return(XML_CHAR_ENCODING_EBCDIC);
+    if ((in[0] == 0x3C) && (in[1] == 0x3F) &&
+        (in[2] == 0x78) && (in[3] == 0x6D))
+	return(XML_CHAR_ENCODING_UTF8);
+    return(XML_CHAR_ENCODING_NONE);
+}
+
+/**
+ * xmlParseCharEncoding:
+ * @name:  the encoding name as parsed, in UTF-8 format (ASCCI actually)
+ *
+ * Conpare the string to the known encoding schemes already known. Note
+ * that the comparison is case insensitive accordingly to the section
+ * [XML] 4.3.3 Character Encoding in Entities.
+ * 
+ * Returns one of the XML_CHAR_ENCODING_... values or XML_CHAR_ENCODING_NONE
+ * if not recognized.
+ */
+xmlCharEncoding
+xmlParseCharEncoding(char* name)
+{
+    char upper[500];
+    int i;
+
+    for (i = 0;i < 499;i++) {
+        upper[i] = toupper(name[i]);
+	if (upper[i] == 0) break;
+    }
+    upper[i] = 0;
+
+    if (!strcmp(upper, "")) return(XML_CHAR_ENCODING_NONE);
+    if (!strcmp(upper, "UTF-8")) return(XML_CHAR_ENCODING_UTF8);
+    if (!strcmp(upper, "UTF8")) return(XML_CHAR_ENCODING_UTF8);
+
+    /*
+     * NOTE: if we were able to parse this, the endianness of UTF16 is
+     *       already found and in use
+     */
+    if (!strcmp(upper, "UTF-16")) return(XML_CHAR_ENCODING_UTF16LE);
+    if (!strcmp(upper, "UTF16")) return(XML_CHAR_ENCODING_UTF16LE);
+    
+    if (!strcmp(upper, "ISO-10646-UCS-2")) return(XML_CHAR_ENCODING_UCS2);
+    if (!strcmp(upper, "UCS-2")) return(XML_CHAR_ENCODING_UCS2);
+    if (!strcmp(upper, "UCS2")) return(XML_CHAR_ENCODING_UCS2);
+
+    /*
+     * NOTE: if we were able to parse this, the endianness of UCS4 is
+     *       already found and in use
+     */
+    if (!strcmp(upper, "ISO-10646-UCS-4")) return(XML_CHAR_ENCODING_UCS4LE);
+    if (!strcmp(upper, "UCS-4")) return(XML_CHAR_ENCODING_UCS4LE);
+    if (!strcmp(upper, "UCS4")) return(XML_CHAR_ENCODING_UCS4LE);
+
+    
+    if (!strcmp(upper,  "ISO-8859-1")) return(XML_CHAR_ENCODING_8859_1);
+    if (!strcmp(upper,  "ISO-LATIN-1")) return(XML_CHAR_ENCODING_8859_1);
+    if (!strcmp(upper,  "ISO LATIN 1")) return(XML_CHAR_ENCODING_8859_1);
+
+    if (!strcmp(upper,  "ISO-8859-2")) return(XML_CHAR_ENCODING_8859_2);
+    if (!strcmp(upper,  "ISO-LATIN-2")) return(XML_CHAR_ENCODING_8859_2);
+    if (!strcmp(upper,  "ISO LATIN 2")) return(XML_CHAR_ENCODING_8859_2);
+
+    if (!strcmp(upper,  "ISO-8859-3")) return(XML_CHAR_ENCODING_8859_3);
+    if (!strcmp(upper,  "ISO-8859-4")) return(XML_CHAR_ENCODING_8859_4);
+    if (!strcmp(upper,  "ISO-8859-5")) return(XML_CHAR_ENCODING_8859_5);
+    if (!strcmp(upper,  "ISO-8859-6")) return(XML_CHAR_ENCODING_8859_6);
+    if (!strcmp(upper,  "ISO-8859-7")) return(XML_CHAR_ENCODING_8859_7);
+    if (!strcmp(upper,  "ISO-8859-8")) return(XML_CHAR_ENCODING_8859_8);
+    if (!strcmp(upper,  "ISO-8859-9")) return(XML_CHAR_ENCODING_8859_9);
+
+    if (!strcmp(upper, "ISO-2022-JP")) return(XML_CHAR_ENCODING_2022_JP);
+    if (!strcmp(upper, "Shift_JIS")) return(XML_CHAR_ENCODING_SHIFT_JIS);
+    if (!strcmp(upper, "EUC-JP")) return(XML_CHAR_ENCODING_EUC_JP);
+    return(XML_CHAR_ENCODING_ERROR);
+}

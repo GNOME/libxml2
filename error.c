@@ -20,8 +20,9 @@
  * extra parameters.
  */
 void
-xmlParserError(xmlParserCtxtPtr ctxt, const char *msg, ...)
+xmlParserError(void *ctx, const char *msg, ...)
 {
+    xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     const CHAR *cur, *base;
     va_list args;
     int n;
@@ -73,8 +74,9 @@ xmlParserError(xmlParserCtxtPtr ctxt, const char *msg, ...)
  * extra parameters.
  */
 void
-xmlParserWarning(xmlParserCtxtPtr ctxt, const char *msg, ...)
+xmlParserWarning(void *ctx, const char *msg, ...)
 {
+    xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     const CHAR *cur, *base;
     va_list args;
     int n;

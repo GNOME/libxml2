@@ -104,7 +104,7 @@ static CHAR buffer[] =
 int
 isStandaloneDebug(xmlParserCtxtPtr ctxt)
 {
-    fprintf(stderr, "SAX.isStandalone()\n");
+    fprintf(stdout, "SAX.isStandalone()\n");
     return(0);
 }
 
@@ -119,7 +119,7 @@ isStandaloneDebug(xmlParserCtxtPtr ctxt)
 int
 hasInternalSubsetDebug(xmlParserCtxtPtr ctxt)
 {
-    fprintf(stderr, "SAX.hasInternalSubset()\n");
+    fprintf(stdout, "SAX.hasInternalSubset()\n");
     return(0);
 }
 
@@ -134,7 +134,7 @@ hasInternalSubsetDebug(xmlParserCtxtPtr ctxt)
 int
 hasExternalSubsetDebug(xmlParserCtxtPtr ctxt)
 {
-    fprintf(stderr, "SAX.hasExternalSubset()\n");
+    fprintf(stdout, "SAX.hasExternalSubset()\n");
     return(0);
 }
 
@@ -148,7 +148,7 @@ void
 internalSubsetDebug(xmlParserCtxtPtr ctxt, const CHAR *name,
 	       const CHAR *ExternalID, const CHAR *SystemID)
 {
-    fprintf(stderr, "SAX.internalSubset(%s, %s, %s)\n",
+    fprintf(stdout, "SAX.internalSubset(%s, %s, %s)\n",
             name, ExternalID, SystemID);
 }
 
@@ -169,7 +169,7 @@ internalSubsetDebug(xmlParserCtxtPtr ctxt, const CHAR *name,
 xmlParserInputPtr
 resolveEntityDebug(xmlParserCtxtPtr ctxt, const CHAR *publicId, const CHAR *systemId)
 {
-    fprintf(stderr, "SAX.resolveEntity(%s, %s)\n",
+    fprintf(stdout, "SAX.resolveEntity(%s, %s)\n",
             (char *)publicId, (char *)systemId);
     return(NULL);
 }
@@ -186,7 +186,7 @@ resolveEntityDebug(xmlParserCtxtPtr ctxt, const CHAR *publicId, const CHAR *syst
 xmlEntityPtr
 getEntityDebug(xmlParserCtxtPtr ctxt, const CHAR *name)
 {
-    fprintf(stderr, "SAX.getEntity(%s)\n", name);
+    fprintf(stdout, "SAX.getEntity(%s)\n", name);
     return(NULL);
 }
 
@@ -206,7 +206,7 @@ void
 entityDeclDebug(xmlParserCtxtPtr ctxt, const CHAR *name, int type,
           const CHAR *publicId, const CHAR *systemId, CHAR *content)
 {
-    fprintf(stderr, "SAX.entityDecl(%s, %d, %s, %s, %s)\n",
+    fprintf(stdout, "SAX.entityDecl(%s, %d, %s, %s, %s)\n",
             name, type, publicId, systemId, content);
 }
 
@@ -223,7 +223,7 @@ attributeDeclDebug(xmlParserCtxtPtr ctxt, const CHAR *elem, const CHAR *name,
               int type, int def, const CHAR *defaultValue,
 	      xmlEnumerationPtr tree)
 {
-    fprintf(stderr, "SAX.attributeDecl(%s, %s, %d, %d, %s, ...)\n",
+    fprintf(stdout, "SAX.attributeDecl(%s, %s, %d, %d, %s, ...)\n",
             elem, name, type, def, defaultValue);
 }
 
@@ -240,7 +240,7 @@ void
 elementDeclDebug(xmlParserCtxtPtr ctxt, const CHAR *name, int type,
 	    xmlElementContentPtr content)
 {
-    fprintf(stderr, "SAX.elementDecl(%s, %d, ...)\n",
+    fprintf(stdout, "SAX.elementDecl(%s, %d, ...)\n",
             name, type);
 }
 
@@ -258,7 +258,7 @@ void
 notationDeclDebug(xmlParserCtxtPtr ctxt, const CHAR *name,
 	     const CHAR *publicId, const CHAR *systemId)
 {
-    fprintf(stderr, "SAX.notationDecl(%s, %s, %s)\n",
+    fprintf(stdout, "SAX.notationDecl(%s, %s, %s)\n",
             (char *) name, (char *) publicId, (char *) systemId);
 }
 
@@ -278,7 +278,7 @@ unparsedEntityDeclDebug(xmlParserCtxtPtr ctxt, const CHAR *name,
 		   const CHAR *publicId, const CHAR *systemId,
 		   const CHAR *notationName)
 {
-    fprintf(stderr, "SAX.unparsedEntityDecl(%s, %s, %s, %s)\n",
+    fprintf(stdout, "SAX.unparsedEntityDecl(%s, %s, %s, %s)\n",
             (char *) name, (char *) publicId, (char *) systemId,
 	    (char *) notationName);
 }
@@ -294,7 +294,7 @@ unparsedEntityDeclDebug(xmlParserCtxtPtr ctxt, const CHAR *name,
 void
 setDocumentLocatorDebug(xmlParserCtxtPtr ctxt, xmlSAXLocatorPtr loc)
 {
-    fprintf(stderr, "SAX.setDocumentLocator()\n");
+    fprintf(stdout, "SAX.setDocumentLocator()\n");
 }
 
 /**
@@ -306,7 +306,7 @@ setDocumentLocatorDebug(xmlParserCtxtPtr ctxt, xmlSAXLocatorPtr loc)
 void
 startDocumentDebug(xmlParserCtxtPtr ctxt)
 {
-    fprintf(stderr, "SAX.startDocument()\n");
+    fprintf(stdout, "SAX.startDocument()\n");
 }
 
 /**
@@ -318,7 +318,7 @@ startDocumentDebug(xmlParserCtxtPtr ctxt)
 void
 endDocumentDebug(xmlParserCtxtPtr ctxt)
 {
-    fprintf(stderr, "SAX.endDocument()\n");
+    fprintf(stdout, "SAX.endDocument()\n");
 }
 
 /**
@@ -334,14 +334,14 @@ startElementDebug(xmlParserCtxtPtr ctxt, const CHAR *name, const CHAR **atts)
 {
     int i;
 
-    fprintf(stderr, "SAX.startElement(%s", (char *) name);
+    fprintf(stdout, "SAX.startElement(%s", (char *) name);
     if (atts != NULL) {
         for (i = 0;(atts[i] != NULL);i++) {
-	    fprintf(stderr, ", %s='", atts[i++]);
-	    fprintf(stderr, "%s'", atts[i]);
+	    fprintf(stdout, ", %s='", atts[i++]);
+	    fprintf(stdout, "%s'", atts[i]);
 	}
     }
-    fprintf(stderr, ")\n");
+    fprintf(stdout, ")\n");
 }
 
 /**
@@ -354,7 +354,7 @@ startElementDebug(xmlParserCtxtPtr ctxt, const CHAR *name, const CHAR **atts)
 void
 endElementDebug(xmlParserCtxtPtr ctxt, const CHAR *name)
 {
-    fprintf(stderr, "SAX.endElement(%s)\n", (char *) name);
+    fprintf(stdout, "SAX.endElement(%s)\n", (char *) name);
 }
 
 /**
@@ -369,7 +369,7 @@ endElementDebug(xmlParserCtxtPtr ctxt, const CHAR *name)
 void
 charactersDebug(xmlParserCtxtPtr ctxt, const CHAR *ch, int len)
 {
-    fprintf(stderr, "SAX.characters(%.30s, %d)\n", (char *) ch, len);
+    fprintf(stdout, "SAX.characters(%.30s, %d)\n", (char *) ch, len);
 }
 
 /**
@@ -382,7 +382,7 @@ charactersDebug(xmlParserCtxtPtr ctxt, const CHAR *ch, int len)
 void
 referenceDebug(xmlParserCtxtPtr ctxt, const CHAR *name)
 {
-    fprintf(stderr, "SAX.reference(%s)\n", name);
+    fprintf(stdout, "SAX.reference(%s)\n", name);
 }
 
 /**
@@ -398,7 +398,7 @@ referenceDebug(xmlParserCtxtPtr ctxt, const CHAR *name)
 void
 ignorableWhitespaceDebug(xmlParserCtxtPtr ctxt, const CHAR *ch, int len)
 {
-    fprintf(stderr, "SAX.ignorableWhitespace(%.30s, %d)\n",
+    fprintf(stdout, "SAX.ignorableWhitespace(%.30s, %d)\n",
             (char *) ch, len);
 }
 
@@ -415,7 +415,7 @@ void
 processingInstructionDebug(xmlParserCtxtPtr ctxt, const CHAR *target,
                       const CHAR *data)
 {
-    fprintf(stderr, "SAX.processingInstruction(%s, %s)\n",
+    fprintf(stdout, "SAX.processingInstruction(%s, %s)\n",
             (char *) target, (char *) data);
 }
 
@@ -429,7 +429,7 @@ processingInstructionDebug(xmlParserCtxtPtr ctxt, const CHAR *target,
 void
 commentDebug(xmlParserCtxtPtr ctxt, const CHAR *value)
 {
-    fprintf(stderr, "SAX.comment(%s)\n", value);
+    fprintf(stdout, "SAX.comment(%s)\n", value);
 }
 
 /**
@@ -447,8 +447,8 @@ warningDebug(xmlParserCtxtPtr ctxt, const char *msg, ...)
     va_list args;
 
     va_start(args, msg);
-    fprintf(stderr, "SAX.warning: ");
-    vfprintf(stderr, msg, args);
+    fprintf(stdout, "SAX.warning: ");
+    vfprintf(stdout, msg, args);
     va_end(args);
 }
 
@@ -467,8 +467,8 @@ errorDebug(xmlParserCtxtPtr ctxt, const char *msg, ...)
     va_list args;
 
     va_start(args, msg);
-    fprintf(stderr, "SAX.error: ");
-    vfprintf(stderr, msg, args);
+    fprintf(stdout, "SAX.error: ");
+    vfprintf(stdout, msg, args);
     va_end(args);
 }
 
@@ -487,8 +487,8 @@ fatalErrorDebug(xmlParserCtxtPtr ctxt, const char *msg, ...)
     va_list args;
 
     va_start(args, msg);
-    fprintf(stderr, "SAX.fatalError: ");
-    vfprintf(stderr, msg, args);
+    fprintf(stdout, "SAX.fatalError: ");
+    vfprintf(stdout, msg, args);
     va_end(args);
 }
 
@@ -535,7 +535,7 @@ void parseAndPrintFile(char *filename) {
      */
     doc = xmlSAXParseFile(emptySAXHandler, filename, 0);
     if (doc != NULL) {
-        fprintf(stderr, "xmlSAXParseFile returned non-NULL\n");
+        fprintf(stdout, "xmlSAXParseFile returned non-NULL\n");
 	xmlDocDump(stdout, doc);
     }
 

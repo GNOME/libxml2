@@ -395,7 +395,7 @@ xmlNewDoc(const CHAR *version) {
     cur->encoding = NULL;
     cur->standalone = -1;
     cur->compression = xmlCompressMode;
-#ifndef WITHOUT_CORBA
+#ifndef XML_WITHOUT_CORBA
     cur->_private = NULL;
     cur->vepv = NULL;
 #endif
@@ -736,7 +736,7 @@ xmlNewProp(xmlNodePtr node, const CHAR *name, const CHAR *value) {
 	cur->val = xmlStringGetNodeList(node->doc, value);
     else 
 	cur->val = NULL;
-#ifndef WITHOUT_CORBA
+#ifndef XML_WITHOUT_CORBA
     cur->_private = NULL;
     cur->vepv = NULL;
 #endif
@@ -792,7 +792,7 @@ xmlNewDocProp(xmlDocPtr doc, const CHAR *name, const CHAR *value) {
 	cur->val = xmlStringGetNodeList(doc, value);
     else 
 	cur->val = NULL;
-#ifndef WITHOUT_CORBA
+#ifndef XML_WITHOUT_CORBA
     cur->_private = NULL;
     cur->vepv = NULL;
 #endif
@@ -879,7 +879,7 @@ xmlNewNode(xmlNsPtr ns, const CHAR *name) {
     cur->ns = ns;
     cur->nsDef = NULL;
     cur->content = NULL;
-#ifndef WITHOUT_CORBA
+#ifndef XML_WITHOUT_CORBA
     cur->_private = NULL;
     cur->vepv = NULL;
 #endif
@@ -1502,7 +1502,7 @@ xmlStaticCopyNode(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
 	ret->content = xmlStrdup(node->content);
     else
 	ret->content = NULL;
-#ifndef WITHOUT_CORBA
+#ifndef XML_WITHOUT_CORBA
     ret->_private = NULL;
     ret->vepv = NULL;
 #endif
@@ -2776,9 +2776,7 @@ xmlSaveFile(const char *filename, xmlDocPtr cur) {
 	if (output == NULL) return(-1);
 #ifdef HAVE_ZLIB_H
     }
-#endif
 
-#ifdef HAVE_ZLIB_H
     if (zoutput != NULL) {
         ret = gzwrite(zoutput, buf->content, sizeof(CHAR) * buf->use);
 	gzclose(zoutput);

@@ -1,10 +1,14 @@
+Sat May 29 13:34:42 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* tree.[ch]: unified the XML_NO_CORBA defines.
+	* parser.c encoding.[ch]: started plugging in char encoding detection
+
 Fri May 28 22:58:42 EDT 1999 Manish Vachharajani <mvachhar@vger.rutgers.edu>
 
 	* tree.c: (xmlSaveFile) - removed double call of xmlContentDump.  
 	  Also freed allocated buffer.
 
-Wed Apr 21 22:07:35 CEST 1999
-
+Wed Apr 21 22:07:35 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 	* parser.[ch] tree.[ch] entities.[ch] valid.[ch] : removed the main
 	  reentrancy problem at printing. One is left in entities.c, to
 	  remove ASAP

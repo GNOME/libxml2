@@ -2114,6 +2114,7 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
     int res = 0;
     int nbchars = 0;
     int buffree;
+    int needSize;
 
     if ((len <= MINLEN) && (len != 4)) 
         len = MINLEN;
@@ -2126,12 +2127,15 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
     if (len > buffree) 
         len = buffree;
 
-    buffer = (char *) xmlMalloc((len + 1) * sizeof(char));
-    if (buffer == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlParserInputBufferGrow : out of memory !\n");
-	return(-1);
+    needSize = in->buffer->use + len + 1;
+    if (needSize > in->buffer->size){
+        if (!xmlBufferResize(in->buffer, needSize)){
+            xmlGenericError(xmlGenericErrorContext,
+		    "xmlBufferAdd : out of memory!\n");
+            return(0);
+        }
     }
+    buffer = (char *)&in->buffer->content[in->buffer->use];
 
     /*
      * Call the read method for this I/O type.
@@ -2143,12 +2147,10 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
     } else {
         xmlGenericError(xmlGenericErrorContext,
 		"xmlParserInputBufferGrow : no input !\n");
-	xmlFree(buffer);
 	return(-1);
     }
     if (res < 0) {
 	perror ("read error");
-	xmlFree(buffer);
 	return(-1);
     }
     len = res;
@@ -2172,15 +2174,14 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
 	}
     } else {
 	nbchars = len;
-        buffer[nbchars] = 0;
-        xmlBufferAdd(in->buffer, (xmlChar *) buffer, nbchars);
+    	in->buffer->use += nbchars;
+	buffer[nbchars] = 0;
     }
 #ifdef DEBUG_INPUT
     xmlGenericError(xmlGenericErrorContext,
 	    "I/O: read %d chars, buffer %d/%d\n",
             nbchars, in->buffer->use, in->buffer->size);
 #endif
-    xmlFree(buffer);
     return(nbchars);
 }
 

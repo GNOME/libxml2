@@ -1,3 +1,7 @@
+Thu May 16 10:43:26 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xmlIO.c: applied a small buffer performance patch from Gary Pennington
+
 Wed May 15 00:25:34 CEST 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
 
 	* win32/libxml2.def.src: exported xmlXPathNodeSetAddNs()

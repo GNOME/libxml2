@@ -1,3 +1,9 @@
+Thu Oct 11 20:58:15 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* catalog.c include/libxml/catalog.h: very serious cleanup,
+	  isolating unportable code and as much as possible the accesses
+	  to the global shared catalog. May need more testing !
+
 Thu Oct 11 11:10:31 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/debugXML.h debugXML.c tree.c: integrating

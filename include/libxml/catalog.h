@@ -54,9 +54,39 @@ typedef enum {
     XML_CATA_ALLOW_ALL = 3
 } xmlCatalogAllow;
 
+typedef struct _xmlCatalog xmlCatalog;
+typedef xmlCatalog *xmlCatalogPtr;
+
+/*
+ * Operations on a given catalog
+ */
+xmlCatalogPtr	xmlLoadACatalog		(const char *filename);
+xmlCatalogPtr	xmlLoadSGMLSuperCatalog	(const char *filename);
+int		xmlConvertSGMLCatalog	(xmlCatalogPtr catal);
+int		xmlACatalogAdd		(xmlCatalogPtr catal,
+					 const xmlChar *type,
+					 const xmlChar *orig,
+					 const xmlChar *replace);
+int		xmlACatalogRemove	(xmlCatalogPtr catal,
+					 const xmlChar *value);
+xmlChar *	xmlACatalogResolve	(xmlCatalogPtr catal,
+					 const xmlChar *pubID,
+	                                 const xmlChar *sysID);
+xmlChar *	xmlACatalogResolveSystem(xmlCatalogPtr catal,
+					 const xmlChar *sysID);
+xmlChar *	xmlACatalogResolvePublic(xmlCatalogPtr catal,
+					 const xmlChar *pubID);
+xmlChar *	xmlACatalogResolveURI	(xmlCatalogPtr catal,
+					 const xmlChar *URI);
+void		xmlACatalogDump		(xmlCatalogPtr catal,
+					 FILE *out);
+void		xmlFreeCatalog		(xmlCatalogPtr catal);
+
+/*
+ * Global operations
+ */
 void		xmlInitializeCatalog	(void);
 int		xmlLoadCatalog		(const char *filename);
-int		xmlLoadSGMLSuperCatalog	(const char *filename);
 void		xmlLoadCatalogs		(const char *paths);
 void		xmlCatalogCleanup	(void);
 void		xmlCatalogDump		(FILE *out);
@@ -91,6 +121,7 @@ int		xmlCatalogSetDebug	(int level);
 xmlCatalogPrefer xmlCatalogSetDefaultPrefer(xmlCatalogPrefer prefer);
 void		xmlCatalogSetDefaults	(xmlCatalogAllow allow);
 xmlCatalogAllow	xmlCatalogGetDefaults	(void);
+
 
 /* DEPRECATED interfaces */
 const xmlChar *	xmlCatalogGetSystem	(const xmlChar *sysID);

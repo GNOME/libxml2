@@ -37,6 +37,7 @@
 #include "tree.h"
 #include "parser.h"
 #include "debugXML.h"
+#include "xmlmemory.h"
 
 static int debug = 0;
 static int expr = 0;
@@ -204,6 +205,10 @@ int main(int argc, char **argv) {
 	printf("\t--file : or\n");
 	printf("\t-f     : read queries from files, args\n");
     }
+    if (document != NULL) 
+	xmlFreeDoc(document);
+    xmlCleanupParser();
+    xmlMemoryDump();
 
     return(0);
 }

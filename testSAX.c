@@ -41,6 +41,7 @@
 #include "parserInternals.h" /* only for xmlNewInputFromFile() */
 #include "tree.h"
 #include "debugXML.h"
+#include "xmlmemory.h"
 
 static int debug = 0;
 static int copy = 0;
@@ -648,6 +649,8 @@ int main(int argc, char **argv) {
 	printf("\nFirst test for the parser, with errors\n");
         parseAndPrintBuffer(buffer);
     }
+    xmlCleanupParser();
+    xmlMemoryDump();
 
     return(0);
 }

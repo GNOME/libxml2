@@ -230,6 +230,24 @@ typedef struct xmlRef {
 typedef xmlRef *xmlRefPtr;
 
 /*
+ * A buffer structure
+ */
+
+typedef enum {
+    XML_BUFFER_ALLOC_DOUBLEIT,
+    XML_BUFFER_ALLOC_EXACT
+} xmlBufferAllocationScheme;
+
+typedef struct xmlBuffer {
+    xmlChar *content;		/* The buffer content UTF8 */
+    unsigned int use;		/* The buffer size used */
+    unsigned int size;		/* The buffer size */
+    xmlBufferAllocationScheme alloc; /* The realloc method */
+} _xmlBuffer;
+typedef _xmlBuffer xmlBuffer;
+typedef xmlBuffer *xmlBufferPtr;
+
+/*
  * A node in an XML tree.
  */
 typedef struct xmlNode {
@@ -248,7 +266,11 @@ typedef struct xmlNode {
     const xmlChar  *name;       /* the name of the node, or the entity */
     xmlNs          *ns;         /* pointer to the associated namespace */
     xmlNs          *nsDef;      /* namespace definitions on this node */
+#ifndef XML_USE_BUFFER_CONTENT    
     xmlChar        *content;    /* the content */
+#else
+    xmlBufferPtr   content;     /* the content in a buffer */
+#endif
 } _xmlNode;
 typedef _xmlNode xmlNode;
 typedef _xmlNode *xmlNodePtr;
@@ -278,29 +300,19 @@ typedef _xmlDoc xmlDoc;
 typedef xmlDoc *xmlDocPtr;
 
 /*
- * A buffer structure
- */
-
-typedef struct xmlBuffer {
-    xmlChar *content;		/* The buffer content UTF8 */
-    unsigned int use;		/* The buffer size used */
-    unsigned int size;		/* The buffer size */
-} _xmlBuffer;
-typedef _xmlBuffer xmlBuffer;
-typedef xmlBuffer *xmlBufferPtr;
-
-/*
  * Variables.
  */
 extern xmlNsPtr baseDTD;
 extern int oldXMLWDcompatibility;/* maintain compatibility with old WD */
 extern int xmlIndentTreeOutput;  /* try to indent the tree dumps */
+extern xmlBufferAllocationScheme xmlBufferAllocScheme; /* alloc scheme to use */
 
 /*
  * Handling Buffers.
  */
 
 xmlBufferPtr	xmlBufferCreate		(void);
+xmlBufferPtr	xmlBufferCreateSize	(size_t size);
 void		xmlBufferFree		(xmlBufferPtr buf);
 int		xmlBufferDump		(FILE *file,
 					 xmlBufferPtr buf);
@@ -314,6 +326,11 @@ void		xmlBufferCCat		(xmlBufferPtr buf,
 int		xmlBufferShrink		(xmlBufferPtr buf,
 					 int len);
 void		xmlBufferEmpty		(xmlBufferPtr buf);
+const xmlChar*	xmlBufferContent	(const xmlBufferPtr buf);
+int		xmlBufferUse		(const xmlBufferPtr buf);
+void		xmlBufferSetAllocationScheme(xmlBufferPtr buf,
+					 xmlBufferAllocationScheme scheme);
+int		xmlBufferLength		(const xmlBufferPtr buf);
 
 /*
  * Creating/freeing new structures

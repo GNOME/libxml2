@@ -712,6 +712,7 @@ int main(int argc, char **argv) {
 	printf("\t--repeat : parse the file 100 times, for timing or profiling\n");
 	printf("\t--noout : do not print the result\n");
     }
+    xmlCleanupParser();
     xmlMemoryDump();
 
     return(0);

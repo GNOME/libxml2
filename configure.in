@@ -104,6 +104,11 @@ XML_INCLUDEDIR='-I${includedir}/gnome-xml'
 XML_LIBS="-lxml $Z_LIBS $M_LIBS $LIBS"
 
 dnl
+dnl Extra flags
+dnl
+XML_CFLAGS=""
+
+dnl
 dnl Workaround wor HP native compiler
 dnl http://bugs.gnome.org/db/31/3163.html
 dnl
@@ -114,7 +119,19 @@ if test "${CC}" != "gcc" ; then
 	       ;;
     esac
 fi
+
+dnl
+dnl Use buffers for content
+dnl
+
+AC_ARG_WITH(buffers, [  --with-buffers          Use buffers for node content])
+if test "$with_buffers" = "yes" ; then
+    CFLAGS="${CFLAGS} -DXML_USE_BUFFER_CONTENT"
+    XML_CFLAGS="${XML_CFLAGS}  -DXML_USE_BUFFER_CONTENT"
+fi
+
 AC_SUBST(CFLAGS)
+AC_SUBST(XML_CFLAGS)
 
 AC_SUBST(XML_LIBDIR)
 AC_SUBST(XML_LIBS)

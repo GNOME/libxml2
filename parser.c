@@ -6740,6 +6740,7 @@ int xmlSAXUserParseMemory(xmlSAXHandlerPtr sax, void *user_data,
 void
 xmlCleanupParser(void) {
     xmlCleanupCharEncodingHandlers();
+    xmlCleanupPredefinedEntities();
 }
 
 /**

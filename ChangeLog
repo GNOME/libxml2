@@ -1,3 +1,17 @@
+Wed Dec  1 10:27:47 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* tree.[ch] HTMLtree.c, debugXML.c, configure.in, xml-config.in:
+	     added the patch from Carl Nygard <cnygard@bellatlantic.net>
+	     which allow impressive speed improvement on dataset with
+	     large text pieces, but at the cost of broken binary
+	     compatibility and slightly bigger memory usage.
+	     Configure with --with-buffers to activate them, they
+	     are protected with XML_USE_BUFFER_CONTENT define.
+	* entities.[ch], parser.c: added xmlCleanupPredefinedEntities(),
+	     goal is 0 memory left allocated once parser is no more used
+	* testDAV.c, testHTML.c, testSAX.c, testXPath.c: make sure we
+	     call xmlCleanupParser() and xmlMemoryDump()
+
 Wed Nov 24 19:00:06 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* tree.[ch] xmlIO.[ch] parser.c valid.c: code cleanup with -pedantic

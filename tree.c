@@ -34,6 +34,7 @@
 static xmlChar xmlStringText[] = { 't', 'e', 'x', 't', 0 };
 int oldXMLWDcompatibility = 0;
 int xmlIndentTreeOutput = 1;
+xmlBufferAllocationScheme xmlBufferAllocScheme = XML_BUFFER_ALLOC_EXACT;
 
 static int xmlCompressMode = 0;
 
@@ -52,6 +53,35 @@ static int xmlCompressMode = 0;
  *									*
  ************************************************************************/
  
+/**
+ * xmlSetBufferAllocationScheme:
+ * @scheme:  allocation method to use
+ * 
+ * Set the buffer allocation method.  Types are
+ * XML_BUFFER_ALLOC_EXACT - use exact sizes, keeps memory usage down
+ * XML_BUFFER_ALLOC_DOUBLEIT - double buffer when extra needed, 
+ *                             improves performance
+ */
+void
+xmlSetBufferAllocationScheme(xmlBufferAllocationScheme scheme) {
+    xmlBufferAllocScheme = scheme;
+}
+
+/**
+ * xmlGetBufferAllocationScheme:
+ *
+ * Types are
+ * XML_BUFFER_ALLOC_EXACT - use exact sizes, keeps memory usage down
+ * XML_BUFFER_ALLOC_DOUBLEIT - double buffer when extra needed, 
+ *                             improves performance
+ * 
+ * Returns the current allocation scheme
+ */
+xmlBufferAllocationScheme
+xmlGetBufferAllocationScheme() {
+    return xmlBufferAllocScheme;
+}
+
 /**
  * xmlUpgradeOldNs:
  * @doc:  a document pointer
@@ -684,12 +714,21 @@ xmlNodeListGetString(xmlDocPtr doc, xmlNodePtr list, int inLine) {
 
     while (node != NULL) {
         if (node->type == XML_TEXT_NODE) {
-	    if ((inLine) || (doc->type == XML_HTML_DOCUMENT_NODE))
+	    if ((inLine) || (doc->type == XML_HTML_DOCUMENT_NODE)) {
+#ifndef XML_USE_BUFFER_CONTENT
 		ret = xmlStrcat(ret, node->content);
-	    else {
+#else
+		ret = xmlStrcat(ret, xmlBufferContent(node->content));
+#endif
+	    } else {
 	        xmlChar *buffer;
 
+#ifndef XML_USE_BUFFER_CONTENT
 		buffer = xmlEncodeEntitiesReentrant(doc, node->content);
+#else
+		buffer = xmlEncodeEntitiesReentrant(doc,
+					    xmlBufferContent(node->content));
+#endif
 		if (buffer != NULL) {
 		    ret = xmlStrcat(ret, buffer);
 		    xmlFree(buffer);
@@ -700,8 +739,13 @@ xmlNodeListGetString(xmlDocPtr doc, xmlNodePtr list, int inLine) {
 		ent = xmlGetDocEntity(doc, node->name);
 		if (ent != NULL)
 		    ret = xmlStrcat(ret, ent->content);
-		else
+		else {
+#ifndef XML_USE_BUFFER_CONTENT
 		    ret = xmlStrcat(ret, node->content);
+#else
+		    ret = xmlStrcat(ret, xmlBufferContent(node->content));
+#endif
+		}    
             } else {
 	        xmlChar buf[2];
 		buf[0] = '&'; buf[1] = 0;
@@ -964,9 +1008,16 @@ xmlNewPI(const xmlChar *name, const xmlChar *content) {
     cur->name = xmlStrdup(name);
     cur->ns = NULL;
     cur->nsDef = NULL;
-    if (content != NULL)
+    if (content != NULL) {
+#ifndef XML_USE_BUFFER_CONTENT
 	cur->content = xmlStrdup(content);
-    else
+#else
+	cur->content = xmlBufferCreateSize(0);
+	xmlBufferSetAllocationScheme(cur->content,
+		                     xmlGetBufferAllocationScheme());
+	xmlBufferAdd(cur->content, content, -1);
+#endif
+    } else
 	cur->content = NULL;
 #ifndef XML_WITHOUT_CORBA
     cur->_private = NULL;
@@ -1116,9 +1167,16 @@ xmlNewText(const xmlChar *content) {
     cur->name = xmlStrdup(xmlStringText);
     cur->ns = NULL;
     cur->nsDef = NULL;
-    if (content != NULL)
+    if (content != NULL) {
+#ifndef XML_USE_BUFFER_CONTENT
 	cur->content = xmlStrdup(content);
-    else 
+#else
+	cur->content = xmlBufferCreateSize(0);
+	xmlBufferSetAllocationScheme(cur->content,
+		                     xmlGetBufferAllocationScheme());
+	xmlBufferAdd(cur->content, content, -1);
+#endif
+    } else 
 	cur->content = NULL;
 #ifndef XML_WITHOUT_CORBA
     cur->_private = NULL;
@@ -1227,9 +1285,22 @@ xmlNewReference(xmlDocPtr doc, const xmlChar *name) {
     cur->nsDef = NULL;
 
     ent = xmlGetDocEntity(doc, cur->name);
-    if (ent != NULL)
+    if (ent != NULL) {
+#ifndef XML_USE_BUFFER_CONTENT
 	cur->content = ent->content;
-    else
+#else
+	/*
+	 * CJN 11.18.99 this might be a problem, since the xmlBuffer gets
+	 * a copy of this pointer.  Let's hope we don't manipulate it
+	 * later 
+	 */
+	cur->content = xmlBufferCreateSize(0);
+	xmlBufferSetAllocationScheme(cur->content,
+		                     xmlGetBufferAllocationScheme());
+	if (ent->content != NULL)
+	    xmlBufferAdd(cur->content, ent->content, -1);
+#endif
+    } else
         cur->content = NULL;
 #ifndef XML_WITHOUT_CORBA
     cur->_private = NULL;
@@ -1288,9 +1359,16 @@ xmlNewTextLen(const xmlChar *content, int len) {
     cur->name = xmlStrdup(xmlStringText);
     cur->ns = NULL;
     cur->nsDef = NULL;
-    if (content != NULL)
+    if (content != NULL) {
+#ifndef XML_USE_BUFFER_CONTENT
 	cur->content = xmlStrndup(content, len);
-    else 
+#else
+	cur->content = xmlBufferCreateSize(len);
+	xmlBufferSetAllocationScheme(cur->content,
+		                     xmlGetBufferAllocationScheme());
+	xmlBufferAdd(cur->content, content, len);
+#endif
+    } else 
 	cur->content = NULL;
 #ifndef XML_WITHOUT_CORBA
     cur->_private = NULL;
@@ -1350,9 +1428,16 @@ xmlNewComment(const xmlChar *content) {
     cur->name = xmlStrdup(xmlStringText);
     cur->ns = NULL;
     cur->nsDef = NULL;
-    if (content != NULL)
+    if (content != NULL) {
+#ifndef XML_USE_BUFFER_CONTENT
 	cur->content = xmlStrdup(content);
-    else 
+#else
+	cur->content = xmlBufferCreateSize(0);
+	xmlBufferSetAllocationScheme(cur->content,
+		                     xmlGetBufferAllocationScheme());
+	xmlBufferAdd(cur->content, content, -1);
+#endif
+    } else 
 	cur->content = NULL;
 #ifndef XML_WITHOUT_CORBA
     cur->_private = NULL;
@@ -1394,8 +1479,15 @@ xmlNewCDataBlock(xmlDocPtr doc, const xmlChar *content, int len) {
     cur->name = xmlStrdup(xmlStringText);
     cur->ns = NULL;
     cur->nsDef = NULL;
-    if ((content != NULL) && (len > 0)) {
+    if (content != NULL) {
+#ifndef XML_USE_BUFFER_CONTENT
 	cur->content = xmlStrndup(content, len);
+#else
+	cur->content = xmlBufferCreateSize(len);
+	xmlBufferSetAllocationScheme(cur->content,
+		                     xmlGetBufferAllocationScheme());
+	xmlBufferAdd(cur->content, content, len);
+#endif
     } else 
 	cur->content = NULL;
 #ifndef XML_WITHOUT_CORBA
@@ -1567,14 +1659,22 @@ xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
     if (parent->content != NULL) {
         xmlNodePtr text;
 	
+#ifndef XML_USE_BUFFER_CONTENT
 	text = xmlNewDocText(parent->doc, parent->content);
+#else
+	text = xmlNewDocText(parent->doc, xmlBufferContent(parent->content));
+#endif
 	if (text != NULL) {
 	    text->next = parent->childs;
 	    if (text->next != NULL)
 		text->next->prev = text;
 	    parent->childs = text;
 	    UPDATE_LAST_CHILD(parent)
+#ifndef XML_USE_BUFFER_CONTENT
 	    xmlFree(parent->content);
+#else
+	    xmlBufferFree(parent->content);
+#endif
 	    parent->content = NULL;
 	}
     }
@@ -1647,7 +1747,11 @@ xmlFreeNode(xmlNodePtr cur) {
     if (cur->childs != NULL) xmlFreeNodeList(cur->childs);
     if (cur->properties != NULL) xmlFreePropList(cur->properties);
     if (cur->type != XML_ENTITY_REF_NODE)
+#ifndef XML_USE_BUFFER_CONTENT
 	if (cur->content != NULL) xmlFree(cur->content);
+#else
+    	if (cur->content != NULL) xmlBufferFree(cur->content);
+#endif
     if (cur->name != NULL) xmlFree((char *) cur->name);
     if (cur->nsDef != NULL) xmlFreeNsList(cur->nsDef);
     memset(cur, -1, sizeof(xmlNode));
@@ -1844,9 +1948,18 @@ xmlStaticCopyNode(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
         ret->name = NULL;
     ret->ns = NULL;
     ret->nsDef = NULL;
-    if ((node->content != NULL) && (node->type != XML_ENTITY_REF_NODE))
+    if ((node->content != NULL) && (node->type != XML_ENTITY_REF_NODE)) {
+#ifndef XML_USE_BUFFER_CONTENT
 	ret->content = xmlStrdup(node->content);
-    else
+#else
+	ret->content = xmlBufferCreateSize(xmlBufferLength(node->content));
+	xmlBufferSetAllocationScheme(ret->content,
+		                     xmlGetBufferAllocationScheme());
+	xmlBufferAdd(ret->content,
+		     xmlBufferContent(node->content),
+		     xmlBufferLength(node->content));
+#endif
+    } else
 	ret->content = NULL;
 #ifndef XML_WITHOUT_CORBA
     ret->_private = NULL;
@@ -2107,7 +2220,11 @@ xmlNodeGetContent(xmlNodePtr cur) {
 	}
         case XML_PI_NODE:
 	    if (cur->content != NULL)
+#ifndef XML_USE_BUFFER_CONTENT
 	        return(xmlStrdup(cur->content));
+#else
+	        return(xmlStrdup(xmlBufferContent(cur->content)));
+#endif
 	    return(NULL);
         case XML_ENTITY_REF_NODE:
         case XML_ENTITY_NODE:
@@ -2120,7 +2237,11 @@ xmlNodeGetContent(xmlNodePtr cur) {
         case XML_CDATA_SECTION_NODE:
         case XML_TEXT_NODE:
 	    if (cur->content != NULL)
+#ifndef XML_USE_BUFFER_CONTENT
 		return(xmlStrdup(cur->content));
+#else
+	        return(xmlStrdup(xmlBufferContent(cur->content)));
+#endif
             return(NULL);
     }
     return(NULL);
@@ -2143,7 +2264,11 @@ xmlNodeSetContent(xmlNodePtr cur, const xmlChar *content) {
         case XML_DOCUMENT_FRAG_NODE:
         case XML_ELEMENT_NODE:
 	    if (cur->content != NULL) {
+#ifndef XML_USE_BUFFER_CONTENT
 	        xmlFree(cur->content);
+#else
+		xmlBufferFree(cur->content);
+#endif
 		cur->content = NULL;
 	    }
 	    if (cur->childs != NULL) xmlFreeNodeList(cur->childs);
@@ -2158,12 +2283,25 @@ xmlNodeSetContent(xmlNodePtr cur, const xmlChar *content) {
         case XML_ENTITY_NODE:
         case XML_PI_NODE:
         case XML_COMMENT_NODE:
-	    if (cur->content != NULL) xmlFree(cur->content);
+	    if (cur->content != NULL) {
+#ifndef XML_USE_BUFFER_CONTENT
+		xmlFree(cur->content);
+#else
+	        xmlBufferFree(cur->content);
+#endif
+	    }	
 	    if (cur->childs != NULL) xmlFreeNodeList(cur->childs);
 	    cur->last = cur->childs = NULL;
-	    if (content != NULL)
+	    if (content != NULL) {
+#ifndef XML_USE_BUFFER_CONTENT
 		cur->content = xmlStrdup(content);
-	    else 
+#else
+		cur->content = xmlBufferCreateSize(0);
+		xmlBufferSetAllocationScheme(cur->content,
+			                     xmlGetBufferAllocationScheme());
+		xmlBufferAdd(cur->content, content, -1);
+#endif
+	    } else 
 		cur->content = NULL;
 	    break;
         case XML_DOCUMENT_NODE:
@@ -2193,7 +2331,11 @@ xmlNodeSetContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
         case XML_DOCUMENT_FRAG_NODE:
         case XML_ELEMENT_NODE:
 	    if (cur->content != NULL) {
+#ifndef XML_USE_BUFFER_CONTENT
 	        xmlFree(cur->content);
+#else
+		xmlBufferFree(cur->content);
+#endif
 		cur->content = NULL;
 	    }
 	    if (cur->childs != NULL) xmlFreeNodeList(cur->childs);
@@ -2208,26 +2350,31 @@ xmlNodeSetContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
         case XML_ENTITY_NODE:
         case XML_PI_NODE:
         case XML_COMMENT_NODE:
-	    if (cur->content != NULL) xmlFree(cur->content);
+        case XML_NOTATION_NODE:
+	    if (cur->content != NULL) {
+#ifndef XML_USE_BUFFER_CONTENT
+		xmlFree(cur->content);
+#else
+	        xmlBufferFree(cur->content);
+#endif
+	    }	
 	    if (cur->childs != NULL) xmlFreeNodeList(cur->childs);
 	    cur->childs = cur->last = NULL;
-	    if (content != NULL)
+	    if (content != NULL) {
+#ifndef XML_USE_BUFFER_CONTENT
 		cur->content = xmlStrndup(content, len);
-	    else 
+#else
+		cur->content = xmlBufferCreateSize(len);
+		xmlBufferSetAllocationScheme(cur->content,
+			                     xmlGetBufferAllocationScheme());
+		xmlBufferAdd(cur->content, content, len);
+#endif
+	    } else 
 		cur->content = NULL;
 	    break;
         case XML_DOCUMENT_NODE:
         case XML_HTML_DOCUMENT_NODE:
         case XML_DOCUMENT_TYPE_NODE:
-	    break;
-        case XML_NOTATION_NODE:
-	    if (cur->content != NULL) xmlFree(cur->content);
-	    if (cur->childs != NULL) xmlFreeNodeList(cur->childs);
-	    cur->childs = cur->last = NULL;
-	    if (content != NULL)
-		cur->content = xmlStrndup(content, len);
-	    else 
-		cur->content = NULL;
 	    break;
     }
 }
@@ -2256,9 +2403,18 @@ xmlNodeAddContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
 		last = cur->last;
 	    } else {
 	        if (cur->content != NULL) {
+#ifndef XML_USE_BUFFER_CONTENT
 		    cur->childs = xmlStringGetNodeList(cur->doc, cur->content);
+#else
+		    cur->childs = xmlStringGetNodeList(cur->doc,
+			                       xmlBufferContent(cur->content));
+#endif
 		    UPDATE_LAST_CHILD(cur)
+#ifndef XML_USE_BUFFER_CONTENT
 		    xmlFree(cur->content);
+#else
+		    xmlBufferFree(cur->content);
+#endif
 		    cur->content = NULL;
 		    last = cur->last;
 		}
@@ -2280,15 +2436,17 @@ xmlNodeAddContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
         case XML_ENTITY_NODE:
         case XML_PI_NODE:
         case XML_COMMENT_NODE:
-	    if (content != NULL)
+        case XML_NOTATION_NODE:
+	    if (content != NULL) {
+#ifndef XML_USE_BUFFER_CONTENT
 		cur->content = xmlStrncat(cur->content, content, len);
+#else
+		xmlBufferAdd(cur->content, content, len);
+#endif
+            }
         case XML_DOCUMENT_NODE:
         case XML_HTML_DOCUMENT_NODE:
         case XML_DOCUMENT_TYPE_NODE:
-	    break;
-        case XML_NOTATION_NODE:
-	    if (content != NULL)
-		cur->content = xmlStrncat(cur->content, content, len);
 	    break;
     }
 }
@@ -2327,7 +2485,11 @@ xmlTextMerge(xmlNodePtr first, xmlNodePtr second) {
     if (second == NULL) return(first);
     if (first->type != XML_TEXT_NODE) return(first);
     if (second->type != XML_TEXT_NODE) return(first);
+#ifndef XML_USE_BUFFER_CONTENT
     xmlNodeAddContent(first, second->content);
+#else
+    xmlNodeAddContent(first, xmlBufferContent(second->content));
+#endif
     xmlUnlinkNode(second);
     xmlFreeNode(second);
     return(first);
@@ -2554,7 +2716,11 @@ xmlTextConcat(xmlNodePtr node, const xmlChar *content, int len) {
 	fprintf(stderr, "xmlTextConcat: node is not text\n");
         return;
     }
+#ifndef XML_USE_BUFFER_CONTENT
     node->content = xmlStrncat(node->content, content, len);
+#else
+    xmlBufferAdd(node->content, content, len);
+#endif
 }
 
 /************************************************************************
@@ -2593,6 +2759,55 @@ xmlBufferCreate(void) {
 }
 
 /**
+ * xmlBufferCreateSize:
+ * @size: initial size of buffer
+ *
+ * routine to create an XML buffer.
+ * returns the new structure.
+ */
+xmlBufferPtr
+xmlBufferCreateSize(size_t size) {
+    xmlBufferPtr ret;
+
+    ret = (xmlBufferPtr) xmlMalloc(sizeof(xmlBuffer));
+    if (ret == NULL) {
+        fprintf(stderr, "xmlBufferCreate : out of memory!\n");
+        return(NULL);
+    }
+    ret->use = 0;
+    ret->size = (size ? size+2 : 0);         /* +1 for ending null */
+    if(ret->size){
+        ret->content = (xmlChar *) xmlMalloc(ret->size * sizeof(xmlChar));
+        if (ret->content == NULL) {
+            fprintf(stderr, "xmlBufferCreate : out of memory!\n");
+            xmlFree(ret);
+            return(NULL);
+        }
+        ret->content[0] = 0;
+    } else
+	ret->content = NULL;
+    return(ret);
+}
+
+/**
+ * xmlBufferAllocationScheme:
+ * @buf:  the buffer to free
+ * @scheme:  allocation scheme to use
+ *
+ * Sets the allocation scheme for this buffer
+ */
+void
+xmlBufferSetAllocationScheme(xmlBufferPtr buf, 
+                             xmlBufferAllocationScheme scheme) {
+    if (buf == NULL) {
+        fprintf(stderr, "xmlBufferSetAllocationScheme: buf == NULL\n");
+        return;
+    }
+
+    buf->alloc = scheme;
+}
+
+/**
  * xmlBufferFree:
  * @buf:  the buffer to free
  *
@@ -2604,10 +2819,12 @@ xmlBufferFree(xmlBufferPtr buf) {
         fprintf(stderr, "xmlBufferFree: buf == NULL\n");
 	return;
     }
-    if (buf->content == NULL) {
-        fprintf(stderr, "xmlBufferFree: buf->content == NULL\n");
-    } else {
+    if (buf->content != NULL) {
+#ifndef XML_USE_BUFFER_CONTENT
         memset(buf->content, -1, BASE_BUFFER_SIZE);
+#else
+        memset(buf->content, -1, buf->size);
+#endif
         xmlFree(buf->content);
     }
     memset(buf, -1, sizeof(xmlBuffer));
@@ -2673,6 +2890,84 @@ xmlBufferDump(FILE *file, xmlBufferPtr buf) {
 }
 
 /**
+ * xmlBufferContent:
+ * @buf:  the buffer to resize
+ *
+ * Returns the internal content
+ */
+
+const xmlChar* 
+xmlBufferContent(const xmlBufferPtr buf)
+{
+    if(!buf)
+        return NULL;
+
+    return buf->content;
+}
+
+/**
+ * xmlBufferLength:
+ * @buf:  the buffer 
+ *
+ * Returns the length of data in the internal content
+ */
+
+int
+xmlBufferLength(const xmlBufferPtr buf)
+{
+    if(!buf)
+        return 0;
+
+    return buf->use;
+}
+
+/**
+ * xmlBufferResize:
+ * @buf:  the buffer to resize
+ * @len:  the desired size
+ *
+ * Resize a buffer to accomodate minimum size of <len>.
+ *
+ * Returns  0 in case of problems, 1 otherwise
+ */
+int
+xmlBufferResize(xmlBufferPtr buf, int size)
+{
+    int newSize = (buf->size ? buf->size*2 : size);/*take care of empty case*/
+    xmlChar* rebuf = NULL;
+
+    /* Don't resize if we don't have to */
+    if(size < buf->size)
+        return 1;
+
+    /* figure out new size */
+    switch(buf->alloc){
+    case XML_BUFFER_ALLOC_DOUBLEIT:
+        while(size > newSize) newSize *= 2;
+        break;
+    case XML_BUFFER_ALLOC_EXACT:
+        newSize = size+10;
+        break;
+    default:
+        newSize = size+10;
+        break;
+    }
+
+    if (buf->content == NULL)
+	rebuf = (xmlChar *) xmlMalloc(newSize * sizeof(xmlChar));
+    else
+	rebuf = (xmlChar *) xmlRealloc(buf->content, 
+				       newSize * sizeof(xmlChar));
+    if (rebuf == NULL) {
+        fprintf(stderr, "xmlBufferAdd : out of memory!\n");
+        return 0;
+    }
+    buf->content = rebuf;
+    buf->size = newSize;
+
+    return 1;
+}
+/**
  * xmlBufferAdd:
  * @buf:  the buffer to dump
  * @str:  the xmlChar string
@@ -2682,30 +2977,32 @@ xmlBufferDump(FILE *file, xmlBufferPtr buf) {
  */
 void
 xmlBufferAdd(xmlBufferPtr buf, const xmlChar *str, int len) {
-    int l;
+    int l, needSize;
 
     if (str == NULL) {
         fprintf(stderr, "xmlBufferAdd: str == NULL\n");
 	return;
     }
+
+    /* CJN What's this for??? */
     l = xmlStrlen(str);
-    if (l < len) len = l;
+    if (l < len){  len = l; printf("xmlBufferAdd bad length\n"); }
+
+    /* CJN 11.18.99 okay, now I'm using the length */
+    if(len == -1) len = l;
+
+
     if (len <= 0) return;
 
-    if (buf->use + len + 10 >= buf->size) {
-	xmlChar *rebuf;
-
-        buf->size *= 2;
-	if (buf->use + len + 10 > buf->size)
-	    buf->size = buf->use + len + 10;
-	rebuf = (xmlChar *) xmlRealloc(buf->content, buf->size * sizeof(xmlChar));
-	if (rebuf == NULL) {
-	    fprintf(stderr, "xmlBufferAdd : out of memory!\n");
-	    return;
-	}
-	buf->content = rebuf;
+    needSize = buf->use + len + 2;
+    if(needSize > buf->size){
+        if(!xmlBufferResize(buf, needSize)){
+            fprintf(stderr, "xmlBufferAdd : out of memory!\n");
+            return;
+        }
     }
-    memmove(&buf->content[buf->use], str, len);
+
+    memmove(&buf->content[buf->use], str, len*sizeof(xmlChar));
     buf->use += len;
     buf->content[buf->use] = 0;
 }
@@ -2719,26 +3016,8 @@ xmlBufferAdd(xmlBufferPtr buf, const xmlChar *str, int len) {
  */
 void
 xmlBufferCat(xmlBufferPtr buf, const xmlChar *str) {
-    const xmlChar *cur;
-
-    if (str == NULL) {
-        fprintf(stderr, "xmlBufferAdd: str == NULL\n");
-	return;
-    }
-    for (cur = str;*cur != 0;cur++) {
-        if (buf->use  + 10 >= buf->size) {
-	    xmlChar *rebuf;
-
-	    buf->size *= 2;
-	    rebuf = (xmlChar *) xmlRealloc(buf->content, buf->size * sizeof(xmlChar));
-	    if (rebuf == NULL) {
-	        fprintf(stderr, "xmlBufferAdd : out of memory!\n");
-		return;
-	    }
-	    buf->content = rebuf;
-	}
-        buf->content[buf->use++] = *cur;
-    }
+    if (str != NULL)
+	xmlBufferAdd(buf, str, -1);
 }
 
 /**
@@ -2758,32 +3037,13 @@ xmlBufferCCat(xmlBufferPtr buf, const char *str) {
     }
     for (cur = str;*cur != 0;cur++) {
         if (buf->use  + 10 >= buf->size) {
-	    xmlChar *rebuf;
-
-	    buf->size *= 2;
-	    rebuf = (xmlChar *) xmlRealloc(buf->content, buf->size * sizeof(xmlChar));
-	    if (rebuf == NULL) {
-	        fprintf(stderr, "xmlBufferAdd : out of memory!\n");
-		return;
-	    }
-	    buf->content = rebuf;
-	}
+            if(!xmlBufferResize(buf, buf->use+10)){
+                fprintf(stderr, "xmlBufferCCat : out of memory!\n");
+                return;
+            }
+        }
         buf->content[buf->use++] = *cur;
     }
-}
-
-/**
- * xmlBufferLastChar:
- * @buf:  the buffer to dump
- *
- * Get the last char of the buffer
- *
- * Returns the last char from the buffer or 0 if empty
- */
-xmlChar
-xmlBufferLastChar(xmlBufferPtr buf) {
-    if ((buf == NULL) || (buf->use <= 0)) return(0);
-    return(buf->content[buf->use - 1]);
 }
 
 /**
@@ -3081,7 +3341,12 @@ xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
 	if (cur->content != NULL) {
             xmlChar *buffer;
 
+#ifndef XML_USE_BUFFER_CONTENT
             buffer = xmlEncodeEntitiesReentrant(doc, cur->content);
+#else
+	    buffer = xmlEncodeEntitiesReentrant(doc, 
+					    xmlBufferContent(cur->content));
+#endif
 	    if (buffer != NULL) {
 		xmlBufferWriteCHAR(buf, buffer);
 		xmlFree(buffer);
@@ -3095,7 +3360,11 @@ xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
 	    xmlBufferWriteCHAR(buf, cur->name);
 	    if (cur->content != NULL) {
 		xmlBufferWriteChar(buf, " ");
+#ifndef XML_USE_BUFFER_CONTENT
 		xmlBufferWriteCHAR(buf, cur->content);
+#else
+		xmlBufferWriteCHAR(buf, xmlBufferContent(cur->content));
+#endif
 	    }
 	    xmlBufferWriteChar(buf, "?>");
 	}
@@ -3104,7 +3373,11 @@ xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
     if (cur->type == XML_COMMENT_NODE) {
 	if (cur->content != NULL) {
 	    xmlBufferWriteChar(buf, "<!--");
+#ifndef XML_USE_BUFFER_CONTENT
 	    xmlBufferWriteCHAR(buf, cur->content);
+#else
+	    xmlBufferWriteCHAR(buf, xmlBufferContent(cur->content));
+#endif
 	    xmlBufferWriteChar(buf, "-->");
 	}
 	return;
@@ -3118,7 +3391,11 @@ xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
     if (cur->type == XML_CDATA_SECTION_NODE) {
         xmlBufferWriteChar(buf, "<![CDATA[");
 	if (cur->content != NULL)
+#ifndef XML_USE_BUFFER_CONTENT
 	    xmlBufferWriteCHAR(buf, cur->content);
+#else
+	    xmlBufferWriteCHAR(buf, xmlBufferContent(cur->content));
+#endif
         xmlBufferWriteChar(buf, "]]>");
 	return;
     }
@@ -3154,7 +3431,12 @@ xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
     if (cur->content != NULL) {
 	xmlChar *buffer;
 
+#ifndef XML_USE_BUFFER_CONTENT
 	buffer = xmlEncodeEntitiesReentrant(doc, cur->content);
+#else
+	buffer = xmlEncodeEntitiesReentrant(doc, 
+		                            xmlBufferContent(cur->content));
+#endif
 	if (buffer != NULL) {
 	    xmlBufferWriteCHAR(buf, buffer);
 	    xmlFree(buffer);

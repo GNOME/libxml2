@@ -179,7 +179,11 @@ void xmlDebugDumpOneNode(FILE *output, xmlNodePtr node, int depth) {
 	if (node->content != NULL) {
 	    fprintf(output, shift);
 	    fprintf(output, "content=");
+#ifndef XML_USE_BUFFER_CONTENT	    
 	    xmlDebugDumpString(output, node->content);
+#else
+	    xmlDebugDumpString(output, xmlBufferContent(node->content));
+#endif
 	    fprintf(output, "\n");
 	}
     } else {

@@ -1,3 +1,7 @@
+Fri Sep  7 11:35:00 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am: Need $(ICONV_LIBS) in libxml2_la_LIBADD
+
 Wed Sep  5 17:47:43 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: warn if version is not 1.0 but it's not

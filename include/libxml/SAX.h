@@ -54,7 +54,7 @@ void		entityDecl			(void *ctx,
 						 xmlChar *content);
 void		attributeDecl			(void *ctx,
 						 const xmlChar *elem,
-						 const xmlChar *name,
+						 const xmlChar *fullname,
 						 int type,
 						 int def,
 						 const xmlChar *defaultValue,

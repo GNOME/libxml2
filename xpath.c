@@ -877,6 +877,14 @@ finish:
 	xmlXPathDebugDumpStepOp(output, comp, &comp->steps[op->ch2], depth + 1);
 }
 
+/**
+ * xmlXPathDebugDumpCompExpr:
+ * @output:  the FILE * for the output
+ * @comp:  the precompiled XPath expression
+ * @depth:  the indentation level.
+ *
+ * Dumps the tree of the compiled XPath expression.
+ */
 void
 xmlXPathDebugDumpCompExpr(FILE *output, xmlXPathCompExprPtr comp,
 	                  int depth) {
@@ -939,6 +947,21 @@ extern type name##Pop(xmlXPathParserContextPtr ctxt) {			\
     return(ret);							\
 }									\
 
+/**
+ * valuePop:
+ * @ctxt: an XPath evaluation context
+ *
+ * Pops the top XPath object from the value stack
+ *
+ * Returns the XPath object just removed
+ */
+/**
+ * valuePush:
+ * @ctxt:  an XPath evaluation context
+ * @value:  the XPath object
+ *
+ * Pushes a new XPath object on top of the value stack
+ */
 PUSH_AND_POP(xmlXPathObjectPtr, value)
 
 /**
@@ -1245,7 +1268,7 @@ const char *xmlXPathErrorMessages[] = {
 };
 
 /**
- * xmlXPathError:
+ * xmlXPatherror:
  * @ctxt:  the XPath Parser context
  * @file:  the file name
  * @line:  the line number
@@ -2540,7 +2563,7 @@ xmlXPathNsLookup(xmlXPathContextPtr ctxt, const xmlChar *prefix) {
 }
 
 /**
- * xmlXPathRegisteredVariablesCleanup:
+ * xmlXPathRegisteredNsCleanup:
  * @ctxt:  the XPath context
  *
  * Cleanup the XPath context data associated to registered variables
@@ -3182,7 +3205,7 @@ xmlXPathCastNodeSetToBoolean (xmlNodeSetPtr ns) {
 }
 
 /**
- * xmlXpathCastToBoolean:
+ * xmlXPathCastToBoolean:
  * @val:  an XPath object
  *
  * Converts an XPath object to its boolean value

@@ -170,7 +170,7 @@ done:
 }
 
 /**
- * xmlNanoHTTPClenup:
+ * xmlNanoHTTPCleanup:
  *
  * Cleanup the HTTP protocol layer.
  */
@@ -1177,6 +1177,8 @@ xmlNanoHTTPSave(void *ctxt, const char *filename) {
  * xmlNanoHTTPReturnCode:
  * @ctx:  the HTTP context
  *
+ * Get the latest HTTP return code received
+ *
  * Returns the HTTP return code for the request.
  */
 int
@@ -1191,6 +1193,8 @@ xmlNanoHTTPReturnCode(void *ctx) {
 /**
  * xmlNanoHTTPAuthHeader:
  * @ctx:  the HTTP context
+ *
+ * Get the authentication header of an HTTP context
  *
  * Returns the stashed value of the WWW-Authenticate or Proxy-Authenticate
  * header.

@@ -453,6 +453,8 @@ xmlFreeDtd(xmlDtdPtr cur) {
  * xmlNewDoc:
  * @version:  xmlChar string giving the version of XML "1.0"
  *
+ * Creates a new XML document
+ *
  * Returns a new document
  */
 xmlDocPtr
@@ -4942,10 +4944,12 @@ xmlBufferDump(FILE *file, xmlBufferPtr buf) {
  * xmlBufferContent:
  * @buf:  the buffer
  *
+ * Function to extract the content of a buffer
+ *
  * Returns the internal content
  */
 
-const xmlChar* 
+const xmlChar *
 xmlBufferContent(const xmlBufferPtr buf)
 {
     if(!buf)
@@ -4957,6 +4961,8 @@ xmlBufferContent(const xmlBufferPtr buf)
 /**
  * xmlBufferLength:
  * @buf:  the buffer 
+ *
+ * Function to get the length of a buffer
  *
  * Returns the length of data in the internal content
  */
@@ -5162,6 +5168,15 @@ xmlBufferCCat(xmlBufferPtr buf, const char *str) {
     buf->content[buf->use] = 0;
 }
 
+/**
+ * xmlBufferWriteXmlCHAR:
+ * @buf:  the XML buffer
+ * @string:  the string to add
+ *
+ * For VMS only.
+ * routine which manages and grows an output buffer. This one adds
+ * xmlChars at the end of the buffer.
+ */
 /**
  * xmlBufferWriteCHAR:
  * @buf:  the XML buffer
@@ -6098,7 +6113,7 @@ xmlDocContentDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr cur,
  ************************************************************************/
 
 /**
- * xmlDocDumpMemoryEnc:
+ * xmlDocDumpFormatMemoryEnc:
  * @out_doc:  Document to generate XML text from
  * @doc_txt_ptr:  Memory pointer for allocated XML text
  * @doc_txt_len:  Length of the generated XML text

@@ -473,7 +473,7 @@ xmlParseCatalog(const xmlChar *value, const char *file) {
  *									*
  ************************************************************************/
 
-/*
+/**
  * xmlLoadCatalog:
  * @filename:  a file path
  *
@@ -548,7 +548,7 @@ xmlLoadCatalog(const char *filename) {
     return(ret);
 }
 
-/*
+/**
  * xmlLoadCatalogs:
  * @paths:  a list of file path separated by ':' or spaces
  *

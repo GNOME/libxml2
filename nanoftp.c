@@ -12,18 +12,11 @@
 #define HAVE_NETINET_IN_H
 #define HAVE_NETDB_H
 #define HAVE_SYS_TIME_H
-#include "libxml.h"
-#ifdef WITHOUT_TRIO
-#include <stdio.h>
-#else
-#define TRIO_REPLACE_STDIO
-#include "trio.h"
-#endif
 #else /* STANDALONE */
 #define NEED_SOCKETS
-#include "libxml.h"
 #endif /* STANDALONE */
 
+#include "libxml.h"
 
 #ifdef LIBXML_FTP_ENABLED
 #include <string.h>

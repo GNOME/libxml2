@@ -64,6 +64,8 @@ extern "C" {
  * xmlXPathGetError:
  * @ctxt:  an XPath parser context
  *
+ * Get the error code of an XPath context
+ *
  * Returns the context error
  */
 #define xmlXPathGetError(ctxt)	  ((ctxt)->error)
@@ -71,6 +73,8 @@ extern "C" {
 /**
  * xmlXPathCheckError:
  * @ctxt:  an XPath parser context
+ *
+ * Check if an XPath error was raised
  *
  * Returns true if an error has been raised, false otherwise.
  */
@@ -80,6 +84,8 @@ extern "C" {
  * xmlXPathGetDocument:
  * @ctxt:  an XPath parser context
  *
+ * Get the document of an XPath context
+ *
  * Returns the context document
  */
 #define xmlXPathGetDocument(ctxt)	((ctxt)->context->doc)
@@ -87,6 +93,8 @@ extern "C" {
 /**
  * xmlXPathGetContextNode:
  * @ctxt: an XPath parser context
+ *
+ * Get the context node of an XPath context
  *
  * Returns the context node
  */
@@ -185,6 +193,9 @@ void *		xmlXPathPopExternal	(xmlXPathParserContextPtr ctxt);
 /**
  * xmlXPathStackIsNodeSet:
  * @ctxt: an XPath parser context
+ *
+ * Check if the current value on the XPath stack is a node set or
+ * an XSLT value tree
  *
  * Returns true if the current object on the stack is a node-set
  */
@@ -300,8 +311,7 @@ void *		xmlXPathPopExternal	(xmlXPathParserContextPtr ctxt);
 /*
  * Variable Lookup forwarding
  */
-typedef xmlXPathObjectPtr
-	(*xmlXPathVariableLookupFunc)	(void *ctxt,
+typedef xmlXPathObjectPtr (*xmlXPathVariableLookupFunc)	(void *ctxt,
 					 const xmlChar *name,
 					 const xmlChar *ns_uri);
 

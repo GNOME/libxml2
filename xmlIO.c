@@ -864,6 +864,15 @@ xmlOutputBufferClose(xmlOutputBufferPtr out) {
 }
 
 /**
+ * xmlParserInputBufferCreateFname:
+ * @URI:  a C string containing the URI or filename
+ * @enc:  the charset encoding if known
+ *
+ * VMS version of xmlParserInputBufferCreateFilename()
+ *
+ * Returns the new parser input or NULL
+ */
+/**
  * xmlParserInputBufferCreateFilename:
  * @URI:  a C string containing the URI or filename
  * @enc:  the charset encoding if known
@@ -1547,7 +1556,7 @@ xmlOutputBufferFlush(xmlOutputBufferPtr out) {
     return(ret);
 }
 
-/*
+/**
  * xmlParserGetDirectory:
  * @filename:  the path to a file
  *
@@ -1596,7 +1605,7 @@ xmlParserGetDirectory(const char *filename) {
  *								*
  ****************************************************************/
 
-/*
+/**
  * xmlDefaultExternalEntityLoader:
  * @URL:  the URL for the entity to load
  * @ID:  the System ID for the entity to load
@@ -1656,7 +1665,7 @@ xmlDefaultExternalEntityLoader(const char *URL, const char *ID,
 static xmlExternalEntityLoader xmlCurrentExternalEntityLoader =
        xmlDefaultExternalEntityLoader;
 
-/*
+/**
  * xmlSetExternalEntityLoader:
  * @f:  the new entity resolver function
  *
@@ -1667,7 +1676,7 @@ xmlSetExternalEntityLoader(xmlExternalEntityLoader f) {
     xmlCurrentExternalEntityLoader = f;
 }
 
-/*
+/**
  * xmlGetExternalEntityLoader:
  *
  * Get the default external entity resolver function for the application
@@ -1679,7 +1688,7 @@ xmlGetExternalEntityLoader(void) {
     return(xmlCurrentExternalEntityLoader);
 }
 
-/*
+/**
  * xmlLoadExternalEntity:
  * @URL:  the URL for the entity to load
  * @ID:  the System ID for the entity to load

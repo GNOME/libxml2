@@ -304,7 +304,7 @@ xmlHashUpdateEntry2(xmlHashTablePtr table, const xmlChar *name,
  *
  * Find the userdata specified by the name.
  *
- * Returns the a pointer to the userdata
+ * Returns the pointer to the userdata
  */
 void *
 xmlHashLookup(xmlHashTablePtr table, const xmlChar *name) {
@@ -319,7 +319,7 @@ xmlHashLookup(xmlHashTablePtr table, const xmlChar *name) {
  *
  * Find the userdata specified by the (name, name2) tuple.
  *
- * Returns the a pointer to the userdata
+ * Returns the pointer to the userdata
  */
 void *
 xmlHashLookup2(xmlHashTablePtr table, const xmlChar *name,
@@ -470,7 +470,7 @@ xmlHashUpdateEntry3(xmlHashTablePtr table, const xmlChar *name,
 }
 
 /**
- * xmlHashLookup:
+ * xmlHashLookup3:
  * @table: the hash table
  * @name: the name of the userdata
  * @name2: a second name of the userdata
@@ -614,6 +614,8 @@ xmlHashCopy(xmlHashTablePtr table, xmlHashCopier f) {
 /**
  * xmlHashSize:
  * @table: the hash table
+ *
+ * Query the number of element installed in the hash table.
  *
  * Returns the number of elements in the hash table or
  * -1 in case of error

@@ -362,7 +362,6 @@ xmlUTF8Strloc(const xmlChar *utf, const xmlChar *utfchar) {
 /**
  * xmlUTF8Strsub:
  * @utf:  a sequence of UTF-8 encoded bytes
- *
  * @start: relative pos of first char
  * @len:   total number to copy
  *
@@ -1768,8 +1767,8 @@ xmlGetCharEncodingHandler(xmlCharEncoding enc) {
 }
 
 /**
- * xmlGetCharEncodingHandler:
- * @enc:  a string describing the char encoding.
+ * xmlFindCharEncodingHandler:
+ * @name:  a string describing the char encoding.
  *
  * Search in the registrered set the handler able to read/write that encoding.
  *

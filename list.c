@@ -226,7 +226,7 @@ xmlListSearch(xmlListPtr l, void *data)
 }
 
 /**
- * xmlListLinkReverseSearch:
+ * xmlListReverseSearch:
  * @l:  a list
  * @data:  a search value
  *
@@ -404,6 +404,8 @@ xmlListClear(xmlListPtr l)
  * xmlListEmpty:
  * @l:  a list
  *
+ * Is the list empty ?
+ *
  * Returns 1 if the list is empty, 0 otherwise
  */
 int
@@ -416,6 +418,8 @@ xmlListEmpty(xmlListPtr l)
  * xmlListFront:
  * @l:  a list
  *
+ * Get the first element in the list
+ *
  * Returns the first element in the list, or NULL
  */
 xmlLinkPtr 
@@ -425,8 +429,10 @@ xmlListFront(xmlListPtr l)
 }
     
 /**
- * xmlListFront:
+ * xmlListEnd:
  * @l:  a list
+ *
+ * Get the last element in the list
  *
  * Returns the last element in the list, or NULL
  */
@@ -439,6 +445,8 @@ xmlListEnd(xmlListPtr l)
 /**
  * xmlListSize:
  * @l:  a list
+ *
+ * Get the number of elements in the list
  *
  * Returns the number of elements in the list
  */
@@ -603,6 +611,7 @@ xmlListSort(xmlListPtr l)
  * xmlListWalk:
  * @l:  a list
  * @walker:  a processing function
+ * @user:  a user parameter passed to the walker function
  *
  * Walk all the element of the first from first to last and
  * apply the walker function to it
@@ -621,6 +630,7 @@ xmlListWalk(xmlListPtr l, xmlListWalker walker, const void *user) {
  * xmlListReverseWalk:
  * @l:  a list
  * @walker:  a processing function
+ * @user:  a user parameter passed to the walker function
  *
  * Walk all the element of the list in reverse order and
  * apply the walker function to it

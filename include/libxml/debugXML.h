@@ -43,11 +43,9 @@ void	xmlDebugDumpDocumentHead(FILE *output,
 void	xmlDebugDumpDocument	(FILE *output,
 				 xmlDocPtr doc);
 void	xmlDebugDumpDTD		(FILE *output,
-				 xmlDtdPtr doc);
+				 xmlDtdPtr dtd);
 void	xmlDebugDumpEntities	(FILE *output,
 				 xmlDocPtr doc);
-void	xmlLsOneNode		(FILE *output,
-				 xmlNodePtr node);
 
 /****************************************************************
  *								*

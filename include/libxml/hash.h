@@ -104,17 +104,8 @@ void *			xmlHashLookup3	(xmlHashTablePtr table,
  */
 xmlHashTablePtr		xmlHashCopy	(xmlHashTablePtr table,
 					 xmlHashCopier f);
-int			xmlHashSize	(xmlHashTablePtr);
+int			xmlHashSize	(xmlHashTablePtr table);
 void			xmlHashScan	(xmlHashTablePtr table,
-					 xmlHashScanner f,
-					 void *data);
-void			xmlHashScan1	(xmlHashTablePtr table,
-					 const xmlChar *name,
-					 xmlHashScanner f,
-					 void *data);
-void			xmlHashScan2	(xmlHashTablePtr table,
-					 const xmlChar *name,
-					 const xmlChar *name2,
 					 xmlHashScanner f,
 					 void *data);
 void			xmlHashScan3	(xmlHashTablePtr table,

@@ -160,7 +160,6 @@ xmlIDPtr	xmlAddID	(xmlValidCtxtPtr ctxt,
 				 xmlDocPtr doc,
 				 const xmlChar *value,
 				 xmlAttrPtr attr);
-xmlIDTablePtr	xmlCopyIDTable	(xmlIDTablePtr table);
 void		xmlFreeIDTable	(xmlIDTablePtr table);
 xmlAttrPtr	xmlGetID	(xmlDocPtr doc,
 				 const xmlChar *ID);
@@ -174,7 +173,6 @@ xmlRefPtr	xmlAddRef	(xmlValidCtxtPtr ctxt,
 				 xmlDocPtr doc,
 				 const xmlChar *value,
 				 xmlAttrPtr attr);
-xmlRefTablePtr	xmlCopyRefTable	(xmlRefTablePtr table);
 void		xmlFreeRefTable	(xmlRefTablePtr table);
 int		xmlIsRef	(xmlDocPtr doc,
 				 xmlNodePtr elem,

@@ -29,18 +29,31 @@
 #define IS_BLANK(c)							\
   (((c) == '\n') || ((c) == '\r') || ((c) == '\t') || ((c) == ' '))
 
-void xmlDebugDumpString(FILE *output, const xmlChar *str) {
+/**
+ * xmlDebugDumpString:
+ * @output:  the FILE * for the output
+ * @str:  the string
+ *
+ * Dumps informations about the string, shorten it if necessary
+ */
+void
+xmlDebugDumpString(FILE * output, const xmlChar * str)
+{
     int i;
+
     if (str == NULL) {
-	fprintf(output, "(NULL)");
-	return;
+        fprintf(output, "(NULL)");
+        return;
     }
-    for (i = 0;i < 40;i++)
-        if (str[i] == 0) return;
-	else if (IS_BLANK(str[i])) fputc(' ', output);
-	else if (str[i] >= 0x80)
-	     fprintf(output, "#%X", str[i]);
-	else fputc(str[i], output);
+    for (i = 0; i < 40; i++)
+        if (str[i] == 0)
+            return;
+        else if (IS_BLANK(str[i]))
+            fputc(' ', output);
+        else if (str[i] >= 0x80)
+            fprintf(output, "#%X", str[i]);
+        else
+            fputc(str[i], output);
     fprintf(output, "...");
 }
 
@@ -457,7 +470,16 @@ xmlDebugDumpEntity(FILE *output, xmlEntityPtr ent, int depth) {
     }
 }
 
-void xmlDebugDumpAttr(FILE *output, xmlAttrPtr attr, int depth) {
+/**
+ * xmlDebugDumpAttr:
+ * @output:  the FILE * for the output
+ * @attr:  the attribute
+ * @depth:  the indentation level.
+ *
+ * Dumps debug information for the attribute
+ */
+void
+xmlDebugDumpAttr(FILE *output, xmlAttrPtr attr, int depth) {
     int i;
     char shift[100];
 
@@ -495,298 +517,371 @@ void xmlDebugDumpAttr(FILE *output, xmlAttrPtr attr, int depth) {
     }
 }
 
-void xmlDebugDumpAttrList(FILE *output, xmlAttrPtr attr, int depth) {
+/**
+ * xmlDebugDumpAttrList:
+ * @output:  the FILE * for the output
+ * @attr:  the attribute list
+ * @depth:  the indentation level.
+ *
+ * Dumps debug information for the attribute list
+ */
+void
+xmlDebugDumpAttrList(FILE * output, xmlAttrPtr attr, int depth)
+{
     while (attr != NULL) {
         xmlDebugDumpAttr(output, attr, depth);
-	attr = attr->next;
+        attr = attr->next;
     }
 }
 
-void xmlDebugDumpOneNode(FILE *output, xmlNodePtr node, int depth) {
+/**
+ * xmlDebugDumpOneNode:
+ * @output:  the FILE * for the output
+ * @node:  the node
+ * @depth:  the indentation level.
+ *
+ * Dumps debug information for the element node, it is not recursive
+ */
+void
+xmlDebugDumpOneNode(FILE * output, xmlNodePtr node, int depth)
+{
     int i;
     char shift[100];
 
-    for (i = 0;((i < depth) && (i < 25));i++)
+    for (i = 0; ((i < depth) && (i < 25)); i++)
         shift[2 * i] = shift[2 * i + 1] = ' ';
     shift[2 * i] = shift[2 * i + 1] = 0;
 
     switch (node->type) {
-	case XML_ELEMENT_NODE:
-	    fprintf(output, shift);
-	    fprintf(output, "ELEMENT ");
-	    if ((node->ns != NULL) && (node->ns->prefix != NULL)) {
-		xmlDebugDumpString(output, node->ns->prefix);
-	        fprintf(output, ":");
-	    }
-	    xmlDebugDumpString(output, node->name);
-	    fprintf(output, "\n");
-	    break;
-	case XML_ATTRIBUTE_NODE:
-	    fprintf(output, shift);
-	    fprintf(output, "Error, ATTRIBUTE found here\n");
-	    break;
-	case XML_TEXT_NODE:
-	    fprintf(output, shift);
-	    fprintf(output, "TEXT\n");
-	    break;
-	case XML_CDATA_SECTION_NODE:
-	    fprintf(output, shift);
-	    fprintf(output, "CDATA_SECTION\n");
-	    break;
-	case XML_ENTITY_REF_NODE:
-	    fprintf(output, shift);
-	    fprintf(output, "ENTITY_REF(%s)\n", node->name);
-	    break;
-	case XML_ENTITY_NODE:
-	    fprintf(output, shift);
-	    fprintf(output, "ENTITY\n");
-	    break;
-	case XML_PI_NODE:
-	    fprintf(output, shift);
-	    fprintf(output, "PI %s\n", node->name);
-	    break;
-	case XML_COMMENT_NODE:
-	    fprintf(output, shift);
-	    fprintf(output, "COMMENT\n");
-	    break;
-	case XML_DOCUMENT_NODE:
-	case XML_HTML_DOCUMENT_NODE:
-	    fprintf(output, shift);
-	    fprintf(output, "Error, DOCUMENT found here\n");
-	    break;
-	case XML_DOCUMENT_TYPE_NODE:
-	    fprintf(output, shift);
-	    fprintf(output, "DOCUMENT_TYPE\n");
-	    break;
-	case XML_DOCUMENT_FRAG_NODE:
-	    fprintf(output, shift);
-	    fprintf(output, "DOCUMENT_FRAG\n");
-	    break;
-	case XML_NOTATION_NODE:
-	    fprintf(output, shift);
-	    fprintf(output, "NOTATION\n");
-	    break;
-	case XML_DTD_NODE:
-	    xmlDebugDumpDtdNode(output, (xmlDtdPtr) node, depth);
-	    return;
-	case XML_ELEMENT_DECL:
-	    xmlDebugDumpElemDecl(output, (xmlElementPtr) node, depth);
-	    return;
-	case XML_ATTRIBUTE_DECL:
-	    xmlDebugDumpAttrDecl(output, (xmlAttributePtr) node, depth);
-	    return;
+        case XML_ELEMENT_NODE:
+            fprintf(output, shift);
+            fprintf(output, "ELEMENT ");
+            if ((node->ns != NULL) && (node->ns->prefix != NULL)) {
+                xmlDebugDumpString(output, node->ns->prefix);
+                fprintf(output, ":");
+            }
+            xmlDebugDumpString(output, node->name);
+            fprintf(output, "\n");
+            break;
+        case XML_ATTRIBUTE_NODE:
+            fprintf(output, shift);
+            fprintf(output, "Error, ATTRIBUTE found here\n");
+            break;
+        case XML_TEXT_NODE:
+            fprintf(output, shift);
+            fprintf(output, "TEXT\n");
+            break;
+        case XML_CDATA_SECTION_NODE:
+            fprintf(output, shift);
+            fprintf(output, "CDATA_SECTION\n");
+            break;
+        case XML_ENTITY_REF_NODE:
+            fprintf(output, shift);
+            fprintf(output, "ENTITY_REF(%s)\n", node->name);
+            break;
+        case XML_ENTITY_NODE:
+            fprintf(output, shift);
+            fprintf(output, "ENTITY\n");
+            break;
+        case XML_PI_NODE:
+            fprintf(output, shift);
+            fprintf(output, "PI %s\n", node->name);
+            break;
+        case XML_COMMENT_NODE:
+            fprintf(output, shift);
+            fprintf(output, "COMMENT\n");
+            break;
+        case XML_DOCUMENT_NODE:
+        case XML_HTML_DOCUMENT_NODE:
+            fprintf(output, shift);
+            fprintf(output, "Error, DOCUMENT found here\n");
+            break;
+        case XML_DOCUMENT_TYPE_NODE:
+            fprintf(output, shift);
+            fprintf(output, "DOCUMENT_TYPE\n");
+            break;
+        case XML_DOCUMENT_FRAG_NODE:
+            fprintf(output, shift);
+            fprintf(output, "DOCUMENT_FRAG\n");
+            break;
+        case XML_NOTATION_NODE:
+            fprintf(output, shift);
+            fprintf(output, "NOTATION\n");
+            break;
+        case XML_DTD_NODE:
+            xmlDebugDumpDtdNode(output, (xmlDtdPtr) node, depth);
+            return;
+        case XML_ELEMENT_DECL:
+            xmlDebugDumpElemDecl(output, (xmlElementPtr) node, depth);
+            return;
+        case XML_ATTRIBUTE_DECL:
+            xmlDebugDumpAttrDecl(output, (xmlAttributePtr) node, depth);
+            return;
         case XML_ENTITY_DECL:
-	    xmlDebugDumpEntityDecl(output, (xmlEntityPtr) node, depth);
-	    return;
+            xmlDebugDumpEntityDecl(output, (xmlEntityPtr) node, depth);
+            return;
         case XML_NAMESPACE_DECL:
-	    xmlDebugDumpNamespace(output, (xmlNsPtr) node, depth);
-	    return;
+            xmlDebugDumpNamespace(output, (xmlNsPtr) node, depth);
+            return;
         case XML_XINCLUDE_START:
-	    fprintf(output, shift);
-	    fprintf(output, "INCLUDE START\n");
-	    return;
+            fprintf(output, shift);
+            fprintf(output, "INCLUDE START\n");
+            return;
         case XML_XINCLUDE_END:
-	    fprintf(output, shift);
-	    fprintf(output, "INCLUDE END\n");
-	    return;
-	default:
-	    fprintf(output, shift);
-	    fprintf(output, "NODE_%d !!!\n", node->type);
-	    return;
+            fprintf(output, shift);
+            fprintf(output, "INCLUDE END\n");
+            return;
+        default:
+            fprintf(output, shift);
+            fprintf(output, "NODE_%d !!!\n", node->type);
+            return;
     }
     if (node->doc == NULL) {
         fprintf(output, shift);
-	fprintf(output, "doc == NULL !!!\n");
+        fprintf(output, "doc == NULL !!!\n");
     }
-    if (node->nsDef != NULL) 
+    if (node->nsDef != NULL)
         xmlDebugDumpNamespaceList(output, node->nsDef, depth + 1);
     if (node->properties != NULL)
-	xmlDebugDumpAttrList(output, node->properties, depth + 1);
+        xmlDebugDumpAttrList(output, node->properties, depth + 1);
     if (node->type != XML_ENTITY_REF_NODE) {
-	if ((node->type != XML_ELEMENT_NODE) &&
-	    (node->content != NULL)) {
-            shift[2 * i] = shift[2 * i + 1] = ' ' ;
-            shift[2 * i + 2] = shift[2 * i + 3] = 0 ;
-	    fprintf(output, shift);
-	    fprintf(output, "content=");
-#ifndef XML_USE_BUFFER_CONTENT	    
-	    xmlDebugDumpString(output, node->content);
+        if ((node->type != XML_ELEMENT_NODE) && (node->content != NULL)) {
+            shift[2 * i] = shift[2 * i + 1] = ' ';
+            shift[2 * i + 2] = shift[2 * i + 3] = 0;
+            fprintf(output, shift);
+            fprintf(output, "content=");
+#ifndef XML_USE_BUFFER_CONTENT
+            xmlDebugDumpString(output, node->content);
 #else
-	    xmlDebugDumpString(output, xmlBufferContent(node->content));
+            xmlDebugDumpString(output, xmlBufferContent(node->content));
 #endif
-	    fprintf(output, "\n");
-	}
+            fprintf(output, "\n");
+        }
     } else {
         xmlEntityPtr ent;
-	ent = xmlGetDocEntity(node->doc, node->name);
-	if (ent != NULL)
-	    xmlDebugDumpEntity(output, ent, depth + 1);
+
+        ent = xmlGetDocEntity(node->doc, node->name);
+        if (ent != NULL)
+            xmlDebugDumpEntity(output, ent, depth + 1);
     }
     /*
      * Do a bit of checking
      */
     if (node->parent == NULL)
-	fprintf(output, "PBM: Node has no parent\n");
+        fprintf(output, "PBM: Node has no parent\n");
     if (node->doc == NULL)
-	fprintf(output, "PBM: Node has no doc\n");
+        fprintf(output, "PBM: Node has no doc\n");
     if ((node->parent != NULL) && (node->doc != node->parent->doc))
-	fprintf(output, "PBM: Node doc differs from parent's one\n");
+        fprintf(output, "PBM: Node doc differs from parent's one\n");
     if (node->prev == NULL) {
-	if ((node->parent != NULL) && (node->parent->children != node))
-	    fprintf(output, "PBM: Node has no prev and not first of list\n");
+        if ((node->parent != NULL) && (node->parent->children != node))
+            fprintf(output,
+                    "PBM: Node has no prev and not first of list\n");
     } else {
-	if (node->prev->next != node)
-	    fprintf(output, "PBM: Node prev->next : back link wrong\n");
+        if (node->prev->next != node)
+            fprintf(output, "PBM: Node prev->next : back link wrong\n");
     }
     if (node->next == NULL) {
-	if ((node->parent != NULL) && (node->parent->last != node))
-	    fprintf(output, "PBM: Node has no next and not last of list\n");
+        if ((node->parent != NULL) && (node->parent->last != node))
+            fprintf(output,
+                    "PBM: Node has no next and not last of list\n");
     } else {
-	if (node->next->prev != node)
-	    fprintf(output, "PBM: Node next->prev : forward link wrong\n");
+        if (node->next->prev != node)
+            fprintf(output, "PBM: Node next->prev : forward link wrong\n");
     }
 }
 
-void xmlDebugDumpNode(FILE *output, xmlNodePtr node, int depth) {
+/**
+ * xmlDebugDumpNode:
+ * @output:  the FILE * for the output
+ * @node:  the node
+ * @depth:  the indentation level.
+ *
+ * Dumps debug information for the element node, it is recursive
+ */
+void
+xmlDebugDumpNode(FILE * output, xmlNodePtr node, int depth)
+{
     xmlDebugDumpOneNode(output, node, depth);
     if ((node->children != NULL) && (node->type != XML_ENTITY_REF_NODE))
-	xmlDebugDumpNodeList(output, node->children, depth + 1);
+        xmlDebugDumpNodeList(output, node->children, depth + 1);
 }
 
-void xmlDebugDumpNodeList(FILE *output, xmlNodePtr node, int depth) {
+/**
+ * xmlDebugDumpNodeList:
+ * @output:  the FILE * for the output
+ * @node:  the node list
+ * @depth:  the indentation level.
+ *
+ * Dumps debug information for the list of element node, it is recursive
+ */
+void
+xmlDebugDumpNodeList(FILE * output, xmlNodePtr node, int depth)
+{
     while (node != NULL) {
         xmlDebugDumpNode(output, node, depth);
-	node = node->next;
+        node = node->next;
     }
 }
 
 
-void xmlDebugDumpDocumentHead(FILE *output, xmlDocPtr doc) {
-    if (output == NULL) output = stdout;
+/**
+ * xmlDebugDumpDocumentHead:
+ * @output:  the FILE * for the output
+ * @doc:  the document
+ *
+ * Dumps debug information cncerning the document, not recursive
+ */
+void
+xmlDebugDumpDocumentHead(FILE * output, xmlDocPtr doc)
+{
+    if (output == NULL)
+        output = stdout;
     if (doc == NULL) {
         fprintf(output, "DOCUMENT == NULL !\n");
-	return;
+        return;
     }
 
     switch (doc->type) {
-	case XML_ELEMENT_NODE:
-	    fprintf(output, "Error, ELEMENT found here ");
-	    break;
-	case XML_ATTRIBUTE_NODE:
-	    fprintf(output, "Error, ATTRIBUTE found here\n");
-	    break;
-	case XML_TEXT_NODE:
-	    fprintf(output, "Error, TEXT\n");
-	    break;
-	case XML_CDATA_SECTION_NODE:
-	    fprintf(output, "Error, CDATA_SECTION\n");
-	    break;
-	case XML_ENTITY_REF_NODE:
-	    fprintf(output, "Error, ENTITY_REF\n");
-	    break;
-	case XML_ENTITY_NODE:
-	    fprintf(output, "Error, ENTITY\n");
-	    break;
-	case XML_PI_NODE:
-	    fprintf(output, "Error, PI\n");
-	    break;
-	case XML_COMMENT_NODE:
-	    fprintf(output, "Error, COMMENT\n");
-	    break;
-	case XML_DOCUMENT_NODE:
-	    fprintf(output, "DOCUMENT\n");
-	    break;
-	case XML_HTML_DOCUMENT_NODE:
-	    fprintf(output, "HTML DOCUMENT\n");
-	    break;
-	case XML_DOCUMENT_TYPE_NODE:
-	    fprintf(output, "Error, DOCUMENT_TYPE\n");
-	    break;
-	case XML_DOCUMENT_FRAG_NODE:
-	    fprintf(output, "Error, DOCUMENT_FRAG\n");
-	    break;
-	case XML_NOTATION_NODE:
-	    fprintf(output, "Error, NOTATION\n");
-	    break;
-	default:
-	    fprintf(output, "NODE_%d\n", doc->type);
+        case XML_ELEMENT_NODE:
+            fprintf(output, "Error, ELEMENT found here ");
+            break;
+        case XML_ATTRIBUTE_NODE:
+            fprintf(output, "Error, ATTRIBUTE found here\n");
+            break;
+        case XML_TEXT_NODE:
+            fprintf(output, "Error, TEXT\n");
+            break;
+        case XML_CDATA_SECTION_NODE:
+            fprintf(output, "Error, CDATA_SECTION\n");
+            break;
+        case XML_ENTITY_REF_NODE:
+            fprintf(output, "Error, ENTITY_REF\n");
+            break;
+        case XML_ENTITY_NODE:
+            fprintf(output, "Error, ENTITY\n");
+            break;
+        case XML_PI_NODE:
+            fprintf(output, "Error, PI\n");
+            break;
+        case XML_COMMENT_NODE:
+            fprintf(output, "Error, COMMENT\n");
+            break;
+        case XML_DOCUMENT_NODE:
+            fprintf(output, "DOCUMENT\n");
+            break;
+        case XML_HTML_DOCUMENT_NODE:
+            fprintf(output, "HTML DOCUMENT\n");
+            break;
+        case XML_DOCUMENT_TYPE_NODE:
+            fprintf(output, "Error, DOCUMENT_TYPE\n");
+            break;
+        case XML_DOCUMENT_FRAG_NODE:
+            fprintf(output, "Error, DOCUMENT_FRAG\n");
+            break;
+        case XML_NOTATION_NODE:
+            fprintf(output, "Error, NOTATION\n");
+            break;
+        default:
+            fprintf(output, "NODE_%d\n", doc->type);
     }
     if (doc->name != NULL) {
-	fprintf(output, "name=");
+        fprintf(output, "name=");
         xmlDebugDumpString(output, BAD_CAST doc->name);
-	fprintf(output, "\n");
+        fprintf(output, "\n");
     }
     if (doc->version != NULL) {
-	fprintf(output, "version=");
+        fprintf(output, "version=");
         xmlDebugDumpString(output, doc->version);
-	fprintf(output, "\n");
+        fprintf(output, "\n");
     }
     if (doc->encoding != NULL) {
-	fprintf(output, "encoding=");
+        fprintf(output, "encoding=");
         xmlDebugDumpString(output, doc->encoding);
-	fprintf(output, "\n");
+        fprintf(output, "\n");
     }
     if (doc->URL != NULL) {
-	fprintf(output, "URL=");
+        fprintf(output, "URL=");
         xmlDebugDumpString(output, doc->URL);
-	fprintf(output, "\n");
+        fprintf(output, "\n");
     }
     if (doc->standalone)
         fprintf(output, "standalone=true\n");
-    if (doc->oldNs != NULL) 
+    if (doc->oldNs != NULL)
         xmlDebugDumpNamespaceList(output, doc->oldNs, 0);
 }
 
-void xmlDebugDumpDocument(FILE *output, xmlDocPtr doc) {
-    if (output == NULL) output = stdout;
+/**
+ * xmlDebugDumpDocument:
+ * @output:  the FILE * for the output
+ * @doc:  the document
+ *
+ * Dumps debug information for the document, it's recursive
+ */
+void
+xmlDebugDumpDocument(FILE * output, xmlDocPtr doc)
+{
+    if (output == NULL)
+        output = stdout;
     if (doc == NULL) {
         fprintf(output, "DOCUMENT == NULL !\n");
-	return;
+        return;
     }
     xmlDebugDumpDocumentHead(output, doc);
     if (((doc->type == XML_DOCUMENT_NODE) ||
-         (doc->type == XML_HTML_DOCUMENT_NODE)) &&
-        (doc->children != NULL))
+         (doc->type == XML_HTML_DOCUMENT_NODE)) && (doc->children != NULL))
         xmlDebugDumpNodeList(output, doc->children, 1);
-}    
+}
 
-void xmlDebugDumpDTD(FILE *output, xmlDtdPtr dtd) {
+/**
+ * xmlDebugDumpDTD:
+ * @output:  the FILE * for the output
+ * @dtd:  the DTD
+ *
+ * Dumps debug information for the DTD
+ */
+void
+xmlDebugDumpDTD(FILE * output, xmlDtdPtr dtd)
+{
     if (dtd == NULL)
-	return;
+        return;
     if (dtd->type != XML_DTD_NODE) {
-	fprintf(output, "PBM: not a DTD\n");
-	return;
+        fprintf(output, "PBM: not a DTD\n");
+        return;
     }
     if (dtd->name != NULL)
-	fprintf(output, "DTD(%s)", dtd->name);
+        fprintf(output, "DTD(%s)", dtd->name);
     else
-	fprintf(output, "DTD");
+        fprintf(output, "DTD");
     if (dtd->ExternalID != NULL)
-	fprintf(output, ", PUBLIC %s", dtd->ExternalID);
+        fprintf(output, ", PUBLIC %s", dtd->ExternalID);
     if (dtd->SystemID != NULL)
-	fprintf(output, ", SYSTEM %s", dtd->SystemID);
+        fprintf(output, ", SYSTEM %s", dtd->SystemID);
     fprintf(output, "\n");
     /*
      * Do a bit of checking
      */
     if ((dtd->parent != NULL) && (dtd->doc != dtd->parent->doc))
-	fprintf(output, "PBM: Dtd doc differs from parent's one\n");
+        fprintf(output, "PBM: Dtd doc differs from parent's one\n");
     if (dtd->prev == NULL) {
-	if ((dtd->parent != NULL) && (dtd->parent->children != (xmlNodePtr)dtd))
-	    fprintf(output, "PBM: Dtd has no prev and not first of list\n");
+        if ((dtd->parent != NULL)
+            && (dtd->parent->children != (xmlNodePtr) dtd))
+            fprintf(output,
+                    "PBM: Dtd has no prev and not first of list\n");
     } else {
-	if (dtd->prev->next != (xmlNodePtr) dtd)
-	    fprintf(output, "PBM: Dtd prev->next : back link wrong\n");
+        if (dtd->prev->next != (xmlNodePtr) dtd)
+            fprintf(output, "PBM: Dtd prev->next : back link wrong\n");
     }
     if (dtd->next == NULL) {
-	if ((dtd->parent != NULL) && (dtd->parent->last != (xmlNodePtr) dtd))
-	    fprintf(output, "PBM: Dtd has no next and not last of list\n");
+        if ((dtd->parent != NULL)
+            && (dtd->parent->last != (xmlNodePtr) dtd))
+            fprintf(output, "PBM: Dtd has no next and not last of list\n");
     } else {
-	if (dtd->next->prev != (xmlNodePtr) dtd)
-	    fprintf(output, "PBM: Dtd next->prev : forward link wrong\n");
+        if (dtd->next->prev != (xmlNodePtr) dtd)
+            fprintf(output, "PBM: Dtd next->prev : forward link wrong\n");
     }
     if (dtd->children == NULL)
-	fprintf(output, "    DTD is empty\n");
+        fprintf(output, "    DTD is empty\n");
     else
         xmlDebugDumpNodeList(output, dtd->children, 1);
 }
@@ -826,70 +921,84 @@ xmlDebugDumpEntityCallback(xmlEntityPtr cur, FILE *output) {
     fprintf(output, "\n");	
 }
 
-void xmlDebugDumpEntities(FILE *output, xmlDocPtr doc) {
-    if (output == NULL) output = stdout;
+/**
+ * xmlDebugDumpEntities:
+ * @output:  the FILE * for the output
+ * @doc:  the document
+ *
+ * Dumps debug information for all the entities in use by the document
+ */
+void
+xmlDebugDumpEntities(FILE * output, xmlDocPtr doc)
+{
+    if (output == NULL)
+        output = stdout;
     if (doc == NULL) {
         fprintf(output, "DOCUMENT == NULL !\n");
-	return;
+        return;
     }
 
     switch (doc->type) {
-	case XML_ELEMENT_NODE:
-	    fprintf(output, "Error, ELEMENT found here ");
-	    break;
-	case XML_ATTRIBUTE_NODE:
-	    fprintf(output, "Error, ATTRIBUTE found here\n");
-	    break;
-	case XML_TEXT_NODE:
-	    fprintf(output, "Error, TEXT\n");
-	    break;
-	case XML_CDATA_SECTION_NODE:
-	    fprintf(output, "Error, CDATA_SECTION\n");
-	    break;
-	case XML_ENTITY_REF_NODE:
-	    fprintf(output, "Error, ENTITY_REF\n");
-	    break;
-	case XML_ENTITY_NODE:
-	    fprintf(output, "Error, ENTITY\n");
-	    break;
-	case XML_PI_NODE:
-	    fprintf(output, "Error, PI\n");
-	    break;
-	case XML_COMMENT_NODE:
-	    fprintf(output, "Error, COMMENT\n");
-	    break;
-	case XML_DOCUMENT_NODE:
-	    fprintf(output, "DOCUMENT\n");
-	    break;
-	case XML_HTML_DOCUMENT_NODE:
-	    fprintf(output, "HTML DOCUMENT\n");
-	    break;
-	case XML_DOCUMENT_TYPE_NODE:
-	    fprintf(output, "Error, DOCUMENT_TYPE\n");
-	    break;
-	case XML_DOCUMENT_FRAG_NODE:
-	    fprintf(output, "Error, DOCUMENT_FRAG\n");
-	    break;
-	case XML_NOTATION_NODE:
-	    fprintf(output, "Error, NOTATION\n");
-	    break;
-	default:
-	    fprintf(output, "NODE_%d\n", doc->type);
+        case XML_ELEMENT_NODE:
+            fprintf(output, "Error, ELEMENT found here ");
+            break;
+        case XML_ATTRIBUTE_NODE:
+            fprintf(output, "Error, ATTRIBUTE found here\n");
+            break;
+        case XML_TEXT_NODE:
+            fprintf(output, "Error, TEXT\n");
+            break;
+        case XML_CDATA_SECTION_NODE:
+            fprintf(output, "Error, CDATA_SECTION\n");
+            break;
+        case XML_ENTITY_REF_NODE:
+            fprintf(output, "Error, ENTITY_REF\n");
+            break;
+        case XML_ENTITY_NODE:
+            fprintf(output, "Error, ENTITY\n");
+            break;
+        case XML_PI_NODE:
+            fprintf(output, "Error, PI\n");
+            break;
+        case XML_COMMENT_NODE:
+            fprintf(output, "Error, COMMENT\n");
+            break;
+        case XML_DOCUMENT_NODE:
+            fprintf(output, "DOCUMENT\n");
+            break;
+        case XML_HTML_DOCUMENT_NODE:
+            fprintf(output, "HTML DOCUMENT\n");
+            break;
+        case XML_DOCUMENT_TYPE_NODE:
+            fprintf(output, "Error, DOCUMENT_TYPE\n");
+            break;
+        case XML_DOCUMENT_FRAG_NODE:
+            fprintf(output, "Error, DOCUMENT_FRAG\n");
+            break;
+        case XML_NOTATION_NODE:
+            fprintf(output, "Error, NOTATION\n");
+            break;
+        default:
+            fprintf(output, "NODE_%d\n", doc->type);
     }
     if ((doc->intSubset != NULL) && (doc->intSubset->entities != NULL)) {
-        xmlEntitiesTablePtr table = (xmlEntitiesTablePtr) 
-	                            doc->intSubset->entities;
-	fprintf(output, "Entities in internal subset\n");
-	xmlHashScan(table, (xmlHashScanner)xmlDebugDumpEntityCallback, output);
+        xmlEntitiesTablePtr table = (xmlEntitiesTablePtr)
+            doc->intSubset->entities;
+
+        fprintf(output, "Entities in internal subset\n");
+        xmlHashScan(table, (xmlHashScanner) xmlDebugDumpEntityCallback,
+                    output);
     } else
-	fprintf(output, "No entities in internal subset\n");
+        fprintf(output, "No entities in internal subset\n");
     if ((doc->extSubset != NULL) && (doc->extSubset->entities != NULL)) {
-        xmlEntitiesTablePtr table = (xmlEntitiesTablePtr) 
-	                            doc->extSubset->entities;
-	fprintf(output, "Entities in external subset\n");
-	xmlHashScan(table, (xmlHashScanner)xmlDebugDumpEntityCallback, output);
+        xmlEntitiesTablePtr table = (xmlEntitiesTablePtr)
+            doc->extSubset->entities;
+
+        fprintf(output, "Entities in external subset\n");
+        xmlHashScan(table, (xmlHashScanner) xmlDebugDumpEntityCallback,
+                    output);
     } else
-	fprintf(output, "No entities in external subset\n");
+        fprintf(output, "No entities in external subset\n");
 }
 
 static int xmlLsCountNode(xmlNodePtr node) {
@@ -942,7 +1051,8 @@ static int xmlLsCountNode(xmlNodePtr node) {
     return(ret);
 }
 
-void xmlLsOneNode(FILE *output, xmlNodePtr node) {
+static void
+xmlLsOneNode(FILE *output, xmlNodePtr node) {
     switch (node->type) {
 	case XML_ELEMENT_NODE:
 	    fprintf(output, "-");

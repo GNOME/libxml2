@@ -1,3 +1,9 @@
+Thu Jul 19 15:29:26 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* configure.in Makefile.am: removed libxml softlink for good
+	* include/libxml/*.h *.c doc/Makefile.am: cleanup to get
+	  100% coverage by gtk-doc
+
 Tue Jul 17 17:36:46 EDT 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xmlmemory.c include/libxml/xmlmemory.h: debugging on IA64,

@@ -19,6 +19,12 @@
 #ifdef WITHOUT_TRIO
 #include <stdio.h>
 #else
+/**
+ * TRIO_REPLACE_STDIO:
+ *
+ * This macro is defined if teh trio string formatting functions are to
+ * be used instead of the default stdio ones.
+ */
 #define TRIO_REPLACE_STDIO
 #include "trio.h"
 #endif

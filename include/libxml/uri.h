@@ -45,7 +45,7 @@ struct _xmlURI {
 xmlURIPtr	xmlCreateURI		(void);
 xmlChar *	xmlBuildURI		(const xmlChar *URI,
 	                        	 const xmlChar *base);
-xmlURIPtr	xmlParseURI		(const char *URI);
+xmlURIPtr	xmlParseURI		(const char *str);
 int		xmlParseURIReference	(xmlURIPtr uri,
 					 const char *str);
 xmlChar *	xmlSaveUri		(xmlURIPtr uri);

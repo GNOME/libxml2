@@ -36,7 +36,7 @@ extern "C" {
 #define XML_CATALOGS_NAMESPACE		\
     (const xmlChar *) "urn:oasis:names:tc:entity:xmlns:xml:catalog"
 
-int		xmlLoadCatalog		(const char *URL);
+int		xmlLoadCatalog		(const char *filename);
 void		xmlLoadCatalogs		(const char *paths);
 void		xmlCatalogCleanup	(void);
 void		xmlCatalogDump		(FILE *out);

@@ -17,7 +17,7 @@ TARGET_DIR=$(HTML_DIR)/$(DOC_MODULE)/html
 # html_DATA = gnome-dev-info.html
 
 scan:
-	gtkdoc-scan --module=libxml --source-dir=$(DOC_SOURCE_DIR) --ignore-headers="acconfig.h config.h"
+	gtkdoc-scan --module=libxml --source-dir=$(DOC_SOURCE_DIR) --ignore-headers="acconfig.h config.h xmlwin32version.h win32config.h trio.h strio.h triop.h"
 
 templates: scan
 	gtkdoc-mktmpl --module=libxml

@@ -25,6 +25,12 @@
 extern "C" {
 #endif
 
+/**
+ * XML_XML_NAMESPACE:
+ *
+ * This is the namespace for the special xml: prefix predefined in the
+ * XML Namespace specification
+ */
 #define XML_XML_NAMESPACE \
     (const xmlChar *) "http://www.w3.org/XML/1998/namespace"
 
@@ -249,6 +255,11 @@ struct _xmlElement {
 };
 
 
+/**
+ * XML_LOCAL_NAMESPACE:
+ *
+ * A namespace declaration node
+ */
 #define XML_LOCAL_NAMESPACE XML_NAMESPACE_DECL
 typedef xmlElementType xmlNsType;
 
@@ -259,7 +270,6 @@ typedef xmlElementType xmlNsType;
  * Note that prefix == NULL is valid, it defines the default namespace
  * within the subtree (until overriden).
  *
- * XML_GLOBAL_NAMESPACE is now deprecated for good
  * xmlNsType is unified with xmlElementType
  */
 
@@ -405,8 +415,21 @@ struct _xmlNode {
     xmlNs           *nsDef;     /* namespace definitions on this node */
 };
 
-#define XML_GET_CONTENT(n) ((n)->type == XML_ELEMENT_PTR ? NULL : (n)->content)
-#define XML_GET_LINE(n) ((n)->type == XML_ELEMENT_PTR ? (int) (n)->content : 0)
+/**
+ * XML_GET_CONTENT:
+ *
+ * macro to extract the content pointer of a node
+ */
+#define XML_GET_CONTENT(n)					\
+    ((n)->type == XML_ELEMENT_PTR ? NULL : (n)->content)
+
+/**
+ * XML_GET_LINE:
+ *
+ * macro to extract the line number of an element node
+ */
+#define XML_GET_LINE(n)						\
+    ((n)->type == XML_ELEMENT_PTR ? (int) (n)->content : 0)
 
 /**
  * xmlDoc:
@@ -499,7 +522,6 @@ int		xmlBufferGrow		(xmlBufferPtr buf,
 					 unsigned int len);
 void		xmlBufferEmpty		(xmlBufferPtr buf);
 const xmlChar*	xmlBufferContent	(const xmlBufferPtr buf);
-int		xmlBufferUse		(const xmlBufferPtr buf);
 void		xmlBufferSetAllocationScheme(xmlBufferPtr buf,
 					 xmlBufferAllocationScheme scheme);
 int		xmlBufferLength		(const xmlBufferPtr buf);
@@ -709,7 +731,6 @@ void		xmlNodeSetBase		(xmlNodePtr cur,
  * Removing content.
  */
 int		xmlRemoveProp		(xmlAttrPtr attr);
-int		xmlRemoveNode		(xmlNodePtr node); /* TODO */
 int		xmlUnsetProp		(xmlNodePtr node,
 					 const xmlChar *name);
 int		xmlUnsetNsProp		(xmlNodePtr node,

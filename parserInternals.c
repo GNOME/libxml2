@@ -56,7 +56,7 @@ void xmlUpgradeOldNs(xmlDocPtr doc);
  ************************************************************************/
 const char *xmlParserVersion = LIBXML_VERSION_STRING;
 
-/*
+/**
  * xmlCheckVersion:
  * @version: the include version number
  *
@@ -128,7 +128,7 @@ static const char *xmlFeaturesList[] = {
     "SAX function externalSubset",
 };
 
-/*
+/**
  * xmlGetFeaturesList:
  * @len:  the length of the features name array (input/output)
  * @result:  an array of string to be filled with the features name.
@@ -155,7 +155,7 @@ xmlGetFeaturesList(int *len, const char **result) {
     return(ret);
 }
 
-/*
+/**
  * xmlGetFeature:
  * @ctxt:  an XML/HTML parser context
  * @name:  the feature name
@@ -256,7 +256,7 @@ xmlGetFeature(xmlParserCtxtPtr ctxt, const char *name, void *result) {
     return(0);
 }
 
-/*
+/**
  * xmlSetFeature:
  * @ctxt:  an XML/HTML parser context
  * @name:  the feature name
@@ -2493,8 +2493,8 @@ xmlParserAddNodeInfo(xmlParserCtxtPtr ctxt,
  *									*
  ************************************************************************/
 
-/*
- * xmlCheckLanguageID
+/**
+ * xmlCheckLanguageID:
  * @lang:  pointer to the string value
  *
  * Checks that the value conforms to the LanguageID production:

@@ -60,9 +60,7 @@ typedef enum {
  * This is the prototype for the link detection routine
  * It calls the default link detection callbacks upon link detection.
  */
-typedef void
-(*xlinkNodeDetectFunc)	(void *ctx,
-		 	 xmlNodePtr node);
+typedef void (*xlinkNodeDetectFunc) (void *ctx, xmlNodePtr node);
 
 /**
  * The link detection module interract with the upper layers using

@@ -157,6 +157,51 @@ scope type name##Pop(xmlParserCtxtPtr ctxt) {				\
     return(ret);							\
 }									\
 
+/**
+ * inputPop:
+ * @ctxt: an XML parser context
+ *
+ * Pops the top parser input from the input stack
+ *
+ * Returns the input just removed
+ */
+/**
+ * inputPush:
+ * @ctxt:  an XML parser context
+ * @input:  the parser input
+ *
+ * Pushes a new parser input on top of the input stack
+ */
+/**
+ * namePop:
+ * @ctxt: an XML parser context
+ *
+ * Pops the top element name from the name stack
+ *
+ * Returns the name just removed
+ */
+/**
+ * namePush:
+ * @ctxt:  an XML parser context
+ * @name:  the element name
+ *
+ * Pushes a new element name on top of the name stack
+ */
+/**
+ * nodePop:
+ * @ctxt: an XML parser context
+ *
+ * Pops the top element node from the node stack
+ *
+ * Returns the node just removed
+ */
+/**
+ * nodePush:
+ * @ctxt:  an XML parser context
+ * @node:  the element node
+ *
+ * Pushes a new element node on top of the node stack
+ */
 /*
  * Those macros actually generate the functions
  */
@@ -4060,6 +4105,15 @@ xmlParseElementMixedContentDecl(xmlParserCtxtPtr ctxt) {
 }
 
 /**
+ * xmlParseElementChildrenContentD:
+ * @ctxt:  an XML parser context
+ *
+ * VMS version of xmlParseElementChildrenContentDecl()
+ *
+ * Returns the tree of xmlElementContentPtr describing the element 
+ *          hierarchy.
+ */
+/**
  * xmlParseElementChildrenContentDecl:
  * @ctxt:  an XML parser context
  *
@@ -4086,7 +4140,7 @@ xmlParseElementMixedContentDecl(xmlParserCtxtPtr ctxt) {
  *	be empty, and neither the first nor last non-blank character of
  *	the replacement text should be a connector (| or ,).
  *
- * returns: the tree of xmlElementContentPtr describing the element 
+ * Returns the tree of xmlElementContentPtr describing the element 
  *          hierarchy.
  */
 xmlElementContentPtr

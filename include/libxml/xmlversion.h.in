@@ -20,9 +20,34 @@ extern "C" {
 #ifndef LIBXML2_COMPILING_MSCCDEF
 extern void xmlCheckVersion(int version);
 #endif /* LIBXML2_COMPILING_MSCCDEF */
+
+/**
+ * LIBXML_DOTTED_VERSION:
+ *
+ * the version string like "1.2.3"
+ */
 #define LIBXML_DOTTED_VERSION "@VERSION@"
+
+/**
+ * LIBXML_VERSION:
+ *
+ * the version number: 1.2.3 value is 1002003
+ */
 #define LIBXML_VERSION @LIBXML_VERSION_NUMBER@
+
+/**
+ * LIBXML_VERSION_STRING:
+ *
+ * the version number string, 1.2.3 value is "1002003"
+ */
 #define LIBXML_VERSION_STRING "@LIBXML_VERSION_NUMBER@"
+
+/**
+ * LIBXML_TEST_VERSION:
+ *
+ * Macro to check that the libxml version in use is compatible with
+ * the version the software has been compiled against
+ */
 #define LIBXML_TEST_VERSION xmlCheckVersion(@LIBXML_VERSION_NUMBER@);
 
 /**
@@ -32,8 +57,6 @@ extern void xmlCheckVersion(int version);
  */
 #if @WITH_TRIO@
 #define WITH_TRIO
-#else
-#define WITHOUT_TRIO
 #endif
 
 /**
@@ -43,8 +66,6 @@ extern void xmlCheckVersion(int version);
  */
 #if @WITH_FTP@
 #define LIBXML_FTP_ENABLED
-#else
-#define LIBXML_FTP_DISABLED
 #endif
 
 /**
@@ -54,8 +75,6 @@ extern void xmlCheckVersion(int version);
  */
 #if @WITH_HTTP@
 #define LIBXML_HTTP_ENABLED
-#else
-#define LIBXML_HTTP_DISABLED
 #endif
 
 /**
@@ -65,8 +84,6 @@ extern void xmlCheckVersion(int version);
  */
 #if @WITH_HTML@
 #define LIBXML_HTML_ENABLED
-#else
-#define LIBXML_HTML_DISABLED
 #endif
 
 /**
@@ -76,8 +93,6 @@ extern void xmlCheckVersion(int version);
  */
 #if @WITH_CATALOG@
 #define LIBXML_CATALOG_ENABLED
-#else
-#define LIBXML_CATALOG_DISABLED
 #endif
 
 /**
@@ -87,8 +102,6 @@ extern void xmlCheckVersion(int version);
  */
 #if @WITH_DOCB@
 #define LIBXML_DOCB_ENABLED
-#else
-#define LIBXML_DOCB_DISABLED
 #endif
 
 /**
@@ -98,8 +111,6 @@ extern void xmlCheckVersion(int version);
  */
 #if @WITH_XPATH@
 #define LIBXML_XPATH_ENABLED
-#else
-#define LIBXML_XPATH_DISABLED
 #endif
 
 /**
@@ -109,8 +120,6 @@ extern void xmlCheckVersion(int version);
  */
 #if @WITH_XPTR@
 #define LIBXML_XPTR_ENABLED
-#else
-#define LIBXML_XPTR_DISABLED
 #endif
 
 /**
@@ -120,8 +129,6 @@ extern void xmlCheckVersion(int version);
  */
 #if @WITH_XINCLUDE@
 #define LIBXML_XINCLUDE_ENABLED
-#else
-#define LIBXML_XINCLUDE_DISABLED
 #endif
 
 /**
@@ -132,8 +139,6 @@ extern void xmlCheckVersion(int version);
 #if !defined(WIN32) || defined(__CYGWIN__)
 #if @WITH_ICONV@
 #define LIBXML_ICONV_ENABLED
-#else
-#define LIBXML_ICONV_DISABLED
 #endif
 #endif
 
@@ -144,8 +149,6 @@ extern void xmlCheckVersion(int version);
  */
 #if @WITH_DEBUG@
 #define LIBXML_DEBUG_ENABLED
-#else
-#define LIBXML_DEBUG_DISABLED
 #endif
 
 /**
@@ -157,6 +160,11 @@ extern void xmlCheckVersion(int version);
 #define DEBUG_MEMORY_LOCATION
 #endif
 
+/**
+ * LIBXML_DLL_IMPORT:
+ *
+ * Used on Windows to declare a variable as exported by the library
+ */
 #ifndef LIBXML_DLL_IMPORT
 #if defined(WIN32) && !defined(STATIC)
 #define LIBXML_DLL_IMPORT __declspec(dllimport)

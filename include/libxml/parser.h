@@ -19,8 +19,10 @@
 extern "C" {
 #endif
 
-/*
- * Constants.
+/**
+ * XML_DEFAULT_VERSION:
+ *
+ * The default version of XML used: 1.0
  */
 #define XML_DEFAULT_VERSION	"1.0"
 
@@ -36,6 +38,7 @@ extern "C" {
  */
 
 typedef void (* xmlParserInputDeallocate)(xmlChar *);
+
 typedef struct _xmlParserInput xmlParserInput;
 typedef xmlParserInput *xmlParserInputPtr;
 struct _xmlParserInput {
@@ -344,6 +347,11 @@ LIBXML_DLL_IMPORT extern xmlSAXHandler docbDefaultSAXHandler;
  */
 
 #ifdef VMS
+/**
+ * xmlSubstituteEntitiesDefaultValue:
+ *
+ * global variable controlling the entity substitution default behaviour
+ */
 LIBXML_DLL_IMPORT extern int xmlSubstituteEntitiesDefaultVal;
 #define xmlSubstituteEntitiesDefaultValue xmlSubstituteEntitiesDefaultVal
 #else

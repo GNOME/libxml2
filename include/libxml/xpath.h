@@ -367,8 +367,6 @@ void		   xmlXPathFreeContext		(xmlXPathContextPtr ctxt);
  */
 xmlXPathObjectPtr  xmlXPathEval			(const xmlChar *str,
 						 xmlXPathContextPtr ctxt);
-xmlXPathObjectPtr  xmlXPathEvalXPtrExpr		(const xmlChar *str,
-						 xmlXPathContextPtr ctxt);
 xmlXPathObjectPtr  xmlXPathEvalExpression	(const xmlChar *str,
 						 xmlXPathContextPtr ctxt);
 int                xmlXPathEvalPredicate	(xmlXPathContextPtr ctxt,

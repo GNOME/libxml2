@@ -1785,6 +1785,9 @@ static int areBlanks(htmlParserCtxtPtr ctxt, const xmlChar *str, int len) {
  * @URI:  URI for the dtd, or NULL
  * @ExternalID:  the external ID of the DTD, or NULL
  *
+ * Creates a new HTML document without a DTD node if @URI and @ExternalID
+ * are NULL
+ *
  * Returns a new document, do not intialize the DTD if not provided
  */
 htmlDocPtr
@@ -1826,6 +1829,8 @@ htmlNewDocNoDtD(const xmlChar *URI, const xmlChar *ExternalID) {
  * htmlNewDoc:
  * @URI:  URI for the dtd, or NULL
  * @ExternalID:  the external ID of the DTD, or NULL
+ *
+ * Creates a new HTML document
  *
  * Returns a new document
  */

@@ -371,7 +371,7 @@ xmlValidPrintNodeList(xmlNodePtr cur) {
 
 static void
 xmlValidDebug(xmlNodePtr cur, xmlElementContentPtr cont) {
-    char expr[1000];
+    char expr[5000];
 
     expr[0] = 0;
     xmlGenericError(xmlGenericErrorContext, "valid: ");

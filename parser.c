@@ -10219,7 +10219,7 @@ xmlSAXParseDTD(xmlSAXHandlerPtr sax, const xmlChar *ExternalID,
      * Canonicalise the system ID
      */
     systemIdCanonic = xmlCanonicPath(SystemID);
-    if (systemIdCanonic == NULL) {
+    if ((SystemID != NULL) && (systemIdCanonic == NULL)) {
 	xmlFreeParserCtxt(ctxt);
 	return(NULL);
     }

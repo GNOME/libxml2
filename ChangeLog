@@ -1,3 +1,7 @@
+Mon Oct  4 13:53:24 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: applied patch from Malcolm Tredinnick fixing bug #152426
+
 Mon Oct  4 12:26:28 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* python/generator.py python/libxml.c python/tests/outbuf.py: 

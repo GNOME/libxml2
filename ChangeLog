@@ -1,3 +1,9 @@
+Sat Oct 18 20:34:18 HKT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* genChRanges.py, chvalid.c, include/libxml/chvalid.h,
+	  doc/apibuild.py: enhanced to include enough comments to
+	  make the api doc generation happy.
+
 Sat Oct 18 07:28:25 EDT 2003 Daniel Veillard <daniel@veillard.com>
 
 	* nanohttp.c xmlIO.c include/libxml/nanohttp.h: starting work

@@ -1011,13 +1011,13 @@ Patterntests: xmllint$(EXEEXT)
 	      rm -f result.$$name ; \
 	      echo New test file $$name ; \
 	      for pat in `cat $$i` ; do \
-	      $(CHECKER) $(top_builddir)/xmllint --stream --pattern $$pat $(srcdir)/test/pattern/$$name.xml >> $(srcdir)/result/pattern/$$name ; \
+	      $(CHECKER) $(top_builddir)/xmllint --walker --pattern $$pat $(srcdir)/test/pattern/$$name.xml >> $(srcdir)/result/pattern/$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	      done ;\
 	  else \
 	      rm -f result.$$name ; \
 	      lst=`cat $$i` ; \
-	      log=`for pat in $$lst ; do $(CHECKER) $(top_builddir)/xmllint --stream --pattern $$pat $(srcdir)/test/pattern/$$name.xml 2>&1 >> result.$$name ; \
+	      log=`for pat in $$lst ; do $(CHECKER) $(top_builddir)/xmllint --walker --pattern $$pat $(srcdir)/test/pattern/$$name.xml 2>&1 >> result.$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	      done ;\
 	      diff $(srcdir)/result/pattern/$$name result.$$name` ; \

@@ -23,6 +23,8 @@
  *   it's implemented and definitely not tested
  * - handling of disjunction "pattern1 | pattern2" mean needed to build
  *   and check a list internally
+ * - get rid of the "compile" starting with lowercase
+ * - get rid of the Strdup/Strndup in case of dictionary
  */
 
 #define IN_LIBXML
@@ -37,9 +39,9 @@
 #include <libxml/parserInternals.h>
 #include <libxml/pattern.h>
 
-/* #ifdef LIBXML_PATTERN_ENABLED */
+#ifdef LIBXML_PATTERN_ENABLED
 
-#define DEBUG_STREAMING
+/* #define DEBUG_STREAMING */
 
 #define ERROR(a, b, c, d)
 #define ERROR5(a, b, c, d, e)
@@ -91,6 +93,21 @@ typedef enum {
     XML_OP_ALL
 } xmlPatOp;
 
+
+typedef struct _xmlStepState xmlStepState;
+typedef xmlStepState *xmlStepStatePtr;
+struct _xmlStepState {
+    int step;
+    xmlNodePtr node;
+};
+
+typedef struct _xmlStepStates xmlStepStates;
+typedef xmlStepStates *xmlStepStatesPtr;
+struct _xmlStepStates {
+    int nbstates;
+    int maxstates;
+    xmlStepStatePtr states;
+};
 
 typedef struct _xmlStepOp xmlStepOp;
 typedef xmlStepOp *xmlStepOpPtr;
@@ -383,6 +400,31 @@ xmlReversePattern(xmlPatternPtr comp) {
  * 									*
  ************************************************************************/
 
+static int
+xmlPatPushState(xmlStepStates *states, int step, xmlNodePtr node) {
+    if ((states->states == NULL) || (states->maxstates <= 0)) {
+        states->maxstates = 4;
+	states->nbstates = 0;
+	states->states = xmlMalloc(4 * sizeof(xmlStepState));
+    }
+    else if (states->maxstates <= states->nbstates) {
+        xmlStepState *tmp;
+
+	tmp = (xmlStepStatePtr) xmlRealloc(states->states,
+			       2 * states->maxstates * sizeof(xmlStepState));
+	if (tmp == NULL)
+	    return(-1);
+	states->states = tmp;
+	states->maxstates *= 2;
+    }
+    states->states[states->nbstates].step = step;
+    states->states[states->nbstates++].node = node;
+#if 0
+    fprintf(stderr, "Push: %d, %s\n", step, node->name);
+#endif
+    return(0);
+}
+
 /**
  * xmlPatMatch:
  * @comp: the precompiled pattern
@@ -396,16 +438,19 @@ static int
 xmlPatMatch(xmlPatternPtr comp, xmlNodePtr node) {
     int i;
     xmlStepOpPtr step;
+    xmlStepStates states = {0, 0, NULL}; /* // may require backtrack */
 
     if ((comp == NULL) || (node == NULL)) return(-1);
-    for (i = 0;i < comp->nbStep;i++) {
+    i = 0;
+restart:
+    for (;i < comp->nbStep;i++) {
 	step = &comp->steps[i];
 	switch (step->op) {
             case XML_OP_END:
-		return(1);
+		goto found;
             case XML_OP_ROOT:
 		if (node->type == XML_NAMESPACE_DECL)
-		    return(0);
+		    goto rollback;
 		node = node->parent;
 		if ((node->type == XML_DOCUMENT_NODE) ||
 #ifdef LIBXML_DOCB_ENABLED
@@ -413,26 +458,26 @@ xmlPatMatch(xmlPatternPtr comp, xmlNodePtr node) {
 #endif
 		    (node->type == XML_HTML_DOCUMENT_NODE))
 		    continue;
-		return(0);
+		goto rollback;
             case XML_OP_ELEM:
 		if (node->type != XML_ELEMENT_NODE)
-		    return(0);
+		    goto rollback;
 		if (step->value == NULL)
 		    continue;
 		if (step->value[0] != node->name[0])
-		    return(0);
+		    goto rollback;
 		if (!xmlStrEqual(step->value, node->name))
-		    return(0);
+		    goto rollback;
 
 		/* Namespace test */
 		if (node->ns == NULL) {
 		    if (step->value2 != NULL)
-			return(0);
+			goto rollback;
 		} else if (node->ns->href != NULL) {
 		    if (step->value2 == NULL)
-			return(0);
+			goto rollback;
 		    if (!xmlStrEqual(step->value2, node->ns->href))
-			return(0);
+			goto rollback;
 		}
 		continue;
             case XML_OP_CHILD: {
@@ -444,7 +489,7 @@ xmlPatMatch(xmlPatternPtr comp, xmlNodePtr node) {
 		    (node->type != XML_DOCB_DOCUMENT_NODE) &&
 #endif
 		    (node->type != XML_HTML_DOCUMENT_NODE))
-		    return(0);
+		    goto rollback;
 
 		lst = node->children;
 
@@ -459,24 +504,24 @@ xmlPatMatch(xmlPatternPtr comp, xmlNodePtr node) {
 		    if (lst != NULL)
 			continue;
 		}
-		return(0);
+		goto rollback;
 	    }
             case XML_OP_ATTR:
 		if (node->type != XML_ATTRIBUTE_NODE)
-		    return(0);
+		    goto rollback;
 		if (step->value != NULL) {
 		    if (step->value[0] != node->name[0])
-			return(0);
+			goto rollback;
 		    if (!xmlStrEqual(step->value, node->name))
-			return(0);
+			goto rollback;
 		}
 		/* Namespace test */
 		if (node->ns == NULL) {
 		    if (step->value2 != NULL)
-			return(0);
+			goto rollback;
 		} else if (step->value2 != NULL) {
 		    if (!xmlStrEqual(step->value2, node->ns->href))
-			return(0);
+			goto rollback;
 		}
 		continue;
             case XML_OP_PARENT:
@@ -486,25 +531,25 @@ xmlPatMatch(xmlPatternPtr comp, xmlNodePtr node) {
 		    (node->type == XML_DOCB_DOCUMENT_NODE) ||
 #endif
 		    (node->type == XML_NAMESPACE_DECL))
-		    return(0);
+		    goto rollback;
 		node = node->parent;
 		if (node == NULL)
-		    return(0);
+		    goto rollback;
 		if (step->value == NULL)
 		    continue;
 		if (step->value[0] != node->name[0])
-		    return(0);
+		    goto rollback;
 		if (!xmlStrEqual(step->value, node->name))
-		    return(0);
+		    goto rollback;
 		/* Namespace test */
 		if (node->ns == NULL) {
 		    if (step->value2 != NULL)
-			return(0);
+			goto rollback;
 		} else if (node->ns->href != NULL) {
 		    if (step->value2 == NULL)
-			return(0);
+			goto rollback;
 		    if (!xmlStrEqual(step->value2, node->ns->href))
-			return(0);
+			goto rollback;
 		}
 		continue;
             case XML_OP_ANCESTOR:
@@ -513,25 +558,25 @@ xmlPatMatch(xmlPatternPtr comp, xmlNodePtr node) {
 		    i++;
 		    step = &comp->steps[i];
 		    if (step->op == XML_OP_ROOT)
-			return(1);
+			goto found;
 		    if (step->op != XML_OP_ELEM)
-			return(0);
+			goto rollback;
 		    if (step->value == NULL)
 			return(-1);
 		}
 		if (node == NULL)
-		    return(0);
+		    goto rollback;
 		if ((node->type == XML_DOCUMENT_NODE) ||
 		    (node->type == XML_HTML_DOCUMENT_NODE) ||
 #ifdef LIBXML_DOCB_ENABLED
 		    (node->type == XML_DOCB_DOCUMENT_NODE) ||
 #endif
 		    (node->type == XML_NAMESPACE_DECL))
-		    return(0);
+		    goto rollback;
 		node = node->parent;
 		while (node != NULL) {
 		    if (node == NULL)
-			return(0);
+			goto rollback;
 		    if ((node->type == XML_ELEMENT_NODE) &&
 			(step->value[0] == node->name[0]) &&
 			(xmlStrEqual(step->value, node->name))) {
@@ -548,28 +593,56 @@ xmlPatMatch(xmlPatternPtr comp, xmlNodePtr node) {
 		    node = node->parent;
 		}
 		if (node == NULL)
-		    return(0);
+		    goto rollback;
+		/*
+		 * prepare a potential rollback from here
+		 * for ancestors of that node.
+		 */
+		if (step->op == XML_OP_ANCESTOR)
+		    xmlPatPushState(&states, i, node);
+		else
+		    xmlPatPushState(&states, i - 1, node);
 		continue;
             case XML_OP_NS:
 		if (node->type != XML_ELEMENT_NODE)
-		    return(0);
+		    goto rollback;
 		if (node->ns == NULL) {
 		    if (step->value != NULL)
-			return(0);
+			goto rollback;
 		} else if (node->ns->href != NULL) {
 		    if (step->value == NULL)
-			return(0);
+			goto rollback;
 		    if (!xmlStrEqual(step->value, node->ns->href))
-			return(0);
+			goto rollback;
 		}
 		break;
             case XML_OP_ALL:
 		if (node->type != XML_ELEMENT_NODE)
-		    return(0);
+		    goto rollback;
 		break;
 	}
     }
+found:
+    if (states.states != NULL) {
+        /* Free the rollback states */
+	xmlFree(states.states);
+    }
     return(1);
+rollback:
+    /* got an error try to rollback */
+    if (states.states == NULL)
+	return(0);
+    if (states.nbstates <= 0) {
+	xmlFree(states.states);
+	return(0);
+    }
+    states.nbstates--;
+    i = states.states[states.nbstates].step;
+    node = states.states[states.nbstates].node;
+#if 0
+    fprintf(stderr, "Pop: %d, %s\n", i, node->name);
+#endif
+    goto restart;
 }
 
 /************************************************************************
@@ -810,13 +883,19 @@ xmlCompileStepPattern(xmlPatParserContextPtr ctxt) {
 	if (CUR != ':') {
 	    xmlChar *prefix = name;
 	    xmlNsPtr ns;
+	    int i;
 
 	    /*
 	     * This is a namespace match
 	     */
 	    token = xmlPatScanName(ctxt);
-	    ns = xmlSearchNs(NULL, ctxt->elem, prefix);
-	    if (ns == NULL) {
+	    for (i = 0;i < ctxt->nb_namespaces;i++) {
+	        if (xmlStrEqual(ctxt->namespaces[2 * i + 1], prefix)) {
+		    URL = xmlStrdup(ctxt->namespaces[2 * i + 1]);
+		    break;
+		}
+	    }
+	    if (i >= ctxt->nb_namespaces) {
 		ERROR5(NULL, NULL, NULL,
 	    "xmlCompileStepPattern : no namespace bound to prefix %s\n",
 				 prefix);

@@ -910,6 +910,15 @@ static void streamFile(char *filename) {
 #endif
 	reader = xmlReaderForFile(filename, NULL, options);
 #ifdef LIBXML_PATTERN_ENABLED
+    if (pattern != NULL) {
+        patternc = xmlPatterncompile((const xmlChar *) pattern, NULL, 0, NULL);
+	if (patternc == NULL) {
+	    xmlGenericError(xmlGenericErrorContext,
+		    "Pattern %s failed to compile\n", pattern);
+            progresult = XMLLINT_ERR_SCHEMAPAT;
+	    pattern = NULL;
+	}
+    }
     if (patternc != NULL) {
         patstream = xmlPatternGetStreamCtxt(patternc);
 	if (patstream != NULL) {
@@ -1029,6 +1038,31 @@ static void walkDoc(xmlDocPtr doc) {
     xmlTextReaderPtr reader;
     int ret;
 
+#ifdef LIBXML_PATTERN_ENABLED
+    xmlNodePtr root;
+    const xmlChar *namespaces[22];
+    int i;
+    xmlNsPtr ns;
+
+    root = xmlDocGetRootElement(doc);
+    for (ns = root->nsDef, i = 0;ns != NULL && i < 20;ns=ns->next) {
+        namespaces[i++] = ns->href;
+        namespaces[i++] = ns->prefix;
+    }
+    namespaces[i++] = NULL;
+    namespaces[i++] = NULL;
+
+    if (pattern != NULL) {
+        patternc = xmlPatterncompile((const xmlChar *) pattern, doc->dict,
+	                             0, &namespaces[0]);
+	if (patternc == NULL) {
+	    xmlGenericError(xmlGenericErrorContext,
+		    "Pattern %s failed to compile\n", pattern);
+            progresult = XMLLINT_ERR_SCHEMAPAT;
+	    pattern = NULL;
+	}
+    }
+#endif /* LIBXML_PATTERN_ENABLED */
     reader = xmlReaderWalker(doc);
     if (reader != NULL) {
 	if ((timing) && (!repeat)) {
@@ -2262,7 +2296,7 @@ main(int argc, char **argv) {
     }
 #endif /* LIBXML_SCHEMAS_ENABLED */
 #ifdef LIBXML_PATTERN_ENABLED
-    if (pattern != NULL) {
+    if ((pattern != NULL) && (walker == 0)) {
         patternc = xmlPatterncompile((const xmlChar *) pattern, NULL, 0, NULL);
 	if (patternc == NULL) {
 	    xmlGenericError(xmlGenericErrorContext,

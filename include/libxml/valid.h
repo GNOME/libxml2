@@ -10,11 +10,11 @@
 #ifndef __XML_VALID_H__
 #define __XML_VALID_H__
 
+#include "tree.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#include "tree.h"
 
 /**
  * an xmlValidCtxt is used for error reporting when validating

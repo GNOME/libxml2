@@ -14276,6 +14276,28 @@ xmlSchemaValidateElement(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr elem)
 }
 
 /**
+ * xmlSchemaValidateOneElement:
+ * @ctxt:  a schema validation context
+ * @elem:  an element node
+ *
+ * Validate a branch of a tree, starting with the given @elem.
+ *
+ * Returns 0 if the element and its subtree is valid, a positive error 
+ * code number otherwise and -1 in case of an internal or API error.
+ */
+int
+xmlSchemaValidateOneElement(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr elem)
+{
+    if ((ctxt == NULL) || (elem == NULL))
+	return (-1);
+
+    ctxt->doc = elem->doc;
+    ctxt->err = 0;
+    ctxt->nberrors = 0;
+    return (xmlSchemaValidateElement(ctxt, elem));
+}
+
+/**
  * xmlSchemaValidateDocument:
  * @ctxt:  a schema validation context
  * @doc:  a parsed document tree

@@ -125,6 +125,9 @@ XMLPUBFUN void XMLCALL
 XMLPUBFUN int XMLCALL			
 	    xmlSchemaValidateDoc	(xmlSchemaValidCtxtPtr ctxt,
 					 xmlDocPtr instance);
+XMLPUBFUN int XMLCALL
+            xmlSchemaValidateOneElement (xmlSchemaValidCtxtPtr ctxt,
+			                 xmlNodePtr elem);
 XMLPUBFUN int XMLCALL			
 	    xmlSchemaValidateStream	(xmlSchemaValidCtxtPtr ctxt,
 					 xmlParserInputBufferPtr input,

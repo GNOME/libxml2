@@ -1,3 +1,9 @@
+Wed Sep  8 11:04:27 CEST 2004 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c include/libxml/xmlschemas.h: Added the function
+	  xmlSchemaValidateOneElement to the XML Schema validation API, 
+	  as proposed by Jeffrey Fink - see bug # 152073.
+
 Tue Sep  7 11:10:36 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in doc/Makefile.am xstc/Makefile.am: some cleanup

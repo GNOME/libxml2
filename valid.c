@@ -5221,9 +5221,7 @@ xmlValidGetValidElements(xmlNode *prev, xmlNode *next, const xmlChar **list,
     
     xmlElement *element_desc;
 
-    vctxt.userData = NULL;
-    vctxt.error = NULL;
-    vctxt.warning = NULL;
+    memset(&vctxt, 0, sizeof (xmlValidCtxt));
 
     if (prev == NULL && next == NULL)
         return(-1);

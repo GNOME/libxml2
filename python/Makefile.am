@@ -14,6 +14,8 @@ DOCS = TODO libxml2class.txt
 EXTRA_DIST = 			\
 	libxml.c		\
 	types.c			\
+	setup.py		\
+	setup.py.in		\
 	generator.py		\
 	libxml_wrap.h		\
 	libxml.py		\

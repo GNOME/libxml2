@@ -52,8 +52,12 @@ automake --add-missing
 autoconf
 
 cd $THEDIR
-mkdir -p "$OBJ_DIR"
-cd "$OBJ_DIR"
+
+if test x$OBJ_DIR != x; then
+    mkdir -p "$OBJ_DIR"
+    cd "$OBJ_DIR"
+fi
+
 $srcdir/configure "$@"
 
 echo 

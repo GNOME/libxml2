@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+<meta content="text/html; charset=ISO-8859-1" http-equiv="Content-Type">
+<style type="text/css"><!--
+TD {font-size: 10pt; font-family: Verdana,Arial,Helvetica}
+BODY {font-size: 10pt; font-family: Verdana,Arial,Helvetica; margin-top: 5pt; margin-left: 0pt; margin-right: 0pt}
+H1 {font-size: 16pt; font-family: Verdana,Arial,Helvetica}
+H2 {font-size: 14pt; font-family: Verdana,Arial,Helvetica}
+H3 {font-size: 12pt; font-family: Verdana,Arial,Helvetica}
+--></style>
+<title>Validation, or are you afraid of DTDs ?</title>
+</head>
+<body bgcolor="#8b7765" text="#000000" link="#000000" vlink="#000000">
+<table border="0" width="100%" cellpadding="5" cellspacing="0" align="center"><tr>
+<td width="180">
+<a href="http://www.gnome.org/"><img src="smallfootonly.gif" alt="Gnome Logo"></a><a href="http://www.w3.org/Status"><img src="w3c.png" alt="W3C Logo"></a><a href="http://www.redhat.com/"><img src="redhat.gif" alt="Red Hat Logo"></a>
+</td>
+<td><table border="0" width="90%" cellpadding="2" cellspacing="0" align="center" bgcolor="#000000"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="3" bgcolor="#fffacd"><tr><td align="center">
+<h1>The XML C library for Gnome</h1>
+<h2>Validation, or are you afraid of DTDs ?</h2>
+</td></tr></table></td></tr></table></td>
+</tr></table>
+<table border="0" cellpadding="4" cellspacing="0" width="100%" align="center"><tr><td bgcolor="#8b7765"><table border="0" cellspacing="0" cellpadding="2" width="100%"><tr>
+<td valign="top" width="200" bgcolor="#8b7765"><table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="3">
+<tr><td colspan="1" bgcolor="#eecfa1" align="center"><center><b>Main Menu</b></center></td></tr>
+<tr><td bgcolor="#fffacd"><ul style="margin-left: -2pt">
+<li><a href="index.html">Home</a></li>
+<li><a href="FAQ.html">FAQ</a></li>
+<li><a href="intro.html">Introduction</a></li>
+<li><a href="docs.html">Documentation</a></li>
+<li><a href="bugs.html">Reporting bugs and getting help</a></li>
+<li><a href="help.html">How to help</a></li>
+<li><a href="downloads.html">Downloads</a></li>
+<li><a href="news.html">News</a></li>
+<li><a href="XML.html">XML</a></li>
+<li><a href="XSLT.html">XSLT</a></li>
+<li><a href="architecture.html">An overview of libxml architecture</a></li>
+<li><a href="tree.html">The tree output</a></li>
+<li><a href="interface.html">The SAX interface</a></li>
+<li><a href="library.html">The XML library interfaces</a></li>
+<li><a href="entities.html">Entities or no entities</a></li>
+<li><a href="namespaces.html">Namespaces</a></li>
+<li><a href="valid.html">Validation, or are you afraid of DTDs ?</a></li>
+<li><a href="DOM.html">DOM Principles</a></li>
+<li><a href="example.html">A real example</a></li>
+<li><a href="contribs.html">Contributions</a></li>
+<li><a href="encoding.html">Encodings support</a></li>
+<li><a href="catalog.html">Catalogs support</a></li>
+<li><a href="xmlio.html">I/O interfaces</a></li>
+<li><a href="xmlmem.html">Memory interfaces</a></li>
+<li><a href="xmldtd.html">DTD support</a></li>
+<li><a href="xml.html">flat page</a></li>
+</ul></td></tr>
+</table></td></tr></table></td>
+<td valign="top" bgcolor="#8b7765"><table border="0" cellspacing="0" cellpadding="1" width="100%"><tr><td><table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000"><tr><td><table border="0" cellpadding="3" cellspacing="1" width="100%"><tr><td bgcolor="#fffacd">
+<p>Well what is validation and what is a DTD ?</p>
+<p>Validation is the process of checking a document against a set of
+construction rules; a <strong>DTD</strong> (Document Type Definition) is such
+a set of rules.</p>
+<p>The validation process and building DTDs are the two most difficult parts
+of the XML life cycle. Briefly a DTD defines all the possibles element to be
+found within your document, what is the formal shape of your document tree
+(by defining the allowed content of an element, either text, a regular
+expression for the allowed list of children, or mixed content i.e. both text
+and children). The DTD also defines the allowed attributes for all elements
+and the types of the attributes. For more detailed information, I suggest
+that you read the related parts of the XML specification, the examples found
+under gnome-xml/test/valid/dtd and any of the large number of books available
+on XML. The dia example in gnome-xml/test/valid should be both simple and
+complete enough to allow you to build your own.</p>
+<p>A word of warning, building a good DTD which will fit the needs of your
+application in the long-term is far from trivial; however, the extra level of
+quality it can ensure is well worth the price for some sets of applications
+or if you already have already a DTD defined for your application field.</p>
+<p>The validation is not completely finished but in a (very IMHO) usable
+state. Until a real validation interface is defined the way to do it is to
+define and set the <strong>xmlDoValidityCheckingDefaultValue</strong>
+external variable to 1, this will of course be changed at some point:</p>
+<p>extern int xmlDoValidityCheckingDefaultValue;</p>
+<p>...</p>
+<p>xmlDoValidityCheckingDefaultValue = 1;</p>
+<p>
+<p>To handle external entities, use the function
+<strong>xmlSetExternalEntityLoader</strong>(xmlExternalEntityLoader f); to
+link in you HTTP/FTP/Entities database library to the standard libxml
+core.</p>
+<p>@@interfaces@@</p>
+<p><a href="mailto:daniel@veillard.com">Daniel Veillard</a></p>
+</td></tr></table></td></tr></table></td></tr></table></td>
+</tr></table></td></tr></table>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+<meta content="text/html; charset=ISO-8859-1" http-equiv="Content-Type">
+<style type="text/css"><!--
+TD {font-size: 10pt; font-family: Verdana,Arial,Helvetica}
+BODY {font-size: 10pt; font-family: Verdana,Arial,Helvetica; margin-top: 5pt; margin-left: 0pt; margin-right: 0pt}
+H1 {font-size: 16pt; font-family: Verdana,Arial,Helvetica}
+H2 {font-size: 14pt; font-family: Verdana,Arial,Helvetica}
+H3 {font-size: 12pt; font-family: Verdana,Arial,Helvetica}
+--></style>
+<title>The SAX interface</title>
+</head>
+<body bgcolor="#8b7765" text="#000000" link="#000000" vlink="#000000">
+<table border="0" width="100%" cellpadding="5" cellspacing="0" align="center"><tr>
+<td width="180">
+<a href="http://www.gnome.org/"><img src="smallfootonly.gif" alt="Gnome Logo"></a><a href="http://www.w3.org/Status"><img src="w3c.png" alt="W3C Logo"></a><a href="http://www.redhat.com/"><img src="redhat.gif" alt="Red Hat Logo"></a>
+</td>
+<td><table border="0" width="90%" cellpadding="2" cellspacing="0" align="center" bgcolor="#000000"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="3" bgcolor="#fffacd"><tr><td align="center">
+<h1>The XML C library for Gnome</h1>
+<h2>The SAX interface</h2>
+</td></tr></table></td></tr></table></td>
+</tr></table>
+<table border="0" cellpadding="4" cellspacing="0" width="100%" align="center"><tr><td bgcolor="#8b7765"><table border="0" cellspacing="0" cellpadding="2" width="100%"><tr>
+<td valign="top" width="200" bgcolor="#8b7765"><table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="3">
+<tr><td colspan="1" bgcolor="#eecfa1" align="center"><center><b>Main Menu</b></center></td></tr>
+<tr><td bgcolor="#fffacd"><ul style="margin-left: -2pt">
+<li><a href="index.html">Home</a></li>
+<li><a href="FAQ.html">FAQ</a></li>
+<li><a href="intro.html">Introduction</a></li>
+<li><a href="docs.html">Documentation</a></li>
+<li><a href="bugs.html">Reporting bugs and getting help</a></li>
+<li><a href="help.html">How to help</a></li>
+<li><a href="downloads.html">Downloads</a></li>
+<li><a href="news.html">News</a></li>
+<li><a href="XML.html">XML</a></li>
+<li><a href="XSLT.html">XSLT</a></li>
+<li><a href="architecture.html">An overview of libxml architecture</a></li>
+<li><a href="tree.html">The tree output</a></li>
+<li><a href="interface.html">The SAX interface</a></li>
+<li><a href="library.html">The XML library interfaces</a></li>
+<li><a href="entities.html">Entities or no entities</a></li>
+<li><a href="namespaces.html">Namespaces</a></li>
+<li><a href="valid.html">Validation, or are you afraid of DTDs ?</a></li>
+<li><a href="DOM.html">DOM Principles</a></li>
+<li><a href="example.html">A real example</a></li>
+<li><a href="contribs.html">Contributions</a></li>
+<li><a href="encoding.html">Encodings support</a></li>
+<li><a href="catalog.html">Catalogs support</a></li>
+<li><a href="xmlio.html">I/O interfaces</a></li>
+<li><a href="xmlmem.html">Memory interfaces</a></li>
+<li><a href="xmldtd.html">DTD support</a></li>
+<li><a href="xml.html">flat page</a></li>
+</ul></td></tr>
+</table></td></tr></table></td>
+<td valign="top" bgcolor="#8b7765"><table border="0" cellspacing="0" cellpadding="1" width="100%"><tr><td><table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000"><tr><td><table border="0" cellpadding="3" cellspacing="1" width="100%"><tr><td bgcolor="#fffacd">
+<p>Sometimes the DOM tree output is just too large to fit reasonably into
+memory. In that case (and if you don't expect to save back the XML document
+loaded using libxml), it's better to use the SAX interface of libxml. SAX is
+a <strong>callback-based interface</strong> to the parser. Before parsing,
+the application layer registers a customized set of callbacks which are
+called by the library as it progresses through the XML input.</p>
+<p>To get more detailed step-by-step guidance on using the SAX interface of
+libxml, see the <a href="http://www.daa.com.au/~james/gnome/xml-sax/xml-sax.html">nice
+documentation</a>.written by <a href="mailto:james@daa.com.au">James
+Henstridge</a>.</p>
+<p>You can debug the SAX behaviour by using the <strong>testSAX</strong>
+program located in the gnome-xml module (it's usually not shipped in the
+binary packages of libxml, but you can find it in the tar source
+distribution). Here is the sequence of callbacks that would be reported by
+testSAX when parsing the example XML document shown earlier:</p>
+<pre>SAX.setDocumentLocator()
+SAX.startDocument()
+SAX.getEntity(amp)
+SAX.startElement(EXAMPLE, prop1='gnome is great', prop2='&amp;amp; linux too')
+SAX.characters(   , 3)
+SAX.startElement(head)
+SAX.characters(    , 4)
+SAX.startElement(title)
+SAX.characters(Welcome to Gnome, 16)
+SAX.endElement(title)
+SAX.characters(   , 3)
+SAX.endElement(head)
+SAX.characters(   , 3)
+SAX.startElement(chapter)
+SAX.characters(    , 4)
+SAX.startElement(title)
+SAX.characters(The Linux adventure, 19)
+SAX.endElement(title)
+SAX.characters(    , 4)
+SAX.startElement(p)
+SAX.characters(bla bla bla ..., 15)
+SAX.endElement(p)
+SAX.characters(    , 4)
+SAX.startElement(image, href='linus.gif')
+SAX.endElement(image)
+SAX.characters(    , 4)
+SAX.startElement(p)
+SAX.characters(..., 3)
+SAX.endElement(p)
+SAX.characters(   , 3)
+SAX.endElement(chapter)
+SAX.characters( , 1)
+SAX.endElement(EXAMPLE)
+SAX.endDocument()</pre>
+<p>Most of the other interfaces of libxml are based on the DOM tree-building
+facility, so nearly everything up to the end of this document presupposes the
+use of the standard DOM tree build. Note that the DOM tree itself is built by
+a set of registered default callbacks, without internal specific
+interface.</p>
+<p><a href="mailto:daniel@veillard.com">Daniel Veillard</a></p>
+</td></tr></table></td></tr></table></td></tr></table></td>
+</tr></table></td></tr></table>
+</body>
+</html>

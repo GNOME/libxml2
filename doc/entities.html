@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+<meta content="text/html; charset=ISO-8859-1" http-equiv="Content-Type">
+<style type="text/css"><!--
+TD {font-size: 10pt; font-family: Verdana,Arial,Helvetica}
+BODY {font-size: 10pt; font-family: Verdana,Arial,Helvetica; margin-top: 5pt; margin-left: 0pt; margin-right: 0pt}
+H1 {font-size: 16pt; font-family: Verdana,Arial,Helvetica}
+H2 {font-size: 14pt; font-family: Verdana,Arial,Helvetica}
+H3 {font-size: 12pt; font-family: Verdana,Arial,Helvetica}
+--></style>
+<title>Entities or no entities</title>
+</head>
+<body bgcolor="#8b7765" text="#000000" link="#000000" vlink="#000000">
+<table border="0" width="100%" cellpadding="5" cellspacing="0" align="center"><tr>
+<td width="180">
+<a href="http://www.gnome.org/"><img src="smallfootonly.gif" alt="Gnome Logo"></a><a href="http://www.w3.org/Status"><img src="w3c.png" alt="W3C Logo"></a><a href="http://www.redhat.com/"><img src="redhat.gif" alt="Red Hat Logo"></a>
+</td>
+<td><table border="0" width="90%" cellpadding="2" cellspacing="0" align="center" bgcolor="#000000"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="3" bgcolor="#fffacd"><tr><td align="center">
+<h1>The XML C library for Gnome</h1>
+<h2>Entities or no entities</h2>
+</td></tr></table></td></tr></table></td>
+</tr></table>
+<table border="0" cellpadding="4" cellspacing="0" width="100%" align="center"><tr><td bgcolor="#8b7765"><table border="0" cellspacing="0" cellpadding="2" width="100%"><tr>
+<td valign="top" width="200" bgcolor="#8b7765"><table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="3">
+<tr><td colspan="1" bgcolor="#eecfa1" align="center"><center><b>Main Menu</b></center></td></tr>
+<tr><td bgcolor="#fffacd"><ul style="margin-left: -2pt">
+<li><a href="index.html">Home</a></li>
+<li><a href="FAQ.html">FAQ</a></li>
+<li><a href="intro.html">Introduction</a></li>
+<li><a href="docs.html">Documentation</a></li>
+<li><a href="bugs.html">Reporting bugs and getting help</a></li>
+<li><a href="help.html">How to help</a></li>
+<li><a href="downloads.html">Downloads</a></li>
+<li><a href="news.html">News</a></li>
+<li><a href="XML.html">XML</a></li>
+<li><a href="XSLT.html">XSLT</a></li>
+<li><a href="architecture.html">An overview of libxml architecture</a></li>
+<li><a href="tree.html">The tree output</a></li>
+<li><a href="interface.html">The SAX interface</a></li>
+<li><a href="library.html">The XML library interfaces</a></li>
+<li><a href="entities.html">Entities or no entities</a></li>
+<li><a href="namespaces.html">Namespaces</a></li>
+<li><a href="valid.html">Validation, or are you afraid of DTDs ?</a></li>
+<li><a href="DOM.html">DOM Principles</a></li>
+<li><a href="example.html">A real example</a></li>
+<li><a href="contribs.html">Contributions</a></li>
+<li><a href="encoding.html">Encodings support</a></li>
+<li><a href="catalog.html">Catalogs support</a></li>
+<li><a href="xmlio.html">I/O interfaces</a></li>
+<li><a href="xmlmem.html">Memory interfaces</a></li>
+<li><a href="xmldtd.html">DTD support</a></li>
+<li><a href="xml.html">flat page</a></li>
+</ul></td></tr>
+</table></td></tr></table></td>
+<td valign="top" bgcolor="#8b7765"><table border="0" cellspacing="0" cellpadding="1" width="100%"><tr><td><table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000"><tr><td><table border="0" cellpadding="3" cellspacing="1" width="100%"><tr><td bgcolor="#fffacd">
+<p>Entities in principle are similar to simple C macros. An entity defines an
+abbreviation for a given string that you can reuse many times throughout the
+content of your document. Entities are especially useful when a given string
+may occur frequently within a document, or to confine the change needed to a
+document to a restricted area in the internal subset of the document (at the
+beginning). Example:</p>
+<pre>1 &lt;?xml version=&quot;1.0&quot;?&gt;
+2 &lt;!DOCTYPE EXAMPLE SYSTEM &quot;example.dtd&quot; [
+3 &lt;!ENTITY xml &quot;Extensible Markup Language&quot;&gt;
+4 ]&gt;
+5 &lt;EXAMPLE&gt;
+6    &amp;xml;
+7 &lt;/EXAMPLE&gt;</pre>
+<p>Line 3 declares the xml entity. Line 6 uses the xml entity, by prefixing
+its name with '&amp;' and following it by ';' without any spaces added. There
+are 5 predefined entities in libxml allowing you to escape charaters with
+predefined meaning in some parts of the xml document content:
+<strong>&amp;lt;</strong> for the character '&lt;', <strong>&amp;gt;</strong>
+for the character '&gt;',  <strong>&amp;apos;</strong> for the character ''',
+<strong>&amp;quot;</strong> for the character '&quot;', and
+<strong>&amp;amp;</strong> for the character '&amp;'.</p>
+<p>One of the problems related to entities is that you may want the parser to
+substitute an entity's content so that you can see the replacement text in
+your application. Or you may prefer to keep entity references as such in the
+content to be able to save the document back without losing this usually
+precious information (if the user went through the pain of explicitly
+defining entities, he may have a a rather negative attitude if you blindly
+susbtitute them as saving time). The <a href="html/libxml-parser.html#XMLSUBSTITUTEENTITIESDEFAULT">xmlSubstituteEntitiesDefault()</a>
+function allows you to check and change the behaviour, which is to not
+substitute entities by default.</p>
+<p>Here is the DOM tree built by libxml for the previous document in the
+default case:</p>
+<pre>/gnome/src/gnome-xml -&gt; ./xmllint --debug test/ent1
+DOCUMENT
+version=1.0
+   ELEMENT EXAMPLE
+     TEXT
+     content=
+     ENTITY_REF
+       INTERNAL_GENERAL_ENTITY xml
+       content=Extensible Markup Language
+     TEXT
+     content=</pre>
+<p>And here is the result when substituting entities:</p>
+<pre>/gnome/src/gnome-xml -&gt; ./tester --debug --noent test/ent1
+DOCUMENT
+version=1.0
+   ELEMENT EXAMPLE
+     TEXT
+     content=     Extensible Markup Language</pre>
+<p>So, entities or no entities? Basically, it depends on your use case. I
+suggest that you keep the non-substituting default behaviour and avoid using
+entities in your XML document or data if you are not willing to handle the
+entity references elements in the DOM tree.</p>
+<p>Note that at save time libxml enforces the conversion of the predefined
+entities where necessary to prevent well-formedness problems, and will also
+transparently replace those with chars (i.e. it will not generate entity
+reference elements in the DOM tree or call the reference() SAX callback when
+finding them in the input).</p>
+<p>
+<span style="background-color: #FF0000">WARNING</span>: handling entities
+on top of the libxml SAX interface is difficult!!! If you plan to use
+non-predefined entities in your documents, then the learning cuvre to handle
+then using the SAX API may be long. If you plan to use complex documents, I
+strongly suggest you consider using the DOM interface instead and let libxml
+deal with the complexity rather than trying to do it yourself.</p>
+<p><a href="mailto:daniel@veillard.com">Daniel Veillard</a></p>
+</td></tr></table></td></tr></table></td></tr></table></td>
+</tr></table></td></tr></table>
+</body>
+</html>

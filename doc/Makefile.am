@@ -12,11 +12,18 @@ DOC_SOURCE_DIR=..
 HTML_DIR=@HTML_DIR@
 
 TARGET_DIR=$(HTML_DIR)/$(DOC_MODULE)/html
+PAGES= architecture.html bugs.html contribs.html docs.html DOM.html \
+    downloads.html entities.html example.html help.html index.html \
+    interface.html intro.html library.html namespaces.html news.html \
+    tree.html valid.html XML.html XSLT.html
 
 man_MANS = xmlcatalog.1
 
-# htmldir = $(prefix)/html
-# html_DATA = gnome-dev-info.html
+all: $(PAGES)
+
+$(PAGES): xml.html site.xsl
+	@(if [ -x /usr/bin/xsltproc ] ; then \
+	  /usr/bin/xsltproc --html site.xsl xml.html > index.html ; fi );
 
 scan:
 	gtkdoc-scan --module=libxml --source-dir=$(DOC_SOURCE_DIR) --ignore-headers="acconfig.h config.h xmlwin32version.h win32config.h trio.h strio.h triop.h"
@@ -52,6 +59,6 @@ install-data-local:
 	-(cd $(DESTDIR); gtkdoc-fixxref --module=libxml --html-dir=$(HTML_DIR))
 
 dist-hook:
-	(cd $(srcdir) ; tar cvf - *.1 *.html *.gif html/*.html html/*.sgml) | (cd $(distdir); tar xf -)
+	(cd $(srcdir) ; tar cvf - *.1 site.xsl *.html *.gif html/*.html html/*.sgml) | (cd $(distdir); tar xf -)
 
 .PHONY : html sgml templates scan

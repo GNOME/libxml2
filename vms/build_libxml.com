@@ -42,14 +42,14 @@ $!- list of sources to be built into the LIBXML library.  Compare this list
 $!  to the definition of "libxml2_la_SOURCES" in the file MAKEFILE.IN.
 $!  Currently this definition includes the list WITH_TRIO_SOURCES_TRUE
 $!
-$   sources = "SAX.c entities.c encoding.c error.c parserInternals.c parser.c"
-$   sources = sources + " tree.c hash.c list.c xmlIO.c xmlmemory.c uri.c valid.c"
-$   sources = sources + " xlink.c HTMLparser.c HTMLtree.c debugXML.c xpath.c "
-$   sources = sources + " xpointer.c xinclude.c nanohttp.c nanoftp.c "
-$   sources = sources + " DOCBparser.c catalog.c globals.c threads.c c14n.c "
-$   sources = sources + " xmlregexp.c xmlschemas.c xmlschemastypes.c xmlunicode.c "
+$   sources = "SAX.c entities.c encoding.c error.c parserInternals.c"
+$   sources = sources + " parser.c tree.c hash.c list.c xmlIO.c xmlmemory.c uri.c"
+$   sources = sources + " valid.c xlink.c HTMLparser.c HTMLtree.c debugXML.c xpath.c"
+$   sources = sources + " xpointer.c xinclude.c nanohttp.c nanoftp.c DOCBparser.c"
+$   sources = sources + " catalog.c globals.c threads.c c14n.c xmlstring.c"
+$   sources = sources + " xmlregexp.c xmlschemas.c xmlschemastypes.c xmlunicode.c"
 $   sources = sources + " triostr.c trio.c xmlreader.c relaxng.c dict.c SAX2.c"
-$   sources = sources + " legacy.c xmldwalk.c chvalid.c"
+$   sources = sources + " xmlwriter.c legacy.c chvalid.c pattern.c xmlsave.c"
 $!
 $!- list of main modules to compile and link.  Compare this list to the
 $!  definition of bin_PROGRAMS in MAKEFILE.IN

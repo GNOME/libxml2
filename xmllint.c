@@ -1236,8 +1236,20 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
      */
     if (copy) {
         tmp = doc;
+	if (timing) {
+	    startTimer();
+	}
 	doc = xmlCopyDoc(doc, 1);
+	if (timing) {
+	    endTimer("Copying");
+	}
+	if (timing) {
+	    startTimer();
+	}
 	xmlFreeDoc(tmp);
+	if (timing) {
+	    endTimer("Freeing original");
+	}
     }
 #endif /* LIBXML_TREE_ENABLED */
 

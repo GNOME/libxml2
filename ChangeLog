@@ -1,3 +1,9 @@
+Mon Sep 20 22:01:47 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xmllint.c: added --timing --copy timing for the copy
+	* vms/build_libxml.com: applied patch from Craig Berry
+	  to build with recent releases
+
 Fri Sep 17 21:25:33 PDT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* nanohttp.c, include/libxml/nanohttp.h: added the routine

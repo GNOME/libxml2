@@ -1,3 +1,10 @@
+Wed Sep 17 12:23:41 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* SAX2.c parser.c parserInternals.c xmlreader.c: started messing
+	  seriously with per-document dict and element and attribute nodes
+	  reuse in the xmlReader. This seems to lead to an interesting
+	  speedup of the xmlReader already.
+
 Wed Sep 17 01:07:56 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* dict.c include/libxml/dict.h: do string allocations in large

@@ -1642,6 +1642,17 @@ xmlSAX2AttributeNs(xmlParserCtxtPtr ctxt,
 	else
 	    ret->name = xmlStrdup(localname);
 
+        /* link at the end to preserv order, TODO speed up with a last */
+	if (ctxt->node->properties == NULL) {
+	    ctxt->node->properties = ret;
+	} else {
+	    xmlAttrPtr prev = ctxt->node->properties;
+
+	    while (prev->next != NULL) prev = prev->next;
+	    prev->next = ret;
+	    ret->prev = prev;
+	}
+
 	if ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
 	    xmlRegisterNodeDefaultValue((xmlNodePtr)ret);
     } else {

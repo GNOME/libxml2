@@ -648,7 +648,8 @@ xmlAddSpecialAttr(xmlParserCtxtPtr ctxt,
 	    goto mem_error;
     }
 
-    xmlHashAddEntry2(ctxt->attsSpecial, fullname, fullattr, (void *) type);
+    xmlHashAddEntry2(ctxt->attsSpecial, fullname, fullattr,
+                     (void *) (long) type);
     return;
 
 mem_error:
@@ -919,7 +920,7 @@ nameNsPush(xmlParserCtxtPtr ctxt, const xmlChar * value,
     ctxt->name = value;
     ctxt->pushTab[ctxt->nameNr * 3] = (void *) prefix;
     ctxt->pushTab[ctxt->nameNr * 3 + 1] = (void *) URI;
-    ctxt->pushTab[ctxt->nameNr * 3 + 2] = (void *) nsNr;
+    ctxt->pushTab[ctxt->nameNr * 3 + 2] = (void *) (long) nsNr;
     return (ctxt->nameNr++);
 mem_error:
     xmlErrMemory(ctxt, NULL);
@@ -10902,6 +10903,8 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
 	ctxt->userData = user_data;
     else
 	ctxt->userData = ctxt;
+    if (ctxt->dict != NULL) xmlDictFree(ctxt->dict);
+    ctxt->dict = oldctxt->dict;
 
     oldsax = ctxt->sax;
     ctxt->sax = oldctxt->sax;
@@ -10912,6 +10915,7 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
 	newDoc = xmlNewDoc(BAD_CAST "1.0");
 	if (newDoc == NULL) {
 	    ctxt->sax = oldsax;
+	    ctxt->dict = NULL;
 	    xmlFreeParserCtxt(ctxt);
 	    return(-1);
 	}
@@ -10924,6 +10928,7 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
 	                                  BAD_CAST "pseudoroot", NULL);
     if (ctxt->myDoc->children == NULL) {
 	ctxt->sax = oldsax;
+	ctxt->dict = NULL;
 	xmlFreeParserCtxt(ctxt);
 	if (newDoc != NULL)
 	    xmlFreeDoc(newDoc);
@@ -10941,6 +10946,7 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
 	 */
 	ctxt->loadsubset |= XML_SKIP_IDS;
     }
+    ctxt->dictNames = oldctxt->dictNames;
 
     xmlParseContent(ctxt);
     if ((RAW == '<') && (NXT(1) == '/')) {
@@ -10987,6 +10993,7 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
     }
 	
     ctxt->sax = oldsax;
+    ctxt->dict = NULL;
     xmlFreeParserCtxt(ctxt);
     if (newDoc != NULL)
 	xmlFreeDoc(newDoc);

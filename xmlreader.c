@@ -135,6 +135,345 @@ struct _xmlTextReader {
 
 static const char *xmlTextReaderIsEmpty = "This element is empty";
 
+/************************************************************************
+ *									*
+ *	Our own version of the freeing routines as we recycle nodes	*
+ *									*
+ ************************************************************************/
+
+static void xmlTextReaderFreeNode(xmlTextReaderPtr reader, xmlNodePtr cur);
+static void xmlTextReaderFreeNodeList(xmlTextReaderPtr reader, xmlNodePtr cur);
+
+/**
+ * xmlTextReaderFreeEntityWrapper:
+ * @entity:  An entity
+ * @name:  its name
+ *
+ * Deallocate the memory used by an entities in the hash table.
+ */
+static void
+xmlTextReaderFreeEntityWrapper(xmlEntityPtr entity,
+	               const xmlChar *name ATTRIBUTE_UNUSED) {
+    if (entity == NULL) return;
+
+    if ((entity->children) && (entity->owner == 1) &&
+	(entity == (xmlEntityPtr) entity->children->parent)) {
+	xmlDocPtr doc;
+	xmlTextReaderPtr reader = NULL;
+	doc = entity->doc;
+	if (doc != NULL)
+	    reader = doc->_private;
+	xmlTextReaderFreeNodeList(reader, entity->children);
+    }
+    if (entity->name != NULL)
+	xmlFree((char *) entity->name);
+    if (entity->ExternalID != NULL)
+        xmlFree((char *) entity->ExternalID);
+    if (entity->SystemID != NULL)
+        xmlFree((char *) entity->SystemID);
+    if (entity->URI != NULL)
+        xmlFree((char *) entity->URI);
+    if (entity->content != NULL)
+        xmlFree((char *) entity->content);
+    if (entity->orig != NULL)
+        xmlFree((char *) entity->orig);
+    xmlFree(entity);
+}
+
+/**
+ * xmlTextReaderFreeEntitiesTable:
+ * @table:  An entity table
+ *
+ * Deallocate the memory used by an entities hash table.
+ */
+static void
+xmlTextReaderFreeEntitiesTable(xmlEntitiesTablePtr table) {
+    xmlHashFree(table, (xmlHashDeallocator) xmlTextReaderFreeEntityWrapper);
+}
+
+/**
+ * xmlTextReaderFreeDtd:
+ * @cur:  the DTD structure to free up
+ *
+ * Free a DTD structure.
+ */
+static void
+xmlTextReaderFreeDtd(xmlTextReaderPtr reader, xmlDtdPtr cur) {
+    if (cur == NULL) return;
+
+    if (cur->children != NULL) {
+	xmlNodePtr next, c = cur->children;
+
+	/*
+	 * Cleanup all the DTD comments they are not in the DTD
+	 * indexes.
+	 */
+        while (c != NULL) {
+	    next = c->next;
+	    if ((c->type == XML_COMMENT_NODE) || (c->type == XML_PI_NODE)) {
+		xmlUnlinkNode(c);
+		xmlTextReaderFreeNode(reader, c);
+	    }
+	    c = next;
+	}
+    }
+
+    if (cur->name != NULL) xmlFree((char *) cur->name);
+    if (cur->SystemID != NULL) xmlFree((char *) cur->SystemID);
+    if (cur->ExternalID != NULL) xmlFree((char *) cur->ExternalID);
+    /* TODO !!! */
+    if (cur->notations != NULL)
+        xmlFreeNotationTable((xmlNotationTablePtr) cur->notations);
+    
+    if (cur->elements != NULL)
+        xmlFreeElementTable((xmlElementTablePtr) cur->elements);
+    if (cur->attributes != NULL)
+        xmlFreeAttributeTable((xmlAttributeTablePtr) cur->attributes);
+    if (cur->pentities != NULL)
+        xmlFreeEntitiesTable((xmlEntitiesTablePtr) cur->pentities);
+
+    if (cur->entities != NULL)
+        xmlTextReaderFreeEntitiesTable((xmlEntitiesTablePtr) cur->entities);
+
+    xmlFree(cur);
+}
+
+/**
+ * xmlTextReaderFreeProp:
+ * @reader:  the xmlTextReaderPtr used
+ * @cur:  the node
+ *
+ * Free a node.
+ */
+static void
+xmlTextReaderFreeProp(xmlTextReaderPtr reader, xmlAttrPtr cur) {
+    if (cur == NULL) return;
+
+    /* Check for ID removal -> leading to invalid references ! */
+    if ((cur->parent != NULL) && (cur->parent->doc != NULL) &&
+	((cur->parent->doc->intSubset != NULL) ||
+	 (cur->parent->doc->extSubset != NULL))) {
+        if (xmlIsID(cur->parent->doc, cur->parent, cur))
+	    xmlRemoveID(cur->parent->doc, cur);
+    }
+    if (cur->children != NULL)
+        xmlTextReaderFreeNodeList(reader, cur->children);
+
+    if ((reader != NULL) && (reader->ctxt != NULL) &&
+	(xmlDictOwns(reader->ctxt->dict, cur->name) != 1) &&
+	(cur->name != NULL))
+	xmlFree((xmlChar *)cur->name);
+    if ((reader != NULL) && (reader->ctxt != NULL)) {
+        cur->next = reader->ctxt->freeAttrs;
+	reader->ctxt->freeAttrs = cur;
+    } else {
+	xmlFree(cur);
+    }
+}
+
+/**
+ * xmlTextReaderFreePropList:
+ * @reader:  the xmlTextReaderPtr used
+ * @cur:  the first property in the list
+ *
+ * Free a property and all its siblings, all the children are freed too.
+ */
+static void
+xmlTextReaderFreePropList(xmlTextReaderPtr reader, xmlAttrPtr cur) {
+    xmlAttrPtr next;
+    if (cur == NULL) return;
+    while (cur != NULL) {
+        next = cur->next;
+        xmlTextReaderFreeProp(reader, cur);
+	cur = next;
+    }
+}
+
+/**
+ * xmlTextReaderFreeNodeList:
+ * @reader:  the xmlTextReaderPtr used
+ * @cur:  the first node in the list
+ *
+ * Free a node and all its siblings, this is a recursive behaviour, all
+ * the children are freed too.
+ */
+static void
+xmlTextReaderFreeNodeList(xmlTextReaderPtr reader, xmlNodePtr cur) {
+    xmlNodePtr next;
+    if (cur == NULL) return;
+    if (cur->type == XML_NAMESPACE_DECL) {
+	xmlFreeNsList((xmlNsPtr) cur);
+	return;
+    }
+    if ((cur->type == XML_DOCUMENT_NODE) ||
+	(cur->type == XML_HTML_DOCUMENT_NODE)) {
+	xmlFreeDoc((xmlDocPtr) cur);
+	return;
+    }
+    while (cur != NULL) {
+        next = cur->next;
+	/* unroll to speed up freeing the document */
+	if (cur->type != XML_DTD_NODE) {
+
+	    if ((cur->children != NULL) &&
+		(cur->type != XML_ENTITY_REF_NODE))
+		xmlTextReaderFreeNodeList(reader, cur->children);
+	    if (((cur->type == XML_ELEMENT_NODE) ||
+		 (cur->type == XML_XINCLUDE_START) ||
+		 (cur->type == XML_XINCLUDE_END)) &&
+		(cur->properties != NULL))
+		xmlTextReaderFreePropList(reader, cur->properties);
+	    if ((cur->type != XML_ELEMENT_NODE) &&
+		(cur->type != XML_XINCLUDE_START) &&
+		(cur->type != XML_XINCLUDE_END) &&
+		(cur->type != XML_ENTITY_REF_NODE)) {
+		if (cur->content != NULL) xmlFree(cur->content);
+	    }
+	    if (((cur->type == XML_ELEMENT_NODE) ||
+	         (cur->type == XML_XINCLUDE_START) ||
+		 (cur->type == XML_XINCLUDE_END)) &&
+		(cur->nsDef != NULL))
+		xmlFreeNsList(cur->nsDef);
+
+	    /*
+	     * we don't free element names here they are interned now
+	     */
+	    if (cur->type == XML_ELEMENT_NODE) {
+		if ((reader != NULL) && (reader->ctxt != NULL) &&
+		    (xmlDictOwns(reader->ctxt->dict, cur->name) != 1) &&
+		    (cur->name != NULL))
+		    xmlFree((xmlChar *)cur->name);
+	    } else if ((cur->type != XML_TEXT_NODE) &&
+		(cur->type != XML_COMMENT_NODE) &&
+		(cur->name != NULL))
+		xmlFree((xmlChar *)cur->name);
+	    if ((cur->type == XML_ELEMENT_NODE) &&
+	        (reader != NULL) && (reader->ctxt != NULL)) {
+	        cur->next = reader->ctxt->freeElems;
+		reader->ctxt->freeElems = cur;
+	    } else {
+		xmlFree(cur);
+	    }
+	}
+	cur = next;
+    }
+}
+
+/**
+ * xmlTextReaderFreeNode:
+ * @reader:  the xmlTextReaderPtr used
+ * @cur:  the node
+ *
+ * Free a node, this is a recursive behaviour, all the children are freed too.
+ * This doesn't unlink the child from the list, use xmlUnlinkNode() first.
+ */
+static void
+xmlTextReaderFreeNode(xmlTextReaderPtr reader, xmlNodePtr cur) {
+    if (cur->type == XML_DTD_NODE) {
+	xmlTextReaderFreeDtd(reader, (xmlDtdPtr) cur);
+	return;
+    }
+    if (cur->type == XML_NAMESPACE_DECL) {
+	xmlFreeNs((xmlNsPtr) cur);
+        return;
+    }
+    if (cur->type == XML_ATTRIBUTE_NODE) {
+	xmlTextReaderFreeProp(reader, (xmlAttrPtr) cur);
+	return;
+    }
+
+    if ((cur->children != NULL) &&
+	(cur->type != XML_ENTITY_REF_NODE))
+	xmlTextReaderFreeNodeList(reader, cur->children);
+    if (((cur->type == XML_ELEMENT_NODE) ||
+	 (cur->type == XML_XINCLUDE_START) ||
+	 (cur->type == XML_XINCLUDE_END)) &&
+	(cur->properties != NULL))
+	xmlTextReaderFreePropList(reader, cur->properties);
+    if ((cur->type != XML_ELEMENT_NODE) &&
+	(cur->type != XML_XINCLUDE_START) &&
+	(cur->type != XML_XINCLUDE_END) &&
+	(cur->type != XML_ENTITY_REF_NODE)) {
+	if (cur->content != NULL) xmlFree(cur->content);
+    }
+    if (((cur->type == XML_ELEMENT_NODE) ||
+	 (cur->type == XML_XINCLUDE_START) ||
+	 (cur->type == XML_XINCLUDE_END)) &&
+	(cur->nsDef != NULL))
+	xmlFreeNsList(cur->nsDef);
+
+    /*
+     * we don't free names here they are interned now
+     */
+    if (cur->type == XML_ELEMENT_NODE) {
+	if ((reader != NULL) && (reader->ctxt != NULL) &&
+	    (xmlDictOwns(reader->ctxt->dict, cur->name) != 1) &&
+	    (cur->name != NULL))
+	    xmlFree((xmlChar *)cur->name);
+    } else if ((cur->type != XML_TEXT_NODE) &&
+	(cur->type != XML_COMMENT_NODE) &&
+	(cur->name != NULL))
+	xmlFree((xmlChar *)cur->name);
+    if ((cur->type == XML_ELEMENT_NODE) &&
+	(reader != NULL) && (reader->ctxt != NULL)) {
+	cur->next = reader->ctxt->freeElems;
+	reader->ctxt->freeElems = cur;
+    } else {
+	xmlFree(cur);
+    }
+
+}
+
+/**
+ * xmlTextReaderFreeDoc:
+ * @reader:  the xmlTextReaderPtr used
+ * @cur:  pointer to the document
+ *
+ * Free up all the structures used by a document, tree included.
+ */
+static void
+xmlTextReaderFreeDoc(xmlTextReaderPtr reader, xmlDocPtr cur) {
+    xmlDtdPtr extSubset, intSubset;
+
+    if (cur == NULL) return;
+
+    /*
+     * Do this before freeing the children list to avoid ID lookups
+     */
+    if (cur->ids != NULL) xmlFreeIDTable((xmlIDTablePtr) cur->ids);
+    cur->ids = NULL;
+    if (cur->refs != NULL) xmlFreeRefTable((xmlRefTablePtr) cur->refs);
+    cur->refs = NULL;
+    extSubset = cur->extSubset;
+    intSubset = cur->intSubset;
+    if (intSubset == extSubset)
+	extSubset = NULL;
+    if (extSubset != NULL) {
+	xmlUnlinkNode((xmlNodePtr) cur->extSubset);
+	cur->extSubset = NULL;
+	xmlTextReaderFreeDtd(reader, extSubset);
+    }
+    if (intSubset != NULL) {
+	xmlUnlinkNode((xmlNodePtr) cur->intSubset);
+	cur->intSubset = NULL;
+	xmlTextReaderFreeDtd(reader, intSubset);
+    }
+
+    if (cur->children != NULL) xmlTextReaderFreeNodeList(reader, cur->children);
+
+    if (cur->version != NULL) xmlFree((char *) cur->version);
+    if (cur->name != NULL) xmlFree((char *) cur->name);
+    if (cur->encoding != NULL) xmlFree((char *) cur->encoding);
+    if (cur->oldNs != NULL) xmlFreeNsList(cur->oldNs);
+    if (cur->URL != NULL) xmlFree((char *) cur->URL);
+    xmlFree(cur);
+}
+
+/************************************************************************
+ *									*
+ *			The reader core parser				*
+ *									*
+ ************************************************************************/
 #ifdef DEBUG_READER
 static void
 xmlTextReaderDebug(xmlTextReaderPtr reader) {
@@ -795,6 +1134,8 @@ xmlTextReaderRead(xmlTextReaderPtr reader) {
 	} while ((reader->ctxt->node == NULL) &&
 		 ((reader->mode != XML_TEXTREADER_MODE_EOF) &&
 		  (reader->mode != XML_TEXTREADER_DONE)));
+	if (reader->ctxt->myDoc != NULL)
+	    reader->ctxt->myDoc->_private = reader;
 	if (reader->ctxt->node == NULL) {
 	    if (reader->ctxt->myDoc != NULL) {
 		reader->node = reader->ctxt->myDoc->children;
@@ -875,7 +1216,7 @@ get_next_node:
             (reader->node->prev->type != XML_DTD_NODE)) {
 	    xmlNodePtr tmp = reader->node->prev;
 	    xmlUnlinkNode(tmp);
-	    xmlFreeNode(tmp);
+	    xmlTextReaderFreeNode(reader, tmp);
 	}
 
 	goto node_found;
@@ -908,7 +1249,7 @@ get_next_node:
 	 */
 	if (oldnode->type != XML_DTD_NODE) {
 	    xmlUnlinkNode(oldnode);
-	    xmlFreeNode(oldnode);
+	    xmlTextReaderFreeNode(reader, oldnode);
 	}
 
 	goto node_end;
@@ -1097,6 +1438,7 @@ xmlTextReaderReadString(xmlTextReaderPtr reader ATTRIBUTE_UNUSED) {
     return(NULL);
 }
 
+#if 0
 /**
  * xmlTextReaderReadBase64:
  * @reader:  the xmlTextReaderPtr used
@@ -1112,8 +1454,10 @@ xmlTextReaderReadString(xmlTextReaderPtr reader ATTRIBUTE_UNUSED) {
  *         instance is not positioned on an element or -1 in case of error.
  */
 int
-xmlTextReaderReadBase64(xmlTextReaderPtr reader, unsigned char *array,
-	                int offset, int len) {
+xmlTextReaderReadBase64(xmlTextReaderPtr reader,
+                        unsigned char *array ATTRIBUTE_UNUSED,
+	                int offset ATTRIBUTE_UNUSED,
+			int len ATTRIBUTE_UNUSED) {
     if ((reader == NULL) || (reader->ctxt == NULL))
 	return(-1);
     if (reader->ctxt->wellFormed != 1)
@@ -1140,8 +1484,10 @@ xmlTextReaderReadBase64(xmlTextReaderPtr reader, unsigned char *array,
  *         instance is not positioned on an element or -1 in case of error.
  */
 int
-xmlTextReaderReadBinHex(xmlTextReaderPtr reader, unsigned char *array,
-	                int offset, int len) {
+xmlTextReaderReadBinHex(xmlTextReaderPtr reader,
+                        unsigned char *array ATTRIBUTE_UNUSED,
+	                int offset ATTRIBUTE_UNUSED,
+			int len ATTRIBUTE_UNUSED) {
     if ((reader == NULL) || (reader->ctxt == NULL))
 	return(-1);
     if (reader->ctxt->wellFormed != 1)
@@ -1152,6 +1498,7 @@ xmlTextReaderReadBinHex(xmlTextReaderPtr reader, unsigned char *array,
     TODO
     return(0);
 }
+#endif
 
 /************************************************************************
  *									*
@@ -1235,6 +1582,7 @@ xmlNewTextReader(xmlParserInputBufferPtr input, const char *URI) {
     }
     ret->ctxt->_private = ret;
     ret->ctxt->linenumbers = 1;
+    ret->ctxt->dictNames = 1;
     ret->allocs = XML_TEXTREADER_CTXT;
     /*
      * use the parser dictionnary to allocate all elements and attributes names
@@ -1297,7 +1645,7 @@ xmlFreeTextReader(xmlTextReaderPtr reader) {
 #endif
     if (reader->ctxt != NULL) {
 	if (reader->ctxt->myDoc != NULL) {
-	    xmlFreeDoc(reader->ctxt->myDoc);
+	    xmlTextReaderFreeDoc(reader, reader->ctxt->myDoc);
 	    reader->ctxt->myDoc = NULL;
 	}
 	if ((reader->ctxt->vctxt.vstateTab != NULL) &&
@@ -2937,6 +3285,7 @@ xmlTextReaderGetErrorHandler(xmlTextReaderPtr reader,
  *			Utilities					*
  *									*
  ************************************************************************/
+#ifdef NOT_USED_YET
 /**
  * xmlBase64Decode:
  * @in:  the input buffer
@@ -3111,3 +3460,4 @@ int main(int argc, char **argv) {
 
 }
 #endif
+#endif /* NOT_USED_YET */

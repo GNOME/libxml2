@@ -2383,6 +2383,26 @@ xmlFreeParserCtxt(xmlParserCtxtPtr ctxt)
         xmlHashFree(ctxt->attsDefault, (xmlHashDeallocator) xmlFree);
     if (ctxt->attsSpecial != NULL)
         xmlHashFree(ctxt->attsSpecial, NULL);
+    if (ctxt->freeElems != NULL) {
+        xmlNodePtr cur, next;
+
+	cur = ctxt->freeElems;
+	while (cur != NULL) {
+	    next = cur->next;
+	    xmlFree(cur);
+	    cur = next;
+	}
+    }
+    if (ctxt->freeAttrs != NULL) {
+        xmlAttrPtr cur, next;
+
+	cur = ctxt->freeAttrs;
+	while (cur != NULL) {
+	    next = cur->next;
+	    xmlFree(cur);
+	    cur = next;
+	}
+    }
 
 #ifdef LIBXML_CATALOG_ENABLED
     if (ctxt->catalogs != NULL)

@@ -4,7 +4,7 @@
 >xmlIO</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.44"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.33"><LINK
 REL="HOME"
 TITLE="Gnome XML Library Reference Manual"
 HREF="book1.html"><LINK
@@ -20,9 +20,6 @@ HREF="gnome-xml-parserinternals.html"></HEAD
 ><BODY
 BGCOLOR="#FFFFFF"
 TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -114,22 +111,19 @@ SIZE="3"
 ></TABLE
 ></DIV
 ><H1
-><A
-NAME="GNOME-XML-XMLIO"
->xmlIO</A
-></H1
+>xmlIO</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN8733"
+NAME="AEN10923"
 ></A
 ><H2
 >Name</H2
->xmlIO&nbsp;--&nbsp;</DIV
+>xmlIO &#8212; </DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN8736"
+NAME="AEN10926"
 ></A
 ><H2
 >Synopsis</H2
@@ -144,10 +138,69 @@ CELLPADDING="6"
 CLASS="SYNOPSIS"
 >&#13;
 
+int         (<A
+HREF="gnome-xml-xmlio.html#XMLINPUTMATCHCALLBACK"
+>*xmlInputMatchCallback</A
+>)        (char const *filename);
+void*       (<A
+HREF="gnome-xml-xmlio.html#XMLINPUTOPENCALLBACK"
+>*xmlInputOpenCallback</A
+>)         (char const *filename);
+int         (<A
+HREF="gnome-xml-xmlio.html#XMLINPUTREADCALLBACK"
+>*xmlInputReadCallback</A
+>)         (void *context,
+                                             char *buffer,
+                                             int len);
+void        (<A
+HREF="gnome-xml-xmlio.html#XMLINPUTCLOSECALLBACK"
+>*xmlInputCloseCallback</A
+>)        (void *context);
+struct      <A
+HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFER"
+>xmlParserInputBuffer</A
+>;
 typedef     <A
 HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 >;
+int         (<A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTMATCHCALLBACK"
+>*xmlOutputMatchCallback</A
+>)       (char const *filename);
+void*       (<A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTOPENCALLBACK"
+>*xmlOutputOpenCallback</A
+>)        (char const *filename);
+int         (<A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTWRITECALLBACK"
+>*xmlOutputWriteCallback</A
+>)       (void *context,
+                                             const char *buffer,
+                                             int len);
+void        (<A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTCLOSECALLBACK"
+>*xmlOutputCloseCallback</A
+>)       (void *context);
+struct      <A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFER"
+>xmlOutputBuffer</A
+>;
+typedef     <A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERPTR"
+>xmlOutputBufferPtr</A
+>;
+<A
+HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+>xmlParserInputBufferPtr</A
+> <A
+HREF="gnome-xml-xmlio.html#XMLALLOCPARSERINPUTBUFFER"
+>xmlAllocParserInputBuffer</A
+>
+                                            (<A
+HREF="gnome-xml-encoding.html#XMLCHARENCODING"
+>xmlCharEncoding</A
+> enc);
 <A
 HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
@@ -187,6 +240,26 @@ HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERCREATEFD"
 HREF="gnome-xml-encoding.html#XMLCHARENCODING"
 >xmlCharEncoding</A
 > enc);
+<A
+HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+>xmlParserInputBufferPtr</A
+> <A
+HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERCREATEIO"
+>xmlParserInputBufferCreateIO</A
+>
+                                            (<A
+HREF="gnome-xml-xmlio.html#XMLINPUTREADCALLBACK"
+>xmlInputReadCallback</A
+> ioread,
+                                             <A
+HREF="gnome-xml-xmlio.html#XMLINPUTCLOSECALLBACK"
+>xmlInputCloseCallback</A
+> ioclose,
+                                             void *ioctx,
+                                             <A
+HREF="gnome-xml-encoding.html#XMLCHARENCODING"
+>xmlCharEncoding</A
+> enc);
 int         <A
 HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERREAD"
 >xmlParserInputBufferRead</A
@@ -203,6 +276,15 @@ HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > in,
                                              int len);
+int         <A
+HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPUSH"
+>xmlParserInputBufferPush</A
+>        (<A
+HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+>xmlParserInputBufferPtr</A
+> in,
+                                             int len,
+                                             const char *buf);
 void        <A
 HREF="gnome-xml-xmlio.html#XMLFREEPARSERINPUTBUFFER"
 >xmlFreeParserInputBuffer</A
@@ -213,7 +295,156 @@ HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
 char*       <A
 HREF="gnome-xml-xmlio.html#XMLPARSERGETDIRECTORY"
 >xmlParserGetDirectory</A
->           (const char *filename);</PRE
+>           (const char *filename);
+int         <A
+HREF="gnome-xml-xmlio.html#XMLREGISTERINPUTCALLBACKS"
+>xmlRegisterInputCallbacks</A
+>       (<A
+HREF="gnome-xml-xmlio.html#XMLINPUTMATCHCALLBACK"
+>xmlInputMatchCallback</A
+> match,
+                                             <A
+HREF="gnome-xml-xmlio.html#XMLINPUTOPENCALLBACK"
+>xmlInputOpenCallback</A
+> open,
+                                             <A
+HREF="gnome-xml-xmlio.html#XMLINPUTREADCALLBACK"
+>xmlInputReadCallback</A
+> read,
+                                             <A
+HREF="gnome-xml-xmlio.html#XMLINPUTCLOSECALLBACK"
+>xmlInputCloseCallback</A
+> close);
+<A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERPTR"
+>xmlOutputBufferPtr</A
+> <A
+HREF="gnome-xml-xmlio.html#XMLALLOCOUTPUTBUFFER"
+>xmlAllocOutputBuffer</A
+>     (<A
+HREF="gnome-xml-encoding.html#XMLCHARENCODINGHANDLERPTR"
+>xmlCharEncodingHandlerPtr</A
+> encoder);
+<A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERPTR"
+>xmlOutputBufferPtr</A
+> <A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERCREATEFILENAME"
+>xmlOutputBufferCreateFilename</A
+>
+                                            (const char *URI,
+                                             <A
+HREF="gnome-xml-encoding.html#XMLCHARENCODINGHANDLERPTR"
+>xmlCharEncodingHandlerPtr</A
+> encoder,
+                                             int compression);
+<A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERPTR"
+>xmlOutputBufferPtr</A
+> <A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERCREATEFILE"
+>xmlOutputBufferCreateFile</A
+>
+                                            (<GTKDOCLINK
+HREF="FILE"
+>FILE</GTKDOCLINK
+> *file,
+                                             <A
+HREF="gnome-xml-encoding.html#XMLCHARENCODINGHANDLERPTR"
+>xmlCharEncodingHandlerPtr</A
+> encoder);
+<A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERPTR"
+>xmlOutputBufferPtr</A
+> <A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERCREATEFD"
+>xmlOutputBufferCreateFd</A
+>  (int fd,
+                                             <A
+HREF="gnome-xml-encoding.html#XMLCHARENCODINGHANDLERPTR"
+>xmlCharEncodingHandlerPtr</A
+> encoder);
+<A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERPTR"
+>xmlOutputBufferPtr</A
+> <A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERCREATEIO"
+>xmlOutputBufferCreateIO</A
+>  (<A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTWRITECALLBACK"
+>xmlOutputWriteCallback</A
+> iowrite,
+                                             <A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTCLOSECALLBACK"
+>xmlOutputCloseCallback</A
+> ioclose,
+                                             void *ioctx,
+                                             <A
+HREF="gnome-xml-encoding.html#XMLCHARENCODINGHANDLERPTR"
+>xmlCharEncodingHandlerPtr</A
+> encoder);
+int         <A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERWRITE"
+>xmlOutputBufferWrite</A
+>            (<A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERPTR"
+>xmlOutputBufferPtr</A
+> out,
+                                             int len,
+                                             const char *buf);
+int         <A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERWRITESTRING"
+>xmlOutputBufferWriteString</A
+>      (<A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERPTR"
+>xmlOutputBufferPtr</A
+> out,
+                                             const char *str);
+int         <A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERFLUSH"
+>xmlOutputBufferFlush</A
+>            (<A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERPTR"
+>xmlOutputBufferPtr</A
+> out);
+int         <A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERCLOSE"
+>xmlOutputBufferClose</A
+>            (<A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERPTR"
+>xmlOutputBufferPtr</A
+> out);
+int         <A
+HREF="gnome-xml-xmlio.html#XMLREGISTEROUTPUTCALLBACKS"
+>xmlRegisterOutputCallbacks</A
+>      (<A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTMATCHCALLBACK"
+>xmlOutputMatchCallback</A
+> match,
+                                             <A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTOPENCALLBACK"
+>xmlOutputOpenCallback</A
+> open,
+                                             <A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTWRITECALLBACK"
+>xmlOutputWriteCallback</A
+> write,
+                                             <A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTCLOSECALLBACK"
+>xmlOutputCloseCallback</A
+> close);
+int         <A
+HREF="gnome-xml-xmlio.html#XMLSAVEFILETO"
+>xmlSaveFileTo</A
+>                   (<A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFER"
+>xmlOutputBuffer</A
+> *buf,
+                                             <A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> cur,
+                                             const char *encoding);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -221,7 +452,7 @@ HREF="gnome-xml-xmlio.html#XMLPARSERGETDIRECTORY"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN8757"
+NAME="AEN11007"
 ></A
 ><H2
 >Description</H2
@@ -231,33 +462,20 @@ NAME="AEN8757"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN8760"
+NAME="AEN11010"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8762"
+NAME="AEN11012"
 ></A
 ><H3
 ><A
-NAME="XMLPARSERINPUTBUFFERPTR"
+NAME="XMLINPUTMATCHCALLBACK"
 ></A
->xmlParserInputBufferPtr</H3
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN8766"
-></A
-><H3
-><A
-NAME="XMLPARSERINPUTBUFFERCREATEFILENAME"
-></A
->xmlParserInputBufferCreateFilename ()</H3
+>xmlInputMatchCallback ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -267,23 +485,10 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
-><A
-HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
->xmlParserInputBufferPtr</A
-> xmlParserInputBufferCreateFilename
-                                            (const char *URI,
-                                             <A
-HREF="gnome-xml-encoding.html#XMLCHARENCODING"
->xmlCharEncoding</A
-> enc);</PRE
+>int         (*xmlInputMatchCallback)        (char const *filename);</PRE
 ></TD
 ></TR
 ></TABLE
-><P
->Create a buffered parser input for the progressive parsing of a file
-If filename is "-' then we use stdin as the input.
-Automatic support for ZLIB/Compress compressed document is provided
-by default if found at compile-time.</P
 ><P
 ></P
 ><DIV
@@ -305,24 +510,7 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->URI</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->enc</I
+>filename</I
 ></TT
 >&nbsp;:</TD
 ><TD
@@ -354,7 +542,839 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8791"
+NAME="AEN11030"
+></A
+><H3
+><A
+NAME="XMLINPUTOPENCALLBACK"
+></A
+>xmlInputOpenCallback ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void*       (*xmlInputOpenCallback)         (char const *filename);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>filename</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11044"
+></A
+><H3
+><A
+NAME="XMLINPUTREADCALLBACK"
+></A
+>xmlInputReadCallback ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         (*xmlInputReadCallback)         (void *context,
+                                             char *buffer,
+                                             int len);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>context</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buffer</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>len</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11070"
+></A
+><H3
+><A
+NAME="XMLINPUTCLOSECALLBACK"
+></A
+>xmlInputCloseCallback ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        (*xmlInputCloseCallback)        (void *context);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>context</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11084"
+></A
+><H3
+><A
+NAME="XMLPARSERINPUTBUFFER"
+></A
+>struct xmlParserInputBuffer</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>struct xmlParserInputBuffer {
+    void*                  context;
+    xmlInputReadCallback   readcallback;
+    xmlInputCloseCallback  closecallback;
+    
+    xmlCharEncodingHandlerPtr encoder; /* I18N conversions to UTF-8 */
+    
+    xmlBufferPtr buffer;    /* Local buffer encoded in UTF-8 or ISOLatin */
+    xmlBufferPtr raw;       /* if encoder != NULL buffer for raw input */
+};</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11089"
+></A
+><H3
+><A
+NAME="XMLPARSERINPUTBUFFERPTR"
+></A
+>xmlParserInputBufferPtr</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef xmlParserInputBuffer *xmlParserInputBufferPtr;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11094"
+></A
+><H3
+><A
+NAME="XMLOUTPUTMATCHCALLBACK"
+></A
+>xmlOutputMatchCallback ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         (*xmlOutputMatchCallback)       (char const *filename);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>filename</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11112"
+></A
+><H3
+><A
+NAME="XMLOUTPUTOPENCALLBACK"
+></A
+>xmlOutputOpenCallback ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void*       (*xmlOutputOpenCallback)        (char const *filename);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>filename</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11126"
+></A
+><H3
+><A
+NAME="XMLOUTPUTWRITECALLBACK"
+></A
+>xmlOutputWriteCallback ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         (*xmlOutputWriteCallback)       (void *context,
+                                             const char *buffer,
+                                             int len);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>context</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buffer</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>len</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11152"
+></A
+><H3
+><A
+NAME="XMLOUTPUTCLOSECALLBACK"
+></A
+>xmlOutputCloseCallback ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        (*xmlOutputCloseCallback)       (void *context);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>context</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11166"
+></A
+><H3
+><A
+NAME="XMLOUTPUTBUFFER"
+></A
+>struct xmlOutputBuffer</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>struct xmlOutputBuffer {
+    void*                   context;
+    xmlOutputWriteCallback  writecallback;
+    xmlOutputCloseCallback  closecallback;
+    
+    xmlCharEncodingHandlerPtr encoder; /* I18N conversions to UTF-8 */
+    
+    xmlBufferPtr buffer;    /* Local buffer encoded in UTF-8 or ISOLatin */
+    xmlBufferPtr conv;      /* if encoder != NULL buffer for output */
+    int written;            /* total number of byte written */
+};</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11171"
+></A
+><H3
+><A
+NAME="XMLOUTPUTBUFFERPTR"
+></A
+>xmlOutputBufferPtr</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef xmlOutputBuffer *xmlOutputBufferPtr;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11176"
+></A
+><H3
+><A
+NAME="XMLALLOCPARSERINPUTBUFFER"
+></A
+>xmlAllocParserInputBuffer ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+>xmlParserInputBufferPtr</A
+> xmlAllocParserInputBuffer
+                                            (<A
+HREF="gnome-xml-encoding.html#XMLCHARENCODING"
+>xmlCharEncoding</A
+> enc);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Create a buffered parser input for progressive parsing</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>enc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the charset encoding if known</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the new parser input or NULL</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11197"
+></A
+><H3
+><A
+NAME="XMLPARSERINPUTBUFFERCREATEFILENAME"
+></A
+>xmlParserInputBufferCreateFilename ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+>xmlParserInputBufferPtr</A
+> xmlParserInputBufferCreateFilename
+                                            (const char *URI,
+                                             <A
+HREF="gnome-xml-encoding.html#XMLCHARENCODING"
+>xmlCharEncoding</A
+> enc);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Create a buffered parser input for the progressive parsing of a file
+If filename is "-' then we use stdin as the input.
+Automatic support for ZLIB/Compress compressed document is provided
+by default if found at compile-time.
+Do an encoding check if enc == XML_CHAR_ENCODING_NONE</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>URI</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a C string containing the URI or filename</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>enc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the charset encoding if known</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the new parser input or NULL</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11222"
 ></A
 ><H3
 ><A
@@ -416,7 +1436,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  a FILE* </TD
 ></TR
 ><TR
 ><TD
@@ -433,7 +1453,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the charset encoding if known</TD
 ></TR
 ><TR
 ><TD
@@ -448,7 +1468,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the new parser input or NULL</TD
 ></TR
 ></TABLE
 ><P
@@ -458,7 +1478,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8817"
+NAME="AEN11248"
 ></A
 ><H3
 ><A
@@ -517,7 +1537,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  a file descriptor number</TD
 ></TR
 ><TR
 ><TD
@@ -534,7 +1554,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the charset encoding if known</TD
 ></TR
 ><TR
 ><TD
@@ -549,7 +1569,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the new parser input or NULL</TD
 ></TR
 ></TABLE
 ><P
@@ -559,7 +1579,150 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8842"
+NAME="AEN11273"
+></A
+><H3
+><A
+NAME="XMLPARSERINPUTBUFFERCREATEIO"
+></A
+>xmlParserInputBufferCreateIO ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+>xmlParserInputBufferPtr</A
+> xmlParserInputBufferCreateIO
+                                            (<A
+HREF="gnome-xml-xmlio.html#XMLINPUTREADCALLBACK"
+>xmlInputReadCallback</A
+> ioread,
+                                             <A
+HREF="gnome-xml-xmlio.html#XMLINPUTCLOSECALLBACK"
+>xmlInputCloseCallback</A
+> ioclose,
+                                             void *ioctx,
+                                             <A
+HREF="gnome-xml-encoding.html#XMLCHARENCODING"
+>xmlCharEncoding</A
+> enc);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Create a buffered parser input for the progressive parsing for the input
+from an I/O handler</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ioread</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an I/O read function</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ioclose</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an I/O close function</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ioctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an I/O handler</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>enc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the charset encoding if known</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the new parser input or NULL</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11308"
 ></A
 ><H3
 ><A
@@ -615,7 +1778,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  a buffered parser input</TD
 ></TR
 ><TR
 ><TD
@@ -632,7 +1795,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  indicative value of the amount of chars to read</TD
 ></TR
 ><TR
 ><TD
@@ -647,7 +1810,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the number of chars read and stored in the buffer, or -1
+in case of error.</TD
 ></TR
 ></TABLE
 ><P
@@ -657,7 +1821,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8866"
+NAME="AEN11332"
 ></A
 ><H3
 ><A
@@ -684,7 +1848,10 @@ HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
 ><P
 >Grow up the content of the input buffer, the old data are preserved
 This routine handle the I18N transcoding to internal UTF-8
-TODO: one should be able to remove one extra copy</P
+This routine is used when operating the parser in normal (pull) mode</P
+><P
+>TODO: one should be able to remove one extra copy by copying directy
+onto in-&gt;buffer or in-&gt;raw</P
 ><P
 ></P
 ><DIV
@@ -713,7 +1880,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  a buffered parser input</TD
 ></TR
 ><TR
 ><TD
@@ -730,7 +1897,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  indicative value of the amount of chars to read</TD
 ></TR
 ><TR
 ><TD
@@ -745,7 +1912,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the number of chars read and stored in the buffer, or -1
+in case of error.</TD
 ></TR
 ></TABLE
 ><P
@@ -755,7 +1923,124 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8890"
+NAME="AEN11357"
+></A
+><H3
+><A
+NAME="XMLPARSERINPUTBUFFERPUSH"
+></A
+>xmlParserInputBufferPush ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlParserInputBufferPush        (<A
+HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+>xmlParserInputBufferPtr</A
+> in,
+                                             int len,
+                                             const char *buf);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Push the content of the arry in the input buffer
+This routine handle the I18N transcoding to internal UTF-8
+This is used when operating the parser in progressive (push) mode.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>in</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a buffered parser input</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>len</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the size in bytes of the array.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buf</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an char array</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the number of chars read and stored in the buffer, or -1
+in case of error.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11385"
 ></A
 ><H3
 ><A
@@ -808,7 +2093,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  a buffered parser input</TD
 ></TR
 ></TABLE
 ><P
@@ -818,7 +2103,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8906"
+NAME="AEN11401"
 ></A
 ><H3
 ><A
@@ -882,6 +2167,1330 @@ WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
 >&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11419"
+></A
+><H3
+><A
+NAME="XMLREGISTERINPUTCALLBACKS"
+></A
+>xmlRegisterInputCallbacks ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlRegisterInputCallbacks       (<A
+HREF="gnome-xml-xmlio.html#XMLINPUTMATCHCALLBACK"
+>xmlInputMatchCallback</A
+> match,
+                                             <A
+HREF="gnome-xml-xmlio.html#XMLINPUTOPENCALLBACK"
+>xmlInputOpenCallback</A
+> open,
+                                             <A
+HREF="gnome-xml-xmlio.html#XMLINPUTREADCALLBACK"
+>xmlInputReadCallback</A
+> read,
+                                             <A
+HREF="gnome-xml-xmlio.html#XMLINPUTCLOSECALLBACK"
+>xmlInputCloseCallback</A
+> close);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Register a new set of I/O callback for handling parser input.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>match</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlInputMatchCallback</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>open</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlInputOpenCallback</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>read</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlInputReadCallback</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>close</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlInputCloseCallback</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the registered handler number or -1 in case of error</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11454"
+></A
+><H3
+><A
+NAME="XMLALLOCOUTPUTBUFFER"
+></A
+>xmlAllocOutputBuffer ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERPTR"
+>xmlOutputBufferPtr</A
+> xmlAllocOutputBuffer     (<A
+HREF="gnome-xml-encoding.html#XMLCHARENCODINGHANDLERPTR"
+>xmlCharEncodingHandlerPtr</A
+> encoder);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Create a buffered parser output</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>encoder</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the encoding converter or NULL</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the new parser output or NULL</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11475"
+></A
+><H3
+><A
+NAME="XMLOUTPUTBUFFERCREATEFILENAME"
+></A
+>xmlOutputBufferCreateFilename ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERPTR"
+>xmlOutputBufferPtr</A
+> xmlOutputBufferCreateFilename
+                                            (const char *URI,
+                                             <A
+HREF="gnome-xml-encoding.html#XMLCHARENCODINGHANDLERPTR"
+>xmlCharEncodingHandlerPtr</A
+> encoder,
+                                             int compression);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Create a buffered  output for the progressive saving of a file
+If filename is "-' then we use stdout as the output.
+Automatic support for ZLIB/Compress compressed document is provided
+by default if found at compile-time.
+TODO: currently if compression is set, the library only support
+writing to a local file.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>URI</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a C string containing the URI or filename</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>encoder</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the encoding converter or NULL</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>compression</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the compression ration (0 none, 9 max).</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the new output or NULL</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11504"
+></A
+><H3
+><A
+NAME="XMLOUTPUTBUFFERCREATEFILE"
+></A
+>xmlOutputBufferCreateFile ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERPTR"
+>xmlOutputBufferPtr</A
+> xmlOutputBufferCreateFile
+                                            (<GTKDOCLINK
+HREF="FILE"
+>FILE</GTKDOCLINK
+> *file,
+                                             <A
+HREF="gnome-xml-encoding.html#XMLCHARENCODINGHANDLERPTR"
+>xmlCharEncodingHandlerPtr</A
+> encoder);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Create a buffered output for the progressive saving to a FILE *
+buffered C I/O</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>file</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a FILE* </TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>encoder</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the encoding converter or NULL</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the new parser output or NULL</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11530"
+></A
+><H3
+><A
+NAME="XMLOUTPUTBUFFERCREATEFD"
+></A
+>xmlOutputBufferCreateFd ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERPTR"
+>xmlOutputBufferPtr</A
+> xmlOutputBufferCreateFd  (int fd,
+                                             <A
+HREF="gnome-xml-encoding.html#XMLCHARENCODINGHANDLERPTR"
+>xmlCharEncodingHandlerPtr</A
+> encoder);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Create a buffered output for the progressive saving 
+to a file descriptor</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>fd</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a file descriptor number</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>encoder</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the encoding converter or NULL</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the new parser output or NULL</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11555"
+></A
+><H3
+><A
+NAME="XMLOUTPUTBUFFERCREATEIO"
+></A
+>xmlOutputBufferCreateIO ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERPTR"
+>xmlOutputBufferPtr</A
+> xmlOutputBufferCreateIO  (<A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTWRITECALLBACK"
+>xmlOutputWriteCallback</A
+> iowrite,
+                                             <A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTCLOSECALLBACK"
+>xmlOutputCloseCallback</A
+> ioclose,
+                                             void *ioctx,
+                                             <A
+HREF="gnome-xml-encoding.html#XMLCHARENCODINGHANDLERPTR"
+>xmlCharEncodingHandlerPtr</A
+> encoder);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Create a buffered output for the progressive saving
+to an I/O handler</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>iowrite</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an I/O write function</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ioclose</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an I/O close function</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ioctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an I/O handler</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>encoder</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the new parser output or NULL</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11590"
+></A
+><H3
+><A
+NAME="XMLOUTPUTBUFFERWRITE"
+></A
+>xmlOutputBufferWrite ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlOutputBufferWrite            (<A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERPTR"
+>xmlOutputBufferPtr</A
+> out,
+                                             int len,
+                                             const char *buf);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Write the content of the array in the output I/O buffer
+This routine handle the I18N transcoding from internal UTF-8
+The buffer is lossless, i.e. will store in case of partial
+or delayed writes.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>out</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a buffered parser output</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>len</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the size in bytes of the array.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buf</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an char array</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the number of chars immediately written, or -1
+in case of error.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11618"
+></A
+><H3
+><A
+NAME="XMLOUTPUTBUFFERWRITESTRING"
+></A
+>xmlOutputBufferWriteString ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlOutputBufferWriteString      (<A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERPTR"
+>xmlOutputBufferPtr</A
+> out,
+                                             const char *str);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Write the content of the string in the output I/O buffer
+This routine handle the I18N transcoding from internal UTF-8
+The buffer is lossless, i.e. will store in case of partial
+or delayed writes.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>out</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a buffered parser output</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>str</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a zero terminated C string</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the number of chars immediately written, or -1
+in case of error.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11642"
+></A
+><H3
+><A
+NAME="XMLOUTPUTBUFFERFLUSH"
+></A
+>xmlOutputBufferFlush ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlOutputBufferFlush            (<A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERPTR"
+>xmlOutputBufferPtr</A
+> out);</PRE
+></TD
+></TR
+></TABLE
+><P
+>flushes the output I/O channel</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>out</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a buffered output</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the number of byte written or -1 in case of error.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11662"
+></A
+><H3
+><A
+NAME="XMLOUTPUTBUFFERCLOSE"
+></A
+>xmlOutputBufferClose ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlOutputBufferClose            (<A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERPTR"
+>xmlOutputBufferPtr</A
+> out);</PRE
+></TD
+></TR
+></TABLE
+><P
+>flushes and close the output I/O channel
+and free up all the associated resources</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>out</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a buffered output</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the number of byte written or -1 in case of error.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11682"
+></A
+><H3
+><A
+NAME="XMLREGISTEROUTPUTCALLBACKS"
+></A
+>xmlRegisterOutputCallbacks ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlRegisterOutputCallbacks      (<A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTMATCHCALLBACK"
+>xmlOutputMatchCallback</A
+> match,
+                                             <A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTOPENCALLBACK"
+>xmlOutputOpenCallback</A
+> open,
+                                             <A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTWRITECALLBACK"
+>xmlOutputWriteCallback</A
+> write,
+                                             <A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTCLOSECALLBACK"
+>xmlOutputCloseCallback</A
+> close);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Register a new set of I/O callback for handling output.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>match</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlOutputMatchCallback</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>open</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlOutputOpenCallback</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>write</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlOutputWriteCallback</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>close</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlOutputCloseCallback</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the registered handler number or -1 in case of error</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11717"
+></A
+><H3
+><A
+NAME="XMLSAVEFILETO"
+></A
+>xmlSaveFileTo ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSaveFileTo                   (<A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFER"
+>xmlOutputBuffer</A
+> *buf,
+                                             <A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> cur,
+                                             const char *encoding);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Dump an XML document to an I/O buffer.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buf</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an output I/O buffer</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the document</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>encoding</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the encoding if any assuming the i/O layer handles the trancoding</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the number of file written or -1 in case of failure.</TD
 ></TR
 ></TABLE
 ><P

@@ -574,13 +574,18 @@ startDocument(void *ctx)
 #ifdef DEBUG_SAX
     fprintf(stderr, "SAX.startDocument()\n");
 #endif
-    doc = ctxt->myDoc = xmlNewDoc(ctxt->version);
-    if (doc != NULL) {
-	if (ctxt->encoding != NULL)
-	    doc->encoding = xmlStrdup(ctxt->encoding);
-	else
-	    doc->encoding = NULL;
-	doc->standalone = ctxt->standalone;
+    if (ctxt->html) {
+	if (ctxt->myDoc == NULL)
+	    ctxt->myDoc = htmlNewDoc(NULL, NULL);
+    } else {
+	doc = ctxt->myDoc = xmlNewDoc(ctxt->version);
+	if (doc != NULL) {
+	    if (ctxt->encoding != NULL)
+		doc->encoding = xmlStrdup(ctxt->encoding);
+	    else
+		doc->encoding = NULL;
+	    doc->standalone = ctxt->standalone;
+	}
     }
 }
 

@@ -155,6 +155,8 @@ PUSH_AND_POP(extern, xmlChar*, name)
 
 void
 htmlNextChar(htmlParserCtxtPtr ctxt) {
+    if (ctxt->instate == XML_PARSER_EOF)
+	return;
     if ((*ctxt->input->cur == 0) &&
         (xmlParserInputGrow(ctxt->input, INPUT_CHUNK) <= 0)) {
 	    xmlPopInput(ctxt);
@@ -1024,7 +1026,7 @@ htmlDecodeEntities(htmlParserCtxtPtr ctxt, int len,
     /*
      * Ok loop until we reach one of the ending char or a size limit.
      */
-    while ((nbchars < max) && (CUR != end) &&
+    while ((nbchars < (int) max) && (CUR != end) &&
            (CUR != end2) && (CUR != end3)) {
 
         if (CUR == '&') {
@@ -1421,7 +1423,8 @@ htmlParseHTMLName(htmlParserCtxtPtr ctxt) {
         (CUR != ':')) return(NULL);
 
     while ((i < HTML_PARSER_BUFFER_SIZE) &&
-           ((IS_LETTER(CUR)) || (IS_DIGIT(CUR)))) {
+           ((IS_LETTER(CUR)) || (IS_DIGIT(CUR)) ||
+	   (CUR == ':') || (CUR == '_'))) {
 	if ((CUR >= 'A') && (CUR <= 'Z')) loc[i] = CUR + 0x20;
         else loc[i] = CUR;
 	i++;
@@ -2360,7 +2363,7 @@ failed:
 	    if (atts[i] != NULL)
 		xmlFree((xmlChar *) atts[i]);
 	}
-	xmlFree(atts);
+	xmlFree((void *) atts);
     }
     if (name != NULL) xmlFree(name);
 }
@@ -2824,8 +2827,6 @@ htmlParseDocument(htmlParserCtxtPtr ctxt) {
      */
     while ((CUR == '<') && (NXT(1) == '!') &&
            (NXT(2) == '-') && (NXT(3) == '-')) {
-	if (ctxt->myDoc == NULL)
-	    ctxt->myDoc = htmlNewDoc(NULL, NULL);
         htmlParseComment(ctxt);	   
 	SKIP_BLANKS;
     }	   

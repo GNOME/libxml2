@@ -4,7 +4,7 @@
 >xml-error</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.44"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.33"><LINK
 REL="HOME"
 TITLE="Gnome XML Library Reference Manual"
 HREF="book1.html"><LINK
@@ -20,9 +20,6 @@ HREF="gnome-xml-htmlparser.html"></HEAD
 ><BODY
 BGCOLOR="#FFFFFF"
 TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -114,22 +111,19 @@ SIZE="3"
 ></TABLE
 ></DIV
 ><H1
-><A
-NAME="GNOME-XML-XML-ERROR"
->xml-error</A
-></H1
+>xml-error</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN7132"
+NAME="AEN8907"
 ></A
 ><H2
 >Name</H2
->xml-error&nbsp;--&nbsp;</DIV
+>xml-error &#8212; </DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN7135"
+NAME="AEN8910"
 ></A
 ><H2
 >Synopsis</H2
@@ -193,7 +187,7 @@ HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN7147"
+NAME="AEN8922"
 ></A
 ><H2
 >Description</H2
@@ -203,14 +197,14 @@ NAME="AEN7147"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN7150"
+NAME="AEN8925"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7152"
+NAME="AEN8927"
 ></A
 ><H3
 ><A
@@ -350,7 +344,9 @@ CLASS="PROGRAMLISTING"
     XML_ERR_ENTITY_CHAR_ERROR, /* 88 */
     XML_ERR_ENTITY_PE_INTERNAL, /* 88 */
     XML_ERR_ENTITY_LOOP, /* 89 */
-    XML_ERR_ENTITY_BOUNDARY /* 90 */
+    XML_ERR_ENTITY_BOUNDARY, /* 90 */
+    XML_ERR_INVALID_URI, /* 91 */
+    XML_ERR_URI_FRAGMENT /* 92 */
 }xmlParserErrors;</PRE
 ></TD
 ></TR
@@ -361,7 +357,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7157"
+NAME="AEN8932"
 ></A
 ><H3
 ><A
@@ -414,7 +410,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -431,7 +427,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the message to display/transmit</TD
 ></TR
 ><TR
 ><TD
@@ -448,7 +444,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  extra parameters for the message display</TD
 ></TR
 ></TABLE
 ><P
@@ -458,7 +454,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7180"
+NAME="AEN8955"
 ></A
 ><H3
 ><A
@@ -511,7 +507,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -528,7 +524,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the message to display/transmit</TD
 ></TR
 ><TR
 ><TD
@@ -545,7 +541,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  extra parameters for the message display</TD
 ></TR
 ></TABLE
 ><P
@@ -555,7 +551,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7203"
+NAME="AEN8978"
 ></A
 ><H3
 ><A
@@ -608,7 +604,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -625,7 +621,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the message to display/transmit</TD
 ></TR
 ><TR
 ><TD
@@ -642,7 +638,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  extra parameters for the message display</TD
 ></TR
 ></TABLE
 ><P
@@ -652,7 +648,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7226"
+NAME="AEN9001"
 ></A
 ><H3
 ><A
@@ -705,7 +701,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an XML parser context</TD
 ></TR
 ><TR
 ><TD
@@ -722,7 +718,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the message to display/transmit</TD
 ></TR
 ><TR
 ><TD
@@ -739,7 +735,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  extra parameters for the message display</TD
 ></TR
 ></TABLE
 ><P
@@ -749,7 +745,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7249"
+NAME="AEN9024"
 ></A
 ><H3
 ><A
@@ -802,7 +798,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an xmlParserInputPtr input</TD
 ></TR
 ></TABLE
 ><P
@@ -812,7 +808,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7265"
+NAME="AEN9040"
 ></A
 ><H3
 ><A
@@ -865,7 +861,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an xmlParserInputPtr input</TD
 ></TR
 ></TABLE
 ><P

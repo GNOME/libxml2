@@ -77,7 +77,7 @@ const char *xmlParserVersion = LIBXML_VERSION_STRING;
  */
 void
 xmlCheckVersion(int version) {
-    int myversion = LIBXML_VERSION;
+    int myversion = (int) LIBXML_VERSION;
 
     if ((myversion / 10000) != (version / 10000)) {
 	fprintf(stderr, 
@@ -206,7 +206,7 @@ xmlParserInputGrow(xmlParserInputPtr in, int len) {
     CHECK_BUFFER(in);
 
     index = in->cur - in->base;
-    if (in->buf->buffer->use > index + INPUT_CHUNK) {
+    if (in->buf->buffer->use > (unsigned int) index + INPUT_CHUNK) {
 
 	CHECK_BUFFER(in);
 
@@ -439,6 +439,9 @@ int spacePop(xmlParserCtxtPtr ctxt) {
 
 void
 xmlNextChar(xmlParserCtxtPtr ctxt) {
+    if (ctxt->instate == XML_PARSER_EOF)
+	return;
+
     /*
      * TODO: 2.11 End-of-Line Handling
      *   the literal two-character sequence "#xD#xA" or a standalone
@@ -586,6 +589,9 @@ encoding_error:
 
 int
 xmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
+    if (ctxt->instate == XML_PARSER_EOF)
+	return(0);
+
     if (ctxt->token != 0) {
 	*len = 0;
 	return(ctxt->token);
@@ -2021,8 +2027,8 @@ xmlChar *
 xmlDecodeEntities(xmlParserCtxtPtr ctxt, int len, int what,
                   xmlChar end, xmlChar  end2, xmlChar end3) {
     xmlChar *buffer = NULL;
-    int buffer_size = 0;
-    int nbchars = 0;
+    unsigned int buffer_size = 0;
+    unsigned int nbchars = 0;
 
     xmlChar *current = NULL;
     xmlEntityPtr ent;
@@ -9447,7 +9453,8 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		if (ctxt->checkIndex > base)
 		    base = ctxt->checkIndex;
 		buf = ctxt->input->buf->buffer->content;
-		for (;base < ctxt->input->buf->buffer->use;base++) {
+		for (;(unsigned int) base < ctxt->input->buf->buffer->use;
+		     base++) {
 		    if (quote != 0) {
 		        if (buf[base] == quote)
 			    quote = 0;
@@ -9462,14 +9469,17 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 			continue;
 		    }
 		    if (buf[base] == ']') {
-		        if (base +1 >= ctxt->input->buf->buffer->use)
+		        if ((unsigned int) base +1 >=
+		            ctxt->input->buf->buffer->use)
 			    break;
 			if (buf[base + 1] == ']') {
 			    /* conditional crap, skip both ']' ! */
 			    base++;
 			    continue;
 			}
-		        for (i = 0;base + i < ctxt->input->buf->buffer->use;i++) {
+		        for (i = 0;
+		     (unsigned int) base + i < ctxt->input->buf->buffer->use;
+		             i++) {
 			    if (buf[base + i] == '>')
 			        goto found_end_int_subset;
 			}
@@ -9624,6 +9634,19 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
  * 		I/O front end functions to the parser			*
  *									*
  ************************************************************************/
+
+/**
+ * xmlCreatePushParserCtxt:
+ * @ctxt:  an XML parser context
+ *
+ * Blocks further parser processing
+ */
+void           
+xmlStopParser(xmlParserCtxtPtr ctxt) {
+    ctxt->instate = XML_PARSER_EOF;
+    if (ctxt->input != NULL)
+	ctxt->input->cur = BAD_CAST"";
+}
 
 /**
  * xmlCreatePushParserCtxt:

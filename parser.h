@@ -353,6 +353,7 @@ xmlDocPtr	xmlParseMemory		(char *buffer,
 xmlDocPtr	xmlParseFile		(const char *filename);
 int		xmlSubstituteEntitiesDefault(int val);
 int		xmlKeepBlanksDefault	(int val);
+void		xmlStopParser		(xmlParserCtxtPtr ctxt);
 
 /**
  * Recovery mode 

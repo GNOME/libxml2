@@ -55,6 +55,15 @@ extern void xmlCheckVersion(int version);
 #endif
 
 /*
+ * Whether iconv support is available
+ */
+#if @WITH_ICONV@
+#define LIBXML_ICONV_ENABLED
+#else
+#define LIBXML_ICONV_DISABLED
+#endif
+
+/*
  * Whether Debugging module is configured in
  */
 #if @WITH_DEBUG@

@@ -30,7 +30,7 @@ TODO:
 - fix --disable-corba configure switch handling, and use XML_WITHOUT_CORBA
   not WITHOUT_CORBA flag
 - the html parser should add <head> and <body> if they don't exist
-- Command to force the parser to stop parsing and ignore the rest of the file.
+  started, not finished.
 
 TODO:
 =====
@@ -96,6 +96,8 @@ EXTENSIONS:
 Done:
 =====
 
+- Command to force the parser to stop parsing and ignore the rest of the file.
+  xmlStopParser() should allow this
 - support for HTML empty attributes like <hr noshade>
 - plugged iconv() in for support of a large set of encodings.
 - xmlSwitchToEncoding() rewrite done

@@ -12,6 +12,7 @@
 
 #include <stdio.h>
 #include <libxml/tree.h>
+#include <libxml/HTMLparser.h>
 
 
 #ifdef __cplusplus
@@ -27,6 +28,7 @@ void htmlDocDump(FILE *f, xmlDocPtr cur);
 int htmlSaveFile(const char *filename, xmlDocPtr cur);
 void htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur);
 void htmlNodeDumpFile(FILE *out, xmlDocPtr doc, xmlNodePtr cur);
+htmlDocPtr htmlNewDoc(const xmlChar *URI, const xmlChar *ExternalID);
 
 #ifdef __cplusplus
 }

@@ -1,3 +1,20 @@
+Fri Jun 30 11:19:59 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* win32config.h.in: updated
+	* xmlversion.h.in: crap forgot to update this, this mean 2.1.0
+	  lacks iconv support :-( need to release 2.1.1
+	* configure.in: release 2.1.1
+	* HTMLparser: fixed bug #14784
+	* xpath.c HTMLparser.c encoding.c parser.c: fix warning raised
+	  by Windows compiler
+	* HTMLparser.c SAX.c HTMLtree.h tree.h: create HTML document in
+	  the SAX startDocument() callback.
+	* TODO: updated
+
+Thu Jun 29 12:06:48 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* added xmlStopParser()
+
 Wed Jun 28 23:10:26 MEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* configure.in: 2.1.0 prerelease

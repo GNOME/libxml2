@@ -381,7 +381,8 @@ UTF8ToUTF16LE(unsigned char* outb, int *outlen,
     unsigned short* outstart= out;
     unsigned short* outend;
     const unsigned char* inend= in+*inlen;
-    unsigned int c, d, trailing;
+    unsigned int c, d;
+    int trailing;
     unsigned char *tmp;
     unsigned short tmp1, tmp2;
 
@@ -456,13 +457,13 @@ UTF8ToUTF16LE(unsigned char* outb, int *outlen,
 	    } else {
 		tmp1 = 0xD800 | (c >> 10);
 		tmp = (unsigned char *) out;
-		*tmp = tmp1;
+		*tmp = (unsigned char) tmp1;
 		*(tmp + 1) = tmp1 >> 8;
 		out++;
 
 		tmp2 = 0xDC00 | (c & 0x03FF);
 		tmp = (unsigned char *) out;
-		*tmp  = tmp2;
+		*tmp  = (unsigned char) tmp2;
 		*(tmp + 1) = tmp2 >> 8;
 		out++;
 	    }
@@ -591,7 +592,8 @@ UTF8ToUTF16BE(unsigned char* outb, int *outlen,
     unsigned short* outstart= out;
     unsigned short* outend;
     const unsigned char* inend= in+*inlen;
-    unsigned int c, d, trailing;
+    unsigned int c, d;
+    int trailing;
     unsigned char *tmp;
     unsigned short tmp1, tmp2;
 
@@ -661,13 +663,13 @@ UTF8ToUTF16BE(unsigned char* outb, int *outlen,
 		tmp1 = 0xD800 | (c >> 10);
 		tmp = (unsigned char *) out;
 		*tmp = tmp1 >> 8;
-		*(tmp + 1) = tmp1;
+		*(tmp + 1) = (unsigned char) tmp1;
 		out++;
 
 		tmp2 = 0xDC00 | (c & 0x03FF);
 		tmp = (unsigned char *) out;
 		*tmp = tmp2 >> 8;
-		*(tmp + 1) = tmp2;
+		*(tmp + 1) = (unsigned char) tmp2;
 		out++;
 	    } else {
 		*out++ = 0xD800 | (c >> 10);
@@ -1125,9 +1127,9 @@ xmlGetCharEncodingHandler(xmlCharEncoding enc) {
  */
 xmlCharEncodingHandlerPtr
 xmlFindCharEncodingHandler(const char *name) {
-    xmlCharEncodingHandlerPtr enc;
     xmlCharEncoding alias;
 #ifdef LIBXML_ICONV_ENABLED
+    xmlCharEncodingHandlerPtr enc;
     iconv_t icv_in, icv_out;
 #endif /* LIBXML_ICONV_ENABLED */
     char upper[100];

@@ -1366,7 +1366,7 @@ or libxslt wrappers or bindings:</p>
     libxml2</a> with Kylix, Delphi and other Pascal compilers</li>
   <li>Uwe Fechner also provides <a
     href="http://sourceforge.net/projects/idom2-pas/">idom2</a>, a DOM2
-    implementation for Kylix2/D5/D6 from Borland </li>
+    implementation for Kylix2/D5/D6 from Borland</li>
   <li>Wai-Sun "Squidster" Chia provides <a
     href="http://www.rubycolor.org/arc/redist/">bindings for Ruby</a>  and
     libxml2 bindings are also available in Ruby through the <a
@@ -2088,7 +2088,11 @@ but not always. Assuming the allocation problem is reproductible, it is
 possible to find more easilly:</p>
 <ol>
   <li>write down the block number xxxx not allocated</li>
-  <li>export the environement variable XML_MEM_BREAKPOINT=xxxx</li>
+  <li>export the environement variable XML_MEM_BREAKPOINT=xxxx , the easiest
+    when using GDB is to simply give the command
+    <p><code>set environment XML_MEM_BREAKPOINT xxxx</code></p>
+    <p>before running the program.</p>
+  </li>
   <li>run the program under a debugger and set a breakpoint on
     xmlMallocBreakpoint() a specific function called when this precise block
     is allocated</li>
@@ -2099,7 +2103,11 @@ possible to find more easilly:</p>
 
 <p>I used to use a commercial tool to debug libxml memory problems but after
 noticing that it was not detecting memory leaks that simple mechanism was
-used and proved extremely efficient until now.</p>
+used and proved extremely efficient until now. Lately I have also used <a
+href="http://developer.kde.org/~sewardj/">valgrind</a> with quite some
+success, it is tied to the i386 architecture since it works by emulating the
+processor and instruction set, it is slow but  extremely efficient, i.e. it
+spot memory usage errors in a very precise way.</p>
 
 <h3><a name="General4">General memory requirements</a></h3>
 
@@ -2549,6 +2557,7 @@ xmlOutputBufferCreateOwn(FILE *file, xmlCharEncodingHandlerPtr encoder) {
         ret-&gt;closecallback = NULL;  /* No close callback */
     }
     return(ret); <br>
+
 
 
 

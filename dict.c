@@ -61,8 +61,6 @@ struct _xmlDict {
 static unsigned long
 xmlDictComputeKey(xmlDictPtr dict, const xmlChar *name, int namelen) {
     unsigned long value = 0L;
-    char ch;
-    int len = 0;
     
     if (name == NULL) return(0);
     value += 30 * (*name);

@@ -1,5 +1,5 @@
 /*
- * SAX.h : Default SAX handler interfaces.
+ * SAX.h : Default SAX2 handler interfaces to build a tree.
  *
  * See Copyright for the status of this software.
  *
@@ -7,8 +7,8 @@
  */
 
 
-#ifndef __XML_SAX_H__
-#define __XML_SAX_H__
+#ifndef __XML_SAX2_H__
+#define __XML_SAX2_H__
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -18,108 +18,108 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-const xmlChar *	getPublicId			(void *ctx);
-const xmlChar *	getSystemId			(void *ctx);
-void		setDocumentLocator		(void *ctx,
+const xmlChar *	xmlSAX2GetPublicId		(void *ctx);
+const xmlChar *	xmlSAX2GetSystemId		(void *ctx);
+void		xmlSAX2SetDocumentLocator	(void *ctx,
 						 xmlSAXLocatorPtr loc);
     
-int		getLineNumber			(void *ctx);
-int		getColumnNumber			(void *ctx);
+int		xmlSAX2GetLineNumber		(void *ctx);
+int		xmlSAX2GetColumnNumber		(void *ctx);
 
-int		isStandalone			(void *ctx);
-int		hasInternalSubset		(void *ctx);
-int		hasExternalSubset		(void *ctx);
+int		xmlSAX2IsStandalone		(void *ctx);
+int		xmlSAX2HasInternalSubset	(void *ctx);
+int		xmlSAX2HasExternalSubset	(void *ctx);
 
-void		internalSubset			(void *ctx,
+void		xmlSAX2InternalSubset		(void *ctx,
 						 const xmlChar *name,
 						 const xmlChar *ExternalID,
 						 const xmlChar *SystemID);
-void		externalSubset			(void *ctx,
+void		xmlSAX2ExternalSubset		(void *ctx,
 						 const xmlChar *name,
 						 const xmlChar *ExternalID,
 						 const xmlChar *SystemID);
-xmlEntityPtr	getEntity			(void *ctx,
+xmlEntityPtr	xmlSAX2GetEntity		(void *ctx,
 						 const xmlChar *name);
-xmlEntityPtr	getParameterEntity		(void *ctx,
+xmlEntityPtr	xmlSAX2GetParameterEntity	(void *ctx,
 						 const xmlChar *name);
-xmlParserInputPtr resolveEntity			(void *ctx,
+xmlParserInputPtr xmlSAX2ResolveEntity		(void *ctx,
 						 const xmlChar *publicId,
 						 const xmlChar *systemId);
 
-void		entityDecl			(void *ctx,
+void		xmlSAX2EntityDecl		(void *ctx,
 						 const xmlChar *name,
 						 int type,
 						 const xmlChar *publicId,
 						 const xmlChar *systemId,
 						 xmlChar *content);
-void		attributeDecl			(void *ctx,
+void		xmlSAX2AttributeDecl		(void *ctx,
 						 const xmlChar *elem,
 						 const xmlChar *fullname,
 						 int type,
 						 int def,
 						 const xmlChar *defaultValue,
 						 xmlEnumerationPtr tree);
-void		elementDecl			(void *ctx,
+void		xmlSAX2ElementDecl		(void *ctx,
 						 const xmlChar *name,
 						 int type,
 						 xmlElementContentPtr content);
-void		notationDecl			(void *ctx,
+void		xmlSAX2NotationDecl		(void *ctx,
 						 const xmlChar *name,
 						 const xmlChar *publicId,
 						 const xmlChar *systemId);
-void		unparsedEntityDecl		(void *ctx,
+void		xmlSAX2UnparsedEntityDecl	(void *ctx,
 						 const xmlChar *name,
 						 const xmlChar *publicId,
 						 const xmlChar *systemId,
 						 const xmlChar *notationName);
 
-void		startDocument			(void *ctx);
-void		endDocument			(void *ctx);
-void		attribute			(void *ctx,
-						 const xmlChar *fullname,
-						 const xmlChar *value);
-void		startElement			(void *ctx,
+void		xmlSAX2StartDocument		(void *ctx);
+void		xmlSAX2EndDocument		(void *ctx);
+void		xmlSAX2StartElement		(void *ctx,
 						 const xmlChar *fullname,
 						 const xmlChar **atts);
-void		endElement			(void *ctx,
+void		xmlSAX2EndElement		(void *ctx,
 						 const xmlChar *name);
-void		reference			(void *ctx,
+void		xmlSAX2Reference		(void *ctx,
 						 const xmlChar *name);
-void		characters			(void *ctx,
+void		xmlSAX2Characters		(void *ctx,
 						 const xmlChar *ch,
 						 int len);
-void		ignorableWhitespace		(void *ctx,
+void		xmlSAX2IgnorableWhitespace	(void *ctx,
 						 const xmlChar *ch,
 						 int len);
-void		processingInstruction		(void *ctx,
+void		xmlSAX2ProcessingInstruction	(void *ctx,
 						 const xmlChar *target,
 						 const xmlChar *data);
-void		globalNamespace			(void *ctx,
+void		xmlSAX2GlobalNamespace		(void *ctx,
 						 const xmlChar *href,
 						 const xmlChar *prefix);
-void		setNamespace			(void *ctx,
+void		xmlSAX2SetNamespace		(void *ctx,
 						 const xmlChar *name);
-xmlNsPtr	getNamespace			(void *ctx);
-int		checkNamespace			(void *ctx,
+xmlNsPtr	xmlSAX2GetNamespace		(void *ctx);
+int		xmlSAX2CheckNamespace		(void *ctx,
 						 xmlChar *nameSpace);
-void		namespaceDecl			(void *ctx,
+void		xmlSAX2NamespaceDecl		(void *ctx,
 						 const xmlChar *href,
 						 const xmlChar *prefix);
-void		comment				(void *ctx,
+void		xmlSAX2Comment			(void *ctx,
 						 const xmlChar *value);
-void		cdataBlock			(void *ctx,
+void		xmlSAX2CDataBlock		(void *ctx,
 						 const xmlChar *value,
 						 int len);
 
-void		initxmlDefaultSAXHandler	(xmlSAXHandler *hdlr,
+void		xmlSAX2InitDefaultSAXHandler    (xmlSAXHandler *hdlr,
 						 int warning);
 #ifdef LIBXML_HTML_ENABLED
-void		inithtmlDefaultSAXHandler	(xmlSAXHandler *hdlr);
+void		xmlSAX2InitHtmlDefaultSAXHandler(xmlSAXHandler *hdlr);
 #endif
 #ifdef LIBXML_DOCB_ENABLED
-void		initdocbDefaultSAXHandler	(xmlSAXHandler *hdlr);
+void		xmlSAX2InitDocbDefaultSAXHandler(xmlSAXHandler *hdlr);
 #endif
+void		xmlDefaultSAXHandlerInit	(void);
+void		htmlDefaultSAXHandlerInit	(void);
+void		docbDefaultSAXHandlerInit	(void);
 #ifdef __cplusplus
 }
 #endif
-#endif /* __XML_SAX_H__ */
+#endif /* __XML_SAX2_H__ */

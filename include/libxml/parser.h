@@ -574,6 +574,7 @@ typedef int (*isStandaloneSAXFunc) (void *ctx);
  * Returns 1 if true
  */
 typedef int (*hasInternalSubsetSAXFunc) (void *ctx);
+
 /**
  * hasExternalSubsetSAXFunc:
  * @ctx:  the user data (XML parser context)
@@ -583,6 +584,80 @@ typedef int (*hasInternalSubsetSAXFunc) (void *ctx);
  * Returns 1 if true
  */
 typedef int (*hasExternalSubsetSAXFunc) (void *ctx);
+
+/************************************************************************
+ *									*
+ *			The SAX version 2 API extensions		*
+ *									*
+ ************************************************************************/
+/**
+ * XML_SAX2_MAGIC:
+ *
+ * Special constant found in SAX2 blocks initialized fields
+ */
+#define XML_SAX2_MAGIC 0xDEEDBEAF
+
+/**
+ * startElementNsSAX2Func:
+ * @ctx:  the user data (XML parser context)
+ * @localname:  the local name of the element
+ * @prefix:  the element namespace prefix if available
+ * @URI:  the element namespace name if available
+ * @nb_namespaces:  number of namespace definitions on that node
+ * @namespaces:  pointer to the array of prefix/URI pairs namespace definitions
+ * @nb_attributes:  the number of attributes on that node
+ *
+ * SAX2 callback when an element start has been detected by the parser.
+ * It provides the namespace informations for the element, as well as
+ * the new namespace declarations on the element.
+ * The number of attributes is given in this callback but the attributes
+ * themselves will be provided as separate callbacks.
+ */
+
+typedef void (*startElementNsSAX2Func) (void *ctx,
+					const xmlChar *localname,
+					const xmlChar *prefix,
+					const xmlChar *URI,
+					int nb_namespaces,
+					const xmlChar **namespaces,
+					int nb_attributes);
+ 
+/**
+ * endElementNsSAX2Func:
+ * @ctx:  the user data (XML parser context)
+ * @localname:  the local name of the element
+ * @prefix:  the element namespace prefix if available
+ * @URI:  the element namespace name if available
+ *
+ * SAX2 callback when an element end has been detected by the parser.
+ * It provides the namespace informations for the element.
+ */
+
+typedef void (*endElementNsSAX2Func)   (void *ctx,
+					const xmlChar *localname,
+					const xmlChar *prefix,
+					const xmlChar *URI);
+
+/**
+ * attributeNsSAX2Func:
+ * @ctx:  the user data (XML parser context)
+ * @localname:  the local name of the attribute
+ * @prefix:  the attribute namespace prefix if available
+ * @URI:  the attribute namespace name if available
+ * @value:  pointer to the attribute value string
+ * @valuelen:  lenght of the attribute value string in bytes
+ *
+ * SAX2 callback when an attribute has been detected by the parser.
+ * It provides the namespace informations for the attribute, as well as
+ * the value of the attribute (note that @value may not be zero terminated
+ * and use of the @valuelen is needed to find the value end).
+ */
+typedef void (*attributeNsSAX2Func)    (void *ctx,
+					const xmlChar *localname,
+					const xmlChar *prefix,
+					const xmlChar *URI,
+					const xmlChar *value,
+					int valuelen);
 
 struct _xmlSAXHandler {
     internalSubsetSAXFunc internalSubset;
@@ -613,6 +688,11 @@ struct _xmlSAXHandler {
     cdataBlockSAXFunc cdataBlock;
     externalSubsetSAXFunc externalSubset;
     int initialized;
+    /* The following fields are extensions available only on version 2 */
+    void *_private;
+    startElementNsSAX2Func startElementNs;
+    endElementNsSAX2Func endElementNs;
+    attributeNsSAX2Func attributeNs;
 };
 
 /**

@@ -3682,8 +3682,8 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 			ctxt->myDoc->intSubset = xmlNewDtd(ctxt->myDoc,
 					    BAD_CAST "fake", NULL, NULL);
 
-		    entityDecl(ctxt, name, XML_INTERNAL_GENERAL_ENTITY,
-			       NULL, NULL, value);
+		    xmlSAX2EntityDecl(ctxt, name, XML_INTERNAL_GENERAL_ENTITY,
+			              NULL, NULL, value);
 		}
 	    } else {
 	        URI = xmlParseExternalID(ctxt, &literal, 1);
@@ -3775,9 +3775,9 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 			if (ctxt->myDoc->intSubset == NULL)
 			    ctxt->myDoc->intSubset = xmlNewDtd(ctxt->myDoc,
 						BAD_CAST "fake", NULL, NULL);
-			entityDecl(ctxt, name,
-				    XML_EXTERNAL_GENERAL_PARSED_ENTITY,
-				    literal, URI, NULL);
+			xmlSAX2EntityDecl(ctxt, name,
+				          XML_EXTERNAL_GENERAL_PARSED_ENTITY,
+				          literal, URI, NULL);
 		    }
 		}
 	    }
@@ -3816,7 +3816,7 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 		    (ctxt->sax->getEntity != NULL))
 		    cur = ctxt->sax->getEntity(ctxt->userData, name);
 		if ((cur == NULL) && (ctxt->userData==ctxt)) {
-		    cur = getEntity(ctxt, name);
+		    cur = xmlSAX2GetEntity(ctxt, name);
 		}
 	    }
             if (cur != NULL) {
@@ -5746,7 +5746,7 @@ xmlParseEntityRef(xmlParserCtxtPtr ctxt) {
 		        ent = xmlGetPredefinedEntity(name);
 		    if ((ctxt->wellFormed == 1 ) && (ent == NULL) &&
 			(ctxt->userData==ctxt)) {
-			ent = getEntity(ctxt, name);
+			ent = xmlSAX2GetEntity(ctxt, name);
 		    }
 		}
 		/*
@@ -5942,7 +5942,7 @@ xmlParseStringEntityRef(xmlParserCtxtPtr ctxt, const xmlChar ** str) {
 		    if (ent == NULL)
 		        ent = xmlGetPredefinedEntity(name);
 		    if ((ent == NULL) && (ctxt->userData==ctxt)) {
-			ent = getEntity(ctxt, name);
+			ent = xmlSAX2GetEntity(ctxt, name);
 		    }
 		}
 		/*

@@ -40,7 +40,8 @@ xmlinc_HEADERS = \
 		xmlunicode.h \
 		xmlreader.h \
 		relaxng.h \
-		dict.h
+		dict.h \
+		SAX2.h
 
 install-exec-hook:
 	$(mkinstalldirs) $(DESTDIR)$(xmlincdir)

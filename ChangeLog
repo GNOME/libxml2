@@ -1,3 +1,14 @@
+Thu Aug 21 00:50:32 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am SAX2.c include/libxml/Makefile.am include/libxml/SAX2.h:
+	  Adding new version of the SAX interface, it's not there yet,
+	  currently just preparing the work
+	* globals.c parser.c SAX.c include/libxml/SAX.h 
+	  include/libxml/globals.h include/libxml/parser.h: doing some
+	  refactoring of the SAXv1 interfaces, obsoleting a bunch of them
+	  while keeping functionalities, preparing SAX2 integration.
+	* dict.c: small cleanup.
+
 Wed Aug 20 00:20:01 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: fixes a small bug introduced in last commit and detected

@@ -1,3 +1,9 @@
+Fri Oct 10 13:40:51 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c: cleanup
+	* xpointer.c include/libxml/xmlerror.h: migrated XPointer module
+	  to the new error mechanism
+
 Fri Oct 10 12:49:53 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* error.c xmlschemas.c: a bit of cleanup

@@ -289,7 +289,7 @@ xmlXPathErr(xmlXPathParserContextPtr ctxt, int error)
     ctxt->context->lastError.domain = XML_FROM_XPATH;
     ctxt->context->lastError.code = error + XML_XPATH_EXPRESSION_OK -
                            XPATH_EXPRESSION_OK;
-    ctxt->context->lastError.level = XML_ERR_FATAL;
+    ctxt->context->lastError.level = XML_ERR_ERROR;
     ctxt->context->lastError.str1 = (char *) xmlStrdup(ctxt->base);
     ctxt->context->lastError.int1 = ctxt->cur - ctxt->base;
     ctxt->context->lastError.node = ctxt->context->debugNode;

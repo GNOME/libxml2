@@ -17,6 +17,7 @@
 #include <libxml/parser.h>
 #include <libxml/parserInternals.h>
 #include <libxml/hash.h>
+#include <libxml/uri.h>
 
 #include <libxml/xmlschemas.h>
 #include <libxml/schemasInternals.h>
@@ -34,6 +35,8 @@
     xmlGenericError(xmlGenericErrorContext,				\
 	    "Unimplemented block at %s:%d\n",				\
             __FILE__, __LINE__);
+
+#define XML_SCHEMAS_DEFAULT_NAMESPACE (const xmlChar *)"the default namespace"
 
 /*
  * The XML Schemas namespaces
@@ -2161,6 +2164,127 @@ xmlSchemaParseAll(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 }
 
 /**
+ * xmlSchemaParseImport:
+ * @ctxt:  a schema validation context
+ * @schema:  the schema being built
+ * @node:  a subtree containing XML Schema informations
+ *
+ * parse a XML schema Import definition
+ * *WARNING* this interface is highly subject to change
+ *
+ * Returns -1 in case of error, 0 if the declaration is inproper and
+ *         1 in case of success.
+ */
+static int
+xmlSchemaParseImport(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
+                          xmlNodePtr node)
+{
+    xmlNodePtr child = NULL;
+    xmlChar *namespace;
+    xmlChar *schemaLocation;
+    xmlChar *previous;
+    xmlURIPtr check;
+
+    if ((ctxt == NULL) || (schema == NULL) || (node == NULL))
+        return (-1);
+
+    namespace = xmlGetProp(node, BAD_CAST "namespace");
+    if (namespace != NULL) {
+	check = xmlParseURI((const char *) namespace);
+	if (check == NULL) {
+	    xmlSchemaErrorContext(ctxt, schema, node, child);
+	    if ((ctxt != NULL) && (ctxt->error != NULL))
+		ctxt->error(ctxt->userData,
+			    "Import namespace attribute is not an URI: %s\n",
+			    namespace);
+	    xmlFree(namespace);
+	    return(-1);
+	} else {
+	    xmlFreeURI(check);
+	}
+    }
+    schemaLocation = xmlGetProp(node, BAD_CAST "schemaLocation");
+    if (schemaLocation != NULL) {
+	check = xmlParseURI((const char *) schemaLocation);
+	if (check == NULL) {
+	    xmlSchemaErrorContext(ctxt, schema, node, child);
+	    if ((ctxt != NULL) && (ctxt->error != NULL))
+		ctxt->error(ctxt->userData,
+		    "Import schemaLocation attribute is not an URI: %s\n",
+			    schemaLocation);
+	    if (namespace != NULL)
+		xmlFree(namespace);
+	    xmlFree(schemaLocation);
+	    return(-1);
+	} else {
+	    xmlFreeURI(check);
+	}
+    }
+    if (schema->schemasImports == NULL) {
+	schema->schemasImports = xmlHashCreate(10);
+	if (schema->schemasImports == NULL) {
+	    xmlSchemaErrorContext(ctxt, schema, node, child);
+	    if ((ctxt != NULL) && (ctxt->error != NULL))
+		ctxt->error(ctxt->userData,
+		    "Internal: failed to build import table\n");
+	    if (namespace != NULL)
+		xmlFree(namespace);
+	    if (schemaLocation != NULL)
+		xmlFree(schemaLocation);
+	    return(-1);
+	}
+    }
+    if (namespace == NULL) {
+	previous = xmlHashLookup(schema->schemasImports,
+		XML_SCHEMAS_DEFAULT_NAMESPACE);
+	if (schemaLocation != NULL) {
+	    if (previous != NULL) {
+		if (!xmlStrEqual(schemaLocation, previous)) {
+		    xmlSchemaErrorContext(ctxt, schema, node, child);
+		    if ((ctxt != NULL) && (ctxt->error != NULL))
+			ctxt->error(ctxt->userData,
+	"Redefining import for default namespace with a different URI: %s\n",
+	                            schemaLocation);
+		}
+	    } else {
+		xmlHashAddEntry(schema->schemasImports, 
+			XML_SCHEMAS_DEFAULT_NAMESPACE, schemaLocation);
+	    }
+	}
+    } else {
+	previous = xmlHashLookup(schema->schemasImports, namespace);
+	if (schemaLocation != NULL) {
+	    if (previous != NULL) {
+		if (!xmlStrEqual(schemaLocation, previous)) {
+		    xmlSchemaErrorContext(ctxt, schema, node, child);
+		    if ((ctxt != NULL) && (ctxt->error != NULL))
+			ctxt->error(ctxt->userData,
+	"Redefining import for namespace %s with a different URI: %s\n",
+	                            namespace, schemaLocation);
+		}
+	    } else {
+		xmlHashAddEntry(schema->schemasImports, 
+			namespace, schemaLocation);
+	    }
+	}
+    }
+    TODO
+
+    child = node->children;
+    while (IS_SCHEMA(child, "annotation")) {
+	child = child->next;
+    }
+    if (child != NULL) {
+	xmlSchemaErrorContext(ctxt, schema, node, child);
+	if ((ctxt != NULL) && (ctxt->error != NULL))
+	    ctxt->error(ctxt->userData,
+			"Import has unexpected content\n");
+	return(-1);
+    }
+    return(1);
+}
+
+/**
  * xmlSchemaParseChoice:
  * @ctxt:  a schema validation context
  * @schema:  the schema being built
@@ -2791,8 +2915,7 @@ xmlSchemaParseSchema(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node)
 	    } else if (IS_SCHEMA(child, "include")) {
 		TODO
 	    } else if (IS_SCHEMA(child, "import")) {
-		/* xmlSchemaParseImport(ctxt, schema, child);*/
-		TODO
+		xmlSchemaParseImport(ctxt, schema, child);
 	    } else if (IS_SCHEMA(child, "redefine")) {
 		TODO
 	    }

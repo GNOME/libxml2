@@ -1,3 +1,12 @@
+Wed May 22 08:38:19 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemas.c: a bit of work on import.
+	* xmlschemastypes.c: Charles Bozeman provided a compare function
+	  for date/time types so min/max facet restrictions should work,
+	  indeterminate comparisons return an error instead of equal.
+	* test/schemas/date_0* result/schemas/date_0_0: specific test
+	  from Charles Bozeman too
+
 Sat May 18 09:54:12 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* libxml.3 doc/buildDocBookCatalog: apply a couple of patches

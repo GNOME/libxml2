@@ -89,7 +89,7 @@ struct _xmlSchemaValDecimal {
     /* would use long long but not portable */
     unsigned long base;
     unsigned int extra;
-    int sign:1;
+    unsigned int sign:1;
     int frac:7;
     int total:8;
 };
@@ -97,7 +97,7 @@ struct _xmlSchemaValDecimal {
 struct _xmlSchemaVal {
     xmlSchemaValType type;
     union {
-	xmlSchemaValDecimal decimal;
+	xmlSchemaValDecimal     decimal;
         xmlSchemaValDate        date;
         xmlSchemaValDuration    dur;
     } value;
@@ -270,6 +270,9 @@ static const long daysInMonth[12] =
 static const long daysInMonthLeap[12] =
 	{ 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
+#define MAX_DAYINMONTH(yr,mon)                                  \
+        (IS_LEAP(yr) ? daysInMonthLeap[mon - 1] : daysInMonth[mon - 1])
+
 #define VALID_MDAY(dt)						\
 	(IS_LEAP(dt->year) ?				        \
 	    (dt->day <= daysInMonthLeap[dt->mon - 1]) :	        \
@@ -288,6 +291,35 @@ static const long daysInMonthLeap[12] =
 #define SECS_PER_MIN            (60)
 #define SECS_PER_HOUR           (60 * SECS_PER_MIN)
 #define SECS_PER_DAY            (24 * SECS_PER_HOUR)
+
+static const long dayInYearByMonth[12] =
+	{ 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334 };
+static const long dayInLeapYearByMonth[12] =
+	{ 0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335 };
+
+#define DAY_IN_YEAR(day, month, year)				\
+        ((IS_LEAP(year) ?					\
+                dayInLeapYearByMonth[month - 1] :		\
+                dayInYearByMonth[month - 1]) + day)
+
+#ifdef DEBUG
+#define DEBUG_DATE(dt)                                                  \
+    xmlGenericError(xmlGenericErrorContext,                             \
+        "type=%o %04ld-%02u-%02uT%02u:%02u:%03f",                       \
+        dt->type,dt->value.date.year,dt->value.date.mon,                \
+        dt->value.date.day,dt->value.date.hour,dt->value.date.min,      \
+        dt->value.date.sec);                                            \
+    if (dt->value.date.tz_flag)                                         \
+        if (dt->value.date.tzo != 0)                                    \
+            xmlGenericError(xmlGenericErrorContext,                     \
+                "%+05d\n",dt->value.date.tzo);                          \
+        else                                                            \
+            xmlGenericError(xmlGenericErrorContext, "Z\n");             \
+    else                                                                \
+        xmlGenericError(xmlGenericErrorContext,"\n")
+#else
+#define DEBUG_DATE(dt)
+#endif
 
 /**
  * _xmlSchemaParseGYear:
@@ -548,6 +580,7 @@ _xmlSchemaParseTimeZone (xmlSchemaValDatePtr dt, const xmlChar **str) {
 	if (!VALID_TZO(dt->tzo))
 	    return 2;
 
+	dt->tz_flag = 1;
 	break;
       }
     default:
@@ -615,7 +648,7 @@ _xmlSchemaParseTimeZone (xmlSchemaValDatePtr dt, const xmlChar **str) {
 	}
 
 /**
- * xmlSchemaParseDates:
+ * xmlSchemaValidateDates:
  * @type: the predefined type
  * @dateTime:  string to analyze
  * @val:  the return computed value
@@ -627,7 +660,7 @@ _xmlSchemaParseTimeZone (xmlSchemaValDatePtr dt, const xmlChar **str) {
  *         and -1 in case of internal or API error.
  */
 static int
-xmlSchemaParseDates (xmlSchemaTypePtr type, const xmlChar *dateTime,
+xmlSchemaValidateDates (xmlSchemaTypePtr type, const xmlChar *dateTime,
                         xmlSchemaValPtr *val) {
     xmlSchemaValPtr dt;
     int ret;
@@ -774,7 +807,7 @@ error:
 }
 
 /**
- * xmlSchemaParseDuration:
+ * xmlSchemaValidateDuration:
  * @type: the predefined type
  * @duration:  string to analyze
  * @val:  the return computed value
@@ -786,7 +819,7 @@ error:
  *         and -1 in case of internal or API error.
  */
 static int
-xmlSchemaParseDuration (xmlSchemaTypePtr type, const xmlChar *duration,
+xmlSchemaValidateDuration (xmlSchemaTypePtr type, const xmlChar *duration,
                         xmlSchemaValPtr *val) {
     const xmlChar  *cur = duration;
     xmlSchemaValPtr dur;
@@ -904,6 +937,7 @@ xmlSchemaValidatePredefinedType(xmlSchemaTypePtr type, const xmlChar *value,
 	return(-1);
     if (type == NULL)
 	return(-1);
+
     if (val != NULL)
 	*val = NULL;
     if (type == xmlSchemaTypeStringDef) { 
@@ -918,7 +952,7 @@ xmlSchemaValidatePredefinedType(xmlSchemaTypePtr type, const xmlChar *value,
 	return(1);
     } else if (type == xmlSchemaTypeDecimalDef) {
 	const xmlChar *cur = value, *tmp;
-	int frac = 0, main, neg = 0;
+	int frac = 0, len, neg = 0;
 	unsigned long base = 0;
 	if (cur == NULL)
 	    return(1);
@@ -933,7 +967,7 @@ xmlSchemaValidatePredefinedType(xmlSchemaTypePtr type, const xmlChar *value,
 	    base = base * 10 + (*cur - '0');
 	    cur++;
 	}
-	main = cur - tmp;
+	len = cur - tmp;
 	if (*cur == '.') {
 	    cur++;
 	    tmp = cur;
@@ -951,13 +985,13 @@ xmlSchemaValidatePredefinedType(xmlSchemaTypePtr type, const xmlChar *value,
 		v->value.decimal.base = base;
 		v->value.decimal.sign = neg;
 		v->value.decimal.frac = frac;
-		v->value.decimal.total = frac + main;
+		v->value.decimal.total = frac + len;
 		*val = v;
 	    }
 	}
 	return(0);
     } else if (type == xmlSchemaTypeDurationDef) {
-        return xmlSchemaParseDuration(type, value, val);
+        return xmlSchemaValidateDuration(type, value, val);
     } else if ((type == xmlSchemaTypeDatetimeDef) ||
                (type == xmlSchemaTypeTimeDef) ||
                (type == xmlSchemaTypeDateDef) ||
@@ -966,7 +1000,7 @@ xmlSchemaValidatePredefinedType(xmlSchemaTypePtr type, const xmlChar *value,
                (type == xmlSchemaTypeGMonthDef) ||
                (type == xmlSchemaTypeGMonthDayDef) ||
                (type == xmlSchemaTypeGDayDef))         {
-        return xmlSchemaParseDates(type, value, val);
+        return xmlSchemaValidateDates(type, value, val);
     } else if (type == xmlSchemaTypePositiveIntegerDef) {
 	const xmlChar *cur = value;
 	unsigned long base = 0;
@@ -1102,7 +1136,7 @@ xmlSchemaCompareDurations(xmlSchemaValPtr x, xmlSchemaValPtr y)
         { 0, 31, 62, 92, 123, 153, 184, 215, 245, 276, 306, 337} };
 
     if ((x == NULL) || (y == NULL))
-        return NULL;
+        return -2;
 
     /* months */
     mon = x->value.dur.mon - y->value.dur.mon;
@@ -1159,6 +1193,472 @@ xmlSchemaCompareDurations(xmlSchemaValPtr x, xmlSchemaValPtr y)
         return -1;
 
     /* indeterminate */
+    return 2;
+}
+
+/*
+ * macros for adding date/times and durations
+ */
+#define FQUOTIENT(a,b)                  (floor(((double)a/(double)b)))
+#define MODULO(a,b)                     (a - FQUOTIENT(a,b) * b)
+#define FQUOTIENT_RANGE(a,low,high)     (FQUOTIENT((a-low),(high-low)))
+#define MODULO_RANGE(a,low,high)        ((MODULO((a-low),(high-low)))+low)
+
+/**
+ * _xmlSchemaDateAdd:
+ * @dt: an #xmlSchemaValPtr
+ * @dur: an #xmlSchemaValPtr of type #XS_DURATION
+ *
+ * Compute a new date/time from @dt and @dur. This function assumes @dt
+ * is either #XML_SCHEMAS_DATETIME, #XML_SCHEMAS_DATE, #XML_SCHEMAS_GYEARMONTH,
+ * or #XML_SCHEMAS_GYEAR.
+ *
+ * Returns date/time pointer or NULL.
+ */
+static xmlSchemaValPtr
+_xmlSchemaDateAdd (xmlSchemaValPtr dt, xmlSchemaValPtr dur)
+{
+    xmlSchemaValPtr ret;
+    long carry, tempdays, temp;
+    xmlSchemaValDatePtr r, d;
+    xmlSchemaValDurationPtr u;
+
+    if ((dt == NULL) || (dur == NULL))
+        return NULL;
+
+    ret = xmlSchemaNewValue(dt->type);
+    if (ret == NULL)
+        return NULL;
+
+    r = &(ret->value.date);
+    d = &(dt->value.date);
+    u = &(dur->value.dur);
+
+    /* normalization */
+    if (d->mon == 0)
+        d->mon = 1;
+
+    /* normalize for time zone offset */
+    u->sec -= (d->tzo * 60);
+    d->tzo = 0;
+
+    /* normalization */
+    if (d->day == 0)
+        d->day = 1;
+
+    /* month */
+    carry  = d->mon + u->mon;
+    r->mon = MODULO_RANGE(carry, 1, 13);
+    carry  = FQUOTIENT_RANGE(carry, 1, 13);
+
+    /* year (may be modified later) */
+    r->year = d->year + carry;
+    if (r->year == 0) {
+        if (d->year > 0)
+            r->year--;
+        else
+            r->year++;
+    }
+
+    /* time zone */
+    r->tzo     = d->tzo;
+    r->tz_flag = d->tz_flag;
+
+    /* seconds */
+    r->sec = d->sec + u->sec;
+    carry  = FQUOTIENT((long)r->sec, 60);
+    if (r->sec != 0.0) {
+        r->sec = MODULO(r->sec, 60.0);
+    }
+
+    /* minute */
+    carry += d->min;
+    r->min = MODULO(carry, 60);
+    carry  = FQUOTIENT(carry, 60);
+
+    /* hours */
+    carry  += d->hour;
+    r->hour = MODULO(carry, 24);
+    carry   = FQUOTIENT(carry, 24);
+
+    /*
+     * days
+     * Note we use tempdays because the temporary values may need more
+     * than 5 bits
+     */
+    if ((VALID_YEAR(r->year)) && (VALID_MONTH(r->mon)) &&
+                  (d->day > MAX_DAYINMONTH(r->year, r->mon)))
+        tempdays = MAX_DAYINMONTH(r->year, r->mon);
+    else if (d->day < 1)
+        tempdays = 1;
+    else
+        tempdays = d->day;
+
+    tempdays += u->day + carry;
+
+    while (1) {
+        if (tempdays < 1) {
+            long tmon = MODULO_RANGE(r->mon-1, 1, 13);
+            long tyr  = r->year + FQUOTIENT_RANGE(r->mon-1, 1, 13);
+            if (tyr == 0)
+                tyr--;
+            tempdays += MAX_DAYINMONTH(tyr, tmon);
+            carry = -1;
+        } else if (tempdays > MAX_DAYINMONTH(r->year, r->mon)) {
+            tempdays = tempdays - MAX_DAYINMONTH(r->year, r->mon);
+            carry = 1;
+        } else
+            break;
+
+        temp = r->mon + carry;
+        r->mon = MODULO_RANGE(temp, 1, 13);
+        r->year = r->year + FQUOTIENT_RANGE(temp, 1, 13);
+        if (r->year == 0) {
+            if (temp < 1)
+                r->year--;
+            else
+                r->year++;
+	}
+    }
+    
+    r->day = tempdays;
+
+    /*
+     * adjust the date/time type to the date values
+     */
+    if (ret->type != XML_SCHEMAS_DATETIME) {
+        if ((r->hour) || (r->min) || (r->sec))
+            ret->type = XML_SCHEMAS_DATETIME;
+        else if (ret->type != XML_SCHEMAS_DATE) {
+            if ((r->mon != 1) && (r->day != 1))
+                ret->type = XML_SCHEMAS_DATE;
+            else if ((ret->type != XML_SCHEMAS_GYEARMONTH) && (r->mon != 1))
+                ret->type = XML_SCHEMAS_GYEARMONTH;
+        }
+    }
+
+    return ret;
+}
+
+/**
+ * xmlSchemaDupVal:
+ * @v: value to duplicate
+ *
+ * returns a duplicated value.
+ */
+static xmlSchemaValPtr
+xmlSchemaDupVal (xmlSchemaValPtr v)
+{
+    xmlSchemaValPtr ret = xmlSchemaNewValue(v->type);
+    if (ret == NULL)
+        return ret;
+    
+    memcpy(ret, v, sizeof(xmlSchemaVal));
+    return ret;
+}
+
+/**
+ * xmlSchemaDateNormalize:
+ * @dt: an #xmlSchemaValPtr
+ *
+ * Normalize @dt to GMT time.
+ *
+ */
+static xmlSchemaValPtr
+xmlSchemaDateNormalize (xmlSchemaValPtr dt, double offset)
+{
+    xmlSchemaValPtr dur, ret;
+
+    if (dt == NULL)
+        return NULL;
+
+    if (((dt->type != XML_SCHEMAS_TIME) &&
+         (dt->type != XML_SCHEMAS_DATETIME)) || (dt->value.date.tzo == 0))
+        return xmlSchemaDupVal(dt);
+
+    dur = xmlSchemaNewValue(XML_SCHEMAS_DURATION);
+    if (dur == NULL)
+        return NULL;
+
+    dur->value.date.sec -= offset;
+
+    ret = _xmlSchemaDateAdd(dt, dur);
+    if (ret == NULL)
+        return NULL;
+
+    xmlSchemaFreeValue(dur);
+
+    /* ret->value.date.tzo = 0; */
+    return ret;
+}
+
+/**
+ * _xmlSchemaDateCastYMToDays:
+ * @dt: an #xmlSchemaValPtr
+ *
+ * Convert mon and year of @dt to total number of days. Take the 
+ * number of years since (or before) 1 AD and add the number of leap
+ * years. This is a function  because negative
+ * years must be handled a little differently and there is no zero year.
+ *
+ * Returns number of days.
+ */
+static long
+_xmlSchemaDateCastYMToDays (const xmlSchemaValPtr dt)
+{
+    long ret;
+
+    if (dt->value.date.year < 0)
+        ret = (dt->value.date.year * 365) +
+              (((dt->value.date.year+1)/4)-((dt->value.date.year+1)/100)+
+               ((dt->value.date.year+1)/400)) +
+              DAY_IN_YEAR(0, dt->value.date.mon, dt->value.date.year);
+    else
+        ret = ((dt->value.date.year-1) * 365) +
+              (((dt->value.date.year-1)/4)-((dt->value.date.year-1)/100)+
+               ((dt->value.date.year-1)/400)) +
+              DAY_IN_YEAR(0, dt->value.date.mon, dt->value.date.year);
+
+    return ret;
+}
+
+/**
+ * TIME_TO_NUMBER:
+ * @dt:  an #xmlSchemaValPtr
+ *
+ * Calculates the number of seconds in the time portion of @dt.
+ *
+ * Returns seconds.
+ */
+#define TIME_TO_NUMBER(dt)                              \
+    ((double)((dt->value.date.hour * SECS_PER_HOUR) +   \
+              (dt->value.date.min * SECS_PER_MIN)) + dt->value.date.sec)
+
+/**
+ * xmlSchemaCompareDates:
+ * @x:  a first date/time value
+ * @y:  a second date/time value
+ *
+ * Compare 2 date/times
+ *
+ * Returns -1 if x < y, 0 if x == y, 1 if x > y, 2 if x <> y, and -2 in
+ * case of error
+ */
+static int
+xmlSchemaCompareDates (xmlSchemaValPtr x, xmlSchemaValPtr y)
+{
+    unsigned char xmask, ymask, xor_mask, and_mask;
+    xmlSchemaValPtr p1, p2, q1, q2;
+    long p1d, p2d, q1d, q2d;
+
+    if ((x == NULL) || (y == NULL))
+        return -2;
+
+    if (x->value.date.tz_flag) {
+
+        if (!y->value.date.tz_flag) {
+            p1 = xmlSchemaDateNormalize(x, 0);
+            p1d = _xmlSchemaDateCastYMToDays(p1) + p1->value.date.day;
+            /* normalize y + 14:00 */
+            q1 = xmlSchemaDateNormalize(y, (14 * SECS_PER_HOUR));
+
+            q1d = _xmlSchemaDateCastYMToDays(q1) + q1->value.date.day;
+            if (p1d < q1d)
+                return -1;
+            else if (p1d == q1d) {
+                double sec;
+
+                sec = TIME_TO_NUMBER(p1) - TIME_TO_NUMBER(q1);
+                if (sec < 0.0)
+                    return -1;
+                else {
+                    /* normalize y - 14:00 */
+                    q2 = xmlSchemaDateNormalize(y, -(14 * SECS_PER_HOUR));
+                    q2d = _xmlSchemaDateCastYMToDays(q2) + q2->value.date.day;
+                    if (p1d > q2d)
+                        return 1;
+                    else if (p1d == q2d) {
+                        sec = TIME_TO_NUMBER(p1) - TIME_TO_NUMBER(q2);
+                        if (sec > 0.0)
+                            return 1;
+                        else
+                            return 2; /* indeterminate */
+                    }
+                }
+            }
+        }
+    } else if (y->value.date.tz_flag) {
+        q1 = xmlSchemaDateNormalize(y, 0);
+        q1d = _xmlSchemaDateCastYMToDays(q1) + q1->value.date.day;
+
+        /* normalize x - 14:00 */
+        p1 = xmlSchemaDateNormalize(x, -(14 * SECS_PER_HOUR));
+        p1d = _xmlSchemaDateCastYMToDays(p1) + p1->value.date.day;
+
+        if (p1d < q1d)
+            return -1;
+        else if (p1d == q1d) {
+            double sec;
+
+            sec = TIME_TO_NUMBER(p1) - TIME_TO_NUMBER(q1);
+            if (sec < 0.0)
+                return -1;
+            else {
+                /* normalize x + 14:00 */
+                p2 = xmlSchemaDateNormalize(x, (14 * SECS_PER_HOUR));
+                p2d = _xmlSchemaDateCastYMToDays(p2) + p2->value.date.day;
+
+                if (p2d > q1d)
+                    return 1;
+                else if (p2d == q1d) {
+                    sec = TIME_TO_NUMBER(p2) - TIME_TO_NUMBER(q1);
+                    if (sec > 0.0)
+                        return 1;
+                    else
+                        return 2; /* indeterminate */
+                }
+            }
+        }
+    }
+
+    /*
+     * if the same type then calculate the difference
+     */
+    if (x->type == y->type) {
+        q1 = xmlSchemaDateNormalize(y, 0);
+        q1d = _xmlSchemaDateCastYMToDays(q1) + q1->value.date.day;
+
+        p1 = xmlSchemaDateNormalize(x, 0);
+        p1d = _xmlSchemaDateCastYMToDays(p1) + p1->value.date.day;
+
+        if (p1d < q1d)
+            return -1;
+        else if (p1d > q1d)
+            return 1;
+        else {
+            double sec;
+
+            sec = TIME_TO_NUMBER(p1) - TIME_TO_NUMBER(q1);
+            if (sec < 0.0)
+                return -1;
+            else if (sec > 0.0)
+                return 1;
+            
+        }
+        return 0;
+    }
+
+    switch (x->type) {
+        case XML_SCHEMAS_DATETIME:
+            xmask = 0xf;
+            break;
+        case XML_SCHEMAS_DATE:
+            xmask = 0x7;
+            break;
+        case XML_SCHEMAS_GYEAR:
+            xmask = 0x1;
+            break;
+        case XML_SCHEMAS_GMONTH:
+            xmask = 0x2;
+            break;
+        case XML_SCHEMAS_GDAY:
+            xmask = 0x3;
+            break;
+        case XML_SCHEMAS_GYEARMONTH:
+            xmask = 0x3;
+            break;
+        case XML_SCHEMAS_GMONTHDAY:
+            xmask = 0x6;
+            break;
+        case XML_SCHEMAS_TIME:
+            xmask = 0x8;
+            break;
+        default:
+            xmask = 0;
+            break;
+    }
+
+    switch (y->type) {
+        case XML_SCHEMAS_DATETIME:
+            ymask = 0xf;
+            break;
+        case XML_SCHEMAS_DATE:
+            ymask = 0x7;
+            break;
+        case XML_SCHEMAS_GYEAR:
+            ymask = 0x1;
+            break;
+        case XML_SCHEMAS_GMONTH:
+            ymask = 0x2;
+            break;
+        case XML_SCHEMAS_GDAY:
+            ymask = 0x3;
+            break;
+        case XML_SCHEMAS_GYEARMONTH:
+            ymask = 0x3;
+            break;
+        case XML_SCHEMAS_GMONTHDAY:
+            ymask = 0x6;
+            break;
+        case XML_SCHEMAS_TIME:
+            ymask = 0x8;
+            break;
+        default:
+            ymask = 0;
+            break;
+    }
+
+    xor_mask = xmask ^ ymask;           /* mark type differences */
+    and_mask = xmask & ymask;           /* mark field specification */
+
+    /* year */
+    if (xor_mask & 1)
+        return 2; /* indeterminate */
+    else if (and_mask & 1) {
+        if (x->value.date.year < y->value.date.year)
+            return -1;
+        else if (x->value.date.year > y->value.date.year)
+            return 1;
+    }
+
+    /* month */
+    if (xor_mask & 2)
+        return 2; /* indeterminate */
+    else if (and_mask & 2) {
+        if (x->value.date.mon < y->value.date.mon)
+            return -1;
+        else if (x->value.date.mon > y->value.date.mon)
+            return 1;
+    }
+
+    /* day */
+    if (xor_mask & 4)
+        return 2; /* indeterminate */
+    else if (and_mask & 4) {
+        if (x->value.date.day < y->value.date.day)
+            return -1;
+        else if (x->value.date.day > y->value.date.day)
+            return 1;
+    }
+
+    /* time */
+    if (xor_mask & 8)
+        return 2; /* indeterminate */
+    else if (and_mask & 8) {
+        if (x->value.date.hour < y->value.date.hour)
+            return -1;
+        else if (x->value.date.hour > y->value.date.hour)
+            return 1;
+        else if (x->value.date.min < y->value.date.min)
+            return -1;
+        else if (x->value.date.min > y->value.date.min)
+            return 1;
+        else if (x->value.date.sec < y->value.date.sec)
+            return -1;
+        else if (x->value.date.sec > y->value.date.sec)
+            return 1;
+    }
+
     return 0;
 }
 
@@ -1169,7 +1669,8 @@ xmlSchemaCompareDurations(xmlSchemaValPtr x, xmlSchemaValPtr y)
  *
  * Compare 2 values
  *
- * Returns -1 if x < y, 0 if x == y, 1 if x > y and -2 in case of error
+ * Returns -1 if x < y, 0 if x == y, 1 if x > y, 2 if x <> y, and -2 in
+ * case of error
  */
 static int
 xmlSchemaCompareValues(xmlSchemaValPtr x, xmlSchemaValPtr y) {
@@ -1182,16 +1683,34 @@ xmlSchemaCompareValues(xmlSchemaValPtr x, xmlSchemaValPtr y) {
 	case XML_SCHEMAS_DECIMAL:
 	    if (y->type == XML_SCHEMAS_DECIMAL)
 		return(xmlSchemaCompareDecimals(x, y));
-	    else
-		return(-2);
+	    return(-2);
         case XML_SCHEMAS_DURATION:
 	    if (y->type == XML_SCHEMAS_DURATION)
                 return(xmlSchemaCompareDurations(x, y));
-            else
-                return(-2);
+            return(-2);
+        case XML_SCHEMAS_TIME:
+        case XML_SCHEMAS_GDAY:
+        case XML_SCHEMAS_GMONTH:
+        case XML_SCHEMAS_GMONTHDAY:
+        case XML_SCHEMAS_GYEAR:
+        case XML_SCHEMAS_GYEARMONTH:
+        case XML_SCHEMAS_DATE:
+        case XML_SCHEMAS_DATETIME:
+            if ((y->type == XML_SCHEMAS_DATETIME)  ||
+                (y->type == XML_SCHEMAS_TIME)      ||
+                (y->type == XML_SCHEMAS_GDAY)      ||
+                (y->type == XML_SCHEMAS_GMONTH)    ||
+                (y->type == XML_SCHEMAS_GMONTHDAY) ||
+                (y->type == XML_SCHEMAS_GYEAR)     ||
+                (y->type == XML_SCHEMAS_DATE)      ||
+                (y->type == XML_SCHEMAS_GYEARMONTH))
+                return (xmlSchemaCompareDates(x, y));
+
+            return (-2);
 	default:
 	    TODO
     }
+    return -2;
 }
 
 /**
@@ -1230,7 +1749,7 @@ xmlSchemaValidateFacet(xmlSchemaTypePtr base, xmlSchemaFacetPtr facet,
 	    }
 	    if (ret == -1)
 		return(0);
-	    TODO /* error code */
+	    /* error code */
 	    return(1);
 	case XML_SCHEMA_FACET_MAXINCLUSIVE:
 	    ret = xmlSchemaCompareValues(val, facet->val);
@@ -1240,7 +1759,7 @@ xmlSchemaValidateFacet(xmlSchemaTypePtr base, xmlSchemaFacetPtr facet,
 	    }
 	    if ((ret == -1) || (ret == 0))
 		return(0);
-	    TODO /* error code */
+	    /* error code */
 	    return(1);
 	case XML_SCHEMA_FACET_MINEXCLUSIVE:
 	    ret = xmlSchemaCompareValues(val, facet->val);
@@ -1250,7 +1769,7 @@ xmlSchemaValidateFacet(xmlSchemaTypePtr base, xmlSchemaFacetPtr facet,
 	    }
 	    if (ret == 1)
 		return(0);
-	    TODO /* error code */
+	    /* error code */
 	    return(1);
 	case XML_SCHEMA_FACET_MININCLUSIVE:
 	    ret = xmlSchemaCompareValues(val, facet->val);
@@ -1260,7 +1779,7 @@ xmlSchemaValidateFacet(xmlSchemaTypePtr base, xmlSchemaFacetPtr facet,
 	    }
 	    if ((ret == 1) || (ret == 0))
 		return(0);
-	    TODO /* error code */
+	    /* error code */
 	    return(1);
 	case XML_SCHEMA_FACET_WHITESPACE:
 	    TODO /* whitespaces */

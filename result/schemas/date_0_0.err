@@ -1,0 +1,420 @@
+Type of restriction 15 : ./test/schemas/date_0.xsd:55 :empty
+Type of simpletype22 : ./test/schemas/date_0.xsd:87 :simple
+Type of restriction 24 : ./test/schemas/date_0.xsd:102 :empty
+Type of restriction 5 : ./test/schemas/date_0.xsd:15 :empty
+Type of simpletype14 : ./test/schemas/date_0.xsd:54 :simple
+Type of holidays : ./test/schemas/date_0.xsd:98 :simple
+Type of choice 3 : ./test/schemas/date_0.xsd:11 :elements
+Type of simpletype4 : ./test/schemas/date_0.xsd:14 :simple
+Type of restriction 17 : ./test/schemas/date_0.xsd:64 :empty
+Type of restriction 7 : ./test/schemas/date_0.xsd:23 :empty
+Type of simpletype16 : ./test/schemas/date_0.xsd:63 :simple
+Type of simpletype6 : ./test/schemas/date_0.xsd:22 :simple
+Type of restriction 19 : ./test/schemas/date_0.xsd:72 :empty
+Type of restriction 9 : ./test/schemas/date_0.xsd:31 :empty
+Type of simpletype18 : ./test/schemas/date_0.xsd:71 :simple
+Type of simpletype8 : ./test/schemas/date_0.xsd:30 :simple
+Type of restriction 11 : ./test/schemas/date_0.xsd:39 :empty
+Type of sequence 2 : ./test/schemas/date_0.xsd:10 :elements
+Type of anontype1 : ./test/schemas/date_0.xsd:9 :elements
+Type of simpletype10 : ./test/schemas/date_0.xsd:38 :simple
+Type of restriction 21 : ./test/schemas/date_0.xsd:80 :empty
+Type of restriction 13 : ./test/schemas/date_0.xsd:47 :empty
+Type of simpletype20 : ./test/schemas/date_0.xsd:79 :simple
+Type of sequence 2 : ./test/schemas/date_0.xsd:10 :elements
+Type of simpletype12 : ./test/schemas/date_0.xsd:46 :simple
+Type of restriction 23 : ./test/schemas/date_0.xsd:88 :empty
+Building content model for date
+Content model of date:
+ regexp: '(null)' 
+12 atoms:
+ 00  atom: string once 'time' 
+ 01  atom: string once 'time1' 
+ 02  atom: string once 'time2' 
+ 03  atom: string once 'date1' 
+ 04  atom: string once 'date2' 
+ 05  atom: string once 'dt1' 
+ 06  atom: string once 'dt2' 
+ 07  atom: string once 'hol' 
+ 08  atom: string once 'year1' 
+ 09  atom: string once 'yearmon1' 
+ 10  atom: string once 'mon1' 
+ 11  atom: string once 'day1' 
+15 states:
+ state: 0, 12 transitions:
+  trans: atom 0, to 3
+  trans: atom 1, to 4
+  trans: atom 2, to 5
+  trans: atom 3, to 6
+  trans: atom 4, to 7
+  trans: atom 5, to 8
+  trans: atom 6, to 9
+  trans: atom 7, to 10
+  trans: atom 8, to 11
+  trans: atom 9, to 12
+  trans: atom 10, to 13
+  trans: atom 11, to 14
+ state: FINAL 1, 0 transitions:
+ state: 2, 14 transitions:
+  trans: removed
+  trans: count based 0, epsilon to 1
+  trans: counted 0, atom 0, to 3
+  trans: counted 0, atom 1, to 4
+  trans: counted 0, atom 2, to 5
+  trans: counted 0, atom 3, to 6
+  trans: counted 0, atom 4, to 7
+  trans: counted 0, atom 5, to 8
+  trans: counted 0, atom 6, to 9
+  trans: counted 0, atom 7, to 10
+  trans: counted 0, atom 8, to 11
+  trans: counted 0, atom 9, to 12
+  trans: counted 0, atom 10, to 13
+  trans: counted 0, atom 11, to 14
+ state: 3, 26 transitions:
+  trans: removed
+  trans: counted 0, atom 0, to 3
+  trans: counted 0, atom 1, to 4
+  trans: counted 0, atom 2, to 5
+  trans: counted 0, atom 3, to 6
+  trans: counted 0, atom 4, to 7
+  trans: counted 0, atom 5, to 8
+  trans: counted 0, atom 6, to 9
+  trans: counted 0, atom 7, to 10
+  trans: counted 0, atom 8, to 11
+  trans: counted 0, atom 9, to 12
+  trans: counted 0, atom 10, to 13
+  trans: counted 0, atom 11, to 14
+  trans: count based 0, epsilon to 1
+  trans: counted 0, atom 0, to 3
+  trans: counted 0, atom 1, to 4
+  trans: counted 0, atom 2, to 5
+  trans: counted 0, atom 3, to 6
+  trans: counted 0, atom 4, to 7
+  trans: counted 0, atom 5, to 8
+  trans: counted 0, atom 6, to 9
+  trans: counted 0, atom 7, to 10
+  trans: counted 0, atom 8, to 11
+  trans: counted 0, atom 9, to 12
+  trans: counted 0, atom 10, to 13
+  trans: counted 0, atom 11, to 14
+ state: 4, 26 transitions:
+  trans: removed
+  trans: counted 0, atom 0, to 3
+  trans: counted 0, atom 1, to 4
+  trans: counted 0, atom 2, to 5
+  trans: counted 0, atom 3, to 6
+  trans: counted 0, atom 4, to 7
+  trans: counted 0, atom 5, to 8
+  trans: counted 0, atom 6, to 9
+  trans: counted 0, atom 7, to 10
+  trans: counted 0, atom 8, to 11
+  trans: counted 0, atom 9, to 12
+  trans: counted 0, atom 10, to 13
+  trans: counted 0, atom 11, to 14
+  trans: count based 0, epsilon to 1
+  trans: counted 0, atom 0, to 3
+  trans: counted 0, atom 1, to 4
+  trans: counted 0, atom 2, to 5
+  trans: counted 0, atom 3, to 6
+  trans: counted 0, atom 4, to 7
+  trans: counted 0, atom 5, to 8
+  trans: counted 0, atom 6, to 9
+  trans: counted 0, atom 7, to 10
+  trans: counted 0, atom 8, to 11
+  trans: counted 0, atom 9, to 12
+  trans: counted 0, atom 10, to 13
+  trans: counted 0, atom 11, to 14
+ state: 5, 26 transitions:
+  trans: removed
+  trans: counted 0, atom 0, to 3
+  trans: counted 0, atom 1, to 4
+  trans: counted 0, atom 2, to 5
+  trans: counted 0, atom 3, to 6
+  trans: counted 0, atom 4, to 7
+  trans: counted 0, atom 5, to 8
+  trans: counted 0, atom 6, to 9
+  trans: counted 0, atom 7, to 10
+  trans: counted 0, atom 8, to 11
+  trans: counted 0, atom 9, to 12
+  trans: counted 0, atom 10, to 13
+  trans: counted 0, atom 11, to 14
+  trans: count based 0, epsilon to 1
+  trans: counted 0, atom 0, to 3
+  trans: counted 0, atom 1, to 4
+  trans: counted 0, atom 2, to 5
+  trans: counted 0, atom 3, to 6
+  trans: counted 0, atom 4, to 7
+  trans: counted 0, atom 5, to 8
+  trans: counted 0, atom 6, to 9
+  trans: counted 0, atom 7, to 10
+  trans: counted 0, atom 8, to 11
+  trans: counted 0, atom 9, to 12
+  trans: counted 0, atom 10, to 13
+  trans: counted 0, atom 11, to 14
+ state: 6, 26 transitions:
+  trans: removed
+  trans: counted 0, atom 0, to 3
+  trans: counted 0, atom 1, to 4
+  trans: counted 0, atom 2, to 5
+  trans: counted 0, atom 3, to 6
+  trans: counted 0, atom 4, to 7
+  trans: counted 0, atom 5, to 8
+  trans: counted 0, atom 6, to 9
+  trans: counted 0, atom 7, to 10
+  trans: counted 0, atom 8, to 11
+  trans: counted 0, atom 9, to 12
+  trans: counted 0, atom 10, to 13
+  trans: counted 0, atom 11, to 14
+  trans: count based 0, epsilon to 1
+  trans: counted 0, atom 0, to 3
+  trans: counted 0, atom 1, to 4
+  trans: counted 0, atom 2, to 5
+  trans: counted 0, atom 3, to 6
+  trans: counted 0, atom 4, to 7
+  trans: counted 0, atom 5, to 8
+  trans: counted 0, atom 6, to 9
+  trans: counted 0, atom 7, to 10
+  trans: counted 0, atom 8, to 11
+  trans: counted 0, atom 9, to 12
+  trans: counted 0, atom 10, to 13
+  trans: counted 0, atom 11, to 14
+ state: 7, 26 transitions:
+  trans: removed
+  trans: counted 0, atom 0, to 3
+  trans: counted 0, atom 1, to 4
+  trans: counted 0, atom 2, to 5
+  trans: counted 0, atom 3, to 6
+  trans: counted 0, atom 4, to 7
+  trans: counted 0, atom 5, to 8
+  trans: counted 0, atom 6, to 9
+  trans: counted 0, atom 7, to 10
+  trans: counted 0, atom 8, to 11
+  trans: counted 0, atom 9, to 12
+  trans: counted 0, atom 10, to 13
+  trans: counted 0, atom 11, to 14
+  trans: count based 0, epsilon to 1
+  trans: counted 0, atom 0, to 3
+  trans: counted 0, atom 1, to 4
+  trans: counted 0, atom 2, to 5
+  trans: counted 0, atom 3, to 6
+  trans: counted 0, atom 4, to 7
+  trans: counted 0, atom 5, to 8
+  trans: counted 0, atom 6, to 9
+  trans: counted 0, atom 7, to 10
+  trans: counted 0, atom 8, to 11
+  trans: counted 0, atom 9, to 12
+  trans: counted 0, atom 10, to 13
+  trans: counted 0, atom 11, to 14
+ state: 8, 26 transitions:
+  trans: removed
+  trans: counted 0, atom 0, to 3
+  trans: counted 0, atom 1, to 4
+  trans: counted 0, atom 2, to 5
+  trans: counted 0, atom 3, to 6
+  trans: counted 0, atom 4, to 7
+  trans: counted 0, atom 5, to 8
+  trans: counted 0, atom 6, to 9
+  trans: counted 0, atom 7, to 10
+  trans: counted 0, atom 8, to 11
+  trans: counted 0, atom 9, to 12
+  trans: counted 0, atom 10, to 13
+  trans: counted 0, atom 11, to 14
+  trans: count based 0, epsilon to 1
+  trans: counted 0, atom 0, to 3
+  trans: counted 0, atom 1, to 4
+  trans: counted 0, atom 2, to 5
+  trans: counted 0, atom 3, to 6
+  trans: counted 0, atom 4, to 7
+  trans: counted 0, atom 5, to 8
+  trans: counted 0, atom 6, to 9
+  trans: counted 0, atom 7, to 10
+  trans: counted 0, atom 8, to 11
+  trans: counted 0, atom 9, to 12
+  trans: counted 0, atom 10, to 13
+  trans: counted 0, atom 11, to 14
+ state: 9, 26 transitions:
+  trans: removed
+  trans: counted 0, atom 0, to 3
+  trans: counted 0, atom 1, to 4
+  trans: counted 0, atom 2, to 5
+  trans: counted 0, atom 3, to 6
+  trans: counted 0, atom 4, to 7
+  trans: counted 0, atom 5, to 8
+  trans: counted 0, atom 6, to 9
+  trans: counted 0, atom 7, to 10
+  trans: counted 0, atom 8, to 11
+  trans: counted 0, atom 9, to 12
+  trans: counted 0, atom 10, to 13
+  trans: counted 0, atom 11, to 14
+  trans: count based 0, epsilon to 1
+  trans: counted 0, atom 0, to 3
+  trans: counted 0, atom 1, to 4
+  trans: counted 0, atom 2, to 5
+  trans: counted 0, atom 3, to 6
+  trans: counted 0, atom 4, to 7
+  trans: counted 0, atom 5, to 8
+  trans: counted 0, atom 6, to 9
+  trans: counted 0, atom 7, to 10
+  trans: counted 0, atom 8, to 11
+  trans: counted 0, atom 9, to 12
+  trans: counted 0, atom 10, to 13
+  trans: counted 0, atom 11, to 14
+ state: 10, 26 transitions:
+  trans: removed
+  trans: counted 0, atom 0, to 3
+  trans: counted 0, atom 1, to 4
+  trans: counted 0, atom 2, to 5
+  trans: counted 0, atom 3, to 6
+  trans: counted 0, atom 4, to 7
+  trans: counted 0, atom 5, to 8
+  trans: counted 0, atom 6, to 9
+  trans: counted 0, atom 7, to 10
+  trans: counted 0, atom 8, to 11
+  trans: counted 0, atom 9, to 12
+  trans: counted 0, atom 10, to 13
+  trans: counted 0, atom 11, to 14
+  trans: count based 0, epsilon to 1
+  trans: counted 0, atom 0, to 3
+  trans: counted 0, atom 1, to 4
+  trans: counted 0, atom 2, to 5
+  trans: counted 0, atom 3, to 6
+  trans: counted 0, atom 4, to 7
+  trans: counted 0, atom 5, to 8
+  trans: counted 0, atom 6, to 9
+  trans: counted 0, atom 7, to 10
+  trans: counted 0, atom 8, to 11
+  trans: counted 0, atom 9, to 12
+  trans: counted 0, atom 10, to 13
+  trans: counted 0, atom 11, to 14
+ state: 11, 26 transitions:
+  trans: removed
+  trans: counted 0, atom 0, to 3
+  trans: counted 0, atom 1, to 4
+  trans: counted 0, atom 2, to 5
+  trans: counted 0, atom 3, to 6
+  trans: counted 0, atom 4, to 7
+  trans: counted 0, atom 5, to 8
+  trans: counted 0, atom 6, to 9
+  trans: counted 0, atom 7, to 10
+  trans: counted 0, atom 8, to 11
+  trans: counted 0, atom 9, to 12
+  trans: counted 0, atom 10, to 13
+  trans: counted 0, atom 11, to 14
+  trans: count based 0, epsilon to 1
+  trans: counted 0, atom 0, to 3
+  trans: counted 0, atom 1, to 4
+  trans: counted 0, atom 2, to 5
+  trans: counted 0, atom 3, to 6
+  trans: counted 0, atom 4, to 7
+  trans: counted 0, atom 5, to 8
+  trans: counted 0, atom 6, to 9
+  trans: counted 0, atom 7, to 10
+  trans: counted 0, atom 8, to 11
+  trans: counted 0, atom 9, to 12
+  trans: counted 0, atom 10, to 13
+  trans: counted 0, atom 11, to 14
+ state: 12, 26 transitions:
+  trans: removed
+  trans: counted 0, atom 0, to 3
+  trans: counted 0, atom 1, to 4
+  trans: counted 0, atom 2, to 5
+  trans: counted 0, atom 3, to 6
+  trans: counted 0, atom 4, to 7
+  trans: counted 0, atom 5, to 8
+  trans: counted 0, atom 6, to 9
+  trans: counted 0, atom 7, to 10
+  trans: counted 0, atom 8, to 11
+  trans: counted 0, atom 9, to 12
+  trans: counted 0, atom 10, to 13
+  trans: counted 0, atom 11, to 14
+  trans: count based 0, epsilon to 1
+  trans: counted 0, atom 0, to 3
+  trans: counted 0, atom 1, to 4
+  trans: counted 0, atom 2, to 5
+  trans: counted 0, atom 3, to 6
+  trans: counted 0, atom 4, to 7
+  trans: counted 0, atom 5, to 8
+  trans: counted 0, atom 6, to 9
+  trans: counted 0, atom 7, to 10
+  trans: counted 0, atom 8, to 11
+  trans: counted 0, atom 9, to 12
+  trans: counted 0, atom 10, to 13
+  trans: counted 0, atom 11, to 14
+ state: 13, 26 transitions:
+  trans: removed
+  trans: counted 0, atom 0, to 3
+  trans: counted 0, atom 1, to 4
+  trans: counted 0, atom 2, to 5
+  trans: counted 0, atom 3, to 6
+  trans: counted 0, atom 4, to 7
+  trans: counted 0, atom 5, to 8
+  trans: counted 0, atom 6, to 9
+  trans: counted 0, atom 7, to 10
+  trans: counted 0, atom 8, to 11
+  trans: counted 0, atom 9, to 12
+  trans: counted 0, atom 10, to 13
+  trans: counted 0, atom 11, to 14
+  trans: count based 0, epsilon to 1
+  trans: counted 0, atom 0, to 3
+  trans: counted 0, atom 1, to 4
+  trans: counted 0, atom 2, to 5
+  trans: counted 0, atom 3, to 6
+  trans: counted 0, atom 4, to 7
+  trans: counted 0, atom 5, to 8
+  trans: counted 0, atom 6, to 9
+  trans: counted 0, atom 7, to 10
+  trans: counted 0, atom 8, to 11
+  trans: counted 0, atom 9, to 12
+  trans: counted 0, atom 10, to 13
+  trans: counted 0, atom 11, to 14
+ state: 14, 26 transitions:
+  trans: removed
+  trans: counted 0, atom 0, to 3
+  trans: counted 0, atom 1, to 4
+  trans: counted 0, atom 2, to 5
+  trans: counted 0, atom 3, to 6
+  trans: counted 0, atom 4, to 7
+  trans: counted 0, atom 5, to 8
+  trans: counted 0, atom 6, to 9
+  trans: counted 0, atom 7, to 10
+  trans: counted 0, atom 8, to 11
+  trans: counted 0, atom 9, to 12
+  trans: counted 0, atom 10, to 13
+  trans: counted 0, atom 11, to 14
+  trans: count based 0, epsilon to 1
+  trans: counted 0, atom 0, to 3
+  trans: counted 0, atom 1, to 4
+  trans: counted 0, atom 2, to 5
+  trans: counted 0, atom 3, to 6
+  trans: counted 0, atom 4, to 7
+  trans: counted 0, atom 5, to 8
+  trans: counted 0, atom 6, to 9
+  trans: counted 0, atom 7, to 10
+  trans: counted 0, atom 8, to 11
+  trans: counted 0, atom 9, to 12
+  trans: counted 0, atom 10, to 13
+  trans: counted 0, atom 11, to 14
+1 counters:
+ 0: min 0 max 1073741823
+xmlSchemaValidateCallback: time, time, time
+xmlSchemaValidateCallback: time1, time1, time1
+xmlSchemaValidateCallback: time2, time2, time2
+xmlSchemaValidateCallback: time2, time2, time2
+xmlSchemaValidateCallback: date1, date1, date1
+xmlSchemaValidateCallback: date1, date1, date1
+xmlSchemaValidateCallback: date2, date2, date2
+xmlSchemaValidateCallback: date2, date2, date2
+xmlSchemaValidateCallback: date1, date1, date1
+xmlSchemaValidateCallback: date1, date1, date1
+xmlSchemaValidateCallback: dt1, dt1, dt1
+xmlSchemaValidateCallback: dt2, dt2, dt2
+xmlSchemaValidateCallback: hol, hol, hol
+xmlSchemaValidateCallback: hol, hol, hol
+xmlSchemaValidateCallback: hol, hol, hol
+xmlSchemaValidateCallback: hol, hol, hol
+xmlSchemaValidateCallback: year1, year1, year1
+xmlSchemaValidateCallback: yearmon1, yearmon1, yearmon1
+xmlSchemaValidateCallback: mon1, mon1, mon1
+xmlSchemaValidateCallback: day1, day1, day1
+xmlSchemaValidateCallback: dt2, dt2, dt2
+Element date content check succeeded

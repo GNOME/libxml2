@@ -3261,8 +3261,8 @@ xmlXPathCastToString(xmlXPathObjectPtr val) {
 #endif
 	    ret = xmlStrdup((const xmlChar *) "");
 	    break;
-        case XPATH_XSLT_TREE:
         case XPATH_NODESET:
+        case XPATH_XSLT_TREE:
 	    ret = xmlXPathCastNodeSetToString(val->nodesetval);
 	    break;
 	case XPATH_STRING:
@@ -3307,8 +3307,8 @@ xmlXPathConvertString(xmlXPathObjectPtr val) {
 	xmlGenericError(xmlGenericErrorContext, "STRING: undefined\n");
 #endif
 	break;
-    case XPATH_XSLT_TREE:
     case XPATH_NODESET:
+    case XPATH_XSLT_TREE:
 	res = xmlXPathCastNodeSetToString(val->nodesetval);
 	break;
     case XPATH_STRING:
@@ -3426,8 +3426,8 @@ xmlXPathCastToNumber(xmlXPathObjectPtr val) {
 #endif
 	ret = xmlXPathNAN;
 	break;
-    case XPATH_XSLT_TREE:
     case XPATH_NODESET:
+    case XPATH_XSLT_TREE:
 	ret = xmlXPathCastNodeSetToNumber(val->nodesetval);
 	break;
     case XPATH_STRING:
@@ -3538,8 +3538,8 @@ xmlXPathCastToBoolean (xmlXPathObjectPtr val) {
 #endif
 	ret = 0;
 	break;
-    case XPATH_XSLT_TREE:
     case XPATH_NODESET:
+    case XPATH_XSLT_TREE:
 	ret = xmlXPathCastNodeSetToBoolean(val->nodesetval);
 	break;
     case XPATH_STRING:
@@ -4169,6 +4169,7 @@ xmlXPathCompareNodeSetValue(xmlXPathParserContextPtr ctxt, int inf, int strict,
  * xmlXPathEqualNodeSetString
  * @arg:  the nodeset object argument
  * @str:  the string to compare to.
+ * @neq:  flag to show whether for '=' (0) or '!=' (1)
  *
  * Implement the equal operation on XPath objects content: @arg1 == @arg2
  * If one object to be compared is a node-set and the other is a string,
@@ -4179,7 +4180,7 @@ xmlXPathCompareNodeSetValue(xmlXPathParserContextPtr ctxt, int inf, int strict,
  * Returns 0 or 1 depending on the results of the test.
  */
 static int
-xmlXPathEqualNodeSetString(xmlXPathObjectPtr arg, const xmlChar * str)
+xmlXPathEqualNodeSetString(xmlXPathObjectPtr arg, const xmlChar * str, int neq)
 {
     int i;
     xmlNodeSetPtr ns;
@@ -4195,19 +4196,26 @@ xmlXPathEqualNodeSetString(xmlXPathObjectPtr arg, const xmlChar * str)
         return (0);
     if (ns->nodeNr <= 0) {
 	if (hash == 0)
-	    return(1);
-        return(0);
+	    return(neq ^ 1);
+        return(neq);
     }
     for (i = 0; i < ns->nodeNr; i++) {
         if (xmlXPathNodeValHash(ns->nodeTab[i]) == hash) {
             str2 = xmlNodeGetContent(ns->nodeTab[i]);
             if ((str2 != NULL) && (xmlStrEqual(str, str2))) {
                 xmlFree(str2);
+		if (neq)
+		    continue;
                 return (1);
-            }
+            } else if (neq) {
+		if (str2 != NULL)
+		    xmlFree(str2);
+		return (1);
+	    }
             if (str2 != NULL)
                 xmlFree(str2);
-        }
+        } else if (neq)
+	    return (1);
     }
     return (0);
 }
@@ -4216,6 +4224,7 @@ xmlXPathEqualNodeSetString(xmlXPathObjectPtr arg, const xmlChar * str)
  * xmlXPathEqualNodeSetFloat
  * @arg:  the nodeset object argument
  * @f:  the float to compare to
+ * @neq:  flag to show whether to compare '=' (0) or '!=' (1)
  *
  * Implement the equal operation on XPath objects content: @arg1 == @arg2
  * If one object to be compared is a node-set and the other is a number,
@@ -4227,15 +4236,43 @@ xmlXPathEqualNodeSetString(xmlXPathObjectPtr arg, const xmlChar * str)
  * Returns 0 or 1 depending on the results of the test.
  */
 static int
-xmlXPathEqualNodeSetFloat(xmlXPathObjectPtr arg, double f) {
-    char buf[100] = "";
+xmlXPathEqualNodeSetFloat(xmlXPathParserContextPtr ctxt,
+    xmlXPathObjectPtr arg, double f, int neq) {
+  int i, ret=0;
+  xmlNodeSetPtr ns;
+  xmlChar *str2;
+  xmlXPathObjectPtr val;
+  double v;
 
     if ((arg == NULL) ||
 	((arg->type != XPATH_NODESET) && (arg->type != XPATH_XSLT_TREE)))
         return(0);
 
-    xmlXPathFormatNumber(f, buf, sizeof(buf));
-    return(xmlXPathEqualNodeSetString(arg, BAD_CAST buf));
+    ns = arg->nodesetval;
+    if (ns != NULL) {
+	for (i=0;i<ns->nodeNr;i++) {
+	    str2 = xmlXPathCastNodeToString(ns->nodeTab[i]);
+	    if (str2 != NULL) {
+		valuePush(ctxt, xmlXPathNewString(str2));
+		xmlFree(str2);
+		xmlXPathNumberFunction(ctxt, 1);
+		val = valuePop(ctxt);
+		v = val->floatval;
+		xmlXPathFreeObject(val);
+		if (!xmlXPathIsNaN(v)) {
+		    if ((!neq) && (v==f)) {
+			ret = 1;
+			break;
+		    } else if ((neq) && (v!=f)) {
+			ret = 1;
+			break;
+		    }
+		}
+	    }
+	}
+    }
+
+    return(ret);
 }
 
 
@@ -4243,8 +4280,10 @@ xmlXPathEqualNodeSetFloat(xmlXPathObjectPtr arg, double f) {
  * xmlXPathEqualNodeSets
  * @arg1:  first nodeset object argument
  * @arg2:  second nodeset object argument
+ * @neq:   flag to show whether to test '=' (0) or '!=' (1)
  *
- * Implement the equal operation on XPath nodesets: @arg1 == @arg2
+ * Implement the equal / not equal operation on XPath nodesets:
+ * @arg1 == @arg2  or  @arg1 != @arg2
  * If both objects to be compared are node-sets, then the comparison
  * will be true if and only if there is a node in the first node-set and
  * a node in the second node-set such that the result of performing the
@@ -4255,7 +4294,7 @@ xmlXPathEqualNodeSetFloat(xmlXPathObjectPtr arg, double f) {
  * Returns 0 or 1 depending on the results of the test.
  */
 static int
-xmlXPathEqualNodeSets(xmlXPathObjectPtr arg1, xmlXPathObjectPtr arg2) {
+xmlXPathEqualNodeSets(xmlXPathObjectPtr arg1, xmlXPathObjectPtr arg2, int neq) {
     int i, j;
     unsigned int *hashs1;
     unsigned int *hashs2;
@@ -4281,12 +4320,13 @@ xmlXPathEqualNodeSets(xmlXPathObjectPtr arg1, xmlXPathObjectPtr arg2) {
 	return(0);
 
     /*
-     * check if there is a node pertaining to both sets
+     * for equal, check if there is a node pertaining to both sets
      */
-    for (i = 0;i < ns1->nodeNr;i++)
-	for (j = 0;j < ns2->nodeNr;j++)
-	    if (ns1->nodeTab[i] == ns2->nodeTab[j])
-		return(1);
+    if (neq == 0)
+	for (i = 0;i < ns1->nodeNr;i++)
+	    for (j = 0;j < ns2->nodeNr;j++)
+		if (ns1->nodeTab[i] == ns2->nodeTab[j])
+		    return(1);
 
     values1 = (xmlChar **) xmlMalloc(ns1->nodeNr * sizeof(xmlChar *));
     if (values1 == NULL)
@@ -4316,12 +4356,18 @@ xmlXPathEqualNodeSets(xmlXPathObjectPtr arg1, xmlXPathObjectPtr arg2) {
 	for (j = 0;j < ns2->nodeNr;j++) {
 	    if (i == 0)
 		hashs2[j] = xmlXPathNodeValHash(ns2->nodeTab[j]);
-	    if (hashs1[i] == hashs2[j]) {
+	    if (hashs1[i] != hashs2[j]) {
+		if (neq) {
+		    ret = 1;
+		    break;
+		}
+	    }
+	    else {
 		if (values1[i] == NULL)
 		    values1[i] = xmlNodeGetContent(ns1->nodeTab[i]);
 		if (values2[j] == NULL)
 		    values2[j] = xmlNodeGetContent(ns2->nodeTab[j]);
-		ret = xmlStrEqual(values1[i], values2[j]);
+		ret = xmlStrEqual(values1[i], values2[j]) ^ neq;
 		if (ret)
 		    break;
 	    }
@@ -4342,77 +4388,20 @@ xmlXPathEqualNodeSets(xmlXPathObjectPtr arg1, xmlXPathObjectPtr arg2) {
     return(ret);
 }
 
-/**
- * xmlXPathEqualValues:
- * @ctxt:  the XPath Parser context
- *
- * Implement the equal operation on XPath objects content: @arg1 == @arg2
- *
- * Returns 0 or 1 depending on the results of the test.
- */
-int
-xmlXPathEqualValues(xmlXPathParserContextPtr ctxt) {
-    xmlXPathObjectPtr arg1, arg2;
+static int
+xmlXPathEqualValuesCommon(xmlXPathParserContextPtr ctxt,
+  xmlXPathObjectPtr arg1, xmlXPathObjectPtr arg2) {
     int ret = 0;
-
-    arg1 = valuePop(ctxt);
-    if (arg1 == NULL)
-	XP_ERROR0(XPATH_INVALID_OPERAND);
-
-    arg2 = valuePop(ctxt);
-    if (arg2 == NULL) {
-	xmlXPathFreeObject(arg1);
-	XP_ERROR0(XPATH_INVALID_OPERAND);
-    }
-  
-    if (arg1 == arg2) {
-#ifdef DEBUG_EXPR
-        xmlGenericError(xmlGenericErrorContext,
-		"Equal: by pointer\n");
-#endif
-        return(1);
-    }
-
+    /*
+     *At this point we are assured neither arg1 nor arg2
+     *is a nodeset, so we can just pick the appropriate routine.
+     */
     switch (arg1->type) {
         case XPATH_UNDEFINED:
 #ifdef DEBUG_EXPR
 	    xmlGenericError(xmlGenericErrorContext,
 		    "Equal: undefined\n");
 #endif
-	    break;
-        case XPATH_XSLT_TREE:
-        case XPATH_NODESET:
-	    switch (arg2->type) {
-	        case XPATH_UNDEFINED:
-#ifdef DEBUG_EXPR
-		    xmlGenericError(xmlGenericErrorContext,
-			    "Equal: undefined\n");
-#endif
-		    break;
-		case XPATH_XSLT_TREE:
-		case XPATH_NODESET:
-		    ret = xmlXPathEqualNodeSets(arg1, arg2);
-		    break;
-		case XPATH_BOOLEAN:
-		    if ((arg1->nodesetval == NULL) ||
-			(arg1->nodesetval->nodeNr == 0)) ret = 0;
-		    else 
-			ret = 1;
-		    ret = (ret == arg2->boolval);
-		    break;
-		case XPATH_NUMBER:
-		    ret = xmlXPathEqualNodeSetFloat(arg1, arg2->floatval);
-		    break;
-		case XPATH_STRING:
-		    ret = xmlXPathEqualNodeSetString(arg1, arg2->stringval);
-		    break;
-		case XPATH_USERS:
-		case XPATH_POINT:
-		case XPATH_RANGE:
-		case XPATH_LOCATIONSET:
-		    TODO
-		    break;
-	    }
 	    break;
         case XPATH_BOOLEAN:
 	    switch (arg2->type) {
@@ -4421,15 +4410,6 @@ xmlXPathEqualValues(xmlXPathParserContextPtr ctxt) {
 		    xmlGenericError(xmlGenericErrorContext,
 			    "Equal: undefined\n");
 #endif
-		    break;
-		case XPATH_NODESET:
-		case XPATH_XSLT_TREE:
-		    if ((arg2->nodesetval == NULL) ||
-			(arg2->nodesetval->nodeNr == 0))
-			ret = 0;
-		    else 
-			ret = 1;
-		    ret = (ret == arg1->boolval);
 		    break;
 		case XPATH_BOOLEAN:
 #ifdef DEBUG_EXPR
@@ -4457,6 +4437,9 @@ xmlXPathEqualValues(xmlXPathParserContextPtr ctxt) {
 		case XPATH_LOCATIONSET:
 		    TODO
 		    break;
+		case XPATH_NODESET:
+		case XPATH_XSLT_TREE:
+		    break;
 	    }
 	    break;
         case XPATH_NUMBER:
@@ -4466,10 +4449,6 @@ xmlXPathEqualValues(xmlXPathParserContextPtr ctxt) {
 		    xmlGenericError(xmlGenericErrorContext,
 			    "Equal: undefined\n");
 #endif
-		    break;
-		case XPATH_NODESET:
-		case XPATH_XSLT_TREE:
-		    ret = xmlXPathEqualNodeSetFloat(arg2, arg1->floatval);
 		    break;
 		case XPATH_BOOLEAN:
 		    if (arg1->floatval) ret = 1;
@@ -4515,6 +4494,9 @@ xmlXPathEqualValues(xmlXPathParserContextPtr ctxt) {
 		case XPATH_LOCATIONSET:
 		    TODO
 		    break;
+		case XPATH_NODESET:
+		case XPATH_XSLT_TREE:
+		    break;
 	    }
 	    break;
         case XPATH_STRING:
@@ -4524,10 +4506,6 @@ xmlXPathEqualValues(xmlXPathParserContextPtr ctxt) {
 		    xmlGenericError(xmlGenericErrorContext,
 			    "Equal: undefined\n");
 #endif
-		    break;
-		case XPATH_NODESET:
-		case XPATH_XSLT_TREE:
-		    ret = xmlXPathEqualNodeSetString(arg2, arg1->stringval);
 		    break;
 		case XPATH_BOOLEAN:
 		    if ((arg1->stringval == NULL) ||
@@ -4576,6 +4554,9 @@ xmlXPathEqualValues(xmlXPathParserContextPtr ctxt) {
 		case XPATH_LOCATIONSET:
 		    TODO
 		    break;
+		case XPATH_NODESET:
+		case XPATH_XSLT_TREE:
+		    break;
 	    }
 	    break;
         case XPATH_USERS:
@@ -4584,12 +4565,180 @@ xmlXPathEqualValues(xmlXPathParserContextPtr ctxt) {
 	case XPATH_LOCATIONSET:
 	    TODO
 	    break;
+	case XPATH_NODESET:
+	case XPATH_XSLT_TREE:
+	    break;
     }
     xmlXPathFreeObject(arg1);
     xmlXPathFreeObject(arg2);
     return(ret);
 }
 
+/**
+ * xmlXPathEqualValues:
+ * @ctxt:  the XPath Parser context
+ *
+ * Implement the equal operation on XPath objects content: @arg1 == @arg2
+ *
+ * Returns 0 or 1 depending on the results of the test.
+ */
+int
+xmlXPathEqualValues(xmlXPathParserContextPtr ctxt) {
+    xmlXPathObjectPtr arg1, arg2, argtmp;
+    int ret = 0;
+
+    arg2 = valuePop(ctxt); 
+    arg1 = valuePop(ctxt);
+    if ((arg1 == NULL) || (arg2 == NULL)) {
+	if (arg1 != NULL)
+	    xmlXPathFreeObject(arg1);
+	else
+	    xmlXPathFreeObject(arg2);
+	XP_ERROR0(XPATH_INVALID_OPERAND);
+    }
+
+    if (arg1 == arg2) {
+#ifdef DEBUG_EXPR
+        xmlGenericError(xmlGenericErrorContext,
+		"Equal: by pointer\n");
+#endif
+        return(1);
+    }
+
+    /*
+     *If either argument is a nodeset, it's a 'special case'
+     */
+    if ((arg2->type == XPATH_NODESET) || (arg2->type == XPATH_XSLT_TREE) ||
+      (arg1->type == XPATH_NODESET) || (arg1->type == XPATH_XSLT_TREE)) {
+	/*
+	 *Hack it to assure arg1 is the nodeset
+	 */
+	if ((arg1->type != XPATH_NODESET) && (arg1->type != XPATH_XSLT_TREE)) {
+		argtmp = arg2;
+		arg2 = arg1;
+		arg1 = argtmp;
+	}
+	switch (arg2->type) {
+	    case XPATH_UNDEFINED:
+#ifdef DEBUG_EXPR
+		xmlGenericError(xmlGenericErrorContext,
+			"Equal: undefined\n");
+#endif
+		break;
+	    case XPATH_NODESET:
+	    case XPATH_XSLT_TREE:
+		ret = xmlXPathEqualNodeSets(arg1, arg2, 0);
+		break;
+	    case XPATH_BOOLEAN:
+		if ((arg1->nodesetval == NULL) ||
+		  (arg1->nodesetval->nodeNr == 0)) ret = 0;
+		else 
+		    ret = 1;
+		ret = (ret == arg2->boolval);
+		break;
+	    case XPATH_NUMBER:
+		ret = xmlXPathEqualNodeSetFloat(ctxt, arg1, arg2->floatval, 0);
+		break;
+	    case XPATH_STRING:
+		ret = xmlXPathEqualNodeSetString(arg1, arg2->stringval, 0);
+		break;
+	    case XPATH_USERS:
+	    case XPATH_POINT:
+	    case XPATH_RANGE:
+	    case XPATH_LOCATIONSET:
+		TODO
+		break;
+	}
+	xmlXPathFreeObject(arg1);
+	xmlXPathFreeObject(arg2);
+	return(ret);
+    }
+
+    return (xmlXPathEqualValuesCommon(ctxt, arg1, arg2));
+}
+
+/**
+ * xmlXPathNotEqualValues:
+ * @ctxt:  the XPath Parser context
+ *
+ * Implement the equal operation on XPath objects content: @arg1 == @arg2
+ *
+ * Returns 0 or 1 depending on the results of the test.
+ */
+int
+xmlXPathNotEqualValues(xmlXPathParserContextPtr ctxt) {
+    xmlXPathObjectPtr arg1, arg2, argtmp;
+    int ret = 0;
+
+    arg2 = valuePop(ctxt); 
+    arg1 = valuePop(ctxt);
+    if ((arg1 == NULL) || (arg2 == NULL)) {
+	if (arg1 != NULL)
+	    xmlXPathFreeObject(arg1);
+	else
+	    xmlXPathFreeObject(arg2);
+	XP_ERROR0(XPATH_INVALID_OPERAND);
+    }
+
+    if (arg1 == arg2) {
+#ifdef DEBUG_EXPR
+        xmlGenericError(xmlGenericErrorContext,
+		"NotEqual: by pointer\n");
+#endif
+        return(0);
+    }
+
+    /*
+     *If either argument is a nodeset, it's a 'special case'
+     */
+    if ((arg2->type == XPATH_NODESET) || (arg2->type == XPATH_XSLT_TREE) ||
+      (arg1->type == XPATH_NODESET) || (arg1->type == XPATH_XSLT_TREE)) {
+	/*
+	 *Hack it to assure arg1 is the nodeset
+	 */
+	if ((arg1->type != XPATH_NODESET) && (arg1->type != XPATH_XSLT_TREE)) {
+		argtmp = arg2;
+		arg2 = arg1;
+		arg1 = argtmp;
+	}
+	switch (arg2->type) {
+	    case XPATH_UNDEFINED:
+#ifdef DEBUG_EXPR
+		xmlGenericError(xmlGenericErrorContext,
+			"NotEqual: undefined\n");
+#endif
+		break;
+	    case XPATH_NODESET:
+	    case XPATH_XSLT_TREE:
+		ret = xmlXPathEqualNodeSets(arg1, arg2, 1);
+		break;
+	    case XPATH_BOOLEAN:
+		if ((arg1->nodesetval == NULL) ||
+		  (arg1->nodesetval->nodeNr == 0)) ret = 0;
+		else 
+		    ret = 1;
+		ret = (ret == arg2->boolval);
+		break;
+	    case XPATH_NUMBER:
+		ret = xmlXPathEqualNodeSetFloat(ctxt, arg1, arg2->floatval, 1);
+		break;
+	    case XPATH_STRING:
+		ret = xmlXPathEqualNodeSetString(arg1, arg2->stringval,1);
+		break;
+	    case XPATH_USERS:
+	    case XPATH_POINT:
+	    case XPATH_RANGE:
+	    case XPATH_LOCATIONSET:
+		TODO
+		break;
+	}
+	xmlXPathFreeObject(arg1);
+	xmlXPathFreeObject(arg2);
+	return(ret);
+    }
+
+    return (!xmlXPathEqualValuesCommon(ctxt, arg1, arg2));
+}
 
 /**
  * xmlXPathCompareValues:
@@ -4620,22 +4769,23 @@ xmlXPathCompareValues(xmlXPathParserContextPtr ctxt, int inf, int strict) {
     int ret = 0, arg1i = 0, arg2i = 0;
     xmlXPathObjectPtr arg1, arg2;
 
-    arg2 = valuePop(ctxt);
-    if (arg2 == NULL) {
-	XP_ERROR0(XPATH_INVALID_OPERAND);
-    }
-  
+    arg2 = valuePop(ctxt); 
     arg1 = valuePop(ctxt);
-    if (arg1 == NULL) {
-	xmlXPathFreeObject(arg2);
+    if ((arg1 == NULL) || (arg2 == NULL)) {
+	if (arg1 != NULL)
+	    xmlXPathFreeObject(arg1);
+	else
+	    xmlXPathFreeObject(arg2);
 	XP_ERROR0(XPATH_INVALID_OPERAND);
     }
 
-    if ((arg2->type == XPATH_NODESET) || (arg1->type == XPATH_NODESET)) {
-	if ((arg2->type == XPATH_NODESET) && (arg1->type == XPATH_NODESET)) {
+    if ((arg2->type == XPATH_NODESET) || (arg2->type == XPATH_XSLT_TREE) ||
+      (arg1->type == XPATH_NODESET) || (arg1->type == XPATH_XSLT_TREE)) {
+	if (((arg2->type == XPATH_NODESET) || (arg2->type == XPATH_XSLT_TREE)) &&
+	  ((arg1->type == XPATH_NODESET) || (arg1->type == XPATH_XSLT_TREE))){
 	    ret = xmlXPathCompareNodeSets(inf, strict, arg1, arg2);
 	} else {
-	    if (arg1->type == XPATH_NODESET) {
+	    if ((arg1->type == XPATH_NODESET) || (arg1->type == XPATH_XSLT_TREE)) {
 		ret = xmlXPathCompareNodeSetValue(ctxt, inf, strict,
 			                          arg1, arg2);
 	    } else {
@@ -5595,7 +5745,7 @@ xmlXPathCountFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 
     if ((cur == NULL) || (cur->nodesetval == NULL))
 	valuePush(ctxt, xmlXPathNewFloat((double) 0));
-    else if (cur->type == XPATH_NODESET) {
+    else if ((cur->type == XPATH_NODESET) || (cur->type == XPATH_XSLT_TREE)) {
 	valuePush(ctxt, xmlXPathNewFloat((double) cur->nodesetval->nodeNr));
     } else {
 	if ((cur->nodesetval->nodeNr != 1) ||
@@ -5691,7 +5841,7 @@ xmlXPathIdFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     CHECK_ARITY(1);
     obj = valuePop(ctxt);
     if (obj == NULL) XP_ERROR(XPATH_INVALID_OPERAND);
-    if (obj->type == XPATH_NODESET) {
+    if ((obj->type == XPATH_NODESET) || (obj->type == XPATH_XSLT_TREE)) {
 	xmlNodeSetPtr ns;
 	int i;
 
@@ -9664,11 +9814,11 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
 	    ctxt->context->contextSize = cs;
             total += xmlXPathCompOpEval(ctxt, &comp->steps[op->ch2]);
 	    CHECK_ERROR0;
-            equal = xmlXPathEqualValues(ctxt);
-            if (op->value)
-                valuePush(ctxt, xmlXPathNewBoolean(equal));
-            else
-                valuePush(ctxt, xmlXPathNewBoolean(!equal));
+	    if (op->value)
+        	equal = xmlXPathEqualValues(ctxt);
+	    else
+		equal = xmlXPathNotEqualValues(ctxt);
+	    valuePush(ctxt, xmlXPathNewBoolean(equal));
             return (total);
         case XPATH_OP_CMP:
 	    bakd = ctxt->context->doc;

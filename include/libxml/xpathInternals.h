@@ -503,6 +503,7 @@ xmlXPathObjectPtr xmlXPathWrapNodeSet(xmlNodeSetPtr val);
 xmlXPathObjectPtr xmlXPathWrapExternal(void *val);
 
 int xmlXPathEqualValues(xmlXPathParserContextPtr ctxt);
+int xmlXPathNotEqualValues(xmlXPathParserContextPtr ctxt);
 int xmlXPathCompareValues(xmlXPathParserContextPtr ctxt, int inf, int strict);
 void xmlXPathValueFlipSign(xmlXPathParserContextPtr ctxt);
 void xmlXPathAddValues(xmlXPathParserContextPtr ctxt);

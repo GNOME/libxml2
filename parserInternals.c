@@ -2196,12 +2196,9 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
     ctxt->spaceTab[0] = -1;
     ctxt->space = &ctxt->spaceTab[0];
 
-    if (sax == NULL) {
-	ctxt->sax = &xmlDefaultSAXHandler;
-    } else {
-        ctxt->sax = sax;
-	memcpy(sax, &xmlDefaultSAXHandler, sizeof(xmlSAXHandler));
-    }
+    ctxt->sax = sax;
+    memcpy(sax, &xmlDefaultSAXHandler, sizeof(xmlSAXHandler));
+
     ctxt->userData = ctxt;
     ctxt->myDoc = NULL;
     ctxt->wellFormed = 1;

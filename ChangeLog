@@ -1,3 +1,8 @@
+Sat Mar  3 19:45:59 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xml2Conf.sh.in: fixes pointed out by Fredrik Hallenberg
+	* parserInternals.c: removed unneeded test raised by Stric
+
 Sat Mar  3 13:04:37 CET 2001 Bjorn Reese <breese@users.sourceforge.net>
 
 	* xpath.c: Fixed xmlXPathNodeCollectAndTest (problem reported

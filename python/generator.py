@@ -735,6 +735,8 @@ functions_noexcept = {
     "xmlHasProp": 1,
     "xmlHasNsProp": 1,
     "xmlDocSetRootElement": 1,
+    "xmlNodeGetNs": 1,
+    "xmlNodeGetNsDefs": 1,
 }
 
 reference_keepers = {

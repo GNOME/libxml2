@@ -1,3 +1,9 @@
+Fri Dec 17 14:52:17 PST 2004 William Brack <wbrack@mmm.com.hk>
+
+	* python/generator.py: modified to allow the ns and nsDefs
+	  accessors to return None instead of error when no namespace
+	  is present (bug #)
+
 Fri Dec 17 11:40:21 PST 2004 William Brack <wbrack@mmm.com.hk>
 
 	* doc/Makefile.am: changed maintainer-clean dependency with

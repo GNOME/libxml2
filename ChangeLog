@@ -1,3 +1,7 @@
+Fri Nov  5 23:15:51 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* entities.c: fixed a compilation problem on a recent change
+
 Fri Nov  5 12:50:09 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* gentest.py testapi.c: more coverage

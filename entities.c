@@ -83,8 +83,6 @@ xmlEntitiesErrMemory(const char *extra)
 static void
 xmlEntitiesErr(xmlParserErrors code, const char *msg)
 {
-    const char *msg = NULL;
-
     __xmlSimpleError(XML_FROM_TREE, code, NULL, msg, NULL);
 }
 

@@ -304,7 +304,7 @@ $(UTILS) : $(UTILS_INTDIR) $(BINDIR) libxml libxmla
 
 tests :  XPathtests
 
-XPathtests:
+XPathtests : $(BINDIR)\testXPath.exe
 	@echo. 2> .memdump
 	@echo ## XPath regression tests
 	@-$(BINDIR)\testXPath.exe | find /C "support not compiled in" 1>nul
@@ -313,32 +313,54 @@ XPathtests:
 		@exit 0 \
 	)
 	@for %%I in ($(XML_SRCDIR)\test\XPath\expr\*.*) do @( \
-		@IF NOT EXIST $(XML_SRCDIR)\result\XPath\expr\%%~nI ( \
-			@echo New test %%~nI &&\
-			@echo %%~nI &&\
-			$(BINDIR)\testXPath.exe -f --expr %%I > $(XML_SRCDIR)/result/XPath/expr/%%~nI &&\
+		@IF NOT EXIST $(XML_SRCDIR)\result\XPath\expr\%%~nxI ( \
+			@echo New test %%~nxI &&\
+			@echo %%~nxI &&\
+			$(BINDIR)\testXPath.exe -f --expr %%I > $(XML_SRCDIR)/result/XPath/expr/%%~nxI &&\
 			findstr /C:"MEMORY ALLOCATED : 0" \
 		) ELSE ( \
-			$(BINDIR)\testXPath.exe -f --expr %%I 2>&1 > result.%%~nI &&\
-			fc $(XML_SRCDIR)\result\XPath\expr\%%~nI result.%%~nI >nul &\
+			$(BINDIR)\testXPath.exe -f --expr %%I 2>&1 > result.%%~nxI &&\
+			fc $(XML_SRCDIR)\result\XPath\expr\%%~nxI result.%%~nxI >nul &\
 			iF ERRORLEVEL 1 exit 1 & \
 			findstr "MEMORY ALLOCATED" .memdump | findstr /C:"MEMORY ALLOCATED : 0" >nul &&\
-			del result.%%~nI \
+			del result.%%~nxI \
 		) \
 	)
 	@for %%I in ($(XML_SRCDIR)\test\XPath\docs\*.*) do @( \
-		for %%J in ($(XML_SRCDIR)\test\XPath\tests\%%~nI*.*) do @( \
-			if not exist $(XML_SRCDIR)\result\XPath\tests\%%~nJ ( \
-				$(BINDIR)\testXPath.exe -f -i %%I %%J > $(XML_SRCDIR)\result\XPath\tests\%%~nJ &&\
+		for %%J in ($(XML_SRCDIR)\test\XPath\tests\%%~nxI*.*) do @( \
+			if not exist $(XML_SRCDIR)\result\XPath\tests\%%~nxJ ( \
+				$(BINDIR)\testXPath.exe -f -i %%I %%J > $(XML_SRCDIR)\result\XPath\tests\%%~nxJ &&\
 				findstr /C:"MEMORY ALLOCATED" .memdump | findstr /C:"MEMORY ALLOCATED : 0" > nul \
 			) ELSE ( \
-				$(BINDIR)\testXPAth.exe -f -i %%I %%J 2>&1 > result.%%~nJ &&\
+				$(BINDIR)\testXPAth.exe -f -i %%I %%J 2>&1 > result.%%~nxJ &&\
 				findstr /C:"MEMORY ALLOCATED" .memdump | findstr /C:"MEMORY ALLOCATED : 0">null &&\
-				fc $(XML_SRCDIR)\result\XPath\tests\%%~nJ result.%%~nJ >null & \
+				fc $(XML_SRCDIR)\result\XPath\tests\%%~nxJ result.%%~nxJ >null & \
 				IF ERRORLEVEL 1 (echo Error: %%I %%J & exit 1) & \
-				del result.%%~nJ \
+				del result.%%~nxJ \
 			)\
 		)\
 	)
+
+XMLtests : $(BINDIR)\xmllint.exe
+	@echo. 2> .memdump
+	@echo ## XML regression tests
+	-@for %%I in ($(XML_SRCDIR)\test\*) do @( \
+		if not exist $(XML_SRCDIR)\result\%%~nxI ( \
+			echo New test file %%~nxI &\
+			$(BINDIR)\xmllint.exe  %%I > $(XML_SRCDIR)\result\%%~nxI && \
+			findstr /C:"MEMORY ALLOCATED" .memdump | findstr /C:"MEMORY ALLOCATED : 0" > null \
+		) ELSE ( \
+			$(BINDIR)\xmllint.exe %%I 2>&1 > result.%%~nxI && \
+			findstr /C:"MEMORY ALLOC" .memdump | findstr /C:"MEMORY ALLOCATED : 0" > null && \
+			fc $(XML_SRCDIR)\result\%%~nxI result.%%~nxI > null && \
+			$(BINDIR)\xmllint.exe result.%%~nxI 2>&1 > result2.%%~nxI | findstr /V /C:"failed to load external entity" && \
+			fc result.%%~nxI result2.%%~nxI & \
+			del result.%%~nxI result2.%%~nxI\
+		) \
+	)	
+
+				
+
+
 
 	

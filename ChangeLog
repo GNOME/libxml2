@@ -1,3 +1,8 @@
+Fri Apr 30 08:57:47 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* win32/Makefile.msvc: applied a second patch from Mark Vakoc for
+	  regression tests on Windows
+
 Thu Apr 29 21:47:23 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c: never commit without running make tests first !

@@ -1115,15 +1115,17 @@ extern int
 valuePush(xmlXPathParserContextPtr ctxt, xmlXPathObjectPtr value)
 {
     if (ctxt->valueNr >= ctxt->valueMax) {
-        ctxt->valueMax *= 2;
-        ctxt->valueTab =
-            (xmlXPathObjectPtr *) xmlRealloc(ctxt->valueTab,
-                                             ctxt->valueMax *
+        xmlXPathObjectPtr *tmp;
+
+        tmp = (xmlXPathObjectPtr *) xmlRealloc(ctxt->valueTab,
+                                             2 * ctxt->valueMax *
                                              sizeof(ctxt->valueTab[0]));
-        if (ctxt->valueTab == NULL) {
+        if (tmp == NULL) {
             xmlGenericError(xmlGenericErrorContext, "realloc failed !\n");
             return (0);
         }
+        ctxt->valueMax *= 2;
+	ctxt->valueTab = tmp;
     }
     ctxt->valueTab[ctxt->valueNr] = value;
     ctxt->value = value;

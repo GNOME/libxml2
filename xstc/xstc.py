@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 #
 # This is the MS subset of the W3C test suite for XML Schemas.
 # This file is generated from the MS W3c test suite description file.
@@ -258,7 +260,7 @@ class MSTestCase:
             else:
                 self.fail(msgSchemaValidButShouldNot)
         else:
-	    return schema
+            return schema
             self.debugMsg("schema result is OK")
         self.debugMsg("after checking schema result")
 
@@ -307,7 +309,7 @@ class MSTestCase:
                             self.fail(msgInstanceValidButShouldNot)
                             
                     else:                        
-            			self.debugMsg("instance result is OK")
+                                self.debugMsg("instance result is OK")
                 finally:
                     del validation_Ctxt
             finally:
@@ -405,24 +407,24 @@ class MSTestRunner:
             out.write("    memory leaks    : %d\n" % counters[self.CNT_MEMLEAK])
 
     def displayShortResults(self, out, all, combName, counters):
-	out.write("Ran %d of %d tests:" % (counters[self.CNT_RAN],
-	          counters[self.CNT_TOTAL]))
+        out.write("Ran %d of %d tests:" % (counters[self.CNT_RAN],
+                  counters[self.CNT_TOTAL]))
         # out.write("    succeeded       : %d\n" % counters[self.CNT_SUCCEEDED])
         if counters[self.CNT_FAILED] > 0 or counters[self.CNT_MEMLEAK] > 0:
-	    out.write(" %d failed" % (counters[self.CNT_FAILED]))
-	    if counters[self.CNT_INTERNAL] > 0:
-		out.write(" %d internal" % (counters[self.CNT_INTERNAL]))
-	    if counters[self.CNT_UNIMPLEMENTED] > 0:
-		out.write(" %d unimplemented" % (counters[self.CNT_UNIMPLEMENTED]))
-	    if counters[self.CNT_BAD] > 0:
-		out.write(" %d bad" % (counters[self.CNT_BAD]))
-	    if counters[self.CNT_EXCEPTED] > 0:
-		out.write(" %d exception" % (counters[self.CNT_EXCEPTED]))
-	    if counters[self.CNT_MEMLEAK] > 0:
-		out.write(" %d leaks" % (counters[self.CNT_MEMLEAK]))
-	    out.write("\n")
-	else:
-	    out.write(" all passed\n")
+            out.write(" %d failed" % (counters[self.CNT_FAILED]))
+            if counters[self.CNT_INTERNAL] > 0:
+                out.write(" %d internal" % (counters[self.CNT_INTERNAL]))
+            if counters[self.CNT_UNIMPLEMENTED] > 0:
+                out.write(" %d unimplemented" % (counters[self.CNT_UNIMPLEMENTED]))
+            if counters[self.CNT_BAD] > 0:
+                out.write(" %d bad" % (counters[self.CNT_BAD]))
+            if counters[self.CNT_EXCEPTED] > 0:
+                out.write(" %d exception" % (counters[self.CNT_EXCEPTED]))
+            if counters[self.CNT_MEMLEAK] > 0:
+                out.write(" %d leaks" % (counters[self.CNT_MEMLEAK]))
+            out.write("\n")
+        else:
+            out.write(" all passed\n")
     
     def reportCombine(self, combName):
         global options
@@ -536,8 +538,8 @@ class MSTestRunner:
             #
             # Display the final report.
             #
-	    if options.silent:
-		self.displayShortResults(sys.stdout, True, None, self.counters)
-	    else:
-		sys.stdout.write("===========================\n")
-		self.displayResults(sys.stdout, True, None, self.counters)
+            if options.silent:
+                self.displayShortResults(sys.stdout, True, None, self.counters)
+            else:
+                sys.stdout.write("===========================\n")
+                self.displayResults(sys.stdout, True, None, self.counters)

@@ -1,3 +1,8 @@
+Sun Sep 26 16:24:44 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xstc/xstc.py: applied patch from Malcolm Tredinnick fixing space/tabs
+	* xpath.c: fixed a realloc potential problem
+
 Fri Sep 24 16:14:12 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am: fixed make valgrind xstc 

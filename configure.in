@@ -359,7 +359,8 @@ if test "$with_iconv" = "no" ; then
     WITH_ICONV=0
 else
     AC_CHECK_HEADER(iconv.h, 
-	AC_CHECK_FUNC(iconv, , AC_CHECK_LIB(iconv, iconv)))
+	AC_CHECK_FUNC(iconv, ,
+	    AC_CHECK_LIB(iconv, iconv, XML_LIBS="$XML_LIBS -liconv")))
     if test "$have_iconv" != "" ; then
         echo Iconv support not found
         WITH_ICONV=0

@@ -564,6 +564,16 @@ static const char *htmlScriptAttributes[] = {
     "onselect"
 };
 
+/*
+ * end tags that imply the end of the inside elements
+ */
+const char *htmlEndClose[] = {
+"head",
+"body",
+"html",
+NULL
+};
+
 
 static const char** htmlStartCloseIndex[100];
 static int htmlStartCloseIndexinitialized = 0;
@@ -664,7 +674,7 @@ static void
 htmlAutoCloseOnClose(htmlParserCtxtPtr ctxt, const xmlChar *newtag) {
     htmlElemDescPtr info;
     xmlChar *oldname;
-    int i;
+    int i, endCloses = 0;
 
 #ifdef DEBUG
     xmlGenericError(xmlGenericErrorContext,"Close of %s stack: %d elements\n", newtag, ctxt->nameNr);
@@ -676,6 +686,11 @@ htmlAutoCloseOnClose(htmlParserCtxtPtr ctxt, const xmlChar *newtag) {
         if (xmlStrEqual(newtag, ctxt->nameTab[i])) break;
     }
     if (i < 0) return;
+    for (i = 0; (htmlEndClose[i] != NULL);i++)
+	if (xmlStrEqual(newtag, (const xmlChar *) htmlEndClose[i])) {
+	    endCloses = 1;
+	    break;
+	}
 
     while (!xmlStrEqual(newtag, ctxt->name)) {
 	info = htmlTagLookup(ctxt->name);
@@ -692,7 +707,7 @@ htmlAutoCloseOnClose(htmlParserCtxtPtr ctxt, const xmlChar *newtag) {
 		 "Opening and ending tag mismatch: %s and %s\n",
 				 newtag, ctxt->name);
 	    ctxt->wellFormed = 0;
-	} else {
+	} else if (endCloses == 0) {
 	    return;
 	}
 	if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))

@@ -2872,13 +2872,11 @@ SAX.cdata( window.open=NS_ActualOpen; , 28)
 SAX.endElement(script)
 SAX.characters(
 , 2)
-SAX.error: Opening and ending tag mismatch: body and tbody
-SAX.error: Opening and ending tag mismatch: html and tbody
-SAX.ignorableWhitespace(
-, 2)
 SAX.endElement(tbody)
 SAX.endElement(table)
 SAX.endElement(div)
 SAX.endElement(body)
 SAX.endElement(html)
+SAX.ignorableWhitespace(
+, 2)
 SAX.endDocument()

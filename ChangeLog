@@ -1,3 +1,10 @@
+Thu May  3 10:25:19 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* HTMLparser.c: trying to fix the problem reported by Jonas Borgström
+	* results/HTML/ : a few changes in the output of the HTML tests as
+	  a result.
+	* configure.in: tying to fix -liconv where needed
+
 Wed May  2 19:10:26 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* Makefile.am: fixed a stupid error

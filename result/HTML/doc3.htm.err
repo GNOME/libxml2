@@ -91,9 +91,3 @@ HEIGHT="70">&nbsp;</TD> </TR></TABLE>
 ./test/HTML/doc3.htm:844: error: Opening and ending tag mismatch: div and tbody
 ,arial">Site design by Tim Brinkley</FONT>		</TD>	</TR> --></TBODY></TABLE></DI
                                                                               ^
-./test/HTML/doc3.htm:846: error: Opening and ending tag mismatch: body and tbody
-</BODY></HTML>
-       ^
-./test/HTML/doc3.htm:846: error: Opening and ending tag mismatch: html and tbody
-</BODY></HTML>
-             ^

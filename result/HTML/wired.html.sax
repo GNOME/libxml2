@@ -2836,13 +2836,6 @@ SAX.startElement(br)
 SAX.endElement(br)
 SAX.characters(
 , 1)
-SAX.error: Opening and ending tag mismatch: body and td
-SAX.characters(
-, 1)
-SAX.error: Opening and ending tag mismatch: html and td
-SAX.ignorableWhitespace(
-
-, 2)
 SAX.endElement(td)
 SAX.endElement(tr)
 SAX.endElement(table)
@@ -2850,5 +2843,10 @@ SAX.endElement(td)
 SAX.endElement(tr)
 SAX.endElement(table)
 SAX.endElement(body)
+SAX.ignorableWhitespace(
+, 1)
 SAX.endElement(html)
+SAX.ignorableWhitespace(
+
+, 2)
 SAX.endDocument()

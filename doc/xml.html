@@ -810,8 +810,8 @@ is an excerpt from the <a href="html/gnome-xml-tree.html">tree API</a>:</p>
 <dl>
   <dt><code>const xmlChar *xmlGetProp(xmlNodePtr node, const xmlChar
   *name);</code></dt>
-    <dd><p>This function returns a pointer to the property content. Note that
-      no extra copy is made.</p>
+    <dd><p>This function returns a pointer to new copy of the property
+      content. Note that the user must deallocate the result.</p>
     </dd>
 </dl>
 
@@ -1308,6 +1308,6 @@ Gnome CVS base under gnome-xml/example</p>
 
 <p><a href="mailto:Daniel.Veillard@w3.org">Daniel Veillard</a></p>
 
-<p>$Id: xml.html,v 1.51 2000/08/31 13:50:12 veillard Exp $</p>
+<p>$Id: xml.html,v 1.52 2000/09/17 16:38:14 veillard Exp $</p>
 </body>
 </html>

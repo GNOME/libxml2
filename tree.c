@@ -73,16 +73,16 @@ xmlTreeErr(int code, xmlNodePtr node, const char *extra)
 
     switch(code) {
         case XML_TREE_INVALID_HEX:
-	    msg = "invalid hexadecimal character value";
+	    msg = "invalid hexadecimal character value\n";
 	    break;
 	case XML_TREE_INVALID_DEC:
-	    msg = "invalid decimal character value";
+	    msg = "invalid decimal character value\n";
 	    break;
 	case XML_TREE_UNTERMINATED_ENTITY:
-	    msg = "unterminated entity reference %15s";
+	    msg = "unterminated entity reference %15s\n";
 	    break;
 	default:
-	    msg = "unexpected error number";
+	    msg = "unexpected error number\n";
     }
     __xmlSimpleError(XML_FROM_TREE, code, node, msg, extra);
 }
@@ -3845,7 +3845,8 @@ xmlStaticCopyNode(const xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
 
 out:
     /* if parent != NULL we already registered the node above */
-    if (parent == NULL && xmlRegisterNodeDefaultValue)
+    if ((parent == NULL) &&
+        ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue)))
 	xmlRegisterNodeDefaultValue((xmlNodePtr)ret);
     return(ret);
 }
@@ -5781,7 +5782,7 @@ xmlReconciliateNs(xmlDocPtr doc, xmlNodePtr tree) {
 	/*
 	 * Browse the full subtree, deep first
 	 */
-        if (node->children != NULL) {
+        if (node->children != NULL && node->type != XML_ENTITY_REF_NODE) {
 	    /* deep first */
 	    node = node->children;
 	} else if ((node != tree) && (node->next != NULL)) {

@@ -1,3 +1,8 @@
+Fri Jul 30 13:57:55 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: applied a couple of patch one from Oliver Stoeneberg
+	  and another one from Rob Richards fixing #148448
+
 Thu Jul 29 13:20:28 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: 1 line patch, apparently htmlNewDoc() was not

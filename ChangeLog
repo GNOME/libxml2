@@ -1,3 +1,8 @@
+Sun Oct 19 23:46:04 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: cleanup xmlNodeGetContent() reusing xmlNodeBufGetContent(),
+	  tested it through the xslt regression suite.
+
 Sun Oct 19 22:42:16 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c include/libxml/tree.h: adding xmlNodeBufGetContent()

@@ -4868,65 +4868,13 @@ xmlNodeGetContent(xmlNodePtr cur)
     switch (cur->type) {
         case XML_DOCUMENT_FRAG_NODE:
         case XML_ELEMENT_NODE:{
-                xmlNodePtr tmp = cur;
                 xmlBufferPtr buffer;
                 xmlChar *ret;
 
                 buffer = xmlBufferCreateSize(64);
                 if (buffer == NULL)
                     return (NULL);
-                while (tmp != NULL) {
-                    switch (tmp->type) {
-                        case XML_CDATA_SECTION_NODE:
-                        case XML_TEXT_NODE:
-                            if (tmp->content != NULL)
-                                xmlBufferCat(buffer, tmp->content);
-                            break;
-                        case XML_ENTITY_REF_NODE:{
-                                /* recursive substitution of entity references */
-                                xmlChar *cont = xmlNodeGetContent(tmp);
-
-                                if (cont) {
-                                    xmlBufferCat(buffer,
-                                                 (const xmlChar *) cont);
-                                    xmlFree(cont);
-                                }
-                                break;
-                            }
-                        default:
-                            break;
-                    }
-                    /*
-                     * Skip to next node
-                     */
-                    if (tmp->children != NULL) {
-                        if (tmp->children->type != XML_ENTITY_DECL) {
-                            tmp = tmp->children;
-                            continue;
-                        }
-                    }
-                    if (tmp == cur)
-                        break;
-
-                    if (tmp->next != NULL) {
-                        tmp = tmp->next;
-                        continue;
-                    }
-
-                    do {
-                        tmp = tmp->parent;
-                        if (tmp == NULL)
-                            break;
-                        if (tmp == cur) {
-                            tmp = NULL;
-                            break;
-                        }
-                        if (tmp->next != NULL) {
-                            tmp = tmp->next;
-                            break;
-                        }
-                    } while (tmp != NULL);
-                }
+		xmlNodeBufGetContent(buffer, cur);
                 ret = buffer->content;
                 buffer->content = NULL;
                 xmlBufferFree(buffer);
@@ -4949,7 +4897,6 @@ xmlNodeGetContent(xmlNodePtr cur)
             return (NULL);
         case XML_ENTITY_REF_NODE:{
                 xmlEntityPtr ent;
-                xmlNodePtr tmp;
                 xmlBufferPtr buffer;
                 xmlChar *ret;
 
@@ -4962,21 +4909,7 @@ xmlNodeGetContent(xmlNodePtr cur)
                 if (buffer == NULL)
                     return (NULL);
 
-                /* an entity content can be any "well balanced chunk",
-                 * i.e. the result of the content [43] production:
-                 * http://www.w3.org/TR/REC-xml#NT-content
-                 * -> we iterate through child nodes and recursive call
-                 * xmlNodeGetContent() which handles all possible node types */
-                tmp = ent->children;
-                while (tmp) {
-                    xmlChar *cont = xmlNodeGetContent(tmp);
-
-                    if (cont) {
-                        xmlBufferCat(buffer, (const xmlChar *) cont);
-                        xmlFree(cont);
-                    }
-                    tmp = tmp->next;
-                }
+                xmlNodeBufGetContent(buffer, cur);
 
                 ret = buffer->content;
                 buffer->content = NULL;
@@ -4995,27 +4928,19 @@ xmlNodeGetContent(xmlNodePtr cur)
         case XML_DOCB_DOCUMENT_NODE:
 #endif
         case XML_HTML_DOCUMENT_NODE: {
-            xmlChar *tmp;
-	    xmlChar *res = NULL;
+	    xmlBufferPtr buffer;
+	    xmlChar *ret;
 
-	    cur = cur->children;
-	    while (cur!= NULL) {
-		if ((cur->type == XML_ELEMENT_NODE) ||
-		    (cur->type == XML_TEXT_NODE) ||
-		    (cur->type == XML_CDATA_SECTION_NODE)) {
-		    tmp = xmlNodeGetContent(cur);
-		    if (tmp != NULL) {
-			if (res == NULL)
-			    res = tmp;
-			else {
-			    res = xmlStrcat(res, tmp);
-			    xmlFree(tmp);
-			}
-		    }
-		}
-		cur = cur->next;
-	    }
-	    return(res);
+	    buffer = xmlBufferCreate();
+	    if (buffer == NULL)
+		return (NULL);
+
+	    xmlNodeBufGetContent(buffer, (xmlNodePtr) cur);
+
+	    ret = buffer->content;
+	    buffer->content = NULL;
+	    xmlBufferFree(buffer);
+	    return (ret);
 	}
         case XML_NAMESPACE_DECL: {
 	    xmlChar *tmp;

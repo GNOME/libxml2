@@ -91,7 +91,7 @@ typedef struct _xmlValidState {
     unsigned char        state; /* ROLLBACK_XXX */
 } _xmlValidState;
 
-#define MAX_RECURSE 1024
+#define MAX_RECURSE 25000
 #define MAX_DEPTH ((sizeof(_xmlValidState.occurs)) * 8)
 #define CONT ctxt->vstate->cont
 #define NODE ctxt->vstate->node

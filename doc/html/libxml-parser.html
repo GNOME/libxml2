@@ -8812,8 +8812,8 @@ compressed document is provided by default if found at compile-time.
 It use the given SAX function block to handle the parsing callback.
 If sax is NULL, fallback to the default DOM tree building routines.</P
 ><P
->User data (void *) is stored within the parser context, so it is
-available nearly everywhere in libxml.</P
+>User data (void *) is stored within the parser context in the
+context's _private member, so it is available nearly everywhere in libxml</P
 ><P
 ></P
 ><DIV

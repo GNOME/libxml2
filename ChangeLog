@@ -1,3 +1,9 @@
+Mon Apr 29 17:48:26 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in include/libxml/xmlwin32version.h: preparing 2.4.21
+	* valid.c: raised a too low limit
+	* doc/*: rebuilt the docs 
+
 Wed Apr 24 13:41:03 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* test/XPath/expr/floats test/XPath/expr/functions

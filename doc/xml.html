@@ -559,6 +559,13 @@ you want to test those</p>
     SGML docs</li>
 </ul>
 
+<h3>2.4.8: Nov 4 2001</h3>
+<ul>
+  <li>fixed SGML catalogs broken in previous release, updated xmlcatalog
+  tool</li>
+  <li>fixed a compile errors and some includes troubles.</li>
+</ul>
+
 <h3>2.4.7: Oct 30 2001</h3>
 <ul>
   <li>exported some debugging interfaces</li>
@@ -2133,6 +2140,7 @@ xmlOutputBufferCreateOwn(FILE *file, xmlCharEncodingHandlerPtr encoder) {
         ret-&gt;closecallback = NULL;  /* No close callback */
     }
     return(ret); <br>
+
 
 
 

@@ -109,7 +109,7 @@ it's actually not compiled in by default. The real fixes are:</p>
 </ul>
 <h3>2.4.20: Apr 15 2002</h3>
 <ul>
-<li>bug fixes: file descriptor leak, XPath, HTML ouput, DTD validation</li>
+<li>bug fixes: file descriptor leak, XPath, HTML output, DTD validation</li>
 <li>XPath conformance testing by Richard Jinks</li>
 <li>Portability fixes: Solaris, MPE/iX, Windows, OSF/1, python bindings,
     libxml.m4</li>
@@ -125,7 +125,7 @@ it's actually not compiled in by default. The real fixes are:</p>
 <h3>2.4.18: Mar 18 2002</h3>
 <ul>
 <li>bug fixes: tree, SAX, canonicalization, validation, portability,
-  xpath</li>
+  XPath</li>
 <li>removed the --with-buffer option it was becoming unmaintainable</li>
 <li>serious cleanup of the Python makefiles</li>
 <li>speedup patch to XPath very effective for DocBook stylesheets</li>
@@ -137,7 +137,7 @@ it's actually not compiled in by default. The real fixes are:</p>
   XPath&quot;</li>
 <li>fixed/improved the Python wrappers, added more examples and more
     regression tests, XPath extension functions can now return node-sets</li>
-<li>added the XML Canonalization support from Aleksey Sanin</li>
+<li>added the XML Canonicalization support from Aleksey Sanin</li>
 </ul>
 <h3>2.4.16: Feb 20 2002</h3>
 <ul>
@@ -153,9 +153,9 @@ it's actually not compiled in by default. The real fixes are:</p>
 </ul>
 <h3>2.4.14: Feb 8 2002</h3>
 <ul>
-<li>Change of Licence to the <a href="http://www.opensource.org/licenses/mit-license.html">MIT
-    Licence</a> basisally for integration in XFree86 codebase, and removing
-    confusion around the previous dual-licencing</li>
+<li>Change of License to the <a href="http://www.opensource.org/licenses/mit-license.html">MIT
+    License</a> basically for integration in XFree86 codebase, and removing
+    confusion around the previous dual-licensing</li>
 <li>added Python bindings, beta software but should already be quite
     complete</li>
 <li>a large number of fixes and cleanups, especially for all tree
@@ -230,7 +230,7 @@ it's actually not compiled in by default. The real fixes are:</p>
 <li>portability and configure fixes</li>
 <li>an infinite loop on the HTML parser was removed (William)</li>
 <li>Windows makefile patches from Igor</li>
-<li>fixed half a dozen bugs reported fof libxml or libxslt</li>
+<li>fixed half a dozen bugs reported for libxml or libxslt</li>
 <li>updated xmlcatalog to be able to modify SGML super catalogs</li>
 </ul>
 <h3>2.4.5: Sep 14 2001</h3>
@@ -259,7 +259,7 @@ it's actually not compiled in by default. The real fixes are:</p>
 <ul>
 <li>adds xmlLineNumbersDefault() to control line number generation</li>
 <li>lot of bug fixes</li>
-<li>the Microsoft MSC projects files shuld now be up to date</li>
+<li>the Microsoft MSC projects files should now be up to date</li>
 <li>inheritance of namespaces from DTD defaulted attributes</li>
 <li>fixes a serious potential security bug</li>
 <li>added a --format option to xmllint</li>
@@ -275,20 +275,20 @@ it's actually not compiled in by default. The real fixes are:</p>
 <h3>2.4.0: July 10 2001</h3>
 <ul>
 <li>Fixed a few bugs in XPath, validation, and tree handling.</li>
-<li>Fixed XML Base implementation, added a coupel of examples to the
+<li>Fixed XML Base implementation, added a couple of examples to the
     regression tests</li>
 <li>A bit of cleanup</li>
 </ul>
 <h3>2.3.14: July 5 2001</h3>
 <ul>
-<li>fixed some entities problems and reduce mem requirement when
-    substituing them</li>
+<li>fixed some entities problems and reduce memory requirement when
+    substituting them</li>
 <li>lots of improvements in the XPath queries interpreter can be
-    substancially faster</li>
+    substantially faster</li>
 <li>Makefiles and configure cleanups</li>
 <li>Fixes to XPath variable eval, and compare on empty node set</li>
 <li>HTML tag closing bug fixed</li>
-<li>Fixed an URI reference computating problem when validating</li>
+<li>Fixed an URI reference computation problem when validating</li>
 </ul>
 <h3>2.3.13: June 28 2001</h3>
 <ul>
@@ -342,9 +342,9 @@ it's actually not compiled in by default. The real fixes are:</p>
 <p>Lots of bugfixes, and added a basic SGML catalog support:</p>
 <ul>
 <li>HTML push bugfix #54891 and another patch from Jonas Borgström</li>
-<li>some serious speed optimisation again</li>
+<li>some serious speed optimization again</li>
 <li>some documentation cleanups</li>
-<li>trying to get better linking on solaris (-R)</li>
+<li>trying to get better linking on Solaris (-R)</li>
 <li>XPath API cleanup from Thomas Broyer</li>
 <li>Validation bug fixed #54631, added a patch from Gary Pennington, fixed
     xmlValidGetValidElements()</li>
@@ -374,12 +374,12 @@ it's actually not compiled in by default. The real fixes are:</p>
 <h3>2.3.7: April 22 2001</h3>
 <ul>
 <li>lots of small bug fixes, corrected XPointer</li>
-<li>Non determinist content model validation support</li>
+<li>Non deterministic content model validation support</li>
 <li>added xmlDocCopyNode for gdome2</li>
 <li>revamped the way the HTML parser handles end of tags</li>
-<li>XPath: corrctions of namespacessupport and number formatting</li>
+<li>XPath: corrections of namespaces support and number formatting</li>
 <li>Windows: Igor Zlatkovic patches for MSC compilation</li>
-<li>HTML ouput fixes from P C Chow and William M. Brack</li>
+<li>HTML output fixes from P C Chow and William M. Brack</li>
 <li>Improved validation speed sensible for DocBook</li>
 <li>fixed a big bug with ID declared in external parsed entities</li>
 <li>portability fixes, update of Trio from Bjorn Reese</li>
@@ -417,7 +417,7 @@ it's actually not compiled in by default. The real fixes are:</p>
 <li>Bjorn fixed XPath node collection and Number formatting</li>
 <li>Fixed a loop reported in the HTML parsing</li>
 <li>blank space are reported even if the Dtd content model proves that they
-    are formatting spaces, this is for XmL conformance</li>
+    are formatting spaces, this is for XML conformance</li>
 </ul>
 <h3>2.3.3: Mar 1 2001</h3>
 <ul>
@@ -455,7 +455,7 @@ it's actually not compiled in by default. The real fixes are:</p>
 <li>added HTML to the RPM packages</li>
 <li>tree copying bugfixes</li>
 <li>updates to Windows makefiles</li>
-<li>optimisation patch from Bjorn Reese</li>
+<li>optimization patch from Bjorn Reese</li>
 </ul>
 <h3>2.2.11: Jan 4 2001</h3>
 <ul>
@@ -528,7 +528,7 @@ it's actually not compiled in by default. The real fixes are:</p>
 <li>cleanup of entity handling code</li>
 <li>overall review of all loops in the parsers, all sprintf usage has been
     checked too</li>
-<li>Far better handling of larges Dtd. Validating against Docbook XML Dtd
+<li>Far better handling of larges Dtd. Validating against DocBook XML Dtd
     works smoothly now.</li>
 </ul>
 <h3>1.8.10: Sep 6 2000</h3>
@@ -573,7 +573,7 @@ it's actually not compiled in by default. The real fixes are:</p>
 </ul>
 <h3>2.1.0 and 1.8.8: June 29 2000</h3>
 <ul>
-<li>1.8.8 is mostly a comodity package for upgrading to libxml2 accoding to
+<li>1.8.8 is mostly a commodity package for upgrading to libxml2 according to
     <a href="upgrade.html">new instructions</a>. It fixes a nasty problem
     about &amp;#38; charref parsing</li>
 <li>2.1.0 also ease the upgrade from libxml v1 to the recent version. it
@@ -582,7 +582,7 @@ it's actually not compiled in by default. The real fixes are:</p>
 <li>added xmlStopParser() to stop parsing</li>
 <li>improved a lot parsing speed when there is large CDATA blocs</li>
 <li>includes XPath patches provided by Picdar Technology</li>
-<li>tried to fix as much as possible DtD validation and namespace
+<li>tried to fix as much as possible DTD validation and namespace
         related problems</li>
 <li>output to a given encoding has been added/tested</li>
 <li>lot of various fixes</li>
@@ -592,8 +592,8 @@ it's actually not compiled in by default. The real fixes are:</p>
 <h3>2.0.0: Apr 12 2000</h3>
 <ul>
 <li>First public release of libxml2. If you are using libxml, it's a good
-    idea to check the 1.x to 2.x upgrade instructions. NOTE: while initally
-    scheduled for Apr 3 the relase occured only on Apr 12 due to massive
+    idea to check the 1.x to 2.x upgrade instructions. NOTE: while initially
+    scheduled for Apr 3 the release occurred only on Apr 12 due to massive
     workload.</li>
 <li>The include are now located under $prefix/include/libxml (instead of
     $prefix/include/gnome-xml), they also are referenced by
@@ -624,7 +624,7 @@ it's actually not compiled in by default. The real fixes are:</p>
   RPMs</li>
 <li>This version is now the head in the Gnome CVS base, the old one is
     available under the tag LIB_XML_1_X</li>
-<li>This includes a very large set of changes. Froma  programmatic point of
+<li>This includes a very large set of changes. From a  programmatic point of
     view applications should not have to be modified too much, check the <a href="upgrade.html">upgrade page</a>
 </li>
 <li>Some interfaces may changes (especially a bit about encoding).</li>
@@ -632,16 +632,16 @@ it's actually not compiled in by default. The real fixes are:</p>
     <ul>
 <li>fix I18N support. ISO-Latin-x/UTF-8/UTF-16 (nearly) seems correctly
         handled now</li>
-<li>Better handling of entities, especially well formedness checking
+<li>Better handling of entities, especially well-formedness checking
         and proper PEref extensions in external subsets</li>
 <li>DTD conditional sections</li>
-<li>Validation now correcly handle entities content</li>
+<li>Validation now correctly handle entities content</li>
 <li><a href="http://rpmfind.net/tools/gdome/messages/0039.html">change
-        structures to accomodate DOM</a></li>
+        structures to accommodate DOM</a></li>
 </ul>
 </li>
 <li>Serious progress were made toward compliance, <a href="conf/result.html">here are the result of the test</a> against the
-    OASIS testsuite (except the japanese tests since I don't support that
+    OASIS testsuite (except the Japanese tests since I don't support that
     encoding yet). This URL is rebuilt every couple of hours using the CVS
     head version.</li>
 </ul>
@@ -684,7 +684,7 @@ it's actually not compiled in by default. The real fixes are:</p>
 <ul>
 <li>a Push interface for the XML and HTML parsers</li>
 <li>a shell-like interface to the document tree (try tester --shell :-)</li>
-<li>lots of bug fixes and improvement added over XMas hollidays</li>
+<li>lots of bug fixes and improvement added over XMas holidays</li>
 <li>fixed the DTD parsing code to work with the xhtml DTD</li>
 <li>added xmlRemoveProp(), xmlRemoveID() and xmlRemoveRef()</li>
 <li>Fixed bugs in xmlNewNs()</li>
@@ -722,8 +722,8 @@ it's actually not compiled in by default. The real fixes are:</p>
     dataset from <a href="mailto:cnygard@bellatlantic.net">Carl Nygard</a>,
     configure with --with-buffers to enable them.</li>
 <li>attribute normalization, oops should have been added long ago !</li>
-<li>attributes defaulted from Dtds should be available, xmlSetProp() now
-    does entities escapting by default.</li>
+<li>attributes defaulted from DTDs should be available, xmlSetProp() now
+    does entities escaping by default.</li>
 </ul>
 <h3>1.7.4: Oct 25 1999</h3>
 <ul>
@@ -735,7 +735,7 @@ it's actually not compiled in by default. The real fixes are:</p>
 <h3>1.7.3: Sep 29 1999</h3>
 <ul>
 <li>portability problems fixed</li>
-<li>snprintf was used unconditionnally, leading to link problems on system
+<li>snprintf was used unconditionally, leading to link problems on system
     were it's not available, fixed</li>
 </ul>
 <h3>1.7.1: Sep 24 1999</h3>
@@ -748,7 +748,7 @@ it's actually not compiled in by default. The real fixes are:</p>
 <li>Changed another error : the use of a structure field called errno, and
     leading to troubles on platforms where it's a macro</li>
 </ul>
-<h3>1.7.0: sep 23 1999</h3>
+<h3>1.7.0: Sep 23 1999</h3>
 <ul>
 <li>Added the ability to fetch remote DTD or parsed entities, see the <a href="html/libxml-nanohttp.html">nanohttp</a> module.</li>
 <li>Added an errno to report errors by another mean than a simple printf

@@ -101,18 +101,18 @@ A:link, A:visited, A:active { text-decoration: underline }
 <p>XML was designed from the start to allow the support of any character set
 by using Unicode. Any conformant XML parser has to support the UTF-8 and
 UTF-16 default encodings which can both express the full unicode ranges. UTF8
-is a variable length encoding whose greatest point are to resuse the same
-emcoding for ASCII and to save space for Western encodings, but it is a bit
+is a variable length encoding whose greatest points are to reuse the same
+encoding for ASCII and to save space for Western encodings, but it is a bit
 more complex to handle in practice. UTF-16 use 2 bytes per characters (and
 sometimes combines two pairs), it makes implementation easier, but looks a
 bit overkill for Western languages encoding. Moreover the XML specification
 allows document to be encoded in other encodings at the condition that they
-are clearly labelled as such. For example the following is a wellformed XML
+are clearly labeled as such. For example the following is a wellformed XML
 document encoded in ISO-8859 1 and using accentuated letter that we French
 likes for both markup and content:</p>
 <pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;
 &lt;très&gt;là&lt;/très&gt;</pre>
-<p>Having internationalization support in libxml means the foolowing:</p>
+<p>Having internationalization support in libxml means the following:</p>
 <ul>
 <li>the document is properly parsed</li>
 <li>informations about it's encoding are saved</li>
@@ -125,7 +125,7 @@ likes for both markup and content:</p>
 exception of a few routines to read with a specific encoding or save to a
 specific encoding, is completely agnostic about the original encoding of the
 document.</p>
-<p>It should be noted too that the HTML parser embedded in libxml now obbey
+<p>It should be noted too that the HTML parser embedded in libxml now obey
 the same rules too, the following document will be (as of 2.2.2) handled  in
 an internationalized fashion by libxml too:</p>
 <pre>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0 Transitional//EN&quot;
@@ -151,7 +151,7 @@ rationale for those choices:</p>
     cases this may make sense.</li>
 <li>the second decision was which encoding. From the XML spec only UTF8 and
     UTF16 really makes sense as being the two only encodings for which there
-    is amndatory support. UCS-4 (32 bits fixed size encoding) could be
+    is mandatory support. UCS-4 (32 bits fixed size encoding) could be
     considered an intelligent choice too since it's a direct Unicode mapping
     support. I selected UTF-8 on the basis of efficiency and compatibility
     with surrounding software:
@@ -210,7 +210,7 @@ err.xml:1: error: Bytes: 0xE8 0x73 0x3E 0x6C
 &lt;très&gt;là&lt;/très&gt;
    ^</pre>
 </li>
-<li>xmlSwitchEncoding() does an encoding name lookup, canonalize it, and
+<li>xmlSwitchEncoding() does an encoding name lookup, canonicalize it, and
     then search the default registered encoding converters for that encoding.
     If it's not within the default set and iconv() support has been compiled
     it, it will ask iconv for such an encoder. If this fails then the parser
@@ -220,7 +220,7 @@ err2.xml:1: error: Unsupported encoding UnsupportedEnc
 &lt;?xml version=&quot;1.0&quot; encoding=&quot;UnsupportedEnc&quot;?&gt;
                                              ^</pre>
 </li>
-<li>From that point the encoder process progressingly the input (it is
+<li>From that point the encoder processes progressingly the input (it is
     plugged as a front-end to the I/O module) for that entity. It captures
     and convert on-the-fly the document to be parsed to UTF-8. The parser
     itself just does UTF-8 checking of this input and process it
@@ -230,8 +230,8 @@ err2.xml:1: error: Unsupported encoding UnsupportedEnc
 <li>The result (when using DOM) is an internal form completely in UTF-8
     with just an encoding information on the document node.</li>
 </ol>
-<p>Ok then what's happen when saving the document (assuming you
-colllected/built an xmlDoc DOM like structure) ? It depends on the function
+<p>Ok then what happens when saving the document (assuming you
+collected/built an xmlDoc DOM like structure) ? It depends on the function
 called, xmlSaveFile() will just try to save in the original encoding, while
 xmlSaveFileTo() and xmlSaveFileEnc() can optionally save to a given
 encoding:</p>
@@ -242,7 +242,7 @@ encoding:</p>
     <p>otherwise everything is written in the internal form, i.e. UTF-8</p>
 </li>
 <li>so if an encoding was specified, either at the API level or on the
-    document, libxml will again canonalize the encoding name, lookup for a
+    document, libxml will again canonicalize the encoding name, lookup for a
     converter in the registered set or through iconv. If not found the
     function will return an error code</li>
 <li>the converter is placed before the I/O buffer layer, as another kind of
@@ -250,14 +250,14 @@ encoding:</p>
     that buffer, which will then progressively be converted and pushed onto
     the I/O layer.</li>
 <li>It is possible that the converter code fails on some input, for example
-    trying to push an UTF-8 encoded chinese character through the UTF-8 to
+    trying to push an UTF-8 encoded Chinese character through the UTF-8 to
     ISO-8859-1 converter won't work. Since the encoders are progressive they
     will just report the error and the number of bytes converted, at that
     point libxml will decode the offending character, remove it from the
     buffer and replace it with the associated charRef encoding &amp;#123; and
-    resume the convertion. This guarante that any document will be saved
+    resume the conversion. This guarantees that any document will be saved
     without losses (except for markup names where this is not legal, this is
-    a problem in the current version, in pactice avoid using non-ascci
+    a problem in the current version, in practice avoid using non-ascii
     characters for tags or attributes names  @@). A special &quot;ascii&quot; encoding
     name is used to save documents to a pure ascii form can be used when
     portability is really crucial</li>
@@ -288,7 +288,7 @@ detecting such a tag on input. Except for that the processing is the same
 <li>HTML, a specific handler for the conversion of UTF-8 to ASCII with HTML
     predefined entities like &amp;copy; for the Copyright sign.</li>
 </ol>
-<p>More over when compiled on an Unix platfor with iconv support the full set
+<p>More over when compiled on an Unix platform with iconv support the full set
 of encodings supported by iconv can be instantly be used by libxml. On a
 linux machine with glibc-2.1 the list of supported encodings and aliases fill
 3 full pages, and include UCS-4, the full set of ISO-Latin encodings, and the
@@ -323,7 +323,7 @@ tried it. The key is to override the default conversion routines (by
 registering null encoders/decoders for your charsets), and bypass the UTF-8
 checking of the parser by setting the parser context charset
 (ctxt-&gt;charset) to something different than XML_CHAR_ENCODING_UTF8, but
-there is no guarantee taht this will work. You may also have some troubles
+there is no guarantee that this will work. You may also have some troubles
 saving back.</p>
 <p>Basically proper I18N support is important, this requires at least
 libxml-2.0.0, but a lot of features and corrections are really available only

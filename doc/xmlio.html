@@ -109,7 +109,7 @@ the interfaces to the libxml I/O system. This consists of 4 main parts:</p>
 <li>Input I/O buffers which are a commodity structure used by the parser(s)
     input layer to handle fetching the informations to feed the parser. This
     provides buffering and is also a placeholder where the encoding
-    convertors to UTF8 are piggy-backed.</li>
+    converters to UTF8 are piggy-backed.</li>
 <li>Output I/O buffers are similar to the Input ones and fulfill similar
     task but when generating a serialization from a tree.</li>
 <li>A mechanism to register sets of I/O callbacks and associate them with
@@ -135,7 +135,7 @@ example in the HTML parser is the following:</p>
     buffer, providing buffering and efficient use of the conversion
   routines</li>
 <li>once the parser has finished, the close() function of the handler is
-    called once and the Input buffer and associed resources are
+    called once and the Input buffer and associated resources are
   deallocated.</li>
 </ol>
 <p>The user defined callbacks are checked first to allow overriding of the
@@ -145,7 +145,7 @@ default libxml I/O routines.</p>
 <code>xmlBuffer</code> type define in <code><a href="http://xmlsoft.org/html/libxml-tree.html">tree.h</a></code>which is a
 resizable memory buffer. The buffer allocation strategy can be selected to be
 either best-fit or use an exponential doubling one (CPU vs. memory use
-tradeoff). The values are <code>XML_BUFFER_ALLOC_EXACT</code> and
+trade-off). The values are <code>XML_BUFFER_ALLOC_EXACT</code> and
 <code>XML_BUFFER_ALLOC_DOUBLEIT</code>, and can be set individually or on a
 system wide basis using <code>xmlBufferSetAllocationScheme()</code>. A number
 of functions allows to manipulate buffers with names starting with the
@@ -205,7 +205,7 @@ real use case</a>,  xmlDocDump() closes the FILE * passed by the application
 and this was a problem. The <a href="http://xmlsoft.org/messages/0711.html">solution</a> was to redefine a
 new output handler with the closing call deactivated:</p>
 <ol>
-<li>First define a new I/O ouput allocator where the output don't close the
+<li>First define a new I/O output allocator where the output don't close the
     file:
     <pre>xmlOutputBufferPtr
 xmlOutputBufferCreateOwn(FILE *file, xmlCharEncodingHandlerPtr encoder) {

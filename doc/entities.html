@@ -101,7 +101,7 @@ beginning). Example:</p>
 7 &lt;/EXAMPLE&gt;</pre>
 <p>Line 3 declares the xml entity. Line 6 uses the xml entity, by prefixing
 its name with '&amp;' and following it by ';' without any spaces added. There
-are 5 predefined entities in libxml allowing you to escape charaters with
+are 5 predefined entities in libxml allowing you to escape characters with
 predefined meaning in some parts of the xml document content:
 <strong>&amp;lt;</strong> for the character '&lt;', <strong>&amp;gt;</strong>
 for the character '&gt;',  <strong>&amp;apos;</strong> for the character ''',
@@ -113,7 +113,7 @@ your application. Or you may prefer to keep entity references as such in the
 content to be able to save the document back without losing this usually
 precious information (if the user went through the pain of explicitly
 defining entities, he may have a a rather negative attitude if you blindly
-susbtitute them as saving time). The <a href="html/libxml-parser.html#XMLSUBSTITUTEENTITIESDEFAULT">xmlSubstituteEntitiesDefault()</a>
+substitute them as saving time). The <a href="html/libxml-parser.html#XMLSUBSTITUTEENTITIESDEFAULT">xmlSubstituteEntitiesDefault()</a>
 function allows you to check and change the behaviour, which is to not
 substitute entities by default.</p>
 <p>Here is the DOM tree built by libxml for the previous document in the
@@ -148,7 +148,7 @@ finding them in the input).</p>
 <p>
 <span style="background-color: #FF0000">WARNING</span>: handling entities
 on top of the libxml SAX interface is difficult!!! If you plan to use
-non-predefined entities in your documents, then the learning cuvre to handle
+non-predefined entities in your documents, then the learning curve to handle
 then using the SAX API may be long. If you plan to use complex documents, I
 strongly suggest you consider using the DOM interface instead and let libxml
 deal with the complexity rather than trying to do it yourself.</p>

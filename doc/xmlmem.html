@@ -121,7 +121,7 @@ any other libxml routines (unless you are sure your allocations routines are
 compatibles).</p>
 <h3><a name="cleanup">Cleaning up after parsing</a></h3>
 <p>Libxml is not stateless, there is a few set of memory structures needing
-allocation before the parser is fully functionnal (some encoding structures
+allocation before the parser is fully functional (some encoding structures
 for example). This also mean that once parsing is finished there is a tiny
 amount of memory (a few hundred bytes) which can be recollected if you don't
 reuse the parser immediately:</p>
@@ -142,7 +142,7 @@ at the next invocation of parser routines, but be careful of the consequences
 in multithreaded applications.</p>
 <h3><a name="Debugging">Debugging routines</a></h3>
 <p>When configured using --with-mem-debug flag (off by default), libxml uses
-a set of memory allocation debugging routineskeeping track of all allocated
+a set of memory allocation debugging routines keeping track of all allocated
 blocks and the location in the code where the routine was called. A couple of
 other debugging routines allow to dump the memory allocated infos to a file
 or call a specific routine when a given block number is allocated:</p>
@@ -156,7 +156,7 @@ or call a specific routine when a given block number is allocated:</p>
     ()</a> dumps all the informations about the allocated memory block lefts
     in the <code>.memdump</code> file</li>
 </ul>
-<p>When developping libxml memory debug is enabled, the tests programs call
+<p>When developing libxml memory debug is enabled, the tests programs call
 xmlMemoryDump () and the &quot;make test&quot; regression tests will check for any
 memory leak during the full regression test sequence, this helps a lot
 ensuring that libxml  does not leak memory and bullet proof memory
@@ -165,11 +165,11 @@ resulting in major portability problems!).</p>
 <p>If the .memdump reports a leak, it displays the allocation function and
 also tries to give some informations about the content and structure of the
 allocated blocks left. This is sufficient in most cases to find the culprit,
-but not always. Assuming the allocation problem is reproductible, it is
-possible to find more easilly:</p>
+but not always. Assuming the allocation problem is reproducible, it is
+possible to find more easily:</p>
 <ol>
 <li>write down the block number xxxx not allocated</li>
-<li>export the environement variable XML_MEM_BREAKPOINT=xxxx , the easiest
+<li>export the environment variable XML_MEM_BREAKPOINT=xxxx , the easiest
     when using GDB is to simply give the command
     <p><code>set environment XML_MEM_BREAKPOINT xxxx</code></p>
 <p>before running the program.</p>
@@ -191,15 +191,15 @@ spot memory usage errors in a very precise way.</p>
 <p>How much libxml memory require ? It's hard to tell in average it depends
 of a number of things:</p>
 <ul>
-<li>the parser itself should work  in a fixed amout of memory, except for
+<li>the parser itself should work  in a fixed amount of memory, except for
     information maintained about the stacks of names and  entities locations.
     The I/O and encoding handlers will probably account for a few KBytes.
     This is true for both the XML and HTML parser (though the HTML parser
     need more state).</li>
 <li>If you are generating the DOM tree then memory requirements will grow
-    nearly lineary with the size of the data. In general for a balanced
+    nearly linear with the size of the data. In general for a balanced
     textual document the internal memory requirement is about 4 times the
-    size of the UTF8 serialization of this document (exmple the XML-1.0
+    size of the UTF8 serialization of this document (example the XML-1.0
     recommendation is a bit more of 150KBytes and takes 650KBytes of main
     memory when parsed). Validation will add a amount of memory required for
     maintaining the external Dtd state which should be linear with the

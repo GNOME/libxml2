@@ -106,7 +106,7 @@ or libxslt wrappers or bindings:</p>
 </li>
 <li>
 <a href="http://mail.gnome.org/archives/xml/2001-March/msg00014.html">Matt
-    Sergeant</a> developped <a href="http://axkit.org/download/">XML::LibXSLT</a>, a perl wrapper for
+    Sergeant</a> developed <a href="http://axkit.org/download/">XML::LibXSLT</a>, a Perl wrapper for
     libxml2/libxslt as part of the <a href="http://axkit.com/">AxKit XML
     application server</a>
 </li>
@@ -126,7 +126,7 @@ or libxslt wrappers or bindings:</p>
 </li>
 <li>There is support for libxml2 in the DOM module of PHP.</li>
 </ul>
-<p>The distribution includes a set of Python bindings, which are garanteed to
+<p>The distribution includes a set of Python bindings, which are guaranteed to
 be maintained as part of the library in the future, though the Python
 interface have not yet reached the maturity of the C API.</p>
 <p>To install the Python bindings there are 2 options:</p>
@@ -163,14 +163,13 @@ doc.freeDoc()</pre>
 <p>The Python module is called libxml2, parseFile is the equivalent of
 xmlParseFile (most of the bindings are automatically generated, and the xml
 prefix is removed and the casing convention are kept). All node seen at the
-binding level share the same subset of accesors:</p>
+binding level share the same subset of accessors:</p>
 <ul>
 <li>
 <code>name</code> : returns the node name</li>
 <li>
 <code>type</code> : returns a string indicating the node
-    typ<code>e</code>
-</li>
+    type</li>
 <li>
 <code>content</code> : returns the content of the node, it is based on
     xmlNodeGetContent() and hence is recursive.</li>
@@ -180,7 +179,7 @@ binding level share the same subset of accesors:</p>
     <code>properties</code>: pointing to the associated element in the tree,
     those may return None in case no such link exists.</li>
 </ul>
-<p>Also note the need to explicitely deallocate documents with freeDoc() .
+<p>Also note the need to explicitly deallocate documents with freeDoc() .
 Reference counting for libxml2 trees would need quite a lot of work to
 function properly, and rather than risk memory leaks if not implemented
 correctly it sounds safer to have an explicit function to free a tree. The
@@ -191,7 +190,7 @@ collected.</p>
 messages:</p>
 <pre>import libxml2
 
-#desactivate error messages from the validation
+#deactivate error messages from the validation
 def noerr(ctx, str):
     pass
 
@@ -204,13 +203,13 @@ doc = ctxt.doc()
 valid = ctxt.isValid()
 doc.freeDoc()
 if valid != 0:
-    print &quot;validity chec failed&quot;</pre>
+    print &quot;validity check failed&quot;</pre>
 <p>The first thing to notice is the call to registerErrorHandler(), it
 defines a new error handler global to the library. It is used to avoid seeing
 the error messages when trying to validate the invalid document.</p>
 <p>The main interest of that test is the creation of a parser context with
 createFileParserCtxt() and how the behaviour can be changed before calling
-parseDocument() . Similary the informations resulting from the parsing phase
+parseDocument() . Similarly the informations resulting from the parsing phase
 are also available using context methods.</p>
 <p>Contexts like nodes are defined as class and the libxml2 wrappers maps the
 C function interfaces in terms of objects method as much as possible. The
@@ -225,12 +224,12 @@ ctxt.parseChunk(&quot;/&gt;&quot;, 2, 1)
 doc = ctxt.doc()
 
 doc.freeDoc()</pre>
-<p>The context is created with a speciall call based on the
+<p>The context is created with a special call based on the
 xmlCreatePushParser() from the C library. The first argument is an optional
-SAX callback object, then the initial set of data, the lenght and the name of
+SAX callback object, then the initial set of data, the length and the name of
 the resource in case URI-References need to be computed by the parser.</p>
 <p>Then the data are pushed using the parseChunk() method, the last call
-setting the thrird argument terminate to 1.</p>
+setting the third argument terminate to 1.</p>
 <h3>pushSAX.py:</h3>
 <p>this test show the use of the event based parsing interfaces. In this case
 the parser does not build a document, but provides callback information as
@@ -283,19 +282,19 @@ reference = &quot;startDocument:startElement foo {'url': 'tst'}:&quot; + \
             &quot;characters: bar:endElement foo:endDocument:&quot;
 if log != reference:
     print &quot;Error got: %s&quot; % log
-    print &quot;Exprected: %s&quot; % reference</pre>
+    print &quot;Expected: %s&quot; % reference</pre>
 <p>The key object in that test is the handler, it provides a number of entry
 points which can be called by the parser as it makes progresses to indicate
 the information set obtained. The full set of callback is larger than what
 the callback class in that specific example implements (see the SAX
 definition for a complete list). The wrapper will only call those supplied by
 the object when activated. The startElement receives the names of the element
-and a dictionnary containing the attributes carried by this element.</p>
+and a dictionary containing the attributes carried by this element.</p>
 <p>Also note that the reference string generated from the callback shows a
 single character call even though the string &quot;bar&quot; is passed to the parser
 from 2 different call to parseChunk()</p>
 <h3>xpath.py:</h3>
-<p>This is a basic test of XPath warppers support</p>
+<p>This is a basic test of XPath wrappers support</p>
 <pre>import libxml2
 
 doc = libxml2.parseFile(&quot;tst.xml&quot;)
@@ -313,7 +312,7 @@ ctxt.xpathFreeContext()</pre>
 expression on it. The xpathEval() method execute an XPath query and returns
 the result mapped in a Python way. String and numbers are natively converted,
 and node sets are returned as a tuple of libxml2 Python nodes wrappers. Like
-the document, the XPath context need to be freed explicitely, also not that
+the document, the XPath context need to be freed explicitly, also not that
 the result of the XPath query may point back to the document tree and hence
 the document must be freed after the result of the query is used.</p>
 <h3>xpathext.py:</h3>
@@ -333,9 +332,9 @@ if res != 2:
 doc.freeDoc()
 ctxt.xpathFreeContext()</pre>
 <p>Note how the extension function is registered with the context (but that
-part is not yet finalized, ths may change slightly in the future).</p>
+part is not yet finalized, this may change slightly in the future).</p>
 <h3>tstxpath.py:</h3>
-<p>This test is similar to the previousone but shows how the extension
+<p>This test is similar to the previous one but shows how the extension
 function can access the XPath evaluation context:</p>
 <pre>def foo(ctx, x):
     global called
@@ -363,7 +362,7 @@ else:
     print &quot;Memory leak %d bytes&quot; % (libxml2.debugMemory(1))
     libxml2.dumpMemory()</pre>
 <p>Those activate the memory debugging interface of libxml2 where all
-alloacted block in the library are tracked. The prologue then cleans up the
+allocated block in the library are tracked. The prologue then cleans up the
 library state and checks that all allocated memory has been freed. If not it
 calls dumpMemory() which saves that list in a <code>.memdump</code> file.</p>
 <p><a href="bugs.html">Daniel Veillard</a></p>

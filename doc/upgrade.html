@@ -115,14 +115,14 @@ mail</a>:</p>
     select the right parameters libxml2</li>
 <li>Node <strong>childs</strong> field has been renamed
     <strong>children</strong> so s/childs/children/g should be  applied
-    (probablility of having &quot;childs&quot; anywere else is close to 0+</li>
+    (probability of having &quot;childs&quot; anywhere else is close to 0+</li>
 <li>The document don't have anymore a <strong>root</strong> element it has
     been replaced by <strong>children</strong> and usually you will get a
     list of element here. For example a Dtd element for the internal subset
     and it's declaration may be found in that list, as well as processing
     instructions or comments found before or after the document root element.
     Use <strong>xmlDocGetRootElement(doc)</strong> to get the root element of
-    a document. Alternatively if you are sure to not reference Dtds nor have
+    a document. Alternatively if you are sure to not reference DTDs nor have
     PIs or comments before or after the root element
     s/-&gt;root/-&gt;children/g will probably do it.</li>
 <li>The white space issue, this one is more complex, unless special case of
@@ -136,9 +136,9 @@ mail</a>:</p>
         relying on a special (and possibly broken) set of heuristics of
         libxml to detect ignorable blanks. Don't complain if it breaks or
         make your application not 100% clean w.r.t. to it's input.</li>
-<li>the Right Way: change you code to accept possibly unsignificant
+<li>the Right Way: change you code to accept possibly insignificant
         blanks characters, or have your tree populated with weird blank text
-        nodes. You can spot them using the comodity function
+        nodes. You can spot them using the commodity function
         <strong>xmlIsBlankNode(node)</strong> returning 1 for such blank
         nodes.</li>
 </ol>
@@ -154,12 +154,12 @@ mail</a>:</p>
 <p>output to generate you compile commands this will probably work out of
     the box</p>
 </li>
-<li>xmlDetectCharEncoding takes an extra argument indicating the lenght in
+<li>xmlDetectCharEncoding takes an extra argument indicating the length in
     byte of the head of the document available for character detection.</li>
 </ol>
 <h3>Ensuring both libxml-1.x and libxml-2.x compatibility</h3>
 <p>Two new version of libxml (1.8.11) and libxml2 (2.3.4) have been released
-to allow smoth upgrade of existing libxml v1code while retaining
+to allow smooth upgrade of existing libxml v1code while retaining
 compatibility. They offers the following:</p>
 <ol>
 <li>similar include naming, one should use
@@ -175,17 +175,17 @@ compatibility. They offers the following:</p>
 following:</p>
 <ol>
 <li>install the  libxml-1.8.8 (and libxml-devel-1.8.8) packages</li>
-<li>find all occurences where the xmlDoc <strong>root</strong> field is
+<li>find all occurrences where the xmlDoc <strong>root</strong> field is
     used and change it to <strong>xmlRootNode</strong>
 </li>
-<li>similary find all occurences where the xmlNode <strong>childs</strong>
+<li>similarly find all occurrences where the xmlNode <strong>childs</strong>
     field is used and change it to <strong>xmlChildrenNode</strong>
 </li>
 <li>add a <strong>LIBXML_TEST_VERSION</strong> macro somewhere in your
     <strong>main()</strong> or in the library init entry point</li>
 <li>Recompile, check compatibility, it should still work</li>
-<li>Change your configure script to look first for xml2-config and fallback
-    using xml-config . Use the --cflags and --libs ouptut of the command as
+<li>Change your configure script to look first for xml2-config and fall back
+    using xml-config . Use the --cflags and --libs output of the command as
     the Include and Linking parameters needed to use libxml.</li>
 <li>install libxml2-2.3.x and  libxml2-devel-2.3.x (libxml-1.8.y and
     libxml-devel-1.8.y can be kept simultaneously)</li>

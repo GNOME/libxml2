@@ -104,8 +104,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 <h3><a name="General5">General overview</a></h3>
 <p>Well what is validation and what is a DTD ?</p>
 <p>DTD is the acronym for Document Type Definition. This is a description of
-the content for a familly of XML files. This is part of the XML 1.0
-specification, and alows to describe and check that a given document instance
+the content for a family of XML files. This is part of the XML 1.0
+specification, and allows to describe and check that a given document instance
 conforms to a set of rules detailing its structure and content.</p>
 <p>Validation is the process of checking a document against a DTD (more
 generally against a set of construction rules).</p>
@@ -130,10 +130,10 @@ ancient...</p>
 <h3><a name="Simple1">Simple rules</a></h3>
 <p>Writing DTD can be done in multiple ways, the rules to build them if you
 need something fixed or something which can evolve over time can be radically
-different. Really complex DTD like Docbook ones are flexible but quite harder
-to design. I will just focuse on DTDs for a formats with a fixed simple
+different. Really complex DTD like DocBook ones are flexible but quite harder
+to design. I will just focus on DTDs for a formats with a fixed simple
 structure. It is just a set of basic rules, and definitely not exhaustive nor
-useable for complex DTD design.</p>
+usable for complex DTD design.</p>
 <h4>
 <a name="reference1">How to reference a DTD from a document</a>:</h4>
 <p>Assuming the top element of the document is <code>spec</code> and the dtd
@@ -146,10 +146,10 @@ is placed in the file <code>mydtd</code> in the subdirectory
     full URL string indicating the location of your DTD on the Web, this is a
     really good thing to do if you want others to validate your document</li>
 <li>it is also possible to associate a <code>PUBLIC</code> identifier (a
-    magic string) so that the DTd is looked up in catalogs on the client side
+    magic string) so that the DTD is looked up in catalogs on the client side
     without having to locate it on the web</li>
 <li>a dtd contains a set of elements and attributes declarations, but they
-    don't define what the root of the document should be. This is explicitely
+    don't define what the root of the document should be. This is explicitly
     told to the parser/validator as the first element of the
     <code>DOCTYPE</code> declaration.</li>
 </ul>
@@ -158,9 +158,9 @@ is placed in the file <code>mydtd</code> in the subdirectory
 <p>The following declares an element <code>spec</code>:</p>
 <p><code>&lt;!ELEMENT spec (front, body, back?)&gt;</code></p>
 <p>it also expresses that the spec element contains one <code>front</code>,
-one <code>body</code> and one optionnal <code>back</code> children elements
+one <code>body</code> and one optional <code>back</code> children elements
 in this order. The declaration of one element of the structure and its
-content are done in a single declaration. Similary the following declares
+content are done in a single declaration. Similarly the following declares
 <code>div1</code> elements:</p>
 <p><code>&lt;!ELEMENT div1 (head, (p | list | note)*, div2?)&gt;</code></p>
 <p>means div1 contains one <code>head</code> then a series of optional
@@ -181,14 +181,14 @@ order.</p>
 <p>again the attributes declaration includes their content definition:</p>
 <p><code>&lt;!ATTLIST termdef name CDATA #IMPLIED&gt;</code></p>
 <p>means that the element <code>termdef</code> can have a <code>name</code>
-attribute containing text (<code>CDATA</code>) and which is optionnal
+attribute containing text (<code>CDATA</code>) and which is optional
 (<code>#IMPLIED</code>). The attribute value can also be defined within a
 set:</p>
 <p><code>&lt;!ATTLIST list type (bullets|ordered|glossary)
 &quot;ordered&quot;&gt;</code></p>
 <p>means <code>list</code> element have a <code>type</code> attribute with 3
 allowed values &quot;bullets&quot;, &quot;ordered&quot; or &quot;glossary&quot; and which default to
-&quot;ordered&quot; if the attribute is not explicitely specified.</p>
+&quot;ordered&quot; if the attribute is not explicitly specified.</p>
 <p>The content type of an attribute can be text (<code>CDATA</code>),
 anchor/reference/references
 (<code>ID</code>/<code>IDREF</code>/<code>IDREFS</code>), entity(ies)
@@ -219,7 +219,7 @@ contains some complex DTD examples. The  <code>test/valid/dia.xml</code>
 example shows an XML file where the simple DTD is directly included within
 the document.</p>
 <h3><a name="validate1">How to validate</a></h3>
-<p>The simplest is to use the xmllint program comming with libxml. The
+<p>The simplest is to use the xmllint program coming with libxml. The
 <code>--valid</code> option turn on validation of the files given as input,
 for example the following validates a copy of the first revision of the XML
 1.0 specification:</p>

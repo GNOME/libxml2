@@ -148,7 +148,7 @@ base</a>:</p>
   &lt;/gjob:Jobs&gt;
 &lt;/gjob:Helping&gt;</pre>
 <p>While loading the XML file into an internal DOM tree is a matter of
-calling only a couple of functions, browsing the tree to gather the ata and
+calling only a couple of functions, browsing the tree to gather the data and
 generate the internal structures is harder, and more error prone.</p>
 <p>The suggested principle is to be tolerant with respect to the input
 structure. For example, the ordering of the attributes is not significant,
@@ -200,8 +200,8 @@ DEBUG(&quot;parsePerson\n&quot;);
 <p>Here are a couple of things to notice:</p>
 <ul>
 <li>Usually a recursive parsing style is the more convenient one: XML data
-    is by nature subject to repetitive constructs and usually exibits highly
-    stuctured patterns.</li>
+    is by nature subject to repetitive constructs and usually exhibits highly
+    structured patterns.</li>
 <li>The two arguments of type <em>xmlDocPtr</em> and <em>xmlNsPtr</em>,
     i.e. the pointer to the global XML document and the namespace reserved to
     the application. Document wide information are needed for example to
@@ -267,7 +267,7 @@ DEBUG(&quot;parseJob\n&quot;);
     return(ret);
 }</pre>
 <p>Once you are used to it, writing this kind of code is quite simple, but
-boring. Ultimately, it could be possble to write stubbers taking either C
+boring. Ultimately, it could be possible to write stubbers taking either C
 data structure definitions, a set of XML examples or an XML DTD and produce
 the code needed to import and export the content between C data and XML
 storage. This is left as an exercise to the reader :-)</p>

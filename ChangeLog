@@ -1,3 +1,10 @@
+Sun Oct 29 18:38:12 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* xpath.c: fixed the root evaluation problems
+	* HTMLparser.c result/HTML/doc3.htm: fixed the problem of non
+	  ignorable spaces with <b> <bold> <em>
+	* tree.c: fixed a loop in xmlSearchNsByHref()
+
 Fri Oct 27 18:57:32 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* xpath.c: applied another XPath patch from TOM 

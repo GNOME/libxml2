@@ -3569,6 +3569,7 @@ xmlSearchNsByHref(xmlDocPtr doc, xmlNodePtr node, const xmlChar *href) {
 	                    goto shadowed;
 		        tst = tst->next;
 		    }
+		    check = check->parent;
 		}
 		return(cur);
 	    }

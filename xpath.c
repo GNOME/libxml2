@@ -2610,13 +2610,6 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt, xmlXPathAxisVal axis,
  */
 void
 xmlXPathRoot(xmlXPathParserContextPtr ctxt) {
-    if (ctxt->value != NULL) {
-	xmlXPathObjectPtr obj;
-
-	CHECK_TYPE(XPATH_NODESET);
-	obj = valuePop(ctxt);
-	xmlXPathFreeObject(obj);
-    }
     ctxt->context->node = (xmlNodePtr) ctxt->context->doc;
     valuePush(ctxt, xmlXPathNewNodeSet(ctxt->context->node));
 }
@@ -4365,6 +4358,8 @@ xmlXPathEvalPathExpr(xmlXPathParserContextPtr ctxt) {
     } 
 
     if (lc) {
+	if (CUR == '/')
+	    xmlXPathRoot(ctxt);
 	xmlXPathEvalLocationPath(ctxt);
     } else {
 	xmlXPathEvalFilterExpr(ctxt);
@@ -5261,7 +5256,6 @@ xmlXPathEvalLocationPath(xmlXPathParserContextPtr ctxt) {
 	    } else if (CUR == '/') {
 		NEXT;
 		SKIP_BLANKS;
-		xmlXPathRoot(ctxt);
 		if (CUR != 0)
 		    xmlXPathEvalRelativeLocationPath(ctxt);
 	    }
@@ -5283,7 +5277,6 @@ xmlXPathObjectPtr
 xmlXPathEval(const xmlChar *str, xmlXPathContextPtr ctx) {
     xmlXPathParserContextPtr ctxt;
     xmlXPathObjectPtr res = NULL, tmp;
-    xmlXPathObjectPtr init = NULL;
     int stack = 0;
 
     xmlXPathInit();
@@ -5291,12 +5284,6 @@ xmlXPathEval(const xmlChar *str, xmlXPathContextPtr ctx) {
     CHECK_CONTEXT(ctx)
 
     ctxt = xmlXPathNewParserContext(str, ctx);
-    if (ctx->node != NULL) {
-	init = xmlXPathNewNodeSet(ctx->node);
-	valuePush(ctxt, init);
-    }
-    if (str[0] == '/')
-	xmlXPathRoot(ctxt);
     xmlXPathEvalExpr(ctxt);
 
     if (ctxt->value == NULL) {
@@ -5310,8 +5297,7 @@ xmlXPathEval(const xmlChar *str, xmlXPathContextPtr ctx) {
         tmp = valuePop(ctxt);
 	if (tmp != NULL) {
 	    xmlXPathFreeObject(tmp);
-	    if (tmp != init)
-		stack++;    
+	    stack++;    
         }
     } while (tmp != NULL);
     if (stack != 0) {

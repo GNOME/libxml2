@@ -1712,8 +1712,15 @@ static int areBlanks(htmlParserCtxtPtr ctxt, const xmlChar *str, int len) {
     lastChild = xmlGetLastChild(ctxt->node);
     if (lastChild == NULL) {
         if (ctxt->node->content != NULL) return(0);
-    } else if (xmlNodeIsText(lastChild))
+    } else if (xmlNodeIsText(lastChild)) {
         return(0);
+    } else if (xmlStrEqual(lastChild->name, BAD_CAST"b")) {
+        return(0);
+    } else if (xmlStrEqual(lastChild->name, BAD_CAST"bold")) {
+        return(0);
+    } else if (xmlStrEqual(lastChild->name, BAD_CAST"em")) {
+        return(0);
+    }
     return(1);
 }
 

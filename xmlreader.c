@@ -4342,6 +4342,8 @@ xmlReaderForMemory(const char *buffer, int size, const char *URL,
  *
  * Create an xmltextReader for an XML from a file descriptor.
  * The parsing flags @options are a combination of xmlParserOption.
+ * NOTE that the file descriptor will not be closed when the
+ *      reader is closed or reset.
  * 
  * Returns the new reader or NULL in case of error.
  */
@@ -4357,6 +4359,7 @@ xmlReaderForFd(int fd, const char *URL, const char *encoding, int options)
     input = xmlParserInputBufferCreateFd(fd, XML_CHAR_ENCODING_NONE);
     if (input == NULL)
         return (NULL);
+    input->closecallback = NULL;
     reader = xmlNewTextReader(input, URL);
     if (reader == NULL) {
         xmlFreeParserInputBuffer(input);
@@ -4553,6 +4556,8 @@ xmlReaderNewMemory(xmlTextReaderPtr reader, const char *buffer, int size,
  * @options:  a combination of xmlParserOption
  *
  * Setup an xmltextReader to parse an XML from a file descriptor.
+ * NOTE that the file descriptor will not be closed when the
+ *      reader is closed or reset.
  * The parsing flags @options are a combination of xmlParserOption.
  * This reuses the existing @reader xmlTextReader.
  * 
@@ -4572,6 +4577,7 @@ xmlReaderNewFd(xmlTextReaderPtr reader, int fd,
     input = xmlParserInputBufferCreateFd(fd, XML_CHAR_ENCODING_NONE);
     if (input == NULL)
         return (-1);
+    input->closecallback = NULL;
     return (xmlTextReaderSetup(reader, input, URL, encoding, options));
 }
 

@@ -1,3 +1,9 @@
+Mon Dec 22 19:06:16 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c xmlreader.c: change xmlReadFd() xmlCtxtReadFd()
+	  xmlReaderNewFd() xmlReaderForFd(), change those to not close
+	  the file descriptor. Updated the comment, should close #129683
+
 Mon Dec 22 00:34:09 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xinclude.c: fixed a serious problem in XInclude #129021

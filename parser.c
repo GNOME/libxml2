@@ -12553,6 +12553,8 @@ xmlReadMemory(const char *buffer, int size, const char *URL, const char *encodin
  * @options:  a combination of xmlParserOption
  *
  * parse an XML from a file descriptor and build a tree.
+ * NOTE that the file descriptor will not be closed when the
+ *      reader is closed or reset.
  * 
  * Returns the resulting document tree
  */
@@ -12569,6 +12571,7 @@ xmlReadFd(int fd, const char *URL, const char *encoding, int options)
     input = xmlParserInputBufferCreateFd(fd, XML_CHAR_ENCODING_NONE);
     if (input == NULL)
         return (NULL);
+    input->closecallback = NULL;
     ctxt = xmlNewParserCtxt();
     if (ctxt == NULL) {
         xmlFreeParserInputBuffer(input);
@@ -12747,6 +12750,8 @@ xmlCtxtReadMemory(xmlParserCtxtPtr ctxt, const char *buffer, int size,
  *
  * parse an XML from a file descriptor and build a tree.
  * This reuses the existing @ctxt parser context
+ * NOTE that the file descriptor will not be closed when the
+ *      reader is closed or reset.
  * 
  * Returns the resulting document tree
  */
@@ -12768,6 +12773,7 @@ xmlCtxtReadFd(xmlParserCtxtPtr ctxt, int fd,
     input = xmlParserInputBufferCreateFd(fd, XML_CHAR_ENCODING_NONE);
     if (input == NULL)
         return (NULL);
+    input->closecallback = NULL;
     stream = xmlNewIOInputStream(ctxt, input, XML_CHAR_ENCODING_NONE);
     if (stream == NULL) {
         xmlFreeParserInputBuffer(input);

@@ -1,3 +1,8 @@
+Thu Aug 22 11:45:50 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* python/Makefile.am: typo in target name resulted in libxml2.py
+	  to not be rebuilt. fixed DESTDIR similary to the libxslt one.
+
 Thu Aug 22 09:15:00 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* win32/win32/Makefile.mingw: updated with version from 

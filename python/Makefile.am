@@ -28,7 +28,7 @@ if WITH_PYTHON
 mylibs = \
 	$(top_builddir)/libxml2.la
 
-all_local:	libxml2.py
+all-local:	libxml2.py
 
 pythondir = $(libdir)/python${PYTHON_VERSION}/site-packages
 python_LTLIBRARIES = libxml2mod.la
@@ -40,11 +40,11 @@ libxml2.py: $(srcdir)/libxml.py libxml2class.py
 	cat $(srcdir)/libxml.py libxml2class.py > libxml2.py
 
 install-data-local:
-	$(mkinstalldirs) $(DESTDIR)$(PYTHON_SITE_PACKAGES)
-	-@INSTALL@ -m 0644 libxml2.py $(DESTDIR)$(PYTHON_SITE_PACKAGES)
-	$(mkinstalldirs) $(DESTDIR)$(DOCS_DIR)
-	-@(for doc in $(DOCS) ; \
-	   do @INSTALL@ -m 0644 $$doc $(DESTDIR)$(DOCS_DIR) ; done)
+	$(mkinstalldirs) $(libdir)/python${PYTHON_VERSION}/site-packages
+	@INSTALL@ -m 0644 libxml2.py $(libdir)/python${PYTHON_VERSION}/site-packages
+	$(mkinstalldirs) $(DOCS_DIR)
+	@(for doc in $(DOCS) ; \
+	   do @INSTALL@ -m 0644 $$doc $(DOCS_DIR) ; done)
 
 GENERATE = generator.py
 API_DESC = $(top_srcdir)/doc/libxml2-api.xml $(srcdir)/libxml2-python-api.xml

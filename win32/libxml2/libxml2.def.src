@@ -716,7 +716,9 @@ EXPORTS
 	xmlRegisterOutputCallbacks
 	xmlSaveFileTo
 	xmlNodeDumpOutput
+#ifdef LIBXML_HTML_ENABLED
 	htmlDocContentDumpOutput
+#endif /* LIBXML_HTML_ENABLED */
 
 /* 
  * xmlmemory.h 

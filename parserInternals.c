@@ -1380,7 +1380,7 @@ encoding_error:
 
 int
 xmlStringCurrentChar(xmlParserCtxtPtr ctxt, const xmlChar *cur, int *len) {
-    if (ctxt->charset == XML_CHAR_ENCODING_UTF8) {
+    if ((ctxt == NULL) || (ctxt->charset == XML_CHAR_ENCODING_UTF8)) {
 	/*
 	 * We are supposed to handle UTF8, check it's valid
 	 * From rfc2044: encoding of the Unicode values on UTF-8:

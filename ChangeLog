@@ -1,3 +1,13 @@
+Fri Apr 27 19:06:13 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* parserInternals.c xpath.[ch]: some UTF8 cleanup on
+	  xmlXPathParseName
+	* xpath.c: Igor Zlatkovic suggested a change for NAN and MSC
+	* debugXML.c: avoid compilation problems if compiling without
+	  HTML support, Igor Zlatkovic
+	* win32/libxml2/libxml2.def.src: being able to compile without
+	  XPath on Windows
+
 Thu Apr 26 22:53:03 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* libxml.m4: yet another patch from Toshio Kuratomi

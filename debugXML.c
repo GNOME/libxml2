@@ -1723,7 +1723,9 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
 				    "%s is an XSLT value tree\n", arg);
 			    break;
 		    }
+#ifdef LIBXML_XPATH_ENABLED
 		    xmlXPathFreeNodeSetList(list);
+#endif
 		} else {
 		    xmlGenericError(xmlGenericErrorContext,
 			    "%s: no such node\n", arg);
@@ -1787,7 +1789,9 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
 				    "%s is an XSLT value tree\n", arg);
 			    break;
 		    }
+#ifdef LIBXML_XPATH_ENABLED
 		    xmlXPathFreeNodeSetList(list);
+#endif
 		} else {
 		    xmlGenericError(xmlGenericErrorContext,
 			    "%s: no such node\n", arg);
@@ -1855,7 +1859,9 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
 				    "%s is an XSLT value tree\n", arg);
 			    break;
 		    }
+#ifdef LIBXML_XPATH_ENABLED
 		    xmlXPathFreeNodeSetList(list);
+#endif
 		} else {
 		    xmlGenericError(xmlGenericErrorContext,
 			    "%s: no such node\n", arg);

@@ -8344,6 +8344,7 @@ xmlSchemaValidateAttributes(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr elem, xmlSche
     int ret;
     xmlAttrPtr attr; /* An attribute on the element. */
     xmlChar *value;
+    const xmlChar *nsURI;
     xmlSchemaAttributeLinkPtr attrUse;
     xmlSchemaAttributePtr attrDecl;
     int found;
@@ -8430,7 +8431,7 @@ xmlSchemaValidateAttributes(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr elem, xmlSche
 	    printf("found\n");
 #endif
             found = 1;
-            ctxt->cur = (xmlNodePtr) attr;
+	    ctxt->cur = (xmlNodePtr) attr;
 
             if (attrDecl->subtypes == NULL) {
 		curState->state = XML_SCHEMAS_ATTR_TYPE_NOT_RESOLVED;
@@ -8505,6 +8506,14 @@ xmlSchemaValidateAttributes(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr elem, xmlSche
 #ifdef DEBUG_ATTR_VALIDATION
 	xmlSchemaWildcardNsPtr ns;	
 	printf("matching wildcard: [%d] of complexType: %s\n", type->attributeWildcard, type->name);
+	if (type->attributeWildcard->processContents == 
+	    XML_SCHEMAS_ANY_LAX)
+	    printf("processContents: lax\n");
+	else if (type->attributeWildcard->processContents == 
+	    XML_SCHEMAS_ANY_STRICT)
+	    printf("processContents: strict\n");
+	else
+	    printf("processContents: skip\n");
 	if (type->attributeWildcard->any)
 	    printf("type: any\n");
 	else if (type->attributeWildcard->negNsSet != NULL) {
@@ -8526,26 +8535,52 @@ xmlSchemaValidateAttributes(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr elem, xmlSche
 	} else
 	    printf("empty\n");
 
-#endif
-	/*
-	* TODO: Implement processContents.
-	*/
+
+#endif	
 	curState = ctxt->attr;
 	while (curState != NULL) {
-	    if ((curState->state == XML_SCHEMAS_ATTR_UNKNOWN) && 
-		(curState->attr != NULL)) {
-		if (curState->attr->ns != NULL) {
-		    if (xmlSchemaMatchesWildcardNs(type->attributeWildcard, 
-			curState->attr->ns->href))
+	    if (curState->state == XML_SCHEMAS_ATTR_UNKNOWN) {		
+		if (curState->attr->ns != NULL) 
+		    nsURI = curState->attr->ns->href;
+		else
+		    nsURI = NULL;		
+		if (xmlSchemaMatchesWildcardNs(type->attributeWildcard, 
+		    nsURI)) {
+		    /*
+		    * Handle processContents.
+		    */
+		    if ((type->attributeWildcard->processContents == 
+			XML_SCHEMAS_ANY_LAX) ||
+			(type->attributeWildcard->processContents == 
+			XML_SCHEMAS_ANY_STRICT)) {
+			
+			attr = curState->attr;						
+			attrDecl = xmlSchemaGetAttribute(ctxt->schema, 
+			    attr->name, nsURI);		
+			if (attrDecl != NULL) {
+			    value = xmlNodeListGetString(elem->doc, attr->children, 1);
+			    ret = xmlSchemaValidateSimpleValue(ctxt, attrDecl->subtypes, 
+				value);
+			    if (ret != 0) 
+				curState->state = XML_SCHEMAS_ATTR_INVALID_VALUE;   				
+			    else
+				curState->state = XML_SCHEMAS_ATTR_CHECKED;
+			    curState->decl = attrDecl;
+			    if (value != NULL) {
+				xmlFree(value);
+			    }	    
+			    
+			} else if (type->attributeWildcard->processContents == 
+			    XML_SCHEMAS_ANY_LAX) {
+			    curState->state = XML_SCHEMAS_ATTR_CHECKED;
+			}											
+		    } else
 			curState->state = XML_SCHEMAS_ATTR_CHECKED;
-		} else if (xmlSchemaMatchesWildcardNs(type->attributeWildcard, 
-		    NULL))
-		    curState->state = XML_SCHEMAS_ATTR_CHECKED;		
-        }
+		}		
+	    }
 	    curState = curState->next;
         }
     }
-
 #ifdef DEBUG_ATTR_VALIDATION
     if (redundant)
 	xmlGenericError(xmlGenericErrorContext,

@@ -1,0 +1,3 @@
+./test/schemas/anyAttr-processContents-err1_0.xml:11: element elem.lax: Schemas validity error : Failed to validate basic type language
+./test/schemas/anyAttr-processContents-err1_0.xml:11: element elem.lax: Schemas validity error : Attribute bar on elem.lax does not match type
+./test/schemas/anyAttr-processContents-err1_0.xml:12: element elem.strict: Schemas validity error : Attribute barB on elem.strict is unknown

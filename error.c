@@ -301,6 +301,7 @@ xmlReportError(xmlErrorPtr err, xmlParserCtxtPtr ctxt, const char *str,
             channel(data, "namespace ");
             break;
         case XML_FROM_DTD:
+        case XML_FROM_VALID:
             channel(data, "validity ");
             break;
         case XML_FROM_HTML:
@@ -449,6 +450,14 @@ __xmlRaiseError(xmlStructuredErrorFunc schannel,
     if ((domain == XML_FROM_PARSER) || (domain == XML_FROM_HTML) ||
         (domain == XML_FROM_DTD) || (domain == XML_FROM_NAMESPACE) ||
 	(domain == XML_FROM_IO)) {
+	ctxt = (xmlParserCtxtPtr) ctx;
+	if ((schannel == NULL) && (ctxt != NULL) && (ctxt->sax != NULL) &&
+	    (ctxt->sax->initialized == XML_SAX2_MAGIC))
+	    schannel = ctxt->sax->serror;
+    }
+    if ((domain == XML_FROM_VALID) &&
+        ((channel == xmlParserValidityError) ||
+	 (channel == xmlParserValidityWarning))) {
 	ctxt = (xmlParserCtxtPtr) ctx;
 	if ((schannel == NULL) && (ctxt != NULL) && (ctxt->sax != NULL) &&
 	    (ctxt->sax->initialized == XML_SAX2_MAGIC))

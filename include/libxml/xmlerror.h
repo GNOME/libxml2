@@ -29,7 +29,7 @@ typedef enum {
     XML_FROM_PARSER,	/* The XML parser */
     XML_FROM_TREE,	/* The tree module */
     XML_FROM_NAMESPACE,	/* The XML Namespace module */
-    XML_FROM_DTD,	/* The XML DTD validation */
+    XML_FROM_DTD,	/* The XML DTD validation with parser context*/
     XML_FROM_HTML,	/* The HTML parser */
     XML_FROM_MEMORY,	/* The memory allocator */
     XML_FROM_OUTPUT,	/* The serialization code */
@@ -47,7 +47,8 @@ typedef enum {
     XML_FROM_RELAXNGV,	/* The Relax-NG validator module */
     XML_FROM_CATALOG,	/* The Catalog module */
     XML_FROM_C14N,	/* The Canonicalization module */
-    XML_FROM_XSLT	/* The XSLT engine from libxslt */
+    XML_FROM_XSLT,	/* The XSLT engine from libxslt */
+    XML_FROM_VALID	/* The XML DTD validation with valid context */
 } xmlErrorDomain;
 
 /**

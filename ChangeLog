@@ -1,3 +1,11 @@
+Tue Oct 28 16:42:16 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am: cleanup
+	* error.c valid.c include/libxml/xmlerror.h: fixing bug #125653
+	  sometimes the error handlers can get a parser context on DTD
+	  errors, and sometime they don't. So be very careful when trying
+	  to grab those informations.
+
 Tue Oct 28 15:26:18 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: applied patch from Kasimier Buchcik which fixes a 

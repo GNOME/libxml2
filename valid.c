@@ -62,12 +62,12 @@ xmlVErrMemory(xmlValidCtxtPtr ctxt, const char *extra)
     }
     if (extra)
         __xmlRaiseError(NULL, channel, data,
-                        pctxt, NULL, XML_FROM_DTD, XML_ERR_NO_MEMORY,
+                        pctxt, NULL, XML_FROM_VALID, XML_ERR_NO_MEMORY,
                         XML_ERR_FATAL, NULL, 0, extra, NULL, NULL, 0, 0,
                         "Memory allocation failed : %s\n", extra);
     else
         __xmlRaiseError(NULL, channel, data,
-                        pctxt, NULL, XML_FROM_DTD, XML_ERR_NO_MEMORY,
+                        pctxt, NULL, XML_FROM_VALID, XML_ERR_NO_MEMORY,
                         XML_ERR_FATAL, NULL, 0, NULL, NULL, NULL, 0, 0,
                         "Memory allocation failed\n");
 }
@@ -95,12 +95,12 @@ xmlErrValid(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED, xmlParserErrors error,
     }
     if (extra)
         __xmlRaiseError(NULL, channel, data,
-                        pctxt, NULL, XML_FROM_DTD, error,
+                        pctxt, NULL, XML_FROM_VALID, error,
                         XML_ERR_ERROR, NULL, 0, extra, NULL, NULL, 0, 0,
                         msg, extra);
     else
         __xmlRaiseError(NULL, channel, data,
-                        pctxt, NULL, XML_FROM_DTD, error,
+                        pctxt, NULL, XML_FROM_VALID, error,
                         XML_ERR_ERROR, NULL, 0, NULL, NULL, NULL, 0, 0,
                         msg);
 }
@@ -118,7 +118,7 @@ xmlErrValid(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED, xmlParserErrors error,
  * Handle a validation error, provide contextual informations
  */
 static void
-xmlErrValidNodeNr(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
+xmlErrValidNodeNr(xmlValidCtxtPtr ctxt,
                 xmlNodePtr node, xmlParserErrors error,
                 const char *msg, const xmlChar * str1,
                 int int2, const xmlChar * str3)
@@ -134,7 +134,7 @@ xmlErrValidNodeNr(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
 	pctxt = ctxt->userData;
 	pctxt = ctxt->userData;
     }
-    __xmlRaiseError(schannel, channel, data, pctxt, node, XML_FROM_DTD, error,
+    __xmlRaiseError(schannel, channel, data, pctxt, node, XML_FROM_VALID, error,
                     XML_ERR_ERROR, NULL, 0,
                     (const char *) str1,
                     (const char *) str3,
@@ -168,7 +168,7 @@ xmlErrValidNode(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
 	pctxt = ctxt->userData;
 	pctxt = ctxt->userData;
     }
-    __xmlRaiseError(schannel, channel, data, pctxt, node, XML_FROM_DTD, error,
+    __xmlRaiseError(schannel, channel, data, pctxt, node, XML_FROM_VALID, error,
                     XML_ERR_ERROR, NULL, 0,
                     (const char *) str1,
                     (const char *) str1,
@@ -202,7 +202,7 @@ xmlErrValidWarning(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
 	pctxt = ctxt->userData;
 	pctxt = ctxt->userData;
     }
-    __xmlRaiseError(schannel, channel, data, pctxt, node, XML_FROM_DTD, error,
+    __xmlRaiseError(schannel, channel, data, pctxt, node, XML_FROM_VALID, error,
                     XML_ERR_WARNING, NULL, 0,
                     (const char *) str1,
                     (const char *) str1,

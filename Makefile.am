@@ -184,9 +184,7 @@ HTMLPushtests : testHTML$(EXEEXT)
 	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
 	      rm result.$$name.sax ; \
 	  fi ; fi ; done)
-	@echo "##"
 	@echo "## Push HTML SAX regression tests"
-	@echo "##"
 	-@(for i in $(srcdir)/test/HTML/* ; do \
 	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \

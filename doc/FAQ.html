@@ -1,9 +1,9 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-                      "http://www.w3.org/TR/REC-html40/loose.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
   <title>Libxml Frequently asqued Questions</title>
-  <meta name="GENERATOR" content="amaya V3.2.1">
+  <meta name="GENERATOR" content="amaya V4.1">
   <meta http-equiv="Content-Type" content="text/html">
 </head>
 
@@ -119,29 +119,8 @@ href="http://xmlsoft.org/messages/">http://xmlsoft.org/messages/</a></p>
         the official UNIX</a> specification. Here is one <a
         href="http://clisp.cons.org/~haible/packages-libiconv.html">implementation
         of the library</a> which source can be found <a
-        href="ftp://ftp.ilog.fr/pub/Users/haible/gnu/">here</a>. </li>
+        href="ftp://ftp.ilog.fr/pub/Users/haible/gnu/">here</a>.</li>
     </ul>
-  </li>
-  <li><em>The Makefile for the example gjobread is not generated</em>
-    <p>This is due to a circular dependancy in automake. No solution found so
-    far (if you know how to fix this the patch will be very welcome), that
-    failure won't affect the actually building of the xml library. You can
-    later go in and create the example Makefile by hand or reuse the
-    following:</p>
-    <pre>CC=gcc
-        CFLAGS=`xml-config --cflags`
-        LDFLAGS=`xml-config --libs`
-
-        all: gjobread
-
-        clean:
-        &lt;TAB&gt;@(rm -f gjobread gjobread.o)
-
-        gjobread.o : gjobread.c
-        &lt;TAB&gt;$(CC) $(CFLAGS) -c gjobread.c
-
-        gjobread: gjobread.o
-        &lt;TAB&gt;$(CC) -o gjobread gjobread.o $(LDFLAGS)</pre>
   </li>
   <li><em>libxml does not compile with HP-UX's optional ANSI-C compiler</em>
     <p>this is due to macro limitations. Try to add " -Wp,-H16800 -Ae" to the
@@ -161,6 +140,36 @@ href="http://xmlsoft.org/messages/">http://xmlsoft.org/messages/</a></p>
 
 <h2><a name="Developper">Developper</a> corner</h2>
 <ol>
+  <li>Extra nodes in the document:
+    <p><em>For a XML file as below:</em><br>
+    </p>
+    <p><code><em>&lt;?xml version="1.0"?&gt;</em></code></p>
+    <p><code><em>&lt;PLAN
+    xmlns="http://www.argus.ca/autotest/1.0/"&gt;</em></code></p>
+    <p><code><em>&lt;NODE CommFlag="0"/&gt;</em></code></p>
+    <p><code><em>&lt;NODE CommFlag="1"/&gt;</em></code></p>
+    <p><code><em>&lt;/PLAN&gt; </em></code></p>
+    <p><em>after parsing it with the function
+    pxmlDoc=xmlParseFile(...);</em></p>
+    <p><em>I want to the get the content of the first node (node with the
+    CommFlag="0")</em></p>
+    <p><em>so I did it as following;</em></p>
+    <p><code><em>xmlNodePtr pode;</em></code></p>
+    <p><code><em>pnode=pxmlDoc-&gt;children-&gt;children;</em></code></p>
+    <p><em>but it does not work. If I change it to</em></p>
+    <p><code><em>pnode=pxmlDoc-&gt;children-&gt;children-&gt;next;</em></code></p>
+    <p><em>then it works.  Can someone explain it to me.</em></p>
+    <p></p>
+    <p>In XML all characters in the content of the document are signifficant
+    <strong>including blanks and formatting line breaks</strong>.</p>
+    <p>The extra nodes you are wondering about are just that, text nodes with
+    the formatting spaces wich are part of the document but that people tend
+    to forget. There is a function <a
+    href="http://xmlsoft.org/html/libxml-parser.html">xmlKeepBlanksDefault
+    ()</a>  to remove those at parse time, but that's an heuristic, and its
+    use should be limited to case where you are sure there is no mixed-content
+    in the document.</p>
+  </li>
   <li><em>I get compilation errors of existing code like when accessing
     <strong>root</strong> or <strong>childs fields</strong> of nodes</em>
     <p>You are compiling code developped for libxml version 1 and using a
@@ -177,12 +186,9 @@ href="http://xmlsoft.org/messages/">http://xmlsoft.org/messages/</a></p>
     &gt;= 1.8.8 or libxml2(-devel) &gt;= 2.1.0</p>
   </li>
   <li><em>XPath implementation looks seriously broken</em>
-    <p>True, it's incomplete and the version released in 2.0.0 was nearly
-    unusable. A set of patches from <a href="http://www.picdar.co.uk/">Picdar
-    Technology</a> have been integrated in 2.1.0 fixing the most nasty bugs.
-    But there is still bugs and its incomplete. Patches and bug reports are
-    welcome. This will be worked out, XPath implementation is not abandonned,
-    just a momentary lack of time.</p>
+    <p>XPath implementation prior to 2.3.0 was really incomplete, upgrade to a
+    recent version, the implementation and debug of libxslt generated fixes
+    for most obvious problems. </p>
   </li>
   <li><em>The example provided in the web page does not compile</em>
     <p>It's hard to maintain the documentation in sync with the code

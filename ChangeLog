@@ -1,3 +1,9 @@
+Wed Sep 12 22:14:55 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* config.h.in configure.in libxml.spec.in include/libxml/Makefile.am
+	  libxml-2.0.pc.in: moved includes to includedir/libxml2/libxml,
+	  updated the configuration scripts systems accordingly
+
 Wed Sep 12 20:49:32 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in: preparing for 2.4.4

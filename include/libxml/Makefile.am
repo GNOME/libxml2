@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-xmlincdir = $(includedir)/libxml
+xmlincdir = $(includedir)/libxml2/libxml
 
 xmlinc_HEADERS = \
 		SAX.h \
@@ -32,6 +32,6 @@ xmlinc_HEADERS = \
 		catalog.h
 
 install-exec-hook:
-	$(mkinstalldirs) $(DESTDIR)$(xmlincdir) $(DESTDIR)$(xmlincdir)/libxml
+	$(mkinstalldirs) $(DESTDIR)$(xmlincdir)/libxml2 $(DESTDIR)$(xmlincdir)/libxml2/libxml
 
 EXTRA_DIST = xmlversion.h.in xmlwin32version.h.in

@@ -6,7 +6,7 @@ includedir=@includedir@
 
 Name: libXML
 Version: @VERSION@
-Description: libXML library.
+Description: libXML library version2.
 Requires:
 Libs: -L${libdir} -lxml2 @Z_LIBS@ @M_LIBS@ @LIBS@
-Cflags: @XML_INCLUDEDIR@ @XML_CFLAGS@
+Cflags: -I${includedir}/libxml2/libxml @XML_CFLAGS@

@@ -117,8 +117,8 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-, root, root)
 
 %doc AUTHORS ChangeLog NEWS README COPYING COPYING.LIB TODO
-%doc /usr/share/man/man1/xmllint.1*
-%doc /usr/share/man/man4/libxml.4*
+%doc %{prefix}/share/man/man1/xmllint.1*
+%doc %{prefix}/share/man/man4/libxml.4*
 
 %{prefix}/lib/lib*.so.*
 %{prefix}/bin/xmllint
@@ -136,5 +136,4 @@ rm -rf $RPM_BUILD_ROOT
 %{prefix}/include/*
 %{prefix}/bin/xml2-config
 %{prefix}/share/aclocal/libxml.m4
-# I'm not certain if this should be included in the distribution or not.
-#%{prefix}/lib/pkgconfig/libxml-2.0.pc
+%{prefix}/lib/pkgconfig/libxml-2.0.pc

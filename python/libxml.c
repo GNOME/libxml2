@@ -1351,20 +1351,21 @@ libxml_xmlNodeGetNs(PyObject *self, PyObject *args) {
  ************************************************************************/
 static PyMethodDef libxmlMethods[] = {
 #include "libxml2-export.c"
-    { "name", libxml_name, METH_VARARGS },
-    { "children", libxml_children, METH_VARARGS },
-    { "properties", libxml_properties, METH_VARARGS },
-    { "last", libxml_last, METH_VARARGS },
-    { "prev", libxml_prev, METH_VARARGS },
-    { "next", libxml_next, METH_VARARGS },
-    { "parent", libxml_parent, METH_VARARGS },
-    { "type", libxml_type, METH_VARARGS },
-    { "doc", libxml_doc, METH_VARARGS },
+    { "name", libxml_name, METH_VARARGS, NULL },
+    { "children", libxml_children, METH_VARARGS, NULL },
+    { "properties", libxml_properties, METH_VARARGS, NULL },
+    { "last", libxml_last, METH_VARARGS, NULL },
+    { "prev", libxml_prev, METH_VARARGS, NULL },
+    { "next", libxml_next, METH_VARARGS, NULL },
+    { "parent", libxml_parent, METH_VARARGS, NULL },
+    { "type", libxml_type, METH_VARARGS, NULL },
+    { "doc", libxml_doc, METH_VARARGS, NULL },
+    { NULL, NULL, NULL, NULL}
 };
 
-void init_libxml(void) {
+void initlibxml2mod(void) {
     PyObject *m;
-    m = Py_InitModule("_libxml", libxmlMethods);
+    m = Py_InitModule("libxml2mod", libxmlMethods);
     libxml_xmlErrorInitialize();
 }
 

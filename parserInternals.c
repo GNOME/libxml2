@@ -1074,7 +1074,7 @@ xmlParserInputShrink(xmlParserInputPtr in) {
     xmlParserInputBufferRead(in->buf, 2 * INPUT_CHUNK);
     if (in->base != in->buf->buffer->content) {
         /*
-	 * the buffer has been ereallocated
+	 * the buffer has been reallocated
 	 */
 	indx = in->cur - in->base;
 	in->base = in->buf->buffer->content;

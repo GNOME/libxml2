@@ -143,7 +143,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %doc AUTHORS ChangeLog NEWS README Copyright
 %{prefix}/lib/python*/site-packages/libxml2.py
-%{prefix}/lib/python*/site-packages/_libxml.so
+%{prefix}/lib/python*/site-packages/libxml2mod.so
 %doc python/TODO
 %doc python/libxml2class.txt
 %doc python/tests/*.py

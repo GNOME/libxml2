@@ -378,7 +378,8 @@ def print_function_wrapper(name, output, export, include):
     include.write("PyObject * ")
     include.write("libxml_%s(PyObject *self, PyObject *args);\n" % (name))
 
-    export.write("    { \"%s\", libxml_%s, METH_VARARGS },\n" % (name, name))
+    export.write("    { \"%s\", libxml_%s, METH_VARARGS, NULL },\n" %
+                 (name, name))
 
     if file == "python":
         # Those have been manually generated
@@ -726,7 +727,7 @@ if function_classes.has_key("None"):
 	    classes.write("    ret = ");
 	else:
 	    classes.write("    ");
-	classes.write("_libxml.%s(" % name)
+	classes.write("libxml2mod.%s(" % name)
 	n = 0
 	for arg in args:
 	    if n != 0:
@@ -775,7 +776,7 @@ for classname in classes_list:
 	if classes_destructors.has_key(classname):
 	    classes.write("    def __del__(self):\n")
 	    classes.write("        if self._o != None:\n")
-	    classes.write("            _libxml.%s(self._o)\n" %
+	    classes.write("            libxml2mod.%s(self._o)\n" %
 	                  classes_destructors[classname]);
 	    classes.write("        self._o = None\n\n");
 	flist = function_classes[classname]
@@ -816,7 +817,7 @@ for classname in classes_list:
 	        classes.write("        ret = ");
 	    else:
 	        classes.write("        ");
-	    classes.write("_libxml.%s(" % name)
+	    classes.write("libxml2mod.%s(" % name)
 	    n = 0
 	    for arg in args:
 	        if n != 0:

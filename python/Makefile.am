@@ -1,11 +1,14 @@
+# Makefile for libxml2 python library
+AUTOMAKE_OPTIONS = 1.4 foreign
+
 SUBDIRS= . tests
 
-LIBS=-L../.libs -L.. $(XML_LIBS)
-INCLUDES=-I/usr/include/python$(PYTHON_VERSION) -I$(PYTHON_INCLUDES) -I$(top_srcdir)/include
-SHCFLAGS=$(INCLUDES) -Wall -fPIC -g
-LINK_FLAGS= -shared
-DOCS_DIR = $(prefix)/share/doc/libxml2-python-$(LIBXML_VERSION)
+INCLUDES = \
+	-I/usr/include/python$(PYTHON_VERSION) \
+	-I$(PYTHON_INCLUDES) \
+	-I$(top_srcdir)/include
 
+DOCS_DIR = $(prefix)/share/doc/libxml2-python-$(LIBXML_VERSION)
 DOCS = TODO libxml2class.txt
 
 EXTRA_DIST = 			\
@@ -18,30 +21,36 @@ EXTRA_DIST = 			\
 	$(DOCS)
 
 if WITH_PYTHON
-all: _libxml.so libxml2.py
+mylibs = \
+	$(top_builddir)/libxml2.la
+
+all: libxml2mod.so libxml2.py
+
+LDADD = -lxml2
+CFLAGS = -Wall -g
+
+pythondir = $(prefix)/lib/python${PYTHON_VERSION}/site-packages
+python_PROGRAMS = libxml2mod.so
+
+libxml2mod_so_SOURCES =
+libxml2mod_so_LDFLAGS = $(mylibs) $(LIBS) -shared -Wl,-soname,libxml2mod.so
+
+noinst_LTLIBRARIES = libxmlmodule.la
+libxmlmodule_la_SOURCES = libxml.c types.c libxml2-py.c
+
+libxml2mod.so: $(libxmlmodule_la_OBJECTS)
+	$(LINK) -o $@ $(libxmlmodule_la_OBJECTS) $(libxml2mod_so_LDFLAGS)
+
 
 libxml2.py: $(srcdir)/libxml.py libxml2class.py
 	cat $(srcdir)/libxml.py libxml2class.py > libxml2.py
 
-_libxml.so: libxml.o libxml2-py.o types.o
-	$(CC) $(LINK_FLAGS) libxml.o libxml2-py.o types.o $(LIBS) -o _libxml.so
-
 install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(PYTHON_SITE_PACKAGES)
 	-@INSTALL@ -m 0644 libxml2.py $(DESTDIR)$(PYTHON_SITE_PACKAGES)
-	-@INSTALL@ -m 0755 _libxml.so $(DESTDIR)$(PYTHON_SITE_PACKAGES)
 	$(mkinstalldirs) $(DESTDIR)$(DOCS_DIR)
 	-@(for doc in $(DOCS) ; \
 	   do @INSTALL@ -m 0644 $$doc $(DESTDIR)$(DOCS_DIR) ; done)
-
-libxml.o: libxml.c libxml2-export.c libxml_wrap.h
-	$(CC) $(SHCFLAGS) -c -o libxml.o $(srcdir)/libxml.c
-
-types.o: types.c libxml_wrap.h
-	$(CC) $(SHCFLAGS) -c -o types.o $(srcdir)/types.c
-
-libxml2-py.o: libxml2-py.c libxml2-py.h libxml_wrap.h
-	$(CC) $(SHCFLAGS) -c -o libxml2-py.o $(srcdir)/libxml2-py.c
 
 GENERATE = generator.py
 API_DESC = $(top_srcdir)/doc/libxml2-api.xml $(srcdir)/libxml2-python-api.xml

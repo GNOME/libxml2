@@ -4349,7 +4349,7 @@ xmlValidateOneElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 		    }
 		    if (cont == NULL) {
 			VERROR(ctxt->userData,
-	       "Element %s is not declared in %s list of possible childs\n",
+	       "Element %s is not declared in %s list of possible children\n",
 			       name, elem->name);
 			ret = 0;
 		    }
@@ -4935,7 +4935,7 @@ xmlValidGetValidElements(xmlNode *prev, xmlNode *next, const xmlChar **list,
     int nb_valid_elements = 0;
     const xmlChar *elements[256];
     int nb_elements = 0, i;
-    xmlChar *name;
+    const xmlChar *name;
     
     xmlNode *ref_node;
     xmlNode *parent;

@@ -1,4 +1,4 @@
-import _libxml
+import libxml2mod
 
 #
 # This class is the ancestor of all the Node classes. It provides
@@ -15,43 +15,43 @@ class xmlCore:
 
     def __getattr__(self, attr):
         if attr == "parent":
-	    ret = _libxml.parent(self._o)
+	    ret = libxml2mod.parent(self._o)
 	    if ret == None:
 	        return None
 	    return xmlNode(_obj=ret)
         elif attr == "properties":
-	    ret = _libxml.properties(self._o)
+	    ret = libxml2mod.properties(self._o)
 	    if ret == None:
 	        return None
 	    return xmlAttr(_obj=ret)
 	elif attr == "children":
-	    ret = _libxml.children(self._o)
+	    ret = libxml2mod.children(self._o)
 	    if ret == None:
 		return None
 	    return xmlNode(_obj=ret)
 	elif attr == "last":
-	    ret = _libxml.last(self._o)
+	    ret = libxml2mod.last(self._o)
 	    if ret == None:
 		return None
 	    return xmlNode(_obj=ret)
 	elif attr == "next":
-	    ret = _libxml.next(self._o)
+	    ret = libxml2mod.next(self._o)
 	    if ret == None:
 		return None
 	    return xmlNode(_obj=ret)
 	elif attr == "prev":
-	    ret = _libxml.prev(self._o)
+	    ret = libxml2mod.prev(self._o)
 	    if ret == None:
 		return None
 	    return xmlNode(_obj=ret)
 	elif attr == "content":
-	    return _libxml.xmlNodeGetContent(self._o)
+	    return libxml2mod.xmlNodeGetContent(self._o)
 	elif attr == "name":
-	    return _libxml.name(self._o)
+	    return libxml2mod.name(self._o)
 	elif attr == "type":
-	    return _libxml.type(self._o)
+	    return libxml2mod.type(self._o)
 	elif attr == "doc":
-	    ret = _libxml.doc(self._o)
+	    ret = libxml2mod.doc(self._o)
 	    if ret == None:
 		return None
 	    return xmlDoc(_doc=ret)
@@ -61,62 +61,62 @@ class xmlCore:
 	# Those are common attributes to nearly all type of nodes
 	#
     def get_parent(self):
-	ret = _libxml.parent(self._o)
+	ret = libxml2mod.parent(self._o)
 	if ret == None:
 	    return None
 	return xmlNode(_obj=ret)
     def get_children(self):
-	ret = _libxml.children(self._o)
+	ret = libxml2mod.children(self._o)
 	if ret == None:
 	    return None
 	return xmlNode(_obj=ret)
     def get_last(self):
-	ret = _libxml.last(self._o)
+	ret = libxml2mod.last(self._o)
 	if ret == None:
 	    return None
 	return xmlNode(_obj=ret)
     def get_next(self):
-	ret = _libxml.next(self._o)
+	ret = libxml2mod.next(self._o)
 	if ret == None:
 	    return None
 	return xmlNode(_obj=ret)
     def get_properties(self):
-	ret = _libxml.properties(self._o)
+	ret = libxml2mod.properties(self._o)
 	if ret == None:
 	    return None
 	return xmlAttr(_obj=ret)
     def get_doc(self):
-	ret = _libxml.doc(self._o)
+	ret = libxml2mod.doc(self._o)
 	if ret == None:
 	    return None
 	return xmlDoc(_obj=ret)
     def get_prev(self):
-	ret = _libxml.prev(self._o)
+	ret = libxml2mod.prev(self._o)
 	if ret == None:
 	    return None
 	return xmlNode(_obj=ret)
     def get_content(self):
-	return _libxml.xmlNodeGetContent(self._o)
+	return libxml2mod.xmlNodeGetContent(self._o)
     def getContent(self):
-	return _libxml.xmlNodeGetContent(self._o)
+	return libxml2mod.xmlNodeGetContent(self._o)
     def get_name(self):
-	return _libxml.name(self._o)
+	return libxml2mod.name(self._o)
     def get_type(self):
-	return _libxml.type(self._o)
+	return libxml2mod.type(self._o)
     def get_doc(self):
-	ret = _libxml.doc(self._o)
+	ret = libxml2mod.doc(self._o)
 	if ret == None:
 	    return None
 	return xmlDoc(_doc=ret)
     def free(self):
-        _libxml.freeDoc(self._o)
+        libxml2mod.freeDoc(self._o)
 	    
 #
 # converters to present a nicer view of the XPath returns
 #
 def nodeWrap(o):
     # TODO try to cast to the most appropriate node class
-    name = _libxml.name(o)
+    name = libxml2mod.name(o)
     if name == "element" or name == "text":
         return xmlNode(_obj=o)
     if name == "attribute":
@@ -145,7 +145,7 @@ def xpathObjectRet(o):
 # register an XPath function
 #
 def registerXPathFunction(ctxt, name, ns_uri, f):
-    ret = _libxml.xmlRegisterXPathFunction(ctxt, name, ns_uri, f)
+    ret = libxml2mod.xmlRegisterXPathFunction(ctxt, name, ns_uri, f)
 
 #
 # Everything below this point is automatically generated

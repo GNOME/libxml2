@@ -1,3 +1,12 @@
+Sat Feb  9 18:59:23 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* parserInternals.c valid.c: Justin Fletcher found some parts
+	  of the code needing cleanup
+	* libxml.spec.in python/Makefile.am python/generator.py
+	  python/libxml.c python/libxml.py: Fixed the python Makefiles
+	  corrected a bug showing up on ia64, changed the name of the
+	  python internal module too
+
 Fri Feb  8 15:19:28 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am: applied patch from Andris Pavenis for binary

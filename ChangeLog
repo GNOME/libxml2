@@ -1,3 +1,7 @@
+Wed Aug 22 02:28:28 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: xmlSAXParseDoc() fixing a memleak on ctxt->sax
+
 Tue Aug 14 01:01:42 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* configure.in: released 1.8.15

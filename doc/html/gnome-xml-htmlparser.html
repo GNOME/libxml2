@@ -4,7 +4,7 @@
 >HTMLparser</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.33"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.44"><LINK
 REL="HOME"
 TITLE="Gnome XML Library Reference Manual"
 HREF="book1.html"><LINK
@@ -20,6 +20,9 @@ HREF="gnome-xml-htmltree.html"></HEAD
 ><BODY
 BGCOLOR="#FFFFFF"
 TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -111,19 +114,22 @@ SIZE="3"
 ></TABLE
 ></DIV
 ><H1
->HTMLparser</H1
+><A
+NAME="GNOME-XML-HTMLPARSER"
+>HTMLparser</A
+></H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN8848"
+NAME="AEN7286"
 ></A
 ><H2
 >Name</H2
->HTMLparser &#8212; </DIV
+>HTMLparser&nbsp;--&nbsp;</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN8851"
+NAME="AEN7289"
 ></A
 ><H2
 >Synopsis</H2
@@ -174,25 +180,9 @@ typedef     <A
 HREF="gnome-xml-htmlparser.html#HTMLNODEPTR"
 >htmlNodePtr</A
 >;
-struct      <A
-HREF="gnome-xml-htmlparser.html#HTMLELEMDESC"
->htmlElemDesc</A
->;
-typedef     <A
-HREF="gnome-xml-htmlparser.html#HTMLELEMDESCPTR"
->htmlElemDescPtr</A
->;
-struct      <A
-HREF="gnome-xml-htmlparser.html#HTMLENTITYDESC"
->htmlEntityDesc</A
->;
-typedef     <A
-HREF="gnome-xml-htmlparser.html#HTMLENTITYDESCPTR"
->htmlEntityDescPtr</A
->;
-<A
-HREF="gnome-xml-htmlparser.html#HTMLELEMDESCPTR"
->htmlElemDescPtr</A
+<GTKDOCLINK
+HREF="HTMLELEMDESCPTR"
+>htmlElemDescPtr</GTKDOCLINK
 > <A
 HREF="gnome-xml-htmlparser.html#HTMLTAGLOOKUP"
 >htmlTagLookup</A
@@ -200,9 +190,9 @@ HREF="gnome-xml-htmlparser.html#HTMLTAGLOOKUP"
 HREF="gnome-xml-tree.html#XMLCHAR"
 >xmlChar</A
 > *tag);
-<A
-HREF="gnome-xml-htmlparser.html#HTMLENTITYDESCPTR"
->htmlEntityDescPtr</A
+<GTKDOCLINK
+HREF="HTMLENTITYDESCPTR"
+>htmlEntityDescPtr</GTKDOCLINK
 > <A
 HREF="gnome-xml-htmlparser.html#HTMLENTITYLOOKUP"
 >htmlEntityLookup</A
@@ -210,35 +200,9 @@ HREF="gnome-xml-htmlparser.html#HTMLENTITYLOOKUP"
 HREF="gnome-xml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name);
-int         <A
-HREF="gnome-xml-htmlparser.html#HTMLISAUTOCLOSED"
->htmlIsAutoClosed</A
->                (<A
-HREF="gnome-xml-htmlparser.html#HTMLDOCPTR"
->htmlDocPtr</A
-> doc,
-                                             <A
-HREF="gnome-xml-htmlparser.html#HTMLNODEPTR"
->htmlNodePtr</A
-> elem);
-int         <A
-HREF="gnome-xml-htmlparser.html#HTMLAUTOCLOSETAG"
->htmlAutoCloseTag</A
->                (<A
-HREF="gnome-xml-htmlparser.html#HTMLDOCPTR"
->htmlDocPtr</A
-> doc,
-                                             const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
->xmlChar</A
-> *name,
-                                             <A
-HREF="gnome-xml-htmlparser.html#HTMLNODEPTR"
->htmlNodePtr</A
-> elem);
-<A
-HREF="gnome-xml-htmlparser.html#HTMLENTITYDESCPTR"
->htmlEntityDescPtr</A
+<GTKDOCLINK
+HREF="HTMLENTITYDESCPTR"
+>htmlEntityDescPtr</GTKDOCLINK
 > <A
 HREF="gnome-xml-htmlparser.html#HTMLPARSEENTITYREF"
 >htmlParseEntityRef</A
@@ -311,42 +275,7 @@ HREF="gnome-xml-htmlparser.html#HTMLDOCPTR"
 HREF="gnome-xml-htmlparser.html#HTMLPARSEFILE"
 >htmlParseFile</A
 >                   (const char *filename,
-                                             const char *encoding);
-void        <A
-HREF="gnome-xml-htmlparser.html#HTMLFREEPARSERCTXT"
->htmlFreeParserCtxt</A
->              (<A
-HREF="gnome-xml-htmlparser.html#HTMLPARSERCTXTPTR"
->htmlParserCtxtPtr</A
-> ctxt);
-<A
-HREF="gnome-xml-htmlparser.html#HTMLPARSERCTXTPTR"
->htmlParserCtxtPtr</A
-> <A
-HREF="gnome-xml-htmlparser.html#HTMLCREATEPUSHPARSERCTXT"
->htmlCreatePushParserCtxt</A
->  (<A
-HREF="gnome-xml-htmlparser.html#HTMLSAXHANDLERPTR"
->htmlSAXHandlerPtr</A
-> sax,
-                                             void *user_data,
-                                             const char *chunk,
-                                             int size,
-                                             const char *filename,
-                                             <A
-HREF="gnome-xml-encoding.html#XMLCHARENCODING"
->xmlCharEncoding</A
-> enc);
-int         <A
-HREF="gnome-xml-htmlparser.html#HTMLPARSECHUNK"
->htmlParseChunk</A
->                  (<A
-HREF="gnome-xml-htmlparser.html#HTMLPARSERCTXTPTR"
->htmlParserCtxtPtr</A
-> ctxt,
-                                             const char *chunk,
-                                             int size,
-                                             int terminate);</PRE
+                                             const char *encoding);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -354,7 +283,7 @@ HREF="gnome-xml-htmlparser.html#HTMLPARSERCTXTPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN8908"
+NAME="AEN7327"
 ></A
 ><H2
 >Description</H2
@@ -364,364 +293,131 @@ NAME="AEN8908"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN8911"
+NAME="AEN7330"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8913"
+NAME="AEN7332"
 ></A
 ><H3
 ><A
 NAME="HTMLPARSERCTXT"
 ></A
 >htmlParserCtxt</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlParserCtxt htmlParserCtxt;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8918"
+NAME="AEN7336"
 ></A
 ><H3
 ><A
 NAME="HTMLPARSERCTXTPTR"
 ></A
 >htmlParserCtxtPtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlParserCtxtPtr htmlParserCtxtPtr;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8923"
+NAME="AEN7340"
 ></A
 ><H3
 ><A
 NAME="HTMLPARSERNODEINFO"
 ></A
 >htmlParserNodeInfo</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlParserNodeInfo htmlParserNodeInfo;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8928"
+NAME="AEN7344"
 ></A
 ><H3
 ><A
 NAME="HTMLSAXHANDLER"
 ></A
 >htmlSAXHandler</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlSAXHandler htmlSAXHandler;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8933"
+NAME="AEN7348"
 ></A
 ><H3
 ><A
 NAME="HTMLSAXHANDLERPTR"
 ></A
 >htmlSAXHandlerPtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlSAXHandlerPtr htmlSAXHandlerPtr;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8938"
+NAME="AEN7352"
 ></A
 ><H3
 ><A
 NAME="HTMLPARSERINPUT"
 ></A
 >htmlParserInput</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlParserInput htmlParserInput;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8943"
+NAME="AEN7356"
 ></A
 ><H3
 ><A
 NAME="HTMLPARSERINPUTPTR"
 ></A
 >htmlParserInputPtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlParserInputPtr htmlParserInputPtr;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8948"
+NAME="AEN7360"
 ></A
 ><H3
 ><A
 NAME="HTMLDOCPTR"
 ></A
 >htmlDocPtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlDocPtr htmlDocPtr;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8953"
+NAME="AEN7364"
 ></A
 ><H3
 ><A
 NAME="HTMLNODEPTR"
 ></A
 >htmlNodePtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlNodePtr htmlNodePtr;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8958"
-></A
-><H3
-><A
-NAME="HTMLELEMDESC"
-></A
->struct htmlElemDesc</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->struct htmlElemDesc {
-    const char *name;	/* The tag name */
-    int startTag;       /* Whether the start tag can be implied */
-    int endTag;         /* Whether the end tag can be implied */
-    int empty;          /* Is this an empty element ? */
-    int depr;           /* Is this a deprecated element ? */
-    int dtd;            /* 1: only in Loose DTD, 2: only Frameset one */
-    const char *desc;   /* the description */
-};</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN8963"
-></A
-><H3
-><A
-NAME="HTMLELEMDESCPTR"
-></A
->htmlElemDescPtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef htmlElemDesc *htmlElemDescPtr;</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN8968"
-></A
-><H3
-><A
-NAME="HTMLENTITYDESC"
-></A
->struct htmlEntityDesc</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->struct htmlEntityDesc {
-    int value;		/* the UNICODE value for the character */
-    const char *name;	/* The entity name */
-    const char *desc;   /* the description */
-};</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN8973"
-></A
-><H3
-><A
-NAME="HTMLENTITYDESCPTR"
-></A
->htmlEntityDescPtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef htmlEntityDesc *htmlEntityDescPtr;</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN8978"
+NAME="AEN7368"
 ></A
 ><H3
 ><A
@@ -737,9 +433,9 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
-><A
-HREF="gnome-xml-htmlparser.html#HTMLELEMDESCPTR"
->htmlElemDescPtr</A
+><GTKDOCLINK
+HREF="HTMLELEMDESCPTR"
+>htmlElemDescPtr</GTKDOCLINK
 > htmlTagLookup               (const <A
 HREF="gnome-xml-tree.html#XMLCHAR"
 >xmlChar</A
@@ -777,7 +473,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  The tag name</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -792,7 +488,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the related htmlElemDescPtr or NULL if not found.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -802,7 +498,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8999"
+NAME="AEN7389"
 ></A
 ><H3
 ><A
@@ -818,9 +514,9 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
-><A
-HREF="gnome-xml-htmlparser.html#HTMLENTITYDESCPTR"
->htmlEntityDescPtr</A
+><GTKDOCLINK
+HREF="HTMLENTITYDESCPTR"
+>htmlEntityDescPtr</GTKDOCLINK
 > htmlEntityLookup          (const <A
 HREF="gnome-xml-tree.html#XMLCHAR"
 >xmlChar</A
@@ -860,7 +556,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the entity name</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -875,7 +571,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the associated htmlEntityDescPtr if found, NULL otherwise.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -885,231 +581,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9021"
-></A
-><H3
-><A
-NAME="HTMLISAUTOCLOSED"
-></A
->htmlIsAutoClosed ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         htmlIsAutoClosed                (<A
-HREF="gnome-xml-htmlparser.html#HTMLDOCPTR"
->htmlDocPtr</A
-> doc,
-                                             <A
-HREF="gnome-xml-htmlparser.html#HTMLNODEPTR"
->htmlNodePtr</A
-> elem);</PRE
-></TD
-></TR
-></TABLE
-><P
->The HTmL DtD allows a tag to implicitely close other tags.
-The list is kept in htmlStartClose array. This function checks
-if a tag is autoclosed by one of it's child</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->doc</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the HTML document</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->elem</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the HTML element</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><I
-CLASS="EMPHASIS"
->Returns</I
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->1 if autoclosed, 0 otherwise</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN9046"
-></A
-><H3
-><A
-NAME="HTMLAUTOCLOSETAG"
-></A
->htmlAutoCloseTag ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         htmlAutoCloseTag                (<A
-HREF="gnome-xml-htmlparser.html#HTMLDOCPTR"
->htmlDocPtr</A
-> doc,
-                                             const <A
-HREF="gnome-xml-tree.html#XMLCHAR"
->xmlChar</A
-> *name,
-                                             <A
-HREF="gnome-xml-htmlparser.html#HTMLNODEPTR"
->htmlNodePtr</A
-> elem);</PRE
-></TD
-></TR
-></TABLE
-><P
->The HTmL DtD allows a tag to implicitely close other tags.
-The list is kept in htmlStartClose array. This function checks
-if the element or one of it's children would autoclose the
-given tag.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->doc</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the HTML document</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->name</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  The tag name</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->elem</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the HTML element</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><I
-CLASS="EMPHASIS"
->Returns</I
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->1 if autoclose, 0 otherwise</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN9076"
+NAME="AEN7411"
 ></A
 ><H3
 ><A
@@ -1125,9 +597,9 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
-><A
-HREF="gnome-xml-htmlparser.html#HTMLENTITYDESCPTR"
->htmlEntityDescPtr</A
+><GTKDOCLINK
+HREF="HTMLENTITYDESCPTR"
+>htmlEntityDescPtr</GTKDOCLINK
 > htmlParseEntityRef        (<A
 HREF="gnome-xml-htmlparser.html#HTMLPARSERCTXTPTR"
 >htmlParserCtxtPtr</A
@@ -1171,7 +643,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an HTML parser context</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1188,7 +660,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  location to store the entity name</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1203,8 +675,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the associated htmlEntityDescPtr if found, or NULL otherwise,
-if non-NULL *str will have to be freed by the caller.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -1214,7 +685,7 @@ if non-NULL *str will have to be freed by the caller.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9103"
+NAME="AEN7438"
 ></A
 ><H3
 ><A
@@ -1273,7 +744,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an HTML parser context</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1288,7 +759,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the value parsed (as an int)</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -1298,7 +769,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9125"
+NAME="AEN7460"
 ></A
 ><H3
 ><A
@@ -1355,7 +826,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an HTML parser context</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -1365,7 +836,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9143"
+NAME="AEN7478"
 ></A
 ><H3
 ><A
@@ -1429,7 +900,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a pointer to an array of xmlChar</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1446,7 +917,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a free form C string describing the HTML document encoding, or NULL</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1463,7 +934,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the SAX handler block</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1480,7 +951,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> if using SAX, this pointer will be provided on callbacks. </TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1495,7 +966,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the resulting document tree</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -1505,7 +976,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9177"
+NAME="AEN7512"
 ></A
 ><H3
 ><A
@@ -1562,7 +1033,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a pointer to an array of xmlChar</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1579,7 +1050,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a free form C string describing the HTML document encoding, or NULL</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1594,7 +1065,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the resulting document tree</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -1604,7 +1075,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9202"
+NAME="AEN7537"
 ></A
 ><H3
 ><A
@@ -1666,7 +1137,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the filename</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1683,7 +1154,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a free form C string describing the HTML document encoding, or NULL</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1700,7 +1171,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the SAX handler block</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1717,7 +1188,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> if using SAX, this pointer will be provided on callbacks. </TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1732,7 +1203,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the resulting document tree</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -1742,7 +1213,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9235"
+NAME="AEN7570"
 ></A
 ><H3
 ><A
@@ -1797,7 +1268,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the filename</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1814,7 +1285,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a free form C string describing the HTML document encoding, or NULL</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1829,390 +1300,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the resulting document tree</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN9259"
-></A
-><H3
-><A
-NAME="HTMLFREEPARSERCTXT"
-></A
->htmlFreeParserCtxt ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        htmlFreeParserCtxt              (<A
-HREF="gnome-xml-htmlparser.html#HTMLPARSERCTXTPTR"
->htmlParserCtxtPtr</A
-> ctxt);</PRE
-></TD
-></TR
-></TABLE
-><P
->Free all the memory used by a parser context. However the parsed
-document in ctxt-&gt;myDoc is not freed.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctxt</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  an HTML parser context</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN9275"
-></A
-><H3
-><A
-NAME="HTMLCREATEPUSHPARSERCTXT"
-></A
->htmlCreatePushParserCtxt ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><A
-HREF="gnome-xml-htmlparser.html#HTMLPARSERCTXTPTR"
->htmlParserCtxtPtr</A
-> htmlCreatePushParserCtxt  (<A
-HREF="gnome-xml-htmlparser.html#HTMLSAXHANDLERPTR"
->htmlSAXHandlerPtr</A
-> sax,
-                                             void *user_data,
-                                             const char *chunk,
-                                             int size,
-                                             const char *filename,
-                                             <A
-HREF="gnome-xml-encoding.html#XMLCHARENCODING"
->xmlCharEncoding</A
-> enc);</PRE
-></TD
-></TR
-></TABLE
-><P
->Create a parser context for using the HTML parser in push mode
-To allow content encoding detection, <TT
-CLASS="PARAMETER"
-><I
->size</I
-></TT
-> should be &gt;= 4
-The value of <TT
-CLASS="PARAMETER"
-><I
->filename</I
-></TT
-> is used for fetching external entities
-and error/warning reports.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->sax</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  a SAX handler</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->user_data</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  The user data returned on SAX callbacks</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->chunk</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  a pointer to an array of chars</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->size</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  number of chars in the array</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->filename</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  an optional file name or URI</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->enc</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  an optional encoding</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><I
-CLASS="EMPHASIS"
->Returns</I
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the new parser context or NULL</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN9319"
-></A
-><H3
-><A
-NAME="HTMLPARSECHUNK"
-></A
->htmlParseChunk ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         htmlParseChunk                  (<A
-HREF="gnome-xml-htmlparser.html#HTMLPARSERCTXTPTR"
->htmlParserCtxtPtr</A
-> ctxt,
-                                             const char *chunk,
-                                             int size,
-                                             int terminate);</PRE
-></TD
-></TR
-></TABLE
-><P
->Parse a Chunk of memory</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctxt</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  an XML parser context</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->chunk</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  an char array</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->size</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the size in byte of the chunk</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->terminate</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  last chunk indicator</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><I
-CLASS="EMPHASIS"
->Returns</I
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->zero if no error, the xmlParserErrors otherwise.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P

@@ -44,7 +44,7 @@ xmlParserInputBufferPtr
 	xmlAllocParserInputBuffer		(xmlCharEncoding enc);
 
 xmlParserInputBufferPtr
-	xmlParserInputBufferCreateFilename	(const char *filename,
+	xmlParserInputBufferCreateFilename	(const char *URI,
                                                  xmlCharEncoding enc);
 xmlParserInputBufferPtr
 	xmlParserInputBufferCreateFile		(FILE *file,

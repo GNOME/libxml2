@@ -67,7 +67,7 @@ xlinkGetDefaultHandler(void) {
 
 
 /**
- * xlinkGetDefaultHandler:
+ * xlinkSetDefaultHandler:
  * @handler:  the new value for the xlink handler block
  *
  * Set the default xlink handlers

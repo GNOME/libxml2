@@ -23,6 +23,8 @@ TODO:
 - Handle undefined namespaces in entity contents better ... at least
   issue a warning
 - General checking of DTD validation in presence of namespaces ... hairy
+- fix --disable-corba configure switch handling, and use XML_WITHOUT_CORBA
+  not WITHOUT_CORBA flag
 
 TODO:
 =====

@@ -507,7 +507,6 @@ void		xmlTextConcat		(xmlNodePtr node,
 					 int len);
 void		xmlFreeNodeList		(xmlNodePtr cur);
 void		xmlFreeNode		(xmlNodePtr cur);
-int		xmlRemoveProp		(xmlAttrPtr cur);
 
 /*
  * Namespaces
@@ -593,8 +592,8 @@ void		xmlDocDumpMemory	(xmlDocPtr cur,
 void		xmlDocDump		(FILE *f,
 					 xmlDocPtr cur);
 void		xmlElemDump		(FILE *f,
-					 xmlDocPtr cur,
-					 xmlNodePtr elem);
+					 xmlDocPtr doc,
+					 xmlNodePtr cur);
 int		xmlSaveFile		(const char *filename,
 					 xmlDocPtr cur);
 

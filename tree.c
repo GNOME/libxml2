@@ -2282,17 +2282,13 @@ xmlStaticCopyNodeList(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent) {
 
     while (node != NULL) {
         q = xmlStaticCopyNode(node, doc, parent, 1);
-	if (parent == NULL) {
-	    if (ret == NULL) ret = q;
+	if (ret == NULL) {
+	    q->prev = NULL;
+	    ret = p = q;
 	} else {
-	    if (ret == NULL) {
-		q->prev = NULL;
-		ret = p = q;
-	    } else {
-		p->next = q;
-		q->prev = p;
-		p = q;
-	    }
+	    p->next = q;
+	    q->prev = p;
+	    p = q;
 	}
 	node = node->next;
     }
@@ -2415,7 +2411,8 @@ xmlCopyDoc(xmlDocPtr doc, int recursive) {
     if (doc->oldNs != NULL)
         ret->oldNs = xmlCopyNamespaceList(doc->oldNs);
     if (doc->children != NULL)
-        ret->children = xmlStaticCopyNodeList(doc->children, ret, NULL);
+        ret->children = xmlStaticCopyNodeList(doc->children, ret,
+		                              (xmlNodePtr)ret);
     return(ret);
 }
 
@@ -3696,7 +3693,7 @@ xmlBufferCreateSize(size_t size) {
 }
 
 /**
- * xmlBufferAllocationScheme:
+ * xmlBufferSetAllocationScheme:
  * @buf:  the buffer to free
  * @scheme:  allocation scheme to use
  *
@@ -4426,7 +4423,7 @@ xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
 
 /**
  * xmlElemDump:
- * @buf:  the XML buffer output
+ * @f:  the FILE * for the output
  * @doc:  the document
  * @cur:  the current node
  *

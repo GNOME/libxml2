@@ -1,3 +1,15 @@
+Mon Apr 24 13:30:13 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* tree.h: removed extraneous xmlRemoveProp definition
+	* TODO: added item about --disable-corba configure switch
+	* tree.c parser.c: fixed problems for xmlCopyDoc and postvalidation
+	* nanoftp.c: fixed include problems giving troubles on AIX and 
+	  slowlaris
+	* xmlIO.[ch] valid.h tree.[ch] xlink.c xmlmemory.c uri.c 
+	  parser.c nanoftp.c nanohttp.c SAX.c testSAX.c :
+	  comment and headers changes to lower gtk-doc number of warnings
+	* doc/html/*: rebuilt docs
+
 Sun Apr 16 11:23:29 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* HACKING: documented the tag for 1.x and instructions

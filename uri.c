@@ -21,13 +21,13 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/uri.h>
 
-/**
+/*
  * alpha    = lowalpha | upalpha
  */
 #define IS_ALPHA(x) (IS_LOWALPHA(x) || IS_UPALPHA(x))
 
 
-/**
+/*
  * lowalpha = "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" |
  *            "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" | "s" | "t" |
  *            "u" | "v" | "w" | "x" | "y" | "z"
@@ -35,34 +35,34 @@
 
 #define IS_LOWALPHA(x) (((x) >= 'a') && ((x) <= 'z'))
 
-/**
+/*
  * upalpha = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" |
  *           "K" | "L" | "M" | "N" | "O" | "P" | "Q" | "R" | "S" | "T" |
  *           "U" | "V" | "W" | "X" | "Y" | "Z"
  */
 #define IS_UPALPHA(x) (((x) >= 'A') && ((x) <= 'Z'))
 
-/**
+/*
  * digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
  */
 
 #define IS_DIGIT(x) (((x) >= '0') && ((x) <= '9'))
 
-/**
+/*
  * alphanum = alpha | digit
  */
 
 #define IS_ALPHANUM(x) (IS_ALPHA(x) || IS_DIGIT(x))
 
-/**
- * he(x) = digit | "A" | "B" | "C" | "D" | "E" | "F" |
+/*
+ * hex = digit | "A" | "B" | "C" | "D" | "E" | "F" |
  *               "a" | "b" | "c" | "d" | "e" | "f"
  */
 
 #define IS_HEX(x) ((IS_DIGIT(x)) || (((x) >= 'a') && ((x) <= 'f')) || \
 	    (((x) >= 'A') && ((x) <= 'F')))
 
-/**
+/*
  * mark = "-" | "_" | "." | "!" | "~" | "*" | "'" | "(" | ")"
  */
 
@@ -71,7 +71,7 @@
     ((x) == '(') || ((x) == ')'))
 
 
-/**
+/*
  * reserved = ";" | "/" | "?" | ":" | "@" | "&" | "=" | "+" | "$" | ","
  */
 
@@ -79,20 +79,20 @@
         ((x) == ':') || ((x) == '@') || ((x) == '&') || ((x) == '=') ||	\
 	((x) == '+') || ((x) == '$') || ((x) == ','))
 
-/**
+/*
  * unreserved = alphanum | mark
  */
 
 #define IS_UNRESERVED(x) (IS_ALPHANUM(x) || IS_MARK(x))
 
-/**
+/*
  * escaped = "%" hex hex
  */
 
 #define IS_ESCAPED(p) ((*(p) == '%') && (IS_HEX((p)[1])) &&		\
 	    (IS_HEX((p)[2])))
 
-/**
+/*
  * uric_no_slash = unreserved | escaped | ";" | "?" | ":" | "@" |
  *                        "&" | "=" | "+" | "$" | ","
  */
@@ -101,7 +101,7 @@
 	        ((*(p) == '@')) || ((*(p) == '&')) || ((*(p) == '=')) ||\
 	        ((*(p) == '+')) || ((*(p) == '$')) || ((*(p) == ',')))
 
-/**
+/*
  * pchar = unreserved | escaped | ":" | "@" | "&" | "=" | "+" | "$" | ","
  */
 #define IS_PCHAR(p) ((IS_UNRESERVED(*(p))) || (IS_ESCAPED(p)) ||	\
@@ -109,7 +109,7 @@
 	        ((*(p) == '=')) || ((*(p) == '+')) || ((*(p) == '$')) ||\
 	        ((*(p) == ',')))
 
-/**
+/*
  * rel_segment   = 1*( unreserved | escaped |
  *                 ";" | "@" | "&" | "=" | "+" | "$" | "," )
  */
@@ -119,14 +119,14 @@
 	  ((*(p) == '=')) || ((*(p) == '+')) || ((*(p) == '$')) ||	\
 	  ((*(p) == ',')))
 
-/**
+/*
  * scheme = alpha *( alpha | digit | "+" | "-" | "." )
  */
 
 #define IS_SCHEME(x) ((IS_ALPHA(x)) || (IS_DIGIT(x)) ||			\
 	              ((x) == '+') || ((x) == '-') || ((x) == '.'))
 
-/**
+/*
  * reg_name = 1*( unreserved | escaped | "$" | "," |
  *                ";" | ":" | "@" | "&" | "=" | "+" )
  */
@@ -136,7 +136,7 @@
        ((*(p) == ':')) || ((*(p) == '@')) || ((*(p) == '&')) ||		\
        ((*(p) == '=')) || ((*(p) == '+')))
 
-/**
+/*
  * userinfo = *( unreserved | escaped | ";" | ":" | "&" | "=" |
  *                      "+" | "$" | "," )
  */
@@ -145,20 +145,20 @@
        ((*(p) == '=')) || ((*(p) == '+')) || ((*(p) == '$')) ||		\
        ((*(p) == ',')))
 
-/**
+/*
  * uric = reserved | unreserved | escaped
  */
 
 #define IS_URIC(p) ((IS_UNRESERVED(*(p))) || (IS_ESCAPED(p)) ||		\
 	            (IS_RESERVED(*(p))))
 
-/**
+/*
  * Skip to next pointer char, handle escaped sequences
  */
 
 #define NEXT(p) ((*p == '%')? p += 3 : p++)
 
-/**
+/*
  * Productions from the spec.
  *
  *    authority     = server | reg_name

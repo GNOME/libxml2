@@ -7360,7 +7360,7 @@ xmlParseAttribute(xmlParserCtxtPtr ctxt, xmlChar **value) {
  *
  * [NS 10] EmptyElement ::= '<' QName (S Attribute)* S? '/>'
  *
- * Returne the element name parsed
+ * Returns the element name parsed
  */
 
 xmlChar *
@@ -9618,7 +9618,7 @@ xmlCreateIOParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
  * xmlCreateDocParserCtxt:
  * @cur:  a pointer to an array of xmlChar
  *
- * Create a parser context for an XML in-memory document.
+ * Creates a parser context for an XML in-memory document.
  *
  * Returns the new parser context or NULL
  */
@@ -9768,12 +9768,16 @@ xmlSAXParseDTD(xmlSAXHandlerPtr sax, const xmlChar *ExternalID,
     /*
      * let's parse that entity knowing it's an external subset.
      */
+    ctxt->inSubset = 2;
+    ctxt->myDoc = xmlNewDoc(BAD_CAST "1.0");
+    ctxt->myDoc->extSubset = xmlNewDtd(ctxt->myDoc, BAD_CAST "none",
+	                               ExternalID, SystemID);
     xmlParseExternalSubset(ctxt, ExternalID, SystemID);
 
     if (ctxt->myDoc != NULL) {
 	if (ctxt->wellFormed) {
-	    ret = ctxt->myDoc->intSubset;
-	    ctxt->myDoc->intSubset = NULL;
+	    ret = ctxt->myDoc->extSubset;
+	    ctxt->myDoc->extSubset = NULL;
 	} else {
 	    ret = NULL;
 	}

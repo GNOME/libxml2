@@ -714,7 +714,7 @@ xmlNanoHTTPConnectHost(const char *host, int port)
  *     The contentType, if provided must be freed by the caller
  */
 
-void *
+void*
 xmlNanoHTTPOpen(const char *URL, char **contentType) {
     xmlNanoHTTPCtxtPtr ctxt;
     char buf[4096];
@@ -914,7 +914,7 @@ xmlNanoHTTPClose(void *ctx) {
  *     The contentType, if provided must be freed by the caller
  */
 
-void *
+void*
 xmlNanoHTTPMethod(const char *URL, const char *method, const char *input,
                   char **contentType, const char *headers) {
     xmlNanoHTTPCtxtPtr ctxt;

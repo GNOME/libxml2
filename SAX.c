@@ -144,7 +144,10 @@ hasExternalSubset(void *ctx)
 
 /**
  * internalSubset:
- * @ctx: the user data (XML parser context)
+ * @ctx:  the user data (XML parser context)
+ * @name:  the root element name
+ * @ExternalID:  the external ID
+ * @SystemID:  the SYSTEM ID (e.g. filename or URL)
  *
  * Callback on internal subset declaration.
  */
@@ -163,6 +166,9 @@ internalSubset(void *ctx, const xmlChar *name,
 /**
  * externalSubset:
  * @ctx: the user data (XML parser context)
+ * @name:  the root element name
+ * @ExternalID:  the external ID
+ * @SystemID:  the SYSTEM ID (e.g. filename or URL)
  *
  * Callback on external subset declaration.
  */
@@ -378,11 +384,12 @@ entityDecl(void *ctx, const xmlChar *name, int type,
 /**
  * attributeDecl:
  * @ctx: the user data (XML parser context)
+ * @elem:  the name of the element
  * @fullname:  the attribute name 
  * @type:  the attribute type 
- * @publicId: The public ID of the attribute
- * @systemId: The system ID of the attribute
- * @content: the attribute value (without processing).
+ * @def:  the type of default value
+ * @defaultValue: the attribute default value
+ * @tree:  the tree of enumerated value set
  *
  * An attribute definition has been parsed
  */
@@ -428,9 +435,7 @@ attributeDecl(void *ctx, const xmlChar *elem, const xmlChar *fullname,
  * @ctx: the user data (XML parser context)
  * @name:  the element name 
  * @type:  the element type 
- * @publicId: The public ID of the element
- * @systemId: The system ID of the element
- * @content: the element value (without processing).
+ * @content: the element value tree
  *
  * An element definition has been parsed
  */
@@ -595,7 +600,7 @@ endDocument(void *ctx)
 /**
  * attribute:
  * @ctx: the user data (XML parser context)
- * @name:  The attribute name
+ * @fullname:  The attribute name, including namespace prefix
  * @value:  The attribute value
  *
  * Handle an attribute that has been read by the parser.
@@ -743,7 +748,7 @@ attribute(void *ctx, const xmlChar *fullname, const xmlChar *value)
 /**
  * startElement:
  * @ctx: the user data (XML parser context)
- * @name:  The element name
+ * @fullname:  The element name, including namespace prefix
  * @atts:  An array of name/value attributes pairs, NULL terminated
  *
  * called when an opening tag has been processed.
@@ -1029,7 +1034,6 @@ ignorableWhitespace(void *ctx, const xmlChar *ch, int len)
  * @ctx: the user data (XML parser context)
  * @target:  the target name
  * @data: the PI data's
- * @len: the number of xmlChar
  *
  * A processing instruction has been parsed.
  */
@@ -1102,6 +1106,7 @@ globalNamespace(void *ctx, const xmlChar *href, const xmlChar *prefix)
  *
  * Set the current element namespace.
  */
+
 void
 setNamespace(void *ctx, const xmlChar *name)
 {
@@ -1128,7 +1133,10 @@ setNamespace(void *ctx, const xmlChar *name)
  * @ctx: the user data (XML parser context)
  *
  * Get the current element namespace.
+ *
+ * Returns the xmlNsPtr or NULL if none
  */
+
 xmlNsPtr
 getNamespace(void *ctx)
 {
@@ -1149,7 +1157,10 @@ getNamespace(void *ctx)
  *
  * Check that the current element namespace is the same as the
  * one read upon parsing.
+ *
+ * Returns 1 if true 0 otherwise
  */
+
 int
 checkNamespace(void *ctx, xmlChar *namespace)
 {

@@ -4,7 +4,7 @@
 >debugXML</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.33"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.44"><LINK
 REL="HOME"
 TITLE="Gnome XML Library Reference Manual"
 HREF="book1.html"><LINK
@@ -20,6 +20,9 @@ HREF="gnome-xml-xmlmemory.html"></HEAD
 ><BODY
 BGCOLOR="#FFFFFF"
 TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -111,19 +114,22 @@ SIZE="3"
 ></TABLE
 ></DIV
 ><H1
->debugXML</H1
+><A
+NAME="GNOME-XML-DEBUGXML"
+>debugXML</A
+></H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN13459"
+NAME="AEN11140"
 ></A
 ><H2
 >Name</H2
->debugXML &#8212; </DIV
+>debugXML&nbsp;--&nbsp;</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN13462"
+NAME="AEN11143"
 ></A
 ><H2
 >Synopsis</H2
@@ -210,17 +216,6 @@ HREF="gnome-xml-tree.html#XMLNODEPTR"
 > node,
                                              int depth);
 void        <A
-HREF="gnome-xml-debugxml.html#XMLDEBUGDUMPDOCUMENTHEAD"
->xmlDebugDumpDocumentHead</A
->        (<GTKDOCLINK
-HREF="FILE"
->FILE</GTKDOCLINK
-> *output,
-                                             <A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
->xmlDocPtr</A
-> doc);
-void        <A
 HREF="gnome-xml-debugxml.html#XMLDEBUGDUMPDOCUMENT"
 >xmlDebugDumpDocument</A
 >            (<GTKDOCLINK
@@ -230,73 +225,7 @@ HREF="FILE"
                                              <A
 HREF="gnome-xml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
-> doc);
-void        <A
-HREF="gnome-xml-debugxml.html#XMLDEBUGDUMPENTITIES"
->xmlDebugDumpEntities</A
->            (<GTKDOCLINK
-HREF="FILE"
->FILE</GTKDOCLINK
-> *output,
-                                             <A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
->xmlDocPtr</A
-> doc);
-void        <A
-HREF="gnome-xml-debugxml.html#XMLLSONENODE"
->xmlLsOneNode</A
->                    (<GTKDOCLINK
-HREF="FILE"
->FILE</GTKDOCLINK
-> *output,
-                                             <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
-> node);
-char*       (<A
-HREF="gnome-xml-debugxml.html#XMLSHELLREADLINEFUNC"
->*xmlShellReadlineFunc</A
->)         (char *prompt);
-struct      <A
-HREF="gnome-xml-debugxml.html#XMLSHELLCTXT"
->xmlShellCtxt</A
->;
-typedef     <A
-HREF="gnome-xml-debugxml.html#XMLSHELLCTXTPTR"
->xmlShellCtxtPtr</A
->;
-int         (<A
-HREF="gnome-xml-debugxml.html#XMLSHELLCMD"
->*xmlShellCmd</A
->)                  (<A
-HREF="gnome-xml-debugxml.html#XMLSHELLCTXTPTR"
->xmlShellCtxtPtr</A
-> ctxt,
-                                             char *arg,
-                                             <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
-> node,
-                                             <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
-> node2);
-void        <A
-HREF="gnome-xml-debugxml.html#XMLSHELL"
->xmlShell</A
->                        (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
->xmlDocPtr</A
-> doc,
-                                             char *filename,
-                                             <A
-HREF="gnome-xml-debugxml.html#XMLSHELLREADLINEFUNC"
->xmlShellReadlineFunc</A
-> input,
-                                             <GTKDOCLINK
-HREF="FILE"
->FILE</GTKDOCLINK
-> *output);</PRE
+> doc);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -304,7 +233,7 @@ HREF="FILE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN13506"
+NAME="AEN11167"
 ></A
 ><H2
 >Description</H2
@@ -314,14 +243,14 @@ NAME="AEN13506"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN13509"
+NAME="AEN11170"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13511"
+NAME="AEN11172"
 ></A
 ><H3
 ><A
@@ -403,7 +332,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13531"
+NAME="AEN11192"
 ></A
 ><H3
 ><A
@@ -503,7 +432,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13555"
+NAME="AEN11216"
 ></A
 ><H3
 ><A
@@ -603,7 +532,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13579"
+NAME="AEN11240"
 ></A
 ><H3
 ><A
@@ -703,7 +632,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13603"
+NAME="AEN11264"
 ></A
 ><H3
 ><A
@@ -803,7 +732,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13627"
+NAME="AEN11288"
 ></A
 ><H3
 ><A
@@ -903,89 +832,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13651"
-></A
-><H3
-><A
-NAME="XMLDEBUGDUMPDOCUMENTHEAD"
-></A
->xmlDebugDumpDocumentHead ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlDebugDumpDocumentHead        (<GTKDOCLINK
-HREF="FILE"
->FILE</GTKDOCLINK
-> *output,
-                                             <A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
->xmlDocPtr</A
-> doc);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->output</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->doc</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN13671"
+NAME="AEN11312"
 ></A
 ><H3
 ><A
@@ -1058,564 +905,6 @@ WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
 >&nbsp;</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN13691"
-></A
-><H3
-><A
-NAME="XMLDEBUGDUMPENTITIES"
-></A
->xmlDebugDumpEntities ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlDebugDumpEntities            (<GTKDOCLINK
-HREF="FILE"
->FILE</GTKDOCLINK
-> *output,
-                                             <A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
->xmlDocPtr</A
-> doc);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->output</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->doc</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN13711"
-></A
-><H3
-><A
-NAME="XMLLSONENODE"
-></A
->xmlLsOneNode ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlLsOneNode                    (<GTKDOCLINK
-HREF="FILE"
->FILE</GTKDOCLINK
-> *output,
-                                             <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
-> node);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->output</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->node</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN13731"
-></A
-><H3
-><A
-NAME="XMLSHELLREADLINEFUNC"
-></A
->xmlShellReadlineFunc ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->char*       (*xmlShellReadlineFunc)         (char *prompt);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->prompt</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><I
-CLASS="EMPHASIS"
->Returns</I
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN13749"
-></A
-><H3
-><A
-NAME="XMLSHELLCTXT"
-></A
->struct xmlShellCtxt</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->struct xmlShellCtxt {
-    char *filename;
-    xmlDocPtr doc;
-    xmlNodePtr node;
-    xmlXPathContextPtr pctxt;
-    int loaded;
-    FILE *output;
-    xmlShellReadlineFunc input;
-};</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN13754"
-></A
-><H3
-><A
-NAME="XMLSHELLCTXTPTR"
-></A
->xmlShellCtxtPtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlShellCtxt *xmlShellCtxtPtr;</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN13759"
-></A
-><H3
-><A
-NAME="XMLSHELLCMD"
-></A
->xmlShellCmd ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         (*xmlShellCmd)                  (<A
-HREF="gnome-xml-debugxml.html#XMLSHELLCTXTPTR"
->xmlShellCtxtPtr</A
-> ctxt,
-                                             char *arg,
-                                             <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
-> node,
-                                             <A
-HREF="gnome-xml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
-> node2);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctxt</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->arg</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->node</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->node2</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><I
-CLASS="EMPHASIS"
->Returns</I
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN13792"
-></A
-><H3
-><A
-NAME="XMLSHELL"
-></A
->xmlShell ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlShell                        (<A
-HREF="gnome-xml-tree.html#XMLDOCPTR"
->xmlDocPtr</A
-> doc,
-                                             char *filename,
-                                             <A
-HREF="gnome-xml-debugxml.html#XMLSHELLREADLINEFUNC"
->xmlShellReadlineFunc</A
-> input,
-                                             <GTKDOCLINK
-HREF="FILE"
->FILE</GTKDOCLINK
-> *output);</PRE
-></TD
-></TR
-></TABLE
-><P
->Implements the XML shell 
-This allow to load, validate, view, modify and save a document
-using a environment similar to a UNIX commandline.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->doc</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the initial document</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->filename</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the output buffer</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->input</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the line reading function</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->output</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the output FILE*</TD
 ></TR
 ></TABLE
 ><P

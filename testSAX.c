@@ -132,7 +132,7 @@ hasExternalSubsetDebug(void *ctx)
 }
 
 /**
- * hasInternalSubsetDebug:
+ * internalSubsetDebug:
  * @ctxt:  An XML parser context
  *
  * Does this document has an internal subset

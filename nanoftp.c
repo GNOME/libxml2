@@ -1,5 +1,5 @@
-/**
- * ftp.c: basic handling of an FTP command connection to check for
+/*
+ * nanoftp.c: basic handling of an FTP command connection to check for
  *        directory availability. No transfer is needed.
  *
  *  Reference: RFC 959
@@ -11,22 +11,18 @@
 #else
 #include "config.h"
 #endif
+
 #include "xmlversion.h"
 
 #ifdef LIBXML_FTP_ENABLED
 #include <stdio.h>
 #include <string.h>
 
-#ifdef HAVE_CTYPE_H
-#include <ctype.h>
+#ifdef HAVE_STDLIB_H
+#include <stdlib.h>
 #endif
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
-#endif
-
-#include <sys/types.h>
-#ifdef HAVE_SYS_TIME_H
-#include <sys/time.h>
 #endif
 #ifdef HAVE_SYS_SOCKET_H
 #include <sys/socket.h>
@@ -51,12 +47,6 @@
 #endif
 #ifdef HAVE_SYS_SELECT_H
 #include <sys/select.h>
-#endif
-#ifdef HAVE_RESOLV_H
-#include <resolv.h>
-#endif
-#ifdef HAVE_STDLIB_H
-#include <stdlib.h>
 #endif
 #ifdef HAVE_STRINGS_H
 #include <strings.h>
@@ -448,7 +438,7 @@ xmlNanoFTPScanProxy(const char *URL) {
  * Returns an FTP context or NULL in case of error.
  */
 
-void *
+void*
 xmlNanoFTPNewCtxt(const char *URL) {
     xmlNanoFTPCtxtPtr ret;
 
@@ -487,8 +477,14 @@ xmlNanoFTPFreeCtxt(void * ctx) {
 }
 
 /**
+ * xmlNanoFTPParseResponse:
+ * @ctx:  the FTP connection context
+ * @buf:  the buffer containing the response
+ * @len:  the buffer length
+ * 
  * Parsing of the server answer, we just extract the code.
- * return 0 for errors
+ *
+ * returns 0 for errors
  *     +XXX for last line of response
  *     -XXX for response to be continued
  */
@@ -1064,15 +1060,14 @@ xmlNanoFTPConnect(void *ctx) {
 /**
  * xmlNanoFTPConnectTo:
  * @server:  an FTP server name
- * @directory:  the port (use 21 if 0)
+ * @port:  the port (use 21 if 0)
  *
  * Tries to open a control connection to the given server/port
  *
- * Returns and fTP context or NULL if it failed
+ * Returns an fTP context or NULL if it failed
  */
 
-
-void *
+void*
 xmlNanoFTPConnectTo(const char *server, int port) {
     xmlNanoFTPCtxtPtr ctxt;
     int res;
@@ -1713,7 +1708,7 @@ xmlNanoFTPRead(void *ctx, void *dest, int len) {
  * Returns an FTP context, or NULL 
  */
 
-void *
+void*
 xmlNanoFTPOpen(const char *URL) {
     xmlNanoFTPCtxtPtr ctxt;
     int sock;

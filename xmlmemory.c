@@ -118,7 +118,7 @@ xmlMallocBreakpoint(void) {
  * xmlMallocLoc:
  * @size:  an int specifying the size in byte to allocate.
  * @file:  the file name or NULL
-  @file:  the line number
+ * @line:  the line number
  *
  * a malloc() equivalent, with logging of the allocation info.
  *
@@ -187,7 +187,7 @@ xmlMemMalloc(int size)
  * @ptr:  the initial memory block pointer
  * @size:  an int specifying the size in byte to allocate.
  * @file:  the file name or NULL
- * @file:  the line number
+ * @line:  the line number
  *
  * a realloc() equivalent, with logging of the allocation info.
  *
@@ -293,7 +293,7 @@ error:
  * xmlMemStrdupLoc:
  * @ptr:  the initial string pointer
  * @file:  the file name or NULL
- * @file:  the line number
+ * @line:  the line number
  *
  * a strdup() equivalent, with logging of the allocation info.
  *

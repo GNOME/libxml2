@@ -96,6 +96,9 @@ int         <a href="libxml-encoding.html#xmlUTF8Strloc">xmlUTF8Strloc</a>      
                                              int start,
                                              int len);
 int         <a href="libxml-encoding.html#xmlUTF8Strlen">xmlUTF8Strlen</a>                   (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *utf);
+int         <a href="libxml-encoding.html#xmlUTF8Size">xmlUTF8Size</a>                     (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *utf);
+int         <a href="libxml-encoding.html#xmlUTF8Charcmp">xmlUTF8Charcmp</a>                  (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *utf1,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *utf2);
 </pre></div><div class="refsect1" lang="en"><h2>Description</h2><p>
 
 </p></div><div class="refsect1" lang="en"><h2>Details</h2><div class="refsect2" lang="en"><h3><a name="xmlCharEncoding"></a>enum xmlCharEncoding</h3><pre class="programlisting">typedef enum {
@@ -412,4 +415,17 @@ checking of the content of the string.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>utf</tt></i> :</span></td><td>  a sequence of UTF-8 encoded bytes
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the number of characters in the string or -1 in case of error
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlUTF8Size"></a>xmlUTF8Size ()</h3><pre class="programlisting">int         xmlUTF8Size                     (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *utf);</pre><p>
+</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>utf</tt></i> :</span></td><td> pointer to the UTF8 character
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the numbers of bytes in the character, -1 on format error
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlUTF8Charcmp"></a>xmlUTF8Charcmp ()</h3><pre class="programlisting">int         xmlUTF8Charcmp                  (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *utf1,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *utf2);</pre><p>
+</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>utf1</tt></i> :</span></td><td> pointer to first UTF8 char
+</td></tr><tr><td><span class="term"><i><tt>utf2</tt></i> :</span></td><td> pointer to second UTF8 char
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>result of comparing the two UCS4 values
+as with xmlStrncmp
 </td></tr></tbody></table></div></div></div></div><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-parserInternals.html"><b>&lt;&lt; parserInternals</b></a></td><td align="right"><a accesskey="n" href="libxml-hash.html"><b>hash &gt;&gt;</b></a></td></tr></table></body></html>

@@ -1,3 +1,7 @@
+Mon Aug  4 22:40:54 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* doc/libxml2-api.xml doc/html/*: rebuilt the API and docs.
+
 Mon Aug  4 21:40:34 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: fixed a small problem in the patch for #118763

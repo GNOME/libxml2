@@ -103,6 +103,8 @@ int         <a href="libxml-tree.html#xmlValidateNMToken">xmlValidateNMToken</a>
                                              int len);
 <a href="libxml-tree.html#xmlChar">xmlChar</a>*    <a href="libxml-tree.html#xmlSplitQName2">xmlSplitQName2</a>                  (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
                                              <a href="libxml-tree.html#xmlChar">xmlChar</a> **prefix);
+const <a href="libxml-tree.html#xmlChar">xmlChar</a>* <a href="libxml-tree.html#xmlSplitQName3">xmlSplitQName3</a>               (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             int *len);
 void        <a href="libxml-tree.html#xmlSetBufferAllocationScheme">xmlSetBufferAllocationScheme</a>    (<a href="libxml-tree.html#xmlBufferAllocationScheme">xmlBufferAllocationScheme</a> scheme);
 <a href="libxml-tree.html#xmlBufferAllocationScheme">xmlBufferAllocationScheme</a> <a href="libxml-tree.html#xmlGetBufferAllocationScheme">xmlGetBufferAllocationScheme</a>
                                             (void);
@@ -1069,6 +1071,14 @@ parse an XML qualified name string
 </td></tr><tr><td><span class="term"><i><tt>prefix</tt></i> :</span></td><td>  a xmlChar ** 
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>NULL if not a QName, otherwise the local part, and prefix
   is updated to get the Prefix if any.
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSplitQName3"></a>xmlSplitQName3 ()</h3><pre class="programlisting">const <a href="libxml-tree.html#xmlChar">xmlChar</a>* xmlSplitQName3               (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             int *len);</pre><p>
+parse an XML qualified name string,i</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>  the full QName
+</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td> an int *
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>NULL if it is not a Qualified Name, otherwise, update len
+        with the lenght in byte of the prefix and return a pointer
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSetBufferAllocationScheme"></a>xmlSetBufferAllocationScheme ()</h3><pre class="programlisting">void        xmlSetBufferAllocationScheme    (<a href="libxml-tree.html#xmlBufferAllocationScheme">xmlBufferAllocationScheme</a> scheme);</pre><p>
 Set the buffer allocation method.  Types are
 XML_BUFFER_ALLOC_EXACT - use exact sizes, keeps memory usage down

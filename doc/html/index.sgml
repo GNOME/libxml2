@@ -269,6 +269,7 @@
 <ANCHOR id="xmlValidateNMToken" href="libxml/libxml-tree.html#xmlValidateNMToken">
 <ANCHOR id="xmlBuildQName" href="libxml/libxml-tree.html#xmlBuildQName">
 <ANCHOR id="xmlSplitQName2" href="libxml/libxml-tree.html#xmlSplitQName2">
+<ANCHOR id="xmlSplitQName3" href="libxml/libxml-tree.html#xmlSplitQName3">
 <ANCHOR id="xmlSetBufferAllocationScheme" href="libxml/libxml-tree.html#xmlSetBufferAllocationScheme">
 <ANCHOR id="xmlGetBufferAllocationScheme" href="libxml/libxml-tree.html#xmlGetBufferAllocationScheme">
 <ANCHOR id="xmlBufferCreate" href="libxml/libxml-tree.html#xmlBufferCreate">
@@ -514,11 +515,13 @@
 <ANCHOR id="xmlRelaxNGNewDocParserCtxt" href="libxml/libxml-relaxng.html#xmlRelaxNGNewDocParserCtxt">
 <ANCHOR id="xmlRelaxNGFreeParserCtxt" href="libxml/libxml-relaxng.html#xmlRelaxNGFreeParserCtxt">
 <ANCHOR id="xmlRelaxNGSetParserErrors" href="libxml/libxml-relaxng.html#xmlRelaxNGSetParserErrors">
+<ANCHOR id="xmlRelaxNGGetParserErrors" href="libxml/libxml-relaxng.html#xmlRelaxNGGetParserErrors">
 <ANCHOR id="xmlRelaxNGParse" href="libxml/libxml-relaxng.html#xmlRelaxNGParse">
 <ANCHOR id="xmlRelaxNGFree" href="libxml/libxml-relaxng.html#xmlRelaxNGFree">
 <ANCHOR id="xmlRelaxNGDump" href="libxml/libxml-relaxng.html#xmlRelaxNGDump">
 <ANCHOR id="xmlRelaxNGDumpTree" href="libxml/libxml-relaxng.html#xmlRelaxNGDumpTree">
 <ANCHOR id="xmlRelaxNGSetValidErrors" href="libxml/libxml-relaxng.html#xmlRelaxNGSetValidErrors">
+<ANCHOR id="xmlRelaxNGGetValidErrors" href="libxml/libxml-relaxng.html#xmlRelaxNGGetValidErrors">
 <ANCHOR id="xmlRelaxNGNewValidCtxt" href="libxml/libxml-relaxng.html#xmlRelaxNGNewValidCtxt">
 <ANCHOR id="xmlRelaxNGFreeValidCtxt" href="libxml/libxml-relaxng.html#xmlRelaxNGFreeValidCtxt">
 <ANCHOR id="xmlRelaxNGValidateDoc" href="libxml/libxml-relaxng.html#xmlRelaxNGValidateDoc">
@@ -840,6 +843,7 @@
 <ANCHOR id="xmlXPtrBuildNodeList" href="libxml/libxml-xpointer.html#xmlXPtrBuildNodeList">
 <ANCHOR id="xmlXPtrEvalRangePredicate" href="libxml/libxml-xpointer.html#xmlXPtrEvalRangePredicate">
 <ANCHOR id="xmlXIncludeProcess" href="libxml/libxml-xinclude.html#xmlXIncludeProcess">
+<ANCHOR id="xmlXIncludeProcessTree" href="libxml/libxml-xinclude.html#xmlXIncludeProcessTree">
 <ANCHOR id="xmlNanoHTTPInit" href="libxml/libxml-nanohttp.html#xmlNanoHTTPInit">
 <ANCHOR id="xmlNanoHTTPCleanup" href="libxml/libxml-nanohttp.html#xmlNanoHTTPCleanup">
 <ANCHOR id="xmlNanoHTTPScanProxy" href="libxml/libxml-nanohttp.html#xmlNanoHTTPScanProxy">
@@ -1214,6 +1218,8 @@
 <ANCHOR id="xmlUTF8Strloc" href="libxml/libxml-encoding.html#xmlUTF8Strloc">
 <ANCHOR id="xmlUTF8Strsub" href="libxml/libxml-encoding.html#xmlUTF8Strsub">
 <ANCHOR id="xmlUTF8Strlen" href="libxml/libxml-encoding.html#xmlUTF8Strlen">
+<ANCHOR id="xmlUTF8Size" href="libxml/libxml-encoding.html#xmlUTF8Size">
+<ANCHOR id="xmlUTF8Charcmp" href="libxml/libxml-encoding.html#xmlUTF8Charcmp">
 <ANCHOR id="xmlHashTable" href="libxml/libxml-hash.html#xmlHashTable">
 <ANCHOR id="xmlHashTablePtr" href="libxml/libxml-hash.html#xmlHashTablePtr">
 <ANCHOR id="xmlHashDeallocator" href="libxml/libxml-hash.html#xmlHashDeallocator">

@@ -44,6 +44,8 @@ debugDumpString()
 shellPrintXPathError()
 
 # functions from module encoding
+UTF8Charcmp()
+UTF8Size()
 UTF8Strlen()
 UTF8Strloc()
 UTF8Strndup()
@@ -427,6 +429,9 @@ Class xmlNode(xmlCore)
     isID()
     isRef()
     validNormalizeAttributeValue()
+
+    # functions from module xinclude
+    xincludeProcessTree()
 
     # functions from module xpath
     xpathCastNodeToNumber()

@@ -703,6 +703,7 @@
     </file>
     <file name='xinclude'>
      <exports symbol='xmlXIncludeProcess'/>
+     <exports symbol='xmlXIncludeProcessTree'/>
     </file>
     <file name='list'>
      <exports symbol='xmlLink'/>
@@ -836,6 +837,7 @@
      <exports symbol='LIBXML_HTML_ENABLED'/>
      <exports symbol='LIBXML_HTTP_ENABLED'/>
      <exports symbol='LIBXML_ICONV_ENABLED'/>
+     <exports symbol='LIBXML_ISO8859X_ENABLED'/>
      <exports symbol='LIBXML_REGEXP_ENABLED'/>
      <exports symbol='LIBXML_SCHEMAS_ENABLED'/>
      <exports symbol='LIBXML_TEST_VERSION'/>
@@ -1219,6 +1221,25 @@
      <exports symbol='XML_PARSER_SEVERITY_WARNING'/>
      <exports symbol='XML_PARSER_SUBST_ENTITIES'/>
      <exports symbol='XML_PARSER_VALIDATE'/>
+     <exports symbol='XML_READER_TYPE_ATTRIBUTE'/>
+     <exports symbol='XML_READER_TYPE_CDATA'/>
+     <exports symbol='XML_READER_TYPE_COMMENT'/>
+     <exports symbol='XML_READER_TYPE_DOCUMENT'/>
+     <exports symbol='XML_READER_TYPE_DOCUMENT_FRAGMENT'/>
+     <exports symbol='XML_READER_TYPE_DOCUMENT_TYPE'/>
+     <exports symbol='XML_READER_TYPE_ELEMENT'/>
+     <exports symbol='XML_READER_TYPE_END_ELEMENT'/>
+     <exports symbol='XML_READER_TYPE_END_ENTITY'/>
+     <exports symbol='XML_READER_TYPE_ENTITY'/>
+     <exports symbol='XML_READER_TYPE_ENTITY_REFERENCE'/>
+     <exports symbol='XML_READER_TYPE_NONE'/>
+     <exports symbol='XML_READER_TYPE_NOTATION'/>
+     <exports symbol='XML_READER_TYPE_PROCESSING_INSTRUCTION'/>
+     <exports symbol='XML_READER_TYPE_SIGNIFICANT_WHITESPACE'/>
+     <exports symbol='XML_READER_TYPE_TEXT'/>
+     <exports symbol='XML_READER_TYPE_WHITESPACE'/>
+     <exports symbol='XML_READER_TYPE_XML_DECLARATION'/>
+     <exports symbol='enum'/>
      <exports symbol='xmlFreeTextReader'/>
      <exports symbol='xmlNewTextReader'/>
      <exports symbol='xmlNewTextReaderFilename'/>
@@ -1373,6 +1394,8 @@
      <exports symbol='xmlRelaxNGFree'/>
      <exports symbol='xmlRelaxNGFreeParserCtxt'/>
      <exports symbol='xmlRelaxNGFreeValidCtxt'/>
+     <exports symbol='xmlRelaxNGGetParserErrors'/>
+     <exports symbol='xmlRelaxNGGetValidErrors'/>
      <exports symbol='xmlRelaxNGNewDocParserCtxt'/>
      <exports symbol='xmlRelaxNGNewMemParserCtxt'/>
      <exports symbol='xmlRelaxNGNewParserCtxt'/>
@@ -1889,6 +1912,7 @@
      <exports symbol='xmlSetProp'/>
      <exports symbol='xmlSetTreeDoc'/>
      <exports symbol='xmlSplitQName2'/>
+     <exports symbol='xmlSplitQName3'/>
      <exports symbol='xmlStringGetNodeList'/>
      <exports symbol='xmlStringLenGetNodeList'/>
      <exports symbol='xmlTextConcat'/>
@@ -2137,6 +2161,8 @@
      <exports symbol='xmlNewCharEncodingHandler'/>
      <exports symbol='xmlParseCharEncoding'/>
      <exports symbol='xmlRegisterCharEncodingHandler'/>
+     <exports symbol='xmlUTF8Charcmp'/>
+     <exports symbol='xmlUTF8Size'/>
      <exports symbol='xmlUTF8Strlen'/>
      <exports symbol='xmlUTF8Strloc'/>
      <exports symbol='xmlUTF8Strndup'/>
@@ -2273,6 +2299,9 @@
     </macro>
     <macro name='LIBXML_ICONV_ENABLED' file='xmlversion'>
       <info>Whether iconv support is available</info>
+    </macro>
+    <macro name='LIBXML_ISO8859X_ENABLED' file='xmlversion'>
+      <info>Whether ISO-8859-* support is made available in case iconv is not</info>
     </macro>
     <macro name='LIBXML_REGEXP_ENABLED' file='xmlversion'>
     </macro>
@@ -2747,6 +2776,24 @@
     <enum name='XML_PARSER_SYSTEM_LITERAL' file='parser' value='13' type='xmlParserInputState' info='within a SYSTEM value'/>
     <enum name='XML_PARSER_VALIDATE' file='xmlreader' value='3' type='xmlParserProperties'/>
     <enum name='XML_PI_NODE' file='tree' value='7' type='xmlElementType'/>
+    <enum name='XML_READER_TYPE_ATTRIBUTE' file='xmlreader' value='2'/>
+    <enum name='XML_READER_TYPE_CDATA' file='xmlreader' value='4'/>
+    <enum name='XML_READER_TYPE_COMMENT' file='xmlreader' value='8'/>
+    <enum name='XML_READER_TYPE_DOCUMENT' file='xmlreader' value='9'/>
+    <enum name='XML_READER_TYPE_DOCUMENT_FRAGMENT' file='xmlreader' value='11'/>
+    <enum name='XML_READER_TYPE_DOCUMENT_TYPE' file='xmlreader' value='10'/>
+    <enum name='XML_READER_TYPE_ELEMENT' file='xmlreader' value='1'/>
+    <enum name='XML_READER_TYPE_END_ELEMENT' file='xmlreader' value='15'/>
+    <enum name='XML_READER_TYPE_END_ENTITY' file='xmlreader' value='16'/>
+    <enum name='XML_READER_TYPE_ENTITY' file='xmlreader' value='6'/>
+    <enum name='XML_READER_TYPE_ENTITY_REFERENCE' file='xmlreader' value='5'/>
+    <enum name='XML_READER_TYPE_NONE' file='xmlreader' value='0'/>
+    <enum name='XML_READER_TYPE_NOTATION' file='xmlreader' value='12'/>
+    <enum name='XML_READER_TYPE_PROCESSING_INSTRUCTION' file='xmlreader' value='7'/>
+    <enum name='XML_READER_TYPE_SIGNIFICANT_WHITESPACE' file='xmlreader' value='14'/>
+    <enum name='XML_READER_TYPE_TEXT' file='xmlreader' value='3'/>
+    <enum name='XML_READER_TYPE_WHITESPACE' file='xmlreader' value='13'/>
+    <enum name='XML_READER_TYPE_XML_DECLARATION' file='xmlreader' value='17'/>
     <enum name='XML_RELAXNG_ERR_ATTREXTRANS' file='relaxng' value='20' type='xmlRelaxNGValidErr'/>
     <enum name='XML_RELAXNG_ERR_ATTRNAME' file='relaxng' value='14' type='xmlRelaxNGValidErr'/>
     <enum name='XML_RELAXNG_ERR_ATTRNONS' file='relaxng' value='16' type='xmlRelaxNGValidErr'/>
@@ -3659,6 +3706,7 @@ actually an xmlCharEncoding'/>
     </struct>
     <typedef name='xmlXPathVariablePtr' file='xpath' type='xmlXPathVariable *'/>
     <variable name='docbDefaultSAXHandler' file='globals' type='xmlSAXHandler'/>
+    <variable name='enum' file='xmlreader' type='enum'/>
     <variable name='htmlDefaultSAXHandler' file='globals' type='xmlSAXHandler'/>
     <variable name='oldXMLWDcompatibility' file='globals' type='int'/>
     <variable name='xmlBufferAllocScheme' file='globals' type='xmlBufferAllocationScheme'/>
@@ -8152,6 +8200,22 @@ actually an xmlCharEncoding'/>
       <return type='void'/>
       <arg name='ctxt' type='xmlRelaxNGValidCtxtPtr' info='the schema validation context'/>
     </function>
+    <function name='xmlRelaxNGGetParserErrors' file='relaxng'>
+      <info>Get the callback information used to handle errors for a validation context</info>
+      <return type='int' info='-1 in case of failure, 0 otherwise.'/>
+      <arg name='ctxt' type='xmlRelaxNGParserCtxtPtr' info='a Relax-NG validation context'/>
+      <arg name='err' type='xmlRelaxNGValidityErrorFunc *' info='the error callback result'/>
+      <arg name='warn' type='xmlRelaxNGValidityWarningFunc *' info='the warning callback result'/>
+      <arg name='ctx' type='void **' info='contextual data for the callbacks result'/>
+    </function>
+    <function name='xmlRelaxNGGetValidErrors' file='relaxng'>
+      <info>Get the error and warning callback informations</info>
+      <return type='int' info='-1 in case of error and 0 otherwise'/>
+      <arg name='ctxt' type='xmlRelaxNGValidCtxtPtr' info='a Relax-NG validation context'/>
+      <arg name='err' type='xmlRelaxNGValidityErrorFunc *' info='the error function result'/>
+      <arg name='warn' type='xmlRelaxNGValidityWarningFunc *' info='the warning function result'/>
+      <arg name='ctx' type='void **' info='the functions context result'/>
+    </function>
     <function name='xmlRelaxNGNewDocParserCtxt' file='relaxng'>
       <info>Create an XML RelaxNGs parser context for that document. Note: since the process of compiling a RelaxNG schemas modifies the document, the @doc parameter is duplicated internally.</info>
       <return type='xmlRelaxNGParserCtxtPtr' info='the parser context or NULL in case of error'/>
@@ -8777,6 +8841,12 @@ actually an xmlCharEncoding'/>
       <return type='xmlChar *' info='NULL if not a QName, otherwise the local part, and prefix is updated to get the Prefix if any.'/>
       <arg name='name' type='const xmlChar *' info='the full QName'/>
       <arg name='prefix' type='xmlChar **' info='a xmlChar **'/>
+    </function>
+    <function name='xmlSplitQName3' file='tree'>
+      <info>parse an XML qualified name string,i</info>
+      <return type='const xmlChar *' info='NULL if it is not a Qualified Name, otherwise, update len with the lenght in byte of the prefix and return a pointer'/>
+      <arg name='name' type='const xmlChar *' info='the full QName'/>
+      <arg name='len' type='int *' info='an int *'/>
     </function>
     <function name='xmlSprintfElementContent' file='valid'>
       <info>Deprecated, unsafe, use xmlSnprintfElementContent</info>
@@ -9973,6 +10043,17 @@ actually an xmlCharEncoding'/>
       <arg name='len' type='int' info='the length in bytes to unescape (or &lt;= 0 to indicate full string)'/>
       <arg name='target' type='char *' info='optional destination buffer'/>
     </function>
+    <function name='xmlUTF8Charcmp' file='encoding'>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='utf1' type='const xmlChar *' info=''/>
+      <arg name='utf2' type='const xmlChar *' info=''/>
+    </function>
+    <function name='xmlUTF8Size' file='encoding'>
+      <info></info>
+      <return type='int' info='the numbers of bytes in the character, -1 on format error'/>
+      <arg name='utf' type='const xmlChar *' info='pointer to the UTF8 character'/>
+    </function>
     <function name='xmlUTF8Strlen' file='encoding'>
       <info>compute the length of an UTF8 string, it doesn&apos;t do a full UTF8 checking of the content of the string.</info>
       <return type='int' info='the number of characters in the string or -1 in case of error'/>
@@ -10253,6 +10334,11 @@ actually an xmlCharEncoding'/>
       <info>Implement the XInclude substitution on the XML document @doc</info>
       <return type='int' info='0 if no substitution were done, -1 if some processing failed or the number of substitutions done.'/>
       <arg name='doc' type='xmlDocPtr' info='an XML document'/>
+    </function>
+    <function name='xmlXIncludeProcessTree' file='xinclude'>
+      <info>Implement the XInclude substitution for the given subtree</info>
+      <return type='int' info='0 if no substitution were done, -1 if some processing failed or the number of substitutions done.'/>
+      <arg name='tree' type='xmlNodePtr' info='a node in an XML document'/>
     </function>
     <function name='xmlXPathAddValues' file='xpathInternals'>
       <info>Implement the add operation on XPath objects: The numeric operators convert their operands to numbers as if by calling the number function.</info>

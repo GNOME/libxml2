@@ -58,6 +58,10 @@ void        <a href="libxml-relaxng.html#xmlRelaxNGSetParserErrors">xmlRelaxNGSe
                                              <a href="libxml-relaxng.html#xmlRelaxNGValidityErrorFunc">xmlRelaxNGValidityErrorFunc</a> err,
                                              <a href="libxml-relaxng.html#xmlRelaxNGValidityWarningFunc">xmlRelaxNGValidityWarningFunc</a> warn,
                                              void *ctx);
+int         <a href="libxml-relaxng.html#xmlRelaxNGGetParserErrors">xmlRelaxNGGetParserErrors</a>       (<a href="libxml-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-relaxng.html#xmlRelaxNGValidityErrorFunc">xmlRelaxNGValidityErrorFunc</a> *err,
+                                             <a href="libxml-relaxng.html#xmlRelaxNGValidityWarningFunc">xmlRelaxNGValidityWarningFunc</a> *warn,
+                                             void **ctx);
 <a href="libxml-relaxng.html#xmlRelaxNGPtr">xmlRelaxNGPtr</a> <a href="libxml-relaxng.html#xmlRelaxNGParse">xmlRelaxNGParse</a>               (<a href="libxml-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a> ctxt);
 void        <a href="libxml-relaxng.html#xmlRelaxNGFree">xmlRelaxNGFree</a>                  (<a href="libxml-relaxng.html#xmlRelaxNGPtr">xmlRelaxNGPtr</a> schema);
 void        <a href="libxml-relaxng.html#xmlRelaxNGDump">xmlRelaxNGDump</a>                  (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="FILE-CAPS">FILE</GTKDOCLINK> *output,
@@ -68,6 +72,10 @@ void        <a href="libxml-relaxng.html#xmlRelaxNGSetValidErrors">xmlRelaxNGSet
                                              <a href="libxml-relaxng.html#xmlRelaxNGValidityErrorFunc">xmlRelaxNGValidityErrorFunc</a> err,
                                              <a href="libxml-relaxng.html#xmlRelaxNGValidityWarningFunc">xmlRelaxNGValidityWarningFunc</a> warn,
                                              void *ctx);
+int         <a href="libxml-relaxng.html#xmlRelaxNGGetValidErrors">xmlRelaxNGGetValidErrors</a>        (<a href="libxml-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt,
+                                             <a href="libxml-relaxng.html#xmlRelaxNGValidityErrorFunc">xmlRelaxNGValidityErrorFunc</a> *err,
+                                             <a href="libxml-relaxng.html#xmlRelaxNGValidityWarningFunc">xmlRelaxNGValidityWarningFunc</a> *warn,
+                                             void **ctx);
 <a href="libxml-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> <a href="libxml-relaxng.html#xmlRelaxNGNewValidCtxt">xmlRelaxNGNewValidCtxt</a>
                                             (<a href="libxml-relaxng.html#xmlRelaxNGPtr">xmlRelaxNGPtr</a> schema);
 void        <a href="libxml-relaxng.html#xmlRelaxNGFreeValidCtxt">xmlRelaxNGFreeValidCtxt</a>         (<a href="libxml-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt);
@@ -205,6 +213,17 @@ Set the callback functions used to handle errors for a validation context</p><p>
 </td></tr><tr><td><span class="term"><i><tt>err</tt></i> :</span></td><td>  the error callback
 </td></tr><tr><td><span class="term"><i><tt>warn</tt></i> :</span></td><td>  the warning callback
 </td></tr><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  contextual data for the callbacks
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRelaxNGGetParserErrors"></a>xmlRelaxNGGetParserErrors ()</h3><pre class="programlisting">int         xmlRelaxNGGetParserErrors       (<a href="libxml-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-relaxng.html#xmlRelaxNGValidityErrorFunc">xmlRelaxNGValidityErrorFunc</a> *err,
+                                             <a href="libxml-relaxng.html#xmlRelaxNGValidityWarningFunc">xmlRelaxNGValidityWarningFunc</a> *warn,
+                                             void **ctx);</pre><p>
+Get the callback information used to handle errors for a validation context</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  a Relax-NG validation context
+</td></tr><tr><td><span class="term"><i><tt>err</tt></i> :</span></td><td>  the error callback result
+</td></tr><tr><td><span class="term"><i><tt>warn</tt></i> :</span></td><td>  the warning callback result
+</td></tr><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  contextual data for the callbacks result
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>-1 in case of failure, 0 otherwise.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRelaxNGParse"></a>xmlRelaxNGParse ()</h3><pre class="programlisting"><a href="libxml-relaxng.html#xmlRelaxNGPtr">xmlRelaxNGPtr</a> xmlRelaxNGParse               (<a href="libxml-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a> ctxt);</pre><p>
 parse a schema definition resource and build an internal
 XML Shema struture which can be used to validate instances.
@@ -239,6 +258,17 @@ Set the error and warning callback informations</p><p>
 </td></tr><tr><td><span class="term"><i><tt>err</tt></i> :</span></td><td>  the error function
 </td></tr><tr><td><span class="term"><i><tt>warn</tt></i> :</span></td><td> the warning function
 </td></tr><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td> the functions context
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRelaxNGGetValidErrors"></a>xmlRelaxNGGetValidErrors ()</h3><pre class="programlisting">int         xmlRelaxNGGetValidErrors        (<a href="libxml-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt,
+                                             <a href="libxml-relaxng.html#xmlRelaxNGValidityErrorFunc">xmlRelaxNGValidityErrorFunc</a> *err,
+                                             <a href="libxml-relaxng.html#xmlRelaxNGValidityWarningFunc">xmlRelaxNGValidityWarningFunc</a> *warn,
+                                             void **ctx);</pre><p>
+Get the error and warning callback informations</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  a Relax-NG validation context
+</td></tr><tr><td><span class="term"><i><tt>err</tt></i> :</span></td><td>  the error function result
+</td></tr><tr><td><span class="term"><i><tt>warn</tt></i> :</span></td><td> the warning function result
+</td></tr><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td> the functions context result
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>-1 in case of error and 0 otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRelaxNGNewValidCtxt"></a>xmlRelaxNGNewValidCtxt ()</h3><pre class="programlisting"><a href="libxml-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> xmlRelaxNGNewValidCtxt
                                             (<a href="libxml-relaxng.html#xmlRelaxNGPtr">xmlRelaxNGPtr</a> schema);</pre><p>
 Create an XML RelaxNGs validation context based on the given schema</p><p>

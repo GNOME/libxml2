@@ -33,12 +33,19 @@
 
 
 int         <a href="libxml-xinclude.html#xmlXIncludeProcess">xmlXIncludeProcess</a>              (<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc);
+int         <a href="libxml-xinclude.html#xmlXIncludeProcessTree">xmlXIncludeProcessTree</a>          (<a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> tree);
 </pre></div><div class="refsect1" lang="en"><h2>Description</h2><p>
 
 </p></div><div class="refsect1" lang="en"><h2>Details</h2><div class="refsect2" lang="en"><h3><a name="xmlXIncludeProcess"></a>xmlXIncludeProcess ()</h3><pre class="programlisting">int         xmlXIncludeProcess              (<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc);</pre><p>
 Implement the XInclude substitution on the XML document <i><tt>doc</tt></i></p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td> an XML document
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 if no substitution were done, -1 if some processing failed
+   or the number of substitutions done.
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXIncludeProcessTree"></a>xmlXIncludeProcessTree ()</h3><pre class="programlisting">int         xmlXIncludeProcessTree          (<a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> tree);</pre><p>
+Implement the XInclude substitution for the given subtree</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>tree</tt></i> :</span></td><td> a node in an XML document
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 if no substitution were done, -1 if some processing failed
    or the number of substitutions done.
 </td></tr></tbody></table></div></div></div></div><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-xpointer.html"><b>&lt;&lt; xpointer</b></a></td><td align="right"><a accesskey="n" href="libxml-nanohttp.html"><b>nanohttp &gt;&gt;</b></a></td></tr></table></body></html>

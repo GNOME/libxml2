@@ -1,3 +1,8 @@
+Wed Aug  1 23:21:06 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* SAX.c: unparsedEntityDecl() the URI computation of the
+	  entity wasn't done breaking XSLT unparsed-entity-uri()
+
 Wed Aug  1 17:44:57 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: fixed a bug when walking the descendants and

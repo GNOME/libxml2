@@ -611,6 +611,7 @@ unparsedEntityDecl(void *ctx, const xmlChar *name,
 		   const xmlChar *publicId, const xmlChar *systemId,
 		   const xmlChar *notationName)
 {
+    xmlEntityPtr ent;
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
 #ifdef DEBUG_SAX
     xmlGenericError(xmlGenericErrorContext,
@@ -621,15 +622,47 @@ unparsedEntityDecl(void *ctx, const xmlChar *name,
         ctxt->myDoc && ctxt->myDoc->extSubset)
 	ctxt->valid &= xmlValidateNotationUse(&ctxt->vctxt, ctxt->myDoc,
 	                                      notationName);
-    if (ctxt->inSubset == 1)
-	xmlAddDocEntity(ctxt->myDoc, name,
+    if (ctxt->inSubset == 1) {
+	ent = xmlAddDocEntity(ctxt->myDoc, name,
 			XML_EXTERNAL_GENERAL_UNPARSED_ENTITY,
 			publicId, systemId, notationName);
-    else if (ctxt->inSubset == 2)
-	xmlAddDtdEntity(ctxt->myDoc, name,
+	if ((ent == NULL) && (ctxt->pedantic) &&
+	    (ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
+	    ctxt->sax->warning(ctxt, 
+	     "Entity(%s) already defined in the internal subset\n", name);
+	if ((ent != NULL) && (ent->URI == NULL) && (systemId != NULL)) {
+	    xmlChar *URI;
+	    const char *base = NULL;
+
+	    if (ctxt->input != NULL)
+		base = ctxt->input->filename;
+	    if (base == NULL)
+		base = ctxt->directory;
+	
+	    URI = xmlBuildURI(systemId, (const xmlChar *) base);
+	    ent->URI = URI;
+	}
+    } else if (ctxt->inSubset == 2) {
+	ent = xmlAddDtdEntity(ctxt->myDoc, name,
 			XML_EXTERNAL_GENERAL_UNPARSED_ENTITY,
 			publicId, systemId, notationName);
-    else {
+	if ((ent == NULL) && (ctxt->pedantic) &&
+	    (ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
+	    ctxt->sax->warning(ctxt, 
+	     "Entity(%s) already defined in the external subset\n", name);
+	if ((ent != NULL) && (ent->URI == NULL) && (systemId != NULL)) {
+	    xmlChar *URI;
+	    const char *base = NULL;
+
+	    if (ctxt->input != NULL)
+		base = ctxt->input->filename;
+	    if (base == NULL)
+		base = ctxt->directory;
+	
+	    URI = xmlBuildURI(systemId, (const xmlChar *) base);
+	    ent->URI = URI;
+	}
+    } else {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt, 
 	     "SAX.unparsedEntityDecl(%s) called while not in subset\n", name);

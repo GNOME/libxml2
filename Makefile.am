@@ -300,4 +300,8 @@ $(srcdir)/libxml:
 	-$(RM) -f $(srcdir)/libxml
 	ln -s $(srcdir)/. $(srcdir)/libxml
 
+install-data-local:
+	-mkdir -p $(xmlincdir)
+	-(cd $(xmlincdir) && ln -s . libxml)
+
 $(libxml_la_SOURCES): $(srcdir)/libxml

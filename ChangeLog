@@ -1,3 +1,8 @@
+2001-03-24  Martin Baulig  <baulig@suse.de>
+
+	* Makefile.am: Added install-data-local target to create the
+	libxml symlink.
+
 Fri Mar 23 19:17:45 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* parser.c: remove some cases where an encoding error

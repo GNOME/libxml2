@@ -1,3 +1,8 @@
+Mon Aug 28 00:38:31 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* HTMLparser.[ch]: applied some of Wayne Davison <wayned@blorf.net>
+	  patches
+
 Sun Aug 27 22:14:01 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* SAX.c tree.c debugXML.c: fixed bogus behaviour when an

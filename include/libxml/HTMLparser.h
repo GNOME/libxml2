@@ -58,6 +58,7 @@ struct _htmlEntityDesc {
  */
 htmlElemDescPtr		htmlTagLookup	(const xmlChar *tag);
 htmlEntityDescPtr	htmlEntityLookup(const xmlChar *name);
+htmlEntityDescPtr	htmlEntityValueLookup(int value);
 
 int			htmlIsAutoClosed(htmlDocPtr doc,
 					 htmlNodePtr elem);

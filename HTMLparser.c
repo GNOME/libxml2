@@ -607,7 +607,7 @@ htmlInitAutoClose(void) {
  */
 htmlElemDescPtr
 htmlTagLookup(const xmlChar *tag) {
-    int i = 0;
+    int i;
 
     for (i = 0; i < (sizeof(html40ElementTable) /
                      sizeof(html40ElementTable[0]));i++) {
@@ -911,10 +911,11 @@ htmlCheckParagraph(htmlParserCtxtPtr ctxt) {
 
 htmlEntityDesc  html40EntitiesTable[] = {
 /*
- * the 4 absolute ones,
+ * the 4 absolute ones, plus apostrophe.
  */
 { 34,	"quot",	"quotation mark = APL quote, U+0022 ISOnum" },
 { 38,	"amp",	"ampersand, U+0026 ISOnum" },
+{ 39,	"apos",	"single quote" },
 { 60,	"lt",	"less-than sign, U+003C ISOnum" },
 { 62,	"gt",	"greater-than sign, U+003E ISOnum" },
 
@@ -922,7 +923,6 @@ htmlEntityDesc  html40EntitiesTable[] = {
  * A bunch still in the 128-255 range
  * Replacing them depend really on the charset used.
  */
-{ 39,	"apos",	"single quote" },
 { 160,	"nbsp",	"no-break space = non-breaking space, U+00A0 ISOnum" },
 { 161,	"iexcl","inverted exclamation mark, U+00A1 ISOnum" },
 { 162,	"cent",	"cent sign, U+00A2 ISOnum" },
@@ -1020,10 +1020,19 @@ htmlEntityDesc  html40EntitiesTable[] = {
 { 254,	"thorn","latin small letter thorn with, U+00FE ISOlat1" },
 { 255,	"yuml",	"latin small letter y with diaeresis, U+00FF ISOlat1" },
 
+{ 338,	"OElig","latin capital ligature OE, U+0152 ISOlat2" },
+{ 339,	"oelig","latin small ligature oe, U+0153 ISOlat2" },
+{ 352,	"Scaron","latin capital letter S with caron, U+0160 ISOlat2" },
+{ 353,	"scaron","latin small letter s with caron, U+0161 ISOlat2" },
+{ 376,	"Yuml",	"latin capital letter Y with diaeresis, U+0178 ISOlat2" },
+
 /*
  * Anything below should really be kept as entities references
  */
 { 402,	"fnof",	"latin small f with hook = function = florin, U+0192 ISOtech" },
+
+{ 710,	"circ",	"modifier letter circumflex accent, U+02C6 ISOpub" },
+{ 732,	"tilde","small tilde, U+02DC ISOdia" },
 
 { 913,	"Alpha","greek capital letter alpha, U+0391" },
 { 914,	"Beta",	"greek capital letter beta, U+0392" },
@@ -1079,15 +1088,42 @@ htmlEntityDesc  html40EntitiesTable[] = {
 { 978,	"upsih","greek upsilon with hook symbol, U+03D2 NEW" },
 { 982,	"piv",	"greek pi symbol, U+03D6 ISOgrk3" },
 
+{ 8194,	"ensp",	"en space, U+2002 ISOpub" },
+{ 8195,	"emsp",	"em space, U+2003 ISOpub" },
+{ 8201,	"thinsp","thin space, U+2009 ISOpub" },
+{ 8204,	"zwnj",	"zero width non-joiner, U+200C NEW RFC 2070" },
+{ 8205,	"zwj",	"zero width joiner, U+200D NEW RFC 2070" },
+{ 8206,	"lrm",	"left-to-right mark, U+200E NEW RFC 2070" },
+{ 8207,	"rlm",	"right-to-left mark, U+200F NEW RFC 2070" },
+{ 8211,	"ndash","en dash, U+2013 ISOpub" },
+{ 8212,	"mdash","em dash, U+2014 ISOpub" },
+{ 8216,	"lsquo","left single quotation mark, U+2018 ISOnum" },
+{ 8217,	"rsquo","right single quotation mark, U+2019 ISOnum" },
+{ 8218,	"sbquo","single low-9 quotation mark, U+201A NEW" },
+{ 8220,	"ldquo","left double quotation mark, U+201C ISOnum" },
+{ 8221,	"rdquo","right double quotation mark, U+201D ISOnum" },
+{ 8222,	"bdquo","double low-9 quotation mark, U+201E NEW" },
+{ 8224,	"dagger","dagger, U+2020 ISOpub" },
+{ 8225,	"Dagger","double dagger, U+2021 ISOpub" },
+
 { 8226,	"bull",	"bullet = black small circle, U+2022 ISOpub" },
 { 8230,	"hellip","horizontal ellipsis = three dot leader, U+2026 ISOpub" },
+
+{ 8240,	"permil","per mille sign, U+2030 ISOtech" },
+
 { 8242,	"prime","prime = minutes = feet, U+2032 ISOtech" },
 { 8243,	"Prime","double prime = seconds = inches, U+2033 ISOtech" },
+
+{ 8249,	"lsaquo","single left-pointing angle quotation mark, U+2039 ISO proposed" },
+{ 8250,	"rsaquo","single right-pointing angle quotation mark, U+203A ISO proposed" },
+
 { 8254,	"oline","overline = spacing overscore, U+203E NEW" },
 { 8260,	"frasl","fraction slash, U+2044 NEW" },
 
-{ 8472,	"weierp","script capital P = power set = Weierstrass p, U+2118 ISOamso" },
+{ 8364,	"euro",	"euro sign, U+20AC NEW" },
+
 { 8465,	"image","blackletter capital I = imaginary part, U+2111 ISOamso" },
+{ 8472,	"weierp","script capital P = power set = Weierstrass p, U+2118 ISOamso" },
 { 8476,	"real",	"blackletter capital R = real part symbol, U+211C ISOamso" },
 { 8482,	"trade","trade mark sign, U+2122 ISOnum" },
 { 8501,	"alefsym","alef symbol = first transfinite cardinal, U+2135 NEW" },
@@ -1102,7 +1138,6 @@ htmlEntityDesc  html40EntitiesTable[] = {
 { 8658,	"rArr",	"rightwards double arrow, U+21D2 ISOtech" },
 { 8659,	"dArr",	"downwards double arrow, U+21D3 ISOamsa" },
 { 8660,	"hArr",	"left right double arrow, U+21D4 ISOamsa" },
-
 
 { 8704,	"forall","for all, U+2200 ISOtech" },
 { 8706,	"part",	"partial differential, U+2202 ISOtech" },
@@ -1155,35 +1190,6 @@ htmlEntityDesc  html40EntitiesTable[] = {
 { 9829,	"hearts","black heart suit = valentine, U+2665 ISOpub" },
 { 9830,	"diams","black diamond suit, U+2666 ISOpub" },
 
-{ 338,	"OElig","latin capital ligature OE, U+0152 ISOlat2" },
-{ 339,	"oelig","latin small ligature oe, U+0153 ISOlat2" },
-{ 352,	"Scaron","latin capital letter S with caron, U+0160 ISOlat2" },
-{ 353,	"scaron","latin small letter s with caron, U+0161 ISOlat2" },
-{ 376,	"Yuml",	"latin capital letter Y with diaeresis, U+0178 ISOlat2" },
-{ 710,	"circ",	"modifier letter circumflex accent, U+02C6 ISOpub" },
-{ 732,	"tilde","small tilde, U+02DC ISOdia" },
-
-{ 8194,	"ensp",	"en space, U+2002 ISOpub" },
-{ 8195,	"emsp",	"em space, U+2003 ISOpub" },
-{ 8201,	"thinsp","thin space, U+2009 ISOpub" },
-{ 8204,	"zwnj",	"zero width non-joiner, U+200C NEW RFC 2070" },
-{ 8205,	"zwj",	"zero width joiner, U+200D NEW RFC 2070" },
-{ 8206,	"lrm",	"left-to-right mark, U+200E NEW RFC 2070" },
-{ 8207,	"rlm",	"right-to-left mark, U+200F NEW RFC 2070" },
-{ 8211,	"ndash","en dash, U+2013 ISOpub" },
-{ 8212,	"mdash","em dash, U+2014 ISOpub" },
-{ 8216,	"lsquo","left single quotation mark, U+2018 ISOnum" },
-{ 8217,	"rsquo","right single quotation mark, U+2019 ISOnum" },
-{ 8218,	"sbquo","single low-9 quotation mark, U+201A NEW" },
-{ 8220,	"ldquo","left double quotation mark, U+201C ISOnum" },
-{ 8221,	"rdquo","right double quotation mark, U+201D ISOnum" },
-{ 8222,	"bdquo","double low-9 quotation mark, U+201E NEW" },
-{ 8224,	"dagger","dagger, U+2020 ISOpub" },
-{ 8225,	"Dagger","double dagger, U+2021 ISOpub" },
-{ 8240,	"permil","per mille sign, U+2030 ISOtech" },
-{ 8249,	"lsaquo","single left-pointing angle quotation mark, U+2039 ISO proposed" },
-{ 8250,	"rsaquo","single right-pointing angle quotation mark, U+203A ISO proposed" },
-{ 8364,	"euro",	"euro sign, U+20AC NEW" }
 };
 
 /************************************************************************
@@ -1226,6 +1232,44 @@ htmlEntityLookup(const xmlChar *name) {
 #endif
             return(&html40EntitiesTable[i]);
 	}
+    }
+    return(NULL);
+}
+
+/**
+ * htmlEntityValueLookup:
+ * @value: the entity's unicode value
+ *
+ * Lookup the given entity in EntitiesTable
+ *
+ * TODO: the linear scan is really ugly, an hash table is really needed.
+ *
+ * Returns the associated htmlEntityDescPtr if found, NULL otherwise.
+ */
+htmlEntityDescPtr
+htmlEntityValueLookup(int value) {
+    int i;
+#ifdef DEBUG
+    int lv = 0;
+#endif
+
+    for (i = 0;i < (sizeof(html40EntitiesTable)/
+                    sizeof(html40EntitiesTable[0]));i++) {
+        if (html40EntitiesTable[i].value >= value) {
+	    if (html40EntitiesTable[i].value > value)
+		break;
+#ifdef DEBUG
+	    fprintf(stderr,"Found entity %s\n", html40EntitiesTable[i].name);
+#endif
+            return(&html40EntitiesTable[i]);
+	}
+#ifdef DEBUG
+	if (lv > html40EntitiesTable[i].value) {
+	    fprintf(stderr, "html40EntitiesTable[] is not sorted (%d > %d)!\n",
+		    lv, html40EntitiesTable[i].value);
+	}
+	lv = html40EntitiesTable[i].value;
+#endif
     }
     return(NULL);
 }
@@ -1301,35 +1345,26 @@ UTF8ToHtml(unsigned char* out, int *outlen,
 		break;
 	    *out++ = c;
 	} else {
-	    int i, j, len;
+	    int len;
+	    htmlEntityDescPtr ent;
+
 	    /*
 	     * Try to lookup a predefined HTML entity for it
 	     */
 
-	    for (i = 0;i < (sizeof(html40EntitiesTable)/
-			    sizeof(html40EntitiesTable[0]));i++) {
-		if (html40EntitiesTable[i].value == c) {
-#ifdef DEBUG
-		    fprintf(stderr,"Found entity %s\n", 
-			    html40EntitiesTable[i].name);
-#endif
-		    goto found_ent;
-		}
-		if (html40EntitiesTable[i].value > c)
-		    break;
+	    ent = htmlEntityValueLookup(c);
+	    if (ent == NULL) {
+		/* no chance for this in Ascii */
+		*outlen = out - outstart;
+		*inlen = processed - instart;
+		return(-2);
 	    }
-
-	    /* no chance for this in Ascii */
-	    *outlen = out - outstart;
-	    *inlen = processed - instart;
-	    return(-2);
-found_ent:
-	    len = strlen(html40EntitiesTable[i].name);
-	    if (out + 2 + len >= outend)
+	    len = strlen(ent->name);
+	    if (out + 2 + len > outend)
 		break;
 	    *out++ = '&';
-            for (j = 0;j < len;j++)
-		*out++ = html40EntitiesTable[i].name[j];
+	    memcpy(out, ent->name, len);
+	    out += len;
 	    *out++ = ';';
 	}
 	processed = in;

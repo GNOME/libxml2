@@ -1,3 +1,7 @@
+Fri Feb 15 21:47:13 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xmlmemory.c: avoid a warning bug #71594
+
 Wed Feb 13 22:13:33 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xmlmemory.c: Jesse Perry provided a patch to remove a few

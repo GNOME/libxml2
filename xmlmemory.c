@@ -458,7 +458,7 @@ xmlMemContentShow(FILE *fp, MEMHDR *p)
 
     for (i = 0;i < len;i++) {
         if (buf[i] == 0) break;
-	if (!isprint(buf[i])) break;
+	if (!isprint((unsigned char) buf[i])) break;
     }
     if ((i < 4) && ((buf[i] != 0) || (i == 0))) {
         if (len >= 4) {

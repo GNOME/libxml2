@@ -1,3 +1,8 @@
+Fri Oct 30 01:36:52 EST 1998 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* parser.c: fixed? a strange error due to compression on a GWP
+	  document.
+
 Thu Oct 29 00:48:45 EST 1998 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* tree.[ch]: bug fixing

@@ -3345,6 +3345,7 @@ xmlDocPtr xmlParseFile(const char *filename) {
     int input;
 #endif
     int res;
+    int len;
     struct stat buf;
     char *buffer;
     xmlParserCtxtPtr ctxt;
@@ -3354,17 +3355,19 @@ xmlDocPtr xmlParseFile(const char *filename) {
     if (res < 0) return(NULL);
 
 #ifdef HAVE_ZLIB_H
+    len = (buf.st_size * 8) + 1000;
 retry_bigger:
-    buffer = malloc((buf.st_size * 20) + 100);
+    buffer = malloc(len);
 #else
-    buffer = malloc(buf.st_size + 100);
+    len = buf.st_size + 100;
+    buffer = malloc(len);
 #endif
     if (buffer == NULL) {
 	perror("malloc");
         return(NULL);
     }
 
-    memset(buffer, 0, sizeof(buffer));
+    memset(buffer, 0, len);
 #ifdef HAVE_ZLIB_H
     input = gzopen (filename, "r");
     if (input == NULL) {
@@ -3381,7 +3384,7 @@ retry_bigger:
     }
 #endif
 #ifdef HAVE_ZLIB_H
-    res = gzread(input, buffer, 20 * buf.st_size);
+    res = gzread(input, buffer, len);
 #else
     res = read(input, buffer, buf.st_size);
 #endif
@@ -3396,9 +3399,9 @@ retry_bigger:
     }
 #ifdef HAVE_ZLIB_H
     gzclose(input);
-    if (res >= 20 * buf.st_size + 20) {
+    if (res >= len) {
         free(buffer);
-	buf.st_size *= 2;
+	len *= 2;
 	goto retry_bigger;
     }
     buf.st_size = res;

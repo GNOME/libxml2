@@ -1,0 +1,227 @@
+<?xml version="1.0"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
+    "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
+]>
+<refentry>
+  <refentryinfo>
+    <title>xmlcatalog Manual</title>
+    <copyright>
+      <year>2001</year>
+    </copyright>
+    <author>
+      <firstname>John</firstname>
+      <surname>Fleck</surname>
+    </author>
+    <address><email>jfleck@inkstain.net</email></address>
+    <legalnotice id="legalnotice">
+      <para>Permission is granted to copy, distribute and/or modify this document
+	under the terms of the <ulink type="help" url="gnome-help:fdl"><citetitle>GNU Free Documentation
+	    License</citetitle></ulink>, Version 1.1 or any later version 
+	published by the Free Software Foundation with no Invariant Sections, 
+	no Front-Cover Texts, and no Back-Cover Texts.  A copy of the license
+	can be found <ulink type="help" url="gnome-help:fdl">here</ulink>.
+      </para>
+      <para>Many of the names used by companies to distinguish their products and
+	services are claimed as trademarks. Where those names appear in any
+	GNOME documentation, and those trademarks are made aware to the members
+	of the GNOME Documentation Project, the names have been printed in caps
+	or initial caps.
+      </para>
+    </legalnotice>
+    <releaseinfo>This is release 0.1 of the xmlcatalog Manual.</releaseinfo>
+  </refentryinfo>
+
+ <refmeta>
+    <refentrytitle>xmlcatalog</refentrytitle>
+    <manvolnum>1</manvolnum>
+  </refmeta>
+  <refnamediv>
+    <refname>xmlcatalog</refname>
+    <refpurpose>Command line tool to parse and manipulate <acronym>XML</acronym> or
+      <acronym>SGML</acronym> catalog files.</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <cmdsynopsis>
+      <command>xmlcatalog</command>
+      <group>
+	<arg>--shell</arg>
+	<arg>--create</arg>
+	<arg>--add <replaceable>type</replaceable>
+	  <replaceable>orig</replaceable> <replaceable>replace</replaceable></arg>
+	<arg>--del <replaceable>values</replaceable></arg>
+	<arg>--noout</arg>
+	<arg>--verbose</arg>
+      </group>
+      <arg><option><replaceable>catalogfile</replaceable></option></arg>
+      <arg><option><replaceable>entities</replaceable></option></arg>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+
+  <refsect1 id="introduction">
+    <title>Introduction</title>
+    <para>
+      <application>xmlcatalog</application> is a command line application
+      allowing users to monitor and manipulate <acronym>XML</acronym> and
+      <acronym>SGML</acronym> catalogs. It is included in
+      <application>libxml2</application>.
+    </para>
+
+    <para>
+      Its functions can be invoked from a single command from the command line,
+      or it can perform multiple functions in interactive mode. It can operate
+      on both <acronym>XML</acronym> and <acronym>SGML</acronym> files.
+    </para>
+  </refsect1>
+  
+  <refsect1 id="cloptions">
+    <title>Command Line Options</title>
+    <para>
+      <option>--shell</option> <replaceable>filename</replaceable> - Run a shell
+      allowing interactive queries on catalog file
+      <replaceable>filename</replaceable>.
+    </para>
+
+    <para>
+      <option>--create</option> <replaceable>filename</replaceable> - Create a new
+      <acronym>XML</acronym> catalog. Outputs to stdout, ignoring
+      <replaceable>filename</replaceable> unless <option>--noout</option> is
+      used, in which case it creates a new catalog file
+      <replaceable>filename</replaceable>.
+    </para>
+
+    <para>
+      <option>--add</option> <replaceable>'type'</replaceable>
+      <replaceable>'orig'</replaceable> <replaceable>'replace'</replaceable>
+      <replaceable>filename</replaceable> - Add an entry to catalog file
+      <filename>filename</filename>. <replaceable>type</replaceable> indicates
+      the type of entry. Possible types are 'public', 'system', 'rewriteSystem',
+      'delegatePublic' and 'delegateSystem'. <replaceable>'orig'</replaceable>
+      is the original reference to 
+      be replaced, and <replaceable>'replace'</replaceable> is the
+      <acronym>URI</acronym> of the replacement entity to be used. The
+      <option>-add</option> option will not overwrite
+      <replaceable>filename</replaceable>, outputing to stdout, unless
+      <option>--noout</option> is used. The <option>--add</option> will always
+      take three parameters even if some of the <acronym>XML</acronym> catalog
+      constructs will have only a single argument.
+<!--
+FIXME - Is my list of possible types correct? Are SGML types the same? 
+-->
+    </para>
+
+    <para>
+      <option>--del</option> <replaceable>'values'</replaceable>
+      <replaceable>filename</replaceable> - Remove entries from the catalog file
+      <replaceable>filename</replaceable> matching
+      <replaceable>'values'</replaceable>. The <option>--del</option> option
+      will not overwrite <replaceable>filename</replaceable>, outputing to
+      stdout, unless <option>--noout</option> is used.
+    </para>
+
+    <para>
+      <option>--noout</option> - Save output to the named file rather than
+      outputing to stdout.
+    </para>
+
+    <para>
+      <option>-v</option> or <option>--verbose</option> - output debugging
+      information.
+    </para>
+  </refsect1>
+
+  <refsect1 id="shell">
+    <title>Shell Commands</title>
+    <para>Invoking <application>xmlcatalog</application> with the
+      <option>--shell</option> <replaceable>filename</replaceable> option opens
+    a command line shell allowing interactive access to the catalog file
+      identified by <replaceable>filename</replaceable>. Invoking the shell
+    provides a command line prompt after which commands can be entered.
+    </para>
+
+    <para>
+      <option>public</option> <replaceable>'PublicID'</replaceable> - Execute a
+      public identifier lookup of the catalog entry for
+      <replaceable>'PublicID'</replaceable>. The corresponding entry will be
+      output to the command line.
+    </para>
+
+    <para>
+ <option>system</option> <replaceable>'SystemID'</replaceable> - Execute a
+      public identifier lookup of the catalog entry for
+      <replaceable>'SystemID'</replaceable>. The corresponding entry will be
+      output to the command line.
+    </para>
+
+    <para>
+      <option>add </option> <replaceable>'type'</replaceable>
+      <replaceable>'orig'</replaceable> <replaceable>'replace'</replaceable> -
+      Add an entry to the catalog
+      file. <replaceable>type</replaceable> indicates the type of
+      entry. Possible types are 'public', 'system', 'rewriteSystem',
+      'delegatePublic' and 'delegateSystem'. <replaceable>'orig'</replaceable>
+      is the original reference to  be replaced, and
+      <replaceable>'replace'</replaceable> is the <acronym>URI</acronym> of the
+      replacement entity to be used.
+    </para>
+
+    <para>
+      <option>del</option> <replaceable>'values'</replaceable> - Remove the
+      catalog entry corresponding to <replaceable>'values'</replaceable>.
+    </para>
+
+    <para>
+      <option>dump</option> - Print the current catalog.
+    </para>
+
+    <para>
+      <option>debug</option> - Print debugging statements showing the steps
+      <application>xmlcatalog</application> is executing.
+    </para>
+
+    <para>
+      <option>quiet</option> - Stop printing debugging statements.
+    </para>
+
+    <para>
+      <option>exit</option> - Quit the shell.
+    </para>
+
+  </refsect1>
+
+
+  <refsect1 id="references">
+    <title>References</title>
+    <para>
+
+      <itemizedlist>
+	<listitem>
+	  <para><application>libxml web page: </application><ulink
+	  url="http://www.xmlsoft.org/">http://www.xmlsoft.org/</ulink>
+	  </para>
+	</listitem>
+	<listitem>
+	  <para>
+	    <application>libxml</application> catalog support web page: <ulink
+									       url="http://www.xmlsoft.org/catalog.html">http://www.xmlsoft.org/catalog.html</ulink>
+	  </para>
+	</listitem>
+	<listitem>
+	  <para>
+	    James Clark's <acronym>SGML</acronym> catalog page: <ulink
+								       url="http://www.jclark.com/sp/catalog.htm">http://www.jclark.com/sp/catalog.htm</ulink>
+	  </para>
+	</listitem>
+	<listitem>
+	  <para>
+	    <acronym>OASIS</acronym> <acronym>XML</acronym> catalog
+	    specification: <ulink
+				  url="http://www.oasis-open.org/committees/entity/spec.html">http://www.oasis-open.org/committees/entity/spec.html</ulink>
+	  </para>
+	</listitem>
+      </itemizedlist>
+
+    </para>
+  </refsect1>
+
+</refentry>

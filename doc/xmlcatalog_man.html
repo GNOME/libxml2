@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+<meta content="text/html; charset=ISO-8859-1" http-equiv="Content-Type">
+<title>xmlcatalog</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.41">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry">
+<h1 class="title">
+<a name="id2707557"></a>xmlcatalog</h1>
+<div class="refnamediv">
+<a name="id2707759"></a><h2>Name</h2>xmlcatalog &#x2014; Command line tool to parse and manipulate XML or
+      SGML catalog files.</div>
+<div class="refsynopsisdiv">
+<a name="id2700082"></a><h2>Synopsis</h2>
+<div class="cmdsynopsis" id="id2702384">
+<a name="id2702384"></a><tt>xmlcatalog</tt>  [--shell | --create | --add <i><tt>type</tt></i>
+	  <i><tt>orig</tt></i> <i><tt>replace</tt></i> | --del <i><tt>values</tt></i> | --noout | --verbose] [<tt><i><tt>catalogfile</tt></i></tt>] [<tt><i><tt>entities</tt></i></tt>]</div>
+</div>
+<div class="refsect1">
+<a name="introduction"></a><h2>
+<a name="introduction"></a>Introduction</h2>
+<p>
+      xmlcatalog is a command line application
+      allowing users to monitor and manipulate XML and
+      SGML catalogs. It is included in
+      libxml2.
+    </p>
+<p>
+      Its functions can be invoked from a single command from the command line,
+      or it can perform multiple functions in interactive mode. It can operate
+      on both XML and SGML files.
+    </p>
+</div>
+<div class="refsect1">
+<a name="cloptions"></a><h2>
+<a name="cloptions"></a>Command Line Options</h2>
+<p>
+      <tt>--shell</tt> <i><tt>filename</tt></i> - Run a shell
+      allowing interactive queries on catalog file
+      <i><tt>filename</tt></i>.
+    </p>
+<p>
+      <tt>--create</tt> <i><tt>filename</tt></i> - Create a new
+      XML catalog. Outputs to stdout, ignoring
+      <i><tt>filename</tt></i> unless <tt>--noout</tt> is
+      used, in which case it creates a new catalog file
+      <i><tt>filename</tt></i>.
+    </p>
+<p>
+      <tt>--add</tt> <i><tt>'type'</tt></i>
+      <i><tt>'orig'</tt></i> <i><tt>'replace'</tt></i>
+      <i><tt>filename</tt></i> - Add an entry to catalog file
+      <tt>filename</tt>. <i><tt>type</tt></i> indicates
+      the type of entry. Possible types are 'public', 'system', 'rewriteSystem',
+      'delegatePublic' and 'delegateSystem'. <i><tt>'orig'</tt></i>
+      is the original reference to 
+      be replaced, and <i><tt>'replace'</tt></i> is the
+      URI of the replacement entity to be used. The
+      <tt>-add</tt> option will not overwrite
+      <i><tt>filename</tt></i>, outputing to stdout, unless
+      <tt>--noout</tt> is used. The <tt>--add</tt> will always
+      take three parameters even if some of the XML catalog
+      constructs will have only a single argument.
+
+    </p>
+<p>
+      <tt>--del</tt> <i><tt>'values'</tt></i>
+      <i><tt>filename</tt></i> - Remove entries from the catalog file
+      <i><tt>filename</tt></i> matching
+      <i><tt>'values'</tt></i>. The <tt>--del</tt> option
+      will not overwrite <i><tt>filename</tt></i>, outputing to
+      stdout, unless <tt>--noout</tt> is used.
+    </p>
+<p>
+      <tt>--noout</tt> - Save output to the named file rather than
+      outputing to stdout.
+    </p>
+<p>
+      <tt>-v</tt> or <tt>--verbose</tt> - output debugging
+      information.
+    </p>
+</div>
+<div class="refsect1">
+<a name="shell"></a><h2>
+<a name="shell"></a>Shell Commands</h2>
+<p>Invoking xmlcatalog with the
+      <tt>--shell</tt> <i><tt>filename</tt></i> option opens
+    a command line shell allowing interactive access to the catalog file
+      identified by <i><tt>filename</tt></i>. Invoking the shell
+    provides a command line prompt after which commands can be entered.
+    </p>
+<p>
+      <tt>public</tt> <i><tt>'PublicID'</tt></i> - Execute a
+      public identifier lookup of the catalog entry for
+      <i><tt>'PublicID'</tt></i>. The corresponding entry will be
+      output to the command line.
+    </p>
+<p>
+ <tt>system</tt> <i><tt>'SystemID'</tt></i> - Execute a
+      public identifier lookup of the catalog entry for
+      <i><tt>'SystemID'</tt></i>. The corresponding entry will be
+      output to the command line.
+    </p>
+<p>
+      <tt>add </tt> <i><tt>'type'</tt></i>
+      <i><tt>'orig'</tt></i> <i><tt>'replace'</tt></i> -
+      Add an entry to the catalog
+      file. <i><tt>type</tt></i> indicates the type of
+      entry. Possible types are 'public', 'system', 'rewriteSystem',
+      'delegatePublic' and 'delegateSystem'. <i><tt>'orig'</tt></i>
+      is the original reference to  be replaced, and
+      <i><tt>'replace'</tt></i> is the URI of the
+      replacement entity to be used.
+    </p>
+<p>
+      <tt>del</tt> <i><tt>'values'</tt></i> - Remove the
+      catalog entry corresponding to <i><tt>'values'</tt></i>.
+    </p>
+<p>
+      <tt>dump</tt> - Print the current catalog.
+    </p>
+<p>
+      <tt>debug</tt> - Print debugging statements showing the steps
+      xmlcatalog is executing.
+    </p>
+<p>
+      <tt>quiet</tt> - Stop printing debugging statements.
+    </p>
+<p>
+      <tt>exit</tt> - Quit the shell.
+    </p>
+</div>
+<div class="refsect1">
+<a name="references"></a><h2>
+<a name="references"></a>References</h2>
+<p>
+
+      <div class="itemizedlist"><ul>
+<li><p>
+<a name="id2708320"></a>libxml web page: <a href="http://www.xmlsoft.org/" target="_top">http://www.xmlsoft.org/</a>
+	  </p></li>
+<li><p>
+<a name="id2705398"></a>
+	    libxml catalog support web page: <a href="http://www.xmlsoft.org/catalog.html" target="_top">http://www.xmlsoft.org/catalog.html</a>
+	  </p></li>
+<li><p>
+<a name="id2708614"></a>
+	    James Clark's SGML catalog page: <a href="http://www.jclark.com/sp/catalog.htm" target="_top">http://www.jclark.com/sp/catalog.htm</a>
+	  </p></li>
+<li><p>
+<a name="id2708638"></a>
+	    OASIS XML catalog
+	    specification: <a href="http://www.oasis-open.org/committees/entity/spec.html" target="_top">http://www.oasis-open.org/committees/entity/spec.html</a>
+	  </p></li>
+</ul></div>
+
+    </p>
+</div>
+</div></body>
+</html>

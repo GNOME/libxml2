@@ -1,3 +1,9 @@
+Mon Sep  3 09:10:08 MDT 2001 John Fleck <jfleck@inkstain.net>
+
+	* doc/xmlcatalog_man.xml, xmlcatalog_man.html, xmlcatalog.1
+	adding documentation for xmlcatalog. Note: xmlcatalog.1, the man
+	file, has not yet been included in the build.
+
 Sat Sep  1 18:17:47 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* catalog.c: removed a duplicate affectation Justin Fletcher

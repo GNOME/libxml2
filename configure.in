@@ -41,7 +41,7 @@ AC_ARG_ENABLE(corba,    [  --enable-corba           Add Corba support (default)]
 dnl
 dnl Corba is enabled by default
 dnl
-if test "$enable_java" = "no" ; then
+if test "$enable_corba" = "no" ; then
    CORBA_CFLAGS="-DWITHOUT_CORBA"
 fi
 AC_SUBST(CORBA_CFLAGS)

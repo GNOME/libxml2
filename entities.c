@@ -312,7 +312,11 @@ CHAR *xmlEncodeEntities(xmlDocPtr doc, const CHAR *input) {
 #ifndef USE_UTF_8
 	} else if ((sizeof(CHAR) == 1) && (*cur >= 0x80)) {
 	    char buf[10], *ptr;
-	    g_snprintf(buf, 9, "&#%d;", *cur);
+#ifdef HAVE_SNPRINTF
+	    snprintf(buf, 9, "&#%d;", *cur);
+#else
+	    sprintf(buf, "&#%d;", *cur);
+#endif
             ptr = buf;
 	    while (*ptr != 0) *out++ = *ptr++;
 #endif

@@ -157,7 +157,6 @@ xmlCleanupInputCallbacks(void)
         xmlInputCallbackTable[i].readcallback = NULL;
         xmlInputCallbackTable[i].closecallback = NULL;
     }
-    xmlInputCallbackInitialized = 0;
 
     xmlInputCallbackNr = 0;
     xmlInputCallbackInitialized = 0;
@@ -183,7 +182,6 @@ xmlCleanupOutputCallbacks(void)
         xmlOutputCallbackTable[i].writecallback = NULL;
         xmlOutputCallbackTable[i].closecallback = NULL;
     }
-    xmlOutputCallbackInitialized = 0;
 
     xmlOutputCallbackNr = 0;
     xmlOutputCallbackInitialized = 0;
@@ -1436,6 +1434,7 @@ xmlRegisterInputCallbacks(xmlInputMatchCallback matchFunc,
     xmlInputCallbackTable[xmlInputCallbackNr].opencallback = openFunc;
     xmlInputCallbackTable[xmlInputCallbackNr].readcallback = readFunc;
     xmlInputCallbackTable[xmlInputCallbackNr].closecallback = closeFunc;
+    xmlInputCallbackInitialized = 1;
     return(xmlInputCallbackNr++);
 }
 
@@ -1461,6 +1460,7 @@ xmlRegisterOutputCallbacks(xmlOutputMatchCallback matchFunc,
     xmlOutputCallbackTable[xmlOutputCallbackNr].opencallback = openFunc;
     xmlOutputCallbackTable[xmlOutputCallbackNr].writecallback = writeFunc;
     xmlOutputCallbackTable[xmlOutputCallbackNr].closecallback = closeFunc;
+    xmlOutputCallbackInitialized = 1;
     return(xmlOutputCallbackNr++);
 }
 

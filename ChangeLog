@@ -1,3 +1,10 @@
+Tue Sep 23 09:40:33 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmlIO.c: applied patch from Markus Keim fixing a problem
+	  with I/O callback registration.
+	* include/libxml/xmlerror.h: fixed #122994 comment numbering
+	  for xmlParserErrors
+
 Mon Sep 22 12:21:11 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c include/libxml/tree.h: the uri arg to xmlNodeSetBase is

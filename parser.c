@@ -4562,139 +4562,6 @@ xmlParseElementDecl(xmlParserCtxtPtr ctxt) {
 }
 
 /**
- * xmlParseMarkupDecl:
- * @ctxt:  an XML parser context
- * 
- * parse Markup declarations
- *
- * [29] markupdecl ::= elementdecl | AttlistDecl | EntityDecl |
- *                     NotationDecl | PI | Comment
- *
- * [ VC: Proper Declaration/PE Nesting ]
- * Parameter-entity replacement text must be properly nested with
- * markup declarations. That is to say, if either the first character
- * or the last character of a markup declaration (markupdecl above) is
- * contained in the replacement text for a parameter-entity reference,
- * both must be contained in the same replacement text.
- *
- * [ WFC: PEs in Internal Subset ]
- * In the internal DTD subset, parameter-entity references can occur
- * only where markup declarations can occur, not within markup declarations.
- * (This does not apply to references that occur in external parameter
- * entities or to the external subset.) 
- */
-void
-xmlParseMarkupDecl(xmlParserCtxtPtr ctxt) {
-    GROW;
-    xmlParseElementDecl(ctxt);
-    xmlParseAttributeListDecl(ctxt);
-    xmlParseEntityDecl(ctxt);
-    xmlParseNotationDecl(ctxt);
-    xmlParsePI(ctxt);
-    xmlParseComment(ctxt);
-    /*
-     * This is only for internal subset. On external entities,
-     * the replacement is done before parsing stage
-     */
-    if ((ctxt->external == 0) && (ctxt->inputNr == 1))
-	xmlParsePEReference(ctxt);
-    ctxt->instate = XML_PARSER_DTD;
-}
-
-/**
- * xmlParseTextDecl:
- * @ctxt:  an XML parser context
- * 
- * parse an XML declaration header for external entities
- *
- * [77] TextDecl ::= '<?xml' VersionInfo? EncodingDecl S? '?>'
- *
- * Question: Seems that EncodingDecl is mandatory ? Is that a typo ?
- */
-
-void
-xmlParseTextDecl(xmlParserCtxtPtr ctxt) {
-    xmlChar *version;
-
-    /*
-     * We know that '<?xml' is here.
-     */
-    if ((RAW == '<') && (NXT(1) == '?') &&
-	(NXT(2) == 'x') && (NXT(3) == 'm') &&
-	(NXT(4) == 'l') && (IS_BLANK(NXT(5)))) {
-	SKIP(5);
-    } else {
-	ctxt->errNo = XML_ERR_XMLDECL_NOT_STARTED;
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt->userData,
-	                     "Text declaration '<?xml' required\n");
-	ctxt->wellFormed = 0;
-	ctxt->disableSAX = 1;
-
-	return;
-    }
-
-    if (!IS_BLANK(CUR)) {
-	ctxt->errNo = XML_ERR_SPACE_REQUIRED;
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt->userData,
-	                     "Space needed after '<?xml'\n");
-	ctxt->wellFormed = 0;
-	ctxt->disableSAX = 1;
-    }
-    SKIP_BLANKS;
-
-    /*
-     * We may have the VersionInfo here.
-     */
-    version = xmlParseVersionInfo(ctxt);
-    if (version == NULL)
-	version = xmlCharStrdup(XML_DEFAULT_VERSION);
-    ctxt->input->version = version;
-
-    /*
-     * We must have the encoding declaration
-     */
-    if (!IS_BLANK(CUR)) {
-	ctxt->errNo = XML_ERR_SPACE_REQUIRED;
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt->userData, "Space needed here\n");
-	ctxt->wellFormed = 0;
-	ctxt->disableSAX = 1;
-    }
-    xmlParseEncodingDecl(ctxt);
-    if (ctxt->errNo == XML_ERR_UNSUPPORTED_ENCODING) {
-	/*
-	 * The XML REC instructs us to stop parsing right here
-	 */
-        return;
-    }
-
-    SKIP_BLANKS;
-    if ((RAW == '?') && (NXT(1) == '>')) {
-        SKIP(2);
-    } else if (RAW == '>') {
-        /* Deprecated old WD ... */
-	ctxt->errNo = XML_ERR_XMLDECL_NOT_FINISHED;
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt->userData,
-	                     "XML declaration must end-up with '?>'\n");
-	ctxt->wellFormed = 0;
-	ctxt->disableSAX = 1;
-	NEXT;
-    } else {
-	ctxt->errNo = XML_ERR_XMLDECL_NOT_FINISHED;
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt->userData,
-	                     "parsing XML declaration: '?>' expected\n");
-	ctxt->wellFormed = 0;
-	ctxt->disableSAX = 1;
-	MOVETO_ENDTAG(CUR_PTR);
-	NEXT;
-    }
-}
-
-/*
  * xmlParseConditionalSections
  * @ctxt:  an XML parser context
  *
@@ -4857,6 +4724,150 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
 	ctxt->disableSAX = 1;
     } else {
         SKIP(3);
+    }
+}
+
+/**
+ * xmlParseMarkupDecl:
+ * @ctxt:  an XML parser context
+ * 
+ * parse Markup declarations
+ *
+ * [29] markupdecl ::= elementdecl | AttlistDecl | EntityDecl |
+ *                     NotationDecl | PI | Comment
+ *
+ * [ VC: Proper Declaration/PE Nesting ]
+ * Parameter-entity replacement text must be properly nested with
+ * markup declarations. That is to say, if either the first character
+ * or the last character of a markup declaration (markupdecl above) is
+ * contained in the replacement text for a parameter-entity reference,
+ * both must be contained in the same replacement text.
+ *
+ * [ WFC: PEs in Internal Subset ]
+ * In the internal DTD subset, parameter-entity references can occur
+ * only where markup declarations can occur, not within markup declarations.
+ * (This does not apply to references that occur in external parameter
+ * entities or to the external subset.) 
+ */
+void
+xmlParseMarkupDecl(xmlParserCtxtPtr ctxt) {
+    GROW;
+    xmlParseElementDecl(ctxt);
+    xmlParseAttributeListDecl(ctxt);
+    xmlParseEntityDecl(ctxt);
+    xmlParseNotationDecl(ctxt);
+    xmlParsePI(ctxt);
+    xmlParseComment(ctxt);
+    /*
+     * This is only for internal subset. On external entities,
+     * the replacement is done before parsing stage
+     */
+    if ((ctxt->external == 0) && (ctxt->inputNr == 1))
+	xmlParsePEReference(ctxt);
+
+    /*
+     * Conditional sections are allowed from entities included
+     * by PE References in the internal subset.
+     */
+    if ((ctxt->external == 0) && (ctxt->inputNr > 1)) {
+        if ((RAW == '<') && (NXT(1) == '!') && (NXT(2) == '[')) {
+	    xmlParseConditionalSections(ctxt);
+	}
+    }
+
+    ctxt->instate = XML_PARSER_DTD;
+}
+
+/**
+ * xmlParseTextDecl:
+ * @ctxt:  an XML parser context
+ * 
+ * parse an XML declaration header for external entities
+ *
+ * [77] TextDecl ::= '<?xml' VersionInfo? EncodingDecl S? '?>'
+ *
+ * Question: Seems that EncodingDecl is mandatory ? Is that a typo ?
+ */
+
+void
+xmlParseTextDecl(xmlParserCtxtPtr ctxt) {
+    xmlChar *version;
+
+    /*
+     * We know that '<?xml' is here.
+     */
+    if ((RAW == '<') && (NXT(1) == '?') &&
+	(NXT(2) == 'x') && (NXT(3) == 'm') &&
+	(NXT(4) == 'l') && (IS_BLANK(NXT(5)))) {
+	SKIP(5);
+    } else {
+	ctxt->errNo = XML_ERR_XMLDECL_NOT_STARTED;
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt->userData,
+	                     "Text declaration '<?xml' required\n");
+	ctxt->wellFormed = 0;
+	ctxt->disableSAX = 1;
+
+	return;
+    }
+
+    if (!IS_BLANK(CUR)) {
+	ctxt->errNo = XML_ERR_SPACE_REQUIRED;
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt->userData,
+	                     "Space needed after '<?xml'\n");
+	ctxt->wellFormed = 0;
+	ctxt->disableSAX = 1;
+    }
+    SKIP_BLANKS;
+
+    /*
+     * We may have the VersionInfo here.
+     */
+    version = xmlParseVersionInfo(ctxt);
+    if (version == NULL)
+	version = xmlCharStrdup(XML_DEFAULT_VERSION);
+    ctxt->input->version = version;
+
+    /*
+     * We must have the encoding declaration
+     */
+    if (!IS_BLANK(CUR)) {
+	ctxt->errNo = XML_ERR_SPACE_REQUIRED;
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt->userData, "Space needed here\n");
+	ctxt->wellFormed = 0;
+	ctxt->disableSAX = 1;
+    }
+    xmlParseEncodingDecl(ctxt);
+    if (ctxt->errNo == XML_ERR_UNSUPPORTED_ENCODING) {
+	/*
+	 * The XML REC instructs us to stop parsing right here
+	 */
+        return;
+    }
+
+    SKIP_BLANKS;
+    if ((RAW == '?') && (NXT(1) == '>')) {
+        SKIP(2);
+    } else if (RAW == '>') {
+        /* Deprecated old WD ... */
+	ctxt->errNo = XML_ERR_XMLDECL_NOT_FINISHED;
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt->userData,
+	                     "XML declaration must end-up with '?>'\n");
+	ctxt->wellFormed = 0;
+	ctxt->disableSAX = 1;
+	NEXT;
+    } else {
+	ctxt->errNo = XML_ERR_XMLDECL_NOT_FINISHED;
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt->userData,
+	                     "parsing XML declaration: '?>' expected\n");
+	ctxt->wellFormed = 0;
+	ctxt->disableSAX = 1;
+	MOVETO_ENDTAG(CUR_PTR);
+	NEXT;
     }
 }
 

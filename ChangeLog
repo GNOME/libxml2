@@ -1,3 +1,14 @@
+Wed Dec 29 15:29:52 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* HTMLparser.[ch] testHTML.c: added push mode for the HTML parser
+	  too htmlCreatePushParserCtxt() and htmlParseChunk()
+	* parser.c: a bit of cleanup.
+	* SAX.c, HTMLparser.c: some attributes may not have values (contrary
+	  to XML) removed the last mem leak known
+	* HTMLtree.c: output message cleanup
+	* xmlmemory.c: display content info about memory blocks
+	* result/HTML/wired.* : missing att value warning change
+
 Tue Dec 28 17:42:41 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* doc/* : rebuilt the documentation

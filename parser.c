@@ -7180,7 +7180,7 @@ xmlParseTry(xmlParserCtxtPtr ctxt) {
 		    xmlParsePI(ctxt);
 		} else if ((cur == '<') && (next == '!') &&
 		    (in->cur[2] == '-') && (in->cur[3] == '-')) {
-		    if (xmlParseLookupSequence(ctxt, '-', '>', 0) < 0) 
+		    if (xmlParseLookupSequence(ctxt, '-', '-', '>') < 0) 
 			goto done;
 #ifdef DEBUG_PUSH
 		    fprintf(stderr, "PP: Parsing Comment\n");
@@ -7238,7 +7238,7 @@ xmlParseTry(xmlParserCtxtPtr ctxt) {
 		    xmlParsePI(ctxt);
 		} else if ((cur == '<') && (next == '!') &&
 		    (in->cur[2] == '-') && (in->cur[3] == '-')) {
-		    if (xmlParseLookupSequence(ctxt, '-', '>', 0) < 0) 
+		    if (xmlParseLookupSequence(ctxt, '-', '-', '>') < 0) 
 			goto done;
 #ifdef DEBUG_PUSH
 		    fprintf(stderr, "PP: Parsing Comment\n");
@@ -7275,7 +7275,7 @@ xmlParseTry(xmlParserCtxtPtr ctxt) {
 		    ctxt->instate = XML_PARSER_EPILOG;
 		} else if ((cur == '<') && (next == '!') &&
 		    (in->cur[2] == '-') && (in->cur[3] == '-')) {
-		    if (xmlParseLookupSequence(ctxt, '-', '>', 0) < 0) 
+		    if (xmlParseLookupSequence(ctxt, '-', '-', '>') < 0) 
 			goto done;
 #ifdef DEBUG_PUSH
 		    fprintf(stderr, "PP: Parsing Comment\n");
@@ -7425,7 +7425,7 @@ xmlParseTry(xmlParserCtxtPtr ctxt) {
 		    xmlParsePI(ctxt);
 		} else if ((cur == '<') && (next == '!') &&
 		           (in->cur[2] == '-') && (in->cur[3] == '-')) {
-		    if (xmlParseLookupSequence(ctxt, '-', '>', 0) < 0) 
+		    if (xmlParseLookupSequence(ctxt, '-', '-', '>') < 0) 
 			goto done;
 #ifdef DEBUG_PUSH
 		    fprintf(stderr, "PP: Parsing Comment\n");
@@ -7531,7 +7531,7 @@ xmlParseTry(xmlParserCtxtPtr ctxt) {
 		}
 		break;
 	    }
-            case XML_PARSER_END_TAG: {
+            case XML_PARSER_END_TAG:
 		if (avail < 2)
 		    goto done;
 		if (xmlParseLookupSequence(ctxt, '>', 0, 0) < 0) 
@@ -7549,7 +7549,6 @@ xmlParseTry(xmlParserCtxtPtr ctxt) {
 #endif
 		}
 		break;
-	    } 
             case XML_PARSER_DTD: {
 	        /*
 		 * Sorry but progressive parsing of the internal subset

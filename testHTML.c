@@ -43,26 +43,7 @@ static int copy = 0;
 static int sax = 0;
 static int repeat = 0;
 static int noout = 0;
-
-/*
- * Note: this is perfectly clean HTML, i.e. not a useful test.
-static xmlChar buffer[] = 
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\"\n\
-                      \"http://www.w3.org/TR/REC-html40/loose.dtd\">\n\
-<html>\n\
-<head>\n\
-  <title>This service is temporary down</title>\n\
-</head>\n\
-\n\
-<body bgcolor=\"#FFFFFF\">\n\
-<h1 align=\"center\">Sorry, this service is temporary down</h1>\n\
-We are doing our best to get it back on-line,\n\
-\n\
-<p>The W3C system administrators</p>\n\
-</body>\n\
-</html>\n\
-";
- */
+static int push = 0;
 
 xmlSAXHandler emptySAXHandlerStruct = {
     NULL, /* internalSubset */
@@ -608,7 +589,35 @@ void parseAndPrintFile(char *filename) {
     /*
      * build an HTML tree from a string;
      */
-    doc = htmlParseFile(filename, NULL);
+    if (push) {
+	FILE *f;
+
+	f = fopen(filename, "r");
+	if (f != NULL) {
+	    int res, size = 3;
+	    char chars[1024];
+	    htmlParserCtxtPtr ctxt;
+
+	    if (repeat)
+		size = 1024;
+	    res = fread(chars, 1, 4, f);
+	    if (res > 0) {
+		ctxt = htmlCreatePushParserCtxt(NULL, NULL,
+			    chars, res, filename, 0);
+		while ((res = fread(chars, 1, size, f)) > 0) {
+		    htmlParseChunk(ctxt, chars, res, 0);
+		}
+		htmlParseChunk(ctxt, chars, 0, 1);
+		doc = ctxt->myDoc;
+		htmlFreeParserCtxt(ctxt);
+	    }
+	}
+    } else {	
+	doc = htmlParseFile(filename, NULL);
+    }
+    if (doc == NULL) {
+        fprintf(stderr, "Could not parse %s\n", filename);
+    }
 
     /*
      * test intermediate copy if needed.
@@ -635,37 +644,6 @@ void parseAndPrintFile(char *filename) {
     xmlFreeDoc(doc);
 }
 
-void parseAndPrintBuffer(xmlChar *buf) {
-    htmlDocPtr doc, tmp;
-
-    /*
-     * build an HTML tree from a string;
-     */
-    doc = htmlParseDoc(buf, NULL);
-
-    /*
-     * test intermediate copy if needed.
-     */
-    if (copy) {
-        tmp = doc;
-	doc = xmlCopyDoc(doc, 1);
-	xmlFreeDoc(tmp);
-    }
-
-    /*
-     * print it.
-     */
-    if (!debug)
-	htmlDocDump(stdout, doc);
-    else
-        xmlDebugDumpDocument(stdout, doc);
-
-    /*
-     * free it.
-     */
-    xmlFreeDoc(doc);
-}
-
 int main(int argc, char **argv) {
     int i, count;
     int files = 0;
@@ -675,6 +653,8 @@ int main(int argc, char **argv) {
 	    debug++;
 	else if ((!strcmp(argv[i], "-copy")) || (!strcmp(argv[i], "--copy")))
 	    copy++;
+	else if ((!strcmp(argv[i], "-push")) || (!strcmp(argv[i], "--push")))
+	    push++;
 	else if ((!strcmp(argv[i], "-sax")) || (!strcmp(argv[i], "--sax")))
 	    sax++;
 	else if ((!strcmp(argv[i], "-noout")) || (!strcmp(argv[i], "--noout")))
@@ -708,8 +688,9 @@ int main(int argc, char **argv) {
 	printf("\t--debug : dump a debug tree of the in-memory document\n");
 	printf("\t--copy : used to test the internal copy implementation\n");
 	printf("\t--sax : debug the sequence of SAX callbacks\n");
-	printf("\t--repeat : parse the file 100 times, for timing or profiling\n");
+	printf("\t--repeat : parse the file 100 times, for timing\n");
 	printf("\t--noout : do not print the result\n");
+	printf("\t--push : use the push mode parser\n");
     }
     xmlCleanupParser();
     xmlMemoryDump();

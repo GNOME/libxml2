@@ -310,7 +310,7 @@ htmlDocDumpMemory(xmlDocPtr cur, xmlChar**mem, int *size) {
 
     if (cur == NULL) {
 #ifdef DEBUG_TREE
-        fprintf(stderr, "xmlDocDumpMemory : document == NULL\n");
+        fprintf(stderr, "htmlxmlDocDumpMemory : document == NULL\n");
 #endif
 	*mem = NULL;
 	*size = 0;
@@ -343,7 +343,7 @@ htmlDocDump(FILE *f, xmlDocPtr cur) {
 
     if (cur == NULL) {
 #ifdef DEBUG_TREE
-        fprintf(stderr, "xmlDocDump : document == NULL\n");
+        fprintf(stderr, "htmlDocDump : document == NULL\n");
 #endif
 	return;
     }

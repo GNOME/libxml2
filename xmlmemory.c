@@ -25,6 +25,9 @@
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
 #endif
+#ifdef HAVE_CTYPE_H
+#include <ctype.h>
+#endif
 
 
 #include "xmlmemory.h"
@@ -368,6 +371,59 @@ xmlMemUsed(void) {
      return(debugMemSize);
 }
 
+#ifdef MEM_LIST
+/**
+ * xmlMemContentShow:
+ * @fp:  a FILE descriptor used as the output file
+ * @p:  a memory block header
+ *
+ * tries to show some content from the memory block
+ */
+
+void
+xmlMemContentShow(FILE *fp, MEMHDR *p)
+{
+    int i,j,len = p->mh_size;
+    const char *buf = HDR_2_CLIENT(p);
+
+    for (i = 0;i < len;i++) {
+        if (buf[i] == 0) break;
+	if (!isprint(buf[i])) break;
+    }
+    if ((i < 4) && ((buf[i] != 0) || (i == 0))) {
+        if (len >= 4) {
+	    MEMHDR *q;
+	    void *cur;
+
+            for (j = 0;j < len -3;j += 4) {
+		cur = *((void **) &buf[j]);
+		q = CLIENT_2_HDR(cur);
+		p = memlist;
+		while (p != NULL) {
+		    if (p == q) break;
+		    p = p->mh_next;
+		}
+		if (p == q) {
+		    fprintf(fp, " pointer to #%lu at index %d",
+		            p->mh_number, j);
+		    return;
+		}
+	    }
+	}
+    } else if ((i == 0) && (buf[i] == 0)) {
+        fprintf(fp," null");
+    } else {
+        if (buf[i] == 0) fprintf(fp," \"%.25s\"", buf); 
+	else {
+            fprintf(fp," [");
+	    for (j = 0;j < i;j++)
+                fprintf(fp,"%c", buf[j]);
+            fprintf(fp,"]");
+	}
+    }
+}
+#endif
+
 /**
  * xmlMemShow:
  * @fp:  a FILE descriptor used as the output file
@@ -403,6 +459,7 @@ xmlMemShow(FILE *fp, int nr)
 	        fprintf(fp,"%s(%d)", p->mh_file, p->mh_line);
 	    if (p->mh_tag != MEMTAG)
 		fprintf(fp,"  INVALID");
+	    xmlMemContentShow(fp, p);
 	    fprintf(fp,"\n");
 	    nr--;
 	    p = p->mh_next;
@@ -453,6 +510,7 @@ xmlMemDisplay(FILE *fp)
 	  if (p->mh_file != NULL) fprintf(fp,"%s(%d)", p->mh_file, p->mh_line);
         if (p->mh_tag != MEMTAG)
 	      fprintf(fp,"  INVALID");
+	xmlMemContentShow(fp, p);
         fprintf(fp,"\n");
         p = p->mh_next;
     }

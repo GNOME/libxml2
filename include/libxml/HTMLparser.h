@@ -78,6 +78,20 @@ htmlDocPtr		htmlSAXParseFile(const char *filename,
 htmlDocPtr		htmlParseFile	(const char *filename,
 					 const char *encoding);
 
+/**
+ * Interfaces for the Push mode
+ */
+void			htmlFreeParserCtxt	(htmlParserCtxtPtr ctxt);
+htmlParserCtxtPtr	htmlCreatePushParserCtxt(htmlSAXHandlerPtr sax,
+						 void *user_data,
+						 const char *chunk,
+						 int size,
+						 const char *filename,
+						 xmlCharEncoding enc);
+int			htmlParseChunk		(htmlParserCtxtPtr ctxt,
+						 const char *chunk,
+						 int size,
+						 int terminate);
 #ifdef __cplusplus
 }
 #endif

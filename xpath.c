@@ -3309,7 +3309,7 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt, xmlXPathAxisVal axis,
 #ifdef DEBUG_STEP
 					n++;
 #endif
-					addNode(ret, attr);
+					addNode(ret, (xmlNodePtr) attr);
 				    }
 				} else {
 				    if ((attr->ns != NULL) && 
@@ -3318,7 +3318,7 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt, xmlXPathAxisVal axis,
 #ifdef DEBUG_STEP
 					n++;
 #endif
-					addNode(ret, attr);
+					addNode(ret, (xmlNodePtr) attr);
 				    }
 				}
 			    }
@@ -5149,6 +5149,9 @@ xmlXPathEvalPathExpr(xmlXPathParserContextPtr ctxt) {
     if ((CUR == '$') || (CUR == '(') || (IS_DIGIT(CUR)) ||
         (CUR == '\'') || (CUR == '"')) {
 	lc = 0;
+    } else if (CUR == '*') {
+	/* relative or absolute location path */
+	lc = 1;
     } else if (CUR == '/') {
 	/* relative or absolute location path */
 	lc = 1;

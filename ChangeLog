@@ -1,3 +1,7 @@
+Mon Feb 19 10:59:41 CET 2001 Bjorn Reese <breese@users.sourceforge.net>
+
+	* xpath.c: fixed "*" (unbelievable !) and a couple of warnings
+
 Sun Feb 18 17:52:37 MET 2001 Bjorn Reese <breese@users.sourceforge.net>
 
 	* xpath.c: fixed whitespace handling in xmlXPathStringEvalNumber,

@@ -948,7 +948,7 @@ xmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
 	}
 	return(0xA);
     }
-    return((int) *ctxt->input->cur);
+    return((int) * (unsigned char *)ctxt->input->cur);
 encoding_error:
     /*
      * If we detect an UTF8 error that probably mean that the
@@ -1071,18 +1071,16 @@ encoding_error:
 }
 
 /**
- * xmlCopyChar:
- * @len:  pointer to the length of the char read (or zero)
- * @array:  pointer to an arry of xmlChar
+ * xmlCopyCharMultiByte:
+ * @out:  pointer to an arry of xmlChar
  * @val:  the char value
  *
  * append the char value in the array 
  *
  * Returns the number of xmlChar written
  */
-
 int
-xmlCopyChar(int len, xmlChar *out, int val) {
+xmlCopyCharMultiByte(xmlChar *out, int val) {
     /*
      * We are supposed to handle UTF8, check it's valid
      * From rfc2044: encoding of the Unicode values on UTF-8:
@@ -1092,35 +1090,47 @@ xmlCopyChar(int len, xmlChar *out, int val) {
      * 0000 0080-0000 07FF   110xxxxx 10xxxxxx
      * 0000 0800-0000 FFFF   1110xxxx 10xxxxxx 10xxxxxx 
      */
-    if (len <= 1) {
-	if (val < 0) len = 0;
-	else if (val < 0x80) len = 1;
-	else if (val < 0x800) len = 2;
-	else if (val < 0x10000) len = 3;
-	else if (val < 0x110000) len = 4;
-	if (len == 0) {
-	    fprintf(stderr, /* changed from 2.3.5 */
+    if  (val >= 0x80) {
+	xmlChar *savedout = out;
+	int bits;
+	if (val <   0x800) { *out++= (val >>  6) | 0xC0;  bits=  0; }
+	else if (val < 0x10000) { *out++= (val >> 12) | 0xE0;  bits=  6;}
+	else if (val < 0x110000)  { *out++= (val >> 18) | 0xF0;  bits=  12; }
+	else {
+	    fprintf(stderr,
 		    "Internal error, xmlCopyChar 0x%X out of bound\n",
 		    val);
 	    return(0);
 	}
-    }
-    if (len > 1) {
-	int bits; 
-
-        if      (val <    0x80) {  *out++=  val;                bits= -6; }
-        else if (val <   0x800) {  *out++= (val >>  6) | 0xC0;  bits=  0; }
-        else if (val < 0x10000) {  *out++= (val >> 12) | 0xE0;  bits=  6; }
-        else                  {    *out++= (val >> 18) | 0xF0;  bits= 12; }
- 
-        for ( ; bits >= 0; bits-= 6)
-            *out++= ((val >> bits) & 0x3F) | 0x80 ;
-
-        return(len);
+	for ( ; bits >= 0; bits-= 6)
+	    *out++= ((val >> bits) & 0x3F) | 0x80 ;
+	return (out - savedout);
     }
     *out = (xmlChar) val;
-    return(1);
+    return 1;
 }
+
+/**
+ * xmlCopyChar:
+ * @len:  Ignored, compatibility
+ * @out:  pointer to an arry of xmlChar
+ * @val:  the char value
+ *
+ * append the char value in the array 
+ *
+ * Returns the number of xmlChar written
+ */
+
+int
+xmlCopyChar(int len, xmlChar *out, int val) {
+    /* the len parameter is ignored */
+    if  (val >= 0x80) {
+	return(xmlCopyCharMultiByte (out, val));
+    }
+    *out = (xmlChar) val;
+    return 1;
+}
+
 /************************************************************************
  *									*
  *	Commodity functions to handle entities processing		*
@@ -2848,6 +2858,118 @@ xmlNamespaceParseQName(xmlParserCtxtPtr ctxt, xmlChar **prefix) {
 
 xmlChar *
 xmlSplitQName(const xmlChar *name, xmlChar **prefix) {
+    xmlChar buf[XML_MAX_NAMELEN + 5];
+    xmlChar *buffer = NULL;
+    int len = 0;
+    int max = XML_MAX_NAMELEN;
+    xmlChar *ret = NULL;
+    const xmlChar *cur = name;
+    int c;
+
+    *prefix = NULL;
+
+#ifndef XML_XML_NAMESPACE
+    /* xml: prefix is not really a namespace */
+    if ((cur[0] == 'x') && (cur[1] == 'm') &&
+        (cur[2] == 'l') && (cur[3] == ':'))
+	return(xmlStrdup(name));
+#endif
+
+    /* nasty but valid */
+    if (cur[0] == ':')
+	return(xmlStrdup(name));
+
+    c = *cur++;
+    while ((c != 0) && (c != ':') && (len < max)) { /* tested bigname.xml */
+	buf[len++] = c;
+	c = *cur++;
+    }
+    if (len >= max) {
+	/*
+	 * Okay someone managed to make a huge name, so he's ready to pay
+	 * for the processing speed.
+	 */
+	max = len * 2;
+	
+	buffer = (xmlChar *) xmlMalloc(max * sizeof(xmlChar));
+	if (buffer == NULL) {
+	    fprintf(stderr, "xmlSplitQName: out of memory\n");
+	    return(NULL);
+	}
+	memcpy(buffer, buf, len);
+	while ((c != 0) && (c != ':')) { /* tested bigname.xml */
+	    if (len + 10 > max) {
+		max *= 2;
+		buffer = (xmlChar *) xmlRealloc(buffer,
+						max * sizeof(xmlChar));
+		if (buffer == NULL) {
+		    fprintf(stderr, "xmlSplitQName: out of memory\n");
+		    return(NULL);
+		}
+	    }
+	    buffer[len++] = c;
+	    c = *cur++;
+	}
+	buffer[len] = 0;
+    }
+    
+    if (buffer == NULL)
+	ret = xmlStrndup(buf, len);
+    else {
+	ret = buffer;
+	buffer = NULL;
+	max = XML_MAX_NAMELEN;
+    }
+
+
+    if (c == ':') {
+	c = *cur++;
+	if (c == 0) return(ret);
+        *prefix = ret;
+	len = 0;
+
+	while ((c != 0) && (len < max)) { /* tested bigname2.xml */
+	    buf[len++] = c;
+	    c = *cur++;
+	}
+	if (len >= max) {
+	    /*
+	     * Okay someone managed to make a huge name, so he's ready to pay
+	     * for the processing speed.
+	     */
+	    max = len * 2;
+	    
+	    buffer = (xmlChar *) xmlMalloc(max * sizeof(xmlChar));
+	    if (buffer == NULL) {
+		fprintf(stderr, "xmlSplitQName: out of memory\n");
+		return(NULL);
+	    }
+	    memcpy(buffer, buf, len);
+	    while (c != 0) { /* tested bigname2.xml */
+		if (len + 10 > max) {
+		    max *= 2;
+		    buffer = (xmlChar *) xmlRealloc(buffer,
+						    max * sizeof(xmlChar));
+		    if (buffer == NULL) {
+			fprintf(stderr, "xmlSplitQName: out of memory\n");
+			return(NULL);
+		    }
+		}
+		buffer[len++] = c;
+		c = *cur++;
+	    }
+	    buffer[len] = 0;
+	}
+	
+	if (buffer == NULL)
+	    ret = xmlStrndup(buf, len);
+	else {
+	    ret = buffer;
+	}
+    }
+
+    return(ret);
+#if 0
     xmlChar *ret = NULL;
     const xmlChar *q;
     const xmlChar *cur = name;
@@ -2889,6 +3011,7 @@ xmlSplitQName(const xmlChar *name, xmlChar **prefix) {
     }
 
     return(ret);
+#endif
 }
 /**
  * xmlNamespaceParseNSDef:

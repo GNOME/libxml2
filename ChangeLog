@@ -1,3 +1,9 @@
+Sun Mar 25 16:56:27 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* parser.c: fixed an I18N breakage on the new parser due
+	  to the usage of an old routine
+	* test/i18n.xml result/i18n.xml: added a small first test
+
 Sun Mar 25 16:07:08 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* parser.c: cleanup and make sure scrollkeeper won't have problems

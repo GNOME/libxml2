@@ -1,3 +1,8 @@
+Sat Sep  6 10:55:01 PTD 2003 William Brack <wbrack@mmm.com.hk>
+
+	* SAX2.c, xmlIO.c: fixed bug #121210 (callback to sax->error,
+	  sax->warning with wrong params).
+
 Fri Sep  5 10:33:42 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/globals.h: patch from Stéphane Bidoul to export

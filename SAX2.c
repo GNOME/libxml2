@@ -366,8 +366,8 @@ xmlSAX2GetEntity(void *ctx, const xmlChar *name)
 		ret = xmlGetDocEntity(ctxt->myDoc, name);
 		if (ret != NULL) {
 		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-			ctxt->sax->error(ctxt, 
-		 "Entity(%s) document marked standalone but require external subset\n",
+			ctxt->sax->error(ctxt->userData, 
+		 "Entity(%s) document marked standalone but requires external subset\n",
 					 name);
 		    ctxt->valid = 0;
 		    ctxt->wellFormed = 0;
@@ -395,8 +395,9 @@ xmlSAX2GetEntity(void *ctx, const xmlChar *name)
 	if (val == 0) {
 	    xmlAddChildList((xmlNodePtr) ret, children);
 	} else {
-	    ctxt->sax->error(ctxt, 
-	     "Failure to process entity %s\n", name);
+	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	        ctxt->sax->error(ctxt->userData, 
+		 "Failure to process entity %s\n", name);
 	    ctxt->wellFormed = 0;
 	    ctxt->valid = 0;
 	    ctxt->validate = 0;
@@ -460,7 +461,7 @@ xmlSAX2EntityDecl(void *ctx, const xmlChar *name, int type,
 		              systemId, content);
 	if ((ent == NULL) && (ctxt->pedantic) &&
 	    (ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
-	    ctxt->sax->warning(ctxt, 
+	    ctxt->sax->warning(ctxt->userData, 
 	     "Entity(%s) already defined in the internal subset\n", name);
 	if ((ent != NULL) && (ent->URI == NULL) && (systemId != NULL)) {
 	    xmlChar *URI;
@@ -479,7 +480,7 @@ xmlSAX2EntityDecl(void *ctx, const xmlChar *name, int type,
 		              systemId, content);
 	if ((ent == NULL) && (ctxt->pedantic) &&
 	    (ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
-	    ctxt->sax->warning(ctxt, 
+	    ctxt->sax->warning(ctxt->userData, 
 	     "Entity(%s) already defined in the external subset\n", name);
 	if ((ent != NULL) && (ent->URI == NULL) && (systemId != NULL)) {
 	    xmlChar *URI;
@@ -495,7 +496,7 @@ xmlSAX2EntityDecl(void *ctx, const xmlChar *name, int type,
 	}
     } else {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt, 
+	    ctxt->sax->error(ctxt->userData, 
 	     "SAX.xmlSAX2EntityDecl(%s) called while not in subset\n", name);
     }
 }
@@ -538,7 +539,7 @@ xmlSAX2AttributeDecl(void *ctx, const xmlChar *elem, const xmlChar *fullname,
 	   (xmlAttributeDefault) def, defaultValue, tree);
     else {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt, 
+	    ctxt->sax->error(ctxt->userData, 
 	     "SAX.xmlSAX2AttributeDecl(%s) called while not in subset\n", name);
 	return;
     }
@@ -583,7 +584,7 @@ xmlSAX2ElementDecl(void *ctx, const xmlChar * name, int type,
                                  name, (xmlElementTypeVal) type, content);
     else {
         if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-            ctxt->sax->error(ctxt,
+            ctxt->sax->error(ctxt->userData,
                              "SAX.xmlSAX2ElementDecl(%s) called while not in subset\n",
                              name);
         return;
@@ -619,7 +620,7 @@ xmlSAX2NotationDecl(void *ctx, const xmlChar *name,
 
     if ((publicId == NULL) && (systemId == NULL)) {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt, 
+	    ctxt->sax->error(ctxt->userData, 
 	     "SAX.xmlSAX2NotationDecl(%s) externalID or PublicID missing\n", name);
 	ctxt->valid = 0;
 	ctxt->wellFormed = 0;
@@ -632,7 +633,7 @@ xmlSAX2NotationDecl(void *ctx, const xmlChar *name,
                               publicId, systemId);
     else {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt, 
+	    ctxt->sax->error(ctxt->userData, 
 	     "SAX.xmlSAX2NotationDecl(%s) called while not in subset\n", name);
 	return;
     }
@@ -671,7 +672,7 @@ xmlSAX2UnparsedEntityDecl(void *ctx, const xmlChar *name,
 			publicId, systemId, notationName);
 	if ((ent == NULL) && (ctxt->pedantic) &&
 	    (ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
-	    ctxt->sax->warning(ctxt, 
+	    ctxt->sax->warning(ctxt->userData, 
 	     "Entity(%s) already defined in the internal subset\n", name);
 	if ((ent != NULL) && (ent->URI == NULL) && (systemId != NULL)) {
 	    xmlChar *URI;
@@ -691,7 +692,7 @@ xmlSAX2UnparsedEntityDecl(void *ctx, const xmlChar *name,
 			publicId, systemId, notationName);
 	if ((ent == NULL) && (ctxt->pedantic) &&
 	    (ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
-	    ctxt->sax->warning(ctxt, 
+	    ctxt->sax->warning(ctxt->userData, 
 	     "Entity(%s) already defined in the external subset\n", name);
 	if ((ent != NULL) && (ent->URI == NULL) && (systemId != NULL)) {
 	    xmlChar *URI;
@@ -707,7 +708,7 @@ xmlSAX2UnparsedEntityDecl(void *ctx, const xmlChar *name,
 	}
     } else {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt, 
+	    ctxt->sax->error(ctxt->userData, 
 	     "SAX.xmlSAX2UnparsedEntityDecl(%s) called while not in subset\n", name);
     }
 }
@@ -924,7 +925,7 @@ xmlSAX2AttributeInternal(void *ctx, const xmlChar *fullname,
 	    if (uri == NULL) {
 		if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
 		    ctxt->sax->warning(ctxt->userData, 
-			 "nmlns: %s not a valid URI\n", val);
+			 "xmlns: %s not a valid URI\n", val);
 	    } else {
 		if (uri->scheme == NULL) {
 		    if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
@@ -1028,8 +1029,9 @@ xmlSAX2AttributeInternal(void *ctx, const xmlChar *fullname,
 	xmlAttrPtr prop;
 	namespace = xmlSearchNs(ctxt->myDoc, ctxt->node, ns);
 	if (namespace == NULL) {
-	    ctxt->sax->error(ctxt->userData, 
-		 "Namespace prefix %s of attribute %s is not defined\n",
+	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		ctxt->sax->error(ctxt->userData, 
+		    "Namespace prefix %s of attribute %s is not defined\n",
 		             ns, name);
 	}
 

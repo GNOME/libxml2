@@ -2609,10 +2609,10 @@ xmlDefaultExternalEntityLoader(const char *URL, const char *ID,
 	    ID = "NULL";
 	if ((ctxt->validate) && (ctxt->sax != NULL) && 
             (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt,
+	    ctxt->sax->error(ctxt->userData,
 		    "failed to load external entity \"%s\"\n", ID);
 	else if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
-	    ctxt->sax->warning(ctxt,
+	    ctxt->sax->warning(ctxt->userData,
 		    "failed to load external entity \"%s\"\n", ID);
         return(NULL);
     }
@@ -2620,10 +2620,10 @@ xmlDefaultExternalEntityLoader(const char *URL, const char *ID,
     if (ret == NULL) {
 	if ((ctxt->validate) && (ctxt->sax != NULL) && 
             (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt,
+	    ctxt->sax->error(ctxt->userData,
 		    "failed to load external entity \"%s\"\n", resource);
 	else if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
-	    ctxt->sax->warning(ctxt,
+	    ctxt->sax->warning(ctxt->userData,
 		    "failed to load external entity \"%s\"\n", resource);
     }
     if ((resource != NULL) && (resource != (xmlChar *) URL))

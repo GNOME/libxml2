@@ -131,6 +131,8 @@ typedef enum {
 #define IS_NOT_NULLABLE		2
 #define IS_INDETERMINIST	4
 #define IS_MIXED		8
+#define IS_TRIABLE		16
+#define IS_PROCESSED		32
 
 struct _xmlRelaxNGDefine {
     xmlRelaxNGType type;	/* the type of definition */
@@ -146,7 +148,7 @@ struct _xmlRelaxNGDefine {
     xmlRelaxNGDefinePtr nameClass;/* the nameClass definition if any */
     xmlRelaxNGDefinePtr nextHash;/* next define in defs/refs hash tables */
     short           depth;       /* used for the cycle detection */
-    short           flags;       /* define related flags */
+    short           dflags;      /* define related flags */
 };
 
 /**
@@ -780,6 +782,9 @@ xmlRelaxNGFreeDefine(xmlRelaxNGDefinePtr define)
     if ((define->data != NULL) &&
 	(define->type == XML_RELAXNG_INTERLEAVE))
 	xmlRelaxNGFreePartition((xmlRelaxNGPartitionPtr) define->data);
+    if ((define->data != NULL) &&
+	(define->type == XML_RELAXNG_CHOICE))
+	xmlHashFree((xmlHashTablePtr) define->data, NULL);
     if (define->name != NULL)
 	xmlFree(define->name);
     if (define->ns != NULL)
@@ -1052,9 +1057,6 @@ xmlRelaxNGNewValidState(xmlRelaxNGValidCtxtPtr ctxt, xmlNodePtr node)
 	}
     }
     ret->nbAttrLeft = ret->nbAttrs;
-    if (ret->node == NULL) {
-	printf("pbm!\n");
-    }
     return (ret);
 }
 
@@ -1120,9 +1122,6 @@ xmlRelaxNGCopyValidState(xmlRelaxNGValidCtxtPtr ctxt,
 	    ret->maxAttrs = state->maxAttrs;
 	}
 	memcpy(ret->attrs, state->attrs, state->nbAttrs * sizeof(xmlAttrPtr));
-    }
-    if (ret->node == NULL) {
-	printf("pbm!\n");
     }
     return(ret);
 }
@@ -2645,9 +2644,9 @@ xmlRelaxNGIsNullable(xmlRelaxNGDefinePtr define) {
     if (define == NULL)
 	return(-1);
 
-    if (define->flags & IS_NULLABLE)
+    if (define->dflags & IS_NULLABLE)
 	return(1);
-    if (define->flags & IS_NOT_NULLABLE)
+    if (define->dflags & IS_NOT_NULLABLE)
 	return(0);
     switch (define->type) {
         case XML_RELAXNG_EMPTY:
@@ -2699,9 +2698,9 @@ xmlRelaxNGIsNullable(xmlRelaxNGDefinePtr define) {
     }
 done:
     if (ret == 0)
-	define->flags |= IS_NOT_NULLABLE;
+	define->dflags |= IS_NOT_NULLABLE;
     if (ret == 1)
-	define->flags |= IS_NULLABLE;
+	define->dflags |= IS_NULLABLE;
     return(ret);
 }
 
@@ -3286,9 +3285,14 @@ xmlRelaxNGCheckChoiceDeterminism(xmlRelaxNGParserCtxtPtr ctxt,
     int nbchild = 0, i, j, ret;
     int is_nullable = 0;
     int is_indeterminist = 0;
+    xmlHashTablePtr triage = NULL;
+    int is_triable = 1;
 
     if ((def == NULL) ||
 	(def->type != XML_RELAXNG_CHOICE))
+	return;
+
+    if (def->dflags & IS_PROCESSED)
 	return;
 
     /*
@@ -3316,9 +3320,60 @@ xmlRelaxNGCheckChoiceDeterminism(xmlRelaxNGParserCtxtPtr ctxt,
 	return;
     }
     i = 0;
+    /*
+     * a bit strong but safe
+     */
+    if (is_nullable == 0) {
+	triage = xmlHashCreate(10);
+    } else {
+	is_triable = 0;
+    }
     cur = def->content;
     while (cur != NULL) {
 	list[i] = xmlRelaxNGGetElements(ctxt, cur, 0);
+	if ((list[i] == NULL) || (list[i][0] == NULL)) {
+	    is_triable = 0;
+	} else if (is_triable == 1) {
+	    xmlRelaxNGDefinePtr *tmp;
+	    int res;
+
+	    tmp = list[i];
+	    while ((*tmp != NULL) && (is_triable == 1)) {
+		if ((*tmp)->type == XML_RELAXNG_TEXT) {
+		    res = xmlHashAddEntry2(triage,
+					   BAD_CAST "#text", NULL,
+					   (void *)cur);
+		    if (res != 0)
+			is_triable = -1;
+		} else if (((*tmp)->type == XML_RELAXNG_ELEMENT) &&
+			   ((*tmp)->name != NULL)) {
+		    if (((*tmp)->ns == NULL) || ((*tmp)->ns[0] == 0))
+			res = xmlHashAddEntry2(triage,
+				       (*tmp)->name, NULL,
+				       (void *)cur);
+		    else
+			res = xmlHashAddEntry2(triage,
+				       (*tmp)->name, (*tmp)->ns,
+				       (void *)cur);
+		    if (res != 0)
+			is_triable = -1;
+		} else if ((*tmp)->type == XML_RELAXNG_ELEMENT) {
+		    if (((*tmp)->ns == NULL) || ((*tmp)->ns[0] == 0))
+			res = xmlHashAddEntry2(triage,
+				       BAD_CAST "#any", NULL,
+				       (void *)cur);
+		    else
+			res = xmlHashAddEntry2(triage,
+				       BAD_CAST "#any", (*tmp)->ns,
+				       (void *)cur);
+		    if (res != 0)
+			is_triable = -1;
+		} else {
+		    is_triable = -1;
+		}
+		tmp++;
+	    }
+	}
 	i++;
 	cur = cur->next;
     }
@@ -3342,8 +3397,15 @@ xmlRelaxNGCheckChoiceDeterminism(xmlRelaxNGParserCtxtPtr ctxt,
 
     xmlFree(list);
     if (is_indeterminist) {
-	def->flags |= IS_INDETERMINIST;
+	def->dflags |= IS_INDETERMINIST;
     }
+    if (is_triable == 1) {
+	def->dflags |= IS_TRIABLE;
+	def->data = triage;
+    } else if (triage != NULL) {
+	xmlHashFree(triage, NULL);
+    }
+    def->dflags |= IS_PROCESSED;
 }
 
 /**
@@ -3363,6 +3425,9 @@ xmlRelaxNGCheckGroupAttrs(xmlRelaxNGParserCtxtPtr ctxt,
     if ((def == NULL) ||
 	((def->type != XML_RELAXNG_GROUP) &&
 	 (def->type != XML_RELAXNG_ELEMENT)))
+	return;
+
+    if (def->dflags & IS_PROCESSED)
 	return;
 
     /*
@@ -3427,6 +3492,7 @@ xmlRelaxNGCheckGroupAttrs(xmlRelaxNGParserCtxtPtr ctxt,
     }
 
     xmlFree(list);
+    def->dflags |= IS_PROCESSED;
 }
 
 /**
@@ -3584,7 +3650,7 @@ xmlRelaxNGComputeInterleaves(xmlRelaxNGDefinePtr def,
      */
     def->data = partitions;
     if (is_mixed != 0)
-	def->flags |= IS_MIXED;
+	def->dflags |= IS_MIXED;
     if (is_determinist == 1)
 	partitions->flags = IS_DETERMINIST;
     if (is_determinist == 2)
@@ -7589,7 +7655,7 @@ xmlRelaxNGValidateInterleave(xmlRelaxNGValidCtxtPtr ctxt,
      * Optimizations for MIXED
      */
     oldflags = ctxt->flags;
-    if (define->flags & IS_MIXED) {
+    if (define->dflags & IS_MIXED) {
 	ctxt->flags |= FLAGS_MIXED_CONTENT;
 	if (nbgroups == 2) {
 	    /*
@@ -8328,14 +8394,49 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
 	    break;
 	}
         case XML_RELAXNG_CHOICE: {
-	    xmlRelaxNGDefinePtr list = define->content;
+	    xmlRelaxNGDefinePtr list;
 	    xmlRelaxNGStatesPtr states = NULL;
 
+	    node = xmlRelaxNGSkipIgnored(ctxt, node);
 
+	    if ((define->dflags & IS_TRIABLE) && (define->data != NULL)) {
+		xmlHashTablePtr triage = (xmlHashTablePtr) define->data;
+
+		/*
+		 * Something we can optimize cleanly there is only one
+		 * possble branch out !
+		 */
+		if (node == NULL) {
+		    ret = -1;
+		    break;
+		}
+		if ((node->type == XML_TEXT_NODE) ||
+		    (node->type == XML_CDATA_SECTION_NODE)) {
+		    list = xmlHashLookup2(triage, BAD_CAST "#text", NULL);
+		} else if (node->type == XML_ELEMENT_NODE) {
+		    if (node->ns != NULL) {
+			list = xmlHashLookup2(triage, node->name,
+					      node->ns->href);
+			if (list == NULL)
+			    list = xmlHashLookup2(triage, BAD_CAST "#any",
+				                  node->ns->href);
+		    } else
+			list = xmlHashLookup2(triage, node->name, NULL);
+		    if (list == NULL)
+			list = xmlHashLookup2(triage, BAD_CAST "#any", NULL);
+		}
+		if (list == NULL) {
+		    ret = -1;
+		    break;
+		}
+		ret = xmlRelaxNGValidateDefinition(ctxt, list);
+		break;
+	    }
+
+            list = define->content;
 	    oldflags = ctxt->flags;
 	    errNr = ctxt->errNr;
 	    ctxt->flags |= FLAGS_IGNORABLE;
-	    node = xmlRelaxNGSkipIgnored(ctxt, node);
 
 	    while (list != NULL) {
 		oldstate = xmlRelaxNGCopyValidState(ctxt, ctxt->state);

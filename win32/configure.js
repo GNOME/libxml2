@@ -58,6 +58,7 @@ var withPython = false;
 var dirSep = "\\";
 var compiler = "msvc";
 var cruntime = "/MD";
+var dynruntime = true;
 var buildDebug = 0;
 var buildStatic = 0;
 var buildPrefix = ".";
@@ -135,6 +136,7 @@ function usage()
 	txt += "\nWin32 build options, default value given in parentheses:\n\n";
 	txt += "  compiler:   Compiler to be used [msvc|mingw|bcb] (" + compiler + ")\n";
 	txt += "  cruntime:   C-runtime compiler option (only msvc) (" + cruntime + ")\n";
+	txt += "  dynruntime: Use the dynamic RTL (only bcb) (" + dynruntime + ")\n";
 	txt += "  debug:      Build unoptimised debug executables (" + (buildDebug? "yes" : "no")  + ")\n";
 	txt += "  static:     Link xmllint statically to libxml2 (" + (buildStatic? "yes" : "no")  + ")\n";
 	txt += "  prefix:     Base directory for the installation (" + buildPrefix + ")\n";
@@ -236,6 +238,7 @@ function discoverVersion()
 	} else if (compiler == "bcb") {
 		vf.WriteLine("INCLUDE=" + buildInclude);
 		vf.WriteLine("LIB=" + buildLib);
+                vf.WriteLine("DYNRUNTIME=" + (dynruntime? "1" : "0"));
 	}
 	vf.Close();
 }
@@ -470,6 +473,8 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 			compiler = arg.substring(opt.length + 1, arg.length);
 		else if (opt == "cruntime")
 			cruntime = arg.substring(opt.length + 1, arg.length);
+		else if (opt == "dynruntime")
+			dynruntime = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "debug")
 			buildDebug = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "static")
@@ -609,6 +614,8 @@ txtOut += "-------------------------\n";
 txtOut += "          Compiler: " + compiler + "\n";
 if (compiler == "msvc")
 	txtOut += "  C-Runtime option: " + cruntime + "\n";
+else if (compiler == "bcb")
+	txtOut += "   Use dynamic RTL: " + dynruntime + "\n";
 txtOut += "     Debug symbols: " + boolToStr(buildDebug) + "\n";
 txtOut += "    Static xmllint: " + boolToStr(buildStatic) + "\n";
 txtOut += "    Install prefix: " + buildPrefix + "\n";

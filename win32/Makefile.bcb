@@ -15,10 +15,6 @@
 # March 2002, Igor Zlatkovic <igor@zlatkovic.com>
 #
 
-# Extra setting to control whether to use dynamic or static Borland runtime. 
-# Set to "1" to use static RTL, anything else to use dynamic RTL
-STATIC_RTL = 0
-
 # There should never be a need to modify anything below this line.
 # ----------------------------------------------------------------
 
@@ -59,8 +55,8 @@ CFLAGS = $(CFLAGS) -I$(XML_SRCDIR) -I$(XML_SRCDIR)\include -I$(INCPREFIX) -I$(IN
 !if "$(WITH_THREADS)" != "no"
 CFLAGS = $(CFLAGS) -D_REENTRANT -tWM
 !endif
-!if "$(STATIC_RTL)" != "1"
-CFLAGS = $(CFLAGS) -D_RTLDLL
+!if "$(DYNRUNTIME)" == "1"
+CFLAGS = $(CFLAGS) -tWR
 !endif
 !if "$(WITH_THREADS)" == "yes" || "$(WITH_THREADS)" == "ctls"
 CFLAGS = $(CFLAGS) -DHAVE_WIN32_THREADS -DHAVE_COMPILER_TLS
@@ -78,14 +74,14 @@ LD = ilink32.exe
 LDFLAGS = -q -U$(LIBXML_MAJOR_VERSION).$(LIBXML_MINOR_VERSION)
 LDFLAGS = $(LDFLAGS) -L$(BINDIR);$(LIBPREFIX);$(LIB);$(BCB)\lib\PSdk
 LIBS = import32.lib
-!if "$(WITH_THREADS)" != "no" && "$(STATIC_RTL)" == "1"
-LIBS = $(LIBS) cw32mt.lib
-!elif "$(WITH_THREADS)" != "no"
+!if "$(WITH_THREADS)" != "no" && "$(DYNRUNTIME)" == "1"
 LIBS = $(LIBS) cw32mti.lib
-!elif "$(STATIC_RTL)" == "1"
-LIBS = $(LIBS) cw32.lib
-else
+!elif "$(WITH_THREADS)" != "no"
+LIBS = $(LIBS) cw32mt.lib
+!elif "$(DYNRUNTIME)" == "1"
 LIBS = $(LIBS) cw32i.lib
+!else
+LIBS = $(LIBS) cw32.lib
 !endif
 !if "$(WITH_FTP)" == "1" || "$(WITH_HTTP)" == "1"
 LIBS = $(LIBS) wsock32.lib

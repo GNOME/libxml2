@@ -1,3 +1,9 @@
+Sun Oct 12 00:52:14 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* chvalid.def chvalid.c include/libxml/chvalid.h: rebuilt 
+	  chvalid.def from scratch based on XML 2nd edition REC
+	  and regenerated the code.
+
 Sat Oct 11 22:54:13 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* check-xml-test-suite.py: removed some annoying warnings

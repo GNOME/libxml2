@@ -73,9 +73,10 @@ those data.</p>
 structure allowed by instances is the core of the design process of the
 vocabulary. Here are a few tips:</p>
 <ul>
-  <li>use significant words for the element and attributes names</li>
-  <li>do not use attributes for textual content, attributes will be modified
-    by the parser before reaching the application</li>
+  <li>use significant words for the element and attributes names.</li>
+  <li>do not use attributes for general textual content, attributes
+    will be modified by the parser before reaching the application,
+    spaces and line informations will be modified.</li>
   <li>use single elements for every strings which might be subject to
     localization, the canonical way to localize XML content is to use
     siblings element carrying different xml:lang attributes like in the

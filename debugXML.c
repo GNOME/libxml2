@@ -29,6 +29,125 @@
 #include <libxml/globals.h>
 
 /**
+ * xmlGetNodePath:
+ * @node: a node
+ *
+ * Build a structure based Path for the given node
+ *
+ * Returns the new path or NULL in case of error. The caller must free
+ *     the returned string
+ */
+xmlChar *
+xmlGetNodePath(xmlNodePtr node)
+{
+    xmlNodePtr cur, tmp, next;
+    xmlChar *buffer = NULL, *temp;
+    size_t buf_len;
+    xmlChar *buf;
+    char sep;
+    const char *name;
+    char nametemp[100];
+    int occur = 0;
+
+    if (node == NULL)
+        return (NULL);
+
+    buf_len = 500;
+    buffer = (xmlChar *) xmlMalloc(buf_len * sizeof(xmlChar));
+    if (buffer == NULL)
+        return (NULL);
+    buf = (xmlChar *) xmlMalloc(buf_len * sizeof(xmlChar));
+    if (buf == NULL) {
+        xmlFree(buffer);
+        return (NULL);
+    }
+
+    buffer[0] = 0;
+    cur = node;
+    do {
+        name = "";
+        sep = '?';
+        occur = 0;
+        if ((cur->type == XML_DOCUMENT_NODE) ||
+            (cur->type == XML_HTML_DOCUMENT_NODE)) {
+            if (buffer[0] == '/')
+                break;
+            sep = '/';
+            next = NULL;
+        } else if (cur->type == XML_ELEMENT_NODE) {
+            sep = '/';
+            name = (const char *) cur->name;
+            if (cur->ns) {
+                snprintf(nametemp, sizeof(nametemp) - 1,
+                         "%s:%s", cur->ns->prefix, cur->name);
+                nametemp[sizeof(nametemp) - 1] = 0;
+                name = nametemp;
+            }
+            next = cur->parent;
+
+            /*
+             * Thumbler index computation
+             */
+            tmp = cur->prev;
+            while (tmp != NULL) {
+                if (xmlStrEqual(cur->name, tmp->name))
+                    occur++;
+                tmp = tmp->prev;
+            }
+            if (occur == 0) {
+                tmp = cur->next;
+                while (tmp != NULL) {
+                    if (xmlStrEqual(cur->name, tmp->name))
+                        occur++;
+                    tmp = tmp->next;
+                }
+                if (occur != 0)
+                    occur = 1;
+            } else
+                occur++;
+        } else if (cur->type == XML_ATTRIBUTE_NODE) {
+            sep = '@';
+            name = (const char *) (((xmlAttrPtr) cur)->name);
+            next = ((xmlAttrPtr) cur)->parent;
+        } else {
+            next = cur->parent;
+        }
+
+        /*
+         * Make sure there is enough room
+         */
+        if (xmlStrlen(buffer) + sizeof(nametemp) + 20 > buf_len) {
+            buf_len =
+                2 * buf_len + xmlStrlen(buffer) + sizeof(nametemp) + 20;
+            temp = (xmlChar *) xmlRealloc(buffer, buf_len);
+            if (temp == NULL) {
+                xmlFree(buf);
+                xmlFree(buffer);
+                return (NULL);
+            }
+            buffer = temp;
+            temp = (xmlChar *) xmlRealloc(buf, buf_len);
+            if (temp == NULL) {
+                xmlFree(buf);
+                xmlFree(buffer);
+                return (NULL);
+            }
+            buf = temp;
+        }
+        if (occur == 0)
+            snprintf((char *) buf, buf_len, "%c%s%s",
+                     sep, name, (char *) buffer);
+        else
+            snprintf((char *) buf, buf_len, "%c%s[%d]%s",
+                     sep, name, occur, (char *) buffer);
+        snprintf((char *) buffer, buf_len, "%s", buf);
+        cur = next;
+    } while (cur != NULL);
+    xmlFree(buf);
+    return (buffer);
+}
+
+/**
  * xmlDebugDumpString:
  * @output:  the FILE * for the output
  * @str:  the string
@@ -1801,81 +1920,27 @@ int
 xmlShellPwd(xmlShellCtxtPtr ctxt ATTRIBUTE_UNUSED, char *buffer,
             xmlNodePtr node, xmlNodePtr node2 ATTRIBUTE_UNUSED)
 {
-    xmlNodePtr cur, tmp, next;
-    char buf[500];
-    char sep;
-    const char *name;
-    char nametemp[100];
-    int occur = 0;
+    xmlChar *path;
 
-    buffer[0] = 0;
     if (node == NULL)
         return (-1);
-    cur = node;
-    do {
-        name = "";
-        sep = '?';
-        occur = 0;
-        if ((cur->type == XML_DOCUMENT_NODE) ||
-            (cur->type == XML_HTML_DOCUMENT_NODE)) {
-            sep = '/';
-            next = NULL;
-        } else if (cur->type == XML_ELEMENT_NODE) {
-            sep = '/';
-            name = (const char *) cur->name;
-            if (cur->ns) {
-                snprintf(nametemp, 99, "%s:%s", cur->ns->prefix,
-                         cur->name);
-                name = nametemp;
-            }
-            next = cur->parent;
 
-            /*
-             * Thumbler index computation
-             */
-            tmp = cur->prev;
-            while (tmp != NULL) {
-                if (xmlStrEqual(cur->name, tmp->name))
-                    occur++;
-                tmp = tmp->prev;
-            }
-            if (occur == 0) {
-                tmp = cur->next;
-                while (tmp != NULL) {
-                    if (xmlStrEqual(cur->name, tmp->name))
-                        occur++;
-                    tmp = tmp->next;
-                }
-                if (occur != 0)
-                    occur = 1;
-            } else
-                occur++;
-        } else if (cur->type == XML_ATTRIBUTE_NODE) {
-            sep = '@';
-            name = (const char *) (((xmlAttrPtr) cur)->name);
-            next = ((xmlAttrPtr) cur)->parent;
-        } else {
-            next = cur->parent;
-        }
-        if (occur == 0)
-            snprintf(buf, sizeof(buf), "%c%s%s", sep, name, buffer);
-        else
-            snprintf(buf, sizeof(buf), "%c%s[%d]%s",
-                     sep, name, occur, buffer);
-        buf[sizeof(buf) - 1] = 0;
-        /*
-         * This test prevents buffer overflow, because this routine
-         * is only called by xmlShell, in which the second argument is
-         * 500 chars long.
-         * It is a dirty hack before a cleaner solution is found.
-         * Documentation should mention that the second argument must
-         * be at least 500 chars long, and could be stripped if too long.
-         */
-        if (strlen(buffer) + strlen(buf) > 499)
-            break;
-        strcpy(buffer, buf);
-        cur = next;
-    } while (cur != NULL);
+    path = xmlGetNodePath(node);
+    if (path == NULL)
+	return (-1);
+
+    /*
+     * This test prevents buffer overflow, because this routine
+     * is only called by xmlShell, in which the second argument is
+     * 500 chars long.
+     * It is a dirty hack before a cleaner solution is found.
+     * Documentation should mention that the second argument must
+     * be at least 500 chars long, and could be stripped if too long.
+     */
+    snprintf(buffer, 499, "%s", path);
+    buffer[499] = '0';
+    xmlFree(path);
+
     return (0);
 }
 

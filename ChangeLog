@@ -1,3 +1,8 @@
+Sat Nov 10 11:07:26 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* debugXML.c include/libxml/debugXML.h: add xmlGetNodePath()
+	  a cleaned up version of the Pwd shell string generation.
+
 Fri Nov  9 00:34:13 CET 2001 Daniel Veillard <daniel@veillard.com>
 
 	* valid.c include/libxml/tree.h: trying to fix namespaces +

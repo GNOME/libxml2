@@ -23,6 +23,8 @@
 #include <libxml/xmlerror.h>
 #include <libxml/list.h>
 
+/* #define DEBUG_VALID_ALGO */
+
 /*
  * Generic function for accessing stacks in the Validity Context
  */
@@ -136,8 +138,6 @@ vstateVPop(xmlValidCtxtPtr ctxt) {
 }
 
 PUSH_AND_POP(static, xmlNodePtr, node)
-
-/* #define DEBUG_VALID_ALGO */
 
 #ifdef DEBUG_VALID_ALGO
 static void
@@ -3278,7 +3278,6 @@ xmlValidateSkipIgnorable(xmlNodePtr child) {
 static int
 xmlValidateElementType(xmlValidCtxtPtr ctxt) {
     int ret = -1;
-    int consumed = 1;
     int determinist = 1;
 
     NODE = xmlValidateSkipIgnorable(NODE);
@@ -3306,7 +3305,6 @@ cont:
 	DEBUG_VALID_MSG("restaured parent branch");
 	DEBUG_VALID_STATE(NODE, CONT)
 	ret = 1;
-	consumed = 0;
 	goto analyze;
     }
 
@@ -3315,8 +3313,7 @@ cont:
      * we may have to save a backup state here. This is the equivalent
      * of handling epsilon transition in NFAs.
      */
-    if ((consumed) && (CONT != NULL) &&
-	(CONT->parent != NULL) &&
+    if ((CONT != NULL) &&
 	((CONT->ocur == XML_ELEMENT_CONTENT_MULT) ||
 	 (CONT->ocur == XML_ELEMENT_CONTENT_OPT) ||
 	 ((CONT->ocur == XML_ELEMENT_CONTENT_PLUS) && (OCCURENCE)))) {
@@ -3350,7 +3347,6 @@ cont:
 		} while ((NODE != NULL) &&
 			 ((NODE->type != XML_ELEMENT_NODE) &&
 			  (NODE->type != XML_TEXT_NODE)));
-		consumed = 1;
                 ret = 1;
 		break;
 	    } else {
@@ -3381,7 +3377,6 @@ cont:
 		} while ((NODE != NULL) &&
 			 ((NODE->type != XML_ELEMENT_NODE) &&
 			  (NODE->type != XML_TEXT_NODE)));
-		consumed = 1;
 	    } else {
 		DEBUG_VALID_MSG("element failed");
 		ret = 0;
@@ -3442,7 +3437,6 @@ analyze:
 		    }
 		    if (cur != ctxt->vstate->node)
 			determinist = -3;
-		    consumed = 0;
 		    goto cont;
 		case XML_ELEMENT_CONTENT_PLUS:
 		    if (OCCURENCE == 0) {
@@ -3454,7 +3448,6 @@ analyze:
 			}
 			if (cur != ctxt->vstate->node)
 			    determinist = -3;
-			consumed = 0;
 			goto cont;
 		    }
 		    DEBUG_VALID_MSG("Plus branch found");
@@ -3569,7 +3562,6 @@ analyze:
 	}
 	if (cur != ctxt->vstate->node)
 	    determinist = -3;
-	consumed = 0;
 	goto cont;
     }
     if (ret == 0) {
@@ -3581,7 +3573,6 @@ analyze:
 	    DEBUG_VALID_MSG("exhaustion, failed");
 	    return(0);
 	}
-	consumed = 0;
 	if (cur != ctxt->vstate->node)
 	    determinist = -3;
 	goto cont;

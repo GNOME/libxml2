@@ -1,3 +1,9 @@
+Tue May 15 10:52:19 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* valid.c test/VCM/v2[34].xml: Fixed bug #54631 added specific test
+	  case
+	* INSTALL: was empty added stuff from the FAQ
+
 Fri May 11 19:37:30 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* tree.[ch]: fixing bug #54446, by cleaning some bugs in the

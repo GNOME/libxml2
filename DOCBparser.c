@@ -3823,7 +3823,7 @@ docbParseStartTag(docbParserCtxtPtr ctxt) {
                }
            } else if (nbatts + 4 > maxatts) {
                maxatts *= 2;
-               atts = (const xmlChar **) xmlRealloc(atts, maxatts * sizeof(xmlChar *));
+               atts = (const xmlChar **) xmlRealloc((void *)atts, maxatts * sizeof(xmlChar *));
                if (atts == NULL) {
                    xmlGenericError(xmlGenericErrorContext,
                            "realloc of %ld byte failed\n",

@@ -103,15 +103,6 @@ static int timing = 0;
 static int generate = 0;
 static struct timeval begin, end;
 
-
-#ifdef VMS
-extern int xmlDoValidityCheckingDefaultVal;
-#define xmlDoValidityCheckingDefaultValue xmlDoValidityCheckingDefaultVal
-#else
-extern int xmlDoValidityCheckingDefaultValue;
-#endif
-extern int xmlGetWarningsDefaultValue;
-
 /************************************************************************
  * 									*
  * 			HTML ouput					*

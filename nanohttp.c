@@ -542,7 +542,11 @@ xmlNanoHTTPRecv(xmlNanoHTTPCtxtPtr ctxt) {
 	FD_ZERO(&rfd);
 	FD_SET(ctxt->fd, &rfd);
 	
-	if ( (select(ctxt->fd+1, &rfd, NULL, NULL, &tv)<1) && (errno != EINTR) )
+	if ( (select(ctxt->fd+1, &rfd, NULL, NULL, &tv)<1)
+#if defined(EINTR)
+		&& (errno != EINTR)
+#endif
+	)
 		return(0);
     }
     return(0);

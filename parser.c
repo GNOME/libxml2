@@ -7308,7 +7308,7 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
     if ((ctxt->sax) && (ctxt->sax->setDocumentLocator))
         ctxt->sax->setDocumentLocator(ctxt->userData, &xmlDefaultSAXLocator);
 
-    if (ctxt->encoding == XML_CHAR_ENCODING_NONE) {
+    if (ctxt->encoding == (const xmlChar *)XML_CHAR_ENCODING_NONE) {
 	/* 
 	 * Get the 4 first bytes and decode the charset
 	 * if enc != XML_CHAR_ENCODING_NONE

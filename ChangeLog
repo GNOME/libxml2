@@ -1,3 +1,12 @@
+Fri Aug  3 14:02:20 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* DOCBparser.c Makefile.am nanohttp.c parser.c testHTML.c
+	  testSAX.c xmlIO.c xmllint.c include/win32config.h
+	  include/libxml/xmlversion.h.in include/libxml/xmlwin32version.h
+	  include/libxml/xmlwin32version.h.in win32/README.MSDev
+	  win32/dsp/*: applied Win32 Facelift No.2 patches from 
+	  Igor Zlatkovic for Windows/MSC
+
 Wed Aug  1 23:21:06 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* SAX.c: unparsedEntityDecl() the URI computation of the

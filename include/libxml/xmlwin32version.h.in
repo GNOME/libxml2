@@ -18,10 +18,37 @@ extern "C" {
  * use those to be sure nothing nasty will happen if
  * your library and includes mismatch
  */
+#ifndef LIBXML2_COMPILING_MSCCDEF
 extern void xmlCheckVersion(int version);
+#endif /* LIBXML2_COMPILING_MSCCDEF */
+
+/**
+ * LIBXML_DOTTED_VERSION:
+ *
+ * the version string like "1.2.3"
+ */
 #define LIBXML_DOTTED_VERSION "@VERSION@"
+
+/**
+ * LIBXML_VERSION:
+ *
+ * the version number: 1.2.3 value is 1002003
+ */
 #define LIBXML_VERSION @LIBXML_VERSION_NUMBER@
+
+/**
+ * LIBXML_VERSION_STRING:
+ *
+ * the version number string, 1.2.3 value is "1002003"
+ */
 #define LIBXML_VERSION_STRING "@LIBXML_VERSION_NUMBER@"
+
+/**
+ * LIBXML_TEST_VERSION:
+ *
+ * Macro to check that the libxml version in use is compatible with
+ * the version the software has been compiled against
+ */
 #define LIBXML_TEST_VERSION xmlCheckVersion(@LIBXML_VERSION_NUMBER@);
 
 /**
@@ -31,8 +58,6 @@ extern void xmlCheckVersion(int version);
  */
 #if 0
 #define WITH_TRIO
-#else
-#define WITHOUT_TRIO
 #endif
 
 /**
@@ -42,8 +67,6 @@ extern void xmlCheckVersion(int version);
  */
 #if 1
 #define LIBXML_FTP_ENABLED
-#else
-#define LIBXML_FTP_DISABLED
 #endif
 
 /**
@@ -53,8 +76,6 @@ extern void xmlCheckVersion(int version);
  */
 #if 1
 #define LIBXML_HTTP_ENABLED
-#else
-#define LIBXML_HTTP_DISABLED
 #endif
 
 /**
@@ -64,8 +85,6 @@ extern void xmlCheckVersion(int version);
  */
 #if 1
 #define LIBXML_HTML_ENABLED
-#else
-#define LIBXML_HTML_DISABLED
 #endif
 
 /**
@@ -75,8 +94,6 @@ extern void xmlCheckVersion(int version);
  */
 #if 1
 #define LIBXML_CATALOG_ENABLED
-#else
-#define LIBXML_CATALOG_DISABLED
 #endif
 
 /**
@@ -84,10 +101,8 @@ extern void xmlCheckVersion(int version);
  *
  * Whether the SGML Docbook support is configured in
  */
-#if 0
+#if 1
 #define LIBXML_DOCB_ENABLED
-#else
-#define LIBXML_DOCB_DISABLED
 #endif
 
 /**
@@ -97,8 +112,6 @@ extern void xmlCheckVersion(int version);
  */
 #if 1
 #define LIBXML_XPATH_ENABLED
-#else
-#define LIBXML_XPATH_DISABLED
 #endif
 
 /**
@@ -108,8 +121,6 @@ extern void xmlCheckVersion(int version);
  */
 #if 1
 #define LIBXML_XPTR_ENABLED
-#else
-#define LIBXML_XPTR_DISABLED
 #endif
 
 /**
@@ -119,8 +130,6 @@ extern void xmlCheckVersion(int version);
  */
 #if 1
 #define LIBXML_XINCLUDE_ENABLED
-#else
-#define LIBXML_XINCLUDE_DISABLED
 #endif
 
 /**
@@ -128,11 +137,9 @@ extern void xmlCheckVersion(int version);
  *
  * Whether iconv support is available
  */
-#if defined(__CYGWIN__)
-#if @WITH_ICONV@
+#if !defined(WIN32) || defined(__CYGWIN__)
+#if 0
 #define LIBXML_ICONV_ENABLED
-#else
-#define LIBXML_ICONV_DISABLED
 #endif
 #endif
 
@@ -143,8 +150,6 @@ extern void xmlCheckVersion(int version);
  */
 #if 1
 #define LIBXML_DEBUG_ENABLED
-#else
-#define LIBXML_DEBUG_DISABLED
 #endif
 
 /**
@@ -156,8 +161,23 @@ extern void xmlCheckVersion(int version);
 #define DEBUG_MEMORY_LOCATION
 #endif
 
+/**
+ * LIBXML_DLL_IMPORT:
+ *
+ * Used on Windows (MS C compiler only) to declare a variable as 
+ * imported from the library. This macro should be empty when compiling
+ * libxml itself. It should expand to __declspec(dllimport)
+ * when the client code includes this header, and that only if the client
+ * links dynamically against libxml.
+ * For this to work, we need three macros. One tells us which compiler is
+ * being used and luckily the compiler defines such a thing: _MSC_VER. The
+ * second macro tells us if we are compiling libxml or the client code and
+ * we define the macro IN_LIBXML on the compiler's command line for this 
+ * purpose. The third macro, LIBXML_STATIC, must be defined by any client 
+ * code which links against libxml statically. 
+ */
 #ifndef LIBXML_DLL_IMPORT
-#if !defined(STATIC)
+#if defined(_MSC_VER) && !defined(IN_LIBXML) && !defined(LIBXML_STATIC)
 #define LIBXML_DLL_IMPORT __declspec(dllimport)
 #else
 #define LIBXML_DLL_IMPORT
@@ -168,13 +188,19 @@ extern void xmlCheckVersion(int version);
  * ATTRIBUTE_UNUSED:
  *
  * Macro used to signal to GCC unused function parameters
- * Disabled on Windows, this is checked on Linux.
  */
+#ifdef __GNUC__
+#ifdef HAVE_ANSIDECL_H
+#include <ansidecl.h>
+#endif
+#ifndef ATTRIBUTE_UNUSED
 #define ATTRIBUTE_UNUSED
+#endif
+#else
+#define ATTRIBUTE_UNUSED
+#endif
 
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
 #endif
-
-

@@ -10,10 +10,6 @@
 
 #ifdef LIBXML_HTML_ENABLED
 
-#ifdef WIN32
-#undef LIBXML_DLL_IMPORT
-#endif
-
 #include <string.h>
 #include <stdarg.h>
 

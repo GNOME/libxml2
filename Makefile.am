@@ -464,7 +464,7 @@ Validtests : xmllint
 
 dist-hook: libxml.spec
 	-cp libxml.spec $(distdir)
-	(cd $(srcdir) ; tar -cf - --exclude CVS test result SAXresult ) | (cd $(distdir); tar xf -)
+	(cd $(srcdir) ; tar -cf - --exclude CVS win32 test result SAXresult ) | (cd $(distdir); tar xf -)
 
 cleantar:
 	@(rm -f libxslt*.tar.gz)
@@ -488,10 +488,6 @@ EXTRA_DIST = xml2-config.in xml2Conf.sh.in libxml.spec.in libxml.spec \
              libxml.m4 \
              example/Makefile.am example/gjobread.c example/gjobs.xml \
 	     $(man_MANS) libxml-2.0.pc.in \
-	     win32/README.MSDev win32/Makefile.mingw \
-	     win32/libxml2/libxml2.dsp win32/libxml2/libxml2_so.dsp \
-	     win32/libxml2/libxml2_a.dsp win32/libxml2/xmllint.dsp \
-	     win32/libxml2/libxml2.def.src \
 	     vms/build_libxml.com vms/config.vms \
 	     strio.c strio.h trio.c trio.h triop.h libxml.h
 

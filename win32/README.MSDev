@@ -1,4 +1,31 @@
 -----------------------------------------------------------------------
+[24. July, 2001, igor@stud.fh-frankfurt.de] 
+
+And again there are new MSVC project files for libxml2.
+
+You can find the project files for MSVC 6.0 and higher in win32/dsp/
+subdirectory of the source tree. You should load the file libxml2.dsw
+into the IDE. This is the workspace file which contains all projects
+and their interdependencies.
+
+Check the file xmlwin32version.h for optional features and enable or
+disable them, as it suits you. The defaults are apropriate for most 
+people, so there is usually no need to mess with this.
+
+If you receive few compiler warnings, ignore them. These are harmless
+and shall dissapear in the future.
+
+From now on, all object files produced by the compiler end up in the same
+directory for each project, no matter if you compile with debugging
+turned on or not. This means that a release build shall overwite the 
+debug build and vice versa. This makes the dependency tracking easier,
+but there are people who don't like this for some reason.
+
+The new project files from win32/dsp/ make any other project files 
+obsolete. Previous project files shall remain in their usual location 
+for some time and end up removed if noone complains.
+
+-----------------------------------------------------------------------
 [January the 16th, 2001, igor@stud.fh-frankfurt.de] 
 
 The following applies only if you use Microsoft Visual C/C++ compiler, 

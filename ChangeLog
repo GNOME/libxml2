@@ -1,3 +1,11 @@
+Sat May  6 10:09:45 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* doc/upgrade.html: updated with instructions for support of both
+	  libxml-1.x and libxml-2.x
+	* doc/gjobread.c : applied Todd Dukes <tdukes@ibmoto.com> patch
+	  for 2.x support and also fixed includes
+
+
 Wed May  3 14:21:25 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* encoding.[ch], xmlIO.[ch], parser.c, configure.in : revamped

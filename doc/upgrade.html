@@ -3,12 +3,14 @@
 <html>
 <head>
   <title>Upgrading libxml client code from 1.x to 2.x</title>
-  <meta name="GENERATOR" content="amaya V2.4">
+  <meta name="GENERATOR" content="amaya V3.1">
   <meta http-equiv="Content-Type" content="text/html">
 </head>
 
 <body bgcolor="#ffffff">
 <h1 align="center">Upgrading libxml client code from 1.x to 2.x</h1>
+
+<h2>Incompatible changes:</h2>
 
 <p>Version 2 of libxml is the first version introducing serious backward
 incompatible changes. The main goals were:</p>
@@ -26,6 +28,8 @@ incompatible changes. The main goals were:</p>
     containing blank text may populate the DOM tree which were not present
     before.</li>
 </ul>
+
+<h2>How to fix libxml-1.x code:</h2>
 
 <p>So client code of libxml designed to run with version 1.x may have to be
 changed to compile against version 2.x of libxml. Here is a list of changes
@@ -83,18 +87,61 @@ mail</a>:</p>
     <pre>xml-config --cflags</pre>
     <p>output to generate you compile commands this will probably work out of
     the box</p>
-    <p></p>
   </li>
 </ol>
 
+<h2>Keeping both libxml-1.x and libxml-2.x compatibility:</h2>
+
+<p>Here is the steps i applied successfully to a couple of gnome project
+dependant on libxml to allow compilation under both environments:</p>
+<ol>
+  <li>make sure your configure adds the output of  "xml-config --cflags" to
+    the compiler command line</li>
+  <li>in your C files including libxml includes do the following
+    <pre>#include &lt;xmlmemory.h>
+#if defined(LIBXML_VERSION) &amp;&amp; LIBXML_VERSION >= 20000
+#include &lt;libxml/parser.h>
+#include &lt;libxml/tree.h>
+#define root children
+#define childs children
+#else 
+#include &lt;gnome-xml/parser.h>
+#include &lt;gnome-xml/tree.h>
+#endif</pre>
+    <p>the first include name is really specific to libxml and won't clash
+    with other installed softare includes. Once included we can tell          
+         the version used and use prefixed path for the includes to safely
+    include headers like tree.h .</p>
+    <p>Second the two #defines allows to handle changes dones in the names of
+    public structures. Just make sure that you don't use the "root" name for
+    other structure in your module. Using xmlDocGetRootElement(doc) is the
+    proper way to access the root node now but is not available on old libxml
+    version (but present in 1.8.7).</p>
+  </li>
+  <li>libxml-2 generates "empty" text nodes for "formatting spaces" found in
+    the XML input. The proper way to handle this change is to check them (and
+    ignore them) when scanning an XML tree produced after libxml parsing. The
+    quick and dirty solution is to force libxml to the old behaviour of
+    ignoring those formatting spaces by adding the following code before any
+    call to the XML parser:
+    <pre>#if defined(LIBXML_VERSION) &amp;&amp; LIBXML_VERSION >= 20000
+  xmlKeepBlanksDefault(0);
+#endif</pre>
+  </li>
+</ol>
+
+<p>Following those 3 steps should work. It worked for some of my own code and
+for the gnome-print module. Other modules (including bonobo/gconf/nautilus)
+will have to be patched in the same way. </p>
+
 <p>Let me put some emphasis on the fact that there is far more changes from
-libxml 1.x to 2.x than the ones you may have to pacth for. The overall code
+libxml 1.x to 2.x than the ones you may have to patch for. The overall code
 has been considerably improved and the conformance to the XML specification
 has been drastically improve. Don't take those changes as an excuse to not
 upgrade, it may cost a lot on the long term ...</p>
 
 <p><a href="mailto:Daniel.Veillard@w3.org">Daniel Veillard</a></p>
 
-<p>$Id: upgrade.html,v 1.3 2000/04/03 19:48:13 veillard Exp $</p>
+<p>$Id: upgrade.html,v 1.4 2000/04/12 13:27:38 veillard Exp $</p>
 </body>
 </html>

@@ -1,3 +1,8 @@
+Tue Jan  6 15:15:23 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/xmlstring.h: fixed the comment in the header
+	* doc/*: rebuilt the docs
+
 Tue Jan  6 19:40:04 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* encoding.c, parser.c, xmlstring.c, Makefile.am,

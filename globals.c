@@ -287,7 +287,7 @@ xmlInitializeGlobalState(xmlGlobalStatePtr gs)
     gs->xmlFree = (xmlFreeFunc) free;
     gs->xmlMalloc = (xmlMallocFunc) malloc;
     gs->xmlRealloc = (xmlReallocFunc) realloc;
-    gs->xmlMemStrdup = (xmlStrdupFunc) strdup;
+    gs->xmlMemStrdup = (xmlStrdupFunc) xmlStrdup;
 #endif
     gs->xmlGenericErrorContext = NULL;
     gs->xmlGetWarningsDefaultValue = 1;

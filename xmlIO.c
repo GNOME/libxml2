@@ -962,56 +962,56 @@ xmlIOHTTPOpen (const char *filename) {
  */
 
 void *
-xmlIOHTTPOpenW( const char * post_uri, int compression ) {
+xmlIOHTTPOpenW(const char *post_uri, int compression)
+{
 
-    xmlIOHTTPWriteCtxtPtr	ctxt = NULL;
+    xmlIOHTTPWriteCtxtPtr ctxt = NULL;
 
-    if ( post_uri == NULL )
-	return ( NULL );
+    if (post_uri == NULL)
+        return (NULL);
 
-    ctxt = xmlMalloc( sizeof( xmlIOHTTPWriteCtxt ) );
-    if ( ctxt == NULL ) {
-	xmlGenericError( xmlGenericErrorContext,
-		"xmlIOHTTPOpenW:  Failed to create output HTTP context.\n" );
-	return ( NULL );
+    ctxt = xmlMalloc(sizeof(xmlIOHTTPWriteCtxt));
+    if (ctxt == NULL) {
+        xmlGenericError(xmlGenericErrorContext,
+		    "xmlIOHTTPOpenW:  Failed to create output HTTP context.\n");
+        return (NULL);
     }
 
-    (void)memset( ctxt, 0, sizeof( xmlIOHTTPWriteCtxt ) );
+    (void) memset(ctxt, 0, sizeof(xmlIOHTTPWriteCtxt));
 
-    ctxt->uri = strdup( post_uri );
-    if ( ctxt->uri == NULL ) {
-	xmlGenericError( xmlGenericErrorContext,
-		"xmlIOHTTPOpenW:  Failed to duplicate destination URI.\n" );
-	xmlFreeHTTPWriteCtxt( ctxt );
-	return ( NULL );
+    ctxt->uri = (char *) xmlStrdup((const xmlChar *)post_uri);
+    if (ctxt->uri == NULL) {
+        xmlGenericError(xmlGenericErrorContext,
+		    "xmlIOHTTPOpenW:  Failed to duplicate destination URI.\n");
+        xmlFreeHTTPWriteCtxt(ctxt);
+        return (NULL);
     }
 
     /*
-    **  Since the document length is required for an HTTP post,
-    **  need to put the document into a buffer.  A memory buffer
-    **  is being used to avoid pushing the data to disk and back.
-    */
+     * **  Since the document length is required for an HTTP post,
+     * **  need to put the document into a buffer.  A memory buffer
+     * **  is being used to avoid pushing the data to disk and back.
+     */
 
 #ifdef HAVE_ZLIB_H
-    if ( ( compression > 0 ) && ( compression <= 9 ) ) {
-	
-	ctxt->compression = compression;
-	ctxt->doc_buff    = xmlCreateZMemBuff( compression );
-    }
-    else
+    if ((compression > 0) && (compression <= 9)) {
+
+        ctxt->compression = compression;
+        ctxt->doc_buff = xmlCreateZMemBuff(compression);
+    } else
 #endif
     {
-	/*  Any character conversions should have been done before this  */
+        /*  Any character conversions should have been done before this  */
 
-	ctxt->doc_buff = xmlAllocOutputBuffer( NULL );
+        ctxt->doc_buff = xmlAllocOutputBuffer(NULL);
     }
 
-    if ( ctxt->doc_buff == NULL ) {
-	xmlFreeHTTPWriteCtxt( ctxt );
-	ctxt = NULL;
+    if (ctxt->doc_buff == NULL) {
+        xmlFreeHTTPWriteCtxt(ctxt);
+        ctxt = NULL;
     }
 
-    return ( ctxt );
+    return (ctxt);
 }
 				
 /**

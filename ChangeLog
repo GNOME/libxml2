@@ -1,3 +1,8 @@
+Fri Jan 18 17:22:50 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* globals.c xmlIO.c xmlcatalog.c: removed the last occurences
+	  of strdup usage in the code
+
 Fri Jan 18 12:47:15 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c error.c: Keith Isdale complained rightly that 

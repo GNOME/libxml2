@@ -72,16 +72,22 @@ xmlShellReadline(const char *prompt) {
     return (line_read);
 #else
     char line_read[501];
+    char *ret;
+    int len;
 
     if (prompt != NULL)
 	fprintf(stdout, "%s", prompt);
     if (!fgets(line_read, 500, stdin))
         return(NULL);
     line_read[500] = 0;
-    return(strdup(line_read));
+    len = strlen(line_read);
+    ret = (char *) malloc(len + 1);
+    if (ret != NULL) {
+	memcpy (ret, line_read, len + 1);
+    }
+    return(ret);
 #endif
 }
-
 
 static void usershell(void) {
     char *cmdline = NULL, *cur;

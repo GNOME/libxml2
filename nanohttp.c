@@ -80,7 +80,6 @@
 #include <libxml/nanohttp.h>
 #include <libxml/globals.h>
 #include <libxml/uri.h>
-#include <config.h>
 
 /**
  * A couple portability macros
@@ -154,7 +153,8 @@ static int socket_errno(void) {
 }
 
 #ifdef SUPPORT_IP6
-static int have_ipv6() {
+static
+int have_ipv6(void) {
     int s;
 
     s = socket (AF_INET6, SOCK_STREAM, 0);
@@ -956,7 +956,7 @@ static int
 xmlNanoHTTPConnectHost(const char *host, int port)
 {
     struct hostent *h;
-    struct sockaddr *addr;
+    struct sockaddr *addr = NULL;
     struct in_addr ia;
     struct sockaddr_in sockin;
 

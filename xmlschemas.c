@@ -5413,8 +5413,9 @@ xmlSchemaValidateType(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr elem,
 			  xmlSchemaTypePtr type) {
     xmlChar *nil;
 
-    if ((elem->content == NULL) || (type == NULL) || (elemDecl == NULL))
+    if ((elem == NULL) || (type == NULL) || (elemDecl == NULL))
 	return(0);
+
     /*
      * 3.3.4 : 2
      */

@@ -1,3 +1,10 @@
+Tue Jul  8 14:15:07 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* nanoftp.c nanohttp.c: the modules should not import <config.h>
+	  directly, some cleanups
+	* xmlschemas.c: Peter Sobisch found a nasty bug in the Schemas
+	  validation code.
+
 Mon Jul  7 18:00:51 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* win32/configure.js: Jesse Pelton pointed out a problem in the

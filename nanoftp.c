@@ -68,7 +68,6 @@
 #include <libxml/uri.h>
 #include <libxml/nanoftp.h>
 #include <libxml/globals.h>
-#include <config.h>
 
 /* #define DEBUG_FTP 1  */
 #ifdef STANDALONE
@@ -125,7 +124,8 @@ static char *proxyPasswd = NULL;/* passwd for proxy authentication */
 static int proxyType = 0;	/* uses TYPE or a@b ? */
 
 #ifdef SUPPORT_IP6
-static int have_ipv6() {
+static
+int have_ipv6(void) {
     int s;
 
     s = socket (AF_INET6, SOCK_STREAM, 0);
@@ -1004,7 +1004,7 @@ xmlNanoFTPConnect(void *ctx) {
     struct hostent *hp;
     int port;
     int res;
-    int addrlen;
+    int addrlen = sizeof (struct sockaddr_in);
 
     if (ctxt == NULL)
 	return(-1);
@@ -1026,7 +1026,7 @@ xmlNanoFTPConnect(void *ctx) {
 
 #ifdef SUPPORT_IP6
     if (have_ipv6 ()) {
-	struct addrinfo hints, *res, *result;
+	struct addrinfo hints, *tmp, *result;
 
 	result = NULL;
 	memset (&hints, 0, sizeof(hints));
@@ -1040,22 +1040,22 @@ xmlNanoFTPConnect(void *ctx) {
 	    if (getaddrinfo (ctxt->hostname, NULL, &hints, &result) != 0)
 		return (-1);
 
-	for (res = result; res; res = res->ai_next)
-	    if (res->ai_family == AF_INET || res->ai_family == AF_INET6)
+	for (tmp = result; tmp; tmp = tmp->ai_next)
+	    if (tmp->ai_family == AF_INET || tmp->ai_family == AF_INET6)
 		break;
 
-	if (res) {
-	    if (res->ai_family == AF_INET6) {
-		memcpy (&ctxt->ftpAddr, res->ai_addr, res->ai_addrlen);
+	if (tmp) {
+	    if (tmp->ai_family == AF_INET6) {
+		memcpy (&ctxt->ftpAddr, tmp->ai_addr, tmp->ai_addrlen);
 		((struct sockaddr_in6 *) &ctxt->ftpAddr)->sin6_port = htons (port);
 		ctxt->controlFd = socket (AF_INET6, SOCK_STREAM, 0);
 	    }
 	    else {
-		memcpy (&ctxt->ftpAddr, res->ai_addr, res->ai_addrlen);
+		memcpy (&ctxt->ftpAddr, tmp->ai_addr, tmp->ai_addrlen);
 		((struct sockaddr_in *) &ctxt->ftpAddr)->sin_port = htons (port);
 		ctxt->controlFd = socket (AF_INET, SOCK_STREAM, 0);
 	    }
-	    addrlen = res->ai_addrlen;
+	    addrlen = tmp->ai_addrlen;
 	    freeaddrinfo (result);
 	}
     }
@@ -1607,7 +1607,7 @@ xmlNanoFTPGetConnection(void *ctx) {
 	    char buf6[INET6_ADDRSTRLEN];
 	    inet_ntop (AF_INET6, &((struct sockaddr_in6 *)&dataAddr)->sin6_addr,
 		    buf6, INET6_ADDRSTRLEN);
-	    adp = buf6;
+	    adp = (unsigned char *) buf6;
 	    portp = (unsigned char *) &((struct sockaddr_in6 *)&dataAddr)->sin6_port;
 	    snprintf (buf, sizeof(buf), "EPRT |2|%s|%s|\r\n", adp, portp);
         } else

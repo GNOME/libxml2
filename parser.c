@@ -661,6 +661,9 @@ xmlParserHandlePEReference(xmlParserCtxtPtr ctxt) {
 	     */
 	    if ((ctxt->external == 0) && (ctxt->inputNr == 1))
 		return;
+            break;
+        case XML_PARSER_IGNORE:
+            return;
     }
 
     NEXT;
@@ -4501,6 +4504,8 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
     } else if ((RAW == 'I') && (NXT(1) == 'G') && (NXT(2) == 'N') &&
             (NXT(3) == 'O') && (NXT(4) == 'R') && (NXT(5) == 'E')) {
 	int state;
+	int instate;
+	int depth = 0;
 
 	SKIP(6);
 	SKIP_BLANKS;
@@ -4528,40 +4533,27 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
 	 * But disable SAX event generating DTD building in the meantime
 	 */
 	state = ctxt->disableSAX;
+	instate = ctxt->instate;
 	ctxt->disableSAX = 1;
-	while ((RAW != 0) && ((RAW != ']') || (NXT(1) != ']') ||
-	       (NXT(2) != '>'))) {
-	    const xmlChar *check = CUR_PTR;
-	    int cons = ctxt->input->consumed;
-	    int tok = ctxt->token;
+	ctxt->instate = XML_PARSER_IGNORE;
 
-	    if ((RAW == '<') && (NXT(1) == '!') && (NXT(2) == '[')) {
-		xmlParseConditionalSections(ctxt);
-	    } else if (IS_BLANK(CUR)) {
-		NEXT;
-	    } else if (RAW == '%') {
-		xmlParsePEReference(ctxt);
-	    } else
-		xmlParseMarkupDecl(ctxt);
-
-	    /*
-	     * Pop-up of finished entities.
-	     */
-	    while ((RAW == 0) && (ctxt->inputNr > 1))
-		xmlPopInput(ctxt);
-
-	    if ((CUR_PTR == check) && (cons == ctxt->input->consumed) &&
-		(tok == ctxt->token)) {
-		ctxt->errNo = XML_ERR_EXT_SUBSET_NOT_FINISHED;
-		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		    ctxt->sax->error(ctxt->userData,
-			"Content error in the external subset\n");
-		ctxt->wellFormed = 0;
-		ctxt->disableSAX = 1;
-		break;
-	    }
+	while (depth >= 0) {
+	  if ((RAW == '<') && (NXT(1) == '!') && (NXT(2) == '[')) {
+	    depth++;
+	    SKIP(3);
+	    continue;
+	  }
+	  if ((RAW == ']') && (NXT(1) == ']') && (NXT(2) == '>')) {
+	    if (--depth >= 0) SKIP(3);
+	    continue;
+	  }
+	  NEXT;
+	  continue;
 	}
+
 	ctxt->disableSAX = state;
+	ctxt->instate = instate;
+
 	if (xmlParserDebugEntities) {
 	    if ((ctxt->input != NULL) && (ctxt->input->filename))
 		xmlGenericError(xmlGenericErrorContext,
@@ -7379,6 +7371,9 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 	case XML_PARSER_PI:
 	    xmlGenericError(xmlGenericErrorContext,
 		    "PP: try PI\n");break;
+        case XML_PARSER_IGNORE:
+            xmlGenericError(xmlGenericErrorContext,
+		    "PP: try IGNORE\n");break;
     }
 #endif
 
@@ -7590,6 +7585,15 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 #endif
 		}
 		break;
+            case XML_PARSER_IGNORE:
+		xmlGenericError(xmlGenericErrorContext,
+			"PP: internal error, state == IGNORE");
+	        ctxt->instate = XML_PARSER_DTD;
+#ifdef DEBUG_PUSH
+		xmlGenericError(xmlGenericErrorContext,
+			"PP: entering DTD\n");
+#endif
+	        break;
             case XML_PARSER_PROLOG:
 		SKIP_BLANKS;
 		if (ctxt->input->buf == NULL)

@@ -3196,6 +3196,8 @@ xmlParserHandleReference(xmlParserCtxtPtr ctxt) {
 	    case XML_PARSER_ATTRIBUTE_VALUE:
 		/* ctxt->token = xmlParseCharRef(ctxt); */
 		return;
+            case XML_PARSER_IGNORE:
+	        return;
 	}
 	return;
     }
@@ -3267,6 +3269,8 @@ xmlParserHandleReference(xmlParserCtxtPtr ctxt) {
 		       "Entity references are forbiden in DTDs!\n");
 	    ctxt->wellFormed = 0;
 	    ctxt->disableSAX = 1;
+	    return;
+        case XML_PARSER_IGNORE:
 	    return;
     }
 

@@ -5520,7 +5520,7 @@ xmlXPathEvalLocationPath(xmlXPathParserContextPtr ctxt) {
 xmlXPathObjectPtr
 xmlXPathEval(const xmlChar *str, xmlXPathContextPtr ctx) {
     xmlXPathParserContextPtr ctxt;
-    xmlXPathObjectPtr res = NULL, tmp;
+    xmlXPathObjectPtr res = NULL, tmp, init = NULL;
     int stack = 0;
 
     xmlXPathInit();
@@ -5528,6 +5528,10 @@ xmlXPathEval(const xmlChar *str, xmlXPathContextPtr ctx) {
     CHECK_CONTEXT(ctx)
 
     ctxt = xmlXPathNewParserContext(str, ctx);
+    if (ctx->node != NULL) {
+	init = xmlXPathNewNodeSet(ctx->node);
+	valuePush(ctxt, init);
+    }
     xmlXPathEvalExpr(ctxt);
 
     if (ctxt->value == NULL) {
@@ -5540,8 +5544,9 @@ xmlXPathEval(const xmlChar *str, xmlXPathContextPtr ctx) {
     do {
         tmp = valuePop(ctxt);
 	if (tmp != NULL) {
+	    if (tmp != init)
+		stack++;    
 	    xmlXPathFreeObject(tmp);
-	    stack++;    
         }
     } while (tmp != NULL);
     if (stack != 0) {

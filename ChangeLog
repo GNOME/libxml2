@@ -1,3 +1,13 @@
+Mon Nov 13 12:39:38 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* parser.[ch] parserInternals.c: applied the conditional
+	  section processing fix from Jonathan P Springer
+	  <jonathan.springer2@gte.net>
+	* xmlversion.h.in win32/libxml2/libxml2.dsp : Updated MS
+	  project file, fixed iconv default non support
+	* xpath.c: fixed the problem of evaluating relative expressions
+	  when a node context is provided.
+
 Sun Nov 12 16:31:19 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* nanoftp.c: fixed gcc 2.95 new warnings

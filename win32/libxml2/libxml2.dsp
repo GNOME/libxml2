@@ -26,7 +26,6 @@ CFG=libxml2 - Win32 Debug
 # PROP Scc_ProjName ""
 # PROP Scc_LocalPath ""
 CPP=cl.exe
-F90=df.exe
 RSC=rc.exe
 
 !IF  "$(CFG)" == "libxml2 - Win32 Release"
@@ -41,6 +40,7 @@ RSC=rc.exe
 # PROP Output_Dir "Release"
 # PROP Intermediate_Dir "Release"
 # PROP Target_Dir ""
+F90=df.exe
 # ADD BASE F90 /include:"Release/"
 # ADD F90 /include:"Release/"
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
@@ -66,6 +66,7 @@ LIB32=link.exe -lib
 # PROP Output_Dir "Debug"
 # PROP Intermediate_Dir "Debug"
 # PROP Target_Dir ""
+F90=df.exe
 # ADD BASE F90 /include:"Debug/"
 # ADD F90 /include:"Debug/"
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ /c
@@ -103,6 +104,10 @@ SOURCE=..\..\entities.c
 # Begin Source File
 
 SOURCE=..\..\error.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\hash.c
 # End Source File
 # Begin Source File
 

@@ -15,6 +15,8 @@ A:link, A:visited, A:active { text-decoration: underline }-->
 
 
 
+
+
   </style>
   <title>Libxml2 XmlTextReader Interface tutorial</title>
 </head>
@@ -422,8 +424,7 @@ validating.</p>
 
 <p>Example, assuming the reader has already being created and that the schema
 string contains the Relax-NG schemas:</p>
-
-<p><code>rngp = libxml2.relaxNGNewMemParserCtxt(schema, len(schema))<br>
+<pre><code>rngp = libxml2.relaxNGNewMemParserCtxt(schema, len(schema))<br>
 rngs = rngp.relaxNGParse()<br>
 reader.RelaxNGSetSchema(rngs)<br>
 ret = reader.Read()<br>
@@ -433,7 +434,9 @@ if ret != 0:<br>
     print "Error parsing the document"<br>
 if reader.IsValid() != 1:<br>
     print "Document failed to validate"</code><br>
-See <code>reader6.py</code> in the sources or documentation for a complete
+</pre>
+
+<p>See <code>reader6.py</code> in the sources or documentation for a complete
 example.</p>
 
 <h2><a name="Mixing">Mixing the reader and tree or XPath operations</a></h2>
@@ -444,12 +447,12 @@ example.</p>
 is based on the DOM builder of libxml2. As a result it is relatively simple
 to mix operations based on both models under some constraints. To do so the
 reader has an Expand() operation allowing to grow the subtree under the
-current node. It returns a pointer to a standard node wich can be manipulated
-in the usual ways. The node will get all its ancestors and the full subtree
-available. Usual operations like XPath queries can be used on that reduced
-view of the document. Here is an example extracted from reader5.py in the
-sources which extract and prints the bibliography for the "Dragon" compiler
-book from the XML 1.0 recommendation:</p>
+current node. It returns a pointer to a standard node which can be
+manipulated in the usual ways. The node will get all its ancestors and the
+full subtree available. Usual operations like XPath queries can be used on
+that reduced view of the document. Here is an example extracted from
+reader5.py in the sources which extract and prints the bibliography for the
+"Dragon" compiler book from the XML 1.0 recommendation:</p>
 <pre>f = open('../../test/valid/REC-xml-19980210.xml')
 input = libxml2.inputBuffer(f)
 reader = input.newTextReader("REC")
@@ -466,7 +469,7 @@ while reader.Read():
 valid until the next Read() operation. The Expand() operation does not
 affects the Read() ones, however usually once processed the full subtree is
 not useful anymore, and the Next() operation allows to skip it completely and
-process to the successor or return 0 if the document end is reached. </p>
+process to the successor or return 0 if the document end is reached.</p>
 
 <p><a href="mailto:veillard@redhat.com">Daniel Veillard</a></p>
 

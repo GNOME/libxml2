@@ -10765,7 +10765,13 @@ xmlXPathCompile(const xmlChar *str) {
 
     ctxt = xmlXPathNewParserContext(str, NULL);
     xmlXPathCompileExpr(ctxt);
-    
+
+    if( ctxt->error != XPATH_EXPRESSION_OK )
+    {
+        xmlXPathFreeParserContext(ctxt);
+        return (0);
+    }
+
     if (*ctxt->cur != 0) {
 	/* 
 	 * aleksey: in some cases this line prints *second* error message

@@ -1,3 +1,7 @@
+Tue Oct 28 19:54:37 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c: applied patch from nico@xtradyne.com for #125030
+
 Tue Oct 28 16:42:16 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am: cleanup

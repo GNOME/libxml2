@@ -616,7 +616,7 @@ htmlTagLookup(const xmlChar *tag) {
 
     for (i = 0; i < (sizeof(html40ElementTable) /
                      sizeof(html40ElementTable[0]));i++) {
-        if (xmlStrEqual(tag, BAD_CAST html40ElementTable[i].name))
+        if (!xmlStrcasecmp(tag, BAD_CAST html40ElementTable[i].name))
 	    return(&html40ElementTable[i]);
     }
     return(NULL);

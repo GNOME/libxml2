@@ -1,3 +1,8 @@
+Wed Apr 18 11:42:47 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* HTMLparser.c HTMLtree.c: applied part of the patches provided
+	  by P C Chow and William M. Brack for XSLT HTML output
+
 Mon Apr 16 19:44:36 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xmlversion.h.in win32config.h win32/libxml2/*: applied 

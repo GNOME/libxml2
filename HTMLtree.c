@@ -189,6 +189,7 @@ htmlSetMetaEncoding(htmlDocPtr doc, const xmlChar *encoding) {
      */
     while (cur != NULL) {
 	if (cur->name != NULL) {
+/*
 	    if (xmlStrEqual(cur->name, BAD_CAST"html"))
 		break;
 	    if (xmlStrEqual(cur->name, BAD_CAST"body")) {
@@ -207,6 +208,13 @@ htmlSetMetaEncoding(htmlDocPtr doc, const xmlChar *encoding) {
 		goto found_head;
 	    if (xmlStrEqual(cur->name, BAD_CAST"meta"))
 		goto found_meta;
+*/
+	    if (xmlStrcasecmp(cur->name, BAD_CAST"html") == 0)
+		break;
+	    if (xmlStrcasecmp(cur->name, BAD_CAST"head") == 0)
+		goto found_head;
+	    if (xmlStrcasecmp(cur->name, BAD_CAST"meta") == 0)
+		goto found_meta;
 	}
 	cur = cur->next;
     }
@@ -219,6 +227,7 @@ htmlSetMetaEncoding(htmlDocPtr doc, const xmlChar *encoding) {
      */
     while (cur != NULL) {
 	if (cur->name != NULL) {
+/*
 	    if (xmlStrEqual(cur->name, BAD_CAST"head"))
 		break;
 	    if (xmlStrEqual(cur->name, BAD_CAST"body")) {
@@ -235,6 +244,11 @@ htmlSetMetaEncoding(htmlDocPtr doc, const xmlChar *encoding) {
 	    }
 	    if (xmlStrEqual(cur->name, BAD_CAST"meta"))
 		goto found_meta;
+*/
+	    if (xmlStrcasecmp(cur->name, BAD_CAST"head") == 0)
+		break;
+	    if (xmlStrcasecmp(cur->name, BAD_CAST"meta") == 0)
+		goto found_meta;
 	}
 	cur = cur->next;
     }
@@ -246,8 +260,8 @@ found_head:
 	    return(0);
 	meta = xmlNewDocNode(doc, NULL, BAD_CAST"meta", NULL);
 	xmlAddChild(cur, meta);
-	xmlNewProp(meta, BAD_CAST"http-equiv", BAD_CAST"Content-Type");
 	xmlNewProp(meta, BAD_CAST"content", BAD_CAST newcontent);
+	xmlNewProp(meta, BAD_CAST"http-equiv", BAD_CAST"Content-Type");
 	return(0);
     }
     cur = cur->children;
@@ -260,8 +274,8 @@ found_meta:
 
 	meta = xmlNewDocNode(doc, NULL, BAD_CAST"meta", NULL);
 	xmlAddPrevSibling(cur, meta);
-	xmlNewProp(meta, BAD_CAST"http-equiv", BAD_CAST"Content-Type");
 	xmlNewProp(meta, BAD_CAST"content", BAD_CAST newcontent);
+	xmlNewProp(meta, BAD_CAST"http-equiv", BAD_CAST"Content-Type");
     }
 
     /*
@@ -270,13 +284,15 @@ found_meta:
      */
     while (cur != NULL) {
 	if (cur->name != NULL) {
-	    if (xmlStrEqual(cur->name, BAD_CAST"meta")) {
+	    if (xmlStrcasecmp(cur->name, BAD_CAST"meta") == 0) {
 		xmlAttrPtr attr = cur->properties;
 		int http;
 		const xmlChar *value;
+                int same_charset;
 
 		content = NULL;
 		http = 0;
+                same_charset = 0;
 		while (attr != NULL) {
 		    if ((attr->children != NULL) &&
 		        (attr->children->type == XML_TEXT_NODE) &&
@@ -289,15 +305,22 @@ found_meta:
 			if ((!xmlStrcasecmp(attr->name, BAD_CAST"http-equiv"))
 			 && (!xmlStrcasecmp(value, BAD_CAST"Content-Type")))
 			    http = 1;
-			else if ((value != NULL)
-			 && (!xmlStrcasecmp(attr->name, BAD_CAST"content")))
-			    content = value;
-			if ((http != 0) && (content != NULL))
+			else 
+                        {
+                           if ((value != NULL) && 
+				(!xmlStrcasecmp(attr->name, BAD_CAST"content")))
+			      content = value;
+			   else 
+			     if ((!xmlStrcasecmp(attr->name, BAD_CAST"charset"))
+			 		&& (!xmlStrcasecmp(value, encoding)))
+			    same_charset = 1;
+                        }
+		        if ((http != 0) && (content != NULL) && (same_charset != 0))
 			    break;
 		    }
 		    attr = attr->next;
 		}
-		if ((http != 0) && (content != NULL)) {
+		if ((http != 0) && (content != NULL) && (same_charset != 0)) {
 		    meta = cur;
 		    cur = cur->next;
 		    xmlUnlinkNode(meta);
@@ -796,7 +819,8 @@ htmlNodeListDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, co
  * Dump an HTML node, recursive behaviour,children are printed too.
  */
 void
-htmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, const char *encoding) {
+htmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
+	           xmlNodePtr cur, const char *encoding) {
     htmlElemDescPtr info;
 
     if (cur == NULL) {
@@ -867,7 +891,7 @@ htmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, const 
     }
 
     /*
-     * Get specific HTmL info for taht node.
+     * Get specific HTML info for taht node.
      */
     info = htmlTagLookup(cur->name);
 
@@ -887,6 +911,10 @@ htmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, const 
     }
     if ((cur->content == NULL) && (cur->children == NULL)) {
         if ((info != NULL) && (info->saveEndTag != 0) &&
+/*
+	    (xmlStrcasecmp(BAD_CAST info->name, BAD_CAST "html")) && 
+	    (xmlStrcasecmp(BAD_CAST info->name, BAD_CAST "body"))) {
+*/
 	    (strcmp(info->name, "html")) && (strcmp(info->name, "body"))) {
 	    xmlOutputBufferWriteString(buf, ">");
 	} else {

@@ -209,17 +209,20 @@ xmlCleanupPredefinedEntities
 #ifdef LIBXML_THREAD_ALLOC_ENABLED
 #ifdef LIBXML_THREAD_ENABLED
 	__xmlMalloc
+	__xmlMallocAtomic
 	__xmlRealloc
 	__xmlFree
 	__xmlMemStrdup
 #else
 	xmlMalloc DATA
+	xmlMallocAtomic DATA
 	xmlRealloc DATA
 	xmlFree DATA
 	xmlMemStrdup DATA
 #endif
 #else /* !LIBXML_THREAD_ALLOC_ENABLED */
 	xmlMalloc DATA
+	xmlMallocAtomic DATA
 	xmlRealloc DATA
 	xmlFree DATA
 	xmlMemStrdup DATA
@@ -330,6 +333,7 @@ xmlCleanupPredefinedEntities
 	htmlParseEntityRef
 	htmlParseCharRef
 	htmlParseElement
+	htmlCreateMemoryParserCtxt
 	htmlParseDocument
 	htmlSAXParseDoc
 	htmlParseDoc
@@ -344,6 +348,12 @@ xmlCleanupPredefinedEntities
 	htmlFreeParserCtxt
 	htmlCreatePushParserCtxt
 	htmlParseChunk
+
+	/* More things */
+	htmlAttrAllowed
+	htmlElementAllowedHere
+	htmlElementStatusHere
+	htmlNodeStatus
 #endif /* LIBXML_HTML_ENABLED */
 
 
@@ -790,6 +800,14 @@ xmlCleanupPredefinedEntities
 	// xmlSaveNoEmptyTags DATA <-- moved to the globals.h section
 	// xmlDefaultBufferSize DATA <-- moved to the globals.h section
 	
+	/* Some helper functions */
+	xmlValidateNCName
+	xmlValidateQName
+	xmlValidateName
+	xmlValidateNMToken
+	xmlBuildQName
+	xmlSplitQName2
+
 	/* handling buffers */	
 	xmlSetBufferAllocationScheme
 	xmlGetBufferAllocationScheme
@@ -890,6 +908,7 @@ xmlCleanupPredefinedEntities
 	/* Changing the content. */
 	xmlSetProp
 	xmlGetProp
+	xmlGetNoNsProp
 	xmlHasProp
 	xmlHasNsProp
 	xmlSetNsProp
@@ -1180,10 +1199,13 @@ xmlCleanupPredefinedEntities
    --------------------------------------------------------------------- */
 	// xmlFree DATA <-- moved to the globals.h section
 	// xmlMalloc DATA <-- moved to the globals.h section
+	// xmlMallocAtomic DATA <-- moved to the globals.h section
 	// xmlRealloc DATA <-- moved to the globals.h section
 	// xmlMemStrdup DATA <-- moved to the globals.h section
 	xmlMemSetup
 	xmlMemGet
+	xmlGcMemSetup
+	xmlGcMemGet
 	xmlInitMemory
 	xmlMemUsed
 	xmlMemDisplay
@@ -1191,6 +1213,7 @@ xmlCleanupPredefinedEntities
 	xmlMemoryDump
 	#ifdef DEBUG_MEMORY_LOCATION
 		xmlMallocLoc
+		xmlMallocAtomicLoc
 		xmlReallocLoc
 		xmlMemStrdupLoc
 	#endif /* DEBUG_MEMORY_LOCATION */

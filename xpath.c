@@ -7085,8 +7085,10 @@ xmlXPathCompLocationPath(xmlXPathParserContextPtr ctxt) {
 		xmlXPathCompRelativeLocationPath(ctxt);
 	    } else if (CUR == '/') {
 		NEXT;
-		/* SKIP_BLANKS; */
-		if ((CUR != 0) && (CUR != ')') && (CUR != ','))
+		SKIP_BLANKS;
+		if ((CUR != 0 ) &&
+		    ((IS_LETTER(CUR)) || (CUR == '_') || (CUR == '.') ||
+		     (CUR == '@') || (CUR == '*')))
 		    xmlXPathCompRelativeLocationPath(ctxt);
 	    }
 	}

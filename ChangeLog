@@ -1,3 +1,7 @@
+Thu Jun 14 10:31:17 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xpath.c: Thomas Broyer suggested a better patch for the / arg
+
 Thu Jun 14 01:01:30 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xpath.c: bug detected by Ankh when / is used as a function arg

@@ -1,3 +1,7 @@
+Fri May 14 17:51:48 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xmlIO.c xmlsave.c: third pass at the escaping refactoring.
+
 Fri May 14 12:37:24 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* parser.c: enhanced the enhancement, fixed another couple of

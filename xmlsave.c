@@ -139,6 +139,178 @@ xmlSaveErr(int code, xmlNodePtr node, const char *extra)
 
 /************************************************************************
  *									*
+ *			Special escaping routines			*
+ *									*
+ ************************************************************************/
+/**
+ * xmlEscapeEntities:
+ * @out:  a pointer to an array of bytes to store the result
+ * @outlen:  the length of @out
+ * @in:  a pointer to an array of unescaped UTF-8 bytes
+ * @inlen:  the length of @in
+ *
+ * Take a block of UTF-8 chars in and escape them. Used when there is no
+ * encoding specified.
+ *
+ * Returns 0 if success, or -1 otherwise
+ * The value of @inlen after return is the number of octets consumed
+ *     if the return value is positive, else unpredictable.
+ * The value of @outlen after return is the number of octets consumed.
+ */
+static int
+xmlEscapeEntities(unsigned char* out, int *outlen,
+                 const xmlChar* in, int *inlen) {
+    unsigned char* outstart = out;
+    const unsigned char* base = in;
+    unsigned char* outend = out + *outlen;
+    const unsigned char* inend;
+    int val;
+
+    inend = in + (*inlen);
+    
+    while ((in < inend) && (out < outend)) {
+    	if (*in == '<') {
+	    if (outend - out < 4) break;
+	    *out++ = '&';
+	    *out++ = 'l';
+	    *out++ = 't';
+	    *out++ = ';';
+	    in++;
+	    continue;
+	} else if (*in == '>') {
+	    if (outend - out < 4) break;
+	    *out++ = '&';
+	    *out++ = 'g';
+	    *out++ = 't';
+	    *out++ = ';';
+	    in++;
+	    continue;
+	} else if (*in == '&') {
+	    if (outend - out < 5) break;
+	    *out++ = '&';
+	    *out++ = 'a';
+	    *out++ = 'm';
+	    *out++ = 'p';
+	    *out++ = ';';
+	    in++;
+	    continue;
+	} else if (((*in >= 0x20) && (*in < 0x80)) ||
+	           (*in == '\n') || (*in == '\t')) {
+	    /*
+	     * default case, just copy !
+	     */
+	    *out++ = *in++;
+	    continue;
+	} else if (*in >= 0x80) {
+	    /*
+	     * We assume we have UTF-8 input.
+	     */
+	    unsigned char* ptr;
+
+	    if (outend - out < 10) break;
+
+	    if (*in < 0xC0) {
+		xmlGenericError(xmlGenericErrorContext,
+			"xmlEscapeEntities : input not UTF-8\n");
+		in++;
+		goto error;
+	    } else if (*in < 0xE0) {
+		if (inend - in < 2) break;
+		val = (in[0]) & 0x1F;
+		val <<= 6;
+		val |= (in[1]) & 0x3F;
+		in += 2;
+	    } else if (*in < 0xF0) {
+		if (inend - in < 3) break;
+		val = (in[0]) & 0x0F;
+		val <<= 6;
+		val |= (in[1]) & 0x3F;
+		val <<= 6;
+		val |= (in[2]) & 0x3F;
+		in += 3;
+	    } else if (*in < 0xF8) {
+		if (inend - in < 4) break;
+		val = (in[0]) & 0x07;
+		val <<= 6;
+		val |= (in[1]) & 0x3F;
+		val <<= 6;
+		val |= (in[2]) & 0x3F;
+		val <<= 6;
+		val |= (in[3]) & 0x3F;
+		in += 4;
+	    } else {
+		xmlGenericError(xmlGenericErrorContext,
+		    "xmlEscapeEntities : char out of range\n");
+		in++;
+		goto error;
+	    }
+	    if (!IS_CHAR(val)) {
+		xmlGenericError(xmlGenericErrorContext,
+		    "xmlEscapeEntities : char out of range\n");
+		in++;
+		goto error;
+	    }
+
+	    /*
+	     * We could do multiple things here. Just save as a char ref
+	     */
+serialize_hex_charref:
+	    *out++ = '&';
+	    *out++ = '#';
+	    *out++ = 'x';
+	    if (val < 0x10) ptr = out;
+	    else if (val < 0x100) ptr = out + 1;
+	    else if (val < 0x1000) ptr = out + 2;
+	    else if (val < 0x10000) ptr = out + 3;
+	    else if (val < 0x100000) ptr = out + 4;
+	    else ptr = out + 5;
+	    out = ptr + 1;
+	    while (val > 0) {
+	        switch (val & 0xF) {
+		    case 0: *ptr-- = '0'; break;
+		    case 1: *ptr-- = '1'; break;
+		    case 2: *ptr-- = '2'; break;
+		    case 3: *ptr-- = '3'; break;
+		    case 4: *ptr-- = '4'; break;
+		    case 5: *ptr-- = '5'; break;
+		    case 6: *ptr-- = '6'; break;
+		    case 7: *ptr-- = '7'; break;
+		    case 8: *ptr-- = '8'; break;
+		    case 9: *ptr-- = '9'; break;
+		    case 0xA: *ptr-- = 'A'; break;
+		    case 0xB: *ptr-- = 'B'; break;
+		    case 0xC: *ptr-- = 'C'; break;
+		    case 0xD: *ptr-- = 'D'; break;
+		    case 0xE: *ptr-- = 'E'; break;
+		    case 0xF: *ptr-- = 'F'; break;
+		    default: *ptr-- = '0'; break;
+		}
+		val >>= 4;
+	    }
+	    *out++ = ';';
+	    continue;
+	} else if (IS_BYTE_CHAR(*in)) {
+	    if (outend - out < 6) break;
+	    val = *in++;
+	    goto serialize_hex_charref;
+	} else {
+	    xmlGenericError(xmlGenericErrorContext,
+		"xmlEscapeEntities : char out of range\n");
+	    in++;
+	    goto error;
+	}
+    }
+    *outlen = out - outstart;
+    *inlen = in - base;
+    return(0);
+error:
+    *outlen = out - outstart;
+    *inlen = in - base;
+    return(-1);
+}
+
+/************************************************************************
+ *									*
  *			Allocation and deallocation			*
  *									*
  ************************************************************************/
@@ -472,14 +644,8 @@ xmlNodeDumpOutputInternal(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
 		(cur->name != xmlStringTextNoenc)) {
 
 		if (ctxt->encoding == NULL) {
-		    xmlChar *buffer;
-
-		    buffer = xmlEncodeEntitiesReentrant(ctxt->doc,
-		                                        cur->content);
-		    if (buffer != NULL) {
-			xmlOutputBufferWriteString(buf, (const char *)buffer);
-			xmlFree(buffer);
-		    }
+		    xmlOutputBufferWriteEscape(buf, cur->content,
+		                               xmlEscapeEntities);
 		} else {
 		    xmlOutputBufferWriteEscape(buf, cur->content, NULL);
 		}
@@ -585,14 +751,7 @@ xmlNodeDumpOutputInternal(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
     xmlOutputBufferWriteString(buf, ">");
     if ((cur->type != XML_ELEMENT_NODE) && (cur->content != NULL)) {
 	if (ctxt->encoding == NULL) {
-	    xmlChar *buffer;
-
-	    buffer = xmlEncodeEntitiesReentrant(ctxt->doc,
-						cur->content);
-	    if (buffer != NULL) {
-		xmlOutputBufferWriteString(buf, (const char *)buffer);
-		xmlFree(buffer);
-	    }
+	    xmlOutputBufferWriteEscape(buf, cur->content, xmlEscapeEntities);
 	} else {
 	    xmlOutputBufferWriteEscape(buf, cur->content, NULL);
 	}
@@ -932,14 +1091,8 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
 		(cur->name != xmlStringTextNoenc)) {
 
 		if (ctxt->encoding == NULL) {
-		    xmlChar *buffer;
-
-		    buffer = xmlEncodeEntitiesReentrant(ctxt->doc,
-		                                        cur->content);
-		    if (buffer != NULL) {
-			xmlOutputBufferWriteString(buf, (const char *)buffer);
-			xmlFree(buffer);
-		    }
+		    xmlOutputBufferWriteEscape(buf, cur->content,
+		                               xmlEscapeEntities);
 		} else {
 		    xmlOutputBufferWriteEscape(buf, cur->content, NULL);
 		}
@@ -1059,14 +1212,7 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
     xmlOutputBufferWriteString(buf, ">");
     if ((cur->type != XML_ELEMENT_NODE) && (cur->content != NULL)) {
 	if (ctxt->encoding == NULL) {
-	    xmlChar *buffer;
-
-	    buffer = xmlEncodeEntitiesReentrant(ctxt->doc,
-						cur->content);
-	    if (buffer != NULL) {
-		xmlOutputBufferWriteString(buf, (const char *)buffer);
-		xmlFree(buffer);
-	    }
+	    xmlOutputBufferWriteEscape(buf, cur->content, xmlEscapeEntities);
 	} else {
 	    xmlOutputBufferWriteEscape(buf, cur->content, NULL);
 	}

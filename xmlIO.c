@@ -3029,6 +3029,8 @@ xmlOutputBufferWriteEscape(xmlOutputBufferPtr out, const xmlChar *str,
 		return(ret);
 	    }
 	    out->written += ret;
+	} else if (out->buffer->size - out->buffer->use < MINLEN) {
+	    xmlBufferResize(out->buffer, out->buffer->size + MINLEN);
 	}
 	written += nbchars;
     } while (len > 0);

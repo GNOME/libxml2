@@ -56,27 +56,27 @@ The content of this structure is not made public by the API.
 }</pre><h3><a name="xmlSchemaAttribute" id="xmlSchemaAttribute">Structure xmlSchemaAttribute</a></h3><pre class="programlisting">Structure xmlSchemaAttribute<br />struct _xmlSchemaAttribute {
     <a href="libxml-schemasInternals.html#xmlSchemaTypeType">xmlSchemaTypeType</a>	type	: The kind of type
     struct _xmlSchemaAttribute *	next	: the next <a href="libxml-SAX.html#attribute">attribute</a> if in a group ...
-    const <a href="libxml-tree.html#xmlChar">xmlChar</a> *	name
-    const <a href="libxml-tree.html#xmlChar">xmlChar</a> *	id
-    const <a href="libxml-tree.html#xmlChar">xmlChar</a> *	ref
-    const <a href="libxml-tree.html#xmlChar">xmlChar</a> *	refNs
-    const <a href="libxml-tree.html#xmlChar">xmlChar</a> *	typeName
-    const <a href="libxml-tree.html#xmlChar">xmlChar</a> *	typeNs
+    const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	name
+    const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	id
+    const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	ref
+    const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	refNs
+    const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	typeName
+    const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	typeNs
     <a href="libxml-schemasInternals.html#xmlSchemaAnnotPtr">xmlSchemaAnnotPtr</a>	annot
     <a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a>	base
     int	occurs
-    const <a href="libxml-tree.html#xmlChar">xmlChar</a> *	defValue
+    const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	defValue
     <a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a>	subtypes
     <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a>	node
-    const <a href="libxml-tree.html#xmlChar">xmlChar</a> *	targetNamespace
+    const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	targetNamespace
     int	flags
 }</pre><h3><a name="xmlSchemaAttributeGroup" id="xmlSchemaAttributeGroup">Structure xmlSchemaAttributeGroup</a></h3><pre class="programlisting">Structure xmlSchemaAttributeGroup<br />struct _xmlSchemaAttributeGroup {
     <a href="libxml-schemasInternals.html#xmlSchemaTypeType">xmlSchemaTypeType</a>	type	: The kind of type
     struct _xmlSchemaAttribute *	next	: the next <a href="libxml-SAX.html#attribute">attribute</a> if in a group ...
-    const <a href="libxml-tree.html#xmlChar">xmlChar</a> *	name
-    const <a href="libxml-tree.html#xmlChar">xmlChar</a> *	id
-    const <a href="libxml-tree.html#xmlChar">xmlChar</a> *	ref
-    const <a href="libxml-tree.html#xmlChar">xmlChar</a> *	refNs
+    const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	name
+    const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	id
+    const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	ref
+    const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	refNs
     <a href="libxml-schemasInternals.html#xmlSchemaAnnotPtr">xmlSchemaAnnotPtr</a>	annot
     <a href="libxml-schemasInternals.html#xmlSchemaAttributePtr">xmlSchemaAttributePtr</a>	attributes
     <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a>	node
@@ -93,10 +93,10 @@ The content of this structure is not made public by the API.
 </pre><h3><a name="xmlSchemaElement" id="xmlSchemaElement">Structure xmlSchemaElement</a></h3><pre class="programlisting">Structure xmlSchemaElement<br />struct _xmlSchemaElement {
     <a href="libxml-schemasInternals.html#xmlSchemaTypeType">xmlSchemaTypeType</a>	type	: The kind of type
     struct _xmlSchemaType *	next	: the next type if in a sequence ...
-    const <a href="libxml-tree.html#xmlChar">xmlChar</a> *	name
-    const <a href="libxml-tree.html#xmlChar">xmlChar</a> *	id
-    const <a href="libxml-tree.html#xmlChar">xmlChar</a> *	ref
-    const <a href="libxml-tree.html#xmlChar">xmlChar</a> *	refNs
+    const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	name
+    const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	id
+    const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	ref
+    const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	refNs
     <a href="libxml-schemasInternals.html#xmlSchemaAnnotPtr">xmlSchemaAnnotPtr</a>	annot
     <a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a>	subtypes
     <a href="libxml-schemasInternals.html#xmlSchemaAttributePtr">xmlSchemaAttributePtr</a>	attributes
@@ -104,21 +104,21 @@ The content of this structure is not made public by the API.
     int	minOccurs
     int	maxOccurs
     int	flags
-    const <a href="libxml-tree.html#xmlChar">xmlChar</a> *	targetNamespace
-    const <a href="libxml-tree.html#xmlChar">xmlChar</a> *	namedType
-    const <a href="libxml-tree.html#xmlChar">xmlChar</a> *	namedTypeNs
-    const <a href="libxml-tree.html#xmlChar">xmlChar</a> *	substGroup
-    const <a href="libxml-tree.html#xmlChar">xmlChar</a> *	substGroupNs
-    const <a href="libxml-tree.html#xmlChar">xmlChar</a> *	scope
-    const <a href="libxml-tree.html#xmlChar">xmlChar</a> *	value
+    const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	targetNamespace
+    const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	namedType
+    const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	namedTypeNs
+    const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	substGroup
+    const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	substGroupNs
+    const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	scope
+    const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	value
     struct _xmlSchemaElement *	refDecl
     <a href="libxml-xmlregexp.html#xmlRegexpPtr">xmlRegexpPtr</a>	contModel
     <a href="libxml-schemasInternals.html#xmlSchemaContentType">xmlSchemaContentType</a>	contentType
 }</pre><h3><a name="xmlSchemaFacet" id="xmlSchemaFacet">Structure xmlSchemaFacet</a></h3><pre class="programlisting">Structure xmlSchemaFacet<br />struct _xmlSchemaFacet {
     <a href="libxml-schemasInternals.html#xmlSchemaTypeType">xmlSchemaTypeType</a>	type	: The kind of type
     struct _xmlSchemaFacet *	next	: the next type if in a sequence ...
-    const <a href="libxml-tree.html#xmlChar">xmlChar</a> *	value
-    const <a href="libxml-tree.html#xmlChar">xmlChar</a> *	id
+    const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	value
+    const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	id
     <a href="libxml-schemasInternals.html#xmlSchemaAnnotPtr">xmlSchemaAnnotPtr</a>	annot
     <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a>	node
     int	fixed
@@ -127,16 +127,16 @@ The content of this structure is not made public by the API.
     <a href="libxml-xmlregexp.html#xmlRegexpPtr">xmlRegexpPtr</a>	regexp
 }</pre><h3><a name="xmlSchemaNotation" id="xmlSchemaNotation">Structure xmlSchemaNotation</a></h3><pre class="programlisting">Structure xmlSchemaNotation<br />struct _xmlSchemaNotation {
     <a href="libxml-schemasInternals.html#xmlSchemaTypeType">xmlSchemaTypeType</a>	type	: The kind of type
-    const <a href="libxml-tree.html#xmlChar">xmlChar</a> *	name
+    const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	name
     <a href="libxml-schemasInternals.html#xmlSchemaAnnotPtr">xmlSchemaAnnotPtr</a>	annot
-    const <a href="libxml-tree.html#xmlChar">xmlChar</a> *	identifier
+    const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	identifier
 }</pre><h3><a name="xmlSchemaType" id="xmlSchemaType">Structure xmlSchemaType</a></h3><pre class="programlisting">Structure xmlSchemaType<br />struct _xmlSchemaType {
     <a href="libxml-schemasInternals.html#xmlSchemaTypeType">xmlSchemaTypeType</a>	type	: The kind of type
     struct _xmlSchemaType *	next	: the next type if in a sequence ...
-    const <a href="libxml-tree.html#xmlChar">xmlChar</a> *	name
-    const <a href="libxml-tree.html#xmlChar">xmlChar</a> *	id
-    const <a href="libxml-tree.html#xmlChar">xmlChar</a> *	ref
-    const <a href="libxml-tree.html#xmlChar">xmlChar</a> *	refNs
+    const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	name
+    const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	id
+    const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	ref
+    const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	refNs
     <a href="libxml-schemasInternals.html#xmlSchemaAnnotPtr">xmlSchemaAnnotPtr</a>	annot
     <a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a>	subtypes
     <a href="libxml-schemasInternals.html#xmlSchemaAttributePtr">xmlSchemaAttributePtr</a>	attributes
@@ -145,8 +145,8 @@ The content of this structure is not made public by the API.
     int	maxOccurs
     int	flags
     <a href="libxml-schemasInternals.html#xmlSchemaContentType">xmlSchemaContentType</a>	contentType
-    const <a href="libxml-tree.html#xmlChar">xmlChar</a> *	base
-    const <a href="libxml-tree.html#xmlChar">xmlChar</a> *	baseNs
+    const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	base
+    const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	baseNs
     <a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a>	baseType
     <a href="libxml-schemasInternals.html#xmlSchemaFacetPtr">xmlSchemaFacetPtr</a>	facets
     struct _xmlSchemaType *	redef	: possible redefinitions for the type

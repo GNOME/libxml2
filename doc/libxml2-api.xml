@@ -407,35 +407,25 @@
      <exports symbol='_xmlCharEncodingHandler' type='struct'/>
      <exports symbol='xmlDelEncodingAlias' type='function'/>
      <exports symbol='xmlGetEncodingAlias' type='function'/>
+     <exports symbol='xmlRegisterCharEncodingHandler' type='function'/>
      <exports symbol='UTF8Toisolat1' type='function'/>
-     <exports symbol='xmlUTF8Strloc' type='function'/>
+     <exports symbol='xmlInitCharEncodingHandlers' type='function'/>
      <exports symbol='xmlAddEncodingAlias' type='function'/>
+     <exports symbol='xmlCleanupEncodingAliases' type='function'/>
      <exports symbol='xmlCharEncOutFunc' type='function'/>
+     <exports symbol='xmlParseCharEncoding' type='function'/>
      <exports symbol='xmlCharEncodingInputFunc' type='function'/>
      <exports symbol='xmlCleanupCharEncodingHandlers' type='function'/>
-     <exports symbol='xmlGetUTF8Char' type='function'/>
+     <exports symbol='xmlNewCharEncodingHandler' type='function'/>
+     <exports symbol='xmlCharEncodingOutputFunc' type='function'/>
      <exports symbol='isolat1ToUTF8' type='function'/>
      <exports symbol='xmlFindCharEncodingHandler' type='function'/>
-     <exports symbol='xmlInitCharEncodingHandlers' type='function'/>
-     <exports symbol='xmlRegisterCharEncodingHandler' type='function'/>
-     <exports symbol='xmlCharEncFirstLine' type='function'/>
-     <exports symbol='xmlCharEncCloseFunc' type='function'/>
-     <exports symbol='xmlCheckUTF8' type='function'/>
-     <exports symbol='xmlUTF8Charcmp' type='function'/>
-     <exports symbol='xmlUTF8Strlen' type='function'/>
-     <exports symbol='xmlUTF8Size' type='function'/>
-     <exports symbol='xmlCleanupEncodingAliases' type='function'/>
-     <exports symbol='xmlUTF8Strsub' type='function'/>
-     <exports symbol='xmlUTF8Strpos' type='function'/>
-     <exports symbol='xmlParseCharEncoding' type='function'/>
-     <exports symbol='xmlCharEncodingOutputFunc' type='function'/>
-     <exports symbol='xmlUTF8Strndup' type='function'/>
-     <exports symbol='xmlGetCharEncodingName' type='function'/>
      <exports symbol='xmlCharEncInFunc' type='function'/>
      <exports symbol='xmlGetCharEncodingHandler' type='function'/>
-     <exports symbol='xmlUTF8Strsize' type='function'/>
+     <exports symbol='xmlCharEncFirstLine' type='function'/>
      <exports symbol='xmlDetectCharEncoding' type='function'/>
-     <exports symbol='xmlNewCharEncodingHandler' type='function'/>
+     <exports symbol='xmlCharEncCloseFunc' type='function'/>
+     <exports symbol='xmlGetCharEncodingName' type='function'/>
     </file>
     <file name='entities'>
      <summary>interface for the XML entities handling</summary>
@@ -709,16 +699,12 @@
      <exports symbol='_xmlParserInput' type='struct'/>
      <exports symbol='_xmlSAXLocator' type='struct'/>
      <exports symbol='xmlParseDoc' type='function'/>
-     <exports symbol='xmlStrndup' type='function'/>
      <exports symbol='xmlCtxtReadFile' type='function'/>
      <exports symbol='xmlSetupParserForBuffer' type='function'/>
      <exports symbol='xmlParseCtxtExternalEntity' type='function'/>
      <exports symbol='xmlRecoverFile' type='function'/>
-     <exports symbol='xmlStrcasestr' type='function'/>
-     <exports symbol='xmlStrcat' type='function'/>
      <exports symbol='attributeDeclSAXFunc' type='function'/>
      <exports symbol='getEntitySAXFunc' type='function'/>
-     <exports symbol='xmlStrstr' type='function'/>
      <exports symbol='xmlLineNumbersDefault' type='function'/>
      <exports symbol='xmlGetExternalEntityLoader' type='function'/>
      <exports symbol='elementDeclSAXFunc' type='function'/>
@@ -726,33 +712,25 @@
      <exports symbol='charactersSAXFunc' type='function'/>
      <exports symbol='xmlClearNodeInfoSeq' type='function'/>
      <exports symbol='xmlParseChunk' type='function'/>
-     <exports symbol='xmlStrQEqual' type='function'/>
      <exports symbol='xmlCtxtUseOptions' type='function'/>
      <exports symbol='xmlParseEntity' type='function'/>
      <exports symbol='xmlCreatePushParserCtxt' type='function'/>
      <exports symbol='xmlParserAddNodeInfo' type='function'/>
      <exports symbol='xmlCtxtReadFd' type='function'/>
      <exports symbol='internalSubsetSAXFunc' type='function'/>
-     <exports symbol='xmlStrdup' type='function'/>
      <exports symbol='xmlNewParserCtxt' type='function'/>
      <exports symbol='endDocumentSAXFunc' type='function'/>
      <exports symbol='xmlParseFile' type='function'/>
      <exports symbol='unparsedEntityDeclSAXFunc' type='function'/>
      <exports symbol='xmlParseDocument' type='function'/>
-     <exports symbol='xmlStrncmp' type='function'/>
      <exports symbol='xmlCreateIOParserCtxt' type='function'/>
-     <exports symbol='xmlStrncasecmp' type='function'/>
      <exports symbol='referenceSAXFunc' type='function'/>
-     <exports symbol='xmlStrncat' type='function'/>
-     <exports symbol='getParameterEntitySAXFunc' type='function'/>
+     <exports symbol='xmlCtxtResetPush' type='function'/>
      <exports symbol='ignorableWhitespaceSAXFunc' type='function'/>
-     <exports symbol='xmlStrPrintf' type='function'/>
      <exports symbol='xmlSAXParseDoc' type='function'/>
      <exports symbol='xmlReadMemory' type='function'/>
      <exports symbol='xmlInitNodeInfoSeq' type='function'/>
-     <exports symbol='xmlStrVPrintf' type='function'/>
      <exports symbol='xmlParseMemory' type='function'/>
-     <exports symbol='xmlStrlen' type='function'/>
      <exports symbol='xmlSubstituteEntitiesDefault' type='function'/>
      <exports symbol='endElementSAXFunc' type='function'/>
      <exports symbol='xmlCtxtReadMemory' type='function'/>
@@ -761,14 +739,12 @@
      <exports symbol='xmlCtxtReset' type='function'/>
      <exports symbol='xmlRecoverDoc' type='function'/>
      <exports symbol='xmlNewIOInputStream' type='function'/>
-     <exports symbol='xmlStrEqual' type='function'/>
      <exports symbol='xmlKeepBlanksDefault' type='function'/>
      <exports symbol='xmlReadFile' type='function'/>
      <exports symbol='xmlParserInputRead' type='function'/>
      <exports symbol='xmlInitParser' type='function'/>
-     <exports symbol='xmlStrcmp' type='function'/>
      <exports symbol='xmlGetFeaturesList' type='function'/>
-     <exports symbol='xmlCharStrndup' type='function'/>
+     <exports symbol='xmlCreateDocParserCtxt' type='function'/>
      <exports symbol='xmlSetFeature' type='function'/>
      <exports symbol='errorSAXFunc' type='function'/>
      <exports symbol='xmlCtxtReadDoc' type='function'/>
@@ -786,7 +762,6 @@
      <exports symbol='entityDeclSAXFunc' type='function'/>
      <exports symbol='xmlLoadExternalEntity' type='function'/>
      <exports symbol='xmlParserInputDeallocate' type='function'/>
-     <exports symbol='xmlStrncatNew' type='function'/>
      <exports symbol='xmlCtxtReadIO' type='function'/>
      <exports symbol='xmlStopParser' type='function'/>
      <exports symbol='xmlReadFd' type='function'/>
@@ -796,12 +771,10 @@
      <exports symbol='xmlReadIO' type='function'/>
      <exports symbol='xmlGetFeature' type='function'/>
      <exports symbol='xmlParseBalancedChunkMemoryRecover' type='function'/>
-     <exports symbol='xmlCharStrdup' type='function'/>
-     <exports symbol='xmlStrchr' type='function'/>
+     <exports symbol='hasExternalSubsetSAXFunc' type='function'/>
      <exports symbol='xmlIOParseDTD' type='function'/>
      <exports symbol='xmlFreeParserCtxt' type='function'/>
-     <exports symbol='xmlCreateDocParserCtxt' type='function'/>
-     <exports symbol='xmlStrsub' type='function'/>
+     <exports symbol='xmlReadDoc' type='function'/>
      <exports symbol='xmlSAXUserParseMemory' type='function'/>
      <exports symbol='xmlParseDTD' type='function'/>
      <exports symbol='xmlParseBalancedChunkMemory' type='function'/>
@@ -810,23 +783,20 @@
      <exports symbol='commentSAXFunc' type='function'/>
      <exports symbol='xmlCleanupParser' type='function'/>
      <exports symbol='attributeSAXFunc' type='function'/>
-     <exports symbol='xmlStrcasecmp' type='function'/>
-     <exports symbol='hasExternalSubsetSAXFunc' type='function'/>
+     <exports symbol='getParameterEntitySAXFunc' type='function'/>
      <exports symbol='isStandaloneSAXFunc' type='function'/>
      <exports symbol='startDocumentSAXFunc' type='function'/>
      <exports symbol='xmlInitParserCtxt' type='function'/>
      <exports symbol='xmlClearParserCtxt' type='function'/>
      <exports symbol='xmlParserInputGrow' type='function'/>
      <exports symbol='xmlParseExternalEntity' type='function'/>
-     <exports symbol='xmlCtxtResetPush' type='function'/>
      <exports symbol='externalSubsetSAXFunc' type='function'/>
      <exports symbol='resolveEntitySAXFunc' type='function'/>
      <exports symbol='setDocumentLocatorSAXFunc' type='function'/>
-     <exports symbol='xmlSetExternalEntityLoader' type='function'/>
      <exports symbol='xmlPedanticParserDefault' type='function'/>
      <exports symbol='warningSAXFunc' type='function'/>
      <exports symbol='xmlSAXParseEntity' type='function'/>
-     <exports symbol='xmlReadDoc' type='function'/>
+     <exports symbol='xmlSetExternalEntityLoader' type='function'/>
     </file>
     <file name='parserInternals'>
      <summary>internals routines exported by the parser.</summary>
@@ -1159,12 +1129,11 @@
      <description>this module describes the structures found in an tree resulting from an XML or HTML parsing, as well as the API provided for various processing on that tree </description>
      <author>Daniel Veillard </author>
      <exports symbol='XML_LOCAL_NAMESPACE' type='macro'/>
-     <exports symbol='BAD_CAST' type='macro'/>
      <exports symbol='XML_GET_CONTENT' type='macro'/>
-     <exports symbol='BASE_BUFFER_SIZE' type='macro'/>
-     <exports symbol='xmlChildrenNode' type='macro'/>
-     <exports symbol='xmlRootNode' type='macro'/>
      <exports symbol='XML_XML_NAMESPACE' type='macro'/>
+     <exports symbol='BASE_BUFFER_SIZE' type='macro'/>
+     <exports symbol='xmlRootNode' type='macro'/>
+     <exports symbol='xmlChildrenNode' type='macro'/>
      <exports symbol='XML_GET_LINE' type='macro'/>
      <exports symbol='XML_ATTRIBUTE_IMPLIED' type='enum'/>
      <exports symbol='XML_ATTRIBUTE_IDREF' type='enum'/>
@@ -1226,10 +1195,9 @@
      <exports symbol='xmlElement' type='typedef'/>
      <exports symbol='xmlElementType' type='typedef'/>
      <exports symbol='xmlBufferAllocationScheme' type='typedef'/>
-     <exports symbol='xmlChar' type='typedef'/>
+     <exports symbol='xmlRef' type='typedef'/>
      <exports symbol='xmlDocPtr' type='typedef'/>
      <exports symbol='xmlElementContent' type='typedef'/>
-     <exports symbol='xmlRef' type='typedef'/>
      <exports symbol='xmlAttributeType' type='typedef'/>
      <exports symbol='xmlRefPtr' type='typedef'/>
      <exports symbol='xmlParserInputBuffer' type='typedef'/>
@@ -2464,6 +2432,43 @@
      <exports symbol='xmlSchemaGetPredefinedType' type='function'/>
      <exports symbol='xmlSchemaCheckFacet' type='function'/>
     </file>
+    <file name='xmlstring'>
+     <summary>the core parser module</summary>
+     <description>Interfaces, constants and types related to the XML parser </description>
+     <author>Daniel Veillard </author>
+     <exports symbol='BAD_CAST' type='macro'/>
+     <exports symbol='xmlChar' type='typedef'/>
+     <exports symbol='xmlStrcmp' type='function'/>
+     <exports symbol='xmlStrncmp' type='function'/>
+     <exports symbol='xmlUTF8Strloc' type='function'/>
+     <exports symbol='xmlCharStrndup' type='function'/>
+     <exports symbol='xmlStrsub' type='function'/>
+     <exports symbol='xmlStrncat' type='function'/>
+     <exports symbol='xmlGetUTF8Char' type='function'/>
+     <exports symbol='xmlStrcasestr' type='function'/>
+     <exports symbol='xmlStrcat' type='function'/>
+     <exports symbol='xmlStrcasecmp' type='function'/>
+     <exports symbol='xmlStrstr' type='function'/>
+     <exports symbol='xmlStrPrintf' type='function'/>
+     <exports symbol='xmlStrndup' type='function'/>
+     <exports symbol='xmlStrVPrintf' type='function'/>
+     <exports symbol='xmlUTF8Size' type='function'/>
+     <exports symbol='xmlCheckUTF8' type='function'/>
+     <exports symbol='xmlStrQEqual' type='function'/>
+     <exports symbol='xmlStrncasecmp' type='function'/>
+     <exports symbol='xmlUTF8Strlen' type='function'/>
+     <exports symbol='xmlUTF8Strsub' type='function'/>
+     <exports symbol='xmlStrncatNew' type='function'/>
+     <exports symbol='xmlUTF8Strpos' type='function'/>
+     <exports symbol='xmlStrEqual' type='function'/>
+     <exports symbol='xmlStrlen' type='function'/>
+     <exports symbol='xmlUTF8Charcmp' type='function'/>
+     <exports symbol='xmlUTF8Strndup' type='function'/>
+     <exports symbol='xmlUTF8Strsize' type='function'/>
+     <exports symbol='xmlStrdup' type='function'/>
+     <exports symbol='xmlCharStrdup' type='function'/>
+     <exports symbol='xmlStrchr' type='function'/>
+    </file>
     <file name='xmlunicode'>
      <summary>Unicode character APIs</summary>
      <description>API for the Unicode character APIs  This file is automatically generated from the UCS description files of the Unicode Character Database</description>
@@ -3057,7 +3062,7 @@
     <macro name='ATTRIBUTE_UNUSED' file='xmlversion'>
       <info>Macro used to signal to GCC unused function parameters</info>
     </macro>
-    <macro name='BAD_CAST' file='tree'>
+    <macro name='BAD_CAST' file='xmlstring'>
       <info>Macro to cast a string to an xmlChar * when one know its safe.</info>
     </macro>
     <macro name='BASE_BUFFER_SIZE' file='tree'>
@@ -4587,7 +4592,7 @@ if necessary or NULL'/>
       <field name='high' type='unsigned short' info=''/>
     </struct>
     <typedef name='xmlChSRangePtr' file='chvalid' type='xmlChSRange *'/>
-    <typedef name='xmlChar' file='tree' type='unsigned char'/>
+    <typedef name='xmlChar' file='xmlstring' type='unsigned char'/>
     <typedef name='xmlCharEncoding' file='encoding' type='enum'/>
     <struct name='xmlCharEncodingHandler' file='encoding' type='struct _xmlCharEncodingHandler'>
       <field name='name' type='char *' info=''/>
@@ -7063,12 +7068,12 @@ actually an xmlCharEncoding'/>
       <arg name='val' type='unsigned int' info='character to be validated'/>
       <arg name='rptr' type='const xmlChRangeGroupPtr' info='pointer to range to be used to validate'/>
     </function>
-    <function name='xmlCharStrdup' file='parser'>
+    <function name='xmlCharStrdup' file='xmlstring'>
       <info>a strdup for char&apos;s to xmlChar&apos;s</info>
       <return type='xmlChar *' info='a new xmlChar * or NULL'/>
       <arg name='cur' type='const char *' info='the input char *'/>
     </function>
-    <function name='xmlCharStrndup' file='parser'>
+    <function name='xmlCharStrndup' file='xmlstring'>
       <info>a strndup for char&apos;s to xmlChar&apos;s</info>
       <return type='xmlChar *' info='a new xmlChar * or NULL'/>
       <arg name='cur' type='const char *' info='the input char *'/>
@@ -7090,7 +7095,7 @@ actually an xmlCharEncoding'/>
       <return type='int' info='1 if correct 0 otherwise'/>
       <arg name='lang' type='const xmlChar *' info='pointer to the string value'/>
     </function>
-    <function name='xmlCheckUTF8' file='encoding'>
+    <function name='xmlCheckUTF8' file='xmlstring'>
       <info>Checks @utf for being valid UTF-8. @utf is assumed to be null-terminated. This function is not super-strict, as it will allow longer UTF-8 sequences than necessary. Note that Java is capable of producing these sequences if provoked. Also note, this routine checks for the 4-byte maximum size, but does not check for 0x10ffff maximum value.</info>
       <return type='int' info='value: true if @utf is valid.'/>
       <arg name='utf' type='const unsigned char *' info='Pointer to putative UTF-8 encoded string.'/>
@@ -8064,7 +8069,7 @@ actually an xmlCharEncoding'/>
       <info>xmlGetThreadId() find the current thread ID number</info>
       <return type='int' info='the current thread ID number'/>
     </function>
-    <function name='xmlGetUTF8Char' file='encoding'>
+    <function name='xmlGetUTF8Char' file='xmlstring'>
       <info>Read one UTF8 Char from @utf</info>
       <return type='int' info='the char value or -1 in case of error, and updates *len with the number of bytes consumed'/>
       <arg name='utf' type='const unsigned char *' info='a sequence of UTF-8 encoded bytes'/>
@@ -8738,9 +8743,9 @@ actually an xmlCharEncoding'/>
       <arg name='fp' type='FILE *' info='a FILE descriptor used as the output file, if NULL, the result is written to the file .memorylist'/>
     </function>
     <function name='xmlMemFree' file='xmlmemory'>
-      <info>a free() equivalent, with error checking.</info>
+      <info></info>
       <return type='void'/>
-      <arg name='ptr' type='void *' info='the memory block pointer'/>
+      <arg name='ptr' type='void *' info=''/>
     </function>
     <function name='xmlMemGet' file='xmlmemory'>
       <info>Provides the memory access functions set currently in use</info>
@@ -8751,15 +8756,15 @@ actually an xmlCharEncoding'/>
       <arg name='strdupFunc' type='xmlStrdupFunc *' info='place to save the strdup() function in use'/>
     </function>
     <function name='xmlMemMalloc' file='xmlmemory'>
-      <info>a malloc() equivalent, with logging of the allocation info.</info>
-      <return type='void *' info='a pointer to the allocated area or NULL in case of lack of memory.'/>
-      <arg name='size' type='size_t' info='an int specifying the size in byte to allocate.'/>
+      <info></info>
+      <return type='void *' info=''/>
+      <arg name='size' type='size_t' info=''/>
     </function>
     <function name='xmlMemRealloc' file='xmlmemory'>
-      <info>a realloc() equivalent, with logging of the allocation info.</info>
-      <return type='void *' info='a pointer to the allocated area or NULL in case of lack of memory.'/>
-      <arg name='ptr' type='void *' info='the initial memory block pointer'/>
-      <arg name='size' type='size_t' info='an int specifying the size in byte to allocate.'/>
+      <info></info>
+      <return type='void *' info=''/>
+      <arg name='ptr' type='void *' info=''/>
+      <arg name='size' type='size_t' info=''/>
     </function>
     <function name='xmlMemSetup' file='xmlmemory'>
       <info>Override the default memory access functions with a new set This has to be called before any other libxml routines !  Should this be blocked if there was already some allocations done ?</info>
@@ -8791,9 +8796,9 @@ actually an xmlCharEncoding'/>
       <return type='void'/>
     </function>
     <function name='xmlMemoryStrdup' file='xmlmemory'>
-      <info>a strdup() equivalent, with logging of the allocation info.</info>
-      <return type='char *' info='a pointer to the new string or NULL if allocation error occurred.'/>
-      <arg name='str' type='const char *' info='the initial string pointer'/>
+      <info></info>
+      <return type='char *' info=''/>
+      <arg name='str' type='const char *' info=''/>
     </function>
     <function name='xmlMutexLock' file='threads'>
       <info>xmlMutexLock() is used to lock a libxml2 token.</info>
@@ -11347,13 +11352,13 @@ actually an xmlCharEncoding'/>
       <return type='void'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
-    <function name='xmlStrEqual' file='parser'>
+    <function name='xmlStrEqual' file='xmlstring'>
       <info>Check if both string are equal of have same content Should be a bit more readable and faster than xmlStrEqual()</info>
       <return type='int' info='1 if they are equal, 0 if they are different'/>
       <arg name='str1' type='const xmlChar *' info='the first xmlChar *'/>
       <arg name='str2' type='const xmlChar *' info='the second xmlChar *'/>
     </function>
-    <function name='xmlStrPrintf' file='parser'>
+    <function name='xmlStrPrintf' file='xmlstring'>
       <info>Formats @msg and places result into @buf.</info>
       <return type='int' info='the number of characters written to @buf or -1 if an error occurs.'/>
       <arg name='buf' type='xmlChar *' info='the result buffer.'/>
@@ -11361,14 +11366,14 @@ actually an xmlCharEncoding'/>
       <arg name='msg' type='const xmlChar *' info='the message with printf formatting.'/>
       <arg name='...' type='...' info='extra parameters for the message.'/>
     </function>
-    <function name='xmlStrQEqual' file='parser'>
+    <function name='xmlStrQEqual' file='xmlstring'>
       <info>Check if a QName is Equal to a given string</info>
       <return type='int' info='1 if they are equal, 0 if they are different'/>
       <arg name='pref' type='const xmlChar *' info='the prefix of the QName'/>
       <arg name='name' type='const xmlChar *' info='the localname of the QName'/>
       <arg name='str' type='const xmlChar *' info='the second xmlChar *'/>
     </function>
-    <function name='xmlStrVPrintf' file='parser'>
+    <function name='xmlStrVPrintf' file='xmlstring'>
       <info>Formats @msg and places result into @buf.</info>
       <return type='int' info='the number of characters written to @buf or -1 if an error occurs.'/>
       <arg name='buf' type='xmlChar *' info='the result buffer.'/>
@@ -11376,37 +11381,37 @@ actually an xmlCharEncoding'/>
       <arg name='msg' type='const xmlChar *' info='the message with printf formatting.'/>
       <arg name='ap' type='va_list' info='extra parameters for the message.'/>
     </function>
-    <function name='xmlStrcasecmp' file='parser'>
+    <function name='xmlStrcasecmp' file='xmlstring'>
       <info>a strcasecmp for xmlChar&apos;s</info>
       <return type='int' info='the integer result of the comparison'/>
       <arg name='str1' type='const xmlChar *' info='the first xmlChar *'/>
       <arg name='str2' type='const xmlChar *' info='the second xmlChar *'/>
     </function>
-    <function name='xmlStrcasestr' file='parser'>
+    <function name='xmlStrcasestr' file='xmlstring'>
       <info>a case-ignoring strstr for xmlChar&apos;s</info>
       <return type='const xmlChar *' info='the xmlChar * for the first occurrence or NULL.'/>
       <arg name='str' type='const xmlChar *' info='the xmlChar * array (haystack)'/>
       <arg name='val' type='xmlChar *' info='the xmlChar to search (needle)'/>
     </function>
-    <function name='xmlStrcat' file='parser'>
+    <function name='xmlStrcat' file='xmlstring'>
       <info>a strcat for array of xmlChar&apos;s. Since they are supposed to be encoded in UTF-8 or an encoding with 8bit based chars, we assume a termination mark of &apos;0&apos;.</info>
       <return type='xmlChar *' info='a new xmlChar * containing the concatenated string.'/>
       <arg name='cur' type='xmlChar *' info='the original xmlChar * array'/>
       <arg name='add' type='const xmlChar *' info='the xmlChar * array added'/>
     </function>
-    <function name='xmlStrchr' file='parser'>
+    <function name='xmlStrchr' file='xmlstring'>
       <info>a strchr for xmlChar&apos;s</info>
       <return type='const xmlChar *' info='the xmlChar * for the first occurrence or NULL.'/>
       <arg name='str' type='const xmlChar *' info='the xmlChar * array'/>
       <arg name='val' type='xmlChar' info='the xmlChar to search'/>
     </function>
-    <function name='xmlStrcmp' file='parser'>
+    <function name='xmlStrcmp' file='xmlstring'>
       <info>a strcmp for xmlChar&apos;s</info>
       <return type='int' info='the integer result of the comparison'/>
       <arg name='str1' type='const xmlChar *' info='the first xmlChar *'/>
       <arg name='str2' type='const xmlChar *' info='the second xmlChar *'/>
     </function>
-    <function name='xmlStrdup' file='parser'>
+    <function name='xmlStrdup' file='xmlstring'>
       <info>a strdup for array of xmlChar&apos;s. Since they are supposed to be encoded in UTF-8 or an encoding with 8bit based chars, we assume a termination mark of &apos;0&apos;.</info>
       <return type='xmlChar *' info='a new xmlChar * or NULL'/>
       <arg name='cur' type='const xmlChar *' info='the input xmlChar *'/>
@@ -11457,52 +11462,52 @@ actually an xmlCharEncoding'/>
       <arg name='value' type='const xmlChar *' info='the value of the text'/>
       <arg name='len' type='int' info='the length of the string value'/>
     </function>
-    <function name='xmlStrlen' file='parser'>
+    <function name='xmlStrlen' file='xmlstring'>
       <info>length of a xmlChar&apos;s string</info>
       <return type='int' info='the number of xmlChar contained in the ARRAY.'/>
       <arg name='str' type='const xmlChar *' info='the xmlChar * array'/>
     </function>
-    <function name='xmlStrncasecmp' file='parser'>
+    <function name='xmlStrncasecmp' file='xmlstring'>
       <info>a strncasecmp for xmlChar&apos;s</info>
       <return type='int' info='the integer result of the comparison'/>
       <arg name='str1' type='const xmlChar *' info='the first xmlChar *'/>
       <arg name='str2' type='const xmlChar *' info='the second xmlChar *'/>
       <arg name='len' type='int' info='the max comparison length'/>
     </function>
-    <function name='xmlStrncat' file='parser'>
+    <function name='xmlStrncat' file='xmlstring'>
       <info>a strncat for array of xmlChar&apos;s, it will extend @cur with the len first bytes of @add.</info>
       <return type='xmlChar *' info='a new xmlChar *, the original @cur is reallocated if needed and should not be freed'/>
       <arg name='cur' type='xmlChar *' info='the original xmlChar * array'/>
       <arg name='add' type='const xmlChar *' info='the xmlChar * array added'/>
       <arg name='len' type='int' info='the length of @add'/>
     </function>
-    <function name='xmlStrncatNew' file='parser'>
+    <function name='xmlStrncatNew' file='xmlstring'>
       <info>same as xmlStrncat, but creates a new string.  The original two strings are not freed.</info>
       <return type='xmlChar *' info='a new xmlChar * or NULL'/>
       <arg name='str1' type='const xmlChar *' info='first xmlChar string'/>
       <arg name='str2' type='const xmlChar *' info='second xmlChar string'/>
       <arg name='len' type='int' info='the len of @str2'/>
     </function>
-    <function name='xmlStrncmp' file='parser'>
+    <function name='xmlStrncmp' file='xmlstring'>
       <info>a strncmp for xmlChar&apos;s</info>
       <return type='int' info='the integer result of the comparison'/>
       <arg name='str1' type='const xmlChar *' info='the first xmlChar *'/>
       <arg name='str2' type='const xmlChar *' info='the second xmlChar *'/>
       <arg name='len' type='int' info='the max comparison length'/>
     </function>
-    <function name='xmlStrndup' file='parser'>
+    <function name='xmlStrndup' file='xmlstring'>
       <info>a strndup for array of xmlChar&apos;s</info>
       <return type='xmlChar *' info='a new xmlChar * or NULL'/>
       <arg name='cur' type='const xmlChar *' info='the input xmlChar *'/>
       <arg name='len' type='int' info='the len of @cur'/>
     </function>
-    <function name='xmlStrstr' file='parser'>
+    <function name='xmlStrstr' file='xmlstring'>
       <info>a strstr for xmlChar&apos;s</info>
       <return type='const xmlChar *' info='the xmlChar * for the first occurrence or NULL.'/>
       <arg name='str' type='const xmlChar *' info='the xmlChar * array (haystack)'/>
       <arg name='val' type='const xmlChar *' info='the xmlChar to search (needle)'/>
     </function>
-    <function name='xmlStrsub' file='parser'>
+    <function name='xmlStrsub' file='xmlstring'>
       <info>Extract a substring of a given string</info>
       <return type='xmlChar *' info='the xmlChar * for the first occurrence or NULL.'/>
       <arg name='str' type='const xmlChar *' info='the xmlChar * array (haystack)'/>
@@ -13294,47 +13299,47 @@ actually an xmlCharEncoding'/>
       <arg name='len' type='int' info='the length in bytes to unescape (or &lt;= 0 to indicate full string)'/>
       <arg name='target' type='char *' info='optional destination buffer'/>
     </function>
-    <function name='xmlUTF8Charcmp' file='encoding'>
+    <function name='xmlUTF8Charcmp' file='xmlstring'>
       <info>compares the two UCS4 values</info>
       <return type='int' info='result of the compare as with xmlStrncmp'/>
       <arg name='utf1' type='const xmlChar *' info='pointer to first UTF8 char'/>
       <arg name='utf2' type='const xmlChar *' info='pointer to second UTF8 char'/>
     </function>
-    <function name='xmlUTF8Size' file='encoding'>
+    <function name='xmlUTF8Size' file='xmlstring'>
       <info>calculates the internal size of a UTF8 character</info>
       <return type='int' info='the numbers of bytes in the character, -1 on format error'/>
       <arg name='utf' type='const xmlChar *' info='pointer to the UTF8 character'/>
     </function>
-    <function name='xmlUTF8Strlen' file='encoding'>
+    <function name='xmlUTF8Strlen' file='xmlstring'>
       <info>compute the length of an UTF8 string, it doesn&apos;t do a full UTF8 checking of the content of the string.</info>
       <return type='int' info='the number of characters in the string or -1 in case of error'/>
       <arg name='utf' type='const xmlChar *' info='a sequence of UTF-8 encoded bytes'/>
     </function>
-    <function name='xmlUTF8Strloc' file='encoding'>
+    <function name='xmlUTF8Strloc' file='xmlstring'>
       <info>a function to provide the relative location of a UTF8 char</info>
       <return type='int' info='the relative character position of the desired char or -1 if not found'/>
       <arg name='utf' type='const xmlChar *' info='the input UTF8 *'/>
       <arg name='utfchar' type='const xmlChar *' info='the UTF8 character to be found'/>
     </function>
-    <function name='xmlUTF8Strndup' file='encoding'>
+    <function name='xmlUTF8Strndup' file='xmlstring'>
       <info>a strndup for array of UTF8&apos;s</info>
       <return type='xmlChar *' info='a new UTF8 * or NULL'/>
       <arg name='utf' type='const xmlChar *' info='the input UTF8 *'/>
       <arg name='len' type='int' info='the len of @utf (in chars)'/>
     </function>
-    <function name='xmlUTF8Strpos' file='encoding'>
+    <function name='xmlUTF8Strpos' file='xmlstring'>
       <info>a function to provide the equivalent of fetching a character from a string array</info>
       <return type='xmlChar *' info='a pointer to the UTF8 character or NULL'/>
       <arg name='utf' type='const xmlChar *' info='the input UTF8 *'/>
       <arg name='pos' type='int' info='the position of the desired UTF8 char (in chars)'/>
     </function>
-    <function name='xmlUTF8Strsize' file='encoding'>
+    <function name='xmlUTF8Strsize' file='xmlstring'>
       <info>storage size of an UTF8 string</info>
       <return type='int' info='the storage size of the first &apos;len&apos; characters of ARRAY'/>
       <arg name='utf' type='const xmlChar *' info='a sequence of UTF-8 encoded bytes'/>
       <arg name='len' type='int' info='the number of characters in the array'/>
     </function>
-    <function name='xmlUTF8Strsub' file='encoding'>
+    <function name='xmlUTF8Strsub' file='xmlstring'>
       <info>Create a substring from a given UTF-8 string Note:  positions are given in units of UTF-8 chars</info>
       <return type='xmlChar *' info='a pointer to a newly created string or NULL if any problem'/>
       <arg name='utf' type='const xmlChar *' info='a sequence of UTF-8 encoded bytes'/>

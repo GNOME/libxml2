@@ -64,16 +64,7 @@ debugDumpString()
 shellPrintXPathError()
 
 # functions from module encoding
-UTF8Charcmp()
-UTF8Size()
-UTF8Strlen()
-UTF8Strloc()
-UTF8Strndup()
-UTF8Strpos()
-UTF8Strsize()
-UTF8Strsub()
 addEncodingAlias()
-checkUTF8()
 cleanupCharEncodingHandlers()
 cleanupEncodingAliases()
 delEncodingAlias()
@@ -227,6 +218,17 @@ regexpCompile()
 # functions from module xmlschemastypes
 schemaCleanupTypes()
 schemaInitTypes()
+
+# functions from module xmlstring
+UTF8Charcmp()
+UTF8Size()
+UTF8Strlen()
+UTF8Strloc()
+UTF8Strndup()
+UTF8Strpos()
+UTF8Strsize()
+UTF8Strsub()
+checkUTF8()
 
 # functions from module xmlunicode
 uCSIsAegeanNumbers()

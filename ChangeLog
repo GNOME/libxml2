@@ -1,3 +1,24 @@
+Tue Jan  6 19:40:04 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* encoding.c, parser.c, xmlstring.c, Makefile.am,
+	  include/libxml/Makefile.am, include/libxml/catalog.c,
+	  include/libxml/chvalid.h, include/libxml/encoding.h,
+	  include/libxml/parser.h, include/libxml/relaxng.h,
+	  include/libxml/tree.h, include/libxml/xmlwriter.h,
+	  include/libxml/xmlstring.h:
+	  moved string and UTF8 routines out of parser.c and encoding.c
+	  into a new module xmlstring.c with include file
+	  include/libxml/xmlstring.h mostly using patches from Reid
+	  Spencer.  Since xmlChar now defined in xmlstring.h, several
+	  include files needed to have a #include added for safety.
+	* doc/apibuild.py: added some additional sorting for various
+	  references displayed in the APIxxx.html files.  Rebuilt the
+	  docs, and also added new file for xmlstring module.
+	* configure.in: small addition to help my testing; no effect on
+	  normal usage.
+	* doc/search.php: added $_GET[query] so that persistent globals
+	  can be disabled (for recent versions of PHP)
+
 Mon Jan  5 20:47:07 MST 2004 John Fleck <jfleck@inkstain.net>
 
 	* doc/tutorial/customfo.xsl

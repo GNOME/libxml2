@@ -20,6 +20,7 @@
 #include <stdio.h>
 
 #include <libxml/xmlversion.h>
+#include <libxml/xmlstring.h>
 
 #ifdef LIBXML_CATALOG_ENABLED
 

@@ -19,6 +19,7 @@
 #include <libxml/valid.h>
 #include <libxml/entities.h>
 #include <libxml/xmlerror.h>
+#include <libxml/xmlstring.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -803,80 +804,6 @@ XMLPUBFUN int XMLCALL
 XMLPUBFUN int XMLCALL		
 		xmlParserInputGrow	(xmlParserInputPtr in,
 					 int len);
-
-/*
- * xmlChar handling
- */
-XMLPUBFUN xmlChar * XMLCALL	
-		xmlStrdup		(const xmlChar *cur);
-XMLPUBFUN xmlChar * XMLCALL	
-		xmlStrndup		(const xmlChar *cur,
-					 int len);
-XMLPUBFUN xmlChar * XMLCALL	
-		xmlCharStrndup		(const char *cur,
-					 int len);
-XMLPUBFUN xmlChar * XMLCALL	
-		xmlCharStrdup		(const char *cur);
-XMLPUBFUN xmlChar * XMLCALL	
-		xmlStrsub		(const xmlChar *str,
-					 int start,
-					 int len);
-XMLPUBFUN const xmlChar * XMLCALL	
-		xmlStrchr		(const xmlChar *str,
-					 xmlChar val);
-XMLPUBFUN const xmlChar * XMLCALL	
-		xmlStrstr		(const xmlChar *str,
-					 const xmlChar *val);
-XMLPUBFUN const xmlChar * XMLCALL	
-		xmlStrcasestr		(const xmlChar *str,
-					 xmlChar *val);
-XMLPUBFUN int XMLCALL		
-		xmlStrcmp		(const xmlChar *str1,
-					 const xmlChar *str2);
-XMLPUBFUN int XMLCALL		
-		xmlStrncmp		(const xmlChar *str1,
-					 const xmlChar *str2,
-					 int len);
-XMLPUBFUN int XMLCALL		
-		xmlStrcasecmp		(const xmlChar *str1,
-					 const xmlChar *str2);
-XMLPUBFUN int XMLCALL		
-		xmlStrncasecmp		(const xmlChar *str1,
-					 const xmlChar *str2,
-					 int len);
-XMLPUBFUN int XMLCALL		
-		xmlStrEqual		(const xmlChar *str1,
-					 const xmlChar *str2);
-XMLPUBFUN int XMLCALL
-		xmlStrQEqual		(const xmlChar *pref,
-					 const xmlChar *name,
-					 const xmlChar *str);
-XMLPUBFUN int XMLCALL		
-		xmlStrlen		(const xmlChar *str);
-XMLPUBFUN xmlChar * XMLCALL	
-		xmlStrcat		(xmlChar *cur,
-					 const xmlChar *add);
-XMLPUBFUN xmlChar * XMLCALL	
-		xmlStrncat		(xmlChar *cur,
-					 const xmlChar *add,
-					 int len);
-
-XMLPUBFUN xmlChar * XMLCALL	
-		xmlStrncatNew		(const xmlChar *str1,
-					 const xmlChar *str2,
-					 int len);
-
-XMLPUBFUN int XMLCALL	
-		xmlStrPrintf		(xmlChar *buf,
-					 int len,
-					 const xmlChar *msg,
-					 ...);
-
-XMLPUBFUN int XMLCALL	
-		xmlStrVPrintf		(xmlChar *buf,
-					 int len,
-					 const xmlChar *msg,
-					 va_list ap);
 
 /*
  * Basic parsing Interfaces

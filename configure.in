@@ -419,7 +419,8 @@ dnl specific tests to setup DV's devel environment with debug etc ...
 dnl (-Wunreachable-code)
 dnl
 if [[ "${LOGNAME}" = "veillard" -a "`pwd`" = "/u/veillard/XML" ]] || \
-   [[ "${LOGNAME}" = "bill" -a "`pwd`" = "/home/bill/gnomecvs/xmltest" ]]
+   [[ "${LOGNAME}" = "bill" -a "`pwd`" = "/home/bill/gnomecvs/xmltest" ]] || \
+   [[ "${LOGNAME}" = "bill" -a "`pwd`" = "/home/bill/gnomecvs/xmlnew" ]]
    then
     if test "$with_minimum" != "yes"
     then

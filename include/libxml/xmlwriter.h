@@ -10,13 +10,14 @@
 #ifndef __XML_XMLWRITER_H__
 #define __XML_XMLWRITER_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include <stdarg.h>
 #include <libxml/xmlIO.h>
 #include <libxml/list.h>
+#include <libxml/xmlstring.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 typedef struct _xmlTextWriter xmlTextWriter;
 typedef xmlTextWriter *xmlTextWriterPtr;

@@ -14,6 +14,7 @@
 
 #include <stdio.h>
 #include <libxml/xmlversion.h>
+#include <libxml/xmlstring.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -97,22 +98,6 @@ typedef enum {
 #endif
 } xmlElementType;
 
-/**
- * xmlChar:
- *
- * This is a basic byte in an UTF-8 encoded string.
- * It's unsigned allowing to pinpoint case where char * are assigned
- * to xmlChar * (possibly making serialization back impossible).
- */
-
-typedef unsigned char xmlChar;
-
-/**
- * BAD_CAST:
- *
- * Macro to cast a string to an xmlChar * when one know its safe.
- */
-#define BAD_CAST (xmlChar *)
 
 /**
  * xmlNotation:

@@ -37,6 +37,7 @@ xmlinc_HEADERS = \
 		xmlschemas.h \
 		schemasInternals.h \
 		xmlschemastypes.h \
+		xmlstring.h \
 		xmlunicode.h \
 		xmlreader.h \
 		relaxng.h \

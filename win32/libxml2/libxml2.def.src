@@ -602,6 +602,8 @@ EXPORTS
 	xmlStringText
 	xmlStringTextNoenc
 	xmlStringComment
+	xmlSaveFormatFile
+	xmlUnsetProp
 
 /* 
  * uri.h 

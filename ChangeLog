@@ -1,3 +1,8 @@
+Fri Jul 13 11:09:56 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* win32/libxml2/libxml2.def.src: added a couple of exported entries
+	  raised by #57348 and #57381
+
 Thu Jul 12 21:20:17 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* DOCBparser.c HTMLparser.c HTMLtree.c SAX.c debugXML.c parser.c

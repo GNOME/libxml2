@@ -2053,19 +2053,12 @@ xmlTextReaderClose(xmlTextReaderPtr reader) {
     reader->curnode = NULL;
     reader->mode = XML_TEXTREADER_MODE_CLOSED;
     if (reader->ctxt != NULL) {
+	xmlStopParser(reader->ctxt);
 	if (reader->ctxt->myDoc != NULL) {
 	    if (reader->preserve == 0)
 		xmlTextReaderFreeDoc(reader, reader->ctxt->myDoc);
 	    reader->ctxt->myDoc = NULL;
 	}
-	if (reader->allocs & XML_TEXTREADER_CTXT) {
-	    xmlFreeParserCtxt(reader->ctxt);
-	    reader->allocs -= XML_TEXTREADER_CTXT;
-	}
-    }
-    if (reader->sax != NULL) {
-        xmlFree(reader->sax);
-	reader->sax = NULL;
     }
     if ((reader->input != NULL)  && (reader->allocs & XML_TEXTREADER_INPUT)) {
 	xmlFreeParserInputBuffer(reader->input);
@@ -2204,6 +2197,10 @@ xmlTextReaderGetAttributeNs(xmlTextReaderPtr reader, const xmlChar *localName,
  * parser, set its state to End Of File and return the input stream with
  * what is left that the parser did not use.
  *
+ * The implementation is not good, the parser certainly procgressed past
+ * what's left in reader->input, and there is an allocation problem. Best
+ * would be to rewrite it differently.
+ *
  * Returns the xmlParserInputBufferPtr attached to the XML or NULL
  *    in case of error.
  */
@@ -2220,22 +2217,16 @@ xmlTextReaderGetRemainder(xmlTextReaderPtr reader) {
     reader->curnode = NULL;
     reader->mode = XML_TEXTREADER_MODE_EOF;
     if (reader->ctxt != NULL) {
+	xmlStopParser(reader->ctxt);
 	if (reader->ctxt->myDoc != NULL) {
 	    if (reader->preserve == 0)
 		xmlTextReaderFreeDoc(reader, reader->ctxt->myDoc);
 	    reader->ctxt->myDoc = NULL;
 	}
-	if (reader->allocs & XML_TEXTREADER_CTXT) {
-	    xmlFreeParserCtxt(reader->ctxt);
-	    reader->allocs -= XML_TEXTREADER_CTXT;
-	}
-    }
-    if (reader->sax != NULL) {
-        xmlFree(reader->sax);
-	reader->sax = NULL;
     }
     if (reader->allocs & XML_TEXTREADER_INPUT) {
 	ret = reader->input;
+	reader->input = NULL;
 	reader->allocs -= XML_TEXTREADER_INPUT;
     } else {
 	/*

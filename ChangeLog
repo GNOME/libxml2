@@ -1,3 +1,10 @@
+Sun Apr 18 16:57:02 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* libxml.spec.in: keep the ChangeLog compressed 
+	* xmlreader.c: fix a segfault when using Close()
+	* python/tests/Makefile.am python/tests/reader8.py: test for
+	  the Close() reader API.
+
 Sat Apr 17 22:42:13 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* xmlschemas.c, xmlwriter.c, doc/examples/parse4.c,

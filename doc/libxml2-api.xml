@@ -1020,25 +1020,28 @@
      <summary>internal interfaces for XML Schemas</summary>
      <description>internal interfaces for the XML Schemas handling and schema validity checking </description>
      <author>Daniel Veillard </author>
-     <exports symbol='XML_SCHEMAS_FACET_UNKNOWN' type='macro'/>
      <exports symbol='XML_SCHEMAS_ANYATTR_LAX' type='macro'/>
-     <exports symbol='XML_SCHEMAS_ELEM_TOPLEVEL' type='macro'/>
-     <exports symbol='XML_SCHEMAS_ELEM_ABSTRACT' type='macro'/>
      <exports symbol='XML_SCHEMAS_ANYATTR_STRICT' type='macro'/>
      <exports symbol='XML_SCHEMAS_QUALIF_ATTR' type='macro'/>
-     <exports symbol='XML_SCHEMAS_ELEM_FIXED' type='macro'/>
+     <exports symbol='XML_SCHEMAS_ATTR_USE_REQUIRED' type='macro'/>
      <exports symbol='XML_SCHEMAS_FACET_COLLAPSE' type='macro'/>
-     <exports symbol='XML_SCHEMAS_QUALIF_ELEM' type='macro'/>
      <exports symbol='XML_SCHEMAS_ELEM_NSDEFAULT' type='macro'/>
      <exports symbol='XML_SCHEMAS_ELEM_GLOBAL' type='macro'/>
-     <exports symbol='XML_SCHEMAS_ATTR_NSDEFAULT' type='macro'/>
-     <exports symbol='XML_SCHEMAS_ANYATTR_SKIP' type='macro'/>
-     <exports symbol='XML_SCHEMAS_ELEM_DEFAULT' type='macro'/>
-     <exports symbol='XML_SCHEMAS_TYPE_MIXED' type='macro'/>
-     <exports symbol='XML_SCHEMAS_FACET_REPLACE' type='macro'/>
-     <exports symbol='XML_SCHEMAS_FACET_PRESERVE' type='macro'/>
-     <exports symbol='XML_SCHEMAS_ELEM_REF' type='macro'/>
      <exports symbol='XML_SCHEMAS_ELEM_NILLABLE' type='macro'/>
+     <exports symbol='XML_SCHEMAS_TYPE_MIXED' type='macro'/>
+     <exports symbol='XML_SCHEMAS_ATTR_USE_PROHIBITED' type='macro'/>
+     <exports symbol='XML_SCHEMAS_FACET_PRESERVE' type='macro'/>
+     <exports symbol='XML_SCHEMAS_FACET_UNKNOWN' type='macro'/>
+     <exports symbol='XML_SCHEMAS_ELEM_TOPLEVEL' type='macro'/>
+     <exports symbol='XML_SCHEMAS_ELEM_ABSTRACT' type='macro'/>
+     <exports symbol='XML_SCHEMAS_ELEM_FIXED' type='macro'/>
+     <exports symbol='XML_SCHEMAS_QUALIF_ELEM' type='macro'/>
+     <exports symbol='XML_SCHEMAS_ANYATTR_SKIP' type='macro'/>
+     <exports symbol='XML_SCHEMAS_ATTR_USE_OPTIONAL' type='macro'/>
+     <exports symbol='XML_SCHEMAS_ATTR_NSDEFAULT' type='macro'/>
+     <exports symbol='XML_SCHEMAS_ELEM_REF' type='macro'/>
+     <exports symbol='XML_SCHEMAS_ELEM_DEFAULT' type='macro'/>
+     <exports symbol='XML_SCHEMAS_FACET_REPLACE' type='macro'/>
      <exports symbol='XML_SCHEMA_TYPE_SIMPLE' type='enum'/>
      <exports symbol='XML_SCHEMA_TYPE_GROUP' type='enum'/>
      <exports symbol='XML_SCHEMA_TYPE_SEQUENCE' type='enum'/>
@@ -1138,9 +1141,10 @@
      <exports symbol='XML_LOCAL_NAMESPACE' type='macro'/>
      <exports symbol='XML_GET_CONTENT' type='macro'/>
      <exports symbol='XML_XML_NAMESPACE' type='macro'/>
-     <exports symbol='BASE_BUFFER_SIZE' type='macro'/>
-     <exports symbol='xmlRootNode' type='macro'/>
+     <exports symbol='XML_XML_ID' type='macro'/>
      <exports symbol='xmlChildrenNode' type='macro'/>
+     <exports symbol='xmlRootNode' type='macro'/>
+     <exports symbol='BASE_BUFFER_SIZE' type='macro'/>
      <exports symbol='XML_GET_LINE' type='macro'/>
      <exports symbol='XML_ATTRIBUTE_IMPLIED' type='enum'/>
      <exports symbol='XML_ATTRIBUTE_IDREF' type='enum'/>
@@ -1657,6 +1661,7 @@
      <description>the API used to report errors </description>
      <author>Daniel Veillard </author>
      <exports symbol='XML_DTD_CONTENT_ERROR' type='enum'/>
+     <exports symbol='XML_SCHEMAP_UNKNOWN_MEMBER_TYPE' type='enum'/>
      <exports symbol='XML_SCHEMAV_NOROOT' type='enum'/>
      <exports symbol='XML_DTD_ATTRIBUTE_VALUE' type='enum'/>
      <exports symbol='XML_ERR_INVALID_DEC_CHARREF' type='enum'/>
@@ -1700,7 +1705,7 @@
      <exports symbol='XML_HTTP_UNKNOWN_HOST' type='enum'/>
      <exports symbol='XML_XPTR_EXTRA_OBJECTS' type='enum'/>
      <exports symbol='XML_ERR_ENTITY_NOT_FINISHED' type='enum'/>
-     <exports symbol='XML_SCHEMAP_UNKNOWN_INCLUDE_CHILD' type='enum'/>
+     <exports symbol='XML_SCHEMAP_INVALID_ATTR_USE' type='enum'/>
      <exports symbol='XML_IO_UNKNOWN' type='enum'/>
      <exports symbol='XML_RNGP_PAT_ONEMORE_GROUP_ATTR' type='enum'/>
      <exports symbol='XML_ERR_VALUE_REQUIRED' type='enum'/>
@@ -1741,7 +1746,7 @@
      <exports symbol='XML_ERR_NMTOKEN_REQUIRED' type='enum'/>
      <exports symbol='XML_RNGP_ANYNAME_ATTR_ANCESTOR' type='enum'/>
      <exports symbol='XML_ERR_ENTITY_IS_EXTERNAL' type='enum'/>
-     <exports symbol='XML_WAR_UNDECLARED_ENTITY' type='enum'/>
+     <exports symbol='XML_SCHEMAP_UNKNOWN_INCLUDE_CHILD' type='enum'/>
      <exports symbol='XML_ERR_PI_NOT_STARTED' type='enum'/>
      <exports symbol='XML_RNGP_START_CONTENT' type='enum'/>
      <exports symbol='XML_RNGP_GROUP_ATTR_CONFLICT' type='enum'/>
@@ -2052,6 +2057,7 @@
      <exports symbol='XML_RNGP_PAT_DATA_EXCEPT_EMPTY' type='enum'/>
      <exports symbol='XML_IO_EFBIG' type='enum'/>
      <exports symbol='XML_ERR_NS_DECL_ERROR' type='enum'/>
+     <exports symbol='XML_WAR_UNDECLARED_ENTITY' type='enum'/>
      <exports symbol='XML_RNGP_PAT_START_DATA' type='enum'/>
      <exports symbol='XML_ERR_ERROR' type='enum'/>
      <exports symbol='XML_DTD_MISSING_ATTRIBUTE' type='enum'/>
@@ -3403,6 +3409,15 @@
     <macro name='XML_SCHEMAS_ATTR_NSDEFAULT' file='schemasInternals'>
       <info>allow elements in no namespace</info>
     </macro>
+    <macro name='XML_SCHEMAS_ATTR_USE_OPTIONAL' file='schemasInternals'>
+      <info>The attribute is optional.</info>
+    </macro>
+    <macro name='XML_SCHEMAS_ATTR_USE_PROHIBITED' file='schemasInternals'>
+      <info>The attribute is prohibited.</info>
+    </macro>
+    <macro name='XML_SCHEMAS_ATTR_USE_REQUIRED' file='schemasInternals'>
+      <info>The attribute is required.</info>
+    </macro>
     <macro name='XML_SCHEMAS_ELEM_ABSTRACT' file='schemasInternals'>
       <info>the element is abstract</info>
     </macro>
@@ -3462,6 +3477,9 @@
     </macro>
     <macro name='XML_SUBSTITUTE_REF' file='parserInternals'>
       <info>Whether general entities need to be substituted.</info>
+    </macro>
+    <macro name='XML_XML_ID' file='tree'>
+      <info>This is the name for the special xml:id attribute</info>
     </macro>
     <macro name='XML_XML_NAMESPACE' file='tree'>
       <info>This is the namespace for the special xml: prefix predefined in the XML Namespace specification.</info>
@@ -4248,6 +4266,7 @@
     <enum name='XML_SCHEMAP_IMPORT_SCHEMA_NOT_URI' file='xmlerror' value='1713' type='xmlParserErrors' info='1713'/>
     <enum name='XML_SCHEMAP_INCLUDE_SCHEMA_NOT_URI' file='xmlerror' value='1770' type='xmlParserErrors' info='1769'/>
     <enum name='XML_SCHEMAP_INCLUDE_SCHEMA_NO_URI' file='xmlerror' value='1771' type='xmlParserErrors' info='1770'/>
+    <enum name='XML_SCHEMAP_INVALID_ATTR_USE' file='xmlerror' value='1774' type='xmlParserErrors' info='1723'/>
     <enum name='XML_SCHEMAP_INVALID_BOOLEAN' file='xmlerror' value='1714' type='xmlParserErrors' info='1714'/>
     <enum name='XML_SCHEMAP_INVALID_ENUM' file='xmlerror' value='1715' type='xmlParserErrors' info='1715'/>
     <enum name='XML_SCHEMAP_INVALID_FACET' file='xmlerror' value='1716' type='xmlParserErrors' info='1716'/>
@@ -4291,6 +4310,7 @@
     <enum name='XML_SCHEMAP_UNKNOWN_IMPORT_CHILD' file='xmlerror' value='1743' type='xmlParserErrors' info='1743'/>
     <enum name='XML_SCHEMAP_UNKNOWN_INCLUDE_CHILD' file='xmlerror' value='1769' type='xmlParserErrors' info='1768'/>
     <enum name='XML_SCHEMAP_UNKNOWN_LIST_CHILD' file='xmlerror' value='1744' type='xmlParserErrors' info='1744'/>
+    <enum name='XML_SCHEMAP_UNKNOWN_MEMBER_TYPE' file='xmlerror' value='1773' type='xmlParserErrors' info='1772'/>
     <enum name='XML_SCHEMAP_UNKNOWN_NOTATION_CHILD' file='xmlerror' value='1745' type='xmlParserErrors' info='1745'/>
     <enum name='XML_SCHEMAP_UNKNOWN_PREFIX' file='xmlerror' value='1767' type='xmlParserErrors' info='1766'/>
     <enum name='XML_SCHEMAP_UNKNOWN_PROCESSCONTENT_CHILD' file='xmlerror' value='1746' type='xmlParserErrors' info='1746'/>
@@ -10935,7 +10955,7 @@ actually an xmlCharEncoding'/>
       <arg name='ctxt' type='xmlSaveCtxtPtr' info='a document saving context'/>
     </function>
     <function name='xmlSaveDoc' file='xmlsave'>
-      <info>Save a full document to a saving context</info>
+      <info>Save a full document to a saving context TODO: The function is not fully implemented yet as it does not return the byte count but 0 instead</info>
       <return type='long' info='the number of byte written or -1 in case of error'/>
       <arg name='ctxt' type='xmlSaveCtxtPtr' info='a document saving context'/>
       <arg name='doc' type='xmlDocPtr' info='a document'/>
@@ -11019,7 +11039,7 @@ actually an xmlCharEncoding'/>
       <arg name='options' type='int' info='a set of xmlSaveOptions'/>
     </function>
     <function name='xmlSaveTree' file='xmlsave'>
-      <info>Save a subtree starting at the node parameter to a saving context</info>
+      <info>Save a subtree starting at the node parameter to a saving context TODO: The function is not fully implemented yet as it does not return the byte count but 0 instead</info>
       <return type='long' info='the number of byte written or -1 in case of error'/>
       <arg name='ctxt' type='xmlSaveCtxtPtr' info='a document saving context'/>
       <arg name='node' type='xmlNodePtr' info='a document'/>

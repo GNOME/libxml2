@@ -694,6 +694,7 @@
     <reference name='XML_SCHEMAP_IMPORT_SCHEMA_NOT_URI' href='html/libxml-xmlerror.html#XML_SCHEMAP_IMPORT_SCHEMA_NOT_URI'/>
     <reference name='XML_SCHEMAP_INCLUDE_SCHEMA_NOT_URI' href='html/libxml-xmlerror.html#XML_SCHEMAP_INCLUDE_SCHEMA_NOT_URI'/>
     <reference name='XML_SCHEMAP_INCLUDE_SCHEMA_NO_URI' href='html/libxml-xmlerror.html#XML_SCHEMAP_INCLUDE_SCHEMA_NO_URI'/>
+    <reference name='XML_SCHEMAP_INVALID_ATTR_USE' href='html/libxml-xmlerror.html#XML_SCHEMAP_INVALID_ATTR_USE'/>
     <reference name='XML_SCHEMAP_INVALID_BOOLEAN' href='html/libxml-xmlerror.html#XML_SCHEMAP_INVALID_BOOLEAN'/>
     <reference name='XML_SCHEMAP_INVALID_ENUM' href='html/libxml-xmlerror.html#XML_SCHEMAP_INVALID_ENUM'/>
     <reference name='XML_SCHEMAP_INVALID_FACET' href='html/libxml-xmlerror.html#XML_SCHEMAP_INVALID_FACET'/>
@@ -737,6 +738,7 @@
     <reference name='XML_SCHEMAP_UNKNOWN_IMPORT_CHILD' href='html/libxml-xmlerror.html#XML_SCHEMAP_UNKNOWN_IMPORT_CHILD'/>
     <reference name='XML_SCHEMAP_UNKNOWN_INCLUDE_CHILD' href='html/libxml-xmlerror.html#XML_SCHEMAP_UNKNOWN_INCLUDE_CHILD'/>
     <reference name='XML_SCHEMAP_UNKNOWN_LIST_CHILD' href='html/libxml-xmlerror.html#XML_SCHEMAP_UNKNOWN_LIST_CHILD'/>
+    <reference name='XML_SCHEMAP_UNKNOWN_MEMBER_TYPE' href='html/libxml-xmlerror.html#XML_SCHEMAP_UNKNOWN_MEMBER_TYPE'/>
     <reference name='XML_SCHEMAP_UNKNOWN_NOTATION_CHILD' href='html/libxml-xmlerror.html#XML_SCHEMAP_UNKNOWN_NOTATION_CHILD'/>
     <reference name='XML_SCHEMAP_UNKNOWN_PREFIX' href='html/libxml-xmlerror.html#XML_SCHEMAP_UNKNOWN_PREFIX'/>
     <reference name='XML_SCHEMAP_UNKNOWN_PROCESSCONTENT_CHILD' href='html/libxml-xmlerror.html#XML_SCHEMAP_UNKNOWN_PROCESSCONTENT_CHILD'/>
@@ -752,6 +754,9 @@
     <reference name='XML_SCHEMAS_ANYATTR_SKIP' href='html/libxml-schemasInternals.html#XML_SCHEMAS_ANYATTR_SKIP'/>
     <reference name='XML_SCHEMAS_ANYATTR_STRICT' href='html/libxml-schemasInternals.html#XML_SCHEMAS_ANYATTR_STRICT'/>
     <reference name='XML_SCHEMAS_ATTR_NSDEFAULT' href='html/libxml-schemasInternals.html#XML_SCHEMAS_ATTR_NSDEFAULT'/>
+    <reference name='XML_SCHEMAS_ATTR_USE_OPTIONAL' href='html/libxml-schemasInternals.html#XML_SCHEMAS_ATTR_USE_OPTIONAL'/>
+    <reference name='XML_SCHEMAS_ATTR_USE_PROHIBITED' href='html/libxml-schemasInternals.html#XML_SCHEMAS_ATTR_USE_PROHIBITED'/>
+    <reference name='XML_SCHEMAS_ATTR_USE_REQUIRED' href='html/libxml-schemasInternals.html#XML_SCHEMAS_ATTR_USE_REQUIRED'/>
     <reference name='XML_SCHEMAS_ELEM_ABSTRACT' href='html/libxml-schemasInternals.html#XML_SCHEMAS_ELEM_ABSTRACT'/>
     <reference name='XML_SCHEMAS_ELEM_DEFAULT' href='html/libxml-schemasInternals.html#XML_SCHEMAS_ELEM_DEFAULT'/>
     <reference name='XML_SCHEMAS_ELEM_FIXED' href='html/libxml-schemasInternals.html#XML_SCHEMAS_ELEM_FIXED'/>
@@ -892,6 +897,7 @@
     <reference name='XML_XINCLUDE_UNKNOWN_ENCODING' href='html/libxml-xmlerror.html#XML_XINCLUDE_UNKNOWN_ENCODING'/>
     <reference name='XML_XINCLUDE_XPTR_FAILED' href='html/libxml-xmlerror.html#XML_XINCLUDE_XPTR_FAILED'/>
     <reference name='XML_XINCLUDE_XPTR_RESULT' href='html/libxml-xmlerror.html#XML_XINCLUDE_XPTR_RESULT'/>
+    <reference name='XML_XML_ID' href='html/libxml-tree.html#XML_XML_ID'/>
     <reference name='XML_XML_NAMESPACE' href='html/libxml-tree.html#XML_XML_NAMESPACE'/>
     <reference name='XML_XPATH_ENCODING_ERROR' href='html/libxml-xmlerror.html#XML_XPATH_ENCODING_ERROR'/>
     <reference name='XML_XPATH_EXPRESSION_OK' href='html/libxml-xmlerror.html#XML_XPATH_EXPRESSION_OK'/>
@@ -3573,6 +3579,7 @@
       <ref name='XML_SCHEMAP_IMPORT_SCHEMA_NOT_URI'/>
       <ref name='XML_SCHEMAP_INCLUDE_SCHEMA_NOT_URI'/>
       <ref name='XML_SCHEMAP_INCLUDE_SCHEMA_NO_URI'/>
+      <ref name='XML_SCHEMAP_INVALID_ATTR_USE'/>
       <ref name='XML_SCHEMAP_INVALID_BOOLEAN'/>
       <ref name='XML_SCHEMAP_INVALID_ENUM'/>
       <ref name='XML_SCHEMAP_INVALID_FACET'/>
@@ -3616,6 +3623,7 @@
       <ref name='XML_SCHEMAP_UNKNOWN_IMPORT_CHILD'/>
       <ref name='XML_SCHEMAP_UNKNOWN_INCLUDE_CHILD'/>
       <ref name='XML_SCHEMAP_UNKNOWN_LIST_CHILD'/>
+      <ref name='XML_SCHEMAP_UNKNOWN_MEMBER_TYPE'/>
       <ref name='XML_SCHEMAP_UNKNOWN_NOTATION_CHILD'/>
       <ref name='XML_SCHEMAP_UNKNOWN_PREFIX'/>
       <ref name='XML_SCHEMAP_UNKNOWN_PROCESSCONTENT_CHILD'/>
@@ -3631,6 +3639,9 @@
       <ref name='XML_SCHEMAS_ANYATTR_SKIP'/>
       <ref name='XML_SCHEMAS_ANYATTR_STRICT'/>
       <ref name='XML_SCHEMAS_ATTR_NSDEFAULT'/>
+      <ref name='XML_SCHEMAS_ATTR_USE_OPTIONAL'/>
+      <ref name='XML_SCHEMAS_ATTR_USE_PROHIBITED'/>
+      <ref name='XML_SCHEMAS_ATTR_USE_REQUIRED'/>
       <ref name='XML_SCHEMAS_ELEM_ABSTRACT'/>
       <ref name='XML_SCHEMAS_ELEM_DEFAULT'/>
       <ref name='XML_SCHEMAS_ELEM_FIXED'/>
@@ -3771,6 +3782,7 @@
       <ref name='XML_XINCLUDE_UNKNOWN_ENCODING'/>
       <ref name='XML_XINCLUDE_XPTR_FAILED'/>
       <ref name='XML_XINCLUDE_XPTR_RESULT'/>
+      <ref name='XML_XML_ID'/>
       <ref name='XML_XML_NAMESPACE'/>
       <ref name='XML_XPATH_ENCODING_ERROR'/>
       <ref name='XML_XPATH_EXPRESSION_OK'/>
@@ -9830,6 +9842,9 @@
       <ref name='XML_SCHEMAS_ANYATTR_SKIP'/>
       <ref name='XML_SCHEMAS_ANYATTR_STRICT'/>
       <ref name='XML_SCHEMAS_ATTR_NSDEFAULT'/>
+      <ref name='XML_SCHEMAS_ATTR_USE_OPTIONAL'/>
+      <ref name='XML_SCHEMAS_ATTR_USE_PROHIBITED'/>
+      <ref name='XML_SCHEMAS_ATTR_USE_REQUIRED'/>
       <ref name='XML_SCHEMAS_ELEM_ABSTRACT'/>
       <ref name='XML_SCHEMAS_ELEM_DEFAULT'/>
       <ref name='XML_SCHEMAS_ELEM_FIXED'/>
@@ -9990,6 +10005,7 @@
       <ref name='XML_TEXT_NODE'/>
       <ref name='XML_XINCLUDE_END'/>
       <ref name='XML_XINCLUDE_START'/>
+      <ref name='XML_XML_ID'/>
       <ref name='XML_XML_NAMESPACE'/>
       <ref name='_xmlAttr'/>
       <ref name='_xmlAttribute'/>
@@ -10823,6 +10839,7 @@
       <ref name='XML_SCHEMAP_IMPORT_SCHEMA_NOT_URI'/>
       <ref name='XML_SCHEMAP_INCLUDE_SCHEMA_NOT_URI'/>
       <ref name='XML_SCHEMAP_INCLUDE_SCHEMA_NO_URI'/>
+      <ref name='XML_SCHEMAP_INVALID_ATTR_USE'/>
       <ref name='XML_SCHEMAP_INVALID_BOOLEAN'/>
       <ref name='XML_SCHEMAP_INVALID_ENUM'/>
       <ref name='XML_SCHEMAP_INVALID_FACET'/>
@@ -10866,6 +10883,7 @@
       <ref name='XML_SCHEMAP_UNKNOWN_IMPORT_CHILD'/>
       <ref name='XML_SCHEMAP_UNKNOWN_INCLUDE_CHILD'/>
       <ref name='XML_SCHEMAP_UNKNOWN_LIST_CHILD'/>
+      <ref name='XML_SCHEMAP_UNKNOWN_MEMBER_TYPE'/>
       <ref name='XML_SCHEMAP_UNKNOWN_NOTATION_CHILD'/>
       <ref name='XML_SCHEMAP_UNKNOWN_PREFIX'/>
       <ref name='XML_SCHEMAP_UNKNOWN_PROCESSCONTENT_CHILD'/>
@@ -15220,6 +15238,8 @@
           <ref name='xmlParseQuotedString'/>
           <ref name='xmlParserHandleReference'/>
           <ref name='xmlParserInputBufferGrow'/>
+          <ref name='xmlSaveDoc'/>
+          <ref name='xmlSaveTree'/>
           <ref name='xmlScanName'/>
           <ref name='xmlTextWriterWriteRawLen'/>
           <ref name='xmlXPathNextAttribute'/>
@@ -16830,7 +16850,9 @@
           <ref name='xmlParsePEReference'/>
           <ref name='xmlParserHandlePEReference'/>
           <ref name='xmlParserInputBufferCreateStatic'/>
+          <ref name='xmlSaveDoc'/>
           <ref name='xmlSaveToFilename'/>
+          <ref name='xmlSaveTree'/>
           <ref name='xmlScanName'/>
           <ref name='xmlSetupParserForBuffer'/>
           <ref name='xmlStrncatNew'/>
@@ -17849,6 +17871,8 @@
         <word name='count'>
           <ref name='ftpListCallback'/>
           <ref name='xmlLsCountNode'/>
+          <ref name='xmlSaveDoc'/>
+          <ref name='xmlSaveTree'/>
           <ref name='xmlTextReaderAttributeCount'/>
           <ref name='xmlXPathCountFunction'/>
         </word>
@@ -18518,6 +18542,8 @@
           <ref name='xmlNodeGetBase'/>
           <ref name='xmlParseMarkupDecl'/>
           <ref name='xmlResetLastError'/>
+          <ref name='xmlSaveDoc'/>
+          <ref name='xmlSaveTree'/>
           <ref name='xmlURIEscape'/>
           <ref name='xmlURIUnescapeString'/>
           <ref name='xmlValidateAttributeDecl'/>
@@ -19580,6 +19606,8 @@
         </word>
         <word name='fully'>
           <ref name='_htmlElemDesc'/>
+          <ref name='xmlSaveDoc'/>
+          <ref name='xmlSaveTree'/>
         </word>
         <word name='func'>
           <ref name='_xmlXPathContext'/>
@@ -20142,6 +20170,8 @@
           <ref name='HTML_PI_NODE'/>
           <ref name='HTML_PRESERVE_NODE'/>
           <ref name='HTML_TEXT_NODE'/>
+          <ref name='xmlSaveDoc'/>
+          <ref name='xmlSaveTree'/>
           <ref name='xmlTextReaderNextSibling'/>
         </word>
         <word name='implicitly'>
@@ -20560,6 +20590,8 @@
           <ref name='xmlIsPubidChar'/>
           <ref name='xmlKeepBlanksDefault'/>
           <ref name='xmlRegisterHTTPPostCallbacks'/>
+          <ref name='xmlSaveDoc'/>
+          <ref name='xmlSaveTree'/>
           <ref name='xmlSubstituteEntitiesDefault'/>
           <ref name='xmlXPtrEvalRangePredicate'/>
         </word>
@@ -22183,6 +22215,7 @@
           <ref name='xmlGetLineNo'/>
         </word>
         <word name='optional'>
+          <ref name='XML_SCHEMAS_ATTR_USE_OPTIONAL'/>
           <ref name='docbCreatePushParserCtxt'/>
           <ref name='htmlCreatePushParserCtxt'/>
           <ref name='xmlCreatePushParserCtxt'/>
@@ -22901,6 +22934,9 @@
           <ref name='xmlParserInputBufferCreateStatic'/>
           <ref name='xmlParserInputBufferPush'/>
           <ref name='xmlRegNewExecCtxt'/>
+        </word>
+        <word name='prohibited'>
+          <ref name='XML_SCHEMAS_ATTR_USE_PROHIBITED'/>
         </word>
         <word name='projects'>
           <ref name='xmlXPathIsInf'/>
@@ -23626,6 +23662,7 @@
           <ref name='xmlRegisterHTTPPostCallbacks'/>
         </word>
         <word name='required'>
+          <ref name='XML_SCHEMAS_ATTR_USE_REQUIRED'/>
           <ref name='htmlRequiredAttrs'/>
           <ref name='xmlCatalogSetDebug'/>
           <ref name='xmlXPathStringFunction'/>
@@ -24433,6 +24470,7 @@
         </word>
         <word name='special'>
           <ref name='XML_SKIP_IDS'/>
+          <ref name='XML_XML_ID'/>
           <ref name='XML_XML_NAMESPACE'/>
           <ref name='xmlNewChild'/>
           <ref name='xmlNewDocNode'/>
@@ -26229,6 +26267,9 @@
         <word name='xml:base'>
           <ref name='xmlNodeSetBase'/>
         </word>
+        <word name='xml:id'>
+          <ref name='XML_XML_ID'/>
+        </word>
         <word name='xml:lang'>
           <ref name='xlinkExtendedLinkFunk'/>
           <ref name='xlinkExtendedLinkSetFunk'/>
@@ -27035,6 +27076,8 @@
         </word>
         <word name='yet'>
           <ref name='xmlPatterncompile'/>
+          <ref name='xmlSaveDoc'/>
+          <ref name='xmlSaveTree'/>
         </word>
         <word name='you'>
           <ref name='xmlNewDocNode'/>

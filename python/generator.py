@@ -302,6 +302,8 @@ def skip_function(name):
         return 1
     if name == "xmlFreeParserCtxt":
         return 1
+    if name == "xmlCleanupParser":
+        return 1
     if name == "xmlFreeTextReader":
         return 1
 #    if name[0:11] == "xmlXPathNew":

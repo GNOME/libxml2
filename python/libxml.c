@@ -75,6 +75,9 @@ static xmlMallocFunc mallocFunc = NULL;
 static xmlReallocFunc reallocFunc = NULL;
 static xmlStrdupFunc strdupFunc = NULL;
 
+static void
+libxml_xmlErrorInitialize(void); /* forward declare */
+
 PyObject *
 libxml_xmlDebugMemory(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
 {
@@ -104,13 +107,21 @@ libxml_xmlDebugMemory(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
                 (strdupFunc == xmlMemoryStrdup)) {
                 libxmlMemoryAllocatedBase = xmlMemUsed();
             } else {
+                /* 
+                 * cleanup first, because some memory has been
+                 * allocated with the non-debug malloc in xmlInitParser
+                 * when the python module was imported
+                 */
+                xmlCleanupParser();
                 ret = (long) xmlMemSetup(xmlMemFree, xmlMemMalloc,
                                          xmlMemRealloc, xmlMemoryStrdup);
                 if (ret < 0)
                     goto error;
                 libxmlMemoryAllocatedBase = xmlMemUsed();
+                /* reinitialize */
+                xmlInitParser();
+                libxml_xmlErrorInitialize();
             }
-            xmlInitParser();
             ret = 0;
         } else if (libxmlMemoryDebugActivated == 0) {
             libxmlMemoryAllocatedBase = xmlMemUsed();
@@ -130,6 +141,29 @@ libxml_xmlDebugMemory(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
   error:
     py_retval = libxml_longWrap(ret);
     return (py_retval);
+}
+
+PyObject *
+libxml_xmlPythonCleanupParser(PyObject *self ATTRIBUTE_UNUSED,
+                              PyObject *args ATTRIBUTE_UNUSED) {
+
+    long freed;
+
+    if (libxmlMemoryDebug) {
+        freed = xmlMemUsed();
+    }
+
+    xmlCleanupParser();
+
+    if (libxmlMemoryDebug) {
+        freed -= xmlMemUsed();
+	libxmlMemoryAllocatedBase -= freed;
+	if (libxmlMemoryAllocatedBase < 0)
+	    libxmlMemoryAllocatedBase = 0;
+    }
+
+    Py_INCREF(Py_None);
+    return(Py_None);
 }
 
 PyObject *
@@ -3228,19 +3262,18 @@ void
 initlibxml2mod(void)
 {
     static int initialized = 0;
-    PyObject *m;
 
     if (initialized != 0)
         return;
-    /* XXX xmlInitParser does much more than this */
-    xmlInitGlobals();
-#ifdef LIBXML_OUTPUT_ENABLED
-    xmlRegisterDefaultOutputCallbacks();
-#endif /* LIBXML_OUTPUT_ENABLED */
-    xmlRegisterDefaultInputCallbacks();
-    m = Py_InitModule((char *) "libxml2mod", libxmlMethods);
-    initialized = 1;
+    
+    /* intialize the python extension module */
+    Py_InitModule((char *) "libxml2mod", libxmlMethods);
+
+    /* initialize libxml2 */
+    xmlInitParser();
     libxml_xmlErrorInitialize();
+
+    initialized = 1;
 
 #ifdef MERGED_MODULES
     initlibxsltmod();

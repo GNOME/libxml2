@@ -104,7 +104,6 @@ nanoHTTPInit()
 nanoHTTPScanProxy()
 
 # functions from module parser
-cleanupParser()
 createDocParserCtxt()
 initParser()
 keepBlanksDefault()
@@ -151,6 +150,7 @@ dumpMemory()
 htmlCreatePushParser()
 htmlSAXParseFile()
 newNode()
+pythonCleanupParser()
 setEntityLoader()
 
 # functions from module relaxng

@@ -1,3 +1,12 @@
+Thu Jul  1 14:53:36 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* python/libxml.c python/generator.py python/libxml.py
+	  python/libxml2-python-api.xml python/libxml2class.txt:
+	  applied patch from Stéphane Bidoul to fix some Python bindings
+	  initialization, then had to change the parserCleanup() 
+	  to handle memory released there.
+	* xmlmemory.c: added more debugging comments.
+
 Thu Jul  1 13:18:02 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c: seems the reader buffer could be used while not

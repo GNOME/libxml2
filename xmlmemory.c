@@ -29,6 +29,7 @@
 #include <ctype.h>
 #endif
 
+/* #define DEBUG_MEMORY */
 
 /**
  * MEM_LIST:
@@ -780,6 +781,10 @@ xmlMemoryDump(void)
 int
 xmlInitMemory(void)
 {
+#ifdef DEBUG_MEMORY
+     xmlGenericError(xmlGenericErrorContext,
+	     "xmlInitMemory()\n");
+#endif     
 #ifdef HAVE_STDLIB_H
      char *breakpoint;
 #endif     
@@ -808,7 +813,6 @@ xmlInitMemory(void)
      xmlGenericError(xmlGenericErrorContext,
 	     "xmlInitMemory() Ok\n");
 #endif     
-
      return(0);
 }
 
@@ -819,12 +823,20 @@ xmlInitMemory(void)
  */
 void
 xmlCleanupMemory(void) {
+#ifdef DEBUG_MEMORY
+     xmlGenericError(xmlGenericErrorContext,
+	     "xmlCleanupMemory()\n");
+#endif     
     if (xmlMemInitialized == 0)
         return;
 
     xmlFreeMutex(xmlMemMutex);
     xmlMemMutex = NULL;
     xmlMemInitialized = 0;
+#ifdef DEBUG_MEMORY
+     xmlGenericError(xmlGenericErrorContext,
+	     "xmlCleanupMemory() Ok\n");
+#endif     
 }
 
 /**
@@ -845,6 +857,10 @@ xmlCleanupMemory(void) {
 int
 xmlMemSetup(xmlFreeFunc freeFunc, xmlMallocFunc mallocFunc,
             xmlReallocFunc reallocFunc, xmlStrdupFunc strdupFunc) {
+#ifdef DEBUG_MEMORY
+     xmlGenericError(xmlGenericErrorContext,
+	     "xmlMemSetup()\n");
+#endif     
     if (freeFunc == NULL)
 	return(-1);
     if (mallocFunc == NULL)
@@ -858,6 +874,10 @@ xmlMemSetup(xmlFreeFunc freeFunc, xmlMallocFunc mallocFunc,
     xmlMallocAtomic = mallocFunc;
     xmlRealloc = reallocFunc;
     xmlMemStrdup = strdupFunc;
+#ifdef DEBUG_MEMORY
+     xmlGenericError(xmlGenericErrorContext,
+	     "xmlMemSetup() Ok\n");
+#endif     
     return(0);
 }
 
@@ -904,6 +924,10 @@ int
 xmlGcMemSetup(xmlFreeFunc freeFunc, xmlMallocFunc mallocFunc,
               xmlMallocFunc mallocAtomicFunc, xmlReallocFunc reallocFunc,
 	      xmlStrdupFunc strdupFunc) {
+#ifdef DEBUG_MEMORY
+     xmlGenericError(xmlGenericErrorContext,
+	     "xmlGcMemSetup()\n");
+#endif     
     if (freeFunc == NULL)
 	return(-1);
     if (mallocFunc == NULL)
@@ -919,6 +943,10 @@ xmlGcMemSetup(xmlFreeFunc freeFunc, xmlMallocFunc mallocFunc,
     xmlMallocAtomic = mallocAtomicFunc;
     xmlRealloc = reallocFunc;
     xmlMemStrdup = strdupFunc;
+#ifdef DEBUG_MEMORY
+     xmlGenericError(xmlGenericErrorContext,
+	     "xmlGcMemSetup() Ok\n");
+#endif     
     return(0);
 }
 

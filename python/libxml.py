@@ -618,6 +618,11 @@ class xmlTextReaderCore:
             # assert f is _xmlTextReaderErrorFunc
             return arg
 
+#
+# The cleanup now goes though a wrappe in libxml.c
+#
+def cleanupParser():
+    libxml2mod.xmlPythonCleanupParser()
 
 # WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING
 #

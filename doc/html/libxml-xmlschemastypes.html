@@ -1,4 +1,4 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>xmlschemastypes</title><meta name="generator" content="DocBook XSL Stylesheets V1.58.1"><style xmlns="http://www.w3.org/TR/xhtml1/transitional" type="text/css">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>xmlschemastypes</title><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><meta xmlns="http://www.w3.org/TR/xhtml1/transitional" name="generator" content="GTK-Doc V1.0 (XML mode)"></meta><style xmlns="http://www.w3.org/TR/xhtml1/transitional" type="text/css">
         .synopsis, .classsynopsis {
             background: #eeeeee;
             border: solid 1px #aaaaaa;
@@ -28,7 +28,7 @@
         .navigation .title {
             font-size: 200%;
         }
-      </style><link rel="home" href="index.html" title="Gnome XML Library Reference Manual"><link rel="up" href="libxml-lib.html" title="Libxml Library Reference"><link rel="previous" href="libxml-xmlschemas.html" title="xmlschemas"><link rel="next" href="libxml-schemasInternals.html" title="schemasInternals"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-xmlschemas.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></img></a></td><td><a accesskey="u" href="libxml-lib.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></img></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></img></a></td><th width="100%" align="center">Gnome XML Library Reference Manual</th><td><a accesskey="n" href="libxml-schemasInternals.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></img></a></td></tr></table><div class="refentry" lang="en"><a name="libxml-xmlschemastypes"></a><div class="titlepage"></div><div class="refnamediv"><h2>xmlschemastypes</h2><p>xmlschemastypes &#8212; </p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+      </style><link rel="home" href="index.html" title="[Insert name here] Reference Manual"><link rel="up" href="ch01.html" title="[Insert title here]"><link rel="previous" href="libxml-xmlautomata.html" title="xmlautomata"><link rel="next" href="libxml-xpointer.html" title="xpointer"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-xmlautomata.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></img></a></td><td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></img></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></img></a></td><th width="100%" align="center">[Insert name here] Reference Manual</th><td><a accesskey="n" href="libxml-xpointer.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></img></a></td></tr></table><div class="refentry" lang="en"><a name="libxml-xmlschemastypes"></a><div class="titlepage"><div></div><div></div></div><div class="refnamediv"><h2><span class="refentrytitle">xmlschemastypes</span></h2><p>xmlschemastypes &#8212; </p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
 
 
 
@@ -67,18 +67,18 @@ Cleanup the default XML Schemas type library</p><p>
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *ns);</pre><p>
 Lookup a type in the default XML Schemas type library</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td> the type name
-</td></tr><tr><td><span class="term"><i><tt>ns</tt></i> :</span></td><td>  the URI of the namespace usually "http://www.w3.org/2001/XMLSchema"
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>name</tt></i> :</span></td><td> the type name
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>ns</tt></i> :</span></td><td>  the URI of the namespace usually "http://www.w3.org/2001/XMLSchema"
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the type if found, NULL otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaValidatePredefinedType"></a>xmlSchemaValidatePredefinedType ()</h3><pre class="programlisting">int         xmlSchemaValidatePredefinedType (<a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a> type,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *value,
                                              <a href="libxml-schemasInternals.html#xmlSchemaValPtr">xmlSchemaValPtr</a> *val);</pre><p>
 Check that a value conforms to the lexical space of the predefined type.
-if true a value is computed and returned in <i><tt>val</tt></i>.</p><p>
+if true a value is computed and returned in <i class="parameter"><tt>val</tt></i>.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>type</tt></i> :</span></td><td> the predefined type
-</td></tr><tr><td><span class="term"><i><tt>value</tt></i> :</span></td><td> the value to check
-</td></tr><tr><td><span class="term"><i><tt>val</tt></i> :</span></td><td>  the return computed value
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>type</tt></i> :</span></td><td> the predefined type
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>value</tt></i> :</span></td><td> the value to check
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>val</tt></i> :</span></td><td>  the return computed value
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 if this validates, a positive error code number otherwise
         and -1 in case of internal or API error.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaValPredefTypeNode"></a>xmlSchemaValPredefTypeNode ()</h3><pre class="programlisting">int         xmlSchemaValPredefTypeNode      (<a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a> type,
@@ -86,12 +86,12 @@ if true a value is computed and returned in <i><tt>val</tt></i>.</p><p>
                                              <a href="libxml-schemasInternals.html#xmlSchemaValPtr">xmlSchemaValPtr</a> *val,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node);</pre><p>
 Check that a value conforms to the lexical space of the predefined type.
-if true a value is computed and returned in <i><tt>val</tt></i>.</p><p>
+if true a value is computed and returned in <i class="parameter"><tt>val</tt></i>.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>type</tt></i> :</span></td><td> the predefined type
-</td></tr><tr><td><span class="term"><i><tt>value</tt></i> :</span></td><td> the value to check
-</td></tr><tr><td><span class="term"><i><tt>val</tt></i> :</span></td><td>  the return computed value
-</td></tr><tr><td><span class="term"><i><tt>node</tt></i> :</span></td><td>  the node containing the value
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>type</tt></i> :</span></td><td> the predefined type
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>value</tt></i> :</span></td><td> the value to check
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>val</tt></i> :</span></td><td>  the return computed value
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>node</tt></i> :</span></td><td>  the node containing the value
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 if this validates, a positive error code number otherwise
         and -1 in case of internal or API error.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaValidateFacet"></a>xmlSchemaValidateFacet ()</h3><pre class="programlisting">int         xmlSchemaValidateFacet          (<a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a> base,
@@ -100,16 +100,16 @@ if true a value is computed and returned in <i><tt>val</tt></i>.</p><p>
                                              <a href="libxml-schemasInternals.html#xmlSchemaValPtr">xmlSchemaValPtr</a> val);</pre><p>
 Check a value against a facet condition</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>base</tt></i> :</span></td><td>  the base type
-</td></tr><tr><td><span class="term"><i><tt>facet</tt></i> :</span></td><td>  the facet to check
-</td></tr><tr><td><span class="term"><i><tt>value</tt></i> :</span></td><td>  the lexical repr of the value to validate
-</td></tr><tr><td><span class="term"><i><tt>val</tt></i> :</span></td><td>  the precomputed value
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>base</tt></i> :</span></td><td>  the base type
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>facet</tt></i> :</span></td><td>  the facet to check
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>value</tt></i> :</span></td><td>  the lexical repr of the value to validate
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>val</tt></i> :</span></td><td>  the precomputed value
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 if the element is schemas valid, a positive error code
     number otherwise and -1 in case of internal or API error.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaFreeValue"></a>xmlSchemaFreeValue ()</h3><pre class="programlisting">void        xmlSchemaFreeValue              (<a href="libxml-schemasInternals.html#xmlSchemaValPtr">xmlSchemaValPtr</a> val);</pre><p>
 Cleanup the default XML Schemas type library</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>val</tt></i> :</span></td><td>
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>val</tt></i> :</span></td><td>
 
 
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaNewFacet"></a>xmlSchemaNewFacet ()</h3><pre class="programlisting"><a href="libxml-schemasInternals.html#xmlSchemaFacetPtr">xmlSchemaFacetPtr</a> xmlSchemaNewFacet         (void);</pre><p>
@@ -122,21 +122,21 @@ Allocate a new Facet structure.</p><p>
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name);</pre><p>
 Checks the default values types, especially for facets</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>facet</tt></i> :</span></td><td>  the facet
-</td></tr><tr><td><span class="term"><i><tt>typeDecl</tt></i> :</span></td><td>  the schema type definition
-</td></tr><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the schema parser context or NULL
-</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td> name of the type
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>facet</tt></i> :</span></td><td>  the facet
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>typeDecl</tt></i> :</span></td><td>  the schema type definition
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>ctxt</tt></i> :</span></td><td>  the schema parser context or NULL
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>name</tt></i> :</span></td><td> name of the type
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 if okay or -1 in cae of error
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaFreeFacet"></a>xmlSchemaFreeFacet ()</h3><pre class="programlisting">void        xmlSchemaFreeFacet              (<a href="libxml-schemasInternals.html#xmlSchemaFacetPtr">xmlSchemaFacetPtr</a> facet);</pre><p>
 Deallocate a Schema Facet structure.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>facet</tt></i> :</span></td><td>  a schema facet structure
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>facet</tt></i> :</span></td><td>  a schema facet structure
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaCompareValues"></a>xmlSchemaCompareValues ()</h3><pre class="programlisting">int         xmlSchemaCompareValues          (<a href="libxml-schemasInternals.html#xmlSchemaValPtr">xmlSchemaValPtr</a> x,
                                              <a href="libxml-schemasInternals.html#xmlSchemaValPtr">xmlSchemaValPtr</a> y);</pre><p>
 Compare 2 values</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>x</tt></i> :</span></td><td>  a first value
-</td></tr><tr><td><span class="term"><i><tt>y</tt></i> :</span></td><td>  a second value
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>x</tt></i> :</span></td><td>  a first value
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>y</tt></i> :</span></td><td>  a second value
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>-1 if x &lt; y, 0 if x == y, 1 if x &gt; y, 2 if x &lt;&gt; y, and -2 in
 case of error
-</td></tr></tbody></table></div></div></div></div><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-xmlschemas.html"><b>&lt;&lt; xmlschemas</b></a></td><td align="right"><a accesskey="n" href="libxml-schemasInternals.html"><b>schemasInternals &gt;&gt;</b></a></td></tr></table></body></html>
+</td></tr></tbody></table></div></div></div></div><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-xmlautomata.html"><b>&lt;&lt; xmlautomata</b></a></td><td align="right"><a accesskey="n" href="libxml-xpointer.html"><b>xpointer &gt;&gt;</b></a></td></tr></table></body></html>

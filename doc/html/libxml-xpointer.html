@@ -1,4 +1,4 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>xpointer</title><meta name="generator" content="DocBook XSL Stylesheets V1.58.1"><style xmlns="http://www.w3.org/TR/xhtml1/transitional" type="text/css">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>xpointer</title><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><meta xmlns="http://www.w3.org/TR/xhtml1/transitional" name="generator" content="GTK-Doc V1.0 (XML mode)"></meta><style xmlns="http://www.w3.org/TR/xhtml1/transitional" type="text/css">
         .synopsis, .classsynopsis {
             background: #eeeeee;
             border: solid 1px #aaaaaa;
@@ -28,7 +28,7 @@
         .navigation .title {
             font-size: 200%;
         }
-      </style><link rel="home" href="index.html" title="Gnome XML Library Reference Manual"><link rel="up" href="libxml-lib.html" title="Libxml Library Reference"><link rel="previous" href="libxml-xpathInternals.html" title="xpathInternals"><link rel="next" href="libxml-xinclude.html" title="xinclude"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-xpathInternals.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></img></a></td><td><a accesskey="u" href="libxml-lib.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></img></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></img></a></td><th width="100%" align="center">Gnome XML Library Reference Manual</th><td><a accesskey="n" href="libxml-xinclude.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></img></a></td></tr></table><div class="refentry" lang="en"><a name="libxml-xpointer"></a><div class="titlepage"></div><div class="refnamediv"><h2>xpointer</h2><p>xpointer &#8212; </p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+      </style><link rel="home" href="index.html" title="[Insert name here] Reference Manual"><link rel="up" href="ch01.html" title="[Insert title here]"><link rel="previous" href="libxml-xmlschemastypes.html" title="xmlschemastypes"><link rel="next" href="libxml-hash.html" title="hash"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-xmlschemastypes.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></img></a></td><td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></img></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></img></a></td><th width="100%" align="center">[Insert name here] Reference Manual</th><td><a accesskey="n" href="libxml-hash.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></img></a></td></tr></table><div class="refentry" lang="en"><a name="libxml-xpointer"></a><div class="titlepage"><div></div><div></div></div><div class="refnamediv"><h2><span class="refentrytitle">xpointer</span></h2><p>xpointer &#8212; </p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
 
 
 
@@ -77,6 +77,7 @@ void        <a href="libxml-xpointer.html#xmlXPtrEvalRangePredicate">xmlXPtrEval
 </pre></div><div class="refsect1" lang="en"><h2>Description</h2><p>
 
 </p></div><div class="refsect1" lang="en"><h2>Details</h2><div class="refsect2" lang="en"><h3><a name="xmlLocationSet"></a>struct xmlLocationSet</h3><pre class="programlisting">struct xmlLocationSet {
+
     int locNr;		      /* number of locations in the set */
     int locMax;		      /* size of the array as allocated */
     xmlXPathObjectPtr *locTab;/* array of locations */
@@ -87,20 +88,20 @@ void        <a href="libxml-xpointer.html#xmlXPtrEvalRangePredicate">xmlXPtrEval
 </pre><p>
 
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPtrLocationSetCreate"></a>xmlXPtrLocationSetCreate ()</h3><pre class="programlisting"><a href="libxml-xpointer.html#xmlLocationSetPtr">xmlLocationSetPtr</a> xmlXPtrLocationSetCreate  (<a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> val);</pre><p>
-Create a new xmlLocationSetPtr of type double and of value <i><tt>val</tt></i></p><p>
+Create a new xmlLocationSetPtr of type double and of value <i class="parameter"><tt>val</tt></i></p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>val</tt></i> :</span></td><td>  an initial xmlXPathObjectPtr, or NULL
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>val</tt></i> :</span></td><td>  an initial xmlXPathObjectPtr, or NULL
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the newly created object.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPtrFreeLocationSet"></a>xmlXPtrFreeLocationSet ()</h3><pre class="programlisting">void        xmlXPtrFreeLocationSet          (<a href="libxml-xpointer.html#xmlLocationSetPtr">xmlLocationSetPtr</a> obj);</pre><p>
 Free the LocationSet compound (not the actual ranges !).</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>obj</tt></i> :</span></td><td>  the xmlLocationSetPtr to free
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>obj</tt></i> :</span></td><td>  the xmlLocationSetPtr to free
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPtrLocationSetMerge"></a>xmlXPtrLocationSetMerge ()</h3><pre class="programlisting"><a href="libxml-xpointer.html#xmlLocationSetPtr">xmlLocationSetPtr</a> xmlXPtrLocationSetMerge   (<a href="libxml-xpointer.html#xmlLocationSetPtr">xmlLocationSetPtr</a> val1,
                                              <a href="libxml-xpointer.html#xmlLocationSetPtr">xmlLocationSetPtr</a> val2);</pre><p>
-Merges two rangesets, all ranges from <i><tt>val2</tt></i> are added to <i><tt>val1</tt></i></p><p>
+Merges two rangesets, all ranges from <i class="parameter"><tt>val2</tt></i> are added to <i class="parameter"><tt>val1</tt></i></p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>val1</tt></i> :</span></td><td>  the first LocationSet
-</td></tr><tr><td><span class="term"><i><tt>val2</tt></i> :</span></td><td>  the second LocationSet
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>val1</tt></i> :</span></td><td>  the first LocationSet
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>val2</tt></i> :</span></td><td>  the second LocationSet
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>val1 once extended or NULL in case of error.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPtrNewRange"></a>xmlXPtrNewRange ()</h3><pre class="programlisting"><a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> xmlXPtrNewRange           (<a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> start,
                                              int startindex,
@@ -108,120 +109,120 @@ Merges two rangesets, all ranges from <i><tt>val2</tt></i> are added to <i><tt>v
                                              int endindex);</pre><p>
 Create a new xmlXPathObjectPtr of type range</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>start</tt></i> :</span></td><td>  the starting node
-</td></tr><tr><td><span class="term"><i><tt>startindex</tt></i> :</span></td><td>  the start index
-</td></tr><tr><td><span class="term"><i><tt>end</tt></i> :</span></td><td>  the ending point
-</td></tr><tr><td><span class="term"><i><tt>endindex</tt></i> :</span></td><td>  the ending index
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>start</tt></i> :</span></td><td>  the starting node
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>startindex</tt></i> :</span></td><td>  the start index
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>end</tt></i> :</span></td><td>  the ending point
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>endindex</tt></i> :</span></td><td>  the ending index
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the newly created object.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPtrNewRangePoints"></a>xmlXPtrNewRangePoints ()</h3><pre class="programlisting"><a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> xmlXPtrNewRangePoints     (<a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> start,
                                              <a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> end);</pre><p>
 Create a new xmlXPathObjectPtr of type range using 2 Points</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>start</tt></i> :</span></td><td>  the starting point
-</td></tr><tr><td><span class="term"><i><tt>end</tt></i> :</span></td><td>  the ending point
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>start</tt></i> :</span></td><td>  the starting point
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>end</tt></i> :</span></td><td>  the ending point
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the newly created object.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPtrNewRangeNodePoint"></a>xmlXPtrNewRangeNodePoint ()</h3><pre class="programlisting"><a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> xmlXPtrNewRangeNodePoint  (<a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> start,
                                              <a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> end);</pre><p>
 Create a new xmlXPathObjectPtr of type range from a node to a point</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>start</tt></i> :</span></td><td>  the starting node
-</td></tr><tr><td><span class="term"><i><tt>end</tt></i> :</span></td><td>  the ending point
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>start</tt></i> :</span></td><td>  the starting node
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>end</tt></i> :</span></td><td>  the ending point
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the newly created object.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPtrNewRangePointNode"></a>xmlXPtrNewRangePointNode ()</h3><pre class="programlisting"><a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> xmlXPtrNewRangePointNode  (<a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> start,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> end);</pre><p>
 Create a new xmlXPathObjectPtr of type range from a point to a node</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>start</tt></i> :</span></td><td>  the starting point
-</td></tr><tr><td><span class="term"><i><tt>end</tt></i> :</span></td><td>  the ending node
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>start</tt></i> :</span></td><td>  the starting point
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>end</tt></i> :</span></td><td>  the ending node
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the newly created object.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPtrNewRangeNodes"></a>xmlXPtrNewRangeNodes ()</h3><pre class="programlisting"><a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> xmlXPtrNewRangeNodes      (<a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> start,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> end);</pre><p>
 Create a new xmlXPathObjectPtr of type range using 2 nodes</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>start</tt></i> :</span></td><td>  the starting node
-</td></tr><tr><td><span class="term"><i><tt>end</tt></i> :</span></td><td>  the ending node
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>start</tt></i> :</span></td><td>  the starting node
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>end</tt></i> :</span></td><td>  the ending node
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the newly created object.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPtrNewLocationSetNodes"></a>xmlXPtrNewLocationSetNodes ()</h3><pre class="programlisting"><a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> xmlXPtrNewLocationSetNodes
                                             (<a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> start,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> end);</pre><p>
 Create a new xmlXPathObjectPtr of type LocationSet and initialize
-it with the single range made of the two nodes <i><tt>start</tt></i> and <i><tt>end</tt></i></p><p>
+it with the single range made of the two nodes <i class="parameter"><tt>start</tt></i> and <i class="parameter"><tt>end</tt></i></p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>start</tt></i> :</span></td><td>  the start NodePtr value
-</td></tr><tr><td><span class="term"><i><tt>end</tt></i> :</span></td><td>  the end NodePtr value or NULL
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>start</tt></i> :</span></td><td>  the start NodePtr value
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>end</tt></i> :</span></td><td>  the end NodePtr value or NULL
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the newly created object.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPtrNewLocationSetNodeSet"></a>xmlXPtrNewLocationSetNodeSet ()</h3><pre class="programlisting"><a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> xmlXPtrNewLocationSetNodeSet
                                             (<a href="libxml-xpath.html#xmlNodeSetPtr">xmlNodeSetPtr</a> set);</pre><p>
 Create a new xmlXPathObjectPtr of type LocationSet and initialize
-it with all the nodes from <i><tt>set</tt></i></p><p>
+it with all the nodes from <i class="parameter"><tt>set</tt></i></p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>set</tt></i> :</span></td><td>  a node set
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>set</tt></i> :</span></td><td>  a node set
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the newly created object.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPtrNewRangeNodeObject"></a>xmlXPtrNewRangeNodeObject ()</h3><pre class="programlisting"><a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> xmlXPtrNewRangeNodeObject (<a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> start,
                                              <a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> end);</pre><p>
 Create a new xmlXPathObjectPtr of type range from a not to an object</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>start</tt></i> :</span></td><td>  the starting node
-</td></tr><tr><td><span class="term"><i><tt>end</tt></i> :</span></td><td>  the ending object
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>start</tt></i> :</span></td><td>  the starting node
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>end</tt></i> :</span></td><td>  the ending object
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the newly created object.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPtrNewCollapsedRange"></a>xmlXPtrNewCollapsedRange ()</h3><pre class="programlisting"><a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> xmlXPtrNewCollapsedRange  (<a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> start);</pre><p>
 Create a new xmlXPathObjectPtr of type range using a single nodes</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>start</tt></i> :</span></td><td>  the starting and ending node
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>start</tt></i> :</span></td><td>  the starting and ending node
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the newly created object.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPtrLocationSetAdd"></a>xmlXPtrLocationSetAdd ()</h3><pre class="programlisting">void        xmlXPtrLocationSetAdd           (<a href="libxml-xpointer.html#xmlLocationSetPtr">xmlLocationSetPtr</a> cur,
                                              <a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> val);</pre><p>
 add a new xmlXPathObjectPtr to an existing LocationSet
-If the location already exist in the set <i><tt>val</tt></i> is freed.</p><p>
+If the location already exist in the set <i class="parameter"><tt>val</tt></i> is freed.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>cur</tt></i> :</span></td><td>  the initial range set
-</td></tr><tr><td><span class="term"><i><tt>val</tt></i> :</span></td><td>  a new xmlXPathObjectPtr
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>cur</tt></i> :</span></td><td>  the initial range set
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>val</tt></i> :</span></td><td>  a new xmlXPathObjectPtr
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPtrWrapLocationSet"></a>xmlXPtrWrapLocationSet ()</h3><pre class="programlisting"><a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> xmlXPtrWrapLocationSet    (<a href="libxml-xpointer.html#xmlLocationSetPtr">xmlLocationSetPtr</a> val);</pre><p>
-Wrap the LocationSet <i><tt>val</tt></i> in a new xmlXPathObjectPtr</p><p>
+Wrap the LocationSet <i class="parameter"><tt>val</tt></i> in a new xmlXPathObjectPtr</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>val</tt></i> :</span></td><td>  the LocationSet value
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>val</tt></i> :</span></td><td>  the LocationSet value
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the newly created object.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPtrLocationSetDel"></a>xmlXPtrLocationSetDel ()</h3><pre class="programlisting">void        xmlXPtrLocationSetDel           (<a href="libxml-xpointer.html#xmlLocationSetPtr">xmlLocationSetPtr</a> cur,
                                              <a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> val);</pre><p>
 Removes an xmlXPathObjectPtr from an existing LocationSet</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>cur</tt></i> :</span></td><td>  the initial range set
-</td></tr><tr><td><span class="term"><i><tt>val</tt></i> :</span></td><td>  an xmlXPathObjectPtr
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>cur</tt></i> :</span></td><td>  the initial range set
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>val</tt></i> :</span></td><td>  an xmlXPathObjectPtr
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPtrLocationSetRemove"></a>xmlXPtrLocationSetRemove ()</h3><pre class="programlisting">void        xmlXPtrLocationSetRemove        (<a href="libxml-xpointer.html#xmlLocationSetPtr">xmlLocationSetPtr</a> cur,
                                              int val);</pre><p>
 Removes an entry from an existing LocationSet list.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>cur</tt></i> :</span></td><td>  the initial range set
-</td></tr><tr><td><span class="term"><i><tt>val</tt></i> :</span></td><td>  the index to remove
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>cur</tt></i> :</span></td><td>  the initial range set
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>val</tt></i> :</span></td><td>  the index to remove
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPtrNewContext"></a>xmlXPtrNewContext ()</h3><pre class="programlisting"><a href="libxml-xpath.html#xmlXPathContextPtr">xmlXPathContextPtr</a> xmlXPtrNewContext        (<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> here,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> origin);</pre><p>
 Create a new XPointer context</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  the XML document
-</td></tr><tr><td><span class="term"><i><tt>here</tt></i> :</span></td><td>  the node that directly contains the XPointer being evaluated or NULL
-</td></tr><tr><td><span class="term"><i><tt>origin</tt></i> :</span></td><td>  the element from which a user or program initiated traversal of
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  the XML document
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>here</tt></i> :</span></td><td>  the node that directly contains the XPointer being evaluated or NULL
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>origin</tt></i> :</span></td><td>  the element from which a user or program initiated traversal of
           the link, or NULL.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the xmlXPathContext just allocated.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPtrEval"></a>xmlXPtrEval ()</h3><pre class="programlisting"><a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> xmlXPtrEval               (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *str,
                                              <a href="libxml-xpath.html#xmlXPathContextPtr">xmlXPathContextPtr</a> ctx);</pre><p>
 Evaluate the XPath Location Path in the given context.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>str</tt></i> :</span></td><td>  the XPointer expression
-</td></tr><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  the XPointer context
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>str</tt></i> :</span></td><td>  the XPointer expression
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>ctx</tt></i> :</span></td><td>  the XPointer context
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the xmlXPathObjectPtr resulting from the evaluation or NULL.
         the caller has to free the object.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPtrRangeToFunction"></a>xmlXPtrRangeToFunction ()</h3><pre class="programlisting">void        xmlXPtrRangeToFunction          (<a href="libxml-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt,
                                              int nargs);</pre><p>
 Implement the range-<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="to">to</GTKDOCLINK>() XPointer function</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the XPointer Parser context
-</td></tr><tr><td><span class="term"><i><tt>nargs</tt></i> :</span></td><td>  the number of args
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ctxt</tt></i> :</span></td><td>  the XPointer Parser context
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>nargs</tt></i> :</span></td><td>  the number of args
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPtrBuildNodeList"></a>xmlXPtrBuildNodeList ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a>  xmlXPtrBuildNodeList            (<a href="libxml-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> obj);</pre><p>
 Build a node list tree copy of the XPointer result.
 This will drop Attributes and Namespace declarations.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>obj</tt></i> :</span></td><td>  the XPointer result from the evaluation.
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>obj</tt></i> :</span></td><td>  the XPointer result from the evaluation.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>an xmlNodePtr list or NULL.
         the caller has to free the node tree.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPtrEvalRangePredicate"></a>xmlXPtrEvalRangePredicate ()</h3><pre class="programlisting">void        xmlXPtrEvalRangePredicate       (<a href="libxml-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt);</pre><p>
@@ -231,5 +232,5 @@ This will drop Attributes and Namespace declarations.</p><p>
 Evaluate a predicate as in <a href="libxml-xpath.html#xmlXPathEvalPredicate">xmlXPathEvalPredicate</a>() but for
 a Location Set instead of a node set</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the XPointer Parser context
-</td></tr></tbody></table></div></div></div></div><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-xpathInternals.html"><b>&lt;&lt; xpathInternals</b></a></td><td align="right"><a accesskey="n" href="libxml-xinclude.html"><b>xinclude &gt;&gt;</b></a></td></tr></table></body></html>
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ctxt</tt></i> :</span></td><td>  the XPointer Parser context
+</td></tr></tbody></table></div></div></div></div><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-xmlschemastypes.html"><b>&lt;&lt; xmlschemastypes</b></a></td><td align="right"><a accesskey="n" href="libxml-hash.html"><b>hash &gt;&gt;</b></a></td></tr></table></body></html>

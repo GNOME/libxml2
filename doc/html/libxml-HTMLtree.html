@@ -1,4 +1,4 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>HTMLtree</title><meta name="generator" content="DocBook XSL Stylesheets V1.58.1"><style xmlns="http://www.w3.org/TR/xhtml1/transitional" type="text/css">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>HTMLtree</title><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><meta xmlns="http://www.w3.org/TR/xhtml1/transitional" name="generator" content="GTK-Doc V1.0 (XML mode)"></meta><style xmlns="http://www.w3.org/TR/xhtml1/transitional" type="text/css">
         .synopsis, .classsynopsis {
             background: #eeeeee;
             border: solid 1px #aaaaaa;
@@ -28,7 +28,7 @@
         .navigation .title {
             font-size: 200%;
         }
-      </style><link rel="home" href="index.html" title="Gnome XML Library Reference Manual"><link rel="up" href="libxml-lib.html" title="Libxml Library Reference"><link rel="previous" href="libxml-HTMLparser.html" title="HTMLparser"><link rel="next" href="libxml-xpath.html" title="xpath"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-HTMLparser.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></img></a></td><td><a accesskey="u" href="libxml-lib.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></img></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></img></a></td><th width="100%" align="center">Gnome XML Library Reference Manual</th><td><a accesskey="n" href="libxml-xpath.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></img></a></td></tr></table><div class="refentry" lang="en"><a name="libxml-HTMLtree"></a><div class="titlepage"></div><div class="refnamediv"><h2>HTMLtree</h2><p>HTMLtree &#8212; </p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+      </style><link rel="home" href="index.html" title="[Insert name here] Reference Manual"><link rel="up" href="ch01.html" title="[Insert title here]"><link rel="previous" href="libxml-list.html" title="list"><link rel="next" href="libxml-parserInternals.html" title="parserInternals"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-list.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></img></a></td><td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></img></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></img></a></td><th width="100%" align="center">[Insert name here] Reference Manual</th><td><a accesskey="n" href="libxml-parserInternals.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></img></a></td></tr></table><div class="refentry" lang="en"><a name="libxml-HTMLtree"></a><div class="titlepage"><div></div><div></div></div><div class="refnamediv"><h2><span class="refentrytitle">HTMLtree</span></h2><p>HTMLtree &#8212; </p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
 
 
 
@@ -117,21 +117,21 @@ the same way as a processing instruction in an XML document.</p><p>
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *ExternalID);</pre><p>
 Creates a new HTML document</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>URI</tt></i> :</span></td><td>  URI for the dtd, or NULL
-</td></tr><tr><td><span class="term"><i><tt>ExternalID</tt></i> :</span></td><td>  the external ID of the DTD, or NULL
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>URI</tt></i> :</span></td><td>  URI for the dtd, or NULL
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>ExternalID</tt></i> :</span></td><td>  the external ID of the DTD, or NULL
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>a new document
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="htmlNewDocNoDtD"></a>htmlNewDocNoDtD ()</h3><pre class="programlisting"><a href="libxml-HTMLparser.html#htmlDocPtr">htmlDocPtr</a>  htmlNewDocNoDtD                 (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *URI,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *ExternalID);</pre><p>
-Creates a new HTML document without a DTD node if <i><tt>URI</tt></i> and <i><tt>ExternalID</tt></i>
+Creates a new HTML document without a DTD node if <i class="parameter"><tt>URI</tt></i> and <i class="parameter"><tt>ExternalID</tt></i>
 are NULL</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>URI</tt></i> :</span></td><td>  URI for the dtd, or NULL
-</td></tr><tr><td><span class="term"><i><tt>ExternalID</tt></i> :</span></td><td>  the external ID of the DTD, or NULL
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>URI</tt></i> :</span></td><td>  URI for the dtd, or NULL
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>ExternalID</tt></i> :</span></td><td>  the external ID of the DTD, or NULL
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>a new document, do not initialize the DTD if not provided
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="htmlGetMetaEncoding"></a>htmlGetMetaEncoding ()</h3><pre class="programlisting">const <a href="libxml-tree.html#xmlChar">xmlChar</a>* htmlGetMetaEncoding          (<a href="libxml-HTMLparser.html#htmlDocPtr">htmlDocPtr</a> doc);</pre><p>
 Encoding definition lookup in the Meta tags</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  the document
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  the document
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the current encoding as flagged in the HTML source
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="htmlSetMetaEncoding"></a>htmlSetMetaEncoding ()</h3><pre class="programlisting">int         htmlSetMetaEncoding             (<a href="libxml-HTMLparser.html#htmlDocPtr">htmlDocPtr</a> doc,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *encoding);</pre><p>
@@ -139,8 +139,8 @@ Sets the current encoding in the Meta tags
 NOTE: this will not change the document content encoding, just
 the META flag associated.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  the document
-</td></tr><tr><td><span class="term"><i><tt>encoding</tt></i> :</span></td><td>  the encoding string
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  the document
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>encoding</tt></i> :</span></td><td>  the encoding string
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 in case of success and -1 in case of error
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="htmlDocDumpMemory"></a>htmlDocDumpMemory ()</h3><pre class="programlisting">void        htmlDocDumpMemory               (<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> cur,
                                              <a href="libxml-tree.html#xmlChar">xmlChar</a> **mem,
@@ -148,23 +148,23 @@ the META flag associated.</p><p>
 Dump an HTML document in memory and return the xmlChar * and it's size.
 It's up to the caller to free the memory.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>cur</tt></i> :</span></td><td>  the document
-</td></tr><tr><td><span class="term"><i><tt>mem</tt></i> :</span></td><td>  OUT: the memory pointer
-</td></tr><tr><td><span class="term"><i><tt>size</tt></i> :</span></td><td>  OUT: the memory length
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>cur</tt></i> :</span></td><td>  the document
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>mem</tt></i> :</span></td><td>  OUT: the memory pointer
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>size</tt></i> :</span></td><td>  OUT: the memory length
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="htmlDocDump"></a>htmlDocDump ()</h3><pre class="programlisting">int         htmlDocDump                     (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="FILE-CAPS">FILE</GTKDOCLINK> *f,
                                              <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> cur);</pre><p>
 Dump an HTML document to an open FILE.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>f</tt></i> :</span></td><td>  the FILE*
-</td></tr><tr><td><span class="term"><i><tt>cur</tt></i> :</span></td><td>  the document
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>f</tt></i> :</span></td><td>  the FILE*
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>cur</tt></i> :</span></td><td>  the document
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> the number of byte written or -1 in case of failure.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="htmlSaveFile"></a>htmlSaveFile ()</h3><pre class="programlisting">int         htmlSaveFile                    (const char *filename,
                                              <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> cur);</pre><p>
-Dump an HTML document to a file. If <i><tt>filename</tt></i> is "-" the stdout file is
+Dump an HTML document to a file. If <i class="parameter"><tt>filename</tt></i> is "-" the stdout file is
 used.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>  the filename (or URL)
-</td></tr><tr><td><span class="term"><i><tt>cur</tt></i> :</span></td><td>  the document
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>filename</tt></i> :</span></td><td>  the filename (or URL)
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>cur</tt></i> :</span></td><td>  the document
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> the number of byte written or -1 in case of failure.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="htmlNodeDump"></a>htmlNodeDump ()</h3><pre class="programlisting">int         htmlNodeDump                    (<a href="libxml-tree.html#xmlBufferPtr">xmlBufferPtr</a> buf,
                                              <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
@@ -172,9 +172,9 @@ used.</p><p>
 Dump an HTML node, recursive behaviour,children are printed too,
 and formatting returns are added.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>buf</tt></i> :</span></td><td>  the HTML buffer output
-</td></tr><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  the document
-</td></tr><tr><td><span class="term"><i><tt>cur</tt></i> :</span></td><td>  the current node
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>buf</tt></i> :</span></td><td>  the HTML buffer output
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  the document
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>cur</tt></i> :</span></td><td>  the current node
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the number of byte written or -1 in case of error
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="htmlNodeDumpFile"></a>htmlNodeDumpFile ()</h3><pre class="programlisting">void        htmlNodeDumpFile                (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="FILE-CAPS">FILE</GTKDOCLINK> *out,
                                              <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
@@ -182,9 +182,9 @@ and formatting returns are added.</p><p>
 Dump an HTML node, recursive behaviour,children are printed too,
 and formatting returns are added.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>out</tt></i> :</span></td><td>  the FILE pointer
-</td></tr><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  the document
-</td></tr><tr><td><span class="term"><i><tt>cur</tt></i> :</span></td><td>  the current node
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>out</tt></i> :</span></td><td>  the FILE pointer
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  the document
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>cur</tt></i> :</span></td><td>  the current node
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="htmlNodeDumpFileFormat"></a>htmlNodeDumpFileFormat ()</h3><pre class="programlisting">int         htmlNodeDumpFileFormat          (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="FILE-CAPS">FILE</GTKDOCLINK> *out,
                                              <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> cur,
@@ -194,11 +194,11 @@ Dump an HTML node, recursive behaviour,children are printed too.
 </p><p>
 TODO: if encoding == NULL try to save in the doc encoding</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>out</tt></i> :</span></td><td>  the FILE pointer
-</td></tr><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  the document
-</td></tr><tr><td><span class="term"><i><tt>cur</tt></i> :</span></td><td>  the current node
-</td></tr><tr><td><span class="term"><i><tt>encoding</tt></i> :</span></td><td> the document encoding
-</td></tr><tr><td><span class="term"><i><tt>format</tt></i> :</span></td><td>  should formatting spaces been added
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>out</tt></i> :</span></td><td>  the FILE pointer
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  the document
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>cur</tt></i> :</span></td><td>  the current node
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>encoding</tt></i> :</span></td><td> the document encoding
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>format</tt></i> :</span></td><td>  should formatting spaces been added
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> the number of byte written or -1 in case of failure.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="htmlSaveFileEnc"></a>htmlSaveFileEnc ()</h3><pre class="programlisting">int         htmlSaveFileEnc                 (const char *filename,
                                              <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> cur,
@@ -206,9 +206,9 @@ TODO: if encoding == NULL try to save in the doc encoding</p><p>
 Dump an HTML document to a file using a given encoding
 and formatting returns/spaces are added.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>  the filename
-</td></tr><tr><td><span class="term"><i><tt>cur</tt></i> :</span></td><td>  the document
-</td></tr><tr><td><span class="term"><i><tt>encoding</tt></i> :</span></td><td> the document encoding
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>filename</tt></i> :</span></td><td>  the filename
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>cur</tt></i> :</span></td><td>  the document
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>encoding</tt></i> :</span></td><td> the document encoding
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> the number of byte written or -1 in case of failure.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="htmlSaveFileFormat"></a>htmlSaveFileFormat ()</h3><pre class="programlisting">int         htmlSaveFileFormat              (const char *filename,
                                              <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> cur,
@@ -216,10 +216,10 @@ and formatting returns/spaces are added.</p><p>
                                              int format);</pre><p>
 Dump an HTML document to a file using a given encoding.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>  the filename
-</td></tr><tr><td><span class="term"><i><tt>cur</tt></i> :</span></td><td>  the document
-</td></tr><tr><td><span class="term"><i><tt>encoding</tt></i> :</span></td><td> the document encoding
-</td></tr><tr><td><span class="term"><i><tt>format</tt></i> :</span></td><td>  should formatting spaces been added
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>filename</tt></i> :</span></td><td>  the filename
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>cur</tt></i> :</span></td><td>  the document
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>encoding</tt></i> :</span></td><td> the document encoding
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>format</tt></i> :</span></td><td>  should formatting spaces been added
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> the number of byte written or -1 in case of failure.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="htmlNodeDumpFormatOutput"></a>htmlNodeDumpFormatOutput ()</h3><pre class="programlisting">void        htmlNodeDumpFormatOutput        (<a href="libxml-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a> buf,
                                              <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
@@ -228,33 +228,33 @@ Dump an HTML document to a file using a given encoding.</p><p>
                                              int format);</pre><p>
 Dump an HTML node, recursive behaviour,children are printed too.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>buf</tt></i> :</span></td><td>  the HTML buffer output
-</td></tr><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  the document
-</td></tr><tr><td><span class="term"><i><tt>cur</tt></i> :</span></td><td>  the current node
-</td></tr><tr><td><span class="term"><i><tt>encoding</tt></i> :</span></td><td>  the encoding string
-</td></tr><tr><td><span class="term"><i><tt>format</tt></i> :</span></td><td>  should formatting spaces been added
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>buf</tt></i> :</span></td><td>  the HTML buffer output
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  the document
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>cur</tt></i> :</span></td><td>  the current node
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>encoding</tt></i> :</span></td><td>  the encoding string
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>format</tt></i> :</span></td><td>  should formatting spaces been added
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="htmlDocContentDumpOutput"></a>htmlDocContentDumpOutput ()</h3><pre class="programlisting">void        htmlDocContentDumpOutput        (<a href="libxml-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a> buf,
                                              <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> cur,
                                              const char *encoding);</pre><p>
 Dump an HTML document. Formating return/spaces are added.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>buf</tt></i> :</span></td><td>  the HTML buffer output
-</td></tr><tr><td><span class="term"><i><tt>cur</tt></i> :</span></td><td>  the document
-</td></tr><tr><td><span class="term"><i><tt>encoding</tt></i> :</span></td><td>  the encoding string
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>buf</tt></i> :</span></td><td>  the HTML buffer output
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>cur</tt></i> :</span></td><td>  the document
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>encoding</tt></i> :</span></td><td>  the encoding string
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="htmlDocContentDumpFormatOutput"></a>htmlDocContentDumpFormatOutput ()</h3><pre class="programlisting">void        htmlDocContentDumpFormatOutput  (<a href="libxml-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a> buf,
                                              <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> cur,
                                              const char *encoding,
                                              int format);</pre><p>
 Dump an HTML document.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>buf</tt></i> :</span></td><td>  the HTML buffer output
-</td></tr><tr><td><span class="term"><i><tt>cur</tt></i> :</span></td><td>  the document
-</td></tr><tr><td><span class="term"><i><tt>encoding</tt></i> :</span></td><td>  the encoding string
-</td></tr><tr><td><span class="term"><i><tt>format</tt></i> :</span></td><td>  should formatting spaces been added
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>buf</tt></i> :</span></td><td>  the HTML buffer output
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>cur</tt></i> :</span></td><td>  the document
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>encoding</tt></i> :</span></td><td>  the encoding string
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>format</tt></i> :</span></td><td>  should formatting spaces been added
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="htmlIsBooleanAttr"></a>htmlIsBooleanAttr ()</h3><pre class="programlisting">int         htmlIsBooleanAttr               (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name);</pre><p>
 Determine if a given attribute is a boolean attribute.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>  the name of the attribute to check
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>name</tt></i> :</span></td><td>  the name of the attribute to check
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> false if the attribute is not boolean, true otherwise.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="htmlNodeDumpOutput"></a>htmlNodeDumpOutput ()</h3><pre class="programlisting">void        htmlNodeDumpOutput              (<a href="libxml-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a> buf,
                                              <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
@@ -263,8 +263,8 @@ Determine if a given attribute is a boolean attribute.</p><p>
 Dump an HTML node, recursive behaviour,children are printed too,
 and formatting returns/spaces are added.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>buf</tt></i> :</span></td><td>  the HTML buffer output
-</td></tr><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  the document
-</td></tr><tr><td><span class="term"><i><tt>cur</tt></i> :</span></td><td>  the current node
-</td></tr><tr><td><span class="term"><i><tt>encoding</tt></i> :</span></td><td>  the encoding string
-</td></tr></tbody></table></div></div></div></div><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-HTMLparser.html"><b>&lt;&lt; HTMLparser</b></a></td><td align="right"><a accesskey="n" href="libxml-xpath.html"><b>xpath &gt;&gt;</b></a></td></tr></table></body></html>
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>buf</tt></i> :</span></td><td>  the HTML buffer output
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>doc</tt></i> :</span></td><td>  the document
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>cur</tt></i> :</span></td><td>  the current node
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>encoding</tt></i> :</span></td><td>  the encoding string
+</td></tr></tbody></table></div></div></div></div><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-list.html"><b>&lt;&lt; list</b></a></td><td align="right"><a accesskey="n" href="libxml-parserInternals.html"><b>parserInternals &gt;&gt;</b></a></td></tr></table></body></html>

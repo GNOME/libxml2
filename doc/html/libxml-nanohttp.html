@@ -1,4 +1,4 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>nanohttp</title><meta name="generator" content="DocBook XSL Stylesheets V1.58.1"><style xmlns="http://www.w3.org/TR/xhtml1/transitional" type="text/css">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>nanohttp</title><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><meta xmlns="http://www.w3.org/TR/xhtml1/transitional" name="generator" content="GTK-Doc V1.0 (XML mode)"></meta><style xmlns="http://www.w3.org/TR/xhtml1/transitional" type="text/css">
         .synopsis, .classsynopsis {
             background: #eeeeee;
             border: solid 1px #aaaaaa;
@@ -28,7 +28,7 @@
         .navigation .title {
             font-size: 200%;
         }
-      </style><link rel="home" href="index.html" title="Gnome XML Library Reference Manual"><link rel="up" href="libxml-lib.html" title="Libxml Library Reference"><link rel="previous" href="libxml-xinclude.html" title="xinclude"><link rel="next" href="libxml-nanoftp.html" title="nanoftp"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-xinclude.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></img></a></td><td><a accesskey="u" href="libxml-lib.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></img></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></img></a></td><th width="100%" align="center">Gnome XML Library Reference Manual</th><td><a accesskey="n" href="libxml-nanoftp.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></img></a></td></tr></table><div class="refentry" lang="en"><a name="libxml-nanohttp"></a><div class="titlepage"></div><div class="refnamediv"><h2>nanohttp</h2><p>nanohttp &#8212; </p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+      </style><link rel="home" href="index.html" title="[Insert name here] Reference Manual"><link rel="up" href="ch01.html" title="[Insert title here]"><link rel="previous" href="libxml-hash.html" title="hash"><link rel="next" href="libxml-relaxng.html" title="relaxng"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-hash.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></img></a></td><td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></img></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></img></a></td><th width="100%" align="center">[Insert name here] Reference Manual</th><td><a accesskey="n" href="libxml-relaxng.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></img></a></td></tr></table><div class="refentry" lang="en"><a name="libxml-nanohttp"></a><div class="titlepage"><div></div><div></div></div><div class="refnamediv"><h2><span class="refentrytitle">nanohttp</span></h2><p>nanohttp &#8212; </p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
 
 
 
@@ -79,16 +79,16 @@ the protocol host port it indicates.
 Should be like http://myproxy/ or http://myproxy:3128/
 A NULL URL cleans up proxy informations.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>URL</tt></i> :</span></td><td>  The proxy URL used to initialize the proxy context
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>URL</tt></i> :</span></td><td>  The proxy URL used to initialize the proxy context
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlNanoHTTPFetch"></a>xmlNanoHTTPFetch ()</h3><pre class="programlisting">int         xmlNanoHTTPFetch                (const char *URL,
                                              const char *filename,
                                              char **contentType);</pre><p>
 This function try to fetch the indicated resource via HTTP GET
 and save it's content in the file.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>URL</tt></i> :</span></td><td>  The URL to load
-</td></tr><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>  the filename where the content should be saved
-</td></tr><tr><td><span class="term"><i><tt>contentType</tt></i> :</span></td><td>  if available the Content-Type information will be
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>URL</tt></i> :</span></td><td>  The URL to load
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>filename</tt></i> :</span></td><td>  the filename where the content should be saved
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>contentType</tt></i> :</span></td><td>  if available the Content-Type information will be
                returned at that location
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>-1 in case of failure, 0 incase of success. The contentType,
     if provided must be freed by the caller
@@ -99,15 +99,15 @@ and save it's content in the file.</p><p>
                                              const char *headers,
                                              int ilen);</pre><p>
 This function try to open a connection to the indicated resource
-via HTTP using the given <i><tt>method</tt></i>, adding the given extra headers
+via HTTP using the given <i class="parameter"><tt>method</tt></i>, adding the given extra headers
 and the input buffer for the request content.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>URL</tt></i> :</span></td><td>  The URL to load
-</td></tr><tr><td><span class="term"><i><tt>method</tt></i> :</span></td><td>  the HTTP method to use
-</td></tr><tr><td><span class="term"><i><tt>input</tt></i> :</span></td><td>  the input string if any
-</td></tr><tr><td><span class="term"><i><tt>contentType</tt></i> :</span></td><td>  the Content-Type information IN and OUT
-</td></tr><tr><td><span class="term"><i><tt>headers</tt></i> :</span></td><td>  the extra headers
-</td></tr><tr><td><span class="term"><i><tt>ilen</tt></i> :</span></td><td>  input length
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>URL</tt></i> :</span></td><td>  The URL to load
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>method</tt></i> :</span></td><td>  the HTTP method to use
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>input</tt></i> :</span></td><td>  the input string if any
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>contentType</tt></i> :</span></td><td>  the Content-Type information IN and OUT
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>headers</tt></i> :</span></td><td>  the extra headers
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>ilen</tt></i> :</span></td><td>  input length
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlNanoHTTPMethodRedir"></a>xmlNanoHTTPMethodRedir ()</h3><pre class="programlisting">void*       xmlNanoHTTPMethodRedir          (const char *URL,
                                              const char *method,
                                              const char *input,
@@ -116,23 +116,23 @@ and the input buffer for the request content.</p><p>
                                              const char *headers,
                                              int ilen);</pre><p>
 This function try to open a connection to the indicated resource
-via HTTP using the given <i><tt>method</tt></i>, adding the given extra headers
+via HTTP using the given <i class="parameter"><tt>method</tt></i>, adding the given extra headers
 and the input buffer for the request content.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>URL</tt></i> :</span></td><td>  The URL to load
-</td></tr><tr><td><span class="term"><i><tt>method</tt></i> :</span></td><td>  the HTTP method to use
-</td></tr><tr><td><span class="term"><i><tt>input</tt></i> :</span></td><td>  the input string if any
-</td></tr><tr><td><span class="term"><i><tt>contentType</tt></i> :</span></td><td>  the Content-Type information IN and OUT
-</td></tr><tr><td><span class="term"><i><tt>redir</tt></i> :</span></td><td>  the redirected URL OUT
-</td></tr><tr><td><span class="term"><i><tt>headers</tt></i> :</span></td><td>  the extra headers
-</td></tr><tr><td><span class="term"><i><tt>ilen</tt></i> :</span></td><td>  input length
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>URL</tt></i> :</span></td><td>  The URL to load
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>method</tt></i> :</span></td><td>  the HTTP method to use
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>input</tt></i> :</span></td><td>  the input string if any
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>contentType</tt></i> :</span></td><td>  the Content-Type information IN and OUT
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>redir</tt></i> :</span></td><td>  the redirected URL OUT
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>headers</tt></i> :</span></td><td>  the extra headers
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>ilen</tt></i> :</span></td><td>  input length
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlNanoHTTPOpen"></a>xmlNanoHTTPOpen ()</h3><pre class="programlisting">void*       xmlNanoHTTPOpen                 (const char *URL,
                                              char **contentType);</pre><p>
 This function try to open a connection to the indicated resource
 via HTTP GET.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>URL</tt></i> :</span></td><td>  The URL to load
-</td></tr><tr><td><span class="term"><i><tt>contentType</tt></i> :</span></td><td>  if available the Content-Type information will be
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>URL</tt></i> :</span></td><td>  The URL to load
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>contentType</tt></i> :</span></td><td>  if available the Content-Type information will be
                returned at that location
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlNanoHTTPOpenRedir"></a>xmlNanoHTTPOpenRedir ()</h3><pre class="programlisting">void*       xmlNanoHTTPOpenRedir            (const char *URL,
                                              char **contentType,
@@ -140,30 +140,30 @@ via HTTP GET.</p><p>
 This function try to open a connection to the indicated resource
 via HTTP GET.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>URL</tt></i> :</span></td><td>  The URL to load
-</td></tr><tr><td><span class="term"><i><tt>contentType</tt></i> :</span></td><td>  if available the Content-Type information will be
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>URL</tt></i> :</span></td><td>  The URL to load
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>contentType</tt></i> :</span></td><td>  if available the Content-Type information will be
                returned at that location
-</td></tr><tr><td><span class="term"><i><tt>redir</tt></i> :</span></td><td> if available the redirected URL will be returned
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>redir</tt></i> :</span></td><td> if available the redirected URL will be returned
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlNanoHTTPReturnCode"></a>xmlNanoHTTPReturnCode ()</h3><pre class="programlisting">int         xmlNanoHTTPReturnCode           (void *ctx);</pre><p>
 Get the latest HTTP return code received</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  the HTTP context
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ctx</tt></i> :</span></td><td>  the HTTP context
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the HTTP return code for the request.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlNanoHTTPAuthHeader"></a>xmlNanoHTTPAuthHeader ()</h3><pre class="programlisting">const char* xmlNanoHTTPAuthHeader           (void *ctx);</pre><p>
 Get the authentication header of an HTTP context</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  the HTTP context
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ctx</tt></i> :</span></td><td>  the HTTP context
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the stashed value of the WWW-Authenticate or Proxy-Authenticate
 header.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlNanoHTTPRead"></a>xmlNanoHTTPRead ()</h3><pre class="programlisting">int         xmlNanoHTTPRead                 (void *ctx,
                                              void *dest,
                                              int len);</pre><p>
-This function tries to read <i><tt>len</tt></i> bytes from the existing HTTP connection
-and saves them in <i><tt>dest</tt></i>. This is a blocking call.</p><p>
+This function tries to read <i class="parameter"><tt>len</tt></i> bytes from the existing HTTP connection
+and saves them in <i class="parameter"><tt>dest</tt></i>. This is a blocking call.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  the HTTP context
-</td></tr><tr><td><span class="term"><i><tt>dest</tt></i> :</span></td><td>  a buffer
-</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>  the buffer length
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ctx</tt></i> :</span></td><td>  the HTTP context
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>dest</tt></i> :</span></td><td>  a buffer
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>len</tt></i> :</span></td><td>  the buffer length
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the number of byte read. 0 is an indication of an end of connection.
         -1 indicates a parameter error.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlNanoHTTPSave"></a>xmlNanoHTTPSave ()</h3><pre class="programlisting">int         xmlNanoHTTPSave                 (void *ctxt,
@@ -171,12 +171,12 @@ and saves them in <i><tt>dest</tt></i>. This is a blocking call.</p><p>
 This function saves the output of the HTTP transaction to a file
 It closes and free the context at the end</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the HTTP context
-</td></tr><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>  the filename where the content should be saved
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ctxt</tt></i> :</span></td><td>  the HTTP context
+</td></tr><tr><td><span class="term"><i class="parameter"><tt>filename</tt></i> :</span></td><td>  the filename where the content should be saved
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>-1 in case of failure, 0 incase of success.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlNanoHTTPClose"></a>xmlNanoHTTPClose ()</h3><pre class="programlisting">void        xmlNanoHTTPClose                (void *ctx);</pre><p>
 This function closes an HTTP context, it ends up the connection and
 free all data related to it.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  the HTTP context
-</td></tr></tbody></table></div></div></div></div><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-xinclude.html"><b>&lt;&lt; xinclude</b></a></td><td align="right"><a accesskey="n" href="libxml-nanoftp.html"><b>nanoftp &gt;&gt;</b></a></td></tr></table></body></html>
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>ctx</tt></i> :</span></td><td>  the HTTP context
+</td></tr></tbody></table></div></div></div></div><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-hash.html"><b>&lt;&lt; hash</b></a></td><td align="right"><a accesskey="n" href="libxml-relaxng.html"><b>relaxng &gt;&gt;</b></a></td></tr></table></body></html>

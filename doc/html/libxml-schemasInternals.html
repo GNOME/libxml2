@@ -1,4 +1,4 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>schemasInternals</title><meta name="generator" content="DocBook XSL Stylesheets V1.58.1"><style xmlns="http://www.w3.org/TR/xhtml1/transitional" type="text/css">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>schemasInternals</title><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><meta xmlns="http://www.w3.org/TR/xhtml1/transitional" name="generator" content="GTK-Doc V1.0 (XML mode)"></meta><style xmlns="http://www.w3.org/TR/xhtml1/transitional" type="text/css">
         .synopsis, .classsynopsis {
             background: #eeeeee;
             border: solid 1px #aaaaaa;
@@ -28,7 +28,7 @@
         .navigation .title {
             font-size: 200%;
         }
-      </style><link rel="home" href="index.html" title="Gnome XML Library Reference Manual"><link rel="up" href="libxml-lib.html" title="Libxml Library Reference"><link rel="previous" href="libxml-xmlschemastypes.html" title="xmlschemastypes"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-xmlschemastypes.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></img></a></td><td><a accesskey="u" href="libxml-lib.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></img></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></img></a></td><th width="100%" align="center">Gnome XML Library Reference Manual</th></tr></table><div class="refentry" lang="en"><a name="libxml-schemasInternals"></a><div class="titlepage"></div><div class="refnamediv"><h2>schemasInternals</h2><p>schemasInternals &#8212; </p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+      </style><link rel="home" href="index.html" title="[Insert name here] Reference Manual"><link rel="up" href="ch01.html" title="[Insert title here]"><link rel="previous" href="libxml-nanoftp.html" title="nanoftp"><link rel="next" href="libxml-threads.html" title="threads"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-nanoftp.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></img></a></td><td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></img></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></img></a></td><th width="100%" align="center">[Insert name here] Reference Manual</th><td><a accesskey="n" href="libxml-threads.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></img></a></td></tr></table><div class="refentry" lang="en"><a name="libxml-schemasInternals"></a><div class="titlepage"><div></div><div></div></div><div class="refnamediv"><h2><span class="refentrytitle">schemasInternals</span></h2><p>schemasInternals &#8212; </p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
 
 
 
@@ -67,7 +67,7 @@ struct      <a href="libxml-schemasInternals.html#xmlSchemaNotation">xmlSchemaNo
 typedef     <a href="libxml-schemasInternals.html#xmlSchemaNotationPtr">xmlSchemaNotationPtr</a>;
 #define     <a href="libxml-schemasInternals.html#XML-SCHEMAS-QUALIF-ELEM-CAPS">XML_SCHEMAS_QUALIF_ELEM</a>
 #define     <a href="libxml-schemasInternals.html#XML-SCHEMAS-QUALIF-ATTR-CAPS">XML_SCHEMAS_QUALIF_ATTR</a>
-struct      <a href="libxml-xmlschemas.html#xmlSchema">xmlSchema</a>;
+struct      <a href="libxml-schemasInternals.html#xmlSchema">xmlSchema</a>;
 void        <a href="libxml-schemasInternals.html#xmlSchemaFreeType">xmlSchemaFreeType</a>               (<a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a> type);
 </pre></div><div class="refsect1" lang="en"><h2>Description</h2><p>
 
@@ -125,6 +125,7 @@ void        <a href="libxml-schemasInternals.html#xmlSchemaFreeType">xmlSchemaFr
 </pre><p>
 
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaType"></a>struct xmlSchemaType</h3><pre class="programlisting">struct xmlSchemaType {
+
     xmlSchemaTypeType type;	/* The kind of type */
     struct _xmlSchemaType *next;/* the next type if in a sequence ... */
     xmlChar *name;
@@ -151,6 +152,7 @@ void        <a href="libxml-schemasInternals.html#xmlSchemaFreeType">xmlSchemaFr
 </pre><p>
 
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaFacet"></a>struct xmlSchemaFacet</h3><pre class="programlisting">struct xmlSchemaFacet {
+
     xmlSchemaTypeType type;	/* The kind of type */
     struct _xmlSchemaFacet *next;/* the next type if in a sequence ... */
     xmlChar *value;
@@ -168,6 +170,7 @@ void        <a href="libxml-schemasInternals.html#xmlSchemaFreeType">xmlSchemaFr
 </pre><p>
 
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaAnnot"></a>struct xmlSchemaAnnot</h3><pre class="programlisting">struct xmlSchemaAnnot {
+
     struct _xmlSchemaAnnot *next;
     xmlNodePtr content;         /* the annotation */
 };
@@ -186,6 +189,7 @@ void        <a href="libxml-schemasInternals.html#xmlSchemaFreeType">xmlSchemaFr
 </pre><p>
 
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaAttribute"></a>struct xmlSchemaAttribute</h3><pre class="programlisting">struct xmlSchemaAttribute {
+
     xmlSchemaTypeType type;	/* The kind of type */
     struct _xmlSchemaAttribute *next;/* the next attribute if in a group ... */
     xmlChar *name;
@@ -208,6 +212,7 @@ void        <a href="libxml-schemasInternals.html#xmlSchemaFreeType">xmlSchemaFr
 </pre><p>
 
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaAttributeGroup"></a>struct xmlSchemaAttributeGroup</h3><pre class="programlisting">struct xmlSchemaAttributeGroup {
+
     xmlSchemaTypeType type;	/* The kind of type */
     struct _xmlSchemaAttribute *next;/* the next attribute if in a group ... */
     xmlChar *name;
@@ -257,6 +262,7 @@ the element is top level</p><p>
 the element is a reference to a type</p><p>
 
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaElement"></a>struct xmlSchemaElement</h3><pre class="programlisting">struct xmlSchemaElement {
+
     xmlSchemaTypeType type;	/* The kind of type */
     struct _xmlSchemaType *next;/* the next type if in a sequence ... */
     xmlChar *name;
@@ -302,6 +308,7 @@ structures must be kept similar</p><p>
 </pre><p>
 
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaNotation"></a>struct xmlSchemaNotation</h3><pre class="programlisting">struct xmlSchemaNotation {
+
     xmlSchemaTypeType type;	/* The kind of type */
     xmlChar *name;
     xmlSchemaAnnotPtr annot;
@@ -321,6 +328,7 @@ the shemas requires qualified elements</p><p>
 the shemas requires qualified attributes</p><p>
 
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchema"></a>struct xmlSchema</h3><pre class="programlisting">struct xmlSchema {
+
     xmlChar *name;        /* schema name */
     xmlChar *targetNamespace;     /* the target namespace */
     xmlChar *version;
@@ -345,5 +353,5 @@ the shemas requires qualified attributes</p><p>
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaFreeType"></a>xmlSchemaFreeType ()</h3><pre class="programlisting">void        xmlSchemaFreeType               (<a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a> type);</pre><p>
 Deallocate a Schema Type structure.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>type</tt></i> :</span></td><td>  a schema type structure
-</td></tr></tbody></table></div></div></div></div><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-xmlschemastypes.html"><b>&lt;&lt; xmlschemastypes</b></a></td><td align="right"></td></tr></table></body></html>
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>type</tt></i> :</span></td><td>  a schema type structure
+</td></tr></tbody></table></div></div></div></div><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-nanoftp.html"><b>&lt;&lt; nanoftp</b></a></td><td align="right"><a accesskey="n" href="libxml-threads.html"><b>threads &gt;&gt;</b></a></td></tr></table></body></html>

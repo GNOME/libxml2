@@ -3655,6 +3655,18 @@ cont:
 	    break;
 	case XML_ELEMENT_CONTENT_OR:
 	    /*
+	     * Small optimization.
+	     */
+	    if (CONT->c1->type == XML_ELEMENT_CONTENT_ELEMENT) {
+		if ((NODE == NULL) ||
+		    (!xmlStrEqual(NODE->name, CONT->c1->name))) {
+		    DEPTH++;
+		    CONT = CONT->c2;
+		    goto cont;
+		}
+	    }
+
+	    /*
 	     * save the second branch 'or' branch
 	     */
 	    DEBUG_VALID_MSG("saving 'or' branch");

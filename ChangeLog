@@ -1,3 +1,9 @@
+Fri Apr 20 15:46:04 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* valid.c: removed a state explosion exhibited by RSS
+	* test/valid/rss.xml result/valid/rss.xml*: added the testcase
+	  from bug #51872
+
 Fri Apr 20 14:52:44 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* valid.[ch] tree.h: worked *hard* to get non-determinist content

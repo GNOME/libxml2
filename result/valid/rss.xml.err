@@ -1,0 +1,3 @@
+./test/valid/rss.xml:178: validity error: Element rss doesn't carry attribute version
+</rss>
+     ^

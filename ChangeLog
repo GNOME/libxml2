@@ -1,3 +1,8 @@
+Wed Feb 16 13:24:35 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c: Further work on IDCs, especially evaluation for
+	  attribute nodes.
+
 Wed Feb 16 01:19:27 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* encoding.c: fix the comment to describe the real return values

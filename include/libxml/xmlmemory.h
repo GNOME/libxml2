@@ -39,13 +39,6 @@
  * libxml i.e. if libxml has been configured with --with-debug-mem too
  */
 #ifdef DEBUG_MEMORY_LOCATION
-
-/**
- * MEM_LIST:
- *
- * keep track of all allocated blocks for error reporting 
- */
-#define MEM_LIST /* keep a list of all the allocated memory blocks */
 #endif
 
 #ifdef __cplusplus

@@ -1,3 +1,8 @@
+Wed Feb  6 17:04:51 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* python/TODO python/libxml.c: cleanup the extension function lookup
+	* xmlmemory.c include/libxml/xmlmemory.h: always compile the list
+
 Tue Feb  5 17:33:30 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in python/Makefile.am: do not install outside

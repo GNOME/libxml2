@@ -13,6 +13,8 @@ Things to do:
 - access to XPath variables
 - xmlBuffer exposure
 - xpathContext, being able to set/get info and clean it up
+- more work needed on context handling for function lookup
+  and use of an hash table.
 - add regression tests
    - SAX flow
 - DTD element and attributes content accesses

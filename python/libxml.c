@@ -769,18 +769,42 @@ static libxml_xpathCallback libxml_xpathCallbacks[10];
 static int libxml_xpathCallbacksNb = 0;
 static int libxml_xpathCallbacksMax = 10;
 
-/* TODO: this is not reentrant !!! MUST FIX with a per context hash */
-static PyObject *current_function = NULL;
-
 static void
 libxml_xmlXPathFuncCallback(xmlXPathParserContextPtr ctxt, int nargs) {
     PyObject *list, *cur, *result;
     xmlXPathObjectPtr obj;
+    xmlXPathContextPtr rctxt;
+    PyObject *current_function = NULL;
+    const xmlChar *name;
+    const xmlChar *ns_uri;
     int i;
 
+    if (ctxt == NULL)
+	return;
+    rctxt = ctxt->context;
+    if (rctxt == NULL)
+	return;
+    name = rctxt->function;
+    ns_uri = rctxt->functionURI;
 #ifdef DEBUG_XPATH
-    printf("libxml_xmlXPathFuncCallback called\n");
+    printf("libxml_xmlXPathFuncCallback called name %s URI %s\n", name, ns_uri);
 #endif
+
+    /*
+     * Find the function, it should be there it was there at lookup
+     */
+    for (i = 0;i < libxml_xpathCallbacksNb;i++) {
+	if (/* TODO (ctxt == libxml_xpathCallbacks[i].ctx) && */
+	    (xmlStrEqual(name, libxml_xpathCallbacks[i].name)) &&
+	    (xmlStrEqual(ns_uri, libxml_xpathCallbacks[i].ns_uri))) {
+	    current_function = libxml_xpathCallbacks[i].function;
+	}
+    }
+    if (current_function == NULL) {
+	printf("libxml_xmlXPathFuncCallback: internal error %s not found !\n",
+	       name);
+	return;
+    }
 
     list = PyTuple_New(nargs);
     for (i = 0;i < nargs;i++) {
@@ -803,15 +827,19 @@ libxml_xmlXPathFuncLookupFunc(void *ctxt, const xmlChar *name,
     printf("libxml_xmlXPathFuncLookupFunc(%p, %s, %s) called\n",
 	   ctxt, name, ns_uri);
 #endif
+    /*
+     * This is called once only. The address is then stored in the
+     * XPath expression evaluation, the proper object to call can
+     * then still be found using the execution context function
+     * and functionURI fields.
+     */
     for (i = 0;i < libxml_xpathCallbacksNb;i++) {
 	if ((ctxt == libxml_xpathCallbacks[i].ctx) &&
 	    (xmlStrEqual(name, libxml_xpathCallbacks[i].name)) &&
 	    (xmlStrEqual(ns_uri, libxml_xpathCallbacks[i].ns_uri))) {
-	    current_function = libxml_xpathCallbacks[i].function;
 	    return(libxml_xmlXPathFuncCallback);
 	}
     }
-    current_function = NULL;
     return(NULL);
 }
 
@@ -832,7 +860,6 @@ libxml_xpathCallbacksInitialize(void) {
 	libxml_xpathCallbacks[i].ns_uri = NULL;
 	libxml_xpathCallbacks[i].function = NULL;
     }
-    current_function = NULL;
     libxml_xpathCallbacksInitialized = 1;
 }
 

@@ -24,6 +24,15 @@
 #include <ctype.h>
 #endif
 
+/**
+ * MEM_LIST:
+ *
+ * keep track of all allocated blocks for error reporting 
+ * Always build the memory list !
+ */
+#ifndef MEM_LIST
+#define MEM_LIST /* keep a list of all the allocated memory blocks */
+#endif
 
 #include <libxml/xmlmemory.h>
 #include <libxml/globals.h>
@@ -638,7 +647,6 @@ static FILE *xmlMemoryDumpFile = NULL;
 void
 xmlMemoryDump(void)
 {
-#if defined(DEBUG_MEMORY_LOCATION) | defined(DEBUG_MEMORY)
     FILE *dump;
 
     dump = fopen(".memdump", "w");
@@ -649,7 +657,6 @@ xmlMemoryDump(void)
     xmlMemDisplay(xmlMemoryDumpFile);
 
     if (dump != NULL) fclose(dump);
-#endif
 }
 
 

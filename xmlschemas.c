@@ -8373,40 +8373,61 @@ xmlSchemaCheckFacet(xmlSchemaFacetPtr facet,
         case XML_SCHEMA_FACET_MININCLUSIVE:
         case XML_SCHEMA_FACET_MINEXCLUSIVE:
         case XML_SCHEMA_FACET_MAXINCLUSIVE:
-        case XML_SCHEMA_FACET_MAXEXCLUSIVE:{
+        case XML_SCHEMA_FACET_MAXEXCLUSIVE:
+	case XML_SCHEMA_FACET_ENUMERATION: {
                 /*
                  * Okay we need to validate the value
                  * at that point.
                  */
                 xmlSchemaValidCtxtPtr vctxt;
 		xmlSchemaTypePtr base;
-		
+
+		/* 4.3.5.5 Constraints on enumeration Schema Components
+		* Schema Component Constraint: enumeration valid restriction
+		* It is an ·error· if any member of {value} is not in the 
+		* ·value space· of {base type definition}. 
+		*
+		* minInclusive, maxInclusive, minExclusive, maxExclusive:
+		* The value ·must· be in the 
+		* ·value space· of the ·base type·. 
+		*/
+		/*
+		* This function is intended to deliver a compiled value
+		* on the facet. In XML Schemas the type holding a facet, 
+		* cannot be a built-in type. Thus to ensure that other API
+		* calls (relaxng) do work, if the given type is a built-in 
+		* type, we will assume that the given built-in type *is
+		* already* the base type.		
+		*/
+		if (typeDecl->type != XML_SCHEMA_TYPE_BASIC) {
+		    base = typeDecl->baseType;
+		    if (base == NULL) {
+			xmlSchemaPErr(ctxt, typeDecl->node,
+			    XML_SCHEMAS_ERR_INTERNAL,
+			    "Internal error: xmlSchemaCheckFacet, "
+			    "the type \"%s\" has no base type.\n",
+			    typeDecl->name, NULL);
+			return (-1);
+		    }		
+		} else
+		    base = typeDecl;
 		/*
 		* TODO: Try to avoid creating a new context.
 		*/
                 vctxt = xmlSchemaNewValidCtxt(NULL);
-                if (vctxt == NULL)
-                    break;		
-                /* xmlSchemaValidateSimpleValue(vctxt, typeDecl,
-                                             facet->value);
-		*/
-		/* The value ·must· be in the 
-		* ·value space· of the ·base type·. 
-		*/
-		base = typeDecl->baseType;
-		if (base == NULL) {
+                if (vctxt == NULL) {
 		    xmlSchemaPErr(ctxt, typeDecl->node,
 			XML_SCHEMAS_ERR_INTERNAL,
 			"Internal error: xmlSchemaCheckFacet, "
-			"the type \"%s\" has no base type.\n",
+			"creating a new validation context.\n",
 			typeDecl->name, NULL);
-		    return (-1);
+                    return (-1);	
 		}
 		vctxt->type = base;
-		xmlSchemaValidateSimpleTypeValue(vctxt, facet->value, 0, 1);
-                facet->val = vctxt->value;
-                vctxt->value = NULL;
-                if (facet->val == NULL) {
+		ret = xmlSchemaValidateSimpleTypeValue(vctxt, facet->value, 0, 1);
+		facet->val = vctxt->value;
+		vctxt->value = NULL;		
+                if (ret > 0) {
                     /* error code */
                     if (ctxt != NULL) {
                         xmlSchemaPErrExt(ctxt, facet->node,
@@ -8419,24 +8440,38 @@ xmlSchemaCheckFacet(xmlSchemaFacetPtr facet,
 			    NULL, NULL);
                     }
                     ret = -1;
-                }
-                xmlSchemaFreeValidCtxt(vctxt);
+                } else if (ret < 0) {
+		    xmlSchemaPErrExt(ctxt, facet->node,
+			XML_SCHEMAS_ERR_INTERNAL,
+			NULL, NULL, NULL,
+			"Internal error: xmlSchemaCheckFacet, "
+			"failed to validate the value \"%s\" name of the "
+			"facet \"%s\" against the base type \"%s\".\n",
+			facet->value, 
+			BAD_CAST xmlSchemaFacetTypeToString(facet->type),
+			base->name, NULL, NULL); 
+		    ret = -1;
+		}                				
+		xmlSchemaFreeValidCtxt(vctxt);
                 break;
             }
+	/*
+	* Removed, since added to the case above.
+	*
         case XML_SCHEMA_FACET_ENUMERATION:{
-                /*
+                *
                  * Okay we need to validate the value
                  * at that point.
-                 */
+                 *
                 xmlSchemaValidCtxtPtr vctxt;
                 int tmp;
 		xmlSchemaTypePtr base;
 
-		/* 4.3.5.5 Constraints on enumeration Schema Components
+		* 4.3.5.5 Constraints on enumeration Schema Components
 		* Schema Component Constraint: enumeration valid restriction
 		* It is an ·error· if any member of {value} is not in the 
 		* ·value space· of {base type definition}. 
-		*/
+		*
                 vctxt = xmlSchemaNewValidCtxt(NULL);
                 if (vctxt == NULL)
                     break;
@@ -8451,9 +8486,9 @@ xmlSchemaCheckFacet(xmlSchemaFacetPtr facet,
 		}
 		vctxt->type = base;
 		tmp = xmlSchemaValidateSimpleTypeValue(vctxt, facet->value, 0, 1);
-                /* tmp = xmlSchemaValidateSimpleValue(vctxt, typeDecl,
+                * tmp = xmlSchemaValidateSimpleValue(vctxt, typeDecl,
                                                    facet->value);
-		*/
+		*
                 if (tmp != 0) {
                     if (ctxt != NULL) {
                         xmlSchemaPErr(ctxt, facet->node,
@@ -8467,6 +8502,7 @@ xmlSchemaCheckFacet(xmlSchemaFacetPtr facet,
                 xmlSchemaFreeValidCtxt(vctxt);
                 break;
             }
+	*/
         case XML_SCHEMA_FACET_PATTERN:
             facet->regexp = xmlRegexpCompile(facet->value);
             if (facet->regexp == NULL) {

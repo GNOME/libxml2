@@ -1,3 +1,8 @@
+Mon Jul  5 15:09:17 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemas.c: applied patch from Kasimier to fix some Relax-NG
+	  datatype facet problem with recent changes.
+
 Sat Jul  3 11:31:02 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* python/libxml.c: Changed the number of XPath extension functions

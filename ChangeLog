@@ -1,3 +1,8 @@
+Tue Oct  7 14:16:45 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c include/libxml/xmlerror.h: last cleanup of error
+	  handling in the Relax-NG module.
+
 Tue Oct  7 13:30:39 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* error.c relaxng.c include/libxml/xmlerror.h: switched Relax-NG

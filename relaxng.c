@@ -2157,74 +2157,6 @@ xmlRelaxNGGetErrorString(xmlRelaxNGValidErr err, const xmlChar * arg1,
 }
 
 /**
- * xmlRelaxNGValidErrorContext:
- * @ctxt:  the validation context
- * @node:  the node
- * @child:  the node child generating the problem.
- *
- * Dump informations about the kocation of the error in the instance
- */
-static void
-xmlRelaxNGValidErrorContext(xmlRelaxNGValidCtxtPtr ctxt, xmlNodePtr node,
-                            xmlNodePtr child)
-{
-    int line = 0;
-    const xmlChar *file = NULL;
-    const xmlChar *name = NULL;
-    const char *type = "error";
-
-    if ((ctxt == NULL) || (ctxt->error == NULL))
-        return;
-
-    if (child != NULL)
-        node = child;
-
-    if (node != NULL) {
-        if ((node->type == XML_DOCUMENT_NODE) ||
-            (node->type == XML_HTML_DOCUMENT_NODE)) {
-            xmlDocPtr doc = (xmlDocPtr) node;
-
-            file = doc->URL;
-        } else {
-            /*
-             * Try to find contextual informations to report
-             */
-            if (node->type == XML_ELEMENT_NODE) {
-                line = (long) node->content;
-            } else if ((node->prev != NULL) &&
-                       (node->prev->type == XML_ELEMENT_NODE)) {
-                line = (long) node->prev->content;
-            } else if ((node->parent != NULL) &&
-                       (node->parent->type == XML_ELEMENT_NODE)) {
-                line = (long) node->parent->content;
-            }
-            if ((node->doc != NULL) && (node->doc->URL != NULL))
-                file = node->doc->URL;
-            if (node->name != NULL)
-                name = node->name;
-        }
-    }
-
-    type = "RNG validity error";
-
-    if ((file != NULL) && (line != 0) && (name != NULL))
-        ctxt->error(ctxt->userData, "%s: file %s line %d element %s\n",
-                    type, file, line, name);
-    else if ((file != NULL) && (name != NULL))
-        ctxt->error(ctxt->userData, "%s: file %s element %s\n",
-                    type, file, name);
-    else if ((file != NULL) && (line != 0))
-        ctxt->error(ctxt->userData, "%s: file %s line %d\n", type, file,
-                    line);
-    else if (file != NULL)
-        ctxt->error(ctxt->userData, "%s: file %s\n", type, file);
-    else if (name != NULL)
-        ctxt->error(ctxt->userData, "%s: element %s\n", type, name);
-    else
-        ctxt->error(ctxt->userData, "%s\n", type);
-}
-
-/**
  * xmlRelaxNGShowValidError:
  * @ctxt:  the validation context
  * @err:  the error number
@@ -4840,16 +4772,14 @@ xmlRelaxNGParsePattern(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node)
                     xmlHashLookup(ctxt->grammar->refs, def->name);
                 if (prev == NULL) {
                     if (def->name != NULL) {
-                        if (ctxt->error != NULL)
-                            ctxt->error(ctxt->userData,
-                                        "Error refs definitions '%s'\n",
-                                        def->name);
+		        xmlRngPErr(ctxt, node, XML_RNGP_REF_CREATE_FAILED,
+				   "Error refs definitions '%s'\n",
+				   def->name, NULL);
                     } else {
-                        if (ctxt->error != NULL)
-                            ctxt->error(ctxt->userData,
-                                        "Error refs definitions\n");
+		        xmlRngPErr(ctxt, node, XML_RNGP_REF_CREATE_FAILED,
+				   "Error refs definitions\n",
+				   NULL, NULL);
                     }
-                    ctxt->nbErrors++;
                     def = NULL;
                 } else {
                     def->nextHash = prev->nextHash;
@@ -5184,16 +5114,14 @@ xmlRelaxNGParseNameClass(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node,
         val = xmlNodeGetContent(node);
         xmlRelaxNGNormExtSpace(val);
         if (xmlValidateNCName(val, 0)) {
-            if (ctxt->error != NULL) {
-                if (node->parent != NULL)
-                    ctxt->error(ctxt->userData,
-                                "Element %s name '%s' is not an NCName\n",
-                                node->parent->name, val);
-                else
-                    ctxt->error(ctxt->userData,
-                                "name '%s' is not an NCName\n", val);
-            }
-            ctxt->nbErrors++;
+	    if (node->parent != NULL)
+		xmlRngPErr(ctxt, node, XML_RNGP_ELEMENT_NAME,
+			   "Element %s name '%s' is not an NCName\n",
+			   node->parent->name, val);
+	    else
+		xmlRngPErr(ctxt, node, XML_RNGP_ELEMENT_NAME,
+			   "name '%s' is not an NCName\n",
+			   val, NULL);
         }
         ret->name = val;
         val = xmlGetProp(node, BAD_CAST "ns");
@@ -5201,18 +5129,16 @@ xmlRelaxNGParseNameClass(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node,
         if ((ctxt->flags & XML_RELAXNG_IN_ATTRIBUTE) &&
             (val != NULL) &&
             (xmlStrEqual(val, BAD_CAST "http://www.w3.org/2000/xmlns"))) {
-            ctxt->error(ctxt->userData,
+	    xmlRngPErr(ctxt, node, XML_RNGP_XML_NS,
                         "Attribute with namespace '%s' is not allowed\n",
-                        val);
-            ctxt->nbErrors++;
+                        val, NULL);
         }
         if ((ctxt->flags & XML_RELAXNG_IN_ATTRIBUTE) &&
             (val != NULL) &&
             (val[0] == 0) && (xmlStrEqual(ret->name, BAD_CAST "xmlns"))) {
-            ctxt->error(ctxt->userData,
-                        "Attribute with QName 'xmlns' is not allowed\n",
-                        val);
-            ctxt->nbErrors++;
+	    xmlRngPErr(ctxt, node, XML_RNGP_XMLNS_NAME,
+                       "Attribute with QName 'xmlns' is not allowed\n",
+                       val, NULL);
         }
     } else if (IS_RELAXNG(node, "anyName")) {
         ret->name = NULL;

@@ -17,6 +17,12 @@ to test those
 
 
 
+2.5.1: Jan 8 2003:
+   - Fixes a memory leak and configuration/compilation problems in 2.5.0
+   - documentation updates (John)
+   - a couple of XmlTextReader fixes
+
+
 2.5.0: Jan 6 2003:
    - New XmltextReader interface based on C#
     API (with help of Stéphane Bidoul)

@@ -589,6 +589,13 @@ to test those</p>
     Schemas</a> and <a href="http://www.w3.org/TR/xinclude">XInclude</a></li>
 </ul>
 
+<h3>2.5.1: Jan 8 2003</h3>
+<ul>
+  <li>Fixes a memory leak and configuration/compilation problems in 2.5.0</li>
+  <li>documentation updates (John)</li>
+  <li>a couple of XmlTextReader fixes</li>
+</ul>
+
 <h3>2.5.0: Jan 6 2003</h3>
 <ul>
   <li>New <a href="xmlreader.html">XmltextReader interface</a> based on C#
@@ -2766,6 +2773,7 @@ xmlOutputBufferCreateOwn(FILE *file, xmlCharEncodingHandlerPtr encoder) {
         ret-&gt;closecallback = NULL;  /* No close callback */
     }
     return(ret); <br>
+
 
 
 

@@ -374,7 +374,9 @@ getEntity(void *ctx, const xmlChar *name)
     } else {
 	ret = xmlGetDocEntity(ctxt->myDoc, name);
     }
-    if ((ret != NULL) && (ctxt->validate) && (ret->children == NULL) &&
+    if ((ret != NULL) &&
+	((ctxt->validate) || (ctxt->replaceEntities)) &&
+	(ret->children == NULL) &&
 	(ret->etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY)) {
 	/*
 	 * for validation purposes we really need to fetch and

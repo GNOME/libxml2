@@ -9477,6 +9477,7 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
     ctxt = xmlCreateEntityParserCtxt(URL, ID, NULL);
     if (ctxt == NULL) return(-1);
     ctxt->userData = ctxt;
+    ctxt->_private = ctx->_private;
     oldsax = ctxt->sax;
     ctxt->sax = ctx->sax;
     newDoc = xmlNewDoc(BAD_CAST "1.0");

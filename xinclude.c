@@ -1079,6 +1079,16 @@ xmlXIncludeMergeEntity(xmlEntityPtr ent, xmlXIncludeMergeDataPtr data,
     }
     return;
 error:
+    switch (ent->etype) {
+        case XML_INTERNAL_PARAMETER_ENTITY:
+        case XML_EXTERNAL_PARAMETER_ENTITY:
+        case XML_INTERNAL_PREDEFINED_ENTITY:
+        case XML_INTERNAL_GENERAL_ENTITY:
+        case XML_EXTERNAL_GENERAL_PARSED_ENTITY:
+	    return;
+        case XML_EXTERNAL_GENERAL_UNPARSED_ENTITY:
+	    break;
+    }
     xmlGenericError(xmlGenericErrorContext,
 		"XInclude: mismatch in redefinition of entity %s\n", ent->name);
     ctxt->nbErrors++;

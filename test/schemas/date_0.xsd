@@ -78,8 +78,8 @@
           <xsd:element name="mon1">
             <xsd:simpleType>
               <xsd:restriction base="xsd:gMonth">
-                <xsd:maxInclusive value="--01--Z"/>
-                <xsd:minInclusive value="--05--Z"/>
+                <xsd:maxInclusive value="--01Z"/>
+                <xsd:minInclusive value="--05Z"/>
               </xsd:restriction>
             </xsd:simpleType>
           </xsd:element>

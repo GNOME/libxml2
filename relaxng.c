@@ -55,6 +55,7 @@ static const xmlChar *xmlRelaxNGNs = (const xmlChar *)
 /* #define DEBUG_INTERLEAVE 1 */
 /* #define DEBUG_LIST 1 */
 /* #define DEBUG_INCLUDE */
+/* #define DEBUG_ERROR 1 */
 
 #define UNBOUNDED (1 << 30)
 #define TODO 								\
@@ -327,6 +328,7 @@ struct _xmlRelaxNGValidCtxt {
     int                     flags;	/* validation flags */
     int                     depth;	/* validation depth */
     int                     idref;	/* requires idref checking */
+    int                     errNo;	/* the first error found */
 
     /*
      * Errors accumulated in branches may have to be stacked to be
@@ -1547,6 +1549,10 @@ xmlRelaxNGValidErrorPush(xmlRelaxNGValidCtxtPtr ctxt, xmlRelaxNGValidErr err,
 	const xmlChar *arg1, const xmlChar *arg2, int dup)
 {
     xmlRelaxNGValidErrorPtr cur;
+#ifdef DEBUG_ERROR
+    xmlGenericError(xmlGenericErrorContext,
+	    "Pushing error %d at %d on stack\n", err, ctxt->errNr);
+#endif
     if (ctxt->errTab == NULL) {
 	ctxt->errMax = 8;
 	ctxt->errNr = 0;
@@ -2051,10 +2057,16 @@ xmlRelaxNGShowValidError(xmlRelaxNGValidCtxtPtr ctxt, xmlRelaxNGValidErr err,
     if (ctxt->error == NULL)
         return;
 
+#ifdef DEBUG_ERROR
+    xmlGenericError(xmlGenericErrorContext,
+	    "Show error %d\n", err);
+#endif
     msg = xmlRelaxNGGetErrorString(err, arg1, arg2);
     if (msg == NULL)
 	return;
 
+    if (ctxt->errNo == XML_RELAXNG_OK)
+	ctxt->errNo = err;
     xmlRelaxNGValidErrorContext(ctxt, node, child);
     ctxt->error(ctxt->userData, "%s\n", msg);
     xmlFree(msg);
@@ -2072,6 +2084,10 @@ xmlRelaxNGPopErrors(xmlRelaxNGValidCtxtPtr ctxt, int level) {
     int i;
     xmlRelaxNGValidErrorPtr err;
 
+#ifdef DEBUG_ERROR
+    xmlGenericError(xmlGenericErrorContext,
+	    "Pop errors till level %d\n", level);
+#endif
     for (i = level;i < ctxt->errNr;i++) {
 	err = &ctxt->errTab[i];
 	if (err->flags & ERROR_IS_DUP) {
@@ -2099,6 +2115,10 @@ xmlRelaxNGDumpValidError(xmlRelaxNGValidCtxtPtr ctxt) {
     int i, j;
     xmlRelaxNGValidErrorPtr err, dup;
 
+#ifdef DEBUG_ERROR
+    xmlGenericError(xmlGenericErrorContext,
+	    "Dumping error stack %d errors\n", ctxt->errNr);
+#endif
     for (i = 0;i < ctxt->errNr;i++) {
 	err = &ctxt->errTab[i];
 	for (j = 0;j < i;j++) {
@@ -2142,6 +2162,10 @@ xmlRelaxNGAddValidError(xmlRelaxNGValidCtxtPtr ctxt, xmlRelaxNGValidErr err,
     if ((ctxt == NULL) || (ctxt->error == NULL))
 	return;
 
+#ifdef DEBUG_ERROR
+    xmlGenericError(xmlGenericErrorContext,
+	    "Adding error %d\n", err);
+#endif
     /*
      * generate the error directly
      */
@@ -7992,7 +8016,7 @@ xmlRelaxNGValidateDefinitionList(xmlRelaxNGValidCtxtPtr ctxt,
 	    VALID_ERR(XML_RELAXNG_ERR_NOSTATE);
 	    return(-1);
 	}
-	if (ret < 0)
+	if (res == -1) /* continues on -2 */
 	    break;
 	defines = defines->next;
     }
@@ -8315,16 +8339,20 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
 		    ret = xmlRelaxNGValidateElementEnd(ctxt);
 		xmlRelaxNGFreeValidState(ctxt,state);
 	    }
+	    if (ret == 0) {
+		node->_private = define;
+	    }
 	    ctxt->flags = oldflags;
 	    ctxt->state = oldstate;
 	    if (oldstate != NULL)
 		oldstate->seq = xmlRelaxNGSkipIgnored(ctxt, node->next);
-	    if (ret == 0) {
-		node->_private = define;
-	    }
 	    if (ret != 0) {
-		if ((ctxt->flags & FLAGS_IGNORABLE) == 0)
+		if ((ctxt->flags & FLAGS_IGNORABLE) == 0) {
 		    xmlRelaxNGDumpValidError(ctxt);
+		    ret = 0;
+		} else {
+		    ret = -2;
+		}
 	    } else {
 		if (ctxt->errNr > errNr) xmlRelaxNGPopErrors(ctxt, errNr);
 	    }
@@ -8346,6 +8374,7 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
 #endif
 	    break;
         case XML_RELAXNG_OPTIONAL: {
+	    errNr = ctxt->errNr;
 	    oldflags = ctxt->flags;
 	    ctxt->flags |= FLAGS_IGNORABLE;
 	    oldstate = xmlRelaxNGCopyValidState(ctxt, ctxt->state);
@@ -8356,6 +8385,7 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
 		ctxt->state = oldstate;
 		ctxt->flags = oldflags;
 		ret = 0;
+		if (ctxt->errNr > errNr) xmlRelaxNGPopErrors(ctxt, errNr);
 		break;
 	    }
 	    if (ctxt->states != NULL) {
@@ -8366,6 +8396,7 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
 		    xmlRelaxNGFreeValidState(ctxt,oldstate);
 		    ctxt->flags = oldflags;
 		    ret = -1;
+		    if (ctxt->errNr > errNr) xmlRelaxNGPopErrors(ctxt, errNr);
 		    break;
 		}
 		xmlRelaxNGAddStates(ctxt, ctxt->states, oldstate);
@@ -8374,19 +8405,23 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
 	    }
 	    ctxt->flags = oldflags;
 	    ret = 0;
+	    if (ctxt->errNr > errNr) xmlRelaxNGPopErrors(ctxt, errNr);
 	    break;
         }
         case XML_RELAXNG_ONEORMORE:
+	    errNr = ctxt->errNr;
 	    ret = xmlRelaxNGValidateDefinitionList(ctxt, define->content);
 	    if (ret != 0) {
 		break;
 	    }
+	    if (ctxt->errNr > errNr) xmlRelaxNGPopErrors(ctxt, errNr);
 	    /* no break on purpose */
         case XML_RELAXNG_ZEROORMORE: {
 	    int progress;
 	    xmlRelaxNGStatesPtr states = NULL, res = NULL;
 	    int base, j;
 
+	    errNr = ctxt->errNr;
 	    res = xmlRelaxNGNewStates(ctxt, 1);
 	    if (res == NULL) {
 		ret = -1;
@@ -8498,6 +8533,7 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
 	    }
 	    ctxt->states = res;
 	    ctxt->flags = oldflags;
+	    if (ctxt->errNr > errNr) xmlRelaxNGPopErrors(ctxt, errNr);
 	    ret = 0;
 	    break;
 	}
@@ -8507,6 +8543,7 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
 
 	    node = xmlRelaxNGSkipIgnored(ctxt, node);
 
+	    errNr = ctxt->errNr;
 	    if ((define->dflags & IS_TRIABLE) && (define->data != NULL)) {
 		xmlHashTablePtr triage = (xmlHashTablePtr) define->data;
 
@@ -8538,12 +8575,13 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
 		    break;
 		}
 		ret = xmlRelaxNGValidateDefinition(ctxt, list);
+		if (ret == 0) {
+		}
 		break;
 	    }
 
             list = define->content;
 	    oldflags = ctxt->flags;
-	    errNr = ctxt->errNr;
 	    ctxt->flags |= FLAGS_IGNORABLE;
 
 	    while (list != NULL) {
@@ -8579,9 +8617,10 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
 	    }
 	    ctxt->flags = oldflags;
 	    if (ret != 0) {
-		if ((ctxt->flags & FLAGS_IGNORABLE) == 0)
+		if ((ctxt->flags & FLAGS_IGNORABLE) == 0) {
 		    xmlRelaxNGDumpValidError(ctxt);
-	    } else if ((ctxt->flags & FLAGS_IGNORABLE) == 0) {
+		}
+	    } else {
 		if (ctxt->errNr > errNr) xmlRelaxNGPopErrors(ctxt, errNr);
 	    }
 	    break;
@@ -8919,6 +8958,7 @@ xmlRelaxNGValidateDocument(xmlRelaxNGValidCtxtPtr ctxt, xmlDocPtr doc) {
     if ((ctxt == NULL) || (ctxt->schema == NULL) || (doc == NULL))
 	return(-1);
 
+    ctxt->errNo = XML_RELAXNG_OK;
     schema = ctxt->schema;
     grammar = schema->topgrammar;
     if (grammar == NULL) {
@@ -8982,6 +9022,8 @@ xmlRelaxNGValidateDocument(xmlRelaxNGValidCtxtPtr ctxt, xmlDocPtr doc) {
 	if (xmlValidateDocumentFinal(&vctxt, doc) != 1)
 	    ret = -1;
     }
+    if ((ret == 0) && (ctxt->errNo != XML_RELAXNG_OK))
+	ret = -1;
 
     return(ret);
 }
@@ -9021,6 +9063,7 @@ xmlRelaxNGNewValidCtxt(xmlRelaxNGPtr schema) {
     ret->states = NULL;
     ret->freeState = NULL;
     ret->freeStates = NULL;
+    ret->errNo = XML_RELAXNG_OK;
     return (ret);
 }
 

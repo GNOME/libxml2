@@ -1,3 +1,12 @@
+Mon Mar 31 18:05:22 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c: try to work on bug #109225 and provide better
+	  error reports.
+	* result/relaxng/* : this change the output of a number of tests
+	* xinclude.c: fixing the parsed entity redefinition problem
+	  raised on the list.
+	* test/schemas/date_0.xsd: updated the date test c.f. E2-12
+
 Mon Mar 31 13:19:04 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemastypes.c: fixed date comparison to handle the tzo

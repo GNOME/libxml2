@@ -595,6 +595,15 @@ endDocument(void *ctx)
     if (ctxt->validate && ctxt->wellFormed &&
         ctxt->myDoc && ctxt->myDoc->intSubset)
 	ctxt->valid &= xmlValidateDocumentFinal(&ctxt->vctxt, ctxt->myDoc);
+
+    /*
+     * Grab the encoding if it was added on-the-fly
+     */
+    if ((ctxt->encoding != NULL) && (ctxt->myDoc != NULL) &&
+	(ctxt->myDoc->encoding == NULL)) {
+	ctxt->myDoc->encoding = ctxt->encoding;
+	ctxt->encoding = NULL;
+    }
 }
 
 /**

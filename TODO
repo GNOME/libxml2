@@ -6,6 +6,8 @@
 TODO:
 =====
 
+- xmlSwitchToEncoding() need a rewrite for correct handling of conversion
+  error code conditions.
 - DOM needs
   xmlAttrPtr xmlNewDocProp(xmlDocPtr doc, const xmlChar *name, const xmlChar *value)
   int xmlPruneProp(xmlNodePtr node, xmlAtttrPtr attr);
@@ -14,7 +16,6 @@ TODO:
 - add support for the trick from Henry conf/sun/valid/empty.xml
 - Correct standalone checking/emitting (hard)
   2.9 Standalone Document Declaration
-- URI checkings (no fragments) rfc2396.txt
 - Better checking of external parsed entities TAG 1234
 - Find way of representing PERefs in the Dtd so that %entity; can
   be saved back.
@@ -22,6 +23,7 @@ TODO:
   http://www.w3.org/XML/xml-19980210-errata ... bummmer 
 - Handle undefined namespaces in entity contents better ... at least
   issue a warning
+- Issue warning when using non-absolute namespaces URI.
 - General checking of DTD validation in presence of namespaces ... hairy
 - fix --disable-corba configure switch handling, and use XML_WITHOUT_CORBA
   not WITHOUT_CORBA flag
@@ -30,7 +32,7 @@ TODO:
 =====
 
 - Get OASIS testsuite to a more friendly result, check all the results
-  once stable.
+  once stable. Current state at:
   http://xmlsoft.org/conf/result.html
 
 - Optimization of tag strings allocation ?
@@ -55,11 +57,13 @@ EXTENSIONS:
 
 - Add Xlink recognition/API
   => started adding an xlink.[ch] with a unified API for XML and HTML.
+     it's crap :-(
 
 - Implement XSLT
   => seems that someone volunteered ?!?
 
 - Implement XSchemas
+  => Really need to be done <grin/>
 
 - O2K parsing;
   => this is a somewhat ugly mix of HTML and XML, adding a specific
@@ -88,6 +92,7 @@ EXTENSIONS:
 Done:
 =====
 
+- URI checkings (no fragments) rfc2396.txt
 - Added a clean mechanism for overload or added input methods:
   xmlRegisterInputCallbacks()
 - dynamically adapt the alloc entry point to use g_alloc()/g_free()

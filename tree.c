@@ -3772,6 +3772,31 @@ xmlBufferShrink(xmlBufferPtr buf, int len) {
 }
 
 /**
+ * xmlBufferGrow:
+ * @buf:  the buffer
+ * @len:  the minimum free sie to allocate
+ *
+ * Grow the available space of an XML buffer.
+ *
+ * Returns the new available space or -1 in case of error
+ */
+int
+xmlBufferGrow(xmlBufferPtr buf, int len) {
+    int size;
+    xmlChar *newbuf;
+
+    if (len <= buf->use) return(0);
+
+    size = buf->size + buf->use + len + 100;
+
+    newbuf = xmlRealloc(buf->content, size);
+    if (newbuf == NULL) return(-1);
+    buf->content = newbuf;
+    buf->size = size;
+    return(buf->size - buf->use);
+}
+
+/**
  * xmlBufferDump:
  * @file:  the file output
  * @buf:  the buffer to dump

@@ -41,6 +41,7 @@
 #include <libxml/valid.h>
 #include <libxml/parserInternals.h>
 #include <libxml/xmlIO.h>
+#include <libxml/uri.h>
 #include "xml-error.h"
 
 #define XML_PARSER_BIG_BUFFER_SIZE 1000
@@ -483,7 +484,7 @@ xmlNextChar(xmlParserCtxtPtr ctxt) {
 			    if ((ctxt->sax != NULL) &&
 				(ctxt->sax->error != NULL))
 				ctxt->sax->error(ctxt->userData, 
-				 "Char out of allowed range\n");
+				 "Char 0x%X out of allowed range\n", val);
 			    ctxt->errNo = XML_ERR_INVALID_ENCODING;
 			    ctxt->wellFormed = 0;
 			    ctxt->disableSAX = 1;
@@ -612,7 +613,7 @@ xmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
 		if ((ctxt->sax != NULL) &&
 		    (ctxt->sax->error != NULL))
 		    ctxt->sax->error(ctxt->userData, 
-				     "Char out of allowed range\n");
+				     "Char 0x%X out of allowed range\n", val);
 		ctxt->errNo = XML_ERR_INVALID_ENCODING;
 		ctxt->wellFormed = 0;
 		ctxt->disableSAX = 1;
@@ -727,7 +728,7 @@ xmlStringCurrentChar(xmlParserCtxtPtr ctxt, const xmlChar *cur, int *len) {
 		if ((ctxt->sax != NULL) &&
 		    (ctxt->sax->error != NULL))
 		    ctxt->sax->error(ctxt->userData, 
-				     "Char out of allowed range\n");
+				     "Char 0x%X out of allowed range\n", val);
 		ctxt->errNo = XML_ERR_INVALID_ENCODING;
 		ctxt->wellFormed = 0;
 		ctxt->disableSAX = 1;
@@ -2278,96 +2279,209 @@ xmlCheckLanguageID(const xmlChar *lang) {
  *
  * change the input functions when discovering the character encoding
  * of a given entity.
+ *
+ * Returns 0 in case of success, -1 otherwise
  */
-void
+int
 xmlSwitchEncoding(xmlParserCtxtPtr ctxt, xmlCharEncoding enc)
 {
     xmlCharEncodingHandlerPtr handler;
 
+    switch (enc) {
+	case XML_CHAR_ENCODING_ERROR:
+	    ctxt->errNo = XML_ERR_UNKNOWN_ENCODING;
+	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		ctxt->sax->error(ctxt->userData, "encoding unknown\n");
+	    ctxt->wellFormed = 0;
+	    ctxt->disableSAX = 1;
+	    break;
+	case XML_CHAR_ENCODING_NONE:
+	    /* let's assume it's UTF-8 without the XML decl */
+	    return(0);
+	case XML_CHAR_ENCODING_UTF8:
+	    /* default encoding, no conversion should be needed */
+	    return(0);
+	default:
+	    break;
+    }
     handler = xmlGetCharEncodingHandler(enc);
+    if (handler == NULL) {
+	/*
+	 * Default handlers.
+	 */
+	switch (enc) {
+	    case XML_CHAR_ENCODING_ERROR:
+		ctxt->errNo = XML_ERR_UNKNOWN_ENCODING;
+		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		    ctxt->sax->error(ctxt->userData, "encoding unknown\n");
+		ctxt->wellFormed = 0;
+		ctxt->disableSAX = 1;
+		break;
+	    case XML_CHAR_ENCODING_NONE:
+		/* let's assume it's UTF-8 without the XML decl */
+		return(0);
+	    case XML_CHAR_ENCODING_UTF8:
+		/* default encoding, no conversion should be needed */
+		return(0);
+	    case XML_CHAR_ENCODING_UTF16LE:
+		break;
+	    case XML_CHAR_ENCODING_UTF16BE:
+		break;
+	    case XML_CHAR_ENCODING_UCS4LE:
+		ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
+		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		    ctxt->sax->error(ctxt->userData,
+		      "char encoding USC4 little endian not supported\n");
+		break;
+	    case XML_CHAR_ENCODING_UCS4BE:
+		ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
+		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		    ctxt->sax->error(ctxt->userData,
+		      "char encoding USC4 big endian not supported\n");
+		break;
+	    case XML_CHAR_ENCODING_EBCDIC:
+		ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
+		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		    ctxt->sax->error(ctxt->userData,
+		      "char encoding EBCDIC not supported\n");
+		break;
+	    case XML_CHAR_ENCODING_UCS4_2143:
+		ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
+		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		    ctxt->sax->error(ctxt->userData,
+		      "char encoding UCS4 2143 not supported\n");
+		break;
+	    case XML_CHAR_ENCODING_UCS4_3412:
+		ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
+		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		    ctxt->sax->error(ctxt->userData,
+		      "char encoding UCS4 3412 not supported\n");
+		break;
+	    case XML_CHAR_ENCODING_UCS2:
+		ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
+		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		    ctxt->sax->error(ctxt->userData,
+		      "char encoding UCS2 not supported\n");
+		break;
+	    case XML_CHAR_ENCODING_8859_1:
+	    case XML_CHAR_ENCODING_8859_2:
+	    case XML_CHAR_ENCODING_8859_3:
+	    case XML_CHAR_ENCODING_8859_4:
+	    case XML_CHAR_ENCODING_8859_5:
+	    case XML_CHAR_ENCODING_8859_6:
+	    case XML_CHAR_ENCODING_8859_7:
+	    case XML_CHAR_ENCODING_8859_8:
+	    case XML_CHAR_ENCODING_8859_9:
+		/*
+		 * Keep the internal content in the document encoding
+		 */
+		if ((ctxt->inputNr == 1) &&
+		    (ctxt->encoding == NULL) &&
+		    (ctxt->input->encoding != NULL)) {
+		    ctxt->encoding = xmlStrdup(ctxt->input->encoding);
+		}
+		return(0);
+	    case XML_CHAR_ENCODING_2022_JP:
+		ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
+		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		    ctxt->sax->error(ctxt->userData,
+		      "char encoding ISO-2022-JPnot supported\n");
+		break;
+	    case XML_CHAR_ENCODING_SHIFT_JIS:
+		ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
+		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		    ctxt->sax->error(ctxt->userData,
+		      "char encoding Shift_JIS not supported\n");
+		break;
+	    case XML_CHAR_ENCODING_EUC_JP:
+		ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
+		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		    ctxt->sax->error(ctxt->userData,
+		      "char encoding EUC-JPnot supported\n");
+		break;
+	}
+    }
+    if (handler == NULL)
+	return(-1);
+    return(xmlSwitchToEncoding(ctxt, handler));
+}
+
+/**
+ * xmlSwitchToEncoding:
+ * @ctxt:  the parser context
+ * @handler:  the encoding handler
+ *
+ * change the input functions when discovering the character encoding
+ * of a given entity.
+ *
+ * Returns 0 in case of success, -1 otherwise
+ */
+int
+xmlSwitchToEncoding(xmlParserCtxtPtr ctxt, xmlCharEncodingHandlerPtr handler) 
+{
+    int nbchars;
+
     if (handler != NULL) {
         if (ctxt->input != NULL) {
 	    if (ctxt->input->buf != NULL) {
 	        if (ctxt->input->buf->encoder != NULL) {
+		    if (ctxt->input->buf->encoder == handler)
+			return(0);
 		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 			ctxt->sax->error(ctxt->userData,
 			     "xmlSwitchEncoding : encoder already regitered\n");
-		    return;
+		    return(-1);
 		}
 		ctxt->input->buf->encoder = handler;
 
 	        /*
-		 * Is there already some content down the pipe to convert
+		 * Is there already some content down the pipe to convert ?
 		 */
 	        if ((ctxt->input->buf->buffer != NULL) &&
 		    (ctxt->input->buf->buffer->use > 0)) {
-		    xmlChar *buf;
-		    int res, len, size;
 		    int processed;
 
 		    /*
 		     * Specific handling of the Byte Order Mark for 
 		     * UTF-16
 		     */
-		    if ((enc == XML_CHAR_ENCODING_UTF16LE) && 
+		    if ((handler->name != NULL) &&
+			(!strcmp(handler->name, "UTF-16LE")) && 
 		        (ctxt->input->cur[0] == 0xFF) &&
 		        (ctxt->input->cur[1] == 0xFE)) {
-			SKIP(2);
+			ctxt->input->cur += 2;
 		    }
-		    if ((enc == XML_CHAR_ENCODING_UTF16BE) && 
+		    if ((handler->name != NULL) &&
+			(!strcmp(handler->name, "UTF-16BE")) && 
 		        (ctxt->input->cur[0] == 0xFE) &&
 		        (ctxt->input->cur[1] == 0xFF)) {
-			SKIP(2);
+			ctxt->input->cur += 2;
 		    }
 
 		    /*
-		     * convert the non processed part
+		     * Shring the current input buffer.
+		     * Move it as the raw buffer and create a new input buffer
 		     */
 		    processed = ctxt->input->cur - ctxt->input->base;
-                    len = ctxt->input->buf->buffer->use - processed;
-
-		    if (len <= 0) {
-		        return;
-		    }
-		    size = ctxt->input->buf->buffer->use * 4;
-		    if (size < 4000)
-		        size = 4000;
-retry_larger:			
-		    buf = (xmlChar *) xmlMalloc(size + 1);
-		    if (buf == NULL) {
-			if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-			    ctxt->sax->error(ctxt->userData,
-				 "xmlSwitchEncoding : out of memory\n");
-		        return;
-		    }
-		    /* TODO !!! Handling of buf too small */
-		    res = handler->input(buf, size, ctxt->input->cur, &len);
-		    if (res == -1) {
-		        size *= 2;
-			xmlFree(buf);
-			goto retry_larger;
-		    }
-		    if ((res < 0) ||
-		        (len != ctxt->input->buf->buffer->use - processed)) {
-			if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-			    ctxt->sax->error(ctxt->userData,
-				 "xmlSwitchEncoding : conversion failed\n");
-                        xmlFree(buf);
-		        return;
-		    }
+		    xmlBufferShrink(ctxt->input->buf->buffer, processed);
+		    ctxt->input->buf->raw = ctxt->input->buf->buffer;
+		    ctxt->input->buf->buffer = xmlBufferCreate();
 
 		    /*
-		     * Conversion succeeded, get rid of the old buffer
+		     * convert as much as possible of the raw input
+		     * to the parser reading buffer.
 		     */
-		    xmlFree(ctxt->input->buf->buffer->content);
-		    ctxt->input->buf->buffer->content = buf;
-		    ctxt->input->base = buf;
-		    ctxt->input->cur = buf;
-		    ctxt->input->buf->buffer->size = size;
-		    ctxt->input->buf->buffer->use = res;
-                    buf[res] = 0;
+		    nbchars = xmlCharEncInFunc(ctxt->input->buf->encoder,
+		                               ctxt->input->buf->buffer,
+					       ctxt->input->buf->raw);
+		    if (nbchars < 0) {
+			fprintf(stderr, "xmlSwitchToEncoding: encoder error\n");
+			return(-1);
+		    }
+		    ctxt->input->base =
+		    ctxt->input->cur = ctxt->input->buf->buffer->content;
 		}
-		return;
+		return(0);
 	    } else {
 	        if (ctxt->input->length == 0) {
 		    /*
@@ -2377,191 +2491,59 @@ retry_larger:
 		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 			ctxt->sax->error(ctxt->userData,
 					 "xmlSwitchEncoding : no input\n");
-		    return;
+		    return(-1);
 		} else {
-		    xmlChar *buf;
-		    int res, len;
-		    int processed = ctxt->input->cur - ctxt->input->base;
+		    int processed;
 
 		    /*
-		     * convert the non processed part
+		     * Shring the current input buffer.
+		     * Move it as the raw buffer and create a new input buffer
 		     */
-                    len = ctxt->input->length - processed;
-		    if (len <= 0) {
-			if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-			    ctxt->sax->error(ctxt->userData,
-				 "xmlSwitchEncoding : input fully consumed?\n");
-		        return;
+		    processed = ctxt->input->cur - ctxt->input->base;
+		    ctxt->input->buf->raw = xmlBufferCreate();
+		    xmlBufferAdd(ctxt->input->buf->raw, ctxt->input->cur,
+		                 ctxt->input->length - processed);
+		    ctxt->input->buf->buffer = xmlBufferCreate();
+
+		    /*
+		     * convert as much as possible of the raw input
+		     * to the parser reading buffer.
+		     */
+		    nbchars = xmlCharEncInFunc(ctxt->input->buf->encoder,
+		                               ctxt->input->buf->buffer,
+					       ctxt->input->buf->raw);
+		    if (nbchars < 0) {
+			fprintf(stderr, "xmlSwitchToEncoding: encoder error\n");
+			return(-1);
 		    }
-		    buf = (xmlChar *) xmlMalloc(ctxt->input->length * 4);
-		    if (buf == NULL) {
-			if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-			    ctxt->sax->error(ctxt->userData,
-				 "xmlSwitchEncoding : out of memory\n");
-		        return;
-		    }
-		    res = handler->input(buf, ctxt->input->length * 4,
-		                         ctxt->input->cur, &len);
-		    if ((res < 0) ||
-		        (len != ctxt->input->length - processed)) {
-			if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-			    ctxt->sax->error(ctxt->userData,
-				 "xmlSwitchEncoding : conversion failed\n");
-                        xmlFree(buf);
-		        return;
-		    }
+
 		    /*
 		     * Conversion succeeded, get rid of the old buffer
 		     */
 		    if ((ctxt->input->free != NULL) &&
 		        (ctxt->input->base != NULL))
 			ctxt->input->free((xmlChar *) ctxt->input->base);
-		    ctxt->input->base = ctxt->input->cur = buf;
-		    ctxt->input->length = res;
+		    ctxt->input->base =
+		    ctxt->input->cur = ctxt->input->buf->buffer->content;
 		}
 	    }
 	} else {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	        ctxt->sax->error(ctxt->userData,
 		                 "xmlSwitchEncoding : no input\n");
+	    return(-1);
 	}
-    }
+	/*
+	 * The parsing is now done in UTF8 natively
+	 */
+	if (ctxt->encoding != NULL) {
+	    xmlFree((xmlChar *) ctxt->encoding);
+	    ctxt->encoding = NULL;
+	}
+    } else 
+	return(-1);
+    return(0);
 
-    switch (enc) {
-        case XML_CHAR_ENCODING_ERROR:
-	    ctxt->errNo = XML_ERR_UNKNOWN_ENCODING;
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	        ctxt->sax->error(ctxt->userData, "encoding unknown\n");
-	    ctxt->wellFormed = 0;
-	    ctxt->disableSAX = 1;
-            break;
-        case XML_CHAR_ENCODING_NONE:
-	    /* let's assume it's UTF-8 without the XML decl */
-            return;
-        case XML_CHAR_ENCODING_UTF8:
-	    /* default encoding, no conversion should be needed */
-            return;
-        case XML_CHAR_ENCODING_UTF16LE:
-	    ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-                ctxt->sax->error(ctxt->userData,
-		  "char encoding UTF16 little endian not supported\n");
-            break;
-        case XML_CHAR_ENCODING_UTF16BE:
-	    ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-                ctxt->sax->error(ctxt->userData,
-		  "char encoding UTF16 big endian not supported\n");
-            break;
-        case XML_CHAR_ENCODING_UCS4LE:
-	    ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-                ctxt->sax->error(ctxt->userData,
-		  "char encoding USC4 little endian not supported\n");
-            break;
-        case XML_CHAR_ENCODING_UCS4BE:
-	    ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-                ctxt->sax->error(ctxt->userData,
-		  "char encoding USC4 big endian not supported\n");
-            break;
-        case XML_CHAR_ENCODING_EBCDIC:
-	    ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-                ctxt->sax->error(ctxt->userData,
-		  "char encoding EBCDIC not supported\n");
-            break;
-        case XML_CHAR_ENCODING_UCS4_2143:
-	    ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-                ctxt->sax->error(ctxt->userData,
-		  "char encoding UCS4 2143 not supported\n");
-            break;
-        case XML_CHAR_ENCODING_UCS4_3412:
-	    ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-                ctxt->sax->error(ctxt->userData,
-		  "char encoding UCS4 3412 not supported\n");
-            break;
-        case XML_CHAR_ENCODING_UCS2:
-	    ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-                ctxt->sax->error(ctxt->userData,
-		  "char encoding UCS2 not supported\n");
-            break;
-        case XML_CHAR_ENCODING_8859_1:
-	    ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-                ctxt->sax->error(ctxt->userData,
-		  "char encoding ISO_8859_1 ISO Latin 1 not supported\n");
-            break;
-        case XML_CHAR_ENCODING_8859_2:
-	    ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-                ctxt->sax->error(ctxt->userData,
-		  "char encoding ISO_8859_2 ISO Latin 2 not supported\n");
-            break;
-        case XML_CHAR_ENCODING_8859_3:
-	    ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-                ctxt->sax->error(ctxt->userData,
-		  "char encoding ISO_8859_3 not supported\n");
-            break;
-        case XML_CHAR_ENCODING_8859_4:
-	    ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-                ctxt->sax->error(ctxt->userData,
-		  "char encoding ISO_8859_4 not supported\n");
-            break;
-        case XML_CHAR_ENCODING_8859_5:
-	    ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-                ctxt->sax->error(ctxt->userData,
-		  "char encoding ISO_8859_5 not supported\n");
-            break;
-        case XML_CHAR_ENCODING_8859_6:
-	    ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-                ctxt->sax->error(ctxt->userData,
-		  "char encoding ISO_8859_6 not supported\n");
-            break;
-        case XML_CHAR_ENCODING_8859_7:
-	    ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-                ctxt->sax->error(ctxt->userData,
-		  "char encoding ISO_8859_7 not supported\n");
-            break;
-        case XML_CHAR_ENCODING_8859_8:
-	    ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-                ctxt->sax->error(ctxt->userData,
-		  "char encoding ISO_8859_8 not supported\n");
-            break;
-        case XML_CHAR_ENCODING_8859_9:
-	    ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-                ctxt->sax->error(ctxt->userData,
-		  "char encoding ISO_8859_9 not supported\n");
-            break;
-        case XML_CHAR_ENCODING_2022_JP:
-	    ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
-            if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-                ctxt->sax->error(ctxt->userData,
-                  "char encoding ISO-2022-JPnot supported\n");
-            break;
-        case XML_CHAR_ENCODING_SHIFT_JIS:
-	    ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
-            if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-                ctxt->sax->error(ctxt->userData,
-                  "char encoding Shift_JISnot supported\n");
-            break;
-        case XML_CHAR_ENCODING_EUC_JP:
-	    ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
-            if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-                ctxt->sax->error(ctxt->userData,
-                  "char encoding EUC-JPnot supported\n");
-            break;
-    }
 }
 
 /************************************************************************
@@ -4253,7 +4235,7 @@ xmlParseExternalID(xmlParserCtxtPtr ctxt, xmlChar **publicID, int strict) {
 void
 xmlParseComment(xmlParserCtxtPtr ctxt) {
     xmlChar *buf = NULL;
-    int len = 0;
+    int len;
     int size = XML_PARSER_BUFFER_SIZE;
     int q, ql;
     int r, rl;
@@ -4282,10 +4264,11 @@ xmlParseComment(xmlParserCtxtPtr ctxt) {
     r = CUR_CHAR(rl);
     NEXTL(rl);
     cur = CUR_CHAR(l);
+    len = 0;
     while (IS_CHAR(cur) &&
            ((cur != '>') ||
 	    (r != '-') || (q != '-'))) {
-	if ((r == '-') && (q == '-')) {
+	if ((r == '-') && (q == '-') && (len > 1)) {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	        ctxt->sax->error(ctxt->userData,
 	       "Comment must not contain '--' (double-hyphen)`\n");
@@ -4732,11 +4715,36 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 		    ctxt->disableSAX = 1;
 		}
 		if (URI) {
-		    if ((ctxt->sax != NULL) &&
-			(!ctxt->disableSAX) && (ctxt->sax->entityDecl != NULL))
-			ctxt->sax->entityDecl(ctxt->userData, name,
-		                    XML_EXTERNAL_PARAMETER_ENTITY,
-				    literal, URI, NULL);
+		    xmlURIPtr uri;
+
+		    uri = xmlParseURI((const char *) URI);
+		    if (uri == NULL) {
+			if ((ctxt->sax != NULL) &&
+			    (!ctxt->disableSAX) &&
+			    (ctxt->sax->error != NULL))
+			    ctxt->sax->error(ctxt->userData,
+				        "Invalid URI: %s\n", URI);
+			ctxt->wellFormed = 0;
+			ctxt->errNo = XML_ERR_INVALID_URI;
+		    } else {
+			if (uri->fragment != NULL) {
+			    if ((ctxt->sax != NULL) &&
+				(!ctxt->disableSAX) &&
+				(ctxt->sax->error != NULL))
+				ctxt->sax->error(ctxt->userData,
+					    "Fragment not allowed: %s\n", URI);
+			    ctxt->wellFormed = 0;
+			    ctxt->errNo = XML_ERR_URI_FRAGMENT;
+			} else {
+			    if ((ctxt->sax != NULL) &&
+				(!ctxt->disableSAX) &&
+				(ctxt->sax->entityDecl != NULL))
+				ctxt->sax->entityDecl(ctxt->userData, name,
+					    XML_EXTERNAL_PARAMETER_ENTITY,
+					    literal, URI, NULL);
+			}
+			xmlFreeURI(uri);
+		    }
 		}
 	    }
 	} else {
@@ -4756,6 +4764,31 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 		    ctxt->errNo = XML_ERR_VALUE_REQUIRED;
 		    ctxt->wellFormed = 0;
 		    ctxt->disableSAX = 1;
+		}
+		if (URI) {
+		    xmlURIPtr uri;
+
+		    uri = xmlParseURI((const char *)URI);
+		    if (uri == NULL) {
+			if ((ctxt->sax != NULL) &&
+			    (!ctxt->disableSAX) &&
+			    (ctxt->sax->error != NULL))
+			    ctxt->sax->error(ctxt->userData,
+				        "Invalid URI: %s\n", URI);
+			ctxt->wellFormed = 0;
+			ctxt->errNo = XML_ERR_INVALID_URI;
+		    } else {
+			if (uri->fragment != NULL) {
+			    if ((ctxt->sax != NULL) &&
+				(!ctxt->disableSAX) &&
+				(ctxt->sax->error != NULL))
+				ctxt->sax->error(ctxt->userData,
+					    "Fragment not allowed: %s\n", URI);
+			    ctxt->wellFormed = 0;
+			    ctxt->errNo = XML_ERR_URI_FRAGMENT;
+			}
+			xmlFreeURI(uri);
+		    }
 		}
 		if ((RAW != '>') && (!IS_BLANK(CUR))) {
 		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
@@ -5973,7 +6006,20 @@ xmlParseTextDecl(xmlParserCtxtPtr ctxt) {
     /*
      * We know that '<?xml' is here.
      */
-    SKIP(5);
+    if ((RAW == '<') && (NXT(1) == '?') &&
+	(NXT(2) == 'x') && (NXT(3) == 'm') &&
+	(NXT(4) == 'l') && (IS_BLANK(NXT(5)))) {
+	SKIP(5);
+    } else {
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt->userData,
+	                     "Text declaration '<?xml' required\n");
+	ctxt->errNo = XML_ERR_XMLDECL_NOT_STARTED;
+	ctxt->wellFormed = 0;
+	ctxt->disableSAX = 1;
+
+	return;
+    }
 
     if (!IS_BLANK(CUR)) {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
@@ -6003,7 +6049,13 @@ xmlParseTextDecl(xmlParserCtxtPtr ctxt) {
 	ctxt->wellFormed = 0;
 	ctxt->disableSAX = 1;
     }
-    ctxt->input->encoding = xmlParseEncodingDecl(ctxt);
+    xmlParseEncodingDecl(ctxt);
+    if (ctxt->errNo == XML_ERR_UNSUPPORTED_ENCODING) {
+	/*
+	 * The XML REC instructs us to stop parsing right here
+	 */
+        return;
+    }
 
     SKIP_BLANKS;
     if ((RAW == '?') && (NXT(1) == '>')) {
@@ -6192,6 +6244,13 @@ xmlParseExternalSubset(xmlParserCtxtPtr ctxt, const xmlChar *ExternalID,
         (NXT(2) == 'x') && (NXT(3) == 'm') &&
 	(NXT(4) == 'l')) {
 	xmlParseTextDecl(ctxt);
+	if (ctxt->errNo == XML_ERR_UNSUPPORTED_ENCODING) {
+	    /*
+	     * The XML REC instructs us to stop parsing right here
+	     */
+	    ctxt->instate = XML_PARSER_EOF;
+	    return;
+	}
     }
     if (ctxt->myDoc == NULL) {
         ctxt->myDoc = xmlNewDoc(BAD_CAST "1.0");
@@ -6441,6 +6500,13 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 		    (NXT(2) == 'x') && (NXT(3) == 'm') &&
 		    (NXT(4) == 'l') && (IS_BLANK(NXT(5)))) {
 		    xmlParseTextDecl(ctxt);
+		    if (ctxt->errNo == XML_ERR_UNSUPPORTED_ENCODING) {
+			/*
+			 * The XML REC instructs us to stop parsing right here
+			 */
+			ctxt->instate = XML_PARSER_EOF;
+			return;
+		    }
 		    if (input->standalone) {
 			if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 			    ctxt->sax->error(ctxt->userData,
@@ -6947,6 +7013,15 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt) {
 			    (NXT(2) == 'x') && (NXT(3) == 'm') &&
 			    (NXT(4) == 'l') && (IS_BLANK(NXT(5)))) {
 			    xmlParseTextDecl(ctxt);
+			    if (ctxt->errNo == XML_ERR_UNSUPPORTED_ENCODING) {
+				/*
+				 * The XML REC instructs us to stop parsing
+				 * right here
+				 */
+				ctxt->instate = XML_PARSER_EOF;
+				xmlFree(name);
+				return;
+			    }
 			}
 			if (ctxt->token == 0)
 			    ctxt->token = ' ';
@@ -8197,6 +8272,38 @@ xmlParseEncodingDecl(xmlParserCtxtPtr ctxt) {
 	    ctxt->disableSAX = 1;
 	    ctxt->errNo = XML_ERR_STRING_NOT_STARTED;
 	}
+	if (encoding != NULL) {
+	    xmlCharEncoding enc;
+	    xmlCharEncodingHandlerPtr handler;
+
+	    if (ctxt->input->encoding != NULL)
+		xmlFree((xmlChar *) ctxt->input->encoding);
+	    ctxt->input->encoding = encoding;
+
+	    enc = xmlParseCharEncoding((const char *) encoding);
+	    /*
+	     * registered set of known encodings
+	     */
+	    if (enc != XML_CHAR_ENCODING_ERROR) {
+		xmlSwitchEncoding(ctxt, enc);
+		if (ctxt->errNo == XML_ERR_UNSUPPORTED_ENCODING) {
+		    xmlFree(encoding);
+		    return(NULL);
+		}
+	    } else {
+	        /*
+		 * fallback for unknown encodings
+		 */
+                handler = xmlFindCharEncodingHandler((const char *) encoding);
+		if (handler != NULL) {
+		    xmlSwitchToEncoding(ctxt, handler);
+		} else {
+		    ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
+		    xmlFree(encoding);
+		    return(NULL);
+		}
+	    }
+	}
     }
     return(encoding);
 }
@@ -8362,7 +8469,13 @@ xmlParseXMLDecl(xmlParserCtxtPtr ctxt) {
 	ctxt->wellFormed = 0;
 	ctxt->disableSAX = 1;
     }
-    ctxt->input->encoding = xmlParseEncodingDecl(ctxt);
+    xmlParseEncodingDecl(ctxt);
+    if (ctxt->errNo == XML_ERR_UNSUPPORTED_ENCODING) {
+	/*
+	 * The XML REC instructs us to stop parsing right here
+	 */
+        return;
+    }
 
     /*
      * We may have the standalone status.
@@ -8489,12 +8602,19 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
     if ((RAW == '<') && (NXT(1) == '?') &&
         (NXT(2) == 'x') && (NXT(3) == 'm') &&
 	(NXT(4) == 'l') && (IS_BLANK(NXT(5)))) {
+
+	/*
+	 * Note that we will switch encoding on the fly.
+	 */
 	xmlParseXMLDecl(ctxt);
+	if (ctxt->errNo == XML_ERR_UNSUPPORTED_ENCODING) {
+	    /*
+	     * The XML REC instructs us to stop parsing right here
+	     */
+	    return(-1);
+	}
 	ctxt->standalone = ctxt->input->standalone;
 	SKIP_BLANKS;
-	if ((ctxt->encoding == NULL) && (ctxt->input->encoding != NULL))
-	    ctxt->encoding = xmlStrdup(ctxt->input->encoding);
-
     } else {
 	ctxt->version = xmlCharStrdup(XML_DEFAULT_VERSION);
     }
@@ -8581,14 +8701,6 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
 	(!ctxt->disableSAX))
         ctxt->sax->endDocument(ctxt->userData);
 
-    /*
-     * Grab the encoding if it was added on-the-fly
-     */
-    if ((ctxt->encoding != NULL) && (ctxt->myDoc != NULL) &&
-	(ctxt->myDoc->encoding == NULL)) {
-	ctxt->myDoc->encoding = ctxt->encoding;
-	ctxt->encoding = NULL;
-    }
     if (! ctxt->wellFormed) return(-1);
     return(0);
 }
@@ -8805,6 +8917,14 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 			fprintf(stderr, "PP: Parsing XML Decl\n");
 #endif
 			xmlParseXMLDecl(ctxt);
+			if (ctxt->errNo == XML_ERR_UNSUPPORTED_ENCODING) {
+			    /*
+			     * The XML REC instructs us to stop parsing right
+			     * here
+			     */
+			    ctxt->instate = XML_PARSER_EOF;
+			    return(0);
+			}
 			ctxt->standalone = ctxt->input->standalone;
 			if ((ctxt->encoding == NULL) &&
 			    (ctxt->input->encoding != NULL))

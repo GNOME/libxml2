@@ -1284,6 +1284,34 @@ xmlParseURIReference(xmlURIPtr uri, const char *str) {
 }
 
 /**
+ * xmlParseURI:
+ * @str:  the URI string to analyze
+ *
+ * Parse an URI 
+ * 
+ * URI-reference = [ absoluteURI | relativeURI ] [ "#" fragment ]
+ *
+ * Returns a newly build xmlURIPtr or NULL in case of error
+ */
+xmlURIPtr
+xmlParseURI(const char *str) {
+    xmlURIPtr uri;
+    int ret;
+
+    if (str == NULL)
+	return(NULL);
+    uri = xmlCreateURI();
+    if (uri != NULL) {
+	ret = xmlParseURIReference(uri, str);
+        if (ret) {
+	    xmlFreeURI(uri);
+	    return(NULL);
+	}
+    }
+    return(uri);
+}
+
+/**
  * xmlNormalizeURIPath:
  * @path:  pointer to the path string
  *

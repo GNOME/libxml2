@@ -4,7 +4,7 @@ AC_INIT(entities.h)
 AM_CONFIG_HEADER(config.h)
 
 LIBXML_MAJOR_VERSION=2
-LIBXML_MINOR_VERSION=0
+LIBXML_MINOR_VERSION=1
 LIBXML_MICRO_VERSION=0
 LIBXML_VERSION=$LIBXML_MAJOR_VERSION.$LIBXML_MINOR_VERSION.$LIBXML_MICRO_VERSION
 LIBXML_VERSION_INFO=`expr $LIBXML_MAJOR_VERSION + $LIBXML_MINOR_VERSION`:$LIBXML_MICRO_VERSION:$LIBXML_MINOR_VERSION
@@ -202,6 +202,20 @@ else
 fi
 AC_SUBST(WITH_XPATH)
 AC_SUBST(XPATH_OBJ)
+
+AC_ARG_WITH(iconv, [  --with-iconv            Add the ICONV support (on)])
+if test "$with_iconv" = "no" ; then
+    echo Disabling ICONV support
+    WITH_ICONV=0
+else    
+    if test "$have_iconv" != "" ; then
+        echo Iconv support not found
+        WITH_ICONV=0
+    else
+        WITH_ICONV=1
+    fi
+fi  
+AC_SUBST(WITH_ICONV)
 
 AC_ARG_WITH(debug, [  --with-debug            Add the debugging module (on)])
 if test "$with_debug" = "no" ; then

@@ -1,3 +1,21 @@
+Wed May  3 14:21:25 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* encoding.[ch], xmlIO.[ch], parser.c, configure.in : revamped
+	  the encoding support, added iconv support, so now libxml if
+	  compiled with iconv automatically support japanese encodings
+	  among others. Work based on initial patch from Yuan-Chen Cheng
+	  I may have broken binary compat in the encoding handler
+	  registration scheme, but that was so utterly broken I don't
+	  expect anybody to have used this feature until now.
+	* parserInternals.h: fixup on the CHAR range macro
+	* xml-error.h, parser.c: catch URL/URI errors using the uri.c
+	  code.
+	* tree.[ch]: added xmlBufferGrow(), was needed for iconv
+	* uri.c: added xmlParseURI() I can't believe I forgot to
+	  implement this one in 2.0 !!!
+	* SAX.c: moved doc->encoding update in the endDocument() call.
+	* TODO: updated.
+
 Mon Apr 24 13:30:13 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* tree.h: removed extraneous xmlRemoveProp definition

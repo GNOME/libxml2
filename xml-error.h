@@ -130,7 +130,9 @@ typedef enum {
     XML_ERR_ENTITY_CHAR_ERROR, /* 88 */
     XML_ERR_ENTITY_PE_INTERNAL, /* 88 */
     XML_ERR_ENTITY_LOOP, /* 89 */
-    XML_ERR_ENTITY_BOUNDARY /* 90 */
+    XML_ERR_ENTITY_BOUNDARY, /* 90 */
+    XML_ERR_INVALID_URI, /* 91 */
+    XML_ERR_URI_FRAGMENT /* 92 */
 }xmlParserErrors;
 
 void	xmlParserError		(void *ctx,

@@ -498,6 +498,10 @@ xmlAllocParserInputBuffer(xmlCharEncoding enc) {
     }
     ret->buffer->alloc = XML_BUFFER_ALLOC_DOUBLEIT;
     ret->encoder = xmlGetCharEncodingHandler(enc);
+    if (ret->encoder != NULL)
+        ret->raw = xmlBufferCreate();
+    else
+        ret->raw = NULL;
     ret->readcallback = NULL;
     ret->closecallback = NULL;
     ret->context = NULL;
@@ -513,12 +517,19 @@ xmlAllocParserInputBuffer(xmlCharEncoding enc) {
  */
 void
 xmlFreeParserInputBuffer(xmlParserInputBufferPtr in) {
-    if (in->buffer != NULL) {
-        xmlBufferFree(in->buffer);
-	in->buffer = NULL;
+    if (in->raw) {
+        xmlBufferFree(in->raw);
+	in->raw = NULL;
+    }
+    if (in->encoder != NULL) {
+        xmlCharEncCloseFunc(in->encoder);
     }
     if (in->closecallback != NULL) {
 	in->closecallback(in->context);
+    }
+    if (in->buffer != NULL) {
+        xmlBufferFree(in->buffer);
+	in->buffer = NULL;
     }
 
     memset(in, 0xbe, (size_t) sizeof(xmlParserInputBuffer));
@@ -683,34 +694,22 @@ xmlParserInputBufferPush(xmlParserInputBufferPtr in, int len, const char *buf) {
 
     if (len < 0) return(0);
     if (in->encoder != NULL) {
-        xmlChar *buffer;
-	int processed = len;
-
-	buffer = (xmlChar *) xmlMalloc((len + 1) * 2 * sizeof(xmlChar));
-	if (buffer == NULL) {
-	    fprintf(stderr, "xmlParserInputBufferGrow : out of memory !\n");
-	    return(-1);
-	}
-	nbchars = in->encoder->input(buffer, (len + 1) * 2 * sizeof(xmlChar),
-	                             (xmlChar *) buf, &processed);
-	/*
-	 * TODO : we really need to have something atomic or the 
-	 *        encoder must report the number of bytes read
+        /*
+	 * Store the data in the incoming raw buffer
 	 */
+        if (in->raw == NULL) {
+	    in->raw = xmlBufferCreate();
+	}
+	xmlBufferAdd(in->raw, (const xmlChar *) buf, len);
+
+	/*
+	 * convert as much as possible to the parser reading buffer.
+	 */
+	nbchars = xmlCharEncInFunc(in->encoder, in->buffer, in->raw);
 	if (nbchars < 0) {
 	    fprintf(stderr, "xmlParserInputBufferPush: encoder error\n");
-	    xmlFree(buffer);
 	    return(-1);
 	}
-	if (processed  != len) {
-	    fprintf(stderr,
-	            "TODO xmlParserInputBufferPush: processed  != len\n");
-	    xmlFree(buffer);
-	    return(-1);
-	}
-        buffer[nbchars] = 0;
-        xmlBufferAdd(in->buffer, (xmlChar *) buffer, nbchars);
-	xmlFree(buffer);
     } else {
 	nbchars = len;
         xmlBufferAdd(in->buffer, (xmlChar *) buf, nbchars);
@@ -730,7 +729,9 @@ xmlParserInputBufferPush(xmlParserInputBufferPtr in, int len, const char *buf) {
  * Grow up the content of the input buffer, the old data are preserved
  * This routine handle the I18N transcoding to internal UTF-8
  * This routine is used when operating the parser in normal (pull) mode
- * TODO: one should be able to remove one extra copy
+ *
+ * TODO: one should be able to remove one extra copy by copying directy
+ *       onto in->buffer or in->raw
  *
  * Returns the number of chars read and stored in the buffer, or -1
  *         in case of error.
@@ -779,34 +780,22 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
 	return(-1);
     }
     if (in->encoder != NULL) {
-        xmlChar *buf;
-	int wrote = res;
-
-	buf = (xmlChar *) xmlMalloc((res + 1) * 2 * sizeof(xmlChar));
-	if (buf == NULL) {
-	    fprintf(stderr, "xmlParserInputBufferGrow : out of memory !\n");
-	    xmlFree(buffer);
-	    return(-1);
+        /*
+	 * Store the data in the incoming raw buffer
+	 */
+        if (in->raw == NULL) {
+	    in->raw = xmlBufferCreate();
 	}
-	nbchars = in->encoder->input(buf, (res + 1) * 2 * sizeof(xmlChar),
-	                             BAD_CAST buffer, &wrote);
-        buf[nbchars] = 0;
-        xmlBufferAdd(in->buffer, (xmlChar *) buf, nbchars);
-	xmlFree(buf);
+	xmlBufferAdd(in->raw, (const xmlChar *) buffer, len);
 
 	/*
-	 * Check that the encoder was able to process the full input
+	 * convert as much as possible to the parser reading buffer.
 	 */
-	if (wrote != res) {
-	    fprintf(stderr, 
-	        "TODO : xmlParserInputBufferGrow wrote %d != res %d\n",
-		wrote, res);
-	    /*
-	     * TODO !!!
-	     * Need to keep the unprocessed input in a buffer in->unprocessed
-	     */
+	nbchars = xmlCharEncInFunc(in->encoder, in->buffer, in->raw);
+	if (nbchars < 0) {
+	    fprintf(stderr, "xmlParserInputBufferGrow: encoder error\n");
+	    return(-1);
 	}
-
     } else {
 	nbchars = res;
         buffer[nbchars] = 0;

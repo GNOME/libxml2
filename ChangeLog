@@ -1,3 +1,7 @@
+Wed Feb 20 19:54:05 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/parserInternals.h: fixes a misplaced #endif
+
 Wed Feb 20 17:47:55 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c valid.c: found and fixed a couple of allocation bugs

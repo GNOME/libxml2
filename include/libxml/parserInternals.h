@@ -394,6 +394,7 @@ void			xmlParserInputShrink	(xmlParserInputPtr in);
 void			htmlInitAutoClose	(void);
 htmlParserCtxtPtr	htmlCreateFileParserCtxt(const char *filename,
 	                                         const char *encoding);
+#endif
 
 /*
  * Specific function to keep track of entities references
@@ -415,7 +416,6 @@ typedef	void	(*xmlEntityReferenceFunc)	(xmlEntityPtr ent,
 void		xmlSetEntityReferenceFunc	(xmlEntityReferenceFunc func);
 
 
-#endif
 #ifdef __cplusplus
 }
 #endif

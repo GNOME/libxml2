@@ -1,3 +1,8 @@
+Sun Sep 14 11:03:27 PDT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* valid.c: fixed bug 121759 - early declaration of
+	  attribute-list in external DTD
+
 Sat Sep 13 14:42:11 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c include/libxml/xmlerror.h: starting cleaning up

@@ -1214,6 +1214,11 @@ xmlAddElementDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *name,
 		xmlFree(uqname);
 	    return(NULL);
 	}
+	/*
+	 * For new element, may have attributes from earlier
+	 * definition in internal subset
+	 */
+	ret->attributes = oldAttributes;
     }
 
     /*
@@ -1221,7 +1226,6 @@ xmlAddElementDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *name,
      */
     ret->etype = type;
     ret->content = xmlCopyElementContent(content);
-    ret->attributes = oldAttributes;
 
     /*
      * Link it to the DTD

@@ -101,8 +101,9 @@ typedef struct xmlNanoHTTPCtxt {
 } xmlNanoHTTPCtxt, *xmlNanoHTTPCtxtPtr;
 
 static int initialized = 0;
-static char *proxy = NULL;	/* the proxy name if any */
+static char *proxy = NULL;	 /* the proxy name if any */
 static int proxyPort;	/* the proxy port if any */
+static unsigned int timeout = 60;/* the select() timeout in seconds */
 
 /**
  * A bit of portability macros and functions
@@ -179,6 +180,19 @@ xmlNanoHTTPCleanup(void) {
     WSACleanup();
 #endif
     return;
+}
+
+/**
+ * xmlNanoHTTPTimeout:
+ * @delay:  the delay in seconds
+ *
+ * Set the HTTP timeout, (default is 60secs).  0 means immediate
+ * return, while -1 infinite.
+ */
+
+void
+xmlNanoHTTPTimeout(int delay) {
+    timeout = (unsigned int) delay;
 }
 
 /**
@@ -462,7 +476,7 @@ xmlNanoHTTPRecv(xmlNanoHTTPCtxtPtr ctxt) {
 	    }
 	}
 
-	tv.tv_sec = 10;
+	tv.tv_sec = timeout;
 	tv.tv_usec = 0;
 	FD_ZERO(&rfd);
 	FD_SET(ctxt->fd, &rfd);
@@ -656,7 +670,7 @@ xmlNanoHTTPConnectAttempt(struct in_addr ia, int port)
 	return(-1);
     }	
     
-    tv.tv_sec = 60;		/* We use 60 second timeouts for now */
+    tv.tv_sec = timeout;
     tv.tv_usec = 0;
     
     FD_ZERO(&wfd);
@@ -968,7 +982,6 @@ xmlNanoHTTPMethod(const char *URL, const char *method, const char *input,
     
     if (URL == NULL) return(NULL);
     if (method == NULL) method = "GET";
-    if (contentType != NULL) *contentType = NULL;
 
 retry:
     if (redirURL == NULL)

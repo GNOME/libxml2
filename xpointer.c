@@ -381,10 +381,11 @@ xmlXPtrLocationSetAdd(xmlLocationSetPtr cur, xmlXPathObjectPtr val) {
 
 /**
  * xmlXPtrLocationSetMerge:
- * @val1:  the first LocationSet
+ * @val1:  the first LocationSet or NULL
  * @val2:  the second LocationSet
  *
  * Merges two rangesets, all ranges from @val2 are added to @val1
+ * if @val1 is NULL, a new set is created and copied from @val2
  *
  * Returns val1 once extended or NULL in case of error.
  */
@@ -392,8 +393,12 @@ xmlLocationSetPtr
 xmlXPtrLocationSetMerge(xmlLocationSetPtr val1, xmlLocationSetPtr val2) {
     int i;
 
-    if (val1 == NULL) return(NULL);
     if (val2 == NULL) return(val1);
+    if (val1 == NULL) {
+	val1 = xmlXPtrLocationSetCreate(NULL);
+	if (val1 == NULL)
+	    return(NULL);
+    }
 
     /*
      * !!!!! this can be optimized a lot, knowing that both

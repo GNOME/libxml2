@@ -1,3 +1,10 @@
+Tue Jan  6 23:51:46 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* python/libxml2-python-api.xml python/libxml_wrap.h python/types.c
+	  python/tests/Makefile.am python/tests/tstLastError.py: applied 
+	  patch from Stephane Bidoul for structured error handling from
+	  python, and the associated test
+
 Tue Jan  6 23:18:11 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* configure.in: fixed Bug130593

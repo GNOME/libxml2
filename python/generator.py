@@ -268,6 +268,7 @@ py_types = {
     'xmlCatalogPtr': ('O', "catalog", "xmlCatalogPtr", "xmlCatalogPtr"),
     'FILE *': ('O', "File", "FILEPtr", "FILE *"),
     'xmlURIPtr': ('O', "URI", "xmlURIPtr", "xmlURIPtr"),
+    'xmlErrorPtr': ('O', "Error", "xmlErrorPtr", "xmlErrorPtr"),
     'xmlOutputBufferPtr': ('O', "outputBuffer", "xmlOutputBufferPtr", "xmlOutputBufferPtr"),
     'xmlParserInputBufferPtr': ('O', "inputBuffer", "xmlParserInputBufferPtr", "xmlParserInputBufferPtr"),
     'xmlRegexpPtr': ('O', "xmlReg", "xmlRegexpPtr", "xmlRegexpPtr"),
@@ -641,6 +642,7 @@ classes_type = {
     "htmlParserCtxt *": ("._o", "parserCtxt(_obj=%s)", "parserCtxt"),
     "xmlCatalogPtr": ("._o", "catalog(_obj=%s)", "catalog"),
     "xmlURIPtr": ("._o", "URI(_obj=%s)", "URI"),
+    "xmlErrorPtr": ("._o", "Error(_obj=%s)", "Error"),
     "xmlOutputBufferPtr": ("._o", "outputBuffer(_obj=%s)", "outputBuffer"),
     "xmlParserInputBufferPtr": ("._o", "inputBuffer(_obj=%s)", "inputBuffer"),
     "xmlRegexpPtr": ("._o", "xmlReg(_obj=%s)", "xmlReg"),
@@ -720,6 +722,9 @@ def nameFixup(name, classe, type, file):
         func = string.lower(func[0:1]) + func[1:]
     elif name[0:9] == "xmlURISet" and file == "python_accessor":
         func = name[6:]
+        func = string.lower(func[0:1]) + func[1:]
+    elif name[0:11] == "xmlErrorGet" and file == "python_accessor":
+        func = name[11:]
         func = string.lower(func[0:1]) + func[1:]
     elif name[0:17] == "xmlXPathParserGet" and file == "python_accessor":
         func = name[17:]

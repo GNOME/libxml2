@@ -641,3 +641,21 @@ libxml_xmlRelaxNGValidCtxtPtrWrap(xmlRelaxNGValidCtxtPtr valid)
     return (ret);
 }
 #endif /* LIBXML_SCHEMAS_ENABLED */
+
+PyObject *
+libxml_xmlErrorPtrWrap(xmlErrorPtr error)
+{
+    PyObject *ret;
+
+#ifdef DEBUG
+    printf("libxml_xmlErrorPtrWrap: error = %p\n", error);
+#endif
+    if (error == NULL) {
+        Py_INCREF(Py_None);
+        return (Py_None);
+    }
+    ret =
+        PyCObject_FromVoidPtrAndDesc((void *) error,
+                                     (char *) "xmlErrorPtr", NULL);
+    return (ret);
+}

@@ -31,7 +31,8 @@ PYTESTS=	\
     ctxterror.py\
     readererr.py\
     relaxng.py	\
-    thread2.py
+    thread2.py \
+    tstLastError.py
 
 XMLS=		\
     tst.xml	\

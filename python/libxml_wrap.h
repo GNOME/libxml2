@@ -109,6 +109,14 @@ typedef struct {
 
 typedef struct {
     PyObject_HEAD
+    xmlErrorPtr obj;
+} PyError_Object;
+
+#define PyError_Get(v) (((v) == Py_None) ? NULL : \
+	(((PyError_Object *)(v))->obj))
+
+typedef struct {
+    PyObject_HEAD
     xmlOutputBufferPtr obj;
 } PyoutputBuffer_Object;
 
@@ -194,3 +202,4 @@ PyObject * libxml_xmlRelaxNGPtrWrap(xmlRelaxNGPtr ctxt);
 PyObject * libxml_xmlRelaxNGParserCtxtPtrWrap(xmlRelaxNGParserCtxtPtr ctxt);
 PyObject * libxml_xmlRelaxNGValidCtxtPtrWrap(xmlRelaxNGValidCtxtPtr valid);
 #endif /* LIBXML_SCHEMAS_ENABLED */
+PyObject * libxml_xmlErrorPtrWrap(xmlErrorPtr error);

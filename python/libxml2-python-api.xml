@@ -275,5 +275,36 @@
       <arg name='URI' type='xmlURIPtr' info='the URI'/>
       <arg name='port' type='int' info='The URI port part'/>
     </function>
+    <!-- xmlErrorPtr accessors -->
+    <function name='xmlErrorGetDomain' file='python_accessor'>
+      <info>What part of the library raised this error</info>
+      <return type='int' info="The error domain" field="domain"/>
+      <arg name='Error' type='xmlErrorPtr' info='the Error'/>
+    </function>
+    <function name='xmlErrorGetCode' file='python_accessor'>
+      <info>The error code, e.g. an xmlParserError</info>
+      <return type='int' info="The error code" field="code"/>
+      <arg name='Error' type='xmlErrorPtr' info='the Error'/>
+    </function>
+    <function name='xmlErrorGetMessage' file='python_accessor'>
+      <info>human-readable informative error message</info>
+      <return type='const char *' info="The error message" field="message"/>
+      <arg name='Error' type='xmlErrorPtr' info='the Error'/>
+    </function>
+    <function name='xmlErrorGetLevel' file='python_accessor'>
+      <info>how consequent is the error</info>
+      <return type='int' info="The error level" field="level"/>
+      <arg name='Error' type='xmlErrorPtr' info='the Error'/>
+    </function>
+    <function name='xmlErrorGetFile' file='python_accessor'>
+      <info>the filename</info>
+      <return type='const char *' info="The error file" field="file"/>
+      <arg name='Error' type='xmlErrorPtr' info='the Error'/>
+    </function>
+    <function name='xmlErrorGetLine' file='python_accessor'>
+      <info>the line number if available</info>
+      <return type='int' info="The error line" field="line"/>
+      <arg name='Error' type='xmlErrorPtr' info='the Error'/>
+    </function>
   </symbols>
 </api>

@@ -203,6 +203,7 @@ registerDefaultOutputCallbacks()
 registerHTTPPostCallbacks()
 
 # functions from module xmlerror
+lastError()
 resetLastError()
 
 # functions from module xmlreader
@@ -779,6 +780,18 @@ Class relaxNgSchema()
 
     # functions from module xmlreader
     RelaxNGSetSchema()
+Class Error()
+    # accessors
+    code()
+    domain()
+    file()
+    level()
+    line()
+    message()
+
+    # functions from module xmlerror
+    copyError()
+    resetError()
 Class relaxNgValidCtxt()
 
     # functions from module relaxng

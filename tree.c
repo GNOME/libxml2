@@ -4519,8 +4519,26 @@ xmlSearchNsByHref(xmlDocPtr doc, xmlNodePtr node, const xmlChar *href) {
 	/*
 	 * Only the document can hold the XML spec namespace.
 	 */
-	if (doc == NULL)
-	    return(NULL);
+	if ((doc == NULL) && (node->type == XML_ELEMENT_NODE)) {
+	    /*
+	     * The XML-1.0 namespace is normally held on the root
+	     * element. In this case exceptionally create it on the
+	     * node element.
+	     */
+	    cur = (xmlNsPtr) xmlMalloc(sizeof(xmlNs));
+	    if (cur == NULL) {
+		xmlGenericError(xmlGenericErrorContext,
+			"xmlSearchNs : malloc failed\n");
+		return(NULL);
+	    }
+	    memset(cur, 0, sizeof(xmlNs));
+	    cur->type = XML_LOCAL_NAMESPACE;
+	    cur->href = xmlStrdup(XML_XML_NAMESPACE); 
+	    cur->prefix = xmlStrdup((const xmlChar *)"xml"); 
+	    cur->next = node->nsDef;
+	    node->nsDef = cur;
+	    return(cur);
+	}
 	if (doc->oldNs == NULL) {
 	    /*
 	     * Allocate a new Namespace and fill the fields.

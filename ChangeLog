@@ -1,3 +1,8 @@
+Wed Aug 14 10:29:02 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: applied the same fix for the XML-1.0 namespace to
+	  xmlSearchNsByHref() as was done for xmlSearchNs()
+
 Mon Aug 12 16:52:08 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* libxml.3: small cleanup of the man page

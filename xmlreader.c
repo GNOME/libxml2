@@ -92,6 +92,12 @@ struct _xmlTextReader {
     int				depth;  /* depth of the current node */
     xmlNodePtr			faketext;/* fake xmlNs chld */
     int				wasempty;/* was the last node empty */
+
+    /* entity stack when traversing entities content */
+    xmlNodePtr         ent;          /* Current Entity Ref Node */
+    int                entNr;        /* Depth of the entities stack */
+    int                entMax;       /* Max depth of the entities stack */
+    xmlNodePtr        *entTab;       /* array of entities */
 };
 
 #ifdef DEBUG_READER
@@ -123,6 +129,68 @@ xmlTextReaderDebug(xmlTextReaderPtr reader) {
 #endif
 
 /**
+ * xmlTextReaderEntPush:
+ * @reader:  the xmlTextReaderPtr used
+ * @value:  the entity reference node
+ *
+ * Pushes a new entity reference node on top of the entities stack
+ *
+ * Returns 0 in case of error, the index in the stack otherwise
+ */
+static int
+xmlTextReaderEntPush(xmlTextReaderPtr reader, xmlNodePtr value)
+{
+    if (reader->entMax <= 0) {
+	reader->entMax = 10;
+	reader->entTab = (xmlNodePtr *) xmlMalloc(reader->entMax *
+		                                  sizeof(reader->entTab[0]));
+        if (reader->entTab == NULL) {
+            xmlGenericError(xmlGenericErrorContext, "xmlMalloc failed !\n");
+            return (0);
+        }
+    }
+    if (reader->entNr >= reader->entMax) {
+        reader->entMax *= 2;
+        reader->entTab =
+            (xmlNodePtr *) xmlRealloc(reader->entTab,
+                                      reader->entMax *
+                                      sizeof(reader->entTab[0]));
+        if (reader->entTab == NULL) {
+            xmlGenericError(xmlGenericErrorContext, "xmlRealloc failed !\n");
+            return (0);
+        }
+    }
+    reader->entTab[reader->entNr] = value;
+    reader->ent = value;
+    return (reader->entNr++);
+}
+
+/**
+ * xmlTextReaderEntPop:
+ * @reader:  the xmlTextReaderPtr used
+ *
+ * Pops the top element entity from the entities stack
+ *
+ * Returns the entity just removed
+ */
+static xmlNodePtr
+xmlTextReaderEntPop(xmlTextReaderPtr reader)
+{
+    xmlNodePtr ret;
+
+    if (reader->entNr <= 0)
+        return (0);
+    reader->entNr--;
+    if (reader->entNr > 0)
+        reader->ent = reader->entTab[reader->entNr - 1];
+    else
+        reader->ent = NULL;
+    ret = reader->entTab[reader->entNr];
+    reader->entTab[reader->entNr] = 0;
+    return (ret);
+}
+
+/**
  * xmlTextReaderStartElement:
  * @ctx: the user data (XML parser context)
  * @fullname:  The element name, including namespace prefix
@@ -146,10 +214,13 @@ xmlTextReaderStartElement(void *ctx, const xmlChar *fullname,
 	 */
 	origctxt = reader->ctxt;
 	reader->startElement(ctx, fullname, atts);
+#if 0
+	123
 	if (origctxt->validate) {
 	    ctxt->valid &= xmlValidatePushElement(&origctxt->vctxt,
 				 ctxt->myDoc, ctxt->node, fullname);
 	}
+#endif
     }
     if (reader != NULL)
 	reader->state = XML_TEXTREADER_ELEMENT;
@@ -180,10 +251,13 @@ xmlTextReaderEndElement(void *ctx, const xmlChar *fullname) {
 
 	reader->endElement(ctx, fullname);
 
+#if 0
+	123
 	if (origctxt->validate) {
 	    ctxt->valid &= xmlValidatePopElement(&origctxt->vctxt,
 		                ctxt->myDoc, node, fullname);
 	}
+#endif
     }
     if (reader != NULL) {
 	if (reader->state == XML_TEXTREADER_ELEMENT)
@@ -218,9 +292,12 @@ xmlTextReaderCharacters(void *ctx, const xmlChar *ch, int len)
 	 */
 	origctxt = reader->ctxt;
 
+#if 0
+	123
 	if (origctxt->validate) {
 	    ctxt->valid &= xmlValidatePushCData(&origctxt->vctxt, ch, len);
 	}
+#endif
     }
 }
 
@@ -289,7 +366,8 @@ xmlTextReaderPushData(xmlTextReaderPtr reader) {
 	    } else 
 		break;
 	}
-	if ((inbuf->content[cur] == '>') || (inbuf->content[cur] == '&')) {
+	if ((inbuf->content[cur] == '>') || (inbuf->content[cur] == '&') ||
+	    (inbuf->content[cur] == ';')) {
 	    cur = cur + 1;
 	    val = xmlParseChunk(reader->ctxt,
 		          (const char *) &inbuf->content[reader->cur],
@@ -345,6 +423,58 @@ xmlTextReaderPushData(xmlTextReaderPtr reader) {
 }
 
 /**
+ * xmlTextReaderValidatePush:
+ * @reader:  the xmlTextReaderPtr used
+ *
+ * Push the current node for validation
+ */
+static void
+xmlTextReaderValidatePush(xmlTextReaderPtr reader) {
+    xmlNodePtr node = reader->node;
+
+    if ((node->ns == NULL) || (node->ns->prefix == NULL)) {
+	reader->ctxt->valid &= xmlValidatePushElement(&reader->ctxt->vctxt,
+				reader->ctxt->myDoc, node, node->name);
+    } else {
+	xmlChar *qname;
+
+	qname = xmlStrdup(node->ns->prefix);
+	qname = xmlStrcat(qname, BAD_CAST ":");
+	qname = xmlStrcat(qname, node->name);
+	reader->ctxt->valid &= xmlValidatePushElement(&reader->ctxt->vctxt,
+				reader->ctxt->myDoc, node, qname);
+	if (qname != NULL)
+	    xmlFree(qname);
+    }
+}
+/**
+ * xmlTextReaderValidatePop:
+ * @reader:  the xmlTextReaderPtr used
+ *
+ * Pop the current node from validation
+ */
+static void
+xmlTextReaderValidatePop(xmlTextReaderPtr reader) {
+    xmlNodePtr node = reader->node;
+
+    if ((node->ns == NULL) || (node->ns->prefix == NULL)) {
+	reader->ctxt->valid &= xmlValidatePopElement(&reader->ctxt->vctxt,
+				reader->ctxt->myDoc, node, node->name);
+    } else {
+	xmlChar *qname;
+
+	qname = xmlStrdup(node->ns->prefix);
+	qname = xmlStrcat(qname, BAD_CAST ":");
+	qname = xmlStrcat(qname, node->name);
+	reader->ctxt->valid &= xmlValidatePopElement(&reader->ctxt->vctxt,
+				reader->ctxt->myDoc, node, qname);
+	if (qname != NULL)
+	    xmlFree(qname);
+    }
+}
+
+
+/**
  * xmlTextReaderRead:
  * @reader:  the xmlTextReaderPtr used
  *
@@ -356,9 +486,9 @@ xmlTextReaderPushData(xmlTextReaderPtr reader) {
  */
 int
 xmlTextReaderRead(xmlTextReaderPtr reader) {
-    int val, olddepth, wasempty;
-    xmlTextReaderState oldstate;
-    xmlNodePtr oldnode;
+    int val, olddepth = 0, wasempty = 0;
+    xmlTextReaderState oldstate = 0;
+    xmlNodePtr oldnode = NULL;
 
     if ((reader == NULL) || (reader->ctxt == NULL))
 	return(-1);
@@ -396,7 +526,7 @@ xmlTextReaderRead(xmlTextReaderPtr reader) {
 	    reader->node = reader->ctxt->nodeTab[0];
 	}
 	reader->depth = 0;
-	return(1);
+	goto node_found;
     }
     oldstate = reader->state;
     olddepth = reader->ctxt->nodeNr;
@@ -412,6 +542,7 @@ xmlTextReaderRead(xmlTextReaderPtr reader) {
 	         (reader->ctxt->node->last == reader->node)) ||
 	        (reader->node != reader->ctxt->node));
 
+get_next_node:
     /*
      * If we are not backtracking on ancestors or examined nodes,
      * that the parser didn't finished or that we arent at the end
@@ -428,7 +559,7 @@ xmlTextReaderRead(xmlTextReaderPtr reader) {
 	if (val < 0)
 	    return(-1);
 	if (reader->node == NULL)
-	    return(0);
+	    goto node_end;
     }
     if (oldstate != XML_TEXTREADER_BACKTRACK) {
 	if ((reader->node->children != NULL) &&
@@ -437,8 +568,7 @@ xmlTextReaderRead(xmlTextReaderPtr reader) {
 	    reader->node = reader->node->children;
 	    reader->depth++;
 	    reader->state = XML_TEXTREADER_ELEMENT;
-	    DUMP_READER
-	    return(1);
+	    goto node_found;
 	}
     }
     if (reader->node->next != NULL) {
@@ -446,12 +576,14 @@ xmlTextReaderRead(xmlTextReaderPtr reader) {
             (reader->node->type == XML_ELEMENT_NODE) &&
 	    (wasempty == 0)) {
 	    reader->state = XML_TEXTREADER_END;
-	    DUMP_READER
-	    return(1);
+	    goto node_found;
 	}
+	if ((reader->ctxt->validate) &&
+	    (reader->node->type == XML_ELEMENT_NODE))
+	    xmlTextReaderValidatePop(reader);
 	reader->node = reader->node->next;
 	reader->state = XML_TEXTREADER_ELEMENT;
-	DUMP_READER
+
 	/*
 	 * Cleanup of the old node
 	 */
@@ -460,15 +592,16 @@ xmlTextReaderRead(xmlTextReaderPtr reader) {
 	    xmlFreeNode(oldnode);
 	}
 
-	return(1);
+	goto node_found;
     }
     if ((oldstate == XML_TEXTREADER_ELEMENT) &&
 	(reader->node->type == XML_ELEMENT_NODE) &&
 	(wasempty == 0)) {
 	reader->state = XML_TEXTREADER_END;
-	DUMP_READER
-	return(1);
+	goto node_found;
     }
+    if ((reader->ctxt->validate) && (reader->node->type == XML_ELEMENT_NODE))
+	xmlTextReaderValidatePop(reader);
     reader->node = reader->node->parent;
     if ((reader->node == NULL) ||
 	(reader->node->type == XML_DOCUMENT_NODE) ||
@@ -491,12 +624,61 @@ xmlTextReaderRead(xmlTextReaderPtr reader) {
 	    xmlFreeNode(oldnode);
 	}
 
-	return(0);
+	goto node_end;
     }
     reader->depth--;
     reader->state = XML_TEXTREADER_BACKTRACK;
+
+node_found:
     DUMP_READER
+
+    /*
+     * Handle entities enter and exit
+     */
+    if ((reader->node != NULL) &&
+	(reader->node->type == XML_ENTITY_REF_NODE) &&
+	(reader->ctxt != NULL) && (reader->ctxt->replaceEntities == 1)) {
+	/*
+	 * Case where the underlying tree is not availble, lookup the entity
+	 * and walk it.
+	 */
+	if ((reader->node->children == NULL) && (reader->ctxt->sax != NULL) &&
+	    (reader->ctxt->sax->getEntity != NULL)) {
+	    reader->node->children = (xmlNodePtr) 
+		reader->ctxt->sax->getEntity(reader->ctxt, reader->node->name);
+	}
+
+	if ((reader->node->children != NULL) &&
+	    (reader->node->children->type == XML_ENTITY_DECL) &&
+	    (reader->node->children->children != NULL)) {
+	    xmlTextReaderEntPush(reader, reader->node);
+	    reader->node = reader->node->children->children;
+	}
+    }
+    if ((reader->node != NULL) &&
+	(reader->node->type == XML_ENTITY_DECL) &&
+	(reader->ent != NULL) && (reader->ent->children == reader->node)) {
+	reader->node = xmlTextReaderEntPop(reader);
+	reader->depth++;
+        goto get_next_node;
+    }
+    if ((reader->ctxt->validate) && (reader->node != NULL)) {
+	xmlNodePtr node = reader->node;
+	xmlParserCtxtPtr ctxt = reader->ctxt;
+
+	if ((node->type == XML_ELEMENT_NODE) && 
+            ((reader->state != XML_TEXTREADER_END) &&
+	     (reader->state != XML_TEXTREADER_BACKTRACK))) {
+	    xmlTextReaderValidatePush(reader);
+	} else if ((node->type == XML_TEXT_NODE) ||
+		   (node->type == XML_CDATA_SECTION_NODE)) {
+	    ctxt->valid &= xmlValidatePushCData(&ctxt->vctxt,
+			      node->content, xmlStrlen(node->content));
+	}
+    }
     return(1);
+node_end:
+    return(0);
 }
 
 /**
@@ -646,6 +828,9 @@ xmlNewTextReader(xmlParserInputBufferPtr input, const char *URI) {
 	return(NULL);
     }
     memset(ret, 0, sizeof(xmlTextReader));
+    ret->entTab = NULL;
+    ret->entMax = 0;
+    ret->entNr = 0;
     ret->input = input;
     ret->sax = (xmlSAXHandler *) xmlMalloc(sizeof(xmlSAXHandler));
     if (ret->sax == NULL) {
@@ -748,6 +933,8 @@ xmlFreeTextReader(xmlTextReaderPtr reader) {
     if (reader->faketext != NULL) {
 	xmlFreeNode(reader->faketext);
     }
+    if (reader->entTab != NULL)
+	xmlFree(reader->entTab);
     xmlFree(reader);
 }
 

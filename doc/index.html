@@ -365,7 +365,7 @@ languages:
 
 </ul>
                                   <p>In most cases libxml2 tries to implement the specifications in a
-relatively strictly compliant way. As of release 2.4.16, libxml2 passes all
+relatively strictly compliant way. As of release 2.4.16, libxml2 passed all
 1800+ tests from the 
                                     <a href="http://www.oasis-open.org/committees/xml-conformance/">OASIS XML Tests
 Suite
@@ -379,8 +379,8 @@ specifications but doesn't claim to implement them completely:
                                       <a href="http://www.w3.org/TR/DOM-Level-2-Core/">http://www.w3.org/TR/DOM-Level-2-Core/
 </a>
 
-    it doesn't implement the API itself, gdome2 does this on top of
-  libxml2
+    the document model, but it doesn't implement the API itself,
+    gdome2 does this on top of libxml2
 </li>
 
   
@@ -398,13 +398,8 @@ specifications but doesn't claim to implement them completely:
 </li>
 
   
-                                    <li>SAX: a minimal SAX implementation compatible with early expat
-  versions
-</li>
-
-  
-                                    <li>DocBook SGML v4: libxml2 includes a hackish parser to transition to
-  XML
+                                    <li>SAX: a SAX2 like interface and a minimal SAX1 implementation compatible
+    with early expat versions
 </li>
 
 

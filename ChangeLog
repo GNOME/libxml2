@@ -1,3 +1,7 @@
+Mon Apr 19 23:27:46 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c: fixed a stupid () error + Mark name.
+
 Sun Apr 18 23:45:46 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in: preparing 2.6.9 release
@@ -746,12 +750,12 @@ Thu Jan 15 00:48:46 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 Tue Jan 13 21:50:05 CET 2004 Daniel Veillard <daniel@veillard.com>
 
-	* testHTML.c: another small patch from Mark Vadoc
+	* testHTML.c: another small patch from Mark Vakoc
 
 Tue Jan 13 21:39:58 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c relaxng.c testRelax.c testSchemas.c: applied
-	  patch from Mark Vadoc to not use SAX1 unless necessary.
+	  patch from Mark Vakoc to not use SAX1 unless necessary.
 
 Mon Jan 12 17:22:57 CET 2004 Daniel Veillard <daniel@veillard.com>
 
@@ -5216,7 +5220,7 @@ Thu Dec 12 10:59:11 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 Thu Dec 12 01:09:34 CET 2002 Daniel Veillard <daniel@veillard.com>
 
-	* HTMLtree.c include/libxml/HTMLtree.h: patch from Mark Vadok
+	* HTMLtree.c include/libxml/HTMLtree.h: patch from Mark Vakoc
 	  about htmlNodeDumpOutput location.
 	* xpath.c: removed an undefined function signature
 	* doc/apibuild.py doc/libxml2-api.xml: the script was exporting
@@ -12962,7 +12966,7 @@ Thu Dec 12 10:59:11 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 Thu Dec 12 01:09:34 CET 2002 Daniel Veillard <daniel@veillard.com>
 
-	* HTMLtree.c include/libxml/HTMLtree.h: patch from Mark Vadok
+	* HTMLtree.c include/libxml/HTMLtree.h: patch from Mark Vakoc
 	  about htmlNodeDumpOutput location.
 	* xpath.c: removed an undefined function signature
 	* doc/apibuild.py doc/libxml2-api.xml: the script was exporting

@@ -10923,8 +10923,8 @@ xmlXPathEvaluatePredicateResult(xmlXPathParserContextPtr ctxt,
 	    return(res->boolval);
         case XPATH_NUMBER:
 #ifdef WIN32
-	    return(((res->floatval == ctxt->context->proximityPosition) &&
-	           (!xmlXPathIsNaN(res->floatval)) /* MSC pbm Mark Vadoc !*/);
+	    return((res->floatval == ctxt->context->proximityPosition) &&
+	           (!xmlXPathIsNaN(res->floatval))); /* MSC pbm Mark Vakoc !*/
 #else
 	    return(res->floatval == ctxt->context->proximityPosition);
 #endif

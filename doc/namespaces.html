@@ -34,21 +34,17 @@ same as &lt;bar:text&gt; in another document. What really matters is the URI
 associated with the element or the attribute, not the prefix string (which is
 just a shortcut for the full URI). In libxml, element and attributes have an
 <code>ns</code> field pointing to an xmlNs structure detailing the namespace
-prefix and its URI.</p><p>@@Interfaces@@</p><pre>
-xmlNodePtr node;
+prefix and its URI.</p><p>@@Interfaces@@</p><pre>xmlNodePtr node;
 if(!strncmp(node-&gt;name,&quot;mytag&quot;,5)
   &amp;&amp; node-&gt;ns
   &amp;&amp; !strcmp(node-&gt;ns-&gt;href,&quot;http://www.mysite.com/myns/1.0&quot;)) {
   ...
-}
-</pre><p>Usually people object to using namespaces together with validity checking.
+}</pre><p>Usually people object to using namespaces together with validity checking.
 I will try to make sure that using namespaces won't break validity checking,
 so even if you plan to use or currently are using validation I strongly
 suggest adding namespaces to your document. A default namespace scheme
 <code>xmlns=&quot;http://....&quot;</code> should not break validity even on less
 flexible parsers. Using namespaces to mix and differentiate content coming
-from multiple DTDs will certainly break current validation schemes.
-To check such documents one needs to use schema-validation, which is supported
-in libxml2 as well. See <a href="http://www.relaxng.org/">relagx-ng</a> and
-<a href="http://www.w3c.org/XML/Schema">w3c-schema</a>.
-</p><p><a href="bugs.html">Daniel Veillard</a></p></td></tr></table></td></tr></table></td></tr></table></td></tr></table></td></tr></table></body></html>
+from multiple DTDs will certainly break current validation schemes. To check
+such documents one needs to use schema-validation, which is supported in
+libxml2 as well. See <a href="http://www.relaxng.org/">relagx-ng</a> and <a href="http://www.w3c.org/XML/Schema">w3c-schema</a>.</p><p><a href="bugs.html">Daniel Veillard</a></p></td></tr></table></td></tr></table></td></tr></table></td></tr></table></td></tr></table></body></html>

@@ -661,6 +661,74 @@ to test those</p>
   Schemas</a></li>
 </ul>
 
+<h3>2.6.0: Oct 20 2003</h3>
+<ul>
+  <li>Major revision release: should be API and ABI compatible but got a lot
+    of change</li>
+  <li>Increased the library modularity, far more options can be stripped out,
+    a --with-minimum configuration will weight around 160KBytes</li>
+  <li>Use per parser and per document dictionnary, allocate names and small
+    text nodes from the dictionnary</li>
+  <li>Switch to a SAX2 like parser rewrote most of the XML parser core,
+    provides namespace resolution and defaulted attributes, minimize memory
+    allocations and copies, namespace checking and specific error handling,
+    immutable buffers, make predefined entities static structures, etc...</li>
+  <li>rewrote all the error handling in the library, all errors can be
+    intercepted at a structured level, with precise information
+  available.</li>
+  <li>New simpler and more generic XML and HTML parser APIs, allowing to
+    easilly modify the parsing options and reuse parser context for multiple
+    consecutive documents.</li>
+  <li>Similar new APIs for the xmlReader, for options and reuse, provided new
+    functions to access content as const strings, use them for Python
+  bindings</li>
+  <li>a  lot of other smaller API improvements: xmlStrPrintf (Aleksey Sanin),
+    Walker i.e. reader on a document tree based on Alfred Mickautsch code,
+    make room in nodes for line numbers, reference counting and future PSVI
+    extensions, generation of character ranges to be checked with faster
+    algorithm (William),  xmlParserMaxDepth (Crutcher Dunnavant), buffer
+    access</li>
+  <li>New xmlWriter API provided by Alfred Mickautsch</li>
+  <li>Schemas: base64 support by Anthony Carrico</li>
+  <li>Parser&lt;-&gt;HTTP integration fix, proper processing of the Mime-Type
+    and charset informations if available.</li>
+  <li>Relax-NG: bug fixes including the one reported by Martijn Faassen and
+    zeroOrMore, better error reporting.</li>
+  <li>Python bindings (Stéphane Bidoul), never use stdout for errors
+  output</li>
+  <li>Portability: all the headers have macros for export and calling
+    convention definitions (Igor Zlatkovic), VMS update (Craig A. Berry),
+    Windows: threads (Jesse Pelton), Borland compiler (Eric Zurcher,  Igor),
+    Mingw (Igor), typos (Mark Vakoc),  beta version (Stephane Bidoul),
+    warning cleanups on AIX and MIPS compilers (William Brack), BeOS (Marcin
+    'Shard' Konicki)</li>
+  <li>Documentation fixes and README (William Brack), search fix (William),
+    tutorial updates (John Fleck), namespace docs (Stefan Kost)</li>
+  <li>Bug fixes: xmlCleanupParser (Dave Beckett), threading uninitialized
+    mutexes, HTML doctype lowercase,  SAX/IO (William), compression detection
+    and restore (William), attribute declaration in DTDs (William), namespace
+    on attribute in HTML output (William), input filename (Rob Richards),
+    namespace DTD validation, xmlReplaceNode (Chris Ryland), I/O callbacks
+    (Markus Keim), CDATA serialization (Shaun McCance), xmlReader (Peter
+    Derr), high codepoint charref like &amp;#x10FFFF;, buffer access in push
+    mode (Justin Fletcher), TLS threads on Windows (Jesse Pelton), XPath bug
+    (William), xmlCleanupParser (Marc Liyanage), CDATA output (William), HTTP
+    error handling.</li>
+  <li>xmllint options: --dtdvalidfpi for Tobias Reif, --sax1 for compat
+    testing,  --nodict for building without tree dictionnary, --nocdata to
+    replace CDATA by text, --nsclean to remove surperfluous  namespace
+    declarations</li>
+  <li>added xml2-config --libtool-libs option from Kevin P. Fleming</li>
+  <li>a lot of profiling and tuning of the code, speedup patch for
+    xmlSearchNs() by Luca Padovani. The xmlReader should do far less
+    allocation and it speed should get closer to SAX. Chris Anderson worked
+    on speeding and cleaning up repetitive checking code.</li>
+  <li>cleanup of "make tests"</li>
+  <li>libxml-2.0-uninstalled.pc from Malcolm Tredinnick</li>
+  <li>deactivated the broken docBook SGML parser code and plugged the XML
+    parser instead.</li>
+</ul>
+
 <h3>2.5.11: Sep 9 2003</h3>
 
 <p>A bugfix only release:</p>
@@ -3757,15 +3825,12 @@ just a shortcut for the full URI). In libxml, element and attributes have an
 prefix and its URI.</p>
 
 <p>@@Interfaces@@</p>
-
-<pre>
-xmlNodePtr node;
+<pre>xmlNodePtr node;
 if(!strncmp(node-&gt;name,"mytag",5)
   &amp;&amp; node-&gt;ns
   &amp;&amp; !strcmp(node-&gt;ns-&gt;href,"http://www.mysite.com/myns/1.0")) {
   ...
-}
-</pre>
+}</pre>
 
 <p>Usually people object to using namespaces together with validity checking.
 I will try to make sure that using namespaces won't break validity checking,
@@ -3773,11 +3838,10 @@ so even if you plan to use or currently are using validation I strongly
 suggest adding namespaces to your document. A default namespace scheme
 <code>xmlns="http://...."</code> should not break validity even on less
 flexible parsers. Using namespaces to mix and differentiate content coming
-from multiple DTDs will certainly break current validation schemes.
-To check such documents one needs to use schema-validation, which is supported
-in libxml2 as well. See <a href="http://www.relaxng.org/">relagx-ng</a> and
-<a href="http://www.w3c.org/XML/Schema">w3c-schema</a>.
-</p>
+from multiple DTDs will certainly break current validation schemes. To check
+such documents one needs to use schema-validation, which is supported in
+libxml2 as well. See <a href="http://www.relaxng.org/">relagx-ng</a> and <a
+href="http://www.w3c.org/XML/Schema">w3c-schema</a>.</p>
 
 <h2><a name="Upgrading">Upgrading 1.x code</a></h2>
 

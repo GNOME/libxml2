@@ -3748,7 +3748,7 @@ xmlStaticCopyNode(const xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
 	ret->content = xmlStrdup(node->content);
     }else{
       if (node->type == XML_ELEMENT_NODE)
-        ret->content = (void*)(long) node->content;
+        ret->line = node->line;
     }
     if (parent != NULL) {
 	xmlNodePtr tmp;
@@ -4071,7 +4071,7 @@ xmlGetLineNo(xmlNodePtr node)
     if (!node)
         return result;
     if (node->type == XML_ELEMENT_NODE)
-        result = (long) node->content;
+        result = (long) node->line;
     else if ((node->prev != NULL) &&
              ((node->prev->type == XML_ELEMENT_NODE) ||
 	      (node->prev->type == XML_TEXT_NODE)))

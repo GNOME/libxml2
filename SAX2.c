@@ -1410,8 +1410,12 @@ xmlSAX2StartElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
     }
     ctxt->nodemem = -1;
     if (ctxt->linenumbers) {
-	if (ctxt->input != NULL)
-	    ret->content = (void *) (long) ctxt->input->line;
+	if (ctxt->input != NULL) {
+	    if (ctxt->input->line < 65535)
+		ret->line = (short) ctxt->input->line;
+	    else
+	        ret->line = 65535;
+	}
     }
 
     /*
@@ -1983,8 +1987,12 @@ xmlSAX2StartElementNs(void *ctx,
 	}
     }
     if (ctxt->linenumbers) {
-	if (ctxt->input != NULL)
-	    ret->content = (void *) (long) ctxt->input->line;
+	if (ctxt->input != NULL) {
+	    if (ctxt->input->line < 65535)
+		ret->line = (short) ctxt->input->line;
+	    else
+	        ret->line = 65535;
+	}
     }
 
     if (ctxt->myDoc->children == NULL) {

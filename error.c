@@ -495,7 +495,7 @@ __xmlRaiseError(xmlStructuredErrorFunc schannel,
 	    base = xmlStrdup(node->doc->URL);
 
 	if ((node != NULL) && (node->type == XML_ELEMENT_NODE))
-	    line = (int) node->content;
+	    line = node->line;
     }
 
     /*

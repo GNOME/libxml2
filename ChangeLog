@@ -1,3 +1,13 @@
+Tue Oct 21 02:03:03 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in NEWS doc/libxml2.xsa: preparing libxml2-2.6.0
+	* doc/*: updated and regenerated the docs and API
+
+Tue Oct 21 01:01:55 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* SAX2.c error.c tree.c: moved the line number to their proper
+	  field in elements now.
+
 Tue Oct 21 00:28:20 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in xmlwriter.c Makefile.am include/libxml/xmlwriter.h

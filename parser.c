@@ -7640,8 +7640,7 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
     /*
      * SAX: end of the document processing.
      */
-    if ((ctxt->sax) && (ctxt->sax->endDocument != NULL) &&
-	(!ctxt->disableSAX))
+    if ((ctxt->sax) && (ctxt->sax->endDocument != NULL))
         ctxt->sax->endDocument(ctxt->userData);
 
     if (! ctxt->wellFormed) {
@@ -7757,8 +7756,7 @@ xmlParseExtParsedEnt(xmlParserCtxtPtr ctxt) {
     /*
      * SAX: end of the document processing.
      */
-    if ((ctxt->sax) && (ctxt->sax->endDocument != NULL) &&
-	(!ctxt->disableSAX))
+    if ((ctxt->sax) && (ctxt->sax->endDocument != NULL))
         ctxt->sax->endDocument(ctxt->userData);
 
     if (! ctxt->wellFormed) return(-1);
@@ -8245,8 +8243,7 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		    xmlGenericError(xmlGenericErrorContext,
 			    "PP: entering EOF\n");
 #endif
-		    if ((ctxt->sax) && (ctxt->sax->endDocument != NULL) &&
-			(!ctxt->disableSAX))
+		    if ((ctxt->sax) && (ctxt->sax->endDocument != NULL))
 			ctxt->sax->endDocument(ctxt->userData);
 		    goto done;
 		}
@@ -8269,8 +8266,7 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		    xmlGenericError(xmlGenericErrorContext,
 			    "PP: entering EOF\n");
 #endif
-		    if ((ctxt->sax) && (ctxt->sax->endDocument != NULL) &&
-			(!ctxt->disableSAX))
+		    if ((ctxt->sax) && (ctxt->sax->endDocument != NULL))
 			ctxt->sax->endDocument(ctxt->userData);
 		    goto done;
 		}
@@ -8289,8 +8285,7 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		    xmlGenericError(xmlGenericErrorContext,
 			    "PP: entering EOF\n");
 #endif
-		    if ((ctxt->sax) && (ctxt->sax->endDocument != NULL) &&
-			(!ctxt->disableSAX))
+		    if ((ctxt->sax) && (ctxt->sax->endDocument != NULL))
 			ctxt->sax->endDocument(ctxt->userData);
 		    goto done;
 		}
@@ -8767,8 +8762,7 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
 	    ctxt->disableSAX = 1;
 	} 
 	if (ctxt->instate != XML_PARSER_EOF) {
-	    if ((ctxt->sax) && (ctxt->sax->endDocument != NULL) &&
-		(!ctxt->disableSAX))
+	    if ((ctxt->sax) && (ctxt->sax->endDocument != NULL))
 		ctxt->sax->endDocument(ctxt->userData);
 	}
 	ctxt->instate = XML_PARSER_EOF;

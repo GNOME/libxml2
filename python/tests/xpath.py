@@ -22,6 +22,14 @@ if len(res) != 2:
 if res[0].name != "doc" or res[1].name != "foo":
     print "xpath query: wrong node set value"
     sys.exit(1)
+ctxt.setContextNode(res[0])
+res = ctxt.xpathEval("foo")
+if len(res) != 1:
+    print "xpath query: wrong node set size"
+    sys.exit(1)
+if res[0].name != "foo":
+    print "xpath query: wrong node set value"
+    sys.exit(1)
 doc.freeDoc()
 ctxt.xpathFreeContext()
 i = 1000

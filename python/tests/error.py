@@ -16,8 +16,17 @@ def callback(ctx, str):
 
      err = err + "%s %s" % (ctx, str)
 
+got_exc = 0
 libxml2.registerErrorHandler(callback, "-->")
-doc = libxml2.parseFile("missing.xml")
+try:
+    doc = libxml2.parseFile("missing.xml")
+except libxml2.parserError:
+    got_exc = 1
+
+if got_exc == 0:
+    print "Failed to get a parser exception"
+    sys.exit(1)
+
 if err != expect:
     print "error"
     print "received %s" %(err)
@@ -26,7 +35,10 @@ if err != expect:
 
 i = 10000
 while i > 0:
-    doc = libxml2.parseFile("missing.xml")
+    try:
+	doc = libxml2.parseFile("missing.xml")
+    except libxml2.parserError:
+	got_exc = 1
     err = ""
     i = i - 1
 

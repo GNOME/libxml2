@@ -583,6 +583,9 @@ def nameFixup(name, classe, type, file):
     elif name[0:11] == "xmlXPathGet" and file == "python_accessor":
         func = name[11:]
         func = string.lower(func[0:1]) + func[1:]
+    elif name[0:11] == "xmlXPathSet" and file == "python_accessor":
+        func = name[8:]
+        func = string.lower(func[0:1]) + func[1:]
     elif name[0:11] == "xmlACatalog":
         func = name[11:]
         func = string.lower(func[0:1]) + func[1:]
@@ -612,6 +615,8 @@ def nameFixup(name, classe, type, file):
         func = "URI" + func[3:]
     elif func[0:4] == "uTF8":
         func = "UTF8" + func[4:]
+    elif func[0:3] == 'sAX':
+        func = "SAX" + func[3:]
     return func
 
 
@@ -712,7 +717,8 @@ def buildWrappers():
 		func = nameFixup(name, classe, type, file)
 		info = (0, func, name, ret, args, file)
 		function_classes[classe].append(info)
-	    elif name[0:3] == "xml" and len(args) >= 2 and args[1][1] == type:
+	    elif name[0:3] == "xml" and len(args) >= 2 and args[1][1] == type \
+	        and file != "python_accessor":
 		found = 1
 		func = nameFixup(name, classe, type, file)
 		info = (1, func, name, ret, args, file)
@@ -722,7 +728,8 @@ def buildWrappers():
 		func = nameFixup(name, classe, type, file)
 		info = (0, func, name, ret, args, file)
 		function_classes[classe].append(info)
-	    elif name[0:4] == "html" and len(args) >= 2 and args[1][1] == type:
+	    elif name[0:4] == "html" and len(args) >= 2 and args[1][1] == type \
+	        and file != "python_accessor":
 		found = 1
 		func = nameFixup(name, classe, type, file)
 		info = (1, func, name, ret, args, file)
@@ -789,7 +796,25 @@ def buildWrappers():
 	    classes.write(")\n");
 	    if ret[0] != "void":
 		if classes_type.has_key(ret[0]):
-		    classes.write("    if ret == None: return None\n");
+		    #
+		    # Raise an exception
+		    #
+		    if string.find(name, "URI") >= 0:
+			classes.write(
+			"    if ret == None:raise uriError('%s() failed')\n"
+			              % (name))
+		    elif string.find(name, "XPath") >= 0:
+			classes.write(
+			"    if ret == None:raise xpathError('%s() failed')\n"
+			              % (name))
+		    elif string.find(name, "Parse") >= 0:
+			classes.write(
+			"    if ret == None:raise parserError('%s() failed')\n"
+			              % (name))
+		    else:
+			classes.write(
+			"    if ret == None:raise treeError('%s() failed')\n"
+			              % (name))
 		    classes.write("    return ");
 		    classes.write(classes_type[ret[0]][1] % ("ret"));
 		    classes.write("\n");
@@ -884,12 +909,48 @@ def buildWrappers():
 		classes.write(")\n");
 		if ret[0] != "void":
 		    if classes_type.has_key(ret[0]):
-			classes.write("        if ret == None: return None\n");
+			#
+			# Raise an exception
+			#
+			if string.find(name, "URI") >= 0:
+			    classes.write(
+		    "        if ret == None:raise uriError('%s() failed')\n"
+					  % (name))
+			elif string.find(name, "XPath") >= 0:
+			    classes.write(
+		    "        if ret == None:raise xpathError('%s() failed')\n"
+					  % (name))
+			elif string.find(name, "Parse") >= 0:
+			    classes.write(
+		    "        if ret == None:raise parserError('%s() failed')\n"
+					  % (name))
+			else:
+			    classes.write(
+		    "        if ret == None:raise treeError('%s() failed')\n"
+					  % (name))
 			classes.write("        return ");
 			classes.write(classes_type[ret[0]][1] % ("ret"));
 			classes.write("\n");
 		    elif converter_type.has_key(ret[0]):
-			classes.write("        if ret == None: return None\n");
+			#
+			# Raise an exception
+			#
+			if string.find(name, "URI") >= 0:
+			    classes.write(
+		    "        if ret == None:raise uriError('%s() failed')\n"
+					  % (name))
+			elif string.find(name, "XPath") >= 0:
+			    classes.write(
+		    "        if ret == None:raise xpathError('%s() failed')\n"
+					  % (name))
+			elif string.find(name, "Parse") >= 0:
+			    classes.write(
+		    "        if ret == None:raise parserError('%s() failed')\n"
+					  % (name))
+			else:
+			    classes.write(
+		    "        if ret == None:raise treeError('%s() failed')\n"
+					  % (name))
 			classes.write("        return ");
 			classes.write(converter_type[ret[0]] % ("ret"));
 			classes.write("\n");

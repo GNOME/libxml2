@@ -324,7 +324,7 @@ pythonProcessingInstruction(void *user_data,
     if (PyObject_HasAttrString(handler, "processingInstruction")) {
         result =
             PyObject_CallMethod(handler,
-                                "ignorableWhitespace", "ss", target, data);
+                                "processingInstruction", "ss", target, data);
         Py_XDECREF(result);
     }
 }
@@ -663,7 +663,7 @@ libxml_xmlCreatePushParser(PyObject *self, PyObject *args) {
 		          &chunk, &size, &URI))
         return(NULL);
 
-#ifdef DEBUG_ERROR
+#ifdef DEBUG
     printf("libxml_xmlCreatePushParser(%p, %s, %d, %s) called\n",
 	   pyobj_SAX, chunk, size, URI);
 #endif
@@ -691,7 +691,7 @@ libxml_htmlCreatePushParser(PyObject *self, PyObject *args) {
 		          &chunk, &size, &URI))
         return(NULL);
 
-#ifdef DEBUG_ERROR
+#ifdef DEBUG
     printf("libxml_htmlCreatePushParser(%p, %s, %d, %s) called\n",
 	   pyobj_SAX, chunk, size, URI);
 #endif
@@ -704,6 +704,60 @@ libxml_htmlCreatePushParser(PyObject *self, PyObject *args) {
 	                           XML_CHAR_ENCODING_NONE);
     pyret = libxml_xmlParserCtxtPtrWrap(ret);
     return(pyret);
+}
+
+PyObject *
+libxml_xmlSAXParseFile(PyObject *self, PyObject *args) {
+    int recover;
+    xmlChar *URI;
+    PyObject *pyobj_SAX = NULL;
+    xmlSAXHandlerPtr SAX = NULL;
+
+    if (!PyArg_ParseTuple(args, "Osi:xmlSAXParseFile", &pyobj_SAX,
+		          &URI, &recover))
+        return(NULL);
+
+#ifdef DEBUG
+    printf("libxml_xmlSAXParseFile(%p, %s, %d) called\n",
+	   pyobj_SAX, URI, recover);
+#endif
+    if (pyobj_SAX == Py_None) {
+	Py_INCREF(Py_None);
+	return(Py_None);
+    }
+    SAX = &pythonSaxHandler;
+    Py_INCREF(pyobj_SAX);
+    /* The reference is released in pythonEndDocument() */
+    xmlSAXParseFileWithData(SAX, URI, recover, pyobj_SAX);
+    Py_INCREF(Py_None);
+    return(Py_None);
+}
+
+PyObject *
+libxml_htmlSAXParseFile(PyObject *self, PyObject *args) {
+    xmlChar *URI;
+    xmlChar *encoding;
+    PyObject *pyobj_SAX = NULL;
+    xmlSAXHandlerPtr SAX = NULL;
+
+    if (!PyArg_ParseTuple(args, "Osz:htmlSAXParseFile", &pyobj_SAX,
+		          &URI, &encoding))
+        return(NULL);
+
+#ifdef DEBUG
+    printf("libxml_htmlSAXParseFile(%p, %s, %s) called\n",
+	   pyobj_SAX, URI, encoding);
+#endif
+    if (pyobj_SAX == Py_None) {
+	Py_INCREF(Py_None);
+	return(Py_None);
+    }
+    SAX = &pythonSaxHandler;
+    Py_INCREF(pyobj_SAX);
+    /* The reference is released in pythonEndDocument() */
+    htmlSAXParseFile(URI, encoding, SAX, pyobj_SAX);
+    Py_INCREF(Py_None);
+    return(Py_None);
 }
 
 /************************************************************************

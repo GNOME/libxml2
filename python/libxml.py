@@ -1,6 +1,134 @@
 import libxml2mod
 
 #
+# Errors raised by the wrappers when some tree handling failed.
+#
+class treeError:
+    def __init__(self, msg):
+        self.msg = msg
+    def __str__(self):
+        return self.msg
+
+class parserError:
+    def __init__(self, msg):
+        self.msg = msg
+    def __str__(self):
+        return self.msg
+
+class uriError:
+    def __init__(self, msg):
+        self.msg = msg
+    def __str__(self):
+        return self.msg
+
+class xpathError:
+    def __init__(self, msg):
+        self.msg = msg
+    def __str__(self):
+        return self.msg
+
+#
+# Example of a class to handle SAX events
+#
+class SAXCallback:
+    """Base class for SAX handlers"""
+    def startDocument(self):
+        """called at the start of the document"""
+        pass
+
+    def endDocument(self):
+        """called at the end of the document"""
+        pass
+
+    def startElement(self, tag, attrs):
+        """called at the start of every element, tag is the name of
+	   the element, attrs is a dictionary of the element's attributes"""
+        pass
+
+    def endElement(self, tag):
+        """called at the start of every element, tag is the name of
+	   the element"""
+        pass
+
+    def characters(self, data):
+        """called when character data have been read, data is the string
+	   containing the data, multiple consecutive characters() callback
+	   are possible."""
+        pass
+
+    def cdataBlock(self, data):
+        """called when CDATA section have been read, data is the string
+	   containing the data, multiple consecutive cdataBlock() callback
+	   are possible."""
+        pass
+
+    def reference(self, name):
+        """called when an entity reference has been found"""
+        pass
+
+    def ignorableWhitespace(self, data):
+        """called when potentially ignorable white spaces have been found"""
+        pass
+
+    def processingInstruction(self, target, data):
+        """called when a PI has been found, target contains the PI name and
+	   data is the associated data in the PI"""
+        pass
+
+    def comment(self, content):
+        """called when a comment has been found, content contains the comment"""
+        pass
+
+    def externalSubset(self, name, externalID, systemID):
+        """called when a DOCTYPE declaration has been found, name is the
+	   DTD name and externalID, systemID are the DTD public and system
+	   identifier for that DTd if available"""
+        pass
+
+    def internalSubset(self, name, externalID, systemID):
+        """called when a DOCTYPE declaration has been found, name is the
+	   DTD name and externalID, systemID are the DTD public and system
+	   identifier for that DTD if available"""
+        pass
+
+    def entityDecl(self, name, type, externalID, systemID, content):
+        """called when an ENTITY declaration has been found, name is the
+	   entity name and externalID, systemID are the entity public and
+	   system identifier for that entity if available, type indicates
+	   the entity type, and content reports it's string content"""
+        pass
+
+    def notationDecl(self, name, externalID, systemID):
+        """called when an NOTATION declaration has been found, name is the
+	   notation name and externalID, systemID are the notation public and
+	   system identifier for that notation if available"""
+        pass
+
+    def attributeDecl(self, elem, name, type, defi, defaultValue, nameList):
+        """called when an ATTRIBUTE definition has been found"""
+	pass
+
+    def elementDecl(self, name, type, content):
+        """called when an ELEMENT definition has been found"""
+	pass
+
+    def entityDecl(self, name, publicId, systemID, notationName):
+        """called when an unparsed ENTITY declaration has been found,
+	   name is the entity name and publicId,, systemID are the entity
+	   public and system identifier for that entity if available,
+	   and notationName indicate the associated NOTATION"""
+        pass
+
+    def warning(self, msg):
+        print msg
+
+    def error(self, msg):
+        raise parserError(msg)
+
+    def fatalError(self, msg):
+        raise parserError(msg)
+
+#
 # This class is the ancestor of all the Node classes. It provides
 # the basic functionalities shared by all nodes (and handle
 # gracefylly the exception), like name, navigation in the tree,

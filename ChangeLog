@@ -1,3 +1,14 @@
+Tue Mar  5 16:33:42 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: make sure SAX endDocument is always called as
+	  this could result in a Python memory leak otherwise (it's
+	  used to decrement ref-counting)
+	* python/generator.py python/libxml.c python/libxml.py
+	  python/libxml2-python-api.xml python/libxml2class.txt
+	  python/tests/error.py python/tests/xpath.py: implemented
+	  the suggestions made by Gary Benson and extended the tests
+	  to match it.
+
 Tue Mar  5 10:35:24 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* python/generator.py: applied patch fixing #73450

@@ -36,6 +36,20 @@
       <arg name='size' type='int' info='the size of the initial data'/>
       <arg name='URI' type='xmlChar *' info='The URI used for base computations'/>
     </function>
+    <function name='xmlSAXParseFile' file='python'>
+      <info>Interface to parse an XML file or resource pointed by an URI to build an event flow to the SAX object</info>
+      <return type='void'/>
+      <arg name='SAX' type='pythonObject' info='the SAX callback object or None'/>
+      <arg name='URI' type='xmlChar *' info='The URI of the resource'/>
+      <arg name='recover' type='int' info='allow recovery in case of error'/>
+    </function>
+    <function name='htmlSAXParseFile' file='python'>
+      <info>Interface to parse an HTML file or resource pointed by an URI to build an event flow to the SAX object</info>
+      <return type='void'/>
+      <arg name='SAX' type='pythonObject' info='the SAX callback object or None'/>
+      <arg name='URI' type='xmlChar *' info='The URI of the resource'/>
+      <arg name='encoding' type='const char *' info='encoding or None'/>
+    </function>
     <!-- xmlParserCtxtPtr accessors -->
     <function name='xmlParserGetDoc' file='python_accessor'>
       <info>Get the document tree from a parser context.</info>
@@ -102,7 +116,7 @@
       <return type='xmlNsPtr' info="The namespace or None"/>
       <arg name='node' type='xmlNodePtr' info='the node'/>
     </function>
-    <!-- xmlXPathParserContextPtr accessors -->
+    <!-- xmlXPathContextPtr accessors -->
     <function name='xmlXPathParserGetContext' file='python_accessor'>
       <info>Get the xpathContext from an xpathParserContext</info>
       <return type='xmlXPathContextPtr' info="The XPath context" field="context"/>
@@ -117,6 +131,18 @@
       <info>Get the current node from an xpathContext</info>
       <return type='xmlNodePtr' info="The node context" field="node"/>
       <arg name='ctxt' type='xmlXPathContextPtr' info='the XPath context'/>
+    </function>
+    <function name='xmlXPathSetContextDoc' file='python_accessor'>
+      <info>Set the doc of an xpathContext</info>
+      <return type='void'/>
+      <arg name='ctxt' type='xmlXPathContextPtr' info='the XPath context'/>
+      <arg name="doc" type='xmlDocPtr' info="The doc context"/>
+    </function>
+    <function name='xmlXPathSetContextNode' file='python_accessor'>
+      <info>Set the current node of an xpathContext</info>
+      <return type='void'/>
+      <arg name='ctxt' type='xmlXPathContextPtr' info='the XPath context'/>
+      <arg name="node" type='xmlNodePtr' info="The node context"/>
     </function>
     <function name='xmlXPathGetContextPosition' file='python_accessor'>
       <info>Get the current node from an xpathContext</info>

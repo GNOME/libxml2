@@ -117,10 +117,12 @@ nodePop()
 nodePush()
 
 # functions from module python
+SAXParseFile()
 createPushParser()
 debugMemory()
 dumpMemory()
 htmlCreatePushParser()
+htmlSAXParseFile()
 newNode()
 registerErrorHandler()
 
@@ -542,6 +544,8 @@ Class xpathContext()
     contextSize()
     function()
     functionURI()
+    setContextDoc()
+    setContextNode()
 
     # functions from module python
     registerXPathFunction()

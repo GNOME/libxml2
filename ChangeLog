@@ -1,3 +1,7 @@
+Sun Sep 10 15:59:58 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* parser.h: added a _private field for linking user's data
+
 Sun Sep 10 15:14:43 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* parser.c parserInternals.h: demacroified most of the IS_XXX

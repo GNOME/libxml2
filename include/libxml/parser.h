@@ -116,14 +116,14 @@ typedef struct _xmlParserCtxt xmlParserCtxt;
 typedef xmlParserCtxt *xmlParserCtxtPtr;
 struct _xmlParserCtxt {
     struct _xmlSAXHandler *sax;       /* The SAX handler */
-    void            *userData;        /* the document being built */
+    void            *userData;        /* For SAX interface only, used by DOM build */
     xmlDocPtr           myDoc;        /* the document being built */
     int            wellFormed;        /* is the document well formed */
     int       replaceEntities;        /* shall we replace entities ? */
     const xmlChar    *version;        /* the XML version string */
     const xmlChar   *encoding;        /* the declared encoding, if any */
     int            standalone;        /* standalone document */
-    int                  html;        /* are we parsing an HTML document */
+    int                  html;        /* an HTML(1)/Docbook(2) document */
 
     /* Input stream stack */
     xmlParserInputPtr  input;         /* Current input stream */
@@ -183,6 +183,7 @@ struct _xmlParserCtxt {
     int                nodelen;       /* Those two fields are there to */
     int                nodemem;       /* Speed up large node parsing */
     int                pedantic;      /* signal pedantic warnings */
+    void              *_private;      /* For user data, libxml won't touch it */
 };
 
 /**
@@ -298,6 +299,7 @@ extern const char *xmlParserVersion;
 extern xmlSAXLocator xmlDefaultSAXLocator;
 extern xmlSAXHandler xmlDefaultSAXHandler;
 extern xmlSAXHandler htmlDefaultSAXHandler;
+extern xmlSAXHandler sgmlDefaultSAXHandler;
 
 /**
  * entity substitution default behaviour.

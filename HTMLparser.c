@@ -2091,6 +2091,7 @@ htmlNewDocNoDtD(const xmlChar *URI, const xmlChar *ExternalID) {
     cur->ids = NULL;
     cur->refs = NULL;
     cur->_private = NULL;
+    cur->charset = XML_CHAR_ENCODING_UTF8;
     if ((ExternalID != NULL) ||
 	(URI != NULL))
 	xmlCreateIntSubset(cur, BAD_CAST "html", ExternalID, URI);

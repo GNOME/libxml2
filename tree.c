@@ -6406,7 +6406,7 @@ xmlBufferEmpty(xmlBufferPtr buf) {
     if (buf->content == NULL) return;
     buf->use = 0;
     if (buf->alloc == XML_BUFFER_ALLOC_IMMUTABLE) {
-        buf->content = "";
+        buf->content = BAD_CAST "";
     } else {
 	memset(buf->content, 0, buf->size);
     }

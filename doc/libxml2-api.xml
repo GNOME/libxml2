@@ -1053,6 +1053,18 @@
      <exports symbol='XML_PARSER_START'/>
      <exports symbol='XML_PARSER_START_TAG'/>
      <exports symbol='XML_PARSER_SYSTEM_LITERAL'/>
+     <exports symbol='XML_PARSE_DTDATTR'/>
+     <exports symbol='XML_PARSE_DTDLOAD'/>
+     <exports symbol='XML_PARSE_DTDVALID'/>
+     <exports symbol='XML_PARSE_NOBLANKS'/>
+     <exports symbol='XML_PARSE_NOENT'/>
+     <exports symbol='XML_PARSE_NOERROR'/>
+     <exports symbol='XML_PARSE_NONET'/>
+     <exports symbol='XML_PARSE_NOWARNING'/>
+     <exports symbol='XML_PARSE_PEDANTIC'/>
+     <exports symbol='XML_PARSE_RECOVER'/>
+     <exports symbol='XML_PARSE_SAX1'/>
+     <exports symbol='XML_PARSE_XINCLUDE'/>
      <exports symbol='XML_SAX2_MAGIC'/>
      <exports symbol='XML_SKIP_IDS'/>
      <exports symbol='_xmlParserCtxt'/>
@@ -1099,12 +1111,18 @@
      <exports symbol='xmlCreateDocParserCtxt'/>
      <exports symbol='xmlCreateIOParserCtxt'/>
      <exports symbol='xmlCreatePushParserCtxt'/>
+     <exports symbol='xmlCtxtReadDoc'/>
+     <exports symbol='xmlCtxtReadFd'/>
+     <exports symbol='xmlCtxtReadFile'/>
+     <exports symbol='xmlCtxtReadIO'/>
+     <exports symbol='xmlCtxtReadMemory'/>
+     <exports symbol='xmlCtxtReset'/>
+     <exports symbol='xmlCtxtUseOptions'/>
      <exports symbol='xmlExternalEntityLoader'/>
      <exports symbol='xmlFreeParserCtxt'/>
      <exports symbol='xmlGetExternalEntityLoader'/>
      <exports symbol='xmlGetFeature'/>
      <exports symbol='xmlGetFeaturesList'/>
-     <exports symbol='xmlGetWarningsDefaultValue'/>
      <exports symbol='xmlIOParseDTD'/>
      <exports symbol='xmlInitNodeInfoSeq'/>
      <exports symbol='xmlInitParser'/>
@@ -1136,8 +1154,13 @@
      <exports symbol='xmlParserNodeInfoPtr'/>
      <exports symbol='xmlParserNodeInfoSeq'/>
      <exports symbol='xmlParserNodeInfoSeqPtr'/>
-     <exports symbol='xmlParserVersion'/>
+     <exports symbol='xmlParserOption'/>
      <exports symbol='xmlPedanticParserDefault'/>
+     <exports symbol='xmlReadDoc'/>
+     <exports symbol='xmlReadFd'/>
+     <exports symbol='xmlReadFile'/>
+     <exports symbol='xmlReadIO'/>
+     <exports symbol='xmlReadMemory'/>
      <exports symbol='xmlRecoverDoc'/>
      <exports symbol='xmlRecoverFile'/>
      <exports symbol='xmlRecoverMemory'/>
@@ -1170,7 +1193,6 @@
      <exports symbol='xmlStrstr'/>
      <exports symbol='xmlStrsub'/>
      <exports symbol='xmlSubstituteEntitiesDefault'/>
-     <exports symbol='xmlSubstituteEntitiesDefaultValue'/>
     </file>
     <file name='schemasInternals'>
      <exports symbol='XML_SCHEMAS_ANYATTR_LAX'/>
@@ -1300,6 +1322,7 @@
      <exports symbol='xmlTextReaderConstName'/>
      <exports symbol='xmlTextReaderConstNamespaceUri'/>
      <exports symbol='xmlTextReaderConstPrefix'/>
+     <exports symbol='xmlTextReaderConstString'/>
      <exports symbol='xmlTextReaderConstXmlLang'/>
      <exports symbol='xmlTextReaderCurrentDoc'/>
      <exports symbol='xmlTextReaderCurrentNode'/>
@@ -2654,11 +2677,11 @@
       <info>Check if the current value on the XPath stack is a node set or an XSLT value tree.  Returns true if the current object on the stack is a node-set.</info>
       <arg name='ctxt' info='an XPath parser context'/>
     </macro>
-    <enum name='HTML_DEPRECATED' file='HTMLparser' value='0x2' type='htmlStatus'/>
-    <enum name='HTML_INVALID' file='HTMLparser' value='0x1' type='htmlStatus'/>
+    <enum name='HTML_DEPRECATED' file='HTMLparser' value='2' type='htmlStatus'/>
+    <enum name='HTML_INVALID' file='HTMLparser' value='1' type='htmlStatus'/>
     <enum name='HTML_NA' file='HTMLparser' value='0' type='htmlStatus' info='something we don&apos;t check at all'/>
-    <enum name='HTML_REQUIRED' file='HTMLparser' value='0xc' type='htmlStatus' info=' VALID bit set so ( &amp; HTML_VALID ) is TRUE'/>
-    <enum name='HTML_VALID' file='HTMLparser' value='0x4' type='htmlStatus'/>
+    <enum name='HTML_REQUIRED' file='HTMLparser' value='12' type='htmlStatus' info=' VALID bit set so ( &amp; HTML_VALID ) is TRUE'/>
+    <enum name='HTML_VALID' file='HTMLparser' value='4' type='htmlStatus'/>
     <enum name='XLINK_ACTUATE_AUTO' file='xlink' value='1' type='xlinkActuate'/>
     <enum name='XLINK_ACTUATE_NONE' file='xlink' value='0' type='xlinkActuate'/>
     <enum name='XLINK_ACTUATE_ONREQUEST' file='xlink' value='2' type='xlinkActuate'/>
@@ -2746,7 +2769,7 @@
     <enum name='XML_ENTITY_NODE' file='tree' value='6' type='xmlElementType'/>
     <enum name='XML_ENTITY_REF_NODE' file='tree' value='5' type='xmlElementType'/>
     <enum name='XML_ERR_ATTLIST_NOT_FINISHED' file='xmlerror' value='51' type='xmlParserErrors'/>
-    <enum name='XML_ERR_ATTLIST_NOT_STARTED' file='xmlerror' value='50' type='xmlParserErrors' info='51'/>
+    <enum name='XML_ERR_ATTLIST_NOT_STARTED' file='xmlerror' value='50' type='xmlParserErrors' info='50'/>
     <enum name='XML_ERR_ATTRIBUTE_NOT_FINISHED' file='xmlerror' value='40' type='xmlParserErrors'/>
     <enum name='XML_ERR_ATTRIBUTE_NOT_STARTED' file='xmlerror' value='39' type='xmlParserErrors'/>
     <enum name='XML_ERR_ATTRIBUTE_REDEFINED' file='xmlerror' value='42' type='xmlParserErrors'/>
@@ -2757,17 +2780,17 @@
     <enum name='XML_ERR_CHARREF_IN_EPILOG' file='xmlerror' value='12' type='xmlParserErrors'/>
     <enum name='XML_ERR_CHARREF_IN_PROLOG' file='xmlerror' value='11' type='xmlParserErrors'/>
     <enum name='XML_ERR_COMMENT_NOT_FINISHED' file='xmlerror' value='45' type='xmlParserErrors' info='45'/>
-    <enum name='XML_ERR_CONDSEC_INVALID' file='xmlerror' value='83' type='xmlParserErrors' info='84'/>
+    <enum name='XML_ERR_CONDSEC_INVALID' file='xmlerror' value='83' type='xmlParserErrors' info='83'/>
     <enum name='XML_ERR_CONDSEC_INVALID_KEYWORD' file='xmlerror' value='99' type='xmlParserErrors'/>
     <enum name='XML_ERR_CONDSEC_NOT_FINISHED' file='xmlerror' value='59' type='xmlParserErrors'/>
-    <enum name='XML_ERR_CONDSEC_NOT_STARTED' file='xmlerror' value='58' type='xmlParserErrors' info='59'/>
-    <enum name='XML_ERR_DOCTYPE_NOT_FINISHED' file='xmlerror' value='61' type='xmlParserErrors' info='62'/>
+    <enum name='XML_ERR_CONDSEC_NOT_STARTED' file='xmlerror' value='58' type='xmlParserErrors' info='58'/>
+    <enum name='XML_ERR_DOCTYPE_NOT_FINISHED' file='xmlerror' value='61' type='xmlParserErrors' info='61'/>
     <enum name='XML_ERR_DOCUMENT_EMPTY' file='xmlerror' value='4' type='xmlParserErrors'/>
     <enum name='XML_ERR_DOCUMENT_END' file='xmlerror' value='5' type='xmlParserErrors'/>
     <enum name='XML_ERR_DOCUMENT_START' file='xmlerror' value='3' type='xmlParserErrors' info='3'/>
     <enum name='XML_ERR_ELEMCONTENT_NOT_FINISHED' file='xmlerror' value='55' type='xmlParserErrors'/>
-    <enum name='XML_ERR_ELEMCONTENT_NOT_STARTED' file='xmlerror' value='54' type='xmlParserErrors' info='55'/>
-    <enum name='XML_ERR_ENCODING_NAME' file='xmlerror' value='79' type='xmlParserErrors' info='80'/>
+    <enum name='XML_ERR_ELEMCONTENT_NOT_STARTED' file='xmlerror' value='54' type='xmlParserErrors' info='54'/>
+    <enum name='XML_ERR_ENCODING_NAME' file='xmlerror' value='79' type='xmlParserErrors' info='79'/>
     <enum name='XML_ERR_ENTITYREF_AT_EOF' file='xmlerror' value='14' type='xmlParserErrors'/>
     <enum name='XML_ERR_ENTITYREF_IN_DTD' file='xmlerror' value='17' type='xmlParserErrors'/>
     <enum name='XML_ERR_ENTITYREF_IN_EPILOG' file='xmlerror' value='16' type='xmlParserErrors'/>
@@ -2775,7 +2798,7 @@
     <enum name='XML_ERR_ENTITYREF_NO_NAME' file='xmlerror' value='22' type='xmlParserErrors' info='22'/>
     <enum name='XML_ERR_ENTITYREF_SEMICOL_MISSING' file='xmlerror' value='23' type='xmlParserErrors'/>
     <enum name='XML_ERR_ENTITY_BOUNDARY' file='xmlerror' value='90' type='xmlParserErrors' info='90'/>
-    <enum name='XML_ERR_ENTITY_CHAR_ERROR' file='xmlerror' value='87' type='xmlParserErrors' info='88'/>
+    <enum name='XML_ERR_ENTITY_CHAR_ERROR' file='xmlerror' value='87' type='xmlParserErrors' info='87'/>
     <enum name='XML_ERR_ENTITY_IS_EXTERNAL' file='xmlerror' value='29' type='xmlParserErrors'/>
     <enum name='XML_ERR_ENTITY_IS_PARAMETER' file='xmlerror' value='30' type='xmlParserErrors'/>
     <enum name='XML_ERR_ENTITY_LOOP' file='xmlerror' value='89' type='xmlParserErrors' info='89'/>
@@ -2783,16 +2806,16 @@
     <enum name='XML_ERR_ENTITY_NOT_STARTED' file='xmlerror' value='36' type='xmlParserErrors' info='36'/>
     <enum name='XML_ERR_ENTITY_PE_INTERNAL' file='xmlerror' value='88' type='xmlParserErrors' info='88'/>
     <enum name='XML_ERR_EQUAL_REQUIRED' file='xmlerror' value='75' type='xmlParserErrors'/>
-    <enum name='XML_ERR_EXTRA_CONTENT' file='xmlerror' value='86' type='xmlParserErrors' info='87'/>
-    <enum name='XML_ERR_EXT_ENTITY_STANDALONE' file='xmlerror' value='82' type='xmlParserErrors' info='83'/>
-    <enum name='XML_ERR_EXT_SUBSET_NOT_FINISHED' file='xmlerror' value='60' type='xmlParserErrors' info='61'/>
+    <enum name='XML_ERR_EXTRA_CONTENT' file='xmlerror' value='86' type='xmlParserErrors' info='86'/>
+    <enum name='XML_ERR_EXT_ENTITY_STANDALONE' file='xmlerror' value='82' type='xmlParserErrors' info='82'/>
+    <enum name='XML_ERR_EXT_SUBSET_NOT_FINISHED' file='xmlerror' value='60' type='xmlParserErrors' info='60'/>
     <enum name='XML_ERR_GT_REQUIRED' file='xmlerror' value='73' type='xmlParserErrors'/>
-    <enum name='XML_ERR_HYPHEN_IN_COMMENT' file='xmlerror' value='80' type='xmlParserErrors' info='81'/>
+    <enum name='XML_ERR_HYPHEN_IN_COMMENT' file='xmlerror' value='80' type='xmlParserErrors' info='80'/>
     <enum name='XML_ERR_INTERNAL_ERROR' file='xmlerror' value='1' type='xmlParserErrors'/>
     <enum name='XML_ERR_INVALID_CHAR' file='xmlerror' value='9' type='xmlParserErrors'/>
     <enum name='XML_ERR_INVALID_CHARREF' file='xmlerror' value='8' type='xmlParserErrors'/>
     <enum name='XML_ERR_INVALID_DEC_CHARREF' file='xmlerror' value='7' type='xmlParserErrors'/>
-    <enum name='XML_ERR_INVALID_ENCODING' file='xmlerror' value='81' type='xmlParserErrors' info='82'/>
+    <enum name='XML_ERR_INVALID_ENCODING' file='xmlerror' value='81' type='xmlParserErrors' info='81'/>
     <enum name='XML_ERR_INVALID_HEX_CHARREF' file='xmlerror' value='6' type='xmlParserErrors' info='6'/>
     <enum name='XML_ERR_INVALID_URI' file='xmlerror' value='91' type='xmlParserErrors' info='91'/>
     <enum name='XML_ERR_LITERAL_NOT_FINISHED' file='xmlerror' value='44' type='xmlParserErrors'/>
@@ -2800,14 +2823,14 @@
     <enum name='XML_ERR_LTSLASH_REQUIRED' file='xmlerror' value='74' type='xmlParserErrors'/>
     <enum name='XML_ERR_LT_IN_ATTRIBUTE' file='xmlerror' value='38' type='xmlParserErrors' info='38'/>
     <enum name='XML_ERR_LT_REQUIRED' file='xmlerror' value='72' type='xmlParserErrors'/>
-    <enum name='XML_ERR_MISPLACED_CDATA_END' file='xmlerror' value='62' type='xmlParserErrors' info='63'/>
+    <enum name='XML_ERR_MISPLACED_CDATA_END' file='xmlerror' value='62' type='xmlParserErrors' info='62'/>
     <enum name='XML_ERR_MIXED_NOT_FINISHED' file='xmlerror' value='53' type='xmlParserErrors'/>
-    <enum name='XML_ERR_MIXED_NOT_STARTED' file='xmlerror' value='52' type='xmlParserErrors' info='53'/>
+    <enum name='XML_ERR_MIXED_NOT_STARTED' file='xmlerror' value='52' type='xmlParserErrors' info='52'/>
     <enum name='XML_ERR_NAME_REQUIRED' file='xmlerror' value='68' type='xmlParserErrors'/>
     <enum name='XML_ERR_NMTOKEN_REQUIRED' file='xmlerror' value='67' type='xmlParserErrors'/>
     <enum name='XML_ERR_NOTATION_NOT_FINISHED' file='xmlerror' value='49' type='xmlParserErrors'/>
-    <enum name='XML_ERR_NOTATION_NOT_STARTED' file='xmlerror' value='48' type='xmlParserErrors' info='49'/>
-    <enum name='XML_ERR_NOT_WELL_BALANCED' file='xmlerror' value='85' type='xmlParserErrors' info='86'/>
+    <enum name='XML_ERR_NOTATION_NOT_STARTED' file='xmlerror' value='48' type='xmlParserErrors' info='48'/>
+    <enum name='XML_ERR_NOT_WELL_BALANCED' file='xmlerror' value='85' type='xmlParserErrors' info='85'/>
     <enum name='XML_ERR_NO_DTD' file='xmlerror' value='94' type='xmlParserErrors' info='94'/>
     <enum name='XML_ERR_NO_MEMORY' file='xmlerror' value='2' type='xmlParserErrors'/>
     <enum name='XML_ERR_NS_DECL_ERROR' file='xmlerror' value='35' type='xmlParserErrors'/>
@@ -2820,15 +2843,15 @@
     <enum name='XML_ERR_PEREF_NO_NAME' file='xmlerror' value='24' type='xmlParserErrors' info='24'/>
     <enum name='XML_ERR_PEREF_SEMICOL_MISSING' file='xmlerror' value='25' type='xmlParserErrors'/>
     <enum name='XML_ERR_PI_NOT_FINISHED' file='xmlerror' value='47' type='xmlParserErrors'/>
-    <enum name='XML_ERR_PI_NOT_STARTED' file='xmlerror' value='46' type='xmlParserErrors' info='47'/>
+    <enum name='XML_ERR_PI_NOT_STARTED' file='xmlerror' value='46' type='xmlParserErrors' info='46'/>
     <enum name='XML_ERR_PUBID_REQUIRED' file='xmlerror' value='71' type='xmlParserErrors'/>
-    <enum name='XML_ERR_RESERVED_XML_NAME' file='xmlerror' value='64' type='xmlParserErrors' info='65'/>
+    <enum name='XML_ERR_RESERVED_XML_NAME' file='xmlerror' value='64' type='xmlParserErrors' info='64'/>
     <enum name='XML_ERR_SEPARATOR_REQUIRED' file='xmlerror' value='66' type='xmlParserErrors'/>
-    <enum name='XML_ERR_SPACE_REQUIRED' file='xmlerror' value='65' type='xmlParserErrors' info='66'/>
-    <enum name='XML_ERR_STANDALONE_VALUE' file='xmlerror' value='78' type='xmlParserErrors' info='79'/>
+    <enum name='XML_ERR_SPACE_REQUIRED' file='xmlerror' value='65' type='xmlParserErrors' info='65'/>
+    <enum name='XML_ERR_STANDALONE_VALUE' file='xmlerror' value='78' type='xmlParserErrors' info='78'/>
     <enum name='XML_ERR_STRING_NOT_CLOSED' file='xmlerror' value='34' type='xmlParserErrors'/>
     <enum name='XML_ERR_STRING_NOT_STARTED' file='xmlerror' value='33' type='xmlParserErrors' info='33'/>
-    <enum name='XML_ERR_TAG_NAME_MISMATCH' file='xmlerror' value='76' type='xmlParserErrors' info='77'/>
+    <enum name='XML_ERR_TAG_NAME_MISMATCH' file='xmlerror' value='76' type='xmlParserErrors' info='76'/>
     <enum name='XML_ERR_TAG_NOT_FINISHED' file='xmlerror' value='77' type='xmlParserErrors'/>
     <enum name='XML_ERR_UNDECLARED_ENTITY' file='xmlerror' value='26' type='xmlParserErrors' info='26'/>
     <enum name='XML_ERR_UNKNOWN_ENCODING' file='xmlerror' value='31' type='xmlParserErrors' info='31'/>
@@ -2836,10 +2859,10 @@
     <enum name='XML_ERR_UNSUPPORTED_ENCODING' file='xmlerror' value='32' type='xmlParserErrors'/>
     <enum name='XML_ERR_URI_FRAGMENT' file='xmlerror' value='92' type='xmlParserErrors' info='92'/>
     <enum name='XML_ERR_URI_REQUIRED' file='xmlerror' value='70' type='xmlParserErrors'/>
-    <enum name='XML_ERR_VALUE_REQUIRED' file='xmlerror' value='84' type='xmlParserErrors' info='85'/>
+    <enum name='XML_ERR_VALUE_REQUIRED' file='xmlerror' value='84' type='xmlParserErrors' info='84'/>
     <enum name='XML_ERR_VERSION_MISSING' file='xmlerror' value='100' type='xmlParserErrors'/>
     <enum name='XML_ERR_XMLDECL_NOT_FINISHED' file='xmlerror' value='57' type='xmlParserErrors'/>
-    <enum name='XML_ERR_XMLDECL_NOT_STARTED' file='xmlerror' value='56' type='xmlParserErrors' info='57'/>
+    <enum name='XML_ERR_XMLDECL_NOT_STARTED' file='xmlerror' value='56' type='xmlParserErrors' info='56'/>
     <enum name='XML_EXTERNAL_GENERAL_PARSED_ENTITY' file='entities' value='2' type='xmlEntityType'/>
     <enum name='XML_EXTERNAL_GENERAL_UNPARSED_ENTITY' file='entities' value='3' type='xmlEntityType'/>
     <enum name='XML_EXTERNAL_PARAMETER_ENTITY' file='entities' value='5' type='xmlEntityType'/>
@@ -2879,6 +2902,18 @@
     <enum name='XML_PARSER_SUBST_ENTITIES' file='xmlreader' value='4' type='xmlParserProperties'/>
     <enum name='XML_PARSER_SYSTEM_LITERAL' file='parser' value='13' type='xmlParserInputState' info='within a SYSTEM value'/>
     <enum name='XML_PARSER_VALIDATE' file='xmlreader' value='3' type='xmlParserProperties'/>
+    <enum name='XML_PARSE_DTDATTR' file='parser' value='8' type='xmlParserOption' info='default DTD attributes'/>
+    <enum name='XML_PARSE_DTDLOAD' file='parser' value='4' type='xmlParserOption' info='load the external subset'/>
+    <enum name='XML_PARSE_DTDVALID' file='parser' value='16' type='xmlParserOption' info='validate with the DTD'/>
+    <enum name='XML_PARSE_NOBLANKS' file='parser' value='256' type='xmlParserOption' info='remove blank nodes'/>
+    <enum name='XML_PARSE_NOENT' file='parser' value='2' type='xmlParserOption' info='substitute entities'/>
+    <enum name='XML_PARSE_NOERROR' file='parser' value='32' type='xmlParserOption' info='suppress error reports'/>
+    <enum name='XML_PARSE_NONET' file='parser' value='2048' type='xmlParserOption' info=' Forbid network access'/>
+    <enum name='XML_PARSE_NOWARNING' file='parser' value='64' type='xmlParserOption' info='suppress warning reports'/>
+    <enum name='XML_PARSE_PEDANTIC' file='parser' value='128' type='xmlParserOption' info='pedantic error reporting'/>
+    <enum name='XML_PARSE_RECOVER' file='parser' value='1' type='xmlParserOption' info='recover on errors'/>
+    <enum name='XML_PARSE_SAX1' file='parser' value='512' type='xmlParserOption' info='use the SAX1 interface internally'/>
+    <enum name='XML_PARSE_XINCLUDE' file='parser' value='1024' type='xmlParserOption' info='Implement XInclude substitition'/>
     <enum name='XML_PI_NODE' file='tree' value='7' type='xmlElementType'/>
     <enum name='XML_READER_TYPE_ATTRIBUTE' file='xmlreader' value='2' type='xmlReaderTypes'/>
     <enum name='XML_READER_TYPE_CDATA' file='xmlreader' value='4' type='xmlReaderTypes'/>
@@ -3511,6 +3546,7 @@ actually an xmlCharEncoding'/>
       <field name='buffer' type='xmlParserNodeInfo *' info=''/>
     </struct>
     <typedef name='xmlParserNodeInfoSeqPtr' file='parser' type='xmlParserNodeInfoSeq *'/>
+    <typedef name='xmlParserOption' file='parser' type='enum'/>
     <typedef name='xmlParserProperties' file='xmlreader' type='enum'/>
     <typedef name='xmlParserSeverities' file='xmlreader' type='enum'/>
     <struct name='xmlRMutex' file='threads' type='struct _xmlRMutex'/>
@@ -3852,7 +3888,7 @@ actually an xmlCharEncoding'/>
     <variable name='xmlFree' file='globals' type='xmlFreeFunc'/>
     <variable name='xmlGenericError' file='globals' type='xmlGenericErrorFunc'/>
     <variable name='xmlGenericErrorContext' file='globals' type='void *'/>
-    <variable name='xmlGetWarningsDefaultValue' file='parser' type='int'/>
+    <variable name='xmlGetWarningsDefaultValue' file='globals' type='int'/>
     <variable name='xmlIndentTreeOutput' file='globals' type='int'/>
     <variable name='xmlKeepBlanksDefaultValue' file='globals' type='int'/>
     <variable name='xmlLineNumbersDefaultValue' file='globals' type='int'/>
@@ -3861,7 +3897,7 @@ actually an xmlCharEncoding'/>
     <variable name='xmlMallocAtomic' file='globals' type='xmlMallocFunc'/>
     <variable name='xmlMemStrdup' file='globals' type='xmlStrdupFunc'/>
     <variable name='xmlParserDebugEntities' file='globals' type='int'/>
-    <variable name='xmlParserVersion' file='parser' type='const char *'/>
+    <variable name='xmlParserVersion' file='globals' type='const char *'/>
     <variable name='xmlPedanticParserDefaultValue' file='globals' type='int'/>
     <variable name='xmlRealloc' file='globals' type='xmlReallocFunc'/>
     <variable name='xmlRegisterNodeDefaultValue' file='globals' type='xmlRegisterNodeFunc'/>
@@ -3869,7 +3905,7 @@ actually an xmlCharEncoding'/>
     <variable name='xmlStringComment' file='parserInternals' type='const xmlCharxmlStringComment[]'/>
     <variable name='xmlStringText' file='parserInternals' type='const xmlCharxmlStringText[]'/>
     <variable name='xmlStringTextNoenc' file='parserInternals' type='const xmlCharxmlStringTextNoenc[]'/>
-    <variable name='xmlSubstituteEntitiesDefaultValue' file='parser' type='int'/>
+    <variable name='xmlSubstituteEntitiesDefaultValue' file='globals' type='int'/>
     <variable name='xmlTreeIndentString' file='globals' type='const char *'/>
     <variable name='xmlXPathNAN' file='xpath' type='double'/>
     <variable name='xmlXPathNINF' file='xpath' type='double'/>
@@ -5606,7 +5642,7 @@ actually an xmlCharEncoding'/>
     <function name='xmlCreateDocParserCtxt' file='parser'>
       <info>Creates a parser context for an XML in-memory document.</info>
       <return type='xmlParserCtxtPtr' info='the new parser context or NULL'/>
-      <arg name='cur' type='xmlChar *' info='a pointer to an array of xmlChar'/>
+      <arg name='cur' type='const xmlChar *' info='a pointer to an array of xmlChar'/>
     </function>
     <function name='xmlCreateEntitiesTable' file='entities'>
       <info>create and initialize an empty entities hash table.</info>
@@ -5665,6 +5701,60 @@ actually an xmlCharEncoding'/>
     <function name='xmlCreateURI' file='uri'>
       <info>Simply creates an empty xmlURI</info>
       <return type='xmlURIPtr' info='the new structure or NULL in case of error'/>
+    </function>
+    <function name='xmlCtxtReadDoc' file='parser'>
+      <info>parse an XML in-memory document and build a tree. This reuses the existing @ctxt parser context</info>
+      <return type='xmlDocPtr' info='the resulting document tree'/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
+      <arg name='cur' type='const xmlChar *' info='a pointer to a zero terminated string'/>
+      <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
+      <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
+    </function>
+    <function name='xmlCtxtReadFd' file='parser'>
+      <info>parse an XML from a file descriptor and build a tree. This reuses the existing @ctxt parser context</info>
+      <return type='xmlDocPtr' info='the resulting document tree'/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
+      <arg name='fd' type='int' info='an open file descriptor'/>
+      <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
+      <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
+    </function>
+    <function name='xmlCtxtReadFile' file='parser'>
+      <info>parse an XML file from the filesystem or the network. This reuses the existing @ctxt parser context</info>
+      <return type='xmlDocPtr' info='the resulting document tree'/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
+      <arg name='filename' type='const char *' info='a file or URL'/>
+      <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
+      <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
+    </function>
+    <function name='xmlCtxtReadIO' file='parser'>
+      <info>parse an XML document from I/O functions and source and build a tree. This reuses the existing @ctxt parser context</info>
+      <return type='xmlDocPtr' info='the resulting document tree'/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
+      <arg name='ioread' type='xmlInputReadCallback' info='an I/O read function'/>
+      <arg name='ioclose' type='xmlInputCloseCallback' info='an I/O close function'/>
+      <arg name='ioctx' type='void *' info='an I/O handler'/>
+      <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
+      <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
+    </function>
+    <function name='xmlCtxtReadMemory' file='parser'>
+      <info>parse an XML in-memory document and build a tree. This reuses the existing @ctxt parser context</info>
+      <return type='xmlDocPtr' info='the resulting document tree'/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
+      <arg name='buffer' type='const char *' info='a pointer to a char array'/>
+      <arg name='size' type='int' info='the size of the array'/>
+      <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
+      <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
+    </function>
+    <function name='xmlCtxtReset' file='parser'>
+      <info>Reset a parser context</info>
+      <return type='void'/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
+    </function>
+    <function name='xmlCtxtUseOptions' file='parser'>
+      <info>Applies the options to the parser context</info>
+      <return type='int' info='0 in case of success, the set of unknown or unimplemented options in case of error.'/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
+      <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
     </function>
     <function name='xmlCurrentChar' file='parserInternals'>
       <info>The current char value, if using UTF-8 this may actually span multiple bytes in the input buffer. Implement the end of line normalization: 2.11 End-of-Line Handling Wherever an external parsed entity or the literal entity value of an internal parsed entity contains either the literal two-character sequence &quot;#xD#xA&quot; or a standalone literal #xD, an XML processor must pass to the application the single character #xA. This behavior can conveniently be produced by normalizing all line breaks to #xA on input, before parsing.)</info>
@@ -7615,7 +7705,7 @@ actually an xmlCharEncoding'/>
       <info>Set (or reset) the base URI of a node, i.e. the value of the xml:base attribute.</info>
       <return type='void'/>
       <arg name='cur' type='xmlNodePtr' info='the node being changed'/>
-      <arg name='uri' type='xmlChar *' info='the new base URI'/>
+      <arg name='uri' type='const xmlChar *' info='the new base URI'/>
     </function>
     <function name='xmlNodeSetContent' file='tree'>
       <info>Replace the content of a node.</info>
@@ -8263,6 +8353,44 @@ actually an xmlCharEncoding'/>
       <info>xmlRMutexUnlock() is used to unlock a libxml2 token_r.</info>
       <return type='void'/>
       <arg name='tok' type='xmlRMutexPtr' info='the reentrant mutex'/>
+    </function>
+    <function name='xmlReadDoc' file='parser'>
+      <info>parse an XML in-memory document and build a tree.</info>
+      <return type='xmlDocPtr' info='the resulting document tree'/>
+      <arg name='cur' type='const xmlChar *' info='a pointer to a zero terminated string'/>
+      <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
+      <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
+    </function>
+    <function name='xmlReadFd' file='parser'>
+      <info>parse an XML from a file descriptor and build a tree.</info>
+      <return type='xmlDocPtr' info='the resulting document tree'/>
+      <arg name='fd' type='int' info='an open file descriptor'/>
+      <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
+      <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
+    </function>
+    <function name='xmlReadFile' file='parser'>
+      <info>parse an XML file from the filesystem or the network.</info>
+      <return type='xmlDocPtr' info='the resulting document tree'/>
+      <arg name='filename' type='const char *' info='a file or URL'/>
+      <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
+      <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
+    </function>
+    <function name='xmlReadIO' file='parser'>
+      <info>parse an XML document from I/O functions and source and build a tree.</info>
+      <return type='xmlDocPtr' info='the resulting document tree'/>
+      <arg name='ioread' type='xmlInputReadCallback' info='an I/O read function'/>
+      <arg name='ioclose' type='xmlInputCloseCallback' info='an I/O close function'/>
+      <arg name='ioctx' type='void *' info='an I/O handler'/>
+      <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
+      <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
+    </function>
+    <function name='xmlReadMemory' file='parser'>
+      <info>parse an XML in-memory document and build a tree.</info>
+      <return type='xmlDocPtr' info='the resulting document tree'/>
+      <arg name='buffer' type='const char *' info='a pointer to a char array'/>
+      <arg name='size' type='int' info='the size of the array'/>
+      <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
+      <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
     </function>
     <functype name='xmlReallocFunc' file='xmlmemory'>
       <info>Signature for a realloc() implementation.</info>
@@ -9568,6 +9696,12 @@ actually an xmlCharEncoding'/>
       <info>A shorthand reference to the namespace associated with the node.</info>
       <return type='const xmlChar *' info='the prefix or NULL if not available, the string is deallocated with the reader.'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
+    </function>
+    <function name='xmlTextReaderConstString' file='xmlreader'>
+      <info>Get an interned string from the reader, allows for example to speedup string name comparisons</info>
+      <return type='const xmlChar *' info='an interned copy of the string or NULL in case of error. The string will be deallocated with the reader.'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
+      <arg name='str' type='const xmlChar *' info='the string to intern.'/>
     </function>
     <function name='xmlTextReaderConstXmlLang' file='xmlreader'>
       <info></info>

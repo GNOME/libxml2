@@ -725,30 +725,6 @@ typedef xmlParserInputPtr (*xmlExternalEntityLoader) (const char *URL,
 					 const char *ID,
 					 xmlParserCtxtPtr context);
 
-/*
- * Global variables: just the default SAX interface tables and XML
- * version infos.
- */
-#if 0
-LIBXML_DLL_IMPORT extern const char *xmlParserVersion;
-#endif
-
-/*
-LIBXML_DLL_IMPORT extern xmlSAXLocator xmlDefaultSAXLocator;
-LIBXML_DLL_IMPORT extern xmlSAXHandler xmlDefaultSAXHandler;
-LIBXML_DLL_IMPORT extern xmlSAXHandler htmlDefaultSAXHandler;
-LIBXML_DLL_IMPORT extern xmlSAXHandler docbDefaultSAXHandler;
- */
-
-/*
- * Entity substitution default behavior.
- */
-
-#if 0
-LIBXML_DLL_IMPORT extern int xmlSubstituteEntitiesDefaultValue;
-LIBXML_DLL_IMPORT extern int xmlGetWarningsDefaultValue;
-#endif
-
 #ifdef __cplusplus
 }
 #endif
@@ -968,7 +944,7 @@ XMLPUBFUN void XMLCALL
 					 const xmlChar* buffer,
 					 const char *filename);
 XMLPUBFUN xmlParserCtxtPtr XMLCALL 
-		xmlCreateDocParserCtxt	(xmlChar *cur);
+		xmlCreateDocParserCtxt	(const xmlChar *cur);
 
 /*
  * Reading/setting optional parsing features.
@@ -1047,6 +1023,86 @@ XMLPUBFUN xmlParserInputPtr XMLCALL
 		xmlLoadExternalEntity	(const char *URL,
 					 const char *ID,
 					 xmlParserCtxtPtr ctxt);
+/*
+ * New set of simpler/more flexible APIs
+ */
+/**
+ * xmlParserOption:
+ *
+ * This is the set of XML parser options that can be passed down
+ * to the xmlReadDoc() and similar calls.
+ */
+typedef enum {
+    XML_PARSE_RECOVER	= 1<<0,	/* recover on errors */
+    XML_PARSE_NOENT	= 1<<1,	/* substitute entities */
+    XML_PARSE_DTDLOAD	= 1<<2,	/* load the external subset */
+    XML_PARSE_DTDATTR	= 1<<3,	/* default DTD attributes */
+    XML_PARSE_DTDVALID	= 1<<4,	/* validate with the DTD */
+    XML_PARSE_NOERROR	= 1<<5,	/* suppress error reports */
+    XML_PARSE_NOWARNING	= 1<<6,	/* suppress warning reports */
+    XML_PARSE_PEDANTIC	= 1<<7,	/* pedantic error reporting */
+    XML_PARSE_NOBLANKS	= 1<<8,	/* remove blank nodes */
+    XML_PARSE_SAX1	= 1<<9,	/* use the SAX1 interface internally */
+    XML_PARSE_XINCLUDE	= 1<<10,/* Implement XInclude substitition  */
+    XML_PARSE_NONET	= 1<<11 /* Forbid network access */
+} xmlParserOption;
+
+XMLPUBFUN void XMLCALL
+		xmlCtxtReset		(xmlParserCtxtPtr ctxt);
+XMLPUBFUN int XMLCALL
+		xmlCtxtUseOptions	(xmlParserCtxtPtr ctxt,
+					 int options);
+XMLPUBFUN xmlDocPtr XMLCALL
+		xmlReadDoc		(const xmlChar *cur,
+					 const char *encoding,
+					 int options);
+XMLPUBFUN xmlDocPtr XMLCALL
+		xmlReadFile		(const char *filename,
+					 const char *encoding,
+					 int options);
+XMLPUBFUN xmlDocPtr XMLCALL
+		xmlReadMemory		(const char *buffer,
+					 int size,
+					 const char *encoding,
+					 int options);
+XMLPUBFUN xmlDocPtr XMLCALL
+		xmlReadFd		(int fd,
+					 const char *encoding,
+					 int options);
+XMLPUBFUN xmlDocPtr XMLCALL
+		xmlReadIO		(xmlInputReadCallback ioread,
+					 xmlInputCloseCallback ioclose,
+					 void *ioctx,
+					 const char *encoding,
+					 int options);
+XMLPUBFUN xmlDocPtr XMLCALL
+		xmlCtxtReadDoc		(xmlParserCtxtPtr ctxt,
+					 const xmlChar *cur,
+					 const char *encoding,
+					 int options);
+XMLPUBFUN xmlDocPtr XMLCALL
+		xmlCtxtReadFile		(xmlParserCtxtPtr ctxt,
+					 const char *filename,
+					 const char *encoding,
+					 int options);
+XMLPUBFUN xmlDocPtr XMLCALL
+		xmlCtxtReadMemory		(xmlParserCtxtPtr ctxt,
+					 const char *buffer,
+					 int size,
+					 const char *encoding,
+					 int options);
+XMLPUBFUN xmlDocPtr XMLCALL
+		xmlCtxtReadFd		(xmlParserCtxtPtr ctxt,
+					 int fd,
+					 const char *encoding,
+					 int options);
+XMLPUBFUN xmlDocPtr XMLCALL
+		xmlCtxtReadIO		(xmlParserCtxtPtr ctxt,
+					 xmlInputReadCallback ioread,
+					 xmlInputCloseCallback ioclose,
+					 void *ioctx,
+					 const char *encoding,
+					 int options);
 
 #ifdef __cplusplus
 }

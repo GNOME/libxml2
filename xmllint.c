@@ -144,6 +144,7 @@ static int stream = 0;
 static int chkregister = 0;
 static int sax1 = 0;
 static const char *output = NULL;
+static int options = 0;
 
 /*
  * Internal timing routines to remove the necessity to have unix-specific
@@ -804,73 +805,34 @@ static void parseAndPrintFile(char *filename) {
 	        }
 	    }
 	} else if (testIO) {
-	    int ret;
-	    FILE *f;
-
-	    /* '-' Usually means stdin -<sven@zen.org> */
 	    if ((filename[0] == '-') && (filename[1] == 0)) {
-	      f = stdin;
+	        doc = xmlReadFd(0, NULL, options);
 	    } else {
-	      f = fopen(filename, "r");
-	    }
-	    if (f != NULL) {
-                xmlParserCtxtPtr ctxt;
+	        FILE *f;
 
-		ctxt = xmlCreateIOParserCtxt(NULL, NULL,
-			    (xmlInputReadCallback) myRead,
-			    (xmlInputCloseCallback) myClose,
-			    f, XML_CHAR_ENCODING_NONE);
-		xmlParseDocument(ctxt);
-
-		ret = ctxt->wellFormed;
-		doc = ctxt->myDoc;
-		xmlFreeParserCtxt(ctxt);
-		if (!ret) {
-		    xmlFreeDoc(doc);
+		f = fopen(filename, "r");
+		if (f != NULL)
+		    doc = xmlReadIO((xmlInputReadCallback) myRead,
+		                    (xmlInputCloseCallback) myClose, f,
+				    NULL, options);
+		else
 		    doc = NULL;
-		}
 	    }
-	} else if (recovery) {
-	    doc = xmlRecoverFile(filename);
 	} else if (htmlout) {
-	    int ret;
 	    xmlParserCtxtPtr ctxt;
-	    xmlSAXHandler silent, *old;
 
-	    ctxt = xmlCreateFileParserCtxt(filename);
-
+	    ctxt = xmlNewParserCtxt();
 	    if (ctxt == NULL) {	      
-	      /* If xmlCreateFileParserCtxt() return NULL something
-		 strange happened so we don't want to do anything.  Do
-		 we want to print an error message here?
-		 <sven@zen.org> */
-	      doc = NULL;
+	        doc = NULL;
 	    } else {
-	      memcpy(&silent, ctxt->sax, sizeof(silent));
-	      old = ctxt->sax;
-	      silent.error = xmlHTMLError;
-	      if (xmlGetWarningsDefaultValue)
-		silent.warning = xmlHTMLWarning;
-	      else 
-		silent.warning = NULL;
-	      silent.fatalError = xmlHTMLError;
-	      ctxt->sax = &silent;
-	      ctxt->vctxt.error = xmlHTMLValidityError;
-	      if (xmlGetWarningsDefaultValue)
-		ctxt->vctxt.warning = xmlHTMLValidityWarning;
-	      else 
-		ctxt->vctxt.warning = NULL;
+	        ctxt->sax->error = xmlHTMLError;
+	        ctxt->sax->warning = xmlHTMLWarning;
+	        ctxt->vctxt.error = xmlHTMLValidityError;
+	        ctxt->vctxt.warning = xmlHTMLValidityWarning;
 
-	      xmlParseDocument(ctxt);
+		doc = xmlCtxtReadFile(ctxt, filename, NULL, options);
 
-	      ret = ctxt->wellFormed;
-	      doc = ctxt->myDoc;
-	      ctxt->sax = old;
-	      xmlFreeParserCtxt(ctxt);
-	      if (!ret) {
-		xmlFreeDoc(doc);
-		doc = NULL;
-	      }
+	        xmlFreeParserCtxt(ctxt);
 	    }
 #ifdef HAVE_SYS_MMAN_H
 	} else if (memory) {
@@ -885,31 +847,24 @@ static void parseAndPrintFile(char *filename) {
 	    if (base == (void *) MAP_FAILED)
 	        return;
 
-	    doc = xmlParseMemory((char *) base, info.st_size);
+	    doc = xmlReadMemory((char *) base, info.st_size, NULL, options);
 	    munmap((char *) base, info.st_size);
 #endif
 	} else if (valid) {
-	    int ret;
 	    xmlParserCtxtPtr ctxt;
 
-	    ctxt = xmlCreateFileParserCtxt(filename);
-
+	    ctxt = xmlNewParserCtxt();
 	    if (ctxt == NULL) {	      
-	      doc = NULL;
+	        doc = NULL;
 	    } else {
-	      xmlParseDocument(ctxt);
-	      if (ctxt->valid == 0)
-		  progresult = 4;
-	      ret = ctxt->wellFormed;
-	      doc = ctxt->myDoc;
-	      xmlFreeParserCtxt(ctxt);
-	      if (!ret) {
-		xmlFreeDoc(doc);
-		doc = NULL;
-	      }
+		doc = xmlCtxtReadFile(ctxt, filename, NULL, options);
+
+		if (ctxt->valid == 0)
+		    progresult = 4;
+	        xmlFreeParserCtxt(ctxt);
 	    }
 	} else {
-	    doc = xmlParseFile(filename);
+	    doc = xmlReadFile(filename, NULL, options);
 	}
     }
 
@@ -1385,12 +1340,14 @@ main(int argc, char **argv) {
 	if ((!strcmp(argv[i], "-copy")) || (!strcmp(argv[i], "--copy")))
 	    copy++;
 	else if ((!strcmp(argv[i], "-recover")) ||
-	         (!strcmp(argv[i], "--recover")))
+	         (!strcmp(argv[i], "--recover"))) {
 	    recovery++;
-	else if ((!strcmp(argv[i], "-noent")) ||
-	         (!strcmp(argv[i], "--noent")))
+	    options |= XML_PARSE_RECOVER;
+	} else if ((!strcmp(argv[i], "-noent")) ||
+	         (!strcmp(argv[i], "--noent"))) {
 	    noent++;
-	else if ((!strcmp(argv[i], "-version")) ||
+	    options |= XML_PARSE_NOENT;
+	} else if ((!strcmp(argv[i], "-version")) ||
 	         (!strcmp(argv[i], "--version"))) {
 	    showVersion(argv[0]);
 	    version = 1;
@@ -1416,16 +1373,19 @@ main(int argc, char **argv) {
 	         (!strcmp(argv[i], "--nowrap")))
 	    nowrap++;
 	else if ((!strcmp(argv[i], "-loaddtd")) ||
-	         (!strcmp(argv[i], "--loaddtd")))
+	         (!strcmp(argv[i], "--loaddtd"))) {
 	    loaddtd++;
-	else if ((!strcmp(argv[i], "-dtdattr")) ||
+	    options |= XML_PARSE_DTDLOAD;
+	} else if ((!strcmp(argv[i], "-dtdattr")) ||
 	         (!strcmp(argv[i], "--dtdattr"))) {
 	    loaddtd++;
 	    dtdattrs++;
+	    options |= XML_PARSE_DTDATTR;
 	} else if ((!strcmp(argv[i], "-valid")) ||
-	         (!strcmp(argv[i], "--valid")))
+	         (!strcmp(argv[i], "--valid"))) {
 	    valid++;
-	else if ((!strcmp(argv[i], "-postvalid")) ||
+	    options |= XML_PARSE_DTDVALID;
+	} else if ((!strcmp(argv[i], "-postvalid")) ||
 	         (!strcmp(argv[i], "--postvalid"))) {
 	    postvalid++;
 	    loaddtd++;
@@ -1471,8 +1431,10 @@ main(int argc, char **argv) {
 	    testIO++;
 #ifdef LIBXML_XINCLUDE_ENABLED
 	else if ((!strcmp(argv[i], "-xinclude")) ||
-	         (!strcmp(argv[i], "--xinclude")))
+	         (!strcmp(argv[i], "--xinclude"))) {
 	    xinclude++;
+	    /* options |= XML_PARSE_XINCLUDE; */
+	}
 #endif
 #ifdef HAVE_ZLIB_H
 	else if ((!strcmp(argv[i], "-compress")) ||
@@ -1485,11 +1447,13 @@ main(int argc, char **argv) {
 	         (!strcmp(argv[i], "--nowarning"))) {
 	    xmlGetWarningsDefaultValue = 0;
 	    xmlPedanticParserDefault(0);
+	    options |= XML_PARSE_NOWARNING;
         }
 	else if ((!strcmp(argv[i], "-pedantic")) ||
 	         (!strcmp(argv[i], "--pedantic"))) {
 	    xmlGetWarningsDefaultValue = 1;
 	    xmlPedanticParserDefault(1);
+	    options |= XML_PARSE_PEDANTIC;
         }
 #ifdef LIBXML_DEBUG_ENABLED
 	else if ((!strcmp(argv[i], "-debugent")) ||
@@ -1544,6 +1508,7 @@ main(int argc, char **argv) {
 	    i++;
 	    relaxng = argv[i];
 	    noent++;
+	    options |= XML_PARSE_NOENT;
 	} else if ((!strcmp(argv[i], "-schema")) ||
 	         (!strcmp(argv[i], "--schema"))) {
 	    i++;
@@ -1617,6 +1582,7 @@ main(int argc, char **argv) {
 
         /* forces loading the DTDs */
         xmlLoadExtDtdDefaultValue |= 1; 
+	options |= XML_PARSE_DTDLOAD;
 	if (timing) {
 	    startTimer();
 	}

@@ -11740,13 +11740,13 @@ int xmlSAXUserParseMemory(xmlSAXHandlerPtr sax, void *user_data,
  * Returns the new parser context or NULL
  */
 xmlParserCtxtPtr
-xmlCreateDocParserCtxt(xmlChar *cur) {
+xmlCreateDocParserCtxt(const xmlChar *cur) {
     int len;
 
     if (cur == NULL)
 	return(NULL);
     len = xmlStrlen(cur);
-    return(xmlCreateMemoryParserCtxt((char *)cur, len));
+    return(xmlCreateMemoryParserCtxt((const char *)cur, len));
 }
 
 /**
@@ -11917,4 +11917,526 @@ xmlCleanupParser(void) {
     xmlCleanupThreads();
     xmlCleanupGlobals();
     xmlParserInitialized = 0;
+}
+
+/************************************************************************
+ *									*
+ *	New set (2.6.0) of simpler and more flexible APIs		*
+ *									*
+ ************************************************************************/
+
+/**
+ * xmlCtxtReset:
+ * @ctxt: an XML parser context
+ *
+ * Reset a parser context
+ */
+void
+xmlCtxtReset(xmlParserCtxtPtr ctxt)
+{
+    xmlParserInputPtr input;
+
+    while ((input = inputPop(ctxt)) != NULL) { /* Non consuming */
+        xmlFreeInputStream(input);
+    }
+    ctxt->inputNr = 0;
+    ctxt->input = NULL;
+
+    ctxt->spaceNr = 0;
+    ctxt->spaceTab[0] = -1;
+    ctxt->space = &ctxt->spaceTab[0];
+
+
+    ctxt->nodeNr = 0;
+    ctxt->node = NULL;
+
+    ctxt->nameNr = 0;
+    ctxt->name = NULL;
+
+    ctxt->version = NULL;
+    ctxt->encoding = NULL;
+    ctxt->standalone = -1;
+    ctxt->hasExternalSubset = 0;
+    ctxt->hasPErefs = 0;
+    ctxt->html = 0;
+    ctxt->external = 0;
+    ctxt->instate = XML_PARSER_START;
+    ctxt->token = 0;
+    ctxt->directory = NULL;
+
+    ctxt->myDoc = NULL;
+    ctxt->wellFormed = 1;
+    ctxt->nsWellFormed = 1;
+    ctxt->valid = 1;
+    ctxt->vctxt.userData = ctxt;
+    ctxt->vctxt.error = xmlParserValidityError;
+    ctxt->vctxt.warning = xmlParserValidityWarning;
+    ctxt->record_info = 0;
+    ctxt->nbChars = 0;
+    ctxt->checkIndex = 0;
+    ctxt->inSubset = 0;
+    ctxt->errNo = XML_ERR_OK;
+    ctxt->depth = 0;
+    ctxt->charset = XML_CHAR_ENCODING_UTF8;
+    ctxt->catalogs = NULL;
+    xmlInitNodeInfoSeq(&ctxt->node_seq);
+
+    if (ctxt->attsDefault != NULL) {
+        xmlHashFree(ctxt->attsDefault, (xmlHashDeallocator) xmlFree);
+        ctxt->attsDefault = NULL;
+    }
+    if (ctxt->attsSpecial != NULL) {
+        xmlHashFree(ctxt->attsSpecial, NULL);
+        ctxt->attsSpecial = NULL;
+    }
+
+    if (ctxt->catalogs != NULL)
+	xmlCatalogFreeLocal(ctxt->catalogs);
+}
+
+/**
+ * xmlCtxtUseOptions:
+ * @ctxt: an XML parser context
+ * @options:  a combination of xmlParserOption(s)
+ *
+ * Applies the options to the parser context
+ *
+ * Returns 0 in case of success, the set of unknown or unimplemented options
+ *         in case of error.
+ */
+int
+xmlCtxtUseOptions(xmlParserCtxtPtr ctxt, int options)
+{
+    if (options & XML_PARSE_RECOVER) {
+        ctxt->recovery = 1;
+        options -= XML_PARSE_RECOVER;
+    } else
+        ctxt->recovery = 0;
+    if (options & XML_PARSE_DTDLOAD) {
+        ctxt->loadsubset = XML_DETECT_IDS;
+        options -= XML_PARSE_DTDLOAD;
+    } else
+        ctxt->loadsubset = 0;
+    if (options & XML_PARSE_DTDATTR) {
+        ctxt->loadsubset |= XML_COMPLETE_ATTRS;
+        options -= XML_PARSE_DTDATTR;
+    }
+    if (options & XML_PARSE_NOENT) {
+        ctxt->replaceEntities = 1;
+        /* ctxt->loadsubset |= XML_DETECT_IDS; */
+        options -= XML_PARSE_NOENT;
+    } else
+        ctxt->replaceEntities = 0;
+    if (options & XML_PARSE_NOWARNING) {
+        ctxt->sax->warning = NULL;
+        options -= XML_PARSE_NOWARNING;
+    }
+    if (options & XML_PARSE_NOERROR) {
+        ctxt->sax->error = NULL;
+        ctxt->sax->fatalError = NULL;
+        options -= XML_PARSE_NOERROR;
+    }
+    if (options & XML_PARSE_PEDANTIC) {
+        ctxt->pedantic = 1;
+        options -= XML_PARSE_PEDANTIC;
+    } else
+        ctxt->pedantic = 0;
+    if (options & XML_PARSE_NOBLANKS) {
+        ctxt->keepBlanks = 0;
+        ctxt->sax->ignorableWhitespace = xmlSAX2IgnorableWhitespace;
+        options -= XML_PARSE_NOBLANKS;
+    } else
+        ctxt->keepBlanks = 1;
+    if (options & XML_PARSE_DTDVALID) {
+        ctxt->validate = 1;
+        if (options & XML_PARSE_NOWARNING)
+            ctxt->vctxt.warning = NULL;
+        if (options & XML_PARSE_NOERROR)
+            ctxt->vctxt.error = NULL;
+        options -= XML_PARSE_DTDVALID;
+    } else
+        ctxt->validate = 0;
+    if (options & XML_PARSE_SAX1) {
+        ctxt->sax->startElement = xmlSAX2StartElement;
+        ctxt->sax->endElement = xmlSAX2EndElement;
+        ctxt->sax->startElementNs = NULL;
+        ctxt->sax->endElementNs = NULL;
+        ctxt->sax->initialized = 1;
+        options -= XML_PARSE_SAX1;
+    }
+    return (options);
+}
+
+/**
+ * xmlDoRead:
+ * @ctxt:  an XML parser context
+ * @encoding:  the document encoding, or NULL
+ * @options:  a combination of xmlParserOption(s)
+ * @reuse:  keep the context for reuse
+ *
+ * Common front-end for the xmlRead functions
+ * 
+ * Returns the resulting document tree or NULL
+ */
+static xmlDocPtr
+xmlDoRead(xmlParserCtxtPtr ctxt, const char *encoding, int options, int reuse)
+{
+    xmlDocPtr ret;
+    
+    xmlCtxtUseOptions(ctxt, options);
+    if (encoding != NULL) {
+        xmlCharEncodingHandlerPtr hdlr;
+
+	hdlr = xmlFindCharEncodingHandler(encoding);
+	if (hdlr != NULL)
+	    xmlSwitchToEncoding(ctxt, hdlr);
+    }
+    xmlParseDocument(ctxt);
+    if ((ctxt->wellFormed) || ctxt->recovery)
+        ret = ctxt->myDoc;
+    else {
+        ret = NULL;
+        xmlFreeDoc(ctxt->myDoc);
+        ctxt->myDoc = NULL;
+    }
+    if (!reuse)
+	xmlFreeParserCtxt(ctxt);
+
+    return (ret);
+}
+
+/**
+ * xmlReadDoc:
+ * @cur:  a pointer to a zero terminated string
+ * @encoding:  the document encoding, or NULL
+ * @options:  a combination of xmlParserOption(s)
+ *
+ * parse an XML in-memory document and build a tree.
+ * 
+ * Returns the resulting document tree
+ */
+xmlDocPtr
+xmlReadDoc(const xmlChar * cur, const char *encoding, int options)
+{
+    xmlParserCtxtPtr ctxt;
+
+    if (cur == NULL)
+        return (NULL);
+
+    ctxt = xmlCreateDocParserCtxt(cur);
+    if (ctxt == NULL)
+        return (NULL);
+    return (xmlDoRead(ctxt, encoding, options, 0));
+}
+
+/**
+ * xmlReadFile:
+ * @filename:  a file or URL
+ * @encoding:  the document encoding, or NULL
+ * @options:  a combination of xmlParserOption(s)
+ *
+ * parse an XML file from the filesystem or the network.
+ * 
+ * Returns the resulting document tree
+ */
+xmlDocPtr
+xmlReadFile(const char *filename, const char *encoding, int options)
+{
+    xmlParserCtxtPtr ctxt;
+
+    ctxt = xmlCreateFileParserCtxt(filename);
+    if (ctxt == NULL)
+        return (NULL);
+    return (xmlDoRead(ctxt, encoding, options, 0));
+}
+
+/**
+ * xmlReadMemory:
+ * @buffer:  a pointer to a char array
+ * @size:  the size of the array
+ * @encoding:  the document encoding, or NULL
+ * @options:  a combination of xmlParserOption(s)
+ *
+ * parse an XML in-memory document and build a tree.
+ * 
+ * Returns the resulting document tree
+ */
+xmlDocPtr
+xmlReadMemory(const char *buffer, int size, const char *encoding, int options)
+{
+    xmlParserCtxtPtr ctxt;
+
+    ctxt = xmlCreateMemoryParserCtxt(buffer, size);
+    if (ctxt == NULL)
+        return (NULL);
+    return (xmlDoRead(ctxt, encoding, options, 0));
+}
+
+/**
+ * xmlReadFd:
+ * @fd:  an open file descriptor
+ * @encoding:  the document encoding, or NULL
+ * @options:  a combination of xmlParserOption(s)
+ *
+ * parse an XML from a file descriptor and build a tree.
+ * 
+ * Returns the resulting document tree
+ */
+xmlDocPtr
+xmlReadFd(int fd, const char *encoding, int options)
+{
+    xmlParserCtxtPtr ctxt;
+    xmlParserInputBufferPtr input;
+    xmlParserInputPtr stream;
+
+    if (fd < 0)
+        return (NULL);
+
+    input = xmlParserInputBufferCreateFd(fd, XML_CHAR_ENCODING_NONE);
+    if (input == NULL)
+        return (NULL);
+    ctxt = xmlNewParserCtxt();
+    if (ctxt == NULL) {
+        xmlFreeParserInputBuffer(input);
+        return (NULL);
+    }
+    stream = xmlNewIOInputStream(ctxt, input, XML_CHAR_ENCODING_NONE);
+    if (stream == NULL) {
+        xmlFreeParserInputBuffer(input);
+	xmlFreeParserCtxt(ctxt);
+        return (NULL);
+    }
+    inputPush(ctxt, stream);
+    return (xmlDoRead(ctxt, encoding, options, 0));
+}
+
+/**
+ * xmlReadIO:
+ * @ioread:  an I/O read function
+ * @ioclose:  an I/O close function
+ * @ioctx:  an I/O handler
+ * @encoding:  the document encoding, or NULL
+ * @options:  a combination of xmlParserOption(s)
+ *
+ * parse an XML document from I/O functions and source and build a tree.
+ * 
+ * Returns the resulting document tree
+ */
+xmlDocPtr
+xmlReadIO(xmlInputReadCallback ioread, xmlInputCloseCallback ioclose,
+          void *ioctx, const char *encoding, int options)
+{
+    xmlParserCtxtPtr ctxt;
+    xmlParserInputBufferPtr input;
+    xmlParserInputPtr stream;
+
+    if (ioread == NULL)
+        return (NULL);
+
+    input = xmlParserInputBufferCreateIO(ioread, ioclose, ioctx,
+                                         XML_CHAR_ENCODING_NONE);
+    if (input == NULL)
+        return (NULL);
+    ctxt = xmlNewParserCtxt();
+    if (ctxt == NULL) {
+        xmlFreeParserInputBuffer(input);
+        return (NULL);
+    }
+    stream = xmlNewIOInputStream(ctxt, input, XML_CHAR_ENCODING_NONE);
+    if (stream == NULL) {
+        xmlFreeParserInputBuffer(input);
+	xmlFreeParserCtxt(ctxt);
+        return (NULL);
+    }
+    inputPush(ctxt, stream);
+    return (xmlDoRead(ctxt, encoding, options, 0));
+}
+
+/**
+ * xmlCtxtReadDoc:
+ * @ctxt:  an XML parser context
+ * @cur:  a pointer to a zero terminated string
+ * @encoding:  the document encoding, or NULL
+ * @options:  a combination of xmlParserOption(s)
+ *
+ * parse an XML in-memory document and build a tree.
+ * This reuses the existing @ctxt parser context
+ * 
+ * Returns the resulting document tree
+ */
+xmlDocPtr
+xmlCtxtReadDoc(xmlParserCtxtPtr ctxt, const xmlChar * cur,
+               const char *encoding, int options)
+{
+    xmlParserInputPtr stream;
+
+    if (cur == NULL)
+        return (NULL);
+    if (ctxt == NULL)
+        return (NULL);
+
+    xmlCtxtReset(ctxt);
+
+    stream = xmlNewStringInputStream(ctxt, cur);
+    if (stream == NULL) {
+        return (NULL);
+    }
+    inputPush(ctxt, stream);
+    return (xmlDoRead(ctxt, encoding, options, 1));
+}
+
+/**
+ * xmlCtxtReadFile:
+ * @ctxt:  an XML parser context
+ * @filename:  a file or URL
+ * @encoding:  the document encoding, or NULL
+ * @options:  a combination of xmlParserOption(s)
+ *
+ * parse an XML file from the filesystem or the network.
+ * This reuses the existing @ctxt parser context
+ * 
+ * Returns the resulting document tree
+ */
+xmlDocPtr
+xmlCtxtReadFile(xmlParserCtxtPtr ctxt, const char *filename,
+                const char *encoding, int options)
+{
+    xmlParserInputPtr stream;
+
+    if (filename == NULL)
+        return (NULL);
+    if (ctxt == NULL)
+        return (NULL);
+
+    xmlCtxtReset(ctxt);
+
+    stream = xmlNewInputFromFile(ctxt, filename);
+    if (stream == NULL) {
+        return (NULL);
+    }
+    inputPush(ctxt, stream);
+    return (xmlDoRead(ctxt, encoding, options, 1));
+}
+
+/**
+ * xmlCtxtReadMemory:
+ * @ctxt:  an XML parser context
+ * @buffer:  a pointer to a char array
+ * @size:  the size of the array
+ * @encoding:  the document encoding, or NULL
+ * @options:  a combination of xmlParserOption(s)
+ *
+ * parse an XML in-memory document and build a tree.
+ * This reuses the existing @ctxt parser context
+ * 
+ * Returns the resulting document tree
+ */
+xmlDocPtr
+xmlCtxtReadMemory(xmlParserCtxtPtr ctxt, const char *buffer, int size,
+                  const char *encoding, int options)
+{
+    xmlParserInputBufferPtr input;
+    xmlParserInputPtr stream;
+
+    if (ctxt == NULL)
+        return (NULL);
+    if (buffer == NULL)
+        return (NULL);
+
+    xmlCtxtReset(ctxt);
+
+    input = xmlParserInputBufferCreateMem(buffer, size, XML_CHAR_ENCODING_NONE);
+    if (input == NULL) {
+	return(NULL);
+    }
+
+    stream = xmlNewIOInputStream(ctxt, input, XML_CHAR_ENCODING_NONE);
+    if (stream == NULL) {
+	xmlFreeParserInputBuffer(input);
+	return(NULL);
+    }
+
+    inputPush(ctxt, stream);
+    return (xmlDoRead(ctxt, encoding, options, 1));
+}
+
+/**
+ * xmlCtxtReadFd:
+ * @ctxt:  an XML parser context
+ * @fd:  an open file descriptor
+ * @encoding:  the document encoding, or NULL
+ * @options:  a combination of xmlParserOption(s)
+ *
+ * parse an XML from a file descriptor and build a tree.
+ * This reuses the existing @ctxt parser context
+ * 
+ * Returns the resulting document tree
+ */
+xmlDocPtr
+xmlCtxtReadFd(xmlParserCtxtPtr ctxt, int fd, const char *encoding,
+              int options)
+{
+    xmlParserInputBufferPtr input;
+    xmlParserInputPtr stream;
+
+    if (fd < 0)
+        return (NULL);
+    if (ctxt == NULL)
+        return (NULL);
+
+    xmlCtxtReset(ctxt);
+
+
+    input = xmlParserInputBufferCreateFd(fd, XML_CHAR_ENCODING_NONE);
+    if (input == NULL)
+        return (NULL);
+    stream = xmlNewIOInputStream(ctxt, input, XML_CHAR_ENCODING_NONE);
+    if (stream == NULL) {
+        xmlFreeParserInputBuffer(input);
+        return (NULL);
+    }
+    inputPush(ctxt, stream);
+    return (xmlDoRead(ctxt, encoding, options, 1));
+}
+
+/**
+ * xmlCtxtReadIO:
+ * @ctxt:  an XML parser context
+ * @ioread:  an I/O read function
+ * @ioclose:  an I/O close function
+ * @ioctx:  an I/O handler
+ * @encoding:  the document encoding, or NULL
+ * @options:  a combination of xmlParserOption(s)
+ *
+ * parse an XML document from I/O functions and source and build a tree.
+ * This reuses the existing @ctxt parser context
+ * 
+ * Returns the resulting document tree
+ */
+xmlDocPtr
+xmlCtxtReadIO(xmlParserCtxtPtr ctxt, xmlInputReadCallback ioread,
+              xmlInputCloseCallback ioclose, void *ioctx,
+              const char *encoding, int options)
+{
+    xmlParserInputBufferPtr input;
+    xmlParserInputPtr stream;
+
+    if (ioread == NULL)
+        return (NULL);
+    if (ctxt == NULL)
+        return (NULL);
+
+    xmlCtxtReset(ctxt);
+
+    input = xmlParserInputBufferCreateIO(ioread, ioclose, ioctx,
+                                         XML_CHAR_ENCODING_NONE);
+    if (input == NULL)
+        return (NULL);
+    stream = xmlNewIOInputStream(ctxt, input, XML_CHAR_ENCODING_NONE);
+    if (stream == NULL) {
+        xmlFreeParserInputBuffer(input);
+        return (NULL);
+    }
+    inputPush(ctxt, stream);
+    return (xmlDoRead(ctxt, encoding, options, 1));
 }

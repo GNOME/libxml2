@@ -1,3 +1,18 @@
+Tue Sep 23 23:07:45 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c include/libxml/parser.h: adding a new set of
+	  API for parsing xmlReadDoc() xmlReadFile() ... xmlReadIO()
+	  and xmlCtxtReadDoc() ... xmlCtxtReadIO(). That with
+	  a clear define of xmlParserOption, xmlCtxtUseOptions()
+	  should simplify custom parsing without being tempted to
+	  use global variables, and xmlCtxtReset() should allow reuse
+	  of a context for multiple parsing.
+	* xmllint.c: switched to use xmlReadXXX, allow options to
+	  be used simultaneously with less troubles.
+	* tree.c: simple warning removal
+	* doc/apibuild.py: small fix
+	* doc/libxml2-api.xml win32/libxml2.def.src: updated
+
 Tue Sep 23 11:15:23 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: revert xmlCreateDocParserCtxt() since this break

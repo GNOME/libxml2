@@ -1325,7 +1325,11 @@ class docBuilder:
 	 if id.info != None:
 	     info = id.info
 	     if info[0] != None and info[0] != '':
-		 output.write(" value='%s'" % info[0]);
+	         try:
+		     val = eval(info[0])
+		 except:
+		     val = info[0]
+		 output.write(" value='%s'" % (val));
 	     if info[2] != None and info[2] != '':
 		 output.write(" type='%s'" % info[2]);
 	     if info[1] != None and info[1] != '':

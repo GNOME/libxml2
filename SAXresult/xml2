@@ -1,7 +1,7 @@
 xmlSAXUserParseFile returned error 27
 SAX.setDocumentLocator()
 SAX.startDocument()
-SAX.internalSubset(test, (null), (null))
+SAX.internalSubset(test, , )
 SAX.elementDecl(test, 3, ...)
 SAX.entityDecl(xx, 4, (null), (null), %zz;)
 SAX.getParameterEntity(xx)
@@ -9,11 +9,6 @@ SAX.entityDecl(zz, 4, (null), (null), <!ENTITY tricky "error-prone" >)
 SAX.getParameterEntity(zz)
 SAX.getParameterEntity(xx)
 SAX.error: PEReference: %xx; not found
-SAX.startElement(test)
-SAX.characters(This sample shows a , 20)
 SAX.getEntity(tricky)
 SAX.warning: Entity 'tricky' not defined
-SAX.characters( method., 8)
-SAX.endElement(test)
-SAX.endDocument()
 xmlSAXUserParseFile returned error 27

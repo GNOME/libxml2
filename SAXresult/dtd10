@@ -1,6 +1,6 @@
 SAX.setDocumentLocator()
 SAX.startDocument()
-SAX.internalSubset(doc, (null), (null))
+SAX.internalSubset(doc, , )
 SAX.elementDecl(doc, 4, ...)
 SAX.elementDecl(a, 3, ...)
 SAX.elementDecl(b, 3, ...)

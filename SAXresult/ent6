@@ -1,6 +1,6 @@
 SAX.setDocumentLocator()
 SAX.startDocument()
-SAX.internalSubset(doc, (null), (null))
+SAX.internalSubset(doc, , )
 SAX.entityDecl(lt, 1, (null), (null), &#60;)
 SAX.getEntity(lt)
 SAX.entityDecl(gt, 1, (null), (null), >)

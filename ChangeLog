@@ -1,3 +1,8 @@
+Sun Oct 15 12:06:16 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* testSAX.c: fixed problem with cdata reporting
+	* SAXresult/* : updated
+
 Sun Oct 15 12:00:24 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* parser.c test/wap.xml result/noent/wap.xml result/wap.xml:

@@ -1,16 +1,12 @@
-xmlSAXUserParseFile returned error 27
+xmlSAXUserParseFile returned error 26
 SAX.setDocumentLocator()
 SAX.startDocument()
-SAX.internalSubset(doc, (null), (null))
-SAX.entityDecl(YN, 4, (null), (null), "Yes")
-SAX.getParameterEntity(YN)
-SAX.getParameterEntity(YN)
-SAX.error: PEReference: %YN; not found
-SAX.entityDecl(WhatHeSaid, 1, (null), (null), He said )
+SAX.internalSubset(doc, , )
+SAX.entityDecl(YN, 1, (null), (null), "Yes")
+SAX.getEntity(YN)
+SAX.entityDecl(WhatHeSaid, 1, (null), (null), He said &YN;)
 SAX.getEntity(WhatHeSaid)
 SAX.startElement(doc)
 SAX.getEntity(WhatHeSaid)
-SAX.warning: Entity 'WhatHeSaid' not defined
-SAX.endElement(doc)
-SAX.endDocument()
-xmlSAXUserParseFile returned error 27
+SAX.error: Entity 'WhatHeSaid' not defined
+xmlSAXUserParseFile returned error 26

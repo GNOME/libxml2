@@ -1,6 +1,6 @@
 SAX.setDocumentLocator()
 SAX.startDocument()
-SAX.internalSubset(EXAMPLE, (null), example.dtd)
+SAX.internalSubset(EXAMPLE, , example.dtd)
 SAX.entityDecl(xml, 1, (null), (null), Extensible Markup Language)
 SAX.getEntity(xml)
 SAX.getEntity(amp)

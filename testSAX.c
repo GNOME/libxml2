@@ -476,7 +476,7 @@ processingInstructionDebug(void *ctx, const xmlChar *target,
 void
 cdataBlockDebug(void *ctx, const xmlChar *value, int len)
 {
-    fprintf(stderr, "SAX.pcdata(%.20s, %d)\n",
+    fprintf(stdout, "SAX.pcdata(%.20s, %d)\n",
 	    (char *) value, len);
 }
 

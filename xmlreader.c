@@ -243,21 +243,12 @@ xmlTextReaderEndElement(void *ctx, const xmlChar *fullname) {
     printf("xmlTextReaderEndElement(%s)\n", fullname);
 #endif
     if ((reader != NULL) && (reader->endElement != NULL)) {
-	xmlNodePtr node = ctxt->node;
 	/*
 	 * when processing an entity, the context may have been changed
 	 */
 	origctxt = reader->ctxt;
 
 	reader->endElement(ctx, fullname);
-
-#if 0
-	123
-	if (origctxt->validate) {
-	    ctxt->valid &= xmlValidatePopElement(&origctxt->vctxt,
-		                ctxt->myDoc, node, fullname);
-	}
-#endif
     }
     if (reader != NULL) {
 	if (reader->state == XML_TEXTREADER_ELEMENT)
@@ -472,6 +463,86 @@ xmlTextReaderValidatePop(xmlTextReaderPtr reader) {
 	    xmlFree(qname);
     }
 }
+/**
+ * xmlTextReaderValidateEntity:
+ * @reader:  the xmlTextReaderPtr used
+ *
+ * Handle the validation when an entity reference is encountered and
+ * entity substitution is not activated. As a result the parser interface
+ * must walk through the entity and do the validation calls
+ */
+static void
+xmlTextReaderValidateEntity(xmlTextReaderPtr reader) {
+    xmlNodePtr oldnode = reader->node;
+    xmlNodePtr node = reader->node;
+    xmlParserCtxtPtr ctxt = reader->ctxt;
+
+    do {
+	if (node->type == XML_ENTITY_REF_NODE) {
+	    /*
+	     * Case where the underlying tree is not availble, lookup the entity
+	     * and walk it.
+	     */
+	    if ((node->children == NULL) && (ctxt->sax != NULL) &&
+		(ctxt->sax->getEntity != NULL)) {
+		node->children = (xmlNodePtr) 
+		    ctxt->sax->getEntity(ctxt, node->name);
+	    }
+
+	    if ((node->children != NULL) &&
+		(node->children->type == XML_ENTITY_DECL) &&
+		(node->children->children != NULL)) {
+		xmlTextReaderEntPush(reader, node);
+		node = node->children->children;
+		continue;
+	    } else {
+		/*
+		 * The error has probably be raised already.
+		 */
+		if (node == oldnode)
+		    break;
+		node = node->next;
+	    }
+	} else if (node->type == XML_ELEMENT_NODE) {
+	    reader->node = node;
+	    xmlTextReaderValidatePush(reader);
+	} else if ((node->type == XML_TEXT_NODE) ||
+		   (node->type == XML_CDATA_SECTION_NODE)) {
+	    ctxt->valid &= xmlValidatePushCData(&ctxt->vctxt,
+			      node->content, xmlStrlen(node->content));
+	}
+
+	/*
+	 * go to next node
+	 */
+	if (node->children != NULL) {
+	    node = node->children;
+	    continue;
+	}
+	if (node->next != NULL) {
+	    node = node->next;
+	    continue;
+	}
+	do {
+	    node = node->parent;
+	    if (node->type == XML_ELEMENT_NODE) {
+		reader->node = node;
+		xmlTextReaderValidatePop(reader);
+	    }
+	    if ((node->type == XML_ENTITY_DECL) &&
+		(reader->ent != NULL) && (reader->ent->children == node)) {
+		node = xmlTextReaderEntPop(reader);
+	    }
+	    if (node == oldnode)
+		break;
+	    if (node->next != NULL) {
+		node = node->next;
+		break;
+	    }
+	} while ((node != NULL) && (node != oldnode));
+    } while ((node != NULL) && (node != oldnode));
+    reader->node = oldnode;
+}
 
 
 /**
@@ -633,7 +704,7 @@ node_found:
     DUMP_READER
 
     /*
-     * Handle entities enter and exit
+     * Handle entities enter and exit when in entity replacement mode
      */
     if ((reader->node != NULL) &&
 	(reader->node->type == XML_ENTITY_REF_NODE) &&
@@ -654,6 +725,10 @@ node_found:
 	    xmlTextReaderEntPush(reader, reader->node);
 	    reader->node = reader->node->children->children;
 	}
+    } else if ((reader->node != NULL) &&
+	       (reader->node->type == XML_ENTITY_REF_NODE) &&
+	       (reader->ctxt != NULL) && (reader->ctxt->validate == 1)) {
+	xmlTextReaderValidateEntity(reader);
     }
     if ((reader->node != NULL) &&
 	(reader->node->type == XML_ENTITY_DECL) &&

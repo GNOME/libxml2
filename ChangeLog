@@ -1,3 +1,8 @@
+Fri Jan  3 13:50:55 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmlreader.c python/tests/reader2py: okay the DTD validation
+	  code on top of the XMLTextParser API should be solid now.
+
 Fri Jan  3 02:17:18 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c python/tests/reader2py: Fixing some more mess

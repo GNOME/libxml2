@@ -198,6 +198,45 @@ if err != "":
     sys.exit(1)
 
 #
+# The same test but without entity substitution this time
+#
+
+s = """<!DOCTYPE test [
+<!ELEMENT test (x, x)>
+<!ELEMENT x (y)>
+<!ELEMENT y (#PCDATA)>
+<!ENTITY x "<x>&y;</x>">
+<!ENTITY y "<y>yyy</y>">
+]>
+<test>
+  &x;
+  &x;
+</test>"""
+expect="""1 test 0
+3 #text 1
+5 x 1
+3 #text 1
+5 x 1
+3 #text 1
+15 test 0
+"""
+res=""
+err=""
+
+input = libxml2.inputBuffer(StringIO.StringIO(s))
+reader = input.newTextReader("test4")
+reader.SetParserProp(libxml2.PARSER_VALIDATE,1)
+while reader.Read() == 1:
+    res = res + "%s %s %d\n" % (reader.NodeType(),reader.Name(),reader.Depth())
+
+if res != expect:
+    print "test5 failed: unexpected output"
+    print res
+if err != "":
+    print "test5 failed: validation error found"
+    print err
+
+#
 # cleanup
 #
 del input

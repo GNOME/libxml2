@@ -1095,7 +1095,7 @@ xmlParserInputBufferCreateFd(int fd, xmlCharEncoding enc) {
  * @enc:  the charset encoding if known
  *
  * Create a buffered parser input for the progressive parsing for the input
- * from a file descriptor
+ * from a memory area.
  *
  * Returns the new parser input or NULL
  */

@@ -4817,7 +4817,7 @@ xmlAttrDump(xmlBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur) {
     }
     xmlBufferWriteCHAR(buf, cur->name);
     value = xmlNodeListGetString(doc, cur->children, 0);
-    if (value) {
+    if (value != NULL) {
 	xmlBufferWriteChar(buf, "=");
 	xmlBufferWriteQuotedString(buf, value);
 	xmlFree(value);

@@ -107,7 +107,7 @@
  - The table of content
  -->
   <xsl:variable name="toc">
-    <ul style="margin-left: -2pt">
+    <ul style="margin-left: -1em">
       <li><a href="index.html">Home</a></li>
       <xsl:for-each select="/html/body/h2">
         <xsl:variable name="filename">
@@ -128,7 +128,7 @@
     </ul>
   </xsl:variable>
   <xsl:variable name="related">
-    <ul style="margin-left: -2pt">
+    <ul style="margin-left: -1em">
       <li><a href="http://mail.gnome.org/archives/xml/">Mail archive</a></li>
       <li><a href="http://xmlsoft.org/XSLT/">XSLT libxslt</a></li>
       <li><a href="http://phd.cs.unibo.it/gdome2/">DOM gdome2</a></li>
@@ -186,11 +186,11 @@
  -->
   <xsl:template name="style">
     <style type="text/css"><xsl:text disable-output-escaping="yes">&lt;!--</xsl:text>
-TD {font-size: 10pt; font-family: Verdana,Arial,Helvetica}
-BODY {font-size: 10pt; font-family: Verdana,Arial,Helvetica; margin-top: 5pt; margin-left: 0pt; margin-right: 0pt}
-H1 {font-size: 16pt; font-family: Verdana,Arial,Helvetica}
-H2 {font-size: 14pt; font-family: Verdana,Arial,Helvetica}
-H3 {font-size: 12pt; font-family: Verdana,Arial,Helvetica}
+TD {font-size: 14pt; font-family: Verdana,Arial,Helvetica}
+BODY {font-size: 14pt; font-family: Verdana,Arial,Helvetica; margin-top: 2em; margin-left: 0em; margin-right: 0em}
+H1 {font-size: 20pt; font-family: Verdana,Arial,Helvetica}
+H2 {font-size: 18pt; font-family: Verdana,Arial,Helvetica}
+H3 {font-size: 16pt; font-family: Verdana,Arial,Helvetica}
 A:link, A:visited, A:active { text-decoration: underline }
 <xsl:text disable-output-escaping="yes">--&gt;</xsl:text></style>
   </xsl:template>

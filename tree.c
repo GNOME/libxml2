@@ -3715,11 +3715,10 @@ xmlNodeSetContent(xmlNodePtr cur, const xmlChar *content) {
     switch (cur->type) {
         case XML_DOCUMENT_FRAG_NODE:
         case XML_ELEMENT_NODE:
+        case XML_ATTRIBUTE_NODE:
 	    if (cur->children != NULL) xmlFreeNodeList(cur->children);
 	    cur->children = xmlStringGetNodeList(cur->doc, content);
 	    UPDATE_LAST_CHILD_AND_PARENT(cur)
-	    break;
-        case XML_ATTRIBUTE_NODE:
 	    break;
         case XML_TEXT_NODE:
         case XML_CDATA_SECTION_NODE:
@@ -3795,11 +3794,10 @@ xmlNodeSetContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
     switch (cur->type) {
         case XML_DOCUMENT_FRAG_NODE:
         case XML_ELEMENT_NODE:
+        case XML_ATTRIBUTE_NODE:
 	    if (cur->children != NULL) xmlFreeNodeList(cur->children);
 	    cur->children = xmlStringLenGetNodeList(cur->doc, content, len);
 	    UPDATE_LAST_CHILD_AND_PARENT(cur)
-	    break;
-        case XML_ATTRIBUTE_NODE:
 	    break;
         case XML_TEXT_NODE:
         case XML_CDATA_SECTION_NODE:
@@ -5701,23 +5699,17 @@ xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
 	return;
     }
     if (cur->type == XML_PI_NODE) {
+    	xmlBufferWriteChar(buf, "<?");
+	xmlBufferWriteCHAR(buf, cur->name);
 	if (cur->content != NULL) {
-	    xmlBufferWriteChar(buf, "<?");
-	    xmlBufferWriteCHAR(buf, cur->name);
-	    if (cur->content != NULL) {
-		xmlBufferWriteChar(buf, " ");
+	    xmlBufferWriteChar(buf, " ");
 #ifndef XML_USE_BUFFER_CONTENT
-		xmlBufferWriteCHAR(buf, cur->content);
+	    xmlBufferWriteCHAR(buf, cur->content);
 #else
-		xmlBufferWriteCHAR(buf, xmlBufferContent(cur->content));
+	    xmlBufferWriteCHAR(buf, xmlBufferContent(cur->content));
 #endif
-	    }
-	    xmlBufferWriteChar(buf, "?>");
-	} else {
-	    xmlBufferWriteChar(buf, "<?");
-	    xmlBufferWriteCHAR(buf, cur->name);
-	    xmlBufferWriteChar(buf, "?>");
 	}
+	xmlBufferWriteChar(buf, "?>");
 	return;
     }
     if (cur->type == XML_COMMENT_NODE) {

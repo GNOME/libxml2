@@ -1,3 +1,8 @@
+Wed Jan 16 16:36:08 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: update xmlNodeSetContent() and xmlNodeSetContentLen()
+	  to allow updating an attribute content
+
 Tue Jan 15 18:09:23 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* libxml.h: try to avoid problems when compiling on Windows

@@ -254,11 +254,11 @@ htmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
 		val |= cur[1] & 0x3f;
 	    }
 	    if (!IS_CHAR(val)) {
+		ctxt->errNo = XML_ERR_INVALID_ENCODING;
 		if ((ctxt->sax != NULL) &&
 		    (ctxt->sax->error != NULL))
 		    ctxt->sax->error(ctxt->userData, 
 				     "Char 0x%X out of allowed range\n", val);
-		ctxt->errNo = XML_ERR_INVALID_ENCODING;
 		ctxt->wellFormed = 0;
 		ctxt->disableSAX = 1;
 	    }    
@@ -293,6 +293,7 @@ encoding_error:
      * to ISO-Latin-1 (if you don't like this policy, just declare the
      * encoding !)
      */
+    ctxt->errNo = XML_ERR_INVALID_ENCODING;
     if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL)) {
 	ctxt->sax->error(ctxt->userData, 
 			 "Input is not proper UTF-8, indicate encoding !\n");
@@ -300,7 +301,6 @@ encoding_error:
 			ctxt->input->cur[0], ctxt->input->cur[1],
 			ctxt->input->cur[2], ctxt->input->cur[3]);
     }
-    ctxt->errNo = XML_ERR_INVALID_ENCODING;
 
     ctxt->charset = XML_CHAR_ENCODING_8859_1; 
     *len = 1;
@@ -1494,12 +1494,12 @@ htmlDecodeEntities(htmlParserCtxtPtr ctxt, int len,
     int c,l;
 
     if (ctxt->depth > 40) {
+	ctxt->errNo = XML_ERR_ENTITY_LOOP;
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt->userData,
 		"Detected entity reference loop\n");
 	ctxt->wellFormed = 0;
 	ctxt->disableSAX = 1;
-	ctxt->errNo = XML_ERR_ENTITY_LOOP;
 	return(NULL);
     }
 
@@ -1601,7 +1601,6 @@ htmlNewInputStream(htmlParserCtxtPtr ctxt) {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt->userData, 
 	                     "malloc: couldn't allocate a new input stream\n");
-	ctxt->errNo = XML_ERR_NO_MEMORY;
 	return(NULL);
     }
     memset(input, 0, sizeof(htmlParserInput));
@@ -2433,10 +2432,10 @@ htmlParseComment(htmlParserCtxtPtr ctxt) {
     }
     buf[len] = 0;
     if (!IS_CHAR(cur)) {
+	ctxt->errNo = XML_ERR_COMMENT_NOT_FINISHED;
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt->userData,
 	                     "Comment not terminated \n<!--%.50s\n", buf);
-	ctxt->errNo = XML_ERR_COMMENT_NOT_FINISHED;
 	ctxt->wellFormed = 0;
 	xmlFree(buf);
     } else {
@@ -2726,10 +2725,10 @@ htmlCheckEncoding(htmlParserCtxtPtr ctxt, const xmlChar *attvalue) {
 		                       ctxt->input->buf->buffer,
 				       ctxt->input->buf->raw);
 	    if (nbchars < 0) {
+		ctxt->errNo = XML_ERR_INVALID_ENCODING;
 		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		    ctxt->sax->error(ctxt->userData, 
 		     "htmlCheckEncoding: encoder error\n");
-		ctxt->errNo = XML_ERR_INVALID_ENCODING;
 	    }
 	    ctxt->input->base =
 	    ctxt->input->cur = ctxt->input->buf->buffer->content;
@@ -3959,11 +3958,11 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		           (avail < 4)) {
 		    goto done;
 		} else {
+		    ctxt->errNo = XML_ERR_DOCUMENT_END;
 		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 			ctxt->sax->error(ctxt->userData,
 			    "Extra content at the end of the document\n");
 		    ctxt->wellFormed = 0;
-		    ctxt->errNo = XML_ERR_DOCUMENT_END;
 		    ctxt->instate = XML_PARSER_EOF;
 #ifdef DEBUG_PUSH
 		    fprintf(stderr, "HPP: entering EOF\n");
@@ -4390,11 +4389,11 @@ htmlParseChunk(htmlParserCtxtPtr ctxt, const char *chunk, int size,
 	if ((ctxt->instate != XML_PARSER_EOF) &&
 	    (ctxt->instate != XML_PARSER_EPILOG) &&
 	    (ctxt->instate != XML_PARSER_MISC)) {
+	    ctxt->errNo = XML_ERR_DOCUMENT_END;
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		ctxt->sax->error(ctxt->userData,
 		    "Extra content at the end of the document\n");
 	    ctxt->wellFormed = 0;
-	    ctxt->errNo = XML_ERR_DOCUMENT_END;
 	} 
 	if (ctxt->instate != XML_PARSER_EOF) {
 	    if ((ctxt->sax) && (ctxt->sax->endDocument != NULL))

@@ -1,3 +1,8 @@
+Sat Sep 16 20:12:41 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* HTMLparser.c parser.c: set ctxt->errNo before calling the
+	  error or warning handlers
+
 Wed Sep 13 22:03:18 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* parserInternals.c parserInternals.h parser.c Makefile.am:

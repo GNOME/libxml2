@@ -1,3 +1,7 @@
+Thu Nov  8 14:52:18 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* debugXML.c: Stefan Kost provided an help command for the shell
+
 Wed Nov  7 14:32:55 CET 2001 Daniel Veillard <daniel@veillard.com>
 
 	* debugXML.c: Heiko Rupp pointed that the shell would crash

@@ -1987,7 +1987,24 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
             break;
         if (!strcmp(command, "bye"))
             break;
-        if (!strcmp(command, "validate")) {
+		if (!strcmp(command, "help")) {
+		  printf("\tbase         display XML base of the node\n");
+		  printf("\tbye          leave shell\n");
+		  printf("\tcat [node]   display node or current node\n");
+		  printf("\tcd [path]    change directory to path or to root\n");
+		  printf("\tdir [path]   dumps informations about the node (namespace, attributes, content)\n");
+		  printf("\tdu [path]    show the structure of the subtree under path or the current node\n");
+		  printf("\texit         leave shell\n");
+		  printf("\thelp         display this help\n");
+		  printf("\tfree         display memory usage\n");
+		  printf("\tload [name]  load a new document with name\n");
+		  printf("\tls [path]    list contents of path or the current directory\n");
+		  printf("\tpwd          display current working directory\n");
+		  printf("\tquit         leave shell\n");
+		  printf("\tsave [name]  save this document to name or the original name\n");
+		  printf("\tvalidate     check the document for errors\n");
+		  printf("\twrite [name] write the current node to the filename\n");
+        } else if (!strcmp(command, "validate")) {
             xmlShellValidate(ctxt, arg, NULL, NULL);
         } else if (!strcmp(command, "load")) {
             xmlShellLoad(ctxt, arg, NULL, NULL);

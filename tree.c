@@ -3484,7 +3484,8 @@ xmlGetNodePath(xmlNodePtr node)
              */
             tmp = cur->prev;
             while (tmp != NULL) {
-                if (xmlStrEqual(cur->name, tmp->name))
+                if ((tmp->type == XML_ELEMENT_NODE) &&
+		    (xmlStrEqual(cur->name, tmp->name)))
                     occur++;
                 tmp = tmp->prev;
             }

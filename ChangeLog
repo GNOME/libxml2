@@ -1,3 +1,8 @@
+Wed Sep 18 00:54:30 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: fixed another stupid bug in xmlGetNodePath()
+	* xmllint.c: --version now report the options compiled in
+
 Tue Sep 17 23:48:07 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: small cleanup

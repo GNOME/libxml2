@@ -981,6 +981,57 @@ static void parseAndPrintFile(char *filename) {
  * 									*
  ************************************************************************/
 
+static void showVersion(const char *name) {
+    fprintf(stderr, "%s: using libxml version %s\n", name, xmlParserVersion);
+    fprintf(stderr, "   compiled with: ");
+#ifdef LIBXML_FTP_ENABLED
+    fprintf(stderr, "FTP ");
+#endif
+#ifdef LIBXML_HTTP_ENABLED
+    fprintf(stderr, "HTTP ");
+#endif
+#ifdef LIBXML_HTML_ENABLED
+    fprintf(stderr, "HTML ");
+#endif
+#ifdef LIBXML_C14N_ENABLED
+    fprintf(stderr, "C14N ");
+#endif
+#ifdef LIBXML_CATALOG_ENABLED
+    fprintf(stderr, "Catalog ");
+#endif
+#ifdef LIBXML_DOCB_ENABLED
+    fprintf(stderr, "DocBook ");
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+    fprintf(stderr, "XPath ");
+#endif
+#ifdef LIBXML_XPTR_ENABLED
+    fprintf(stderr, "XPointer ");
+#endif
+#ifdef LIBXML_XINCLUDE_ENABLED
+    fprintf(stderr, "XInclude ");
+#endif
+#ifdef LIBXML_ICONV_ENABLED
+    fprintf(stderr, "Iconv ");
+#endif
+#ifdef DEBUG_MEMORY_LOCATION
+    fprintf(stderr, "MemDebug ");
+#endif
+#ifdef LIBXML_UNICODE_ENABLED
+    fprintf(stderr, "Unicode ");
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+    fprintf(stderr, "Regexps ");
+#endif
+#ifdef LIBXML_AUTOMATA_ENABLED
+    fprintf(stderr, "Automata ");
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+    fprintf(stderr, "Schemas ");
+#endif
+    fprintf(stderr, "\n");
+}
+
 static void usage(const char *name) {
     printf("Usage : %s [options] XMLfiles ...\n", name);
     printf("\tParse the XML files and output the result of the parsing\n");
@@ -1073,8 +1124,7 @@ main(int argc, char **argv) {
 	    noent++;
 	else if ((!strcmp(argv[i], "-version")) ||
 	         (!strcmp(argv[i], "--version"))) {
-	    fprintf(stderr, "xmllint: using libxml version %s\n",
-		    xmlParserVersion);
+	    showVersion(argv[0]);
 	    version = 1;
 	} else if ((!strcmp(argv[i], "-noout")) ||
 	         (!strcmp(argv[i], "--noout")))

@@ -805,12 +805,12 @@ xmlMemoryDump(void)
 int
 xmlInitMemory(void)
 {
+#ifdef HAVE_STDLIB_H
+     char *breakpoint;
+#endif     
 #ifdef DEBUG_MEMORY
      xmlGenericError(xmlGenericErrorContext,
 	     "xmlInitMemory()\n");
-#endif     
-#ifdef HAVE_STDLIB_H
-     char *breakpoint;
 #endif     
     /*
      This is really not good code (see Bug 130419).  Suggestions for

@@ -1,3 +1,7 @@
+Tue Jul 13 17:24:13 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xmlmemory.c: applied a small fix from Steve Hay
+
 Tue Jul 13 23:02:19 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* xpath.c: Added code to in PREDICATE/FILTER handling to reset

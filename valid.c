@@ -6502,21 +6502,20 @@ xmlValidateDocument(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
     }
     if ((doc->intSubset != NULL) && ((doc->intSubset->SystemID != NULL) ||
 	(doc->intSubset->ExternalID != NULL)) && (doc->extSubset == NULL)) {
-	xmlChar *extID, *sysID;
-	if (doc->intSubset->ExternalID != NULL)
-	    extID = xmlBuildURI(doc->intSubset->ExternalID,
-	    		doc->URL);
-	else
-	    extID = NULL;
-	if (doc->intSubset->SystemID != NULL)
+	xmlChar *sysID;
+	if (doc->intSubset->SystemID != NULL) {
 	    sysID = xmlBuildURI(doc->intSubset->SystemID,
 	    		doc->URL);
-	else
+	    if (sysID == NULL) {
+	        xmlErrValid(ctxt, XML_DTD_LOAD_ERROR,
+			"Could not build URI for external subset \"%s\"\n",
+			(const char *) doc->intSubset->SystemID);
+		return 0;
+	    }
+	} else
 	    sysID = NULL;
-        doc->extSubset = xmlParseDTD((const xmlChar *)extID,
+        doc->extSubset = xmlParseDTD(doc->intSubset->ExternalID,
 			(const xmlChar *)sysID);
-	if (extID != NULL)
-	    xmlFree(extID);
 	if (sysID != NULL)
 	    xmlFree(sysID);
         if (doc->extSubset == NULL) {

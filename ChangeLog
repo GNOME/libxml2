@@ -1,3 +1,8 @@
+Fri Aug  6 09:22:34 PDT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* valid.c: fixed my mis-handling of External ID on last
+	  change.
+
 Wed Aug  4 23:40:21 PDT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* valid.c: changed the parsing of a document's DTD to use

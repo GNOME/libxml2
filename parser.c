@@ -117,47 +117,6 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
 xmlEntityPtr xmlParseStringEntityRef(xmlParserCtxtPtr ctxt,
                                      const xmlChar ** str);
 
-/*
- * Generic function for accessing stacks in the Parser Context
- */
-
-#define PUSH_AND_POP(scope, type, name)					\
-scope int name##Push(xmlParserCtxtPtr ctxt, type value) {		\
-    if (ctxt->name##Nr >= ctxt->name##Max) {				\
-	ctxt->name##Max *= 2;						\
-        ctxt->name##Tab = (type *) xmlRealloc(ctxt->name##Tab,		\
-	             ctxt->name##Max * sizeof(ctxt->name##Tab[0]));	\
-        if (ctxt->name##Tab == NULL) {					\
-	    xmlGenericError(xmlGenericErrorContext,			\
-		    "realloc failed !\n");				\
-	    return(0);							\
-	}								\
-    }									\
-    ctxt->name##Tab[ctxt->name##Nr] = value;				\
-    ctxt->name = value;							\
-    return(ctxt->name##Nr++);						\
-}									\
-scope type name##Pop(xmlParserCtxtPtr ctxt) {				\
-    type ret;								\
-    if (ctxt->name##Nr <= 0) return(0);					\
-    ctxt->name##Nr--;							\
-    if (ctxt->name##Nr > 0)						\
-	ctxt->name = ctxt->name##Tab[ctxt->name##Nr - 1];		\
-    else								\
-        ctxt->name = NULL;						\
-    ret = ctxt->name##Tab[ctxt->name##Nr];				\
-    ctxt->name##Tab[ctxt->name##Nr] = 0;				\
-    return(ret);							\
-}									\
-
-/**
- * inputPop:
- * @ctxt: an XML parser context
- *
- * Pops the top parser input from the input stack
- *
- * Returns the input just removed
- */
 /**
  * inputPush:
  * @ctxt:  an XML parser context
@@ -167,31 +126,48 @@ scope type name##Pop(xmlParserCtxtPtr ctxt) {				\
  *
  * Returns 0 in case of error, the index in the stack otherwise
  */
+extern int
+inputPush(xmlParserCtxtPtr ctxt, xmlParserInputPtr value)
+{
+    if (ctxt->inputNr >= ctxt->inputMax) {
+        ctxt->inputMax *= 2;
+        ctxt->inputTab =
+            (xmlParserInputPtr *) xmlRealloc(ctxt->inputTab,
+                                             ctxt->inputMax *
+                                             sizeof(ctxt->inputTab[0]));
+        if (ctxt->inputTab == NULL) {
+            xmlGenericError(xmlGenericErrorContext, "realloc failed !\n");
+            return (0);
+        }
+    }
+    ctxt->inputTab[ctxt->inputNr] = value;
+    ctxt->input = value;
+    return (ctxt->inputNr++);
+}
 /**
- * namePop:
+ * inputPop:
  * @ctxt: an XML parser context
  *
- * Pops the top element name from the name stack
+ * Pops the top parser input from the input stack
  *
- * Returns the name just removed
+ * Returns the input just removed
  */
-/**
- * namePush:
- * @ctxt:  an XML parser context
- * @value:  the element name
- *
- * Pushes a new element name on top of the name stack
- *
- * Returns 0 in case of error, the index in the stack otherwise
- */
-/**
- * nodePop:
- * @ctxt: an XML parser context
- *
- * Pops the top element node from the node stack
- *
- * Returns the node just removed
- */
+extern xmlParserInputPtr
+inputPop(xmlParserCtxtPtr ctxt)
+{
+    xmlParserInputPtr ret;
+
+    if (ctxt->inputNr <= 0)
+        return (0);
+    ctxt->inputNr--;
+    if (ctxt->inputNr > 0)
+        ctxt->input = ctxt->inputTab[ctxt->inputNr - 1];
+    else
+        ctxt->input = NULL;
+    ret = ctxt->inputTab[ctxt->inputNr];
+    ctxt->inputTab[ctxt->inputNr] = 0;
+    return (ret);
+}
 /**
  * nodePush:
  * @ctxt:  an XML parser context
@@ -201,12 +177,99 @@ scope type name##Pop(xmlParserCtxtPtr ctxt) {				\
  *
  * Returns 0 in case of error, the index in the stack otherwise
  */
-/*
- * Those macros actually generate the functions
+extern int
+nodePush(xmlParserCtxtPtr ctxt, xmlNodePtr value)
+{
+    if (ctxt->nodeNr >= ctxt->nodeMax) {
+        ctxt->nodeMax *= 2;
+        ctxt->nodeTab =
+            (xmlNodePtr *) xmlRealloc(ctxt->nodeTab,
+                                      ctxt->nodeMax *
+                                      sizeof(ctxt->nodeTab[0]));
+        if (ctxt->nodeTab == NULL) {
+            xmlGenericError(xmlGenericErrorContext, "realloc failed !\n");
+            return (0);
+        }
+    }
+    ctxt->nodeTab[ctxt->nodeNr] = value;
+    ctxt->node = value;
+    return (ctxt->nodeNr++);
+}
+/**
+ * nodePop:
+ * @ctxt: an XML parser context
+ *
+ * Pops the top element node from the node stack
+ *
+ * Returns the node just removed
  */
-PUSH_AND_POP(extern, xmlParserInputPtr, input)
-PUSH_AND_POP(extern, xmlNodePtr, node)
-PUSH_AND_POP(extern, xmlChar*, name)
+extern xmlNodePtr
+nodePop(xmlParserCtxtPtr ctxt)
+{
+    xmlNodePtr ret;
+
+    if (ctxt->nodeNr <= 0)
+        return (0);
+    ctxt->nodeNr--;
+    if (ctxt->nodeNr > 0)
+        ctxt->node = ctxt->nodeTab[ctxt->nodeNr - 1];
+    else
+        ctxt->node = NULL;
+    ret = ctxt->nodeTab[ctxt->nodeNr];
+    ctxt->nodeTab[ctxt->nodeNr] = 0;
+    return (ret);
+}
+/**
+ * namePush:
+ * @ctxt:  an XML parser context
+ * @value:  the element name
+ *
+ * Pushes a new element name on top of the name stack
+ *
+ * Returns 0 in case of error, the index in the stack otherwise
+ */
+extern int
+namePush(xmlParserCtxtPtr ctxt, xmlChar * value)
+{
+    if (ctxt->nameNr >= ctxt->nameMax) {
+        ctxt->nameMax *= 2;
+        ctxt->nameTab =
+            (xmlChar * *)xmlRealloc(ctxt->nameTab,
+                                    ctxt->nameMax *
+                                    sizeof(ctxt->nameTab[0]));
+        if (ctxt->nameTab == NULL) {
+            xmlGenericError(xmlGenericErrorContext, "realloc failed !\n");
+            return (0);
+        }
+    }
+    ctxt->nameTab[ctxt->nameNr] = value;
+    ctxt->name = value;
+    return (ctxt->nameNr++);
+}
+/**
+ * namePop:
+ * @ctxt: an XML parser context
+ *
+ * Pops the top element name from the name stack
+ *
+ * Returns the name just removed
+ */
+extern xmlChar *
+namePop(xmlParserCtxtPtr ctxt)
+{
+    xmlChar *ret;
+
+    if (ctxt->nameNr <= 0)
+        return (0);
+    ctxt->nameNr--;
+    if (ctxt->nameNr > 0)
+        ctxt->name = ctxt->nameTab[ctxt->nameNr - 1];
+    else
+        ctxt->name = NULL;
+    ret = ctxt->nameTab[ctxt->nameNr];
+    ctxt->nameTab[ctxt->nameNr] = 0;
+    return (ret);
+}
 
 static int spacePush(xmlParserCtxtPtr ctxt, int val) {
     if (ctxt->spaceNr >= ctxt->spaceMax) {

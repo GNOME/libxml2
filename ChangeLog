@@ -1,3 +1,7 @@
+Sat Nov 30 12:19:17 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* DOCBparser.c HTMLparser.c parser.c valid.c xpath.c: code cleanup
+
 Thu Nov 28 12:53:22 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* uri.c: Johann Richard pointed out some XPointer problems for

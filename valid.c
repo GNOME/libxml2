@@ -32,52 +32,12 @@
     xmlGenericError(xmlGenericErrorContext,				\
 	    "Unimplemented block at %s:%d\n",				\
             __FILE__, __LINE__);
-/*
- * Generic function for accessing stacks in the Validity Context
- */
 
-#define PUSH_AND_POP(scope, type, name)					\
-scope int name##VPush(xmlValidCtxtPtr ctxt, type value) {		\
-    if (ctxt->name##Max <= 0) {						\
-	ctxt->name##Max = 4;						\
-        ctxt->name##Tab = (type *) xmlMalloc(				\
-	             ctxt->name##Max * sizeof(ctxt->name##Tab[0]));	\
-        if (ctxt->name##Tab == NULL) {					\
-	    xmlGenericError(xmlGenericErrorContext,			\
-		    "malloc failed !\n");				\
-	    ctxt->name##Max = 0;					\
-	    return(0);							\
-	}								\
-    }									\
-    if (ctxt->name##Nr >= ctxt->name##Max) {				\
-	ctxt->name##Max *= 2;						\
-        ctxt->name##Tab = (type *) xmlRealloc(ctxt->name##Tab,		\
-	             ctxt->name##Max * sizeof(ctxt->name##Tab[0]));	\
-        if (ctxt->name##Tab == NULL) {					\
-	    xmlGenericError(xmlGenericErrorContext,			\
-		    "realloc failed !\n");				\
-	    return(0);							\
-	}								\
-    }									\
-    ctxt->name##Tab[ctxt->name##Nr] = value;				\
-    ctxt->name = value;							\
-    return(ctxt->name##Nr++);						\
-}									\
-scope type name##VPop(xmlValidCtxtPtr ctxt) {				\
-    type ret;								\
-    if (ctxt->name##Nr <= 0) return(0);					\
-    ctxt->name##Nr--;							\
-    if (ctxt->name##Nr > 0)						\
-	ctxt->name = ctxt->name##Tab[ctxt->name##Nr - 1];		\
-    else								\
-        ctxt->name = NULL;						\
-    ret = ctxt->name##Tab[ctxt->name##Nr];				\
-    ctxt->name##Tab[ctxt->name##Nr] = 0;				\
-    return(ret);							\
-}									\
 
+#ifndef LIBXML_REGEXP_ENABLED
 /*
- * I use a home made algorithm less complex and easier to
+ * If regexp are not enabled, it uses a home made algorithm less
+ * complex and easier to
  * debug/maintain than a generic NFA -> DFA state based algo. The
  * only restriction is on the deepness of the tree limited by the
  * size of the occurs bitfield
@@ -110,7 +70,6 @@ typedef struct _xmlValidState {
 #define SET_OCCURRENCE ctxt->vstate->occurs |= (1 << DEPTH)
 #define RESET_OCCURRENCE ctxt->vstate->occurs &= ((1 << DEPTH) - 1)
 
-#ifndef LIBXML_REGEXP_ENABLED
 static int
 vstateVPush(xmlValidCtxtPtr ctxt, xmlElementContentPtr cont,
 	    xmlNodePtr node, unsigned char depth, long occurs,
@@ -163,7 +122,51 @@ vstateVPop(xmlValidCtxtPtr ctxt) {
 
 #endif /* LIBXML_REGEXP_ENABLED */
 
-PUSH_AND_POP(static, xmlNodePtr, node)
+static int
+nodeVPush(xmlValidCtxtPtr ctxt, xmlNodePtr value)
+{
+    if (ctxt->nodeMax <= 0) {
+        ctxt->nodeMax = 4;
+        ctxt->nodeTab =
+            (xmlNodePtr *) xmlMalloc(ctxt->nodeMax *
+                                     sizeof(ctxt->nodeTab[0]));
+        if (ctxt->nodeTab == NULL) {
+            xmlGenericError(xmlGenericErrorContext, "malloc failed !\n");
+            ctxt->nodeMax = 0;
+            return (0);
+        }
+    }
+    if (ctxt->nodeNr >= ctxt->nodeMax) {
+        ctxt->nodeMax *= 2;
+        ctxt->nodeTab =
+            (xmlNodePtr *) xmlRealloc(ctxt->nodeTab,
+                                      ctxt->nodeMax *
+                                      sizeof(ctxt->nodeTab[0]));
+        if (ctxt->nodeTab == NULL) {
+            xmlGenericError(xmlGenericErrorContext, "realloc failed !\n");
+            return (0);
+        }
+    }
+    ctxt->nodeTab[ctxt->nodeNr] = value;
+    ctxt->node = value;
+    return (ctxt->nodeNr++);
+}
+static xmlNodePtr
+nodeVPop(xmlValidCtxtPtr ctxt)
+{
+    xmlNodePtr ret;
+
+    if (ctxt->nodeNr <= 0)
+        return (0);
+    ctxt->nodeNr--;
+    if (ctxt->nodeNr > 0)
+        ctxt->node = ctxt->nodeTab[ctxt->nodeNr - 1];
+    else
+        ctxt->node = NULL;
+    ret = ctxt->nodeTab[ctxt->nodeNr];
+    ctxt->nodeTab[ctxt->nodeNr] = 0;
+    return (ret);
+}
 
 #ifdef DEBUG_VALID_ALGO
 static void

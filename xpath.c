@@ -885,39 +885,6 @@ xmlXPathDebugDumpCompExpr(FILE *output, xmlXPathCompExprPtr comp,
  *									*
  ************************************************************************/
 
-/*
- * Generic function for accessing stacks in the Parser Context
- */
-
-#define PUSH_AND_POP(type, name)					\
-extern int name##Push(xmlXPathParserContextPtr ctxt, type value) {	\
-    if (ctxt->name##Nr >= ctxt->name##Max) {				\
-	ctxt->name##Max *= 2;						\
-        ctxt->name##Tab = (type *) xmlRealloc(ctxt->name##Tab,		\
-	             ctxt->name##Max * sizeof(ctxt->name##Tab[0]));	\
-        if (ctxt->name##Tab == NULL) {					\
-	    xmlGenericError(xmlGenericErrorContext,			\
-		    "realloc failed !\n");				\
-	    return(0);							\
-	}								\
-    }									\
-    ctxt->name##Tab[ctxt->name##Nr] = value;				\
-    ctxt->name = value;							\
-    return(ctxt->name##Nr++);						\
-}									\
-extern type name##Pop(xmlXPathParserContextPtr ctxt) {			\
-    type ret;								\
-    if (ctxt->name##Nr <= 0) return(0);					\
-    ctxt->name##Nr--;							\
-    if (ctxt->name##Nr > 0)						\
-	ctxt->name = ctxt->name##Tab[ctxt->name##Nr - 1];		\
-    else								\
-        ctxt->name = NULL;						\
-    ret = ctxt->name##Tab[ctxt->name##Nr];				\
-    ctxt->name##Tab[ctxt->name##Nr] = 0;				\
-    return(ret);							\
-}									\
-
 /**
  * valuePop:
  * @ctxt: an XPath evaluation context
@@ -926,6 +893,22 @@ extern type name##Pop(xmlXPathParserContextPtr ctxt) {			\
  *
  * Returns the XPath object just removed
  */
+extern xmlXPathObjectPtr
+valuePop(xmlXPathParserContextPtr ctxt)
+{
+    xmlXPathObjectPtr ret;
+
+    if (ctxt->valueNr <= 0)
+        return (0);
+    ctxt->valueNr--;
+    if (ctxt->valueNr > 0)
+        ctxt->value = ctxt->valueTab[ctxt->valueNr - 1];
+    else
+        ctxt->value = NULL;
+    ret = ctxt->valueTab[ctxt->valueNr];
+    ctxt->valueTab[ctxt->valueNr] = 0;
+    return (ret);
+}
 /**
  * valuePush:
  * @ctxt:  an XPath evaluation context
@@ -935,7 +918,24 @@ extern type name##Pop(xmlXPathParserContextPtr ctxt) {			\
  *
  * returns the number of items on the value stack
  */
-PUSH_AND_POP(xmlXPathObjectPtr, value)
+extern int
+valuePush(xmlXPathParserContextPtr ctxt, xmlXPathObjectPtr value)
+{
+    if (ctxt->valueNr >= ctxt->valueMax) {
+        ctxt->valueMax *= 2;
+        ctxt->valueTab =
+            (xmlXPathObjectPtr *) xmlRealloc(ctxt->valueTab,
+                                             ctxt->valueMax *
+                                             sizeof(ctxt->valueTab[0]));
+        if (ctxt->valueTab == NULL) {
+            xmlGenericError(xmlGenericErrorContext, "realloc failed !\n");
+            return (0);
+        }
+    }
+    ctxt->valueTab[ctxt->valueNr] = value;
+    ctxt->value = value;
+    return (ctxt->valueNr++);
+}
 
 /**
  * xmlXPathPopBoolean:

@@ -62,42 +62,59 @@ static void htmlParseComment(htmlParserCtxtPtr ctxt);
  *									*
  ************************************************************************/
 
-/*
- * Generic function for accessing stacks in the Parser Context
+/**
+ * htmlnamePush:
+ * @ctxt:  an HTML parser context
+ * @value:  the element name
+ *
+ * Pushes a new element name on top of the name stack
+ *
+ * Returns 0 in case of error, the index in the stack otherwise
  */
+static int
+htmlnamePush(htmlParserCtxtPtr ctxt, xmlChar * value)
+{
+    if (ctxt->nameNr >= ctxt->nameMax) {
+        ctxt->nameMax *= 2;
+        ctxt->nameTab =
+            (xmlChar * *)xmlRealloc(ctxt->nameTab,
+                                    ctxt->nameMax *
+                                    sizeof(ctxt->nameTab[0]));
+        if (ctxt->nameTab == NULL) {
+            xmlGenericError(xmlGenericErrorContext, "realloc failed !\n");
+            return (0);
+        }
+    }
+    ctxt->nameTab[ctxt->nameNr] = value;
+    ctxt->name = value;
+    return (ctxt->nameNr++);
+}
+/**
+ * htmlnamePop:
+ * @ctxt: an HTML parser context
+ *
+ * Pops the top element name from the name stack
+ *
+ * Returns the name just removed
+ */
+static xmlChar *
+htmlnamePop(htmlParserCtxtPtr ctxt)
+{
+    xmlChar *ret;
 
-#define PUSH_AND_POP(scope, type, name)					\
-scope int html##name##Push(htmlParserCtxtPtr ctxt, type value) {	\
-    if (ctxt->name##Nr >= ctxt->name##Max) {				\
-	ctxt->name##Max *= 2;						\
-        ctxt->name##Tab = (type *) xmlRealloc(ctxt->name##Tab,		\
-	             ctxt->name##Max * sizeof(ctxt->name##Tab[0]));	\
-        if (ctxt->name##Tab == NULL) {					\
-	    xmlGenericError(xmlGenericErrorContext,			\
-		    		"realloc failed !\n");			\
-	    return(0);							\
-	}								\
-    }									\
-    ctxt->name##Tab[ctxt->name##Nr] = value;				\
-    ctxt->name = value;							\
-    return(ctxt->name##Nr++);						\
-}									\
-scope type html##name##Pop(htmlParserCtxtPtr ctxt) {			\
-    type ret;								\
-    if (ctxt->name##Nr <= 0) return(0);					\
-    ctxt->name##Nr--;							\
-    if (ctxt->name##Nr < 0) return(0);					\
-    if (ctxt->name##Nr > 0)						\
-	ctxt->name = ctxt->name##Tab[ctxt->name##Nr - 1];		\
-    else								\
-        ctxt->name = NULL;						\
-    ret = ctxt->name##Tab[ctxt->name##Nr];				\
-    ctxt->name##Tab[ctxt->name##Nr] = 0;				\
-    return(ret);							\
-}									\
-
-/* PUSH_AND_POP(static, xmlNodePtr, node) */
-PUSH_AND_POP(static, xmlChar*, name)
+    if (ctxt->nameNr <= 0)
+        return (0);
+    ctxt->nameNr--;
+    if (ctxt->nameNr < 0)
+        return (0);
+    if (ctxt->nameNr > 0)
+        ctxt->name = ctxt->nameTab[ctxt->nameNr - 1];
+    else
+        ctxt->name = NULL;
+    ret = ctxt->nameTab[ctxt->nameNr];
+    ctxt->nameTab[ctxt->nameNr] = 0;
+    return (ret);
+}
 
 /*
  * Macros for accessing the content. Those should be used only by the parser,

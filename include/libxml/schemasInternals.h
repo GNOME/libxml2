@@ -350,6 +350,7 @@ struct _xmlSchemaAttributeGroup {
     xmlSchemaWildcardPtr attributeWildcard;
     const xmlChar *refPrefix;
     xmlSchemaAttributeGroupPtr refItem; /* The referenced attribute group */
+    const xmlChar *targetNamespace;
 };
 
 /**
@@ -533,6 +534,7 @@ struct _xmlSchemaType {
     const xmlChar *refPrefix;
     xmlSchemaTypePtr contentTypeDef;
     xmlRegexpPtr contModel;
+    const xmlChar *targetNamespace;
 };
 
 /*
@@ -730,6 +732,7 @@ struct _xmlSchemaNotation {
     const xmlChar *name;
     xmlSchemaAnnotPtr annot;
     const xmlChar *identifier;
+    const xmlChar *targetNamespace;
 };
 
 /**

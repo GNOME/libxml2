@@ -1127,9 +1127,9 @@ xmlSchemaVComplexTypeElemErr(xmlSchemaValidCtxtPtr ctxt,
     */
     if (nbval + nbneg > 0) {
 	if (nbval + nbneg > 1) {
-	    str = xmlStrdup(BAD_CAST ". Expected is one of ");
+	    str = xmlStrdup(BAD_CAST ". Expected is one of ( ");
 	} else
-	    str = xmlStrdup(BAD_CAST ". Expected is ");
+	    str = xmlStrdup(BAD_CAST ". Expected is ( ");
 	nsName = NULL;
     	    
 	for (i = 0; i < nbval + nbneg; i++) {
@@ -1146,9 +1146,7 @@ xmlSchemaVComplexTypeElemErr(xmlSchemaValidCtxtPtr ctxt,
 	    } else {
 		while ((*end != 0) && (*end != '|'))
 		    end++;
-		localName = xmlStrcat(localName, BAD_CAST "'");
 		localName = xmlStrncat(localName, BAD_CAST cur, end - cur);
-		localName = xmlStrcat(localName, BAD_CAST "'");
 	    }		
 	    if (*end != 0) {		    
 		*end++;
@@ -1187,7 +1185,8 @@ xmlSchemaVComplexTypeElemErr(xmlSchemaValidCtxtPtr ctxt,
 		
 	    if (i < nbval + nbneg -1)
 		str = xmlStrcat(str, BAD_CAST ", ");
-	}	    
+	}	
+	str = xmlStrcat(str, BAD_CAST " )");
 	msg = xmlStrcat(msg, BAD_CAST str);
 	FREE_AND_NULL(str)
     }    
@@ -3162,9 +3161,9 @@ xmlSchemaAddAttribute(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     }
     memset(ret, 0, sizeof(xmlSchemaAttribute));
     ret->name = xmlDictLookup(ctxt->dict, name, -1);
-    ret->targetNamespace = xmlDictLookup(ctxt->dict, namespace, -1);
+    ret->targetNamespace = namespace;
     val = xmlHashAddEntry3(schema->attrDecl, name,
-                           schema->targetNamespace, ctxt->container, ret);
+                           namespace, ctxt->container, ret);
     if (val != 0) {
 	xmlSchemaPCustomErr(ctxt,
 	    XML_SCHEMAP_REDEFINED_ATTR,
@@ -3269,7 +3268,6 @@ xmlSchemaAddElement(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     }
     memset(ret, 0, sizeof(xmlSchemaElement));
     ret->name = xmlDictLookup(ctxt->dict, name, -1);
-    ret->targetNamespace = xmlDictLookup(ctxt->dict, namespace, -1);
     val = xmlHashAddEntry3(schema->elemDecl, name,
                            namespace, ctxt->container, ret);
     if (val != 0) {
@@ -3394,7 +3392,8 @@ xmlSchemaAddType(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
  */
 static xmlSchemaTypePtr
 xmlSchemaAddGroup(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
-                  const xmlChar * name, xmlNodePtr node)
+                  const xmlChar *name, const xmlChar *namespaceName,
+		  xmlNodePtr node)
 {
     xmlSchemaTypePtr ret = NULL;
     int val;
@@ -3415,7 +3414,7 @@ xmlSchemaAddGroup(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     memset(ret, 0, sizeof(xmlSchemaType));
     ret->name = xmlDictLookup(ctxt->dict, name, -1);
     val =
-        xmlHashAddEntry2(schema->groupDecl, name, schema->targetNamespace,
+        xmlHashAddEntry2(schema->groupDecl, name, namespaceName,
                          ret);
     if (val != 0) {
 	xmlSchemaPCustomErr(ctxt,
@@ -4650,6 +4649,9 @@ xmlSchemaParseAny(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     type->node = node;
     type->type = XML_SCHEMA_TYPE_ANY;    
     
+    /*
+    * TODO: Use a particle component here.
+    */
     wildc = xmlSchemaAddWildcard(ctxt);
     /*
     * Check min/max sanity.
@@ -4709,6 +4711,7 @@ xmlSchemaParseNotation(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     if (ret == NULL) {
         return (NULL);
     }
+    ret->targetNamespace = schema->targetNamespace;
     child = node->children;
     if (IS_SCHEMA(child, "annotation")) {
         ret->annot = xmlSchemaParseAnnotation(ctxt, schema, child);
@@ -4972,7 +4975,7 @@ xmlSchemaParseAttribute(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	    return (NULL);
 	}
 	ret->type = XML_SCHEMA_TYPE_ATTRIBUTE;
-	ret->node = node;				
+	ret->node = node;	
 	if (topLevel)
 	    ret->flags |= XML_SCHEMAS_ATTR_GLOBAL;
 	/* 
@@ -5178,6 +5181,7 @@ xmlSchemaParseAttributeGroup(xmlSchemaParserCtxtPtr ctxt,
 	ret->type = XML_SCHEMA_TYPE_ATTRIBUTEGROUP;
 	ret->flags |= XML_SCHEMAS_ATTRGROUP_GLOBAL;
 	ret->node = node;
+	ret->targetNamespace = schema->targetNamespace;
     } else {    
 	char buf[50];
 	const xmlChar *refNs = NULL, *ref = NULL, *refPrefix;
@@ -5209,7 +5213,7 @@ xmlSchemaParseAttributeGroup(xmlSchemaParserCtxtPtr ctxt,
 	/* TODO: Is @refPrefix currently used? */
 	ret->refPrefix = refPrefix;
 	ret->node = node;
-    }
+    }    
     /*
     * Check for illegal attributes.
     */
@@ -5549,7 +5553,8 @@ xmlSchemaParseElement(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	    return (NULL);
 	}
 	ret->type = XML_SCHEMA_TYPE_ELEMENT;
-	ret->node = node;					
+	ret->node = node;
+	ret->targetNamespace = ns;
 	/* 
 	* Check for illegal attributes.
 	*/
@@ -6068,7 +6073,8 @@ xmlSchemaParseSimpleType(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 		    attrValue, NULL, NULL, NULL);
 	    }
 	}
-    }    
+    }   
+    type->targetNamespace = schema->targetNamespace;
     /* TODO: Check id. */    
     type->id = xmlSchemaGetProp(ctxt, node, "id");
     /*
@@ -6129,9 +6135,9 @@ xmlSchemaParseGroup(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 {
     xmlSchemaTypePtr type, subtype;
     xmlNodePtr child = NULL;
-    const xmlChar *name;
+    const xmlChar *name, *ns = NULL;
     const xmlChar *ref = NULL, *refNs = NULL;
-    char buf[100];
+    char buf[50];
     int minOccurs, maxOccurs;
 
     if ((ctxt == NULL) || (schema == NULL) || (node == NULL))
@@ -6145,6 +6151,8 @@ xmlSchemaParseGroup(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     if ((minOccurs == 0) && (maxOccurs == 0)) {
 	return (NULL);
     }
+    if (topLevel)
+	ns = schema->targetNamespace;
     name = xmlSchemaGetProp(ctxt, node, "name");
     if (name == NULL) {
         ref = xmlGetQNameProp(ctxt, node, "ref", &refNs);
@@ -6157,16 +6165,16 @@ xmlSchemaParseGroup(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
         }
 	if (refNs == NULL)
 	    refNs = schema->targetNamespace;
-        snprintf(buf, 99, "anongroup %d", ctxt->counter++ + 1);
+        snprintf(buf, 49, "#GrRef %d", ctxt->counter++ + 1);
         name = (const xmlChar *) buf;
     }
-    type = xmlSchemaAddGroup(ctxt, schema, name, node);
+    type = xmlSchemaAddGroup(ctxt, schema, name, ns, node);
     if (type == NULL)
         return (NULL);
     type->node = node;
     type->type = XML_SCHEMA_TYPE_GROUP;
-    if (topLevel) 
-        type->flags |= XML_SCHEMAS_TYPE_GLOBAL;
+    if (topLevel)
+        type->flags |= XML_SCHEMAS_TYPE_GLOBAL;    
     type->id = xmlSchemaGetProp(ctxt, node, "id");
     type->ref = ref;
     type->refNs = refNs;
@@ -7995,7 +8003,8 @@ xmlSchemaParseComplexType(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	*/
 	type->flags |= XML_SCHEMAS_TYPE_FINAL_DEFAULT;
 	type->flags |= XML_SCHEMAS_TYPE_BLOCK_DEFAULT;
-    } 
+    }
+    type->targetNamespace = schema->targetNamespace;
     /*
     * Handle attributes.
     */
@@ -14820,7 +14829,7 @@ xmlSchemaValidateSimpleTypeValue(xmlSchemaValidCtxtPtr ctxt,
 	* of white space separated tokens, each of which ·match·es a literal 
 	* in the ·lexical space· of {item type definition} 
 	*/
-
+	
 	if (value == NULL)
 	    value = BAD_CAST "";
 	tmpType = xmlSchemaGetListSimpleTypeItemType(type);	

@@ -1,3 +1,15 @@
+Thu Jan 13 17:42:55 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* include/libxml/schemasInternals.h xmlschemas.c: 
+	  Exposed targetNamespace for simple/complex types, model groups,
+	  attribute groups and notations (reported by Michael Hewarth 
+	  to the mailing list). Added targetNamespace to xmlSchemaType, 
+	  xmlSchemaAttributeGroup and xmlSchemaNotation.
+	  Tiny cosmetic change to the content model error report output.
+	* result//all_*.err result//any3_0_0.err result//choice_*.err 
+	  result//list0_0_1.err result//list0_1_1.err: Adapted output 
+	  of regression tests.
+
 Thu Jan 13 13:20:51 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: Put the fix of Daniel (from Tue Jan 11 14:41:47 CET)

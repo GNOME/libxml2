@@ -567,7 +567,7 @@ xmlDebugDumpOneNode(FILE * output, xmlNodePtr node, int depth)
             break;
         case XML_TEXT_NODE:
             fprintf(output, shift);
-	    if (node->name == xmlStringTextNoenc)
+	    if (node->name == (const xmlChar *) xmlStringTextNoenc)
 		fprintf(output, "TEXT no enc\n");
 	    else
 		fprintf(output, "TEXT\n");

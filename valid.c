@@ -70,7 +70,7 @@ scope type name##VPop(xmlValidCtxtPtr ctxt) {				\
 }									\
 
 /*
- * I will use a home made algorithm less complex and easier to
+ * I use a home made algorithm less complex and easier to
  * debug/maintin than a generic NFA -> DFA state based algo. The
  * only restriction is on the deepness of the tree limited by the
  * size of the occurs bitfield
@@ -81,7 +81,7 @@ scope type name##VPop(xmlValidCtxtPtr ctxt) {				\
 #define ROLLBACK_OR	0
 #define ROLLBACK_PARENT	1
 
-struct _xmlValidState {
+typedef struct _xmlValidState {
     xmlElementContentPtr cont;	/* pointer to the content model subtree */
     xmlNodePtr           node;	/* pointer to the current node in the list */
     long                 occurs;/* bitfield for multiple occurences */

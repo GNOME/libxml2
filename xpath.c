@@ -1176,7 +1176,7 @@ xmlXPathFormatNumber(double number, char buffer[], int buffersize)
  ************************************************************************/
 
 
-const char *xmlXPathErrorMessages[] = {
+static const char *xmlXPathErrorMessages[] = {
     "Ok",
     "Number encoding",
     "Unfinished litteral",
@@ -3830,7 +3830,6 @@ xmlXPathCompareNodeSetValue(xmlXPathParserContextPtr ctxt, int inf, int strict,
 	    return(xmlXPathCompareValues(ctxt, inf, strict));
 	default:
 	    TODO
-	    return(0);
     }
     return(0);
 }
@@ -9280,7 +9279,6 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                                         "xmlXPathRunEval: function %s not found\n",
                                         op->value4);
                         XP_ERROR0(XPATH_UNKNOWN_FUNC_ERROR);
-                        return (total);
                     }
                     op->cache = (void *) func;
                     op->cacheURI = (void *) URI;

@@ -38,7 +38,7 @@ static struct xmlPredefinedEntityValue xmlPredefinedEntityValues[] = {
  * TODO: This is GROSS, allocation of a 256 entry hash for
  *       a fixed number of 4 elements !
  */
-xmlHashTablePtr xmlPredefinedEntities = NULL;
+static xmlHashTablePtr xmlPredefinedEntities = NULL;
 
 /*
  * xmlFreeEntity : clean-up an entity record.

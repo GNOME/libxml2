@@ -74,8 +74,6 @@
 #define SOCKET int
 #endif
 
-static char hostname[100];
-
 #define FTP_COMMAND_OK		200
 #define FTP_SYNTAX_ERROR	500
 #define FTP_GET_PASSWD		331
@@ -99,6 +97,7 @@ typedef struct xmlNanoFTPCtxt {
     int controlBufIndex;
     int controlBufUsed;
     int controlBufAnswer;
+    char localhostname[100];
 } xmlNanoFTPCtxt, *xmlNanoFTPCtxtPtr;
 
 static int initialized = 0;
@@ -130,8 +129,6 @@ xmlNanoFTPInit(void) {
     if (WSAStartup(MAKEWORD(1, 1), &wsaData) != 0)
 	return;
 #endif
-
-    gethostname(hostname, sizeof(hostname));
 
     proxyPort = 21;
     env = getenv("no_proxy");
@@ -177,7 +174,6 @@ xmlNanoFTPCleanup(void) {
 	xmlFree(proxyPasswd);
 	proxyPasswd = NULL;
     }
-    hostname[0] = 0;
 #ifdef _WINSOCKAPI_
     if (initialized)
 	WSACleanup();
@@ -480,6 +476,7 @@ xmlNanoFTPNewCtxt(const char *URL) {
     ret->returnValue = 0;
     ret->controlBufIndex = 0;
     ret->controlBufUsed = 0;
+    gethostname(ret->localhostname, sizeof(ret->localhostname));
 
     if (URL != NULL)
 	xmlNanoFTPScanURL(ret, URL);
@@ -778,7 +775,7 @@ xmlNanoFTPSendPasswd(void *ctx) {
     int res;
 
     if (ctxt->passwd == NULL)
-	snprintf(buf, sizeof(buf), "PASS libxml@%s\r\n", hostname);
+	snprintf(buf, sizeof(buf), "PASS libxml@%s\r\n", ctxt->localhostname);
     else
 	snprintf(buf, sizeof(buf), "PASS %s\r\n", ctxt->passwd);
     buf[sizeof(buf) - 1] = 0;
@@ -951,7 +948,7 @@ xmlNanoFTPConnect(void *ctx) {
 			snprintf(buf, sizeof(buf), "PASS %s\r\n", proxyPasswd);
 		    else
 			snprintf(buf, sizeof(buf), "PASS libxml@%s\r\n",
-			               hostname);
+			               ctxt->localhostname);
                     buf[sizeof(buf) - 1] = 0;
                     len = strlen(buf);
 #ifdef DEBUG_FTP
@@ -1040,7 +1037,8 @@ xmlNanoFTPConnect(void *ctx) {
 		    return(0);
 		}    
 		if (ctxt->passwd == NULL)
-		    snprintf(buf, sizeof(buf), "PASS libxml@%s\r\n", hostname);
+		    snprintf(buf, sizeof(buf), "PASS libxml@%s\r\n", 
+			     ctxt->localhostname);
 		else
 		    snprintf(buf, sizeof(buf), "PASS %s\r\n", ctxt->passwd);
                 buf[sizeof(buf) - 1] = 0;

@@ -2607,7 +2607,7 @@ xmlACatalogResolveURI(xmlCatalogPtr catal, const xmlChar *URI) {
     if ((URI == NULL) || (catal == NULL))
 	return(NULL);
 
-    if (catal->type == XML_XML_CATALOG_TYPE)
+    if (xmlDebugCatalogs)
 	xmlGenericError(xmlGenericErrorContext,
 		"Resolve URI %s\n", URI);
 
@@ -2734,7 +2734,7 @@ xmlInitializeCatalog(void) {
 	const char *catalogs;
 	xmlCatalogPtr catal;
 
-	catalogs = getenv("XML_CATALOG_FILES");
+	catalogs = (const char *) getenv("XML_CATALOG_FILES");
 	if (catalogs == NULL)
 	    catalogs = XML_XML_DEFAULT_CATALOG;
 

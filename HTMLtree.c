@@ -451,8 +451,8 @@ htmlNodeDumpFormat(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
     }
     if (cur->type == HTML_TEXT_NODE) {
 	if (cur->content != NULL) {
-	    if (((cur->name == xmlStringText) ||
-		 (cur->name != xmlStringTextNoenc)) &&
+	    if (((cur->name == (const xmlChar *)xmlStringText) ||
+		 (cur->name != (const xmlChar *)xmlStringTextNoenc)) &&
 		((cur->parent == NULL) ||
 		 (!xmlStrEqual(cur->parent->name, BAD_CAST "script")))) {
 		xmlChar *buffer;
@@ -949,8 +949,8 @@ htmlNodeDumpFormatOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
     }
     if (cur->type == HTML_TEXT_NODE) {
 	if (cur->content != NULL) {
-	    if (((cur->name == xmlStringText) ||
-		 (cur->name != xmlStringTextNoenc)) &&
+	    if (((cur->name == (const xmlChar *)xmlStringText) ||
+		 (cur->name != (const xmlChar *)xmlStringTextNoenc)) &&
 		((cur->parent == NULL) ||
 		 (!xmlStrEqual(cur->parent->name, BAD_CAST "script")))) {
 		xmlChar *buffer;

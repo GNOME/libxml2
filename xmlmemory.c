@@ -94,9 +94,9 @@ typedef struct memnod {
 static unsigned long  debugMemSize = 0;
 static unsigned long  debugMaxMemSize = 0;
 static int block=0;
-int xmlMemStopAtBlock = 0;
-void *xmlMemTraceBlockAt = NULL;
-int xmlMemInitialized = 0;
+static int xmlMemStopAtBlock = 0;
+static void *xmlMemTraceBlockAt = NULL;
+static int xmlMemInitialized = 0;
 #ifdef MEM_LIST
 static MEMHDR *memlist = NULL;
 #endif
@@ -625,7 +625,7 @@ void debugmem_tag_error(void *p)
 #endif
 }
 
-FILE *xmlMemoryDumpFile = NULL;
+static FILE *xmlMemoryDumpFile = NULL;
 
 
 /**

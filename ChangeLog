@@ -1,3 +1,11 @@
+Fri Oct 12 00:53:03 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLtree.c catalog.c debugXML.c entities.c nanoftp.c
+	  parser.c valid.c xmlmemory.c xpath.c xpointer.c: started
+	  integrating the non-controversial parts of Gary Pennington
+	  multithread patches
+	* catalog.c: corrected a small bug introduced
+
 Thu Oct 11 20:58:15 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* catalog.c include/libxml/catalog.h: very serious cleanup,

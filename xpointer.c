@@ -2027,7 +2027,7 @@ xmlXPtrInsideRange(xmlXPathParserContextPtr ctxt, xmlXPathObjectPtr loc) {
 					   xmlXPtrGetArity(node)));
 		}
 		default:
-		    return(NULL);
+		    break;
 	    }
 	    return(NULL);
 	}
@@ -2064,7 +2064,7 @@ xmlXPtrInsideRange(xmlXPathParserContextPtr ctxt, xmlXPathObjectPtr loc) {
 					       xmlXPtrGetArity(node)));
 		    }
 		    default:
-			return(NULL);
+			break;
 		}
 		return(NULL);
 	    }
@@ -2629,7 +2629,7 @@ xmlXPtrGetStartPoint(xmlXPathObjectPtr obj, xmlNodePtr *node, int *indx) {
 		*indx = obj->index;
 	    return(0);
 	default:
-	    return(-1);
+	    break;
     }
     return(-1);
 }
@@ -2665,7 +2665,7 @@ xmlXPtrGetEndPoint(xmlXPathObjectPtr obj, xmlNodePtr *node, int *indx) {
 		*indx = obj->index;
 	    return(0);
 	default:
-	    return(-1);
+	    break;
     }
     return(-1);
 }

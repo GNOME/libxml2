@@ -1001,12 +1001,9 @@ xmlSchemaTypeDump(xmlSchemaTypePtr type, FILE * output)
         case XML_SCHEMA_CONTENT_MIXED:
             fprintf(output, "mixed ");
             break;
-	/* Removed, since not used. */
-	/*
         case XML_SCHEMA_CONTENT_MIXED_OR_ELEMENTS:
-            fprintf(output, "mixed_or_elems ");
+	/* not used. */
             break;
-	*/
         case XML_SCHEMA_CONTENT_BASIC:
             fprintf(output, "basic ");
             break;
@@ -1084,7 +1081,7 @@ xmlSchemaDump(FILE * output, xmlSchemaPtr schema)
  *									*
  ************************************************************************/
 
-xmlAttrPtr
+static xmlAttrPtr
 xmlSchemaGetPropNode(xmlNodePtr node, const xmlChar *name) 
 {
     xmlAttrPtr prop;
@@ -1804,174 +1801,6 @@ xmlSchemaAddType(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 }
 
 /**
- * xmlSchemaNewItemInternal:
- * @ctxt:  the schema parser context
- * @name:  the internal name of the restriction
- *
- * Createa an schema item
- *
- * Returns the new structure or NULL in case of an error.
- */
-static xmlSchemaTypePtr
-xmlSchemaNewItemInternal(xmlSchemaParserCtxtPtr ctxt,
-                 const xmlChar * name)
-{
-    xmlSchemaTypePtr ret = NULL;
-
-    if ((ctxt == NULL) || (name == NULL))
-        return (NULL);
-
-#ifdef DEBUG
-    fprintf(stderr, "Creating item %s\n", name);
-#endif
-    ret = (xmlSchemaTypePtr) xmlMalloc(sizeof(xmlSchemaType));
-    if (ret == NULL) {
-        xmlSchemaPErrMemory(ctxt, "allocating item", NULL);
-        return (NULL);
-    }
-    memset(ret, 0, sizeof(xmlSchemaType));   
-    ret->name = xmlDictLookup(ctxt->dict, name, -1);
-    ret->minOccurs = 1;
-    ret->maxOccurs = 1;
-
-    return (ret);
-}
-
-/**
- * xmlSchemaNewRestriction:
- * @ctxt:  the schema parser context
- * @name:  the internal name of the restriction
- *
- * Create a <restriction> item 
- *
- * Returns the new structure or NULL in case of an error.
- */
-static xmlSchemaTypePtr
-xmlSchemaNewRestriction(xmlSchemaParserCtxtPtr ctxt,
-                 const xmlChar * name)
-{
-    xmlSchemaTypePtr ret;
-
-    ret = xmlSchemaNewItemInternal(ctxt, name);
-    if (ret != NULL) 
-	ret->type = XML_SCHEMA_TYPE_RESTRICTION;
-
-    return (ret);
-}
-
-/**
- * xmlSchemaNewExtension:
- * @ctxt:  the schema parser context
- * @name:  the internal name of the extension
- *
- * Create an <extension> item 
- *
- * Returns the new structure or NULL in case of an error.
- */
-static xmlSchemaTypePtr
-xmlSchemaNewExtension(xmlSchemaParserCtxtPtr ctxt,
-                 const xmlChar * name)
-{
-    xmlSchemaTypePtr ret;
-
-    ret = xmlSchemaNewItemInternal(ctxt, name);
-    if (ret != NULL) 
-	ret->type = XML_SCHEMA_TYPE_EXTENSION;
-
-    return (ret);
-}
-
-/**
- * xmlSchemaNewSimpleContent:
- * @ctxt:  the schema parser context
- * @name:  the internal name of the simpleContent
- *
- * Create a <simpleContent> item 
- *
- * Returns the new structure or NULL in case of an error.
- */
-static xmlSchemaTypePtr
-xmlSchemaNewSimpleContent(xmlSchemaParserCtxtPtr ctxt,
-                 const xmlChar * name)
-{
-    xmlSchemaTypePtr ret;
-
-    ret = xmlSchemaNewItemInternal(ctxt, name);
-    if (ret != NULL) 
-	ret->type = XML_SCHEMA_TYPE_SIMPLE_CONTENT;
-
-    return (ret);
-}
-
-/**
- * xmlSchemaNewComplexContent:
- * @ctxt:  the schema parser context
- * @name:  the internal name of the complexContent
- *
- * Create a <complexContent> item 
- *
- * Returns the new structure or NULL in case of an error.
- */
-static xmlSchemaTypePtr
-xmlSchemaNewComplexContent(xmlSchemaParserCtxtPtr ctxt,
-                 const xmlChar * name)
-{
-    xmlSchemaTypePtr ret;
-
-    ret = xmlSchemaNewItemInternal(ctxt, name);
-    if (ret != NULL) 
-	ret->type = XML_SCHEMA_TYPE_COMPLEX_CONTENT;
-
-    return (ret);
-}
-
-/**
- * xmlSchemaNewUnion:
- * @ctxt:  the schema parser context
- * @name:  the internal name of the union
- *
- * Create an <union> item
- * *WARNING* this interface is highly subject to change
- *
- * Returns the new structure or NULL in case of an error.
- */
-static xmlSchemaTypePtr
-xmlSchemaNewUnion(xmlSchemaParserCtxtPtr ctxt,
-                 const xmlChar * name)
-{
-    xmlSchemaTypePtr ret;
-
-    ret = xmlSchemaNewItemInternal(ctxt, name);
-    if (ret != NULL) 
-	ret->type = XML_SCHEMA_TYPE_UNION;
-
-    return (ret);
-}
-
-/**
- * xmlSchemaNewList:
- * @ctxt:  the schema parser context
- * @name:  the internal name of the union
- *
- * Create an <union> item
- * *WARNING* this interface is highly subject to change
- *
- * Returns the new structure or NULL in case of an error.
- */
-static xmlSchemaTypePtr
-xmlSchemaNewList(xmlSchemaParserCtxtPtr ctxt,
-                 const xmlChar * name)
-{
-    xmlSchemaTypePtr ret;
-
-    ret = xmlSchemaNewItemInternal(ctxt, name);
-    if (ret != NULL) 
-	ret->type = XML_SCHEMA_TYPE_LIST;
-
-    return (ret);
-}
-
-/**
  * xmlSchemaAddGroup:
  * @ctxt:  a schema validation context
  * @schema:  the schema being built
@@ -2258,8 +2087,7 @@ static xmlSchemaTypePtr xmlSchemaParseComplexType(xmlSchemaParserCtxtPtr
 static xmlSchemaTypePtr xmlSchemaParseRestriction(xmlSchemaParserCtxtPtr
                                                   ctxt,
                                                   xmlSchemaPtr schema,
-                                                  xmlNodePtr node,
-                                                  int simple);
+                                                  xmlNodePtr node);
 static xmlSchemaTypePtr xmlSchemaParseSequence(xmlSchemaParserCtxtPtr ctxt,
                                                xmlSchemaPtr schema,
                                                xmlNodePtr node);
@@ -2318,7 +2146,6 @@ xmlSchemaParseSchemaAttrValue(xmlSchemaParserCtxtPtr ctxt,
 	case XML_SCHEMAS_QNAME:
 	    ret = xmlValidateQName(value, 1);
 	    if ((ret == 0) && (attr != NULL)) {
-		xmlChar *uri = NULL;
                 xmlChar *local = NULL;
 		xmlChar *prefix;
 		
@@ -3400,7 +3227,7 @@ xmlSchemaParseList(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     /*
     * Check type of "itemType". 
     */
-    attr = xmlSchemaGetPropNode(node, "itemType");
+    attr = xmlSchemaGetPropNode(node, BAD_CAST "itemType");
     if (attr != NULL) {
 	type->base = xmlGetQNameProp(ctxt, node, "itemType", &(type->baseNs));
 	xmlSchemaParseSchemaAttrValue(ctxt, attr, 
@@ -3536,7 +3363,7 @@ xmlSchemaParseSimpleType(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     ctxt->parentItem = type;
     if (IS_SCHEMA(child, "restriction")) {
         subtype = (xmlSchemaTypePtr)
-            xmlSchemaParseRestriction(ctxt, schema, child, 1);
+            xmlSchemaParseRestriction(ctxt, schema, child);
         child = child->next;
     } else if (IS_SCHEMA(child, "list")) {
         subtype = (xmlSchemaTypePtr)
@@ -4431,7 +4258,6 @@ xmlSchemaParseSequence(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
  * @ctxt:  a schema validation context
  * @schema:  the schema being built
  * @node:  a subtree containing XML Schema informations
- * @simple:  is that part of a simple type.
  *
  * parse a XML schema Restriction definition
  * *WARNING* this interface is highly subject to change
@@ -4440,7 +4266,7 @@ xmlSchemaParseSequence(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
  */
 static xmlSchemaTypePtr
 xmlSchemaParseRestriction(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
-                          xmlNodePtr node, int simple)
+                          xmlNodePtr node)
 {
     xmlSchemaTypePtr type, subtype;    
     xmlNodePtr child = NULL;
@@ -4692,7 +4518,7 @@ xmlSchemaParseSimpleContent(xmlSchemaParserCtxtPtr ctxt,
     subtype = NULL;    
     if (IS_SCHEMA(child, "restriction")) {
         subtype = (xmlSchemaTypePtr)
-            xmlSchemaParseRestriction(ctxt, schema, child, 0);
+            xmlSchemaParseRestriction(ctxt, schema, child);
         child = child->next;
     } else if (IS_SCHEMA(child, "extension")) {
         subtype = (xmlSchemaTypePtr)
@@ -4748,7 +4574,7 @@ xmlSchemaParseComplexContent(xmlSchemaParserCtxtPtr ctxt,
     subtype = NULL;
     if (IS_SCHEMA(child, "restriction")) {
         subtype = (xmlSchemaTypePtr)
-            xmlSchemaParseRestriction(ctxt, schema, child, 0);
+            xmlSchemaParseRestriction(ctxt, schema, child);
         child = child->next;
     } else if (IS_SCHEMA(child, "extension")) {
         subtype = (xmlSchemaTypePtr)
@@ -6720,183 +6546,157 @@ xmlSchemaBuildAttributeValidation(xmlSchemaParserCtxtPtr ctxt, xmlSchemaTypePtr 
 		      type->name, NULL);
         return (-1);
     }
-    if ((type->flags & XML_SCHEMAS_TYPE_DERIVATION_METHOD_EXTENSION) || 
-	(type->flags & XML_SCHEMAS_TYPE_DERIVATION_METHOD_RESTRICTION)) {	
-		
-	baseType = type->baseType;
-	if (baseType == NULL) {
-	    xmlSchemaPErr(ctxt, type->node, XML_SCHEMAS_ERR_INTERNAL,
-		"Internal error: xmlSchemaBuildAttributeValidation: "
-		"type has no base type.\n",
-		NULL, NULL);
-	    return (-1);
-	}
 
-	if (baseType == anyType)
-	    baseIsAnyType = 1;
-	/*
-	 * Inherit the attribute uses of the base type.
-	 */
-	/*
-	 * NOTE: It is allowed to "extend" the anyType complex type.
-	 */
-	if (!baseIsAnyType) {
-	    if (baseType != NULL) {
-		for (cur = baseType->attributeUses; cur != NULL; cur = cur->next) {
-		    tmp = (xmlSchemaAttributeLinkPtr) 
-			xmlMalloc(sizeof(xmlSchemaAttributeLink));
-		    if (tmp == NULL) {
-			xmlSchemaPErrMemory(ctxt, 
-			    "building attribute uses of complexType", NULL);
-			return (-1);
-		    }
-		    tmp->attr = cur->attr;
-		    tmp->next = NULL;
-		    if (type->attributeUses == NULL) {
-			type->attributeUses = tmp;
-		    } else 
-			lastBaseUse->next = tmp;
-		    lastBaseUse = tmp; 
+    baseType = type->baseType;
+    if (baseType == NULL) {
+	xmlSchemaPErr(ctxt, type->node, XML_SCHEMAS_ERR_INTERNAL,
+	    "Internal error: xmlSchemaBuildAttributeValidation: "
+	    "type has no base type.\n",
+	    NULL, NULL);
+	return (-1);
+    }
+
+    if (baseType == anyType)
+	baseIsAnyType = 1;
+    /*
+     * Inherit the attribute uses of the base type.
+     */
+    /*
+     * NOTE: It is allowed to "extend" the anyType complex type.
+     */
+    if (!baseIsAnyType) {
+	if (baseType != NULL) {
+	    for (cur = baseType->attributeUses; cur != NULL; cur = cur->next) {
+		tmp = (xmlSchemaAttributeLinkPtr) 
+		    xmlMalloc(sizeof(xmlSchemaAttributeLink));
+		if (tmp == NULL) {
+		    xmlSchemaPErrMemory(ctxt, 
+			"building attribute uses of complexType", NULL);
+		    return (-1);
 		}
+		tmp->attr = cur->attr;
+		tmp->next = NULL;
+		if (type->attributeUses == NULL) {
+		    type->attributeUses = tmp;
+		} else 
+		    lastBaseUse->next = tmp;
+		lastBaseUse = tmp; 
 	    }
 	}
-	if ((type->subtypes != NULL) && 
-	    ((type->subtypes->type == XML_SCHEMA_TYPE_COMPLEX_CONTENT) || 
-	     (type->subtypes->type == XML_SCHEMA_TYPE_SIMPLE_CONTENT))) {
-	    attrs = type->subtypes->subtypes->attributes;
-	    type->attributeWildcard = type->subtypes->subtypes->attributeWildcard;
-	} else {
-	    /* Short hand form of the complexType. */
-	    attrs = type->attributes;
-	}
-	/*
-	* Handle attribute wildcards.
-	*/	
-	if (xmlSchemaBuildCompleteAttributeWildcard(ctxt, 
-	    attrs, &type->attributeWildcard) == -1) {	    
-	    if ((type->attributeWildcard != NULL) &&
-		/* Either we used the short hand form... */
-		((type->subtypes == NULL) ||
-		/* Or complexType -> restriction/extension */
-		(type->attributeWildcard != type->subtypes->subtypes->attributeWildcard)))
-		type->flags |= XML_SCHEMAS_TYPE_OWNED_ATTR_WILDCARD;
-	    return (-1);
-	}
-	/*
-	* TODO: This "onwed_attr_wildcard" is quite sensless: we should
-	* create the wildcard right from the start on the complexType,
-	* rather than on the <restriction>/<extension>.
-	*/
+    }
+    if ((type->subtypes != NULL) && 
+	((type->subtypes->type == XML_SCHEMA_TYPE_COMPLEX_CONTENT) || 
+	 (type->subtypes->type == XML_SCHEMA_TYPE_SIMPLE_CONTENT))) {
+	attrs = type->subtypes->subtypes->attributes;
+	type->attributeWildcard = type->subtypes->subtypes->attributeWildcard;
+    } else {
+	/* Short hand form of the complexType. */
+	attrs = type->attributes;
+    }
+    /*
+    * Handle attribute wildcards.
+    */	
+    if (xmlSchemaBuildCompleteAttributeWildcard(ctxt, 
+	attrs, &type->attributeWildcard) == -1) {	    
 	if ((type->attributeWildcard != NULL) &&
 	    /* Either we used the short hand form... */
 	    ((type->subtypes == NULL) ||
 	    /* Or complexType -> restriction/extension */
 	    (type->attributeWildcard != type->subtypes->subtypes->attributeWildcard)))
 	    type->flags |= XML_SCHEMAS_TYPE_OWNED_ATTR_WILDCARD;
-
-	if ((type->flags & XML_SCHEMAS_TYPE_DERIVATION_METHOD_EXTENSION) && 
-	    ((baseIsAnyType) ||
-	     ((baseType != NULL) && 	    
-	      (baseType->type == XML_SCHEMA_TYPE_COMPLEX) &&	      
-	      (baseType->attributeWildcard != NULL)))) {	    
-	    if (type->attributeWildcard != NULL) {
-		/*
-		* Union the complete wildcard with the base wildcard.
-		*/
-		if (xmlSchemaUnionWildcards(ctxt, type->attributeWildcard, 
-		    baseType->attributeWildcard) == -1)
-		    return (-1);
-	    } else {
-		/*
-		* Just inherit the wildcard.
-		*/
-		type->attributeWildcard = baseType->attributeWildcard;
-	    }
-	}
-	
-	if (type->flags & XML_SCHEMAS_TYPE_DERIVATION_METHOD_RESTRICTION) {
-	    if (type->attributeWildcard != NULL) {
-		/* 
-		* Derivation Valid (Restriction, Complex) 	    
-		* 4.1 The {base type definition} must also have one. 
-		*/
-		if (baseType->attributeWildcard == NULL) {	    
-		    xmlSchemaPErr(ctxt, type->node, XML_SCHEMAP_DERIVATION_OK_RESTRICTION_4_1,
-			"The derived type \"%s\" has an attribute wildcard, "
-			"but the base type \"%s\" does not have one.\n",
-			type->name, baseType->name);
-		    return (1);
-		} else if (xmlSchemaIsWildcardNsConstraintSubset(ctxt, 
-		    type->attributeWildcard, baseType->attributeWildcard) == 0) {
-		    /* 4.2 */
-		    xmlSchemaPErr(ctxt, type->node, XML_SCHEMAP_DERIVATION_OK_RESTRICTION_4_2,
-			"The wildcard in the derived type \"%s\" is not a valid " 
-			"subset of the one in the base type \"%s\".\n",
-			type->name, baseType->name);	    
-		    return (1);
-		}
-		/* 4.3 Unless the {base type definition} is the ·ur-type 
-		* definition·, the complex type definition's {attribute 
-		* wildcard}'s {process contents} must be identical to or 
-		* stronger than the {base type definition}'s {attribute 
-		* wildcard}'s {process contents}, where strict is stronger 
-		* than lax is stronger than skip.
-		*/
-		if ((type->baseType != anyType) && 
-		    (type->attributeWildcard->processContents < 
-		    baseType->attributeWildcard->processContents)) {
-		    xmlSchemaPErr(ctxt, type->node, XML_SCHEMAP_DERIVATION_OK_RESTRICTION_4_3,
-			"The process contents of the wildcard in the "
-			"derived type \"%s\" is weaker than " 
-			"that in the base type \"%s\".\n",
-			type->name, baseType->name);
-		    return (1);
-		}
-	    }
-	} else if (type->flags & XML_SCHEMAS_TYPE_DERIVATION_METHOD_EXTENSION) {
-	    /*
-	    * Derivation Valid (Extension)
-	    * At this point the type and the base have both, either
-	    * no wildcard or a wildcard.
-	    */
-	    if ((baseType->attributeWildcard != NULL) &&
-		(baseType->attributeWildcard != type->attributeWildcard)) {
-		/* 1.3 */
-		if (xmlSchemaIsWildcardNsConstraintSubset(ctxt, 
-		    baseType->attributeWildcard, type->attributeWildcard) == 0) {
-		    xmlSchemaPErr(ctxt, type->node, XML_SCHEMAP_COS_CT_EXTENDS_1_3,
-			"The wildcard in the derived type \"%s\" is not a valid " 
-			"superset of the one in the base type \"%s\".\n",
-			type->name, baseType->name);
-		    return (1);		
-		}
-	    }		
-	}	
-    } 
+	return (-1);
+    }
     /*
-    * Removed, since anyType was plugged into the derivation hierarchy.
+    * TODO: This "onwed_attr_wildcard" is quite sensless: we should
+    * create the wildcard right from the start on the complexType,
+    * rather than on the <restriction>/<extension>.
     */
-    /*
-    else {
-	*
-	 * Although the complexType is implicitely derived by "restriction"
-	 * from the ur-type, this is not (yet?) reflected by libxml2.
-	 *
-	baseType = NULL;
-	attrs = type->attributes;
-	if (attrs != NULL) {
-	    if (xmlSchemaBuildCompleteAttributeWildcard(ctxt, 
-		attrs, &type->attributeWildcard) == -1) {
-		if ((type->attributeWildcard != NULL) &&
-		    (type->attributeWildcard != type->subtypes->subtypes->attributeWildcard))
-		    type->flags |= XML_SCHEMAS_TYPE_OWNED_ATTR_WILDCARD;
-		return (-1);	    
-	    }
-	    if ((type->attributeWildcard != NULL) &&
-		((type->flags & XML_SCHEMAS_TYPE_OWNED_ATTR_WILDCARD) == 0))
-		type->flags |= XML_SCHEMAS_TYPE_OWNED_ATTR_WILDCARD;
+    if ((type->attributeWildcard != NULL) &&
+	/* Either we used the short hand form... */
+	((type->subtypes == NULL) ||
+	/* Or complexType -> restriction/extension */
+	(type->attributeWildcard != type->subtypes->subtypes->attributeWildcard)))
+	type->flags |= XML_SCHEMAS_TYPE_OWNED_ATTR_WILDCARD;
+
+    if ((type->flags & XML_SCHEMAS_TYPE_DERIVATION_METHOD_EXTENSION) && 
+	((baseIsAnyType) ||
+	 ((baseType != NULL) && 	    
+	  (baseType->type == XML_SCHEMA_TYPE_COMPLEX) &&	      
+	  (baseType->attributeWildcard != NULL)))) {	    
+	if (type->attributeWildcard != NULL) {
+	    /*
+	    * Union the complete wildcard with the base wildcard.
+	    */
+	    if (xmlSchemaUnionWildcards(ctxt, type->attributeWildcard, 
+		baseType->attributeWildcard) == -1)
+		return (-1);
+	} else {
+	    /*
+	    * Just inherit the wildcard.
+	    */
+	    type->attributeWildcard = baseType->attributeWildcard;
 	}
-    } */
+    }
+    
+    if (type->flags & XML_SCHEMAS_TYPE_DERIVATION_METHOD_RESTRICTION) {
+	if (type->attributeWildcard != NULL) {
+	    /* 
+	    * Derivation Valid (Restriction, Complex) 	    
+	    * 4.1 The {base type definition} must also have one. 
+	    */
+	    if (baseType->attributeWildcard == NULL) {	    
+		xmlSchemaPErr(ctxt, type->node, XML_SCHEMAP_DERIVATION_OK_RESTRICTION_4_1,
+		    "The derived type \"%s\" has an attribute wildcard, "
+		    "but the base type \"%s\" does not have one.\n",
+		    type->name, baseType->name);
+		return (1);
+	    } else if (xmlSchemaIsWildcardNsConstraintSubset(ctxt, 
+		type->attributeWildcard, baseType->attributeWildcard) == 0) {
+		/* 4.2 */
+		xmlSchemaPErr(ctxt, type->node, XML_SCHEMAP_DERIVATION_OK_RESTRICTION_4_2,
+		    "The wildcard in the derived type \"%s\" is not a valid " 
+		    "subset of the one in the base type \"%s\".\n",
+		    type->name, baseType->name);	    
+		return (1);
+	    }
+	    /* 4.3 Unless the {base type definition} is the ·ur-type 
+	    * definition·, the complex type definition's {attribute 
+	    * wildcard}'s {process contents} must be identical to or 
+	    * stronger than the {base type definition}'s {attribute 
+	    * wildcard}'s {process contents}, where strict is stronger 
+	    * than lax is stronger than skip.
+	    */
+	    if ((type->baseType != anyType) && 
+		(type->attributeWildcard->processContents < 
+		baseType->attributeWildcard->processContents)) {
+		xmlSchemaPErr(ctxt, type->node, XML_SCHEMAP_DERIVATION_OK_RESTRICTION_4_3,
+		    "The process contents of the wildcard in the "
+		    "derived type \"%s\" is weaker than " 
+		    "that in the base type \"%s\".\n",
+		    type->name, baseType->name);
+		return (1);
+	    }
+	}
+    } else if (type->flags & XML_SCHEMAS_TYPE_DERIVATION_METHOD_EXTENSION) {
+	/*
+	* Derivation Valid (Extension)
+	* At this point the type and the base have both, either
+	* no wildcard or a wildcard.
+	*/
+	if ((baseType->attributeWildcard != NULL) &&
+	    (baseType->attributeWildcard != type->attributeWildcard)) {
+	    /* 1.3 */
+	    if (xmlSchemaIsWildcardNsConstraintSubset(ctxt, 
+		baseType->attributeWildcard, type->attributeWildcard) == 0) {
+		xmlSchemaPErr(ctxt, type->node, XML_SCHEMAP_COS_CT_EXTENDS_1_3,
+		    "The wildcard in the derived type \"%s\" is not a valid " 
+		    "superset of the one in the base type \"%s\".\n",
+		    type->name, baseType->name);
+		return (1);		
+	    }
+	}		
+    }	
+
     /*
      * Gather attribute uses defined by this type.
      */
@@ -7183,7 +6983,7 @@ xmlSchemaTypeFinalContains(xmlSchemaPtr schema, xmlSchemaTypePtr type, int final
  * Returns a list of member types of @type if existing, 
  * returns NULL otherwise.
  */
-xmlSchemaTypeLinkPtr
+static xmlSchemaTypeLinkPtr
 xmlSchemaGetUnionSimpleTypeMemberTypes(xmlSchemaTypePtr type)
 {
     while (type != NULL) {
@@ -7505,7 +7305,7 @@ xmlSchemaCheckCOSSTRestricts(xmlSchemaParserCtxtPtr ctxt,
 			"is not allowed on primitive type \"%s\".\n",
 			type->name, 
 			xmlSchemaFacetTypeToString(facet->type),
-			primitive->name, NULL, NULL);
+			BAD_CAST primitive->name, NULL, NULL);
 		    
 		    ok = 0;			    
 		}
@@ -7594,7 +7394,8 @@ xmlSchemaCheckCOSSTRestricts(xmlSchemaParserCtxtPtr ctxt,
 			    XML_SCHEMAP_COS_ST_RESTRICTS_2_3_1_2,
 			    "List simple type \"%s\": the facet \"%s\" "
 			    "is not allowed.\n", 
-			    type->name, xmlSchemaFacetTypeToString(facet->type));
+			    type->name,
+			    BAD_CAST xmlSchemaFacetTypeToString(facet->type));
 			return (XML_SCHEMAP_COS_ST_RESTRICTS_2_3_1_2);
 		    }
 		    facet = facet->next;
@@ -7696,7 +7497,7 @@ xmlSchemaCheckCOSSTRestricts(xmlSchemaParserCtxtPtr ctxt,
 				"List simple type \"%s\": the facet \"%s\" "
 				"is not allowed.\n",
 				type->name, 
-				xmlSchemaFacetTypeToString(facet->type));
+				BAD_CAST xmlSchemaFacetTypeToString(facet->type));
 			    /*
 			    * We could return, but it's nicer to report all 
 			    * invalid facets.
@@ -7876,7 +7677,7 @@ xmlSchemaCheckCOSSTRestricts(xmlSchemaParserCtxtPtr ctxt,
 			    "Union simple type \"%s\": the facet \"%s\" "
 			    "is not allowed.\n",
 			    type->name, 
-			    xmlSchemaFacetTypeToString(facet->type));
+			    BAD_CAST xmlSchemaFacetTypeToString(facet->type));
 			ok = 0;			    
 		    }		    
 		    facet = facet->next;
@@ -8060,6 +7861,8 @@ xmlSchemaTypeFixup(xmlSchemaTypePtr typeDecl,
 	    case XML_SCHEMA_TYPE_RESTRICTION:
 	    case XML_SCHEMA_TYPE_EXTENSION:	    
 		return;
+	    default:
+	        break;
 	}
     }
     if (name == NULL)
@@ -8611,7 +8414,7 @@ xmlSchemaCheckFacet(xmlSchemaFacetPtr facet,
 			    "Type \"%s\": the value \"%s\" of the "
 			    "facet \"%s\" is invalid.\n",
 			    name, facet->value, 
-			    xmlSchemaFacetTypeToString(facet->type), 
+			    BAD_CAST xmlSchemaFacetTypeToString(facet->type), 
 			    NULL, NULL);
                     }
                     ret = -1;
@@ -8694,7 +8497,7 @@ xmlSchemaCheckFacet(xmlSchemaFacetPtr facet,
 			    "Type \"%s\": the value \"%s\" of the "
 			    "facet \"%s\" is invalid.\n",
 			    name, facet->value, 
-			    xmlSchemaFacetTypeToString(facet->type),
+			    BAD_CAST xmlSchemaFacetTypeToString(facet->type),
 			    NULL, NULL);
                     }
                     ret = -1;
@@ -9118,27 +8921,6 @@ xmlSchemaValidateFacetsInternal(xmlSchemaValidCtxtPtr ctxt,
             facetLink = facetLink->next;
     }
     return (ret);
-}
-
-/**
- * xmlSchemaValidateFacets:
- * @ctxt:  a schema validation context
- * @base:  the base type
- * @facets:  the list of facets to check
- * @value:  the lexical repr of the value to validate
- * @val:  the precomputed value
- *
- * Check a value against all facet conditions
- *
- * Returns 0 if the element is schemas valid, a positive error code
- *     number otherwise and -1 in case of internal or API error.
- */
-static int
-xmlSchemaValidateFacets(xmlSchemaValidCtxtPtr ctxt,
-                        xmlSchemaTypePtr base,
-                        xmlSchemaFacetLinkPtr facets, const xmlChar * value)
-{
-    return(xmlSchemaValidateFacetsInternal(ctxt, base, facets, value, 1));
 }
 
 /************************************************************************
@@ -9577,35 +9359,6 @@ xmlSchemaValidateCheckNodeList(xmlNodePtr nodelist)
 }
 
 /**
- * xmlSchemaSkipIgnored:
- * @ctxt:  a schema validation context
- * @type:  the current type context
- * @node:  the top node.
- *
- * Skip ignorable nodes in that context
- *
- * Returns the new sibling
- *     number otherwise and -1 in case of internal or API error.
- */
-static xmlNodePtr
-xmlSchemaSkipIgnored(xmlSchemaValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
-                     xmlSchemaTypePtr type, xmlNodePtr node)
-{
-    /*
-     * TODO complete and handle entities
-     */
-    while ((node != NULL) &&
-           ((node->type == XML_COMMENT_NODE) ||
-            ((type->contentType == XML_SCHEMA_CONTENT_MIXED) && 
-	    (node->type == XML_TEXT_NODE)) ||
-            (((type->contentType == XML_SCHEMA_CONTENT_ELEMENTS) &&
-              (node->type == XML_TEXT_NODE) && (IS_BLANK_NODE(node)))))) {
-        node = node->next;
-    }
-    return (node);
-}
-
-/**
  * xmlSchemaValidateCallback:
  * @ctxt:  a schema validation context
  * @name:  the name of the element detected (might be NULL)
@@ -10013,7 +9766,8 @@ xmlSchemaValidateSimpleTypeValue(xmlSchemaValidCtxtPtr ctxt,
 		type->name, NULL);
 	} else if ((ret == 0) && (applyFacets) && 
 	    (type->facetSet != NULL)) {
-	    int expLen, okFacet = 0, hasFacet = 0;
+	    int okFacet = 0, hasFacet = 0;
+	    unsigned long expLen;
 	    xmlSchemaFacetPtr facet;
 	    xmlSchemaFacetLinkPtr facetLink;
 	    xmlChar *collapsedValue = NULL;
@@ -10045,7 +9799,7 @@ xmlSchemaValidateSimpleTypeValue(xmlSchemaValidCtxtPtr ctxt,
 			* length value?
 			*/
 			snprintf(l, 24, "%d", len);
-			snprintf(fl, 24, "%d", expLen);
+			snprintf(fl, 24, "%lu", expLen);
 			if (ret == XML_SCHEMAV_CVC_LENGTH_VALID) {
 			    xmlSchemaVErr(ctxt, ctxt->cur, ret,
 				"The value with length \"%s\" is not "

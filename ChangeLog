@@ -1,3 +1,7 @@
+Tue Jun 29 15:00:13 PDT 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemas.c: more fixes with Kasimier, looks far cleaner :-)
+
 Tue Jun 29 23:00:05 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemas.c: Kasimier Buchcik fixed the memory access and

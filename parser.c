@@ -392,12 +392,12 @@ static void
 xmlWarningMsg(xmlParserCtxtPtr ctxt, xmlParserErrors error,
               const char *msg, const xmlChar *str1, const xmlChar *str2)
 {
-    xmlStructuredErrorFunc schannel = NULL
+    xmlStructuredErrorFunc schannel = NULL;
     
     ctxt->errNo = error;
     if ((ctxt->sax != NULL) && (ctxt->sax->initialized == XML_SAX2_MAGIC))
-        schannel = ctxt->sax->serror
-    __xmlRaiseError(schannel
+        schannel = ctxt->sax->serror;
+    __xmlRaiseError(schannel,
                     (ctxt->sax) ? ctxt->sax->warning : NULL,
                     ctxt->userData,
                     ctxt, NULL, XML_FROM_PARSER, error,
@@ -419,10 +419,10 @@ static void
 xmlValidityError(xmlParserCtxtPtr ctxt, xmlParserErrors error,
               const char *msg, const xmlChar *str1)
 {
-    xmlStructuredErrorFunc schannel = NULL
+    xmlStructuredErrorFunc schannel = NULL;
     ctxt->errNo = error;
     if ((ctxt->sax != NULL) && (ctxt->sax->initialized == XML_SAX2_MAGIC))
-        schannel = ctxt->sax->serror
+        schannel = ctxt->sax->serror;
     __xmlRaiseError(schannel,
                     ctxt->vctxt.error, ctxt->vctxt.userData,
                     ctxt, NULL, XML_FROM_DTD, error,

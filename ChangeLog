@@ -1,3 +1,10 @@
+Sat Mar  9 11:16:11 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* check-xml-test-suite.py: fix to adapt varaiations in the
+	  bindings
+	* configure.in python/setup.py python/setup.py.in: fixed to
+	  have the version of the python scripts automatically updated
+
 Fri Mar  8 16:45:55 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: fixed a bug newly introduced and pointed by Uwe Fechner

@@ -105,7 +105,7 @@ if missing("MANIFEST"):
     manifest.close()
 
 setup (name = "libxml2-python",
-       version = "2.4.16",
+       version = "@LIBXML_VERSION@",
        description = descr,
        author = "Daniel Veillard",
        author_email = "veillard@redhat.com",

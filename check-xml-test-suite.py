@@ -53,7 +53,10 @@ def loadNoentDoc(filename):
         return None
     ctxt.replaceEntities(1)
     ctxt.parseDocument()
-    doc = ctxt.doc()
+    try:
+	doc = ctxt.doc()
+    except:
+        doc = None
     if ctxt.wellFormed() != 1:
         doc.freeDoc()
 	return None
@@ -76,7 +79,10 @@ def testNotWf(filename, id):
         return -1
     ctxt.parseDocument()
 
-    doc = ctxt.doc()
+    try:
+	doc = ctxt.doc()
+    except:
+        doc = None
     if error_nr == 0 or ctxt.wellFormed() != 0:
         print "%s: error: Well Formedness error not detected" % (id)
 	log.write("%s: error: Well Formedness error not detected\n" % (id))
@@ -98,7 +104,10 @@ def testNotWfEnt(filename, id):
     ctxt.replaceEntities(1)
     ctxt.parseDocument()
 
-    doc = ctxt.doc()
+    try:
+	doc = ctxt.doc()
+    except:
+        doc = None
     if error_nr == 0 or ctxt.wellFormed() != 0:
         print "%s: error: Well Formedness error not detected" % (id)
 	log.write("%s: error: Well Formedness error not detected\n" % (id))
@@ -121,7 +130,10 @@ def testNotWfEntDtd(filename, id):
     ctxt.loadSubset(1)
     ctxt.parseDocument()
 
-    doc = ctxt.doc()
+    try:
+	doc = ctxt.doc()
+    except:
+        doc = None
     if error_nr == 0 or ctxt.wellFormed() != 0:
         print "%s: error: Well Formedness error not detected" % (id)
 	log.write("%s: error: Well Formedness error not detected\n" % (id))
@@ -144,7 +156,10 @@ def testWfEntDtd(filename, id):
     ctxt.loadSubset(1)
     ctxt.parseDocument()
 
-    doc = ctxt.doc()
+    try:
+	doc = ctxt.doc()
+    except:
+        doc = None
     if ctxt.wellFormed() == 0:
         print "%s: error: wrongly failed to parse the document" % (id)
 	log.write("%s: error: wrongly failed to parse the document\n" % (id))
@@ -172,7 +187,10 @@ def testError(filename, id):
     ctxt.loadSubset(1)
     ctxt.parseDocument()
 
-    doc = ctxt.doc()
+    try:
+	doc = ctxt.doc()
+    except:
+        doc = None
     if ctxt.wellFormed() == 0:
         print "%s: warning: failed to parse the document but accepted" % (id)
 	log.write("%s: warning: failed to parse the document but accepte\n" % (id))
@@ -199,7 +217,10 @@ def testInvalid(filename, id):
     ctxt.validate(1)
     ctxt.parseDocument()
 
-    doc = ctxt.doc()
+    try:
+	doc = ctxt.doc()
+    except:
+        doc = None
     valid = ctxt.isValid()
     if doc == None:
         print "%s: error: wrongly failed to parse the document" % (id)
@@ -232,7 +253,10 @@ def testValid(filename, id):
     ctxt.validate(1)
     ctxt.parseDocument()
 
-    doc = ctxt.doc()
+    try:
+	doc = ctxt.doc()
+    except:
+        doc = None
     valid = ctxt.isValid()
     if doc == None:
         print "%s: error: wrongly failed to parse the document" % (id)

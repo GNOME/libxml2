@@ -4732,7 +4732,13 @@ void
 xmlXPathValueFlipSign(xmlXPathParserContextPtr ctxt) {
     CAST_TO_NUMBER;
     CHECK_TYPE(XPATH_NUMBER);
-    if (ctxt->value->floatval == 0) {
+    if (xmlXPathIsNaN(ctxt->value->floatval))
+        ctxt->value->floatval=xmlXPathNAN;
+    else if (xmlXPathIsInf(ctxt->value->floatval) == 1)
+        ctxt->value->floatval=xmlXPathNINF;
+    else if (xmlXPathIsInf(ctxt->value->floatval) == -1)
+        ctxt->value->floatval=xmlXPathPINF;
+    else if (ctxt->value->floatval == 0) {
         if (xmlXPathGetSign(ctxt->value->floatval) == 0)
 	    ctxt->value->floatval = xmlXPathNZERO;
 	else
@@ -4835,7 +4841,9 @@ xmlXPathDivValues(xmlXPathParserContextPtr ctxt) {
 
     CAST_TO_NUMBER;
     CHECK_TYPE(XPATH_NUMBER);
-    if (val == 0 && xmlXPathGetSign(val) != 0) {
+    if (xmlXPathIsNaN(val) || xmlXPathIsNaN(ctxt->value->floatval))
+	ctxt->value->floatval = xmlXPathNAN;
+    else if (val == 0 && xmlXPathGetSign(val) != 0) {
 	if (ctxt->value->floatval == 0)
 	    ctxt->value->floatval = xmlXPathNAN;
 	else if (ctxt->value->floatval > 0)
@@ -7045,7 +7053,7 @@ xmlXPathStringEvalNumber(const xmlChar *str) {
     unsigned long tmp = 0;
     double temp;
 #endif
-    
+    if (cur == NULL) return(0);
     while (IS_BLANK(*cur)) cur++;
     if ((*cur != '.') && ((*cur < '0') || (*cur > '9')) && (*cur != '-')) {
         return(xmlXPathNAN);

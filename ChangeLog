@@ -1,3 +1,9 @@
+Wed Apr 24 13:41:03 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* test/XPath/expr/floats test/XPath/expr/functions
+	  result/XPath/expr/floats result/XPath/expr/functions
+	  xpath.c: another XPath conformance patch from Richard Jinks
+
 Tue Apr 23 19:50:40 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemas.c: fixed validation of attribute groups.

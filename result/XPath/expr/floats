@@ -202,3 +202,23 @@ Object is a number : -Infinity
 ========================
 Expression: 1 div round(0)
 Object is a number : Infinity
+
+========================
+Expression: 1 div number('f')
+Object is a number : NaN
+
+========================
+Expression: number('f') div 1
+Object is a number : NaN
+
+========================
+Expression: 1 div (1 div 0)
+Object is a number : 0
+
+========================
+Expression: (1 div 0) div 1
+Object is a number : Infinity
+
+========================
+Expression: -(1 div 0) div 1
+Object is a number : -Infinity

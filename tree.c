@@ -356,6 +356,77 @@ xmlFreeDoc(xmlDocPtr cur) {
 }
 
 /**
+ * xmlStringLenGetNodeList:
+ * @doc:  the document
+ * @value:  the value of the text
+ * @int len:  the length of the string value
+ *
+ * Parse the value string and build the node list associated. Should
+ * produce a flat tree with only TEXTs and ENTITY_REFs.
+ * return values: a pointer to the first child
+ */
+xmlNodePtr
+xmlStringLenGetNodeList(xmlDocPtr doc, const CHAR *value, int len) {
+    xmlNodePtr ret = NULL, last = NULL;
+    xmlNodePtr node;
+    CHAR *val;
+    const CHAR *cur = value;
+    const CHAR *q;
+
+    if (value == NULL) return(NULL);
+
+    q = cur;
+    while ((*cur != 0) && (cur - value < len)) {
+	if (*cur == '&') {
+            if (cur != q) {
+	        node = xmlNewDocTextLen(doc, q, cur - q);
+		if (node == NULL) return(ret);
+		if (last == NULL)
+		    last = ret = node;
+		else {
+		    last->next = node;
+		    last = node;
+		}
+	    }
+	    cur++;
+	    q = cur;
+	    while ((*cur != 0) && (cur - value < len) && (*cur != ';')) cur++;
+	    if ((*cur == 0) || (cur - value >= len)) {
+	        fprintf(stderr,
+		        "xmlStringGetNodeList: unterminated entity %30s\n", q);
+	        return(ret);
+	    }
+            if (cur != q) {
+		val = xmlStrndup(q, cur - q);
+		node = xmlNewReference(doc, val);
+		if (node == NULL) return(ret);
+		if (last == NULL)
+		    last = ret = node;
+		else {
+		    last->next = node;
+		    last = node;
+		}
+		free(val);
+	    }
+	    cur++;
+	    q = cur;
+	} else 
+	    cur++;
+    }
+    if (cur != q) {
+	node = xmlNewDocTextLen(doc, q, cur - q);
+	if (node == NULL) return(ret);
+	if (last == NULL)
+	    last = ret = node;
+	else {
+	    last->next = node;
+	    last = node;
+	}
+    }
+    return(ret);
+}
+
+/**
  * xmlStringGetNodeList:
  * @doc:  the document
  * @value:  the value of the attribute
@@ -1095,11 +1166,69 @@ xmlFreeNode(xmlNodePtr cur) {
     free(cur);
 }
 
+/**
+ * xmlUnlinkNode:
+ * @cur:  the node
+ *
+ * Unlink a node from it's current context, the node is not freed
+ */
+void
+xmlUnlinkNode(xmlNodePtr cur) {
+    if (cur == NULL) {
+        fprintf(stderr, "xmlUnlinkNode : node == NULL\n");
+	return;
+    }
+    if ((cur->parent != NULL) && (cur->parent->childs == cur))
+        cur->parent->childs = cur->next;
+    if (cur->next != NULL)
+        cur->next->prev = cur->prev;
+    if (cur->prev != NULL)
+        cur->prev->next = cur->next;
+    cur->next = cur->prev = NULL;
+    cur->parent = NULL;
+}
+
 /************************************************************************
  *									*
  *		Content access functions				*
  *									*
  ************************************************************************/
+ 
+/**
+ * xmlNodeGetContent:
+ * @cur:  the node being read
+ *
+ * Read the value of a node, this can be either the text carried
+ * directly by this node if it's a TEXT node or the aggregate string
+ * of the values carried by this node child's (TEXT and ENTITY_REF).
+ * Entity references are substitued.
+ * Return value: a new CHAR * or NULL if no content is available.
+ */
+CHAR *
+xmlNodeGetContent(xmlNodePtr cur) {
+    if (cur == NULL) return(NULL);
+    switch (cur->type) {
+        case XML_DOCUMENT_FRAG_NODE:
+        case XML_ELEMENT_NODE:
+            return(xmlNodeListGetString(cur->doc, cur->childs, 1));
+	    break;
+        case XML_ATTRIBUTE_NODE:
+        case XML_CDATA_SECTION_NODE:
+        case XML_ENTITY_REF_NODE:
+        case XML_ENTITY_NODE:
+        case XML_PI_NODE:
+        case XML_COMMENT_NODE:
+        case XML_DOCUMENT_NODE:
+        case XML_DOCUMENT_TYPE_NODE:
+        case XML_NOTATION_NODE:
+	    return(NULL);
+        case XML_TEXT_NODE:
+	    if (cur->content != NULL)
+		return(xmlStrdup(cur->content));
+            return(NULL);
+    }
+    return(NULL);
+}
  
 /**
  * xmlNodeSetContent:
@@ -1114,11 +1243,36 @@ xmlNodeSetContent(xmlNodePtr cur, const CHAR *content) {
         fprintf(stderr, "xmlNodeSetContent : node == NULL\n");
 	return;
     }
-    if (cur->content != NULL) free(cur->content);
-    if (content != NULL)
-	cur->content = xmlStrdup(content);
-    else 
-	cur->content = NULL;
+    switch (cur->type) {
+        case XML_DOCUMENT_FRAG_NODE:
+        case XML_ELEMENT_NODE:
+	    if (cur->content != NULL) {
+	        free(cur->content);
+		cur->content = NULL;
+	    }
+	    if (cur->childs != NULL) xmlFreeNode(cur->childs);
+	    cur->childs = xmlStringGetNodeList(cur->doc, content);
+	    break;
+        case XML_ATTRIBUTE_NODE:
+	    break;
+        case XML_TEXT_NODE:
+        case XML_CDATA_SECTION_NODE:
+        case XML_ENTITY_REF_NODE:
+        case XML_ENTITY_NODE:
+        case XML_PI_NODE:
+        case XML_COMMENT_NODE:
+	    if (cur->content != NULL) free(cur->content);
+	    if (cur->childs != NULL) xmlFreeNode(cur->childs);
+	    if (content != NULL)
+		cur->content = xmlStrdup(content);
+	    else 
+		cur->content = NULL;
+        case XML_DOCUMENT_NODE:
+        case XML_DOCUMENT_TYPE_NODE:
+	    break;
+        case XML_NOTATION_NODE:
+	    break;
+    }
 }
 
 /**
@@ -1132,30 +1286,44 @@ xmlNodeSetContent(xmlNodePtr cur, const CHAR *content) {
 void
 xmlNodeSetContentLen(xmlNodePtr cur, const CHAR *content, int len) {
     if (cur == NULL) {
-        fprintf(stderr, "xmlNodeSetContent : node == NULL\n");
+        fprintf(stderr, "xmlNodeSetContentLen : node == NULL\n");
 	return;
     }
-    if (cur->content != NULL) free(cur->content);
-    if (content != NULL)
-	cur->content = xmlStrndup(content, len);
-    else 
-	cur->content = NULL;
-}
-
-/**
- * xmlNodeAddContent:
- * @cur:  the node being modified
- * @content:  extra content
- * 
- * Append the extra substring to the node content.
- */
-void
-xmlNodeAddContent(xmlNodePtr cur, const CHAR *content) {
-    if (cur == NULL) {
-        fprintf(stderr, "xmlNodeAddContent : node == NULL\n");
-	return;
+    switch (cur->type) {
+        case XML_DOCUMENT_FRAG_NODE:
+        case XML_ELEMENT_NODE:
+	    if (cur->content != NULL) {
+	        free(cur->content);
+		cur->content = NULL;
+	    }
+	    if (cur->childs != NULL) xmlFreeNode(cur->childs);
+	    cur->childs = xmlStringLenGetNodeList(cur->doc, content, len);
+	    break;
+        case XML_ATTRIBUTE_NODE:
+	    break;
+        case XML_TEXT_NODE:
+        case XML_CDATA_SECTION_NODE:
+        case XML_ENTITY_REF_NODE:
+        case XML_ENTITY_NODE:
+        case XML_PI_NODE:
+        case XML_COMMENT_NODE:
+	    if (cur->content != NULL) free(cur->content);
+	    if (cur->childs != NULL) xmlFreeNode(cur->childs);
+	    if (content != NULL)
+		cur->content = xmlStrndup(content, len);
+	    else 
+		cur->content = NULL;
+        case XML_DOCUMENT_NODE:
+        case XML_DOCUMENT_TYPE_NODE:
+	    break;
+        case XML_NOTATION_NODE:
+	    if (cur->content != NULL) free(cur->content);
+	    if (content != NULL)
+		cur->content = xmlStrndup(content, len);
+	    else 
+		cur->content = NULL;
+	    break;
     }
-    cur->content = xmlStrcat(cur->content, content);
 }
 
 /**
@@ -1169,10 +1337,95 @@ xmlNodeAddContent(xmlNodePtr cur, const CHAR *content) {
 void
 xmlNodeAddContentLen(xmlNodePtr cur, const CHAR *content, int len) {
     if (cur == NULL) {
+        fprintf(stderr, "xmlNodeAddContentLen : node == NULL\n");
+	return;
+    }
+    if (len <= 0) return;
+    switch (cur->type) {
+        case XML_DOCUMENT_FRAG_NODE:
+        case XML_ELEMENT_NODE: {
+	    xmlNodePtr last = NULL, new;
+
+	    if (cur->childs != NULL) {
+		last = cur->childs;
+		while (last->next != NULL) last = last->next;
+	    } else {
+	        if (cur->content != NULL) {
+		    cur->childs = xmlStringGetNodeList(cur->doc, cur->content);
+		    free(cur->content);
+		    cur->content = NULL;
+		    if (cur->childs != NULL) {
+			last = cur->childs;
+			while (last->next != NULL) last = last->next;
+                    }
+		}
+	    }
+	    new = xmlStringLenGetNodeList(cur->doc, content, len);
+	    if (new != NULL) {
+		xmlAddChild(cur, new);
+	        if ((last != NULL) && (last->next == new))
+		    xmlTextMerge(last, new);
+	    }
+	    break;
+	}
+        case XML_ATTRIBUTE_NODE:
+	    break;
+        case XML_TEXT_NODE:
+        case XML_CDATA_SECTION_NODE:
+        case XML_ENTITY_REF_NODE:
+        case XML_ENTITY_NODE:
+        case XML_PI_NODE:
+        case XML_COMMENT_NODE:
+	    if (content != NULL)
+		cur->content = xmlStrncat(cur->content, content, len);
+        case XML_DOCUMENT_NODE:
+        case XML_DOCUMENT_TYPE_NODE:
+	    break;
+        case XML_NOTATION_NODE:
+	    if (content != NULL)
+		cur->content = xmlStrncat(cur->content, content, len);
+	    break;
+    }
+}
+
+/**
+ * xmlNodeAddContent:
+ * @cur:  the node being modified
+ * @content:  extra content
+ * 
+ * Append the extra substring to the node content.
+ */
+void
+xmlNodeAddContent(xmlNodePtr cur, const CHAR *content) {
+    int len;
+
+    if (cur == NULL) {
         fprintf(stderr, "xmlNodeAddContent : node == NULL\n");
 	return;
     }
-    cur->content = xmlStrncat(cur->content, content, len);
+    if (content == NULL) return;
+    len = xmlStrlen(content);
+    xmlNodeAddContentLen(cur, content, len);
+}
+
+/**
+ * xmlTextMerge:
+ * @first:  the first text node
+ * @second:  the second text node being merged
+ * 
+ * Merge two text nodes into one
+ * Return values: the first text node augmented
+ */
+xmlNodePtr
+xmlTextMerge(xmlNodePtr first, xmlNodePtr second) {
+    if (first == NULL) return(second);
+    if (second == NULL) return(first);
+    if (first->type != XML_TEXT_NODE) return(first);
+    if (second->type != XML_TEXT_NODE) return(first);
+    xmlNodeAddContent(first, second->content);
+    xmlUnlinkNode(second);
+    xmlFreeNode(second);
+    return(first);
 }
 
 /**

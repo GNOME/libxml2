@@ -163,7 +163,7 @@ extern int oldXMLWDcompatibility;/* maintain compatibility with old WD */
 extern int xmlIndentTreeOutput;  /* try to indent the tree dumps */
 
 /*
- * Functions.
+ * Creating/freeing new structures
  */
 extern xmlDtdPtr xmlNewDtd(xmlDocPtr doc, const CHAR *name,
                     const CHAR *ExternalID, const CHAR *SystemID);
@@ -177,16 +177,17 @@ extern xmlAttrPtr xmlNewDocProp(xmlDocPtr doc, const CHAR *name,
                                 const CHAR *value);
 extern xmlAttrPtr xmlNewProp(xmlNodePtr node, const CHAR *name,
                              const CHAR *value);
-extern xmlAttrPtr xmlSetProp(xmlNodePtr node, const CHAR *name,
-                             const CHAR *value);
-extern const CHAR *xmlGetProp(xmlNodePtr node, const CHAR *name);
-extern xmlNodePtr xmlStringGetNodeList(xmlDocPtr doc, const CHAR *value);
-extern CHAR *xmlNodeListGetString(xmlDocPtr doc, xmlNodePtr list, int inLine);
 extern void xmlFreePropList(xmlAttrPtr cur);
 extern void xmlFreeProp(xmlAttrPtr cur);
+
+/*
+ * Creating new nodes
+ */
 extern xmlNodePtr xmlNewDocNode(xmlDocPtr doc, xmlNsPtr ns,
                              const CHAR *name, CHAR *content);
 extern xmlNodePtr xmlNewNode(xmlNsPtr ns, const CHAR *name);
+extern xmlNodePtr xmlNewChild(xmlNodePtr parent, xmlNsPtr ns,
+                              const CHAR *name, CHAR *content);
 extern xmlNodePtr xmlNewDocText(xmlDocPtr doc, const CHAR *content);
 extern xmlNodePtr xmlNewText(const CHAR *content);
 extern xmlNodePtr xmlNewDocTextLen(xmlDocPtr doc, const CHAR *content, int len);
@@ -194,33 +195,66 @@ extern xmlNodePtr xmlNewTextLen(const CHAR *content, int len);
 extern xmlNodePtr xmlNewDocComment(xmlDocPtr doc, CHAR *content);
 extern xmlNodePtr xmlNewComment(CHAR *content);
 extern xmlNodePtr xmlNewReference(xmlDocPtr doc, const CHAR *name);
-extern xmlNodePtr xmlAddChild(xmlNodePtr parent, xmlNodePtr cur);
+
+/*
+ * Navigating
+ */
 extern xmlNodePtr xmlGetLastChild(xmlNodePtr node);
 extern int xmlNodeIsText(xmlNodePtr node);
+
+/*
+ * Changing the structure
+ */
+extern xmlNodePtr xmlAddChild(xmlNodePtr parent, xmlNodePtr cur);
+extern void xmlUnlinkNode(xmlNodePtr cur);
+
+extern xmlNodePtr xmlTextMerge(xmlNodePtr first, xmlNodePtr second);
 extern void xmlTextConcat(xmlNodePtr node, const CHAR *content, int len);
+
 extern void xmlFreeNodeList(xmlNodePtr cur);
 extern void xmlFreeNode(xmlNodePtr cur);
-extern void xmlNodeSetContent(xmlNodePtr cur, const CHAR *content);
-extern void xmlNodeSetContentLen(xmlNodePtr cur, const CHAR *content, int len);
-extern void xmlNodeAddContent(xmlNodePtr cur, const CHAR *content);
-extern void xmlNodeAddContentLen(xmlNodePtr cur, const CHAR *content, int len);
+
+/*
+ * Namespaces
+ */
 extern xmlNsPtr xmlSearchNs(xmlDocPtr doc, xmlNodePtr node,
                             const CHAR *nameSpace);
 extern xmlNsPtr xmlSearchNsByHref(xmlDocPtr doc, xmlNodePtr node,
                                   const CHAR *href);
 extern void xmlSetNs(xmlNodePtr node, xmlNsPtr ns);
-extern xmlNodePtr xmlNewChild(xmlNodePtr parent, xmlNsPtr ns,
-                              const CHAR *name, CHAR *content);
-extern xmlNodePtr xmlNewChild(xmlNodePtr parent, xmlNsPtr ns,
-                              const CHAR *name, CHAR *content);
 
+/*
+ * Changing the content.
+ */
+extern xmlAttrPtr xmlSetProp(xmlNodePtr node, const CHAR *name,
+                             const CHAR *value);
+extern const CHAR *xmlGetProp(xmlNodePtr node, const CHAR *name);
+extern xmlNodePtr xmlStringGetNodeList(xmlDocPtr doc, const CHAR *value);
+extern xmlNodePtr xmlStringLenGetNodeList(xmlDocPtr doc, const CHAR *value,
+                                          int len);
+extern CHAR *xmlNodeListGetString(xmlDocPtr doc, xmlNodePtr list, int inLine);
+extern void xmlNodeSetContent(xmlNodePtr cur, const CHAR *content);
+extern void xmlNodeSetContentLen(xmlNodePtr cur, const CHAR *content, int len);
+extern void xmlNodeAddContent(xmlNodePtr cur, const CHAR *content);
+extern void xmlNodeAddContentLen(xmlNodePtr cur, const CHAR *content, int len);
+extern CHAR *xmlNodeGetContent(xmlNodePtr cur);
+
+/*
+ * Internal, don't use
+ */
 extern void xmlBufferWriteCHAR(const CHAR *string);
 extern void xmlBufferWriteChar(const char *string);
 
+/*
+ * Saving
+ */
 extern void xmlDocDumpMemory(xmlDocPtr cur, CHAR**mem, int *size);
 extern void xmlDocDump(FILE *f, xmlDocPtr doc);
 int xmlSaveFile(const char *filename, xmlDocPtr cur);
 
+/*
+ * Compression
+ */
 extern int  xmlGetDocCompressMode (xmlDocPtr doc);
 extern void xmlSetDocCompressMode (xmlDocPtr doc, int mode);
 extern int  xmlGetCompressMode(void);

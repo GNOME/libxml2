@@ -18,8 +18,8 @@
     </D:prop>
     <D:status>HTTP/1.1 403 Forbidden</D:status>
     <D:responsedescription> The user does not have access to the DingALing property.
-          </D:responsedescription>
+      </D:responsedescription>
   </D:response>
   <D:responsedescription> There has been an access violation error.
-     </D:responsedescription>
+ </D:responsedescription>
 </D:multistatus>

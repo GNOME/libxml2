@@ -1,22 +1,22 @@
-   <?XML version="1.0"?>
-   <?namespace href = "http://www.ietf.org/standards/dav/" AS = "D"?>
-   <?namespace href = "http://www.foocorp.com/Project/" AS = "F"?>
-   <D:prop>
-     <D:Source>
-          <D:link>
-               <F:projfiles>Source</F:projfiles>
-               <D:src>http://foo.bar/program</D:src>
-               <D:dst>http://foo.bar/src/main.c</D:dst>
-          </D:link>
-          <D:link>
-               <F:projfiles>Library</F:projfiles>
-               <D:src>http://foo.bar/program</D:src>
-               <D:dst>http://foo.bar/src/main.lib</D:dst>
-          </D:link>
-          <D:link>
-               <F:projfiles>Makefile</F:projfiles>
-               <D:src>http://foo.bar/program</D:src>
-               <D:dst>http://foo.bar/src/makefile</D:dst>
-          </D:link>
-     </D:Source>
-   </D:prop>
+<?XML version="1.0"?>
+<?namespace href = "http://www.ietf.org/standards/dav/" AS = "D"?>
+<?namespace href = "http://www.foocorp.com/Project/" AS = "F"?>
+<D:prop>
+ <D:Source>
+      <D:link>
+	   <F:projfiles>Source</F:projfiles>
+	   <D:src>http://foo.bar/program</D:src>
+	   <D:dst>http://foo.bar/src/main.c</D:dst>
+      </D:link>
+      <D:link>
+	   <F:projfiles>Library</F:projfiles>
+	   <D:src>http://foo.bar/program</D:src>
+	   <D:dst>http://foo.bar/src/main.lib</D:dst>
+      </D:link>
+      <D:link>
+	   <F:projfiles>Makefile</F:projfiles>
+	   <D:src>http://foo.bar/program</D:src>
+	   <D:dst>http://foo.bar/src/makefile</D:dst>
+      </D:link>
+ </D:Source>
+</D:prop>

@@ -1,5 +1,5 @@
-   <?XML version="1.0"?>
-   <?namespace href = "http://www.ietf.org/standards/dav/" AS = "D"?>
-   <D:propfind>
-     <D:prop><supportedlock/></D:prop>
-   </D:propfind>
+<?XML version="1.0"?>
+<?namespace href = "http://www.ietf.org/standards/dav/" AS = "D"?>
+<D:propfind>
+ <D:prop><supportedlock/></D:prop>
+</D:propfind>

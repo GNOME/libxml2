@@ -2,11 +2,11 @@
 <D:multistatus xmlns:D="http://www.ietf.org/standards/dav/">
   <D:response>
     <D:href>
-               http://webdav.sb.aol.com/workspace/webdav/proposal.doc
-          </D:href>
+	   http://webdav.sb.aol.com/workspace/webdav/proposal.doc
+      </D:href>
     <D:href>
-               http://webdav.sb.aol.com/workspace/webdav/
-          </D:href>
+	   http://webdav.sb.aol.com/workspace/webdav/
+      </D:href>
     <D:status>HTTP/1.1 202 Accepted</D:status>
   </D:response>
   <D:response>

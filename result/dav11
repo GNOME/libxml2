@@ -7,14 +7,14 @@
       <D:addlocks/>
       <D:owner>
         <D:href>
-                    http://www.ics.uci.edu/~ejw/contact.html
-                    </D:href>
+		http://www.ics.uci.edu/~ejw/contact.html
+		</D:href>
       </D:owner>
       <D:timeout>Second-604800</D:timeout>
       <D:locktoken>
         <D:href>
-               opaquelocktoken:xyz122393481230912asdfa09s8df09s7df
-                    </D:href>
+	   opaquelocktoken:xyz122393481230912asdfa09s8df09s7df
+		</D:href>
       </D:locktoken>
     </D:activelock>
   </D:lockdiscovery>

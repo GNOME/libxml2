@@ -13,5 +13,5 @@
     <D:status>HTTP/1.1 409 Conflict</D:status>
   </D:response>
   <D:responsedescription> Copyright Owner can not be deleted or
-   altered.</D:responsedescription>
+altered.</D:responsedescription>
 </D:multistatus>

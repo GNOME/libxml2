@@ -1,26 +1,26 @@
-   <?XML version="1.0"?>
-   <?namespace href = "http://www.ietf.org/standards/dav/" AS = "S"?>
-   <?namespace href = "http://www.foo.bar/boxschema/" AS = "R"?>
-   <S:multistatus>
-     <S:response>
-          <S:href>http://www.foo.bar/container/</S:href>
-          <S:prop>
-               <R:bigbox>
-                    <R:BoxType>Box type A</R:BoxType>
-               </R:bigbox>
-               <R:author>
-                    <R:Name>Hadrian</R:Name>
-               </R:author>
-          </S:prop>
-          <S:status>HTTP 1.1 200 OK</S:status>
-     </S:response>
-     <S:response>
-          <S:href>http://www.foo.bar/container/index.html</S:href>
-          <S:prop>
-               <R:bigbox>
-                    <R:BoxType>Box type B</R:BoxType>
-               </R:bigbox>
-          </S:prop>
-          <S:status>HTTP 1.1 200 OK</S:status>
-     </S:response>
-   </S:multistatus>
+<?XML version="1.0"?>
+<?namespace href = "http://www.ietf.org/standards/dav/" AS = "S"?>
+<?namespace href = "http://www.foo.bar/boxschema/" AS = "R"?>
+<S:multistatus>
+ <S:response>
+      <S:href>http://www.foo.bar/container/</S:href>
+      <S:prop>
+	   <R:bigbox>
+		<R:BoxType>Box type A</R:BoxType>
+	   </R:bigbox>
+	   <R:author>
+		<R:Name>Hadrian</R:Name>
+	   </R:author>
+      </S:prop>
+      <S:status>HTTP 1.1 200 OK</S:status>
+ </S:response>
+ <S:response>
+      <S:href>http://www.foo.bar/container/index.html</S:href>
+      <S:prop>
+	   <R:bigbox>
+		<R:BoxType>Box type B</R:BoxType>
+	   </R:bigbox>
+      </S:prop>
+      <S:status>HTTP 1.1 200 OK</S:status>
+ </S:response>
+</S:multistatus>

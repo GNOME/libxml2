@@ -1,16 +1,16 @@
-   <?XML version="1.0"?>
-   <?namespace href = "http://www.ietf.org/standards/dav/" AS = "D"?>
-   <?namespace href = "http://www.w3.com/standards/z39.50/" AS = "Z"?>
-   <D:propertyupdate>
-     <D:set>
-          <D:prop>
-               <Z:authors>
-                    <Z:Author>Jim Whitehead</Z:Author>
-                    <Z:Author>Roy Fielding</Z:Author>
-               </Z:authors>
-          </D:prop>
-     </D:set>
-     <D:remove>
-          <D:prop><Z:Copyright-Owner/></D:prop>
-     </D:remove>
-   </D:propertyupdate>
+<?XML version="1.0"?>
+<?namespace href = "http://www.ietf.org/standards/dav/" AS = "D"?>
+<?namespace href = "http://www.w3.com/standards/z39.50/" AS = "Z"?>
+<D:propertyupdate>
+ <D:set>
+      <D:prop>
+	   <Z:authors>
+		<Z:Author>Jim Whitehead</Z:Author>
+		<Z:Author>Roy Fielding</Z:Author>
+	   </Z:authors>
+      </D:prop>
+ </D:set>
+ <D:remove>
+      <D:prop><Z:Copyright-Owner/></D:prop>
+ </D:remove>
+</D:propertyupdate>

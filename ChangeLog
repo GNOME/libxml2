@@ -1,3 +1,7 @@
+Thu Sep 23 01:04:30 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: fixed a bunch of errors when realloc failed.
+
 Wed Sep 22 23:56:05 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* threads.c uri.c: couple of memory fixes from Mark Vakoc reported

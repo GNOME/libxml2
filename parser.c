@@ -2212,13 +2212,17 @@ xmlSplitQName(xmlParserCtxtPtr ctxt, const xmlChar *name, xmlChar **prefix) {
 	memcpy(buffer, buf, len);
 	while ((c != 0) && (c != ':')) { /* tested bigname.xml */
 	    if (len + 10 > max) {
+	        xmlChar *tmp;
+
 		max *= 2;
-		buffer = (xmlChar *) xmlRealloc(buffer,
+		tmp = (xmlChar *) xmlRealloc(buffer,
 						max * sizeof(xmlChar));
-		if (buffer == NULL) {
+		if (tmp == NULL) {
+		    xmlFree(tmp);
 		    xmlErrMemory(ctxt, NULL);
 		    return(NULL);
 		}
+		buffer = tmp;
 	    }
 	    buffer[len++] = c;
 	    c = *cur++;
@@ -2285,13 +2289,17 @@ xmlSplitQName(xmlParserCtxtPtr ctxt, const xmlChar *name, xmlChar **prefix) {
 	    memcpy(buffer, buf, len);
 	    while (c != 0) { /* tested bigname2.xml */
 		if (len + 10 > max) {
+		    xmlChar *tmp;
+
 		    max *= 2;
-		    buffer = (xmlChar *) xmlRealloc(buffer,
+		    tmp = (xmlChar *) xmlRealloc(buffer,
 						    max * sizeof(xmlChar));
-		    if (buffer == NULL) {
+		    if (tmp == NULL) {
 			xmlErrMemory(ctxt, NULL);
+			xmlFree(buffer);
 			return(NULL);
 		    }
+		    buffer = tmp;
 		}
 		buffer[len++] = c;
 		c = *cur++;
@@ -2504,13 +2512,16 @@ xmlParseStringName(xmlParserCtxtPtr ctxt, const xmlChar** str) {
 		   (IS_COMBINING(c)) ||
 		   (IS_EXTENDER(c))) {
 		if (len + 10 > max) {
+		    xmlChar *tmp;
 		    max *= 2;
-		    buffer = (xmlChar *) xmlRealloc(buffer,
+		    tmp = (xmlChar *) xmlRealloc(buffer,
 			                            max * sizeof(xmlChar));
-		    if (buffer == NULL) {
+		    if (tmp == NULL) {
 			xmlErrMemory(ctxt, NULL);
+			xmlFree(buffer);
 			return(NULL);
 		    }
+		    buffer = tmp;
 		}
 		COPY_BUF(l,buffer,len,c);
 		cur += l;
@@ -2584,13 +2595,17 @@ xmlParseNmtoken(xmlParserCtxtPtr ctxt) {
 		    GROW;
 		}
 		if (len + 10 > max) {
+		    xmlChar *tmp;
+
 		    max *= 2;
-		    buffer = (xmlChar *) xmlRealloc(buffer,
+		    tmp = (xmlChar *) xmlRealloc(buffer,
 			                            max * sizeof(xmlChar));
-		    if (buffer == NULL) {
+		    if (tmp == NULL) {
 			xmlErrMemory(ctxt, NULL);
+			xmlFree(buffer);
 			return(NULL);
 		    }
+		    buffer = tmp;
 		}
 		COPY_BUF(l,buffer,len,c);
 		NEXTL(l);
@@ -2662,12 +2677,16 @@ xmlParseEntityValue(xmlParserCtxtPtr ctxt, xmlChar **orig) {
     while ((IS_CHAR(c)) && ((c != stop) || /* checked */
 	   (ctxt->input != input))) {
 	if (len + 5 >= size) {
+	    xmlChar *tmp;
+
 	    size *= 2;
-	    buf = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
-	    if (buf == NULL) {
+	    tmp = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
+	    if (tmp == NULL) {
 		xmlErrMemory(ctxt, NULL);
+		xmlFree(buf);
 		return(NULL);
 	    }
+	    buf = tmp;
 	}
 	COPY_BUF(l,buf,len,c);
 	NEXTL(l);
@@ -3015,13 +3034,17 @@ xmlParseSystemLiteral(xmlParserCtxtPtr ctxt) {
     cur = CUR_CHAR(l);
     while ((IS_CHAR(cur)) && (cur != stop)) { /* checked */
 	if (len + 5 >= size) {
+	    xmlChar *tmp;
+
 	    size *= 2;
-	    buf = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
-	    if (buf == NULL) {
+	    tmp = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
+	    if (tmp == NULL) {
+	        xmlFree(buf);
 		xmlErrMemory(ctxt, NULL);
 		ctxt->instate = (xmlParserInputState) state;
 		return(NULL);
 	    }
+	    buf = tmp;
 	}
 	count++;
 	if (count > 50) {
@@ -3088,12 +3111,16 @@ xmlParsePubidLiteral(xmlParserCtxtPtr ctxt) {
     cur = CUR;
     while ((IS_PUBIDCHAR_CH(cur)) && (cur != stop)) { /* checked */
 	if (len + 1 >= size) {
+	    xmlChar *tmp;
+
 	    size *= 2;
-	    buf = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
-	    if (buf == NULL) {
+	    tmp = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
+	    if (tmp == NULL) {
 		xmlErrMemory(ctxt, NULL);
+		xmlFree(buf);
 		return(NULL);
 	    }
+	    buf = tmp;
 	}
 	buf[len++] = cur;
 	count++;
@@ -3702,13 +3729,17 @@ xmlParsePI(xmlParserCtxtPtr ctxt) {
 	    while (IS_CHAR(cur) && /* checked */
 		   ((cur != '?') || (NXT(1) != '>'))) {
 		if (len + 5 >= size) {
+		    xmlChar *tmp;
+
 		    size *= 2;
-		    buf = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
-		    if (buf == NULL) {
+		    tmp = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
+		    if (tmp == NULL) {
 			xmlErrMemory(ctxt, NULL);
+			xmlFree(buf);
 			ctxt->instate = state;
 			return;
 		    }
+		    buf = tmp;
 		}
 		count++;
 		if (count > 50) {
@@ -7741,12 +7772,16 @@ xmlParseCDSect(xmlParserCtxtPtr ctxt) {
     while (IS_CHAR(cur) &&
            ((r != ']') || (s != ']') || (cur != '>'))) {
 	if (len + 5 >= size) {
+	    xmlChar *tmp;
+
 	    size *= 2;
-	    buf = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
-	    if (buf == NULL) {
+	    tmp = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
+	    if (tmp == NULL) {
+	        xmlFree(buf);
 		xmlErrMemory(ctxt, NULL);
 		return;
 	    }
+	    buf = tmp;
 	}
 	COPY_BUF(rl,buf,len,r);
 	r = s;
@@ -8059,12 +8094,15 @@ xmlParseVersionNum(xmlParserCtxtPtr ctxt) {
            (cur == '_') || (cur == '.') ||
 	   (cur == ':') || (cur == '-')) {
 	if (len + 1 >= size) {
+	    xmlChar *tmp;
+
 	    size *= 2;
-	    buf = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
-	    if (buf == NULL) {
+	    tmp = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
+	    if (tmp == NULL) {
 		xmlErrMemory(ctxt, NULL);
 		return(NULL);
 	    }
+	    buf = tmp;
 	}
 	buf[len++] = cur;
 	NEXT;
@@ -8156,12 +8194,16 @@ xmlParseEncName(xmlParserCtxtPtr ctxt) {
 	       (cur == '.') || (cur == '_') ||
 	       (cur == '-')) {
 	    if (len + 1 >= size) {
+	        xmlChar *tmp;
+
 		size *= 2;
-		buf = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
-		if (buf == NULL) {
+		tmp = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
+		if (tmp == NULL) {
 		    xmlErrMemory(ctxt, NULL);
+		    xmlFree(buf);
 		    return(NULL);
 		}
+		buf = tmp;
 	    }
 	    buf[len++] = cur;
 	    NEXT;

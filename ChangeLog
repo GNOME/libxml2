@@ -1,3 +1,8 @@
+Mon Sep  6 13:14:11 CEST 2004 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xstc/sun-test-def.xml: The "tsDir" attribute was not
+	  set correctly.
+
 Mon Sep  6 11:52:50 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* check-xinclude-test-suite.py: when output and expected do not match

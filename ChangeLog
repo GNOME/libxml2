@@ -1,3 +1,9 @@
+Sun Oct 18 20:40:58 EDT 1998
+
+	* encoding.[ch], Makefile.am: Added the UTF-8, UTF-16 and ISO Latin 1
+	  conversion routines. However they are not yet used to convert the
+	  inputs. The core will run with UTF-8.
+
 Sun Oct 18 15:08:19 EDT 1998 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* tree.c : make sure that the type id is properly set-up when

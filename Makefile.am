@@ -11,6 +11,7 @@ lib_LTLIBRARIES = libxml.la
 libxml_la_SOURCES = \
 		SAX.c \
 		entities.c \
+		encoding.c \
 		error.c \
 		error.h \
 		parser.c \
@@ -20,6 +21,7 @@ libxml_la_SOURCES = \
 xmlincdir = $(includedir)/gnome-xml
 xmlinc_HEADERS = \
 		entities.h \
+		encoding.h \
 		parser.h \
 		tree.h
 

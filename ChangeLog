@@ -1,3 +1,11 @@
+Sat Dec 20 10:48:37 HKT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* include/libxml/xpathInternals.h: fixed xmlXPathReturnString
+	  to cater for NULL pointer (bug 129561)
+	* globals.c: added comment to suppress documentation warning
+	* doc/apibuild.py: fixed problem which caused last APIchunkxx.html
+	  to be lost.  Rebuilt doc/* (including adding APIchunk26.html)
+	  
 Fri Dec 19 18:24:02 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c: trying to fix #129692 xmlTextReaderExpand() when

@@ -153,7 +153,8 @@ XMLPUBFUN void * XMLCALL
  * Pushes the string @str on the context stack.
  */
 #define xmlXPathReturnString(ctxt, str)					\
-    valuePush((ctxt), xmlXPathWrapString(str))
+    (str) == NULL ? valuePush((ctxt), xmlXPathNewCString("")) :		\
+    		    valuePush((ctxt), xmlXPathWrapString(str))
 
 /**
  * xmlXPathReturnEmptyString:

@@ -39,11 +39,21 @@
  */
 static xmlMutexPtr xmlThrDefMutex = NULL;
 
+/**
+ * xmlInitGlobals:
+ *
+ * Additional initialisation for multi-threading
+ */
 void xmlInitGlobals()
 {
     xmlThrDefMutex = xmlNewMutex();
 }
 
+/**
+ * xmlCleanupGlobals:
+ *
+ * Additional cleanup for multi-threading
+ */
 void xmlCleanupGlobals()
 {
     if (xmlThrDefMutex != NULL) {

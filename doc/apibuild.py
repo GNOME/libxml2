@@ -1793,6 +1793,8 @@ class docBuilder:
 	if letter != None:
 	    output.write("      </letter>\n")
 	    output.write("    </chunk>\n")
+	    if count != 0:
+	        chunks.append(["chunk%s" % (chunk -1), first_letter, letter])
 	    output.write("    <chunks>\n")
 	    for ch in chunks:
 		output.write("      <chunk name='%s' start='%s' end='%s'/>\n" % (

@@ -1,3 +1,8 @@
+Sat May 22 09:08:24 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* SAX2.c: skipped call to xmlValidateNCName when compiling
+	  --with-minimum (bug 142917)
+
 Tue May 18 06:48:00 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* catalog.c: reverted the broken change.

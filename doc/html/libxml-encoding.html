@@ -122,7 +122,7 @@ NAME="LIBXML-ENCODING"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN20723"
+NAME="AEN20825"
 ></A
 ><H2
 >Name</H2
@@ -130,7 +130,7 @@ NAME="AEN20723"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN20726"
+NAME="AEN20828"
 ></A
 ><H2
 >Synopsis</H2
@@ -381,7 +381,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN20786"
+NAME="AEN20888"
 ></A
 ><H2
 >Description</H2
@@ -391,14 +391,14 @@ NAME="AEN20786"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN20789"
+NAME="AEN20891"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20791"
+NAME="AEN20893"
 ></A
 ><H3
 ><A
@@ -464,7 +464,7 @@ support needed.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20798"
+NAME="AEN20900"
 ></A
 ><H3
 ><A
@@ -495,7 +495,7 @@ it to an UTF-8 block of chars out.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20804"
+NAME="AEN20906"
 ></A
 ><P
 ></P
@@ -522,7 +522,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  a pointer ot an array of bytes to store the UTF-8 result</TD
 ></TR
 ><TR
 ><TD
@@ -539,7 +539,12 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the lenght of <TT
+CLASS="PARAMETER"
+><I
+>out</I
+></TT
+></TD
 ></TR
 ><TR
 ><TD
@@ -556,7 +561,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  a pointer ot an array of chars in the original encoding</TD
 ></TR
 ><TR
 ><TD
@@ -573,7 +578,12 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the lenght of <TT
+CLASS="PARAMETER"
+><I
+>in</I
+></TT
+></TD
 ></TR
 ><TR
 ><TD
@@ -588,7 +598,21 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the number of byte written, or -1 by lack of space, or -2
+if the transcoding failed.
+The value of <TT
+CLASS="PARAMETER"
+><I
+>inlen</I
+></TT
+> after return is the number of octets consumed
+as the return value is positive, else unpredictiable.
+The value of <TT
+CLASS="PARAMETER"
+><I
+>outlen</I
+></TT
+> after return is the number of ocetes consumed.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -599,7 +623,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20829"
+NAME="AEN20935"
 ></A
 ><H3
 ><A
@@ -632,7 +656,7 @@ in = NULL. If stateful this should also initialize the encoder state</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20835"
+NAME="AEN20941"
 ></A
 ><P
 ></P
@@ -659,7 +683,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  a pointer ot an array of bytes to store the result</TD
 ></TR
 ><TR
 ><TD
@@ -676,7 +700,12 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the lenght of <TT
+CLASS="PARAMETER"
+><I
+>out</I
+></TT
+></TD
 ></TR
 ><TR
 ><TD
@@ -693,7 +722,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  a pointer ot an array of UTF-8 chars</TD
 ></TR
 ><TR
 ><TD
@@ -710,7 +739,12 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the lenght of <TT
+CLASS="PARAMETER"
+><I
+>in</I
+></TT
+></TD
 ></TR
 ><TR
 ><TD
@@ -725,7 +759,21 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the number of byte written, or -1 by lack of space, or -2
+if the transcoding failed.
+The value of <TT
+CLASS="PARAMETER"
+><I
+>inlen</I
+></TT
+> after return is the number of octets consumed
+as the return value is positive, else unpredictiable.
+The value of <TT
+CLASS="PARAMETER"
+><I
+>outlen</I
+></TT
+> after return is the number of ocetes consumed.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -736,7 +784,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20860"
+NAME="AEN20970"
 ></A
 ><H3
 ><A
@@ -770,20 +818,33 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20865"
+NAME="AEN20975"
 ></A
 ><H3
 ><A
 NAME="XMLCHARENCODINGHANDLERPTR"
 ></A
 >xmlCharEncodingHandlerPtr</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef xmlCharEncodingHandler *xmlCharEncodingHandlerPtr;</PRE
+></TD
+></TR
+></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20869"
+NAME="AEN20980"
 ></A
 ><H3
 ><A
@@ -814,7 +875,7 @@ in normal processing.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20875"
+NAME="AEN20986"
 ></A
 ><H3
 ><A
@@ -843,7 +904,7 @@ unregisters all the encoding handlers and the aliases.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20881"
+NAME="AEN20992"
 ></A
 ><H3
 ><A
@@ -873,7 +934,7 @@ HREF="libxml-encoding.html#XMLCHARENCODINGHANDLERPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20888"
+NAME="AEN20999"
 ></A
 ><P
 ></P
@@ -900,7 +961,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the xmlCharEncodingHandlerPtr handler block</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -911,7 +972,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20897"
+NAME="AEN21008"
 ></A
 ><H3
 ><A
@@ -945,7 +1006,7 @@ HREF="libxml-encoding.html#XMLCHARENCODING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20905"
+NAME="AEN21016"
 ></A
 ><P
 ></P
@@ -972,7 +1033,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  a string describing the char encoding.</TD
 ></TR
 ><TR
 ><TD
@@ -987,7 +1048,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the handler or NULL if not found</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -998,7 +1059,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20918"
+NAME="AEN21029"
 ></A
 ><H3
 ><A
@@ -1027,7 +1088,7 @@ HREF="libxml-encoding.html#XMLCHARENCODINGHANDLERPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20924"
+NAME="AEN21035"
 ></A
 ><P
 ></P
@@ -1080,7 +1141,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20937"
+NAME="AEN21048"
 ></A
 ><H3
 ><A
@@ -1119,7 +1180,7 @@ will be overwritten.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20945"
+NAME="AEN21056"
 ></A
 ><P
 ></P
@@ -1146,7 +1207,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the encoding name as parsed, in UTF-8 format (ASCII actually)</TD
 ></TR
 ><TR
 ><TD
@@ -1163,7 +1224,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the alias name as parsed, in UTF-8 format (ASCII actually)</TD
 ></TR
 ><TR
 ><TD
@@ -1178,7 +1239,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>0 in case of success, -1 in case of error</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1189,7 +1250,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20962"
+NAME="AEN21073"
 ></A
 ><H3
 ><A
@@ -1221,7 +1282,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20969"
+NAME="AEN21080"
 ></A
 ><P
 ></P
@@ -1248,7 +1309,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the alias name as parsed, in UTF-8 format (ASCII actually)</TD
 ></TR
 ><TR
 ><TD
@@ -1263,7 +1324,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>0 in case of success, -1 in case of error</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1274,7 +1335,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20982"
+NAME="AEN21093"
 ></A
 ><H3
 ><A
@@ -1301,7 +1362,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20988"
+NAME="AEN21099"
 ></A
 ><P
 ></P
@@ -1328,7 +1389,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the alias name as parsed, in UTF-8 format (ASCII actually)</TD
 ></TR
 ><TR
 ><TD
@@ -1343,7 +1404,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>NULL if not found the original name otherwise</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1354,7 +1415,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21001"
+NAME="AEN21112"
 ></A
 ><H3
 ><A
@@ -1382,7 +1443,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21007"
+NAME="AEN21118"
 ></A
 ><H3
 ><A
@@ -1414,7 +1475,7 @@ that the comparison is case insensitive accordingly to the section
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21014"
+NAME="AEN21125"
 ></A
 ><P
 ></P
@@ -1441,7 +1502,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the encoding name as parsed, in UTF-8 format (ASCII actually)</TD
 ></TR
 ><TR
 ><TD
@@ -1456,7 +1517,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>one of the XML_CHAR_ENCODING_... values or XML_CHAR_ENCODING_NONE
+if not recognized.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1467,7 +1529,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21027"
+NAME="AEN21138"
 ></A
 ><H3
 ><A
@@ -1502,7 +1564,7 @@ Section 4.3.3  Character Encoding in Entities</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21035"
+NAME="AEN21146"
 ></A
 ><P
 ></P
@@ -1529,7 +1591,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the encoding</TD
 ></TR
 ><TR
 ><TD
@@ -1544,7 +1606,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the canonical name for the given encoding</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1555,7 +1617,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21048"
+NAME="AEN21159"
 ></A
 ><H3
 ><A
@@ -1587,7 +1649,7 @@ accordingly of the non-normative appendix F of the XML-1.0 recommendation.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21055"
+NAME="AEN21166"
 ></A
 ><P
 ></P
@@ -1614,7 +1676,8 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  a pointer to the first bytes of the XML entity, must be at least
+4 bytes long.</TD
 ></TR
 ><TR
 ><TD
@@ -1631,7 +1694,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  pointer to the length of the buffer</TD
 ></TR
 ><TR
 ><TD
@@ -1646,7 +1709,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>one of the XML_CHAR_ENCODING_... values.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1657,7 +1720,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21072"
+NAME="AEN21183"
 ></A
 ><H3
 ><A
@@ -1705,7 +1768,7 @@ the content will be automatically remapped to a CharRef sequence.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21082"
+NAME="AEN21193"
 ></A
 ><P
 ></P
@@ -1732,7 +1795,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>	char enconding transformation data structure</TD
 ></TR
 ><TR
 ><TD
@@ -1749,7 +1812,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an xmlBuffer for the output.</TD
 ></TR
 ><TR
 ><TD
@@ -1766,7 +1829,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an xmlBuffer for the input</TD
 ></TR
 ><TR
 ><TD
@@ -1781,7 +1844,10 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the number of byte written if success, or 
+-1 general error
+-2 if the transcoding fails (for *in is not valid utf8 string or
+the result of transformation can't fit into the encoding we want), or</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1792,7 +1858,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21103"
+NAME="AEN21214"
 ></A
 ><H3
 ><A
@@ -1830,7 +1896,7 @@ HREF="libxml-tree.html#XMLBUFFERPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21112"
+NAME="AEN21223"
 ></A
 ><P
 ></P
@@ -1857,7 +1923,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>	char enconding transformation data structure</TD
 ></TR
 ><TR
 ><TD
@@ -1874,7 +1940,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an xmlBuffer for the output.</TD
 ></TR
 ><TR
 ><TD
@@ -1891,7 +1957,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an xmlBuffer for the input</TD
 ></TR
 ><TR
 ><TD
@@ -1906,7 +1972,10 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the number of byte written if success, or 
+-1 general error
+-2 if the transcoding fails (for *in is not valid utf8 string or
+the result of transformation can't fit into the encoding we want), or</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1917,7 +1986,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21133"
+NAME="AEN21244"
 ></A
 ><H3
 ><A
@@ -1956,7 +2025,7 @@ the very first line, i.e. limit itself to 45 chars.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21142"
+NAME="AEN21253"
 ></A
 ><P
 ></P
@@ -1983,7 +2052,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>	char enconding transformation data structure</TD
 ></TR
 ><TR
 ><TD
@@ -2000,7 +2069,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an xmlBuffer for the output.</TD
 ></TR
 ><TR
 ><TD
@@ -2017,7 +2086,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  an xmlBuffer for the input</TD
 ></TR
 ><TR
 ><TD
@@ -2032,7 +2101,10 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the number of byte written if success, or 
+-1 general error
+-2 if the transcoding fails (for *in is not valid utf8 string or
+the result of transformation can't fit into the encoding we want), or</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -2043,7 +2115,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21163"
+NAME="AEN21274"
 ></A
 ><H3
 ><A
@@ -2073,7 +2145,7 @@ HREF="libxml-encoding.html#XMLCHARENCODINGHANDLER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21170"
+NAME="AEN21281"
 ></A
 ><P
 ></P
@@ -2100,7 +2172,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>	char enconding transformation data structure</TD
 ></TR
 ><TR
 ><TD
@@ -2115,7 +2187,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>0 if success, or -1 in case of error</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -2126,7 +2198,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21183"
+NAME="AEN21294"
 ></A
 ><H3
 ><A
@@ -2157,7 +2229,7 @@ block of chars out.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21189"
+NAME="AEN21300"
 ></A
 ><P
 ></P
@@ -2184,7 +2256,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  a pointer to an array of bytes to store the result</TD
 ></TR
 ><TR
 ><TD
@@ -2201,7 +2273,12 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the length of <TT
+CLASS="PARAMETER"
+><I
+>out</I
+></TT
+></TD
 ></TR
 ><TR
 ><TD
@@ -2218,7 +2295,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  a pointer to an array of UTF-8 chars</TD
 ></TR
 ><TR
 ><TD
@@ -2235,7 +2312,12 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the length of <TT
+CLASS="PARAMETER"
+><I
+>in</I
+></TT
+></TD
 ></TR
 ><TR
 ><TD
@@ -2250,7 +2332,20 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>0 if success, -2 if the transcoding fails, or -1 otherwise
+The value of <TT
+CLASS="PARAMETER"
+><I
+>inlen</I
+></TT
+> after return is the number of octets consumed
+as the return value is positive, else unpredictiable.
+The value of <TT
+CLASS="PARAMETER"
+><I
+>outlen</I
+></TT
+> after return is the number of ocetes consumed.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -2261,7 +2356,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21214"
+NAME="AEN21329"
 ></A
 ><H3
 ><A
@@ -2292,7 +2387,7 @@ block of chars out.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21220"
+NAME="AEN21335"
 ></A
 ><P
 ></P
@@ -2319,7 +2414,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  a pointer to an array of bytes to store the result</TD
 ></TR
 ><TR
 ><TD
@@ -2336,7 +2431,12 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the length of <TT
+CLASS="PARAMETER"
+><I
+>out</I
+></TT
+></TD
 ></TR
 ><TR
 ><TD
@@ -2353,7 +2453,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  a pointer to an array of ISO Latin 1 chars</TD
 ></TR
 ><TR
 ><TD
@@ -2370,7 +2470,12 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the length of <TT
+CLASS="PARAMETER"
+><I
+>in</I
+></TT
+></TD
 ></TR
 ><TR
 ><TD
@@ -2385,7 +2490,20 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>0 if success, or -1 otherwise
+The value of <TT
+CLASS="PARAMETER"
+><I
+>inlen</I
+></TT
+> after return is the number of octets consumed
+as the return value is positive, else unpredictiable.
+The value of <TT
+CLASS="PARAMETER"
+><I
+>outlen</I
+></TT
+> after return is the number of ocetes consumed.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -2396,7 +2514,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21245"
+NAME="AEN21364"
 ></A
 ><H3
 ><A
@@ -2438,7 +2556,7 @@ routine checks for the 4-byte maxiumum size, but does not check for
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21253"
+NAME="AEN21372"
 ></A
 ><P
 ></P
@@ -2465,7 +2583,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> Pointer to putative utf-8 encoded string.</TD
 ></TR
 ><TR
 ><TD
@@ -2480,7 +2598,12 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> true if <TT
+CLASS="PARAMETER"
+><I
+>utf</I
+></TT
+> is valid.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -2491,7 +2614,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21266"
+NAME="AEN21386"
 ></A
 ><H3
 ><A
@@ -2522,7 +2645,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21273"
+NAME="AEN21393"
 ></A
 ><P
 ></P
@@ -2549,7 +2672,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  a sequence of UTF-8 encoded bytes</TD
 ></TR
 ><TR
 ><TD
@@ -2566,7 +2689,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the number of characters in the array</TD
 ></TR
 ><TR
 ><TD
@@ -2581,7 +2704,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the storage size of
+the first 'len' characters of ARRAY&#13;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -2592,7 +2716,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21290"
+NAME="AEN21410"
 ></A
 ><H3
 ><A
@@ -2626,7 +2750,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21298"
+NAME="AEN21418"
 ></A
 ><P
 ></P
@@ -2653,7 +2777,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the input UTF8 *</TD
 ></TR
 ><TR
 ><TD
@@ -2670,7 +2794,12 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the len of <TT
+CLASS="PARAMETER"
+><I
+>utf</I
+></TT
+> (in chars)</TD
 ></TR
 ><TR
 ><TD
@@ -2685,7 +2814,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>a new UTF8 * or NULL</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -2696,7 +2825,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21315"
+NAME="AEN21436"
 ></A
 ><H3
 ><A
@@ -2731,7 +2860,7 @@ character from a string array</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21323"
+NAME="AEN21444"
 ></A
 ><P
 ></P
@@ -2758,7 +2887,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the input UTF8 *</TD
 ></TR
 ><TR
 ><TD
@@ -2775,7 +2904,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the position of the desired UTF8 char (in chars)</TD
 ></TR
 ><TR
 ><TD
@@ -2790,7 +2919,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>a pointer to the UTF8 character or NULL</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -2801,7 +2930,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21340"
+NAME="AEN21461"
 ></A
 ><H3
 ><A
@@ -2835,7 +2964,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21348"
+NAME="AEN21469"
 ></A
 ><P
 ></P
@@ -2862,7 +2991,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the input UTF8 *</TD
 ></TR
 ><TR
 ><TD
@@ -2879,7 +3008,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the UTF8 character to be found</TD
 ></TR
 ><TR
 ><TD
@@ -2894,7 +3023,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the relative character position of the desired char
+or -1 if not found</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -2905,7 +3035,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21365"
+NAME="AEN21486"
 ></A
 ><H3
 ><A
@@ -2953,7 +3083,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21376"
+NAME="AEN21497"
 ></A
 ><P
 ></P
@@ -2980,7 +3110,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  a sequence of UTF-8 encoded bytes</TD
 ></TR
 ><TR
 ><TD
@@ -3029,7 +3159,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>a pointer to a newly created string
+or NULL if any problem</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -3040,7 +3171,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21397"
+NAME="AEN21518"
 ></A
 ><H3
 ><A
@@ -3071,7 +3202,7 @@ checking of the content of the string.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21404"
+NAME="AEN21525"
 ></A
 ><P
 ></P
@@ -3098,7 +3229,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  a sequence of UTF-8 encoded bytes</TD
 ></TR
 ><TR
 ><TD
@@ -3113,7 +3244,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the number of characters in the string or -1 in case of error</TD
 ></TR
 ></TBODY
 ></TABLE

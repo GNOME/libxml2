@@ -122,7 +122,7 @@ NAME="LIBXML-HTMLTREE"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN10834"
+NAME="AEN10892"
 ></A
 ><H2
 >Name</H2
@@ -130,7 +130,7 @@ NAME="AEN10834"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN10837"
+NAME="AEN10895"
 ></A
 ><H2
 >Synopsis</H2
@@ -318,7 +318,7 @@ HREF="libxml-tree.html#XMLDOCPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN10883"
+NAME="AEN10941"
 ></A
 ><H2
 >Description</H2
@@ -328,14 +328,14 @@ NAME="AEN10883"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN10886"
+NAME="AEN10944"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10888"
+NAME="AEN10946"
 ></A
 ><H3
 ><A
@@ -351,7 +351,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define     HTML_TEXT_NODE</PRE
+>#define HTML_TEXT_NODE		XML_TEXT_NODE</PRE
 ></TD
 ></TR
 ></TABLE
@@ -364,7 +364,7 @@ the same way as a text node in an XML document.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10894"
+NAME="AEN10952"
 ></A
 ><H3
 ><A
@@ -380,7 +380,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define     HTML_ENTITY_REF_NODE</PRE
+>#define HTML_ENTITY_REF_NODE	XML_ENTITY_REF_NODE</PRE
 ></TD
 ></TR
 ></TABLE
@@ -393,7 +393,7 @@ the same way as an entity reference in an XML document.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10900"
+NAME="AEN10958"
 ></A
 ><H3
 ><A
@@ -409,7 +409,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define     HTML_COMMENT_NODE</PRE
+>#define HTML_COMMENT_NODE	XML_COMMENT_NODE</PRE
 ></TD
 ></TR
 ></TABLE
@@ -422,7 +422,7 @@ the same way as a comment in an XML document.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10906"
+NAME="AEN10964"
 ></A
 ><H3
 ><A
@@ -438,7 +438,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define     HTML_PRESERVE_NODE</PRE
+>#define HTML_PRESERVE_NODE	XML_CDATA_SECTION_NODE</PRE
 ></TD
 ></TR
 ></TABLE
@@ -451,7 +451,7 @@ the same way as a CDATA section in an XML document.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10912"
+NAME="AEN10970"
 ></A
 ><H3
 ><A
@@ -467,7 +467,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define     HTML_PI_NODE</PRE
+>#define HTML_PI_NODE		XML_PI_NODE</PRE
 ></TD
 ></TR
 ></TABLE
@@ -480,7 +480,7 @@ the same way as a processing instruction in an XML document.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10918"
+NAME="AEN10976"
 ></A
 ><H3
 ><A
@@ -517,7 +517,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN10927"
+NAME="AEN10985"
 ></A
 ><P
 ></P
@@ -544,7 +544,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  URI for the dtd, or NULL</TD
 ></TR
 ><TR
 ><TD
@@ -561,7 +561,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the external ID of the DTD, or NULL</TD
 ></TR
 ><TR
 ><TD
@@ -576,7 +576,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>a new document</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -587,7 +587,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10944"
+NAME="AEN11002"
 ></A
 ><H3
 ><A
@@ -624,7 +624,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN10953"
+NAME="AEN11011"
 ></A
 ><P
 ></P
@@ -651,7 +651,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  URI for the dtd, or NULL</TD
 ></TR
 ><TR
 ><TD
@@ -668,7 +668,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the external ID of the DTD, or NULL</TD
 ></TR
 ><TR
 ><TD
@@ -683,7 +683,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>a new document, do not intialize the DTD if not provided</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -694,7 +694,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10970"
+NAME="AEN11028"
 ></A
 ><H3
 ><A
@@ -727,7 +727,7 @@ HREF="libxml-htmlparser.html#HTMLDOCPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN10978"
+NAME="AEN11036"
 ></A
 ><P
 ></P
@@ -754,7 +754,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the document</TD
 ></TR
 ><TR
 ><TD
@@ -769,7 +769,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the current encoding as flagged in the HTML source</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -780,7 +780,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10991"
+NAME="AEN11049"
 ></A
 ><H3
 ><A
@@ -816,7 +816,7 @@ the META flag associated.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN10999"
+NAME="AEN11057"
 ></A
 ><P
 ></P
@@ -843,7 +843,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the document</TD
 ></TR
 ><TR
 ><TD
@@ -860,7 +860,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the encoding string</TD
 ></TR
 ><TR
 ><TD
@@ -875,7 +875,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>0 in case of success and -1 in case of error</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -886,7 +886,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11016"
+NAME="AEN11074"
 ></A
 ><H3
 ><A
@@ -922,7 +922,7 @@ It's up to the caller to free the memory.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN11024"
+NAME="AEN11082"
 ></A
 ><P
 ></P
@@ -949,7 +949,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the document</TD
 ></TR
 ><TR
 ><TD
@@ -966,7 +966,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  OUT: the memory pointer</TD
 ></TR
 ><TR
 ><TD
@@ -983,7 +983,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  OUT: the memory length</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -994,7 +994,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11041"
+NAME="AEN11099"
 ></A
 ><H3
 ><A
@@ -1028,7 +1028,7 @@ HREF="libxml-tree.html#XMLDOCPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN11049"
+NAME="AEN11107"
 ></A
 ><P
 ></P
@@ -1055,7 +1055,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the FILE*</TD
 ></TR
 ><TR
 ><TD
@@ -1072,7 +1072,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the document</TD
 ></TR
 ><TR
 ><TD
@@ -1087,7 +1087,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the number of byte written or -1 in case of failure.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1098,7 +1098,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11066"
+NAME="AEN11124"
 ></A
 ><H3
 ><A
@@ -1135,7 +1135,7 @@ used.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN11074"
+NAME="AEN11132"
 ></A
 ><P
 ></P
@@ -1162,7 +1162,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the filename (or URL)</TD
 ></TR
 ><TR
 ><TD
@@ -1179,7 +1179,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the document</TD
 ></TR
 ><TR
 ><TD
@@ -1194,7 +1194,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the number of byte written or -1 in case of failure.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1205,7 +1205,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11091"
+NAME="AEN11149"
 ></A
 ><H3
 ><A
@@ -1244,7 +1244,7 @@ and formatting returns are added.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN11100"
+NAME="AEN11158"
 ></A
 ><P
 ></P
@@ -1271,7 +1271,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the HTML buffer output</TD
 ></TR
 ><TR
 ><TD
@@ -1288,7 +1288,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the document</TD
 ></TR
 ><TR
 ><TD
@@ -1305,7 +1305,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the current node</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1316,7 +1316,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11117"
+NAME="AEN11175"
 ></A
 ><H3
 ><A
@@ -1355,7 +1355,7 @@ and formatting returns are added.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN11126"
+NAME="AEN11184"
 ></A
 ><P
 ></P
@@ -1382,7 +1382,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the FILE pointer</TD
 ></TR
 ><TR
 ><TD
@@ -1399,7 +1399,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the document</TD
 ></TR
 ><TR
 ><TD
@@ -1416,7 +1416,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the current node</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1427,7 +1427,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11143"
+NAME="AEN11201"
 ></A
 ><H3
 ><A
@@ -1469,7 +1469,7 @@ HREF="libxml-tree.html#XMLNODEPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN11153"
+NAME="AEN11211"
 ></A
 ><P
 ></P
@@ -1496,7 +1496,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the FILE pointer</TD
 ></TR
 ><TR
 ><TD
@@ -1513,7 +1513,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the document</TD
 ></TR
 ><TR
 ><TD
@@ -1530,7 +1530,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the current node</TD
 ></TR
 ><TR
 ><TD
@@ -1547,7 +1547,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the document encoding</TD
 ></TR
 ><TR
 ><TD
@@ -1564,7 +1564,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  should formatting spaces been added</TD
 ></TR
 ><TR
 ><TD
@@ -1579,7 +1579,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the number of byte written or -1 in case of failure.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1590,7 +1590,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11182"
+NAME="AEN11240"
 ></A
 ><H3
 ><A
@@ -1623,7 +1623,7 @@ and formatting returns/spaces are added.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN11189"
+NAME="AEN11247"
 ></A
 ><P
 ></P
@@ -1650,7 +1650,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the filename</TD
 ></TR
 ><TR
 ><TD
@@ -1667,7 +1667,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the document</TD
 ></TR
 ><TR
 ><TD
@@ -1684,7 +1684,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the document encoding</TD
 ></TR
 ><TR
 ><TD
@@ -1699,7 +1699,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the number of byte written or -1 in case of failure.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1710,7 +1710,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11210"
+NAME="AEN11268"
 ></A
 ><H3
 ><A
@@ -1743,7 +1743,7 @@ HREF="libxml-tree.html#XMLDOCPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN11217"
+NAME="AEN11275"
 ></A
 ><P
 ></P
@@ -1770,7 +1770,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the filename</TD
 ></TR
 ><TR
 ><TD
@@ -1787,7 +1787,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the document</TD
 ></TR
 ><TR
 ><TD
@@ -1804,7 +1804,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the document encoding</TD
 ></TR
 ><TR
 ><TD
@@ -1821,7 +1821,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  should formatting spaces been added</TD
 ></TR
 ><TR
 ><TD
@@ -1836,7 +1836,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the number of byte written or -1 in case of failure.</TD
 ></TR
 ></TBODY
 ></TABLE

@@ -1,3 +1,8 @@
+Tue Sep 24 08:10:48 MDT 2002 John Fleck <jfleck@inkstain.net>
+
+	* doc/xml.html
+	fixing ftp links - thanks to Vitaly Ostanin
+
 Tue Sep 24 16:08:17 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xmlregexp.c: fixed the data callback on transition functionality

@@ -2738,6 +2738,7 @@ xmlRegExecPushString(xmlRegExecCtxtPtr exec, const xmlChar *value,
     xmlRegAtomPtr atom;
     int ret;
     int final = 0;
+    int progress = 1;
 
     if (exec == NULL)
 	return(-1);
@@ -3006,6 +3007,20 @@ xmlRegExecPushString(xmlRegExecCtxtPtr exec, const xmlChar *value,
 	}
 	if ((exec->transno != 0) || (exec->state->nbTrans == 0)) {
 rollback:
+            /*
+	     * if we didn't yet rollback on the current input store
+	     * the current state as the error state.
+	     */
+	    if (progress) {
+	        progress = 0;
+		if (exec->errString != NULL)
+		    xmlFree(exec->errString);
+		exec->errString = xmlStrdup(value);
+		exec->errState = exec->state;
+		memcpy(exec->errCounts, exec->counts,
+		       exec->comp->nbCounters * sizeof(int));
+	    }
+
 	    /*
 	     * Failed to find a way out
 	     */
@@ -3019,21 +3034,19 @@ rollback:
 #endif
 	    }
 	}
+	continue;
 progress:
+        progress = 1;
 	continue;
     }
     if (exec->status == 0) {
         return(exec->state->type == XML_REGEXP_FINAL_STATE);
     }
-    if (exec->status < 0) {
-	if (exec->errString != NULL)
-	    xmlFree(exec->errString);
-	exec->errString = xmlStrdup(value);
-	exec->errState = exec->state;
 #ifdef DEBUG_ERR
+    if (exec->status < 0) {
 	testerr(exec);
-#endif
     }
+#endif
     return(exec->status);
 }
 
@@ -3105,7 +3118,8 @@ xmlRegExecPushString2(xmlRegExecCtxtPtr exec, const xmlChar *value,
  * the parameter @values must point to an array of @nbval string pointers
  * on return nbval will contain the number of possible strings in that
  * state and the @values array will be updated with them. The string values
- * returned will be freed with the @exec context.
+ * returned will be freed with the @exec context and don't need to be
+ * deallocated.
  *
  * Returns: 0 in case of success or -1 in case of error.
  */
@@ -3163,7 +3177,7 @@ xmlRegExecErrInfo(xmlRegExecCtxtPtr exec, const xmlChar **string,
 		xmlRegCounterPtr counter;
 		int count;
 
-		count = exec->counts[trans->counter];
+		count = exec->errCounts[trans->counter];
 		counter = &exec->comp->counters[trans->counter];
 		if (count < counter->max) {
 		    values[*nbval] = (const xmlChar *) atom->valuep;

@@ -1,6 +1,8 @@
 /*
  * SAX.c : Default SAX handler to build a tree.
  *
+ * See Copyright for the status of this software.
+ *
  * Daniel Veillard <Daniel.Veillard@w3.org>
  */
 

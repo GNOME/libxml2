@@ -3,7 +3,7 @@
  *
  * See Copyright for the status of this software.
  *
- * $Id$
+ * Daniel.Veillard@w3.org
  */
 
 #ifndef __XML_ENTITIES_H__

@@ -16,7 +16,8 @@ libxml_la_SOURCES = \
 		error.h \
 		parser.c \
 		debugXML.c \
-		tree.c
+		tree.c \
+		valid.c
 
 xmlincdir = $(includedir)/gnome-xml
 xmlinc_HEADERS = \
@@ -24,7 +25,8 @@ xmlinc_HEADERS = \
 		encoding.h \
 		parser.h \
 		debugXML.h \
-		tree.h
+		tree.h \
+		valid.h
 
 DEPS = $(top_builddir)/libxml.la
 LDADDS = $(top_builddir)/libxml.la @Z_LIBS@

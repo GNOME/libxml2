@@ -16,8 +16,6 @@
  *
  * See Copyright for the status of this software.
  *
- * $Id$
- *
  * Daniel.Veillard@w3.org
  */
 

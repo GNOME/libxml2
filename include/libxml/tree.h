@@ -4,7 +4,7 @@
  *
  * See Copyright for the status of this software.
  *
- * $Id$
+ * Daniel.Veillard@w3.org
  */
 
 #ifndef __XML_TREE_H__
@@ -14,6 +14,8 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#include <stdio.h>
 
 /*
  * The different element types carried by an XML tree
@@ -61,18 +63,51 @@ typedef unsigned char CHAR;
  * TODO !!!!
  */
 
+#define XML_ATTRIBUTE_NONE		1
+#define XML_ATTRIBUTE_REQUIRED		2
+#define XML_ATTRIBUTE_IMPLIED		3
+#define XML_ATTRIBUTE_FIXED		4
+
+#define XML_ATTRIBUTE_STRING		1
+#define XML_ATTRIBUTE_ID		2
+#define XML_ATTRIBUTE_IDREF		3
+#define XML_ATTRIBUTE_IDREFS		4
+#define XML_ATTRIBUTE_ENTITY		5
+#define XML_ATTRIBUTE_ENTITIES		6
+#define XML_ATTRIBUTE_NMTOKEN		7
+#define XML_ATTRIBUTE_NMTOKENS		8
+#define XML_ATTRIBUTE_ENUMERATED	9
+
 /*
  * a DTD Element definition.
  */
+#define XML_ELEMENT_CONTENT_PCDATA	1
+#define XML_ELEMENT_CONTENT_ELEMENT	2
+#define XML_ELEMENT_CONTENT_SEQ		3
+#define XML_ELEMENT_CONTENT_OR		4
+
+#define XML_ELEMENT_CONTENT_ONCE	1
+#define XML_ELEMENT_CONTENT_OPT		2
+#define XML_ELEMENT_CONTENT_MULT	3
+#define XML_ELEMENT_CONTENT_PLUS	4
+
+typedef struct xmlElementContent {
+    int            type;		/* PCDATA, ELEMENT, SEQ or OR */
+    int            ocur;		/* ONCE, OPT, MULT or PLUS */
+    const CHAR    *name;		/* Element name */
+    struct xmlElementContent *c1;	/* first child */
+    struct xmlElementContent *c2;	/* second child */
+} xmlElementContent, *xmlElementContentPtr;
+
 #define XML_ELEMENT_TYPE_EMPTY		1
 #define XML_ELEMENT_TYPE_ANY		2
 #define XML_ELEMENT_TYPE_MIXED		3
 #define XML_ELEMENT_TYPE_ELEMENT	4
 
 typedef struct xmlElement {
-    const CHAR    *name;	/* Element name */
-    int            type;	/* type (too simple, to extend ...) */
-    /* TODO !!! more needed */
+    const CHAR    *name;		/* Element name */
+    int            type;		/* The type */
+    xmlElementContentPtr content;	/* the allowed element content */
 } xmlElement, *xmlElementPtr;
 
 /*
@@ -132,6 +167,7 @@ typedef struct xmlNode {
     struct xmlNode *next;	/* next sibling link  */
     struct xmlNode *prev;	/* previous sibling link  */
     struct xmlNode *childs;	/* parent->childs link */
+    struct xmlNode *last;	/* last child link */
     struct xmlAttr *properties;	/* properties list */
     const CHAR     *name;       /* the name of the node, or the entity */
     xmlNs          *ns;         /* pointer to the associated namespace */
@@ -153,9 +189,9 @@ typedef struct xmlDoc {
     const CHAR     *encoding;   /* encoding, if any */
     int             compression;/* level of zlib compression */
     int             standalone; /* standalone document (no external refs) */
-    struct xmlDtd  *dtd;	/* the document DTD if available */
+    struct xmlDtd  *intSubset;	/* the document internal subset */
+    struct xmlDtd  *extSubset;	/* the document external subset */
     struct xmlNs   *oldNs;	/* Global namespace, the old way */
-    void           *entities;   /* Hash table for general entities if any */
     struct xmlNode *root;	/* the document tree */
 } xmlDoc, *xmlDocPtr;
 
@@ -169,6 +205,8 @@ extern int xmlIndentTreeOutput;  /* try to indent the tree dumps */
 /*
  * Creating/freeing new structures
  */
+extern xmlDtdPtr xmlCreateIntSubset(xmlDocPtr doc, const CHAR *name,
+                    const CHAR *ExternalID, const CHAR *SystemID);
 extern xmlDtdPtr xmlNewDtd(xmlDocPtr doc, const CHAR *name,
                     const CHAR *ExternalID, const CHAR *SystemID);
 extern void xmlFreeDtd(xmlDtdPtr cur);
@@ -240,7 +278,7 @@ extern xmlNsPtr xmlCopyNamespaceList(xmlNsPtr cur);
  */
 extern xmlAttrPtr xmlSetProp(xmlNodePtr node, const CHAR *name,
                              const CHAR *value);
-extern const CHAR *xmlGetProp(xmlNodePtr node, const CHAR *name);
+extern CHAR *xmlGetProp(xmlNodePtr node, const CHAR *name);
 extern xmlNodePtr xmlStringGetNodeList(xmlDocPtr doc, const CHAR *value);
 extern xmlNodePtr xmlStringLenGetNodeList(xmlDocPtr doc, const CHAR *value,
                                           int len);

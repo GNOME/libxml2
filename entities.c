@@ -3,7 +3,7 @@
  *
  * See Copyright for the status of this software.
  *
- * $Id$
+ * Daniel.Veillard@w3.org
  */
 
 #include <stdio.h>
@@ -186,14 +186,15 @@ xmlAddDtdEntity(xmlDocPtr doc, const CHAR *name, int type,
               const CHAR *ExternalID, const CHAR *SystemID, CHAR *content) {
     xmlEntitiesTablePtr table;
 
-    if (doc->dtd == NULL) {
-        fprintf(stderr, "xmlAddDtdEntity: document without Dtd !\n");
+    if (doc->extSubset == NULL) {
+        fprintf(stderr,
+	        "xmlAddDtdEntity: document without external subset !\n");
 	return;
     }
-    table = (xmlEntitiesTablePtr) doc->dtd->entities;
+    table = (xmlEntitiesTablePtr) doc->extSubset->entities;
     if (table == NULL) {
         table = xmlCreateEntitiesTable();
-	doc->dtd->entities = table;
+	doc->extSubset->entities = table;
     }
     xmlAddEntity(table, name, type, ExternalID, SystemID, content);
 }
@@ -214,12 +215,22 @@ xmlAddDocEntity(xmlDocPtr doc, const CHAR *name, int type,
               const CHAR *ExternalID, const CHAR *SystemID, CHAR *content) {
     xmlEntitiesTablePtr table;
 
-    table = (xmlEntitiesTablePtr) doc->entities;
+    if (doc == NULL) {
+        fprintf(stderr,
+	        "xmlAddDocEntity: document is NULL !\n");
+	return;
+    }
+    if (doc->intSubset == NULL) {
+        fprintf(stderr,
+	        "xmlAddDtdEntity: document without internal subset !\n");
+	return;
+    }
+    table = (xmlEntitiesTablePtr) doc->intSubset->entities;
     if (table == NULL) {
         table = xmlCreateEntitiesTable();
-	doc->entities = table;
+	doc->intSubset->entities = table;
     }
-    xmlAddEntity(doc->entities, name, type, ExternalID, SystemID, content);
+    xmlAddEntity(table, name, type, ExternalID, SystemID, content);
 }
 
 /**
@@ -238,8 +249,8 @@ xmlGetDtdEntity(xmlDocPtr doc, const CHAR *name) {
     xmlEntityPtr cur;
     xmlEntitiesTablePtr table;
 
-    if ((doc->dtd != NULL) && (doc->dtd->entities != NULL)) {
-	table = (xmlEntitiesTablePtr) doc->dtd->entities;
+    if ((doc->extSubset != NULL) && (doc->extSubset->entities != NULL)) {
+	table = (xmlEntitiesTablePtr) doc->extSubset->entities;
 	for (i = 0;i < table->nb_entities;i++) {
 	    cur = &table->table[i];
 	    if (!xmlStrcmp(cur->name, name)) return(cur);
@@ -265,8 +276,8 @@ xmlGetDocEntity(xmlDocPtr doc, const CHAR *name) {
     xmlEntityPtr cur;
     xmlEntitiesTablePtr table;
 
-    if (doc->entities != NULL) {
-	table = (xmlEntitiesTablePtr) doc->entities;
+    if ((doc->intSubset != NULL) && (doc->intSubset->entities != NULL)) {
+	table = (xmlEntitiesTablePtr) doc->intSubset->entities;
 	for (i = 0;i < table->nb_entities;i++) {
 	    cur = &table->table[i];
 	    if (!xmlStrcmp(cur->name, name)) return(cur);

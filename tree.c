@@ -3,9 +3,9 @@
  *
  * See Copyright for the status of this software.
  *
- * $Id$
- *
  * TODO Cleanup the Dump mechanism.
+ *
+ * Daniel.Veillard@w3.org
  */
 
 #include "config.h"
@@ -26,6 +26,15 @@ int oldXMLWDcompatibility = 0;
 int xmlIndentTreeOutput = 1;
 
 static int xmlCompressMode = 0;
+
+#define UPDATE_LAST_CHILD(n) if ((n) != NULL) {				\
+    xmlNodePtr ulccur = (n)->childs;					\
+    if (ulccur == NULL) {						\
+        (n)->last = NULL;						\
+    } else {								\
+        while (ulccur->next != NULL) ulccur = ulccur->next;		\
+	(n)->last = ulccur;						\
+}   }
 
 /************************************************************************
  *									*
@@ -234,9 +243,10 @@ xmlNewDtd(xmlDocPtr doc, const CHAR *name,
                     const CHAR *ExternalID, const CHAR *SystemID) {
     xmlDtdPtr cur;
 
-    if ((doc != NULL) && (doc->dtd != NULL)) {
+    if ((doc != NULL) && (doc->extSubset != NULL)) {
         fprintf(stderr, "xmlNewDtd(%s): document %s already have a DTD %s\n",
-	/* !!! */ (char *) name, doc->name, /* !!! */ (char *)doc->dtd->name);
+	    /* !!! */ (char *) name, doc->name,
+	    /* !!! */ (char *)doc->extSubset->name);
     }
 
     /*
@@ -263,7 +273,58 @@ xmlNewDtd(xmlDocPtr doc, const CHAR *name,
     cur->elements = NULL;
     cur->entities = NULL;
     if (doc != NULL)
-	doc->dtd = cur;
+	doc->extSubset = cur;
+
+    return(cur);
+}
+
+/**
+ * xmlCreateIntSubset:
+ * @doc:  the document pointer
+ * @name:  the DTD name
+ * @ExternalID:  the external ID
+ * @SystemID:  the system ID
+ *
+ * Creatte the internal subset of a document
+ * return values: a pointer to the new DTD structure
+ */
+xmlDtdPtr
+xmlCreateIntSubset(xmlDocPtr doc, const CHAR *name,
+                   const CHAR *ExternalID, const CHAR *SystemID) {
+    xmlDtdPtr cur;
+
+    if ((doc != NULL) && (doc->intSubset != NULL)) {
+        fprintf(stderr, 
+     "xmlCreateIntSubset(): document %s already have an internal subset\n",
+	    doc->name);
+	return(NULL);
+    }
+
+    /*
+     * Allocate a new DTD and fill the fields.
+     */
+    cur = (xmlDtdPtr) malloc(sizeof(xmlDtd));
+    if (cur == NULL) {
+        fprintf(stderr, "xmlNewDtd : malloc failed\n");
+	return(NULL);
+    }
+
+    if (name != NULL)
+	cur->name = xmlStrdup(name); 
+    else
+        cur->name = NULL;
+    if (ExternalID != NULL)
+	cur->ExternalID = xmlStrdup(ExternalID); 
+    else
+        cur->ExternalID = NULL;
+    if (SystemID != NULL)
+	cur->SystemID = xmlStrdup(SystemID); 
+    else
+        cur->SystemID = NULL;
+    cur->elements = NULL;
+    cur->entities = NULL;
+    if (doc != NULL)
+	doc->intSubset = cur;
 
     return(cur);
 }
@@ -319,10 +380,10 @@ xmlNewDoc(const CHAR *version) {
     cur->version = xmlStrdup(version); 
     cur->name = NULL;
     cur->root = NULL; 
-    cur->dtd = NULL;
+    cur->intSubset = NULL;
+    cur->extSubset = NULL;
     cur->oldNs = NULL;
     cur->encoding = NULL;
-    cur->entities = NULL;
     cur->standalone = -1;
     cur->compression = xmlCompressMode;
 #ifndef WITHOUT_CORBA
@@ -342,17 +403,18 @@ xmlNewDoc(const CHAR *version) {
 void
 xmlFreeDoc(xmlDocPtr cur) {
     if (cur == NULL) {
+#ifdef DEBUG_TREE
         fprintf(stderr, "xmlFreeDoc : document == NULL\n");
+#endif
 	return;
     }
     free((char *) cur->version);
     if (cur->name != NULL) free((char *) cur->name);
     if (cur->encoding != NULL) free((char *) cur->encoding);
     if (cur->root != NULL) xmlFreeNode(cur->root);
-    if (cur->dtd != NULL) xmlFreeDtd(cur->dtd);
+    if (cur->intSubset != NULL) xmlFreeDtd(cur->intSubset);
+    if (cur->extSubset != NULL) xmlFreeDtd(cur->extSubset);
     if (cur->oldNs != NULL) xmlFreeNsList(cur->oldNs);
-    if (cur->entities != NULL)
-        xmlFreeEntitiesTable((xmlEntitiesTablePtr) cur->entities);
     memset(cur, -1, sizeof(xmlDoc));
     free(cur);
 }
@@ -803,6 +865,7 @@ xmlNewNode(xmlNsPtr ns, const CHAR *name) {
     cur->next = NULL;
     cur->prev = NULL;
     cur->childs = NULL;
+    cur->last = NULL;
     cur->properties = NULL;
     cur->name = xmlStrdup(name);
     cur->ns = ns;
@@ -834,8 +897,10 @@ xmlNewDocNode(xmlDocPtr doc, xmlNsPtr ns,
     cur = xmlNewNode(ns, name);
     if (cur != NULL) {
         cur->doc = doc;
-	if (content != NULL)
+	if (content != NULL) {
 	    cur->childs = xmlStringGetNodeList(doc, content);
+	    UPDATE_LAST_CHILD(cur);
+	}
     }
     return(cur);
 }
@@ -867,6 +932,7 @@ xmlNewText(const CHAR *content) {
     cur->next = NULL; 
     cur->prev = NULL; 
     cur->childs = NULL; 
+    cur->last = NULL; 
     cur->properties = NULL; 
     cur->type = XML_TEXT_NODE;
     cur->name = xmlStrdup(xmlStringText);
@@ -907,6 +973,7 @@ xmlNewReference(xmlDocPtr doc, const CHAR *name) {
     cur->next = NULL; 
     cur->prev = NULL; 
     cur->childs = NULL; 
+    cur->last = NULL; 
     cur->properties = NULL; 
     if (name[0] == '&') {
         int len;
@@ -973,6 +1040,7 @@ xmlNewTextLen(const CHAR *content, int len) {
     cur->prev = NULL; 
     cur->next = NULL; 
     cur->childs = NULL; 
+    cur->last = NULL; 
     cur->properties = NULL; 
     cur->type = XML_TEXT_NODE;
     cur->name = xmlStrdup(xmlStringText);
@@ -1030,6 +1098,7 @@ xmlNewComment(CHAR *content) {
     cur->prev = NULL; 
     cur->next = NULL; 
     cur->childs = NULL; 
+    cur->last = NULL; 
     cur->properties = NULL; 
     cur->type = XML_COMMENT_NODE;
     cur->name = xmlStrdup(xmlStringText);
@@ -1104,11 +1173,12 @@ xmlNewChild(xmlNodePtr parent, xmlNsPtr ns,
     cur->doc = parent->doc;
     if (parent->childs == NULL) {
         parent->childs = cur;
+	parent->last = cur;
     } else {
-        prev = parent->childs;
-	while (prev->next != NULL) prev = prev->next;
+        prev = parent->last;
 	prev->next = cur;
 	cur->prev = prev;
+	parent->last = cur;
     }
 
     return(cur);
@@ -1146,6 +1216,7 @@ xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
      */
     cur->parent = parent;
     cur->doc = parent->doc; /* the parent may not be linked to a doc ! */
+
     /*
      * Handle the case where parent->content != NULL, in that case it will
      * create a intermediate TEXT node.
@@ -1159,17 +1230,19 @@ xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
 	    if (text->next != NULL)
 		text->next->prev = text;
 	    parent->childs = text;
+	    UPDATE_LAST_CHILD(parent);
 	    free(parent->content);
 	    parent->content = NULL;
 	}
     }
     if (parent->childs == NULL) {
         parent->childs = cur;
+	parent->last = cur;
     } else {
-        prev = parent->childs;
-	while (prev->next != NULL) prev = prev->next;
+        prev = parent->last;
 	prev->next = cur;
 	cur->prev = prev;
+	parent->last = cur;
     }
 
     return(cur);
@@ -1184,23 +1257,11 @@ xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
  */
 xmlNodePtr
 xmlGetLastChild(xmlNodePtr parent) {
-    xmlNodePtr last;
-
     if (parent == NULL) {
         fprintf(stderr, "xmlGetLastChild : parent == NULL\n");
 	return(NULL);
     }
-
-    /*
-     * add the new element at the end of the childs list.
-     */
-    if (parent->childs == NULL) {
-        return(NULL);
-    } else {
-        last = parent->childs;
-	while (last->next != NULL) last = last->next;
-    }
-    return(last);
+    return(parent->last);
 }
 
 /**
@@ -1264,6 +1325,8 @@ xmlUnlinkNode(xmlNodePtr cur) {
     }
     if ((cur->parent != NULL) && (cur->parent->childs == cur))
         cur->parent->childs = cur->next;
+    if ((cur->parent != NULL) && (cur->parent->last == cur))
+        cur->parent->last = cur->prev;
     if (cur->next != NULL)
         cur->next->prev = cur->prev;
     if (cur->prev != NULL)
@@ -1419,6 +1482,7 @@ xmlStaticCopyNode(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
     ret->next = NULL;
     ret->prev = NULL;
     ret->childs = NULL;
+    ret->last = NULL;
     ret->properties = NULL;
     if (node->name != NULL)
 	ret->name = xmlStrdup(node->name);
@@ -1469,6 +1533,7 @@ xmlStaticCopyNode(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
     }
     if (node->childs != NULL)
         ret->childs = xmlStaticCopyNodeList(node->childs, doc, ret);
+    UPDATE_LAST_CHILD(ret);
     return(ret);
 }
 
@@ -1601,11 +1666,8 @@ xmlCopyDoc(xmlDocPtr doc, int recursive) {
     ret->standalone = doc->standalone;
     if (!recursive) return(ret);
 
-    if (doc->dtd != NULL)
-        ret->dtd = xmlCopyDtd(doc->dtd);
-    if (doc->entities != NULL)
-        ret->entities = (void *) xmlCopyEntitiesTable(
-	                    (xmlEntitiesTablePtr) doc->entities);
+    if (doc->intSubset != NULL)
+        ret->intSubset = xmlCopyDtd(doc->intSubset);
     if (doc->oldNs != NULL)
         ret->oldNs = xmlCopyNamespaceList(doc->oldNs);
     if (doc->root != NULL)
@@ -1677,6 +1739,7 @@ xmlNodeSetContent(xmlNodePtr cur, const CHAR *content) {
 	    }
 	    if (cur->childs != NULL) xmlFreeNode(cur->childs);
 	    cur->childs = xmlStringGetNodeList(cur->doc, content);
+	    UPDATE_LAST_CHILD(cur);
 	    break;
         case XML_ATTRIBUTE_NODE:
 	    break;
@@ -1688,6 +1751,7 @@ xmlNodeSetContent(xmlNodePtr cur, const CHAR *content) {
         case XML_COMMENT_NODE:
 	    if (cur->content != NULL) free(cur->content);
 	    if (cur->childs != NULL) xmlFreeNode(cur->childs);
+	    cur->last = cur->childs = NULL;
 	    if (content != NULL)
 		cur->content = xmlStrdup(content);
 	    else 
@@ -1723,6 +1787,7 @@ xmlNodeSetContentLen(xmlNodePtr cur, const CHAR *content, int len) {
 	    }
 	    if (cur->childs != NULL) xmlFreeNode(cur->childs);
 	    cur->childs = xmlStringLenGetNodeList(cur->doc, content, len);
+	    UPDATE_LAST_CHILD(cur);
 	    break;
         case XML_ATTRIBUTE_NODE:
 	    break;
@@ -1734,6 +1799,7 @@ xmlNodeSetContentLen(xmlNodePtr cur, const CHAR *content, int len) {
         case XML_COMMENT_NODE:
 	    if (cur->content != NULL) free(cur->content);
 	    if (cur->childs != NULL) xmlFreeNode(cur->childs);
+	    cur->childs = cur->last = NULL;
 	    if (content != NULL)
 		cur->content = xmlStrndup(content, len);
 	    else 
@@ -1743,6 +1809,8 @@ xmlNodeSetContentLen(xmlNodePtr cur, const CHAR *content, int len) {
 	    break;
         case XML_NOTATION_NODE:
 	    if (cur->content != NULL) free(cur->content);
+	    if (cur->childs != NULL) xmlFreeNode(cur->childs);
+	    cur->childs = cur->last = NULL;
 	    if (content != NULL)
 		cur->content = xmlStrndup(content, len);
 	    else 
@@ -1772,24 +1840,22 @@ xmlNodeAddContentLen(xmlNodePtr cur, const CHAR *content, int len) {
 	    xmlNodePtr last = NULL, new;
 
 	    if (cur->childs != NULL) {
-		last = cur->childs;
-		while (last->next != NULL) last = last->next;
+		last = cur->last;
 	    } else {
 	        if (cur->content != NULL) {
 		    cur->childs = xmlStringGetNodeList(cur->doc, cur->content);
+		    UPDATE_LAST_CHILD(cur);
 		    free(cur->content);
 		    cur->content = NULL;
-		    if (cur->childs != NULL) {
-			last = cur->childs;
-			while (last->next != NULL) last = last->next;
-                    }
+		    last = cur->last;
 		}
 	    }
-	    new = xmlStringLenGetNodeList(cur->doc, content, len);
+	    new = xmlNewTextLen(content, len);
 	    if (new != NULL) {
 		xmlAddChild(cur, new);
-	        if ((last != NULL) && (last->next == new))
+	        if ((last != NULL) && (last->next == new)) {
 		    xmlTextMerge(last, new);
+		}
 	    }
 	    break;
 	}
@@ -1936,19 +2002,14 @@ xmlSearchNsByHref(xmlDocPtr doc, xmlNodePtr node, const CHAR *href) {
  *
  * Search and get the value of an attribute associated to a node
  * This does the entity substitution.
- *
  * return values: the attribute value or NULL if not found.
  */
-const CHAR *xmlGetProp(xmlNodePtr node, const CHAR *name) {
+CHAR *xmlGetProp(xmlNodePtr node, const CHAR *name) {
     xmlAttrPtr prop = node->properties;
 
     while (prop != NULL) {
-        if (!xmlStrcmp(prop->name, name)) {
-	    if (prop->val != NULL)
-		return(xmlNodeListGetString(node->doc, prop->val, 1));
-	    else
-	        return(xmlStrndup("", 1));
-	}
+        if (!xmlStrcmp(prop->name, name)) 
+	    return(xmlNodeListGetString(node->doc, prop->val, 1));
 	prop = prop->next;
     }
     return(NULL);
@@ -2188,10 +2249,10 @@ xmlNsListDump(xmlNsPtr cur) {
  */
 static void
 xmlDtdDump(xmlDocPtr doc) {
-    xmlDtdPtr cur = doc->dtd;
+    xmlDtdPtr cur = doc->intSubset;
 
     if (cur == NULL) {
-        fprintf(stderr, "xmlDtdDump : DTD == NULL\n");
+        fprintf(stderr, "xmlDtdDump : no internal subset\n");
 	return;
     }
     xmlBufferWriteChar("<!DOCTYPE ");
@@ -2207,15 +2268,13 @@ xmlDtdDump(xmlDocPtr doc) {
 	xmlBufferWriteCHAR(cur->SystemID);
 	xmlBufferWriteChar("\"");
     }
-    if ((cur->entities == NULL) && (doc->entities == NULL)) {
+    if (cur->entities == NULL) {
 	xmlBufferWriteChar(">\n");
 	return;
     }
     xmlBufferWriteChar(" [\n");
     if (cur->entities != NULL)
 	xmlDumpEntitiesTable((xmlEntitiesTablePtr) cur->entities);
-    if (doc->entities != NULL)
-	xmlDumpEntitiesTable((xmlEntitiesTablePtr) doc->entities);
     xmlBufferWriteChar("]");
 
     /* TODO !!! a lot more things to dump ... */
@@ -2239,13 +2298,13 @@ xmlAttrDump(xmlDocPtr doc, xmlAttrPtr cur) {
     }
     xmlBufferWriteChar(" ");
     xmlBufferWriteCHAR(cur->name);
-    xmlBufferWriteChar("=\"");
     value = xmlNodeListGetString(doc, cur->val, 0);
     if (value) {
+	xmlBufferWriteChar("=\"");
 	xmlBufferWriteCHAR(value);
+	xmlBufferWriteChar("\"");
 	free(value);
     }
-    xmlBufferWriteChar("\"");
 }
 
 /**
@@ -2401,7 +2460,7 @@ xmlDocContentDump(xmlDocPtr cur) {
 	    break;
     }
     xmlBufferWriteChar("?>\n");
-    if ((cur->dtd != NULL) || (cur->entities != NULL))
+    if (cur->intSubset != NULL)
         xmlDtdDump(cur);
     if (cur->root != NULL) {
 	/* global namespace definitions, the old way */
@@ -2425,7 +2484,9 @@ xmlDocContentDump(xmlDocPtr cur) {
 void
 xmlDocDumpMemory(xmlDocPtr cur, CHAR**mem, int *size) {
     if (cur == NULL) {
-        fprintf(stderr, "xmlDocDump : document == NULL\n");
+#ifdef DEBUG_TREE
+        fprintf(stderr, "xmlDocDumpMemory : document == NULL\n");
+#endif
 	*mem = NULL;
 	*size = 0;
 	return;
@@ -2501,7 +2562,9 @@ xmlSetCompressMode(int mode) {
 void
 xmlDocDump(FILE *f, xmlDocPtr cur) {
     if (cur == NULL) {
+#ifdef DEBUG_TREE
         fprintf(stderr, "xmlDocDump : document == NULL\n");
+#endif
 	return;
     }
     buffer_index = 0;

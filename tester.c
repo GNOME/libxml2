@@ -3,7 +3,7 @@
  *
  * See Copyright for the status of this software.
  *
- * $Id$
+ * Daniel.Veillard@w3.org
  */
 
 #ifdef WIN32
@@ -32,13 +32,14 @@
 
 static int debug = 0;
 static int copy = 0;
+static int recovery = 0;
 
 /*
  * Note: there is a couple of errors introduced on purpose.
  */
 static CHAR buffer[] = 
 "\n\
-<?xml version=\"1.0\">\n\
+<?xml version=\"1.0\"?>\n\
 <?xml:namespace ns = \"http://www.ietf.org/standards/dav/\" prefix = \"D\"?>\n\
 <?xml:namespace ns = \"http://www.w3.com/standards/z39.50/\" prefix = \"Z\"?>\n\
 <D:propertyupdate>\n\
@@ -109,7 +110,10 @@ void parseAndPrintFile(char *filename) {
     /*
      * build an XML tree from a string;
      */
-    doc = xmlParseFile(filename);
+    if (recovery)
+	doc = xmlRecoverFile(filename);
+    else
+	doc = xmlParseFile(filename);
 
     /*
      * test intermediate copy if needed.
@@ -140,7 +144,10 @@ void parseAndPrintBuffer(CHAR *buf) {
     /*
      * build an XML tree from a string;
      */
-    doc = xmlParseDoc(buf);
+    if (recovery)
+	doc = xmlRecoverDoc(buf);
+    else
+	doc = xmlParseDoc(buf);
 
     /*
      * test intermediate copy if needed.
@@ -174,6 +181,9 @@ int main(int argc, char **argv) {
 	    debug++;
 	else if ((!strcmp(argv[i], "-copy")) || (!strcmp(argv[i], "--copy")))
 	    copy++;
+	else if ((!strcmp(argv[i], "-recover")) ||
+	         (!strcmp(argv[i], "--recover")))
+	    recovery++;
     }
     for (i = 1; i < argc ; i++) {
 	if (argv[i][0] != '-') {

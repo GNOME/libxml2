@@ -1,3 +1,12 @@
+Sun Jan 17 20:06:36 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* parser.c, tree.[ch] : more work toward conformance testing,
+	  added a last element to accelerate parsing of very flat structures
+	  started working on internal subset Element content declaration.
+	* valid.[ch] : first cut at adding code toward validation.
+	* previous changes had also small impact on most files, especially
+	  the conformance testing using James Clark test suite.
+
 Sun Jan 17 14:45:06 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* test/* : updated the examples, most of them were not well

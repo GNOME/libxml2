@@ -3,7 +3,7 @@
  *
  * See Copyright for the status of this software.
  *
- * $Id$
+ * Daniel.Veillard@w3.org
  */
 
 #ifndef __XML_PARSER_H__
@@ -46,6 +46,7 @@ typedef struct xmlParserNodeInfoSeq {
 typedef struct xmlParserCtxt {
     struct xmlSAXHandler *sax;        /* The SAX handler */
     xmlDocPtr doc;                    /* the document being built */
+    int            wellFormed;        /* is the document well formed */
 
     /* Input stream stack */
     xmlParserInputPtr  input;         /* Current input stream */
@@ -131,15 +132,8 @@ extern xmlSAXHandler xmlDefaultSAXHandler;
 #include "entities.h"
 
 /*
- * Interfaces
+ * CHAR handling
  */
-extern int xmlParseDocument(xmlParserCtxtPtr ctxt);
-extern xmlDocPtr xmlParseDoc(CHAR *cur);
-extern xmlDocPtr xmlParseMemory(char *buffer, int size);
-extern xmlDocPtr xmlParseFile(const char *filename);
-extern xmlDocPtr xmlSAXParseDoc(xmlSAXHandlerPtr sax, CHAR *cur);
-extern xmlDocPtr xmlSAXParseMemory(xmlSAXHandlerPtr sax, char *buffer, int size);
-extern xmlDocPtr xmlSAXParseFile(xmlSAXHandlerPtr sax, const char *filename);
 extern CHAR *xmlStrdup(const CHAR *input);
 extern CHAR *xmlStrndup(const CHAR *input, int n);
 extern CHAR *xmlStrchr(const CHAR *str, CHAR val);
@@ -149,6 +143,29 @@ extern int xmlStrlen(const CHAR *str);
 extern CHAR *xmlStrcat(CHAR *cur, const CHAR *add);
 extern CHAR *xmlStrncat(CHAR *cur, const CHAR *add, int len);
 
+/*
+ * Interfaces
+ */
+extern xmlDocPtr xmlParseDoc(CHAR *cur);
+extern xmlDocPtr xmlParseMemory(char *buffer, int size);
+extern xmlDocPtr xmlParseFile(const char *filename);
+
+/*
+ * Recovery mode 
+ */
+extern xmlDocPtr xmlRecoverDoc(CHAR *cur);
+extern xmlDocPtr xmlRecoverMemory(char *buffer, int size);
+extern xmlDocPtr xmlRecoverFile(const char *filename);
+
+/*
+ * Internal routines
+ */
+extern int xmlParseDocument(xmlParserCtxtPtr ctxt);
+extern xmlDocPtr xmlSAXParseDoc(xmlSAXHandlerPtr sax, CHAR *cur, int recovery);
+extern xmlDocPtr xmlSAXParseMemory(xmlSAXHandlerPtr sax, char *buffer,
+                                   int size, int recovery);
+extern xmlDocPtr xmlSAXParseFile(xmlSAXHandlerPtr sax, const char *filename,
+                                 int recovery);
 extern void xmlInitParserCtxt(xmlParserCtxtPtr ctx);
 extern void xmlClearParserCtxt(xmlParserCtxtPtr ctx);
 extern void xmlSetupParserForBuffer(xmlParserCtxtPtr ctx, const CHAR* buffer,

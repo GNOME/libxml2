@@ -3,7 +3,7 @@
  *
  * See Copyright for the status of this software.
  *
- * $Id$
+ * Daniel.Veillard@w3.org
  */
 
 #ifdef WIN32
@@ -30,6 +30,7 @@
 #include "tree.h"
 #include "parser.h"
 #include "entities.h"
+#include "valid.h"
 
 /************************************************************************
  *									*
@@ -182,6 +183,38 @@ xmlNewEntityInputStream(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
     return(input);
 }
 
+/**
+ * xmlNewStringInputStream:
+ * @ctxt:  an XML parser context
+ * @entity:  an Entity pointer
+ *
+ * Create a new input stream based on a memory buffer.
+ * return vakues: the new input stream
+ */
+xmlParserInputPtr
+xmlNewStringInputStream(xmlParserCtxtPtr ctxt, CHAR *string) {
+    xmlParserInputPtr input;
+
+    if (string == NULL) {
+        if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt,
+	      "internal: xmlNewStringInputStream string = NULL\n");
+	return(NULL);
+    }
+    input = (xmlParserInputPtr) malloc(sizeof(xmlParserInput));
+    if (input == NULL) {
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt, "malloc: couldn't allocate a new input stream\n");
+	return(NULL);
+    }
+    input->filename = NULL;
+    input->base = string;
+    input->cur = string;
+    input->line = 1;
+    input->col = 1;
+    return(input);
+}
+
 /*
  * A few macros needed to help building the parser.
  */
@@ -198,8 +231,10 @@ xmlNewEntityInputStream(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
  * any Unicode character, excluding the surrogate blocks, FFFE, and FFFF.
  */
 #define IS_CHAR(c)							\
-    (((c) == 0x09) || ((c) == 0x0a) || ((c) == 0x0d) ||			\
-     (((c) >= 0x20) && ((c) != 0xFFFE) && ((c) != 0xFFFF)))
+    ((((c) == 0x09) || ((c) == 0x0a) || ((c) == 0x0d) ||		\
+      (((c) >= 0x20) && ((c) != 0xFFFE) && ((c) != 0xFFFF))) &&		\
+      (((c) <= 0xD7FF) || ((c) >= 0xE000)) && ((c) >= 0) &&		\
+      ((c) <= 0x10FFFF))
 
 /*
  * [3] S ::= (#x20 | #x9 | #xD | #xA)+
@@ -579,8 +614,9 @@ xmlNewEntityInputStream(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
  * any Unicode character, excluding the surrogate blocks, FFFE, and FFFF.
  */
 #define IS_CHAR(c)							\
-    (((c) == 0x09) || ((c) == 0x0a) || ((c) == 0x0d) || ((c) >= 0x20) ||\
-     ((c) == 0xa))
+    ((((c) == 0x09) || ((c) == 0x0a) || ((c) == 0x0d) ||		\
+      (((c) >= 0x20) && ((c) != 0xFFFE) && ((c) != 0xFFFF))) &&		\
+      (((c) <= 0xD7FF) || ((c) >= 0xE000)) && ((c) <= 0x10FFFF))
 
 /*
  * [85] BaseChar ::= ... long list see REC ...
@@ -935,6 +971,7 @@ xmlHandleEntity(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
         if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt, "xmlHandleEntity %s: content == NULL\n",
 	               entity->name);
+	ctxt->wellFormed = 0;
         return;
     }
     len = xmlStrlen(entity->content);
@@ -1081,6 +1118,7 @@ xmlParseQuotedString(xmlParserCtxtPtr ctxt) {
 	if (CUR != '"') {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	        ctxt->sax->error(ctxt, "String not closed \"%.50s\"\n", q);
+	    ctxt->wellFormed = 0;
         } else {
             ret = xmlStrndup(q, CUR_PTR - q);
 	    NEXT;
@@ -1092,6 +1130,7 @@ xmlParseQuotedString(xmlParserCtxtPtr ctxt) {
 	if (CUR != '\'') {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	        ctxt->sax->error(ctxt, "String not closed \"%.50s\"\n", q);
+	    ctxt->wellFormed = 0;
         } else {
             ret = xmlStrndup(q, CUR_PTR - q);
 	    NEXT;
@@ -1184,6 +1223,7 @@ xmlParseNamespace(xmlParserCtxtPtr ctxt) {
 	    if (!garbage)
 		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		    ctxt->sax->error(ctxt, "xmlParseNamespace found garbage\n");
+	    ctxt->wellFormed = 0;
             NEXT;
         }
     }
@@ -1321,6 +1361,7 @@ xmlParseEntityValue(xmlParserCtxtPtr ctxt) {
 	if (!IS_CHAR(CUR)) {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	        ctxt->sax->error(ctxt, "Unfinished EntityValue\n");
+	    ctxt->wellFormed = 0;
 	} else {
 	    ret = xmlStrncat(ret, q, CUR_PTR - q);
 	    NEXT;
@@ -1354,6 +1395,7 @@ xmlParseEntityValue(xmlParserCtxtPtr ctxt) {
 	if (!IS_CHAR(CUR)) {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	        ctxt->sax->error(ctxt, "Unfinished EntityValue\n");
+	    ctxt->wellFormed = 0;
 	} else {
 	    ret = xmlStrncat(ret, q, CUR_PTR - q);
 	    NEXT;
@@ -1361,6 +1403,7 @@ xmlParseEntityValue(xmlParserCtxtPtr ctxt) {
     } else {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt, "xmlParseEntityValue \" or ' expected\n");
+	ctxt->wellFormed = 0;
     }
     
     return(ret);
@@ -1387,6 +1430,12 @@ xmlParseAttValue(xmlParserCtxtPtr ctxt) {
 
 	q = CUR_PTR;
 	while ((IS_CHAR(CUR)) && (CUR != '"')) {
+	    if (CUR == '<') {
+		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		    ctxt->sax->error(ctxt,
+		       "Unescaped '<' not allowed in attributes values\n");
+		ctxt->wellFormed = 0;
+	    }
 	    if (CUR == '&') {
 	        ret = xmlStrncat(ret, q, CUR_PTR - q);
 	        cur = xmlParseReference(ctxt);
@@ -1419,6 +1468,7 @@ xmlParseAttValue(xmlParserCtxtPtr ctxt) {
 	if (!IS_CHAR(CUR)) {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	        ctxt->sax->error(ctxt, "Unfinished AttValue\n");
+	    ctxt->wellFormed = 0;
 	} else {
 	    ret = xmlStrncat(ret, q, CUR_PTR - q);
 	    NEXT;
@@ -1427,6 +1477,12 @@ xmlParseAttValue(xmlParserCtxtPtr ctxt) {
         NEXT;
 	q = CUR_PTR;
 	while ((IS_CHAR(CUR)) && (CUR != '\'')) {
+	    if (CUR == '<') {
+		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		    ctxt->sax->error(ctxt,
+		       "Unescaped '<' not allowed in attributes values\n");
+		ctxt->wellFormed = 0;
+	    }
 	    if (CUR == '&') {
 	        ret = xmlStrncat(ret, q, CUR_PTR - q);
 	        cur = xmlParseReference(ctxt);
@@ -1459,6 +1515,7 @@ xmlParseAttValue(xmlParserCtxtPtr ctxt) {
 	if (!IS_CHAR(CUR)) {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	        ctxt->sax->error(ctxt, "Unfinished AttValue\n");
+	    ctxt->wellFormed = 0;
 	} else {
 	    ret = xmlStrncat(ret, q, CUR_PTR - q);
 	    NEXT;
@@ -1466,6 +1523,7 @@ xmlParseAttValue(xmlParserCtxtPtr ctxt) {
     } else {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt, "AttValue: \" or ' expected\n");
+	ctxt->wellFormed = 0;
     }
     
     return(ret);
@@ -1494,6 +1552,7 @@ xmlParseSystemLiteral(xmlParserCtxtPtr ctxt) {
 	if (!IS_CHAR(CUR)) {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	        ctxt->sax->error(ctxt, "Unfinished SystemLiteral\n");
+	    ctxt->wellFormed = 0;
 	} else {
 	    ret = xmlStrndup(q, CUR_PTR - q);
 	    NEXT;
@@ -1506,6 +1565,7 @@ xmlParseSystemLiteral(xmlParserCtxtPtr ctxt) {
 	if (!IS_CHAR(CUR)) {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	        ctxt->sax->error(ctxt, "Unfinished SystemLiteral\n");
+	    ctxt->wellFormed = 0;
 	} else {
 	    ret = xmlStrndup(q, CUR_PTR - q);
 	    NEXT;
@@ -1513,6 +1573,7 @@ xmlParseSystemLiteral(xmlParserCtxtPtr ctxt) {
     } else {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt, "SystemLiteral \" or ' expected\n");
+	ctxt->wellFormed = 0;
     }
     
     return(ret);
@@ -1540,6 +1601,7 @@ xmlParsePubidLiteral(xmlParserCtxtPtr ctxt) {
 	if (CUR != '"') {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	        ctxt->sax->error(ctxt, "Unfinished PubidLiteral\n");
+	    ctxt->wellFormed = 0;
 	} else {
 	    ret = xmlStrndup(q, CUR_PTR - q);
 	    NEXT;
@@ -1552,6 +1614,7 @@ xmlParsePubidLiteral(xmlParserCtxtPtr ctxt) {
 	if (!IS_LETTER(CUR)) {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	        ctxt->sax->error(ctxt, "Unfinished PubidLiteral\n");
+	    ctxt->wellFormed = 0;
 	} else {
 	    ret = xmlStrndup(q, CUR_PTR - q);
 	    NEXT;
@@ -1559,6 +1622,7 @@ xmlParsePubidLiteral(xmlParserCtxtPtr ctxt) {
     } else {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt, "SystemLiteral \" or ' expected\n");
+	ctxt->wellFormed = 0;
     }
     
     return(ret);
@@ -1583,9 +1647,17 @@ xmlParseCharData(xmlParserCtxtPtr ctxt, int cdata) {
     q = CUR_PTR;
     while ((IS_CHAR(CUR)) && (CUR != '<') &&
            (CUR != '&')) {
+	if ((CUR == ']') && (NXT(1) == ']') &&
+	    (NXT(2) == '>')) {
+	    if (cdata) break;
+	    else {
+		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		    ctxt->sax->error(ctxt,
+		       "Sequence ']]>' not allowed in content\n");
+		ctxt->wellFormed = 0;
+	    }
+	}
         NEXT;
-	if ((cdata) && (CUR == ']') && (NXT(1) == ']') &&
-	    (NXT(2) == '>')) break;
     }
     if (q == CUR_PTR) return;
 
@@ -1621,28 +1693,52 @@ xmlParseExternalID(xmlParserCtxtPtr ctxt, CHAR **publicID) {
          (NXT(2) == 'S') && (NXT(3) == 'T') &&
 	 (NXT(4) == 'E') && (NXT(5) == 'M')) {
         SKIP(6);
+	if (!IS_BLANK(CUR)) {
+	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		ctxt->sax->error(ctxt,
+		    "Space required after 'SYSTEM'\n");
+	    ctxt->wellFormed = 0;
+	}
         SKIP_BLANKS;
 	URI = xmlParseSystemLiteral(ctxt);
-	if (URI == NULL)
+	if (URI == NULL) {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	        ctxt->sax->error(ctxt,
 	          "xmlParseExternalID: SYSTEM, no URI\n");
+	    ctxt->wellFormed = 0;
+        }
     } else if ((CUR == 'P') && (NXT(1) == 'U') &&
 	       (NXT(2) == 'B') && (NXT(3) == 'L') &&
 	       (NXT(4) == 'I') && (NXT(5) == 'C')) {
         SKIP(6);
+	if (!IS_BLANK(CUR)) {
+	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		ctxt->sax->error(ctxt,
+		    "Space required after 'PUBLIC'\n");
+	    ctxt->wellFormed = 0;
+	}
         SKIP_BLANKS;
 	*publicID = xmlParsePubidLiteral(ctxt);
-	if (*publicID == NULL)
+	if (*publicID == NULL) {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	        ctxt->sax->error(ctxt, 
 	          "xmlParseExternalID: PUBLIC, no Public Identifier\n");
+	    ctxt->wellFormed = 0;
+	}
+	if (!IS_BLANK(CUR)) {
+	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		ctxt->sax->error(ctxt,
+		    "Space required after the Public Identifier\n");
+	    ctxt->wellFormed = 0;
+	}
         SKIP_BLANKS;
 	URI = xmlParseSystemLiteral(ctxt);
-	if (URI == NULL)
+	if (URI == NULL) {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	        ctxt->sax->error(ctxt, 
 	           "xmlParseExternalID: PUBLIC, no URI\n");
+	    ctxt->wellFormed = 0;
+        }
     }
     return(URI);
 }
@@ -1682,15 +1778,18 @@ xmlNodePtr xmlParseComment(xmlParserCtxtPtr ctxt, int create) {
     while (IS_CHAR(CUR) &&
            ((CUR == ':') || (CUR != '>') ||
 	    (*r != '-') || (*q != '-'))) {
-	if ((*r == '-') && (*q == '-'))
+	if ((*r == '-') && (*q == '-')) {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	        ctxt->sax->error(ctxt,
 	       "Comment must not contain '--' (double-hyphen)`\n");
+	    ctxt->wellFormed = 0;
+	}
         NEXT;r++;q++;
     }
     if (!IS_CHAR(CUR)) {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt, "Comment not terminated \n<!--%.50s\n", start);
+	ctxt->wellFormed = 0;
     } else {
         NEXT;
 	if (create) {
@@ -1782,8 +1881,9 @@ xmlParsePI(xmlParserCtxtPtr ctxt) {
 		    NEXT;
 		if (!IS_CHAR(CUR)) {
 		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		        ctxt->sax->error(ctxt, "xmlParsePI: PI %s never end ...\n",
-		                   target);
+		        ctxt->sax->error(ctxt,
+			  "xmlParsePI: PI %s never end ...\n", target);
+		    ctxt->wellFormed = 0;
 		} else {
 		    CHAR *data;
 
@@ -1809,6 +1909,8 @@ xmlParsePI(xmlParserCtxtPtr ctxt) {
 	} else {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	        ctxt->sax->error(ctxt, "xmlParsePI : no target name\n");
+	    ctxt->wellFormed = 0;
+
 	    /********* Should we try to complete parsing the PI ???
 	    while (IS_CHAR(CUR) &&
 		   (CUR != '?') && (CUR != '>'))
@@ -1861,6 +1963,7 @@ xmlParseNotationDecl(xmlParserCtxtPtr ctxt) {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	        ctxt->sax->error(ctxt,
 	        "xmlParseAttributeListDecl: no name for Element\n");
+	    ctxt->wellFormed = 0;
 	    return;
 	}
 	SKIP_BLANKS;
@@ -1903,13 +2006,22 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
     if ((CUR == '<') && (NXT(1) == '!') &&
         (NXT(2) == 'E') && (NXT(3) == 'N') &&
         (NXT(4) == 'T') && (NXT(5) == 'I') &&
-        (NXT(6) == 'T') && (NXT(7) == 'Y') &&
-        (IS_BLANK(NXT(8)))) {
+        (NXT(6) == 'T') && (NXT(7) == 'Y')) {
 	SKIP(8);
-        SKIP_BLANKS;
+	if (!IS_BLANK(CUR)) {
+	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		ctxt->sax->error(ctxt, "Space required after '<!ENTITY'\n");
+	    ctxt->wellFormed = 0;
+	}
+	SKIP_BLANKS;
 
 	if (CUR == '%') {
 	    NEXT;
+	    if (!IS_BLANK(CUR)) {
+		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		    ctxt->sax->error(ctxt, "Space required after '%'\n");
+		ctxt->wellFormed = 0;
+	    }
 	    SKIP_BLANKS;
 	    isParameter = 1;
 	}
@@ -1918,7 +2030,14 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 	if (name == NULL) {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	        ctxt->sax->error(ctxt, "xmlParseEntityDecl: no name\n");
+	    ctxt->wellFormed = 0;
             return;
+	}
+	if (!IS_BLANK(CUR)) {
+	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		ctxt->sax->error(ctxt,
+		     "Space required after the entity name\n");
+	    ctxt->wellFormed = 0;
 	}
         SKIP_BLANKS;
 
@@ -1949,11 +2068,23 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 				NULL, NULL, value);
 	    } else {
 	        URI = xmlParseExternalID(ctxt, &literal);
+		if ((CUR != '>') && (!IS_BLANK(CUR))) {
+		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+			ctxt->sax->error(ctxt,
+			    "Space required before 'NDATA'\n");
+		    ctxt->wellFormed = 0;
+		}
 		SKIP_BLANKS;
 		if ((CUR == 'N') && (NXT(1) == 'D') &&
 		    (NXT(2) == 'A') && (NXT(3) == 'T') &&
 		    (NXT(4) == 'A')) {
 		    SKIP(5);
+		    if (!IS_BLANK(CUR)) {
+			if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+			    ctxt->sax->error(ctxt,
+			        "Space required after 'NDATA'\n");
+			ctxt->wellFormed = 0;
+		    }
 		    SKIP_BLANKS;
 		    ndata = xmlParseName(ctxt);
 		    xmlAddDocEntity(ctxt->doc, name,
@@ -1971,6 +2102,7 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	        ctxt->sax->error(ctxt, 
 	            "xmlParseEntityDecl: entity %s not terminated\n", name);
+	    ctxt->wellFormed = 0;
 	} else
 	    NEXT;
 	if (name != NULL) free(name);
@@ -1979,6 +2111,64 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 	if (literal != NULL) free(literal);
 	if (ndata != NULL) free(ndata);
     }
+}
+
+/**
+ * xmlParseDefaultDecl:
+ * @ctxt:  an XML parser context
+ * @value:  Receive a possible fixed default value for the attribute
+ *
+ * Parse an attribute default declaration
+ *
+ * [60] DefaultDecl ::= '#REQUIRED' | '#IMPLIED' | (('#FIXED' S)? AttValue)
+ *
+ * returns: XML_ATTRIBUTE_NONE, XML_ATTRIBUTE_REQUIRED, XML_ATTRIBUTE_IMPLIED
+ *          or XML_ATTRIBUTE_FIXED. 
+ */
+
+int
+xmlParseDefaultDecl(xmlParserCtxtPtr ctxt, CHAR **value) {
+    int val;
+    CHAR *ret;
+
+    *value = NULL;
+    if ((CUR == '#') && (NXT(1) == 'R') &&
+        (NXT(2) == 'E') && (NXT(3) == 'Q') &&
+        (NXT(4) == 'U') && (NXT(5) == 'I') &&
+        (NXT(6) == 'R') && (NXT(7) == 'E') &&
+        (NXT(8) == 'D')) {
+	SKIP(9);
+	return(XML_ATTRIBUTE_REQUIRED);
+    }
+    if ((CUR == '#') && (NXT(1) == 'I') &&
+        (NXT(2) == 'M') && (NXT(3) == 'P') &&
+        (NXT(4) == 'L') && (NXT(5) == 'I') &&
+        (NXT(6) == 'E') && (NXT(7) == 'D')) {
+	SKIP(8);
+	return(XML_ATTRIBUTE_IMPLIED);
+    }
+    val = XML_ATTRIBUTE_NONE;
+    if ((CUR == '#') && (NXT(1) == 'F') &&
+        (NXT(2) == 'I') && (NXT(3) == 'X') &&
+        (NXT(4) == 'E') && (NXT(5) == 'D')) {
+	SKIP(6);
+	val = XML_ATTRIBUTE_FIXED;
+	if (!IS_BLANK(CUR)) {
+	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	        ctxt->sax->error(ctxt, "Space required after '#FIXED'\n");
+	    ctxt->wellFormed = 0;
+	}
+	SKIP_BLANKS;
+    }
+    ret = xmlParseAttValue(ctxt);
+    if (ret == NULL) {
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt,
+	       "Attribute default value declaration error\n");
+	ctxt->wellFormed = 0;
+    } else
+        *value = ret;
+    return(val);
 }
 
 /**
@@ -2003,6 +2193,7 @@ xmlParseEnumeratedType(xmlParserCtxtPtr ctxt, CHAR *name) {
     /*
      * TODO !!!
      */
+    fprintf(stderr, "Production [57] EnumeratedType not yet supported\n");
     while ((IS_CHAR(CUR)) && (CUR != '>'))
         NEXT;
 }
@@ -2012,7 +2203,7 @@ xmlParseEnumeratedType(xmlParserCtxtPtr ctxt, CHAR *name) {
  * @ctxt:  an XML parser context
  * @name:  ???
  *
- * : parse the Attribute list def for an element
+ * parse the Attribute list def for an element
  *
  * [54] AttType ::= StringType | TokenizedType | EnumeratedType
  *
@@ -2021,46 +2212,54 @@ xmlParseEnumeratedType(xmlParserCtxtPtr ctxt, CHAR *name) {
  * [56] TokenizedType ::= 'ID' | 'IDREF' | 'IDREFS' | 'ENTITY' |
  *                        'ENTITIES' | 'NMTOKEN' | 'NMTOKENS'
  *
- * TODO: not implemented !!!
+ * Returns: the attribute type
  */
-void
+int 
 xmlParseAttributeType(xmlParserCtxtPtr ctxt, CHAR *name) {
     /* TODO !!! */
     if ((CUR == 'C') && (NXT(1) == 'D') &&
         (NXT(2) == 'A') && (NXT(3) == 'T') &&
         (NXT(4) == 'A')) {
 	SKIP(5);
+	return(XML_ATTRIBUTE_STRING);
      } else if ((CUR == 'I') && (NXT(1) == 'D')) {
         SKIP(2);
+	return(XML_ATTRIBUTE_ID);
      } else if ((CUR == 'I') && (NXT(1) == 'D') &&
         (NXT(2) == 'R') && (NXT(3) == 'E') &&
         (NXT(4) == 'F')) {
 	SKIP(5);
+	return(XML_ATTRIBUTE_IDREF);
      } else if ((CUR == 'I') && (NXT(1) == 'D') &&
         (NXT(2) == 'R') && (NXT(3) == 'E') &&
         (NXT(4) == 'F') && (NXT(5) == 'S')) {
 	SKIP(6);
+	return(XML_ATTRIBUTE_IDREFS);
      } else if ((CUR == 'E') && (NXT(1) == 'N') &&
         (NXT(2) == 'T') && (NXT(3) == 'I') &&
         (NXT(4) == 'T') && (NXT(5) == 'Y')) {
 	SKIP(6);
+	return(XML_ATTRIBUTE_ENTITY);
      } else if ((CUR == 'E') && (NXT(1) == 'N') &&
         (NXT(2) == 'T') && (NXT(3) == 'I') &&
         (NXT(4) == 'T') && (NXT(5) == 'I') &&
         (NXT(6) == 'E') && (NXT(7) == 'S')) {
 	SKIP(8);
+	return(XML_ATTRIBUTE_ENTITIES);
      } else if ((CUR == 'N') && (NXT(1) == 'M') &&
         (NXT(2) == 'T') && (NXT(3) == 'O') &&
         (NXT(4) == 'K') && (NXT(5) == 'E') &&
         (NXT(6) == 'N')) {
 	SKIP(7);
+	return(XML_ATTRIBUTE_NMTOKEN);
      } else if ((CUR == 'N') && (NXT(1) == 'M') &&
         (NXT(2) == 'T') && (NXT(3) == 'O') &&
         (NXT(4) == 'K') && (NXT(5) == 'E') &&
         (NXT(6) == 'N') && (NXT(7) == 'S')) {
-     } else {
-        xmlParseEnumeratedType(ctxt, name);
+	return(XML_ATTRIBUTE_NMTOKENS);
      }
+     xmlParseEnumeratedType(ctxt, name);
+     return(XML_ATTRIBUTE_ENUMERATED);
 }
 
 /**
@@ -2077,51 +2276,183 @@ xmlParseAttributeType(xmlParserCtxtPtr ctxt, CHAR *name) {
  */
 void
 xmlParseAttributeListDecl(xmlParserCtxtPtr ctxt) {
-    CHAR *name;
+    CHAR *elemName;
+    CHAR *attrName;
 
     /* TODO !!! */
     if ((CUR == '<') && (NXT(1) == '!') &&
         (NXT(2) == 'A') && (NXT(3) == 'T') &&
         (NXT(4) == 'T') && (NXT(5) == 'L') &&
         (NXT(6) == 'I') && (NXT(7) == 'S') &&
-        (NXT(8) == 'T') && (IS_BLANK(NXT(9)))) {
+        (NXT(8) == 'T')) {
 	SKIP(9);
-        SKIP_BLANKS;
-        name = xmlParseName(ctxt);
-	if (name == NULL) {
+	if (!IS_BLANK(CUR)) {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	        ctxt->sax->error(ctxt, 
-	        "xmlParseAttributeListDecl: no name for Element\n");
+	        ctxt->sax->error(ctxt, "Space required after '<!ATTLIST'\n");
+	    ctxt->wellFormed = 0;
+	}
+        SKIP_BLANKS;
+        elemName = xmlParseName(ctxt);
+	if (elemName == NULL) {
+	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	        ctxt->sax->error(ctxt, "ATTLIST: no name for Element\n");
+	    ctxt->wellFormed = 0;
 	    return;
 	}
 	SKIP_BLANKS;
 	while (CUR != '>') {
 	    const CHAR *check = CUR_PTR;
+	    int type;
+	    int def;
+	    CHAR *defaultValue = NULL;
 
-	    xmlParseAttributeType(ctxt, name);
+	    attrName = xmlParseName(ctxt);
+	    if (attrName == NULL) {
+		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		    ctxt->sax->error(ctxt, "ATTLIST: no name for Attribute\n");
+		ctxt->wellFormed = 0;
+		break;
+	    }
+	    if (!IS_BLANK(CUR)) {
+		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		    ctxt->sax->error(ctxt, 
+		        "Space required after the attribute name\n");
+		ctxt->wellFormed = 0;
+		break;
+	    }
 	    SKIP_BLANKS;
+
+	    type = xmlParseAttributeType(ctxt, attrName);
+	    if (type <= 0) break;
+
+	    if (!IS_BLANK(CUR)) {
+		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		    ctxt->sax->error(ctxt, 
+		        "Space required after the attribute type\n");
+		ctxt->wellFormed = 0;
+		break;
+	    }
+	    SKIP_BLANKS;
+
+	    def = xmlParseDefaultDecl(ctxt, &defaultValue);
+	    if (def <= 0) break;
+
+            if (CUR != '>') {
+		if (!IS_BLANK(CUR)) {
+		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+			ctxt->sax->error(ctxt, 
+			"Space required after the attribute default value\n");
+		    ctxt->wellFormed = 0;
+		    break;
+		}
+		SKIP_BLANKS;
+	    }
 	    if (check == CUR_PTR) {
 	        if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		    ctxt->sax->error(ctxt, 
-		    "xmlParseAttributeListDecl: detected error\n");
+		    "xmlParseAttributeListDecl: detected internal error\n");
 		break;
 	    }
+	    if (attrName != NULL)
+		free(attrName);
+	    if (defaultValue != NULL)
+	        free(defaultValue);
 	}
 	if (CUR == '>')
 	    NEXT;
 
-	free(name);
+	free(elemName);
     }
 }
 
 /**
- * xmlParseElementContentDecl:
+ * xmlParseElementMixedContentDecl:
  * @ctxt:  an XML parser context
- * @name:  ???
  *
- * parse the declaration for an Element content
- * either Mixed or Children, the cases EMPTY and ANY being handled
+ * parse the declaration for a Mixed Element content
+ * The leading '(' and spaces have been skipped in xmlParseElementContentDecl
  * 
+ * [51] Mixed ::= '(' S? '#PCDATA' (S? '|' S? Name)* S? ')*' |
+ *                '(' S? '#PCDATA' S? ')'
+ *
+ * returns: the list of the xmlElementContentPtr describing the element choices
+ */
+xmlElementContentPtr
+xmlParseElementMixedContentDecl(xmlParserCtxtPtr ctxt) {
+    xmlElementContentPtr ret = NULL, cur = NULL;
+    CHAR *elem = NULL;
+
+    if ((CUR == '#') && (NXT(1) == 'P') &&
+        (NXT(2) == 'C') && (NXT(3) == 'D') &&
+        (NXT(4) == 'A') && (NXT(5) == 'T') &&
+        (NXT(6) == 'A')) {
+	SKIP(7);
+	SKIP_BLANKS;
+	if ((CUR == '(') || (CUR == '|')) {
+	    ret = cur = xmlNewElementContent(NULL, XML_ELEMENT_CONTENT_PCDATA);
+	    if (ret == NULL) return(NULL);
+	} else {
+	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		ctxt->sax->error(ctxt, 
+		    "xmlParseElementMixedContentDecl : '|' or ')' expected\n");
+	    ctxt->wellFormed = 0;
+	    return(NULL);
+	}
+	while (CUR == '|') {
+	    if (elem == NULL) {
+	        ret = xmlNewElementContent(NULL, XML_ELEMENT_CONTENT_OR);
+		if (ret == NULL) return(NULL);
+		ret->c1 = cur;
+	    } else {
+	        cur->c1 = xmlNewElementContent(elem,
+		                               XML_ELEMENT_CONTENT_ELEMENT);
+	        cur->c2 = xmlNewElementContent(NULL, XML_ELEMENT_CONTENT_OR);
+		cur = cur->c2;
+		if (cur == NULL) return(NULL);
+	    }
+	    SKIP_BLANKS;
+	    elem = xmlParseName(ctxt);
+	    if (elem == NULL) {
+		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		    ctxt->sax->error(ctxt, 
+			"xmlParseElementMixedContentDecl : Name expected\n");
+		ctxt->wellFormed = 0;
+		xmlFreeElementContent(cur);
+		return(NULL);
+	    }
+	    SKIP_BLANKS;
+	}
+	if (CUR == ')') {
+	    if (elem != NULL)
+		cur->c2 = xmlNewElementContent(elem,
+		                               XML_ELEMENT_CONTENT_ELEMENT);
+	    NEXT;
+	} else {
+	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		ctxt->sax->error(ctxt, 
+		    "xmlParseElementMixedContentDecl : '|' or ')' expected\n");
+	    ctxt->wellFormed = 0;
+	    xmlFreeElementContent(ret);
+	    return(NULL);
+	}
+
+    } else {
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt, 
+		"xmlParseElementMixedContentDecl : '#PCDATA' expected\n");
+	ctxt->wellFormed = 0;
+    }
+    return(ret);
+}
+
+/**
+ * xmlParseElementChildrenContentDecl:
+ * @ctxt:  an XML parser context
+ *
+ * parse the declaration for a Mixed Element content
+ * The leading '(' and spaces have been skipped in xmlParseElementContentDecl
+ * 
+ *
  * [47] children ::= (choice | seq) ('?' | '*' | '+')?
  *
  * [48] cp ::= (Name | choice | seq) ('?' | '*' | '+')?
@@ -2130,23 +2461,217 @@ xmlParseAttributeListDecl(xmlParserCtxtPtr ctxt) {
  *
  * [50] seq ::= '(' S? cp ( S? ',' S? cp )* S? ')'
  *
- * or
+ * returns: the tree of xmlElementContentPtr describing the element 
+ *          hierarchy.
+ */
+xmlElementContentPtr
+xmlParseElementChildrenContentDecl(xmlParserCtxtPtr ctxt) {
+    xmlElementContentPtr ret = NULL, cur = NULL, last = NULL, op = NULL;
+    CHAR *elem;
+    CHAR type = 0;
+
+    SKIP_BLANKS;
+    if (CUR == '(') {
+        /* Recurse on first child */
+	NEXT;
+	SKIP_BLANKS;
+        cur = ret = xmlParseElementChildrenContentDecl(ctxt);
+	SKIP_BLANKS;
+    } else {
+	elem = xmlParseName(ctxt);
+	if (elem == NULL) {
+	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		ctxt->sax->error(ctxt, 
+		"xmlParseElementChildrenContentDecl : Name or '(' expected\n");
+	    ctxt->wellFormed = 0;
+	    return(NULL);
+	}
+        cur = ret = xmlNewElementContent(elem, XML_ELEMENT_CONTENT_ELEMENT);
+	if (CUR == '?') {
+	    ret->ocur = XML_ELEMENT_CONTENT_OPT;
+	    NEXT;
+	} else if (CUR == '*') {
+	    ret->ocur = XML_ELEMENT_CONTENT_MULT;
+	    NEXT;
+	} else if (CUR == '+') {
+	    ret->ocur = XML_ELEMENT_CONTENT_PLUS;
+	    NEXT;
+	} else {
+	    ret->ocur = XML_ELEMENT_CONTENT_ONCE;
+	}
+    }
+    SKIP_BLANKS;
+    while (CUR != ')') {
+        /*
+	 * Each loop we parse one separator and one element.
+	 */
+        if (CUR == ',') {
+	    if (type == 0) type = CUR;
+
+	    /*
+	     * Detect "Name | Name , Name" error
+	     */
+	    else if (type != CUR) {
+		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		    ctxt->sax->error(ctxt, 
+		    "xmlParseElementChildrenContentDecl : '%c' expected\n",
+		    type);
+		ctxt->wellFormed = 0;
+		xmlFreeElementContent(ret);
+		return(NULL);
+	    }
+
+	    op = xmlNewElementContent(NULL, XML_ELEMENT_CONTENT_SEQ);
+	    if (op == NULL) {
+	        xmlFreeElementContent(ret);
+		return(NULL);
+	    }
+	    if (last == NULL) {
+		op->c1 = ret;
+		ret = cur = op;
+	    } else {
+	        cur->c2 = op;
+		op->c1 = last;
+		cur =op;
+	    }
+	} else if (CUR == '|') {
+	    if (type == 0) type = CUR;
+
+	    /*
+	     * Detect "Name , Name | Name" error
+	     */
+	    else if (type != CUR) {
+		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		    ctxt->sax->error(ctxt, 
+		    "xmlParseElementChildrenContentDecl : '%c' expected\n",
+		    type);
+		ctxt->wellFormed = 0;
+		xmlFreeElementContent(ret);
+		return(NULL);
+	    }
+
+	    op = xmlNewElementContent(NULL, XML_ELEMENT_CONTENT_OR);
+	    if (op == NULL) {
+	        xmlFreeElementContent(ret);
+		return(NULL);
+	    }
+	    if (last == NULL) {
+		op->c1 = ret;
+		ret = cur = op;
+	    } else {
+	        cur->c2 = op;
+		op->c1 = last;
+		cur =op;
+	    }
+	} else {
+	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		ctxt->sax->error(ctxt, 
+	    "xmlParseElementChildrenContentDecl : ',' '|' or ')' expected\n");
+	    ctxt->wellFormed = 0;
+	    xmlFreeElementContent(ret);
+	    return(NULL);
+	}
+	SKIP_BLANKS;
+	if (CUR == '(') {
+	    /* Recurse on second child */
+	    NEXT;
+	    SKIP_BLANKS;
+	    cur = xmlParseElementChildrenContentDecl(ctxt);
+	    SKIP_BLANKS;
+	} else {
+	    elem = xmlParseName(ctxt);
+	    if (elem == NULL) {
+		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		    ctxt->sax->error(ctxt, 
+		    "xmlParseElementChildrenContentDecl : Name or '(' expected\n");
+		ctxt->wellFormed = 0;
+		return(NULL);
+	    }
+	    cur = xmlNewElementContent(elem, XML_ELEMENT_CONTENT_ELEMENT);
+	}
+	if (CUR == '?') {
+	    ret->ocur = XML_ELEMENT_CONTENT_OPT;
+	    NEXT;
+	} else if (CUR == '*') {
+	    ret->ocur = XML_ELEMENT_CONTENT_MULT;
+	    NEXT;
+	} else if (CUR == '+') {
+	    ret->ocur = XML_ELEMENT_CONTENT_PLUS;
+	    NEXT;
+	} else {
+	    ret->ocur = XML_ELEMENT_CONTENT_ONCE;
+	}
+	SKIP_BLANKS;
+    }
+    NEXT;
+    if (CUR == '?') {
+        ret->ocur = XML_ELEMENT_CONTENT_OPT;
+	NEXT;
+    } else if (CUR == '*') {
+        ret->ocur = XML_ELEMENT_CONTENT_MULT;
+	NEXT;
+    } else if (CUR == '+') {
+        ret->ocur = XML_ELEMENT_CONTENT_PLUS;
+	NEXT;
+    } else {
+        ret->ocur = XML_ELEMENT_CONTENT_ONCE;
+    }
+    return(ret);
+}
+
+/**
+ * xmlParseElementContentDecl:
+ * @ctxt:  an XML parser context
+ * @name:  the name of the element being defined.
+ * @result:  the Element Content pointer will be stored here if any
  *
- * [51] Mixed ::= '(' S? '#PCDATA' (S? '|' S? Name)* S? ')*' |
- *                '(' S? '#PCDATA' S? ')'
+ * parse the declaration for an Element content either Mixed or Children,
+ * the cases EMPTY and ANY are handled directly in xmlParseElementDecl
+ * 
+ * [46] contentspec ::= 'EMPTY' | 'ANY' | Mixed | children
  *
- * TODO: not implemented !!!
+ * returns: the type of element content XML_ELEMENT_TYPE_xxx
  */
 
-void
-xmlParseElementContentDecl(xmlParserCtxtPtr ctxt, CHAR *name) {
-    /*
-     * TODO This has to be parsed correctly, currently we just skip until
-     *      we reach the first '>'.
-     * !!!
-     */
-    while ((IS_CHAR(CUR)) && (CUR != '>'))
-        NEXT;
+int
+xmlParseElementContentDecl(xmlParserCtxtPtr ctxt, CHAR *name,
+                           xmlElementContentPtr *result) {
+
+    xmlElementContentPtr tree = NULL;
+    int res;
+
+    *result = NULL;
+
+    if (CUR != '(') {
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt, 
+		"xmlParseElementContentDecl : '(' expected\n");
+	ctxt->wellFormed = 0;
+	return(-1);
+    }
+    NEXT;
+    SKIP_BLANKS;
+    if ((CUR == '#') && (NXT(1) == 'P') &&
+        (NXT(2) == 'C') && (NXT(3) == 'D') &&
+        (NXT(4) == 'A') && (NXT(5) == 'T') &&
+        (NXT(6) == 'A')) {
+        tree = xmlParseElementMixedContentDecl(ctxt);
+	res = XML_ELEMENT_TYPE_MIXED;
+    } else {
+        tree = xmlParseElementChildrenContentDecl(ctxt);
+	res = XML_ELEMENT_TYPE_ELEMENT;
+    }
+    SKIP_BLANKS;
+    /****************************
+    if (CUR != ')') {
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt, 
+		"xmlParseElementContentDecl : ')' expected\n");
+	ctxt->wellFormed = 0;
+	return(-1);
+    }
+     ****************************/
+    return(res);
 }
 
 /**
@@ -2157,26 +2682,40 @@ xmlParseElementContentDecl(xmlParserCtxtPtr ctxt, CHAR *name) {
  *
  * [45] elementdecl ::= '<!ELEMENT' S Name S contentspec S? '>'
  *
- * [46] contentspec ::= 'EMPTY' | 'ANY' | Mixed | children
- *
  * TODO There is a check [ VC: Unique Element Type Declaration ]
  */
-void
+int
 xmlParseElementDecl(xmlParserCtxtPtr ctxt) {
     CHAR *name;
+    int ret = -1;
+    xmlElementContentPtr content  = NULL;
 
     if ((CUR == '<') && (NXT(1) == '!') &&
         (NXT(2) == 'E') && (NXT(3) == 'L') &&
         (NXT(4) == 'E') && (NXT(5) == 'M') &&
         (NXT(6) == 'E') && (NXT(7) == 'N') &&
-        (NXT(8) == 'T') && (IS_BLANK(NXT(9)))) {
+        (NXT(8) == 'T')) {
 	SKIP(9);
+	if (!IS_BLANK(CUR)) {
+	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		ctxt->sax->error(ctxt, 
+		    "Space required after 'ELEMENT'\n");
+	    ctxt->wellFormed = 0;
+	}
         SKIP_BLANKS;
         name = xmlParseName(ctxt);
 	if (name == NULL) {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	        ctxt->sax->error(ctxt, "xmlParseElementDecl: no name for Element\n");
-	    return;
+	        ctxt->sax->error(ctxt,
+		   "xmlParseElementDecl: no name for Element\n");
+	    ctxt->wellFormed = 0;
+	    return(-1);
+	}
+	if (!IS_BLANK(CUR)) {
+	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		ctxt->sax->error(ctxt, 
+		    "Space required after the element name\n");
+	    ctxt->wellFormed = 0;
 	}
         SKIP_BLANKS;
 	if ((CUR == 'E') && (NXT(1) == 'M') &&
@@ -2186,23 +2725,39 @@ xmlParseElementDecl(xmlParserCtxtPtr ctxt) {
 	    /*
 	     * Element must always be empty.
 	     */
+	    ret = XML_ELEMENT_TYPE_EMPTY;
 	} else if ((CUR == 'A') && (NXT(1) == 'N') &&
 	           (NXT(2) == 'Y')) {
 	    SKIP(3);
 	    /*
 	     * Element is a generic container.
 	     */
+	    ret = XML_ELEMENT_TYPE_ANY;
+	} else if (CUR == '(') {
+	    ret = xmlParseElementContentDecl(ctxt, name, &content);
 	} else {
-	    xmlParseElementContentDecl(ctxt, name);
+	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	        ctxt->sax->error(ctxt, 
+	          "xmlParseElementDecl: 'EMPTY', 'ANY' or '(' expected\n");
+	    ctxt->wellFormed = 0;
+	    if (name != NULL) free(name);
+	    return(-1);
 	}
 	SKIP_BLANKS;
 	if (CUR != '>') {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	        ctxt->sax->error(ctxt, 
 	          "xmlParseElementDecl: expected '>' at the end\n");
-	} else
+	    ctxt->wellFormed = 0;
+	} else {
 	    NEXT;
+	    xmlAddElementDecl(ctxt->doc->intSubset, name, ret, content);
+	}
+	if (name != NULL) {
+	    free(name);
+	}
     }
+    return(ret);
 }
 
 /**
@@ -2254,7 +2809,8 @@ xmlParseCharRef(xmlParserCtxtPtr ctxt) {
 	    else {
 	        if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		    ctxt->sax->error(ctxt, 
-		         "xmlParseCharRef: invalid hexa value\n");
+		         "xmlParseCharRef: invalid hexadecimal value\n");
+		ctxt->wellFormed = 0;
 		val = 0;
 		break;
 	    }
@@ -2271,6 +2827,7 @@ xmlParseCharRef(xmlParserCtxtPtr ctxt) {
 	        if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		    ctxt->sax->error(ctxt, 
 		         "xmlParseCharRef: invalid decimal value\n");
+		ctxt->wellFormed = 0;
 		val = 0;
 		break;
 	    }
@@ -2281,6 +2838,7 @@ xmlParseCharRef(xmlParserCtxtPtr ctxt) {
     } else {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt, "xmlParseCharRef: invalid value\n");
+	ctxt->wellFormed = 0;
     }
     /*
      * Check the value IS_CHAR ...
@@ -2293,6 +2851,7 @@ xmlParseCharRef(xmlParserCtxtPtr ctxt) {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt, "xmlParseCharRef: invalid CHAR value %d\n",
 	                     val);
+	ctxt->wellFormed = 0;
     }
     return(NULL);
 }
@@ -2311,6 +2870,7 @@ xmlParseEntityRef(xmlParserCtxtPtr ctxt) {
     CHAR *ret = NULL;
     const CHAR *q;
     CHAR *name;
+    xmlEntityPtr ent;
     xmlParserInputPtr input = NULL;
 
     q = CUR_PTR;
@@ -2320,9 +2880,61 @@ xmlParseEntityRef(xmlParserCtxtPtr ctxt) {
 	if (name == NULL) {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	        ctxt->sax->error(ctxt, "xmlParseEntityRef: no name\n");
+	    ctxt->wellFormed = 0;
 	} else {
 	    if (CUR == ';') {
 	        NEXT;
+		/*
+		 * Well Formedness Constraint if:
+		 *   - standalone
+		 * or
+		 *   - no external subset and no external parameter entities
+		 *     referenced
+		 * then
+		 *   the entity referenced must have been declared
+		 *
+		 * TODO: to be double checked !!!
+		 */
+		ent = xmlGetDocEntity(ctxt->doc, name);
+		if ((ctxt->doc->standalone) ||
+		    ((ctxt->doc->intSubset == NULL) &&
+		     (ctxt->doc->extSubset == NULL))) {
+		    if (ent == NULL) {
+			if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+			    ctxt->sax->error(ctxt, 
+			         "Entity '%s' not defined\n", name);
+			ctxt->wellFormed = 0;
+		    }
+		}
+
+		/*
+		 * Well Formedness Constraint :
+		 *   The referenced entity must be a parsed entity.
+		 */
+		if (ent != NULL) {
+		    switch (ent->type) {
+			case XML_INTERNAL_PARAMETER_ENTITY:
+			case XML_EXTERNAL_PARAMETER_ENTITY:
+			if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+			    ctxt->sax->error(ctxt, 
+		     "Attempt to reference the parameter entity '%s'\n", name);
+			ctxt->wellFormed = 0;
+			break;
+                        
+			case XML_EXTERNAL_GENERAL_UNPARSED_ENTITY:
+			if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+			    ctxt->sax->error(ctxt, 
+		     "Attempt to reference unparsed entity '%s'\n", name);
+			ctxt->wellFormed = 0;
+			break;
+		    }
+		}
+
+		/*
+		 * Well Formedness Constraint :
+		 *   The referenced entity must not lead to recursion !
+		 */
+		 
 		/*
 		 * We parsed the entity reference correctly, call SAX
 		 * interface for the proper behaviour:
@@ -2340,7 +2952,9 @@ xmlParseEntityRef(xmlParserCtxtPtr ctxt) {
 		char cst[2] = { '&', 0 };
 
 		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		    ctxt->sax->error(ctxt, "xmlParseEntityRef: expecting ';'\n");
+		    ctxt->sax->error(ctxt,
+		                     "xmlParseEntityRef: expecting ';'\n");
+		ctxt->wellFormed = 0;
 		ret = xmlStrndup(cst, 1);
 		ret = xmlStrcat(ret, name);
 	    }
@@ -2363,7 +2977,14 @@ xmlParseEntityRef(xmlParserCtxtPtr ctxt) {
 CHAR *
 xmlParseReference(xmlParserCtxtPtr ctxt) {
     if ((CUR == '&') && (NXT(1) == '#')) {
-        return(xmlParseCharRef(ctxt));
+        CHAR *val = xmlParseCharRef(ctxt);
+	xmlParserInputPtr in;
+
+	if (val != NULL) {
+	    in = xmlNewStringInputStream(ctxt, val);
+	    xmlPushInput(ctxt, in);
+	}
+	return(NULL);
     } else if (CUR == '&') {
         return(xmlParseEntityRef(ctxt));
     }
@@ -2392,6 +3013,7 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt) {
 	if (name == NULL) {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	        ctxt->sax->error(ctxt, "xmlParsePEReference: no name\n");
+	    ctxt->wellFormed = 0;
 	} else {
 	    if (CUR == ';') {
 	        NEXT;
@@ -2399,7 +3021,7 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt) {
 		if (entity == NULL) {
 		    if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
 		        ctxt->sax->warning(ctxt,
-		         "xmlParsePEReference: %%%s; not found\n");
+		         "xmlParsePEReference: %%%s; not found\n", name);
 		} else {
 		    input = xmlNewEntityInputStream(ctxt, entity);
 		    xmlPushInput(ctxt, input);
@@ -2408,7 +3030,9 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt) {
 		char cst[2] = { '%', 0 };
 
 		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		    ctxt->sax->error(ctxt, "xmlParsePEReference: expecting ';'\n");
+		    ctxt->sax->error(ctxt,
+		                     "xmlParsePEReference: expecting ';'\n");
+		ctxt->wellFormed = 0;
 		ret = xmlStrndup(cst, 1);
 		ret = xmlStrcat(ret, name);
 	    }
@@ -2449,6 +3073,7 @@ xmlParseDocTypeDecl(xmlParserCtxtPtr ctxt) {
     if (name == NULL) {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt, "xmlParseDocTypeDecl : no DOCTYPE name !\n");
+	ctxt->wellFormed = 0;
     }
 
     SKIP_BLANKS;
@@ -2459,7 +3084,7 @@ xmlParseDocTypeDecl(xmlParserCtxtPtr ctxt) {
     URI = xmlParseExternalID(ctxt, &ExternalID);
     SKIP_BLANKS;
 
-    dtd = xmlNewDtd(ctxt->doc, name, ExternalID, URI);
+    dtd = xmlCreateIntSubset(ctxt->doc, name, ExternalID, URI);
 
     /*
      * Is there any DTD definition ?
@@ -2482,6 +3107,7 @@ xmlParseDocTypeDecl(xmlParserCtxtPtr ctxt) {
 		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		    ctxt->sax->error(ctxt, 
 		 "xmlParseDocTypeDecl: error detected in Markup declaration\n");
+		ctxt->wellFormed = 0;
 		break;
 	    }
 	}
@@ -2494,6 +3120,7 @@ xmlParseDocTypeDecl(xmlParserCtxtPtr ctxt) {
     if (CUR != '>') {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt, "DOCTYPE unproperly terminated\n");
+	ctxt->wellFormed = 0;
         /* We shouldn't try to resynchronize ... */
     }
     NEXT;
@@ -2527,7 +3154,7 @@ xmlParseDocTypeDecl(xmlParserCtxtPtr ctxt) {
  */
 
 xmlAttrPtr xmlParseAttribute(xmlParserCtxtPtr ctxt, xmlNodePtr node) {
-    CHAR *name;
+    CHAR *name, *val;
     CHAR *ns;
     CHAR *value = NULL;
     xmlAttrPtr ret;
@@ -2536,6 +3163,7 @@ xmlAttrPtr xmlParseAttribute(xmlParserCtxtPtr ctxt, xmlNodePtr node) {
     if (name == NULL) {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt, "error parsing attribute name\n");
+	ctxt->wellFormed = 0;
         return(NULL);
     }
 
@@ -2549,8 +3177,9 @@ xmlAttrPtr xmlParseAttribute(xmlParserCtxtPtr ctxt, xmlNodePtr node) {
 	value = xmlParseAttValue(ctxt);
     } else {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt, "Specification mandate value for attribute %s\n",
-	               name);
+	    ctxt->sax->error(ctxt,
+	       "Specification mandate value for attribute %s\n", name);
+	ctxt->wellFormed = 0;
     }
 
     /*
@@ -2579,9 +3208,20 @@ xmlAttrPtr xmlParseAttribute(xmlParserCtxtPtr ctxt, xmlNodePtr node) {
 	return(NULL);
     }
 
-    ret = xmlNewProp(ctxt->node, name, NULL);
-    if (ret != NULL)
-        ret->val = xmlStringGetNodeList(ctxt->doc, value);
+    /*
+     * Well formedness requires at most one declaration of an attribute
+     */
+    if ((val = xmlGetProp(ctxt->node, name)) != NULL) {
+        free(val);
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt, "Attribute %s redefined\n", name);
+	ctxt->wellFormed = 0;
+	ret = NULL;
+    } else {
+	ret = xmlNewProp(ctxt->node, name, NULL);
+	if (ret != NULL)
+	    ret->val = xmlStringGetNodeList(ctxt->doc, value);
+    }
 
     if (ns != NULL)
       free(ns);
@@ -2621,7 +3261,13 @@ xmlNodePtr xmlParseStartTag(xmlParserCtxtPtr ctxt) {
     NEXT;
 
     name = xmlNamespaceParseQName(ctxt, &namespace);
-    if (name == NULL) return(NULL);
+    if (name == NULL) {
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt, 
+	     "xmlParseStartTag: invalid element name\n");
+	ctxt->wellFormed = 0;
+        return(NULL);
+    }
 
     /*
      * Note : the namespace resolution is deferred until the end of the
@@ -2659,6 +3305,7 @@ xmlNodePtr xmlParseStartTag(xmlParserCtxtPtr ctxt) {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	        ctxt->sax->error(ctxt, 
 	         "xmlParseStartTag: problem parsing attributes\n");
+	    ctxt->wellFormed = 0;
 	    break;
 	}
     }
@@ -2719,6 +3366,7 @@ xmlParseEndTag(xmlParserCtxtPtr ctxt, xmlNsPtr *nsPtr, CHAR **tagPtr) {
     if ((CUR != '<') || (NXT(1) != '/')) {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt, "xmlParseEndTag: '</' not found\n");
+	ctxt->wellFormed = 0;
 	return;
     }
     SKIP(2);
@@ -2742,6 +3390,7 @@ xmlParseEndTag(xmlParserCtxtPtr ctxt, xmlNsPtr *nsPtr, CHAR **tagPtr) {
     if ((!IS_CHAR(CUR)) || (CUR != '>')) {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt, "End tag : expected '>'\n");
+	ctxt->wellFormed = 0;
     } else
 	NEXT;
 
@@ -2778,12 +3427,14 @@ xmlParseCDSect(xmlParserCtxtPtr ctxt) {
     if (!IS_CHAR(CUR)) {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt, "CData section not finished\n%.50s\n", base);
+	ctxt->wellFormed = 0;
         return;
     }
     r = NEXT;
     if (!IS_CHAR(CUR)) {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt, "CData section not finished\n%.50s\n", base);
+	ctxt->wellFormed = 0;
         return;
     }
     s = NEXT;
@@ -2794,6 +3445,7 @@ xmlParseCDSect(xmlParserCtxtPtr ctxt) {
     if (!IS_CHAR(CUR)) {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt, "CData section not finished\n%.50s\n", base);
+	ctxt->wellFormed = 0;
         return;
     }
 
@@ -2802,9 +3454,9 @@ xmlParseCDSect(xmlParserCtxtPtr ctxt) {
      */
     if (ctxt->sax != NULL) {
 	if (areBlanks(ctxt, base, CUR_PTR - base))
-	    ctxt->sax->ignorableWhitespace(ctxt, base, 0, CUR_PTR - base);
+	    ctxt->sax->ignorableWhitespace(ctxt, base, 0, (CUR_PTR - base) - 2);
 	else
-	    ctxt->sax->characters(ctxt, base, 0, CUR_PTR - base);
+	    ctxt->sax->characters(ctxt, base, 0, (CUR_PTR - base) - 2);
     }
 }
 
@@ -2891,7 +3543,9 @@ xmlParseContent(xmlParserCtxtPtr ctxt) {
 
 	if (test == CUR_PTR) {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	        ctxt->sax->error(ctxt, "detected an error in element content\n");
+	        ctxt->sax->error(ctxt,
+		     "detected an error in element content\n");
+	    ctxt->wellFormed = 0;
             break;
 	}
     }
@@ -2946,6 +3600,7 @@ xmlNodePtr xmlParseElement(xmlParserCtxtPtr ctxt) {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt, "Couldn't find end of Start Tag\n%.30s\n",
 	                     openTag);
+	ctxt->wellFormed = 0;
 
 	/*
 	 * end of parsing of this node.
@@ -2963,6 +3618,7 @@ xmlNodePtr xmlParseElement(xmlParserCtxtPtr ctxt) {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt,
 	         "Premature end of data in tag %.30s\n", openTag);
+	ctxt->wellFormed = 0;
 
 	/*
 	 * end of parsing of this node.
@@ -2985,15 +3641,18 @@ xmlNodePtr xmlParseElement(xmlParserCtxtPtr ctxt) {
 	    ctxt->sax->error(ctxt, 
 	    "Start and End tags don't use the same namespace\n%.30s\n%.30s\n",
 	               openTag, endTag);
+	ctxt->wellFormed = 0;
     }
     if (endTag == NULL ) {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt, "The End tag has no name\n%.30s\n", openTag);
+	ctxt->wellFormed = 0;
     } else if (xmlStrcmp(ret->name, endTag)) {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt, 
 	    "Start and End tags don't use the same name\n%.30s\n%.30s\n",
 	               openTag, endTag);
+	ctxt->wellFormed = 0;
     }
     /*
      * SAX: End of Tag
@@ -3071,6 +3730,7 @@ xmlParseVersionInfo(xmlParserCtxtPtr ctxt) {
 	if (CUR != '=') {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	        ctxt->sax->error(ctxt, "xmlParseVersionInfo : expected '='\n");
+	    ctxt->wellFormed = 0;
 	    return(NULL);
         }
 	NEXT;
@@ -3082,6 +3742,7 @@ xmlParseVersionInfo(xmlParserCtxtPtr ctxt) {
 	    if (CUR != '"') {
 		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		    ctxt->sax->error(ctxt, "String not closed\n%.50s\n", q);
+		ctxt->wellFormed = 0;
 	    } else
 	        NEXT;
 	} else if (CUR == '\''){
@@ -3091,11 +3752,14 @@ xmlParseVersionInfo(xmlParserCtxtPtr ctxt) {
 	    if (CUR != '\'') {
 		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		    ctxt->sax->error(ctxt, "String not closed\n%.50s\n", q);
+		ctxt->wellFormed = 0;
 	    } else
 	        NEXT;
 	} else {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	        ctxt->sax->error(ctxt, "xmlParseVersionInfo : expected ' or \"\n");
+	        ctxt->sax->error(ctxt,
+		      "xmlParseVersionInfo : expected ' or \"\n");
+		ctxt->wellFormed = 0;
 	}
     }
     return(version);
@@ -3128,6 +3792,7 @@ xmlParseEncName(xmlParserCtxtPtr ctxt) {
     } else {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt, "Invalid XML encoding name\n");
+	ctxt->wellFormed = 0;
     }
     return(ret);
 }
@@ -3160,6 +3825,7 @@ xmlParseEncodingDecl(xmlParserCtxtPtr ctxt) {
 	if (CUR != '=') {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	        ctxt->sax->error(ctxt, "xmlParseEncodingDecl : expected '='\n");
+	    ctxt->wellFormed = 0;
 	    return(NULL);
         }
 	NEXT;
@@ -3171,6 +3837,7 @@ xmlParseEncodingDecl(xmlParserCtxtPtr ctxt) {
 	    if (CUR != '"') {
 		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		    ctxt->sax->error(ctxt, "String not closed\n%.50s\n", q);
+		ctxt->wellFormed = 0;
 	    } else
 	        NEXT;
 	} else if (CUR == '\''){
@@ -3180,11 +3847,14 @@ xmlParseEncodingDecl(xmlParserCtxtPtr ctxt) {
 	    if (CUR != '\'') {
 		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		    ctxt->sax->error(ctxt, "String not closed\n%.50s\n", q);
+		ctxt->wellFormed = 0;
 	    } else
 	        NEXT;
 	} else if (CUR == '"'){
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	        ctxt->sax->error(ctxt, "xmlParseEncodingDecl : expected ' or \"\n");
+	        ctxt->sax->error(ctxt,
+		     "xmlParseEncodingDecl : expected ' or \"\n");
+	    ctxt->wellFormed = 0;
 	}
     }
     return(encoding);
@@ -3214,7 +3884,9 @@ xmlParseSDDecl(xmlParserCtxtPtr ctxt) {
 	SKIP(10);
 	if (CUR != '=') {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	        ctxt->sax->error(ctxt, "XML standalone declaration : expected '='\n");
+	        ctxt->sax->error(ctxt,
+		    "XML standalone declaration : expected '='\n");
+	    ctxt->wellFormed = 0;
 	    return(standalone);
         }
 	NEXT;
@@ -3231,10 +3903,12 @@ xmlParseSDDecl(xmlParserCtxtPtr ctxt) {
             } else {
 		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		    ctxt->sax->error(ctxt, "standalone accepts only 'yes' or 'no'\n");
+		ctxt->wellFormed = 0;
 	    }
 	    if (CUR != '\'') {
 		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		    ctxt->sax->error(ctxt, "String not closed\n");
+		ctxt->wellFormed = 0;
 	    } else
 	        NEXT;
 	} else if (CUR == '"'){
@@ -3248,16 +3922,20 @@ xmlParseSDDecl(xmlParserCtxtPtr ctxt) {
                 SKIP(3);
             } else {
 		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		    ctxt->sax->error(ctxt, "standalone accepts only 'yes' or 'no'\n");
+		    ctxt->sax->error(ctxt,
+		        "standalone accepts only 'yes' or 'no'\n");
+		ctxt->wellFormed = 0;
 	    }
 	    if (CUR != '"') {
 		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		    ctxt->sax->error(ctxt, "String not closed\n");
+		ctxt->wellFormed = 0;
 	    } else
 	        NEXT;
 	} else {
             if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	        ctxt->sax->error(ctxt, "Standalone value not found\n");
+	    ctxt->wellFormed = 0;
         }
     }
     return(standalone);
@@ -3281,6 +3959,11 @@ xmlParseXMLDecl(xmlParserCtxtPtr ctxt) {
      */
     SKIP(5);
 
+    if (!IS_BLANK(CUR)) {
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt, "Blank needed after '<?xml'\n");
+	ctxt->wellFormed = 0;
+    }
     SKIP_BLANKS;
 
     /*
@@ -3295,11 +3978,30 @@ xmlParseXMLDecl(xmlParserCtxtPtr ctxt) {
     /*
      * We may have the encoding declaration
      */
+    if (!IS_BLANK(CUR)) {
+        if ((CUR == '?') && (NXT(1) == '>')) {
+	    SKIP(2);
+	    return;
+	}
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt, "Blank needed here\n");
+	ctxt->wellFormed = 0;
+    }
     ctxt->doc->encoding = xmlParseEncodingDecl(ctxt);
 
     /*
      * We may have the standalone status.
      */
+    if ((ctxt->doc->encoding != NULL) && (!IS_BLANK(CUR))) {
+        if ((CUR == '?') && (NXT(1) == '>')) {
+	    SKIP(2);
+	    return;
+	}
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt, "Blank needed here\n");
+	ctxt->wellFormed = 0;
+    }
+    SKIP_BLANKS;
     ctxt->doc->standalone = xmlParseSDDecl(ctxt);
 
     SKIP_BLANKS;
@@ -3309,10 +4011,12 @@ xmlParseXMLDecl(xmlParserCtxtPtr ctxt) {
         /* Deprecated old WD ... */
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt, "XML declaration must end-up with '?>'\n");
+	ctxt->wellFormed = 0;
 	NEXT;
     } else {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt, "parsing XML declaration: '?>' expected\n");
+	ctxt->wellFormed = 0;
 	MOVETO_ENDTAG(CUR_PTR);
 	NEXT;
     }
@@ -3377,7 +4081,19 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
     /*
      * Wipe out everything which is before the first '<'
      */
-    SKIP_BLANKS;
+    if (IS_BLANK(CUR)) {
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt,
+	    "Extra spaces at the beginning of the document are not allowed\n");
+	ctxt->wellFormed = 0;
+	SKIP_BLANKS;
+    }
+
+    if (CUR == 0) {
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt, "Document is empty\n");
+	ctxt->wellFormed = 0;
+    }
 
     /*
      * Check for the XMLDecl in the Prolog.
@@ -3434,11 +4150,19 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
      */
     xmlParseMisc(ctxt);
 
+    if (CUR != 0) {
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt,
+	        "Extra content at the end of the document\n");
+	ctxt->wellFormed = 0;
+    }
+
     /*
      * SAX: end of the document processing.
      */
     if (ctxt->sax) 
         ctxt->sax->endDocument(ctxt);
+    if (! ctxt->wellFormed) return(-1);
     return(0);
 }
 
@@ -3446,6 +4170,8 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
  * xmlSAXParseDoc :
  * @sax:  the SAX handler block
  * @cur:  a pointer to an array of CHAR
+ * @recovery:  work in recovery mode, i.e. tries to read no Well Formed
+ *             documents
  *
  * parse an XML in-memory document and build a tree.
  * It use the given SAX function block to handle the parsing callback.
@@ -3454,7 +4180,7 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
  * return values: the resulting document tree
  */
 
-xmlDocPtr xmlSAXParseDoc(xmlSAXHandlerPtr sax, CHAR *cur) {
+xmlDocPtr xmlSAXParseDoc(xmlSAXHandlerPtr sax, CHAR *cur, int recovery) {
     xmlDocPtr ret;
     xmlParserCtxtPtr ctxt;
     xmlParserInputPtr input;
@@ -3485,7 +4211,12 @@ xmlDocPtr xmlSAXParseDoc(xmlSAXHandlerPtr sax, CHAR *cur) {
 
 
     xmlParseDocument(ctxt);
-    ret = ctxt->doc;
+    if ((ctxt->wellFormed) || recovery) ret = ctxt->doc;
+    else {
+       ret = NULL;
+       xmlFreeDoc(ctxt->doc);
+       ctxt->doc = NULL;
+    }
     free(ctxt->nodeTab);
     free(ctxt->inputTab);
     if (input->filename != NULL)
@@ -3506,13 +4237,29 @@ xmlDocPtr xmlSAXParseDoc(xmlSAXHandlerPtr sax, CHAR *cur) {
  */
 
 xmlDocPtr xmlParseDoc(CHAR *cur) {
-    return(xmlSAXParseDoc(NULL, cur));
+    return(xmlSAXParseDoc(NULL, cur, 0));
+}
+
+/**
+ * xmlRecoverDoc :
+ * @cur:  a pointer to an array of CHAR
+ *
+ * parse an XML in-memory document and build a tree.
+ * In the case the document is not Well Formed, a tree is built anyway
+ * 
+ * return values: the resulting document tree
+ */
+
+xmlDocPtr xmlRecoverDoc(CHAR *cur) {
+    return(xmlSAXParseDoc(NULL, cur, 1));
 }
 
 /**
  * xmlSAXParseFile :
  * @sax:  the SAX handler block
  * @filename:  the filename
+ * @recovery:  work in recovery mode, i.e. tries to read no Well Formed
+ *             documents
  *
  * parse an XML file and build a tree. Automatic support for ZLIB/Compress
  * compressed document is provided by default if found at compile-time.
@@ -3522,7 +4269,8 @@ xmlDocPtr xmlParseDoc(CHAR *cur) {
  * return values: the resulting document tree
  */
 
-xmlDocPtr xmlSAXParseFile(xmlSAXHandlerPtr sax, const char *filename) {
+xmlDocPtr xmlSAXParseFile(xmlSAXHandlerPtr sax, const char *filename,
+                          int recovery) {
     xmlDocPtr ret;
 #ifdef HAVE_ZLIB_H
     gzFile input;
@@ -3624,7 +4372,12 @@ retry_bigger:
 
     xmlParseDocument(ctxt);
 
-    ret = ctxt->doc;
+    if ((ctxt->wellFormed) || recovery) ret = ctxt->doc;
+    else {
+       ret = NULL;
+       xmlFreeDoc(ctxt->doc);
+       ctxt->doc = NULL;
+    }
     free(buffer);
     free(ctxt->nodeTab);
     free(ctxt->inputTab);
@@ -3647,7 +4400,22 @@ retry_bigger:
  */
 
 xmlDocPtr xmlParseFile(const char *filename) {
-    return(xmlSAXParseFile(NULL, filename));
+    return(xmlSAXParseFile(NULL, filename, 0));
+}
+
+/**
+ * xmlRecoverFile :
+ * @filename:  the filename
+ *
+ * parse an XML file and build a tree. Automatic support for ZLIB/Compress
+ * compressed document is provided by default if found at compile-time.
+ * In the case the document is not Well Formed, a tree is built anyway
+ *
+ * return values: the resulting document tree
+ */
+
+xmlDocPtr xmlRecoverFile(const char *filename) {
+    return(xmlSAXParseFile(NULL, filename, 1));
 }
 
 /**
@@ -3655,6 +4423,8 @@ xmlDocPtr xmlParseFile(const char *filename) {
  * @sax:  the SAX handler block
  * @cur:  an pointer to a char array
  * @size:  the siwe of the array
+ * @recovery:  work in recovery mode, i.e. tries to read no Well Formed
+ *             documents
  *
  * parse an XML in-memory block and use the given SAX function block
  * to handle the parsing callback. If sax is NULL, fallback to the default
@@ -3665,7 +4435,8 @@ xmlDocPtr xmlParseFile(const char *filename) {
  * return values: the resulting document tree
  */
 
-xmlDocPtr xmlSAXParseMemory(xmlSAXHandlerPtr sax, char *buffer, int size) {
+xmlDocPtr xmlSAXParseMemory(xmlSAXHandlerPtr sax, char *buffer, int size,
+                            int recovery) {
     xmlDocPtr ret;
     xmlParserCtxtPtr ctxt;
     xmlParserInputPtr input;
@@ -3702,7 +4473,12 @@ xmlDocPtr xmlSAXParseMemory(xmlSAXHandlerPtr sax, char *buffer, int size) {
 
     xmlParseDocument(ctxt);
 
-    ret = ctxt->doc;
+    if ((ctxt->wellFormed) || recovery) ret = ctxt->doc;
+    else {
+       ret = NULL;
+       xmlFreeDoc(ctxt->doc);
+       ctxt->doc = NULL;
+    }
     free(ctxt->nodeTab);
     free(ctxt->inputTab);
     if (input->filename != NULL)
@@ -3724,7 +4500,22 @@ xmlDocPtr xmlSAXParseMemory(xmlSAXHandlerPtr sax, char *buffer, int size) {
  */
 
 xmlDocPtr xmlParseMemory(char *buffer, int size) {
-   return(xmlSAXParseMemory(NULL, buffer, size));
+   return(xmlSAXParseMemory(NULL, buffer, size, 0));
+}
+
+/**
+ * xmlRecoverMemory :
+ * @cur:  an pointer to a char array
+ * @size:  the size of the array
+ *
+ * parse an XML in-memory block and build a tree.
+ * In the case the document is not Well Formed, a tree is built anyway
+ * 
+ * return values: the resulting document tree
+ */
+
+xmlDocPtr xmlRecoverMemory(char *buffer, int size) {
+   return(xmlSAXParseMemory(NULL, buffer, size, 1));
 }
 
 /**
@@ -3751,6 +4542,7 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
 
   ctxt->sax = &xmlDefaultSAXHandler;
   ctxt->doc = NULL;
+  ctxt->wellFormed = 1;
   ctxt->record_info = 0;
   xmlInitNodeInfoSeq(&ctxt->node_seq);
 }

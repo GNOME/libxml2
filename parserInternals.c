@@ -2264,6 +2264,7 @@ xmlFreeParserCtxt(xmlParserCtxtPtr ctxt)
     if ((ctxt->sax != NULL) && (ctxt->sax != &xmlDefaultSAXHandler))
         xmlFree(ctxt->sax);
     if (ctxt->directory != NULL) xmlFree((char *) ctxt->directory);
+    if (ctxt->vctxt.nodeTab != NULL) xmlFree(ctxt->vctxt.nodeTab);
     xmlFree(ctxt);
 }
 

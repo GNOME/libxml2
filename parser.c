@@ -8853,23 +8853,14 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
     if (ctxt->validate) {
 	ctxt->vctxt.error = ctx->vctxt.error;
 	ctxt->vctxt.warning = ctx->vctxt.warning;
-	/* Allocate the Node stack */
-	ctxt->vctxt.nodeTab = (xmlNodePtr *) xmlMalloc(4 * sizeof(xmlNodePtr));
-	if (ctxt->vctxt.nodeTab == NULL) {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "xmlParseCtxtExternalEntity: out of memory\n");
-	    ctxt->validate = 0;
-	    ctxt->vctxt.error = NULL;
-	    ctxt->vctxt.warning = NULL;
-	} else {
-	    ctxt->vctxt.nodeNr = 0;
-	    ctxt->vctxt.nodeMax = 4;
-	    ctxt->vctxt.node = NULL;
-	}
     } else {
 	ctxt->vctxt.error = NULL;
 	ctxt->vctxt.warning = NULL;
     }
+    ctxt->vctxt.nodeTab = NULL;
+    ctxt->vctxt.nodeNr = 0;
+    ctxt->vctxt.nodeMax = 0;
+    ctxt->vctxt.node = NULL;
 
     xmlParseContent(ctxt);
    

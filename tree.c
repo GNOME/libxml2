@@ -483,6 +483,8 @@ xmlNewDoc(const xmlChar *version) {
  */
 void
 xmlFreeDoc(xmlDocPtr cur) {
+    xmlDtdPtr extSubset, intSubset;
+
     if (cur == NULL) {
 #ifdef DEBUG_TREE
         xmlGenericError(xmlGenericErrorContext,
@@ -497,15 +499,17 @@ xmlFreeDoc(xmlDocPtr cur) {
     cur->ids = NULL;
     if (cur->refs != NULL) xmlFreeRefTable((xmlRefTablePtr) cur->refs);
     cur->refs = NULL;
-    if (cur->extSubset != NULL) {
+    extSubset = cur->extSubset;
+    intSubset = cur->intSubset;
+    if (extSubset != NULL) {
 	xmlUnlinkNode((xmlNodePtr) cur->extSubset);
-	xmlFreeDtd(cur->extSubset);
 	cur->extSubset = NULL;
+	xmlFreeDtd(extSubset);
     }
-    if (cur->intSubset != NULL) {
+    if (intSubset != NULL) {
 	xmlUnlinkNode((xmlNodePtr) cur->intSubset);
-	xmlFreeDtd(cur->intSubset);
 	cur->intSubset = NULL;
+	xmlFreeDtd(intSubset);
     }
 
     if (cur->children != NULL) xmlFreeNodeList(cur->children);

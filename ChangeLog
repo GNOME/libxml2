@@ -1,3 +1,10 @@
+Tue Jun 19 13:04:10 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* valid.c tree.c parserInternals.c parser.c: Stephan Kulow
+	  provided another failing case found in KDE, the way the
+	  ctxt->vctxt.nodeTab was allocated and freed changed over
+	  time but it wasn't completely cleaned up. This should fix it.
+
 Sun Jun 17 19:56:33 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* parser.c: Stephan Kulow also raised the fact that line number

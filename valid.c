@@ -38,6 +38,7 @@ scope int name##VPush(xmlValidCtxtPtr ctxt, type value) {		\
         if (ctxt->name##Tab == NULL) {					\
 	    xmlGenericError(xmlGenericErrorContext,			\
 		    "malloc failed !\n");				\
+	    ctxt->name##Max = 0;					\
 	    return(0);							\
 	}								\
     }									\
@@ -3699,6 +3700,8 @@ xmlValidateElementContent(xmlValidCtxtPtr ctxt, xmlNodePtr child,
     /*
      * The first entry in the stack is reserved to the current state
      */
+    ctxt->nodeMax = 0;
+    ctxt->nodeNr = 0;
     ctxt->nodeTab = NULL;
     ctxt->vstate = &ctxt->vstateTab[0];
     ctxt->vstateNr = 1;
@@ -3829,6 +3832,7 @@ done:
 	ctxt->vstateTab = NULL;
     }
     ctxt->nodeMax = 0;
+    ctxt->nodeNr = 0;
     if (ctxt->nodeTab != NULL) {
 	xmlFree(ctxt->nodeTab);
 	ctxt->nodeTab = NULL;

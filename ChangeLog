@@ -1,3 +1,19 @@
+Tue Feb 19 22:01:35 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/parserInternals.h parser.c: had to change
+	  2 internal parsing API when processing document content
+	  to check the start and end of element content are defined
+	  in the same entity
+	* valid.c include/libxml/valid.h: attribute normalization can
+	  generate a validity error added xmlValidCtxtNormalizeAttributeValue()
+	  with the context to report it.
+	* SAX.c: fixed the last known bugs, crazy validation constraints
+	  when a document is standalone seems correctly handled. There
+	  is a couple of open issues left which need consideration especially
+	  PE93 on external unparsed entities and standalone status. 
+	  Ran 1819 tests: 1817 suceeded, 2 failed and 0 generated an error in 8.26 s.
+	  The 2 tests left failing are actually in error. Cleanup done.
+
 Tue Feb 19 15:17:02 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* valid.c: implemented E59 spaces in CDATA does not match the

@@ -4132,7 +4132,7 @@ xmlParseAttributeListDecl(xmlParserCtxtPtr ctxt) {
  * returns: the list of the xmlElementContentPtr describing the element choices
  */
 xmlElementContentPtr
-xmlParseElementMixedContentDecl(xmlParserCtxtPtr ctxt) {
+xmlParseElementMixedContentDecl(xmlParserCtxtPtr ctxt, xmlParserInputPtr inputchk) {
     xmlElementContentPtr ret = NULL, cur = NULL, n;
     xmlChar *elem = NULL;
 
@@ -4145,7 +4145,13 @@ xmlParseElementMixedContentDecl(xmlParserCtxtPtr ctxt) {
 	SKIP_BLANKS;
 	SHRINK;
 	if (RAW == ')') {
-	    ctxt->entity = ctxt->input;
+	    if ((ctxt->validate) && (ctxt->input != inputchk)) {
+		ctxt->errNo = XML_ERR_ENTITY_BOUNDARY;
+		if (ctxt->vctxt.error != NULL)
+		    ctxt->vctxt.error(ctxt->vctxt.userData, 
+"Element content declaration doesn't start and stop in the same entity\n");
+		ctxt->valid = 0;
+	    }
 	    NEXT;
 	    ret = xmlNewElementContent(NULL, XML_ELEMENT_CONTENT_PCDATA);
 	    if (RAW == '*') {
@@ -4203,7 +4209,13 @@ xmlParseElementMixedContentDecl(xmlParserCtxtPtr ctxt) {
 	        xmlFree(elem);
             }
 	    ret->ocur = XML_ELEMENT_CONTENT_MULT;
-	    ctxt->entity = ctxt->input;
+	    if ((ctxt->validate) && (ctxt->input != inputchk)) {
+		ctxt->errNo = XML_ERR_ENTITY_BOUNDARY;
+		if (ctxt->vctxt.error != NULL)
+		    ctxt->vctxt.error(ctxt->vctxt.userData, 
+"Element content declaration doesn't start and stop in the same entity\n");
+		ctxt->valid = 0;
+	    }
 	    SKIP(2);
 	} else {
 	    if (elem != NULL) xmlFree(elem);
@@ -4273,7 +4285,7 @@ xmlParseElementChildrenContentD
 #else
 xmlParseElementChildrenContentDecl
 #endif
-(xmlParserCtxtPtr ctxt) {
+(xmlParserCtxtPtr ctxt, xmlParserInputPtr inputchk) {
     xmlElementContentPtr ret = NULL, cur = NULL, last = NULL, op = NULL;
     xmlChar *elem;
     xmlChar type = 0;
@@ -4281,10 +4293,12 @@ xmlParseElementChildrenContentDecl
     SKIP_BLANKS;
     GROW;
     if (RAW == '(') {
+	xmlParserInputPtr input = ctxt->input;
+
         /* Recurse on first child */
 	NEXT;
 	SKIP_BLANKS;
-        cur = ret = xmlParseElementChildrenContentDecl(ctxt);
+        cur = ret = xmlParseElementChildrenContentDecl(ctxt, input);
 	SKIP_BLANKS;
 	GROW;
     } else {
@@ -4437,10 +4451,11 @@ xmlParseElementChildrenContentDecl
 	SKIP_BLANKS;
 	GROW;
 	if (RAW == '(') {
+	    xmlParserInputPtr input = ctxt->input;
 	    /* Recurse on second child */
 	    NEXT;
 	    SKIP_BLANKS;
-	    last = xmlParseElementChildrenContentDecl(ctxt);
+	    last = xmlParseElementChildrenContentDecl(ctxt, input);
 	    SKIP_BLANKS;
 	} else {
 	    elem = xmlParseName(ctxt);
@@ -4483,7 +4498,13 @@ xmlParseElementChildrenContentDecl
 	if (last != NULL)
 	    last->parent = cur;
     }
-    ctxt->entity = ctxt->input;
+    if ((ctxt->validate) && (ctxt->input != inputchk)) {
+	ctxt->errNo = XML_ERR_ENTITY_BOUNDARY;
+	if (ctxt->vctxt.error != NULL)
+	    ctxt->vctxt.error(ctxt->vctxt.userData, 
+"Element content declaration doesn't start and stop in the same entity\n");
+	ctxt->valid = 0;
+    }
     NEXT;
     if (RAW == '?') {
 	if (ret != NULL)
@@ -4583,19 +4604,11 @@ xmlParseElementContentDecl(xmlParserCtxtPtr ctxt, xmlChar *name,
         (NXT(2) == 'C') && (NXT(3) == 'D') &&
         (NXT(4) == 'A') && (NXT(5) == 'T') &&
         (NXT(6) == 'A')) {
-        tree = xmlParseElementMixedContentDecl(ctxt);
+        tree = xmlParseElementMixedContentDecl(ctxt, input);
 	res = XML_ELEMENT_TYPE_MIXED;
     } else {
-        tree = xmlParseElementChildrenContentDecl(ctxt);
+        tree = xmlParseElementChildrenContentDecl(ctxt, input);
 	res = XML_ELEMENT_TYPE_ELEMENT;
-    }
-    if ((ctxt->entity != NULL) && (input != ctxt->entity)) {
-	ctxt->errNo = XML_ERR_ENTITY_BOUNDARY;
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt->userData, 
-"Element content declaration doesn't start and stop in the same entity\n");
-	ctxt->wellFormed = 0;
-	ctxt->disableSAX = 1;
     }
     SKIP_BLANKS;
     *result = tree;

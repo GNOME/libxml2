@@ -830,8 +830,13 @@ attribute(void *ctx, const xmlChar *fullname, const xmlChar *value)
      * Needed for HTML too:
      *   http://www.w3.org/TR/html4/types.html#h-6.2
      */
-    nval = xmlValidNormalizeAttributeValue(ctxt->myDoc, ctxt->node,
+    ctxt->vctxt.valid = 1;
+    nval = xmlValidCtxtNormalizeAttributeValue(&ctxt->vctxt,
+	                                   ctxt->myDoc, ctxt->node,
 					   fullname, value);
+    if (ctxt->vctxt.valid != 1) {
+	ctxt->valid = 0;
+    }
     if (nval != NULL)
 	value = nval;
 
@@ -985,16 +990,21 @@ attribute(void *ctx, const xmlChar *fullname, const xmlChar *value)
  * Check defaulted attributes from the DTD
  */
 static void
-xmlCheckDefaultedAttributesFromDtd(xmlParserCtxtPtr ctxt,
-	xmlDtdPtr dtd, const xmlChar *name,
+xmlCheckDefaultedAttributes(xmlParserCtxtPtr ctxt, const xmlChar *name,
 	const xmlChar *prefix, const xmlChar **atts) {
     xmlElementPtr elemDecl;
     const xmlChar *att;
+    int internal = 1;
     int i;
 
-    if ((dtd == NULL) || (name == NULL))
-	return;
-    elemDecl = xmlGetDtdQElementDesc(dtd, name, prefix);
+    elemDecl = xmlGetDtdQElementDesc(ctxt->myDoc->intSubset, name, prefix);
+    if (elemDecl == NULL) {
+	elemDecl = xmlGetDtdQElementDesc(ctxt->myDoc->extSubset, name, prefix);
+	internal = 0;
+    }
+
+process_external_subset:
+
     if (elemDecl != NULL) {
 	xmlAttributePtr attr = elemDecl->attributes;
 	/*
@@ -1008,7 +1018,10 @@ xmlCheckDefaultedAttributesFromDtd(xmlParserCtxtPtr ctxt,
 		if ((attr->defaultValue != NULL) &&
 		    (xmlGetDtdQAttrDesc(ctxt->myDoc->extSubset,
 					attr->elem, attr->name,
-					attr->prefix) == attr)) {
+					attr->prefix) == attr) &&
+		    (xmlGetDtdQAttrDesc(ctxt->myDoc->intSubset,
+					attr->elem, attr->name,
+					attr->prefix) == NULL)) {
 		    xmlChar *fulln;
 
 		    if (attr->prefix != NULL) {
@@ -1039,9 +1052,7 @@ xmlCheckDefaultedAttributesFromDtd(xmlParserCtxtPtr ctxt,
 			    ctxt->vctxt.error(ctxt->vctxt.userData,
       "standalone: attribute %s on %s defaulted from external subset\n",
 					      fulln, attr->elem);
-			/* Waiting on the XML Core WG decision on this
 			ctxt->valid = 0;
-			 */
 		    }
 		}
 		attr = attr->nexth;
@@ -1053,7 +1064,18 @@ xmlCheckDefaultedAttributesFromDtd(xmlParserCtxtPtr ctxt,
 	 */
 	attr = elemDecl->attributes;
 	while (attr != NULL) {
-	    if (attr->defaultValue != NULL) {
+	    /*
+	     * Make sure that attributes redefinition occuring in the
+	     * internal subset are not overriden by definitions in the
+	     * external subset.
+	     */
+	    if ((attr->defaultValue != NULL) &&
+		(xmlGetDtdQAttrDesc(ctxt->myDoc->extSubset,
+				    attr->elem, attr->name,
+				    attr->prefix) == attr) &&
+		(xmlGetDtdQAttrDesc(ctxt->myDoc->intSubset,
+				    attr->elem, attr->name,
+				    attr->prefix) == NULL)) {
 		/*
 		 * the element should be instantiated in the tree if:
 		 *  - this is a namespace prefix
@@ -1090,12 +1112,19 @@ xmlCheckDefaultedAttributesFromDtd(xmlParserCtxtPtr ctxt,
 			    att = atts[i];
 			}
 		    }
-		    if (att == NULL)
+		    if (att == NULL) {
 			attribute(ctxt, fulln, attr->defaultValue);
+		    }
 		    xmlFree(fulln);
 		}
 	    }
 	    attr = attr->nexth;
+	}
+	if (internal == 1) {
+	    elemDecl = xmlGetDtdQElementDesc(ctxt->myDoc->extSubset,
+		                             name, prefix);
+	    internal = 0;
+	    goto process_external_subset;
 	}
     }
 }
@@ -1206,12 +1235,7 @@ startElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
     if ((!ctxt->html) &&
 	((ctxt->myDoc->intSubset != NULL) ||
 	 (ctxt->myDoc->extSubset != NULL))) {
-	if (ctxt->myDoc->intSubset != NULL)
-	    xmlCheckDefaultedAttributesFromDtd(ctxt, ctxt->myDoc->intSubset,
-		                               name, prefix, atts);
-	if (ctxt->myDoc->extSubset != NULL)
-	    xmlCheckDefaultedAttributesFromDtd(ctxt, ctxt->myDoc->extSubset,
-		                               name, prefix, atts);
+	xmlCheckDefaultedAttributes(ctxt, name, prefix, atts);
     }
 
     /*

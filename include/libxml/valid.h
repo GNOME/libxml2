@@ -223,6 +223,11 @@ xmlChar *	xmlValidNormalizeAttributeValue(xmlDocPtr doc,
 					 xmlNodePtr elem,
 					 const xmlChar *name,
 					 const xmlChar *value);
+xmlChar *	xmlValidCtxtNormalizeAttributeValue(xmlValidCtxtPtr ctxt,
+					 xmlDocPtr doc,
+					 xmlNodePtr elem,
+					 const xmlChar *name,
+					 const xmlChar *value);
 int		xmlValidateAttributeDecl(xmlValidCtxtPtr ctxt,
 					 xmlDocPtr doc,
 		                         xmlAttributePtr attr);

@@ -2970,11 +2970,99 @@ xmlValidateAttributeValue2(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 }
 
 /**
+ * xmlValidCtxtNormalizeAttributeValue:
+ * @ctxt: the validation context
+ * @doc:  the document
+ * @elem:  the parent
+ * @name:  the attribute name
+ * @value:  the attribute value
+ * @ctxt:  the validation context or NULL
+ *
+ * Does the validation related extra step of the normalization of attribute
+ * values:
+ *
+ * If the declared value is not CDATA, then the XML processor must further
+ * process the normalized attribute value by discarding any leading and
+ * trailing space (#x20) characters, and by replacing sequences of space
+ * (#x20) characters by single space (#x20) character.
+ *
+ * Also  check VC: Standalone Document Declaration in P32, and update
+ *  ctxt->valid accordingly
+ *
+ * returns a new normalized string if normalization is needed, NULL otherwise
+ *      the caller must free the returned value.
+ */
+
+xmlChar *
+xmlValidCtxtNormalizeAttributeValue(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
+	     xmlNodePtr elem, const xmlChar *name, const xmlChar *value) {
+    xmlChar *ret, *dst;
+    const xmlChar *src;
+    xmlAttributePtr attrDecl = NULL;
+    int extsubset = 0;
+
+    if (doc == NULL) return(NULL);
+    if (elem == NULL) return(NULL);
+    if (name == NULL) return(NULL);
+    if (value == NULL) return(NULL);
+
+    if ((elem->ns != NULL) && (elem->ns->prefix != NULL)) {
+	xmlChar qname[500];
+	snprintf((char *) qname, sizeof(qname), "%s:%s",
+		 elem->ns->prefix, elem->name);
+        qname[sizeof(qname) - 1] = 0;
+	attrDecl = xmlGetDtdAttrDesc(doc->intSubset, qname, name);
+	if ((attrDecl == NULL) && (doc->extSubset != NULL)) {
+	    attrDecl = xmlGetDtdAttrDesc(doc->extSubset, qname, name);
+	    if (attrDecl != NULL)
+		extsubset = 1;
+	}
+    }
+    if ((attrDecl == NULL) && (doc->intSubset != NULL))
+	attrDecl = xmlGetDtdAttrDesc(doc->intSubset, elem->name, name);
+    if ((attrDecl == NULL) && (doc->extSubset != NULL)) {
+	attrDecl = xmlGetDtdAttrDesc(doc->extSubset, elem->name, name);
+	if (attrDecl != NULL)
+	    extsubset = 1;
+    }
+
+    if (attrDecl == NULL)
+	return(NULL);
+    if (attrDecl->atype == XML_ATTRIBUTE_CDATA)
+	return(NULL);
+
+    ret = xmlStrdup(value);
+    if (ret == NULL)
+	return(NULL);
+    src = value;
+    dst = ret;
+    while (*src == 0x20) src++;
+    while (*src != 0) {
+	if (*src == 0x20) {
+	    while (*src == 0x20) src++;
+	    if (*src != 0)
+		*dst++ = 0x20;
+	} else {
+	    *dst++ = *src++;
+	}
+    }
+    *dst = 0;
+    if ((doc->standalone) && (extsubset == 1) && (!xmlStrEqual(value, ret))) {
+	VERROR(ctxt->userData, 
+"standalone: %s on %s value had to be normalized based on external subset declaration\n",
+	       name, elem->name);
+	ctxt->valid = 0;
+    }
+    return(ret);
+}
+
+/**
  * xmlValidNormalizeAttributeValue:
  * @doc:  the document
  * @elem:  the parent
  * @name:  the attribute name
  * @value:  the attribute value
+ * @ctxt:  the validation context or NULL
  *
  * Does the validation related extra step of the normalization of attribute
  * values:
@@ -3234,7 +3322,6 @@ xmlValidateElementDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 	       elem->name);
 	ret = 0;
     }
-
     /* One ID per Element Type
      * already done when registering the attribute
     if (xmlScanIDAttributeDecl(ctxt, elem) > 1) {
@@ -4195,9 +4282,10 @@ xmlValidateOneElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
     xmlElementContentPtr cont;
     xmlAttributePtr attr;
     xmlNodePtr child;
-    int ret = 1;
+    int ret = 1, tmp;
     const xmlChar *name;
     const xmlChar *prefix = NULL;
+    int extsubset = 0;
 
     CHECK_DTD;
 
@@ -4275,9 +4363,12 @@ xmlValidateOneElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
     if (prefix != NULL) {
 	elemDecl = xmlGetDtdQElementDesc(doc->intSubset,
 		                         elem->name, prefix);
-	if ((elemDecl == NULL) && (doc->extSubset != NULL))
+	if ((elemDecl == NULL) && (doc->extSubset != NULL)) {
 	    elemDecl = xmlGetDtdQElementDesc(doc->extSubset,
 		                             elem->name, prefix);
+	    if (elemDecl != NULL)
+		extsubset = 1;
+	}
     }
 
     /*
@@ -4287,8 +4378,11 @@ xmlValidateOneElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
      */
     if (elemDecl == NULL) {
 	elemDecl = xmlGetDtdElementDesc(doc->intSubset, elem->name);
-	if ((elemDecl == NULL) && (doc->extSubset != NULL))
+	if ((elemDecl == NULL) && (doc->extSubset != NULL)) {
 	    elemDecl = xmlGetDtdElementDesc(doc->extSubset, elem->name);
+	    if (elemDecl != NULL)
+		extsubset = 1;
+	}
     }
     if (elemDecl == NULL) {
 	VERROR(ctxt->userData, "No declaration for element %s\n",
@@ -4314,6 +4408,7 @@ xmlValidateOneElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 	    /* I don't think anything is required then */
 	    break;
         case XML_ELEMENT_TYPE_MIXED:
+
 	    /* simple case of declared as #PCDATA */
 	    if ((elemDecl->content != NULL) &&
 		(elemDecl->content->type == XML_ELEMENT_CONTENT_PCDATA)) {
@@ -4386,9 +4481,35 @@ child_ok:
 	    }
 	    break;
         case XML_ELEMENT_TYPE_ELEMENT:
+	    if ((doc->standalone == 1) && (extsubset == 1)) {
+		/*
+		 * VC: Standalone Document Declaration
+		 *     - element types with element content, if white space
+		 *       occurs directly within any instance of those types.
+		 */
+		child = elem->children;
+		while (child != NULL) {
+		    if (child->type == XML_TEXT_NODE) {
+			const xmlChar *content = child->content;
+
+			while (IS_BLANK(*content))
+			    content++;
+			if (*content == 0) {
+			    VERROR(ctxt->userData,
+"standalone: %s declared in the external subset contains white spaces nodes\n",
+				   elem->name);
+			    ret = 0;
+			    break;
+			}
+		    }
+		    child =child->next;
+		}
+	    }
 	    child = elem->children;
 	    cont = elemDecl->content;
-	    ret = xmlValidateElementContent(ctxt, child, elemDecl, 1);
+	    tmp = xmlValidateElementContent(ctxt, child, elemDecl, 1);
+	    if (tmp <= 0)
+		ret = tmp;
 	    break;
     }
 

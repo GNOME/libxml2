@@ -624,7 +624,7 @@ static void streamFile(char *filename) {
 	if (base == (void *) MAP_FAILED)
 	    return;
 
-	input = xmlParserInputBufferCreateMem((char *) base, info.st_size,
+	input = xmlParserInputBufferCreateStatic((char *) base, info.st_size,
 	                                      XML_CHAR_ENCODING_NONE);
 	reader = xmlNewTextReader(input, filename);
     } else

@@ -416,7 +416,8 @@ struct _xmlRef {
 
 typedef enum {
     XML_BUFFER_ALLOC_DOUBLEIT,
-    XML_BUFFER_ALLOC_EXACT
+    XML_BUFFER_ALLOC_EXACT,
+    XML_BUFFER_ALLOC_IMMUTABLE
 } xmlBufferAllocationScheme;
 
 /**
@@ -581,6 +582,9 @@ XMLPUBFUN xmlBufferPtr XMLCALL
 		xmlBufferCreate		(void);
 XMLPUBFUN xmlBufferPtr XMLCALL	
 		xmlBufferCreateSize	(size_t size);
+XMLPUBFUN xmlBufferPtr XMLCALL	
+		xmlBufferCreateStatic	(void *mem,
+					 size_t size);
 XMLPUBFUN int XMLCALL		
 		xmlBufferResize		(xmlBufferPtr buf,
 					 unsigned int size);

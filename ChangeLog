@@ -1,3 +1,19 @@
+Thu Sep 18 15:29:46 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am: add streaming on memory regression tests, found
+	  bad bugs in the reader interface
+	* xmlreader.c: fixing bugs w.r.t. very large names, and special
+	  condition in end of file.
+	* xmlIO.c tree.c include/libxml/tree.h include/libxml/xmlIO.h:
+	  adding immutable buffers, and parser input based on those,
+	  but this should not be used (yet) for general parsing
+	* parser.c: added a comment about using immutable buffers for
+	  general parsing.
+	* result/bigname.xml.rdr result/bigname2.xml.rdr: fixing the
+	  output of the regression tests
+	* xmllint.c: using the immutable buffers when streaming on
+	  mmaped file (--stream --memory)
+
 Thu Sep 18 12:04:50 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* dict.c: the last patch broke unicity of returned strings, removed

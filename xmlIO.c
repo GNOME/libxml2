@@ -2012,6 +2012,52 @@ xmlParserInputBufferCreateMem(const char *mem, int size, xmlCharEncoding enc) {
 }
 
 /**
+ * xmlParserInputBufferCreateStatic:
+ * @mem:  the memory input
+ * @size:  the length of the memory block
+ * @enc:  the charset encoding if known
+ *
+ * Create a buffered parser input for the progressive parsing for the input
+ * from an immutable memory area. This will not copy the memory area to
+ * the buffer, but the memory is expected to be available until the end of
+ * the parsing, this is useful for example when using mmap'ed file.
+ *
+ * Returns the new parser input or NULL
+ */
+xmlParserInputBufferPtr
+xmlParserInputBufferCreateStatic(const char *mem, int size,
+                                 xmlCharEncoding enc) {
+    xmlParserInputBufferPtr ret;
+
+    if (size <= 0) return(NULL);
+    if (mem == NULL) return(NULL);
+
+    ret = (xmlParserInputBufferPtr) xmlMalloc(sizeof(xmlParserInputBuffer));
+    if (ret == NULL) {
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlParserInputBufferCreateStatic : out of memory!\n");
+	return(NULL);
+    }
+    memset(ret, 0, (size_t) sizeof(xmlParserInputBuffer));
+    ret->buffer = xmlBufferCreateStatic(mem, size);
+    if (ret->buffer == NULL) {
+        xmlFree(ret);
+	return(NULL);
+    }
+    ret->encoder = xmlGetCharEncodingHandler(enc);
+    if (ret->encoder != NULL)
+        ret->raw = xmlBufferCreateSize(2 * xmlDefaultBufferSize);
+    else
+        ret->raw = NULL;
+    ret->compressed = -1;
+    ret->context = (void *) mem;
+    ret->readcallback = NULL;
+    ret->closecallback = NULL;
+
+    return(ret);
+}
+
+/**
  * xmlOutputBufferCreateFd:
  * @fd:  a file descriptor number
  * @encoder:  the encoding converter or NULL
@@ -2265,6 +2311,9 @@ xmlParserInputBufferRead(xmlParserInputBufferPtr in, int len) {
     /* xmlBufferEmpty(in->buffer); */
     if (in->readcallback != NULL)
 	return(xmlParserInputBufferGrow(in, len));
+    else if ((in->buffer != NULL) &&
+             (in->buffer->alloc == XML_BUFFER_ALLOC_IMMUTABLE))
+	return(0);
     else
         return(-1);
 }

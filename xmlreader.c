@@ -765,12 +765,25 @@ xmlTextReaderPushData(xmlTextReaderPtr reader) {
 	     */
 	    if (reader->mode != XML_TEXTREADER_MODE_EOF) {
 		val = xmlParserInputBufferRead(reader->input, 4096);
-		if (val <= 0) {
+		if ((val == 0) &&
+		    (inbuf->alloc == XML_BUFFER_ALLOC_IMMUTABLE)) {
+		    if (inbuf->use == reader->cur) {
+			reader->mode = XML_TEXTREADER_MODE_EOF;
+			reader->state = oldstate;
+			if ((oldstate != XML_TEXTREADER_START) ||
+			    (reader->ctxt->myDoc != NULL))
+			    return(val);
+		    }
+		} else if (val < 0) {
 		    reader->mode = XML_TEXTREADER_MODE_EOF;
 		    reader->state = oldstate;
 		    if ((oldstate != XML_TEXTREADER_START) ||
 			(reader->ctxt->myDoc != NULL))
 			return(val);
+		} else if (val == 0) {
+		    /* mark the end of the stream and process the remains */
+		    reader->mode = XML_TEXTREADER_MODE_EOF;
+		    break;
 		}
 
 	    } else 
@@ -1572,8 +1585,10 @@ xmlNewTextReader(xmlParserInputBufferPtr input, const char *URI) {
     ret->mode = XML_TEXTREADER_MODE_INITIAL;
     ret->node = NULL;
     ret->curnode = NULL;
-    val = xmlParserInputBufferRead(input, 4);
-    if (val >= 4) {
+    if (ret->input->buffer->use < 4) {
+	val = xmlParserInputBufferRead(input, 4);
+    }
+    if (ret->input->buffer->use >= 4) {
 	ret->ctxt = xmlCreatePushParserCtxt(ret->sax, NULL,
 			(const char *) ret->input->buffer->content, 4, URI);
 	ret->base = 0;

@@ -588,6 +588,23 @@ Readertests : xmllint$(EXEEXT)
 	      diff $(srcdir)/result/$$name.rdr result.$$name ; \
 	      rm result.$$name ; \
 	  fi ; fi ; done)
+	@echo "##"
+	@echo "## Reader on memory regression tests"
+	@echo "##"
+	-@(for i in $(srcdir)/test/* ; do \
+	  name=`basename $$i`; \
+	  if [ ! -d $$i ] ; then \
+	  if [ ! -f $(srcdir)/result/$$name.rdr ] ; then \
+	      echo New test file $$name ; \
+	      $(CHECKER) $(top_builddir)/xmllint --memory --nonet --debug --stream $$i > $(srcdir)/result/$$name.rdr 2>/dev/null ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
+	  else \
+	      echo Testing $$name ; \
+	      $(CHECKER) $(top_builddir)/xmllint --memory --nonet --debug --stream $$i > result.$$name 2>/dev/null ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
+	      diff $(srcdir)/result/$$name.rdr result.$$name ; \
+	      rm result.$$name ; \
+	  fi ; fi ; done)
 
 
 SAXtests : testSAX$(EXEEXT)

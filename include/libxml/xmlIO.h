@@ -171,6 +171,9 @@ XMLPUBFUN xmlParserInputBufferPtr XMLCALL
 	xmlParserInputBufferCreateMem		(const char *mem, int size,
 	                                         xmlCharEncoding enc);
 XMLPUBFUN xmlParserInputBufferPtr XMLCALL
+	xmlParserInputBufferCreateStatic	(const char *mem, int size,
+	                                         xmlCharEncoding enc);
+XMLPUBFUN xmlParserInputBufferPtr XMLCALL
 	xmlParserInputBufferCreateIO		(xmlInputReadCallback   ioread,
 						 xmlInputCloseCallback  ioclose,
 						 void *ioctx,

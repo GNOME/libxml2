@@ -4438,8 +4438,26 @@ xmlSearchNs(xmlDocPtr doc, xmlNodePtr node, const xmlChar *nameSpace) {
     if (node == NULL) return(NULL);
     if ((nameSpace != NULL) &&
 	(xmlStrEqual(nameSpace, (const xmlChar *)"xml"))) {
-	if (doc == NULL)
-	    return(NULL);
+	if ((doc == NULL) && (node->type == XML_ELEMENT_NODE)) {
+	    /*
+	     * The XML-1.0 namespace is normally held on the root
+	     * element. In this case exceptionally create it on the
+	     * node element.
+	     */
+	    cur = (xmlNsPtr) xmlMalloc(sizeof(xmlNs));
+	    if (cur == NULL) {
+		xmlGenericError(xmlGenericErrorContext,
+			"xmlSearchNs : malloc failed\n");
+		return(NULL);
+	    }
+	    memset(cur, 0, sizeof(xmlNs));
+	    cur->type = XML_LOCAL_NAMESPACE;
+	    cur->href = xmlStrdup(XML_XML_NAMESPACE); 
+	    cur->prefix = xmlStrdup((const xmlChar *)"xml"); 
+	    cur->next = node->nsDef;
+	    node->nsDef = cur;
+	    return(cur);
+	}
 	if (doc->oldNs == NULL) {
 	    /*
 	     * Allocate a new Namespace and fill the fields.
@@ -5863,6 +5881,9 @@ xmlNsDump(xmlBufferPtr buf, xmlNsPtr cur) {
 	return;
     }
     if (cur->type == XML_LOCAL_NAMESPACE) {
+	if (xmlStrEqual(cur->prefix, BAD_CAST "xml"))
+	    return;
+
         /* Within the context of an element attributes */
 	if (cur->prefix != NULL) {
 	    xmlBufferWriteChar(buf, " xmlns:");
@@ -6395,6 +6416,9 @@ xmlNsDumpOutput(xmlOutputBufferPtr buf, xmlNsPtr cur) {
 	return;
     }
     if ((cur->type == XML_LOCAL_NAMESPACE) && (cur->href != NULL)) {
+	if (xmlStrEqual(cur->prefix, BAD_CAST "xml"))
+	    return;
+
         /* Within the context of an element attributes */
 	if (cur->prefix != NULL) {
 	    xmlOutputBufferWriteString(buf, " xmlns:");

@@ -155,7 +155,10 @@ xmlCharEncodingHandlerPtr
 	xmlGetCharEncodingHandler	(xmlCharEncoding enc);
 xmlCharEncodingHandlerPtr
 	xmlFindCharEncodingHandler	(const char *name);
-
+xmlCharEncodingHandlerPtr
+	xmlNewCharEncodingHandler	(const char *name, 
+                          		 xmlCharEncodingInputFunc input,
+                          		 xmlCharEncodingOutputFunc output);
 
 /*
  * Interfaces for encoding names and aliases.

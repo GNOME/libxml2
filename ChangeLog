@@ -1,3 +1,12 @@
+Thu Aug  1 12:17:30 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* encoding.c include/libxml/encoding.h: Opening the interface
+	  xmlNewCharEncodingHandler as requested in #89415
+	* python/generator.py python/setup.py.in: applied cleanup
+	  patches from Marc-Andre Lemburg
+	* tree.c: fixing bug #89332 on a specific case of loosing 
+	  the XML-1.0 namespace on xml:xxx attributes
+
 Wed Jul 31 23:27:42 2002  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* c14n.c include/libxml/c14n.h: fixed one more c14n + namespaces

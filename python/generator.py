@@ -74,7 +74,7 @@ class SlowParser(xmllib.XMLParser):
 def getparser(target = None):
     # get the fastest available parser, and attach it to an
     # unmarshalling object.  return both objects.
-    if target == None:
+    if target is None:
         target = docParser()
     if FastParser:
         return FastParser(target), target
@@ -392,7 +392,7 @@ def print_function_wrapper(name, output, export, include):
     if file == "python":
         # Those have been manually generated
         return 1
-    if file == "python_accessor" and ret[0] != "void" and ret[2] == None:
+    if file == "python_accessor" and ret[0] != "void" and ret[2] is None:
         # Those have been manually generated
         return 1
 
@@ -651,7 +651,7 @@ def functionCompare(info1, info2):
     return 0
 
 def writeDoc(name, args, indent, output):
-     if functions[name][0] == None or functions[name][0] == "":
+     if functions[name][0] is None or functions[name][0] == "":
          return
      val = functions[name][0]
      val = string.replace(val, "NULL", "None");
@@ -789,7 +789,7 @@ def buildWrappers():
 
 	    for arg in args:
 		if classes_type.has_key(arg[1]):
-		    classes.write("    if %s == None: %s__o = None\n" %
+		    classes.write("    if %s is None: %s__o = None\n" %
 				  (arg[0], arg[0]))
 		    classes.write("    else: %s__o = %s%s\n" %
 				  (arg[0], arg[0], classes_type[arg[1]][0]))
@@ -813,22 +813,22 @@ def buildWrappers():
 		    # Raise an exception
 		    #
 		    if functions_noexcept.has_key(name):
-		        classes.write("    if ret == None:return None\n");
+		        classes.write("    if ret is None:return None\n");
 		    elif string.find(name, "URI") >= 0:
 			classes.write(
-			"    if ret == None:raise uriError('%s() failed')\n"
+			"    if ret is None:raise uriError('%s() failed')\n"
 			              % (name))
 		    elif string.find(name, "XPath") >= 0:
 			classes.write(
-			"    if ret == None:raise xpathError('%s() failed')\n"
+			"    if ret is None:raise xpathError('%s() failed')\n"
 			              % (name))
 		    elif string.find(name, "Parse") >= 0:
 			classes.write(
-			"    if ret == None:raise parserError('%s() failed')\n"
+			"    if ret is None:raise parserError('%s() failed')\n"
 			              % (name))
 		    else:
 			classes.write(
-			"    if ret == None:raise treeError('%s() failed')\n"
+			"    if ret is None:raise treeError('%s() failed')\n"
 			              % (name))
 		    classes.write("    return ");
 		    classes.write(classes_type[ret[0]][1] % ("ret"));
@@ -898,7 +898,7 @@ def buildWrappers():
 		for arg in args:
 		    if classes_type.has_key(arg[1]):
 			if n != index:
-			    classes.write("        if %s == None: %s__o = None\n" %
+			    classes.write("        if %s is None: %s__o = None\n" %
 					  (arg[0], arg[0]))
 			    classes.write("        else: %s__o = %s%s\n" %
 					  (arg[0], arg[0], classes_type[arg[1]][0]))
@@ -929,22 +929,22 @@ def buildWrappers():
 			#
 			if functions_noexcept.has_key(name):
 			    classes.write(
-			        "        if ret == None:return None\n");
+			        "        if ret is None:return None\n");
 			elif string.find(name, "URI") >= 0:
 			    classes.write(
-		    "        if ret == None:raise uriError('%s() failed')\n"
+		    "        if ret is None:raise uriError('%s() failed')\n"
 					  % (name))
 			elif string.find(name, "XPath") >= 0:
 			    classes.write(
-		    "        if ret == None:raise xpathError('%s() failed')\n"
+		    "        if ret is None:raise xpathError('%s() failed')\n"
 					  % (name))
 			elif string.find(name, "Parse") >= 0:
 			    classes.write(
-		    "        if ret == None:raise parserError('%s() failed')\n"
+		    "        if ret is None:raise parserError('%s() failed')\n"
 					  % (name))
 			else:
 			    classes.write(
-		    "        if ret == None:raise treeError('%s() failed')\n"
+		    "        if ret is None:raise treeError('%s() failed')\n"
 					  % (name))
 			classes.write("        return ");
 			classes.write(classes_type[ret[0]][1] % ("ret"));
@@ -955,22 +955,22 @@ def buildWrappers():
 			#
 			if functions_noexcept.has_key(name):
 			    classes.write(
-			        "        if ret == None:return None");
+			        "        if ret is None:return None");
 			elif string.find(name, "URI") >= 0:
 			    classes.write(
-		    "        if ret == None:raise uriError('%s() failed')\n"
+		    "        if ret is None:raise uriError('%s() failed')\n"
 					  % (name))
 			elif string.find(name, "XPath") >= 0:
 			    classes.write(
-		    "        if ret == None:raise xpathError('%s() failed')\n"
+		    "        if ret is None:raise xpathError('%s() failed')\n"
 					  % (name))
 			elif string.find(name, "Parse") >= 0:
 			    classes.write(
-		    "        if ret == None:raise parserError('%s() failed')\n"
+		    "        if ret is None:raise parserError('%s() failed')\n"
 					  % (name))
 			else:
 			    classes.write(
-		    "        if ret == None:raise treeError('%s() failed')\n"
+		    "        if ret is None:raise treeError('%s() failed')\n"
 					  % (name))
 			classes.write("        return ");
 			classes.write(converter_type[ret[0]] % ("ret"));

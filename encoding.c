@@ -1481,9 +1481,10 @@ static xmlCharEncodingHandlerPtr xmlDefaultCharEncodingHandler = NULL;
  * @output:  the xmlCharEncodingOutputFunc to write that encoding
  *
  * Create and registers an xmlCharEncodingHandler.
+ *
  * Returns the xmlCharEncodingHandlerPtr created (or NULL in case of error).
  */
-static xmlCharEncodingHandlerPtr
+xmlCharEncodingHandlerPtr
 xmlNewCharEncodingHandler(const char *name, 
                           xmlCharEncodingInputFunc input,
                           xmlCharEncodingOutputFunc output) {

@@ -127,7 +127,6 @@ if with_xslt == 1:
 			    libraries=libs))
 
 if missing("MANIFEST"):
-    global xml_files
 
     manifest = open("MANIFEST", "w")
     manifest.write("setup.py\n")

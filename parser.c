@@ -10100,5 +10100,8 @@ xmlCleanupParser(void) {
     xmlParserInitialized = 0;
     xmlCleanupCharEncodingHandlers();
     xmlCleanupPredefinedEntities();
+#ifdef LIBXML_CATALOG_ENABLED
+    xmlCatalogCleanup();
+#endif
 }
 

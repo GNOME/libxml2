@@ -104,6 +104,10 @@ static int progresult = 0;
 static int timing = 0;
 static int generate = 0;
 static struct timeval begin, end;
+#ifdef LIBXML_CATALOG_ENABLED
+static int catalogs = 0;
+static int nocatalogs = 0;
+#endif
 
 /************************************************************************
  * 									*
@@ -798,6 +802,8 @@ static void usage(const char *name) {
     printf("\t--encode encoding : output in the given encoding\n");
 #ifdef LIBXML_CATALOG_ENABLED
     printf("\t--catalogs : use the catalogs from $SGML_CATALOG_FILES\n");
+    printf("\t         otherwise /etc/xml/catalog is activated by default\n");
+    printf("\t--nocatalogs: desactivate all catalogs\n");
 #endif
     printf("\t--auto : generate a small doc on the fly\n");
 #ifdef LIBXML_XINCLUDE_ENABLED
@@ -931,14 +937,10 @@ main(int argc, char **argv) {
 #ifdef LIBXML_CATALOG_ENABLED
 	else if ((!strcmp(argv[i], "-catalogs")) ||
 		 (!strcmp(argv[i], "--catalogs"))) {
-	    const char *catalogs;
-
-	    catalogs = getenv("SGML_CATALOG_FILES");
-	    if (catalogs == NULL) {
-		fprintf(stderr, "Variable $SGML_CATALOG_FILES not set\n");
-	    } else {
-		xmlLoadCatalogs(catalogs);
-	    }
+	    catalogs++;
+	} else if ((!strcmp(argv[i], "-nocatalogs")) ||
+		 (!strcmp(argv[i], "--nocatalogs"))) {
+	    nocatalogs++;
 	} 
 #endif
 	else if ((!strcmp(argv[i], "-encode")) ||
@@ -966,6 +968,17 @@ main(int argc, char **argv) {
 	    return(1);
 	}
     }
+
+#ifdef LIBXML_CATALOG_ENABLED
+    if (nocatalogs == 0) {
+	if (catalogs) {
+	    const char *catal;
+
+	    catal = getenv("SGML_CATALOG_FILES");
+	    xmlLoadCatalogs(catal);
+	}
+    }
+#endif
     xmlLineNumbersDefault(1);
     if (loaddtd != 0)
 	xmlLoadExtDtdDefaultValue |= XML_DETECT_IDS;

@@ -79,7 +79,6 @@ static void usershell(void) {
     char arg[400];
     char *argv[20];
     int i, ret;
-    const xmlChar *answer;
     xmlChar *ans;
 
     while (1) {
@@ -172,22 +171,24 @@ static void usershell(void) {
 	    if (nbargs != 1) {
 		printf("public requires 1 arguments\n");
 	    } else {
-		answer = xmlCatalogGetPublic((const xmlChar *) argv[0]);
-		if (answer == NULL) {
+		ans = xmlCatalogResolvePublic((const xmlChar *) argv[0]);
+		if (ans == NULL) {
 		    printf("No entry for PUBLIC %s\n", argv[0]);
 		} else {
-		    printf("%s\n", answer);
+		    printf("%s\n", ans);
+		    xmlFree(ans);
 		}
 	    }
 	} else if (!strcmp(command, "system")) {
 	    if (nbargs != 1) {
 		printf("system requires 1 arguments\n");
 	    } else {
-		answer = xmlCatalogGetSystem((const xmlChar *) argv[0]);
-		if (answer == NULL) {
+		ans = xmlCatalogResolveSystem((const xmlChar *) argv[0]);
+		if (ans == NULL) {
 		    printf("No entry for SYSTEM %s\n", argv[0]);
 		} else {
-		    printf("%s\n", answer);
+		    printf("%s\n", ans);
+		    xmlFree(ans);
 		}
 	    }
 	} else if (!strcmp(command, "add")) {
@@ -231,6 +232,21 @@ static void usershell(void) {
 	    } else {
 		xmlCatalogDump(stdout);
 	    }
+	} else if (!strcmp(command, "debug")) {
+	    if (nbargs != 0) {
+		printf("debug has no arguments\n");
+	    } else {
+		verbose++;
+		xmlCatalogSetDebug(verbose);
+	    }
+	} else if (!strcmp(command, "quiet")) {
+	    if (nbargs != 0) {
+		printf("quiet has no arguments\n");
+	    } else {
+		if (verbose > 0)
+		    verbose--;
+		xmlCatalogSetDebug(verbose);
+	    }
 	} else {
 	    if (strcmp(command, "help")) {
 		printf("Unrecognized command %s\n", command);
@@ -242,6 +258,8 @@ static void usershell(void) {
 	    printf("\tadd 'type' 'orig' 'replace' : add an entry\n");
 	    printf("\tdel 'values' : remove values\n");
 	    printf("\tdump: print the current catalog state\n");
+	    printf("\tdebug: increase the verbosity level\n");
+	    printf("\tquiet: decrease the verbosity level\n");
 	    printf("\texit:  quit the shell\n");
 	} 
 	free(cmdline); /* not xmlFree here ! */
@@ -254,8 +272,8 @@ static void usershell(void) {
  * 									*
  ************************************************************************/
 static void usage(const char *name) {
-    printf("Usage : %s [options] catalogfile\n", name);
-    printf("\tParse the catalog file and output the result of the parsing\n");
+    printf("Usage : %s [options] catalogfile entities...\n", name);
+    printf("\tParse the catalog file and query it for the entities\n");
     printf("\t--shell : run a shell allowing interactive queries\n");
     printf("\t--add 'type' 'orig' 'replace' : add an entry\n");
     printf("\t--del 'values' : remove values\n");
@@ -277,7 +295,7 @@ int main(int argc, char **argv) {
 	    break;
 
 	if (argv[i][0] != '-')
-	    continue;
+	    break;
 	if ((!strcmp(argv[i], "-verbose")) ||
 	    (!strcmp(argv[i], "-v")) ||
 	    (!strcmp(argv[i], "--verbose"))) {
@@ -360,19 +378,38 @@ int main(int argc, char **argv) {
 		xmlCatalogDump(out);
 	    }
 	}
-    }
-
-    if (shell) {
+    } else if (shell) {
 	usershell();
-    }
-    if (!noout) {
-	xmlCatalogDump(stdout);
+    } else {
+	for (i++; i < argc; i++) {
+	    xmlURIPtr uri;
+	    xmlChar *ans;
+	    
+	    uri = xmlParseURI(argv[i]);
+	    if (uri == NULL) {
+		ans = xmlCatalogResolvePublic((const xmlChar *) argv[i]);
+		if (ans == NULL) {
+		    printf("No entry for PUBLIC %s\n", argv[i]);
+		} else {
+		    printf("%s\n", ans);
+		    xmlFree(ans);
+		}
+	    } else {
+                xmlFreeURI(uri);
+		ans = xmlCatalogResolveSystem((const xmlChar *) argv[i]);
+		if (ans == NULL) {
+		    printf("No entry for SYSTEM %s\n", argv[i]);
+		} else {
+		    printf("%s\n", ans);
+		    xmlFree(ans);
+		}
+	    }
+	}
     }
 
     /*
      * Cleanup and check for memory leaks
      */
-    xmlCatalogCleanup();
     xmlCleanupParser();
     xmlMemoryDump();
     return(0);

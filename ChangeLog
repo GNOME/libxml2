@@ -1,3 +1,13 @@
+Wed Aug 22 02:03:31 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* catalog.c parser.c xmlIO.c xmlcatalog.c xmllint.c 
+	  include/libxml/catalog.h: starts to look okay, really
+	  plugged the new framework, cleaned a lot of stuff,
+	  added some APIs, except the PI's support missing this
+	  should be mostly complete
+	* result/catalogs/* test/catalogs/*: added new test, enriched
+	  the existing one with URN ID tests
+
 Tue Aug 21 14:56:18 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* catalog.c: fixed nextCatalog

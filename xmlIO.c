@@ -2371,7 +2371,10 @@ xmlParserInputPtr
 xmlDefaultExternalEntityLoader(const char *URL, const char *ID,
                                xmlParserCtxtPtr ctxt) {
     xmlParserInputPtr ret = NULL;
-    const xmlChar *resource = NULL;
+    xmlChar *resource = NULL;
+#ifdef LIBXML_CATALOG_ENABLED
+    struct stat info;
+#endif
 
 #ifdef DEBUG_EXTERNAL_ENTITIES
     xmlGenericError(xmlGenericErrorContext,
@@ -2379,16 +2382,18 @@ xmlDefaultExternalEntityLoader(const char *URL, const char *ID,
 #endif
 #ifdef LIBXML_CATALOG_ENABLED
     /*
-     * Try to load it from the resource pointed in the catalog
+     * If the resource doesn't exists as a file,
+     * try to load it from the resource pointed in the catalog
      */
-    if (ID != NULL)
-	resource = xmlCatalogGetPublic((const xmlChar *)ID);
-    if ((resource == NULL) && (URL != NULL))
-	resource = xmlCatalogGetSystem((const xmlChar *)URL);
+#ifdef HAVE_STAT
+    if ((URL == NULL) || (stat(URL, &info) < 0)) 
+#endif
+	resource = xmlCatalogResolve((const xmlChar *)ID,
+		                     (const xmlChar *)URL);
 #endif
 
     if (resource == NULL)
-	resource = (const xmlChar *)URL;
+	resource = (xmlChar *) URL;
 
     if (resource == NULL) {
 	if ((ctxt->validate) && (ctxt->sax != NULL) && 
@@ -2410,6 +2415,8 @@ xmlDefaultExternalEntityLoader(const char *URL, const char *ID,
 	    ctxt->sax->warning(ctxt,
 		    "failed to load external entity \"%s\"\n", resource);
     }
+    if (resource != (xmlChar *) URL)
+	xmlFree(resource);
     return(ret);
 }
 

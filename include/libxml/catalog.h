@@ -36,19 +36,34 @@ extern "C" {
 #define XML_CATALOGS_NAMESPACE		\
     (const xmlChar *) "urn:oasis:names:tc:entity:xmlns:xml:catalog"
 
+/*
+ * The API is voluntarily limited to general cataloging
+ */
+typedef enum {
+    XML_CATA_PREFER_NONE = 0,
+    XML_CATA_PREFER_PUBLIC = 1,
+    XML_CATA_PREFER_SYSTEM
+} xmlCatalogPrefer;
+
+void		xmlInitializeCatalog	(void);
 int		xmlLoadCatalog		(const char *filename);
 void		xmlLoadCatalogs		(const char *paths);
 void		xmlCatalogCleanup	(void);
 void		xmlCatalogDump		(FILE *out);
-const xmlChar *	xmlCatalogGetSystem	(const xmlChar *sysID);
-const xmlChar *	xmlCatalogGetPublic	(const xmlChar *pubID);
 xmlChar *	xmlCatalogResolve	(const xmlChar *pubID,
 	                                 const xmlChar *sysID);
+xmlChar *	xmlCatalogResolveSystem	(const xmlChar *sysID);
+xmlChar *	xmlCatalogResolvePublic	(const xmlChar *pubID);
 int		xmlCatalogAdd		(const xmlChar *type,
 					 const xmlChar *orig,
 					 const xmlChar *replace);
 int		xmlCatalogRemove	(const xmlChar *value);
 int		xmlCatalogSetDebug	(int level);
+xmlCatalogPrefer xmlCatalogSetDefaultPrefer(xmlCatalogPrefer prefer);
+
+/* DEPRECATED interfaces */
+const xmlChar *	xmlCatalogGetSystem	(const xmlChar *sysID);
+const xmlChar *	xmlCatalogGetPublic	(const xmlChar *pubID);
 
 #ifdef __cplusplus
 }

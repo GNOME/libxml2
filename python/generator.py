@@ -570,6 +570,7 @@ def buildStubs():
     wrapper.write("/* Generated */\n\n")
     wrapper.write("#include <Python.h>\n")
 #    wrapper.write("#include \"config.h\"\n")
+    wrapper.write("#define IN_LIBXML\n")
     wrapper.write("#include <libxml/xmlversion.h>\n")
     wrapper.write("#include <libxml/tree.h>\n")
     wrapper.write("#include <libxml/xmlschemastypes.h>\n")

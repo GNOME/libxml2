@@ -1,105 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <api name='libxml2'>
   <files>
-    <file name='debugXML'>
-     <exports symbol='_xmlShellCtxt'/>
-     <exports symbol='xmlBoolToText'/>
-     <exports symbol='xmlDebugDumpAttr'/>
-     <exports symbol='xmlDebugDumpAttrList'/>
-     <exports symbol='xmlDebugDumpDTD'/>
-     <exports symbol='xmlDebugDumpDocument'/>
-     <exports symbol='xmlDebugDumpDocumentHead'/>
-     <exports symbol='xmlDebugDumpEntities'/>
-     <exports symbol='xmlDebugDumpNode'/>
-     <exports symbol='xmlDebugDumpNodeList'/>
-     <exports symbol='xmlDebugDumpOneNode'/>
-     <exports symbol='xmlDebugDumpString'/>
-     <exports symbol='xmlLsCountNode'/>
-     <exports symbol='xmlLsOneNode'/>
-     <exports symbol='xmlShell'/>
-     <exports symbol='xmlShellBase'/>
-     <exports symbol='xmlShellCat'/>
-     <exports symbol='xmlShellCmd'/>
-     <exports symbol='xmlShellCtxt'/>
-     <exports symbol='xmlShellCtxtPtr'/>
-     <exports symbol='xmlShellDir'/>
-     <exports symbol='xmlShellDu'/>
-     <exports symbol='xmlShellList'/>
-     <exports symbol='xmlShellLoad'/>
-     <exports symbol='xmlShellPrintNode'/>
-     <exports symbol='xmlShellPrintXPathError'/>
-     <exports symbol='xmlShellPrintXPathResult'/>
-     <exports symbol='xmlShellPwd'/>
-     <exports symbol='xmlShellReadlineFunc'/>
-     <exports symbol='xmlShellSave'/>
-     <exports symbol='xmlShellValidate'/>
-     <exports symbol='xmlShellWrite'/>
-    </file>
-    <file name='xpointer'>
-     <exports symbol='_xmlLocationSet'/>
-     <exports symbol='xmlLocationSet'/>
-     <exports symbol='xmlLocationSetPtr'/>
-     <exports symbol='xmlXPtrBuildNodeList'/>
-     <exports symbol='xmlXPtrEval'/>
-     <exports symbol='xmlXPtrEvalRangePredicate'/>
-     <exports symbol='xmlXPtrFreeLocationSet'/>
-     <exports symbol='xmlXPtrLocationSetAdd'/>
-     <exports symbol='xmlXPtrLocationSetCreate'/>
-     <exports symbol='xmlXPtrLocationSetDel'/>
-     <exports symbol='xmlXPtrLocationSetMerge'/>
-     <exports symbol='xmlXPtrLocationSetRemove'/>
-     <exports symbol='xmlXPtrNewCollapsedRange'/>
-     <exports symbol='xmlXPtrNewContext'/>
-     <exports symbol='xmlXPtrNewLocationSetNodeSet'/>
-     <exports symbol='xmlXPtrNewLocationSetNodes'/>
-     <exports symbol='xmlXPtrNewRange'/>
-     <exports symbol='xmlXPtrNewRangeNodeObject'/>
-     <exports symbol='xmlXPtrNewRangeNodePoint'/>
-     <exports symbol='xmlXPtrNewRangeNodes'/>
-     <exports symbol='xmlXPtrNewRangePointNode'/>
-     <exports symbol='xmlXPtrNewRangePoints'/>
-     <exports symbol='xmlXPtrRangeToFunction'/>
-     <exports symbol='xmlXPtrWrapLocationSet'/>
-    </file>
-    <file name='SAX'>
-     <exports symbol='attribute'/>
-     <exports symbol='attributeDecl'/>
-     <exports symbol='cdataBlock'/>
-     <exports symbol='characters'/>
-     <exports symbol='checkNamespace'/>
-     <exports symbol='comment'/>
-     <exports symbol='elementDecl'/>
-     <exports symbol='endDocument'/>
-     <exports symbol='endElement'/>
-     <exports symbol='entityDecl'/>
-     <exports symbol='externalSubset'/>
-     <exports symbol='getColumnNumber'/>
-     <exports symbol='getEntity'/>
-     <exports symbol='getLineNumber'/>
-     <exports symbol='getNamespace'/>
-     <exports symbol='getParameterEntity'/>
-     <exports symbol='getPublicId'/>
-     <exports symbol='getSystemId'/>
-     <exports symbol='globalNamespace'/>
-     <exports symbol='hasExternalSubset'/>
-     <exports symbol='hasInternalSubset'/>
-     <exports symbol='ignorableWhitespace'/>
-     <exports symbol='initdocbDefaultSAXHandler'/>
-     <exports symbol='inithtmlDefaultSAXHandler'/>
-     <exports symbol='initxmlDefaultSAXHandler'/>
-     <exports symbol='internalSubset'/>
-     <exports symbol='isStandalone'/>
-     <exports symbol='namespaceDecl'/>
-     <exports symbol='notationDecl'/>
-     <exports symbol='processingInstruction'/>
-     <exports symbol='reference'/>
-     <exports symbol='resolveEntity'/>
-     <exports symbol='setDocumentLocator'/>
-     <exports symbol='setNamespace'/>
-     <exports symbol='startDocument'/>
-     <exports symbol='startElement'/>
-     <exports symbol='unparsedEntityDecl'/>
-    </file>
     <file name='parserInternals'>
      <exports symbol='INPUT_CHUNK'/>
      <exports symbol='IS_BASECHAR'/>
@@ -222,6 +123,274 @@
      <exports symbol='xmlSwitchEncoding'/>
      <exports symbol='xmlSwitchInputEncoding'/>
      <exports symbol='xmlSwitchToEncoding'/>
+    </file>
+    <file name='xmlschemastypes'>
+     <exports symbol='xmlSchemaCheckFacet'/>
+     <exports symbol='xmlSchemaCleanupTypes'/>
+     <exports symbol='xmlSchemaCompareValues'/>
+     <exports symbol='xmlSchemaFreeFacet'/>
+     <exports symbol='xmlSchemaFreeValue'/>
+     <exports symbol='xmlSchemaGetPredefinedType'/>
+     <exports symbol='xmlSchemaInitTypes'/>
+     <exports symbol='xmlSchemaNewFacet'/>
+     <exports symbol='xmlSchemaValPredefTypeNode'/>
+     <exports symbol='xmlSchemaValidateFacet'/>
+     <exports symbol='xmlSchemaValidatePredefinedType'/>
+    </file>
+    <file name='xpointer'>
+     <exports symbol='_xmlLocationSet'/>
+     <exports symbol='xmlLocationSet'/>
+     <exports symbol='xmlLocationSetPtr'/>
+     <exports symbol='xmlXPtrBuildNodeList'/>
+     <exports symbol='xmlXPtrEval'/>
+     <exports symbol='xmlXPtrEvalRangePredicate'/>
+     <exports symbol='xmlXPtrFreeLocationSet'/>
+     <exports symbol='xmlXPtrLocationSetAdd'/>
+     <exports symbol='xmlXPtrLocationSetCreate'/>
+     <exports symbol='xmlXPtrLocationSetDel'/>
+     <exports symbol='xmlXPtrLocationSetMerge'/>
+     <exports symbol='xmlXPtrLocationSetRemove'/>
+     <exports symbol='xmlXPtrNewCollapsedRange'/>
+     <exports symbol='xmlXPtrNewContext'/>
+     <exports symbol='xmlXPtrNewLocationSetNodeSet'/>
+     <exports symbol='xmlXPtrNewLocationSetNodes'/>
+     <exports symbol='xmlXPtrNewRange'/>
+     <exports symbol='xmlXPtrNewRangeNodeObject'/>
+     <exports symbol='xmlXPtrNewRangeNodePoint'/>
+     <exports symbol='xmlXPtrNewRangeNodes'/>
+     <exports symbol='xmlXPtrNewRangePointNode'/>
+     <exports symbol='xmlXPtrNewRangePoints'/>
+     <exports symbol='xmlXPtrRangeToFunction'/>
+     <exports symbol='xmlXPtrWrapLocationSet'/>
+    </file>
+    <file name='xmlunicode'>
+     <exports symbol='xmlUCSIsAegeanNumbers'/>
+     <exports symbol='xmlUCSIsAlphabeticPresentationForms'/>
+     <exports symbol='xmlUCSIsArabic'/>
+     <exports symbol='xmlUCSIsArabicPresentationFormsA'/>
+     <exports symbol='xmlUCSIsArabicPresentationFormsB'/>
+     <exports symbol='xmlUCSIsArmenian'/>
+     <exports symbol='xmlUCSIsArrows'/>
+     <exports symbol='xmlUCSIsBasicLatin'/>
+     <exports symbol='xmlUCSIsBengali'/>
+     <exports symbol='xmlUCSIsBlock'/>
+     <exports symbol='xmlUCSIsBlockElements'/>
+     <exports symbol='xmlUCSIsBopomofo'/>
+     <exports symbol='xmlUCSIsBopomofoExtended'/>
+     <exports symbol='xmlUCSIsBoxDrawing'/>
+     <exports symbol='xmlUCSIsBraillePatterns'/>
+     <exports symbol='xmlUCSIsBuhid'/>
+     <exports symbol='xmlUCSIsByzantineMusicalSymbols'/>
+     <exports symbol='xmlUCSIsCJKCompatibility'/>
+     <exports symbol='xmlUCSIsCJKCompatibilityForms'/>
+     <exports symbol='xmlUCSIsCJKCompatibilityIdeographs'/>
+     <exports symbol='xmlUCSIsCJKCompatibilityIdeographsSupplement'/>
+     <exports symbol='xmlUCSIsCJKRadicalsSupplement'/>
+     <exports symbol='xmlUCSIsCJKSymbolsandPunctuation'/>
+     <exports symbol='xmlUCSIsCJKUnifiedIdeographs'/>
+     <exports symbol='xmlUCSIsCJKUnifiedIdeographsExtensionA'/>
+     <exports symbol='xmlUCSIsCJKUnifiedIdeographsExtensionB'/>
+     <exports symbol='xmlUCSIsCat'/>
+     <exports symbol='xmlUCSIsCatC'/>
+     <exports symbol='xmlUCSIsCatCc'/>
+     <exports symbol='xmlUCSIsCatCf'/>
+     <exports symbol='xmlUCSIsCatCo'/>
+     <exports symbol='xmlUCSIsCatCs'/>
+     <exports symbol='xmlUCSIsCatL'/>
+     <exports symbol='xmlUCSIsCatLl'/>
+     <exports symbol='xmlUCSIsCatLm'/>
+     <exports symbol='xmlUCSIsCatLo'/>
+     <exports symbol='xmlUCSIsCatLt'/>
+     <exports symbol='xmlUCSIsCatLu'/>
+     <exports symbol='xmlUCSIsCatM'/>
+     <exports symbol='xmlUCSIsCatMc'/>
+     <exports symbol='xmlUCSIsCatMe'/>
+     <exports symbol='xmlUCSIsCatMn'/>
+     <exports symbol='xmlUCSIsCatN'/>
+     <exports symbol='xmlUCSIsCatNd'/>
+     <exports symbol='xmlUCSIsCatNl'/>
+     <exports symbol='xmlUCSIsCatNo'/>
+     <exports symbol='xmlUCSIsCatP'/>
+     <exports symbol='xmlUCSIsCatPc'/>
+     <exports symbol='xmlUCSIsCatPd'/>
+     <exports symbol='xmlUCSIsCatPe'/>
+     <exports symbol='xmlUCSIsCatPf'/>
+     <exports symbol='xmlUCSIsCatPi'/>
+     <exports symbol='xmlUCSIsCatPo'/>
+     <exports symbol='xmlUCSIsCatPs'/>
+     <exports symbol='xmlUCSIsCatS'/>
+     <exports symbol='xmlUCSIsCatSc'/>
+     <exports symbol='xmlUCSIsCatSk'/>
+     <exports symbol='xmlUCSIsCatSm'/>
+     <exports symbol='xmlUCSIsCatSo'/>
+     <exports symbol='xmlUCSIsCatZ'/>
+     <exports symbol='xmlUCSIsCatZl'/>
+     <exports symbol='xmlUCSIsCatZp'/>
+     <exports symbol='xmlUCSIsCatZs'/>
+     <exports symbol='xmlUCSIsCherokee'/>
+     <exports symbol='xmlUCSIsCombiningDiacriticalMarks'/>
+     <exports symbol='xmlUCSIsCombiningDiacriticalMarksforSymbols'/>
+     <exports symbol='xmlUCSIsCombiningHalfMarks'/>
+     <exports symbol='xmlUCSIsCombiningMarksforSymbols'/>
+     <exports symbol='xmlUCSIsControlPictures'/>
+     <exports symbol='xmlUCSIsCurrencySymbols'/>
+     <exports symbol='xmlUCSIsCypriotSyllabary'/>
+     <exports symbol='xmlUCSIsCyrillic'/>
+     <exports symbol='xmlUCSIsCyrillicSupplement'/>
+     <exports symbol='xmlUCSIsDeseret'/>
+     <exports symbol='xmlUCSIsDevanagari'/>
+     <exports symbol='xmlUCSIsDingbats'/>
+     <exports symbol='xmlUCSIsEnclosedAlphanumerics'/>
+     <exports symbol='xmlUCSIsEnclosedCJKLettersandMonths'/>
+     <exports symbol='xmlUCSIsEthiopic'/>
+     <exports symbol='xmlUCSIsGeneralPunctuation'/>
+     <exports symbol='xmlUCSIsGeometricShapes'/>
+     <exports symbol='xmlUCSIsGeorgian'/>
+     <exports symbol='xmlUCSIsGothic'/>
+     <exports symbol='xmlUCSIsGreek'/>
+     <exports symbol='xmlUCSIsGreekExtended'/>
+     <exports symbol='xmlUCSIsGreekandCoptic'/>
+     <exports symbol='xmlUCSIsGujarati'/>
+     <exports symbol='xmlUCSIsGurmukhi'/>
+     <exports symbol='xmlUCSIsHalfwidthandFullwidthForms'/>
+     <exports symbol='xmlUCSIsHangulCompatibilityJamo'/>
+     <exports symbol='xmlUCSIsHangulJamo'/>
+     <exports symbol='xmlUCSIsHangulSyllables'/>
+     <exports symbol='xmlUCSIsHanunoo'/>
+     <exports symbol='xmlUCSIsHebrew'/>
+     <exports symbol='xmlUCSIsHighPrivateUseSurrogates'/>
+     <exports symbol='xmlUCSIsHighSurrogates'/>
+     <exports symbol='xmlUCSIsHiragana'/>
+     <exports symbol='xmlUCSIsIPAExtensions'/>
+     <exports symbol='xmlUCSIsIdeographicDescriptionCharacters'/>
+     <exports symbol='xmlUCSIsKanbun'/>
+     <exports symbol='xmlUCSIsKangxiRadicals'/>
+     <exports symbol='xmlUCSIsKannada'/>
+     <exports symbol='xmlUCSIsKatakana'/>
+     <exports symbol='xmlUCSIsKatakanaPhoneticExtensions'/>
+     <exports symbol='xmlUCSIsKhmer'/>
+     <exports symbol='xmlUCSIsKhmerSymbols'/>
+     <exports symbol='xmlUCSIsLao'/>
+     <exports symbol='xmlUCSIsLatin1Supplement'/>
+     <exports symbol='xmlUCSIsLatinExtendedA'/>
+     <exports symbol='xmlUCSIsLatinExtendedAdditional'/>
+     <exports symbol='xmlUCSIsLatinExtendedB'/>
+     <exports symbol='xmlUCSIsLetterlikeSymbols'/>
+     <exports symbol='xmlUCSIsLimbu'/>
+     <exports symbol='xmlUCSIsLinearBIdeograms'/>
+     <exports symbol='xmlUCSIsLinearBSyllabary'/>
+     <exports symbol='xmlUCSIsLowSurrogates'/>
+     <exports symbol='xmlUCSIsMalayalam'/>
+     <exports symbol='xmlUCSIsMathematicalAlphanumericSymbols'/>
+     <exports symbol='xmlUCSIsMathematicalOperators'/>
+     <exports symbol='xmlUCSIsMiscellaneousMathematicalSymbolsA'/>
+     <exports symbol='xmlUCSIsMiscellaneousMathematicalSymbolsB'/>
+     <exports symbol='xmlUCSIsMiscellaneousSymbols'/>
+     <exports symbol='xmlUCSIsMiscellaneousSymbolsandArrows'/>
+     <exports symbol='xmlUCSIsMiscellaneousTechnical'/>
+     <exports symbol='xmlUCSIsMongolian'/>
+     <exports symbol='xmlUCSIsMusicalSymbols'/>
+     <exports symbol='xmlUCSIsMyanmar'/>
+     <exports symbol='xmlUCSIsNumberForms'/>
+     <exports symbol='xmlUCSIsOgham'/>
+     <exports symbol='xmlUCSIsOldItalic'/>
+     <exports symbol='xmlUCSIsOpticalCharacterRecognition'/>
+     <exports symbol='xmlUCSIsOriya'/>
+     <exports symbol='xmlUCSIsOsmanya'/>
+     <exports symbol='xmlUCSIsPhoneticExtensions'/>
+     <exports symbol='xmlUCSIsPrivateUse'/>
+     <exports symbol='xmlUCSIsPrivateUseArea'/>
+     <exports symbol='xmlUCSIsRunic'/>
+     <exports symbol='xmlUCSIsShavian'/>
+     <exports symbol='xmlUCSIsSinhala'/>
+     <exports symbol='xmlUCSIsSmallFormVariants'/>
+     <exports symbol='xmlUCSIsSpacingModifierLetters'/>
+     <exports symbol='xmlUCSIsSpecials'/>
+     <exports symbol='xmlUCSIsSuperscriptsandSubscripts'/>
+     <exports symbol='xmlUCSIsSupplementalArrowsA'/>
+     <exports symbol='xmlUCSIsSupplementalArrowsB'/>
+     <exports symbol='xmlUCSIsSupplementalMathematicalOperators'/>
+     <exports symbol='xmlUCSIsSupplementaryPrivateUseAreaA'/>
+     <exports symbol='xmlUCSIsSupplementaryPrivateUseAreaB'/>
+     <exports symbol='xmlUCSIsSyriac'/>
+     <exports symbol='xmlUCSIsTagalog'/>
+     <exports symbol='xmlUCSIsTagbanwa'/>
+     <exports symbol='xmlUCSIsTags'/>
+     <exports symbol='xmlUCSIsTaiLe'/>
+     <exports symbol='xmlUCSIsTaiXuanJingSymbols'/>
+     <exports symbol='xmlUCSIsTamil'/>
+     <exports symbol='xmlUCSIsTelugu'/>
+     <exports symbol='xmlUCSIsThaana'/>
+     <exports symbol='xmlUCSIsThai'/>
+     <exports symbol='xmlUCSIsTibetan'/>
+     <exports symbol='xmlUCSIsUgaritic'/>
+     <exports symbol='xmlUCSIsUnifiedCanadianAboriginalSyllabics'/>
+     <exports symbol='xmlUCSIsVariationSelectors'/>
+     <exports symbol='xmlUCSIsVariationSelectorsSupplement'/>
+     <exports symbol='xmlUCSIsYiRadicals'/>
+     <exports symbol='xmlUCSIsYiSyllables'/>
+     <exports symbol='xmlUCSIsYijingHexagramSymbols'/>
+    </file>
+    <file name='encoding'>
+     <exports symbol='UTF8Toisolat1'/>
+     <exports symbol='XML_CHAR_ENCODING_2022_JP'/>
+     <exports symbol='XML_CHAR_ENCODING_8859_1'/>
+     <exports symbol='XML_CHAR_ENCODING_8859_2'/>
+     <exports symbol='XML_CHAR_ENCODING_8859_3'/>
+     <exports symbol='XML_CHAR_ENCODING_8859_4'/>
+     <exports symbol='XML_CHAR_ENCODING_8859_5'/>
+     <exports symbol='XML_CHAR_ENCODING_8859_6'/>
+     <exports symbol='XML_CHAR_ENCODING_8859_7'/>
+     <exports symbol='XML_CHAR_ENCODING_8859_8'/>
+     <exports symbol='XML_CHAR_ENCODING_8859_9'/>
+     <exports symbol='XML_CHAR_ENCODING_ASCII'/>
+     <exports symbol='XML_CHAR_ENCODING_EBCDIC'/>
+     <exports symbol='XML_CHAR_ENCODING_ERROR'/>
+     <exports symbol='XML_CHAR_ENCODING_EUC_JP'/>
+     <exports symbol='XML_CHAR_ENCODING_NONE'/>
+     <exports symbol='XML_CHAR_ENCODING_SHIFT_JIS'/>
+     <exports symbol='XML_CHAR_ENCODING_UCS2'/>
+     <exports symbol='XML_CHAR_ENCODING_UCS4BE'/>
+     <exports symbol='XML_CHAR_ENCODING_UCS4LE'/>
+     <exports symbol='XML_CHAR_ENCODING_UCS4_2143'/>
+     <exports symbol='XML_CHAR_ENCODING_UCS4_3412'/>
+     <exports symbol='XML_CHAR_ENCODING_UTF16BE'/>
+     <exports symbol='XML_CHAR_ENCODING_UTF16LE'/>
+     <exports symbol='XML_CHAR_ENCODING_UTF8'/>
+     <exports symbol='_xmlCharEncodingHandler'/>
+     <exports symbol='isolat1ToUTF8'/>
+     <exports symbol='xmlAddEncodingAlias'/>
+     <exports symbol='xmlCharEncCloseFunc'/>
+     <exports symbol='xmlCharEncFirstLine'/>
+     <exports symbol='xmlCharEncInFunc'/>
+     <exports symbol='xmlCharEncOutFunc'/>
+     <exports symbol='xmlCharEncoding'/>
+     <exports symbol='xmlCharEncodingHandler'/>
+     <exports symbol='xmlCharEncodingHandlerPtr'/>
+     <exports symbol='xmlCharEncodingInputFunc'/>
+     <exports symbol='xmlCharEncodingOutputFunc'/>
+     <exports symbol='xmlCheckUTF8'/>
+     <exports symbol='xmlCleanupCharEncodingHandlers'/>
+     <exports symbol='xmlCleanupEncodingAliases'/>
+     <exports symbol='xmlDelEncodingAlias'/>
+     <exports symbol='xmlDetectCharEncoding'/>
+     <exports symbol='xmlFindCharEncodingHandler'/>
+     <exports symbol='xmlGetCharEncodingHandler'/>
+     <exports symbol='xmlGetCharEncodingName'/>
+     <exports symbol='xmlGetEncodingAlias'/>
+     <exports symbol='xmlGetUTF8Char'/>
+     <exports symbol='xmlInitCharEncodingHandlers'/>
+     <exports symbol='xmlNewCharEncodingHandler'/>
+     <exports symbol='xmlParseCharEncoding'/>
+     <exports symbol='xmlRegisterCharEncodingHandler'/>
+     <exports symbol='xmlUTF8Charcmp'/>
+     <exports symbol='xmlUTF8Size'/>
+     <exports symbol='xmlUTF8Strlen'/>
+     <exports symbol='xmlUTF8Strloc'/>
+     <exports symbol='xmlUTF8Strndup'/>
+     <exports symbol='xmlUTF8Strpos'/>
+     <exports symbol='xmlUTF8Strsize'/>
+     <exports symbol='xmlUTF8Strsub'/>
     </file>
     <file name='c14n'>
      <exports symbol='xmlC14NDocDumpMemory'/>
@@ -431,46 +600,40 @@
      <exports symbol='xmlXPathWrapString'/>
      <exports symbol='xmlXPatherror'/>
     </file>
-    <file name='chvalid'>
-     <exports symbol='_xmlChLRange'/>
-     <exports symbol='_xmlChRangeGroup'/>
-     <exports symbol='_xmlChSRange'/>
-     <exports symbol='xmlChLRange'/>
-     <exports symbol='xmlChLRangePtr'/>
-     <exports symbol='xmlChRangeGroup'/>
-     <exports symbol='xmlChRangeGroupPtr'/>
-     <exports symbol='xmlChSRange'/>
-     <exports symbol='xmlChSRangePtr'/>
-     <exports symbol='xmlCharInRange'/>
-     <exports symbol='xmlIsBaseChar'/>
-     <exports symbol='xmlIsBaseCharGroup'/>
-     <exports symbol='xmlIsBaseCharQ'/>
-     <exports symbol='xmlIsBaseChar_ch'/>
-     <exports symbol='xmlIsBlank'/>
-     <exports symbol='xmlIsBlankQ'/>
-     <exports symbol='xmlIsBlank_ch'/>
-     <exports symbol='xmlIsChar'/>
-     <exports symbol='xmlIsCharGroup'/>
-     <exports symbol='xmlIsCharQ'/>
-     <exports symbol='xmlIsChar_ch'/>
-     <exports symbol='xmlIsCombining'/>
-     <exports symbol='xmlIsCombiningGroup'/>
-     <exports symbol='xmlIsCombiningQ'/>
-     <exports symbol='xmlIsDigit'/>
-     <exports symbol='xmlIsDigitGroup'/>
-     <exports symbol='xmlIsDigitQ'/>
-     <exports symbol='xmlIsDigit_ch'/>
-     <exports symbol='xmlIsExtender'/>
-     <exports symbol='xmlIsExtenderGroup'/>
-     <exports symbol='xmlIsExtenderQ'/>
-     <exports symbol='xmlIsExtender_ch'/>
-     <exports symbol='xmlIsIdeographic'/>
-     <exports symbol='xmlIsIdeographicGroup'/>
-     <exports symbol='xmlIsIdeographicQ'/>
-     <exports symbol='xmlIsPubidChar'/>
-     <exports symbol='xmlIsPubidCharQ'/>
-     <exports symbol='xmlIsPubidChar_ch'/>
-     <exports symbol='xmlIsPubidChar_tab'/>
+    <file name='list'>
+     <exports symbol='xmlLink'/>
+     <exports symbol='xmlLinkGetData'/>
+     <exports symbol='xmlLinkPtr'/>
+     <exports symbol='xmlList'/>
+     <exports symbol='xmlListAppend'/>
+     <exports symbol='xmlListClear'/>
+     <exports symbol='xmlListCopy'/>
+     <exports symbol='xmlListCreate'/>
+     <exports symbol='xmlListDataCompare'/>
+     <exports symbol='xmlListDeallocator'/>
+     <exports symbol='xmlListDelete'/>
+     <exports symbol='xmlListDup'/>
+     <exports symbol='xmlListEmpty'/>
+     <exports symbol='xmlListEnd'/>
+     <exports symbol='xmlListFront'/>
+     <exports symbol='xmlListInsert'/>
+     <exports symbol='xmlListMerge'/>
+     <exports symbol='xmlListPopBack'/>
+     <exports symbol='xmlListPopFront'/>
+     <exports symbol='xmlListPtr'/>
+     <exports symbol='xmlListPushBack'/>
+     <exports symbol='xmlListPushFront'/>
+     <exports symbol='xmlListRemoveAll'/>
+     <exports symbol='xmlListRemoveFirst'/>
+     <exports symbol='xmlListRemoveLast'/>
+     <exports symbol='xmlListReverse'/>
+     <exports symbol='xmlListReverseSearch'/>
+     <exports symbol='xmlListReverseWalk'/>
+     <exports symbol='xmlListSearch'/>
+     <exports symbol='xmlListSize'/>
+     <exports symbol='xmlListSort'/>
+     <exports symbol='xmlListWalk'/>
+     <exports symbol='xmlListWalker'/>
     </file>
     <file name='xmlautomata'>
      <exports symbol='xmlAutomata'/>
@@ -544,18 +707,46 @@
      <exports symbol='xmlNanoFTPScanProxy'/>
      <exports symbol='xmlNanoFTPUpdateURL'/>
     </file>
-    <file name='xmlschemastypes'>
-     <exports symbol='xmlSchemaCheckFacet'/>
-     <exports symbol='xmlSchemaCleanupTypes'/>
-     <exports symbol='xmlSchemaCompareValues'/>
-     <exports symbol='xmlSchemaFreeFacet'/>
-     <exports symbol='xmlSchemaFreeValue'/>
-     <exports symbol='xmlSchemaGetPredefinedType'/>
-     <exports symbol='xmlSchemaInitTypes'/>
-     <exports symbol='xmlSchemaNewFacet'/>
-     <exports symbol='xmlSchemaValPredefTypeNode'/>
-     <exports symbol='xmlSchemaValidateFacet'/>
-     <exports symbol='xmlSchemaValidatePredefinedType'/>
+    <file name='chvalid'>
+     <exports symbol='_xmlChLRange'/>
+     <exports symbol='_xmlChRangeGroup'/>
+     <exports symbol='_xmlChSRange'/>
+     <exports symbol='xmlChLRange'/>
+     <exports symbol='xmlChLRangePtr'/>
+     <exports symbol='xmlChRangeGroup'/>
+     <exports symbol='xmlChRangeGroupPtr'/>
+     <exports symbol='xmlChSRange'/>
+     <exports symbol='xmlChSRangePtr'/>
+     <exports symbol='xmlCharInRange'/>
+     <exports symbol='xmlIsBaseChar'/>
+     <exports symbol='xmlIsBaseCharGroup'/>
+     <exports symbol='xmlIsBaseCharQ'/>
+     <exports symbol='xmlIsBaseChar_ch'/>
+     <exports symbol='xmlIsBlank'/>
+     <exports symbol='xmlIsBlankQ'/>
+     <exports symbol='xmlIsBlank_ch'/>
+     <exports symbol='xmlIsChar'/>
+     <exports symbol='xmlIsCharGroup'/>
+     <exports symbol='xmlIsCharQ'/>
+     <exports symbol='xmlIsChar_ch'/>
+     <exports symbol='xmlIsCombining'/>
+     <exports symbol='xmlIsCombiningGroup'/>
+     <exports symbol='xmlIsCombiningQ'/>
+     <exports symbol='xmlIsDigit'/>
+     <exports symbol='xmlIsDigitGroup'/>
+     <exports symbol='xmlIsDigitQ'/>
+     <exports symbol='xmlIsDigit_ch'/>
+     <exports symbol='xmlIsExtender'/>
+     <exports symbol='xmlIsExtenderGroup'/>
+     <exports symbol='xmlIsExtenderQ'/>
+     <exports symbol='xmlIsExtender_ch'/>
+     <exports symbol='xmlIsIdeographic'/>
+     <exports symbol='xmlIsIdeographicGroup'/>
+     <exports symbol='xmlIsIdeographicQ'/>
+     <exports symbol='xmlIsPubidChar'/>
+     <exports symbol='xmlIsPubidCharQ'/>
+     <exports symbol='xmlIsPubidChar_ch'/>
+     <exports symbol='xmlIsPubidChar_tab'/>
     </file>
     <file name='DOCBparser'>
      <exports symbol='docbCreateFileParserCtxt'/>
@@ -683,6 +874,40 @@
      <exports symbol='xmlXPathVariable'/>
      <exports symbol='xmlXPathVariablePtr'/>
     </file>
+    <file name='debugXML'>
+     <exports symbol='_xmlShellCtxt'/>
+     <exports symbol='xmlBoolToText'/>
+     <exports symbol='xmlDebugDumpAttr'/>
+     <exports symbol='xmlDebugDumpAttrList'/>
+     <exports symbol='xmlDebugDumpDTD'/>
+     <exports symbol='xmlDebugDumpDocument'/>
+     <exports symbol='xmlDebugDumpDocumentHead'/>
+     <exports symbol='xmlDebugDumpEntities'/>
+     <exports symbol='xmlDebugDumpNode'/>
+     <exports symbol='xmlDebugDumpNodeList'/>
+     <exports symbol='xmlDebugDumpOneNode'/>
+     <exports symbol='xmlDebugDumpString'/>
+     <exports symbol='xmlLsCountNode'/>
+     <exports symbol='xmlLsOneNode'/>
+     <exports symbol='xmlShell'/>
+     <exports symbol='xmlShellBase'/>
+     <exports symbol='xmlShellCat'/>
+     <exports symbol='xmlShellCmd'/>
+     <exports symbol='xmlShellCtxt'/>
+     <exports symbol='xmlShellCtxtPtr'/>
+     <exports symbol='xmlShellDir'/>
+     <exports symbol='xmlShellDu'/>
+     <exports symbol='xmlShellList'/>
+     <exports symbol='xmlShellLoad'/>
+     <exports symbol='xmlShellPrintNode'/>
+     <exports symbol='xmlShellPrintXPathError'/>
+     <exports symbol='xmlShellPrintXPathResult'/>
+     <exports symbol='xmlShellPwd'/>
+     <exports symbol='xmlShellReadlineFunc'/>
+     <exports symbol='xmlShellSave'/>
+     <exports symbol='xmlShellValidate'/>
+     <exports symbol='xmlShellWrite'/>
+    </file>
     <file name='xlink'>
      <exports symbol='XLINK_ACTUATE_AUTO'/>
      <exports symbol='XLINK_ACTUATE_NONE'/>
@@ -713,6 +938,56 @@
      <exports symbol='xlinkSimpleLinkFunk'/>
      <exports symbol='xlinkTitle'/>
      <exports symbol='xlinkType'/>
+    </file>
+    <file name='xmlschemas'>
+     <exports symbol='XML_SCHEMAS_ERR_'/>
+     <exports symbol='XML_SCHEMAS_ERR_ATTRINVALID'/>
+     <exports symbol='XML_SCHEMAS_ERR_ATTRUNKNOWN'/>
+     <exports symbol='XML_SCHEMAS_ERR_CONSTRUCT'/>
+     <exports symbol='XML_SCHEMAS_ERR_ELEMCONT'/>
+     <exports symbol='XML_SCHEMAS_ERR_EXTRACONTENT'/>
+     <exports symbol='XML_SCHEMAS_ERR_FACET'/>
+     <exports symbol='XML_SCHEMAS_ERR_HAVEDEFAULT'/>
+     <exports symbol='XML_SCHEMAS_ERR_INTERNAL'/>
+     <exports symbol='XML_SCHEMAS_ERR_INVALIDATTR'/>
+     <exports symbol='XML_SCHEMAS_ERR_INVALIDELEM'/>
+     <exports symbol='XML_SCHEMAS_ERR_ISABSTRACT'/>
+     <exports symbol='XML_SCHEMAS_ERR_MISSING'/>
+     <exports symbol='XML_SCHEMAS_ERR_NOROLLBACK'/>
+     <exports symbol='XML_SCHEMAS_ERR_NOROOT'/>
+     <exports symbol='XML_SCHEMAS_ERR_NOTDETERMINIST'/>
+     <exports symbol='XML_SCHEMAS_ERR_NOTEMPTY'/>
+     <exports symbol='XML_SCHEMAS_ERR_NOTNILLABLE'/>
+     <exports symbol='XML_SCHEMAS_ERR_NOTSIMPLE'/>
+     <exports symbol='XML_SCHEMAS_ERR_NOTTOPLEVEL'/>
+     <exports symbol='XML_SCHEMAS_ERR_NOTYPE'/>
+     <exports symbol='XML_SCHEMAS_ERR_OK'/>
+     <exports symbol='XML_SCHEMAS_ERR_UNDECLAREDELEM'/>
+     <exports symbol='XML_SCHEMAS_ERR_VALUE'/>
+     <exports symbol='XML_SCHEMAS_ERR_WRONGELEM'/>
+     <exports symbol='XML_SCHEMAS_ERR_XXX'/>
+     <exports symbol='xmlSchema'/>
+     <exports symbol='xmlSchemaDump'/>
+     <exports symbol='xmlSchemaFree'/>
+     <exports symbol='xmlSchemaFreeParserCtxt'/>
+     <exports symbol='xmlSchemaFreeValidCtxt'/>
+     <exports symbol='xmlSchemaNewDocParserCtxt'/>
+     <exports symbol='xmlSchemaNewMemParserCtxt'/>
+     <exports symbol='xmlSchemaNewParserCtxt'/>
+     <exports symbol='xmlSchemaNewValidCtxt'/>
+     <exports symbol='xmlSchemaParse'/>
+     <exports symbol='xmlSchemaParserCtxt'/>
+     <exports symbol='xmlSchemaParserCtxtPtr'/>
+     <exports symbol='xmlSchemaPtr'/>
+     <exports symbol='xmlSchemaSetParserErrors'/>
+     <exports symbol='xmlSchemaSetValidErrors'/>
+     <exports symbol='xmlSchemaValidCtxt'/>
+     <exports symbol='xmlSchemaValidCtxtPtr'/>
+     <exports symbol='xmlSchemaValidError'/>
+     <exports symbol='xmlSchemaValidateDoc'/>
+     <exports symbol='xmlSchemaValidateStream'/>
+     <exports symbol='xmlSchemaValidityErrorFunc'/>
+     <exports symbol='xmlSchemaValidityWarningFunc'/>
     </file>
     <file name='entities'>
      <exports symbol='XML_EXTERNAL_GENERAL_PARSED_ENTITY'/>
@@ -803,41 +1078,6 @@
      <exports symbol='xmlSAX2UnparsedEntityDecl'/>
      <exports symbol='xmlSAXDefaultVersion'/>
      <exports symbol='xmlSAXVersion'/>
-    </file>
-    <file name='list'>
-     <exports symbol='xmlLink'/>
-     <exports symbol='xmlLinkGetData'/>
-     <exports symbol='xmlLinkPtr'/>
-     <exports symbol='xmlList'/>
-     <exports symbol='xmlListAppend'/>
-     <exports symbol='xmlListClear'/>
-     <exports symbol='xmlListCopy'/>
-     <exports symbol='xmlListCreate'/>
-     <exports symbol='xmlListDataCompare'/>
-     <exports symbol='xmlListDeallocator'/>
-     <exports symbol='xmlListDelete'/>
-     <exports symbol='xmlListDup'/>
-     <exports symbol='xmlListEmpty'/>
-     <exports symbol='xmlListEnd'/>
-     <exports symbol='xmlListFront'/>
-     <exports symbol='xmlListInsert'/>
-     <exports symbol='xmlListMerge'/>
-     <exports symbol='xmlListPopBack'/>
-     <exports symbol='xmlListPopFront'/>
-     <exports symbol='xmlListPtr'/>
-     <exports symbol='xmlListPushBack'/>
-     <exports symbol='xmlListPushFront'/>
-     <exports symbol='xmlListRemoveAll'/>
-     <exports symbol='xmlListRemoveFirst'/>
-     <exports symbol='xmlListRemoveLast'/>
-     <exports symbol='xmlListReverse'/>
-     <exports symbol='xmlListReverseSearch'/>
-     <exports symbol='xmlListReverseWalk'/>
-     <exports symbol='xmlListSearch'/>
-     <exports symbol='xmlListSize'/>
-     <exports symbol='xmlListSort'/>
-     <exports symbol='xmlListWalk'/>
-     <exports symbol='xmlListWalker'/>
     </file>
     <file name='xmlmemory'>
      <exports symbol='DEBUG_MEMORY'/>
@@ -1481,145 +1721,6 @@
      <exports symbol='xmlTextReaderValue'/>
      <exports symbol='xmlTextReaderXmlLang'/>
     </file>
-    <file name='xmlschemas'>
-     <exports symbol='XML_SCHEMAS_ERR_'/>
-     <exports symbol='XML_SCHEMAS_ERR_ATTRINVALID'/>
-     <exports symbol='XML_SCHEMAS_ERR_ATTRUNKNOWN'/>
-     <exports symbol='XML_SCHEMAS_ERR_CONSTRUCT'/>
-     <exports symbol='XML_SCHEMAS_ERR_ELEMCONT'/>
-     <exports symbol='XML_SCHEMAS_ERR_EXTRACONTENT'/>
-     <exports symbol='XML_SCHEMAS_ERR_FACET'/>
-     <exports symbol='XML_SCHEMAS_ERR_HAVEDEFAULT'/>
-     <exports symbol='XML_SCHEMAS_ERR_INTERNAL'/>
-     <exports symbol='XML_SCHEMAS_ERR_INVALIDATTR'/>
-     <exports symbol='XML_SCHEMAS_ERR_INVALIDELEM'/>
-     <exports symbol='XML_SCHEMAS_ERR_ISABSTRACT'/>
-     <exports symbol='XML_SCHEMAS_ERR_MISSING'/>
-     <exports symbol='XML_SCHEMAS_ERR_NOROLLBACK'/>
-     <exports symbol='XML_SCHEMAS_ERR_NOROOT'/>
-     <exports symbol='XML_SCHEMAS_ERR_NOTDETERMINIST'/>
-     <exports symbol='XML_SCHEMAS_ERR_NOTEMPTY'/>
-     <exports symbol='XML_SCHEMAS_ERR_NOTNILLABLE'/>
-     <exports symbol='XML_SCHEMAS_ERR_NOTSIMPLE'/>
-     <exports symbol='XML_SCHEMAS_ERR_NOTTOPLEVEL'/>
-     <exports symbol='XML_SCHEMAS_ERR_NOTYPE'/>
-     <exports symbol='XML_SCHEMAS_ERR_OK'/>
-     <exports symbol='XML_SCHEMAS_ERR_UNDECLAREDELEM'/>
-     <exports symbol='XML_SCHEMAS_ERR_VALUE'/>
-     <exports symbol='XML_SCHEMAS_ERR_WRONGELEM'/>
-     <exports symbol='XML_SCHEMAS_ERR_XXX'/>
-     <exports symbol='xmlSchema'/>
-     <exports symbol='xmlSchemaDump'/>
-     <exports symbol='xmlSchemaFree'/>
-     <exports symbol='xmlSchemaFreeParserCtxt'/>
-     <exports symbol='xmlSchemaFreeValidCtxt'/>
-     <exports symbol='xmlSchemaNewDocParserCtxt'/>
-     <exports symbol='xmlSchemaNewMemParserCtxt'/>
-     <exports symbol='xmlSchemaNewParserCtxt'/>
-     <exports symbol='xmlSchemaNewValidCtxt'/>
-     <exports symbol='xmlSchemaParse'/>
-     <exports symbol='xmlSchemaParserCtxt'/>
-     <exports symbol='xmlSchemaParserCtxtPtr'/>
-     <exports symbol='xmlSchemaPtr'/>
-     <exports symbol='xmlSchemaSetParserErrors'/>
-     <exports symbol='xmlSchemaSetValidErrors'/>
-     <exports symbol='xmlSchemaValidCtxt'/>
-     <exports symbol='xmlSchemaValidCtxtPtr'/>
-     <exports symbol='xmlSchemaValidError'/>
-     <exports symbol='xmlSchemaValidateDoc'/>
-     <exports symbol='xmlSchemaValidateStream'/>
-     <exports symbol='xmlSchemaValidityErrorFunc'/>
-     <exports symbol='xmlSchemaValidityWarningFunc'/>
-    </file>
-    <file name='relaxng'>
-     <exports symbol='XML_RELAXNG_ERR_ATTREXTRANS'/>
-     <exports symbol='XML_RELAXNG_ERR_ATTRNAME'/>
-     <exports symbol='XML_RELAXNG_ERR_ATTRNONS'/>
-     <exports symbol='XML_RELAXNG_ERR_ATTRVALID'/>
-     <exports symbol='XML_RELAXNG_ERR_ATTRWRONGNS'/>
-     <exports symbol='XML_RELAXNG_ERR_CONTENTVALID'/>
-     <exports symbol='XML_RELAXNG_ERR_DATAELEM'/>
-     <exports symbol='XML_RELAXNG_ERR_DATATYPE'/>
-     <exports symbol='XML_RELAXNG_ERR_DUPID'/>
-     <exports symbol='XML_RELAXNG_ERR_ELEMEXTRANS'/>
-     <exports symbol='XML_RELAXNG_ERR_ELEMNAME'/>
-     <exports symbol='XML_RELAXNG_ERR_ELEMNONS'/>
-     <exports symbol='XML_RELAXNG_ERR_ELEMNOTEMPTY'/>
-     <exports symbol='XML_RELAXNG_ERR_ELEMWRONG'/>
-     <exports symbol='XML_RELAXNG_ERR_ELEMWRONGNS'/>
-     <exports symbol='XML_RELAXNG_ERR_EXTRACONTENT'/>
-     <exports symbol='XML_RELAXNG_ERR_EXTRADATA'/>
-     <exports symbol='XML_RELAXNG_ERR_INTEREXTRA'/>
-     <exports symbol='XML_RELAXNG_ERR_INTERNAL'/>
-     <exports symbol='XML_RELAXNG_ERR_INTERNODATA'/>
-     <exports symbol='XML_RELAXNG_ERR_INTERSEQ'/>
-     <exports symbol='XML_RELAXNG_ERR_INVALIDATTR'/>
-     <exports symbol='XML_RELAXNG_ERR_LACKDATA'/>
-     <exports symbol='XML_RELAXNG_ERR_LIST'/>
-     <exports symbol='XML_RELAXNG_ERR_LISTELEM'/>
-     <exports symbol='XML_RELAXNG_ERR_LISTEMPTY'/>
-     <exports symbol='XML_RELAXNG_ERR_LISTEXTRA'/>
-     <exports symbol='XML_RELAXNG_ERR_MEMORY'/>
-     <exports symbol='XML_RELAXNG_ERR_NODEFINE'/>
-     <exports symbol='XML_RELAXNG_ERR_NOELEM'/>
-     <exports symbol='XML_RELAXNG_ERR_NOGRAMMAR'/>
-     <exports symbol='XML_RELAXNG_ERR_NOSTATE'/>
-     <exports symbol='XML_RELAXNG_ERR_NOTELEM'/>
-     <exports symbol='XML_RELAXNG_ERR_TEXTWRONG'/>
-     <exports symbol='XML_RELAXNG_ERR_TYPE'/>
-     <exports symbol='XML_RELAXNG_ERR_TYPECMP'/>
-     <exports symbol='XML_RELAXNG_ERR_TYPEVAL'/>
-     <exports symbol='XML_RELAXNG_ERR_VALELEM'/>
-     <exports symbol='XML_RELAXNG_ERR_VALUE'/>
-     <exports symbol='XML_RELAXNG_OK'/>
-     <exports symbol='xmlRelaxNG'/>
-     <exports symbol='xmlRelaxNGCleanupTypes'/>
-     <exports symbol='xmlRelaxNGDump'/>
-     <exports symbol='xmlRelaxNGDumpTree'/>
-     <exports symbol='xmlRelaxNGFree'/>
-     <exports symbol='xmlRelaxNGFreeParserCtxt'/>
-     <exports symbol='xmlRelaxNGFreeValidCtxt'/>
-     <exports symbol='xmlRelaxNGGetParserErrors'/>
-     <exports symbol='xmlRelaxNGGetValidErrors'/>
-     <exports symbol='xmlRelaxNGNewDocParserCtxt'/>
-     <exports symbol='xmlRelaxNGNewMemParserCtxt'/>
-     <exports symbol='xmlRelaxNGNewParserCtxt'/>
-     <exports symbol='xmlRelaxNGNewValidCtxt'/>
-     <exports symbol='xmlRelaxNGParse'/>
-     <exports symbol='xmlRelaxNGParserCtxt'/>
-     <exports symbol='xmlRelaxNGParserCtxtPtr'/>
-     <exports symbol='xmlRelaxNGPtr'/>
-     <exports symbol='xmlRelaxNGSetParserErrors'/>
-     <exports symbol='xmlRelaxNGSetValidErrors'/>
-     <exports symbol='xmlRelaxNGValidCtxt'/>
-     <exports symbol='xmlRelaxNGValidCtxtPtr'/>
-     <exports symbol='xmlRelaxNGValidErr'/>
-     <exports symbol='xmlRelaxNGValidateDoc'/>
-     <exports symbol='xmlRelaxNGValidateFullElement'/>
-     <exports symbol='xmlRelaxNGValidatePopElement'/>
-     <exports symbol='xmlRelaxNGValidatePushCData'/>
-     <exports symbol='xmlRelaxNGValidatePushElement'/>
-     <exports symbol='xmlRelaxNGValidityErrorFunc'/>
-     <exports symbol='xmlRelaxNGValidityWarningFunc'/>
-    </file>
-    <file name='dict'>
-     <exports symbol='xmlDict'/>
-     <exports symbol='xmlDictCreate'/>
-     <exports symbol='xmlDictFree'/>
-     <exports symbol='xmlDictLookup'/>
-     <exports symbol='xmlDictOwns'/>
-     <exports symbol='xmlDictPtr'/>
-     <exports symbol='xmlDictQLookup'/>
-     <exports symbol='xmlDictReference'/>
-     <exports symbol='xmlDictSize'/>
-    </file>
-    <file name='xmlexports'>
-     <exports symbol='LIBXML_DLL_IMPORT'/>
-     <exports symbol='XMLCALL'/>
-     <exports symbol='XMLPUBFUN'/>
-     <exports symbol='XMLPUBVAR'/>
-     <exports symbol='_REENTRANT'/>
-    </file>
     <file name='globals'>
      <exports symbol='_xmlGlobalState'/>
      <exports symbol='docbDefaultSAXHandler'/>
@@ -1708,6 +1809,63 @@
      <exports symbol='xmlThrDefTreeIndentString'/>
      <exports symbol='xmlTreeIndentString'/>
      <exports symbol='xmlTreeIndentString'/>
+    </file>
+    <file name='dict'>
+     <exports symbol='xmlDict'/>
+     <exports symbol='xmlDictCreate'/>
+     <exports symbol='xmlDictFree'/>
+     <exports symbol='xmlDictLookup'/>
+     <exports symbol='xmlDictOwns'/>
+     <exports symbol='xmlDictPtr'/>
+     <exports symbol='xmlDictQLookup'/>
+     <exports symbol='xmlDictReference'/>
+     <exports symbol='xmlDictSize'/>
+    </file>
+    <file name='xmlexports'>
+     <exports symbol='LIBXML_DLL_IMPORT'/>
+     <exports symbol='XMLCALL'/>
+     <exports symbol='XMLPUBFUN'/>
+     <exports symbol='XMLPUBVAR'/>
+     <exports symbol='_REENTRANT'/>
+    </file>
+    <file name='SAX'>
+     <exports symbol='attribute'/>
+     <exports symbol='attributeDecl'/>
+     <exports symbol='cdataBlock'/>
+     <exports symbol='characters'/>
+     <exports symbol='checkNamespace'/>
+     <exports symbol='comment'/>
+     <exports symbol='elementDecl'/>
+     <exports symbol='endDocument'/>
+     <exports symbol='endElement'/>
+     <exports symbol='entityDecl'/>
+     <exports symbol='externalSubset'/>
+     <exports symbol='getColumnNumber'/>
+     <exports symbol='getEntity'/>
+     <exports symbol='getLineNumber'/>
+     <exports symbol='getNamespace'/>
+     <exports symbol='getParameterEntity'/>
+     <exports symbol='getPublicId'/>
+     <exports symbol='getSystemId'/>
+     <exports symbol='globalNamespace'/>
+     <exports symbol='hasExternalSubset'/>
+     <exports symbol='hasInternalSubset'/>
+     <exports symbol='ignorableWhitespace'/>
+     <exports symbol='initdocbDefaultSAXHandler'/>
+     <exports symbol='inithtmlDefaultSAXHandler'/>
+     <exports symbol='initxmlDefaultSAXHandler'/>
+     <exports symbol='internalSubset'/>
+     <exports symbol='isStandalone'/>
+     <exports symbol='namespaceDecl'/>
+     <exports symbol='notationDecl'/>
+     <exports symbol='processingInstruction'/>
+     <exports symbol='reference'/>
+     <exports symbol='resolveEntity'/>
+     <exports symbol='setDocumentLocator'/>
+     <exports symbol='setNamespace'/>
+     <exports symbol='startDocument'/>
+     <exports symbol='startElement'/>
+     <exports symbol='unparsedEntityDecl'/>
     </file>
     <file name='xmlwriter'>
      <exports symbol='xmlFreeTextWriter'/>
@@ -2655,159 +2813,76 @@
      <exports symbol='xmlRegexpPrint'/>
      <exports symbol='xmlRegexpPtr'/>
     </file>
-    <file name='nanohttp'>
-     <exports symbol='xmlNanoHTTPAuthHeader'/>
-     <exports symbol='xmlNanoHTTPCleanup'/>
-     <exports symbol='xmlNanoHTTPClose'/>
-     <exports symbol='xmlNanoHTTPEncoding'/>
-     <exports symbol='xmlNanoHTTPFetch'/>
-     <exports symbol='xmlNanoHTTPInit'/>
-     <exports symbol='xmlNanoHTTPMethod'/>
-     <exports symbol='xmlNanoHTTPMethodRedir'/>
-     <exports symbol='xmlNanoHTTPMimeType'/>
-     <exports symbol='xmlNanoHTTPOpen'/>
-     <exports symbol='xmlNanoHTTPOpenRedir'/>
-     <exports symbol='xmlNanoHTTPRead'/>
-     <exports symbol='xmlNanoHTTPRedir'/>
-     <exports symbol='xmlNanoHTTPReturnCode'/>
-     <exports symbol='xmlNanoHTTPSave'/>
-     <exports symbol='xmlNanoHTTPScanProxy'/>
-    </file>
-    <file name='xmlunicode'>
-     <exports symbol='xmlUCSIsAlphabeticPresentationForms'/>
-     <exports symbol='xmlUCSIsArabic'/>
-     <exports symbol='xmlUCSIsArabicPresentationFormsA'/>
-     <exports symbol='xmlUCSIsArabicPresentationFormsB'/>
-     <exports symbol='xmlUCSIsArmenian'/>
-     <exports symbol='xmlUCSIsArrows'/>
-     <exports symbol='xmlUCSIsBasicLatin'/>
-     <exports symbol='xmlUCSIsBengali'/>
-     <exports symbol='xmlUCSIsBlock'/>
-     <exports symbol='xmlUCSIsBlockElements'/>
-     <exports symbol='xmlUCSIsBopomofo'/>
-     <exports symbol='xmlUCSIsBopomofoExtended'/>
-     <exports symbol='xmlUCSIsBoxDrawing'/>
-     <exports symbol='xmlUCSIsBraillePatterns'/>
-     <exports symbol='xmlUCSIsByzantineMusicalSymbols'/>
-     <exports symbol='xmlUCSIsCJKCompatibility'/>
-     <exports symbol='xmlUCSIsCJKCompatibilityForms'/>
-     <exports symbol='xmlUCSIsCJKCompatibilityIdeographs'/>
-     <exports symbol='xmlUCSIsCJKCompatibilityIdeographsSupplement'/>
-     <exports symbol='xmlUCSIsCJKRadicalsSupplement'/>
-     <exports symbol='xmlUCSIsCJKSymbolsandPunctuation'/>
-     <exports symbol='xmlUCSIsCJKUnifiedIdeographs'/>
-     <exports symbol='xmlUCSIsCJKUnifiedIdeographsExtensionA'/>
-     <exports symbol='xmlUCSIsCJKUnifiedIdeographsExtensionB'/>
-     <exports symbol='xmlUCSIsCat'/>
-     <exports symbol='xmlUCSIsCatC'/>
-     <exports symbol='xmlUCSIsCatCc'/>
-     <exports symbol='xmlUCSIsCatCf'/>
-     <exports symbol='xmlUCSIsCatCo'/>
-     <exports symbol='xmlUCSIsCatCs'/>
-     <exports symbol='xmlUCSIsCatL'/>
-     <exports symbol='xmlUCSIsCatLl'/>
-     <exports symbol='xmlUCSIsCatLm'/>
-     <exports symbol='xmlUCSIsCatLo'/>
-     <exports symbol='xmlUCSIsCatLt'/>
-     <exports symbol='xmlUCSIsCatLu'/>
-     <exports symbol='xmlUCSIsCatM'/>
-     <exports symbol='xmlUCSIsCatMc'/>
-     <exports symbol='xmlUCSIsCatMe'/>
-     <exports symbol='xmlUCSIsCatMn'/>
-     <exports symbol='xmlUCSIsCatN'/>
-     <exports symbol='xmlUCSIsCatNd'/>
-     <exports symbol='xmlUCSIsCatNl'/>
-     <exports symbol='xmlUCSIsCatNo'/>
-     <exports symbol='xmlUCSIsCatP'/>
-     <exports symbol='xmlUCSIsCatPc'/>
-     <exports symbol='xmlUCSIsCatPd'/>
-     <exports symbol='xmlUCSIsCatPe'/>
-     <exports symbol='xmlUCSIsCatPf'/>
-     <exports symbol='xmlUCSIsCatPi'/>
-     <exports symbol='xmlUCSIsCatPo'/>
-     <exports symbol='xmlUCSIsCatPs'/>
-     <exports symbol='xmlUCSIsCatS'/>
-     <exports symbol='xmlUCSIsCatSc'/>
-     <exports symbol='xmlUCSIsCatSk'/>
-     <exports symbol='xmlUCSIsCatSm'/>
-     <exports symbol='xmlUCSIsCatSo'/>
-     <exports symbol='xmlUCSIsCatZ'/>
-     <exports symbol='xmlUCSIsCatZl'/>
-     <exports symbol='xmlUCSIsCatZp'/>
-     <exports symbol='xmlUCSIsCatZs'/>
-     <exports symbol='xmlUCSIsCherokee'/>
-     <exports symbol='xmlUCSIsCombiningDiacriticalMarks'/>
-     <exports symbol='xmlUCSIsCombiningHalfMarks'/>
-     <exports symbol='xmlUCSIsCombiningMarksforSymbols'/>
-     <exports symbol='xmlUCSIsControlPictures'/>
-     <exports symbol='xmlUCSIsCurrencySymbols'/>
-     <exports symbol='xmlUCSIsCyrillic'/>
-     <exports symbol='xmlUCSIsDeseret'/>
-     <exports symbol='xmlUCSIsDevanagari'/>
-     <exports symbol='xmlUCSIsDingbats'/>
-     <exports symbol='xmlUCSIsEnclosedAlphanumerics'/>
-     <exports symbol='xmlUCSIsEnclosedCJKLettersandMonths'/>
-     <exports symbol='xmlUCSIsEthiopic'/>
-     <exports symbol='xmlUCSIsGeneralPunctuation'/>
-     <exports symbol='xmlUCSIsGeometricShapes'/>
-     <exports symbol='xmlUCSIsGeorgian'/>
-     <exports symbol='xmlUCSIsGothic'/>
-     <exports symbol='xmlUCSIsGreek'/>
-     <exports symbol='xmlUCSIsGreekExtended'/>
-     <exports symbol='xmlUCSIsGujarati'/>
-     <exports symbol='xmlUCSIsGurmukhi'/>
-     <exports symbol='xmlUCSIsHalfwidthandFullwidthForms'/>
-     <exports symbol='xmlUCSIsHangulCompatibilityJamo'/>
-     <exports symbol='xmlUCSIsHangulJamo'/>
-     <exports symbol='xmlUCSIsHangulSyllables'/>
-     <exports symbol='xmlUCSIsHebrew'/>
-     <exports symbol='xmlUCSIsHighPrivateUseSurrogates'/>
-     <exports symbol='xmlUCSIsHighSurrogates'/>
-     <exports symbol='xmlUCSIsHiragana'/>
-     <exports symbol='xmlUCSIsIPAExtensions'/>
-     <exports symbol='xmlUCSIsIdeographicDescriptionCharacters'/>
-     <exports symbol='xmlUCSIsKanbun'/>
-     <exports symbol='xmlUCSIsKangxiRadicals'/>
-     <exports symbol='xmlUCSIsKannada'/>
-     <exports symbol='xmlUCSIsKatakana'/>
-     <exports symbol='xmlUCSIsKhmer'/>
-     <exports symbol='xmlUCSIsLao'/>
-     <exports symbol='xmlUCSIsLatin1Supplement'/>
-     <exports symbol='xmlUCSIsLatinExtendedA'/>
-     <exports symbol='xmlUCSIsLatinExtendedAdditional'/>
-     <exports symbol='xmlUCSIsLatinExtendedB'/>
-     <exports symbol='xmlUCSIsLetterlikeSymbols'/>
-     <exports symbol='xmlUCSIsLowSurrogates'/>
-     <exports symbol='xmlUCSIsMalayalam'/>
-     <exports symbol='xmlUCSIsMathematicalAlphanumericSymbols'/>
-     <exports symbol='xmlUCSIsMathematicalOperators'/>
-     <exports symbol='xmlUCSIsMiscellaneousSymbols'/>
-     <exports symbol='xmlUCSIsMiscellaneousTechnical'/>
-     <exports symbol='xmlUCSIsMongolian'/>
-     <exports symbol='xmlUCSIsMusicalSymbols'/>
-     <exports symbol='xmlUCSIsMyanmar'/>
-     <exports symbol='xmlUCSIsNumberForms'/>
-     <exports symbol='xmlUCSIsOgham'/>
-     <exports symbol='xmlUCSIsOldItalic'/>
-     <exports symbol='xmlUCSIsOpticalCharacterRecognition'/>
-     <exports symbol='xmlUCSIsOriya'/>
-     <exports symbol='xmlUCSIsPrivateUse'/>
-     <exports symbol='xmlUCSIsRunic'/>
-     <exports symbol='xmlUCSIsSinhala'/>
-     <exports symbol='xmlUCSIsSmallFormVariants'/>
-     <exports symbol='xmlUCSIsSpacingModifierLetters'/>
-     <exports symbol='xmlUCSIsSpecials'/>
-     <exports symbol='xmlUCSIsSuperscriptsandSubscripts'/>
-     <exports symbol='xmlUCSIsSyriac'/>
-     <exports symbol='xmlUCSIsTags'/>
-     <exports symbol='xmlUCSIsTamil'/>
-     <exports symbol='xmlUCSIsTelugu'/>
-     <exports symbol='xmlUCSIsThaana'/>
-     <exports symbol='xmlUCSIsThai'/>
-     <exports symbol='xmlUCSIsTibetan'/>
-     <exports symbol='xmlUCSIsUnifiedCanadianAboriginalSyllabics'/>
-     <exports symbol='xmlUCSIsYiRadicals'/>
-     <exports symbol='xmlUCSIsYiSyllables'/>
+    <file name='relaxng'>
+     <exports symbol='XML_RELAXNG_ERR_ATTREXTRANS'/>
+     <exports symbol='XML_RELAXNG_ERR_ATTRNAME'/>
+     <exports symbol='XML_RELAXNG_ERR_ATTRNONS'/>
+     <exports symbol='XML_RELAXNG_ERR_ATTRVALID'/>
+     <exports symbol='XML_RELAXNG_ERR_ATTRWRONGNS'/>
+     <exports symbol='XML_RELAXNG_ERR_CONTENTVALID'/>
+     <exports symbol='XML_RELAXNG_ERR_DATAELEM'/>
+     <exports symbol='XML_RELAXNG_ERR_DATATYPE'/>
+     <exports symbol='XML_RELAXNG_ERR_DUPID'/>
+     <exports symbol='XML_RELAXNG_ERR_ELEMEXTRANS'/>
+     <exports symbol='XML_RELAXNG_ERR_ELEMNAME'/>
+     <exports symbol='XML_RELAXNG_ERR_ELEMNONS'/>
+     <exports symbol='XML_RELAXNG_ERR_ELEMNOTEMPTY'/>
+     <exports symbol='XML_RELAXNG_ERR_ELEMWRONG'/>
+     <exports symbol='XML_RELAXNG_ERR_ELEMWRONGNS'/>
+     <exports symbol='XML_RELAXNG_ERR_EXTRACONTENT'/>
+     <exports symbol='XML_RELAXNG_ERR_EXTRADATA'/>
+     <exports symbol='XML_RELAXNG_ERR_INTEREXTRA'/>
+     <exports symbol='XML_RELAXNG_ERR_INTERNAL'/>
+     <exports symbol='XML_RELAXNG_ERR_INTERNODATA'/>
+     <exports symbol='XML_RELAXNG_ERR_INTERSEQ'/>
+     <exports symbol='XML_RELAXNG_ERR_INVALIDATTR'/>
+     <exports symbol='XML_RELAXNG_ERR_LACKDATA'/>
+     <exports symbol='XML_RELAXNG_ERR_LIST'/>
+     <exports symbol='XML_RELAXNG_ERR_LISTELEM'/>
+     <exports symbol='XML_RELAXNG_ERR_LISTEMPTY'/>
+     <exports symbol='XML_RELAXNG_ERR_LISTEXTRA'/>
+     <exports symbol='XML_RELAXNG_ERR_MEMORY'/>
+     <exports symbol='XML_RELAXNG_ERR_NODEFINE'/>
+     <exports symbol='XML_RELAXNG_ERR_NOELEM'/>
+     <exports symbol='XML_RELAXNG_ERR_NOGRAMMAR'/>
+     <exports symbol='XML_RELAXNG_ERR_NOSTATE'/>
+     <exports symbol='XML_RELAXNG_ERR_NOTELEM'/>
+     <exports symbol='XML_RELAXNG_ERR_TEXTWRONG'/>
+     <exports symbol='XML_RELAXNG_ERR_TYPE'/>
+     <exports symbol='XML_RELAXNG_ERR_TYPECMP'/>
+     <exports symbol='XML_RELAXNG_ERR_TYPEVAL'/>
+     <exports symbol='XML_RELAXNG_ERR_VALELEM'/>
+     <exports symbol='XML_RELAXNG_ERR_VALUE'/>
+     <exports symbol='XML_RELAXNG_OK'/>
+     <exports symbol='xmlRelaxNG'/>
+     <exports symbol='xmlRelaxNGCleanupTypes'/>
+     <exports symbol='xmlRelaxNGDump'/>
+     <exports symbol='xmlRelaxNGDumpTree'/>
+     <exports symbol='xmlRelaxNGFree'/>
+     <exports symbol='xmlRelaxNGFreeParserCtxt'/>
+     <exports symbol='xmlRelaxNGFreeValidCtxt'/>
+     <exports symbol='xmlRelaxNGGetParserErrors'/>
+     <exports symbol='xmlRelaxNGGetValidErrors'/>
+     <exports symbol='xmlRelaxNGNewDocParserCtxt'/>
+     <exports symbol='xmlRelaxNGNewMemParserCtxt'/>
+     <exports symbol='xmlRelaxNGNewParserCtxt'/>
+     <exports symbol='xmlRelaxNGNewValidCtxt'/>
+     <exports symbol='xmlRelaxNGParse'/>
+     <exports symbol='xmlRelaxNGParserCtxt'/>
+     <exports symbol='xmlRelaxNGParserCtxtPtr'/>
+     <exports symbol='xmlRelaxNGPtr'/>
+     <exports symbol='xmlRelaxNGSetParserErrors'/>
+     <exports symbol='xmlRelaxNGSetValidErrors'/>
+     <exports symbol='xmlRelaxNGValidCtxt'/>
+     <exports symbol='xmlRelaxNGValidCtxtPtr'/>
+     <exports symbol='xmlRelaxNGValidErr'/>
+     <exports symbol='xmlRelaxNGValidateDoc'/>
+     <exports symbol='xmlRelaxNGValidateFullElement'/>
+     <exports symbol='xmlRelaxNGValidatePopElement'/>
+     <exports symbol='xmlRelaxNGValidatePushCData'/>
+     <exports symbol='xmlRelaxNGValidatePushElement'/>
+     <exports symbol='xmlRelaxNGValidityErrorFunc'/>
+     <exports symbol='xmlRelaxNGValidityWarningFunc'/>
     </file>
     <file name='uri'>
      <exports symbol='_xmlURI'/>
@@ -2826,66 +2901,23 @@
      <exports symbol='xmlURIPtr'/>
      <exports symbol='xmlURIUnescapeString'/>
     </file>
-    <file name='encoding'>
-     <exports symbol='UTF8Toisolat1'/>
-     <exports symbol='XML_CHAR_ENCODING_2022_JP'/>
-     <exports symbol='XML_CHAR_ENCODING_8859_1'/>
-     <exports symbol='XML_CHAR_ENCODING_8859_2'/>
-     <exports symbol='XML_CHAR_ENCODING_8859_3'/>
-     <exports symbol='XML_CHAR_ENCODING_8859_4'/>
-     <exports symbol='XML_CHAR_ENCODING_8859_5'/>
-     <exports symbol='XML_CHAR_ENCODING_8859_6'/>
-     <exports symbol='XML_CHAR_ENCODING_8859_7'/>
-     <exports symbol='XML_CHAR_ENCODING_8859_8'/>
-     <exports symbol='XML_CHAR_ENCODING_8859_9'/>
-     <exports symbol='XML_CHAR_ENCODING_ASCII'/>
-     <exports symbol='XML_CHAR_ENCODING_EBCDIC'/>
-     <exports symbol='XML_CHAR_ENCODING_ERROR'/>
-     <exports symbol='XML_CHAR_ENCODING_EUC_JP'/>
-     <exports symbol='XML_CHAR_ENCODING_NONE'/>
-     <exports symbol='XML_CHAR_ENCODING_SHIFT_JIS'/>
-     <exports symbol='XML_CHAR_ENCODING_UCS2'/>
-     <exports symbol='XML_CHAR_ENCODING_UCS4BE'/>
-     <exports symbol='XML_CHAR_ENCODING_UCS4LE'/>
-     <exports symbol='XML_CHAR_ENCODING_UCS4_2143'/>
-     <exports symbol='XML_CHAR_ENCODING_UCS4_3412'/>
-     <exports symbol='XML_CHAR_ENCODING_UTF16BE'/>
-     <exports symbol='XML_CHAR_ENCODING_UTF16LE'/>
-     <exports symbol='XML_CHAR_ENCODING_UTF8'/>
-     <exports symbol='_xmlCharEncodingHandler'/>
-     <exports symbol='isolat1ToUTF8'/>
-     <exports symbol='xmlAddEncodingAlias'/>
-     <exports symbol='xmlCharEncCloseFunc'/>
-     <exports symbol='xmlCharEncFirstLine'/>
-     <exports symbol='xmlCharEncInFunc'/>
-     <exports symbol='xmlCharEncOutFunc'/>
-     <exports symbol='xmlCharEncoding'/>
-     <exports symbol='xmlCharEncodingHandler'/>
-     <exports symbol='xmlCharEncodingHandlerPtr'/>
-     <exports symbol='xmlCharEncodingInputFunc'/>
-     <exports symbol='xmlCharEncodingOutputFunc'/>
-     <exports symbol='xmlCheckUTF8'/>
-     <exports symbol='xmlCleanupCharEncodingHandlers'/>
-     <exports symbol='xmlCleanupEncodingAliases'/>
-     <exports symbol='xmlDelEncodingAlias'/>
-     <exports symbol='xmlDetectCharEncoding'/>
-     <exports symbol='xmlFindCharEncodingHandler'/>
-     <exports symbol='xmlGetCharEncodingHandler'/>
-     <exports symbol='xmlGetCharEncodingName'/>
-     <exports symbol='xmlGetEncodingAlias'/>
-     <exports symbol='xmlGetUTF8Char'/>
-     <exports symbol='xmlInitCharEncodingHandlers'/>
-     <exports symbol='xmlNewCharEncodingHandler'/>
-     <exports symbol='xmlParseCharEncoding'/>
-     <exports symbol='xmlRegisterCharEncodingHandler'/>
-     <exports symbol='xmlUTF8Charcmp'/>
-     <exports symbol='xmlUTF8Size'/>
-     <exports symbol='xmlUTF8Strlen'/>
-     <exports symbol='xmlUTF8Strloc'/>
-     <exports symbol='xmlUTF8Strndup'/>
-     <exports symbol='xmlUTF8Strpos'/>
-     <exports symbol='xmlUTF8Strsize'/>
-     <exports symbol='xmlUTF8Strsub'/>
+    <file name='nanohttp'>
+     <exports symbol='xmlNanoHTTPAuthHeader'/>
+     <exports symbol='xmlNanoHTTPCleanup'/>
+     <exports symbol='xmlNanoHTTPClose'/>
+     <exports symbol='xmlNanoHTTPEncoding'/>
+     <exports symbol='xmlNanoHTTPFetch'/>
+     <exports symbol='xmlNanoHTTPInit'/>
+     <exports symbol='xmlNanoHTTPMethod'/>
+     <exports symbol='xmlNanoHTTPMethodRedir'/>
+     <exports symbol='xmlNanoHTTPMimeType'/>
+     <exports symbol='xmlNanoHTTPOpen'/>
+     <exports symbol='xmlNanoHTTPOpenRedir'/>
+     <exports symbol='xmlNanoHTTPRead'/>
+     <exports symbol='xmlNanoHTTPRedir'/>
+     <exports symbol='xmlNanoHTTPReturnCode'/>
+     <exports symbol='xmlNanoHTTPSave'/>
+     <exports symbol='xmlNanoHTTPScanProxy'/>
     </file>
   </files>
   <symbols>
@@ -8511,9 +8543,9 @@ actually an xmlCharEncoding'/>
       <arg name='fp' type='FILE *' info='a FILE descriptor used as the output file, if NULL, the result is written to the file .memorylist'/>
     </function>
     <function name='xmlMemFree' file='xmlmemory'>
-      <info>a free() equivalent, with error checking.</info>
+      <info></info>
       <return type='void'/>
-      <arg name='ptr' type='void *' info='the memory block pointer'/>
+      <arg name='ptr' type='void *' info=''/>
     </function>
     <function name='xmlMemGet' file='xmlmemory'>
       <info>Provides the memory access functions set currently in use</info>
@@ -8524,15 +8556,15 @@ actually an xmlCharEncoding'/>
       <arg name='strdupFunc' type='xmlStrdupFunc *' info='place to save the strdup() function in use'/>
     </function>
     <function name='xmlMemMalloc' file='xmlmemory'>
-      <info>a malloc() equivalent, with logging of the allocation info.</info>
-      <return type='void *' info='a pointer to the allocated area or NULL in case of lack of memory.'/>
-      <arg name='size' type='size_t' info='an int specifying the size in byte to allocate.'/>
+      <info></info>
+      <return type='void *' info=''/>
+      <arg name='size' type='size_t' info=''/>
     </function>
     <function name='xmlMemRealloc' file='xmlmemory'>
-      <info>a realloc() equivalent, with logging of the allocation info.</info>
-      <return type='void *' info='a pointer to the allocated area or NULL in case of lack of memory.'/>
-      <arg name='ptr' type='void *' info='the initial memory block pointer'/>
-      <arg name='size' type='size_t' info='an int specifying the size in byte to allocate.'/>
+      <info></info>
+      <return type='void *' info=''/>
+      <arg name='ptr' type='void *' info=''/>
+      <arg name='size' type='size_t' info=''/>
     </function>
     <function name='xmlMemSetup' file='xmlmemory'>
       <info>Override the default memory access functions with a new set This has to be called before any other libxml routines !  Should this be blocked if there was already some allocations done ?</info>
@@ -8564,9 +8596,9 @@ actually an xmlCharEncoding'/>
       <return type='void'/>
     </function>
     <function name='xmlMemoryStrdup' file='xmlmemory'>
-      <info>a strdup() equivalent, with logging of the allocation info.</info>
-      <return type='char *' info='a pointer to the new string or NULL if allocation error occurred.'/>
-      <arg name='str' type='const char *' info='the initial string pointer'/>
+      <info></info>
+      <return type='char *' info=''/>
+      <arg name='str' type='const char *' info=''/>
     </function>
     <function name='xmlMutexLock' file='threads'>
       <info>xmlMutexLock() is used to lock a libxml2 token.</info>
@@ -12158,6 +12190,11 @@ actually an xmlCharEncoding'/>
       <return type='const char *' info=''/>
       <arg name='v' type='const char *' info=''/>
     </function>
+    <function name='xmlUCSIsAegeanNumbers' file='xmlunicode'>
+      <info>Check whether the character is part of AegeanNumbers UCS Block</info>
+      <return type='int' info='1 if true 0 otherwise'/>
+      <arg name='code' type='int' info='UCS code point'/>
+    </function>
     <function name='xmlUCSIsAlphabeticPresentationForms' file='xmlunicode'>
       <info>Check whether the character is part of AlphabeticPresentationForms UCS Block</info>
       <return type='int' info='1 if true 0 otherwise'/>
@@ -12199,7 +12236,7 @@ actually an xmlCharEncoding'/>
       <arg name='code' type='int' info='UCS code point'/>
     </function>
     <function name='xmlUCSIsBlock' file='xmlunicode'>
-      <info>Check whether the caracter is part of the UCS Block</info>
+      <info>Check whether the character is part of the UCS Block</info>
       <return type='int' info='1 if true, 0 if false and -1 on unknown block'/>
       <arg name='code' type='int' info='UCS code point'/>
       <arg name='block' type='const char *' info='UCS block name'/>
@@ -12226,6 +12263,11 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlUCSIsBraillePatterns' file='xmlunicode'>
       <info>Check whether the character is part of BraillePatterns UCS Block</info>
+      <return type='int' info='1 if true 0 otherwise'/>
+      <arg name='code' type='int' info='UCS code point'/>
+    </function>
+    <function name='xmlUCSIsBuhid' file='xmlunicode'>
+      <info>Check whether the character is part of Buhid UCS Block</info>
       <return type='int' info='1 if true 0 otherwise'/>
       <arg name='code' type='int' info='UCS code point'/>
     </function>
@@ -12280,7 +12322,7 @@ actually an xmlCharEncoding'/>
       <arg name='code' type='int' info='UCS code point'/>
     </function>
     <function name='xmlUCSIsCat' file='xmlunicode'>
-      <info>Check whether the caracter is part of the UCS Category</info>
+      <info>Check whether the character is part of the UCS Category</info>
       <return type='int' info='1 if true, 0 if false and -1 on unknown category'/>
       <arg name='code' type='int' info='UCS code point'/>
       <arg name='cat' type='const char *' info='UCS Category name'/>
@@ -12475,6 +12517,11 @@ actually an xmlCharEncoding'/>
       <return type='int' info='1 if true 0 otherwise'/>
       <arg name='code' type='int' info='UCS code point'/>
     </function>
+    <function name='xmlUCSIsCombiningDiacriticalMarksforSymbols' file='xmlunicode'>
+      <info>Check whether the character is part of CombiningDiacriticalMarksforSymbols UCS Block</info>
+      <return type='int' info='1 if true 0 otherwise'/>
+      <arg name='code' type='int' info='UCS code point'/>
+    </function>
     <function name='xmlUCSIsCombiningHalfMarks' file='xmlunicode'>
       <info>Check whether the character is part of CombiningHalfMarks UCS Block</info>
       <return type='int' info='1 if true 0 otherwise'/>
@@ -12495,8 +12542,18 @@ actually an xmlCharEncoding'/>
       <return type='int' info='1 if true 0 otherwise'/>
       <arg name='code' type='int' info='UCS code point'/>
     </function>
+    <function name='xmlUCSIsCypriotSyllabary' file='xmlunicode'>
+      <info>Check whether the character is part of CypriotSyllabary UCS Block</info>
+      <return type='int' info='1 if true 0 otherwise'/>
+      <arg name='code' type='int' info='UCS code point'/>
+    </function>
     <function name='xmlUCSIsCyrillic' file='xmlunicode'>
       <info>Check whether the character is part of Cyrillic UCS Block</info>
+      <return type='int' info='1 if true 0 otherwise'/>
+      <arg name='code' type='int' info='UCS code point'/>
+    </function>
+    <function name='xmlUCSIsCyrillicSupplement' file='xmlunicode'>
+      <info>Check whether the character is part of CyrillicSupplement UCS Block</info>
       <return type='int' info='1 if true 0 otherwise'/>
       <arg name='code' type='int' info='UCS code point'/>
     </function>
@@ -12560,6 +12617,11 @@ actually an xmlCharEncoding'/>
       <return type='int' info='1 if true 0 otherwise'/>
       <arg name='code' type='int' info='UCS code point'/>
     </function>
+    <function name='xmlUCSIsGreekandCoptic' file='xmlunicode'>
+      <info>Check whether the character is part of GreekandCoptic UCS Block</info>
+      <return type='int' info='1 if true 0 otherwise'/>
+      <arg name='code' type='int' info='UCS code point'/>
+    </function>
     <function name='xmlUCSIsGujarati' file='xmlunicode'>
       <info>Check whether the character is part of Gujarati UCS Block</info>
       <return type='int' info='1 if true 0 otherwise'/>
@@ -12587,6 +12649,11 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlUCSIsHangulSyllables' file='xmlunicode'>
       <info>Check whether the character is part of HangulSyllables UCS Block</info>
+      <return type='int' info='1 if true 0 otherwise'/>
+      <arg name='code' type='int' info='UCS code point'/>
+    </function>
+    <function name='xmlUCSIsHanunoo' file='xmlunicode'>
+      <info>Check whether the character is part of Hanunoo UCS Block</info>
       <return type='int' info='1 if true 0 otherwise'/>
       <arg name='code' type='int' info='UCS code point'/>
     </function>
@@ -12640,8 +12707,18 @@ actually an xmlCharEncoding'/>
       <return type='int' info='1 if true 0 otherwise'/>
       <arg name='code' type='int' info='UCS code point'/>
     </function>
+    <function name='xmlUCSIsKatakanaPhoneticExtensions' file='xmlunicode'>
+      <info>Check whether the character is part of KatakanaPhoneticExtensions UCS Block</info>
+      <return type='int' info='1 if true 0 otherwise'/>
+      <arg name='code' type='int' info='UCS code point'/>
+    </function>
     <function name='xmlUCSIsKhmer' file='xmlunicode'>
       <info>Check whether the character is part of Khmer UCS Block</info>
+      <return type='int' info='1 if true 0 otherwise'/>
+      <arg name='code' type='int' info='UCS code point'/>
+    </function>
+    <function name='xmlUCSIsKhmerSymbols' file='xmlunicode'>
+      <info>Check whether the character is part of KhmerSymbols UCS Block</info>
       <return type='int' info='1 if true 0 otherwise'/>
       <arg name='code' type='int' info='UCS code point'/>
     </function>
@@ -12675,6 +12752,21 @@ actually an xmlCharEncoding'/>
       <return type='int' info='1 if true 0 otherwise'/>
       <arg name='code' type='int' info='UCS code point'/>
     </function>
+    <function name='xmlUCSIsLimbu' file='xmlunicode'>
+      <info>Check whether the character is part of Limbu UCS Block</info>
+      <return type='int' info='1 if true 0 otherwise'/>
+      <arg name='code' type='int' info='UCS code point'/>
+    </function>
+    <function name='xmlUCSIsLinearBIdeograms' file='xmlunicode'>
+      <info>Check whether the character is part of LinearBIdeograms UCS Block</info>
+      <return type='int' info='1 if true 0 otherwise'/>
+      <arg name='code' type='int' info='UCS code point'/>
+    </function>
+    <function name='xmlUCSIsLinearBSyllabary' file='xmlunicode'>
+      <info>Check whether the character is part of LinearBSyllabary UCS Block</info>
+      <return type='int' info='1 if true 0 otherwise'/>
+      <arg name='code' type='int' info='UCS code point'/>
+    </function>
     <function name='xmlUCSIsLowSurrogates' file='xmlunicode'>
       <info>Check whether the character is part of LowSurrogates UCS Block</info>
       <return type='int' info='1 if true 0 otherwise'/>
@@ -12695,8 +12787,23 @@ actually an xmlCharEncoding'/>
       <return type='int' info='1 if true 0 otherwise'/>
       <arg name='code' type='int' info='UCS code point'/>
     </function>
+    <function name='xmlUCSIsMiscellaneousMathematicalSymbolsA' file='xmlunicode'>
+      <info>Check whether the character is part of MiscellaneousMathematicalSymbols-A UCS Block</info>
+      <return type='int' info='1 if true 0 otherwise'/>
+      <arg name='code' type='int' info='UCS code point'/>
+    </function>
+    <function name='xmlUCSIsMiscellaneousMathematicalSymbolsB' file='xmlunicode'>
+      <info>Check whether the character is part of MiscellaneousMathematicalSymbols-B UCS Block</info>
+      <return type='int' info='1 if true 0 otherwise'/>
+      <arg name='code' type='int' info='UCS code point'/>
+    </function>
     <function name='xmlUCSIsMiscellaneousSymbols' file='xmlunicode'>
       <info>Check whether the character is part of MiscellaneousSymbols UCS Block</info>
+      <return type='int' info='1 if true 0 otherwise'/>
+      <arg name='code' type='int' info='UCS code point'/>
+    </function>
+    <function name='xmlUCSIsMiscellaneousSymbolsandArrows' file='xmlunicode'>
+      <info>Check whether the character is part of MiscellaneousSymbolsandArrows UCS Block</info>
       <return type='int' info='1 if true 0 otherwise'/>
       <arg name='code' type='int' info='UCS code point'/>
     </function>
@@ -12745,13 +12852,33 @@ actually an xmlCharEncoding'/>
       <return type='int' info='1 if true 0 otherwise'/>
       <arg name='code' type='int' info='UCS code point'/>
     </function>
+    <function name='xmlUCSIsOsmanya' file='xmlunicode'>
+      <info>Check whether the character is part of Osmanya UCS Block</info>
+      <return type='int' info='1 if true 0 otherwise'/>
+      <arg name='code' type='int' info='UCS code point'/>
+    </function>
+    <function name='xmlUCSIsPhoneticExtensions' file='xmlunicode'>
+      <info>Check whether the character is part of PhoneticExtensions UCS Block</info>
+      <return type='int' info='1 if true 0 otherwise'/>
+      <arg name='code' type='int' info='UCS code point'/>
+    </function>
     <function name='xmlUCSIsPrivateUse' file='xmlunicode'>
       <info>Check whether the character is part of PrivateUse UCS Block</info>
       <return type='int' info='1 if true 0 otherwise'/>
       <arg name='code' type='int' info='UCS code point'/>
     </function>
+    <function name='xmlUCSIsPrivateUseArea' file='xmlunicode'>
+      <info>Check whether the character is part of PrivateUseArea UCS Block</info>
+      <return type='int' info='1 if true 0 otherwise'/>
+      <arg name='code' type='int' info='UCS code point'/>
+    </function>
     <function name='xmlUCSIsRunic' file='xmlunicode'>
       <info>Check whether the character is part of Runic UCS Block</info>
+      <return type='int' info='1 if true 0 otherwise'/>
+      <arg name='code' type='int' info='UCS code point'/>
+    </function>
+    <function name='xmlUCSIsShavian' file='xmlunicode'>
+      <info>Check whether the character is part of Shavian UCS Block</info>
       <return type='int' info='1 if true 0 otherwise'/>
       <arg name='code' type='int' info='UCS code point'/>
     </function>
@@ -12780,13 +12907,58 @@ actually an xmlCharEncoding'/>
       <return type='int' info='1 if true 0 otherwise'/>
       <arg name='code' type='int' info='UCS code point'/>
     </function>
+    <function name='xmlUCSIsSupplementalArrowsA' file='xmlunicode'>
+      <info>Check whether the character is part of SupplementalArrows-A UCS Block</info>
+      <return type='int' info='1 if true 0 otherwise'/>
+      <arg name='code' type='int' info='UCS code point'/>
+    </function>
+    <function name='xmlUCSIsSupplementalArrowsB' file='xmlunicode'>
+      <info>Check whether the character is part of SupplementalArrows-B UCS Block</info>
+      <return type='int' info='1 if true 0 otherwise'/>
+      <arg name='code' type='int' info='UCS code point'/>
+    </function>
+    <function name='xmlUCSIsSupplementalMathematicalOperators' file='xmlunicode'>
+      <info>Check whether the character is part of SupplementalMathematicalOperators UCS Block</info>
+      <return type='int' info='1 if true 0 otherwise'/>
+      <arg name='code' type='int' info='UCS code point'/>
+    </function>
+    <function name='xmlUCSIsSupplementaryPrivateUseAreaA' file='xmlunicode'>
+      <info>Check whether the character is part of SupplementaryPrivateUseArea-A UCS Block</info>
+      <return type='int' info='1 if true 0 otherwise'/>
+      <arg name='code' type='int' info='UCS code point'/>
+    </function>
+    <function name='xmlUCSIsSupplementaryPrivateUseAreaB' file='xmlunicode'>
+      <info>Check whether the character is part of SupplementaryPrivateUseArea-B UCS Block</info>
+      <return type='int' info='1 if true 0 otherwise'/>
+      <arg name='code' type='int' info='UCS code point'/>
+    </function>
     <function name='xmlUCSIsSyriac' file='xmlunicode'>
       <info>Check whether the character is part of Syriac UCS Block</info>
       <return type='int' info='1 if true 0 otherwise'/>
       <arg name='code' type='int' info='UCS code point'/>
     </function>
+    <function name='xmlUCSIsTagalog' file='xmlunicode'>
+      <info>Check whether the character is part of Tagalog UCS Block</info>
+      <return type='int' info='1 if true 0 otherwise'/>
+      <arg name='code' type='int' info='UCS code point'/>
+    </function>
+    <function name='xmlUCSIsTagbanwa' file='xmlunicode'>
+      <info>Check whether the character is part of Tagbanwa UCS Block</info>
+      <return type='int' info='1 if true 0 otherwise'/>
+      <arg name='code' type='int' info='UCS code point'/>
+    </function>
     <function name='xmlUCSIsTags' file='xmlunicode'>
       <info>Check whether the character is part of Tags UCS Block</info>
+      <return type='int' info='1 if true 0 otherwise'/>
+      <arg name='code' type='int' info='UCS code point'/>
+    </function>
+    <function name='xmlUCSIsTaiLe' file='xmlunicode'>
+      <info>Check whether the character is part of TaiLe UCS Block</info>
+      <return type='int' info='1 if true 0 otherwise'/>
+      <arg name='code' type='int' info='UCS code point'/>
+    </function>
+    <function name='xmlUCSIsTaiXuanJingSymbols' file='xmlunicode'>
+      <info>Check whether the character is part of TaiXuanJingSymbols UCS Block</info>
       <return type='int' info='1 if true 0 otherwise'/>
       <arg name='code' type='int' info='UCS code point'/>
     </function>
@@ -12815,8 +12987,23 @@ actually an xmlCharEncoding'/>
       <return type='int' info='1 if true 0 otherwise'/>
       <arg name='code' type='int' info='UCS code point'/>
     </function>
+    <function name='xmlUCSIsUgaritic' file='xmlunicode'>
+      <info>Check whether the character is part of Ugaritic UCS Block</info>
+      <return type='int' info='1 if true 0 otherwise'/>
+      <arg name='code' type='int' info='UCS code point'/>
+    </function>
     <function name='xmlUCSIsUnifiedCanadianAboriginalSyllabics' file='xmlunicode'>
       <info>Check whether the character is part of UnifiedCanadianAboriginalSyllabics UCS Block</info>
+      <return type='int' info='1 if true 0 otherwise'/>
+      <arg name='code' type='int' info='UCS code point'/>
+    </function>
+    <function name='xmlUCSIsVariationSelectors' file='xmlunicode'>
+      <info>Check whether the character is part of VariationSelectors UCS Block</info>
+      <return type='int' info='1 if true 0 otherwise'/>
+      <arg name='code' type='int' info='UCS code point'/>
+    </function>
+    <function name='xmlUCSIsVariationSelectorsSupplement' file='xmlunicode'>
+      <info>Check whether the character is part of VariationSelectorsSupplement UCS Block</info>
       <return type='int' info='1 if true 0 otherwise'/>
       <arg name='code' type='int' info='UCS code point'/>
     </function>
@@ -12827,6 +13014,11 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlUCSIsYiSyllables' file='xmlunicode'>
       <info>Check whether the character is part of YiSyllables UCS Block</info>
+      <return type='int' info='1 if true 0 otherwise'/>
+      <arg name='code' type='int' info='UCS code point'/>
+    </function>
+    <function name='xmlUCSIsYijingHexagramSymbols' file='xmlunicode'>
+      <info>Check whether the character is part of YijingHexagramSymbols UCS Block</info>
       <return type='int' info='1 if true 0 otherwise'/>
       <arg name='code' type='int' info='UCS code point'/>
     </function>

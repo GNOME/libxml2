@@ -1,3 +1,10 @@
+Sun Nov  9 20:28:21 HKT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* genUnicode.py, xmlunicode.c, include/libxml/xmlunicode.h,
+	  python/libxml2class.txt: enhanced for range checking,
+	  updated to Unicode version 4.0.1 (API docs also updated)
+	* python/generator.py: minor change to fix a warning
+	
 Wed Nov  5 23:46:36 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am: apply fix from Karl Eichwalder for script path

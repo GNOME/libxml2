@@ -674,6 +674,7 @@ xmlCreateIntSubset
 xmlCreateMemoryParserCtxt
 xmlCreatePushParserCtxt
 xmlCreateURI
+xmlCreateURLParserCtxt
 xmlCtxtGetLastError
 xmlCtxtReadDoc
 xmlCtxtReadFd
@@ -682,6 +683,7 @@ xmlCtxtReadIO
 xmlCtxtReadMemory
 xmlCtxtReset
 xmlCtxtResetLastError
+xmlCtxtResetPush
 xmlCtxtUseOptions
 xmlCurrentChar
 #ifdef LIBXML_DEBUG_ENABLED
@@ -1477,6 +1479,9 @@ xmlSchemaGetPredefinedType
 xmlSchemaInitTypes
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
+xmlSchemaNewDocParserCtxt
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
 xmlSchemaNewFacet
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
@@ -1580,6 +1585,7 @@ xmlStopParser
 xmlStrEqual
 xmlStrPrintf
 xmlStrQEqual
+xmlStrVPrintf
 xmlStrcasecmp
 xmlStrcasestr
 xmlStrcat
@@ -1747,6 +1753,9 @@ xmlThrDefSetStructuredErrorFunc
 xmlThrDefSubstituteEntitiesDefaultValue
 xmlThrDefTreeIndentString
 #ifdef LIBXML_REGEXP_ENABLED
+xmlUCSIsAegeanNumbers
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
 xmlUCSIsAlphabeticPresentationForms
 #endif
 #ifdef LIBXML_REGEXP_ENABLED
@@ -1787,6 +1796,9 @@ xmlUCSIsBoxDrawing
 #endif
 #ifdef LIBXML_REGEXP_ENABLED
 xmlUCSIsBraillePatterns
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlUCSIsBuhid
 #endif
 #ifdef LIBXML_REGEXP_ENABLED
 xmlUCSIsByzantineMusicalSymbols
@@ -1936,6 +1948,9 @@ xmlUCSIsCherokee
 xmlUCSIsCombiningDiacriticalMarks
 #endif
 #ifdef LIBXML_REGEXP_ENABLED
+xmlUCSIsCombiningDiacriticalMarksforSymbols
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
 xmlUCSIsCombiningHalfMarks
 #endif
 #ifdef LIBXML_REGEXP_ENABLED
@@ -1948,7 +1963,13 @@ xmlUCSIsControlPictures
 xmlUCSIsCurrencySymbols
 #endif
 #ifdef LIBXML_REGEXP_ENABLED
+xmlUCSIsCypriotSyllabary
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
 xmlUCSIsCyrillic
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlUCSIsCyrillicSupplement
 #endif
 #ifdef LIBXML_REGEXP_ENABLED
 xmlUCSIsDeseret
@@ -1987,6 +2008,9 @@ xmlUCSIsGreek
 xmlUCSIsGreekExtended
 #endif
 #ifdef LIBXML_REGEXP_ENABLED
+xmlUCSIsGreekandCoptic
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
 xmlUCSIsGujarati
 #endif
 #ifdef LIBXML_REGEXP_ENABLED
@@ -2003,6 +2027,9 @@ xmlUCSIsHangulJamo
 #endif
 #ifdef LIBXML_REGEXP_ENABLED
 xmlUCSIsHangulSyllables
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlUCSIsHanunoo
 #endif
 #ifdef LIBXML_REGEXP_ENABLED
 xmlUCSIsHebrew
@@ -2035,7 +2062,13 @@ xmlUCSIsKannada
 xmlUCSIsKatakana
 #endif
 #ifdef LIBXML_REGEXP_ENABLED
+xmlUCSIsKatakanaPhoneticExtensions
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
 xmlUCSIsKhmer
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlUCSIsKhmerSymbols
 #endif
 #ifdef LIBXML_REGEXP_ENABLED
 xmlUCSIsLao
@@ -2056,6 +2089,15 @@ xmlUCSIsLatinExtendedB
 xmlUCSIsLetterlikeSymbols
 #endif
 #ifdef LIBXML_REGEXP_ENABLED
+xmlUCSIsLimbu
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlUCSIsLinearBIdeograms
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlUCSIsLinearBSyllabary
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
 xmlUCSIsLowSurrogates
 #endif
 #ifdef LIBXML_REGEXP_ENABLED
@@ -2068,7 +2110,16 @@ xmlUCSIsMathematicalAlphanumericSymbols
 xmlUCSIsMathematicalOperators
 #endif
 #ifdef LIBXML_REGEXP_ENABLED
+xmlUCSIsMiscellaneousMathematicalSymbolsA
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlUCSIsMiscellaneousMathematicalSymbolsB
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
 xmlUCSIsMiscellaneousSymbols
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlUCSIsMiscellaneousSymbolsandArrows
 #endif
 #ifdef LIBXML_REGEXP_ENABLED
 xmlUCSIsMiscellaneousTechnical
@@ -2098,10 +2149,22 @@ xmlUCSIsOpticalCharacterRecognition
 xmlUCSIsOriya
 #endif
 #ifdef LIBXML_REGEXP_ENABLED
+xmlUCSIsOsmanya
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlUCSIsPhoneticExtensions
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
 xmlUCSIsPrivateUse
 #endif
 #ifdef LIBXML_REGEXP_ENABLED
+xmlUCSIsPrivateUseArea
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
 xmlUCSIsRunic
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlUCSIsShavian
 #endif
 #ifdef LIBXML_REGEXP_ENABLED
 xmlUCSIsSinhala
@@ -2119,10 +2182,37 @@ xmlUCSIsSpecials
 xmlUCSIsSuperscriptsandSubscripts
 #endif
 #ifdef LIBXML_REGEXP_ENABLED
+xmlUCSIsSupplementalArrowsA
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlUCSIsSupplementalArrowsB
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlUCSIsSupplementalMathematicalOperators
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlUCSIsSupplementaryPrivateUseAreaA
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlUCSIsSupplementaryPrivateUseAreaB
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
 xmlUCSIsSyriac
 #endif
 #ifdef LIBXML_REGEXP_ENABLED
+xmlUCSIsTagalog
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlUCSIsTagbanwa
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
 xmlUCSIsTags
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlUCSIsTaiLe
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlUCSIsTaiXuanJingSymbols
 #endif
 #ifdef LIBXML_REGEXP_ENABLED
 xmlUCSIsTamil
@@ -2140,13 +2230,25 @@ xmlUCSIsThai
 xmlUCSIsTibetan
 #endif
 #ifdef LIBXML_REGEXP_ENABLED
+xmlUCSIsUgaritic
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
 xmlUCSIsUnifiedCanadianAboriginalSyllabics
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlUCSIsVariationSelectors
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlUCSIsVariationSelectorsSupplement
 #endif
 #ifdef LIBXML_REGEXP_ENABLED
 xmlUCSIsYiRadicals
 #endif
 #ifdef LIBXML_REGEXP_ENABLED
 xmlUCSIsYiSyllables
+#endif
+#ifdef LIBXML_REGEXP_ENABLED
+xmlUCSIsYijingHexagramSymbols
 #endif
 xmlURIEscape
 xmlURIEscapeStr
@@ -2196,7 +2298,16 @@ xmlValidatePushElement
 xmlValidateQName
 xmlValidateRoot
 #ifdef LIBXML_XINCLUDE_ENABLED
+xmlXIncludeFreeContext
+#endif
+#ifdef LIBXML_XINCLUDE_ENABLED
+xmlXIncludeNewContext
+#endif
+#ifdef LIBXML_XINCLUDE_ENABLED
 xmlXIncludeProcess
+#endif
+#ifdef LIBXML_XINCLUDE_ENABLED
+xmlXIncludeProcessNode
 #endif
 #ifdef LIBXML_XINCLUDE_ENABLED
 xmlXIncludeProcessTree

@@ -2290,6 +2290,7 @@ xmlXPtrRangeToFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 /**
  * xmlXPtrAdvanceNode:
  * @cur:  the node
+ * @level: incremented/decremented to show level in tree
  *
  * Advance to the next element or text node in document order
  * TODO: add a stack for entering/exiting entities 

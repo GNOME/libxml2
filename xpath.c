@@ -9846,6 +9846,10 @@ xmlXPathCompOpEvalLast(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op,
     int total = 0, cur;
     xmlXPathCompExprPtr comp;
     xmlXPathObjectPtr arg1, arg2;
+    xmlNodePtr bak;
+    xmlDocPtr bakd;
+    int pp;
+    int cs;
 
     CHECK_ERROR0;
     comp = ctxt->comp;
@@ -9853,6 +9857,10 @@ xmlXPathCompOpEvalLast(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op,
         case XPATH_OP_END:
             return (0);
         case XPATH_OP_UNION:
+	    bakd = ctxt->context->doc;
+	    bak = ctxt->context->node;
+	    pp = ctxt->context->proximityPosition;
+	    cs = ctxt->context->contextSize;
             total =
                 xmlXPathCompOpEvalLast(ctxt, &comp->steps[op->ch1], last);
 	    CHECK_ERROR0;
@@ -9869,6 +9877,10 @@ xmlXPathCompOpEvalLast(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op,
                                                      nodesetval->nodeNr -
                                                      1];
             }
+	    ctxt->context->doc = bakd;
+	    ctxt->context->node = bak;
+	    ctxt->context->proximityPosition = pp;
+	    ctxt->context->contextSize = cs;
             cur =
                 xmlXPathCompOpEvalLast(ctxt, &comp->steps[op->ch2], last);
 	    CHECK_ERROR0;

@@ -1,3 +1,9 @@
+Thu Jan 22 10:43:22 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* xpath.c: fixed problem with union when last() is used
+	  in predicate (bug #131971)
+	* xpointer.c: minor change to comment for doc generation
+
 Wed Jan 21 17:03:17 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: fixed bug #131745 raised by Shaun McCance with the

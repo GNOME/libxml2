@@ -1,10 +1,9 @@
-/* win32/libxml2/libxml2.def.src
-   Pseudo-source used to create a .DEF file for proper dynamic 
-   linkage under MSCC. 
+/* win32/libxml2.def.src
+   Pseudo-source used to create a .DEF file for proper dynamic linkage. 
    
    Assuming you use Microsoft's C compiler, you run a
    
-       cl /nologo /EP libxml2.def.src > libxml2.def
+       cl /EP libxml2.def.src > libxml2.def
        
    in order to get the right .DEF file. Basically, all you do is
    preprocess this file using a C/C++ preprocessor and the right
@@ -14,7 +13,7 @@
    from the libxml2.dll, its name is most certainly missing here.
    Add the name of the offending function to this file and rebuild.
 
-   14.04.2001, Igor Zlatkovic (igor@stud.fh-frankfurt.de)
+   21.03.2001, Igor Zlatkovic (igor@stud.fh-frankfurt.de)
 */
 
 #define LIBXML2_COMPILING_MSCCDEF
@@ -22,6 +21,16 @@
 
 LIBRARY libxml2
 EXPORTS
+
+
+/* c14n.h
+   --------------------------------------------------------------------- */
+#ifdef LIBXML_C14N_ENABLED
+	xmlC14NDocSaveTo
+	xmlC14NDocDumpMemory
+	xmlC14NDocSave
+#endif /* LIBXML_C14N_ENABLED */
+
 
 /* catalog.h 
    --------------------------------------------------------------------- */
@@ -71,7 +80,7 @@ EXPORTS
 	/* DEPRECATED interfaces */
 	xmlCatalogGetSystem
 	xmlCatalogGetPublic
-#endif
+#endif /* LIBXML_CATALOG_ENABLED */
 
 
 /* debugXML.h 
@@ -219,7 +228,7 @@ EXPORTS
 		__docbDefaultSAXHandler
 	#endif
 	#ifdef LIBXML_HTML_ENABLED
-	__htmlDefaultSAXHandler
+		__htmlDefaultSAXHandler
 	#endif
 	__oldXMLWDcompatibility
 	__xmlBufferAllocScheme
@@ -239,7 +248,7 @@ EXPORTS
 	__xmlPedanticParserDefaultValue
 	__xmlSaveNoEmptyTags
 	__xmlSubstituteEntitiesDefaultValue
-#else
+#else /* LIBXML_THREAD_ENABLED */
 	#ifdef LIBXML_DOCB_ENABLED
 		docbDefaultSAXHandler DATA
 	#endif
@@ -264,7 +273,7 @@ EXPORTS
 	xmlPedanticParserDefaultValue DATA
 	xmlSaveNoEmptyTags DATA
 	xmlSubstituteEntitiesDefaultValue DATA
-#endif
+#endif /* LIBXML_THREAD_ENABLED */
 
 
 /* hash.h 

@@ -1,3 +1,7 @@
+Sat Mar  2 10:33:04 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xmlIO.c: fix bug #72706 when loading a NULL entity
+
 Fri Mar  1 17:14:42 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* SAX.c: Fixed #72346, about handling of xmlns:foo="", this could

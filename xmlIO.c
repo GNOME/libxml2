@@ -2528,6 +2528,8 @@ xmlDefaultExternalEntityLoader(const char *URL, const char *ID,
 	resource = (xmlChar *) URL;
 
     if (resource == NULL) {
+	if (ID == NULL)
+	    ID = "NULL";
 	if ((ctxt->validate) && (ctxt->sax != NULL) && 
             (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt,

@@ -2156,6 +2156,9 @@ xmlParseAttValue(xmlParserCtxtPtr ctxt) {
 			buf[len++] = *current++;
 		    }
 		} else {
+		    if (len > buf_size - 10) {
+			growBuffer(buf);
+		    }
 		    len += xmlCopyChar(0, &buf[len], val);
 		}
 	    } else {
@@ -2178,6 +2181,9 @@ xmlParseAttValue(xmlParserCtxtPtr ctxt) {
 			    xmlFree(rep);
 			}
 		    } else {
+			if (len > buf_size - 10) {
+			    growBuffer(buf);
+			}
 			if (ent->content != NULL)
 			    buf[len++] = ent->content[0];
 		    }

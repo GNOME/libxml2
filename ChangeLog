@@ -1,3 +1,7 @@
+Sat Oct 25 17:33:59 CEST 2003 Igor Zlatkovic <igor@zlatkovic.com>
+
+	* win32/configure.js: added declaration for verMicroSuffix
+
 Fri Oct 24 23:08:17 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* libxml.m4: applied patch from Patrick Welche provided in

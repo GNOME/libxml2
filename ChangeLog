@@ -1,3 +1,8 @@
+Fri Oct 15 11:22:48 PDT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* debugXML.c: excluded a few nodes (with no content) from the
+	  string check routine.
+
 Fri Oct 15 10:48:30 EDT 2004 Daniel Veillard <daniel@veillard.com>
 
 	* debugXML.c include/libxml/xmlerror.h: added UTF-8 string checking,

@@ -63,8 +63,9 @@ xmlCtxtDumpInitCtxt(xmlDebugCtxtPtr ctxt)
 }
 
 static void
-xmlCtxtDumpCleanCtxt(xmlDebugCtxtPtr ctxt)
+xmlCtxtDumpCleanCtxt(xmlDebugCtxtPtr ctxt ATTRIBUTE_UNUSED)
 {
+ /* remove the ATTRIBUTE_UNUSED when this is added */
 }
 
 /**
@@ -283,10 +284,13 @@ xmlCtxtGenericNodeCheck(xmlDebugCtxtPtr ctxt, xmlNodePtr node) {
     }
 
     if ((node->type != XML_ELEMENT_NODE) &&
-        (node->type != XML_HTML_DOCUMENT_NODE) &&
-        (node->type != XML_DOCUMENT_NODE)) {
+	(node->type != XML_ATTRIBUTE_NODE) &&
+	(node->type != XML_ATTRIBUTE_DECL) &&
+	(node->type != XML_DTD_NODE) &&
+	(node->type != XML_HTML_DOCUMENT_NODE) &&
+	(node->type != XML_DOCUMENT_NODE)) {
 	if (node->content != NULL)
-	    xmlCtxtCheckString(ctxt, (const char *) node->content);
+	    xmlCtxtCheckString(ctxt, (const xmlChar *) node->content);
     }
 }
 

@@ -1,3 +1,8 @@
+Wed Jun  9 16:31:24 CEST 2004 Igor Zlatkovic <igor@zlatkovic.com>
+
+	* win32/configure.js win32/Makefile.* minor changes for the new
+	  layout of the Windows binary package
+
 Tue Jun  8 19:50:25 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemas.c include/libxml/xmlerror.h: applied another patch

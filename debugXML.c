@@ -1563,7 +1563,7 @@ xmlShellSetBase(xmlShellCtxtPtr ctxt ATTRIBUTE_UNUSED,
  *
  * Returns 0
  */
-int
+static int
 xmlShellGrep(xmlShellCtxtPtr ctxt ATTRIBUTE_UNUSED,
             char *arg, xmlNodePtr node, xmlNodePtr node2 ATTRIBUTE_UNUSED)
 {
@@ -1582,16 +1582,16 @@ xmlShellGrep(xmlShellCtxtPtr ctxt ATTRIBUTE_UNUSED,
 #endif
     while (node != NULL) {
         if (node->type == XML_COMMENT_NODE) {
-	    if (xmlStrstr(node->content, arg)) {
+	    if (xmlStrstr(node->content, (xmlChar *) arg)) {
 
 		fprintf(ctxt->output, "%s : ", xmlGetNodePath(node));
                 xmlShellList(ctxt, NULL, node, NULL);
 	    }
         } else if (node->type == XML_TEXT_NODE) {
-	    if (xmlStrstr(node->content, arg)) {
+	    if (xmlStrstr(node->content, (xmlChar *) arg)) {
 
 		fprintf(ctxt->output, "%s : ", xmlGetNodePath(node->parent));
-                xmlShellList(ctxt, NULL, node, NULL);
+                xmlShellList(ctxt, NULL, node->parent, NULL);
 	    }
         }
 

@@ -5,9 +5,6 @@
  *
  * daniel@veillard.com
  *
- * 14 Nov 2000 ht - truncated declaration of xmlParseElementChildrenContentDecl 
- * for VMS
- *
  */
 
 #ifndef __XML_PARSER_INTERNALS_H__
@@ -275,15 +272,9 @@ void			xmlParseAttributeListDecl(xmlParserCtxtPtr ctxt);
 xmlElementContentPtr	xmlParseElementMixedContentDecl
 						(xmlParserCtxtPtr ctxt,
 						 xmlParserInputPtr inputchk);
-#ifdef VMS
-xmlElementContentPtr	xmlParseElementChildrenContentD
-						(xmlParserCtxtPtr ctxt);
-#define xmlParseElementChildrenContentDecl	xmlParseElementChildrenContentD
-#else
 xmlElementContentPtr	xmlParseElementChildrenContentDecl
 						(xmlParserCtxtPtr ctxt,
 						 xmlParserInputPtr inputchk);
-#endif
 int			xmlParseElementContentDecl(xmlParserCtxtPtr ctxt,
 						 xmlChar *name,
 						 xmlElementContentPtr *result);

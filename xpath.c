@@ -12,8 +12,6 @@
  *
  * Author: daniel@veillard.com
  *
- * 14 Nov 2000 ht - truncated declaration of xmlXPathEvalRelativeLocationPath
- * for VMS
  */
 
 #define IN_LIBXML
@@ -6913,12 +6911,7 @@ xmlXPathRoundFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 static void xmlXPathCompileExpr(xmlXPathParserContextPtr ctxt);
 static void xmlXPathCompPredicate(xmlXPathParserContextPtr ctxt, int filter);
 static void xmlXPathCompLocationPath(xmlXPathParserContextPtr ctxt);
-#ifdef VMS
-static void xmlXPathCompRelLocationPath(xmlXPathParserContextPtr ctxt);
-#define xmlXPathCompRelativeLocationPath xmlXPathCompRelLocationPath 
-#else 
 static void xmlXPathCompRelativeLocationPath(xmlXPathParserContextPtr ctxt);
-#endif
 static xmlChar * xmlXPathParseNameComplex(xmlXPathParserContextPtr ctxt,
 	                                  int qualified);
 
@@ -8568,11 +8561,7 @@ eval_predicates:
  * Compile a relative location path.
  */
 static void
-#ifdef VMS
-xmlXPathCompRelLocationPath
-#else
 xmlXPathCompRelativeLocationPath
-#endif
 (xmlXPathParserContextPtr ctxt) {
     SKIP_BLANKS;
     if ((CUR == '/') && (NXT(1) == '/')) {

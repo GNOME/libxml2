@@ -46,7 +46,7 @@
 # define TRIO_PLATFORM_UNIX
 #elif defined(TRIO_COMPILER_XLC) || defined(_AIX)
 # define TRIO_PLATFORM_UNIX
-#elif defined(TRIO_COMPILER_DECC) || defined(__osf__)
+#elif ( defined(TRIO_COMPILER_DECC) && !defined(__VMS) ) || defined(__osf__)
 # define TRIO_PLATFORM_UNIX
 #elif defined(__NetBSD__)
 # define TRIO_PLATFORM_UNIX
@@ -81,6 +81,18 @@
 #  endif
 # endif
 #endif
+
+#if defined(TRIO_PLATFORM_VMS)
+ /* The compiler does support C99 but the library still does not have things
+  * the standard requires (like nan() and strtof()) as of __CRTL_VER 70300022.
+  */
+# undef TRIO_COMPILER_SUPPORTS_C99
+
+ /* Computations done with constants at compile time can trigger these
+  * even when compiling with IEEE enabled.
+  */
+#  pragma message disable (UNDERFLOW,FLOATOVERFL)
+#endif /* TRIO_PLATFORM_VMS */
 
 #if defined(_XOPEN_SOURCE)
 # if defined(_XOPEN_SOURCE_EXTENDED)

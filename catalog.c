@@ -2860,7 +2860,7 @@ xmlInitializeCatalog(void) {
 		    paths = cur;
 		    while ((*cur != 0) && (!IS_BLANK(*cur)))
 			cur++;
-		    path = xmlStrndup((const xmlChar *)paths, cur - paths);
+		    path = (char *) xmlStrndup((const xmlChar *)paths, cur - paths);
 		    if (path != NULL) {
 			*nextent = xmlNewCatalogEntry(XML_CATA_CATALOG, NULL,
 				NULL, BAD_CAST path, xmlCatalogDefaultPrefer);

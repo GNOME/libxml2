@@ -58,12 +58,6 @@ void xmlUpgradeOldNs(xmlDocPtr doc);
 /*
  * Various global defaults for parsing
  */
-#ifdef VMS
-int xmlSubstituteEntitiesDefaultVal = 0;
-#define xmlSubstituteEntitiesDefaultValue xmlSubstituteEntitiesDefaultVal 
-int xmlDoValidityCheckingDefaultVal = 0;
-#define xmlDoValidityCheckingDefaultValue xmlDoValidityCheckingDefaultVal
-#endif
 
 /**
  * xmlCheckVersion:

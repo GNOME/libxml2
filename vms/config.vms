@@ -13,7 +13,9 @@
 #undef HAVE_LIBZ
 #undef HAVE_LIBM
 #undef HAVE_ISINF
-#undef HAVE_ISNAN
+#if defined(_IEEE_FP) && (__CRTL_VER >= 60200000)
+# define HAVE_ISNAN 1
+#endif
 #undef HAVE_LIBHISTORY
 #undef HAVE_LIBREADLINE
 
@@ -146,3 +148,53 @@
 /* Version number of package */
 #undef VERSION
 
+/* Up to this point this is just a hard-wired version of 
+ * config.h.  After this will be anything else we need 
+ * that is VMS-specific.
+ */
+
+/* For best results, compile with /NAMES=(SHORTENED), which requires
+ * DEC C 5.7 or later.  For older compilers, the shortened names below
+ * are the same ones the mangler generates in C 5.7 and later.  These may
+ * work, though there will probably be some conflicts with redefinitions 
+ * in globals.h.
+ */
+
+#if __DECC_VER < 57000000
+/*      0        1         2         3               0        1         2         3
+ *      123456789012345678901234567890123456789      1234567890123456789012345678901 
+ */
+#define __xmlDoValidityCheckingDefaultValue          __xmlDoValidityChecking3qad3pq$
+#define __xmlSubstituteEntitiesDefaultValue          __xmlSubstituteEntities0pij13u$
+#define trio_locale_set_thousand_separator           trio_locale_set_thousan259ikkk$
+#define xmlDoValidityCheckingDefaultValue            xmlDoValidityCheckingDe1bcsei4$
+#define xmlParseBalancedChunkMemoryRecover           xmlParseBalancedChunkMe1lu1e86$
+#define xmlParseElementChildrenContentDecl           xmlParseElementChildren1mp6pcb$
+#define xmlParserInputBufferCreateFilename           xmlParserInputBufferCre36lujn2$
+#define xmlRegisterDefaultInputCallbacks             xmlRegisterDefaultInput3vin0cp$
+#define xmlRegisterDefaultOutputCallbacks            xmlRegisterDefaultOutpu0q443dd$
+#define xmlSubstituteEntitiesDefaultValue            xmlSubstituteEntitiesDe28k2c80$
+#define xmlUCSIsAlphabeticPresentationForms          xmlUCSIsAlphabeticPrese2qr24s3$
+#define xmlUCSIsArabicPresentationFormsB             xmlUCSIsArabicPresentat1gajvg8$
+#define xmlUCSIsArabicPresentationFormsA             xmlUCSIsArabicPresentat3sq1bti$
+#define xmlUCSIsCJKCompatibilityIdeographsSupplement xmlUCSIsCJKCompatibilit0or40ki$
+#define xmlUCSIsCJKCompatibilityIdeographs           xmlUCSIsCJKCompatibilit2nodmc5$
+#define xmlUCSIsCJKSymbolsandPunctuation             xmlUCSIsCJKSymbolsandPu0a3i7ra$
+#define xmlUCSIsCJKUnifiedIdeographsExtensionA       xmlUCSIsCJKUnifiedIdeog11ig3fd$
+#define xmlUCSIsCJKUnifiedIdeographsExtensionB       xmlUCSIsCJKUnifiedIdeog3d22n2n$
+#define xmlUCSIsCombiningDiacriticalMarks            xmlUCSIsCombiningDiacri3tj3nl8$
+#define xmlUCSIsCombiningMarksforSymbols             xmlUCSIsCombiningMarksf3ftqd7s$
+#define xmlUCSIsEnclosedCJKLettersandMonths          xmlUCSIsEnclosedCJKLett0nq67g4$
+#define xmlUCSIsHalfwidthandFullwidthForms           xmlUCSIsHalfwidthandFul047l0a1$
+#define xmlUCSIsHighPrivateUseSurrogates             xmlUCSIsHighPrivateUseS071kh83$
+#define xmlUCSIsIdeographicDescriptionCharacters     xmlUCSIsIdeographicDesc1rovf8g$
+#define xmlUCSIsMathematicalAlphanumericSymbols      xmlUCSIsMathematicalAlp2ag8r44$
+#define xmlUCSIsOpticalCharacterRecognition          xmlUCSIsOpticalCharacte1juuh06$
+#define xmlUCSIsSuperscriptsandSubscripts            xmlUCSIsSuperscriptsand3fi4eup$
+#define xmlUCSIsUnifiedCanadianAboriginalSyllabics   xmlUCSIsUnifiedCanadian0lbvi9b$
+#define xmlValidCtxtNormalizeAttributeValue          xmlValidCtxtNormalizeAt0q11n5f$
+#define xmlXPathRegisteredVariablesCleanup           xmlXPathRegisteredVaria1uvs4uc$
+
+#endif
+
+#define xmlBufferWriteChar xmlBufferWriteChar2

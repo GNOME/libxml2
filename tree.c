@@ -5,10 +5,6 @@
  *
  * daniel@veillard.com
  *
- * 14 Nov 2000 ht - Changed the name of function xmlBufferWriteChar under VMS
- * as it was similar to xmlBufferWriteCHAR when compiling without case
- * sensitivity.
- *  
  */
 
 #define IN_LIBXML
@@ -5797,15 +5793,6 @@ xmlBufferCCat(xmlBufferPtr buf, const char *str) {
 }
 
 /**
- * xmlBufferWriteXmlCHAR:
- * @buf:  the XML buffer
- * @string:  the string to add
- *
- * For VMS only.
- * routine which manages and grows an output buffer. This one adds
- * xmlChars at the end of the buffer.
- */
-/**
  * xmlBufferWriteCHAR:
  * @buf:  the XML buffer
  * @string:  the string to add
@@ -5814,11 +5801,7 @@ xmlBufferCCat(xmlBufferPtr buf, const char *str) {
  * xmlChars at the end of the buffer.
  */
 void
-#ifdef VMS
-xmlBufferWriteXmlCHAR
-#else
 xmlBufferWriteCHAR
-#endif
 (xmlBufferPtr buf, const xmlChar *string) {
     xmlBufferCat(buf, string);
 }

@@ -1,3 +1,13 @@
+Tue Oct 22 19:33:20 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* vms/build_libxml.com vms/config.vms vms/readme.vms
+	  include/libxml/parser.h include/libxml/parserInternals.h
+	  include/libxml/tree.h include/libxml/xmlIO.h
+	  HTMLparser.c catalog.c debugXML.c parser.c parserInternals.c
+	  tree.c triodef.h trionan.c uri.c xmlIO.c xpath.c:
+	  Applied the VMS update patch from Craig A. Berry
+	* doc/*.html: update
+
 Tue Oct 22 16:27:31 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/encoding.h encoding.c: made xmlGetUTF8Char public

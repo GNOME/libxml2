@@ -627,15 +627,6 @@ LIBXML_DLL_IMPORT extern xmlSAXHandler docbDefaultSAXHandler;
  * Entity substitution default behavior.
  */
 
-#ifdef VMS
-/**
- * xmlSubstituteEntitiesDefaultValue:
- *
- * Global variable controlling the entity substitution default behavior.
- */
-LIBXML_DLL_IMPORT extern int xmlSubstituteEntitiesDefaultVal;
-#define xmlSubstituteEntitiesDefaultValue xmlSubstituteEntitiesDefaultVal
-#endif
 #if 0
 LIBXML_DLL_IMPORT extern int xmlSubstituteEntitiesDefaultValue;
 LIBXML_DLL_IMPORT extern int xmlGetWarningsDefaultValue;

@@ -773,7 +773,7 @@ TRIO_ARGS1((number),
 
 static TRIO_CONST char *
 getClassification
-TRIO_ARGS1((type)
+TRIO_ARGS1((type),
 	   int type)
 {
   switch (type) {
@@ -794,7 +794,7 @@ TRIO_ARGS1((type)
 
 static void
 print_class
-TRIO_ARGS2((prefix, number)
+TRIO_ARGS2((prefix, number),
 	   TRIO_CONST char *prefix,
 	   double number)
 {

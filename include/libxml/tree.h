@@ -6,8 +6,6 @@
  *
  * daniel@veillard.com
  *
- * 14 Nov 2000 ht - added redefinition of xmlBufferWriteChar for VMS
- *
  */
 
 #ifndef __XML_TREE_H__
@@ -799,14 +797,8 @@ int		xmlUnsetNsProp		(xmlNodePtr node,
 /*
  * Internal, don't use.
  */
-#ifdef VMS
-void		xmlBufferWriteXmlCHAR	(xmlBufferPtr buf,
-					 const xmlChar *string);
-#define 	xmlBufferWriteCHAR 	xmlBufferWriteXmlCHAR
-#else
 void		xmlBufferWriteCHAR	(xmlBufferPtr buf,
 					 const xmlChar *string);
-#endif
 void		xmlBufferWriteChar	(xmlBufferPtr buf,
 					 const char *string);
 void		xmlBufferWriteQuotedString(xmlBufferPtr buf,

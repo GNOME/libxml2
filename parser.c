@@ -2297,7 +2297,7 @@ xmlParseAttValue(xmlParserCtxtPtr ctxt) {
     xmlChar *ret = NULL;
     SHRINK;
     GROW;
-    in = CUR_PTR;
+    in = (xmlChar *) CUR_PTR;
     if (*in != '"' && *in != '\'') {
       ctxt->errNo = XML_ERR_ATTRIBUTE_NOT_STARTED;
       if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
@@ -4405,15 +4405,6 @@ xmlParseElementMixedContentDecl(xmlParserCtxtPtr ctxt, xmlParserInputPtr inputch
 }
 
 /**
- * xmlParseElementChildrenContentD:
- * @ctxt:  an XML parser context
- *
- * VMS version of xmlParseElementChildrenContentDecl()
- *
- * Returns the tree of xmlElementContentPtr describing the element 
- *          hierarchy.
- */
-/**
  * xmlParseElementChildrenContentDecl:
  * @ctxt:  an XML parser context
  *
@@ -4444,11 +4435,7 @@ xmlParseElementMixedContentDecl(xmlParserCtxtPtr ctxt, xmlParserInputPtr inputch
  *          hierarchy.
  */
 xmlElementContentPtr
-#ifdef VMS
-xmlParseElementChildrenContentD
-#else
 xmlParseElementChildrenContentDecl
-#endif
 (xmlParserCtxtPtr ctxt, xmlParserInputPtr inputchk) {
     xmlElementContentPtr ret = NULL, cur = NULL, last = NULL, op = NULL;
     xmlChar *elem;

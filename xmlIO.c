@@ -79,11 +79,6 @@
 #endif
 #include <libxml/globals.h>
 
-#ifdef VMS
-#define xmlRegisterDefaultInputCallbacks xmlRegisterDefInputCallbacks
-#define xmlRegisterDefaultOutputCallbacks xmlRegisterDefOutputCallbacks
-#endif
-
 /* #define VERBOSE_FAILURE */
 /* #define DEBUG_EXTERNAL_ENTITIES */
 /* #define DEBUG_INPUT */
@@ -1465,11 +1460,7 @@ xmlRegisterOutputCallbacks(xmlOutputMatchCallback matchFunc,
  * Registers the default compiled-in I/O handlers.
  */
 void
-#ifdef VMS
-xmlRegisterDefInputCallbacks
-#else
 xmlRegisterDefaultInputCallbacks
-#endif
 (void) {
     if (xmlInputCallbackInitialized)
 	return;
@@ -1499,11 +1490,7 @@ xmlRegisterDefaultInputCallbacks
  * Registers the default compiled-in I/O handlers.
  */
 void
-#ifdef VMS
-xmlRegisterDefOutputCallbacks
-#else
 xmlRegisterDefaultOutputCallbacks
-#endif
 (void) {
     if (xmlOutputCallbackInitialized)
 	return;
@@ -1706,8 +1693,6 @@ xmlOutputBufferClose(xmlOutputBufferPtr out) {
  * @URI:  a C string containing the URI or filename
  * @enc:  the charset encoding if known
  *
- * VMS version of xmlParserInputBufferCreateFilename()
- *
  * Returns the new parser input or NULL
  */
 /**
@@ -1724,11 +1709,7 @@ xmlOutputBufferClose(xmlOutputBufferPtr out) {
  * Returns the new parser input or NULL
  */
 xmlParserInputBufferPtr
-#ifdef VMS
-xmlParserInputBufferCreateFname
-#else
 xmlParserInputBufferCreateFilename
-#endif
 (const char *URI, xmlCharEncoding enc) {
     xmlParserInputBufferPtr ret;
     int i = 0;

@@ -407,12 +407,26 @@ loaded:
     if (fragment == NULL) {
 	/*
 	 * Add the top children list as the replacement copy.
-	 * ISSUE: seems we should scrap DTD info from the copied list.
 	 */
 	if (doc == NULL)
+	{
+	    /* Hopefully a DTD declaration won't be copied from
+	     * the same document */
 	    ctxt->repTab[nr] = xmlCopyNodeList(ctxt->doc->children);
-	else
+	} else {
+	    /* DTD declarations can't be copied from included files */
+	    xmlNodePtr node = doc->children;
+	    while (node != NULL)
+	    {
+		if (node->type == XML_DTD_NODE)
+		{
+		    xmlUnlinkNode(node);
+		    xmlFreeNode(node);
+		}
+		node = node->next;
+	    }
 	    ctxt->repTab[nr] = xmlCopyNodeList(doc->children);
+	}
     } else {
 	/*
 	 * Computes the XPointer expression and make a copy used

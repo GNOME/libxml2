@@ -2750,6 +2750,10 @@ xmlStaticCopyNodeList(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent) {
 
     while (node != NULL) {
 	if( node->type == XML_DTD_NODE ) {
+	    if (doc == NULL) {
+		node = node->next;
+		continue;
+	    }
 	    if (doc->intSubset == NULL) {
 		q = (xmlNodePtr) xmlCopyDtd( (xmlDtdPtr) node );
 		q->doc = doc;

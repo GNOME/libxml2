@@ -1,1 +1,1 @@
-<!ELEMENT a EMPTY>
+<!ELEMENT a (#PCDATA)>

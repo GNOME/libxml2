@@ -48,6 +48,15 @@
 #include <libxml/globals.h>
 
 /*
+ * DocBook XML current versions
+ */
+
+#define XML_DOCBOOK_XML_PUBLIC (const xmlChar *)			\
+             "-//OASIS//DTD DocBook XML V4.1.2//EN"
+#define XML_DOCBOOK_XML_SYSTEM (const xmlChar *)			\
+             "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd"
+
+/*
  * Internal description of an SGML entity
  */
 typedef struct _docbEntityDesc docbEntityDesc;
@@ -3554,17 +3563,20 @@ docbParseDocTypeDecl(docbParserCtxtPtr ctxt) {
 
     /*
      * Create or update the document accordingly to the DOCTYPE
+     * But use the predefined PUBLIC and SYSTEM ID of DocBook XML
      */
     if ((ctxt->sax != NULL) && (ctxt->sax->internalSubset != NULL) &&
        (!ctxt->disableSAX))
-       ctxt->sax->internalSubset(ctxt->userData, name, ExternalID, URI);
+       ctxt->sax->internalSubset(ctxt->userData, name,
+	                         XML_DOCBOOK_XML_PUBLIC,
+				 XML_DOCBOOK_XML_SYSTEM);
 
-    /*
-     * Is there any internal subset declarations ?
-     * they are handled separately in docbParseInternalSubset()
-     */
-    if (RAW != '[') {
-       return;
+    if (RAW != '>') {
+       if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+           ctxt->sax->error(ctxt->userData,
+		   "docbParseDocTypeDecl : internal subset not handled\n");
+    } else {
+	NEXT;
     }
 
     /*

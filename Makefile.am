@@ -1,8 +1,5 @@
 ## Process this file with automake to produce Makefile.in
 
-# Dependancies are fucked in make distcheck could not find why :-(
-AUTOMAKE_OPTIONS=no-dependencies
-
 SUBDIRS = include . doc example
 
 INCLUDES = -I@srcdir@/include -I$(top_builddir)/include @THREAD_CFLAGS@ @Z_CFLAGS@ 
@@ -224,6 +221,26 @@ XMLtests : xmllint
 	      $(top_builddir)/xmllint --memory result.$$name > result2.$$name ; \
 	      diff result.$$name result2.$$name ; \
 	      rm result.$$name result2.$$name ; \
+	  fi ; fi ; done)
+
+Docbtests : xmllint
+	@(echo > .memdump)
+	@echo "##"
+	@echo "## SGML DocBook regression tests"
+	@echo "##"
+	@(for i in $(srcdir)/test/DocBook/*.sgm ; do \
+	  name=`basename $$i .sgm`; \
+	  if [ ! -d $$i ] ; then \
+	  if [ ! -f $(srcdir)/result/DocBook/$$name.xml ] ; then \
+	      echo New test file $$name ; \
+	      $(top_builddir)/xmllint --sgml $$i > $(srcdir)/result/DocBook/$$name.xml ; \
+	      $(top_builddir)/xmllint --valid --noout $(srcdir)/result/DocBook/$$name.xml ; \
+	  else \
+	      echo Testing $$name ; \
+	      $(top_builddir)/xmllint --sgml $$i > result.$$name ; \
+	      diff $(srcdir)/result/DocBook/$$name.xml result.$$name ; \
+	      $(top_builddir)/xmllint --valid --noout result.$$name ; \
+	      rm result.$$name ; \
 	  fi ; fi ; done)
 
 XMLenttests : xmllint

@@ -1,3 +1,11 @@
+Mon Oct 22 11:32:36 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* test/threads/*: added entities testing to the Thread test
+	* testThreads.c: make the test reasonable
+	* DOCBparser.c: fix the DTD public and system ID
+	* xmllint.c: added --sgml for SGML DocBook importing
+	* Makefile.am: added Docbtests target
+
 Fri Oct 19 11:47:13 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* nanoftp.c: use only "anonymous@" string for anonymous passwds

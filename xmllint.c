@@ -68,6 +68,9 @@
 #ifdef LIBXML_CATALOG_ENABLED
 #include <libxml/catalog.h>
 #endif
+#ifdef LIBXML_DOCB_ENABLED
+#include <libxml/DOCBparser.h>
+#endif
 #include <libxml/globals.h>
 
 #ifdef LIBXML_DEBUG_ENABLED
@@ -86,6 +89,9 @@ static char * dtdvalid = NULL;
 static int repeat = 0;
 static int insert = 0;
 static int compress = 0;
+#ifdef LIBXML_DOCB_ENABLED
+static int sgml = 0;
+#endif
 static int html = 0;
 static int htmlout = 0;
 static int push = 0;
@@ -412,6 +418,38 @@ static void parseAndPrintFile(char *filename) {
 	    xmlDocSetRootElement(doc, n);
 	}
     }
+#ifdef LIBXML_DOCB_ENABLED
+    /*
+     * build an SGML tree from a string;
+     */
+    else if ((sgml) && (push)) {
+	FILE *f;
+
+	f = fopen(filename, "r");
+	if (f != NULL) {
+	    int res, size = 3;
+	    char chars[4096];
+	    docbParserCtxtPtr ctxt;
+
+	    /* if (repeat) */
+		size = 4096;
+	    res = fread(chars, 1, 4, f);
+	    if (res > 0) {
+		ctxt = docbCreatePushParserCtxt(NULL, NULL,
+			    chars, res, filename, 0);
+		while ((res = fread(chars, 1, size, f)) > 0) {
+		    docbParseChunk(ctxt, chars, res, 0);
+		}
+		docbParseChunk(ctxt, chars, 0, 1);
+		doc = ctxt->myDoc;
+		docbFreeParserCtxt(ctxt);
+	    }
+	    fclose(f);
+	}
+    } else if (sgml) {	
+	doc = docbParseFile(filename, NULL);
+    }
+#endif
 #ifdef LIBXML_HTML_ENABLED
     else if (html) {
 	doc = htmlParseFile(filename, NULL);
@@ -789,6 +827,9 @@ static void usage(const char *name) {
     printf("\t--repeat : repeat 100 times, for timing or profiling\n");
     printf("\t--insert : ad-hoc test for valid insertions\n");
     printf("\t--compress : turn on gzip compression of output\n");
+#ifdef LIBXML_DOCB_ENABLED
+    printf("\t--sgml : use the DocBook SGML parser\n");
+#endif
 #ifdef LIBXML_HTML_ENABLED
     printf("\t--html : use the HTML parser\n");
 #endif
@@ -856,6 +897,12 @@ main(int argc, char **argv) {
 	else if ((!strcmp(argv[i], "-htmlout")) ||
 	         (!strcmp(argv[i], "--htmlout")))
 	    htmlout++;
+#ifdef LIBXML_DOCB_ENABLED
+        else if ((!strcmp(argv[i], "-sgml")) ||
+		 (!strcmp(argv[i], "--sgml"))) {
+	    sgml++;
+	}
+#endif
 #ifdef LIBXML_HTML_ENABLED
 	else if ((!strcmp(argv[i], "-html")) ||
 	         (!strcmp(argv[i], "--html"))) {

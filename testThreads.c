@@ -90,7 +90,7 @@ main()
     int ret;
 
     xmlInitParser();
-    for (repeat = 0;repeat < 10000;repeat++) {
+    for (repeat = 0;repeat < 500;repeat++) {
 	xmlLoadCatalog(catalog);
 
 	for (i = 0; i < num_threads; i++) {

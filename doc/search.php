@@ -11,7 +11,7 @@ H2 {font-family: Verdana,Arial,Helvetica}
 H3 {font-family: Verdana,Arial,Helvetica}
 A:link, A:visited, A:active { text-decoration: underline }
 --></style>
-<title>Search the XMLSoft documentation</title>
+<title>Search the documentation on XMLSoft.org</title>
 </head>
 <body bgcolor="#8b7765" text="#000000" link="#000000" vlink="#000000">
 <table border="0" width="100%" cellpadding="5" cellspacing="0" align="center"><tr>
@@ -92,7 +92,7 @@ A:link, A:visited, A:active { text-decoration: underline }
     // We handle only the first argument so far
     $query = ltrim ($query);
     if (! $query) {
-        echo "<h1 align='center'>Search the X documentation on XMLSoft.org</h1>";
+        echo "<h1 align='center'>Search the documentation on XMLSoft.org</h1>";
     }
     if ($scope == NULL)
         $scope = "any";

@@ -80,6 +80,6 @@ install-data-local:
 	-(cd $(DESTDIR); gtkdoc-fixxref --module=libxml --html-dir=$(HTML_DIR))
 
 dist-hook:
-	(cd $(srcdir) ; tar cvf - *.1 site.xsl *.html *.gif w3c.png html/*.html html/*.sgml libxml2-api.xml parsedecl.py) | (cd $(distdir); tar xf -)
+	(cd $(srcdir) ; tar cvf - *.1 site.xsl *.html *.gif w3c.png html/*.html html/*.sgml libxml2-api.xml parsedecl.py index.py search.php) | (cd $(distdir); tar xf -)
 
 .PHONY : html sgml templates scan

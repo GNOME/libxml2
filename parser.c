@@ -2449,12 +2449,18 @@ xmlParseCharData(xmlParserCtxtPtr ctxt, int cdata) {
     if ((ctxt->token == 0) && (!cdata)) {
 	in = ctxt->input->cur;
 	do {
+get_more:
 	    while (((*in >= 0x20) && (*in != '<') &&
 		    (*in != '&') && (*in <= 0x7F)) || (*in == 0x09))
 		in++;
 	    if (*in == 0xA) {
 		ctxt->input->line++;
-		continue; /* while */
+		in++;
+		while (*in == 0xA) {
+		    ctxt->input->line++;
+		    in++;
+		}
+		goto get_more;
 	    }
 	    nbchar = in - ctxt->input->cur;
 	    if (nbchar > 0) {

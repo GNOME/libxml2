@@ -1,3 +1,7 @@
+Sun Apr 29 21:53:47 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* parser.c: small but effective parsing speed improvement
+
 Sun Apr 29 19:02:13 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* configure.in: default on the DocBook parser inclusion (for Gnome)

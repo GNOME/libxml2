@@ -26,6 +26,7 @@
 #include <libxml/globals.h>
 
 /* #define DEBUG_VALID_ALGO */
+/* #define DEBUG_REGEXP_ALGO */
 
 #define TODO 								\
     xmlGenericError(xmlGenericErrorContext,				\
@@ -435,7 +436,7 @@ xmlValidBuildAContentModel(xmlElementContentPtr content,
 	    break;
 	}
 	case XML_ELEMENT_CONTENT_SEQ: {
-	    xmlAutomataStatePtr oldstate;
+	    xmlAutomataStatePtr oldstate, oldend;
 	    xmlElementContentOccur ocur;
 
 	    /*
@@ -449,6 +450,8 @@ xmlValidBuildAContentModel(xmlElementContentPtr content,
 	    } while ((content->type == XML_ELEMENT_CONTENT_SEQ) &&
 		     (content->ocur == XML_ELEMENT_CONTENT_ONCE));
 	    xmlValidBuildAContentModel(content, ctxt, name);
+	    oldend = ctxt->state;
+	    ctxt->state = xmlAutomataNewEpsilon(ctxt->am, oldend, NULL);
 	    switch (ocur) {
 		case XML_ELEMENT_CONTENT_ONCE:
 		    break;
@@ -457,49 +460,54 @@ xmlValidBuildAContentModel(xmlElementContentPtr content,
 		    break;
 		case XML_ELEMENT_CONTENT_MULT:
 		    xmlAutomataNewEpsilon(ctxt->am, oldstate, ctxt->state);
-		    xmlAutomataNewEpsilon(ctxt->am, ctxt->state, oldstate);
+		    xmlAutomataNewEpsilon(ctxt->am, oldend, oldstate);
 		    break;
 		case XML_ELEMENT_CONTENT_PLUS:
-		    xmlAutomataNewEpsilon(ctxt->am, ctxt->state, oldstate);
+		    xmlAutomataNewEpsilon(ctxt->am, oldend, oldstate);
 		    break;
 	    }
 	    break;
 	}
 	case XML_ELEMENT_CONTENT_OR: {
-	    xmlAutomataStatePtr start, end;
+	    xmlAutomataStatePtr oldstate, oldend;
 	    xmlElementContentOccur ocur;
 
-	    start = ctxt->state;
-	    end = xmlAutomataNewState(ctxt->am);
 	    ocur = content->ocur;
+	    if ((ocur == XML_ELEMENT_CONTENT_PLUS) || 
+		(ocur == XML_ELEMENT_CONTENT_MULT)) {
+		ctxt->state = xmlAutomataNewEpsilon(ctxt->am,
+			ctxt->state, NULL);
+	    }
+	    oldstate = ctxt->state;
+	    oldend = xmlAutomataNewState(ctxt->am);
 
 	    /*
 	     * iterate over the subtypes and remerge the end with an
 	     * epsilon transition
 	     */
 	    do {
-		ctxt->state = start;
+		ctxt->state = oldstate;
 		xmlValidBuildAContentModel(content->c1, ctxt, name);
-		xmlAutomataNewEpsilon(ctxt->am, ctxt->state, end);
+		xmlAutomataNewEpsilon(ctxt->am, ctxt->state, oldend);
 		content = content->c2;
 	    } while ((content->type == XML_ELEMENT_CONTENT_OR) &&
 		     (content->ocur == XML_ELEMENT_CONTENT_ONCE));
-	    ctxt->state = start;
+	    ctxt->state = oldstate;
 	    xmlValidBuildAContentModel(content, ctxt, name);
-	    xmlAutomataNewEpsilon(ctxt->am, ctxt->state, end);
-	    ctxt->state = end;
+	    xmlAutomataNewEpsilon(ctxt->am, ctxt->state, oldend);
+	    ctxt->state = xmlAutomataNewEpsilon(ctxt->am, oldend, NULL);
 	    switch (ocur) {
 		case XML_ELEMENT_CONTENT_ONCE:
 		    break;
 		case XML_ELEMENT_CONTENT_OPT:
-		    xmlAutomataNewEpsilon(ctxt->am, start, ctxt->state);
+		    xmlAutomataNewEpsilon(ctxt->am, oldstate, ctxt->state);
 		    break;
 		case XML_ELEMENT_CONTENT_MULT:
-		    xmlAutomataNewEpsilon(ctxt->am, start, ctxt->state);
-		    xmlAutomataNewEpsilon(ctxt->am, ctxt->state, start);
+		    xmlAutomataNewEpsilon(ctxt->am, oldstate, ctxt->state);
+		    xmlAutomataNewEpsilon(ctxt->am, oldend, oldstate);
 		    break;
 		case XML_ELEMENT_CONTENT_PLUS:
-		    xmlAutomataNewEpsilon(ctxt->am, ctxt->state, start);
+		    xmlAutomataNewEpsilon(ctxt->am, oldend, oldstate);
 		    break;
 	    }
 	    break;
@@ -546,8 +554,14 @@ xmlValidBuildContentModel(xmlValidCtxtPtr ctxt, xmlElementPtr elem) {
     xmlAutomataSetFinalState(ctxt->am, ctxt->state);
     elem->contModel = xmlAutomataCompile(ctxt->am);
     if (!xmlAutomataIsDeterminist(ctxt->am)) {
-	VERROR(ctxt->userData, "Content model of %s is not determinist:\n",
-	       elem->name);
+	char expr[5000];
+	expr[0] = 0;
+	xmlSnprintfElementContent(expr, 5000, elem->content, 1);
+	VERROR(ctxt->userData, "Content model of %s is not determinist: %s\n",
+	       elem->name, expr);
+#ifdef DEBUG_REGEXP_ALGO
+        xmlRegexpPrint(stderr, elem->contModel);
+#endif
         ctxt->valid = 0;
     }
     ctxt->state = NULL;
@@ -873,7 +887,9 @@ xmlSnprintfElementContent(char *buf, int size, xmlElementContentPtr content, int
 		return;
 	    }
             strcat(buf, " , ");
-	    if (content->c2->type == XML_ELEMENT_CONTENT_OR)
+	    if (((content->c2->type == XML_ELEMENT_CONTENT_OR) ||
+		 (content->c2->ocur != XML_ELEMENT_CONTENT_ONCE)) &&
+		(content->c2->type != XML_ELEMENT_CONTENT_ELEMENT))
 		xmlSnprintfElementContent(buf, size, content->c2, 1);
 	    else
 		xmlSnprintfElementContent(buf, size, content->c2, 0);
@@ -891,7 +907,9 @@ xmlSnprintfElementContent(char *buf, int size, xmlElementContentPtr content, int
 		return;
 	    }
             strcat(buf, " | ");
-	    if (content->c2->type == XML_ELEMENT_CONTENT_SEQ)
+	    if (((content->c2->type == XML_ELEMENT_CONTENT_SEQ) ||
+		 (content->c2->ocur != XML_ELEMENT_CONTENT_ONCE)) &&
+		(content->c2->type != XML_ELEMENT_CONTENT_ELEMENT))
 		xmlSnprintfElementContent(buf, size, content->c2, 1);
 	    else
 		xmlSnprintfElementContent(buf, size, content->c2, 0);
@@ -3546,9 +3564,11 @@ xmlValidateElementDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
     
     if (elem == NULL) return(1);
 
+#if 0
 #ifdef LIBXML_REGEXP_ENABLED
     /* Build the regexp associated to the content model */
     ret = xmlValidBuildContentModel(ctxt, elem);
+#endif
 #endif
 
     /* No Duplicate Types */
@@ -4298,7 +4318,7 @@ xmlSnprintfElements(char *buf, int size, xmlNodePtr node, int glob) {
 static int
 xmlValidateElementContent(xmlValidCtxtPtr ctxt, xmlNodePtr child,
        xmlElementPtr elemDecl, int warn, xmlNodePtr parent) {
-    int ret;
+    int ret = 1;
     xmlNodePtr repl = NULL, last = NULL, cur, tmp;
     xmlElementContentPtr cont;
     const xmlChar *name;

@@ -1,3 +1,9 @@
+Wed Sep 18 18:27:26 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* valid.c: determinism is debugged, new DTD checking code now works
+	  but xmlFAComputesDeterminism takes far too much CPU and the whole
+	  set usues too much memory to be really usable as-is
+
 Wed Sep 18 00:54:30 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: fixed another stupid bug in xmlGetNodePath()

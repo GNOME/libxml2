@@ -248,6 +248,13 @@ if test "$with_python" != "no" ; then
     fi
 fi
 AM_CONDITIONAL(WITH_PYTHON, test "$PYTHON_INCLUDES" != "")
+if test "$PYTHON_INCLUDES" != ""
+then
+    PYTHON_SUBDIR=python
+else
+    PYTHON_SUBDIR=
+fi
+AC_SUBST(PYTHON_SUBDIR)
 
 dnl
 dnl Tester makes use of readline if present

@@ -1,7 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 # AUTOMAKE_ OPTIONS=no-dependencies
 
-SUBDIRS = include . doc example python
+SUBDIRS = include . doc example @PYTHON_SUBDIR@
 
 INCLUDES = -I@srcdir@/include -I$(top_builddir)/include @THREAD_CFLAGS@ @Z_CFLAGS@ 
 
@@ -107,7 +107,7 @@ check-local: tests
 testall : tests SVGtests SAXtests
 
 tests: XMLtests XMLenttests HTMLtests Validtests URItests XPathtests XPtrtests XIncludetests C14Ntests Scripttests Catatests @TEST_REGEXPS@ @TEST_SCHEMAS@ @TEST_THREADS@
-	@(cd python ; $(MAKE) tests)
+	@(if [ "@PYTHON_SUBDIR@" != "" ] ; then cd python ; $(MAKE) tests ; fi)
 
 valgrind:
 	@echo '## Running the regression tests under Valgrind'

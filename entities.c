@@ -18,8 +18,6 @@
 #include <libxml/parser.h>
 #include <libxml/xmlerror.h>
 
-#define DEBUG_ENT_REF /* debugging of cross entities dependancies */
-
 /*
  * The XML predefined entities.
  */
@@ -37,8 +35,8 @@ struct xmlPredefinedEntityValue xmlPredefinedEntityValues[] = {
 };
 
 /*
- * TODO: !!!!!!! This is GROSS, allocation of a 256 entry hash for
- *               a fixed number of 4 elements !
+ * TODO: This is GROSS, allocation of a 256 entry hash for
+ *       a fixed number of 4 elements !
  */
 xmlHashTablePtr xmlPredefinedEntities = NULL;
 

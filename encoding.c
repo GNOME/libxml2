@@ -2016,7 +2016,7 @@ xmlCharEncFirstLine(xmlCharEncodingHandler *handler, xmlBufferPtr out,
 	default:
 	    xmlGenericError(xmlGenericErrorContext,"Unknown input conversion failed %d\n", ret);
     }
-#endif
+#endif /* DEBUG_ENCODING */
     /*
      * Ignore when input buffer is not on a boundary
      */
@@ -2039,70 +2039,82 @@ xmlCharEncFirstLine(xmlCharEncodingHandler *handler, xmlBufferPtr out,
  *        the result of transformation can't fit into the encoding we want), or
  */
 int
-xmlCharEncInFunc(xmlCharEncodingHandler *handler, xmlBufferPtr out,
-                 xmlBufferPtr in) {
+xmlCharEncInFunc(xmlCharEncodingHandler * handler, xmlBufferPtr out,
+                 xmlBufferPtr in)
+{
     int ret = -2;
     int written;
     int toconv;
 
-    if (handler == NULL) return(-1);
-    if (out == NULL) return(-1);
-    if (in == NULL) return(-1);
+    if (handler == NULL)
+        return (-1);
+    if (out == NULL)
+        return (-1);
+    if (in == NULL)
+        return (-1);
 
     toconv = in->use;
     if (toconv == 0)
-	return(0);
+        return (0);
     written = out->size - out->use;
     if (toconv * 2 >= written) {
         xmlBufferGrow(out, out->size + toconv * 2);
-	written = out->size - out->use - 1;
+        written = out->size - out->use - 1;
     }
     if (handler->input != NULL) {
-	ret = handler->input(&out->content[out->use], &written,
-	                     in->content, &toconv);
-	xmlBufferShrink(in, toconv);
-	out->use += written;
-	out->content[out->use] = 0;
+        ret = handler->input(&out->content[out->use], &written,
+                             in->content, &toconv);
+        xmlBufferShrink(in, toconv);
+        out->use += written;
+        out->content[out->use] = 0;
     }
 #ifdef LIBXML_ICONV_ENABLED
     else if (handler->iconv_in != NULL) {
-	ret = xmlIconvWrapper(handler->iconv_in, &out->content[out->use],
-	                      &written, in->content, &toconv);
-	xmlBufferShrink(in, toconv);
-	out->use += written;
-	out->content[out->use] = 0;
-	if (ret == -1) ret = -3;
+        ret = xmlIconvWrapper(handler->iconv_in, &out->content[out->use],
+                              &written, in->content, &toconv);
+        xmlBufferShrink(in, toconv);
+        out->use += written;
+        out->content[out->use] = 0;
+        if (ret == -1)
+            ret = -3;
     }
 #endif /* LIBXML_ICONV_ENABLED */
     switch (ret) {
-#ifdef DEBUG_ENCODING
         case 0:
-	    xmlGenericError(xmlGenericErrorContext,
-		    "converted %d bytes to %d bytes of input\n",
-	            toconv, written);
-	    break;
-        case -1:
-	    xmlGenericError(xmlGenericErrorContext,"converted %d bytes to %d bytes of input, %d left\n",
-	            toconv, written, in->use);
-	    break;
-        case -3:
-	    xmlGenericError(xmlGenericErrorContext,"converted %d bytes to %d bytes of input, %d left\n",
-	            toconv, written, in->use);
-	    break;
+#ifdef DEBUG_ENCODING
+            xmlGenericError(xmlGenericErrorContext,
+                            "converted %d bytes to %d bytes of input\n",
+                            toconv, written);
 #endif
+            break;
+        case -1:
+#ifdef DEBUG_ENCODING
+            xmlGenericError(xmlGenericErrorContext,
+                         "converted %d bytes to %d bytes of input, %d left\n",
+                            toconv, written, in->use);
+#endif
+            break;
+        case -3:
+#ifdef DEBUG_ENCODING
+            xmlGenericError(xmlGenericErrorContext,
+                        "converted %d bytes to %d bytes of input, %d left\n",
+                            toconv, written, in->use);
+#endif
+            break;
         case -2:
-	    xmlGenericError(xmlGenericErrorContext,
-		    "input conversion failed due to input error\n");
-	    xmlGenericError(xmlGenericErrorContext,
-		    "Bytes: 0x%02X 0x%02X 0x%02X 0x%02X\n",
-		    in->content[0], in->content[1],
-		    in->content[2], in->content[3]);
+            xmlGenericError(xmlGenericErrorContext,
+                            "input conversion failed due to input error\n");
+            xmlGenericError(xmlGenericErrorContext,
+                            "Bytes: 0x%02X 0x%02X 0x%02X 0x%02X\n",
+                            in->content[0], in->content[1],
+                            in->content[2], in->content[3]);
     }
     /*
      * Ignore when input buffer is not on a boundary
      */
-    if (ret == -3) ret = 0;
-    return(ret);
+    if (ret == -3)
+        ret = 0;
+    return (ret);
 }
 
 /**
@@ -2214,17 +2226,19 @@ retry:
      * Attempt to handle error cases
      */
     switch (ret) {
-#ifdef DEBUG_ENCODING
         case 0:
+#ifdef DEBUG_ENCODING
 	    xmlGenericError(xmlGenericErrorContext,
 		    "converted %d bytes to %d bytes of output\n",
 	            toconv, written);
+#endif
 	    break;
         case -1:
+#ifdef DEBUG_ENCODING
 	    xmlGenericError(xmlGenericErrorContext,
 		    "output conversion failed by lack of space\n");
-	    break;
 #endif
+	    break;
         case -3:
 	    xmlGenericError(xmlGenericErrorContext,"converted %d bytes to %d bytes of output %d left\n",
 	            toconv, written, in->use);
@@ -2313,8 +2327,8 @@ xmlCharEncCloseFunc(xmlCharEncodingHandler *handler) {
     else
         xmlGenericError(xmlGenericErrorContext,
 		"closed the encoding handler\n");
-
 #endif
+
     return(ret);
 }
 

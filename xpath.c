@@ -5731,7 +5731,7 @@ xmlXPathStringEvalNumber(const xmlChar *str) {
     const xmlChar *cur = str;
     double ret = 0.0;
     double mult = 1;
-    int ok = 0;
+    int ok = 0, tmp = 0;
     int isneg = 0;
     int exponent = 0;
     int is_exponent_negative = 0;
@@ -5744,11 +5744,16 @@ xmlXPathStringEvalNumber(const xmlChar *str) {
 	isneg = 1;
 	cur++;
     }
+    /*
+     * tmp is a workaroudn against a gcc compiler bug
+     */
     while ((*cur >= '0') && (*cur <= '9')) {
-        ret = ret * 10 + (*cur - '0');
+	tmp = tmp * 10 + (*cur - '0');
 	ok = 1;
 	cur++;
     }
+    ret = (double) tmp;
+
     if (*cur == '.') {
         cur++;
 	if (((*cur < '0') || (*cur > '9')) && (!ok)) {
@@ -5791,10 +5796,11 @@ xmlXPathStringEvalNumber(const xmlChar *str) {
  *
  */
 static void
-xmlXPathCompNumber(xmlXPathParserContextPtr ctxt) {
+xmlXPathCompNumber(xmlXPathParserContextPtr ctxt)
+{
     double ret = 0.0;
     double mult = 1;
-    int ok = 0;
+    int ok = 0, tmp = 0;
     int exponent = 0;
     int is_exponent_negative = 0;
 
@@ -5802,38 +5808,42 @@ xmlXPathCompNumber(xmlXPathParserContextPtr ctxt) {
     if ((CUR != '.') && ((CUR < '0') || (CUR > '9'))) {
         XP_ERROR(XPATH_NUMBER_ERROR);
     }
+    /*
+     * Try to work around a gcc optimizer bug
+     */
     while ((CUR >= '0') && (CUR <= '9')) {
-        ret = ret * 10 + (CUR - '0');
-	ok = 1;
-	NEXT;
+	tmp = tmp * 10 + (CUR - '0');
+        ok = 1;
+        NEXT;
     }
+    ret = (double) tmp;
     if (CUR == '.') {
         NEXT;
-	if (((CUR < '0') || (CUR > '9')) && (!ok)) {
-	     XP_ERROR(XPATH_NUMBER_ERROR);
-	}
-	while ((CUR >= '0') && (CUR <= '9')) {
-	    mult /= 10;
-	    ret = ret  + (CUR - '0') * mult;
-	    NEXT;
-	}
+        if (((CUR < '0') || (CUR > '9')) && (!ok)) {
+            XP_ERROR(XPATH_NUMBER_ERROR);
+        }
+        while ((CUR >= '0') && (CUR <= '9')) {
+            mult /= 10;
+            ret = ret + (CUR - '0') * mult;
+            NEXT;
+        }
     }
     if ((CUR == 'e') || (CUR == 'E')) {
-      NEXT;
-      if (CUR == '-') {
-	is_exponent_negative = 1;
-	NEXT;
-      }
-      while ((CUR >= '0') && (CUR <= '9')) {
-	exponent = exponent * 10 + (CUR - '0');
-	NEXT;
-      }
+        NEXT;
+        if (CUR == '-') {
+            is_exponent_negative = 1;
+            NEXT;
+        }
+        while ((CUR >= '0') && (CUR <= '9')) {
+            exponent = exponent * 10 + (CUR - '0');
+            NEXT;
+        }
+        if (is_exponent_negative)
+            exponent = -exponent;
+        ret *= pow(10.0, (double) exponent);
     }
-    if (is_exponent_negative)
-      exponent = -exponent;
-    ret *= pow(10.0, (double)exponent);
     PUSH_LONG_EXPR(XPATH_OP_VALUE, XPATH_NUMBER, 0, 0,
-	           xmlXPathNewFloat(ret), NULL);
+                   xmlXPathNewFloat(ret), NULL);
 }
 
 /**

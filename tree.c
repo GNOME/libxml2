@@ -5645,12 +5645,12 @@ xmlElemDump(FILE *f, xmlDocPtr doc, xmlNodePtr cur) {
 #endif
 	return;
     }
-    if (doc == NULL) {
 #ifdef DEBUG_TREE
+    if (doc == NULL) {
         xmlGenericError(xmlGenericErrorContext,
 		"xmlElemDump : doc == NULL\n");
-#endif
     }
+#endif
     buf = xmlBufferCreate();
     if (buf == NULL) return;
     if ((doc != NULL) && 

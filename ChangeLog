@@ -1,3 +1,10 @@
+Fri Jun 22 00:04:36 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xpath.c: attempt to work around what seemed a gcc optimizer
+	  bug when handling floats on i386 http://veillard.com/gcc.bug
+	* tree.c entities.c encoding.c: doing some cleanups while
+	  chasing it
+
 Thu Jun 21 13:13:36 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* Makefile.am: cleanup when --without-debug is specified

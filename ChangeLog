@@ -1,3 +1,8 @@
+Fri Dec  7 15:21:33 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in : preparing 2.4.12
+	* doc/* : updated and rebuilt the docs
+
 Fri Dec  7 12:32:00 CET 2001 Daniel Veillard <daniel@veillard.com>
 
 	* uri.c: closed bug #66159

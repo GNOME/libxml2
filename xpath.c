@@ -609,6 +609,8 @@ xmlXPathDebugDumpObject(FILE *output, xmlXPathObjectPtr cur, int depth) {
 	    default:
 		if (xmlXPathIsNaN(cur->floatval)) {
 		    fprintf(output, "Object is a number : NaN\n");
+		} else if (cur->floatval == 0 && xmlXPathGetSign(cur->floatval) != 0) {
+		    fprintf(output, "Object is a number : 0\n");
 		} else {
 		    fprintf(output, "Object is a number : %0g\n", cur->floatval);
 		}
@@ -1143,6 +1145,8 @@ xmlXPathFormatNumber(double number, char buffer[], int buffersize)
 	if (xmlXPathIsNaN(number)) {
 	    if (buffersize > (int)sizeof("NaN"))
 		sprintf(buffer, "NaN");
+	} else if (number == 0 && xmlXPathGetSign(number) != 0) {
+	    sprintf(buffer, "0");
 	} else if (number == ((int) number)) {
 	    char work[30];
 	    char *ptr, *cur;
@@ -3190,6 +3194,8 @@ xmlXPathCastNumberToString (double val) {
     default:
 	if (xmlXPathIsNaN(val)) {
 	    ret = xmlStrdup((const xmlChar *) "NaN");
+	} else if (val == 0 && xmlXPathGetSign(val) != 0) {
+	    ret = xmlStrdup((const xmlChar *) "0");
 	} else {
 	    /* could be improved */
 	    char buf[100];
@@ -4472,9 +4478,29 @@ xmlXPathEqualValues(xmlXPathParserContextPtr ctxt) {
 		    arg2 = valuePop(ctxt);
 		    /* no break on purpose */
 		case XPATH_NUMBER:
-		    /* Hand checking NaNs for VC6++'s benefit... */
+		    /* Hand check NaN and Infinity equalities */
 		    if (xmlXPathIsNaN(arg1->floatval) || xmlXPathIsNaN(arg2->floatval)) {
 		        ret = 0;
+		    } else if (xmlXPathIsInf(arg1->floatval) == 1) {
+		        if (xmlXPathIsInf(arg2->floatval) == 1)
+			    ret = 1;
+			else
+			    ret = 0;
+		    } else if (xmlXPathIsInf(arg1->floatval) == -1) {
+			if (xmlXPathIsInf(arg2->floatval) == -1)
+			    ret = 1;
+			else
+			    ret = 0;
+		    } else if (xmlXPathIsInf(arg2->floatval) == 1) {
+			if (xmlXPathIsInf(arg1->floatval) == 1)
+			    ret = 1;
+			else
+			    ret = 0;
+		    } else if (xmlXPathIsInf(arg2->floatval) == -1) {
+			if (xmlXPathIsInf(arg1->floatval) == -1)
+			    ret = 1;
+			else
+			    ret = 0;
 		    } else {
 		        ret = (arg1->floatval == arg2->floatval);
 		    }
@@ -4513,9 +4539,29 @@ xmlXPathEqualValues(xmlXPathParserContextPtr ctxt) {
 		    valuePush(ctxt, arg1);
 		    xmlXPathNumberFunction(ctxt, 1);
 		    arg1 = valuePop(ctxt);
-		    /* Hand checking NaNs for VC6++'s benefit... */
+		    /* Hand check NaN and Infinity equalities */
 		    if (xmlXPathIsNaN(arg1->floatval) || xmlXPathIsNaN(arg2->floatval)) {
 		        ret = 0;
+		    } else if (xmlXPathIsInf(arg1->floatval) == 1) {
+			if (xmlXPathIsInf(arg2->floatval) == 1)
+			    ret = 1;
+			else
+			    ret = 0;
+		    } else if (xmlXPathIsInf(arg1->floatval) == -1) {
+			if (xmlXPathIsInf(arg2->floatval) == -1)
+			    ret = 1;
+			else
+			    ret = 0;
+		    } else if (xmlXPathIsInf(arg2->floatval) == 1) {
+			if (xmlXPathIsInf(arg1->floatval) == 1)
+			    ret = 1;
+			else
+			    ret = 0;
+		    } else if (xmlXPathIsInf(arg2->floatval) == -1) {
+			if (xmlXPathIsInf(arg1->floatval) == -1)
+			    ret = 1;
+			else
+			    ret = 0;
 		    } else {
 		        ret = (arg1->floatval == arg2->floatval);
 		    }
@@ -4567,7 +4613,7 @@ xmlXPathEqualValues(xmlXPathParserContextPtr ctxt) {
  */
 int
 xmlXPathCompareValues(xmlXPathParserContextPtr ctxt, int inf, int strict) {
-    int ret = 0;
+    int ret = 0, arg1i = 0, arg2i = 0;
     xmlXPathObjectPtr arg1, arg2;
 
     arg2 = valuePop(ctxt);
@@ -4620,18 +4666,50 @@ xmlXPathCompareValues(xmlXPathParserContextPtr ctxt, int inf, int strict) {
      * Add tests for infinity and nan
      * => feedback on 3.4 for Inf and NaN
      */
-    /* Hand checking NaNs for VC++6's benefit... */
+    /* Hand check NaN and Infinity comparisons */
     if (xmlXPathIsNaN(arg1->floatval) || xmlXPathIsNaN(arg2->floatval)) {
-      ret=0;
+	ret=0;
     } else {
-      if (inf && strict) 
-	  ret = (arg1->floatval < arg2->floatval);
-      else if (inf && !strict)
-	  ret = (arg1->floatval <= arg2->floatval);
-      else if (!inf && strict)
-	  ret = (arg1->floatval > arg2->floatval);
-      else if (!inf && !strict)
-	  ret = (arg1->floatval >= arg2->floatval);
+	arg1i=xmlXPathIsInf(arg1->floatval);
+	arg2i=xmlXPathIsInf(arg2->floatval);
+	if (inf && strict) {
+	    if ((arg1i == -1 && arg2i != -1) ||
+		(arg2i == 1 && arg1i != 1)) {
+		ret = 1;
+	    } else if (arg1i == 0 && arg2i == 0) {
+		ret = (arg1->floatval < arg2->floatval);
+	    } else {
+		ret = 0;
+	    }
+	}
+	else if (inf && !strict) {
+	    if (arg1i == -1 || arg2i == 1) {
+		ret = 1;
+	    } else if (arg1i == 0 && arg2i == 0) {
+		ret = (arg1->floatval <= arg2->floatval);
+	    } else {
+		ret = 0;
+	    }
+	}
+	else if (!inf && strict) {
+	    if ((arg1i == 1 && arg2i != 1) ||
+		(arg2i == -1 && arg1i != -1)) {
+		ret = 1;
+	    } else if (arg1i == 0 && arg2i == 0) {
+		ret = (arg1->floatval > arg2->floatval);
+	    } else {
+		ret = 0;
+	    }
+	}
+	else if (!inf && !strict) {
+	    if (arg1i == 1 || arg2i == -1) {
+		ret = 1;
+	    } else if (arg1i == 0 && arg2i == 0) {
+		ret = (arg1->floatval >= arg2->floatval);
+	    } else {
+		ret = 0;
+	    }
+	}
     }
     xmlXPathFreeObject(arg1);
     xmlXPathFreeObject(arg2);
@@ -4753,7 +4831,7 @@ xmlXPathDivValues(xmlXPathParserContextPtr ctxt) {
 
     CAST_TO_NUMBER;
     CHECK_TYPE(XPATH_NUMBER);
-    if (val == 0 && xmlXPathGetSign(val) == 1) {
+    if (val == 0 && xmlXPathGetSign(val) != 0) {
 	if (ctxt->value->floatval == 0)
 	    ctxt->value->floatval = xmlXPathNAN;
 	else if (ctxt->value->floatval > 0)

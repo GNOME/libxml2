@@ -711,6 +711,9 @@ xmlInitMemory(void)
      xmlGenericError(xmlGenericErrorContext,
 	     "xmlInitMemory() Ok\n");
 #endif     
+     xmlMemInitialized = 1;
+     xmlInitMemoryDone = 1;
+
      ret = 0;
      return(ret);
 }

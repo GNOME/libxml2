@@ -1,3 +1,10 @@
+Thu Mar 28 19:22:48 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in: fixed configure for MPE/iX from Markus Henke
+	* xmlmemory.c: fixed initialization problems
+	* xpath.c: another set of patches from Richard Jinks this
+	  fixes "make XPathtests" on linux
+
 Wed Mar 27 17:09:43 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* trionan.c trionan.h xpath.c: more patches from Richard Jinks

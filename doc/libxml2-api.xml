@@ -786,6 +786,7 @@
      <exports symbol='entityDeclSAXFunc' type='function'/>
      <exports symbol='xmlLoadExternalEntity' type='function'/>
      <exports symbol='xmlParserInputDeallocate' type='function'/>
+     <exports symbol='xmlStrncatNew' type='function'/>
      <exports symbol='xmlCtxtReadIO' type='function'/>
      <exports symbol='xmlStopParser' type='function'/>
      <exports symbol='xmlReadFd' type='function'/>
@@ -2241,26 +2242,27 @@
      <exports symbol='xmlMallocAtomic' type='macro'/>
      <exports symbol='DEBUG_MEMORY' type='macro'/>
      <exports symbol='xmlMemStrdup' type='macro'/>
-     <exports symbol='xmlReallocLoc' type='function'/>
      <exports symbol='xmlMemRealloc' type='function'/>
-     <exports symbol='xmlMemUsed' type='function'/>
-     <exports symbol='xmlMemGet' type='function'/>
-     <exports symbol='xmlMemoryDump' type='function'/>
+     <exports symbol='xmlMemMalloc' type='function'/>
      <exports symbol='xmlGcMemGet' type='function'/>
      <exports symbol='xmlStrdupFunc' type='function'/>
-     <exports symbol='xmlMallocLoc' type='function'/>
      <exports symbol='xmlFreeFunc' type='function'/>
      <exports symbol='xmlInitMemory' type='function'/>
-     <exports symbol='xmlReallocFunc' type='function'/>
      <exports symbol='xmlMemFree' type='function'/>
+     <exports symbol='xmlMallocAtomicLoc' type='function'/>
+     <exports symbol='xmlReallocLoc' type='function'/>
+     <exports symbol='xmlCleanupMemory' type='function'/>
+     <exports symbol='xmlMemUsed' type='function'/>
+     <exports symbol='xmlMemSetup' type='function'/>
+     <exports symbol='xmlMemGet' type='function'/>
+     <exports symbol='xmlMemoryDump' type='function'/>
+     <exports symbol='xmlMallocLoc' type='function'/>
+     <exports symbol='xmlReallocFunc' type='function'/>
      <exports symbol='xmlMallocFunc' type='function'/>
      <exports symbol='xmlMemDisplay' type='function'/>
-     <exports symbol='xmlMemMalloc' type='function'/>
-     <exports symbol='xmlMallocAtomicLoc' type='function'/>
      <exports symbol='xmlGcMemSetup' type='function'/>
      <exports symbol='xmlMemShow' type='function'/>
      <exports symbol='xmlMemoryStrdup' type='function'/>
-     <exports symbol='xmlMemSetup' type='function'/>
      <exports symbol='xmlMemStrdupLoc' type='function'/>
     </file>
     <file name='xmlreader'>
@@ -2687,6 +2689,7 @@
      <exports symbol='xmlTextWriterStartDocument' type='function'/>
      <exports symbol='xmlTextWriterEndDocument' type='function'/>
      <exports symbol='xmlTextWriterWriteBase64' type='function'/>
+     <exports symbol='xmlTextWriterSetIndentString' type='function'/>
      <exports symbol='xmlTextWriterStartAttribute' type='function'/>
      <exports symbol='xmlTextWriterWriteComment' type='function'/>
      <exports symbol='xmlTextWriterWriteRawLen' type='function'/>
@@ -2699,7 +2702,7 @@
      <exports symbol='xmlTextWriterWriteVFormatPI' type='function'/>
      <exports symbol='xmlTextWriterWriteBinHex' type='function'/>
      <exports symbol='xmlTextWriterEndAttribute' type='function'/>
-     <exports symbol='xmlTextWriterWriteVFormatDTDAttlist' type='function'/>
+     <exports symbol='xmlTextWriterSetIndent' type='function'/>
      <exports symbol='xmlTextWriterWriteFormatPI' type='function'/>
      <exports symbol='xmlTextWriterEndPI' type='function'/>
      <exports symbol='xmlTextWriterWriteDTDAttlist' type='function'/>
@@ -2708,6 +2711,7 @@
      <exports symbol='xmlTextWriterStartElementNS' type='function'/>
      <exports symbol='xmlNewTextWriter' type='function'/>
      <exports symbol='xmlFreeTextWriter' type='function'/>
+     <exports symbol='xmlTextWriterWriteVFormatDTDAttlist' type='function'/>
      <exports symbol='xmlTextWriterStartPI' type='function'/>
      <exports symbol='xmlTextWriterStartElement' type='function'/>
      <exports symbol='xmlTextWriterWriteDTDExternalEntity' type='function'/>
@@ -7112,6 +7116,10 @@ actually an xmlCharEncoding'/>
       <info>clears the entire input callback table. this includes the compiled-in I/O.</info>
       <return type='void'/>
     </function>
+    <function name='xmlCleanupMemory' file='xmlmemory'>
+      <info>Free up all the memory associated with memorys</info>
+      <return type='void'/>
+    </function>
     <function name='xmlCleanupOutputCallbacks' file='xmlIO'>
       <info>clears the entire output callback table. this includes the compiled-in I/O callbacks.</info>
       <return type='void'/>
@@ -11468,6 +11476,13 @@ actually an xmlCharEncoding'/>
       <arg name='add' type='const xmlChar *' info='the xmlChar * array added'/>
       <arg name='len' type='int' info='the length of @add'/>
     </function>
+    <function name='xmlStrncatNew' file='parser'>
+      <info>same as xmlStrncat, but creates a new string.  The original two strings are not freed.</info>
+      <return type='xmlChar *' info='a new xmlChar * or NULL'/>
+      <arg name='str1' type='const xmlChar *' info='first xmlChar string'/>
+      <arg name='str2' type='const xmlChar *' info='second xmlChar string'/>
+      <arg name='len' type='int' info='the len of @str2'/>
+    </function>
     <function name='xmlStrncmp' file='parser'>
       <info>a strncmp for xmlChar&apos;s</info>
       <return type='int' info='the integer result of the comparison'/>
@@ -11895,6 +11910,18 @@ actually an xmlCharEncoding'/>
       <info>End the current xml element. Writes an end tag even if the element is empty</info>
       <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
       <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+    </function>
+    <function name='xmlTextWriterSetIndent' file='xmlwriter'>
+      <info>Set indentation output. indent = 0 do not indentation. indent &gt; 0 do indentation.</info>
+      <return type='int' info='-1 on error or 0 otherwise.'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='indent' type='int' info='do indentation?'/>
+    </function>
+    <function name='xmlTextWriterSetIndentString' file='xmlwriter'>
+      <info>Set string indentation.</info>
+      <return type='int' info='-1 on error or 0 otherwise.'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='str' type='xmlChar *' info='the xmlChar string'/>
     </function>
     <function name='xmlTextWriterStartAttribute' file='xmlwriter'>
       <info>Start an xml attribute.</info>
@@ -13610,7 +13637,7 @@ actually an xmlCharEncoding'/>
       <arg name='cur' type='xmlXPathObjectPtr' info='the previous node being explored on that axis'/>
     </functype>
     <function name='xmlXPathBooleanFunction' file='xpathInternals'>
-      <info>Implement the boolean() XPath function boolean boolean(object) he boolean function converts its argument to a boolean as follows: - a number is true if and only if it is neither positive or negative zero nor NaN - a node-set is true if and only if it is non-empty - a string is true if and only if its length is non-zero</info>
+      <info>Implement the boolean() XPath function boolean boolean(object) The boolean function converts its argument to a boolean as follows: - a number is true if and only if it is neither positive or negative zero nor NaN - a node-set is true if and only if it is non-empty - a string is true if and only if its length is non-zero</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlXPathParserContextPtr' info='the XPath Parser context'/>
       <arg name='nargs' type='int' info='the number of arguments'/>
@@ -13693,7 +13720,7 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlXPathCmpNodes' file='xpath'>
       <info>Compare two nodes w.r.t document order</info>
-      <return type='int' info='-2 in case of error 1 if first point &lt; second point, 0 if that&apos;s the same node, -1 otherwise'/>
+      <return type='int' info='-2 in case of error 1 if first point &lt; second point, 0 if it&apos;s the same node, -1 otherwise'/>
       <arg name='node1' type='xmlNodePtr' info='the first node'/>
       <arg name='node2' type='xmlNodePtr' info='the second node'/>
     </function>
@@ -14159,7 +14186,7 @@ actually an xmlCharEncoding'/>
       <arg name='val' type='xmlNodePtr' info='an xmlNodePtr'/>
     </function>
     <function name='xmlXPathNodeSetFreeNs' file='xpathInternals'>
-      <info>Namespace node in libxml don&apos;t match the XPath semantic. In a node set the namespace nodes are duplicated and the next pointer is set to the parent node in the XPath semantic. Check if such a node need to be freed</info>
+      <info>Namespace nodes in libxml don&apos;t match the XPath semantic. In a node set the namespace nodes are duplicated and the next pointer is set to the parent node in the XPath semantic. Check if such a node needs to be freed</info>
       <return type='void'/>
       <arg name='ns' type='xmlNsPtr' info='the XPath namespace node found in a nodeset.'/>
     </function>
@@ -14227,8 +14254,8 @@ actually an xmlCharEncoding'/>
       <arg name='val' type='xmlXPathObjectPtr' info='the original object'/>
     </function>
     <function name='xmlXPathOrderDocElems' file='xpath'>
-      <info>Call this routine to speed up XPath computation on static documents. This stamps all the element nodes with the document order Like for line information, the order is kept in the element-&gt;content field, the value stored is actually - the node number (startting at -1) to be able to differenciate from line numbers.</info>
-      <return type='long' info='the number of element found in the document or -1 in case of error.'/>
+      <info>Call this routine to speed up XPath computation on static documents. This stamps all the element nodes with the document order Like for line information, the order is kept in the element-&gt;content field, the value stored is actually - the node number (starting at -1) to be able to differentiate from line numbers.</info>
+      <return type='long' info='the number of elements found in the document or -1 in case of error.'/>
       <arg name='doc' type='xmlDocPtr' info='an input document'/>
     </function>
     <function name='xmlXPathParseNCName' file='xpathInternals'>
@@ -14366,7 +14393,7 @@ actually an xmlCharEncoding'/>
       <arg name='str' type='const xmlChar *' info='A string to scan'/>
     </function>
     <function name='xmlXPathStringFunction' file='xpathInternals'>
-      <info>Implement the string() XPath function string string(object?) he string function converts an object to a string as follows: - A node-set is converted to a string by returning the value of the node in the node-set that is first in document order. If the node-set is empty, an empty string is returned. - A number is converted to a string as follows + NaN is converted to the string NaN + positive zero is converted to the string 0 + negative zero is converted to the string 0 + positive infinity is converted to the string Infinity + negative infinity is converted to the string -Infinity + if the number is an integer, the number is represented in decimal form as a Number with no decimal point and no leading zeros, preceded by a minus sign (-) if the number is negative + otherwise, the number is represented in decimal form as a Number including a decimal point with at least one digit before the decimal point and at least one digit after the decimal point, preceded by a minus sign (-) if the number is negative; there must be no leading zeros before the decimal point apart possibly from the one required digit immediately before the decimal point; beyond the one required digit after the decimal point there must be as many, but only as many, more digits as are needed to uniquely distinguish the number from all other IEEE 754 numeric values. - The boolean false value is converted to the string false. The boolean true value is converted to the string true.  If the argument is omitted, it defaults to a node-set with the context node as its only member.</info>
+      <info>Implement the string() XPath function string string(object?) The string function converts an object to a string as follows: - A node-set is converted to a string by returning the value of the node in the node-set that is first in document order. If the node-set is empty, an empty string is returned. - A number is converted to a string as follows + NaN is converted to the string NaN + positive zero is converted to the string 0 + negative zero is converted to the string 0 + positive infinity is converted to the string Infinity + negative infinity is converted to the string -Infinity + if the number is an integer, the number is represented in decimal form as a Number with no decimal point and no leading zeros, preceded by a minus sign (-) if the number is negative + otherwise, the number is represented in decimal form as a Number including a decimal point with at least one digit before the decimal point and at least one digit after the decimal point, preceded by a minus sign (-) if the number is negative; there must be no leading zeros before the decimal point apart possibly from the one required digit immediately before the decimal point; beyond the one required digit after the decimal point there must be as many, but only as many, more digits as are needed to uniquely distinguish the number from all other IEEE 754 numeric values. - The boolean false value is converted to the string false. The boolean true value is converted to the string true.  If the argument is omitted, it defaults to a node-set with the context node as its only member.</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlXPathParserContextPtr' info='the XPath Parser context'/>
       <arg name='nargs' type='int' info='the number of arguments'/>

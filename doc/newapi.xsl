@@ -104,7 +104,7 @@
   <xsl:template name="docstyle">
     <style type="text/css">
       div.deprecated pre.programlisting {border-style: double;border-color:red}
-      pre.programlisting {border-style: double}
+      pre.programlisting {border-style: double;background: #EECFA1}
     </style>
   </xsl:template>
   <xsl:template name="navbar">

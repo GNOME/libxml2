@@ -1327,6 +1327,7 @@
     <reference name='xmlCleanupEncodingAliases' href='html/libxml-encoding.html#xmlCleanupEncodingAliases'/>
     <reference name='xmlCleanupGlobals' href='html/libxml-globals.html#xmlCleanupGlobals'/>
     <reference name='xmlCleanupInputCallbacks' href='html/libxml-xmlIO.html#xmlCleanupInputCallbacks'/>
+    <reference name='xmlCleanupMemory' href='html/libxml-xmlmemory.html#xmlCleanupMemory'/>
     <reference name='xmlCleanupOutputCallbacks' href='html/libxml-xmlIO.html#xmlCleanupOutputCallbacks'/>
     <reference name='xmlCleanupParser' href='html/libxml-parser.html#xmlCleanupParser'/>
     <reference name='xmlCleanupPredefinedEntities' href='html/libxml-entities.html#xmlCleanupPredefinedEntities'/>
@@ -2215,6 +2216,7 @@
     <reference name='xmlStrlen' href='html/libxml-parser.html#xmlStrlen'/>
     <reference name='xmlStrncasecmp' href='html/libxml-parser.html#xmlStrncasecmp'/>
     <reference name='xmlStrncat' href='html/libxml-parser.html#xmlStrncat'/>
+    <reference name='xmlStrncatNew' href='html/libxml-parser.html#xmlStrncatNew'/>
     <reference name='xmlStrncmp' href='html/libxml-parser.html#xmlStrncmp'/>
     <reference name='xmlStrndup' href='html/libxml-parser.html#xmlStrndup'/>
     <reference name='xmlStrstr' href='html/libxml-parser.html#xmlStrstr'/>
@@ -2303,6 +2305,8 @@
     <reference name='xmlTextWriterFlush' href='html/libxml-xmlwriter.html#xmlTextWriterFlush'/>
     <reference name='xmlTextWriterFullEndElement' href='html/libxml-xmlwriter.html#xmlTextWriterFullEndElement'/>
     <reference name='xmlTextWriterPtr' href='html/libxml-xmlwriter.html#xmlTextWriterPtr'/>
+    <reference name='xmlTextWriterSetIndent' href='html/libxml-xmlwriter.html#xmlTextWriterSetIndent'/>
+    <reference name='xmlTextWriterSetIndentString' href='html/libxml-xmlwriter.html#xmlTextWriterSetIndentString'/>
     <reference name='xmlTextWriterStartAttribute' href='html/libxml-xmlwriter.html#xmlTextWriterStartAttribute'/>
     <reference name='xmlTextWriterStartAttributeNS' href='html/libxml-xmlwriter.html#xmlTextWriterStartAttributeNS'/>
     <reference name='xmlTextWriterStartCDATA' href='html/libxml-xmlwriter.html#xmlTextWriterStartCDATA'/>
@@ -4215,6 +4219,7 @@
       <ref name='xmlCleanupEncodingAliases'/>
       <ref name='xmlCleanupGlobals'/>
       <ref name='xmlCleanupInputCallbacks'/>
+      <ref name='xmlCleanupMemory'/>
       <ref name='xmlCleanupOutputCallbacks'/>
       <ref name='xmlCleanupParser'/>
       <ref name='xmlCleanupPredefinedEntities'/>
@@ -5103,6 +5108,7 @@
       <ref name='xmlStrlen'/>
       <ref name='xmlStrncasecmp'/>
       <ref name='xmlStrncat'/>
+      <ref name='xmlStrncatNew'/>
       <ref name='xmlStrncmp'/>
       <ref name='xmlStrndup'/>
       <ref name='xmlStrstr'/>
@@ -5191,6 +5197,8 @@
       <ref name='xmlTextWriterFlush'/>
       <ref name='xmlTextWriterFullEndElement'/>
       <ref name='xmlTextWriterPtr'/>
+      <ref name='xmlTextWriterSetIndent'/>
+      <ref name='xmlTextWriterSetIndentString'/>
       <ref name='xmlTextWriterStartAttribute'/>
       <ref name='xmlTextWriterStartAttributeNS'/>
       <ref name='xmlTextWriterStartCDATA'/>
@@ -5800,8 +5808,8 @@
       <ref name='htmlReadFd'/>
     </type>
     <type name='htmlParserCtxtPtr'>
-      <ref name='htmlCreatePushParserCtxt'/>
       <ref name='htmlCreateFileParserCtxt'/>
+      <ref name='htmlCreatePushParserCtxt'/>
       <ref name='htmlCreateMemoryParserCtxt'/>
     </type>
     <type name='htmlStatus'>
@@ -5819,12 +5827,12 @@
     <type name='void *'>
       <ref name='xmlNanoHTTPMethod'/>
       <ref name='xmlMemRealloc'/>
-      <ref name='xmlLinkGetData'/>
       <ref name='xmlHashLookup3'/>
       <ref name='xmlReallocFunc'/>
       <ref name='xmlNanoFTPConnectTo'/>
       <ref name='xmlOutputOpenCallback'/>
       <ref name='xmlHashLookup2'/>
+      <ref name='xmlLinkGetData'/>
       <ref name='xmlHashLookup'/>
       <ref name='xmlHashQLookup'/>
       <ref name='xmlListReverseSearch'/>
@@ -5873,9 +5881,9 @@
       <ref name='xmlSetProp'/>
     </type>
     <type name='xmlAttributePtr'>
+      <ref name='xmlGetDtdAttrDesc'/>
       <ref name='xmlAddAttributeDecl'/>
       <ref name='xmlGetDtdQAttrDesc'/>
-      <ref name='xmlGetDtdAttrDesc'/>
     </type>
     <type name='xmlAttributeTablePtr'>
       <ref name='xmlCopyAttributeTable'/>
@@ -5912,8 +5920,8 @@
     </type>
     <type name='xmlCatalogPtr'>
       <ref name='xmlLoadSGMLSuperCatalog'/>
-      <ref name='xmlNewCatalog'/>
       <ref name='xmlLoadACatalog'/>
+      <ref name='xmlNewCatalog'/>
     </type>
     <type name='xmlChar'>
       <ref name='xmlPopInput'/>
@@ -5945,7 +5953,6 @@
       <ref name='xmlStringDecodeEntities'/>
       <ref name='xmlParseEncName'/>
       <ref name='xmlTextReaderPrefix'/>
-      <ref name='xmlDecodeEntities'/>
       <ref name='xmlXPathCastNumberToString'/>
       <ref name='xmlParseNmtoken'/>
       <ref name='xmlTextReaderLocatorBaseURI'/>
@@ -5957,6 +5964,7 @@
       <ref name='xmlEncodeSpecialChars'/>
       <ref name='xmlURIEscapeStr'/>
       <ref name='xmlGetNsProp'/>
+      <ref name='xmlDecodeEntities'/>
       <ref name='xmlXPathCastNodeToString'/>
       <ref name='xmlNamespaceParseNCName'/>
       <ref name='xmlCatalogResolveURI'/>
@@ -5981,6 +5989,7 @@
       <ref name='xmlACatalogResolve'/>
       <ref name='xmlTextReaderBaseUri'/>
       <ref name='xmlParseEntityValue'/>
+      <ref name='xmlStrncatNew'/>
       <ref name='xmlUTF8Strpos'/>
       <ref name='xmlCharStrdup'/>
       <ref name='xmlNamespaceParseNSDef'/>
@@ -6008,8 +6017,8 @@
     </type>
     <type name='xmlCharEncodingHandlerPtr'>
       <ref name='xmlGetCharEncodingHandler'/>
-      <ref name='xmlNewCharEncodingHandler'/>
       <ref name='xmlFindCharEncodingHandler'/>
+      <ref name='xmlNewCharEncodingHandler'/>
     </type>
     <type name='xmlDeregisterNodeFunc'>
       <ref name='xmlThrDefDeregisterNodeDefault'/>
@@ -6024,8 +6033,8 @@
       <ref name='xmlSAXParseMemoryWithData'/>
       <ref name='xmlSAXParseEntity'/>
       <ref name='xmlParseEntity'/>
-      <ref name='xmlSAXParseFileWithData'/>
       <ref name='xmlRecoverDoc'/>
+      <ref name='xmlSAXParseFileWithData'/>
       <ref name='xmlReadDoc'/>
       <ref name='xmlReadMemory'/>
       <ref name='xmlCtxtReadIO'/>
@@ -6033,13 +6042,13 @@
       <ref name='xmlReadFile'/>
       <ref name='xmlRecoverFile'/>
       <ref name='xmlSAXParseDoc'/>
+      <ref name='xmlParseCatalogFile'/>
       <ref name='xmlCtxtReadFile'/>
       <ref name='xmlCtxtReadFd'/>
       <ref name='xmlReadIO'/>
       <ref name='xmlCopyDoc'/>
       <ref name='xmlCtxtReadMemory'/>
       <ref name='xmlReadFd'/>
-      <ref name='xmlParseCatalogFile'/>
       <ref name='xmlCtxtReadDoc'/>
       <ref name='xmlParseMemory'/>
       <ref name='xmlSAXParseFile'/>
@@ -6091,9 +6100,9 @@
     </type>
     <type name='xmlEnumerationPtr'>
       <ref name='xmlCreateEnumeration'/>
-      <ref name='xmlParseNotationType'/>
       <ref name='xmlCopyEnumeration'/>
       <ref name='xmlParseEnumerationType'/>
+      <ref name='xmlParseNotationType'/>
     </type>
     <type name='xmlErrorPtr'>
       <ref name='xmlCtxtGetLastError'/>
@@ -6231,9 +6240,9 @@
       <ref name='xmlCreateIOParserCtxt'/>
       <ref name='xmlCreateFileParserCtxt'/>
       <ref name='xmlCreateDocParserCtxt'/>
-      <ref name='xmlCreateEntityParserCtxt'/>
       <ref name='xmlCreatePushParserCtxt'/>
       <ref name='xmlNewParserCtxt'/>
+      <ref name='xmlCreateEntityParserCtxt'/>
     </type>
     <type name='xmlParserInputBufferPtr'>
       <ref name='xmlParserInputBufferCreateFilename'/>
@@ -6311,8 +6320,8 @@
     <type name='xmlTextReaderPtr'>
       <ref name='xmlReaderForFile'/>
       <ref name='xmlReaderForIO'/>
-      <ref name='xmlNewTextReader'/>
       <ref name='xmlReaderForFd'/>
+      <ref name='xmlNewTextReader'/>
       <ref name='xmlReaderWalker'/>
       <ref name='xmlNewTextReaderFilename'/>
       <ref name='xmlReaderForDoc'/>
@@ -6457,9 +6466,7 @@
       <ref name='xmlNanoHTTPFetch'/>
       <ref name='xmlNanoHTTPMethod'/>
       <ref name='xmlNanoHTTPMethodRedir'/>
-      <ref name='xmlNanoHTTPMethodRedir'/>
       <ref name='xmlNanoHTTPOpen'/>
-      <ref name='xmlNanoHTTPOpenRedir'/>
       <ref name='xmlNanoHTTPOpenRedir'/>
     </type>
     <type name='char const *'>
@@ -6474,7 +6481,6 @@
     <type name='const htmlElemDesc *'>
       <ref name='htmlAttrAllowed'/>
       <ref name='htmlElementAllowedHere'/>
-      <ref name='htmlElementStatusHere'/>
       <ref name='htmlElementStatusHere'/>
     </type>
     <type name='const htmlNodePtr'>
@@ -6494,10 +6500,8 @@
     </type>
     <type name='const void *'>
       <ref name='xmlListDataCompare'/>
-      <ref name='xmlListDataCompare'/>
       <ref name='xmlListReverseWalk'/>
       <ref name='xmlListWalk'/>
-      <ref name='xmlListWalker'/>
       <ref name='xmlListWalker'/>
     </type>
     <type name='const xlinkHRef'>
@@ -6511,8 +6515,6 @@
       <ref name='xlinkSimpleLinkFunk'/>
     </type>
     <type name='const xlinkRole *'>
-      <ref name='xlinkExtendedLinkFunk'/>
-      <ref name='xlinkExtendedLinkFunk'/>
       <ref name='xlinkExtendedLinkFunk'/>
       <ref name='xlinkExtendedLinkSetFunk'/>
     </type>
@@ -6532,14 +6534,8 @@
     </type>
     <type name='const xmlChar *'>
       <ref name='attribute'/>
-      <ref name='attribute'/>
-      <ref name='attributeDecl'/>
-      <ref name='attributeDecl'/>
       <ref name='attributeDecl'/>
       <ref name='attributeDeclSAXFunc'/>
-      <ref name='attributeDeclSAXFunc'/>
-      <ref name='attributeDeclSAXFunc'/>
-      <ref name='attributeSAXFunc'/>
       <ref name='attributeSAXFunc'/>
       <ref name='cdataBlock'/>
       <ref name='cdataBlockSAXFunc'/>
@@ -6551,26 +6547,15 @@
       <ref name='elementDeclSAXFunc'/>
       <ref name='endElement'/>
       <ref name='endElementNsSAX2Func'/>
-      <ref name='endElementNsSAX2Func'/>
-      <ref name='endElementNsSAX2Func'/>
       <ref name='endElementSAXFunc'/>
       <ref name='entityDecl'/>
-      <ref name='entityDecl'/>
-      <ref name='entityDecl'/>
-      <ref name='entityDeclSAXFunc'/>
-      <ref name='entityDeclSAXFunc'/>
       <ref name='entityDeclSAXFunc'/>
       <ref name='externalSubset'/>
-      <ref name='externalSubset'/>
-      <ref name='externalSubset'/>
-      <ref name='externalSubsetSAXFunc'/>
-      <ref name='externalSubsetSAXFunc'/>
       <ref name='externalSubsetSAXFunc'/>
       <ref name='getEntity'/>
       <ref name='getEntitySAXFunc'/>
       <ref name='getParameterEntity'/>
       <ref name='getParameterEntitySAXFunc'/>
-      <ref name='globalNamespace'/>
       <ref name='globalNamespace'/>
       <ref name='htmlAttrAllowed'/>
       <ref name='htmlAutoCloseTag'/>
@@ -6580,8 +6565,6 @@
       <ref name='htmlIsBooleanAttr'/>
       <ref name='htmlIsScriptAttribute'/>
       <ref name='htmlNewDoc'/>
-      <ref name='htmlNewDoc'/>
-      <ref name='htmlNewDocNoDtD'/>
       <ref name='htmlNewDocNoDtD'/>
       <ref name='htmlReadDoc'/>
       <ref name='htmlSetMetaEncoding'/>
@@ -6589,75 +6572,39 @@
       <ref name='ignorableWhitespace'/>
       <ref name='ignorableWhitespaceSAXFunc'/>
       <ref name='internalSubset'/>
-      <ref name='internalSubset'/>
-      <ref name='internalSubset'/>
-      <ref name='internalSubsetSAXFunc'/>
-      <ref name='internalSubsetSAXFunc'/>
       <ref name='internalSubsetSAXFunc'/>
       <ref name='namePush'/>
       <ref name='namespaceDecl'/>
-      <ref name='namespaceDecl'/>
       <ref name='notationDecl'/>
-      <ref name='notationDecl'/>
-      <ref name='notationDecl'/>
-      <ref name='notationDeclSAXFunc'/>
-      <ref name='notationDeclSAXFunc'/>
       <ref name='notationDeclSAXFunc'/>
       <ref name='processingInstruction'/>
-      <ref name='processingInstruction'/>
-      <ref name='processingInstructionSAXFunc'/>
       <ref name='processingInstructionSAXFunc'/>
       <ref name='reference'/>
       <ref name='referenceSAXFunc'/>
       <ref name='resolveEntity'/>
-      <ref name='resolveEntity'/>
-      <ref name='resolveEntitySAXFunc'/>
       <ref name='resolveEntitySAXFunc'/>
       <ref name='setNamespace'/>
       <ref name='startElement'/>
       <ref name='startElementNsSAX2Func'/>
-      <ref name='startElementNsSAX2Func'/>
-      <ref name='startElementNsSAX2Func'/>
       <ref name='startElementSAXFunc'/>
       <ref name='unparsedEntityDecl'/>
-      <ref name='unparsedEntityDecl'/>
-      <ref name='unparsedEntityDecl'/>
-      <ref name='unparsedEntityDecl'/>
       <ref name='unparsedEntityDeclSAXFunc'/>
-      <ref name='unparsedEntityDeclSAXFunc'/>
-      <ref name='unparsedEntityDeclSAXFunc'/>
-      <ref name='unparsedEntityDeclSAXFunc'/>
-      <ref name='xmlACatalogAdd'/>
-      <ref name='xmlACatalogAdd'/>
       <ref name='xmlACatalogAdd'/>
       <ref name='xmlACatalogRemove'/>
-      <ref name='xmlACatalogResolve'/>
       <ref name='xmlACatalogResolve'/>
       <ref name='xmlACatalogResolvePublic'/>
       <ref name='xmlACatalogResolveSystem'/>
       <ref name='xmlACatalogResolveURI'/>
       <ref name='xmlAddAttributeDecl'/>
-      <ref name='xmlAddAttributeDecl'/>
-      <ref name='xmlAddAttributeDecl'/>
-      <ref name='xmlAddAttributeDecl'/>
       <ref name='xmlAddDocEntity'/>
-      <ref name='xmlAddDocEntity'/>
-      <ref name='xmlAddDocEntity'/>
-      <ref name='xmlAddDocEntity'/>
-      <ref name='xmlAddDtdEntity'/>
-      <ref name='xmlAddDtdEntity'/>
-      <ref name='xmlAddDtdEntity'/>
       <ref name='xmlAddDtdEntity'/>
       <ref name='xmlAddElementDecl'/>
       <ref name='xmlAddID'/>
-      <ref name='xmlAddNotationDecl'/>
-      <ref name='xmlAddNotationDecl'/>
       <ref name='xmlAddNotationDecl'/>
       <ref name='xmlAddRef'/>
       <ref name='xmlAutomataNewCountTrans'/>
       <ref name='xmlAutomataNewOnceTrans'/>
       <ref name='xmlAutomataNewTransition'/>
-      <ref name='xmlAutomataNewTransition2'/>
       <ref name='xmlAutomataNewTransition2'/>
       <ref name='xmlBufferAdd'/>
       <ref name='xmlBufferAddHead'/>
@@ -6665,21 +6612,15 @@
       <ref name='xmlBufferWriteCHAR'/>
       <ref name='xmlBufferWriteQuotedString'/>
       <ref name='xmlBuildQName'/>
-      <ref name='xmlBuildQName'/>
-      <ref name='xmlBuildURI'/>
       <ref name='xmlBuildURI'/>
       <ref name='xmlCanonicPath'/>
-      <ref name='xmlCatalogAdd'/>
-      <ref name='xmlCatalogAdd'/>
       <ref name='xmlCatalogAdd'/>
       <ref name='xmlCatalogAddLocal'/>
       <ref name='xmlCatalogGetPublic'/>
       <ref name='xmlCatalogGetSystem'/>
       <ref name='xmlCatalogLocalResolve'/>
-      <ref name='xmlCatalogLocalResolve'/>
       <ref name='xmlCatalogLocalResolveURI'/>
       <ref name='xmlCatalogRemove'/>
-      <ref name='xmlCatalogResolve'/>
       <ref name='xmlCatalogResolve'/>
       <ref name='xmlCatalogResolvePublic'/>
       <ref name='xmlCatalogResolveSystem'/>
@@ -6687,127 +6628,76 @@
       <ref name='xmlCheckLanguageID'/>
       <ref name='xmlCreateDocParserCtxt'/>
       <ref name='xmlCreateEntityParserCtxt'/>
-      <ref name='xmlCreateEntityParserCtxt'/>
-      <ref name='xmlCreateEntityParserCtxt'/>
       <ref name='xmlCreateEnumeration'/>
-      <ref name='xmlCreateIntSubset'/>
-      <ref name='xmlCreateIntSubset'/>
       <ref name='xmlCreateIntSubset'/>
       <ref name='xmlCtxtReadDoc'/>
       <ref name='xmlDebugDumpString'/>
       <ref name='xmlDictLookup'/>
       <ref name='xmlDictOwns'/>
       <ref name='xmlDictQLookup'/>
-      <ref name='xmlDictQLookup'/>
       <ref name='xmlEncodeEntities'/>
       <ref name='xmlEncodeEntitiesReentrant'/>
       <ref name='xmlEncodeSpecialChars'/>
       <ref name='xmlGetDocEntity'/>
       <ref name='xmlGetDtdAttrDesc'/>
-      <ref name='xmlGetDtdAttrDesc'/>
       <ref name='xmlGetDtdElementDesc'/>
       <ref name='xmlGetDtdEntity'/>
       <ref name='xmlGetDtdNotationDesc'/>
       <ref name='xmlGetDtdQAttrDesc'/>
-      <ref name='xmlGetDtdQAttrDesc'/>
-      <ref name='xmlGetDtdQAttrDesc'/>
-      <ref name='xmlGetDtdQElementDesc'/>
       <ref name='xmlGetDtdQElementDesc'/>
       <ref name='xmlGetID'/>
       <ref name='xmlGetNoNsProp'/>
-      <ref name='xmlGetNsProp'/>
       <ref name='xmlGetNsProp'/>
       <ref name='xmlGetParameterEntity'/>
       <ref name='xmlGetPredefinedEntity'/>
       <ref name='xmlGetProp'/>
       <ref name='xmlGetRefs'/>
       <ref name='xmlHasNsProp'/>
-      <ref name='xmlHasNsProp'/>
       <ref name='xmlHasProp'/>
       <ref name='xmlHashAddEntry'/>
       <ref name='xmlHashAddEntry2'/>
-      <ref name='xmlHashAddEntry2'/>
-      <ref name='xmlHashAddEntry3'/>
-      <ref name='xmlHashAddEntry3'/>
       <ref name='xmlHashAddEntry3'/>
       <ref name='xmlHashLookup'/>
       <ref name='xmlHashLookup2'/>
-      <ref name='xmlHashLookup2'/>
-      <ref name='xmlHashLookup3'/>
-      <ref name='xmlHashLookup3'/>
       <ref name='xmlHashLookup3'/>
       <ref name='xmlHashQLookup'/>
-      <ref name='xmlHashQLookup'/>
       <ref name='xmlHashQLookup2'/>
-      <ref name='xmlHashQLookup2'/>
-      <ref name='xmlHashQLookup2'/>
-      <ref name='xmlHashQLookup2'/>
-      <ref name='xmlHashQLookup3'/>
-      <ref name='xmlHashQLookup3'/>
-      <ref name='xmlHashQLookup3'/>
-      <ref name='xmlHashQLookup3'/>
-      <ref name='xmlHashQLookup3'/>
       <ref name='xmlHashQLookup3'/>
       <ref name='xmlHashRemoveEntry'/>
       <ref name='xmlHashRemoveEntry2'/>
-      <ref name='xmlHashRemoveEntry2'/>
-      <ref name='xmlHashRemoveEntry3'/>
-      <ref name='xmlHashRemoveEntry3'/>
       <ref name='xmlHashRemoveEntry3'/>
       <ref name='xmlHashScan3'/>
-      <ref name='xmlHashScan3'/>
-      <ref name='xmlHashScan3'/>
       <ref name='xmlHashScanFull3'/>
-      <ref name='xmlHashScanFull3'/>
-      <ref name='xmlHashScanFull3'/>
-      <ref name='xmlHashScannerFull'/>
-      <ref name='xmlHashScannerFull'/>
       <ref name='xmlHashScannerFull'/>
       <ref name='xmlHashUpdateEntry'/>
       <ref name='xmlHashUpdateEntry2'/>
-      <ref name='xmlHashUpdateEntry2'/>
-      <ref name='xmlHashUpdateEntry3'/>
-      <ref name='xmlHashUpdateEntry3'/>
       <ref name='xmlHashUpdateEntry3'/>
       <ref name='xmlIsMixedElement'/>
       <ref name='xmlIsXHTML'/>
-      <ref name='xmlIsXHTML'/>
       <ref name='xmlNewCDataBlock'/>
       <ref name='xmlNewCharRef'/>
-      <ref name='xmlNewChild'/>
       <ref name='xmlNewChild'/>
       <ref name='xmlNewComment'/>
       <ref name='xmlNewDoc'/>
       <ref name='xmlNewDocComment'/>
       <ref name='xmlNewDocNode'/>
-      <ref name='xmlNewDocNode'/>
       <ref name='xmlNewDocNodeEatName'/>
       <ref name='xmlNewDocProp'/>
-      <ref name='xmlNewDocProp'/>
-      <ref name='xmlNewDocRawNode'/>
       <ref name='xmlNewDocRawNode'/>
       <ref name='xmlNewDocText'/>
       <ref name='xmlNewDocTextLen'/>
       <ref name='xmlNewDtd'/>
-      <ref name='xmlNewDtd'/>
-      <ref name='xmlNewDtd'/>
       <ref name='xmlNewElementContent'/>
-      <ref name='xmlNewGlobalNs'/>
       <ref name='xmlNewGlobalNs'/>
       <ref name='xmlNewNode'/>
       <ref name='xmlNewNs'/>
-      <ref name='xmlNewNs'/>
-      <ref name='xmlNewNsProp'/>
       <ref name='xmlNewNsProp'/>
       <ref name='xmlNewNsPropEatName'/>
       <ref name='xmlNewPI'/>
-      <ref name='xmlNewPI'/>
-      <ref name='xmlNewProp'/>
       <ref name='xmlNewProp'/>
       <ref name='xmlNewReference'/>
       <ref name='xmlNewStringInputStream'/>
       <ref name='xmlNewText'/>
-      <ref name='xmlNewTextChild'/>
       <ref name='xmlNewTextChild'/>
       <ref name='xmlNewTextLen'/>
       <ref name='xmlNodeAddContent'/>
@@ -6821,13 +6711,9 @@
       <ref name='xmlParseBalancedChunkMemory'/>
       <ref name='xmlParseBalancedChunkMemoryRecover'/>
       <ref name='xmlParseCtxtExternalEntity'/>
-      <ref name='xmlParseCtxtExternalEntity'/>
-      <ref name='xmlParseDTD'/>
       <ref name='xmlParseDTD'/>
       <ref name='xmlParseElementContentDecl'/>
       <ref name='xmlParseExternalEntity'/>
-      <ref name='xmlParseExternalEntity'/>
-      <ref name='xmlParseExternalSubset'/>
       <ref name='xmlParseExternalSubset'/>
       <ref name='xmlPatterncompile'/>
       <ref name='xmlReadDoc'/>
@@ -6836,12 +6722,9 @@
       <ref name='xmlRegExecCallbacks'/>
       <ref name='xmlRegExecPushString'/>
       <ref name='xmlRegExecPushString2'/>
-      <ref name='xmlRegExecPushString2'/>
       <ref name='xmlRegexpCompile'/>
       <ref name='xmlRegexpExec'/>
       <ref name='xmlRelaxNGValidatePushCData'/>
-      <ref name='xmlSAX2AttributeDecl'/>
-      <ref name='xmlSAX2AttributeDecl'/>
       <ref name='xmlSAX2AttributeDecl'/>
       <ref name='xmlSAX2CDataBlock'/>
       <ref name='xmlSAX2Characters'/>
@@ -6849,45 +6732,24 @@
       <ref name='xmlSAX2ElementDecl'/>
       <ref name='xmlSAX2EndElement'/>
       <ref name='xmlSAX2EndElementNs'/>
-      <ref name='xmlSAX2EndElementNs'/>
-      <ref name='xmlSAX2EndElementNs'/>
       <ref name='xmlSAX2EntityDecl'/>
-      <ref name='xmlSAX2EntityDecl'/>
-      <ref name='xmlSAX2EntityDecl'/>
-      <ref name='xmlSAX2ExternalSubset'/>
-      <ref name='xmlSAX2ExternalSubset'/>
       <ref name='xmlSAX2ExternalSubset'/>
       <ref name='xmlSAX2GetEntity'/>
       <ref name='xmlSAX2GetParameterEntity'/>
       <ref name='xmlSAX2GlobalNamespace'/>
-      <ref name='xmlSAX2GlobalNamespace'/>
       <ref name='xmlSAX2IgnorableWhitespace'/>
       <ref name='xmlSAX2InternalSubset'/>
-      <ref name='xmlSAX2InternalSubset'/>
-      <ref name='xmlSAX2InternalSubset'/>
-      <ref name='xmlSAX2NamespaceDecl'/>
       <ref name='xmlSAX2NamespaceDecl'/>
       <ref name='xmlSAX2NotationDecl'/>
-      <ref name='xmlSAX2NotationDecl'/>
-      <ref name='xmlSAX2NotationDecl'/>
-      <ref name='xmlSAX2ProcessingInstruction'/>
       <ref name='xmlSAX2ProcessingInstruction'/>
       <ref name='xmlSAX2Reference'/>
-      <ref name='xmlSAX2ResolveEntity'/>
       <ref name='xmlSAX2ResolveEntity'/>
       <ref name='xmlSAX2SetNamespace'/>
       <ref name='xmlSAX2StartElement'/>
       <ref name='xmlSAX2StartElementNs'/>
-      <ref name='xmlSAX2StartElementNs'/>
-      <ref name='xmlSAX2StartElementNs'/>
       <ref name='xmlSAX2UnparsedEntityDecl'/>
-      <ref name='xmlSAX2UnparsedEntityDecl'/>
-      <ref name='xmlSAX2UnparsedEntityDecl'/>
-      <ref name='xmlSAX2UnparsedEntityDecl'/>
-      <ref name='xmlSAXParseDTD'/>
       <ref name='xmlSAXParseDTD'/>
       <ref name='xmlSchemaCheckFacet'/>
-      <ref name='xmlSchemaGetPredefinedType'/>
       <ref name='xmlSchemaGetPredefinedType'/>
       <ref name='xmlSchemaValPredefTypeNode'/>
       <ref name='xmlSchemaValidateFacet'/>
@@ -6895,26 +6757,19 @@
       <ref name='xmlSearchNs'/>
       <ref name='xmlSearchNsByHref'/>
       <ref name='xmlSetNsProp'/>
-      <ref name='xmlSetNsProp'/>
-      <ref name='xmlSetProp'/>
       <ref name='xmlSetProp'/>
       <ref name='xmlSetupParserForBuffer'/>
       <ref name='xmlSplitQName'/>
       <ref name='xmlSplitQName2'/>
       <ref name='xmlSplitQName3'/>
       <ref name='xmlStrEqual'/>
-      <ref name='xmlStrEqual'/>
       <ref name='xmlStrPrintf'/>
       <ref name='xmlStrQEqual'/>
-      <ref name='xmlStrQEqual'/>
-      <ref name='xmlStrQEqual'/>
       <ref name='xmlStrVPrintf'/>
-      <ref name='xmlStrcasecmp'/>
       <ref name='xmlStrcasecmp'/>
       <ref name='xmlStrcasestr'/>
       <ref name='xmlStrcat'/>
       <ref name='xmlStrchr'/>
-      <ref name='xmlStrcmp'/>
       <ref name='xmlStrcmp'/>
       <ref name='xmlStrdup'/>
       <ref name='xmlStringCurrentChar'/>
@@ -6924,118 +6779,69 @@
       <ref name='xmlStringLenGetNodeList'/>
       <ref name='xmlStrlen'/>
       <ref name='xmlStrncasecmp'/>
-      <ref name='xmlStrncasecmp'/>
       <ref name='xmlStrncat'/>
-      <ref name='xmlStrncmp'/>
+      <ref name='xmlStrncatNew'/>
       <ref name='xmlStrncmp'/>
       <ref name='xmlStrndup'/>
-      <ref name='xmlStrstr'/>
       <ref name='xmlStrstr'/>
       <ref name='xmlStrsub'/>
       <ref name='xmlTextConcat'/>
       <ref name='xmlTextReaderConstString'/>
       <ref name='xmlTextReaderGetAttribute'/>
       <ref name='xmlTextReaderGetAttributeNs'/>
-      <ref name='xmlTextReaderGetAttributeNs'/>
       <ref name='xmlTextReaderLookupNamespace'/>
       <ref name='xmlTextReaderMoveToAttribute'/>
-      <ref name='xmlTextReaderMoveToAttributeNs'/>
       <ref name='xmlTextReaderMoveToAttributeNs'/>
       <ref name='xmlTextReaderPreservePattern'/>
       <ref name='xmlTextWriterStartAttribute'/>
       <ref name='xmlTextWriterStartAttributeNS'/>
-      <ref name='xmlTextWriterStartAttributeNS'/>
-      <ref name='xmlTextWriterStartAttributeNS'/>
-      <ref name='xmlTextWriterStartDTD'/>
-      <ref name='xmlTextWriterStartDTD'/>
       <ref name='xmlTextWriterStartDTD'/>
       <ref name='xmlTextWriterStartDTDAttlist'/>
       <ref name='xmlTextWriterStartDTDElement'/>
       <ref name='xmlTextWriterStartDTDEntity'/>
       <ref name='xmlTextWriterStartElement'/>
       <ref name='xmlTextWriterStartElementNS'/>
-      <ref name='xmlTextWriterStartElementNS'/>
-      <ref name='xmlTextWriterStartElementNS'/>
       <ref name='xmlTextWriterStartPI'/>
       <ref name='xmlTextWriterWriteAttribute'/>
-      <ref name='xmlTextWriterWriteAttribute'/>
-      <ref name='xmlTextWriterWriteAttributeNS'/>
-      <ref name='xmlTextWriterWriteAttributeNS'/>
-      <ref name='xmlTextWriterWriteAttributeNS'/>
       <ref name='xmlTextWriterWriteAttributeNS'/>
       <ref name='xmlTextWriterWriteCDATA'/>
       <ref name='xmlTextWriterWriteComment'/>
       <ref name='xmlTextWriterWriteDTD'/>
-      <ref name='xmlTextWriterWriteDTD'/>
-      <ref name='xmlTextWriterWriteDTD'/>
-      <ref name='xmlTextWriterWriteDTD'/>
-      <ref name='xmlTextWriterWriteDTDAttlist'/>
       <ref name='xmlTextWriterWriteDTDAttlist'/>
       <ref name='xmlTextWriterWriteDTDElement'/>
-      <ref name='xmlTextWriterWriteDTDElement'/>
       <ref name='xmlTextWriterWriteDTDEntity'/>
-      <ref name='xmlTextWriterWriteDTDEntity'/>
-      <ref name='xmlTextWriterWriteDTDEntity'/>
-      <ref name='xmlTextWriterWriteDTDEntity'/>
-      <ref name='xmlTextWriterWriteDTDEntity'/>
-      <ref name='xmlTextWriterWriteDTDExternalEntity'/>
-      <ref name='xmlTextWriterWriteDTDExternalEntity'/>
-      <ref name='xmlTextWriterWriteDTDExternalEntity'/>
       <ref name='xmlTextWriterWriteDTDExternalEntity'/>
       <ref name='xmlTextWriterWriteDTDInternalEntity'/>
-      <ref name='xmlTextWriterWriteDTDInternalEntity'/>
-      <ref name='xmlTextWriterWriteDTDNotation'/>
-      <ref name='xmlTextWriterWriteDTDNotation'/>
       <ref name='xmlTextWriterWriteDTDNotation'/>
       <ref name='xmlTextWriterWriteElement'/>
-      <ref name='xmlTextWriterWriteElement'/>
-      <ref name='xmlTextWriterWriteElementNS'/>
-      <ref name='xmlTextWriterWriteElementNS'/>
-      <ref name='xmlTextWriterWriteElementNS'/>
       <ref name='xmlTextWriterWriteElementNS'/>
       <ref name='xmlTextWriterWriteFormatAttribute'/>
       <ref name='xmlTextWriterWriteFormatAttributeNS'/>
-      <ref name='xmlTextWriterWriteFormatAttributeNS'/>
-      <ref name='xmlTextWriterWriteFormatAttributeNS'/>
-      <ref name='xmlTextWriterWriteFormatDTD'/>
-      <ref name='xmlTextWriterWriteFormatDTD'/>
       <ref name='xmlTextWriterWriteFormatDTD'/>
       <ref name='xmlTextWriterWriteFormatDTDAttlist'/>
       <ref name='xmlTextWriterWriteFormatDTDElement'/>
       <ref name='xmlTextWriterWriteFormatDTDInternalEntity'/>
       <ref name='xmlTextWriterWriteFormatElement'/>
       <ref name='xmlTextWriterWriteFormatElementNS'/>
-      <ref name='xmlTextWriterWriteFormatElementNS'/>
-      <ref name='xmlTextWriterWriteFormatElementNS'/>
       <ref name='xmlTextWriterWriteFormatPI'/>
-      <ref name='xmlTextWriterWritePI'/>
       <ref name='xmlTextWriterWritePI'/>
       <ref name='xmlTextWriterWriteRaw'/>
       <ref name='xmlTextWriterWriteRawLen'/>
       <ref name='xmlTextWriterWriteString'/>
       <ref name='xmlTextWriterWriteVFormatAttribute'/>
       <ref name='xmlTextWriterWriteVFormatAttributeNS'/>
-      <ref name='xmlTextWriterWriteVFormatAttributeNS'/>
-      <ref name='xmlTextWriterWriteVFormatAttributeNS'/>
-      <ref name='xmlTextWriterWriteVFormatDTD'/>
-      <ref name='xmlTextWriterWriteVFormatDTD'/>
       <ref name='xmlTextWriterWriteVFormatDTD'/>
       <ref name='xmlTextWriterWriteVFormatDTDAttlist'/>
       <ref name='xmlTextWriterWriteVFormatDTDElement'/>
       <ref name='xmlTextWriterWriteVFormatDTDInternalEntity'/>
       <ref name='xmlTextWriterWriteVFormatElement'/>
       <ref name='xmlTextWriterWriteVFormatElementNS'/>
-      <ref name='xmlTextWriterWriteVFormatElementNS'/>
-      <ref name='xmlTextWriterWriteVFormatElementNS'/>
       <ref name='xmlTextWriterWriteVFormatPI'/>
       <ref name='xmlURIEscape'/>
       <ref name='xmlURIEscapeStr'/>
-      <ref name='xmlURIEscapeStr'/>
-      <ref name='xmlUTF8Charcmp'/>
       <ref name='xmlUTF8Charcmp'/>
       <ref name='xmlUTF8Size'/>
       <ref name='xmlUTF8Strlen'/>
-      <ref name='xmlUTF8Strloc'/>
       <ref name='xmlUTF8Strloc'/>
       <ref name='xmlUTF8Strndup'/>
       <ref name='xmlUTF8Strpos'/>
@@ -7044,8 +6850,6 @@
       <ref name='xmlUnsetNsProp'/>
       <ref name='xmlUnsetProp'/>
       <ref name='xmlValidCtxtNormalizeAttributeValue'/>
-      <ref name='xmlValidCtxtNormalizeAttributeValue'/>
-      <ref name='xmlValidNormalizeAttributeValue'/>
       <ref name='xmlValidNormalizeAttributeValue'/>
       <ref name='xmlValidateAttributeValue'/>
       <ref name='xmlValidateNCName'/>
@@ -7058,7 +6862,6 @@
       <ref name='xmlValidateNotationUse'/>
       <ref name='xmlValidateOneAttribute'/>
       <ref name='xmlValidateOneNamespace'/>
-      <ref name='xmlValidateOneNamespace'/>
       <ref name='xmlValidatePopElement'/>
       <ref name='xmlValidatePushCData'/>
       <ref name='xmlValidatePushElement'/>
@@ -7069,9 +6872,7 @@
       <ref name='xmlXPathEval'/>
       <ref name='xmlXPathEvalExpression'/>
       <ref name='xmlXPathFuncLookupFunc'/>
-      <ref name='xmlXPathFuncLookupFunc'/>
       <ref name='xmlXPathFunctionLookup'/>
-      <ref name='xmlXPathFunctionLookupNS'/>
       <ref name='xmlXPathFunctionLookupNS'/>
       <ref name='xmlXPathIsNodeType'/>
       <ref name='xmlXPathNewParserContext'/>
@@ -7079,17 +6880,12 @@
       <ref name='xmlXPathNsLookup'/>
       <ref name='xmlXPathRegisterFunc'/>
       <ref name='xmlXPathRegisterFuncNS'/>
-      <ref name='xmlXPathRegisterFuncNS'/>
-      <ref name='xmlXPathRegisterNs'/>
       <ref name='xmlXPathRegisterNs'/>
       <ref name='xmlXPathRegisterVariable'/>
-      <ref name='xmlXPathRegisterVariableNS'/>
       <ref name='xmlXPathRegisterVariableNS'/>
       <ref name='xmlXPathStringEvalNumber'/>
       <ref name='xmlXPathVariableLookup'/>
       <ref name='xmlXPathVariableLookupFunc'/>
-      <ref name='xmlXPathVariableLookupFunc'/>
-      <ref name='xmlXPathVariableLookupNS'/>
       <ref name='xmlXPathVariableLookupNS'/>
       <ref name='xmlXPtrEval'/>
     </type>
@@ -7097,13 +6893,11 @@
       <ref name='htmlParseEntityRef'/>
       <ref name='startElement'/>
       <ref name='startElementNsSAX2Func'/>
-      <ref name='startElementNsSAX2Func'/>
       <ref name='startElementSAXFunc'/>
       <ref name='xlinkExtendedLinkFunk'/>
       <ref name='xlinkExtendedLinkSetFunk'/>
       <ref name='xmlPatterncompile'/>
       <ref name='xmlSAX2StartElement'/>
-      <ref name='xmlSAX2StartElementNs'/>
       <ref name='xmlSAX2StartElementNs'/>
       <ref name='xmlTextReaderPreservePattern'/>
       <ref name='xmlValidGetPotentialChildren'/>
@@ -7184,19 +6978,12 @@
     </type>
     <type name='int *'>
       <ref name='UTF8ToHtml'/>
-      <ref name='UTF8ToHtml'/>
       <ref name='UTF8Toisolat1'/>
-      <ref name='UTF8Toisolat1'/>
-      <ref name='docbEncodeEntities'/>
       <ref name='docbEncodeEntities'/>
       <ref name='htmlDocDumpMemory'/>
       <ref name='htmlEncodeEntities'/>
-      <ref name='htmlEncodeEntities'/>
-      <ref name='isolat1ToUTF8'/>
       <ref name='isolat1ToUTF8'/>
       <ref name='xmlCharEncodingInputFunc'/>
-      <ref name='xmlCharEncodingInputFunc'/>
-      <ref name='xmlCharEncodingOutputFunc'/>
       <ref name='xmlCharEncodingOutputFunc'/>
       <ref name='xmlCurrentChar'/>
       <ref name='xmlDocDumpFormatMemory'/>
@@ -7354,7 +7141,6 @@
       <ref name='xmlCatalogLocalResolve'/>
       <ref name='xmlCatalogLocalResolveURI'/>
       <ref name='xmlCreateIOParserCtxt'/>
-      <ref name='xmlCreateIOParserCtxt'/>
       <ref name='xmlCreatePushParserCtxt'/>
       <ref name='xmlCtxtGetLastError'/>
       <ref name='xmlCtxtReadIO'/>
@@ -7374,8 +7160,6 @@
       <ref name='xmlHashScanFull'/>
       <ref name='xmlHashScanFull3'/>
       <ref name='xmlHashScanner'/>
-      <ref name='xmlHashScanner'/>
-      <ref name='xmlHashScannerFull'/>
       <ref name='xmlHashScannerFull'/>
       <ref name='xmlHashUpdateEntry'/>
       <ref name='xmlHashUpdateEntry2'/>
@@ -7405,21 +7189,17 @@
       <ref name='xmlNanoFTPDele'/>
       <ref name='xmlNanoFTPFreeCtxt'/>
       <ref name='xmlNanoFTPGet'/>
-      <ref name='xmlNanoFTPGet'/>
       <ref name='xmlNanoFTPGetConnection'/>
       <ref name='xmlNanoFTPGetResponse'/>
       <ref name='xmlNanoFTPGetSocket'/>
       <ref name='xmlNanoFTPList'/>
-      <ref name='xmlNanoFTPList'/>
       <ref name='xmlNanoFTPQuit'/>
-      <ref name='xmlNanoFTPRead'/>
       <ref name='xmlNanoFTPRead'/>
       <ref name='xmlNanoFTPUpdateURL'/>
       <ref name='xmlNanoHTTPAuthHeader'/>
       <ref name='xmlNanoHTTPClose'/>
       <ref name='xmlNanoHTTPEncoding'/>
       <ref name='xmlNanoHTTPMimeType'/>
-      <ref name='xmlNanoHTTPRead'/>
       <ref name='xmlNanoHTTPRead'/>
       <ref name='xmlNanoHTTPRedir'/>
       <ref name='xmlNanoHTTPReturnCode'/>
@@ -7440,7 +7220,6 @@
       <ref name='xmlReaderNewIO'/>
       <ref name='xmlReallocFunc'/>
       <ref name='xmlReallocLoc'/>
-      <ref name='xmlRegExecCallbacks'/>
       <ref name='xmlRegExecCallbacks'/>
       <ref name='xmlRegExecPushString'/>
       <ref name='xmlRegExecPushString2'/>
@@ -7577,20 +7356,12 @@
     </type>
     <type name='xmlAutomataStatePtr'>
       <ref name='xmlAutomataNewAllTrans'/>
-      <ref name='xmlAutomataNewAllTrans'/>
-      <ref name='xmlAutomataNewCountTrans'/>
       <ref name='xmlAutomataNewCountTrans'/>
       <ref name='xmlAutomataNewCountedTrans'/>
-      <ref name='xmlAutomataNewCountedTrans'/>
-      <ref name='xmlAutomataNewCounterTrans'/>
       <ref name='xmlAutomataNewCounterTrans'/>
       <ref name='xmlAutomataNewEpsilon'/>
-      <ref name='xmlAutomataNewEpsilon'/>
-      <ref name='xmlAutomataNewOnceTrans'/>
       <ref name='xmlAutomataNewOnceTrans'/>
       <ref name='xmlAutomataNewTransition'/>
-      <ref name='xmlAutomataNewTransition'/>
-      <ref name='xmlAutomataNewTransition2'/>
       <ref name='xmlAutomataNewTransition2'/>
       <ref name='xmlAutomataSetFinalState'/>
     </type>
@@ -7616,10 +7387,7 @@
       <ref name='xmlBufferWriteChar'/>
       <ref name='xmlBufferWriteQuotedString'/>
       <ref name='xmlCharEncFirstLine'/>
-      <ref name='xmlCharEncFirstLine'/>
       <ref name='xmlCharEncInFunc'/>
-      <ref name='xmlCharEncInFunc'/>
-      <ref name='xmlCharEncOutFunc'/>
       <ref name='xmlCharEncOutFunc'/>
       <ref name='xmlDumpAttributeDecl'/>
       <ref name='xmlDumpAttributeTable'/>
@@ -7656,14 +7424,8 @@
     </type>
     <type name='xmlChar'>
       <ref name='xmlDecodeEntities'/>
-      <ref name='xmlDecodeEntities'/>
-      <ref name='xmlDecodeEntities'/>
       <ref name='xmlStrchr'/>
       <ref name='xmlStringDecodeEntities'/>
-      <ref name='xmlStringDecodeEntities'/>
-      <ref name='xmlStringDecodeEntities'/>
-      <ref name='xmlStringLenDecodeEntities'/>
-      <ref name='xmlStringLenDecodeEntities'/>
       <ref name='xmlStringLenDecodeEntities'/>
     </type>
     <type name='xmlChar *'>
@@ -7694,11 +7456,11 @@
       <ref name='xmlStrcasestr'/>
       <ref name='xmlStrcat'/>
       <ref name='xmlStrncat'/>
+      <ref name='xmlTextWriterSetIndentString'/>
       <ref name='xmlXPathWrapString'/>
     </type>
     <type name='xmlChar **'>
       <ref name='htmlDocDumpMemory'/>
-      <ref name='xmlC14NDocDumpMemory'/>
       <ref name='xmlC14NDocDumpMemory'/>
       <ref name='xmlC14NDocSave'/>
       <ref name='xmlC14NDocSaveTo'/>
@@ -7971,7 +7733,6 @@
     </type>
     <type name='xmlErrorPtr'>
       <ref name='xmlCopyError'/>
-      <ref name='xmlCopyError'/>
       <ref name='xmlResetError'/>
       <ref name='xmlStructuredErrorFunc'/>
     </type>
@@ -8091,7 +7852,6 @@
       <ref name='xmlListFront'/>
       <ref name='xmlListInsert'/>
       <ref name='xmlListMerge'/>
-      <ref name='xmlListMerge'/>
       <ref name='xmlListPopBack'/>
       <ref name='xmlListPopFront'/>
       <ref name='xmlListPushBack'/>
@@ -8116,17 +7876,14 @@
       <ref name='xmlXPtrLocationSetAdd'/>
       <ref name='xmlXPtrLocationSetDel'/>
       <ref name='xmlXPtrLocationSetMerge'/>
-      <ref name='xmlXPtrLocationSetMerge'/>
       <ref name='xmlXPtrLocationSetRemove'/>
       <ref name='xmlXPtrWrapLocationSet'/>
     </type>
     <type name='xmlMallocFunc'>
       <ref name='xmlGcMemSetup'/>
-      <ref name='xmlGcMemSetup'/>
       <ref name='xmlMemSetup'/>
     </type>
     <type name='xmlMallocFunc *'>
-      <ref name='xmlGcMemGet'/>
       <ref name='xmlGcMemGet'/>
       <ref name='xmlMemGet'/>
     </type>
@@ -8136,7 +7893,6 @@
       <ref name='xmlMutexUnlock'/>
     </type>
     <type name='xmlNode *'>
-      <ref name='xmlValidGetValidElements'/>
       <ref name='xmlValidGetValidElements'/>
     </type>
     <type name='xmlNodePtr'>
@@ -8152,16 +7908,10 @@
       <ref name='xlinkNodeDetectFunc'/>
       <ref name='xlinkSimpleLinkFunk'/>
       <ref name='xmlAddChild'/>
-      <ref name='xmlAddChild'/>
-      <ref name='xmlAddChildList'/>
       <ref name='xmlAddChildList'/>
       <ref name='xmlAddNextSibling'/>
-      <ref name='xmlAddNextSibling'/>
-      <ref name='xmlAddPrevSibling'/>
       <ref name='xmlAddPrevSibling'/>
       <ref name='xmlAddSibling'/>
-      <ref name='xmlAddSibling'/>
-      <ref name='xmlC14NIsVisibleCallback'/>
       <ref name='xmlC14NIsVisibleCallback'/>
       <ref name='xmlCopyProp'/>
       <ref name='xmlCopyPropList'/>
@@ -8171,7 +7921,6 @@
       <ref name='xmlDeregisterNodeFunc'/>
       <ref name='xmlDocSetRootElement'/>
       <ref name='xmlElemDump'/>
-      <ref name='xmlEntityReferenceFunc'/>
       <ref name='xmlEntityReferenceFunc'/>
       <ref name='xmlFreeNode'/>
       <ref name='xmlFreeNodeList'/>
@@ -8221,7 +7970,6 @@
       <ref name='xmlRelaxNGValidatePopElement'/>
       <ref name='xmlRelaxNGValidatePushElement'/>
       <ref name='xmlReplaceNode'/>
-      <ref name='xmlReplaceNode'/>
       <ref name='xmlSchemaValPredefTypeNode'/>
       <ref name='xmlSearchNs'/>
       <ref name='xmlSearchNsByHref'/>
@@ -8231,30 +7979,18 @@
       <ref name='xmlSetProp'/>
       <ref name='xmlSetTreeDoc'/>
       <ref name='xmlShellBase'/>
-      <ref name='xmlShellBase'/>
-      <ref name='xmlShellCat'/>
       <ref name='xmlShellCat'/>
       <ref name='xmlShellCmd'/>
-      <ref name='xmlShellCmd'/>
-      <ref name='xmlShellDir'/>
       <ref name='xmlShellDir'/>
       <ref name='xmlShellDu'/>
-      <ref name='xmlShellDu'/>
       <ref name='xmlShellList'/>
-      <ref name='xmlShellList'/>
-      <ref name='xmlShellLoad'/>
       <ref name='xmlShellLoad'/>
       <ref name='xmlShellPrintNode'/>
       <ref name='xmlShellPwd'/>
-      <ref name='xmlShellPwd'/>
-      <ref name='xmlShellSave'/>
       <ref name='xmlShellSave'/>
       <ref name='xmlShellValidate'/>
-      <ref name='xmlShellValidate'/>
-      <ref name='xmlShellWrite'/>
       <ref name='xmlShellWrite'/>
       <ref name='xmlTextConcat'/>
-      <ref name='xmlTextMerge'/>
       <ref name='xmlTextMerge'/>
       <ref name='xmlUnlinkNode'/>
       <ref name='xmlUnsetNsProp'/>
@@ -8272,7 +8008,6 @@
       <ref name='xmlXIncludeProcessTreeFlags'/>
       <ref name='xmlXPathCastNodeToNumber'/>
       <ref name='xmlXPathCastNodeToString'/>
-      <ref name='xmlXPathCmpNodes'/>
       <ref name='xmlXPathCmpNodes'/>
       <ref name='xmlXPathNewNodeSet'/>
       <ref name='xmlXPathNewValueTree'/>
@@ -8301,14 +8036,10 @@
       <ref name='xmlXPathNodeTrailingSorted'/>
       <ref name='xmlXPtrNewCollapsedRange'/>
       <ref name='xmlXPtrNewContext'/>
-      <ref name='xmlXPtrNewContext'/>
       <ref name='xmlXPtrNewLocationSetNodes'/>
-      <ref name='xmlXPtrNewLocationSetNodes'/>
-      <ref name='xmlXPtrNewRange'/>
       <ref name='xmlXPtrNewRange'/>
       <ref name='xmlXPtrNewRangeNodeObject'/>
       <ref name='xmlXPtrNewRangeNodePoint'/>
-      <ref name='xmlXPtrNewRangeNodes'/>
       <ref name='xmlXPtrNewRangeNodes'/>
       <ref name='xmlXPtrNewRangePointNode'/>
     </type>
@@ -8326,17 +8057,12 @@
       <ref name='xmlXPathCastNodeSetToNumber'/>
       <ref name='xmlXPathCastNodeSetToString'/>
       <ref name='xmlXPathDifference'/>
-      <ref name='xmlXPathDifference'/>
       <ref name='xmlXPathDistinct'/>
       <ref name='xmlXPathDistinctSorted'/>
       <ref name='xmlXPathFreeNodeSet'/>
       <ref name='xmlXPathHasSameNodes'/>
-      <ref name='xmlXPathHasSameNodes'/>
-      <ref name='xmlXPathIntersection'/>
       <ref name='xmlXPathIntersection'/>
       <ref name='xmlXPathLeading'/>
-      <ref name='xmlXPathLeading'/>
-      <ref name='xmlXPathLeadingSorted'/>
       <ref name='xmlXPathLeadingSorted'/>
       <ref name='xmlXPathNewNodeSetList'/>
       <ref name='xmlXPathNodeLeading'/>
@@ -8347,14 +8073,11 @@
       <ref name='xmlXPathNodeSetContains'/>
       <ref name='xmlXPathNodeSetDel'/>
       <ref name='xmlXPathNodeSetMerge'/>
-      <ref name='xmlXPathNodeSetMerge'/>
       <ref name='xmlXPathNodeSetRemove'/>
       <ref name='xmlXPathNodeSetSort'/>
       <ref name='xmlXPathNodeTrailing'/>
       <ref name='xmlXPathNodeTrailingSorted'/>
       <ref name='xmlXPathTrailing'/>
-      <ref name='xmlXPathTrailing'/>
-      <ref name='xmlXPathTrailingSorted'/>
       <ref name='xmlXPathTrailingSorted'/>
       <ref name='xmlXPathWrapNodeSet'/>
       <ref name='xmlXPtrNewLocationSetNodeSet'/>
@@ -8692,7 +8415,6 @@
     </type>
     <type name='xmlSchemaValPtr'>
       <ref name='xmlSchemaCompareValues'/>
-      <ref name='xmlSchemaCompareValues'/>
       <ref name='xmlSchemaFreeValue'/>
       <ref name='xmlSchemaValidateFacet'/>
     </type>
@@ -8828,6 +8550,8 @@
       <ref name='xmlTextWriterEndPI'/>
       <ref name='xmlTextWriterFlush'/>
       <ref name='xmlTextWriterFullEndElement'/>
+      <ref name='xmlTextWriterSetIndent'/>
+      <ref name='xmlTextWriterSetIndentString'/>
       <ref name='xmlTextWriterStartAttribute'/>
       <ref name='xmlTextWriterStartAttributeNS'/>
       <ref name='xmlTextWriterStartCDATA'/>
@@ -8985,7 +8709,6 @@
       <ref name='xmlXPtrNewRangeNodeObject'/>
       <ref name='xmlXPtrNewRangeNodePoint'/>
       <ref name='xmlXPtrNewRangePointNode'/>
-      <ref name='xmlXPtrNewRangePoints'/>
       <ref name='xmlXPtrNewRangePoints'/>
     </type>
     <type name='xmlXPathParserContextPtr'>
@@ -9805,6 +9528,7 @@
       <ref name='entityDeclSAXFunc'/>
       <ref name='xmlLoadExternalEntity'/>
       <ref name='XML_DEFAULT_VERSION'/>
+      <ref name='xmlStrncatNew'/>
       <ref name='xmlStopParser'/>
       <ref name='xmlReadFd'/>
       <ref name='XML_PARSER_EOF'/>
@@ -11210,6 +10934,7 @@
       <ref name='xmlMemGet'/>
       <ref name='xmlMallocAtomicLoc'/>
       <ref name='xmlMemMalloc'/>
+      <ref name='xmlCleanupMemory'/>
       <ref name='xmlMemDisplay'/>
       <ref name='xmlMemUsed'/>
       <ref name='xmlMemSetup'/>
@@ -11621,8 +11346,8 @@
       <ref name='xmlTextWriterStartDocument'/>
       <ref name='xmlTextWriterEndPI'/>
       <ref name='xmlTextWriterWriteBase64'/>
-      <ref name='xmlTextWriterWriteProcessingInstruction'/>
-      <ref name='xmlTextWriterStartAttribute'/>
+      <ref name='xmlTextWriterSetIndentString'/>
+      <ref name='xmlFreeTextWriter'/>
       <ref name='xmlTextWriterWriteComment'/>
       <ref name='xmlTextWriterWriteRawLen'/>
       <ref name='xmlTextWriterWriteVFormatDTD'/>
@@ -11635,6 +11360,7 @@
       <ref name='xmlTextWriterWriteBinHex'/>
       <ref name='xmlTextWriterEndAttribute'/>
       <ref name='xmlTextWriterWriteVFormatDTDAttlist'/>
+      <ref name='xmlTextWriterSetIndent'/>
       <ref name='xmlTextWriterWriteFormatPI'/>
       <ref name='xmlTextWriterEndDocument'/>
       <ref name='xmlTextWriterWriteDTDAttlist'/>
@@ -11643,9 +11369,10 @@
       <ref name='xmlTextWriterStartElementNS'/>
       <ref name='xmlTextWriter'/>
       <ref name='xmlNewTextWriter'/>
-      <ref name='xmlFreeTextWriter'/>
+      <ref name='xmlTextWriterStartAttribute'/>
       <ref name='xmlTextWriterWriteDocType'/>
       <ref name='xmlTextWriterStartPI'/>
+      <ref name='xmlTextWriterWriteProcessingInstruction'/>
       <ref name='xmlTextWriterStartElement'/>
       <ref name='xmlTextWriterWriteDTDExternalEntity'/>
       <ref name='xmlTextWriterWriteFormatRaw'/>
@@ -15137,6 +14864,8 @@
           <ref name='xmlSetNsProp'/>
           <ref name='xmlSetProp'/>
           <ref name='xmlSubstituteEntitiesDefault'/>
+          <ref name='xmlTextWriterSetIndent'/>
+          <ref name='xmlTextWriterSetIndentString'/>
           <ref name='xmlXIncludeSetFlags'/>
           <ref name='xmlXPtrEvalRangePredicate'/>
         </word>
@@ -16962,6 +16691,7 @@
           <ref name='xmlParserInputBufferCreateStatic'/>
           <ref name='xmlScanName'/>
           <ref name='xmlSetupParserForBuffer'/>
+          <ref name='xmlStrncatNew'/>
           <ref name='xmlURIEscape'/>
           <ref name='xmlURIUnescapeString'/>
           <ref name='xmlXPathFreeNodeSetList'/>
@@ -18062,6 +17792,7 @@
         </word>
         <word name='creates'>
           <ref name='xmlCreateURI'/>
+          <ref name='xmlStrncatNew'/>
         </word>
         <word name='creation'>
           <ref name='xmlIOHTTPOpenW'/>
@@ -18530,9 +18261,6 @@
         <word name='difference'>
           <ref name='xmlXPathDifference'/>
         </word>
-        <word name='differenciate'>
-          <ref name='xmlXPathOrderDocElems'/>
-        </word>
         <word name='different'>
           <ref name='xmlACatalogAdd'/>
           <ref name='xmlBuildQName'/>
@@ -18540,6 +18268,9 @@
           <ref name='xmlNodeGetBase'/>
           <ref name='xmlStrEqual'/>
           <ref name='xmlStrQEqual'/>
+        </word>
+        <word name='differentiate'>
+          <ref name='xmlXPathOrderDocElems'/>
         </word>
         <word name='digit'>
           <ref name='xmlXPathStringFunction'/>
@@ -18892,6 +18623,7 @@
           <ref name='xmlShellPwd'/>
           <ref name='xmlTextWriterEndDocument'/>
           <ref name='xmlXPathIdFunction'/>
+          <ref name='xmlXPathOrderDocElems'/>
         </word>
         <word name='else'>
           <ref name='UTF8ToHtml'/>
@@ -20432,6 +20164,9 @@
         <word name='incremental'>
           <ref name='xmlValidateDocumentFinal'/>
         </word>
+        <word name='indent'>
+          <ref name='xmlTextWriterSetIndent'/>
+        </word>
         <word name='indentation'>
           <ref name='xmlDebugDumpAttr'/>
           <ref name='xmlDebugDumpAttrList'/>
@@ -20439,8 +20174,13 @@
           <ref name='xmlDebugDumpNodeList'/>
           <ref name='xmlDebugDumpOneNode'/>
           <ref name='xmlKeepBlanksDefault'/>
+          <ref name='xmlTextWriterSetIndent'/>
+          <ref name='xmlTextWriterSetIndentString'/>
           <ref name='xmlXPathDebugDumpCompExpr'/>
           <ref name='xmlXPathDebugDumpObject'/>
+        </word>
+        <word name='indentation?'>
+          <ref name='xmlTextWriterSetIndent'/>
         </word>
         <word name='indented'>
           <ref name='xmlSaveFormatFile'/>
@@ -21049,6 +20789,7 @@
           <ref name='xmlNewTextLen'/>
           <ref name='xmlSplitQName3'/>
           <ref name='xmlStrncat'/>
+          <ref name='xmlStrncatNew'/>
           <ref name='xmlStrndup'/>
           <ref name='xmlUTF8Strndup'/>
           <ref name='xmlUTF8Strsize'/>
@@ -21585,6 +21326,9 @@
           <ref name='xmlMemDisplay'/>
           <ref name='xmlMemoryDump'/>
         </word>
+        <word name='memorys'>
+          <ref name='xmlCleanupMemory'/>
+        </word>
         <word name='merged'>
           <ref name='xmlTextMerge'/>
         </word>
@@ -21858,7 +21602,6 @@
           <ref name='xmlParserHandleReference'/>
           <ref name='xmlValidGetValidElements'/>
           <ref name='xmlXPathNewContext'/>
-          <ref name='xmlXPathNodeSetFreeNs'/>
         </word>
         <word name='needed'>
           <ref name='_xmlParserCtxt'/>
@@ -21896,6 +21639,7 @@
         </word>
         <word name='needs'>
           <ref name='xmlEntityReferenceFunc'/>
+          <ref name='xmlXPathNodeSetFreeNs'/>
         </word>
         <word name='negativa'>
           <ref name='xmlRegexpExec'/>
@@ -22433,6 +22177,7 @@
           <ref name='xmlShellSave'/>
           <ref name='xmlStrcat'/>
           <ref name='xmlStrncat'/>
+          <ref name='xmlStrncatNew'/>
           <ref name='xmlXPathObjectCopy'/>
         </word>
         <word name='other'>
@@ -24041,6 +23786,7 @@
           <ref name='xmlParseStartTag'/>
           <ref name='xmlReplaceNode'/>
           <ref name='xmlStrEqual'/>
+          <ref name='xmlStrncatNew'/>
           <ref name='xmlXPathCmpNodes'/>
           <ref name='xmlXPathIdFunction'/>
           <ref name='xmlXPathLangFunction'/>
@@ -24680,6 +24426,7 @@
           <ref name='xmlAutomataNewTransition2'/>
           <ref name='xmlNewCharRef'/>
           <ref name='xmlNewTextWriterTree'/>
+          <ref name='xmlXPathOrderDocElems'/>
           <ref name='xmlXPathSubstringFunction'/>
           <ref name='xmlXPtrNewCollapsedRange'/>
           <ref name='xmlXPtrNewRange'/>
@@ -24694,9 +24441,6 @@
         </word>
         <word name='starts-with'>
           <ref name='xmlXPathStartsWithFunction'/>
-        </word>
-        <word name='startting'>
-          <ref name='xmlXPathOrderDocElems'/>
         </word>
         <word name='startup'>
           <ref name='setDocumentLocator'/>
@@ -24865,6 +24609,7 @@
           <ref name='xmlGetFeaturesList'/>
           <ref name='xmlPatterncompile'/>
           <ref name='xmlRegexpCompile'/>
+          <ref name='xmlStrncatNew'/>
         </word>
         <word name='stripping'>
           <ref name='xmlXPathNormalizeFunction'/>
@@ -25617,6 +25362,7 @@
         </word>
         <word name='two'>
           <ref name='_xmlParserCtxt'/>
+          <ref name='xmlStrncatNew'/>
           <ref name='xmlTextMerge'/>
           <ref name='xmlUTF8Charcmp'/>
           <ref name='xmlXPathCmpNodes'/>
@@ -26961,6 +26707,9 @@
         </word>
         <word name='xmlStringGetNodeList'>
           <ref name='xmlParseAttValue'/>
+        </word>
+        <word name='xmlStrncat'>
+          <ref name='xmlStrncatNew'/>
         </word>
         <word name='xmlStrncmp'>
           <ref name='xmlUTF8Charcmp'/>

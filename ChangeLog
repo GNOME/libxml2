@@ -1,3 +1,7 @@
+Sun Apr 14 14:55:15 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in: trying to fix #77441
+
 Fri Apr 12 23:02:16 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/xmlIO.h: Hallski complained it could not be

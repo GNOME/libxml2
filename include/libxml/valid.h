@@ -284,6 +284,10 @@ int		xmlValidGetPotentialChildren(xmlElementContent *ctree,
 					 const xmlChar **list,
 					 int *len,
 					 int max);
+int		xmlValidateNameValue	(const xmlChar *value);
+int		xmlValidateNamesValue	(const xmlChar *value);
+int		xmlValidateNmtokenValue	(const xmlChar *value);
+int		xmlValidateNmtokensValue(const xmlChar *value);
 #ifdef __cplusplus
 }
 #endif

@@ -93,6 +93,9 @@
 /* Define if you have the <arpa/inet.h> header file.  */
 #undef HAVE_ARPA_INET_H
 
+/* Define if you have the <arpa/nameser.h> header file.  */
+#undef HAVE_ARPA_NAMESER_H
+
 /* Define if you have the <ctype.h> header file.  */
 #undef HAVE_CTYPE_H
 
@@ -134,6 +137,9 @@
 
 /* Define if you have the <netinet/in.h> header file.  */
 #undef HAVE_NETINET_IN_H
+
+/* Define if you have the <resolv.h> header file.  */
+#undef HAVE_RESOLV_H
 
 /* Define if you have the <signal.h> header file.  */
 #undef HAVE_SIGNAL_H

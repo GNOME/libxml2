@@ -40,9 +40,9 @@
 #include <netdb.h>
 #endif
 #ifdef HAVE_RESOLV_H
-# ifdef HAVE_ARPA_NAMESER_H
-# include <arpa/nameser.h>
-# endif
+#ifdef HAVE_ARPA_NAMESER_H
+#include <arpa/nameser.h>
+#endif
 #include <resolv.h>
 #endif
 #ifdef HAVE_FCNTL_H

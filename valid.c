@@ -2585,7 +2585,7 @@ xmlIsMixedElement(xmlDocPtr doc, const xmlChar *name) {
  * returns 1 if valid or 0 otherwise
  */
 
-static int
+int
 xmlValidateNameValue(const xmlChar *value) {
     const xmlChar *cur;
     int val, len;
@@ -2624,7 +2624,7 @@ xmlValidateNameValue(const xmlChar *value) {
  * returns 1 if valid or 0 otherwise
  */
 
-static int
+int
 xmlValidateNamesValue(const xmlChar *value) {
     const xmlChar *cur;
     int val, len;
@@ -2689,7 +2689,7 @@ xmlValidateNamesValue(const xmlChar *value) {
  * returns 1 if valid or 0 otherwise
  */
 
-static int
+int
 xmlValidateNmtokenValue(const xmlChar *value) {
     const xmlChar *cur;
     int val, len;
@@ -2731,7 +2731,7 @@ xmlValidateNmtokenValue(const xmlChar *value) {
  * returns 1 if valid or 0 otherwise
  */
 
-static int
+int
 xmlValidateNmtokensValue(const xmlChar *value) {
     const xmlChar *cur;
     int val, len;

@@ -1,3 +1,10 @@
+Fri Nov  9 00:34:13 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* valid.c include/libxml/tree.h: trying to fix namespaces +
+	  validation problems for good, closing #63619 in the process
+	* result/valid/dia.xml test/valid/dia.xml: the Dia test was
+	  wrong in this respect, fixed it.
+
 Thu Nov  8 18:31:40 CET 2001 Daniel Veillard <daniel@veillard.com>
 
 	* xmllint.c: Morus Walter patch to allow --format and --encode

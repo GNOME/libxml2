@@ -424,10 +424,16 @@ xmlNewElementContent(xmlChar *name, xmlElementContentType type) {
     }
     ret->type = type;
     ret->ocur = XML_ELEMENT_CONTENT_ONCE;
-    if (name != NULL)
-        ret->name = xmlStrdup(name);
-    else
+    if (name != NULL) {
+	xmlChar *prefix = NULL;
+	ret->name = xmlSplitQName2(name, &prefix);
+	if (ret->name == NULL)
+	    ret->name = xmlStrdup(name);
+	ret->prefix = prefix;
+    } else {
         ret->name = NULL;
+	ret->prefix = NULL;
+    }
     ret->c1 = ret->c2 = ret->parent = NULL;
     return(ret);
 }
@@ -451,6 +457,8 @@ xmlCopyElementContent(xmlElementContentPtr cur) {
 		"xmlCopyElementContent : out of memory\n");
 	return(NULL);
     }
+    if (cur->prefix != NULL)
+	ret->prefix = xmlStrdup(cur->prefix);
     ret->ocur = cur->ocur;
     if (cur->c1 != NULL) ret->c1 = xmlCopyElementContent(cur->c1);
     if (ret->c1 != NULL)
@@ -484,6 +492,7 @@ xmlFreeElementContent(xmlElementContentPtr cur) {
     if (cur->c1 != NULL) xmlFreeElementContent(cur->c1);
     if (cur->c2 != NULL) xmlFreeElementContent(cur->c2);
     if (cur->name != NULL) xmlFree((xmlChar *) cur->name);
+    if (cur->prefix != NULL) xmlFree((xmlChar *) cur->prefix);
     xmlFree(cur);
 }
 
@@ -505,6 +514,10 @@ xmlDumpElementContent(xmlBufferPtr buf, xmlElementContentPtr content, int glob) 
             xmlBufferWriteChar(buf, "#PCDATA");
 	    break;
 	case XML_ELEMENT_CONTENT_ELEMENT:
+	    if (content->prefix != NULL) {
+		xmlBufferWriteCHAR(buf, content->prefix);
+		xmlBufferWriteChar(buf, ":");
+	    }
 	    xmlBufferWriteCHAR(buf, content->name);
 	    break;
 	case XML_ELEMENT_CONTENT_SEQ:
@@ -594,6 +607,14 @@ xmlSnprintfElementContent(char *buf, int size, xmlElementContentPtr content, int
             strcat(buf, "#PCDATA");
 	    break;
 	case XML_ELEMENT_CONTENT_ELEMENT:
+	    if (content->prefix != NULL) {
+		if (size - len < xmlStrlen(content->prefix + 10)) {
+		    strcat(buf, " ...");
+		    return;
+		}
+		strcat(buf, (char *) content->prefix);
+		strcat(buf, ":");
+	    }
 	    if (size - len < xmlStrlen(content->name + 10)) {
 		strcat(buf, " ...");
 		return;
@@ -936,16 +957,28 @@ xmlDumpElementDecl(xmlBufferPtr buf, xmlElementPtr elem) {
     switch (elem->etype) {
 	case XML_ELEMENT_TYPE_EMPTY:
 	    xmlBufferWriteChar(buf, "<!ELEMENT ");
+	    if (elem->prefix != NULL) {
+		xmlBufferWriteCHAR(buf, elem->prefix);
+		xmlBufferWriteChar(buf, ":");
+	    }
 	    xmlBufferWriteCHAR(buf, elem->name);
 	    xmlBufferWriteChar(buf, " EMPTY>\n");
 	    break;
 	case XML_ELEMENT_TYPE_ANY:
 	    xmlBufferWriteChar(buf, "<!ELEMENT ");
+	    if (elem->prefix != NULL) {
+		xmlBufferWriteCHAR(buf, elem->prefix);
+		xmlBufferWriteChar(buf, ":");
+	    }
 	    xmlBufferWriteCHAR(buf, elem->name);
 	    xmlBufferWriteChar(buf, " ANY>\n");
 	    break;
 	case XML_ELEMENT_TYPE_MIXED:
 	    xmlBufferWriteChar(buf, "<!ELEMENT ");
+	    if (elem->prefix != NULL) {
+		xmlBufferWriteCHAR(buf, elem->prefix);
+		xmlBufferWriteChar(buf, ":");
+	    }
 	    xmlBufferWriteCHAR(buf, elem->name);
 	    xmlBufferWriteChar(buf, " ");
 	    xmlDumpElementContent(buf, elem->content, 1);
@@ -953,6 +986,10 @@ xmlDumpElementDecl(xmlBufferPtr buf, xmlElementPtr elem) {
 	    break;
 	case XML_ELEMENT_TYPE_ELEMENT:
 	    xmlBufferWriteChar(buf, "<!ELEMENT ");
+	    if (elem->prefix != NULL) {
+		xmlBufferWriteCHAR(buf, elem->prefix);
+		xmlBufferWriteChar(buf, ":");
+	    }
 	    xmlBufferWriteCHAR(buf, elem->name);
 	    xmlBufferWriteChar(buf, " ");
 	    xmlDumpElementContent(buf, elem->content, 1);
@@ -3122,6 +3159,8 @@ xmlValidateElementDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
     /* VC: Unique Element Type Declaration */
     tst = xmlGetDtdElementDesc(doc->intSubset, elem->name);
     if ((tst != NULL ) && (tst != elem) &&
+	((tst->prefix == elem->prefix) ||
+	 (xmlStrEqual(tst->prefix, elem->prefix))) &&
 	(tst->etype != XML_ELEMENT_TYPE_UNDEFINED)) {
 	VERROR(ctxt->userData, "Redefinition of element %s\n",
 	       elem->name);
@@ -3129,6 +3168,8 @@ xmlValidateElementDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
     }
     tst = xmlGetDtdElementDesc(doc->extSubset, elem->name);
     if ((tst != NULL ) && (tst != elem) &&
+	((tst->prefix == elem->prefix) ||
+	 (xmlStrEqual(tst->prefix, elem->prefix))) &&
 	(tst->etype != XML_ELEMENT_TYPE_UNDEFINED)) {
 	VERROR(ctxt->userData, "Redefinition of element %s\n",
 	       elem->name);
@@ -3363,7 +3404,7 @@ xmlValidateSkipIgnorable(xmlNodePtr child) {
 
 static int
 xmlValidateElementType(xmlValidCtxtPtr ctxt) {
-    int ret = -1;
+    int ret = -1, tmp;
     int determinist = 1;
 
     NODE = xmlValidateSkipIgnorable(NODE);
@@ -3452,6 +3493,15 @@ cont:
 	    ret = ((NODE->type == XML_ELEMENT_NODE) &&
 		   (xmlStrEqual(NODE->name, CONT->name)));
 	    if (ret == 1) {
+		if ((NODE->ns == NULL) || (NODE->ns->prefix == NULL)) {
+		    ret = (CONT->prefix == NULL);
+		} else if (CONT->prefix == NULL) {
+		    ret = 0;
+		} else {
+		    ret = xmlStrEqual(NODE->ns->prefix, CONT->prefix);
+		}
+	    }
+	    if (ret == 1) {
 		DEBUG_VALID_MSG("element found, skip to next");
 		/*
 		 * go to next element in the content model
@@ -3483,6 +3533,18 @@ cont:
 		    CONT = CONT->c2;
 		    goto cont;
 		}
+		if ((NODE->ns == NULL) || (NODE->ns->prefix == NULL)) {
+		    ret = (CONT->c1->prefix == NULL);
+		} else if (CONT->c1->prefix == NULL) {
+		    ret = 0;
+		} else {
+		    ret = xmlStrEqual(NODE->ns->prefix, CONT->c1->prefix);
+		}
+		if (ret == 0) {
+		    DEPTH++;
+		    CONT = CONT->c2;
+		    goto cont;
+		}
 	    }
 
 	    /*
@@ -3504,6 +3566,18 @@ cont:
 		 (CONT->c1->ocur == XML_ELEMENT_CONTENT_MULT))) {
 		if ((NODE == NULL) ||
 		    (!xmlStrEqual(NODE->name, CONT->c1->name))) {
+		    DEPTH++;
+		    CONT = CONT->c2;
+		    goto cont;
+		}
+		if ((NODE->ns == NULL) || (NODE->ns->prefix == NULL)) {
+		    ret = (CONT->c1->prefix == NULL);
+		} else if (CONT->c1->prefix == NULL) {
+		    ret = 0;
+		} else {
+		    ret = xmlStrEqual(NODE->ns->prefix, CONT->c1->prefix);
+		}
+		if (ret == 0) {
 		    DEPTH++;
 		    CONT = CONT->c2;
 		    goto cont;
@@ -3710,6 +3784,15 @@ xmlSnprintfElements(char *buf, int size, xmlNodePtr node, int glob) {
 	}
         switch (cur->type) {
             case XML_ELEMENT_NODE:
+		if ((cur->ns != NULL) && (cur->ns->prefix != NULL)) {
+		    if (size - len < xmlStrlen(cur->ns->prefix + 10)) {
+			if ((size - len > 4) && (buf[len - 1] != '.'))
+			    strcat(buf, " ...");
+			return;
+		    }
+		    strcat(buf, (char *) cur->ns->prefix);
+		    strcat(buf, ":");
+		}
                 if (size - len < xmlStrlen(cur->name + 10)) {
 		    if ((size - len > 4) && (buf[len - 1] != '.'))
 			strcat(buf, " ...");
@@ -3762,7 +3845,7 @@ xmlSnprintfElements(char *buf, int size, xmlNodePtr node, int glob) {
  * xmlValidateElementContent:
  * @ctxt:  the validation context
  * @child:  the child list
- * @cont:  pointer to the content declaration
+ * @elemDecl:  pointer to the element declaration
  * @warn:  emit the error message
  *
  * Try to validate the content model of an element
@@ -3772,9 +3855,16 @@ xmlSnprintfElements(char *buf, int size, xmlNodePtr node, int glob) {
 
 static int
 xmlValidateElementContent(xmlValidCtxtPtr ctxt, xmlNodePtr child,
-		   xmlElementContentPtr cont, int warn, const xmlChar *name) {
+       xmlElementPtr elemDecl, int warn) {
     int ret;
     xmlNodePtr repl = NULL, last = NULL, cur, tmp;
+    xmlElementContentPtr cont;
+    const xmlChar *name;
+
+    if (elemDecl == NULL)
+	return(-1);
+    cont = elemDecl->content;
+    name = elemDecl->name;
 
     /*
      * Allocate the stack
@@ -4026,6 +4116,7 @@ xmlValidateOneElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
     xmlNodePtr child;
     int ret = 1;
     const xmlChar *name;
+    const xmlChar *prefix = NULL;
 
     CHECK_DTD;
 
@@ -4097,16 +4188,21 @@ xmlValidateOneElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
     /*
      * Fetch the declaration for the qualified name
      */
-    if ((elem->ns != NULL) && (elem->ns->prefix != NULL)) {
+    if ((elem->ns != NULL) && (elem->ns->prefix != NULL))
+	prefix = elem->ns->prefix;
+
+    if (prefix != NULL) {
 	elemDecl = xmlGetDtdQElementDesc(doc->intSubset,
-		                         elem->name, elem->ns->prefix);
+		                         elem->name, prefix);
 	if ((elemDecl == NULL) && (doc->extSubset != NULL))
 	    elemDecl = xmlGetDtdQElementDesc(doc->extSubset,
-		                             elem->name, elem->ns->prefix);
+		                             elem->name, prefix);
     }
 
     /*
      * Fetch the declaration for the non qualified name
+     * This is "non-strict" validation should be done on the
+     * full QName but in that case being flexible makes sense.
      */
     if (elemDecl == NULL) {
 	elemDecl = xmlGetDtdElementDesc(doc->intSubset, elem->name);
@@ -4211,7 +4307,7 @@ child_ok:
         case XML_ELEMENT_TYPE_ELEMENT:
 	    child = elem->children;
 	    cont = elemDecl->content;
-	    ret = xmlValidateElementContent(ctxt, child, cont, 1, elem->name);
+	    ret = xmlValidateElementContent(ctxt, child, elemDecl, 1);
 	    break;
     }
 

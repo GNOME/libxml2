@@ -228,10 +228,11 @@ typedef xmlElementContent *xmlElementContentPtr;
 struct _xmlElementContent {
     xmlElementContentType     type;	/* PCDATA, ELEMENT, SEQ or OR */
     xmlElementContentOccur    ocur;	/* ONCE, OPT, MULT or PLUS */
-    const xmlChar            *name;	/* Element name */
+    const xmlChar             *name;	/* Element name */
     struct _xmlElementContent *c1;	/* first child */
     struct _xmlElementContent *c2;	/* second child */
     struct _xmlElementContent *parent;	/* parent */
+    const xmlChar             *prefix;	/* Element name */
 };
 
 /**

@@ -607,9 +607,9 @@ static void parseAndPrintFile(char *filename) {
 		if (nb < 0) {
 		    printf("could not get valid list of elements\n");
 		} else if (nb == 0) {
-		    printf("No element can be indersted under root\n");
+		    printf("No element can be inserted under root\n");
 		} else {
-		    printf("%d element types can be indersted under root:\n",
+		    printf("%d element types can be inserted under root:\n",
 		           nb);
 		    for (i = 0;i < nb;i++) {
 			 printf("%s\n", list[i]);

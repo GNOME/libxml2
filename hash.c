@@ -218,11 +218,13 @@ xmlHashFree(xmlHashTablePtr table, xmlHashDeallocator f) {
     xmlHashEntryPtr iter;
     xmlHashEntryPtr next;
     int inside_table = 0;
+    int nbElems;
 
     if (table == NULL)
 	return;
     if (table->table) {
-	for(i = 0; i < table->size; i++) {
+	nbElems = table->nbElems;
+	for(i = 0; (i < table->size) && (nbElems > 0); i++) {
 	    iter = &(table->table[i]);
 	    if (iter->valid == 0)
 		continue;
@@ -240,6 +242,7 @@ xmlHashFree(xmlHashTablePtr table, xmlHashDeallocator f) {
 		iter->payload = NULL;
 		if (!inside_table)
 		    xmlFree(iter);
+		nbElems--;
 		inside_table = 0;
 		iter = next;
 	    }

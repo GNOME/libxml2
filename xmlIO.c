@@ -1574,7 +1574,7 @@ xmlAllocParserInputBuffer(xmlCharEncoding enc) {
 	return(NULL);
     }
     memset(ret, 0, (size_t) sizeof(xmlParserInputBuffer));
-    ret->buffer = xmlBufferCreate();
+    ret->buffer = xmlBufferCreateSize(2 * xmlDefaultBufferSize);
     if (ret->buffer == NULL) {
         xmlFree(ret);
 	return(NULL);
@@ -1582,7 +1582,7 @@ xmlAllocParserInputBuffer(xmlCharEncoding enc) {
     ret->buffer->alloc = XML_BUFFER_ALLOC_DOUBLEIT;
     ret->encoder = xmlGetCharEncodingHandler(enc);
     if (ret->encoder != NULL)
-        ret->raw = xmlBufferCreate();
+        ret->raw = xmlBufferCreateSize(2 * xmlDefaultBufferSize);
     else
         ret->raw = NULL;
     ret->readcallback = NULL;
@@ -2173,16 +2173,15 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
     int buffree;
     unsigned int needSize;
 
-    if ((len <= MINLEN) && (len != 4)) 
+    if ((len <= MINLEN) && (len != 4))
         len = MINLEN;
+
     buffree = in->buffer->size - in->buffer->use;
     if (buffree <= 0) {
         xmlGenericError(xmlGenericErrorContext,
 		"xmlParserInputBufferGrow : buffer full !\n");
 	return(0);
     }
-    if (len > buffree) 
-        len = buffree;
 
     needSize = in->buffer->use + len + 1;
     if (needSize > in->buffer->size){

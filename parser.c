@@ -369,8 +369,8 @@ static int spacePop(xmlParserCtxtPtr ctxt) {
   } while (0)
 
 #define SHRINK if ((ctxt->progressive == 0) &&				\
-		   (ctxt->input->cur - ctxt->input->base > INPUT_CHUNK) && \
-		   (ctxt->input->end - ctxt->input->cur < INPUT_CHUNK)) \
+		   (ctxt->input->cur - ctxt->input->base > 2 * INPUT_CHUNK) && \
+		   (ctxt->input->end - ctxt->input->cur < 2 * INPUT_CHUNK)) \
 	xmlSHRINK (ctxt);
 
 static void xmlSHRINK (xmlParserCtxtPtr ctxt) {
@@ -2363,6 +2363,7 @@ xmlParseAttValue(xmlParserCtxtPtr ctxt) {
     xmlChar limit = 0;
     const xmlChar *in = NULL;
     xmlChar *ret = NULL;
+
     SHRINK;
     GROW;
     in = (xmlChar *) CUR_PTR;
@@ -2412,8 +2413,6 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt) {
     xmlChar *current = NULL;
     xmlEntityPtr ent;
 
-
-    SHRINK;
     if (NXT(0) == '"') {
 	ctxt->instate = XML_PARSER_ATTRIBUTE_VALUE;
 	limit = '"';
@@ -6612,9 +6611,9 @@ xmlParseStartTag(xmlParserCtxtPtr ctxt) {
     const xmlChar *name;
     const xmlChar *attname;
     xmlChar *attvalue;
-    const xmlChar **atts = NULL;
+    const xmlChar **atts = ctxt->atts;
     int nbatts = 0;
-    int maxatts = 0;
+    int maxatts = ctxt->maxatts;
     int i;
 
     if (RAW != '<') return(NULL);
@@ -6670,8 +6669,9 @@ xmlParseStartTag(xmlParserCtxtPtr ctxt) {
 	     * Add the pair to atts
 	     */
 	    if (atts == NULL) {
-	        maxatts = 10;
-	        atts = (const xmlChar **) xmlMalloc(maxatts * sizeof(xmlChar *));
+	        maxatts = 22; /* allow for 10 attrs by default */
+	        atts = (const xmlChar **)
+		       xmlMalloc(maxatts * sizeof(xmlChar *));
 		if (atts == NULL) {
 		    xmlGenericError(xmlGenericErrorContext,
 			    "malloc of %ld byte failed\n",
@@ -6683,12 +6683,14 @@ xmlParseStartTag(xmlParserCtxtPtr ctxt) {
 		    ctxt->disableSAX = 1;
 		    goto failed;
 		}
+		ctxt->atts = atts;
+		ctxt->maxatts = maxatts;
 	    } else if (nbatts + 4 > maxatts) {
 	        const xmlChar **n;
 
 	        maxatts *= 2;
 	        n = (const xmlChar **) xmlRealloc((void *) atts,
-						     maxatts * sizeof(xmlChar *));
+					     maxatts * sizeof(const xmlChar *));
 		if (n == NULL) {
 		    xmlGenericError(xmlGenericErrorContext,
 			    "realloc of %ld byte failed\n",
@@ -6701,6 +6703,8 @@ xmlParseStartTag(xmlParserCtxtPtr ctxt) {
 		    goto failed;
 		}
 		atts = n;
+		ctxt->atts = atts;
+		ctxt->maxatts = maxatts;
 	    }
 	    atts[nbatts++] = attname;
 	    atts[nbatts++] = attvalue;
@@ -6735,6 +6739,7 @@ failed:
 	    if (ctxt->recovery == 0) ctxt->disableSAX = 1;
 	    break;
 	}
+	SHRINK;
         GROW;
     }
 
@@ -6742,15 +6747,18 @@ failed:
      * SAX: Start of Element !
      */
     if ((ctxt->sax != NULL) && (ctxt->sax->startElement != NULL) &&
-	(!ctxt->disableSAX))
-        ctxt->sax->startElement(ctxt->userData, name, atts);
+	(!ctxt->disableSAX)) {
+	if (nbatts > 0)
+	    ctxt->sax->startElement(ctxt->userData, name, atts);
+	else
+	    ctxt->sax->startElement(ctxt->userData, name, NULL);
+    }
 
     if (atts != NULL) {
         /* Free only the content strings */
         for (i = 1;i < nbatts;i+=2)
 	    if (atts[i] != NULL)
 	       xmlFree((xmlChar *) atts[i]);
-	xmlFree((void *) atts);
     }
     return(name);
 }

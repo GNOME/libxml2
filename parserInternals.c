@@ -2218,6 +2218,8 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
     else
         memcpy(ctxt->sax, &xmlDefaultSAXHandler, sizeof(xmlSAXHandler));
 
+    ctxt->maxatts = 0;
+    ctxt->atts = NULL;
     /* Allocate the Input stack */
     ctxt->inputTab = (xmlParserInputPtr *)
 	        xmlMalloc(5 * sizeof(xmlParserInputPtr));
@@ -2369,6 +2371,7 @@ xmlFreeParserCtxt(xmlParserCtxtPtr ctxt)
         xmlFree(ctxt->sax);
     if (ctxt->directory != NULL) xmlFree((char *) ctxt->directory);
     if (ctxt->vctxt.nodeTab != NULL) xmlFree(ctxt->vctxt.nodeTab);
+    if (ctxt->atts != NULL) xmlFree(ctxt->atts);
     if (ctxt->dict != NULL) xmlDictFree(ctxt->dict);
 #ifdef LIBXML_CATALOG_ENABLED
     if (ctxt->catalogs != NULL)

@@ -50,7 +50,7 @@ typedef xmlEntity *xmlEntityPtr;
  *
  * default buffer size 4000.
  */
-#define BASE_BUFFER_SIZE 4000
+#define BASE_BUFFER_SIZE 4096
 
 /**
  * XML_XML_NAMESPACE:

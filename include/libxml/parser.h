@@ -236,6 +236,8 @@ struct _xmlParserCtxt {
     int                recovery;      /* run in recovery mode */
     int                progressive;   /* is this a progressive parsing */
     xmlDictPtr         dict;          /* dictionnary for the parser */
+    const xmlChar *   *atts;         /* array for the attributes callbacks */
+    int                maxatts;       /* the size of the array */
 };
 
 /**

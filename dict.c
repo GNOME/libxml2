@@ -232,7 +232,7 @@ xmlDictFree(xmlDictPtr dict) {
     if (dict == NULL)
 	return;
     if (dict->dict) {
-	for(i = 0; i < dict->size; i++) {
+	for(i = 0; ((i < dict->size) && (dict->nbElems > 0)); i++) {
 	    iter = &(dict->dict[i]);
 	    if (iter->valid == 0)
 		continue;
@@ -243,6 +243,7 @@ xmlDictFree(xmlDictPtr dict) {
 		    xmlFree(iter->name);
 		if (!inside_dict)
 		    xmlFree(iter);
+		dict->nbElems--;
 		inside_dict = 0;
 		iter = next;
 	    }

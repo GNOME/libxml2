@@ -6413,9 +6413,21 @@ xmlBufferResize(xmlBufferPtr buf, unsigned int size)
 
     if (buf->content == NULL)
 	rebuf = (xmlChar *) xmlMallocAtomic(newSize * sizeof(xmlChar));
-    else
+    else if (buf->size - buf->use < 100) {
 	rebuf = (xmlChar *) xmlRealloc(buf->content, 
 				       newSize * sizeof(xmlChar));
+   } else {
+        /*
+	 * if we are reallocating a buffer far from being full, it's
+	 * better to make a new allocation and copy only the used range
+	 * and free the old one.
+	 */
+	rebuf = (xmlChar *) xmlMallocAtomic(newSize * sizeof(xmlChar));
+	if (rebuf != NULL) {
+	    memcpy(rebuf, buf->content, buf->use);
+	    xmlFree(buf->content);
+	}
+    }
     if (rebuf == NULL) {
         xmlGenericError(xmlGenericErrorContext,
 		"xmlBufferResize : out of memory!\n");

@@ -1,3 +1,14 @@
+Tue Aug 19 16:54:18 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* dict.c hash.c: optimization when freeing hash tables.
+	* parser.c xmlIO.c include/libxml/tree.h: some tuning of buffer
+	  allocations
+	* parser.c parserInternals.c include/libxml/parser.h: keep a
+	  single allocated block for all the attributes callbacks,
+	  avoid useless malloc()/free()
+	* tree.c: do not realloc() when growing a buffer if the buffer
+	  ain't full, malloc/memcpy/free avoid copying memory.
+
 Mon Aug 18 18:37:01 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmllint.c doc/xmllint.xml doc/xmllint.1: added option

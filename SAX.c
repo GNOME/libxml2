@@ -21,7 +21,7 @@
  *
  * Return the public ID e.g. "-//SGMLSOURCE//DTD DEMO//EN"
  *
- * return values: a CHAR *
+ * Returns a CHAR *
  */
 const CHAR *
 getPublicId(xmlParserCtxtPtr ctxt)
@@ -36,7 +36,7 @@ getPublicId(xmlParserCtxtPtr ctxt)
  * Return the system ID, basically URI or filename e.g.
  * http://www.sgmlsource.com/dtds/memo.dtd
  *
- * return values: a CHAR *
+ * Returns a CHAR *
  */
 const CHAR *
 getSystemId(xmlParserCtxtPtr ctxt)
@@ -50,7 +50,7 @@ getSystemId(xmlParserCtxtPtr ctxt)
  *
  * Return the line number of the current parsing point.
  *
- * return values: an int
+ * Returns an int
  */
 int
 getLineNumber(xmlParserCtxtPtr ctxt)
@@ -64,7 +64,7 @@ getLineNumber(xmlParserCtxtPtr ctxt)
  *
  * Return the column number of the current parsing point.
  *
- * return values: an int
+ * Returns an int
  */
 int
 getColumnNumber(xmlParserCtxtPtr ctxt)
@@ -92,7 +92,7 @@ xmlSAXLocator xmlDefaultSAXLocator = {
  * the ENTITY_REF nodes are built in the structure (and the parameter
  * values).
  *
- * return values: the xmlParserInputPtr if inlined or NULL for DOM behaviour.
+ * Returns the xmlParserInputPtr if inlined or NULL for DOM behaviour.
  */
 xmlParserInputPtr
 resolveEntity(xmlParserCtxtPtr ctxt, const CHAR *publicId, const CHAR *systemId)
@@ -114,8 +114,6 @@ resolveEntity(xmlParserCtxtPtr ctxt, const CHAR *publicId, const CHAR *systemId)
  *
  * What to do when a notation declaration has been parsed.
  * TODO Not handled currently.
- *
- * return values: 
  */
 void
 notationDecl(xmlParserCtxtPtr ctxt, const CHAR *name,
@@ -136,8 +134,6 @@ notationDecl(xmlParserCtxtPtr ctxt, const CHAR *name,
  *
  * What to do when an unparsed entity declaration is parsed
  * TODO Create an Entity node.
- *
- * return values: 
  */
 void
 unparsedEntityDecl(xmlParserCtxtPtr ctxt, const CHAR *name,
@@ -157,8 +153,6 @@ unparsedEntityDecl(xmlParserCtxtPtr ctxt, const CHAR *name,
  *
  * Receive the document locator at startup, actually xmlDefaultSAXLocator
  * Everything is available on the context, so this is useless in our case.
- *
- * return values: 
  */
 void
 setDocumentLocator(xmlParserCtxtPtr ctxt, xmlSAXLocatorPtr loc)
@@ -173,8 +167,6 @@ setDocumentLocator(xmlParserCtxtPtr ctxt, xmlSAXLocatorPtr loc)
  * @ctxt:  An XML parser context
  *
  * called when the document start being processed.
- *
- * return values: 
  */
 void
 startDocument(xmlParserCtxtPtr ctxt)
@@ -189,8 +181,6 @@ startDocument(xmlParserCtxtPtr ctxt)
  * @ctxt:  An XML parser context
  *
  * called when the document end has been detected.
- *
- * return values: 
  */
 void
 endDocument(xmlParserCtxtPtr ctxt)
@@ -207,8 +197,6 @@ endDocument(xmlParserCtxtPtr ctxt)
  *
  * called when an opening tag has been processed.
  * TODO We currently have a small pblm with the arguments ...
- *
- * return values: 
  */
 void
 startElement(xmlParserCtxtPtr ctxt, const CHAR *name)
@@ -224,8 +212,6 @@ startElement(xmlParserCtxtPtr ctxt, const CHAR *name)
  * @name:  The element name
  *
  * called when the end of an element has been detected.
- *
- * return values: 
  */
 void
 endElement(xmlParserCtxtPtr ctxt, const CHAR *name)
@@ -245,8 +231,6 @@ endElement(xmlParserCtxtPtr ctxt, const CHAR *name)
  * The default handling is to convert the attribute into an
  * DOM subtree and past it in a new xmlAttr element added to
  * the element.
- *
- * return values: 
  */
 void
 attribute(xmlParserCtxtPtr ctxt, const CHAR *name, const CHAR *value)
@@ -265,8 +249,6 @@ attribute(xmlParserCtxtPtr ctxt, const CHAR *name, const CHAR *value)
  *
  * receiving some chars from the parser.
  * Question: how much at a time ???
- *
- * return values: 
  */
 void
 characters(xmlParserCtxtPtr ctxt, const CHAR *ch, int start, int len)
@@ -304,8 +286,6 @@ characters(xmlParserCtxtPtr ctxt, const CHAR *ch, int start, int len)
  *
  * receiving some ignorable whitespaces from the parser.
  * Question: how much at a time ???
- *
- * return values: 
  */
 void
 ignorableWhitespace(xmlParserCtxtPtr ctxt, const CHAR *ch, int start, int len)
@@ -323,8 +303,6 @@ ignorableWhitespace(xmlParserCtxtPtr ctxt, const CHAR *ch, int start, int len)
  * @len: the number of CHAR
  *
  * A processing instruction has been parsed.
- *
- * return values: 
  */
 void
 processingInstruction(xmlParserCtxtPtr ctxt, const CHAR *target,

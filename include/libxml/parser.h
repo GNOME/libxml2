@@ -26,24 +26,28 @@ typedef struct xmlParserInput {
     const CHAR *cur;                  /* Current char being parsed */
     int line;                         /* Current line */
     int col;                          /* Current column */
-} xmlParserInput, *xmlParserInputPtr;
+} xmlParserInput;
+typedef xmlParserInput *xmlParserInputPtr;
 
-typedef struct xmlParserNodeInfo {
+typedef struct _xmlParserNodeInfo {
   const struct xmlNode* node;
   /* Position & line # that text that created the node begins & ends on */
   unsigned long begin_pos;
   unsigned long begin_line;
   unsigned long end_pos;
   unsigned long end_line;
-} xmlParserNodeInfo;
+} _xmlParserNodeInfo;
+typedef _xmlParserNodeInfo xmlParserNodeInfo;
 
 typedef struct xmlParserNodeInfoSeq {
   unsigned long maximum;
   unsigned long length;
   xmlParserNodeInfo* buffer;
-} xmlParserNodeInfoSeq, *xmlParserNodeInfoSeqPtr;
+} _xmlParserNodeInfoSeq;
+typedef _xmlParserNodeInfoSeq xmlParserNodeInfoSeq;
+typedef xmlParserNodeInfoSeq *xmlParserNodeInfoSeqPtr;
 
-typedef struct xmlParserCtxt {
+typedef struct _xmlParserCtxt {
     struct xmlSAXHandler *sax;        /* The SAX handler */
     xmlDocPtr doc;                    /* the document being built */
     int            wellFormed;        /* is the document well formed */
@@ -62,7 +66,9 @@ typedef struct xmlParserCtxt {
 
     int record_info;                  /* Whether node info should be kept */
     xmlParserNodeInfoSeq node_seq;    /* info about each node parsed */
-} xmlParserCtxt, *xmlParserCtxtPtr;
+} _xmlParserCtxt;
+typedef _xmlParserCtxt xmlParserCtxt;
+typedef xmlParserCtxt *xmlParserCtxtPtr;
 
 /*
  * a SAX Locator.
@@ -73,7 +79,9 @@ typedef struct xmlSAXLocator {
     const CHAR *(*getSystemId)(xmlParserCtxtPtr ctxt);
     int (*getLineNumber)(xmlParserCtxtPtr ctxt);
     int (*getColumnNumber)(xmlParserCtxtPtr ctxt);
-} xmlSAXLocator, *xmlSAXLocatorPtr;
+} _xmlSAXLocator;
+typedef _xmlSAXLocator xmlSAXLocator;
+typedef xmlSAXLocator *xmlSAXLocatorPtr;
 
 /*
  * a SAX Exception.
@@ -120,7 +128,8 @@ typedef struct xmlSAXHandler {
     warningSAXFunc warning;
     errorSAXFunc error;
     fatalErrorSAXFunc fatalError;
-} xmlSAXHandler, *xmlSAXHandlerPtr;
+} xmlSAXHandler;
+typedef xmlSAXHandler *xmlSAXHandlerPtr;
 
 /*
  * Global variables: just the SAX interface tables we are looking for full
@@ -130,61 +139,58 @@ extern xmlSAXLocator xmlDefaultSAXLocator;
 extern xmlSAXHandler xmlDefaultSAXHandler;
 
 #include "entities.h"
+#include "error.h"
 
 /*
  * CHAR handling
  */
-extern CHAR *xmlStrdup(const CHAR *input);
-extern CHAR *xmlStrndup(const CHAR *input, int n);
-extern CHAR *xmlStrchr(const CHAR *str, CHAR val);
-extern int xmlStrcmp(const CHAR *str1, const CHAR *str2);
-extern int xmlStrncmp(const CHAR *str1, const CHAR *str2, int len);
-extern int xmlStrlen(const CHAR *str);
-extern CHAR *xmlStrcat(CHAR *cur, const CHAR *add);
-extern CHAR *xmlStrncat(CHAR *cur, const CHAR *add, int len);
+CHAR *xmlStrdup(const CHAR *cur);
+CHAR *xmlStrndup(const CHAR *cur, int len);
+CHAR *xmlStrchr(const CHAR *str, CHAR val);
+int xmlStrcmp(const CHAR *str1, const CHAR *str2);
+int xmlStrncmp(const CHAR *str1, const CHAR *str2, int len);
+int xmlStrlen(const CHAR *str);
+CHAR *xmlStrcat(CHAR *cur, const CHAR *add);
+CHAR *xmlStrncat(CHAR *cur, const CHAR *add, int len);
 
 /*
  * Interfaces
  */
-extern xmlDocPtr xmlParseDoc(CHAR *cur);
-extern xmlDocPtr xmlParseMemory(char *buffer, int size);
-extern xmlDocPtr xmlParseFile(const char *filename);
+xmlDocPtr xmlParseDoc(CHAR *cur);
+xmlDocPtr xmlParseMemory(char *buffer, int size);
+xmlDocPtr xmlParseFile(const char *filename);
 
 /*
  * Recovery mode 
  */
-extern xmlDocPtr xmlRecoverDoc(CHAR *cur);
-extern xmlDocPtr xmlRecoverMemory(char *buffer, int size);
-extern xmlDocPtr xmlRecoverFile(const char *filename);
+xmlDocPtr xmlRecoverDoc(CHAR *cur);
+xmlDocPtr xmlRecoverMemory(char *buffer, int size);
+xmlDocPtr xmlRecoverFile(const char *filename);
 
 /*
  * Internal routines
  */
-extern int xmlParseDocument(xmlParserCtxtPtr ctxt);
-extern xmlDocPtr xmlSAXParseDoc(xmlSAXHandlerPtr sax, CHAR *cur, int recovery);
-extern xmlDocPtr xmlSAXParseMemory(xmlSAXHandlerPtr sax, char *buffer,
+int xmlParseDocument(xmlParserCtxtPtr ctxt);
+xmlDocPtr xmlSAXParseDoc(xmlSAXHandlerPtr sax, CHAR *cur, int recovery);
+xmlDocPtr xmlSAXParseMemory(xmlSAXHandlerPtr sax, char *buffer,
                                    int size, int recovery);
-extern xmlDocPtr xmlSAXParseFile(xmlSAXHandlerPtr sax, const char *filename,
+xmlDocPtr xmlSAXParseFile(xmlSAXHandlerPtr sax, const char *filename,
                                  int recovery);
-extern void xmlInitParserCtxt(xmlParserCtxtPtr ctx);
-extern void xmlClearParserCtxt(xmlParserCtxtPtr ctx);
-extern void xmlSetupParserForBuffer(xmlParserCtxtPtr ctx, const CHAR* buffer,
+void xmlInitParserCtxt(xmlParserCtxtPtr ctxt);
+void xmlClearParserCtxt(xmlParserCtxtPtr ctxt);
+void xmlSetupParserForBuffer(xmlParserCtxtPtr ctxt, const CHAR* buffer,
                                     const char* filename);
 
-extern void xmlParserError(xmlParserCtxtPtr ctxt, const char *msg, ...);
-
-extern const xmlParserNodeInfo* xmlParserFindNodeInfo(const xmlParserCtxt* c,
-                                                      const xmlNode* node);
-extern void xmlInitNodeInfoSeq(xmlParserNodeInfoSeqPtr seq);
-extern void xmlClearNodeInfoSeq(xmlParserNodeInfoSeqPtr seq);
+const xmlParserNodeInfo* xmlParserFindNodeInfo(const xmlParserCtxt* ctxt,
+                                               const xmlNode* node);
+void xmlInitNodeInfoSeq(xmlParserNodeInfoSeqPtr seq);
+void xmlClearNodeInfoSeq(xmlParserNodeInfoSeqPtr seq);
 unsigned long xmlParserFindNodeInfoIndex(const xmlParserNodeInfoSeq* seq,
                                          const xmlNode* node);
-extern void xmlParserAddNodeInfo(xmlParserCtxtPtr ctx,
-                                 const xmlParserNodeInfo* info);
+void xmlParserAddNodeInfo(xmlParserCtxtPtr ctxt,
+                          const xmlParserNodeInfo* info);
 
-extern void xmlParserWarning(xmlParserCtxtPtr ctxt, const char *msg, ...);
-extern void xmlParserError(xmlParserCtxtPtr ctxt, const char *msg, ...);
-extern void xmlDefaultSAXHandlerInit(void);
+void xmlDefaultSAXHandlerInit(void);
 #ifdef __cplusplus
 }
 #endif

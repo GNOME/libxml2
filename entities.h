@@ -34,7 +34,8 @@ typedef struct xmlEntity {
     const CHAR    *ExternalID;	/* External identifier for PUBLIC Entity */
     const CHAR    *SystemID;	/* URI for a SYSTEM or PUBLIC Entity */
     CHAR *content;		/* The entity content or ndata if unparsed */
-} xmlEntity, *xmlEntityPtr;
+} xmlEntity;
+typedef xmlEntity *xmlEntityPtr;
 
 /*
  * ALl entities are stored in a table there is one table per DTD
@@ -47,28 +48,29 @@ typedef struct xmlEntitiesTable {
     int nb_entities;		/* number of elements stored */
     int max_entities;		/* maximum number of elements */
     xmlEntityPtr table;	        /* the table of entities */
-} xmlEntitiesTable, *xmlEntitiesTablePtr;
+} xmlEntitiesTable;
+typedef xmlEntitiesTable *xmlEntitiesTablePtr;
 
 
 /*
  * External functions :
  */
 
-extern void xmlAddDocEntity(xmlDocPtr doc, const CHAR *name, int type,
+void xmlAddDocEntity(xmlDocPtr doc, const CHAR *name, int type,
               const CHAR *ExternalID, const CHAR *SystemID, CHAR *content);
-extern void xmlAddDtdEntity(xmlDocPtr doc, const CHAR *name, int type,
+void xmlAddDtdEntity(xmlDocPtr doc, const CHAR *name, int type,
               const CHAR *ExternalID, const CHAR *SystemID, CHAR *content);
-extern xmlEntityPtr xmlGetPredefinedEntity(const CHAR *name);
-extern xmlEntityPtr xmlGetDocEntity(xmlDocPtr doc, const CHAR *name);
-extern xmlEntityPtr xmlGetDtdEntity(xmlDocPtr doc, const CHAR *name);
-extern CHAR *xmlEncodeEntities(xmlDocPtr doc, const CHAR *input);
-extern xmlEntitiesTablePtr xmlCreateEntitiesTable(void);
-extern xmlEntitiesTablePtr xmlCopyEntitiesTable(xmlEntitiesTablePtr table);
-extern void xmlFreeEntitiesTable(xmlEntitiesTablePtr table);
-extern void xmlDumpEntitiesTable(xmlEntitiesTablePtr table);
-extern xmlParserInputPtr xmlNewEntityInputStream(xmlParserCtxtPtr ctxt,
+xmlEntityPtr xmlGetPredefinedEntity(const CHAR *name);
+xmlEntityPtr xmlGetDocEntity(xmlDocPtr doc, const CHAR *name);
+xmlEntityPtr xmlGetDtdEntity(xmlDocPtr doc, const CHAR *name);
+CHAR *xmlEncodeEntities(xmlDocPtr doc, const CHAR *input);
+xmlEntitiesTablePtr xmlCreateEntitiesTable(void);
+xmlEntitiesTablePtr xmlCopyEntitiesTable(xmlEntitiesTablePtr table);
+void xmlFreeEntitiesTable(xmlEntitiesTablePtr table);
+void xmlDumpEntitiesTable(xmlEntitiesTablePtr table);
+xmlParserInputPtr xmlNewEntityInputStream(xmlParserCtxtPtr ctxt,
                                                  xmlEntityPtr entity);
-extern xmlEntitiesTablePtr xmlCopyEntitiesTable(xmlEntitiesTablePtr table);
+xmlEntitiesTablePtr xmlCopyEntitiesTable(xmlEntitiesTablePtr table);
 
 #ifdef __cplusplus
 }

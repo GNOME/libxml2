@@ -31,6 +31,7 @@
 #include "parser.h"
 #include "entities.h"
 #include "valid.h"
+#include "parserInternals.h"
 
 /************************************************************************
  *									*
@@ -122,7 +123,8 @@ PUSH_AND_POP(xmlNodePtr, node)
  *          pop it and return the next char.
  *
  * TODO A deallocation of the popped Input structure is needed
- * return values: the current CHAR in the parser context
+ *
+ * Returns the current CHAR in the parser context
  */
 CHAR
 xmlPopInput(xmlParserCtxtPtr ctxt) {
@@ -151,7 +153,7 @@ xmlPushInput(xmlParserCtxtPtr ctxt, xmlParserInputPtr input) {
  * @entity:  an Entity pointer
  *
  * Create a new input stream based on a memory buffer.
- * return vakues: the new input stream
+ * Returns the new input stream
  */
 xmlParserInputPtr
 xmlNewEntityInputStream(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
@@ -189,7 +191,7 @@ xmlNewEntityInputStream(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
  * @entity:  an Entity pointer
  *
  * Create a new input stream based on a memory buffer.
- * return vakues: the new input stream
+ * Returns the new input stream
  */
 xmlParserInputPtr
 xmlNewStringInputStream(xmlParserCtxtPtr ctxt, CHAR *string) {
@@ -708,9 +710,9 @@ TODO !!!
  * @len:  the len of @cur
  *
  * a strndup for array of CHAR's
- * return values: a new CHAR * or NULL
+ *
+ * Returns a new CHAR * or NULL
  */
-
 CHAR *
 xmlStrndup(const CHAR *cur, int len) {
     CHAR *ret = malloc((len + 1) * sizeof(CHAR));
@@ -730,9 +732,9 @@ xmlStrndup(const CHAR *cur, int len) {
  * @cur:  the input CHAR *
  *
  * a strdup for array of CHAR's
- * return values: a new CHAR * or NULL
+ *
+ * Returns a new CHAR * or NULL
  */
-
 CHAR *
 xmlStrdup(const CHAR *cur) {
     const CHAR *p = cur;
@@ -747,7 +749,8 @@ xmlStrdup(const CHAR *cur) {
  * @len:  the len of @cur
  *
  * a strndup for char's to CHAR's
- * return values: a new CHAR * or NULL
+ *
+ * Returns a new CHAR * or NULL
  */
 
 CHAR *
@@ -772,7 +775,8 @@ xmlCharStrndup(const char *cur, int len) {
  * @len:  the len of @cur
  *
  * a strdup for char's to CHAR's
- * return values: a new CHAR * or NULL
+ *
+ * Returns a new CHAR * or NULL
  */
 
 CHAR *
@@ -789,7 +793,8 @@ xmlCharStrdup(const char *cur) {
  * @str2:  the second CHAR *
  *
  * a strcmp for CHAR's
- * return values: the integer result of the comparison
+ *
+ * Returns the integer result of the comparison
  */
 
 int
@@ -810,7 +815,8 @@ xmlStrcmp(const CHAR *str1, const CHAR *str2) {
  * @len:  the max comparison length
  *
  * a strncmp for CHAR's
- * return values: the integer result of the comparison
+ *
+ * Returns the integer result of the comparison
  */
 
 int
@@ -833,7 +839,8 @@ xmlStrncmp(const CHAR *str1, const CHAR *str2, int len) {
  * @val:  the CHAR to search
  *
  * a strchr for CHAR's
- * return values: the CHAR * for the first occurence or NULL.
+ *
+ * Returns the CHAR * for the first occurence or NULL.
  */
 
 CHAR *
@@ -850,7 +857,8 @@ xmlStrchr(const CHAR *str, CHAR val) {
  * @str:  the CHAR * array
  *
  * lenght of a CHAR's string
- * return values: the number of CHAR contained in the ARRAY.
+ *
+ * Returns the number of CHAR contained in the ARRAY.
  */
 
 int
@@ -867,12 +875,13 @@ xmlStrlen(const CHAR *str) {
 
 /**
  * xmlStrncat:
- * @first:  the original CHAR * array
+ * @cur:  the original CHAR * array
  * @add:  the CHAR * array added
  * @len:  the length of @add
  *
  * a strncat for array of CHAR's
- * return values: a new CHAR * containing the concatenated string.
+ *
+ * Returns a new CHAR * containing the concatenated string.
  */
 
 CHAR *
@@ -899,13 +908,13 @@ xmlStrncat(CHAR *cur, const CHAR *add, int len) {
 
 /**
  * xmlStrcat:
- * @first:  the original CHAR * array
+ * @cur:  the original CHAR * array
  * @add:  the CHAR * array added
  *
  * a strcat for array of CHAR's
- * return values: a new CHAR * containing the concatenated string.
+ *
+ * Returns a new CHAR * containing the concatenated string.
  */
-
 CHAR *
 xmlStrcat(CHAR *cur, const CHAR *add) {
     const CHAR *p = add;
@@ -933,7 +942,8 @@ xmlStrcat(CHAR *cur, const CHAR *add) {
  * Is this a sequence of blank chars that one can ignore ?
  *
  * TODO: to be corrected accodingly to DTD information if available
- * return values: 1 if ignorable 0 otherwise.
+ *
+ * Returns 1 if ignorable 0 otherwise.
  */
 
 static int areBlanks(xmlParserCtxtPtr ctxt, const CHAR *str, int len) {
@@ -1017,7 +1027,8 @@ CHAR *xmlParseReference(xmlParserCtxtPtr ctxt);
  *
  * [NS 4] NCNameChar ::= Letter | Digit | '.' | '-' | '_' |
  *                       CombiningChar | Extender
- * return values: the namespace name or NULL
+ *
+ * Returns the namespace name or NULL
  */
 
 CHAR *
@@ -1052,7 +1063,8 @@ xmlNamespaceParseNCName(xmlParserCtxtPtr ctxt) {
  * [NS 6] Prefix ::= NCName
  *
  * [NS 7] LocalPart ::= NCName
- * return values: the function returns the local part, and prefix is updated
+ *
+ * Returns the function returns the local part, and prefix is updated
  *   to get the Prefix if any.
  */
 
@@ -1080,7 +1092,8 @@ xmlNamespaceParseQName(xmlParserCtxtPtr ctxt, CHAR **prefix) {
  * [NS 1] NSDef ::= PrefixDef Eq SystemLiteral
  *
  * [NS 2] PrefixDef ::= 'xmlns' (':' NCName)?
- * return values: the namespace name
+ *
+ * Returns the namespace name
  */
 
 CHAR *
@@ -1104,7 +1117,8 @@ xmlNamespaceParseNSDef(xmlParserCtxtPtr ctxt) {
  * @ctxt:  an XML parser context
  *
  * [OLD] Parse and return a string between quotes or doublequotes
- * return values: the string parser or NULL.
+ *
+ * Returns the string parser or NULL.
  */
 CHAR *
 xmlParseQuotedString(xmlParserCtxtPtr ctxt) {
@@ -1260,7 +1274,8 @@ xmlParseNamespace(xmlParserCtxtPtr ctxt) {
  * [5] Name ::= (Letter | '_' | ':') (NameChar)*
  *
  * [6] Names ::= Name (S Name)*
- * return values: the Name parsed or NULL
+ *
+ * Returns the Name parsed or NULL
  */
 
 CHAR *
@@ -1293,7 +1308,8 @@ xmlParseName(xmlParserCtxtPtr ctxt) {
  * [7] Nmtoken ::= (NameChar)+
  *
  * [8] Nmtokens ::= Nmtoken (S Nmtoken)*
- * return values: the Nmtoken parsed or NULL
+ *
+ * Returns the Nmtoken parsed or NULL
  */
 
 CHAR *
@@ -1323,7 +1339,8 @@ xmlParseNmtoken(xmlParserCtxtPtr ctxt) {
  *
  * [9] EntityValue ::= '"' ([^%&"] | PEReference | Reference)* '"' |
  *	               "'" ([^%&'] | PEReference | Reference)* "'"
- * return values: the EntityValue parsed or NULL
+ *
+ * Returns the EntityValue parsed or NULL
  */
 
 CHAR *
@@ -1417,7 +1434,8 @@ xmlParseEntityValue(xmlParserCtxtPtr ctxt) {
  *
  * [10] AttValue ::= '"' ([^<&"] | Reference)* '"' |
  *                   "'" ([^<&'] | Reference)* "'"
- * return values: the AttValue parsed or NULL.
+ *
+ * Returns the AttValue parsed or NULL.
  */
 
 CHAR *
@@ -1536,7 +1554,8 @@ xmlParseAttValue(xmlParserCtxtPtr ctxt) {
  * parse an XML Literal
  *
  * [11] SystemLiteral ::= ('"' [^"]* '"') | ("'" [^']* "'")
- * return values: the SystemLiteral parsed or NULL
+ *
+ * Returns the SystemLiteral parsed or NULL
  */
 
 CHAR *
@@ -1584,7 +1603,10 @@ xmlParseSystemLiteral(xmlParserCtxtPtr ctxt) {
  * @ctxt:  an XML parser context
  *
  * parse an XML public literal
- * return values: the PubidLiteral parsed or NULL.
+ *
+ * [12] PubidLiteral ::= '"' PubidChar* '"' | "'" (PubidChar - "'")* "'"
+ *
+ * Returns the PubidLiteral parsed or NULL.
  */
 
 CHAR *
@@ -1637,7 +1659,6 @@ xmlParsePubidLiteral(xmlParserCtxtPtr ctxt) {
  * if we are within a CDATA section ']]>' marks an end of section.
  *
  * [14] CharData ::= [^<&]* - ([^<&]* ']]>' [^<&]*)
- * return values: 
  */
 
 void
@@ -1676,17 +1697,26 @@ xmlParseCharData(xmlParserCtxtPtr ctxt, int cdata) {
  * xmlParseExternalID:
  * @ctxt:  an XML parser context
  * @publicID:  a CHAR** receiving PubidLiteral
+ * @strict: indicate whether we should restrict parsing to only
+ *          production [75], see NOTE below
  *
- * Parse an External ID
+ * Parse an External ID or a Public ID
+ *
+ * NOTE: Productions [75] and [83] interract badly since [75] can generate
+ *       'PUBLIC' S PubidLiteral S SystemLiteral
  *
  * [75] ExternalID ::= 'SYSTEM' S SystemLiteral
  *                   | 'PUBLIC' S PubidLiteral S SystemLiteral
- * return values: the function returns SystemLiteral and in the second
- *                case publicID receives PubidLiteral
+ *
+ * [83] PublicID ::= 'PUBLIC' S PubidLiteral
+ *
+ * Returns the function returns SystemLiteral and in the second
+ *                case publicID receives PubidLiteral, is strict is off
+ *                it is possible to return NULL and have publicID set.
  */
 
 CHAR *
-xmlParseExternalID(xmlParserCtxtPtr ctxt, CHAR **publicID) {
+xmlParseExternalID(xmlParserCtxtPtr ctxt, CHAR **publicID, int strict) {
     CHAR *URI = NULL;
 
     if ((CUR == 'S') && (NXT(1) == 'Y') &&
@@ -1725,11 +1755,27 @@ xmlParseExternalID(xmlParserCtxtPtr ctxt, CHAR **publicID) {
 	          "xmlParseExternalID: PUBLIC, no Public Identifier\n");
 	    ctxt->wellFormed = 0;
 	}
-	if (!IS_BLANK(CUR)) {
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		ctxt->sax->error(ctxt,
-		    "Space required after the Public Identifier\n");
-	    ctxt->wellFormed = 0;
+	if (strict) {
+	    /*
+	     * We don't handle [83] so "S SystemLiteral" is required.
+	     */
+	    if (!IS_BLANK(CUR)) {
+		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		    ctxt->sax->error(ctxt,
+			"Space required after the Public Identifier\n");
+		ctxt->wellFormed = 0;
+	    }
+	} else {
+	    /*
+	     * We handle [83] so we return immediately, if 
+	     * "S SystemLiteral" is not detected. From a purely parsing
+	     * point of view that's a nice mess.
+	     */
+	    const CHAR *ptr = CUR_PTR;
+	    if (!IS_BLANK(*ptr)) return(NULL);
+	    
+	    while (IS_BLANK(*ptr)) ptr++;
+	    if ((*ptr != '\'') || (*ptr != '"')) return(NULL);
 	}
         SKIP_BLANKS;
 	URI = xmlParseSystemLiteral(ctxt);
@@ -1745,7 +1791,8 @@ xmlParseExternalID(xmlParserCtxtPtr ctxt, CHAR **publicID) {
 
 /**
  * xmlParseComment:
- * @create:  should we create a node
+ * @ctxt:  an XML parser context
+ * @create: should we create a node, or just skip the content
  *
  * Skip an XML (SGML) comment <!-- .... -->
  *  This may or may not create a node (depending on the context)
@@ -1756,9 +1803,11 @@ xmlParseExternalID(xmlParserCtxtPtr ctxt, CHAR **publicID) {
  *
  * TODO: this should call a SAX function which will handle (or not) the
  *       creation of the comment !
- * return values: 
+ *
+ * Returns the comment node, or NULL
  */
-xmlNodePtr xmlParseComment(xmlParserCtxtPtr ctxt, int create) {
+xmlNodePtr
+xmlParseComment(xmlParserCtxtPtr ctxt, int create) {
     xmlNodePtr ret = NULL;
     const CHAR *q, *start;
     const CHAR *r;
@@ -1808,7 +1857,8 @@ xmlNodePtr xmlParseComment(xmlParserCtxtPtr ctxt, int create) {
  * parse the name of a PI
  *
  * [17] PITarget ::= Name - (('X' | 'x') ('M' | 'm') ('L' | 'l'))
- * return values: the PITarget name or NULL
+ *
+ * Returns the PITarget name or NULL
  */
 
 CHAR *
@@ -1834,7 +1884,8 @@ xmlParsePITarget(xmlParserCtxtPtr ctxt) {
  * parse an XML Processing Instruction.
  *
  * [16] PI ::= '<?' PITarget (S (Char* - (Char* '?>' Char*)))? '?>'
- * return values: the PI name or NULL
+ *
+ * The processing is transfered to SAX once parsed.
  */
 
 void
@@ -1932,47 +1983,68 @@ xmlParsePI(xmlParserCtxtPtr ctxt) {
  *
  * [82] NotationDecl ::= '<!NOTATION' S Name S (ExternalID |  PublicID) S? '>'
  *
- * [83] PublicID ::= 'PUBLIC' S PubidLiteral
- *
- * NOTE: Actually [75] and [83] interract badly since [75] can generate
- *       'PUBLIC' S PubidLiteral S SystemLiteral
- *
  * Hence there is actually 3 choices:
  *     'PUBLIC' S PubidLiteral
  *     'PUBLIC' S PubidLiteral S SystemLiteral
  * and 'SYSTEM' S SystemLiteral
  *
- * TODO: no handling of the values parsed !
+ * See the NOTE on xmlParseExternalID().
  */
 
 void
 xmlParseNotationDecl(xmlParserCtxtPtr ctxt) {
     CHAR *name;
+    CHAR *Pubid;
+    CHAR *Systemid;
     
     if ((CUR == '<') && (NXT(1) == '!') &&
         (NXT(2) == 'N') && (NXT(3) == 'O') &&
         (NXT(4) == 'T') && (NXT(5) == 'A') &&
         (NXT(6) == 'T') && (NXT(7) == 'I') &&
-        (NXT(8) == 'O') && (NXT(9) == 'N') &&
-        (IS_BLANK(NXT(10)))) {
+        (NXT(8) == 'O') && (NXT(9) == 'N')) {
 	SKIP(10);
-        SKIP_BLANKS;
-
-        name = xmlParseName(ctxt);
-	if (name == NULL) {
+	if (!IS_BLANK(CUR)) {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	        ctxt->sax->error(ctxt,
-	        "xmlParseAttributeListDecl: no name for Element\n");
+		ctxt->sax->error(ctxt, "Space required after '<!NOTATION'\n");
 	    ctxt->wellFormed = 0;
 	    return;
 	}
 	SKIP_BLANKS;
+
+        name = xmlParseName(ctxt);
+	if (name == NULL) {
+	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	        ctxt->sax->error(ctxt, "NOTATION: Name expected here\n");
+	    ctxt->wellFormed = 0;
+	    return;
+	}
+	if (!IS_BLANK(CUR)) {
+	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		ctxt->sax->error(ctxt, 
+		     "Space required after the NOTATION name'\n");
+	    ctxt->wellFormed = 0;
+	    return;
+	}
+	SKIP_BLANKS;
+
 	/*
-	 * TODO !!!
+	 * Parse the IDs.
 	 */
-	while ((IS_CHAR(CUR)) && (CUR != '>'))
+	Systemid = xmlParseExternalID(ctxt, &Pubid, 1);
+	SKIP_BLANKS;
+
+	if (CUR == '>') {
 	    NEXT;
+	    xmlAddNotationDecl(ctxt->doc->intSubset, name, Pubid, Systemid);
+	} else {
+	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		ctxt->sax->error(ctxt,
+		       "'>' required to close NOTATION declaration\n");
+	    ctxt->wellFormed = 0;
+	}
 	free(name);
+	if (Systemid != NULL) free(Systemid);
+	if (Pubid != NULL) free(Pubid);
     }
 }
 
@@ -2042,7 +2114,7 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
         SKIP_BLANKS;
 
 	/*
-	 * TODO handle the various case of definitions...
+	 * handle the various case of definitions...
 	 */
 	if (isParameter) {
 	    if ((CUR == '"') || (CUR == '\''))
@@ -2053,7 +2125,7 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 				    NULL, NULL, value);
 		}
 	    else {
-	        URI = xmlParseExternalID(ctxt, &literal);
+	        URI = xmlParseExternalID(ctxt, &literal, 1);
 		if (URI) {
 		    xmlAddDocEntity(ctxt->doc, name,
 		                    XML_EXTERNAL_PARAMETER_ENTITY,
@@ -2067,7 +2139,7 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 				XML_INTERNAL_GENERAL_ENTITY,
 				NULL, NULL, value);
 	    } else {
-	        URI = xmlParseExternalID(ctxt, &literal);
+	        URI = xmlParseExternalID(ctxt, &literal, 1);
 		if ((CUR != '>') && (!IS_BLANK(CUR))) {
 		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 			ctxt->sax->error(ctxt,
@@ -2172,36 +2244,158 @@ xmlParseDefaultDecl(xmlParserCtxtPtr ctxt, CHAR **value) {
 }
 
 /**
+ * xmlParseNotationType:
+ * @ctxt:  an XML parser context
+ *
+ * parse an Notation attribute type.
+ *
+ * [58] NotationType ::= 'NOTATION' S '(' S? Name (S? '|' S? Name)* S? ')'
+ *
+ * Note: the leading 'NOTATION' S part has already being parsed...
+ *
+ * Returns: the notation attribute tree built while parsing
+ */
+
+xmlEnumerationPtr
+xmlParseNotationType(xmlParserCtxtPtr ctxt) {
+    CHAR *name;
+    xmlEnumerationPtr ret = NULL, last = NULL, cur;
+
+    if (CUR != '(') {
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt, "'(' required to start 'NOTATION'\n");
+	ctxt->wellFormed = 0;
+	return(NULL);
+    }
+    do {
+        NEXT;
+	SKIP_BLANKS;
+        name = xmlParseName(ctxt);
+	if (name == NULL) {
+	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		ctxt->sax->error(ctxt, 
+		                 "Name expected in NOTATION declaration\n");
+	    ctxt->wellFormed = 0;
+	    return(ret);
+	}
+	cur = xmlCreateEnumeration(name);
+	free(name);
+	if (cur == NULL) return(ret);
+	if (last == NULL) ret = last = cur;
+	else {
+	    last->next = cur;
+	    last = cur;
+	}
+	SKIP_BLANKS;
+    } while (CUR == '|');
+    if (CUR != ')') {
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt,
+	                     "')' required to finish NOTATION declaration\n");
+	ctxt->wellFormed = 0;
+	return(ret);
+    }
+    NEXT;
+    return(ret);
+}
+
+/**
+ * xmlParseEnumerationType:
+ * @ctxt:  an XML parser context
+ *
+ * parse an Enumeration attribute type.
+ *
+ * [59] Enumeration ::= '(' S? Nmtoken (S? '|' S? Nmtoken)* S? ')'
+ *
+ * Returns: the enumeration attribute tree built while parsing
+ */
+
+xmlEnumerationPtr
+xmlParseEnumerationType(xmlParserCtxtPtr ctxt) {
+    CHAR *name;
+    xmlEnumerationPtr ret = NULL, last = NULL, cur;
+
+    if (CUR != '(') {
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt,
+	                     "'(' required to start ATTLIST enumeration\n");
+	ctxt->wellFormed = 0;
+	return(NULL);
+    }
+    do {
+        NEXT;
+	SKIP_BLANKS;
+        name = xmlParseNmtoken(ctxt);
+	if (name == NULL) {
+	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		ctxt->sax->error(ctxt, 
+		                 "NmToken expected in ATTLIST enumeration\n");
+	    ctxt->wellFormed = 0;
+	    return(ret);
+	}
+	cur = xmlCreateEnumeration(name);
+	free(name);
+	if (cur == NULL) return(ret);
+	if (last == NULL) ret = last = cur;
+	else {
+	    last->next = cur;
+	    last = cur;
+	}
+	SKIP_BLANKS;
+    } while (CUR == '|');
+    if (CUR != ')') {
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt,
+	                     "')' required to finish ATTLIST enumeration\n");
+	ctxt->wellFormed = 0;
+	return(ret);
+    }
+    NEXT;
+    return(ret);
+}
+
+/**
  * xmlParseEnumeratedType:
  * @ctxt:  an XML parser context
- * @name:  ???
- * @:  
+ * @tree:  the enumeration tree built while parsing
  *
- * parse and Enumerated attribute type.
+ * parse an Enumerated attribute type.
  *
  * [57] EnumeratedType ::= NotationType | Enumeration
  *
  * [58] NotationType ::= 'NOTATION' S '(' S? Name (S? '|' S? Name)* S? ')'
  *
- * [59] Enumeration ::= '(' S? Nmtoken (S? '|' S? Nmtoken)* S? ')'
  *
- * TODO: not implemented !!!
+ * Returns: XML_ATTRIBUTE_ENUMERATION or XML_ATTRIBUTE_NOTATION
  */
 
-void
-xmlParseEnumeratedType(xmlParserCtxtPtr ctxt, CHAR *name) {
-    /*
-     * TODO !!!
-     */
-    fprintf(stderr, "Production [57] EnumeratedType not yet supported\n");
-    while ((IS_CHAR(CUR)) && (CUR != '>'))
-        NEXT;
+int
+xmlParseEnumeratedType(xmlParserCtxtPtr ctxt, xmlEnumerationPtr *tree) {
+    if ((CUR == 'N') && (NXT(1) == 'O') &&
+        (NXT(2) == 'T') && (NXT(3) == 'A') &&
+        (NXT(4) == 'T') && (NXT(5) == 'I') &&
+	(NXT(6) == 'O') && (NXT(7) == 'N')) {
+	SKIP(8);
+	if (!IS_BLANK(CUR)) {
+	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	        ctxt->sax->error(ctxt, "Space required after 'NOTATION'\n");
+	    ctxt->wellFormed = 0;
+	    return(0);
+	}
+        SKIP_BLANKS;
+	*tree = xmlParseNotationType(ctxt);
+	if (*tree == NULL) return(0);
+	return(XML_ATTRIBUTE_NOTATION);
+    }
+    *tree = xmlParseEnumerationType(ctxt);
+    if (*tree == NULL) return(0);
+    return(XML_ATTRIBUTE_ENUMERATION);
 }
 
 /**
  * xmlParseAttributeType:
  * @ctxt:  an XML parser context
- * @name:  ???
+ * @tree:  the enumeration tree built while parsing
  *
  * parse the Attribute list def for an element
  *
@@ -2212,24 +2406,23 @@ xmlParseEnumeratedType(xmlParserCtxtPtr ctxt, CHAR *name) {
  * [56] TokenizedType ::= 'ID' | 'IDREF' | 'IDREFS' | 'ENTITY' |
  *                        'ENTITIES' | 'NMTOKEN' | 'NMTOKENS'
  *
- * Returns: the attribute type
+ * Returns the attribute type
  */
 int 
-xmlParseAttributeType(xmlParserCtxtPtr ctxt, CHAR *name) {
-    /* TODO !!! */
+xmlParseAttributeType(xmlParserCtxtPtr ctxt, xmlEnumerationPtr *tree) {
     if ((CUR == 'C') && (NXT(1) == 'D') &&
         (NXT(2) == 'A') && (NXT(3) == 'T') &&
         (NXT(4) == 'A')) {
 	SKIP(5);
-	return(XML_ATTRIBUTE_STRING);
-     } else if ((CUR == 'I') && (NXT(1) == 'D')) {
-        SKIP(2);
-	return(XML_ATTRIBUTE_ID);
+	return(XML_ATTRIBUTE_CDATA);
      } else if ((CUR == 'I') && (NXT(1) == 'D') &&
         (NXT(2) == 'R') && (NXT(3) == 'E') &&
         (NXT(4) == 'F')) {
 	SKIP(5);
 	return(XML_ATTRIBUTE_IDREF);
+     } else if ((CUR == 'I') && (NXT(1) == 'D')) {
+        SKIP(2);
+	return(XML_ATTRIBUTE_ID);
      } else if ((CUR == 'I') && (NXT(1) == 'D') &&
         (NXT(2) == 'R') && (NXT(3) == 'E') &&
         (NXT(4) == 'F') && (NXT(5) == 'S')) {
@@ -2249,17 +2442,17 @@ xmlParseAttributeType(xmlParserCtxtPtr ctxt, CHAR *name) {
      } else if ((CUR == 'N') && (NXT(1) == 'M') &&
         (NXT(2) == 'T') && (NXT(3) == 'O') &&
         (NXT(4) == 'K') && (NXT(5) == 'E') &&
-        (NXT(6) == 'N')) {
-	SKIP(7);
-	return(XML_ATTRIBUTE_NMTOKEN);
+        (NXT(6) == 'N') && (NXT(7) == 'S')) {
+	SKIP(8);
+	return(XML_ATTRIBUTE_NMTOKENS);
      } else if ((CUR == 'N') && (NXT(1) == 'M') &&
         (NXT(2) == 'T') && (NXT(3) == 'O') &&
         (NXT(4) == 'K') && (NXT(5) == 'E') &&
-        (NXT(6) == 'N') && (NXT(7) == 'S')) {
-	return(XML_ATTRIBUTE_NMTOKENS);
+        (NXT(6) == 'N')) {
+	SKIP(7);
+	return(XML_ATTRIBUTE_NMTOKEN);
      }
-     xmlParseEnumeratedType(ctxt, name);
-     return(XML_ATTRIBUTE_ENUMERATED);
+     return(xmlParseEnumeratedType(ctxt, tree));
 }
 
 /**
@@ -2272,14 +2465,13 @@ xmlParseAttributeType(xmlParserCtxtPtr ctxt, CHAR *name) {
  *
  * [53] AttDef ::= S Name S AttType S DefaultDecl
  *
- * TODO: not implemented !!!
  */
 void
 xmlParseAttributeListDecl(xmlParserCtxtPtr ctxt) {
     CHAR *elemName;
     CHAR *attrName;
+    xmlEnumerationPtr tree = NULL;
 
-    /* TODO !!! */
     if ((CUR == '<') && (NXT(1) == '!') &&
         (NXT(2) == 'A') && (NXT(3) == 'T') &&
         (NXT(4) == 'T') && (NXT(5) == 'L') &&
@@ -2322,7 +2514,7 @@ xmlParseAttributeListDecl(xmlParserCtxtPtr ctxt) {
 	    }
 	    SKIP_BLANKS;
 
-	    type = xmlParseAttributeType(ctxt, attrName);
+	    type = xmlParseAttributeType(ctxt, &tree);
 	    if (type <= 0) break;
 
 	    if (!IS_BLANK(CUR)) {
@@ -2353,6 +2545,8 @@ xmlParseAttributeListDecl(xmlParserCtxtPtr ctxt) {
 		    "xmlParseAttributeListDecl: detected internal error\n");
 		break;
 	    }
+	    xmlAddAttributeDecl(ctxt->doc->intSubset, elemName, attrName,
+	                        type, def, defaultValue, tree);
 	    if (attrName != NULL)
 		free(attrName);
 	    if (defaultValue != NULL)
@@ -2416,6 +2610,7 @@ xmlParseElementMixedContentDecl(xmlParserCtxtPtr ctxt) {
 		n->c1 = xmlNewElementContent(elem, XML_ELEMENT_CONTENT_ELEMENT);
 	        cur->c2 = n;
 		cur = n;
+		free(elem);
 	    }
 	    SKIP_BLANKS;
 	    elem = xmlParseName(ctxt);
@@ -2430,12 +2625,15 @@ xmlParseElementMixedContentDecl(xmlParserCtxtPtr ctxt) {
 	    SKIP_BLANKS;
 	}
 	if ((CUR == ')') && (NXT(1) == '*')) {
-	    if (elem != NULL)
+	    if (elem != NULL) {
 		cur->c2 = xmlNewElementContent(elem,
 		                               XML_ELEMENT_CONTENT_ELEMENT);
+	        free(elem);
+            }
 	    ret->ocur = XML_ELEMENT_CONTENT_MULT;
 	    SKIP(2);
 	} else {
+	    if (elem != NULL) free(elem);
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		ctxt->sax->error(ctxt, 
 		    "xmlParseElementMixedContentDecl : '|' or ')*' expected\n");
@@ -2507,6 +2705,7 @@ xmlParseElementChildrenContentDecl(xmlParserCtxtPtr ctxt) {
 	} else {
 	    ret->ocur = XML_ELEMENT_CONTENT_ONCE;
 	}
+	free(elem);
     }
     SKIP_BLANKS;
     while (CUR != ')') {
@@ -2600,6 +2799,7 @@ xmlParseElementChildrenContentDecl(xmlParserCtxtPtr ctxt) {
 		return(NULL);
 	    }
 	    last = xmlNewElementContent(elem, XML_ELEMENT_CONTENT_ELEMENT);
+	    free(elem);
 	}
 	if (CUR == '?') {
 	    ret->ocur = XML_ELEMENT_CONTENT_OPT;
@@ -2699,6 +2899,8 @@ xmlParseElementContentDecl(xmlParserCtxtPtr ctxt, CHAR *name,
  * [45] elementdecl ::= '<!ELEMENT' S Name S contentspec S? '>'
  *
  * TODO There is a check [ VC: Unique Element Type Declaration ]
+ *
+ * Returns the type of the element, or -1 in case of error
  */
 int
 xmlParseElementDecl(xmlParserCtxtPtr ctxt) {
@@ -2805,7 +3007,8 @@ xmlParseMarkupDecl(xmlParserCtxtPtr ctxt) {
  *
  * [66] CharRef ::= '&#' [0-9]+ ';' |
  *                  '&#x' [0-9a-fA-F]+ ';'
- * return values: the value parsed
+ *
+ * Returns the value parsed
  */
 CHAR *
 xmlParseCharRef(xmlParserCtxtPtr ctxt) {
@@ -2879,7 +3082,8 @@ xmlParseCharRef(xmlParserCtxtPtr ctxt) {
  * parse ENTITY references declarations
  *
  * [68] EntityRef ::= '&' Name ';'
- * return values: the entity ref string or NULL if directly as input stream.
+ *
+ * Returns the entity ref string or NULL if directly as input stream.
  */
 CHAR *
 xmlParseEntityRef(xmlParserCtxtPtr ctxt) {
@@ -2987,7 +3191,8 @@ xmlParseEntityRef(xmlParserCtxtPtr ctxt) {
  * parse Reference declarations
  *
  * [67] Reference ::= EntityRef | CharRef
- * return values: the entity string or NULL if handled directly by pushing
+ *
+ * Returns the entity string or NULL if handled directly by pushing
  *      the entity value as the input.
  */
 CHAR *
@@ -3014,7 +3219,8 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
  * parse PEReference declarations
  *
  * [69] PEReference ::= '%' Name ';'
- * return values: the entity content or NULL if handled directly.
+ *
+ * Returns the entity content or NULL if handled directly.
  */
 CHAR *
 xmlParsePEReference(xmlParserCtxtPtr ctxt) {
@@ -3097,7 +3303,7 @@ xmlParseDocTypeDecl(xmlParserCtxtPtr ctxt) {
     /*
      * Check for SystemID and ExternalID
      */
-    URI = xmlParseExternalID(ctxt, &ExternalID);
+    URI = xmlParseExternalID(ctxt, &ExternalID, 1);
     SKIP_BLANKS;
 
     dtd = xmlCreateIntSubset(ctxt->doc, name, ExternalID, URI);
@@ -3167,9 +3373,12 @@ xmlParseDocTypeDecl(xmlParserCtxtPtr ctxt) {
  *
  * Also the case QName == xmlns:??? is handled independently as a namespace
  * definition.
+ *
+ * Returns the attribute just parsed of NULL in case of error.
  */
 
-xmlAttrPtr xmlParseAttribute(xmlParserCtxtPtr ctxt, xmlNodePtr node) {
+xmlAttrPtr
+xmlParseAttribute(xmlParserCtxtPtr ctxt, xmlNodePtr node) {
     CHAR *name, *val;
     CHAR *ns;
     CHAR *value = NULL;
@@ -3264,10 +3473,11 @@ xmlAttrPtr xmlParseAttribute(xmlParserCtxtPtr ctxt, xmlNodePtr node) {
  *
  * [NS 10] EmptyElement ::= '<' QName (S Attribute)* S? '/>'
  *
- * return values: the XML new node or NULL.
+ * Returns the XML new node or NULL.
  */
 
-xmlNodePtr xmlParseStartTag(xmlParserCtxtPtr ctxt) {
+xmlNodePtr
+xmlParseStartTag(xmlParserCtxtPtr ctxt) {
     CHAR *namespace, *name;
     xmlNsPtr ns = NULL;
     xmlNodePtr ret = NULL;
@@ -3368,7 +3578,7 @@ xmlNodePtr xmlParseStartTag(xmlParserCtxtPtr ctxt) {
  *
  * [9] ETag ::= '</' QName S? '>'
  *    
- * return values: tagPtr receive the tag name just read
+ * tagPtr receive the tag name just read
  */
 
 void
@@ -3576,11 +3786,13 @@ xmlParseContent(xmlParserCtxtPtr ctxt) {
  * [39] element ::= EmptyElemTag | STag content ETag
  *
  * [41] Attribute ::= Name Eq AttValue
- * return values: the XML new node or NULL
+ *
+ * Returns the XML new node or NULL
  */
 
 
-xmlNodePtr xmlParseElement(xmlParserCtxtPtr ctxt) {
+xmlNodePtr
+xmlParseElement(xmlParserCtxtPtr ctxt) {
     xmlNodePtr ret;
     const CHAR *openTag = CUR_PTR;
     xmlParserNodeInfo node_info;
@@ -3702,7 +3914,8 @@ xmlNodePtr xmlParseElement(xmlParserCtxtPtr ctxt) {
  * parse the XML version value.
  *
  * [26] VersionNum ::= ([a-zA-Z0-9_.:] | '-')+
- * return values: the string giving the XML version number, or NULL
+ *
+ * Returns the string giving the XML version number, or NULL
  */
 CHAR *
 xmlParseVersionNum(xmlParserCtxtPtr ctxt) {
@@ -3729,7 +3942,7 @@ xmlParseVersionNum(xmlParserCtxtPtr ctxt) {
  * 
  * [25] Eq ::= S? '=' S?
  *
- * return values: the version string, e.g. "1.0"
+ * Returns the version string, e.g. "1.0"
  */
 
 CHAR *
@@ -3789,7 +4002,7 @@ xmlParseVersionInfo(xmlParserCtxtPtr ctxt) {
  *
  * [81] EncName ::= [A-Za-z] ([A-Za-z0-9._] | '-')*
  *
- * return values: the encoding name value or NULL
+ * Returns the encoding name value or NULL
  */
 CHAR *
 xmlParseEncName(xmlParserCtxtPtr ctxt) {
@@ -3823,7 +4036,7 @@ xmlParseEncName(xmlParserCtxtPtr ctxt) {
  *
  * TODO: this should setup the conversion filters.
  *
- * return values: the encoding value or NULL
+ * Returns the encoding value or NULL
  */
 
 CHAR *
@@ -3884,7 +4097,8 @@ xmlParseEncodingDecl(xmlParserCtxtPtr ctxt) {
  *
  * [32] SDDecl ::= S 'standalone' Eq
  *                 (("'" ('yes' | 'no') "'") | ('"' ('yes' | 'no')'"')) 
- * return values: 1 if standalone, 0 otherwise
+ *
+ * Returns 1 if standalone, 0 otherwise
  */
 
 int
@@ -4073,7 +4287,7 @@ xmlParseMisc(xmlParserCtxtPtr ctxt) {
  *
  * [22] prolog ::= XMLDecl? Misc* (doctypedecl Misc*)?
  *
- * return values: 0, -1 in case of error. the parser context is augmented
+ * Returns 0, -1 in case of error. the parser context is augmented
  *                as a result of the parsing.
  */
 
@@ -4193,10 +4407,11 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
  * It use the given SAX function block to handle the parsing callback.
  * If sax is NULL, fallback to the default DOM tree building routines.
  * 
- * return values: the resulting document tree
+ * Returns the resulting document tree
  */
 
-xmlDocPtr xmlSAXParseDoc(xmlSAXHandlerPtr sax, CHAR *cur, int recovery) {
+xmlDocPtr
+xmlSAXParseDoc(xmlSAXHandlerPtr sax, CHAR *cur, int recovery) {
     xmlDocPtr ret;
     xmlParserCtxtPtr ctxt;
     xmlParserInputPtr input;
@@ -4249,10 +4464,11 @@ xmlDocPtr xmlSAXParseDoc(xmlSAXHandlerPtr sax, CHAR *cur, int recovery) {
  *
  * parse an XML in-memory document and build a tree.
  * 
- * return values: the resulting document tree
+ * Returns the resulting document tree
  */
 
-xmlDocPtr xmlParseDoc(CHAR *cur) {
+xmlDocPtr
+xmlParseDoc(CHAR *cur) {
     return(xmlSAXParseDoc(NULL, cur, 0));
 }
 
@@ -4263,10 +4479,11 @@ xmlDocPtr xmlParseDoc(CHAR *cur) {
  * parse an XML in-memory document and build a tree.
  * In the case the document is not Well Formed, a tree is built anyway
  * 
- * return values: the resulting document tree
+ * Returns the resulting document tree
  */
 
-xmlDocPtr xmlRecoverDoc(CHAR *cur) {
+xmlDocPtr
+xmlRecoverDoc(CHAR *cur) {
     return(xmlSAXParseDoc(NULL, cur, 1));
 }
 
@@ -4282,7 +4499,7 @@ xmlDocPtr xmlRecoverDoc(CHAR *cur) {
  * It use the given SAX function block to handle the parsing callback.
  * If sax is NULL, fallback to the default DOM tree building routines.
  *
- * return values: the resulting document tree
+ * Returns the resulting document tree
  */
 
 xmlDocPtr xmlSAXParseFile(xmlSAXHandlerPtr sax, const char *filename,
@@ -4412,7 +4629,7 @@ retry_bigger:
  * parse an XML file and build a tree. Automatic support for ZLIB/Compress
  * compressed document is provided by default if found at compile-time.
  *
- * return values: the resulting document tree
+ * Returns the resulting document tree
  */
 
 xmlDocPtr xmlParseFile(const char *filename) {
@@ -4427,7 +4644,7 @@ xmlDocPtr xmlParseFile(const char *filename) {
  * compressed document is provided by default if found at compile-time.
  * In the case the document is not Well Formed, a tree is built anyway
  *
- * return values: the resulting document tree
+ * Returns the resulting document tree
  */
 
 xmlDocPtr xmlRecoverFile(const char *filename) {
@@ -4437,7 +4654,7 @@ xmlDocPtr xmlRecoverFile(const char *filename) {
 /**
  * xmlSAXParseMemory :
  * @sax:  the SAX handler block
- * @cur:  an pointer to a char array
+ * @buffer:  an pointer to a char array
  * @size:  the siwe of the array
  * @recovery:  work in recovery mode, i.e. tries to read no Well Formed
  *             documents
@@ -4448,10 +4665,10 @@ xmlDocPtr xmlRecoverFile(const char *filename) {
  * 
  * TODO : plug some encoding conversion routines here. !!!
  *
- * return values: the resulting document tree
+ * Returns the resulting document tree
  */
-
-xmlDocPtr xmlSAXParseMemory(xmlSAXHandlerPtr sax, char *buffer, int size,
+xmlDocPtr
+xmlSAXParseMemory(xmlSAXHandlerPtr sax, char *buffer, int size,
                             int recovery) {
     xmlDocPtr ret;
     xmlParserCtxtPtr ctxt;
@@ -4507,12 +4724,12 @@ xmlDocPtr xmlSAXParseMemory(xmlSAXHandlerPtr sax, char *buffer, int size,
 
 /**
  * xmlParseMemory :
- * @cur:  an pointer to a char array
+ * @buffer:  an pointer to a char array
  * @size:  the size of the array
  *
  * parse an XML in-memory block and build a tree.
  * 
- * return values: the resulting document tree
+ * Returns the resulting document tree
  */
 
 xmlDocPtr xmlParseMemory(char *buffer, int size) {
@@ -4521,13 +4738,13 @@ xmlDocPtr xmlParseMemory(char *buffer, int size) {
 
 /**
  * xmlRecoverMemory :
- * @cur:  an pointer to a char array
+ * @buffer:  an pointer to a char array
  * @size:  the size of the array
  *
  * parse an XML in-memory block and build a tree.
  * In the case the document is not Well Formed, a tree is built anyway
  * 
- * return values: the resulting document tree
+ * Returns the resulting document tree
  */
 
 xmlDocPtr xmlRecoverMemory(char *buffer, int size) {
@@ -4588,7 +4805,6 @@ xmlClearParserCtxt(xmlParserCtxtPtr ctxt)
  * contents from the parser context. The buffer parameter must not be
  * NULL, but the filename parameter can be
  */
-
 void
 xmlSetupParserForBuffer(xmlParserCtxtPtr ctxt, const CHAR* buffer,
                              const char* filename)
@@ -4623,7 +4839,7 @@ xmlSetupParserForBuffer(xmlParserCtxtPtr ctxt, const CHAR* buffer,
  *
  * Find the parser node info struct for a given node
  * 
- * return values: an xmlParserNodeInfo block pointer or NULL
+ * Returns an xmlParserNodeInfo block pointer or NULL
  */
 const xmlParserNodeInfo* xmlParserFindNodeInfo(const xmlParserCtxt* ctx,
                                                const xmlNode* node)
@@ -4678,7 +4894,7 @@ xmlClearNodeInfoSeq(xmlParserNodeInfoSeqPtr seq)
  * xmlParserFindNodeInfoIndex : Find the index that the info record for
  *   the given node is or should be at in a sorted sequence
  *
- * return values: a long indicating the position of the record
+ * Returns a long indicating the position of the record
  */
 unsigned long xmlParserFindNodeInfoIndex(const xmlParserNodeInfoSeq* seq,
                                          const xmlNode* node)
@@ -4711,13 +4927,13 @@ unsigned long xmlParserFindNodeInfoIndex(const xmlParserNodeInfoSeq* seq,
 /**
  * xmlParserAddNodeInfo:
  * @ctxt:  an XML parser context
- * @seq:  a node info sequence pointer
+ * @info:  a node info sequence pointer
  *
  * Insert node info record into the sorted sequence
  */
 void
 xmlParserAddNodeInfo(xmlParserCtxtPtr ctxt, 
-                          const xmlParserNodeInfo* info)
+                     const xmlParserNodeInfo* info)
 {
   unsigned long pos;
   static unsigned int block_size = 5;

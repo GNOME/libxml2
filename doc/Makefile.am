@@ -34,6 +34,13 @@ maintainer-clean-local: clean
 docdatadir = $(datadir)/aclocal
 docdata_DATA = xml.html structure.gif DOM.gif
 
+gnome-xml-decl-list.txt : templates
+
+gnome-xml-sections.txt : scan
+	cp gnome-xml-decl-list.txt gnome-xml-sections.txt
+
+rebuild: gnome-xml-sections.txt templates sgml html
+
 #install-data-local:
 #	install -d -m 0755 $(TARGET_DIR)
 #	install -m 0644 xml.html structure.gif DOM.gif $(TARGET_DIR)

@@ -41,7 +41,7 @@
  *
  * Take a block of ISO Latin 1 chars in and try to convert it to an UTF-8
  * block of chars out.
- * return values: number of byte written, or -1 by lack of space.
+ * Returns the number of byte written, or -1 by lack of space.
  */
 int
 isolat1ToUTF8(unsigned char* out, int outlen, unsigned char* in, int inlen)
@@ -77,7 +77,7 @@ isolat1ToUTF8(unsigned char* out, int outlen, unsigned char* in, int inlen)
  * Take a block of UTF-8 chars in and try to convert it to an ISO Latin 1
  * block of chars out.
  * TODO: need a fallback mechanism ...
- * return values: the number of byte written, or -1 by lack of space, or -2
+ * Returns the number of byte written, or -1 by lack of space, or -2
  *     if the transcoding failed.
  */
 int
@@ -112,7 +112,7 @@ UTF8Toisolat1(unsigned char* out, int outlen, unsigned char* in, int inlen)
  *
  * Take a block of UTF-16 ushorts in and try to convert it to an UTF-8
  * block of chars out.
- * return values: number of byte written, or -1 by lack of space.
+ * Returns the number of byte written, or -1 by lack of space.
  */
 int
 UTF16ToUTF8(unsigned char* out, int outlen, unsigned short* in, int inlen)
@@ -161,7 +161,7 @@ UTF16ToUTF8(unsigned char* out, int outlen, unsigned short* in, int inlen)
  * Take a block of UTF-8 chars in and try to convert it to an UTF-16
  * block of chars out.
  * TODO: need a fallback mechanism ...
- * return values: the number of byte written, or -1 by lack of space, or -2
+ * Returns the number of byte written, or -1 by lack of space, or -2
  *     if the transcoding failed.
  */
 int

@@ -35,7 +35,7 @@ static int xmlCompressMode = 0;
     } else {								\
         while (ulccur->next != NULL) ulccur = ulccur->next;		\
 	(n)->last = ulccur;						\
-}   }
+}}
 
 /************************************************************************
  *									*
@@ -77,7 +77,7 @@ xmlUpgradeOldNs(xmlDocPtr doc) {
  * @prefix:  the prefix for the namespace
  *
  * Creation of a new Namespace.
- * return values: returns a new namespace pointer
+ * Returns returns a new namespace pointer
  */
 xmlNsPtr
 xmlNewNs(xmlNodePtr node, const CHAR *href, const CHAR *prefix) {
@@ -132,7 +132,7 @@ xmlNewNs(xmlNodePtr node, const CHAR *href, const CHAR *prefix) {
  * @prefix:  the prefix for the namespace
  *
  * Creation of a Namespace, the old way using PI and without scoping, to AVOID.
- * return values: returns a new namespace pointer
+ * Returns returns a new namespace pointer
  */
 xmlNsPtr
 xmlNewGlobalNs(xmlDocPtr doc, const CHAR *href, const CHAR *prefix) {
@@ -237,7 +237,7 @@ xmlFreeNsList(xmlNsPtr cur) {
  * @SystemID:  the system ID
  *
  * Creation of a new DTD.
- * return values: a pointer to the new DTD structure
+ * Returns a pointer to the new DTD structure
  */
 xmlDtdPtr
 xmlNewDtd(xmlDocPtr doc, const CHAR *name,
@@ -271,7 +271,9 @@ xmlNewDtd(xmlDocPtr doc, const CHAR *name,
 	cur->SystemID = xmlStrdup(SystemID); 
     else
         cur->SystemID = NULL;
+    cur->notations = NULL;
     cur->elements = NULL;
+    cur->attributes = NULL;
     cur->entities = NULL;
     if (doc != NULL)
 	doc->extSubset = cur;
@@ -286,8 +288,8 @@ xmlNewDtd(xmlDocPtr doc, const CHAR *name,
  * @ExternalID:  the external ID
  * @SystemID:  the system ID
  *
- * Creatte the internal subset of a document
- * return values: a pointer to the new DTD structure
+ * Create the internal subset of a document
+ * Returns a pointer to the new DTD structure
  */
 xmlDtdPtr
 xmlCreateIntSubset(xmlDocPtr doc, const CHAR *name,
@@ -322,7 +324,9 @@ xmlCreateIntSubset(xmlDocPtr doc, const CHAR *name,
 	cur->SystemID = xmlStrdup(SystemID); 
     else
         cur->SystemID = NULL;
+    cur->notations = NULL;
     cur->elements = NULL;
+    cur->attributes = NULL;
     cur->entities = NULL;
     if (doc != NULL)
 	doc->intSubset = cur;
@@ -345,8 +349,12 @@ xmlFreeDtd(xmlDtdPtr cur) {
     if (cur->name != NULL) free((char *) cur->name);
     if (cur->SystemID != NULL) free((char *) cur->SystemID);
     if (cur->ExternalID != NULL) free((char *) cur->ExternalID);
+    if (cur->notations != NULL)
+        xmlFreeNotationTable((xmlNotationTablePtr) cur->notations);
     if (cur->elements != NULL)
         xmlFreeElementTable((xmlElementTablePtr) cur->elements);
+    if (cur->attributes != NULL)
+        xmlFreeAttributeTable((xmlAttributeTablePtr) cur->attributes);
     if (cur->entities != NULL)
         xmlFreeEntitiesTable((xmlEntitiesTablePtr) cur->entities);
     memset(cur, -1, sizeof(xmlDtd));
@@ -357,7 +365,7 @@ xmlFreeDtd(xmlDtdPtr cur) {
  * xmlNewDoc:
  * @version:  CHAR string giving the version of XML "1.0"
  *
- * Create a new document
+ * Returns a new document
  */
 xmlDocPtr
 xmlNewDoc(const CHAR *version) {
@@ -424,11 +432,11 @@ xmlFreeDoc(xmlDocPtr cur) {
  * xmlStringLenGetNodeList:
  * @doc:  the document
  * @value:  the value of the text
- * @int len:  the length of the string value
+ * @len:  the length of the string value
  *
  * Parse the value string and build the node list associated. Should
  * produce a flat tree with only TEXTs and ENTITY_REFs.
- * return values: a pointer to the first child
+ * Returns a pointer to the first child
  */
 xmlNodePtr
 xmlStringLenGetNodeList(xmlDocPtr doc, const CHAR *value, int len) {
@@ -539,7 +547,7 @@ xmlStringLenGetNodeList(xmlDocPtr doc, const CHAR *value, int len) {
  *
  * Parse the value string and build the node list associated. Should
  * produce a flat tree with only TEXTs and ENTITY_REFs.
- * return values: a pointer to the first child
+ * Returns a pointer to the first child
  */
 xmlNodePtr
 xmlStringGetNodeList(xmlDocPtr doc, const CHAR *value) {
@@ -651,7 +659,7 @@ xmlStringGetNodeList(xmlDocPtr doc, const CHAR *value) {
  *
  * Returns the string equivalent to the text contained in the Node list
  * made of TEXTs and ENTITY_REFs
- * return values: a pointer to the string copy, the calller must free it.
+ * Returns a pointer to the string copy, the calller must free it.
  */
 CHAR *
 xmlNodeListGetString(xmlDocPtr doc, xmlNodePtr list, int inLine) {
@@ -701,7 +709,7 @@ xmlNodeListGetString(xmlDocPtr doc, xmlNodePtr list, int inLine) {
  * @value:  the value of the attribute
  *
  * Create a new property carried by a node.
- * return values: a pointer to the attribute
+ * Returns a pointer to the attribute
  */
 xmlAttrPtr
 xmlNewProp(xmlNodePtr node, const CHAR *name, const CHAR *value) {
@@ -757,7 +765,7 @@ xmlNewProp(xmlNodePtr node, const CHAR *name, const CHAR *value) {
  * @value:  the value of the attribute
  *
  * Create a new property carried by a document.
- * return values: a pointer to the attribute
+ * Returns a pointer to the attribute
  */
 xmlAttrPtr
 xmlNewDocProp(xmlDocPtr doc, const CHAR *name, const CHAR *value) {
@@ -835,12 +843,11 @@ xmlFreeProp(xmlAttrPtr cur) {
  * xmlNewNode:
  * @ns:  namespace if any
  * @name:  the node name
- * @content:  the text content if any
  *
  * Creation of a new node element. @ns and @content are optionnal (NULL).
  * If content is non NULL, a child list containing the TEXTs and
  * ENTITY_REFs node will be created.
- * return values: a pointer to the new node object.
+ * Returns a pointer to the new node object.
  */
 xmlNodePtr
 xmlNewNode(xmlNsPtr ns, const CHAR *name) {
@@ -888,7 +895,7 @@ xmlNewNode(xmlNsPtr ns, const CHAR *name) {
  *
  * Creation of a new node element within a document. @ns and @content
  * are optionnal (NULL).
- * return values: a pointer to the new node object.
+ * Returns a pointer to the new node object.
  */
 xmlNodePtr
 xmlNewDocNode(xmlDocPtr doc, xmlNsPtr ns,
@@ -900,7 +907,7 @@ xmlNewDocNode(xmlDocPtr doc, xmlNsPtr ns,
         cur->doc = doc;
 	if (content != NULL) {
 	    cur->childs = xmlStringGetNodeList(doc, content);
-	    UPDATE_LAST_CHILD(cur);
+	    UPDATE_LAST_CHILD(cur)
 	}
     }
     return(cur);
@@ -912,7 +919,7 @@ xmlNewDocNode(xmlDocPtr doc, xmlNsPtr ns,
  * @content:  the text content
  *
  * Creation of a new text node.
- * return values: a pointer to the new node object.
+ * Returns a pointer to the new node object.
  */
 xmlNodePtr
 xmlNewText(const CHAR *content) {
@@ -952,7 +959,7 @@ xmlNewText(const CHAR *content) {
  * @name:  the reference name, or the reference string with & and ;
  *
  * Creation of a new reference node.
- * return values: a pointer to the new node object.
+ * Returns a pointer to the new node object.
  */
 xmlNodePtr
 xmlNewReference(xmlDocPtr doc, const CHAR *name) {
@@ -1003,7 +1010,7 @@ xmlNewReference(xmlDocPtr doc, const CHAR *name) {
  * @content:  the text content
  *
  * Creation of a new text node within a document.
- * return values: a pointer to the new node object.
+ * Returns a pointer to the new node object.
  */
 xmlNodePtr
 xmlNewDocText(xmlDocPtr doc, const CHAR *content) {
@@ -1020,7 +1027,7 @@ xmlNewDocText(xmlDocPtr doc, const CHAR *content) {
  * @len:  the text len.
  *
  * Creation of a new text node with an extra parameter for the content's lenght
- * return values: a pointer to the new node object.
+ * Returns a pointer to the new node object.
  */
 xmlNodePtr
 xmlNewTextLen(const CHAR *content, int len) {
@@ -1062,7 +1069,7 @@ xmlNewTextLen(const CHAR *content, int len) {
  *
  * Creation of a new text node with an extra content lenght parameter. The
  * text node pertain to a given document.
- * return values: a pointer to the new node object.
+ * Returns a pointer to the new node object.
  */
 xmlNodePtr
 xmlNewDocTextLen(xmlDocPtr doc, const CHAR *content, int len) {
@@ -1078,7 +1085,7 @@ xmlNewDocTextLen(xmlDocPtr doc, const CHAR *content, int len) {
  * @content:  the comment content
  *
  * Creation of a new node containing a comment.
- * return values: a pointer to the new node object.
+ * Returns a pointer to the new node object.
  */
 xmlNodePtr
 xmlNewComment(CHAR *content) {
@@ -1113,12 +1120,12 @@ xmlNewComment(CHAR *content) {
 }
 
 /**
- * xmlNewComment:
+ * xmlNewDocComment:
  * @doc:  the document
  * @content:  the comment content
  *
  * Creation of a new node containing a commentwithin a document.
- * return values: a pointer to the new node object.
+ * Returns a pointer to the new node object.
  */
 xmlNodePtr
 xmlNewDocComment(xmlDocPtr doc, CHAR *content) {
@@ -1140,7 +1147,7 @@ xmlNewDocComment(xmlDocPtr doc, CHAR *content) {
  * Creation of a new child element, added at the end of @parent childs list.
  * @ns and @content parameters are optionnal (NULL). If content is non NULL,
  * a child list containing the TEXTs and ENTITY_REFs node will be created.
- * return values: a pointer to the new node object.
+ * Returns a pointer to the new node object.
  */
 xmlNodePtr
 xmlNewChild(xmlNodePtr parent, xmlNsPtr ns,
@@ -1191,7 +1198,7 @@ xmlNewChild(xmlNodePtr parent, xmlNsPtr ns,
  * @cur:  the child node
  *
  * Add a new child element, to @parent, at the end of the child list.
- * return values: the child or NULL in case of error.
+ * Returns the child or NULL in case of error.
  */
 xmlNodePtr
 xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
@@ -1231,7 +1238,7 @@ xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
 	    if (text->next != NULL)
 		text->next->prev = text;
 	    parent->childs = text;
-	    UPDATE_LAST_CHILD(parent);
+	    UPDATE_LAST_CHILD(parent)
 	    free(parent->content);
 	    parent->content = NULL;
 	}
@@ -1254,7 +1261,7 @@ xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
  * @parent:  the parent node
  *
  * Search the last child of a node.
- * return values: the last child or NULL if none.
+ * Returns the last child or NULL if none.
  */
 xmlNodePtr
 xmlGetLastChild(xmlNodePtr parent) {
@@ -1534,7 +1541,7 @@ xmlStaticCopyNode(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
     }
     if (node->childs != NULL)
         ret->childs = xmlStaticCopyNodeList(node->childs, doc, ret);
-    UPDATE_LAST_CHILD(ret);
+    UPDATE_LAST_CHILD(ret)
     return(ret);
 }
 
@@ -1636,6 +1643,15 @@ xmlCopyDtd(xmlDtdPtr dtd) {
     if (dtd->entities != NULL)
         ret->entities = (void *) xmlCopyEntitiesTable(
 	                    (xmlEntitiesTablePtr) dtd->entities);
+    if (dtd->notations != NULL)
+        ret->notations = (void *) xmlCopyNotationTable(
+	                    (xmlNotationTablePtr) dtd->notations);
+    if (dtd->elements != NULL)
+        ret->elements = (void *) xmlCopyElementTable(
+	                    (xmlElementTablePtr) dtd->elements);
+    if (dtd->attributes != NULL)
+        ret->attributes = (void *) xmlCopyAttributeTable(
+	                    (xmlAttributeTablePtr) dtd->attributes);
     /*
      * TODO: support for Element definitions.
      */
@@ -1690,7 +1706,7 @@ xmlCopyDoc(xmlDocPtr doc, int recursive) {
  * directly by this node if it's a TEXT node or the aggregate string
  * of the values carried by this node child's (TEXT and ENTITY_REF).
  * Entity references are substitued.
- * Return value: a new CHAR * or NULL if no content is available.
+ * Returns a new CHAR * or NULL if no content is available.
  */
 CHAR *
 xmlNodeGetContent(xmlNodePtr cur) {
@@ -1740,7 +1756,7 @@ xmlNodeSetContent(xmlNodePtr cur, const CHAR *content) {
 	    }
 	    if (cur->childs != NULL) xmlFreeNode(cur->childs);
 	    cur->childs = xmlStringGetNodeList(cur->doc, content);
-	    UPDATE_LAST_CHILD(cur);
+	    UPDATE_LAST_CHILD(cur)
 	    break;
         case XML_ATTRIBUTE_NODE:
 	    break;
@@ -1788,7 +1804,7 @@ xmlNodeSetContentLen(xmlNodePtr cur, const CHAR *content, int len) {
 	    }
 	    if (cur->childs != NULL) xmlFreeNode(cur->childs);
 	    cur->childs = xmlStringLenGetNodeList(cur->doc, content, len);
-	    UPDATE_LAST_CHILD(cur);
+	    UPDATE_LAST_CHILD(cur)
 	    break;
         case XML_ATTRIBUTE_NODE:
 	    break;
@@ -1845,7 +1861,7 @@ xmlNodeAddContentLen(xmlNodePtr cur, const CHAR *content, int len) {
 	    } else {
 	        if (cur->content != NULL) {
 		    cur->childs = xmlStringGetNodeList(cur->doc, cur->content);
-		    UPDATE_LAST_CHILD(cur);
+		    UPDATE_LAST_CHILD(cur)
 		    free(cur->content);
 		    cur->content = NULL;
 		    last = cur->last;
@@ -1906,7 +1922,7 @@ xmlNodeAddContent(xmlNodePtr cur, const CHAR *content) {
  * @second:  the second text node being merged
  * 
  * Merge two text nodes into one
- * Return values: the first text node augmented
+ * Returns the first text node augmented
  */
 xmlNodePtr
 xmlTextMerge(xmlNodePtr first, xmlNodePtr second) {
@@ -1930,7 +1946,7 @@ xmlTextMerge(xmlNodePtr first, xmlNodePtr second) {
  * recurse on the parents until it finds the defined namespace
  * or return NULL otherwise.
  * @nameSpace can be NULL, this is a search for the default namespace.
- * return values: the namespace pointer or NULL.
+ * Returns the namespace pointer or NULL.
  */
 xmlNsPtr
 xmlSearchNs(xmlDocPtr doc, xmlNodePtr node, const CHAR *nameSpace) {
@@ -1968,7 +1984,7 @@ xmlSearchNs(xmlDocPtr doc, xmlNodePtr node, const CHAR *nameSpace) {
  *
  * Search a Ns aliasing a given URI. Recurse on the parents until it finds
  * the defined namespace or return NULL otherwise.
- * return values: the namespace pointer or NULL.
+ * Returns the namespace pointer or NULL.
  */
 xmlNsPtr
 xmlSearchNsByHref(xmlDocPtr doc, xmlNodePtr node, const CHAR *href) {
@@ -2003,7 +2019,7 @@ xmlSearchNsByHref(xmlDocPtr doc, xmlNodePtr node, const CHAR *href) {
  *
  * Search and get the value of an attribute associated to a node
  * This does the entity substitution.
- * return values: the attribute value or NULL if not found.
+ * Returns the attribute value or NULL if not found.
  */
 CHAR *xmlGetProp(xmlNodePtr node, const CHAR *name) {
     xmlAttrPtr prop = node->properties;
@@ -2028,7 +2044,7 @@ CHAR *xmlGetProp(xmlNodePtr node, const CHAR *name) {
  * @value:  the attribute value
  *
  * Set (or reset) an attribute carried by a node.
- * return values: the attribute pointer.
+ * Returns the attribute pointer.
  */
 xmlAttrPtr
 xmlSetProp(xmlNodePtr node, const CHAR *name, const CHAR *value) {
@@ -2054,7 +2070,7 @@ xmlSetProp(xmlNodePtr node, const CHAR *name, const CHAR *value) {
  * @node:  the node
  * 
  * Is this node a Text node ?
- * return values: 1 yes, 0 no
+ * Returns 1 yes, 0 no
  */
 int
 xmlNodeIsText(xmlNodePtr node) {
@@ -2065,7 +2081,7 @@ xmlNodeIsText(xmlNodePtr node) {
 }
 
 /**
- * xmlNodeIsText:
+ * xmlTextConcat:
  * @node:  the node
  * @content:  the content
  * @len:  @content lenght
@@ -2274,15 +2290,20 @@ xmlDtdDump(xmlDocPtr doc) {
 	xmlBufferWriteCHAR(cur->SystemID);
 	xmlBufferWriteChar("\"");
     }
-    if ((cur->entities == NULL) && (cur->elements == NULL)) {
+    if ((cur->entities == NULL) && (cur->elements == NULL) &&
+        (cur->attributes == NULL) && (cur->notations == NULL)) {
 	xmlBufferWriteChar(">\n");
 	return;
     }
     xmlBufferWriteChar(" [\n");
     if (cur->entities != NULL)
 	xmlDumpEntitiesTable((xmlEntitiesTablePtr) cur->entities);
+    if (cur->notations != NULL)
+	xmlDumpNotationTable((xmlNotationTablePtr) cur->notations);
     if (cur->elements != NULL)
 	xmlDumpElementTable((xmlElementTablePtr) cur->elements);
+    if (cur->attributes != NULL)
+	xmlDumpAttributeTable((xmlAttributeTablePtr) cur->attributes);
     xmlBufferWriteChar("]");
 
     /* TODO !!! a lot more things to dump ... */
@@ -2513,7 +2534,7 @@ xmlDocDumpMemory(xmlDocPtr cur, CHAR**mem, int *size) {
  * @doc:  the document
  *
  * get the compression ratio for a document, ZLIB based
- * return values: 0 (uncompressed) to 9 (max compression)
+ * Returns 0 (uncompressed) to 9 (max compression)
  */
 int
  xmlGetDocCompressMode (xmlDocPtr doc) {
@@ -2541,7 +2562,7 @@ xmlSetDocCompressMode (xmlDocPtr doc, int mode) {
  * xmlGetCompressMode:
  *
  * get the default compression mode used, ZLIB based.
- * return values: 0 (uncompressed) to 9 (max compression)
+ * Returns 0 (uncompressed) to 9 (max compression)
  */
 int
  xmlGetCompressMode(void) {

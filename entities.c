@@ -154,7 +154,7 @@ void xmlInitializePredefinedEntities(void) {
  *
  * Check whether this name is an predefined entity.
  *
- * return values: NULL if not, othervise the entity
+ * Returns NULL if not, othervise the entity
  */
 xmlEntityPtr
 xmlGetPredefinedEntity(const CHAR *name) {
@@ -241,7 +241,7 @@ xmlAddDocEntity(xmlDocPtr doc, const CHAR *name, int type,
  * Do an entity lookup in the Dtd entity hash table and
  * returns the corresponding entity, if found.
  * 
- * return values: A pointer to the entity structure or NULL if not found.
+ * Returns A pointer to the entity structure or NULL if not found.
  */
 xmlEntityPtr
 xmlGetDtdEntity(xmlDocPtr doc, const CHAR *name) {
@@ -268,7 +268,7 @@ xmlGetDtdEntity(xmlDocPtr doc, const CHAR *name) {
  * returns the corrsponding entity, otherwise a lookup is done
  * in the predefined entities too.
  * 
- * return values: A pointer to the entity structure or NULL if not found.
+ * Returns A pointer to the entity structure or NULL if not found.
  */
 xmlEntityPtr
 xmlGetDocEntity(xmlDocPtr doc, const CHAR *name) {
@@ -317,7 +317,7 @@ xmlGetDocEntity(xmlDocPtr doc, const CHAR *name) {
  * TODO This routine is not reentrant and this will be changed, the interface
  *      should not be modified though.
  * 
- * return values: A newly allocated string with the substitution done.
+ * Returns A newly allocated string with the substitution done.
  */
 CHAR *
 xmlEncodeEntities(xmlDocPtr doc, const CHAR *input) {
@@ -423,7 +423,7 @@ xmlEncodeEntities(xmlDocPtr doc, const CHAR *input) {
  *
  * create and initialize an empty entities hash table.
  *
- * return values: the xmlEntitiesTablePtr just created or NULL in case of error.
+ * Returns the xmlEntitiesTablePtr just created or NULL in case of error.
  */
 xmlEntitiesTablePtr
 xmlCreateEntitiesTable(void) {
@@ -474,7 +474,7 @@ xmlFreeEntitiesTable(xmlEntitiesTablePtr table) {
  *
  * Build a copy of an entity table.
  * 
- * return values: the new xmlEntitiesTablePtr or NULL in case of error.
+ * Returns the new xmlEntitiesTablePtr or NULL in case of error.
  */
 xmlEntitiesTablePtr
 xmlCopyEntitiesTable(xmlEntitiesTablePtr table) {

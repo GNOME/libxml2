@@ -1,3 +1,15 @@
+Mon Feb 22 11:24:56 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* parserInternals.h: added this header giving access to the parser
+	  internal functions.
+	* doc/Makefile.am : added a rebuild target which rebuilds the full
+	  set of documentations
+	* parser.[ch] tree.[ch] valid.[ch]: serious updates w.r.t. parsing
+	  the internal subset. 
+	* *.c *.h: modifications needed to generate the documentation using
+	  gtk-doc, cleanup of functions blocks, reorganisation of struct
+	  declarations.
+
 Tue Feb 16 17:27:29 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* Makefile.am, spec, doc/Makefile.am : upgrading to 0.99.8, fixing

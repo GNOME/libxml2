@@ -260,6 +260,9 @@ XMLPUBFUN void * XMLCALL
 XMLPUBFUN void XMLCALL	
 	xmlRegisterHTTPPostCallbacks	(void );
 #endif
+XMLPUBFUN xmlParserInputPtr XMLCALL
+	xmlCheckHTTPInput		(xmlParserCtxtPtr ctxt,
+					 xmlParserInputPtr ret);
 
 /*
  * A predefined entity loader disabling network accesses

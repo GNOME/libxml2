@@ -2961,6 +2961,80 @@ xmlParserGetDirectory(const char *filename) {
  *								*
  ****************************************************************/
 
+/**
+ * xmlCheckHTTPInput:
+ * @ctxt: an XML parser context
+ * @ret: an XML parser input
+ *
+ * Check an input in case it was created from an HTTP stream, in that
+ * case it will handle encoding and update of the base URL in case of
+ * redirection. It also checks for HTTP errors in which case the input
+ * is cleanly freed up and an appropriate error is raised in context
+ *
+ * Returns the input or NULL in case of HTTP error.
+ */
+xmlParserInputPtr
+xmlCheckHTTPInput(xmlParserCtxtPtr ctxt, xmlParserInputPtr ret) {
+#ifdef LIBXML_HTTP_ENABLED
+    if ((ret != NULL) && (ret->buf != NULL) &&
+        (ret->buf->readcallback == xmlIOHTTPRead) &&
+        (ret->buf->context != NULL)) {
+        const char *encoding;
+        const char *redir;
+        const char *mime;
+        int code;
+
+        code = xmlNanoHTTPReturnCode(ret->buf->context);
+        if (code >= 400) {
+            /* fatal error */
+	    if (ret->filename != NULL)
+		xmlLoaderErr(ctxt, "failed to load HTTP resource \"%s\"\n",
+                         (const char *) ret->filename);
+	    else
+		xmlLoaderErr(ctxt, "failed to load HTTP resource\n", NULL);
+            xmlFreeInputStream(ret);
+            ret = NULL;
+        } else {
+
+            mime = xmlNanoHTTPMimeType(ret->buf->context);
+            if ((xmlStrstr(BAD_CAST mime, BAD_CAST "/xml")) ||
+                (xmlStrstr(BAD_CAST mime, BAD_CAST "+xml"))) {
+                encoding = xmlNanoHTTPEncoding(ret->buf->context);
+                if (encoding != NULL) {
+                    xmlCharEncodingHandlerPtr handler;
+
+                    handler = xmlFindCharEncodingHandler(encoding);
+                    if (handler != NULL) {
+                        xmlSwitchInputEncoding(ctxt, ret, handler);
+                    } else {
+                        __xmlErrEncoding(ctxt, XML_ERR_UNKNOWN_ENCODING,
+                                         "Unknown encoding %s",
+                                         BAD_CAST encoding, NULL);
+                    }
+                    if (ret->encoding == NULL)
+                        ret->encoding = xmlStrdup(BAD_CAST encoding);
+                }
+#if 0
+            } else if (xmlStrstr(BAD_CAST mime, BAD_CAST "html")) {
+#endif
+            }
+            redir = xmlNanoHTTPRedir(ret->buf->context);
+            if (redir != NULL) {
+                if (ret->filename != NULL)
+                    xmlFree((xmlChar *) ret->filename);
+                if (ret->directory != NULL) {
+                    xmlFree((xmlChar *) ret->directory);
+                    ret->directory = NULL;
+                }
+                ret->filename =
+                    (char *) xmlStrdup((const xmlChar *) redir);
+            }
+        }
+    }
+#endif
+    return(ret);
+}
+
 static int xmlSysIDExists(const char *URL) {
 #ifdef HAVE_STAT
     int ret;
@@ -3001,19 +3075,20 @@ static int xmlSysIDExists(const char *URL) {
  *
  * Returns a new allocated xmlParserInputPtr, or NULL.
  */
-static
-xmlParserInputPtr
+static xmlParserInputPtr
 xmlDefaultExternalEntityLoader(const char *URL, const char *ID,
-                               xmlParserCtxtPtr ctxt) {
+                               xmlParserCtxtPtr ctxt)
+{
     xmlParserInputPtr ret = NULL;
     xmlChar *resource = NULL;
+
 #ifdef LIBXML_CATALOG_ENABLED
     xmlCatalogAllow pref;
 #endif
 
 #ifdef DEBUG_EXTERNAL_ENTITIES
     xmlGenericError(xmlGenericErrorContext,
-	    "xmlDefaultExternalEntityLoader(%s, xxx)\n", URL);
+                    "xmlDefaultExternalEntityLoader(%s, xxx)\n", URL);
 #endif
 #ifdef LIBXML_CATALOG_ENABLED
     /*
@@ -3023,87 +3098,71 @@ xmlDefaultExternalEntityLoader(const char *URL, const char *ID,
     pref = xmlCatalogGetDefaults();
 
     if ((pref != XML_CATA_ALLOW_NONE) && (!xmlSysIDExists(URL))) {
-	/*
-	 * Do a local lookup
-	 */
-	if ((ctxt->catalogs != NULL) &&
-	    ((pref == XML_CATA_ALLOW_ALL) ||
-	     (pref == XML_CATA_ALLOW_DOCUMENT))) {
-	    resource = xmlCatalogLocalResolve(ctxt->catalogs,
-					      (const xmlChar *)ID,
-					      (const xmlChar *)URL);
+        /*
+         * Do a local lookup
+         */
+        if ((ctxt->catalogs != NULL) &&
+            ((pref == XML_CATA_ALLOW_ALL) ||
+             (pref == XML_CATA_ALLOW_DOCUMENT))) {
+            resource = xmlCatalogLocalResolve(ctxt->catalogs,
+                                              (const xmlChar *) ID,
+                                              (const xmlChar *) URL);
         }
-	/*
-	 * Try a global lookup
-	 */
-	if ((resource == NULL) &&
-	    ((pref == XML_CATA_ALLOW_ALL) ||
-	     (pref == XML_CATA_ALLOW_GLOBAL))) {
-	    resource = xmlCatalogResolve((const xmlChar *)ID,
-					 (const xmlChar *)URL);
-	}
-	if ((resource == NULL) && (URL != NULL))
-	    resource = xmlStrdup((const xmlChar *) URL);
+        /*
+         * Try a global lookup
+         */
+        if ((resource == NULL) &&
+            ((pref == XML_CATA_ALLOW_ALL) ||
+             (pref == XML_CATA_ALLOW_GLOBAL))) {
+            resource = xmlCatalogResolve((const xmlChar *) ID,
+                                         (const xmlChar *) URL);
+        }
+        if ((resource == NULL) && (URL != NULL))
+            resource = xmlStrdup((const xmlChar *) URL);
 
-	/*
-	 * TODO: do an URI lookup on the reference
-	 */
-	if ((resource != NULL) && (!xmlSysIDExists((const char *)resource))) {
-	    xmlChar *tmp = NULL;
+        /*
+         * TODO: do an URI lookup on the reference
+         */
+        if ((resource != NULL)
+            && (!xmlSysIDExists((const char *) resource))) {
+            xmlChar *tmp = NULL;
 
-	    if ((ctxt->catalogs != NULL) &&
-		((pref == XML_CATA_ALLOW_ALL) ||
-		 (pref == XML_CATA_ALLOW_DOCUMENT))) {
-		tmp = xmlCatalogLocalResolveURI(ctxt->catalogs, resource);
-	    }
-	    if ((tmp == NULL) &&
-		((pref == XML_CATA_ALLOW_ALL) ||
-	         (pref == XML_CATA_ALLOW_GLOBAL))) {
-		tmp = xmlCatalogResolveURI(resource);
-	    }
+            if ((ctxt->catalogs != NULL) &&
+                ((pref == XML_CATA_ALLOW_ALL) ||
+                 (pref == XML_CATA_ALLOW_DOCUMENT))) {
+                tmp = xmlCatalogLocalResolveURI(ctxt->catalogs, resource);
+            }
+            if ((tmp == NULL) &&
+                ((pref == XML_CATA_ALLOW_ALL) ||
+                 (pref == XML_CATA_ALLOW_GLOBAL))) {
+                tmp = xmlCatalogResolveURI(resource);
+            }
 
-	    if (tmp != NULL) {
-		xmlFree(resource);
-		resource = tmp;
-	    }
-	}
+            if (tmp != NULL) {
+                xmlFree(resource);
+                resource = tmp;
+            }
+        }
     }
 #endif
 
     if (resource == NULL)
-	resource = (xmlChar *) URL;
+        resource = (xmlChar *) URL;
 
     if (resource == NULL) {
-	if (ID == NULL)
-	    ID = "NULL";
-	xmlLoaderErr(ctxt, "failed to load external entity \"%s\"\n", ID);
-        return(NULL);
+        if (ID == NULL)
+            ID = "NULL";
+        xmlLoaderErr(ctxt, "failed to load external entity \"%s\"\n", ID);
+        return (NULL);
     }
-    ret = xmlNewInputFromFile(ctxt, (const char *)resource);
+    ret = xmlNewInputFromFile(ctxt, (const char *) resource);
     if (ret == NULL) {
-	xmlLoaderErr(ctxt, "failed to load external entity \"%s\"\n",
-	             (const char *) resource);
-	return(NULL);
-    }
-    if ((ret->buf != NULL) && (ret->buf->readcallback == xmlIOHTTPRead)) {
-        const char *encoding;
-	const char *redir;
-
-	encoding = xmlNanoHTTPEncoding(ret->buf->context);
-	redir = xmlNanoHTTPRedir(ret->buf->context);
-	if (redir != NULL) {
-	    if (ret->filename != NULL)
-	        xmlFree((xmlChar *) ret->filename);
-	    if (ret->directory != NULL) {
-	        xmlFree((xmlChar *) ret->directory);
-		ret->directory = NULL;
-            }
-	    ret->filename = (char *) xmlStrdup((const xmlChar *)redir);
-	}
+        xmlLoaderErr(ctxt, "failed to load external entity \"%s\"\n",
+                     (const char *) resource);
     }
     if ((resource != NULL) && (resource != (xmlChar *) URL))
-	xmlFree(resource);
-    return(ret);
+        xmlFree(resource);
+    return (ret);
 }
 
 static xmlExternalEntityLoader xmlCurrentExternalEntityLoader =

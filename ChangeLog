@@ -1,3 +1,13 @@
+Sun Oct 19 15:31:43 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/nanohttp.h include/libxml/parserInternals.h 
+	  include/libxml/xmlIO.h nanohttp.c parserInternals.c xmlIO.c:
+	  Fixed the HTTP<->parser interraction, which should fix 2 long
+	  standing bugs #104790 and #124054 , this also fix the fact that
+	  HTTP error code (> 400) should not generate data, we usually
+	  don't want to parse the HTML error information instead of the
+	  resource looked at.
+
 Sun Oct 19 19:20:48 HKT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* doc/Makefile.am: enhanced the installation of tutorial files

@@ -150,6 +150,7 @@ typedef struct xmlNanoHTTPCtxt {
     char *location;	/* the new URL in case of redirect */
     char *authHeader;	/* contents of {WWW,Proxy}-Authenticate header */
     char *encoding;	/* encoding extracted from the contentType */
+    char *mimeType;	/* Mime-Type extracted from the contentType */
 } xmlNanoHTTPCtxt, *xmlNanoHTTPCtxtPtr;
 
 static int initialized = 0;
@@ -530,6 +531,7 @@ xmlNanoHTTPFreeCtxt(xmlNanoHTTPCtxtPtr ctxt) {
     if (ctxt->in != NULL) xmlFree(ctxt->in);
     if (ctxt->contentType != NULL) xmlFree(ctxt->contentType);
     if (ctxt->encoding != NULL) xmlFree(ctxt->encoding);
+    if (ctxt->mimeType != NULL) xmlFree(ctxt->mimeType);
     if (ctxt->location != NULL) xmlFree(ctxt->location);
     if (ctxt->authHeader != NULL) xmlFree(ctxt->authHeader);
     ctxt->state = XML_NANO_HTTP_NONE;
@@ -737,7 +739,7 @@ xmlNanoHTTPReadLine(xmlNanoHTTPCtxtPtr ctxt) {
  * Try to extract useful informations from the server answer.
  * We currently parse and process:
  *  - The HTTP revision/ return code
- *  - The Content-Type
+ *  - The Content-Type, Mime-Type and charset used
  *  - The Location for redirect processing.
  *
  * Returns -1 in case of failure, the file descriptor number otherwise
@@ -781,16 +783,56 @@ xmlNanoHTTPScanAnswer(xmlNanoHTTPCtxtPtr ctxt, const char *line) {
 	if ((*cur != 0) && (*cur != ' ') && (*cur != '\t')) return;
 	ctxt->returnValue = ret;
     } else if (!xmlStrncasecmp(BAD_CAST line, BAD_CAST"Content-Type:", 13)) {
+        const xmlChar *charset, *last, *mime;
         cur += 13;
 	while ((*cur == ' ') || (*cur == '\t')) cur++;
 	if (ctxt->contentType != NULL)
 	    xmlFree(ctxt->contentType);
 	ctxt->contentType = xmlMemStrdup(cur);
+	mime = (const xmlChar *) cur;
+	last = mime;
+	while ((*last != 0) && (*last != ' ') && (*last != '\t') &&
+	       (*last != ';') && (*last != ','))
+	    last++;
+	if (ctxt->mimeType != NULL)
+	    xmlFree(ctxt->mimeType);
+	ctxt->mimeType = (char *) xmlStrndup(mime, last - mime);
+	charset = xmlStrstr(BAD_CAST ctxt->contentType, BAD_CAST "charset=");
+	if (charset != NULL) {
+	    charset += 8;
+	    last = charset;
+	    while ((*last != 0) && (*last != ' ') && (*last != '\t') &&
+	           (*last != ';') && (*last != ','))
+		last++;
+	    if (ctxt->encoding != NULL)
+	        xmlFree(ctxt->encoding);
+	    ctxt->encoding = (char *) xmlStrndup(charset, last - charset);
+	}
     } else if (!xmlStrncasecmp(BAD_CAST line, BAD_CAST"ContentType:", 12)) {
+        const xmlChar *charset, *last, *mime;
         cur += 12;
 	if (ctxt->contentType != NULL) return;
 	while ((*cur == ' ') || (*cur == '\t')) cur++;
 	ctxt->contentType = xmlMemStrdup(cur);
+	mime = (const xmlChar *) cur;
+	last = mime;
+	while ((*last != 0) && (*last != ' ') && (*last != '\t') &&
+	       (*last != ';') && (*last != ','))
+	    last++;
+	if (ctxt->mimeType != NULL)
+	    xmlFree(ctxt->mimeType);
+	ctxt->mimeType = (char *) xmlStrndup(mime, last - mime);
+	charset = xmlStrstr(BAD_CAST ctxt->contentType, BAD_CAST "charset=");
+	if (charset != NULL) {
+	    charset += 8;
+	    last = charset;
+	    while ((*last != 0) && (*last != ' ') && (*last != '\t') &&
+	           (*last != ';') && (*last != ','))
+		last++;
+	    if (ctxt->encoding != NULL)
+	        xmlFree(ctxt->encoding);
+	    ctxt->encoding = (char *) xmlStrndup(charset, last - charset);
+	}
     } else if (!xmlStrncasecmp(BAD_CAST line, BAD_CAST"Location:", 9)) {
         cur += 9;
 	while ((*cur == ' ') || (*cur == '\t')) cur++;
@@ -1227,6 +1269,7 @@ retry:
 	ctxt = xmlNanoHTTPNewCtxt(URL);
     else {
 	ctxt = xmlNanoHTTPNewCtxt(redirURL);
+	ctxt->location = xmlMemStrdup(redirURL);
     }
 
     if ( ctxt == NULL ) {
@@ -1606,6 +1649,21 @@ xmlNanoHTTPEncoding( void * ctx ) {
     xmlNanoHTTPCtxtPtr	ctxt = ctx;
 
     return ( ( ctxt == NULL ) ? NULL : ctxt->encoding );
+}
+
+/**
+ * xmlNanoHTTPMimeType:
+ * @ctx:  the HTTP context
+ *
+ * Provides the specified Mime-Type if specified in the HTTP headers.
+ *
+ * Return the specified Mime-Type or NULL if not available
+ */
+const char *
+xmlNanoHTTPMimeType( void * ctx ) {
+    xmlNanoHTTPCtxtPtr	ctxt = ctx;
+
+    return ( ( ctxt == NULL ) ? NULL : ctxt->mimeType );
 }
 
 /**

@@ -271,8 +271,21 @@ XMLPUBFUN int XMLCALL
 						 xmlCharEncoding enc);
 XMLPUBFUN int XMLCALL			
 			xmlSwitchToEncoding	(xmlParserCtxtPtr ctxt,
-					     xmlCharEncodingHandlerPtr handler);
+					 xmlCharEncodingHandlerPtr handler);
+XMLPUBFUN int XMLCALL			
+			xmlSwitchInputEncoding	(xmlParserCtxtPtr ctxt,
+						 xmlParserInputPtr input,
+					 xmlCharEncodingHandlerPtr handler);
 
+#ifdef IN_LIBXML
+/* internal error reporting */
+XMLPUBFUN void XMLCALL
+			__xmlErrEncoding	(xmlParserCtxtPtr ctxt,
+						 xmlParserErrors error,
+						 const char *msg,
+						 const xmlChar * str1,
+						 const xmlChar * str2);
+#endif
 /**
  * Entities
  */

@@ -1,3 +1,7 @@
+Thu Mar 22 15:50:27 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* Makefile.am: fixed bug 51876
+
 Wed Mar 21 18:18:45 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* HTMLparser.c parser.c: found a hard to trigger but real I/O

@@ -297,7 +297,7 @@ xmlConf.sh: xmlConf.sh.in Makefile
 	  && mv xmlConf.tmp xmlConf.sh
 
 $(srcdir)/libxml:
-	-$(RM) $(srcdir)/libxml
+	-$(RM) -f $(srcdir)/libxml
 	ln -s $(srcdir)/. $(srcdir)/libxml
 
 $(libxml_la_SOURCES): $(srcdir)/libxml

@@ -2221,10 +2221,10 @@ static
 void ftpData(void *userData, const char *data, int len) {
     if (userData == NULL) return;
     if (len <= 0) {
-	fclose(userData);
+	fclose((FILE*)userData);
 	return;
     }	
-    fwrite(data, len, 1, userData);
+    fwrite(data, len, 1, (FILE*)userData);
 }
 
 int main(int argc, char **argv) {

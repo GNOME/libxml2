@@ -1,3 +1,8 @@
+Wed Oct 29 14:37:40 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* nanoftp.c nanohttp.c testThreads.c threads.c: applied patch from
+	  Marcin 'Shard' Konicki to provide BeOS thread support.
+
 Wed Oct 29 14:20:14 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemas.c include/libxml/xmlschemas.h: applied patch

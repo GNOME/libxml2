@@ -1314,7 +1314,7 @@ retry:
     if (contentType && *contentType)
 	blen += strlen(*contentType) + 16;
     blen += strlen(method) + strlen(ctxt->path) + 24;
-    bp = xmlMallocAtomic(blen);
+    bp = (char*)xmlMallocAtomic(blen);
     if ( bp == NULL ) {
         xmlNanoHTTPFreeCtxt( ctxt );
 	xmlHTTPErrMemory("allocating header buffer");
@@ -1616,7 +1616,7 @@ xmlNanoHTTPAuthHeader(void *ctx) {
  */
 int
 xmlNanoHTTPContentLength( void * ctx ) {
-    xmlNanoHTTPCtxtPtr	ctxt = ctx;
+    xmlNanoHTTPCtxtPtr	ctxt = (xmlNanoHTTPCtxtPtr)ctx;
 
     return ( ( ctxt == NULL ) ? -1 : ctxt->ContentLength );
 }
@@ -1631,7 +1631,7 @@ xmlNanoHTTPContentLength( void * ctx ) {
  */
 const char *
 xmlNanoHTTPRedir( void * ctx ) {
-    xmlNanoHTTPCtxtPtr	ctxt = ctx;
+    xmlNanoHTTPCtxtPtr	ctxt = (xmlNanoHTTPCtxtPtr)ctx;
 
     return ( ( ctxt == NULL ) ? NULL : ctxt->location );
 }
@@ -1646,7 +1646,7 @@ xmlNanoHTTPRedir( void * ctx ) {
  */
 const char *
 xmlNanoHTTPEncoding( void * ctx ) {
-    xmlNanoHTTPCtxtPtr	ctxt = ctx;
+    xmlNanoHTTPCtxtPtr	ctxt = (xmlNanoHTTPCtxtPtr)ctx;
 
     return ( ( ctxt == NULL ) ? NULL : ctxt->encoding );
 }
@@ -1661,7 +1661,7 @@ xmlNanoHTTPEncoding( void * ctx ) {
  */
 const char *
 xmlNanoHTTPMimeType( void * ctx ) {
-    xmlNanoHTTPCtxtPtr	ctxt = ctx;
+    xmlNanoHTTPCtxtPtr	ctxt = (xmlNanoHTTPCtxtPtr)ctx;
 
     return ( ( ctxt == NULL ) ? NULL : ctxt->mimeType );
 }
@@ -1680,7 +1680,7 @@ xmlNanoHTTPMimeType( void * ctx ) {
  */
 int
 xmlNanoHTTPFetchContent( void * ctx, char ** ptr, int * len ) {
-    xmlNanoHTTPCtxtPtr	ctxt = ctx;
+    xmlNanoHTTPCtxtPtr	ctxt = (xmlNanoHTTPCtxtPtr)ctx;
 
     int			rc = 0;
     int			cur_lgth;

@@ -444,7 +444,7 @@ EXTRA_DIST = xml2Conf.sh.in libxml.spec.in libxml.spec libxml.m4 \
 	     win32/libxml2/libxml2.dsp win32/libxml2/libxml2_so.dsp \
 	     win32/libxml2/libxml2_a.dsp win32/libxml2/xmllint.dsp \
 	     win32/libxml2/libxml2.def.src \
-	     vms/build_libxml.com vms/config.vms
+	     vms/build_libxml.com vms/config.vms \
 	     strio.c strio.h trio.c trio.h triop.h libxml.h
 
 pkgconfigdir = $(libdir)/pkgconfig

@@ -1,3 +1,8 @@
+Wed Mar 21 18:18:45 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* HTMLparser.c parser.c: found a hard to trigger but real I/O
+	  buffer problem fixed the multiple points where this needed fixing
+
 Wed Mar 21 14:50:55 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* parser.c: make sure the full structure is NULL initialized

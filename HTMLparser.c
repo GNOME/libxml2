@@ -3622,6 +3622,8 @@ htmlCreatePushParserCtxt(htmlSAXHandlerPtr sax, void *user_data,
     inputStream->buf = buf;
     inputStream->base = inputStream->buf->buffer->content;
     inputStream->cur = inputStream->buf->buffer->content;
+    inputStream->end =
+	&inputStream->buf->buffer->content[inputStream->buf->buffer->use];
 
     inputPush(ctxt, inputStream);
 
@@ -3737,6 +3739,8 @@ htmlCreateFileParserCtxt(const char *filename, const char *encoding)
 
     inputStream->base = inputStream->buf->buffer->content;
     inputStream->cur = inputStream->buf->buffer->content;
+    inputStream->end =
+	&inputStream->buf->buffer->content[inputStream->buf->buffer->use];
     inputStream->free = NULL;
 
     inputPush(ctxt, inputStream);

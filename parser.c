@@ -162,6 +162,7 @@ xmlParserInputRead(xmlParserInputPtr in, int len) {
 	in->base = in->buf->buffer->content;
 	in->cur = &in->buf->buffer->content[index];
     }
+    in->end = &in->buf->buffer->content[in->buf->buffer->use];
 
     CHECK_BUFFER(in);
 
@@ -225,6 +226,7 @@ xmlParserInputGrow(xmlParserInputPtr in, int len) {
 	in->base = in->buf->buffer->content;
 	in->cur = &in->buf->buffer->content[index];
     }
+    in->end = &in->buf->buffer->content[in->buf->buffer->use];
 
     CHECK_BUFFER(in);
 
@@ -260,6 +262,7 @@ xmlParserInputShrink(xmlParserInputPtr in) {
 	    in->cur -= ret;
 	    in->consumed += ret;
 	}
+	in->end = &in->buf->buffer->content[in->buf->buffer->use];
     }
 
     CHECK_BUFFER(in);
@@ -276,6 +279,7 @@ xmlParserInputShrink(xmlParserInputPtr in) {
 	in->base = in->buf->buffer->content;
 	in->cur = &in->buf->buffer->content[index];
     }
+    in->end = &in->buf->buffer->content[in->buf->buffer->use];
 
     CHECK_BUFFER(in);
 }
@@ -1239,6 +1243,7 @@ xmlNewEntityInputStream(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
     input->base = entity->content;
     input->cur = entity->content;
     input->length = entity->length;
+    input->end = &entity->content[input->length];
     return(input);
 }
 
@@ -1268,6 +1273,7 @@ xmlNewStringInputStream(xmlParserCtxtPtr ctxt, const xmlChar *buffer) {
     input->base = buffer;
     input->cur = buffer;
     input->length = xmlStrlen(buffer);
+    input->end = &buffer[input->length];
     return(input);
 }
 
@@ -1331,6 +1337,7 @@ xmlNewInputFromFile(xmlParserCtxtPtr ctxt, const char *filename) {
 
     inputStream->base = inputStream->buf->buffer->content;
     inputStream->cur = inputStream->buf->buffer->content;
+    inputStream->end = &inputStream->base[inputStream->buf->buffer->use];
     if ((ctxt->directory == NULL) && (directory != NULL))
         ctxt->directory = (char *) xmlStrdup((const xmlChar *) directory);
     return(inputStream);
@@ -9798,6 +9805,8 @@ xmlCreatePushParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
     inputStream->buf = buf;
     inputStream->base = inputStream->buf->buffer->content;
     inputStream->cur = inputStream->buf->buffer->content;
+    inputStream->end =
+	&inputStream->buf->buffer->content[inputStream->buf->buffer->use];
 
     inputPush(ctxt, inputStream);
 
@@ -10506,6 +10515,8 @@ xmlCreateFileParserCtxt(const char *filename)
     inputStream->buf = buf;
     inputStream->base = inputStream->buf->buffer->content;
     inputStream->cur = inputStream->buf->buffer->content;
+    inputStream->end =
+	&inputStream->buf->buffer->content[inputStream->buf->buffer->use];
 
     inputPush(ctxt, inputStream);
     if ((ctxt->directory == NULL) && (directory == NULL))

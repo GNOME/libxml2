@@ -100,11 +100,6 @@ void		xmlRelaxNGSetValidErrors(xmlRelaxNGValidCtxtPtr ctxt,
 xmlRelaxNGValidCtxtPtr	xmlRelaxNGNewValidCtxt	(xmlRelaxNGPtr schema);
 void			xmlRelaxNGFreeValidCtxt	(xmlRelaxNGValidCtxtPtr ctxt);
 int			xmlRelaxNGValidateDoc	(xmlRelaxNGValidCtxtPtr ctxt,
-					 	 xmlDocPtr instance);
-int			xmlRelaxNGValidateStream(xmlRelaxNGValidCtxtPtr ctxt,
-						 xmlParserInputBufferPtr input,
-						 xmlCharEncoding enc,
-					 	 xmlSAXHandlerPtr sax,
-						 void *user_data);
+					 	 xmlDocPtr doc);
 void			xmlRelaxNGCleanupTypes	(void);
 #endif /* __XML_RELAX_NG__ */

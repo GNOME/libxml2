@@ -1694,8 +1694,10 @@ xmlXPathNodeSetAdd(xmlNodeSetPtr cur, xmlNodePtr val) {
 
     if (val == NULL) return;
 
+#if 0
     if ((val->type == XML_ELEMENT_NODE) && (val->name[0] == ' '))
 	return;	/* an XSLT fake node */
+#endif
 
     /* @@ with_ns to check wether namespace nodes should be looked at @@ */
     /*
@@ -1752,8 +1754,10 @@ void
 xmlXPathNodeSetAddUnique(xmlNodeSetPtr cur, xmlNodePtr val) {
     if (val == NULL) return;
 
+#if 0
     if ((val->type == XML_ELEMENT_NODE) && (val->name[0] == ' '))
 	return;	/* an XSLT fake node */
+#endif
 
     /* @@ with_ns to check wether namespace nodes should be looked at @@ */
     /*
@@ -3130,11 +3134,21 @@ xmlXPathObjectCopy(xmlXPathObjectPtr val) {
 	case XPATH_XSLT_TREE:
 	    if ((val->nodesetval != NULL) &&
 		(val->nodesetval->nodeTab != NULL)) {
+		xmlNodePtr cur, top, tmp;
+
 		ret->boolval = 1;
-		ret->user = xmlDocCopyNode(val->nodesetval->nodeTab[0],
-				       val->nodesetval->nodeTab[0]->doc, 1);
-		ret->nodesetval = xmlXPathNodeSetCreate(
-					  (xmlNodePtr) ret->user);
+		top =  xmlCopyNode(val->nodesetval->nodeTab[0], 0);
+		ret->user = top;
+		if (top != NULL) {
+		    top->doc = (xmlDocPtr) top;
+		    cur = val->nodesetval->nodeTab[0]->children;
+		    while (cur != NULL) {
+			tmp = xmlDocCopyNode(cur, (xmlDocPtr) top, 1);
+			xmlAddChild(top, tmp);
+			cur = cur->next;
+		    }
+		}
+		ret->nodesetval = xmlXPathNodeSetCreate(top);
 	    } else
 		ret->nodesetval = xmlXPathNodeSetCreate(NULL);
 	    /* Deallocate the copied tree value */

@@ -1,3 +1,8 @@
+Mon Mar 24 14:56:01 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c: fixed some problems related to #75813 about handling
+	  of Result Value Trees
+
 Sun Mar 23 22:57:20 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* uri.c: applied a set of patches from Lorenzo Viali correcting

@@ -4375,14 +4375,10 @@ xmlGetNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *namespace) {
 	 * One need to have
 	 *   - same attribute names
 	 *   - and the attribute carrying that namespace
-	 *         or
-	 *         no namespace on the attribute and the element carrying it
 	 */
         if ((xmlStrEqual(prop->name, name)) &&
-	    (((prop->ns == NULL) && (node->ns != NULL) &&
-	      (xmlStrEqual(node->ns->href, namespace))) ||
-	     ((prop->ns != NULL) &&
-	      (xmlStrEqual(prop->ns->href, namespace))))) {
+	    ((prop->ns != NULL) &&
+	     (xmlStrEqual(prop->ns->href, namespace)))) {
 	    xmlChar *ret;
 
 	    ret = xmlNodeListGetString(node->doc, prop->children, 1);

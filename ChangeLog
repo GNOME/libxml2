@@ -1,3 +1,8 @@
+Thu Jun  7 21:29:39 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* tree.c: fixed xmlGetNsProp() to close bug #55683
+	  Note this requires libxslt to use it's own function instead.
+
 Thu Jun  7 18:06:34 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* HTMLtree.c: when in a pre element no formatting space should

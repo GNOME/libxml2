@@ -15,7 +15,7 @@ except:
 #
 skipped_modules = [ "SAX", "SAX2", "xlink", "threads", "globals",
   "xpathInternals", "xmlunicode", "parserInternals", "xmlmemory",
-  "xmlversion", "debugXML", "xmlexports",
+  "xmlversion", "debugXML", "xmlexports", "DOCBparser",
 
   # temporary
   "xmlautomata", "xmlregexp",
@@ -30,11 +30,14 @@ skipped_functions = [
 "xmlFdRead", "xmlReadFd", "xmlCtxtReadFd",
 "htmlFdRead", "htmlReadFd", "htmlCtxtReadFd",
 "xmlReaderNewFd", 
+"xmlIORead", "xmlReadIO", "xmlCtxtReadIO",
+"htmlIORead", "htmlReadIO", "htmlCtxtReadIO",
+"xmlReaderNewIO", 
 # library state cleanup, generate false leak informations and other
 # troubles, heavillyb tested otherwise.
 "xmlCleanupParser", "xmlRelaxNGCleanupTypes",
 # hard to avoid leaks in the tests
-"xmlStrcat", "xmlStrncat",
+"xmlStrcat", "xmlStrncat", "xmlCatalogAddLocal",
 # unimplemented
 "xmlTextReaderReadInnerXml", "xmlTextReaderReadOuterXml",
 "xmlTextReaderReadString",
@@ -42,6 +45,8 @@ skipped_functions = [
 "xmlListDelete",
 # deprecated
 "xmlCatalogGetPublic", "xmlCatalogGetSystem", "xmlEncodeEntities",
+# allocators
+"xmlMemFree",
 ]
 
 #
@@ -191,19 +196,19 @@ for file in headers:
         continue
 
     #
+    # Some module may be skipped because they don't really consists
+    # of user callable APIs
+    #
+    if is_skipped_module(name):
+        continue
+
+    #
     # do not test deprecated APIs
     #
     desc = file.xpathEval('string(description)')
     if string.find(desc, 'DEPRECATED') != -1:
         print "Skipping deprecated interface %s" % name
 	continue;
-
-    #
-    # Some module may be skipped because they don't really consists
-    # of user callable APIs
-    #
-    if is_skipped_module(name):
-        continue
 
     test.write("#include <libxml/%s.h>\n" % name)
     modules.append(name)
@@ -234,10 +239,16 @@ def type_convert(str, name, info, module, function, pos):
 	    if string.find(function, "Save") != -1:
 	        return('fileoutput')
 	    return('filepath')
+    if function == 'xmlIOHTTPOpenW':
+        print function, name, res, pos
     if res == 'void_ptr':
         if module == 'nanoftp' and name == 'ctx':
 	    return('xmlNanoFTPCtxtPtr')
+        if function == 'xmlNanoFTPNewCtxt':
+	    return('xmlNanoFTPCtxtPtr')
         if module == 'nanohttp' and name == 'ctx':
+	    return('xmlNanoHTTPCtxtPtr')
+        if function == 'xmlIOHTTPOpenW':
 	    return('xmlNanoHTTPCtxtPtr')
 	if string.find(name, "data") != -1:
 	    return('userdata');
@@ -261,6 +272,7 @@ known_param_types = [ "int", "const_char_ptr", "const_xmlChar_ptr",
    "xmlNodePtr", "xmlNodePtr_in", "userdata", "xmlChar_ptr",
    "xmlTextWriterPtr", "xmlTextReaderPtr", "xmlBufferPtr",
    "xmlListPtr", "xmlXPathObjectPtr", "xmlHashTablePtr", "xmlValidCtxtPtr",
+   "void_ptr",
 ]
 
 def is_known_param_type(name):
@@ -270,6 +282,14 @@ def is_known_param_type(name):
     return 0
 
 test.write("""
+#define gen_nb_void_ptr 1
+
+static void *gen_void_ptr(int no ATTRIBUTE_UNUSED) {
+    return(NULL);
+}
+static void des_void_ptr(int no ATTRIBUTE_UNUSED, void *val ATTRIBUTE_UNUSED) {
+}
+
 #define gen_nb_userdata 3
 
 static void *gen_userdata(int no) {
@@ -481,7 +501,7 @@ static void des_xmlXPathObjectPtr(int no ATTRIBUTE_UNUSED, xmlXPathObjectPtr val
 #
 
 known_return_types = [ "int", "const_char_ptr", "xmlDocPtr", "xmlNodePtr",
-                       "xmlChar_ptr", "const_xmlChar_ptr" ];
+                       "xmlChar_ptr", "const_xmlChar_ptr", "void_ptr" ];
 
 def is_known_return_type(name):
     for type in known_return_types:
@@ -491,6 +511,8 @@ def is_known_return_type(name):
 
 test.write("""
 static void desret_int(int val ATTRIBUTE_UNUSED) {
+}
+static void desret_void_ptr(void *val ATTRIBUTE_UNUSED) {
 }
 static void desret_const_char_ptr(const char *val ATTRIBUTE_UNUSED) {
 }
@@ -767,6 +789,8 @@ miss2 = 'none'
 nr3 = 0
 miss3 = 'none'
 for missing in missing_types.keys():
+    if missing == 'xmlAttrPtr' or missing == 'xmlNsPtr' or missing == '...':
+        continue;
     n = len(missing_types[missing])
     if n > nr1:
         miss3 = miss2
@@ -787,5 +811,7 @@ for missing in missing_types.keys():
 if nr1 > 0:
     print "most needed type support: %s %d times, %s %d and %s %d" % (
           miss1, nr1, miss2, nr2, miss3, nr3)
+
+print missing_types[miss1]
 
 

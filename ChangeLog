@@ -1,3 +1,8 @@
+Thu Nov  4 00:25:36 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* gentest.py testapi.c: more fixes and extending the tests coverage
+	* nanoftp.c xmlIO.c: more fixes and hardening
+	
 Wed Nov  3 20:16:24 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* gentest.py testapi.c: more fixes and extending the tests coverage

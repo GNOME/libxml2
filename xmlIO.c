@@ -657,6 +657,9 @@ xmlFileOpen_real (const char *filename) {
     const char *path = NULL;
     FILE *fd;
 
+    if (filename == NULL)
+        return(NULL);
+
     if (!strcmp(filename, "-")) {
 	fd = stdin;
 	return((void *) fd);
@@ -704,13 +707,14 @@ void *
 xmlFileOpen (const char *filename) {
     char *unescaped;
     void *retval;
+
     unescaped = xmlURIUnescapeString(filename, 0, NULL);
     if (unescaped != NULL) {
 	retval = xmlFileOpen_real(unescaped);
+	xmlFree(unescaped);
     } else {
 	retval = xmlFileOpen_real(filename);
     }
-    xmlFree(unescaped);
     return retval;
 }
 
@@ -813,6 +817,8 @@ xmlFileClose (void * context) {
     FILE *fil;
     int ret;
 
+    if (context == NULL)
+        return(-1);
     fil = (FILE *) context;
     if ((fil == stdout) || (fil == stderr)) {
         ret = fflush(fil);
@@ -837,6 +843,9 @@ xmlFileClose (void * context) {
 static int
 xmlFileFlush (void * context) {
     int ret;
+
+    if (context == NULL)
+        return(-1);
     ret = ( fflush((FILE *) context) == EOF ) ? -1 : 0;
     if (ret < 0)
         xmlIOErr(0, "fflush()");

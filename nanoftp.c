@@ -703,11 +703,11 @@ xmlNanoFTPNewCtxt(const char *URL) {
     ret->controlFd = -1;
 
     unescaped = xmlURIUnescapeString(URL, 0, NULL);
-    if (unescaped != NULL)
+    if (unescaped != NULL) {
 	xmlNanoFTPScanURL(ret, unescaped);
-    else if (URL != NULL)
+	xmlFree(unescaped);
+    } else if (URL != NULL)
 	xmlNanoFTPScanURL(ret, URL);
-    xmlFree(unescaped);
 
     return(ret);
 }

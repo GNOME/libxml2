@@ -338,13 +338,18 @@ xmlEntityPtr
 getEntity(void *ctx, const xmlChar *name)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
-    xmlEntityPtr ret;
+    xmlEntityPtr ret = NULL;
 
 #ifdef DEBUG_SAX
     xmlGenericError(xmlGenericErrorContext,
 	    "SAX.getEntity(%s)\n", name);
 #endif
 
+    if (ctxt->inSubset == 0) {
+	ret = xmlGetPredefinedEntity(name);
+	if (ret != NULL)
+	    return(ret);
+    }
     if ((ctxt->myDoc != NULL) && (ctxt->myDoc->standalone == 1)) {
 	if (ctxt->inSubset == 2) {
 	    ctxt->myDoc->standalone = 0;

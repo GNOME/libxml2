@@ -1,3 +1,7 @@
+Thu Nov  4 13:32:19 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* gentest.py testapi.c: extending the tests coverage
+
 Thu Nov  4 11:52:28 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am: gentest.py was missing from the EXTRA_DIST

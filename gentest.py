@@ -29,7 +29,7 @@ skipped_functions = [
 # block on I/O
 "xmlFdRead", "xmlReadFd", "xmlCtxtReadFd",
 "htmlFdRead", "htmlReadFd", "htmlCtxtReadFd",
-"xmlReaderNewFd", 
+"xmlReaderNewFd", "xmlReaderForFd",
 "xmlIORead", "xmlReadIO", "xmlCtxtReadIO",
 "htmlIORead", "htmlReadIO", "htmlCtxtReadIO",
 "xmlReaderNewIO", 
@@ -88,6 +88,7 @@ extra_post_call = {
               (ret_val != prefix) && (ret_val != memory))
               xmlFree(ret_val);
 	  ret_val = NULL;""",
+   "xmlDictReference": "xmlDictFree(dict);",
    # Functions which deallocates one of their parameters
    "xmlXPathConvertBoolean": """val = NULL;""",
    "xmlXPathConvertNumber": """val = NULL;""",
@@ -162,6 +163,8 @@ static int call_tests = 0;
 static int function_tests = 0;
 
 static xmlChar chartab[1024] = "  chartab\\n";
+static int inttab[1024];
+static unsigned long longtab[1024];
 
 static void
 structured_errors(void *userData ATTRIBUTE_UNUSED,
@@ -287,7 +290,8 @@ known_param_types = [ "int", "const_char_ptr", "const_xmlChar_ptr",
    "xmlTextWriterPtr", "xmlTextReaderPtr", "xmlBufferPtr",
    "xmlListPtr", "xmlXPathObjectPtr", "xmlHashTablePtr", "xmlValidCtxtPtr",
    "void_ptr", "xmlOutputBufferPtr", "xmlCharEncoding",
-   "unsigned_int"
+   "unsigned_int", "long", "unsigned_long", "const_void_ptr",
+   "unsigned_long_ptr", "int_ptr", "FILE_ptr", "xmlDictPtr",
 ]
 
 def is_known_param_type(name):
@@ -297,12 +301,21 @@ def is_known_param_type(name):
     return 0
 
 test.write("""
-#define gen_nb_void_ptr 1
+#define gen_nb_void_ptr 2
 
 static void *gen_void_ptr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
     return(NULL);
 }
 static void des_void_ptr(int no ATTRIBUTE_UNUSED, void *val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+}
+
+#define gen_nb_const_void_ptr 2
+
+static const void *gen_const_void_ptr(int no, int nr ATTRIBUTE_UNUSED) {
+    if (no == 0) return((const void *) "immutable string");
+    return(NULL);
+}
+static void des_const_void_ptr(int no ATTRIBUTE_UNUSED, const void *val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
 }
 
 #define gen_nb_userdata 3
@@ -329,6 +342,19 @@ static int gen_int(int no, int nr ATTRIBUTE_UNUSED) {
 static void des_int(int no ATTRIBUTE_UNUSED, int val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
 }
 
+#define gen_nb_long 4
+
+static long gen_long(int no, int nr ATTRIBUTE_UNUSED) {
+    if (no == 0) return(0);
+    if (no == 1) return(1);
+    if (no == 1) return(-1);
+    if (no == 2) return(122);
+    return(-1);
+}
+
+static void des_long(int no ATTRIBUTE_UNUSED, long val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+}
+
 #define gen_nb_unsigned_int 3
 
 static unsigned int gen_unsigned_int(int no, int nr ATTRIBUTE_UNUSED) {
@@ -339,6 +365,38 @@ static unsigned int gen_unsigned_int(int no, int nr ATTRIBUTE_UNUSED) {
 }
 
 static void des_unsigned_int(int no ATTRIBUTE_UNUSED, unsigned int val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+}
+
+#define gen_nb_unsigned_long 3
+
+static unsigned long gen_unsigned_long(int no, int nr ATTRIBUTE_UNUSED) {
+    if (no == 0) return(0);
+    if (no == 1) return(1);
+    if (no == 2) return(122);
+    return(-1);
+}
+
+static void des_unsigned_long(int no ATTRIBUTE_UNUSED, unsigned long val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+}
+
+#define gen_nb_unsigned_long_ptr 2
+
+static unsigned long *gen_unsigned_long_ptr(int no, int nr) {
+    if (no == 0) return(&longtab[nr]);
+    return(NULL);
+}
+
+static void des_unsigned_long_ptr(int no ATTRIBUTE_UNUSED, unsigned long *val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+}
+
+#define gen_nb_int_ptr 2
+
+static int *gen_int_ptr(int no, int nr) {
+    if (no == 0) return(&inttab[nr]);
+    return(NULL);
+}
+
+static void des_int_ptr(int no ATTRIBUTE_UNUSED, int *val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
 }
 
 #define gen_nb_const_char_ptr 4
@@ -361,6 +419,16 @@ static xmlChar *gen_xmlChar_ptr(int no, int nr ATTRIBUTE_UNUSED) {
 static void des_xmlChar_ptr(int no ATTRIBUTE_UNUSED, xmlChar *val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
 }
 
+#define gen_nb_FILE_ptr 2
+
+static FILE *gen_FILE_ptr(int no, int nr ATTRIBUTE_UNUSED) {
+    if (no == 0) return(fopen("test.out", "a+"));
+    return(NULL);
+}
+static void des_FILE_ptr(int no ATTRIBUTE_UNUSED, FILE *val, int nr ATTRIBUTE_UNUSED) {
+    if (val != NULL) fclose(val);
+}
+
 #define gen_nb_const_xmlChar_ptr 5
 
 static const xmlChar *gen_const_xmlChar_ptr(int no, int nr ATTRIBUTE_UNUSED) {
@@ -380,7 +448,7 @@ static const char *gen_filepath(int no, int nr ATTRIBUTE_UNUSED) {
     if (no == 1) return("<foo/>");
     if (no == 2) return("test/ent2");
     if (no == 3) return("test/valid/REC-xml-19980210.xml");
-    if (no == 4) return("test/valid/xhtml1-strict.dtd");
+    if (no == 4) return("test/valid/dtds/xhtml1-strict.dtd");
     if (no == 5) return("http://missing.example.org/");
     if (no == 6) return("http://missing. example.org/");
     return(NULL);
@@ -430,6 +498,16 @@ static xmlDocPtr gen_xmlDocPtr(int no, int nr ATTRIBUTE_UNUSED) {
 static void des_xmlDocPtr(int no ATTRIBUTE_UNUSED, xmlDocPtr val, int nr ATTRIBUTE_UNUSED) {
     if (val != NULL)
         xmlFreeDoc(val);
+}
+
+#define gen_nb_xmlDictPtr 2
+static xmlDictPtr gen_xmlDictPtr(int no, int nr ATTRIBUTE_UNUSED) {
+    if (no == 0) return(xmlDictCreate());
+    return(NULL);
+}
+static void des_xmlDictPtr(int no ATTRIBUTE_UNUSED, xmlDictPtr val, int nr ATTRIBUTE_UNUSED) {
+    if (val != NULL)
+        xmlDictFree(val);
 }
 
 #define gen_nb_xmlNodePtr 2
@@ -551,7 +629,10 @@ static void des_xmlCharEncoding(int no ATTRIBUTE_UNUSED, xmlCharEncoding val ATT
 
 known_return_types = [ "int", "const_char_ptr", "xmlDocPtr", "xmlNodePtr",
                        "xmlChar_ptr", "const_xmlChar_ptr", "void_ptr",
-		       "xmlXPathObjectPtr", "xmlCharEncoding" ];
+		       "xmlXPathObjectPtr", "xmlCharEncoding", "long",
+		       "const_void_ptr", "double", "xmlTextReaderPtr",
+		       "xmlDictPtr",
+]
 
 def is_known_return_type(name):
     for type in known_return_types:
@@ -562,7 +643,13 @@ def is_known_return_type(name):
 test.write("""
 static void desret_int(int val ATTRIBUTE_UNUSED) {
 }
+static void desret_long(long val ATTRIBUTE_UNUSED) {
+}
+static void desret_double(double val ATTRIBUTE_UNUSED) {
+}
 static void desret_xmlCharEncoding(xmlCharEncoding val ATTRIBUTE_UNUSED) {
+}
+static void desret_const_void_ptr(void *val ATTRIBUTE_UNUSED) {
 }
 static void desret_void_ptr(void *val ATTRIBUTE_UNUSED) {
 }
@@ -577,14 +664,18 @@ static void desret_xmlChar_ptr(xmlChar *val) {
 static void desret_xmlDocPtr(xmlDocPtr val) {
     xmlFreeDoc(val);
 }
+static void desret_xmlDictPtr(xmlDictPtr val) {
+    xmlDictFree(val);
+}
+static void desret_xmlTextReaderPtr(xmlTextReaderPtr val) {
+    xmlFreeTextReader(val);
+}
 static void desret_xmlNodePtr(xmlNodePtr val) {
     xmlUnlinkNode(val);
     xmlFreeNode(val);
 }
 static void desret_xmlXPathObjectPtr(xmlXPathObjectPtr val) {
-    if (val != NULL) {
-        xmlXPathFreeObject(val);
-    }
+    xmlXPathFreeObject(val);
 }
 """);
 
@@ -818,7 +909,10 @@ for module in modules:
 	continue;
 
     # iterate over all functions in the module generating the test
+    i = 0
+    nb_tests_old = nb_tests
     for function in functions:
+        i = i + 1
         generate_test(module, function);
 
     # header
@@ -826,8 +920,8 @@ for module in modules:
 test_%s(void) {
     int ret = 0;
 
-    printf("Testing %s ...\\n");
-""" % (module, module))
+    printf("Testing %s : %d of %d functions ...\\n");
+""" % (module, module, nb_tests - nb_tests_old, i))
 
     # iterate over all functions in the module generating the call
     for function in functions:
@@ -845,38 +939,33 @@ test_%s(void) {
 """ % (module))
 
 print "Generated test for %d modules and %d functions" %(len(modules), nb_tests)
-nr1 = 0
-miss1 = 'none'
-nr2 = 0
-miss2 = 'none'
-nr3 = 0
-miss3 = 'none'
+
+missing_list = []
 for missing in missing_types.keys():
-    if missing == 'xmlAttrPtr' or missing == 'xmlNsPtr' or missing == '...':
+    if missing == 'va_list' or missing == '...':
         continue;
+
     n = len(missing_types[missing])
-    if n > nr1:
-        miss3 = miss2
-	nr3 = nr2
-        miss2 = miss1
-	nr2 = nr1
-        miss1 = missing
-	nr1 = n
-    elif n > nr2:
-        miss3 = miss2
-	nr3 = nr2
-        miss2 = missing
-	nr2 = n
-    elif n > nr3:
-        miss3 = missing
-	nr3 = n
+    missing_list.append((n, missing))
 
-if nr1 > 0:
-    print "most needed type support: %s %d times, %s %d and %s %d" % (
-          miss1, nr1, miss2, nr2, miss3, nr3)
-    print "%d missing types: %s" % (len(missing_types.keys()),
-                                    missing_types.keys())
+def compare_missing(a, b):
+    return b[0] - a[0]
 
-print missing_types[miss1]
+missing_list.sort(compare_missing)
+print "Missing support for %d types see missing.lst" % (len(missing_list))
+lst = open("missing.lst", "w")
+for miss in missing_list:
+    lst.write("%s: %d :" % (miss[1], miss[0]))
+    i = 0
+    for n in missing_types[miss[1]]:
+        i = i + 1
+        if i > 5:
+	    lst.write(" ...")
+	    break
+	lst.write(" %s" % (n))
+    lst.write("\n")
+
+lst.close()
+test.close()
 
 

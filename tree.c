@@ -2074,7 +2074,8 @@ xmlAddChildList(xmlNodePtr parent, xmlNodePtr cur) {
 	 * If cur and parent->last both are TEXT nodes, then merge them.
 	 */
 	if ((cur->type == XML_TEXT_NODE) && 
-	    (parent->last->type == XML_TEXT_NODE)) {
+	    (parent->last->type == XML_TEXT_NODE) &&
+	    (cur->name == parent->last->name)) {
 #ifndef XML_USE_BUFFER_CONTENT
 	    xmlNodeAddContent(parent->last, cur->content);
 #else
@@ -2163,7 +2164,8 @@ xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
 	    xmlFreeNode(cur);
 	    return(parent);
 	}
-	if ((parent->last != NULL) && (parent->last->type == XML_TEXT_NODE)) {
+	if ((parent->last != NULL) && (parent->last->type == XML_TEXT_NODE) &&
+	    (parent->last->name == cur->name)) {
 #ifndef XML_USE_BUFFER_CONTENT
 	    xmlNodeAddContent(parent->last, cur->content);
 #else
@@ -3146,6 +3148,8 @@ xmlNodeGetBase(xmlDocPtr doc, xmlNodePtr cur) {
 	    return(base);
 	cur = cur->parent;
     }
+    if ((doc != NULL) && (doc->URL != NULL))
+        return(xmlStrdup(doc->URL));
     return(NULL);
 }
  
@@ -3522,6 +3526,8 @@ xmlTextMerge(xmlNodePtr first, xmlNodePtr second) {
     if (second == NULL) return(first);
     if (first->type != XML_TEXT_NODE) return(first);
     if (second->type != XML_TEXT_NODE) return(first);
+    if (second->name != first->name)
+	return(first);
 #ifndef XML_USE_BUFFER_CONTENT
     xmlNodeAddContent(first, second->content);
 #else

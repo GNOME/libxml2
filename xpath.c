@@ -1918,7 +1918,8 @@ xmlXPathEqualNodeSetString(xmlXPathObjectPtr arg, const xmlChar *str) {
 	     xmlFree(str2);
 	     return(1);
 	 }
-	 xmlFree(str2);
+	 if (str2 != NULL)
+	     xmlFree(str2);
     }
     return(0);
 }

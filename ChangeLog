@@ -1,3 +1,9 @@
+Mon Feb 12 18:33:20 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xpath.c: ouch don't free NULL, rare case fixed
+	* tree.c: don't coalesce text nodes if they don't have the
+	  same behaviour wrt escaping on output
+
 Sun Feb 11 21:15:41 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xpath.c: small fixup

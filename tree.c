@@ -2845,6 +2845,21 @@ xmlCopyProp(xmlNodePtr target, xmlAttrPtr cur) {
 	    tmp = tmp->next;
 	}
     }
+    /*
+     * Try to handle IDs
+     */
+    if ((target->doc != NULL) && (cur->doc != NULL) &&
+	(cur->doc->ids != NULL) && (cur->parent != NULL)) {
+	if (xmlIsID(cur->doc, cur->parent, cur)) {
+	    xmlChar *id;
+
+	    id = xmlNodeListGetString(cur->doc, cur->children, 1);
+	    if (id != NULL) {
+		xmlAddID(NULL, target->doc, id, ret);
+		xmlFree(id);
+	    }
+	}
+    }
     return(ret);
 }
 

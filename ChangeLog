@@ -1,3 +1,11 @@
+Sun Feb 10 12:02:59 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c valid.c xinclude.c: fix #68882, cleanup the XInclude
+	  copying of node, merge back IDs in the target document.
+	* result/XInclude/docids.xml test/XInclude/docs/docids.xml
+	  test/XInclude/ents/ids.xml: test case
+	* result/VC/ElementValid4: output changed due to a typo fix
+
 Sat Feb  9 23:15:04 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* python/Makefile.am: seems some version of automake didn't

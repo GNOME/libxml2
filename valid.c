@@ -1859,7 +1859,8 @@ xmlAddID(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const xmlChar *value,
 	/*
 	 * The id is already defined in this DTD.
 	 */
-	VERROR(ctxt->userData, "ID %s already defined\n", value);
+	if (ctxt != NULL)
+	    VERROR(ctxt->userData, "ID %s already defined\n", value);
 	xmlFreeID(ret);
 	return(NULL);
     }

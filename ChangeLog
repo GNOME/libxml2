@@ -1,3 +1,14 @@
+Sun Sep 29 19:44:10 CEST 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
+
+	* xmlIO.c: applied Windows CE patch from Javier.
+	* win32/wince: new directory, contains support for the PocketPC
+	  with Windows CE from Javier.
+	* include/win32config.h: reorganised, removed duplicate 
+	  definitions and applied WinCE patch from Javier.
+	* include/wsockcompat.h: new file, now contains WinSock
+	  compatibility macros.
+	* win32/Makefile.msvc: introduced double-run compilation.
+
 Thu Sep 26 19:48:06 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in include/libxml/xmlwin32version.h: preparing release

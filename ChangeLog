@@ -1,3 +1,8 @@
+Fri Oct 18 13:18:53 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in: preparing the release of 2.4.26
+	* doc/*: updated and rebuilt the documentation
+
 Wed Oct 16 20:01:46 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: fixed a XML Namespace compliance bug reported by

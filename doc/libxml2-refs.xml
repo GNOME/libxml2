@@ -420,6 +420,7 @@
     <reference name='xmlCharEncodingOutputFunc' href='html/libxml-encoding.html#XMLCHARENCODINGOUTPUTFUNC'/>
     <reference name='xmlCharStrdup' href='html/libxml-parser.html#XMLCHARSTRDUP'/>
     <reference name='xmlCharStrndup' href='html/libxml-parser.html#XMLCHARSTRNDUP'/>
+    <reference name='xmlCheckFilename' href='html/libxml-xmlio.html#XMLCHECKFILENAME'/>
     <reference name='xmlCheckLanguageID' href='html/libxml-parserinternals.html#XMLCHECKLANGUAGEID'/>
     <reference name='xmlCheckUTF8' href='html/libxml-encoding.html#XMLCHECKUTF8'/>
     <reference name='xmlCheckVersion' href='html/libxml-xmlversion.html#XMLCHECKVERSION'/>
@@ -1994,6 +1995,7 @@
     <ref name='xmlCharEncodingOutputFunc'/>
     <ref name='xmlCharStrdup'/>
     <ref name='xmlCharStrndup'/>
+    <ref name='xmlCheckFilename'/>
     <ref name='xmlCheckLanguageID'/>
     <ref name='xmlCheckUTF8'/>
     <ref name='xmlCheckVersion'/>
@@ -6546,6 +6548,7 @@
       <ref name='xmlRegisterHTTPPostCallbacks'/>
       <ref name='xmlNoNetExternalEntityLoader'/>
       <ref name='xmlNormalizeWindowsPath'/>
+      <ref name='xmlCheckFilename'/>
       <ref name='xmlFileMatch'/>
       <ref name='xmlFileOpen'/>
       <ref name='xmlFileRead'/>
@@ -10928,6 +10931,7 @@
           <ref name='LIBXML_TEST_VERSION'/>
           <ref name='checkNamespace'/>
           <ref name='htmlIsBooleanAttr'/>
+          <ref name='xmlCheckFilename'/>
           <ref name='xmlCheckUTF8'/>
           <ref name='xmlCheckVersion'/>
           <ref name='xmlIOFTPMatch'/>
@@ -10953,6 +10957,7 @@
         <word name='checks'>
           <ref name='htmlAutoCloseTag'/>
           <ref name='htmlIsAutoClosed'/>
+          <ref name='xmlCheckFilename'/>
           <ref name='xmlCheckUTF8'/>
           <ref name='xmlNanoFTPInit'/>
           <ref name='xmlNanoHTTPInit'/>
@@ -11717,6 +11722,7 @@
           <ref name='xmlSetExternalEntityLoader'/>
         </word>
         <word name='defaults'>
+          <ref name='xmlShell'/>
           <ref name='xmlXPathLocalNameFunction'/>
           <ref name='xmlXPathNamespaceURIFunction'/>
           <ref name='xmlXPathNormalizeFunction'/>
@@ -15249,6 +15255,7 @@
           <ref name='xmlReconciliateNs'/>
         </word>
         <word name='path'>
+          <ref name='xmlCheckFilename'/>
           <ref name='xmlGetNodePath'/>
           <ref name='xmlLoadACatalog'/>
           <ref name='xmlLoadCatalog'/>
@@ -16642,6 +16649,7 @@
           <ref name='xmlC14NDocSave'/>
           <ref name='xmlC14NDocSaveTo'/>
           <ref name='xmlC14NExecute'/>
+          <ref name='xmlCheckFilename'/>
           <ref name='xmlIsBaseChar'/>
           <ref name='xmlIsCombining'/>
           <ref name='xmlIsDigit'/>
@@ -16871,6 +16879,7 @@
           <ref name='xmlXPathCeilingFunction'/>
         </word>
         <word name='socket'>
+          <ref name='xmlCheckFilename'/>
           <ref name='xmlNanoFTPGetSocket'/>
         </word>
         <word name='software'>
@@ -16902,6 +16911,7 @@
         </word>
         <word name='source'>
           <ref name='htmlGetMetaEncoding'/>
+          <ref name='xmlCheckFilename'/>
         </word>
         <word name='sourceforge'>
           <ref name='xmlXPathIsInf'/>
@@ -17072,8 +17082,7 @@
           <ref name='xmlOutputBufferCreateFilename'/>
           <ref name='xmlSaveFile'/>
           <ref name='xmlSaveFormatFile'/>
-          <ref name='xmlShellPrintNode'/>
-          <ref name='xmlShellPrintXPathResult'/>
+          <ref name='xmlShell'/>
         </word>
         <word name='steam'>
           <ref name='xmlPrintURI'/>

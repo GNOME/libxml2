@@ -304,6 +304,10 @@ XMLPUBFUN void XMLCALL
 		    xmlTextReaderSetErrorHandler(xmlTextReaderPtr reader, 
 						 xmlTextReaderErrorFunc f, 
 						 void *arg);
+XMLPUBFUN void XMLCALL
+		    xmlTextReaderSetStructuredErrorHandler(xmlTextReaderPtr reader,
+							   xmlStructuredErrorFunc f,
+							   void *arg);
 XMLPUBFUN void XMLCALL            
 		    xmlTextReaderGetErrorHandler(xmlTextReaderPtr reader, 
 						 xmlTextReaderErrorFunc *f, 

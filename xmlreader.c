@@ -157,6 +157,8 @@ struct _xmlTextReader {
 #endif
     int                preserves;	/* level of preserves */
     int                parserFlags;	/* the set of options set */
+    /* Structured error handling */
+    xmlStructuredErrorFunc sErrorFunc;  /* callback function */
 };
 
 #define NODE_IS_EMPTY		0x1
@@ -3891,6 +3893,17 @@ xmlTextReaderGenericError(void *ctxt, xmlParserSeverities severity, char *str) {
 }
 
 static void 
+xmlTextReaderStructuredError(void *ctxt, xmlErrorPtr error) {
+  xmlParserCtxtPtr ctx = (xmlParserCtxtPtr) ctxt;
+  xmlTextReaderPtr reader = (xmlTextReaderPtr) ctx->_private;
+
+  if (error && reader->sErrorFunc) {
+	reader->sErrorFunc(reader->errorFuncArg,
+			   (xmlErrorPtr) error);
+  }
+}
+
+static void 
 xmlTextReaderError(void *ctxt, const char *msg, ...) {
     va_list ap;
 
@@ -3965,6 +3978,7 @@ xmlTextReaderSetErrorHandler(xmlTextReaderPtr reader,
 			     void *arg) {
     if (f != NULL) {
 	reader->ctxt->sax->error = xmlTextReaderError;
+	reader->ctxt->sax->serror = NULL;
 	reader->ctxt->vctxt.error = xmlTextReaderValidityError;
 	reader->ctxt->sax->warning = xmlTextReaderWarning;
 	reader->ctxt->vctxt.warning = xmlTextReaderValidityWarning;
@@ -3978,8 +3992,45 @@ xmlTextReaderSetErrorHandler(xmlTextReaderPtr reader,
 	reader->ctxt->sax->warning = xmlParserWarning;
 	reader->ctxt->vctxt.warning = xmlParserValidityWarning;
 	reader->errorFunc = NULL;
+	reader->sErrorFunc = NULL;
 	reader->errorFuncArg = NULL;
     }
+}
+
+/**
+* xmlTextReaderSetStructuredErrorHandler:
+ * @reader:  the xmlTextReaderPtr used
+ * @f:	the callback function to call on error and warnings
+ * @arg:    a user argument to pass to the callback function
+ *
+ * Register a callback function that will be called on error and warnings.
+ *
+ * If @f is NULL, the default error and warning handlers are restored.
+ */
+void
+xmlTextReaderSetStructuredErrorHandler(xmlTextReaderPtr reader, 
+					 xmlStructuredErrorFunc f, 
+					 void *arg) {
+  if (f != NULL) {
+	reader->ctxt->sax->serror = xmlTextReaderStructuredError;
+	reader->ctxt->vctxt.error = xmlTextReaderValidityError;
+	reader->ctxt->sax->warning = xmlTextReaderWarning;
+	reader->ctxt->vctxt.warning = xmlTextReaderValidityWarning;
+	reader->sErrorFunc = f;
+	reader->errorFunc = NULL;
+	reader->errorFuncArg = arg;
+  }
+  else {
+	/* restore defaults */
+	reader->ctxt->sax->error = xmlParserError;
+	reader->ctxt->sax->serror = NULL;
+	reader->ctxt->vctxt.error = xmlParserValidityError;
+	reader->ctxt->sax->warning = xmlParserWarning;
+	reader->ctxt->vctxt.warning = xmlParserValidityWarning;
+	reader->errorFunc = NULL;
+	reader->sErrorFunc = NULL;
+	reader->errorFuncArg = NULL;
+  }
 }
 
 /**

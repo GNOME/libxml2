@@ -1,3 +1,7 @@
+Thu Jul 10 16:02:47 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* nanoftp.c nanohttp.c: cleanup patches from Peter Breitenlohner
+
 Tue Jul  8 16:02:19 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* globals.c threads.c: fixes some problem when freeing unititialized

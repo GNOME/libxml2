@@ -996,14 +996,13 @@ xmlNanoHTTPConnectHost(const char *host, int port)
 	}
 
 	for (res = result; res; res = res->ai_next) {
-	    if (res) {
+	    if (res->ai_family == AF_INET || res->ai_family == AF_INET6) {
 		if (res->ai_family == AF_INET6) {
 		    memcpy (&sockin6, res->ai_addr, res->ai_addrlen);
 		    sockin6.sin6_port = htons (port);
 		    addr = (struct sockaddr *)&sockin6;
 		}
-
-		if (res->ai_family == AF_INET) {
+		else {
 		    memcpy (&sockin, res->ai_addr, res->ai_addrlen);
 		    sockin.sin_port = htons (port);
 		    addr = (struct sockaddr *)&sockin;
@@ -1015,11 +1014,10 @@ xmlNanoHTTPConnectHost(const char *host, int port)
 		    return (s);
 		}
 	    }
-	    else {
-		freeaddrinfo (result);
-		return (-1);
-	    }
 	}
+	if (result)
+	    freeaddrinfo (result);
+	return (-1);
     } else
 #endif
 #endif

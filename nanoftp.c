@@ -1044,7 +1044,12 @@ xmlNanoFTPConnect(void *ctx) {
 	    if (tmp->ai_family == AF_INET || tmp->ai_family == AF_INET6)
 		break;
 
-	if (tmp) {
+	if (!tmp) {
+	    if (result)
+		freeaddrinfo (result);
+	    return (-1);
+	}
+	else {
 	    if (tmp->ai_family == AF_INET6) {
 		memcpy (&ctxt->ftpAddr, tmp->ai_addr, tmp->ai_addrlen);
 		((struct sockaddr_in6 *) &ctxt->ftpAddr)->sin6_port = htons (port);

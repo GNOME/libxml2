@@ -11078,9 +11078,8 @@ xmlParseInNodeContext(xmlNodePtr node, const char *data, int datalen,
 	*lst = NULL;
     }
 
-    if ((doc->dict == NULL) && (ctxt->dict != NULL))
-        xmlDictFree(ctxt->dict);
-    ctxt->dict = NULL;
+    if (doc->dict != NULL)
+        ctxt->dict = NULL;
     xmlFreeParserCtxt(ctxt);
     
     return(ret);

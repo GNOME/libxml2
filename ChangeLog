@@ -1,3 +1,7 @@
+Mon Feb 19 16:13:22 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* configure.in: fixed iconv detection on AIX (stric)
+
 Mon Feb 19 10:59:41 CET 2001 Bjorn Reese <breese@users.sourceforge.net>
 
 	* xpath.c: fixed "*" (unbelievable !) and a couple of warnings

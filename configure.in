@@ -320,7 +320,7 @@ if test "$with_iconv" = "no" ; then
     echo Disabling ICONV support
     WITH_ICONV=0
 else    
-    AC_CHECK_FUNCS(iconv)
+    AC_CHECK_FUNC(iconv, , AC_CHECK_LIB(iconv, iconv))
     if test "$have_iconv" != "" ; then
         echo Iconv support not found
         WITH_ICONV=0

@@ -6307,7 +6307,7 @@ xmlParseContent(xmlParserCtxtPtr ctxt) {
 	   ((RAW != '<') || (NXT(1) != '/'))) {
 	const xmlChar *test = CUR_PTR;
 	int cons = ctxt->input->consumed;
-	xmlChar tok = ctxt->token;
+	int tok = ctxt->token;
 	const xmlChar *cur = ctxt->input->cur;
 
 	/*
@@ -7926,7 +7926,7 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
             case XML_PARSER_CONTENT: {
 		const xmlChar *test;
 		int cons;
-		xmlChar tok;
+		int tok;
 
                 /*
 		 * Handle preparsed entities and charRef

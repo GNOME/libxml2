@@ -1,3 +1,8 @@
+Mon Mar 26 23:21:41 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* parser.c: Sullivan and Darin found a parser bug,
+	  applied the patch.
+
 Mon Mar 26 18:24:52 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* HTMLparser.c HTMLtree.c SAX.c debugXML.c error.c parserInternals.c

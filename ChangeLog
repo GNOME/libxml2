@@ -1,3 +1,8 @@
+Sat Mar 29 17:35:05 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xinclude.c: forgot to apply one check from #106931 patch
+	* xmlschemastypes.c: more work on XML Schemas datatypes
+
 Sat Mar 29 11:49:25 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c include/libxml/relaxng.h xmlschemastypes.c: more work

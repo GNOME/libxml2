@@ -1,3 +1,9 @@
+Thu Sep 26 19:48:06 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in include/libxml/xmlwin32version.h: preparing release
+	  of 2.4.25
+	* doc/*: updated and regenerated teh docs and web pages.
+
 Thu Sep 26 17:33:46 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* SAX.c valid.c include/libxml/valid.h: fixed bug #92518 validation

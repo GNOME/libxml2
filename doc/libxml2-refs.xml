@@ -3868,6 +3868,8 @@
       <ref name='xmlValidCtxtNormalizeAttributeValue'/>
       <ref name='xmlValidateAttributeValue'/>
       <ref name='xmlValidateOneAttribute'/>
+      <ref name='xmlValidateOneNamespace'/>
+      <ref name='xmlValidateOneNamespace'/>
       <ref name='xmlValidateNotationUse'/>
       <ref name='xmlIsMixedElement'/>
       <ref name='xmlGetDtdAttrDesc'/>
@@ -4576,6 +4578,7 @@
       <ref name='xmlValidateElement'/>
       <ref name='xmlValidateOneElement'/>
       <ref name='xmlValidateOneAttribute'/>
+      <ref name='xmlValidateOneNamespace'/>
       <ref name='xmlValidateDocumentFinal'/>
       <ref name='xmlValidateNotationUse'/>
       <ref name='xmlIsMixedElement'/>
@@ -4906,6 +4909,7 @@
       <ref name='xmlValidateElement'/>
       <ref name='xmlValidateOneElement'/>
       <ref name='xmlValidateOneAttribute'/>
+      <ref name='xmlValidateOneNamespace'/>
       <ref name='xmlXPathNodeSetCreate'/>
       <ref name='xmlXPathCmpNodes'/>
       <ref name='xmlXPathCmpNodes'/>
@@ -5023,6 +5027,7 @@
       <ref name='xmlCopyNamespaceList'/>
       <ref name='xmlSetNsProp'/>
       <ref name='xmlUnsetNsProp'/>
+      <ref name='xmlValidateOneNamespace'/>
       <ref name='xmlXPathNodeSetAddNs'/>
       <ref name='xmlXPathNodeSetFreeNs'/>
     </type>
@@ -5273,6 +5278,7 @@
       <ref name='xmlValidateElement'/>
       <ref name='xmlValidateOneElement'/>
       <ref name='xmlValidateOneAttribute'/>
+      <ref name='xmlValidateOneNamespace'/>
       <ref name='xmlValidateDocumentFinal'/>
       <ref name='xmlValidateNotationUse'/>
       <ref name='xmlValidBuildContentModel'/>
@@ -6364,6 +6370,7 @@
       <ref name='xmlValidateElement'/>
       <ref name='xmlValidateOneElement'/>
       <ref name='xmlValidateOneAttribute'/>
+      <ref name='xmlValidateOneNamespace'/>
       <ref name='xmlValidateDocumentFinal'/>
       <ref name='xmlValidateNotationUse'/>
       <ref name='xmlIsMixedElement'/>

@@ -525,9 +525,9 @@ href="ftp://ftp.gnome.org/pub/GNOME/MIRRORS.html">Gnome FTP server</a> either
 as a <a href="ftp://ftp.gnome.org/pub/GNOME/sources/libxml2/2.4/">source
 archive</a><!-- commenting this out because they seem to have disappeared or <a
 href="ftp://ftp.gnome.org/pub/GNOME/stable/redhat/i386/libxml/">RPM
-packages</a> -->, Antonin Sprinzl also provide <a
-href="ftp://gd.tuwien.ac.at/pub/libxml/">a mirror in Austria</a>. (NOTE that
-you need both the <a
+packages</a> -->
+, Antonin Sprinzl also provide <a href="ftp://gd.tuwien.ac.at/pub/libxml/">a
+mirror in Austria</a>. (NOTE that you need both the <a
 href="http://rpmfind.net/linux/RPM/libxml2.html">libxml(2)</a> and <a
 href="http://rpmfind.net/linux/RPM/libxml2-devel.html">libxml(2)-devel</a>
 packages installed to compile applications using libxml.) <a
@@ -577,6 +577,27 @@ to test those</p>
 <ul>
   <li>Finishing up <a href="http://www.w3.org/TR/xmlschema-1/">XML
     Schemas</a> and <a href="http://www.w3.org/TR/xinclude">XInclude</a></li>
+</ul>
+
+<h3>2.4.25: Sep 26 2002</h3>
+<ul>
+  <li>A number of bug fixes: XPath, validation, Python bindings, DOM and
+    tree, xmlI/O,  Html</li>
+  <li>Serious rewrite of XInclude</li>
+  <li>Made XML Schemas regexp part of the default build and APIs, small fix
+    and improvement of the regexp core</li>
+  <li>Changed the validation code to reuse XML Schemas regexp APIs</li>
+  <li>Better handling of Windows file paths, improvement of Makefiles (Igor,
+    Daniel Gehriger, Mark Vakoc)</li>
+  <li>Improved the python I/O bindings, the tests, added resolver and regexp
+    APIs </li>
+  <li>New logos from Marc Liyanage</li>
+  <li>Tutorial improvements: John Fleck, Christopher Harris</li>
+  <li>Makefile: Fixes for AMD x86_64 (Mandrake), DESTDIR (Christophe
+  Merlet)</li>
+  <li>removal of all stderr/perror use for error reporting</li>
+  <li>Better error reporting: XPath and DTD validation</li>
+  <li>update of the trio portability layer (Bjorn Reese)</li>
 </ul>
 
 <p><strong>2.4.24: Aug 22 2002</strong></p>
@@ -2649,6 +2670,7 @@ xmlOutputBufferCreateOwn(FILE *file, xmlCharEncodingHandlerPtr encoder) {
         ret-&gt;closecallback = NULL;  /* No close callback */
     }
     return(ret); <br>
+
 
 
 

@@ -290,6 +290,7 @@
      <exports symbol='xmlValidateElement'/>
      <exports symbol='xmlValidateOneElement'/>
      <exports symbol='xmlValidateOneAttribute'/>
+     <exports symbol='xmlValidateOneNamespace'/>
      <exports symbol='xmlValidateDocumentFinal'/>
      <exports symbol='xmlValidateNotationUse'/>
      <exports symbol='xmlIsMixedElement'/>
@@ -7852,6 +7853,15 @@
       <arg name='ctxt' type='xmlValidCtxtPtr' info='the validation context '/>
       <arg name='doc' type='xmlDocPtr' info='a document instance '/>
       <arg name='elem' type='xmlNodePtr' info='an element instance '/>
+    </function>
+    <function name='xmlValidateOneNamespace' file='valid'>
+      <return type='int'/>
+      <arg name='ctxt' type='xmlValidCtxtPtr'/>
+      <arg name='doc' type='xmlDocPtr'/>
+      <arg name='elem' type='xmlNodePtr'/>
+      <arg name='prefix' type='const xmlChar *'/>
+      <arg name='ns' type='xmlNsPtr'/>
+      <arg name='value' type='const xmlChar *'/>
     </function>
     <function name='xmlValidateRoot' file='valid'>
       <info>Try to validate a the root element basically it does the following check as described by the XML-1.0 recommendation: - [ VC: Root Element Type ] it doesn&apos;t try to recurse or apply other check to the element</info>

@@ -204,6 +204,7 @@ typedef enum {
     XPATH_OP_FUNCTION,
     XPATH_OP_ARG,
     XPATH_OP_PREDICATE,
+    XPATH_OP_FILTER,
     XPATH_OP_SORT
 #ifdef LIBXML_XPTR_ENABLED
     ,XPATH_OP_RANGETO
@@ -378,6 +379,9 @@ xmlXPathCompExprAdd(xmlXPathCompExprPtr comp, int ch1, int ch2,
     return(comp->nbStep++);
 }
 
+#define PUSH_FULL_EXPR(op, op1, op2, val, val2, val3, val4, val5)	\
+    xmlXPathCompExprAdd(ctxt->comp, (op1), (op2),			\
+	                (op), (val), (val2), (val3), (val4), (val5))
 #define PUSH_LONG_EXPR(op, val, val2, val3, val4, val5)			\
     xmlXPathCompExprAdd(ctxt->comp, ctxt->comp->last, -1,		\
 	                (op), (val), (val2), (val3), (val4), (val5))
@@ -782,6 +786,7 @@ xmlXPathDebugDumpStepOp(FILE *output, xmlXPathCompExprPtr comp,
 	}
         case XPATH_OP_ARG: fprintf(output, "ARG"); break;
         case XPATH_OP_PREDICATE: fprintf(output, "PREDICATE"); break;
+        case XPATH_OP_FILTER: fprintf(output, "FILTER"); break;
 	default:
         fprintf(output, "UNKNOWN %d\n", op->op); return;
     }
@@ -1096,6 +1101,9 @@ xmlXPatherror(xmlXPathParserContextPtr ctxt, const char *file,
 
     cur = ctxt->cur;
     base = ctxt->base;
+    if ((cur == NULL) || (base == NULL))
+	return;
+
     while ((cur > base) && ((*cur == '\n') || (*cur == '\r'))) {
 	cur--;
     }
@@ -1376,7 +1384,7 @@ xmlXPathNodeSetAddUnique(xmlNodeSetPtr cur, xmlNodePtr val) {
  */
 xmlNodeSetPtr
 xmlXPathNodeSetMerge(xmlNodeSetPtr val1, xmlNodeSetPtr val2) {
-    int i, j, initNr;
+    int i, j, initNr, skip;
 
     if (val2 == NULL) return(val1);
     if (val1 == NULL) {
@@ -1389,8 +1397,15 @@ xmlXPathNodeSetMerge(xmlNodeSetPtr val1, xmlNodeSetPtr val2) {
 	/*
 	 * check against doublons
 	 */
-	for (j = 0; j < initNr; j++)
-	    if (val1->nodeTab[j] == val2->nodeTab[i]) continue;
+	skip = 0;
+	for (j = 0; j < initNr; j++) {
+	    if (val1->nodeTab[j] == val2->nodeTab[i]) {
+		skip = 1;
+		break;
+	    }
+	}
+	if (skip)
+	    continue;
 
 	/*
 	 * grow the nodeTab if needed
@@ -2555,12 +2570,12 @@ xmlXPathCompareNodeSets(int inf, int strict,
     ns1 = arg1->nodesetval;
     ns2 = arg2->nodesetval;
 
-    if (ns1->nodeNr <= 0) {
+    if ((ns1 == NULL) || (ns1->nodeNr <= 0)) {
 	xmlXPathFreeObject(arg1);
 	xmlXPathFreeObject(arg2);
 	return(0);
     }
-    if (ns2->nodeNr <= 0) {
+    if ((ns2 == NULL) || (ns2->nodeNr <= 0)) {
 	xmlXPathFreeObject(arg1);
 	xmlXPathFreeObject(arg2);
 	return(0);
@@ -2685,6 +2700,8 @@ xmlXPathEqualNodeSetString(xmlXPathObjectPtr arg, const xmlChar *str) {
 	((arg->type != XPATH_NODESET) && (arg->type != XPATH_XSLT_TREE)))
         return(0);
     ns = arg->nodesetval;
+    if (ns == NULL)
+	return(0);
     if (ns->nodeNr <= 0)
 	return(0);
     for (i = 0;i < ns->nodeNr;i++) {
@@ -3751,339 +3768,6 @@ xmlXPathNextAttribute(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
  ************************************************************************/
 
 #define IS_FUNCTION			200
-
-/**
- * xmlXPathNodeCollectAndTest:
- * @ctxt:  the XPath Parser context
- * @axis:  the XPath axis
- * @test:  the XPath test
- * @type:  the XPath type
- * @prefix:  the namesapce prefix if any
- * @name:  the name used in the search if any
- *
- * This is the function implementing a step: based on the current list
- * of nodes, it builds up a new list, looking at all nodes under that
- * axis and selecting them.
- *
- * Returns the new NodeSet resulting from the search.
- */
-static void
-xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt, xmlXPathAxisVal axis,
-                           xmlXPathTestVal test, xmlXPathTypeVal type,
-			   const xmlChar *prefix, const xmlChar *name) {
-#ifdef DEBUG_STEP
-    int n = 0, t = 0;
-#endif
-    int i;
-    xmlNodeSetPtr ret;
-    xmlXPathTraversalFunction next = NULL;
-    void (*addNode)(xmlNodeSetPtr, xmlNodePtr);
-    xmlNodePtr cur = NULL;
-    xmlXPathObjectPtr obj;
-    xmlNodeSetPtr nodelist;
-    xmlNodePtr tmp;
-
-    CHECK_TYPE(XPATH_NODESET);
-    obj = valuePop(ctxt);
-    addNode = xmlXPathNodeSetAdd;
-
-#ifdef DEBUG_STEP
-    xmlGenericError(xmlGenericErrorContext,
-	    "new step : ");
-#endif
-    switch (axis) {
-        case AXIS_ANCESTOR:
-#ifdef DEBUG_STEP
-	    xmlGenericError(xmlGenericErrorContext,
-		    "axis 'ancestors' ");
-#endif
-	    next = xmlXPathNextAncestor; break;
-        case AXIS_ANCESTOR_OR_SELF:
-#ifdef DEBUG_STEP
-	    xmlGenericError(xmlGenericErrorContext,
-		    "axis 'ancestors-or-self' ");
-#endif
-	    next = xmlXPathNextAncestorOrSelf; break;
-        case AXIS_ATTRIBUTE:
-#ifdef DEBUG_STEP
-	    xmlGenericError(xmlGenericErrorContext,
-		    "axis 'attributes' ");
-#endif
-	    next = xmlXPathNextAttribute; break;
-	    break;
-        case AXIS_CHILD:
-#ifdef DEBUG_STEP
-	    xmlGenericError(xmlGenericErrorContext,
-		    "axis 'child' ");
-#endif
-	    next = xmlXPathNextChild; break;
-        case AXIS_DESCENDANT:
-#ifdef DEBUG_STEP
-	    xmlGenericError(xmlGenericErrorContext,
-		    "axis 'descendant' ");
-#endif
-	    next = xmlXPathNextDescendant; break;
-        case AXIS_DESCENDANT_OR_SELF:
-#ifdef DEBUG_STEP
-	    xmlGenericError(xmlGenericErrorContext,
-		    "axis 'descendant-or-self' ");
-#endif
-	    next = xmlXPathNextDescendantOrSelf; break;
-        case AXIS_FOLLOWING:
-#ifdef DEBUG_STEP
-	    xmlGenericError(xmlGenericErrorContext,
-		    "axis 'following' ");
-#endif
-	    next = xmlXPathNextFollowing; break;
-        case AXIS_FOLLOWING_SIBLING:
-#ifdef DEBUG_STEP
-	    xmlGenericError(xmlGenericErrorContext,
-		    "axis 'following-siblings' ");
-#endif
-	    next = xmlXPathNextFollowingSibling; break;
-        case AXIS_NAMESPACE:
-#ifdef DEBUG_STEP
-	    xmlGenericError(xmlGenericErrorContext,
-		    "axis 'namespace' ");
-#endif
-	    next = (xmlXPathTraversalFunction) xmlXPathNextNamespace; break;
-	    break;
-        case AXIS_PARENT:
-#ifdef DEBUG_STEP
-	    xmlGenericError(xmlGenericErrorContext,
-		    "axis 'parent' ");
-#endif
-	    next = xmlXPathNextParent; break;
-        case AXIS_PRECEDING:
-#ifdef DEBUG_STEP
-	    xmlGenericError(xmlGenericErrorContext,
-		    "axis 'preceding' ");
-#endif
-	    next = xmlXPathNextPreceding; break;
-        case AXIS_PRECEDING_SIBLING:
-#ifdef DEBUG_STEP
-	    xmlGenericError(xmlGenericErrorContext,
-		    "axis 'preceding-sibling' ");
-#endif
-	    next = xmlXPathNextPrecedingSibling; break;
-        case AXIS_SELF:
-#ifdef DEBUG_STEP
-	    xmlGenericError(xmlGenericErrorContext,
-		    "axis 'self' ");
-#endif
-	    next = xmlXPathNextSelf; break;
-    }
-    if (next == NULL)
-	return;
-
-    nodelist = obj->nodesetval;
-    if ((nodelist != NULL) &&
-	(nodelist->nodeNr <= 1))
-	addNode = xmlXPathNodeSetAddUnique;
-    else
-	addNode = xmlXPathNodeSetAdd;
-    ret = xmlXPathNodeSetCreate(NULL);
-#ifdef DEBUG_STEP
-    xmlGenericError(xmlGenericErrorContext,
-	    " context contains %d nodes\n",
-            nodelist->nodeNr);
-    switch (test) {
-	case NODE_TEST_NODE:
-	    xmlGenericError(xmlGenericErrorContext,
-		    "           searching all nodes\n");
-	    break;
-	case NODE_TEST_NONE:
-	    xmlGenericError(xmlGenericErrorContext,
-		    "           searching for none !!!\n");
-	    break;
-	case NODE_TEST_TYPE:
-	    xmlGenericError(xmlGenericErrorContext,
-		    "           searching for type %d\n", type);
-	    break;
-	case NODE_TEST_PI:
-	    xmlGenericError(xmlGenericErrorContext,
-		    "           searching for PI !!!\n");
-	    break;
-	case NODE_TEST_ALL:
-	    xmlGenericError(xmlGenericErrorContext,
-		    "           searching for *\n");
-	    break;
-	case NODE_TEST_NS:
-	    xmlGenericError(xmlGenericErrorContext,
-		    "           searching for namespace %s\n",
-	            prefix);
-	    break;
-	case NODE_TEST_NAME:
-	    xmlGenericError(xmlGenericErrorContext,
-		    "           searching for name %s\n", name);
-	    if (prefix != NULL)
-		xmlGenericError(xmlGenericErrorContext,
-			"           with namespace %s\n",
-		        prefix);
-	    break;
-    }
-    xmlGenericError(xmlGenericErrorContext, "Testing : ");
-#endif
-    /*
-     * 2.3 Node Tests
-     *  - For the attribute axis, the principal node type is attribute. 
-     *  - For the namespace axis, the principal node type is namespace. 
-     *  - For other axes, the principal node type is element. 
-     *
-     * A node test * is true for any node of the
-     * principal node type. For example, child::* willi
-     * select all element children of the context node
-     */
-    tmp = ctxt->context->node;
-    for (i = 0;i < nodelist->nodeNr; i++) {
-        ctxt->context->node = nodelist->nodeTab[i];
-
-	cur = NULL;
-	do {
-	    cur = next(ctxt, cur);
-	    if (cur == NULL) break;
-#ifdef DEBUG_STEP
-            t++;
-            xmlGenericError(xmlGenericErrorContext, " %s", cur->name);
-#endif
-	    switch (test) {
-                case NODE_TEST_NONE:
-		    ctxt->context->node = tmp;
-		    STRANGE
-		    return;
-                case NODE_TEST_TYPE:
-		    if ((cur->type == type) ||
-		        ((type == NODE_TYPE_NODE) && 
-			 ((cur->type == XML_DOCUMENT_NODE) ||
-			  (cur->type == XML_HTML_DOCUMENT_NODE) ||
-			  (cur->type == XML_ELEMENT_NODE) ||
-			  (cur->type == XML_PI_NODE) ||
-			  (cur->type == XML_COMMENT_NODE) ||
-			  (cur->type == XML_CDATA_SECTION_NODE) ||
-			  (cur->type == XML_TEXT_NODE)))) {
-#ifdef DEBUG_STEP
-                        n++;
-#endif
-		        addNode(ret, cur);
-		    }
-		    break;
-                case NODE_TEST_PI:
-		    if (cur->type == XML_PI_NODE) {
-		        if ((name != NULL) &&
-			    (!xmlStrEqual(name, cur->name)))
-			    break;
-#ifdef DEBUG_STEP
-			n++;
-#endif
-			addNode(ret, cur);
-		    }
-		    break;
-                case NODE_TEST_ALL:
-		    if (axis == AXIS_ATTRIBUTE) {
-			if (cur->type == XML_ATTRIBUTE_NODE) {
-#ifdef DEBUG_STEP
-			    n++;
-#endif
-			    addNode(ret, cur);
-			}
-		    } else if (axis == AXIS_NAMESPACE) {
-			if (cur->type == XML_NAMESPACE_DECL) {
-#ifdef DEBUG_STEP
-			    n++;
-#endif
-			    addNode(ret, cur);
-			}
-		    } else {
-			if ((cur->type == XML_ELEMENT_NODE) ||
-			    (cur->type == XML_DOCUMENT_NODE) ||
-			    (cur->type == XML_HTML_DOCUMENT_NODE)) {
-			    if (prefix == NULL) {
-#ifdef DEBUG_STEP
-				n++;
-#endif
-				addNode(ret, cur);
-			    } else if ((cur->ns != NULL) && 
-				(xmlStrEqual(prefix,
-					     cur->ns->href))) {
-#ifdef DEBUG_STEP
-				n++;
-#endif
-				addNode(ret, cur);
-			    }
-			}
-		    }
-		    break;
-                case NODE_TEST_NS: {
-		    TODO;
-		    break;
-		}
-                case NODE_TEST_NAME:
-		    switch (cur->type) {
-		        case XML_ELEMENT_NODE:
-			    if (xmlStrEqual(name, cur->name)) {
-				if (prefix == NULL) {
-				    if ((cur->ns == NULL) ||
-					(cur->ns->prefix == NULL)) {
-#ifdef DEBUG_STEP
-					n++;
-#endif
-					addNode(ret, cur);
-				    }
-				} else {
-				    if ((cur->ns != NULL) && 
-				        (xmlStrEqual(prefix,
-						     cur->ns->href))) {
-#ifdef DEBUG_STEP
-					n++;
-#endif
-					addNode(ret, cur);
-				    }
-				}
-			    }
-			    break;
-		        case XML_ATTRIBUTE_NODE: {
-			    xmlAttrPtr attr = (xmlAttrPtr) cur;
-			    if (xmlStrEqual(name, attr->name)) {
-				if (prefix == NULL) {
-				    if ((attr->ns == NULL) ||
-					(attr->ns->prefix == NULL)) {
-#ifdef DEBUG_STEP
-					n++;
-#endif
-					addNode(ret, (xmlNodePtr) attr);
-				    }
-				} else {
-				    if ((attr->ns != NULL) && 
-				        (xmlStrEqual(prefix,
-						     attr->ns->href))) {
-#ifdef DEBUG_STEP
-					n++;
-#endif
-					addNode(ret, (xmlNodePtr) attr);
-				    }
-				}
-			    }
-			    break;
-			}
-			case XML_NAMESPACE_DECL: {
-			    TODO;
-			    break;
-			}
-			default:
-			    break;
-		    }
-	            break;
-	    }
-	} while (cur != NULL);
-    }
-    ctxt->context->node = tmp;
-#ifdef DEBUG_STEP
-    xmlGenericError(xmlGenericErrorContext,
-            "\nExamined %d nodes, found %d nodes at that step\n", t, n);
-#endif
-    xmlXPathFreeObject(obj);
-    valuePush(ctxt, xmlXPathWrapNodeSet(ret));
-}
 
 
 /************************************************************************
@@ -5280,7 +4964,7 @@ xmlXPathSumFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 	XP_ERROR(XPATH_INVALID_TYPE);
     cur = valuePop(ctxt);
 
-    if (cur->nodesetval->nodeNr == 0) {
+    if ((cur->nodesetval == NULL) || (cur->nodesetval->nodeNr == 0)) {
 	valuePush(ctxt, xmlXPathNewFloat(0.0));
     } else {
 	valuePush(ctxt,
@@ -5392,7 +5076,7 @@ xmlXPathRoundFunction(xmlXPathParserContextPtr ctxt, int nargs) {
  * implementation.
  */
 static void xmlXPathCompileExpr(xmlXPathParserContextPtr ctxt);
-static void xmlXPathCompPredicate(xmlXPathParserContextPtr ctxt);
+static void xmlXPathCompPredicate(xmlXPathParserContextPtr ctxt, int filter);
 static void xmlXPathCompLocationPath(xmlXPathParserContextPtr ctxt);
 #ifdef VMS
 static void xmlXPathCompRelLocationPath(xmlXPathParserContextPtr ctxt);
@@ -5865,7 +5549,7 @@ xmlXPathCompFilterExpr(xmlXPathParserContextPtr ctxt) {
     SKIP_BLANKS;
     
     while (CUR == '[') {
-	xmlXPathCompPredicate(ctxt);
+	xmlXPathCompPredicate(ctxt, 1);
 	SKIP_BLANKS;
     }
 
@@ -6358,6 +6042,7 @@ xmlXPathCompileExpr(xmlXPathParserContextPtr ctxt) {
 /**
  * xmlXPathCompPredicate:
  * @ctxt:  the XPath Parser context
+ * @filter:  act as a filter
  *
  *  [8]   Predicate ::=   '[' PredicateExpr ']'
  *  [9]   PredicateExpr ::=   Expr 
@@ -6365,7 +6050,7 @@ xmlXPathCompileExpr(xmlXPathParserContextPtr ctxt) {
  * Compile a predicate expression
  */
 static void
-xmlXPathCompPredicate(xmlXPathParserContextPtr ctxt) {
+xmlXPathCompPredicate(xmlXPathParserContextPtr ctxt, int filter) {
     int op1 = ctxt->comp->last;
 
     SKIP_BLANKS;
@@ -6383,7 +6068,10 @@ xmlXPathCompPredicate(xmlXPathParserContextPtr ctxt) {
 	XP_ERROR(XPATH_INVALID_PREDICATE_ERROR);
     }
 
-    PUSH_BINARY_EXPR(XPATH_OP_PREDICATE, op1, ctxt->comp->last, 0, 0);
+    if (filter)
+	PUSH_BINARY_EXPR(XPATH_OP_FILTER, op1, ctxt->comp->last, 0, 0);
+    else
+	PUSH_BINARY_EXPR(XPATH_OP_PREDICATE, op1, ctxt->comp->last, 0, 0);
 
     NEXT;
     SKIP_BLANKS;
@@ -6637,8 +6325,9 @@ xmlXPathCompStep(xmlXPathParserContextPtr ctxt) {
 	xmlChar *name = NULL;
 	const xmlChar *prefix = NULL;
 	xmlXPathTestVal test;
-	xmlXPathAxisVal axis;
+	xmlXPathAxisVal axis = 0;
 	xmlXPathTypeVal type;
+	int op1;
 
 	/*
 	 * The modification needed for XPointer change to the production
@@ -6647,7 +6336,7 @@ xmlXPathCompStep(xmlXPathParserContextPtr ctxt) {
 	if (ctxt->xptr) {
 	    name = xmlXPathParseNCName(ctxt);
 	    if ((name != NULL) && (xmlStrEqual(name, BAD_CAST "range-to"))) {
-		int op1 = ctxt->comp->last;
+		int op2 = ctxt->comp->last;
 		xmlFree(name);
 		SKIP_BLANKS;
 		if (CUR != '(') {
@@ -6657,7 +6346,7 @@ xmlXPathCompStep(xmlXPathParserContextPtr ctxt) {
 		SKIP_BLANKS;
 
 		xmlXPathCompileExpr(ctxt);
-		PUSH_BINARY_EXPR(XPATH_OP_RANGETO, op1, ctxt->comp->last, 0, 0);
+		PUSH_BINARY_EXPR(XPATH_OP_RANGETO, op2, ctxt->comp->last, 0, 0);
 		CHECK_ERROR;
 
 		SKIP_BLANKS;
@@ -6704,19 +6393,23 @@ xmlXPathCompStep(xmlXPathParserContextPtr ctxt) {
 		"Basis : computing new set\n");
 #endif
 
-	PUSH_LONG_EXPR(XPATH_OP_COLLECT, axis, test, type,
-		       (void *)prefix, (void *)name);
-
 #ifdef DEBUG_STEP
 	xmlGenericError(xmlGenericErrorContext, "Basis : ");
 	xmlGenericErrorContextNodeSet(stdout, ctxt->value->nodesetval);
 #endif
 
 eval_predicates:
+	op1 = ctxt->comp->last;
+	ctxt->comp->last = -1;
+
 	SKIP_BLANKS;
 	while (CUR == '[') {
-	    xmlXPathCompPredicate(ctxt);
+	    xmlXPathCompPredicate(ctxt, 0);
 	}
+
+	PUSH_FULL_EXPR(XPATH_OP_COLLECT, op1, ctxt->comp->last, axis,
+		       test, type, (void *)prefix, (void *)name);
+
     }
 #ifdef DEBUG_STEP
     xmlGenericError(xmlGenericErrorContext, "Step : ");
@@ -6820,6 +6513,366 @@ xmlXPathCompLocationPath(xmlXPathParserContextPtr ctxt) {
  * 		XPath precompiled expression evaluation			*
  *									*
  ************************************************************************/
+
+static void
+xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op);
+
+/**
+ * xmlXPathNodeCollectAndTest:
+ * @ctxt:  the XPath Parser context
+ * @op:  the XPath precompiled step operation
+ *
+ * This is the function implementing a step: based on the current list
+ * of nodes, it builds up a new list, looking at all nodes under that
+ * axis and selecting them it also do the predicate filtering
+ *
+ * Pushes the new NodeSet resulting from the search.
+ */
+static void
+xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
+	                   xmlXPathStepOpPtr op) {
+    xmlXPathAxisVal axis = op->value;
+    xmlXPathTestVal test = op->value2;
+    xmlXPathTypeVal type = op->value3;
+    const xmlChar *prefix = op->value4;
+    const xmlChar *name = op->value5;
+
+#ifdef DEBUG_STEP
+    int n = 0, t = 0;
+#endif
+    int i;
+    xmlNodeSetPtr ret, list;
+    xmlXPathTraversalFunction next = NULL;
+    void (*addNode)(xmlNodeSetPtr, xmlNodePtr);
+    xmlNodePtr cur = NULL;
+    xmlXPathObjectPtr obj;
+    xmlNodeSetPtr nodelist;
+    xmlNodePtr tmp;
+
+    CHECK_TYPE(XPATH_NODESET);
+    obj = valuePop(ctxt);
+    addNode = xmlXPathNodeSetAdd;
+
+#ifdef DEBUG_STEP
+    xmlGenericError(xmlGenericErrorContext,
+	    "new step : ");
+#endif
+    switch (axis) {
+        case AXIS_ANCESTOR:
+#ifdef DEBUG_STEP
+	    xmlGenericError(xmlGenericErrorContext,
+		    "axis 'ancestors' ");
+#endif
+	    next = xmlXPathNextAncestor; break;
+        case AXIS_ANCESTOR_OR_SELF:
+#ifdef DEBUG_STEP
+	    xmlGenericError(xmlGenericErrorContext,
+		    "axis 'ancestors-or-self' ");
+#endif
+	    next = xmlXPathNextAncestorOrSelf; break;
+        case AXIS_ATTRIBUTE:
+#ifdef DEBUG_STEP
+	    xmlGenericError(xmlGenericErrorContext,
+		    "axis 'attributes' ");
+#endif
+	    next = xmlXPathNextAttribute; break;
+	    break;
+        case AXIS_CHILD:
+#ifdef DEBUG_STEP
+	    xmlGenericError(xmlGenericErrorContext,
+		    "axis 'child' ");
+#endif
+	    next = xmlXPathNextChild; break;
+        case AXIS_DESCENDANT:
+#ifdef DEBUG_STEP
+	    xmlGenericError(xmlGenericErrorContext,
+		    "axis 'descendant' ");
+#endif
+	    next = xmlXPathNextDescendant; break;
+        case AXIS_DESCENDANT_OR_SELF:
+#ifdef DEBUG_STEP
+	    xmlGenericError(xmlGenericErrorContext,
+		    "axis 'descendant-or-self' ");
+#endif
+	    next = xmlXPathNextDescendantOrSelf; break;
+        case AXIS_FOLLOWING:
+#ifdef DEBUG_STEP
+	    xmlGenericError(xmlGenericErrorContext,
+		    "axis 'following' ");
+#endif
+	    next = xmlXPathNextFollowing; break;
+        case AXIS_FOLLOWING_SIBLING:
+#ifdef DEBUG_STEP
+	    xmlGenericError(xmlGenericErrorContext,
+		    "axis 'following-siblings' ");
+#endif
+	    next = xmlXPathNextFollowingSibling; break;
+        case AXIS_NAMESPACE:
+#ifdef DEBUG_STEP
+	    xmlGenericError(xmlGenericErrorContext,
+		    "axis 'namespace' ");
+#endif
+	    next = (xmlXPathTraversalFunction) xmlXPathNextNamespace; break;
+	    break;
+        case AXIS_PARENT:
+#ifdef DEBUG_STEP
+	    xmlGenericError(xmlGenericErrorContext,
+		    "axis 'parent' ");
+#endif
+	    next = xmlXPathNextParent; break;
+        case AXIS_PRECEDING:
+#ifdef DEBUG_STEP
+	    xmlGenericError(xmlGenericErrorContext,
+		    "axis 'preceding' ");
+#endif
+	    next = xmlXPathNextPreceding; break;
+        case AXIS_PRECEDING_SIBLING:
+#ifdef DEBUG_STEP
+	    xmlGenericError(xmlGenericErrorContext,
+		    "axis 'preceding-sibling' ");
+#endif
+	    next = xmlXPathNextPrecedingSibling; break;
+        case AXIS_SELF:
+#ifdef DEBUG_STEP
+	    xmlGenericError(xmlGenericErrorContext,
+		    "axis 'self' ");
+#endif
+	    next = xmlXPathNextSelf; break;
+    }
+    if (next == NULL)
+	return;
+
+    nodelist = obj->nodesetval;
+    if (nodelist == NULL) {
+	xmlXPathFreeObject(obj);
+	valuePush(ctxt, xmlXPathWrapNodeSet(NULL));
+	return;
+    }
+    addNode = xmlXPathNodeSetAddUnique;
+    ret = NULL;
+#ifdef DEBUG_STEP
+    xmlGenericError(xmlGenericErrorContext,
+	    " context contains %d nodes\n",
+            nodelist->nodeNr);
+    switch (test) {
+	case NODE_TEST_NODE:
+	    xmlGenericError(xmlGenericErrorContext,
+		    "           searching all nodes\n");
+	    break;
+	case NODE_TEST_NONE:
+	    xmlGenericError(xmlGenericErrorContext,
+		    "           searching for none !!!\n");
+	    break;
+	case NODE_TEST_TYPE:
+	    xmlGenericError(xmlGenericErrorContext,
+		    "           searching for type %d\n", type);
+	    break;
+	case NODE_TEST_PI:
+	    xmlGenericError(xmlGenericErrorContext,
+		    "           searching for PI !!!\n");
+	    break;
+	case NODE_TEST_ALL:
+	    xmlGenericError(xmlGenericErrorContext,
+		    "           searching for *\n");
+	    break;
+	case NODE_TEST_NS:
+	    xmlGenericError(xmlGenericErrorContext,
+		    "           searching for namespace %s\n",
+	            prefix);
+	    break;
+	case NODE_TEST_NAME:
+	    xmlGenericError(xmlGenericErrorContext,
+		    "           searching for name %s\n", name);
+	    if (prefix != NULL)
+		xmlGenericError(xmlGenericErrorContext,
+			"           with namespace %s\n",
+		        prefix);
+	    break;
+    }
+    xmlGenericError(xmlGenericErrorContext, "Testing : ");
+#endif
+    /*
+     * 2.3 Node Tests
+     *  - For the attribute axis, the principal node type is attribute. 
+     *  - For the namespace axis, the principal node type is namespace. 
+     *  - For other axes, the principal node type is element. 
+     *
+     * A node test * is true for any node of the
+     * principal node type. For example, child::* willi
+     * select all element children of the context node
+     */
+    tmp = ctxt->context->node;
+    for (i = 0;i < nodelist->nodeNr; i++) {
+        ctxt->context->node = nodelist->nodeTab[i];
+
+	cur = NULL;
+	list = xmlXPathNodeSetCreate(NULL);
+	do {
+	    cur = next(ctxt, cur);
+	    if (cur == NULL) break;
+#ifdef DEBUG_STEP
+            t++;
+            xmlGenericError(xmlGenericErrorContext, " %s", cur->name);
+#endif
+	    switch (test) {
+                case NODE_TEST_NONE:
+		    ctxt->context->node = tmp;
+		    STRANGE
+		    return;
+                case NODE_TEST_TYPE:
+		    if ((cur->type == type) ||
+		        ((type == NODE_TYPE_NODE) && 
+			 ((cur->type == XML_DOCUMENT_NODE) ||
+			  (cur->type == XML_HTML_DOCUMENT_NODE) ||
+			  (cur->type == XML_ELEMENT_NODE) ||
+			  (cur->type == XML_PI_NODE) ||
+			  (cur->type == XML_COMMENT_NODE) ||
+			  (cur->type == XML_CDATA_SECTION_NODE) ||
+			  (cur->type == XML_TEXT_NODE)))) {
+#ifdef DEBUG_STEP
+                        n++;
+#endif
+		        addNode(list, cur);
+		    }
+		    break;
+                case NODE_TEST_PI:
+		    if (cur->type == XML_PI_NODE) {
+		        if ((name != NULL) &&
+			    (!xmlStrEqual(name, cur->name)))
+			    break;
+#ifdef DEBUG_STEP
+			n++;
+#endif
+			addNode(list, cur);
+		    }
+		    break;
+                case NODE_TEST_ALL:
+		    if (axis == AXIS_ATTRIBUTE) {
+			if (cur->type == XML_ATTRIBUTE_NODE) {
+#ifdef DEBUG_STEP
+			    n++;
+#endif
+			    addNode(list, cur);
+			}
+		    } else if (axis == AXIS_NAMESPACE) {
+			if (cur->type == XML_NAMESPACE_DECL) {
+#ifdef DEBUG_STEP
+			    n++;
+#endif
+			    addNode(list, cur);
+			}
+		    } else {
+			if ((cur->type == XML_ELEMENT_NODE) ||
+			    (cur->type == XML_DOCUMENT_NODE) ||
+			    (cur->type == XML_HTML_DOCUMENT_NODE)) {
+			    if (prefix == NULL) {
+#ifdef DEBUG_STEP
+				n++;
+#endif
+				addNode(list, cur);
+			    } else if ((cur->ns != NULL) && 
+				(xmlStrEqual(prefix,
+					     cur->ns->href))) {
+#ifdef DEBUG_STEP
+				n++;
+#endif
+				addNode(list, cur);
+			    }
+			}
+		    }
+		    break;
+                case NODE_TEST_NS: {
+		    TODO;
+		    break;
+		}
+                case NODE_TEST_NAME:
+		    switch (cur->type) {
+		        case XML_ELEMENT_NODE:
+			    if (xmlStrEqual(name, cur->name)) {
+				if (prefix == NULL) {
+				    if ((cur->ns == NULL) ||
+					(cur->ns->prefix == NULL)) {
+#ifdef DEBUG_STEP
+					n++;
+#endif
+					addNode(list, cur);
+				    }
+				} else {
+				    if ((cur->ns != NULL) && 
+				        (xmlStrEqual(prefix,
+						     cur->ns->href))) {
+#ifdef DEBUG_STEP
+					n++;
+#endif
+					addNode(list, cur);
+				    }
+				}
+			    }
+			    break;
+		        case XML_ATTRIBUTE_NODE: {
+			    xmlAttrPtr attr = (xmlAttrPtr) cur;
+			    if (xmlStrEqual(name, attr->name)) {
+				if (prefix == NULL) {
+				    if ((attr->ns == NULL) ||
+					(attr->ns->prefix == NULL)) {
+#ifdef DEBUG_STEP
+					n++;
+#endif
+					addNode(list, (xmlNodePtr) attr);
+				    }
+				} else {
+				    if ((attr->ns != NULL) && 
+				        (xmlStrEqual(prefix,
+						     attr->ns->href))) {
+#ifdef DEBUG_STEP
+					n++;
+#endif
+					addNode(list, (xmlNodePtr) attr);
+				    }
+				}
+			    }
+			    break;
+			}
+			case XML_NAMESPACE_DECL: {
+			    TODO;
+			    break;
+			}
+			default:
+			    break;
+		    }
+	            break;
+	    }
+	} while (cur != NULL);
+
+	/*
+	 * If there is some predicate filtering do it now
+	 */
+	if (op->ch2 != -1) {
+	    xmlXPathObjectPtr obj2;
+
+	    valuePush(ctxt, xmlXPathWrapNodeSet(list));
+	    xmlXPathCompOpEval(ctxt, &ctxt->comp->steps[op->ch2]);
+	    CHECK_TYPE(XPATH_NODESET);
+	    obj2 = valuePop(ctxt);
+	    list = obj2->nodesetval;
+	    obj2->nodesetval = NULL;
+	    xmlXPathFreeObject(obj2);
+	}
+	if (ret == NULL) {
+	    ret = list;
+	} else {
+	    ret = xmlXPathNodeSetMerge(ret, list);
+	    xmlXPathFreeNodeSet(list);
+	}
+    }
+    ctxt->context->node = tmp;
+#ifdef DEBUG_STEP
+    xmlGenericError(xmlGenericErrorContext,
+            "\nExamined %d nodes, found %d nodes at that step\n", t, n);
+#endif
+    xmlXPathFreeObject(obj);
+    valuePush(ctxt, xmlXPathWrapNodeSet(ret));
+}
 
 /**
  * xmlXPathCompOpEval:
@@ -6929,12 +6982,14 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op) {
 		xmlXPathCompOpEval(ctxt, &comp->steps[op->ch2]);
 	    ctxt->context->node = NULL;
 	    return;
-	case XPATH_OP_COLLECT:
-	    if (op->ch1 != -1)
-		xmlXPathCompOpEval(ctxt, &comp->steps[op->ch1]);
-	    xmlXPathNodeCollectAndTest(ctxt, op->value, op->value2,
-			       op->value3, op->value4, op->value5);
+	case XPATH_OP_COLLECT: {
+	    if (op->ch1 == -1)
+		return;
+
+	    xmlXPathCompOpEval(ctxt, &comp->steps[op->ch1]);
+	    xmlXPathNodeCollectAndTest(ctxt, op);
 	    return;
+        }
 	case XPATH_OP_VALUE:
 	    valuePush(ctxt,
 		    xmlXPathObjectCopy((xmlXPathObjectPtr) op->value4));
@@ -6995,7 +7050,8 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op) {
 	    if (op->ch2 != -1)
 		xmlXPathCompOpEval(ctxt, &comp->steps[op->ch2]);
 	    return;
-	case XPATH_OP_PREDICATE: {
+	case XPATH_OP_PREDICATE:
+	case XPATH_OP_FILTER: {
 	    xmlXPathObjectPtr res;
 	    xmlXPathObjectPtr obj, tmp;
 	    xmlNodeSetPtr newset = NULL;
@@ -7315,6 +7371,8 @@ xmlXPathEvalPredicate(xmlXPathContextPtr ctxt, xmlXPathObjectPtr res) {
 	    return(res->floatval == ctxt->proximityPosition);
         case XPATH_NODESET:
         case XPATH_XSLT_TREE:
+	    if (res->nodesetval == NULL)
+		return(0);
 	    return(res->nodesetval->nodeNr != 0);
         case XPATH_STRING:
 	    return((res->stringval != NULL) &&

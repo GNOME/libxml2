@@ -113,6 +113,7 @@ testXPath(const char *str) {
 		    xmlXPathDebugDumpCompExpr(stdout, comp, 0);
 
 		res = xmlXPathCompiledEval(comp, ctxt);
+		xmlXPathFreeCompExpr(comp);
 	    } else
 		res = NULL;
 	}

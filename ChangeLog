@@ -1,3 +1,9 @@
+Fri Apr  6 12:53:05 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xpath.c: fixed a [] evaluation problem reported
+	* test/XPath/tests/simpleaddr: extended test
+	* result/XPath/simpleaddr: updated result
+
 Wed Apr  4 02:07:53 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xmllint.c: Dan Timis reported a portability problem

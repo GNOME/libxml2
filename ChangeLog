@@ -1,3 +1,13 @@
+Fri Sep 17 10:40:23 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: removed some extern before function code reported by
+	  Kjartan Maraas on IRC
+	* legacy.c: fixed compiling when configuring out the HTML parser
+	* Makefile.am: added a declaration for CVS_EXTRA_DIST
+	* HTMLparser.c: beginning of an attempt at cleaning up the construction
+	  of the HTML parser data structures, current data generate a huge
+	  amount of ELF relocations at loading time.
+
 Fri Sep 17 10:36:23 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* ChangeLog: applied fix from Stepan Kasal to fix duplication

@@ -943,7 +943,7 @@ mem_error:
  *
  * Returns 0 in case of error, the index in the stack otherwise
  */
-extern int
+int
 inputPush(xmlParserCtxtPtr ctxt, xmlParserInputPtr value)
 {
     if (ctxt->inputNr >= ctxt->inputMax) {
@@ -969,7 +969,7 @@ inputPush(xmlParserCtxtPtr ctxt, xmlParserInputPtr value)
  *
  * Returns the input just removed
  */
-extern xmlParserInputPtr
+xmlParserInputPtr
 inputPop(xmlParserCtxtPtr ctxt)
 {
     xmlParserInputPtr ret;
@@ -994,7 +994,7 @@ inputPop(xmlParserCtxtPtr ctxt)
  *
  * Returns 0 in case of error, the index in the stack otherwise
  */
-extern int
+int
 nodePush(xmlParserCtxtPtr ctxt, xmlNodePtr value)
 {
     if (ctxt->nodeNr >= ctxt->nodeMax) {
@@ -1027,7 +1027,7 @@ nodePush(xmlParserCtxtPtr ctxt, xmlNodePtr value)
  *
  * Returns the node just removed
  */
-extern xmlNodePtr
+xmlNodePtr
 nodePop(xmlParserCtxtPtr ctxt)
 {
     xmlNodePtr ret;
@@ -1126,7 +1126,7 @@ nameNsPop(xmlParserCtxtPtr ctxt)
  *
  * Returns -1 in case of error, the index in the stack otherwise
  */
-extern int
+int
 namePush(xmlParserCtxtPtr ctxt, const xmlChar * value)
 {
     if (ctxt->nameNr >= ctxt->nameMax) {
@@ -1156,7 +1156,7 @@ mem_error:
  *
  * Returns the name just removed
  */
-extern const xmlChar *
+const xmlChar *
 namePop(xmlParserCtxtPtr ctxt)
 {
     const xmlChar *ret;

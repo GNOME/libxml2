@@ -463,16 +463,27 @@ htmlSkipBlankChars(xmlParserCtxtPtr ctxt) {
 /* Definitions and a couple of vars for HTML Elements */
 
 #define FONTSTYLE "tt", "i", "b", "u", "s", "strike", "big", "small"
+#define NB_FONTSTYLE 8
 #define PHRASE "em", "strong", "dfn", "code", "samp", "kbd", "var", "cite", "abbr", "acronym"
+#define NB_PHRASE 10
 #define SPECIAL "a", "img", "applet", "object", "font", "basefont", "br", "script", "map", "q", "sub", "sup", "span", "bdo", "iframe"
+#define NB_SPECIAL 15
 #define INLINE PCDATA FONTSTYLE PHRASE SPECIAL FORMCTRL
-#define BLOCK HEADING LIST "pre", "p", "dl", "div", "center", "noscript", "noframes", "blockquote", "form", "isindex", "hr", "table", "fieldset", "address"
+#define NB_INLINE NB_PCDATA + NB_FONTSTYLE + NB_PHRASE + NB_SPECIAL + NB_FORMCTRL
+#define BLOCK HEADING, LIST "pre", "p", "dl", "div", "center", "noscript", "noframes", "blockquote", "form", "isindex", "hr", "table", "fieldset", "address"
+#define NB_BLOCK NB_HEADING + NB_LIST + 14
 #define FORMCTRL "input", "select", "textarea", "label", "button"
+#define NB_FORMCTRL 5
 #define PCDATA
+#define NB_PCDATA 0
 #define HEADING "h1", "h2", "h3", "h4", "h5", "h6"
+#define NB_HEADING 6
 #define LIST "ul", "ol", "dir", "menu"
+#define NB_LIST 4
 #define MODIFIER
+#define NB_MODIFIER 0
 #define FLOW BLOCK,INLINE
+#define NB_FLOW NB_BLOCK + NB_INLINE
 #define EMPTY NULL
 
 
@@ -487,11 +498,17 @@ static const char* html_pcdata[] = { NULL } ;
 /* ... and for HTML Attributes */
 
 #define COREATTRS "id", "class", "style", "title"
+#define NB_COREATTRS 4
 #define I18N "lang", "dir"
+#define NB_I18N 2
 #define EVENTS "onclick", "ondblclick", "onmousedown", "onmouseup", "onmouseover", "onmouseout", "onkeypress", "onkeydown", "onkeyup"
+#define NB_EVENTS 9
 #define ATTRS COREATTRS,I18N,EVENTS
+#define NB_ATTRS NB_NB_COREATTRS + NB_I18N + NB_EVENTS
 #define CELLHALIGN "align", "char", "charoff"
+#define NB_CELLHALIGN 3
 #define CELLVALIGN "valign"
+#define NB_CELLVALIGN 1
 
 static const char* html_attrs[] = { ATTRS, NULL } ;
 static const char* core_i18n_attrs[] = { COREATTRS, I18N, NULL } ;

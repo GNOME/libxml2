@@ -1661,11 +1661,9 @@ xmlSchemaValPredefTypeNode(xmlSchemaTypePtr type, const xmlChar *value,
 	    attr->atype = XML_ATTRIBUTE_ENTITY;
 	}
 	return(ret);
-    } else {
-	TODO
-	return(0);
     }
-    return(-1);
+    TODO
+    return(0);
 }
 
 /**

@@ -89,21 +89,12 @@
 
 /* Windows platform with GNU compiler (Mingw) */
 #if defined(_WIN32) && defined(__MINGW32__)
-  #undef XMLPUBFUN
   #undef XMLPUBVAR
-  #undef XMLCALL
-  #if defined(IN_LIBXML) && !defined(LIBXML_STATIC)
-    #define XMLPUBFUN __declspec(dllexport)
-    #define XMLPUBVAR __declspec(dllexport) extern
+  #ifdef __cplusplus
+    #define XMLPUBVAR extern
   #else
-    #define XMLPUBFUN
-    #if !defined(LIBXML_STATIC)
-      #define XMLPUBVAR __declspec(dllimport) extern
-    #else
-      #define XMLPUBVAR extern
-    #endif
+    #define XMLPUBVAR
   #endif
-  #define XMLCALL __cdecl
   #if !defined _REENTRANT
     #define _REENTRANT
   #endif

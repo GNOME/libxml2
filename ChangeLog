@@ -1,3 +1,8 @@
+Sun Mar 27 13:24:24 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: cleanup of the Prop related functions and xmlNewNodeEatName
+	  by Rob Richards
+
 Thu Mar 24 19:01:22 PST 2005 William Brack <wbrack@mmm.com.hk>
 
 	* gentest.py, testapi.c: fixed problem with 'minimal library'

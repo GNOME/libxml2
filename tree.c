@@ -1721,39 +1721,26 @@ xmlNodeListGetRawString(xmlDocPtr doc, xmlNodePtr list, int inLine)
 }
 #endif /* LIBXML_TREE_ENABLED */
 
-#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_HTML_ENABLED) || \
-    defined(LIBXML_SCHEMAS_ENABLED)
-/**
- * xmlNewProp:
- * @node:  the holding node
- * @name:  the name of the attribute
- * @value:  the value of the attribute
- *
- * Create a new property carried by a node.
- * Returns a pointer to the attribute
- */
-xmlAttrPtr
-xmlNewProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
+static xmlAttrPtr xmlNewPropInternal(xmlNodePtr node, xmlNsPtr ns, 
+           const xmlChar *name, const xmlChar *value, int eatname) {
     xmlAttrPtr cur;
     xmlDocPtr doc = NULL;
 
-    if (name == NULL) {
-#ifdef DEBUG_TREE
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlNewProp : name == NULL\n");
-#endif
-	return(NULL);
-    }
-    if ((node != NULL) && (node->type != XML_ELEMENT_NODE))
-	return(NULL);
+    if ((node != NULL) && (node->type != XML_ELEMENT_NODE)) {
+		if (eatname == 1)
+			xmlFree((xmlChar *) name);
+		return(NULL);
+	}
 
     /*
      * Allocate a new property and fill the fields.
      */
     cur = (xmlAttrPtr) xmlMalloc(sizeof(xmlAttr));
     if (cur == NULL) {
-	xmlTreeErrMemory("building attribute");
-	return(NULL);
+		if (eatname == 1)
+			xmlFree((xmlChar *) name);
+		xmlTreeErrMemory("building attribute");
+		return(NULL);
     }
     memset(cur, 0, sizeof(xmlAttr));
     cur->type = XML_ATTRIBUTE_NODE;
@@ -1763,10 +1750,16 @@ xmlNewProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
 	doc = node->doc;
 	cur->doc = doc;
     }
-    if ((doc != NULL) && (doc->dict != NULL))
-        cur->name = (xmlChar *) xmlDictLookup(doc->dict, name, -1);
-    else
-	cur->name = xmlStrdup(name);
+	cur->ns = ns;
+
+	if (eatname == 0) {
+		if ((doc != NULL) && (doc->dict != NULL))
+			cur->name = (xmlChar *) xmlDictLookup(doc->dict, name, -1);
+		else
+			cur->name = xmlStrdup(name);
+	} else
+		cur->name = name;
+
     if (value != NULL) {
 	xmlChar *buffer;
 	xmlNodePtr tmp;
@@ -1777,7 +1770,6 @@ xmlNewProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
 	tmp = cur->children;
 	while (tmp != NULL) {
 	    tmp->parent = (xmlNodePtr) cur;
-	    tmp->doc = doc;
 	    if (tmp->next == NULL)
 		cur->last = tmp;
 	    tmp = tmp->next;
@@ -1804,6 +1796,31 @@ xmlNewProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
 	xmlRegisterNodeDefaultValue((xmlNodePtr)cur);
     return(cur);
 }
+
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_HTML_ENABLED) || \
+    defined(LIBXML_SCHEMAS_ENABLED)
+/**
+ * xmlNewProp:
+ * @node:  the holding node
+ * @name:  the name of the attribute
+ * @value:  the value of the attribute
+ *
+ * Create a new property carried by a node.
+ * Returns a pointer to the attribute
+ */
+xmlAttrPtr
+xmlNewProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
+
+    if (name == NULL) {
+#ifdef DEBUG_TREE
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlNewProp : name == NULL\n");
+#endif
+	return(NULL);
+    }
+
+	return xmlNewPropInternal(node, NULL, name, value, 0);
+}
 #endif /* LIBXML_TREE_ENABLED */
 
 /**
@@ -1819,8 +1836,6 @@ xmlNewProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
 xmlAttrPtr
 xmlNewNsProp(xmlNodePtr node, xmlNsPtr ns, const xmlChar *name,
            const xmlChar *value) {
-    xmlAttrPtr cur;
-    xmlDocPtr doc = NULL;
 
     if (name == NULL) {
 #ifdef DEBUG_TREE
@@ -1830,62 +1845,7 @@ xmlNewNsProp(xmlNodePtr node, xmlNsPtr ns, const xmlChar *name,
 	return(NULL);
     }
 
-    /*
-     * Allocate a new property and fill the fields.
-     */
-    cur = (xmlAttrPtr) xmlMalloc(sizeof(xmlAttr));
-    if (cur == NULL) {
-	xmlTreeErrMemory("building attribute");
-	return(NULL);
-    }
-    memset(cur, 0, sizeof(xmlAttr));
-    cur->type = XML_ATTRIBUTE_NODE;
-
-    cur->parent = node; 
-    if (node != NULL) {
-	doc = node->doc;
-	cur->doc = doc;
-    }
-    cur->ns = ns;
-    if ((doc != NULL) && (doc->dict != NULL))
-	cur->name = xmlDictLookup(doc->dict, name, -1);
-    else
-	cur->name = xmlStrdup(name);
-    if (value != NULL) {
-	xmlChar *buffer;
-	xmlNodePtr tmp;
-
-	buffer = xmlEncodeEntitiesReentrant(doc, value);
-	cur->children = xmlStringGetNodeList(doc, buffer);
-	cur->last = NULL;
-	tmp = cur->children;
-	while (tmp != NULL) {
-	    tmp->parent = (xmlNodePtr) cur;
-	    if (tmp->next == NULL)
-		cur->last = tmp;
-	    tmp = tmp->next;
-	}
-	xmlFree(buffer);
-    }
-
-    /*
-     * Add it at the end to preserve parsing order ...
-     */
-    if (node != NULL) {
-	if (node->properties == NULL) {
-	    node->properties = cur;
-	} else {
-	    xmlAttrPtr prev = node->properties;
-
-	    while (prev->next != NULL) prev = prev->next;
-	    prev->next = cur;
-	    cur->prev = prev;
-	}
-    }
-
-    if ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
-	xmlRegisterNodeDefaultValue((xmlNodePtr)cur);
-    return(cur);
+    return xmlNewPropInternal(node, ns, name, value, 0);
 }
 
 /**
@@ -1901,8 +1861,6 @@ xmlNewNsProp(xmlNodePtr node, xmlNsPtr ns, const xmlChar *name,
 xmlAttrPtr
 xmlNewNsPropEatName(xmlNodePtr node, xmlNsPtr ns, xmlChar *name,
            const xmlChar *value) {
-    xmlAttrPtr cur;
-    xmlDocPtr doc = NULL;
 
     if (name == NULL) {
 #ifdef DEBUG_TREE
@@ -1912,59 +1870,7 @@ xmlNewNsPropEatName(xmlNodePtr node, xmlNsPtr ns, xmlChar *name,
 	return(NULL);
     }
 
-    /*
-     * Allocate a new property and fill the fields.
-     */
-    cur = (xmlAttrPtr) xmlMalloc(sizeof(xmlAttr));
-    if (cur == NULL) {
-	xmlTreeErrMemory("building attribute");
-	return(NULL);
-    }
-    memset(cur, 0, sizeof(xmlAttr));
-    cur->type = XML_ATTRIBUTE_NODE;
-
-    cur->parent = node; 
-    if (node != NULL) {
-	doc = node->doc;
-	cur->doc = doc;
-    }
-    cur->ns = ns;
-    cur->name = name;
-    if (value != NULL) {
-	xmlChar *buffer;
-	xmlNodePtr tmp;
-
-	buffer = xmlEncodeEntitiesReentrant(doc, value);
-	cur->children = xmlStringGetNodeList(doc, buffer);
-	cur->last = NULL;
-	tmp = cur->children;
-	while (tmp != NULL) {
-	    tmp->parent = (xmlNodePtr) cur;
-	    if (tmp->next == NULL)
-		cur->last = tmp;
-	    tmp = tmp->next;
-	}
-	xmlFree(buffer);
-    }
-
-    /*
-     * Add it at the end to preserve parsing order ...
-     */
-    if (node != NULL) {
-	if (node->properties == NULL) {
-	    node->properties = cur;
-	} else {
-	    xmlAttrPtr prev = node->properties;
-
-	    while (prev->next != NULL) prev = prev->next;
-	    prev->next = cur;
-	    cur->prev = prev;
-	}
-    }
-
-    if ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
-	xmlRegisterNodeDefaultValue((xmlNodePtr)cur);
-    return(cur);
+	return xmlNewPropInternal(node, ns, name, value, 1);
 }
 
 /**
@@ -2250,6 +2156,7 @@ xmlNewNodeEatName(xmlNsPtr ns, xmlChar *name) {
      */
     cur = (xmlNodePtr) xmlMalloc(sizeof(xmlNode));
     if (cur == NULL) {
+	xmlFree(name);
 	xmlTreeErrMemory("building node");
 	return(NULL);
     }
@@ -6311,17 +6218,7 @@ xmlUnsetProp(xmlNodePtr node, const xmlChar *name) {
     while (prop != NULL) {
         if ((xmlStrEqual(prop->name, name)) &&
 	    (prop->ns == NULL)) {
-	    if (prev == NULL) {
-		node->properties = prop->next;
-		if (prop->next != NULL)
-		    prop->next->prev = NULL;
-	    } else {
-		prev->next = prop->next;
-		if (prop->next != NULL)
-		    prop->next->prev = NULL;
-	    }
-	    prop->next = NULL;
-	    prop->prev = NULL;
+		xmlUnlinkNode((xmlNodePtr) prop);
 	    xmlFreeProp(prop);
 	    return(0);
 	}
@@ -6354,17 +6251,7 @@ xmlUnsetNsProp(xmlNodePtr node, xmlNsPtr ns, const xmlChar *name) {
     while (prop != NULL) {
         if ((xmlStrEqual(prop->name, name)) &&
 	    (prop->ns != NULL) && (xmlStrEqual(prop->ns->href, ns->href))) {
-	    if (prev == NULL) {
-		node->properties = prop->next;
-		if (prop->next != NULL)
-		    prop->next->prev = NULL;
-	    } else {
-		prev->next = prop->next;
-		if (prop->next != NULL)
-		    prop->next->prev = NULL;
-	    }
-	    prop->next = NULL;
-	    prop->prev = NULL;
+	    xmlUnlinkNode((xmlNodePtr) prop);
 	    xmlFreeProp(prop);
 	    return(0);
 	}

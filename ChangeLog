@@ -1,3 +1,7 @@
+Tue Aug 10 11:33:41 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* Added an HACKING file
+
 Tue Jul 27 21:43:00 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
         * xpath.[ch] : improvements and debug of the XPath implementation

@@ -3091,6 +3091,15 @@ xmlDefaultExternalEntityLoader(const char *URL, const char *ID,
                     "xmlDefaultExternalEntityLoader(%s, xxx)\n", URL);
 #endif
 #ifdef LIBXML_CATALOG_ENABLED
+    if ((ctxt != NULL) && (ctxt->options & XML_PARSE_NONET)) {
+        int options = ctxt->options;
+
+	ctxt->options -= XML_PARSE_NONET;
+        ret = xmlNoNetExternalEntityLoader(URL, ID, ctxt);
+	ctxt->options = options;
+	return(ret);
+    }
+
     /*
      * If the resource doesn't exists as a file,
      * try to load it from the resource pointed in the catalogs

@@ -260,6 +260,9 @@ XMLPUBFUN int XMLCALL                   xmlIsLetter     (int c);
 XMLPUBFUN xmlParserCtxtPtr XMLCALL	
 			xmlCreateFileParserCtxt	(const char *filename);
 XMLPUBFUN xmlParserCtxtPtr XMLCALL	
+			xmlCreateURLParserCtxt	(const char *filename,
+						 int options);
+XMLPUBFUN xmlParserCtxtPtr XMLCALL	
 			xmlCreateMemoryParserCtxt(const char *buffer,
 						 int size);
 XMLPUBFUN xmlParserCtxtPtr XMLCALL	

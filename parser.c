@@ -11433,17 +11433,18 @@ xmlCreateEntityParserCtxt(const xmlChar *URL, const xmlChar *ID,
  ************************************************************************/
 
 /**
- * xmlCreateFileParserCtxt:
- * @filename:  the filename
+ * xmlCreateURLParserCtxt:
+ * @filename:  the filename or URL
+ * @options:  a combination of xmlParserOption(s)
  *
- * Create a parser context for a file content. 
+ * Create a parser context for a file or URL content. 
  * Automatic support for ZLIB/Compress compressed document is provided
- * by default if found at compile-time.
+ * by default if found at compile-time and for file accesses
  *
  * Returns the new parser context or NULL
  */
 xmlParserCtxtPtr
-xmlCreateFileParserCtxt(const char *filename)
+xmlCreateURLParserCtxt(const char *filename, int options)
 {
     xmlParserCtxtPtr ctxt;
     xmlParserInputPtr inputStream;
@@ -11455,6 +11456,8 @@ xmlCreateFileParserCtxt(const char *filename)
 	return(NULL);
     }
 
+    if (options != 0)
+        xmlCtxtUseOptions(ctxt, options);
     
     inputStream = xmlLoadExternalEntity(filename, NULL, ctxt);
     if (inputStream == NULL) {
@@ -11469,6 +11472,22 @@ xmlCreateFileParserCtxt(const char *filename)
         ctxt->directory = directory;
 
     return(ctxt);
+}
+
+/**
+ * xmlCreateFileParserCtxt:
+ * @filename:  the filename
+ *
+ * Create a parser context for a file content. 
+ * Automatic support for ZLIB/Compress compressed document is provided
+ * by default if found at compile-time.
+ *
+ * Returns the new parser context or NULL
+ */
+xmlParserCtxtPtr
+xmlCreateFileParserCtxt(const char *filename)
+{
+    return(xmlCreateURLParserCtxt(filename, 0));
 }
 
 #ifdef LIBXML_SAX1_ENABLED
@@ -12385,6 +12404,10 @@ xmlCtxtUseOptions(xmlParserCtxtPtr ctxt, int options)
 	ctxt->options |= XML_PARSE_NSCLEAN;
         options -= XML_PARSE_NSCLEAN;
     }
+    if (options & XML_PARSE_NONET) {
+	ctxt->options |= XML_PARSE_NONET;
+        options -= XML_PARSE_NONET;
+    }
     ctxt->linenumbers = 1;
     return (options);
 }
@@ -12488,7 +12511,7 @@ xmlReadFile(const char *filename, const char *encoding, int options)
 {
     xmlParserCtxtPtr ctxt;
 
-    ctxt = xmlCreateFileParserCtxt(filename);
+    ctxt = xmlCreateURLParserCtxt(filename, options);
     if (ctxt == NULL)
         return (NULL);
     return (xmlDoRead(ctxt, NULL, encoding, options, 0));

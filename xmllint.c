@@ -1686,7 +1686,7 @@ main(int argc, char **argv) {
 #endif
         } else if ((!strcmp(argv[i], "-nonet")) ||
                    (!strcmp(argv[i], "--nonet"))) {
-	    xmlSetExternalEntityLoader(xmlNoNetExternalEntityLoader);
+	    options |= XML_PARSE_NONET;
 	} else {
 	    fprintf(stderr, "Unknown option %s\n", argv[i]);
 	    usage(argv[0]);

@@ -817,7 +817,7 @@ xmlIsExtender(int c) {
     case 0x0640: case 0x0E46: case 0x0EC6: case 0x3005:
     case 0x3031: case 0x3032: case 0x3033: case 0x3034:
     case 0x3035: case 0x309D: case 0x309E: case 0x30FC:
-    case 0x30FE:
+    case 0x30FD: case 0x30FE:
 	return 1;
     default:
 	return 0;

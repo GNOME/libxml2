@@ -727,6 +727,7 @@ xmlParserHandlePEReference(xmlParserCtxtPtr ctxt) {
         case XML_PARSER_ATTRIBUTE_VALUE:
         case XML_PARSER_PI:
 	case XML_PARSER_SYSTEM_LITERAL:
+	case XML_PARSER_PUBLIC_LITERAL:
 	    /* we just ignore it there */
 	    return;
         case XML_PARSER_EPILOG:
@@ -2468,6 +2469,7 @@ xmlParsePubidLiteral(xmlParserCtxtPtr ctxt) {
     xmlChar cur;
     xmlChar stop;
     int count = 0;
+    xmlParserInputState oldstate = ctxt->instate;
 
     SHRINK;
     if (RAW == '"') {
@@ -2491,6 +2493,7 @@ xmlParsePubidLiteral(xmlParserCtxtPtr ctxt) {
 		"malloc of %d byte failed\n", size);
 	return(NULL);
     }
+    ctxt->instate = XML_PARSER_PUBLIC_LITERAL;
     cur = CUR;
     while ((IS_PUBIDCHAR(cur)) && (cur != stop)) { /* checked */
 	if (len + 1 >= size) {
@@ -2526,6 +2529,7 @@ xmlParsePubidLiteral(xmlParserCtxtPtr ctxt) {
     } else {
 	NEXT;
     }
+    ctxt->instate = oldstate;
     return(buf);
 }
 
@@ -3417,7 +3421,11 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 			    (ctxt->sax->error != NULL))
 			    ctxt->sax->error(ctxt->userData,
 				        "Invalid URI: %s\n", URI);
-			ctxt->wellFormed = 0;
+			/*
+			 * This really ought to be a well formedness error
+			 * but the XML Core WG decided otherwise c.f. issue
+			 * E26 of the XML erratas.
+			 */
 		    } else {
 			if (uri->fragment != NULL) {
 			    ctxt->errNo = XML_ERR_URI_FRAGMENT;
@@ -3426,6 +3434,10 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 				(ctxt->sax->error != NULL))
 				ctxt->sax->error(ctxt->userData,
 					    "Fragment not allowed: %s\n", URI);
+			    /*
+			     * Okay this is foolish to block those but not
+			     * invalid URIs.
+			     */
 			    ctxt->wellFormed = 0;
 			} else {
 			    if ((ctxt->sax != NULL) &&
@@ -3468,7 +3480,11 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 			    (ctxt->sax->error != NULL))
 			    ctxt->sax->error(ctxt->userData,
 				        "Invalid URI: %s\n", URI);
-			ctxt->wellFormed = 0;
+			/*
+			 * This really ought to be a well formedness error
+			 * but the XML Core WG decided otherwise c.f. issue
+			 * E26 of the XML erratas.
+			 */
 		    } else {
 			if (uri->fragment != NULL) {
 			    ctxt->errNo = XML_ERR_URI_FRAGMENT;
@@ -3477,6 +3493,10 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 				(ctxt->sax->error != NULL))
 				ctxt->sax->error(ctxt->userData,
 					    "Fragment not allowed: %s\n", URI);
+			    /*
+			     * Okay this is foolish to block those but not
+			     * invalid URIs.
+			     */
 			    ctxt->wellFormed = 0;
 			}
 			xmlFreeURI(uri);
@@ -8643,6 +8663,15 @@ found_end_int_subset:
             case XML_PARSER_SYSTEM_LITERAL:
 		xmlGenericError(xmlGenericErrorContext,
 			"PP: internal error, state == SYSTEM_LITERAL\n");
+		ctxt->instate = XML_PARSER_START_TAG;
+#ifdef DEBUG_PUSH
+		xmlGenericError(xmlGenericErrorContext,
+			"PP: entering START_TAG\n");
+#endif
+		break;
+            case XML_PARSER_PUBLIC_LITERAL:
+		xmlGenericError(xmlGenericErrorContext,
+			"PP: internal error, state == PUBLIC_LITERAL\n");
 		ctxt->instate = XML_PARSER_START_TAG;
 #ifdef DEBUG_PUSH
 		xmlGenericError(xmlGenericErrorContext,

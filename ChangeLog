@@ -1,3 +1,9 @@
+Mon Feb 18 20:16:15 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xmlInternald.c: isExtender was missing a char 
+	* parser.c include/libxml/parser.h: % are acceptable in the
+	  internal subset if within a PUBLIC ID
+
 Mon Feb 18 19:27:32 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* SAX.c parserInternals.c valid.c: more work on the conformance

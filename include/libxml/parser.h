@@ -112,7 +112,8 @@ typedef enum {
     XML_PARSER_ATTRIBUTE_VALUE,	/* within an attribute value */
     XML_PARSER_SYSTEM_LITERAL,	/* within a SYSTEM value */
     XML_PARSER_EPILOG, 		/* the Misc* after the last end tag */
-    XML_PARSER_IGNORE		/* within an IGNORED section */
+    XML_PARSER_IGNORE,		/* within an IGNORED section */
+    XML_PARSER_PUBLIC_LITERAL 	/* within a PUBLIC value */
 } xmlParserInputState;
 
 /**

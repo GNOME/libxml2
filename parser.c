@@ -176,7 +176,8 @@ xmlParserInputGrow(xmlParserInputPtr in, int len) {
 
         return(0);
     }
-    if ((in->buf->netIO != NULL) || (in->buf->file != NULL) ||
+    if ((in->buf->httpIO != NULL) || (in->buf->ftpIO != NULL) ||
+	(in->buf->file != NULL) ||
 #ifdef HAVE_ZLIB_H
         (in->buf->gzfile != NULL) ||
 #endif
@@ -5978,11 +5979,22 @@ xmlParseEndTag(xmlParserCtxtPtr ctxt) {
      * start-tag. 
      *
      */
-    if (xmlStrcmp(name, ctxt->name)) {
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt->userData,
-	     "Opening and ending tag mismatch: %s and %s\n", ctxt->name, name);
+    if ((name == NULL) || (ctxt->name == NULL) ||
+        (xmlStrcmp(name, ctxt->name))) {
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL)) {
+	    if ((name != NULL) && (ctxt->name != NULL)) {
+		ctxt->sax->error(ctxt->userData,
+		     "Opening and ending tag mismatch: %s and %s\n",
+		                 ctxt->name, name);
+            } else if (ctxt->name != NULL) {
+		ctxt->sax->error(ctxt->userData,
+		     "Ending tag eror for: %s\n", ctxt->name);
+	    } else {
+		ctxt->sax->error(ctxt->userData,
+		     "Ending tag error: internal error ???\n");
+	    }
 
+	}     
 	ctxt->errNo = XML_ERR_TAG_NAME_MISMATCH;
 	ctxt->wellFormed = 0;
     }

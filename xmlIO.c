@@ -39,6 +39,7 @@
 #include "parserInternals.h"
 #include "xmlIO.h"
 #include "nanohttp.h"
+#include "nanoftp.h"
 
 /* #define DEBUG_INPUT */
 /* #define VERBOSE_FAILURE */
@@ -76,7 +77,8 @@ xmlAllocParserInputBuffer(xmlCharEncoding enc) {
     ret->buffer->alloc = XML_BUFFER_ALLOC_DOUBLEIT;
     ret->encoder = xmlGetCharEncodingHandler(enc);
     ret->fd = -1;
-    ret->netIO = NULL;
+    ret->httpIO = NULL;
+    ret->ftpIO = NULL;
 
     return(ret);
 }
@@ -97,8 +99,10 @@ xmlFreeParserInputBuffer(xmlParserInputBufferPtr in) {
     if (in->gzfile != NULL)
         gzclose(in->gzfile);
 #endif
-    if (in->netIO != NULL)
-        xmlNanoHTTPClose(in->netIO);
+    if (in->httpIO != NULL)
+        xmlNanoHTTPClose(in->httpIO);
+    if (in->ftpIO != NULL)
+        xmlNanoFTPClose(in->ftpIO);
     if (in->fd >= 0)
         close(in->fd);
     memset(in, 0xbe, (size_t) sizeof(xmlParserInputBuffer));
@@ -125,16 +129,26 @@ xmlParserInputBufferCreateFilename(const char *filename, xmlCharEncoding enc) {
 #else
     int input = -1;
 #endif
-    void *netIO = NULL;
+    void *httpIO = NULL;
+    void *ftpIO = NULL;
 
     if (filename == NULL) return(NULL);
 
     if (!strncmp(filename, "http://", 7)) {
-        netIO = xmlNanoHTTPOpen(filename, NULL);
-        if (netIO == NULL) {
+        httpIO = xmlNanoHTTPOpen(filename, NULL);
+        if (httpIO == NULL) {
 #ifdef VERBOSE_FAILURE
             fprintf (stderr, "Cannot read URL %s\n", filename);
             perror ("xmlNanoHTTPOpen failed");
+#endif
+            return(NULL);
+	}
+    } else if (!strncmp(filename, "ftp://", 6)) {
+        ftpIO = xmlNanoFTPOpen(filename);
+        if (ftpIO == NULL) {
+#ifdef VERBOSE_FAILURE
+            fprintf (stderr, "Cannot read URL %s\n", filename);
+            perror ("xmlNanoFTPOpen failed");
 #endif
             return(NULL);
 	}
@@ -201,7 +215,8 @@ xmlParserInputBufferCreateFilename(const char *filename, xmlCharEncoding enc) {
 #else
         ret->fd = input;
 #endif
-        ret->netIO = netIO;
+        ret->httpIO = httpIO;
+        ret->ftpIO = ftpIO;
     }
     xmlParserInputBufferRead(ret, 4);
 
@@ -339,8 +354,10 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
         fprintf(stderr, "xmlParserInputBufferGrow : out of memory !\n");
 	return(-1);
     }
-    if (in->netIO != NULL) {
-        res = xmlNanoHTTPRead(in->netIO, &buffer[0], len);
+    if (in->httpIO != NULL) {
+        res = xmlNanoHTTPRead(in->httpIO, &buffer[0], len);
+    } else if (in->ftpIO != NULL) {
+        res = xmlNanoFTPRead(in->ftpIO, &buffer[0], len);
     } else if (in->file != NULL) {
 	res = fread(&buffer[0], 1, len, in->file);
 #ifdef HAVE_ZLIB_H
@@ -405,7 +422,7 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
 int
 xmlParserInputBufferRead(xmlParserInputBufferPtr in, int len) {
     /* xmlBufferEmpty(in->buffer); */
-    if ((in->netIO != NULL) || (in->file != NULL) ||
+    if ((in->httpIO != NULL) || (in->ftpIO != NULL) || (in->file != NULL) ||
 #ifdef HAVE_ZLIB_H
         (in->gzfile != NULL) ||
 #endif

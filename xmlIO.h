@@ -25,12 +25,12 @@ struct _xmlParserInputBuffer {
     FILE          *file;    /* Input on file handler */
     void*        gzfile;    /* Input on a compressed stream */
     int              fd;    /* Input on a file descriptor */
-    void         *netIO;    /* Input from a network stream */
+    void        *httpIO;    /* Input from an HTTP stream */
+    void         *ftpIO;    /* Input from an FTP stream */
     
     xmlCharEncodingHandlerPtr encoder; /* I18N conversions to UTF-8 */
     
     xmlBufferPtr buffer;    /* Local buffer encoded in  UTF-8 */
-
 };
 
 

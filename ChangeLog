@@ -1,3 +1,11 @@
+Wed Jan 26 16:52:50 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* nanoftp.[ch] parser.c xmlIO.[ch]: added a Nano FTP implementation
+	* debugXML.c : fixed a bug in the cat command
+	* valid.c: fixing some small probs
+	* libxml.spec.in: get rid of the SNAP suffix
+	* doc/xml.html: updated the status
+
 Mon Jan 24 14:31:09 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* xml-config.in: xml-config --version to just return the

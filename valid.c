@@ -2602,9 +2602,9 @@ xmlValidateElementTypeExpr(xmlValidCtxtPtr ctxt, xmlNodePtr *child,
     }
     switch (cont->type) {
 	case XML_ELEMENT_CONTENT_PCDATA:
-	    /* Internal error !!! */
-	    fprintf(stderr, "Internal: MIXED struct bad\n");
-	    return(-1);
+	    if (*child == NULL) return(0);
+	    if ((*child)->type == XML_TEXT_NODE) return(1);
+	    return(0);
 	case XML_ELEMENT_CONTENT_ELEMENT:
 	    if (*child == NULL) return(0);
 	    ret = (!xmlStrcmp((*child)->name, cont->name));
@@ -3049,10 +3049,13 @@ xmlValidateRoot(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
         return(0);
     }
     if (xmlStrcmp(doc->intSubset->name, root->name)) {
-	VERROR(ctxt->userData,
-	       "Not valid: root and DtD name do not match '%s' and '%s'\n",
-	       root->name, doc->intSubset->name);
-	return(0);
+	if ((xmlStrcmp(doc->intSubset->name, BAD_CAST "HTML")) ||
+	    (xmlStrcmp(root->name, BAD_CAST "html"))) {
+	    VERROR(ctxt->userData,
+		   "Not valid: root and DtD name do not match '%s' and '%s'\n",
+		   root->name, doc->intSubset->name);
+	    return(0);
+	}
     }
     return(1);
 }

@@ -1377,71 +1377,84 @@ xmlParserInputBufferRead(xmlParserInputBufferPtr in, int len) {
  */
 int
 xmlOutputBufferWrite(xmlOutputBufferPtr out, int len, const char *buf) {
-    int nbchars = 0, ret;
+    int nbchars = 0; /* number of chars to output to I/O */
+    int ret;         /* return from function call */
+    int written = 0; /* number of char written to I/O so far */
+    int chunk;       /* number of byte curreent processed from buf */
 
     if (len < 0) return(0);
 
-    /*
-     * first handle encoding stuff.
-     */
-    if (out->encoder != NULL) {
-        /*
-	 * Store the data in the incoming raw buffer
-	 */
-        if (out->conv == NULL) {
-	    out->conv = xmlBufferCreate();
-	}
-	xmlBufferAdd(out->buffer, (const xmlChar *) buf, len);
-
-        if (out->buffer->use < MINLEN)
-	    return(0);
+    do {
+	chunk = len;
+	if (chunk > 4 * MINLEN)
+	    chunk = 4 * MINLEN;
 
 	/*
-	 * convert as much as possible to the parser reading buffer.
+	 * first handle encoding stuff.
 	 */
-	nbchars = xmlCharEncOutFunc(out->encoder, out->conv, out->buffer);
-	if (nbchars < 0) {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "xmlOutputBufferWrite: encoder error\n");
-	    return(-1);
+	if (out->encoder != NULL) {
+	    /*
+	     * Store the data in the incoming raw buffer
+	     */
+	    if (out->conv == NULL) {
+		out->conv = xmlBufferCreate();
+	    }
+	    xmlBufferAdd(out->buffer, (const xmlChar *) buf, chunk);
+
+	    if ((out->buffer->use < MINLEN) && (chunk == len))
+		goto done;
+
+	    /*
+	     * convert as much as possible to the parser reading buffer.
+	     */
+	    ret = xmlCharEncOutFunc(out->encoder, out->conv, out->buffer);
+	    if (ret < 0) {
+		xmlGenericError(xmlGenericErrorContext,
+			"xmlOutputBufferWrite: encoder error\n");
+		return(-1);
+	    }
+	    nbchars = out->conv->use;
+	} else {
+	    xmlBufferAdd(out->buffer, (const xmlChar *) buf, chunk);
+	    nbchars = out->buffer->use;
 	}
-	nbchars = out->conv->use;
-    } else {
-	xmlBufferAdd(out->buffer, (const xmlChar *) buf, len);
-	nbchars = out->buffer->use;
-    }
-    if (nbchars < MINLEN)
-	return(0);
+	buf += chunk;
+	len -= chunk;
 
-    if (!out->writecallback)
-	return(nbchars);
+	if ((nbchars < MINLEN) && (len <= 0))
+	    goto done;
 
-    /*
-     * second write the stuff to the I/O channel
-     */
-    if (out->encoder != NULL) {
-	ret = out->writecallback(out->context, 
-                             (const char *)out->conv->content, nbchars);
-	if (ret >= 0)
-	    xmlBufferShrink(out->conv, nbchars);
-    } else {
-	ret = out->writecallback(out->context, 
-                             (const char *)out->buffer->content, nbchars);
-	if (ret >= 0)
-	    xmlBufferShrink(out->buffer, nbchars);
-    }
-    if (ret < 0) {
-        xmlGenericError(xmlGenericErrorContext,
-		"I/O: error %d writing %d bytes\n", ret, nbchars);
-	return(ret);
-    }
-    out->written += ret;
+	if (out->writecallback) {
+	    /*
+	     * second write the stuff to the I/O channel
+	     */
+	    if (out->encoder != NULL) {
+		ret = out->writecallback(out->context, 
+				 (const char *)out->conv->content, nbchars);
+		if (ret >= 0)
+		    xmlBufferShrink(out->conv, nbchars);
+	    } else {
+		ret = out->writecallback(out->context, 
+				 (const char *)out->buffer->content, nbchars);
+		if (ret >= 0)
+		    xmlBufferShrink(out->buffer, nbchars);
+	    }
+	    if (ret < 0) {
+		xmlGenericError(xmlGenericErrorContext,
+			"I/O: error %d writing %d bytes\n", ret, nbchars);
+		return(ret);
+	    }
+	    out->written += ret;
+	}
+	written += nbchars;
+    } while (len > 0);
 
+done:
 #ifdef DEBUG_INPUT
     xmlGenericError(xmlGenericErrorContext,
-	    "I/O: wrote %d chars\n", ret);
+	    "I/O: wrote %d chars\n", written);
 #endif
-    return(nbchars);
+    return(written);
 }
 
 /**

@@ -1812,7 +1812,7 @@ xmlCharEncInFunc(xmlCharEncodingHandler *handler, xmlBufferPtr out,
 	return(0);
     written = out->size - out->use;
     if (toconv * 2 >= written) {
-        xmlBufferGrow(out, toconv * 2);
+        xmlBufferGrow(out, out->size + toconv * 2);
 	written = out->size - out->use - 1;
     }
     if (handler->input != NULL) {
@@ -1886,6 +1886,7 @@ xmlCharEncOutFunc(xmlCharEncodingHandler *handler, xmlBufferPtr out,
                   xmlBufferPtr in) {
     int ret = -2;
     int written;
+    int writtentot = 0;
     int toconv;
     int output = 0;
 
@@ -1937,6 +1938,7 @@ retry:
 	                      in->content, &toconv);
 	xmlBufferShrink(in, toconv);
 	out->use += written;
+	writtentot += written;
 	out->content[out->use] = 0;
     }
 #ifdef LIBXML_ICONV_ENABLED
@@ -1945,8 +1947,17 @@ retry:
 	                      &written, in->content, &toconv);
 	xmlBufferShrink(in, toconv);
 	out->use += written;
+	writtentot += written;
 	out->content[out->use] = 0;
-	if (ret == -1) ret = -3;
+	if (ret == -1) {
+	    if (written > 0) {
+		/*
+		 * Can be a limitation of iconv
+		 */
+		goto retry;
+	    }
+	    ret = -3;
+	}
     }
 #endif /* LIBXML_ICONV_ENABLED */
     else {
@@ -1971,11 +1982,11 @@ retry:
 	    xmlGenericError(xmlGenericErrorContext,
 		    "output conversion failed by lack of space\n");
 	    break;
+#endif
         case -3:
 	    xmlGenericError(xmlGenericErrorContext,"converted %d bytes to %d bytes of output %d left\n",
 	            toconv, written, in->use);
 	    break;
-#endif
         case -2: {
 	    int len = in->use;
 	    const xmlChar *utf = (const xmlChar *) in->content;

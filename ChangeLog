@@ -1,3 +1,8 @@
+Mon Feb 23 17:28:34 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* doc/* NEWS configure.in: preparing 2.6.7 release, updated and
+	  rebuilt the documentation.
+
 Mon Feb 23 11:52:12 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* python/tests/*.py: applied patch from Malcolm Tredinnick

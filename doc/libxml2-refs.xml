@@ -2304,6 +2304,7 @@
     <reference name='xmlTextWriter' href='html/libxml-xmlwriter.html#xmlTextWriter'/>
     <reference name='xmlTextWriterEndAttribute' href='html/libxml-xmlwriter.html#xmlTextWriterEndAttribute'/>
     <reference name='xmlTextWriterEndCDATA' href='html/libxml-xmlwriter.html#xmlTextWriterEndCDATA'/>
+    <reference name='xmlTextWriterEndComment' href='html/libxml-xmlwriter.html#xmlTextWriterEndComment'/>
     <reference name='xmlTextWriterEndDTD' href='html/libxml-xmlwriter.html#xmlTextWriterEndDTD'/>
     <reference name='xmlTextWriterEndDTDAttlist' href='html/libxml-xmlwriter.html#xmlTextWriterEndDTDAttlist'/>
     <reference name='xmlTextWriterEndDTDElement' href='html/libxml-xmlwriter.html#xmlTextWriterEndDTDElement'/>
@@ -2319,6 +2320,7 @@
     <reference name='xmlTextWriterStartAttribute' href='html/libxml-xmlwriter.html#xmlTextWriterStartAttribute'/>
     <reference name='xmlTextWriterStartAttributeNS' href='html/libxml-xmlwriter.html#xmlTextWriterStartAttributeNS'/>
     <reference name='xmlTextWriterStartCDATA' href='html/libxml-xmlwriter.html#xmlTextWriterStartCDATA'/>
+    <reference name='xmlTextWriterStartComment' href='html/libxml-xmlwriter.html#xmlTextWriterStartComment'/>
     <reference name='xmlTextWriterStartDTD' href='html/libxml-xmlwriter.html#xmlTextWriterStartDTD'/>
     <reference name='xmlTextWriterStartDTDAttlist' href='html/libxml-xmlwriter.html#xmlTextWriterStartDTDAttlist'/>
     <reference name='xmlTextWriterStartDTDElement' href='html/libxml-xmlwriter.html#xmlTextWriterStartDTDElement'/>
@@ -5206,6 +5208,7 @@
       <ref name='xmlTextWriter'/>
       <ref name='xmlTextWriterEndAttribute'/>
       <ref name='xmlTextWriterEndCDATA'/>
+      <ref name='xmlTextWriterEndComment'/>
       <ref name='xmlTextWriterEndDTD'/>
       <ref name='xmlTextWriterEndDTDAttlist'/>
       <ref name='xmlTextWriterEndDTDElement'/>
@@ -5221,6 +5224,7 @@
       <ref name='xmlTextWriterStartAttribute'/>
       <ref name='xmlTextWriterStartAttributeNS'/>
       <ref name='xmlTextWriterStartCDATA'/>
+      <ref name='xmlTextWriterStartComment'/>
       <ref name='xmlTextWriterStartDTD'/>
       <ref name='xmlTextWriterStartDTDAttlist'/>
       <ref name='xmlTextWriterStartDTDElement'/>
@@ -6817,6 +6821,7 @@
       <ref name='xmlTextReaderMoveToAttribute'/>
       <ref name='xmlTextReaderMoveToAttributeNs'/>
       <ref name='xmlTextReaderPreservePattern'/>
+      <ref name='xmlTextWriterSetIndentString'/>
       <ref name='xmlTextWriterStartAttribute'/>
       <ref name='xmlTextWriterStartAttributeNS'/>
       <ref name='xmlTextWriterStartDTD'/>
@@ -7484,7 +7489,6 @@
       <ref name='xmlStrcasestr'/>
       <ref name='xmlStrcat'/>
       <ref name='xmlStrncat'/>
-      <ref name='xmlTextWriterSetIndentString'/>
       <ref name='xmlXPathWrapString'/>
     </type>
     <type name='xmlChar **'>
@@ -8578,6 +8582,7 @@
       <ref name='xmlFreeTextWriter'/>
       <ref name='xmlTextWriterEndAttribute'/>
       <ref name='xmlTextWriterEndCDATA'/>
+      <ref name='xmlTextWriterEndComment'/>
       <ref name='xmlTextWriterEndDTD'/>
       <ref name='xmlTextWriterEndDocument'/>
       <ref name='xmlTextWriterEndElement'/>
@@ -8589,6 +8594,7 @@
       <ref name='xmlTextWriterStartAttribute'/>
       <ref name='xmlTextWriterStartAttributeNS'/>
       <ref name='xmlTextWriterStartCDATA'/>
+      <ref name='xmlTextWriterStartComment'/>
       <ref name='xmlTextWriterStartDTD'/>
       <ref name='xmlTextWriterStartDTDAttlist'/>
       <ref name='xmlTextWriterStartDTDElement'/>
@@ -11399,6 +11405,7 @@
       <ref name='xmlTextWriter'/>
       <ref name='xmlTextWriterEndAttribute'/>
       <ref name='xmlTextWriterEndCDATA'/>
+      <ref name='xmlTextWriterEndComment'/>
       <ref name='xmlTextWriterEndDTD'/>
       <ref name='xmlTextWriterEndDTDAttlist'/>
       <ref name='xmlTextWriterEndDTDElement'/>
@@ -11414,6 +11421,7 @@
       <ref name='xmlTextWriterStartAttribute'/>
       <ref name='xmlTextWriterStartAttributeNS'/>
       <ref name='xmlTextWriterStartCDATA'/>
+      <ref name='xmlTextWriterStartComment'/>
       <ref name='xmlTextWriterStartDTD'/>
       <ref name='xmlTextWriterStartDTDAttlist'/>
       <ref name='xmlTextWriterStartDTDElement'/>
@@ -12940,6 +12948,7 @@
           <ref name='xmlTextReaderGetRemainder'/>
           <ref name='xmlTextWriterEndAttribute'/>
           <ref name='xmlTextWriterEndCDATA'/>
+          <ref name='xmlTextWriterEndComment'/>
           <ref name='xmlTextWriterEndDTD'/>
           <ref name='xmlTextWriterEndDocument'/>
           <ref name='xmlTextWriterEndElement'/>
@@ -15042,6 +15051,7 @@
           <ref name='xmlTextWriterStartAttribute'/>
           <ref name='xmlTextWriterStartAttributeNS'/>
           <ref name='xmlTextWriterStartCDATA'/>
+          <ref name='xmlTextWriterStartComment'/>
           <ref name='xmlTextWriterStartDTD'/>
           <ref name='xmlTextWriterStartDTDAttlist'/>
           <ref name='xmlTextWriterStartDTDElement'/>
@@ -16760,38 +16770,6 @@
         <word name='bypass'>
           <ref name='xmlParseCatalogFile'/>
         </word>
-        <word name='byte'>
-          <ref name='IS_BYTE_CHAR'/>
-          <ref name='IS_DIGIT_CH'/>
-          <ref name='_xmlOutputBuffer'/>
-          <ref name='c'/>
-          <ref name='docbParseChunk'/>
-          <ref name='htmlDocDump'/>
-          <ref name='htmlNodeDump'/>
-          <ref name='htmlNodeDumpFileFormat'/>
-          <ref name='htmlParseChunk'/>
-          <ref name='htmlSaveFile'/>
-          <ref name='htmlSaveFileEnc'/>
-          <ref name='htmlSaveFileFormat'/>
-          <ref name='xmlBufferCreateStatic'/>
-          <ref name='xmlByteConsumed'/>
-          <ref name='xmlCharEncFirstLine'/>
-          <ref name='xmlCharEncInFunc'/>
-          <ref name='xmlCharEncOutFunc'/>
-          <ref name='xmlMallocAtomicLoc'/>
-          <ref name='xmlMallocLoc'/>
-          <ref name='xmlMemMalloc'/>
-          <ref name='xmlMemRealloc'/>
-          <ref name='xmlNanoFTPRead'/>
-          <ref name='xmlNanoHTTPRead'/>
-          <ref name='xmlOutputBufferClose'/>
-          <ref name='xmlOutputBufferFlush'/>
-          <ref name='xmlParseChunk'/>
-          <ref name='xmlReallocLoc'/>
-          <ref name='xmlSplitQName3'/>
-          <ref name='xmlTextWriterWriteBase64'/>
-          <ref name='xmlTextWriterWriteBinHex'/>
-        </word>
       </letter>
     </chunk>
     <chunk name='chunk10'>
@@ -17257,6 +17235,9 @@
         <word name='combining'>
           <ref name='IS_COMBINING_CH'/>
         </word>
+        <word name='coment'>
+          <ref name='xmlTextWriterEndComment'/>
+        </word>
         <word name='coming'>
           <ref name='xmlXIncludeProcessNode'/>
         </word>
@@ -17281,6 +17262,7 @@
           <ref name='xmlNewComment'/>
           <ref name='xmlNewDocComment'/>
           <ref name='xmlParseComment'/>
+          <ref name='xmlTextWriterStartComment'/>
           <ref name='xmlTextWriterWriteComment'/>
           <ref name='xmlTextWriterWriteFormatComment'/>
           <ref name='xmlTextWriterWriteVFormatComment'/>
@@ -20187,6 +20169,7 @@
           <ref name='xmlC14NDocDumpMemory'/>
           <ref name='xmlC14NDocSave'/>
           <ref name='xmlC14NDocSaveTo'/>
+          <ref name='xmlDocDumpMemory'/>
           <ref name='xmlFreeDoc'/>
           <ref name='xmlParseNotationType'/>
         </word>
@@ -25016,6 +24999,7 @@
           <ref name='xmlBufferCCat'/>
           <ref name='xmlBufferCat'/>
           <ref name='xmlCtxtReadDoc'/>
+          <ref name='xmlDocDumpMemory'/>
           <ref name='xmlGetNsList'/>
           <ref name='xmlOutputBufferWriteString'/>
           <ref name='xmlParseBalancedChunkMemory'/>
@@ -25153,6 +25137,7 @@
           <ref name='xmlXPathSubstringFunction'/>
         </word>
         <word name='though'>
+          <ref name='xmlDocDumpMemory'/>
           <ref name='xmlNoNetExternalEntityLoader'/>
         </word>
         <word name='thread'>
@@ -27012,6 +26997,7 @@
           <ref name='xmlBufferCat'/>
           <ref name='xmlByteConsumed'/>
           <ref name='xmlCtxtReadDoc'/>
+          <ref name='xmlDocDumpMemory'/>
           <ref name='xmlOutputBufferWriteString'/>
           <ref name='xmlParseBalancedChunkMemory'/>
           <ref name='xmlParseBalancedChunkMemoryRecover'/>

@@ -2705,7 +2705,7 @@
      <exports symbol='xmlTextWriterWriteBase64' type='function'/>
      <exports symbol='xmlTextWriterSetIndentString' type='function'/>
      <exports symbol='xmlTextWriterStartAttribute' type='function'/>
-     <exports symbol='xmlTextWriterWriteComment' type='function'/>
+     <exports symbol='xmlTextWriterEndComment' type='function'/>
      <exports symbol='xmlTextWriterWriteRawLen' type='function'/>
      <exports symbol='xmlTextWriterWriteVFormatDTD' type='function'/>
      <exports symbol='xmlTextWriterWriteVFormatCDATA' type='function'/>
@@ -2718,9 +2718,9 @@
      <exports symbol='xmlTextWriterEndAttribute' type='function'/>
      <exports symbol='xmlTextWriterSetIndent' type='function'/>
      <exports symbol='xmlTextWriterWriteFormatPI' type='function'/>
-     <exports symbol='xmlTextWriterEndPI' type='function'/>
      <exports symbol='xmlTextWriterWriteDTDAttlist' type='function'/>
-     <exports symbol='xmlTextWriterWriteFormatString' type='function'/>
+     <exports symbol='xmlTextWriterEndPI' type='function'/>
+     <exports symbol='xmlTextWriterStartComment' type='function'/>
      <exports symbol='xmlTextWriterEndCDATA' type='function'/>
      <exports symbol='xmlTextWriterStartElementNS' type='function'/>
      <exports symbol='xmlNewTextWriter' type='function'/>
@@ -2733,7 +2733,7 @@
      <exports symbol='xmlTextWriterWriteCDATA' type='function'/>
      <exports symbol='xmlTextWriterWriteVFormatDTDInternalEntity' type='function'/>
      <exports symbol='xmlTextWriterWriteVFormatAttribute' type='function'/>
-     <exports symbol='xmlTextWriterEndDTD' type='function'/>
+     <exports symbol='xmlTextWriterWriteComment' type='function'/>
      <exports symbol='xmlTextWriterWriteElement' type='function'/>
      <exports symbol='xmlTextWriterEndElement' type='function'/>
      <exports symbol='xmlTextWriterWriteVFormatComment' type='function'/>
@@ -2743,6 +2743,7 @@
      <exports symbol='xmlTextWriterWriteFormatComment' type='function'/>
      <exports symbol='xmlTextWriterWriteAttributeNS' type='function'/>
      <exports symbol='xmlTextWriterWritePI' type='function'/>
+     <exports symbol='xmlTextWriterWriteVFormatRaw' type='function'/>
      <exports symbol='xmlTextWriterWriteFormatDTDInternalEntity' type='function'/>
      <exports symbol='xmlTextWriterWriteVFormatString' type='function'/>
      <exports symbol='xmlTextWriterWriteDTDInternalEntity' type='function'/>
@@ -2762,7 +2763,8 @@
      <exports symbol='xmlNewTextWriterMemory' type='function'/>
      <exports symbol='xmlTextWriterWriteFormatCDATA' type='function'/>
      <exports symbol='xmlTextWriterStartDTDAttlist' type='function'/>
-     <exports symbol='xmlTextWriterWriteVFormatRaw' type='function'/>
+     <exports symbol='xmlTextWriterWriteFormatString' type='function'/>
+     <exports symbol='xmlTextWriterEndDTD' type='function'/>
      <exports symbol='xmlTextWriterWriteFormatDTD' type='function'/>
      <exports symbol='xmlTextWriterWriteFormatDTDAttlist' type='function'/>
      <exports symbol='xmlTextWriterWriteRaw' type='function'/>
@@ -7606,7 +7608,7 @@ actually an xmlCharEncoding'/>
       <arg name='format' type='int' info='should formatting spaces been added'/>
     </function>
     <function name='xmlDocDumpMemory' file='tree'>
-      <info>Dump an XML document in memory and return the #xmlChar * and it&apos;s size. It&apos;s up to the caller to free the memory with xmlFree().</info>
+      <info>Dump an XML document in memory and return the #xmlChar * and it&apos;s size in bytes. It&apos;s up to the caller to free the memory with xmlFree(). The resulting byte array is zero terminated, though the last 0 is not included in the returned size.</info>
       <return type='void'/>
       <arg name='cur' type='xmlDocPtr' info='the document'/>
       <arg name='mem' type='xmlChar **' info='OUT: the memory pointer'/>
@@ -11934,6 +11936,11 @@ actually an xmlCharEncoding'/>
       <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
       <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
     </function>
+    <function name='xmlTextWriterEndComment' file='xmlwriter'>
+      <info>End the current xml coment.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+    </function>
     <function name='xmlTextWriterEndDTD' file='xmlwriter'>
       <info>End an xml DTD.</info>
       <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
@@ -11974,7 +11981,7 @@ actually an xmlCharEncoding'/>
       <info>Set string indentation.</info>
       <return type='int' info='-1 on error or 0 otherwise.'/>
       <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
-      <arg name='str' type='xmlChar *' info='the xmlChar string'/>
+      <arg name='str' type='const xmlChar *' info='the xmlChar string'/>
     </function>
     <function name='xmlTextWriterStartAttribute' file='xmlwriter'>
       <info>Start an xml attribute.</info>
@@ -11992,6 +11999,11 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlTextWriterStartCDATA' file='xmlwriter'>
       <info>Start an xml CDATA section.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+    </function>
+    <function name='xmlTextWriterStartComment' file='xmlwriter'>
+      <info>Start an xml comment.</info>
       <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
       <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
     </function>

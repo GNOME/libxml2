@@ -8,31 +8,19 @@
   </vendor>
   <product id="libxml2">
     <name>libxml2</name>
-    <version>2.6.6</version>
-    <last-release> Feb 12 2004</last-release>
+    <version>2.6.7</version>
+    <last-release> Feb 23 2004</last-release>
     <info-url>http://xmlsoft.org/</info-url>
-    <changes>   - nanohttp and nanoftp: buffer overflow error on URI parsing (Igor and
-    William) reported by Yuuichi Teranishi
-   - bugfixes: make test and path issues, xmlWriter attribute serialization
-    (William Brack), xmlWriter indentation (William), schemas validation
-    (Eric Haszlakiewicz), XInclude dictionnaries issues (William and Oleg
-    Paraschenko), XInclude empty fallback (William), HTML warnings (William),
-    XPointer in XInclude (William), Python namespace serialization,
-    isolat1ToUTF8 bound error (Alfred Mickautsch), output of parameter
-    entities in internal subset (William), internal subset bug in push mode,
-    &lt;xs:all&gt; fix (Alexey Sarytchev)
-   - Build: fix for automake-1.8 (Alexander Winston), warnings removal
-    (Philip Ludlam), SOCKLEN_T detection fixes (Daniel Richard), fix
-    --with-minimum configuration.
-   - XInclude: allow the 2001 namespace without warning.
-   - Documentation: missing example/index.html (John Fleck), version
-    dependancies (John Fleck)
-   - reader API: structured error reporting (Steve Ball)
-   - Windows compilation: mingw, msys (Mikhail Grushinskiy), function
-    prototype (Cameron Johnson), MSVC6 compiler warnings, _WINSOCKAPI_
-  patch
-   - Parsers: added xmlByteConsumed(ctxt) API to get the byte offest in
-    input.
+    <changes>   - documentation: tutorial updates (John Fleck), benchmark results
+   - xmlWriter: updates and fixes (Alfred Mickautsch, Lucas Brasilino)
+   - XPath optimization (Petr Pajas)
+   - DTD ID handling optimization
+   - bugfixes: xpath number with  &gt; 19 fractional (William Brack), push
+    mode with unescaped '&gt;' characters, fix xmllint --stream --timing, fix
+    xmllint --memory --stream memory usage, xmlAttrSerializeTxtContent
+    handling NULL, trying to fix Relax-NG/Perl interface.
+   - python: 2.3 compatibility, whitespace fixes (Malcolm Tredinnick)
+   - Added relaxng option to xmllint --shell
 
 </changes>
   </product>

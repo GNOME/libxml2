@@ -1690,6 +1690,7 @@ xmlTextReaderValue
 xmlTextReaderXmlLang
 xmlTextWriterEndAttribute
 xmlTextWriterEndCDATA
+xmlTextWriterEndComment
 xmlTextWriterEndDTD
 xmlTextWriterEndDocument
 xmlTextWriterEndElement
@@ -1701,6 +1702,7 @@ xmlTextWriterSetIndentString
 xmlTextWriterStartAttribute
 xmlTextWriterStartAttributeNS
 xmlTextWriterStartCDATA
+xmlTextWriterStartComment
 xmlTextWriterStartDTD
 xmlTextWriterStartDTDAttlist
 xmlTextWriterStartDTDElement

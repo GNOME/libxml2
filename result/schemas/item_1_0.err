@@ -1,12 +1,12 @@
-Type of sequence 3 : ./test/schemas/item_1.xsd:12 :elements
-Type of restriction 5 : ./test/schemas/item_1.xsd:16 :empty
-Type of simpletype4 : ./test/schemas/item_1.xsd:15 :simple
-Type of SKU : ./test/schemas/item_1.xsd:5 :simple
 Type of restriction 9 : ./test/schemas/item_1.xsd:34 :empty
-Type of simpletype8 : ./test/schemas/item_1.xsd:33 :simple
-Type of restriction 1 : ./test/schemas/item_1.xsd:6 :empty
+Type of simpletype4 : ./test/schemas/item_1.xsd:15 :simple
+Type of restriction 5 : ./test/schemas/item_1.xsd:16 :empty
 Type of sequence 3 : ./test/schemas/item_1.xsd:12 :elements
 Type of anontype2 : ./test/schemas/item_1.xsd:11 :elements
+Type of sequence 3 : ./test/schemas/item_1.xsd:12 :elements
+Type of simpletype8 : ./test/schemas/item_1.xsd:33 :simple
+Type of restriction 1 : ./test/schemas/item_1.xsd:6 :empty
+Type of SKU : ./test/schemas/item_1.xsd:5 :simple
 Building content model for Item
 Content model of Item:
  regexp: '(null)' 

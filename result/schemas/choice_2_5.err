@@ -1,7 +1,7 @@
-Type of choice 3 : ./test/schemas/choice_2.xsd:6 :elements
 Type of sequence 2 : ./test/schemas/choice_2.xsd:5 :elements
 Type of anontype1 : ./test/schemas/choice_2.xsd:4 :elements
 Type of sequence 2 : ./test/schemas/choice_2.xsd:5 :elements
+Type of choice 3 : ./test/schemas/choice_2.xsd:6 :elements
 Building content model for doc
 Content model of doc:
  regexp: '(null)' 

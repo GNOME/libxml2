@@ -1,40 +1,52 @@
-Type of sequence 3 : ./test/schemas/po0_0.xsd:21 :elements
-Type of sequence 4 : ./test/schemas/po0_0.xsd:31 :elements
-Type of sequence 6 : ./test/schemas/po0_0.xsd:34 :elements
-Type of anontype5 : ./test/schemas/po0_0.xsd:33 :elements
 Type of sequence 1 : ./test/schemas/po0_0.xsd:12 :elements
 Type of PurchaseOrderType : ./test/schemas/po0_0.xsd:11 :elements
-Type of sequence 6 : ./test/schemas/po0_0.xsd:34 :elements
-Type of SKU : ./test/schemas/po0_0.xsd:53 :simple
+Type of restriction 8 : ./test/schemas/po0_0.xsd:38 :empty
 Type of sequence 4 : ./test/schemas/po0_0.xsd:31 :elements
 Type of Items : ./test/schemas/po0_0.xsd:30 :elements
-Type of restriction 8 : ./test/schemas/po0_0.xsd:38 :empty
-Type of simpletype7 : ./test/schemas/po0_0.xsd:37 :simple
-Type of restriction 10 : ./test/schemas/po0_0.xsd:54 :empty
-Type of sequence 1 : ./test/schemas/po0_0.xsd:12 :elements
 Type of sequence 3 : ./test/schemas/po0_0.xsd:21 :elements
 Type of USAddress : ./test/schemas/po0_0.xsd:20 :elements
-Building content model for shipTo
-Content model of shipTo:
+Type of sequence 6 : ./test/schemas/po0_0.xsd:34 :elements
+Type of anontype5 : ./test/schemas/po0_0.xsd:33 :elements
+Type of sequence 3 : ./test/schemas/po0_0.xsd:21 :elements
+Type of restriction 10 : ./test/schemas/po0_0.xsd:54 :empty
+Type of sequence 4 : ./test/schemas/po0_0.xsd:31 :elements
+Type of sequence 6 : ./test/schemas/po0_0.xsd:34 :elements
+Type of simpletype7 : ./test/schemas/po0_0.xsd:37 :simple
+Type of sequence 1 : ./test/schemas/po0_0.xsd:12 :elements
+Type of SKU : ./test/schemas/po0_0.xsd:53 :simple
+Building content model for purchaseOrder
+Content model of purchaseOrder:
  regexp: '(null)' 
-5 atoms:
- 00  atom: string once 'name' 
- 01  atom: string once 'street' 
- 02  atom: string once 'city' 
- 03  atom: string once 'state' 
- 04  atom: string once 'zip' 
-6 states:
+4 atoms:
+ 00  atom: string once 'shipTo' 
+ 01  atom: string once 'billTo' 
+ 02  atom: string once 'comment' 
+ 03  atom: string once 'items' 
+5 states:
  state: 0, 1 transitions:
   trans: atom 0, to 1
  state: 1, 1 transitions:
   trans: atom 1, to 2
- state: 2, 1 transitions:
+ state: 2, 3 transitions:
   trans: atom 2, to 3
+  trans: removed
+  trans: atom 3, to 4
  state: 3, 1 transitions:
   trans: atom 3, to 4
- state: 4, 1 transitions:
-  trans: atom 4, to 5
- state: FINAL 5, 0 transitions:
+ state: FINAL 4, 0 transitions:
+0 counters:
+Building content model for items
+Content model of items:
+ regexp: '(null)' 
+1 atoms:
+ 00  atom: string once 'item' 
+2 states:
+ state: FINAL 0, 2 transitions:
+  trans: atom 0, to 1
+  trans: removed
+ state: FINAL 1, 2 transitions:
+  trans: removed
+  trans: atom 0, to 1
 0 counters:
 Building content model for item
 Content model of item:
@@ -61,26 +73,27 @@ Content model of item:
   trans: removed
  state: FINAL 5, 0 transitions:
 0 counters:
-Building content model for purchaseOrder
-Content model of purchaseOrder:
+Building content model for shipTo
+Content model of shipTo:
  regexp: '(null)' 
-4 atoms:
- 00  atom: string once 'shipTo' 
- 01  atom: string once 'billTo' 
- 02  atom: string once 'comment' 
- 03  atom: string once 'items' 
-5 states:
+5 atoms:
+ 00  atom: string once 'name' 
+ 01  atom: string once 'street' 
+ 02  atom: string once 'city' 
+ 03  atom: string once 'state' 
+ 04  atom: string once 'zip' 
+6 states:
  state: 0, 1 transitions:
   trans: atom 0, to 1
  state: 1, 1 transitions:
   trans: atom 1, to 2
- state: 2, 3 transitions:
+ state: 2, 1 transitions:
   trans: atom 2, to 3
-  trans: removed
-  trans: atom 3, to 4
  state: 3, 1 transitions:
   trans: atom 3, to 4
- state: FINAL 4, 0 transitions:
+ state: 4, 1 transitions:
+  trans: atom 4, to 5
+ state: FINAL 5, 0 transitions:
 0 counters:
 Building content model for billTo
 Content model of billTo:
@@ -103,19 +116,6 @@ Content model of billTo:
  state: 4, 1 transitions:
   trans: atom 4, to 5
  state: FINAL 5, 0 transitions:
-0 counters:
-Building content model for items
-Content model of items:
- regexp: '(null)' 
-1 atoms:
- 00  atom: string once 'item' 
-2 states:
- state: FINAL 0, 2 transitions:
-  trans: atom 0, to 1
-  trans: removed
- state: FINAL 1, 2 transitions:
-  trans: removed
-  trans: atom 0, to 1
 0 counters:
 xmlSchemaValidateCallback: shipTo, shipTo, shipTo
 xmlSchemaValidateCallback: name, name, name

@@ -1,3 +1,10 @@
+Tue Jun 18 09:58:48 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* hash.c: applied a patch from Peter Jacobi to solve a problem
+	  when compiling with the Watcom C on Win32 
+	* result/schemas/*.err: the change of hashing algo generated
+	  permutations in the output
+
 Mon Jun 17 19:02:49 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* hash.c: applied patch from Sander Vesik improving the quality of

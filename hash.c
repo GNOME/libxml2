@@ -507,9 +507,25 @@ xmlHashLookup3(xmlHashTablePtr table, const xmlChar *name,
  *
  * Scan the hash @table and applied @f to each value.
  */
+typedef struct {
+    xmlHashScanner hashscanner;
+    void *data;
+} stubData;
+
+static void 
+stubHashScannerFull (void *payload, void *data, const xmlChar *name, 
+    const xmlChar *name2, const xmlChar *name3
+) {
+    stubData *stubdata = (stubData *) data;
+    stubdata->hashscanner (payload, stubdata->data, (xmlChar *) name);
+}                                  
+ 
 void
 xmlHashScan(xmlHashTablePtr table, xmlHashScanner f, void *data) {
-    xmlHashScanFull (table, (xmlHashScannerFull) f, data);
+    stubData stubdata;
+    stubdata.data = data;
+    stubdata.hashscanner = f; 
+    xmlHashScanFull (table, stubHashScannerFull, &stubdata);
 }
 
 /**

@@ -1,35 +1,35 @@
 compilation error: file ./test/schemas/dur_0.xsd line 67 element minOccurs
 Restriction restriction 16 has unexpected content
 compilation error
-Schemas: element year2 have both type and subtype
-compilation error
-Schemas: element second1 have both type and subtype
+Schemas: element year1 have both type and subtype
 compilation error
 Schemas: element second2 have both type and subtype
 compilation error
 Schemas: element month1 have both type and subtype
 compilation error
-Schemas: element month2 have both type and subtype
+Schemas: element year2 have both type and subtype
 compilation error
-Schemas: element year1 have both type and subtype
-Type of restriction 15 : ./test/schemas/dur_0.xsd:55 :empty
-Type of restriction 5 : ./test/schemas/dur_0.xsd:14 :empty
-Type of simpletype14 : ./test/schemas/dur_0.xsd:54 :simple
-Type of restriction 16 : ./test/schemas/dur_0.xsd:66 :empty
-Type of choice 3 : ./test/schemas/dur_0.xsd:11 :elements
-Type of simpletype4 : ./test/schemas/dur_0.xsd:13 :simple
+Schemas: element second1 have both type and subtype
+compilation error
+Schemas: element month2 have both type and subtype
 Type of restriction 7 : ./test/schemas/dur_0.xsd:22 :empty
-Type of simpletype6 : ./test/schemas/dur_0.xsd:21 :simple
 Type of restriction 9 : ./test/schemas/dur_0.xsd:30 :empty
-Type of simpletype8 : ./test/schemas/dur_0.xsd:29 :simple
-Type of restriction 11 : ./test/schemas/dur_0.xsd:38 :empty
-Type of sequence 2 : ./test/schemas/dur_0.xsd:10 :elements
-Type of anontype1 : ./test/schemas/dur_0.xsd:9 :elements
-Type of simpletype10 : ./test/schemas/dur_0.xsd:37 :simple
-Type of restriction 13 : ./test/schemas/dur_0.xsd:47 :empty
+Type of simpletype14 : ./test/schemas/dur_0.xsd:54 :simple
+Type of restriction 15 : ./test/schemas/dur_0.xsd:55 :empty
+Type of simpletype4 : ./test/schemas/dur_0.xsd:13 :simple
+Type of restriction 5 : ./test/schemas/dur_0.xsd:14 :empty
+Type of simpletype12 : ./test/schemas/dur_0.xsd:46 :simple
 Type of MSD : ./test/schemas/dur_0.xsd:65 :simple
 Type of sequence 2 : ./test/schemas/dur_0.xsd:10 :elements
-Type of simpletype12 : ./test/schemas/dur_0.xsd:46 :simple
+Type of anontype1 : ./test/schemas/dur_0.xsd:9 :elements
+Type of simpletype6 : ./test/schemas/dur_0.xsd:21 :simple
+Type of simpletype10 : ./test/schemas/dur_0.xsd:37 :simple
+Type of restriction 13 : ./test/schemas/dur_0.xsd:47 :empty
+Type of simpletype8 : ./test/schemas/dur_0.xsd:29 :simple
+Type of restriction 11 : ./test/schemas/dur_0.xsd:38 :empty
+Type of restriction 16 : ./test/schemas/dur_0.xsd:66 :empty
+Type of sequence 2 : ./test/schemas/dur_0.xsd:10 :elements
+Type of choice 3 : ./test/schemas/dur_0.xsd:11 :elements
 Building content model for duration
 Content model of duration:
  regexp: '(null)' 
@@ -190,7 +190,6 @@ xmlSchemaValidateCallback: month1, month1, month1
 xmlSchemaValidateCallback: month2, month2, month2
 xmlSchemaValidateCallback: year1, year1, year1
 xmlSchemaValidateCallback: year1, year1, year1
-Unimplemented block at xmlschemastypes.c:1253
 xmlSchemaValidateCallback: year2, year2, year2
 xmlSchemaValidateCallback: month3, month3, month3
 Element duration content check succeeded

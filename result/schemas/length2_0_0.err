@@ -1,10 +1,10 @@
 Unable to lookup type nonPositiveInteger:http://www.w3.org/2001/XMLSchemaSchemas: element size type nonPositiveInteger not found
 Type of sequence 3 : ./test/schemas/length2_0.xsd:6 :elements
-Type of sequence 3 : ./test/schemas/length2_0.xsd:6 :elements
 Type of restriction 2 : ./test/schemas/length2_0.xsd:5 :elements
 Type of complexContent 1 : ./test/schemas/length2_0.xsd:4 :elements
-Type of length2 : ./test/schemas/length2_0.xsd:3 :elements
+Type of sequence 3 : ./test/schemas/length2_0.xsd:6 :elements
 Type of complexContent 1 : ./test/schemas/length2_0.xsd:4 :elements
+Type of length2 : ./test/schemas/length2_0.xsd:3 :elements
 Type of restriction 2 : ./test/schemas/length2_0.xsd:5 :elements
 Building content model for depth
 Content model of depth:

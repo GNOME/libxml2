@@ -1,29 +1,29 @@
+Type of restriction 7 : ./test/schemas/date_0.xsd:23 :empty
+Type of restriction 9 : ./test/schemas/date_0.xsd:31 :empty
+Type of simpletype14 : ./test/schemas/date_0.xsd:54 :simple
 Type of restriction 15 : ./test/schemas/date_0.xsd:55 :empty
 Type of simpletype22 : ./test/schemas/date_0.xsd:87 :simple
-Type of restriction 24 : ./test/schemas/date_0.xsd:102 :empty
-Type of restriction 5 : ./test/schemas/date_0.xsd:15 :empty
-Type of simpletype14 : ./test/schemas/date_0.xsd:54 :simple
-Type of holidays : ./test/schemas/date_0.xsd:98 :simple
-Type of choice 3 : ./test/schemas/date_0.xsd:11 :elements
 Type of simpletype4 : ./test/schemas/date_0.xsd:14 :simple
-Type of restriction 17 : ./test/schemas/date_0.xsd:64 :empty
-Type of restriction 7 : ./test/schemas/date_0.xsd:23 :empty
-Type of simpletype16 : ./test/schemas/date_0.xsd:63 :simple
-Type of simpletype6 : ./test/schemas/date_0.xsd:22 :simple
-Type of restriction 19 : ./test/schemas/date_0.xsd:72 :empty
-Type of restriction 9 : ./test/schemas/date_0.xsd:31 :empty
-Type of simpletype18 : ./test/schemas/date_0.xsd:71 :simple
-Type of simpletype8 : ./test/schemas/date_0.xsd:30 :simple
-Type of restriction 11 : ./test/schemas/date_0.xsd:39 :empty
+Type of restriction 5 : ./test/schemas/date_0.xsd:15 :empty
+Type of simpletype12 : ./test/schemas/date_0.xsd:46 :simple
+Type of restriction 23 : ./test/schemas/date_0.xsd:88 :empty
+Type of simpletype20 : ./test/schemas/date_0.xsd:79 :simple
 Type of sequence 2 : ./test/schemas/date_0.xsd:10 :elements
 Type of anontype1 : ./test/schemas/date_0.xsd:9 :elements
+Type of simpletype6 : ./test/schemas/date_0.xsd:22 :simple
 Type of simpletype10 : ./test/schemas/date_0.xsd:38 :simple
 Type of restriction 21 : ./test/schemas/date_0.xsd:80 :empty
 Type of restriction 13 : ./test/schemas/date_0.xsd:47 :empty
-Type of simpletype20 : ./test/schemas/date_0.xsd:79 :simple
+Type of restriction 19 : ./test/schemas/date_0.xsd:72 :empty
+Type of simpletype8 : ./test/schemas/date_0.xsd:30 :simple
+Type of simpletype18 : ./test/schemas/date_0.xsd:71 :simple
+Type of holidays : ./test/schemas/date_0.xsd:98 :simple
+Type of restriction 11 : ./test/schemas/date_0.xsd:39 :empty
+Type of simpletype16 : ./test/schemas/date_0.xsd:63 :simple
 Type of sequence 2 : ./test/schemas/date_0.xsd:10 :elements
-Type of simpletype12 : ./test/schemas/date_0.xsd:46 :simple
-Type of restriction 23 : ./test/schemas/date_0.xsd:88 :empty
+Type of choice 3 : ./test/schemas/date_0.xsd:11 :elements
+Type of restriction 17 : ./test/schemas/date_0.xsd:64 :empty
+Type of restriction 24 : ./test/schemas/date_0.xsd:102 :empty
 Building content model for date
 Content model of date:
  regexp: '(null)' 

@@ -1,13 +1,13 @@
 Type of sequence 4 : ./test/schemas/extension0_0.xsd:13 :elements
-Type of sequence 4 : ./test/schemas/extension0_0.xsd:13 :elements
 Type of sequence 1 : ./test/schemas/extension0_0.xsd:4 :elements
 Type of personName : ./test/schemas/extension0_0.xsd:3 :elements
 Type of extension 3 : ./test/schemas/extension0_0.xsd:12 :elements
-Type of extension 3 : ./test/schemas/extension0_0.xsd:12 :elements
-Type of complexContent 2 : ./test/schemas/extension0_0.xsd:11 :elements
 Type of complexContent 2 : ./test/schemas/extension0_0.xsd:11 :elements
 Type of extendedName : ./test/schemas/extension0_0.xsd:10 :elements
 Type of personName : ./test/schemas/extension0_0.xsd:3 :elements
+Type of complexContent 2 : ./test/schemas/extension0_0.xsd:11 :elements
+Type of extension 3 : ./test/schemas/extension0_0.xsd:12 :elements
+Type of sequence 4 : ./test/schemas/extension0_0.xsd:13 :elements
 Type of sequence 1 : ./test/schemas/extension0_0.xsd:4 :elements
 Building content model for addressee
 Content model of addressee:

@@ -22,8 +22,8 @@ PYTESTS=	\
     regexp.py	\
     reader.py	\
     reader2.py	\
-    reader3.py
-
+    reader3.py	\
+    ctxterror.py
 
 XMLS=		\
     tst.xml	\

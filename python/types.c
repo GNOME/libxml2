@@ -323,6 +323,7 @@ libxml_xmlParserCtxtPtrWrap(xmlParserCtxtPtr ctxt)
         Py_INCREF(Py_None);
         return (Py_None);
     }
+
     ret =
         PyCObject_FromVoidPtrAndDesc((void *) ctxt,
                                      (char *) "xmlParserCtxtPtr", NULL);

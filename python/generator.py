@@ -290,6 +290,8 @@ unknown_types = {}
 def skip_function(name):
     if name[0:12] == "xmlXPathWrap":
         return 1
+    if name == "xmlFreeParserCtxt":
+        return 1
 #    if name[0:11] == "xmlXPathNew":
 #        return 1
     return 0
@@ -618,6 +620,7 @@ classes_ancestor = {
     "xmlAttribute" : "xmlNode",
     "outputBuffer": "ioWriteWrapper",
     "inputBuffer": "ioReadWrapper",
+    "parserCtxt": "parserCtxtCore",
 }
 classes_destructors = {
     "parserCtxt": "xmlFreeParserCtxt",

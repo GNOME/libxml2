@@ -662,7 +662,9 @@ Class xpathParserContext()
     xpathTrueFunction()
     xpathValueFlipSign()
     xpatherror()
-Class parserCtxt()
+
+
+Class parserCtxt(parserCtxtCore)
     # accessors
     doc()
     isValid()
@@ -682,7 +684,6 @@ Class parserCtxt()
 
     # functions from module parser
     clearParserCtxt()
-    freeParserCtxt()
     initParserCtxt()
     parseChunk()
     parseDocument()

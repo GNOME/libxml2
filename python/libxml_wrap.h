@@ -149,3 +149,17 @@ PyObject * libxml_xmlRegexpPtrWrap(xmlRegexpPtr regexp);
 PyObject * libxml_xmlTextReaderPtrWrap(xmlTextReaderPtr reader);
 
 xmlXPathObjectPtr libxml_xmlXPathObjectPtrConvert(PyObject * obj);
+
+/*
+ * Data structure that makes the link from the parser context
+ * to the python wrapper.
+ */
+typedef struct 
+{
+    PyObject *errorFunc;
+    PyObject *errorFuncArg;
+    PyObject *warningFunc;
+    PyObject *warningFuncArg;
+} xmlParserCtxtPyCtxt;
+typedef xmlParserCtxtPyCtxt *xmlParserCtxtPyCtxtPtr;
+

@@ -478,6 +478,25 @@ def registerErrorHandler(f, ctx):
         ret = libxslt.registerErrorHandler(f,ctx)
     return ret
 
+class parserCtxtCore:
+
+    def __init__(self, _obj=None):
+        if _obj != None: 
+            self._o = _obj;
+            return
+        self._o = None
+
+    def __del__(self):
+        if self._o != None:
+            libxml2mod.xmlFreeParserCtxt(self._o)
+	self._o = None
+
+    def registerErrorHandler(self,f,arg):
+        libxml2mod.xmlSetParserCtxtErrorHandler(self._o,f,arg)
+
+    def registerWarningHandler(self,f,arg):
+        libxml2mod.xmlSetParserCtxtWarningHandler(self._o,f,arg)
+
 # WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING
 #
 # Everything before this line comes from libxml.py 

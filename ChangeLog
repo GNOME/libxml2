@@ -1,3 +1,12 @@
+Tue Jan 14 12:40:29 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* python/generator.py python/libxml.c python/libxml.py
+	  python/libxml_wrap.h python/types.c: applied and fixed a patch
+	  from Stephane Bibould to provide per parser error handlers at the
+	  Python level.
+	* python/tests/Makefile.am python/tests/ctxterror.py: added a
+	  regression test for it.
+
 Tue Jan 14 01:15:04 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c: fixed the streaming property of the reader,

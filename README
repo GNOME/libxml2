@@ -1,10 +1,13 @@
 
-                  XML parser for Gnome
+                  XML toolkit from the GNOME project
 
 Full documentation is available on-line at
     http://xmlsoft.org/
 
 This code is released under the MIT Licence see the Copyright file.
+
+To report bugs, follow the instructions at: 
+  http://xmlsoft.org/XSLT/bug.html
 
 A mailing-list xml@gnome.org is available, to subscribe:
     http://mail.gnome.org/mailman/listinfo/xml
@@ -12,4 +15,6 @@ A mailing-list xml@gnome.org is available, to subscribe:
 The list archive is at:
     http://mail.gnome.org/archives/xml/
 
-daniel@veillard.com
+Daniel Veillard
+
+$Id$

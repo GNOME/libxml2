@@ -1,3 +1,7 @@
+Tue Oct 15 12:41:01 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* README: updated the contact informations
+
 Tue Oct 15 10:35:57 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am: use test -f instead of test -e since Solaris /bin/sh

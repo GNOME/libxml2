@@ -83,20 +83,20 @@
       <include>&lt;libxml/xmlreader.h&gt;</include>
     </includes>
     <uses>
-      <function line='40' file='xmlstring' name='xmlStrlen'/>
-      <function line='90' file='parser' name='xmlCleanupParser'/>
-      <function line='33' file='xmlreader' name='xmlTextReaderNodeType'/>
-      <typedef line='55' file='xmlreader' name='xmlTextReaderPtr'/>
-      <function line='94' file='xmlmemory' name='xmlMemoryDump'/>
-      <function line='29' file='xmlreader' name='xmlTextReaderConstValue'/>
-      <function line='32' file='xmlreader' name='xmlTextReaderDepth'/>
-      <function line='65' file='xmlreader' name='xmlFreeTextReader'/>
-      <macro line='85' file='xmlversion' name='LIBXML_TEST_VERSION'/>
-      <function line='25' file='xmlreader' name='xmlTextReaderConstName'/>
-      <function line='36' file='xmlreader' name='xmlTextReaderHasValue'/>
-      <function line='63' file='xmlreader' name='xmlTextReaderRead'/>
-      <function line='35' file='xmlreader' name='xmlTextReaderIsEmptyElement'/>
-      <function line='58' file='xmlreader' name='xmlReaderForFile'/>
+      <function line='42' file='xmlstring' name='xmlStrlen'/>
+      <function line='92' file='parser' name='xmlCleanupParser'/>
+      <function line='35' file='xmlreader' name='xmlTextReaderNodeType'/>
+      <typedef line='57' file='xmlreader' name='xmlTextReaderPtr'/>
+      <function line='96' file='xmlmemory' name='xmlMemoryDump'/>
+      <function line='31' file='xmlreader' name='xmlTextReaderConstValue'/>
+      <function line='34' file='xmlreader' name='xmlTextReaderDepth'/>
+      <function line='67' file='xmlreader' name='xmlFreeTextReader'/>
+      <macro line='87' file='xmlversion' name='LIBXML_TEST_VERSION'/>
+      <function line='27' file='xmlreader' name='xmlTextReaderConstName'/>
+      <function line='38' file='xmlreader' name='xmlTextReaderHasValue'/>
+      <function line='65' file='xmlreader' name='xmlTextReaderRead'/>
+      <function line='37' file='xmlreader' name='xmlTextReaderIsEmptyElement'/>
+      <function line='60' file='xmlreader' name='xmlReaderForFile'/>
     </uses>
   </example>
   <example filename='reader2.c'>
@@ -111,24 +111,24 @@
       <include>&lt;libxml/xmlreader.h&gt;</include>
     </includes>
     <uses>
-      <function line='41' file='xmlstring' name='xmlStrlen'/>
-      <function line='105' file='parser' name='xmlCleanupParser'/>
-      <function line='34' file='xmlreader' name='xmlTextReaderNodeType'/>
-      <typedef line='56' file='xmlreader' name='xmlTextReaderPtr'/>
-      <function line='109' file='xmlmemory' name='xmlMemoryDump'/>
-      <function line='30' file='xmlreader' name='xmlTextReaderConstValue'/>
-      <enum line='66' file='parser' name='XML_PARSE_NOENT'/>
-      <function line='33' file='xmlreader' name='xmlTextReaderDepth'/>
-      <enum line='67' file='parser' name='XML_PARSE_DTDVALID'/>
-      <enum line='65' file='parser' name='XML_PARSE_DTDATTR'/>
-      <function line='80' file='xmlreader' name='xmlFreeTextReader'/>
-      <macro line='100' file='xmlversion' name='LIBXML_TEST_VERSION'/>
-      <function line='26' file='xmlreader' name='xmlTextReaderConstName'/>
-      <function line='37' file='xmlreader' name='xmlTextReaderHasValue'/>
-      <function line='72' file='xmlreader' name='xmlTextReaderRead'/>
-      <function line='36' file='xmlreader' name='xmlTextReaderIsEmptyElement'/>
-      <function line='64' file='xmlreader' name='xmlReaderForFile'/>
-      <function line='77' file='xmlreader' name='xmlTextReaderIsValid'/>
+      <function line='43' file='xmlstring' name='xmlStrlen'/>
+      <function line='107' file='parser' name='xmlCleanupParser'/>
+      <function line='36' file='xmlreader' name='xmlTextReaderNodeType'/>
+      <typedef line='58' file='xmlreader' name='xmlTextReaderPtr'/>
+      <function line='111' file='xmlmemory' name='xmlMemoryDump'/>
+      <function line='32' file='xmlreader' name='xmlTextReaderConstValue'/>
+      <enum line='68' file='parser' name='XML_PARSE_NOENT'/>
+      <function line='35' file='xmlreader' name='xmlTextReaderDepth'/>
+      <enum line='69' file='parser' name='XML_PARSE_DTDVALID'/>
+      <enum line='67' file='parser' name='XML_PARSE_DTDATTR'/>
+      <function line='82' file='xmlreader' name='xmlFreeTextReader'/>
+      <macro line='102' file='xmlversion' name='LIBXML_TEST_VERSION'/>
+      <function line='28' file='xmlreader' name='xmlTextReaderConstName'/>
+      <function line='39' file='xmlreader' name='xmlTextReaderHasValue'/>
+      <function line='74' file='xmlreader' name='xmlTextReaderRead'/>
+      <function line='38' file='xmlreader' name='xmlTextReaderIsEmptyElement'/>
+      <function line='66' file='xmlreader' name='xmlReaderForFile'/>
+      <function line='79' file='xmlreader' name='xmlTextReaderIsValid'/>
     </uses>
   </example>
   <example filename='reader3.c'>
@@ -143,18 +143,18 @@
       <include>&lt;libxml/xmlreader.h&gt;</include>
     </includes>
     <uses>
-      <function line='102' file='parser' name='xmlCleanupParser'/>
-      <typedef line='27' file='xmlreader' name='xmlTextReaderPtr'/>
-      <function line='106' file='xmlmemory' name='xmlMemoryDump'/>
-      <function line='95' file='tree' name='xmlFreeDoc'/>
-      <function line='33' file='xmlreader' name='xmlReaderForFile'/>
-      <function line='61' file='xmlreader' name='xmlFreeTextReader'/>
-      <macro line='86' file='xmlversion' name='LIBXML_TEST_VERSION'/>
-      <function line='91' file='tree' name='xmlDocDump'/>
-      <function line='47' file='xmlreader' name='xmlTextReaderRead'/>
-      <function line='57' file='xmlreader' name='xmlTextReaderCurrentDoc'/>
-      <function line='38' file='xmlreader' name='xmlTextReaderPreservePattern'/>
-      <typedef line='72' file='tree' name='xmlDocPtr'/>
+      <function line='104' file='parser' name='xmlCleanupParser'/>
+      <typedef line='29' file='xmlreader' name='xmlTextReaderPtr'/>
+      <function line='108' file='xmlmemory' name='xmlMemoryDump'/>
+      <function line='97' file='tree' name='xmlFreeDoc'/>
+      <function line='35' file='xmlreader' name='xmlReaderForFile'/>
+      <function line='63' file='xmlreader' name='xmlFreeTextReader'/>
+      <macro line='88' file='xmlversion' name='LIBXML_TEST_VERSION'/>
+      <function line='93' file='tree' name='xmlDocDump'/>
+      <function line='49' file='xmlreader' name='xmlTextReaderRead'/>
+      <function line='59' file='xmlreader' name='xmlTextReaderCurrentDoc'/>
+      <function line='40' file='xmlreader' name='xmlTextReaderPreservePattern'/>
+      <typedef line='74' file='tree' name='xmlDocPtr'/>
     </uses>
   </example>
   <example filename='testWriter.c'>

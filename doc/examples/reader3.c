@@ -3,7 +3,9 @@
  * synopsis: Show how to extract subdocuments with xmlReader
  * purpose: Demonstrate the use of xmlTextReaderPreservePattern() 
  *          to parse an XML file with the xmlReader while collecting
- *          only some subparts of the document
+ *          only some subparts of the document.
+ *          (Note that the XMLReader functions require libxml2 version later
+ *          than 2.6.)
  * usage: reader3
  * test: reader3 > reader3.tmp ; diff reader3.tmp reader3.res ; rm reader3.tmp
  * author: Daniel Veillard

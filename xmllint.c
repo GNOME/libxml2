@@ -1066,6 +1066,8 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 #endif /* LIBXML_READER_ENABLED */
 #ifdef LIBXML_OUTPUT_ENABLED
     if (noout == 0) {
+        int ret;
+
 	/*
 	 * print it.
 	 */
@@ -1144,14 +1146,25 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 	    }
 	    else if (encoding != NULL) {
 	        if ( format ) {
-		    xmlSaveFormatFileEnc(output ? output : "-", doc, encoding, 1);
+		    ret = xmlSaveFormatFileEnc(output ? output : "-", doc,
+		                               encoding, 1);
 		}
 		else {
-		    xmlSaveFileEnc(output ? output : "-", doc, encoding);
+		    ret = xmlSaveFileEnc(output ? output : "-", doc, encoding);
+		}
+		if (ret < 0) {
+		    fprintf(stderr, "failed save to %s\n",
+		            output ? output : "-");
+		    progresult = 6;
 		}
 	    }
 	    else if (format) {
-		xmlSaveFormatFile(output ? output : "-", doc, 1);
+		ret = xmlSaveFormatFile(output ? output : "-", doc, 1);
+		if (ret < 0) {
+		    fprintf(stderr, "failed save to %s\n",
+		            output ? output : "-");
+		    progresult = 6;
+		}
 	    }
 	    else {
 		FILE *out;

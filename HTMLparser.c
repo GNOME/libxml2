@@ -53,6 +53,7 @@ static int htmlOmittedDefaultValue = 1;
 
 xmlChar * htmlDecodeEntities(htmlParserCtxtPtr ctxt, int len,
 			     xmlChar end, xmlChar  end2, xmlChar end3);
+static void htmlParseComment(htmlParserCtxtPtr ctxt);
 
 /************************************************************************
  *									*
@@ -2299,7 +2300,21 @@ htmlParseScript(htmlParserCtxtPtr ctxt) {
     SHRINK;
     cur = CUR;
     while (IS_CHAR(cur)) {
-	if ((cur == '<') && (NXT(1) == '/')) {
+	if ((cur == '<') && (NXT(1) == '!') && (NXT(2) == '-') &&
+	    (NXT(3) == '-')) {
+	    if ((nbchar != 0) && (ctxt->sax != NULL) && (!ctxt->disableSAX)) {
+		if (ctxt->sax->cdataBlock!= NULL) {
+		    /*
+		     * Insert as CDATA, which is the same as HTML_PRESERVE_NODE
+		     */
+		    ctxt->sax->cdataBlock(ctxt->userData, buf, nbchar);
+		}
+	    }
+	    nbchar = 0;
+	    htmlParseComment(ctxt);
+	    cur = CUR;
+	    continue;
+	} else if ((cur == '<') && (NXT(1) == '/')) {
 	    /*
 	     * One should break here, the specification is clear:
 	     * Authors should therefore escape "</" within the content.
@@ -3841,6 +3856,7 @@ htmlParseLookupSequence(htmlParserCtxtPtr ctxt, xmlChar first,
     int base, len;
     htmlParserInputPtr in;
     const xmlChar *buf;
+    int incomment = 0;
 
     in = ctxt->input;
     if (in == NULL) return(-1);
@@ -3859,6 +3875,23 @@ htmlParseLookupSequence(htmlParserCtxtPtr ctxt, xmlChar first,
     if (third) len -= 2;
     else if (next) len --;
     for (;base < len;base++) {
+	if (!incomment && (base + 4 < len)) {
+	    if ((buf[base] == '<') && (buf[base + 1] == '!') &&
+		(buf[base + 2] == '-') && (buf[base + 3] == '-')) {
+		incomment = 1;
+	    }
+	    /* do not increment base, some people use <!--> */
+	}
+	if (incomment) {
+	    if (base + 3 < len)
+		return(-1);
+	    if ((buf[base] == '-') && (buf[base + 1] == '-') &&
+		(buf[base + 2] == '>')) {
+		incomment = 0;
+		base += 2;
+	    }
+	    continue;
+	}
         if (buf[base] == first) {
 	    if (third != 0) {
 		if ((buf[base + 1] != next) ||

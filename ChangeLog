@@ -1,3 +1,12 @@
+Sat Nov 10 12:33:38 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: fix comment in scripts element parsing.
+	* result/HTML/doc3*: updated the results.
+
+Sat Nov 10 11:18:18 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* uri.c: another URI bug fix #63336, using Joel Young patch.
+
 Sat Nov 10 11:07:26 CET 2001 Daniel Veillard <daniel@veillard.com>
 
 	* debugXML.c include/libxml/debugXML.h: add xmlGetNodePath()

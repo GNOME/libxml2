@@ -986,6 +986,8 @@ static void usage(const char *name) {
     printf("\t--loaddtd : fetch external DTD\n");
     printf("\t--dtdattr : loaddtd + populate the tree with inherited attributes \n");
     printf("\t--dropdtd : remove the DOCTYPE of the input docs\n");
+    printf("\nLibxml project home page: http://xmlsoft.org/\n");
+    printf("To report bugs or get some help check: http://xmlsoft.org/bugs.html\n");
 }
 int
 main(int argc, char **argv) {

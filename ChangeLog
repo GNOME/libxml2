@@ -1,3 +1,7 @@
+Fri Jan 25 15:14:55 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xmllint.c: added pointers to the web pages in the usage()
+
 Thu Jan 24 17:04:04 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: more fixes from Petr Kozelka for attribute handling

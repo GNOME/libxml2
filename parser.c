@@ -4961,18 +4961,20 @@ xmlParseTextDecl(xmlParserCtxtPtr ctxt) {
     version = xmlParseVersionInfo(ctxt);
     if (version == NULL)
 	version = xmlCharStrdup(XML_DEFAULT_VERSION);
+    else {
+	if (!IS_BLANK(CUR)) {
+	    ctxt->errNo = XML_ERR_SPACE_REQUIRED;
+	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		ctxt->sax->error(ctxt->userData, "Space needed here\n");
+	    ctxt->wellFormed = 0;
+	    ctxt->disableSAX = 1;
+	}
+    }
     ctxt->input->version = version;
 
     /*
      * We must have the encoding declaration
      */
-    if (!IS_BLANK(CUR)) {
-	ctxt->errNo = XML_ERR_SPACE_REQUIRED;
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt->userData, "Space needed here\n");
-	ctxt->wellFormed = 0;
-	ctxt->disableSAX = 1;
-    }
     xmlParseEncodingDecl(ctxt);
     if (ctxt->errNo == XML_ERR_UNSUPPORTED_ENCODING) {
 	/*

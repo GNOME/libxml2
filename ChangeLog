@@ -1,3 +1,8 @@
+Mon Jan  7 17:52:48 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: Jirka Kosek pointer out a bug in xmlParseTextDecl()
+	  when the version info is not present.
+
 Mon Jan  7 00:03:58 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: Anthony Jones  pointed out a problem in

@@ -88,6 +88,10 @@ void		xmlRelaxNGSetParserErrors(xmlRelaxNGParserCtxtPtr ctxt,
 					 xmlRelaxNGValidityErrorFunc err,
 					 xmlRelaxNGValidityWarningFunc warn,
 					 void *ctx);
+int		xmlRelaxNGGetParserErrors(xmlRelaxNGParserCtxtPtr ctxt,
+					 xmlRelaxNGValidityErrorFunc *err,
+					 xmlRelaxNGValidityWarningFunc *warn,
+					 void **ctx);
 xmlRelaxNGPtr	xmlRelaxNGParse		(xmlRelaxNGParserCtxtPtr ctxt);
 void		xmlRelaxNGFree		(xmlRelaxNGPtr schema);
 void		xmlRelaxNGDump		(FILE *output,
@@ -101,6 +105,10 @@ void		xmlRelaxNGSetValidErrors(xmlRelaxNGValidCtxtPtr ctxt,
 					 xmlRelaxNGValidityErrorFunc err,
 					 xmlRelaxNGValidityWarningFunc warn,
 					 void *ctx);
+int		xmlRelaxNGGetValidErrors(xmlRelaxNGValidCtxtPtr ctxt,
+					 xmlRelaxNGValidityErrorFunc *err,
+					 xmlRelaxNGValidityWarningFunc *warn,
+					 void **ctx);
 xmlRelaxNGValidCtxtPtr	xmlRelaxNGNewValidCtxt	(xmlRelaxNGPtr schema);
 void			xmlRelaxNGFreeValidCtxt	(xmlRelaxNGValidCtxtPtr ctxt);
 int			xmlRelaxNGValidateDoc	(xmlRelaxNGValidCtxtPtr ctxt,

@@ -770,6 +770,9 @@ get_next_node:
            ((oldstate == XML_TEXTREADER_BACKTRACK) ||
             (reader->node->children == NULL) ||
 	    (reader->node->type == XML_ENTITY_REF_NODE) ||
+	    ((reader->node->children != NULL) &&
+	     (reader->node->children->type == XML_TEXT_NODE) &&
+	     (reader->node->children->next == NULL)) ||
 	    (reader->node->type == XML_DTD_NODE) ||
 	    (reader->node->type == XML_DOCUMENT_NODE) ||
 	    (reader->node->type == XML_HTML_DOCUMENT_NODE)) &&

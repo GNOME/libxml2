@@ -7304,6 +7304,30 @@ xmlRelaxNGSetParserErrors(xmlRelaxNGParserCtxtPtr ctxt,
     ctxt->warning = warn;
     ctxt->userData = ctx;
 }
+
+/**
+ * xmlRelaxNGGetParserErrors:
+ * @ctxt:  a Relax-NG validation context
+ * @err:  the error callback result
+ * @warn:  the warning callback result
+ * @ctx:  contextual data for the callbacks result
+ *
+ * Get the callback information used to handle errors for a validation context
+ *
+ * Returns -1 in case of failure, 0 otherwise.
+ */
+int
+xmlRelaxNGGetParserErrors(xmlRelaxNGParserCtxtPtr ctxt,
+	xmlRelaxNGValidityErrorFunc *err,
+	xmlRelaxNGValidityWarningFunc *warn, void **ctx) {
+    if (ctxt == NULL)
+	return(-1);
+    if (err != NULL) *err = ctxt->error;
+    if (warn != NULL) *warn = ctxt->warning;
+    if (ctx != NULL) *ctx = ctxt->userData;
+    return(0);
+}
+
 /************************************************************************
  * 									*
  * 			Dump back a compiled form			*
@@ -10279,6 +10303,29 @@ xmlRelaxNGSetValidErrors(xmlRelaxNGValidCtxtPtr ctxt,
     ctxt->error = err;
     ctxt->warning = warn;
     ctxt->userData = ctx;
+}
+
+/**
+ * xmlRelaxNGGetValidErrors:
+ * @ctxt:  a Relax-NG validation context
+ * @err:  the error function result
+ * @warn: the warning function result
+ * @ctx: the functions context result
+ *
+ * Get the error and warning callback informations
+ *
+ * Returns -1 in case of error and 0 otherwise
+ */
+int
+xmlRelaxNGGetValidErrors(xmlRelaxNGValidCtxtPtr ctxt,
+	xmlRelaxNGValidityErrorFunc *err,
+	xmlRelaxNGValidityWarningFunc *warn, void **ctx) {
+    if (ctxt == NULL)
+	return(-1);
+    if (err != NULL) *err = ctxt->error;
+    if (warn != NULL) *warn = ctxt->warning;
+    if (ctx != NULL) *ctx = ctxt->userData;
+    return(0);
 }
 
 /**

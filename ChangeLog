@@ -1,3 +1,11 @@
+Fri Jul 18 17:11:42 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c include/libxml/relaxng.h: adding Get interface for
+	  the error callback and parameters of parsing and validation
+	  contexts
+	* xmlreader.c: patch to fix bug #117702 about incomplete Read()
+	  on text nodes.
+
 Wed Jul 16 23:15:53 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parserInternals.c: patch from Dodji Seketeli about UTF16 BOM

@@ -126,6 +126,48 @@ HREF="gnome-xml-entities.html#XMLENTITYPTR"
 >xmlEntityPtr</A
 > entity);
 <A
+HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
+>xmlParserInputPtr</A
+> <A
+HREF="gnome-xml-entities.html#XMLNEWENTITYINPUTSTREAM"
+>xmlNewEntityInputStream</A
+>   (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             <A
+HREF="gnome-xml-entities.html#XMLENTITYPTR"
+>xmlEntityPtr</A
+> entity);
+void        <A
+HREF="gnome-xml-parserinternals.html#XMLPUSHINPUT"
+>xmlPushInput</A
+>                    (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             <A
+HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
+>xmlParserInputPtr</A
+> input);
+<A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>        <A
+HREF="gnome-xml-parserinternals.html#XMLPOPINPUT"
+>xmlPopInput</A
+>                     (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+void        <A
+HREF="gnome-xml-parserinternals.html#XMLFREEINPUTSTREAM"
+>xmlFreeInputStream</A
+>              (<A
+HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
+>xmlParserInputPtr</A
+> input);
+<A
 HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
 >*       <A
@@ -590,7 +632,7 @@ HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN4086"
+NAME="AEN4098"
 ></A
 ><H2
 >Description</H2
@@ -600,14 +642,14 @@ NAME="AEN4086"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN4089"
+NAME="AEN4101"
 ></A
 ><H2
 >Details</H2
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4091"
+NAME="AEN4103"
 ></A
 ><H3
 ><A
@@ -686,7 +728,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4111"
+NAME="AEN4123"
 ></A
 ><H3
 ><A
@@ -766,7 +808,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4131"
+NAME="AEN4143"
 ></A
 ><H3
 ><A
@@ -862,7 +904,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4155"
+NAME="AEN4167"
 ></A
 ><H3
 ><A
@@ -926,7 +968,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4171"
+NAME="AEN4183"
 ></A
 ><H3
 ><A
@@ -1012,7 +1054,341 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4192"
+NAME="AEN4204"
+></A
+><H3
+><A
+NAME="XMLNEWENTITYINPUTSTREAM"
+></A
+>xmlNewEntityInputStream()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
+>xmlParserInputPtr</A
+> xmlNewEntityInputStream   (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             <A
+HREF="gnome-xml-entities.html#XMLENTITYPTR"
+>xmlEntityPtr</A
+> entity);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Create a new input stream based on a memory buffer.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>entity</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4230"
+></A
+><H3
+><A
+NAME="XMLPUSHINPUT"
+></A
+>xmlPushInput()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlPushInput                    (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             <A
+HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
+>xmlParserInputPtr</A
+> input);</PRE
+></TD
+></TR
+></TABLE
+><P
+>xmlPushInput: switch to a new input stream which is stacked on top
+of the previous one(s).</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>input</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser input fragment (entity, XML fragment ...).</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4251"
+></A
+><H3
+><A
+NAME="XMLPOPINPUT"
+></A
+>xmlPopInput()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>        xmlPopInput                     (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>xmlPopInput: the current input pointed by ctxt-&gt;input came to an end
+pop it and return the next char.</P
+><P
+>TODO A deallocation of the popped Input structure is needed</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the current CHAR in the parser context</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4273"
+></A
+><H3
+><A
+NAME="XMLFREEINPUTSTREAM"
+></A
+>xmlFreeInputStream()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlFreeInputStream              (<A
+HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
+>xmlParserInputPtr</A
+> input);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Free up an input stream.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>input</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an xmlParserInputPtr</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4289"
 ></A
 ><H3
 ><A
@@ -1098,7 +1474,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4215"
+NAME="AEN4312"
 ></A
 ><H3
 ><A
@@ -1207,7 +1583,7 @@ to get the Prefix if any.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4244"
+NAME="AEN4341"
 ></A
 ><H3
 ><A
@@ -1292,7 +1668,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4267"
+NAME="AEN4364"
 ></A
 ><H3
 ><A
@@ -1373,7 +1749,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4288"
+NAME="AEN4385"
 ></A
 ><H3
 ><A
@@ -1440,7 +1816,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4305"
+NAME="AEN4402"
 ></A
 ><H3
 ><A
@@ -1528,7 +1904,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4329"
+NAME="AEN4426"
 ></A
 ><H3
 ><A
@@ -1613,7 +1989,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4352"
+NAME="AEN4449"
 ></A
 ><H3
 ><A
@@ -1697,7 +2073,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4374"
+NAME="AEN4471"
 ></A
 ><H3
 ><A
@@ -1781,7 +2157,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4396"
+NAME="AEN4493"
 ></A
 ><H3
 ><A
@@ -1864,7 +2240,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4418"
+NAME="AEN4515"
 ></A
 ><H3
 ><A
@@ -1947,7 +2323,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4440"
+NAME="AEN4537"
 ></A
 ><H3
 ><A
@@ -2031,7 +2407,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4461"
+NAME="AEN4558"
 ></A
 ><H3
 ><A
@@ -2162,7 +2538,7 @@ it is possible to return NULL and have publicID set.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4494"
+NAME="AEN4591"
 ></A
 ><H3
 ><A
@@ -2269,7 +2645,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4521"
+NAME="AEN4618"
 ></A
 ><H3
 ><A
@@ -2352,7 +2728,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4543"
+NAME="AEN4640"
 ></A
 ><H3
 ><A
@@ -2419,7 +2795,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4561"
+NAME="AEN4658"
 ></A
 ><H3
 ><A
@@ -2494,7 +2870,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4581"
+NAME="AEN4678"
 ></A
 ><H3
 ><A
@@ -2569,7 +2945,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4603"
+NAME="AEN4700"
 ></A
 ><H3
 ><A
@@ -2680,7 +3056,7 @@ or XML_ATTRIBUTE_FIXED. </TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4632"
+NAME="AEN4729"
 ></A
 ><H3
 ><A
@@ -2765,7 +3141,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4655"
+NAME="AEN4752"
 ></A
 ><H3
 ><A
@@ -2848,7 +3224,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4677"
+NAME="AEN4774"
 ></A
 ><H3
 ><A
@@ -2951,7 +3327,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4704"
+NAME="AEN4801"
 ></A
 ><H3
 ><A
@@ -3057,7 +3433,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4732"
+NAME="AEN4829"
 ></A
 ><H3
 ><A
@@ -3124,7 +3500,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4750"
+NAME="AEN4847"
 ></A
 ><H3
 ><A
@@ -3216,7 +3592,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4774"
+NAME="AEN4871"
 ></A
 ><H3
 ><A
@@ -3308,7 +3684,7 @@ hierarchy.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4799"
+NAME="AEN4896"
 ></A
 ><H3
 ><A
@@ -3431,7 +3807,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4830"
+NAME="AEN4927"
 ></A
 ><H3
 ><A
@@ -3513,7 +3889,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4852"
+NAME="AEN4949"
 ></A
 ><H3
 ><A
@@ -3581,7 +3957,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4870"
+NAME="AEN4967"
 ></A
 ><H3
 ><A
@@ -3668,7 +4044,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4893"
+NAME="AEN4990"
 ></A
 ><H3
 ><A
@@ -3751,7 +4127,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4915"
+NAME="AEN5012"
 ></A
 ><H3
 ><A
@@ -3835,7 +4211,7 @@ the entity value as the input.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4937"
+NAME="AEN5034"
 ></A
 ><H3
 ><A
@@ -3918,7 +4294,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4959"
+NAME="AEN5056"
 ></A
 ><H3
 ><A
@@ -3984,7 +4360,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4976"
+NAME="AEN5073"
 ></A
 ><H3
 ><A
@@ -4097,7 +4473,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5007"
+NAME="AEN5104"
 ></A
 ><H3
 ><A
@@ -4189,7 +4565,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5033"
+NAME="AEN5130"
 ></A
 ><H3
 ><A
@@ -4302,7 +4678,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5063"
+NAME="AEN5160"
 ></A
 ><H3
 ><A
@@ -4373,7 +4749,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5083"
+NAME="AEN5180"
 ></A
 ><H3
 ><A
@@ -4438,7 +4814,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5100"
+NAME="AEN5197"
 ></A
 ><H3
 ><A
@@ -4523,7 +4899,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5123"
+NAME="AEN5220"
 ></A
 ><H3
 ><A
@@ -4606,7 +4982,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5145"
+NAME="AEN5242"
 ></A
 ><H3
 ><A
@@ -4691,7 +5067,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5168"
+NAME="AEN5265"
 ></A
 ><H3
 ><A
@@ -4774,7 +5150,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5190"
+NAME="AEN5287"
 ></A
 ><H3
 ><A
@@ -4859,7 +5235,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5213"
+NAME="AEN5310"
 ></A
 ><H3
 ><A
@@ -4940,7 +5316,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5234"
+NAME="AEN5331"
 ></A
 ><H3
 ><A
@@ -5005,7 +5381,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5251"
+NAME="AEN5348"
 ></A
 ><H3
 ><A

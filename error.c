@@ -40,10 +40,9 @@ xmlParserError(xmlParserCtxtPtr ctxt, const char *msg, ...)
     base = ctxt->input->base;
     while ((cur > base) && ((*cur == '\n') || (*cur == '\r'))) {
 	cur--;
-	base--;
     }
     n = 0;
-    while ((n++ < 60) && (cur > base) && (*cur != '\n') && (*cur != '\r'))
+    while ((n++ < 80) && (cur > base) && (*cur != '\n') && (*cur != '\r'))
         cur--;
     if ((*cur == '\n') || (*cur == '\r')) cur++;
     base = cur;
@@ -57,7 +56,7 @@ xmlParserError(xmlParserCtxtPtr ctxt, const char *msg, ...)
     while ((*cur == '\n') || (*cur == '\r'))
 	cur--;
     n = 0;
-    while ((cur != base) && (n++ < 60)) {
+    while ((cur != base) && (n++ < 80)) {
         fprintf(stderr, " ");
         base++;
     }
@@ -92,10 +91,13 @@ xmlParserWarning(xmlParserCtxtPtr ctxt, const char *msg, ...)
     va_end(ap);
     cur = ctxt->input->cur;
     base = ctxt->input->base;
+    while ((cur > base) && ((*cur == '\n') || (*cur == '\r'))) {
+	cur--;
+    }
     n = 0;
-    while ((n++ < 60) && (cur > base) && (*cur != '\n') && (*cur != '\r'))
+    while ((n++ < 80) && (cur > base) && (*cur != '\n') && (*cur != '\r'))
         cur--;
-    if ((*cur != '\n') || (*cur != '\r')) cur++;
+    if ((*cur == '\n') || (*cur == '\r')) cur++;
     base = cur;
     n = 0;
     while ((*cur != 0) && (*cur != '\n') && (*cur != '\r') && (n < 79)) {
@@ -104,8 +106,10 @@ xmlParserWarning(xmlParserCtxtPtr ctxt, const char *msg, ...)
     }
     fprintf(stderr, "\n");
     cur = ctxt->input->cur;
+    while ((*cur == '\n') || (*cur == '\r'))
+	cur--;
     n = 0;
-    while ((cur != base) && (n++ < 60)) {
+    while ((cur != base) && (n++ < 80)) {
         fprintf(stderr, " ");
         base++;
     }

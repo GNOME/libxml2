@@ -132,7 +132,7 @@ PUSH_AND_POP(xmlNodePtr, node)
 CHAR
 xmlPopInput(xmlParserCtxtPtr ctxt) {
     if (ctxt->inputNr == 1) return(0); /* End of main Input */
-    inputPop(ctxt);
+    xmlFreeInputStream(inputPop(ctxt));
     return(CUR);
 }
 
@@ -160,7 +160,7 @@ void
 xmlFreeInputStream(xmlParserInputPtr input) {
     if (input == NULL) return;
 
-    if (input->filename != NULL) return;
+    if (input->filename != NULL) free((char *) input->filename);
     if ((input->free != NULL) && (input->base != NULL))
         input->free((char *) input->base);
     memset(input, -1, sizeof(xmlParserInput));
@@ -3773,6 +3773,7 @@ xmlParseContent(xmlParserCtxtPtr ctxt) {
 		     */
 		    ret = xmlNewReference(ctxt->doc, val);
 		    xmlAddChild(ctxt->node, ret);
+		    ret = NULL;
 		}
 		free(val);
 	    }
@@ -3787,7 +3788,8 @@ xmlParseContent(xmlParserCtxtPtr ctxt) {
 	/*
 	 * Pop-up of finished entities.
 	 */
-	while ((CUR == 0) && (ctxt->inputNr > 1)) xmlPopInput(ctxt);
+	while ((CUR == 0) && (ctxt->inputNr > 1))
+	    xmlPopInput(ctxt);
 
 	if (test == CUR_PTR) {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))

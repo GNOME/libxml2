@@ -15,7 +15,7 @@
 extern "C" {
 #endif
 
-/*
+/**
  * Parser context
  */
 xmlParserCtxtPtr
@@ -27,13 +27,25 @@ xmlCreateMemoryParserCtxt(char *buffer, int size);
 void
 xmlFreeParserCtxt(xmlParserCtxtPtr ctxt);
 
-/*
+/**
  * Entities
  */
 void
 xmlHandleEntity(xmlParserCtxtPtr ctxt, xmlEntityPtr entity);
 
-/*
+/**
+ * Input Streams
+ */
+xmlParserInputPtr
+xmlNewEntityInputStream(xmlParserCtxtPtr ctxt, xmlEntityPtr entity);
+void
+xmlPushInput(xmlParserCtxtPtr ctxt, xmlParserInputPtr input);
+CHAR
+xmlPopInput(xmlParserCtxtPtr ctxt);
+void
+xmlFreeInputStream(xmlParserInputPtr input);
+
+/**
  * Namespaces.
  */
 CHAR *
@@ -47,7 +59,7 @@ xmlParseQuotedString(xmlParserCtxtPtr ctxt);
 void
 xmlParseNamespace(xmlParserCtxtPtr ctxt);
 
-/*
+/**
  * Generic production rules
  */
 CHAR *

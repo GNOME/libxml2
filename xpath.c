@@ -516,7 +516,7 @@ xmlXPatherror(xmlXPathParserContextPtr ctxt, const char *file,
  * Compare two nodes w.r.t document order
  *
  * Returns -2 in case of error 1 if first point < second point, 0 if
- *         that's the same point, -1 otherwise
+ *         that's the same node, -1 otherwise
  */
 int
 xmlXPathCmpNodes(xmlNodePtr node1, xmlNodePtr node2) {
@@ -2914,10 +2914,10 @@ typedef enum {
 } xmlXPathTestVal;
 
 typedef enum {
+    NODE_TYPE_NODE = 0,
     NODE_TYPE_COMMENT = XML_COMMENT_NODE,
     NODE_TYPE_TEXT = XML_TEXT_NODE,
-    NODE_TYPE_PI = XML_PI_NODE,
-    NODE_TYPE_NODE = XML_ELEMENT_NODE
+    NODE_TYPE_PI = XML_PI_NODE
 } xmlXPathTypeVal;
 
 #define IS_FUNCTION			200
@@ -3050,6 +3050,10 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt, xmlXPathAxisVal axis,
 	    " context contains %d nodes\n",
             nodelist->nodeNr);
     switch (test) {
+	case NODE_TEST_NODE:
+	    xmlGenericError(xmlGenericErrorContext,
+		    "           searching all nodes\n");
+	    break;
 	case NODE_TEST_NONE:
 	    xmlGenericError(xmlGenericErrorContext,
 		    "           searching for none !!!\n");
@@ -3109,9 +3113,14 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt, xmlXPathAxisVal axis,
 		    return;
                 case NODE_TEST_TYPE:
 		    if ((cur->type == type) ||
-		        ((type == XML_ELEMENT_NODE) && 
+		        ((type == NODE_TYPE_NODE) && 
 			 ((cur->type == XML_DOCUMENT_NODE) ||
-			  (cur->type == XML_HTML_DOCUMENT_NODE)))) {
+			  (cur->type == XML_HTML_DOCUMENT_NODE) ||
+			  (cur->type == XML_ELEMENT_NODE) ||
+			  (cur->type == XML_PI_NODE) ||
+			  (cur->type == XML_COMMENT_NODE) ||
+			  (cur->type == XML_CDATA_SECTION_NODE) ||
+			  (cur->type == XML_TEXT_NODE)))) {
 #ifdef DEBUG_STEP
                         n++;
 #endif

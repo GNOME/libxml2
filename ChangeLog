@@ -1,3 +1,10 @@
+Wed Jan 31 14:19:16 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xpath.c result/XPath/tests/chaptersbase
+	  result/XPath/tests/simplebase: fixed XPath node() 
+	* tree.c: small fix in xmlNewNs()
+	* Makefile.am: removed extraneous xml2Conf.sh rule
+
 Sun Jan 28 08:37:03 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* Makefile.am configure.in libxml.spec.in example/Makefile.am:

@@ -120,6 +120,9 @@ xmlNsPtr
 xmlNewNs(xmlNodePtr node, const xmlChar *href, const xmlChar *prefix) {
     xmlNsPtr cur;
 
+    if ((node != NULL) && (node->type != XML_ELEMENT_NODE))
+	return(NULL);
+
     /*
      * Allocate a new Namespace and fill the fields.
      */

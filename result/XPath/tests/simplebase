@@ -52,8 +52,12 @@ Set contains 1 nodes:
 ========================
 Expression: /child::EXAMPLE/child::head/node()
 Object is a Node Set :
-Set contains 1 nodes:
-1  ELEMENT title
+Set contains 3 nodes:
+1  TEXT
+    content=    
+2  ELEMENT title
+3  TEXT
+    content=   
 
 ========================
 Expression: /descendant::title

@@ -163,9 +163,6 @@
 /* Define if you have the <zlib.h> header file.  */
 #undef HAVE_ZLIB_H
 
-/* Define if you have the iconv library (-liconv).  */
-#undef HAVE_LIBICONV
-
 /* Define if you have the inet library (-linet).  */
 #undef HAVE_LIBINET
 

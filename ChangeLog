@@ -1,3 +1,7 @@
+Fri Jun  1 11:27:11 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* configure.in: releasing 2.3.10
+
 Thu May 31 20:42:39 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xmlIO.c: Gary Pennington spotted a few troubles with file:///

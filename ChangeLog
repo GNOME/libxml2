@@ -1,3 +1,14 @@
+Thu Oct 31 16:55:21 CEST 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
+
+	* threads.c: improvements to the Windows-side of thread handling
+	* testThreads.c: conditionally excluded unistd.h
+	* testThradsWin32.c: broke overlong lines
+	* include/win32config.h: adapted thread-related macros to the new
+	  scheme and for pthreads on Windows
+	* win32/Makefile.msvc: introduced a more flexible thread build, 
+	  added testThreads[Win32].c to the build
+	* win32/configure.js: introduced a more flexible thread config
+
 2002-10-31  John Fleck  <jfleck@inkstain.net>
 
 	* doc/xml.html (and, by implication, FAQ.html)

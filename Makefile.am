@@ -525,9 +525,6 @@ rpm: cleantar distcheck
 ## the value NONE in configure if the user doesn't specify them (this
 ## is an autoconf feature, not a bug).
 
-confexecdir=$(libdir)
-confexec_DATA = xml2Conf.sh
-
 CLEANFILES=xml2Conf.sh
 
 confexecdir=$(libdir)

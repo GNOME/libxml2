@@ -1,3 +1,8 @@
+Mon Nov  5 12:40:54 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am: confexecdir and confexec_DATA were defined twice
+	  pointed out by Karl Eichwalder
+	  
 Sun Nov  4 23:18:34 CET 2001 Daniel Veillard <daniel@veillard.com>
 
 	* xmlcatalog.c: avoid unlink() and use remove() instead.

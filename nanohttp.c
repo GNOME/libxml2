@@ -76,6 +76,7 @@
 #include <libxml/parser.h> /* for xmlStr(n)casecmp() */
 #include <libxml/nanohttp.h>
 #include <libxml/globals.h>
+#include <libxml/uri.h>
 
 /**
  * A couple portability macros
@@ -371,6 +372,7 @@ xmlNanoHTTPScanProxy(const char *URL) {
 static xmlNanoHTTPCtxtPtr
 xmlNanoHTTPNewCtxt(const char *URL) {
     xmlNanoHTTPCtxtPtr ret;
+    xmlChar *escaped;
 
     ret = (xmlNanoHTTPCtxtPtr) xmlMalloc(sizeof(xmlNanoHTTPCtxt));
     if (ret == NULL) return(NULL);
@@ -381,7 +383,13 @@ xmlNanoHTTPNewCtxt(const char *URL) {
     ret->fd = -1;
     ret->ContentLength = -1;
 
-    xmlNanoHTTPScanURL(ret, URL);
+    escaped = xmlURIEscapeStr(BAD_CAST URL, BAD_CAST"@/:=?;#%&");
+    if (escaped != NULL) {
+	xmlNanoHTTPScanURL(ret, (const char *) escaped);
+	xmlFree(escaped);
+    } else {
+	xmlNanoHTTPScanURL(ret, URL);
+    }
 
     return(ret);
 }

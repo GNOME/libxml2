@@ -1,3 +1,8 @@
+Thu Mar 21 09:03:59 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* c14n.c: patch from Mark Vakoc to build C14N if DocBook and
+	  HTML support is not configured in.
+
 Wed Mar 20 22:42:42 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c error.c parser.c parserInternals.c tree.c xmlIO.c

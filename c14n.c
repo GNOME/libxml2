@@ -1046,8 +1046,12 @@ xmlC14NProcessNode(xmlC14NCtxPtr ctx, xmlNodePtr cur)
             break;
         case XML_DOCUMENT_NODE:
         case XML_DOCUMENT_FRAG_NODE:   /* should be processed as document? */
+#ifdef LIBXML_DOCB_ENABLED
         case XML_DOCB_DOCUMENT_NODE:   /* should be processed as document? */
+#endif
+#ifdef LIBXML_HTML_ENABLED
         case XML_HTML_DOCUMENT_NODE:   /* should be processed as document? */
+#endif
             if (cur->children != NULL) {
                 ctx->pos = XMLC14N_BEFORE_DOCUMENT_ELEMENT;
                 ctx->parent_is_doc = 1;
@@ -1078,8 +1082,10 @@ xmlC14NProcessNode(xmlC14NCtxPtr ctx, xmlNodePtr cur)
         case XML_ELEMENT_DECL:
         case XML_ATTRIBUTE_DECL:
         case XML_ENTITY_DECL:
+#ifdef LIBXML_XINCLUDE_ENABLED
         case XML_XINCLUDE_START:
         case XML_XINCLUDE_END:
+#endif
             /* 
              * should be ignored according to "W3C Canonical XML" 
              */

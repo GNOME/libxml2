@@ -3930,11 +3930,9 @@ xmlXPathEvalBasis(xmlXPathParserContextPtr ctxt) {
     int nodetest = NODE_TEST_NONE;
     int nodetype = 0;
     xmlNodeSetPtr newset = NULL;
-    int attribute = 0;
 
     if (CUR == '@') {
         NEXT;
-	attribute = 1;
 	axis = AXIS_ATTRIBUTE;
 	goto parse_NodeTest;
     } else if (CUR == '*') {

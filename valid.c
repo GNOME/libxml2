@@ -43,7 +43,7 @@ xmlAttributePtr xmlScanAttributeDecl(xmlDtdPtr dtd, const CHAR *elem);
  * Returns NULL if not, othervise the new element content structure
  */
 xmlElementContentPtr
-xmlNewElementContent(CHAR *name, int type) {
+xmlNewElementContent(CHAR *name, xmlElementContentType type) {
     xmlElementContentPtr ret;
 
     switch(type) {
@@ -296,7 +296,7 @@ xmlCreateElementTable(void) {
  */
 xmlElementPtr
 xmlAddElementDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const CHAR *name,
-                  int type, xmlElementContentPtr content) {
+                  xmlElementContentType type, xmlElementContentPtr content) {
     xmlElementPtr ret, cur;
     xmlElementTablePtr table;
     int i;
@@ -741,8 +741,9 @@ xmlScanIDAttributeDecl(xmlValidCtxtPtr ctxt, xmlElementPtr elem) {
  */
 xmlAttributePtr
 xmlAddAttributeDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const CHAR *elem,
-                    const CHAR *name, int type, int def,
-		    const CHAR *defaultValue, xmlEnumerationPtr tree) {
+                    const CHAR *name, xmlAttributeType type, 
+                    xmlAttributeDefault def, const CHAR *defaultValue,
+                    xmlEnumerationPtr tree) {
     xmlAttributePtr ret, cur;
     xmlAttributeTablePtr table;
     xmlElementPtr elemDef;

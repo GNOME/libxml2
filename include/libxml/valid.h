@@ -9,6 +9,11 @@
 
 #ifndef __XML_VALID_H__
 #define __XML_VALID_H__
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "tree.h"
 
 /**
@@ -95,7 +100,8 @@ void		    xmlDumpNotationTable(xmlBufferPtr buf,
 					 xmlNotationTablePtr table);
 
 /* Element Content */
-xmlElementContentPtr xmlNewElementContent (CHAR *name, int type);
+xmlElementContentPtr xmlNewElementContent (CHAR *name,
+					   xmlElementContentType type);
 xmlElementContentPtr xmlCopyElementContent(xmlElementContentPtr content);
 void		     xmlFreeElementContent(xmlElementContentPtr cur);
 
@@ -103,7 +109,7 @@ void		     xmlFreeElementContent(xmlElementContentPtr cur);
 xmlElementPtr	   xmlAddElementDecl	(xmlValidCtxtPtr ctxt,
 					 xmlDtdPtr dtd,
 					 const CHAR *name,
-					 int type,
+					 xmlElementContentType type,
 					 xmlElementContentPtr content);
 xmlElementTablePtr xmlCopyElementTable	(xmlElementTablePtr table);
 void		   xmlFreeElementTable	(xmlElementTablePtr table);
@@ -120,8 +126,8 @@ xmlAttributePtr	    xmlAddAttributeDecl	    (xmlValidCtxtPtr ctxt,
 					     xmlDtdPtr dtd,
 					     const CHAR *elem,
 					     const CHAR *name,
-					     int type,
-					     int def,
+					     xmlAttributeType type,
+					     xmlAttributeDefault def,
 					     const CHAR *defaultValue,
 					     xmlEnumerationPtr tree);
 xmlAttributeTablePtr xmlCopyAttributeTable  (xmlAttributeTablePtr table);
@@ -187,4 +193,8 @@ xmlNotationPtr	xmlGetDtdNotationDesc	(xmlDtdPtr dtd,
 					 const CHAR *name);
 xmlElementPtr	xmlGetDtdElementDesc	(xmlDtdPtr dtd,
 					 const CHAR *name);
+
+#ifdef __cplusplus
+}
+#endif
 #endif /* __XML_VALID_H__ */

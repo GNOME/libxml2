@@ -4658,7 +4658,7 @@ xmlParseDocTypeDecl(xmlParserCtxtPtr ctxt) {
 	    while ((CUR == 0) && (ctxt->inputNr > 1))
 		xmlPopInput(ctxt);
 
-	    if ((CUR_PTR == check) && (cons = ctxt->input->consumed)) {
+	    if ((CUR_PTR == check) && (cons == ctxt->input->consumed)) {
 		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		    ctxt->sax->error(ctxt->userData, 
 		 "xmlParseDocTypeDecl: error detected in Markup declaration\n");
@@ -5146,15 +5146,20 @@ xmlParseElement(xmlParserCtxtPtr ctxt) {
     const CHAR *openTag = CUR_PTR;
     CHAR *name;
     xmlParserNodeInfo node_info;
+    xmlNodePtr ret;
 
     /* Capture start position */
-    node_info.begin_pos = CUR_PTR - ctxt->input->base;
-    node_info.begin_line = ctxt->input->line;
+    if (ctxt->record_info) {
+        node_info.begin_pos = ctxt->input->consumed +
+                          (CUR_PTR - ctxt->input->base);
+	node_info.begin_line = ctxt->input->line;
+    }
 
     name = xmlParseStartTag(ctxt);
     if (name == NULL) {
         return;
     }
+    ret = ctxt->node;
 
     /*
      * [ VC: Root Element Type ]
@@ -5188,6 +5193,17 @@ xmlParseElement(xmlParserCtxtPtr ctxt) {
 	 */
 	nodePop(ctxt);
 	free(name);
+
+	/*
+	 * Capture end position and add node
+	 */
+	if ( ret != NULL && ctxt->record_info ) {
+	   node_info.end_pos = ctxt->input->consumed +
+			      (CUR_PTR - ctxt->input->base);
+	   node_info.end_line = ctxt->input->line;
+	   node_info.node = ret;
+	   xmlParserAddNodeInfo(ctxt, &node_info);
+	}
 	return;
     }
 
@@ -5214,6 +5230,17 @@ xmlParseElement(xmlParserCtxtPtr ctxt) {
      */
     xmlParseEndTag(ctxt, name);
     free(name);
+
+    /*
+     * Capture end position and add node
+     */
+    if ( ret != NULL && ctxt->record_info ) {
+       node_info.end_pos = ctxt->input->consumed +
+                          (CUR_PTR - ctxt->input->base);
+       node_info.end_line = ctxt->input->line;
+       node_info.node = ret;
+       xmlParserAddNodeInfo(ctxt, &node_info);
+    }
 }
 
 /**

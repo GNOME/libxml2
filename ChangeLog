@@ -1,3 +1,8 @@
+Mon Aug 30 13:22:26 CEST 1999
+
+	* parser.c valid.[ch] xpath.c: patched compilation warnings reported
+	  on SGI by Stephane.Conversy@lri.fr
+
 Sun Aug 29 22:27:29 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* all .h : changed the prototype declaration indent as in gtk

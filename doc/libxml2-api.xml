@@ -443,6 +443,7 @@
      <exports symbol='xmlAutomataNewOnceTrans'/>
      <exports symbol='xmlAutomataNewState'/>
      <exports symbol='xmlAutomataNewTransition'/>
+     <exports symbol='xmlAutomataNewTransition2'/>
      <exports symbol='xmlAutomataPtr'/>
      <exports symbol='xmlAutomataSetFinalState'/>
      <exports symbol='xmlAutomataState'/>
@@ -1138,6 +1139,7 @@
      <exports symbol='xmlTextReaderHasValue'/>
      <exports symbol='xmlTextReaderIsDefault'/>
      <exports symbol='xmlTextReaderIsEmptyElement'/>
+     <exports symbol='xmlTextReaderIsValid'/>
      <exports symbol='xmlTextReaderLocalName'/>
      <exports symbol='xmlTextReaderLocatorBaseURI'/>
      <exports symbol='xmlTextReaderLocatorLineNumber'/>
@@ -1163,6 +1165,8 @@
      <exports symbol='xmlTextReaderReadOuterXml'/>
      <exports symbol='xmlTextReaderReadState'/>
      <exports symbol='xmlTextReaderReadString'/>
+     <exports symbol='xmlTextReaderRelaxNGSetSchema'/>
+     <exports symbol='xmlTextReaderRelaxNGValidate'/>
      <exports symbol='xmlTextReaderSetErrorHandler'/>
      <exports symbol='xmlTextReaderSetParserProp'/>
      <exports symbol='xmlTextReaderValue'/>
@@ -1182,6 +1186,7 @@
      <exports symbol='XML_RELAXNG_ERR_ELEMNAME'/>
      <exports symbol='XML_RELAXNG_ERR_ELEMNONS'/>
      <exports symbol='XML_RELAXNG_ERR_ELEMNOTEMPTY'/>
+     <exports symbol='XML_RELAXNG_ERR_ELEMWRONG'/>
      <exports symbol='XML_RELAXNG_ERR_ELEMWRONGNS'/>
      <exports symbol='XML_RELAXNG_ERR_EXTRACONTENT'/>
      <exports symbol='XML_RELAXNG_ERR_EXTRADATA'/>
@@ -1201,6 +1206,7 @@
      <exports symbol='XML_RELAXNG_ERR_NOGRAMMAR'/>
      <exports symbol='XML_RELAXNG_ERR_NOSTATE'/>
      <exports symbol='XML_RELAXNG_ERR_NOTELEM'/>
+     <exports symbol='XML_RELAXNG_ERR_TEXTWRONG'/>
      <exports symbol='XML_RELAXNG_ERR_TYPE'/>
      <exports symbol='XML_RELAXNG_ERR_TYPECMP'/>
      <exports symbol='XML_RELAXNG_ERR_TYPEVAL'/>
@@ -1214,6 +1220,7 @@
      <exports symbol='xmlRelaxNGFree'/>
      <exports symbol='xmlRelaxNGFreeParserCtxt'/>
      <exports symbol='xmlRelaxNGFreeValidCtxt'/>
+     <exports symbol='xmlRelaxNGNewDocParserCtxt'/>
      <exports symbol='xmlRelaxNGNewMemParserCtxt'/>
      <exports symbol='xmlRelaxNGNewParserCtxt'/>
      <exports symbol='xmlRelaxNGNewValidCtxt'/>
@@ -1227,6 +1234,10 @@
      <exports symbol='xmlRelaxNGValidCtxtPtr'/>
      <exports symbol='xmlRelaxNGValidErr'/>
      <exports symbol='xmlRelaxNGValidateDoc'/>
+     <exports symbol='xmlRelaxNGValidateFullElement'/>
+     <exports symbol='xmlRelaxNGValidatePopElement'/>
+     <exports symbol='xmlRelaxNGValidatePushCData'/>
+     <exports symbol='xmlRelaxNGValidatePushElement'/>
      <exports symbol='xmlRelaxNGValidityErrorFunc'/>
      <exports symbol='xmlRelaxNGValidityWarningFunc'/>
     </file>
@@ -1722,6 +1733,7 @@
      <exports symbol='xmlRegExecCtxt'/>
      <exports symbol='xmlRegExecCtxtPtr'/>
      <exports symbol='xmlRegExecPushString'/>
+     <exports symbol='xmlRegExecPushString2'/>
      <exports symbol='xmlRegFreeExecCtxt'/>
      <exports symbol='xmlRegFreeRegexp'/>
      <exports symbol='xmlRegNewExecCtxt'/>
@@ -2527,6 +2539,7 @@
     <enum name='XML_RELAXNG_ERR_ELEMNAME' file='relaxng' value='13' type='xmlRelaxNGValidErr'/>
     <enum name='XML_RELAXNG_ERR_ELEMNONS' file='relaxng' value='15' type='xmlRelaxNGValidErr'/>
     <enum name='XML_RELAXNG_ERR_ELEMNOTEMPTY' file='relaxng' value='21' type='xmlRelaxNGValidErr'/>
+    <enum name='XML_RELAXNG_ERR_ELEMWRONG' file='relaxng' value='38' type='xmlRelaxNGValidErr'/>
     <enum name='XML_RELAXNG_ERR_ELEMWRONGNS' file='relaxng' value='17' type='xmlRelaxNGValidErr'/>
     <enum name='XML_RELAXNG_ERR_EXTRACONTENT' file='relaxng' value='26' type='xmlRelaxNGValidErr'/>
     <enum name='XML_RELAXNG_ERR_EXTRADATA' file='relaxng' value='35' type='xmlRelaxNGValidErr'/>
@@ -2546,6 +2559,7 @@
     <enum name='XML_RELAXNG_ERR_NOGRAMMAR' file='relaxng' value='34' type='xmlRelaxNGValidErr'/>
     <enum name='XML_RELAXNG_ERR_NOSTATE' file='relaxng' value='6' type='xmlRelaxNGValidErr'/>
     <enum name='XML_RELAXNG_ERR_NOTELEM' file='relaxng' value='23' type='xmlRelaxNGValidErr'/>
+    <enum name='XML_RELAXNG_ERR_TEXTWRONG' file='relaxng' value='39' type='xmlRelaxNGValidErr'/>
     <enum name='XML_RELAXNG_ERR_TYPE' file='relaxng' value='2' type='xmlRelaxNGValidErr'/>
     <enum name='XML_RELAXNG_ERR_TYPECMP' file='relaxng' value='5' type='xmlRelaxNGValidErr'/>
     <enum name='XML_RELAXNG_ERR_TYPEVAL' file='relaxng' value='3' type='xmlRelaxNGValidErr'/>
@@ -4454,6 +4468,16 @@ actually an xmlCharEncoding'/>
       <arg name='from' type='xmlAutomataStatePtr' info='the starting point of the transition'/>
       <arg name='to' type='xmlAutomataStatePtr' info='the target point of the transition or NULL'/>
       <arg name='token' type='const xmlChar *' info='the input string associated to that transition'/>
+      <arg name='data' type='void *' info='data passed to the callback function if the transition is activated'/>
+    </function>
+    <function name='xmlAutomataNewTransition2' file='xmlautomata'>
+      <info>If @to is NULL, this create first a new target state in the automata and then adds a transition from the @from state to the target state activated by the value of @token</info>
+      <return type='xmlAutomataStatePtr' info='the target state or NULL in case of error'/>
+      <arg name='am' type='xmlAutomataPtr' info='an automata'/>
+      <arg name='from' type='xmlAutomataStatePtr' info='the starting point of the transition'/>
+      <arg name='to' type='xmlAutomataStatePtr' info='the target point of the transition or NULL'/>
+      <arg name='token' type='const xmlChar *' info='the first input string associated to that transition'/>
+      <arg name='token2' type='const xmlChar *' info='the second input string associated to that transition'/>
       <arg name='data' type='void *' info='data passed to the callback function if the transition is activated'/>
     </function>
     <function name='xmlAutomataSetFinalState' file='xmlautomata'>
@@ -6898,8 +6922,8 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlNormalizeWindowsPath' file='xmlIO'>
       <info>This function is obsolete. Please see xmlURIFromPath in uri.c for a better solution.</info>
-      <return type='xmlChar *' info=''/>
-      <arg name='path' type='const xmlChar *' info=''/>
+      <return type='xmlChar *' info='a canonicalized version of the path'/>
+      <arg name='path' type='const xmlChar *' info='the input file path'/>
     </function>
     <function name='xmlOutputBufferClose' file='xmlIO'>
       <info>flushes and close the output I/O channel and free up all the associated resources</info>
@@ -7551,6 +7575,14 @@ actually an xmlCharEncoding'/>
       <arg name='value' type='const xmlChar *' info='a string token input'/>
       <arg name='data' type='void *' info='data associated to the token to reuse in callbacks'/>
     </function>
+    <function name='xmlRegExecPushString2' file='xmlregexp'>
+      <info>Push one input token in the execution context</info>
+      <return type='int' info='1 if the regexp reached a final state, 0 if non-final, and a negative value in case of error.'/>
+      <arg name='exec' type='xmlRegExecCtxtPtr' info='a regexp execution context or NULL to indicate the end'/>
+      <arg name='value' type='const xmlChar *' info='the first string token input'/>
+      <arg name='value2' type='const xmlChar *' info='the second string token input'/>
+      <arg name='data' type='void *' info='data associated to the token to reuse in callbacks'/>
+    </function>
     <function name='xmlRegFreeExecCtxt' file='xmlregexp'>
       <info>Free the structures associated to a regular expression evaulation context.</info>
       <return type='void'/>
@@ -7664,6 +7696,11 @@ actually an xmlCharEncoding'/>
       <return type='void'/>
       <arg name='ctxt' type='xmlRelaxNGValidCtxtPtr' info='the schema validation context'/>
     </function>
+    <function name='xmlRelaxNGNewDocParserCtxt' file='relaxng'>
+      <info>Create an XML RelaxNGs parser context for that document. Note: since the process of compiling a RelaxNG schemas modifies the document, the @doc parameter is duplicated internally.</info>
+      <return type='xmlRelaxNGParserCtxtPtr' info='the parser context or NULL in case of error'/>
+      <arg name='doc' type='xmlDocPtr' info='a preparsed document tree'/>
+    </function>
     <function name='xmlRelaxNGNewMemParserCtxt' file='relaxng'>
       <info>Create an XML RelaxNGs parse context for that memory buffer expected to contain an XML RelaxNGs file.</info>
       <return type='xmlRelaxNGParserCtxtPtr' info='the parser context or NULL in case of error'/>
@@ -7706,6 +7743,34 @@ actually an xmlCharEncoding'/>
       <return type='int' info='0 if the document is valid, a positive error code number otherwise and -1 in case of internal or API error.'/>
       <arg name='ctxt' type='xmlRelaxNGValidCtxtPtr' info='a Relax-NG validation context'/>
       <arg name='doc' type='xmlDocPtr' info='a parsed document tree'/>
+    </function>
+    <function name='xmlRelaxNGValidateFullElement' file='relaxng'>
+      <info>Validate a full subtree when xmlRelaxNGValidatePushElement() returned 0 and the content of the node has been expanded.</info>
+      <return type='int' info='1 if no validation problem was found or -1 in case of error.'/>
+      <arg name='ctxt' type='xmlRelaxNGValidCtxtPtr' info='the validation context'/>
+      <arg name='doc' type='xmlDocPtr' info='a document instance'/>
+      <arg name='elem' type='xmlNodePtr' info='an element instance'/>
+    </function>
+    <function name='xmlRelaxNGValidatePopElement' file='relaxng'>
+      <info>Pop the element end from the RelaxNG validation stack.</info>
+      <return type='int' info='1 if no validation problem was found or 0 otherwise'/>
+      <arg name='ctxt' type='xmlRelaxNGValidCtxtPtr' info='the RelaxNG validation context'/>
+      <arg name='doc' type='xmlDocPtr' info='a document instance'/>
+      <arg name='elem' type='xmlNodePtr' info='an element instance'/>
+    </function>
+    <function name='xmlRelaxNGValidatePushCData' file='relaxng'>
+      <info>check the CData parsed for validation in the current stack</info>
+      <return type='int' info='1 if no validation problem was found or -1 otherwise'/>
+      <arg name='ctxt' type='xmlRelaxNGValidCtxtPtr' info='the RelaxNG validation context'/>
+      <arg name='data' type='const xmlChar *' info='some character data read'/>
+      <arg name='len' type='int' info='the lenght of the data'/>
+    </function>
+    <function name='xmlRelaxNGValidatePushElement' file='relaxng'>
+      <info>Push a new element start on the RelaxNG validation stack.</info>
+      <return type='int' info='1 if no validation problem was found or 0 if validating the element requires a full node, and -1 in case of error.'/>
+      <arg name='ctxt' type='xmlRelaxNGValidCtxtPtr' info='the validation context'/>
+      <arg name='doc' type='xmlDocPtr' info='a document instance'/>
+      <arg name='elem' type='xmlNodePtr' info='an element instance'/>
     </function>
     <functype name='xmlRelaxNGValidityErrorFunc' file='relaxng'>
       <info></info>
@@ -8363,6 +8428,11 @@ actually an xmlCharEncoding'/>
       <return type='int' info='1 if empty, 0 if not and -1 in case of error'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
     </function>
+    <function name='xmlTextReaderIsValid' file='xmlreader'>
+      <info>Retrieve the validity status from the parser context</info>
+      <return type='int' info='the flag value 1 if valid, 0 if no, and -1 in case of error'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
+    </function>
     <function name='xmlTextReaderLocalName' file='xmlreader'>
       <info>The local name of the node.</info>
       <return type='xmlChar *' info='the local name or NULL if not available'/>
@@ -8482,6 +8552,18 @@ actually an xmlCharEncoding'/>
       <info>Reads the contents of an element or a text node as a string.</info>
       <return type='xmlChar *' info='a string containing the contents of the Element or Text node, or NULL if the reader is positioned on any other type of node. The string must be deallocated by the caller.'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
+    </function>
+    <function name='xmlTextReaderRelaxNGSetSchema' file='xmlreader'>
+      <info>Use RelaxNG to validate the document as it is processed. Activation is only possible before the first Read(). if @schema is NULL, then RelaxNG validation is desactivated. @ The @schema should not be freed until the reader is deallocated or its use has been deactivated.</info>
+      <return type='int' info='0 in case the RelaxNG validation could be (des)activated and -1 in case of error.'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
+      <arg name='schema' type='xmlRelaxNGPtr' info='a precompiled RelaxNG schema'/>
+    </function>
+    <function name='xmlTextReaderRelaxNGValidate' file='xmlreader'>
+      <info>Use RelaxNG to validate the document as it is processed. Activation is only possible before the first Read(). if @rng is NULL, then RelaxNG validation is desactivated.</info>
+      <return type='int' info='0 in case the RelaxNG validation could be (des)activated and -1 in case of error.'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
+      <arg name='rng' type='const char *' info='the path to a RelaxNG schema or NULL'/>
     </function>
     <function name='xmlTextReaderSetErrorHandler' file='xmlreader'>
       <info>Register a callback function that will be called on error and warnings.  If @f is NULL, the default error and warning handlers are restored.</info>

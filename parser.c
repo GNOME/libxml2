@@ -10273,7 +10273,6 @@ xmlDocPtr
 xmlSAXParseEntity(xmlSAXHandlerPtr sax, const char *filename) {
     xmlDocPtr ret;
     xmlParserCtxtPtr ctxt;
-    char *directory = NULL;
 
     ctxt = xmlCreateFileParserCtxt(filename);
     if (ctxt == NULL) {
@@ -10285,9 +10284,6 @@ xmlSAXParseEntity(xmlSAXHandlerPtr sax, const char *filename) {
         ctxt->sax = sax;
         ctxt->userData = NULL;
     }
-
-    if ((ctxt->directory == NULL) && (directory == NULL))
-        directory = xmlParserGetDirectory(filename);
 
     xmlParseExtParsedEnt(ctxt);
 

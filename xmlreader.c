@@ -1031,7 +1031,7 @@ xmlTextReaderNext(xmlTextReaderPtr reader) {
  *         string must be deallocated by the caller.
  */
 xmlChar *
-xmlTextReaderReadInnerXml(xmlTextReaderPtr reader) {
+xmlTextReaderReadInnerXml(xmlTextReaderPtr reader ATTRIBUTE_UNUSED) {
     TODO
     return(NULL);
 }
@@ -1047,7 +1047,7 @@ xmlTextReaderReadInnerXml(xmlTextReaderPtr reader) {
  *         string must be deallocated by the caller.
  */
 xmlChar *
-xmlTextReaderReadOuterXml(xmlTextReaderPtr reader) {
+xmlTextReaderReadOuterXml(xmlTextReaderPtr reader ATTRIBUTE_UNUSED) {
     TODO
     return(NULL);
 }
@@ -1063,7 +1063,7 @@ xmlTextReaderReadOuterXml(xmlTextReaderPtr reader) {
  *         The string must be deallocated by the caller.
  */
 xmlChar *
-xmlTextReaderReadString(xmlTextReaderPtr reader) {
+xmlTextReaderReadString(xmlTextReaderPtr reader ATTRIBUTE_UNUSED) {
     TODO
     return(NULL);
 }
@@ -2502,6 +2502,58 @@ xmlTextReaderCurrentDoc(xmlTextReaderPtr reader) {
 }
 
 /**
+ * xmlTextReaderRelaxNGSetSchema:
+ * @reader:  the xmlTextReaderPtr used
+ * @schema:  a precompiled RelaxNG schema
+ *
+ * Use RelaxNG to validate the document as it is processed.
+ * Activation is only possible before the first Read().
+ * if @schema is NULL, then RelaxNG validation is desactivated.
+ @ The @schema should not be freed until the reader is deallocated
+ * or its use has been deactivated.
+ *
+ * Returns 0 in case the RelaxNG validation could be (des)activated and
+ *         -1 in case of error.
+ */
+int
+xmlTextReaderRelaxNGSetSchema(xmlTextReaderPtr reader, xmlRelaxNGPtr schema) {
+    if (schema == NULL) {
+        if (reader->rngSchemas != NULL) {
+	    xmlRelaxNGFree(reader->rngSchemas);
+	    reader->rngSchemas = NULL;
+	}
+        if (reader->rngValidCtxt != NULL) {
+	    xmlRelaxNGFreeValidCtxt(reader->rngValidCtxt);
+	    reader->rngValidCtxt = NULL;
+        }
+	return(0);
+    }
+    if (reader->mode != XML_TEXTREADER_MODE_INITIAL)
+	return(-1);
+    if (reader->rngSchemas != NULL) {
+	xmlRelaxNGFree(reader->rngSchemas);
+	reader->rngSchemas = NULL;
+    }
+    if (reader->rngValidCtxt != NULL) {
+	xmlRelaxNGFreeValidCtxt(reader->rngValidCtxt);
+	reader->rngValidCtxt = NULL;
+    }
+    reader->rngValidCtxt = xmlRelaxNGNewValidCtxt(schema);
+    if (reader->rngValidCtxt == NULL)
+        return(-1);
+    if (reader->errorFunc != NULL) {
+	xmlRelaxNGSetValidErrors(reader->rngValidCtxt,
+			 (xmlRelaxNGValidityErrorFunc)reader->errorFunc,
+			 (xmlRelaxNGValidityWarningFunc) reader->errorFunc,
+			 reader->errorFuncArg);
+    }
+    reader->rngValidErrors = 0;
+    reader->rngFullNode = NULL;
+    reader->validate = XML_TEXTREADER_VALIDATE_RNG;
+    return(0);
+}
+
+/**
  * xmlTextReaderRelaxNGValidate:
  * @reader:  the xmlTextReaderPtr used
  * @rng:  the path to a RelaxNG schema or NULL
@@ -2533,6 +2585,14 @@ xmlTextReaderRelaxNGValidate(xmlTextReaderPtr reader, const char *rng) {
     }
     if (reader->mode != XML_TEXTREADER_MODE_INITIAL)
 	return(-1);
+    if (reader->rngSchemas != NULL) {
+	xmlRelaxNGFree(reader->rngSchemas);
+	reader->rngSchemas = NULL;
+    }
+    if (reader->rngValidCtxt != NULL) {
+	xmlRelaxNGFreeValidCtxt(reader->rngValidCtxt);
+	reader->rngValidCtxt = NULL;
+    }
     ctxt = xmlRelaxNGNewParserCtxt(rng);
     if (reader->errorFunc != NULL) {
 	xmlRelaxNGSetParserErrors(ctxt,

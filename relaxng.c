@@ -6510,6 +6510,39 @@ xmlRelaxNGNewMemParserCtxt(const char *buffer, int size) {
 }
 
 /**
+ * xmlRelaxNGNewDocParserCtxt:
+ * @doc:  a preparsed document tree
+ *
+ * Create an XML RelaxNGs parser context for that document.
+ * Note: since the process of compiling a RelaxNG schemas modifies the
+ *       document, the @doc parameter is duplicated internally.
+ *
+ * Returns the parser context or NULL in case of error
+ */
+xmlRelaxNGParserCtxtPtr
+xmlRelaxNGNewDocParserCtxt(xmlDocPtr doc) {
+    xmlRelaxNGParserCtxtPtr ret;
+    xmlDocPtr copy;
+
+    if (doc == NULL)
+	return(NULL);
+    copy = xmlCopyDoc(doc, 1);
+    if (copy == NULL)
+        return(NULL);
+
+    ret = (xmlRelaxNGParserCtxtPtr) xmlMalloc(sizeof(xmlRelaxNGParserCtxt));
+    if (ret == NULL) {
+	xmlGenericError(xmlGenericErrorContext,
+		"Failed to allocate new schama parser context\n");
+        return (NULL);
+    }
+    memset(ret, 0, sizeof(xmlRelaxNGParserCtxt));
+    ret->document = copy;
+    ret->userData = xmlGenericErrorContext;
+    return (ret);
+}
+
+/**
  * xmlRelaxNGFreeParserCtxt:
  * @ctxt:  the schema parser context
  *
@@ -6522,7 +6555,7 @@ xmlRelaxNGFreeParserCtxt(xmlRelaxNGParserCtxtPtr ctxt) {
     if (ctxt->URL != NULL)
 	xmlFree(ctxt->URL);
     if (ctxt->doc != NULL)
-	xmlFreeDoc(ctxt->document);
+	xmlFreeDoc(ctxt->doc);
     if (ctxt->interleaves != NULL)
         xmlHashFree(ctxt->interleaves, NULL);
     if (ctxt->documents != NULL)
@@ -7159,6 +7192,8 @@ xmlRelaxNGParse(xmlRelaxNGParserCtxtPtr ctxt)
 	}
 	doc->URL = xmlStrdup(BAD_CAST "in_memory_buffer");
 	ctxt->URL = xmlStrdup(BAD_CAST "in_memory_buffer");
+    } else if (ctxt->document != NULL) {
+        doc = ctxt->document;
     } else {
 	if (ctxt->error != NULL)
 	    ctxt->error(ctxt->userData,
@@ -7845,7 +7880,8 @@ xmlRelaxNGValidateProgressiveCallback(xmlRegExecCtxtPtr exec ATTRIBUTE_UNUSED,
  *         element requires a full node, and -1 in case of error.
  */
 int
-xmlRelaxNGValidatePushElement(xmlRelaxNGValidCtxtPtr ctxt, xmlDocPtr doc,
+xmlRelaxNGValidatePushElement(xmlRelaxNGValidCtxtPtr ctxt,
+                              xmlDocPtr doc ATTRIBUTE_UNUSED,
                               xmlNodePtr elem)
 {
     int ret = 1;
@@ -7924,7 +7960,8 @@ xmlRelaxNGValidatePushElement(xmlRelaxNGValidCtxtPtr ctxt, xmlDocPtr doc,
  */
 int
 xmlRelaxNGValidatePushCData(xmlRelaxNGValidCtxtPtr ctxt,
-                            const xmlChar * data, int len)
+                            const xmlChar * data,
+			    int len ATTRIBUTE_UNUSED)
 {
     int ret = 1;
 
@@ -7945,7 +7982,7 @@ xmlRelaxNGValidatePushCData(xmlRelaxNGValidCtxtPtr ctxt,
 
     ret = xmlRegExecPushString(ctxt->elem, BAD_CAST "#text", ctxt);
     if (ret < 0) {
-        VALID_ERR2(XML_RELAXNG_ERR_TEXTWRONG, " TODO ");
+        VALID_ERR2(XML_RELAXNG_ERR_TEXTWRONG, BAD_CAST " TODO ");
 #ifdef DEBUG_PROGRESSIVE
 	xmlGenericError(xmlGenericErrorContext, "CDATA failed\n");
 #endif
@@ -8013,7 +8050,8 @@ xmlRelaxNGValidatePopElement(xmlRelaxNGValidCtxtPtr ctxt,
  * returns 1 if no validation problem was found or -1 in case of error.
  */
 int
-xmlRelaxNGValidateFullElement(xmlRelaxNGValidCtxtPtr ctxt, xmlDocPtr doc,
+xmlRelaxNGValidateFullElement(xmlRelaxNGValidCtxtPtr ctxt,
+                              xmlDocPtr doc ATTRIBUTE_UNUSED,
 			      xmlNodePtr elem) {
     int ret;
     xmlRelaxNGValidStatePtr state;

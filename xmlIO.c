@@ -124,9 +124,12 @@ static int xmlOutputCallbackInitialized = 0;
 
 /**
  * xmlNormalizeWindowsPath:
+ * @path: the input file path
  *
  * This function is obsolete. Please see xmlURIFromPath in uri.c for
  * a better solution.
+ *
+ * Returns a canonicalized version of the path
  */
 xmlChar *
 xmlNormalizeWindowsPath(const xmlChar *path)

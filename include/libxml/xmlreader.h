@@ -11,6 +11,9 @@
 
 #include <libxml/tree.h>
 #include <libxml/xmlIO.h>
+#ifdef LIBXML_SCHEMAS_ENABLED
+#include <libxml/relaxng.h>
+#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -112,6 +115,8 @@ int		xmlTextReaderIsValid		(xmlTextReaderPtr reader);
 #ifdef LIBXML_SCHEMAS_ENABLED
 int		xmlTextReaderRelaxNGValidate	(xmlTextReaderPtr reader,
 						 const char *rng);
+int		xmlTextReaderRelaxNGSetSchema	(xmlTextReaderPtr reader,
+						 xmlRelaxNGPtr schema);
 #endif
 
 /*

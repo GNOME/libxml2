@@ -81,6 +81,8 @@ typedef enum {
 xmlRelaxNGParserCtxtPtr xmlRelaxNGNewParserCtxt	(const char *URL);
 xmlRelaxNGParserCtxtPtr xmlRelaxNGNewMemParserCtxt(const char *buffer,
 						 int size);
+xmlRelaxNGParserCtxtPtr xmlRelaxNGNewDocParserCtxt(xmlDocPtr doc);
+
 void		xmlRelaxNGFreeParserCtxt	(xmlRelaxNGParserCtxtPtr ctxt);
 void		xmlRelaxNGSetParserErrors(xmlRelaxNGParserCtxtPtr ctxt,
 					 xmlRelaxNGValidityErrorFunc err,

@@ -1,3 +1,10 @@
+Thu Apr 17 11:06:28 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/relaxng.h relaxng.c include/libxml/xmlreader.h
+	  xmlreader.c: augnemting the APIs, cleanups.
+	* parser.c: cleanup bug #111005
+	* xmlIO.c: added some missing comments
+
 Wed Apr 16 17:46:50 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c xmllint.c: more work on RelaxNG streaming validation

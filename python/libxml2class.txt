@@ -474,7 +474,11 @@ Class xmlDoc(xmlNode)
     parameterEntity()
 
     # functions from module relaxng
+    relaxNGNewDocParserCtxt()
     relaxNGValidateDoc()
+    relaxNGValidateFullElement()
+    relaxNGValidatePopElement()
+    relaxNGValidatePushElement()
 
     # functions from module tree
     copyDoc()
@@ -606,6 +610,7 @@ Class xmlTextReader(xmlTextReaderCore)
     HasValue()
     IsDefault()
     IsEmptyElement()
+    IsValid()
     LocalName()
     LookupNamespace()
     MoveToAttribute()
@@ -627,6 +632,8 @@ Class xmlTextReader(xmlTextReaderCore)
     ReadOuterXml()
     ReadState()
     ReadString()
+    RelaxNGSetSchema()
+    RelaxNGValidate()
     SetParserProp()
     Value()
     XmlLang()
@@ -654,6 +661,7 @@ Class relaxNgValidCtxt()
 
     # functions from module relaxng
     relaxNGFreeValidCtxt()
+    relaxNGValidatePushCData()
 Class xpathParserContext()
     # accessors
     context()

@@ -1,6 +1,10 @@
 /*
  * DOCBparser.c : an attempt to parse SGML Docbook documents
  *
+ * This is extremely hackish. It also adds one extension
+ *    <?sgml-declaration encoding="ISO-8859-1"?>
+ * allowing to store the encoding of the document within the instance.
+ *
  * See Copyright for the status of this software.
  *
  * Daniel.Veillard@w3.org
@@ -3177,6 +3181,173 @@ docbParseExternalID(docbParserCtxtPtr ctxt, xmlChar **publicID) {
 }
 
 /**
+ * docbParsePI:
+ * @ctxt:  an XML parser context
+ * 
+ * parse an XML Processing Instruction.
+ *
+ * [16] PI ::= '<?' PITarget (S (Char* - (Char* '?>' Char*)))? '?>'
+ *
+ * The processing is transfered to SAX once parsed.
+ */
+
+static void
+docbParsePI(xmlParserCtxtPtr ctxt) {
+    xmlChar *buf = NULL;
+    int len = 0;
+    int size = DOCB_PARSER_BUFFER_SIZE;
+    int cur, l;
+    xmlChar *target;
+    xmlParserInputState state;
+    int count = 0;
+
+    if ((RAW == '<') && (NXT(1) == '?')) {
+	xmlParserInputPtr input = ctxt->input;
+	state = ctxt->instate;
+        ctxt->instate = XML_PARSER_PI;
+	/*
+	 * this is a Processing Instruction.
+	 */
+	SKIP(2);
+	SHRINK;
+
+	/*
+	 * Parse the target name and check for special support like
+	 * namespace.
+	 */
+	target = xmlParseName(ctxt);
+	if (target != NULL) {
+	    xmlChar *encoding = NULL;
+
+	    if ((RAW == '?') && (NXT(1) == '>')) {
+		if (input != ctxt->input) {
+		    ctxt->errNo = XML_ERR_ENTITY_BOUNDARY;
+		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+			ctxt->sax->error(ctxt->userData, 
+    "PI declaration doesn't start and stop in the same entity\n");
+		    ctxt->wellFormed = 0;
+		    ctxt->disableSAX = 1;
+		}
+		SKIP(2);
+
+		/*
+		 * SAX: PI detected.
+		 */
+		if ((ctxt->sax) && (!ctxt->disableSAX) &&
+		    (ctxt->sax->processingInstruction != NULL))
+		    ctxt->sax->processingInstruction(ctxt->userData,
+		                                     target, NULL);
+		ctxt->instate = state;
+		xmlFree(target);
+		return;
+	    }
+	    if (xmlStrEqual(target, BAD_CAST "sgml-declaration")) {
+
+		encoding = xmlParseEncodingDecl(ctxt);
+		if (encoding == NULL) {
+		    xmlGenericError(xmlGenericErrorContext,
+			"sgml-declaration: failed to find/handle encoding\n");
+#ifdef DEBUG
+		} else {
+		    xmlGenericError(xmlGenericErrorContext,
+			    "switched to encoding %s\n", encoding);
+#endif
+		}
+
+	    }
+	    buf = (xmlChar *) xmlMalloc(size * sizeof(xmlChar));
+	    if (buf == NULL) {
+		xmlGenericError(xmlGenericErrorContext,
+			"malloc of %d byte failed\n", size);
+		ctxt->instate = state;
+		return;
+	    }
+	    cur = CUR;
+	    if (encoding != NULL) {
+		len = snprintf((char *) buf, size - 1,
+			       " encoding = \"%s\"", encoding);
+		if (len < 0) 
+		    len = size;
+	    } else {
+		if (!IS_BLANK(cur)) {
+		    ctxt->errNo = XML_ERR_SPACE_REQUIRED;
+		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+			ctxt->sax->error(ctxt->userData,
+			  "docbParsePI: PI %s space expected\n", target);
+		    ctxt->wellFormed = 0;
+		    ctxt->disableSAX = 1;
+		}
+		SKIP_BLANKS;
+	    }
+	    cur = CUR_CHAR(l);
+	    while (IS_CHAR(cur) && /* checked */
+		   ((cur != '?') || (NXT(1) != '>'))) {
+		if (len + 5 >= size) {
+		    size *= 2;
+		    buf = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
+		    if (buf == NULL) {
+			xmlGenericError(xmlGenericErrorContext,
+				"realloc of %d byte failed\n", size);
+			ctxt->instate = state;
+			return;
+		    }
+		}
+		count++;
+		if (count > 50) {
+		    GROW;
+		    count = 0;
+		}
+		COPY_BUF(l,buf,len,cur);
+		NEXTL(l);
+		cur = CUR_CHAR(l);
+		if (cur == 0) {
+		    SHRINK;
+		    GROW;
+		    cur = CUR_CHAR(l);
+		}
+	    }
+	    buf[len] = 0;
+	    if (cur != '?') {
+		ctxt->errNo = XML_ERR_PI_NOT_FINISHED;
+		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		    ctxt->sax->error(ctxt->userData,
+		      "docbParsePI: PI %s never end ...\n", target);
+		ctxt->wellFormed = 0;
+		ctxt->disableSAX = 1;
+	    } else {
+		if (input != ctxt->input) {
+		    ctxt->errNo = XML_ERR_ENTITY_BOUNDARY;
+		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+			ctxt->sax->error(ctxt->userData, 
+    "PI declaration doesn't start and stop in the same entity\n");
+		    ctxt->wellFormed = 0;
+		    ctxt->disableSAX = 1;
+		}
+		SKIP(2);
+
+		/*
+		 * SAX: PI detected.
+		 */
+		if ((ctxt->sax) && (!ctxt->disableSAX) &&
+		    (ctxt->sax->processingInstruction != NULL))
+		    ctxt->sax->processingInstruction(ctxt->userData,
+		                                     target, buf);
+	    }
+	    xmlFree(buf);
+	    xmlFree(target);
+	} else {
+	    ctxt->errNo = XML_ERR_PI_NOT_STARTED;
+	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	        ctxt->sax->error(ctxt->userData,
+		       "docbParsePI : no target name\n");
+	    ctxt->wellFormed = 0;
+	    ctxt->disableSAX = 1;
+	}
+	ctxt->instate = state;
+    }
+}
+
+/**
  * docbParseComment:
  * @ctxt:  an SGML parser context
  *
@@ -4559,7 +4730,7 @@ docbParseMarkupDecl(xmlParserCtxtPtr ctxt) {
     xmlParseAttributeListDecl(ctxt);
     docbParseEntityDecl(ctxt);
     xmlParseNotationDecl(ctxt);
-    xmlParsePI(ctxt);
+    docbParsePI(ctxt);
     xmlParseComment(ctxt);
     /*
      * This is only for internal subset. On external entities,
@@ -4651,7 +4822,7 @@ docbParseMisc(xmlParserCtxtPtr ctxt) {
            (NXT(2) == '-') && (NXT(3) == '-')) ||
            IS_BLANK(CUR)) {
         if ((RAW == '<') && (NXT(1) == '?')) {
-           xmlParsePI(ctxt); /* TODO: SGML PIs differs */
+           docbParsePI(ctxt); /* TODO: SGML PIs differs */
        } else if (IS_BLANK(CUR)) {
            NEXT;
        } else
@@ -4773,6 +4944,7 @@ docbParseDocument(docbParserCtxtPtr ctxt) {
 
     if (ctxt->myDoc != NULL) {
        dtd = ctxt->myDoc->intSubset;
+       ctxt->myDoc->standalone = -1;
        if (dtd == NULL)
            ctxt->myDoc->intSubset = 
                xmlCreateIntSubset(ctxt->myDoc, BAD_CAST "SGML", 

@@ -1,3 +1,10 @@
+Thu Jun  7 06:44:01 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* DOCBparser.c: implemented the <?sgml-declaration encoding="xxx"?>
+	  hack
+	* tree.[ch]: added xmlHasNsProp as suggested in bug report #55653 
+	* uri.c: fixed a warning
+
 Tue Jun  5 22:54:21 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* HTMLtree.c: trying to close bug #55772 escaping in script

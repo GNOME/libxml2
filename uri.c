@@ -1109,7 +1109,7 @@ xmlURIEscape(const xmlChar *str) {
 
     if(uri->port) {
 	xmlChar port[10];
-	snprintf(segment, 10, "%d", uri->port);
+	snprintf((char *) segment, 10, "%d", uri->port);
 	xmlStrcat(ret, BAD_CAST ":");
 	xmlStrcat(ret, port);
 	xmlFree(segment);

@@ -4219,6 +4219,78 @@ xmlHasProp(xmlNodePtr node, const xmlChar *name) {
 }
 
 /**
+ * xmlHasNsProp:
+ * @node:  the node
+ * @name:  the attribute name
+ * @namespace:  the URI of the namespace
+ *
+ * Search for an attribute associated to a node
+ * This attribute has to be anchored in the namespace specified.
+ * This does the entity substitution.
+ * This function looks in DTD attribute declaration for #FIXED or
+ * default declaration values unless DTD use has been turned off.
+ *
+ * Returns the attribute or the attribute declaration or NULL
+ *     if neither was found.
+ */
+xmlAttrPtr
+xmlHasNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *namespace) {
+    xmlAttrPtr prop;
+    xmlDocPtr doc;
+    xmlNsPtr ns;
+
+    if (node == NULL)
+	return(NULL);
+
+    prop = node->properties;
+    if (namespace == NULL)
+	return(xmlHasProp(node, name));
+    while (prop != NULL) {
+	/*
+	 * One need to have
+	 *   - same attribute names
+	 *   - and the attribute carrying that namespace
+	 *         or
+	 *         no namespace on the attribute and the element carrying it
+	 */
+        if ((xmlStrEqual(prop->name, name)) &&
+	    (((prop->ns == NULL) && (node->ns != NULL) &&
+	      (xmlStrEqual(node->ns->href, namespace))) ||
+	     ((prop->ns != NULL) &&
+	      (xmlStrEqual(prop->ns->href, namespace))))) {
+	  return(prop);
+        }
+	prop = prop->next;
+    }
+    if (!xmlCheckDTD) return(NULL);
+
+    /*
+     * Check if there is a default declaration in the internal
+     * or external subsets
+     */
+    doc =  node->doc;
+    if (doc != NULL) {
+        if (doc->intSubset != NULL) {
+	    xmlAttributePtr attrDecl;
+
+	    attrDecl = xmlGetDtdAttrDesc(doc->intSubset, node->name, name);
+	    if ((attrDecl == NULL) && (doc->extSubset != NULL))
+		attrDecl = xmlGetDtdAttrDesc(doc->extSubset, node->name, name);
+		
+	    if ((attrDecl != NULL) && (attrDecl->prefix != NULL)) {
+	        /*
+		 * The DTD declaration only allows a prefix search
+		 */
+		ns = xmlSearchNs(doc, node, attrDecl->prefix);
+		if ((ns != NULL) && (xmlStrEqual(ns->href, namespace)))
+		    return((xmlAttrPtr) attrDecl);
+	    }
+	}
+    }
+    return(NULL);
+}
+
+/**
  * xmlGetProp:
  * @node:  the node
  * @name:  the attribute name

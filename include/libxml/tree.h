@@ -677,6 +677,9 @@ xmlChar *	xmlGetProp		(xmlNodePtr node,
 					 const xmlChar *name);
 xmlAttrPtr	xmlHasProp		(xmlNodePtr node,
 					 const xmlChar *name);
+xmlAttrPtr	xmlHasNsProp		(xmlNodePtr node,
+					 const xmlChar *name,
+					 const xmlChar *namespace);
 xmlAttrPtr	xmlSetNsProp		(xmlNodePtr node,
 					 xmlNsPtr ns,
 					 const xmlChar *name,

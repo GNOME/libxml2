@@ -299,5 +299,5 @@ else
     (cd $srcdir ; rm -f libxml ; ln -s . libxml)
     (rm -f libxml ; ln -s . libxml)
 fi
-AC_OUTPUT(libxml.spec Makefile doc/Makefile example/Makefile xmlversion.h xml-config win32config.h)
+AC_OUTPUT(libxml.spec Makefile doc/Makefile example/Makefile xmlversion.h xml-config win32config.h libxml-2.0.pc)
 

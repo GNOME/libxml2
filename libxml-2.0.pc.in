@@ -1,0 +1,15 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+VERSION="@VERSION@"
+REQUIRES=""
+CFLAGS="@XML_INCLUDEDIR@ @XML_CFLAGS@ $CFLAGS"
+LIBS_PATH="-L${libdir} $LIBS_PATH"
+LIBS_LINK_SELF="-lxml $LIBS_LINK_SELF"
+LIBS_LINK_SYSTEM="@Z_LIBS@ @M_LIBS@ @LIBS@ $LIBS_LINK_SYSTEM"
+
+
+#Name: libXML
+#Description: libXML library.

@@ -126,7 +126,6 @@ tests: XMLtests XMLenttests NStests IDtests Errtests @READER_TEST@ @TEST_SAX@ @T
 	@(if [ "@PYTHON_SUBDIR@" != "" ] ; then cd python ; \
 	    $(MAKE) MAKEFLAGS+=--silent tests ; fi)
 	@(cd doc/examples ; $(MAKE) MAKEFLAGS+=--silent tests)
-	@(if [ -x $(PYTHON) ] ; then cd xstc ; $(MAKE) MAKEFLAGS+=--silent pytests ; fi)
 
 valgrind:
 	@echo '## Running the regression tests under Valgrind'
@@ -971,6 +970,7 @@ SchemasPythonTests:
 	    echo "## It is normal to see 6 errors reported" ; \
 	    $(CHECKER) $(PYTHON) $(srcdir)/check-xsddata-test-suite.py ; \
 	  fi)
+	@(if [ -x $(PYTHON) -a -d xstc ] ; then cd xstc ; $(MAKE) MAKEFLAGS+=--silent pytests ; fi)
 
 cleanup:
 	-@(find . -name .\#\* -exec rm {} \;)

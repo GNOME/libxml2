@@ -1,3 +1,8 @@
+Fri Mar  8 16:45:55 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: fixed a bug newly introduced and pointed by Uwe Fechner
+	  in xmlCopyProp()
+
 Fri Mar  8 15:49:10 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in: preparing 2.4.17 release

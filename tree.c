@@ -2890,7 +2890,8 @@ xmlCopyProp(xmlNodePtr target, xmlAttrPtr cur) {
     /*
      * Try to handle IDs
      */
-    if ((target->doc != NULL) && (cur->doc != NULL) &&
+    if ((target!= NULL) && (cur!= NULL) &&
+	(target->doc != NULL) && (cur->doc != NULL) &&
 	(cur->doc->ids != NULL) && (cur->parent != NULL)) {
 	if (xmlIsID(cur->doc, cur->parent, cur)) {
 	    xmlChar *id;

@@ -770,7 +770,7 @@ xmlStringGetNodeList(xmlDocPtr doc, const xmlChar *value) {
 	} else
 	    cur++;
     }
-    if (cur != q) {
+    if ((cur != q) || (ret == NULL)) {
         /*
 	 * Handle the last piece of text.
 	 */
@@ -4342,7 +4342,8 @@ xmlSetProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
 	return(NULL);
     doc = node->doc;
     while (prop != NULL) {
-        if (xmlStrEqual(prop->name, name)) {
+        if ((xmlStrEqual(prop->name, name)) &&
+	    (prop->ns == NULL)){
 	    if (prop->children != NULL) 
 	        xmlFreeNodeList(prop->children);
 	    prop->children = NULL;
@@ -4364,13 +4365,43 @@ xmlSetProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
 		    tmp = tmp->next;
 		}
 		xmlFree(buffer);
-	    }	
+	    }
 	    return(prop);
 	}
 	prop = prop->next;
     }
     prop = xmlNewProp(node, name, value);
     return(prop);
+}
+
+/**
+ * xmlUnsetProp:
+ * @node:  the node
+ * @name:  the attribute name
+ *
+ * Remove an attribute carried by a node.
+ * Returns 0 if successful, -1 if not found
+ */
+int
+xmlUnsetProp(xmlNodePtr node, const xmlChar *name) {
+    xmlAttrPtr prop = node->properties, prev = NULL;;
+
+    if ((node == NULL) || (name == NULL))
+	return(-1);
+    while (prop != NULL) {
+        if ((xmlStrEqual(prop->name, name)) &&
+	    (prop->ns == NULL)) {
+	    if (prev == NULL)
+		node->properties = prop->next;
+	    else
+		prev->next = prop->next;
+	    xmlFreeProp(prop);
+	    return(0);
+	}
+	prev = prop;
+	prop = prop->next;
+    }
+    return(-1);
 }
 
 /**
@@ -4438,6 +4469,43 @@ xmlSetNsProp(xmlNodePtr node, xmlNsPtr ns, const xmlChar *name,
     }
     prop = xmlNewNsProp(node, ns, name, value);
     return(prop);
+}
+
+/**
+ * xmlUnsetNsProp:
+ * @node:  the node
+ * @ns:  the namespace definition
+ * @name:  the attribute name
+ *
+ * Remove an attribute carried by a node.
+ * Returns 0 if successful, -1 if not found
+ */
+int
+xmlUnsetNsProp(xmlNodePtr node, xmlNsPtr ns, const xmlChar *name) {
+    xmlAttrPtr prop = node->properties, prev = NULL;;
+
+    if ((node == NULL) || (name == NULL))
+	return(-1);
+    if (ns == NULL)
+	return(xmlUnsetProp(node, name));
+    if (ns->href == NULL)
+	return(-1);
+    while (prop != NULL) {
+        if ((xmlStrEqual(prop->name, name)) &&
+	    (((prop->ns == NULL) && (node->ns != NULL) &&
+	      (xmlStrEqual(node->ns->href, ns->href))) ||
+	     ((prop->ns != NULL) && (xmlStrEqual(prop->ns->href, ns->href))))) {
+	    if (prev == NULL)
+		node->properties = prop->next;
+	    else
+		prev->next = prop->next;
+	    xmlFreeProp(prop);
+	    return(0);
+	}
+	prev = prop;
+	prop = prop->next;
+    }
+    return(-1);
 }
 
 /**

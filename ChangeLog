@@ -1,3 +1,9 @@
+Fri May 11 19:37:30 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* tree.[ch]: fixing bug #54446, by cleaning some bugs in the
+	  attributes handling and #54433 by adding xmlUnsetProp()
+	  and xmlUnsetNsProp()
+
 Fri May 11 16:07:13 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* HTMLparser.c: Patch from Jonas Borgström

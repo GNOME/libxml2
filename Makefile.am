@@ -62,7 +62,7 @@ testDocbook_LDADD= $(LDADDS)
 xmlcatalog_SOURCES=xmlcatalog.c
 xmlcatalog_LDFLAGS = 
 xmlcatalog_DEPENDENCIES = $(DEPS)
-xmlcatalog_LDADD= $(LDADDS)
+xmlcatalog_LDADD= @RDL_LIBS@ $(LDADDS)
 
 testXPath_SOURCES=testXPath.c
 testXPath_LDFLAGS = 

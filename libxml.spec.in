@@ -129,7 +129,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %doc %{_mandir}/man1/xml2-config.1*
 %doc AUTHORS ChangeLog NEWS README Copyright TODO
-%doc doc/*.html doc/html
+%doc doc/*.html doc/html doc/*.gif doc/*.png
 
 %{prefix}/lib/lib*.so
 %{prefix}/lib/*a

@@ -3,6 +3,20 @@ Thu Aug 26 12:27:23 CEST 2004 Daniel Veillard <daniel@veillard.com>
 	* parser.c: remove a warning on Solaris
 	* xmlschemastype.c: fix a crashing bug #151111
 
+Wed Aug 25 22:20:18 CEST 2004 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* test/schemas/import-bad-1_0.imp: Added missing test file.
+	* xmlschemas.c include/libxml/xmlerror.h include/libxml/xmlschemas.h:
+	  Substituted the obsolete xmlSchemaValidError(s) for xmlParserErrors
+	  - see #150840. 
+	  Changed the import of schemas to allow failure of location
+	  of a resource to be imported.
+	* result/schemas/all_* result/schemas/any3_0_0.err 
+	  result/schemas/choice_* result/schemas/import1_0_0.err
+	  result/schemas/list0_0_1.err result/schemas/list0_1_0.err
+	  result/schemas/list0_1_1.err result/schemas/ns0_0_2.err
+	  result/schemas/ns0_1_2.err: Adapted regression test results.
+
 Tue Aug 24 20:49:15 MDT 2004 John Fleck <jfleck@inkstain.net>
 
 	* doc/tutorial/xmltutorial.xml, xmltutorial.pdf, *.html

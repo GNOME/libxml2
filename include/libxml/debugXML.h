@@ -47,6 +47,12 @@ void	xmlDebugDumpDTD		(FILE *output,
 void	xmlDebugDumpEntities	(FILE *output,
 				 xmlDocPtr doc);
 
+void	xmlLsOneNode		(FILE *output, xmlNodePtr node);
+int	xmlLsCountNode		(xmlNodePtr node);
+
+const char *xmlBoolToText	(int bool);
+long	xmlGetLineNo		(xmlNodePtr node);
+
 /****************************************************************
  *								*
  *	 The XML shell related structures and functions		*
@@ -97,13 +103,57 @@ typedef int (* xmlShellCmd) (xmlShellCtxtPtr ctxt,
 			     xmlNodePtr node,
 			     xmlNodePtr node2);
 
+void	xmlShellPrintXPathError	(int errorType, const char* arg);
+void	xmlShellPrintNode	(xmlNodePtr node);
+void	xmlShellPrintXPathResult(xmlXPathObjectPtr list);
+int	xmlShellList		(xmlShellCtxtPtr ctxt,
+				 char *arg,
+				 xmlNodePtr node,
+				 xmlNodePtr node2);
+int	xmlShellBase		(xmlShellCtxtPtr ctxt,
+				 char *arg,
+				 xmlNodePtr node,
+				 xmlNodePtr node2);
+int	xmlShellDir		(xmlShellCtxtPtr ctxt,
+				 char *arg,
+				 xmlNodePtr node,
+				 xmlNodePtr node2);
+int	xmlShellCat		(xmlShellCtxtPtr ctxt,
+				 char *arg,
+				 xmlNodePtr node,
+				 xmlNodePtr node2);
+int	xmlShellLoad		(xmlShellCtxtPtr ctxt,
+				 char *filename,
+				 xmlNodePtr node,
+				 xmlNodePtr node2);
+int	xmlShellWrite		(xmlShellCtxtPtr ctxt,
+				 char *filename,
+				 xmlNodePtr node,
+				 xmlNodePtr node2);
+int	xmlShellSave		(xmlShellCtxtPtr ctxt,
+				 char *filename,
+				 xmlNodePtr node,
+				 xmlNodePtr node2);
+int	xmlShellValidate	(xmlShellCtxtPtr ctxt,
+				 char *dtd,
+				 xmlNodePtr node,
+				 xmlNodePtr node2);
+int	xmlShellDu		(xmlShellCtxtPtr ctxt,
+				 char *arg,
+				 xmlNodePtr tree,
+				 xmlNodePtr node2);
+int	xmlShellPwd		(xmlShellCtxtPtr ctxt,
+				 char *buffer,
+				 xmlNodePtr node,
+				 xmlNodePtr node2);
+
 /*
  * The Shell interface.
  */
-void	xmlShell	(xmlDocPtr doc,
-			 char *filename,
-			 xmlShellReadlineFunc input,
-			 FILE *output);
+void	xmlShell		(xmlDocPtr doc,
+				 char *filename,
+				 xmlShellReadlineFunc input,
+				 FILE *output);
 			 
 #ifdef __cplusplus
 }

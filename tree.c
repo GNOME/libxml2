@@ -5479,6 +5479,10 @@ xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
         xmlDumpElementDecl(buf, (xmlElementPtr) cur);
 	return;
     }
+    if (cur->type == XML_ATTRIBUTE_NODE){
+      xmlAttrDump(buf, doc, (xmlAttrPtr)cur);
+      return;
+    }
     if (cur->type == XML_ATTRIBUTE_DECL) {
         xmlDumpAttributeDecl(buf, (xmlAttributePtr) cur);
 	return;
@@ -5653,6 +5657,7 @@ xmlElemDump(FILE *f, xmlDocPtr doc, xmlNodePtr cur) {
 		"xmlElemDump : doc == NULL\n");
     }
 #endif
+      
     buf = xmlBufferCreate();
     if (buf == NULL) return;
     if ((doc != NULL) && 

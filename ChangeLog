@@ -1,3 +1,9 @@
+Mon Feb 10 16:41:13 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* encoding.c xmlIO.c: fixing bug #104646 about iconv based
+	  encoding conversion when the input buffer stops in the
+	  middle of a multibyte char
+
 Mon Feb 10 15:24:47 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* test/relaxng/OASIS/spectest.xml: OASIS RelaxNG testsuite

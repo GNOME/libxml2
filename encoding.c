@@ -2283,8 +2283,10 @@ retry:
 #endif
 	    break;
         case -3:
+#ifdef DEBUG_ENCODING
 	    xmlGenericError(xmlGenericErrorContext,"converted %d bytes to %d bytes of output %d left\n",
 	            toconv, written, in->use);
+#endif
 	    break;
         case -2: {
 	    int len = in->use;

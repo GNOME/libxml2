@@ -2364,7 +2364,7 @@ xmlOutputBufferWrite(xmlOutputBufferPtr out, int len, const char *buf) {
 	     * convert as much as possible to the parser reading buffer.
 	     */
 	    ret = xmlCharEncOutFunc(out->encoder, out->conv, out->buffer);
-	    if (ret < 0) {
+	    if ((ret < 0) && (ret != -3)) {
 		xmlGenericError(xmlGenericErrorContext,
 			"xmlOutputBufferWrite: encoder error\n");
 		return(-1);

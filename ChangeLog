@@ -1,3 +1,8 @@
+Tue Sep 10 21:05:28 CEST 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
+
+	* win32/configure.js: added more readme info for the binary
+	  package.
+	
 Tue Sep 10 14:15:18 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xmlIO.c: fixed a stupid out of bound array error

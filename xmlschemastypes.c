@@ -1761,7 +1761,8 @@ xmlSchemaValAtomicListNode(xmlSchemaTypePtr type, const xmlChar *value,
  *
  * Parse an unsigned long into 3 fields.
  *
- * Returns the number of chars parsed or -1 if overflow of the capacity
+ * Returns the number of significant digits in the number or
+ * -1 if overflow of the capacity
  */
 static int
 xmlSchemaParseUInt(const xmlChar **str, unsigned long *llo,
@@ -1770,8 +1771,7 @@ xmlSchemaParseUInt(const xmlChar **str, unsigned long *llo,
     const xmlChar *tmp, *cur = *str;
     int ret = 0, i = 0;
 
-    while (*cur == '0') {
-	ret++;
+    while (*cur == '0') {	/* ignore leading zeroes */
 	cur++;
     }
     tmp = cur;
@@ -1923,7 +1923,6 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
 		}
 		if (*cur != 0)
 		    goto return1;	/* error if any extraneous chars */
-
                 if (val != NULL) {
                     v = xmlSchemaNewValue(XML_SCHEMAS_DECIMAL);
                     if (v != NULL) {
@@ -2637,7 +2636,7 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
         case XML_SCHEMAS_NNINTEGER:{
                 const xmlChar *cur = value;
                 unsigned long lo, mi, hi;
-                int sign = 0, total = 0;
+                int sign = 0;
 
                 if (cur == NULL)
                     goto return1;
@@ -2646,22 +2645,11 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
                     cur++;
                 } else if (*cur == '+')
                     cur++;
-		/* Skip leading zeroes. */
-		while ((*cur == '0') && ((*(cur + 1)) != 0))
-		    cur++;
-		if (*cur != '0') {
-		    total = xmlSchemaParseUInt(&cur, &lo, &mi, &hi);
-		    if (total <= 0)
-			goto return1;
-		    if (*cur != 0)
-			goto return1;
-		} else {
-		    /* Tiny speedup for "0" */
-		    total = 1;
-		    lo = 0;
-		    mi = 0;
-		    hi = 0;
-		}                
+                ret = xmlSchemaParseUInt(&cur, &lo, &mi, &hi);
+                if (ret == -1)
+                    goto return1;
+                if (*cur != 0)
+                    goto return1;
                 if (type->builtInType == XML_SCHEMAS_NPINTEGER) {
                     if ((sign == 0) &&
                         ((hi != 0) || (mi != 0) || (lo != 0)))
@@ -2681,9 +2669,6 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
                         ((hi != 0) || (mi != 0) || (lo != 0)))
                         goto return1;
                 }
-                /*
-                 * We can store a value only if no overflow occured
-                 */
                 if (val != NULL) {
                     v = xmlSchemaNewValue(type->builtInType);
                     if (v != NULL) {
@@ -2692,7 +2677,7 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
                         v->value.decimal.hi = hi;
                         v->value.decimal.sign = sign;
                         v->value.decimal.frac = 0;
-                        v->value.decimal.total = total;
+                        v->value.decimal.total = ret;
                         *val = v;
                     }
                 }
@@ -2704,7 +2689,6 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
         case XML_SCHEMAS_INT:{
                 const xmlChar *cur = value;
                 unsigned long lo, mi, hi;
-                int total = 0;
                 int sign = 0;
 
                 if (cur == NULL)
@@ -2714,22 +2698,11 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
                     cur++;
                 } else if (*cur == '+')
                     cur++;
-		/* Skip leading zeroes. */
-		while ((*cur == '0') && ((*(cur + 1)) != 0))
-		    cur++;
-		if (*cur != '0') {
-		    total = xmlSchemaParseUInt(&cur, &lo, &mi, &hi);
-		    if (total <= 0)
-			goto return1;
-		    if (*cur != 0)
-			goto return1;
-		} else {
-		    /* Tiny speedup for "0" */
-		    total = 1;
-		    lo = 0;
-		    mi = 0;
-		    hi = 0;
-		}
+                ret = xmlSchemaParseUInt(&cur, &lo, &mi, &hi);
+                if (ret < 0)
+                    goto return1;
+                if (*cur != 0)
+                    goto return1;
                 if (type->builtInType == XML_SCHEMAS_LONG) {
                     if (hi >= 922) {
                         if (hi > 922)
@@ -2777,7 +2750,7 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
                         v->value.decimal.hi = hi;
                         v->value.decimal.sign = sign;
                         v->value.decimal.frac = 0;
-                        v->value.decimal.total = total;
+                        v->value.decimal.total = ret;
                         *val = v;
                     }
                 }
@@ -2789,27 +2762,14 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
         case XML_SCHEMAS_UBYTE:{
                 const xmlChar *cur = value;
                 unsigned long lo, mi, hi;
-                int total = 0;
 
                 if (cur == NULL)
                     goto return1;
-		/* Note that "+" is not allowed. */
-		/* Skip leading zeroes. */
-		while ((*cur == '0') && ((*(cur + 1)) != 0))
-		    cur++;
-		if (*cur != '0') {
-		    total = xmlSchemaParseUInt(&cur, &lo, &mi, &hi);
-		    if (total <= 0)
-			goto return1;
-		    if (*cur != 0)
-			goto return1;
-		} else {
-		    /* Tiny speedup for "0" */
-		    total = 1;
-		    lo = 0;
-		    mi = 0;
-		    hi = 0;
-		}
+                ret = xmlSchemaParseUInt(&cur, &lo, &mi, &hi);
+                if (ret < 0)
+                    goto return1;
+                if (*cur != 0)
+                    goto return1;
                 if (type->builtInType == XML_SCHEMAS_ULONG) {
                     if (hi >= 1844) {
                         if (hi > 1844)
@@ -2849,7 +2809,7 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
                         v->value.decimal.hi = hi;
                         v->value.decimal.sign = 0;
                         v->value.decimal.frac = 0;
-                        v->value.decimal.total = total;
+                        v->value.decimal.total = ret;
                         *val = v;
                     }
                 }

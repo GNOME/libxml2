@@ -34,3 +34,8 @@ testURI
 testDocbook
 testCatalog
 xmlcatalog
+testAutomata
+testC14N
+testRegexp
+testSchemas
+testThreads

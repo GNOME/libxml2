@@ -8012,35 +8012,34 @@ xmlXPathCompFilterExpr(xmlXPathParserContextPtr ctxt) {
 
 static xmlChar *
 xmlXPathScanName(xmlXPathParserContextPtr ctxt) {
-    xmlChar buf[XML_MAX_NAMELEN];
-    int len = 0;
+    int len = 0, l;
+    int c;
+    int count = 0;
+    const xmlChar *cur;
+    xmlChar *ret;
 
-    SKIP_BLANKS;
-    if (!IS_ASCII_LETTER(CUR) && (CUR != '_') &&
-        (CUR != ':')) {
+    cur = ctxt->cur;
+
+    c = CUR_CHAR(l);
+    if ((c == ' ') || (c == '>') || (c == '/') || /* accelerators */
+	(!IS_LETTER(c) && (c != '_') &&
+         (c != ':'))) {
 	return(NULL);
     }
 
-    while ((IS_ASCII_LETTER(NXT(len))) || (IS_ASCII_DIGIT(NXT(len))) ||
-           (NXT(len) == '.') || (NXT(len) == '-') ||
-	   (NXT(len) == '_') || (NXT(len) == ':') || 
-	   (IS_COMBINING_CH(NXT(len))) ||
-	   (IS_EXTENDER_CH(NXT(len)))) {
-	buf[len] = NXT(len);
-	len++;
-	if (len >= XML_MAX_NAMELEN) {
-	    xmlGenericError(xmlGenericErrorContext, 
-	       "xmlScanName: reached XML_MAX_NAMELEN limit\n");
-	    while ((IS_ASCII_LETTER(NXT(len))) || (IS_ASCII_DIGIT(NXT(len))) ||
-		   (NXT(len) == '.') || (NXT(len) == '-') ||
-		   (NXT(len) == '_') || (NXT(len) == ':') || 
-		   (IS_COMBINING_CH(NXT(len))) ||
-		   (IS_EXTENDER_CH(NXT(len))))
-		 len++;
-	    break;
-	}
+    while ((c != ' ') && (c != '>') && (c != '/') && /* test bigname.xml */
+	   ((IS_LETTER(c)) || (IS_DIGIT(c)) ||
+            (c == '.') || (c == '-') ||
+	    (c == '_') || (c == ':') || 
+	    (IS_COMBINING(c)) ||
+	    (IS_EXTENDER(c)))) {
+	len += l;
+	NEXTL(l);
+	c = CUR_CHAR(l);
     }
-    return(xmlStrndup(buf, len));
+    ret = xmlStrndup(cur, ctxt->cur - cur);
+    ctxt->cur = cur;
+    return(ret);
 }
 
 /**

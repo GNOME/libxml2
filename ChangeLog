@@ -1,3 +1,8 @@
+Mon May 27 14:16:28 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c: patch from Richard Jinks to fix a problem introduced
+	  in the previous patch and pointed by Norm
+
 Fri May 24 13:10:22 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* libxml.spec.in: fixing bug #81112

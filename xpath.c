@@ -8100,7 +8100,7 @@ xmlXPathCompNodeTest(xmlXPathParserContextPtr ctxt, xmlXPathTestVal *test,
 	    if (CUR != ')') {
 		name = xmlXPathParseLiteral(ctxt);
 		CHECK_ERROR 0;
-		*type = NODE_TEST_PI;
+		*test = NODE_TEST_PI;
 		SKIP_BLANKS;
 	    }
 	}

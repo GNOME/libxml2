@@ -1421,7 +1421,7 @@ xmlSAX2StartElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
     const xmlChar *value;
     int i;
 
-    if ((ctx == NULL) || (fullname == NULL)) return;
+    if ((ctx == NULL) || (fullname == NULL) || (ctxt->myDoc == NULL)) return;
     parent = ctxt->node;
 #ifdef DEBUG_SAX
     xmlGenericError(xmlGenericErrorContext,

@@ -71,6 +71,7 @@ struct _xmlTextWriter {
     xmlChar *ichar;             /* indent character */
     char qchar;                 /* character used for quoting attribute values */
     xmlParserCtxtPtr ctxt;
+    int no_doc_free;
 };
 
 static void xmlFreeTextWriterStackEntry(xmlLinkPtr lk);
@@ -198,6 +199,7 @@ xmlNewTextWriter(xmlOutputBufferPtr out)
                         "xmlNewTextWriter : out of memory!\n");
         return NULL;
     }
+    ret->no_doc_free = 0;
 
     return ret;
 }
@@ -376,8 +378,10 @@ xmlNewTextWriterDoc(xmlDocPtr * doc, int compression)
 
     xmlSetDocCompressMode(ctxt->myDoc, compression);
 
-    if (doc != NULL)
+    if (doc != NULL) {
         *doc = ctxt->myDoc;
+	ret->no_doc_free = 1;
+    }
 
     return ret;
 }
@@ -434,6 +438,7 @@ xmlNewTextWriterTree(xmlDocPtr doc, xmlNodePtr node, int compression)
 
     ctxt->myDoc = doc;
     ctxt->node = node;
+    ret->no_doc_free = 1;
 
     xmlSetDocCompressMode(doc, compression);
 
@@ -461,8 +466,13 @@ xmlFreeTextWriter(xmlTextWriterPtr writer)
     if (writer->nsstack != NULL)
         xmlListDelete(writer->nsstack);
 
-    if (writer->ctxt != NULL)
+    if (writer->ctxt != NULL) {
+        if ((writer->ctxt->myDoc != NULL) && (writer->no_doc_free == 0)) {
+	    xmlFreeDoc(writer->ctxt->myDoc);
+	    writer->ctxt->myDoc = NULL;
+	}
         xmlFreeParserCtxt(writer->ctxt);
+    }
 
     if (writer->ichar != NULL)
         xmlFree(writer->ichar);

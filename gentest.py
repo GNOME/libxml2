@@ -21,6 +21,80 @@ skipped_modules = [ "SAX", "xlink", "threads", "globals",
 ]
 
 #
+# defines for each module
+#
+modules_defines = {
+    "HTMLparser": "LIBXML_HTML_ENABLED",
+    "catalog": "LIBXML_CATALOG_ENABLED",
+    "xmlreader": "LIBXML_READER_ENABLED",
+    "relaxng": "LIBXML_SCHEMAS_ENABLED",
+    "schemasInternals": "LIBXML_SCHEMAS_ENABLED",
+    "xmlschemas": "LIBXML_SCHEMAS_ENABLED",
+    "xmlschemastypes": "LIBXML_SCHEMAS_ENABLED",
+    "xpath": "LIBXML_XPATH_ENABLED",
+    "xpathInternals": "LIBXML_XPATH_ENABLED",
+    "xinclude": "LIBXML_XINCLUDE_ENABLED",
+    "xpointer": "LIBXML_XPTR_ENABLED",
+    "xmlregexp" : "LIBXML_REGEXP_ENABLED",
+    "xmlautomata" : "LIBXML_AUTOMATA_ENABLED",
+    "xmlsave" : "LIBXML_OUTPUT_ENABLED",
+    "DOCBparser" : "LIBXML_DOCB_ENABLED",
+}
+
+#
+# defines for specific functions
+#
+function_defines = {
+    "htmlDefaultSAXHandlerInit": "LIBXML_HTML_ENABLED",
+    "xmlSAX2EndElement" : "LIBXML_SAX1_ENABLED",
+    "xmlSAX2StartElement" : "LIBXML_SAX1_ENABLED",
+    "xmlSAXDefaultVersion" : "LIBXML_SAX1_ENABLED",
+    "UTF8Toisolat1" : "LIBXML_OUTPUT_ENABLED",
+    "xmlCleanupPredefinedEntities": "LIBXML_LEGACY_ENABLED",
+    "xmlInitializePredefinedEntities": "LIBXML_LEGACY_ENABLED",
+    "xmlSetFeature": "LIBXML_LEGACY_ENABLED",
+    "xmlGetFeature": "LIBXML_LEGACY_ENABLED",
+    "xmlGetFeaturesList": "LIBXML_LEGACY_ENABLED",
+    "xmlIOParseDTD": "LIBXML_VALID_ENABLED",
+    "xmlParseDTD": "LIBXML_VALID_ENABLED",
+    "xmlParseDoc": "LIBXML_SAX1_ENABLED",
+    "xmlParseMemory": "LIBXML_SAX1_ENABLED",
+    "xmlRecoverDoc": "LIBXML_SAX1_ENABLED",
+    "xmlParseFile": "LIBXML_SAX1_ENABLED",
+    "xmlRecoverFile": "LIBXML_SAX1_ENABLED",
+    "xmlRecoverMemory": "LIBXML_SAX1_ENABLED",
+    "xmlSAXParseFileWithData": "LIBXML_SAX1_ENABLED",
+    "xmlSAXParseMemory": "LIBXML_SAX1_ENABLED",
+    "xmlSAXUserParseMemory": "LIBXML_SAX1_ENABLED",
+    "xmlSAXParseDoc": "LIBXML_SAX1_ENABLED",
+    "xmlSAXParseDTD": "LIBXML_SAX1_ENABLED",
+    "xmlSAXUserParseFile": "LIBXML_SAX1_ENABLED",
+    "xmlParseEntity": "LIBXML_SAX1_ENABLED",
+    "xmlParseExternalEntity": "LIBXML_SAX1_ENABLED",
+    "xmlSAXParseMemoryWithData": "LIBXML_SAX1_ENABLED",
+    "xmlParseBalancedChunkMemory": "LIBXML_SAX1_ENABLED",
+    "xmlParseBalancedChunkMemoryRecover": "LIBXML_SAX1_ENABLED",
+    "xmlSetupParserForBuffer": "LIBXML_SAX1_ENABLED",
+    "xmlStopParser": "LIBXML_PUSH_ENABLED",
+    "xmlAttrSerializeTxtContent": "LIBXML_OUTPUT_ENABLED",
+    "xmlSAXParseFile": "LIBXML_SAX1_ENABLED",
+    "xmlSAXParseEntity": "LIBXML_SAX1_ENABLED",
+    "xmlNewTextChild": "LIBXML_TREE_ENABLED",
+    "xmlNewDocRawNode": "LIBXML_TREE_ENABLED",
+    "xmlNewProp": "LIBXML_TREE_ENABLED",
+    "xmlReconciliateNs": "LIBXML_TREE_ENABLED",
+    "xmlValidateNCName": "LIBXML_TREE_ENABLED",
+    "xmlValidateNMToken": "LIBXML_TREE_ENABLED",
+    "xmlValidateName": "LIBXML_TREE_ENABLED",
+    "xmlNewChild": "LIBXML_TREE_ENABLED",
+    "xmlValidateQName": "LIBXML_TREE_ENABLED",
+    "xmlSprintfElementContent": "LIBXML_OUTPUT_ENABLED",
+    "xmlValidGetPotentialChildren" : "LIBXML_VALID_ENABLED",
+    "xmlValidGetValidElements" : "LIBXML_VALID_ENABLED",
+    "docbDefaultSAXHandlerInit" : "LIBXML_DOCB_ENABLED",
+}
+
+#
 # Some function really need to be skipped for the tests.
 #
 skipped_functions = [
@@ -97,14 +171,26 @@ skipped_memcheck = [ "xmlLoadCatalog", "xmlAddEncodingAlias",
 # Extra code needed for some test cases
 #
 extra_pre_call = {
-   "xmlSAXUserParseFile":
-       "if (sax == (xmlSAXHandlerPtr)&xmlDefaultSAXHandler) user_data = NULL;",
-   "xmlSAXUserParseMemory":
-       "if (sax == (xmlSAXHandlerPtr)&xmlDefaultSAXHandler) user_data = NULL;",
-   "xmlParseBalancedChunkMemory":
-       "if (sax == (xmlSAXHandlerPtr)&xmlDefaultSAXHandler) user_data = NULL;",
-   "xmlParseBalancedChunkMemoryRecover":
-       "if (sax == (xmlSAXHandlerPtr)&xmlDefaultSAXHandler) user_data = NULL;",
+   "xmlSAXUserParseFile": """
+#ifdef LIBXML_SAX1_ENABLED
+        if (sax == (xmlSAXHandlerPtr)&xmlDefaultSAXHandler) user_data = NULL;
+#endif
+""",
+   "xmlSAXUserParseMemory": """
+#ifdef LIBXML_SAX1_ENABLED
+        if (sax == (xmlSAXHandlerPtr)&xmlDefaultSAXHandler) user_data = NULL;
+#endif
+""",
+   "xmlParseBalancedChunkMemory": """
+#ifdef LIBXML_SAX1_ENABLED
+        if (sax == (xmlSAXHandlerPtr)&xmlDefaultSAXHandler) user_data = NULL;
+#endif
+""",
+   "xmlParseBalancedChunkMemoryRecover": """
+#ifdef LIBXML_SAX1_ENABLED
+        if (sax == (xmlSAXHandlerPtr)&xmlDefaultSAXHandler) user_data = NULL;
+#endif
+""",
    "xmlParserInputBufferCreateFd":
        "if (fd >= 0) fd = -1;",
 }
@@ -151,8 +237,13 @@ extra_post_call = {
    "xmlCopyNamespace": "if (ret_val != NULL) xmlFreeNs(ret_val);",
    "xmlCopyNamespaceList": "if (ret_val != NULL) xmlFreeNsList(ret_val);",
    "xmlNewTextWriter": "if (ret_val != NULL) out = NULL;",
-   "xmlNewTextWriterPushParser": "if (ret_val != NULL) ctxt = NULL;",
+   "xmlNewTextWriterPushParser": "if (ctxt != NULL) {xmlFreeDoc(ctxt->myDoc); ctxt->myDoc = NULL;} if (ret_val != NULL) ctxt = NULL;",
    "xmlNewIOInputStream": "if (ret_val != NULL) input = NULL;",
+   "htmlParseChunk": "if (ctxt != NULL) {xmlFreeDoc(ctxt->myDoc); ctxt->myDoc = NULL;}",
+   "htmlParseDocument": "if (ctxt != NULL) {xmlFreeDoc(ctxt->myDoc); ctxt->myDoc = NULL;}",
+   "xmlParseDocument": "if (ctxt != NULL) {xmlFreeDoc(ctxt->myDoc); ctxt->myDoc = NULL;}",
+   "xmlParseChunk": "if (ctxt != NULL) {xmlFreeDoc(ctxt->myDoc); ctxt->myDoc = NULL;}",
+   "xmlParseExtParsedEnt": "if (ctxt != NULL) {xmlFreeDoc(ctxt->myDoc); ctxt->myDoc = NULL;}",
 }
 
 modules = []
@@ -217,9 +308,6 @@ def type_convert(str, name, info, module, function, pos):
     res = string.replace(str, " *", "_ptr")
 #    res = string.replace(str, "*", "_ptr")
     res = string.replace(res, " ", "_")
-    res = string.replace(res, "htmlNode", "xmlNode")
-    res = string.replace(res, "htmlDoc", "xmlDoc")
-    res = string.replace(res, "htmlParser", "xmlParser")
     if res == 'const_char_ptr':
         if string.find(name, "file") != -1 or \
            string.find(name, "uri") != -1 or \
@@ -301,6 +389,10 @@ def is_known_param_type(name, rtype):
 	else:
 	    crtype = rtype
 
+        define = 0
+	if modules_defines.has_key(module):
+	    test.write("#ifdef %s\n" % (modules_defines[module]))
+	    define = 1
         test.write("""
 #define gen_nb_%s 1
 static %s gen_%s(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
@@ -309,6 +401,8 @@ static %s gen_%s(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
 static void des_%s(int no ATTRIBUTE_UNUSED, %s val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
 }
 """ % (name, crtype, name, name, rtype))
+        if define == 1:
+	    test.write("#endif\n\n")
         add_generated_param_type(name)
         return 1
 
@@ -386,6 +480,8 @@ for enum in enums:
     name = enum.xpathEval('string(@name)')
     if name == None:
         continue;
+    module = enum.xpathEval('string(@file)')
+    define = 0
 
     if is_known_param_type(name, name) == 0:
 	values = ctxt.xpathEval("/api/symbols/enum[@type='%s']" % name)
@@ -402,6 +498,9 @@ for enum in enums:
 	if vals == []:
 	    print "Didn't found any value for enum %s" % (name)
 	    continue
+	if modules_defines.has_key(module):
+	    test.write("#ifdef %s\n" % (modules_defines[module]))
+	    define = 1
 	test.write("#define gen_nb_%s %d\n" % (name, len(vals)))
 	test.write("""static %s gen_%s(int no, int nr ATTRIBUTE_UNUSED) {\n""" %
 	           (name, name))
@@ -415,6 +514,9 @@ for enum in enums:
 	known_param_types.append(name)
 
     if is_known_return_type(name) == 0:
+	if define == 0 and modules_defines.has_key(module):
+	    test.write("#ifdef %s\n" % (modules_defines[module]))
+	    define = 1
         test.write("""static void des_%s(int no ATTRIBUTE_UNUSED, %s val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
 }
 static void desret_%s(%s val ATTRIBUTE_UNUSED) {
@@ -422,6 +524,8 @@ static void desret_%s(%s val ATTRIBUTE_UNUSED) {
 
 """ % (name, name, name, name))
 	known_return_types.append(name)
+    if define == 1:
+        test.write("#endif\n\n")
 
 #
 # Load the interfaces
@@ -566,6 +670,11 @@ test_%s(void) {
 	    nb_cond = nb_cond + 1
     except:
         pass
+
+    define = 0
+    if function_defines.has_key(name):
+        test.write("#ifdef %s\n" % (function_defines[name]))
+	define = 1
     
     # Declare the memory usage counter
     no_mem = is_skipped_memcheck(name)
@@ -672,6 +781,8 @@ test_%s(void) {
     while nb_cond > 0:
         test.write("#endif\n")
 	nb_cond = nb_cond -1
+    if define == 1:
+        test.write("#endif\n")
 
     nb_tests = nb_tests + 1;
 

@@ -1,3 +1,9 @@
+Tue Nov  9 15:59:50 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* gentest.py testapi.c: better handling of conditional features
+	* HTMLparser.c SAX2.c parserInternals.c xmlwriter.c: more testing
+	  on parser contexts closed leaks, error messages
+
 Tue Nov  9 10:21:37 GMT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* xpath.c: fixed problem concerning XPath context corruption

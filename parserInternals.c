@@ -574,15 +574,20 @@ encoding_error:
      * to ISO-Latin-1 (if you don't like this policy, just declare the
      * encoding !)
      */
-    __xmlErrEncoding(ctxt, XML_ERR_INVALID_CHAR,
-		   "Input is not proper UTF-8, indicate encoding !\n",
-		   NULL, NULL);
-    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL) &&
-        (ctxt->input != NULL)) {
-        ctxt->sax->error(ctxt->userData,
-                         "Bytes: 0x%02X 0x%02X 0x%02X 0x%02X\n",
-                         ctxt->input->cur[0], ctxt->input->cur[1],
-                         ctxt->input->cur[2], ctxt->input->cur[3]);
+    if ((ctxt == NULL) || (ctxt->input == NULL) ||
+        (ctxt->input->end - ctxt->input->cur < 4)) {
+	__xmlErrEncoding(ctxt, XML_ERR_INVALID_CHAR,
+		     "Input is not proper UTF-8, indicate encoding !\n",
+		     NULL, NULL);
+    } else {
+        char buffer[150];
+
+	snprintf(buffer, 149, "Bytes: 0x%02X 0x%02X 0x%02X 0x%02X\n",
+			ctxt->input->cur[0], ctxt->input->cur[1],
+			ctxt->input->cur[2], ctxt->input->cur[3]);
+	__xmlErrEncoding(ctxt, XML_ERR_INVALID_CHAR,
+		     "Input is not proper UTF-8, indicate encoding !\n%s",
+		     BAD_CAST buffer, NULL);
     }
     ctxt->charset = XML_CHAR_ENCODING_8859_1;
     ctxt->input->cur++;
@@ -722,14 +727,15 @@ encoding_error:
      * to ISO-Latin-1 (if you don't like this policy, just declare the
      * encoding !)
      */
-    __xmlErrEncoding(ctxt, XML_ERR_INVALID_CHAR,
-		   "Input is not proper UTF-8, indicate encoding !\n",
-		   NULL, NULL);
-    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL) &&
-        (ctxt->input != NULL)) {
-	ctxt->sax->error(ctxt->userData, "Bytes: 0x%02X 0x%02X 0x%02X 0x%02X\n",
+    {
+        char buffer[150];
+
+	snprintf(buffer, 149, "Bytes: 0x%02X 0x%02X 0x%02X 0x%02X\n",
 			ctxt->input->cur[0], ctxt->input->cur[1],
 			ctxt->input->cur[2], ctxt->input->cur[3]);
+	__xmlErrEncoding(ctxt, XML_ERR_INVALID_CHAR,
+		     "Input is not proper UTF-8, indicate encoding !\n%s",
+		     BAD_CAST buffer, NULL);
     }
     ctxt->charset = XML_CHAR_ENCODING_8859_1; 
     *len = 1;
@@ -818,21 +824,31 @@ xmlStringCurrentChar(xmlParserCtxtPtr ctxt, const xmlChar * cur, int *len)
 encoding_error:
 
     /*
+     * An encoding problem may arise from a truncated input buffer
+     * splitting a character in the middle. In that case do not raise
+     * an error but return 0 to endicate an end of stream problem
+     */
+    if ((ctxt == NULL) || (ctxt->input == NULL) ||
+        (ctxt->input->end - ctxt->input->cur < 4)) {
+	*len = 0;
+	return(0);
+    }
+    /*
      * If we detect an UTF8 error that probably mean that the
      * input encoding didn't get properly advertised in the
      * declaration header. Report the error and switch the encoding
      * to ISO-Latin-1 (if you don't like this policy, just declare the
      * encoding !)
      */
-    __xmlErrEncoding(ctxt, XML_ERR_INVALID_CHAR,
-		   "Input is not proper UTF-8, indicate encoding !\n",
-		   NULL, NULL);
-    if ((ctxt != NULL) && (ctxt->sax != NULL) && (ctxt->sax->error != NULL) &&
-        (ctxt->input != NULL)) {
-	ctxt->sax->error(ctxt->userData,
-			 "Bytes: 0x%02X 0x%02X 0x%02X 0x%02X\n",
-			 ctxt->input->cur[0], ctxt->input->cur[1],
-			 ctxt->input->cur[2], ctxt->input->cur[3]);
+    {
+        char buffer[150];
+
+	snprintf(buffer, 149, "Bytes: 0x%02X 0x%02X 0x%02X 0x%02X\n",
+			ctxt->input->cur[0], ctxt->input->cur[1],
+			ctxt->input->cur[2], ctxt->input->cur[3]);
+	__xmlErrEncoding(ctxt, XML_ERR_INVALID_CHAR,
+		     "Input is not proper UTF-8, indicate encoding !\n%s",
+		     BAD_CAST buffer, NULL);
     }
     *len = 1;
     return ((int) *cur);
@@ -1526,6 +1542,8 @@ xmlNewInputFromFile(xmlParserCtxtPtr ctxt, const char *filename) {
 int
 xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
 {
+    xmlParserInputPtr input;
+
     if(ctxt==NULL) {
         xmlErrInternal(NULL, "Got NULL parser context\n", NULL);
         return(-1);
@@ -1562,6 +1580,9 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
 	ctxt->inputMax = 0;
 	ctxt->input = NULL;
 	return(-1);
+    }
+    while ((input = inputPop(ctxt)) != NULL) { /* Non consuming */
+        xmlFreeInputStream(input);
     }
     ctxt->inputNr = 0;
     ctxt->input = NULL;

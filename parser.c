@@ -4822,7 +4822,10 @@ xmlParseElementChildrenContentDecl (xmlParserCtxtPtr ctxt, int inputchk) {
 	if (ret != NULL) {
 	    int found = 0;
 
-	    ret->ocur = XML_ELEMENT_CONTENT_PLUS;
+	    if (ret->ocur == XML_ELEMENT_CONTENT_OPT)
+	        ret->ocur == XML_ELEMENT_CONTENT_MULT;
+	    else
+	        ret->ocur = XML_ELEMENT_CONTENT_PLUS;
 	    /*
 	     * Some normalization:
 	     * (a | b*)+ == (a | b)*

@@ -1,18 +1,20 @@
 <?xml version="1.0"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
-    "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+    "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd" [
 <!ENTITY KEYWORD SYSTEM "includekeyword.c">
 <!ENTITY STORY SYSTEM "includestory.xml">
 <!ENTITY ADDKEYWORD SYSTEM "includeaddkeyword.c">
 <!ENTITY ADDATTRIBUTE SYSTEM "includeaddattribute.c">
 <!ENTITY GETATTRIBUTE SYSTEM "includegetattribute.c">
+<!ENTITY CONVERT SYSTEM "includeconvert.c">
 ]>
-<article>
+<article lang="en">
   <articleinfo>
     <title>Libxml Tutorial</title>
     <author>
       <firstname>John</firstname>
       <surname>Fleck</surname>
+      <email>jfleck@inkstain.net</email>
     </author>
     <copyright>
       <year>2002</year>
@@ -21,7 +23,7 @@
     <revhistory>
       <revision>
 	<revnumber>1</revnumber>
-	<date>June 4,2002</date>
+	<date>June 4, 2002</date>
       </revision>
       <revision>
 	<revnumber>2</revnumber>
@@ -30,6 +32,10 @@
       <revision>
 	<revnumber>3</revnumber>
 	<date>Aug. 31, 2002</date>
+      </revision>
+      <revision>
+	<revnumber>4</revnumber>
+	<date>Nov. 10, 2002</date>
       </revision>
     </revhistory>
   </articleinfo>
@@ -81,7 +87,7 @@
 
   <sect1 id="xmltutorialdatatypes">
     <title>Data Types</title>
-    <para><application>Libxml</application> declares a number of datatypes we
+    <para><application>Libxml</application> declares a number of data types we
     will encounter repeatedly, hiding the messy stuff so you do not have to deal
     with it unless you have some specific need.</para>
     <para>
@@ -91,7 +97,10 @@
 	  url="http://xmlsoft.org/html/libxml-tree.html#XMLCHAR">xmlChar</ulink></term>
 	  <listitem>
 	    <para>A basic replacement for char, a byte in a UTF-8 encoded
-	    string.</para>
+	    string. If your data uses another encoding, it must be converted to
+	      UTF-8 for use with <application>libxml's</application>
+	      functions. More information on encoding is available on the <ulink
+		url="http://www.xmlsoft.org/encoding.html"><application>libxml</application> encoding support web page</ulink>.</para>
 	  </listitem>
 	</varlistentry>
 	<varlistentry>
@@ -160,7 +169,21 @@
 	  interact with individual nodes).</para>
 	</callout>
 	<callout arearefs="checkparseerror">
-	  <para>Check to see that the document was successfully parsed.</para>
+	  <para>Check to see that the document was successfully parsed. If it
+	    was not, <application>libxml</application> will at this point
+	    register an error and stop. 
+	    <note>
+	      <para>One common example of an error at this point is improper
+	    handling of encoding. The <acronym>XML</acronym> standard requires
+	    documents stored with an encoding other than UTF-8 or UTF-16 to
+	    contain an explicit declaration of their encoding. If the
+	    declaration is there, <application>libxml</application> will
+	    automatically perform the necessary conversion to UTF-8 for
+		you. More information on <acronym>XML's</acronym> encoding
+		requirements is contained in the <ulink
+		  url="http://www.w3.org/TR/REC-xml#charencoding">standard</ulink>.</para>
+	    </note>
+	  </para>
 	</callout>
 	<callout arearefs="getrootelement">
 	  <para>Retrieve the document's root element.</para>
@@ -170,7 +193,8 @@
 	</callout>
 	<callout arearefs="checkroottype">
 	  <para>In our case, we need to make sure the document is the right
-	  type. &quot;story&quot; is the root type of my documents.</para>
+	  type. &quot;story&quot; is the root type of the documents used in this
+	  tutorial.</para>
 	</callout>
       </calloutlist>
     </para>
@@ -280,7 +304,7 @@ parseStory (xmlDocPtr doc, xmlNodePtr cur, char *keyword) {
 				     url="http://xmlsoft.org/html/libxml-tree.html#XMLNEWTEXTCHILD">xmlNewTextChild</ulink></function>
 				     function adds a new child element at the
 				     current node pointer's location in the
-	    tree, specificied by <varname>cur</varname>.</para>
+	    tree, specified by <varname>cur</varname>.</para>
 	</callout>
       </calloutlist>
          </para>
@@ -310,7 +334,7 @@ parseStory (xmlDocPtr doc, xmlNodePtr cur, char *keyword) {
       simple. As soon as we do the error-checking test in our
       <function>parseDoc</function>, we are in the right spot to add our
       element. But before we do that, we need to make a declaration using a
-      datatype we have not seen yet:
+      data type we have not seen yet:
       <programlisting>
 	xmlAttrPtr newattr;
       </programlisting>
@@ -388,6 +412,100 @@ getReference (xmlDocPtr doc, xmlNodePtr cur) {
     </para>
   </sect1>
 
+  <sect1 id="xmltutorialconvert">
+    <title>Encoding Conversion</title>
+
+    <para>Data encoding compatibility problems are one of the most common
+      difficulties encountered by programmers new to <acronym>XML</acronym> in
+      general and <application>libxml</application> in particular. Thinking
+      through the design of your application in light of this issue will help
+      avoid difficulties later. Internally, <application>libxml</application>
+      stores and manipulates date in the UTF-8 format. Data used by your program
+      in other formats, such as the commonly used ISO-8859-1 encoding, must be
+      converted to UTF-8 before passing it to <application>libxml</application>
+      functions. If you want your program's output in an encoding other than
+      UTF-8, you also must convert it.</para>
+
+      <para><application>Libxml</application> uses
+      <application>iconv</application> if it is available to convert
+    data. Without <application>iconv</application>, only UTF-8, UTF-16 and
+    ISO-8859-1 can be used as external formats. With
+    <application>iconv</application>, any format can be used provided
+    <application>iconv</application> is able to convert it to and from
+    UTF-8. Currently <application>iconv</application> supports about 150
+    different character formats with ability to convert from any to any. While
+    the actual number of supported formats varies between implementations, every
+    <application>iconv</application> implementation is almost guaranteed to
+    support every format anyone has ever heard of.</para>
+
+    <warning>
+      <para>A common mistake is to use different formats for the internal data
+	in different parts of one's code. The most common case is an application
+	that assumes ISO-8859-1 to be the internal data format, combined with
+	<application>libxml</application>, which assumes UTF-8 to be the
+	internal data format. The result is an application that treats internal
+	data differently, depending on which code section is executing. The one or
+	the other part of code will then, naturally, misinterpret the data.
+      </para>
+    </warning>
+
+    <para>This example constructs a simple document, then adds content provided
+    at the command line to the document's root element and outputs the results
+    to <filename>stdout</filename> in the proper encoding. For this example, we
+    use ISO-8859-1 encoding. The encoding of the string input at the command
+    line is converted from ISO-8859-1 to UTF-8. Full code: <xref
+    linkend="convertappendix" /></para>
+
+    <para>The conversion, encapsulated in the example code in the
+      <function>convert</function> function, uses
+      <application>libxml's</application>
+    <function>xmlFindCharEncodingHandler</function> function:
+      <programlisting>
+	<co id="handlerdatatype" />xmlCharEncodingHandlerPtr handler;
+        <co id="calcsize" />size = (int)strlen(in)+1; 
+        out_size = size*2-1; 
+        out = malloc((size_t)out_size); 
+
+&hellip;
+	<co id="findhandlerfunction" />handler = xmlFindCharEncodingHandler(encoding);
+&hellip;
+	<co id="callconversionfunction" />handler->input(out, &amp;out_size, in, &amp;temp);
+&hellip;	
+	<co id="outputencoding" />xmlSaveFormatFileEnc("-", doc, encoding, 1);
+      </programlisting>
+      <calloutlist>
+	<callout arearefs="handlerdatatype">
+	  <para><varname>handler</varname> is declared as a pointer to an
+	    <function>xmlCharEncodingHandler</function> function.</para>
+	</callout>
+	<callout arearefs="calcsize">
+	  <para>The <function>xmlCharEncodingHandler</function> function needs
+	  to be given the size of the input and output strings, which are
+	    calculated here for strings <varname>in</varname> and
+	  <varname>out</varname>.</para>
+	</callout>
+	<callout arearefs="findhandlerfunction">
+	  <para><function>xmlFindCharEncodingHandler</function> takes as its
+	    argument the data's initial encoding and searches
+	    <application>libxml's</application> built-in set of conversion
+	    handlers, returning a pointer to the function or NULL if none is
+	    found.</para>
+	</callout>
+	<callout arearefs="callconversionfunction">
+	  <para>The conversion function identified by <varname>handler</varname>
+	  requires as its arguments pointers to the input and output strings,
+	  along with the length of each. The lengths must be determined
+	  separately by the application.</para>
+	</callout>
+	<callout arearefs="outputencoding">
+	  <para>To output in a specified encoding rather than UTF-8, we use
+	    <function>xmlSaveFormatFileEnc</function>, specifying the
+	    encoding.</para>
+	</callout>
+      </calloutlist>
+    </para>
+  </sect1>
+
 <!--
   <appendix id="furtherresources">
     <title>Further Resources</title>
@@ -420,6 +538,24 @@ getReference (xmlDocPtr doc, xmlNodePtr cur) {
     <title>Code for Retrieving Attribute Value Example</title>
     <para>
       <programlisting>&GETATTRIBUTE;</programlisting>
+    </para>
+  </appendix>
+  <appendix id="convertappendix">
+    <title>Code for Encoding Conversion Example</title>
+    <para>
+      <programlisting>&CONVERT;</programlisting>
+    </para>
+  </appendix>
+  <appendix>
+    <title>Acknowledgements</title>
+    <para>A number of people have generously offered feedback, code and
+    suggested improvements to this tutorial. In no particular order:
+      <simplelist>
+	<member>Daniel Veillard</member>
+	<member>Marcus Labib Iskander</member>
+	<member>Christopher R. Harris</member>
+	<member>Igor Zlatkovic</member>
+      </simplelist>
     </para>
   </appendix>
 </article>

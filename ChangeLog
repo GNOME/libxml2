@@ -1,3 +1,14 @@
+Sun Nov 10 20:33:13 MST 2002 John Fleck  <jfleck@inkstain.net>
+
+	Adding encoding discussion to tutorial
+	Added:
+	* doc/tutorial/images/*.png: DocBook admonition image files
+	* doc/tutorial/apf.html, apg.html: new generated html
+	* doc/tutorial/includeconvert.c: conversion code entity file
+	changed:
+	* doc/tutorial/xmltutorial.xml: DocBook original
+	* doc/tutorial/*.html: generated html
+
 Fri Nov  8 17:59:32 CEST 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
 
 	* include/libxml/*.h: retired xmlwin32version.h

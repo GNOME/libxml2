@@ -1,32 +1,32 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Writing element content</title><meta name="generator" content="DocBook XSL Stylesheets V1.48"><link rel="home" href="index.html" title="Libxml Tutorial"><link rel="up" href="index.html" title="Libxml Tutorial"><link rel="previous" href="ar01s04.html" title="Retrieving Element Content"><link rel="next" href="ar01s06.html" title="Writing Attribute"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Writing element content</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ar01s04.html">Prev</a> </td><th width="60%" align="center"> </th><td width="20%" align="right"> <a accesskey="n" href="ar01s06.html">Next</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="xmltutorialwritingcontent"></a>Writing element content</h2></div></div><p>Writing element content uses many of the same steps we used above
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Writing element content</title><meta name="generator" content="DocBook XSL Stylesheets V1.57.0"><link rel="home" href="index.html" title="Libxml Tutorial"><link rel="up" href="index.html" title="Libxml Tutorial"><link rel="previous" href="ar01s04.html" title="Retrieving Element Content"><link rel="next" href="ar01s06.html" title="Writing Attribute"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Writing element content</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ar01s04.html">Prev</a> </td><th width="60%" align="center"> </th><td width="20%" align="right"> <a accesskey="n" href="ar01s06.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="xmltutorialwritingcontent"></a>Writing element content</h2></div></div><p>Writing element content uses many of the same steps we used above
     &#8212; parsing the document and walking the tree. We parse the document,
     then traverse the tree to find the place we want to insert our element. For
     this example, we want to again find the &quot;storyinfo&quot; element and
       this time insert a keyword. Then we'll write the file to disk. Full code:
-    <a href="apc.html" title="C. Code for Add Keyword Example">Appendix C</a></p><p>
+    <a href="apc.html" title="C. Code for Add Keyword Example">Appendix C</a></p><p>
       The main difference in this example is in
       <tt>parseStory</tt>:
 
-      <pre class="programlisting">
+      </p><pre class="programlisting">
 void
 parseStory (xmlDocPtr doc, xmlNodePtr cur, char *keyword) {
 
 	<a name="addkeyword"></a><img src="images/callouts/1.png" alt="1" border="0"> xmlNewTextChild (cur, NULL, &quot;keyword&quot;, keyword);
     return;
 }
-      </pre>
-      <div class="calloutlist"><table border="0" summary="Callout list"><tr><td width="5%" valign="top" align="left"><a href="#addkeyword"><img src="images/callouts/1.png" alt="1" border="0"></a> </td><td valign="top" align="left"><p>The <tt><a href="http://xmlsoft.org/html/libxml-tree.html#XMLNEWTEXTCHILD" target="_top">xmlNewTextChild</a></tt>
+      </pre><p>
+      </p><div class="calloutlist"><table border="0" summary="Callout list"><tr><td width="5%" valign="top" align="left"><a href="#addkeyword"><img src="images/callouts/1.png" alt="1" border="0"></a> </td><td valign="top" align="left"><p>The <tt><a href="http://xmlsoft.org/html/libxml-tree.html#XMLNEWTEXTCHILD" target="_top">xmlNewTextChild</a></tt>
 				     function adds a new child element at the
 				     current node pointer's location in the
-	    tree, specificied by <tt>cur</tt>.</p></td></tr></table></div>
+	    tree, specified by <tt>cur</tt>.</p></td></tr></table></div><p>
          </p><p>
       Once the node has been added, we would like to write the document to
       file. Is you want the element to have a namespace, you can add it here as
       well. In our case, the namespace is NULL.
-      <pre class="programlisting">
+      </p><pre class="programlisting">
 	xmlSaveFormatFile (docname, doc, 1);
-      </pre>
+      </pre><p>
       The first parameter is the name of the file to be written. You'll notice
       it is the same as the file we just read. In this case, we just write over
       the old file. The second parameter is a pointer to the xmlDoc

@@ -37,6 +37,7 @@
 #include <libxml/parserInternals.h>
 #include <libxml/catalog.h>
 #include <libxml/xmlerror.h>
+#include <libxml/threads.h>
 
 #define MAX_DELEGATE	50
 
@@ -139,6 +140,10 @@ struct _xmlCatalog {
  *									*
  ************************************************************************/
 
+/*
+ * Those are preferences
+ */
+static int xmlDebugCatalogs = 0;   /* used for debugging */
 static xmlCatalogAllow xmlCatalogDefaultAllow = XML_CATA_ALLOW_ALL;
 static xmlCatalogPrefer xmlCatalogDefaultPrefer = XML_CATA_PREFER_PUBLIC;
 
@@ -154,12 +159,18 @@ static xmlHashTablePtr xmlCatalogXMLFiles = NULL;
 static xmlCatalogPtr xmlDefaultCatalog = NULL;
 
 /*
+ * A mutex for modifying the shared global catalog(s)
+ * xmlDefaultCatalog tree.
+ * It also protects xmlCatalogXMLFiles
+ * The core of this readers/writer scheme is in xmlFetchXMLCatalogFile()
+ */
+static xmlRMutexPtr xmlCatalogMutex = NULL;
+
+/*
  * Whether the catalog support was initialized.
  */
 static int xmlCatalogInitialized = 0;
 
-
-static int xmlDebugCatalogs = 0;   /* used for debugging */
 
 /************************************************************************
  *									*
@@ -1207,8 +1218,6 @@ xmlParseXMLCatalogFile(xmlCatalogPrefer prefer, const xmlChar *filename) {
  * @catal:  an existing but incomplete catalog entry
  *
  * Fetch and parse the subcatalog referenced by an entry
- * It tries to be thread safe but by lack of an atomic test and
- * set there is a risk of loosing memory.
  * 
  * Returns 0 in case of success, -1 otherwise
  */
@@ -1223,12 +1232,25 @@ xmlFetchXMLCatalogFile(xmlCatalogEntryPtr catal) {
     if (catal->children != NULL)
 	return(-1);
 
+    /*
+     * lock the whole catalog for modification
+     */
+    xmlRMutexLock(xmlCatalogMutex);
+    if (catal->children != NULL) {
+	/* Okay someone else did it in the meantime */
+	xmlRMutexUnlock(xmlCatalogMutex);
+	return(0);
+
+
+    }
+
     if (xmlCatalogXMLFiles != NULL)
 	children = (xmlCatalogEntryPtr)
 	    xmlHashLookup(xmlCatalogXMLFiles, catal->value);
     if (children != NULL) {
 	catal->children = children;
 	catal->dealloc = 0;
+	xmlRMutexUnlock(xmlCatalogMutex);
 	return(0);
     }
 
@@ -1240,6 +1262,7 @@ xmlFetchXMLCatalogFile(xmlCatalogEntryPtr catal) {
     doc = xmlParseXMLCatalogFile(catal->prefer, catal->value);
     if (doc == NULL) {
 	catal->type = XML_CATA_BROKEN_CATALOG;
+	xmlRMutexUnlock(xmlCatalogMutex);
 	return(-1);
     }
     if ((catal->type == XML_CATA_CATALOG) &&
@@ -1251,24 +1274,15 @@ xmlFetchXMLCatalogFile(xmlCatalogEntryPtr catal) {
 	children = doc;
     }
 
-    /*
-     * Where a real test and set would be needed !
-     */
-    if (catal->children == NULL) {
-	catal->children = children;
-	catal->dealloc = 1;
-	if (xmlCatalogXMLFiles == NULL)
-	    xmlCatalogXMLFiles = xmlHashCreate(10);
-	if (xmlCatalogXMLFiles != NULL) {
-	    if (children != NULL)
-		xmlHashAddEntry(xmlCatalogXMLFiles, catal->value, children);
-	}
-    } else {
-	/*
-	 * Another thread filled it before us
-	 */
-	xmlFreeCatalogEntryList(children);
+    catal->children = children;
+    catal->dealloc = 1;
+    if (xmlCatalogXMLFiles == NULL)
+	xmlCatalogXMLFiles = xmlHashCreate(10);
+    if (xmlCatalogXMLFiles != NULL) {
+	if (children != NULL)
+	    xmlHashAddEntry(xmlCatalogXMLFiles, catal->value, children);
     }
+    xmlRMutexUnlock(xmlCatalogMutex);
     return(0);
 }
 
@@ -2717,19 +2731,42 @@ xmlACatalogRemove(xmlCatalogPtr catal, const xmlChar *value) {
  ************************************************************************/
 
 /**
+ * xmlInitializeCatalogData:
+ *
+ * Do the catalog initialization only of global data, doesn't try to load
+ * any catalog actually.
+ * this function is not thread safe, catalog initialization should
+ * preferably be done once at startup
+ */
+static void
+xmlInitializeCatalogData(void) {
+    if (xmlCatalogInitialized != 0)
+	return;
+
+    if (getenv("XML_DEBUG_CATALOG")) 
+	xmlDebugCatalogs = 1;
+    xmlCatalogMutex = xmlNewRMutex();
+
+    xmlCatalogInitialized = 1;
+}
+/**
  * xmlInitializeCatalog:
  *
  * Do the catalog initialization.
- * TODO: this function is not thread safe, catalog initialization should
- *       preferably be done once at startup
+ * this function is not thread safe, catalog initialization should
+ * preferably be done once at startup
  */
 void
 xmlInitializeCatalog(void) {
     if (xmlCatalogInitialized != 0)
 	return;
 
+    xmlInitializeCatalogData();
+    xmlRMutexLock(xmlCatalogMutex);
+
     if (getenv("XML_DEBUG_CATALOG")) 
 	xmlDebugCatalogs = 1;
+
     if (xmlDefaultCatalog == NULL) {
 	const char *catalogs;
 	xmlCatalogPtr catal;
@@ -2739,8 +2776,8 @@ xmlInitializeCatalog(void) {
 	    catalogs = XML_XML_DEFAULT_CATALOG;
 
 	catal = xmlNewCatalog(XML_XML_CATALOG_TYPE, xmlCatalogDefaultPrefer);
-	if (catal == NULL)
-	    return;
+	if (catal == NULL) {
+	}
 
 	catal->xml = xmlNewCatalogEntry(XML_CATA_CATALOG,
 			   NULL, BAD_CAST catalogs, xmlCatalogDefaultPrefer);
@@ -2748,7 +2785,7 @@ xmlInitializeCatalog(void) {
 	xmlDefaultCatalog = catal;
     }
 
-    xmlCatalogInitialized = 1;
+    xmlRMutexUnlock(xmlCatalogMutex);
 }
 
 
@@ -2758,8 +2795,8 @@ xmlInitializeCatalog(void) {
  *
  * Load the catalog and makes its definitions effective for the default
  * external entity loader. It will recurse in SGML CATALOG entries.
- * TODO: this function is not thread safe, catalog initialization should
- *       preferably be done once at startup
+ * this function is not thread safe, catalog initialization should
+ * preferably be done once at startup
  *
  * Returns 0 in case of success -1 in case of error
  */
@@ -2769,22 +2806,23 @@ xmlLoadCatalog(const char *filename)
     int ret;
     xmlCatalogPtr catal;
 
+    if (!xmlCatalogInitialized)
+	xmlInitializeCatalogData();
+
+    xmlRMutexLock(xmlCatalogMutex);
+
     if (xmlDefaultCatalog == NULL) {
 	catal = xmlLoadACatalog(filename);
 	if (catal == NULL)
 	    return(-1);
 
 	xmlDefaultCatalog = catal;
-
-	/*
-	 * Need to be done after ...
-	 */
-	if (!xmlCatalogInitialized)
-	    xmlInitializeCatalog();
+	xmlRMutexUnlock(xmlCatalogMutex);
 	return(0);
     }
 
     ret = xmlExpandCatalog(xmlDefaultCatalog, filename);
+    xmlRMutexUnlock(xmlCatalogMutex);
     return(ret);
 }
 
@@ -2794,8 +2832,8 @@ xmlLoadCatalog(const char *filename)
  *
  * Load the catalogs and makes their definitions effective for the default
  * external entity loader.
- * TODO: this function is not thread safe, catalog initialization should
- *       preferably be done once at startup
+ * this function is not thread safe, catalog initialization should
+ * preferably be done once at startup
  */
 void
 xmlLoadCatalogs(const char *pathss) {
@@ -2831,6 +2869,7 @@ xmlLoadCatalogs(const char *pathss) {
  */
 void
 xmlCatalogCleanup(void) {
+    xmlRMutexLock(xmlCatalogMutex);
     if (xmlDebugCatalogs)
 	xmlGenericError(xmlGenericErrorContext,
 		"Catalogs cleanup\n");
@@ -2842,6 +2881,8 @@ xmlCatalogCleanup(void) {
     xmlDefaultCatalog = NULL;
     xmlDebugCatalogs = 0;
     xmlCatalogInitialized = 0;
+    xmlRMutexUnlock(xmlCatalogMutex);
+    xmlFreeRMutex(xmlCatalogMutex);
 }
 
 /**
@@ -2959,6 +3000,10 @@ int
 xmlCatalogAdd(const xmlChar *type, const xmlChar *orig, const xmlChar *replace) {
     int res = -1;
 
+    if (!xmlCatalogInitialized)
+	xmlInitializeCatalogData();
+
+    xmlRMutexLock(xmlCatalogMutex);
     /*
      * Specific case where one want to override the default catalog
      * put in place by xmlInitializeCatalog();
@@ -2970,15 +3015,12 @@ xmlCatalogAdd(const xmlChar *type, const xmlChar *orig, const xmlChar *replace) 
 	xmlDefaultCatalog->xml = xmlNewCatalogEntry(XML_CATA_CATALOG, NULL,
 				    orig, xmlCatalogDefaultPrefer);
 
-	if (!xmlCatalogInitialized)
-	    xmlInitializeCatalog();
+	xmlRMutexUnlock(xmlCatalogMutex);
 	return(0);
     } 
 
-    if (!xmlCatalogInitialized)
-	xmlInitializeCatalog();
-
     res = xmlACatalogAdd(xmlDefaultCatalog, type, orig, replace);
+    xmlRMutexUnlock(xmlCatalogMutex);
     return(res);
 }
 
@@ -2997,7 +3039,9 @@ xmlCatalogRemove(const xmlChar *value) {
     if (!xmlCatalogInitialized)
 	xmlInitializeCatalog();
 
+    xmlRMutexLock(xmlCatalogMutex);
     res = xmlACatalogRemove(xmlDefaultCatalog, value);
+    xmlRMutexUnlock(xmlCatalogMutex);
     return(res);
 }
 
@@ -3015,7 +3059,9 @@ xmlCatalogConvert(void) {
     if (!xmlCatalogInitialized)
 	xmlInitializeCatalog();
 
+    xmlRMutexLock(xmlCatalogMutex);
     res = xmlConvertSGMLCatalog(xmlDefaultCatalog);
+    xmlRMutexUnlock(xmlCatalogMutex);
     return(res);
 }
 
@@ -3024,6 +3070,7 @@ xmlCatalogConvert(void) {
  *	Public interface manipulating the common preferences		*
  *									*
  ************************************************************************/
+
 /**
  * xmlCatalogGetDefaults:
  *
@@ -3034,6 +3081,9 @@ xmlCatalogConvert(void) {
  */
 xmlCatalogAllow
 xmlCatalogGetDefaults(void) {
+    if (!xmlCatalogInitialized)
+	xmlInitializeCatalog();
+
     return(xmlCatalogDefaultAllow);
 }
 
@@ -3047,6 +3097,7 @@ void
 xmlCatalogSetDefaults(xmlCatalogAllow allow) {
     if (!xmlCatalogInitialized)
 	xmlInitializeCatalog();
+
     if (xmlDebugCatalogs) {
 	switch (allow) {
 	    case XML_CATA_ALLOW_NONE:
@@ -3086,6 +3137,7 @@ xmlCatalogSetDefaultPrefer(xmlCatalogPrefer prefer) {
 
     if (!xmlCatalogInitialized)
 	xmlInitializeCatalog();
+
     if (prefer == XML_CATA_PREFER_NONE)
 	return(ret);
 
@@ -3120,6 +3172,9 @@ int
 xmlCatalogSetDebug(int level) {
     int ret = xmlDebugCatalogs;
 
+    if (!xmlCatalogInitialized)
+	xmlInitializeCatalog();
+
     if (level <= 0)
         xmlDebugCatalogs = 0;
     else
@@ -3143,6 +3198,9 @@ void
 xmlCatalogFreeLocal(void *catalogs) {
     xmlCatalogEntryPtr catal;
 
+    if (!xmlCatalogInitialized)
+	xmlInitializeCatalog();
+
     catal = (xmlCatalogEntryPtr) catalogs;
     if (catal != NULL)
 	xmlFreeCatalogEntryList(catal);
@@ -3164,6 +3222,7 @@ xmlCatalogAddLocal(void *catalogs, const xmlChar *URL) {
 
     if (!xmlCatalogInitialized)
 	xmlInitializeCatalog();
+
     if (URL == NULL)
 	return(catalogs);
 
@@ -3204,11 +3263,11 @@ xmlCatalogLocalResolve(void *catalogs, const xmlChar *pubID,
     xmlCatalogEntryPtr catal;
     xmlChar *ret;
 
-    if ((pubID == NULL) && (sysID == NULL))
-	return(NULL);
-
     if (!xmlCatalogInitialized)
 	xmlInitializeCatalog();
+
+    if ((pubID == NULL) && (sysID == NULL))
+	return(NULL);
 
     if (xmlDebugCatalogs) {
 	if (pubID != NULL) {
@@ -3245,11 +3304,11 @@ xmlCatalogLocalResolveURI(void *catalogs, const xmlChar *URI) {
     xmlCatalogEntryPtr catal;
     xmlChar *ret;
 
-    if (URI == NULL)
-	return(NULL);
-
     if (!xmlCatalogInitialized)
 	xmlInitializeCatalog();
+
+    if (URI == NULL)
+	return(NULL);
 
     if (xmlDebugCatalogs)
 	xmlGenericError(xmlGenericErrorContext,
@@ -3284,6 +3343,9 @@ xmlCatalogGetSystem(const xmlChar *sysID) {
     static xmlChar result[1000];
     static int msg = 0;
 
+    if (!xmlCatalogInitialized)
+	xmlInitializeCatalog();
+
     if (msg == 0) {
 	xmlGenericError(xmlGenericErrorContext,
 		"Use of deprecated xmlCatalogGetSystem() call\n");
@@ -3293,9 +3355,6 @@ xmlCatalogGetSystem(const xmlChar *sysID) {
     if (sysID == NULL)
 	return(NULL);
     
-    if (!xmlCatalogInitialized)
-	xmlInitializeCatalog();
-
     /*
      * Check first the XML catalogs
      */
@@ -3328,6 +3387,9 @@ xmlCatalogGetPublic(const xmlChar *pubID) {
     static xmlChar result[1000];
     static int msg = 0;
 
+    if (!xmlCatalogInitialized)
+	xmlInitializeCatalog();
+
     if (msg == 0) {
 	xmlGenericError(xmlGenericErrorContext,
 		"Use of deprecated xmlCatalogGetPublic() call\n");
@@ -3337,9 +3399,6 @@ xmlCatalogGetPublic(const xmlChar *pubID) {
     if (pubID == NULL)
 	return(NULL);
     
-    if (!xmlCatalogInitialized)
-	xmlInitializeCatalog();
-
     /*
      * Check first the XML catalogs
      */

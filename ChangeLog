@@ -1,3 +1,8 @@
+Tue Oct 16 14:33:19 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* catalog.c xpath.c: trying to cleanup the not thread safe
+	  parts of the library.
+
 Mon Oct 15 14:30:11 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/globals.h configure.in global.data: make

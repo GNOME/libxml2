@@ -51,6 +51,7 @@
 #include <libxml/debugXML.h>
 #endif
 #include <libxml/xmlerror.h>
+#include <libxml/threads.h>
 
 /* #define DEBUG */
 /* #define DEBUG_STEP */
@@ -69,6 +70,13 @@ static xmlNs xmlXPathXMLNamespaceStruct = {
     BAD_CAST "xml"
 };
 static xmlNsPtr xmlXPathXMLNamespace = &xmlXPathXMLNamespaceStruct;
+#ifndef LIBXML_THREADS_ENABLED
+/* 
+ * Optimizer is disabled only when threaded apps are detected while
+ * the library ain't compiled for thread safety.
+ */
+static int xmlXPathDisableOptimizer = 0;
+#endif
 
 /************************************************************************
  * 									*
@@ -361,13 +369,20 @@ xmlXPathCompExprAdd(xmlXPathCompExprPtr comp, int ch1, int ch2,
  * @op: operation index
  *
  * Swaps 2 operations in the compiled expression
- * TODO: not thread safe, disable for multi-thread operations
- *
- * Returns -1 in case of failure, the index otherwise
  */
 static void
 xmlXPathCompSwap(xmlXPathStepOpPtr op) {
     int tmp;
+
+#ifdef LIBXML_THREADS_ENABLED
+    /*
+     * Since this manipulates possibly shared variables, this is
+     * disable if one detects that the library is used in a multithreaded
+     * application
+     */
+    if (xmlXPathDisableOptimizer)
+	return;
+#endif
 
     tmp = op->ch1;
     op->ch1 = op->ch2;
@@ -9819,12 +9834,21 @@ xmlXPathCompiledEval(xmlXPathCompExprPtr comp, xmlXPathContextPtr ctx) {
     xmlXPathParserContextPtr ctxt;
     xmlXPathObjectPtr res, tmp, init = NULL;
     int stack = 0;
+#ifndef LIBXML_THREAD_ENABLED
+    static int reentance = 0;
+#endif
 
     if ((comp == NULL) || (ctx == NULL))
 	return(NULL);
     xmlXPathInit();
 
     CHECK_CONTEXT(ctx)
+
+#ifndef LIBXML_THREAD_ENABLED
+    reentance++;
+    if (reentance > 1)
+	xmlXPathDisableOptimizer = 1;
+#endif
 
 #ifdef DEBUG_EVAL_COUNTS
     comp->nb++;
@@ -9866,6 +9890,9 @@ xmlXPathCompiledEval(xmlXPathCompExprPtr comp, xmlXPathContextPtr ctx) {
 
     ctxt->comp = NULL;
     xmlXPathFreeParserContext(ctxt);
+#ifndef LIBXML_THREAD_ENABLED
+    reentance--;
+#endif
     return(res);
 }
 

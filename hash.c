@@ -427,7 +427,7 @@ xmlHashQLookup(xmlHashTablePtr table, const xmlChar *prefix,
  * @table: the hash table
  * @prefix: the prefix of the userdata
  * @name: the name of the userdata
- * @prefix: the second prefix of the userdata
+ * @prefix2: the second prefix of the userdata
  * @name2: a second name of the userdata
  *
  * Find the userdata specified by the QNames tuple

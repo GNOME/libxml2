@@ -620,7 +620,7 @@ cdataBlock(void *ctx, const xmlChar *value, int len)
  * DEPRECATED: use xmlSAX2InitDefaultSAXHandler() for the new SAX2 blocks
  */
 void
-initxmlDefaultSAXHandler(xmlSAXHandler *hdlr, int warning)
+initxmlDefaultSAXHandler(xmlSAXHandlerV1 *hdlr, int warning)
 {
     
     if(hdlr->initialized == 1)
@@ -669,7 +669,7 @@ initxmlDefaultSAXHandler(xmlSAXHandler *hdlr, int warning)
  * DEPRECATED: use xmlSAX2InitHtmlDefaultSAXHandler() for the new SAX2 blocks
  */
 void
-inithtmlDefaultSAXHandler(xmlSAXHandler *hdlr)
+inithtmlDefaultSAXHandler(xmlSAXHandlerV1 *hdlr)
 {
     if(hdlr->initialized == 1)
 	return;
@@ -717,7 +717,7 @@ inithtmlDefaultSAXHandler(xmlSAXHandler *hdlr)
  * DEPRECATED: use xmlSAX2InitDocbDefaultSAXHandler() for the new SAX2 blocks
  */
 void
-initdocbDefaultSAXHandler(xmlSAXHandler *hdlr)
+initdocbDefaultSAXHandler(xmlSAXHandlerV1 *hdlr)
 {
     if(hdlr->initialized == 1)
 	return;

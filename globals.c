@@ -62,7 +62,7 @@ void xmlCleanupGlobals()
  * Memory allocation routines
  */
 #if defined(DEBUG_MEMORY_LOCATION) || defined(DEBUG_MEMORY)
-#ifndef _DEBUG_MEMORY_ALLOC_
+#ifndef __DEBUG_MEMORY_ALLOC__
 extern void xmlMemFree(void *ptr);
 extern void * xmlMemMalloc(size_t size);
 extern void * xmlMemRealloc(void *ptr,size_t size);
@@ -328,9 +328,9 @@ int xmlSaveNoEmptyTagsThrDef = 0;
 /**
  * xmlDefaultSAXHandler:
  *
- * Default handler for XML, builds the DOM tree
+ * Default SAX version1 handler for XML, builds the DOM tree
  */
-xmlSAXHandler xmlDefaultSAXHandler = {
+xmlSAXHandlerV1 xmlDefaultSAXHandler = {
     xmlSAX2InternalSubset,
     xmlSAX2IsStandalone,
     xmlSAX2HasInternalSubset,
@@ -359,9 +359,6 @@ xmlSAXHandler xmlDefaultSAXHandler = {
     xmlSAX2CDataBlock,
     xmlSAX2ExternalSubset,
     0,
-    NULL,
-    NULL,
-    NULL
 };
 
 /**
@@ -381,9 +378,9 @@ xmlSAXLocator xmlDefaultSAXLocator = {
 /**
  * htmlDefaultSAXHandler:
  *
- * Default handler for HTML, builds the DOM tree
+ * Default old SAX v1 handler for HTML, builds the DOM tree
  */
-xmlSAXHandler htmlDefaultSAXHandler = {
+xmlSAXHandlerV1 htmlDefaultSAXHandler = {
     xmlSAX2InternalSubset,
     NULL,
     NULL,
@@ -412,9 +409,6 @@ xmlSAXHandler htmlDefaultSAXHandler = {
     xmlSAX2CDataBlock,
     NULL,
     0,
-    NULL,
-    NULL,
-    NULL
 };
 #endif /* LIBXML_HTML_ENABLED */
 
@@ -422,9 +416,9 @@ xmlSAXHandler htmlDefaultSAXHandler = {
 /**
  * docbDefaultSAXHandler:
  *
- * Default handler for SGML DocBook, builds the DOM tree
+ * Default old SAX v1 handler for SGML DocBook, builds the DOM tree
  */
-xmlSAXHandler docbDefaultSAXHandler = {
+xmlSAXHandlerV1 docbDefaultSAXHandler = {
     xmlSAX2InternalSubset,
     xmlSAX2IsStandalone,
     xmlSAX2HasInternalSubset,
@@ -453,9 +447,6 @@ xmlSAXHandler docbDefaultSAXHandler = {
     NULL,
     NULL,
     0,
-    NULL,
-    NULL,
-    NULL
 };
 #endif /* LIBXML_DOCB_ENABLED */
 
@@ -483,16 +474,16 @@ xmlInitializeGlobalState(xmlGlobalStatePtr gs)
     xmlMutexLock(xmlThrDefMutex);
 
 #ifdef LIBXML_DOCB_ENABLED
-    xmlSAX2InitDocbDefaultSAXHandler(&gs->docbDefaultSAXHandler);
+    initdocbDefaultSAXHandler(&gs->docbDefaultSAXHandler);
 #endif
 #ifdef LIBXML_HTML_ENABLED
-    xmlSAX2InitHtmlDefaultSAXHandler(&gs->htmlDefaultSAXHandler);
+    inithtmlDefaultSAXHandler(&gs->htmlDefaultSAXHandler);
 #endif
 
     gs->oldXMLWDcompatibility = 0;
     gs->xmlBufferAllocScheme = xmlBufferAllocSchemeThrDef;
     gs->xmlDefaultBufferSize = xmlDefaultBufferSizeThrDef;
-    xmlSAX2InitDefaultSAXHandler(&gs->xmlDefaultSAXHandler, 1);
+    initxmlDefaultSAXHandler(&gs->xmlDefaultSAXHandler, 1);
     gs->xmlDefaultSAXLocator.getPublicId = getPublicId;
     gs->xmlDefaultSAXLocator.getSystemId = getSystemId;
     gs->xmlDefaultSAXLocator.getLineNumber = getLineNumber;
@@ -613,7 +604,7 @@ xmlThrDefDeregisterNodeDefault(xmlDeregisterNodeFunc func)
 
 #ifdef LIBXML_DOCB_ENABLED
 #undef	docbDefaultSAXHandler
-xmlSAXHandler *
+xmlSAXHandlerV1 *
 __docbDefaultSAXHandler(void) {
     if (IS_MAIN_THREAD)
 	return (&docbDefaultSAXHandler);
@@ -624,7 +615,7 @@ __docbDefaultSAXHandler(void) {
 
 #ifdef LIBXML_HTML_ENABLED
 #undef	htmlDefaultSAXHandler
-xmlSAXHandler *
+xmlSAXHandlerV1 *
 __htmlDefaultSAXHandler(void) {
     if (IS_MAIN_THREAD)
 	return (&htmlDefaultSAXHandler);
@@ -684,7 +675,7 @@ int xmlThrDefDefaultBufferSize(int v) {
 }
 
 #undef	xmlDefaultSAXHandler
-xmlSAXHandler *
+xmlSAXHandlerV1 *
 __xmlDefaultSAXHandler(void) {
     if (IS_MAIN_THREAD)
 	return (&xmlDefaultSAXHandler);

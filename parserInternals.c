@@ -2219,7 +2219,7 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
 	return(-1);
     }
     else
-        memcpy(ctxt->sax, &xmlDefaultSAXHandler, sizeof(xmlSAXHandler));
+        xmlSAXVersion(ctxt->sax, 2);
 
     ctxt->maxatts = 0;
     ctxt->atts = NULL;
@@ -2371,7 +2371,8 @@ xmlFreeParserCtxt(xmlParserCtxtPtr ctxt)
     if (ctxt->encoding != NULL) xmlFree((char *) ctxt->encoding);
     if (ctxt->extSubURI != NULL) xmlFree((char *) ctxt->extSubURI);
     if (ctxt->extSubSystem != NULL) xmlFree((char *) ctxt->extSubSystem);
-    if ((ctxt->sax != NULL) && (ctxt->sax != &xmlDefaultSAXHandler))
+    if ((ctxt->sax != NULL) &&
+        (ctxt->sax != (xmlSAXHandlerPtr) &xmlDefaultSAXHandler))
         xmlFree(ctxt->sax);
     if (ctxt->directory != NULL) xmlFree((char *) ctxt->directory);
     if (ctxt->vctxt.nodeTab != NULL) xmlFree(ctxt->vctxt.nodeTab);

@@ -1,3 +1,13 @@
+Thu Sep 25 16:23:58 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in: preparing a beta3 solving the ABI problems
+	* globals.c parser.c parserInternals.c testHTML.c HTMLparser.c SAX.c
+	  include/libxml/globals.h include/libxml/SAX.h: make sure the
+	  global variables for the default SAX handler are V1 ones to
+	  avoid ABI compat problems.
+	* xmlreader.c: cleanup of uneeded code
+	* hash.c: fix a comment
+
 Thu Sep 25 14:16:51 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* SAX2.c hash.c parser.c include/libxml/xmlexports.h 

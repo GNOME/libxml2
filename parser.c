@@ -3491,6 +3491,8 @@ xmlParseCharDataComplex(xmlParserCtxtPtr ctxt, int cdata) {
 	}
 	COPY_BUF(l,buf,nbchar,cur);
 	if (nbchar >= XML_PARSER_BIG_BUFFER_SIZE) {
+	    buf[nbchar] = 0;
+
 	    /*
 	     * OK the segment is to be consumed as chars.
 	     */
@@ -3515,6 +3517,7 @@ xmlParseCharDataComplex(xmlParserCtxtPtr ctxt, int cdata) {
 	cur = CUR_CHAR(l);
     }
     if (nbchar != 0) {
+        buf[nbchar] = 0;
 	/*
 	 * OK the segment is to be consumed as chars.
 	 */
@@ -10092,7 +10095,7 @@ xmlCreatePushParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
 	return(NULL);
     }
     if (sax != NULL) {
-	if (ctxt->sax != &xmlDefaultSAXHandler)
+	if (ctxt->sax != (xmlSAXHandlerPtr) &xmlDefaultSAXHandler)
 	    xmlFree(ctxt->sax);
 	ctxt->sax = (xmlSAXHandlerPtr) xmlMalloc(sizeof(xmlSAXHandler));
 	if (ctxt->sax == NULL) {
@@ -10185,7 +10188,7 @@ xmlCreateIOParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
 	return(NULL);
     }
     if (sax != NULL) {
-	if (ctxt->sax != &xmlDefaultSAXHandler)
+	if (ctxt->sax != (xmlSAXHandlerPtr) &xmlDefaultSAXHandler)
 	    xmlFree(ctxt->sax);
 	ctxt->sax = (xmlSAXHandlerPtr) xmlMalloc(sizeof(xmlSAXHandler));
 	if (ctxt->sax == NULL) {
@@ -11506,7 +11509,7 @@ xmlSAXUserParseFile(xmlSAXHandlerPtr sax, void *user_data,
     
     ctxt = xmlCreateFileParserCtxt(filename);
     if (ctxt == NULL) return -1;
-    if (ctxt->sax != &xmlDefaultSAXHandler)
+    if (ctxt->sax != (xmlSAXHandlerPtr) &xmlDefaultSAXHandler)
 	xmlFree(ctxt->sax);
     ctxt->sax = sax;
     xmlDetectSAX2(ctxt);

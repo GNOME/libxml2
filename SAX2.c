@@ -2412,17 +2412,6 @@ xmlSAXDefaultVersion(int version)
     if ((version != 1) && (version != 2))
         return(-1);
     xmlSAX2DefaultVersionValue = version;
-    if (version == 1) {
-	xmlDefaultSAXHandler.startElement = xmlSAX2StartElement;
-	xmlDefaultSAXHandler.endElement = xmlSAX2EndElement;
-	xmlDefaultSAXHandler.startElementNs = NULL;
-	xmlDefaultSAXHandler.endElementNs = NULL;
-    } else if (version == 2) {
-	xmlDefaultSAXHandler.startElement = NULL;
-	xmlDefaultSAXHandler.endElement = NULL;
-	xmlDefaultSAXHandler.startElementNs = xmlSAX2StartElementNs;
-	xmlDefaultSAXHandler.endElementNs = xmlSAX2EndElementNs;
-    }
     return(ret);
 }
 
@@ -2442,13 +2431,13 @@ xmlSAXVersion(xmlSAXHandler *hdlr, int version)
     if (version == 1) {
 	hdlr->startElement = xmlSAX2StartElement;
 	hdlr->endElement = xmlSAX2EndElement;
-	hdlr->startElementNs = NULL;
-	hdlr->endElementNs = NULL;
+	hdlr->initialized = 1;
     } else if (version == 2) {
 	hdlr->startElement = NULL;
 	hdlr->endElement = NULL;
 	hdlr->startElementNs = xmlSAX2StartElementNs;
 	hdlr->endElementNs = xmlSAX2EndElementNs;
+	hdlr->initialized = XML_SAX2_MAGIC;
     } else
         return(-1);
     hdlr->internalSubset = xmlSAX2InternalSubset;
@@ -2477,7 +2466,6 @@ xmlSAXVersion(xmlSAXHandler *hdlr, int version)
     hdlr->error = xmlParserError;
     hdlr->fatalError = xmlParserError;
 
-    hdlr->initialized = XML_SAX2_MAGIC;
     return(0);
 }
 
@@ -2509,8 +2497,7 @@ xmlSAX2InitDefaultSAXHandler(xmlSAXHandler *hdlr, int warning)
 void
 xmlDefaultSAXHandlerInit(void)
 {
-    xmlSAX2InitDefaultSAXHandler(&xmlDefaultSAXHandler,
-                                 xmlGetWarningsDefaultValue);
+    xmlSAXVersion((xmlSAXHandlerPtr) &xmlDefaultSAXHandler, 1);
 }
 
 #ifdef LIBXML_HTML_ENABLED
@@ -2555,7 +2542,7 @@ xmlSAX2InitHtmlDefaultSAXHandler(xmlSAXHandler *hdlr)
     hdlr->error = xmlParserError;
     hdlr->fatalError = xmlParserError;
 
-    hdlr->initialized = XML_SAX2_MAGIC;
+    hdlr->initialized = 1;
 }
 
 /**
@@ -2566,7 +2553,7 @@ xmlSAX2InitHtmlDefaultSAXHandler(xmlSAXHandler *hdlr)
 void
 htmlDefaultSAXHandlerInit(void)
 {
-    xmlSAX2InitHtmlDefaultSAXHandler(&htmlDefaultSAXHandler);
+    xmlSAX2InitHtmlDefaultSAXHandler((xmlSAXHandlerPtr) &htmlDefaultSAXHandler);
 }
 
 #endif /* LIBXML_HTML_ENABLED */
@@ -2624,7 +2611,7 @@ xmlSAX2InitDocbDefaultSAXHandler(xmlSAXHandler *hdlr)
 void
 docbDefaultSAXHandlerInit(void)
 {
-    xmlSAX2InitDocbDefaultSAXHandler(&docbDefaultSAXHandler);
+    xmlSAX2InitDocbDefaultSAXHandler((xmlSAXHandlerPtr) &docbDefaultSAXHandler);
 }
 
 #endif /* LIBXML_DOCB_ENABLED */

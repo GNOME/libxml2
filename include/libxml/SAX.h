@@ -1,5 +1,5 @@
 /*
- * SAX.h : Default SAX handler interfaces.
+ * SAX.h : Old SAX vewrsion1 handler interfaces.
  *
  * See Copyright for the status of this software.
  *
@@ -19,6 +19,39 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+typedef struct _xmlSAXHandlerV1 xmlSAXHandlerV1;
+typedef xmlSAXHandlerV1 *xmlSAXHandlerV1Ptr;
+struct _xmlSAXHandlerV1 {
+    internalSubsetSAXFunc internalSubset;
+    isStandaloneSAXFunc isStandalone;
+    hasInternalSubsetSAXFunc hasInternalSubset;
+    hasExternalSubsetSAXFunc hasExternalSubset;
+    resolveEntitySAXFunc resolveEntity;
+    getEntitySAXFunc getEntity;
+    entityDeclSAXFunc entityDecl;
+    notationDeclSAXFunc notationDecl;
+    attributeDeclSAXFunc attributeDecl;
+    elementDeclSAXFunc elementDecl;
+    unparsedEntityDeclSAXFunc unparsedEntityDecl;
+    setDocumentLocatorSAXFunc setDocumentLocator;
+    startDocumentSAXFunc startDocument;
+    endDocumentSAXFunc endDocument;
+    startElementSAXFunc startElement;
+    endElementSAXFunc endElement;
+    referenceSAXFunc reference;
+    charactersSAXFunc characters;
+    ignorableWhitespaceSAXFunc ignorableWhitespace;
+    processingInstructionSAXFunc processingInstruction;
+    commentSAXFunc comment;
+    warningSAXFunc warning;
+    errorSAXFunc error;
+    fatalErrorSAXFunc fatalError; /* unused error() get all the errors */
+    getParameterEntitySAXFunc getParameterEntity;
+    cdataBlockSAXFunc cdataBlock;
+    externalSubsetSAXFunc externalSubset;
+    unsigned int initialized;
+};
+
 XMLPUBFUN const xmlChar * XMLCALL
 		getPublicId			(void *ctx);
 XMLPUBFUN const xmlChar * XMLCALL	
@@ -147,15 +180,15 @@ XMLPUBFUN void XMLCALL
 						 int len);
 
 XMLPUBFUN void XMLCALL		
-		initxmlDefaultSAXHandler	(xmlSAXHandler *hdlr,
+		initxmlDefaultSAXHandler	(xmlSAXHandlerV1 *hdlr,
 						 int warning);
 #ifdef LIBXML_HTML_ENABLED
 XMLPUBFUN void XMLCALL		
-		inithtmlDefaultSAXHandler	(xmlSAXHandler *hdlr);
+		inithtmlDefaultSAXHandler	(xmlSAXHandlerV1 *hdlr);
 #endif
 #ifdef LIBXML_DOCB_ENABLED
 XMLPUBFUN void XMLCALL		
-		initdocbDefaultSAXHandler	(xmlSAXHandler *hdlr);
+		initdocbDefaultSAXHandler	(xmlSAXHandlerV1 *hdlr);
 #endif
 #ifdef __cplusplus
 }

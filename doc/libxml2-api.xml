@@ -62,6 +62,7 @@
      <exports symbol='xmlXPtrWrapLocationSet'/>
     </file>
     <file name='SAX'>
+     <exports symbol='_xmlSAXHandlerV1'/>
      <exports symbol='attribute'/>
      <exports symbol='attributeDecl'/>
      <exports symbol='cdataBlock'/>
@@ -99,6 +100,8 @@
      <exports symbol='startDocument'/>
      <exports symbol='startElement'/>
      <exports symbol='unparsedEntityDecl'/>
+     <exports symbol='xmlSAXHandlerV1'/>
+     <exports symbol='xmlSAXHandlerV1Ptr'/>
     </file>
     <file name='parserInternals'>
      <exports symbol='INPUT_CHUNK'/>
@@ -783,7 +786,6 @@
     </file>
     <file name='xmlmemory'>
      <exports symbol='DEBUG_MEMORY'/>
-     <exports symbol='_DEBUG_MEMORY_ALLOC_'/>
      <exports symbol='xmlFreeFunc'/>
      <exports symbol='xmlGcMemGet'/>
      <exports symbol='xmlGcMemSetup'/>
@@ -2374,6 +2376,7 @@
       <arg name='c' info='an UNICODE value (int)'/>
     </macro>
     <macro name='LIBXML_AUTOMATA_ENABLED' file='xmlversion'>
+      <info>Whether the automata interfaces are compiled in</info>
     </macro>
     <macro name='LIBXML_C14N_ENABLED' file='xmlversion'>
       <info>Whether the Canonicalization support is configured in</info>
@@ -2408,8 +2411,10 @@
       <info>Whether ISO-8859-* support is made available in case iconv is not</info>
     </macro>
     <macro name='LIBXML_REGEXP_ENABLED' file='xmlversion'>
+      <info>Whether the regular expressions interfaces are compiled in</info>
     </macro>
     <macro name='LIBXML_SCHEMAS_ENABLED' file='xmlversion'>
+      <info>Whether the Schemas validation interfaces are compiled in</info>
     </macro>
     <macro name='LIBXML_TEST_VERSION' file='xmlversion'>
       <info>Macro to check that the libxml version in use is compatible with the version the software has been compiled against</info>
@@ -2418,6 +2423,7 @@
       <info>Whether the thread support is configured in</info>
     </macro>
     <macro name='LIBXML_UNICODE_ENABLED' file='xmlversion'>
+      <info>Whether the Unicode related interfaces are compiled in</info>
     </macro>
     <macro name='LIBXML_VERSION' file='xmlversion'>
       <info>the version number: 1.2.3 value is 1002003</info>
@@ -2452,6 +2458,7 @@
     <macro name='WITH_TRIO' file='xmlversion'>
     </macro>
     <macro name='XMLCALL' file='xmlexports'>
+      <info>Macros which declare the called convention for exported functions Windows platform with MS compiler Windows platform with Borland compiler Windows platform with GNU compiler (Mingw) Cygwin platform, GNU compiler</info>
     </macro>
     <macro name='XMLPUBFUN' file='xmlexports'>
     </macro>
@@ -2560,8 +2567,6 @@
     <macro name='XP_ERROR0' file='xpathInternals'>
       <info>Macro to raise an XPath error and return 0.</info>
       <arg name='X' info='the error code'/>
-    </macro>
-    <macro name='_DEBUG_MEMORY_ALLOC_' file='xmlmemory'>
     </macro>
     <macro name='_REENTRANT' file='xmlexports'>
     </macro>
@@ -3316,9 +3321,9 @@ actually an xmlCharEncoding'/>
     <struct name='xmlGlobalState' file='globals' type='struct _xmlGlobalState'>
       <field name='xmlParserVersion' type='const char *' info=''/>
       <field name='xmlDefaultSAXLocator' type='xmlSAXLocator' info=''/>
-      <field name='xmlDefaultSAXHandler' type='xmlSAXHandler' info=''/>
-      <field name='docbDefaultSAXHandler' type='xmlSAXHandler' info=''/>
-      <field name='htmlDefaultSAXHandler' type='xmlSAXHandler' info=''/>
+      <field name='xmlDefaultSAXHandler' type='xmlSAXHandlerV1' info=''/>
+      <field name='docbDefaultSAXHandler' type='xmlSAXHandlerV1' info=''/>
+      <field name='htmlDefaultSAXHandler' type='xmlSAXHandlerV1' info=''/>
       <field name='xmlFree' type='xmlFreeFunc' info=''/>
       <field name='xmlMalloc' type='xmlMallocFunc' info=''/>
       <field name='xmlMemStrdup' type='xmlStrdupFunc' info=''/>
@@ -3610,6 +3615,37 @@ actually an xmlCharEncoding'/>
       <field name='endElementNs' type='endElementNsSAX2Func' info=''/>
     </struct>
     <typedef name='xmlSAXHandlerPtr' file='tree' type='xmlSAXHandler *'/>
+    <struct name='xmlSAXHandlerV1' file='SAX' type='struct _xmlSAXHandlerV1'>
+      <field name='internalSubset' type='internalSubsetSAXFunc' info=''/>
+      <field name='isStandalone' type='isStandaloneSAXFunc' info=''/>
+      <field name='hasInternalSubset' type='hasInternalSubsetSAXFunc' info=''/>
+      <field name='hasExternalSubset' type='hasExternalSubsetSAXFunc' info=''/>
+      <field name='resolveEntity' type='resolveEntitySAXFunc' info=''/>
+      <field name='getEntity' type='getEntitySAXFunc' info=''/>
+      <field name='entityDecl' type='entityDeclSAXFunc' info=''/>
+      <field name='notationDecl' type='notationDeclSAXFunc' info=''/>
+      <field name='attributeDecl' type='attributeDeclSAXFunc' info=''/>
+      <field name='elementDecl' type='elementDeclSAXFunc' info=''/>
+      <field name='unparsedEntityDecl' type='unparsedEntityDeclSAXFunc' info=''/>
+      <field name='setDocumentLocator' type='setDocumentLocatorSAXFunc' info=''/>
+      <field name='startDocument' type='startDocumentSAXFunc' info=''/>
+      <field name='endDocument' type='endDocumentSAXFunc' info=''/>
+      <field name='startElement' type='startElementSAXFunc' info=''/>
+      <field name='endElement' type='endElementSAXFunc' info=''/>
+      <field name='reference' type='referenceSAXFunc' info=''/>
+      <field name='characters' type='charactersSAXFunc' info=''/>
+      <field name='ignorableWhitespace' type='ignorableWhitespaceSAXFunc' info=''/>
+      <field name='processingInstruction' type='processingInstructionSAXFunc' info=''/>
+      <field name='comment' type='commentSAXFunc' info=''/>
+      <field name='warning' type='warningSAXFunc' info=''/>
+      <field name='error' type='errorSAXFunc' info=''/>
+      <field name='fatalError' type='fatalErrorSAXFunc' info=' unused error() get all the errors'/>
+      <field name='getParameterEntity' type='getParameterEntitySAXFunc' info=''/>
+      <field name='cdataBlock' type='cdataBlockSAXFunc' info=''/>
+      <field name='externalSubset' type='externalSubsetSAXFunc' info=''/>
+      <field name='initialized' type='unsigned int' info=''/>
+    </struct>
+    <typedef name='xmlSAXHandlerV1Ptr' file='SAX' type='xmlSAXHandlerV1 *'/>
     <struct name='xmlSAXLocator' file='tree' type='struct _xmlSAXLocator'>
       <field name='getPublicId' type='const xmlChar *(*getPublicId)' info=''/>
       <field name='getSystemId' type='const xmlChar *(*getSystemId)' info=''/>
@@ -3879,12 +3915,12 @@ actually an xmlCharEncoding'/>
       <field name='value' type='xmlXPathObjectPtr' info=' the value'/>
     </struct>
     <typedef name='xmlXPathVariablePtr' file='xpath' type='xmlXPathVariable *'/>
-    <variable name='docbDefaultSAXHandler' file='globals' type='xmlSAXHandler'/>
-    <variable name='htmlDefaultSAXHandler' file='globals' type='xmlSAXHandler'/>
+    <variable name='docbDefaultSAXHandler' file='globals' type='xmlSAXHandlerV1'/>
+    <variable name='htmlDefaultSAXHandler' file='globals' type='xmlSAXHandlerV1'/>
     <variable name='oldXMLWDcompatibility' file='globals' type='int'/>
     <variable name='xmlBufferAllocScheme' file='globals' type='xmlBufferAllocationScheme'/>
     <variable name='xmlDefaultBufferSize' file='globals' type='int'/>
-    <variable name='xmlDefaultSAXHandler' file='globals' type='xmlSAXHandler'/>
+    <variable name='xmlDefaultSAXHandler' file='globals' type='xmlSAXHandlerV1'/>
     <variable name='xmlDefaultSAXLocator' file='globals' type='xmlSAXLocator'/>
     <variable name='xmlDeregisterNodeDefaultValue' file='globals' type='xmlDeregisterNodeFunc'/>
     <variable name='xmlDoValidityCheckingDefaultValue' file='globals' type='int'/>
@@ -4584,17 +4620,17 @@ actually an xmlCharEncoding'/>
     <function name='initdocbDefaultSAXHandler' file='SAX'>
       <info>Initialize the default DocBook SAX version 1 handler DEPRECATED: use xmlSAX2InitDocbDefaultSAXHandler() for the new SAX2 blocks</info>
       <return type='void'/>
-      <arg name='hdlr' type='xmlSAXHandler *' info='the SAX handler'/>
+      <arg name='hdlr' type='xmlSAXHandlerV1 *' info='the SAX handler'/>
     </function>
     <function name='inithtmlDefaultSAXHandler' file='SAX'>
       <info>Initialize the default HTML SAX version 1 handler DEPRECATED: use xmlSAX2InitHtmlDefaultSAXHandler() for the new SAX2 blocks</info>
       <return type='void'/>
-      <arg name='hdlr' type='xmlSAXHandler *' info='the SAX handler'/>
+      <arg name='hdlr' type='xmlSAXHandlerV1 *' info='the SAX handler'/>
     </function>
     <function name='initxmlDefaultSAXHandler' file='SAX'>
       <info>Initialize the default XML SAX version 1 handler DEPRECATED: use xmlSAX2InitDefaultSAXHandler() for the new SAX2 blocks</info>
       <return type='void'/>
-      <arg name='hdlr' type='xmlSAXHandler *' info='the SAX handler'/>
+      <arg name='hdlr' type='xmlSAXHandlerV1 *' info='the SAX handler'/>
       <arg name='warning' type='int' info='flag if non-zero sets the handler warning procedure'/>
     </function>
     <function name='inputPop' file='parserInternals'>
@@ -6515,13 +6551,13 @@ actually an xmlCharEncoding'/>
       <arg name='name' type='const xmlChar *' info='the name of the userdata'/>
     </function>
     <function name='xmlHashQLookup2' file='hash'>
-      <info></info>
-      <return type='void *' info=''/>
-      <arg name='table' type='xmlHashTablePtr' info=''/>
-      <arg name='prefix' type='const xmlChar *' info=''/>
-      <arg name='name' type='const xmlChar *' info=''/>
+      <info>Find the userdata specified by the QNames tuple</info>
+      <return type='void *' info='the pointer to the userdata'/>
+      <arg name='table' type='xmlHashTablePtr' info='the hash table'/>
+      <arg name='prefix' type='const xmlChar *' info='the second prefix of the userdata'/>
+      <arg name='name' type='const xmlChar *' info='the name of the userdata'/>
       <arg name='prefix2' type='const xmlChar *' info=''/>
-      <arg name='name2' type='const xmlChar *' info=''/>
+      <arg name='name2' type='const xmlChar *' info='a second name of the userdata'/>
     </function>
     <function name='xmlHashQLookup3' file='hash'>
       <info>Find the userdata specified by the (@name, @name2, @name3) tuple.</info>
@@ -8941,8 +8977,8 @@ actually an xmlCharEncoding'/>
       <arg name='URI' type='const xmlChar *' info='the element namespace name if available'/>
       <arg name='nb_namespaces' type='int' info='number of namespace definitions on that node'/>
       <arg name='namespaces' type='const xmlChar **' info='pointer to the array of prefix/URI pairs namespace definitions'/>
-      <arg name='nb_attributes' type='int' info='the number of attributes on that node nb_defaulted:  the number of defaulted attributes.'/>
-      <arg name='nb_defaulted' type='int' info=''/>
+      <arg name='nb_attributes' type='int' info='the number of attributes on that node'/>
+      <arg name='nb_defaulted' type='int' info='the number of defaulted attributes.'/>
       <arg name='attributes' type='const xmlChar **' info='pointer to the array of (localname/prefix/URI/value/end) attribute values.'/>
     </function>
     <function name='xmlSAX2UnparsedEntityDecl' file='SAX2'>
@@ -9573,15 +9609,15 @@ actually an xmlCharEncoding'/>
       <arg name='value' type='const xmlChar *' info='the value of the attribute'/>
     </function>
     <function name='xmlStringLenDecodeEntities' file='parserInternals'>
-      <info></info>
-      <return type='xmlChar *' info=''/>
-      <arg name='ctxt' type='xmlParserCtxtPtr' info=''/>
-      <arg name='str' type='const xmlChar *' info=''/>
-      <arg name='len' type='int' info=''/>
-      <arg name='what' type='int' info=''/>
-      <arg name='end' type='xmlChar' info=''/>
-      <arg name='end2' type='xmlChar' info=''/>
-      <arg name='end3' type='xmlChar' info=''/>
+      <info>Takes a entity string content and process to do the adequate substitutions.  [67] Reference ::= EntityRef | CharRef  [69] PEReference ::= &apos;%&apos; Name &apos;;&apos;</info>
+      <return type='xmlChar *' info='A newly allocated string with the substitution done. The caller must deallocate it !'/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info='the parser context'/>
+      <arg name='str' type='const xmlChar *' info='the input string'/>
+      <arg name='len' type='int' info='the string length'/>
+      <arg name='what' type='int' info='combination of XML_SUBSTITUTE_REF and XML_SUBSTITUTE_PEREF'/>
+      <arg name='end' type='xmlChar' info='an end marker xmlChar, 0 if none'/>
+      <arg name='end2' type='xmlChar' info='an end marker xmlChar, 0 if none'/>
+      <arg name='end3' type='xmlChar' info='an end marker xmlChar, 0 if none'/>
     </function>
     <function name='xmlStringLenGetNodeList' file='tree'>
       <info>Parse the value string and build the node list associated. Should produce a flat tree with only TEXTs and ENTITY_REFs.</info>
@@ -9712,9 +9748,9 @@ actually an xmlCharEncoding'/>
       <arg name='str' type='const xmlChar *' info='the string to intern.'/>
     </function>
     <function name='xmlTextReaderConstXmlLang' file='xmlreader'>
-      <info></info>
-      <return type='const xmlChar *' info=''/>
-      <arg name='reader' type='xmlTextReaderPtr' info=''/>
+      <info>The xml:lang scope within which the node resides.</info>
+      <return type='const xmlChar *' info='the xml:lang value or NULL if none exists.'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
     </function>
     <function name='xmlTextReaderCurrentDoc' file='xmlreader'>
       <info>Hacking interface allowing to get the xmlDocPtr correponding to the current document being accessed by the xmlTextReader. This is dangerous because the associated node may be destroyed on the next Reads.</info>

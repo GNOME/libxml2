@@ -16,6 +16,7 @@
 #include <libxml/xmlversion.h>
 #include <libxml/parser.h>
 #include <libxml/xmlerror.h>
+#include <libxml/SAX.h>
 #include <libxml/SAX2.h>
 #include <libxml/xmlmemory.h>
 
@@ -70,9 +71,9 @@ struct _xmlGlobalState
 	const char *xmlParserVersion;
 
 	xmlSAXLocator xmlDefaultSAXLocator;
-	xmlSAXHandler xmlDefaultSAXHandler;
-	xmlSAXHandler docbDefaultSAXHandler;
-	xmlSAXHandler htmlDefaultSAXHandler;
+	xmlSAXHandlerV1 xmlDefaultSAXHandler;
+	xmlSAXHandlerV1 docbDefaultSAXHandler;
+	xmlSAXHandlerV1 htmlDefaultSAXHandler;
 
 	xmlFreeFunc xmlFree;
 	xmlMallocFunc xmlMalloc;
@@ -183,22 +184,22 @@ XMLPUBVAR xmlStrdupFunc xmlMemStrdup;
 #endif /* LIBXML_THREAD_ALLOC_ENABLED */
 
 #ifdef LIBXML_DOCB_ENABLED
-XMLPUBFUN  xmlSAXHandler * XMLCALL __docbDefaultSAXHandler(void);
+XMLPUBFUN  xmlSAXHandlerV1 * XMLCALL __docbDefaultSAXHandler(void);
 #ifdef LIBXML_THREAD_ENABLED
 #define docbDefaultSAXHandler \
 (*(__docbDefaultSAXHandler()))
 #else
-XMLPUBVAR xmlSAXHandler docbDefaultSAXHandler;
+XMLPUBVAR xmlSAXHandlerV1 docbDefaultSAXHandler;
 #endif
 #endif
 
 #ifdef LIBXML_HTML_ENABLED
-XMLPUBFUN xmlSAXHandler * XMLCALL __htmlDefaultSAXHandler(void);
+XMLPUBFUN xmlSAXHandlerV1 * XMLCALL __htmlDefaultSAXHandler(void);
 #ifdef LIBXML_THREAD_ENABLED
 #define htmlDefaultSAXHandler \
 (*(__htmlDefaultSAXHandler()))
 #else
-XMLPUBVAR xmlSAXHandler htmlDefaultSAXHandler;
+XMLPUBVAR xmlSAXHandlerV1 htmlDefaultSAXHandler;
 #endif
 #endif
 
@@ -236,12 +237,12 @@ XMLPUBVAR int xmlDefaultBufferSize;
 #endif
 XMLPUBFUN int XMLCALL xmlThrDefDefaultBufferSize(int v);
 
-XMLPUBFUN xmlSAXHandler * XMLCALL __xmlDefaultSAXHandler(void);
+XMLPUBFUN xmlSAXHandlerV1 * XMLCALL __xmlDefaultSAXHandler(void);
 #ifdef LIBXML_THREAD_ENABLED
 #define xmlDefaultSAXHandler \
 (*(__xmlDefaultSAXHandler()))
 #else
-XMLPUBVAR xmlSAXHandler xmlDefaultSAXHandler;
+XMLPUBVAR xmlSAXHandlerV1 xmlDefaultSAXHandler;
 #endif
 
 XMLPUBFUN xmlSAXLocator * XMLCALL __xmlDefaultSAXLocator(void);

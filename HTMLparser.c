@@ -4102,10 +4102,10 @@ htmlInitParserCtxt(htmlParserCtxtPtr ctxt)
     ctxt->nameMax = 10;
     ctxt->name = NULL;
 
-    if (sax == NULL) ctxt->sax = &htmlDefaultSAXHandler;
+    if (sax == NULL) ctxt->sax = (xmlSAXHandlerPtr) &htmlDefaultSAXHandler;
     else {
         ctxt->sax = sax;
-	memcpy(sax, &htmlDefaultSAXHandler, sizeof(htmlSAXHandler));
+	memcpy(sax, &htmlDefaultSAXHandler, sizeof(xmlSAXHandlerV1));
     }
     ctxt->userData = ctxt;
     ctxt->myDoc = NULL;
@@ -5175,7 +5175,7 @@ htmlCreatePushParserCtxt(htmlSAXHandlerPtr sax, void *user_data,
     if(enc==XML_CHAR_ENCODING_UTF8 || buf->encoder)
 	ctxt->charset=XML_CHAR_ENCODING_UTF8;
     if (sax != NULL) {
-	if (ctxt->sax != &htmlDefaultSAXHandler)
+	if (ctxt->sax != (xmlSAXHandlerPtr) &htmlDefaultSAXHandler)
 	    xmlFree(ctxt->sax);
 	ctxt->sax = (htmlSAXHandlerPtr) xmlMalloc(sizeof(htmlSAXHandler));
 	if (ctxt->sax == NULL) {

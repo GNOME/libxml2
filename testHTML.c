@@ -75,7 +75,10 @@ xmlSAXHandler emptySAXHandlerStruct = {
     NULL, /* getParameterEntity */
     NULL, /* cdataBlock */
     NULL, /* externalSubset */
-    1
+    1,
+    NULL,
+    NULL,
+    NULL
 };
 
 xmlSAXHandlerPtr emptySAXHandler = &emptySAXHandlerStruct;
@@ -595,7 +598,10 @@ xmlSAXHandler debugSAXHandlerStruct = {
     getParameterEntityDebug,
     cdataDebug,
     NULL,
-    1
+    1,
+    NULL,
+    NULL,
+    NULL
 };
 
 xmlSAXHandlerPtr debugSAXHandler = &debugSAXHandlerStruct;

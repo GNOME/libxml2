@@ -1,3 +1,10 @@
+Wed 01 May 2002 11:29:27 AM PDT Aleksey Sanin <aleksey@aleksey.com>
+
+	* include/libxml/xmlIO.h win32/dsp/libxml2.def.src
+	win32/libxml2.def.src xmlIO.c: exported default
+	'file:', 'http:' and 'ftp:' protocols input handlers 
+	and maked protocols comparisson case insensitive
+
 Tue Apr 30 16:29:05 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in: Neven Has detected a typo

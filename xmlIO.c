@@ -268,7 +268,7 @@ xmlFdClose (void * context) {
  *
  * Returns 1 if matches, 0 otherwise
  */
-static int
+int
 xmlFileMatch (const char *filename ATTRIBUTE_UNUSED) {
     return(1);
 }
@@ -282,7 +282,7 @@ xmlFileMatch (const char *filename ATTRIBUTE_UNUSED) {
  *
  * Returns an I/O context or NULL in case of error
  */
-static void *
+void *
 xmlFileOpen (const char *filename) {
     const char *path = NULL;
     FILE *fd;
@@ -292,9 +292,9 @@ xmlFileOpen (const char *filename) {
 	return((void *) fd);
     }
 
-    if (!strncmp(filename, "file://localhost", 16))
+    if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "file://localhost", 16))
 	path = &filename[16];
-    else if (!strncmp(filename, "file:///", 8)) {
+    else if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "file:///", 8)) {
 #if defined (_WIN32) && !defined(__CYGWIN__)
 	path = &filename[8];
 #else
@@ -335,9 +335,9 @@ xmlFileOpenW (const char *filename) {
 	return((void *) fd);
     }
 
-    if (!strncmp(filename, "file://localhost", 16))
+    if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "file://localhost", 16))
 	path = &filename[16];
-    else if (!strncmp(filename, "file:///", 8)) {
+    else if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "file:///", 8)) {
 #if defined (_WIN32) && !defined(__CYGWIN__)
 	path = &filename[8];
 #else
@@ -363,7 +363,7 @@ xmlFileOpenW (const char *filename) {
  *
  * Returns the number of bytes written
  */
-static int
+int
 xmlFileRead (void * context, char * buffer, int len) {
     return(fread(&buffer[0], 1,  len, (FILE *) context));
 }
@@ -389,7 +389,7 @@ xmlFileWrite (void * context, const char * buffer, int len) {
  *
  * Close an I/O channel
  */
-static int
+int
 xmlFileClose (void * context) {
     FILE *fil;
 
@@ -452,9 +452,9 @@ xmlGzfileOpen (const char *filename) {
 	return((void *) fd);
     }
 
-    if (!strncmp(filename, "file://localhost", 16))
+    if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "file://localhost", 16))
 	path = &filename[16];
-    else if (!strncmp(filename, "file:///", 8)) {
+    else if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "file:///", 8)) {
 #if defined (_WIN32) && !defined(__CYGWIN__)
 	path = &filename[8];
 #else
@@ -494,9 +494,9 @@ xmlGzfileOpenW (const char *filename, int compression) {
 	return((void *) fd);
     }
 
-    if (!strncmp(filename, "file://localhost", 16))
+    if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "file://localhost", 16))
 	path = &filename[16];
-    else if (!strncmp(filename, "file:///", 8)) {
+    else if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "file:///", 8)) {
 #if defined (_WIN32) && !defined(__CYGWIN__)
 	path = &filename[8];
 #else
@@ -931,9 +931,9 @@ xmlFreeHTTPWriteCtxt( xmlIOHTTPWriteCtxtPtr ctxt )
  *
  * Returns 1 if matches, 0 otherwise
  */
-static int
+int
 xmlIOHTTPMatch (const char *filename) {
-    if (!strncmp(filename, "http://", 7))
+    if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "http://", 7))
 	return(1);
     return(0);
 }
@@ -946,7 +946,7 @@ xmlIOHTTPMatch (const char *filename) {
  *
  * Returns an I/O context or NULL in case of error
  */
-static void *
+void *
 xmlIOHTTPOpen (const char *filename) {
     return(xmlNanoHTTPOpen(filename, NULL));
 }
@@ -1040,7 +1040,7 @@ xmlIOHTTPDfltOpenW( const char * post_uri ) {
  *
  * Returns the number of bytes written
  */
-static int 
+int 
 xmlIOHTTPRead(void * context, char * buffer, int len) {
     return(xmlNanoHTTPRead(context, &buffer[0], len));
 }
@@ -1096,7 +1096,7 @@ xmlIOHTTPWrite( void * context, const char * buffer, int len ) {
  *
  * Close an HTTP I/O channel
  */
-static int
+int
 xmlIOHTTPClose (void * context) {
     xmlNanoHTTPClose(context);
     return 0;
@@ -1275,9 +1275,9 @@ xmlIOHTTPClosePost( void * ctxt ) {
  *
  * Returns 1 if matches, 0 otherwise
  */
-static int
+int
 xmlIOFTPMatch (const char *filename) {
-    if (!strncmp(filename, "ftp://", 6))
+    if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "ftp://", 6))
 	return(1);
     return(0);
 }
@@ -1290,7 +1290,7 @@ xmlIOFTPMatch (const char *filename) {
  *
  * Returns an I/O context or NULL in case of error
  */
-static void *
+void *
 xmlIOFTPOpen (const char *filename) {
     return(xmlNanoFTPOpen(filename));
 }
@@ -1305,7 +1305,7 @@ xmlIOFTPOpen (const char *filename) {
  *
  * Returns the number of bytes written
  */
-static int 
+int 
 xmlIOFTPRead(void * context, char * buffer, int len) {
     return(xmlNanoFTPRead(context, &buffer[0], len));
 }
@@ -1316,7 +1316,7 @@ xmlIOFTPRead(void * context, char * buffer, int len) {
  *
  * Close an FTP I/O channel
  */
-static int
+int
 xmlIOFTPClose (void * context) {
     return ( xmlNanoFTPClose(context) );
 }
@@ -2442,9 +2442,9 @@ static int xmlSysIDExists(const char *URL) {
     if (URL == NULL)
 	return(0);
 
-    if (!strncmp(URL, "file://localhost", 16))
+    if (!xmlStrncasecmp(BAD_CAST URL, BAD_CAST "file://localhost", 16))
 	path = &URL[16];
-    else if (!strncmp(URL, "file:///", 8)) {
+    else if (!xmlStrncasecmp(BAD_CAST URL, BAD_CAST "file:///", 8)) {
 #if defined (_WIN32) && !defined(__CYGWIN__)
 	path = &URL[8];
 #else
@@ -2631,9 +2631,9 @@ xmlNoNetExists(const char *URL)
     if (URL == NULL)
         return (0);
 
-    if (!xmlStrncmp(BAD_CAST URL, BAD_CAST "file://localhost", 16))
+    if (!xmlStrncasecmp(BAD_CAST URL, BAD_CAST "file://localhost", 16))
         path = &URL[16];
-    else if (!xmlStrncmp(BAD_CAST URL, BAD_CAST "file:///", 8)) {
+    else if (!xmlStrncasecmp(BAD_CAST URL, BAD_CAST "file:///", 8)) {
 #if defined (_WIN32) && !defined(__CYGWIN__)
         path = &URL[8];
 #else
@@ -2726,10 +2726,8 @@ xmlNoNetExternalEntityLoader(const char *URL, const char *ID,
 	resource = (xmlChar *) URL;
 
     if (resource != NULL) {
-        if ((!xmlStrncasecmp((const xmlChar *) resource,
-		            (const xmlChar *) "ftp://", 6)) ||
-            (!xmlStrncasecmp((const xmlChar *) resource,
-		            (const xmlChar *) "http://", 7))) {
+        if ((!xmlStrncasecmp(BAD_CAST resource, BAD_CAST "ftp://", 6)) ||
+            (!xmlStrncasecmp(BAD_CAST resource, BAD_CAST "http://", 7))) {
 	    xmlGenericError(xmlGenericErrorContext,
 	            "Attempt to load network entity %s \n", resource);
 

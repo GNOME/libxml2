@@ -252,6 +252,41 @@ xmlParserInputPtr xmlNoNetExternalEntityLoader(const char *URL,
 					 const char *ID,
 					 xmlParserCtxtPtr ctxt);
 
+
+/**
+ * Default 'file://' protocol callbacks 
+ */
+int	xmlFileMatch 			(const char *filename);
+void *	xmlFileOpen 			(const char *filename);
+int	xmlFileRead 			(void * context, 
+					 char * buffer, 
+					 int len);
+int	xmlFileClose 			(void * context);
+
+/**
+ * Default 'http://' protocol callbacks 
+ */
+#ifdef LIBXML_HTTP_ENABLED
+int	xmlIOHTTPMatch 			(const char *filename);
+void *	xmlIOHTTPOpen 			(const char *filename);
+int 	xmlIOHTTPRead			(void * context, 
+					 char * buffer, 
+					 int len);
+int	xmlIOHTTPClose 			(void * context);
+#endif /* LIBXML_HTTP_ENABLED */
+
+/**
+ * Default 'ftp://' protocol callbacks 
+ */
+#ifdef LIBXML_FTP_ENABLED 
+int	xmlIOFTPMatch 			(const char *filename);
+void *	xmlIOFTPOpen 			(const char *filename);
+int 	xmlIOFTPRead			(void * context, 
+					 char * buffer, 
+					 int len);
+int 	xmlIOFTPClose 			(void * context);
+#endif /* LIBXML_FTP_ENABLED */
+
 #ifdef __cplusplus
 }
 #endif

@@ -4,7 +4,7 @@ import time
 import os
 import string
 import StringIO
-sys.path.append("python")
+sys.path.insert(0, "python")
 import libxml2
 
 # Memory debug specific

@@ -3,7 +3,7 @@ import sys
 import time
 import os
 import string
-sys.path.append("python")
+sys.path.insert(0, "python")
 import libxml2
 
 test_nr = 0

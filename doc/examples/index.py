@@ -9,7 +9,7 @@ try:
     import libxml2
 except:
     sys.exit(1)
-sys.path.append("..")
+sys.path.insert(0, "..")
 from apibuild import CParser, escape
 
 examples = []

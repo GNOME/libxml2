@@ -1,3 +1,11 @@
+Sat Oct  2 15:46:37 PDT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* check-relaxng-test-suite.py, check-relaxng-test-suite2.py,
+	  check-xinclude-test-suite.py, check-xml-test-suite.py,
+	  check-xsddata-test-suite.py, doc/examples/index.py: changed
+	  changed sys.path setting from 'append' to 'insert' (patch
+	  supplied by Malcolm Tredinnick) (bug 153716)
+
 Sat Oct  2 15:03:14 PDT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* include/libxml/parserInternals.h: added two new macros

@@ -1,3 +1,13 @@
+Thu Mar 17 12:55:23 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c: Removed inheritance of "mixed" content type for
+	  short-hand restrictions of "anyType" (reported by Guy Fabrice
+	  to the mailing list). Added the namespace conversion (chameleon
+	  includes) for the base type reference of <restriction> and
+	  <extension>.
+	* test/schemas/bug152470_1.xsd: Adapted due to the above change
+	  of "mixed" inheritance.
+
 Thu Mar 17 11:03:59 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemas.c: fixed a = -> == error pointed by GUY Fabrice

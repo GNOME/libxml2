@@ -13,7 +13,7 @@
 
 <complexType name="Identifier">
   <choice>
-    <element name="keyIdentifier" type="roap:KeyIdentifier"/>
+    <element name="keyIdentifier" type="roap:X509SPKIHash"/> <!-- was: type="roap:KeyIdentifier" -->
   </choice>
 </complexType>
 

@@ -62,6 +62,8 @@
 
 /* #define DEBUG_IDC 1 */
 
+/* #define DEBUG_INCLUDES 1 */
+
 
 #define UNBOUNDED (1 << 30)
 #define TODO 								\
@@ -1430,17 +1432,29 @@ xmlSchemaVFacetErr(xmlSchemaValidCtxtPtr ctxt,
 	    msg = xmlStrcat(msg, BAD_CAST "The value '%s' is not accepted "
 		"by the pattern '%s'.\n");
 	    xmlSchemaVErr(ctxt, node, error, (const char *) msg, value, 
-		facet->value);	       
+		facet->value);
 	} else if (facetType == XML_SCHEMA_FACET_MININCLUSIVE) {
 	    msg = xmlStrcat(msg, BAD_CAST "The value '%s' is less than the "
 		"minimum value allowed ('%s').\n");
-	    xmlSchemaVErr(ctxt, node, error, (const char *) msg, value, 
+	    xmlSchemaVErr(ctxt, node, error, (const char *) msg, value,
 		facet->value);
 	} else if (facetType == XML_SCHEMA_FACET_MAXINCLUSIVE) {
 	    msg = xmlStrcat(msg, BAD_CAST "The value '%s' is greater than the "
 		"maximum value allowed ('%s').\n");
-	    xmlSchemaVErr(ctxt, node, error, (const char *) msg, value, 
+	    xmlSchemaVErr(ctxt, node, error, (const char *) msg, value,
 		facet->value);
+#if 0
+	} else if (facetType == XML_SCHEMA_FACET_MINEXCLUSIVE) {
+	    msg = xmlStrcat(msg, BAD_CAST "The value '%s' is less than the "
+		"minimum exclusive value allowed ('%s').\n");
+	    xmlSchemaVErr(ctxt, node, error, (const char *) msg, value,
+		facet->value);
+	} else if (facetType == XML_SCHEMA_FACET_MAXEXCLUSIVE) {
+	    msg = xmlStrcat(msg, BAD_CAST "The value '%s' is greater than the "
+		"maximum exclusive value allowed ('%s').\n");
+	    xmlSchemaVErr(ctxt, node, error, (const char *) msg, value,
+		facet->value);
+#endif
 	} else if (node->type == XML_ATTRIBUTE_NODE) {		
 	    msg = xmlStrcat(msg, BAD_CAST "The value '%s' is not facet-valid.\n");
 	    xmlSchemaVErr(ctxt, node, error, (const char *) msg, value, NULL);
@@ -4130,6 +4144,7 @@ xmlSchemaAddWildcard(xmlSchemaParserCtxtPtr ctxt)
  * 									*
  ************************************************************************/
 
+#if 0
 /**
  * xmlGetQNameProp:
  * @ctxt:  a schema validation context
@@ -4187,6 +4202,7 @@ xmlGetQNameProp(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node,
     }
     return (ret);
 }
+#endif
 
 /**
  * xmlSchemaPValAttrNodeQNameValue:
@@ -4340,6 +4356,8 @@ xmlSchemaPValAttrQName(xmlSchemaParserCtxtPtr ctxt,
     attr = xmlSchemaGetPropNode(ownerElem, name);
     if (attr == NULL) {
 	*local = NULL;
+	if (prefix != NULL)
+	    *prefix = NULL;
 	*uri = NULL;
 	return (0);    
     }
@@ -8611,6 +8629,17 @@ check_targetNamespace:
     */
     include->origTargetNamespace = targetNamespace;
     include->targetNamespace = schema->targetNamespace;
+#ifdef DEBUG_INCLUDES
+    if (targetNamespace != schema->targetNamespace) 
+	xmlGenericError(xmlGenericErrorContext,
+	    "INCLUDING CHAMELEON '%s'\n  orig TNS '%s'\n"
+	    "  into TNS '%s'\n", schemaLocation,
+	    targetNamespace, schema->targetNamespace);
+    else
+	xmlGenericError(xmlGenericErrorContext,
+	    "INCLUDING '%s'\n  orig-TNS '%s'\n", schemaLocation,
+	    targetNamespace);
+#endif
     /*
     * Compile the included schema.
     */
@@ -8920,14 +8949,15 @@ xmlSchemaParseRestriction(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     /*
     * Attribute "base".
     */
-    type->base = xmlGetQNameProp(ctxt, node, "base", &(type->baseNs));
-    if ((type->base == NULL) && 
+    if ((xmlSchemaPValAttrQName(ctxt, schema,
+	NULL, NULL, node, "base", &(type->baseNs), NULL, &(type->base)) == 0) &&
+	(type->base == NULL) &&
 	(ctxt->ctxtType->type == XML_SCHEMA_TYPE_COMPLEX)) {
 	/* TODO: Think about the error code. */
 	xmlSchemaPMissingAttrErr(ctxt,
 	    XML_SCHEMAP_RESTRICTION_NONAME_NOREF, 
 	    NULL, type, node, "base", NULL);
-    }
+    }    
     /*
     * And now for the children...
     */
@@ -9120,13 +9150,19 @@ xmlSchemaParseExtension(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     xmlSchemaPValAttrID(ctxt, NULL, NULL, node, BAD_CAST "id");
 
     ctxt->container = name;
-
-    type->base = xmlGetQNameProp(ctxt, node, "base", &(type->baseNs));
-    if (type->base == NULL) {
-        xmlSchemaPErr2(ctxt, node, child, XML_SCHEMAP_EXTENSION_NO_BASE,
-	    "<extension>: The attribute \"base\" is missing.\n", 
-	    type->name, NULL);
-    }
+    /*
+    * Attribute "base".
+    */
+    if ((xmlSchemaPValAttrQName(ctxt, schema,
+	NULL, NULL, node, "base", &(type->baseNs), NULL, &(type->base)) == 0) &&
+	(type->base == NULL) &&
+	(ctxt->ctxtType->type == XML_SCHEMA_TYPE_COMPLEX)) {
+	/* TODO: Think about the error code. */
+	xmlSchemaPMissingAttrErr(ctxt,
+	    XML_SCHEMAP_RESTRICTION_NONAME_NOREF, 
+	    NULL, type, node, "base", NULL);
+    }  
+   
     child = node->children;
     if (IS_SCHEMA(child, "annotation")) {
         type->annot = xmlSchemaParseAnnotation(ctxt, schema, child);
@@ -13817,7 +13853,6 @@ xmlSchemaTypeFixup(xmlSchemaTypePtr item,
 		    ctxt->ctxtType->flags |= 
 			XML_SCHEMAS_TYPE_DERIVATION_METHOD_EXTENSION;
 		    if (item->recurse) {
-			/* TODO: The word "recursive" should be changed to "circular" here. */
 			xmlSchemaPCustomErr(ctxt,
 			    XML_SCHEMAP_UNKNOWN_BASE_TYPE,
 			    NULL, item, item->node,	
@@ -13914,11 +13949,10 @@ xmlSchemaTypeFixup(xmlSchemaTypePtr item,
 			item->flags |= 
 			    XML_SCHEMAS_TYPE_DERIVATION_METHOD_RESTRICTION;
 			/*
-			* Assume that we inherit the content-type type 
-			* from 'anyType', which is 'mixed' and a particle
-			* emptiable.
+			* NOTE that if restricting, the content type of the
+			* base type is not inherited.
+			* REMOVED: item->contentType = item->baseType->contentType;
 			*/
-			item->contentType = item->baseType->contentType;
 		    }
 		    /*
 		    * Fixup the sub components.

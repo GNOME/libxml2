@@ -29,8 +29,7 @@ xmlinc_HEADERS = \
 		xmlversion.h \
 		xmlwin32version.h \
 		DOCBparser.h \
-		catalog.h \
-		trionan.h
+		catalog.h
 
 install-exec-hook:
 	$(mkinstalldirs) $(DESTDIR)$(xmlincdir) $(DESTDIR)$(xmlincdir)/libxml

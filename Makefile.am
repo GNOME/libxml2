@@ -23,14 +23,14 @@ libxml2_la_SOURCES = SAX.c entities.c encoding.c error.c parserInternals.c  \
 		parser.c tree.c hash.c list.c xmlIO.c xmlmemory.c uri.c  \
 		valid.c xlink.c HTMLparser.c HTMLtree.c debugXML.c xpath.c  \
 		xpointer.c xinclude.c nanohttp.c nanoftp.c DOCBparser.c \
-		catalog.c trionan.c strio.c trio.c
+		catalog.c strio.c trio.c
 
 else
 libxml2_la_SOURCES = SAX.c entities.c encoding.c error.c parserInternals.c  \
 		parser.c tree.c hash.c list.c xmlIO.c xmlmemory.c uri.c  \
 		valid.c xlink.c HTMLparser.c HTMLtree.c debugXML.c xpath.c  \
 		xpointer.c xinclude.c nanohttp.c nanoftp.c DOCBparser.c \
-		catalog.c trionan.c
+		catalog.c 
 
 endif
 
@@ -81,7 +81,7 @@ check-local: tests
 
 testall : tests SVGtests SAXtests
 
-tests: XMLtests XMLenttests HTMLtests Validtests URItests XPathtests XPtrtests XIncludetests Scripttests
+tests: XMLtests XMLenttests HTMLtests Validtests URItests XPathtests XPtrtests XIncludetests Scripttests Catatests
 
 HTMLtests : testHTML
 	@(echo > .memdump)
@@ -375,6 +375,26 @@ Scripttests : xmllint
 	      $(top_builddir)/xmllint --shell $$xml < $$i > result.$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	      diff $(srcdir)/result/scripts/$$name result.$$name ; \
+	      rm result.$$name ; \
+	  fi ; fi ; done)
+
+Catatests : xmlcatalog
+	@(echo > .memdump)
+	@echo "##"
+	@echo "## Catalog regression tests"
+	@echo "##"
+	@(for i in $(srcdir)/test/catalogs/*.script ; do \
+	  name=`basename $$i .script`; \
+	  xml=$(srcdir)/test/catalogs/`basename $$i .script`.xml; \
+	  if [ -f $$xml ] ; then \
+	  if [ ! -f $(srcdir)/result/catalogs/$$name ] ; then \
+	      echo New test file $$name ; \
+	      $(top_builddir)/xmlcatalog --shell $$xml < $$i > $(srcdir)/result/catalogs/$$name ; \
+	  else \
+	      echo Testing $$name ; \
+	      $(top_builddir)/xmlcatalog --shell $$xml < $$i > result.$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
+	      diff $(srcdir)/result/catalogs/$$name result.$$name ; \
 	      rm result.$$name ; \
 	  fi ; fi ; done)
 

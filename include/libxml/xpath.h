@@ -295,6 +295,9 @@ LIBXML_DLL_IMPORT extern double xmlXPathNAN;
 LIBXML_DLL_IMPORT extern double xmlXPathPINF;
 LIBXML_DLL_IMPORT extern double xmlXPathNINF;
 
+int		xmlXPathIsNaN	(double val);
+int		xmlXPathIsInf	(double val);
+
 /* These macros may later turn into functions */
 /**
  * xmlXPathNodeSetGetLength:

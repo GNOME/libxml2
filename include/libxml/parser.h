@@ -471,18 +471,18 @@ int		xmlParseBalancedChunkMemory(xmlDocPtr doc,
 					 void *user_data,
 					 int depth,
 					 const xmlChar *string,
-					 xmlNodePtr *list);
+					 xmlNodePtr *lst);
 int		xmlParseExternalEntity	(xmlDocPtr doc,
 					 xmlSAXHandlerPtr sax,
 					 void *user_data,
 					 int depth,
 					 const xmlChar *URL,
 					 const xmlChar *ID,
-					 xmlNodePtr *list);
+					 xmlNodePtr *lst);
 int		xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx,
 					 const xmlChar *URL,
 					 const xmlChar *ID,
-					 xmlNodePtr *list);
+					 xmlNodePtr *lst);
 
 /*
  * SAX initialization routines

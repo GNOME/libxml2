@@ -21,30 +21,40 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#ifndef TRIO_PUBLIC
+#define TRIO_PUBLIC
+#endif
+
 /*
  * Return NaN (Not-a-Number).
  */
+TRIO_PUBLIC
 double trio_nan(void);
 
 /*
  * Return positive infinity.
  */
+TRIO_PUBLIC
 double trio_pinf(void);
 
 /*
  * Return negative infinity.
  */
+TRIO_PUBLIC
 double trio_ninf(void);
   
 /*
  * If number is a NaN return non-zero, otherwise return zero.
  */
+TRIO_PUBLIC
 int trio_isnan(double number);
 
 /*
  * If number is positive infinity return 1, if number is negative
  * infinity return -1, otherwise return 0.
  */
+TRIO_PUBLIC
 int trio_isinf(double number);
 
 #ifdef __cplusplus

@@ -51,7 +51,6 @@
 #include <libxml/debugXML.h>
 #endif
 #include <libxml/xmlerror.h>
-#include <libxml/trionan.h>
 
 /* #define DEBUG */
 /* #define DEBUG_STEP */
@@ -68,6 +67,9 @@ double xmlXPathDivideBy(double f, double fzero);
  * 			Floating point stuff				*
  * 									*
  ************************************************************************/
+
+#define TRIO_PUBLIC static
+#include "trionan.c"
 
 /*
  * The lack of portability of this section of the libc is annoying !
@@ -92,6 +94,36 @@ xmlXPathInit(void) {
     xmlXPathNAN = trio_nan();
 
     initialized = 1;
+}
+
+/**
+ * xmlXPathIsNaN:
+ * @val:  a double value
+ *
+ * Provides a portable isnan() function to detect whether a double
+ * is a NotaNumber. Based on trio code
+ * http://sourceforge.net/projects/ctrio/
+ * 
+ * Returns 1 if the value is a NaN, 0 otherwise
+ */
+int
+xmlXPathIsNaN(double val) {
+    return(trio_isnan(val));
+}
+
+/**
+ * xmlXPathIsInf:
+ * @val:  a double value
+ *
+ * Provides a portable isinf() function to detect whether a double
+ * is a +Infinite or -Infinite. Based on trio code
+ * http://sourceforge.net/projects/ctrio/
+ * 
+ * Returns 1 vi the value is +Infinite, -1 if -Infinite, 0 otherwise
+ */
+int
+xmlXPathIsInf(double val) {
+    return(trio_isinf(val));
 }
 
 /************************************************************************
@@ -526,7 +558,7 @@ xmlXPathDebugDumpObject(FILE *output, xmlXPathObjectPtr cur, int depth) {
 	    else fprintf(output, "false\n");
 	    break;
         case XPATH_NUMBER:
-	    switch (trio_isinf(cur->floatval)) {
+	    switch (xmlXPathIsInf(cur->floatval)) {
 	    case 1:
 		fprintf(output, "Object is a number : +Infinity\n");
 		break;
@@ -534,7 +566,7 @@ xmlXPathDebugDumpObject(FILE *output, xmlXPathObjectPtr cur, int depth) {
 		fprintf(output, "Object is a number : -Infinity\n");
 		break;
 	    default:
-		if (trio_isnan(cur->floatval)) {
+		if (xmlXPathIsNaN(cur->floatval)) {
 		    fprintf(output, "Object is a number : NaN\n");
 		} else {
 		    fprintf(output, "Object is a number : %0g\n", cur->floatval);
@@ -1055,7 +1087,7 @@ xmlXPathPopExternal (xmlXPathParserContextPtr ctxt) {
 static void
 xmlXPathFormatNumber(double number, char buffer[], int buffersize)
 {
-    switch (trio_isinf(number)) {
+    switch (xmlXPathIsInf(number)) {
     case 1:
 	if (buffersize > (int)sizeof("+Infinity"))
 	    sprintf(buffer, "+Infinity");
@@ -1065,7 +1097,7 @@ xmlXPathFormatNumber(double number, char buffer[], int buffersize)
 	    sprintf(buffer, "-Infinity");
 	break;
     default:
-	if (trio_isnan(number)) {
+	if (xmlXPathIsNaN(number)) {
 	    if (buffersize > (int)sizeof("NaN"))
 		sprintf(buffer, "NaN");
 	} else {
@@ -2813,7 +2845,7 @@ xmlXPathCastBooleanToString (int val) {
 xmlChar *
 xmlXPathCastNumberToString (double val) {
     xmlChar *ret;
-    switch (trio_isinf(val)) {
+    switch (xmlXPathIsInf(val)) {
     case 1:
 	ret = xmlStrdup((const xmlChar *) "+Infinity");
 	break;
@@ -2821,7 +2853,7 @@ xmlXPathCastNumberToString (double val) {
 	ret = xmlStrdup((const xmlChar *) "-Infinity");
 	break;
     default:
-	if (trio_isnan(val)) {
+	if (xmlXPathIsNaN(val)) {
 	    ret = xmlStrdup((const xmlChar *) "NaN");
 	} else {
 	    /* could be improved */
@@ -3107,7 +3139,7 @@ xmlXPathConvertNumber(xmlXPathObjectPtr val) {
  */
 int
 xmlXPathCastNumberToBoolean (double val) {
-     if (trio_isnan(val) || (val == 0.0))
+     if (xmlXPathIsNaN(val) || (val == 0.0))
 	 return(0);
      return(1);
 }
@@ -3714,13 +3746,13 @@ xmlXPathCompareNodeSets(int inf, int strict,
     }
     for (i = 0;i < ns1->nodeNr;i++) {
 	val1 = xmlXPathCastNodeToNumber(ns1->nodeTab[i]);
-	if (trio_isnan(val1))
+	if (xmlXPathIsNaN(val1))
 	    continue;
 	for (j = 0;j < ns2->nodeNr;j++) {
 	    if (init == 0) {
 		values2[j] = xmlXPathCastNodeToNumber(ns2->nodeTab[j]);
 	    }
-	    if (trio_isnan(values2[j]))
+	    if (xmlXPathIsNaN(values2[j]))
 		continue;
 	    if (inf && strict) 
 		ret = (val1 < values2[j]);
@@ -6177,9 +6209,9 @@ xmlXPathRoundFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     CAST_TO_NUMBER;
     CHECK_TYPE(XPATH_NUMBER);
 
-    if ((trio_isnan(ctxt->value->floatval)) ||
-	(trio_isinf(ctxt->value->floatval) == 1) ||
-	(trio_isinf(ctxt->value->floatval) == -1) ||
+    if ((xmlXPathIsNaN(ctxt->value->floatval)) ||
+	(xmlXPathIsInf(ctxt->value->floatval) == 1) ||
+	(xmlXPathIsInf(ctxt->value->floatval) == -1) ||
 	(ctxt->value->floatval == 0.0))
 	return;
 

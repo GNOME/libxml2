@@ -200,7 +200,7 @@ trio_is_special_quantity(double number,
 /*************************************************************************
  * trio_pinf
  */
-double
+TRIO_PUBLIC double
 trio_pinf(void)
 {
   /* Cache the result */
@@ -242,7 +242,7 @@ trio_pinf(void)
 /*************************************************************************
  * trio_ninf
  */
-double
+TRIO_PUBLIC double
 trio_ninf(void)
 {
   static double result = 0.0;
@@ -261,7 +261,7 @@ trio_ninf(void)
 /*************************************************************************
  * trio_nan
  */
-double
+TRIO_PUBLIC double
 trio_nan(void)
 {
   /* Cache the result */
@@ -306,7 +306,7 @@ trio_nan(void)
 /*************************************************************************
  * trio_isnan
  */
-int
+TRIO_PUBLIC int
 trio_isnan(volatile double number)
 {
 #if defined(isnan) || defined(TRIO_COMPILER_SUPPORTS_UNIX95)
@@ -370,7 +370,7 @@ trio_isnan(volatile double number)
 /*************************************************************************
  * trio_isinf
  */
-int
+TRIO_PUBLIC int
 trio_isinf(volatile double number)
 {
 #if defined(TRIO_COMPILER_DECC)

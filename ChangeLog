@@ -1,3 +1,14 @@
+Tue Aug 21 12:52:38 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am catalog.c xmlcatalog.c include/libxml/catalog.h:
+	  more work on the XML catalog support.
+	* parser.c include/libxml/parser.h: small cleanup seems using
+	  list as a public parameter name can give portability troubles
+	* trionan.c trionan.h xpath.c include/libxml/trionan.h
+	  include/libxml/xpath.h include/libxml/Makefile.am: removed
+	  trionan from the libxml API, added xmlXPathIsInf and xmlXPathIsNaN
+	  wrappers
+
 Tue Aug 21 11:18:45 CEST 2001 Bjorn Reese <breese@users.sourceforge.net>
 
 	* Makefile.am trio.c triodef.h trionan.c xpath.c

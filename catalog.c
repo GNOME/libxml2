@@ -45,6 +45,7 @@
 	    "Unimplemented block at %s:%d\n",				\
             __FILE__, __LINE__);
 
+#define XML_URN_PUBID "urn:publicid:"
 
 /************************************************************************
  *									*
@@ -92,6 +93,7 @@ struct _xmlCatalogEntry {
     xmlCatalogEntryType type;
     xmlChar *name;
     xmlChar *value;
+    /* TODO : 1234 xmlCatalogPrefer prefer */
 };
 
 static xmlHashTablePtr xmlDefaultCatalog;
@@ -251,6 +253,9 @@ xmlParseXMLCatalog(const xmlChar *value, xmlCatalogPrefer prefer,
 static void
 xmlParseXMLCatalogNodeList(xmlNodePtr cur, xmlCatalogPrefer prefer,
 	                   xmlCatalogEntryPtr parent);
+static xmlChar *
+xmlCatalogListXMLResolve(xmlCatalogEntryPtr catal, const xmlChar *pubID,
+	              const xmlChar *sysID);
 
 static xmlCatalogEntryType
 xmlGetXMLCatalogEntryType(const xmlChar *name) {
@@ -540,6 +545,49 @@ xmlParseXMLCatalogFile(xmlCatalogPrefer prefer, const xmlChar *filename) {
     return(parent);
 }
 
+/**
+ * xmlFetchXMLCatalogFile:
+ * @catal:  an existing but incomplete catalog entry
+ *
+ * Fetch and parse the subcatalog referenced by an entry
+ * It tries to be thread safe but by lack of an atomic test and
+ * set there is a risk of loosing memory.
+ * 
+ * Returns 0 in case of success, -1 otherwise
+ */
+static int
+xmlFetchXMLCatalogFile(xmlCatalogEntryPtr catal) {
+    xmlCatalogEntryPtr children;
+
+    if (catal == NULL) 
+	return(-1);
+    if (catal->value == NULL)
+	return(-1);
+    if (catal->children != NULL)
+	return(-1);
+
+    /*
+     * Fetch and parse
+     */
+    /* TODO : 1234 s/XML_CATA_PREFER_PUBLIC/catal->prefer */
+    children = xmlParseXMLCatalogFile(XML_CATA_PREFER_PUBLIC, catal->value);
+    if (children == NULL)
+	return(-1);
+
+    /*
+     * Where a real test and set would be needed !
+     */
+    if (catal->children == NULL) {
+	catal->children = children;
+    } else {
+	/*
+	 * Another thread filled it before us
+	 */
+	xmlFreeCatalogEntryList(children);
+    }
+    return(0);
+}
+
 static int
 xmlDumpXMLCatalog(FILE *out, xmlCatalogEntryPtr catal) {
     int ret;
@@ -682,7 +730,7 @@ BAD_CAST "http://www.oasis-open.org/committees/entity/release/1.0/catalog.dtd");
  * xmlAddXMLCatalog:
  * @catal:  top of an XML catalog
  * @type:  the type of record to add to the catalog
- * @orig:  the system, public or prefix to match 
+ * @orig:  the system, public or prefix to match (or NULL)
  * @replace:  the replacement value for the match
  *
  * Add an entry in the XML catalog, it may overwrite existing but
@@ -708,12 +756,12 @@ xmlAddXMLCatalog(xmlCatalogEntryPtr catal, const xmlChar *type,
      */
     if (cur != NULL) {
 	while (cur != NULL) {
-	    cur = cur->next;
-	    if ((cur->type == typ) && (xmlStrEqual(orig, cur->name))) {
+	    if ((orig != NULL) && (cur->type == typ) &&
+		(xmlStrEqual(orig, cur->name))) {
 		if (cur->value != NULL)
 		    xmlFree(cur->value);
 		cur->value = xmlStrdup(replace);
-		return(1);
+		return(0);
 	    }
 	    if (cur->next == NULL)
 		break;
@@ -724,7 +772,306 @@ xmlAddXMLCatalog(xmlCatalogEntryPtr catal, const xmlChar *type,
 	catal->children = xmlNewCatalogEntry(typ, orig, replace);
     else
 	cur->next = xmlNewCatalogEntry(typ, orig, replace);
-    return(1);
+    return(0);
+}
+
+/**
+ * xmlDelXMLCatalog:
+ * @catal:  top of an XML catalog
+ * @value:  the value to remove from teh catalog
+ *
+ * Remove entries in the XML catalog where the value or the URI
+ * is equal to @value
+ *
+ * Returns the number of entries removed if successful, -1 otherwise
+ */
+static int
+xmlDelXMLCatalog(xmlCatalogEntryPtr catal, const xmlChar *value) {
+    xmlCatalogEntryPtr cur, prev, tmp;
+    int ret = 0;
+
+    if ((catal == NULL) || (catal->type != XML_CATA_CATALOG))
+	return(-1);
+    if (value == NULL)
+	return(-1);
+
+    /*
+     * Scan the children
+     */
+    cur = catal->children;
+    prev = NULL;
+    while (cur != NULL) {
+	if (((cur->name != NULL) && (xmlStrEqual(value, cur->name))) ||
+	    (xmlStrEqual(value, cur->value))) {
+	    ret++;
+	    tmp = cur;
+	    cur = tmp->next;
+	    if (prev == NULL) {
+		catal->children = cur;
+	    } else {
+		prev->next = cur;
+	    }
+            xmlFreeCatalogEntry(tmp);
+	    continue;
+	}
+	prev = cur;
+	cur = cur->next;
+    }
+    return(ret);
+}
+
+/**
+ * xmlCatalogGetXMLPublic:
+ * @catal:  an XML catalog
+ * @pubId:  the public ID string
+ *
+ * Try to lookup the system ID associated to a public ID
+ *
+ * Returns the system ID if found or NULL otherwise.
+ */
+static const xmlChar *
+xmlCatalogGetXMLPublic(xmlCatalogEntryPtr catal, const xmlChar *pubID) {
+    const xmlChar *ret;
+    while (catal != NULL) {
+	switch (catal->type) {
+            case XML_CATA_CATALOG:
+		if (catal->children == NULL) {
+		    if (xmlFetchXMLCatalogFile(catal))
+			break;
+		}
+		ret = xmlCatalogGetXMLPublic(catal->children, pubID);
+		if (ret != NULL)
+		    return(ret);
+		break;
+            case XML_CATA_NEXT_CATALOG:
+		if (catal->children == NULL) {
+		    if (xmlFetchXMLCatalogFile(catal))
+			break;
+		}
+            case XML_CATA_PUBLIC:
+		if (xmlStrEqual(pubID, catal->name))
+		    return(catal->value);
+		break;
+            case XML_CATA_SYSTEM:
+            case XML_CATA_REWRITE_SYSTEM:
+            case XML_CATA_DELEGATE_PUBLIC:
+            case XML_CATA_DELEGATE_SYSTEM:
+            case XML_CATA_URI:
+            case XML_CATA_REWRITE_URI:
+            case XML_CATA_DELEGATE_URI:
+		TODO;
+		break;
+
+            case XML_CATA_NONE:
+            case SGML_CATA_SYSTEM:
+            case SGML_CATA_PUBLIC:
+            case SGML_CATA_ENTITY:
+            case SGML_CATA_PENTITY:
+            case SGML_CATA_DOCTYPE:
+            case SGML_CATA_LINKTYPE:
+            case SGML_CATA_NOTATION:
+            case SGML_CATA_DELEGATE:
+            case SGML_CATA_BASE:
+            case SGML_CATA_CATALOG:
+            case SGML_CATA_DOCUMENT:
+            case SGML_CATA_SGMLDECL:
+		/* Ignored entries */
+		break;
+	}
+	catal = catal->next;
+    }
+    return(NULL);
+}
+
+/**
+ * xmlCatalogXMLResolve:
+ * @catal:  a catalog list
+ * @pubId:  the public ID string
+ * @sysId:  the system ID string
+ *
+ * Do a complete resolution lookup of an External Identifier for a
+ * list of catalog entries.
+ *
+ * Implements (or tries to) 7.1. External Identifier Resolution
+ * from http://www.oasis-open.org/committees/entity/spec-2001-08-06.html
+ *
+ * Returns the URI of the resource or NULL if not found
+ */
+static xmlChar *
+xmlCatalogXMLResolve(xmlCatalogEntryPtr catal, const xmlChar *pubID,
+	              const xmlChar *sysID) {
+    xmlChar *ret = NULL;
+    xmlCatalogEntryPtr cur;
+    int haveDelegate = 0;
+    int haveNext = 0;
+
+    /*
+     * First tries steps 2/ 3/ 4/ if a system ID is provided.
+     */
+    if (sysID != NULL) {
+	xmlCatalogEntryPtr rewrite = NULL;
+	int lenrewrite = 0, len;
+	cur = catal;
+	haveDelegate = 0;
+	while (cur != NULL) {
+	    switch (cur->type) {
+		case XML_CATA_SYSTEM:
+		    if (xmlStrEqual(sysID, cur->name))
+			return(xmlStrdup(cur->value));
+		    break;
+		case XML_CATA_REWRITE_SYSTEM:
+		    len = xmlStrlen(cur->name);
+		    if ((len > lenrewrite) &&
+			(!xmlStrncmp(sysID, cur->name, len))) {
+			lenrewrite = len;
+			rewrite = cur;
+		    }
+		    break;
+		case XML_CATA_DELEGATE_SYSTEM:
+		    if (!xmlStrncmp(sysID, cur->name, xmlStrlen(cur->name)))
+			haveDelegate++;
+		    break;
+		case XML_CATA_NEXT_CATALOG:
+		    haveNext++;
+		    break;
+		default:
+		    break;
+	    }
+	    cur = cur->next;
+	}
+	if (rewrite != NULL) {
+	    ret = xmlStrdup(rewrite->value);
+	    if (ret != NULL)
+		ret = xmlStrcat(ret, &sysID[lenrewrite]);
+	    return(ret);
+	}
+	if (haveDelegate) {
+	    /*
+	     * Assume the entries have been sorted by decreasing subscting
+	     * matches when the list was produced.
+	     */
+	    cur = catal;
+	    while (cur != NULL) {
+		if ((cur->type == XML_CATA_DELEGATE_SYSTEM) &&
+		    (!xmlStrncmp(sysID, cur->name, xmlStrlen(cur->name)))) {
+		    if (cur->children == NULL) {
+			xmlFetchXMLCatalogFile(cur);
+		    }
+		    if (cur->children != NULL) {
+			TODO /* handle a delegate system entry */
+		    }
+		}
+		cur = cur->next;
+	    }
+	}
+    }
+    /*
+     * Then tries 5/ 6/ if a public ID is provided
+     */
+    if (pubID != NULL) {
+	cur = catal;
+	haveDelegate = 0;
+	while (cur != NULL) {
+	    switch (cur->type) {
+		case XML_CATA_PUBLIC:
+		    if (xmlStrEqual(pubID, cur->name))
+			return(xmlStrdup(cur->value));
+		    break;
+		case XML_CATA_DELEGATE_PUBLIC:
+		    if (!xmlStrncmp(pubID, cur->name, xmlStrlen(cur->name)))
+			haveDelegate++;
+		    break;
+		case XML_CATA_NEXT_CATALOG:
+		    if (sysID == NULL)
+			haveNext++;
+		    break;
+		default:
+		    break;
+	    }
+	    cur = cur->next;
+	}
+	if (haveDelegate) {
+	    /*
+	     * Assume the entries have been sorted by decreasing subscting
+	     * matches when the list was produced.
+	     */
+	    cur = catal;
+	    while (cur != NULL) {
+		if ((cur->type == XML_CATA_DELEGATE_PUBLIC) &&
+		    (!xmlStrncmp(sysID, cur->name, xmlStrlen(cur->name)))) {
+		    if (cur->children == NULL) {
+			xmlFetchXMLCatalogFile(cur);
+		    }
+		    if (cur->children != NULL) {
+			TODO /* handle a delegate public entry */
+		    }
+		}
+		cur = cur->next;
+	    }
+	}
+    }
+    if (haveNext) {
+	cur = catal;
+	while (cur != NULL) {
+	    if (cur->type == XML_CATA_NEXT_CATALOG) {
+		if (cur->children == NULL) {
+		    xmlFetchXMLCatalogFile(cur);
+		}
+		if (cur->children != NULL) {
+		    xmlCatalogListXMLResolve(cur->children, pubID, sysID);
+		}
+	    }
+	    cur = cur->next;
+	}
+    }
+
+    return(NULL);
+}
+
+/**
+ * xmlCatalogListXMLResolve:
+ * @catal:  a catalog list
+ * @pubId:  the public ID string
+ * @sysId:  the system ID string
+ *
+ * Do a complete resolution lookup of an External Identifier for a
+ * list of catalogs
+ *
+ * Implements (or tries to) 7.1. External Identifier Resolution
+ * from http://www.oasis-open.org/committees/entity/spec-2001-08-06.html
+ *
+ * Returns the URI of the resource or NULL if not found
+ */
+static xmlChar *
+xmlCatalogListXMLResolve(xmlCatalogEntryPtr catal, const xmlChar *pubID,
+	              const xmlChar *sysID) {
+    xmlChar *ret = NULL;
+    if (!xmlStrncmp(pubID, BAD_CAST XML_URN_PUBID, sizeof(XML_URN_PUBID))) {
+	TODO /* convert to PublicId */
+    }
+    if (!xmlStrncmp(sysID, BAD_CAST XML_URN_PUBID, sizeof(XML_URN_PUBID))) {
+	TODO /* convert to PublicId and check */
+    }
+    while (catal != NULL) {
+	if (catal->type == XML_CATA_CATALOG) {
+	    if (catal->children == NULL) {
+		/*
+		 * Construct the list on the fly, then double check
+		 * in case of threaded program that it hasn't already
+		 * being built by a concurrent thread.
+		xmlCatalogEntryPtr list;
+
+		list = 
+		 */
+		TODO
+	    }
+	    ret = xmlCatalogXMLResolve(catal->children, pubID, sysID);
+	    if (ret != NULL)
+		return(ret);
+	}
+	catal = catal->next;
+    }
+    return(ret);
 }
 
 /************************************************************************
@@ -741,7 +1088,7 @@ xmlAddXMLCatalog(xmlCatalogEntryPtr catal, const xmlChar *type,
 #define SKIP_BLANKS while (IS_BLANK(*cur)) NEXT;
 
 static const xmlChar *
-xmlParseCatalogComment(const xmlChar *cur) {
+xmlParseSGMLCatalogComment(const xmlChar *cur) {
     if ((cur[0] != '-') || (cur[1] != '-')) 
 	return(cur);
     SKIP(2);
@@ -754,7 +1101,7 @@ xmlParseCatalogComment(const xmlChar *cur) {
 }
 
 static const xmlChar *
-xmlParseCatalogPubid(const xmlChar *cur, xmlChar **id) {
+xmlParseSGMLCatalogPubid(const xmlChar *cur, xmlChar **id) {
     xmlChar *buf = NULL;
     int len = 0;
     int size = 50;
@@ -814,7 +1161,7 @@ xmlParseCatalogPubid(const xmlChar *cur, xmlChar **id) {
 }
 
 static const xmlChar *
-xmlParseCatalogName(const xmlChar *cur, xmlChar **name) {
+xmlParseSGMLCatalogName(const xmlChar *cur, xmlChar **name) {
     xmlChar buf[XML_MAX_NAMELEN + 5];
     int len = 0;
     int c;
@@ -843,7 +1190,7 @@ xmlParseCatalogName(const xmlChar *cur, xmlChar **name) {
 }
 
 static xmlCatalogEntryType
-xmlGetCatalogEntryType(const xmlChar *name) {
+xmlGetSGMLCatalogEntryType(const xmlChar *name) {
     xmlCatalogEntryType type = XML_CATA_NONE;
     if (xmlStrEqual(name, (const xmlChar *) "SYSTEM"))
 	type = SGML_CATA_SYSTEM;
@@ -873,7 +1220,7 @@ xmlGetCatalogEntryType(const xmlChar *name) {
 }
 
 static int
-xmlParseCatalog(const xmlChar *value, const char *file) {
+xmlParseSGMLCatalog(const xmlChar *value, const char *file) {
     const xmlChar *cur = value;
     xmlChar *base = NULL;
     int res;
@@ -885,7 +1232,7 @@ xmlParseCatalog(const xmlChar *value, const char *file) {
     while ((cur != NULL) && (cur[0] != '0')) {
 	SKIP_BLANKS;
 	if ((cur[0] == '-') && (cur[1] == '-')) {
-	    cur = xmlParseCatalogComment(cur);
+	    cur = xmlParseSGMLCatalogComment(cur);
 	    if (cur == NULL) {
 		/* error */
 		break;
@@ -895,7 +1242,7 @@ xmlParseCatalog(const xmlChar *value, const char *file) {
 	    xmlChar *name = NULL;
 	    xmlCatalogEntryType type = XML_CATA_NONE;
 
-	    cur = xmlParseCatalogName(cur, &name);
+	    cur = xmlParseSGMLCatalogName(cur, &name);
 	    if (name == NULL) {
 		/* error */
 		break;
@@ -931,7 +1278,7 @@ xmlParseCatalog(const xmlChar *value, const char *file) {
                 type = SGML_CATA_DELEGATE;
 	    else if (xmlStrEqual(name, (const xmlChar *) "OVERRIDE")) {
 		xmlFree(name);
-		cur = xmlParseCatalogName(cur, &name);
+		cur = xmlParseSGMLCatalogName(cur, &name);
 		if (name == NULL) {
 		    /* error */
 		    break;
@@ -950,7 +1297,7 @@ xmlParseCatalog(const xmlChar *value, const char *file) {
 		case SGML_CATA_DOCTYPE:
 		case SGML_CATA_LINKTYPE:
 		case SGML_CATA_NOTATION:
-		    cur = xmlParseCatalogName(cur, &name);
+		    cur = xmlParseSGMLCatalogName(cur, &name);
 		    if (cur == NULL) {
 			/* error */
 			break;
@@ -960,7 +1307,7 @@ xmlParseCatalog(const xmlChar *value, const char *file) {
 			break;
 		    }
 		    SKIP_BLANKS;
-		    cur = xmlParseCatalogPubid(cur, &sysid);
+		    cur = xmlParseSGMLCatalogPubid(cur, &sysid);
 		    if (cur == NULL) {
 			/* error */
 			break;
@@ -969,7 +1316,7 @@ xmlParseCatalog(const xmlChar *value, const char *file) {
 		case SGML_CATA_PUBLIC:
 		case SGML_CATA_SYSTEM:
 		case SGML_CATA_DELEGATE:
-		    cur = xmlParseCatalogPubid(cur, &name);
+		    cur = xmlParseSGMLCatalogPubid(cur, &name);
 		    if (cur == NULL) {
 			/* error */
 			break;
@@ -979,7 +1326,7 @@ xmlParseCatalog(const xmlChar *value, const char *file) {
 			break;
 		    }
 		    SKIP_BLANKS;
-		    cur = xmlParseCatalogPubid(cur, &sysid);
+		    cur = xmlParseSGMLCatalogPubid(cur, &sysid);
 		    if (cur == NULL) {
 			/* error */
 			break;
@@ -989,7 +1336,7 @@ xmlParseCatalog(const xmlChar *value, const char *file) {
 		case SGML_CATA_CATALOG:
 		case SGML_CATA_DOCUMENT:
 		case SGML_CATA_SGMLDECL:
-		    cur = xmlParseCatalogPubid(cur, &sysid);
+		    cur = xmlParseSGMLCatalogPubid(cur, &sysid);
 		    if (cur == NULL) {
 			/* error */
 			break;
@@ -1047,6 +1394,45 @@ xmlParseCatalog(const xmlChar *value, const char *file) {
     if (cur == NULL)
 	return(-1);
     return(0);
+}
+
+/**
+ * xmlCatalogGetSGMLPublic:
+ * @catal:  an SGML catalog hash
+ * @pubId:  the public ID string
+ *
+ * Try to lookup the system ID associated to a public ID
+ *
+ * Returns the system ID if found or NULL otherwise.
+ */
+static const xmlChar *
+xmlCatalogGetSGMLPublic(xmlHashTablePtr catal, const xmlChar *pubID) {
+    xmlCatalogEntryPtr entry;
+
+    if (catal == NULL)
+	return(NULL);
+
+    entry = (xmlCatalogEntryPtr) xmlHashLookup(catal, pubID);
+    if (entry == NULL)
+	return(NULL);
+    if (entry->type == SGML_CATA_PUBLIC)
+	return(entry->value);
+    return(NULL);
+}
+
+/**
+ * xmlCatalogSGMLResolve:
+ * @pubId:  the public ID string
+ * @sysId:  the system ID string
+ *
+ * Do a complete resolution lookup of an External Identifier
+ *
+ * Returns the URI of the resource or NULL if not found
+ */
+static const xmlChar *
+xmlCatalogSGMLResolve(const xmlChar *pubID, const xmlChar *sysID) {
+    TODO
+    return(NULL);
 }
 
 /************************************************************************
@@ -1127,7 +1513,7 @@ xmlLoadCatalog(const char *filename) {
     if ((content[0] == ' ') || (content[0] == '-') ||
 	((content[0] >= 'A') && (content[0] <= 'Z')) ||
 	((content[0] >= 'a') && (content[0] <= 'z')))
-	ret = xmlParseCatalog(content, filename);
+	ret = xmlParseSGMLCatalog(content, filename);
     else {
 	xmlCatalogEntryPtr catal, tmp;
 	/* TODO: allow to switch the default preference */
@@ -1190,6 +1576,8 @@ xmlLoadCatalogs(const char *pathss) {
  */
 void
 xmlCatalogCleanup(void) {
+    if (xmlDefaultXMLCatalogList != NULL)
+	xmlFreeCatalogEntryList(xmlDefaultXMLCatalogList);
     if (xmlDefaultCatalog != NULL)
 	xmlHashFree(xmlDefaultCatalog,
 		    (xmlHashDeallocator) xmlFreeCatalogEntry);
@@ -1214,91 +1602,6 @@ xmlCatalogGetSystem(const xmlChar *sysID) {
     if (entry == NULL)
 	return(NULL);
     if (entry->type == SGML_CATA_SYSTEM)
-	return(entry->value);
-    return(NULL);
-}
-
-/**
- * xmlCatalogGetXMLPublic:
- * @catal:  an XML catalog
- * @pubId:  the public ID string
- *
- * Try to lookup the system ID associated to a public ID
- *
- * Returns the system ID if found or NULL otherwise.
- */
-const xmlChar *
-xmlCatalogGetXMLPublic(xmlCatalogEntryPtr catal, const xmlChar *pubID) {
-    const xmlChar *ret;
-    while (catal != NULL) {
-	switch (catal->type) {
-            case XML_CATA_CATALOG:
-		if (catal->children == NULL) {
-		    TODO /* fetch and fill */
-		}
-		ret = xmlCatalogGetXMLPublic(catal->children, pubID);
-		if (ret != NULL)
-		    return(ret);
-		break;
-            case XML_CATA_NEXT_CATALOG:
-		if (catal->children == NULL) {
-		    TODO /* fetch and fill */
-		}
-            case XML_CATA_PUBLIC:
-		if (xmlStrEqual(pubID, catal->name))
-		    return(catal->value);
-		break;
-            case XML_CATA_SYSTEM:
-            case XML_CATA_REWRITE_SYSTEM:
-            case XML_CATA_DELEGATE_PUBLIC:
-            case XML_CATA_DELEGATE_SYSTEM:
-            case XML_CATA_URI:
-            case XML_CATA_REWRITE_URI:
-            case XML_CATA_DELEGATE_URI:
-		TODO;
-		break;
-
-            case XML_CATA_NONE:
-            case SGML_CATA_SYSTEM:
-            case SGML_CATA_PUBLIC:
-            case SGML_CATA_ENTITY:
-            case SGML_CATA_PENTITY:
-            case SGML_CATA_DOCTYPE:
-            case SGML_CATA_LINKTYPE:
-            case SGML_CATA_NOTATION:
-            case SGML_CATA_DELEGATE:
-            case SGML_CATA_BASE:
-            case SGML_CATA_CATALOG:
-            case SGML_CATA_DOCUMENT:
-            case SGML_CATA_SGMLDECL:
-		/* Ignored entries */
-		break;
-	}
-	catal = catal->next;
-    }
-    return(NULL);
-}
-
-/**
- * xmlCatalogGetSGMLPublic:
- * @catal:  an SGML catalog hash
- * @pubId:  the public ID string
- *
- * Try to lookup the system ID associated to a public ID
- *
- * Returns the system ID if found or NULL otherwise.
- */
-static const xmlChar *
-xmlCatalogGetSGMLPublic(xmlHashTablePtr catal, const xmlChar *pubID) {
-    xmlCatalogEntryPtr entry;
-
-    if (catal == NULL)
-	return(NULL);
-
-    entry = (xmlCatalogEntryPtr) xmlHashLookup(catal, pubID);
-    if (entry == NULL)
-	return(NULL);
-    if (entry->type == SGML_CATA_PUBLIC)
 	return(entry->value);
     return(NULL);
 }
@@ -1332,6 +1635,25 @@ xmlCatalogGetPublic(const xmlChar *pubID) {
     if (xmlDefaultCatalog != NULL)
 	return(xmlCatalogGetSGMLPublic(xmlDefaultCatalog, pubID));
     return(NULL);
+}
+
+/**
+ * xmlCatalogResolve:
+ * @pubId:  the public ID string
+ * @sysId:  the system ID string
+ *
+ * Do a complete resolution lookup of an External Identifier
+ *
+ * Returns the URI of the resource or NULL if not found, it must be freed
+ *      by the caller.
+ */
+xmlChar *
+xmlCatalogResolve(const xmlChar *pubID, const xmlChar *sysID) {
+    if (xmlDefaultXMLCatalogList != NULL) {
+	return(xmlCatalogListXMLResolve(xmlDefaultXMLCatalogList, pubID, sysID));
+    } else {
+	return(xmlCatalogSGMLResolve(pubID, sysID));
+    }
 }
 
 /**
@@ -1373,7 +1695,7 @@ xmlCatalogAdd(const xmlChar *type, const xmlChar *orig, const xmlChar *replace) 
     } else if (xmlDefaultCatalog != NULL) {
 	xmlCatalogEntryType typ;
 
-	typ = xmlGetCatalogEntryType(type);
+	typ = xmlGetSGMLCatalogEntryType(type);
 	if (type != XML_CATA_NONE) {
 	    xmlCatalogEntryPtr entry;
 	    entry = xmlNewCatalogEntry(typ, orig, replace);
@@ -1393,6 +1715,14 @@ xmlCatalogAdd(const xmlChar *type, const xmlChar *orig, const xmlChar *replace) 
  */
 int
 xmlCatalogRemove(const xmlChar *value) {
+    int res = -1;
+
+    if (xmlDefaultXMLCatalogList != NULL) {
+	res = xmlDelXMLCatalog(xmlDefaultXMLCatalogList, value);
+    } else if (xmlDefaultCatalog != NULL) {
+	TODO
+    } 
+    return(res);
 }
 
 /**

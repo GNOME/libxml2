@@ -8921,7 +8921,7 @@ xmlParseDTD(const xmlChar *ExternalID, const xmlChar *SystemID) {
  * @ctx:  the existing parsing context
  * @URL:  the URL for the entity to load
  * @ID:  the System ID for the entity to load
- * @list:  the return value for the set of parsed nodes
+ * @lst:  the return value for the set of parsed nodes
  *
  * Parse an external general entity within an existing parsing context
  * An external general parsed entity is well-formed if it matches the
@@ -8935,7 +8935,7 @@ xmlParseDTD(const xmlChar *ExternalID, const xmlChar *SystemID) {
 
 int
 xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
-	               const xmlChar *ID, xmlNodePtr *list) {
+	               const xmlChar *ID, xmlNodePtr *lst) {
     xmlParserCtxtPtr ctxt;
     xmlDocPtr newDoc;
     xmlSAXHandlerPtr oldsax = NULL;
@@ -8947,8 +8947,8 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
 	return(XML_ERR_ENTITY_LOOP);
     }
 
-    if (list != NULL)
-        *list = NULL;
+    if (lst != NULL)
+        *lst = NULL;
     if ((URL == NULL) && (ID == NULL))
 	return(-1);
     if (ctx->myDoc == NULL) /* @@ relax but check for dereferences */
@@ -9065,7 +9065,7 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
 	else
 	    ret = ctxt->errNo;
     } else {
-	if (list != NULL) {
+	if (lst != NULL) {
 	    xmlNodePtr cur;
 
 	    /*
@@ -9073,7 +9073,7 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
 	     * they pseudo parent.
 	     */
 	    cur = newDoc->children->children;
-	    *list = cur;
+	    *lst = cur;
 	    while (cur != NULL) {
 		cur->parent = NULL;
 		cur = cur->next;
@@ -9282,7 +9282,7 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
  * @depth:  Used for loop detection, use 0
  * @URL:  the URL for the entity to load
  * @ID:  the System ID for the entity to load
- * @list:  the return value for the set of parsed nodes
+ * @lst:  the return value for the set of parsed nodes
  *
  * Parse an external general entity
  * An external general parsed entity is well-formed if it matches the
@@ -9296,9 +9296,9 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
 
 int
 xmlParseExternalEntity(xmlDocPtr doc, xmlSAXHandlerPtr sax, void *user_data,
-	  int depth, const xmlChar *URL, const xmlChar *ID, xmlNodePtr *list) {
+	  int depth, const xmlChar *URL, const xmlChar *ID, xmlNodePtr *lst) {
     return(xmlParseExternalEntityPrivate(doc, NULL, sax, user_data, depth, URL,
-		                       ID, list));
+		                       ID, lst));
 }
 
 /**
@@ -9308,7 +9308,7 @@ xmlParseExternalEntity(xmlDocPtr doc, xmlSAXHandlerPtr sax, void *user_data,
  * @user_data:  The user data returned on SAX callbacks (possibly NULL)
  * @depth:  Used for loop detection, use 0
  * @string:  the input string in UTF8 or ISO-Latin (zero terminated)
- * @list:  the return value for the set of parsed nodes
+ * @lst:  the return value for the set of parsed nodes
  *
  * Parse a well-balanced chunk of an XML document
  * called by the parser
@@ -9323,7 +9323,7 @@ xmlParseExternalEntity(xmlDocPtr doc, xmlSAXHandlerPtr sax, void *user_data,
 
 int
 xmlParseBalancedChunkMemory(xmlDocPtr doc, xmlSAXHandlerPtr sax,
-     void *user_data, int depth, const xmlChar *string, xmlNodePtr *list) {
+     void *user_data, int depth, const xmlChar *string, xmlNodePtr *lst) {
     xmlParserCtxtPtr ctxt;
     xmlDocPtr newDoc;
     xmlSAXHandlerPtr oldsax = NULL;
@@ -9335,8 +9335,8 @@ xmlParseBalancedChunkMemory(xmlDocPtr doc, xmlSAXHandlerPtr sax,
     }
 
 
-    if (list != NULL)
-        *list = NULL;
+    if (lst != NULL)
+        *lst = NULL;
     if (string == NULL)
         return(-1);
 
@@ -9418,7 +9418,7 @@ xmlParseBalancedChunkMemory(xmlDocPtr doc, xmlSAXHandlerPtr sax,
 	else
 	    ret = ctxt->errNo;
     } else {
-	if (list != NULL) {
+	if (lst != NULL) {
 	    xmlNodePtr cur;
 
 	    /*
@@ -9426,7 +9426,7 @@ xmlParseBalancedChunkMemory(xmlDocPtr doc, xmlSAXHandlerPtr sax,
 	     * they pseudo parent.
 	     */
 	    cur = newDoc->children->children;
-	    *list = cur;
+	    *lst = cur;
 	    while (cur != NULL) {
 		cur->parent = NULL;
 		cur = cur->next;

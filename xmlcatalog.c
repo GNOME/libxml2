@@ -26,7 +26,10 @@
 
 static int shell = 0;
 static int noout = 0;
+static int add = 0;
+static int del = 0;
 static int verbose = 0;
+static char *filename;
 
 #ifdef LIBXML_CATALOG_ENABLED
 /************************************************************************
@@ -74,8 +77,10 @@ static void usershell(void) {
     int nbargs;
     char command[100];
     char arg[400];
-    int i;
+    char *argv[20];
+    int i, ret;
     const xmlChar *answer;
+    xmlChar *ans;
 
     while (1) {
 	cmdline = xmlShellReadline("> ");
@@ -100,8 +105,9 @@ static void usershell(void) {
 	nbargs++;
 
 	/*
-	 * Parse the argument
+	 * Parse the argument string
 	 */
+	memset(arg, 0, sizeof(arg));
 	while ((*cur == ' ') || (*cur == '\t')) cur++;
 	i = 0;
 	while ((*cur != '\n') && (*cur != '\r') && (*cur != 0)) {
@@ -114,6 +120,46 @@ static void usershell(void) {
 	    nbargs++;
 
 	/*
+	 * Parse the arguments
+	 */
+	i = 0;
+	nbargs = 0;
+	cur = arg;
+	memset(argv, 0, sizeof(argv));
+	while (*cur != 0) {
+	    while ((*cur == ' ') || (*cur == '\t')) cur++;
+	    if (*cur == '\'') {
+		cur++;
+		argv[i] = cur;
+		while ((*cur != 0) && (*cur != '\'')) cur++;
+		if (*cur == '\'') {
+		    *cur = 0;
+		    nbargs++;
+		    i++;
+		    cur++;
+		}
+	    } else if (*cur == '"') { 
+		cur++;
+		argv[i] = cur;
+		while ((*cur != 0) && (*cur != '"')) cur++;
+		if (*cur == '"') {
+		    *cur = 0;
+		    nbargs++;
+		    i++;
+		    cur++;
+		}
+	    } else {
+		argv[i] = cur;
+		while ((*cur != 0) && (*cur != ' ') && (*cur != '\t'))
+		    cur++;
+		*cur = 0;
+		nbargs++;
+		i++;
+		cur++;
+	    }
+	}
+
+	/*
 	 * start interpreting the command
 	 */
         if (!strcmp(command, "exit"))
@@ -123,21 +169,68 @@ static void usershell(void) {
         if (!strcmp(command, "bye"))
 	    break;
 	if (!strcmp(command, "public")) {
-	    answer = xmlCatalogGetPublic((const xmlChar *) arg);
-	    if (answer == NULL) {
-		printf("No entry for PUBLIC %s\n", arg);
+	    if (nbargs != 1) {
+		printf("public requires 1 arguments\n");
 	    } else {
-		printf("%s\n", answer);
+		answer = xmlCatalogGetPublic((const xmlChar *) argv[0]);
+		if (answer == NULL) {
+		    printf("No entry for PUBLIC %s\n", argv[0]);
+		} else {
+		    printf("%s\n", answer);
+		}
 	    }
 	} else if (!strcmp(command, "system")) {
-	    answer = xmlCatalogGetSystem((const xmlChar *) arg);
-	    if (answer == NULL) {
-		printf("No entry for SYSTEM %s\n", arg);
+	    if (nbargs != 1) {
+		printf("system requires 1 arguments\n");
 	    } else {
-		printf("%s\n", answer);
+		answer = xmlCatalogGetSystem((const xmlChar *) argv[0]);
+		if (answer == NULL) {
+		    printf("No entry for SYSTEM %s\n", argv[0]);
+		} else {
+		    printf("%s\n", answer);
+		}
+	    }
+	} else if (!strcmp(command, "add")) {
+	    if ((nbargs != 3) && (nbargs != 2)) {
+		printf("add requires 2 or 3 arguments\n");
+	    } else {
+		if (argv[2] == NULL)
+		    ret = xmlCatalogAdd(BAD_CAST argv[0], NULL,
+			                BAD_CAST argv[1]);
+		else
+		    ret = xmlCatalogAdd(BAD_CAST argv[0], BAD_CAST argv[1],
+			                BAD_CAST argv[2]);
+		if (ret != 0)
+		    printf("add command failed\n");
+	    }
+	} else if (!strcmp(command, "del")) {
+	    if (nbargs != 1) {
+		printf("del requires 1\n");
+	    } else {
+		ret = xmlCatalogRemove(BAD_CAST argv[0]);
+		if (ret <= 0)
+		    printf("del command failed\n");
+
+	    }
+	} else if (!strcmp(command, "resolve")) {
+	    if (nbargs != 2) {
+		printf("resolve requires 2 arguments\n");
+	    } else {
+		ans = xmlCatalogResolve(BAD_CAST argv[0],
+			                BAD_CAST argv[1]);
+		if (ans == NULL) {
+		    printf("Resolver failed to find an answer\n");
+		} else {
+		    printf("%s\n", ans);
+		    xmlFree(ans);
+		}
 	    }
 	} else if (!strcmp(command, "dump")) {
-	    xmlCatalogDump(stdout);
+	    if (nbargs != 0) {
+		printf("dump has no arguments\n");
+	    } else {
+		xmlCatalogDump(stdout);
+	    }
 	} else {
 	    if (strcmp(command, "help")) {
 		printf("Unrecognized command %s\n", command);
@@ -145,6 +238,9 @@ static void usershell(void) {
 	    printf("Commands available:\n");
 	    printf("\tpublic PublicID: make a PUBLIC identifier lookup\n");
 	    printf("\tsystem SystemID: make a SYSTEM identifier lookup\n");
+	    printf("\tresolve PublicID SystemID: do a full resolver lookup\n");
+	    printf("\tadd 'type' 'orig' 'replace' : add an entry\n");
+	    printf("\tdel 'values' : remove values\n");
 	    printf("\tdump: print the current catalog state\n");
 	    printf("\texit:  quit the shell\n");
 	} 
@@ -158,9 +254,13 @@ static void usershell(void) {
  * 									*
  ************************************************************************/
 static void usage(const char *name) {
-    printf("Usage : %s [options] catalogfile ...\n", name);
-    printf("\tParse the catalog file(s) and output the result of the parsing\n");
+    printf("Usage : %s [options] catalogfile\n", name);
+    printf("\tParse the catalog file and output the result of the parsing\n");
     printf("\t--shell : run a shell allowing interactive queries\n");
+    printf("\t--add 'type' 'orig' 'replace' : add an entry\n");
+    printf("\t--del 'values' : remove values\n");
+    printf("\t--noout: avoid dumping the result on stdout\n");
+    printf("\t         used with add or del, it saves the catalog changes\n");
     printf("\t-v --verbose : provide debug informations\n");
 }
 int main(int argc, char **argv) {
@@ -183,10 +283,21 @@ int main(int argc, char **argv) {
 	    (!strcmp(argv[i], "--verbose"))) {
 	    verbose++;
 	    xmlCatalogSetDebug(verbose);
+	} else if ((!strcmp(argv[i], "-noout")) ||
+	    (!strcmp(argv[i], "--noout"))) {
+            noout = 1;
 	} else if ((!strcmp(argv[i], "-shell")) ||
 	    (!strcmp(argv[i], "--shell"))) {
 	    shell++;
             noout = 1;
+	} else if ((!strcmp(argv[i], "-add")) ||
+	    (!strcmp(argv[i], "--add"))) {
+	    i += 3;
+	    add++;
+	} else if ((!strcmp(argv[i], "-del")) ||
+	    (!strcmp(argv[i], "--del"))) {
+	    i += 1;
+	    del++;
 	} else {
 	    fprintf(stderr, "Unknown option %s\n", argv[i]);
 	    usage(argv[0]);
@@ -195,9 +306,60 @@ int main(int argc, char **argv) {
     }
 
     for (i = 1; i < argc; i++) {
-	if (argv[i][0] == '-')
+	if ((!strcmp(argv[i], "-add")) ||
+	    (!strcmp(argv[i], "--add"))) {
+	    i += 3;
 	    continue;
+	} else if ((!strcmp(argv[i], "-del")) ||
+	    (!strcmp(argv[i], "--del"))) {
+	    i += 1;
+	    continue;
+	} else if (argv[i][0] == '-')
+	    continue;
+	filename = argv[i];
 	xmlLoadCatalog(argv[i]);
+	break;
+    }
+
+    if ((add) || (del)) {
+	int ret;
+
+	for (i = 1; i < argc ; i++) {
+	    if (!strcmp(argv[i], "-"))
+		break;
+
+	    if (argv[i][0] != '-')
+		continue;
+	    if ((!strcmp(argv[i], "-add")) ||
+		(!strcmp(argv[i], "--add"))) {
+		if ((argv[i + 3] == NULL) || (argv[i + 3][0] == 0))
+		    ret = xmlCatalogAdd(BAD_CAST argv[i + 1], NULL,
+			                BAD_CAST argv[i + 2]);
+		else
+		    ret = xmlCatalogAdd(BAD_CAST argv[i + 1],
+			                BAD_CAST argv[i + 2],
+			                BAD_CAST argv[i + 3]);
+		if (ret != 0)
+		    printf("add command failed\n");
+		i += 3;
+	    } else if ((!strcmp(argv[i], "-del")) ||
+		(!strcmp(argv[i], "--del"))) {
+		ret = xmlCatalogRemove(BAD_CAST argv[i + 1]);
+		i += 1;
+	    }
+	}
+	
+	if (noout) {
+	    FILE *out;
+
+	    out = fopen(filename, "w");
+	    if (out == NULL) {
+		fprintf(stderr, "could not open %s for saving\n", filename);
+		noout = 0;
+	    } else {
+		xmlCatalogDump(out);
+	    }
+	}
     }
 
     if (shell) {

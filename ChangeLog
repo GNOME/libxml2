@@ -1,3 +1,8 @@
+Thu Aug  7 21:13:22 HKT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* encoding.c: further small changes for warnings when
+	  configured with --with-iconv=no
+
 Wed Aug  6 12:32:11 HKT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* error.c trionan.[ch] testThreads.c python/generator.py:

@@ -65,6 +65,10 @@ static int xmlCharEncodingAliasesMax = 0;
 #if 0
 #define DEBUG_ENCODING  /* Define this to get encoding traces */
 #endif
+#else
+#ifdef LIBXML_ISO8859X_ENABLED
+static void xmlRegisterCharEncodingHandlersISO8859x (void);
+#endif
 #endif
 
 static int xmlLittleEndian = 1;
@@ -2491,7 +2495,7 @@ UTF8ToISO8859x(unsigned char* out, int *outlen,
                 return(-2);
             }
             c = *in++;
-            if (c & 0xC0 != 0xC0) {
+            if ((c & 0xC0) != 0xC0) {
                 /* not a trailing byte */
                 *outlen = out - outstart;
                 *inlen = in - instart - 2;
@@ -2517,14 +2521,14 @@ UTF8ToISO8859x(unsigned char* out, int *outlen,
                 return(-2);
             }
             c1 = *in++;
-            if (c1 & 0xC0 != 0xC0) {
+            if ((c1 & 0xC0) != 0xC0) {
                 /* not a trailing byte (c1) */
                 *outlen = out - outstart;
                 *inlen = in - instart - 2;
                 return(-2);
             }
             c2 = *in++;
-            if (c2 & 0xC0 != 0xC0) {
+            if ((c2 & 0xC0) != 0xC0) {
                 /* not a trailing byte (c2) */
                 *outlen = out - outstart;
                 *inlen = in - instart - 2;

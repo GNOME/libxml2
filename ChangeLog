@@ -1,3 +1,7 @@
+Mon Sep 21 20:11:13 EDT 1998 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* parser.c: corrected a loop for files of size 0
+
 1998-08-20  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* error.h: New file.  Contains prototyes from `error.c'.

@@ -3059,7 +3059,7 @@ retry_bigger:
     }
 #ifdef HAVE_ZLIB_H
     gzclose(input);
-    if (res >= 20 * buf.st_size) {
+    if (res >= 20 * buf.st_size + 20) {
         free(buffer);
 	buf.st_size *= 2;
 	goto retry_bigger;

@@ -410,7 +410,7 @@ xmlReportError(xmlErrorPtr err, xmlParserCtxtPtr ctxt, const char *str,
 
 /**
  * __xmlRaiseError:
- * @channel: the structured callback channel
+ * @schannel: the structured callback channel
  * @channel: the old callback channel
  * @data: the callback data
  * @ctx: the parser context or NULL
@@ -428,7 +428,7 @@ xmlReportError(xmlErrorPtr err, xmlParserCtxtPtr ctxt, const char *str,
  * @msg:  the message to display/transmit
  * @...:  extra parameters for the message display
  *
- * Update teh appropriate global or contextual error structure,
+ * Update the appropriate global or contextual error structure,
  * then forward the error message down the parser or generic
  * error callback handler
  */
@@ -512,7 +512,7 @@ __xmlRaiseError(xmlStructuredErrorFunc schannel,
     }
 
     /*
-     * Save the informations about the error
+     * Save the information about the error
      */
     xmlResetError(to);
     to->domain = domain;
@@ -543,7 +543,7 @@ __xmlRaiseError(xmlStructuredErrorFunc schannel,
     /*
      * Find the callback channel.
      */
-    if ((ctxt != NULL) && (channel == NULL)) {
+    if ((ctxt != NULL) && (channel == NULL) && (xmlStructuredError == NULL)) {
         if (level == XML_ERR_WARNING)
 	    channel = ctxt->sax->warning;
         else

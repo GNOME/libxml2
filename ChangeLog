@@ -1,3 +1,8 @@
+Sun May 16 11:11:13 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* error.c: modified to assure proper user data is sent to
+	  structured error routine (bug 142598)
+
 Sun May 16 03:18:52 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* catalog.c: a couple of large static variable which should really

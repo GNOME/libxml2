@@ -1,3 +1,8 @@
+Wed Oct 27 09:31:24 PDT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* uri.c: fixed a stupid mistake in xmlBuildRelativeURI
+	  (bug 156527)
+
 Wed Oct 27 11:44:35 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* nanoftp.c nanohttp.c: second part of the security fix for

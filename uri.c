@@ -2095,10 +2095,12 @@ xmlBuildRelativeURI (const xmlChar * URI, const xmlChar * base)
 	if (ref->path[ix] == '/')
 	    break;
     }
-    if (ix == 0)
+    if (ix == 0) {
 	uptr = (xmlChar *)ref->path;
-    else
-	uptr = (xmlChar *)&ref->path[ix + 1];
+    } else {
+	ix++;
+	uptr = (xmlChar *)&ref->path[ix];
+    }
 
     /*
      * In base, count the number of '/' from the differing point
@@ -2114,7 +2116,6 @@ xmlBuildRelativeURI (const xmlChar * URI, const xmlChar * base)
 	val = xmlStrdup (uptr);
 	goto done;
     }
-    nbslash--;
 
     /*
      * Allocate just enough space for the returned string -

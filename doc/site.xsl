@@ -128,6 +128,7 @@
           </xsl:element>
         </li>
       </xsl:for-each>
+      <li><a href="tutorial/index.html">Tutorial</a></li>
       <li><a href="xml.html">flat page</a>, <a href="site.xsl">stylesheet</a></li>
     </ul>
   </xsl:variable>

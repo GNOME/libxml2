@@ -1662,6 +1662,7 @@ xmlSchemaParseAttributeGroup(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     }
     ret->ref = ref;
     ret->refNs = refNs;
+    ret->type = XML_SCHEMA_TYPE_ATTRIBUTEGROUP;
     child = node->children;
     ctxt->container = name;
     if (IS_SCHEMA(child, "annotation")) {
@@ -3554,6 +3555,45 @@ xmlSchemaCheckDefaults(xmlSchemaTypePtr typeDecl,
 }
 
 /**
+ * xmlSchemaAttrGrpFixup:
+ * @attrgrpDecl:  the schema attribute definition
+ * @ctxt:  the schema parser context
+ * @name:  the attribute name
+ *
+ * Fixes finish doing the computations on the attributes definitions
+ */
+static void
+xmlSchemaAttrGrpFixup(xmlSchemaAttributeGroupPtr attrgrpDecl,
+		   xmlSchemaParserCtxtPtr ctxt,
+		   const xmlChar *name)
+{
+    if (name == NULL)
+	name = attrgrpDecl->name;
+    if (attrgrpDecl->attributes != NULL)
+	return;
+    if (attrgrpDecl->ref != NULL) {
+	xmlSchemaAttributeGroupPtr ref;
+
+	ref = xmlHashLookup2(ctxt->schema->attrgrpDecl, attrgrpDecl->ref,
+		             attrgrpDecl->refNs);
+	if (ref == NULL) {
+	    if ((ctxt != NULL) && (ctxt->error != NULL))
+		ctxt->error(ctxt->userData,
+		    "Schemas: attribute group %s reference %s not found\n",
+			    name, attrgrpDecl->ref);
+	    return;
+	}
+	xmlSchemaAttrGrpFixup(ref, ctxt, NULL);
+	attrgrpDecl->attributes = ref->attributes;
+    } else {
+	if ((ctxt != NULL) && (ctxt->error != NULL))
+	    ctxt->error(ctxt->userData,
+		"Schemas: attribute %s has no attributes nor reference\n",
+			name);
+    }
+}
+
+/**
  * xmlSchemaAttrFixup:
  * @attrDecl:  the schema attribute definition
  * @ctxt:  the schema parser context
@@ -3748,6 +3788,11 @@ skip_children:
      * Then fixup all attributes declarations
      */
     xmlHashScan(ret->attrDecl, (xmlHashScanner) xmlSchemaAttrFixup, ctxt);
+
+    /*
+     * Then fixup all attributes group declarations
+     */
+    xmlHashScan(ret->attrgrpDecl, (xmlHashScanner) xmlSchemaAttrGrpFixup, ctxt);
 
     return (ret);
 }
@@ -4796,10 +4841,20 @@ xmlSchemaValidateAttributes(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr elem,
     int i, ret;
     xmlAttrPtr attr;
     xmlChar *value;
+    xmlSchemaAttributeGroupPtr group = NULL;
 
     if (attributes == NULL)
 	return(0);
     while (attributes != NULL) {
+	/*
+	 * Handle attribute groups
+	 */
+	if (attributes->type == XML_SCHEMA_TYPE_ATTRIBUTEGROUP) {
+	    group = (xmlSchemaAttributeGroupPtr) attributes;
+	    xmlSchemaValidateAttributes(ctxt, elem, group->attributes);
+	    attributes = group->next;
+	    continue;
+	}
 	for (i = ctxt->attrBase;i < ctxt->attrNr;i++) {
 	    attr = ctxt->attr[i].attr;
 	    if (attr == NULL)
@@ -4822,7 +4877,7 @@ xmlSchemaValidateAttributes(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr elem,
 	    }
 	    value = xmlNodeListGetString(elem->doc, attr->children, 1);
 	    ret = xmlSchemaValidateSimpleValue(ctxt, attributes->subtypes,
-		                               value);
+					       value);
 	    if (ret != 0) {
 		ctxt->err = XML_SCHEMAS_ERR_ATTRINVALID;
 		if (ctxt->error != NULL)

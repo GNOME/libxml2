@@ -1,0 +1,39 @@
+Type of sequence 3 : ./test/schemas/item_1.xsd:12 :elements
+Type of restriction 5 : ./test/schemas/item_1.xsd:16 :empty
+Type of simpletype4 : ./test/schemas/item_1.xsd:15 :simple
+Type of SKU : ./test/schemas/item_1.xsd:5 :simple
+Type of restriction 9 : ./test/schemas/item_1.xsd:34 :empty
+Type of simpletype8 : ./test/schemas/item_1.xsd:33 :simple
+Type of restriction 1 : ./test/schemas/item_1.xsd:6 :empty
+Type of sequence 3 : ./test/schemas/item_1.xsd:12 :elements
+Type of anontype2 : ./test/schemas/item_1.xsd:11 :elements
+Building content model for Item
+Content model of Item:
+ regexp: '(null)' 
+5 atoms:
+ 00  atom: string once 'productName' 
+ 01  atom: string once 'quantity' 
+ 02  atom: string once 'USPrice' 
+ 03  atom: string once 'comment' 
+ 04  atom: string once 'shipDate' 
+6 states:
+ state: 0, 1 transitions:
+  trans: atom 0, to 1
+ state: 1, 1 transitions:
+  trans: atom 1, to 2
+ state: 2, 1 transitions:
+  trans: atom 2, to 3
+ state: FINAL 3, 3 transitions:
+  trans: atom 3, to 4
+  trans: removed
+  trans: atom 4, to 5
+ state: FINAL 4, 2 transitions:
+  trans: atom 4, to 5
+  trans: removed
+ state: FINAL 5, 0 transitions:
+0 counters:
+xmlSchemaValidateCallback: productName, productName, productName
+xmlSchemaValidateCallback: quantity, quantity, quantity
+xmlSchemaValidateCallback: USPrice, USPrice, USPrice
+xmlSchemaValidateCallback: comment, comment, comment
+Element Item content check succeeded

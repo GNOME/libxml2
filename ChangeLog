@@ -1,3 +1,8 @@
+Tue Apr 23 19:50:40 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemas.c: fixed validation of attribute groups.
+	* test/schemas result/schemas: added an example from the primer
+
 Tue Apr 23 09:11:37 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am xmlschemas.c xmlschemastypes.c: more work on Schemas

@@ -1,3 +1,7 @@
+Wed Sep 17 22:53:32 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* parserInternals.c: avoid a leak with previous patch
+
 Wed Sep 17 22:06:11 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* python/libxml.c: use stderr and not stdout for default errors

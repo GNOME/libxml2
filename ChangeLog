@@ -1,3 +1,8 @@
+Wed Jul  4 18:02:58 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* HTMLparser.c: fixing a too early root closing problem raised
+	  byt Prashanth Naidu
+
 Wed Jul  4 01:42:01 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xpath.c: fixed a missing copy in xmlXPathVariableLookupNS() 

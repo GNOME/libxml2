@@ -3084,24 +3084,26 @@ failed:
  * With namespace
  *
  * [NS 9] ETag ::= '</' QName S? '>'
+ *
+ * Returns 1 if the current level should be closed.
  */
 
-static void
+static int
 htmlParseEndTag(htmlParserCtxtPtr ctxt) {
     xmlChar *name;
     xmlChar *oldname;
-    int i;
+    int i, ret;
 
     if ((CUR != '<') || (NXT(1) != '/')) {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt->userData, "htmlParseEndTag: '</' not found\n");
 	ctxt->wellFormed = 0;
-	return;
+	return(0);
     }
     SKIP(2);
 
     name = htmlParseHTMLName(ctxt);
-    if (name == NULL) return;
+    if (name == NULL) return(0);
 
     /*
      * We should definitely be at the ending "S? '>'" part
@@ -3127,7 +3129,7 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt) {
 	     "Unexpected end tag : %s\n", name);
 	xmlFree(name);
 	ctxt->wellFormed = 0;
-	return;
+	return(0);
     }
 
 
@@ -3174,12 +3176,15 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt) {
 	    xmlGenericError(xmlGenericErrorContext,"End of tag %s: stack empty !!!\n", name);
 #endif
 	}
+	ret = 1;
+    } else {
+	ret = 0;
     }
 
     if (name != NULL)
 	xmlFree(name);
 
-    return;
+    return(ret);
 }
 
 
@@ -3285,17 +3290,22 @@ htmlParseContent(htmlParserCtxtPtr ctxt) {
 	 * Our tag or one of it's parent or children is ending.
 	 */
         if ((CUR == '<') && (NXT(1) == '/')) {
-	    htmlParseEndTag(ctxt);
-	    if (currentNode != NULL) xmlFree(currentNode);
-	    return;
+	    if (htmlParseEndTag(ctxt) &&
+		((currentNode != NULL) || (ctxt->nameNr == 0))) {
+		if (currentNode != NULL)
+		    xmlFree(currentNode);
+		return;
+	    }
+	    continue; /* while */
         }
 
 	/*
 	 * Has this node been popped out during parsing of
 	 * the next element
 	 */
-        if ((!xmlStrEqual(currentNode, ctxt->name)) &&
-	    (depth >= ctxt->nameNr)) {
+        if ((ctxt->nameNr > 0) && (depth >= ctxt->nameNr) &&
+	    (!xmlStrEqual(currentNode, ctxt->name)))
+	     {
 	    if (currentNode != NULL) xmlFree(currentNode);
 	    return;
 	}

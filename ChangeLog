@@ -1,3 +1,8 @@
+Mon Jun  7 22:14:58 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* relaxng.c: fixed a problem with internal cleanup of <DIV> element
+	  (bug 143738).
+
 Mon Jun  7 16:57:43 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* uri.c, include/libxml/uri.h: added a new routine

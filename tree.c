@@ -6669,6 +6669,10 @@ xmlNodeDumpOutputInternal(xmlOutputBufferPtr buf, xmlDocPtr doc,
         xmlOutputBufferWriteString(buf, "]]>");
 	return;
     }
+    if (cur->type == XML_NAMESPACE_DECL) {
+	xmlNsDumpOutput(buf, cur);
+	return;
+    }
 
     if (format == 1) {
 	tmp = cur->children;

@@ -1,3 +1,7 @@
+Mon Feb 10 01:00:31 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: fixing #105678 problem when dumping a namespace node.
+
 Mon Feb 10 00:30:01 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: fixed doc comment problems

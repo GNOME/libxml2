@@ -1,3 +1,14 @@
+Fri Mar 11 13:22:52 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c: The schema parser will stop if components could
+	  not be resolved. This is not conforming to the spec but for now
+	  will avoid internal errors during type fixup and content model
+	  creation. Restructured inclusion/import of schemata: this avoids
+	  duplicate, self and circular inclusion. Chameleon includes are
+	  still workarounded. Added restriction to disallow references to
+	  non-imported namespaces. Corrected parsing of <group>.
+	* result/schemas/bug167754_0_0*: Added a missing test result.
+
 Thu Mar 10 16:02:17 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* doc/xml.html doc/encoding.html: Enriched encoding.html with more

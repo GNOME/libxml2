@@ -21,7 +21,7 @@ libxml2_la_SOURCES = SAX.c entities.c encoding.c error.c parserInternals.c  \
 		parser.c tree.c hash.c list.c xmlIO.c xmlmemory.c uri.c  \
 		valid.c xlink.c HTMLparser.c HTMLtree.c debugXML.c xpath.c  \
 		xpointer.c xinclude.c nanohttp.c nanoftp.c DOCBparser.c \
-		catalog.c globals.c threads.c strio.c trio.c
+		catalog.c globals.c threads.c triostr.c trio.c
 
 else
 libxml2_la_SOURCES = SAX.c entities.c encoding.c error.c parserInternals.c  \
@@ -568,7 +568,7 @@ EXTRA_DIST = xml2-config.in xml2Conf.sh.in libxml.spec.in libxml.spec \
              libxml.m4 \
              example/Makefile.am example/gjobread.c example/gjobs.xml \
 	     $(man_MANS) libxml-2.0.pc.in \
-	     trionan.c trionan.h strio.c strio.h trio.c trio.h \
+	     trionan.c trionan.h triostr.c triostr.h trio.c trio.h \
 	     triop.h triodef.h libxml.h \
 	     testThreadsWin32.c
 

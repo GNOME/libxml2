@@ -50,6 +50,7 @@
  *   NetBSD 1.4      x86          gcc
  *   NetBSD 1.4      StrongARM    gcc
  *   NetBSD 1.5      Alpha        gcc
+ *   OpenVMS 7.1     Alpha        DEC C 6.0
  *   RISC OS 4       StrongARM    Norcroft C
  *   Solaris 2.5.1   x86          gcc
  *   Solaris 2.5.1   Sparc        gcc
@@ -62,7 +63,6 @@
  ************************************************************************/
 
 static const char rcsid[] = "@(#)$Id$";
-
 
 /*************************************************************************
  * Include files
@@ -77,15 +77,17 @@ static const char rcsid[] = "@(#)$Id$";
 #if defined(TRIO_PLATFORM_UNIX)
 # include <signal.h>
 #endif
+#if defined(TRIO_COMPILER_DECC)
+# include <fp_class.h>
+#endif
 #include <assert.h>
 
-#ifdef __STDC__
-# define CONST const
-# define VOLATILE volatile
-#else
-# define CONST
-# define VOLATILE
+#if defined(TRIO_DOCUMENTATION)
+# include "doc/doc_nan.h"
 #endif
+/** @addtogroup SpecialQuantities
+    @{
+*/
 
 /*************************************************************************
  * Definitions
@@ -94,7 +96,11 @@ static const char rcsid[] = "@(#)$Id$";
 /* We must enable IEEE floating-point on Alpha */
 #if defined(__alpha) && !defined(_IEEE_FP)
 # if defined(TRIO_COMPILER_DECC)
-#  error "Must be compiled with option -ieee"
+#  if defined(TRIO_PLATFORM_VMS)
+#   error "Must be compiled with option /IEEE_MODE=UNDERFLOW_TO_ZERO/FLOAT=IEEE"
+#  else
+#   error "Must be compiled with option -ieee"
+#  endif
 # elif defined(TRIO_COMPILER_GCC) && (defined(__osf__) || defined(__linux__))
 #  error "Must be compiled with option -mieee"
 # endif
@@ -128,57 +134,61 @@ static const char rcsid[] = "@(#)$Id$";
  * Endian-agnostic indexing macro.
  *
  * The value of internalEndianMagic, when converted into a 64-bit
- * integer, becomes 0x0001020304050607 (we could have used a 64-bit
+ * integer, becomes 0x0706050403020100 (we could have used a 64-bit
  * integer value instead of a double, but not all platforms supports
  * that type). The value is automatically encoded with the correct
  * endianess by the compiler, which means that we can support any
  * kind of endianess. The individual bytes are then used as an index
  * for the IEEE 754 bit-patterns and masks.
  */
-#define TRIO_DOUBLE_INDEX(x) (((unsigned char *)&internalEndianMagic)[(x)])
+#define TRIO_DOUBLE_INDEX(x) (((unsigned char *)&internalEndianMagic)[7-(x)])
 
-static CONST double internalEndianMagic = 1.4015997730788920e-309;
+static TRIO_CONST double internalEndianMagic = 7.949928895127363e-275;
 
 /* Mask for the exponent */
-static CONST unsigned char ieee_754_exponent_mask[] = {
+static TRIO_CONST unsigned char ieee_754_exponent_mask[] = {
   0x7F, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 };
 
 /* Mask for the mantissa */
-static CONST unsigned char ieee_754_mantissa_mask[] = {
+static TRIO_CONST unsigned char ieee_754_mantissa_mask[] = {
   0x00, 0x0F, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
 };
 
 /* Bit-pattern for infinity */
-static CONST unsigned char ieee_754_infinity_array[] = {
+static TRIO_CONST unsigned char ieee_754_infinity_array[] = {
   0x7F, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 };
 
 /* Bit-pattern for quiet NaN */
-static CONST unsigned char ieee_754_qnan_array[] = {
+static TRIO_CONST unsigned char ieee_754_qnan_array[] = {
   0x7F, 0xF8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 };
 
 
 /*************************************************************************
+ * Functions
+ */
+
+/*
  * trio_make_double
  */
-static double
-trio_make_double(CONST unsigned char *values)
+TRIO_PRIVATE double
+trio_make_double(TRIO_CONST unsigned char *values)
 {
-  VOLATILE double result;
+  TRIO_VOLATILE double result;
   int i;
 
   for (i = 0; i < (int)sizeof(double); i++) {
-    ((VOLATILE unsigned char *)&result)[TRIO_DOUBLE_INDEX(i)] = values[i];
+    ((TRIO_VOLATILE unsigned char *)&result)[TRIO_DOUBLE_INDEX(i)] = values[i];
   }
   return result;
 }
 
-/*************************************************************************
+/*
  * trio_examine_double
  */
-static int
+TRIO_PRIVATE int
 trio_is_special_quantity(double number,
 			 int *has_mantissa)
 {
@@ -200,9 +210,11 @@ trio_is_special_quantity(double number,
 #endif /* USE_IEEE_754 */
 
 
-/*************************************************************************
- * trio_pinf
- */
+/**
+   Generate positive infinity.
+
+   @return Floating-point representation of positive infinity.
+*/
 TRIO_PUBLIC double
 trio_pinf(void)
 {
@@ -242,9 +254,11 @@ trio_pinf(void)
   return result;
 }
 
-/*************************************************************************
- * trio_ninf
- */
+/**
+   Generate negative infinity.
+
+   @return Floating-point value of negative infinity.
+*/
 TRIO_PUBLIC double
 trio_ninf(void)
 {
@@ -261,9 +275,11 @@ trio_ninf(void)
   return result;
 }
 
-/*************************************************************************
- * trio_nan
- */
+/**
+   Generate NaN.
+
+   @return Floating-point representation of NaN.
+*/
 TRIO_PUBLIC double
 trio_nan(void)
 {
@@ -306,11 +322,14 @@ trio_nan(void)
   return result;
 }
 
-/*************************************************************************
- * trio_isnan
- */
+/**
+   Check for NaN.
+
+   @param number An arbitrary floating-point number.
+   @return Boolean value indicating whether or not the number is a NaN.
+*/
 TRIO_PUBLIC int
-trio_isnan(VOLATILE double number)
+trio_isnan(TRIO_VOLATILE double number)
 {
 #if defined(isnan) || defined(TRIO_COMPILER_SUPPORTS_UNIX95)
   /*
@@ -370,11 +389,14 @@ trio_isnan(VOLATILE double number)
 #endif
 }
 
-/*************************************************************************
- * trio_isinf
- */
+/**
+   Check for infinity.
+
+   @param number An arbitrary floating-point number.
+   @return 1 if positive infinity, -1 if negative infinity, 0 otherwise.
+*/
 TRIO_PUBLIC int
-trio_isinf(VOLATILE double number)
+trio_isinf(TRIO_VOLATILE double number)
 {
 #if defined(TRIO_COMPILER_DECC)
   /*
@@ -438,7 +460,15 @@ trio_isinf(VOLATILE double number)
 #endif
 }
 
+/** @} SpecialQuantities */
+
 /*************************************************************************
+ * For test purposes.
+ *
+ * Add the following compiler option to include this test code.
+ *
+ *  Unix : -DSTANDALONE
+ *  VMS  : /DEFINE=(STANDALONE)
  */
 #if defined(STANDALONE)
 # include <stdio.h>

@@ -1,3 +1,9 @@
+Sat Jan 19 16:36:21 CET 2002 Bjorn Reese <breese@users.sourceforge.net>
+
+	* trio.h trio.c triodef.h triop.h trionan.h trionan.c Makefile.am:
+	  Upgraded to trio baseline 1.6
+	* strio.h strio.c: Replaced by triostr.h and triostr.c
+
 Fri Jan 18 17:22:50 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* globals.c xmlIO.c xmlcatalog.c: removed the last occurences

@@ -11,6 +11,8 @@
 
 #if defined(WIN32) && !defined(__CYGWIN__)
 #include "win32config.h"
+#elif defined(macintosh)
+#include "config-mac.h"
 #else
 #include "config.h"
 #include <libxml/xmlversion.h>

@@ -95,7 +95,7 @@ main()
 
 	for (i = 0; i < num_threads; i++) {
 	    results[i] = NULL;
-	    tid[i] = -1;
+	    tid[i] = (pthread_t) -1;
 	}
 
 	for (i = 0; i < num_threads; i++) {

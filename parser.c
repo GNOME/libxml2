@@ -7335,7 +7335,7 @@ xmlParseXMLDecl(xmlParserCtxtPtr ctxt) {
 				   version);
 	}
 	if (ctxt->version != NULL)
-	    xmlFree(ctxt->version);
+	    xmlFree((void *) ctxt->version);
 	ctxt->version = version;
     }
 

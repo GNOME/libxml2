@@ -39,13 +39,14 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/tree.h>
 #include <libxml/parser.h>
+#include <libxml/parserInternals.h>
+#include <libxml/valid.h>
 #include <libxml/entities.h>
+#include <libxml/xml-error.h>
 #include <libxml/encoding.h>
 #include <libxml/valid.h>
-#include <libxml/parserInternals.h>
 #include <libxml/xmlIO.h>
 #include <libxml/uri.h>
-#include <libxml/xml-error.h>
 
 
 /************************************************************************

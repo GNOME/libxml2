@@ -230,16 +230,20 @@ if test "$with_python" != "no" ; then
 	    if test -r $prefix/include/python$PYTHON_VERSION/Python.h
 	    then
 	        PYTHON_INCLUDES='$(prefix)/include/python$(PYTHON_VERSION)'
-		PYTHON_SITE_PACKAGES='$(prefix)/lib/python$(PYTHON_VERSION)/site-packages'
+		PYTHON_SITE_PACKAGES='$(libdir)/python$(PYTHON_VERSION)/site-packages'
 	    else
 		if test -r /usr/include/python$PYTHON_VERSION/Python.h
 		then
 		    PYTHON_INCLUDES=/usr/include/python$PYTHON_VERSION
-		    PYTHON_SITE_PACKAGES='$(prefix)/lib/python$(PYTHON_VERSION)/site-packages'
+		    PYTHON_SITE_PACKAGES='$(libdir)/python$(PYTHON_VERSION)/site-packages'
 		else
 		    echo could not find python$PYTHON_VERSION/Python.h
 		fi
 	    fi
+		if ! test -d "$PYTHON_SITE_PACKAGES"
+		then
+			PYTHON_SITE_PACKAGES=`$PYTHON -c "from distutils import sysconfig; print sysconfig.get_python_lib()"`
+		fi
 	fi
     fi
 fi

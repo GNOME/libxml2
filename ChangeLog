@@ -1,3 +1,13 @@
+Wed Aug 14 16:05:37 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xinclude.c: quick but apparently working implementation of
+	  xi:fallback, should close bug #89684
+	* Makefile.am test/XInclude/docs/fallback.xml 
+	  result/XInclude/fallback.xml: added a basic test for fallback,
+	  and run with --nowarning to avoid a spurious warning
+	* configure.in: applied patch from Frederic Crozat for python
+	  bindings on AMD 64bits machines.
+
 Wed Aug 14 10:47:46 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: xmlSAXUserParseMemory() really ought to fail if

@@ -399,10 +399,10 @@ XIncludetests : xmllint$(EXEEXT)
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/result/XInclude/$$name ] ; then \
 	      echo New test file $$name ; \
-	      $(CHECKER) $(top_builddir)/xmllint --xinclude $$i > $(srcdir)/result/XInclude/$$name ; \
+	      $(CHECKER) $(top_builddir)/xmllint --nowarning --xinclude $$i > $(srcdir)/result/XInclude/$$name ; \
 	  else \
 	      echo Testing $$name ; \
-	      $(CHECKER) $(top_builddir)/xmllint --xinclude $$i > result.$$name ; \
+	      $(CHECKER) $(top_builddir)/xmllint --nowarning --xinclude $$i > result.$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	      diff $(srcdir)/result/XInclude/$$name result.$$name ; \
 	      rm result.$$name ; \

@@ -710,8 +710,10 @@ xmlXIncludeCopyXPointer(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
  * @nr:  the xinclude node number
  * 
  * Load the document, and store the result in the XInclude context
+ *
+ * Returns 0 in case of success, -1 in case of failure
  */
-static void
+static int
 xmlXIncludeLoadDoc(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
     xmlDocPtr doc;
     xmlURIPtr uri;
@@ -725,7 +727,7 @@ xmlXIncludeLoadDoc(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
     if (uri == NULL) {
 	xmlGenericError(xmlGenericErrorContext,
 		    "XInclude: invalid value URI %s\n", url);
-	return;
+	return(-1);
     }
     if (uri->fragment != NULL) {
 	fragment = (xmlChar *) uri->fragment;
@@ -738,7 +740,7 @@ xmlXIncludeLoadDoc(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
 		    "XInclude: invalid value URI %s\n", url);
 	if (fragment != NULL)
 	    xmlFree(fragment);
-	return;
+	return(-1);
     }
 
     /*
@@ -764,12 +766,10 @@ xmlXIncludeLoadDoc(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
      */
     doc = xmlParseFile((const char *)URL);
     if (doc == NULL) {
-	xmlGenericError(xmlGenericErrorContext,
-		    "XInclude: could not load %s\n", URL);
 	xmlFree(URL);
 	if (fragment != NULL)
 	    xmlFree(fragment);
-	return;
+	return(-1);
     }
     xmlXIncludeAddDoc(ctxt, doc, URL);
 
@@ -806,7 +806,7 @@ loaded:
 			"XInclude: could create XPointer context\n");
 	    xmlFree(URL);
 	    xmlFree(fragment);
-	    return;
+	    return(-1);
 	}
 	xptr = xmlXPtrEval(fragment, xptrctxt);
 	if (xptr == NULL) {
@@ -816,7 +816,7 @@ loaded:
 	    xmlXPathFreeContext(xptrctxt);
 	    xmlFree(URL);
 	    xmlFree(fragment);
-	    return;
+	    return(-1);
 	}
 	switch (xptr->type) {
 	    case XPATH_UNDEFINED:
@@ -832,7 +832,7 @@ loaded:
 		xmlXPathFreeContext(xptrctxt);
 		xmlFree(URL);
 		xmlFree(fragment);
-		return;
+		return(-1);
 	    case XPATH_NODESET:
 	    case XPATH_RANGE:
 	    case XPATH_LOCATIONSET:
@@ -893,6 +893,7 @@ loaded:
 	xmlFree(fragment);
     }
     xmlFree(URL);
+    return(0);
 }
 
 /**
@@ -902,8 +903,10 @@ loaded:
  * @nr:  the xinclude node number
  * 
  * Load the content, and store the result in the XInclude context
+ *
+ * Returns 0 in case of success, -1 in case of failure
  */
-static void
+static int
 xmlXIncludeLoadTxt(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
     xmlParserInputBufferPtr buf;
     xmlNodePtr node;
@@ -917,21 +920,21 @@ xmlXIncludeLoadTxt(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
     if (uri == NULL) {
 	xmlGenericError(xmlGenericErrorContext,
 		    "XInclude: invalid value URI %s\n", url);
-	return;
+	return(-1);
     }
     if (uri->fragment != NULL) {
 	xmlGenericError(xmlGenericErrorContext,
 		"XInclude: fragment identifier forbidden for text: %s\n",
 		uri->fragment);
 	xmlFreeURI(uri);
-	return;
+	return(-1);
     }
     URL = xmlSaveUri(uri);
     xmlFreeURI(uri);
     if (URL == NULL) {
 	xmlGenericError(xmlGenericErrorContext,
 		    "XInclude: invalid value URI %s\n", url);
-	return;
+	return(-1);
     }
 
     /*
@@ -942,7 +945,7 @@ xmlXIncludeLoadTxt(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
 	xmlGenericError(xmlGenericErrorContext,
 		"XInclude: text serialization of document not available\n");
 	xmlFree(URL);
-	return;
+	return(-1);
     }
 
     /*
@@ -960,10 +963,8 @@ xmlXIncludeLoadTxt(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
      */
     buf = xmlParserInputBufferCreateFilename((const char *)URL, 0);
     if (buf == NULL) {
-	xmlGenericError(xmlGenericErrorContext,
-		    "XInclude: could not load %s\n", URL);
 	xmlFree(URL);
-	return;
+	return(-1);
     }
     node = xmlNewText(NULL);
 
@@ -998,6 +999,27 @@ loaded:
      */
     ctxt->repTab[nr] = node;
     xmlFree(URL);
+    return(0);
+}
+
+/**
+ * xmlXIncludeLoadFallback:
+ * @ctxt:  the XInclude context
+ * @fallback:  the fallback node
+ * @nr:  the xinclude node number
+ * 
+ * Load the content of teh fallback node, and store the result
+ * in the XInclude context
+ *
+ * Returns 0 in case of success, -1 in case of failure
+ */
+static int
+xmlXIncludeLoadFallback(xmlXIncludeCtxtPtr ctxt, xmlNodePtr fallback, int nr) {
+    if ((fallback == NULL) || (ctxt == NULL))
+	return(-1);
+
+    ctxt->repTab[nr] = xmlCopyNode(fallback->children, 1);
+    return(0);
 }
 
 /************************************************************************
@@ -1039,6 +1061,7 @@ xmlXIncludeLoadNode(xmlXIncludeCtxtPtr ctxt, int nr) {
     xmlChar *base;
     xmlChar *URI;
     int xml = 1; /* default Issue 64 */
+    int ret;
 
     if (ctxt == NULL)
 	return(-1);
@@ -1126,10 +1149,37 @@ xmlXIncludeLoadNode(xmlXIncludeCtxtPtr ctxt, int nr) {
      * Cleanup
      */
     if (xml) {
-	xmlXIncludeLoadDoc(ctxt, URI, nr);
+	ret = xmlXIncludeLoadDoc(ctxt, URI, nr);
 	/* xmlXIncludeGetFragment(ctxt, cur, URI); */
     } else {
-	xmlXIncludeLoadTxt(ctxt, URI, nr);
+	ret = xmlXIncludeLoadTxt(ctxt, URI, nr);
+    }
+    if (ret < 0) {
+	xmlNodePtr children;
+
+	/*
+	 * Time to try a fallback if availble
+	 */
+#ifdef DEBUG_XINCLUDE
+	xmlGenericError(xmlGenericErrorContext, "error looking for fallback\n");
+#endif
+	children = cur->children;
+	while (children != NULL) {
+	    if ((children->type == XML_ELEMENT_NODE) &&
+		(children->ns != NULL) &&
+		(xmlStrEqual(children->name, XINCLUDE_FALLBACK)) &&
+		(xmlStrEqual(children->ns->href, XINCLUDE_NS))) {
+		ret = xmlXIncludeLoadFallback(ctxt, children, nr);
+		if (ret == 0)
+		    break;
+	    }
+	    children = children->next;
+	}
+    }
+    if (ret < 0) {
+	xmlGenericError(xmlGenericErrorContext,
+		    "XInclude: could not load %s, and no fallback was found\n",
+		        URI);
     }
 
     /*

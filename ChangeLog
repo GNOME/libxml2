@@ -1,4 +1,10 @@
+Fri May 24 09:54:49 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* result/catalogs/mycatalog.full: Aleksey's commit changed the
+	  output of one catalog test
+
 Fri 24 May 2002 12:17:45 AM PDT Aleksey Sanin <aleksey@aleksey.com>
+
 	* global.data globals.c tree.c include/libxml/globals.h 
 	win32/libxml2.def.src win32/dsp/libxml2.def.src: changed
 	default value for global parameter xmlIndentTreeOutput to 1 and

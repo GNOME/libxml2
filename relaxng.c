@@ -1850,7 +1850,7 @@ xmlRelaxNGGetErrorString(xmlRelaxNGValidErr err, const xmlChar *arg1,
 	    snprintf(msg, 1000, "failed to validate type %s", arg1);
 	    break;
 	case XML_RELAXNG_ERR_TYPEVAL:
-	    snprintf(msg, 1000, "Type %s doesn't allow value %s", arg1, arg2);
+	    snprintf(msg, 1000, "Type %s doesn't allow value '%s'", arg1, arg2);
 	    break;
 	case XML_RELAXNG_ERR_DUPID:
 	    snprintf(msg, 1000, "ID %s redefined", arg1);
@@ -1911,6 +1911,10 @@ xmlRelaxNGGetErrorString(xmlRelaxNGValidErr err, const xmlChar *arg1,
 	case XML_RELAXNG_ERR_INVALIDATTR:
 	    snprintf(msg, 1000, "Invalid attribute %s for element %s",
 		     arg1, arg2);
+	    break;
+	case XML_RELAXNG_ERR_LACKDATA:
+	    snprintf(msg, 1000, "Datatype element %s contains no data",
+		     arg1);
 	    break;
 	case XML_RELAXNG_ERR_DATAELEM:
 	    snprintf(msg, 1000, "Datatype element %s has child elements",

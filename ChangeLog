@@ -1,3 +1,9 @@
+Sat Mar 29 11:49:25 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c include/libxml/relaxng.h xmlschemastypes.c: more work
+	  on cleaning up XML Schemas datatypes based on James Clark tests
+	  test/xsdtest/xsdtest.xml
+
 Fri Mar 28 14:24:08 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c: implemented comparisons for Schemas values.

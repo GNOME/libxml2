@@ -133,6 +133,7 @@ struct _xmlSchemaVal {
 	float			f;
 	double			d;
 	int			b;
+	xmlChar                *str;
     } value;
 };
 
@@ -370,6 +371,29 @@ void
 xmlSchemaFreeValue(xmlSchemaValPtr value) {
     if (value == NULL)
 	return;
+    switch (value->type) {
+        case XML_SCHEMAS_STRING:
+        case XML_SCHEMAS_NORMSTRING:
+        case XML_SCHEMAS_TOKEN:
+        case XML_SCHEMAS_LANGUAGE:
+        case XML_SCHEMAS_NMTOKEN:
+        case XML_SCHEMAS_NMTOKENS:
+        case XML_SCHEMAS_NAME:
+        case XML_SCHEMAS_QNAME:
+        case XML_SCHEMAS_NCNAME:
+        case XML_SCHEMAS_ID:
+        case XML_SCHEMAS_IDREF:
+        case XML_SCHEMAS_IDREFS:
+        case XML_SCHEMAS_ENTITY:
+        case XML_SCHEMAS_ENTITIES:
+        case XML_SCHEMAS_NOTATION:
+        case XML_SCHEMAS_ANYURI:
+	    if (value->value.str != NULL)
+		xmlFree(value->value.str);
+	    break;
+	default:
+	    break;
+    }
     xmlFree(value);
 }
 
@@ -1197,13 +1221,23 @@ xmlSchemaValPredefTypeNode(xmlSchemaTypePtr type, const xmlChar *value,
     } else if (type == xmlSchemaTypeAnySimpleTypeDef) {
 	return(0);
     } else if (type == xmlSchemaTypeNmtokenDef) {
-	if (xmlValidateNMToken(value, 1) == 0)
+	if (xmlValidateNMToken(value, 1) == 0) {
+	    if (val != NULL) {
+		v = xmlSchemaNewValue(XML_SCHEMAS_NMTOKEN);
+		if (v != NULL) {
+		    v->value.str = xmlStrdup(value);
+		    *val = v;
+		} else {
+		    return(-1);
+		}
+	    }
 	    return(0);
+	}
 	return(1);
     } else if (type == xmlSchemaTypeNmtokensDef) {
 	ret = xmlSchemaValAtomicListNode(xmlSchemaTypeNmtokenDef,
 		                         value, val, node);
-	if (ret >= 0)
+	if (ret > 0)
 	    ret = 0;
 	else
 	    ret = 1;
@@ -1555,7 +1589,13 @@ xmlSchemaValPredefTypeNode(xmlSchemaTypePtr type, const xmlChar *value,
     } else if (type == xmlSchemaTypeNCNameDef) {
 	ret = xmlValidateNCName(value, 1);
 	if ((ret == 0) && (val != NULL)) {
-	    TODO;
+	    v = xmlSchemaNewValue(XML_SCHEMAS_NCNAME);
+	    if (v != NULL) {
+		v->value.str = xmlStrdup(value);
+		*val = v;
+	    } else {
+		return(-1);
+	    }
 	}
 	return(ret);
     } else if (type == xmlSchemaTypeAnyURIDef) {
@@ -1701,6 +1741,49 @@ xmlSchemaValPredefTypeNode(xmlSchemaTypePtr type, const xmlChar *value,
 	    attr->atype = XML_ATTRIBUTE_ENTITY;
 	}
 	return(ret);
+    } else if (type == xmlSchemaTypeLanguageDef) {
+	if (xmlCheckLanguageID(value) == 1) {
+	    if (val != NULL) {
+		v = xmlSchemaNewValue(XML_SCHEMAS_LANGUAGE);
+		if (v != NULL) {
+		    v->value.str = xmlStrdup(value);
+		    *val = v;
+		} else {
+		    return(-1);
+		}
+	    }
+	    return(0);
+	}
+	return(1);
+    } else if (type == xmlSchemaTypeTokenDef) {
+	const xmlChar *cur = value;
+
+	if (IS_BLANK(*cur))
+	    return(1);
+
+	while (*cur != 0) {
+	    if ((*cur == 0xd) || (*cur == 0xa) || (*cur == 0x9)) {
+		return(1);
+	    } else if (*cur == ' ') {
+		cur++;
+		if (*cur == 0)
+		    return(1);
+		if (*cur == ' ')
+		    return(1);
+	    } else {
+		cur++;
+	    }
+	}
+	if (val != NULL) {
+	    v = xmlSchemaNewValue(XML_SCHEMAS_TOKEN);
+	    if (v != NULL) {
+		v->value.str = xmlStrdup(value);
+		*val = v;
+	    } else {
+		return(-1);
+	    }
+	}
+	return(0);
     }
     TODO
     return(0);
@@ -2367,6 +2450,58 @@ xmlSchemaCompareDates (xmlSchemaValPtr x, xmlSchemaValPtr y)
 }
 
 /**
+ * xmlSchemaCompareNormStrings:
+ * @x:  a first string value
+ * @y:  a second string value
+ *
+ * Compare 2 string for their normalized values.
+ *
+ * Returns -1 if x < y, 0 if x == y, 1 if x > y, and -2 in
+ * case of error
+ */
+static int
+xmlSchemaCompareNormStrings(xmlSchemaValPtr x, xmlSchemaValPtr y) {
+    const xmlChar *utf1;
+    const xmlChar *utf2;
+    int tmp;
+
+    if ((x == NULL) || (y == NULL))
+	return(-2);
+    utf1 = x->value.str;
+    utf2 = y->value.str;
+    
+    while (IS_BLANK(*utf1)) utf1++;
+    while (IS_BLANK(*utf2)) utf2++;
+    while ((*utf1 != 0) && (*utf2 != 0)) {
+	if (IS_BLANK(*utf1)) {
+	    if (!IS_BLANK(*utf2)) {
+		tmp = *utf1 - *utf2;
+		return(tmp);
+	    }
+	    while (IS_BLANK(*utf1)) utf1++;
+	    while (IS_BLANK(*utf2)) utf2++;
+	} else {
+	    tmp = *utf1++ - *utf2++;
+	    if (tmp < 0)
+		return(-1);
+	    if (tmp > 0)
+		return(1);
+	}
+    }
+    if (*utf1 != 0) {
+	while (IS_BLANK(*utf1)) utf1++;
+	if (*utf1 != 0)
+	    return(1);
+    }
+    if (*utf2 != 0) {
+	while (IS_BLANK(*utf2)) utf2++;
+	if (*utf2 != 0)
+	    return(-1);
+    }
+    return(0);
+}
+
+/**
  * xmlSchemaCompareValues:
  * @x:  a first value
  * @y:  a second value
@@ -2438,28 +2573,94 @@ xmlSchemaCompareValues(xmlSchemaValPtr x, xmlSchemaValPtr y) {
                 (y->type == XML_SCHEMAS_GYEARMONTH))
                 return (xmlSchemaCompareDates(x, y));
             return (-2);
-        case XML_SCHEMAS_STRING:
         case XML_SCHEMAS_NORMSTRING:
-        case XML_SCHEMAS_FLOAT:
-        case XML_SCHEMAS_DOUBLE:
-        case XML_SCHEMAS_BOOLEAN:
         case XML_SCHEMAS_TOKEN:
         case XML_SCHEMAS_LANGUAGE:
         case XML_SCHEMAS_NMTOKEN:
-        case XML_SCHEMAS_NMTOKENS:
         case XML_SCHEMAS_NAME:
         case XML_SCHEMAS_QNAME:
         case XML_SCHEMAS_NCNAME:
         case XML_SCHEMAS_ID:
         case XML_SCHEMAS_IDREF:
-        case XML_SCHEMAS_IDREFS:
         case XML_SCHEMAS_ENTITY:
-        case XML_SCHEMAS_ENTITIES:
         case XML_SCHEMAS_NOTATION:
         case XML_SCHEMAS_ANYURI:
+            if ((y->type == XML_SCHEMAS_NORMSTRING) ||
+                (y->type == XML_SCHEMAS_TOKEN) ||
+                (y->type == XML_SCHEMAS_LANGUAGE) ||
+                (y->type == XML_SCHEMAS_NMTOKEN) ||
+                (y->type == XML_SCHEMAS_NAME) ||
+                (y->type == XML_SCHEMAS_QNAME) ||
+                (y->type == XML_SCHEMAS_NCNAME) ||
+                (y->type == XML_SCHEMAS_ID) ||
+                (y->type == XML_SCHEMAS_IDREF) ||
+                (y->type == XML_SCHEMAS_ENTITY) ||
+                (y->type == XML_SCHEMAS_NOTATION) ||
+                (y->type == XML_SCHEMAS_ANYURI))
+                return (xmlSchemaCompareNormStrings(x, y));
+            return (-2);
+
+        case XML_SCHEMAS_FLOAT:
+        case XML_SCHEMAS_DOUBLE:
 	    TODO
+	    break;
+        case XML_SCHEMAS_BOOLEAN:
+	    TODO
+	    break;
+        case XML_SCHEMAS_STRING:
+        case XML_SCHEMAS_IDREFS:
+        case XML_SCHEMAS_ENTITIES:
+        case XML_SCHEMAS_NMTOKENS:
+	    TODO
+	    break;
     }
     return -2;
+}
+
+/**
+ * xmlSchemaNormLen:
+ * @value:  a string
+ *
+ * Computes the UTF8 length of the normalized value of the string
+ *
+ * Returns the length or -1 in case of error.
+ */
+static int
+xmlSchemaNormLen(const xmlChar *value) {
+    const xmlChar *utf;
+    int ret = 0;
+
+    if (value == NULL)
+	return(-1);
+    utf = value;
+    while (IS_BLANK(*utf)) utf++;
+    while (*utf != 0) {
+	if (utf[0] & 0x80) {
+	    if ((utf[1] & 0xc0) != 0x80)
+		return(-1);
+	    if ((utf[0] & 0xe0) == 0xe0) {
+		if ((utf[2] & 0xc0) != 0x80)
+		    return(-1);
+		if ((utf[0] & 0xf0) == 0xf0) {
+		    if ((utf[0] & 0xf8) != 0xf0 || (utf[3] & 0xc0) != 0x80)
+			return(-1);
+		    utf += 4;
+		} else {
+		    utf += 3;
+		}
+	    } else {
+		utf += 2;
+	    }
+	} else if (IS_BLANK(*utf)) {
+	    while (IS_BLANK(*utf)) utf++;
+	    if (*utf == 0)
+		break;
+	} else {
+	    utf++;
+	}
+	ret++;
+    }
+    return(ret);
 }
 
 /**
@@ -2550,7 +2751,7 @@ xmlSchemaValidateFacet(xmlSchemaTypePtr base ATTRIBUTE_UNUSED,
 		return(-1);
 	    }
 	    switch (base->flags) {
-		case XML_SCHEMAS_STRING:
+		case XML_SCHEMAS_IDREF:
 		case XML_SCHEMAS_NORMSTRING:
 		case XML_SCHEMAS_TOKEN:
 		case XML_SCHEMAS_LANGUAGE:
@@ -2558,10 +2759,11 @@ xmlSchemaValidateFacet(xmlSchemaTypePtr base ATTRIBUTE_UNUSED,
 		case XML_SCHEMAS_NAME:
 		case XML_SCHEMAS_NCNAME:
 		case XML_SCHEMAS_ID:
-		case XML_SCHEMAS_IDREF: {
+		    len = xmlSchemaNormLen(value);
+		    break;
+		case XML_SCHEMAS_STRING:
 		    len = xmlUTF8Strlen(value);
 		    break;
-		}
 		default:
 		    TODO
 	    }

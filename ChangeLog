@@ -1,3 +1,7 @@
+Thu Apr 11 10:23:36 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in: applied an IEEE flag patch for OSF/1 #77825
+
 Wed Apr 10 23:31:34 CEST 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
 
 	* win32/configure.js: patch from Nilo for the c14n option

@@ -176,6 +176,9 @@ else
           alpha*-*-linux* )
 	       CFLAGS="${CFLAGS} -mieee"
 	       ;;
+	  alpha*-*-osf* )
+	       CFLAGS="${CFLAGS} -mieee"
+	       ;;
     esac
 fi
 case ${host} in

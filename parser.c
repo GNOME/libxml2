@@ -9400,7 +9400,6 @@ xmlSAXParseFile(xmlSAXHandlerPtr sax, const char *filename,
 	if (ctxt->sax != NULL)
 	    xmlFree(ctxt->sax);
         ctxt->sax = sax;
-        ctxt->userData = NULL;
     }
 
     if ((ctxt->directory == NULL) && (directory == NULL))
@@ -9616,7 +9615,6 @@ xmlSAXParseMemory(xmlSAXHandlerPtr sax, char *buffer, int size, int recovery) {
     if (ctxt == NULL) return(NULL);
     if (sax != NULL) {
         ctxt->sax = sax;
-        ctxt->userData = NULL;
     }
 
     xmlParseDocument(ctxt);
@@ -9687,7 +9685,8 @@ int xmlSAXUserParseMemory(xmlSAXHandlerPtr sax, void *user_data,
 	oldsax = ctxt->sax;
 	ctxt->sax = sax;
     }
-    ctxt->userData = user_data;
+    if (user_data != NULL)
+	ctxt->userData = user_data;
     
     xmlParseDocument(ctxt);
     

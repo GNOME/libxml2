@@ -3024,6 +3024,7 @@ xmlOutputBufferWriteEscape(xmlOutputBufferPtr out, const xmlChar *str,
     int nbchars = 0; /* number of chars to output to I/O */
     int ret;         /* return from function call */
     int written = 0; /* number of char written to I/O so far */
+    int oldwritten=0;/* loop guard */
     int chunk;       /* number of byte currently processed from str */
     int len;         /* number of bytes in str */
     int cons;        /* byte from str consumed */
@@ -3035,6 +3036,8 @@ xmlOutputBufferWriteEscape(xmlOutputBufferPtr out, const xmlChar *str,
     if (escaping == NULL) escaping = xmlEscapeContent;
 
     do {
+        oldwritten = written;
+
         /*
 	 * how many bytes to consume and how many bytes to store.
 	 */
@@ -3111,7 +3114,7 @@ xmlOutputBufferWriteEscape(xmlOutputBufferPtr out, const xmlChar *str,
 	    xmlBufferResize(out->buffer, out->buffer->size + MINLEN);
 	}
 	written += nbchars;
-    } while (len > 0);
+    } while ((len > 0) && (oldwritten != written));
 
 done:
 #ifdef DEBUG_INPUT

@@ -1,3 +1,8 @@
+Tue Aug 31 14:14:30 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xmlIO.c: fixing #151456, an encoding error could generate
+	  a serialization loop.
+
 Tue Aug 31 11:34:04 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am: also produce a tar ball with just the sources

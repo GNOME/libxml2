@@ -432,7 +432,7 @@ def print_function_wrapper(name, output, export, include):
         include.write("#ifdef LIBXML_DEBUG_ENABLED\n");
         export.write("#ifdef LIBXML_DEBUG_ENABLED\n");
         output.write("#ifdef LIBXML_DEBUG_ENABLED\n");
-    elif file == "HTMLtree" or file == "HTMLparser":
+    elif file == "HTMLtree" or file == "HTMLparser" or name[0:4] == "html":
         include.write("#ifdef LIBXML_HTML_ENABLED\n");
         export.write("#ifdef LIBXML_HTML_ENABLED\n");
         output.write("#ifdef LIBXML_HTML_ENABLED\n");
@@ -470,9 +470,17 @@ def print_function_wrapper(name, output, export, include):
 
     if file == "python":
         # Those have been manually generated
+        if name[0:4] == "html":
+	    include.write("#endif /* LIBXML_HTML_ENABLED */\n");
+	    export.write("#endif /* LIBXML_HTML_ENABLED */\n");
+	    output.write("#endif /* LIBXML_HTML_ENABLED */\n");
         return 1
     if file == "python_accessor" and ret[0] != "void" and ret[2] is None:
         # Those have been manually generated
+        if name[0:4] == "html":
+	    include.write("#endif /* LIBXML_HTML_ENABLED */\n");
+	    export.write("#endif /* LIBXML_HTML_ENABLED */\n");
+	    output.write("#endif /* LIBXML_HTML_ENABLED */\n");
         return 1
 
     output.write("PyObject *\n")
@@ -501,7 +509,7 @@ def print_function_wrapper(name, output, export, include):
         include.write("#endif /* LIBXML_DEBUG_ENABLED */\n");
         export.write("#endif /* LIBXML_DEBUG_ENABLED */\n");
         output.write("#endif /* LIBXML_DEBUG_ENABLED */\n");
-    elif file == "HTMLtree" or file == "HTMLparser":
+    elif file == "HTMLtree" or file == "HTMLparser" or name[0:4] == "html":
         include.write("#endif /* LIBXML_HTML_ENABLED */\n");
         export.write("#endif /* LIBXML_HTML_ENABLED */\n");
         output.write("#endif /* LIBXML_HTML_ENABLED */\n");

@@ -129,7 +129,7 @@ static xmlSchemaPtr wxschemas = NULL;
 #endif
 static int repeat = 0;
 static int insert = 0;
-#ifdef  LIBXML_HTML_ENABLED
+#if defined(LIBXML_HTML_ENABLED) || defined(LIBXML_VALID_ENABLED)
 static int html = 0;
 static int xmlout = 0;
 #endif
@@ -1080,7 +1080,7 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 	    if ((timing) && (!repeat)) {
 		startTimer();
 	    }
-#ifdef LIBXML_VALID_ENABLED
+#ifdef LIBXML_HTML_ENABLED
             if ((html) && (!xmlout)) {
 		if (compress) {
 		    htmlSaveFile(output ? output : "-", doc);

@@ -14,10 +14,10 @@
 #include <libxml/parserInternals.h>
 #include <libxml/tree.h>
 #include <libxml/xmlsave.h>
-#ifdef LIBXML_HTML_ENABLED
-#include <libxml/HTMLtree.h>
 
 #define MAX_INDENT 60
+
+#include <libxml/HTMLtree.h>
 
 /************************************************************************
  *									*
@@ -63,8 +63,6 @@ xmlIsXHTML(const xmlChar *systemID, const xmlChar *publicID) {
     }
     return(0);
 }
-#endif /* LIBXML_HTML_ENABLED */
-
 
 #ifdef LIBXML_OUTPUT_ENABLED
 

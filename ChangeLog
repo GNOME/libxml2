@@ -1,3 +1,8 @@
+Sat May  1 01:08:44 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xmllint.c xmlsave.c python/generator.py python/libxml.c: Fixed
+	  bug #141529 i.e. various problems when building with --without-html
+
 Fri Apr 30 18:12:31 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xmllint.c xmlreader.c: fixing bug #141384 where the reader didn't

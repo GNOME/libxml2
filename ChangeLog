@@ -1,3 +1,7 @@
+2004-05-25  Aleksey Sanin <aleksey@aleksey.com>
+
+	* c14n.c: fixed c14n bug with serializing attribute namespaces
+
 Mon May 24 08:22:48 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* xpath.c: fixed to allow '+' in exponent of number

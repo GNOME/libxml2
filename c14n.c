@@ -757,7 +757,7 @@ xmlExcC14NProcessNamespacesAxis(xmlC14NCtxPtr ctx, xmlNodePtr cur, int visible)
          */
 	if((attr->ns != NULL) && xmlC14NIsVisible(ctx, attr, cur)) {
 	    already_rendered = xmlExcC14NVisibleNsStackFind(ctx->ns_rendered, attr->ns, ctx);
-	    xmlC14NVisibleNsStackAdd(ctx->ns_rendered, attr->ns, (xmlNodePtr)attr); 
+	    xmlC14NVisibleNsStackAdd(ctx->ns_rendered, attr->ns, cur); 
 	    if(!already_rendered && visible) {
 		xmlListInsert(list, attr->ns); 
 	    }

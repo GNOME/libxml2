@@ -1,3 +1,8 @@
+Fri Jan 19 06:30:38 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xpath.[ch] xpathInternals.h: added xmlXPathRegisterVariableLookup()
+	  for XSLT
+
 Thu Jan 18 16:19:47 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xmlIO.c: Gary Pennington <Gary.Pennington@uk.sun.com> fix

@@ -212,6 +212,8 @@ struct _xmlXPathContext {
 
     /* the set of namespace declarations in scope for the expression */
     xmlHashTablePtr nsHash;		/* The namespaces hash table */
+    void *varLookupFunc;		/* variable lookup func */
+    void *varLookupData;		/* variable lookup data */
 };
 
 /*

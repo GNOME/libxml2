@@ -1012,6 +1012,23 @@ xmlXPathRegisterVariableNS(xmlXPathContextPtr ctxt, const xmlChar *name,
 }
 
 /**
+ * xmlXPathRegisterVariableLookup:
+ * @ctxt:  the XPath context
+ * @f:  the lookup function
+ * @data:  the lookup data
+ *
+ * register an external mechanism to do variable lookup
+ */
+void
+xmlXPathRegisterVariableLookup(xmlXPathContextPtr ctxt,
+	 xmlXPathVariableLookupFunc f, void *data) {
+    if (ctxt == NULL)
+	return;
+    ctxt->varLookupFunc = (void *) f;
+    ctxt->varLookupData = data;
+}
+
+/**
  * xmlXPathVariableLookup:
  * @ctxt:  the XPath context
  * @name:  the variable name
@@ -1023,6 +1040,16 @@ xmlXPathRegisterVariableNS(xmlXPathContextPtr ctxt, const xmlChar *name,
  */
 xmlXPathObjectPtr
 xmlXPathVariableLookup(xmlXPathContextPtr ctxt, const xmlChar *name) {
+    if (ctxt == NULL)
+	return(NULL);
+
+    if (ctxt->varLookupFunc != NULL) {
+	xmlXPathObjectPtr ret;
+
+	ret = ((xmlXPathVariableLookupFunc)ctxt->varLookupFunc)
+	        (ctxt->varLookupData, name, NULL);
+	if (ret != NULL) return(ret);
+    }
     return(xmlXPathVariableLookupNS(ctxt, name, NULL));
 }
 
@@ -1042,6 +1069,15 @@ xmlXPathVariableLookupNS(xmlXPathContextPtr ctxt, const xmlChar *name,
 			 const xmlChar *ns_uri) {
     if (ctxt == NULL)
 	return(NULL);
+
+    if (ctxt->varLookupFunc != NULL) {
+	xmlXPathObjectPtr ret;
+
+	ret = ((xmlXPathVariableLookupFunc)ctxt->varLookupFunc)
+	        (ctxt->varLookupData, name, ns_uri);
+	if (ret != NULL) return(ret);
+    }
+
     if (ctxt->varHash == NULL)
 	return(NULL);
     if (name == NULL)

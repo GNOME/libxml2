@@ -56,6 +56,21 @@ extern "C" {
     if ((ctxt->value != NULL) && (ctxt->value->type != XPATH_BOOLEAN))	\
         xmlXPathBooleanFunction(ctxt, 1);
 
+/*
+ * Varibale Lookup forwarding
+ */
+typedef xmlXPathObjectPtr
+	(*xmlXPathVariableLookupFunc)	(void *ctxt,
+					 const xmlChar *name,
+					 const xmlChar *ns_uri);
+
+void	xmlXPathRegisterVariableLookup	(xmlXPathContextPtr ctxt,
+					 xmlXPathVariableLookupFunc f,
+					 void *varCtxt);
+
+/*
+ * Error reporting
+ */
 void		xmlXPatherror	(xmlXPathParserContextPtr ctxt,
 				 const char *file,
 				 int line,
@@ -68,6 +83,7 @@ void		xmlXPathDebugDumpObject	(FILE *output,
 /**
  * Extending a context
  */
+
 int		   xmlXPathRegisterNs		(xmlXPathContextPtr ctxt,
 						 const xmlChar *prefix,
 						 const xmlChar *ns_uri);

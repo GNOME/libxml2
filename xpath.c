@@ -2571,9 +2571,11 @@ xmlXPathCompareValues(xmlXPathParserContextPtr ctxt, int inf, int strict) {
 	    ret = xmlXPathCompareNodeSets(ctxt, inf, strict, arg1, arg2);
 	} else {
 	    if (arg1->type == XPATH_NODESET) {
-		ret = xmlXPathCompareNodeSetValue(ctxt, inf, strict, arg1, arg2);
+		ret = xmlXPathCompareNodeSetValue(ctxt, inf, strict,
+			                          arg1, arg2);
 	    } else {
-		ret = xmlXPathCompareNodeSetValue(ctxt, !inf, !strict, arg2, arg1);
+		ret = xmlXPathCompareNodeSetValue(ctxt, !inf, strict,
+			                          arg2, arg1);
 	    }
 	}
 	return(ret);

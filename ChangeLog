@@ -1,3 +1,7 @@
+Tue Mar  6 09:21:30 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xpath.c: Bjorn found the error related to strictness of comparison.
+
 Mon Mar  5 21:47:31 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* parser.c: trying to fix the Dtd parsing problem reported

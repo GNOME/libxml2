@@ -8894,6 +8894,14 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
 	/*
 	 * Check for termination
 	 */
+	    int avail = 0;
+	    if (ctxt->input->buf == NULL)
+                avail = ctxt->input->length -
+		        (ctxt->input->cur - ctxt->input->base);
+            else
+                avail = ctxt->input->buf->buffer->use -
+		        (ctxt->input->cur - ctxt->input->base);
+			    
 	if ((ctxt->instate != XML_PARSER_EOF) &&
 	    (ctxt->instate != XML_PARSER_EPILOG)) {
 	    ctxt->errNo = XML_ERR_DOCUMENT_END;
@@ -8903,6 +8911,15 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
 	    ctxt->wellFormed = 0;
 	    ctxt->disableSAX = 1;
 	} 
+	if ((ctxt->instate == XML_PARSER_EPILOG) && (avail > 0)) {
+	    ctxt->errNo = XML_ERR_DOCUMENT_END;
+	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		ctxt->sax->error(ctxt->userData,
+		    "Extra content at the end of the document\n");
+	    ctxt->wellFormed = 0;
+	    ctxt->disableSAX = 1;
+
+	}
 	if (ctxt->instate != XML_PARSER_EOF) {
 	    if ((ctxt->sax) && (ctxt->sax->endDocument != NULL))
 		ctxt->sax->endDocument(ctxt->userData);

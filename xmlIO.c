@@ -261,25 +261,22 @@ xmlCleanupOutputCallbacks(void)
  * returns 1.  if stat fails, returns 0 (if calling
  * stat on the filename fails, it can't be right).
  * if stat succeeds and the file is a directory,
- * sets errno to EISDIR and returns 0.  otherwise
- * returns 1.
+ * returns 2.  otherwise returns 1.
  */
 
-static int
+int
 xmlCheckFilename (const char *path)
 {
 #ifdef HAVE_STAT
-#ifdef S_ISDIR
     struct stat stat_buffer;
 
     if (stat(path, &stat_buffer) == -1)
         return 0;
 
+#ifdef S_ISDIR
     if (S_ISDIR(stat_buffer.st_mode)) {
-        errno = EISDIR;
-        return 0;
+        return 2;
     }
-
 #endif
 #endif
     return 1;
@@ -992,7 +989,7 @@ static void
 xmlFreeHTTPWriteCtxt( xmlIOHTTPWriteCtxtPtr ctxt )
 {
     if ( ctxt->uri != NULL )
-	free( ctxt->uri );
+	xmlFree( ctxt->uri );
 
     if ( ctxt->doc_buff != NULL ) {
 
@@ -1007,7 +1004,7 @@ xmlFreeHTTPWriteCtxt( xmlIOHTTPWriteCtxtPtr ctxt )
 	}
     }
 
-    free( ctxt );
+    xmlFree( ctxt );
     return;
 }
 

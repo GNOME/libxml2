@@ -1,3 +1,9 @@
+Wed Nov 27 09:00:00 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* python/setup.py.in: another patch from Stéphane Bidoul for 
+	  Python bindings on Windows
+	* doc/parsedecl.py: small cleanup
+
 Mon Nov 25 17:28:53 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* libxml.spec.in configure.in: add a line in %changelog for releases

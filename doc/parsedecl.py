@@ -530,10 +530,6 @@ def analyzeXMLDoc(doc):
     for description in descriptions:
         analyzeXMLDescription(doc, description)
 
-doc = libxml2.parseFile("xml/c14n.xml");
-analyzeXMLDoc(doc)
-doc.freeDoc()
-
 xmlfiles = 0
 filenames = os.listdir("xml")
 for filename in filenames:

@@ -5,10 +5,10 @@
 import sys, os
 from distutils.core import setup, Extension
 
-# Below ROOT, we expect to find include, include/libxml2, lib and bin
-# TBC: on unix, it is not needed (but should not harm), 
-#      on Windows, it can be set by configure.js
-ROOT = r'../../_bin' 
+# Below ROOT, we expect to find include, include/libxml2, lib and bin.
+# On *nix, it is not needed (but should not harm), 
+# on Windows, it is set by configure.js.
+ROOT = r'@prefix@' 
 
 # If this flag is set (windows only), 
 # a private copy of the dlls are included in the package.
@@ -168,22 +168,31 @@ libs    = [libraryPrefix + "xml2"] + platformLibs
 macros  = []
 if with_xslt == 1:
     descr = "libxml2 and libxslt package"
-    #
-    # We are gonna build 2 identical shared libs with merge initializing
-    # both libxml2mod and libxsltmod
-    #
-    c_files = c_files + ['libxslt-py.c', 'libxslt.c']
+    if not sys.platform.startswith('win'):
+        #
+        # We are gonna build 2 identical shared libs with merge initializing
+        # both libxml2mod and libxsltmod
+        #
+        c_files = c_files + ['libxslt-py.c', 'libxslt.c']
+        xslt_c_files = c_files
+        macros.append(('MERGED_MODULES', '1'))
+    else:
+        #
+        # On windows the MERGED_MODULE option is not needed
+        # (and does not work)
+        #
+        xslt_c_files = ['libxslt-py.c', 'libxslt.c', 'types.c']
+    libs.insert(0, libraryPrefix + 'exslt')
     libs.insert(0, libraryPrefix + 'xslt')
     includes.append(xslt_includes)
     modules.append('libxslt')
-    macros.append(('MERGED_MODULES', '1'))
 
 
 extens=[Extension('libxml2mod', c_files, include_dirs=includes,
                   library_dirs=libdirs, 
                   libraries=libs, define_macros=macros)] 
 if with_xslt == 1:
-    extens.append(Extension('libxsltmod', c_files, include_dirs=includes,
+    extens.append(Extension('libxsltmod', xslt_c_files, include_dirs=includes,
 			    library_dirs=libdirs, 
                             libraries=libs))
 
@@ -206,9 +215,8 @@ else:
     data_files = []
 
 setup (name = "libxml2-python",
-       # TBC: extract the version number from somewhere 
-       # On *nix, this is created from setup.py.in
-       # On windows, this could be set by configure.js
+       # On *nix, the version number is created from setup.py.in
+       # On windows, it is set by configure.js
        version = "@LIBXML_VERSION@",
        description = descr,
        author = "Daniel Veillard",

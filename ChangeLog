@@ -1,3 +1,8 @@
+Wed Oct 16 17:18:42 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLtree.c: fixed serialization of script and style when
+	  they are not lowercase (i.e. added using the API to the tree).
+
 Wed Oct 16 16:31:05 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* valid.c: make xmlValidateDocument emit a warning msg if there

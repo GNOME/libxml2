@@ -1,3 +1,9 @@
+Thu Oct  9 13:44:57 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xinclude.c: comment fix
+	* catalog.c include/libxml/xmlerror.h: migrating the catalog code
+	  to the new infrastructure
+
 Thu Oct  9 00:36:03 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlIO.c: final error handling cleanup

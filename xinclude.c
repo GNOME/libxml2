@@ -96,7 +96,7 @@ xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr tree);
 
 /************************************************************************
  *									*
- * 		Tree memory error handler				*
+ * 			XInclude error handler				*
  *									*
  ************************************************************************/
 

@@ -1092,6 +1092,34 @@ xmlShellList(xmlShellCtxtPtr ctxt ATTRIBUTE_UNUSED , char *arg ATTRIBUTE_UNUSED,
 }
 
 /**
+ * xmlShellBase:
+ * @ctxt:  the shell context
+ * @arg:  unused
+ * @node:  a node
+ * @node2:  unused
+ *
+ * Implements the XML shell function "base"
+ * dumps the current XML base of the node
+ *
+ * Returns 0
+ */
+static int
+xmlShellBase(xmlShellCtxtPtr ctxt ATTRIBUTE_UNUSED, char *arg ATTRIBUTE_UNUSED, xmlNodePtr node,
+                  xmlNodePtr node2 ATTRIBUTE_UNUSED) {
+    xmlChar *base;
+
+    base = xmlNodeGetBase(node->doc, node);
+
+    if (base == NULL) {
+	printf(" No base found !!!\n");
+    } else {
+	printf("%s\n", base);
+	xmlFree(base);
+    }
+    return(0);
+}
+
+/**
  * xmlShellDir:
  * @ctxt:  the shell context
  * @arg:  unused
@@ -1654,6 +1682,8 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
 		printf("%s\n", dir);
 	} else  if (!strcmp(command, "du")) {
 	    xmlShellDu(ctxt, NULL, ctxt->node, NULL);
+	} else  if (!strcmp(command, "base")) {
+	    xmlShellBase(ctxt, NULL, ctxt->node, NULL);
 	} else  if ((!strcmp(command, "ls")) ||
 	      (!strcmp(command, "dir"))) {
 	    int dir = (!strcmp(command, "dir"));
@@ -1724,7 +1754,7 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
 			    break;
 		    }
 #ifdef LIBXML_XPATH_ENABLED
-		    xmlXPathFreeNodeSetList(list);
+		    xmlXPathFreeObject(list);
 #endif
 		} else {
 		    xmlGenericError(xmlGenericErrorContext,
@@ -1790,7 +1820,7 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
 			    break;
 		    }
 #ifdef LIBXML_XPATH_ENABLED
-		    xmlXPathFreeNodeSetList(list);
+		    xmlXPathFreeObject(list);
 #endif
 		} else {
 		    xmlGenericError(xmlGenericErrorContext,
@@ -1860,7 +1890,7 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
 			    break;
 		    }
 #ifdef LIBXML_XPATH_ENABLED
-		    xmlXPathFreeNodeSetList(list);
+		    xmlXPathFreeObject(list);
 #endif
 		} else {
 		    xmlGenericError(xmlGenericErrorContext,
@@ -1880,6 +1910,8 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
     if (ctxt->loaded) {
         xmlFreeDoc(ctxt->doc);
     }
+    if (ctxt->filename != NULL)
+	xmlFree(ctxt->filename);
     xmlFree(ctxt);
     if (cmdline != NULL)
         free(cmdline); /* not xmlFree here ! */

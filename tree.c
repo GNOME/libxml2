@@ -28,6 +28,7 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/tree.h>
 #include <libxml/parser.h>
+#include <libxml/uri.h>
 #include <libxml/entities.h>
 #include <libxml/valid.h>
 #include <libxml/xmlerror.h>
@@ -3317,7 +3318,8 @@ xmlNodeSetBase(xmlNodePtr cur, xmlChar* uri) {
  */
 xmlChar *
 xmlNodeGetBase(xmlDocPtr doc, xmlNodePtr cur) {
-    xmlChar *base;
+    xmlChar *oldbase = NULL;
+    xmlChar *base, *newbase;
 
     if ((cur == NULL) && (doc == NULL)) 
         return(NULL);
@@ -3350,17 +3352,38 @@ xmlNodeGetBase(xmlDocPtr doc, xmlNodePtr cur) {
 	    return(xmlStrdup(ent->URI));
 	}
 	if (cur->type == XML_ELEMENT_NODE) {
-	    base = xmlGetProp(cur, BAD_CAST "xml:base");
+	    base = xmlGetNsProp(cur, BAD_CAST "base", XML_XML_NAMESPACE);
 	    if (base != NULL) {
-		/* TODO : apply cascade in the base resolution ! */
-		return(base);
+		if (oldbase != NULL) {
+		    newbase = xmlBuildURI(oldbase, base);
+		    if (newbase != NULL) {
+			xmlFree(oldbase);
+			xmlFree(base);
+			oldbase = newbase;
+		    } else {
+			xmlFree(oldbase);
+			xmlFree(base);
+			return(NULL);
+		    }
+		} else {
+		    oldbase = base;
+		}
+		if ((!xmlStrncmp(oldbase, BAD_CAST "http://", 7)) ||
+		    (!xmlStrncmp(oldbase, BAD_CAST "ftp://", 6)) ||
+		    (!xmlStrncmp(oldbase, BAD_CAST "urn:", 4)))
+		    return(oldbase);
 	    }
 	}
 	cur = cur->parent;
     }
-    if ((doc != NULL) && (doc->URL != NULL))
-        return(xmlStrdup(doc->URL));
-    return(NULL);
+    if ((doc != NULL) && (doc->URL != NULL)) {
+	if (oldbase == NULL)
+	    return(xmlStrdup(doc->URL));
+	newbase = xmlBuildURI(oldbase, doc->URL);
+	xmlFree(oldbase);
+	return(newbase);
+    }
+    return(oldbase);
 }
  
 /**

@@ -89,7 +89,7 @@ $(libxml2_la_SOURCES): $(srcdir)/libxml
 
 testall : tests SVGtests SAXtests
 
-tests: XMLtests XMLenttests HTMLtests Validtests URItests XPathtests XPtrtests XIncludetests
+tests: XMLtests XMLenttests HTMLtests Validtests URItests XPathtests XPtrtests XIncludetests Scripttests
 
 HTMLtests : testHTML
 	@(echo > .memdump)
@@ -362,6 +362,27 @@ XIncludetests : xmllint
 	      $(top_builddir)/xmllint --xinclude $$i > result.$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	      diff $(srcdir)/result/XInclude/$$name result.$$name ; \
+	      rm result.$$name ; \
+	  fi ; fi ; done)
+
+Scripttests : xmllint
+	@(echo > .memdump)
+	@echo "##"
+	@echo "## Scripts regression tests"
+	@echo "## Some of the base computations may be different if srcdir != ."
+	@echo "##"
+	@(for i in $(srcdir)/test/scripts/*.script ; do \
+	  name=`basename $$i .script`; \
+	  xml=$(srcdir)/test/scripts/`basename $$i .script`.xml; \
+	  if [ -f $$xml ] ; then \
+	  if [ ! -f $(srcdir)/result/scripts/$$name ] ; then \
+	      echo New test file $$name ; \
+	      $(top_builddir)/xmllint --shell $$xml < $$i > $(srcdir)/result/scripts/$$name ; \
+	  else \
+	      echo Testing $$name ; \
+	      $(top_builddir)/xmllint --shell $$xml < $$i > result.$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
+	      diff $(srcdir)/result/scripts/$$name result.$$name ; \
 	      rm result.$$name ; \
 	  fi ; fi ; done)
 

@@ -18,6 +18,7 @@ PAGES= architecture.html bugs.html contribs.html docs.html DOM.html \
     tree.html xmldtd.html XMLinfo.html XSLT.html
 APIPAGES=APIconstructors.html APIfiles.html APIfunctions.html \
     APIsymbols.html APIchunk0.html
+EXTRA_DIST=xmlcatalog_man.xml
 
 man_MANS = xmllint.1 xmlcatalog.1
 

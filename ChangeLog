@@ -1,3 +1,8 @@
+Thu Jul 11 21:45:52 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* doc/Makefile.am: fixing Red Hat bug #68614 by adding the
+	  doc/xmlcatalog_man.xml to the source distribution
+
 Wed Jul 10 21:26:13 CEST 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
 	
 	* win32/Makefile.msvc: Added a copy *.pdb to install, few have

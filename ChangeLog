@@ -1,3 +1,8 @@
+Sun May  5 08:57:08 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: modified xmlNodeSetBase to allow changing the
+	  base of a document.
+
 Fri May  3 09:20:41 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemastypes.c: patch Charles Bozeman for validation of

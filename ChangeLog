@@ -1,3 +1,8 @@
+Sat May 29 21:35:52 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* test/schemas/date_0.xml xmlschemastypes.c: applied a patch from
+	  Charles Bozeman fixing a side effect in date handling
+
 Thu May 27 19:47:48 MDT 2004 John Fleck <jfleck@inkstain.net>
 
 	* doc/tutorial/xmltutorial.xml fix lack of cast in Xpath example

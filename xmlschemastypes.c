@@ -2608,20 +2608,41 @@ xmlSchemaCompareDurations(xmlSchemaValPtr x, xmlSchemaValPtr y)
 #define MODULO_RANGE(a,low,high)        ((MODULO((a-low),(high-low)))+low)
 
 /**
+ * xmlSchemaDupVal:
+ * @v: the #xmlSchemaValPtr value to duplicate
+ *
+ * Makes a copy of @v. The calling program is responsible for freeing
+ * the returned value.
+ *
+ * returns a pointer to a duplicated #xmlSchemaValPtr or NULL if error.
+ */
+static xmlSchemaValPtr
+xmlSchemaDupVal (xmlSchemaValPtr v)
+{
+    xmlSchemaValPtr ret = xmlSchemaNewValue(v->type);
+    if (ret == NULL)
+        return NULL;
+    
+    memcpy(ret, v, sizeof(xmlSchemaVal));
+    return ret;
+}
+
+/**
  * _xmlSchemaDateAdd:
  * @dt: an #xmlSchemaValPtr
  * @dur: an #xmlSchemaValPtr of type #XS_DURATION
  *
  * Compute a new date/time from @dt and @dur. This function assumes @dt
  * is either #XML_SCHEMAS_DATETIME, #XML_SCHEMAS_DATE, #XML_SCHEMAS_GYEARMONTH,
- * or #XML_SCHEMAS_GYEAR.
+ * or #XML_SCHEMAS_GYEAR. The returned #xmlSchemaVal is the same type as
+ * @dt. The calling program is responsible for freeing the returned value.
  *
- * Returns date/time pointer or NULL.
+ * Returns a pointer to a new #xmlSchemaVal or NULL if error.
  */
 static xmlSchemaValPtr
 _xmlSchemaDateAdd (xmlSchemaValPtr dt, xmlSchemaValPtr dur)
 {
-    xmlSchemaValPtr ret;
+    xmlSchemaValPtr ret, tmp;
     long carry, tempdays, temp;
     xmlSchemaValDatePtr r, d;
     xmlSchemaValDurationPtr u;
@@ -2633,8 +2654,15 @@ _xmlSchemaDateAdd (xmlSchemaValPtr dt, xmlSchemaValPtr dur)
     if (ret == NULL)
         return NULL;
 
+    /* make a copy so we don't alter the original value */
+    tmp = xmlSchemaDupVal(dt);
+    if (tmp == NULL) {
+        xmlSchemaFreeValue(ret);
+        return NULL;
+    }
+
     r = &(ret->value.date);
-    d = &(dt->value.date);
+    d = &(tmp->value.date);
     u = &(dur->value.dur);
 
     /* normalization */
@@ -2740,32 +2768,20 @@ _xmlSchemaDateAdd (xmlSchemaValPtr dt, xmlSchemaValPtr dur)
         }
     }
 
-    return ret;
-}
+    xmlSchemaFreeValue(tmp);
 
-/**
- * xmlSchemaDupVal:
- * @v: value to duplicate
- *
- * returns a duplicated value.
- */
-static xmlSchemaValPtr
-xmlSchemaDupVal (xmlSchemaValPtr v)
-{
-    xmlSchemaValPtr ret = xmlSchemaNewValue(v->type);
-    if (ret == NULL)
-        return ret;
-    
-    memcpy(ret, v, sizeof(xmlSchemaVal));
     return ret;
 }
 
 /**
  * xmlSchemaDateNormalize:
- * @dt: an #xmlSchemaValPtr
+ * @dt: an #xmlSchemaValPtr of a date/time type value.
+ * @offset: number of seconds to adjust @dt by.
  *
- * Normalize @dt to GMT time.
+ * Normalize @dt to GMT time. The @offset parameter is subtracted from
+ * the return value is a time-zone offset is present on @dt.
  *
+ * Returns a normalized copy of @dt or NULL if error.
  */
 static xmlSchemaValPtr
 xmlSchemaDateNormalize (xmlSchemaValPtr dt, double offset)

@@ -55,7 +55,7 @@ xmlStrdupFunc xmlMemStrdup = (xmlStrdupFunc) xmlMemoryStrdup;
 xmlFreeFunc xmlFree = (xmlFreeFunc) free;
 xmlMallocFunc xmlMalloc = (xmlMallocFunc) malloc;
 xmlReallocFunc xmlRealloc = (xmlReallocFunc) realloc;
-xmlStrdupFunc xmlMemStrdup = (xmlStrdupFunc) strdup;
+xmlStrdupFunc xmlMemStrdup = (xmlStrdupFunc) xmlStrdup;
 #endif
 
 #include <libxml/threads.h>

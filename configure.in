@@ -447,7 +447,8 @@ iconv (cd, NULL, NULL, NULL, NULL);],[
 		LIBS="${_libs}"
 		LDFLAGS="${_ldflags}"])]))
 fi
-XML_LIBS="-lxml2 $Z_LIBS $ICONV_LIBS -lm $LIBS"
+M_LIBS="-lm"
+XML_LIBS="-lxml2 $Z_LIBS $THREAD_LIBS $ICONV_LIBS $M_LIBS $LIBS"
 AC_SUBST(WITH_ICONV)
 
 AC_ARG_WITH(debug, [  --with-debug            Add the debugging module (on)])

@@ -11,11 +11,8 @@
 #ifndef __XML_SCHEMA_TYPES_H__
 #define __XML_SCHEMA_TYPES_H__
 
-#if defined(WIN32) && defined(_MSC_VER)
-#include <libxml/xmlwin32version.h>
-#else
 #include <libxml/xmlversion.h>
-#endif
+
 #ifdef LIBXML_SCHEMAS_ENABLED
 
 #include <libxml/schemasInternals.h>

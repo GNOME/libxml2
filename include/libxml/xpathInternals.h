@@ -10,11 +10,7 @@
 #ifndef __XML_XPATH_INTERNALS_H__
 #define __XML_XPATH_INTERNALS_H__
 
-#if defined(WIN32) && defined(_MSC_VER)
-#include <libxml/xmlwin32version.h>
-#else
 #include <libxml/xmlversion.h>
-#endif
 #include <libxml/xpath.h>
 
 #ifdef __cplusplus

@@ -23,7 +23,6 @@ var versionFile = ".\\configure.txt";
    is identical to the first. */
 var optsFileIn = srcDirXml + "\\include\\libxml\\xmlversion.h.in";
 var optsFile = srcDirXml + "\\include\\libxml\\xmlversion.h";
-var optsFile2 = srcDirXml + "\\include\\libxml\\xmlwin32version.h";
 /* Version strings for the binary distribution. Will be filled later 
    in the code. */
 var verMajor;
@@ -245,7 +244,6 @@ function configureLibxml()
 	}
 	ofi.Close();
 	of.Close();
-	fso.CopyFile(optsFile, optsFile2, true);
 }
 
 /* Creates the readme file for the binary distribution of 'bname', for the

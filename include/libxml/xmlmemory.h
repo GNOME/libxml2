@@ -9,11 +9,7 @@
 #define _DEBUG_MEMORY_ALLOC_
 
 #include <stdio.h>
-#if defined(WIN32) && defined(_MSC_VER)
-#include <libxml/xmlwin32version.h>
-#else
 #include <libxml/xmlversion.h>
-#endif
 
 /**
  * DEBUG_MEMORY:
@@ -118,6 +114,10 @@ int	xmlMemUsed	(void);
 void	xmlMemDisplay	(FILE *fp);
 void	xmlMemShow	(FILE *fp, int nr);
 void	xmlMemoryDump	(void);
+void *	xmlMemMalloc	(size_t size);
+void *	xmlMemRealloc	(void *ptr,size_t size);
+void	xmlMemFree	(void *ptr);
+char *	xmlMemoryStrdup	(const char *str);
 
 #ifdef DEBUG_MEMORY_LOCATION
 /**

@@ -9,13 +9,9 @@
 #ifndef __XML_REGEXP_H__
 #define __XML_REGEXP_H__
 
-#if defined(WIN32) && defined(_MSC_VER)
-#include <libxml/xmlwin32version.h>
-#else
 #include <libxml/xmlversion.h>
-#endif
-#ifdef LIBXML_REGEXP_ENABLED
 
+#ifdef LIBXML_REGEXP_ENABLED
 
 #ifdef __cplusplus
 extern "C" {

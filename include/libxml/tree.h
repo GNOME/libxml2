@@ -12,11 +12,8 @@
 #define __XML_TREE_H__
 
 #include <stdio.h>
-#if defined(WIN32) && (defined(_MSC_VER) || defined(__BORLANDC__))
-#include <libxml/xmlwin32version.h>
-#else
 #include <libxml/xmlversion.h>
-#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif

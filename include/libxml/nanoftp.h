@@ -9,11 +9,8 @@
 #ifndef __NANO_FTP_H__
 #define __NANO_FTP_H__
 
-#if defined(WIN32) && defined(_MSC_VER)
-#include <libxml/xmlwin32version.h>
-#else
 #include <libxml/xmlversion.h>
-#endif
+
 #ifdef LIBXML_FTP_ENABLED
 
 #ifdef __cplusplus

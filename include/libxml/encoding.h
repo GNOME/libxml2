@@ -21,11 +21,8 @@
 #ifndef __XML_CHAR_ENCODING_H__
 #define __XML_CHAR_ENCODING_H__
 
-#if defined(WIN32) && (defined(_MSC_VER) || defined(__BORLANDC__))
-#include <libxml/xmlwin32version.h>
-#else
 #include <libxml/xmlversion.h>
-#endif
+
 #ifdef LIBXML_ICONV_ENABLED
 #include <iconv.h>
 #endif

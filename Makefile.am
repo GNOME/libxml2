@@ -34,6 +34,7 @@ libxml_la_SOURCES = \
 		debugXML.c \
 		xpath.c \
 		xpointer.c \
+		xinclude.c \
 		nanohttp.c \
 		nanoftp.c
 

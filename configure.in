@@ -286,6 +286,19 @@ fi
 AC_SUBST(WITH_XPTR)
 AC_SUBST(XPTR_OBJ)
 
+AC_ARG_WITH(xinclude, [  --with-xinclude         Add the XInclude support (on)])
+if test "$with_xinclude" = "no" ; then
+    echo Disabling XInclude support
+    WITH_XINCLUDE=0
+    XINCLUDE_OBJ=
+    with_xinclude="no"
+else    
+    WITH_XINCLUDE=1
+    XINCLUDE_OBJ=xinclude.o
+fi
+AC_SUBST(WITH_XINCLUDE)
+AC_SUBST(XINCLUDE_OBJ)
+
 AC_ARG_WITH(iconv, [  --with-iconv            Add the ICONV support (on)])
 if test "$with_iconv" = "no" ; then
     echo Disabling ICONV support

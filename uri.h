@@ -52,6 +52,7 @@ char *		xmlURIUnescapeString	(const char *str,
 					 int len,
 					 char *target);
 int		xmlNormalizeURIPath	(char *path);
+xmlChar *	xmlURIEscape		(const xmlChar *str);
 void		xmlFreeURI		(xmlURIPtr uri);
 
 #ifdef __cplusplus

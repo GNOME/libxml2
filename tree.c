@@ -45,12 +45,16 @@ int xmlSaveNoEmptyTags = 0;
 #define IS_BLANK(c)							\
   (((c) == '\n') || ((c) == '\r') || ((c) == '\t') || ((c) == ' '))
 
-#define UPDATE_LAST_CHILD(n) if ((n) != NULL) {				\
+#define UPDATE_LAST_CHILD_AND_PARENT(n) if ((n) != NULL) {		\
     xmlNodePtr ulccur = (n)->children;					\
     if (ulccur == NULL) {						\
         (n)->last = NULL;						\
     } else {								\
-        while (ulccur->next != NULL) ulccur = ulccur->next;		\
+        while (ulccur->next != NULL) {					\
+	       	ulccur->parent = (n);					\
+		ulccur = ulccur->next;					\
+	}								\
+	ulccur->parent = (n);						\
 	(n)->last = ulccur;						\
 }}
 
@@ -892,6 +896,7 @@ xmlNewProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
 
 	buffer = xmlEncodeEntitiesReentrant(node->doc, value);
 	cur->children = xmlStringGetNodeList(node->doc, buffer);
+	cur->last = NULL;
 	tmp = cur->children;
 	while (tmp != NULL) {
 	    tmp->parent = (xmlNodePtr) cur;
@@ -965,6 +970,7 @@ xmlNewNsProp(xmlNodePtr node, xmlNsPtr ns, const xmlChar *name,
 
 	buffer = xmlEncodeEntitiesReentrant(node->doc, value);
 	cur->children = xmlStringGetNodeList(node->doc, buffer);
+	cur->last = NULL;
 	tmp = cur->children;
 	while (tmp != NULL) {
 	    tmp->parent = (xmlNodePtr) cur;
@@ -1027,8 +1033,20 @@ xmlNewDocProp(xmlDocPtr doc, const xmlChar *name, const xmlChar *value) {
 
     cur->name = xmlStrdup(name);
     cur->doc = doc; 
-    if (value != NULL)
+    if (value != NULL) {
+	xmlNodePtr tmp;
+
 	cur->children = xmlStringGetNodeList(doc, value);
+	cur->last = NULL;
+
+	tmp = cur->children;
+	while (tmp != NULL) {
+	    tmp->parent = (xmlNodePtr) cur;
+	    if (tmp->next == NULL)
+		cur->last = tmp;
+	    tmp = tmp->next;
+	}
+    }
     return(cur);
 }
 
@@ -1239,7 +1257,7 @@ xmlNewDocNode(xmlDocPtr doc, xmlNsPtr ns,
         cur->doc = doc;
 	if (content != NULL) {
 	    cur->children = xmlStringGetNodeList(doc, content);
-	    UPDATE_LAST_CHILD(cur)
+	    UPDATE_LAST_CHILD_AND_PARENT(cur)
 	}
     }
     return(cur);
@@ -1268,7 +1286,7 @@ xmlNewDocRawNode(xmlDocPtr doc, xmlNsPtr ns,
         cur->doc = doc;
 	if (content != NULL) {
 	    cur->children = xmlNewDocText(doc, content);
-	    UPDATE_LAST_CHILD(cur)
+	    UPDATE_LAST_CHILD_AND_PARENT(cur)
 	}
     }
     return(cur);
@@ -1491,7 +1509,13 @@ xmlNewReference(xmlDocPtr doc, const xmlChar *name) {
 	if (ent->content != NULL)
 	    xmlBufferAdd(cur->content, ent->content, -1);
 #endif
+	/*
+	 * The parent pointer in entity is a Dtd pointer and thus is NOT
+	 * updated.  Not sure if this is 100% correct.
+	 *  -George
+	 */
 	cur->children = (xmlNodePtr) ent;
+	cur->last = (xmlNodePtr) ent;
     }
     return(cur);
 }
@@ -1662,6 +1686,47 @@ xmlNewDocComment(xmlDocPtr doc, const xmlChar *content) {
     return(cur);
 }
 
+/**
+ * xmlSetTreeDoc:
+ * @tree:  the top element
+ * @doc:  the document
+ *
+ * update all nodes under the tree to point to the right document
+ */
+void
+xmlSetTreeDoc(xmlNodePtr tree, xmlDocPtr doc) {
+    if (tree == NULL)
+	return;
+    if (tree->type == XML_ENTITY_DECL)
+	return;
+    if (tree->doc != doc) {
+	if (tree->children != NULL)
+	    xmlSetListDoc(tree->children, doc);
+	tree->doc = doc;
+    }
+}
+
+/**
+ * xmlSetListDoc:
+ * @tree:  the first element
+ * @doc:  the document
+ *
+ * update all nodes in the list to point to the right document
+ */
+void
+xmlSetListDoc(xmlNodePtr list, xmlDocPtr doc) {
+    xmlNodePtr cur;
+
+    if (list == NULL)
+	return;
+    cur = list;
+    while (cur != NULL) {
+	if (cur->doc != doc)
+	    xmlSetTreeDoc(cur, doc);
+	cur = cur->next;
+    }
+}
+
 
 /**
  * xmlNewChild:
@@ -1779,7 +1844,8 @@ xmlAddNextSibling(xmlNodePtr cur, xmlNodePtr elem) {
 	    xmlNodeSetContent(cur->next, tmp);
 	    xmlFree(tmp);
 #else
-	    xmlBufferAddHead(cur->next, xmlBufferContent(elem->content),
+	    xmlBufferAddHead(cur->next->content,
+		             xmlBufferContent(elem->content),
 			     xmlBufferLength(elem->content));
 #endif
 	    xmlFreeNode(elem);
@@ -1787,7 +1853,9 @@ xmlAddNextSibling(xmlNodePtr cur, xmlNodePtr elem) {
 	}
     }
 
-    elem->doc = cur->doc;
+    if (elem->doc != cur->doc) {
+	xmlSetTreeDoc(elem, cur->doc);
+    }
     elem->parent = cur->parent;
     elem->prev = cur;
     elem->next = cur->next;
@@ -1857,7 +1925,9 @@ xmlAddPrevSibling(xmlNodePtr cur, xmlNodePtr elem) {
 	}
     }
 
-    elem->doc = cur->doc;
+    if (elem->doc != cur->doc) {
+	xmlSetTreeDoc(elem, cur->doc);
+    }
     elem->parent = cur->parent;
     elem->next = cur;
     elem->prev = cur->prev;
@@ -1926,9 +1996,9 @@ xmlAddSibling(xmlNodePtr cur, xmlNodePtr elem) {
 	return(cur);
     }
 
-    if (elem->doc == NULL)
-	elem->doc = cur->doc; /* the parent may not be linked to a doc ! */
-
+    if (elem->doc != cur->doc) {
+	xmlSetTreeDoc(elem, cur->doc);
+    }
     parent = cur->parent;
     elem->prev = cur;
     elem->next = NULL;
@@ -2011,7 +2081,9 @@ xmlAddChildList(xmlNodePtr parent, xmlNodePtr cur) {
     }
     while (cur->next != NULL) {
 	cur->parent = parent;
-	cur->doc = parent->doc; /* the parent may not be linked to a doc ! */
+	if (cur->doc != parent->doc) {
+	    xmlSetTreeDoc(cur, parent->doc);
+	}
         cur = cur->next;
     }
     cur->parent = parent;
@@ -2090,7 +2162,9 @@ xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
      * add the new element at the end of the children list.
      */
     cur->parent = parent;
-    cur->doc = parent->doc; /* the parent may not be linked to a doc ! */
+    if (cur->doc != parent->doc) {
+	xmlSetTreeDoc(cur, parent->doc);
+    }
 
     /*
      * Handle the case where parent->content != NULL, in that case it will
@@ -2110,7 +2184,7 @@ xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
 	    if (text->next != NULL)
 		text->next->prev = text;
 	    parent->children = text;
-	    UPDATE_LAST_CHILD(parent)
+	    UPDATE_LAST_CHILD_AND_PARENT(parent)
 #ifndef XML_USE_BUFFER_CONTENT
 	    xmlFree(parent->content);
 #else
@@ -2264,6 +2338,9 @@ xmlReplaceNode(xmlNodePtr old, xmlNodePtr cur) {
 	xmlUnlinkNode(old);
 	return(old);
     }
+    if (cur == old) {
+	return(old);
+    }
     xmlUnlinkNode(cur);
     cur->doc = old->doc;
     cur->parent = old->parent;
@@ -2374,8 +2451,19 @@ xmlCopyProp(xmlNodePtr target, xmlAttrPtr cur) {
     } else
         ret->ns = NULL;
 
-    if (cur->children != NULL)
+    if (cur->children != NULL) {
+	xmlNodePtr tmp;
+
 	ret->children = xmlCopyNodeList(cur->children);
+	ret->last = NULL;
+	tmp = ret->children;
+	while (tmp != NULL) {
+	    tmp->parent = (xmlNodePtr)ret;
+	    if (tmp->next == NULL)
+	        ret->last = tmp;
+	    tmp = tmp->next;
+	}
+    }
     return(ret);
 }
 
@@ -2494,7 +2582,7 @@ xmlStaticCopyNode(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
         ret->properties = xmlCopyPropList(ret, node->properties);
     if (node->children != NULL)
         ret->children = xmlStaticCopyNodeList(node->children, doc, ret);
-    UPDATE_LAST_CHILD(ret)
+    UPDATE_LAST_CHILD_AND_PARENT(ret)
     return(ret);
 }
 
@@ -2633,9 +2721,18 @@ xmlCopyDoc(xmlDocPtr doc, int recursive) {
         ret->intSubset = xmlCopyDtd(doc->intSubset);
     if (doc->oldNs != NULL)
         ret->oldNs = xmlCopyNamespaceList(doc->oldNs);
-    if (doc->children != NULL)
+    if (doc->children != NULL) {
+	xmlNodePtr tmp;
         ret->children = xmlStaticCopyNodeList(doc->children, ret,
 		                              (xmlNodePtr)ret);
+	ret->last = NULL;
+	tmp = ret->children;
+	while (tmp != NULL) {
+	    if (tmp->next == NULL)
+	        ret->last = tmp;
+	    tmp = tmp->next;
+	}
+    }
     return(ret);
 }
 
@@ -2692,6 +2789,7 @@ xmlDocSetRootElement(xmlDocPtr doc, xmlNodePtr root) {
     if (old == NULL) {
 	if (doc->children == NULL) {
 	    doc->children = root;
+	    doc->last = root;
 	} else {
 	    xmlAddSibling(doc->children, root);
 	}
@@ -2732,6 +2830,8 @@ xmlNodeSetLang(xmlNodePtr cur, const xmlChar *lang) {
 #ifdef LIBXML_SGML_ENABLED
 	case XML_SGML_DOCUMENT_NODE:
 #endif
+	case XML_XINCLUDE_START:
+	case XML_XINCLUDE_END:
 	    return;
         case XML_ELEMENT_NODE:
         case XML_ATTRIBUTE_NODE:
@@ -2792,6 +2892,8 @@ xmlNodeSetSpacePreserve(xmlNodePtr cur, int val) {
         case XML_ENTITY_REF_NODE:
         case XML_ENTITY_NODE:
 	case XML_NAMESPACE_DECL:
+	case XML_XINCLUDE_START:
+	case XML_XINCLUDE_END:
 #ifdef LIBXML_SGML_ENABLED
 	case XML_SGML_DOCUMENT_NODE:
 #endif
@@ -2863,6 +2965,8 @@ xmlNodeSetName(xmlNodePtr cur, const xmlChar *name) {
         case XML_NOTATION_NODE:
         case XML_HTML_DOCUMENT_NODE:
 	case XML_NAMESPACE_DECL:
+	case XML_XINCLUDE_START:
+	case XML_XINCLUDE_END:
 #ifdef LIBXML_SGML_ENABLED
 	case XML_SGML_DOCUMENT_NODE:
 #endif
@@ -2911,6 +3015,8 @@ xmlNodeSetBase(xmlNodePtr cur, xmlChar* uri) {
         case XML_ENTITY_REF_NODE:
         case XML_ENTITY_NODE:
 	case XML_NAMESPACE_DECL:
+	case XML_XINCLUDE_START:
+	case XML_XINCLUDE_END:
 #ifdef LIBXML_SGML_ENABLED
 	case XML_SGML_DOCUMENT_NODE:
 #endif
@@ -2923,12 +3029,46 @@ xmlNodeSetBase(xmlNodePtr cur, xmlChar* uri) {
 }
 
 /**
+ * xmlDocumentGetBase:
+ * @doc:  the document
+ *
+ * Searches for the Document BASE URL. The code should work on both XML
+ * and HTML document.
+ * It returns the base as defined in RFC 2396 section
+ * 5.1.3. Base URI from the Retrieval URI
+ * However it does not return the computed base (5.1.1 and 5.1.2), use
+ * xmlNodeGetBase() for this
+ *
+ * Returns a pointer to the base URL, or NULL if not found
+ *     It's up to the caller to free the memory.
+ */
+xmlChar *
+xmlDocumentGetBase(xmlDocPtr doc) {
+    if (doc == NULL)
+        return(NULL);
+    if (doc->type == XML_HTML_DOCUMENT_NODE) {
+	if (doc->URL != NULL)
+	    return(xmlStrdup(doc->URL));
+	return(NULL);
+    }
+    if (doc->URL != NULL)
+	return(xmlStrdup(doc->URL));
+    return(NULL);
+}
+
+/**
  * xmlNodeGetBase:
  * @doc:  the document the node pertains to
  * @cur:  the node being checked
  *
  * Searches for the BASE URL. The code should work on both XML
  * and HTML document even if base mechanisms are completely different.
+ * It returns the base as defined in RFC 2396 sections
+ * 5.1.1. Base URI within Document Content
+ * and
+ * 5.1.2. Base URI from the Encapsulating Entity
+ * However it does not return the document base (5.1.3), use
+ * xmlDocumentGetBase() for this
  *
  * Returns a pointer to the base URL, or NULL if not found
  *     It's up to the caller to free the memory.
@@ -2943,9 +3083,6 @@ xmlNodeGetBase(xmlDocPtr doc, xmlNodePtr cur) {
     if ((doc != NULL) && (doc->type == XML_HTML_DOCUMENT_NODE)) {
         cur = doc->children;
 	while ((cur != NULL) && (cur->name != NULL)) {
-	    if (cur->type == XML_ENTITY_DECL) {
-		/* TODO: we are crossing entity boundaries */
-	    }
 	    if (cur->type != XML_ELEMENT_NODE) {
 	        cur = cur->next;
 		continue;
@@ -2963,18 +3100,18 @@ xmlNodeGetBase(xmlDocPtr doc, xmlNodePtr cur) {
 	    }
 	    cur = cur->next;
 	}
-	if ((doc != NULL) && (doc->URL != NULL))
-	    return(xmlStrdup(doc->URL));
 	return(NULL);
     }
     while (cur != NULL) {
+	if (cur->type == XML_ENTITY_DECL) {
+	    xmlEntityPtr ent = (xmlEntityPtr) cur;
+	    return(xmlStrdup(ent->URI));
+	}
         base = xmlGetProp(cur, BAD_CAST "xml:base");
 	if (base != NULL)
 	    return(base);
 	cur = cur->parent;
     }
-    if ((doc != NULL) && (doc->URL != NULL))
-	return(xmlStrdup(doc->URL));
     return(NULL);
 }
  
@@ -3026,13 +3163,14 @@ xmlNodeGetContent(xmlNodePtr cur) {
         case XML_DOCUMENT_TYPE_NODE:
         case XML_NOTATION_NODE:
         case XML_DTD_NODE:
+	case XML_XINCLUDE_START:
+	case XML_XINCLUDE_END:
 #ifdef LIBXML_SGML_ENABLED
 	case XML_SGML_DOCUMENT_NODE:
 #endif
 	    return(NULL);
 	case XML_NAMESPACE_DECL:
-	    /* TODO !!! */
-	    return(NULL);
+	    return(xmlStrdup(((xmlNsPtr)cur)->href));
         case XML_ELEMENT_DECL:
 	    /* TODO !!! */
 	    return(NULL);
@@ -3084,7 +3222,7 @@ xmlNodeSetContent(xmlNodePtr cur, const xmlChar *content) {
 	    }
 	    if (cur->children != NULL) xmlFreeNodeList(cur->children);
 	    cur->children = xmlStringGetNodeList(cur->doc, content);
-	    UPDATE_LAST_CHILD(cur)
+	    UPDATE_LAST_CHILD_AND_PARENT(cur)
 	    break;
         case XML_ATTRIBUTE_NODE:
 	    break;
@@ -3118,6 +3256,8 @@ xmlNodeSetContent(xmlNodePtr cur, const xmlChar *content) {
         case XML_DOCUMENT_NODE:
         case XML_HTML_DOCUMENT_NODE:
         case XML_DOCUMENT_TYPE_NODE:
+	case XML_XINCLUDE_START:
+	case XML_XINCLUDE_END:
 #ifdef LIBXML_SGML_ENABLED
 	case XML_SGML_DOCUMENT_NODE:
 #endif
@@ -3170,7 +3310,7 @@ xmlNodeSetContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
 	    }
 	    if (cur->children != NULL) xmlFreeNodeList(cur->children);
 	    cur->children = xmlStringLenGetNodeList(cur->doc, content, len);
-	    UPDATE_LAST_CHILD(cur)
+	    UPDATE_LAST_CHILD_AND_PARENT(cur)
 	    break;
         case XML_ATTRIBUTE_NODE:
 	    break;
@@ -3207,6 +3347,8 @@ xmlNodeSetContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
         case XML_HTML_DOCUMENT_NODE:
         case XML_DOCUMENT_TYPE_NODE:
 	case XML_NAMESPACE_DECL:
+	case XML_XINCLUDE_START:
+	case XML_XINCLUDE_END:
 #ifdef LIBXML_SGML_ENABLED
 	case XML_SGML_DOCUMENT_NODE:
 #endif
@@ -3256,7 +3398,7 @@ xmlNodeAddContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
 		    cur->children = xmlStringGetNodeList(cur->doc,
 			                       xmlBufferContent(cur->content));
 #endif
-		    UPDATE_LAST_CHILD(cur)
+		    UPDATE_LAST_CHILD_AND_PARENT(cur)
 #ifndef XML_USE_BUFFER_CONTENT
 		    xmlFree(cur->content);
 #else
@@ -3296,6 +3438,8 @@ xmlNodeAddContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
         case XML_HTML_DOCUMENT_NODE:
         case XML_DOCUMENT_TYPE_NODE:
 	case XML_NAMESPACE_DECL:
+	case XML_XINCLUDE_START:
+	case XML_XINCLUDE_END:
 #ifdef LIBXML_SGML_ENABLED
 	case XML_SGML_DOCUMENT_NODE:
 #endif
@@ -3944,12 +4088,14 @@ xmlSetProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
 	    if (prop->children != NULL) 
 	        xmlFreeNodeList(prop->children);
 	    prop->children = NULL;
+	    prop->last = NULL;
 	    if (value != NULL) {
 	        xmlChar *buffer;
 		xmlNodePtr tmp;
 
 		buffer = xmlEncodeEntitiesReentrant(node->doc, value);
 		prop->children = xmlStringGetNodeList(node->doc, buffer);
+		prop->last = NULL;
 		tmp = prop->children;
 		while (tmp != NULL) {
 		    tmp->parent = (xmlNodePtr) prop;
@@ -3993,12 +4139,16 @@ xmlNodeIsText(xmlNodePtr node) {
  */
 int
 xmlIsBlankNode(xmlNodePtr node) {
-    xmlChar *cur;
+    const xmlChar *cur;
     if (node == NULL) return(0);
 
     if (node->type != XML_TEXT_NODE) return(0);
     if (node->content == NULL) return(1);
+#ifndef XML_USE_BUFFER_CONTENT
     cur = node->content;
+#else
+    cur = xmlBufferContent(node->content);
+#endif
     while (*cur != 0) {
 	if (!IS_BLANK(*cur)) return(0);
 	cur++;
@@ -4749,6 +4899,10 @@ xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
 #endif
 	return;
     }
+    if (cur->type == XML_XINCLUDE_START)
+	return;
+    if (cur->type == XML_XINCLUDE_END)
+	return;
     if (cur->type == XML_DTD_NODE) {
         xmlDtdDump(buf, (xmlDtdPtr) cur);
 	return;
@@ -5201,6 +5355,10 @@ xmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
 #endif
 	return;
     }
+    if (cur->type == XML_XINCLUDE_START)
+	return;
+    if (cur->type == XML_XINCLUDE_END)
+	return;
     if (cur->type == XML_DTD_NODE) {
         xmlDtdDumpOutput(buf, (xmlDtdPtr) cur, encoding);
 	return;

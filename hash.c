@@ -17,6 +17,7 @@
  * Author: bjorn.reese@systematic.dk
  */
 
+#include <string.h>
 #include <libxml/hash.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>

@@ -3212,6 +3212,7 @@ xmlSprintfElementChilds(char *buf, xmlNodePtr node, int glob) {
             case XML_DOCUMENT_TYPE_NODE:
             case XML_DOCUMENT_FRAG_NODE:
             case XML_NOTATION_NODE:
+	    case XML_NAMESPACE_DECL:
 	         strcat(buf, "???");
 		 if (cur->next != NULL)
 		     strcat(buf, " ");
@@ -3223,6 +3224,8 @@ xmlSprintfElementChilds(char *buf, xmlNodePtr node, int glob) {
 	    case XML_ELEMENT_DECL:
 	    case XML_ATTRIBUTE_DECL:
 	    case XML_ENTITY_DECL:
+	    case XML_XINCLUDE_START:
+	    case XML_XINCLUDE_END:
 		 break;
 	}
 	cur = cur->next;

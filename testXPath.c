@@ -41,6 +41,7 @@
 #include <libxml/debugXML.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/parserInternals.h>
+#include <libxml/xpathInternals.h>
 #include <libxml/xmlerror.h>
 #if defined(LIBXML_XPTR_ENABLED)
 #include <libxml/xpointer.h>

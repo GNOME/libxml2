@@ -78,6 +78,15 @@ extern void xmlCheckVersion(int version);
 #endif
 
 /*
+ * Whether XInclude is configured in
+ */
+#if @WITH_XINCLUDE@
+#define LIBXML_XINCLUDE_ENABLED
+#else
+#define LIBXML_XINCLUDE_DISABLED
+#endif
+
+/*
  * Whether iconv support is available
  */
 #if @WITH_ICONV@

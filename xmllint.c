@@ -55,6 +55,9 @@
 #include <libxml/xpath.h>
 #include <libxml/debugXML.h>
 #include <libxml/xmlerror.h>
+#ifdef LIBXML_XINCLUDE_ENABLED
+#include <libxml/xinclude.h>
+#endif
 
 #ifdef LIBXML_DEBUG_ENABLED
 static int debug = 0;
@@ -81,6 +84,9 @@ static int memory = 0;
 static int noblanks = 0;
 static int testIO = 0;
 static char *encoding = NULL;
+#ifdef LIBXML_XINCLUDE_ENABLED
+static int xinclude = 0;
+#endif
 
 extern int xmlDoValidityCheckingDefaultValue;
 extern int xmlGetWarningsDefaultValue;
@@ -497,10 +503,14 @@ void parseAndPrintFile(char *filename) {
     /*
      * If we don't have a document we might as well give up.  Do we
      * want an error message here?  <sven@zen.org> */
-    if (doc == NULL)
-      {
+    if (doc == NULL) {
 	return;
-      }
+    }
+
+#ifdef LIBXML_XINCLUDE_ENABLED
+    if (xinclude)
+	xmlXIncludeProcess(doc);
+#endif
 
 #ifdef LIBXML_DEBUG_ENABLED
     /*
@@ -667,6 +677,11 @@ int main(int argc, char **argv) {
 	else if ((!strcmp(argv[i], "-testIO")) ||
 	         (!strcmp(argv[i], "--testIO")))
 	    testIO++;
+#ifdef LIBXML_XINCLUDE_ENABLED
+	else if ((!strcmp(argv[i], "-xinclude")) ||
+	         (!strcmp(argv[i], "--xinclude")))
+	    xinclude++;
+#endif
 	else if ((!strcmp(argv[i], "-compress")) ||
 	         (!strcmp(argv[i], "--compress"))) {
 	    compress++;
@@ -773,6 +788,9 @@ int main(int argc, char **argv) {
 	printf("\t--noblanks : drop (ignorable?) blanks spaces\n");
 	printf("\t--testIO : test user I/O support\n");
 	printf("\t--encode encoding : output in the given encoding\n");
+#ifdef LIBXML_XINCLUDE_ENABLED
+	printf("\t--xinclude : do XInclude processing\n");
+#endif
     }
     xmlCleanupParser();
     xmlMemoryDump();

@@ -818,7 +818,8 @@ htmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, const 
 #ifndef XML_USE_BUFFER_CONTENT
 	    xmlOutputBufferWriteString(buf, (const char *)cur->content);
 #else
-	    xmlOutputBufferWriteString(buf, xmlBufferContent(cur->content));
+	    xmlOutputBufferWriteString(buf, (const char *)
+		                       xmlBufferContent(cur->content));
 #endif
 	    xmlOutputBufferWriteString(buf, "-->");
 	}
@@ -835,7 +836,8 @@ htmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, const 
 #ifndef XML_USE_BUFFER_CONTENT
 	    xmlOutputBufferWriteString(buf, (const char *)cur->content);
 #else
-	    xmlOutputBufferWriteString(buf, xmlBufferContent(cur->content));
+	    xmlOutputBufferWriteString(buf, (const char *)
+		                       xmlBufferContent(cur->content));
 #endif
 	}
 	return;

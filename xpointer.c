@@ -25,6 +25,7 @@
  */
 
 #include <stdio.h>
+#include <string.h>
 #include <libxml/xpointer.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/parserInternals.h>
@@ -1711,8 +1712,13 @@ xmlXPtrInsideRange(xmlXPathParserContextPtr ctxt, xmlXPathObjectPtr loc) {
 		    if (node->content == NULL) {
 			return(xmlXPtrNewRange(node, 0, node, 0));
 		    } else {
+#ifndef XML_USE_BUFFER_CONTENT
 			return(xmlXPtrNewRange(node, 0, node,
 					       xmlStrlen(node->content)));
+#else
+			return(xmlXPtrNewRange(node, 0, node,
+					       xmlBufferLength(node->content)));
+#endif
 		    }
 		}
 		case XML_ATTRIBUTE_NODE:
@@ -1743,8 +1749,13 @@ xmlXPtrInsideRange(xmlXPathParserContextPtr ctxt, xmlXPathObjectPtr loc) {
 			if (node->content == NULL) {
 			    return(xmlXPtrNewRange(node, 0, node, 0));
 			} else {
+#ifndef XML_USE_BUFFER_CONTENT
 			    return(xmlXPtrNewRange(node, 0, node,
 						   xmlStrlen(node->content)));
+#else
+			    return(xmlXPtrNewRange(node, 0, node,
+					       xmlBufferLength(node->content)));
+#endif
 			}
 		    }
 		    case XML_ATTRIBUTE_NODE:
@@ -2010,7 +2021,11 @@ xmlXPtrAdvanceChar(xmlNodePtr *node, int *index, int bytes) {
 	 */
 	len = 0;
 	if (cur->content != NULL) {
+#ifndef XML_USE_BUFFER_CONTENT
 	    len = xmlStrlen(cur->content);
+#else
+	    len = xmlBufferLength(cur->content);
+#endif
 	}
 	if (pos > len) {
 	    /* Strange, the index in the text node is greater than it's len */
@@ -2072,9 +2087,18 @@ xmlXPtrMatchString(const xmlChar *string, xmlNodePtr start, int startindex,
 	if ((cur == *end) && (pos + stringlen > *endindex))
 	    return(0);
 	if (cur->content != NULL) {
+#ifndef XML_USE_BUFFER_CONTENT
 	    len = xmlStrlen(cur->content);
+#else
+	    len = xmlBufferLength(cur->content);
+#endif
 	    if (len >= pos + stringlen) {
+#ifndef XML_USE_BUFFER_CONTENT
 		match = (!xmlStrncmp(&cur->content[pos], string, stringlen));
+#else
+		len = (!xmlStrncmp(&xmlBufferContent(cur->content)[pos],
+			           string, stringlen));
+#endif
 		if (match) {
 #ifdef DEBUG_RANGES
 		    xmlGenericError(xmlGenericErrorContext,
@@ -2091,7 +2115,12 @@ xmlXPtrMatchString(const xmlChar *string, xmlNodePtr start, int startindex,
 		}
 	    } else {
                 int sub = len - pos;
+#ifndef XML_USE_BUFFER_CONTENT
 		match = (!xmlStrncmp(&cur->content[pos], string, sub));
+#else
+		len = (!xmlStrncmp(&xmlBufferContent(cur->content)[pos],
+			           string, sub));
+#endif
 		if (match) {
 #ifdef DEBUG_RANGES
 		    xmlGenericError(xmlGenericErrorContext,
@@ -2156,12 +2185,21 @@ xmlXPtrSearchString(const xmlChar *string, xmlNodePtr *start, int *startindex,
 
     while (cur != NULL) {
 	if (cur->content != NULL) {
+#ifndef XML_USE_BUFFER_CONTENT
 	    len = xmlStrlen(cur->content);
+#else
+	    len = xmlBufferLength(cur->content);
+#endif
 	    while (pos <= len) {
 		if (first != 0) {
+#ifndef XML_USE_BUFFER_CONTENT
 		    str = xmlStrchr(&cur->content[pos], first);
+#else
+		    str = xmlStrchr(&xmlBufferContent(cur->content)[pos],
+			            first);
+#endif
 		    if (str != NULL) {
-			pos = (str - cur->content);
+			pos = (str - (xmlChar *)(cur->content));
 #ifdef DEBUG_RANGES
 			xmlGenericError(xmlGenericErrorContext,
 				"found '%c' at index %d of ->",
@@ -2244,7 +2282,11 @@ xmlXPtrGetLastChar(xmlNodePtr *node, int *index) {
 	if (cur->last != NULL)
 	    cur = cur->last;
 	else if (cur->content != NULL) {
+#ifndef XML_USE_BUFFER_CONTENT
 	    len = xmlStrlen(cur->content);
+#else
+	    len = xmlBufferLength(cur->content);
+#endif
 	    break;
 	}
     }
@@ -2459,7 +2501,7 @@ xmlXPtrStringRangeFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 					xmlXPtrNewRange(start, startindex,
 							rend, rindex));
 			}
-		    } else if (num <= 0) {
+		    } else if ((number != NULL) && (num <= 0)) {
 			xmlXPtrLocationSetAdd(newset,
 				    xmlXPtrNewRange(start, startindex,
 						    start, startindex));

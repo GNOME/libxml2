@@ -1,3 +1,14 @@
+Mon Nov  6 17:22:46 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* tree.[ch] xinclude.[ch] xmllint.c configure.in valid.c
+	  debugXML.c xmlversion.h.in: Started adding XInclude support,
+	  this is a new xmllint option
+	* tree.c xpath.c: applied TOM patches for XPath
+	* xpointer.c: fixed a couple of errors.
+	* uri.c: added an escaping function needed for xinclude
+	* testXPath.c hash.c HTMLtree.c: minor cleanups raised by
+	  new warning from RH70 gcc's version
+
 Tue Oct 31 14:14:13 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* HTMLparser.c: fixed loop on invalid char in scripts

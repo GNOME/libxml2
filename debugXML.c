@@ -559,6 +559,7 @@ void xmlDebugDumpOneNode(FILE *output, xmlNodePtr node, int depth) {
 	    fprintf(output, "DOCUMENT_FRAG\n");
 	    break;
 	case XML_NOTATION_NODE:
+	    fprintf(output, shift);
 	    fprintf(output, "NOTATION\n");
 	    break;
 	case XML_DTD_NODE:
@@ -575,6 +576,14 @@ void xmlDebugDumpOneNode(FILE *output, xmlNodePtr node, int depth) {
 	    return;
         case XML_NAMESPACE_DECL:
 	    xmlDebugDumpNamespace(output, (xmlNsPtr) node, depth);
+	    return;
+        case XML_XINCLUDE_START:
+	    fprintf(output, shift);
+	    fprintf(output, "INCLUDE START\n");
+	    return;
+        case XML_XINCLUDE_END:
+	    fprintf(output, shift);
+	    fprintf(output, "INCLUDE END\n");
 	    return;
 	default:
 	    fprintf(output, shift);
@@ -917,6 +926,8 @@ static int xmlLsCountNode(xmlNodePtr node) {
         case XML_ATTRIBUTE_DECL:
         case XML_ENTITY_DECL:
 	case XML_NAMESPACE_DECL:
+	case XML_XINCLUDE_START:
+	case XML_XINCLUDE_END:
 	    ret = 1;
 	    break;
     }

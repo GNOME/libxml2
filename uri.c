@@ -22,6 +22,13 @@
 #include <libxml/uri.h>
 #include <libxml/xmlerror.h>
 
+/************************************************************************
+ *									*
+ *		Macros to differenciate various character type		*
+ *			directly extracted from RFC 2396		*
+ *									*
+ ************************************************************************/
+
 /*
  * alpha    = lowalpha | upalpha
  */
@@ -168,6 +175,12 @@
  *
  * path          = [ abs_path | opaque_part ]
  */
+
+/************************************************************************
+ *									*
+ *			Generic URI structure functions			*
+ *									*
+ ************************************************************************/
 
 /**
  * xmlCreateURI:
@@ -587,6 +600,143 @@ xmlFreeURI(xmlURIPtr uri) {
     xmlFree(uri);
 }
 
+/************************************************************************
+ *									*
+ *			Helper functions				*
+ *									*
+ ************************************************************************/
+
+/**
+ * xmlNormalizeURIPath:
+ * @path:  pointer to the path string
+ *
+ * applies the 5 normalization steps to a path string
+ * Normalization occurs directly on the string, no new allocation is done
+ *
+ * Returns 0 or an error code
+ */
+int
+xmlNormalizeURIPath(char *path) {
+    int cur, out;
+
+    if (path == NULL)
+	return(-1);
+    cur = 0;
+    out = 0;
+    while ((path[cur] != 0) && (path[cur] != '/')) cur++;
+    if (path[cur] == 0)
+	return(0);
+
+    /* we are positionned at the beginning of the first segment */
+    cur++;
+    out = cur;
+
+    /*
+     * Analyze each segment in sequence.
+     */
+    while (path[cur] != 0) {
+	/*
+	 * c) All occurrences of "./", where "." is a complete path segment,
+	 *    are removed from the buffer string.
+	 */
+	if ((path[cur] == '.') && (path[cur + 1] == '/')) {
+	    cur += 2;
+	    continue;
+	}
+
+	/*
+	 * d) If the buffer string ends with "." as a complete path segment,
+	 *    that "." is removed.
+	 */
+	if ((path[cur] == '.') && (path[cur + 1] == 0)) {
+	    path[out] = 0;
+	    break;
+	}
+
+	/* read the segment */
+	while ((path[cur] != 0) && (path[cur] != '/')) {
+	    path[out++] = path[cur++];
+	}
+	path[out++] = path[cur];
+	if (path[cur] != 0) {
+	    cur++;
+	}
+    }
+
+    cur = 0;
+    out = 0;
+    while ((path[cur] != 0) && (path[cur] != '/')) cur++;
+    if (path[cur] == 0)
+	return(0);
+    /* we are positionned at the beginning of the first segment */
+    cur++;
+    out = cur;
+    /*
+     * Analyze each segment in sequence.
+     */
+    while (path[cur] != 0) {
+	/*
+	 * e) All occurrences of "<segment>/../", where <segment> is a
+	 *    complete path segment not equal to "..", are removed from the
+	 *    buffer string.  Removal of these path segments is performed
+	 *    iteratively, removing the leftmost matching pattern on each
+	 *    iteration, until no matching pattern remains.
+	 */
+	if ((cur > 1) && (out > 1) &&
+	    (path[cur] == '/') && (path[cur + 1] == '.') &&
+	    (path[cur + 2] == '.') && (path[cur + 3] == '/') &&
+	    ((path[out] != '.') || (path[out - 1] != '.') ||
+	     (path[out - 2] != '/'))) {
+	    cur += 3;
+	    out --;
+	    while ((out > 0) && (path[out] != '/')) { out --; }
+	    path[out] = 0;
+            continue;
+	}
+
+	/*
+	 * f) If the buffer string ends with "<segment>/..", where <segment>
+	 *    is a complete path segment not equal to "..", that
+	 *    "<segment>/.." is removed.
+	 */
+	if ((path[cur] == '/') && (path[cur + 1] == '.') &&
+	    (path[cur + 2] == '.') && (path[cur + 3] == 0) &&
+	    ((path[out] != '.') || (path[out - 1] != '.') ||
+	     (path[out - 2] != '/'))) {
+	    cur += 4;
+	    out --;
+	    while ((out > 0) && (path[out - 1] != '/')) { out --; }
+	    path[out] = 0;
+            continue;
+	}
+        
+	path[out++] = path[cur++]; /* / or 0 */
+    }
+    path[out] = 0;
+
+    /*
+     * g) If the resulting buffer string still begins with one or more
+     *    complete path segments of "..", then the reference is 
+     *    considered to be in error. Implementations may handle this
+     *    error by retaining these components in the resolved path (i.e.,
+     *    treating them as part of the final URI), by removing them from
+     *    the resolved path (i.e., discarding relative levels above the
+     *    root), or by avoiding traversal of the reference.
+     *
+     * We discard them from the final path.
+     */
+    cur = 0;
+    while ((path[cur] == '/') && (path[cur + 1] == '.') &&
+	   (path[cur + 2] == '.'))
+	cur += 3;
+    if (cur != 0) {
+	out = 0;
+	while (path[cur] != 0) path[out++] = path[cur++];
+	path[out] = 0;
+    }
+    return(0);
+}
+
 /**
  * xmlURIUnescapeString:
  * @str:  the string to unescape
@@ -647,6 +797,74 @@ xmlURIUnescapeString(const char *str, int len, char *target) {
     return(ret);
 }
 
+/**
+ * xmlURIEscape:
+ * @str:  the string of the URI to escape
+ *
+ * Escaping routine, does not do validity checks !
+ * It will try to escape the chars needing this, but this is heuristic
+ * based it's impossible to be sure.
+ *
+ * Returns an copy of the string, but escaped
+ */
+xmlChar *
+xmlURIEscape(const xmlChar *str) {
+    xmlChar *ret;
+    const xmlChar *in;
+    unsigned int len, out;
+
+    if (str == NULL)
+	return(NULL);
+    len = xmlStrlen(str);
+    if (len <= 0) return(NULL);
+
+    len += 20;
+    ret = (xmlChar *) xmlMalloc(len);
+    if (ret == NULL) {
+	xmlGenericError(xmlGenericErrorContext,
+		"xmlURIEscape: out of memory\n");
+	return(NULL);
+    }
+    in = (const xmlChar *) str;
+    out = 0;
+    while(*in != 0) {
+	if (len - out <= 3) {
+	    len += 20;
+	    ret = (xmlChar *) xmlRealloc(ret, len);
+	    if (ret == NULL) {
+		xmlGenericError(xmlGenericErrorContext,
+			"xmlURIEscape: out of memory\n");
+		return(NULL);
+	    }
+	}
+	if ((!IS_UNRESERVED(*in)) && (*in != ':') && (*in != '/') &&
+	    (*in != '?') && (*in != '#')) {
+	    unsigned char val;
+	    ret[out++] = '%';
+	    val = *in >> 4;
+	    if (val <= 9)
+		ret[out++] = '0' + val;
+	    else
+		ret[out++] = 'A' + val - 0xA;
+	    val = *in & 0xF;
+	    if (val <= 9)
+		ret[out++] = '0' + val;
+	    else
+		ret[out++] = 'A' + val - 0xA;
+	    in++;
+	} else {
+	    ret[out++] = *in++;
+	}
+    }
+    ret[out] = 0;
+    return(ret);
+}
+
+/************************************************************************
+ *									*
+ *			Escaped URI parsing				*
+ *									*
+ ************************************************************************/
 
 /**
  * xmlParseURIFragment:
@@ -1284,136 +1502,11 @@ xmlParseURI(const char *str) {
     return(uri);
 }
 
-/**
- * xmlNormalizeURIPath:
- * @path:  pointer to the path string
- *
- * applies the 5 normalization steps to a path string
- * Normalization occurs directly on the string, no new allocation is done
- *
- * Returns 0 or an error code
- */
-int
-xmlNormalizeURIPath(char *path) {
-    int cur, out;
-
-    if (path == NULL)
-	return(-1);
-    cur = 0;
-    out = 0;
-    while ((path[cur] != 0) && (path[cur] != '/')) cur++;
-    if (path[cur] == 0)
-	return(0);
-
-    /* we are positionned at the beginning of the first segment */
-    cur++;
-    out = cur;
-
-    /*
-     * Analyze each segment in sequence.
-     */
-    while (path[cur] != 0) {
-	/*
-	 * c) All occurrences of "./", where "." is a complete path segment,
-	 *    are removed from the buffer string.
-	 */
-	if ((path[cur] == '.') && (path[cur + 1] == '/')) {
-	    cur += 2;
-	    continue;
-	}
-
-	/*
-	 * d) If the buffer string ends with "." as a complete path segment,
-	 *    that "." is removed.
-	 */
-	if ((path[cur] == '.') && (path[cur + 1] == 0)) {
-	    path[out] = 0;
-	    break;
-	}
-
-	/* read the segment */
-	while ((path[cur] != 0) && (path[cur] != '/')) {
-	    path[out++] = path[cur++];
-	}
-	path[out++] = path[cur];
-	if (path[cur] != 0) {
-	    cur++;
-	}
-    }
-
-    cur = 0;
-    out = 0;
-    while ((path[cur] != 0) && (path[cur] != '/')) cur++;
-    if (path[cur] == 0)
-	return(0);
-    /* we are positionned at the beginning of the first segment */
-    cur++;
-    out = cur;
-    /*
-     * Analyze each segment in sequence.
-     */
-    while (path[cur] != 0) {
-	/*
-	 * e) All occurrences of "<segment>/../", where <segment> is a
-	 *    complete path segment not equal to "..", are removed from the
-	 *    buffer string.  Removal of these path segments is performed
-	 *    iteratively, removing the leftmost matching pattern on each
-	 *    iteration, until no matching pattern remains.
-	 */
-	if ((cur > 1) && (out > 1) &&
-	    (path[cur] == '/') && (path[cur + 1] == '.') &&
-	    (path[cur + 2] == '.') && (path[cur + 3] == '/') &&
-	    ((path[out] != '.') || (path[out - 1] != '.') ||
-	     (path[out - 2] != '/'))) {
-	    cur += 3;
-	    out --;
-	    while ((out > 0) && (path[out] != '/')) { out --; }
-	    path[out] = 0;
-            continue;
-	}
-
-	/*
-	 * f) If the buffer string ends with "<segment>/..", where <segment>
-	 *    is a complete path segment not equal to "..", that
-	 *    "<segment>/.." is removed.
-	 */
-	if ((path[cur] == '/') && (path[cur + 1] == '.') &&
-	    (path[cur + 2] == '.') && (path[cur + 3] == 0) &&
-	    ((path[out] != '.') || (path[out - 1] != '.') ||
-	     (path[out - 2] != '/'))) {
-	    cur += 4;
-	    out --;
-	    while ((out > 0) && (path[out - 1] != '/')) { out --; }
-	    path[out] = 0;
-            continue;
-	}
-        
-	path[out++] = path[cur++]; /* / or 0 */
-    }
-    path[out] = 0;
-
-    /*
-     * g) If the resulting buffer string still begins with one or more
-     *    complete path segments of "..", then the reference is 
-     *    considered to be in error. Implementations may handle this
-     *    error by retaining these components in the resolved path (i.e.,
-     *    treating them as part of the final URI), by removing them from
-     *    the resolved path (i.e., discarding relative levels above the
-     *    root), or by avoiding traversal of the reference.
-     *
-     * We discard them from the final path.
-     */
-    cur = 0;
-    while ((path[cur] == '/') && (path[cur + 1] == '.') &&
-	   (path[cur + 2] == '.'))
-	cur += 3;
-    if (cur != 0) {
-	out = 0;
-	while (path[cur] != 0) path[out++] = path[cur++];
-	path[out] = 0;
-    }
-    return(0);
-}
+/************************************************************************
+ *									*
+ *			Public functions				*
+ *									*
+ ************************************************************************/
 
 /**
  * xmlBuildURI:

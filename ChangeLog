@@ -1,3 +1,7 @@
+Tue Apr 30 16:29:05 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in: Neven Has detected a typo
+
 Tue Apr 30 08:48:11 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* AUTHORS HACKING: added Aleksey Sanin <aleksey@aleksey.com>

@@ -215,6 +215,9 @@ struct _xmlXPathContext {
     xmlHashTablePtr nsHash;		/* The namespaces hash table */
     void *varLookupFunc;		/* variable lookup func */
     void *varLookupData;		/* variable lookup data */
+
+    /* Possibility to link in an extra item */
+    void *extra;                        /* needed for XSLT */
 };
 
 /*

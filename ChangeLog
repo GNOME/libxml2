@@ -1,3 +1,8 @@
+Thu Jan 25 19:11:49 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xpath.h: added a hook in the context structure allowing to
+	  link to extra support, needed for XSLT
+
 Thu Jan 25 13:34:11 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xpath.[ch] xpointer.c: added xmlXPathCmpNodes, changed

@@ -132,7 +132,6 @@ xmlErrValidNodeNr(xmlValidCtxtPtr ctxt,
         channel = ctxt->error;
         data = ctxt->userData;
 	pctxt = ctxt->userData;
-	pctxt = ctxt->userData;
     }
     __xmlRaiseError(schannel, channel, data, pctxt, node, XML_FROM_VALID, error,
                     XML_ERR_ERROR, NULL, 0,
@@ -152,7 +151,7 @@ xmlErrValidNodeNr(xmlValidCtxtPtr ctxt,
  * Handle a validation error, provide contextual informations
  */
 static void
-xmlErrValidNode(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
+xmlErrValidNode(xmlValidCtxtPtr ctxt,
                 xmlNodePtr node, xmlParserErrors error,
                 const char *msg, const xmlChar * str1,
                 const xmlChar * str2, const xmlChar * str3)
@@ -165,7 +164,6 @@ xmlErrValidNode(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
     if (ctxt != NULL) {
         channel = ctxt->error;
         data = ctxt->userData;
-	pctxt = ctxt->userData;
 	pctxt = ctxt->userData;
     }
     __xmlRaiseError(schannel, channel, data, pctxt, node, XML_FROM_VALID, error,
@@ -179,14 +177,14 @@ xmlErrValidNode(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
  * @ctxt:  an XML validation parser context
  * @node:  the node raising the error
  * @error:  the error number
- * @str1:  extra informations
- * @str2:  extra informations
- * @str3:  extra informations
+ * @str1:  extra information
+ * @str2:  extra information
+ * @str3:  extra information
  *
- * Handle a validation error, provide contextual informations
+ * Handle a validation error, provide contextual information
  */
 static void
-xmlErrValidWarning(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
+xmlErrValidWarning(xmlValidCtxtPtr ctxt,
                 xmlNodePtr node, xmlParserErrors error,
                 const char *msg, const xmlChar * str1,
                 const xmlChar * str2, const xmlChar * str3)
@@ -199,7 +197,6 @@ xmlErrValidWarning(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
     if (ctxt != NULL) {
         channel = ctxt->error;
         data = ctxt->userData;
-	pctxt = ctxt->userData;
 	pctxt = ctxt->userData;
     }
     __xmlRaiseError(schannel, channel, data, pctxt, node, XML_FROM_VALID, error,
@@ -1219,7 +1216,7 @@ xmlFreeElement(xmlElementPtr elem) {
  * Returns NULL if not, otherwise the entity
  */
 xmlElementPtr
-xmlAddElementDecl(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
+xmlAddElementDecl(xmlValidCtxtPtr ctxt,
                   xmlDtdPtr dtd, const xmlChar *name,
                   xmlElementTypeVal type,
 		  xmlElementContentPtr content) {
@@ -1777,7 +1774,7 @@ xmlFreeAttribute(xmlAttributePtr attr) {
  * Returns NULL if not new, otherwise the attribute decl
  */
 xmlAttributePtr
-xmlAddAttributeDecl(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
+xmlAddAttributeDecl(xmlValidCtxtPtr ctxt,
                     xmlDtdPtr dtd, const xmlChar *elem,
                     const xmlChar *name, const xmlChar *ns,
 		    xmlAttributeType type, xmlAttributeDefault def,
@@ -2183,7 +2180,7 @@ xmlFreeNotation(xmlNotationPtr nota) {
  * Returns NULL if not, otherwise the entity
  */
 xmlNotationPtr
-xmlAddNotationDecl(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED, xmlDtdPtr dtd,
+xmlAddNotationDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd,
 	           const xmlChar *name,
                    const xmlChar *PublicID, const xmlChar *SystemID) {
     xmlNotationPtr ret;
@@ -2729,7 +2726,7 @@ xmlWalkRemoveRef(const void *data, const void *user)
  * Returns NULL if not, otherwise the new xmlRefPtr
  */
 xmlRefPtr 
-xmlAddRef(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED, xmlDocPtr doc, const xmlChar *value,
+xmlAddRef(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const xmlChar *value,
     xmlAttrPtr attr) {
     xmlRefPtr ret;
     xmlRefTablePtr table;
@@ -5267,7 +5264,7 @@ done:
  * Returns 1 if yes, 0 if no, -1 in case of error
  */
 static int
-xmlValidateCheckMixed(xmlValidCtxtPtr ctxt  ATTRIBUTE_UNUSED,
+xmlValidateCheckMixed(xmlValidCtxtPtr ctxt,
 	              xmlElementContentPtr cont, const xmlChar *qname) {
     const xmlChar *name;
     int plen;

@@ -1,3 +1,10 @@
+Fri Feb  6 15:28:36 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* HTMLparser.c: added initialisation for ctxt->vctxt
+	  in HTMLInitParser (bug 133127)
+	* valid.c: minor cosmetic change (removed ATTRIBUTE_UNUSED
+	  from several function params)
+
 Tue Feb  3 16:48:57 PST 2004 William Brack <wbrack@mmm.com.hk>
 
 	* xinclude.c: fixed problem regarding freeing of dictionary

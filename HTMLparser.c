@@ -64,7 +64,7 @@ static void htmlParseComment(htmlParserCtxtPtr ctxt);
  ************************************************************************/
 
 /**
- * xmlErrMemory:
+ * htmlErrMemory:
  * @ctxt:  an HTML parser context
  * @extra:  extra informations
  *
@@ -3893,7 +3893,7 @@ htmlParseDocument(htmlParserCtxtPtr ctxt) {
  ************************************************************************/
 
 /**
- * xmlInitParserCtxt:
+ * htmlInitParserCtxt:
  * @ctxt:  an HTML parser context
  *
  * Initialize a parser context
@@ -3986,6 +3986,9 @@ htmlInitParserCtxt(htmlParserCtxtPtr ctxt)
     ctxt->replaceEntities = 0;
     ctxt->linenumbers = xmlLineNumbersDefaultValue;
     ctxt->html = 1;
+    ctxt->vctxt.userData = ctxt;
+    ctxt->vctxt.error = xmlParserValidityError;
+    ctxt->vctxt.warning = xmlParserValidityWarning;
     ctxt->record_info = 0;
     ctxt->validate = 0;
     ctxt->nbChars = 0;

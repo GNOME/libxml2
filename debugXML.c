@@ -20,14 +20,12 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/tree.h>
 #include <libxml/parser.h>
+#include <libxml/parserInternals.h>
 #include <libxml/valid.h>
 #include <libxml/debugXML.h>
 #include <libxml/HTMLtree.h>
 #include <libxml/HTMLparser.h>
 #include <libxml/xmlerror.h>
-
-#define IS_BLANK(c)							\
-  (((c) == '\n') || ((c) == '\r') || ((c) == '\t') || ((c) == ' '))
 
 /**
  * xmlDebugDumpString:
@@ -569,7 +567,10 @@ xmlDebugDumpOneNode(FILE * output, xmlNodePtr node, int depth)
             break;
         case XML_TEXT_NODE:
             fprintf(output, shift);
-            fprintf(output, "TEXT\n");
+	    if (node->name == xmlStringTextNoenc)
+		fprintf(output, "TEXT no enc\n");
+	    else
+		fprintf(output, "TEXT\n");
             break;
         case XML_CDATA_SECTION_NODE:
             fprintf(output, shift);

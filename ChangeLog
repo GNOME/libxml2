@@ -1,3 +1,9 @@
+Wed Aug  1 17:44:57 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c: fixed a bug when walking the descendants and
+	  the current node has no children
+	* debugXML.c: show up when a text node is supposed to not be escaped
+
 Wed Aug  1 01:33:35 CEST 2001 Thomas Broyer <tbroyer@ltgt.net>
 
 	* xpath.c: fixed a bug in xmlXPathNodeTrailingSorted (for now it

@@ -4607,11 +4607,13 @@ xmlXPathNextDescendant(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
         return(ctxt->context->node->children);
     }
 
-    if (cur->children != NULL)
-    	{
+    if (cur->children != NULL) {
     	if (cur->children->type != XML_ENTITY_DECL)
-		   	return(cur->children);
-    	}
+	    return(cur->children);
+    }
+
+    if (cur == ctxt->context->node) return(NULL);
+
     if (cur->next != NULL) return(cur->next);
     
     do {

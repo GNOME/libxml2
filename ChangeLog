@@ -1,3 +1,7 @@
+Wed Apr  6 21:59:11 CEST 2005 Igor Zlatkovic <igor@zlatkovic.com>
+
+	* .cvsignore: added Eclipse project files to ignore list
+
 Wed Apr  6 16:08:10 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: fixed the bug in lang() as raised by Elliotte Rusty Harold

@@ -1,3 +1,13 @@
+Tue Apr 20 11:42:50 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* error.c: Johnson Cameron pointed out that
+	  initGenericErrorDefaultFunc() was really wrong.
+	* xmlreader.c include/libxml/xmlreader.h: xmlTextReaderMode enum
+	  must be made public, added some missing comments on the XMLReader
+	  header.
+	* c14n.c: Alexsey fixed C14N bug with processing namespaces
+	  from attributes
+
 Mon Apr 19 23:27:46 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: fixed a stupid () error + Mark name.

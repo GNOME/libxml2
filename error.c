@@ -87,7 +87,7 @@ initGenericErrorDefaultFunc(xmlGenericErrorFunc * handler)
     if (handler == NULL)
         xmlGenericError = xmlGenericErrorDefaultFunc;
     else
-        (*handler) = xmlGenericErrorDefaultFunc;
+        xmlGenericError = (*handler);
 }
 
 /**

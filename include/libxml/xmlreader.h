@@ -21,6 +21,27 @@
 extern "C" {
 #endif
 
+/**
+ * xmlTextReaderMode:
+ *
+ * Internal state values for the reader.
+ */
+typedef enum {
+    XML_TEXTREADER_MODE_INITIAL = 0,
+    XML_TEXTREADER_MODE_INTERACTIVE = 1,
+    XML_TEXTREADER_MODE_ERROR = 2,
+    XML_TEXTREADER_MODE_EOF =3,
+    XML_TEXTREADER_MODE_CLOSED = 4,
+    XML_TEXTREADER_MODE_READING = 5
+} xmlTextReaderMode;
+
+/**
+ * xmlParserProperties:
+ *
+ * Some common options to use with xmlTextReaderSetParserProp, but it
+ * is better to use xmlParserOption and the xmlReaderNewxxx and 
+ * xmlReaderForxxx APIs now.
+ */
 typedef enum {
     XML_PARSER_LOADDTD = 1,
     XML_PARSER_DEFAULTATTRS = 2,
@@ -28,6 +49,12 @@ typedef enum {
     XML_PARSER_SUBST_ENTITIES = 4
 } xmlParserProperties;
 
+/**
+ * xmlParserSeverities:
+ *
+ * How severe an error callback is when the per-reader error callback API
+ * is used.
+ */
 typedef enum {
     XML_PARSER_SEVERITY_VALIDITY_WARNING = 1,
     XML_PARSER_SEVERITY_VALIDITY_ERROR = 2,
@@ -35,6 +62,11 @@ typedef enum {
     XML_PARSER_SEVERITY_ERROR = 4
 } xmlParserSeverities;
 
+/**
+ * xmlReaderTypes:
+ *
+ * Predefined constants for the different types of nodes.
+ */
 typedef enum {
     XML_READER_TYPE_NONE = 0,
     XML_READER_TYPE_ELEMENT = 1,
@@ -56,7 +88,18 @@ typedef enum {
     XML_READER_TYPE_XML_DECLARATION = 17
 } xmlReaderTypes;
 
+/**
+ * xmlTextReader:
+ *
+ * Structure for an xmlReader context.
+ */
 typedef struct _xmlTextReader xmlTextReader;
+
+/**
+ * xmlTextReaderPtr:
+ *
+ * Pointer to an xmlReader context.
+ */
 typedef xmlTextReader *xmlTextReaderPtr;
 
 /*

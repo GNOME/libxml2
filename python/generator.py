@@ -344,6 +344,8 @@ def skip_function(name):
     # the next function is defined in libxml.c
     if name == "xmlRelaxNGFreeValidCtxt":
         return 1
+    if name == "xmlFreeValidCtxt":
+        return 1
 #
 # Those are skipped because the Const version is used of the bindings
 # instead.

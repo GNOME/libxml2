@@ -37,7 +37,8 @@ PYTESTS=	\
     sync.py \
     tstLastError.py \
     indexes.py \
-    dtdvalid.py
+    dtdvalid.py \
+    tstmem.py
 
 XMLS=		\
     tst.xml	\

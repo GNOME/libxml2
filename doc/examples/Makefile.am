@@ -95,7 +95,7 @@ reader3_DEPENDENCIES= $(DEPS)
 reader3_LDADD= @RDL_LIBS@ $(LDADDS)
 
 valgrind: 
-	$(MAKE) CHECKER='valgrind -q' tests
+	$(MAKE) CHECKER='valgrind' tests
 
 tests: $(noinst_PROGRAMS)
 	@(echo '## examples regression tests')

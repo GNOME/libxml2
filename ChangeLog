@@ -1,3 +1,11 @@
+Wed Mar  2 11:45:18 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am doc/examples/Makefile.am python/tests/Makefile.am
+	  xstc/Makefile.am: try to fix a problem with valgrind.
+	* python/generator.py python/libxml.c python/tests/Makefile.am
+	  python/tests/tstmem.py: applied memory leak fix from Brent Hendricks
+	  c.f. bug #165349
+
 Mon Feb 28 11:18:24 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* tree.c: Changed xmlSearchNsByHref to call xmlNsInScope with

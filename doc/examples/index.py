@@ -249,7 +249,7 @@ install-data-local:
     for example in examples:
         Makefile = Makefile + "%s_SOURCES=%s.c\n%s_LDFLAGS=\n%s_DEPENDENCIES= $(DEPS)\n%s_LDADD= @RDL_LIBS@ $(LDADDS)\n\n" % (example, example, example,
 	       example, example)
-    Makefile = Makefile + "valgrind: \n\t$(MAKE) CHECKER='valgrind -q' tests\n\n"
+    Makefile = Makefile + "valgrind: \n\t$(MAKE) CHECKER='valgrind' tests\n\n"
     Makefile = Makefile + "tests: $(noinst_PROGRAMS)\n"
     Makefile = Makefile + "\t@(echo '## examples regression tests')\n"
     Makefile = Makefile + "\t@(echo > .memdump)\n"

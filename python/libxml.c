@@ -1858,6 +1858,31 @@ libxml_xmlSetValidErrors(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
     return (py_retval);
 }
 
+
+PyObject *
+libxml_xmlFreeValidCtxt(PyObject *self ATTRIBUTE_UNUSED, PyObject *args) {
+    xmlValidCtxtPtr cur;
+    xmlValidCtxtPyCtxtPtr pyCtxt;
+    PyObject *pyobj_cur;
+
+    if (!PyArg_ParseTuple(args, (char *)"O:xmlFreeValidCtxt", &pyobj_cur))
+        return(NULL);
+    cur = (xmlValidCtxtPtr) PyValidCtxt_Get(pyobj_cur);
+
+    pyCtxt = (xmlValidCtxtPyCtxtPtr)(cur->userData);
+    if (pyCtxt != NULL)
+    {
+            Py_XDECREF(pyCtxt->error);
+            Py_XDECREF(pyCtxt->warn);
+            Py_XDECREF(pyCtxt->arg);
+            xmlFree(pyCtxt);
+    }
+
+    xmlFreeValidCtxt(cur);
+    Py_INCREF(Py_None);
+    return(Py_None);
+}
+
 /************************************************************************
  *									*
  *                      Per xmlTextReader error handler                 *
@@ -3618,6 +3643,7 @@ static PyMethodDef libxmlMethods[] = {
     {(char *) "doc", libxml_doc, METH_VARARGS, NULL},
     {(char *) "xmlNewNode", libxml_xmlNewNode, METH_VARARGS, NULL},
     {(char *)"xmlSetValidErrors", libxml_xmlSetValidErrors, METH_VARARGS, NULL},
+    {(char *)"xmlFreeValidCtxt", libxml_xmlFreeValidCtxt, METH_VARARGS, NULL},
 #ifdef LIBXML_OUTPUT_ENABLED
     {(char *) "serializeNode", libxml_serializeNode, METH_VARARGS, NULL},
     {(char *) "saveNodeTo", libxml_saveNodeTo, METH_VARARGS, NULL},

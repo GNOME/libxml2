@@ -2144,6 +2144,12 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
 {
     xmlSAXHandler *sax;
 
+    if(ctxt==NULL) {
+	xmlGenericError(xmlGenericErrorContext,
+		"xmlInitParserCtxt: NULL context given\n");
+        return;
+    }
+
     xmlDefaultSAXHandlerInit();
 
     sax = (xmlSAXHandler *) xmlMalloc(sizeof(xmlSAXHandler));
@@ -2360,6 +2366,8 @@ xmlNewParserCtxt()
 void
 xmlClearParserCtxt(xmlParserCtxtPtr ctxt)
 {
+  if (ctxt==NULL)
+    return;
   xmlClearNodeInfoSeq(&ctxt->node_seq);
   xmlInitParserCtxt(ctxt);
 }

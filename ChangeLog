@@ -1,3 +1,8 @@
+Fri Aug 31 16:51:28 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* libxml.4 parser.c: doc updates from Heiko Rupp
+	* parserInternals.c: 2 sanity checks from Heiko Rupp
+
 Tue Aug 28 22:38:45 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: applied patch from Armin Sander to make some pointers

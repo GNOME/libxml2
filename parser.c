@@ -22,7 +22,7 @@
  * The DOM tree build is realized from the default SAX callbacks in
  * the module SAX.c.
  * The routines doing the validation checks are in valid.c and called either
- * from the SAx callbacks or as standalones functions using a preparsed
+ * from the SAX callbacks or as standalones functions using a preparsed
  * document.
  *
  * See Copyright for the status of this software.
@@ -9773,7 +9773,8 @@ xmlRecoverDoc(xmlChar *cur) {
  * parse an XML file and build a tree. Automatic support for ZLIB/Compress
  * compressed document is provided by default if found at compile-time.
  *
- * Returns the resulting document tree
+ * Returns the resulting document tree if the file was wellformed,
+ * NULL otherwise.
  */
 
 xmlDocPtr

@@ -1,3 +1,8 @@
+Wed Oct 16 20:01:46 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: fixed a XML Namespace compliance bug reported by
+	  Alexander Grimalovsky
+
 Wed Oct 16 17:18:42 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLtree.c: fixed serialization of script and style when

@@ -1688,10 +1688,29 @@ xmlSplitQName(xmlParserCtxtPtr ctxt, const xmlChar *name, xmlChar **prefix) {
 
 
     if (c == ':') {
-	c = *cur++;
+	c = *cur;
 	if (c == 0) return(ret);
         *prefix = ret;
 	len = 0;
+
+	/*
+	 * Check that the first character is proper to start
+	 * a new name
+	 */
+	if (!(((c >= 0x61) && (c <= 0x7A)) ||
+	      ((c >= 0x41) && (c <= 0x5A)) ||
+	      (c == '_') || (c == ':'))) {
+	    int l;
+	    int first = CUR_SCHAR(cur, l);
+
+	    if (!IS_LETTER(first) && (first != '_')) {
+		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		    ctxt->sax->error(ctxt->userData,
+			    "Name %s is not XML Namespace compliant\n",
+			             name);
+	    }
+	}
+	cur++;
 
 	while ((c != 0) && (len < max)) { /* tested bigname2.xml */
 	    buf[len++] = c;

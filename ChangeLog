@@ -1,3 +1,9 @@
+Fri Nov 21 20:50:59 MST 2003 John Fleck <jfleck@inkstain.net>
+
+	* doc/xml.html, docs.html: remove reference to gtk-doc now that
+	Daniel has removed it, fix link to George's IBM article, other
+	minor edits
+
 Fri Nov 21 01:26:00 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemas.c: applied patch from Robert Stepanek to start 

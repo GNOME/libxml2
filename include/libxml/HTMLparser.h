@@ -27,7 +27,7 @@ typedef xmlNodePtr htmlNodePtr;
  * Internal description of an HTML element
  */
 typedef struct htmlElemDesc {
-    const CHAR *name;	/* The tag name */
+    const char *name;	/* The tag name */
     int startTag;       /* Whether the start tag can be implied */
     int endTag;         /* Whether the end tag can be implied */
     int empty;          /* Is this an empty element ? */
@@ -41,7 +41,7 @@ typedef struct htmlElemDesc {
  */
 typedef struct htmlEntityDesc {
     int value;		/* the UNICODE value for the character */
-    const CHAR *name;	/* The entity name */
+    const char *name;	/* The entity name */
     const char *desc;   /* the description */
 } htmlEntityDesc, *htmlEntityDescPtr;
 

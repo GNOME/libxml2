@@ -269,7 +269,7 @@ htmlElemDesc  html40ElementTable[] = {
  * any tag of each line implies the end of the current element if the type of
  * that element is in the same line
  */
-CHAR *htmlEquEnd[] = {
+char *htmlEquEnd[] = {
 "DT", "DD", "LI", "OPTION", NULL,
 "H1", "H2", "H3", "H4", "H5", "H6", NULL,
 "OL", "MENU", "DIR", "ADDRESS", "PRE", "LISTING", "XMP", NULL,
@@ -284,7 +284,7 @@ NULL
 /*
  * start tags that imply the end of current element
  */
-CHAR *htmlStartClose[] = {
+char *htmlStartClose[] = {
 "FORM",		"FORM", "P", "HR", "H1", "H2", "H3", "H4", "H5", "H6",
 		"DL", "UL", "OL", "MENU", "DIR", "ADDRESS", "PRE",
 		"LISTING", "XMP", "HEAD", NULL,
@@ -338,7 +338,7 @@ CHAR *htmlStartClose[] = {
 NULL
 };
 
-static CHAR** htmlStartCloseIndex[100];
+static char** htmlStartCloseIndex[100];
 static int htmlStartCloseIndexinitialized = 0;
 
 /************************************************************************
@@ -382,7 +382,7 @@ htmlTagLookup(const CHAR *tag) {
 
     for (i = 0; i < (sizeof(html40ElementTable) /
                      sizeof(html40ElementTable[0]));i++) {
-        if (!xmlStrcmp(tag, html40ElementTable[i].name))
+        if (!xmlStrcmp(tag, BAD_CAST html40ElementTable[i].name))
 	    return(&html40ElementTable[i]);
     }
     return(NULL);
@@ -401,7 +401,7 @@ htmlTagLookup(const CHAR *tag) {
 int
 htmlCheckAutoClose(const CHAR *new, const CHAR *old) {
     int i, index;
-    CHAR **close;
+    char **close;
 
     if (htmlStartCloseIndexinitialized == 0) htmlInitAutoClose();
 
@@ -409,13 +409,13 @@ htmlCheckAutoClose(const CHAR *new, const CHAR *old) {
     for (index = 0; index < 100;index++) {
         close = htmlStartCloseIndex[index];
 	if (close == NULL) return(0);
-	if (!xmlStrcmp(*close, new)) break;
+	if (!xmlStrcmp(BAD_CAST *close, new)) break;
     }
 
     i = close - htmlStartClose;
     i++;
     while (htmlStartClose[i] != NULL) {
-        if (!xmlStrcmp(htmlStartClose[i], old)) {
+        if (!xmlStrcmp(BAD_CAST htmlStartClose[i], old)) {
 	    return(1);
 	}
 	i++;
@@ -789,7 +789,7 @@ htmlEntityLookup(const CHAR *name) {
 
     for (i = 0;i < (sizeof(html40EntitiesTable)/
                     sizeof(html40EntitiesTable[0]));i++) {
-        if (!xmlStrcmp(name, html40EntitiesTable[i].name)) {
+        if (!xmlStrcmp(name, BAD_CAST html40EntitiesTable[i].name)) {
 #ifdef DEBUG
             printf("Found entity %s\n", name);
 #endif
@@ -850,7 +850,7 @@ htmlDecodeEntities(htmlParserCtxtPtr ctxt, int len,
         if (CUR == '&') {
 	    if (NXT(1) == '#') {
 		int val = htmlParseCharRef(ctxt);
-		/* TODO: invalid for UTF-8 variable encoding !!! */
+		/* invalid for UTF-8 variable encoding !!!!! */
 		*out++ = val;
 		nbchars += 3; /* !!!! */
 	    } else {
@@ -871,7 +871,7 @@ htmlDecodeEntities(htmlParserCtxtPtr ctxt, int len,
 			}
 		        *out++ = ';';
 		    } else {
-			/* TODO: invalid for UTF-8 variable encoding !!! */
+			/* invalid for UTF-8 variable encoding !!!!! */
 			*out++ = (CHAR)ent->value;
 			if (out - buffer > buffer_size - 100) {
 			    int index = out - buffer;
@@ -885,7 +885,7 @@ htmlDecodeEntities(htmlParserCtxtPtr ctxt, int len,
 		}
 	    }
 	} else {
-	    /*  TODO: invalid for UTF-8 , use COPY(out); */
+	    /*  invalid for UTF-8 , use COPY(out); !!!!! */
 	    *out++ = CUR;
 	    nbchars++;
 	    if (out - buffer > buffer_size - 100) {
@@ -1050,8 +1050,6 @@ htmlSwitchEncoding(htmlParserCtxtPtr ctxt, xmlCharEncoding enc)
  *
  * Is this a sequence of blank chars that one can ignore ?
  *
- * TODO: to be corrected accodingly to DTD information if available
- *
  * Returns 1 if ignorable 0 otherwise.
  */
 
@@ -1125,7 +1123,7 @@ htmlNewDoc(const CHAR *URI, const CHAR *ExternalID) {
     cur->type = XML_DOCUMENT_NODE;
     cur->version = NULL;
     cur->intSubset = NULL;
-    xmlCreateIntSubset(cur, "HTML", ExternalID, URI);
+    xmlCreateIntSubset(cur, BAD_CAST "HTML", ExternalID, URI);
     cur->name = NULL;
     cur->root = NULL; 
     cur->extSubset = NULL;
@@ -1338,7 +1336,7 @@ htmlParseEntityRef(htmlParserCtxtPtr ctxt, CHAR **str) {
 		                     "htmlParseEntityRef: expecting ';'\n");
 		ctxt->wellFormed = 0;
 		if (ctxt->sax->characters != NULL) {
-		    ctxt->sax->characters(ctxt->userData, "&", 1);
+		    ctxt->sax->characters(ctxt->userData, BAD_CAST "&", 1);
 		    ctxt->sax->characters(ctxt->userData, name, xmlStrlen(name));
 		}
 		free(name);
@@ -1817,7 +1815,6 @@ htmlParseDocTypeDecl(htmlParserCtxtPtr ctxt) {
 
     /*
      * Cleanup, since we don't use all those identifiers
-     * TODO : the DOCTYPE if available should be stored !
      */
     if (URI != NULL) free(URI);
     if (ExternalID != NULL) free(ExternalID);
@@ -2113,7 +2110,7 @@ htmlParseReference(htmlParserCtxtPtr ctxt) {
 
     if (NXT(1) == '#') {
 	val = htmlParseCharRef(ctxt);
-	/* TODO: invalid for UTF-8 variable encoding !!! */
+	/* invalid for UTF-8 variable encoding !!!!! */
 	out[0] = val;
 	out[1] = 0;
 	if ((ctxt->sax != NULL) && (ctxt->sax->characters != NULL))
@@ -2123,12 +2120,12 @@ htmlParseReference(htmlParserCtxtPtr ctxt) {
 	if (name == NULL) return; /* Shall we output & anyway ? */
 	if ((ent == NULL) || (ent->value <= 0) || (ent->value >= 255)) {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->characters != NULL)) {
-		ctxt->sax->characters(ctxt->userData, "&", 1);
+		ctxt->sax->characters(ctxt->userData, BAD_CAST "&", 1);
 		ctxt->sax->characters(ctxt->userData, name, xmlStrlen(name));
-		ctxt->sax->characters(ctxt->userData, ";", 1);
+		ctxt->sax->characters(ctxt->userData, BAD_CAST ";", 1);
 	    }
 	} else {
-	    /* TODO: invalid for UTF-8 variable encoding !!! */
+	    /* invalid for UTF-8 variable encoding !!!!! */
 	    out[0] = ent->value;
 	    out[1] = 0;
 	    if ((ctxt->sax != NULL) && (ctxt->sax->characters != NULL))
@@ -2339,15 +2336,10 @@ htmlParseDocument(htmlParserCtxtPtr ctxt) {
 
     GROW;
     /*
-     * SAX: beginning of the document processing TODO: update for HTML.
+     * SAX: beginning of the document processing.
      */
     if ((ctxt->sax) && (ctxt->sax->setDocumentLocator))
         ctxt->sax->setDocumentLocator(ctxt->userData, &xmlDefaultSAXLocator);
-
-    /*
-     * We should check for encoding here and plug-in some
-     * conversion code TODO !!!!
-     */
 
     /*
      * Wipe out everything which is before the first '<'

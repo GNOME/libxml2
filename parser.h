@@ -47,6 +47,10 @@ typedef struct xmlParserInput {
 } xmlParserInput;
 typedef xmlParserInput *xmlParserInputPtr;
 
+typedef xmlParserInputPtr (*xmlExternalEntityLoader)(const char *URL,
+						     const char *ID,
+						     xmlParserInputPtr context);
+
 /**
  * the parser can be asked to collect Node informations, i.e. at what
  * place in the file they were detected. 
@@ -84,7 +88,7 @@ typedef enum xmlParserInputState {
     XML_PARSER_DTD,
     XML_PARSER_EPILOG,
     XML_PARSER_COMMENT,
-    XML_PARSER_CDATA_SECTION,
+    XML_PARSER_CDATA_SECTION 
 } xmlParserInputState;
 
 /**
@@ -249,66 +253,104 @@ extern xmlSAXHandler htmlDefaultSAXHandler;
  * Input functions
  */
 
-int xmlParserInputRead(xmlParserInputPtr in, int len);
-int xmlParserInputGrow(xmlParserInputPtr in, int len);
+int		xmlParserInputRead	(xmlParserInputPtr in,
+					 int len);
+int		xmlParserInputGrow	(xmlParserInputPtr in,
+					 int len);
 
 /**
  * CHAR handling
  */
-CHAR *xmlStrdup(const CHAR *cur);
-CHAR *xmlStrndup(const CHAR *cur, int len);
-CHAR *xmlStrsub(const CHAR *str, int start, int len);
-const CHAR *xmlStrchr(const CHAR *str, CHAR val);
-const CHAR *xmlStrstr(const CHAR *str, CHAR *val);
-int xmlStrcmp(const CHAR *str1, const CHAR *str2);
-int xmlStrncmp(const CHAR *str1, const CHAR *str2, int len);
-int xmlStrlen(const CHAR *str);
-CHAR *xmlStrcat(CHAR *cur, const CHAR *add);
-CHAR *xmlStrncat(CHAR *cur, const CHAR *add, int len);
+CHAR *		xmlStrdup		(const CHAR *cur);
+CHAR *		xmlStrndup		(const CHAR *cur,
+					 int len);
+CHAR *		xmlStrsub		(const CHAR *str,
+					 int start,
+					 int len);
+const CHAR *	xmlStrchr		(const CHAR *str,
+					 CHAR val);
+const CHAR *	xmlStrstr		(const CHAR *str,
+					 CHAR *val);
+int		xmlStrcmp		(const CHAR *str1,
+					 const CHAR *str2);
+int		xmlStrncmp		(const CHAR *str1,
+					 const CHAR *str2,
+					 int len);
+int		xmlStrlen		(const CHAR *str);
+CHAR *		xmlStrcat		(CHAR *cur,
+					 const CHAR *add);
+CHAR *		xmlStrncat		(CHAR *cur,
+					 const CHAR *add,
+					 int len);
 
 /**
  * Basic parsing Interfaces
  */
-xmlDocPtr xmlParseDoc(CHAR *cur);
-xmlDocPtr xmlParseMemory(char *buffer, int size);
-xmlDocPtr xmlParseFile(const char *filename);
-int xmlSubstituteEntitiesDefault(int val);
+xmlDocPtr	xmlParseDoc		(CHAR *cur);
+xmlDocPtr	xmlParseMemory		(char *buffer,
+					 int size);
+xmlDocPtr	xmlParseFile		(const char *filename);
+int		xmlSubstituteEntitiesDefault(int val);
 
 /**
  * Recovery mode 
  */
-xmlDocPtr xmlRecoverDoc(CHAR *cur);
-xmlDocPtr xmlRecoverMemory(char *buffer, int size);
-xmlDocPtr xmlRecoverFile(const char *filename);
+xmlDocPtr	xmlRecoverDoc		(CHAR *cur);
+xmlDocPtr	xmlRecoverMemory	(char *buffer,
+					 int size);
+xmlDocPtr	xmlRecoverFile		(const char *filename);
 
 /**
  * Less common routines and SAX interfaces
  */
-int xmlParseDocument(xmlParserCtxtPtr ctxt);
-xmlDocPtr xmlSAXParseDoc(xmlSAXHandlerPtr sax, CHAR *cur, int recovery);
-xmlDocPtr xmlSAXParseMemory(xmlSAXHandlerPtr sax, char *buffer,
-                                   int size, int recovery);
-xmlDocPtr xmlSAXParseFile(xmlSAXHandlerPtr sax, const char *filename,
-                                 int recovery);
-xmlDtdPtr xmlParseDTD(const CHAR *ExternalID, const CHAR *SystemID);
-xmlDtdPtr xmlSAXParseDTD(xmlSAXHandlerPtr sax, const CHAR *ExternalID,
-                         const CHAR *SystemID);
-void xmlInitParserCtxt(xmlParserCtxtPtr ctxt);
-void xmlClearParserCtxt(xmlParserCtxtPtr ctxt);
-void xmlSetupParserForBuffer(xmlParserCtxtPtr ctxt, const CHAR* buffer,
-                                    const char* filename);
+int		xmlParseDocument	(xmlParserCtxtPtr ctxt);
+xmlDocPtr	xmlSAXParseDoc		(xmlSAXHandlerPtr sax,
+					 CHAR *cur,
+					 int recovery);
+xmlDocPtr	xmlSAXParseMemory	(xmlSAXHandlerPtr sax,
+					 char *buffer,
+                                   	 int size,
+					 int recovery);
+xmlDocPtr	xmlSAXParseFile		(xmlSAXHandlerPtr sax,
+					 const char *filename,
+					 int recovery);
+xmlDtdPtr	xmlParseDTD		(const CHAR *ExternalID,
+					 const CHAR *SystemID);
+xmlDtdPtr	xmlSAXParseDTD		(xmlSAXHandlerPtr sax,
+					 const CHAR *ExternalID,
+					 const CHAR *SystemID);
+void		xmlInitParserCtxt	(xmlParserCtxtPtr ctxt);
+void		xmlClearParserCtxt	(xmlParserCtxtPtr ctxt);
+void		xmlSetupParserForBuffer	(xmlParserCtxtPtr ctxt,
+					 const CHAR* buffer,
+					 const char* filename);
+void		xmlDefaultSAXHandlerInit(void);
+void		htmlDefaultSAXHandlerInit(void);
 
-const xmlParserNodeInfo* xmlParserFindNodeInfo(const xmlParserCtxt* ctxt,
+/**
+ * Node infos
+ */
+const xmlParserNodeInfo*
+		xmlParserFindNodeInfo	(const xmlParserCtxt* ctxt,
                                                const xmlNode* node);
-void xmlInitNodeInfoSeq(xmlParserNodeInfoSeqPtr seq);
-void xmlClearNodeInfoSeq(xmlParserNodeInfoSeqPtr seq);
+void		xmlInitNodeInfoSeq	(xmlParserNodeInfoSeqPtr seq);
+void		xmlClearNodeInfoSeq	(xmlParserNodeInfoSeqPtr seq);
 unsigned long xmlParserFindNodeInfoIndex(const xmlParserNodeInfoSeq* seq,
                                          const xmlNode* node);
-void xmlParserAddNodeInfo(xmlParserCtxtPtr ctxt,
-                          const xmlParserNodeInfo* info);
+void		xmlParserAddNodeInfo	(xmlParserCtxtPtr ctxt,
+					 const xmlParserNodeInfo* info);
 
-void xmlDefaultSAXHandlerInit(void);
-void htmlDefaultSAXHandlerInit(void);
+/*
+ * External entities handling actually implemented in xmlIO
+ */
+
+void		xmlSetExternalEntityLoader(xmlExternalEntityLoader f);
+xmlExternalEntityLoader
+		xmlGetExternalEntityLoader(void);
+xmlParserInputPtr
+		xmlLoadExternalEntity	(const char *URL,
+					 const char *ID,
+					 xmlParserInputPtr context);
 #ifdef __cplusplus
 }
 #endif

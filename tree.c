@@ -3,8 +3,6 @@
  *
  * See Copyright for the status of this software.
  *
- * TODO Cleanup the Dump mechanism.
- *
  * Daniel.Veillard@w3.org
  */
 
@@ -395,6 +393,7 @@ xmlNewDoc(const CHAR *version) {
     cur->encoding = NULL;
     cur->standalone = -1;
     cur->compression = xmlCompressMode;
+    cur->ids = NULL;
 #ifndef XML_WITHOUT_CORBA
     cur->_private = NULL;
     cur->vepv = NULL;
@@ -424,6 +423,7 @@ xmlFreeDoc(xmlDocPtr cur) {
     if (cur->intSubset != NULL) xmlFreeDtd(cur->intSubset);
     if (cur->extSubset != NULL) xmlFreeDtd(cur->extSubset);
     if (cur->oldNs != NULL) xmlFreeNsList(cur->oldNs);
+    if (cur->ids != NULL) xmlFreeIDTable((xmlIDTablePtr) cur->ids);
     memset(cur, -1, sizeof(xmlDoc));
     free(cur);
 }
@@ -738,6 +738,66 @@ xmlNewProp(xmlNodePtr node, const CHAR *name, const CHAR *value) {
 
     cur->type = XML_ATTRIBUTE_NODE;
     cur->node = node; 
+    cur->ns = NULL;
+    cur->name = xmlStrdup(name);
+    if (value != NULL)
+	cur->val = xmlStringGetNodeList(node->doc, value);
+    else 
+	cur->val = NULL;
+#ifndef XML_WITHOUT_CORBA
+    cur->_private = NULL;
+    cur->vepv = NULL;
+#endif
+
+    /*
+     * Add it at the end to preserve parsing order ...
+     */
+    cur->next = NULL;
+    if (node != NULL) {
+	if (node->properties == NULL) {
+	    node->properties = cur;
+	} else {
+	    xmlAttrPtr prev = node->properties;
+
+	    while (prev->next != NULL) prev = prev->next;
+	    prev->next = cur;
+	}
+    }
+    return(cur);
+}
+
+/**
+ * xmlNewNsProp:
+ * @node:  the holding node
+ * @ns:  the namespace
+ * @name:  the name of the attribute
+ * @value:  the value of the attribute
+ *
+ * Create a new property tagged with a namespace and carried by a node.
+ * Returns a pointer to the attribute
+ */
+xmlAttrPtr
+xmlNewNsProp(xmlNodePtr node, xmlNsPtr ns, const CHAR *name,
+           const CHAR *value) {
+    xmlAttrPtr cur;
+
+    if (name == NULL) {
+        fprintf(stderr, "xmlNewProp : name == NULL\n");
+	return(NULL);
+    }
+
+    /*
+     * Allocate a new property and fill the fields.
+     */
+    cur = (xmlAttrPtr) malloc(sizeof(xmlAttr));
+    if (cur == NULL) {
+        fprintf(stderr, "xmlNewProp : malloc failed\n");
+	return(NULL);
+    }
+
+    cur->type = XML_ATTRIBUTE_NODE;
+    cur->node = node; 
+    cur->ns = ns;
     cur->name = xmlStrdup(name);
     if (value != NULL)
 	cur->val = xmlStringGetNodeList(node->doc, value);
@@ -844,6 +904,54 @@ xmlFreeProp(xmlAttrPtr cur) {
     if (cur->val != NULL) xmlFreeNodeList(cur->val);
     memset(cur, -1, sizeof(xmlAttr));
     free(cur);
+}
+
+/**
+ * xmlNewPI:
+ * @name:  the processing instruction name
+ * @content:  the PI content
+ *
+ * Creation of a processing instruction element.
+ * Returns a pointer to the new node object.
+ */
+xmlNodePtr
+xmlNewPI(const CHAR *name, const CHAR *content) {
+    xmlNodePtr cur;
+
+    if (name == NULL) {
+        fprintf(stderr, "xmlNewPI : name == NULL\n");
+	return(NULL);
+    }
+
+    /*
+     * Allocate a new node and fill the fields.
+     */
+    cur = (xmlNodePtr) malloc(sizeof(xmlNode));
+    if (cur == NULL) {
+        fprintf(stderr, "xmlNewPI : malloc failed\n");
+	return(NULL);
+    }
+
+    cur->type = XML_PI_NODE;
+    cur->doc = NULL;
+    cur->parent = NULL; 
+    cur->next = NULL;
+    cur->prev = NULL;
+    cur->childs = NULL;
+    cur->last = NULL;
+    cur->properties = NULL;
+    cur->name = xmlStrdup(name);
+    cur->ns = NULL;
+    cur->nsDef = NULL;
+    if (content != NULL)
+	cur->content = xmlStrdup(content);
+    else
+	cur->content = NULL;
+#ifndef XML_WITHOUT_CORBA
+    cur->_private = NULL;
+    cur->vepv = NULL;
+#endif
+    return(cur);
 }
 
 /**
@@ -1240,6 +1348,50 @@ xmlNewChild(xmlNodePtr parent, xmlNsPtr ns,
 }
 
 /**
+ * xmlAddSibling:
+ * @cur:  the child node
+ * @elem:  the new node
+ *
+ * Add a new element to the list of siblings of @cur
+ * Returns the element or NULL in case of error.
+ */
+xmlNodePtr
+xmlAddSibling(xmlNodePtr cur, xmlNodePtr elem) {
+    xmlNodePtr parent;
+
+    if (cur == NULL) {
+        fprintf(stderr, "xmlAddSibling : cur == NULL\n");
+	return(NULL);
+    }
+
+    if (elem == NULL) {
+        fprintf(stderr, "xmlAddSibling : elem == NULL\n");
+	return(NULL);
+    }
+
+    if ((cur->doc != NULL) && (elem->doc != NULL) &&
+        (cur->doc != elem->doc)) {
+	fprintf(stderr, 
+	        "xmlAddSibling: Elements moved to a different document\n");
+    }
+
+    while (cur->next != NULL) cur = cur->next;
+
+    if (elem->doc == NULL)
+	elem->doc = cur->doc; /* the parent may not be linked to a doc ! */
+
+    parent = cur->parent;
+    elem->prev = cur;
+    elem->next = NULL;
+    elem->parent = parent;
+    cur->next = elem;
+    if (parent != NULL)
+	parent->last = elem;
+
+    return(elem);
+}
+
+/**
  * xmlAddChild:
  * @parent:  the parent node
  * @cur:  the child node
@@ -1451,6 +1603,7 @@ xmlCopyNamespaceList(xmlNsPtr cur) {
 
 /**
  * xmlCopyProp:
+ * @target:  the element where the attribute will be grafted
  * @cur:  the attribute
  *
  * Do a copy of the attribute.
@@ -1458,7 +1611,7 @@ xmlCopyNamespaceList(xmlNsPtr cur) {
  * Returns: a new xmlAttrPtr, or NULL in case of error.
  */
 xmlAttrPtr
-xmlCopyProp(xmlAttrPtr cur) {
+xmlCopyProp(xmlNodePtr target, xmlAttrPtr cur) {
     xmlAttrPtr ret;
 
     if (cur == NULL) return(NULL);
@@ -1467,6 +1620,15 @@ xmlCopyProp(xmlAttrPtr cur) {
     else
 	ret = xmlNewDocProp(NULL, cur->name, NULL);
     if (ret == NULL) return(NULL);
+    
+    if ((cur->ns != NULL) && (target != NULL)) {
+        xmlNsPtr ns;
+
+	ns = xmlSearchNs(target->doc, target, cur->ns->prefix);
+	ret->ns = ns;
+    } else
+        ret->ns = NULL;
+
     if (cur->val != NULL)
 	ret->val = xmlCopyNodeList(cur->val);
     return(ret);
@@ -1474,6 +1636,7 @@ xmlCopyProp(xmlAttrPtr cur) {
 
 /**
  * xmlCopyPropList:
+ * @target:  the element where the attributes will be grafted
  * @cur:  the first attribute
  *
  * Do a copy of an attribute list.
@@ -1481,12 +1644,12 @@ xmlCopyProp(xmlAttrPtr cur) {
  * Returns: a new xmlAttrPtr, or NULL in case of error.
  */
 xmlAttrPtr
-xmlCopyPropList(xmlAttrPtr cur) {
+xmlCopyPropList(xmlNodePtr target, xmlAttrPtr cur) {
     xmlAttrPtr ret = NULL;
     xmlAttrPtr p = NULL,q;
 
     while (cur != NULL) {
-        q = xmlCopyProp(cur);
+        q = xmlCopyProp(target, cur);
 	if (p == NULL) {
 	    ret = p = q;
 	} else {
@@ -1557,8 +1720,6 @@ xmlStaticCopyNode(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
         xmlAddChild(parent, ret);
     
     if (!recursive) return(ret);
-    if (node->properties != NULL)
-        ret->properties = xmlCopyPropList(node->properties);
     if (node->nsDef != NULL)
         ret->nsDef = xmlCopyNamespaceList(node->nsDef);
 
@@ -1586,6 +1747,8 @@ xmlStaticCopyNode(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
 	    ret->ns = ns;
 	}
     }
+    if (node->properties != NULL)
+        ret->properties = xmlCopyPropList(ret, node->properties);
     if (node->childs != NULL)
         ret->childs = xmlStaticCopyNodeList(node->childs, doc, ret);
     UPDATE_LAST_CHILD(ret)
@@ -1699,9 +1862,6 @@ xmlCopyDtd(xmlDtdPtr dtd) {
     if (dtd->attributes != NULL)
         ret->attributes = (void *) xmlCopyAttributeTable(
 	                    (xmlAttributeTablePtr) dtd->attributes);
-    /*
-     * TODO: support for Element definitions.
-     */
     return(ret);
 }
 
@@ -1746,6 +1906,44 @@ xmlCopyDoc(xmlDocPtr doc, int recursive) {
  ************************************************************************/
  
 /**
+ * xmlNodeSetLang:
+ * @cur:  the node being changed
+ * @lang:  the langage description
+ *
+ * Searches the language of a node, i.e. the values of the xml:lang
+ * attribute or the one carried by the nearest ancestor.
+ *
+ * Returns a pointer to the lang value, or NULL if not found
+ */
+void
+xmlNodeSetLang(xmlNodePtr cur, const CHAR *lang) {
+    /* TODO xmlNodeSetLang check against the production [33] LanguageID */
+    xmlSetProp(cur, BAD_CAST "xml:lang", lang);
+}
+ 
+/**
+ * xmlNodeGetLang:
+ * @cur:  the node being checked
+ *
+ * Searches the language of a node, i.e. the values of the xml:lang
+ * attribute or the one carried by the nearest ancestor.
+ *
+ * Returns a pointer to the lang value, or NULL if not found
+ */
+const CHAR *
+xmlNodeGetLang(xmlNodePtr cur) {
+    const CHAR *lang;
+
+    while (cur != NULL) {
+        lang = xmlGetProp(cur, BAD_CAST "xml:lang");
+	if (lang != NULL)
+	    return(lang);
+	cur = cur->parent;
+    }
+    return(NULL);
+}
+ 
+/**
  * xmlNodeGetContent:
  * @cur:  the node being read
  *
@@ -1764,10 +1962,20 @@ xmlNodeGetContent(xmlNodePtr cur) {
         case XML_ELEMENT_NODE:
             return(xmlNodeListGetString(cur->doc, cur->childs, 1));
 	    break;
-        case XML_ATTRIBUTE_NODE:
+        case XML_ATTRIBUTE_NODE: {
+	    xmlAttrPtr attr = (xmlAttrPtr) cur;
+	    if (attr->node != NULL)
+		return(xmlNodeListGetString(attr->node->doc, attr->val, 1));
+	    else
+		return(xmlNodeListGetString(NULL, attr->val, 1));
+	    break;
+	}
+        case XML_PI_NODE:
+	    if (cur->content != NULL)
+	        return(xmlStrdup(cur->content));
+	    return(NULL);
         case XML_ENTITY_REF_NODE:
         case XML_ENTITY_NODE:
-        case XML_PI_NODE:
         case XML_COMMENT_NODE:
         case XML_DOCUMENT_NODE:
         case XML_DOCUMENT_TYPE_NODE:
@@ -1821,6 +2029,7 @@ xmlNodeSetContent(xmlNodePtr cur, const CHAR *content) {
 		cur->content = xmlStrdup(content);
 	    else 
 		cur->content = NULL;
+	    break;
         case XML_DOCUMENT_NODE:
         case XML_DOCUMENT_TYPE_NODE:
 	    break;
@@ -1869,6 +2078,7 @@ xmlNodeSetContentLen(xmlNodePtr cur, const CHAR *content, int len) {
 		cur->content = xmlStrndup(content, len);
 	    else 
 		cur->content = NULL;
+	    break;
         case XML_DOCUMENT_NODE:
         case XML_DOCUMENT_TYPE_NODE:
 	    break;
@@ -1985,6 +2195,60 @@ xmlTextMerge(xmlNodePtr first, xmlNodePtr second) {
 }
 
 /**
+ * xmlGetNsList:
+ * @doc:  the document
+ * @node:  the current node
+ *
+ * Search all the namespace applying to a given element.
+ * Returns an NULL terminated array of all the xmlNsPtr found
+ *         that need to be freed by the caller or NULL if no
+ *         namespace if defined
+ */
+xmlNsPtr *
+xmlGetNsList(xmlDocPtr doc, xmlNodePtr node) {
+    xmlNsPtr cur;
+    xmlNsPtr *ret = NULL;
+    int nbns = 0;
+    int maxns = 10;
+    int i;
+
+    while (node != NULL) {
+	cur = node->nsDef;
+	while (cur != NULL) {
+	    if (ret == NULL) {
+	        ret = (xmlNsPtr *) malloc((maxns + 1) * sizeof(xmlNsPtr));
+		if (ret == NULL) {
+		    fprintf(stderr, "xmlGetNsList : out of memory!\n");
+		    return(NULL);
+		}
+		ret[nbns] = NULL;
+	    }
+	    for (i = 0;i < nbns;i++) {
+	        if ((cur->prefix == ret[i]->prefix) ||
+		    (!xmlStrcmp(cur->prefix, ret[i]->prefix))) break;
+	    }
+	    if (i >= nbns) {
+	        if (nbns >= maxns) {
+		    maxns *= 2;
+		    ret = (xmlNsPtr *) realloc(ret,
+		                         (maxns + 1) * sizeof(xmlNsPtr));
+		    if (ret == NULL) {
+			fprintf(stderr, "xmlGetNsList : realloc failed!\n");
+			return(NULL);
+		    }
+		}
+		ret[nbns++] = cur;
+		ret[nbns] = NULL;
+	    }
+
+	    cur = cur->next;
+	}
+	node = node->parent;
+    }
+    return(ret);
+}
+
+/**
  * xmlSearchNs:
  * @doc:  the document
  * @node:  the current node
@@ -2077,7 +2341,7 @@ CHAR *xmlGetProp(xmlNodePtr node, const CHAR *name) {
 	    CHAR *ret;
 
 	    ret = xmlNodeListGetString(node->doc, prop->val, 1);
-	    if (ret == NULL) return(xmlStrdup(""));
+	    if (ret == NULL) return(xmlStrdup((CHAR *)""));
 	    return(ret);
         }
 	prop = prop->next;
@@ -2401,11 +2665,8 @@ xmlBufferWriteChar(xmlBufferPtr buf, const char *string) {
  */
 void
 xmlBufferWriteQuotedString(xmlBufferPtr buf, const CHAR *string) {
-    /*
-     * TODO: fix strchr by xmlStrchr to work coreectly on UTF-8 !!!
-     */
-    if (strchr(string, '"')) {
-        if (strchr(string, '\'')) {
+    if (xmlStrchr(string, '"')) {
+        if (xmlStrchr(string, '\'')) {
 	    fprintf(stderr,
  "xmlBufferWriteQuotedString: string contains quote and double-quotes !\n");
 	}
@@ -2546,7 +2807,6 @@ xmlDtdDump(xmlBufferPtr buf, xmlDocPtr doc) {
 	xmlDumpAttributeTable(buf, (xmlAttributeTablePtr) cur->attributes);
     xmlBufferWriteChar(buf, "]");
 
-    /* TODO !!! a lot more things to dump ... */
     xmlBufferWriteChar(buf, ">\n");
 }
 
@@ -2567,6 +2827,10 @@ xmlAttrDump(xmlBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur) {
 	return;
     }
     xmlBufferWriteChar(buf, " ");
+    if ((cur->ns != NULL) && (cur->ns->prefix != NULL)) {
+        xmlBufferWriteCHAR(buf, cur->ns->prefix);
+	xmlBufferWriteChar(buf, ":");
+    }
     xmlBufferWriteCHAR(buf, cur->name);
     value = xmlNodeListGetString(doc, cur->val, 0);
     if (value) {
@@ -2663,11 +2927,23 @@ xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level) {
 	}
 	return;
     }
+    if (cur->type == XML_PI_NODE) {
+	if (cur->content != NULL) {
+	    xmlBufferWriteChar(buf, "<?");
+	    xmlBufferWriteCHAR(buf, cur->name);
+	    if (cur->content != NULL) {
+		xmlBufferWriteChar(buf, " ");
+		xmlBufferWriteCHAR(buf, cur->content);
+	    }
+	    xmlBufferWriteChar(buf, "?>\n");
+	}
+	return;
+    }
     if (cur->type == XML_COMMENT_NODE) {
 	if (cur->content != NULL) {
 	    xmlBufferWriteChar(buf, "<!--");
 	    xmlBufferWriteCHAR(buf, cur->content);
-	    xmlBufferWriteChar(buf, "-->");
+	    xmlBufferWriteChar(buf, "-->\n");
 	}
 	return;
     }
@@ -2757,12 +3033,18 @@ xmlDocContentDump(xmlBufferPtr buf, xmlDocPtr cur) {
     if (cur->intSubset != NULL)
         xmlDtdDump(buf, cur);
     if (cur->root != NULL) {
+        xmlNodePtr child = cur->root;
+
 	/* global namespace definitions, the old way */
 	if (oldXMLWDcompatibility)
 	    xmlGlobalNsListDump(buf, cur->oldNs);
 	else 
 	    xmlUpgradeOldNs(cur);
-        xmlNodeDump(buf, cur, cur->root, 0);
+	
+	while (child != NULL) {
+	    xmlNodeDump(buf, cur, child, 0);
+	    child = child->next;
+	}
     }
 }
 

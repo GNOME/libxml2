@@ -57,7 +57,7 @@ while test $# -gt 0; do
        	;;
 
     --libs)
-       	echo -L@libdir@ @XML_LIBS@
+       	echo -L@libdir@ @XML_LIBS@ @LIBS@
        	;;
 
     *)

@@ -146,7 +146,7 @@ void xmlDebugDumpOneNode(FILE *output, xmlNodePtr node, int depth) {
 	    fprintf(output, "ENTITY\n");
 	    break;
 	case XML_PI_NODE:
-	    fprintf(output, "PI\n");
+	    fprintf(output, "PI %s\n", node->name);
 	    break;
 	case XML_COMMENT_NODE:
 	    fprintf(output, "COMMENT\n");
@@ -252,7 +252,7 @@ void xmlDebugDumpDocument(FILE *output, xmlDocPtr doc) {
     }
     if (doc->name != NULL) {
 	fprintf(output, "name=");
-        xmlDebugDumpString(output, doc->name);
+        xmlDebugDumpString(output, BAD_CAST doc->name);
 	fprintf(output, "\n");
     }
     if (doc->version != NULL) {

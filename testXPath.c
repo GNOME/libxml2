@@ -85,6 +85,8 @@ void xmlXPAthDebugDumpNodeSet(FILE *output, xmlNodeSetPtr cur) {
 	    fprintf(output, " NULL\n");
 	else if (cur->nodeTab[i]->type == XML_DOCUMENT_NODE)
 	    fprintf(output, " /\n");
+	else if (cur->nodeTab[i]->type == XML_ATTRIBUTE_NODE)
+	    xmlDebugDumpAttr(output, (xmlAttrPtr)cur->nodeTab[i], 2);
 	else
 	    xmlDebugDumpOneNode(output, cur->nodeTab[i], 2);
     }
@@ -123,11 +125,11 @@ void testXPath(const char *str) {
     xmlXPathObjectPtr res;
     xmlXPathContextPtr ctxt;
     
-    ctxt = xmlXPathNewContext(document, NULL, NULL, NULL);
+    ctxt = xmlXPathNewContext(document, NULL, NULL);
     if (expr)
-	res = xmlXPathEvalExpression(str, ctxt);
+	res = xmlXPathEvalExpression(BAD_CAST str, ctxt);
     else
-	res = xmlXPathEval(str, ctxt);
+	res = xmlXPathEval(BAD_CAST str, ctxt);
     xmlXPAthDebugDumpObject(stdout, res);
     xmlXPathFreeObject(res);
     xmlXPathFreeContext(ctxt);

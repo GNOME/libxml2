@@ -1,4 +1,13 @@
-Mon Aug 16 03:27:38 CEST 1999
+Sun Aug 29 22:27:29 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* all .h : changed the prototype declaration indent as in gtk
+	* most .c : working on reducing the TODOs in the code
+	* most .c : cleanup though -pedantic and Insure++
+	* improvements on validation ID checkings.
+	* tree.[ch] SAX.c: added support for namespace on attributes #2022
+	* xml-config.in: closed #1810
+
+Mon Aug 16 03:27:38 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* tree.h, valid.c, valid.h: more work on validity, IDs
 	* xpath.c: added/fixed comparidon and equlity, added a new isinf

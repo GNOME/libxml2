@@ -84,62 +84,107 @@ typedef struct xmlIDTable {
 typedef xmlIDTable *xmlIDTablePtr;
 
 /* Notation */
-xmlNotationPtr xmlAddNotationDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd,
-	   const CHAR *name, const CHAR *PublicID, const CHAR *SystemID);
+xmlNotationPtr	    xmlAddNotationDecl	(xmlValidCtxtPtr ctxt,
+					 xmlDtdPtr dtd,
+					 const CHAR *name,
+					 const CHAR *PublicID,
+					 const CHAR *SystemID);
 xmlNotationTablePtr xmlCopyNotationTable(xmlNotationTablePtr table);
-void xmlFreeNotationTable(xmlNotationTablePtr table);
-void xmlDumpNotationTable(xmlBufferPtr buf, xmlNotationTablePtr table);
+void		    xmlFreeNotationTable(xmlNotationTablePtr table);
+void		    xmlDumpNotationTable(xmlBufferPtr buf,
+					 xmlNotationTablePtr table);
 
 /* Element Content */
-xmlElementContentPtr xmlNewElementContent(CHAR *name, int type);
+xmlElementContentPtr xmlNewElementContent (CHAR *name, int type);
 xmlElementContentPtr xmlCopyElementContent(xmlElementContentPtr content);
-void xmlFreeElementContent(xmlElementContentPtr cur);
+void		     xmlFreeElementContent(xmlElementContentPtr cur);
 
 /* Element */
-xmlElementPtr xmlAddElementDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd,
-         const CHAR *name, int type, xmlElementContentPtr content);
-xmlElementTablePtr xmlCopyElementTable(xmlElementTablePtr table);
-void xmlFreeElementTable(xmlElementTablePtr table);
-void xmlDumpElementTable(xmlBufferPtr buf, xmlElementTablePtr table);
+xmlElementPtr	   xmlAddElementDecl	(xmlValidCtxtPtr ctxt,
+					 xmlDtdPtr dtd,
+					 const CHAR *name,
+					 int type,
+					 xmlElementContentPtr content);
+xmlElementTablePtr xmlCopyElementTable	(xmlElementTablePtr table);
+void		   xmlFreeElementTable	(xmlElementTablePtr table);
+void		   xmlDumpElementTable	(xmlBufferPtr buf,
+					 xmlElementTablePtr table);
 
 /* Enumeration */
-xmlEnumerationPtr xmlCreateEnumeration(CHAR *name);
-void xmlFreeEnumeration(xmlEnumerationPtr cur);
-xmlEnumerationPtr xmlCopyEnumeration(xmlEnumerationPtr cur);
+xmlEnumerationPtr  xmlCreateEnumeration	(CHAR *name);
+void		   xmlFreeEnumeration	(xmlEnumerationPtr cur);
+xmlEnumerationPtr  xmlCopyEnumeration	(xmlEnumerationPtr cur);
 
 /* Attribute */
-xmlAttributePtr xmlAddAttributeDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd,
-               const CHAR *elem, const CHAR *name, int type, int def,
-	       const CHAR *defaultValue, xmlEnumerationPtr tree);
-xmlAttributeTablePtr xmlCopyAttributeTable(xmlAttributeTablePtr table);
-void xmlFreeAttributeTable(xmlAttributeTablePtr table);
-void xmlDumpAttributeTable(xmlBufferPtr buf, xmlAttributeTablePtr table);
+xmlAttributePtr	    xmlAddAttributeDecl	    (xmlValidCtxtPtr ctxt,
+					     xmlDtdPtr dtd,
+					     const CHAR *elem,
+					     const CHAR *name,
+					     int type,
+					     int def,
+					     const CHAR *defaultValue,
+					     xmlEnumerationPtr tree);
+xmlAttributeTablePtr xmlCopyAttributeTable  (xmlAttributeTablePtr table);
+void		     xmlFreeAttributeTable  (xmlAttributeTablePtr table);
+void		     xmlDumpAttributeTable  (xmlBufferPtr buf,
+					     xmlAttributeTablePtr table);
 
 /* IDs */
-xmlIDPtr xmlAddID(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
-               const CHAR *value, xmlAttrPtr attr);
-xmlIDTablePtr xmlCopyIDTable(xmlIDTablePtr table);
-void xmlFreeIDTable(xmlIDTablePtr table);
+xmlIDPtr	xmlAddID	(xmlValidCtxtPtr ctxt,
+				 xmlDocPtr doc,
+				 const CHAR *value,
+				 xmlAttrPtr attr);
+xmlIDTablePtr	xmlCopyIDTable	(xmlIDTablePtr table);
+void		xmlFreeIDTable	(xmlIDTablePtr table);
+xmlAttrPtr	xmlGetID	(xmlDocPtr doc,
+				 const CHAR *ID);
+int		xmlIsID		(xmlDocPtr doc,
+				 xmlNodePtr elem,
+				 xmlAttrPtr attr);
 
 /**
  * The public function calls related to validity checking
  */
 
-int xmlValidateRoot(xmlValidCtxtPtr ctxt, xmlDocPtr doc);
-int xmlValidateElementDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
-                           xmlElementPtr elem);
-int xmlValidateAttributeDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
-                             xmlAttributePtr attr);
-int xmlValidateNotationDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
-                            xmlNotationPtr nota);
-int xmlValidateDtd(xmlValidCtxtPtr ctxt, xmlDocPtr doc, xmlDtdPtr dtd);
-
-int xmlValidateDocument(xmlValidCtxtPtr ctxt, xmlDocPtr doc);
-int xmlValidateElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr elem);
-int xmlValidateOneElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
-                          xmlNodePtr elem);
-int xmlValidateOneAttribute(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
-			xmlNodePtr elem, xmlAttrPtr attr, const CHAR *value);
-
-int xmlIsMixedElement(xmlDocPtr doc, const CHAR *name);
+int		xmlValidateRoot		(xmlValidCtxtPtr ctxt,
+					 xmlDocPtr doc);
+int		xmlValidateElementDecl	(xmlValidCtxtPtr ctxt,
+					 xmlDocPtr doc,
+		                         xmlElementPtr elem);
+int		xmlValidateAttributeDecl(xmlValidCtxtPtr ctxt,
+					 xmlDocPtr doc,
+		                         xmlAttributePtr attr);
+int		xmlValidateAttributeValue(xmlAttributeType type,
+					 const CHAR *value);
+int		xmlValidateNotationDecl	(xmlValidCtxtPtr ctxt,
+					 xmlDocPtr doc,
+		                         xmlNotationPtr nota);
+int		xmlValidateDtd		(xmlValidCtxtPtr ctxt,
+					 xmlDocPtr doc,
+					 xmlDtdPtr dtd);
+int		xmlValidateDocument	(xmlValidCtxtPtr ctxt,
+					 xmlDocPtr doc);
+int		xmlValidateElement	(xmlValidCtxtPtr ctxt,
+					 xmlDocPtr doc,
+					 xmlNodePtr elem);
+int		xmlValidateOneElement	(xmlValidCtxtPtr ctxt,
+					 xmlDocPtr doc,
+		                         xmlNodePtr elem);
+int		xmlValidateOneAttribute	(xmlValidCtxtPtr ctxt,
+					 xmlDocPtr doc,
+					 xmlNodePtr	elem,
+					 xmlAttrPtr attr,
+					 const CHAR *value);
+int		xmlValidateNotationUse	(xmlValidCtxtPtr ctxt,
+					 xmlDocPtr doc,
+					 const CHAR *notationName);
+int		xmlIsMixedElement	(xmlDocPtr doc,
+					 const CHAR *name);
+xmlAttributePtr	xmlGetDtdAttrDesc	(xmlDtdPtr dtd,
+					 const CHAR *elem,
+					 const CHAR *name);
+xmlNotationPtr	xmlGetDtdNotationDesc	(xmlDtdPtr dtd,
+					 const CHAR *name);
+xmlElementPtr	xmlGetDtdElementDesc	(xmlDtdPtr dtd,
+					 const CHAR *name);
 #endif /* __XML_VALID_H__ */

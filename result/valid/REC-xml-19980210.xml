@@ -29,6 +29,15 @@
 <!ENTITY doc.distribution "may be distributed freely, as long as
 all text and legal notices remain intact">
 ]>
+<!-- LAST TOUCHED BY: Tim Bray, 8 February 1997 -->
+<!-- The words 'FINAL EDIT' in comments mark places where changes
+need to be made after approval of the document by the ERB, before
+publication.  -->
+<!-- &#x2014, but nsgmls doesn't grok hex -->
+<!-- <!ENTITY nbsp " "> -->
+<!-- audience and distribution status:  for use at publication time -->
+<!-- for Panorama *-->
+<?VERBATIM "eg" ?>
 <spec>
   <header>
     <title>Extensible Markup Language (XML) 1.0</title>
@@ -69,7 +78,8 @@ http://www.w3.org/TR/WD-xml-lang-970630</loc>
 <loc  href='http://www.w3.org/TR/WD-xml-970807'>
 http://www.w3.org/TR/WD-xml-970807</loc>
 <loc  href='http://www.w3.org/TR/WD-xml-971117'>
-http://www.w3.org/TR/WD-xml-971117</loc>-->    </prevlocs>
+http://www.w3.org/TR/WD-xml-971117</loc>-->
+    </prevlocs>
     <authlist>
       <author>
         <name>Tim Bray</name>
@@ -473,6 +483,7 @@ and construct computer programs to process it.</p>
         <p>This version of the XML specification
 
 <!-- is for &doc.audience;.-->
+
 &doc.distribution;.        </p>
       </div2>
       <div2 id="sec-terminology">
@@ -501,6 +512,7 @@ are required to behave as described; otherwise they are in error.
 
 <!-- do NOT change this! this is what defines a violation of
 a 'must' clause as 'an error'. -MSM -->
+
                 </p>
               </def>
             </gitem>
@@ -625,7 +637,8 @@ processors which predate the
         </p>
       </div2>
     </div1>
-<!-- &Docs; -->    <div1 id="sec-documents">
+<!-- &Docs; -->
+    <div1 id="sec-documents">
       <head>Documents</head>
       <p>
         <termdef id="dt-xml-doc" term="XML Document">
@@ -721,7 +734,8 @@ matching the grammar, and that means by definition it's
 logically redundant.  I don't think it's rhetorically
 redundant or unnecessary, though, so I'm keeping it.  It
 could however use some recasting when the editors are feeling
-stronger. -MSM *-->            <item>
+stronger. -MSM *-->
+            <item>
               <p>
                 <termdef id="dt-root" term="Root Element">There is  exactly
 one element, called the 
@@ -816,7 +830,8 @@ discussed later, in
 10646 character set may be referred to by the decimal or hexadecimal
 equivalent of its 
 UCS-4 code value.
-</p>-->      </div2>
+</p>-->
+      </div2>
       <div2 id="sec-common-syn">
         <head>Common Syntactic Constructs</head>
         <p>This section defines some symbols used widely in the grammar.</p>
@@ -1060,6 +1075,7 @@ value</termref>
           <specref ref="wf-entities"/>
 .
 <!-- FINAL EDIT:  restore internal entity decl or leave it out. -->
+
 If they are needed elsewhere,
 they must be           <termref def="dt-escape">escaped</termref>
 
@@ -1634,6 +1650,7 @@ example:
 If both the external and internal subsets are used, the 
 internal subset is considered to occur before the external subset.
 <!-- 'is considered to'? boo. whazzat mean? -->
+
 This has the effect that entity and attribute-list declarations in the
 internal subset take precedence over those in the external subset.
         </p>
@@ -1957,7 +1974,8 @@ are case insensitive.</p>
 <!--<p>The xml:lang value is considered to apply both to the contents of an
 element and 
 (unless otherwise via attribute default values) to the
-values of all of its attributes with free-text (CDATA) values.  -->        <p>The intent declared with 
+values of all of its attributes with free-text (CDATA) values.  -->
+        <p>The intent declared with 
           <kw>xml:lang</kw>
  is considered to apply to
 all attributes and content of the element where it is specified,
@@ -1978,7 +1996,8 @@ value for xml:lang:
 
 The application, not the XML processor, is responsible for this '
 inheritance' of attribute values.
--->        <p>A simple declaration for 
+-->
+        <p>A simple declaration for 
           <kw>xml:lang</kw>
  might take
 the form
@@ -1995,7 +2014,8 @@ notes in English, the xml:lang attribute might be declared this way:
         </p>
       </div2>
     </div1>
-<!-- &Elements; -->    <div1 id="sec-logical-struct">
+<!-- &Elements; -->
+    <div1 id="sec-logical-struct">
       <head>Logical Structures</head>
       <p>
         <termdef id="dt-element" term="Element">Each 
@@ -2512,7 +2532,9 @@ match more than one occurrence of an element type in the content model.
 For more information, see             <specref ref="determinism"/>
 .
 <!-- appendix <specref ref="determinism"/>. -->
+
 <!-- appendix on deterministic content models. -->
+
           </p>
           <vcnote id="vc-PEinGroup">
             <head>Proper Group/PE Nesting</head>
@@ -2849,7 +2871,8 @@ match               <termref def="NT-Nmtokens">Nmtokens</termref>
 <!-- why?
 <p>The XML processor must normalize attribute values before
 passing them to the application, as described in 
-<specref ref="AVNormalize"/>.</p>-->          <p>
+<specref ref="AVNormalize"/>.</p>-->
+          <p>
             <termdef id="dt-enumerated" term="Enumerated Attribute
 Values">
               <term>Enumerated attributes</term>
@@ -2986,6 +3009,7 @@ from an element of this type,
 the XML processor must inform the application
 that no value was specified; no constraint is placed on the behavior
 of the application. -->
+
             <termdef id="dt-default" term="Attribute Default">If the 
 declaration
 is neither 
@@ -3213,8 +3237,10 @@ values are specified.
 </ulist>
 </p>
 </div2>
--->    </div1>
-<!-- &Entities; -->    <div1 id="sec-physical-struct">
+-->
+    </div1>
+<!-- &Entities; -->
+    <div1 id="sec-physical-struct">
       <head>Physical Structures</head>
       <p>
         <termdef id="dt-entity" term="Entity">An XML document may consist
@@ -3435,7 +3461,8 @@ Similarly, the declaration of a general entity must precede any
 reference to it which appears in a default value in an attribute-list
 declaration.          </p>
         </vcnote>
-<!-- FINAL EDIT:  is this duplication too clumsy? -->        <wfcnote id="textent">
+<!-- FINAL EDIT:  is this duplication too clumsy? -->
+        <wfcnote id="textent">
           <head>Parsed Entity</head>
           <p>
 An entity reference must not contain the name of an 
@@ -3494,9 +3521,11 @@ Entities are declared thus:
                   <rhs>
                     <nt def="NT-GEDecl">GEDecl</nt>
 <!--</rhs><com>General entities</com>
-<rhs>--> |                     <nt def="NT-PEDecl">PEDecl</nt>
+<rhs>-->
+ |                     <nt def="NT-PEDecl">PEDecl</nt>
                   </rhs>
-<!--<com>Parameter entities</com>-->                </prod>
+<!--<com>Parameter entities</com>-->
+                </prod>
                 <prod id="NT-GEDecl">
                   <lhs>GEDecl</lhs>
                   <rhs>&apos;&lt;!ENTITY&apos; 
@@ -3521,19 +3550,23 @@ Entities are declared thus:
                     <nt def="NT-PEDef">PEDef</nt>
                      <nt def="NT-S">S</nt>
 ? &apos;&gt;&apos;                  </rhs>
-<!--<com>Parameter entities</com>-->                </prod>
+<!--<com>Parameter entities</com>-->
+                </prod>
                 <prod id="NT-EntityDef">
                   <lhs>EntityDef</lhs>
                   <rhs>
                     <nt def="NT-EntityValue">EntityValue</nt>
 
 <!--</rhs>
-<rhs>-->| (                    <nt def="NT-ExternalID">ExternalID</nt>
+<rhs>-->
+| (                    <nt def="NT-ExternalID">ExternalID</nt>
  
                     <nt def="NT-NDataDecl">NDataDecl</nt>
 ?)                  </rhs>
-<!-- <nt def='NT-ExternalDef'>ExternalDef</nt></rhs> -->                </prod>
-<!-- FINAL EDIT: what happened to WFs here? -->                <prod id="NT-PEDef">
+<!-- <nt def='NT-ExternalDef'>ExternalDef</nt></rhs> -->
+                </prod>
+<!-- FINAL EDIT: what happened to WFs here? -->
+                <prod id="NT-PEDef">
                   <lhs>PEDef</lhs>
                   <rhs>
                     <nt def="NT-EntityValue">EntityValue</nt>
@@ -3601,7 +3634,8 @@ entity</term>
                 <head>External Entity Declaration</head>
 <!--
 <prod id='NT-ExternalDef'><lhs>ExternalDef</lhs>
-<rhs></prod> -->                <prod id="NT-ExternalID">
+<rhs></prod> -->
+                <prod id="NT-ExternalID">
                   <lhs>ExternalID</lhs>
                   <rhs>&apos;SYSTEM&apos; 
                     <nt def="NT-S">S</nt>
@@ -3850,7 +3884,8 @@ declaration is part of the             <termref def="dt-xmldecl">XML declaration
 The             <nt def="NT-EncName">EncName</nt>
  is the name of the encoding used.
           </p>
-<!-- FINAL EDIT:  check name of IANA and charset names -->          <p>In an encoding declaration, the values
+<!-- FINAL EDIT:  check name of IANA and charset names -->
+          <p>In an encoding declaration, the values
 &quot;
             <code>UTF-8</code>
 &quot;,
@@ -4470,7 +4505,8 @@ well appear on a processor input stream
 without any identification at all.        </p>
       </div2>
     </div1>
-<!-- &Conformance; -->    <div1 id="sec-conformance">
+<!-- &Conformance; -->
+    <div1 id="sec-conformance">
       <head>Conformance</head>
       <div2 id="proc-types">
         <head>Validating and Non-Validating Processors</head>
@@ -4816,7 +4852,9 @@ a production.              </p>
     </div1>
   </body>
   <back>
-<!-- &SGML; --><!-- &Biblio; -->    <div1 id="sec-bibliography">
+<!-- &SGML; -->
+<!-- &Biblio; -->
+    <div1 id="sec-bibliography">
       <head>References</head>
       <div2 id="sec-existing-stds">
         <head>Normative References</head>
@@ -4881,7 +4919,7 @@ Ravi Sethi, and Jeffrey D. Ullman.
             <emph>Compilers:  Principles, Techniques, and Tools</emph>
 .
 Reading:  Addison-Wesley, 1986, rpt. corr. 1988.          </bibl>
-          <bibl id="Berners-Lee" xml-link="simple" key="Berners-Lee et al.">
+          <bibl xml-link="simple" id="Berners-Lee" key="Berners-Lee et al.">
 Berners-Lee, T., R. Fielding, and L. Masinter.
 
             <emph>Uniform Resource Identifiers (URI):  Generic Syntax and
@@ -4912,7 +4950,7 @@ Comparison of SGML and XML. See
             <loc href="http://www.w3.org/TR/NOTE-sgml-xml-971215">http://www.w3.org/TR/NOTE-sgml-xml-971215</loc>
 .
           </bibl>
-          <bibl id="RFC1738" xml-link="simple" key="IETF RFC1738">
+          <bibl xml-link="simple" id="RFC1738" key="IETF RFC1738">
 IETF (Internet Engineering Task Force).
 
             <emph>RFC 1738:  Uniform Resource Locators (URL)</emph>
@@ -4920,7 +4958,7 @@ IETF (Internet Engineering Task Force).
 ed. T. Berners-Lee, L. Masinter, M. McCahill.
 1994.
           </bibl>
-          <bibl id="RFC1808" xml-link="simple" key="IETF RFC1808">
+          <bibl xml-link="simple" id="RFC1808" key="IETF RFC1808">
 IETF (Internet Engineering Task Force).
 
             <emph>RFC 1808:  Relative Uniform Resource Locators</emph>
@@ -4928,7 +4966,7 @@ IETF (Internet Engineering Task Force).
 ed. R. Fielding.
 1995.
           </bibl>
-          <bibl id="RFC2141" xml-link="simple" key="IETF RFC2141">
+          <bibl xml-link="simple" id="RFC2141" key="IETF RFC2141">
 IETF (Internet Engineering Task Force).
 
             <emph>RFC 2141:  URN Syntax</emph>
@@ -5519,7 +5557,8 @@ recognized, and it is expanded, so the full content of the
 required
 that content models in element type declarations be deterministic.  
       </p>
-<!-- FINAL EDIT:  WebSGML allows ambiguity? -->      <p>SGML
+<!-- FINAL EDIT:  WebSGML allows ambiguity? -->
+      <p>SGML
 requires deterministic content models (it calls them
 &quot;unambiguous&quot;); XML processors built using SGML systems may
 flag non-deterministic content models as errors.</p>
@@ -5824,3 +5863,11 @@ Co-editor</role>
     </inform-div1>
   </back>
 </spec>
+<!-- Keep this comment at the end of the file
+Local variables:
+mode: sgml
+sgml-default-dtd-file:"~/sgml/spec.ced"
+sgml-omittag:t
+sgml-shorttag:t
+End:
+-->

@@ -3,12 +3,20 @@
 <!ENTITY doc-type "WD">
 <!ENTITY iso6.doc.date "29-May-1999">
 ]>
+<!--ArborText, Inc., 1988-1998, v.4002-->
+<?Pub UDT _bookmark _target?>
+<?Pub Inc?>
+<?xml-stylesheet href="file:///C|/Program%20Files/SoftQuad/XMetaL%201/display/xmlspec.css"
+type="text/css"?>
 <spec>
-<!-- Last edited: 27 May 1999 by bent -->  <header>
+<!-- Last edited: 27 May 1999 by bent -->
+  <header>
+<?Pub Dtl?>
     <title>XML Linking Language (XLink)</title>
     <version>Version 1.0</version>
     <w3c-designation>
-<!-- &doc-type;-&iso6.doc.date; --> WD-xlink-19990527    </w3c-designation>
+<!-- &doc-type;-&iso6.doc.date; -->
+ WD-xlink-19990527    </w3c-designation>
     <w3c-doctype>World Wide Web Consortium Working Draft</w3c-doctype>
     <pubdate>
       <day>29</day>
@@ -22,13 +30,16 @@
       <loc href="http://www.w3.org/XML/Group/1999/05/WD-xlink-current">http://www.w3.org/XML/Group/1999/05/WD-xlink-current</loc>
     </publoc>
     <prevlocs>
-<!--Check: was it actually August?-->      <loc href="http://www.w3.org/XML/Group/1999/05/WD-xlink-19990527">http://www.w3.org/XML/Group/1999/05/WD-xlink-19990527</loc>
+<!--Check: was it actually August?-->
+      <loc href="http://www.w3.org/XML/Group/1999/05/WD-xlink-19990527">http://www.w3.org/XML/Group/1999/05/WD-xlink-19990527</loc>
       <loc href="http://www.w3.org/XML/Group/1999/05/WD-xlink-19990505">http://www.w3.org/XML/Group/1999/05/WD-xlink-19990505</loc>
       <loc href="http://www.w3.org/TR/1998/WD-xlink-19980303">http://www.w3.org/TR/1998/WD-xlink-19980303</loc>
       <loc href="http://www.w3.org/TR/WD-xml-link-970630">http://www.w3.org/TR/WD-xml-link-970630</loc>
     </prevlocs>
     <authlist>
-<!--Updated author hrefs  dorchard--><!-- Update Steve's email - bent -->      <author>
+<!--Updated author hrefs  dorchard-->
+<!-- Update Steve's email - bent -->
+      <author>
         <name>Steve DeRose</name>
         <affiliation>Inso Corp. and Brown University</affiliation>
         <email href="mailto:Steven_DeRose@Brown.edu">Steven_DeRose@Brown.edu</email>
@@ -47,7 +58,8 @@
 		also ought to add Gabe Beged-Dov there, as well. bent
 		how shall we cite Tim? sjd What about with an Acknowledgments section?
 		-elm <AUTHOR> <NAME>Tim Bray</NAME> <AFFILIATION>Textuality</AFFILIATION>
-		<EMAIL>tbray@textuality.com</EMAIL> </AUTHOR>-->    </authlist>
+		<EMAIL>tbray@textuality.com</EMAIL> </AUTHOR>-->
+    </authlist>
     <status>
       <p>This is a W3C Working Draft for review by W3C members and other interested parties. It is a draft document and may be updated, replaced, or obsoleted by other documents at any time. It is inappropriate to use W3C Working Drafts as reference material or to cite them as other than &quot;work in progress&quot;. A list of current W3C working drafts can be found at 
         <loc href="http://www.w3.org/TR">http://www.w3.org/TR</loc>
@@ -69,7 +81,8 @@
  for the XLink requirements that this document attempts to satisfy.      </p>
     </status>
     <abstract>
-<!-- edited the abstract for further clarity - bent -->      <p>This specification defines constructs that may be inserted into XML DTDs, schemas and document instances to describe links between objects. It uses XML syntax to create structures that can describe the simple unidirectional hyperlinks of today&apos;s HTML as well as more sophisticated links.</p>
+<!-- edited the abstract for further clarity - bent -->
+      <p>This specification defines constructs that may be inserted into XML DTDs, schemas and document instances to describe links between objects. It uses XML syntax to create structures that can describe the simple unidirectional hyperlinks of today&apos;s HTML as well as more sophisticated links.</p>
     </abstract>
     <pubstmt>
       <p>Burlington, Seekonk, et al.: World-Wide Web Consortium, XML Working Group, 1998.</p>
@@ -106,6 +119,7 @@
   </header>
   <body>
     <div1>
+<?Pub Dtl?>
       <head>Introduction</head>
       <p>This specification defines constructs that may be inserted into XML DTDs, schemas, and document instances to describe links between objects. A 
         <termref def="dt-link">link</termref>
@@ -178,7 +192,8 @@
 	        </p>
       </div2>
 <!--Changed the list of requirements to reflect current XLink requirements
-document. bent-->      <div2>
+document. bent-->
+      <div2>
         <head>Relationship to Existing Standards</head>
         <p>Three standards have been especially influential:
 		
@@ -192,6 +207,7 @@ document. bent-->      <div2>
               <p>
                 <emph>HyTime:</emph>
  Defines inline and out-of-line link structures and some semantic features, including traversal control and presentation of objects. <!--Changed from "placement of objects into a display or other space" -elm-->
+
 			              </p>
             </item>
             <item>
@@ -209,6 +225,7 @@ document. bent-->      <div2>
         <p>The following basic terms apply in this document. 
 <!--<IMG
 	SRC="local://./linkdiag.gif">(figure to be inserted)-->
+
 		          <glist>
             <gitem>
               <label>
@@ -348,6 +365,7 @@ linking element. Note that the content of the linking element could be explicitl
 . Examples include files, images, documents, programs, and query results. Concretely, anything reachable by the use of a                   <termref def="dt-locator">locator</termref>
  in some                   <termref def="dt-linkel">linking	element</termref>
 . Note that this term and its definition are taken from the basic specifications governing the World Wide Web. <!--Joel notes: need link here. bent asks: A link?-->
+
 				                 </p>
               </def>
             </gitem>
@@ -381,14 +399,17 @@ linking element. Note that the content of the linking element could be explicitl
           <termref def="dt-locator">locators</termref>
  is given using a simple Extended Backus-Naur Form (EBNF) location, as described in           <xspecref href="http://www.w3.org/TR/REC-xml#sec-notation">the XML specification</xspecref>
 .        </p>
-<!-- fixed link to XML spec - bent -->      </div2>
+<!-- fixed link to XML spec - bent -->
+      </div2>
     </div1>
     <div1 id="addressing">
+<?Pub Dtl?>
       <head>Locator Syntax</head>
       <p>The locator for a 
         <termref def="dt-resource">resource</termref>
  is typically provided by means of a Uniform Resource Identifier, or URI. XPointers can be used in conjunction with the URI structure, as fragment identifiers, to specify a more precise sub-resource.       </p>
-<!-- Removed the discussion of queries from the previous paragraph, due to contention within the WG. bent -->      <p>A locator generally contains a URI, as described in IETF RFCs 
+<!-- Removed the discussion of queries from the previous paragraph, due to contention within the WG. bent -->
+      <p>A locator generally contains a URI, as described in IETF RFCs 
         <bibref ref="rfc1738"/>
  and         <bibref ref="rfc1808"/>
 . As these RFCs state, the URI may include a trailing         <emph>query</emph>
@@ -396,7 +417,8 @@ linking element. Note that the content of the linking element could be explicitl
 &quot;), and be followed by a &quot;        <code>#</code>
 &quot; and a         <emph>fragment identifier</emph>
 , with the query interpreted by the host providing the indicated resource, and the interpretation of the fragment identifier dependent on the data type of the indicated resource.      </p>
-<!--Is there some restriction on URNs having queries and/or fragment identifiers?  Since these RFCs don't mention URIs explicitly, should the wording here lead from URLs to URIs more explicitly? -elm-->      <p>In order to locate XML documents and portions of documents, a locator value may contain either a 
+<!--Is there some restriction on URNs having queries and/or fragment identifiers?  Since these RFCs don't mention URIs explicitly, should the wording here lead from URLs to URIs more explicitly? -elm-->
+      <p>In order to locate XML documents and portions of documents, a locator value may contain either a 
         <xtermref href="http://www.w3.org/Addressing/rfc1738.txt"> URI</xtermref>
  or a fragment identifier, or both. Any fragment identifier for pointing into XML must be an         <xtermref href="http://www.w3.org/TR/WD-xptr#dt-xpointer"> XPointer</xtermref>
 .      </p>
@@ -461,7 +483,8 @@ linking element. Note that the content of the linking element could be explicitl
             </p>
           </item>
 <!--Is this now incorrect, given the nature of the switch from here() to origin()? -elm 
-			Oy, yes, i think so. it will require some fun wording, though, so i haven't fixed it yet here -sjd-->          <item>
+			Oy, yes, i think so. it will require some fun wording, though, so i haven't fixed it yet here -sjd-->
+          <item>
             <p>If the 
               <nt def="nt-connector">Connector</nt>
  is followed directly by a               <xnt href="http://www.w3.org/TR/REC-xml#NT-Name">Name</xnt>
@@ -473,7 +496,8 @@ linking element. Note that the content of the linking element could be explicitl
 . This shorthand is to encourage use of the robust               <code>id</code>
  addressing mode.            </p>
           </item>
-<!-- fixed links to the XML recommendation - bent -->          <item>
+<!-- fixed links to the XML recommendation - bent -->
+          <item>
             <p>If the connector is &quot;
               <code>#</code>
 &quot;, this signals an intent that the containing resource is to be fetched as a whole from the host that provides it, and that the XPointer processing to extract the sub-resource
@@ -502,8 +526,10 @@ linking element. Note that the content of the linking element could be explicitl
         </scrap>
 
 	      </p>
-<!-- fixed link to XML recommendation - bent -->    </div1>
+<!-- fixed link to XML recommendation - bent -->
+    </div1>
     <div1>
+<?Pub Dtl?>
       <head>Link Recognition</head>
       <p>The existence of a 
         <termref def="dt-link">link</termref>
@@ -522,8 +548,10 @@ title=&quot;The XLink Working Draft&quot;&gt;The XLink Working Draft&lt;/xlink:s
 	Any arbitrary element can be made into an XLink by using the         <code>xlink:type</code>
  attribute. And, of course, the explicit XLink elements may be used, as well. This document will go on to describe the linking attributes that are associated with linking elements. It may be assumed by the reader that these attributes would require the         <code>xlink</code>
  namespace prefix if they existed within an arbitrary element, or that they may be used directly if they exist within an explicit Xlink element.      </p>
-<!-- heavily modified this section to accomodate namespace-aware link recognition - bent -->    </div1>
-<!-- Rewrote this entire section. - bent -->    <div1>
+<!-- heavily modified this section to accomodate namespace-aware link recognition - bent -->
+    </div1>
+<!-- Rewrote this entire section. - bent -->
+    <div1>
       <head>Linking Attributes</head>
       <p>XLink has several attributes associated with the variety of links it may represent. These attributes define four main concepts: locators, arcs, behaviors, and semantics. 
         <emph>Locators</emph>
@@ -552,7 +580,8 @@ title=&quot;The XLink Working Draft&quot;&gt;The XLink Working Draft&lt;/xlink:s
  attribute from the resource being linked to. The purpose of the           <code>to</code>
  attribute is to define where this link traverses to.        </p>
         <p>The application may use this information in a number of ways, especially in a complex hypertext system, but it is mainly useful in providing context for application behavior.</p>
-<!-- I'm at a loss as to how to describe arcs more clearly than this. I don't want to devolve into discussions of directed graphs and n-ary links. -bent -->      </div2>
+<!-- I'm at a loss as to how to describe arcs more clearly than this. I don't want to devolve into discussions of directed graphs and n-ary links. -bent -->
+      </div2>
       <div2 id="link-behaviors">
         <head>Behavior Attributes</head>
         <p>There are two attributes associated with behavior: 
@@ -574,7 +603,8 @@ title=&quot;The XLink Working Draft&quot;&gt;The XLink Working Draft&lt;/xlink:s
  option indicates that the link must be initiated by some sort of human-initiated selection, such as clicking on an HTML anchor. The           <code>auto</code>
  option indicates that the link is automatically initiated when the application deems that the user has reached the link. It then follows the behavior set out in the           <code>show</code>
  option.        </p>
-<!-- Something should be put here in terms of an example. Idea: "A" link versus automatically updating encyclopedia. -bent -->      </div2>
+<!-- Something should be put here in terms of an example. Idea: "A" link versus automatically updating encyclopedia. -bent -->
+      </div2>
       <div2 id="link-semantics">
         <head>Semantic Attributes</head>
         <p>There are two attributes associated with semantics, 
@@ -747,7 +777,8 @@ The XLink Working Draft.&lt;/foo&gt;</eg>
             <term>arc</term>
  is contained within an extended link for the purpose of defining traversal behavior.          </termdef>
  More than one arc may be associated with a link. Otherwise, arc elements function exactly as the arc attributes might lead on to expect.        </p>
-<!-- More here? -bent -->      </div2>
+<!-- More here? -bent -->
+      </div2>
     </div1>
     <div1>
       <head>Conformance</head>
@@ -779,7 +810,8 @@ prescribed.
 <!--If/when we split out the XLinkfunctionality
 (e.g. inline links and out-of-line links), the
 conformance language will have to address the different
-levels of support. -elm-->       </p>
+levels of support. -elm-->
+       </p>
     </div1>
   </body>
   <back>
@@ -815,7 +847,8 @@ Annex.</titleref>
 1996. (See            <loc href="http://www.ornl.gov/sgml/wg8/hytime/html/is10744r.html">http://www.ornl.go
 v/sgml/wg8/hytime/html/is10744r.html </loc>
  <!--p m-r says this link is
-broken. elm --> ).        </bibl>
+broken. elm -->
+ ).        </bibl>
         <bibl id="rfc1738" key="IETF RFC 1738">IETF (Internet Engineering Task
 Force). 
           <titleref>
@@ -838,7 +871,8 @@ Guidelines for Electronic Text Encoding and Interchange</titleref>
 for Computers and the Humanities (ACH), Association for Computational
 Linguistics
 (ACL), and Association for Literary and Linguistic Computing (ALLC). Chicago,
-Oxford: Text Encoding Initiative, 1994. <!-- add cite to DOM work -->         </bibl>
+Oxford: Text Encoding Initiative, 1994. <!-- add cite to DOM work -->
+         </bibl>
         <bibl id="chum" key="CHUM">]Steven J. DeRose and David G. Durand. 1995. &quot;The
 TEI Hypertext Guidelines.&quot; In 
           <titleref>Computing and the Humanities
@@ -847,8 +881,10 @@ TEI Hypertext Guidelines.&quot; In
 Reprinted in           <titleref>Text Encoding Initiative: Background and
 Context</titleref>
 ,
-ed. Nancy Ide and Jean ronis <!-- fix this name -->, ISBN 0-7923-3704-2.         </bibl>
+ed. Nancy Ide and Jean ronis <!-- fix this name -->
+, ISBN 0-7923-3704-2.         </bibl>
       </blist>
     </div1>
   </back>
 </spec>
+<?Pub *0000052575?>

@@ -10,18 +10,32 @@
 #include <stdarg.h>
 #include "parser.h"
 
-static void
+/**
+ * xmlParserPrintFileInfo:
+ * @input:  an xmlParserInputPtr input
+ * 
+ * Displays the associated file and line informations for the current input
+ */
+
+void
 xmlParserPrintFileInfo(xmlParserInputPtr input) {
     if (input != NULL) {
 	if (input->filename)
 	    fprintf(stderr, "%s:%d: ", input->filename,
 		    input->line);
 	else
-	    fprintf(stderr, "line %d: ", input->line);
+	    fprintf(stderr, "Entity: line %d: ", input->line);
     }
 }
 
-static void
+/**
+ * xmlParserPrintFileContext:
+ * @input:  an xmlParserInputPtr input
+ * 
+ * Displays current context within the input content for error tracking
+ */
+
+void
 xmlParserPrintFileContext(xmlParserInputPtr input) {
     const CHAR *cur, *base;
     int n;
@@ -67,11 +81,14 @@ xmlParserError(void *ctx, const char *msg, ...)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlParserInputPtr input;
+    xmlParserInputPtr cur = NULL;
     va_list args;
 
     input = ctxt->input;
-    if ((input->filename == NULL) && (ctxt->inputNr > 1))
+    if ((input->filename == NULL) && (ctxt->inputNr > 1)) {
+	cur = input;
         input = ctxt->inputTab[ctxt->inputNr - 2];
+    }
         
     xmlParserPrintFileInfo(input);
 
@@ -81,6 +98,11 @@ xmlParserError(void *ctx, const char *msg, ...)
     va_end(args);
 
     xmlParserPrintFileContext(input);
+    if (cur != NULL) {
+        xmlParserPrintFileInfo(cur);
+	fprintf(stderr, "\n");
+	xmlParserPrintFileContext(cur);
+    }
 }
 
 /**
@@ -97,11 +119,15 @@ xmlParserWarning(void *ctx, const char *msg, ...)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlParserInputPtr input;
+    xmlParserInputPtr cur = NULL;
     va_list args;
 
     input = ctxt->input;
-    if ((input->filename == NULL) && (ctxt->inputNr > 1))
+    if ((input->filename == NULL) && (ctxt->inputNr > 1)) {
+	cur = input;
         input = ctxt->inputTab[ctxt->inputNr - 2];
+    }
+        
 
     xmlParserPrintFileInfo(input);
         
@@ -111,6 +137,11 @@ xmlParserWarning(void *ctx, const char *msg, ...)
     va_end(args);
 
     xmlParserPrintFileContext(input);
+    if (cur != NULL) {
+        xmlParserPrintFileInfo(cur);
+	fprintf(stderr, "\n");
+	xmlParserPrintFileContext(cur);
+    }
 }
 
 /**

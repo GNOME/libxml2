@@ -76,18 +76,20 @@ int treeTest(void) {
     /*
      * build a fake XML document
      */
-    doc = xmlNewDoc("1.0");
-    doc->root = xmlNewDocNode(doc, NULL, "EXAMPLE", NULL);
-    xmlSetProp(doc->root, "prop1", "gnome is great");
-    xmlSetProp(doc->root, "prop2", "&linux; too");
-    xmlSetProp(doc->root, "emptyprop", "");
-    tree = xmlNewChild(doc->root, NULL, "head", NULL);
-    subtree = xmlNewChild(tree, NULL, "title", "Welcome to Gnome");
-    tree = xmlNewChild(doc->root, NULL, "chapter", NULL);
-    subtree = xmlNewChild(tree, NULL, "title", "The Linux adventure");
-    subtree = xmlNewChild(tree, NULL, "p", "bla bla bla ...");
-    subtree = xmlNewChild(tree, NULL, "image", NULL);
-    xmlSetProp(subtree, "href", "linus.gif");
+    doc = xmlNewDoc(BAD_CAST "1.0");
+    doc->root = xmlNewDocNode(doc, NULL, BAD_CAST "EXAMPLE", NULL);
+    xmlSetProp(doc->root, BAD_CAST "prop1", BAD_CAST "gnome is great");
+    xmlSetProp(doc->root, BAD_CAST "prop2", BAD_CAST "&linux; too");
+    xmlSetProp(doc->root, BAD_CAST "emptyprop", BAD_CAST "");
+    tree = xmlNewChild(doc->root, NULL, BAD_CAST "head", NULL);
+    subtree = xmlNewChild(tree, NULL, BAD_CAST "title",
+                          BAD_CAST "Welcome to Gnome");
+    tree = xmlNewChild(doc->root, NULL, BAD_CAST "chapter", NULL);
+    subtree = xmlNewChild(tree, NULL, BAD_CAST "title",
+                          BAD_CAST "The Linux adventure");
+    subtree = xmlNewChild(tree, NULL, BAD_CAST "p", BAD_CAST "bla bla bla ...");
+    subtree = xmlNewChild(tree, NULL, BAD_CAST "image", NULL);
+    xmlSetProp(subtree, BAD_CAST "href", BAD_CAST "linus.gif");
 
     /*
      * test intermediate copy if needed.

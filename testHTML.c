@@ -35,7 +35,6 @@ static int copy = 0;
 
 /*
  * Note: this is perfectly clean HTML, i.e. not a useful test.
- */
 static CHAR buffer[] = 
 "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\"\n\
                       \"http://www.w3.org/TR/REC-html40/loose.dtd\">\n\
@@ -52,6 +51,7 @@ We are doing our best to get it back on-line,\n\
 </body>\n\
 </html>\n\
 ";
+ */
 
 /************************************************************************
  *									*

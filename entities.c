@@ -50,13 +50,10 @@ void xmlFreeEntity(xmlEntityPtr entity) {
 
 /*
  * xmlAddEntity : register a new entity for an entities table.
- *
- * TODO !!! We should check here that the combination of type
- *          ExternalID and SystemID is valid.
  */
 static void
 xmlAddEntity(xmlEntitiesTablePtr table, const CHAR *name, int type,
-              const CHAR *ExternalID, const CHAR *SystemID, CHAR *content) {
+	  const CHAR *ExternalID, const CHAR *SystemID, const CHAR *content) {
     int i;
     xmlEntityPtr cur;
     int len;
@@ -67,6 +64,7 @@ xmlAddEntity(xmlEntitiesTablePtr table, const CHAR *name, int type,
 	    /*
 	     * The entity is already defined in this Dtd, the spec says to NOT
 	     * override it ... Is it worth a Warning ??? !!!
+	     * Not having a cprinting context this seems hard ...
 	     */
 	    if (((type == XML_INTERNAL_PARAMETER_ENTITY) ||
 	         (type == XML_EXTERNAL_PARAMETER_ENTITY)) &&
@@ -178,7 +176,7 @@ xmlGetPredefinedEntity(const CHAR *name) {
  */
 void
 xmlAddDtdEntity(xmlDocPtr doc, const CHAR *name, int type,
-              const CHAR *ExternalID, const CHAR *SystemID, CHAR *content) {
+	  const CHAR *ExternalID, const CHAR *SystemID, const CHAR *content) {
     xmlEntitiesTablePtr table;
 
     if (doc->extSubset == NULL) {
@@ -207,7 +205,7 @@ xmlAddDtdEntity(xmlDocPtr doc, const CHAR *name, int type,
  */
 void
 xmlAddDocEntity(xmlDocPtr doc, const CHAR *name, int type,
-              const CHAR *ExternalID, const CHAR *SystemID, CHAR *content) {
+	  const CHAR *ExternalID, const CHAR *SystemID, const CHAR *content) {
     xmlEntitiesTablePtr table;
 
     if (doc == NULL) {
@@ -343,8 +341,6 @@ xmlGetDocEntity(xmlDocPtr doc, const CHAR *name) {
 
 /*
  * A buffer used for converting entities to their equivalent and back.
- *
- * TODO: remove this, once we are not afraid of breaking binary compatibility
  */
 static int buffer_size = 0;
 static CHAR *buffer = NULL;
@@ -367,7 +363,8 @@ void growBuffer(void) {
  * Do a global encoding of a string, replacing the predefined entities
  * and non ASCII values with their entities and CharRef counterparts.
  *
- * TODO: remove this, once we are not afraid of breaking binary compatibility
+ * TODO: remove xmlEncodeEntities, once we are not afraid of breaking binary
+ *       compatibility
  *
  * People must migrate their code to xmlEncodeEntitiesReentrant !
  * This routine will issue a warning when encountered.

@@ -105,7 +105,7 @@ static CHAR buffer[] =
  * Returns 1 if true
  */
 int
-isStandaloneDebug(xmlParserCtxtPtr ctxt)
+isStandaloneDebug(void *ctx)
 {
     fprintf(stdout, "SAX.isStandalone()\n");
     return(0);
@@ -120,7 +120,7 @@ isStandaloneDebug(xmlParserCtxtPtr ctxt)
  * Returns 1 if true
  */
 int
-hasInternalSubsetDebug(xmlParserCtxtPtr ctxt)
+hasInternalSubsetDebug(void *ctx)
 {
     fprintf(stdout, "SAX.hasInternalSubset()\n");
     return(0);
@@ -135,7 +135,7 @@ hasInternalSubsetDebug(xmlParserCtxtPtr ctxt)
  * Returns 1 if true
  */
 int
-hasExternalSubsetDebug(xmlParserCtxtPtr ctxt)
+hasExternalSubsetDebug(void *ctx)
 {
     fprintf(stdout, "SAX.hasExternalSubset()\n");
     return(0);
@@ -148,7 +148,7 @@ hasExternalSubsetDebug(xmlParserCtxtPtr ctxt)
  * Does this document has an internal subset
  */
 void
-internalSubsetDebug(xmlParserCtxtPtr ctxt, const CHAR *name,
+internalSubsetDebug(void *ctx, const CHAR *name,
 	       const CHAR *ExternalID, const CHAR *SystemID)
 {
     xmlDtdPtr externalSubset;
@@ -179,8 +179,10 @@ internalSubsetDebug(xmlParserCtxtPtr ctxt, const CHAR *name,
  * Returns the xmlParserInputPtr if inlined or NULL for DOM behaviour.
  */
 xmlParserInputPtr
-resolveEntityDebug(xmlParserCtxtPtr ctxt, const CHAR *publicId, const CHAR *systemId)
+resolveEntityDebug(void *ctx, const CHAR *publicId, const CHAR *systemId)
 {
+    xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
+
     
     fprintf(stdout, "SAX.resolveEntity(");
     if (publicId != NULL)
@@ -192,7 +194,7 @@ resolveEntityDebug(xmlParserCtxtPtr ctxt, const CHAR *publicId, const CHAR *syst
     else
 	fprintf(stdout, ", )\n");
     if (systemId != NULL) {
-        return(xmlNewInputFromFile(ctxt, systemId));
+        return(xmlNewInputFromFile(ctxt, (char *) systemId));
     }
     return(NULL);
 }
@@ -207,7 +209,7 @@ resolveEntityDebug(xmlParserCtxtPtr ctxt, const CHAR *publicId, const CHAR *syst
  * Returns the xmlParserInputPtr if inlined or NULL for DOM behaviour.
  */
 xmlEntityPtr
-getEntityDebug(xmlParserCtxtPtr ctxt, const CHAR *name)
+getEntityDebug(void *ctx, const CHAR *name)
 {
     fprintf(stdout, "SAX.getEntity(%s)\n", name);
     return(NULL);
@@ -223,7 +225,7 @@ getEntityDebug(xmlParserCtxtPtr ctxt, const CHAR *name)
  * Returns the xmlParserInputPtr
  */
 xmlEntityPtr
-getParameterEntityDebug(xmlParserCtxtPtr ctxt, const CHAR *name)
+getParameterEntityDebug(void *ctx, const CHAR *name)
 {
     fprintf(stdout, "SAX.getParameterEntity(%s)\n", name);
     return(NULL);
@@ -242,7 +244,7 @@ getParameterEntityDebug(xmlParserCtxtPtr ctxt, const CHAR *name)
  * An entity definition has been parsed
  */
 void
-entityDeclDebug(xmlParserCtxtPtr ctxt, const CHAR *name, int type,
+entityDeclDebug(void *ctx, const CHAR *name, int type,
           const CHAR *publicId, const CHAR *systemId, CHAR *content)
 {
     fprintf(stdout, "SAX.entityDecl(%s, %d, %s, %s, %s)\n",
@@ -258,7 +260,7 @@ entityDeclDebug(xmlParserCtxtPtr ctxt, const CHAR *name, int type,
  * An attribute definition has been parsed
  */
 void
-attributeDeclDebug(xmlParserCtxtPtr ctxt, const CHAR *elem, const CHAR *name,
+attributeDeclDebug(void *ctx, const CHAR *elem, const CHAR *name,
               int type, int def, const CHAR *defaultValue,
 	      xmlEnumerationPtr tree)
 {
@@ -276,7 +278,7 @@ attributeDeclDebug(xmlParserCtxtPtr ctxt, const CHAR *elem, const CHAR *name,
  * An element definition has been parsed
  */
 void
-elementDeclDebug(xmlParserCtxtPtr ctxt, const CHAR *name, int type,
+elementDeclDebug(void *ctx, const CHAR *name, int type,
 	    xmlElementContentPtr content)
 {
     fprintf(stdout, "SAX.elementDecl(%s, %d, ...)\n",
@@ -291,10 +293,9 @@ elementDeclDebug(xmlParserCtxtPtr ctxt, const CHAR *name, int type,
  * @systemId: The system ID of the entity
  *
  * What to do when a notation declaration has been parsed.
- * TODO Not handled currently.
  */
 void
-notationDeclDebug(xmlParserCtxtPtr ctxt, const CHAR *name,
+notationDeclDebug(void *ctx, const CHAR *name,
 	     const CHAR *publicId, const CHAR *systemId)
 {
     fprintf(stdout, "SAX.notationDecl(%s, %s, %s)\n",
@@ -310,10 +311,9 @@ notationDeclDebug(xmlParserCtxtPtr ctxt, const CHAR *name,
  * @notationName: the name of the notation
  *
  * What to do when an unparsed entity declaration is parsed
- * TODO Create an Entity node.
  */
 void
-unparsedEntityDeclDebug(xmlParserCtxtPtr ctxt, const CHAR *name,
+unparsedEntityDeclDebug(void *ctx, const CHAR *name,
 		   const CHAR *publicId, const CHAR *systemId,
 		   const CHAR *notationName)
 {
@@ -331,7 +331,7 @@ unparsedEntityDeclDebug(xmlParserCtxtPtr ctxt, const CHAR *name,
  * Everything is available on the context, so this is useless in our case.
  */
 void
-setDocumentLocatorDebug(xmlParserCtxtPtr ctxt, xmlSAXLocatorPtr loc)
+setDocumentLocatorDebug(void *ctx, xmlSAXLocatorPtr loc)
 {
     fprintf(stdout, "SAX.setDocumentLocator()\n");
 }
@@ -343,7 +343,7 @@ setDocumentLocatorDebug(xmlParserCtxtPtr ctxt, xmlSAXLocatorPtr loc)
  * called when the document start being processed.
  */
 void
-startDocumentDebug(xmlParserCtxtPtr ctxt)
+startDocumentDebug(void *ctx)
 {
     fprintf(stdout, "SAX.startDocument()\n");
 }
@@ -355,7 +355,7 @@ startDocumentDebug(xmlParserCtxtPtr ctxt)
  * called when the document end has been detected.
  */
 void
-endDocumentDebug(xmlParserCtxtPtr ctxt)
+endDocumentDebug(void *ctx)
 {
     fprintf(stdout, "SAX.endDocument()\n");
 }
@@ -366,10 +366,9 @@ endDocumentDebug(xmlParserCtxtPtr ctxt)
  * @name:  The element name
  *
  * called when an opening tag has been processed.
- * TODO We currently have a small pblm with the arguments ...
  */
 void
-startElementDebug(xmlParserCtxtPtr ctxt, const CHAR *name, const CHAR **atts)
+startElementDebug(void *ctx, const CHAR *name, const CHAR **atts)
 {
     int i;
 
@@ -391,7 +390,7 @@ startElementDebug(xmlParserCtxtPtr ctxt, const CHAR *name, const CHAR **atts)
  * called when the end of an element has been detected.
  */
 void
-endElementDebug(xmlParserCtxtPtr ctxt, const CHAR *name)
+endElementDebug(void *ctx, const CHAR *name)
 {
     fprintf(stdout, "SAX.endElement(%s)\n", (char *) name);
 }
@@ -406,7 +405,7 @@ endElementDebug(xmlParserCtxtPtr ctxt, const CHAR *name)
  * Question: how much at a time ???
  */
 void
-charactersDebug(xmlParserCtxtPtr ctxt, const CHAR *ch, int len)
+charactersDebug(void *ctx, const CHAR *ch, int len)
 {
     int i;
 
@@ -424,7 +423,7 @@ charactersDebug(xmlParserCtxtPtr ctxt, const CHAR *ch, int len)
  * called when an entity reference is detected. 
  */
 void
-referenceDebug(xmlParserCtxtPtr ctxt, const CHAR *name)
+referenceDebug(void *ctx, const CHAR *name)
 {
     fprintf(stdout, "SAX.reference(%s)\n", name);
 }
@@ -440,7 +439,7 @@ referenceDebug(xmlParserCtxtPtr ctxt, const CHAR *name)
  * Question: how much at a time ???
  */
 void
-ignorableWhitespaceDebug(xmlParserCtxtPtr ctxt, const CHAR *ch, int len)
+ignorableWhitespaceDebug(void *ctx, const CHAR *ch, int len)
 {
     fprintf(stdout, "SAX.ignorableWhitespace(%.30s, %d)\n",
             (char *) ch, len);
@@ -456,7 +455,7 @@ ignorableWhitespaceDebug(xmlParserCtxtPtr ctxt, const CHAR *ch, int len)
  * A processing instruction has been parsed.
  */
 void
-processingInstructionDebug(xmlParserCtxtPtr ctxt, const CHAR *target,
+processingInstructionDebug(void *ctx, const CHAR *target,
                       const CHAR *data)
 {
     fprintf(stdout, "SAX.processingInstruction(%s, %s)\n",
@@ -471,7 +470,7 @@ processingInstructionDebug(xmlParserCtxtPtr ctxt, const CHAR *target,
  * A comment has been parsed.
  */
 void
-commentDebug(xmlParserCtxtPtr ctxt, const CHAR *value)
+commentDebug(void *ctx, const CHAR *value)
 {
     fprintf(stdout, "SAX.comment(%s)\n", value);
 }
@@ -486,7 +485,7 @@ commentDebug(xmlParserCtxtPtr ctxt, const CHAR *value)
  * extra parameters.
  */
 void
-warningDebug(xmlParserCtxtPtr ctxt, const char *msg, ...)
+warningDebug(void *ctx, const char *msg, ...)
 {
     va_list args;
 
@@ -506,7 +505,7 @@ warningDebug(xmlParserCtxtPtr ctxt, const char *msg, ...)
  * extra parameters.
  */
 void
-errorDebug(xmlParserCtxtPtr ctxt, const char *msg, ...)
+errorDebug(void *ctx, const char *msg, ...)
 {
     va_list args;
 
@@ -526,7 +525,7 @@ errorDebug(xmlParserCtxtPtr ctxt, const char *msg, ...)
  * extra parameters.
  */
 void
-fatalErrorDebug(xmlParserCtxtPtr ctxt, const char *msg, ...)
+fatalErrorDebug(void *ctx, const char *msg, ...)
 {
     va_list args;
 

@@ -14,8 +14,10 @@
 #include "valid.h"
 #include "entities.h"
 #include "xml-error.h"
+#include "debugXML.h"
 
 /* #define DEBUG_SAX */
+/* #define DEBUG_SAX_TREE */
 
 /**
  * getPublicId:
@@ -45,7 +47,7 @@ const CHAR *
 getSystemId(void *ctx)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
-    return(ctxt->input->filename); 
+    return(BAD_CAST ctxt->input->filename); 
 }
 
 /**
@@ -164,7 +166,7 @@ internalSubset(void *ctx, const CHAR *name,
 	 * Ask the Entity resolver to load the damn thing
 	 */
 	if ((ctxt->directory != NULL) && (dtdCtxt->directory == NULL))
-	    dtdCtxt->directory = xmlStrdup(ctxt->directory);
+	    dtdCtxt->directory = (char *) xmlStrdup(BAD_CAST ctxt->directory);
 
 	if ((dtdCtxt->sax != NULL) && (dtdCtxt->sax->resolveEntity != NULL))
 	    input = dtdCtxt->sax->resolveEntity(dtdCtxt->userData, ExternalID,
@@ -182,7 +184,7 @@ internalSubset(void *ctx, const CHAR *name,
 	xmlSwitchEncoding(dtdCtxt, enc);
 
 	if (input->filename == NULL)
-	    input->filename = xmlStrdup(SystemID);
+	    input->filename = (char *) xmlStrdup(SystemID);
 	input->line = 1;
 	input->col = 1;
 	input->base = dtdCtxt->input->cur;
@@ -234,15 +236,13 @@ resolveEntity(void *ctx, const CHAR *publicId, const CHAR *systemId)
 #endif
 
     /*
-     * TODO : not 100% sure that the appropriate handling in that case.
+     * TODO : resolveEntity, handling of http://.. or ftp://..
      */
     if (systemId != NULL) {
-        if (!xmlStrncmp(systemId, "http://", 7)) {
-	    /* !!!!!!!!! TODO */
-	} else if (!xmlStrncmp(systemId, "ftp://", 6)) {
-	    /* !!!!!!!!! TODO */
+        if (!xmlStrncmp(systemId, BAD_CAST "http://", 7)) {
+	} else if (!xmlStrncmp(systemId, BAD_CAST "ftp://", 6)) {
 	} else {
-	    return(xmlNewInputFromFile(ctxt, systemId));
+	    return(xmlNewInputFromFile(ctxt, (char *) systemId));
 	}
     }
     return(NULL);
@@ -390,7 +390,6 @@ elementDecl(void *ctx, const CHAR *name, int type,
  * @systemId: The system ID of the entity
  *
  * What to do when a notation declaration has been parsed.
- * TODO Not handled currently.
  */
 void
 notationDecl(void *ctx, const CHAR *name,
@@ -421,18 +420,24 @@ notationDecl(void *ctx, const CHAR *name,
  * @notationName: the name of the notation
  *
  * What to do when an unparsed entity declaration is parsed
- * TODO Create an Entity node.
  */
 void
 unparsedEntityDecl(void *ctx, const CHAR *name,
 		   const CHAR *publicId, const CHAR *systemId,
 		   const CHAR *notationName)
 {
-    /* xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx; */
+    xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
 #ifdef DEBUG_SAX
     fprintf(stderr, "SAX.unparsedEntityDecl(%s, %s, %s, %s)\n",
             name, publicId, systemId, notationName);
 #endif
+    if (ctxt->validate && ctxt->wellFormed &&
+        ctxt->myDoc && ctxt->myDoc->intSubset)
+	ctxt->valid &= xmlValidateNotationUse(&ctxt->vctxt, ctxt->myDoc,
+	                                      notationName);
+    xmlAddDocEntity(ctxt->myDoc, name,
+                    XML_EXTERNAL_GENERAL_UNPARSED_ENTITY,
+		    publicId, systemId, notationName);
 }
 
 /**
@@ -510,6 +515,7 @@ attribute(void *ctx, const CHAR *fullname, const CHAR *value)
     xmlAttrPtr ret;
     CHAR *name;
     CHAR *ns;
+    xmlNsPtr namespace;
 
 /****************
 #ifdef DEBUG_SAX
@@ -543,15 +549,29 @@ attribute(void *ctx, const CHAR *fullname, const CHAR *value)
 	return;
     }
 
-    ret = xmlNewProp(ctxt->node, name, NULL);
+    namespace = xmlSearchNs(ctxt->myDoc, ctxt->node, ns);
+    /* !!!!!! <a toto:arg="" xmlns:toto="http://toto.com"> */
+    ret = xmlNewNsProp(ctxt->node, namespace, name, NULL);
 
-    if ((ret != NULL) && (ctxt->replaceEntities == 0))
-	ret->val = xmlStringGetNodeList(ctxt->myDoc, value);
+    if (ret != NULL) {
+        if (ctxt->replaceEntities == 0)
+	    ret->val = xmlStringGetNodeList(ctxt->myDoc, value);
+	else
+	    ret->val = xmlNewDocText(ctxt->myDoc, value);
+    }
 
     if (ctxt->validate && ctxt->wellFormed &&
         ctxt->myDoc && ctxt->myDoc->intSubset)
         ctxt->valid &= xmlValidateOneAttribute(&ctxt->vctxt, ctxt->myDoc,
 					       ctxt->node, ret, value);
+    else {
+        /*
+	 * when validating, the ID registration is done at the attribute
+	 * validation level. Otherwise we have to do specific handling here.
+	 */
+	if (xmlIsID(ctxt->myDoc, ctxt->node, ret))
+	    xmlAddID(&ctxt->vctxt, ctxt->myDoc, value, ret);
+    }
 
     if (name != NULL) 
 	free(name);
@@ -566,7 +586,6 @@ attribute(void *ctx, const CHAR *fullname, const CHAR *value)
  * @atts:  An array of name/value attributes pairs, NULL terminated
  *
  * called when an opening tag has been processed.
- * TODO We currently have a small pblm with the arguments ...
  */
 void
 startElement(void *ctx, const CHAR *fullname, const CHAR **atts)
@@ -598,32 +617,67 @@ startElement(void *ctx, const CHAR *fullname, const CHAR **atts)
      */
     ret = xmlNewDocNode(ctxt->myDoc, NULL, name, NULL);
     if (ret == NULL) return;
-    if (ctxt->myDoc->root == NULL)
+    if (ctxt->myDoc->root == NULL) {
+#ifdef DEBUG_SAX_TREE
+	fprintf(stderr, "Setting %s as root\n", name);
+#endif
         ctxt->myDoc->root = ret;
+    } else if (parent == NULL) {
+        parent = ctxt->myDoc->root;
+    }
 
     /*
      * We are parsing a new node.
      */
+#ifdef DEBUG_SAX_TREE
+    fprintf(stderr, "pushing(%s)\n", name);
+#endif
     nodePush(ctxt, ret);
 
     /*
      * Link the child element
      */
-    if (parent != NULL)
-	xmlAddChild(parent, ctxt->node);
+    if (parent != NULL) {
+        if (parent->type == XML_ELEMENT_NODE) {
+#ifdef DEBUG_SAX_TREE
+	    fprintf(stderr, "adding child %s to %s\n", name, parent->name);
+#endif
+	    xmlAddChild(parent, ret);
+	} else {
+#ifdef DEBUG_SAX_TREE
+	    fprintf(stderr, "adding sibling %s to ", name);
+	    xmlDebugDumpOneNode(stderr, parent, 0);
+#endif
+	    xmlAddSibling(parent, ret);
+	}
+    }
 
     /*
-     * process all the attributes.
+     * process all the attributes whose name start with "xml"
      */
     if (atts != NULL) {
         i = 0;
 	att = atts[i++];
 	value = atts[i++];
         while ((att != NULL) && (value != NULL)) {
-	    /*
-	     * Handle one pair of attribute/value
-	     */
-	    attribute(ctxt, att, value);
+	    if ((att[0] == 'x') && (att[1] == 'm') && (att[2] == 'l'))
+		attribute(ctxt, att, value);
+
+	    att = atts[i++];
+	    value = atts[i++];
+	}
+    }
+
+    /*
+     * process all the other attributes
+     */
+    if (atts != NULL) {
+        i = 0;
+	att = atts[i++];
+	value = atts[i++];
+        while ((att != NULL) && (value != NULL)) {
+	    if ((att[0] != 'x') || (att[1] != 'm') || (att[2] != 'l'))
+		attribute(ctxt, att, value);
 
 	    /*
 	     * Next ones
@@ -687,6 +741,9 @@ endElement(void *ctx, const CHAR *name)
     /*
      * end of parsing of this node.
      */
+#ifdef DEBUG_SAX_TREE
+    fprintf(stderr, "popping(%s)\n", cur->name);
+#endif
     nodePop(ctxt);
 }
 
@@ -707,6 +764,9 @@ reference(void *ctx, const CHAR *name)
     fprintf(stderr, "SAX.reference(%s)\n", name);
 #endif
     ret = xmlNewReference(ctxt->myDoc, name);
+#ifdef DEBUG_SAX_TREE
+    fprintf(stderr, "add reference %s to %s \n", name, ctxt->node->name);
+#endif
     xmlAddChild(ctxt->node, ret);
 }
 
@@ -735,6 +795,9 @@ characters(void *ctx, const CHAR *ch, int len)
      */
 
     lastChild = xmlGetLastChild(ctxt->node);
+#ifdef DEBUG_SAX_TREE
+    fprintf(stderr, "add chars to %s \n", ctxt->node->name);
+#endif
     if (lastChild == NULL)
 	xmlNodeAddContentLen(ctxt->node, ch, len);
     else {
@@ -778,10 +841,40 @@ void
 processingInstruction(void *ctx, const CHAR *target,
                       const CHAR *data)
 {
-    /* xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx; */
+    xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
+    xmlNodePtr ret;
+    xmlNodePtr parent = ctxt->node;
+
 #ifdef DEBUG_SAX
     fprintf(stderr, "SAX.processingInstruction(%s, %s)\n", target, data);
 #endif
+
+    ret = xmlNewPI(target, data);
+    if (ret == NULL) return;
+    ret->doc = ctxt->myDoc;
+    if (ctxt->myDoc->root == NULL) {
+#ifdef DEBUG_SAX_TREE
+	    fprintf(stderr, "Setting PI %s as root\n", target);
+#endif
+        ctxt->myDoc->root = ret;
+    } else if (parent == NULL) {
+        parent = ctxt->myDoc->root;
+    }
+    if (parent != NULL) {
+        if (parent->type == XML_ELEMENT_NODE) {
+#ifdef DEBUG_SAX_TREE
+	    fprintf(stderr, "adding PI child %s to %s\n", target, parent->name);
+#endif
+	    xmlAddChild(parent, ret);
+	} else {
+#ifdef DEBUG_SAX_TREE
+	    fprintf(stderr, "adding PI sibling %s to ", target);
+	    xmlDebugDumpOneNode(stderr, parent, 0);
+#endif
+	    xmlAddSibling(parent, ret);
+	}
+    }
+
 }
 
 /**
@@ -885,7 +978,7 @@ checkNamespace(void *ctx, CHAR *namespace)
 		 "End tags %s holds a prefix %s not used by the open tag\n",
 		                 cur->name, namespace);
 	    ctxt->wellFormed = 0;
-	} else if (strcmp(namespace, cur->ns->prefix)) {
+	} else if (xmlStrcmp(namespace, cur->ns->prefix)) {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		ctxt->sax->error(ctxt, 
     "Start and End tags for %s don't use the same namespaces: %s and %s\n",
@@ -930,13 +1023,36 @@ comment(void *ctx, const CHAR *value)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlNodePtr ret;
+    xmlNodePtr parent = ctxt->node;
 
 #ifdef DEBUG_SAX
     fprintf(stderr, "SAX.comment(%s)\n", value);
 #endif
     ret = xmlNewDocComment(ctxt->myDoc, value);
-    xmlAddChild(ctxt->node, ret);
-    /* !!!!! merges */
+    if (ret == NULL) return;
+
+    if (ctxt->myDoc->root == NULL) {
+#ifdef DEBUG_SAX_TREE
+	    fprintf(stderr, "Setting comment as root\n");
+#endif
+        ctxt->myDoc->root = ret;
+    } else if (parent == NULL) {
+        parent = ctxt->myDoc->root;
+    }
+    if (parent != NULL) {
+        if (parent->type == XML_ELEMENT_NODE) {
+#ifdef DEBUG_SAX_TREE
+	    fprintf(stderr, "adding comment child to %s\n", parent->name);
+#endif
+	    xmlAddChild(parent, ret);
+	} else {
+#ifdef DEBUG_SAX_TREE
+	    fprintf(stderr, "adding comment sibling to ");
+	    xmlDebugDumpOneNode(stderr, parent, 0);
+#endif
+	    xmlAddSibling(parent, ret);
+	}
+    }
 }
 
 /**
@@ -954,7 +1070,7 @@ cdataBlock(void *ctx, const CHAR *value, int len)
     xmlNodePtr ret;
 
 #ifdef DEBUG_SAX
-    fprintf(stderr, "SAX.pcdata(%s, %d)\n", name, len);
+    fprintf(stderr, "SAX.pcdata(%.10s, %d)\n", value, len);
 #endif
     ret = xmlNewCDataBlock(ctxt->myDoc, value, len);
     xmlAddChild(ctxt->node, ret);

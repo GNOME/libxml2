@@ -19,9 +19,13 @@
  * Daniel.Veillard@w3.org
  */
 
+#include "config.h"
 #include <ctype.h>
 #include <string.h>
 #include <stdio.h>
+#ifdef HAVE_MALLOC_H
+#include <malloc.h>
+#endif
 #include "encoding.h"
 #ifdef HAVE_UNICODE_H
 #include <unicode.h>
@@ -85,7 +89,8 @@ isolat1ToUTF8(unsigned char* out, int outlen, unsigned char* in, int inlen)
  *
  * Take a block of UTF-8 chars in and try to convert it to an ISO Latin 1
  * block of chars out.
- * TODO: need a fallback mechanism ...
+ * TODO: UTF8Toisolat1 need a fallback mechanism ...
+ *
  * Returns the number of byte written, or -1 by lack of space, or -2
  *     if the transcoding failed.
  */
@@ -169,7 +174,8 @@ UTF16ToUTF8(unsigned char* out, int outlen, unsigned short* in, int inlen)
  *
  * Take a block of UTF-8 chars in and try to convert it to an UTF-16
  * block of chars out.
- * TODO: need a fallback mechanism ...
+ * TODO: UTF8ToUTF16 need a fallback mechanism ...
+ *
  * Returns the number of byte written, or -1 by lack of space, or -2
  *     if the transcoding failed.
  */
@@ -416,7 +422,7 @@ xmlInitCharEncodingHandlers(void) {
     xmlNewCharEncodingHandler("UTF-8", NULL, NULL);
 #ifdef HAVE_UNICODE_H
 #else
-    xmlNewCharEncodingHandler("UTF-16", UTF16ToUTF8, UTF8ToUTF16);
+    /* xmlNewCharEncodingHandler("UTF-16", UTF16ToUTF8, UTF8ToUTF16); */
     xmlNewCharEncodingHandler("ISO-8859-1", isolat1ToUTF8, UTF8Toisolat1);
 #endif
 }
@@ -455,7 +461,7 @@ xmlRegisterCharEncodingHandler(xmlCharEncodingHandlerPtr handler) {
 xmlCharEncodingHandlerPtr
 xmlGetCharEncodingHandler(xmlCharEncoding enc) {
     if (handlers == NULL) xmlInitCharEncodingHandlers();
-    /* TODO !!!!!!! */
+    /* TODO xmlGetCharEncodingHandler !!!!!!! */
     return(NULL);
 }
 

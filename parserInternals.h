@@ -15,6 +15,8 @@
 extern "C" {
 #endif
 
+#define XML_MAX_NAMELEN 1000
+
 /**
  * A few macros needed to help building the parser.
  */
@@ -510,154 +512,112 @@ typedef unsigned char CHARVAL;
  * entity substitution default behaviour.
  */
 
-int xmlSubstituteEntitiesDefaultValue;
+int			xmlSubstituteEntitiesDefaultValue;
 
 /**
  * Parser context
  */
-xmlParserCtxtPtr
-xmlCreateDocParserCtxt(CHAR *cur);
-xmlParserCtxtPtr
-xmlCreateFileParserCtxt(const char *filename);
-xmlParserCtxtPtr
-xmlCreateMemoryParserCtxt(char *buffer, int size);
-void
-xmlFreeParserCtxt(xmlParserCtxtPtr ctxt);
-xmlParserCtxtPtr
-xmlNewParserCtxt();
-void
-xmlSwitchEncoding(xmlParserCtxtPtr ctxt, xmlCharEncoding enc);
+xmlParserCtxtPtr	xmlCreateDocParserCtxt	(CHAR *cur);
+xmlParserCtxtPtr	xmlCreateFileParserCtxt	(const char *filename);
+xmlParserCtxtPtr	xmlCreateMemoryParserCtxt(char *buffer,
+						 int size);
+void			xmlFreeParserCtxt	(xmlParserCtxtPtr ctxt);
+xmlParserCtxtPtr	xmlNewParserCtxt	(void);
+void			xmlSwitchEncoding	(xmlParserCtxtPtr ctxt,
+						 xmlCharEncoding enc);
 
 /**
  * Entities
  */
-void
-xmlHandleEntity(xmlParserCtxtPtr ctxt, xmlEntityPtr entity);
+void			xmlHandleEntity		(xmlParserCtxtPtr ctxt,
+						 xmlEntityPtr entity);
 
 /**
  * Input Streams
  */
-xmlParserInputPtr
-xmlNewEntityInputStream(xmlParserCtxtPtr ctxt, xmlEntityPtr entity);
-void
-xmlPushInput(xmlParserCtxtPtr ctxt, xmlParserInputPtr input);
-CHAR
-xmlPopInput(xmlParserCtxtPtr ctxt);
-void
-xmlFreeInputStream(xmlParserInputPtr input);
-xmlParserInputPtr
-xmlNewInputFromFile(xmlParserCtxtPtr ctxt, const char *filename);
+xmlParserInputPtr	xmlNewEntityInputStream	(xmlParserCtxtPtr ctxt,
+						 xmlEntityPtr entity);
+void			xmlPushInput		(xmlParserCtxtPtr ctxt,
+						 xmlParserInputPtr input);
+CHAR			xmlPopInput		(xmlParserCtxtPtr ctxt);
+void			xmlFreeInputStream	(xmlParserInputPtr input);
+xmlParserInputPtr	xmlNewInputFromFile	(xmlParserCtxtPtr ctxt,
+						 const char *filename);
 
 /**
  * Namespaces.
  */
-CHAR *
-xmlSplitQName(const CHAR *name, CHAR **prefix);
-CHAR *
-xmlNamespaceParseNCName(xmlParserCtxtPtr ctxt);
-CHAR *
-xmlNamespaceParseQName(xmlParserCtxtPtr ctxt, CHAR **prefix);
-CHAR *
-xmlNamespaceParseNSDef(xmlParserCtxtPtr ctxt);
-CHAR *
-xmlParseQuotedString(xmlParserCtxtPtr ctxt);
-void
-xmlParseNamespace(xmlParserCtxtPtr ctxt);
+CHAR *			xmlSplitQName		(const CHAR *name,
+						 CHAR **prefix);
+CHAR *			xmlNamespaceParseNCName	(xmlParserCtxtPtr ctxt);
+CHAR *			xmlNamespaceParseQName	(xmlParserCtxtPtr ctxt,
+						 CHAR **prefix);
+CHAR *			xmlNamespaceParseNSDef	(xmlParserCtxtPtr ctxt);
+CHAR *			xmlParseQuotedString	(xmlParserCtxtPtr ctxt);
+void			xmlParseNamespace	(xmlParserCtxtPtr ctxt);
 
 /**
  * Generic production rules
  */
-CHAR *
-xmlScanName(xmlParserCtxtPtr ctxt);
-CHAR *
-xmlParseName(xmlParserCtxtPtr ctxt);
-CHAR *
-xmlParseNmtoken(xmlParserCtxtPtr ctxt);
-CHAR *
-xmlParseEntityValue(xmlParserCtxtPtr ctxt, CHAR **orig);
-CHAR *
-xmlParseAttValue(xmlParserCtxtPtr ctxt);
-CHAR *
-xmlParseSystemLiteral(xmlParserCtxtPtr ctxt);
-CHAR *
-xmlParsePubidLiteral(xmlParserCtxtPtr ctxt);
-void
-xmlParseCharData(xmlParserCtxtPtr ctxt, int cdata);
-CHAR *
-xmlParseExternalID(xmlParserCtxtPtr ctxt, CHAR **publicID, int strict);
-void 
-xmlParseComment(xmlParserCtxtPtr ctxt, int create);
-CHAR *
-xmlParsePITarget(xmlParserCtxtPtr ctxt);
-void
-xmlParsePI(xmlParserCtxtPtr ctxt);
-void
-xmlParseNotationDecl(xmlParserCtxtPtr ctxt);
-void
-xmlParseEntityDecl(xmlParserCtxtPtr ctxt);
-int
-xmlParseDefaultDecl(xmlParserCtxtPtr ctxt, CHAR **value);
-xmlEnumerationPtr
-xmlParseNotationType(xmlParserCtxtPtr ctxt);
-xmlEnumerationPtr
-xmlParseEnumerationType(xmlParserCtxtPtr ctxt);
-int
-xmlParseEnumeratedType(xmlParserCtxtPtr ctxt, xmlEnumerationPtr *tree);
-int
-xmlParseAttributeType(xmlParserCtxtPtr ctxt, xmlEnumerationPtr *tree);
-void
-xmlParseAttributeListDecl(xmlParserCtxtPtr ctxt);
-xmlElementContentPtr
-xmlParseElementMixedContentDecl(xmlParserCtxtPtr ctxt);
-xmlElementContentPtr
-xmlParseElementChildrenContentDecl(xmlParserCtxtPtr ctxt);
-int
-xmlParseElementContentDecl(xmlParserCtxtPtr ctxt, CHAR *name,
-                           xmlElementContentPtr *result);
-int
-xmlParseElementDecl(xmlParserCtxtPtr ctxt);
-void
-xmlParseMarkupDecl(xmlParserCtxtPtr ctxt);
-int
-xmlParseCharRef(xmlParserCtxtPtr ctxt);
-xmlEntityPtr
-xmlParseEntityRef(xmlParserCtxtPtr ctxt);
-void
-xmlParseReference(xmlParserCtxtPtr ctxt);
-void
-xmlParsePEReference(xmlParserCtxtPtr ctxt);
-void
-xmlParseDocTypeDecl(xmlParserCtxtPtr ctxt);
-CHAR *
-xmlParseAttribute(xmlParserCtxtPtr ctxt, CHAR **value);
-CHAR *
-xmlParseStartTag(xmlParserCtxtPtr ctxt);
-void
-xmlParseEndTag(xmlParserCtxtPtr ctxt, CHAR *tagname);
-void
-xmlParseCDSect(xmlParserCtxtPtr ctxt);
-void
-xmlParseContent(xmlParserCtxtPtr ctxt);
-void
-xmlParseElement(xmlParserCtxtPtr ctxt);
-CHAR *
-xmlParseVersionNum(xmlParserCtxtPtr ctxt);
-CHAR *
-xmlParseVersionInfo(xmlParserCtxtPtr ctxt);
-CHAR *
-xmlParseEncName(xmlParserCtxtPtr ctxt);
-CHAR *
-xmlParseEncodingDecl(xmlParserCtxtPtr ctxt);
-int
-xmlParseSDDecl(xmlParserCtxtPtr ctxt);
-void
-xmlParseXMLDecl(xmlParserCtxtPtr ctxt);
-void
-xmlParseMisc(xmlParserCtxtPtr ctxt);
-void
-xmlParseExternalSubset(xmlParserCtxtPtr ctxt, const CHAR *ExternalID,
-                       const CHAR *SystemID);
-
+CHAR *			xmlScanName		(xmlParserCtxtPtr ctxt);
+CHAR *			xmlParseName		(xmlParserCtxtPtr ctxt);
+CHAR *			xmlParseNmtoken		(xmlParserCtxtPtr ctxt);
+CHAR *			xmlParseEntityValue	(xmlParserCtxtPtr ctxt,
+						 CHAR **orig);
+CHAR *			xmlParseAttValue	(xmlParserCtxtPtr ctxt);
+CHAR *			xmlParseSystemLiteral	(xmlParserCtxtPtr ctxt);
+CHAR *			xmlParsePubidLiteral	(xmlParserCtxtPtr ctxt);
+void			xmlParseCharData	(xmlParserCtxtPtr ctxt,
+						 int cdata);
+CHAR *			xmlParseExternalID	(xmlParserCtxtPtr ctxt,
+						 CHAR **publicID,
+						 int strict);
+void			xmlParseComment		(xmlParserCtxtPtr ctxt);
+CHAR *			xmlParsePITarget	(xmlParserCtxtPtr ctxt);
+void			xmlParsePI		(xmlParserCtxtPtr ctxt);
+void			xmlParseNotationDecl	(xmlParserCtxtPtr ctxt);
+void			xmlParseEntityDecl	(xmlParserCtxtPtr ctxt);
+int			xmlParseDefaultDecl	(xmlParserCtxtPtr ctxt,
+						 CHAR **value);
+xmlEnumerationPtr	xmlParseNotationType	(xmlParserCtxtPtr ctxt);
+xmlEnumerationPtr	xmlParseEnumerationType	(xmlParserCtxtPtr ctxt);
+int			xmlParseEnumeratedType	(xmlParserCtxtPtr ctxt,
+						 xmlEnumerationPtr *tree);
+int			xmlParseAttributeType	(xmlParserCtxtPtr ctxt,
+						 xmlEnumerationPtr *tree);
+void			xmlParseAttributeListDecl(xmlParserCtxtPtr ctxt);
+xmlElementContentPtr	xmlParseElementMixedContentDecl
+						(xmlParserCtxtPtr ctxt);
+xmlElementContentPtr	xmlParseElementChildrenContentDecl
+						(xmlParserCtxtPtr ctxt);
+int			xmlParseElementContentDecl(xmlParserCtxtPtr ctxt,
+						 CHAR *name,
+						 xmlElementContentPtr *result);
+int			xmlParseElementDecl	(xmlParserCtxtPtr ctxt);
+void			xmlParseMarkupDecl	(xmlParserCtxtPtr ctxt);
+int			xmlParseCharRef		(xmlParserCtxtPtr ctxt);
+xmlEntityPtr		xmlParseEntityRef	(xmlParserCtxtPtr ctxt);
+void			xmlParseReference	(xmlParserCtxtPtr ctxt);
+void			xmlParsePEReference	(xmlParserCtxtPtr ctxt);
+void			xmlParseDocTypeDecl	(xmlParserCtxtPtr ctxt);
+CHAR *			xmlParseAttribute	(xmlParserCtxtPtr ctxt,
+						 CHAR **value);
+CHAR *			xmlParseStartTag	(xmlParserCtxtPtr ctxt);
+void			xmlParseEndTag		(xmlParserCtxtPtr ctxt,
+						 CHAR *tagname);
+void			xmlParseCDSect		(xmlParserCtxtPtr ctxt);
+void			xmlParseContent		(xmlParserCtxtPtr ctxt);
+void			xmlParseElement		(xmlParserCtxtPtr ctxt);
+CHAR *			xmlParseVersionNum	(xmlParserCtxtPtr ctxt);
+CHAR *			xmlParseVersionInfo	(xmlParserCtxtPtr ctxt);
+CHAR *			xmlParseEncName		(xmlParserCtxtPtr ctxt);
+CHAR *			xmlParseEncodingDecl	(xmlParserCtxtPtr ctxt);
+int			xmlParseSDDecl		(xmlParserCtxtPtr ctxt);
+void			xmlParseXMLDecl		(xmlParserCtxtPtr ctxt);
+void			xmlParseMisc		(xmlParserCtxtPtr ctxt);
+void			xmlParseExternalSubset	(xmlParserCtxtPtr ctxt,
+						 const CHAR *ExternalID,
+						 const CHAR *SystemID); 
 /*
  * Entities substitution
  */
@@ -666,16 +626,21 @@ xmlParseExternalSubset(xmlParserCtxtPtr ctxt, const CHAR *ExternalID,
 #define XML_SUBSTITUTE_PEREF	2
 #define XML_SUBSTITUTE_BOTH 	3
 
-CHAR *
-xmlDecodeEntities(xmlParserCtxtPtr ctxt, int len, int what,
-                  CHAR end, CHAR  end2, CHAR end3);
+CHAR *			xmlDecodeEntities	(xmlParserCtxtPtr ctxt,
+						 int len,
+						 int what,
+						 CHAR end,
+						 CHAR  end2,
+						 CHAR end3);
 
 /*
  * Generated by MACROS on top of parser.c c.f. PUSH_AND_POP
  */
-extern int nodePush(xmlParserCtxtPtr ctxt, xmlNodePtr value);
-extern xmlNodePtr nodePop(xmlParserCtxtPtr ctxt);
-extern int inputPush(xmlParserCtxtPtr ctxt, xmlParserInputPtr value);
-extern xmlParserInputPtr inputPop(xmlParserCtxtPtr ctxt);
+int			nodePush		(xmlParserCtxtPtr ctxt,
+						 xmlNodePtr value);
+xmlNodePtr		nodePop			(xmlParserCtxtPtr ctxt);
+int			inputPush		(xmlParserCtxtPtr ctxt,
+						 xmlParserInputPtr value);
+xmlParserInputPtr	inputPop		(xmlParserCtxtPtr ctxt);
 
 #endif /* __XML_PARSER_INTERNALS_H__ */

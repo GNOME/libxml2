@@ -1,5 +1,5 @@
 /child::EXAMPLE
-/child::EXAMPLE/child::*
+/child::*
 /child::EXAMPLE/child::head
 /child::EXAMPLE/child::*
 /child::EXAMPLE/child::head/child::title

@@ -59,21 +59,35 @@ typedef xmlEntitiesTable *xmlEntitiesTablePtr;
 
 #include "parser.h"
 
-void xmlAddDocEntity(xmlDocPtr doc, const CHAR *name, int type,
-              const CHAR *ExternalID, const CHAR *SystemID, CHAR *content);
-void xmlAddDtdEntity(xmlDocPtr doc, const CHAR *name, int type,
-              const CHAR *ExternalID, const CHAR *SystemID, CHAR *content);
-xmlEntityPtr xmlGetPredefinedEntity(const CHAR *name);
-xmlEntityPtr xmlGetDocEntity(xmlDocPtr doc, const CHAR *name);
-xmlEntityPtr xmlGetDtdEntity(xmlDocPtr doc, const CHAR *name);
-xmlEntityPtr xmlGetParameterEntity(xmlDocPtr doc, const CHAR *name);
-const CHAR *xmlEncodeEntities(xmlDocPtr doc, const CHAR *input);
-CHAR *xmlEncodeEntitiesReentrant(xmlDocPtr doc, const CHAR *input);
-xmlEntitiesTablePtr xmlCreateEntitiesTable(void);
-xmlEntitiesTablePtr xmlCopyEntitiesTable(xmlEntitiesTablePtr table);
-void xmlFreeEntitiesTable(xmlEntitiesTablePtr table);
-void xmlDumpEntitiesTable(xmlBufferPtr buf, xmlEntitiesTablePtr table);
-xmlEntitiesTablePtr xmlCopyEntitiesTable(xmlEntitiesTablePtr table);
+void			xmlAddDocEntity		(xmlDocPtr doc,
+						 const CHAR *name,
+						 int type,
+						 const CHAR *ExternalID,
+						 const CHAR *SystemID,
+						 const CHAR *content);
+void			xmlAddDtdEntity		(xmlDocPtr doc,
+						 const CHAR *name,
+						 int type,
+						 const CHAR *ExternalID,
+						 const CHAR *SystemID,
+						 const CHAR *content);
+xmlEntityPtr		xmlGetPredefinedEntity	(const CHAR *name);
+xmlEntityPtr		xmlGetDocEntity		(xmlDocPtr doc,
+						 const CHAR *name);
+xmlEntityPtr		xmlGetDtdEntity		(xmlDocPtr doc,
+						 const CHAR *name);
+xmlEntityPtr		xmlGetParameterEntity	(xmlDocPtr doc,
+						 const CHAR *name);
+const CHAR *		xmlEncodeEntities	(xmlDocPtr doc,
+						 const CHAR *input);
+CHAR *			xmlEncodeEntitiesReentrant(xmlDocPtr doc,
+						 const CHAR *input);
+xmlEntitiesTablePtr	xmlCreateEntitiesTable	(void);
+xmlEntitiesTablePtr	xmlCopyEntitiesTable	(xmlEntitiesTablePtr table);
+void			xmlFreeEntitiesTable	(xmlEntitiesTablePtr table);
+void			xmlDumpEntitiesTable	(xmlBufferPtr buf,
+						 xmlEntitiesTablePtr table);
+xmlEntitiesTablePtr	xmlCopyEntitiesTable	(xmlEntitiesTablePtr table);
 
 #ifdef __cplusplus
 }

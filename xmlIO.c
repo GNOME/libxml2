@@ -6,10 +6,6 @@
  * Daniel.Veillard@w3.org
  */
 
-/*
- * TODO: plug-in a generic transfer library, like libwww if available
- */
-
 #include "config.h"
 
 #include <sys/types.h>
@@ -24,10 +20,12 @@
 #endif
 #include <string.h>
 
+#include "parser.h"
 #include "xmlIO.h"
 
 /* #define DEBUG_INPUT */
 /* #define VERBOSE_FAILURE */
+/* #define DEBUG_EXTERNAL_ENTITIES */
 
 #ifdef DEBUG_INPUT
 #define MINLEN 40
@@ -155,7 +153,7 @@ xmlParserInputBufferCreateFilename(const char *filename, xmlCharEncoding enc) {
 #endif
     }
     /* 
-     * TODO : get the 4 first bytes and 
+     * TODO : get the 4 first bytes and decode the charset
      * if enc == XML_CHAR_ENCODING_NONE
      * plug some encoding conversion routines here. !!!
      * enc = xmlDetectCharEncoding(buffer);
@@ -227,7 +225,7 @@ xmlParserInputBufferCreateFd(int fd, xmlCharEncoding enc) {
  *
  * Grow up the content of the input buffer, the old data are preserved
  * This routine handle the I18N transcoding to internal UTF-8
- * TODO: one should be able to remove one copy
+ * TODO: one should be able to remove one extra copy
  *
  * Returns the number of chars read and stored in the buffer, or -1
  *         in case of error.
@@ -289,7 +287,7 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
 	    return(-1);
 	}
 	nbchars = in->encoder->input(buf, (res + 1) * 2 * sizeof(CHAR),
-	                             buffer, res);
+	                             BAD_CAST buffer, res);
         buf[nbchars] = 0;
         xmlBufferAdd(in->buffer, (CHAR *) buf, nbchars);
 	free(buf);
@@ -362,5 +360,77 @@ xmlParserGetDirectory(const char *filename) {
 	}
     }
     return(ret);
+}
+
+/****************************************************************
+ *								*
+ *		External entities loading			*
+ *								*
+ ****************************************************************/
+
+/*
+ * xmlDefaultExternalEntityLoader:
+ * @URL:  the URL for the entity to load
+ * @ID:  the System ID for the entity to load
+ * @context:  the context in which the entity is called or NULL
+ *
+ * By default we don't load external entitites, yet.
+ * TODO: get a sample http implementation and scan for existing one
+ *       at compile time.
+ *
+ * Returns a new allocated xmlParserInputPtr, or NULL.
+ */
+static
+xmlParserInputPtr
+xmlDefaultExternalEntityLoader(const char *URL, const char *ID,
+                               xmlParserInputPtr context) {
+#ifdef DEBUG_EXTERNAL_ENTITIES
+    fprintf(stderr, "xmlDefaultExternalEntityLoader(%s, xxx)\n", URL);
+#endif
+    return(NULL);
+}
+
+static xmlExternalEntityLoader xmlCurrentExternalEntityLoader =
+       xmlDefaultExternalEntityLoader;
+
+/*
+ * xmlSetExternalEntityLoader:
+ * @f:  the new entity resolver function
+ *
+ * Changes the defaultexternal entity resolver function for the application
+ */
+void
+xmlSetExternalEntityLoader(xmlExternalEntityLoader f) {
+    xmlCurrentExternalEntityLoader = f;
+}
+
+/*
+ * xmlGetExternalEntityLoader:
+ *
+ * Get the default external entity resolver function for the application
+ *
+ * Returns the xmlExternalEntityLoader function pointer
+ */
+xmlExternalEntityLoader
+xmlGetExternalEntityLoader(void) {
+    return(xmlCurrentExternalEntityLoader);
+}
+
+/*
+ * xmlLoadExternalEntity:
+ * @URL:  the URL for the entity to load
+ * @ID:  the System ID for the entity to load
+ * @context:  the context in which the entity is called or NULL
+ *
+ * Load an external entity, note that the use of this function for
+ * unparsed entities may generate problems
+ * TODO: a more generic External entitiy API must be designed
+ *
+ * Returns the xmlParserInputPtr or NULL
+ */
+xmlParserInputPtr
+xmlLoadExternalEntity(const char *URL, const char *ID,
+                      xmlParserInputPtr context) {
+    return(xmlCurrentExternalEntityLoader(URL, ID, context));
 }
 

@@ -201,7 +201,7 @@ xmlSprintfElementContent(char *buf, xmlElementContentPtr content, int glob) {
             strcat(buf, "#PCDATA");
 	    break;
 	case XML_ELEMENT_CONTENT_ELEMENT:
-	    strcat(buf, content->name);
+	    strcat(buf, (char *) content->name);
 	    break;
 	case XML_ELEMENT_CONTENT_SEQ:
 	    if ((content->c1->type == XML_ELEMENT_CONTENT_OR) ||
@@ -760,7 +760,9 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const CHAR *elem,
         fprintf(stderr, "xmlAddAttributeDecl: elem == NULL\n");
 	return(NULL);
     }
-    /* TODO: Lacks verifications !!! */
+    /*
+     * Check the type and possibly the default value.
+     */
     switch (type) {
         case XML_ATTRIBUTE_CDATA:
 	    break;
@@ -786,6 +788,12 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const CHAR *elem,
 	    fprintf(stderr, "xmlAddAttributeDecl: unknown type %d\n", type);
 	    return(NULL);
     }
+    if ((defaultValue != NULL) && 
+        (!xmlValidateAttributeValue(type, defaultValue))) {
+	VERROR(ctxt->userData, "Attribute %s on %s: invalid default value\n",
+	       elem, name, defaultValue);
+	defaultValue = NULL;
+    }
 
     /*
      * Create the Attribute table if needed.
@@ -808,8 +816,8 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const CHAR *elem,
 	    /*
 	     * The attribute is already defined in this Dtd.
 	     */
-	    fprintf(stderr,
-		    "xmlAddAttributeDecl: %s already defined\n", name);
+	    VERROR(ctxt->userData, "Attribute %s on %s: already defined\n",
+		   elem, name);
 	}
     }
 
@@ -1492,10 +1500,51 @@ xmlIsID(xmlDocPtr doc, xmlNodePtr elem, xmlAttrPtr attr) {
 	    attrDecl = xmlGetDtdAttrDesc(doc->extSubset, elem->name,
 	                                 attr->name);
 
-        if ((attrDecl == NULL) || (attrDecl->type == XML_ATTRIBUTE_ID))
+        if ((attrDecl != NULL) && (attrDecl->type == XML_ATTRIBUTE_ID))
 	    return(1);
     }
     return(0);
+}
+
+/**
+ * xmlGetID:
+ * @doc:  pointer to the document
+ * @ID:  the ID value
+ *
+ * Search the attribute declaring the given ID
+ *
+ * Returns NULL if not found, otherwise the xmlAttrPtr defining the ID
+ */
+xmlAttrPtr 
+xmlGetID(xmlDocPtr doc, const CHAR *ID) {
+    xmlIDPtr cur;
+    xmlIDTablePtr table;
+    int i;
+
+    if (doc == NULL) {
+        fprintf(stderr, "xmlGetID: doc == NULL\n");
+	return(NULL);
+    }
+
+    if (ID == NULL) {
+        fprintf(stderr, "xmlGetID: ID == NULL\n");
+	return(NULL);
+    }
+
+    table = doc->ids;
+    if (table == NULL) 
+        return(NULL);
+
+    /*
+     * Search the ID list.
+     */
+    for (i = 0;i < table->nb_ids;i++) {
+        cur = table->table[i];
+	if (!xmlStrcmp(cur->value, ID)) {
+	    return(cur->attr);
+	}
+    }
+    return(NULL);
 }
 
 /************************************************************************
@@ -1589,6 +1638,36 @@ xmlGetDtdNotationDesc(xmlDtdPtr dtd, const CHAR *name) {
 	    return(cur);
     }
     return(NULL);
+}
+
+/**
+ * xmlValidateNotationUse:
+ * @ctxt:  the validation context
+ * @doc:  the document
+ * @notationName:  the notation name to check
+ *
+ * Validate that the given mame match a notation declaration.
+ * - [ VC: Notation Declared ]
+ *
+ * returns 1 if valid or 0 otherwise
+ */
+
+int
+xmlValidateNotationUse(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
+                       const CHAR *notationName) {
+    xmlNotationPtr notaDecl;
+    if ((doc == NULL) || (doc->intSubset == NULL)) return(-1);
+
+    notaDecl = xmlGetDtdNotationDesc(doc->intSubset, notationName);
+    if ((notaDecl == NULL) && (doc->extSubset != NULL))
+	notaDecl = xmlGetDtdNotationDesc(doc->extSubset, notationName);
+
+    if (notaDecl == NULL) {
+	VERROR(ctxt->userData, "NOTATION %s is not declared\n",
+	       notationName);
+	return(0);
+    }
+    return(1);
 }
 
 /**
@@ -1804,6 +1883,7 @@ xmlValidateNmtokensValue(const CHAR *value) {
 
 /**
  * xmlValidateNotationDecl:
+ * @ctxt:  the validation context
  * @doc:  a document instance
  * @nota:  a notation definition
  *
@@ -1852,12 +1932,12 @@ xmlValidateNotationDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 int
 xmlValidateAttributeValue(xmlAttributeType type, const CHAR *value) {
     switch (type) {
-	case XML_ATTRIBUTE_IDREFS:
 	case XML_ATTRIBUTE_ENTITIES:
+	case XML_ATTRIBUTE_IDREFS:
 	    return(xmlValidateNamesValue(value));
+	case XML_ATTRIBUTE_ENTITY:
 	case XML_ATTRIBUTE_IDREF:
 	case XML_ATTRIBUTE_ID:
-	case XML_ATTRIBUTE_ENTITY:
 	case XML_ATTRIBUTE_NOTATION:
 	    return(xmlValidateNameValue(value));
 	case XML_ATTRIBUTE_NMTOKENS:
@@ -1873,6 +1953,7 @@ xmlValidateAttributeValue(xmlAttributeType type, const CHAR *value) {
 
 /**
  * xmlValidateAttributeDecl:
+ * @ctxt:  the validation context
  * @doc:  a document instance
  * @attr:  an attribute definition
  *
@@ -1918,7 +1999,7 @@ xmlValidateAttributeDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 	ret = 0;
     }
 
-    /* max ID per element */
+    /* One ID per Element Type */
     if ((attr->type == XML_ATTRIBUTE_ID) && (doc->extSubset != NULL)) {
         int nbId = 0;
 
@@ -2048,7 +2129,7 @@ xmlValidateElementDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 int
 xmlValidateOneAttribute(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
                         xmlNodePtr elem, xmlAttrPtr attr, const CHAR *value) {
-    xmlElementPtr elemDecl;
+    /* xmlElementPtr elemDecl; */
     xmlAttributePtr attrDecl;
     int val;
     int ret = 1;
@@ -2075,6 +2156,11 @@ xmlValidateOneAttribute(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 	   "Syntax of value for attribute %s on %s is not valid\n",
 	       attr->name, elem->name);
         ret = 0;
+    }
+
+    /* Validity Constraint: ID uniqueness */
+    if (attrDecl->type == XML_ATTRIBUTE_ID) {
+        xmlAddID(ctxt, doc, value, attr);
     }
 
     /* Validity Constraint: Notation Attributes */
@@ -2131,13 +2217,14 @@ xmlValidateOneAttribute(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
         ret = 0;
     }
 
+    /********
     elemDecl = xmlGetDtdElementDesc(doc->intSubset, elem->name);
     if ((elemDecl == NULL) && (doc->extSubset != NULL))
 	elemDecl = xmlGetDtdElementDesc(doc->extSubset, elem->name);
     if (elemDecl == NULL) {
-	/* the error has or will be reported soon in xmlValidateOneElement */
 	return(0);
     }
+     ********/
     return(ret);
 }
 
@@ -2329,7 +2416,7 @@ xmlSprintfElementChilds(char *buf, xmlNodePtr node, int glob) {
     while (cur != NULL) {
         switch (cur->type) {
             case XML_ELEMENT_NODE:
-	         strcat(buf, cur->name);
+	         strcat(buf, (char *) cur->name);
 		 if (cur->next != NULL)
 		     strcat(buf, " ");
 		 break;
@@ -2467,6 +2554,7 @@ xmlValidateOneElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 	    break;
     }
 
+    /* TODO - [ VC: Required Attribute ] */
     return(ret);
 }
 

@@ -62,7 +62,8 @@ typedef struct xmlXPathContext {
     xmlNodeSetPtr nodelist;		/* The current node list */
     void *variables; /* TODO !!!! */
     void *functions; /* TODO !!!! */
-    void *namespaces; /* TODO !!!! */
+    xmlNsPtr *namespaces;		/* The namespaces lookup */
+    int nsNr;				/* the current Namespace index */
 } xmlXPathContext, *xmlXPathContextPtr;
 
 /*
@@ -96,12 +97,14 @@ typedef void (*xmlXPathFunction) (xmlXPathParserContextPtr ctxt, int nargs);
  *									*
  ************************************************************************/
 
-xmlXPathContextPtr xmlXPathNewContext(xmlDocPtr doc, void *variables,
-                                      void *functions, void *namespaces);
-void xmlXPathFreeContext(xmlXPathContextPtr ctxt);
-xmlXPathObjectPtr xmlXPathEval(const CHAR *str, xmlXPathContextPtr ctxt);
-void xmlXPathFreeObject(xmlXPathObjectPtr obj);
-xmlXPathObjectPtr xmlXPathEvalExpression(const CHAR *str,
-                                         xmlXPathContextPtr ctxt);
+xmlXPathContextPtr xmlXPathNewContext		(xmlDocPtr doc,
+						 void *variables,
+						 void *functions);
+void		   xmlXPathFreeContext		(xmlXPathContextPtr ctxt);
+xmlXPathObjectPtr  xmlXPathEval			(const CHAR *str,
+						 xmlXPathContextPtr ctxt);
+void		   xmlXPathFreeObject		(xmlXPathObjectPtr obj);
+xmlXPathObjectPtr  xmlXPathEvalExpression	(const CHAR *str,
+						 xmlXPathContextPtr ctxt);
 
 #endif /* ! __XML_XPATH_H__ */

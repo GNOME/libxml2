@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include "tree.h"
+#include "parser.h"
 #include "encoding.h"
 
 #ifdef __cplusplus
@@ -35,17 +36,21 @@ typedef xmlParserInputBuffer *xmlParserInputBufferPtr;
  * Interfaces
  */
 
-xmlParserInputBufferPtr xmlParserInputBufferCreateFilename(const char *filename,
-                                                       xmlCharEncoding enc);
-xmlParserInputBufferPtr xmlParserInputBufferCreateFile(FILE *file,
-                                                       xmlCharEncoding enc);
-xmlParserInputBufferPtr xmlParserInputBufferCreateFd(int fd, xmlCharEncoding enc);
-
-int xmlParserInputBufferRead(xmlParserInputBufferPtr in, int len);
-int xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len);
-
-void xmlFreeParserInputBuffer(xmlParserInputBufferPtr in);
-char *xmlParserGetDirectory(const char *filename);
+xmlParserInputBufferPtr
+	xmlParserInputBufferCreateFilename	(const char *filename,
+                                                 xmlCharEncoding enc);
+xmlParserInputBufferPtr
+	xmlParserInputBufferCreateFile		(FILE *file,
+                                                 xmlCharEncoding enc);
+xmlParserInputBufferPtr
+	xmlParserInputBufferCreateFd		(int fd,
+	                                         xmlCharEncoding enc);
+int	xmlParserInputBufferRead		(xmlParserInputBufferPtr in,
+						 int len);
+int	xmlParserInputBufferGrow		(xmlParserInputBufferPtr in,
+						 int len);
+void	xmlFreeParserInputBuffer		(xmlParserInputBufferPtr in);
+char *	xmlParserGetDirectory			(const char *filename);
 
 #ifdef __cplusplus
 }

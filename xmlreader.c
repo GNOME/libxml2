@@ -1482,10 +1482,12 @@ xmlTextReaderReadState(xmlTextReaderPtr reader) {
  */
 xmlNodePtr
 xmlTextReaderExpand(xmlTextReaderPtr reader) {
-    if ((reader == NULL) || (reader->node == NULL) || (reader->ctxt == NULL))
+    if ((reader == NULL) || (reader->node == NULL))
         return(NULL);
     if (reader->doc != NULL)
         return(reader->node);
+    if (reader->ctxt == NULL)
+        return(NULL);
     if (xmlTextReaderDoExpand(reader) < 0)
         return(NULL);
     return(reader->node);

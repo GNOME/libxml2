@@ -132,6 +132,7 @@
 	
 	<co id="checkparseerror" /> if (doc == NULL ) {
 		fprintf(stderr,"Document not parsed successfully. \n");
+                xmlFreeDoc(doc);
 		return;
 	}
 

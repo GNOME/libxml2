@@ -30,6 +30,7 @@ parseDoc(char *docname) {
 	
 	if (doc == NULL ) {
 		fprintf(stderr,&quot;Document not parsed successfully. \n&quot;);
+		xmlFreeDoc(doc);
 		return;
 	}
 	

@@ -1,3 +1,11 @@
+Tue Sep  3 21:14:19 MDT 2002 John Fleck <jfleck@inkstain.net>
+
+	* doc/tutorial/includekeyword.c
+	* doc/tutorial/xmltutorial.xml
+	(plus resulting generated html files)
+	fixing one spot I missed in the tutorial where I hadn't freed
+	memory properly
+
 Sat Aug 31 19:31:17 MDT 2002 John Fleck <jfleck@inkstain.net>
 
 	* doc/tutorial/includeaddattribute.c

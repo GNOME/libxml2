@@ -1,7 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
 # Dependancies are fucked in make distcheck could not find why :-(
-# AUTOMAKE_OPTIONS=no-dependencies
+AUTOMAKE_OPTIONS=no-dependencies
 
 SUBDIRS = include . doc example
 

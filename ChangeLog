@@ -1,3 +1,8 @@
+Fri Jul  6 01:40:23 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* Makefile.am configure.in include/libxml/xmlwin32version.h:
+	  released 2.3.14
+
 Fri Jul  6 00:47:41 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* doc/html/*: rebuilt the docs for the release

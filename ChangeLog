@@ -1,3 +1,7 @@
+Mon May 17 05:52:03 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in : releasing 2.6.10
+
 Sun May 16 23:12:35 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: avoid returning default namespace when searching

@@ -6620,7 +6620,7 @@ xmlParseAttribute(xmlParserCtxtPtr ctxt, xmlChar **value) {
 	    ctxt->errNo = XML_ERR_ATTRIBUTE_WITHOUT_VALUE;
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		ctxt->sax->error(ctxt->userData,
-"Invalid value for xml:space : \"%s\", \"default\" or \"preserve\" expected\n",
+"Invalid value \"%s\" for xml:space : \"default\" or \"preserve\" expected\n",
                                  val);
 	    ctxt->wellFormed = 0;
 	    if (ctxt->recovery == 0) ctxt->disableSAX = 1;

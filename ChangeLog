@@ -1,3 +1,8 @@
+Wed Mar 26 17:30:37 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: Norm suggested a nicer error message for xml:space values
+	  errors
+
 Wed Mar 26 01:34:19 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c include/libxml/xpath.h: first part of the fix to

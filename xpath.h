@@ -23,6 +23,28 @@ typedef xmlXPathContext *xmlXPathContextPtr;
 typedef struct _xmlXPathParserContext xmlXPathParserContext;
 typedef xmlXPathParserContext *xmlXPathParserContextPtr;
 
+/**
+ * The set of XPath error codes
+ */
+
+typedef enum {
+    XPATH_EXPRESSION_OK = 0,
+    XPATH_NUMBER_ERROR,
+    XPATH_UNFINISHED_LITERAL_ERROR,
+    XPATH_START_LITERAL_ERROR,
+    XPATH_VARIABLE_REF_ERROR,
+    XPATH_UNDEF_VARIABLE_ERROR,
+    XPATH_INVALID_PREDICATE_ERROR,
+    XPATH_EXPR_ERROR,
+    XPATH_UNCLOSED_ERROR,
+    XPATH_UNKNOWN_FUNC_ERROR,
+    XPATH_INVALID_OPERAND,
+    XPATH_INVALID_TYPE,
+    XPATH_INVALID_ARITY,
+    XPATH_INVALID_CTXT_SIZE,
+    XPATH_INVALID_CTXT_POSITION
+} xmlXPathError;
+
 /*
  * A node-set (an unordered collection of nodes without duplicates) 
  */
@@ -208,6 +230,47 @@ typedef void (*xmlXPathFunction) (xmlXPathParserContextPtr ctxt, int nargs);
 
 /************************************************************************
  *									*
+ *			Helpers						*
+ *									*
+ ************************************************************************/
+
+#define CHECK_ERROR							\
+    if (ctxt->error != XPATH_EXPRESSION_OK) return
+
+#define CHECK_ERROR0							\
+    if (ctxt->error != XPATH_EXPRESSION_OK) return(0)
+
+#define XP_ERROR(X)							\
+    { xmlXPatherror(ctxt, __FILE__, __LINE__, X);			\
+      ctxt->error = (X); return; }
+
+#define XP_ERROR0(X)							\
+    { xmlXPatherror(ctxt, __FILE__, __LINE__, X);			\
+      ctxt->error = (X); return(0); }
+
+#define CHECK_TYPE(typeval)						\
+    if ((ctxt->value == NULL) || (ctxt->value->type != typeval))	\
+        XP_ERROR(XPATH_INVALID_TYPE)					\
+
+#define CHECK_ARITY(x)							\
+    if (nargs != (x)) {							\
+        XP_ERROR(XPATH_INVALID_ARITY);					\
+    }									\
+
+void		xmlXPatherror	(xmlXPathParserContextPtr ctxt,
+				 const char *file,
+				 int line,
+				 int no);
+
+/**
+ * Utilities for implementing more functions
+ */
+xmlXPathObjectPtr valuePop			(xmlXPathParserContextPtr ctxt);
+int		  valuePush			(xmlXPathParserContextPtr ctxt,
+						 xmlXPathObjectPtr value);
+
+/************************************************************************
+ *									*
  *			Public API					*
  *									*
  ************************************************************************/
@@ -244,6 +307,7 @@ xmlXPathObjectPtr  xmlXPathEvalExpression	(const xmlChar *str,
 xmlNodeSetPtr	   xmlXPathNodeSetCreate	(xmlNodePtr val);
 void		   xmlXPathFreeNodeSetList	(xmlXPathObjectPtr obj);
 void		   xmlXPathFreeNodeSet		(xmlNodeSetPtr obj);
+
 
 #ifdef __cplusplus
 }

@@ -1,3 +1,10 @@
+Thu Oct  5 18:13:15 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* debugXML.c testXPath.c xpath.[ch]: got pissed by some nastyness
+	  in the XPath engine, rewrote large parts of it, now it's far
+	  cleaner and in sync with the REC not an old WD. Fixed a parsing
+	  problem in the interactive XML shell found when testing XPath.
+
 Wed Oct  4 15:25:53 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* debugXML.c testXPath.c xpath.[ch]: More work on XPath/Xpointer,

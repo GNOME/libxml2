@@ -84,6 +84,24 @@ static xmlChar buffer[] =
 </EXAMPLE>\n\
 ";
 
+void xmlXPAthDebugDumpNode(FILE *output, xmlNodePtr cur) {
+    if (cur == NULL) {
+	fprintf(output, "Node is NULL !\n");
+	return;
+        
+    }
+
+    if (cur == NULL)
+	fprintf(output, " NULL\n");
+    else if ((cur->type == XML_DOCUMENT_NODE) ||
+	     (cur->type == XML_HTML_DOCUMENT_NODE))
+	fprintf(output, " /\n");
+    else if (cur->type == XML_ATTRIBUTE_NODE)
+	xmlDebugDumpAttr(output, (xmlAttrPtr)cur, 2);
+    else
+	xmlDebugDumpOneNode(output, cur, 2);
+}
+
 void xmlXPAthDebugDumpNodeSet(FILE *output, xmlNodeSetPtr cur) {
     int i;
 
@@ -96,17 +114,28 @@ void xmlXPAthDebugDumpNodeSet(FILE *output, xmlNodeSetPtr cur) {
     fprintf(output, "Set contains %d nodes:\n", cur->nodeNr);
     for (i = 0;i < cur->nodeNr;i++) {
         fprintf(output, "%d", i + 1);
-	if (cur->nodeTab[i] == NULL)
-	    fprintf(output, " NULL\n");
-	else if ((cur->nodeTab[i]->type == XML_DOCUMENT_NODE) ||
-	         (cur->nodeTab[i]->type == XML_HTML_DOCUMENT_NODE))
-	    fprintf(output, " /\n");
-	else if (cur->nodeTab[i]->type == XML_ATTRIBUTE_NODE)
-	    xmlDebugDumpAttr(output, (xmlAttrPtr)cur->nodeTab[i], 2);
-	else
-	    xmlDebugDumpOneNode(output, cur->nodeTab[i], 2);
+	xmlXPAthDebugDumpNode(output, cur->nodeTab[i]);
     }
 }
+
+#if defined(LIBXML_XPTR_ENABLED)
+void xmlXPAthDebugDumpObject(FILE *output, xmlXPathObjectPtr cur);
+void xmlXPAthDebugDumpLocationSet(FILE *output, xmlLocationSetPtr cur) {
+    int i;
+
+    if (cur == NULL) {
+	fprintf(output, "LocationSet is NULL !\n");
+	return;
+        
+    }
+
+    fprintf(output, "Set contains %d ranges:\n", cur->locNr);
+    for (i = 0;i < cur->locNr;i++) {
+        fprintf(output, "%d", i + 1);
+	xmlXPAthDebugDumpObject(output, cur->locTab[i]);
+    }
+}
+#endif
 
 void xmlXPAthDebugDumpObject(FILE *output, xmlXPathObjectPtr cur) {
     if (cur == NULL) {
@@ -134,6 +163,30 @@ void xmlXPAthDebugDumpObject(FILE *output, xmlXPathObjectPtr cur) {
 	    xmlDebugDumpString(output, cur->stringval);
 	    fprintf(output, "\n");
 	    break;
+	case XPATH_POINT:
+	    fprintf(output, "Object is a point : index %d in node", cur->index);
+	    xmlXPAthDebugDumpNode(output, (xmlNodePtr) cur->user);
+	    fprintf(output, "\n");
+	    break;
+	case XPATH_RANGE:
+	    fprintf(output, "Object is a range : from");
+	    if (cur->index >= 0)
+		fprintf(output, "index %d in ", cur->index);
+	    fprintf(output, "node");
+	    xmlXPAthDebugDumpNode(output, (xmlNodePtr) cur->user);
+	    fprintf(output, "   to ");
+	    if (cur->index2 >= 0)
+		fprintf(output, "index %d in ", cur->index2);
+	    fprintf(output, "node");
+	    xmlXPAthDebugDumpNode(output, (xmlNodePtr) cur->user2);
+	    fprintf(output, "\n");
+	case XPATH_LOCATIONSET:
+#if defined(LIBXML_XPTR_ENABLED)
+	    fprintf(output, "Object is a location set containing :");
+	    xmlXPAthDebugDumpLocationSet(output, (xmlLocationSetPtr) cur->user);
+#endif
+	case XPATH_USERS:
+	    fprintf(output, "Object is user defined\n");
     }
 }
 

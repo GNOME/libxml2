@@ -1559,10 +1559,11 @@ void
 xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
          FILE *output) {
     char prompt[500] = "/ > ";
-    char *cmdline = NULL;
+    char *cmdline = NULL, *cur;
     int nbargs;
     char command[100];
     char arg[400];
+    int i;
     xmlShellCtxtPtr ctxt;
     xmlXPathObjectPtr list;
 
@@ -1604,14 +1605,45 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
 	    sprintf(prompt, "? > ");
         prompt[sizeof(prompt) - 1] = 0;
 
+	/*
+	 * Get a new command line
+	 */
         cmdline = ctxt->input(prompt);
         if (cmdline == NULL) break;
 
-	command[0] = 0;
-	arg[0] = 0;
-	nbargs = sscanf(cmdline, "%s %s", command, arg);
+	/*
+	 * Parse the command itself
+	 */
+	cur = cmdline;
+	while ((*cur == ' ') || (*cur == '\t')) cur++;
+	i = 0;
+	while ((*cur != ' ') && (*cur != '\t') &&
+	       (*cur != '\n') && (*cur != '\r')) {
+	    if (*cur == 0)
+		break;
+	    command[i++] = *cur++;
+	}
+	command[i] = 0;
+	if (i == 0) continue;
+	nbargs++;
 
-	if (command[0] == 0) continue;
+	/*
+	 * Parse the argument
+	 */
+	while ((*cur == ' ') || (*cur == '\t')) cur++;
+	i = 0;
+	while ((*cur != '\n') && (*cur != '\r') && (*cur != 0)) {
+	    if (*cur == 0)
+		break;
+	    arg[i++] = *cur++;
+	}
+	arg[i] = 0;
+	if (i != 0) 
+	    nbargs++;
+
+	/*
+	 * start interpreting the command
+	 */
         if (!strcmp(command, "exit"))
 	    break;
         if (!strcmp(command, "quit"))

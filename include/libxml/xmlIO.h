@@ -17,9 +17,6 @@
 #else
 #include <libxml/xmlversion.h>
 #endif
-#include <libxml/tree.h>
-#include <libxml/parser.h>
-#include <libxml/encoding.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -70,18 +67,6 @@ typedef int (*xmlInputReadCallback) (void * context, char * buffer, int len);
  */
 typedef int (*xmlInputCloseCallback) (void * context);
 
-struct _xmlParserInputBuffer {
-    void*                  context;
-    xmlInputReadCallback   readcallback;
-    xmlInputCloseCallback  closecallback;
-    
-    xmlCharEncodingHandlerPtr encoder; /* I18N conversions to UTF-8 */
-    
-    xmlBufferPtr buffer;    /* Local buffer encoded in UTF-8 */
-    xmlBufferPtr raw;       /* if encoder != NULL buffer for raw input */
-};
-
-
 /*
  * Those are the functions and datatypes for the library output
  * I/O structures.
@@ -127,6 +112,30 @@ typedef int (*xmlOutputWriteCallback) (void * context, const char * buffer,
  * Returns 0 or -1 in case of error
  */
 typedef int (*xmlOutputCloseCallback) (void * context);
+
+#ifdef __cplusplus
+}
+#endif
+
+#include <libxml/globals.h>
+#include <libxml/tree.h>
+#include <libxml/parser.h>
+#include <libxml/encoding.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+struct _xmlParserInputBuffer {
+    void*                  context;
+    xmlInputReadCallback   readcallback;
+    xmlInputCloseCallback  closecallback;
+    
+    xmlCharEncodingHandlerPtr encoder; /* I18N conversions to UTF-8 */
+    
+    xmlBufferPtr buffer;    /* Local buffer encoded in UTF-8 */
+    xmlBufferPtr raw;       /* if encoder != NULL buffer for raw input */
+};
+
 
 struct _xmlOutputBuffer {
     void*                   context;

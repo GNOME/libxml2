@@ -168,7 +168,11 @@ but not always. Assuming the allocation problem is reproductible, it is
 possible to find more easilly:</p>
 <ol>
 <li>write down the block number xxxx not allocated</li>
-<li>export the environement variable XML_MEM_BREAKPOINT=xxxx</li>
+<li>export the environement variable XML_MEM_BREAKPOINT=xxxx , the easiest
+    when using GDB is to simply give the command
+    <p><code>set environment XML_MEM_BREAKPOINT xxxx</code></p>
+<p>before running the program.</p>
+</li>
 <li>run the program under a debugger and set a breakpoint on
     xmlMallocBreakpoint() a specific function called when this precise block
     is allocated</li>
@@ -178,7 +182,10 @@ possible to find more easilly:</p>
 </ol>
 <p>I used to use a commercial tool to debug libxml memory problems but after
 noticing that it was not detecting memory leaks that simple mechanism was
-used and proved extremely efficient until now.</p>
+used and proved extremely efficient until now. Lately I have also used <a href="http://developer.kde.org/~sewardj/">valgrind</a> with quite some
+success, it is tied to the i386 architecture since it works by emulating the
+processor and instruction set, it is slow but  extremely efficient, i.e. it
+spot memory usage errors in a very precise way.</p>
 <h3><a name="General4">General memory requirements</a></h3>
 <p>How much libxml memory require ? It's hard to tell in average it depends
 of a number of things:</p>

@@ -1,3 +1,8 @@
+Fri Apr 12 23:02:16 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/xmlIO.h: Hallski complained it could not be
+	  included by itself.
+
 Thu Apr 11 10:23:36 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in: applied an IEEE flag patch for OSF/1 #77825

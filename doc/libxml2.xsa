@@ -8,9 +8,9 @@
   </vendor>
   <product id="libxml2">
     <name>libxml2</name>
-    <version>2.5.10</version>
-    <last-release> Aug 15 2003</last-release>
+    <version>2.5.11</version>
+    <last-release> Sep 9 2003</last-release>
     <info-url>http://xmlsoft.org/</info-url>
-    <changes>A bugfixes only release</changes>
+    <changes>A bugfix only release:</changes>
   </product>
 </xsa>

@@ -121,7 +121,7 @@ NAME="LIBXML-HTMLPARSER"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN9636"
+NAME="AEN9842"
 ></A
 ><H2
 >Name</H2
@@ -129,7 +129,7 @@ NAME="AEN9636"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN9639"
+NAME="AEN9845"
 ></A
 ><H2
 >Synopsis</H2
@@ -222,7 +222,7 @@ HREF="libxml-htmlparser.html#HTMLENTITYDESCPTR"
 > <A
 HREF="libxml-htmlparser.html#HTMLENTITYVALUELOOKUP"
 >htmlEntityValueLookup</A
->     (int value);
+>     (unsigned int value);
 int         <A
 HREF="libxml-htmlparser.html#HTMLISAUTOCLOSED"
 >htmlIsAutoClosed</A
@@ -393,7 +393,7 @@ HREF="libxml-htmlparser.html#HTMLPARSERCTXTPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN9703"
+NAME="AEN9909"
 ></A
 ><H2
 >Description</H2
@@ -403,14 +403,14 @@ NAME="AEN9703"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN9706"
+NAME="AEN9912"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9708"
+NAME="AEN9914"
 ></A
 ><H3
 ><A
@@ -436,7 +436,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9713"
+NAME="AEN9919"
 ></A
 ><H3
 ><A
@@ -462,7 +462,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9718"
+NAME="AEN9924"
 ></A
 ><H3
 ><A
@@ -488,7 +488,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9723"
+NAME="AEN9929"
 ></A
 ><H3
 ><A
@@ -514,7 +514,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9728"
+NAME="AEN9934"
 ></A
 ><H3
 ><A
@@ -540,7 +540,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9733"
+NAME="AEN9939"
 ></A
 ><H3
 ><A
@@ -566,7 +566,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9738"
+NAME="AEN9944"
 ></A
 ><H3
 ><A
@@ -592,7 +592,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9743"
+NAME="AEN9949"
 ></A
 ><H3
 ><A
@@ -618,7 +618,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9748"
+NAME="AEN9954"
 ></A
 ><H3
 ><A
@@ -644,7 +644,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9753"
+NAME="AEN9959"
 ></A
 ><H3
 ><A
@@ -679,7 +679,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9758"
+NAME="AEN9964"
 ></A
 ><H3
 ><A
@@ -705,7 +705,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9763"
+NAME="AEN9969"
 ></A
 ><H3
 ><A
@@ -722,7 +722,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >struct htmlEntityDesc {
-    int value;		/* the UNICODE value for the character */
+    unsigned int value;	/* the UNICODE value for the character */
     const char *name;	/* The entity name */
     const char *desc;   /* the description */
 };</PRE
@@ -735,7 +735,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9768"
+NAME="AEN9974"
 ></A
 ><H3
 ><A
@@ -761,7 +761,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9773"
+NAME="AEN9979"
 ></A
 ><H3
 ><A
@@ -812,7 +812,7 @@ CLASS="PARAMETER"
 ><I
 >tag</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -842,7 +842,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9794"
+NAME="AEN10000"
 ></A
 ><H3
 ><A
@@ -895,7 +895,7 @@ CLASS="PARAMETER"
 ><I
 >name</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -925,7 +925,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9816"
+NAME="AEN10022"
 ></A
 ><H3
 ><A
@@ -944,7 +944,7 @@ CLASS="PROGRAMLISTING"
 ><A
 HREF="libxml-htmlparser.html#HTMLENTITYDESCPTR"
 >htmlEntityDescPtr</A
-> htmlEntityValueLookup     (int value);</PRE
+> htmlEntityValueLookup     (unsigned int value);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -975,7 +975,7 @@ CLASS="PARAMETER"
 ><I
 >value</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1005,7 +1005,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9837"
+NAME="AEN10043"
 ></A
 ><H3
 ><A
@@ -1059,7 +1059,7 @@ CLASS="PARAMETER"
 ><I
 >doc</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1076,7 +1076,7 @@ CLASS="PARAMETER"
 ><I
 >elem</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1106,7 +1106,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9862"
+NAME="AEN10068"
 ></A
 ><H3
 ><A
@@ -1165,7 +1165,7 @@ CLASS="PARAMETER"
 ><I
 >doc</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1182,7 +1182,7 @@ CLASS="PARAMETER"
 ><I
 >name</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1199,7 +1199,7 @@ CLASS="PARAMETER"
 ><I
 >elem</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1229,7 +1229,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9892"
+NAME="AEN10098"
 ></A
 ><H3
 ><A
@@ -1262,7 +1262,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><P
 >parse an HTML ENTITY references</P
 ><P
->[68] EntityRef ::= '&amp;' Name ';'</P
+>[68] EntityRef ::= '' Name ';'</P
 ><P
 ></P
 ><DIV
@@ -1286,7 +1286,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1303,7 +1303,7 @@ CLASS="PARAMETER"
 ><I
 >str</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1334,7 +1334,7 @@ if non-NULL *str will have to be freed by the caller.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9919"
+NAME="AEN10125"
 ></A
 ><H3
 ><A
@@ -1360,8 +1360,8 @@ HREF="libxml-htmlparser.html#HTMLPARSERCTXTPTR"
 ><P
 >parse Reference declarations</P
 ><P
->[66] CharRef ::= '&amp;#' [0-9]+ ';' |
-'&amp;<GTKDOCLINK
+>[66] CharRef ::= '#' [0-9]+ ';' |
+'<GTKDOCLINK
 HREF="X"
 >x</GTKDOCLINK
 >' [0-9a-fA-F]+ ';'</P
@@ -1388,7 +1388,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1418,7 +1418,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9941"
+NAME="AEN10147"
 ></A
 ><H3
 ><A
@@ -1470,7 +1470,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1485,7 +1485,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9959"
+NAME="AEN10165"
 ></A
 ><H3
 ><A
@@ -1544,7 +1544,7 @@ CLASS="PARAMETER"
 ><I
 >cur</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1561,7 +1561,7 @@ CLASS="PARAMETER"
 ><I
 >encoding</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1578,7 +1578,7 @@ CLASS="PARAMETER"
 ><I
 >sax</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1595,7 +1595,7 @@ CLASS="PARAMETER"
 ><I
 >userData</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1625,7 +1625,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9993"
+NAME="AEN10199"
 ></A
 ><H3
 ><A
@@ -1677,7 +1677,7 @@ CLASS="PARAMETER"
 ><I
 >cur</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1694,7 +1694,7 @@ CLASS="PARAMETER"
 ><I
 >encoding</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1724,7 +1724,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10018"
+NAME="AEN10224"
 ></A
 ><H3
 ><A
@@ -1781,7 +1781,7 @@ CLASS="PARAMETER"
 ><I
 >filename</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1798,7 +1798,7 @@ CLASS="PARAMETER"
 ><I
 >encoding</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1815,7 +1815,7 @@ CLASS="PARAMETER"
 ><I
 >sax</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1832,7 +1832,7 @@ CLASS="PARAMETER"
 ><I
 >userData</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1862,7 +1862,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10051"
+NAME="AEN10257"
 ></A
 ><H3
 ><A
@@ -1912,7 +1912,7 @@ CLASS="PARAMETER"
 ><I
 >filename</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1929,7 +1929,7 @@ CLASS="PARAMETER"
 ><I
 >encoding</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1959,7 +1959,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10075"
+NAME="AEN10281"
 ></A
 ><H3
 ><A
@@ -2008,7 +2008,7 @@ CLASS="PARAMETER"
 ><I
 >out</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2025,7 +2025,7 @@ CLASS="PARAMETER"
 ><I
 >outlen</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2047,7 +2047,7 @@ CLASS="PARAMETER"
 ><I
 >in</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2064,7 +2064,7 @@ CLASS="PARAMETER"
 ><I
 >inlen</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2112,7 +2112,7 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10110"
+NAME="AEN10316"
 ></A
 ><H3
 ><A
@@ -2162,7 +2162,7 @@ CLASS="PARAMETER"
 ><I
 >out</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2179,7 +2179,7 @@ CLASS="PARAMETER"
 ><I
 >outlen</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2201,7 +2201,7 @@ CLASS="PARAMETER"
 ><I
 >in</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2218,7 +2218,7 @@ CLASS="PARAMETER"
 ><I
 >inlen</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2240,7 +2240,7 @@ CLASS="PARAMETER"
 ><I
 >quoteChar</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2283,7 +2283,7 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10149"
+NAME="AEN10355"
 ></A
 ><H3
 ><A
@@ -2331,7 +2331,7 @@ CLASS="PARAMETER"
 ><I
 >name</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2361,7 +2361,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10169"
+NAME="AEN10375"
 ></A
 ><H3
 ><A
@@ -2406,7 +2406,7 @@ CLASS="PARAMETER"
 ><I
 >val</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2436,7 +2436,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10188"
+NAME="AEN10394"
 ></A
 ><H3
 ><A
@@ -2461,7 +2461,7 @@ HREF="libxml-htmlparser.html#HTMLPARSERCTXTPTR"
 ></TABLE
 ><P
 >Free all the memory used by a parser context. However the parsed
-document in ctxt-&gt;myDoc is not freed.</P
+document in ctxt-myDoc is not freed.</P
 ><P
 ></P
 ><DIV
@@ -2485,7 +2485,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2500,7 +2500,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10204"
+NAME="AEN10410"
 ></A
 ><H3
 ><A
@@ -2541,7 +2541,7 @@ CLASS="PARAMETER"
 ><I
 >size</I
 ></TT
-> should be &gt;= 4
+> should be = 4
 The value of <TT
 CLASS="PARAMETER"
 ><I
@@ -2572,7 +2572,7 @@ CLASS="PARAMETER"
 ><I
 >sax</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2589,7 +2589,7 @@ CLASS="PARAMETER"
 ><I
 >user_data</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2606,7 +2606,7 @@ CLASS="PARAMETER"
 ><I
 >chunk</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2623,7 +2623,7 @@ CLASS="PARAMETER"
 ><I
 >size</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2640,7 +2640,7 @@ CLASS="PARAMETER"
 ><I
 >filename</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2657,7 +2657,7 @@ CLASS="PARAMETER"
 ><I
 >enc</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2687,7 +2687,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10248"
+NAME="AEN10454"
 ></A
 ><H3
 ><A
@@ -2738,7 +2738,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2755,7 +2755,7 @@ CLASS="PARAMETER"
 ><I
 >chunk</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2772,7 +2772,7 @@ CLASS="PARAMETER"
 ><I
 >size</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2789,7 +2789,7 @@ CLASS="PARAMETER"
 ><I
 >terminate</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"

@@ -141,9 +141,9 @@ of fixing them in a timely fashion. The best way to report a bug is to use the
 <a href="http://bugzilla.gnome.org/buglist.cgi?product=libxml">Gnome bug
 tracking database</a> (make sure to use the "libxml" module name). I look at
 reports there regularly and it's good to have a reminder when a bug is still
-open. Check the <a href="http://bugzilla.gnome.org/bugwritinghelp.html">instructions on
-reporting bugs</a> and be sure to specify that the bug is for the package
-libxml.</p>
+open. Check the <a
+href="http://bugzilla.gnome.org/bugwritinghelp.html">instructions on reporting
+bugs</a> and be sure to specify that the bug is for the package libxml.</p>
 
 <p>There is also a mailing-list <a
 href="mailto:xml@gnome.org">xml@gnome.org</a> for libxml, with an  <a
@@ -195,8 +195,8 @@ href="ftp://xmlsoft.org/">xmlsoft.org</a> or on the <a
 href="ftp://ftp.gnome.org/pub/GNOME/MIRRORS.html">Gnome FTP server</a> either
 as a <a href="ftp://ftp.gnome.org/pub/GNOME/stable/sources/libxml/">source
 archive</a> or <a
-href="ftp://ftp.gnome.org/pub/GNOME/stable/redhat/i386/libxml/">RPM packages</a>.
-(NOTE that you need both the <a
+href="ftp://ftp.gnome.org/pub/GNOME/stable/redhat/i386/libxml/">RPM
+packages</a>. (NOTE that you need both the <a
 href="http://rpmfind.net/linux/RPM/libxml2.html">libxml(2)</a> and <a
 href="http://rpmfind.net/linux/RPM/libxml2-devel.html">libxml(2)-devel</a>
 packages installed to compile applications using libxml.)</p>
@@ -242,6 +242,20 @@ you want to test those</p>
     href="http://www.w3.org/TR/xinclude">XInclude</a></li>
   <li>(seeems working but delayed from release) parsing/import of Docbook SGML
     docs</li>
+</ul>
+
+<h3>2.3.7: April 22 2001</h3>
+<ul>
+  <li>lots of small bug fixes, corrected XPointer</li>
+  <li>Non determinist content model validation support</li>
+  <li>added xmlDocCopyNode for gdome2</li>
+  <li>revamped the way the HTML parser handles end of tags</li>
+  <li>XPath: corrctions of namespacessupport and number formatting</li>
+  <li>Windows: Igor Zlatkovic patches for MSC compilation</li>
+  <li>HTML ouput fixes from P C Chow and William M. Brack</li>
+  <li>Improved validation speed sensible for DocBook</li>
+  <li>fixed a big bug with ID declared in external parsed entities</li>
+  <li>portability fixes, update of Trio from Bjorn Reese</li>
 </ul>
 
 <h3>2.3.6: April 8 2001</h3>
@@ -1494,6 +1508,6 @@ Gnome CVS base under gnome-xml/example</p>
 
 <p><a href="mailto:Daniel.Veillard@imag.fr">Daniel Veillard</a></p>
 
-<p>$Id: xml.html,v 1.79 2001/04/11 11:51:41 veillard Exp $</p>
+<p>$Id: xml.html,v 1.80 2001/04/17 21:03:15 veillard Exp $</p>
 </body>
 </html>

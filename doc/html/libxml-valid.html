@@ -121,7 +121,7 @@ NAME="LIBXML-VALID"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN7621"
+NAME="AEN7785"
 ></A
 ><H2
 >Name</H2
@@ -129,7 +129,7 @@ NAME="AEN7621"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN7624"
+NAME="AEN7788"
 ></A
 ><H2
 >Synopsis</H2
@@ -144,6 +144,14 @@ CELLPADDING="6"
 CLASS="SYNOPSIS"
 >&#13;
 
+struct      <A
+HREF="libxml-valid.html#XMLVALIDSTATE"
+>xmlValidState</A
+>;
+typedef     <A
+HREF="libxml-valid.html#XMLVALIDSTATEPTR"
+>xmlValidStatePtr</A
+>;
 void        (<A
 HREF="libxml-valid.html#XMLVALIDITYERRORFUNC"
 >*xmlValidityErrorFunc</A
@@ -620,6 +628,20 @@ HREF="libxml-tree.html#XMLDOCPTR"
 HREF="libxml-tree.html#XMLATTRPTR"
 >xmlAttrPtr</A
 > attr);
+<GTKDOCLINK
+HREF="XMLLISTPTR"
+>xmlListPtr</GTKDOCLINK
+>  <A
+HREF="libxml-valid.html#XMLGETREFS"
+>xmlGetRefs</A
+>                      (<A
+HREF="libxml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *ID);
 int         <A
 HREF="libxml-valid.html#XMLVALIDATEROOT"
 >xmlValidateRoot</A
@@ -918,7 +940,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN7835"
+NAME="AEN8005"
 ></A
 ><H2
 >Description</H2
@@ -928,14 +950,66 @@ NAME="AEN7835"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN7838"
+NAME="AEN8008"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7840"
+NAME="AEN8010"
+></A
+><H3
+><A
+NAME="XMLVALIDSTATE"
+></A
+>struct xmlValidState</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>struct xmlValidState;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN8015"
+></A
+><H3
+><A
+NAME="XMLVALIDSTATEPTR"
+></A
+>xmlValidStatePtr</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef xmlValidState *xmlValidStatePtr;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN8020"
 ></A
 ><H3
 ><A
@@ -980,7 +1054,7 @@ CLASS="PARAMETER"
 ><I
 >ctx</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -997,7 +1071,7 @@ CLASS="PARAMETER"
 ><I
 >msg</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1014,7 +1088,7 @@ CLASS="PARAMETER"
 ><I
 >...</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1029,7 +1103,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7862"
+NAME="AEN8042"
 ></A
 ><H3
 ><A
@@ -1074,7 +1148,7 @@ CLASS="PARAMETER"
 ><I
 >ctx</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1091,7 +1165,7 @@ CLASS="PARAMETER"
 ><I
 >msg</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1108,7 +1182,7 @@ CLASS="PARAMETER"
 ><I
 >...</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1123,7 +1197,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7884"
+NAME="AEN8064"
 ></A
 ><H3
 ><A
@@ -1153,6 +1227,12 @@ CLASS="PROGRAMLISTING"
     int              finishDtd;       /* finished validating the Dtd ? */
     xmlDocPtr              doc;       /* the document */
     int                  valid;       /* temporary validity check result */
+
+    /* state state used for non-determinist content validation */
+    xmlValidState     *vstate;        /* current state */
+    int                vstateNr;      /* Depth of the validation stack */
+    int                vstateMax;     /* Max depth of the validation stack */
+    xmlValidState     *vstateTab;     /* array of validation states */
 };</PRE
 ></TD
 ></TR
@@ -1163,7 +1243,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7889"
+NAME="AEN8069"
 ></A
 ><H3
 ><A
@@ -1189,7 +1269,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7894"
+NAME="AEN8074"
 ></A
 ><H3
 ><A
@@ -1215,7 +1295,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7899"
+NAME="AEN8079"
 ></A
 ><H3
 ><A
@@ -1241,7 +1321,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7904"
+NAME="AEN8084"
 ></A
 ><H3
 ><A
@@ -1267,7 +1347,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7909"
+NAME="AEN8089"
 ></A
 ><H3
 ><A
@@ -1293,7 +1373,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7914"
+NAME="AEN8094"
 ></A
 ><H3
 ><A
@@ -1319,7 +1399,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7919"
+NAME="AEN8099"
 ></A
 ><H3
 ><A
@@ -1380,7 +1460,7 @@ CLASS="PARAMETER"
 ><I
 >name</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1397,7 +1477,7 @@ CLASS="PARAMETER"
 ><I
 >prefix</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1428,7 +1508,7 @@ is updated to get the Prefix if any.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7948"
+NAME="AEN8128"
 ></A
 ><H3
 ><A
@@ -1495,7 +1575,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1512,7 +1592,7 @@ CLASS="PARAMETER"
 ><I
 >dtd</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1529,7 +1609,7 @@ CLASS="PARAMETER"
 ><I
 >name</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1546,7 +1626,7 @@ CLASS="PARAMETER"
 ><I
 >PublicID</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1563,7 +1643,7 @@ CLASS="PARAMETER"
 ><I
 >SystemID</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1593,7 +1673,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7989"
+NAME="AEN8169"
 ></A
 ><H3
 ><A
@@ -1644,7 +1724,7 @@ CLASS="PARAMETER"
 ><I
 >table</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1674,7 +1754,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8010"
+NAME="AEN8190"
 ></A
 ><H3
 ><A
@@ -1722,7 +1802,7 @@ CLASS="PARAMETER"
 ><I
 >table</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1737,7 +1817,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8026"
+NAME="AEN8206"
 ></A
 ><H3
 ><A
@@ -1789,7 +1869,7 @@ CLASS="PARAMETER"
 ><I
 >buf</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1806,7 +1886,7 @@ CLASS="PARAMETER"
 ><I
 >nota</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1821,7 +1901,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8047"
+NAME="AEN8227"
 ></A
 ><H3
 ><A
@@ -1873,7 +1953,7 @@ CLASS="PARAMETER"
 ><I
 >buf</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1890,7 +1970,7 @@ CLASS="PARAMETER"
 ><I
 >table</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1905,7 +1985,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8068"
+NAME="AEN8248"
 ></A
 ><H3
 ><A
@@ -1960,7 +2040,7 @@ CLASS="PARAMETER"
 ><I
 >name</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1977,7 +2057,7 @@ CLASS="PARAMETER"
 ><I
 >type</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2007,7 +2087,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8094"
+NAME="AEN8274"
 ></A
 ><H3
 ><A
@@ -2058,7 +2138,7 @@ CLASS="PARAMETER"
 ><I
 >content</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2088,7 +2168,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8115"
+NAME="AEN8295"
 ></A
 ><H3
 ><A
@@ -2136,7 +2216,7 @@ CLASS="PARAMETER"
 ><I
 >cur</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2151,7 +2231,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8131"
+NAME="AEN8311"
 ></A
 ><H3
 ><A
@@ -2202,7 +2282,7 @@ CLASS="PARAMETER"
 ><I
 >buf</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2219,7 +2299,7 @@ CLASS="PARAMETER"
 ><I
 >content</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2236,7 +2316,7 @@ CLASS="PARAMETER"
 ><I
 >glob</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2251,7 +2331,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8155"
+NAME="AEN8335"
 ></A
 ><H3
 ><A
@@ -2318,7 +2398,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2335,7 +2415,7 @@ CLASS="PARAMETER"
 ><I
 >dtd</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2352,7 +2432,7 @@ CLASS="PARAMETER"
 ><I
 >name</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2369,7 +2449,7 @@ CLASS="PARAMETER"
 ><I
 >type</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2386,7 +2466,7 @@ CLASS="PARAMETER"
 ><I
 >content</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2416,7 +2496,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8196"
+NAME="AEN8376"
 ></A
 ><H3
 ><A
@@ -2467,7 +2547,7 @@ CLASS="PARAMETER"
 ><I
 >table</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2497,7 +2577,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8217"
+NAME="AEN8397"
 ></A
 ><H3
 ><A
@@ -2545,7 +2625,7 @@ CLASS="PARAMETER"
 ><I
 >table</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2560,7 +2640,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8233"
+NAME="AEN8413"
 ></A
 ><H3
 ><A
@@ -2612,7 +2692,7 @@ CLASS="PARAMETER"
 ><I
 >buf</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2629,7 +2709,7 @@ CLASS="PARAMETER"
 ><I
 >table</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2644,7 +2724,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8254"
+NAME="AEN8434"
 ></A
 ><H3
 ><A
@@ -2697,7 +2777,7 @@ CLASS="PARAMETER"
 ><I
 >buf</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2714,7 +2794,7 @@ CLASS="PARAMETER"
 ><I
 >elem</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2729,7 +2809,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8275"
+NAME="AEN8455"
 ></A
 ><H3
 ><A
@@ -2780,7 +2860,7 @@ CLASS="PARAMETER"
 ><I
 >name</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2811,7 +2891,7 @@ of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8296"
+NAME="AEN8476"
 ></A
 ><H3
 ><A
@@ -2859,7 +2939,7 @@ CLASS="PARAMETER"
 ><I
 >cur</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2874,7 +2954,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8312"
+NAME="AEN8492"
 ></A
 ><H3
 ><A
@@ -2925,7 +3005,7 @@ CLASS="PARAMETER"
 ><I
 >cur</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2956,7 +3036,7 @@ of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8333"
+NAME="AEN8513"
 ></A
 ><H3
 ><A
@@ -3045,7 +3125,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3062,7 +3142,7 @@ CLASS="PARAMETER"
 ><I
 >dtd</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3079,7 +3159,7 @@ CLASS="PARAMETER"
 ><I
 >elem</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3096,7 +3176,7 @@ CLASS="PARAMETER"
 ><I
 >name</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3113,7 +3193,7 @@ CLASS="PARAMETER"
 ><I
 >ns</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3130,7 +3210,7 @@ CLASS="PARAMETER"
 ><I
 >type</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3147,7 +3227,7 @@ CLASS="PARAMETER"
 ><I
 >def</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3164,7 +3244,7 @@ CLASS="PARAMETER"
 ><I
 >defaultValue</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3181,7 +3261,7 @@ CLASS="PARAMETER"
 ><I
 >tree</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3211,7 +3291,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8395"
+NAME="AEN8575"
 ></A
 ><H3
 ><A
@@ -3262,7 +3342,7 @@ CLASS="PARAMETER"
 ><I
 >table</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3292,7 +3372,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8416"
+NAME="AEN8596"
 ></A
 ><H3
 ><A
@@ -3340,7 +3420,7 @@ CLASS="PARAMETER"
 ><I
 >table</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3355,7 +3435,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8432"
+NAME="AEN8612"
 ></A
 ><H3
 ><A
@@ -3407,7 +3487,7 @@ CLASS="PARAMETER"
 ><I
 >buf</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3424,7 +3504,7 @@ CLASS="PARAMETER"
 ><I
 >table</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3439,7 +3519,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8453"
+NAME="AEN8633"
 ></A
 ><H3
 ><A
@@ -3492,7 +3572,7 @@ CLASS="PARAMETER"
 ><I
 >buf</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3509,7 +3589,7 @@ CLASS="PARAMETER"
 ><I
 >attr</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3524,7 +3604,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8474"
+NAME="AEN8654"
 ></A
 ><H3
 ><A
@@ -3587,7 +3667,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3604,7 +3684,7 @@ CLASS="PARAMETER"
 ><I
 >doc</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3621,7 +3701,7 @@ CLASS="PARAMETER"
 ><I
 >value</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3638,7 +3718,7 @@ CLASS="PARAMETER"
 ><I
 >attr</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3668,7 +3748,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8510"
+NAME="AEN8690"
 ></A
 ><H3
 ><A
@@ -3717,7 +3797,7 @@ CLASS="PARAMETER"
 ><I
 >table</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3747,7 +3827,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8530"
+NAME="AEN8710"
 ></A
 ><H3
 ><A
@@ -3795,7 +3875,7 @@ CLASS="PARAMETER"
 ><I
 >table</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3810,7 +3890,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8546"
+NAME="AEN8726"
 ></A
 ><H3
 ><A
@@ -3865,7 +3945,7 @@ CLASS="PARAMETER"
 ><I
 >doc</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3882,7 +3962,7 @@ CLASS="PARAMETER"
 ><I
 >ID</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3912,7 +3992,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8572"
+NAME="AEN8752"
 ></A
 ><H3
 ><A
@@ -3970,7 +4050,7 @@ CLASS="PARAMETER"
 ><I
 >doc</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3987,7 +4067,7 @@ CLASS="PARAMETER"
 ><I
 >elem</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4004,7 +4084,7 @@ CLASS="PARAMETER"
 ><I
 >attr</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4034,7 +4114,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8602"
+NAME="AEN8782"
 ></A
 ><H3
 ><A
@@ -4086,7 +4166,7 @@ CLASS="PARAMETER"
 ><I
 >doc</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4103,7 +4183,7 @@ CLASS="PARAMETER"
 ><I
 >attr</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4133,7 +4213,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8627"
+NAME="AEN8807"
 ></A
 ><H3
 ><A
@@ -4196,7 +4276,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4213,7 +4293,7 @@ CLASS="PARAMETER"
 ><I
 >doc</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4230,7 +4310,7 @@ CLASS="PARAMETER"
 ><I
 >value</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4247,7 +4327,7 @@ CLASS="PARAMETER"
 ><I
 >attr</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4277,7 +4357,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8663"
+NAME="AEN8843"
 ></A
 ><H3
 ><A
@@ -4326,7 +4406,7 @@ CLASS="PARAMETER"
 ><I
 >table</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4356,7 +4436,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8683"
+NAME="AEN8863"
 ></A
 ><H3
 ><A
@@ -4404,7 +4484,7 @@ CLASS="PARAMETER"
 ><I
 >table</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4419,7 +4499,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8699"
+NAME="AEN8879"
 ></A
 ><H3
 ><A
@@ -4477,7 +4557,7 @@ CLASS="PARAMETER"
 ><I
 >doc</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4494,7 +4574,7 @@ CLASS="PARAMETER"
 ><I
 >elem</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4511,7 +4591,7 @@ CLASS="PARAMETER"
 ><I
 >attr</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4541,7 +4621,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8729"
+NAME="AEN8909"
 ></A
 ><H3
 ><A
@@ -4593,7 +4673,7 @@ CLASS="PARAMETER"
 ><I
 >doc</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4610,7 +4690,7 @@ CLASS="PARAMETER"
 ><I
 >attr</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4640,7 +4720,109 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8754"
+NAME="AEN8934"
+></A
+><H3
+><A
+NAME="XMLGETREFS"
+></A
+>xmlGetRefs ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLLISTPTR"
+>xmlListPtr</GTKDOCLINK
+>  xmlGetRefs                      (<A
+HREF="libxml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *ID);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Find the set of references for the supplied ID.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  pointer to the document</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ID</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the ID value</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>NULL if not found, otherwise node set for the ID.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN8960"
 ></A
 ><H3
 ><A
@@ -4696,7 +4878,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4713,7 +4895,7 @@ CLASS="PARAMETER"
 ><I
 >doc</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4743,7 +4925,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8779"
+NAME="AEN8985"
 ></A
 ><H3
 ><A
@@ -4804,7 +4986,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4821,7 +5003,7 @@ CLASS="PARAMETER"
 ><I
 >doc</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4838,7 +5020,7 @@ CLASS="PARAMETER"
 ><I
 >elem</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4868,7 +5050,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8809"
+NAME="AEN9015"
 ></A
 ><H3
 ><A
@@ -4946,7 +5128,7 @@ CLASS="PARAMETER"
 ><I
 >doc</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4963,7 +5145,7 @@ CLASS="PARAMETER"
 ><I
 >elem</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4980,7 +5162,7 @@ CLASS="PARAMETER"
 ><I
 >name</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4997,7 +5179,7 @@ CLASS="PARAMETER"
 ><I
 >value</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5028,7 +5210,7 @@ the caller must free the returned value.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8849"
+NAME="AEN9055"
 ></A
 ><H3
 ><A
@@ -5091,7 +5273,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5108,7 +5290,7 @@ CLASS="PARAMETER"
 ><I
 >doc</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5125,7 +5307,7 @@ CLASS="PARAMETER"
 ><I
 >attr</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5155,7 +5337,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8880"
+NAME="AEN9086"
 ></A
 ><H3
 ><A
@@ -5222,7 +5404,7 @@ CLASS="PARAMETER"
 ><I
 >type</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5239,7 +5421,7 @@ CLASS="PARAMETER"
 ><I
 >value</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5269,7 +5451,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8909"
+NAME="AEN9115"
 ></A
 ><H3
 ><A
@@ -5329,7 +5511,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5346,7 +5528,7 @@ CLASS="PARAMETER"
 ><I
 >doc</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5363,7 +5545,7 @@ CLASS="PARAMETER"
 ><I
 >nota</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5393,7 +5575,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8939"
+NAME="AEN9145"
 ></A
 ><H3
 ><A
@@ -5451,7 +5633,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5468,7 +5650,7 @@ CLASS="PARAMETER"
 ><I
 >doc</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5485,7 +5667,7 @@ CLASS="PARAMETER"
 ><I
 >dtd</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5515,7 +5697,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8970"
+NAME="AEN9176"
 ></A
 ><H3
 ><A
@@ -5574,7 +5756,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5591,7 +5773,7 @@ CLASS="PARAMETER"
 ><I
 >doc</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5621,7 +5803,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8996"
+NAME="AEN9202"
 ></A
 ><H3
 ><A
@@ -5677,7 +5859,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5694,7 +5876,7 @@ CLASS="PARAMETER"
 ><I
 >doc</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5724,7 +5906,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9022"
+NAME="AEN9228"
 ></A
 ><H3
 ><A
@@ -5780,7 +5962,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5797,7 +5979,7 @@ CLASS="PARAMETER"
 ><I
 >doc</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5814,7 +5996,7 @@ CLASS="PARAMETER"
 ><I
 >elem</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5844,7 +6026,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9052"
+NAME="AEN9258"
 ></A
 ><H3
 ><A
@@ -5910,7 +6092,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5927,7 +6109,7 @@ CLASS="PARAMETER"
 ><I
 >doc</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5944,7 +6126,7 @@ CLASS="PARAMETER"
 ><I
 >elem</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5974,7 +6156,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9084"
+NAME="AEN9290"
 ></A
 ><H3
 ><A
@@ -6050,7 +6232,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6067,7 +6249,7 @@ CLASS="PARAMETER"
 ><I
 >doc</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6084,7 +6266,7 @@ CLASS="PARAMETER"
 ><I
 >elem</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6101,7 +6283,7 @@ CLASS="PARAMETER"
 ><I
 >attr</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6118,7 +6300,7 @@ CLASS="PARAMETER"
 ><I
 >value</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6148,7 +6330,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9125"
+NAME="AEN9331"
 ></A
 ><H3
 ><A
@@ -6203,7 +6385,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6220,7 +6402,7 @@ CLASS="PARAMETER"
 ><I
 >doc</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6250,7 +6432,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9151"
+NAME="AEN9357"
 ></A
 ><H3
 ><A
@@ -6307,7 +6489,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6324,7 +6506,7 @@ CLASS="PARAMETER"
 ><I
 >doc</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6341,7 +6523,7 @@ CLASS="PARAMETER"
 ><I
 >notationName</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6371,7 +6553,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9181"
+NAME="AEN9387"
 ></A
 ><H3
 ><A
@@ -6424,7 +6606,7 @@ CLASS="PARAMETER"
 ><I
 >doc</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6441,7 +6623,7 @@ CLASS="PARAMETER"
 ><I
 >name</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6471,7 +6653,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9206"
+NAME="AEN9412"
 ></A
 ><H3
 ><A
@@ -6531,7 +6713,7 @@ CLASS="PARAMETER"
 ><I
 >dtd</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6548,7 +6730,7 @@ CLASS="PARAMETER"
 ><I
 >elem</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6565,7 +6747,7 @@ CLASS="PARAMETER"
 ><I
 >name</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6595,7 +6777,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9237"
+NAME="AEN9443"
 ></A
 ><H3
 ><A
@@ -6650,7 +6832,7 @@ CLASS="PARAMETER"
 ><I
 >dtd</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6667,7 +6849,7 @@ CLASS="PARAMETER"
 ><I
 >name</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6697,7 +6879,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9263"
+NAME="AEN9469"
 ></A
 ><H3
 ><A
@@ -6752,7 +6934,7 @@ CLASS="PARAMETER"
 ><I
 >dtd</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6769,7 +6951,7 @@ CLASS="PARAMETER"
 ><I
 >name</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6799,7 +6981,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9289"
+NAME="AEN9495"
 ></A
 ><H3
 ><A
@@ -6846,11 +7028,11 @@ CLASS="PARAMETER"
 >next</I
 ></TT
 > in the following ways:
-to insert before 'node': xmlValidGetValidElements(node-&gt;prev, node, ...
-to insert next 'node': xmlValidGetValidElements(node, node-&gt;next, ...
-to replace 'node': xmlValidGetValidElements(node-&gt;prev, node-&gt;next, ...
-to prepend a child to 'node': xmlValidGetValidElements(NULL, node-&gt;childs,
-to append a child to 'node': xmlValidGetValidElements(node-&gt;last, NULL, ...</P
+to insert before 'node': xmlValidGetValidElements(node-prev, node, ...
+to insert next 'node': xmlValidGetValidElements(node, node-next, ...
+to replace 'node': xmlValidGetValidElements(node-prev, node-next, ...
+to prepend a child to 'node': xmlValidGetValidElements(NULL, node-childs,
+to append a child to 'node': xmlValidGetValidElements(node-last, NULL, ...</P
 ><P
 >pointers to the element names are inserted at the beginning of the array
 and do not need to be freed.</P
@@ -6877,7 +7059,7 @@ CLASS="PARAMETER"
 ><I
 >prev</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6894,7 +7076,7 @@ CLASS="PARAMETER"
 ><I
 >next</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6911,7 +7093,7 @@ CLASS="PARAMETER"
 ><I
 >list</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6928,7 +7110,7 @@ CLASS="PARAMETER"
 ><I
 >max</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6965,7 +7147,7 @@ receiving array and retry.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9327"
+NAME="AEN9533"
 ></A
 ><H3
 ><A
@@ -7019,7 +7201,7 @@ CLASS="PARAMETER"
 ><I
 >ctree</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -7036,7 +7218,7 @@ CLASS="PARAMETER"
 ><I
 >list</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -7053,7 +7235,7 @@ CLASS="PARAMETER"
 ><I
 >len</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -7070,7 +7252,7 @@ CLASS="PARAMETER"
 ><I
 >max</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"

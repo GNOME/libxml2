@@ -121,7 +121,7 @@ NAME="LIBXML-XMLIO"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN14607"
+NAME="AEN15491"
 ></A
 ><H2
 >Name</H2
@@ -129,7 +129,7 @@ NAME="AEN14607"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN14610"
+NAME="AEN15494"
 ></A
 ><H2
 >Synopsis</H2
@@ -338,19 +338,19 @@ HREF="libxml-xmlio.html#XMLREGISTERINPUTCALLBACKS"
 >       (<A
 HREF="libxml-xmlio.html#XMLINPUTMATCHCALLBACK"
 >xmlInputMatchCallback</A
-> match,
+> matchFunc,
                                              <A
 HREF="libxml-xmlio.html#XMLINPUTOPENCALLBACK"
 >xmlInputOpenCallback</A
-> open,
+> openFunc,
                                              <A
 HREF="libxml-xmlio.html#XMLINPUTREADCALLBACK"
 >xmlInputReadCallback</A
-> read,
+> readFunc,
                                              <A
 HREF="libxml-xmlio.html#XMLINPUTCLOSECALLBACK"
 >xmlInputCloseCallback</A
-> close);
+> closeFunc);
 void        <A
 HREF="libxml-xmlio.html#XMLREGISTERDEFAULTOUTPUTCALLBACKS"
 >xmlRegisterDefaultOutputCallbacks</A
@@ -461,19 +461,19 @@ HREF="libxml-xmlio.html#XMLREGISTEROUTPUTCALLBACKS"
 >      (<A
 HREF="libxml-xmlio.html#XMLOUTPUTMATCHCALLBACK"
 >xmlOutputMatchCallback</A
-> match,
+> matchFunc,
                                              <A
 HREF="libxml-xmlio.html#XMLOUTPUTOPENCALLBACK"
 >xmlOutputOpenCallback</A
-> open,
+> openFunc,
                                              <A
 HREF="libxml-xmlio.html#XMLOUTPUTWRITECALLBACK"
 >xmlOutputWriteCallback</A
-> write,
+> writeFunc,
                                              <A
 HREF="libxml-xmlio.html#XMLOUTPUTCLOSECALLBACK"
 >xmlOutputCloseCallback</A
-> close);
+> closeFunc);
 int         <A
 HREF="libxml-xmlio.html#XMLSAVEFILETO"
 >xmlSaveFileTo</A
@@ -523,7 +523,7 @@ HREF="libxml-tree.html#XMLDOCPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN14706"
+NAME="AEN15590"
 ></A
 ><H2
 >Description</H2
@@ -533,14 +533,14 @@ NAME="AEN14706"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN14709"
+NAME="AEN15593"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14711"
+NAME="AEN15595"
 ></A
 ><H3
 ><A
@@ -583,7 +583,7 @@ CLASS="PARAMETER"
 ><I
 >filename</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -613,7 +613,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14729"
+NAME="AEN15613"
 ></A
 ><H3
 ><A
@@ -656,7 +656,7 @@ CLASS="PARAMETER"
 ><I
 >filename</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -671,7 +671,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14743"
+NAME="AEN15627"
 ></A
 ><H3
 ><A
@@ -716,7 +716,7 @@ CLASS="PARAMETER"
 ><I
 >context</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -733,7 +733,7 @@ CLASS="PARAMETER"
 ><I
 >buffer</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -750,7 +750,7 @@ CLASS="PARAMETER"
 ><I
 >len</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -780,7 +780,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14769"
+NAME="AEN15653"
 ></A
 ><H3
 ><A
@@ -823,7 +823,7 @@ CLASS="PARAMETER"
 ><I
 >context</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -838,7 +838,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14783"
+NAME="AEN15667"
 ></A
 ><H3
 ><A
@@ -873,7 +873,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14788"
+NAME="AEN15672"
 ></A
 ><H3
 ><A
@@ -899,7 +899,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14793"
+NAME="AEN15677"
 ></A
 ><H3
 ><A
@@ -942,7 +942,7 @@ CLASS="PARAMETER"
 ><I
 >filename</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -972,7 +972,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14811"
+NAME="AEN15695"
 ></A
 ><H3
 ><A
@@ -1015,7 +1015,7 @@ CLASS="PARAMETER"
 ><I
 >filename</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1030,7 +1030,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14825"
+NAME="AEN15709"
 ></A
 ><H3
 ><A
@@ -1075,7 +1075,7 @@ CLASS="PARAMETER"
 ><I
 >context</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1092,7 +1092,7 @@ CLASS="PARAMETER"
 ><I
 >buffer</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1109,7 +1109,7 @@ CLASS="PARAMETER"
 ><I
 >len</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1139,7 +1139,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14851"
+NAME="AEN15735"
 ></A
 ><H3
 ><A
@@ -1182,7 +1182,7 @@ CLASS="PARAMETER"
 ><I
 >context</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1197,7 +1197,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14865"
+NAME="AEN15749"
 ></A
 ><H3
 ><A
@@ -1233,7 +1233,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14870"
+NAME="AEN15754"
 ></A
 ><H3
 ><A
@@ -1259,7 +1259,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14875"
+NAME="AEN15759"
 ></A
 ><H3
 ><A
@@ -1288,7 +1288,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14881"
+NAME="AEN15765"
 ></A
 ><H3
 ><A
@@ -1340,7 +1340,7 @@ CLASS="PARAMETER"
 ><I
 >enc</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1370,7 +1370,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14902"
+NAME="AEN15786"
 ></A
 ><H3
 ><A
@@ -1421,7 +1421,7 @@ CLASS="PARAMETER"
 ><I
 >URI</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1438,7 +1438,7 @@ CLASS="PARAMETER"
 ><I
 >enc</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1468,7 +1468,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14926"
+NAME="AEN15810"
 ></A
 ><H3
 ><A
@@ -1525,7 +1525,7 @@ CLASS="PARAMETER"
 ><I
 >URI</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1542,7 +1542,7 @@ CLASS="PARAMETER"
 ><I
 >enc</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1572,7 +1572,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14951"
+NAME="AEN15835"
 ></A
 ><H3
 ><A
@@ -1629,7 +1629,7 @@ CLASS="PARAMETER"
 ><I
 >file</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1646,7 +1646,7 @@ CLASS="PARAMETER"
 ><I
 >enc</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1676,7 +1676,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14977"
+NAME="AEN15861"
 ></A
 ><H3
 ><A
@@ -1730,7 +1730,7 @@ CLASS="PARAMETER"
 ><I
 >fd</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1747,7 +1747,7 @@ CLASS="PARAMETER"
 ><I
 >enc</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1777,7 +1777,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15002"
+NAME="AEN15886"
 ></A
 ><H3
 ><A
@@ -1832,7 +1832,7 @@ CLASS="PARAMETER"
 ><I
 >mem</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1849,7 +1849,7 @@ CLASS="PARAMETER"
 ><I
 >size</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1866,7 +1866,7 @@ CLASS="PARAMETER"
 ><I
 >enc</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1896,7 +1896,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15031"
+NAME="AEN15915"
 ></A
 ><H3
 ><A
@@ -1958,7 +1958,7 @@ CLASS="PARAMETER"
 ><I
 >ioread</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1975,7 +1975,7 @@ CLASS="PARAMETER"
 ><I
 >ioclose</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1992,7 +1992,7 @@ CLASS="PARAMETER"
 ><I
 >ioctx</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2009,7 +2009,7 @@ CLASS="PARAMETER"
 ><I
 >enc</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2039,7 +2039,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15066"
+NAME="AEN15950"
 ></A
 ><H3
 ><A
@@ -2090,7 +2090,7 @@ CLASS="PARAMETER"
 ><I
 >in</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2107,7 +2107,7 @@ CLASS="PARAMETER"
 ><I
 >len</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2138,7 +2138,7 @@ in case of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15090"
+NAME="AEN15974"
 ></A
 ><H3
 ><A
@@ -2168,7 +2168,7 @@ This routine handle the I18N transcoding to internal UTF-8
 This routine is used when operating the parser in normal (pull) mode</P
 ><P
 >TODO: one should be able to remove one extra copy by copying directy
-onto in-&gt;buffer or in-&gt;raw</P
+onto in-buffer or in-raw</P
 ><P
 ></P
 ><DIV
@@ -2192,7 +2192,7 @@ CLASS="PARAMETER"
 ><I
 >in</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2209,7 +2209,7 @@ CLASS="PARAMETER"
 ><I
 >len</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2240,7 +2240,7 @@ in case of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15115"
+NAME="AEN15999"
 ></A
 ><H3
 ><A
@@ -2292,7 +2292,7 @@ CLASS="PARAMETER"
 ><I
 >in</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2309,7 +2309,7 @@ CLASS="PARAMETER"
 ><I
 >len</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2326,7 +2326,7 @@ CLASS="PARAMETER"
 ><I
 >buf</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2357,7 +2357,7 @@ in case of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15143"
+NAME="AEN16027"
 ></A
 ><H3
 ><A
@@ -2405,7 +2405,7 @@ CLASS="PARAMETER"
 ><I
 >in</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2420,7 +2420,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15159"
+NAME="AEN16043"
 ></A
 ><H3
 ><A
@@ -2463,7 +2463,7 @@ CLASS="PARAMETER"
 ><I
 >filename</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2493,7 +2493,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15177"
+NAME="AEN16061"
 ></A
 ><H3
 ><A
@@ -2512,19 +2512,19 @@ CLASS="PROGRAMLISTING"
 >int         xmlRegisterInputCallbacks       (<A
 HREF="libxml-xmlio.html#XMLINPUTMATCHCALLBACK"
 >xmlInputMatchCallback</A
-> match,
+> matchFunc,
                                              <A
 HREF="libxml-xmlio.html#XMLINPUTOPENCALLBACK"
 >xmlInputOpenCallback</A
-> open,
+> openFunc,
                                              <A
 HREF="libxml-xmlio.html#XMLINPUTREADCALLBACK"
 >xmlInputReadCallback</A
-> read,
+> readFunc,
                                              <A
 HREF="libxml-xmlio.html#XMLINPUTCLOSECALLBACK"
 >xmlInputCloseCallback</A
-> close);</PRE
+> closeFunc);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -2551,9 +2551,9 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->match</I
+>matchFunc</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2568,9 +2568,9 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->open</I
+>openFunc</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2585,9 +2585,9 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->read</I
+>readFunc</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2602,9 +2602,9 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->close</I
+>closeFunc</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2634,7 +2634,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15212"
+NAME="AEN16096"
 ></A
 ><H3
 ><A
@@ -2663,7 +2663,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15218"
+NAME="AEN16102"
 ></A
 ><H3
 ><A
@@ -2714,7 +2714,7 @@ CLASS="PARAMETER"
 ><I
 >encoder</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2744,7 +2744,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15239"
+NAME="AEN16123"
 ></A
 ><H3
 ><A
@@ -2803,7 +2803,7 @@ CLASS="PARAMETER"
 ><I
 >URI</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2820,7 +2820,7 @@ CLASS="PARAMETER"
 ><I
 >encoder</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2837,7 +2837,7 @@ CLASS="PARAMETER"
 ><I
 >compression</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2867,7 +2867,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15268"
+NAME="AEN16152"
 ></A
 ><H3
 ><A
@@ -2924,7 +2924,7 @@ CLASS="PARAMETER"
 ><I
 >file</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2941,7 +2941,7 @@ CLASS="PARAMETER"
 ><I
 >encoder</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2971,7 +2971,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15294"
+NAME="AEN16178"
 ></A
 ><H3
 ><A
@@ -3024,7 +3024,7 @@ CLASS="PARAMETER"
 ><I
 >fd</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3041,7 +3041,7 @@ CLASS="PARAMETER"
 ><I
 >encoder</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3071,7 +3071,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15319"
+NAME="AEN16203"
 ></A
 ><H3
 ><A
@@ -3132,7 +3132,7 @@ CLASS="PARAMETER"
 ><I
 >iowrite</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3149,7 +3149,7 @@ CLASS="PARAMETER"
 ><I
 >ioclose</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3166,7 +3166,7 @@ CLASS="PARAMETER"
 ><I
 >ioctx</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3183,7 +3183,7 @@ CLASS="PARAMETER"
 ><I
 >encoder</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3213,7 +3213,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15354"
+NAME="AEN16238"
 ></A
 ><H3
 ><A
@@ -3266,7 +3266,7 @@ CLASS="PARAMETER"
 ><I
 >out</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3283,7 +3283,7 @@ CLASS="PARAMETER"
 ><I
 >len</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3300,7 +3300,7 @@ CLASS="PARAMETER"
 ><I
 >buf</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3331,7 +3331,7 @@ in case of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15382"
+NAME="AEN16266"
 ></A
 ><H3
 ><A
@@ -3383,7 +3383,7 @@ CLASS="PARAMETER"
 ><I
 >out</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3400,7 +3400,7 @@ CLASS="PARAMETER"
 ><I
 >str</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3431,7 +3431,7 @@ in case of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15406"
+NAME="AEN16290"
 ></A
 ><H3
 ><A
@@ -3479,7 +3479,7 @@ CLASS="PARAMETER"
 ><I
 >out</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3509,7 +3509,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15426"
+NAME="AEN16310"
 ></A
 ><H3
 ><A
@@ -3558,7 +3558,7 @@ CLASS="PARAMETER"
 ><I
 >out</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3588,7 +3588,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15446"
+NAME="AEN16330"
 ></A
 ><H3
 ><A
@@ -3607,19 +3607,19 @@ CLASS="PROGRAMLISTING"
 >int         xmlRegisterOutputCallbacks      (<A
 HREF="libxml-xmlio.html#XMLOUTPUTMATCHCALLBACK"
 >xmlOutputMatchCallback</A
-> match,
+> matchFunc,
                                              <A
 HREF="libxml-xmlio.html#XMLOUTPUTOPENCALLBACK"
 >xmlOutputOpenCallback</A
-> open,
+> openFunc,
                                              <A
 HREF="libxml-xmlio.html#XMLOUTPUTWRITECALLBACK"
 >xmlOutputWriteCallback</A
-> write,
+> writeFunc,
                                              <A
 HREF="libxml-xmlio.html#XMLOUTPUTCLOSECALLBACK"
 >xmlOutputCloseCallback</A
-> close);</PRE
+> closeFunc);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -3646,9 +3646,9 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->match</I
+>matchFunc</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3663,9 +3663,9 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->open</I
+>openFunc</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3680,9 +3680,9 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->write</I
+>writeFunc</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3697,9 +3697,9 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->close</I
+>closeFunc</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3729,7 +3729,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15481"
+NAME="AEN16365"
 ></A
 ><H3
 ><A
@@ -3782,7 +3782,7 @@ CLASS="PARAMETER"
 ><I
 >buf</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3799,7 +3799,7 @@ CLASS="PARAMETER"
 ><I
 >cur</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3816,7 +3816,7 @@ CLASS="PARAMETER"
 ><I
 >encoding</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3846,7 +3846,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15510"
+NAME="AEN16394"
 ></A
 ><H3
 ><A
@@ -3905,7 +3905,7 @@ CLASS="PARAMETER"
 ><I
 >buf</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3922,7 +3922,7 @@ CLASS="PARAMETER"
 ><I
 >doc</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3939,7 +3939,7 @@ CLASS="PARAMETER"
 ><I
 >cur</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3956,7 +3956,7 @@ CLASS="PARAMETER"
 ><I
 >level</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3973,7 +3973,7 @@ CLASS="PARAMETER"
 ><I
 >format</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3990,7 +3990,7 @@ CLASS="PARAMETER"
 ><I
 >encoding</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4005,7 +4005,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15548"
+NAME="AEN16432"
 ></A
 ><H3
 ><A
@@ -4056,7 +4056,7 @@ CLASS="PARAMETER"
 ><I
 >buf</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4073,7 +4073,7 @@ CLASS="PARAMETER"
 ><I
 >cur</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4090,7 +4090,7 @@ CLASS="PARAMETER"
 ><I
 >encoding</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"

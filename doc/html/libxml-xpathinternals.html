@@ -121,7 +121,7 @@ NAME="LIBXML-XPATHINTERNALS"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN11308"
+NAME="AEN11514"
 ></A
 ><H2
 >Name</H2
@@ -129,7 +129,7 @@ NAME="AEN11308"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN11311"
+NAME="AEN11517"
 ></A
 ><H2
 >Synopsis</H2
@@ -220,6 +220,18 @@ HREF="FILE-CAPS"
 HREF="libxml-xpath.html#XMLXPATHOBJECTPTR"
 >xmlXPathObjectPtr</A
 > cur,
+                                             int depth);
+void        <A
+HREF="libxml-xpathinternals.html#XMLXPATHDEBUGDUMPCOMPEXPR"
+>xmlXPathDebugDumpCompExpr</A
+>       (<GTKDOCLINK
+HREF="FILE-CAPS"
+>FILE</GTKDOCLINK
+> *output,
+                                             <A
+HREF="libxml-xpath.html#XMLXPATHCOMPEXPRPTR"
+>xmlXPathCompExprPtr</A
+> comp,
                                              int depth);
 int         <A
 HREF="libxml-xpathinternals.html#XMLXPATHREGISTERNS"
@@ -513,6 +525,24 @@ HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > val);
 void        <A
+HREF="libxml-xpathinternals.html#XMLXPATHNODESETADDUNIQUE"
+>xmlXPathNodeSetAddUnique</A
+>        (<A
+HREF="libxml-xpath.html#XMLNODESETPTR"
+>xmlNodeSetPtr</A
+> cur,
+                                             <A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> val);
+void        <A
+HREF="libxml-xpathinternals.html#XMLXPATHNODESETSORT"
+>xmlXPathNodeSetSort</A
+>             (<A
+HREF="libxml-xpath.html#XMLNODESETPTR"
+>xmlNodeSetPtr</A
+> set);
+void        <A
 HREF="libxml-xpathinternals.html#XMLXPATHIDFUNCTION"
 >xmlXPathIdFunction</A
 >              (<A
@@ -753,6 +783,153 @@ HREF="libxml-xpathinternals.html#XMLXPATHMODVALUES"
 HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 >xmlXPathParserContextPtr</A
 > ctxt);
+int         <A
+HREF="libxml-xpathinternals.html#XMLXPATHISNODETYPE"
+>xmlXPathIsNodeType</A
+>              (const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *name);
+<A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  <A
+HREF="libxml-xpathinternals.html#XMLXPATHNEXTSELF"
+>xmlXPathNextSelf</A
+>                (<A
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+>xmlXPathParserContextPtr</A
+> ctxt,
+                                             <A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur);
+<A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  <A
+HREF="libxml-xpathinternals.html#XMLXPATHNEXTCHILD"
+>xmlXPathNextChild</A
+>               (<A
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+>xmlXPathParserContextPtr</A
+> ctxt,
+                                             <A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur);
+<A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  <A
+HREF="libxml-xpathinternals.html#XMLXPATHNEXTDESCENDANT"
+>xmlXPathNextDescendant</A
+>          (<A
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+>xmlXPathParserContextPtr</A
+> ctxt,
+                                             <A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur);
+<A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  <A
+HREF="libxml-xpathinternals.html#XMLXPATHNEXTDESCENDANTORSELF"
+>xmlXPathNextDescendantOrSelf</A
+>    (<A
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+>xmlXPathParserContextPtr</A
+> ctxt,
+                                             <A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur);
+<A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  <A
+HREF="libxml-xpathinternals.html#XMLXPATHNEXTPARENT"
+>xmlXPathNextParent</A
+>              (<A
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+>xmlXPathParserContextPtr</A
+> ctxt,
+                                             <A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur);
+<A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  <A
+HREF="libxml-xpathinternals.html#XMLXPATHNEXTANCESTORORSELF"
+>xmlXPathNextAncestorOrSelf</A
+>      (<A
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+>xmlXPathParserContextPtr</A
+> ctxt,
+                                             <A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur);
+<A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  <A
+HREF="libxml-xpathinternals.html#XMLXPATHNEXTFOLLOWINGSIBLING"
+>xmlXPathNextFollowingSibling</A
+>    (<A
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+>xmlXPathParserContextPtr</A
+> ctxt,
+                                             <A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur);
+<A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  <A
+HREF="libxml-xpathinternals.html#XMLXPATHNEXTFOLLOWING"
+>xmlXPathNextFollowing</A
+>           (<A
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+>xmlXPathParserContextPtr</A
+> ctxt,
+                                             <A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur);
+<A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  <A
+HREF="libxml-xpathinternals.html#XMLXPATHNEXTNAMESPACE"
+>xmlXPathNextNamespace</A
+>           (<A
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+>xmlXPathParserContextPtr</A
+> ctxt,
+                                             <A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur);
+<A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  <A
+HREF="libxml-xpathinternals.html#XMLXPATHNEXTATTRIBUTE"
+>xmlXPathNextAttribute</A
+>           (<A
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+>xmlXPathParserContextPtr</A
+> ctxt,
+                                             <A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur);
 <A
 HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
@@ -994,7 +1171,7 @@ HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN11542"
+NAME="AEN11798"
 ></A
 ><H2
 >Description</H2
@@ -1004,14 +1181,14 @@ NAME="AEN11542"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN11545"
+NAME="AEN11801"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11547"
+NAME="AEN11803"
 ></A
 ><H3
 ><A
@@ -1037,7 +1214,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11552"
+NAME="AEN11808"
 ></A
 ><H3
 ><A
@@ -1063,7 +1240,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11557"
+NAME="AEN11813"
 ></A
 ><H3
 ><A
@@ -1106,7 +1283,7 @@ CLASS="PARAMETER"
 ><I
 >X</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1121,7 +1298,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11571"
+NAME="AEN11827"
 ></A
 ><H3
 ><A
@@ -1164,7 +1341,7 @@ CLASS="PARAMETER"
 ><I
 >X</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1179,7 +1356,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11585"
+NAME="AEN11841"
 ></A
 ><H3
 ><A
@@ -1222,7 +1399,7 @@ CLASS="PARAMETER"
 ><I
 >typeval</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1237,7 +1414,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11599"
+NAME="AEN11855"
 ></A
 ><H3
 ><A
@@ -1280,7 +1457,7 @@ CLASS="PARAMETER"
 ><I
 >x</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1295,7 +1472,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11613"
+NAME="AEN11869"
 ></A
 ><H3
 ><A
@@ -1321,7 +1498,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11618"
+NAME="AEN11874"
 ></A
 ><H3
 ><A
@@ -1347,7 +1524,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11623"
+NAME="AEN11879"
 ></A
 ><H3
 ><A
@@ -1373,7 +1550,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11628"
+NAME="AEN11884"
 ></A
 ><H3
 ><A
@@ -1432,7 +1609,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11643"
+NAME="AEN11899"
 ></A
 ><H3
 ><A
@@ -1485,7 +1662,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1502,7 +1679,7 @@ CLASS="PARAMETER"
 ><I
 >f</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1519,7 +1696,7 @@ CLASS="PARAMETER"
 ><I
 >varCtxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1534,7 +1711,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11668"
+NAME="AEN11924"
 ></A
 ><H3
 ><A
@@ -1583,7 +1760,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1600,7 +1777,7 @@ CLASS="PARAMETER"
 ><I
 >file</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1617,7 +1794,7 @@ CLASS="PARAMETER"
 ><I
 >line</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1634,7 +1811,7 @@ CLASS="PARAMETER"
 ><I
 >no</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1649,7 +1826,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11695"
+NAME="AEN11951"
 ></A
 ><H3
 ><A
@@ -1702,7 +1879,7 @@ CLASS="PARAMETER"
 ><I
 >output</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1719,7 +1896,7 @@ CLASS="PARAMETER"
 ><I
 >cur</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1736,7 +1913,7 @@ CLASS="PARAMETER"
 ><I
 >depth</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1751,7 +1928,107 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11720"
+NAME="AEN11976"
+></A
+><H3
+><A
+NAME="XMLXPATHDEBUGDUMPCOMPEXPR"
+></A
+>xmlXPathDebugDumpCompExpr ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlXPathDebugDumpCompExpr       (<GTKDOCLINK
+HREF="FILE-CAPS"
+>FILE</GTKDOCLINK
+> *output,
+                                             <A
+HREF="libxml-xpath.html#XMLXPATHCOMPEXPRPTR"
+>xmlXPathCompExprPtr</A
+> comp,
+                                             int depth);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>output</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>comp</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>depth</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&#13;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN12000"
 ></A
 ><H3
 ><A
@@ -1813,7 +2090,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1830,7 +2107,7 @@ CLASS="PARAMETER"
 ><I
 >prefix</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1847,7 +2124,7 @@ CLASS="PARAMETER"
 ><I
 >ns_uri</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1877,7 +2154,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11751"
+NAME="AEN12031"
 ></A
 ><H3
 ><A
@@ -1933,7 +2210,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1950,7 +2227,7 @@ CLASS="PARAMETER"
 ><I
 >ns_uri</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1980,7 +2257,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11777"
+NAME="AEN12057"
 ></A
 ><H3
 ><A
@@ -2026,7 +2303,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2041,7 +2318,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11792"
+NAME="AEN12072"
 ></A
 ><H3
 ><A
@@ -2102,7 +2379,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2119,7 +2396,7 @@ CLASS="PARAMETER"
 ><I
 >name</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2136,7 +2413,7 @@ CLASS="PARAMETER"
 ><I
 >f</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2166,7 +2443,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11823"
+NAME="AEN12103"
 ></A
 ><H3
 ><A
@@ -2231,7 +2508,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2248,7 +2525,7 @@ CLASS="PARAMETER"
 ><I
 >name</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2265,7 +2542,7 @@ CLASS="PARAMETER"
 ><I
 >ns_uri</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2282,7 +2559,7 @@ CLASS="PARAMETER"
 ><I
 >f</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2312,7 +2589,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11859"
+NAME="AEN12139"
 ></A
 ><H3
 ><A
@@ -2374,7 +2651,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2391,7 +2668,7 @@ CLASS="PARAMETER"
 ><I
 >name</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2408,7 +2685,7 @@ CLASS="PARAMETER"
 ><I
 >value</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2438,7 +2715,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11890"
+NAME="AEN12170"
 ></A
 ><H3
 ><A
@@ -2504,7 +2781,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2521,7 +2798,7 @@ CLASS="PARAMETER"
 ><I
 >name</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2538,7 +2815,7 @@ CLASS="PARAMETER"
 ><I
 >ns_uri</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2555,7 +2832,7 @@ CLASS="PARAMETER"
 ><I
 >value</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2585,7 +2862,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11926"
+NAME="AEN12206"
 ></A
 ><H3
 ><A
@@ -2641,7 +2918,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2658,7 +2935,7 @@ CLASS="PARAMETER"
 ><I
 >name</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2688,7 +2965,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11952"
+NAME="AEN12232"
 ></A
 ><H3
 ><A
@@ -2748,7 +3025,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2765,7 +3042,7 @@ CLASS="PARAMETER"
 ><I
 >name</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2782,7 +3059,7 @@ CLASS="PARAMETER"
 ><I
 >ns_uri</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2812,7 +3089,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11983"
+NAME="AEN12263"
 ></A
 ><H3
 ><A
@@ -2860,7 +3137,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2875,7 +3152,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11999"
+NAME="AEN12279"
 ></A
 ><H3
 ><A
@@ -2931,7 +3208,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2948,7 +3225,7 @@ CLASS="PARAMETER"
 ><I
 >name</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2978,7 +3255,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12025"
+NAME="AEN12305"
 ></A
 ><H3
 ><A
@@ -3038,7 +3315,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3055,7 +3332,7 @@ CLASS="PARAMETER"
 ><I
 >name</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3072,7 +3349,7 @@ CLASS="PARAMETER"
 ><I
 >ns_uri</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3102,7 +3379,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12056"
+NAME="AEN12336"
 ></A
 ><H3
 ><A
@@ -3151,7 +3428,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3166,7 +3443,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12072"
+NAME="AEN12352"
 ></A
 ><H3
 ><A
@@ -3222,7 +3499,7 @@ CLASS="PARAMETER"
 ><I
 >str</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3239,7 +3516,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3269,7 +3546,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12098"
+NAME="AEN12378"
 ></A
 ><H3
 ><A
@@ -3317,7 +3594,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3332,7 +3609,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12114"
+NAME="AEN12394"
 ></A
 ><H3
 ><A
@@ -3381,7 +3658,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3411,7 +3688,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12134"
+NAME="AEN12414"
 ></A
 ><H3
 ><A
@@ -3461,7 +3738,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3478,7 +3755,7 @@ CLASS="PARAMETER"
 ><I
 >value</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3508,7 +3785,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12158"
+NAME="AEN12438"
 ></A
 ><H3
 ><A
@@ -3564,7 +3841,7 @@ CLASS="PARAMETER"
 ><I
 >val</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3594,7 +3871,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12180"
+NAME="AEN12460"
 ></A
 ><H3
 ><A
@@ -3647,7 +3924,7 @@ CLASS="PARAMETER"
 ><I
 >val</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3677,7 +3954,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12201"
+NAME="AEN12481"
 ></A
 ><H3
 ><A
@@ -3733,7 +4010,7 @@ CLASS="PARAMETER"
 ><I
 >val</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3763,7 +4040,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12223"
+NAME="AEN12503"
 ></A
 ><H3
 ><A
@@ -3816,7 +4093,7 @@ CLASS="PARAMETER"
 ><I
 >val</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3846,7 +4123,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12244"
+NAME="AEN12524"
 ></A
 ><H3
 ><A
@@ -3903,7 +4180,7 @@ CLASS="PARAMETER"
 ><I
 >val</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3933,7 +4210,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12266"
+NAME="AEN12546"
 ></A
 ><H3
 ><A
@@ -3990,7 +4267,7 @@ CLASS="PARAMETER"
 ><I
 >val</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4020,7 +4297,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12288"
+NAME="AEN12568"
 ></A
 ><H3
 ><A
@@ -4072,7 +4349,7 @@ CLASS="PARAMETER"
 ><I
 >cur</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4089,7 +4366,7 @@ CLASS="PARAMETER"
 ><I
 >val</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4104,7 +4381,155 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12309"
+NAME="AEN12589"
+></A
+><H3
+><A
+NAME="XMLXPATHNODESETADDUNIQUE"
+></A
+>xmlXPathNodeSetAddUnique ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlXPathNodeSetAddUnique        (<A
+HREF="libxml-xpath.html#XMLNODESETPTR"
+>xmlNodeSetPtr</A
+> cur,
+                                             <A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> val);</PRE
+></TD
+></TR
+></TABLE
+><P
+>add a new xmlNodePtr ot an existing NodeSet, optimized version
+when we are sure the node is not already in the set.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the initial node set</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>val</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a new xmlNodePtr</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN12610"
+></A
+><H3
+><A
+NAME="XMLXPATHNODESETSORT"
+></A
+>xmlXPathNodeSetSort ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlXPathNodeSetSort             (<A
+HREF="libxml-xpath.html#XMLNODESETPTR"
+>xmlNodeSetPtr</A
+> set);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Sort the node set in document order</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>set</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the node set</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN12626"
 ></A
 ><H3
 ><A
@@ -4167,7 +4592,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4184,7 +4609,7 @@ CLASS="PARAMETER"
 ><I
 >nargs</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4199,7 +4624,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12330"
+NAME="AEN12647"
 ></A
 ><H3
 ><A
@@ -4247,7 +4672,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4262,7 +4687,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12346"
+NAME="AEN12663"
 ></A
 ><H3
 ><A
@@ -4311,7 +4736,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4326,7 +4751,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12362"
+NAME="AEN12679"
 ></A
 ><H3
 ><A
@@ -4382,7 +4807,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4412,7 +4837,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12385"
+NAME="AEN12702"
 ></A
 ><H3
 ><A
@@ -4468,7 +4893,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4498,7 +4923,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12408"
+NAME="AEN12725"
 ></A
 ><H3
 ><A
@@ -4524,6 +4949,8 @@ HREF="libxml-tree.html#XMLCHAR"
 ></TD
 ></TR
 ></TABLE
+><P
+>[30a]  Float  ::= Number ('e' Digits?)?</P
 ><P
 >[30]   Number ::=   Digits ('.' Digits?)?
 | '.' Digits 
@@ -4555,7 +4982,7 @@ CLASS="PARAMETER"
 ><I
 >str</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4585,7 +5012,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12430"
+NAME="AEN12748"
 ></A
 ><H3
 ><A
@@ -4646,7 +5073,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4663,7 +5090,7 @@ CLASS="PARAMETER"
 ><I
 >res</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4693,7 +5120,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12456"
+NAME="AEN12774"
 ></A
 ><H3
 ><A
@@ -4721,7 +5148,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12462"
+NAME="AEN12780"
 ></A
 ><H3
 ><A
@@ -4802,7 +5229,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4819,7 +5246,7 @@ CLASS="PARAMETER"
 ><I
 >nargs</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4834,7 +5261,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12484"
+NAME="AEN12802"
 ></A
 ><H3
 ><A
@@ -4882,7 +5309,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4897,7 +5324,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12500"
+NAME="AEN12818"
 ></A
 ><H3
 ><A
@@ -4953,7 +5380,7 @@ CLASS="PARAMETER"
 ><I
 >val</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4983,7 +5410,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12522"
+NAME="AEN12840"
 ></A
 ><H3
 ><A
@@ -5059,7 +5486,7 @@ CLASS="PARAMETER"
 ><I
 >val1</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5076,7 +5503,7 @@ CLASS="PARAMETER"
 ><I
 >val2</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5106,7 +5533,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12552"
+NAME="AEN12870"
 ></A
 ><H3
 ><A
@@ -5158,7 +5585,7 @@ CLASS="PARAMETER"
 ><I
 >cur</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5175,7 +5602,7 @@ CLASS="PARAMETER"
 ><I
 >val</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5190,7 +5617,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12573"
+NAME="AEN12891"
 ></A
 ><H3
 ><A
@@ -5239,7 +5666,7 @@ CLASS="PARAMETER"
 ><I
 >cur</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5256,7 +5683,7 @@ CLASS="PARAMETER"
 ><I
 >val</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5271,7 +5698,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12593"
+NAME="AEN12911"
 ></A
 ><H3
 ><A
@@ -5319,7 +5746,7 @@ CLASS="PARAMETER"
 ><I
 >obj</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5334,7 +5761,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12609"
+NAME="AEN12927"
 ></A
 ><H3
 ><A
@@ -5391,7 +5818,7 @@ CLASS="PARAMETER"
 ><I
 >val</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5421,7 +5848,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12631"
+NAME="AEN12949"
 ></A
 ><H3
 ><A
@@ -5477,7 +5904,7 @@ CLASS="PARAMETER"
 ><I
 >val</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5507,7 +5934,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12653"
+NAME="AEN12971"
 ></A
 ><H3
 ><A
@@ -5564,7 +5991,7 @@ CLASS="PARAMETER"
 ><I
 >obj</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5579,7 +6006,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12671"
+NAME="AEN12989"
 ></A
 ><H3
 ><A
@@ -5627,7 +6054,7 @@ CLASS="PARAMETER"
 ><I
 >obj</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5642,7 +6069,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12687"
+NAME="AEN13005"
 ></A
 ><H3
 ><A
@@ -5693,7 +6120,7 @@ CLASS="PARAMETER"
 ><I
 >doc</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5723,7 +6150,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12708"
+NAME="AEN13026"
 ></A
 ><H3
 ><A
@@ -5771,7 +6198,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5786,7 +6213,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12724"
+NAME="AEN13042"
 ></A
 ><H3
 ><A
@@ -5844,7 +6271,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5874,7 +6301,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12746"
+NAME="AEN13064"
 ></A
 ><H3
 ><A
@@ -5906,7 +6333,7 @@ CLASS="PARAMETER"
 ><I
 >arg1</I
 ></TT
-> &lt; <TT
+>  <TT
 CLASS="PARAMETER"
 ><I
 >arg2</I
@@ -5917,7 +6344,7 @@ CLASS="PARAMETER"
 ><I
 >arg1</I
 ></TT
-> &lt;= <TT
+> = <TT
 CLASS="PARAMETER"
 ><I
 >arg2</I
@@ -5928,7 +6355,7 @@ CLASS="PARAMETER"
 ><I
 >arg1</I
 ></TT
-> &gt; <TT
+>  <TT
 CLASS="PARAMETER"
 ><I
 >arg2</I
@@ -5939,7 +6366,7 @@ CLASS="PARAMETER"
 ><I
 >arg1</I
 ></TT
-> &gt;= <TT
+> = <TT
 CLASS="PARAMETER"
 ><I
 >arg2</I
@@ -5947,13 +6374,13 @@ CLASS="PARAMETER"
 >   (0, 0, ...</P
 ><P
 >When neither object to be compared is a node-set and the operator is
-&lt;=, &lt;, &gt;=, &gt;, then the objects are compared by converted both objects
-to numbers and comparing the numbers according to IEEE 754. The &lt;
+=, , =, , then the objects are compared by converted both objects
+to numbers and comparing the numbers according to IEEE 754. The 
 comparison will be true if and only if the first number is less than the
-second number. The &lt;= comparison will be true if and only if the first
-number is less than or equal to the second number. The &gt; comparison
+second number. The = comparison will be true if and only if the first
+number is less than or equal to the second number. The  comparison
 will be true if and only if the first number is greater than the second
-number. The &gt;= comparison will be true if and only if the first number
+number. The = comparison will be true if and only if the first number
 is greater than or equal to the second number.</P
 ><P
 ></P
@@ -5978,7 +6405,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5995,7 +6422,7 @@ CLASS="PARAMETER"
 ><I
 >inf</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6012,7 +6439,7 @@ CLASS="PARAMETER"
 ><I
 >strict</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6042,7 +6469,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12783"
+NAME="AEN13101"
 ></A
 ><H3
 ><A
@@ -6092,7 +6519,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6107,7 +6534,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12799"
+NAME="AEN13117"
 ></A
 ><H3
 ><A
@@ -6157,7 +6584,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6172,7 +6599,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12815"
+NAME="AEN13133"
 ></A
 ><H3
 ><A
@@ -6222,7 +6649,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6237,7 +6664,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12831"
+NAME="AEN13149"
 ></A
 ><H3
 ><A
@@ -6287,7 +6714,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6302,7 +6729,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12847"
+NAME="AEN13165"
 ></A
 ><H3
 ><A
@@ -6362,7 +6789,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6377,7 +6804,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12865"
+NAME="AEN13183"
 ></A
 ><H3
 ><A
@@ -6437,7 +6864,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6452,7 +6879,1133 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12883"
+NAME="AEN13201"
+></A
+><H3
+><A
+NAME="XMLXPATHISNODETYPE"
+></A
+>xmlXPathIsNodeType ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlXPathIsNodeType              (const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *name);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Is the name given a NodeType one.</P
+><P
+>[38]   NodeType ::=   'comment'
+| 'text'
+| 'processing-instruction'
+| 'node'</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a name string</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>1 if true 0 otherwise</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13222"
+></A
+><H3
+><A
+NAME="XMLXPATHNEXTSELF"
+></A
+>xmlXPathNextSelf ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  xmlXPathNextSelf                (<A
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+>xmlXPathParserContextPtr</A
+> ctxt,
+                                             <A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Traversal function for the "self" direction
+The self axis contains just the context node itself</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the XPath Parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the current node in the traversal</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the next element following that axis</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13248"
+></A
+><H3
+><A
+NAME="XMLXPATHNEXTCHILD"
+></A
+>xmlXPathNextChild ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  xmlXPathNextChild               (<A
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+>xmlXPathParserContextPtr</A
+> ctxt,
+                                             <A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Traversal function for the "child" direction
+The child axis contains the children of the context node in document order.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the XPath Parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the current node in the traversal</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the next element following that axis</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13274"
+></A
+><H3
+><A
+NAME="XMLXPATHNEXTDESCENDANT"
+></A
+>xmlXPathNextDescendant ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  xmlXPathNextDescendant          (<A
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+>xmlXPathParserContextPtr</A
+> ctxt,
+                                             <A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Traversal function for the "descendant" direction
+the descendant axis contains the descendants of the context node in document
+order; a descendant is a child or a child of a child and so on.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the XPath Parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the current node in the traversal</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the next element following that axis</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13300"
+></A
+><H3
+><A
+NAME="XMLXPATHNEXTDESCENDANTORSELF"
+></A
+>xmlXPathNextDescendantOrSelf ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  xmlXPathNextDescendantOrSelf    (<A
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+>xmlXPathParserContextPtr</A
+> ctxt,
+                                             <A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Traversal function for the "descendant-or-self" direction
+the descendant-or-self axis contains the context node and the descendants
+of the context node in document order; thus the context node is the first
+node on the axis, and the first child of the context node is the second node
+on the axis</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the XPath Parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the current node in the traversal</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the next element following that axis</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13326"
+></A
+><H3
+><A
+NAME="XMLXPATHNEXTPARENT"
+></A
+>xmlXPathNextParent ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  xmlXPathNextParent              (<A
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+>xmlXPathParserContextPtr</A
+> ctxt,
+                                             <A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Traversal function for the "parent" direction
+The parent axis contains the parent of the context node, if there is one.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the XPath Parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the current node in the traversal</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the next element following that axis</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13352"
+></A
+><H3
+><A
+NAME="XMLXPATHNEXTANCESTORORSELF"
+></A
+>xmlXPathNextAncestorOrSelf ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  xmlXPathNextAncestorOrSelf      (<A
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+>xmlXPathParserContextPtr</A
+> ctxt,
+                                             <A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Traversal function for the "ancestor-or-self" direction
+he ancestor-or-self axis contains the context node and ancestors of
+the context node in reverse document order; thus the context node is
+the first node on the axis, and the context node's parent the second;
+parent here is defined the same as with the parent axis.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the XPath Parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the current node in the traversal</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the next element following that axis</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13378"
+></A
+><H3
+><A
+NAME="XMLXPATHNEXTFOLLOWINGSIBLING"
+></A
+>xmlXPathNextFollowingSibling ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  xmlXPathNextFollowingSibling    (<A
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+>xmlXPathParserContextPtr</A
+> ctxt,
+                                             <A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Traversal function for the "following-sibling" direction
+The following-sibling axis contains the following siblings of the context
+node in document order.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the XPath Parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the current node in the traversal</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the next element following that axis</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13404"
+></A
+><H3
+><A
+NAME="XMLXPATHNEXTFOLLOWING"
+></A
+>xmlXPathNextFollowing ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  xmlXPathNextFollowing           (<A
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+>xmlXPathParserContextPtr</A
+> ctxt,
+                                             <A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Traversal function for the "following" direction
+The following axis contains all nodes in the same document as the context
+node that are after the context node in document order, excluding any
+descendants and excluding attribute nodes and namespace nodes; the nodes
+are ordered in document order</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the XPath Parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the current node in the traversal</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the next element following that axis</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13430"
+></A
+><H3
+><A
+NAME="XMLXPATHNEXTNAMESPACE"
+></A
+>xmlXPathNextNamespace ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  xmlXPathNextNamespace           (<A
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+>xmlXPathParserContextPtr</A
+> ctxt,
+                                             <A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Traversal function for the "namespace" direction
+the namespace axis contains the namespace nodes of the context node;
+the order of nodes on this axis is implementation-defined; the axis will
+be empty unless the context node is an element</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the XPath Parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the current attribute in the traversal</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the next element following that axis</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13456"
+></A
+><H3
+><A
+NAME="XMLXPATHNEXTATTRIBUTE"
+></A
+>xmlXPathNextAttribute ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  xmlXPathNextAttribute           (<A
+HREF="libxml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+>xmlXPathParserContextPtr</A
+> ctxt,
+                                             <A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Traversal function for the "attribute" direction
+TODO: support DTD inherited default attributes</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the XPath Parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the current attribute in the traversal</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the next element following that axis</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13482"
 ></A
 ><H3
 ><A
@@ -6511,7 +8064,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6528,7 +8081,7 @@ CLASS="PARAMETER"
 ><I
 >cur</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6558,7 +8111,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12909"
+NAME="AEN13508"
 ></A
 ><H3
 ><A
@@ -6618,7 +8171,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6635,7 +8188,7 @@ CLASS="PARAMETER"
 ><I
 >cur</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6665,7 +8218,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12935"
+NAME="AEN13534"
 ></A
 ><H3
 ><A
@@ -6723,7 +8276,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6740,7 +8293,7 @@ CLASS="PARAMETER"
 ><I
 >cur</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6770,7 +8323,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12961"
+NAME="AEN13560"
 ></A
 ><H3
 ><A
@@ -6827,7 +8380,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6844,7 +8397,7 @@ CLASS="PARAMETER"
 ><I
 >nargs</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6859,7 +8412,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12983"
+NAME="AEN13582"
 ></A
 ><H3
 ><A
@@ -6921,7 +8474,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6938,7 +8491,7 @@ CLASS="PARAMETER"
 ><I
 >nargs</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6953,7 +8506,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13006"
+NAME="AEN13605"
 ></A
 ><H3
 ><A
@@ -7006,7 +8559,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -7023,7 +8576,7 @@ CLASS="PARAMETER"
 ><I
 >nargs</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -7038,7 +8591,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13027"
+NAME="AEN13626"
 ></A
 ><H3
 ><A
@@ -7096,7 +8649,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -7113,7 +8666,7 @@ CLASS="PARAMETER"
 ><I
 >nargs</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -7128,7 +8681,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13048"
+NAME="AEN13647"
 ></A
 ><H3
 ><A
@@ -7187,7 +8740,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -7204,7 +8757,7 @@ CLASS="PARAMETER"
 ><I
 >nargs</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -7219,7 +8772,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13069"
+NAME="AEN13668"
 ></A
 ><H3
 ><A
@@ -7276,7 +8829,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -7293,7 +8846,7 @@ CLASS="PARAMETER"
 ><I
 >nargs</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -7308,7 +8861,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13090"
+NAME="AEN13689"
 ></A
 ><H3
 ><A
@@ -7362,7 +8915,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -7379,7 +8932,7 @@ CLASS="PARAMETER"
 ><I
 >nargs</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -7394,7 +8947,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13111"
+NAME="AEN13710"
 ></A
 ><H3
 ><A
@@ -7449,7 +9002,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -7466,7 +9019,7 @@ CLASS="PARAMETER"
 ><I
 >nargs</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -7481,7 +9034,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13132"
+NAME="AEN13731"
 ></A
 ><H3
 ><A
@@ -7536,7 +9089,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -7553,7 +9106,7 @@ CLASS="PARAMETER"
 ><I
 >nargs</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -7568,7 +9121,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13153"
+NAME="AEN13752"
 ></A
 ><H3
 ><A
@@ -7641,7 +9194,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -7658,7 +9211,7 @@ CLASS="PARAMETER"
 ><I
 >nargs</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -7673,7 +9226,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13174"
+NAME="AEN13773"
 ></A
 ><H3
 ><A
@@ -7731,7 +9284,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -7748,7 +9301,7 @@ CLASS="PARAMETER"
 ><I
 >nargs</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -7763,7 +9316,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13195"
+NAME="AEN13794"
 ></A
 ><H3
 ><A
@@ -7822,7 +9375,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -7839,7 +9392,7 @@ CLASS="PARAMETER"
 ><I
 >nargs</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -7854,7 +9407,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13216"
+NAME="AEN13815"
 ></A
 ><H3
 ><A
@@ -7913,7 +9466,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -7930,7 +9483,7 @@ CLASS="PARAMETER"
 ><I
 >nargs</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -7945,7 +9498,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13237"
+NAME="AEN13836"
 ></A
 ><H3
 ><A
@@ -8007,7 +9560,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -8024,7 +9577,7 @@ CLASS="PARAMETER"
 ><I
 >nargs</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -8039,7 +9592,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13258"
+NAME="AEN13857"
 ></A
 ><H3
 ><A
@@ -8094,7 +9647,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -8111,7 +9664,7 @@ CLASS="PARAMETER"
 ><I
 >nargs</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -8126,7 +9679,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13279"
+NAME="AEN13878"
 ></A
 ><H3
 ><A
@@ -8182,7 +9735,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -8199,7 +9752,7 @@ CLASS="PARAMETER"
 ><I
 >nargs</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -8214,7 +9767,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13301"
+NAME="AEN13900"
 ></A
 ><H3
 ><A
@@ -8270,7 +9823,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -8287,7 +9840,7 @@ CLASS="PARAMETER"
 ><I
 >nargs</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -8302,7 +9855,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13323"
+NAME="AEN13922"
 ></A
 ><H3
 ><A
@@ -8363,7 +9916,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -8380,7 +9933,7 @@ CLASS="PARAMETER"
 ><I
 >nargs</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -8395,7 +9948,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13344"
+NAME="AEN13943"
 ></A
 ><H3
 ><A
@@ -8448,7 +10001,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -8465,7 +10018,7 @@ CLASS="PARAMETER"
 ><I
 >nargs</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -8480,7 +10033,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13365"
+NAME="AEN13964"
 ></A
 ><H3
 ><A
@@ -8535,7 +10088,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -8552,7 +10105,7 @@ CLASS="PARAMETER"
 ><I
 >nargs</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -8567,7 +10120,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13386"
+NAME="AEN13985"
 ></A
 ><H3
 ><A
@@ -8622,7 +10175,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -8639,7 +10192,7 @@ CLASS="PARAMETER"
 ><I
 >nargs</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -8654,7 +10207,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13407"
+NAME="AEN14006"
 ></A
 ><H3
 ><A
@@ -8709,7 +10262,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -8726,7 +10279,7 @@ CLASS="PARAMETER"
 ><I
 >nargs</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -8741,7 +10294,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13428"
+NAME="AEN14027"
 ></A
 ><H3
 ><A
@@ -8797,7 +10350,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -8814,7 +10367,7 @@ CLASS="PARAMETER"
 ><I
 >nargs</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -8829,7 +10382,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13449"
+NAME="AEN14048"
 ></A
 ><H3
 ><A
@@ -8887,7 +10440,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -8904,7 +10457,7 @@ CLASS="PARAMETER"
 ><I
 >nargs</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"

@@ -1,3 +1,7 @@
+Sun Apr 22 21:29:52 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* doc/html/* doc/xml.html: updated and regenerated the docs
+
 Sun Apr 22 21:11:45 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xpath.c: fixed the XPointer problem introduced in 2.3.6

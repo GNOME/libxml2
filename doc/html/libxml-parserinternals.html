@@ -121,7 +121,7 @@ NAME="LIBXML-PARSERINTERNALS"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN15577"
+NAME="AEN16461"
 ></A
 ><H2
 >Name</H2
@@ -129,7 +129,7 @@ NAME="AEN15577"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN15580"
+NAME="AEN16464"
 ></A
 ><H2
 >Synopsis</H2
@@ -326,6 +326,20 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 HREF="libxml-entities.html#XMLENTITYPTR"
 >xmlEntityPtr</A
 > entity);
+<A
+HREF="libxml-parser.html#XMLPARSERINPUTPTR"
+>xmlParserInputPtr</A
+> <A
+HREF="libxml-parserinternals.html#XMLNEWSTRINGINPUTSTREAM"
+>xmlNewStringInputStream</A
+>   (<A
+HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *buffer);
 <A
 HREF="libxml-parser.html#XMLPARSERINPUTPTR"
 >xmlParserInputPtr</A
@@ -997,6 +1011,27 @@ HREF="libxml-parserinternals.html#INPUTPOP"
 HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
+<A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    <A
+HREF="libxml-parserinternals.html#NAMEPOP"
+>namePop</A
+>                         (<A
+HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+int         <A
+HREF="libxml-parserinternals.html#NAMEPUSH"
+>namePush</A
+>                        (<A
+HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *value);
 int         <A
 HREF="libxml-parserinternals.html#XMLSKIPBLANKCHARS"
 >xmlSkipBlankChars</A
@@ -1030,16 +1065,6 @@ HREF="libxml-parserinternals.html#XMLPARSERHANDLEREFERENCE"
 HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
-<A
-HREF="libxml-tree.html#XMLCHAR"
->xmlChar</A
->*    <A
-HREF="libxml-parserinternals.html#NAMEPOP"
->namePop</A
->                         (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt);
 int         <A
 HREF="libxml-parserinternals.html#XMLCHECKLANGUAGEID"
 >xmlCheckLanguageID</A
@@ -1055,6 +1080,14 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              int *len);
+int         <A
+HREF="libxml-parserinternals.html#XMLCOPYCHARMULTIBYTE"
+>xmlCopyCharMultiByte</A
+>            (<A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *out,
+                                             int val);
 int         <A
 HREF="libxml-parserinternals.html#XMLCOPYCHAR"
 >xmlCopyChar</A
@@ -1081,7 +1114,15 @@ HREF="libxml-parser.html#XMLPARSERINPUTPTR"
 void        <A
 HREF="libxml-parserinternals.html#HTMLINITAUTOCLOSE"
 >htmlInitAutoClose</A
->               (void);</PRE
+>               (void);
+<A
+HREF="libxml-htmlparser.html#HTMLPARSERCTXTPTR"
+>htmlParserCtxtPtr</A
+> <A
+HREF="libxml-parserinternals.html#HTMLCREATEFILEPARSERCTXT"
+>htmlCreateFileParserCtxt</A
+>  (const char *filename,
+                                             const char *encoding);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -1089,7 +1130,7 @@ HREF="libxml-parserinternals.html#HTMLINITAUTOCLOSE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN15844"
+NAME="AEN16739"
 ></A
 ><H2
 >Description</H2
@@ -1099,14 +1140,14 @@ NAME="AEN15844"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN15847"
+NAME="AEN16742"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15849"
+NAME="AEN16744"
 ></A
 ><H3
 ><A
@@ -1132,7 +1173,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15854"
+NAME="AEN16749"
 ></A
 ><H3
 ><A
@@ -1158,7 +1199,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15859"
+NAME="AEN16754"
 ></A
 ><H3
 ><A
@@ -1201,7 +1242,7 @@ CLASS="PARAMETER"
 ><I
 >c</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1216,7 +1257,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15873"
+NAME="AEN16768"
 ></A
 ><H3
 ><A
@@ -1259,7 +1300,7 @@ CLASS="PARAMETER"
 ><I
 >c</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1274,7 +1315,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15887"
+NAME="AEN16782"
 ></A
 ><H3
 ><A
@@ -1317,7 +1358,7 @@ CLASS="PARAMETER"
 ><I
 >c</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1332,7 +1373,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15901"
+NAME="AEN16796"
 ></A
 ><H3
 ><A
@@ -1375,7 +1416,7 @@ CLASS="PARAMETER"
 ><I
 >c</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1390,7 +1431,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15915"
+NAME="AEN16810"
 ></A
 ><H3
 ><A
@@ -1433,7 +1474,7 @@ CLASS="PARAMETER"
 ><I
 >c</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1448,7 +1489,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15929"
+NAME="AEN16824"
 ></A
 ><H3
 ><A
@@ -1491,7 +1532,7 @@ CLASS="PARAMETER"
 ><I
 >c</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1506,7 +1547,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15943"
+NAME="AEN16838"
 ></A
 ><H3
 ><A
@@ -1549,7 +1590,7 @@ CLASS="PARAMETER"
 ><I
 >c</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1564,7 +1605,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15957"
+NAME="AEN16852"
 ></A
 ><H3
 ><A
@@ -1607,7 +1648,7 @@ CLASS="PARAMETER"
 ><I
 >c</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1622,7 +1663,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15971"
+NAME="AEN16866"
 ></A
 ><H3
 ><A
@@ -1665,7 +1706,7 @@ CLASS="PARAMETER"
 ><I
 >c</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1680,7 +1721,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15985"
+NAME="AEN16880"
 ></A
 ><H3
 ><A
@@ -1723,7 +1764,7 @@ CLASS="PARAMETER"
 ><I
 >p</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1738,7 +1779,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15999"
+NAME="AEN16894"
 ></A
 ><H3
 ><A
@@ -1781,7 +1822,7 @@ CLASS="PARAMETER"
 ><I
 >p</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1796,7 +1837,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN16013"
+NAME="AEN16908"
 ></A
 ><H3
 ><A
@@ -1839,7 +1880,7 @@ CLASS="PARAMETER"
 ><I
 >p</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1854,7 +1895,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN16027"
+NAME="AEN16922"
 ></A
 ><H3
 ><A
@@ -1885,7 +1926,7 @@ HREF="X"
 >\([0-9A-Z]*\)-<GTKDOCLINK
 HREF="X"
 >x</GTKDOCLINK
->\([0-9A-Z]*\)\]/     (((c) &gt;= 0x\1) \&amp;\&amp; ((c) &lt;= 0x\2)) ||/
+>\([0-9A-Z]*\)\]/     (((c) = 0x\1) \\ ((c) = 0x\2)) ||/
 and 
 :1,$ s/<GTKDOCLINK
 HREF="X"
@@ -1914,7 +1955,7 @@ CLASS="PARAMETER"
 ><I
 >c</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1944,7 +1985,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN16050"
+NAME="AEN16945"
 ></A
 ><H3
 ><A
@@ -2006,7 +2047,7 @@ CLASS="PARAMETER"
 ><I
 >c</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2036,7 +2077,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN16074"
+NAME="AEN16969"
 ></A
 ><H3
 ><A
@@ -2091,7 +2132,7 @@ CLASS="PARAMETER"
 ><I
 >c</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2121,7 +2162,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN16096"
+NAME="AEN16991"
 ></A
 ><H3
 ><A
@@ -2167,7 +2208,7 @@ CLASS="PARAMETER"
 ><I
 >c</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2197,7 +2238,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN16115"
+NAME="AEN17010"
 ></A
 ><H3
 ><A
@@ -2243,7 +2284,7 @@ CLASS="PARAMETER"
 ><I
 >c</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2273,7 +2314,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN16134"
+NAME="AEN17029"
 ></A
 ><H3
 ><A
@@ -2334,7 +2375,7 @@ CLASS="PARAMETER"
 ><I
 >c</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2364,7 +2405,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN16158"
+NAME="AEN17053"
 ></A
 ><H3
 ><A
@@ -2410,7 +2451,7 @@ CLASS="PARAMETER"
 ><I
 >c</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2440,7 +2481,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN16177"
+NAME="AEN17072"
 ></A
 ><H3
 ><A
@@ -2530,7 +2571,7 @@ CLASS="PARAMETER"
 ><I
 >c</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2560,7 +2601,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN16210"
+NAME="AEN17105"
 ></A
 ><H3
 ><A
@@ -2639,7 +2680,7 @@ CLASS="PARAMETER"
 ><I
 >c</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2669,7 +2710,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN16239"
+NAME="AEN17134"
 ></A
 ><H3
 ><A
@@ -2720,7 +2761,7 @@ CLASS="PARAMETER"
 ><I
 >cur</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2750,7 +2791,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN16260"
+NAME="AEN17155"
 ></A
 ><H3
 ><A
@@ -2800,7 +2841,7 @@ CLASS="PARAMETER"
 ><I
 >filename</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2830,7 +2871,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN16280"
+NAME="AEN17175"
 ></A
 ><H3
 ><A
@@ -2879,7 +2920,7 @@ CLASS="PARAMETER"
 ><I
 >buffer</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2896,7 +2937,7 @@ CLASS="PARAMETER"
 ><I
 >size</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -2926,7 +2967,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN16304"
+NAME="AEN17199"
 ></A
 ><H3
 ><A
@@ -2987,7 +3028,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN16320"
+NAME="AEN17215"
 ></A
 ><H3
 ><A
@@ -3048,7 +3089,7 @@ CLASS="PARAMETER"
 ><I
 >URL</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3065,7 +3106,7 @@ CLASS="PARAMETER"
 ><I
 >ID</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3082,7 +3123,7 @@ CLASS="PARAMETER"
 ><I
 >base</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3112,7 +3153,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN16351"
+NAME="AEN17246"
 ></A
 ><H3
 ><A
@@ -3165,7 +3206,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3182,7 +3223,7 @@ CLASS="PARAMETER"
 ><I
 >enc</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3212,7 +3253,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN16376"
+NAME="AEN17271"
 ></A
 ><H3
 ><A
@@ -3265,7 +3306,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3282,7 +3323,7 @@ CLASS="PARAMETER"
 ><I
 >handler</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3312,7 +3353,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN16401"
+NAME="AEN17296"
 ></A
 ><H3
 ><A
@@ -3337,7 +3378,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ></TABLE
 ><P
 >Free all the memory used by a parser context. However the parsed
-document in ctxt-&gt;myDoc is not freed.</P
+document in ctxt-myDoc is not freed.</P
 ><P
 ></P
 ><DIV
@@ -3361,7 +3402,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3376,7 +3417,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN16417"
+NAME="AEN17312"
 ></A
 ><H3
 ><A
@@ -3431,7 +3472,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3448,7 +3489,7 @@ CLASS="PARAMETER"
 ><I
 >entity</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3463,7 +3504,109 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN16439"
+NAME="AEN17334"
+></A
+><H3
+><A
+NAME="XMLNEWSTRINGINPUTSTREAM"
+></A
+>xmlNewStringInputStream ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-parser.html#XMLPARSERINPUTPTR"
+>xmlParserInputPtr</A
+> xmlNewStringInputStream   (<A
+HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *buffer);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Create a new input stream based on a memory buffer.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buffer</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an memory buffer</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the new input stream</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN17360"
 ></A
 ><H3
 ><A
@@ -3518,7 +3661,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3535,7 +3678,7 @@ CLASS="PARAMETER"
 ><I
 >entity</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3565,7 +3708,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN16465"
+NAME="AEN17386"
 ></A
 ><H3
 ><A
@@ -3618,7 +3761,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3635,7 +3778,7 @@ CLASS="PARAMETER"
 ><I
 >input</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3650,7 +3793,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN16486"
+NAME="AEN17407"
 ></A
 ><H3
 ><A
@@ -3677,7 +3820,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ></TR
 ></TABLE
 ><P
->xmlPopInput: the current input pointed by ctxt-&gt;input came to an end
+>xmlPopInput: the current input pointed by ctxt-input came to an end
 pop it and return the next char.</P
 ><P
 ></P
@@ -3702,7 +3845,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3732,7 +3875,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN16507"
+NAME="AEN17428"
 ></A
 ><H3
 ><A
@@ -3780,7 +3923,7 @@ CLASS="PARAMETER"
 ><I
 >input</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3795,7 +3938,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN16523"
+NAME="AEN17444"
 ></A
 ><H3
 ><A
@@ -3847,7 +3990,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3864,7 +4007,7 @@ CLASS="PARAMETER"
 ><I
 >filename</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3894,7 +4037,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN16548"
+NAME="AEN17469"
 ></A
 ><H3
 ><A
@@ -3945,7 +4088,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -3975,7 +4118,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN16569"
+NAME="AEN17490"
 ></A
 ><H3
 ><A
@@ -4040,7 +4183,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4057,7 +4200,7 @@ CLASS="PARAMETER"
 ><I
 >name</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4074,7 +4217,7 @@ CLASS="PARAMETER"
 ><I
 >prefix</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4105,7 +4248,7 @@ to get the Prefix if any.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN16603"
+NAME="AEN17524"
 ></A
 ><H3
 ><A
@@ -4164,7 +4307,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4194,7 +4337,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN16627"
+NAME="AEN17548"
 ></A
 ><H3
 ><A
@@ -4258,7 +4401,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4275,7 +4418,7 @@ CLASS="PARAMETER"
 ><I
 >prefix</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4306,7 +4449,7 @@ to get the Prefix if any.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN16657"
+NAME="AEN17578"
 ></A
 ><H3
 ><A
@@ -4364,7 +4507,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4394,7 +4537,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN16681"
+NAME="AEN17602"
 ></A
 ><H3
 ><A
@@ -4447,7 +4590,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4477,7 +4620,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN16703"
+NAME="AEN17624"
 ></A
 ><H3
 ><A
@@ -4501,7 +4644,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ></TR
 ></TABLE
 ><P
->xmlParseNamespace: parse specific PI '&lt;?namespace ...' constructs.</P
+>xmlParseNamespace: parse specific PI '?namespace ...' constructs.</P
 ><P
 >This is what the older xml-name Working Draft specified, a bunch of
 other stuff may still rely on it, so support is still here as
@@ -4533,7 +4676,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4548,7 +4691,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN16722"
+NAME="AEN17643"
 ></A
 ><H3
 ><A
@@ -4610,7 +4753,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4640,7 +4783,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN16747"
+NAME="AEN17668"
 ></A
 ><H3
 ><A
@@ -4698,7 +4841,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4728,7 +4871,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN16771"
+NAME="AEN17692"
 ></A
 ><H3
 ><A
@@ -4783,7 +4926,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4813,7 +4956,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN16794"
+NAME="AEN17715"
 ></A
 ><H3
 ><A
@@ -4846,8 +4989,8 @@ HREF="libxml-tree.html#XMLCHAR"
 ><P
 >parse a value for ENTITY declarations</P
 ><P
->[9] EntityValue ::= '"' ([^%&amp;"] | PEReference | Reference)* '"' |
-"'" ([^%&amp;'] | PEReference | Reference)* "'"</P
+>[9] EntityValue ::= '"' ([^%"] | PEReference | Reference)* '"' |
+"'" ([^%'] | PEReference | Reference)* "'"</P
 ><P
 ></P
 ><DIV
@@ -4871,7 +5014,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4888,7 +5031,7 @@ CLASS="PARAMETER"
 ><I
 >orig</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -4918,7 +5061,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN16821"
+NAME="AEN17742"
 ></A
 ><H3
 ><A
@@ -4949,8 +5092,8 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 Note: the parser won't do substitution of entities here, this
 will be handled later in xmlStringGetNodeList</P
 ><P
->[10] AttValue ::= '"' ([^&lt;&amp;"] | Reference)* '"' |
-"'" ([^&lt;&amp;'] | Reference)* "'"</P
+>[10] AttValue ::= '"' ([^"] | Reference)* '"' |
+"'" ([^'] | Reference)* "'"</P
 ><P
 >3.3.3 Attribute-Value Normalization:
 Before the value of an attribute is passed to the application or
@@ -5026,7 +5169,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5056,7 +5199,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN16855"
+NAME="AEN17776"
 ></A
 ><H3
 ><A
@@ -5109,7 +5252,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5139,7 +5282,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN16877"
+NAME="AEN17798"
 ></A
 ><H3
 ><A
@@ -5192,7 +5335,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5222,7 +5365,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN16899"
+NAME="AEN17820"
 ></A
 ><H3
 ><A
@@ -5248,14 +5391,14 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ></TABLE
 ><P
 >parse a CharData section.
-if we are within a CDATA section ']]&gt;' marks an end of section.</P
+if we are within a CDATA section ']]' marks an end of section.</P
 ><P
->The right angle bracket (&gt;) may be represented using the string "&amp;gt;",
-and must, for compatibility, be escaped using "&amp;gt;" or a character
-reference when it appears in the string "]]&gt;" in content, when that
+>The right angle bracket () may be represented using the string "gt;",
+and must, for compatibility, be escaped using "gt;" or a character
+reference when it appears in the string "]]" in content, when that
 string is not marking the end of a CDATA section. </P
 ><P
->[14] CharData ::= [^&lt;&amp;]* - ([^&lt;&amp;]* ']]&gt;' [^&lt;&amp;]*)</P
+>[14] CharData ::= [^]* - ([^]* ']]' [^]*)</P
 ><P
 ></P
 ><DIV
@@ -5279,7 +5422,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5296,7 +5439,7 @@ CLASS="PARAMETER"
 ><I
 >cdata</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5311,7 +5454,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN16921"
+NAME="AEN17842"
 ></A
 ><H3
 ><A
@@ -5375,7 +5518,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5392,7 +5535,7 @@ CLASS="PARAMETER"
 ><I
 >publicID</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5409,7 +5552,7 @@ CLASS="PARAMETER"
 ><I
 >strict</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5442,7 +5585,7 @@ it is possible to return NULL and have publicID set.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN16954"
+NAME="AEN17875"
 ></A
 ><H3
 ><A
@@ -5466,11 +5609,11 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ></TR
 ></TABLE
 ><P
->Skip an XML (SGML) comment &lt;!-- .... --&gt;
+>Skip an XML (SGML) comment !-- .... --
 The spec says that "For compatibility, the string "--" (double-hyphen)
 must not occur within comments. "</P
 ><P
->[15] Comment ::= '&lt;!--' ((Char - '-') | ('-' (Char - '-')))* '--&gt;'</P
+>[15] Comment ::= '!--' ((Char - '-') | ('-' (Char - '-')))* '--'</P
 ><P
 ></P
 ><DIV
@@ -5494,7 +5637,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5509,7 +5652,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN16971"
+NAME="AEN17892"
 ></A
 ><H3
 ><A
@@ -5562,7 +5705,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5592,7 +5735,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN16993"
+NAME="AEN17914"
 ></A
 ><H3
 ><A
@@ -5618,7 +5761,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><P
 >parse an XML Processing Instruction.</P
 ><P
->[16] PI ::= '&lt;?' PITarget (S (Char* - (Char* '?&gt;' Char*)))? '?&gt;'</P
+>[16] PI ::= '?' PITarget (S (Char* - (Char* '?' Char*)))? '?'</P
 ><P
 >The processing is transfered to SAX once parsed.</P
 ><P
@@ -5644,7 +5787,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5659,7 +5802,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17011"
+NAME="AEN17932"
 ></A
 ><H3
 ><A
@@ -5685,7 +5828,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><P
 >parse a notation declaration</P
 ><P
->[82] NotationDecl ::= '&lt;!NOTATION' S Name S (ExternalID |  PublicID) S? '&gt;'</P
+>[82] NotationDecl ::= '!NOTATION' S Name S (ExternalID |  PublicID) S? ''</P
 ><P
 >Hence there is actually 3 choices:
 'PUBLIC' S PubidLiteral
@@ -5719,7 +5862,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5734,7 +5877,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17031"
+NAME="AEN17952"
 ></A
 ><H3
 ><A
@@ -5758,13 +5901,13 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ></TR
 ></TABLE
 ><P
->parse &lt;!ENTITY declarations</P
+>parse !ENTITY declarations</P
 ><P
 >[70] EntityDecl ::= GEDecl | PEDecl</P
 ><P
->[71] GEDecl ::= '&lt;!ENTITY' S Name S EntityDef S? '&gt;'</P
+>[71] GEDecl ::= '!ENTITY' S Name S EntityDef S? ''</P
 ><P
->[72] PEDecl ::= '&lt;!ENTITY' S '%' S Name S PEDef S? '&gt;'</P
+>[72] PEDecl ::= '!ENTITY' S '%' S Name S PEDef S? ''</P
 ><P
 >[73] EntityDef ::= EntityValue | (ExternalID NDataDecl?)</P
 ><P
@@ -5797,7 +5940,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5812,7 +5955,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17054"
+NAME="AEN17975"
 ></A
 ><H3
 ><A
@@ -5875,7 +6018,7 @@ HREF="FIXED-CAPS"
 >
 keyword, instances of that attribute must match the default value. </P
 ><P
->[ WFC: No &lt; in Attribute Values ]
+>[ WFC: No  in Attribute Values ]
 handled in <A
 HREF="libxml-parserinternals.html#XMLPARSEATTVALUE"
 >xmlParseAttValue</A
@@ -5903,7 +6046,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5920,7 +6063,7 @@ CLASS="PARAMETER"
 ><I
 >value</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -5951,7 +6094,7 @@ or XML_ATTRIBUTE_FIXED. </TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17091"
+NAME="AEN18012"
 ></A
 ><H3
 ><A
@@ -6010,7 +6153,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6040,7 +6183,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17115"
+NAME="AEN18036"
 ></A
 ><H3
 ><A
@@ -6097,7 +6240,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6127,7 +6270,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17138"
+NAME="AEN18059"
 ></A
 ><H3
 ><A
@@ -6183,7 +6326,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6200,7 +6343,7 @@ CLASS="PARAMETER"
 ><I
 >tree</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6230,7 +6373,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17165"
+NAME="AEN18086"
 ></A
 ><H3
 ><A
@@ -6327,7 +6470,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6344,7 +6487,7 @@ CLASS="PARAMETER"
 ><I
 >tree</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6374,7 +6517,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17203"
+NAME="AEN18124"
 ></A
 ><H3
 ><A
@@ -6400,7 +6543,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><P
 >: parse the Attribute list def for an element</P
 ><P
->[52] AttlistDecl ::= '&lt;!ATTLIST' S Name AttDef* S? '&gt;'</P
+>[52] AttlistDecl ::= '!ATTLIST' S Name AttDef* S? ''</P
 ><P
 >[53] AttDef ::= S Name S AttType S DefaultDecl</P
 ><P
@@ -6426,7 +6569,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6441,7 +6584,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17221"
+NAME="AEN18142"
 ></A
 ><H3
 ><A
@@ -6509,7 +6652,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6539,7 +6682,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17247"
+NAME="AEN18168"
 ></A
 ><H3
 ><A
@@ -6589,7 +6732,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6619,7 +6762,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17267"
+NAME="AEN18188"
 ></A
 ><H3
 ><A
@@ -6691,7 +6834,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6722,7 +6865,7 @@ hierarchy.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17293"
+NAME="AEN18214"
 ></A
 ><H3
 ><A
@@ -6781,7 +6924,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6798,7 +6941,7 @@ CLASS="PARAMETER"
 ><I
 >name</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6815,7 +6958,7 @@ CLASS="PARAMETER"
 ><I
 >result</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6845,7 +6988,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17324"
+NAME="AEN18245"
 ></A
 ><H3
 ><A
@@ -6871,7 +7014,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><P
 >parse an Element declaration.</P
 ><P
->[45] elementdecl ::= '&lt;!ELEMENT' S Name S contentspec S? '&gt;'</P
+>[45] elementdecl ::= '!ELEMENT' S Name S contentspec S? ''</P
 ><P
 >[ VC: Unique Element Type Declaration ]
 No element type may be declared more than once</P
@@ -6898,7 +7041,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -6928,7 +7071,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17346"
+NAME="AEN18267"
 ></A
 ><H3
 ><A
@@ -6992,7 +7135,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -7007,7 +7150,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17365"
+NAME="AEN18286"
 ></A
 ><H3
 ><A
@@ -7033,8 +7176,8 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><P
 >parse Reference declarations</P
 ><P
->[66] CharRef ::= '&amp;#' [0-9]+ ';' |
-'&amp;<GTKDOCLINK
+>[66] CharRef ::= '#' [0-9]+ ';' |
+'<GTKDOCLINK
 HREF="X"
 >x</GTKDOCLINK
 >' [0-9a-fA-F]+ ';'</P
@@ -7065,7 +7208,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -7095,7 +7238,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17388"
+NAME="AEN18309"
 ></A
 ><H3
 ><A
@@ -7124,7 +7267,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><P
 >parse ENTITY references declarations</P
 ><P
->[68] EntityRef ::= '&amp;' Name ';'</P
+>[68] EntityRef ::= '' Name ';'</P
 ><P
 >[ WFC: Entity Declared ]
 In a document without any DTD, a document with only an internal DTD
@@ -7166,7 +7309,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -7196,7 +7339,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17412"
+NAME="AEN18333"
 ></A
 ><H3
 ><A
@@ -7255,7 +7398,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -7270,7 +7413,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17431"
+NAME="AEN18352"
 ></A
 ><H3
 ><A
@@ -7341,7 +7484,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -7356,7 +7499,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17452"
+NAME="AEN18373"
 ></A
 ><H3
 ><A
@@ -7382,8 +7525,8 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><P
 >parse a DOCTYPE declaration</P
 ><P
->[28] doctypedecl ::= '&lt;!DOCTYPE' S Name (S ExternalID)? S? 
-('[' (markupdecl | PEReference | S)* ']' S?)? '&gt;'</P
+>[28] doctypedecl ::= '!DOCTYPE' S Name (S ExternalID)? S? 
+('[' (markupdecl | PEReference | S)* ']' S?)? ''</P
 ><P
 >[ VC: Root Element Type ]
 The Name in the document type declaration must match the element
@@ -7411,7 +7554,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -7426,7 +7569,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17470"
+NAME="AEN18391"
 ></A
 ><H3
 ><A
@@ -7465,9 +7608,9 @@ HREF="libxml-tree.html#XMLCHAR"
 Attribute values cannot contain direct or indirect entity references
 to external entities.</P
 ><P
->[ WFC: No &lt; in Attribute Values ]
+>[ WFC: No  in Attribute Values ]
 The replacement text of any entity referred to directly or indirectly in
-an attribute value (other than "&amp;lt;") must not contain a &lt;. </P
+an attribute value (other than "lt;") must not contain a . </P
 ><P
 >[ VC: Attribute Value Type ]
 The attribute must have been declared; the value must be of the type
@@ -7504,7 +7647,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -7521,7 +7664,7 @@ CLASS="PARAMETER"
 ><I
 >value</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -7551,7 +7694,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17504"
+NAME="AEN18425"
 ></A
 ><H3
 ><A
@@ -7581,13 +7724,13 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 >parse a start of tag either for rule element or
 EmptyElement. In both case we don't parse the tag closing chars.</P
 ><P
->[40] STag ::= '&lt;' Name (S Attribute)* S? '&gt;'</P
+>[40] STag ::= '' Name (S Attribute)* S? ''</P
 ><P
 >[ WFC: Unique Att Spec ]
 No attribute name may appear more than once in the same start-tag or
 empty-element tag. </P
 ><P
->[44] EmptyElemTag ::= '&lt;' Name (S Attribute)* S? '/&gt;'</P
+>[44] EmptyElemTag ::= '' Name (S Attribute)* S? '/'</P
 ><P
 >[ WFC: Unique Att Spec ]
 No attribute name may appear more than once in the same start-tag or
@@ -7595,9 +7738,9 @@ empty-element tag. </P
 ><P
 >With namespace:</P
 ><P
->[NS 8] STag ::= '&lt;' QName (S Attribute)* S? '&gt;'</P
+>[NS 8] STag ::= '' QName (S Attribute)* S? ''</P
 ><P
->[NS 10] EmptyElement ::= '&lt;' QName (S Attribute)* S? '/&gt;'</P
+>[NS 10] EmptyElement ::= '' QName (S Attribute)* S? '/'</P
 ><P
 ></P
 ><DIV
@@ -7621,7 +7764,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -7651,7 +7794,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17532"
+NAME="AEN18453"
 ></A
 ><H3
 ><A
@@ -7677,11 +7820,11 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><P
 >parse an end of tag</P
 ><P
->[42] ETag ::= '&lt;/' Name S? '&gt;'</P
+>[42] ETag ::= '/' Name S? ''</P
 ><P
 >With namespace</P
 ><P
->[NS 9] ETag ::= '&lt;/' QName S? '&gt;'</P
+>[NS 9] ETag ::= '/' QName S? ''</P
 ><P
 ></P
 ><DIV
@@ -7705,7 +7848,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -7720,7 +7863,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17551"
+NAME="AEN18472"
 ></A
 ><H3
 ><A
@@ -7748,11 +7891,11 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><P
 >[18] CDSect ::= CDStart CData CDEnd</P
 ><P
->[19] CDStart ::= '&lt;![CDATA['</P
+>[19] CDStart ::= '![CDATA['</P
 ><P
->[20] Data ::= (Char* - (Char* ']]&gt;' Char*))</P
+>[20] Data ::= (Char* - (Char* ']]' Char*))</P
 ><P
->[21] CDEnd ::= ']]&gt;'</P
+>[21] CDEnd ::= ']]'</P
 ><P
 ></P
 ><DIV
@@ -7776,7 +7919,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -7791,7 +7934,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17571"
+NAME="AEN18492"
 ></A
 ><H3
 ><A
@@ -7841,7 +7984,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -7856,7 +7999,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17588"
+NAME="AEN18509"
 ></A
 ><H3
 ><A
@@ -7923,7 +8066,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -7938,7 +8081,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17607"
+NAME="AEN18528"
 ></A
 ><H3
 ><A
@@ -7991,7 +8134,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -8021,7 +8164,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17629"
+NAME="AEN18550"
 ></A
 ><H3
 ><A
@@ -8076,7 +8219,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -8106,7 +8249,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17652"
+NAME="AEN18573"
 ></A
 ><H3
 ><A
@@ -8159,7 +8302,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -8189,7 +8332,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17674"
+NAME="AEN18595"
 ></A
 ><H3
 ><A
@@ -8244,7 +8387,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -8274,7 +8417,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17697"
+NAME="AEN18618"
 ></A
 ><H3
 ><A
@@ -8339,7 +8482,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -8369,7 +8512,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17719"
+NAME="AEN18640"
 ></A
 ><H3
 ><A
@@ -8395,7 +8538,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><P
 >parse an XML declaration header</P
 ><P
->[23] XMLDecl ::= '&lt;?xml' VersionInfo EncodingDecl? SDDecl? S? '?&gt;'</P
+>[23] XMLDecl ::= '?xml' VersionInfo EncodingDecl? SDDecl? S? '?'</P
 ><P
 ></P
 ><DIV
@@ -8419,7 +8562,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -8434,7 +8577,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17736"
+NAME="AEN18657"
 ></A
 ><H3
 ><A
@@ -8460,7 +8603,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><P
 >parse an XML declaration header for external entities</P
 ><P
->[77] TextDecl ::= '&lt;?xml' VersionInfo? EncodingDecl S? '?&gt;'</P
+>[77] TextDecl ::= '?xml' VersionInfo? EncodingDecl S? '?'</P
 ><P
 >Question: Seems that EncodingDecl is mandatory ? Is that a typo ?</P
 ><P
@@ -8486,7 +8629,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -8501,7 +8644,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17754"
+NAME="AEN18675"
 ></A
 ><H3
 ><A
@@ -8551,7 +8694,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -8566,7 +8709,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17771"
+NAME="AEN18692"
 ></A
 ><H3
 ><A
@@ -8626,7 +8769,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -8643,7 +8786,7 @@ CLASS="PARAMETER"
 ><I
 >ExternalID</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -8660,7 +8803,7 @@ CLASS="PARAMETER"
 ><I
 >SystemID</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -8675,7 +8818,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17799"
+NAME="AEN18720"
 ></A
 ><H3
 ><A
@@ -8701,7 +8844,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17804"
+NAME="AEN18725"
 ></A
 ><H3
 ><A
@@ -8727,7 +8870,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17809"
+NAME="AEN18730"
 ></A
 ><H3
 ><A
@@ -8753,7 +8896,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17814"
+NAME="AEN18735"
 ></A
 ><H3
 ><A
@@ -8779,7 +8922,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17819"
+NAME="AEN18740"
 ></A
 ><H3
 ><A
@@ -8851,7 +8994,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -8868,7 +9011,7 @@ CLASS="PARAMETER"
 ><I
 >len</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -8885,7 +9028,7 @@ CLASS="PARAMETER"
 ><I
 >what</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -8902,7 +9045,7 @@ CLASS="PARAMETER"
 ><I
 >end</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -8919,7 +9062,7 @@ CLASS="PARAMETER"
 ><I
 >end2</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -8936,7 +9079,7 @@ CLASS="PARAMETER"
 ><I
 >end3</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -8967,7 +9110,7 @@ must deallocate it !</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17866"
+NAME="AEN18787"
 ></A
 ><H3
 ><A
@@ -9039,7 +9182,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -9056,7 +9199,7 @@ CLASS="PARAMETER"
 ><I
 >str</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -9073,7 +9216,7 @@ CLASS="PARAMETER"
 ><I
 >what</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -9090,7 +9233,7 @@ CLASS="PARAMETER"
 ><I
 >end</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -9107,7 +9250,7 @@ CLASS="PARAMETER"
 ><I
 >end2</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -9124,7 +9267,7 @@ CLASS="PARAMETER"
 ><I
 >end3</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -9155,7 +9298,7 @@ must deallocate it !</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17913"
+NAME="AEN18834"
 ></A
 ><H3
 ><A
@@ -9205,7 +9348,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -9222,7 +9365,7 @@ CLASS="PARAMETER"
 ><I
 >value</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -9252,7 +9395,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17937"
+NAME="AEN18858"
 ></A
 ><H3
 ><A
@@ -9301,7 +9444,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -9331,7 +9474,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17957"
+NAME="AEN18878"
 ></A
 ><H3
 ><A
@@ -9381,7 +9524,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -9398,7 +9541,7 @@ CLASS="PARAMETER"
 ><I
 >value</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -9428,7 +9571,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17981"
+NAME="AEN18902"
 ></A
 ><H3
 ><A
@@ -9477,7 +9620,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -9507,7 +9650,183 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18001"
+NAME="AEN18922"
+></A
+><H3
+><A
+NAME="NAMEPOP"
+></A
+>namePop ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    namePop                         (<A
+HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&#13;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN18942"
+></A
+><H3
+><A
+NAME="NAMEPUSH"
+></A
+>namePush ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         namePush                        (<A
+HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *value);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>value</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&#13;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN18966"
 ></A
 ><H3
 ><A
@@ -9556,7 +9875,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -9586,7 +9905,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18021"
+NAME="AEN18986"
 ></A
 ><H3
 ><A
@@ -9640,7 +9959,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -9657,7 +9976,7 @@ CLASS="PARAMETER"
 ><I
 >cur</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -9674,7 +9993,7 @@ CLASS="PARAMETER"
 ><I
 >len</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -9704,7 +10023,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18050"
+NAME="AEN19015"
 ></A
 ><H3
 ><A
@@ -9781,7 +10100,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -9796,7 +10115,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18072"
+NAME="AEN19037"
 ></A
 ><H3
 ><A
@@ -9826,7 +10145,7 @@ routines.</P
 ><P
 >[67] Reference ::= EntityRef | CharRef</P
 ><P
->[68] EntityRef ::= '&amp;' Name ';'</P
+>[68] EntityRef ::= '' Name ';'</P
 ><P
 >[ WFC: Entity Declared ]
 the Name given in the entity reference must match that in an entity
@@ -9836,8 +10155,8 @@ of the following entities: amp, lt, gt, apos, quot. </P
 >[ WFC: Parsed Entity ]
 An entity reference must not contain the name of an unparsed entity</P
 ><P
->[66] CharRef ::= '&amp;#' [0-9]+ ';' |
-'&amp;<GTKDOCLINK
+>[66] CharRef ::= '#' [0-9]+ ';' |
+'<GTKDOCLINK
 HREF="X"
 >x</GTKDOCLINK
 >' [0-9a-fA-F]+ ';'</P
@@ -9871,7 +10190,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -9886,86 +10205,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18096"
-></A
-><H3
-><A
-NAME="NAMEPOP"
-></A
->namePop ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><A
-HREF="libxml-tree.html#XMLCHAR"
->xmlChar</A
->*    namePop                         (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctxt</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><I
-CLASS="EMPHASIS"
->Returns</I
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&#13;</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN18116"
+NAME="AEN19061"
 ></A
 ><H3
 ><A
@@ -10011,7 +10251,7 @@ CLASS="PARAMETER"
 ><I
 >lang</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -10041,7 +10281,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18135"
+NAME="AEN19080"
 ></A
 ><H3
 ><A
@@ -10113,7 +10353,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -10130,7 +10370,7 @@ CLASS="PARAMETER"
 ><I
 >len</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -10160,7 +10400,103 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18164"
+NAME="AEN19109"
+></A
+><H3
+><A
+NAME="XMLCOPYCHARMULTIBYTE"
+></A
+>xmlCopyCharMultiByte ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlCopyCharMultiByte            (<A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *out,
+                                             int val);</PRE
+></TD
+></TR
+></TABLE
+><P
+>append the char value in the array</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>out</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  pointer to an arry of xmlChar</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>val</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the char value</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the number of xmlChar written</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN19133"
 ></A
 ><H3
 ><A
@@ -10210,12 +10546,12 @@ CLASS="PARAMETER"
 ><I
 >len</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  pointer to the length of the char read (or zero)</TD
+>  Ignored, compatibility</TD
 ></TR
 ><TR
 ><TD
@@ -10227,12 +10563,12 @@ CLASS="PARAMETER"
 ><I
 >out</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  pointer to an arry of xmlChar</TD
 ></TR
 ><TR
 ><TD
@@ -10244,7 +10580,7 @@ CLASS="PARAMETER"
 ><I
 >val</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -10274,7 +10610,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18192"
+NAME="AEN19161"
 ></A
 ><H3
 ><A
@@ -10322,7 +10658,7 @@ CLASS="PARAMETER"
 ><I
 >ctxt</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -10337,7 +10673,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18208"
+NAME="AEN19177"
 ></A
 ><H3
 ><A
@@ -10385,7 +10721,7 @@ CLASS="PARAMETER"
 ><I
 >in</I
 ></TT
->&nbsp;:</TD
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -10400,7 +10736,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18224"
+NAME="AEN19193"
 ></A
 ><H3
 ><A
@@ -10429,6 +10765,104 @@ HREF="libxml-parser.html#XMLINITPARSER"
 case of use in multithreaded programs.</P
 ><P
 ></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN19200"
+></A
+><H3
+><A
+NAME="HTMLCREATEFILEPARSERCTXT"
+></A
+>htmlCreateFileParserCtxt ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-htmlparser.html#HTMLPARSERCTXTPTR"
+>htmlParserCtxtPtr</A
+> htmlCreateFileParserCtxt  (const char *filename,
+                                             const char *encoding);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Create a parser context for a file content. 
+Automatic support for ZLIB/Compress compressed document is provided
+by default if found at compile-time.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>filename</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the filename</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>encoding</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a free form C string describing the HTML document encoding, or NULL</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the new parser context or NULL</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
 ></DIV
 ></DIV
 ><DIV

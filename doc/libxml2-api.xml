@@ -880,6 +880,7 @@
      <exports symbol='xmlFreeIDTable'/>
      <exports symbol='xmlFreeNotationTable'/>
      <exports symbol='xmlFreeRefTable'/>
+     <exports symbol='xmlFreeValidCtxt'/>
      <exports symbol='xmlGetDtdAttrDesc'/>
      <exports symbol='xmlGetDtdElementDesc'/>
      <exports symbol='xmlGetDtdNotationDesc'/>
@@ -893,6 +894,7 @@
      <exports symbol='xmlIsMixedElement'/>
      <exports symbol='xmlIsRef'/>
      <exports symbol='xmlNewElementContent'/>
+     <exports symbol='xmlNewValidCtxt'/>
      <exports symbol='xmlNotationTable'/>
      <exports symbol='xmlNotationTablePtr'/>
      <exports symbol='xmlRefTable'/>
@@ -5868,6 +5870,11 @@ actually an xmlCharEncoding'/>
       <return type='void'/>
       <arg name='uri' type='xmlURIPtr' info='pointer to an xmlURI'/>
     </function>
+    <function name='xmlFreeValidCtxt' file='valid'>
+      <info>Free a validation context structure.</info>
+      <return type='void'/>
+      <arg name='cur' type='xmlValidCtxtPtr' info='the validation context to free'/>
+    </function>
     <function name='xmlGcMemGet' file='xmlmemory'>
       <info>Provides the memory access functions set currently in use The mallocAtomicFunc is specialized for atomic block allocations (i.e. of areas  useful for garbage collected memory allocators</info>
       <return type='int' info='0 on success'/>
@@ -7238,6 +7245,10 @@ actually an xmlCharEncoding'/>
       <info>Create an xmlTextReader structure fed with the resource at @URI</info>
       <return type='xmlTextReaderPtr' info='the new xmlTextReaderPtr or NULL in case of error'/>
       <arg name='URI' type='const char *' info='the URI of the resource to process'/>
+    </function>
+    <function name='xmlNewValidCtxt' file='valid'>
+      <info>Allocate a validation context structure.</info>
+      <return type='xmlValidCtxtPtr' info='NULL if not, otherwise the new validation context structure'/>
     </function>
     <function name='xmlNextChar' file='parserInternals'>
       <info>Skip to the next char input char.</info>

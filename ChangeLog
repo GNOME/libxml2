@@ -1,3 +1,9 @@
+Mon Nov 17 17:55:51 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* doc/apibuild.py doc/libxml2-api.xml doc/newapi.xsl: more cleanup,
+	  improving navigation
+	* doc/html/*.html: updated the result
+
 Mon Nov 17 14:54:38 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* doc/Makefile.am doc/apibuild.py doc/libxml2-api.xml doc/newapi.xsl:

@@ -1516,7 +1516,9 @@ class docBuilder:
 	 output.write('<?xml version="1.0" encoding="ISO-8859-1"?>\n')
 	 output.write("<api name='%s'>\n" % self.name)
 	 output.write("  <files>\n")
-	 for file in self.headers.keys():
+	 headers = self.headers.keys()
+	 headers.sort()
+	 for file in headers:
 	     self.serialize_exports(output, file)
 	 output.write("  </files>\n")
 	 output.write("  <symbols>\n")

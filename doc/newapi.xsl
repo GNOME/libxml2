@@ -26,6 +26,28 @@
   <!-- the target directory for the HTML output -->
   <xsl:variable name="htmldir">html</xsl:variable>
 
+  <xsl:template name="navbar">
+    <xsl:variable name="previous" select="preceding-sibling::file[1]"/>
+    <xsl:variable name="next" select="following-sibling::file[1]"/>
+    <table class="navigation" width="100%" summary="Navigation header"
+           cellpadding="2" cellspacing="2">
+      <tr valign="middle">
+        <xsl:if test="$previous">
+          <td><a accesskey="p" href="libxml-{$previous/@name}.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></img></a></td>
+	  <th align="left"><a href="libxml-{$previous/@name}.html"><xsl:value-of select="$previous/@name"/></a></th>
+	</xsl:if>
+        <td><a accesskey="u" href="index.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></img></a></td>
+	<th align="left"><a href="index.html">API documentation</a></th>
+        <td><a accesskey="h" href="../index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></img></a></td>
+        <th align="center"><a href="../index.html">The XML C parser and toolkit of Gnome</a></th>
+        <xsl:if test="$next">
+	  <th align="right"><a href="libxml-{$next/@name}.html"><xsl:value-of select="$next/@name"/></a></th>
+          <td><a accesskey="n" href="libxml-{$next/@name}.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></img></a></td>
+        </xsl:if>
+      </tr>
+    </table>
+  </xsl:template>
+
   <!-- This is convoluted but needed to force the current document to
        be the API one and not the result tree from the tokenize() result,
        because the keys are only defined on the main document -->
@@ -356,6 +378,7 @@
 				  <table border="0" cellpadding="3" cellspacing="1" width="100%">
 				    <tr>
 				      <td bgcolor="#fffacd">
+	    <xsl:call-template name="navbar"/>
 	    <h2>Table of Contents</h2>
 	    <xsl:apply-templates select="exports" mode="toc"/>
 	    <h2>Description</h2>

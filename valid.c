@@ -3404,7 +3404,7 @@ xmlValidateSkipIgnorable(xmlNodePtr child) {
 
 static int
 xmlValidateElementType(xmlValidCtxtPtr ctxt) {
-    int ret = -1, tmp;
+    int ret = -1;
     int determinist = 1;
 
     NODE = xmlValidateSkipIgnorable(NODE);
@@ -3973,25 +3973,36 @@ xmlValidateElementContent(xmlValidCtxtPtr ctxt, xmlNodePtr child,
 	ret = xmlValidateElementType(ctxt);
     }
     if ((warn) && ((ret != 1) && (ret != -3))) {
-	char expr[5000];
-	char list[5000];
+	if ((ctxt != NULL) && (ctxt->warning != NULL)) {
+	    char expr[5000];
+	    char list[5000];
 
-	expr[0] = 0;
-	xmlSnprintfElementContent(expr, 5000, cont, 1);
-	list[0] = 0;
-	if (repl != NULL)
-	    xmlSnprintfElements(list, 5000, repl, 1);
-	else
-	    xmlSnprintfElements(list, 5000, child, 1);
+	    expr[0] = 0;
+	    xmlSnprintfElementContent(expr, 5000, cont, 1);
+	    list[0] = 0;
+	    if (repl != NULL)
+		xmlSnprintfElements(list, 5000, repl, 1);
+	    else
+		xmlSnprintfElements(list, 5000, child, 1);
 
-	if (name != NULL) {
-	    VERROR(ctxt->userData,
-   "Element %s content doesn't follow the Dtd\nExpecting %s, got %s\n",
-	       name, expr, list);
+	    if (name != NULL) {
+		VERROR(ctxt->userData,
+	   "Element %s content doesn't follow the Dtd\nExpecting %s, got %s\n",
+		       name, expr, list);
+	    } else {
+		VERROR(ctxt->userData,
+	   "Element content doesn't follow the Dtd\nExpecting %s, got %s\n",
+		       expr, list);
+	    }
 	} else {
-	    VERROR(ctxt->userData,
-       "Element content doesn't follow the Dtd\nExpecting %s, got %s\n",
-	       expr, list);
+	    if (name != NULL) {
+		VERROR(ctxt->userData,
+		       "Element %s content doesn't follow the Dtd\n",
+		       name);
+	    } else {
+		VERROR(ctxt->userData,
+		       "Element content doesn't follow the Dtd\n");
+	    }
 	}
 	ret = 0;
     }

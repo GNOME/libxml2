@@ -1,3 +1,8 @@
+Tue Nov 20 10:34:01 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* valid.c: in case of content model validity error, don't
+	  print it if validity warnings were not requested.
+
 Tue Nov 20 09:30:02 CET 2001 Daniel Veillard <daniel@veillard.com>
 
 	* nanoftp.c: applied a couple of patches from Brian D Ripley.

@@ -2325,11 +2325,11 @@ xmlDumpNotationDecl(xmlBufferPtr buf, xmlNotationPtr nota) {
 	xmlBufferWriteQuotedString(buf, nota->PublicID);
 	if (nota->SystemID != NULL) {
 	    xmlBufferWriteChar(buf, " ");
-	    xmlBufferWriteCHAR(buf, nota->SystemID);
+	    xmlBufferWriteQuotedString(buf, nota->SystemID);
 	}
     } else {
 	xmlBufferWriteChar(buf, " SYSTEM ");
-	xmlBufferWriteCHAR(buf, nota->SystemID);
+	xmlBufferWriteQuotedString(buf, nota->SystemID);
     }
     xmlBufferWriteChar(buf, " >\n");
 }

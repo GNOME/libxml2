@@ -1,3 +1,10 @@
+Wed Sep  8 22:50:27 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* valid.c xmlsave.c: fixed 2 problems raised by #152140, one
+	  which is that notation not in the internal subset should
+	  not be saved, and the second more nasty on an error saving
+	  NOTATIONs, if there is a proof that nobody uses notations !
+
 Wed Sep  8 11:04:27 CEST 2004 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c include/libxml/xmlschemas.h: Added the function

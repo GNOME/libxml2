@@ -517,14 +517,18 @@ xmlDtdDumpOutput(xmlSaveCtxtPtr ctxt, xmlDtdPtr dtd) {
 	xmlBufferWriteQuotedString(buf->buffer, dtd->SystemID);
     }
     if ((dtd->entities == NULL) && (dtd->elements == NULL) &&
-            (dtd->attributes == NULL) && (dtd->notations == NULL) &&
-	    (dtd->pentities == NULL)) {
+        (dtd->attributes == NULL) && (dtd->notations == NULL) &&
+	(dtd->pentities == NULL)) {
 	xmlOutputBufferWrite(buf, 1, ">");
 	return;
     }
     xmlOutputBufferWrite(buf, 3, " [\n");
-    /* Dump the notations first they are not in the DTD children list */
-    if (dtd->notations != NULL) {
+    /*
+     * Dump the notations first they are not in the DTD children list
+     * Do this only on a standalone DTD or on the internal subset though.
+     */
+    if ((dtd->notations != NULL) && ((dtd->doc == NULL) ||
+        (dtd->doc->intSubset == dtd))) {
         xmlDumpNotationTable(buf->buffer, (xmlNotationTablePtr) dtd->notations);
     }
     format = ctxt->format;

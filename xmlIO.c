@@ -2108,7 +2108,6 @@ xmlOutputBufferClose(xmlOutputBufferPtr out)
 xmlParserInputBufferPtr
 xmlParserInputBufferCreateFilename(const char *URI, xmlCharEncoding enc) {
     xmlParserInputBufferPtr ret;
-    int is_http = 0;
     int i = 0;
     void *context = NULL;
 
@@ -2127,8 +2126,6 @@ xmlParserInputBufferCreateFilename(const char *URI, xmlCharEncoding enc) {
 		(xmlInputCallbackTable[i].matchcallback(URI) != 0)) {
 		context = xmlInputCallbackTable[i].opencallback(URI);
 		if (context != NULL) {
-		    if (xmlInputCallbackTable[i].opencallback == xmlIOHTTPOpen)
-		        is_http = 1;
 		    break;
 		}
 	    }

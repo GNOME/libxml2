@@ -27,8 +27,6 @@
 
 static xmlElementPtr xmlGetDtdElementDesc2(xmlDtdPtr dtd, const xmlChar *name,
 	                           int create);
-#ifdef LIBXML_VALID_ENABLED
-
 /* #define DEBUG_VALID_ALGO */
 /* #define DEBUG_REGEXP_ALGO */
 
@@ -107,6 +105,7 @@ xmlErrValid(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED, xmlParserErrors error,
                         msg);
 }
 
+#ifdef LIBXML_VALID_ENABLED
 /**
  * xmlErrValidNodeNr:
  * @ctxt:  an XML validation parser context

@@ -1,3 +1,7 @@
+Sun Oct 19 23:57:45 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* valid.c xmlIO.c: fixes for compiling using --with-minimum
+
 Sun Oct 19 23:46:04 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: cleanup xmlNodeGetContent() reusing xmlNodeBufGetContent(),

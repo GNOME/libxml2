@@ -92,6 +92,58 @@ typedef struct xmlNanoHTTPCtxt {
     char *location;	/* the new URL in case of redirect */
 } xmlNanoHTTPCtxt, *xmlNanoHTTPCtxtPtr;
 
+static int initialized = 0;
+static char *proxy = NULL;	/* the proxy name if any */
+static int proxyPort;	/* the proxy port if any */
+
+/**
+ * xmlNanoHTTPInit:
+ *
+ * Initialize the HTTP protocol layer.
+ * Currently it just checks for proxy informations
+ */
+
+void
+xmlNanoHTTPInit(void) {
+    const char *env;
+
+    if (initialized)
+	return;
+
+    if (proxy == NULL) {
+	proxyPort = 80;
+	env = getenv("no_proxy");
+	if (env != NULL)
+	    goto done;
+	env = getenv("http_proxy");
+	if (env != NULL) {
+	    xmlNanoHTTPScanProxy(env);
+	    goto done;
+	}
+	env = getenv("HTTP_PROXY");
+	if (env != NULL) {
+	    xmlNanoHTTPScanProxy(env);
+	    goto done;
+	}
+    }
+done:
+    initialized = 1;
+}
+
+/**
+ * xmlNanoHTTPClenup:
+ *
+ * Cleanup the HTTP protocol layer.
+ */
+
+void
+xmlNanoHTTPCleanup(void) {
+    if (proxy != NULL)
+	xmlFree(proxy);
+    initialized = 0;
+    return;
+}
+
 /**
  * xmlNanoHTTPScanURL:
  * @ctxt:  an HTTP context
@@ -120,6 +172,7 @@ xmlNanoHTTPScanURL(xmlNanoHTTPCtxtPtr ctxt, const char *URL) {
         xmlFree(ctxt->path);
 	ctxt->path = NULL;
     }
+    if (URL == NULL) return;
     buf[index] = 0;
     while (*cur != 0) {
         if ((cur[0] == ':') && (cur[1] == '/') && (cur[2] == '/')) {
@@ -170,6 +223,76 @@ xmlNanoHTTPScanURL(xmlNanoHTTPCtxtPtr ctxt, const char *URL) {
 	buf[index] = 0;
 	ctxt->path = xmlMemStrdup(buf);
     }	
+}
+
+/**
+ * xmlNanoHTTPScanProxy:
+ * @URL:  The proxy URL used to initialize the proxy context
+ *
+ * (Re)Initialize the HTTP Proxy context by parsing the URL and finding
+ * the protocol host port it indicates.
+ * Should be like http://myproxy/ or http://myproxy:3128/
+ * A NULL URL cleans up proxy informations.
+ */
+
+void
+xmlNanoHTTPScanProxy(const char *URL) {
+    const char *cur = URL;
+    char buf[4096];
+    int index = 0;
+    int port = 0;
+
+    if (proxy != NULL) { 
+        xmlFree(proxy);
+	proxy = NULL;
+    }
+    if (proxyPort != 0) { 
+	proxyPort = 0;
+    }
+#ifdef DEBUG_HTTP
+    if (URL == NULL)
+	printf("Removing HTTP proxy info\n");
+    else
+	printf("Using HTTP proxy %s\n", URL);
+#endif
+    if (URL == NULL) return;
+    buf[index] = 0;
+    while (*cur != 0) {
+        if ((cur[0] == ':') && (cur[1] == '/') && (cur[2] == '/')) {
+	    buf[index] = 0;
+	    index = 0;
+            cur += 3;
+	    break;
+	}
+	buf[index++] = *cur++;
+    }
+    if (*cur == 0) return;
+
+    buf[index] = 0;
+    while (1) {
+        if (cur[0] == ':') {
+	    buf[index] = 0;
+	    proxy = xmlMemStrdup(buf);
+	    index = 0;
+	    cur += 1;
+	    while ((*cur >= '0') && (*cur <= '9')) {
+	        port *= 10;
+		port += *cur - '0';
+		cur++;
+	    }
+	    if (port != 0) proxyPort = port;
+	    while ((cur[0] != '/') && (*cur != 0)) 
+	        cur++;
+	    break;
+	}
+        if ((*cur == '/') || (*cur == 0)) {
+	    buf[index] = 0;
+	    proxy = xmlMemStrdup(buf);
+	    index = 0;
+	    break;
+	}
+	buf[index++] = *cur++;
+    }
 }
 
 /**
@@ -598,6 +721,7 @@ xmlNanoHTTPOpen(const char *URL, char **contentType) {
     int nbRedirects = 0;
     char *redirURL = NULL;
     
+    xmlNanoHTTPInit();
     if (contentType != NULL) *contentType = NULL;
 
 retry:
@@ -618,23 +742,54 @@ retry:
         xmlNanoHTTPFreeCtxt(ctxt);
         return(NULL);
     }
-    ret = xmlNanoHTTPConnectHost(ctxt->hostname, ctxt->port);
+    if (proxy)
+	ret = xmlNanoHTTPConnectHost(proxy, proxyPort);
+    else
+	ret = xmlNanoHTTPConnectHost(ctxt->hostname, ctxt->port);
     if (ret < 0) {
         xmlNanoHTTPFreeCtxt(ctxt);
         return(NULL);
     }
     ctxt->fd = ret;
-#ifdef HAVE_SNPRINTF
-    snprintf(buf, sizeof(buf),"GET %s HTTP/1.0\r\nHost: %s\r\n\r\n",
-	     ctxt->path, ctxt->hostname);
+    if (proxy) {
+#ifdef have_snprintf
+	if (ctxt->port != 80)
+	    snprintf(buf, sizeof(buf),
+		     "GET http://%s:%d%s HTTP/1.0\r\nHost: %s\r\n\r\n",
+		 ctxt->hostname, ctxt->port, ctxt->path, ctxt->hostname);
+	else 
+	    snprintf(buf, sizeof(buf),"GET http://%s%s HTTP/1.0\r\nHost: %s\r\n\r\n",
+		 ctxt->hostname, ctxt->path, ctxt->hostname);
 #else
-    sprintf(buf, "GET %s HTTP/1.0\r\nHost: %s\r\n\r\n",
-	     ctxt->path, ctxt->hostname);
+	if (ctxt->port != 80)
+	    sprintf(buf, 
+		     "GET http://%s:%d%s HTTP/1.0\r\nHost: %s\r\n\r\n",
+		 ctxt->hostname, ctxt->port, ctxt->path, ctxt->hostname);
+	else 
+	    sprintf(buf, "GET http://%s%s HTTP/1.0\r\nHost: %s\r\n\r\n",
+		 ctxt->hostname, ctxt->path, ctxt->hostname);
 #endif
 #ifdef DEBUG_HTTP
-    printf("-> GET %s HTTP/1.0\n-> Host: %s\n\n",
-           ctxt->path, ctxt->hostname);
+	if (ctxt->port != 80)
+	    printf("-> Proxy GET http://%s:%d%s HTTP/1.0\n-> Host: %s\n\n",
+	           ctxt->hostname, ctxt->port, ctxt->path, ctxt->hostname);
+	else
+	    printf("-> Proxy GET http://%s%s HTTP/1.0\n-> Host: %s\n\n",
+	           ctxt->hostname, ctxt->path, ctxt->hostname);
 #endif
+    } else {
+#ifdef HAVE_SNPRINTF
+	snprintf(buf, sizeof(buf),"GET %s HTTP/1.0\r\nHost: %s\r\n\r\n",
+		 ctxt->path, ctxt->hostname);
+#else
+	sprintf(buf, "GET %s HTTP/1.0\r\nHost: %s\r\n\r\n",
+		 ctxt->path, ctxt->hostname);
+#endif
+#ifdef DEBUG_HTTP
+	printf("-> GET %s HTTP/1.0\n-> Host: %s\n\n",
+	       ctxt->path, ctxt->hostname);
+#endif
+    }
     ctxt->outptr = ctxt->out = xmlMemStrdup(buf);
     ctxt->state = XML_NANO_HTTP_WRITE;
     xmlNanoHTTPSend(ctxt);
@@ -645,6 +800,7 @@ retry:
         if (head && (*p == 0)) {
 	    head = 0;
 	    ctxt->content = ctxt->inrptr;
+	    xmlFree(p);
 	    break;
 	}
 	xmlNanoHTTPScanAnswer(ctxt, p);
@@ -984,7 +1140,7 @@ xmlNanoHTTPFetch(const char *URL, const char *filename, char **contentType) {
     if (!strcmp(filename, "-")) 
         fd = 0;
     else {
-        fd = open(filename, O_CREAT | O_WRONLY);
+        fd = open(filename, O_CREAT | O_WRONLY, 00644);
 	if (fd < 0) {
 	    xmlNanoHTTPClose(ctxt);
 	    if ((contentType != NULL) && (*contentType != NULL)) {
@@ -1000,6 +1156,7 @@ xmlNanoHTTPFetch(const char *URL, const char *filename, char **contentType) {
     }
 
     xmlNanoHTTPClose(ctxt);
+    close(fd);
     return(0);
 }
 
@@ -1068,6 +1225,8 @@ int main(int argc, char **argv) {
         printf("%s: minimal HTTP GET implementation\n", argv[0]);
         printf("\tusage %s [ URL [ filename ] ]\n", argv[0]);
     }
+    xmlNanoHTTPCleanup();
+    xmlMemoryDump();
     return(0);
 }
 #endif /* STANDALONE */

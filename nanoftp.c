@@ -31,11 +31,29 @@
 #ifdef HAVE_NETINET_IN_H
 #include <netinet/in.h>
 #endif
+#ifdef HAVE_ARPA_INET_H
+#include <arpa/inet.h>
+#endif
 #ifdef HAVE_NETDB_H
 #include <netdb.h>
 #endif
+#ifdef HAVE_FCNTL_H
+#include <fcntl.h> 
+#endif
+#ifdef HAVE_ERRNO_H
+#include <errno.h>
+#endif
+#ifdef HAVE_SYS_TIME_H
+#include <sys/time.h>
+#endif
+#ifdef HAVE_SYS_SELECT_H
+#include <sys/select.h>
+#endif
 #ifdef HAVE_RESOLV_H
 #include <resolv.h>
+#endif
+#ifdef HAVE_STDLIB_H
+#include <stdlib.h>
 #endif
 
 #include "xmlmemory.h"
@@ -43,7 +61,9 @@
 
 /* #define DEBUG_FTP 1  */
 #ifdef STANDALONE
+#ifndef DEBUG_FTP
 #define DEBUG_FTP 1
+#endif
 #endif
 
 static char hostname[100];
@@ -66,6 +86,111 @@ typedef struct xmlNanoFTPCtxt {
     int state;		/* WRITE / READ / CLOSED */
     int returnValue;	/* the protocol return value */
 } xmlNanoFTPCtxt, *xmlNanoFTPCtxtPtr;
+
+static int initialized = 0;
+static char *proxy = NULL;	/* the proxy name if any */
+static int proxyPort = 0;	/* the proxy port if any */
+static char *proxyUser = NULL;	/* user for proxy authentication */
+static char *proxyPasswd = NULL;/* passwd for proxy authentication */
+static int proxyType = 0;	/* uses TYPE or a@b ? */
+
+/**
+ * xmlNanoFTPInit:
+ *
+ * Initialize the FTP protocol layer.
+ * Currently it just checks for proxy informations,
+ * and get the hostname
+ */
+
+void
+xmlNanoFTPInit(void) {
+    const char *env;
+
+    if (initialized)
+	return;
+
+    gethostname(hostname, sizeof(hostname));
+
+    proxyPort = 21;
+    env = getenv("no_proxy");
+    if (env != NULL)
+	return;
+    env = getenv("ftp_proxy");
+    if (env != NULL) {
+	xmlNanoFTPScanProxy(env);
+    } else {
+	env = getenv("FTP_PROXY");
+	if (env != NULL) {
+	    xmlNanoFTPScanProxy(env);
+	}
+    }
+    env = getenv("ftp_proxy_user");
+    if (env != NULL) {
+	proxyUser = xmlMemStrdup(env);
+    }
+    env = getenv("ftp_proxy_password");
+    if (env != NULL) {
+	proxyPasswd = xmlMemStrdup(env);
+    }
+    initialized = 1;
+}
+
+/**
+ * xmlNanoFTPClenup:
+ *
+ * Cleanup the FTP protocol layer. This cleanup proxy informations.
+ */
+
+void
+xmlNanoFTPCleanup(void) {
+    if (proxy != NULL) {
+	xmlFree(proxy);
+	proxy = NULL;
+    }
+    if (proxyUser != NULL) {
+	xmlFree(proxyUser);
+	proxyUser = NULL;
+    }
+    if (proxyPasswd != NULL) {
+	xmlFree(proxyPasswd);
+	proxyPasswd = NULL;
+    }
+    hostname[0] = 0;
+    initialized = 0;
+    return;
+}
+
+/**
+ * xmlNanoFTPProxy:
+ * @host:  the proxy host name
+ * @port:  the proxy port
+ * @user:  the proxy user name
+ * @passwd:  the proxy password
+ * @type:  the type of proxy 1 for using SITE, 2 for USER a@b
+ *
+ * Setup the FTP proxy informations.
+ * This can also be done by using ftp_proxy ftp_proxy_user and
+ * ftp_proxy_password environment variables.
+ */
+
+void
+xmlNanoFTPProxy(const char *host, int port, const char *user,
+	        const char *passwd, int type) {
+    if (proxy != NULL)
+	xmlFree(proxy);
+    if (proxyUser != NULL)
+	xmlFree(proxyUser);
+    if (proxyPasswd != NULL)
+	xmlFree(proxyPasswd);
+    if (host)
+	proxy = xmlMemStrdup(host);
+    if (user)
+	proxyUser = xmlMemStrdup(user);
+    if (passwd)
+	proxyPasswd = xmlMemStrdup(passwd);
+    proxyPort = port;
+    proxyType = type;
+}
 
 /**
  * xmlNanoFTPScanURL:
@@ -96,6 +221,7 @@ xmlNanoFTPScanURL(void *ctx, const char *URL) {
         xmlFree(ctxt->path);
 	ctxt->path = NULL;
     }
+    if (URL == NULL) return;
     buf[index] = 0;
     while (*cur != 0) {
         if ((cur[0] == ':') && (cur[1] == '/') && (cur[2] == '/')) {
@@ -149,6 +275,169 @@ xmlNanoFTPScanURL(void *ctx, const char *URL) {
 }
 
 /**
+ * xmlNanoFTPUpdateURL:
+ * @ctx:  an FTP context
+ * @URL:  The URL used to update the context
+ *
+ * Update an FTP context by parsing the URL and finding
+ * new path it indicates. If there is an error in the 
+ * protocol, hostname, port or other information, the
+ * error is raised. It indicates a new connection has to
+ * be established.
+ *
+ * Returns 0 if Ok, -1 in case of error (other host).
+ */
+
+int
+xmlNanoFTPUpdateURL(void *ctx, const char *URL) {
+    xmlNanoFTPCtxtPtr ctxt = (xmlNanoFTPCtxtPtr) ctx;
+    const char *cur = URL;
+    char buf[4096];
+    int index = 0;
+    int port = 0;
+
+    if (URL == NULL)
+	return(-1);
+    if (ctxt == NULL)
+	return(-1);
+    if (ctxt->protocol == NULL)
+	return(-1);
+    if (ctxt->hostname == NULL)
+	return(-1);
+    buf[index] = 0;
+    while (*cur != 0) {
+        if ((cur[0] == ':') && (cur[1] == '/') && (cur[2] == '/')) {
+	    buf[index] = 0;
+	    if (strcmp(ctxt->protocol, buf))
+		return(-1);
+	    index = 0;
+            cur += 3;
+	    break;
+	}
+	buf[index++] = *cur++;
+    }
+    if (*cur == 0)
+	return(-1);
+
+    buf[index] = 0;
+    while (1) {
+        if (cur[0] == ':') {
+	    buf[index] = 0;
+	    if (strcmp(ctxt->hostname, buf))
+		return(-1);
+	    index = 0;
+	    cur += 1;
+	    while ((*cur >= '0') && (*cur <= '9')) {
+	        port *= 10;
+		port += *cur - '0';
+		cur++;
+	    }
+	    if (port != ctxt->port)
+		return(-1);
+	    while ((cur[0] != '/') && (*cur != 0)) 
+	        cur++;
+	    break;
+	}
+        if ((*cur == '/') || (*cur == 0)) {
+	    buf[index] = 0;
+	    if (strcmp(ctxt->hostname, buf))
+		return(-1);
+	    index = 0;
+	    break;
+	}
+	buf[index++] = *cur++;
+    }
+    if (ctxt->path != NULL) {
+	xmlFree(ctxt->path);
+	ctxt->path = NULL;
+    }
+
+    if (*cur == 0) 
+        ctxt->path = xmlMemStrdup("/");
+    else {
+        buf[index] = 0;
+	while (*cur != 0) {
+	    if ((cur[0] == '#') || (cur[0] == '?'))
+	        break;
+	    buf[index++] = *cur++;
+	}
+	buf[index] = 0;
+	ctxt->path = xmlMemStrdup(buf);
+    }	
+    return(0);
+}
+
+/**
+ * xmlNanoFTPScanProxy:
+ * @URL:  The proxy URL used to initialize the proxy context
+ *
+ * (Re)Initialize the FTP Proxy context by parsing the URL and finding
+ * the protocol host port it indicates.
+ * Should be like ftp://myproxy/ or ftp://myproxy:3128/
+ * A NULL URL cleans up proxy informations.
+ */
+
+void
+xmlNanoFTPScanProxy(const char *URL) {
+    const char *cur = URL;
+    char buf[4096];
+    int index = 0;
+    int port = 0;
+
+    if (proxy != NULL) { 
+        xmlFree(proxy);
+	proxy = NULL;
+    }
+    if (proxyPort != 0) { 
+	proxyPort = 0;
+    }
+#ifdef DEBUG_FTP
+    if (URL == NULL)
+	printf("Removing FTP proxy info\n");
+    else
+	printf("Using FTP proxy %s\n", URL);
+#endif
+    if (URL == NULL) return;
+    buf[index] = 0;
+    while (*cur != 0) {
+        if ((cur[0] == ':') && (cur[1] == '/') && (cur[2] == '/')) {
+	    buf[index] = 0;
+	    index = 0;
+            cur += 3;
+	    break;
+	}
+	buf[index++] = *cur++;
+    }
+    if (*cur == 0) return;
+
+    buf[index] = 0;
+    while (1) {
+        if (cur[0] == ':') {
+	    buf[index] = 0;
+	    proxy = xmlMemStrdup(buf);
+	    index = 0;
+	    cur += 1;
+	    while ((*cur >= '0') && (*cur <= '9')) {
+	        port *= 10;
+		port += *cur - '0';
+		cur++;
+	    }
+	    if (port != 0) proxyPort = port;
+	    while ((cur[0] != '/') && (*cur != 0)) 
+	        cur++;
+	    break;
+	}
+        if ((*cur == '/') || (*cur == 0)) {
+	    buf[index] = 0;
+	    proxy = xmlMemStrdup(buf);
+	    index = 0;
+	    break;
+	}
+	buf[index++] = *cur++;
+    }
+}
+
+/**
  * xmlNanoFTPNewCtxt:
  * @URL:  The URL used to initialize the context
  *
@@ -193,20 +482,6 @@ xmlNanoFTPFreeCtxt(void * ctx) {
     if (ctxt->controlFd >= 0) close(ctxt->controlFd);
     ctxt->controlFd = -1;
     xmlFree(ctxt);
-}
-
-/**
- * xmlNanoFTPInit:
- *
- * Initialize the FTP handling.
- */
-
-void
-xmlNanoFTPInit(void) {
-    static int done = 0;
-    if (done) return;
-    gethostname(hostname, sizeof(hostname));
-    done = 1;
 }
 
 /**
@@ -446,6 +721,7 @@ int
 xmlNanoFTPConnect(void *ctx) {
     xmlNanoFTPCtxtPtr ctxt = (xmlNanoFTPCtxtPtr) ctx;
     struct hostent *hp;
+    int port;
     int res;
 
     if (ctxt == NULL)
@@ -456,7 +732,10 @@ xmlNanoFTPConnect(void *ctx) {
     /*
      * do the blocking DNS query.
      */
-    hp = gethostbyname(ctxt->hostname);
+    if (proxy)
+	hp = gethostbyname(proxy);
+    else
+	hp = gethostbyname(ctxt->hostname);
     if (hp == NULL)
         return(-1);
 
@@ -466,9 +745,14 @@ xmlNanoFTPConnect(void *ctx) {
     memset(&ctxt->ftpAddr, 0, sizeof(ctxt->ftpAddr));
     ctxt->ftpAddr.sin_family = AF_INET;
     memcpy(&ctxt->ftpAddr.sin_addr, hp->h_addr_list[0], hp->h_length);
-    if (ctxt->port == 0)
-        ctxt->port = 21;
-    ctxt->ftpAddr.sin_port = htons(ctxt->port);
+    if (proxy) {
+        port = proxyPort;
+    } else {
+	port = ctxt->port;
+    }
+    if (port == 0)
+	port = 21;
+    ctxt->ftpAddr.sin_port = htons(port);
     ctxt->controlFd = socket(AF_INET, SOCK_STREAM, 0);
     if (ctxt->controlFd < 0)
         return(-1);
@@ -524,6 +808,157 @@ xmlNanoFTPConnect(void *ctx) {
      * +---+   ACCT    +---+--  |   ----->+---+
      * |   |---------->| W | 4,5 -------->| F |
      * +---+           +---+------------->+---+
+     *
+     * Of course in case of using a proxy this get really nasty and is not
+     * standardized at all :-(
+     */
+    if (proxy) {
+        int len;
+	char buf[400];
+
+        if (proxyUser != NULL) {
+	    /*
+	     * We need proxy auth
+	     */
+	    len = snprintf(buf, sizeof(buf), "USER %s\r\n", proxyUser);
+#ifdef DEBUG_FTP
+	    printf(buf);
+#endif
+	    res = send(ctxt->controlFd, buf, len, 0);
+	    if (res < 0) {
+		close(ctxt->controlFd);
+		ctxt->controlFd = -1;
+	        return(res);
+	    }
+	    res = xmlNanoFTPGetResponse(ctxt);
+	    switch (res) {
+		case 2:
+		    if (proxyPasswd == NULL)
+			break;
+		case 3:
+		    if (proxyPasswd != NULL)
+			len = snprintf(buf, sizeof(buf), "PASS %s\r\n", proxyPasswd);
+		    else
+			len = snprintf(buf, sizeof(buf), "PASS libxml@%s\r\n",
+			               hostname);
+#ifdef DEBUG_FTP
+		    printf(buf);
+#endif
+		    res = send(ctxt->controlFd, buf, len, 0);
+		    if (res < 0) {
+			close(ctxt->controlFd);
+			ctxt->controlFd = -1;
+			return(res);
+		    }
+		    res = xmlNanoFTPGetResponse(ctxt);
+		    if (res > 3) {
+			close(ctxt->controlFd);
+			ctxt->controlFd = -1;
+			return(-1);
+		    }
+		    break;
+		case 1:
+		    break;
+		case 4:
+		case 5:
+		case -1:
+		default:
+		    close(ctxt->controlFd);
+		    ctxt->controlFd = -1;
+		    return(-1);
+	    }
+	}
+
+	/*
+	 * We assume we don't need more authentication to the proxy
+	 * and that it succeeded :-\
+	 */
+	switch (proxyType) {
+	    case 0:
+		/* we will try in seqence */
+	    case 1:
+		/* Using SITE command */
+		len = snprintf(buf, sizeof(buf), "SITE %s\r\n", ctxt->hostname);
+#ifdef DEBUG_FTP
+		printf(buf);
+#endif
+		res = send(ctxt->controlFd, buf, len, 0);
+		if (res < 0) {
+		    close(ctxt->controlFd); ctxt->controlFd = -1;
+		    ctxt->controlFd = -1;
+		    return(res);
+		}
+		res = xmlNanoFTPGetResponse(ctxt);
+		if (res == 2) {
+		    /* we assume it worked :-\ 1 is error for SITE command */
+		    proxyType = 1;
+		    break;
+		}    
+		if (proxyType == 1) {
+		    close(ctxt->controlFd); ctxt->controlFd = -1;
+		    ctxt->controlFd = -1;
+		    return(-1);
+		}
+	    case 2:
+		/* USER user@host command */
+		if (ctxt->user == NULL)
+		    len = snprintf(buf, sizeof(buf), "USER anonymous@%s\r\n",
+			           ctxt->hostname);
+		else
+		    len = snprintf(buf, sizeof(buf), "USER %s@%s\r\n",
+			           ctxt->user, ctxt->hostname);
+#ifdef DEBUG_FTP
+		printf(buf);
+#endif
+		res = send(ctxt->controlFd, buf, len, 0);
+		if (res < 0) {
+		    close(ctxt->controlFd); ctxt->controlFd = -1;
+		    ctxt->controlFd = -1;
+		    return(res);
+		}
+		res = xmlNanoFTPGetResponse(ctxt);
+		if ((res == 1) || (res == 2)) {
+		    /* we assume it worked :-\ */
+		    proxyType = 2;
+		    return(0);
+		}    
+		if (ctxt->passwd == NULL)
+		    len = snprintf(buf, sizeof(buf), "PASS libxml@%s\r\n", hostname);
+		else
+		    len = snprintf(buf, sizeof(buf), "PASS %s\r\n", ctxt->passwd);
+#ifdef DEBUG_FTP
+		printf(buf);
+#endif
+		res = send(ctxt->controlFd, buf, len, 0);
+		if (res < 0) {
+		    close(ctxt->controlFd); ctxt->controlFd = -1;
+		    ctxt->controlFd = -1;
+		    return(res);
+		}
+		res = xmlNanoFTPGetResponse(ctxt);
+		if ((res == 1) || (res == 2)) {
+		    /* we assume it worked :-\ */
+		    proxyType = 2;
+		    return(0);
+		}
+		if (proxyType == 2) {
+		    close(ctxt->controlFd); ctxt->controlFd = -1;
+		    ctxt->controlFd = -1;
+		    return(-1);
+		}
+	    case 3:
+		/*
+		 * If you need support for other Proxy authentication scheme
+		 * send the code or at least the sequence in use.
+		 */
+	    default:
+		close(ctxt->controlFd); ctxt->controlFd = -1;
+		ctxt->controlFd = -1;
+		return(-1);
+	}
+    }
+    /*
+     * Non-proxy handling.
      */
     res = xmlNanoFTPSendUser(ctxt);
     if (res < 0) {
@@ -896,7 +1331,7 @@ xmlNanoFTPParseList(const char *list, ftpListCallback callback, void *userData) 
     }
     if (callback != NULL) {
         callback(userData, filename, attrib, owner, group, size, links,
-		 year, month, day, minute);
+		 year, month, day, hour, minute);
     }
     return(cur - list);
 }
@@ -924,12 +1359,19 @@ xmlNanoFTPList(void *ctx, ftpListCallback callback, void *userData,
     fd_set rfd, efd;
     struct timeval tv;
 
-    ctxt->dataFd = xmlNanoFTPGetConnection(ctxt);
-
-    if (filename != NULL)
-	len = snprintf(buf, sizeof(buf), "LIST -L %s\r\n", filename);
-    else
+    if (filename == NULL) {
+        if (xmlNanoFTPCwd(ctxt, ctxt->path) < 1)
+	    return(-1);
+	ctxt->dataFd = xmlNanoFTPGetConnection(ctxt);
 	len = snprintf(buf, sizeof(buf), "LIST -L\r\n");
+    } else {
+	if (filename[0] != '/') {
+	    if (xmlNanoFTPCwd(ctxt, ctxt->path) < 1)
+		return(-1);
+	}
+	ctxt->dataFd = xmlNanoFTPGetConnection(ctxt);
+	len = snprintf(buf, sizeof(buf), "LIST -L %s\r\n", filename);
+    }
 #ifdef DEBUG_FTP
     printf(buf);
 #endif
@@ -1003,7 +1445,7 @@ xmlNanoFTPList(void *ctx, ftpListCallback callback, void *userData,
 /**
  * xmlNanoFTPGetSocket:
  * @ctx:  an FTP context
- * @filename:  the file to retrieve
+ * @filename:  the file to retrieve (or NULL if path is in context).
  *
  * Initiate fetch of the given file from the server.
  *
@@ -1016,7 +1458,7 @@ xmlNanoFTPGetSocket(void *ctx, const char *filename) {
     xmlNanoFTPCtxtPtr ctxt = (xmlNanoFTPCtxtPtr) ctx;
     char buf[300];
     int res, len;
-    if (filename == NULL)
+    if ((filename == NULL) && (ctxt->path == NULL))
 	return(-1);
     ctxt->dataFd = xmlNanoFTPGetConnection(ctxt);
 
@@ -1034,7 +1476,10 @@ xmlNanoFTPGetSocket(void *ctx, const char *filename) {
 	close(ctxt->dataFd); ctxt->dataFd = -1;
 	return(-res);
     }
-    len = snprintf(buf, sizeof(buf), "RETR %s\r\n", filename);
+    if (filename == NULL)
+	len = snprintf(buf, sizeof(buf), "RETR %s\r\n", ctxt->path);
+    else
+	len = snprintf(buf, sizeof(buf), "RETR %s\r\n", filename);
 #ifdef DEBUG_FTP
     printf(buf);
 #endif
@@ -1073,7 +1518,7 @@ xmlNanoFTPGet(void *ctx, ftpDataCallback callback, void *userData,
     fd_set rfd;
     struct timeval tv;
 
-    if (filename == NULL)
+    if ((filename == NULL) && (ctxt->path == NULL))
 	return(-1);
     if (callback == NULL)
 	return(-1);
@@ -1218,7 +1663,7 @@ xmlNanoFTPClose(void *ctx) {
  ************************************************************************/
 void ftpList(void *userData, const char *filename, const char* attrib,
 	     const char *owner, const char *group, unsigned long size, int links,
-	     int year, const char *month, int day, int minute) {
+	     int year, const char *month, int day, int hour, int minute) {
     printf("%s %s %s %ld %s\n", attrib, owner, group, size, filename);
 }
 void ftpData(void *userData, const char *data, int len) {
@@ -1233,12 +1678,15 @@ void ftpData(void *userData, const char *data, int len) {
 int main(int argc, char **argv) {
     void *ctxt;
     FILE *output;
-    int res;
-    const char *tstfile = "tstfile";
+    char *tstfile = NULL;
 
     xmlNanoFTPInit();
     if (argc > 1) {
-	ctxt = xmlNanoFTPConnectTo(argv[1], 0);
+	ctxt = xmlNanoFTPNewCtxt(argv[1]);
+	if (xmlNanoFTPConnect(ctxt) < 0) {
+	    fprintf(stderr, "Couldn't connect to %s\n", argv[1]);
+	    exit(1);
+	}
 	if (argc > 2)
 	    tstfile = argv[2];
     } else
@@ -1247,33 +1695,11 @@ int main(int argc, char **argv) {
         fprintf(stderr, "Couldn't connect to localhost\n");
         exit(1);
     }
-    res = xmlNanoFTPCwd(ctxt, "/linux");
-    if (res < 0) {
-        fprintf(stderr, "disconnected\n");
-	xmlNanoFTPClose(ctxt);
-	exit(1);
-    }
-    if (res == 0) {
-        fprintf(stderr, "/linux : CWD failed\n");
-    } else {
-        fprintf(stderr, "/linux : CWD successful\n");
-    }
-    res = xmlNanoFTPCwd(ctxt, "/toto");
-    if (res < 0) {
-        fprintf(stderr, "disconnected\n");
-	xmlNanoFTPClose(ctxt);
-	exit(1);
-    }
-    if (res == 0) {
-        fprintf(stderr, "/toto : CWD failed\n");
-    } else {
-        fprintf(stderr, "/toto : CWD successful\n");
-    }
-    xmlNanoFTPList(ctxt, ftpList, NULL, NULL);
+    xmlNanoFTPList(ctxt, ftpList, NULL, tstfile);
     output = fopen("/tmp/tstdata", "w");
     if (output != NULL) {
 	if (xmlNanoFTPGet(ctxt, ftpData, (void *) output, tstfile) < 0)
-	    fprintf(stderr, "Failed to get file %s\n", tstfile);
+	    fprintf(stderr, "Failed to get file\n");
 	
     }
     xmlNanoFTPClose(ctxt);

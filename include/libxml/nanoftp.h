@@ -14,13 +14,28 @@ extern "C" {
 
 /**
  * ftpListCallback: 
+ * @userData:  user provided data for the callback
+ * @filename:  the file name (including "->" when links are shown)
+ * @attrib:  the attribute string
+ * @owner:  the owner string
+ * @group:  the group string
+ * @size:  the file size
+ * @links:  the link count
+ * @year:  the year
+ * @month:  the month
+ * @day:  the day
+ * @hour:  the hour
+ * @minute:  the minute
+ *
  * A callback for the xmlNanoFTPList command
+ * Note that only one of year and day:minute are specified
  */
 typedef void (*ftpListCallback) (void *userData,
 	                         const char *filename, const char* attrib,
 	                         const char *owner, const char *group,
 				 unsigned long size, int links, int year,
-				 const char *month, int day, int minute);
+				 const char *month, int day, int hour,
+				 int minute);
 /**
  * ftpDataCallback: 
  * A callback for the xmlNanoFTPGet command
@@ -31,6 +46,7 @@ typedef void (*ftpDataCallback) (void *userData, const char *data, int len);
  * Init
  */
 void	xmlNanoFTPInit		(void);
+void	xmlNanoFTPCleanup	(void);
 
 /*
  * Creating/freeing contexts
@@ -46,7 +62,14 @@ void * 	xmlNanoFTPOpen		(const char *URL);
 int	xmlNanoFTPConnect	(void *ctx);
 int	xmlNanoFTPClose		(void *ctx);
 int	xmlNanoFTPQuit		(void *ctx);
-
+void	xmlNanoFTPScanProxy	(const char *URL);
+void	xmlNanoFTPProxy		(const char *host,
+				 int port,
+				 const char *user,
+				 const char *passwd,
+				 int type);
+int	xmlNanoFTPUpdateURL	(void *ctx,
+				 const char *URL);
 
 /*
  * Rathern internal commands

@@ -317,6 +317,7 @@ extern xmlNsPtr baseDTD;
 extern int oldXMLWDcompatibility;/* maintain compatibility with old WD */
 extern int xmlIndentTreeOutput;  /* try to indent the tree dumps */
 extern xmlBufferAllocationScheme xmlBufferAllocScheme; /* alloc scheme to use */
+extern int xmlSaveNoEmptyTags;   /* save empty tags as <empty></empty> */
 
 /*
  * Handling Buffers.

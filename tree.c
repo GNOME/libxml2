@@ -38,6 +38,7 @@ xmlBufferAllocationScheme xmlBufferAllocScheme = XML_BUFFER_ALLOC_EXACT;
 
 static int xmlCompressMode = 0;
 static int xmlCheckDTD = 1;
+int xmlSaveNoEmptyTags = 0;
 
 #define UPDATE_LAST_CHILD(n) if ((n) != NULL) {				\
     xmlNodePtr ulccur = (n)->childs;					\
@@ -4299,7 +4300,8 @@ xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
     if (cur->properties != NULL)
         xmlAttrListDump(buf, doc, cur->properties);
 
-    if ((cur->content == NULL) && (cur->childs == NULL)) {
+    if ((cur->content == NULL) && (cur->childs == NULL) &&
+	(!xmlSaveNoEmptyTags)) {
         xmlBufferWriteChar(buf, "/>");
 	return;
     }

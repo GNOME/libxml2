@@ -11,6 +11,9 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+void	xmlNanoHTTPInit		(void);
+void	xmlNanoHTTPCleanup	(void);
+void	xmlNanoHTTPScanProxy	(const char *URL);
 int	xmlNanoHTTPFetch	(const char *URL,
 				 const char *filename,
 				 char **contentType);

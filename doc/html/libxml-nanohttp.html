@@ -123,7 +123,7 @@ NAME="LIBXML-NANOHTTP"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN17240"
+NAME="AEN17259"
 ></A
 ><H2
 >Name</H2
@@ -131,7 +131,7 @@ NAME="AEN17240"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN17243"
+NAME="AEN17262"
 ></A
 ><H2
 >Synopsis</H2
@@ -224,7 +224,7 @@ HREF="libxml-nanohttp.html#XMLNANOHTTPCLOSE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN17259"
+NAME="AEN17278"
 ></A
 ><H2
 >Description</H2
@@ -234,20 +234,20 @@ NAME="AEN17259"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN17262"
+NAME="AEN17281"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17264"
+NAME="AEN17283"
 ></A
 ><H3
 ><A
 NAME="XMLNANOHTTPINIT"
 ></A
->xmlNanoHTTPInit ()</H3
+>&#62;xmlNanoHTTPInit ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -270,13 +270,13 @@ Currently it just checks for proxy informations</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17270"
+NAME="AEN17289"
 ></A
 ><H3
 ><A
 NAME="XMLNANOHTTPCLEANUP"
 ></A
->xmlNanoHTTPCleanup ()</H3
+>&#62;xmlNanoHTTPCleanup ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -298,13 +298,13 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17276"
+NAME="AEN17295"
 ></A
 ><H3
 ><A
 NAME="XMLNANOHTTPSCANPROXY"
 ></A
->xmlNanoHTTPScanProxy ()</H3
+>&#62;xmlNanoHTTPScanProxy ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -328,7 +328,7 @@ A NULL URL cleans up proxy informations.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN17282"
+NAME="AEN17301"
 ></A
 ><P
 ></P
@@ -366,13 +366,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17291"
+NAME="AEN17310"
 ></A
 ><H3
 ><A
 NAME="XMLNANOHTTPFETCH"
 ></A
->xmlNanoHTTPFetch ()</H3
+>&#62;xmlNanoHTTPFetch ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -396,7 +396,7 @@ and save it's content in the file.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN17297"
+NAME="AEN17316"
 ></A
 ><P
 ></P
@@ -458,7 +458,7 @@ WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
 >  if available the Content-Type information will be
-returned at that location</TD
+               returned at that location</TD
 ></TR
 ><TR
 ><TD
@@ -474,7 +474,7 @@ WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
 >-1 in case of failure, 0 incase of success. The contentType,
-if provided must be freed by the caller</TD
+    if provided must be freed by the caller</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -485,13 +485,13 @@ if provided must be freed by the caller</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17318"
+NAME="AEN17337"
 ></A
 ><H3
 ><A
 NAME="XMLNANOHTTPMETHOD"
 ></A
->xmlNanoHTTPMethod ()</H3
+>&#62;xmlNanoHTTPMethod ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -524,7 +524,7 @@ and the input buffer for the request content.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN17325"
+NAME="AEN17344"
 ></A
 ><P
 ></P
@@ -647,13 +647,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17354"
+NAME="AEN17373"
 ></A
 ><H3
 ><A
 NAME="XMLNANOHTTPMETHODREDIR"
 ></A
->xmlNanoHTTPMethodRedir ()</H3
+>&#62;xmlNanoHTTPMethodRedir ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -687,7 +687,7 @@ and the input buffer for the request content.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN17361"
+NAME="AEN17380"
 ></A
 ><P
 ></P
@@ -827,13 +827,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17394"
+NAME="AEN17413"
 ></A
 ><H3
 ><A
 NAME="XMLNANOHTTPOPEN"
 ></A
->xmlNanoHTTPOpen ()</H3
+>&#62;xmlNanoHTTPOpen ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -845,92 +845,6 @@ CELLPADDING="6"
 CLASS="PROGRAMLISTING"
 >void*       xmlNanoHTTPOpen                 (const char *URL,
                                              char **contentType);</PRE
-></TD
-></TR
-></TABLE
-><P
->This function try to open a connection to the indicated resource
-via HTTP GET.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN17400"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->URL</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  The URL to load</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->contentType</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  if available the Content-Type information will be
-returned at that location</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN17413"
-></A
-><H3
-><A
-NAME="XMLNANOHTTPOPENREDIR"
-></A
->xmlNanoHTTPOpenRedir ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void*       xmlNanoHTTPOpenRedir            (const char *URL,
-                                             char **contentType,
-                                             char **redir);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -987,7 +901,93 @@ WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
 >  if available the Content-Type information will be
-returned at that location</TD
+               returned at that location</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN17432"
+></A
+><H3
+><A
+NAME="XMLNANOHTTPOPENREDIR"
+></A
+>&#62;xmlNanoHTTPOpenRedir ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void*       xmlNanoHTTPOpenRedir            (const char *URL,
+                                             char **contentType,
+                                             char **redir);</PRE
+></TD
+></TR
+></TABLE
+><P
+>This function try to open a connection to the indicated resource
+via HTTP GET.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN17438"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>URL</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  The URL to load</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>contentType</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  if available the Content-Type information will be
+               returned at that location</TD
 ></TR
 ><TR
 ><TD
@@ -1015,13 +1015,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17436"
+NAME="AEN17455"
 ></A
 ><H3
 ><A
 NAME="XMLNANOHTTPRETURNCODE"
 ></A
->xmlNanoHTTPReturnCode ()</H3
+>&#62;xmlNanoHTTPReturnCode ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1042,7 +1042,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN17442"
+NAME="AEN17461"
 ></A
 ><P
 ></P
@@ -1095,13 +1095,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17455"
+NAME="AEN17474"
 ></A
 ><H3
 ><A
 NAME="XMLNANOHTTPAUTHHEADER"
 ></A
->xmlNanoHTTPAuthHeader ()</H3
+>&#62;xmlNanoHTTPAuthHeader ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1122,7 +1122,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN17461"
+NAME="AEN17480"
 ></A
 ><P
 ></P
@@ -1176,13 +1176,13 @@ header.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17474"
+NAME="AEN17493"
 ></A
 ><H3
 ><A
 NAME="XMLNANOHTTPREAD"
 ></A
->xmlNanoHTTPRead ()</H3
+>&#62;xmlNanoHTTPRead ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1216,7 +1216,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN17482"
+NAME="AEN17501"
 ></A
 ><P
 ></P
@@ -1293,7 +1293,7 @@ WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
 >the number of byte read. 0 is an indication of an end of connection.
--1 indicates a parameter error.</TD
+        -1 indicates a parameter error.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1304,13 +1304,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17503"
+NAME="AEN17522"
 ></A
 ><H3
 ><A
 NAME="XMLNANOHTTPSAVE"
 ></A
->xmlNanoHTTPSave ()</H3
+>&#62;xmlNanoHTTPSave ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1333,7 +1333,7 @@ It closes and free the context at the end</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN17509"
+NAME="AEN17528"
 ></A
 ><P
 ></P
@@ -1403,13 +1403,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17526"
+NAME="AEN17545"
 ></A
 ><H3
 ><A
 NAME="XMLNANOHTTPCLOSE"
 ></A
->xmlNanoHTTPClose ()</H3
+>&#62;xmlNanoHTTPClose ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1431,7 +1431,7 @@ free all data related to it.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN17532"
+NAME="AEN17551"
 ></A
 ><P
 ></P

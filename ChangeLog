@@ -1,3 +1,7 @@
+Tue Feb  4 16:17:09 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: updating a comment, fixing #103776
+
 Tue Feb  4 16:05:53 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: fixing bug 105049 for validity checking of content

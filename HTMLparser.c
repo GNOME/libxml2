@@ -4855,7 +4855,6 @@ htmlParseChunk(htmlParserCtxtPtr ctxt, const char *chunk, int size,
  * @enc:  an optional encoding
  *
  * Create a parser context for using the HTML parser in push mode
- * To allow content encoding detection, @size should be >= 4
  * The value of @filename is used for fetching external entities
  * and error/warning reports.
  *

@@ -1,3 +1,8 @@
+Sun Jun 27 14:17:15 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* libxml.spec.in: another, more 'experimental' feature to 
+	  get compiler optimization based on gcc runtime profiling
+
 Sun Jun 27 14:02:36 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* elfgcchack.h doc/elfgcchack.xsl libxml.h: hack based on Arjan van de

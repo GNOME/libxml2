@@ -1,3 +1,8 @@
+Fri Feb 18 12:41:10 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* test/schemas/bug167754_0*: Added the regression test of Frans
+	  Englich for bug #167754.
+
 Fri Feb 18 12:31:49 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: Started support for IDC resolution to default

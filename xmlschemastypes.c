@@ -684,6 +684,7 @@ xmlSchemaNewValue(xmlSchemaValType type) {
 /**
  * xmlSchemaNewStringValue:
  * @type:  the value type
+ * @value:  the value
  *
  * Allocate a new simple type value. The type can be 
  * of XML_SCHEMAS_STRING.
@@ -710,7 +711,8 @@ xmlSchemaNewStringValue(xmlSchemaValType type,
 
 /**
  * xmlSchemaNewNOTATIONValue:
- * @type:  the value type
+ * @name:  the notation name
+ * @ns: the notation namespace name or NULL
  *
  * Allocate a new NOTATION value.
  *
@@ -4629,17 +4631,16 @@ xmlSchemaValidateFacet(xmlSchemaTypePtr base ATTRIBUTE_UNUSED,
  * @val: the precomputed value
  * @retValue: the returned value
  *
- * Returns a the cononical representation of the value.
- * The called has to free the returned retValue.
+ * Get a the cononical representation of the value.
+ * The caller has to free the returned retValue.
  *
  * Returns 0 if the value could be built and -1 in case of
  *         API errors or if the value type is not supported yet.
  */
 int
-xmlSchemaGetCanonValue(xmlSchemaValPtr val,
-		       const xmlChar **retValue)
+xmlSchemaGetCanonValue(xmlSchemaValPtr val, const xmlChar **retValue)
 {
-    if (retValue == NULL)
+    if ((retValue == NULL) || (val == NULL))
 	return (-1);
     *retValue = NULL;
     switch (val->type) {

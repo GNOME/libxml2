@@ -1,3 +1,9 @@
+Sat Feb 19 19:25:14 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemastypes.c: a bit of cleanup
+	* elfgcchack.h testapi.c doc/*: rebuilt the API the tests and
+	  the documentation as a result.
+
 Fri Feb 18 20:34:03 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c include/libxml/xmlreader.h: applied patch from

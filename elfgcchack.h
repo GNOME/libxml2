@@ -3282,6 +3282,12 @@ extern __typeof (xmlParserWarning) xmlParserWarning __attribute((alias("xmlParse
 #define xmlParserWarning xmlParserWarning__internal_alias
 
 #if defined(LIBXML_PATTERN_ENABLED)
+extern __typeof (xmlPatternFromRoot) xmlPatternFromRoot__internal_alias __attribute((visibility("hidden")));
+extern __typeof (xmlPatternFromRoot) xmlPatternFromRoot __attribute((alias("xmlPatternFromRoot__internal_alias")));
+#define xmlPatternFromRoot xmlPatternFromRoot__internal_alias
+#endif
+
+#if defined(LIBXML_PATTERN_ENABLED)
 extern __typeof (xmlPatternGetStreamCtxt) xmlPatternGetStreamCtxt__internal_alias __attribute((visibility("hidden")));
 extern __typeof (xmlPatternGetStreamCtxt) xmlPatternGetStreamCtxt __attribute((alias("xmlPatternGetStreamCtxt__internal_alias")));
 #define xmlPatternGetStreamCtxt xmlPatternGetStreamCtxt__internal_alias
@@ -3291,6 +3297,18 @@ extern __typeof (xmlPatternGetStreamCtxt) xmlPatternGetStreamCtxt __attribute((a
 extern __typeof (xmlPatternMatch) xmlPatternMatch__internal_alias __attribute((visibility("hidden")));
 extern __typeof (xmlPatternMatch) xmlPatternMatch __attribute((alias("xmlPatternMatch__internal_alias")));
 #define xmlPatternMatch xmlPatternMatch__internal_alias
+#endif
+
+#if defined(LIBXML_PATTERN_ENABLED)
+extern __typeof (xmlPatternMaxDepth) xmlPatternMaxDepth__internal_alias __attribute((visibility("hidden")));
+extern __typeof (xmlPatternMaxDepth) xmlPatternMaxDepth __attribute((alias("xmlPatternMaxDepth__internal_alias")));
+#define xmlPatternMaxDepth xmlPatternMaxDepth__internal_alias
+#endif
+
+#if defined(LIBXML_PATTERN_ENABLED)
+extern __typeof (xmlPatternStreamable) xmlPatternStreamable__internal_alias __attribute((visibility("hidden")));
+extern __typeof (xmlPatternStreamable) xmlPatternStreamable __attribute((alias("xmlPatternStreamable__internal_alias")));
+#define xmlPatternStreamable xmlPatternStreamable__internal_alias
 #endif
 
 #if defined(LIBXML_PATTERN_ENABLED)
@@ -4035,6 +4053,12 @@ extern __typeof (xmlSchemaCompareValues) xmlSchemaCompareValues __attribute((ali
 #define xmlSchemaCompareValues xmlSchemaCompareValues__internal_alias
 #endif
 
+#if defined(LIBXML_SCHEMAS_ENABLED)
+extern __typeof (xmlSchemaCompareValuesWhtsp) xmlSchemaCompareValuesWhtsp__internal_alias __attribute((visibility("hidden")));
+extern __typeof (xmlSchemaCompareValuesWhtsp) xmlSchemaCompareValuesWhtsp __attribute((alias("xmlSchemaCompareValuesWhtsp__internal_alias")));
+#define xmlSchemaCompareValuesWhtsp xmlSchemaCompareValuesWhtsp__internal_alias
+#endif
+
 #if defined(LIBXML_SCHEMAS_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)
 extern __typeof (xmlSchemaDump) xmlSchemaDump__internal_alias __attribute((visibility("hidden")));
 extern __typeof (xmlSchemaDump) xmlSchemaDump __attribute((alias("xmlSchemaDump__internal_alias")));
@@ -4096,6 +4120,12 @@ extern __typeof (xmlSchemaGetBuiltInType) xmlSchemaGetBuiltInType __attribute((a
 #endif
 
 #if defined(LIBXML_SCHEMAS_ENABLED)
+extern __typeof (xmlSchemaGetCanonValue) xmlSchemaGetCanonValue__internal_alias __attribute((visibility("hidden")));
+extern __typeof (xmlSchemaGetCanonValue) xmlSchemaGetCanonValue __attribute((alias("xmlSchemaGetCanonValue__internal_alias")));
+#define xmlSchemaGetCanonValue xmlSchemaGetCanonValue__internal_alias
+#endif
+
+#if defined(LIBXML_SCHEMAS_ENABLED)
 extern __typeof (xmlSchemaGetFacetValueAsULong) xmlSchemaGetFacetValueAsULong__internal_alias __attribute((visibility("hidden")));
 extern __typeof (xmlSchemaGetFacetValueAsULong) xmlSchemaGetFacetValueAsULong __attribute((alias("xmlSchemaGetFacetValueAsULong__internal_alias")));
 #define xmlSchemaGetFacetValueAsULong xmlSchemaGetFacetValueAsULong__internal_alias
@@ -4150,9 +4180,21 @@ extern __typeof (xmlSchemaNewMemParserCtxt) xmlSchemaNewMemParserCtxt __attribut
 #endif
 
 #if defined(LIBXML_SCHEMAS_ENABLED)
+extern __typeof (xmlSchemaNewNOTATIONValue) xmlSchemaNewNOTATIONValue__internal_alias __attribute((visibility("hidden")));
+extern __typeof (xmlSchemaNewNOTATIONValue) xmlSchemaNewNOTATIONValue __attribute((alias("xmlSchemaNewNOTATIONValue__internal_alias")));
+#define xmlSchemaNewNOTATIONValue xmlSchemaNewNOTATIONValue__internal_alias
+#endif
+
+#if defined(LIBXML_SCHEMAS_ENABLED)
 extern __typeof (xmlSchemaNewParserCtxt) xmlSchemaNewParserCtxt__internal_alias __attribute((visibility("hidden")));
 extern __typeof (xmlSchemaNewParserCtxt) xmlSchemaNewParserCtxt __attribute((alias("xmlSchemaNewParserCtxt__internal_alias")));
 #define xmlSchemaNewParserCtxt xmlSchemaNewParserCtxt__internal_alias
+#endif
+
+#if defined(LIBXML_SCHEMAS_ENABLED)
+extern __typeof (xmlSchemaNewStringValue) xmlSchemaNewStringValue__internal_alias __attribute((visibility("hidden")));
+extern __typeof (xmlSchemaNewStringValue) xmlSchemaNewStringValue __attribute((alias("xmlSchemaNewStringValue__internal_alias")));
+#define xmlSchemaNewStringValue xmlSchemaNewStringValue__internal_alias
 #endif
 
 #if defined(LIBXML_SCHEMAS_ENABLED)
@@ -4493,6 +4535,12 @@ extern __typeof (xmlStreamPush) xmlStreamPush __attribute((alias("xmlStreamPush_
 #define xmlStreamPush xmlStreamPush__internal_alias
 #endif
 
+#if defined(LIBXML_PATTERN_ENABLED)
+extern __typeof (xmlStreamPushAttr) xmlStreamPushAttr__internal_alias __attribute((visibility("hidden")));
+extern __typeof (xmlStreamPushAttr) xmlStreamPushAttr __attribute((alias("xmlStreamPushAttr__internal_alias")));
+#define xmlStreamPushAttr xmlStreamPushAttr__internal_alias
+#endif
+
 extern __typeof (xmlStringCurrentChar) xmlStringCurrentChar__internal_alias __attribute((visibility("hidden")));
 extern __typeof (xmlStringCurrentChar) xmlStringCurrentChar __attribute((alias("xmlStringCurrentChar__internal_alias")));
 #define xmlStringCurrentChar xmlStringCurrentChar__internal_alias
@@ -4579,6 +4627,12 @@ extern __typeof (xmlTextReaderAttributeCount) xmlTextReaderAttributeCount __attr
 extern __typeof (xmlTextReaderBaseUri) xmlTextReaderBaseUri__internal_alias __attribute((visibility("hidden")));
 extern __typeof (xmlTextReaderBaseUri) xmlTextReaderBaseUri __attribute((alias("xmlTextReaderBaseUri__internal_alias")));
 #define xmlTextReaderBaseUri xmlTextReaderBaseUri__internal_alias
+#endif
+
+#if defined(LIBXML_READER_ENABLED)
+extern __typeof (xmlTextReaderByteConsumed) xmlTextReaderByteConsumed__internal_alias __attribute((visibility("hidden")));
+extern __typeof (xmlTextReaderByteConsumed) xmlTextReaderByteConsumed __attribute((alias("xmlTextReaderByteConsumed__internal_alias")));
+#define xmlTextReaderByteConsumed xmlTextReaderByteConsumed__internal_alias
 #endif
 
 #if defined(LIBXML_READER_ENABLED)

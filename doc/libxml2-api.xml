@@ -956,13 +956,17 @@
      <exports symbol='xmlPattern' type='typedef'/>
      <exports symbol='xmlPatternPtr' type='typedef'/>
      <exports symbol='xmlPatternGetStreamCtxt' type='function'/>
-     <exports symbol='xmlFreeStreamCtxt' type='function'/>
+     <exports symbol='xmlPatternFromRoot' type='function'/>
      <exports symbol='xmlFreePatternList' type='function'/>
+     <exports symbol='xmlPatternStreamable' type='function'/>
+     <exports symbol='xmlStreamPushAttr' type='function'/>
      <exports symbol='xmlPatternMatch' type='function'/>
+     <exports symbol='xmlStreamPop' type='function'/>
      <exports symbol='xmlFreePattern' type='function'/>
      <exports symbol='xmlStreamPush' type='function'/>
-     <exports symbol='xmlStreamPop' type='function'/>
+     <exports symbol='xmlPatternMaxDepth' type='function'/>
      <exports symbol='xmlPatterncompile' type='function'/>
+     <exports symbol='xmlFreeStreamCtxt' type='function'/>
     </file>
     <file name='relaxng'>
      <summary>implementation of the Relax-NG validation</summary>
@@ -2091,6 +2095,7 @@
      <exports symbol='XML_IO_NO_INPUT' type='enum'/>
      <exports symbol='XML_NS_ERR_UNDEFINED_NAMESPACE' type='enum'/>
      <exports symbol='XML_SCHEMAV_CVC_MINLENGTH_VALID' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_WILDCARD' type='enum'/>
      <exports symbol='XML_IO_WRITE' type='enum'/>
      <exports symbol='XML_ERR_ENTITY_PE_INTERNAL' type='enum'/>
      <exports symbol='XML_DTD_XMLID_VALUE' type='enum'/>
@@ -2732,6 +2737,7 @@
      <exports symbol='xmlReaderForFd' type='function'/>
      <exports symbol='xmlTextReaderMoveToFirstAttribute' type='function'/>
      <exports symbol='xmlTextReaderPrefix' type='function'/>
+     <exports symbol='xmlTextReaderByteConsumed' type='function'/>
      <exports symbol='xmlTextReaderPreservePattern' type='function'/>
      <exports symbol='xmlTextReaderLocatorBaseURI' type='function'/>
      <exports symbol='xmlTextReaderGetAttribute' type='function'/>
@@ -2853,25 +2859,34 @@
      <summary>implementation of XML Schema Datatypes</summary>
      <description>module providing the XML Schema Datatypes implementation both definition and validity checking </description>
      <author>Daniel Veillard </author>
-     <exports symbol='xmlSchemaNewFacet' type='function'/>
+     <exports symbol='XML_SCHEMA_WHITESPACE_UNKNOWN' type='enum'/>
+     <exports symbol='XML_SCHEMA_WHITESPACE_COLLAPSE' type='enum'/>
+     <exports symbol='XML_SCHEMA_WHITESPACE_REPLACE' type='enum'/>
+     <exports symbol='XML_SCHEMA_WHITESPACE_PRESERVE' type='enum'/>
+     <exports symbol='xmlSchemaWhitespaceValueType' type='typedef'/>
      <exports symbol='xmlSchemaValPredefTypeNode' type='function'/>
      <exports symbol='xmlSchemaIsBuiltInTypeFacet' type='function'/>
-     <exports symbol='xmlSchemaValidateLengthFacet' type='function'/>
-     <exports symbol='xmlSchemaFreeFacet' type='function'/>
+     <exports symbol='xmlSchemaGetCanonValue' type='function'/>
      <exports symbol='xmlSchemaGetBuiltInListSimpleTypeItemType' type='function'/>
-     <exports symbol='xmlSchemaValidatePredefinedType' type='function'/>
-     <exports symbol='xmlSchemaCompareValues' type='function'/>
-     <exports symbol='xmlSchemaGetFacetValueAsULong' type='function'/>
-     <exports symbol='xmlSchemaInitTypes' type='function'/>
-     <exports symbol='xmlSchemaValidateFacet' type='function'/>
+     <exports symbol='xmlSchemaCompareValuesWhtsp' type='function'/>
+     <exports symbol='xmlSchemaCollapseString' type='function'/>
      <exports symbol='xmlSchemaValPredefTypeNodeNoNorm' type='function'/>
-     <exports symbol='xmlSchemaValidateListSimpleTypeFacet' type='function'/>
+     <exports symbol='xmlSchemaValidateFacet' type='function'/>
+     <exports symbol='xmlSchemaNewFacet' type='function'/>
+     <exports symbol='xmlSchemaCompareValues' type='function'/>
+     <exports symbol='xmlSchemaValidateLengthFacet' type='function'/>
+     <exports symbol='xmlSchemaGetPredefinedType' type='function'/>
+     <exports symbol='xmlSchemaValidatePredefinedType' type='function'/>
+     <exports symbol='xmlSchemaFreeFacet' type='function'/>
+     <exports symbol='xmlSchemaGetFacetValueAsULong' type='function'/>
+     <exports symbol='xmlSchemaFreeValue' type='function'/>
+     <exports symbol='xmlSchemaNewStringValue' type='function'/>
+     <exports symbol='xmlSchemaNewNOTATIONValue' type='function'/>
      <exports symbol='xmlSchemaCleanupTypes' type='function'/>
      <exports symbol='xmlSchemaWhiteSpaceReplace' type='function'/>
-     <exports symbol='xmlSchemaCollapseString' type='function'/>
+     <exports symbol='xmlSchemaValidateListSimpleTypeFacet' type='function'/>
      <exports symbol='xmlSchemaGetBuiltInType' type='function'/>
-     <exports symbol='xmlSchemaFreeValue' type='function'/>
-     <exports symbol='xmlSchemaGetPredefinedType' type='function'/>
+     <exports symbol='xmlSchemaInitTypes' type='function'/>
      <exports symbol='xmlSchemaCheckFacet' type='function'/>
     </file>
     <file name='xmlstring'>
@@ -3691,7 +3706,6 @@
       <info>Whether the module interfaces are compiled in</info>
     </macro>
     <macro name='LIBXML_MODULE_EXTENSION' file='xmlversion'>
-      <info>The file extension for the modules</info>
     </macro>
     <macro name='LIBXML_OUTPUT_ENABLED' file='xmlversion'>
       <info>Whether the serialization/saving support is configured in</info>
@@ -5202,6 +5216,7 @@
     <enum name='XML_SCHEMAV_CVC_TYPE_2' file='xmlerror' value='1876' type='xmlParserErrors' info='1876'/>
     <enum name='XML_SCHEMAV_CVC_TYPE_3_1_1' file='xmlerror' value='1827' type='xmlParserErrors' info='1827'/>
     <enum name='XML_SCHEMAV_CVC_TYPE_3_1_2' file='xmlerror' value='1828' type='xmlParserErrors' info='1828'/>
+    <enum name='XML_SCHEMAV_CVC_WILDCARD' file='xmlerror' value='1878' type='xmlParserErrors' info='1878'/>
     <enum name='XML_SCHEMAV_DOCUMENT_ELEMENT_MISSING' file='xmlerror' value='1872' type='xmlParserErrors' info='1872'/>
     <enum name='XML_SCHEMAV_ELEMCONT' file='xmlerror' value='1810' type='xmlParserErrors' info='1810'/>
     <enum name='XML_SCHEMAV_ELEMENT_CONTENT' file='xmlerror' value='1871' type='xmlParserErrors' info='1871'/>
@@ -5271,6 +5286,10 @@
     <enum name='XML_SCHEMA_VAL_VC_I_CREATE' file='xmlschemas' value='1' type='xmlSchemaValidOption' info=' Default/fixed: create an attribute node
 * or an element&apos;s text node on the instance.
 *'/>
+    <enum name='XML_SCHEMA_WHITESPACE_COLLAPSE' file='xmlschemastypes' value='3' type='xmlSchemaWhitespaceValueType'/>
+    <enum name='XML_SCHEMA_WHITESPACE_PRESERVE' file='xmlschemastypes' value='1' type='xmlSchemaWhitespaceValueType'/>
+    <enum name='XML_SCHEMA_WHITESPACE_REPLACE' file='xmlschemastypes' value='2' type='xmlSchemaWhitespaceValueType'/>
+    <enum name='XML_SCHEMA_WHITESPACE_UNKNOWN' file='xmlschemastypes' value='0' type='xmlSchemaWhitespaceValueType'/>
     <enum name='XML_TEXTREADER_MODE_CLOSED' file='xmlreader' value='4' type='xmlTextReaderMode'/>
     <enum name='XML_TEXTREADER_MODE_EOF' file='xmlreader' value='3' type='xmlTextReaderMode'/>
     <enum name='XML_TEXTREADER_MODE_ERROR' file='xmlreader' value='2' type='xmlTextReaderMode'/>
@@ -6175,6 +6194,7 @@ actually an xmlCharEncoding'/>
     <typedef name='xmlSchemaValidCtxtPtr' file='xmlschemas' type='xmlSchemaValidCtxt *'/>
     <typedef name='xmlSchemaValidError' file='xmlschemas' type='enum'/>
     <typedef name='xmlSchemaValidOption' file='xmlschemas' type='enum'/>
+    <typedef name='xmlSchemaWhitespaceValueType' file='xmlschemastypes' type='enum'/>
     <struct name='xmlSchemaWildcard' file='schemasInternals' type='struct _xmlSchemaWildcard'>
       <field name='type' type='xmlSchemaTypeType' info=' The kind of type'/>
       <field name='id' type='const xmlChar *' info=''/>
@@ -6398,7 +6418,7 @@ actually an xmlCharEncoding'/>
     <function name='UTF8Toisolat1' file='encoding'>
       <cond>defined(LIBXML_OUTPUT_ENABLED)</cond>
       <info>Take a block of UTF-8 chars in and try to convert it to an ISO Latin 1 block of chars out.</info>
-      <return type='int' info='0 if success, -2 if the transcoding fails, or -1 otherwise The value of @inlen after return is the number of octets consumed if the return value is positive, else unpredictable. The value of @outlen after return is the number of octets consumed.'/>
+      <return type='int' info='the number of bytes written if success, -2 if the transcoding fails, or -1 otherwise The value of @inlen after return is the number of octets consumed if the return value is positive, else unpredictable. The value of @outlen after return is the number of octets consumed.'/>
       <arg name='out' type='unsigned char *' info='a pointer to an array of bytes to store the result'/>
       <arg name='outlen' type='int *' info='the length of @out'/>
       <arg name='in' type='const unsigned char *' info='a pointer to an array of UTF-8 chars'/>
@@ -7307,7 +7327,7 @@ actually an xmlCharEncoding'/>
     </functype>
     <function name='isolat1ToUTF8' file='encoding'>
       <info>Take a block of ISO Latin 1 chars in and try to convert it to an UTF-8 block of chars out.</info>
-      <return type='int' info='0 if success, or -1 otherwise The value of @inlen after return is the number of octets consumed if the return value is positive, else unpredictable. The value of @outlen after return is the number of octets consumed.'/>
+      <return type='int' info='the number of bytes written if success, or -1 otherwise The value of @inlen after return is the number of octets consumed if the return value is positive, else unpredictable. The value of @outlen after return is the number of octets consumed.'/>
       <arg name='out' type='unsigned char *' info='a pointer to an array of bytes to store the result'/>
       <arg name='outlen' type='int *' info='the length of @out'/>
       <arg name='in' type='const unsigned char *' info='a pointer to an array of ISO Latin 1 chars'/>
@@ -10072,9 +10092,9 @@ actually an xmlCharEncoding'/>
       <arg name='fp' type='FILE *' info='a FILE descriptor used as the output file, if NULL, the result is written to the file .memorylist'/>
     </function>
     <function name='xmlMemFree' file='xmlmemory'>
-      <info></info>
+      <info>a free() equivalent, with error checking.</info>
       <return type='void'/>
-      <arg name='ptr' type='void *' info=''/>
+      <arg name='ptr' type='void *' info='the memory block pointer'/>
     </function>
     <function name='xmlMemGet' file='xmlmemory'>
       <info>Provides the memory access functions set currently in use</info>
@@ -10085,15 +10105,15 @@ actually an xmlCharEncoding'/>
       <arg name='strdupFunc' type='xmlStrdupFunc *' info='place to save the strdup() function in use'/>
     </function>
     <function name='xmlMemMalloc' file='xmlmemory'>
-      <info></info>
-      <return type='void *' info=''/>
-      <arg name='size' type='size_t' info=''/>
+      <info>a malloc() equivalent, with logging of the allocation info.</info>
+      <return type='void *' info='a pointer to the allocated area or NULL in case of lack of memory.'/>
+      <arg name='size' type='size_t' info='an int specifying the size in byte to allocate.'/>
     </function>
     <function name='xmlMemRealloc' file='xmlmemory'>
-      <info></info>
-      <return type='void *' info=''/>
-      <arg name='ptr' type='void *' info=''/>
-      <arg name='size' type='size_t' info=''/>
+      <info>a realloc() equivalent, with logging of the allocation info.</info>
+      <return type='void *' info='a pointer to the allocated area or NULL in case of lack of memory.'/>
+      <arg name='ptr' type='void *' info='the initial memory block pointer'/>
+      <arg name='size' type='size_t' info='an int specifying the size in byte to allocate.'/>
     </function>
     <function name='xmlMemSetup' file='xmlmemory'>
       <info>Override the default memory access functions with a new set This has to be called before any other libxml routines !  Should this be blocked if there was already some allocations done ?</info>
@@ -10125,9 +10145,9 @@ actually an xmlCharEncoding'/>
       <return type='void'/>
     </function>
     <function name='xmlMemoryStrdup' file='xmlmemory'>
-      <info></info>
-      <return type='char *' info=''/>
-      <arg name='str' type='const char *' info=''/>
+      <info>a strdup() equivalent, with logging of the allocation info.</info>
+      <return type='char *' info='a pointer to the new string or NULL if allocation error occurred.'/>
+      <arg name='str' type='const char *' info='the initial string pointer'/>
     </function>
     <function name='xmlModuleClose' file='xmlmodule'>
       <cond>defined(LIBXML_MODULES_ENABLED)</cond>
@@ -11558,27 +11578,45 @@ actually an xmlCharEncoding'/>
       <arg name='msg' type='const char *' info='the message to display/transmit'/>
       <arg name='...' type='...' info='extra parameters for the message display'/>
     </function>
+    <function name='xmlPatternFromRoot' file='pattern'>
+      <cond>defined(LIBXML_PATTERN_ENABLED)</cond>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='comp' type='xmlPatternPtr' info=''/>
+    </function>
     <function name='xmlPatternGetStreamCtxt' file='pattern'>
       <cond>defined(LIBXML_PATTERN_ENABLED)</cond>
-      <info>Get a streaming context for that pattern Use xmlFreeStreamCtxt to free the context.</info>
-      <return type='xmlStreamCtxtPtr' info='a pointer to the context or NULL in case of failure'/>
-      <arg name='comp' type='xmlPatternPtr' info='the precompiled pattern'/>
+      <info></info>
+      <return type='xmlStreamCtxtPtr' info=''/>
+      <arg name='comp' type='xmlPatternPtr' info=''/>
     </function>
     <function name='xmlPatternMatch' file='pattern'>
       <cond>defined(LIBXML_PATTERN_ENABLED)</cond>
-      <info>Test wether the node matches the pattern</info>
-      <return type='int' info='1 if it matches, 0 if it doesn&apos;t and -1 in case of failure'/>
-      <arg name='comp' type='xmlPatternPtr' info='the precompiled pattern'/>
-      <arg name='node' type='xmlNodePtr' info='a node'/>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='comp' type='xmlPatternPtr' info=''/>
+      <arg name='node' type='xmlNodePtr' info=''/>
+    </function>
+    <function name='xmlPatternMaxDepth' file='pattern'>
+      <cond>defined(LIBXML_PATTERN_ENABLED)</cond>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='comp' type='xmlPatternPtr' info=''/>
+    </function>
+    <function name='xmlPatternStreamable' file='pattern'>
+      <cond>defined(LIBXML_PATTERN_ENABLED)</cond>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='comp' type='xmlPatternPtr' info=''/>
     </function>
     <function name='xmlPatterncompile' file='pattern'>
       <cond>defined(LIBXML_PATTERN_ENABLED)</cond>
-      <info>Compile a pattern.</info>
-      <return type='xmlPatternPtr' info='the compiled for of the pattern or NULL in case of error'/>
-      <arg name='pattern' type='const xmlChar *' info='the pattern to compile'/>
-      <arg name='dict' type='xmlDict *' info='an optional dictionnary for interned strings'/>
-      <arg name='flags' type='int' info='compilation flags, undefined yet'/>
-      <arg name='namespaces' type='const xmlChar **' info='the prefix definitions, array of [URI, prefix] or NULL'/>
+      <info></info>
+      <return type='xmlPatternPtr' info=''/>
+      <arg name='pattern' type='const xmlChar *' info=''/>
+      <arg name='dict' type='xmlDict *' info=''/>
+      <arg name='flags' type='int' info=''/>
+      <arg name='namespaces' type='const xmlChar **' info=''/>
     </function>
     <function name='xmlPedanticParserDefault' file='parser'>
       <info>Set and return the previous value for enabling pedantic warnings.</info>
@@ -12621,6 +12659,15 @@ actually an xmlCharEncoding'/>
       <arg name='x' type='xmlSchemaValPtr' info='a first value'/>
       <arg name='y' type='xmlSchemaValPtr' info='a second value'/>
     </function>
+    <function name='xmlSchemaCompareValuesWhtsp' file='xmlschemastypes'>
+      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <info>Compare 2 values</info>
+      <return type='int' info='-1 if x &lt; y, 0 if x == y, 1 if x &gt; y, 2 if x &lt;&gt; y, and -2 in case of error'/>
+      <arg name='x' type='xmlSchemaValPtr' info='a first value'/>
+      <arg name='xws' type='xmlSchemaWhitespaceValueType' info='the whitespace value of x'/>
+      <arg name='y' type='xmlSchemaValPtr' info='a second value'/>
+      <arg name='yws' type='xmlSchemaWhitespaceValueType' info='the whitespace value of y'/>
+    </function>
     <function name='xmlSchemaDump' file='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED) &amp;&amp; defined(LIBXML_OUTPUT_ENABLED)</cond>
       <info>Dump a Schema structure.</info>
@@ -12681,6 +12728,13 @@ actually an xmlCharEncoding'/>
       <info>Gives you the type struct for a built-in type by its type id.</info>
       <return type='xmlSchemaTypePtr' info='the type if found, NULL otherwise.'/>
       <arg name='type' type='xmlSchemaValType' info='the type of the built in type'/>
+    </function>
+    <function name='xmlSchemaGetCanonValue' file='xmlschemastypes'>
+      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <info>Get a the cononical representation of the value. The caller has to free the returned retValue.</info>
+      <return type='int' info='0 if the value could be built and -1 in case of API errors or if the value type is not supported yet.'/>
+      <arg name='val' type='xmlSchemaValPtr' info='the precomputed value'/>
+      <arg name='retValue' type='const xmlChar **' info='the returned value'/>
     </function>
     <function name='xmlSchemaGetFacetValueAsULong' file='xmlschemastypes'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
@@ -12743,11 +12797,25 @@ actually an xmlCharEncoding'/>
       <arg name='buffer' type='const char *' info='a pointer to a char array containing the schemas'/>
       <arg name='size' type='int' info='the size of the array'/>
     </function>
+    <function name='xmlSchemaNewNOTATIONValue' file='xmlschemastypes'>
+      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <info>Allocate a new NOTATION value.</info>
+      <return type='xmlSchemaValPtr' info='a pointer to the new value or NULL in case of error'/>
+      <arg name='name' type='const xmlChar *' info='the notation name'/>
+      <arg name='ns' type='const xmlChar *' info='the notation namespace name or NULL'/>
+    </function>
     <function name='xmlSchemaNewParserCtxt' file='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
       <info>Create an XML Schemas parse context for that file/resource expected to contain an XML Schemas file.</info>
       <return type='xmlSchemaParserCtxtPtr' info='the parser context or NULL in case of error'/>
       <arg name='URL' type='const char *' info='the location of the schema'/>
+    </function>
+    <function name='xmlSchemaNewStringValue' file='xmlschemastypes'>
+      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <info>Allocate a new simple type value. The type can be of XML_SCHEMAS_STRING.</info>
+      <return type='xmlSchemaValPtr' info='a pointer to the new value or NULL in case of error'/>
+      <arg name='type' type='xmlSchemaValType' info='the value type'/>
+      <arg name='value' type='const xmlChar *' info='the value'/>
     </function>
     <function name='xmlSchemaNewValidCtxt' file='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
@@ -13246,17 +13314,25 @@ actually an xmlCharEncoding'/>
     </functype>
     <function name='xmlStreamPop' file='pattern'>
       <cond>defined(LIBXML_PATTERN_ENABLED)</cond>
-      <info>push one level from the stream.</info>
-      <return type='int' info='-1 in case of error, 0 otherwise.'/>
-      <arg name='stream' type='xmlStreamCtxtPtr' info='the stream context'/>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='stream' type='xmlStreamCtxtPtr' info=''/>
     </function>
     <function name='xmlStreamPush' file='pattern'>
       <cond>defined(LIBXML_PATTERN_ENABLED)</cond>
-      <info>push new data onto the stream. NOTE: if the call xmlPatterncompile() indicated a dictionnary, then strings for name and ns will be expected to come from the dictionary. Both @name and @ns being NULL means the / i.e. the root of the document. This can also act as a reset.</info>
-      <return type='int' info='-1 in case of error, 1 if the current state in the stream is a match and 0 otherwise.'/>
-      <arg name='stream' type='xmlStreamCtxtPtr' info='the stream context'/>
-      <arg name='name' type='const xmlChar *' info='the current name'/>
-      <arg name='ns' type='const xmlChar *' info='the namespace name'/>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='stream' type='xmlStreamCtxtPtr' info=''/>
+      <arg name='name' type='const xmlChar *' info=''/>
+      <arg name='ns' type='const xmlChar *' info=''/>
+    </function>
+    <function name='xmlStreamPushAttr' file='pattern'>
+      <cond>defined(LIBXML_PATTERN_ENABLED)</cond>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='stream' type='xmlStreamCtxtPtr' info=''/>
+      <arg name='name' type='const xmlChar *' info=''/>
+      <arg name='ns' type='const xmlChar *' info=''/>
     </function>
     <function name='xmlStringCurrentChar' file='parserInternals'>
       <info>The current char value, if using UTF-8 this may actually span multiple bytes in the input buffer.</info>
@@ -13405,6 +13481,12 @@ actually an xmlCharEncoding'/>
       <info>The base URI of the node.</info>
       <return type='xmlChar *' info='the base URI or NULL if not available'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
+    </function>
+    <function name='xmlTextReaderByteConsumed' file='xmlreader'>
+      <cond>defined(LIBXML_READER_ENABLED)</cond>
+      <info>This function provides the current index of the parser used by the reader, relative to the start of the current entity. This function actually just wraps a call to xmlBytesConsumed() for the parser context associated with the reader. See xmlBytesConsumed() for more information.</info>
+      <return type='long' info='the index in bytes from the beginning of the entity or -1 in case the index could not be computed.'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='an XML reader'/>
     </function>
     <function name='xmlTextReaderClose' file='xmlreader'>
       <cond>defined(LIBXML_READER_ENABLED)</cond>

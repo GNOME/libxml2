@@ -860,14 +860,18 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-pattern.html#xmlFreePatternList">xmlFreePatternList</a><br />
 <a href="html/libxml-pattern.html#xmlFreeStreamCtxt">xmlFreeStreamCtxt</a><br />
 <a href="html/libxml-pattern.html#xmlPattern">xmlPattern</a><br />
+<a href="html/libxml-pattern.html#xmlPatternFromRoot">xmlPatternFromRoot</a><br />
 <a href="html/libxml-pattern.html#xmlPatternGetStreamCtxt">xmlPatternGetStreamCtxt</a><br />
 <a href="html/libxml-pattern.html#xmlPatternMatch">xmlPatternMatch</a><br />
+<a href="html/libxml-pattern.html#xmlPatternMaxDepth">xmlPatternMaxDepth</a><br />
 <a href="html/libxml-pattern.html#xmlPatternPtr">xmlPatternPtr</a><br />
+<a href="html/libxml-pattern.html#xmlPatternStreamable">xmlPatternStreamable</a><br />
 <a href="html/libxml-pattern.html#xmlPatterncompile">xmlPatterncompile</a><br />
 <a href="html/libxml-pattern.html#xmlStreamCtxt">xmlStreamCtxt</a><br />
 <a href="html/libxml-pattern.html#xmlStreamCtxtPtr">xmlStreamCtxtPtr</a><br />
 <a href="html/libxml-pattern.html#xmlStreamPop">xmlStreamPop</a><br />
 <a href="html/libxml-pattern.html#xmlStreamPush">xmlStreamPush</a><br />
+<a href="html/libxml-pattern.html#xmlStreamPushAttr">xmlStreamPushAttr</a><br />
 </p><h2><a name="relaxng" id="relaxng">Module relaxng</a>:</h2><p><a href="html/libxml-relaxng.html#XML_RELAXNGP_CRNG">XML_RELAXNGP_CRNG</a><br />
 <a href="html/libxml-relaxng.html#XML_RELAXNGP_FREE_DOC">XML_RELAXNGP_FREE_DOC</a><br />
 <a href="html/libxml-relaxng.html#XML_RELAXNGP_NONE">XML_RELAXNGP_NONE</a><br />
@@ -2318,6 +2322,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlerror.html#XML_SCHEMAV_CVC_TYPE_2">XML_SCHEMAV_CVC_TYPE_2</a><br />
 <a href="html/libxml-xmlerror.html#XML_SCHEMAV_CVC_TYPE_3_1_1">XML_SCHEMAV_CVC_TYPE_3_1_1</a><br />
 <a href="html/libxml-xmlerror.html#XML_SCHEMAV_CVC_TYPE_3_1_2">XML_SCHEMAV_CVC_TYPE_3_1_2</a><br />
+<a href="html/libxml-xmlerror.html#XML_SCHEMAV_CVC_WILDCARD">XML_SCHEMAV_CVC_WILDCARD</a><br />
 <a href="html/libxml-xmlerror.html#XML_SCHEMAV_DOCUMENT_ELEMENT_MISSING">XML_SCHEMAV_DOCUMENT_ELEMENT_MISSING</a><br />
 <a href="html/libxml-xmlerror.html#XML_SCHEMAV_ELEMCONT">XML_SCHEMAV_ELEMCONT</a><br />
 <a href="html/libxml-xmlerror.html#XML_SCHEMAV_ELEMENT_CONTENT">XML_SCHEMAV_ELEMENT_CONTENT</a><br />
@@ -2512,6 +2517,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlreader.html#xmlTextReader">xmlTextReader</a><br />
 <a href="html/libxml-xmlreader.html#xmlTextReaderAttributeCount">xmlTextReaderAttributeCount</a><br />
 <a href="html/libxml-xmlreader.html#xmlTextReaderBaseUri">xmlTextReaderBaseUri</a><br />
+<a href="html/libxml-xmlreader.html#xmlTextReaderByteConsumed">xmlTextReaderByteConsumed</a><br />
 <a href="html/libxml-xmlreader.html#xmlTextReaderClose">xmlTextReaderClose</a><br />
 <a href="html/libxml-xmlreader.html#xmlTextReaderConstBaseUri">xmlTextReaderConstBaseUri</a><br />
 <a href="html/libxml-xmlreader.html#xmlTextReaderConstEncoding">xmlTextReaderConstEncoding</a><br />
@@ -2663,19 +2669,27 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlschemas.html#xmlSchemaValidateStream">xmlSchemaValidateStream</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaValidityErrorFunc">xmlSchemaValidityErrorFunc</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaValidityWarningFunc">xmlSchemaValidityWarningFunc</a><br />
-</p><h2><a name="xmlschemastypes" id="xmlschemastypes">Module xmlschemastypes</a>:</h2><p><a href="html/libxml-xmlschemastypes.html#xmlSchemaCheckFacet">xmlSchemaCheckFacet</a><br />
+</p><h2><a name="xmlschemastypes" id="xmlschemastypes">Module xmlschemastypes</a>:</h2><p><a href="html/libxml-xmlschemastypes.html#XML_SCHEMA_WHITESPACE_COLLAPSE">XML_SCHEMA_WHITESPACE_COLLAPSE</a><br />
+<a href="html/libxml-xmlschemastypes.html#XML_SCHEMA_WHITESPACE_PRESERVE">XML_SCHEMA_WHITESPACE_PRESERVE</a><br />
+<a href="html/libxml-xmlschemastypes.html#XML_SCHEMA_WHITESPACE_REPLACE">XML_SCHEMA_WHITESPACE_REPLACE</a><br />
+<a href="html/libxml-xmlschemastypes.html#XML_SCHEMA_WHITESPACE_UNKNOWN">XML_SCHEMA_WHITESPACE_UNKNOWN</a><br />
+<a href="html/libxml-xmlschemastypes.html#xmlSchemaCheckFacet">xmlSchemaCheckFacet</a><br />
 <a href="html/libxml-xmlschemastypes.html#xmlSchemaCleanupTypes">xmlSchemaCleanupTypes</a><br />
 <a href="html/libxml-xmlschemastypes.html#xmlSchemaCollapseString">xmlSchemaCollapseString</a><br />
 <a href="html/libxml-xmlschemastypes.html#xmlSchemaCompareValues">xmlSchemaCompareValues</a><br />
+<a href="html/libxml-xmlschemastypes.html#xmlSchemaCompareValuesWhtsp">xmlSchemaCompareValuesWhtsp</a><br />
 <a href="html/libxml-xmlschemastypes.html#xmlSchemaFreeFacet">xmlSchemaFreeFacet</a><br />
 <a href="html/libxml-xmlschemastypes.html#xmlSchemaFreeValue">xmlSchemaFreeValue</a><br />
 <a href="html/libxml-xmlschemastypes.html#xmlSchemaGetBuiltInListSimpleTypeItemType">xmlSchemaGetBuiltInListSimpleTypeItemType</a><br />
 <a href="html/libxml-xmlschemastypes.html#xmlSchemaGetBuiltInType">xmlSchemaGetBuiltInType</a><br />
+<a href="html/libxml-xmlschemastypes.html#xmlSchemaGetCanonValue">xmlSchemaGetCanonValue</a><br />
 <a href="html/libxml-xmlschemastypes.html#xmlSchemaGetFacetValueAsULong">xmlSchemaGetFacetValueAsULong</a><br />
 <a href="html/libxml-xmlschemastypes.html#xmlSchemaGetPredefinedType">xmlSchemaGetPredefinedType</a><br />
 <a href="html/libxml-xmlschemastypes.html#xmlSchemaInitTypes">xmlSchemaInitTypes</a><br />
 <a href="html/libxml-xmlschemastypes.html#xmlSchemaIsBuiltInTypeFacet">xmlSchemaIsBuiltInTypeFacet</a><br />
 <a href="html/libxml-xmlschemastypes.html#xmlSchemaNewFacet">xmlSchemaNewFacet</a><br />
+<a href="html/libxml-xmlschemastypes.html#xmlSchemaNewNOTATIONValue">xmlSchemaNewNOTATIONValue</a><br />
+<a href="html/libxml-xmlschemastypes.html#xmlSchemaNewStringValue">xmlSchemaNewStringValue</a><br />
 <a href="html/libxml-xmlschemastypes.html#xmlSchemaValPredefTypeNode">xmlSchemaValPredefTypeNode</a><br />
 <a href="html/libxml-xmlschemastypes.html#xmlSchemaValPredefTypeNodeNoNorm">xmlSchemaValPredefTypeNodeNoNorm</a><br />
 <a href="html/libxml-xmlschemastypes.html#xmlSchemaValidateFacet">xmlSchemaValidateFacet</a><br />
@@ -2683,6 +2697,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlschemastypes.html#xmlSchemaValidateListSimpleTypeFacet">xmlSchemaValidateListSimpleTypeFacet</a><br />
 <a href="html/libxml-xmlschemastypes.html#xmlSchemaValidatePredefinedType">xmlSchemaValidatePredefinedType</a><br />
 <a href="html/libxml-xmlschemastypes.html#xmlSchemaWhiteSpaceReplace">xmlSchemaWhiteSpaceReplace</a><br />
+<a href="html/libxml-xmlschemastypes.html#xmlSchemaWhitespaceValueType">xmlSchemaWhitespaceValueType</a><br />
 </p><h2><a name="xmlstring" id="xmlstring">Module xmlstring</a>:</h2><p><a href="html/libxml-xmlstring.html#BAD_CAST">BAD_CAST</a><br />
 <a href="html/libxml-xmlstring.html#xmlChar">xmlChar</a><br />
 <a href="html/libxml-xmlstring.html#xmlCharStrdup">xmlCharStrdup</a><br />

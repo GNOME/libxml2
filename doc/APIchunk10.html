@@ -52,7 +52,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-tree.html#xmlSaveFileTo">xmlSaveFileTo</a><br />
 <a href="html/libxml-tree.html#xmlSaveFormatFileTo">xmlSaveFormatFileTo</a><br />
 <a href="html/libxml-parserInternals.html#xmlSetEntityReferenceFunc">xmlSetEntityReferenceFunc</a><br />
-<a href="html/libxml-pattern.html#xmlStreamPush">xmlStreamPush</a><br />
+<a href="html/libxml-xmlreader.html#xmlTextReaderByteConsumed">xmlTextReaderByteConsumed</a><br />
 <a href="html/libxml-xmlreader.html#xmlTextReaderCurrentDoc">xmlTextReaderCurrentDoc</a><br />
 <a href="html/libxml-xmlreader.html#xmlTextReaderExpand">xmlTextReaderExpand</a><br />
 <a href="html/libxml-xmlreader.html#xmlTextReaderSetErrorHandler">xmlTextReaderSetErrorHandler</a><br />
@@ -219,6 +219,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 </dd><dt>checking</dt><dd><a href="html/libxml-xlink.html#xlinkIsLink">xlinkIsLink</a><br />
 <a href="html/libxml-tree.html#xmlBufferWriteQuotedString">xmlBufferWriteQuotedString</a><br />
 <a href="html/libxml-uri.html#xmlBuildURI">xmlBuildURI</a><br />
+<a href="html/libxml-xmlmemory.html#xmlMemFree">xmlMemFree</a><br />
 <a href="html/libxml-xmlstring.html#xmlUTF8Strlen">xmlUTF8Strlen</a><br />
 </dd><dt>checkings</dt><dd><a href="html/libxml-valid.html#xmlValidateOneElement">xmlValidateOneElement</a><br />
 </dd><dt>checks</dt><dd><a href="html/libxml-schemasInternals.html#XML_SCHEMAS_ATTRGROUP_MARKED">XML_SCHEMAS_ATTRGROUP_MARKED</a><br />
@@ -330,7 +331,6 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-uri.html#xmlBuildRelativeURI">xmlBuildRelativeURI</a><br />
 <a href="html/libxml-SAX2.html#xmlSAX2GetSystemId">xmlSAX2GetSystemId</a><br />
 </dd><dt>combining</dt><dd><a href="html/libxml-parserInternals.html#IS_COMBINING_CH">IS_COMBINING_CH</a><br />
-</dd><dt>come</dt><dd><a href="html/libxml-pattern.html#xmlStreamPush">xmlStreamPush</a><br />
 </dd><dt>coment</dt><dd><a href="html/libxml-xmlwriter.html#xmlTextWriterEndComment">xmlTextWriterEndComment</a><br />
 </dd><dt>comes</dt><dd><a href="html/libxml-valid.html#xmlValidityErrorFunc">xmlValidityErrorFunc</a><br />
 <a href="html/libxml-valid.html#xmlValidityWarningFunc">xmlValidityWarningFunc</a><br />
@@ -398,10 +398,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 </dd><dt>compatible</dt><dd><a href="html/libxml-xmlversion.html#LIBXML_TEST_VERSION">LIBXML_TEST_VERSION</a><br />
 <a href="html/libxml-debugXML.html#xmlShellPwd">xmlShellPwd</a><br />
 </dd><dt>compilation</dt><dd><a href="html/libxml-xmlversion.html#LIBXML_VERSION_EXTRA">LIBXML_VERSION_EXTRA</a><br />
-<a href="html/libxml-pattern.html#xmlPatterncompile">xmlPatterncompile</a><br />
 <a href="html/libxml-xpath.html#xmlXPathCompile">xmlXPathCompile</a><br />
 <a href="html/libxml-xpath.html#xmlXPathCtxtCompile">xmlXPathCtxtCompile</a><br />
-</dd><dt>compile</dt><dd><a href="html/libxml-pattern.html#xmlPatterncompile">xmlPatterncompile</a><br />
 </dd><dt>compile-time</dt><dd><a href="html/libxml-DOCBparser.html#docbCreateFileParserCtxt">docbCreateFileParserCtxt</a><br />
 <a href="html/libxml-DOCBparser.html#docbParseFile">docbParseFile</a><br />
 <a href="html/libxml-DOCBparser.html#docbSAXParseFile">docbSAXParseFile</a><br />
@@ -427,7 +425,6 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlautomata.html#xmlAutomataCompile">xmlAutomataCompile</a><br />
 <a href="html/libxml-xmlversion.html#xmlCheckVersion">xmlCheckVersion</a><br />
 <a href="html/libxml-xmlerror.html#xmlGetLastError">xmlGetLastError</a><br />
-<a href="html/libxml-pattern.html#xmlPatterncompile">xmlPatterncompile</a><br />
 <a href="html/libxml-xmlregexp.html#xmlRegexpCompile">xmlRegexpCompile</a><br />
 <a href="html/libxml-xmlregexp.html#xmlRegexpExec">xmlRegexpExec</a><br />
 <a href="html/libxml-xmlregexp.html#xmlRegexpIsDeterminist">xmlRegexpIsDeterminist</a><br />
@@ -512,6 +509,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlschemastypes.html#xmlSchemaValPredefTypeNodeNoNorm">xmlSchemaValPredefTypeNodeNoNorm</a><br />
 <a href="html/libxml-xmlschemastypes.html#xmlSchemaValidateLengthFacet">xmlSchemaValidateLengthFacet</a><br />
 <a href="html/libxml-xmlschemastypes.html#xmlSchemaValidatePredefinedType">xmlSchemaValidatePredefinedType</a><br />
+<a href="html/libxml-xmlreader.html#xmlTextReaderByteConsumed">xmlTextReaderByteConsumed</a><br />
 </dd><dt>concat</dt><dd><a href="html/libxml-xpathInternals.html#xmlXPathConcatFunction">xmlXPathConcatFunction</a><br />
 </dd><dt>concatenated</dt><dd><a href="html/libxml-xmlstring.html#xmlStrcat">xmlStrcat</a><br />
 </dd><dt>concatenation</dt><dd><a href="html/libxml-xpathInternals.html#xmlXPathConcatFunction">xmlXPathConcatFunction</a><br />
@@ -567,6 +565,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-nanohttp.html#xmlNanoHTTPOpenRedir">xmlNanoHTTPOpenRedir</a><br />
 <a href="html/libxml-nanohttp.html#xmlNanoHTTPRead">xmlNanoHTTPRead</a><br />
 </dd><dt>connector</dt><dd><a href="html/libxml-parserInternals.html#xmlParseElementChildrenContentDecl">xmlParseElementChildrenContentDecl</a><br />
+</dd><dt>cononical</dt><dd><a href="html/libxml-xmlschemastypes.html#xmlSchemaGetCanonValue">xmlSchemaGetCanonValue</a><br />
 </dd><dt>consequent</dt><dd><a href="html/libxml-xmlerror.html#_xmlError">_xmlError</a><br />
 </dd><dt>consideration</dt><dd><a href="html/libxml-uri.html#xmlBuildRelativeURI">xmlBuildRelativeURI</a><br />
 </dd><dt>considered</dt><dd><a href="html/libxml-hash.html#xmlHashScan3">xmlHashScan3</a><br />
@@ -757,6 +756,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-parser.html#xmlByteConsumed">xmlByteConsumed</a><br />
 </dd><dt>could</dt><dd><a href="html/libxml-parser.html#xmlByteConsumed">xmlByteConsumed</a><br />
 <a href="html/libxml-xmlmodule.html#xmlModuleClose">xmlModuleClose</a><br />
+<a href="html/libxml-xmlschemastypes.html#xmlSchemaGetCanonValue">xmlSchemaGetCanonValue</a><br />
+<a href="html/libxml-xmlreader.html#xmlTextReaderByteConsumed">xmlTextReaderByteConsumed</a><br />
 <a href="html/libxml-xmlreader.html#xmlTextReaderRelaxNGSetSchema">xmlTextReaderRelaxNGSetSchema</a><br />
 <a href="html/libxml-xmlreader.html#xmlTextReaderRelaxNGValidate">xmlTextReaderRelaxNGValidate</a><br />
 <a href="html/libxml-valid.html#xmlValidateDtd">xmlValidateDtd</a><br />

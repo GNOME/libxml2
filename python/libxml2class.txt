@@ -1012,6 +1012,7 @@ Class xmlTextReader(xmlTextReaderCore)
     # functions from module xmlreader
     AttributeCount()
     BaseUri()
+    ByteConsumed()
     Close()
     CurrentDoc()
     CurrentNode()

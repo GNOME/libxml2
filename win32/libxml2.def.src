@@ -1297,8 +1297,11 @@ xmlParserPrintFileInfo
 xmlParserValidityError
 xmlParserValidityWarning
 xmlParserWarning
+xmlPatternFromRoot
 xmlPatternGetStreamCtxt
 xmlPatternMatch
+xmlPatternMaxDepth
+xmlPatternStreamable
 xmlPatterncompile
 xmlPedanticParserDefault
 xmlPopInput
@@ -1519,6 +1522,9 @@ xmlSchemaCollapseString
 xmlSchemaCompareValues
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
+xmlSchemaCompareValuesWhtsp
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
 xmlSchemaDump
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
@@ -1543,6 +1549,9 @@ xmlSchemaGetBuiltInListSimpleTypeItemType
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
 xmlSchemaGetBuiltInType
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlSchemaGetCanonValue
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
 xmlSchemaGetFacetValueAsULong
@@ -1572,7 +1581,13 @@ xmlSchemaNewFacet
 xmlSchemaNewMemParserCtxt
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
+xmlSchemaNewNOTATIONValue
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
 xmlSchemaNewParserCtxt
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlSchemaNewStringValue
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
 xmlSchemaNewValidCtxt
@@ -1699,6 +1714,7 @@ xmlStrcmp
 xmlStrdup
 xmlStreamPop
 xmlStreamPush
+xmlStreamPushAttr
 xmlStringCurrentChar
 xmlStringDecodeEntities
 xmlStringGetNodeList
@@ -1720,6 +1736,7 @@ xmlTextConcat
 xmlTextMerge
 xmlTextReaderAttributeCount
 xmlTextReaderBaseUri
+xmlTextReaderByteConsumed
 xmlTextReaderClose
 xmlTextReaderConstBaseUri
 xmlTextReaderConstEncoding

@@ -12,6 +12,26 @@ for a really accurate description</h3><p>Items not finished and worked on, get i
 to test those</p><ul><li>More testing on RelaxNG</li>
   <li>Finishing up <a href="http://www.w3.org/TR/xmlschema-1/">XML
   Schemas</a></li>
+</ul><h3>2.6.2: Nov 4 2003</h3><ul><li>XPath context unregistration fixes</li>
+  <li>text node coalescing fixes (Mark Lilback)</li>
+  <li>API to screate a W3C Schemas from an existing document (Steve Ball)</li>
+  <li>BeOS patches (Marcin 'Shard' Konicki)</li>
+  <li>xmlStrVPrintf function added (Aleksey Sanin)</li>
+  <li>compilation fixes (Mark Vakoc)</li>
+  <li>stdin parsing fix (William Brack)</li>
+  <li>a posteriori DTD validation fixes</li>
+  <li>xmlReader bug fixes: Walker fixes, python bindings </li>
+  <li>fixed xmlStopParser() to really stop the parser and errors</li>
+  <li>always generate line numbers when using the new xmlReadxxx
+  functions</li>
+  <li>added XInclude support to the xmlReader interface</li>
+  <li>implemented XML_PARSE_NONET parser option</li>
+  <li>DocBook XSLT processing bug fixed</li>
+  <li>HTML serialization for &lt;p&gt; elements (William Brack and me)</li>
+  <li>XPointer failure in XInclude are now handled as resource errors</li>
+  <li>fixed xmllint --html to use the HTML serializer on output (added
+    --xmlout to implement the previous behaviour of saving it using the XML
+    serializer)</li>
 </ul><h3>2.6.1: Oct 28 2003</h3><ul><li>Mostly bugfixes after the big 2.6.0 changes</li>
   <li>Unix compilation patches: libxml.m4 (Patrick Welche), warnings cleanup
     (William Brack)</li>
@@ -19,7 +39,8 @@ to test those</p><ul><li>More testing on RelaxNG</li>
     Zlatkovic)</li>
   <li>xmlWriter bugfix (Alfred Mickautsch)</li>
   <li>chvalid.[ch]: couple of fixes from Stephane Bidoul</li>
-  <li>context reset: error state reset, push parser reset (Graham Bennett)</li>
+  <li>context reset: error state reset, push parser reset (Graham
+  Bennett)</li>
   <li>context reuse: generate errors if file is not readable</li>
   <li>defaulted attributes for element coming from internal entities
     (Stephane Bidoul)</li>

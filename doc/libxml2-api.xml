@@ -141,6 +141,7 @@
      <exports symbol='xmlCreateEntityParserCtxt'/>
      <exports symbol='xmlCreateFileParserCtxt'/>
      <exports symbol='xmlCreateMemoryParserCtxt'/>
+     <exports symbol='xmlCreateURLParserCtxt'/>
      <exports symbol='xmlCurrentChar'/>
      <exports symbol='xmlDecodeEntities'/>
      <exports symbol='xmlEntityReferenceFunc'/>
@@ -742,7 +743,20 @@
      <exports symbol='xmlInitializePredefinedEntities'/>
     </file>
     <file name='xinclude'>
+     <exports symbol='XINCLUDE_FALLBACK'/>
+     <exports symbol='XINCLUDE_HREF'/>
+     <exports symbol='XINCLUDE_NODE'/>
+     <exports symbol='XINCLUDE_NS'/>
+     <exports symbol='XINCLUDE_PARSE'/>
+     <exports symbol='XINCLUDE_PARSE_ENCODING'/>
+     <exports symbol='XINCLUDE_PARSE_TEXT'/>
+     <exports symbol='XINCLUDE_PARSE_XML'/>
+     <exports symbol='xmlXIncludeCtxt'/>
+     <exports symbol='xmlXIncludeCtxtPtr'/>
+     <exports symbol='xmlXIncludeFreeContext'/>
+     <exports symbol='xmlXIncludeNewContext'/>
      <exports symbol='xmlXIncludeProcess'/>
+     <exports symbol='xmlXIncludeProcessNode'/>
      <exports symbol='xmlXIncludeProcessTree'/>
     </file>
     <file name='SAX2'>
@@ -1258,6 +1272,7 @@
      <exports symbol='xmlStrEqual'/>
      <exports symbol='xmlStrPrintf'/>
      <exports symbol='xmlStrQEqual'/>
+     <exports symbol='xmlStrVPrintf'/>
      <exports symbol='xmlStrcasecmp'/>
      <exports symbol='xmlStrcasestr'/>
      <exports symbol='xmlStrcat'/>
@@ -1498,6 +1513,7 @@
      <exports symbol='xmlSchemaFree'/>
      <exports symbol='xmlSchemaFreeParserCtxt'/>
      <exports symbol='xmlSchemaFreeValidCtxt'/>
+     <exports symbol='xmlSchemaNewDocParserCtxt'/>
      <exports symbol='xmlSchemaNewMemParserCtxt'/>
      <exports symbol='xmlSchemaNewParserCtxt'/>
      <exports symbol='xmlSchemaNewValidCtxt'/>
@@ -3106,6 +3122,22 @@
       <info>defined if the trio support should not be configured in</info>
     </macro>
     <macro name='WITH_TRIO' file='xmlversion'>
+    </macro>
+    <macro name='XINCLUDE_FALLBACK' file='xinclude'>
+    </macro>
+    <macro name='XINCLUDE_HREF' file='xinclude'>
+    </macro>
+    <macro name='XINCLUDE_NODE' file='xinclude'>
+    </macro>
+    <macro name='XINCLUDE_NS' file='xinclude'>
+    </macro>
+    <macro name='XINCLUDE_PARSE' file='xinclude'>
+    </macro>
+    <macro name='XINCLUDE_PARSE_ENCODING' file='xinclude'>
+    </macro>
+    <macro name='XINCLUDE_PARSE_TEXT' file='xinclude'>
+    </macro>
+    <macro name='XINCLUDE_PARSE_XML' file='xinclude'>
     </macro>
     <macro name='XMLCALL' file='xmlexports'>
       <info>Macros which declare the called convention for exported functions Windows platform with MS compiler Windows platform with Borland compiler Windows platform with GNU compiler (Mingw) Cygwin platform, GNU compiler</info>
@@ -5013,6 +5045,8 @@ actually an xmlCharEncoding'/>
     <typedef name='xmlValidCtxtPtr' file='valid' type='xmlValidCtxt *'/>
     <struct name='xmlValidState' file='valid' type='struct _xmlValidState'/>
     <typedef name='xmlValidStatePtr' file='valid' type='xmlValidState *'/>
+    <struct name='xmlXIncludeCtxt' file='xinclude' type='struct _xmlXIncludeCtxt'/>
+    <typedef name='xmlXIncludeCtxtPtr' file='xinclude' type='xmlXIncludeCtxt *'/>
     <struct name='xmlXPathAxis' file='xpath' type='struct _xmlXPathAxis'>
       <field name='name' type='const xmlChar *' info=' the axis name'/>
       <field name='func' type='xmlXPathAxisFunc' info=' the search function'/>
@@ -7055,6 +7089,12 @@ actually an xmlCharEncoding'/>
     <function name='xmlCreateURI' file='uri'>
       <info>Simply creates an empty xmlURI</info>
       <return type='xmlURIPtr' info='the new structure or NULL in case of error'/>
+    </function>
+    <function name='xmlCreateURLParserCtxt' file='parserInternals'>
+      <info>Create a parser context for a file or URL content. Automatic support for ZLIB/Compress compressed document is provided by default if found at compile-time and for file accesses</info>
+      <return type='xmlParserCtxtPtr' info='the new parser context or NULL'/>
+      <arg name='filename' type='const char *' info='the filename or URL'/>
+      <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
     </function>
     <function name='xmlCtxtGetLastError' file='xmlerror'>
       <info>Get the last parsing error registered.</info>
@@ -10689,6 +10729,11 @@ actually an xmlCharEncoding'/>
       <info>Initialize the default XML Schemas type library</info>
       <return type='void'/>
     </function>
+    <function name='xmlSchemaNewDocParserCtxt' file='xmlschemas'>
+      <info>Create an XML Schemas parse context for that document. NB. The document may be modified during the parsing process.</info>
+      <return type='xmlSchemaParserCtxtPtr' info='the parser context or NULL in case of error'/>
+      <arg name='doc' type='xmlDocPtr' info='a preparsed document tree'/>
+    </function>
     <function name='xmlSchemaNewFacet' file='xmlschemastypes'>
       <info>Allocate a new Facet structure.</info>
       <return type='xmlSchemaFacetPtr' info='the newly allocated structure or NULL in case or error'/>
@@ -11062,6 +11107,14 @@ actually an xmlCharEncoding'/>
       <arg name='pref' type='const xmlChar *' info='the prefix of the QName'/>
       <arg name='name' type='const xmlChar *' info='the localname of the QName'/>
       <arg name='str' type='const xmlChar *' info='the second xmlChar *'/>
+    </function>
+    <function name='xmlStrVPrintf' file='parser'>
+      <info>Formats @msg and places result into @buf.</info>
+      <return type='int' info='the number of characters written to @buf or -1 if an error occurs.'/>
+      <arg name='buf' type='xmlChar *' info='the result buffer.'/>
+      <arg name='len' type='int' info='the result buffer length.'/>
+      <arg name='msg' type='const xmlChar *' info='the message with printf formatting.'/>
+      <arg name='ap' type='va_list' info='extra parameters for the message.'/>
     </function>
     <function name='xmlStrcasecmp' file='parser'>
       <info>a strcasecmp for xmlChar&apos;s</info>
@@ -13082,10 +13135,26 @@ actually an xmlCharEncoding'/>
       <arg name='msg' type='const char *' info='the string to format *printf like vararg'/>
       <arg name='...' type='...' info='remaining arguments to the format'/>
     </functype>
+    <function name='xmlXIncludeFreeContext' file='xinclude'>
+      <info>Free an XInclude context</info>
+      <return type='void'/>
+      <arg name='ctxt' type='xmlXIncludeCtxtPtr' info='the XInclude context'/>
+    </function>
+    <function name='xmlXIncludeNewContext' file='xinclude'>
+      <info>Creates a new XInclude context</info>
+      <return type='xmlXIncludeCtxtPtr' info='the new set'/>
+      <arg name='doc' type='xmlDocPtr' info='an XML Document'/>
+    </function>
     <function name='xmlXIncludeProcess' file='xinclude'>
       <info>Implement the XInclude substitution on the XML document @doc</info>
       <return type='int' info='0 if no substitution were done, -1 if some processing failed or the number of substitutions done.'/>
       <arg name='doc' type='xmlDocPtr' info='an XML document'/>
+    </function>
+    <function name='xmlXIncludeProcessNode' file='xinclude'>
+      <info>Implement the XInclude substitution for the given subtree reusing the informations and data coming from the given context.</info>
+      <return type='int' info='0 if no substitution were done, -1 if some processing failed or the number of substitutions done.'/>
+      <arg name='ctxt' type='xmlXIncludeCtxtPtr' info='an existing XInclude context'/>
+      <arg name='node' type='xmlNodePtr' info='a node in an XML document'/>
     </function>
     <function name='xmlXIncludeProcessTree' file='xinclude'>
       <info>Implement the XInclude substitution for the given subtree</info>

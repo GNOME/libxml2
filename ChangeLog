@@ -1,3 +1,8 @@
+Tue Nov  4 11:24:04 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in NEWS doc/*: preparing release 2.6.2, updated and
+	  rebuilt the docs
+
 Tue Nov  4 09:38:46 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmllint.c: change --html to make sure we use the HTML serialization

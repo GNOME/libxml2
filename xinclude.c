@@ -458,6 +458,9 @@ xmlXIncludeParseFile(xmlXIncludeCtxtPtr ctxt, const char *URL) {
 	    if ((ctxt->doc != NULL) && (ctxt->doc->dict != NULL) &&
 	        (pctxt->myDoc->dict == ctxt->doc->dict))
 		xmlDictReference(ctxt->doc->dict);
+	    else if ((pctxt->dict != NULL) &&
+	             (pctxt->dict == pctxt->myDoc->dict))
+		xmlDictReference(pctxt->dict);
 	    xmlFreeDoc(pctxt->myDoc);
 	}
         pctxt->myDoc = NULL;

@@ -1,3 +1,9 @@
+Tue Feb  3 16:48:57 PST 2004 William Brack <wbrack@mmm.com.hk>
+
+	* xinclude.c: fixed problem regarding freeing of dictionary
+	  when there are errors within an XInclude file (bug 133106).
+	  Thanks to Oleg Paraschenko for the assistance.
+
 Tue Feb  3 09:53:18 PST 2004 William Brack <wbrack@mmm.com.hk>
 
 	* xmlschemastypes.c: fixed validation of maxLength with no

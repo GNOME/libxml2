@@ -1,3 +1,10 @@
+Tue Aug 14 18:37:23 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c: serious changes on Result Value Trees and NodeSets
+	  w.r.t. deallocation and collect operations. Probably not
+	  100% clean (merge of allocated trees smells like a problem).
+	  Seems sufficient to close #58943
+
 Tue Aug 14 16:12:00 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* xmllint.c: adding a --format option

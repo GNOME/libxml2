@@ -1737,7 +1737,7 @@ xmlXPathFreeValueTree(xmlNodeSetPtr obj) {
 
     if (obj == NULL) return;
     for (i = 0;i < obj->nodeNr;i++)
-        if (obj->nodeTab[i] != NULL)
+	if (obj->nodeTab[i] != NULL)
 	    xmlFreeNodeList(obj->nodeTab[i]);
 
     if (obj->nodeTab != NULL) {
@@ -1834,6 +1834,8 @@ xmlXPathNewValueTree(xmlNodePtr val) {
     }
     memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
     ret->type = XPATH_XSLT_TREE;
+    ret->boolval = 1;
+    ret->user = (void *) val;
     ret->nodesetval = xmlXPathNodeSetCreate(val);
     return(ret);
 }
@@ -2824,14 +2826,19 @@ xmlXPathObjectCopy(xmlXPathObjectPtr val) {
 	    break;
 	case XPATH_XSLT_TREE:
 	    if ((val->nodesetval != NULL) &&
-		(val->nodesetval->nodeTab != NULL))
+		(val->nodesetval->nodeTab != NULL)) {
+		ret->boolval = 1;
+		ret->user = xmlCopyNode(val->nodesetval->nodeTab[0], 1);
 		ret->nodesetval = xmlXPathNodeSetCreate(
-			xmlCopyNode(val->nodesetval->nodeTab[0], 1));
-	    else
+					  (xmlNodePtr) ret->user);
+	    } else
 		ret->nodesetval = xmlXPathNodeSetCreate(NULL);
+	    /* Deallocate the copied tree value */
 	    break;
 	case XPATH_NODESET:
 	    ret->nodesetval = xmlXPathNodeSetMerge(NULL, val->nodesetval);
+	    /* Do not deallocate the copied tree value */
+	    ret->boolval = 0;
 	    break;
 	case XPATH_LOCATIONSET:
 #ifdef LIBXML_XPTR_ENABLED
@@ -2860,10 +2867,12 @@ xmlXPathObjectCopy(xmlXPathObjectPtr val) {
 void
 xmlXPathFreeObject(xmlXPathObjectPtr obj) {
     if (obj == NULL) return;
-    if (obj->type == XPATH_NODESET) {
+    if ((obj->type == XPATH_NODESET) || (obj->type == XPATH_XSLT_TREE)) {
 	if (obj->boolval) {
-	    obj->type = XPATH_XSLT_TREE;
-	    if (obj->nodesetval != NULL)
+	    if (obj->user != NULL) {
+		xmlFreeNodeList((xmlNodePtr) obj->user);
+                xmlXPathFreeNodeSet(obj->nodesetval);
+	    } else if (obj->nodesetval != NULL)
 		xmlXPathFreeValueTree(obj->nodesetval);
 	} else {
 	    if (obj->nodesetval != NULL)
@@ -2877,9 +2886,6 @@ xmlXPathFreeObject(xmlXPathObjectPtr obj) {
     } else if (obj->type == XPATH_STRING) {
 	if (obj->stringval != NULL)
 	    xmlFree(obj->stringval);
-    } else if (obj->type == XPATH_XSLT_TREE) {
-	if (obj->nodesetval != NULL)
-	    xmlXPathFreeValueTree(obj->nodesetval);
     }
 
     xmlFree(obj);
@@ -8402,8 +8408,14 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
                     "\nExamined %d nodes, found %d nodes at that step\n",
                     t, n);
 #endif
-    xmlXPathFreeObject(obj);
     valuePush(ctxt, xmlXPathWrapNodeSet(ret));
+    if ((obj->boolval) && (obj->user != NULL)) {
+	ctxt->value->boolval = 1;
+	ctxt->value->user = obj->user;
+	obj->user = NULL;
+	obj->boolval = 0;
+    }
+    xmlXPathFreeObject(obj);
     return(t);
 }
 
@@ -8780,8 +8792,14 @@ xmlXPathNodeCollectAndTestNth(xmlXPathParserContextPtr ctxt,
                     "\nExamined %d nodes, found %d nodes at that step\n",
                     t, list->nodeNr);
 #endif
-    xmlXPathFreeObject(obj);
     valuePush(ctxt, xmlXPathWrapNodeSet(list));
+    if ((obj->boolval) && (obj->user != NULL)) {
+	ctxt->value->boolval = 1;
+	ctxt->value->user = obj->user;
+	obj->user = NULL;
+	obj->boolval = 0;
+    }
+    xmlXPathFreeObject(obj);
     return(t);
 }
 

@@ -1,3 +1,9 @@
+Wed Jan 12 14:17:14 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/xmlregexp.h xmlregexp.c: extended xmlRegExecErrInfo()
+	  and xmlRegExecNextValues() to return error transition strings too,
+	  and sink state detection and handling.
+
 Tue Jan 11 14:41:47 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemas.c: fixed bug #163641 when the value passed for

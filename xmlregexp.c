@@ -139,7 +139,8 @@ typedef enum {
 typedef enum {
     XML_REGEXP_START_STATE = 1,
     XML_REGEXP_FINAL_STATE,
-    XML_REGEXP_TRANS_STATE
+    XML_REGEXP_TRANS_STATE,
+    XML_REGEXP_SINK_STATE
 } xmlRegStateType;
 
 typedef enum {
@@ -207,7 +208,6 @@ struct _xmlAutomataState {
     xmlRegMarkedType mark;
     xmlRegMarkedType reached;
     int no;
-
     int maxTrans;
     int nbTrans;
     xmlRegTrans *trans;
@@ -1596,11 +1596,16 @@ xmlFAEliminateEpsilonTransitions(xmlRegParserCtxtPtr ctxt) {
     /*
      * build the completed transitions bypassing the epsilons
      * Use a marking algorithm to avoid loops
+     * mark sink states too.
      */
     for (statenr = 0;statenr < ctxt->nbStates;statenr++) {
 	state = ctxt->states[statenr];
 	if (state == NULL)
 	    continue;
+	if ((state->nbTrans == 0) &&
+	    (state->type != XML_REGEXP_FINAL_STATE)) {
+	    state->type = XML_REGEXP_SINK_STATE;
+	}
 	for (transnr = 0;transnr < state->nbTrans;transnr++) {
 	    if ((state->trans[transnr].atom == NULL) &&
 		(state->trans[transnr].to >= 0)) {
@@ -1677,6 +1682,7 @@ xmlFAEliminateEpsilonTransitions(xmlRegParserCtxtPtr ctxt) {
 		}
 	    }
 	}
+
 	/*
 	 * find the next accessible state not explored
 	 */
@@ -2698,6 +2704,10 @@ xmlRegCompactPushString(xmlRegExecCtxtPtr exec,
 		printf("entering state %d\n", target);
 #endif
 		if (comp->compact[target * (comp->nbstrings + 1)] ==
+		    XML_REGEXP_SINK_STATE)
+		    goto error;
+
+		if (comp->compact[target * (comp->nbstrings + 1)] ==
 		    XML_REGEXP_FINAL_STATE)
 		    return(1);
 		return(0);
@@ -2711,6 +2721,7 @@ xmlRegCompactPushString(xmlRegExecCtxtPtr exec,
 #ifdef DEBUG_PUSH
     printf("failed to find a transition for %s on state %d\n", value, state);
 #endif
+error:
     if (exec->errString != NULL)
         xmlFree(exec->errString);
     exec->errString = xmlStrdup(value);
@@ -2975,6 +2986,20 @@ xmlRegExecPushString(xmlRegExecCtxtPtr exec, const xmlChar *value,
 #ifdef DEBUG_PUSH
 		printf("entering state %d\n", trans->to);
 #endif
+                if ((exec->comp->states[trans->to] != NULL) &&
+		    (exec->comp->states[trans->to]->type ==
+		     XML_REGEXP_SINK_STATE)) {
+		    /*
+		     * entering a sink state, save the current state as error
+		     * state.
+		     */
+		    if (exec->errString != NULL)
+			xmlFree(exec->errString);
+		    exec->errString = xmlStrdup(value);
+		    exec->errState = exec->state;
+		    memcpy(exec->errCounts, exec->counts,
+			   exec->comp->nbCounters * sizeof(int));
+		}
 		exec->state = exec->comp->states[trans->to];
 		exec->transno = 0;
 		if (trans->atom != NULL) {
@@ -3010,10 +3035,11 @@ xmlRegExecPushString(xmlRegExecCtxtPtr exec, const xmlChar *value,
 	if ((exec->transno != 0) || (exec->state->nbTrans == 0)) {
 rollback:
             /*
-	     * if we didn't yet rollback on the current input store
-	     * the current state as the error state.
+	     * if we didn't yet rollback on the current input
+	     * store the current state as the error state.
 	     */
-	    if (progress) {
+	    if ((progress) && (exec->state != NULL) &&
+	        (exec->state->type != XML_REGEXP_SINK_STATE)) {
 	        progress = 0;
 		if (exec->errString != NULL)
 		    xmlFree(exec->errString);
@@ -3113,6 +3139,7 @@ xmlRegExecPushString2(xmlRegExecCtxtPtr exec, const xmlChar *value,
  * @exec: a regexp execution context
  * @err: error extraction or normal one
  * @nbval: pointer to the number of accepted values IN/OUT
+ * @nbneg: return number of negative transitions
  * @values: pointer to the array of acceptable values
  * @terminal: return value if this was a terminal state
  *
@@ -3123,14 +3150,18 @@ xmlRegExecPushString2(xmlRegExecCtxtPtr exec, const xmlChar *value,
  */
 static int
 xmlRegExecGetValues(xmlRegExecCtxtPtr exec, int err,
-                    int *nbval, xmlChar **values, int *terminal) {
+                    int *nbval, int *nbneg,
+		    xmlChar **values, int *terminal) {
     int maxval;
+    int nb = 0;
 
-    if ((exec == NULL) || (nbval == NULL) || (values == NULL) || (*nbval <= 0))
+    if ((exec == NULL) || (nbval == NULL) || (nbneg == NULL) || 
+        (values == NULL) || (*nbval <= 0))
         return(-1);
 
     maxval = *nbval;
     *nbval = 0;
+    *nbneg = 0;
     if ((exec->comp != NULL) && (exec->comp->compact != NULL)) {
         xmlRegexpPtr comp;
 	int target, i, state;
@@ -3150,11 +3181,22 @@ xmlRegExecGetValues(xmlRegExecCtxtPtr exec, int err,
 	    else
 		*terminal = 0;
 	}
-	for (i = 0;(i < comp->nbstrings) && (*nbval < maxval);i++) {
+	for (i = 0;(i < comp->nbstrings) && (nb < maxval);i++) {
 	    target = comp->compact[state * (comp->nbstrings + 1) + i + 1];
-	    if ((target > 0) && (target <= comp->nbstates)) {
-	        values[*nbval] = comp->stringMap[i];
+	    if ((target > 0) && (target <= comp->nbstates) &&
+	        (comp->compact[(target - 1) * (comp->nbstrings + 1)] !=
+		 XML_REGEXP_SINK_STATE)) {
+	        values[nb++] = comp->stringMap[i];
 		(*nbval)++;
+	    }
+	}
+	for (i = 0;(i < comp->nbstrings) && (nb < maxval);i++) {
+	    target = comp->compact[state * (comp->nbstrings + 1) + i + 1];
+	    if ((target > 0) && (target <= comp->nbstates) &&
+	        (comp->compact[(target - 1) * (comp->nbstrings + 1)] ==
+		 XML_REGEXP_SINK_STATE)) {
+	        values[nb++] = comp->stringMap[i];
+		(*nbneg)++;
 	    }
 	}
     } else {
@@ -3178,7 +3220,7 @@ xmlRegExecGetValues(xmlRegExecCtxtPtr exec, int err,
 	    state = exec->state;
 	}
 	for (transno = 0;
-	     (transno < state->nbTrans) && (*nbval < maxval);
+	     (transno < state->nbTrans) && (nb < maxval);
 	     transno++) {
 	    trans = &state->trans[transno];
 	    if (trans->to < 0)
@@ -3187,8 +3229,10 @@ xmlRegExecGetValues(xmlRegExecCtxtPtr exec, int err,
 	    if ((atom == NULL) || (atom->valuep == NULL))
 		continue;
 	    if (trans->count == REGEXP_ALL_LAX_COUNTER) {
+	        /* this should not be reached but ... */
 	        TODO;
 	    } else if (trans->count == REGEXP_ALL_COUNTER) {
+	        /* this should not be reached but ... */
 	        TODO;
 	    } else if (trans->counter >= 0) {
 		xmlRegCounterPtr counter;
@@ -3200,12 +3244,40 @@ xmlRegExecGetValues(xmlRegExecCtxtPtr exec, int err,
 		    count = exec->counts[trans->counter];
 		counter = &exec->comp->counters[trans->counter];
 		if (count < counter->max) {
-		    values[*nbval] = (xmlChar *) atom->valuep;
+		    values[nb++] = (xmlChar *) atom->valuep;
 		    (*nbval)++;
 		}
 	    } else {
-		values[*nbval] = (xmlChar *) atom->valuep;
-		(*nbval)++;
+                if ((exec->comp->states[trans->to] != NULL) &&
+		    (exec->comp->states[trans->to]->type !=
+		     XML_REGEXP_SINK_STATE)) {
+		    values[nb++] = (xmlChar *) atom->valuep;
+		    (*nbval)++;
+		}
+	    } 
+	}
+	for (transno = 0;
+	     (transno < state->nbTrans) && (nb < maxval);
+	     transno++) {
+	    trans = &state->trans[transno];
+	    if (trans->to < 0)
+		continue;
+	    atom = trans->atom;
+	    if ((atom == NULL) || (atom->valuep == NULL))
+		continue;
+	    if (trans->count == REGEXP_ALL_LAX_COUNTER) {
+	        continue;
+	    } else if (trans->count == REGEXP_ALL_COUNTER) {
+	        continue;
+	    } else if (trans->counter >= 0) {
+	        continue;
+	    } else {
+                if ((exec->comp->states[trans->to] != NULL) &&
+		    (exec->comp->states[trans->to]->type ==
+		     XML_REGEXP_SINK_STATE)) {
+		    values[nb++] = (xmlChar *) atom->valuep;
+		    (*nbneg)++;
+		}
 	    } 
 	}
     }
@@ -3216,6 +3288,7 @@ xmlRegExecGetValues(xmlRegExecCtxtPtr exec, int err,
  * xmlRegExecNextValues:
  * @exec: a regexp execution context
  * @nbval: pointer to the number of accepted values IN/OUT
+ * @nbneg: return number of negative transitions
  * @values: pointer to the array of acceptable values
  * @terminal: return value if this was a terminal state
  *
@@ -3229,9 +3302,9 @@ xmlRegExecGetValues(xmlRegExecCtxtPtr exec, int err,
  * Returns: 0 in case of success or -1 in case of error.
  */
 int
-xmlRegExecNextValues(xmlRegExecCtxtPtr exec, int *nbval, xmlChar **values,
-                     int *terminal) {
-    return(xmlRegExecGetValues(exec, 0, nbval, values, terminal));
+xmlRegExecNextValues(xmlRegExecCtxtPtr exec, int *nbval, int *nbneg,
+                     xmlChar **values, int *terminal) {
+    return(xmlRegExecGetValues(exec, 0, nbval, nbneg, values, terminal));
 }
 
 /**
@@ -3239,6 +3312,7 @@ xmlRegExecNextValues(xmlRegExecCtxtPtr exec, int *nbval, xmlChar **values,
  * @exec: a regexp execution context generating an error
  * @string: return value for the error string
  * @nbval: pointer to the number of accepted values IN/OUT
+ * @nbneg: return number of negative transitions
  * @values: pointer to the array of acceptable values
  * @terminal: return value if this was a terminal state
  *
@@ -3254,7 +3328,7 @@ xmlRegExecNextValues(xmlRegExecCtxtPtr exec, int *nbval, xmlChar **values,
  */
 int
 xmlRegExecErrInfo(xmlRegExecCtxtPtr exec, const xmlChar **string,
-                  int *nbval, xmlChar **values, int *terminal) {
+                  int *nbval, int *nbneg, xmlChar **values, int *terminal) {
     if (exec == NULL)
         return(-1);
     if (string != NULL) {
@@ -3263,7 +3337,7 @@ xmlRegExecErrInfo(xmlRegExecCtxtPtr exec, const xmlChar **string,
 	else
 	    *string = NULL;
     }
-    return(xmlRegExecGetValues(exec, 1, nbval, values, terminal));
+    return(xmlRegExecGetValues(exec, 1, nbval, nbneg, values, terminal));
 }
 
 #ifdef DEBUG_ERR
@@ -3271,8 +3345,9 @@ static void testerr(xmlRegExecCtxtPtr exec) {
     const xmlChar *string;
     const xmlChar *values[5];
     int nb = 5;
+    int nbneg;
     int terminal;
-    xmlRegExecErrInfo(exec, &string, &nb, &values[0], &terminal);
+    xmlRegExecErrInfo(exec, &string, &nb, &nbneg, &values[0], &terminal);
 }
 #endif
 

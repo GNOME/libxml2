@@ -286,7 +286,7 @@ XMLPUBFUN int XMLCALL
 /* internal error reporting */
 XMLPUBFUN void XMLCALL
 			__xmlErrEncoding	(xmlParserCtxtPtr ctxt,
-						 xmlParserErrors error,
+						 xmlParserErrors xmlerr,
 						 const char *msg,
 						 const xmlChar * str1,
 						 const xmlChar * str2);

@@ -195,7 +195,7 @@ xmlNanoFTPInit(void) {
 
     proxyPort = 21;
     env = getenv("no_proxy");
-    if (env != NULL)
+    if (env && ((env[0] == '*' ) && (env[1] == 0)))
 	return;
     env = getenv("ftp_proxy");
     if (env != NULL) {

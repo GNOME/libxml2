@@ -505,14 +505,15 @@ Scripttests : xmllint$(EXEEXT)
 	  if [ -f $$xml ] ; then \
 	  if [ ! -f $(srcdir)/result/scripts/$$name ] ; then \
 	      echo New test file $$name ; \
-	      $(CHECKER) $(top_builddir)/xmllint --shell $$xml < $$i > $(srcdir)/result/scripts/$$name ; \
+	      $(CHECKER) $(top_builddir)/xmllint --shell $$xml < $$i > $(srcdir)/result/scripts/$$name 2> $(srcdir)/result/scripts/$$name.err ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	  else \
-	      log=`$(CHECKER) $(top_builddir)/xmllint --shell $$xml < $$i 2>&1 > result.$$name ; \
+	      log=`$(CHECKER) $(top_builddir)/xmllint --shell $$xml < $$i > result.$$name 2> result.$$name.err ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
-	      diff $(srcdir)/result/scripts/$$name result.$$name` ; \
+	      diff $(srcdir)/result/scripts/$$name result.$$name ; \
+	      diff $(srcdir)/result/scripts/$$name.err result.$$name.err` ; \
 	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
-	      rm result.$$name ; \
+	      rm result.$$name result.$$name.err ; \
 	  fi ; fi ; done)
 
 Catatests : xmlcatalog$(EXEEXT)

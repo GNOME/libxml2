@@ -182,7 +182,7 @@ static const char *IOerr[] = {
     "loading error",
     "not a socket",		/* ENOTSOCK */
     "already connected",	/* EISCONN */
-    "connection refuxed",	/* ECONNREFUSED */
+    "connection refused",	/* ECONNREFUSED */
     "unreachable network",	/* ENETUNREACH */
     "adddress in use",		/* EADDRINUSE */
     "already in use",		/* EALREADY */

@@ -223,7 +223,7 @@ xmlNanoHTTPInit(void) {
     if (proxy == NULL) {
 	proxyPort = 80;
 	env = getenv("no_proxy");
-	if (env != NULL)
+	if (env && ((env[0] == '*') && (env[1] == 0)))
 	    goto done;
 	env = getenv("http_proxy");
 	if (env != NULL) {

@@ -1733,6 +1733,51 @@ xmlShellDir(xmlShellCtxtPtr ctxt ATTRIBUTE_UNUSED,
     return (0);
 }
 
+/**
+ * xmlShellSetContent:
+ * @ctxt:  the shell context
+ * @value:  the content as a string
+ * @node:  a node
+ * @node2:  unused
+ *
+ * Implements the XML shell function "dir"
+ * dumps informations about the node (namespace, attributes, content).
+ *
+ * Returns 0
+ */
+static int
+xmlShellSetContent(xmlShellCtxtPtr ctxt ATTRIBUTE_UNUSED,
+            char *value, xmlNodePtr node,
+            xmlNodePtr node2 ATTRIBUTE_UNUSED)
+{
+    xmlNodePtr results;
+    xmlParserErrors ret;
+
+    if (!ctxt)
+        return (0);
+    if (node == NULL) {
+	fprintf(ctxt->output, "NULL\n");
+	return (0);
+    }
+    if (value == NULL) {
+        fprintf(ctxt->output, "NULL\n");
+	return (0);
+    }
+
+    ret = xmlParseInNodeContext(node, value, strlen(value), 0, &results);
+    if (ret == XML_ERR_OK) {
+	if (node->children != NULL) {
+	    xmlFreeNodeList(node->children);
+	    node->children = NULL;
+	    node->last = NULL;
+	}
+	xmlAddChildList(node, results);
+    } else {
+        fprintf(ctxt->output, "failed to parse content\n");
+    }
+    return (0);
+}
+
 #ifdef LIBXML_SCHEMAS_ENABLED
 /**
  * xmlShellRNGValidate:
@@ -2358,6 +2403,8 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
             xmlShellDu(ctxt, NULL, ctxt->node, NULL);
         } else if (!strcmp(command, "base")) {
             xmlShellBase(ctxt, NULL, ctxt->node, NULL);
+        } else if (!strcmp(command, "set")) {
+	    xmlShellSetContent(ctxt, arg, ctxt->node, NULL);
 #ifdef LIBXML_XPATH_ENABLED
         } else if (!strcmp(command, "setns")) {
             if (arg[0] == 0) {

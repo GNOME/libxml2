@@ -18,6 +18,7 @@
 
 #include <libxml/xmlmemory.h>
 #include <libxml/hash.h>
+#include <libxml/uri.h>
 #include <libxml/valid.h>
 #include <libxml/parser.h>
 #include <libxml/parserInternals.h>

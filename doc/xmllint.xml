@@ -522,16 +522,12 @@
 	</listitem>
       </varlistentry>
       <varlistentry>
-	<term><option>--c14n</option></term>
-	<listitem>
-	  <simpara>Output canonical XML.</simpara>
-	</listitem>
-      </varlistentry>
-      <varlistentry>
 	<term>
-      <option>--nonet</option></term>
+      <option>--c14n</option></term>
 	<listitem>
-	  <simpara>Do not use the Internet to fetch DTD's or entities.</simpara>
+	  <simpara>Use the W3C XML Canonicalisation (C14N) to
+serialize the result of parsing to stdout, it keeps comments in
+teh result.</simpara>
 	</listitem>
       </varlistentry>
     </variablelist>

@@ -707,12 +707,12 @@ typedef void (*xmlGenericErrorFunc) (void *ctx,
 /**
  * xmlStructuredErrorFunc:
  * @userData:  user provided data for the error callback
- * @error:  the error being raised.
+ * @xmlerr:  the error being raised.
  *
  * Signature of the function to use when there is an error and
  * the module handles the new error reporting mechanism.
  */
-typedef void (*xmlStructuredErrorFunc) (void *userData, xmlErrorPtr error);
+typedef void (*xmlStructuredErrorFunc) (void *userData, xmlErrorPtr xmlerr);
 
 /*
  * Use the following function to reset the two global variables

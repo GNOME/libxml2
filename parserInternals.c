@@ -127,7 +127,7 @@ xmlErrMemory(xmlParserCtxtPtr ctxt, const char *extra)
 /**
  * __xmlErrEncoding:
  * @ctxt:  an XML parser context
- * @error:  the error number
+ * @xmlerr:  the error number
  * @msg:  the error message
  * @str1:  an string info
  * @str2:  an string info
@@ -135,16 +135,16 @@ xmlErrMemory(xmlParserCtxtPtr ctxt, const char *extra)
  * Handle an encoding error
  */
 void
-__xmlErrEncoding(xmlParserCtxtPtr ctxt, xmlParserErrors error,
+__xmlErrEncoding(xmlParserCtxtPtr ctxt, xmlParserErrors xmlerr,
                  const char *msg, const xmlChar * str1, const xmlChar * str2)
 {
     if ((ctxt != NULL) && (ctxt->disableSAX != 0) &&
         (ctxt->instate == XML_PARSER_EOF))
 	return;
     if (ctxt != NULL)
-        ctxt->errNo = error;
+        ctxt->errNo = xmlerr;
     __xmlRaiseError(NULL, NULL, NULL,
-                    ctxt, NULL, XML_FROM_PARSER, error, XML_ERR_FATAL,
+                    ctxt, NULL, XML_FROM_PARSER, xmlerr, XML_ERR_FATAL,
                     NULL, 0, (const char *) str1, (const char *) str2,
                     NULL, 0, 0, msg, str1, str2);
     if (ctxt != NULL) {

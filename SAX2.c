@@ -2042,10 +2042,8 @@ xmlSAX2StartElementNs(void *ctx,
 	}
     }
 
-    if (ctxt->myDoc->children == NULL) {
+    if ((ctxt->myDoc->children == NULL) || (parent == NULL)) {
         xmlAddChild((xmlNodePtr) ctxt->myDoc, (xmlNodePtr) ret);
-    } else if (parent == NULL) {
-        parent = ctxt->myDoc->children;
     }
     /*
      * Build the namespace list

@@ -915,6 +915,12 @@ XMLPUBFUN int XMLCALL
 					 int depth,
 					 const xmlChar *string,
 					 xmlNodePtr *lst);
+XMLPUBFUN xmlParserErrors XMLCALL
+		xmlParseInNodeContext	(xmlNodePtr node,
+					 const char *data,
+					 int datalen,
+					 int options,
+					 xmlNodePtr *lst);
 XMLPUBFUN int XMLCALL          
 		xmlParseBalancedChunkMemoryRecover(xmlDocPtr doc,
                      xmlSAXHandlerPtr sax,

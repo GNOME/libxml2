@@ -62,5 +62,5 @@ dnl Checks for library functions.
 AC_FUNC_STRFTIME
 AC_CHECK_FUNCS(strdup strndup strerror snprintf )
 AC_SUBST(Z_LIBS)
-AC_OUTPUT(Makefile doc/Makefile xml-config)
+AC_OUTPUT(libxml.spec Makefile doc/Makefile xml-config)
 

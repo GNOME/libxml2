@@ -1,3 +1,8 @@
+Sat Apr  5 11:41:36 CEST 2003 Igoe Zlatkovic <igor@zlatkovic.com>
+
+	* win32/libxml2.def.src: fixed conditional exports, reported by
+	  Luke Murray.
+
 Fri Apr  4 18:08:00 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: fixed a possible problem with xmlRecoverMemory()

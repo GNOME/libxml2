@@ -1,0 +1,3 @@
+./test/HTML/autoclose3.html:4: error: Opening and ending tag mismatch: body and ul
+
+^

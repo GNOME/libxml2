@@ -1,0 +1,25 @@
+SAX.setDocumentLocator()
+SAX.startDocument()
+SAX.startElement(rec)
+SAX.characters(
+, 1)
+SAX.startElement(eg)
+SAX.endElement(eg)
+SAX.characters(
+then the replacement text for, 43)
+SAX.startElement(code)
+SAX.characters(book, 4)
+SAX.endElement(code)
+SAX.characters(" is:
+, 6)
+SAX.startElement(eg)
+SAX.characters(La Peste: Albert Camus, 
+© 19, 54)
+SAX.getEntity(amp)
+SAX.characters(&, 1)
+SAX.characters(rights;, 7)
+SAX.endElement(eg)
+SAX.characters(
+, 1)
+SAX.endElement(rec)
+SAX.endDocument()

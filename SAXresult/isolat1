@@ -1,0 +1,6 @@
+SAX.setDocumentLocator()
+SAX.startDocument()
+SAX.startElement(très)
+SAX.characters(là, 3)
+SAX.endElement(très)
+SAX.endDocument()

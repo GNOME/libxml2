@@ -1,0 +1,17 @@
+SAX.setDocumentLocator()
+SAX.startDocument()
+SAX.startElement(tst)
+SAX.characters(
+
+       The following table d, 1000)
+SAX.characters( SIGN
+       257   175   AF   , 1000)
+SAX.characters(LETTER A WITH ACUTE
+       302, 1000)
+SAX.characters( D0     Ð     LATIN CAPITAL L, 1000)
+SAX.characters(  ß     LATIN SMALL LETTER SH, 1000)
+SAX.characters(SMALL LETTER I WITH CIRCUMFLEX, 1000)
+SAX.characters(E
+       376   254   FE     þ, 130)
+SAX.endElement(tst)
+SAX.endDocument()

@@ -2,23 +2,50 @@
            TODO for the XML parser and stuff:
 	   ==================================
 
-URGENT:
-=======
-- Support for UTF-8 and UTF-16 encoding
-  => added some convertion routines provided by Martin Durst but I didn't
-     try to glue them in. I plan to keep everything internally as UTF-8
-     this is slightly more costly but more compact, and recent processors
-     efficiency is cache related. The key for good performances is keeping
-     the data set small, so will I.
-  => the new progressive reading routines call the detection code which
-     need to be enabled, then thest the ISO->UTF-8 stuff, and add more
-     charset conv routines.
+TODO:
+=====
+
+- extend validity checks to go through entities content instead of
+  just labelling them PCDATA
+- add support for the trick from Henry conf/sun/valid/empty.xml
+- Correct standalone checking/emitting (hard)
+  2.9 Standalone Document Declaration
+- URI checkings (no fragments) rfc2396.txt
+- Better checking of external parsed entities TAG 1234
+- Find way of representing PERefs in the Dtd so that %entity; can
+  be saved back.
+- Go through erratas and do the cleanup.
+  http://www.w3.org/XML/xml-19980210-errata ... bummmer 
 
 TODO:
 =====
 
-- Tools to produce man pages from the SGML docs.
+- Get OASIS testsuite to a more friendly result, check all the results
+  once stable.
+  http://xmlsoft.org/conf/result.html
 
+- Optimization of tag strings allocation.
+
+- maintain coherency of namespace when doing cut'n paste operations
+  => the functions are coded, but need testing
+
+- function to rebuild the ID table ?
+
+- Parsing of a well balanced chunk
+
+- dynamically adapt the alloc entry point to use g_alloc()/g_free()
+  if the programmer wants it
+
+- Validity checking problems for ENTITY ENTITIES attributes
+
+- Validity checking problems for NOTATIONS attributes
+   
+- Check attribute normalization especially xmlGetProp()
+
+EXTENSIONS:
+===========
+- URI module: validation, base, etc ...
+- Tools to produce man pages from the SGML docs.
 - Finish XPath
   => attributes addressing troubles
   => defaulted attributes handling
@@ -40,36 +67,11 @@ TODO:
      parsing one in-there should not be too hard. Key point is to get
      XSL to transform all this to something decent ...
 
-- Add regression tests for all WFC errors
-  => did some in test/WFC , not added to the Makefile yet.
-
-- Optimization of tag strings allocation.
-
-- Language identification code, productions [33] to [38]
-
-- Conditional sections in DTDs [61] to [65]
-  => should this crap be really implemented ???
-
-
-- Allow parsed entities defined in the internal subset to override
-  the ones defined in the external subset (DtD customization).
-  => This mean that the entity content should be computed only at
-     use time, i.e. keep the orig string only at parse time and expand
-     only when referenced from the external subset :-(
-     Needed for complete use of most DTD from Eve Maler
-
-- maintain coherency of namespace when doing cut'n paste operations
-  => the functions are coded, but need testing
-
-- function to rebuild the ID table ?
-
 - extend the shell with:
    - edit
    - load/save
    - mv (yum, yum, but it's harder because directories are ordered in
      our case, mvup and mvdown would be required)
-
-- Parsing of a well balanced chunk
 
 - Add HTML validation using the XHTML DTD
   - problem: do we want to keep and maintain the code for handling
@@ -83,16 +85,49 @@ TODO:
 
 - Add output to XHTML in case of HTML documents.
 
-- dynamically adapt the alloc entry point to use g_alloc()/g_free()
-  if the programmer wants it
-
-- I18N: http://wap.trondheim.com/vaer/index.phtml is not XML and accepted
-  by the XML parser, UTF-8 should be checked when there is no "encoding"
-  declared !
 
 Done:
 =====
 
+- Save Dtds using the children list instead of dumping the tables,
+  order is preserved as well as comments and PIs
+- Wrote a notice of changes requires to go from 1.x to 2.x
+- make sure that all SAX callbacks are disabled if a WF error is detected
+- checking/handling of newline normalization
+  http://localhost/www.xml.com/axml/target.html#sec-line-ends
+- correct checking of '&' '%' on entities content.
+- checking of PE/Nesting on entities declaration
+- checking/handling of xml:space
+   - checking done.
+   - handling done, not well tested
+- Language identification code, productions [33] to [38]
+  => done, the check has been added and report WFness errors
+- Conditional sections in DTDs [61] to [65]
+  => should this crap be really implemented ???
+  => Yep OASIS testsuite uses them
+- Allow parsed entities defined in the internal subset to override
+  the ones defined in the external subset (DtD customization).
+  => This mean that the entity content should be computed only at
+     use time, i.e. keep the orig string only at parse time and expand
+     only when referenced from the external subset :-(
+     Needed for complete use of most DTD from Eve Maler
+- Add regression tests for all WFC errors
+  => did some in test/WFC
+  => added OASIS testsuite routines
+     http://xmlsoft.org/conf/result.html
+
+- I18N: http://wap.trondheim.com/vaer/index.phtml is not XML and accepted
+  by the XML parser, UTF-8 should be checked when there is no "encoding"
+  declared !
+- Support for UTF-8 and UTF-16 encoding
+  => added some convertion routines provided by Martin Durst
+     patched them, got fixes from @@@
+     I plan to keep everything internally as UTF-8 (or ISO-Latin-X)
+     this is slightly more costly but more compact, and recent processors
+     efficiency is cache related. The key for good performances is keeping
+     the data set small, so will I.
+  => the new progressive reading routines call the detection code
+     is enabled, tested the ISO->UTF-8 stuff
 - External entities loading: 
    - allow override by client code
    - make sure it is alled for all external entities referenced

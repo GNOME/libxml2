@@ -46,7 +46,7 @@ xmlHashTablePtr xmlPredefinedEntities = NULL;
 static void xmlFreeEntity(xmlEntityPtr entity) {
     if (entity == NULL) return;
 
-    if (entity->children)
+    if ((entity->children) && (entity->children->parent == entity))
 	xmlFreeNodeList(entity->children);
     if (entity->name != NULL)
 	xmlFree((char *) entity->name);

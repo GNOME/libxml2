@@ -885,7 +885,8 @@ attribute(void *ctx, const xmlChar *fullname, const xmlChar *value)
 	    ctxt->valid &= xmlValidateOneAttribute(&ctxt->vctxt, ctxt->myDoc,
 					       ctxt->node, ret, value);
 	}
-    } else if (ctxt->external != 2){
+    } else if (((ctxt->replaceEntities == 0) && (ctxt->external != 2)) ||
+	       ((ctxt->replaceEntities != 0) && (ctxt->inSubset == 0))) {
         /*
 	 * when validating, the ID registration is done at the attribute
 	 * validation level. Otherwise we have to do specific handling here.

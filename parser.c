@@ -5050,14 +5050,35 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 			 (ent->etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY))&&
 			    (ent->children == NULL)) {
 			    ent->children = list;
-			    while (list != NULL) {
-				list->parent = (xmlNodePtr) ent;
-				if (list->next == NULL)
-				    ent->last = list;
-				list = list->next;
+			    if (ctxt->replaceEntities) {
+				/*
+				 * Prune it directly in the generated document
+				 * except for single text nodes.
+				 */
+				if ((list->type == XML_TEXT_NODE) &&
+				    (list->next == NULL)) {
+				    list->parent = (xmlNodePtr) ent;
+				    list = NULL;
+				} else {
+				    while (list != NULL) {
+					list->parent = (xmlNodePtr) ctxt->node;
+					if (list->next == NULL)
+					    ent->last = list;
+					list = list->next;
+				    }
+				    list = ent->children;
+				}
+			    } else {
+				while (list != NULL) {
+				    list->parent = (xmlNodePtr) ent;
+				    if (list->next == NULL)
+					ent->last = list;
+				    list = list->next;
+				}
 			    }
 			} else {
 			    xmlFreeNodeList(list);
+			    list = NULL;
 			}
 		    } else if (ret > 0) {
 			ctxt->errNo = ret;
@@ -5068,6 +5089,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 			ctxt->disableSAX = 1;
 		    } else if (list != NULL) {
 			xmlFreeNodeList(list);
+			list = NULL;
 		    }
 		}
 	    }
@@ -5082,12 +5104,33 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 		if ((ctxt->node != NULL) && (ent->children != NULL)) {
 		    /*
 		     * Seems we are generating the DOM content, do
-		     * a simple tree copy
+		     * a simple tree copy for all references except the first
+		     * In the first occurence list contains the replacement
 		     */
-		    xmlNodePtr new;
-		    new = xmlCopyNodeList(ent->children);
-		    
-		    xmlAddChildList(ctxt->node, new);
+		    if (list == NULL) {
+			xmlNodePtr new, cur;
+			cur = ent->children;
+			while (cur != NULL) {
+			    new = xmlCopyNode(cur, 1);
+			    xmlAddChild(ctxt->node, new);
+			    if (cur == ent->last)
+				break;
+			    cur = cur->next;
+			}
+		    } else {
+			/*
+			 * the name change is to avoid coalescing of the
+			 * node with a prossible previous text one which
+			 * would make ent->children a dandling pointer
+			 */
+			if (ent->children->type == XML_TEXT_NODE)
+			    ent->children->name = xmlStrdup(BAD_CAST "nbktext");
+			if ((ent->last != ent->children) &&
+			    (ent->last->type == XML_TEXT_NODE))
+			    ent->last->name = xmlStrdup(BAD_CAST "nbktext");
+			xmlAddChildList(ctxt->node, ent->children);
+		    }
+
 		    /*
 		     * This is to avoid a nasty side effect, see
 		     * characters() in SAX.c

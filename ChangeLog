@@ -1,3 +1,11 @@
+Wed Jul  4 21:42:24 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* SAX.c entities.c parser.c: changed completely the way entities
+	  are handled when running the parser in entity substitution mode.
+	  This fixes a bug reported by Stephan Kulow and nearly divides
+	  by 3 the amount of memory required by libxslt to load and process
+	  DocBook TDG.
+
 Wed Jul  4 18:02:58 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* HTMLparser.c: fixing a too early root closing problem raised

@@ -1,3 +1,11 @@
+Tue May 11 23:04:47 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* xmlschemas.c, include/libxml/schemasInternals.h,
+	  include/libxml/xmlerror.h: Applied patches supplied by
+	  Kasimier Buchcik.
+	* test/schemas/po1_0.xml, test/schemas/po1_0.xsd:
+	  changed test to account for above patch.
+	  
 Tue May 11 09:06:53 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* python/tests/tstLastError.py: better portability fix for f(*args),

@@ -21,7 +21,7 @@
       <productName>Lawnmower</productName>
       <quantity>1</quantity>
       <USPrice>148.95</USPrice>
-      <comment>Confirm this is electric</comment>
+      <apo:comment>Confirm this is electric</apo:comment>
     </item>
     <item partNum="926-AA">
       <productName>Baby Monitor</productName>
@@ -31,3 +31,4 @@
     </item>
   </items>
 </apo:purchaseOrder>
+

@@ -132,6 +132,10 @@ relaxNGCleanupTypes()
 relaxNGNewMemParserCtxt()
 relaxNGNewParserCtxt()
 
+# functions from module testOOMlib
+test_get_malloc_blocks_outstanding()
+test_strdup()
+
 # functions from module tree
 buildQName()
 compressMode()

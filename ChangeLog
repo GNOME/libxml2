@@ -1,3 +1,9 @@
+Thu Apr 24 19:11:12 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am doc/apibuild.py: make sure the OOM code don't
+	  get in the way of the builds
+	* doc/libxml2-api.xml python/libxml2class.txt: automatic update
+
 Thu Apr 24 18:01:46 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am testOOM.c testOOMlib.[ch] : integrated the Out Of

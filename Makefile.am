@@ -116,10 +116,10 @@ testReader_LDFLAGS =
 testReader_DEPENDENCIES = $(DEPS)
 testReader_LDADD= $(LDADDS)
 
-testOOM_SOURCES=testOOM.c testOOMlib.h testOOMlib.c
-testOOM_LDFLAGS = 
-testOOM_DEPENDENCIES = $(DEPS)
-testOOM_LDADD= $(LDADDS)
+#testOOM_SOURCES=testOOM.c testOOMlib.h testOOMlib.c
+#testOOM_LDFLAGS = 
+#testOOM_DEPENDENCIES = $(DEPS)
+#testOOM_LDADD= $(LDADDS)
 
 check-local: tests
 

@@ -1,3 +1,12 @@
+Tue Mar 18 17:50:31 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: removed a warning
+	* xmlschemastypes.c: more cleanup, added ENTITY and ENTITIES
+	  support
+	* check-relaxng-test-suite.py check-xsddata-test-suite.py:
+	  cleanup/improvements of the regression tests batch
+	* test/relaxng/testsuite.xml: augmented libxml2 own testsuite
+
 Tue Mar 18 12:36:22 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c: fixed error msg cleanup deallocation

@@ -6994,7 +6994,7 @@ xmlNodeDumpOutputInternal(xmlOutputBufferPtr buf, xmlDocPtr doc,
 	return;
     }
     if (cur->type == XML_ATTRIBUTE_NODE) {
-	xmlAttrDumpOutput(buf,doc,cur,encoding);
+	xmlAttrDumpOutput(buf,doc, (xmlAttrPtr) cur,encoding);
 	return;
     }
     if (cur->type == XML_NAMESPACE_DECL) {

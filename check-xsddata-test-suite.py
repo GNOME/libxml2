@@ -10,12 +10,13 @@ import libxml2
 # Memory debug specific
 libxml2.debugMemory(1)
 debug = 0
+verbose = 1
 
 #
 # the testsuite description
 #
 CONF="test/xsdtest/xsdtestsuite.xml"
-LOG="check-xsdtype-test-suite.log"
+LOG="check-xsddata-test-suite.log"
 
 log = open(LOG, "w")
 nb_schemas_tests = 0
@@ -56,13 +57,16 @@ def handle_valid(node, schema):
     global nb_instances_success
     global nb_instances_failed
 
-    instance = ""
+    instance = node.prop("dtd")
+    if instance == None:
+        instance = ""
     child = node.children
     while child != None:
         if child.type != 'text':
 	    instance = instance + child.serialize()
 	child = child.next
 
+    mem = libxml2.debugMemory(1);
     try:
 	doc = libxml2.parseDoc(instance)
     except:
@@ -75,11 +79,21 @@ def handle_valid(node, schema):
 	nb_instances_failed = nb_instances_failed + 1
 	return
 
+    if debug:
+        print "instance line %d" % (node.lineNo())
+       
     try:
         ctxt = schema.relaxNGNewValidCtxt()
 	ret = doc.relaxNGValidateDoc(ctxt)
+	del ctxt
     except:
         ret = -1
+
+    doc.freeDoc()
+    if mem != libxml2.debugMemory(1):
+	print "validating instance %d line %d leaks" % (
+		  nb_instances_tests, node.lineNo())
+
     if ret != 0:
         log.write("\nFailed to validate correct instance:\n-----\n")
 	log.write(instance)
@@ -87,7 +101,6 @@ def handle_valid(node, schema):
 	nb_instances_failed = nb_instances_failed + 1
     else:
 	nb_instances_success = nb_instances_success + 1
-    doc.freeDoc()
 
 #
 # handle an invalid instance
@@ -97,12 +110,16 @@ def handle_invalid(node, schema):
     global nb_instances_success
     global nb_instances_failed
 
-    instance = ""
+    instance = node.prop("dtd")
+    if instance == None:
+        instance = ""
     child = node.children
     while child != None:
         if child.type != 'text':
 	    instance = instance + child.serialize()
 	child = child.next
+
+    mem = libxml2.debugMemory(1);
 
     try:
 	doc = libxml2.parseDoc(instance)
@@ -115,11 +132,22 @@ def handle_invalid(node, schema):
         log.write("\n-----\n")
 	return
 
+    if debug:
+        print "instance line %d" % (node.lineNo())
+       
     try:
         ctxt = schema.relaxNGNewValidCtxt()
 	ret = doc.relaxNGValidateDoc(ctxt)
+	del ctxt
+
     except:
         ret = -1
+
+    doc.freeDoc()
+    if mem != libxml2.debugMemory(1):
+	print "validating instance %d line %d leaks" % (
+		  nb_instances_tests, node.lineNo())
+    
     if ret == 0:
         log.write("\nFailed to detect validation problem in instance:\n-----\n")
 	log.write(instance)
@@ -127,7 +155,6 @@ def handle_invalid(node, schema):
 	nb_instances_failed = nb_instances_failed + 1
     else:
 	nb_instances_success = nb_instances_success + 1
-    doc.freeDoc()
 
 #
 # handle an incorrect test
@@ -293,12 +320,13 @@ def handle_testCase(node):
 def handle_testSuite(node, level = 0):
     global nb_schemas_tests, nb_schemas_success, nb_schemas_failed
     global nb_instances_tests, nb_instances_success, nb_instances_failed
-    old_schemas_tests = nb_schemas_tests
-    old_schemas_success = nb_schemas_success
-    old_schemas_failed = nb_schemas_failed
-    old_instances_tests = nb_instances_tests
-    old_instances_success = nb_instances_success
-    old_instances_failed = nb_instances_failed
+    if verbose and level >= 0:
+	old_schemas_tests = nb_schemas_tests
+	old_schemas_success = nb_schemas_success
+	old_schemas_failed = nb_schemas_failed
+	old_instances_tests = nb_instances_tests
+	old_instances_success = nb_instances_success
+	old_instances_failed = nb_instances_failed
 
     docs = node.xpathEval('documentation')
     authors = node.xpathEval('author')
@@ -311,27 +339,48 @@ def handle_testSuite(node, level = 0):
 	    for author in authors:
 	        msg = msg + author.content + " "
 	print msg
+    sections = node.xpathEval('section')
+    if sections != [] and level <= 0:
+        msg = ""
+        for section in sections:
+	    msg = msg + section.content + " "
+        print "Tests for section %s" % (msg)
     for test in node.xpathEval('testCase'):
         handle_testCase(test)
     for test in node.xpathEval('testSuite'):
         handle_testSuite(test, level + 1)
 	        
-    print "Result of tests for %s" % (node.xpathEval('string(documentation)'))
-    if nb_schemas_tests != old_schemas_tests:
-	print "found %d test schemas: %d success %d failures" % (
-	      nb_schemas_tests - old_schemas_tests,
-	      nb_schemas_success - old_schemas_success,
-	      nb_schemas_failed - old_schemas_failed)
-    if nb_instances_tests != old_instances_tests:
-	print "found %d test instances: %d success %d failures" % (
-	      nb_instances_tests - old_instances_tests,
-	      nb_instances_success - old_instances_success,
-	      nb_instances_failed - old_instances_failed)
+
+    if verbose and level >= 0 and sections != []:
+        msg = ""
+        for section in sections:
+	    msg = msg + section.content + " "
+        print "Result of tests for section %s" % (msg)
+        if nb_schemas_tests != old_schemas_tests:
+	    print "found %d test schemas: %d success %d failures" % (
+		  nb_schemas_tests - old_schemas_tests,
+		  nb_schemas_success - old_schemas_success,
+		  nb_schemas_failed - old_schemas_failed)
+	if nb_instances_tests != old_instances_tests:
+	    print "found %d test instances: %d success %d failures" % (
+		  nb_instances_tests - old_instances_tests,
+		  nb_instances_success - old_instances_success,
+		  nb_instances_failed - old_instances_failed)
 #
 # Parse the conf file
 #
 libxml2.substituteEntitiesDefault(1);
 testsuite = libxml2.parseFile(CONF)
+
+#
+# Error and warnng callbacks
+#
+def callback(ctx, str):
+    global log
+    log.write("%s%s" % (ctx, str))
+
+libxml2.registerErrorHandler(callback, "")
+
 libxml2.setEntityLoader(resolver)
 root = testsuite.getRootElement()
 if root.name != 'testSuite':

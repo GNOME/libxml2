@@ -1377,6 +1377,14 @@
 </valid>
 <valid>
 <top>
+  <xref link="  id1 "/>
+  <ref id="     id1   "/>
+  <xref link="id1 "/>
+  <xref link="  id1"/>
+</top>
+</valid>
+<valid>
+<top>
   <ref id="id1"/>
   <xref link="id1"/>
 </top>
@@ -1386,6 +1394,140 @@
   <ref id="id1"/>
   <ref id="id1"/>
 </top>
+</invalid>
+</testCase>
+<testCase>
+<correct>
+<element name="top" xmlns="http://relaxng.org/ns/structure/1.0"
+         datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+  <zeroOrMore>
+    <choice>
+      <element name="ref">
+        <attribute name="id">
+	  <data type="ID"/>
+	</attribute>
+	<text/>
+      </element>
+      <element name="xref">
+        <attribute name="link">
+	  <data type="IDREFS"/>
+	</attribute>
+	<text/>
+      </element>
+    </choice>
+  </zeroOrMore>
+</element>
+</correct>
+<valid>
+<top>
+</top>
+</valid>
+<invalid>
+<top>
+  <xref link="id1"/>
+</top>
+</invalid>
+<valid>
+<top>
+  <ref id="id1"/>
+</top>
+</valid>
+<valid>
+<top>
+  <xref link="id1"/>
+  <ref id="id1"/>
+</top>
+</valid>
+<valid>
+<top>
+  <xref link="id1 id1"/>
+  <ref id="id1"/>
+</top>
+</valid>
+<valid>
+<top>
+  <ref id="id1"/>
+  <xref link="id1"/>
+</top>
+</valid>
+<valid>
+<top>
+  <ref id="id2"/>
+  <xref link="id1 id2"/>
+  <ref id="id1"/>
+</top>
+</valid>
+<valid>
+<top>
+  <ref id="id2"/>
+  <xref link=" id2    id1   id2 "/>
+  <ref id="id1"/>
+</top>
+</valid>
+<invalid>
+<top>
+  <ref id="id2"/>
+  <xref link="id1 id2"/>
+</top>
+</invalid>
+<invalid>
+<top>
+  <xref link="id1 id2"/>
+  <ref id="id1"/>
+</top>
+</invalid>
+<invalid>
+<top>
+  <ref id="id1"/>
+  <ref id="id1"/>
+</top>
+</invalid>
+</testCase>
+</testSuite>
+<testSuite>
+<documentation>Test of ENTITY/ENTITIES</documentation>
+<testCase>
+<correct>
+<element xmlns="http://relaxng.org/ns/structure/1.0" name="doc" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+  <data type="ENTITY"/>
+</element>
+</correct>
+<invalid>
+<doc></doc>
+</invalid>
+<invalid>
+<doc>foo</doc>
+</invalid>
+<valid dtd="&#10;&lt;!DOCTYPE doc [&#10;&lt;!ENTITY foo SYSTEM 'whatever' NDATA jpeg&gt;&#10;]&gt;">
+<doc>foo</doc>
+</valid>
+<valid dtd="&#10;&lt;!DOCTYPE doc [&#10;&lt;!ENTITY foo SYSTEM 'whatever' NDATA jpeg&gt;&#10;]&gt;">
+<doc>  foo </doc>
+</valid>
+<invalid dtd="&#10;&lt;!DOCTYPE doc [&#10;&lt;!ENTITY foo SYSTEM 'whatever' NDATA jpeg&gt;&#10;]&gt;">
+<doc>foo bar</doc>
+</invalid>
+</testCase>
+<testCase>
+<correct>
+<element xmlns="http://relaxng.org/ns/structure/1.0" name="doc" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+  <data type="ENTITIES"/>
+</element>
+</correct>
+<invalid>
+<doc></doc>
+</invalid>
+<invalid>
+<doc>foo</doc>
+</invalid>
+<valid dtd="&#10;&lt;!DOCTYPE doc [&#10;&lt;!ENTITY foo SYSTEM 'whatever' NDATA jpeg&gt; &#10;&lt;!ENTITY bar SYSTEM 'whatever' NDATA jpeg&gt; &#10;]&gt;">
+<doc> foo bar </doc>
+</valid>
+<valid dtd="&#10;&lt;!DOCTYPE doc [&#10;&lt;!ENTITY foo SYSTEM 'whatever' NDATA jpeg&gt; &#10;&lt;!ENTITY bar SYSTEM 'whatever' NDATA jpeg&gt; &#10;]&gt;">
+<doc> foo bar foo</doc>
+</valid>
+<invalid dtd="&#10;&lt;!DOCTYPE doc [&#10;&lt;!ENTITY foo SYSTEM 'whatever' NDATA jpeg&gt;]&gt;">
+<doc>foo bar</doc>
 </invalid>
 </testCase>
 </testSuite>

@@ -185,6 +185,8 @@ static xmlSchemaTypePtr xmlSchemaTypeNCNameDef = NULL;
 static xmlSchemaTypePtr xmlSchemaTypeIdDef = NULL;
 static xmlSchemaTypePtr xmlSchemaTypeIdrefDef = NULL;
 static xmlSchemaTypePtr xmlSchemaTypeIdrefsDef = NULL;
+static xmlSchemaTypePtr xmlSchemaTypeEntityDef = NULL;
+static xmlSchemaTypePtr xmlSchemaTypeEntitiesDef = NULL;
 static xmlSchemaTypePtr xmlSchemaTypeNmtokenDef = NULL;
 static xmlSchemaTypePtr xmlSchemaTypeNmtokensDef = NULL;
 
@@ -306,6 +308,10 @@ xmlSchemaInitTypes(void) {
             XML_SCHEMAS_IDREF);
     xmlSchemaTypeIdrefsDef = xmlSchemaInitBasicType("IDREFS",
             XML_SCHEMAS_IDREFS);
+    xmlSchemaTypeEntityDef = xmlSchemaInitBasicType("ENTITY",
+            XML_SCHEMAS_ENTITY);
+    xmlSchemaTypeEntitiesDef = xmlSchemaInitBasicType("ENTITIES",
+            XML_SCHEMAS_ENTITIES);
     xmlSchemaTypeNameDef = xmlSchemaInitBasicType("Name",
 	    XML_SCHEMAS_NAME);
     xmlSchemaTypeQNameDef = xmlSchemaInitBasicType("QName",
@@ -1055,6 +1061,29 @@ error:
     return 1;
 }
 
+/**
+ * xmlSchemaStrip:
+ * @value: a value
+ *
+ * Removes the leading and ending spaces of a string
+ *
+ * Returns the new string or NULL if no change was required.
+ */
+static xmlChar *
+xmlSchemaStrip(const xmlChar *value) {
+    const xmlChar *start = value, *end, *f;
+
+    if (value == NULL) return(NULL);
+    while ((*start != 0) && (IS_BLANK(*start))) start++;
+    end = start;
+    while (*end != 0) end++;
+    f = end;
+    end--;
+    while ((end > start) && (IS_BLANK(*end))) end--;
+    end++;
+    if ((start == value) && (f == end)) return(NULL);
+    return(xmlStrndup(start, end - start));
+}
 
 /**
  * xmlSchemaValAtomicListNode:
@@ -1066,8 +1095,8 @@ error:
  * Check that a value conforms to the lexical space of the predefined
  * list type. if true a value is computed and returned in @ret.
  *
- * Returns 0 if this validates, a positive error code number otherwise
- *         and -1 in case of internal or API error.
+ * Returns the number of items if this validates, a negative error code
+ *         number otherwise
  */
 static int
 xmlSchemaValAtomicListNode(xmlSchemaTypePtr type, const xmlChar *value,
@@ -1087,7 +1116,7 @@ xmlSchemaValAtomicListNode(xmlSchemaTypePtr type, const xmlChar *value,
     /*
      * Split the list
      */
-    while (IS_BLANK(*cur)) cur++;
+    while (IS_BLANK(*cur)) *cur++ = 0;
     while (*cur != 0) {
 	if (IS_BLANK(*cur)) {
 	    *cur = 0;
@@ -1104,7 +1133,7 @@ xmlSchemaValAtomicListNode(xmlSchemaTypePtr type, const xmlChar *value,
 	    TODO
 	}
 	xmlFree(val);
-	return(0);
+	return(nb_values);
     }
     endval = cur;
     cur = val;
@@ -1120,7 +1149,9 @@ xmlSchemaValAtomicListNode(xmlSchemaTypePtr type, const xmlChar *value,
     if (ret != NULL) {
 	TODO
     }
-    return(tmp);
+    if (tmp == 0)
+	return(nb_values);
+    return(-1);
 }
 
 /**
@@ -1156,9 +1187,17 @@ xmlSchemaValPredefTypeNode(xmlSchemaTypePtr type, const xmlChar *value,
     } else if (type == xmlSchemaTypeAnySimpleTypeDef) {
 	return(0);
     } else if (type == xmlSchemaTypeNmtokenDef) {
-	if (xmlValidateNmtokenValue(value))
+	if (xmlValidateNMToken(value, 1) == 0)
 	    return(0);
 	return(1);
+    } else if (type == xmlSchemaTypeNmtokensDef) {
+	ret = xmlSchemaValAtomicListNode(xmlSchemaTypeNmtokenDef,
+		                         value, val, node);
+	if (ret >= 0)
+	    ret = 0;
+	else
+	    ret = 1;
+	return(ret);
     } else if (type == xmlSchemaTypeDecimalDef) {
 	const xmlChar *cur = value, *tmp;
 	int frac = 0, len, neg = 0;
@@ -1487,14 +1526,24 @@ xmlSchemaValPredefTypeNode(xmlSchemaTypePtr type, const xmlChar *value,
 	if ((ret == 0) && (node != NULL) &&
 	    (node->type == XML_ATTRIBUTE_NODE)) {
 	    xmlAttrPtr attr = (xmlAttrPtr) node;
+	    xmlChar *strip;
 
-	    xmlAddRef(NULL, node->doc, value, attr);
+	    strip = xmlSchemaStrip(value);
+	    if (strip != NULL) {
+		xmlAddRef(NULL, node->doc, strip, attr);
+		xmlFree(strip);
+	    } else
+		xmlAddRef(NULL, node->doc, value, attr);
 	    attr->atype = XML_ATTRIBUTE_IDREF;
 	}
 	return(ret);
     } else if (type == xmlSchemaTypeIdrefsDef) {
 	ret = xmlSchemaValAtomicListNode(xmlSchemaTypeIdrefDef,
 		                         value, val, node);
+	if (ret < 0)
+	    ret = 2;
+	else
+	    ret = 0;
 	if ((ret == 0) && (node != NULL) &&
 	    (node->type == XML_ATTRIBUTE_NODE)) {
 	    xmlAttrPtr attr = (xmlAttrPtr) node;
@@ -1511,13 +1560,64 @@ xmlSchemaValPredefTypeNode(xmlSchemaTypePtr type, const xmlChar *value,
 	    (node->type == XML_ATTRIBUTE_NODE)) {
 	    xmlAttrPtr attr = (xmlAttrPtr) node;
 	    xmlIDPtr res;
+	    xmlChar *strip;
 
-	    res = xmlAddID(NULL, node->doc, value, attr);
+	    strip = xmlSchemaStrip(value);
+	    if (strip != NULL) {
+		res = xmlAddID(NULL, node->doc, strip, attr);
+		xmlFree(strip);
+	    } else
+		res = xmlAddID(NULL, node->doc, value, attr);
 	    if (res == NULL) {
 		ret = 2;
 	    } else {
 		attr->atype = XML_ATTRIBUTE_ID;
 	    }
+	}
+	return(ret);
+    } else if (type == xmlSchemaTypeEntitiesDef) {
+	if ((node == NULL) || (node->doc == NULL))
+	    return(3);
+	ret = xmlSchemaValAtomicListNode(xmlSchemaTypeEntityDef,
+		                         value, val, node);
+	if (ret <= 0)
+	    ret = 1;
+	else
+	    ret = 0;
+	if ((ret == 0) && (node != NULL) &&
+	    (node->type == XML_ATTRIBUTE_NODE)) {
+	    xmlAttrPtr attr = (xmlAttrPtr) node;
+
+	    attr->atype = XML_ATTRIBUTE_ENTITIES;
+	}
+	return(ret);
+    } else if (type == xmlSchemaTypeEntityDef) {
+	xmlChar *strip;
+	ret = xmlValidateNCName(value, 1);
+	if ((node == NULL) || (node->doc == NULL))
+	    ret = 3;
+	if (ret == 0) {
+	    xmlEntityPtr ent;
+
+	    strip = xmlSchemaStrip(value);
+	    if (strip != NULL) {
+		ent = xmlGetDocEntity(node->doc, strip);
+		xmlFree(strip);
+	    } else {
+		ent = xmlGetDocEntity(node->doc, value);
+	    }
+	    if ((ent == NULL) ||
+		(ent->etype != XML_EXTERNAL_GENERAL_UNPARSED_ENTITY))
+		ret = 4;
+	}
+	if ((ret == 0) && (val != NULL)) {
+	    TODO;
+	}
+	if ((ret == 0) && (node != NULL) &&
+	    (node->type == XML_ATTRIBUTE_NODE)) {
+	    xmlAttrPtr attr = (xmlAttrPtr) node;
+
+	    attr->atype = XML_ATTRIBUTE_ENTITY;
 	}
 	return(ret);
     } else {

@@ -10,6 +10,7 @@ import libxml2
 # Memory debug specific
 libxml2.debugMemory(1)
 debug = 0
+verbose = 0
 
 #
 # the testsuite description
@@ -336,7 +337,7 @@ def handle_testSuite(node, level = 0):
         handle_testSuite(test, level + 1)
 	        
 
-    if level >= 1 and sections != []:
+    if verbose and level >= 1 and sections != []:
         msg = ""
         for section in sections:
 	    msg = msg + section.content + " "

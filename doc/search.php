@@ -254,12 +254,16 @@ A:link, A:visited, A:active { text-decoration: underline }
             if ($nb > 0) {
 		printf("<table><tbody>\n");
 		printf("<tr><td>Quality</td><td>Symbol</td><td>Type</td><td>module</td><td>Description</td></tr>\n");
+		$i = 0;
 		while (list ($name, $val) = each ($results)) {
 		    list($r,$t,$m,$d,$s,$u) = $val;
 		    $m = str_replace("<", "&lt;", $m);
 		    $s = str_replace("<", "&lt;", $s);
 		    $d = str_replace("<", "&lt;", $d);
 		    echo "<tr><td>$r</td><td><a href='$u'>$s</a></td><td>$t</td><td>$m</td><td>$d</td></tr>";
+		    $i = $i + 1;
+		    if ($i > 75)
+		        break;
 		}
 		printf("</tbody></table>\n");
 	    }

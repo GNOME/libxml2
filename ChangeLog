@@ -1,3 +1,7 @@
+1999-01-27  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* configure.in (XML_INCLUDEDIR): Use -I not -L for includes.
+
 Sun Jan 17 20:06:36 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* parser.c, tree.[ch] : more work toward conformance testing,

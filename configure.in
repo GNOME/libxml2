@@ -29,7 +29,7 @@ AC_CHECK_HEADERS(fcntl.h unistd.h ctype.h dirent.h errno.h malloc.h)
 AC_CHECK_HEADERS(stdarg.h sys/stat.h sys/types.h time.h zlib.h)
 
 XML_LIBDIR='-L${libdir}'
-XML_INCLUDEDIR='-L${includedir}'
+XML_INCLUDEDIR='-I${includedir}'
 XML_LIBS="-lxml $Z_LIBS"
 
 AC_SUBST(XML_LIBDIR)

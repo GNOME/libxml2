@@ -5912,6 +5912,7 @@ xmlHasProp(xmlNodePtr node, const xmlChar *name) {
  * This does the entity substitution.
  * This function looks in DTD attribute declaration for #FIXED or
  * default declaration values unless DTD use has been turned off.
+ * Note that a namespace of NULL indicates to use the default namespace.
  *
  * Returns the attribute or the attribute declaration or NULL
  *     if neither was found.
@@ -5927,17 +5928,18 @@ xmlHasNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *nameSpace) {
 	return(NULL);
 
     prop = node->properties;
-    if (nameSpace == NULL)
-	return(xmlHasProp(node, name));
     while (prop != NULL) {
 	/*
 	 * One need to have
 	 *   - same attribute names
 	 *   - and the attribute carrying that namespace
 	 */
-        if ((xmlStrEqual(prop->name, name)) &&
-	    ((prop->ns != NULL) && (xmlStrEqual(prop->ns->href, nameSpace)))) {
-	    return(prop);
+        if (xmlStrEqual(prop->name, name)) {
+	    if (((prop->ns != NULL) &&
+	    	 (xmlStrEqual(prop->ns->href, nameSpace))) ||
+		((prop->ns == NULL) && (nameSpace == NULL))) {
+		return(prop);
+	    }
         }
 	prop = prop->next;
     }
@@ -5970,16 +5972,25 @@ xmlHasNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *nameSpace) {
 		return(NULL);
 	    }
 
-	    cur = nsList;
-	    while (*cur != NULL) {
-		if (xmlStrEqual((*cur)->href, nameSpace)) {
-		    attrDecl = xmlGetDtdQAttrDesc(doc->intSubset, ename,
-			                          name, (*cur)->prefix);
-		    if ((attrDecl == NULL) && (doc->extSubset != NULL))
-			attrDecl = xmlGetDtdQAttrDesc(doc->extSubset, ename,
-						      name, (*cur)->prefix);
+	    if (nameSpace == NULL) {
+	        attrDecl = xmlGetDtdQAttrDesc(doc->intSubset, ename,
+					      name, NULL);
+		if ((attrDecl == NULL) && (doc->extSubset != NULL)) {
+		    attrDecl = xmlGetDtdQAttrDesc(doc->extSubset, ename,
+		    				  name, NULL);
 		}
-		cur++;
+	    } else {
+		cur = nsList;
+		while (*cur != NULL) {
+		    if (xmlStrEqual((*cur)->href, nameSpace)) {
+			attrDecl = xmlGetDtdQAttrDesc(doc->intSubset, ename,
+						      name, (*cur)->prefix);
+			if ((attrDecl == NULL) && (doc->extSubset != NULL))
+			    attrDecl = xmlGetDtdQAttrDesc(doc->extSubset, ename,
+							  name, (*cur)->prefix);
+		    }
+		    cur++;
+		}
 	    }
 	    xmlFree(nsList);
 	    xmlFree(ename);

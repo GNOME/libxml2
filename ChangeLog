@@ -1,3 +1,8 @@
+Sat Oct  2 21:08:51 PDT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* tree.c: changed xmlHasNsProp to properly handle a request for
+	  the default namespace (bug 153557)
+
 Sat Oct  2 18:18:27 PDT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* parser.c: fixed problem with dictionary handling within

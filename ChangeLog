@@ -1,3 +1,8 @@
+Thu Apr 10 15:32:44 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmlreader.c: fixing HasValue for namespace as raised by 
+	  Denys Duchier
+
 Wed Apr  9 14:07:18 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c include/libxml/HTMLparser.h:  exported

@@ -2034,6 +2034,7 @@ xmlTextReaderHasValue(xmlTextReaderPtr reader) {
         case XML_CDATA_SECTION_NODE:
         case XML_PI_NODE:
         case XML_COMMENT_NODE:
+        case XML_NAMESPACE_DECL:
 	    return(1);
 	default:
 	    break;

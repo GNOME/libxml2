@@ -7574,6 +7574,16 @@ xmlParseEncodingDecl(xmlParserCtxtPtr ctxt) {
 	    ctxt->wellFormed = 0;
 	    if (ctxt->recovery == 0) ctxt->disableSAX = 1;
 	}
+	/*
+	 * UTF-16 encoding stwich has already taken place at this stage,
+	 * more over the little-endian/big-endian selection is already done
+	 */
+        if ((encoding != NULL) &&
+	    ((!xmlStrcasecmp(encoding, BAD_CAST "UTF-16")) ||
+	     (!xmlStrcasecmp(encoding, BAD_CAST "UTF16")))) {
+	     xmlFree(encoding);
+	     encoding = NULL;
+	}
 	if (encoding != NULL) {
 	    xmlCharEncodingHandlerPtr handler;
 

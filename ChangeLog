@@ -1,3 +1,8 @@
+Mon Aug 11 17:02:23 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: cleaning up a problem when parsing UTF-16 and libiconv
+	  is not used.
+
 Sun Aug 10 08:13:22 HKT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* win32/libxml2.def.src: renerated with fixed libxml2-api.xml

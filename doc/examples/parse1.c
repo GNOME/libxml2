@@ -1,5 +1,6 @@
 /**
  * section: Parsing
+ * synopsis: Parse an XML file to a tree and free it
  * purpose: Demonstrate the use of xmlReadFile() to read an XML file
  *          into a tree and and xmlFreeDoc() to free the resulting tree
  * usage: example1 test1.xml

@@ -24,8 +24,9 @@
   </xsl:variable>
 
   <xsl:template match="include">
-    <!-- TODO improve with a link -->
-    <li><xsl:value-of select="."/></li>
+    <xsl:variable name="header" select="substring-before(substring-after(., '/'), '&gt;')"/>
+    <xsl:variable name="doc" select="concat('../html/libxml-', $header, 'tml')"/>
+    <li><a href="{$doc}"><xsl:value-of select="."/></a></li>
   </xsl:template>
 
   <xsl:template match="typedef">
@@ -51,7 +52,7 @@
 
   <xsl:template match="example">
     <xsl:variable name="filename" select="string(@filename)"/>
-    <h3><a name="{$filename}" href="{$filename}"><xsl:value-of select="$filename"/></a></h3>
+    <h3><a name="{$filename}" href="{$filename}"><xsl:value-of select="$filename"/></a>: <xsl:value-of select="synopsis"/></h3>
     <p><xsl:value-of select="purpose"/></p>
     <p>Includes:</p>
     <ul>
@@ -72,11 +73,12 @@
   </xsl:template>
 
   <xsl:template match="section">
-    <li><p> <xsl:value-of select="@name"/> :</p>
+    <li><p> <a href="#{@name}"><xsl:value-of select="@name"/></a> :</p>
     <ul>
     <xsl:for-each select="example">
       <xsl:sort select='.'/>
-      <li> <a href="#{@filename}"><xsl:value-of select="@filename"/></a></li>
+      <xsl:variable name="filename" select="@filename"/>
+      <li> <a href="#{$filename}"><xsl:value-of select="$filename"/></a>: <xsl:value-of select="/examples/example[@filename = $filename]/synopsis"/></li>
     </xsl:for-each>
     </ul>
     </li>
@@ -91,6 +93,14 @@
       <xsl:apply-templates select='.'/>
     </xsl:for-each>
     </ul>
+  </xsl:template>
+
+  <xsl:template name="sections-list">
+    <xsl:for-each select="sections/section">
+      <xsl:variable name="section" select="@name"/>
+      <h2> <a name="{$section}"></a><xsl:value-of select="$section"/> Examples</h2>
+      <xsl:apply-templates select='/examples/example[section = $section]'/>
+    </xsl:for-each>
   </xsl:template>
 
   <xsl:template match="examples">
@@ -128,7 +138,7 @@
                                     <tr>
                                       <td bgcolor="#fffacd">
 				        <xsl:apply-templates select="sections"/>
-				        <xsl:apply-templates select="example"/>
+					<xsl:call-template name="sections-list"/>
 					<p><a href="../bugs.html">Daniel Veillard</a></p>
                                       </td>
                                     </tr>

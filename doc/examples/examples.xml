@@ -1,5 +1,6 @@
 <examples>
-  <example filename='example1.c'>
+  <example filename='parse1.c'>
+    <synopsis>Parse an XML file to a tree and free it</synopsis>
     <purpose>Demonstrate the use of xmlReadFile() to read an XML file into a tree and and xmlFreeDoc() to free the resulting tree</purpose>
     <usage>example1 test1.xml</usage>
     <author>Daniel veillard</author>
@@ -10,33 +11,33 @@
       <include>&lt;libxml/parser.h&gt;</include>
     </includes>
     <uses>
-      <function line='48' file='parser' name='xmlCleanupParser'/>
-      <macro line='43' file='xmlversion' name='LIBXML_TEST_VERSION'/>
-      <function line='29' file='tree' name='xmlFreeDoc'/>
-      <function line='24' file='parser' name='xmlReadFile'/>
-      <typedef line='22' file='tree' name='xmlDocPtr'/>
+      <function line='49' file='parser' name='xmlCleanupParser'/>
+      <macro line='44' file='xmlversion' name='LIBXML_TEST_VERSION'/>
+      <function line='30' file='tree' name='xmlFreeDoc'/>
+      <function line='25' file='parser' name='xmlReadFile'/>
+      <typedef line='23' file='tree' name='xmlDocPtr'/>
     </uses>
   </example>
   <symbols>
     <symbol name='LIBXML_TEST_VERSION'>
-      <ref filename='example1.c'/>
+      <ref filename='parse1.c'/>
     </symbol>
     <symbol name='xmlCleanupParser'>
-      <ref filename='example1.c'/>
+      <ref filename='parse1.c'/>
     </symbol>
     <symbol name='xmlDocPtr'>
-      <ref filename='example1.c'/>
+      <ref filename='parse1.c'/>
     </symbol>
     <symbol name='xmlFreeDoc'>
-      <ref filename='example1.c'/>
+      <ref filename='parse1.c'/>
     </symbol>
     <symbol name='xmlReadFile'>
-      <ref filename='example1.c'/>
+      <ref filename='parse1.c'/>
     </symbol>
   </symbols>
   <sections>
     <section name='Parsing'>
-      <example filename='example1.c'/>
+      <example filename='parse1.c'/>
     </section>
   </sections>
 </examples>

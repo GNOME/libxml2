@@ -6610,7 +6610,13 @@ xmlSchemaAcquireSchemaDoc(xmlSchemaParserCtxtPtr ctxt,
 	xmlSchemaPErrMemory(NULL, "xmlSchemaParseImport: "
 	    "allocating a parser context", NULL);
 	return(-1);
-    }		
+    }	   
+    
+    if ((ctxt->dict != NULL) && (parserCtxt->dict != NULL)) {
+	xmlDictFree(parserCtxt->dict);
+	parserCtxt->dict = ctxt->dict;
+	xmlDictReference(parserCtxt->dict);
+    }
     
     *doc = xmlCtxtReadFile(parserCtxt, (const char *) location, 
 	    NULL, SCHEMAS_PARSE_OPTIONS);
@@ -6922,6 +6928,7 @@ xmlSchemaParseInclude(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     int wasConvertingNs = 0;
     xmlAttrPtr attr;
     int saveFlags;
+    xmlParserCtxtPtr parserCtxt;
 
 
     if ((ctxt == NULL) || (schema == NULL) || (node == NULL))
@@ -6998,8 +7005,25 @@ xmlSchemaParseInclude(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     /*
      * First step is to parse the input document into an DOM/Infoset
      */
-    doc = xmlReadFile((const char *) schemaLocation, NULL,
-                      SCHEMAS_PARSE_OPTIONS);
+    /* 
+    * TODO: Use xmlCtxtReadFile to share the dictionary.
+    */
+    parserCtxt = xmlNewParserCtxt();
+    if (parserCtxt == NULL) {
+	xmlSchemaPErrMemory(NULL, "xmlSchemaParseInclude: "
+	    "allocating a parser context", NULL);
+	return(-1);
+    }	   
+    
+    if ((ctxt->dict != NULL) && (parserCtxt->dict != NULL)) {
+	xmlDictFree(parserCtxt->dict);
+	parserCtxt->dict = ctxt->dict;
+	xmlDictReference(parserCtxt->dict);
+    }
+    
+    doc = xmlCtxtReadFile(parserCtxt, (const char *) schemaLocation, 
+	    NULL, SCHEMAS_PARSE_OPTIONS);
+    xmlFreeParserCtxt(parserCtxt);
     if (doc == NULL) {
 	/*
 	* TODO: It is not an error for the ·actual value· of the 
@@ -15561,8 +15585,8 @@ xmlSchemaValidateElementByWildcardInternal(xmlSchemaValidCtxtPtr ctxt,
 		    "Internal error: xmlSchemaValidateAnyInternal, "
 		    "validating an element in the context of a wildcard.",
 		    NULL, NULL);
-	    } else if (ret > 0)
-		return (ret);
+	    }
+	    return (ret);
 	} else if (wild->processContents == XML_SCHEMAS_ANY_STRICT) {
 	    /* TODO: Change to proper error code. */
 	    xmlSchemaVWildcardErr(ctxt, XML_SCHEMAV_CVC_ELT_1,

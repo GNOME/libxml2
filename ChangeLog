@@ -1,3 +1,8 @@
+Tue Jul 13 00:14:08 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* python/libxml.py: ran 'expand' on the file to get rid of mixture
+	  of tabs and spaces (bug 147424)
+
 Sun Jul 11 22:38:29 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* python/drv_libxml.py: added an encoding "special comment" to avoid

@@ -1,3 +1,7 @@
+Mon Feb  9 13:45:59 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c: small patch from Philip Ludlam to avoid warnings.
+
 Mon Feb  9 13:41:47 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* encoding.c: applied a small patch from Alfred Mickautsch

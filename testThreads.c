@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <libxml/xmlversion.h>
+#include "libxml.h"
 
 #if defined(LIBXML_THREAD_ENABLED) && defined(LIBXML_CATALOG_ENABLED)
 #include <libxml/globals.h>

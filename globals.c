@@ -18,7 +18,6 @@
 #endif
 #include <string.h>
 
-#include <libxml/xmlversion.h>
 #include <libxml/globals.h>
 #include <libxml/xmlmemory.h>
 

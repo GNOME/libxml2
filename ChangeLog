@@ -1,3 +1,8 @@
+Thu Dec  6 15:31:30 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* globals.c testThreads.c: removed some misplaced includes
+	  of xmlversion.h
+
 Thu Dec  6 09:06:08 EST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* threads.c: patch from Gary Pennington fixing a possible

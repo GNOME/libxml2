@@ -559,6 +559,33 @@ static char *htmlNoContentElements[] = {
     NULL
 };
 
+/*
+ * The list of HTML attributes which are of content %Script;
+ * NOTE: when adding ones, check htmlIsScriptAttribute() since
+ *       it assumes the name starts with 'on'
+ */
+static char *htmlScriptAttributes[] = {
+    "onclick",
+    "ondblclick",
+    "onmousedown",
+    "onmouseup",
+    "onmouseover",
+    "onmousemove",
+    "onmouseout",
+    "onkeypress",
+    "onkeydown",
+    "onkeyup",
+    "onload",
+    "onunload",
+    "onfocus",
+    "onblur",
+    "onsubmit",
+    "onrest",
+    "onchange",
+    "onselect"
+};
+
+
 static char** htmlStartCloseIndex[100];
 static int htmlStartCloseIndexinitialized = 0;
 
@@ -892,6 +919,34 @@ htmlCheckParagraph(htmlParserCtxtPtr ctxt) {
 		ctxt->sax->startElement(ctxt->userData, BAD_CAST"p", NULL);
 	    return(1);
 	}
+    }
+    return(0);
+}
+
+/**
+ * htmlIsScriptAttribute:
+ * @name:  an attribute name
+ *
+ * Check if an attribute is of content type Script
+ *
+ * Returns 1 is the attribute is a script 0 otherwise
+ */
+int
+htmlIsScriptAttribute(const xmlChar *name) {
+    int i;
+
+    if (name == NULL)
+       	return(0);
+    /*
+     * all script attributes start with 'on'
+     */
+    if ((name[0] != 'o') || (name[1] != 'n'))
+       	return(0);
+    for (i = 0;
+	 i < sizeof(htmlScriptAttributes)/sizeof(htmlScriptAttributes[0]);
+	 i++) {
+	if (xmlStrEqual(name, (const xmlChar *) htmlScriptAttributes[i]))
+	    return(1);
     }
     return(0);
 }

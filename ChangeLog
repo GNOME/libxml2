@@ -1,3 +1,8 @@
+Sun Oct 15 16:21:27 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* SAX.c: HTML attributes need normalization too (Bjorn Reese)
+	* HTMLparser.[ch]: addded htmlIsScriptAttribute()
+
 Sun Oct 15 13:18:36 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* doc/*: rebuilt docs preparing for 2.2.5 release, added URI

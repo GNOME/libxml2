@@ -740,13 +740,12 @@ attribute(void *ctx, const xmlChar *fullname, const xmlChar *value)
     name = xmlSplitQName(ctxt, fullname, &ns);
 
     /*
-     * Do the last stave of the attribute normalization
+     * Do the last stage of the attribute normalization
+     * Needed for HTML too:
+     *   http://www.w3.org/TR/html4/types.html#h-6.2
      */
-    if (ctxt->html)
-	nval = NULL;
-    else
-	nval = xmlValidNormalizeAttributeValue(ctxt->myDoc,
-			       ctxt->node, fullname, value);
+    nval = xmlValidNormalizeAttributeValue(ctxt->myDoc, ctxt->node,
+					   fullname, value);
     if (nval != NULL)
 	value = nval;
 

@@ -90,6 +90,7 @@ int			htmlEncodeEntities(unsigned char* out,
 					 int *outlen,
 					 const unsigned char* in,
 					 int *inlen, int quoteChar);
+int			htmlIsScriptAttribute(const xmlChar *name);
 
 /**
  * Interfaces for the Push mode

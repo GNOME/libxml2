@@ -1,3 +1,8 @@
+Tue Oct 21 11:26:36 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* win32/Makefile.bcb win32/Makefile.mingw win32/Makefile.msvc
+	  win32/configure.js: set of Win32 patches for 2.6.0 by Joachim Bauch
+
 Tue Oct 21 02:07:22 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: last minute patch from Eric Zurcher making it into 2.6.0

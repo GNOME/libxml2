@@ -47,6 +47,7 @@ var withSchemas = true;
 var withRegExps = true;
 var withTree = true;
 var withReader = true;
+var withWriter = true;
 var withWalker = true;
 var withPush = true;
 var withValid = true;
@@ -122,6 +123,7 @@ function usage()
 	txt += "  regexps:    Enable regular expressions (" + (withRegExps? "yes" : "no") + ")\n";
 	txt += "  tree:       Enable tree api (" + (withTree? "yes" : "no") + ")\n";
 	txt += "  reader:     Enable xmlReader api (" + (withReader? "yes" : "no") + ")\n";
+	txt += "  writer:     Enable xmlWriter api (" + (withWriter? "yes" : "no") + ")\n";
 	txt += "  walker:     Enable xmlDocWalker api (" + (withWalker? "yes" : "no") + ")\n";
 	txt += "  push:       Enable push api (" + (withPush? "yes" : "no") + ")\n";
 	txt += "  valid:      Enable DTD validation support (" + (withValid? "yes" : "no") + ")\n";
@@ -209,6 +211,7 @@ function discoverVersion()
 	vf.WriteLine("WITH_REGEXPS=" + (withRegExps? "1" : "0"));
 	vf.WriteLine("WITH_TREE=" + (withTree? "1" : "0"));
 	vf.WriteLine("WITH_READER=" + (withReader? "1" : "0"));
+	vf.WriteLine("WITH_WRITER=" + (withWriter? "1" : "0"));
 	vf.WriteLine("WITH_WALKER=" + (withWalker? "1" : "0"));
 	vf.WriteLine("WITH_PUSH=" + (withPush? "1" : "0"));
 	vf.WriteLine("WITH_VALID=" + (withValid? "1" : "0"));
@@ -293,6 +296,8 @@ function configureLibxml()
 			of.WriteLine(s.replace(/\@WITH_TREE\@/, withTree? "1" : "0"));
 		} else if (s.search(/\@WITH_READER\@/) != -1) {
 			of.WriteLine(s.replace(/\@WITH_READER\@/, withReader? "1" : "0"));
+		} else if (s.search(/\@WITH_WRITER\@/) != -1) {
+			of.WriteLine(s.replace(/\@WITH_WRITER\@/, withWriter? "1" : "0"));
 		} else if (s.search(/\@WITH_WALKER\@/) != -1) {
 			of.WriteLine(s.replace(/\@WITH_WALKER\@/, withWalker? "1" : "0"));
 		} else if (s.search(/\@WITH_PUSH\@/) != -1) {
@@ -444,6 +449,8 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 			withTree = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "reader")
 			withReader = strToBool(arg.substring(opt.length + 1, arg.length));
+		else if (opt == "writer")
+			withWriter = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "walker")
 			withWalker = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "push")
@@ -579,6 +586,7 @@ txtOut += "  Memory debugging: " + boolToStr(withMemDebug) + "\n";
 txtOut += "    Regexp support: " + boolToStr(withRegExps) + "\n";
 txtOut += "      Tree support: " + boolToStr(withTree) + "\n";
 txtOut += "    Reader support: " + boolToStr(withReader) + "\n";
+txtOut += "    Writer support: " + boolToStr(withWriter) + "\n";
 txtOut += "    Walker support: " + boolToStr(withWalker) + "\n";
 txtOut += "      Push support: " + boolToStr(withPush) + "\n";
 txtOut += "Validation support: " + boolToStr(withValid) + "\n";

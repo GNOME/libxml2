@@ -1,3 +1,8 @@
+Thu Mar 27 15:06:13 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLtree.c: Fixed reopening of #78662 <form action="...">
+	  is an URI reference
+
 Wed Mar 26 22:38:39 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: fixed bug #109160 on non-ASCII IDs

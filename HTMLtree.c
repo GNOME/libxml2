@@ -605,8 +605,11 @@ htmlAttrDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur,
 	value = xmlNodeListGetString(doc, cur->children, 0);
 	if (value) {
 	    xmlOutputBufferWriteString(buf, "=");
-	    if ((!xmlStrcasecmp(cur->name, BAD_CAST "href")) ||
-		(!xmlStrcasecmp(cur->name, BAD_CAST "src"))) {
+	    if ((cur->ns == NULL) && (cur->parent != NULL) &&
+		(cur->parent->ns == NULL) &&
+		((!xmlStrcasecmp(cur->name, BAD_CAST "href")) ||
+	         (!xmlStrcasecmp(cur->name, BAD_CAST "action")) ||
+		 (!xmlStrcasecmp(cur->name, BAD_CAST "src")))) {
 		xmlChar *escaped;
 		xmlChar *tmp = value;
 

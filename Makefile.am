@@ -841,14 +841,17 @@ Relaxtests: xmllint$(EXEEXT)
 	       fi ; fi ; \
 	  done; done)
 
-dist-hook: libxml2.spec
+cleanup:
+	-@(find . -name .\#\* -exec rm {} \;)
+
+dist-hook: cleanup libxml2.spec
 	-cp libxml2.spec $(distdir)
 	(cd $(srcdir) ; tar -cf - --exclude CVS win32 macos vms test result SAXresult ) | (cd $(distdir); tar xf -)
 
 cleantar:
 	@(rm -f libxml*.tar.gz COPYING.LIB)
 
-rpm: cleantar
+rpm: cleanup cleantar
 	@(unset CDPATH ; $(MAKE) dist && rpmbuild -ta $(distdir).tar.gz)
 
 ## We create xml2Conf.sh here and not from configure because we want

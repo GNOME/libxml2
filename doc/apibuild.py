@@ -1602,12 +1602,41 @@ class docBuilder:
 		if string.find(desc, "DEPRECATED") != -1:
 		    output.write("     <deprecated/>\n")
 
-	ids = dict.functions.keys() + dict.variables.keys() + \
-	      dict.macros.keys() + dict.typedefs.keys() + \
-	      dict.structs.keys() + dict.enums.keys()
+        ids = dict.macros.keys()
 	ids.sort()
 	for id in uniq(ids):
-	    output.write("     <exports symbol='%s'/>\n" % (id))
+	    # Macros are sometime used to masquerade other types.
+	    if dict.functions.has_key(id):
+	        continue
+	    if dict.variables.has_key(id):
+	        continue
+	    if dict.typedefs.has_key(id):
+	        continue
+	    if dict.structs.has_key(id):
+	        continue
+	    if dict.enums.has_key(id):
+	        continue
+	    output.write("     <exports symbol='%s' type='macro'/>\n" % (id))
+        ids = dict.enums.keys()
+	ids.sort()
+	for id in uniq(ids):
+	    output.write("     <exports symbol='%s' type='enum'/>\n" % (id))
+        ids = dict.typedefs.keys()
+	ids.sort()
+	for id in uniq(ids):
+	    output.write("     <exports symbol='%s' type='typedef'/>\n" % (id))
+        ids = dict.structs.keys()
+	ids.sort()
+	for id in uniq(ids):
+	    output.write("     <exports symbol='%s' type='struct'/>\n" % (id))
+        ids = dict.variables.keys()
+	ids.sort()
+	for id in uniq(ids):
+	    output.write("     <exports symbol='%s' type='variable'/>\n" % (id))
+        ids = dict.functions.keys()
+	ids.sort()
+	for id in uniq(ids):
+	    output.write("     <exports symbol='%s' type='function'/>\n" % (id))
 	output.write("    </file>\n")
 
     def serialize_xrefs_files(self, output):

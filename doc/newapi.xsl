@@ -162,9 +162,7 @@
 
   <xsl:template match="macro" mode="toc">
     <pre class="programlisting">
-    <xsl:text>#define </xsl:text><a href="#{@name}"><xsl:value-of select="@name"/></a><xsl:text>
-
-</xsl:text>
+    <xsl:text>#define </xsl:text><a href="#{@name}"><xsl:value-of select="@name"/></a>
     </pre>
   </xsl:template>
 
@@ -189,26 +187,8 @@
     <xsl:choose>
       <xsl:when test="@type = 'enum'">
 	<xsl:text>Enum </xsl:text>
-	<a name="{$name}"><xsl:value-of select="$name"/></a>
-	<xsl:text> {
-</xsl:text>
-        <xsl:for-each select="/api/symbols/enum[@type = $name]">
-	  <xsl:sort select="@value" data-type="number" order="ascending"/>
-	  <xsl:text>    </xsl:text>
-	  <a name="{@name}"><xsl:value-of select="@name"/></a>
-	  <xsl:text> = </xsl:text>
-	  <xsl:value-of select="@value"/>
-	  <xsl:if test="@info != ''">
-	    <xsl:text> : </xsl:text>
-	    <xsl:call-template name="dumptext">
-	      <xsl:with-param name="text" select="@info"/>
-	    </xsl:call-template>
-	  </xsl:if>
-	  <xsl:text>
-</xsl:text>
-	</xsl:for-each>
-	<xsl:text>}
-
+	<a href="#{$name}"><xsl:value-of select="$name"/></a>
+	<xsl:text>
 </xsl:text>
       </xsl:when>
       <xsl:otherwise>
@@ -219,16 +199,56 @@
 	<xsl:text> </xsl:text>
 	<a name="{$name}"><xsl:value-of select="$name"/></a>
 	<xsl:text>
-
 </xsl:text>
       </xsl:otherwise>
     </xsl:choose>
     </pre>
   </xsl:template>
 
+  <xsl:template match="typedef[@type = 'enum']">
+    <xsl:variable name="name" select="string(@name)"/>
+    <h3><a name="{$name}"><xsl:value-of select="$name"/></a></h3>
+    <pre class="programlisting">
+      <xsl:text>Enum </xsl:text>
+      <xsl:value-of select="$name"/>
+      <xsl:text> {
+</xsl:text>
+      <xsl:for-each select="/api/symbols/enum[@type = $name]">
+        <xsl:sort select="@value" data-type="number" order="ascending"/>
+        <xsl:text>    </xsl:text>
+        <a name="{@name}"><xsl:value-of select="@name"/></a>
+        <xsl:text> = </xsl:text>
+        <xsl:value-of select="@value"/>
+        <xsl:if test="@info != ''">
+	  <xsl:text> : </xsl:text>
+	  <xsl:call-template name="dumptext">
+	    <xsl:with-param name="text" select="@info"/>
+	  </xsl:call-template>
+        </xsl:if>
+        <xsl:text>
+</xsl:text>
+      </xsl:for-each>
+      <xsl:text>}
+</xsl:text>
+    </pre>
+  </xsl:template>
+
   <xsl:template match="struct" mode="toc">
     <pre class="programlisting">
-    <xsl:text>Structure </xsl:text><a name="{@name}"><xsl:value-of select="@name"/></a><br/>
+    <xsl:text>Structure </xsl:text><a href="#{@name}"><xsl:value-of select="@name"/></a><br/>
+    <xsl:value-of select="@type"/><xsl:text>
+</xsl:text>
+    <xsl:if test="not(field)">
+      <xsl:text>The content of this structure is not made public by the API.
+</xsl:text>
+    </xsl:if>
+    </pre>
+  </xsl:template>
+
+  <xsl:template match="struct">
+    <h3><a name="{@name}">Structure <xsl:value-of select="@name"/></a></h3>
+    <pre class="programlisting">
+    <xsl:text>Structure </xsl:text><xsl:value-of select="@name"/><br/>
     <xsl:value-of select="@type"/><xsl:text> {
 </xsl:text>
     <xsl:if test="not(field)">
@@ -253,7 +273,6 @@
     </xsl:for-each>
     <xsl:text>}</xsl:text>
     </pre>
-    <br/>
   </xsl:template>
 
   <xsl:template match="macro">
@@ -269,12 +288,22 @@
   </xsl:template>
 
   <xsl:template match="function" mode="toc">
+    <xsl:variable name="name" select="string(@name)"/>
+    <xsl:variable name="nlen" select="string-length($name)"/>
+    <xsl:variable name="tlen" select="string-length(return/@type)"/>
+    <xsl:variable name="blen" select="(($nlen + 8) - (($nlen + 8) mod 8)) + (($tlen + 8) - (($tlen + 8) mod 8))"/>
     <pre class="programlisting">
     <xsl:call-template name="dumptext">
       <xsl:with-param name="text" select="return/@type"/>
     </xsl:call-template>
     <xsl:text>&#9;</xsl:text>
     <a href="#{@name}"><xsl:value-of select="@name"/></a>
+    <xsl:if test="$blen - 40 &lt; -8">
+      <xsl:text>&#9;</xsl:text>
+    </xsl:if>
+    <xsl:if test="$blen - 40 &lt; 0">
+      <xsl:text>&#9;</xsl:text>
+    </xsl:if>
     <xsl:text>&#9;(</xsl:text>
     <xsl:if test="not(arg)">
       <xsl:text>void</xsl:text>
@@ -286,19 +315,81 @@
       <xsl:text> </xsl:text>
       <xsl:value-of select="@name"/>
       <xsl:if test="position() != last()">
-        <xsl:text>, </xsl:text><br/><xsl:text>&#9;&#9;&#9;&#9; </xsl:text>
+        <xsl:text>, </xsl:text><br/>
+	<xsl:if test="$blen - 40 &gt; 8">
+	  <xsl:text>&#9;</xsl:text>
+	</xsl:if>
+	<xsl:if test="$blen - 40 &gt; 0">
+	  <xsl:text>&#9;</xsl:text>
+	</xsl:if>
+	<xsl:text>&#9;&#9;&#9;&#9;&#9; </xsl:text>
       </xsl:if>
     </xsl:for-each>
-    <xsl:text>)</xsl:text><br/>
-    <xsl:text>
+    <xsl:text>)</xsl:text>
+    </pre><xsl:text>
 </xsl:text>
-    </pre>
   </xsl:template>
 
   <xsl:template match="functype" mode="toc">
-    <pre class="programlisting">
     <xsl:variable name="name" select="string(@name)"/>
-    <a name="{$name}"></a>
+    <xsl:variable name="nlen" select="string-length($name)"/>
+    <xsl:variable name="tlen" select="string-length(return/@type)"/>
+    <xsl:variable name="blen" select="(($nlen + 8) - (($nlen + 8) mod 8)) + (($tlen + 8) - (($tlen + 8) mod 8))"/>
+    <pre class="programlisting">
+    <xsl:text>Function type: </xsl:text>
+    <a href="#{$name}"><xsl:value-of select="$name"/></a>
+    <xsl:text>
+</xsl:text>
+    <xsl:call-template name="dumptext">
+      <xsl:with-param name="text" select="return/@type"/>
+    </xsl:call-template>
+    <xsl:text>&#9;</xsl:text>
+    <a href="#{$name}"><xsl:value-of select="$name"/></a>
+    <xsl:if test="$blen - 40 &lt; -8">
+      <xsl:text>&#9;</xsl:text>
+    </xsl:if>
+    <xsl:if test="$blen - 40 &lt; 0">
+      <xsl:text>&#9;</xsl:text>
+    </xsl:if>
+    <xsl:text>&#9;(</xsl:text>
+    <xsl:if test="not(arg)">
+      <xsl:text>void</xsl:text>
+    </xsl:if>
+    <xsl:for-each select="arg">
+      <xsl:call-template name="dumptext">
+        <xsl:with-param name="text" select="@type"/>
+      </xsl:call-template>
+      <xsl:text> </xsl:text>
+      <xsl:value-of select="@name"/>
+      <xsl:if test="position() != last()">
+        <xsl:text>, </xsl:text><br/>
+	<xsl:if test="$blen - 40 &gt; 8">
+	  <xsl:text>&#9;</xsl:text>
+	</xsl:if>
+	<xsl:if test="$blen - 40 &gt; 0">
+	  <xsl:text>&#9;</xsl:text>
+	</xsl:if>
+	<xsl:text>&#9;&#9;&#9;&#9;&#9; </xsl:text>
+      </xsl:if>
+    </xsl:for-each>
+    <xsl:text>)
+</xsl:text>
+    </pre>
+    <xsl:text>
+</xsl:text>
+  </xsl:template>
+
+  <xsl:template match="functype">
+    <xsl:variable name="name" select="string(@name)"/>
+    <xsl:variable name="nlen" select="string-length($name)"/>
+    <xsl:variable name="tlen" select="string-length(return/@type)"/>
+    <xsl:variable name="blen" select="(($nlen + 8) - (($nlen + 8) mod 8)) + (($tlen + 8) - (($tlen + 8) mod 8))"/>
+    <h3>
+      <a name="{$name}"></a>
+      <xsl:text>Function type: </xsl:text>
+      <xsl:value-of select="$name"/>
+    </h3>
+    <pre class="programlisting">
     <xsl:text>Function type: </xsl:text>
     <xsl:value-of select="$name"/>
     <xsl:text>
@@ -308,6 +399,12 @@
     </xsl:call-template>
     <xsl:text>&#9;</xsl:text>
     <xsl:value-of select="@name"/>
+    <xsl:if test="$blen - 40 &lt; -8">
+      <xsl:text>&#9;</xsl:text>
+    </xsl:if>
+    <xsl:if test="$blen - 40 &lt; 0">
+      <xsl:text>&#9;</xsl:text>
+    </xsl:if>
     <xsl:text>&#9;(</xsl:text>
     <xsl:if test="not(arg)">
       <xsl:text>void</xsl:text>
@@ -319,7 +416,14 @@
       <xsl:text> </xsl:text>
       <xsl:value-of select="@name"/>
       <xsl:if test="position() != last()">
-        <xsl:text>, </xsl:text><br/><xsl:text>&#9;&#9;&#9;&#9; </xsl:text>
+        <xsl:text>, </xsl:text><br/>
+	<xsl:if test="$blen - 40 &gt; 8">
+	  <xsl:text>&#9;</xsl:text>
+	</xsl:if>
+	<xsl:if test="$blen - 40 &gt; 0">
+	  <xsl:text>&#9;</xsl:text>
+	</xsl:if>
+	<xsl:text>&#9;&#9;&#9;&#9;&#9; </xsl:text>
       </xsl:if>
     </xsl:for-each>
     <xsl:text>)
@@ -361,6 +465,9 @@
 
   <xsl:template match="function">
     <xsl:variable name="name" select="string(@name)"/>
+    <xsl:variable name="nlen" select="string-length($name)"/>
+    <xsl:variable name="tlen" select="string-length(return/@type)"/>
+    <xsl:variable name="blen" select="(($nlen + 8) - (($nlen + 8) mod 8)) + (($tlen + 8) - (($tlen + 8) mod 8))"/>
     <h3><a name="{$name}"></a>Function: <xsl:value-of select="$name"/></h3>
     <pre class="programlisting">
     <xsl:call-template name="dumptext">
@@ -368,6 +475,12 @@
     </xsl:call-template>
     <xsl:text>&#9;</xsl:text>
     <xsl:value-of select="@name"/>
+    <xsl:if test="$blen - 40 &lt; -8">
+      <xsl:text>&#9;</xsl:text>
+    </xsl:if>
+    <xsl:if test="$blen - 40 &lt; 0">
+      <xsl:text>&#9;</xsl:text>
+    </xsl:if>
     <xsl:text>&#9;(</xsl:text>
     <xsl:if test="not(arg)">
       <xsl:text>void</xsl:text>
@@ -379,7 +492,14 @@
       <xsl:text> </xsl:text>
       <xsl:value-of select="@name"/>
       <xsl:if test="position() != last()">
-        <xsl:text>, </xsl:text><br/><xsl:text>&#9;&#9;&#9;&#9; </xsl:text>
+        <xsl:text>, </xsl:text><br/>
+	<xsl:if test="$blen - 40 &gt; 8">
+	  <xsl:text>&#9;</xsl:text>
+	</xsl:if>
+	<xsl:if test="$blen - 40 &gt; 0">
+	  <xsl:text>&#9;</xsl:text>
+	</xsl:if>
+	<xsl:text>&#9;&#9;&#9;&#9;&#9; </xsl:text>
       </xsl:if>
     </xsl:for-each>
     <xsl:text>)</xsl:text><br/>
@@ -484,7 +604,21 @@
 	      </xsl:when>
 	      <xsl:otherwise>
 		<h2>Table of Contents</h2>
-		<xsl:apply-templates select="exports" mode="toc"/>
+		<xsl:apply-templates select="exports[@type='macro']" mode="toc">
+		  <xsl:sort select='@symbol'/>
+		</xsl:apply-templates>
+		<xsl:apply-templates select="exports[@type='enum']" mode="toc">
+		  <xsl:sort select='@symbol'/>
+		</xsl:apply-templates>
+		<xsl:apply-templates select="exports[@type='typedef']" mode="toc">
+		  <xsl:sort select='@symbol'/>
+		</xsl:apply-templates>
+		<xsl:apply-templates select="exports[@type='struct']" mode="toc">
+		  <xsl:sort select='@symbol'/>
+		</xsl:apply-templates>
+		<xsl:apply-templates select="exports[@type='function']" mode="toc">
+		  <xsl:sort select='@symbol'/>
+		</xsl:apply-templates>
 		<h2>Description</h2>
 		<xsl:text>
 </xsl:text>

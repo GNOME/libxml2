@@ -1,3 +1,11 @@
+Wed Nov 19 00:48:56 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am: do not package cvs versioning temp files.
+	* doc/apibuild.py doc/libxml2-api.xml doc/newapi.xsl: more cleanup,
+	  slightly improved the API xml format, fixed a lot of small
+	  rendering problems
+	* doc/html/libxml*.html: rebuilt
+
 Tue Nov 18 21:51:15 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/*.h include/libxml/*.h.in: modified the file

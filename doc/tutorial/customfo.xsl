@@ -2,7 +2,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 version='1.0'>
 
-  <xsl:import href="http://docbook.sourceforge.net/release/xsl/1.60.1/fo/docbook.xsl" />
+  <xsl:import href="http://docbook.sourceforge.net/release/xsl/1.61.2/fo/docbook.xsl" />
 
 <!-- don't display ulink targets in main text -->
 <xsl:param name="ulink.show">0</xsl:param>

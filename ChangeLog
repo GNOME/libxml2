@@ -1,3 +1,10 @@
+Mon Jan  5 20:47:07 MST 2004 John Fleck <jfleck@inkstain.net>
+
+	* doc/tutorial/customfo.xsl
+	* doc/tutorial/customhtml.xsl
+	update custom tutorial-building stylesheets in preparation
+	for tutorial update
+
 Tue Jan  6 00:10:33 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* rngparser.c: commiting the compact relax ng parser. It's not

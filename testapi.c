@@ -89,8 +89,10 @@ get_api_ns(void) {
 
 static xmlAttrPtr
 get_api_attr(void) {
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XINCLUDE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_HTML_ENABLED)
     static int nr = 0;
     xmlChar name[20];
+#endif
 
     if ((api_root == NULL) || (api_root->type != XML_ELEMENT_NODE)) {
         get_api_root();
@@ -101,8 +103,11 @@ get_api_attr(void) {
         api_attr = api_root->properties;
         return(api_root->properties);
     }
+    api_attr = NULL;
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XINCLUDE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_HTML_ENABLED)
     snprintf((char *) name, 20, "foo%d", nr++);
     api_attr = xmlSetProp(api_root, name, (const xmlChar *) "bar");
+#endif
     return(api_attr);
 }
 
@@ -111,7 +116,7 @@ int main(int argc, char **argv) {
     int blocks, mem;
 
     memset(chartab, 0, sizeof(chartab));
-    strncpy(chartab, "  chartab\n", 20);
+    strncpy((char *) chartab, "  chartab\n", 20);
     memset(inttab, 0, sizeof(inttab));
     memset(longtab, 0, sizeof(longtab));
 
@@ -258,7 +263,9 @@ static void des_unsigned_long(int no ATTRIBUTE_UNUSED, unsigned long val ATTRIBU
 static double gen_double(int no, int nr ATTRIBUTE_UNUSED) {
     if (no == 0) return(0);
     if (no == 1) return(-1.1);
+#if defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_XPATH_ENABLED)
     if (no == 2) return(xmlXPathNAN);
+#endif
     return(-1);
 }
 
@@ -494,6 +501,7 @@ static xmlNodePtr gen_xmlNodePtr_in(int no, int nr ATTRIBUTE_UNUSED) {
 static void des_xmlNodePtr_in(int no ATTRIBUTE_UNUSED, xmlNodePtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
 }
 
+#ifdef LIBXML_WRITER_ENABLED
 #define gen_nb_xmlTextWriterPtr 2
 static xmlTextWriterPtr gen_xmlTextWriterPtr(int no, int nr ATTRIBUTE_UNUSED) {
     if (no == 0) return(xmlNewTextWriterFilename("test.out", 0));
@@ -502,7 +510,9 @@ static xmlTextWriterPtr gen_xmlTextWriterPtr(int no, int nr ATTRIBUTE_UNUSED) {
 static void des_xmlTextWriterPtr(int no ATTRIBUTE_UNUSED, xmlTextWriterPtr val, int nr ATTRIBUTE_UNUSED) {
     if (val != NULL) xmlFreeTextWriter(val);
 }
+#endif
 
+#ifdef LIBXML_READER_ENABLED
 #define gen_nb_xmlTextReaderPtr 4
 static xmlTextReaderPtr gen_xmlTextReaderPtr(int no, int nr ATTRIBUTE_UNUSED) {
     if (no == 0) return(xmlNewTextReaderFilename("test/ent2"));
@@ -513,6 +523,7 @@ static xmlTextReaderPtr gen_xmlTextReaderPtr(int no, int nr ATTRIBUTE_UNUSED) {
 static void des_xmlTextReaderPtr(int no ATTRIBUTE_UNUSED, xmlTextReaderPtr val, int nr ATTRIBUTE_UNUSED) {
     if (val != NULL) xmlFreeTextReader(val);
 }
+#endif
 
 #define gen_nb_xmlBufferPtr 3
 static xmlBufferPtr gen_xmlBufferPtr(int no, int nr ATTRIBUTE_UNUSED) {
@@ -550,6 +561,7 @@ static void des_xmlHashTablePtr(int no ATTRIBUTE_UNUSED, xmlHashTablePtr val, in
 
 #include <libxml/xpathInternals.h>
 
+#ifdef LIBXML_XPATH_ENABLED
 #define gen_nb_xmlXPathObjectPtr 5
 static xmlXPathObjectPtr gen_xmlXPathObjectPtr(int no, int nr ATTRIBUTE_UNUSED) {
     if (no == 0) return(xmlXPathNewString(BAD_CAST "string object"));
@@ -563,7 +575,9 @@ static void des_xmlXPathObjectPtr(int no ATTRIBUTE_UNUSED, xmlXPathObjectPtr val
         xmlXPathFreeObject(val);
     }
 }
+#endif
 
+#ifdef LIBXML_OUTPUT_ENABLED
 #define gen_nb_xmlOutputBufferPtr 2
 static xmlOutputBufferPtr gen_xmlOutputBufferPtr(int no, int nr ATTRIBUTE_UNUSED) {
     if (no == 0) return(xmlOutputBufferCreateFilename("test.out", NULL, 0));
@@ -574,7 +588,9 @@ static void des_xmlOutputBufferPtr(int no ATTRIBUTE_UNUSED, xmlOutputBufferPtr v
         xmlOutputBufferClose(val);
     }
 }
+#endif
 
+#ifdef LIBXML_FTP_ENABLED
 #define gen_nb_xmlNanoFTPCtxtPtr 4
 static void *gen_xmlNanoFTPCtxtPtr(int no, int nr ATTRIBUTE_UNUSED) {
     if (no == 0) return(xmlNanoFTPNewCtxt("ftp://example.com/"));
@@ -587,13 +603,16 @@ static void des_xmlNanoFTPCtxtPtr(int no ATTRIBUTE_UNUSED, void *val, int nr ATT
         xmlNanoFTPFreeCtxt(val);
     }
 }
+#endif
 
+#ifdef LIBXML_HTTP_ENABLED
 #define gen_nb_xmlNanoHTTPCtxtPtr 1
 static void *gen_xmlNanoHTTPCtxtPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
     return(NULL);
 }
 static void des_xmlNanoHTTPCtxtPtr(int no ATTRIBUTE_UNUSED, void *val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
 }
+#endif
 
 #define gen_nb_xmlCharEncoding 4
 static xmlCharEncoding gen_xmlCharEncoding(int no, int nr ATTRIBUTE_UNUSED) {
@@ -647,12 +666,16 @@ static void desret_xmlDocPtr(xmlDocPtr val) {
 static void desret_xmlDictPtr(xmlDictPtr val) {
     xmlDictFree(val);
 }
+#ifdef LIBXML_OUTPUT_ENABLED
 static void desret_xmlOutputBufferPtr(xmlOutputBufferPtr val) {
     xmlOutputBufferClose(val);
 }
+#endif
+#ifdef LIBXML_READER_ENABLED
 static void desret_xmlTextReaderPtr(xmlTextReaderPtr val) {
     xmlFreeTextReader(val);
 }
+#endif
 static void desret_xmlNodePtr(xmlNodePtr val) {
     if ((val != NULL) && (val != api_root) && (val != (xmlNodePtr) api_doc)) {
 	xmlUnlinkNode(val);
@@ -686,9 +709,11 @@ static void desret_xmlNsPtr(xmlNsPtr val ATTRIBUTE_UNUSED) {
 static void desret_xmlDtdPtr(xmlDtdPtr val) {
     desret_xmlNodePtr((xmlNodePtr)val);
 }
+#ifdef LIBXML_XPATH_ENABLED
 static void desret_xmlXPathObjectPtr(xmlXPathObjectPtr val) {
     xmlXPathFreeObject(val);
 }
+#endif
 static void desret_xmlParserCtxtPtr(xmlParserCtxtPtr val) {
     xmlFreeParserCtxt(val);
 }
@@ -699,12 +724,15 @@ static void desret_xmlParserInputBufferPtr(xmlParserInputBufferPtr val) {
 static void desret_xmlParserInputPtr(xmlParserInputPtr val) {
     xmlFreeInputStream(val);
 }
+#ifdef LIBXML_WRITER_ENABLED
 static void desret_xmlTextWriterPtr(xmlTextWriterPtr val) {
     xmlFreeTextWriter(val);
 }
+#endif
 static void desret_xmlBufferPtr(xmlBufferPtr val) {
     xmlBufferFree(val);
 }
+#ifdef LIBXML_SCHEMAS_ENABLED
 static void desret_xmlSchemaParserCtxtPtr(xmlSchemaParserCtxtPtr val) {
     xmlSchemaFreeParserCtxt(val);
 }
@@ -713,8 +741,11 @@ static void desret_xmlSchemaTypePtr(xmlSchemaTypePtr val ATTRIBUTE_UNUSED) {
 static void desret_xmlRelaxNGParserCtxtPtr(xmlRelaxNGParserCtxtPtr val) {
     xmlRelaxNGFreeParserCtxt(val);
 }
+#endif
+#ifdef LIBXML_HTML_ENABLED
 static void desret_const_htmlEntityDesc_ptr(const htmlEntityDescPtr val ATTRIBUTE_UNUSED) {
 }
+#endif
 
 /************************************************************************
  *									*

@@ -865,7 +865,13 @@ xmlNanoHTTPConnectHost(const char *host, int port)
 #endif
     h = gethostbyname(host);
     if (h == NULL) {
-#if defined(HAVE_NETDB_H) && defined(HOST_NOT_FOUND)
+
+/*
+ * Okay, I got fed up by the non-portability of this error message
+ * extraction code. it work on Linux, if it work on your platform
+ * and one want to enable it, send me the defined(foobar) needed
+ */
+#if defined(HAVE_NETDB_H) && defined(HOST_NOT_FOUND) && defined(linux)
         const char *h_err_txt = "";
 
         switch (h_errno) {

@@ -1,3 +1,8 @@
+Tue May 20 14:21:23 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* parserInternals.c: fixing Red Hat bug #91013 where xmllint was
+	  accepting an improper UTF8 sequence
+
 Sat May 17 12:53:11 CEST 2003 Igor Zlatkovic <igor@zlatkovic.com>
 
 	* threads.c: applied the patch from Stéphane Bidoul for getting

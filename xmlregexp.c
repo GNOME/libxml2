@@ -740,7 +740,6 @@ xmlRegPrintState(FILE *output, xmlRegStatePtr state) {
     }
 }
 
-#if 0
 static void
 xmlRegPrintCtxt(FILE *output, xmlRegParserCtxtPtr ctxt) {
     int i;
@@ -780,7 +779,6 @@ xmlRegPrintCtxt(FILE *output, xmlRegParserCtxtPtr ctxt) {
 		                                ctxt->counters[i].max);
     }
 }
-#endif
 
 /************************************************************************
  * 									*
@@ -927,7 +925,7 @@ xmlRegStateAddTrans(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr state,
     printf("Add trans from %d to %d ", state->no, target->no);
     if (count == REGEXP_ALL_COUNTER)
 	printf("all transition");
-    else (count >= 0)
+    else if (count >= 0)
 	printf("count based %d", count);
     else if (counter >= 0)
 	printf("counted %d", counter);
@@ -1389,6 +1387,10 @@ xmlFAComputesDeterminism(xmlRegParserCtxtPtr ctxt) {
     int i;
     int ret = 1;
 
+#ifdef DEBUG_REGEXP_GRAPH
+    printf("xmlFAComputesDeterminism\n");
+    xmlRegPrintCtxt(stdout, ctxt);
+#endif
     if (ctxt->determinist != -1)
 	return(ctxt->determinist);
 

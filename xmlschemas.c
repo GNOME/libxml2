@@ -3262,20 +3262,20 @@ xmlSchemaBuildContentModel(xmlSchemaElementPtr elem,
     start = ctxt->state = xmlAutomataGetInitState(ctxt->am);
     xmlSchemaBuildAContentModel(elem->subtypes, ctxt, name);
     xmlAutomataSetFinalState(ctxt->am, ctxt->state);
+    elem->contModel = xmlAutomataCompile(ctxt->am);
     if (!xmlAutomataIsDeterminist(ctxt->am)) {
 	xmlGenericError(xmlGenericErrorContext,
 			"Content model of %s is not determinist:\n", name);
-	elem->contModel = xmlAutomataCompile(ctxt->am);
 	ctxt->err = XML_SCHEMAS_ERR_NOTDETERMINIST;
+	ctxt->state = NULL;
     } else {
-	elem->contModel = xmlAutomataCompile(ctxt->am);
 #ifdef DEBUG_CONTENT
 	xmlGenericError(xmlGenericErrorContext,
 			"Content model of %s:\n", name);
 	xmlRegexpPrint(stderr, elem->contModel);
 #endif
+	ctxt->state = NULL;
     }
-    ctxt->state = NULL;
     xmlFreeAutomata(ctxt->am);
     ctxt->am = NULL;
 }

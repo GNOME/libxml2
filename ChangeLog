@@ -1,3 +1,9 @@
+Thu Sep 12 18:01:29 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xmlregexp.c xmlschemas.c: fixed a bug reported by Jeff Goff,
+	  the determinism was tested before eliminating the epsilon
+	  transitions :-(
+
 Thu Sep 12 16:57:45 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* python/generator.py python/libxml.c python/libxml.py

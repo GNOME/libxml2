@@ -8,20 +8,18 @@
   </vendor>
   <product id="libxml2">
     <name>libxml2</name>
-    <version>2.5.4</version>
-    <last-release> Feb 20 2003</last-release>
+    <version>2.5.6</version>
+    <last-release> Apr 1 2003</last-release>
     <info-url>http://xmlsoft.org/</info-url>
-    <changes>   - Conformance testing and lot of fixes on Relax NG and XInclude
-    implementation
-   - Implementation of XPointer element() scheme
-   - Bug fixes: XML parser, XInclude entities merge, validity checking on
-    namespaces,
-    2 serialization bugs, node info generation problems, a DTD regexp
-    generation problem.
-  
-   - Portability: windows updates and path canonicalization (Igor)
-   - A few typo fixes (Kjartan Maraas)
-   - Python bindings generator fixes (Stephane Bidoul)
+    <changes>   - Fixed W3C XML Schemas datatype, should be compliant now except for
+    binHex and base64 which are not supported yet.
+   - bug fixes: non-ASCII IDs, HTML output, XInclude on large docs and
+    XInclude entities handling, encoding detection on external subsets, XML
+    Schemas bugs and memory leaks, HTML parser (James Bursa)
+   - portability: python/trio (Albert Chin), Sun compiler warnings
+   - documentation: added --relaxng option to xmllint man page (John)
+   - improved error reporting: xml:space, start/end tag mismatches, Relax NG
+    errors
 
 </changes>
   </product>

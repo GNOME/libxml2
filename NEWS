@@ -17,7 +17,20 @@ to test those
   Schemas
 
 
-2.5.5: Mar 24 2003
+
+2.5.6: Apr 1 2003:
+   - Fixed W3C XML Schemas datatype, should be compliant now except for
+    binHex and base64 which are not supported yet.
+   - bug fixes: non-ASCII IDs, HTML output, XInclude on large docs and
+    XInclude entities handling, encoding detection on external subsets, XML
+    Schemas bugs and memory leaks, HTML parser (James Bursa)
+   - portability: python/trio (Albert Chin), Sun compiler warnings
+   - documentation: added --relaxng option to xmllint man page (John)
+   - improved error reporting: xml:space, start/end tag mismatches, Relax NG
+    errors
+
+
+2.5.5: Mar 24 2003:
    - Lot of fixes on the Relax NG implementation. More testing including
     DocBook and TEI examples.
    - Increased the support for W3C XML Schemas datatype

@@ -519,6 +519,7 @@ Class xmlDoc(xmlNode)
 
     # functions from module xpath
     xpathNewContext()
+    xpathOrderDocElems()
 Class xpathContext()
     # accessors
     contextDoc()

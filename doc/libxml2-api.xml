@@ -619,6 +619,7 @@
      <exports symbol='xmlXPathObjectCopy'/>
      <exports symbol='xmlXPathObjectPtr'/>
      <exports symbol='xmlXPathObjectType'/>
+     <exports symbol='xmlXPathOrderDocElems'/>
      <exports symbol='xmlXPathPINF'/>
      <exports symbol='xmlXPathParserContext'/>
      <exports symbol='xmlXPathParserContextPtr'/>
@@ -10070,6 +10071,11 @@ actually an xmlCharEncoding'/>
       <info>allocate a new copy of a given object</info>
       <return type='xmlXPathObjectPtr' info='the newly created object.'/>
       <arg name='val' type='xmlXPathObjectPtr' info='the original object'/>
+    </function>
+    <function name='xmlXPathOrderDocElems' file='xpath'>
+      <info>Call this routine to speed up XPath computation on static documents. This stamps all the element nodes with the document order Like for line information, the order is kept in the element-&gt;content field, the value stored is actually - the node number (startting at -1) to be able to differenciate from line numbers.</info>
+      <return type='long' info='the number of element found in the document or -1 in case of error.'/>
+      <arg name='doc' type='xmlDocPtr' info='an input document'/>
     </function>
     <function name='xmlXPathParseNCName' file='xpathInternals'>
       <info>parse an XML namespace non qualified name.  [NS 3] NCName ::= (Letter | &apos;_&apos;) (NCNameChar)*  [NS 4] NCNameChar ::= Letter | Digit | &apos;.&apos; | &apos;-&apos; | &apos;_&apos; | CombiningChar | Extender</info>

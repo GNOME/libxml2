@@ -1,3 +1,8 @@
+Tue Apr  1 13:09:46 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in NEWS: preparing release 2.5.6
+	* doc/*: updated and rebuilt the docs
+
 Tue Apr  1 11:52:15 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* SAX.c: fixed an uninitialized memory access pointed by valgrind

@@ -383,6 +383,31 @@ def print_function_wrapper(name, output, export, include):
             unknown_types[ret[0]] = [name]
         return -1
 
+    if file == "debugXML":
+        include.write("#ifdef LIBXML_DEBUG_ENABLED\n");
+        export.write("#ifdef LIBXML_DEBUG_ENABLED\n");
+        output.write("#ifdef LIBXML_DEBUG_ENABLED\n");
+    elif file == "HTMLtree" or file == "HTMLparser":
+        include.write("#ifdef LIBXML_HTML_ENABLED\n");
+        export.write("#ifdef LIBXML_HTML_ENABLED\n");
+        output.write("#ifdef LIBXML_HTML_ENABLED\n");
+    elif file == "c14n":
+        include.write("#ifdef LIBXML_C14N_ENABLED\n");
+        export.write("#ifdef LIBXML_C14N_ENABLED\n");
+        output.write("#ifdef LIBXML_C14N_ENABLED\n");
+    elif file == "xpathInternals" or file == "xpath":
+        include.write("#ifdef LIBXML_XPATH_ENABLED\n");
+        export.write("#ifdef LIBXML_XPATH_ENABLED\n");
+        output.write("#ifdef LIBXML_XPATH_ENABLED\n");
+    elif file == "xpointer":
+        include.write("#ifdef LIBXML_XPTR_ENABLED\n");
+        export.write("#ifdef LIBXML_XPTR_ENABLED\n");
+        output.write("#ifdef LIBXML_XPTR_ENABLED\n");
+    elif file == "xinclude":
+        include.write("#ifdef LIBXML_XINCLUDE_ENABLED\n");
+        export.write("#ifdef LIBXML_XINCLUDE_ENABLED\n");
+        output.write("#ifdef LIBXML_XINCLUDE_ENABLED\n");
+
     include.write("PyObject * ")
     include.write("libxml_%s(PyObject *self, PyObject *args);\n" % (name));
 
@@ -417,6 +442,30 @@ def print_function_wrapper(name, output, export, include):
     output.write(c_call)
     output.write(ret_convert)
     output.write("}\n\n")
+    if file == "debugXML":
+        include.write("#endif /* LIBXML_DEBUG_ENABLED */\n");
+        export.write("#endif /* LIBXML_DEBUG_ENABLED */\n");
+        output.write("#endif /* LIBXML_DEBUG_ENABLED */\n");
+    elif file == "HTMLtree" or file == "HTMLparser":
+        include.write("#endif /* LIBXML_HTML_ENABLED */\n");
+        export.write("#endif /* LIBXML_HTML_ENABLED */\n");
+        output.write("#endif /* LIBXML_HTML_ENABLED */\n");
+    elif file == "c14n":
+        include.write("#endif /* LIBXML_C14N_ENABLED */\n");
+        export.write("#endif /* LIBXML_C14N_ENABLED */\n");
+        output.write("#endif /* LIBXML_C14N_ENABLED */\n");
+    elif file == "xpathInternals" or file == "xpath":
+        include.write("#endif /* LIBXML_XPATH_ENABLED */\n");
+        export.write("#endif /* LIBXML_XPATH_ENABLED */\n");
+        output.write("#endif /* LIBXML_XPATH_ENABLED */\n");
+    elif file == "xpointer":
+        include.write("#endif /* LIBXML_XPTR_ENABLED */\n");
+        export.write("#endif /* LIBXML_XPTR_ENABLED */\n");
+        output.write("#endif /* LIBXML_XPTR_ENABLED */\n");
+    elif file == "xinclude":
+        include.write("#endif /* LIBXML_XINCLUDE_ENABLED */\n");
+        export.write("#endif /* LIBXML_XINCLUDE_ENABLED */\n");
+        output.write("#endif /* LIBXML_XINCLUDE_ENABLED */\n");
     return 1
 
 def buildStubs():

@@ -49,9 +49,11 @@ int main(int argc, char **argv) {
     xmlSchemaPtr schema = NULL;
 
     for (i = 1; i < argc ; i++) {
+#ifdef LIBXML_DEBUG_ENABLED
 	if ((!strcmp(argv[i], "-debug")) || (!strcmp(argv[i], "--debug")))
 	    debug++;
 	else
+#endif
 	if ((!strcmp(argv[i], "-noout")) || (!strcmp(argv[i], "--noout"))) {
 	    noout++;
         }
@@ -69,8 +71,10 @@ int main(int argc, char **argv) {
 			stderr);
 		schema = xmlSchemaParse(ctxt);
 		xmlSchemaFreeParserCtxt(ctxt);
+#ifdef LIBXML_DEBUG_ENABLED
 		if (debug)
 		    xmlSchemaDump(stdout, schema);
+#endif
 	    } else {
 		xmlDocPtr doc;
 
@@ -109,7 +113,9 @@ int main(int argc, char **argv) {
 	printf("Usage : %s [--debug] [--noout] schemas XMLfiles ...\n",
 	       argv[0]);
 	printf("\tParse the HTML files and output the result of the parsing\n");
+#ifdef LIBXML_DEBUG_ENABLED
 	printf("\t--debug : dump a debug tree of the in-memory document\n");
+#endif
 	printf("\t--noout : do not print the result\n");
     }
     xmlSchemaCleanupTypes();

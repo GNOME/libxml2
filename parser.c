@@ -9794,7 +9794,7 @@ xmlParseBalancedChunkMemoryRecover(xmlDocPtr doc, xmlSAXHandlerPtr sax,
     if (doc == NULL) {
 	ctxt->myDoc = newDoc;
     } else {
-	ctxt->myDoc = doc;
+	ctxt->myDoc = newDoc;
 	newDoc->children->doc = doc;
     }
     ctxt->instate = XML_PARSER_CONTENT;

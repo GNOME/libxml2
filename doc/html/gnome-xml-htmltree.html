@@ -115,7 +115,7 @@ SIZE="3"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN10096"
+NAME="AEN10184"
 ></A
 ><H2
 >Name</H2
@@ -123,7 +123,7 @@ NAME="AEN10096"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN10099"
+NAME="AEN10187"
 ></A
 ><H2
 >Synopsis</H2
@@ -149,6 +149,10 @@ HREF="gnome-xml-htmltree.html#HTML-ENTITY-REF-NODE"
 #define     <A
 HREF="gnome-xml-htmltree.html#HTML-COMMENT-NODE"
 >HTML_COMMENT_NODE</A
+>
+#define     <A
+HREF="gnome-xml-htmltree.html#HTML-PRESERVE-NODE"
+>HTML_PRESERVE_NODE</A
 >
 <A
 HREF="gnome-xml-htmlparser.html#HTMLDOCPTR"
@@ -276,7 +280,7 @@ HREF="gnome-xml-tree.html#XMLDOCPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN10137"
+NAME="AEN10226"
 ></A
 ><H2
 >Description</H2
@@ -286,14 +290,14 @@ NAME="AEN10137"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN10140"
+NAME="AEN10229"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10142"
+NAME="AEN10231"
 ></A
 ><H3
 ><A
@@ -309,7 +313,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define     HTML_TEXT_NODE</PRE
+>#define HTML_TEXT_NODE		XML_TEXT_NODE</PRE
 ></TD
 ></TR
 ></TABLE
@@ -319,7 +323,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10147"
+NAME="AEN10236"
 ></A
 ><H3
 ><A
@@ -335,7 +339,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define     HTML_ENTITY_REF_NODE</PRE
+>#define HTML_ENTITY_REF_NODE	XML_ENTITY_REF_NODE</PRE
 ></TD
 ></TR
 ></TABLE
@@ -345,7 +349,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10152"
+NAME="AEN10241"
 ></A
 ><H3
 ><A
@@ -361,7 +365,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define     HTML_COMMENT_NODE</PRE
+>#define HTML_COMMENT_NODE	XML_COMMENT_NODE</PRE
 ></TD
 ></TR
 ></TABLE
@@ -371,7 +375,33 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10157"
+NAME="AEN10246"
+></A
+><H3
+><A
+NAME="HTML-PRESERVE-NODE"
+></A
+>HTML_PRESERVE_NODE</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define HTML_PRESERVE_NODE	XML_CDATA_SECTION_NODE</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN10251"
 ></A
 ><H3
 ><A
@@ -431,7 +461,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  URI for the dtd, or NULL</TD
 ></TR
 ><TR
 ><TD
@@ -448,7 +478,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the external ID of the DTD, or NULL</TD
 ></TR
 ><TR
 ><TD
@@ -463,7 +493,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>a new document</TD
 ></TR
 ></TABLE
 ><P
@@ -473,7 +503,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10183"
+NAME="AEN10277"
 ></A
 ><H3
 ><A
@@ -533,7 +563,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  URI for the dtd, or NULL</TD
 ></TR
 ><TR
 ><TD
@@ -550,7 +580,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the external ID of the DTD, or NULL</TD
 ></TR
 ><TR
 ><TD
@@ -565,7 +595,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>a new document, do not intialize the DTD if not provided</TD
 ></TR
 ></TABLE
 ><P
@@ -575,7 +605,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10209"
+NAME="AEN10303"
 ></A
 ><H3
 ><A
@@ -631,7 +661,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the document</TD
 ></TR
 ><TR
 ><TD
@@ -646,7 +676,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the current encoding as flagged in the HTML source</TD
 ></TR
 ></TABLE
 ><P
@@ -656,7 +686,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10230"
+NAME="AEN10324"
 ></A
 ><H3
 ><A
@@ -715,7 +745,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the document</TD
 ></TR
 ><TR
 ><TD
@@ -732,7 +762,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the encoding string</TD
 ></TR
 ><TR
 ><TD
@@ -747,7 +777,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>0 in case of success and -1 in case of error</TD
 ></TR
 ></TABLE
 ><P
@@ -757,7 +787,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10255"
+NAME="AEN10349"
 ></A
 ><H3
 ><A
@@ -816,7 +846,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the document</TD
 ></TR
 ><TR
 ><TD
@@ -833,7 +863,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  OUT: the memory pointer</TD
 ></TR
 ><TR
 ><TD
@@ -850,7 +880,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  OUT: the memory lenght</TD
 ></TR
 ></TABLE
 ><P
@@ -860,7 +890,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10280"
+NAME="AEN10374"
 ></A
 ><H3
 ><A
@@ -917,7 +947,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the FILE*</TD
 ></TR
 ><TR
 ><TD
@@ -934,7 +964,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the document</TD
 ></TR
 ><TR
 ><TD
@@ -949,7 +979,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the number of byte written or -1 in case of failure.</TD
 ></TR
 ></TABLE
 ><P
@@ -959,7 +989,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10305"
+NAME="AEN10399"
 ></A
 ><H3
 ><A
@@ -1019,7 +1049,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the filename (or URL)</TD
 ></TR
 ><TR
 ><TD
@@ -1036,7 +1066,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the document</TD
 ></TR
 ><TR
 ><TD
@@ -1051,7 +1081,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the number of byte written or -1 in case of failure.</TD
 ></TR
 ></TABLE
 ><P
@@ -1061,7 +1091,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10330"
+NAME="AEN10424"
 ></A
 ><H3
 ><A
@@ -1122,7 +1152,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the HTML buffer output</TD
 ></TR
 ><TR
 ><TD
@@ -1139,7 +1169,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the document</TD
 ></TR
 ><TR
 ><TD
@@ -1156,7 +1186,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the current node</TD
 ></TR
 ></TABLE
 ><P
@@ -1166,7 +1196,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10356"
+NAME="AEN10450"
 ></A
 ><H3
 ><A
@@ -1227,7 +1257,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the FILE pointer</TD
 ></TR
 ><TR
 ><TD
@@ -1244,7 +1274,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the document</TD
 ></TR
 ><TR
 ><TD
@@ -1261,7 +1291,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the current node</TD
 ></TR
 ></TABLE
 ><P
@@ -1271,7 +1301,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10382"
+NAME="AEN10476"
 ></A
 ><H3
 ><A
@@ -1326,7 +1356,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the filename</TD
 ></TR
 ><TR
 ><TD
@@ -1343,7 +1373,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the document</TD
 ></TR
 ><TR
 ><TD
@@ -1375,7 +1405,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the number of byte written or -1 in case of failure.</TD
 ></TR
 ></TABLE
 ><P

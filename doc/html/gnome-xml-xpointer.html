@@ -1,0 +1,879 @@
+<HTML
+><HEAD
+><TITLE
+>xpointer</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.33"><LINK
+REL="HOME"
+TITLE="Gnome XML Library Reference Manual"
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="Libxml Library Reference"
+HREF="libxml-lib.html"><LINK
+REL="PREVIOUS"
+TITLE="xpath"
+HREF="gnome-xml-xpath.html"><LINK
+REL="NEXT"
+TITLE="nanohttp"
+HREF="gnome-xml-nanohttp.html"></HEAD
+><BODY
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="4"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="5"
+>Gnome XML Library Reference Manual</FONT
+></TH
+></TR
+><TR
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="left"
+><A
+HREF="gnome-xml-xpath.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>&#60;&#60;&#60; Previous Page</B
+></FONT
+></A
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="book1.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#00C000"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="libxml-lib.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Up</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="right"
+><A
+HREF="gnome-xml-nanohttp.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Next Page &#62;&#62;&#62;</B
+></FONT
+></A
+></TD
+></TR
+></TABLE
+></DIV
+><H1
+>xpointer</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN11386"
+></A
+><H2
+>Name</H2
+>xpointer &#8212; </DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN11389"
+></A
+><H2
+>Synopsis</H2
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="SYNOPSIS"
+>&#13;
+
+struct      <A
+HREF="gnome-xml-xpointer.html#XMLLOCATIONSET"
+>xmlLocationSet</A
+>;
+typedef     <A
+HREF="gnome-xml-xpointer.html#XMLLOCATIONSETPTR"
+>xmlLocationSetPtr</A
+>;
+void        <A
+HREF="gnome-xml-xpointer.html#XMLXPTRFREELOCATIONSET"
+>xmlXPtrFreeLocationSet</A
+>          (<A
+HREF="gnome-xml-xpointer.html#XMLLOCATIONSETPTR"
+>xmlLocationSetPtr</A
+> obj);
+<A
+HREF="gnome-xml-xpointer.html#XMLLOCATIONSETPTR"
+>xmlLocationSetPtr</A
+> <A
+HREF="gnome-xml-xpointer.html#XMLXPTRLOCATIONSETMERGE"
+>xmlXPtrLocationSetMerge</A
+>   (<A
+HREF="gnome-xml-xpointer.html#XMLLOCATIONSETPTR"
+>xmlLocationSetPtr</A
+> val1,
+                                             <A
+HREF="gnome-xml-xpointer.html#XMLLOCATIONSETPTR"
+>xmlLocationSetPtr</A
+> val2);
+<A
+HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+>xmlXPathContextPtr</A
+> <A
+HREF="gnome-xml-xpointer.html#XMLXPTRNEWCONTEXT"
+>xmlXPtrNewContext</A
+>        (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> here,
+                                             <A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> origin);
+<A
+HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+>xmlXPathObjectPtr</A
+> <A
+HREF="gnome-xml-xpointer.html#XMLXPTREVAL"
+>xmlXPtrEval</A
+>               (const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *str,
+                                             <A
+HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+>xmlXPathContextPtr</A
+> ctx);
+void        <A
+HREF="gnome-xml-xpointer.html#XMLXPTRRANGETOFUNCTION"
+>xmlXPtrRangeToFunction</A
+>          (<A
+HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+>xmlXPathParserContextPtr</A
+> ctxt,
+                                             int nargs);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN11411"
+></A
+><H2
+>Description</H2
+><P
+></P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN11414"
+></A
+><H2
+>Details</H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11416"
+></A
+><H3
+><A
+NAME="XMLLOCATIONSET"
+></A
+>struct xmlLocationSet</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>struct xmlLocationSet {
+    int locNr;		      /* number of locations in the set */
+    int locMax;		      /* size of the array as allocated */
+    xmlXPathObjectPtr *locTab;/* array of locations */
+};</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11421"
+></A
+><H3
+><A
+NAME="XMLLOCATIONSETPTR"
+></A
+>xmlLocationSetPtr</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef xmlLocationSet *xmlLocationSetPtr;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11426"
+></A
+><H3
+><A
+NAME="XMLXPTRFREELOCATIONSET"
+></A
+>xmlXPtrFreeLocationSet ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlXPtrFreeLocationSet          (<A
+HREF="gnome-xml-xpointer.html#XMLLOCATIONSETPTR"
+>xmlLocationSetPtr</A
+> obj);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Free the LocationSet compound (not the actual ranges !).</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>obj</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlLocationSetPtr to free</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11442"
+></A
+><H3
+><A
+NAME="XMLXPTRLOCATIONSETMERGE"
+></A
+>xmlXPtrLocationSetMerge ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-xpointer.html#XMLLOCATIONSETPTR"
+>xmlLocationSetPtr</A
+> xmlXPtrLocationSetMerge   (<A
+HREF="gnome-xml-xpointer.html#XMLLOCATIONSETPTR"
+>xmlLocationSetPtr</A
+> val1,
+                                             <A
+HREF="gnome-xml-xpointer.html#XMLLOCATIONSETPTR"
+>xmlLocationSetPtr</A
+> val2);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Merges two rangesets, all ranges from <TT
+CLASS="PARAMETER"
+><I
+>val2</I
+></TT
+> are added to <TT
+CLASS="PARAMETER"
+><I
+>val1</I
+></TT
+></P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>val1</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the first LocationSet</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>val2</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the second LocationSet</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>val1 once extended or NULL in case of error.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11470"
+></A
+><H3
+><A
+NAME="XMLXPTRNEWCONTEXT"
+></A
+>xmlXPtrNewContext ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+>xmlXPathContextPtr</A
+> xmlXPtrNewContext        (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> here,
+                                             <A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> origin);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Create a new XPointer context</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the XML document</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>here</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the node that directly contains the XPointer being evaluated or NULL</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>origin</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the element from which a user or program initiated traversal of
+the link, or NULL.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the xmlXPathContext just allocated.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11501"
+></A
+><H3
+><A
+NAME="XMLXPTREVAL"
+></A
+>xmlXPtrEval ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-xpath.html#XMLXPATHOBJECTPTR"
+>xmlXPathObjectPtr</A
+> xmlXPtrEval               (const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *str,
+                                             <A
+HREF="gnome-xml-xpath.html#XMLXPATHCONTEXTPTR"
+>xmlXPathContextPtr</A
+> ctx);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Evaluate the XPath Location Path in the given context.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>str</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the XPointer expression</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the XPointer context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the xmlXPathObjectPtr resulting from the eveluation or NULL.
+the caller has to free the object.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11527"
+></A
+><H3
+><A
+NAME="XMLXPTRRANGETOFUNCTION"
+></A
+>xmlXPtrRangeToFunction ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlXPtrRangeToFunction          (<A
+HREF="gnome-xml-xpath.html#XMLXPATHPARSERCONTEXTPTR"
+>xmlXPathParserContextPtr</A
+> ctxt,
+                                             int nargs);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Implement the range-<GTKDOCLINK
+HREF="TO"
+>to</GTKDOCLINK
+>() XPointer function</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the XPointer Parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>nargs</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><BR
+CLEAR="all"><BR><TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="left"
+><A
+HREF="gnome-xml-xpath.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>&#60;&#60;&#60; Previous Page</B
+></FONT
+></A
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="book1.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#00C000"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="libxml-lib.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Up</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="right"
+><A
+HREF="gnome-xml-nanohttp.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Next Page &#62;&#62;&#62;</B
+></FONT
+></A
+></TD
+></TR
+><TR
+><TD
+COLSPAN="2"
+ALIGN="left"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>xpath</B
+></FONT
+></TD
+><TD
+COLSPAN="2"
+ALIGN="right"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>nanohttp</B
+></FONT
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

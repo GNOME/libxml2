@@ -1,7 +1,7 @@
 <HTML
 ><HEAD
 ><TITLE
->nanohttp</TITLE
+>uri</TITLE
 ><META
 NAME="GENERATOR"
 CONTENT="Modular DocBook HTML Stylesheet Version 1.33"><LINK
@@ -12,11 +12,11 @@ REL="UP"
 TITLE="Libxml Library Reference"
 HREF="libxml-lib.html"><LINK
 REL="PREVIOUS"
-TITLE="xpointer"
-HREF="gnome-xml-xpointer.html"><LINK
+TITLE="valid"
+HREF="gnome-xml-valid.html"><LINK
 REL="NEXT"
-TITLE="nanoftp"
-HREF="gnome-xml-nanoftp.html"></HEAD
+TITLE="xml-error"
+HREF="gnome-xml-xml-error.html"></HEAD
 ><BODY
 BGCOLOR="#FFFFFF"
 TEXT="#000000"
@@ -44,7 +44,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="left"
 ><A
-HREF="gnome-xml-xpointer.html"
+HREF="gnome-xml-valid.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -98,7 +98,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="right"
 ><A
-HREF="gnome-xml-nanoftp.html"
+HREF="gnome-xml-xml-error.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -111,19 +111,19 @@ SIZE="3"
 ></TABLE
 ></DIV
 ><H1
->nanohttp</H1
+>uri</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN11553"
+NAME="AEN9179"
 ></A
 ><H2
 >Name</H2
->nanohttp &#8212; </DIV
+>uri &#8212; </DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN11556"
+NAME="AEN9182"
 ></A
 ><H2
 >Synopsis</H2
@@ -138,56 +138,88 @@ CELLPADDING="6"
 CLASS="SYNOPSIS"
 >&#13;
 
-void        <A
-HREF="gnome-xml-nanohttp.html#XMLNANOHTTPINIT"
->xmlNanoHTTPInit</A
->                 (void);
-void        <A
-HREF="gnome-xml-nanohttp.html#XMLNANOHTTPCLEANUP"
->xmlNanoHTTPCleanup</A
->              (void);
-void        <A
-HREF="gnome-xml-nanohttp.html#XMLNANOHTTPSCANPROXY"
->xmlNanoHTTPScanProxy</A
->            (const char *URL);
+struct      <A
+HREF="gnome-xml-uri.html#XMLURI"
+>xmlURI</A
+>;
+typedef     <A
+HREF="gnome-xml-uri.html#XMLURIPTR"
+>xmlURIPtr</A
+>;
+<A
+HREF="gnome-xml-uri.html#XMLURIPTR"
+>xmlURIPtr</A
+>   <A
+HREF="gnome-xml-uri.html#XMLCREATEURI"
+>xmlCreateURI</A
+>                    (void);
+<A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    <A
+HREF="gnome-xml-uri.html#XMLBUILDURI"
+>xmlBuildURI</A
+>                     (const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *URI,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *base);
+<A
+HREF="gnome-xml-uri.html#XMLURIPTR"
+>xmlURIPtr</A
+>   <A
+HREF="gnome-xml-uri.html#XMLPARSEURI"
+>xmlParseURI</A
+>                     (const char *URI);
 int         <A
-HREF="gnome-xml-nanohttp.html#XMLNANOHTTPFETCH"
->xmlNanoHTTPFetch</A
->                (const char *URL,
-                                             const char *filename,
-                                             char **contentType);
-void*       <A
-HREF="gnome-xml-nanohttp.html#XMLNANOHTTPMETHOD"
->xmlNanoHTTPMethod</A
->               (const char *URL,
-                                             const char *method,
-                                             const char *input,
-                                             char **contentType,
-                                             const char *headers);
-void*       <A
-HREF="gnome-xml-nanohttp.html#XMLNANOHTTPOPEN"
->xmlNanoHTTPOpen</A
->                 (const char *URL,
-                                             char **contentType);
-int         <A
-HREF="gnome-xml-nanohttp.html#XMLNANOHTTPRETURNCODE"
->xmlNanoHTTPReturnCode</A
->           (void *ctx);
-int         <A
-HREF="gnome-xml-nanohttp.html#XMLNANOHTTPREAD"
->xmlNanoHTTPRead</A
->                 (void *ctx,
-                                             void *dest,
-                                             int len);
-int         <A
-HREF="gnome-xml-nanohttp.html#XMLNANOHTTPSAVE"
->xmlNanoHTTPSave</A
->                 (void *ctxt,
-                                             const char *filename);
+HREF="gnome-xml-uri.html#XMLPARSEURIREFERENCE"
+>xmlParseURIReference</A
+>            (<A
+HREF="gnome-xml-uri.html#XMLURIPTR"
+>xmlURIPtr</A
+> uri,
+                                             const char *str);
+<A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    <A
+HREF="gnome-xml-uri.html#XMLSAVEURI"
+>xmlSaveUri</A
+>                      (<A
+HREF="gnome-xml-uri.html#XMLURIPTR"
+>xmlURIPtr</A
+> uri);
 void        <A
-HREF="gnome-xml-nanohttp.html#XMLNANOHTTPCLOSE"
->xmlNanoHTTPClose</A
->                (void *ctx);</PRE
+HREF="gnome-xml-uri.html#XMLPRINTURI"
+>xmlPrintURI</A
+>                     (<GTKDOCLINK
+HREF="FILE"
+>FILE</GTKDOCLINK
+> *stream,
+                                             <A
+HREF="gnome-xml-uri.html#XMLURIPTR"
+>xmlURIPtr</A
+> uri);
+char*       <A
+HREF="gnome-xml-uri.html#XMLURIUNESCAPESTRING"
+>xmlURIUnescapeString</A
+>            (const char *str,
+                                             int len,
+                                             char *target);
+int         <A
+HREF="gnome-xml-uri.html#XMLNORMALIZEURIPATH"
+>xmlNormalizeURIPath</A
+>             (char *path);
+void        <A
+HREF="gnome-xml-uri.html#XMLFREEURI"
+>xmlFreeURI</A
+>                      (<A
+HREF="gnome-xml-uri.html#XMLURIPTR"
+>xmlURIPtr</A
+> uri);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -195,7 +227,7 @@ HREF="gnome-xml-nanohttp.html#XMLNANOHTTPCLOSE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN11569"
+NAME="AEN9207"
 ></A
 ><H2
 >Description</H2
@@ -205,20 +237,20 @@ NAME="AEN11569"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN11572"
+NAME="AEN9210"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11574"
+NAME="AEN9212"
 ></A
 ><H3
 ><A
-NAME="XMLNANOHTTPINIT"
+NAME="XMLURI"
 ></A
->xmlNanoHTTPInit ()</H3
+>struct xmlURI</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -228,36 +260,17 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void        xmlNanoHTTPInit                 (void);</PRE
-></TD
-></TR
-></TABLE
-><P
->Initialize the HTTP protocol layer.
-Currently it just checks for proxy informations</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN11580"
-></A
-><H3
-><A
-NAME="XMLNANOHTTPCLEANUP"
-></A
->xmlNanoHTTPCleanup ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlNanoHTTPCleanup              (void);</PRE
+>struct xmlURI {
+    char *scheme;
+    char *opaque;
+    char *authority;
+    char *server;
+    char *user;
+    int port;
+    char *path;
+    char *query;
+    char *fragment;
+};</PRE
 ></TD
 ></TR
 ></TABLE
@@ -267,13 +280,13 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11585"
+NAME="AEN9217"
 ></A
 ><H3
 ><A
-NAME="XMLNANOHTTPSCANPROXY"
+NAME="XMLURIPTR"
 ></A
->xmlNanoHTTPScanProxy ()</H3
+>xmlURIPtr</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -283,15 +296,114 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void        xmlNanoHTTPScanProxy            (const char *URL);</PRE
+>typedef xmlURI *xmlURIPtr;</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
->(Re)Initialize the HTTP Proxy context by parsing the URL and finding
-the protocol host port it indicates.
-Should be like http://myproxy/ or http://myproxy:3128/
-A NULL URL cleans up proxy informations.</P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN9222"
+></A
+><H3
+><A
+NAME="XMLCREATEURI"
+></A
+>xmlCreateURI ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-uri.html#XMLURIPTR"
+>xmlURIPtr</A
+>   xmlCreateURI                    (void);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Simply creates an empty xmlURI</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the new structure or NULL in case of error</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN9238"
+></A
+><H3
+><A
+NAME="XMLBUILDURI"
+></A
+>xmlBuildURI ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    xmlBuildURI                     (const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *URI,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *base);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Computes he final URI of the reference done by checking that
+the given URI is valid, and building the final URI using the
+base URI. This is processed according to section 5.2 of the 
+RFC 2396</P
+><P
+>5.2. Resolving Relative References to Absolute Form</P
 ><P
 ></P
 ><DIV
@@ -313,77 +425,14 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->URL</I
+>URI</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  The proxy URL used to initialize the proxy context</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN11600"
-></A
-><H3
-><A
-NAME="XMLNANOHTTPFETCH"
-></A
->xmlNanoHTTPFetch ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlNanoHTTPFetch                (const char *URL,
-                                             const char *filename,
-                                             char **contentType);</PRE
-></TD
-></TR
-></TABLE
-><P
->This function try to fetch the indicated resource via HTTP GET
-and save it's content in the file.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->URL</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  The URL to load</TD
+>  the URI instance found in the document</TD
 ></TR
 ><TR
 ><TD
@@ -393,32 +442,14 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->filename</I
+>base</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the filename where the content should be saved</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->contentType</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  if available the Content-Type information will be
-returned at that location</TD
+>  the base value</TD
 ></TR
 ><TR
 ><TD
@@ -433,8 +464,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->-1 in case of failure, 0 incase of success. The contentType,
-if provided must be freed by the caller</TD
+>a new URI string (to be freed by the caller) or NULL in case
+of error.</TD
 ></TR
 ></TABLE
 ><P
@@ -444,13 +475,13 @@ if provided must be freed by the caller</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11627"
+NAME="AEN9265"
 ></A
 ><H3
 ><A
-NAME="XMLNANOHTTPMETHOD"
+NAME="XMLPARSEURI"
 ></A
->xmlNanoHTTPMethod ()</H3
+>xmlParseURI ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -460,23 +491,17 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void*       xmlNanoHTTPMethod               (const char *URL,
-                                             const char *method,
-                                             const char *input,
-                                             char **contentType,
-                                             const char *headers);</PRE
+><A
+HREF="gnome-xml-uri.html#XMLURIPTR"
+>xmlURIPtr</A
+>   xmlParseURI                     (const char *URI);</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
->This function try to open a connection to the indicated resource
-via HTTP using the given <TT
-CLASS="PARAMETER"
-><I
->method</I
-></TT
->, adding the given extra headers
-and the input buffer for the request content.</P
+>Parse an URI </P
+><P
+>URI-reference = [ absoluteURI | relativeURI ] [ "#" fragment ]</P
 ><P
 ></P
 ><DIV
@@ -498,222 +523,14 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->URL</I
+>URI</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  The URL to load</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->method</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the HTTP method to use</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->input</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the input string if any</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->contentType</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the Content-Type information IN and OUT</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->headers</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the extra headers</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN11659"
-></A
-><H3
-><A
-NAME="XMLNANOHTTPOPEN"
-></A
->xmlNanoHTTPOpen ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void*       xmlNanoHTTPOpen                 (const char *URL,
-                                             char **contentType);</PRE
-></TD
-></TR
-></TABLE
-><P
->This function try to open a connection to the indicated resource
-via HTTP GET.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->URL</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  The URL to load</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->contentType</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  if available the Content-Type information will be
-returned at that location</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN11678"
-></A
-><H3
-><A
-NAME="XMLNANOHTTPRETURNCODE"
-></A
->xmlNanoHTTPReturnCode ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlNanoHTTPReturnCode           (void *ctx);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctx</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the HTTP context</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -728,7 +545,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the HTTP return code for the request.</TD
+>a newly build xmlURIPtr or NULL in case of error</TD
 ></TR
 ></TABLE
 ><P
@@ -738,13 +555,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11697"
+NAME="AEN9286"
 ></A
 ><H3
 ><A
-NAME="XMLNANOHTTPREAD"
+NAME="XMLPARSEURIREFERENCE"
 ></A
->xmlNanoHTTPRead ()</H3
+>xmlParseURIReference ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -754,54 +571,338 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->int         xmlNanoHTTPRead                 (void *ctx,
-                                             void *dest,
-                                             int len);</PRE
+>int         xmlParseURIReference            (<A
+HREF="gnome-xml-uri.html#XMLURIPTR"
+>xmlURIPtr</A
+> uri,
+                                             const char *str);</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
->This function tries to read <TT
+>Parse an URI reference string and fills in the appropriate fields
+of the <TT
+CLASS="PARAMETER"
+><I
+>uri</I
+></TT
+> structure</P
+><P
+>URI-reference = [ absoluteURI | relativeURI ] [ "#" fragment ]</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>uri</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  pointer to an URI structure</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>str</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the string to analyze</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 or the error code</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN9312"
+></A
+><H3
+><A
+NAME="XMLSAVEURI"
+></A
+>xmlSaveUri ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    xmlSaveUri                      (<A
+HREF="gnome-xml-uri.html#XMLURIPTR"
+>xmlURIPtr</A
+> uri);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Save the URI as an escaped string</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>uri</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  pointer to an xmlURI</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a new string (to be deallocated by caller)</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN9333"
+></A
+><H3
+><A
+NAME="XMLPRINTURI"
+></A
+>xmlPrintURI ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlPrintURI                     (<GTKDOCLINK
+HREF="FILE"
+>FILE</GTKDOCLINK
+> *stream,
+                                             <A
+HREF="gnome-xml-uri.html#XMLURIPTR"
+>xmlURIPtr</A
+> uri);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Prints the URI in the stream <TT
+CLASS="PARAMETER"
+><I
+>steam</I
+></TT
+>.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>stream</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a FILE* for the output</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>uri</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  pointer to an xmlURI</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN9355"
+></A
+><H3
+><A
+NAME="XMLURIUNESCAPESTRING"
+></A
+>xmlURIUnescapeString ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>char*       xmlURIUnescapeString            (const char *str,
+                                             int len,
+                                             char *target);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Unescaping routine, does not do validity checks !
+Output is direct unsigned char translation of <TT
+CLASS="LITERAL"
+>XX</TT
+> values (no encoding)</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>str</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the string to unescape</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
 CLASS="PARAMETER"
 ><I
 >len</I
 ></TT
-> bytes from the existing HTTP connection
-and saves them in <TT
-CLASS="PARAMETER"
-><I
->dest</I
-></TT
->. This is a blocking call.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctx</I
-></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the HTTP context</TD
+>   the lenght in bytes to unescape (or &lt;= 0 to indicate full string)</TD
 ></TR
 ><TR
 ><TD
@@ -811,31 +912,14 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->dest</I
+>target</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a buffer</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->len</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the buffer length</TD
+>  optionnal destination buffer</TD
 ></TR
 ><TR
 ><TD
@@ -850,8 +934,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the number of byte read. 0 is an indication of an end of connection.
--1 indicates a parameter error.</TD
+>an copy of the string, but unescaped</TD
 ></TR
 ></TABLE
 ><P
@@ -861,13 +944,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11726"
+NAME="AEN9383"
 ></A
 ><H3
 ><A
-NAME="XMLNANOHTTPSAVE"
+NAME="XMLNORMALIZEURIPATH"
 ></A
->xmlNanoHTTPSave ()</H3
+>xmlNormalizeURIPath ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -877,14 +960,13 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->int         xmlNanoHTTPSave                 (void *ctxt,
-                                             const char *filename);</PRE
+>int         xmlNormalizeURIPath             (char *path);</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
->This function saves the output of the HTTP transaction to a file
-It closes and free the context at the end</P
+>applies the 5 normalization steps to a path string
+Normalization occurs directly on the string, no new allocation is done</P
 ><P
 ></P
 ><DIV
@@ -906,31 +988,14 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->ctxt</I
+>path</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the HTTP context</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->filename</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the filename where the content should be saved</TD
+>  pointer to the path string</TD
 ></TR
 ><TR
 ><TD
@@ -945,7 +1010,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->-1 in case of failure, 0 incase of success.</TD
+>0 or an error code</TD
 ></TR
 ></TABLE
 ><P
@@ -955,13 +1020,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11749"
+NAME="AEN9402"
 ></A
 ><H3
 ><A
-NAME="XMLNANOHTTPCLOSE"
+NAME="XMLFREEURI"
 ></A
->xmlNanoHTTPClose ()</H3
+>xmlFreeURI ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -971,13 +1036,15 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void        xmlNanoHTTPClose                (void *ctx);</PRE
+>void        xmlFreeURI                      (<A
+HREF="gnome-xml-uri.html#XMLURIPTR"
+>xmlURIPtr</A
+> uri);</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
->This function closes an HTTP context, it ends up the connection and
-free all data related to it.</P
+>Free up the xmlURI struct</P
 ><P
 ></P
 ><DIV
@@ -999,14 +1066,14 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->ctx</I
+>uri</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the HTTP context</TD
+>  pointer to an xmlURI</TD
 ></TR
 ></TABLE
 ><P
@@ -1029,7 +1096,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="left"
 ><A
-HREF="gnome-xml-xpointer.html"
+HREF="gnome-xml-valid.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -1083,7 +1150,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="right"
 ><A
-HREF="gnome-xml-nanoftp.html"
+HREF="gnome-xml-xml-error.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -1101,7 +1168,7 @@ ALIGN="left"
 COLOR="#FFFFFF"
 SIZE="3"
 ><B
->xpointer</B
+>valid</B
 ></FONT
 ></TD
 ><TD
@@ -1111,7 +1178,7 @@ ALIGN="right"
 COLOR="#FFFFFF"
 SIZE="3"
 ><B
->nanoftp</B
+>xml-error</B
 ></FONT
 ></TD
 ></TR

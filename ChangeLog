@@ -1,3 +1,8 @@
+Sun Oct 15 13:18:36 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* doc/*: rebuilt docs preparing for 2.2.5 release, added URI
+	  and XPointer modules
+
 Sun Oct 15 12:13:30 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* SAX.h: closed #25107

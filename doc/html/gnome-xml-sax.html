@@ -115,7 +115,7 @@ SIZE="3"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN2684"
+NAME="AEN2692"
 ></A
 ><H2
 >Name</H2
@@ -123,7 +123,7 @@ NAME="AEN2684"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN2687"
+NAME="AEN2695"
 ></A
 ><H2
 >Synopsis</H2
@@ -183,6 +183,22 @@ HREF="gnome-xml-sax.html#HASEXTERNALSUBSET"
 void        <A
 HREF="gnome-xml-sax.html#INTERNALSUBSET"
 >internalSubset</A
+>                  (void *ctx,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *name,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *ExternalID,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *SystemID);
+void        <A
+HREF="gnome-xml-sax.html#EXTERNALSUBSET"
+>externalSubset</A
 >                  (void *ctx,
                                              const <A
 HREF="gnome-xml-tree.html#XMLCHAR"
@@ -486,7 +502,7 @@ HREF="gnome-xml-sax.html#SGMLDEFAULTSAXHANDLERINIT"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN2775"
+NAME="AEN2787"
 ></A
 ><H2
 >Description</H2
@@ -496,14 +512,14 @@ NAME="AEN2775"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN2778"
+NAME="AEN2790"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2780"
+NAME="AEN2792"
 ></A
 ><H3
 ><A
@@ -556,7 +572,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -571,7 +587,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>a xmlChar *</TD
 ></TR
 ></TABLE
 ><P
@@ -581,7 +597,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2800"
+NAME="AEN2812"
 ></A
 ><H3
 ><A
@@ -635,7 +651,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -650,7 +666,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>a xmlChar *</TD
 ></TR
 ></TABLE
 ><P
@@ -660,7 +676,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2820"
+NAME="AEN2832"
 ></A
 ><H3
 ><A
@@ -715,7 +731,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -732,7 +748,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> A SAX Locator</TD
 ></TR
 ></TABLE
 ><P
@@ -742,7 +758,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2840"
+NAME="AEN2852"
 ></A
 ><H3
 ><A
@@ -792,7 +808,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -807,7 +823,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>an int</TD
 ></TR
 ></TABLE
 ><P
@@ -817,7 +833,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2859"
+NAME="AEN2871"
 ></A
 ><H3
 ><A
@@ -867,7 +883,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -882,7 +898,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>an int</TD
 ></TR
 ></TABLE
 ><P
@@ -892,7 +908,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2878"
+NAME="AEN2890"
 ></A
 ><H3
 ><A
@@ -942,7 +958,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -957,7 +973,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>1 if true</TD
 ></TR
 ></TABLE
 ><P
@@ -967,7 +983,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2897"
+NAME="AEN2909"
 ></A
 ><H3
 ><A
@@ -1017,7 +1033,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -1032,7 +1048,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>1 if true</TD
 ></TR
 ></TABLE
 ><P
@@ -1042,7 +1058,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2916"
+NAME="AEN2928"
 ></A
 ><H3
 ><A
@@ -1092,7 +1108,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -1107,7 +1123,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>1 if true</TD
 ></TR
 ></TABLE
 ><P
@@ -1117,7 +1133,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2935"
+NAME="AEN2947"
 ></A
 ><H3
 ><A
@@ -1179,7 +1195,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -1196,7 +1212,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the root element name</TD
 ></TR
 ><TR
 ><TD
@@ -1213,7 +1229,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the external ID</TD
 ></TR
 ><TR
 ><TD
@@ -1230,7 +1246,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the SYSTEM ID (e.g. filename or URL)</TD
 ></TR
 ></TABLE
 ><P
@@ -1240,7 +1256,130 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2965"
+NAME="AEN2977"
+></A
+><H3
+><A
+NAME="EXTERNALSUBSET"
+></A
+>externalSubset ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        externalSubset                  (void *ctx,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *name,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *ExternalID,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *SystemID);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Callback on external subset declaration.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the user data (XML parser context)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the root element name</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ExternalID</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the external ID</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>SystemID</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the SYSTEM ID (e.g. filename or URL)</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3007"
 ></A
 ><H3
 ><A
@@ -1297,7 +1436,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -1314,7 +1453,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> The entity name</TD
 ></TR
 ><TR
 ><TD
@@ -1329,7 +1468,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the xmlEntityPtr if found.</TD
 ></TR
 ></TABLE
 ><P
@@ -1339,7 +1478,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2990"
+NAME="AEN3032"
 ></A
 ><H3
 ><A
@@ -1396,7 +1535,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -1413,7 +1552,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> The entity name</TD
 ></TR
 ><TR
 ><TD
@@ -1428,7 +1567,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the xmlEntityPtr if found.</TD
 ></TR
 ></TABLE
 ><P
@@ -1438,7 +1577,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3015"
+NAME="AEN3057"
 ></A
 ><H3
 ><A
@@ -1509,7 +1648,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -1526,7 +1665,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> The public ID of the entity</TD
 ></TR
 ><TR
 ><TD
@@ -1543,7 +1682,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> The system ID of the entity</TD
 ></TR
 ><TR
 ><TD
@@ -1558,7 +1697,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the xmlParserInputPtr if inlined or NULL for DOM behaviour.</TD
 ></TR
 ></TABLE
 ><P
@@ -1568,7 +1707,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3047"
+NAME="AEN3089"
 ></A
 ><H3
 ><A
@@ -1635,7 +1774,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -1652,7 +1791,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the entity name </TD
 ></TR
 ><TR
 ><TD
@@ -1669,7 +1808,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the entity type </TD
 ></TR
 ><TR
 ><TD
@@ -1686,7 +1825,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> The public ID of the entity</TD
 ></TR
 ><TR
 ><TD
@@ -1703,7 +1842,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> The system ID of the entity</TD
 ></TR
 ><TR
 ><TD
@@ -1720,7 +1859,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the entity value (without processing).</TD
 ></TR
 ></TABLE
 ><P
@@ -1730,7 +1869,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3086"
+NAME="AEN3128"
 ></A
 ><H3
 ><A
@@ -1798,7 +1937,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -1815,7 +1954,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the name of the element</TD
 ></TR
 ><TR
 ><TD
@@ -1849,7 +1988,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the attribute type </TD
 ></TR
 ><TR
 ><TD
@@ -1866,7 +2005,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the type of default value</TD
 ></TR
 ><TR
 ><TD
@@ -1883,7 +2022,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the attribute default value</TD
 ></TR
 ><TR
 ><TD
@@ -1900,7 +2039,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the tree of enumerated value set</TD
 ></TR
 ></TABLE
 ><P
@@ -1910,7 +2049,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3129"
+NAME="AEN3171"
 ></A
 ><H3
 ><A
@@ -1969,7 +2108,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -1986,7 +2125,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the element name </TD
 ></TR
 ><TR
 ><TD
@@ -2003,7 +2142,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the element type </TD
 ></TR
 ><TR
 ><TD
@@ -2020,7 +2159,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the element value tree</TD
 ></TR
 ></TABLE
 ><P
@@ -2030,7 +2169,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3158"
+NAME="AEN3200"
 ></A
 ><H3
 ><A
@@ -2092,7 +2231,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -2109,7 +2248,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> The name of the notation</TD
 ></TR
 ><TR
 ><TD
@@ -2126,7 +2265,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> The public ID of the entity</TD
 ></TR
 ><TR
 ><TD
@@ -2143,7 +2282,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> The system ID of the entity</TD
 ></TR
 ></TABLE
 ><P
@@ -2153,7 +2292,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3188"
+NAME="AEN3230"
 ></A
 ><H3
 ><A
@@ -2219,7 +2358,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -2236,7 +2375,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> The name of the entity</TD
 ></TR
 ><TR
 ><TD
@@ -2253,7 +2392,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> The public ID of the entity</TD
 ></TR
 ><TR
 ><TD
@@ -2270,7 +2409,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> The system ID of the entity</TD
 ></TR
 ><TR
 ><TD
@@ -2287,7 +2426,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the name of the notation</TD
 ></TR
 ></TABLE
 ><P
@@ -2297,7 +2436,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3223"
+NAME="AEN3265"
 ></A
 ><H3
 ><A
@@ -2347,7 +2486,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the user data (XML parser context)</TD
 ></TR
 ></TABLE
 ><P
@@ -2357,7 +2496,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3238"
+NAME="AEN3280"
 ></A
 ><H3
 ><A
@@ -2407,7 +2546,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the user data (XML parser context)</TD
 ></TR
 ></TABLE
 ><P
@@ -2417,7 +2556,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3253"
+NAME="AEN3295"
 ></A
 ><H3
 ><A
@@ -2478,7 +2617,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -2495,7 +2634,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  The attribute name, including namespace prefix</TD
 ></TR
 ><TR
 ><TD
@@ -2512,7 +2651,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  The attribute value</TD
 ></TR
 ></TABLE
 ><P
@@ -2522,7 +2661,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3278"
+NAME="AEN3320"
 ></A
 ><H3
 ><A
@@ -2580,7 +2719,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -2597,7 +2736,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  The element name, including namespace prefix</TD
 ></TR
 ><TR
 ><TD
@@ -2614,7 +2753,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  An array of name/value attributes pairs, NULL terminated</TD
 ></TR
 ></TABLE
 ><P
@@ -2624,7 +2763,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3303"
+NAME="AEN3345"
 ></A
 ><H3
 ><A
@@ -2678,7 +2817,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -2695,7 +2834,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  The element name</TD
 ></TR
 ></TABLE
 ><P
@@ -2705,7 +2844,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3323"
+NAME="AEN3365"
 ></A
 ><H3
 ><A
@@ -2759,7 +2898,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -2776,7 +2915,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  The entity name</TD
 ></TR
 ></TABLE
 ><P
@@ -2786,7 +2925,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3343"
+NAME="AEN3385"
 ></A
 ><H3
 ><A
@@ -2842,7 +2981,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -2859,7 +2998,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  a xmlChar string</TD
 ></TR
 ><TR
 ><TD
@@ -2876,7 +3015,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the number of xmlChar</TD
 ></TR
 ></TABLE
 ><P
@@ -2886,7 +3025,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3367"
+NAME="AEN3409"
 ></A
 ><H3
 ><A
@@ -2942,7 +3081,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -2959,7 +3098,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  a xmlChar string</TD
 ></TR
 ><TR
 ><TD
@@ -2976,7 +3115,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the number of xmlChar</TD
 ></TR
 ></TABLE
 ><P
@@ -2986,7 +3125,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3391"
+NAME="AEN3433"
 ></A
 ><H3
 ><A
@@ -3044,7 +3183,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -3061,7 +3200,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the target name</TD
 ></TR
 ><TR
 ><TD
@@ -3078,7 +3217,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the PI data's</TD
 ></TR
 ></TABLE
 ><P
@@ -3088,7 +3227,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3416"
+NAME="AEN3458"
 ></A
 ><H3
 ><A
@@ -3146,7 +3285,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -3163,7 +3302,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the namespace associated URN</TD
 ></TR
 ><TR
 ><TD
@@ -3180,7 +3319,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the namespace prefix</TD
 ></TR
 ></TABLE
 ><P
@@ -3190,7 +3329,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3441"
+NAME="AEN3483"
 ></A
 ><H3
 ><A
@@ -3244,7 +3383,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -3261,7 +3400,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the namespace prefix</TD
 ></TR
 ></TABLE
 ><P
@@ -3271,7 +3410,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3461"
+NAME="AEN3503"
 ></A
 ><H3
 ><A
@@ -3324,7 +3463,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -3339,7 +3478,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the xmlNsPtr or NULL if none</TD
 ></TR
 ></TABLE
 ><P
@@ -3349,7 +3488,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3481"
+NAME="AEN3523"
 ></A
 ><H3
 ><A
@@ -3404,7 +3543,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -3421,7 +3560,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the namespace to check against</TD
 ></TR
 ><TR
 ><TD
@@ -3436,7 +3575,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>1 if true 0 otherwise</TD
 ></TR
 ></TABLE
 ><P
@@ -3446,7 +3585,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3505"
+NAME="AEN3547"
 ></A
 ><H3
 ><A
@@ -3504,7 +3643,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -3521,7 +3660,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the namespace associated URN</TD
 ></TR
 ><TR
 ><TD
@@ -3538,7 +3677,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the namespace prefix</TD
 ></TR
 ></TABLE
 ><P
@@ -3548,7 +3687,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3530"
+NAME="AEN3572"
 ></A
 ><H3
 ><A
@@ -3602,7 +3741,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -3619,7 +3758,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the comment content</TD
 ></TR
 ></TABLE
 ><P
@@ -3629,7 +3768,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3550"
+NAME="AEN3592"
 ></A
 ><H3
 ><A
@@ -3684,7 +3823,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the user data (XML parser context)</TD
 ></TR
 ><TR
 ><TD
@@ -3701,7 +3840,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  The pcdata content</TD
 ></TR
 ><TR
 ><TD
@@ -3718,7 +3857,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the block length</TD
 ></TR
 ></TABLE
 ><P
@@ -3728,7 +3867,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3574"
+NAME="AEN3616"
 ></A
 ><H3
 ><A
@@ -3756,7 +3895,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3580"
+NAME="AEN3622"
 ></A
 ><H3
 ><A
@@ -3784,7 +3923,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3586"
+NAME="AEN3628"
 ></A
 ><H3
 ><A

@@ -1,3 +1,9 @@
+Fri Sep 12 11:43:12 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: applied speedup to xmlSearchNs() as suggested by
+	  Luca Padovani. Cleaned up xmlSearchNsByHref() in the process
+	  applying the same trick.
+
 Fri Sep 12 01:36:20 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c parserInternals.c tree.c include/libxml/parser.h

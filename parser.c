@@ -79,6 +79,8 @@
 #define XML_PARSER_BIG_BUFFER_SIZE 300
 #define XML_PARSER_BUFFER_SIZE 100
 
+#define SAX_COMPAT_MODE BAD_CAST "SAX compatibility mode document"
+
 /*
  * List of XML prefixed PI allowed by W3C specs
  */
@@ -3459,6 +3461,21 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 		    ctxt->sax->entityDecl(ctxt->userData, name,
 				XML_INTERNAL_GENERAL_ENTITY,
 				NULL, NULL, value);
+		/*
+		 * For expat compatibility in SAX mode.
+		 */
+		if ((ctxt->myDoc == NULL) ||
+		    (xmlStrEqual(ctxt->myDoc->version, SAX_COMPAT_MODE))) {
+		    if (ctxt->myDoc == NULL) {
+			ctxt->myDoc = xmlNewDoc(SAX_COMPAT_MODE);
+		    }
+		    if (ctxt->myDoc->intSubset == NULL)
+			ctxt->myDoc->intSubset = xmlNewDtd(ctxt->myDoc,
+					    BAD_CAST "fake", NULL, NULL);
+
+		    entityDecl(ctxt, name, XML_INTERNAL_GENERAL_ENTITY,
+			       NULL, NULL, value);
+		}
 	    } else {
 	        URI = xmlParseExternalID(ctxt, &literal, 1);
 		if ((URI == NULL) && (literal == NULL)) {
@@ -3535,6 +3552,24 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 			ctxt->sax->entityDecl(ctxt->userData, name,
 				    XML_EXTERNAL_GENERAL_PARSED_ENTITY,
 				    literal, URI, NULL);
+		    /*
+		     * For expat compatibility in SAX mode.
+		     * assuming the entity repalcement was asked for
+		     */
+		    if ((ctxt->replaceEntities != 0) &&
+			((ctxt->myDoc == NULL) ||
+			(xmlStrEqual(ctxt->myDoc->version, SAX_COMPAT_MODE)))) {
+			if (ctxt->myDoc == NULL) {
+			    ctxt->myDoc = xmlNewDoc(SAX_COMPAT_MODE);
+			}
+
+			if (ctxt->myDoc->intSubset == NULL)
+			    ctxt->myDoc->intSubset = xmlNewDtd(ctxt->myDoc,
+						BAD_CAST "fake", NULL, NULL);
+			entityDecl(ctxt, name,
+				    XML_EXTERNAL_GENERAL_PARSED_ENTITY,
+				    literal, URI, NULL);
+		    }
 		}
 	    }
 	}
@@ -3571,6 +3606,9 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 	        if ((ctxt->sax != NULL) &&
 		    (ctxt->sax->getEntity != NULL))
 		    cur = ctxt->sax->getEntity(ctxt->userData, name);
+		if ((cur == NULL) && (ctxt->userData==ctxt)) {
+		    cur = getEntity(ctxt, name);
+		}
 	    }
             if (cur != NULL) {
 	        if (cur->orig != NULL)
@@ -5492,6 +5530,9 @@ xmlParseEntityRef(xmlParserCtxtPtr ctxt) {
 			ent = ctxt->sax->getEntity(ctxt->userData, name);
 		    if (ent == NULL)
 		        ent = xmlGetPredefinedEntity(name);
+		    if ((ent == NULL) && (ctxt->userData==ctxt)) {
+			ent = getEntity(ctxt, name);
+		    }
 		}
 		/*
 		 * [ WFC: Entity Declared ]
@@ -5686,6 +5727,9 @@ xmlParseStringEntityRef(xmlParserCtxtPtr ctxt, const xmlChar ** str) {
 			ent = ctxt->sax->getEntity(ctxt->userData, name);
 		    if (ent == NULL)
 		        ent = xmlGetPredefinedEntity(name);
+		    if ((ent == NULL) && (ctxt->userData==ctxt)) {
+			ent = getEntity(ctxt, name);
+		    }
 		}
 		/*
 		 * [ WFC: Entity Declared ]
@@ -7654,6 +7698,15 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
      */
     if ((ctxt->sax) && (ctxt->sax->endDocument != NULL))
         ctxt->sax->endDocument(ctxt->userData);
+
+    /*
+     * Remove locally kept entity definitions if the tree was not built
+     */
+    if ((ctxt->myDoc != NULL) &&
+	(xmlStrEqual(ctxt->myDoc->version, SAX_COMPAT_MODE))) {
+	xmlFreeDoc(ctxt->myDoc);
+	ctxt->myDoc = NULL;
+    }
 
     if (! ctxt->wellFormed) {
 	ctxt->valid = 0;

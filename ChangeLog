@@ -1,3 +1,11 @@
+Mon Mar 18 19:18:13 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: humm, changed the way the SAX parser work when
+	  xmlSubstituteEntitiesDefault(1) is set, it will then 
+	  do the entity registration and loading by itself in case the
+	  user provided SAX getEntity() returns NULL.
+	* testSAX.c: added --noent to test the behaviour.
+
 Mon Mar 18 12:44:23 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: Wilfried Teiken provided a hackish but working

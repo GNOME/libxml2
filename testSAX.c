@@ -44,6 +44,7 @@ static int copy = 0;
 static int recovery = 0;
 static int push = 0;
 static int speed = 0;
+static int noent = 0;
 
 xmlSAXHandler emptySAXHandlerStruct = {
     NULL, /* internalSubset */
@@ -718,7 +719,11 @@ int main(int argc, char **argv) {
 	else if ((!strcmp(argv[i], "-speed")) ||
 	         (!strcmp(argv[i], "--speed")))
 	    speed++;
+	else if ((!strcmp(argv[i], "-noent")) ||
+	         (!strcmp(argv[i], "--noent")))
+	    noent++;
     }
+    if (noent != 0) xmlSubstituteEntitiesDefault(1);
     for (i = 1; i < argc ; i++) {
 	if (argv[i][0] != '-') {
 	    parseAndPrintFile(argv[i]);

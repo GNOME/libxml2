@@ -653,6 +653,8 @@ xmlMemoryDump(void)
 {
     FILE *dump;
 
+    if (debugMaxMemSize == 0)
+	return;
     dump = fopen(".memdump", "w");
     if (dump == NULL)
 	xmlMemoryDumpFile = stderr;

@@ -57,11 +57,11 @@ $(GENERATED): $(srcdir)/$(GENERATE) $(API_DESC)
 	cd $(srcdir) && $(PYTHON) $(GENERATE)
 
 $(libxml2mod_la_OBJECTS): $(GENERATED)
+
 else
 all: 
 endif
-
-tests: all
+tests test: all
 	cd tests && $(MAKE) tests
 
 clean:

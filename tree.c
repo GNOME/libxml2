@@ -556,6 +556,8 @@ xmlFreeDoc(xmlDocPtr cur) {
     cur->refs = NULL;
     extSubset = cur->extSubset;
     intSubset = cur->intSubset;
+    if (intSubset == extSubset)
+	extSubset = NULL;
     if (extSubset != NULL) {
 	xmlUnlinkNode((xmlNodePtr) cur->extSubset);
 	cur->extSubset = NULL;

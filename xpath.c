@@ -161,14 +161,6 @@ xmlXPathInit(void) {
 
 FILE *xmlXPathDebug = NULL;
 
-#define TODO 								\
-    fprintf(xmlXPathDebug, "Unimplemented block at %s:%d\n",		\
-            __FILE__, __LINE__);
-
-#define STRANGE 							\
-    fprintf(xmlXPathDebug, "Internal error at %s:%d\n",			\
-            __FILE__, __LINE__);
-
 double xmlXPathStringEvalNumber(const xmlChar *str);
 void xmlXPathStringFunction(xmlXPathParserContextPtr ctxt, int nargs);
 
@@ -177,6 +169,14 @@ void xmlXPathStringFunction(xmlXPathParserContextPtr ctxt, int nargs);
  * 		Parser stacks related functions and macros		*
  *									*
  ************************************************************************/
+
+#define TODO 								\
+    fprintf(xmlXPathDebug, "Unimplemented block at %s:%d\n",		\
+            __FILE__, __LINE__);
+
+#define STRANGE 							\
+    fprintf(xmlXPathDebug, "Internal error at %s:%d\n",			\
+            __FILE__, __LINE__);
 
 /*
  * Generic function for accessing stacks in the Parser Context
@@ -547,6 +547,97 @@ xmlXPathDebugNodeSet(FILE *output, xmlNodeSetPtr obj) {
 }
 #endif
 
+/**
+ * xmlXPathNewNodeSet:
+ * @val:  the NodePtr value
+ *
+ * Create a new xmlXPathObjectPtr of type NodeSet and initialize
+ * it with the single Node @val
+ *
+ * Returns the newly created object.
+ */
+xmlXPathObjectPtr
+xmlXPathNewNodeSet(xmlNodePtr val) {
+    xmlXPathObjectPtr ret;
+
+    ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
+    if (ret == NULL) {
+        fprintf(xmlXPathDebug, "xmlXPathNewNodeSet: out of memory\n");
+	return(NULL);
+    }
+    memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
+    ret->type = XPATH_NODESET;
+    ret->nodesetval = xmlXPathNodeSetCreate(val);
+    return(ret);
+}
+
+/**
+ * xmlXPathNewNodeSetList:
+ * @val:  an existing NodeSet
+ *
+ * Create a new xmlXPathObjectPtr of type NodeSet and initialize
+ * it with the Nodeset @val
+ *
+ * Returns the newly created object.
+ */
+xmlXPathObjectPtr
+xmlXPathNewNodeSetList(xmlNodeSetPtr val) {
+    xmlXPathObjectPtr ret;
+    int i;
+
+    if (val == NULL)
+    	ret = NULL;
+    else if (val->nodeTab == NULL)
+	    ret = xmlXPathNewNodeSet(NULL);
+    else
+    	{
+	    ret = xmlXPathNewNodeSet(val->nodeTab[0]);
+	    for (i = 1; i < val->nodeNr; ++i)
+	    	xmlXPathNodeSetAdd(ret->nodesetval, val->nodeTab[i]);
+	    }
+
+    return(ret);
+}
+
+/**
+ * xmlXPathWrapNodeSet:
+ * @val:  the NodePtr value
+ *
+ * Wrap the Nodeset @val in a new xmlXPathObjectPtr
+ *
+ * Returns the newly created object.
+ */
+xmlXPathObjectPtr
+xmlXPathWrapNodeSet(xmlNodeSetPtr val) {
+    xmlXPathObjectPtr ret;
+
+    ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
+    if (ret == NULL) {
+        fprintf(xmlXPathDebug, "xmlXPathWrapNodeSet: out of memory\n");
+	return(NULL);
+    }
+    memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
+    ret->type = XPATH_NODESET;
+    ret->nodesetval = val;
+    return(ret);
+}
+
+/**
+ * xmlXPathFreeNodeSetList:
+ * @obj:  an existing NodeSetList object
+ *
+ * Free up the xmlXPathObjectPtr @obj but don't deallocate the objects in
+ * the list contrary to xmlXPathFreeObject().
+ */
+void
+xmlXPathFreeNodeSetList(xmlXPathObjectPtr obj) {
+    if (obj == NULL) return;
+#ifdef DEBUG
+    memset(obj, 0xB , (size_t) sizeof(xmlXPathObject));
+#endif
+    xmlFree(obj);
+}
+
 /************************************************************************
  *									*
  *			Routines to handle Variable			*
@@ -675,600 +766,6 @@ xmlXPathNewCString(const char *val) {
 }
 
 /**
- * xmlXPathNewNodeSet:
- * @val:  the NodePtr value
- *
- * Create a new xmlXPathObjectPtr of type NodeSet and initialize
- * it with the single Node @val
- *
- * Returns the newly created object.
- */
-xmlXPathObjectPtr
-xmlXPathNewNodeSet(xmlNodePtr val) {
-    xmlXPathObjectPtr ret;
-
-    ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
-    if (ret == NULL) {
-        fprintf(xmlXPathDebug, "xmlXPathNewNodeSet: out of memory\n");
-	return(NULL);
-    }
-    memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
-    ret->type = XPATH_NODESET;
-    ret->nodesetval = xmlXPathNodeSetCreate(val);
-    return(ret);
-}
-
-/**
- * xmlXPathNewNodeSetList:
- * @val:  an existing NodeSet
- *
- * Create a new xmlXPathObjectPtr of type NodeSet and initialize
- * it with the Nodeset @val
- *
- * Returns the newly created object.
- */
-xmlXPathObjectPtr
-xmlXPathNewNodeSetList(xmlNodeSetPtr val) {
-    xmlXPathObjectPtr ret;
-    int i;
-
-    if (val == NULL)
-    	ret = NULL;
-    else if (val->nodeTab == NULL)
-	    ret = xmlXPathNewNodeSet(NULL);
-    else
-    	{
-	    ret = xmlXPathNewNodeSet(val->nodeTab[0]);
-	    for (i = 1; i < val->nodeNr; ++i)
-	    	xmlXPathNodeSetAdd(ret->nodesetval, val->nodeTab[i]);
-	    }
-
-    return(ret);
-}
-
-/**
- * xmlXPathWrapNodeSet:
- * @val:  the NodePtr value
- *
- * Wrap the Nodeset @val in a new xmlXPathObjectPtr
- *
- * Returns the newly created object.
- */
-xmlXPathObjectPtr
-xmlXPathWrapNodeSet(xmlNodeSetPtr val) {
-    xmlXPathObjectPtr ret;
-
-    ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
-    if (ret == NULL) {
-        fprintf(xmlXPathDebug, "xmlXPathWrapNodeSet: out of memory\n");
-	return(NULL);
-    }
-    memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
-    ret->type = XPATH_NODESET;
-    ret->nodesetval = val;
-    return(ret);
-}
-
-/**
- * xmlXPathFreeNodeSetList:
- * @obj:  an existing NodeSetList object
- *
- * Free up the xmlXPathObjectPtr @obj but don't deallocate the objects in
- * the list contrary to xmlXPathFreeObject().
- */
-void
-xmlXPathFreeNodeSetList(xmlXPathObjectPtr obj) {
-    if (obj == NULL) return;
-#ifdef DEBUG
-    memset(obj, 0xB , (size_t) sizeof(xmlXPathObject));
-#endif
-    xmlFree(obj);
-}
-
-#ifdef LIBXML_XPTR_ENABLED
-/**
- * xmlXPathNewPoint:
- * @node:  the xmlNodePtr
- * @index:  the index within the node
- *
- * Create a new xmlXPathObjectPtr of type point
- *
- * Returns the newly created object.
- */
-xmlXPathObjectPtr
-xmlXPathNewPoint(xmlNodePtr node, int index) {
-    xmlXPathObjectPtr ret;
-
-    if (node == NULL)
-	return(NULL);
-    if (index < 0)
-	return(NULL);
-
-    ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
-    if (ret == NULL) {
-        fprintf(xmlXPathDebug, "xmlXPathNewPoint: out of memory\n");
-	return(NULL);
-    }
-    memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
-    ret->type = XPATH_POINT;
-    ret->user = (void *) node;
-    ret->index = index;
-    return(ret);
-}
-
-/**
- * xmlXPathNewRangePoints:
- * @start:  the starting point
- * @end:  the ending point
- *
- * Create a new xmlXPathObjectPtr of type range using 2 Points
- *
- * Returns the newly created object.
- */
-xmlXPathObjectPtr
-xmlXPathNewRangePoints(xmlXPathObjectPtr start, xmlXPathObjectPtr end) {
-    xmlXPathObjectPtr ret;
-
-    if (start == NULL)
-	return(NULL);
-    if (end == NULL)
-	return(NULL);
-    if (start->type != XPATH_POINT)
-	return(NULL);
-    if (end->type != XPATH_POINT)
-	return(NULL);
-
-    ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
-    if (ret == NULL) {
-        fprintf(xmlXPathDebug, "xmlXPathNewRangePoints: out of memory\n");
-	return(NULL);
-    }
-    memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
-    ret->type = XPATH_RANGE;
-    ret->user = start->user;
-    ret->index = start->index;
-    ret->user2 = end->user;
-    ret->index2 = end->index;
-    return(ret);
-}
-
-/**
- * xmlXPathNewRangePointNode:
- * @start:  the starting point
- * @end:  the ending node
- *
- * Create a new xmlXPathObjectPtr of type range from a point to a node
- *
- * Returns the newly created object.
- */
-xmlXPathObjectPtr
-xmlXPathNewRangePointNode(xmlXPathObjectPtr start, xmlNodePtr end) {
-    xmlXPathObjectPtr ret;
-
-    if (start == NULL)
-	return(NULL);
-    if (end == NULL)
-	return(NULL);
-    if (start->type != XPATH_POINT)
-	return(NULL);
-
-    ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
-    if (ret == NULL) {
-        fprintf(xmlXPathDebug, "xmlXPathNewRangePointNode: out of memory\n");
-	return(NULL);
-    }
-    memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
-    ret->type = XPATH_RANGE;
-    ret->user = start->user;
-    ret->index = start->index;
-    ret->user2 = end;
-    ret->index2 = -1;
-    return(ret);
-}
-
-/**
- * xmlXPathNewRangeNodePoint:
- * @start:  the starting node
- * @end:  the ending point
- *
- * Create a new xmlXPathObjectPtr of type range from a node to a point
- *
- * Returns the newly created object.
- */
-xmlXPathObjectPtr
-xmlXPathNewRangeNodePoint(xmlNodePtr start, xmlXPathObjectPtr end) {
-    xmlXPathObjectPtr ret;
-
-    if (start == NULL)
-	return(NULL);
-    if (end == NULL)
-	return(NULL);
-    if (start->type != XPATH_POINT)
-	return(NULL);
-    if (end->type != XPATH_POINT)
-	return(NULL);
-
-    ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
-    if (ret == NULL) {
-        fprintf(xmlXPathDebug, "xmlXPathNewRangeNodePoint: out of memory\n");
-	return(NULL);
-    }
-    memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
-    ret->type = XPATH_RANGE;
-    ret->user = start;
-    ret->index = -1;
-    ret->user2 = end->user;
-    ret->index2 = end->index;
-    return(ret);
-}
-
-/**
- * xmlXPathNewRangeNodes:
- * @start:  the starting node
- * @end:  the ending node
- *
- * Create a new xmlXPathObjectPtr of type range using 2 nodes
- *
- * Returns the newly created object.
- */
-xmlXPathObjectPtr
-xmlXPathNewRangeNodes(xmlNodePtr start, xmlNodePtr end) {
-    xmlXPathObjectPtr ret;
-
-    if (start == NULL)
-	return(NULL);
-    if (end == NULL)
-	return(NULL);
-
-    ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
-    if (ret == NULL) {
-        fprintf(xmlXPathDebug, "xmlXPathNewRangeNodes: out of memory\n");
-	return(NULL);
-    }
-    memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
-    ret->type = XPATH_RANGE;
-    ret->user = start;
-    ret->index = -1;
-    ret->user2 = end;
-    ret->index2 = -1;
-    return(ret);
-}
-
-/**
- * xmlXPathNewRangeNodeObject:
- * @start:  the starting node
- * @end:  the ending object
- *
- * Create a new xmlXPathObjectPtr of type range from a not to an object
- *
- * Returns the newly created object.
- */
-xmlXPathObjectPtr
-xmlXPathNewRangeNodeObject(xmlNodePtr start, xmlXPathObjectPtr end) {
-    xmlXPathObjectPtr ret;
-
-    if (start == NULL)
-	return(NULL);
-    if (end == NULL)
-	return(NULL);
-    switch (end->type) {
-	case XPATH_POINT:
-	    break;
-	case XPATH_NODESET:
-	    /*
-	     * Empty set ... 
-	     */
-	    if (end->nodesetval->nodeNr <= 0)
-		return(NULL);
-	    break;
-	default:
-	    TODO
-	    return(NULL);
-    }
-
-    ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
-    if (ret == NULL) {
-        fprintf(xmlXPathDebug, "xmlXPathNewRangeNodeObject: out of memory\n");
-	return(NULL);
-    }
-    memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
-    ret->type = XPATH_RANGE;
-    ret->user = start;
-    ret->index = -1;
-    switch (end->type) {
-	case XPATH_POINT:
-	    ret->user2 = end->user;
-	    ret->index2 = end->index;
-	case XPATH_NODESET: {
-	    ret->user2 = end->nodesetval->nodeTab[end->nodesetval->nodeNr - -1];
-	    ret->index2 = -1;
-	    break;
-	}
-	default:
-	    STRANGE
-	    return(NULL);
-    }
-    ret->user2 = end;
-    ret->index2 = -1;
-    return(ret);
-}
-
-#define XML_RANGESET_DEFAULT	10
-
-/**
- * xmlXPathLocationSetCreate:
- * @val:  an initial xmlXPathObjectPtr, or NULL
- *
- * Create a new xmlLocationSetPtr of type double and of value @val
- *
- * Returns the newly created object.
- */
-xmlLocationSetPtr
-xmlXPathLocationSetCreate(xmlXPathObjectPtr val) {
-    xmlLocationSetPtr ret;
-
-    ret = (xmlLocationSetPtr) xmlMalloc(sizeof(xmlLocationSet));
-    if (ret == NULL) {
-        fprintf(xmlXPathDebug, "xmlXPathNewLocationSet: out of memory\n");
-	return(NULL);
-    }
-    memset(ret, 0 , (size_t) sizeof(xmlLocationSet));
-    if (val != NULL) {
-        ret->locTab = (xmlXPathObjectPtr *) xmlMalloc(XML_RANGESET_DEFAULT *
-					     sizeof(xmlXPathObjectPtr));
-	if (ret->locTab == NULL) {
-	    fprintf(xmlXPathDebug, "xmlXPathNewLocationSet: out of memory\n");
-	    return(NULL);
-	}
-	memset(ret->locTab, 0 ,
-	       XML_RANGESET_DEFAULT * (size_t) sizeof(xmlXPathObjectPtr));
-        ret->locMax = XML_RANGESET_DEFAULT;
-	ret->locTab[ret->locNr++] = val;
-    }
-    return(ret);
-}
-
-/**
- * xmlXPathLocationSetAdd:
- * @cur:  the initial range set
- * @val:  a new xmlXPathObjectPtr
- *
- * add a new xmlXPathObjectPtr ot an existing LocationSet
- */
-void
-xmlXPathLocationSetAdd(xmlLocationSetPtr cur, xmlXPathObjectPtr val) {
-    int i;
-
-    if (val == NULL) return;
-
-    /*
-     * check against doublons
-     */
-    for (i = 0;i < cur->locNr;i++)
-        if (cur->locTab[i] == val) return;
-
-    /*
-     * grow the locTab if needed
-     */
-    if (cur->locMax == 0) {
-        cur->locTab = (xmlXPathObjectPtr *) xmlMalloc(XML_RANGESET_DEFAULT *
-					     sizeof(xmlXPathObjectPtr));
-	if (cur->locTab == NULL) {
-	    fprintf(xmlXPathDebug, "xmlXPathLocationSetAdd: out of memory\n");
-	    return;
-	}
-	memset(cur->locTab, 0 ,
-	       XML_RANGESET_DEFAULT * (size_t) sizeof(xmlXPathObjectPtr));
-        cur->locMax = XML_RANGESET_DEFAULT;
-    } else if (cur->locNr == cur->locMax) {
-        xmlXPathObjectPtr *temp;
-
-        cur->locMax *= 2;
-	temp = (xmlXPathObjectPtr *) xmlRealloc(cur->locTab, cur->locMax *
-				      sizeof(xmlXPathObjectPtr));
-	if (temp == NULL) {
-	    fprintf(xmlXPathDebug, "xmlXPathLocationSetAdd: out of memory\n");
-	    return;
-	}
-	cur->locTab = temp;
-    }
-    cur->locTab[cur->locNr++] = val;
-}
-
-/**
- * xmlXPathLocationSetMerge:
- * @val1:  the first LocationSet
- * @val2:  the second LocationSet
- *
- * Merges two rangesets, all ranges from @val2 are added to @val1
- *
- * Returns val1 once extended or NULL in case of error.
- */
-xmlLocationSetPtr
-xmlXPathLocationSetMerge(xmlLocationSetPtr val1, xmlLocationSetPtr val2) {
-    int i;
-
-    if (val1 == NULL) return(NULL);
-    if (val2 == NULL) return(val1);
-
-    /*
-     * !!!!! this can be optimized a lot, knowing that both
-     *       val1 and val2 already have unicity of their values.
-     */
-
-    for (i = 0;i < val2->locNr;i++)
-        xmlXPathLocationSetAdd(val1, val2->locTab[i]);
-
-    return(val1);
-}
-
-/**
- * xmlXPathLocationSetDel:
- * @cur:  the initial range set
- * @val:  an xmlXPathObjectPtr
- *
- * Removes an xmlXPathObjectPtr from an existing LocationSet
- */
-void
-xmlXPathLocationSetDel(xmlLocationSetPtr cur, xmlXPathObjectPtr val) {
-    int i;
-
-    if (cur == NULL) return;
-    if (val == NULL) return;
-
-    /*
-     * check against doublons
-     */
-    for (i = 0;i < cur->locNr;i++)
-        if (cur->locTab[i] == val) break;
-
-    if (i >= cur->locNr) {
-#ifdef DEBUG
-        fprintf(xmlXPathDebug, 
-	        "xmlXPathLocationSetDel: Range %s wasn't found in RangeList\n",
-		val->name);
-#endif
-        return;
-    }
-    cur->locNr--;
-    for (;i < cur->locNr;i++)
-        cur->locTab[i] = cur->locTab[i + 1];
-    cur->locTab[cur->locNr] = NULL;
-}
-
-/**
- * xmlXPathLocationSetRemove:
- * @cur:  the initial range set
- * @val:  the index to remove
- *
- * Removes an entry from an existing LocationSet list.
- */
-void
-xmlXPathLocationSetRemove(xmlLocationSetPtr cur, int val) {
-    if (cur == NULL) return;
-    if (val >= cur->locNr) return;
-    cur->locNr--;
-    for (;val < cur->locNr;val++)
-        cur->locTab[val] = cur->locTab[val + 1];
-    cur->locTab[cur->locNr] = NULL;
-}
-
-/**
- * xmlXPathFreeLocationSet:
- * @obj:  the xmlLocationSetPtr to free
- *
- * Free the LocationSet compound (not the actual ranges !).
- */
-void
-xmlXPathFreeLocationSet(xmlLocationSetPtr obj) {
-    if (obj == NULL) return;
-    if (obj->locTab != NULL) {
-#ifdef DEBUG
-	memset(obj->locTab, 0xB ,
-	       (size_t) sizeof(xmlXPathObjectPtr) * obj->locMax);
-#endif
-	xmlFree(obj->locTab);
-    }
-#ifdef DEBUG
-    memset(obj, 0xB , (size_t) sizeof(xmlLocationSet));
-#endif
-    xmlFree(obj);
-}
-
-#if defined(DEBUG) || defined(DEBUG_STEP)
-/**
- * xmlXPathDebugLocationSet:
- * @output:  a FILE * for the output
- * @obj:  the xmlLocationSetPtr to free
- *
- * Quick display of a LocationSet
- */
-void
-xmlXPathDebugLocationSet(FILE *output, xmlLocationSetPtr obj) {
-    int i;
-
-    if (output == NULL) output = xmlXPathDebug;
-    if (obj == NULL)  {
-        fprintf(output, "LocationSet == NULL !\n");
-	return;
-    }
-    if (obj->locNr == 0) {
-        fprintf(output, "LocationSet is empty\n");
-	return;
-    }
-    if (obj->locTab == NULL) {
-	fprintf(output, " locTab == NULL !\n");
-	return;
-    }
-    for (i = 0; i < obj->locNr; i++) {
-        if (obj->locTab[i] == NULL) {
-	    fprintf(output, " NULL !\n");
-	    return;
-        }
-	if ((obj->locTab[i]->type == XML_DOCUMENT_NODE) ||
-	    (obj->locTab[i]->type == XML_HTML_DOCUMENT_NODE))
-	    fprintf(output, " /");
-	/******* TODO 
-	else if (obj->locTab[i]->name == NULL)
-	    fprintf(output, " noname!");
-	else fprintf(output, " %s", obj->locTab[i]->name);
-	 ********/
-    }
-    fprintf(output, "\n");
-}
-#endif
-
-/**
- * xmlXPathNewLocationSetNodes:
- * @start:  the NodePtr value
- * @end:  the NodePtr value
- *
- * Create a new xmlXPathObjectPtr of type LocationSet and initialize
- * it with the single range made of the two nodes @start and @end
- *
- * Returns the newly created object.
- */
-xmlXPathObjectPtr
-xmlXPathNewLocationSetNodes(xmlNodePtr start, xmlNodePtr end) {
-    xmlXPathObjectPtr ret;
-
-    ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
-    if (ret == NULL) {
-        fprintf(xmlXPathDebug, "xmlXPathNewLocationSet: out of memory\n");
-	return(NULL);
-    }
-    memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
-    ret->type = XPATH_LOCATIONSET;
-    ret->user = xmlXPathLocationSetCreate(xmlXPathNewRangeNodes(start, end));
-    return(ret);
-}
-
-/**
- * xmlXPathWrapLocationSet:
- * @val:  the LocationSet value
- *
- * Wrap the LocationSet @val in a new xmlXPathObjectPtr
- *
- * Returns the newly created object.
- */
-xmlXPathObjectPtr
-xmlXPathWrapLocationSet(xmlLocationSetPtr val) {
-    xmlXPathObjectPtr ret;
-
-    ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
-    if (ret == NULL) {
-        fprintf(xmlXPathDebug, "xmlXPathWrapLocationSet: out of memory\n");
-	return(NULL);
-    }
-    memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
-    ret->type = XPATH_LOCATIONSET;
-    ret->user = (void *) val;
-    return(ret);
-}
-
-#endif /* LIBXML_XPTR_ENABLED */
-
-/**
  * xmlXPathFreeObject:
  * @obj:  the object to free
  *
@@ -1280,6 +777,9 @@ xmlXPathFreeObject(xmlXPathObjectPtr obj) {
     if (obj->type == XPATH_NODESET) {
 	if (obj->nodesetval != NULL)
 	    xmlXPathFreeNodeSet(obj->nodesetval);
+    } else if (obj->type == XPATH_LOCATIONSET) {
+	if (obj->user != NULL)
+	    xmlXPathFreeLocationSet(obj->user);
     } else if (obj->type == XPATH_STRING) {
 	if (obj->stringval != NULL)
 	    xmlFree(obj->stringval);

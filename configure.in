@@ -1,12 +1,12 @@
 dnl Process this file with autoconf to produce a configure script.
 AC_PREREQ(2.2)
-AC_INIT(entities.h)
+AC_INIT(entities.c)
 AM_CONFIG_HEADER(config.h)
 AC_CANONICAL_HOST
 
 LIBXML_MAJOR_VERSION=2
 LIBXML_MINOR_VERSION=2
-LIBXML_MICRO_VERSION=4
+LIBXML_MICRO_VERSION=5
 LIBXML_VERSION=$LIBXML_MAJOR_VERSION.$LIBXML_MINOR_VERSION.$LIBXML_MICRO_VERSION
 LIBXML_VERSION_INFO=`expr $LIBXML_MAJOR_VERSION + $LIBXML_MINOR_VERSION`:$LIBXML_MICRO_VERSION:$LIBXML_MINOR_VERSION
 
@@ -116,7 +116,7 @@ AC_CHECK_FUNC(isinf, , AC_CHECK_LIB(m, isinf,
   [M_LIBS="-lm"; AC_DEFINE(HAVE_ISINF)]))
 
 XML_LIBDIR='-L${libdir}'
-XML_INCLUDEDIR='-I${includedir}/libxml -I${includedir}'
+XML_INCLUDEDIR='-I${srcdir}/include -I${includedir}/libxml -I${includedir}'
 XML_LIBS="-lxml $Z_LIBS $M_LIBS $LIBS"
 
 dnl
@@ -295,16 +295,22 @@ AC_SUBST(M_LIBS)
 AC_SUBST(RDL_LIBS)
 
 dnl
-dnl create the libxml link needed to get dependencies right
+dnl create the libxml and include links needed to get dependencies right
 dnl
-if test -f $srcdir/libxml 
+if test ! -d $srcdir/include/libxml
 then
-    rm -f $srcdir/libxml libxml
+    rm -f $srcdir/include
+    rm -f $srcdir/libxml
+    (cd $srcdir ; ln -s . include)
     (cd $srcdir ; ln -s . libxml)
-    (ln -s . libxml)
-else
-    (cd $srcdir ; rm -f libxml ; ln -s . libxml)
-    (rm -f libxml ; ln -s . libxml)
 fi
-AC_OUTPUT(libxml.spec Makefile doc/Makefile example/Makefile xmlversion.h xml-config win32config.h libxml-2.0.pc)
+if test ! -e include/libxml
+then
+    rm -f include
+    rm -f libxml
+    (ln -s $srcdir/include include)
+    (ln -s $srcdir/include/libxml libxml)
+fi
+
+AC_OUTPUT(libxml.spec Makefile doc/Makefile example/Makefile include/libxml/xmlversion.h xml-config include/libxml/win32config.h libxml-2.0.pc)
 

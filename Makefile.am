@@ -2,7 +2,7 @@
 
 SUBDIRS = doc
 
-INCLUDES = -I@srcdir@ @Z_CFLAGS@ @CORBA_CFLAGS@ 
+INCLUDES = -I@srcdir@/include @Z_CFLAGS@ @CORBA_CFLAGS@ 
 
 noinst_PROGRAMS=testSAX testHTML testXPath testURI
 
@@ -35,27 +35,28 @@ libxml_la_SOURCES = \
 		nanohttp.c \
 		nanoftp.c
 
-xmlincdir = $(includedir)/libxml
+xmlincdir = $(srcdir)/include/libxml
+
 xmlinc_HEADERS = \
-		SAX.h \
-		entities.h \
-		encoding.h \
-		parser.h \
-		parserInternals.h \
-		xml-error.h \
-		HTMLparser.h \
-		HTMLtree.h \
-		debugXML.h \
-		tree.h \
-		xpath.h \
-		xmlIO.h \
-		xmlmemory.h \
-		nanohttp.h \
-		nanoftp.h \
-		uri.h \
-		valid.h \
-		xlink.h \
-		xmlversion.h
+		$(xmlincdir)/SAX.h \
+		$(xmlincdir)/entities.h \
+		$(xmlincdir)/encoding.h \
+		$(xmlincdir)/parser.h \
+		$(xmlincdir)/parserInternals.h \
+		$(xmlincdir)/xml-error.h \
+		$(xmlincdir)/HTMLparser.h \
+		$(xmlincdir)/HTMLtree.h \
+		$(xmlincdir)/debugXML.h \
+		$(xmlincdir)/tree.h \
+		$(xmlincdir)/xpath.h \
+		$(xmlincdir)/xmlIO.h \
+		$(xmlincdir)/xmlmemory.h \
+		$(xmlincdir)/nanohttp.h \
+		$(xmlincdir)/nanoftp.h \
+		$(xmlincdir)/uri.h \
+		$(xmlincdir)/valid.h \
+		$(xmlincdir)/xlink.h \
+		$(xmlincdir)/xmlversion.h
 
 DEPS = $(top_builddir)/libxml.la
 LDADDS = $(top_builddir)/libxml.la @Z_LIBS@ @M_LIBS@
@@ -356,7 +357,8 @@ confexecdir=$(libdir)
 confexec_DATA = xmlConf.sh
 EXTRA_DIST = xmlConf.sh.in libxml.spec.in libxml.spec libxml.m4 \
              example/Makefile.am example/gjobread.c example/gjobs.xml \
-	     $(man_MANS) libxml-2.0.pc.in
+	     $(man_MANS) libxml-2.0.pc.in include/libxml/*.h.in \
+	     win32/README.MSDev win32/libxml2/libxml2.dsp
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libxml-2.0.pc

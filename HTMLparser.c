@@ -45,7 +45,7 @@
 #include <libxml/valid.h>
 #include <libxml/parserInternals.h>
 #include <libxml/xmlIO.h>
-#include "xml-error.h"
+#include <libxml/xml-error.h>
 
 #define HTML_MAX_NAMELEN 1000
 #define HTML_PARSER_BIG_BUFFER_SIZE 1000

@@ -267,7 +267,18 @@ void		xmlXPatherror	(xmlXPathParserContextPtr ctxt,
  */
 xmlXPathObjectPtr valuePop			(xmlXPathParserContextPtr ctxt);
 int		  valuePush			(xmlXPathParserContextPtr ctxt,
-						 xmlXPathObjectPtr value);
+					 	xmlXPathObjectPtr value);
+
+xmlXPathObjectPtr xmlXPathNewString		(const xmlChar *val);
+xmlXPathObjectPtr xmlXPathNewNodeSet		(xmlNodePtr val);
+void		  xmlXPathNodeSetAdd		(xmlNodeSetPtr cur,
+						 xmlNodePtr val);
+
+
+void		  xmlXPathIdFunction		(xmlXPathParserContextPtr ctxt,
+					 	int nargs);
+void		  xmlXPathRoot			(xmlXPathParserContextPtr ctxt);
+void		  xmlXPathEvalExpr		(xmlXPathParserContextPtr ctxt);
 
 /************************************************************************
  *									*

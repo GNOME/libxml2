@@ -18,6 +18,7 @@ TARGET_DIR=$(HTML_DIR)/$(DOC_MODULE)
 
 scan:
 	@(if [ -L $(DOC_SOURCE_DIR)/libxml ] ; then rm -f $(DOC_SOURCE_DIR)/libxml ; fi)
+	@(if [ -L $(DOC_SOURCE_DIR)/include ] ; then rm -f $(DOC_SOURCE_DIR)/libxml ; fi)
 	gtkdoc-scan --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR) --ignore-headers="acconfig.h config.h"
 
 templates: scan

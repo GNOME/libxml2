@@ -1,0 +1,63 @@
+The configuration stuff (i.e. what should be enabled/disabled) is in xmlversion.h
+I only tested it compiled fine with the current settings 
+(that is nearly everything disabled, I didn't need many features)
+
+----------------------------
+
+How did I get everything in place so the MSDev project works from the original archive?
+
+from the cygwin prompt (http://sources.redhat.com/cygwin) :
+$ ./configure --disable-corba --without-ftp --without-http --without-html --wit
+hout-xpath --without-iconv --without-debug
+
+created a libxml directory and copied the following headers in:
+HTMLparser.h       entities.h         tree.h             xmlIO.h
+HTMLtree.h         nanoftp.h          uri.h              xmlmemory.h
+SAX.h              nanohttp.h         valid.h            xmlversion.h
+debugXML.h         parser.h           xlink.h            xpath.h
+encoding.h         parserInternals.h  xml-error.h
+
+modified win32config.h to comment out 
+#define LIBXML_VERSION 20204
+#define LIBXML_VERSION_STRING "2.2.4"
+(is already in xmlversion.h)
+
+built the project file for the static library
+
+----------------------------
+
+diff after doing the changes and cleaning up the generated stuff:
+
+Only in libxml2-2.2.4: MSDev
+Common subdirectories: libxml2-2.2.4/SAXresult and libxml2-2.2.4-reference/SAXresult
+Common subdirectories: libxml2-2.2.4/doc and libxml2-2.2.4-reference/doc
+Common subdirectories: libxml2-2.2.4/example and libxml2-2.2.4-reference/example
+Only in libxml2-2.2.4: libxml
+Common subdirectories: libxml2-2.2.4/result and libxml2-2.2.4-reference/result
+Common subdirectories: libxml2-2.2.4/test and libxml2-2.2.4-reference/test
+Only in libxml2-2.2.4: win32config.h
+diff libxml2-2.2.4/xmlversion.h libxml2-2.2.4-reference/xmlversion.h
+38c38
+< #if 0
+---
+> #if 1
+47c47
+< #if 0
+---
+> #if 1
+56c56
+< #if 0
+---
+> #if 1
+74c74
+< #if 0
+---
+> #if 1
+83c83
+< #if 0
+---
+> #if 1
+92c92
+< #if 0
+---
+> #if 1

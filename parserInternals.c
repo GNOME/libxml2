@@ -45,7 +45,7 @@
 #include <libxml/parserInternals.h>
 #include <libxml/xmlIO.h>
 #include <libxml/uri.h>
-#include "xml-error.h"
+#include <libxml/xml-error.h>
 
 
 /************************************************************************

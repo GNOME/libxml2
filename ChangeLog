@@ -1,3 +1,15 @@
+Fri Oct  6 12:58:04 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* configure.in Makefile.am: 2.2.5, ship the include in an
+	  include/libxml subdirectory, use symlinks when using CVS
+	* testSAX.c: fixed small bug
+	* testXPath.c: changed the way testfiles are parsed
+	* debugXML.c: same kind of cleanup when parsing an argument expression
+	  XPath/XPointers can have blanks embedded
+	* xpath.[ch]: more cleanup, reorgs for XPointer work
+	* parserInternals.c parser.c HTMLparser.c: fixed wrong include
+	* win32/README.MSDev win32/libxml2/libxml2.dsp: Windows stuff
+
 Thu Oct  5 18:13:15 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* debugXML.c testXPath.c xpath.[ch]: got pissed by some nastyness

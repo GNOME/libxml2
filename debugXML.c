@@ -572,7 +572,8 @@ void xmlDebugDumpOneNode(FILE *output, xmlNodePtr node, int depth) {
 	    return;
 	default:
 	    fprintf(output, shift);
-	    fprintf(output, "NODE_%d\n", node->type);
+	    fprintf(output, "NODE_%d !!!\n", node->type);
+	    return;
     }
     if (node->doc == NULL) {
         fprintf(output, shift);

@@ -68,7 +68,7 @@
 #include <libxml/parserInternals.h>
 #include <libxml/xmlIO.h>
 #include <libxml/uri.h>
-#include "xml-error.h"
+#include <libxml/xml-error.h>
 
 #define XML_PARSER_BIG_BUFFER_SIZE 1000
 #define XML_PARSER_BUFFER_SIZE 100

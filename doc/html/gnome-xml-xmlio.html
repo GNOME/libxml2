@@ -115,7 +115,7 @@ SIZE="3"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN11622"
+NAME="AEN11845"
 ></A
 ><H2
 >Name</H2
@@ -123,7 +123,7 @@ NAME="AEN11622"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN11625"
+NAME="AEN11848"
 ></A
 ><H2
 >Synopsis</H2
@@ -190,6 +190,11 @@ typedef     <A
 HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERPTR"
 >xmlOutputBufferPtr</A
 >;
+void        <A
+HREF="gnome-xml-xmlio.html#XMLREGISTERDEFAULTINPUTCALLBACKS"
+>xmlRegisterDefaultInputCallbacks</A
+>
+                                            (void);
 <A
 HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
@@ -328,6 +333,11 @@ HREF="gnome-xml-xmlio.html#XMLINPUTREADCALLBACK"
 HREF="gnome-xml-xmlio.html#XMLINPUTCLOSECALLBACK"
 >xmlInputCloseCallback</A
 > close);
+void        <A
+HREF="gnome-xml-xmlio.html#XMLREGISTERDEFAULTOUTPUTCALLBACKS"
+>xmlRegisterDefaultOutputCallbacks</A
+>
+                                            (void);
 <A
 HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERPTR"
 >xmlOutputBufferPtr</A
@@ -483,7 +493,7 @@ HREF="gnome-xml-tree.html#XMLNODEPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN11713"
+NAME="AEN11938"
 ></A
 ><H2
 >Description</H2
@@ -493,14 +503,14 @@ NAME="AEN11713"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN11716"
+NAME="AEN11941"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11718"
+NAME="AEN11943"
 ></A
 ><H3
 ><A
@@ -573,7 +583,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11736"
+NAME="AEN11961"
 ></A
 ><H3
 ><A
@@ -631,7 +641,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11750"
+NAME="AEN11975"
 ></A
 ><H3
 ><A
@@ -740,7 +750,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11776"
+NAME="AEN12001"
 ></A
 ><H3
 ><A
@@ -798,7 +808,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11790"
+NAME="AEN12015"
 ></A
 ><H3
 ><A
@@ -833,33 +843,20 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11795"
+NAME="AEN12020"
 ></A
 ><H3
 ><A
 NAME="XMLPARSERINPUTBUFFERPTR"
 ></A
 >xmlParserInputBufferPtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlParserInputBuffer *xmlParserInputBufferPtr;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11800"
+NAME="AEN12024"
 ></A
 ><H3
 ><A
@@ -932,7 +929,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11818"
+NAME="AEN12042"
 ></A
 ><H3
 ><A
@@ -990,7 +987,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11832"
+NAME="AEN12056"
 ></A
 ><H3
 ><A
@@ -1099,7 +1096,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11858"
+NAME="AEN12082"
 ></A
 ><H3
 ><A
@@ -1157,7 +1154,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11872"
+NAME="AEN12096"
 ></A
 ><H3
 ><A
@@ -1193,13 +1190,26 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11877"
+NAME="AEN12101"
 ></A
 ><H3
 ><A
 NAME="XMLOUTPUTBUFFERPTR"
 ></A
 >xmlOutputBufferPtr</H3
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN12105"
+></A
+><H3
+><A
+NAME="XMLREGISTERDEFAULTINPUTCALLBACKS"
+></A
+>xmlRegisterDefaultInputCallbacks ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1209,17 +1219,20 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->typedef xmlOutputBuffer *xmlOutputBufferPtr;</PRE
+>void        xmlRegisterDefaultInputCallbacks
+                                            (void);</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>Registers the default compiled-in I/O handlers.</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11882"
+NAME="AEN12111"
 ></A
 ><H3
 ><A
@@ -1276,7 +1289,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the charset encoding if known</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1291,7 +1304,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the new parser input or NULL</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -1301,7 +1314,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11903"
+NAME="AEN12132"
 ></A
 ><H3
 ><A
@@ -1363,7 +1376,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a C string containing the URI or filename</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1380,7 +1393,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the charset encoding if known</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1395,7 +1408,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the new parser input or NULL</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -1405,7 +1418,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11928"
+NAME="AEN12157"
 ></A
 ><H3
 ><A
@@ -1467,7 +1480,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a FILE* </TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1484,7 +1497,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the charset encoding if known</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1499,7 +1512,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the new parser input or NULL</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -1509,7 +1522,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11954"
+NAME="AEN12183"
 ></A
 ><H3
 ><A
@@ -1568,7 +1581,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a file descriptor number</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1585,7 +1598,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the charset encoding if known</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1600,7 +1613,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the new parser input or NULL</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -1610,7 +1623,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11979"
+NAME="AEN12208"
 ></A
 ><H3
 ><A
@@ -1670,7 +1683,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the memory input</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1687,7 +1700,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the length of the memory block</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1704,7 +1717,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the charset encoding if known</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1719,7 +1732,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the new parser input or NULL</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -1729,7 +1742,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12008"
+NAME="AEN12237"
 ></A
 ><H3
 ><A
@@ -1796,7 +1809,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an I/O read function</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1813,7 +1826,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an I/O close function</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1830,7 +1843,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an I/O handler</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1847,7 +1860,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the charset encoding if known</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1862,7 +1875,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the new parser input or NULL</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -1872,7 +1885,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12043"
+NAME="AEN12272"
 ></A
 ><H3
 ><A
@@ -1928,7 +1941,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a buffered parser input</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1945,7 +1958,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  indicative value of the amount of chars to read</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1960,8 +1973,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the number of chars read and stored in the buffer, or -1
-in case of error.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -1971,7 +1983,7 @@ in case of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12067"
+NAME="AEN12296"
 ></A
 ><H3
 ><A
@@ -2030,7 +2042,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a buffered parser input</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2047,7 +2059,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  indicative value of the amount of chars to read</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2062,8 +2074,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the number of chars read and stored in the buffer, or -1
-in case of error.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -2073,7 +2084,7 @@ in case of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12092"
+NAME="AEN12321"
 ></A
 ><H3
 ><A
@@ -2130,7 +2141,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a buffered parser input</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2147,7 +2158,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the size in bytes of the array.</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2164,7 +2175,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an char array</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2179,8 +2190,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the number of chars read and stored in the buffer, or -1
-in case of error.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -2190,7 +2200,7 @@ in case of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12120"
+NAME="AEN12349"
 ></A
 ><H3
 ><A
@@ -2243,7 +2253,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a buffered parser input</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -2253,7 +2263,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12136"
+NAME="AEN12365"
 ></A
 ><H3
 ><A
@@ -2326,7 +2336,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12154"
+NAME="AEN12383"
 ></A
 ><H3
 ><A
@@ -2391,7 +2401,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the xmlInputMatchCallback</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2408,7 +2418,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the xmlInputOpenCallback</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2425,7 +2435,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the xmlInputReadCallback</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2442,7 +2452,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the xmlInputCloseCallback</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2457,7 +2467,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the registered handler number or -1 in case of error</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -2467,7 +2477,36 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12189"
+NAME="AEN12418"
+></A
+><H3
+><A
+NAME="XMLREGISTERDEFAULTOUTPUTCALLBACKS"
+></A
+>xmlRegisterDefaultOutputCallbacks ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlRegisterDefaultOutputCallbacks
+                                            (void);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Registers the default compiled-in I/O handlers.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN12424"
 ></A
 ><H3
 ><A
@@ -2523,7 +2562,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the encoding converter or NULL</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2538,7 +2577,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the new parser output or NULL</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -2548,7 +2587,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12210"
+NAME="AEN12445"
 ></A
 ><H3
 ><A
@@ -2612,7 +2651,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a C string containing the URI or filename</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2629,7 +2668,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the encoding converter or NULL</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2646,7 +2685,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the compression ration (0 none, 9 max).</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2661,7 +2700,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the new output or NULL</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -2671,7 +2710,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12239"
+NAME="AEN12474"
 ></A
 ><H3
 ><A
@@ -2733,7 +2772,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a FILE* </TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2750,7 +2789,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the encoding converter or NULL</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2765,7 +2804,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the new parser output or NULL</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -2775,7 +2814,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12265"
+NAME="AEN12500"
 ></A
 ><H3
 ><A
@@ -2833,7 +2872,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a file descriptor number</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2850,7 +2889,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the encoding converter or NULL</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2865,7 +2904,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the new parser output or NULL</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -2875,7 +2914,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12290"
+NAME="AEN12525"
 ></A
 ><H3
 ><A
@@ -2941,7 +2980,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an I/O write function</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2958,7 +2997,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an I/O close function</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2975,7 +3014,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an I/O handler</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3007,7 +3046,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the new parser output or NULL</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -3017,7 +3056,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12325"
+NAME="AEN12560"
 ></A
 ><H3
 ><A
@@ -3075,7 +3114,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a buffered parser output</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3092,7 +3131,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the size in bytes of the array.</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3109,7 +3148,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an char array</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3124,8 +3163,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the number of chars immediately written, or -1
-in case of error.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -3135,7 +3173,7 @@ in case of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12353"
+NAME="AEN12588"
 ></A
 ><H3
 ><A
@@ -3192,7 +3230,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a buffered parser output</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3209,7 +3247,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a zero terminated C string</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3224,8 +3262,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the number of chars immediately written, or -1
-in case of error.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -3235,7 +3272,7 @@ in case of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12377"
+NAME="AEN12612"
 ></A
 ><H3
 ><A
@@ -3288,7 +3325,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a buffered output</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3303,7 +3340,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the number of byte written or -1 in case of error.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -3313,7 +3350,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12397"
+NAME="AEN12632"
 ></A
 ><H3
 ><A
@@ -3367,7 +3404,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a buffered output</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3382,7 +3419,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the number of byte written or -1 in case of error.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -3392,7 +3429,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12417"
+NAME="AEN12652"
 ></A
 ><H3
 ><A
@@ -3457,7 +3494,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the xmlOutputMatchCallback</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3474,7 +3511,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the xmlOutputOpenCallback</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3491,7 +3528,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the xmlOutputWriteCallback</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3508,7 +3545,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the xmlOutputCloseCallback</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3523,7 +3560,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the registered handler number or -1 in case of error</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -3533,7 +3570,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12452"
+NAME="AEN12687"
 ></A
 ><H3
 ><A
@@ -3591,7 +3628,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an output I/O buffer</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3608,7 +3645,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3625,7 +3662,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the encoding if any assuming the i/O layer handles the trancoding</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3640,7 +3677,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the number of byte written or -1 in case of failure.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -3650,7 +3687,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12481"
+NAME="AEN12716"
 ></A
 ><H3
 ><A
@@ -3714,7 +3751,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the XML buffer output</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3731,7 +3768,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3748,7 +3785,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the current node</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3765,7 +3802,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the imbrication level for indenting</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3782,7 +3819,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> is formatting allowed</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3799,7 +3836,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an optional encoding string</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P

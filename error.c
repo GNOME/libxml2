@@ -35,7 +35,7 @@ xmlParserError(xmlParserCtxtPtr ctxt, const char *msg, ...)
         
     fprintf(stderr, "error: ");
     vfprintf(stderr, msg, args);
-    va_end(ap);
+    va_end(args);
     cur = ctxt->input->cur;
     base = ctxt->input->base;
     while ((cur > base) && ((*cur == '\n') || (*cur == '\r'))) {
@@ -88,7 +88,7 @@ xmlParserWarning(xmlParserCtxtPtr ctxt, const char *msg, ...)
         
     fprintf(stderr, "warning: ");
     vfprintf(stderr, msg, args);
-    va_end(ap);
+    va_end(args);
     cur = ctxt->input->cur;
     base = ctxt->input->base;
     while ((cur > base) && ((*cur == '\n') || (*cur == '\r'))) {

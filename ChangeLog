@@ -1,3 +1,10 @@
+Wed Mar 24 21:37:02 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* parser.c, parserInternals.h: moved the chars macro definitions
+	  to parserInternals.h
+	* parser.c, error.c: applied patches from "Knut Åkesson"
+	  <ka@s2.chalmers.se> for clean compilation under MSVC 6 :-o
+
 Tue Mar 23 11:10:15 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* xml-config.in : applied patch to make --version work

@@ -26,13 +26,12 @@
 	<a name="cocreatecontext"></a><img src="images/callouts/2.png" alt="2" border="0">context = xmlXPathNewContext(doc);
 	<a name="corunxpath"></a><img src="images/callouts/3.png" alt="3" border="0">result = xmlXPathEvalExpression(xpath, context);
 	<a name="cocheckxpathresult"></a><img src="images/callouts/4.png" alt="4" border="0">if(xmlXPathNodeSetIsEmpty(result-&gt;nodesetval)){
+		xmlXPathFreeObject(result);
                 printf("No result\n");
-                return NULL;
-	}
-	xmlXPathFreeContext(context);
-	return result;
+		return NULL;
       </pre><p>
-      </p><div class="calloutlist"><table border="0" summary="Callout list"><tr><td width="5%" valign="top" align="left"><a href="#cocontext"><img src="images/callouts/1.png" alt="1" border="0"></a> </td><td valign="top" align="left"><p>First we declare our variables.</p></td></tr><tr><td width="5%" valign="top" align="left"><a href="#cocreatecontext"><img src="images/callouts/2.png" alt="2" border="0"></a> </td><td valign="top" align="left"><p>Initialize the <tt class="varname">context</tt> variable.</p></td></tr><tr><td width="5%" valign="top" align="left"><a href="#corunxpath"><img src="images/callouts/3.png" alt="3" border="0"></a> </td><td valign="top" align="left"><p>Apply the <span class="application">XPath</span> expression.</p></td></tr><tr><td width="5%" valign="top" align="left"><a href="#cocheckxpathresult"><img src="images/callouts/4.png" alt="4" border="0"></a> </td><td valign="top" align="left"><p>Check the result.</p></td></tr></table></div><p>
+      </p><div class="calloutlist"><table border="0" summary="Callout list"><tr><td width="5%" valign="top" align="left"><a href="#cocontext"><img src="images/callouts/1.png" alt="1" border="0"></a> </td><td valign="top" align="left"><p>First we declare our variables.</p></td></tr><tr><td width="5%" valign="top" align="left"><a href="#cocreatecontext"><img src="images/callouts/2.png" alt="2" border="0"></a> </td><td valign="top" align="left"><p>Initialize the <tt class="varname">context</tt> variable.</p></td></tr><tr><td width="5%" valign="top" align="left"><a href="#corunxpath"><img src="images/callouts/3.png" alt="3" border="0"></a> </td><td valign="top" align="left"><p>Apply the <span class="application">XPath</span> expression.</p></td></tr><tr><td width="5%" valign="top" align="left"><a href="#cocheckxpathresult"><img src="images/callouts/4.png" alt="4" border="0"></a> </td><td valign="top" align="left"><p>Check the result and free the memory allocated to
+	    <tt class="varname">result</tt> if no result is found.</p></td></tr></table></div><p>
     </p><p>The xmlPathObjectPtr returned by the function contains a set of nodes
     and other information needed to iterate through the set and act on the
       results. For this example, our functions returns the

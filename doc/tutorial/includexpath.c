@@ -22,12 +22,21 @@ getnodeset (xmlDocPtr doc, xmlChar *xpath){
 	xmlXPathObjectPtr result;
 
 	context = xmlXPathNewContext(doc);
+	if (context == NULL) {
+		printf("Error in xmlXPathNewContext\n");
+		return NULL;
+	}
 	result = xmlXPathEvalExpression(xpath, context);
+	xmlXPathFreeContext(context);
+	if (result == NULL) {
+		printf("Error in xmlXPathEvalExpression\n");
+		return NULL;
+	}
 	if(xmlXPathNodeSetIsEmpty(result->nodesetval)){
+		xmlXPathFreeObject(result);
                 printf("No result\n");
 		return NULL;
 	}
-	xmlXPathFreeContext(context);
 	return result;
 }
 int

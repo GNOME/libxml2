@@ -67,6 +67,11 @@
 	<date>Feb. 14, 2004</date>
 	<revremark>Fix bug in XPath example</revremark>
       </revision>
+      <revision>
+	<revnumber>7</revnumber>
+	<date>Aug. 24, 2004</date>
+	<revremark>Fix another bug in XPath example</revremark>
+      </revision>
     </revhistory>
   </articleinfo>
   <abstract>
@@ -369,11 +374,9 @@ parseStory (xmlDocPtr doc, xmlNodePtr cur) {
 	<co id="cocreatecontext" />context = xmlXPathNewContext(doc);
 	<co id="corunxpath" />result = xmlXPathEvalExpression(xpath, context);
 	<co id="cocheckxpathresult" />if(xmlXPathNodeSetIsEmpty(result->nodesetval)){
+		xmlXPathFreeObject(result);
                 printf("No result\n");
-                return NULL;
-	}
-	xmlXPathFreeContext(context);
-	return result;
+		return NULL;
       </programlisting>
       <calloutlist>
 	<callout arearefs="cocontext">
@@ -386,7 +389,8 @@ parseStory (xmlDocPtr doc, xmlNodePtr cur) {
 	  <para>Apply the <application>XPath</application> expression.</para>
 	</callout>
 	<callout arearefs="cocheckxpathresult">
-	  <para>Check the result.</para>
+	  <para>Check the result and free the memory allocated to
+	    <varname>result</varname> if no result is found.</para>
 	</callout>
       </calloutlist>
     </para>

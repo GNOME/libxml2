@@ -1,6 +1,6 @@
 Fri Oct  4 15:33:55 CEST 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
 
-	* xmlIO.c: extended Windows path noramlisation to fix the base
+	* xmlIO.c: extended Windows path normalisation to fix the base
 	  problem in libxslt.
 	* catalog.c: fixed list handling in XML_CATALOG_FILES
 

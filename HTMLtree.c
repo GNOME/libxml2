@@ -663,7 +663,7 @@ htmlDocDumpMemory(xmlDocPtr cur, xmlChar**mem, int *size) {
     htmlDocContentDump(buf, cur);
     *mem = buf->content;
     *size = buf->use;
-    memset(buf, -1, sizeof(xmlBuffer));
+    MEM_CLEANUP(buf, sizeof(xmlBuffer));
     xmlFree(buf);
 }
 

@@ -596,7 +596,7 @@ xmlFreeURI(xmlURIPtr uri) {
     if (uri->opaque != NULL) xmlFree(uri->opaque);
     if (uri->authority != NULL) xmlFree(uri->authority);
     if (uri->query != NULL) xmlFree(uri->query);
-    memset(uri, -1, sizeof(xmlURI));
+    MEM_CLEANUP(uri, sizeof(xmlURI));
     xmlFree(uri);
 }
 

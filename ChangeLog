@@ -1,3 +1,13 @@
+Sun Feb 25 18:03:42 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xmlmemory.h HTMLparser.c HTMLtree.c entities.c parser.c
+	  xpath.c xpointer.c tree.c uri.c valid.c xinclude.c xmlIO.c:
+	  avoiding memcpy in production builds MEM_CLEANUP macro use
+	* parser.[ch] parserInternals.c: optimizations of the tightest
+	  internal loops inside the parser. Better checking of I/O
+	  flushing/loading conditions
+	* xmllint.c : added --timing
+
 Sun Feb 25 05:48:51 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* configure.in: bumped to 2.3.2

@@ -44,6 +44,7 @@ struct _xmlParserInput {
     const char *directory;            /* the directory/base of teh file */
     const xmlChar *base;              /* Base of the array to parse */
     const xmlChar *cur;               /* Current char being parsed */
+    const xmlChar *end;               /* end of the arry to parse */
     int length;                       /* length if known */
     int line;                         /* Current line */
     int col;                          /* Current column */

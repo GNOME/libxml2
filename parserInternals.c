@@ -960,6 +960,7 @@ xmlParserInputRead(xmlParserInputPtr in, int len) {
 	in->base = in->buf->buffer->content;
 	in->cur = &in->buf->buffer->content[index];
     }
+    in->end = &in->buf->buffer->content[in->buf->buffer->use];
 
     CHECK_BUFFER(in);
 
@@ -1005,7 +1006,7 @@ xmlParserInputGrow(xmlParserInputPtr in, int len) {
         return(0);
 
     /*
-     * NOTE : in->base may be a "dandling" i.e. freed pointer in this
+     * NOTE : in->base may be a "dangling" i.e. freed pointer in this
      *        block, but we use it really as an integer to do some
      *        pointer arithmetic. Insure will raise it as a bug but in
      *        that specific case, that's not !
@@ -1018,6 +1019,7 @@ xmlParserInputGrow(xmlParserInputPtr in, int len) {
 	in->base = in->buf->buffer->content;
 	in->cur = &in->buf->buffer->content[index];
     }
+    in->end = &in->buf->buffer->content[in->buf->buffer->use];
 
     CHECK_BUFFER(in);
 
@@ -1059,6 +1061,7 @@ xmlParserInputShrink(xmlParserInputPtr in) {
 	    in->cur -= ret;
 	    in->consumed += ret;
 	}
+	in->end = &in->buf->buffer->content[in->buf->buffer->use];
     }
 
     CHECK_BUFFER(in);
@@ -1075,6 +1078,7 @@ xmlParserInputShrink(xmlParserInputPtr in) {
 	in->base = in->buf->buffer->content;
 	in->cur = &in->buf->buffer->content[index];
     }
+    in->end = &in->buf->buffer->content[in->buf->buffer->use];
 
     CHECK_BUFFER(in);
 }
@@ -1769,6 +1773,8 @@ xmlSwitchToEncoding(xmlParserCtxtPtr ctxt, xmlCharEncodingHandlerPtr handler)
 		    }
 		    ctxt->input->base =
 		    ctxt->input->cur = ctxt->input->buf->buffer->content;
+		    ctxt->input->end =
+			&ctxt->input->base[ctxt->input->buf->buffer->use];
 
 		}
 		return(0);
@@ -1817,6 +1823,8 @@ xmlSwitchToEncoding(xmlParserCtxtPtr ctxt, xmlCharEncodingHandlerPtr handler)
 			ctxt->input->free((xmlChar *) ctxt->input->base);
 		    ctxt->input->base =
 		    ctxt->input->cur = ctxt->input->buf->buffer->content;
+		    ctxt->input->end =
+			&ctxt->input->base[ctxt->input->buf->buffer->use];
 		}
 	    }
 	} else {
@@ -1859,7 +1867,7 @@ xmlFreeInputStream(xmlParserInputPtr input) {
         input->free((xmlChar *) input->base);
     if (input->buf != NULL) 
         xmlFreeParserInputBuffer(input->buf);
-    memset(input, -1, sizeof(xmlParserInput));
+    MEM_CLEANUP(input, sizeof(xmlParserInput));
     xmlFree(input);
 }
 
@@ -1918,6 +1926,7 @@ xmlNewIOInputStream(xmlParserCtxtPtr ctxt, xmlParserInputBufferPtr input,
     inputStream->buf = input;
     inputStream->base = inputStream->buf->buffer->content;
     inputStream->cur = inputStream->buf->buffer->content;
+    inputStream->end = &inputStream->base[inputStream->buf->buffer->use];
     if (enc != XML_CHAR_ENCODING_NONE) {
         xmlSwitchEncoding(ctxt, enc);
     }
@@ -1989,6 +1998,7 @@ xmlNewEntityInputStream(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
     input->base = entity->content;
     input->cur = entity->content;
     input->length = entity->length;
+    input->end = &entity->content[input->length];
     return(input);
 }
 
@@ -2021,6 +2031,7 @@ xmlNewStringInputStream(xmlParserCtxtPtr ctxt, const xmlChar *buffer) {
     input->base = buffer;
     input->cur = buffer;
     input->length = xmlStrlen(buffer);
+    input->end = &buffer[input->length];
     return(input);
 }
 
@@ -2064,6 +2075,7 @@ xmlNewInputFromFile(xmlParserCtxtPtr ctxt, const char *filename) {
 
     inputStream->base = inputStream->buf->buffer->content;
     inputStream->cur = inputStream->buf->buffer->content;
+    inputStream->end = &inputStream->base[inputStream->buf->buffer->use];
     if ((ctxt->directory == NULL) && (directory != NULL))
         ctxt->directory = (char *) xmlStrdup((const xmlChar *) directory);
     return(inputStream);

@@ -715,15 +715,11 @@ xmlXPtrFreeLocationSet(xmlLocationSetPtr obj) {
 	for (i = 0;i < obj->locNr; i++) {
             xmlXPathFreeObject(obj->locTab[i]);
 	}
-#ifdef DEBUG
-	memset(obj->locTab, 0xB ,
+	MEM_CLEANUP(obj->locTab,
 	       (size_t) sizeof(xmlXPathObjectPtr) * obj->locMax);
-#endif
 	xmlFree(obj->locTab);
     }
-#ifdef DEBUG
-    memset(obj, 0xB , (size_t) sizeof(xmlLocationSet));
-#endif
+    MEM_CLEANUP(obj, (size_t) sizeof(xmlLocationSet));
     xmlFree(obj);
 }
 

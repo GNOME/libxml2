@@ -231,25 +231,24 @@ int spacePop(xmlParserCtxtPtr ctxt) {
 #define SKIP(val) do {							\
     ctxt->nbChars += (val),ctxt->input->cur += (val);			\
     if (*ctxt->input->cur == '%') xmlParserHandlePEReference(ctxt);	\
-    /* DEPR if (*ctxt->input->cur == '&') xmlParserHandleReference(ctxt); */\
     if ((*ctxt->input->cur == 0) &&					\
         (xmlParserInputGrow(ctxt->input, INPUT_CHUNK) <= 0))		\
 	    xmlPopInput(ctxt);						\
   } while (0)
 
-#define SHRINK do {							\
+#define SHRINK if (ctxt->input->cur - ctxt->input->base > INPUT_CHUNK) {\
     xmlParserInputShrink(ctxt->input);					\
     if ((*ctxt->input->cur == 0) &&					\
         (xmlParserInputGrow(ctxt->input, INPUT_CHUNK) <= 0))		\
 	    xmlPopInput(ctxt);						\
-  } while (0)
+  }
 
-#define GROW do {							\
+#define GROW if (ctxt->input->end - ctxt->input->cur < INPUT_CHUNK) {	\
     xmlParserInputGrow(ctxt->input, INPUT_CHUNK);			\
     if ((*ctxt->input->cur == 0) &&					\
         (xmlParserInputGrow(ctxt->input, INPUT_CHUNK) <= 0))		\
 	    xmlPopInput(ctxt);						\
-  } while (0)
+  }
 
 #define SKIP_BLANKS xmlSkipBlankChars(ctxt)
 
@@ -261,7 +260,6 @@ int spacePop(xmlParserCtxtPtr ctxt) {
     } else ctxt->input->col++;						\
     ctxt->token = 0; ctxt->input->cur += l;				\
     if (*ctxt->input->cur == '%') xmlParserHandlePEReference(ctxt);	\
-    /* DEPR if (*ctxt->input->cur == '&') xmlParserHandleReference(ctxt); */\
   } while (0)
 
 #define CUR_CHAR(l) xmlCurrentChar(ctxt, &l)
@@ -1610,11 +1608,35 @@ xmlSplitQName(xmlParserCtxtPtr ctxt, const xmlChar *name, xmlChar **prefix) {
 xmlChar *
 xmlParseName(xmlParserCtxtPtr ctxt) {
     xmlChar buf[XML_MAX_NAMELEN + 5];
+    const xmlChar *in;
+    xmlChar *ret;
     int len = 0, l;
     int c;
     int count = 0;
 
     GROW;
+
+    /*
+     * Accelerator for simple ASCII names
+     */
+    in = ctxt->input->cur;
+    if (((*in >= 0x61) && (*in <= 0x7A)) ||
+	((*in >= 0x41) && (*in <= 0x5A)) ||
+	(*in == '_') || (*in == ':')) {
+	in++;
+	while (((*in >= 0x61) && (*in <= 0x7A)) ||
+	       ((*in >= 0x41) && (*in <= 0x5A)) ||
+	       ((*in >= 0x30) && (*in <= 0x39)) ||
+	       (*in == '_') || (*in == ':'))
+	    in++;
+	if ((*in == ' ') || (*in == '>') || (*in == '/')) {
+	    count = in - ctxt->input->cur;
+	    ret = xmlStrndup(ctxt->input->cur, count);
+	    ctxt->input->cur = in;
+	    return(ret);
+	}
+    }
+
     c = CUR_CHAR(l);
     if ((c == ' ') || (c == '>') || (c == '/') || /* accelerators */
 	(!IS_LETTER(c) && (c != '_') &&
@@ -2370,6 +2392,7 @@ xmlParsePubidLiteral(xmlParserCtxtPtr ctxt) {
     return(buf);
 }
 
+void xmlParseCharDataComplex(xmlParserCtxtPtr ctxt, int cdata);
 /**
  * xmlParseCharData:
  * @ctxt:  an XML parser context
@@ -2388,6 +2411,61 @@ xmlParsePubidLiteral(xmlParserCtxtPtr ctxt) {
 
 void
 xmlParseCharData(xmlParserCtxtPtr ctxt, int cdata) {
+    const xmlChar *in;
+    int nbchar = 0;
+
+    SHRINK;
+    GROW;
+    /*
+     * Accelerated common case where input don't need to be
+     * modified before passing it to the handler.
+     */
+    if ((ctxt->token == 0) && (!cdata)) {
+	in = ctxt->input->cur;
+	do {
+	    while (((*in >= 0x20) && (*in != '<') &&
+		    (*in != '&') && (*in <= 0x7F)) || (*in == 0x09))
+		in++;
+	    if (*in == 0xA) {
+		ctxt->input->line++;
+		continue; /* while */
+	    }
+	    nbchar = in - ctxt->input->cur;
+	    if (IS_BLANK(*ctxt->input->cur) &&
+		areBlanks(ctxt, ctxt->input->cur, nbchar)) {
+		if (ctxt->sax->ignorableWhitespace != NULL)
+		    ctxt->sax->ignorableWhitespace(ctxt->userData,
+					   ctxt->input->cur, nbchar);
+	    } else {
+		if (ctxt->sax->characters != NULL)
+		    ctxt->sax->characters(ctxt->userData,
+					  ctxt->input->cur, nbchar);
+	    }
+	    ctxt->input->cur = in;
+	    if (*in == 0xD) {
+		in++;
+		if (*in == 0xA) {
+		    ctxt->input->cur = in;
+		    in++;
+		    ctxt->input->line++;
+		    continue; /* while */
+		}
+		in--;
+	    }
+	    if ((*in == '<') || (*in == '&')) {
+		return;
+	    }
+	    SHRINK;
+	    GROW;
+	    in = ctxt->input->cur;
+	} while ((*in >= 0x20) && (*in <= 0x7F));
+	nbchar = 0;
+    }
+    xmlParseCharDataComplex(ctxt, cdata);
+}
+
+void
+xmlParseCharDataComplex(xmlParserCtxtPtr ctxt, int cdata) {
     xmlChar buf[XML_PARSER_BIG_BUFFER_SIZE + 5];
     int nbchar = 0;
     int cur, l;
@@ -8193,6 +8271,8 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
 	xmlParserInputBufferPush(ctxt->input->buf, size, chunk);	      
 	ctxt->input->base = ctxt->input->buf->buffer->content + base;
 	ctxt->input->cur = ctxt->input->base + cur;
+	ctxt->input->end =
+	    &ctxt->input->buf->buffer->content[ctxt->input->buf->buffer->use];
 #ifdef DEBUG_PUSH
 	xmlGenericError(xmlGenericErrorContext, "PP: pushed %d\n", size);
 #endif
@@ -8327,6 +8407,8 @@ xmlCreatePushParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
     inputStream->buf = buf;
     inputStream->base = inputStream->buf->buffer->content;
     inputStream->cur = inputStream->buf->buffer->content;
+    inputStream->end = 
+	&inputStream->buf->buffer->content[inputStream->buf->buffer->use];
     if (enc != XML_CHAR_ENCODING_NONE) {
         xmlSwitchEncoding(ctxt, enc);
     }
@@ -9317,6 +9399,8 @@ xmlCreateFileParserCtxt(const char *filename)
     inputStream->buf = buf;
     inputStream->base = inputStream->buf->buffer->content;
     inputStream->cur = inputStream->buf->buffer->content;
+    inputStream->end = 
+	&inputStream->buf->buffer->content[inputStream->buf->buffer->use];
 
     inputPush(ctxt, inputStream);
     if ((ctxt->directory == NULL) && (directory == NULL))
@@ -9455,6 +9539,7 @@ xmlSetupParserForBuffer(xmlParserCtxtPtr ctxt, const xmlChar* buffer,
         input->filename = xmlMemStrdup(filename);
     input->base = buffer;
     input->cur = buffer;
+    input->end = &buffer[xmlStrlen(buffer)];
     inputPush(ctxt, input);
 }
 
@@ -9543,6 +9628,7 @@ xmlCreateMemoryParserCtxt(char *buffer, int size) {
     input->buf = buf;
     input->base = input->buf->buffer->content;
     input->cur = input->buf->buffer->content;
+    input->end = &input->buf->buffer->content[input->buf->buffer->use];
 
     inputPush(ctxt, input);
     return(ctxt);

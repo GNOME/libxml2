@@ -317,7 +317,7 @@ xmlFreeElementContent(xmlElementContentPtr cur) {
     if (cur->c1 != NULL) xmlFreeElementContent(cur->c1);
     if (cur->c2 != NULL) xmlFreeElementContent(cur->c2);
     if (cur->name != NULL) xmlFree((xmlChar *) cur->name);
-    memset(cur, -1, sizeof(xmlElementContent));
+    MEM_CLEANUP(cur, sizeof(xmlElementContent));
     xmlFree(cur);
 }
 
@@ -482,7 +482,7 @@ xmlFreeElement(xmlElementPtr elem) {
 	xmlFree((xmlChar *) elem->name);
     if (elem->prefix != NULL)
 	xmlFree((xmlChar *) elem->prefix);
-    memset(elem, -1, sizeof(xmlElement));
+    MEM_CLEANUP(elem, sizeof(xmlElement));
     xmlFree(elem);
 }
 
@@ -777,7 +777,7 @@ xmlFreeEnumeration(xmlEnumerationPtr cur) {
     if (cur->next != NULL) xmlFreeEnumeration(cur->next);
 
     if (cur->name != NULL) xmlFree((xmlChar *) cur->name);
-    memset(cur, -1, sizeof(xmlEnumeration));
+    MEM_CLEANUP(cur, sizeof(xmlEnumeration));
     xmlFree(cur);
 }
 
@@ -937,7 +937,7 @@ xmlFreeAttribute(xmlAttributePtr attr) {
 	xmlFree((xmlChar *) attr->defaultValue);
     if (attr->prefix != NULL)
 	xmlFree((xmlChar *) attr->prefix);
-    memset(attr, -1, sizeof(xmlAttribute));
+    MEM_CLEANUP(attr, sizeof(xmlAttribute));
     xmlFree(attr);
 }
 
@@ -1285,7 +1285,7 @@ xmlFreeNotation(xmlNotationPtr nota) {
 	xmlFree((xmlChar *) nota->PublicID);
     if (nota->SystemID != NULL)
 	xmlFree((xmlChar *) nota->SystemID);
-    memset(nota, -1, sizeof(xmlNotation));
+    MEM_CLEANUP(nota, sizeof(xmlNotation));
     xmlFree(nota);
 }
 
@@ -1489,7 +1489,7 @@ xmlFreeID(xmlIDPtr id) {
     if (id == NULL) return;
     if (id->value != NULL)
 	xmlFree((xmlChar *) id->value);
-    memset(id, -1, sizeof(xmlID));
+    MEM_CLEANUP(id, sizeof(xmlID));
     xmlFree(id);
 }
 
@@ -1717,7 +1717,7 @@ xmlFreeRef(xmlLinkPtr lk) {
 	if (ref == NULL) return;
 	if (ref->value != NULL)
 		xmlFree((xmlChar *)ref->value);
-	memset(ref, -1, sizeof(xmlRef));
+	MEM_CLEANUP(ref, sizeof(xmlRef));
 	xmlFree(ref);
 }
 

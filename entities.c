@@ -84,7 +84,7 @@ void xmlFreeEntity(xmlEntityPtr entity) {
         xmlFree((char *) entity->content);
     if (entity->orig != NULL)
         xmlFree((char *) entity->orig);
-    memset(entity, -1, sizeof(xmlEntity));
+    MEM_CLEANUP(entity, sizeof(xmlEntity));
     xmlFree(entity);
 }
 

@@ -205,7 +205,7 @@ xmlFreeNs(xmlNsPtr cur) {
     }
     if (cur->href != NULL) xmlFree((char *) cur->href);
     if (cur->prefix != NULL) xmlFree((char *) cur->prefix);
-    memset(cur, -1, sizeof(xmlNs));
+    MEM_CLEANUP(cur, sizeof(xmlNs));
     xmlFree(cur);
 }
 
@@ -423,7 +423,7 @@ xmlFreeDtd(xmlDtdPtr cur) {
     if (cur->pentities != NULL)
         xmlFreeEntitiesTable((xmlEntitiesTablePtr) cur->pentities);
 
-    memset(cur, -1, sizeof(xmlDtd));
+    MEM_CLEANUP(cur, sizeof(xmlDtd));
     xmlFree(cur);
 }
 
@@ -485,7 +485,7 @@ xmlFreeDoc(xmlDocPtr cur) {
     if (cur->ids != NULL) xmlFreeIDTable((xmlIDTablePtr) cur->ids);
     if (cur->refs != NULL) xmlFreeRefTable((xmlRefTablePtr) cur->refs);
     if (cur->URL != NULL) xmlFree((char *) cur->URL);
-    memset(cur, -1, sizeof(xmlDoc));
+    MEM_CLEANUP(cur, sizeof(xmlDoc));
     xmlFree(cur);
 }
 
@@ -1110,7 +1110,7 @@ xmlFreeProp(xmlAttrPtr cur) {
         xmlRemoveID(cur->parent->doc, cur);
     if (cur->name != NULL) xmlFree((char *) cur->name);
     if (cur->children != NULL) xmlFreeNodeList(cur->children);
-    memset(cur, -1, sizeof(xmlAttr));
+    MEM_CLEANUP(cur, sizeof(xmlAttr));
     xmlFree(cur);
 }
 
@@ -2305,7 +2305,7 @@ xmlFreeNode(xmlNodePtr cur) {
 	(cur->name != xmlStringComment))
 	xmlFree((char *) cur->name);
     if (cur->nsDef != NULL) xmlFreeNsList(cur->nsDef);
-    memset(cur, -1, sizeof(xmlNode));
+    MEM_CLEANUP(cur, sizeof(xmlNode));
     xmlFree(cur);
 }
 
@@ -4511,13 +4511,13 @@ xmlBufferFree(xmlBufferPtr buf) {
     }
     if (buf->content != NULL) {
 #ifndef XML_USE_BUFFER_CONTENT
-        memset(buf->content, -1, BASE_BUFFER_SIZE);
+        MEM_CLEANUP(buf->content, BASE_BUFFER_SIZE);
 #else
-        memset(buf->content, -1, buf->size);
+        MEM_CLEANUP(buf->content, buf->size);
 #endif
         xmlFree(buf->content);
     }
-    memset(buf, -1, sizeof(xmlBuffer));
+    MEM_CLEANUP(buf, sizeof(xmlBuffer));
     xmlFree(buf);
 }
 
@@ -4531,7 +4531,7 @@ void
 xmlBufferEmpty(xmlBufferPtr buf) {
     if (buf->content == NULL) return;
     buf->use = 0;
-    memset(buf->content, -1, buf->size);/* just for debug */
+    MEM_CLEANUP(buf->content, buf->size);
 }
 
 /**

@@ -906,14 +906,10 @@ void
 xmlXPathFreeNodeSet(xmlNodeSetPtr obj) {
     if (obj == NULL) return;
     if (obj->nodeTab != NULL) {
-#ifdef DEBUG
-	memset(obj->nodeTab, 0xB , (size_t) sizeof(xmlNodePtr) * obj->nodeMax);
-#endif
+	MEM_CLEANUP(obj->nodeTab, (size_t) sizeof(xmlNodePtr) * obj->nodeMax);
 	xmlFree(obj->nodeTab);
     }
-#ifdef DEBUG
-    memset(obj, 0xB , (size_t) sizeof(xmlNodeSet));
-#endif
+    MEM_CLEANUP(obj, (size_t) sizeof(xmlNodeSet));
     xmlFree(obj);
 }
 
@@ -934,14 +930,10 @@ xmlXPathFreeValueTree(xmlNodeSetPtr obj) {
 	    xmlFreeNodeList(obj->nodeTab[i]);
 
     if (obj->nodeTab != NULL) {
-#ifdef DEBUG
-	memset(obj->nodeTab, 0xB , (size_t) sizeof(xmlNodePtr) * obj->nodeMax);
-#endif
+	MEM_CLEANUP(obj->nodeTab, (size_t) sizeof(xmlNodePtr) * obj->nodeMax);
 	xmlFree(obj->nodeTab);
     }
-#ifdef DEBUG
-    memset(obj, 0xB , (size_t) sizeof(xmlNodeSet));
-#endif
+    MEM_CLEANUP(obj, (size_t) sizeof(xmlNodeSet));
     xmlFree(obj);
 }
 
@@ -1098,9 +1090,7 @@ xmlXPathWrapNodeSet(xmlNodeSetPtr val) {
 void
 xmlXPathFreeNodeSetList(xmlXPathObjectPtr obj) {
     if (obj == NULL) return;
-#ifdef DEBUG
-    memset(obj, 0xB , (size_t) sizeof(xmlXPathObject));
-#endif
+    MEM_CLEANUP(obj, (size_t) sizeof(xmlXPathObject));
     xmlFree(obj);
 }
 
@@ -1611,9 +1601,7 @@ xmlXPathFreeObject(xmlXPathObjectPtr obj) {
 	    xmlXPathFreeValueTree(obj->nodesetval);
     }
 
-#ifdef DEBUG
-    memset(obj, 0xB , (size_t) sizeof(xmlXPathObject));
-#endif
+    MEM_CLEANUP(obj, (size_t) sizeof(xmlXPathObject));
     xmlFree(obj);
 }
 
@@ -1679,9 +1667,7 @@ xmlXPathFreeContext(xmlXPathContextPtr ctxt) {
     xmlXPathRegisteredNsCleanup(ctxt);
     xmlXPathRegisteredFuncsCleanup(ctxt);
     xmlXPathRegisteredVariablesCleanup(ctxt);
-#ifdef DEBUG
-    memset(ctxt, 0xB , (size_t) sizeof(xmlXPathContext));
-#endif
+    MEM_CLEANUP(ctxt, (size_t) sizeof(xmlXPathContext));
     xmlFree(ctxt);
 }
 
@@ -1758,14 +1744,10 @@ xmlXPathNewParserContext(const xmlChar *str, xmlXPathContextPtr ctxt) {
 void
 xmlXPathFreeParserContext(xmlXPathParserContextPtr ctxt) {
     if (ctxt->valueTab != NULL) {
-#ifdef DEBUG
-        memset(ctxt->valueTab, 0xB , 10 * (size_t) sizeof(xmlXPathObjectPtr));
-#endif
+        MEM_CLEANUP(ctxt->valueTab, 10 * (size_t) sizeof(xmlXPathObjectPtr));
         xmlFree(ctxt->valueTab);
     }
-#ifdef DEBUG
-    memset(ctxt, 0xB , (size_t) sizeof(xmlXPathParserContext));
-#endif
+    MEM_CLEANUP(ctxt, (size_t) sizeof(xmlXPathParserContext));
     xmlFree(ctxt);
 }
 

@@ -16,6 +16,8 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include <sys/time.h>
+
 
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
@@ -88,6 +90,8 @@ static char *encoding = NULL;
 static int xinclude = 0;
 #endif
 static int progresult = 0;
+static int timing = 0;
+static struct timeval begin, end;
 
 
 #ifdef VMS
@@ -386,6 +390,10 @@ void myClose(FILE *f) {
 void parseAndPrintFile(char *filename) {
     xmlDocPtr doc = NULL, tmp;
 
+    if ((timing) && (!repeat))
+	gettimeofday(&begin, NULL);
+    
+
 #ifdef LIBXML_HTML_ENABLED
     if (html) {
 	doc = htmlParseFile(filename, NULL);
@@ -527,9 +535,30 @@ void parseAndPrintFile(char *filename) {
 	return;
     }
 
+    if ((timing) && (!repeat)) {
+	long msec;
+	gettimeofday(&end, NULL);
+	msec = end.tv_sec - begin.tv_sec;
+	msec *= 1000;
+	msec += (end.tv_usec - begin.tv_usec) / 1000;
+	fprintf(stderr, "Parsing took %ld ms\n", msec);
+    }
+
 #ifdef LIBXML_XINCLUDE_ENABLED
-    if (xinclude)
+    if (xinclude) {
+	if ((timing) && (!repeat)) {
+	    gettimeofday(&begin, NULL);
+	}
 	xmlXIncludeProcess(doc);
+	if ((timing) && (!repeat)) {
+	    long msec;
+	    gettimeofday(&end, NULL);
+	    msec = end.tv_sec - begin.tv_sec;
+	    msec *= 1000;
+	    msec += (end.tv_usec - begin.tv_usec) / 1000;
+	    fprintf(stderr, "Xinclude processing took %ld ms\n", msec);
+	}
+    }
 #endif
 
 #ifdef LIBXML_DEBUG_ENABLED
@@ -579,6 +608,9 @@ void parseAndPrintFile(char *filename) {
 #ifdef LIBXML_DEBUG_ENABLED
 	if (!debug) {
 #endif
+	    if ((timing) && (!repeat)) {
+		gettimeofday(&begin, NULL);
+	    }
 	    if (memory) {
 		xmlChar *result;
 		int len;
@@ -600,6 +632,14 @@ void parseAndPrintFile(char *filename) {
 	        xmlSaveFileEnc("-", doc, encoding);
 	    else
 		xmlDocDump(stdout, doc);
+	    if ((timing) && (!repeat)) {
+		long msec;
+		gettimeofday(&end, NULL);
+		msec = end.tv_sec - begin.tv_sec;
+		msec *= 1000;
+		msec += (end.tv_usec - begin.tv_usec) / 1000;
+		fprintf(stderr, "Saving took %ld ms\n", msec);
+	    }
 #ifdef LIBXML_DEBUG_ENABLED
 	} else {
 	    xmlDebugDumpDocument(stdout, doc);
@@ -613,13 +653,27 @@ void parseAndPrintFile(char *filename) {
     if (dtdvalid != NULL) {
 	xmlDtdPtr dtd;
 
+	if ((timing) && (!repeat)) {
+	    gettimeofday(&begin, NULL);
+	}
 	dtd = xmlParseDTD(NULL, (const xmlChar *)dtdvalid); 
+	if ((timing) && (!repeat)) {
+	    long msec;
+	    gettimeofday(&end, NULL);
+	    msec = end.tv_sec - begin.tv_sec;
+	    msec *= 1000;
+	    msec += (end.tv_usec - begin.tv_usec) / 1000;
+	    fprintf(stderr, "Parsing DTD took %ld ms\n", msec);
+	}
 	if (dtd == NULL) {
 	    xmlGenericError(xmlGenericErrorContext,
 		    "Could not parse DTD %s\n", dtdvalid);
 	    progresult = 2;
 	} else {
 	    xmlValidCtxt cvp;
+	    if ((timing) && (!repeat)) {
+		gettimeofday(&begin, NULL);
+	    }
 	    cvp.userData = (void *) stderr;                                                 cvp.error    = (xmlValidityErrorFunc) fprintf;                                  cvp.warning  = (xmlValidityWarningFunc) fprintf;
 	    if (!xmlValidateDtd(&cvp, doc, dtd)) {
 		xmlGenericError(xmlGenericErrorContext,
@@ -627,15 +681,34 @@ void parseAndPrintFile(char *filename) {
 			filename, dtdvalid);
 		progresult = 3;
 	    }
+	    if ((timing) && (!repeat)) {
+		long msec;
+		gettimeofday(&end, NULL);
+		msec = end.tv_sec - begin.tv_sec;
+		msec *= 1000;
+		msec += (end.tv_usec - begin.tv_usec) / 1000;
+		fprintf(stderr, "Validating against DTD took %ld ms\n", msec);
+	    }
 	    xmlFreeDtd(dtd);
 	}
     } else if (postvalid) {
 	xmlValidCtxt cvp;
+	if ((timing) && (!repeat)) {
+	    gettimeofday(&begin, NULL);
+	}
 	cvp.userData = (void *) stderr;                                                 cvp.error    = (xmlValidityErrorFunc) fprintf;                                  cvp.warning  = (xmlValidityWarningFunc) fprintf;
 	if (!xmlValidateDocument(&cvp, doc)) {
 	    xmlGenericError(xmlGenericErrorContext,
 		    "Document %s does not validate\n", filename);
 	    progresult = 3;
+	}
+	if ((timing) && (!repeat)) {
+	    long msec;
+	    gettimeofday(&end, NULL);
+	    msec = end.tv_sec - begin.tv_sec;
+	    msec *= 1000;
+	    msec += (end.tv_usec - begin.tv_usec) / 1000;
+	    fprintf(stderr, "Validating took %ld ms\n", msec);
 	}
     }
 
@@ -647,7 +720,18 @@ void parseAndPrintFile(char *filename) {
     /*
      * free it.
      */
+    if ((timing) && (!repeat)) {
+	gettimeofday(&begin, NULL);
+    }
     xmlFreeDoc(doc);
+    if ((timing) && (!repeat)) {
+	long msec;
+	gettimeofday(&end, NULL);
+	msec = end.tv_sec - begin.tv_sec;
+	msec *= 1000;
+	msec += (end.tv_usec - begin.tv_usec) / 1000;
+	fprintf(stderr, "Freeing took %ld ms\n", msec);
+    }
 }
 
 int
@@ -703,6 +787,9 @@ main(int argc, char **argv) {
 	else if ((!strcmp(argv[i], "-insert")) ||
 	         (!strcmp(argv[i], "--insert")))
 	    insert++;
+	else if ((!strcmp(argv[i], "-timing")) ||
+	         (!strcmp(argv[i], "--timing")))
+	    timing++;
 	else if ((!strcmp(argv[i], "-repeat")) ||
 	         (!strcmp(argv[i], "--repeat")))
 	    repeat++;
@@ -784,6 +871,8 @@ main(int argc, char **argv) {
 	    i++;
 	    continue;
         }
+	if ((timing) && (repeat))
+	    gettimeofday(&begin, NULL);
 	/* Remember file names.  "-" means stding.  <sven@zen.org> */
 	if ((argv[i][0] != '-') || (strcmp(argv[i], "-") == 0)) {
 	    if (repeat) {
@@ -793,12 +882,20 @@ main(int argc, char **argv) {
 		parseAndPrintFile(argv[i]);
 	    files ++;
 	}
+	if ((timing) && (repeat)) {
+	    long msec;
+	    gettimeofday(&end, NULL);
+	    msec = end.tv_sec - begin.tv_sec;
+	    msec *= 1000;
+	    msec += (end.tv_usec - begin.tv_usec) / 1000;
+	    fprintf(stderr, "100 iteration took %ld ms\n", msec);
+	}
     }
     if ((htmlout) && (!nowrap)) {
 	xmlGenericError(xmlGenericErrorContext, "</body></html>\n");
     }
     if (files == 0) {
-	printf("Usage : %s [--debug] [--debugent] [--copy] [--recover] [--noent] [--noout] [--valid] [--repeat] XMLfiles ...\n",
+	printf("Usage : %s [options] XMLfiles ...\n",
 	       argv[0]);
 	printf("\tParse the XML files and output the result of the parsing\n");
 #ifdef LIBXML_DEBUG_ENABLED
@@ -815,6 +912,7 @@ main(int argc, char **argv) {
 	printf("\t--valid : validate the document in addition to std well-formed check\n");
 	printf("\t--postvalid : do a posteriori validation, i.e after parsing\n");
 	printf("\t--dtdvalid URL : do a posteriori validation against a given DTD\n");
+	printf("\t--timing : print some timings\n");
 	printf("\t--repeat : repeat 100 times, for timing or profiling\n");
 	printf("\t--insert : ad-hoc test for valid insertions\n");
 	printf("\t--compress : turn on gzip compression of output\n");

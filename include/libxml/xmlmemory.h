@@ -15,6 +15,7 @@
  * DEBUG_MEMORY_LOCATION should be activated only done when debugging 
  * libxml.
  */
+/* #define DEBUG_MEMORY_FREED */
 /* #define DEBUG_MEMORY_LOCATION */
 
 #ifdef DEBUG
@@ -25,6 +26,12 @@
 
 #ifdef DEBUG_MEMORY_LOCATION
 #define MEM_LIST /* keep a list of all the allocated memory blocks */
+#endif
+
+#ifdef DEBUG_MEMORY_FREED
+#define MEM_CLEANUP(p,l) memset((p), -1, (l));
+#else
+#define MEM_CLEANUP(p,l)
 #endif
 
 #ifdef __cplusplus

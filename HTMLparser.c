@@ -1651,7 +1651,7 @@ htmlFreeInputStream(htmlParserInputPtr input) {
         input->free((xmlChar *) input->base);
     if (input->buf != NULL) 
         xmlFreeParserInputBuffer(input->buf);
-    memset(input, -1, sizeof(htmlParserInput));
+    MEM_CLEANUP(input, sizeof(htmlParserInput));
     xmlFree(input);
 }
 

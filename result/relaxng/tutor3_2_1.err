@@ -1,3 +1,3 @@
-error detected at relaxng.c:4260
-error detected at relaxng.c:4308
+error detected at relaxng.c:4293
+error detected at relaxng.c:4341
 xmlRelaxNGValidateDefinition(): validated card : -1

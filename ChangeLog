@@ -1,3 +1,9 @@
+Thu Jan 30 14:06:55 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng: more work done in the train
+	* test/relaxng/* result/relaxng/*: augmented/updated the
+	  regression tests
+
 Wed Jan 29 23:44:58 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c: debugging of externalRef

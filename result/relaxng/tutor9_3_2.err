@@ -1,0 +1,8 @@
+xmlRelaxNGCheckCombine(): merging inline.class defines: 1
+xmlRelaxNGComputeInterleaves(interleave0)
+  2 child
+  2 groups
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated em : 0
+xmlRelaxNGValidateDefinition(): validated italic : 0
+xmlRelaxNGValidateDefinition(): validated data : 0

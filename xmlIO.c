@@ -2929,6 +2929,7 @@ xmlEscapeContent(unsigned char* out, int *outlen,
  * xmlOutputBufferWriteEscape:
  * @out:  a buffered parser output
  * @str:  a zero terminated UTF-8 string
+ * @escaping:  an optional escaping function (or NULL)
  *
  * Write the content of the string in the output I/O buffer
  * This routine escapes the caracters and then handle the I18N
@@ -2940,7 +2941,8 @@ xmlEscapeContent(unsigned char* out, int *outlen,
  *         in case of error.
  */
 int
-xmlOutputBufferWriteEscape(xmlOutputBufferPtr out, const xmlChar *str) {
+xmlOutputBufferWriteEscape(xmlOutputBufferPtr out, const xmlChar *str,
+                           xmlCharEncodingOutputFunc escaping) {
     int nbchars = 0; /* number of chars to output to I/O */
     int ret;         /* return from function call */
     int written = 0; /* number of char written to I/O so far */
@@ -2949,9 +2951,10 @@ xmlOutputBufferWriteEscape(xmlOutputBufferPtr out, const xmlChar *str) {
     int cons;        /* byte from str consumed */
 
     if ((out == NULL) || (out->error) || (str == NULL)) return(-1);
-    len = strlen(str);
+    len = strlen((const char *)str);
     if (len < 0) return(0);
     if (out->error) return(-1);
+    if (escaping == NULL) escaping = xmlEscapeContent;
 
     do {
         /*
@@ -2970,8 +2973,8 @@ xmlOutputBufferWriteEscape(xmlOutputBufferPtr out, const xmlChar *str) {
 	    if (out->conv == NULL) {
 		out->conv = xmlBufferCreate();
 	    }
-	    ret = xmlEscapeContent(out->buffer->content + out->buffer->use ,
-	                           &chunk, str, &cons);
+	    ret = escaping(out->buffer->content + out->buffer->use ,
+	                   &chunk, str, &cons);
 	    if (ret < 0)
 	        return(-1);
 	    out->buffer->use += chunk;
@@ -2991,8 +2994,8 @@ xmlOutputBufferWriteEscape(xmlOutputBufferPtr out, const xmlChar *str) {
 	    }
 	    nbchars = out->conv->use;
 	} else {
-	    ret = xmlEscapeContent(out->buffer->content + out->buffer->use ,
-	                           &chunk, str, &cons);
+	    ret = escaping(out->buffer->content + out->buffer->use ,
+	                   &chunk, str, &cons);
 	    if (ret < 0)
 	        return(-1);
 	    out->buffer->use += chunk;

@@ -245,7 +245,8 @@ XMLPUBFUN int XMLCALL
 					 const char *str);
 XMLPUBFUN int XMLCALL	
 	xmlOutputBufferWriteEscape	(xmlOutputBufferPtr out,
-					 const xmlChar *str);
+					 const xmlChar *str,
+					 xmlCharEncodingOutputFunc escaping);
 
 XMLPUBFUN int XMLCALL	
 	xmlOutputBufferFlush		(xmlOutputBufferPtr out);

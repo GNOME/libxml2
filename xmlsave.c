@@ -481,7 +481,7 @@ xmlNodeDumpOutputInternal(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
 			xmlFree(buffer);
 		    }
 		} else {
-		    xmlOutputBufferWriteEscape(buf, cur->content);
+		    xmlOutputBufferWriteEscape(buf, cur->content, NULL);
 		}
 	    } else {
 		/*
@@ -594,7 +594,7 @@ xmlNodeDumpOutputInternal(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
 		xmlFree(buffer);
 	    }
 	} else {
-	    xmlOutputBufferWriteEscape(buf, cur->content);
+	    xmlOutputBufferWriteEscape(buf, cur->content, NULL);
 	}
     }
     if (cur->children != NULL) {
@@ -941,7 +941,7 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
 			xmlFree(buffer);
 		    }
 		} else {
-		    xmlOutputBufferWriteEscape(buf, cur->content);
+		    xmlOutputBufferWriteEscape(buf, cur->content, NULL);
 		}
 	    } else {
 		/*
@@ -1068,7 +1068,7 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
 		xmlFree(buffer);
 	    }
 	} else {
-	    xmlOutputBufferWriteEscape(buf, cur->content);
+	    xmlOutputBufferWriteEscape(buf, cur->content, NULL);
 	}
     }
 

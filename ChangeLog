@@ -1,3 +1,7 @@
+Fri Sep 12 01:34:19 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* threads.c: backport of a thread bugfix from 2_5_X branch
+
 Thu Sep 11 18:29:18 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: fixed a bug in one corner case of attribute parsing.

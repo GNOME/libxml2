@@ -550,8 +550,13 @@ static void xmlDumpXMLCatalogNode(xmlCatalogEntryPtr catal, xmlNodePtr catalog,
 		case XML_CATA_GROUP:
 		    node = xmlNewDocNode(doc, ns, BAD_CAST "group", NULL);
 		    xmlSetProp(node, BAD_CAST "id", cur->name);
-		    if (cur->value != NULL)
-			xmlSetProp(node, BAD_CAST "uri", cur->value);
+		    if (cur->value != NULL) {
+		        xmlNsPtr xns;
+			xns = xmlSearchNsByHref(doc, node, XML_XML_NAMESPACE);
+			if (xns != NULL)
+			    xmlSetNsProp(node, xns, BAD_CAST "base",
+			    		 cur->value);
+		    }
 		    switch (cur->prefer) {
 			case XML_CATA_PREFER_NONE:
 		            break;

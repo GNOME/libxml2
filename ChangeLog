@@ -1,3 +1,7 @@
+Wed Oct  6 10:50:03 PDT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* catalog.c: small change to last fix, to get xml:base right
+
 Wed Oct  6 09:33:51 PDT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* catalog.c: added code to handle <group>, including dumping

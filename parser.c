@@ -75,7 +75,7 @@
 #endif
 
 
-#define XML_PARSER_BIG_BUFFER_SIZE 1000
+#define XML_PARSER_BIG_BUFFER_SIZE 300
 #define XML_PARSER_BUFFER_SIZE 100
 
 /*
@@ -253,6 +253,13 @@ int spacePop(xmlParserCtxtPtr ctxt) {
 #define SKIP_BLANKS xmlSkipBlankChars(ctxt)
 
 #define NEXT xmlNextChar(ctxt)
+
+#define NEXT1 {								\
+	ctxt->input->cur++;						\
+	ctxt->nbChars++;						\
+	if (*ctxt->input->cur == 0)					\
+	    xmlParserInputGrow(ctxt->input, INPUT_CHUNK);		\
+    }
 
 #define NEXTL(l) do {							\
     if (*(ctxt->input->cur) == '\n') {					\
@@ -1589,6 +1596,7 @@ xmlSplitQName(xmlParserCtxtPtr ctxt, const xmlChar *name, xmlChar **prefix) {
  *									*
  ************************************************************************/
 
+xmlChar *xmlParseNameComplex(xmlParserCtxtPtr ctxt);
 /**
  * xmlParseName:
  * @ctxt:  an XML parser context
@@ -1607,11 +1615,8 @@ xmlSplitQName(xmlParserCtxtPtr ctxt, const xmlChar *name, xmlChar **prefix) {
 
 xmlChar *
 xmlParseName(xmlParserCtxtPtr ctxt) {
-    xmlChar buf[XML_MAX_NAMELEN + 5];
     const xmlChar *in;
     xmlChar *ret;
-    int len = 0, l;
-    int c;
     int count = 0;
 
     GROW;
@@ -1636,7 +1641,20 @@ xmlParseName(xmlParserCtxtPtr ctxt) {
 	    return(ret);
 	}
     }
+    xmlParseNameComplex(ctxt);
+}
 
+xmlChar *
+xmlParseNameComplex(xmlParserCtxtPtr ctxt) {
+    xmlChar buf[XML_MAX_NAMELEN + 5];
+    int len = 0, l;
+    int c;
+    int count = 0;
+
+    /*
+     * Handler for more complex cases
+     */
+    GROW;
     c = CUR_CHAR(l);
     if ((c == ' ') || (c == '>') || (c == '/') || /* accelerators */
 	(!IS_LETTER(c) && (c != '_') &&
@@ -5932,7 +5950,7 @@ xmlParseStartTag(xmlParserCtxtPtr ctxt) {
     int i;
 
     if (RAW != '<') return(NULL);
-    NEXT;
+    NEXT1;
 
     name = xmlParseName(ctxt);
     if (name == NULL) {
@@ -5953,9 +5971,9 @@ xmlParseStartTag(xmlParserCtxtPtr ctxt) {
     SKIP_BLANKS;
     GROW;
 
-    while ((IS_CHAR(RAW)) &&
-           (RAW != '>') && 
-	   ((RAW != '/') || (NXT(1) != '>'))) {
+    while ((RAW != '>') && 
+	   ((RAW != '/') || (NXT(1) != '>')) &&
+	   (IS_CHAR(RAW))) {
 	const xmlChar *q = CUR_PTR;
 	int cons = ctxt->input->consumed;
 
@@ -6097,7 +6115,7 @@ xmlParseEndTag(xmlParserCtxtPtr ctxt) {
 	ctxt->wellFormed = 0;
 	ctxt->disableSAX = 1;
     } else
-	NEXT;
+	NEXT1;
 
     /*
      * [ WFC: Element Type Match ]
@@ -6276,6 +6294,7 @@ xmlParseContent(xmlParserCtxtPtr ctxt) {
 	const xmlChar *test = CUR_PTR;
 	int cons = ctxt->input->consumed;
 	xmlChar tok = ctxt->token;
+	const xmlChar *cur = ctxt->input->cur;
 
 	/*
 	 * Handle  possible processed charrefs.
@@ -6286,14 +6305,14 @@ xmlParseContent(xmlParserCtxtPtr ctxt) {
 	/*
 	 * First case : a Processing Instruction.
 	 */
-	else if ((RAW == '<') && (NXT(1) == '?')) {
+	else if ((*cur == '<') && (cur[1] == '?')) {
 	    xmlParsePI(ctxt);
 	}
 
 	/*
 	 * Second case : a CDSection
 	 */
-	else if ((RAW == '<') && (NXT(1) == '!') &&
+	else if ((*cur == '<') && (NXT(1) == '!') &&
 	    (NXT(2) == '[') && (NXT(3) == 'C') &&
 	    (NXT(4) == 'D') && (NXT(5) == 'A') &&
 	    (NXT(6) == 'T') && (NXT(7) == 'A') &&
@@ -6304,7 +6323,7 @@ xmlParseContent(xmlParserCtxtPtr ctxt) {
 	/*
 	 * Third case :  a comment
 	 */
-	else if ((RAW == '<') && (NXT(1) == '!') &&
+	else if ((*cur == '<') && (NXT(1) == '!') &&
 		 (NXT(2) == '-') && (NXT(3) == '-')) {
 	    xmlParseComment(ctxt);
 	    ctxt->instate = XML_PARSER_CONTENT;
@@ -6313,7 +6332,7 @@ xmlParseContent(xmlParserCtxtPtr ctxt) {
 	/*
 	 * Fourth case :  a sub-element.
 	 */
-	else if (RAW == '<') {
+	else if (*cur == '<') {
 	    xmlParseElement(ctxt);
 	}
 
@@ -6322,7 +6341,7 @@ xmlParseContent(xmlParserCtxtPtr ctxt) {
 	 *    parsing returns it's Name, create the node 
 	 */
 
-	else if (RAW == '&') {
+	else if (*cur == '&') {
 	    xmlParseReference(ctxt);
 	}
 
@@ -6444,7 +6463,7 @@ xmlParseElement(xmlParserCtxtPtr ctxt) {
 	return;
     }
     if (RAW == '>') {
-        NEXT;
+        NEXT1;
     } else {
 	ctxt->errNo = XML_ERR_GT_REQUIRED;
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))

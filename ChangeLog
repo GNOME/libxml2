@@ -1,3 +1,7 @@
+Sun Feb 25 21:52:30 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* parser.c: more work on increasing parsing ferformances
+
 Sun Feb 25 18:03:42 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xmlmemory.h HTMLparser.c HTMLtree.c entities.c parser.c

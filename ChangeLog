@@ -1,3 +1,8 @@
+Fri Jan  3 17:18:32 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmllint.c: added the --stream flag to use the TextReader API
+	* xmlreader.c: small performance tweak
+
 Fri Jan  3 13:50:55 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c python/tests/reader2py: okay the DTD validation

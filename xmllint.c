@@ -81,6 +81,7 @@
 #include <libxml/DOCBparser.h>
 #endif
 #include <libxml/globals.h>
+#include <libxml/xmlreader.h>
 
 #ifdef LIBXML_DEBUG_ENABLED
 static int debug = 0;
@@ -124,6 +125,7 @@ static int dropdtd = 0;
 static int catalogs = 0;
 static int nocatalogs = 0;
 #endif
+static int stream = 0;
 static const char *output = NULL;
 
 
@@ -563,7 +565,75 @@ static void myClose(FILE *f) {
 
 /************************************************************************
  * 									*
- * 			Test processing					*
+ * 			Stream Test processing				*
+ * 									*
+ ************************************************************************/
+static int count = 0;
+static int elem, attrs;
+
+static void processNode(xmlTextReaderPtr reader) {
+    if (debug) {
+	xmlChar *name, *value;
+
+	name = xmlTextReaderName(reader);
+	if (name == NULL)
+	    name = xmlStrdup(BAD_CAST "--");
+	value = xmlTextReaderValue(reader);
+
+	printf("%d %d %d %s", 
+		xmlTextReaderDepth(reader),
+		xmlTextReaderNodeType(reader),
+		xmlTextReaderIsEmptyElement(reader),
+		name);
+	xmlFree(name);
+	if (value == NULL)
+	    printf("\n");
+	else {
+	    printf(" %s\n", value);
+	    xmlFree(value);
+	}
+    }
+}
+
+static void streamFile(char *filename) {
+    xmlTextReaderPtr reader;
+    int ret;
+
+    if (count) {
+	elem = 0;
+	attrs = 0;
+    }
+
+    reader = xmlNewTextReaderFilename(filename);
+    if (reader != NULL) {
+	if (valid)
+	    xmlTextReaderSetParserProp(reader, XML_PARSER_VALIDATE, 1);
+
+	/*
+	 * Process all nodes in sequence
+	 */
+	ret = xmlTextReaderRead(reader);
+	while (ret == 1) {
+	    if (debug)
+		processNode(reader);
+	    ret = xmlTextReaderRead(reader);
+	}
+
+	/*
+	 * Done, cleanup and status
+	 */
+	xmlFreeTextReader(reader);
+	if (ret != 0) {
+	    printf("%s : failed to parse\n", filename);
+	}
+    } else {
+	fprintf(stderr, "Unable to open %s\n", filename);
+    }
+}
+
+/************************************************************************
+ * 									*
+ * 			Tree Test processing				*
  * 									*
  ************************************************************************/
 static void parseAndPrintFile(char *filename) {
@@ -1106,12 +1176,13 @@ static void usage(const char *name) {
     printf("\t--loaddtd : fetch external DTD\n");
     printf("\t--dtdattr : loaddtd + populate the tree with inherited attributes \n");
     printf("\t--dropdtd : remove the DOCTYPE of the input docs\n");
+    printf("\t--stream : use the streaming interface to process very large files\n");
     printf("\nLibxml project home page: http://xmlsoft.org/\n");
     printf("To report bugs or get some help check: http://xmlsoft.org/bugs.html\n");
 }
 int
 main(int argc, char **argv) {
-    int i, count;
+    int i, acount;
     int files = 0;
     int version = 0;
 
@@ -1277,6 +1348,10 @@ main(int argc, char **argv) {
 	     noblanks++;
 	     format++;
 	     xmlKeepBlanksDefault(0);
+	}
+	else if ((!strcmp(argv[i], "-stream")) ||
+	         (!strcmp(argv[i], "--stream"))) {
+	     stream++;
 	} else {
 	    fprintf(stderr, "Unknown option %s\n", argv[i]);
 	    usage(argv[0]);
@@ -1338,10 +1413,17 @@ main(int argc, char **argv) {
 	/* Remember file names.  "-" means stdin.  <sven@zen.org> */
 	if ((argv[i][0] != '-') || (strcmp(argv[i], "-") == 0)) {
 	    if (repeat) {
-		for (count = 0;count < 100 * repeat;count++)
+		for (acount = 0;acount < 100 * repeat;acount++)
+		    if (stream != 0)
+			streamFile(argv[i]);
+		    else
+			parseAndPrintFile(argv[i]);
+	    } else {
+		if (stream != 0)
+		    streamFile(argv[i]);
+		else
 		    parseAndPrintFile(argv[i]);
-	    } else
-		parseAndPrintFile(argv[i]);
+	    }
 	    files ++;
 	    if ((timing) && (repeat)) {
 		endTimer("100 iterations");

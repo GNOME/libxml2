@@ -10,6 +10,14 @@
  * daniel@veillard.com
  */
 
+/*
+ * TODOs:
+ *   - provide an API to expand part of the tree
+ *   - provide an API to preserve part of the tree
+ *   - Streaming XInclude support
+ *   - setting(s) for NoBlanks
+ *   - performances and tuning ...
+ */
 #define IN_LIBXML
 #include "libxml.h"
 
@@ -357,8 +365,7 @@ xmlTextReaderPushData(xmlTextReaderPtr reader) {
 	    } else 
 		break;
 	}
-	if ((inbuf->content[cur] == '>') || (inbuf->content[cur] == '&') ||
-	    (inbuf->content[cur] == ';')) {
+	if (inbuf->content[cur] == '>') {
 	    cur = cur + 1;
 	    val = xmlParseChunk(reader->ctxt,
 		          (const char *) &inbuf->content[reader->cur],

@@ -5044,7 +5044,7 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
 	while ((RAW != 0) && ((RAW != ']') || (NXT(1) != ']') ||
 	       (NXT(2) != '>'))) {
 	    const xmlChar *check = CUR_PTR;
-	    int cons = ctxt->input->consumed;
+	    unsigned int cons = ctxt->input->consumed;
 
 	    if ((RAW == '<') && (NXT(1) == '!') && (NXT(2) == '[')) {
 		xmlParseConditionalSections(ctxt);
@@ -5352,7 +5352,7 @@ xmlParseExternalSubset(xmlParserCtxtPtr ctxt, const xmlChar *ExternalID,
            ((RAW == '<') && (NXT(1) == '!')) ||
 	   (RAW == '%') || IS_BLANK(CUR)) {
 	const xmlChar *check = CUR_PTR;
-	int cons = ctxt->input->consumed;
+	unsigned int cons = ctxt->input->consumed;
 
 	GROW;
         if ((RAW == '<') && (NXT(1) == '!') && (NXT(2) == '[')) {
@@ -6485,7 +6485,7 @@ xmlParseInternalSubset(xmlParserCtxtPtr ctxt) {
 	 */
 	while (RAW != ']') {
 	    const xmlChar *check = CUR_PTR;
-	    int cons = ctxt->input->consumed;
+	    unsigned int cons = ctxt->input->consumed;
 
 	    SKIP_BLANKS;
 	    xmlParseMarkupDecl(ctxt);
@@ -6695,7 +6695,7 @@ xmlParseStartTag(xmlParserCtxtPtr ctxt) {
 	   ((RAW != '/') || (NXT(1) != '>')) &&
 	   (IS_CHAR(RAW))) {
 	const xmlChar *q = CUR_PTR;
-	int cons = ctxt->input->consumed;
+	unsigned int cons = ctxt->input->consumed;
 
 	attname = xmlParseAttribute(ctxt, &attvalue);
         if ((attname != NULL) && (attvalue != NULL)) {
@@ -7030,7 +7030,7 @@ xmlParseContent(xmlParserCtxtPtr ctxt) {
     while ((RAW != 0) &&
 	   ((RAW != '<') || (NXT(1) != '/'))) {
 	const xmlChar *test = CUR_PTR;
-	int cons = ctxt->input->consumed;
+	unsigned int cons = ctxt->input->consumed;
 	const xmlChar *cur = ctxt->input->cur;
 
 	/*
@@ -8709,7 +8709,7 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 	    }
             case XML_PARSER_CONTENT: {
 		const xmlChar *test;
-		int cons;
+		unsigned int cons;
 		if ((avail < 2) && (ctxt->inputNr == 1))
 		    goto done;
 		cur = ctxt->input->cur[0];

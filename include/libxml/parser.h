@@ -55,7 +55,12 @@ struct _xmlParserInput {
     int length;                       /* length if known */
     int line;                         /* Current line */
     int col;                          /* Current column */
-    int consumed;                     /* How many xmlChars already consumed */
+    /*
+     * NOTE: consumed is only tested for equality in the parser code,
+     *       so even if there is an overflow this should not give troubles
+     *       for parsing very large instances.
+     */
+    unsigned long consumed;           /* How many xmlChars already consumed */
     xmlParserInputDeallocate free;    /* function to deallocate the base */
     const xmlChar *encoding;          /* the encoding string for entity */
     const xmlChar *version;           /* the version string for entity */

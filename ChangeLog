@@ -1,3 +1,11 @@
+Fri Apr 18 14:31:15 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* libxml.h include/libxml/parser.h parser.c xmlIO.c DOCBparser.c: 
+	  added support for large file, tested with a 3+GB instance,
+	  and some cleanup.
+	* catalog.c: added a TODO
+	* Makefile.am: added some "make tests" comments
+
 Thu Apr 17 14:51:57 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c: some cleanups

@@ -408,6 +408,8 @@ XIncludetests : xmllint$(EXEEXT)
 	@echo "##"
 	@echo "## XInclude regression tests"
 	@echo "##"
+	@echo "## the warning reported on fallback.xml test is expected"
+	@echo "##"
 	-@(for i in $(srcdir)/test/XInclude/docs/* ; do \
 	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \
@@ -735,6 +737,9 @@ Relaxtests: xmllint$(EXEEXT)
 	  done; done)
 	@echo "##"
 	@echo "## Relax-NG streaming regression tests"
+	@echo "##"
+	@echo "## Some error messages are different than non-streaming"
+	@echo "## and generate small diffs"
 	@echo "##"
 	-@(for i in $(srcdir)/test/relaxng/*.rng ; do \
 	  name=`basename $$i | sed 's+\.rng++'`; \

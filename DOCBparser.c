@@ -4713,7 +4713,7 @@ docbParseInternalSubset(xmlParserCtxtPtr ctxt) {
         */
        while (RAW != ']') {
            const xmlChar *check = CUR_PTR;
-           int cons = ctxt->input->consumed;
+           unsigned int cons = ctxt->input->consumed;
 
            SKIP_BLANKS;
            docbParseMarkupDecl(ctxt);

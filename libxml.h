@@ -9,6 +9,15 @@
 #ifndef __XML_LIBXML_H__
 #define __XML_LIBXML_H__
 
+#ifndef NO_LARGEFILE_SOURCE
+#ifndef _LARGEFILE_SOURCE
+#define _LARGEFILE_SOURCE
+#endif
+#ifndef _FILE_OFFSET_BITS
+#define _FILE_OFFSET_BITS 64
+#endif
+#endif
+
 #if defined(WIN32) && !defined(__CYGWIN__)
 #include "win32config.h"
 #elif defined(macintosh)

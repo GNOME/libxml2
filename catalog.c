@@ -47,6 +47,11 @@
  * TODO:
  *
  * macro to flag unimplemented blocks
+ * XML_CATALOG_PREFER user env to select between system/public prefered
+ * option. C.f. Richard Tobin <richard@cogsci.ed.ac.uk>
+ *> Just FYI, I am using an environment variable XML_CATALOG_PREFER with
+ *> values "system" and "public".  I have made the default be "system" to
+ *> match yours.
  */
 #define TODO 								\
     xmlGenericError(xmlGenericErrorContext,				\

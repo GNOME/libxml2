@@ -1,3 +1,9 @@
+Fri Sep 26 16:49:25 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* parserInternals.c: fixed a backward compatibility problem
+	  when formatting "deprecated SAXv1 function ignorableWhitespace"
+	  could be reproduced by xmllint --format
+
 Fri Sep 26 15:50:44 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* doc/libxml2-api.xml: rebuilt the API

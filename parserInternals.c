@@ -2320,7 +2320,7 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
     ctxt->linenumbers = xmlLineNumbersDefaultValue;
     ctxt->keepBlanks = xmlKeepBlanksDefaultValue;
     if (ctxt->keepBlanks == 0)
-	ctxt->sax->ignorableWhitespace = ignorableWhitespace;
+	ctxt->sax->ignorableWhitespace = xmlSAX2IgnorableWhitespace;
 
     ctxt->vctxt.userData = ctxt;
     ctxt->vctxt.error = xmlParserValidityError;
@@ -2687,7 +2687,7 @@ xmlSubstituteEntitiesDefault(int val) {
  * Set and return the previous value for default blanks text nodes support.
  * The 1.x version of the parser used an heuristic to try to detect
  * ignorable white spaces. As a result the SAX callback was generating
- * ignorableWhitespace() callbacks instead of characters() one, and when
+ * xmlSAX2IgnorableWhitespace() callbacks instead of characters() one, and when
  * using the DOM output text nodes containing those blanks were not generated.
  * The 2.x and later version will switch to the XML standard way and
  * ignorableWhitespace() are only generated when running the parser in

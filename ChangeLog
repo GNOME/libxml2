@@ -1,3 +1,16 @@
+Tue Jan 18 18:46:06 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* configure.in: prepared for libxml-1.8.5
+	* doc/* recompiled the documentation
+
+2000-01-17  Jody Goldberg <jgoldberg@home.com>
+
+	* configure.in : WARNING autoconf subtlety alert :
+	  Use AC_CHECK_HEADERS rather than AC_CHECK_HEADER
+	  when looking for zlib.h so that HAVE_ZLIB_H is defined.
+	* config.h.in : Have a #undef for HAVE_ZLIB_H so that it will
+	  get defined by AC_CHECK_HEADERS.
+
 Mon Jan 17 17:04:12 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* tree.c: fixed a hideous bug in xmlGetProp() thanks to

@@ -19,6 +19,7 @@ extern "C" {
 #endif
 
 int	xmlXIncludeProcess	(xmlDocPtr doc);
+int	xmlXIncludeProcessTree	(xmlNodePtr tree);
 
 #ifdef __cplusplus
 }

@@ -96,7 +96,7 @@ struct _xmlXIncludeCtxt {
 };
 
 static int
-xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc);
+xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr tree);
 
 /**
  * xmlXIncludeFreeRef:
@@ -533,7 +533,7 @@ xmlXIncludeRecurseDoc(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc,
 	    newctxt->incTab[i]->count++; /* prevent the recursion from
 					    freeing it */
 	}
-	xmlXIncludeDoProcess(newctxt, doc);
+	xmlXIncludeDoProcess(newctxt, doc, xmlDocGetRootElement(doc));
 	for (i = 0;i < ctxt->incNr;i++) {
 	    newctxt->incTab[i]->count--;
 	    newctxt->incTab[i] = NULL;
@@ -2049,6 +2049,7 @@ xmlXIncludeTestNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node) {
  * xmlXIncludeDoProcess:
  * @ctxt: the XInclude processing context
  * @doc: an XML document
+ * @tree: the top of the tree to process
  *
  * Implement the XInclude substitution on the XML document @doc
  *
@@ -2056,12 +2057,12 @@ xmlXIncludeTestNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node) {
  *    or the number of substitutions done.
  */
 static int
-xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc) {
+xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr tree) {
     xmlNodePtr cur;
     int ret = 0;
     int i;
 
-    if (doc == NULL)
+    if ((doc == NULL) || (tree == NULL))
 	return(-1);
     if (ctxt == NULL)
 	return(-1);
@@ -2075,7 +2076,7 @@ xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc) {
     /*
      * First phase: lookup the elements in the document
      */
-    cur = xmlDocGetRootElement(doc);
+    cur = tree;
     if (xmlXIncludeTestNode(ctxt, cur) == 1)
 	xmlXIncludePreProcessNode(ctxt, cur);
     while (cur != NULL) {
@@ -2139,14 +2140,45 @@ xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc) {
 int
 xmlXIncludeProcess(xmlDocPtr doc) {
     xmlXIncludeCtxtPtr ctxt;
+    xmlNodePtr tree;
     int ret = 0;
 
     if (doc == NULL)
 	return(-1);
+    tree = xmlDocGetRootElement(doc);
+    if (tree == NULL)
+	return(-1);
     ctxt = xmlXIncludeNewContext(doc);
     if (ctxt == NULL)
 	return(-1);
-    ret = xmlXIncludeDoProcess(ctxt, doc);
+    ret = xmlXIncludeDoProcess(ctxt, doc, tree);
+    if ((ret >= 0) && (ctxt->nbErrors > 0))
+	ret = -1;
+
+    xmlXIncludeFreeContext(ctxt);
+    return(ret);
+}
+
+/**
+ * xmlXIncludeProcessTree:
+ * @tree: a node in an XML document
+ *
+ * Implement the XInclude substitution for the given subtree
+ *
+ * Returns 0 if no substitution were done, -1 if some processing failed
+ *    or the number of substitutions done.
+ */
+int
+xmlXIncludeProcessTree(xmlNodePtr tree) {
+    xmlXIncludeCtxtPtr ctxt;
+    int ret = 0;
+
+    if ((tree == NULL) || (tree->doc == NULL))
+	return(-1);
+    ctxt = xmlXIncludeNewContext(tree->doc);
+    if (ctxt == NULL)
+	return(-1);
+    ret = xmlXIncludeDoProcess(ctxt, tree->doc, tree);
     if ((ret >= 0) && (ctxt->nbErrors > 0))
 	ret = -1;
 

@@ -17,6 +17,7 @@ DOCS:
 TODO:
 =====
 
+- XInclude at the SAX level (libSRVG)
 - fix the C code prototype to bring back doc/libxml-undocumented.txt
   to a reasonable level
 - Computation of base when HTTP redirect occurs, might affect HTTP

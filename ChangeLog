@@ -1,3 +1,9 @@
+Mon Jul 21 21:53:43 IST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xinclude.c include/libxml/xinclude.h: added a new API
+	  xmlXIncludeProcessTree() to process XInclude only on a subtree
+	  this should fix bug #115385
+
 Fri Jul 18 17:11:42 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c include/libxml/relaxng.h: adding Get interface for

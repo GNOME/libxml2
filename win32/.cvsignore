@@ -1,5 +1,6 @@
 Makefile
 config.*
 depends.*
-*.int
-binaries
+int.*
+bin.*
+

@@ -1,9 +1,5 @@
-
-
-------- test/dav9 -----------
 <?xml version="1.0"?>
-<?xml:namespace ns="http://www.ietf.org/standards/dav/" prefix="d"?>
-<d:multistatus>
+<d:multistatus xmlns:d="http://www.ietf.org/standards/dav/">
   <d:response>
     <d:href>http://www.foo.bar/container/resource1</d:href>
     <d:href>http://www.foo.bar/container/resource2</d:href>

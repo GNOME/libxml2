@@ -1,4 +1,4 @@
-   <?XML version="1.0">
+   <?XML version="1.0"?>
    <?namespace href = "http://www.ietf.org/standards/dav/" AS = "D"?>
    <?namespace href = "http://www.w3.com/standards/z39.50/" AS = "Z"?>
    <D:propertyupdate>

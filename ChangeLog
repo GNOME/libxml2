@@ -1,3 +1,11 @@
+Wed Aug 12 23:12:58 EDT 1998  Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* New release 0.2, removed the old xml_* files so that it's
+	    coherent with the other CVS base (W3C), far better conformance
+	    to standard, new namespaces, decent entities support, beginning
+	    of a SAX-like interface. Nearly nothing left intact, even the
+	    test examples ...
+
 1998-07-30  Christopher Blizzard  <blizzard@appliedtheory.com>
 
 	* .cvsignore: Add .deps dir

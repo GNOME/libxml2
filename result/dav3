@@ -1,10 +1,5 @@
-
-
-------- test/dav3 -----------
 <?xml version="1.0"?>
-<?xml:namespace ns="http://www.foo.bar/boxschema/" prefix="R"?>
-<?xml:namespace ns="http://www.ietf.org/standards/dav/" prefix="D"?>
-<D:multistatus>
+<D:multistatus xmlns:D="http://www.ietf.org/standards/dav/" xmlns:R="http://www.foo.bar/boxschema/">
   <D:response>
     <D:href>http://www.foo.bar/container/</D:href>
     <D:prop>

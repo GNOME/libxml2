@@ -1,26 +1,22 @@
-
-
-------- test/p3p -----------
 <?xml version="1.0"?>
-<?xml:namespace ns="http://www.w3.org/TR/WD-rdf-syntax#" prefix="RDF"?>
-<RDF:RDF>
-  <PROP assurance="http://www.TrustUs.org" agreeID="94df1293a3e519bb" entity="CoolCatalog" realm="http://www.CoolCatalog.com/catalogue/">
+<RDF:RDF xmlns:p3p="http//www.w3.org/TR/1998/WD-P3P10-syntax#proposal.DTD" xmlns:RDF="http://www.w3.org/TR/WD-rdf-syntax#">
+  <PROP realm="http://www.CoolCatalog.com/catalogue/" entity="CoolCatalog" agreeID="94df1293a3e519bb" assurance="http://www.TrustUs.org">
     <USES>
-      <STATEMENT consq="a site with clothes you&apos;d appreciate." id="0" recpnt="0" purp="2,3">
+      <STATEMENT purp="2,3" recpnt="0" id="0" consq="a site with clothes you&apos;d appreciate.">
         <WITH>
           <PREFIX name="User.">
             <REF name="Name.First"/>
-            <REF optional="1" name="Bdate.Year"/>
+            <REF name="Bdate.Year" optional="1"/>
             <REF name="Gender"/>
           </PREFIX>
         </WITH>
       </STATEMENT>
     </USES>
     <USES>
-      <STATEMENT id="1" recpnt="0" purp="0" action="read&amp;write">
+      <STATEMENT action="read&amp;write" purp="0" recpnt="0" id="1">
         <REF name="User.Shipping."/>
       </STATEMENT>
     </USES>
-    <DISCLOSURE other="0,1" access="3" discURI="http://www.CoolCatalog.com/PrivacyPractice.html"/>
+    <DISCLOSURE discURI="http://www.CoolCatalog.com/PrivacyPractice.html" access="3" other="0,1"/>
   </PROP>
 </RDF:RDF>

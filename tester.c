@@ -6,20 +6,33 @@
  * $Id$
  */
 
+#ifdef WIN32
+#define HAVE_FCNTL_H
+#include <io.h>
+#else
+#include <config.h>
+#endif
 #include <sys/types.h>
+#ifdef HAVE_SYS_STAT_H
 #include <sys/stat.h>
+#endif
+#ifdef HAVE_FCNTL_H
 #include <fcntl.h>
+#endif
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#endif
 #include <stdio.h>
 #include <string.h>
 #include <malloc.h>
 
-#include "xml_parser.h"
-#include "xml_tree.h"
+#include "parser.h"
+#include "tree.h"
 
-#define MAX_BUF	500000
-
-static CHAR buffer[MAX_BUF] = 
+/*
+ * Note: there is a couple of errors introduced on purpose.
+ */
+static CHAR buffer[] = 
 "\n\
 <?xml version=\"1.0\">\n\
 <?xml:namespace ns = \"http://www.ietf.org/standards/dav/\" prefix = \"D\"?>\n\
@@ -40,37 +53,31 @@ static CHAR buffer[MAX_BUF] =
 \n\
 ";
 
-int readFile(char *filename) {
-    int input;
-    int res;
 
-    memset(buffer, 0, sizeof(buffer));
-    input = open (filename, O_RDONLY);
-    if (input < 0) {
-        fprintf (stderr, "Cannot read file %s :\n", filename);
-	perror ("open failed");
-	return(-1);
-    }
-    res = read(input, buffer, sizeof(buffer));
-    if (res < 0) {
-        fprintf (stderr, "Cannot read file %s :\n", filename);
-	perror ("read failed");
-	return(-1);
-    }
-    if (res >= MAX_BUF) {
-        fprintf (stderr, "Read only %d byte of %s, increase MAX_BUF\n",
-	         res, filename);
-        return(-1);
-    }
-    close(input);
-    return(res);
-}
-
-void parseAndPrint(CHAR *buf) {
+void parseAndPrintFile(char *filename) {
     xmlDocPtr doc;
 
     /*
-     * build a fake XML document from a string;
+     * build an XML tree from a string;
+     */
+    doc = xmlParseFile(filename);
+
+    /*
+     * print it.
+     */
+    xmlDocDump(stdout, doc);
+
+    /*
+     * free it.
+     */
+    xmlFreeDoc(doc);
+}
+
+void parseAndPrintBuffer(CHAR *buf) {
+    xmlDocPtr doc;
+
+    /*
+     * build an XML tree from a string;
      */
     doc = xmlParseDoc(buf);
 
@@ -90,13 +97,10 @@ int main(int argc, char **argv) {
 
     if (argc > 1) {
         for (i = 1; i < argc ; i++) {
-	    if (readFile(argv[i]) >= 0) {
-	        printf("\n\n------- %s -----------\n", argv[i]);
-	        parseAndPrint(buffer);
-	    }
+	    parseAndPrintFile(argv[i]);
 	}
     } else
-        parseAndPrint(buffer);
+        parseAndPrintBuffer(buffer);
 
     return(0);
 }

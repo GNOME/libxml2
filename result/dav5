@@ -1,10 +1,5 @@
-
-
-------- test/dav5 -----------
 <?xml version="1.0"?>
-<?xml:namespace ns="http://www.w3.com/standards/z39.50/" prefix="Z"?>
-<?xml:namespace ns="http://www.ietf.org/standards/dav/" prefix="D"?>
-<D:multistatus>
+<D:multistatus xmlns:D="http://www.ietf.org/standards/dav/" xmlns:Z="http://www.w3.com/standards/z39.50/">
   <D:response>
     <D:prop>
       <Z:Authors/>

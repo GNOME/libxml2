@@ -1,9 +1,5 @@
-
-
-------- test/dav6 -----------
 <?xml version="1.0"?>
-<?xml:namespace ns="http://www.ietf.org/standards/dav/" prefix="D"?>
-<D:multistatus>
+<D:multistatus xmlns:D="http://www.ietf.org/standards/dav/">
   <D:response>
     <D:href>http://www.microsoft.com/user/yarong/dav_drafts/
           </D:href>

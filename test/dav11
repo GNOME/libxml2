@@ -1,4 +1,4 @@
-   <?XML version="1.0">
+   <?XML version="1.0"?>
    <?namespace href ="http://www.ietf.org/standards/dav/" AS = "D"?>
    <D:prop>
      <D:lockdiscovery>

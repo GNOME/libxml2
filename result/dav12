@@ -1,6 +1,2 @@
-
-
-------- test/dav12 -----------
 <?xml version="1.0"?>
-<?xml:namespace ns="http://www.ietf.org/standards/dav/" prefix="D"?>
-<D:href>http://www.ics.uci.edu/~ejw/contact.html</D:href>
+<D:href xmlns:D="http://www.ietf.org/standards/dav/">http://www.ics.uci.edu/~ejw/contact.html</D:href>

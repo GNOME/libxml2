@@ -5,14 +5,18 @@ noinst_PROGRAMS=tester
 lib_LTLIBRARIES = libxml.la
 
 libxml_la_SOURCES = \
-		xml_entities.c \
-		xml_parser.c \
-		xml_tree.c
+		SAX.c \
+		entities.c \
+		error.c \
+		parser.c \
+		tester.c \
+		tree.c
+
 
 include_HEADERS = \
-		xml_entities.h \
-		xml_parser.h \
-		xml_tree.h
+		entities.h \
+		parser.h \
+		tree.h
 
 DEPS = $(top_builddir)/libxml.la
 LDADDS = $(top_builddir)/libxml.la @Z_LIBS@

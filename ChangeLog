@@ -1,4 +1,4 @@
-2002-06-14  Aleksey Sanin  <set EMAIL_ADDRESS environment variable>
+2002-06-14  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* DOCBparser.c HTMLparser.c debugXML.c encoding.c
 	nanoftp.c nanohttp.c parser.c tree.c uri.c xmlIO.c
@@ -46,7 +46,7 @@ Mon Jun 10 18:00:02 CEST 2002 Daniel Veillard <daniel@veillard.com>
 	* xpath.c: patch from Richard Jinks for XPath substring() function
 	* result/XPath/expr/strings test/XPath/expr/strings: new set of tests
 
-2002-06-06  Aleksey Sanin  <set EMAIL_ADDRESS environment variable>
+2002-06-06  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* xmlIO.c: patch from Rachel Hestilow to fix bug #84340
 

@@ -9861,8 +9861,12 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 				    break;
 				}
 		            }
-			    if (!found)
-			        break;
+			    if (!found) {
+#if 0
+			        fprintf(stderr, "unfinished comment\n");
+#endif
+			        break; /* for */
+		            }
 		            continue;
 			}
 		    }
@@ -9875,6 +9879,10 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 			continue;
 		    }
 		    if (buf[base] == ']') {
+#if 0
+		        fprintf(stderr, "%c%c%c%c: ", buf[base],
+			        buf[base + 1], buf[base + 2], buf[base + 3]);
+#endif
 		        if ((unsigned int) base +1 >=
 		            ctxt->input->buf->buffer->use)
 			    break;
@@ -9883,20 +9891,34 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 			    base++;
 			    continue;
 			}
-		        for (i = 0;
+		        for (i = 1;
 		     (unsigned int) base + i < ctxt->input->buf->buffer->use;
 		             i++) {
-			    if (buf[base + i] == '>')
+			    if (buf[base + i] == '>') {
+#if 0
+			        fprintf(stderr, "found\n");
+#endif
 			        goto found_end_int_subset;
+			    }
+			    if (!IS_BLANK_CH(buf[base + i])) {
+#if 0
+			        fprintf(stderr, "not found\n");
+#endif
+			        goto not_end_of_int_subset;
+			    }
 			}
+#if 0
+			fprintf(stderr, "end of stream\n");
+#endif
 		        break;
+                        
 		    }
+not_end_of_int_subset:
+                    continue; /* for */
 		}
 		/*
 		 * We didn't found the end of the Internal subset
 		 */
-		if (quote == 0) 
-		    ctxt->checkIndex = base;
 #ifdef DEBUG_PUSH
 		if (next == 0)
 		    xmlGenericError(xmlGenericErrorContext,

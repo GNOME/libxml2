@@ -1,3 +1,10 @@
+Tue Jan 25 22:39:33 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: found and fixed 2 problems in the internal subset scanning
+	  code affecting the push parser (and the reader), fixes #165126
+	* test/intsubset2.xml result//intsubset2.xml*: added the test case
+	  to the regression tests.
+
 Tue Jan 25 01:20:11 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* testdso.c xmlregexp.c: warning patches from Peter Breitenlohner

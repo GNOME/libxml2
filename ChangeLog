@@ -1,3 +1,12 @@
+Thu Nov 20 12:54:30 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmlwriter.c include/libxml/xmlwriter.h: applied patch from
+	  Alfred Mickautsch, bugfixes and comments
+	* doc/examples/*: added his test as the xmlWriter example
+	* doc/html/ doc/*.html: this resulted in some improvements
+	* include/libxml/hash.h: fixed an inclusion problem when
+	  <libxml/hash.h> wasn't preceeded by <xml/parser.h>
+
 Wed Nov 19 17:19:35 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xinclude.c: fix an error message

@@ -1134,8 +1134,11 @@ xmlNewTextLen
 xmlNewTextReader
 xmlNewTextReaderFilename
 xmlNewTextWriter
+xmlNewTextWriterDoc
 xmlNewTextWriterFilename
 xmlNewTextWriterMemory
+xmlNewTextWriterPushParser
+xmlNewTextWriterTree
 xmlNewValidCtxt
 xmlNextChar
 xmlNoNetExternalEntityLoader

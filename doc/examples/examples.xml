@@ -126,6 +126,51 @@
       <function line='37' file='tree' name='xmlNewDoc'/>
     </uses>
   </example>
+  <example filename='testWriter.c'>
+    <synopsis>use various APIs for the xmlWriter</synopsis>
+    <purpose>tests a number of APIs for the xmlWriter, especially the various methods to write to a filename, to a memory buffer, to a new document, or to a subtree. It shows how to do encoding string conversions too. The resulting documents are then serialized.</purpose>
+    <usage>testWriter</usage>
+    <test>testWriter ; for i in 1 2 3 4 ; do diff writer.xml writer$$i.out ; done ; rm writer*.out</test>
+    <author>Alfred Mickautsch</author>
+    <copy>see Copyright for the status of this software. </copy>
+    <section>xmlWriter</section>
+    <includes>
+      <include>&lt;libxml/encoding.h&gt;</include>
+      <include>&lt;libxml/xmlwriter.h&gt;</include>
+    </includes>
+    <uses>
+      <function line='1075' file='xmlwriter' name='xmlTextWriterEndElement'/>
+      <function line='880' file='xmlwriter' name='xmlTextWriterStartDocument'/>
+      <function line='1085' file='xmlwriter' name='xmlTextWriterEndDocument'/>
+      <function line='925' file='xmlwriter' name='xmlTextWriterWriteFormatComment'/>
+      <function line='890' file='xmlwriter' name='xmlTextWriterWriteComment'/>
+      <variable line='1147' file='globals' name='xmlRealloc'/>
+      <function line='1037' file='xmlwriter' name='xmlTextWriterWriteFormatElement'/>
+      <function line='1120' file='encoding' name='xmlFindCharEncodingHandler'/>
+      <typedef line='1115' file='encoding' name='xmlCharEncodingHandlerPtr'/>
+      <function line='871' file='xmlwriter' name='xmlNewTextWriterTree'/>
+      <function line='58' file='xmlwriter' name='xmlNewTextWriterFilename'/>
+      <function line='1095' file='tree' name='xmlFreeDoc'/>
+      <typedef line='848' file='tree' name='xmlNodePtr'/>
+      <typedef line='847' file='tree' name='xmlDocPtr'/>
+      <typedef line='320' file='tree' name='xmlBufferPtr'/>
+      <function line='603' file='xmlwriter' name='xmlNewTextWriterDoc'/>
+      <function line='861' file='tree' name='xmlNewDocNode'/>
+      <function line='1093' file='tree' name='xmlSaveFileEnc'/>
+      <macro line='852' file='parser' name='XML_DEFAULT_VERSION'/>
+      <function line='333' file='xmlwriter' name='xmlNewTextWriterMemory'/>
+      <variable line='1144' file='globals' name='xmlFree'/>
+      <function line='868' file='tree' name='xmlDocSetRootElement'/>
+      <function line='1091' file='xmlwriter' name='xmlFreeTextWriter'/>
+      <function line='1060' file='xmlwriter' name='xmlTextWriterStartElement'/>
+      <variable line='1130' file='globals' name='xmlMalloc'/>
+      <function line='325' file='tree' name='xmlBufferCreate'/>
+      <typedef line='846' file='xmlwriter' name='xmlTextWriterPtr'/>
+      <function line='1067' file='xmlwriter' name='xmlTextWriterWriteElement'/>
+      <function line='916' file='xmlwriter' name='xmlTextWriterWriteAttribute'/>
+      <function line='852' file='tree' name='xmlNewDoc'/>
+    </uses>
+  </example>
   <symbols>
     <symbol name='LIBXML_TEST_VERSION'>
       <ref filename='xpath1.c'/>
@@ -133,6 +178,9 @@
       <ref filename='parse2.c'/>
       <ref filename='tree1.c'/>
       <ref filename='tree2.c'/>
+    </symbol>
+    <symbol name='XML_DEFAULT_VERSION'>
+      <ref filename='testWriter.c'/>
     </symbol>
     <symbol name='XML_ELEMENT_NODE'>
       <ref filename='xpath1.c'/>
@@ -146,6 +194,15 @@
     </symbol>
     <symbol name='xmlAddChild'>
       <ref filename='tree2.c'/>
+    </symbol>
+    <symbol name='xmlBufferCreate'>
+      <ref filename='testWriter.c'/>
+    </symbol>
+    <symbol name='xmlBufferPtr'>
+      <ref filename='testWriter.c'/>
+    </symbol>
+    <symbol name='xmlCharEncodingHandlerPtr'>
+      <ref filename='testWriter.c'/>
     </symbol>
     <symbol name='xmlCleanupParser'>
       <ref filename='xpath1.c'/>
@@ -167,9 +224,17 @@
       <ref filename='xpath1.c'/>
       <ref filename='parse1.c'/>
       <ref filename='parse2.c'/>
+      <ref filename='testWriter.c'/>
     </symbol>
     <symbol name='xmlDocSetRootElement'>
       <ref filename='tree2.c'/>
+      <ref filename='testWriter.c'/>
+    </symbol>
+    <symbol name='xmlFindCharEncodingHandler'>
+      <ref filename='testWriter.c'/>
+    </symbol>
+    <symbol name='xmlFree'>
+      <ref filename='testWriter.c'/>
     </symbol>
     <symbol name='xmlFreeDoc'>
       <ref filename='xpath1.c'/>
@@ -177,18 +242,29 @@
       <ref filename='parse2.c'/>
       <ref filename='tree1.c'/>
       <ref filename='tree2.c'/>
+      <ref filename='testWriter.c'/>
     </symbol>
     <symbol name='xmlFreeParserCtxt'>
       <ref filename='parse2.c'/>
     </symbol>
+    <symbol name='xmlFreeTextWriter'>
+      <ref filename='testWriter.c'/>
+    </symbol>
     <symbol name='xmlInitParser'>
       <ref filename='xpath1.c'/>
+    </symbol>
+    <symbol name='xmlMalloc'>
+      <ref filename='testWriter.c'/>
     </symbol>
     <symbol name='xmlNewChild'>
       <ref filename='tree2.c'/>
     </symbol>
     <symbol name='xmlNewDoc'>
       <ref filename='tree2.c'/>
+      <ref filename='testWriter.c'/>
+    </symbol>
+    <symbol name='xmlNewDocNode'>
+      <ref filename='testWriter.c'/>
     </symbol>
     <symbol name='xmlNewNode'>
       <ref filename='tree2.c'/>
@@ -202,8 +278,21 @@
     <symbol name='xmlNewText'>
       <ref filename='tree2.c'/>
     </symbol>
+    <symbol name='xmlNewTextWriterDoc'>
+      <ref filename='testWriter.c'/>
+    </symbol>
+    <symbol name='xmlNewTextWriterFilename'>
+      <ref filename='testWriter.c'/>
+    </symbol>
+    <symbol name='xmlNewTextWriterMemory'>
+      <ref filename='testWriter.c'/>
+    </symbol>
+    <symbol name='xmlNewTextWriterTree'>
+      <ref filename='testWriter.c'/>
+    </symbol>
     <symbol name='xmlNodePtr'>
       <ref filename='xpath1.c'/>
+      <ref filename='testWriter.c'/>
     </symbol>
     <symbol name='xmlNsPtr'>
       <ref filename='xpath1.c'/>
@@ -218,6 +307,12 @@
     <symbol name='xmlReadFile'>
       <ref filename='parse1.c'/>
     </symbol>
+    <symbol name='xmlRealloc'>
+      <ref filename='testWriter.c'/>
+    </symbol>
+    <symbol name='xmlSaveFileEnc'>
+      <ref filename='testWriter.c'/>
+    </symbol>
     <symbol name='xmlSaveFormatFileEnc'>
       <ref filename='tree2.c'/>
     </symbol>
@@ -226,6 +321,36 @@
     </symbol>
     <symbol name='xmlStrdup'>
       <ref filename='xpath1.c'/>
+    </symbol>
+    <symbol name='xmlTextWriterEndDocument'>
+      <ref filename='testWriter.c'/>
+    </symbol>
+    <symbol name='xmlTextWriterEndElement'>
+      <ref filename='testWriter.c'/>
+    </symbol>
+    <symbol name='xmlTextWriterPtr'>
+      <ref filename='testWriter.c'/>
+    </symbol>
+    <symbol name='xmlTextWriterStartDocument'>
+      <ref filename='testWriter.c'/>
+    </symbol>
+    <symbol name='xmlTextWriterStartElement'>
+      <ref filename='testWriter.c'/>
+    </symbol>
+    <symbol name='xmlTextWriterWriteAttribute'>
+      <ref filename='testWriter.c'/>
+    </symbol>
+    <symbol name='xmlTextWriterWriteComment'>
+      <ref filename='testWriter.c'/>
+    </symbol>
+    <symbol name='xmlTextWriterWriteElement'>
+      <ref filename='testWriter.c'/>
+    </symbol>
+    <symbol name='xmlTextWriterWriteFormatComment'>
+      <ref filename='testWriter.c'/>
+    </symbol>
+    <symbol name='xmlTextWriterWriteFormatElement'>
+      <ref filename='testWriter.c'/>
     </symbol>
     <symbol name='xmlXPathContextPtr'>
       <ref filename='xpath1.c'/>
@@ -260,6 +385,9 @@
     </section>
     <section name='XPath'>
       <example filename='xpath1.c'/>
+    </section>
+    <section name='xmlWriter'>
+      <example filename='testWriter.c'/>
     </section>
   </sections>
 </examples>

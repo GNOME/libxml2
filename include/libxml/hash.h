@@ -11,9 +11,6 @@
 #ifndef __XML_HASH_H__
 #define __XML_HASH_H__
 
-#include <libxml/xmlversion.h>
-#include <libxml/parser.h>
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -23,6 +20,17 @@ extern "C" {
  */
 typedef struct _xmlHashTable xmlHashTable;
 typedef xmlHashTable *xmlHashTablePtr;
+
+#ifdef __cplusplus
+}
+#endif
+
+#include <libxml/xmlversion.h>
+#include <libxml/parser.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*
  * function types:

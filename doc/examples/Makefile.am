@@ -19,9 +19,9 @@ install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)
 	-@INSTALL@ -m 0644 $(srcdir)/*.html $(srcdir)/*.c $(srcdir)/*.xml $(srcdir)/*.xsl $(srcdir)/*.out $(DESTDIR)$(TARGET_DIR)
 
-EXTRA_DIST=examples.xsl index.py test1.xml examples.xml test2.xml tree1.out tree2.out 
+EXTRA_DIST=examples.xsl index.py test1.xml examples.xml test2.xml writer.xml tree1.out tree2.out 
 
-noinst_PROGRAMS=xpath1 parse1 parse2 tree1 tree2 
+noinst_PROGRAMS=xpath1 parse1 parse2 tree1 tree2 testWriter 
 
 xpath1_SOURCES=xpath1.c
 xpath1_LDFLAGS=
@@ -48,10 +48,16 @@ tree2_LDFLAGS=
 tree2_DEPENDENCIES= $(DEPS)
 tree2_LDADD= @RDL_LIBS@ $(LDADDS)
 
+testWriter_SOURCES=testWriter.c
+testWriter_LDFLAGS=
+testWriter_DEPENDENCIES= $(DEPS)
+testWriter_LDADD= @RDL_LIBS@ $(LDADDS)
+
 tests: $(noinst_PROGRAMS)
 	parse1 test1.xml
 	parse2 test2.xml
 	tree1 test2.xml > tree1.tmp ; diff tree1.tmp tree1.out ; rm tree1.tmp
 	tree2 > tree2.tmp ; diff tree2.tmp tree2.out ; rm tree2.tmp
+	testWriter ; for i in 1 2 3 4 ; do diff writer.xml writer$$i.out ; done ; rm writer*.out
 
 

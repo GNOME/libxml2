@@ -2664,6 +2664,7 @@
      <exports symbol='xmlTextWriterWriteVFormatDTD' type='function'/>
      <exports symbol='xmlTextWriterWriteVFormatCDATA' type='function'/>
      <exports symbol='xmlTextWriterStartAttributeNS' type='function'/>
+     <exports symbol='xmlNewTextWriterPushParser' type='function'/>
      <exports symbol='xmlTextWriterWriteFormatAttributeNS' type='function'/>
      <exports symbol='xmlTextWriterWriteDTDEntity' type='function'/>
      <exports symbol='xmlTextWriterWriteVFormatPI' type='function'/>
@@ -2708,7 +2709,9 @@
      <exports symbol='xmlTextWriterFlush' type='function'/>
      <exports symbol='xmlTextWriterStartDTD' type='function'/>
      <exports symbol='xmlTextWriterWriteAttribute' type='function'/>
+     <exports symbol='xmlNewTextWriterDoc' type='function'/>
      <exports symbol='xmlTextWriterWriteFormatDTDElement' type='function'/>
+     <exports symbol='xmlNewTextWriterTree' type='function'/>
      <exports symbol='xmlNewTextWriterMemory' type='function'/>
      <exports symbol='xmlTextWriterWriteFormatCDATA' type='function'/>
      <exports symbol='xmlTextWriterStartDTDAttlist' type='function'/>
@@ -9200,6 +9203,12 @@ actually an xmlCharEncoding'/>
       <return type='xmlTextWriterPtr' info='the new xmlTextWriterPtr or NULL in case of error'/>
       <arg name='out' type='xmlOutputBufferPtr' info='an xmlOutputBufferPtr'/>
     </function>
+    <function name='xmlNewTextWriterDoc' file='xmlwriter'>
+      <info>Create a new xmlNewTextWriter structure with @*doc as output</info>
+      <return type='xmlTextWriterPtr' info='the new xmlTextWriterPtr or NULL in case of error'/>
+      <arg name='doc' type='xmlDocPtr *' info='address of a xmlDocPtr to hold the new XML document tree'/>
+      <arg name='compression' type='int' info='compress the output?'/>
+    </function>
     <function name='xmlNewTextWriterFilename' file='xmlwriter'>
       <info>Create a new xmlNewTextWriter structure with @uri as output</info>
       <return type='xmlTextWriterPtr' info='the new xmlTextWriterPtr or NULL in case of error'/>
@@ -9210,6 +9219,19 @@ actually an xmlCharEncoding'/>
       <info>Create a new xmlNewTextWriter structure with @buf as output TODO: handle compression</info>
       <return type='xmlTextWriterPtr' info='the new xmlTextWriterPtr or NULL in case of error'/>
       <arg name='buf' type='xmlBufferPtr' info='xmlBufferPtr'/>
+      <arg name='compression' type='int' info='compress the output?'/>
+    </function>
+    <function name='xmlNewTextWriterPushParser' file='xmlwriter'>
+      <info>Create a new xmlNewTextWriter structure with @ctxt as output TODO: handle compression</info>
+      <return type='xmlTextWriterPtr' info='the new xmlTextWriterPtr or NULL in case of error'/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info='xmlParserCtxtPtr to hold the new XML document tree'/>
+      <arg name='compression' type='int' info='compress the output?'/>
+    </function>
+    <function name='xmlNewTextWriterTree' file='xmlwriter'>
+      <info>Create a new xmlNewTextWriter structure with @doc as output starting at @node</info>
+      <return type='xmlTextWriterPtr' info='the new xmlTextWriterPtr or NULL in case of error'/>
+      <arg name='doc' type='xmlDocPtr' info='xmlDocPtr'/>
+      <arg name='node' type='xmlNodePtr' info='xmlNodePtr or NULL for doc-&gt;children'/>
       <arg name='compression' type='int' info='compress the output?'/>
     </function>
     <function name='xmlNewValidCtxt' file='valid'>
@@ -11795,23 +11817,23 @@ actually an xmlCharEncoding'/>
       <arg name='sysid' type='const xmlChar *' info='the system identifier, which is the URI of the DTD'/>
     </function>
     <function name='xmlTextWriterStartDTDAttlist' file='xmlwriter'>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='writer' type='xmlTextWriterPtr' info=''/>
-      <arg name='name' type='const xmlChar *' info=''/>
+      <info>Start an xml DTD ATTLIST.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='name' type='const xmlChar *' info='the name of the DTD ATTLIST'/>
     </function>
     <function name='xmlTextWriterStartDTDElement' file='xmlwriter'>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='writer' type='xmlTextWriterPtr' info=''/>
-      <arg name='name' type='const xmlChar *' info=''/>
+      <info>Start an xml DTD element.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='name' type='const xmlChar *' info='the name of the DTD element'/>
     </function>
     <function name='xmlTextWriterStartDTDEntity' file='xmlwriter'>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='writer' type='xmlTextWriterPtr' info=''/>
-      <arg name='pe' type='int' info=''/>
-      <arg name='name' type='const xmlChar *' info=''/>
+      <info>Start an xml DTD ATTLIST.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='pe' type='int' info='TRUE if this is a parameter entity, FALSE if not'/>
+      <arg name='name' type='const xmlChar *' info='the name of the DTD ATTLIST'/>
     </function>
     <function name='xmlTextWriterStartDocument' file='xmlwriter'>
       <info>Start a new xml document</info>
@@ -11895,55 +11917,55 @@ actually an xmlCharEncoding'/>
       <arg name='subset' type='const xmlChar *' info='string content of the DTD'/>
     </function>
     <function name='xmlTextWriterWriteDTDAttlist' file='xmlwriter'>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='writer' type='xmlTextWriterPtr' info=''/>
-      <arg name='name' type='const xmlChar *' info=''/>
-      <arg name='content' type='const xmlChar *' info=''/>
+      <info>Write a DTD ATTLIST.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='name' type='const xmlChar *' info='the name of the DTD ATTLIST'/>
+      <arg name='content' type='const xmlChar *' info='content of the ATTLIST'/>
     </function>
     <function name='xmlTextWriterWriteDTDElement' file='xmlwriter'>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='writer' type='xmlTextWriterPtr' info=''/>
-      <arg name='name' type='const xmlChar *' info=''/>
-      <arg name='content' type='const xmlChar *' info=''/>
+      <info>Write a DTD element.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='name' type='const xmlChar *' info='the name of the DTD element'/>
+      <arg name='content' type='const xmlChar *' info='content of the element'/>
     </function>
     <function name='xmlTextWriterWriteDTDEntity' file='xmlwriter'>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='writer' type='xmlTextWriterPtr' info=''/>
-      <arg name='pe' type='int' info=''/>
-      <arg name='name' type='const xmlChar *' info=''/>
-      <arg name='pubid' type='const xmlChar *' info=''/>
-      <arg name='sysid' type='const xmlChar *' info=''/>
-      <arg name='ndataid' type='const xmlChar *' info=''/>
-      <arg name='content' type='const xmlChar *' info=''/>
+      <info>Write a DTD entity.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='pe' type='int' info='TRUE if this is a parameter entity, FALSE if not'/>
+      <arg name='name' type='const xmlChar *' info='the name of the DTD entity'/>
+      <arg name='pubid' type='const xmlChar *' info='the public identifier, which is an alternative to the system identifier'/>
+      <arg name='sysid' type='const xmlChar *' info='the system identifier, which is the URI of the DTD'/>
+      <arg name='ndataid' type='const xmlChar *' info='the xml notation name.'/>
+      <arg name='content' type='const xmlChar *' info='content of the entity'/>
     </function>
     <function name='xmlTextWriterWriteDTDExternalEntity' file='xmlwriter'>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='writer' type='xmlTextWriterPtr' info=''/>
-      <arg name='pe' type='int' info=''/>
-      <arg name='name' type='const xmlChar *' info=''/>
-      <arg name='pubid' type='const xmlChar *' info=''/>
-      <arg name='sysid' type='const xmlChar *' info=''/>
-      <arg name='ndataid' type='const xmlChar *' info=''/>
+      <info>Write a DTD internal entity.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='pe' type='int' info='TRUE if this is a parameter entity, FALSE if not'/>
+      <arg name='name' type='const xmlChar *' info='the name of the DTD entity'/>
+      <arg name='pubid' type='const xmlChar *' info='the public identifier, which is an alternative to the system identifier'/>
+      <arg name='sysid' type='const xmlChar *' info='the system identifier, which is the URI of the DTD'/>
+      <arg name='ndataid' type='const xmlChar *' info='the xml notation name.'/>
     </function>
     <function name='xmlTextWriterWriteDTDInternalEntity' file='xmlwriter'>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='writer' type='xmlTextWriterPtr' info=''/>
-      <arg name='pe' type='int' info=''/>
-      <arg name='name' type='const xmlChar *' info=''/>
-      <arg name='content' type='const xmlChar *' info=''/>
+      <info>Write a DTD internal entity.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='pe' type='int' info='TRUE if this is a parameter entity, FALSE if not'/>
+      <arg name='name' type='const xmlChar *' info='the name of the DTD entity'/>
+      <arg name='content' type='const xmlChar *' info='content of the entity'/>
     </function>
     <function name='xmlTextWriterWriteDTDNotation' file='xmlwriter'>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='writer' type='xmlTextWriterPtr' info=''/>
-      <arg name='name' type='const xmlChar *' info=''/>
-      <arg name='pubid' type='const xmlChar *' info=''/>
-      <arg name='sysid' type='const xmlChar *' info=''/>
+      <info>Write a DTD entity.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='name' type='const xmlChar *' info='the name of the xml notation'/>
+      <arg name='pubid' type='const xmlChar *' info='the public identifier, which is an alternative to the system identifier'/>
+      <arg name='sysid' type='const xmlChar *' info='the system identifier, which is the URI of the DTD'/>
     </function>
     <function name='xmlTextWriterWriteElement' file='xmlwriter'>
       <info>Write an xml element.</info>
@@ -12004,28 +12026,28 @@ actually an xmlCharEncoding'/>
       <arg name='...' type='...' info=''/>
     </function>
     <function name='xmlTextWriterWriteFormatDTDAttlist' file='xmlwriter'>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='writer' type='xmlTextWriterPtr' info=''/>
-      <arg name='name' type='const xmlChar *' info=''/>
-      <arg name='format' type='const char *' info=''/>
+      <info>Write a formatted DTD ATTLIST.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='name' type='const xmlChar *' info='the name of the DTD ATTLIST'/>
+      <arg name='format' type='const char *' info='format string (see printf)'/>
       <arg name='...' type='...' info=''/>
     </function>
     <function name='xmlTextWriterWriteFormatDTDElement' file='xmlwriter'>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='writer' type='xmlTextWriterPtr' info=''/>
-      <arg name='name' type='const xmlChar *' info=''/>
-      <arg name='format' type='const char *' info=''/>
+      <info>Write a formatted DTD element.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='name' type='const xmlChar *' info='the name of the DTD element'/>
+      <arg name='format' type='const char *' info='format string (see printf)'/>
       <arg name='...' type='...' info=''/>
     </function>
     <function name='xmlTextWriterWriteFormatDTDInternalEntity' file='xmlwriter'>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='writer' type='xmlTextWriterPtr' info=''/>
-      <arg name='pe' type='int' info=''/>
-      <arg name='name' type='const xmlChar *' info=''/>
-      <arg name='format' type='const char *' info=''/>
+      <info>Write a formatted DTD internal entity.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='pe' type='int' info='TRUE if this is a parameter entity, FALSE if not'/>
+      <arg name='name' type='const xmlChar *' info='the name of the DTD entity'/>
+      <arg name='format' type='const char *' info='format string (see printf)'/>
       <arg name='...' type='...' info=''/>
     </function>
     <function name='xmlTextWriterWriteFormatElement' file='xmlwriter'>
@@ -12117,7 +12139,7 @@ actually an xmlCharEncoding'/>
       <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
       <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
       <arg name='format' type='const char *' info='format string (see printf)'/>
-      <arg name='argptr' type='va_list' info=''/>
+      <arg name='argptr' type='va_list' info='pointer to the first member of the variable argument list.'/>
     </function>
     <function name='xmlTextWriterWriteVFormatComment' file='xmlwriter'>
       <info>Write an xml comment.</info>
@@ -12134,32 +12156,32 @@ actually an xmlCharEncoding'/>
       <arg name='pubid' type='const xmlChar *' info='the public identifier, which is an alternative to the system identifier'/>
       <arg name='sysid' type='const xmlChar *' info='the system identifier, which is the URI of the DTD'/>
       <arg name='format' type='const char *' info='format string (see printf)'/>
-      <arg name='argptr' type='va_list' info=''/>
+      <arg name='argptr' type='va_list' info='pointer to the first member of the variable argument list.'/>
     </function>
     <function name='xmlTextWriterWriteVFormatDTDAttlist' file='xmlwriter'>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='writer' type='xmlTextWriterPtr' info=''/>
-      <arg name='name' type='const xmlChar *' info=''/>
-      <arg name='format' type='const char *' info=''/>
-      <arg name='argptr' type='va_list' info=''/>
+      <info>Write a formatted DTD ATTLIST.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='name' type='const xmlChar *' info='the name of the DTD ATTLIST'/>
+      <arg name='format' type='const char *' info='format string (see printf)'/>
+      <arg name='argptr' type='va_list' info='pointer to the first member of the variable argument list.'/>
     </function>
     <function name='xmlTextWriterWriteVFormatDTDElement' file='xmlwriter'>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='writer' type='xmlTextWriterPtr' info=''/>
-      <arg name='name' type='const xmlChar *' info=''/>
-      <arg name='format' type='const char *' info=''/>
-      <arg name='argptr' type='va_list' info=''/>
+      <info>Write a formatted DTD element.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='name' type='const xmlChar *' info='the name of the DTD element'/>
+      <arg name='format' type='const char *' info='format string (see printf)'/>
+      <arg name='argptr' type='va_list' info='pointer to the first member of the variable argument list.'/>
     </function>
     <function name='xmlTextWriterWriteVFormatDTDInternalEntity' file='xmlwriter'>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='writer' type='xmlTextWriterPtr' info=''/>
-      <arg name='pe' type='int' info=''/>
-      <arg name='name' type='const xmlChar *' info=''/>
-      <arg name='format' type='const char *' info=''/>
-      <arg name='argptr' type='va_list' info=''/>
+      <info>Write a formatted DTD internal entity.</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='pe' type='int' info='TRUE if this is a parameter entity, FALSE if not'/>
+      <arg name='name' type='const xmlChar *' info='the name of the DTD entity'/>
+      <arg name='format' type='const char *' info='format string (see printf)'/>
+      <arg name='argptr' type='va_list' info='pointer to the first member of the variable argument list.'/>
     </function>
     <function name='xmlTextWriterWriteVFormatElement' file='xmlwriter'>
       <info>Write a formatted xml element.</info>
@@ -12185,7 +12207,7 @@ actually an xmlCharEncoding'/>
       <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
       <arg name='target' type='const xmlChar *' info='PI target'/>
       <arg name='format' type='const char *' info='format string (see printf)'/>
-      <arg name='argptr' type='va_list' info=''/>
+      <arg name='argptr' type='va_list' info='pointer to the first member of the variable argument list.'/>
     </function>
     <function name='xmlTextWriterWriteVFormatRaw' file='xmlwriter'>
       <info>Write a formatted raw xml text.</info>

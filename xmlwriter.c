@@ -1,3 +1,4 @@
+
 /*
  * xmlwriter.c: XML text writer implementation
  *
@@ -8,11 +9,12 @@
  */
 
 #include <string.h>
-#include <stdarg.h>
 
 #include "libxml.h"
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
+#include <libxml/uri.h>
+#include <libxml/HTMLtree.h>
 
 #ifdef LIBXML_WRITER_ENABLED
 
@@ -72,9 +74,14 @@ static int xmlCmpTextWriterNsStackEntry(const void *data0,
 static int xmlTextWriterWriteMemCallback(void *context,
                                          const xmlChar * str, int len);
 static int xmlTextWriterCloseMemCallback(void *context);
+static int xmlTextWriterWriteDocCallback(void *context,
+                                         const xmlChar * str, int len);
+static int xmlTextWriterCloseDocCallback(void *context);
+
 static xmlChar *xmlTextWriterVSprintf(const char *format, va_list argptr);
 static int xmlOutputBufferWriteBase64(xmlOutputBufferPtr out, int len,
                                       const unsigned char *data);
+static void xmlTextWriterStartDocumentCallback(void *ctx);
 
 /**
  * xmlNewTextWriter:
@@ -195,6 +202,144 @@ xmlNewTextWriterMemory(xmlBufferPtr buf, int compression ATTRIBUTE_UNUSED)
         xmlOutputBufferClose(out);
         return NULL;
     }
+
+    return ret;
+}
+
+/**
+ * xmlNewTextWriterPushParser:
+ * @ctxt: xmlParserCtxtPtr to hold the new XML document tree
+ * @compression:  compress the output?
+ *
+ * Create a new xmlNewTextWriter structure with @ctxt as output
+ * TODO: handle compression
+ *
+ * Returns the new xmlTextWriterPtr or NULL in case of error
+ */
+xmlTextWriterPtr
+xmlNewTextWriterPushParser(xmlParserCtxtPtr ctxt, int compression)
+{
+    xmlTextWriterPtr ret;
+    xmlOutputBufferPtr out;
+
+    out = xmlOutputBufferCreateIO((xmlOutputWriteCallback)
+                                  xmlTextWriterWriteDocCallback,
+                                  (xmlOutputCloseCallback)
+                                  xmlTextWriterCloseDocCallback,
+                                  (void *) ctxt, NULL);
+    if (out == NULL) {
+        xmlGenericError(xmlGenericErrorContext,
+                        "xmlNewTextWriterPushParser : error at xmlOutputBufferCreateIO!\n");
+        return NULL;
+    }
+
+    ret = xmlNewTextWriter(out);
+    if (ret == NULL) {
+        xmlGenericError(xmlGenericErrorContext,
+                        "xmlNewTextWriterPushParser : error at xmlNewTextWriter!\n");
+        xmlOutputBufferClose(out);
+        return NULL;
+    }
+
+    return ret;
+}
+
+/**
+ * xmlNewTextWriterDoc:
+ * @doc: address of a xmlDocPtr to hold the new XML document tree
+ * @compression:  compress the output?
+ *
+ * Create a new xmlNewTextWriter structure with @*doc as output
+ *
+ * Returns the new xmlTextWriterPtr or NULL in case of error
+ */
+xmlTextWriterPtr
+xmlNewTextWriterDoc(xmlDocPtr * doc, int compression)
+{
+    xmlTextWriterPtr ret;
+    xmlSAXHandler saxHandler;
+    xmlParserCtxtPtr ctxt;
+
+    memset(&saxHandler, '\0', sizeof(saxHandler));
+    xmlSAX2InitDefaultSAXHandler(&saxHandler, 1);
+    saxHandler.startDocument = xmlTextWriterStartDocumentCallback;
+    saxHandler.startElement = xmlSAX2StartElement;
+    saxHandler.endElement = xmlSAX2EndElement;
+
+    ctxt = xmlCreatePushParserCtxt(&saxHandler, NULL, NULL, 0, NULL);
+    if (ctxt == NULL) {
+        xmlGenericError(xmlGenericErrorContext,
+                        "xmlNewTextWriterDoc : error at xmlCreatePushParserCtxt!\n");
+        return NULL;
+    }
+
+    ctxt->myDoc = xmlNewDoc(XML_DEFAULT_VERSION);
+    if (ctxt->myDoc == NULL) {
+        xmlFreeParserCtxt(ctxt);
+        xmlGenericError(xmlGenericErrorContext,
+                        "xmlNewTextWriterDoc : error at xmlNewDoc!\n");
+        return NULL;
+    }
+
+    ret = xmlNewTextWriterPushParser(ctxt, compression);
+    if (ret == NULL) {
+        xmlGenericError(xmlGenericErrorContext,
+                        "xmlNewTextWriterDoc : error at xmlNewTextWriterPushParser!\n");
+        return NULL;
+    }
+
+    *doc = ctxt->myDoc;
+    xmlSetDocCompressMode(*doc, compression);
+
+    return ret;
+}
+
+/**
+ * xmlNewTextWriterTree:
+ * @doc: xmlDocPtr
+ * @node: xmlNodePtr or NULL for doc->children
+ * @compression:  compress the output?
+ *
+ * Create a new xmlNewTextWriter structure with @doc as output
+ * starting at @node
+ *
+ * Returns the new xmlTextWriterPtr or NULL in case of error
+ */
+xmlTextWriterPtr
+xmlNewTextWriterTree(xmlDocPtr doc, xmlNodePtr node, int compression)
+{
+    xmlTextWriterPtr ret;
+    xmlSAXHandler saxHandler;
+    xmlParserCtxtPtr ctxt;
+
+    if (doc == NULL) {
+        return NULL;
+    }
+
+    memset(&saxHandler, '\0', sizeof(saxHandler));
+    xmlSAX2InitDefaultSAXHandler(&saxHandler, 1);
+    saxHandler.startDocument = xmlTextWriterStartDocumentCallback;
+    saxHandler.startElement = xmlSAX2StartElement;
+    saxHandler.endElement = xmlSAX2EndElement;
+
+    ctxt = xmlCreatePushParserCtxt(&saxHandler, NULL, NULL, 0, NULL);
+    if (ctxt == NULL) {
+        xmlGenericError(xmlGenericErrorContext,
+                        "xmlNewTextWriterDoc : error at xmlCreatePushParserCtxt!\n");
+        return NULL;
+    }
+
+    ctxt->myDoc = doc;
+    ctxt->node = node;
+
+    ret = xmlNewTextWriterPushParser(ctxt, compression);
+    if (ret == NULL) {
+        xmlGenericError(xmlGenericErrorContext,
+                        "xmlNewTextWriterDoc : error at xmlNewTextWriterPushParser!\n");
+        return NULL;
+    }
+
+    xmlSetDocCompressMode(doc, compression);
 
     return ret;
 }
@@ -395,6 +540,11 @@ xmlTextWriterEndDocument(xmlTextWriterPtr writer)
         }
     }
 
+    count = xmlOutputBufferWriteString(writer->out, "\n");
+    if(count < 0)
+        return -1;
+    sum += count;
+
     return sum;
 }
 
@@ -468,7 +618,6 @@ xmlTextWriterWriteComment(xmlTextWriterPtr writer, const xmlChar * content)
     int sum;
     xmlLinkPtr lk;
     xmlTextWriterStackEntry *p;
-    xmlChar *buf;
 
     if ((writer == NULL) || (writer->out == NULL))
         return -1;
@@ -505,12 +654,8 @@ xmlTextWriterWriteComment(xmlTextWriterPtr writer, const xmlChar * content)
     if (count < 0)
         return -1;
     sum += count;
-    buf = xmlEncodeEntitiesReentrant(NULL, content);
-    if (buf != 0) {
-        count = xmlOutputBufferWriteString(writer->out, (const char *)buf);
-        xmlFree(buf);
-    } else
-        count = xmlOutputBufferWriteString(writer->out, (const char *)content);
+    count = xmlOutputBufferWriteString(writer->out,
+                                       (const char *) content);
     if (count < 0)
         return -1;
     sum += count;
@@ -589,7 +734,8 @@ xmlTextWriterStartElement(xmlTextWriterPtr writer, const xmlChar * name)
     if (count < 0)
         return -1;
     sum += count;
-    count = xmlOutputBufferWriteString(writer->out, (const char *)p->name);
+    count =
+        xmlOutputBufferWriteString(writer->out, (const char *) p->name);
     if (count < 0)
         return -1;
     sum += count;
@@ -1021,7 +1167,7 @@ xmlTextWriterWriteString(xmlTextWriterPtr writer, const xmlChar * content)
         case XML_TEXTWRITER_TEXT:
         case XML_TEXTWRITER_ATTRIBUTE:
           encode:
-            buf = xmlEncodeEntitiesReentrant(NULL, content);
+            buf = xmlEncodeSpecialChars(NULL, content);
             break;
         case XML_TEXTWRITER_DTD:
             count = xmlOutputBufferWriteString(writer->out, " [");
@@ -1040,7 +1186,8 @@ xmlTextWriterWriteString(xmlTextWriterPtr writer, const xmlChar * content)
     }
 
     if (buf != 0) {
-        count = xmlOutputBufferWriteString(writer->out, (const char *) buf);
+        count =
+            xmlOutputBufferWriteString(writer->out, (const char *) buf);
         xmlFree(buf);
     } else
         count = -1;
@@ -1330,7 +1477,9 @@ xmlTextWriterStartAttribute(xmlTextWriterPtr writer, const xmlChar * name)
             if (count < 0)
                 return -1;
             sum += count;
-            count = xmlOutputBufferWriteString(writer->out, (const char *)name);
+            count =
+                xmlOutputBufferWriteString(writer->out,
+                                           (const char *) name);
             if (count < 0)
                 return -1;
             sum += count;
@@ -1986,7 +2135,8 @@ xmlTextWriterStartPI(xmlTextWriterPtr writer, const xmlChar * target)
     if (count < 0)
         return -1;
     sum += count;
-    count = xmlOutputBufferWriteString(writer->out, (const char *) p->name);
+    count =
+        xmlOutputBufferWriteString(writer->out, (const char *) p->name);
     if (count < 0)
         return -1;
     sum += count;
@@ -2068,6 +2218,7 @@ xmlTextWriterWriteFormatPI(xmlTextWriterPtr writer, const xmlChar * target,
  * @writer:  the xmlTextWriterPtr
  * @target:  PI target
  * @format:  format string (see printf)
+ * @argptr:  pointer to the first member of the variable argument list.
  *
  * Write a formatted xml PI.
  *
@@ -2274,6 +2425,7 @@ xmlTextWriterWriteFormatCDATA(xmlTextWriterPtr writer, const char *format,
  * xmlTextWriterWriteVFormatCDATA:
  * @writer:  the xmlTextWriterPtr
  * @format:  format string (see printf)
+ * @argptr:  pointer to the first member of the variable argument list.
  *
  * Write a formatted xml CDATA.
  *
@@ -2405,7 +2557,8 @@ xmlTextWriterStartDTD(xmlTextWriterPtr writer,
             return -1;
         sum += count;
 
-        count = xmlOutputBufferWriteString(writer->out, (const char *) pubid);
+        count =
+            xmlOutputBufferWriteString(writer->out, (const char *) pubid);
         if (count < 0)
             return -1;
         sum += count;
@@ -2429,7 +2582,8 @@ xmlTextWriterStartDTD(xmlTextWriterPtr writer,
             return -1;
         sum += count;
 
-        count = xmlOutputBufferWriteString(writer->out, (const char *) sysid);
+        count =
+            xmlOutputBufferWriteString(writer->out, (const char *) sysid);
         if (count < 0)
             return -1;
         sum += count;
@@ -2531,6 +2685,7 @@ xmlTextWriterWriteFormatDTD(xmlTextWriterPtr writer,
  * @pubid:  the public identifier, which is an alternative to the system identifier
  * @sysid:  the system identifier, which is the URI of the DTD
  * @format:  format string (see printf)
+ * @argptr:  pointer to the first member of the variable argument list.
  *
  * Write a DTD with a formatted markup declarations part.
  *
@@ -2599,6 +2754,15 @@ xmlTextWriterWriteDTD(xmlTextWriterPtr writer,
     return sum;
 }
 
+/**
+ * xmlTextWriterStartDTDElement:
+ * @writer:  the xmlTextWriterPtr
+ * @name:  the name of the DTD element
+ *
+ * Start an xml DTD element.
+ *
+ * Returns the bytes written (may be 0 because of buffering) or -1 in case of error
+ */
 int
 xmlTextWriterStartDTDElement(xmlTextWriterPtr writer, const xmlChar * name)
 {
@@ -2671,6 +2835,16 @@ xmlTextWriterStartDTDElement(xmlTextWriterPtr writer, const xmlChar * name)
     return sum;
 }
 
+/**
+ * xmlTextWriterWriteFormatDTDElement:
+ * @writer:  the xmlTextWriterPtr
+ * @name:  the name of the DTD element
+ * @format:  format string (see printf)
+ *
+ * Write a formatted DTD element.
+ *
+ * Returns the bytes written (may be 0 because of buffering) or -1 in case of error
+ */
 int
 xmlTextWriterWriteFormatDTDElement(xmlTextWriterPtr writer,
                                    const xmlChar * name,
@@ -2687,6 +2861,17 @@ xmlTextWriterWriteFormatDTDElement(xmlTextWriterPtr writer,
     return rc;
 }
 
+/**
+ * xmlTextWriterWriteVFormatDTDElement:
+ * @writer:  the xmlTextWriterPtr
+ * @name:  the name of the DTD element
+ * @format:  format string (see printf)
+ * @argptr:  pointer to the first member of the variable argument list.
+ *
+ * Write a formatted DTD element.
+ *
+ * Returns the bytes written (may be 0 because of buffering) or -1 in case of error
+ */
 int
 xmlTextWriterWriteVFormatDTDElement(xmlTextWriterPtr writer,
                                     const xmlChar * name,
@@ -2708,6 +2893,16 @@ xmlTextWriterWriteVFormatDTDElement(xmlTextWriterPtr writer,
     return rc;
 }
 
+/**
+ * xmlTextWriterWriteDTDElement:
+ * @writer:  the xmlTextWriterPtr
+ * @name:  the name of the DTD element
+ * @content:  content of the element
+ *
+ * Write a DTD element.
+ *
+ * Returns the bytes written (may be 0 because of buffering) or -1 in case of error
+ */
 int
 xmlTextWriterWriteDTDElement(xmlTextWriterPtr writer,
                              const xmlChar * name, const xmlChar * content)
@@ -2741,6 +2936,15 @@ xmlTextWriterWriteDTDElement(xmlTextWriterPtr writer,
     return sum;
 }
 
+/**
+ * xmlTextWriterStartDTDAttlist:
+ * @writer:  the xmlTextWriterPtr
+ * @name:  the name of the DTD ATTLIST
+ *
+ * Start an xml DTD ATTLIST.
+ *
+ * Returns the bytes written (may be 0 because of buffering) or -1 in case of error
+ */
 int
 xmlTextWriterStartDTDAttlist(xmlTextWriterPtr writer, const xmlChar * name)
 {
@@ -2815,6 +3019,16 @@ xmlTextWriterStartDTDAttlist(xmlTextWriterPtr writer, const xmlChar * name)
     return sum;
 }
 
+/**
+ * xmlTextWriterWriteFormatDTDAttlist:
+ * @writer:  the xmlTextWriterPtr
+ * @name:  the name of the DTD ATTLIST
+ * @format:  format string (see printf)
+ *
+ * Write a formatted DTD ATTLIST.
+ *
+ * Returns the bytes written (may be 0 because of buffering) or -1 in case of error
+ */
 int
 xmlTextWriterWriteFormatDTDAttlist(xmlTextWriterPtr writer,
                                    const xmlChar * name,
@@ -2831,6 +3045,17 @@ xmlTextWriterWriteFormatDTDAttlist(xmlTextWriterPtr writer,
     return rc;
 }
 
+/**
+ * xmlTextWriterWriteVFormatDTDAttlist:
+ * @writer:  the xmlTextWriterPtr
+ * @name:  the name of the DTD ATTLIST
+ * @format:  format string (see printf)
+ * @argptr:  pointer to the first member of the variable argument list.
+ *
+ * Write a formatted DTD ATTLIST.
+ *
+ * Returns the bytes written (may be 0 because of buffering) or -1 in case of error
+ */
 int
 xmlTextWriterWriteVFormatDTDAttlist(xmlTextWriterPtr writer,
                                     const xmlChar * name,
@@ -2852,6 +3077,16 @@ xmlTextWriterWriteVFormatDTDAttlist(xmlTextWriterPtr writer,
     return rc;
 }
 
+/**
+ * xmlTextWriterWriteDTDAttlist:
+ * @writer:  the xmlTextWriterPtr
+ * @name:  the name of the DTD ATTLIST
+ * @content:  content of the ATTLIST
+ *
+ * Write a DTD ATTLIST.
+ *
+ * Returns the bytes written (may be 0 because of buffering) or -1 in case of error
+ */
 int
 xmlTextWriterWriteDTDAttlist(xmlTextWriterPtr writer,
                              const xmlChar * name, const xmlChar * content)
@@ -2885,6 +3120,16 @@ xmlTextWriterWriteDTDAttlist(xmlTextWriterPtr writer,
     return sum;
 }
 
+/**
+ * xmlTextWriterStartDTDEntity:
+ * @writer:  the xmlTextWriterPtr
+ * @pe:  TRUE if this is a parameter entity, FALSE if not
+ * @name:  the name of the DTD ATTLIST
+ *
+ * Start an xml DTD ATTLIST.
+ *
+ * Returns the bytes written (may be 0 because of buffering) or -1 in case of error
+ */
 int
 xmlTextWriterStartDTDEntity(xmlTextWriterPtr writer,
                             int pe, const xmlChar * name)
@@ -2968,6 +3213,17 @@ xmlTextWriterStartDTDEntity(xmlTextWriterPtr writer,
     return sum;
 }
 
+/**
+ * xmlTextWriterWriteFormatDTDInternalEntity:
+ * @writer:  the xmlTextWriterPtr
+ * @pe:  TRUE if this is a parameter entity, FALSE if not
+ * @name:  the name of the DTD entity
+ * @format:  format string (see printf)
+ *
+ * Write a formatted DTD internal entity.
+ *
+ * Returns the bytes written (may be 0 because of buffering) or -1 in case of error
+ */
 int
 xmlTextWriterWriteFormatDTDInternalEntity(xmlTextWriterPtr writer,
                                           int pe,
@@ -2986,6 +3242,18 @@ xmlTextWriterWriteFormatDTDInternalEntity(xmlTextWriterPtr writer,
     return rc;
 }
 
+/**
+ * xmlTextWriterWriteVFormatDTDInternalEntity:
+ * @writer:  the xmlTextWriterPtr
+ * @pe:  TRUE if this is a parameter entity, FALSE if not
+ * @name:  the name of the DTD entity
+ * @format:  format string (see printf)
+ * @argptr:  pointer to the first member of the variable argument list.
+ *
+ * Write a formatted DTD internal entity.
+ *
+ * Returns the bytes written (may be 0 because of buffering) or -1 in case of error
+ */
 int
 xmlTextWriterWriteVFormatDTDInternalEntity(xmlTextWriterPtr writer,
                                            int pe,
@@ -3009,6 +3277,20 @@ xmlTextWriterWriteVFormatDTDInternalEntity(xmlTextWriterPtr writer,
     return rc;
 }
 
+/**
+ * xmlTextWriterWriteDTDEntity:
+ * @writer:  the xmlTextWriterPtr
+ * @pe:  TRUE if this is a parameter entity, FALSE if not
+ * @name:  the name of the DTD entity
+ * @pubid:  the public identifier, which is an alternative to the system identifier
+ * @sysid:  the system identifier, which is the URI of the DTD
+ * @ndataid:  the xml notation name.
+ * @content:  content of the entity
+ *
+ * Write a DTD entity.
+ *
+ * Returns the bytes written (may be 0 because of buffering) or -1 in case of error
+ */
 int
 xmlTextWriterWriteDTDEntity(xmlTextWriterPtr writer,
                             int pe,
@@ -3032,6 +3314,17 @@ xmlTextWriterWriteDTDEntity(xmlTextWriterPtr writer,
                                                sysid, ndataid);
 }
 
+/**
+ * xmlTextWriterWriteDTDInternalEntity:
+ * @writer:  the xmlTextWriterPtr
+ * @pe:  TRUE if this is a parameter entity, FALSE if not
+ * @name:  the name of the DTD entity
+ * @content:  content of the entity
+ *
+ * Write a DTD internal entity.
+ *
+ * Returns the bytes written (may be 0 because of buffering) or -1 in case of error
+ */
 int
 xmlTextWriterWriteDTDInternalEntity(xmlTextWriterPtr writer,
                                     int pe,
@@ -3075,6 +3368,19 @@ xmlTextWriterWriteDTDInternalEntity(xmlTextWriterPtr writer,
     return sum;
 }
 
+/**
+ * xmlTextWriterWriteDTDExternalEntity:
+ * @writer:  the xmlTextWriterPtr
+ * @pe:  TRUE if this is a parameter entity, FALSE if not
+ * @name:  the name of the DTD entity
+ * @pubid:  the public identifier, which is an alternative to the system identifier
+ * @sysid:  the system identifier, which is the URI of the DTD
+ * @ndataid:  the xml notation name.
+ *
+ * Write a DTD internal entity.
+ *
+ * Returns the bytes written (may be 0 because of buffering) or -1 in case of error
+ */
 int
 xmlTextWriterWriteDTDExternalEntity(xmlTextWriterPtr writer,
                                     int pe,
@@ -3115,7 +3421,8 @@ xmlTextWriterWriteDTDExternalEntity(xmlTextWriterPtr writer,
             return -1;
         sum += count;
 
-        count = xmlOutputBufferWriteString(writer->out, (const char *) pubid);
+        count =
+            xmlOutputBufferWriteString(writer->out, (const char *) pubid);
         if (count < 0)
             return -1;
         sum += count;
@@ -3144,7 +3451,8 @@ xmlTextWriterWriteDTDExternalEntity(xmlTextWriterPtr writer,
             return -1;
         sum += count;
 
-        count = xmlOutputBufferWriteString(writer->out, (const char *) sysid);
+        count =
+            xmlOutputBufferWriteString(writer->out, (const char *) sysid);
         if (count < 0)
             return -1;
         sum += count;
@@ -3161,7 +3469,9 @@ xmlTextWriterWriteDTDExternalEntity(xmlTextWriterPtr writer,
             return -1;
         sum += count;
 
-        count = xmlOutputBufferWriteString(writer->out, (const char *) ndataid);
+        count =
+            xmlOutputBufferWriteString(writer->out,
+                                       (const char *) ndataid);
         if (count < 0)
             return -1;
         sum += count;
@@ -3175,6 +3485,17 @@ xmlTextWriterWriteDTDExternalEntity(xmlTextWriterPtr writer,
     return sum;
 }
 
+/**
+ * xmlTextWriterWriteDTDNotation:
+ * @writer:  the xmlTextWriterPtr
+ * @name:  the name of the xml notation
+ * @pubid:  the public identifier, which is an alternative to the system identifier
+ * @sysid:  the system identifier, which is the URI of the DTD
+ *
+ * Write a DTD entity.
+ *
+ * Returns the bytes written (may be 0 because of buffering) or -1 in case of error
+ */
 int
 xmlTextWriterWriteDTDNotation(xmlTextWriterPtr writer,
                               const xmlChar * name,
@@ -3238,7 +3559,8 @@ xmlTextWriterWriteDTDNotation(xmlTextWriterPtr writer,
         if (count < 0)
             return -1;
         sum += count;
-        count = xmlOutputBufferWriteString(writer->out, (const char *) pubid);
+        count =
+            xmlOutputBufferWriteString(writer->out, (const char *) pubid);
         if (count < 0)
             return -1;
         sum += count;
@@ -3263,7 +3585,8 @@ xmlTextWriterWriteDTDNotation(xmlTextWriterPtr writer,
         if (count < 0)
             return -1;
         sum += count;
-        count = xmlOutputBufferWriteString(writer->out, (const char *) sysid);
+        count =
+            xmlOutputBufferWriteString(writer->out, (const char *) sysid);
         if (count < 0)
             return -1;
         sum += count;
@@ -3457,6 +3780,56 @@ xmlTextWriterCloseMemCallback(void *context ATTRIBUTE_UNUSED)
 }
 
 /**
+ * xmlTextWriterWriteDocCallback:
+ * @context:  the xmlBufferPtr
+ * @str:  the data to write
+ * @len:  the length of the data
+ *
+ * Write callback for the xmlOutputBuffer with target xmlBuffer
+ *
+ * Returns -1, 0, 1
+ */
+static int
+xmlTextWriterWriteDocCallback(void *context, const xmlChar * str, int len)
+{
+    xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) context;
+    int rc;
+
+    if ((rc = xmlParseChunk(ctxt, str, len, 0)) != 0) {
+        xmlGenericError(xmlGenericErrorContext,
+                        "xmlTextWriterWriteDocCallback : XML error %d !\n",
+                        rc);
+        return -1;
+    }
+
+    return len;
+}
+
+/**
+ * xmlTextWriterCloseDocCallback:
+ * @context:  the xmlBufferPtr
+ *
+ * Close callback for the xmlOutputBuffer with target xmlBuffer
+ *
+ * Returns -1, 0, 1
+ */
+static int
+xmlTextWriterCloseDocCallback(void *context)
+{
+    xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) context;
+    int rc;
+
+    if ((rc = xmlParseChunk(ctxt, NULL, 0, 1)) != 0) {
+        xmlGenericError(xmlGenericErrorContext,
+                        "xmlTextWriterWriteDocCallback : XML error %d !\n",
+                        rc);
+        return -1;
+    }
+
+    return 0;
+}
+
+/**
  * xmlTextWriterVSprintf:
  * @format:  see printf
  * @argptr:  pointer to the first member of the variable argument list.
@@ -3493,6 +3866,74 @@ xmlTextWriterVSprintf(const char *format, va_list argptr)
     }
 
     return buf;
+}
+
+/**
+ * xmlTextWriterStartDocumentCallback:
+ * @ctx: the user data (XML parser context)
+ *
+ * called at the start of document processing.
+ */
+static void
+xmlTextWriterStartDocumentCallback(void *ctx)
+{
+    xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
+    xmlDocPtr doc;
+
+#ifdef DEBUG_SAX
+    xmlGenericError(xmlGenericErrorContext, "SAX.startDocument()\n");
+#endif
+    if (ctxt->html) {
+#ifdef LIBXML_HTML_ENABLED
+        if (ctxt->myDoc == NULL)
+            ctxt->myDoc = htmlNewDocNoDtD(NULL, NULL);
+        if (ctxt->myDoc == NULL) {
+            if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+                ctxt->sax->error(ctxt->userData,
+                                 "SAX.startDocument(): out of memory\n");
+            ctxt->errNo = XML_ERR_NO_MEMORY;
+            ctxt->instate = XML_PARSER_EOF;
+            ctxt->disableSAX = 1;
+            return;
+        }
+#else
+        xmlGenericError(xmlGenericErrorContext,
+                        "libxml2 built without HTML support\n");
+        ctxt->errNo = XML_ERR_INTERNAL_ERROR;
+        ctxt->instate = XML_PARSER_EOF;
+        ctxt->disableSAX = 1;
+        return;
+#endif
+    } else {
+        doc = ctxt->myDoc;
+        if (doc == NULL)
+            doc = ctxt->myDoc = xmlNewDoc(ctxt->version);
+        if (doc != NULL) {
+            if (doc->children == NULL) {
+                if (ctxt->encoding != NULL)
+                    doc->encoding = xmlStrdup(ctxt->encoding);
+                else
+                    doc->encoding = NULL;
+                doc->standalone = ctxt->standalone;
+            }
+        } else {
+            if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+                ctxt->sax->error(ctxt->userData,
+                                 "SAX.startDocument(): out of memory\n");
+            ctxt->errNo = XML_ERR_NO_MEMORY;
+            ctxt->instate = XML_PARSER_EOF;
+            ctxt->disableSAX = 1;
+            return;
+        }
+    }
+    if ((ctxt->myDoc != NULL) && (ctxt->myDoc->URL == NULL) &&
+        (ctxt->input != NULL) && (ctxt->input->filename != NULL)) {
+        ctxt->myDoc->URL =
+            xmlCanonicPath((const xmlChar *) ctxt->input->filename);
+        if (ctxt->myDoc->URL == NULL)
+            ctxt->myDoc->URL =
+                xmlStrdup((const xmlChar *) ctxt->input->filename);
+    }
 }
 
 #endif

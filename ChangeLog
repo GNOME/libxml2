@@ -1,3 +1,8 @@
+Mon Jan 14 18:27:19 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in include/libxml/xmlwin32version.h: updated to 2.4.13
+	* doc/* : update of the documentation
+
 Mon Jan 14 17:53:41 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* debugXML.c tree.c: some cleanup after an unsuccessful attempt

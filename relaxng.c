@@ -80,6 +80,13 @@ typedef enum {
     XML_RELAXNG_COMBINE_INTERLEAVE	/* interleave */
 } xmlRelaxNGCombine;
 
+typedef enum {
+    XML_RELAXNG_CONTENT_ERROR = -1,
+    XML_RELAXNG_CONTENT_EMPTY = 0,
+    XML_RELAXNG_CONTENT_SIMPLE,
+    XML_RELAXNG_CONTENT_COMPLEX
+} xmlRelaxNGContentType;
+
 typedef struct _xmlRelaxNGGrammar xmlRelaxNGGrammar;
 typedef xmlRelaxNGGrammar *xmlRelaxNGGrammarPtr;
 
@@ -1956,25 +1963,38 @@ xmlRelaxNGParseData(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
     while (content != NULL) {
 	if (!xmlStrEqual(content->name, BAD_CAST "param"))
 	    break;
-	param = xmlRelaxNGNewDefine(ctxt, node);
-	if (param != NULL) {
-	    param->type = XML_RELAXNG_PARAM;
-	    param->name = xmlGetProp(content, BAD_CAST "name");
-	    if (param->name == NULL) {
-		if (ctxt->error != NULL)
-		    ctxt->error(ctxt->userData,
-			"param has no name\n");
-		ctxt->nbErrors++;
+	if (xmlStrEqual(library,
+		        BAD_CAST"http://relaxng.org/ns/structure/1.0")) {
+	    if (ctxt->error != NULL)
+		ctxt->error(ctxt->userData,
+		"Type library '%s' does not allow type parameters\n",
+			    library);
+	    ctxt->nbErrors++;
+	    content = content->next;
+	    while ((content != NULL) &&
+		   (xmlStrEqual(content->name, BAD_CAST "param")))
+		content = content->next;
+	} else {
+	    param = xmlRelaxNGNewDefine(ctxt, node);
+	    if (param != NULL) {
+		param->type = XML_RELAXNG_PARAM;
+		param->name = xmlGetProp(content, BAD_CAST "name");
+		if (param->name == NULL) {
+		    if (ctxt->error != NULL)
+			ctxt->error(ctxt->userData,
+			    "param has no name\n");
+		    ctxt->nbErrors++;
+		}
+		param->value = xmlNodeGetContent(content);
+		if (lastparam == NULL) {
+		    def->attrs = lastparam = param;
+		} else {
+		    lastparam->next = param;
+		    lastparam = param;
+		}
 	    }
-	    param->value = xmlNodeGetContent(content);
-	    if (lastparam == NULL) {
-		def->attrs = lastparam = param;
-	    } else {
-		lastparam->next = param;
-		lastparam = param;
-	    }
+	    content = content->next;
 	}
-	content = content->next;
     }
     /*
      * Handle optional except
@@ -3831,7 +3851,7 @@ xmlRelaxNGTryUnlink(xmlRelaxNGParserCtxtPtr ctxt ATTRIBUTE_UNUSED,
 }
 
 /**
- * xmlRelaxNGCheckRules:
+ * xmlRelaxNGSimplify:
  * @ctxt:  a Relax-NG parser context
  * @nodes:  grammar children nodes
  *
@@ -3955,128 +3975,185 @@ xmlRelaxNGSimplify(xmlRelaxNGParserCtxtPtr ctxt,
     }
 }
 
+/**
+ * xmlRelaxNGGroupContentType:
+ * @ct1:  the first content type
+ * @ct2:  the second content type
+ *
+ * Try to group 2 content types
+ *
+ * Returns the content type
+ */
+static xmlRelaxNGContentType
+xmlRelaxNGGroupContentType(xmlRelaxNGContentType ct1,
+		           xmlRelaxNGContentType ct2) {
+    if ((ct1 == XML_RELAXNG_CONTENT_ERROR) ||
+	(ct2 == XML_RELAXNG_CONTENT_ERROR))
+	return(XML_RELAXNG_CONTENT_ERROR);
+    if (ct1 == XML_RELAXNG_CONTENT_EMPTY)
+	return(ct2);
+    if (ct2 == XML_RELAXNG_CONTENT_EMPTY)
+	return(ct1);
+    if ((ct1 == XML_RELAXNG_CONTENT_COMPLEX) &&
+	(ct2 == XML_RELAXNG_CONTENT_COMPLEX))
+	return(XML_RELAXNG_CONTENT_COMPLEX);
+    return(XML_RELAXNG_CONTENT_ERROR);
+}
+
+/**
+ * xmlRelaxNGMaxContentType:
+ * @ct1:  the first content type
+ * @ct2:  the second content type
+ *
+ * Compute the max content-type
+ *
+ * Returns the content type
+ */
+static xmlRelaxNGContentType
+xmlRelaxNGMaxContentType(xmlRelaxNGContentType ct1,
+		     xmlRelaxNGContentType ct2) {
+    if ((ct1 == XML_RELAXNG_CONTENT_ERROR) ||
+	(ct2 == XML_RELAXNG_CONTENT_ERROR))
+	return(XML_RELAXNG_CONTENT_ERROR);
+    if ((ct1 == XML_RELAXNG_CONTENT_SIMPLE) ||
+	(ct2 == XML_RELAXNG_CONTENT_SIMPLE))
+	return(XML_RELAXNG_CONTENT_SIMPLE);
+    if ((ct1 == XML_RELAXNG_CONTENT_COMPLEX) ||
+	(ct2 == XML_RELAXNG_CONTENT_COMPLEX))
+	return(XML_RELAXNG_CONTENT_COMPLEX);
+    return(XML_RELAXNG_CONTENT_EMPTY);
+}
 
 /**
  * xmlRelaxNGCheckRules:
  * @ctxt:  a Relax-NG parser context
- * @nodes:  grammar children nodes
+ * @cur:  the current definition
  * @flags:  some accumulated flags
+ * @ptype:  the parent type
  *
- * Check for rules in section 7
+ * Check for rules in section 7.1 and 7.2
  *
- * Returns 0 if check passed, and -1 in case of error
+ * Returns the content type of @cur
  */
-static int
+static xmlRelaxNGContentType
 xmlRelaxNGCheckRules(xmlRelaxNGParserCtxtPtr ctxt, 
-	             xmlRelaxNGDefinePtr cur, int flags) {
-    int ret = 0, nflags = flags;
+	             xmlRelaxNGDefinePtr cur, int flags,
+		     xmlRelaxNGType ptype) {
+    int nflags = flags;
+    xmlRelaxNGContentType ret, tmp, val = XML_RELAXNG_CONTENT_EMPTY;
 
     while (cur != NULL) {
+	ret = XML_RELAXNG_CONTENT_EMPTY;
 	if ((cur->type == XML_RELAXNG_REF) ||
 	    (cur->type == XML_RELAXNG_PARENTREF)) {
+	    ret = XML_RELAXNG_CONTENT_COMPLEX;
+
 	    if (flags & XML_RELAXNG_IN_LIST) {
 		if (ctxt->error != NULL)
 		    ctxt->error(ctxt->userData,
 		"Found forbidden pattern list//ref\n");
 		ctxt->nbErrors++;
-		ret = -1;
 	    }
 	    if (flags & XML_RELAXNG_IN_ATTRIBUTE) {
 		if (ctxt->error != NULL)
 		    ctxt->error(ctxt->userData,
 			"Found forbidden pattern attribute//ref\n");
 		ctxt->nbErrors++;
-		ret = -1;
 	    }
 	    if (flags & XML_RELAXNG_IN_DATAEXCEPT) {
 		if (ctxt->error != NULL)
 		    ctxt->error(ctxt->userData,
 			"Found forbidden pattern data/except//ref\n");
 		ctxt->nbErrors++;
-		ret = -1;
 	    }
 	    if (cur->depth != -4) {
 		cur->depth = -4;
-		if (xmlRelaxNGCheckRules(ctxt, cur->content, flags) != 0)
-		    ret = -1;
+		xmlRelaxNGCheckRules(ctxt, cur->content, flags, cur->type);
 	    }
+	    if (ret != XML_RELAXNG_CONTENT_ERROR)
+		ret = XML_RELAXNG_CONTENT_COMPLEX;
 	} else if (cur->type == XML_RELAXNG_ELEMENT) {
 	    if (flags & XML_RELAXNG_IN_DATAEXCEPT) {
 		if (ctxt->error != NULL)
 		    ctxt->error(ctxt->userData,
 			"Found forbidden pattern data/except//element(ref)\n");
 		ctxt->nbErrors++;
-		ret = -1;
 	    }
 	    if (flags & XML_RELAXNG_IN_LIST) {
 		if (ctxt->error != NULL)
 		    ctxt->error(ctxt->userData,
 		"Found forbidden pattern list//element(ref)\n");
 		ctxt->nbErrors++;
-		ret = -1;
 	    }
 	    if (flags & XML_RELAXNG_IN_ATTRIBUTE) {
 		if (ctxt->error != NULL)
 		    ctxt->error(ctxt->userData,
 		"Found forbidden pattern attribute//element(ref)\n");
 		ctxt->nbErrors++;
-		ret = -1;
 	    }
 	    /*
 	     * reset since in the simple form elements are only child
 	     * of grammar/define
 	     */
 	    nflags = 0;
-	    if (xmlRelaxNGCheckRules(ctxt, cur->attrs, nflags) != 0)
-		ret = -1;
-	    if (xmlRelaxNGCheckRules(ctxt, cur->content, nflags) != 0)
-		ret = -1;
+	    ret = xmlRelaxNGCheckRules(ctxt, cur->attrs, nflags, cur->type);
+	    if (ret != XML_RELAXNG_CONTENT_EMPTY) {
+		if (ctxt->error != NULL)
+		    ctxt->error(ctxt->userData,
+			"Element %s attributes have a content type error\n",
+			        cur->name);
+		ctxt->nbErrors++;
+	    }
+	    ret = xmlRelaxNGCheckRules(ctxt, cur->content, nflags, cur->type);
+	    if (ret == XML_RELAXNG_CONTENT_ERROR) {
+		if (ctxt->error != NULL)
+		    ctxt->error(ctxt->userData,
+			"Element %s has a content type error\n",
+			        cur->name);
+		ctxt->nbErrors++;
+	    } else {
+		ret = XML_RELAXNG_CONTENT_COMPLEX;
+	    }
 	} else if (cur->type == XML_RELAXNG_ATTRIBUTE) {
 	    if (flags & XML_RELAXNG_IN_ATTRIBUTE) {
 		if (ctxt->error != NULL)
 		    ctxt->error(ctxt->userData,
 			"Found forbidden pattern attribute//attribute\n");
 		ctxt->nbErrors++;
-		ret = -1;
 	    }
 	    if (flags & XML_RELAXNG_IN_LIST) {
 		if (ctxt->error != NULL)
 		    ctxt->error(ctxt->userData,
 		"Found forbidden pattern list//attribute\n");
 		ctxt->nbErrors++;
-		ret = -1;
 	    }
 	    if (flags & XML_RELAXNG_IN_OOMGROUP) {
 		if (ctxt->error != NULL)
 		    ctxt->error(ctxt->userData,
 		    "Found forbidden pattern oneOrMore//group//attribute\n");
 		ctxt->nbErrors++;
-		ret = -1;
 	    }
 	    if (flags & XML_RELAXNG_IN_OOMINTERLEAVE) {
 		if (ctxt->error != NULL)
 		    ctxt->error(ctxt->userData,
 		"Found forbidden pattern oneOrMore//interleave//attribute\n");
 		ctxt->nbErrors++;
-		ret = -1;
 	    }
 	    if (flags & XML_RELAXNG_IN_DATAEXCEPT) {
 		if (ctxt->error != NULL)
 		    ctxt->error(ctxt->userData,
 			"Found forbidden pattern data/except//attribute\n");
 		ctxt->nbErrors++;
-		ret = -1;
 	    }
 	    if (flags & XML_RELAXNG_IN_START) {
 		if (ctxt->error != NULL)
 		    ctxt->error(ctxt->userData,
 			"Found forbidden pattern start//attribute\n");
 		ctxt->nbErrors++;
-		ret = -1;
 	    }
 	    nflags = flags | XML_RELAXNG_IN_ATTRIBUTE;
-	    if (xmlRelaxNGCheckRules(ctxt, cur->content, nflags) != 0)
-		ret = -1;
+	    xmlRelaxNGCheckRules(ctxt, cur->content, nflags, cur->type);
+	    ret = XML_RELAXNG_CONTENT_EMPTY;
 	} else if ((cur->type == XML_RELAXNG_ONEORMORE) ||
 		   (cur->type == XML_RELAXNG_ZEROORMORE)) {
 	    if (flags & XML_RELAXNG_IN_DATAEXCEPT) {
@@ -4084,164 +4161,163 @@ xmlRelaxNGCheckRules(xmlRelaxNGParserCtxtPtr ctxt,
 		    ctxt->error(ctxt->userData,
 			"Found forbidden pattern data/except//oneOrMore\n");
 		ctxt->nbErrors++;
-		ret = -1;
 	    }
 	    if (flags & XML_RELAXNG_IN_START) {
 		if (ctxt->error != NULL)
 		    ctxt->error(ctxt->userData,
 			"Found forbidden pattern start//oneOrMore\n");
 		ctxt->nbErrors++;
-		ret = -1;
 	    }
 	    nflags = flags | XML_RELAXNG_IN_ONEORMORE;
-	    if (xmlRelaxNGCheckRules(ctxt, cur->content, nflags) != 0)
-		ret = -1;
+	    ret = xmlRelaxNGCheckRules(ctxt, cur->content, nflags, cur->type);
+	    ret = xmlRelaxNGGroupContentType(ret, ret);
 	} else if (cur->type == XML_RELAXNG_LIST) {
 	    if (flags & XML_RELAXNG_IN_LIST) {
 		if (ctxt->error != NULL)
 		    ctxt->error(ctxt->userData,
 		"Found forbidden pattern list//list\n");
 		ctxt->nbErrors++;
-		ret = -1;
 	    }
 	    if (flags & XML_RELAXNG_IN_DATAEXCEPT) {
 		if (ctxt->error != NULL)
 		    ctxt->error(ctxt->userData,
 			"Found forbidden pattern data/except//list\n");
 		ctxt->nbErrors++;
-		ret = -1;
 	    }
 	    if (flags & XML_RELAXNG_IN_START) {
 		if (ctxt->error != NULL)
 		    ctxt->error(ctxt->userData,
 			"Found forbidden pattern start//list\n");
 		ctxt->nbErrors++;
-		ret = -1;
 	    }
 	    nflags = flags | XML_RELAXNG_IN_LIST;
-	    if (xmlRelaxNGCheckRules(ctxt, cur->content, nflags) != 0)
-		ret = -1;
+	    ret = xmlRelaxNGCheckRules(ctxt, cur->content, nflags, cur->type);
 	} else if (cur->type == XML_RELAXNG_GROUP) {
 	    if (flags & XML_RELAXNG_IN_DATAEXCEPT) {
 		if (ctxt->error != NULL)
 		    ctxt->error(ctxt->userData,
 			"Found forbidden pattern data/except//group\n");
 		ctxt->nbErrors++;
-		ret = -1;
 	    }
 	    if (flags & XML_RELAXNG_IN_START) {
 		if (ctxt->error != NULL)
 		    ctxt->error(ctxt->userData,
 			"Found forbidden pattern start//group\n");
 		ctxt->nbErrors++;
-		ret = -1;
 	    }
 	    if (flags & XML_RELAXNG_IN_ONEORMORE)
 		nflags = flags | XML_RELAXNG_IN_OOMGROUP;
 	    else
 		nflags = flags;
-	    if (xmlRelaxNGCheckRules(ctxt, cur->content, nflags) != 0)
-		ret = -1;
+	    ret = xmlRelaxNGCheckRules(ctxt, cur->content, nflags, cur->type);
 	} else if (cur->type == XML_RELAXNG_INTERLEAVE) {
 	    if (flags & XML_RELAXNG_IN_LIST) {
 		if (ctxt->error != NULL)
 		    ctxt->error(ctxt->userData,
 		"Found forbidden pattern list//interleave\n");
 		ctxt->nbErrors++;
-		ret = -1;
 	    }
 	    if (flags & XML_RELAXNG_IN_DATAEXCEPT) {
 		if (ctxt->error != NULL)
 		    ctxt->error(ctxt->userData,
 			"Found forbidden pattern data/except//interleave\n");
 		ctxt->nbErrors++;
-		ret = -1;
 	    }
 	    if (flags & XML_RELAXNG_IN_START) {
 		if (ctxt->error != NULL)
 		    ctxt->error(ctxt->userData,
 			"Found forbidden pattern start//interleave\n");
 		ctxt->nbErrors++;
-		ret = -1;
 	    }
 	    if (flags & XML_RELAXNG_IN_ONEORMORE)
 		nflags = flags | XML_RELAXNG_IN_OOMINTERLEAVE;
 	    else
 		nflags = flags;
-	    if (xmlRelaxNGCheckRules(ctxt, cur->content, nflags) != 0)
-		ret = -1;
+	    ret = xmlRelaxNGCheckRules(ctxt, cur->content, nflags, cur->type);
 	} else if (cur->type == XML_RELAXNG_EXCEPT) {
 	    if ((cur->parent != NULL) &&
 		(cur->parent->type == XML_RELAXNG_DATATYPE))
 		nflags = flags | XML_RELAXNG_IN_DATAEXCEPT;
 	    else
 		nflags = flags;
-	    if (xmlRelaxNGCheckRules(ctxt, cur->content, nflags) != 0)
-		ret = -1;
+	    ret = xmlRelaxNGCheckRules(ctxt, cur->content, nflags, cur->type);
 	} else if (cur->type == XML_RELAXNG_DATATYPE) {
 	    if (flags & XML_RELAXNG_IN_START) {
 		if (ctxt->error != NULL)
 		    ctxt->error(ctxt->userData,
 			"Found forbidden pattern start//data\n");
 		ctxt->nbErrors++;
-		ret = -1;
 	    }
-	    if (xmlRelaxNGCheckRules(ctxt, cur->content, flags) != 0)
-		ret = -1;
+	    xmlRelaxNGCheckRules(ctxt, cur->content, flags, cur->type);
+	    ret = XML_RELAXNG_CONTENT_SIMPLE;
 	} else if (cur->type == XML_RELAXNG_VALUE) {
 	    if (flags & XML_RELAXNG_IN_START) {
 		if (ctxt->error != NULL)
 		    ctxt->error(ctxt->userData,
 			"Found forbidden pattern start//value\n");
 		ctxt->nbErrors++;
-		ret = -1;
 	    }
-	    if (xmlRelaxNGCheckRules(ctxt, cur->content, flags) != 0)
-		ret = -1;
+	    xmlRelaxNGCheckRules(ctxt, cur->content, flags, cur->type);
+	    ret = XML_RELAXNG_CONTENT_SIMPLE;
 	} else if (cur->type == XML_RELAXNG_TEXT) {
 	    if (flags & XML_RELAXNG_IN_LIST) {
 		if (ctxt->error != NULL)
 		    ctxt->error(ctxt->userData,
 		"Found forbidden pattern list//text\n");
 		ctxt->nbErrors++;
-		ret = -1;
 	    }
 	    if (flags & XML_RELAXNG_IN_DATAEXCEPT) {
 		if (ctxt->error != NULL)
 		    ctxt->error(ctxt->userData,
 			"Found forbidden pattern data/except//text\n");
 		ctxt->nbErrors++;
-		ret = -1;
 	    }
 	    if (flags & XML_RELAXNG_IN_START) {
 		if (ctxt->error != NULL)
 		    ctxt->error(ctxt->userData,
 			"Found forbidden pattern start//text\n");
 		ctxt->nbErrors++;
-		ret = -1;
 	    }
+	    ret = XML_RELAXNG_CONTENT_COMPLEX;
 	} else if (cur->type == XML_RELAXNG_EMPTY) {
 	    if (flags & XML_RELAXNG_IN_DATAEXCEPT) {
 		if (ctxt->error != NULL)
 		    ctxt->error(ctxt->userData,
 			"Found forbidden pattern data/except//empty\n");
 		ctxt->nbErrors++;
-		ret = -1;
 	    }
 	    if (flags & XML_RELAXNG_IN_START) {
 		if (ctxt->error != NULL)
 		    ctxt->error(ctxt->userData,
 			"Found forbidden pattern start//empty\n");
 		ctxt->nbErrors++;
-		ret = -1;
 	    }
+	    ret = XML_RELAXNG_CONTENT_EMPTY;
 	} else {
-	    if (xmlRelaxNGCheckRules(ctxt, cur->content, flags) != 0)
-		ret = -1;
+	    ret = xmlRelaxNGCheckRules(ctxt, cur->content, flags, cur->type);
 	}
 	cur = cur->next;
+	if (ptype == XML_RELAXNG_GROUP) {
+	    val = xmlRelaxNGGroupContentType(val, ret);
+	} else if (ptype == XML_RELAXNG_INTERLEAVE) {
+	    tmp = xmlRelaxNGGroupContentType(val, ret);
+	    if (tmp != XML_RELAXNG_CONTENT_ERROR)
+		tmp = xmlRelaxNGMaxContentType(val, ret);
+	} else if (ptype == XML_RELAXNG_CHOICE) {
+	    val = xmlRelaxNGMaxContentType(val, ret);
+	} else if (ptype == XML_RELAXNG_LIST) {
+	    val = XML_RELAXNG_CONTENT_SIMPLE;
+	} else if (ptype == XML_RELAXNG_EXCEPT) {
+	    if (ret == XML_RELAXNG_CONTENT_ERROR)
+		val = XML_RELAXNG_CONTENT_ERROR;
+	    else
+		val = XML_RELAXNG_CONTENT_SIMPLE;
+	} else {
+	    val = xmlRelaxNGGroupContentType(val, ret);
+	}
+
     }
-    return(ret);
+    return(val);
 }
 
 /**
@@ -4363,7 +4439,7 @@ xmlRelaxNGParseDocument(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
 		   (schema->topgrammar->start->next != NULL))
 		schema->topgrammar->start = schema->topgrammar->start->content;
 	    xmlRelaxNGCheckRules(ctxt, schema->topgrammar->start,
-				 XML_RELAXNG_IN_START);
+				 XML_RELAXNG_IN_START, XML_RELAXNG_NOOP);
 	}
     }
 

@@ -353,6 +353,7 @@ PUSH_AND_POP(extern, xmlChar*, name)
  *   COPY(to) copy one char to *to, increment CUR_PTR and to accordingly
  */
 
+#define RAW (ctxt->token ? -1 : (*ctxt->input->cur))
 #define CUR (ctxt->token ? ctxt->token : (*ctxt->input->cur))
 #define SKIP(val) ctxt->nbChars += (val),ctxt->input->cur += (val)
 #define NXT(val) ctxt->input->cur[(val)]
@@ -3158,8 +3159,9 @@ xmlParseCharData(xmlParserCtxtPtr ctxt, int cdata) {
 
     SHRINK;
     cur = CUR;
-    while ((IS_CHAR(cur)) && (cur != '<') &&
-           (cur != '&')) {
+    while (((cur != '<') || (ctxt->token == '<')) &&
+           ((cur != '&') || (ctxt->token == '&')) && 
+	   (IS_CHAR(cur))) {
 	if ((cur == ']') && (NXT(1) == ']') &&
 	    (NXT(2) == '>')) {
 	    if (cdata) break;
@@ -6177,16 +6179,23 @@ xmlParseContent(xmlParserCtxtPtr ctxt) {
 	xmlChar tok = ctxt->token;
 
 	/*
+	 * Handle  possible processed charrefs.
+	 */
+	if (ctxt->token != 0) {
+	    xmlParseCharData(ctxt, 0);
+	}
+
+	/*
 	 * First case : a Processing Instruction.
 	 */
-	if ((CUR == '<') && (NXT(1) == '?')) {
+	else if ((RAW == '<') && (NXT(1) == '?')) {
 	    xmlParsePI(ctxt);
 	}
 
 	/*
 	 * Second case : a CDSection
 	 */
-	else if ((CUR == '<') && (NXT(1) == '!') &&
+	else if ((RAW == '<') && (NXT(1) == '!') &&
 	    (NXT(2) == '[') && (NXT(3) == 'C') &&
 	    (NXT(4) == 'D') && (NXT(5) == 'A') &&
 	    (NXT(6) == 'T') && (NXT(7) == 'A') &&
@@ -6197,7 +6206,7 @@ xmlParseContent(xmlParserCtxtPtr ctxt) {
 	/*
 	 * Third case :  a comment
 	 */
-	else if ((CUR == '<') && (NXT(1) == '!') &&
+	else if ((RAW == '<') && (NXT(1) == '!') &&
 		 (NXT(2) == '-') && (NXT(3) == '-')) {
 	    xmlParseComment(ctxt);
 	    ctxt->instate = XML_PARSER_CONTENT;
@@ -6206,7 +6215,7 @@ xmlParseContent(xmlParserCtxtPtr ctxt) {
 	/*
 	 * Fourth case :  a sub-element.
 	 */
-	else if (CUR == '<') {
+	else if (RAW == '<') {
 	    xmlParseElement(ctxt);
 	}
 
@@ -6215,7 +6224,7 @@ xmlParseContent(xmlParserCtxtPtr ctxt) {
 	 *    parsing returns it's Name, create the node 
 	 */
 
-	else if (CUR == '&') {
+	else if (RAW == '&') {
 	    xmlParseReference(ctxt);
 	}
 
@@ -6230,7 +6239,7 @@ xmlParseContent(xmlParserCtxtPtr ctxt) {
 	/*
 	 * Pop-up of finished entities.
 	 */
-	while ((CUR == 0) && (ctxt->inputNr > 1))
+	while ((RAW == 0) && (ctxt->inputNr > 1))
 	    xmlPopInput(ctxt);
 	SHRINK;
 

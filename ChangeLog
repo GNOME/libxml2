@@ -1,4 +1,8 @@
-Thu Jun 29 01:27:19 MEST 2000 
+Thu Jun 29 11:37:38 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* parser.c: fixed &#38; parsing bug
+
+Thu Jun 29 01:27:19 MEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* configure.in: 1.8.8 prerelease
 	* example/Makefile.am example/gjobread.c tree.h: work on

@@ -1951,7 +1951,8 @@ xmlXPathVariableLookupNS(xmlXPathContextPtr ctxt, const xmlChar *name,
     if (name == NULL)
 	return(NULL);
 
-    return((xmlXPathObjectPtr) xmlHashLookup2(ctxt->varHash, name, ns_uri));
+    return(xmlXPathObjectCopy((xmlXPathObjectPtr)
+		xmlHashLookup2(ctxt->varHash, name, ns_uri)));
 }
 
 /**

@@ -1,3 +1,10 @@
+Wed Jul 16 23:15:53 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* parserInternals.c: patch from Dodji Seketeli about UTF16 BOM
+	  when using the push XML parser.
+	* result/utf16bom.xml result/noent/utf16bom.xml test/utf16bom.xml:
+	  added the test to the regression suite.
+
 Tue Jul 15 22:03:13 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* globals.c: add xmlThrDefMutex = NULL in xmlCleanupGlobals() 

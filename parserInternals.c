@@ -1621,6 +1621,23 @@ xmlSwitchEncoding(xmlParserCtxtPtr ctxt, xmlCharEncoding enc)
 		ctxt->input->cur += 3;
 	    }
 	    return(0);
+    case XML_CHAR_ENCODING_UTF16LE:
+    case XML_CHAR_ENCODING_UTF16BE:
+        /*The raw input characters are encoded
+         *in UTF-16. As we expect this function
+         *to be called after xmlCharEncInFunc, we expect
+         *ctxt->input->cur to contain UTF-8 encoded characters.
+         *So the raw UTF16 Byte Order Mark
+         *has also been converted into
+         *an UTF-8 BOM. Let's skip that BOM.
+         */
+        if ((ctxt->input != NULL) &&
+            (ctxt->input->cur[0] == 0xEF) &&
+            (ctxt->input->cur[1] == 0xBB) &&
+            (ctxt->input->cur[2] == 0xBF)) {
+            ctxt->input->cur += 3;
+        }
+	break ;
 	default:
 	    break;
     }

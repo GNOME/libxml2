@@ -1193,6 +1193,8 @@ xmlSchemaValidatePredefinedType(xmlSchemaTypePtr type, const xmlChar *value,
 	    neg = 1;
 	    cur++;
 	}
+	if (cur[0] == 0)
+	    return(1);
 	if ((cur[0] == 'I') && (cur[1] == 'N') && (cur[2] == 'F')) {
 	    cur += 3;
 	    if (*cur != 0)

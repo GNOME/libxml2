@@ -2492,6 +2492,7 @@ xmlTextReaderGetErrorHandler(xmlTextReaderPtr reader,
  * @tolen:  the size of the output (in), the size written to (out)
  *
  * Base64 decoder, reads from @in and save in @to
+ * TODO: tell jody when this is actually exported
  *
  * Returns 0 if all the input was consumer, 1 if the Base64 end was reached,
  *         2 if there wasn't enough space on the output or -1 in case of error.

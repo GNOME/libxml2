@@ -1,3 +1,14 @@
+Tue Feb 18 22:09:50 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemastypes.c: float/double check bugfix
+	* tree.c include/libxml/tree.h: exported a function for NMTOKEN
+	  validation
+	* xmlreader.c: add a TODO for Jody
+	* relaxng.c: bugfix bugfix bugfix
+	  found 373 test schemas: 300 success 73 failures
+	  found 529 test instances: 507 success 10 failures
+	* result/relaxng/*: updated the results
+
 Tue Feb 18 00:33:17 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c check-relaxng-test-suite.py: more RelaxNG bug hunting

@@ -363,6 +363,76 @@ try_complex:
     return(0);
 }
 
+/**
+ * xmlValidateNMToken:
+ * @value: the value to check
+ * @space: allow spaces in front and end of the string
+ *
+ * Check that a value conforms to the lexical space of NMToken
+ *
+ * Returns 0 if this validates, a positive error code number otherwise
+ *         and -1 in case of internal or API error.
+ */
+int
+xmlValidateNMToken(const xmlChar *value, int space) {
+    const xmlChar *cur = value;
+    int c,l;
+
+    /*
+     * First quick algorithm for ASCII range
+     */
+    if (space)
+	while (IS_BLANK(*cur)) cur++;
+    if (((*cur >= 'a') && (*cur <= 'z')) ||
+        ((*cur >= 'A') && (*cur <= 'Z')) ||
+        ((*cur >= '0') && (*cur <= '9')) ||
+        (*cur == '_') || (*cur == '-') || (*cur == '.') || (*cur == ':'))
+	cur++;
+    else
+	goto try_complex;
+    while (((*cur >= 'a') && (*cur <= 'z')) ||
+	   ((*cur >= 'A') && (*cur <= 'Z')) ||
+	   ((*cur >= '0') && (*cur <= '9')) ||
+	   (*cur == '_') || (*cur == '-') || (*cur == '.') || (*cur == ':'))
+	cur++;
+    if (space)
+	while (IS_BLANK(*cur)) cur++;
+    if (*cur == 0)
+	return(0);
+
+try_complex:
+    /*
+     * Second check for chars outside the ASCII range
+     */
+    cur = value;
+    c = CUR_SCHAR(cur, l);
+    if (space) {
+	while (IS_BLANK(c)) {
+	    cur += l;
+	    c = CUR_SCHAR(cur, l);
+	}
+    }
+    if (!(xmlIsLetter(c) || xmlIsDigit(c) || (c == '.') || (c == ':') ||
+        (c == '-') || (c == '_') || xmlIsCombining(c) || xmlIsExtender(c)))
+	return(1);
+    cur += l;
+    c = CUR_SCHAR(cur, l);
+    while (xmlIsLetter(c) || xmlIsDigit(c) || (c == '.') || (c == ':') ||
+	   (c == '-') || (c == '_') || xmlIsCombining(c) || xmlIsExtender(c)) {
+	cur += l;
+	c = CUR_SCHAR(cur, l);
+    }
+    if (space) {
+	while (IS_BLANK(c)) {
+	    cur += l;
+	    c = CUR_SCHAR(cur, l);
+	}
+    }
+    if (c != 0)
+	return(1);
+    return(0);
+}
+
 /************************************************************************
  *									*
  *		Allocation and deallocation of basic structures		*

@@ -538,9 +538,11 @@ LIBXML_DLL_IMPORT extern int xmlSaveNoEmptyTags; /* save empty tags as <empty></
 LIBXML_DLL_IMPORT extern int xmlDefaultBufferSize; /* default buffer size */
 #endif
 
-int		 xmlValidateNCName	(const xmlChar *value, int space);
-int		 xmlValidateQName	(const xmlChar *value, int space);
-int		 xmlValidateName	(const xmlChar *value, int space);
+int		xmlValidateNCName	(const xmlChar *value, int space);
+int		xmlValidateQName	(const xmlChar *value, int space);
+int		xmlValidateName		(const xmlChar *value, int space);
+int		xmlValidateNMToken	(const xmlChar *value, int space);
+
 /*
  * Handling Buffers.
  */

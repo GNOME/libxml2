@@ -7,6 +7,8 @@ import StringIO
 sys.path.append("python")
 import libxml2
 
+debug = 0
+
 #
 # the testsuite description
 #
@@ -256,6 +258,8 @@ def handle_testCase(node):
 
               nb_schemas_tests, node.lineNo()))
     resources = {}
+    if debug:
+        print "test %d line %d" % (nb_schemas_tests, node.lineNo())
 
     dirs = node.xpathEval('dir')
     for dir in dirs:

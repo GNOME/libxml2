@@ -25,6 +25,14 @@ libxml2.py: $(srcdir)/libxml.py libxml2class.py
 
 _libxml.so: libxml.o libxml2-py.o types.o
 	$(CC) $(LINK_FLAGS) libxml.o libxml2-py.o types.o $(LIBS) -o _libxml.so
+
+install-data-local:
+	$(mkinstalldirs) $(DESTDIR)$(PYTHON_SITE_PACKAGES)
+	-@INSTALL@ -m 0644 libxml2.py $(DESTDIR)$(PYTHON_SITE_PACKAGES)
+	-@INSTALL@ -m 0755 _libxml.so $(DESTDIR)$(PYTHON_SITE_PACKAGES)
+	$(mkinstalldirs) $(DESTDIR)$(DOCS_DIR)
+	-@(for doc in $(DOCS) ; \
+	   do @INSTALL@ -m 0644 $$doc $(DESTDIR)$(DOCS_DIR) ; done)
 else
 all: 
 endif
@@ -53,12 +61,4 @@ tests: all
 
 clean:
 	rm -f $(GENERATED) *.o _libxml.so *.pyc libxml2.py
-
-install-data-local:
-	$(mkinstalldirs) $(DESTDIR)$(PYTHON_SITE_PACKAGES)
-	-@INSTALL@ -m 0644 libxml2.py $(DESTDIR)$(PYTHON_SITE_PACKAGES)
-	-@INSTALL@ -m 0755 _libxml.so $(DESTDIR)$(PYTHON_SITE_PACKAGES)
-	$(mkinstalldirs) $(DESTDIR)$(DOCS_DIR)
-	-@(for doc in $(DOCS) ; \
-	   do @INSTALL@ -m 0644 $$doc $(DESTDIR)$(DOCS_DIR) ; done)
 

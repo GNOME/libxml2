@@ -1,3 +1,8 @@
+Tue Feb  5 17:33:30 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in python/Makefile.am: do not install outside
+	  of prefix
+
 Mon Feb  4 15:05:55 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* python/TODO python/libxml.c: started adding SAX interfaces

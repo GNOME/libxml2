@@ -131,85 +131,6 @@ checkVersion()
 # Set of classes of the module
 #
 
-Class xpathContext()
-
-    # functions from module xpath
-    xpathEval()
-    xpathEvalExpression()
-
-    # functions from module xpathInternals
-    xpathFreeContext()
-    xpathNsLookup()
-    xpathRegisterAllFunctions()
-    xpathRegisterNs()
-    xpathRegisteredFuncsCleanup()
-    xpathRegisteredNsCleanup()
-    xpathRegisteredVariablesCleanup()
-    xpathVariableLookup()
-    xpathVariableLookupNS()
-
-
-Class xmlDoc(xmlNode)
-
-    # functions from module HTMLparser
-    htmlAutoCloseTag()
-    htmlIsAutoClosed()
-
-    # functions from module HTMLtree
-    htmlGetMetaEncoding()
-    htmlSaveFile()
-    htmlSaveFileEnc()
-    htmlSaveFileFormat()
-    htmlSetMetaEncoding()
-
-    # functions from module entities
-    addDocEntity()
-    addDtdEntity()
-    docEntity()
-    dtdEntity()
-    encodeEntities()
-    encodeEntitiesReentrant()
-    encodeSpecialChars()
-    parameterEntity()
-
-    # functions from module tree
-    copyDoc()
-    createIntSubset()
-    docCompressMode()
-    freeDoc()
-    getRootElement()
-    intSubset()
-    newCDataBlock()
-    newCharRef()
-    newDocComment()
-    newDocFragment()
-    newDocNode()
-    newDocProp()
-    newDocRawNode()
-    newDocText()
-    newDocTextLen()
-    newDtd()
-    newGlobalNs()
-    newReference()
-    saveFile()
-    saveFileEnc()
-    saveFormatFile()
-    saveFormatFileEnc()
-    setDocCompressMode()
-    stringGetNodeList()
-    stringLenGetNodeList()
-
-    # functions from module valid
-    ID()
-    isMixedElement()
-    removeID()
-    removeRef()
-
-    # functions from module xinclude
-    xincludeProcess()
-
-    # functions from module xpathInternals
-    xpathNewContext()
 
 
 Class xmlNode(xmlCore)
@@ -290,6 +211,90 @@ Class xmlNode(xmlCore)
     xpathNewValueTree()
 
 
+Class xmlDoc(xmlNode)
+
+    # functions from module HTMLparser
+    htmlAutoCloseTag()
+    htmlIsAutoClosed()
+
+    # functions from module HTMLtree
+    htmlGetMetaEncoding()
+    htmlSaveFile()
+    htmlSaveFileEnc()
+    htmlSaveFileFormat()
+    htmlSetMetaEncoding()
+
+    # functions from module entities
+    addDocEntity()
+    addDtdEntity()
+    docEntity()
+    dtdEntity()
+    encodeEntities()
+    encodeEntitiesReentrant()
+    encodeSpecialChars()
+    parameterEntity()
+
+    # functions from module tree
+    copyDoc()
+    createIntSubset()
+    docCompressMode()
+    freeDoc()
+    getRootElement()
+    intSubset()
+    newCDataBlock()
+    newCharRef()
+    newDocComment()
+    newDocFragment()
+    newDocNode()
+    newDocProp()
+    newDocRawNode()
+    newDocText()
+    newDocTextLen()
+    newDtd()
+    newGlobalNs()
+    newReference()
+    saveFile()
+    saveFileEnc()
+    saveFormatFile()
+    saveFormatFileEnc()
+    setDocCompressMode()
+    stringGetNodeList()
+    stringLenGetNodeList()
+
+    # functions from module valid
+    ID()
+    isMixedElement()
+    removeID()
+    removeRef()
+
+    # functions from module xinclude
+    xincludeProcess()
+
+    # functions from module xpathInternals
+    xpathNewContext()
+
+
+Class xmlEntity(xmlNode)
+
+
+Class xmlNs(xmlNode)
+
+    # functions from module tree
+    copyNamespace()
+    copyNamespaceList()
+    freeNs()
+    freeNsList()
+    newNode()
+
+
+Class xmlAttr(xmlNode)
+
+    # functions from module tree
+    freeProp()
+    freePropList()
+    removeProp()
+
+
 Class xmlAttribute(xmlNode)
 
 
@@ -306,25 +311,23 @@ Class xmlDtd(xmlNode)
     dtdQElementDesc()
 
 
-Class xmlAttr(xmlNode)
-
-    # functions from module tree
-    freeProp()
-    freePropList()
-    removeProp()
-
-
-Class xmlEntity(xmlNode)
-
-
 Class xmlElement(xmlNode)
+Class xpathContext()
 
+    # functions from module python
+    registerXPathFunction()
 
-Class xmlNs(xmlNode)
+    # functions from module xpath
+    xpathEval()
+    xpathEvalExpression()
 
-    # functions from module tree
-    copyNamespace()
-    copyNamespaceList()
-    freeNs()
-    freeNsList()
-    newNode()
+    # functions from module xpathInternals
+    xpathFreeContext()
+    xpathNsLookup()
+    xpathRegisterAllFunctions()
+    xpathRegisterNs()
+    xpathRegisteredFuncsCleanup()
+    xpathRegisteredNsCleanup()
+    xpathRegisteredVariablesCleanup()
+    xpathVariableLookup()
+    xpathVariableLookupNS()

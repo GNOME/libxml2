@@ -419,6 +419,7 @@ libxml_registerXPathFunction(PyObject *self, PyObject *args) {
         libxml_xpathCallbacks[i].name = xmlStrdup(name);
         libxml_xpathCallbacks[i].ns_uri = xmlStrdup(ns_uri);
 	libxml_xpathCallbacks[i].function = pyobj_f;
+	c_retval = 1;
     }
 done:
     py_retval = libxml_intWrap((int) c_retval);

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<api name='libxml2-python'>
+  <files>
+    <file name='python'>
+     <exports symbol='libxml_registerXPathFunction'/>
+    </file>
+  </files>
+  <symbols>
+    <function name='xmlRegisterXPathFunction' file='python'>
+      <info>Register a Python written function to the XPath interpreter</info>
+      <return type='int' info="1 in case of success, 0 or -1 in case of error"/>
+      <arg name='ctx' type='xmlXPathContextPtr' info='the xpathContext'/>
+      <arg name='name' type='xmlChar *' info='the function name'/>
+      <arg name='ns_uri' type='xmlChar *' info='the namespace or NULL'/>
+      <arg name='f' type='pythonObject' info='the python function'/>
+    </function>
+  </symbols>
+</api>

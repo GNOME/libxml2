@@ -1,3 +1,11 @@
+Sat Feb  2 11:25:51 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* libxml.spec.in python/Makefile.am python/TODO python/generator.py
+	  python/libxml.c python/libxml2-python-api.xml
+	  python/libxml2class.txt: Progressing through the TODOs, class
+	  description output, extra XML API, RPM now builds the wrappers
+	  for all python installed versions
+
 Sat Feb  2 10:13:52 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in libxml.spec.in python/Makefile.am python/TODO

@@ -361,7 +361,13 @@ def print_function_wrapper(name, output, export, include):
 
     include.write("PyObject * ")
     include.write("libxml_%s(PyObject *self, PyObject *args);\n" % (name))
+
     export.write("    { \"%s\", libxml_%s, METH_VARARGS },\n" % (name, name))
+
+    if file == "python":
+        # Those have been manually generated
+	return 1
+
     output.write("PyObject *\n")
     output.write("libxml_%s(PyObject *self, PyObject *args) {\n" % (name))
     if ret[0] != 'void':
@@ -391,7 +397,22 @@ try:
 except IOError, msg:
     print file, ":", msg
 
-print "Found %d functions in libxml2-api.xml" % (len(functions.keys()))
+n = len(functions.keys())
+print "Found %d functions in libxml2-api.xml" % (n)
+
+py_types['pythonObject'] = ('O', "pythonObject", "pythonObject", "pythonObject")
+try:
+    f = open("libxml2-python-api.xml")
+    data = f.read()
+    (parser, target)  = getparser()
+    parser.feed(data)
+    parser.close()
+except IOError, msg:
+    print file, ":", msg
+
+
+print "Found %d functions in libxml2-python-api.xml" % (
+      len(functions.keys()) - n)
 nb_wrap = 0
 failed = 0
 skipped = 0
@@ -487,8 +508,12 @@ for type in classes_type.keys():
 # Build the list of C types to look for ordered to start with primary classes
 #
 ctypes = []
+classes_list = []
 ctypes_processed = {}
+classes_processed = {}
 for classe in primary_classes:
+    classes_list.append(classe)
+    classes_processed[classe] = ()
     for type in classes_type.keys():
         tinfo = classes_type[type]
 	if tinfo[2] == classe:
@@ -498,6 +523,10 @@ for type in classes_type.keys():
     if ctypes_processed.has_key(type):
         continue
     tinfo = classes_type[type]
+    if not classes_processed.has_key(tinfo[2]):
+        classes_list.append(tinfo[2])
+	classes_processed[tinfo[2]] = ()
+	
     ctypes.append(type)
     ctypes_processed[type] = ()
 
@@ -510,6 +539,9 @@ def nameFixup(function, classe, type):
 	func = string.lower(func[0:1]) + func[1:]
     elif name[0:l] == classe:
 	func = name[l:]
+	func = string.lower(func[0:1]) + func[1:]
+    elif name[0:7] == "libxml_":
+	func = name[7:]
 	func = string.lower(func[0:1]) + func[1:]
     elif name[0:6] == "xmlGet":
 	func = name[6:]
@@ -656,7 +688,7 @@ if function_classes.has_key("None"):
 	classes.write("\n");
 
 txt.write("\n\n#\n# Set of classes of the module\n#\n\n")
-for classname in function_classes.keys():
+for classname in classes_list:
     if classname == "None":
         pass
     else:

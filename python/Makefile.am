@@ -34,7 +34,7 @@ libxml2-py.o: libxml2-py.c libxml2-py.h libxml_wrap.h
 	$(CC) $(SHCFLAGS) -c -o libxml2-py.o $(srcdir)/libxml2-py.c
 
 GENERATE = generator.py
-API_DESC = $(top_srcdir)/doc/libxml2-api.xml
+API_DESC = $(top_srcdir)/doc/libxml2-api.xml $(srcdir)/libxml2-python-api.xml
 GENERATED= $(srcdir)/libxml2class.py \
            $(srcdir)/libxml2-export.c \
 	   $(srcdir)/libxml2-py.c \

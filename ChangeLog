@@ -1,3 +1,8 @@
+Thu Oct 18 16:56:23 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c valid.c result/valid/rss.xml result/valid/rss.xml.err:
+	  fixed a very serious (looping) validation bug
+
 Wed Oct 17 11:56:25 EDT 2001 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/globals.h include/libxml/threads.h threads.c

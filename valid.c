@@ -199,6 +199,11 @@ xmlValidPrintNode(xmlNodePtr cur) {
 	case XML_HTML_DOCUMENT_NODE:
 	    xmlGenericError(xmlGenericErrorContext, "?html? ");
 	    break;
+#ifdef LIBXML_DOCB_ENABLED
+	case XML_DOCB_DOCUMENT_NODE:
+	    xmlGenericError(xmlGenericErrorContext, "?docb? ");
+	    break;
+#endif
 	case XML_DTD_NODE:
 	    xmlGenericError(xmlGenericErrorContext, "?dtd? ");
 	    break;
@@ -3395,6 +3400,8 @@ cont:
      * of handling epsilon transition in NFAs.
      */
     if ((CONT != NULL) &&
+	((CONT->parent == NULL) ||
+	 (CONT->parent->type != XML_ELEMENT_CONTENT_OR)) &&
 	((CONT->ocur == XML_ELEMENT_CONTENT_MULT) ||
 	 (CONT->ocur == XML_ELEMENT_CONTENT_OPT) ||
 	 ((CONT->ocur == XML_ELEMENT_CONTENT_PLUS) && (OCCURENCE)))) {
@@ -3600,7 +3607,7 @@ analyze:
 			break;
 		    }
 		    DEBUG_VALID_MSG("Mult branch succeeded, continuing");
-		    SET_OCCURENCE;
+		    /* SET_OCCURENCE; */
 		    goto cont;
 	    }
 	}

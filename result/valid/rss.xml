@@ -17,15 +17,15 @@
   
   Based on RSS DTD originally created by
   Lars Marius Garshol - larsga@ifi.uio.no.
-  $Id: rss-0.91.dtd,v 1.1 1999/07/25 07:59:31 danda Exp $
+  $Id: rss.xml,v 1.1 2001/04/20 13:48:21 veillard Exp $
   
 --><!ELEMENT rss (channel)>
 <!ATTLIST rss version CDATA #REQUIRED>
-<!-- must be "0.91"> --><!ELEMENT channel (title | description | link | language | item+ | rating? | image? | textinput? | copyright? | pubDate? | lastBuildDate? | docs? | managingEditor? | webMaster? | skipHours? | skipDays?)*>
+<!-- must be "0.91"> --><!ELEMENT channel (title | description | link | language | item+ | rating | image | textinput | copyright | pubDate | lastBuildDate | docs | managingEditor | webMaster | skipHours | skipDays)*>
 <!ELEMENT title (#PCDATA)>
 <!ELEMENT description (#PCDATA)>
 <!ELEMENT link (#PCDATA)>
-<!ELEMENT image (title | url | link | width? | height? | description?)*>
+<!ELEMENT image (title | url | link | width | height | description)*>
 <!ELEMENT url (#PCDATA)>
 <!ELEMENT item (title | link | description)*>
 <!ELEMENT textinput (title | description | name | link)*>

@@ -4443,12 +4443,54 @@ xmlParseElementChildrenContentDecl
 	    ret->ocur = XML_ELEMENT_CONTENT_OPT;
 	NEXT;
     } else if (RAW == '*') {
-	if (ret != NULL)
+	if (ret != NULL) {
 	    ret->ocur = XML_ELEMENT_CONTENT_MULT;
+	    cur = ret;
+	    /*
+	     * Some normalization:
+	     * (a | b* | c?)* == (a | b | c)*
+	     */
+	    while (cur->type == XML_ELEMENT_CONTENT_OR) {
+		if ((cur->c1 != NULL) &&
+	            ((cur->c1->ocur == XML_ELEMENT_CONTENT_OPT) ||
+		     (cur->c1->ocur == XML_ELEMENT_CONTENT_MULT)))
+		    cur->c1->ocur = XML_ELEMENT_CONTENT_ONCE;
+		if ((cur->c2 != NULL) &&
+	            ((cur->c2->ocur == XML_ELEMENT_CONTENT_OPT) ||
+		     (cur->c2->ocur == XML_ELEMENT_CONTENT_MULT)))
+		    cur->c2->ocur = XML_ELEMENT_CONTENT_ONCE;
+		cur = cur->c2;
+	    }
+	}
 	NEXT;
     } else if (RAW == '+') {
-	if (ret != NULL)
+	if (ret != NULL) {
+	    int found = 0;
+
 	    ret->ocur = XML_ELEMENT_CONTENT_PLUS;
+	    /*
+	     * Some normalization:
+	     * (a | b*)+ == (a | b)*
+	     * (a | b?)+ == (a | b)*
+	     */
+	    while (cur->type == XML_ELEMENT_CONTENT_OR) {
+		if ((cur->c1 != NULL) &&
+	            ((cur->c1->ocur == XML_ELEMENT_CONTENT_OPT) ||
+		     (cur->c1->ocur == XML_ELEMENT_CONTENT_MULT))) {
+		    cur->c1->ocur = XML_ELEMENT_CONTENT_ONCE;
+		    found = 1;
+		}
+		if ((cur->c2 != NULL) &&
+	            ((cur->c2->ocur == XML_ELEMENT_CONTENT_OPT) ||
+		     (cur->c2->ocur == XML_ELEMENT_CONTENT_MULT))) {
+		    cur->c2->ocur = XML_ELEMENT_CONTENT_ONCE;
+		    found = 1;
+		}
+		cur = cur->c2;
+	    }
+	    if (found)
+		ret->ocur = XML_ELEMENT_CONTENT_MULT;
+	}
 	NEXT;
     }
     return(ret);

@@ -1,3 +1,9 @@
+Tue Aug 28 18:19:30 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: oops forgot to zero terminate that string seems
+	  to break bonobo_ui which expect mem[size] == 0 while that
+	  0 is outside the range actually ...
+
 Mon Aug 27 19:08:32 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: improved xmlDocDumpMemory() memory usage for Jody

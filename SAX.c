@@ -890,7 +890,7 @@ attribute(void *ctx, const xmlChar *fullname, const xmlChar *value)
 	    ctxt->valid &= xmlValidateOneAttribute(&ctxt->vctxt, ctxt->myDoc,
 					       ctxt->node, ret, value);
 	}
-    } else {
+    } else if (ctxt->external != 2){
         /*
 	 * when validating, the ID registration is done at the attribute
 	 * validation level. Otherwise we have to do specific handling here.

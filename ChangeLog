@@ -1,3 +1,10 @@
+Wed Apr 18 23:33:11 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* SAX.c parser.c xpath.c: generating IDs when not validating
+	  from an external parsed entity was poisoning the ID has table
+	  with removed values. This was killing XSLT on the KDE help
+	  browser.
+
 Wed Apr 18 17:09:15 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* entities.h: andrew@ugh.net.au detected a double declaration

@@ -3755,7 +3755,10 @@ xmlXPathNextNamespace(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
  */
 xmlNodePtr
 xmlXPathNextAttribute(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
-    if (ctxt->context->node->type != XML_ELEMENT_NODE) return(NULL);
+    if (ctxt->context->node == NULL)
+	return(NULL);
+    if (ctxt->context->node->type != XML_ELEMENT_NODE)
+	return(NULL);
     if (cur == NULL) {
         if (ctxt->context->node == (xmlNodePtr) ctxt->context->doc)
 	    return(NULL);

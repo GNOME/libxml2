@@ -4217,13 +4217,16 @@ xmlParseElementChildrenContentDecl
     ctxt->entity = ctxt->input;
     NEXT;
     if (RAW == '?') {
-        ret->ocur = XML_ELEMENT_CONTENT_OPT;
+	if (ret != NULL)
+	    ret->ocur = XML_ELEMENT_CONTENT_OPT;
 	NEXT;
     } else if (RAW == '*') {
-        ret->ocur = XML_ELEMENT_CONTENT_MULT;
+	if (ret != NULL)
+	    ret->ocur = XML_ELEMENT_CONTENT_MULT;
 	NEXT;
     } else if (RAW == '+') {
-        ret->ocur = XML_ELEMENT_CONTENT_PLUS;
+	if (ret != NULL)
+	    ret->ocur = XML_ELEMENT_CONTENT_PLUS;
 	NEXT;
     }
     return(ret);
@@ -8880,6 +8883,7 @@ xmlParseExternalEntity(xmlDocPtr doc, xmlSAXHandlerPtr sax, void *user_data,
     xmlParserCtxtPtr ctxt;
     xmlDocPtr newDoc;
     xmlSAXHandlerPtr oldsax = NULL;
+    int oldexternal = ctxt->external;
     int ret = 0;
 
     if (depth > 40) {
@@ -8950,6 +8954,7 @@ xmlParseExternalEntity(xmlDocPtr doc, xmlSAXHandlerPtr sax, void *user_data,
      */
     ctxt->instate = XML_PARSER_CONTENT;
     ctxt->validate = 0;
+    ctxt->external = 2;
     ctxt->loadsubset = 0;
     ctxt->depth = depth;
 

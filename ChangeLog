@@ -1,3 +1,11 @@
+Sun Aug  3 20:55:40 EDT 2003 Daniel Veillard <daniel@veillard.com>
+
+	* catalog.c: trying to fix #118754 of possible recursion in the
+	  catalogs. Not fantastically happy about the current fix since
+	  it's likely to break under very thread intensive concurrent
+	  access to the catalog. Better solution might to keep the depth
+	  an extra argument to the resolution functions.
+
 Sun Aug  3 18:56:54 EDT 2003 Daniel Veillard <daniel@veillard.com>
 
 	* valid.c: fixed bug #118712 about mixed content, and namespaced

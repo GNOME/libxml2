@@ -42,6 +42,7 @@
 #include <libxml/globals.h>
 
 #define MAX_DELEGATE	50
+#define MAX_CATAL_DEPTH	50
 
 /**
  * TODO:
@@ -115,6 +116,7 @@ struct _xmlCatalogEntry {
     xmlChar *URL;  /* The expanded URL using the base */
     xmlCatalogPrefer prefer;
     int dealloc;
+    int depth;
 };
 
 typedef enum {
@@ -230,6 +232,7 @@ xmlNewCatalogEntry(xmlCatalogEntryType type, const xmlChar *name,
 	ret->URL = NULL;
     ret->prefer = prefer;
     ret->dealloc = 0;
+    ret->depth = 0;
     return(ret);
 }
 
@@ -1443,6 +1446,20 @@ xmlCatalogXMLResolve(xmlCatalogEntryPtr catal, const xmlChar *pubID,
     int haveNext = 0;
 
     /*
+     * protection against loops
+     */
+    if (catal->depth > MAX_CATAL_DEPTH) {
+        if (catal->name != NULL)
+	    xmlGenericError(xmlGenericErrorContext,
+		    "Detected recursion in catalog %s\n", catal->name);
+	else
+	    xmlGenericError(xmlGenericErrorContext,
+		    "Detected recursion in catalog\n");
+	return(NULL);
+    }
+    catal->depth++;
+
+    /*
      * First tries steps 2/ 3/ 4/ if a system ID is provided.
      */
     if (sysID != NULL) {
@@ -1457,6 +1474,7 @@ xmlCatalogXMLResolve(xmlCatalogEntryPtr catal, const xmlChar *pubID,
 			if (xmlDebugCatalogs)
 			    xmlGenericError(xmlGenericErrorContext,
 				    "Found system match %s\n", cur->name);
+			catal->depth--;
 			return(xmlStrdup(cur->URL));
 		    }
 		    break;
@@ -1487,6 +1505,7 @@ xmlCatalogXMLResolve(xmlCatalogEntryPtr catal, const xmlChar *pubID,
 	    ret = xmlStrdup(rewrite->URL);
 	    if (ret != NULL)
 		ret = xmlStrcat(ret, &sysID[lenrewrite]);
+	    catal->depth--;
 	    return(ret);
 	}
 	if (haveDelegate) {
@@ -1520,8 +1539,10 @@ xmlCatalogXMLResolve(xmlCatalogEntryPtr catal, const xmlChar *pubID,
 				    "Trying system delegate %s\n", cur->URL);
 			ret = xmlCatalogListXMLResolve(
 				cur->children, NULL, sysID);
-			if (ret != NULL)
+			if (ret != NULL) {
+			    catal->depth--;
 			    return(ret);
+			}
 		    }
 		}
 		cur = cur->next;
@@ -1529,6 +1550,7 @@ xmlCatalogXMLResolve(xmlCatalogEntryPtr catal, const xmlChar *pubID,
 	    /*
 	     * Apply the cut algorithm explained in 4/
 	     */
+	    catal->depth--;
 	    return(XML_CATAL_BREAK);
 	}
     }
@@ -1545,6 +1567,7 @@ xmlCatalogXMLResolve(xmlCatalogEntryPtr catal, const xmlChar *pubID,
 			if (xmlDebugCatalogs)
 			    xmlGenericError(xmlGenericErrorContext,
 				    "Found public match %s\n", cur->name);
+			catal->depth--;
 			return(xmlStrdup(cur->URL));
 		    }
 		    break;
@@ -1595,8 +1618,10 @@ xmlCatalogXMLResolve(xmlCatalogEntryPtr catal, const xmlChar *pubID,
 				    "Trying public delegate %s\n", cur->URL);
 			ret = xmlCatalogListXMLResolve(
 				cur->children, pubID, NULL);
-			if (ret != NULL)
+			if (ret != NULL) {
+			    catal->depth--;
 			    return(ret);
+			}
 		    }
 		}
 		cur = cur->next;
@@ -1604,6 +1629,7 @@ xmlCatalogXMLResolve(xmlCatalogEntryPtr catal, const xmlChar *pubID,
 	    /*
 	     * Apply the cut algorithm explained in 4/
 	     */
+	    catal->depth--;
 	    return(XML_CATAL_BREAK);
 	}
     }
@@ -1616,14 +1642,17 @@ xmlCatalogXMLResolve(xmlCatalogEntryPtr catal, const xmlChar *pubID,
 		}
 		if (cur->children != NULL) {
 		    ret = xmlCatalogListXMLResolve(cur->children, pubID, sysID);
-		    if (ret != NULL)
+		    if (ret != NULL) {
+			catal->depth--;
 			return(ret);
+		    }
 		}
 	    }
 	    cur = cur->next;
 	}
     }
 
+    catal->depth--;
     return(NULL);
 }
 

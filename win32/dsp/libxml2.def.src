@@ -318,8 +318,12 @@ EXPORTS
 	xmlParserVersion DATA
 	xmlDefaultSAXLocator DATA
 	xmlDefaultSAXHandler DATA
+#ifdef LIBXML_HTML_ENABLED
 	htmlDefaultSAXHandler DATA
+#endif
+#ifdef LIBXML_DOCB_ENABLED
 	docbDefaultSAXHandler DATA
+#endif
 	xmlSubstituteEntitiesDefaultValue DATA
 	xmlGetWarningsDefaultValue DATA
 

@@ -1,3 +1,8 @@
+Thu Aug 16 17:59:18 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* win32/dsp/libxml2.def.src: small cleanup closing bug
+	  #59108
+
 Wed Aug 15 22:46:01 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* example/gjobread.c: add xmlCleanupParser() before leaving

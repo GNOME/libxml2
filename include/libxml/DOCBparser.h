@@ -8,7 +8,7 @@
 
 #ifndef __DOCB_PARSER_H__
 #define __DOCB_PARSER_H__
-#include <parser.h>
+#include <libxml/parser.h>
 
 #ifdef __cplusplus
 extern "C" {

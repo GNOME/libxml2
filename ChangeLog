@@ -1,3 +1,8 @@
+Sun Apr 29 19:02:13 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* configure.in: default on the DocBook parser inclusion (for Gnome)
+	* DOCBparser.h: fixed a header reference
+
 Sat Apr 28 19:00:39 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* configure.in xpath.c: applied Bjorn patches for FPE on the

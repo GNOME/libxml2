@@ -301,14 +301,14 @@ fi
 AC_SUBST(WITH_HTML)
 AC_SUBST(HTML_OBJ)
 
-AC_ARG_WITH(docbook, [  --with-docbook         Add Docbook SGML support (off)])
-if test "$with_docbook" = "yes" ; then
-    echo Enabling Docbook support
-    WITH_DOCB=1
-    DOCB_OBJ="DOCBparser.o"
-else    
+AC_ARG_WITH(docbook, [  --with-docbook         Add Docbook SGML support (on)])
+if test "$with_docbook" = "no" ; then
+    echo Disabling Docbook support
     WITH_DOCB=0
     DOCB_OBJ=
+else    
+    WITH_DOCB=1
+    DOCB_OBJ="DOCBparser.o"
 fi
 AC_SUBST(WITH_DOCB)
 AC_SUBST(DOCB_OBJ)

@@ -1,3 +1,7 @@
+Wed Dec 11 18:01:15 CET 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
+
+	* include/win32config.h: applied mingw patch from Magnus Henoch
+
 Wed Dec 11 16:58:48 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* catalog.c doc/libxml2-api.xml: a bit more cleanup

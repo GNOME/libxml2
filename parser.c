@@ -4349,10 +4349,7 @@ xmlParseElementChildrenContentDecl
 		    type);
 		ctxt->wellFormed = 0;
 		ctxt->disableSAX = 1;
-		if ((op != NULL) && (op != ret))
-		    xmlFreeElementContent(op);
-		if ((last != NULL) && (last != ret) &&
-		    (last != ret->c1) && (last != ret->c2))
+		if ((last != NULL) && (last != ret))
 		    xmlFreeElementContent(last);
 		if (ret != NULL)
 		    xmlFreeElementContent(ret);
@@ -4362,6 +4359,8 @@ xmlParseElementChildrenContentDecl
 
 	    op = xmlNewElementContent(NULL, XML_ELEMENT_CONTENT_SEQ);
 	    if (op == NULL) {
+		if ((last != NULL) && (last != ret))
+		    xmlFreeElementContent(last);
 	        xmlFreeElementContent(ret);
 		return(NULL);
 	    }
@@ -4394,10 +4393,7 @@ xmlParseElementChildrenContentDecl
 		    type);
 		ctxt->wellFormed = 0;
 		ctxt->disableSAX = 1;
-		if ((op != NULL) && (op != ret) && (op != last))
-		    xmlFreeElementContent(op);
-		if ((last != NULL) && (last != ret) &&
-		    (last != ret->c1) && (last != ret->c2))
+		if ((last != NULL) && (last != ret))
 		    xmlFreeElementContent(last);
 		if (ret != NULL)
 		    xmlFreeElementContent(ret);
@@ -4407,10 +4403,7 @@ xmlParseElementChildrenContentDecl
 
 	    op = xmlNewElementContent(NULL, XML_ELEMENT_CONTENT_OR);
 	    if (op == NULL) {
-		if ((op != NULL) && (op != ret))
-		    xmlFreeElementContent(op);
-		if ((last != NULL) && (last != ret) &&
-		    (last != ret->c1) && (last != ret->c2))
+		if ((last != NULL) && (last != ret))
 		    xmlFreeElementContent(last);
 		if (ret != NULL)
 		    xmlFreeElementContent(ret);
@@ -4438,11 +4431,6 @@ xmlParseElementChildrenContentDecl
 	    "xmlParseElementChildrenContentDecl : ',' '|' or ')' expected\n");
 	    ctxt->wellFormed = 0;
 	    ctxt->disableSAX = 1;
-	    if ((op != NULL) && (op != ret))
-		xmlFreeElementContent(op);
-	    if ((last != NULL) && (last != ret) &&
-		(last != ret->c1) && (last != ret->c2))
-		xmlFreeElementContent(last);
 	    if (ret != NULL)
 		xmlFreeElementContent(ret);
 	    return(NULL);
@@ -4466,11 +4454,6 @@ xmlParseElementChildrenContentDecl
 		"xmlParseElementChildrenContentDecl : Name or '(' expected\n");
 		ctxt->wellFormed = 0;
 		ctxt->disableSAX = 1;
-		if ((op != NULL) && (op != ret))
-		    xmlFreeElementContent(op);
-		if ((last != NULL) && (last != ret) &&
-		    (last != ret->c1) && (last != ret->c2))
-		    xmlFreeElementContent(last);
 		if (ret != NULL)
 		    xmlFreeElementContent(ret);
 		return(NULL);

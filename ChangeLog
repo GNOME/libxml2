@@ -1,3 +1,7 @@
+Wed Feb 20 17:47:55 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c valid.c: found and fixed a couple of allocation bugs
+
 Wed Feb 20 15:36:03 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* doc/xml.html doc/python.html doc/*: added a Python and binding

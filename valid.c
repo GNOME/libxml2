@@ -421,6 +421,7 @@ xmlNewElementContent(xmlChar *name, xmlElementContentType type) {
 		"xmlNewElementContent : out of memory!\n");
 	return(NULL);
     }
+    memset(ret, 0, sizeof(xmlElementContent));
     ret->type = type;
     ret->ocur = XML_ELEMENT_CONTENT_ONCE;
     if (name != NULL) {

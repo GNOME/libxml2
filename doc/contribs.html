@@ -27,7 +27,11 @@ A:link, A:visited, A:active { text-decoration: underline }
 <td valign="top" width="200" bgcolor="#8b7765"><table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000"><tr><td>
 <table width="100%" border="0" cellspacing="1" cellpadding="3">
 <tr><td colspan="1" bgcolor="#eecfa1" align="center"><center><b>Main Menu</b></center></td></tr>
-<tr><td bgcolor="#fffacd"><ul>
+<tr><td bgcolor="#fffacd">
+<form action="search.php" enctype="application/x-www-form-urlencoded" method="GET">
+<input name="query" type="TEXT" size="20" value=""><input name="submit" type="submit" value="Search ...">
+</form>
+<ul>
 <li><a href="index.html">Home</a></li>
 <li><a href="intro.html">Introduction</a></li>
 <li><a href="FAQ.html">FAQ</a></li>
@@ -61,20 +65,6 @@ A:link, A:visited, A:active { text-decoration: underline }
 <li>
 <a href="xml.html">flat page</a>, <a href="site.xsl">stylesheet</a>
 </li>
-</ul></td></tr>
-</table>
-<table width="100%" border="0" cellspacing="1" cellpadding="3">
-<tr><td colspan="1" bgcolor="#eecfa1" align="center"><center><b>API Indexes</b></center></td></tr>
-<tr><td bgcolor="#fffacd">
-<form action="search.php" enctype="application/x-www-form-urlencoded" method="GET">
-<input name="query" type="TEXT" size="20" value=""><input name="submit" type="submit" value="Search ...">
-</form>
-<ul>
-<li><a href="APIchunk0.html">Alphabetic</a></li>
-<li><a href="APIconstructors.html">Constructors</a></li>
-<li><a href="APIfunctions.html">Functions/Types</a></li>
-<li><a href="APIfiles.html">Modules</a></li>
-<li><a href="APIsymbols.html">Symbols</a></li>
 </ul>
 </td></tr>
 </table>
@@ -91,6 +81,16 @@ A:link, A:visited, A:active { text-decoration: underline }
 <li><a href="http://www.zveno.com/open_source/libxml2xslt.html">MacOsX binaries</a></li>
 <li><a href="http://sourceforge.net/projects/libxml2-pas/">Pascal bindings</a></li>
 <li><a href="http://bugzilla.gnome.org/buglist.cgi?product=libxml&amp;product=libxml2">Bug Tracker</a></li>
+</ul></td></tr>
+</table>
+<table width="100%" border="0" cellspacing="1" cellpadding="3">
+<tr><td colspan="1" bgcolor="#eecfa1" align="center"><center><b>API Indexes</b></center></td></tr>
+<tr><td bgcolor="#fffacd"><ul>
+<li><a href="APIchunk0.html">Alphabetic</a></li>
+<li><a href="APIconstructors.html">Constructors</a></li>
+<li><a href="APIfunctions.html">Functions/Types</a></li>
+<li><a href="APIfiles.html">Modules</a></li>
+<li><a href="APIsymbols.html">Symbols</a></li>
 </ul></td></tr>
 </table>
 </td></tr></table></td>

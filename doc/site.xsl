@@ -111,6 +111,11 @@
  - The table of content
  -->
   <xsl:variable name="toc">
+    <form action="search.php"
+          enctype="application/x-www-form-urlencoded" method="GET">
+      <input name="query" type="TEXT" size="20" value=""/>
+      <input name="submit" type="submit" value="Search ..."/>
+    </form>
     <ul><!-- style="margin-left: -1em" -->
       <li><a href="index.html">Home</a></li>
       <xsl:for-each select="/html/body/h2">
@@ -135,11 +140,6 @@
     </ul>
   </xsl:variable>
   <xsl:variable name="api">
-    <form action="search.php"
-          enctype="application/x-www-form-urlencoded" method="GET">
-      <input name="query" type="TEXT" size="20" value=""/>
-      <input name="submit" type="submit" value="Search ..."/>
-    </form>
     <ul><!-- style="margin-left: -1em" -->
       <li><a href="APIchunk0.html">Alphabetic</a></li>
       <li><a href="APIconstructors.html">Constructors</a></li>
@@ -184,20 +184,6 @@
             <tr>
               <td colspan="1" bgcolor="#eecfa1" align="center">
                 <center>
-                  <b>API Indexes</b>
-                </center>
-              </td>
-            </tr>
-            <tr>
-              <td bgcolor="#fffacd">
-                <xsl:copy-of select="$api"/>
-              </td>
-            </tr>
-          </table>
-          <table width="100%" border="0" cellspacing="1" cellpadding="3">
-            <tr>
-              <td colspan="1" bgcolor="#eecfa1" align="center">
-                <center>
                   <b>Related links</b>
                 </center>
               </td>
@@ -205,6 +191,20 @@
             <tr>
               <td bgcolor="#fffacd">
                 <xsl:copy-of select="$related"/>
+              </td>
+            </tr>
+          </table>
+          <table width="100%" border="0" cellspacing="1" cellpadding="3">
+            <tr>
+              <td colspan="1" bgcolor="#eecfa1" align="center">
+                <center>
+                  <b>API Indexes</b>
+                </center>
+              </td>
+            </tr>
+            <tr>
+              <td bgcolor="#fffacd">
+                <xsl:copy-of select="$api"/>
               </td>
             </tr>
           </table>

@@ -626,6 +626,7 @@ EXPORTS
 	xmlNodeDump
 	xmlSaveFileTo
 	xmlSaveFileEnc
+	xmlGetNodePath
 	xmlGetDocCompressMode
 	xmlSetDocCompressMode
 	xmlGetCompressMode

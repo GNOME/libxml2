@@ -10,34 +10,74 @@
 <body bgcolor="#ffffff">
 <h1 align="center">The XML C library for Gnome</h1>
 
+<h1>Note: this is the flat content of the <a href="index.html">web
+site</a></h1>
+
 <h1 style="text-align: center">libxml, a.k.a. gnome-xml</h1>
 
 <p></p>
+
+<p>Libxml is the XML C library developped for the Gnome project.  XML itself
+is a metalanguage to design markup languages, i.e. text language where
+semantic and structure are added to the content using extra "markup"
+information enclosed between angle bracket. HTML is the most well-known
+markup language.</p>
+
+<p>Libxml2 implements a number of existing standards related to markup
+languages:</p>
 <ul>
-  <li><a href="#Introducti">Introduction</a></li>
-  <li><a href="#Documentat">Documentation</a></li>
-  <li><a href="#Reporting">Reporting bugs and getting help</a></li>
-  <li><a href="#help">how to help</a></li>
-  <li><a href="#Downloads">Downloads</a></li>
-  <li><a href="#News">News</a></li>
-  <li><a href="#XML">XML</a></li>
-  <li><a href="#XSLT">XSLT</a></li>
-  <li><a href="#tree">The tree output</a></li>
-  <li><a href="#interface">The SAX interface</a></li>
-  <li><a href="#library">The XML library interfaces</a></li>
-  <li><a href="#Entities">Entities or no entities</a></li>
-  <li><a href="#Namespaces">Namespaces</a></li>
-  <li><a href="#Validation">Validation</a></li>
-  <li><a href="#Principles">DOM principles</a></li>
-  <li><a href="#real">A real example</a></li>
-  <li><a href="#Contributi">Contributions</a></li>
+  <li>the XML standard: <a
+    href="http://www.w3.org/TR/REC-xml">http://www.w3.org/TR/REC-xml</a></li>
+  <li>Namespaces in XML: <a
+    href="http://www.w3.org/TR/REC-xml-names/">http://www.w3.org/TR/REC-xml-names/</a></li>
+  <li>XML Base: <a
+    href="http://www.w3.org/TR/xmlbase/">http://www.w3.org/TR/xmlbase/</a></li>
+  <li><a href="http://www.cis.ohio-state.edu/rfc/rfc2396.txt">RFC 2396</a>
+    : Uniform Resource Identifiers <a
+    href="http://www.ietf.org/rfc/rfc2396.txt">http://www.ietf.org/rfc/rfc2396.txt</a></li>
+  <li>XML Path Language (XPath) 1.0: <a
+    href="http://www.w3.org/TR/xpath">http://www.w3.org/TR/xpath</a></li>
+  <li>HTML4 parser: <a
+    href="http://www.w3.org/TR/html401/">http://www.w3.org/TR/html401/</a></li>
+  <li>most of XML Pointer Language (XPointer) Version 1.0: <a
+    href="http://www.w3.org/TR/xptr">http://www.w3.org/TR/xptr</a></li>
+  <li>XML Inclusions (XInclude) Version 1.0: <a
+    href="http://www.w3.org/TR/xinclude/">http://www.w3.org/TR/xinclude/</a></li>
+  <li>[ISO-8859-1], <a
+    href="http://www.cis.ohio-state.edu/rfc/rfc2044.txt">rfc2044</a> [UTF-8]
+    and <a href="http://www.cis.ohio-state.edu/rfc/rfc2781.txt">rfc2781</a>
+    [UTF-16] core encodings</li>
+  <li>part of SGML Open Technical Resolution TR9401:1997</li>
+  <li>XML Catalogs Working Draft 06 August 2001: <a
+    href="http://www.oasis-open.org/committees/entity/spec-2001-08-06.html">http://www.oasis-open.org/committees/entity/spec-2001-08-06.html</a></li>
 </ul>
+
+<p>In most cases libxml tries to implement the specifications in a relatively
+strict way. To some extent libxml2 provide some support for the following
+other specification but don't claim to implement them:</p>
+<ul>
+  <li>Document Object Model (DOM) <a
+    href="http://www.w3.org/TR/DOM-Level-2-Core/">http://www.w3.org/TR/DOM-Level-2-Core/</a>
+    it doesn't implement the API itself, gdome2 does this in top of
+  libxml2</li>
+  <li><a href="http://www.cis.ohio-state.edu/rfc/rfc959.txt">RFC 959</a>
+    : libxml implements a basic FTP client code</li>
+  <li><a href="http://www.cis.ohio-state.edu/rfc/rfc1945.txt">RFC 1945</a>
+    : HTTP/1.0, again a basic HTTP client code</li>
+  <li>SAX: a minimal SAX implementation compatible with early expat
+  versions</li>
+  <li>DocBook SGML v4: libxml2 includes a hackish parser to transition to
+  XML</li>
+</ul>
+
+<p></p>
 
 <p>Separate documents:</p>
 <ul>
-  <li><a href="http://xmlsoft.org/XSLT/">the libxslt page</a></li>
-  <li><a href="http://www.cs.unibo.it/~casarini/gdome2/">the gdome2 page: a
-    standard DOM interface for libxml2</a></li>
+  <li><a href="http://xmlsoft.org/XSLT/">the libxslt page</a> providing an
+    implementation of XSLT 1.0 and extensions on top of libxml2</li>
+  <li><a href="http://www.cs.unibo.it/~casarini/gdome2/">the gdome2 page</a>:
+    a standard DOM2 implementation based on libxml2</li>
 </ul>
 
 <h2><a name="Introducti">Introduction</a></h2>
@@ -1322,8 +1362,7 @@ interface.</p>
   <li><a href="#definition">The definition</a></li>
   <li><a href="#Simple">Simple rules</a>
     <ol>
-      <li><a href="#reference">How to reference a DTD from a
-        document</a></li>
+      <li><a href="#reference">How to reference a DTD from a document</a></li>
       <li><a href="#Declaring">Declaring elements</a></li>
       <li><a href="#Declaring1">Declaring attributes</a></li>
     </ol>
@@ -1521,8 +1560,7 @@ should be both simple and complete enough to allow you to build your own.</p>
 <p>Table of Content:</p>
 <ol>
   <li><a href="#General3">General overview</a></li>
-  <li><a href="#setting">Setting libxml set of memory
-  routines</a></li>
+  <li><a href="#setting">Setting libxml set of memory routines</a></li>
   <li><a href="#cleanup">Cleaning up after parsing</a></li>
   <li><a href="#Debugging">Debugging routines</a></li>
   <li><a href="#General4">General memory requirements</a></li>
@@ -1945,8 +1983,8 @@ the interfaces to the libxml I/O system. This consists of 4 main parts:</p>
     don't look at the public identifier since libxml do not maintain a
     catalog. You can redefine you own entity loader by using
     <code>xmlGetExternalEntityLoader()</code> and
-    <code>xmlSetExternalEntityLoader()</code>. <a
-    href="#entities">Check the example</a>.</li>
+    <code>xmlSetExternalEntityLoader()</code>. <a href="#entities">Check the
+    example</a>.</li>
   <li>Input I/O buffers which are a commodity structure used by the parser(s)
     input layer to handle fetching the informations to feed the parser. This
     provides buffering and is also a placeholder where the encoding
@@ -2078,6 +2116,8 @@ xmlOutputBufferCreateOwn(FILE *file, xmlCharEncodingHandlerPtr encoder) {
         ret-&gt;closecallback = NULL;  /* No close callback */
     }
     return(ret); <br>
+
+
 
 
 
@@ -3170,7 +3210,7 @@ Gnome CVS base under gnome-xml/example</p>
     and Solaris port.</li>
   <li>John Fleck helps maintaining the documentation and man pages.</li>
   <li><p><a href="mailto:ari@lusis.org">Ari Johnson</a></p>
-     provides a  C++ wrapper for libxml:
+    provides a  C++ wrapper for libxml:
     <p>Website: <a
     href="http://lusis.org/~ari/xml++/">http://lusis.org/~ari/xml++/</a></p>
     <p>Download: <a

@@ -71,30 +71,66 @@ A:link, A:visited, A:active { text-decoration: underline }
 </td></tr></table></td>
 <td valign="top" bgcolor="#8b7765"><table border="0" cellspacing="0" cellpadding="1" width="100%"><tr><td><table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000"><tr><td><table border="0" cellpadding="3" cellspacing="1" width="100%"><tr><td bgcolor="#fffacd">
 <p>
+<p>Libxml is the XML C library developped for the Gnome project.  XML itself
+is a metalanguage to design markup languages, i.e. text language where
+semantic and structure are added to the content using extra &quot;markup&quot;
+information enclosed between angle bracket. HTML is the most well-known
+markup language.</p>
+<p>Libxml2 implements a number of existing standards related to markup
+languages:</p>
 <ul>
-<li><a href="intro.html">Introduction</a></li>
-<li><a href="docs.html">Documentation</a></li>
-<li><a href="bugs.html">Reporting bugs and getting help</a></li>
-<li><a href="help.html">how to help</a></li>
-<li><a href="downloads.html">Downloads</a></li>
-<li><a href="news.html">News</a></li>
-<li><a href="XML.html">XML</a></li>
-<li><a href="XSLT.html">XSLT</a></li>
-<li><a href="tree.html">The tree output</a></li>
-<li><a href="interface.html">The SAX interface</a></li>
-<li><a href="library.html">The XML library interfaces</a></li>
-<li><a href="entities.html">Entities or no entities</a></li>
-<li><a href="namespaces.html">Namespaces</a></li>
-<li><a href="xmldtd.html">Validation</a></li>
-<li><a href="#Principles">DOM principles</a></li>
-<li><a href="#real">A real example</a></li>
-<li><a href="contribs.html">Contributions</a></li>
+<li>the XML standard: <a href="http://www.w3.org/TR/REC-xml">http://www.w3.org/TR/REC-xml</a>
+</li>
+<li>Namespaces in XML: <a href="http://www.w3.org/TR/REC-xml-names/">http://www.w3.org/TR/REC-xml-names/</a>
+</li>
+<li>XML Base: <a href="http://www.w3.org/TR/xmlbase/">http://www.w3.org/TR/xmlbase/</a>
+</li>
+<li>
+<a href="http://www.cis.ohio-state.edu/rfc/rfc2396.txt">RFC 2396</a>
+    : Uniform Resource Identifiers <a href="http://www.ietf.org/rfc/rfc2396.txt">http://www.ietf.org/rfc/rfc2396.txt</a>
+</li>
+<li>XML Path Language (XPath) 1.0: <a href="http://www.w3.org/TR/xpath">http://www.w3.org/TR/xpath</a>
+</li>
+<li>HTML4 parser: <a href="http://www.w3.org/TR/html401/">http://www.w3.org/TR/html401/</a>
+</li>
+<li>most of XML Pointer Language (XPointer) Version 1.0: <a href="http://www.w3.org/TR/xptr">http://www.w3.org/TR/xptr</a>
+</li>
+<li>XML Inclusions (XInclude) Version 1.0: <a href="http://www.w3.org/TR/xinclude/">http://www.w3.org/TR/xinclude/</a>
+</li>
+<li>[ISO-8859-1], <a href="http://www.cis.ohio-state.edu/rfc/rfc2044.txt">rfc2044</a> [UTF-8]
+    and <a href="http://www.cis.ohio-state.edu/rfc/rfc2781.txt">rfc2781</a>
+    [UTF-16] core encodings</li>
+<li>part of SGML Open Technical Resolution TR9401:1997</li>
+<li>XML Catalogs Working Draft 06 August 2001: <a href="http://www.oasis-open.org/committees/entity/spec-2001-08-06.html">http://www.oasis-open.org/committees/entity/spec-2001-08-06.html</a>
+</li>
 </ul>
+<p>In most cases libxml tries to implement the specifications in a relatively
+strict way. To some extent libxml2 provide some support for the following
+other specification but don't claim to implement them:</p>
+<ul>
+<li>Document Object Model (DOM) <a href="http://www.w3.org/TR/DOM-Level-2-Core/">http://www.w3.org/TR/DOM-Level-2-Core/</a>
+    it doesn't implement the API itself, gdome2 does this in top of
+  libxml2</li>
+<li>
+<a href="http://www.cis.ohio-state.edu/rfc/rfc959.txt">RFC 959</a>
+    : libxml implements a basic FTP client code</li>
+<li>
+<a href="http://www.cis.ohio-state.edu/rfc/rfc1945.txt">RFC 1945</a>
+    : HTTP/1.0, again a basic HTTP client code</li>
+<li>SAX: a minimal SAX implementation compatible with early expat
+  versions</li>
+<li>DocBook SGML v4: libxml2 includes a hackish parser to transition to
+  XML</li>
+</ul>
+<p>
 <p>Separate documents:</p>
 <ul>
-<li><a href="http://xmlsoft.org/XSLT/">the libxslt page</a></li>
-<li><a href="http://www.cs.unibo.it/~casarini/gdome2/">the gdome2 page: a
-    standard DOM interface for libxml2</a></li>
+<li>
+<a href="http://xmlsoft.org/XSLT/">the libxslt page</a> providing an
+    implementation of XSLT 1.0 and extensions on top of libxml2</li>
+<li>
+<a href="http://www.cs.unibo.it/~casarini/gdome2/">the gdome2 page</a>:
+    a standard DOM2 implementation based on libxml2</li>
 </ul>
 <p><a href="mailto:daniel@veillard.com">Daniel Veillard</a></p>
 </td></tr></table></td></tr></table></td></tr></table></td>

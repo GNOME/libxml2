@@ -88,7 +88,8 @@ the interfaces to the libxml I/O system. This consists of 4 main parts:</p>
     don't look at the public identifier since libxml do not maintain a
     catalog. You can redefine you own entity loader by using
     <code>xmlGetExternalEntityLoader()</code> and
-    <code>xmlSetExternalEntityLoader()</code>. <a href="#entities">Check the example</a>.</li>
+    <code>xmlSetExternalEntityLoader()</code>. <a href="#entities">Check the
+    example</a>.</li>
 <li>Input I/O buffers which are a commodity structure used by the parser(s)
     input layer to handle fetching the informations to feed the parser. This
     provides buffering and is also a placeholder where the encoding
@@ -205,6 +206,8 @@ xmlOutputBufferCreateOwn(FILE *file, xmlCharEncodingHandlerPtr encoder) {
         ret-&gt;closecallback = NULL;  /* No close callback */
     }
     return(ret); <br>
+
+
 
 
 

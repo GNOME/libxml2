@@ -15,6 +15,26 @@ to test those   - More testing on RelaxNG
   Schemas
 
 
+2.5.8: Jul 6 2003:
+   - bugfixes: XPath, XInclude, file/URI mapping, UTF-16 save (Mark
+    Itzcovitz), UTF-8 checking, URI saving, error printing (William Brack),
+    PI related memleak, compilation without schemas or without xpath (Joerg
+    Schmitz-Linneweber/Garry Pennington), xmlUnlinkNode problem with DTDs,
+    rpm problem on , i86_64, removed a few compilation problems from 2.5.7,
+    xmlIOParseDTD, and xmlSAXParseDTD (Malcolm Tredinnick)
+   - portability: DJGPP (MsDos) , OpenVMS (Craig A. Berry)
+   - William Brack fixed multithreading lock problems
+   - IPv6 patch for FTP and HTTP accesses (Archana Shah/Wipro)
+   - Windows fixes (Igor Zlatkovic,  Eric Zurcher), threading (Stéphane
+    Bidoul)
+   - A few W3C Schemas Structure improvements
+   - W3C Schemas Datatype improvements (Charlie Bozeman)
+   - Python bindings for thread globals (Stéphane Bidoul), and method/class
+    generator 
+   - added --nonet option to xmllint 
+   - documentation improvements (John Fleck)
+
+
 2.5.7: Apr 25 2003:
    - Relax-NG: Compiling to regexp and streaming validation on top of the
     xmlReader interface, added to xmllint --stream

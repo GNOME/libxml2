@@ -1,3 +1,11 @@
+Mon Jul  7 16:39:31 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* NEWS doc/*: regenerated
+	* nanoftp.c nanohttp.c: might fix includes problems with the
+	  Ipv6 support on solaris
+	* tree.c: patch from Markus Keim about xmlHasNsProp() on attributes
+	  defined as #IMPLIED
+
 Sun Jul  6 23:09:13 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in doc/*: preparing release 1.5.8

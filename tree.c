@@ -5560,7 +5560,9 @@ xmlHasProp(xmlNodePtr node, const xmlChar *name) {
 	    attrDecl = xmlGetDtdAttrDesc(doc->intSubset, node->name, name);
 	    if ((attrDecl == NULL) && (doc->extSubset != NULL))
 		attrDecl = xmlGetDtdAttrDesc(doc->extSubset, node->name, name);
-	    if (attrDecl != NULL)
+            if ((attrDecl != NULL) && (attrDecl->defaultValue != NULL))
+              /* return attribute declaration only if a default value is given
+                 (that includes #FIXED declarations) */
 		return((xmlAttrPtr) attrDecl);
 	}
     }
@@ -5701,7 +5703,9 @@ xmlGetProp(xmlNodePtr node, const xmlChar *name) {
 	    attrDecl = xmlGetDtdAttrDesc(doc->intSubset, node->name, name);
 	    if ((attrDecl == NULL) && (doc->extSubset != NULL))
 		attrDecl = xmlGetDtdAttrDesc(doc->extSubset, node->name, name);
-	    if (attrDecl != NULL)
+            if ((attrDecl != NULL) && (attrDecl->defaultValue != NULL))
+              /* return attribute declaration only if a default value is given
+                 (that includes #FIXED declarations) */
 		return(xmlStrdup(attrDecl->defaultValue));
 	}
     }
@@ -5756,7 +5760,9 @@ xmlGetNoNsProp(xmlNodePtr node, const xmlChar *name) {
 	    attrDecl = xmlGetDtdAttrDesc(doc->intSubset, node->name, name);
 	    if ((attrDecl == NULL) && (doc->extSubset != NULL))
 		attrDecl = xmlGetDtdAttrDesc(doc->extSubset, node->name, name);
-	    if (attrDecl != NULL)
+            if ((attrDecl != NULL) && (attrDecl->defaultValue != NULL))
+              /* return attribute declaration only if a default value is given
+                 (that includes #FIXED declarations) */
 		return(xmlStrdup(attrDecl->defaultValue));
 	}
     }

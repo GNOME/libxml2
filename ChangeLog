@@ -1,3 +1,9 @@
+Wed Jul 23 20:52:36 IST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c result/relaxng/*: checked and fixed the compilation
+	  of RNG schemas, fixes a couple of bugs #117097 and #117001 .
+	  This slightly changes the output messages of some regression tests.
+
 Wed Jul 23 15:15:08 IST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c: fixed an out of bound error #118052 , the good

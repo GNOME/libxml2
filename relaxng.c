@@ -2701,18 +2701,7 @@ xmlRelaxNGIsCompileable(xmlRelaxNGDefinePtr def) {
         (def->dflags & IS_NOT_COMPILABLE))
 	return(0);
     switch(def->type) {
-        case XML_RELAXNG_REF:
-        case XML_RELAXNG_EXTERNALREF:
-        case XML_RELAXNG_PARENTREF:
-	    if (def->depth == -20) {
-	        return(1);
-	    } else {
-	        def->depth = -20;
-		ret = xmlRelaxNGIsCompileable(def->content);
-	    }
-	    break;
         case XML_RELAXNG_NOOP:
-        case XML_RELAXNG_START:
 	    ret = xmlRelaxNGIsCompileable(def->content);
 	    break;
         case XML_RELAXNG_TEXT:
@@ -2722,15 +2711,41 @@ xmlRelaxNGIsCompileable(xmlRelaxNGDefinePtr def) {
         case XML_RELAXNG_ELEMENT:
 	    if (((def->dflags & IS_NOT_COMPILABLE) == 0) &&
 	        ((def->dflags & IS_COMPILABLE) == 0)) {
-		ret = xmlRelaxNGIsCompileable(def->content);
+		xmlRelaxNGDefinePtr list;
+		list = def->content;
+		while (list != NULL) {
+		    ret = xmlRelaxNGIsCompileable(list);
+		    if (ret != 1)
+		        break;
+		    list = list->next;
+		}
 		if (ret == 0) def->dflags |= IS_NOT_COMPILABLE;
 		if (ret == 1) def->dflags |= IS_COMPILABLE;
 	    }
-	    if ((def->nameClass != NULL) || (def->name == NULL))
-	        return(0);
-	    else
-		return(1);
+	    if (ret == 1) {
+		if ((def->nameClass != NULL) || (def->name == NULL))
+		    ret = 0;
+	    }
 	    break;
+        case XML_RELAXNG_REF:
+        case XML_RELAXNG_EXTERNALREF:
+        case XML_RELAXNG_PARENTREF:
+	    if (def->depth == -20) {
+	        return(1);
+	    } else {
+		xmlRelaxNGDefinePtr list;
+
+	        def->depth = -20;
+		list = def->content;
+		while (list != NULL) {
+		    ret = xmlRelaxNGIsCompileable(list);
+		    if (ret != 1)
+			break;
+		    list = list->next;
+		}
+	    }
+	    break;
+        case XML_RELAXNG_START:
         case XML_RELAXNG_OPTIONAL:
         case XML_RELAXNG_ZEROORMORE:
         case XML_RELAXNG_ONEORMORE:
@@ -2853,9 +2868,6 @@ xmlRelaxNGCompile(xmlRelaxNGParserCtxtPtr ctxt, xmlRelaxNGDefinePtr def) {
 		ctxt->am = oldam;
 	    }
 	    break;
-        case XML_RELAXNG_REF:
-        case XML_RELAXNG_EXTERNALREF:
-        case XML_RELAXNG_PARENTREF:
         case XML_RELAXNG_NOOP:
 	    ret = xmlRelaxNGCompile(ctxt, def->content);
 	    break;
@@ -2905,7 +2917,9 @@ xmlRelaxNGCompile(xmlRelaxNGParserCtxtPtr ctxt, xmlRelaxNGDefinePtr def) {
 	    list = def->content;
 	    while (list != NULL) {
 	        ctxt->state = oldstate;
-		xmlRelaxNGCompile(ctxt, list);
+		ret = xmlRelaxNGCompile(ctxt, list);
+		if (ret != 0)
+		    break;
 		if (target == NULL)
 		    target = ctxt->state;
 		else {
@@ -2917,11 +2931,16 @@ xmlRelaxNGCompile(xmlRelaxNGParserCtxtPtr ctxt, xmlRelaxNGDefinePtr def) {
 
 	    break;
 	}
+        case XML_RELAXNG_REF:
+        case XML_RELAXNG_EXTERNALREF:
+        case XML_RELAXNG_PARENTREF:
         case XML_RELAXNG_GROUP:
         case XML_RELAXNG_DEF:
 	    list = def->content;
 	    while (list != NULL) {
-		xmlRelaxNGCompile(ctxt, list);
+		ret = xmlRelaxNGCompile(ctxt, list);
+		if (ret != 0)
+		    break;
 		list = list->next;
 	    }
 	    break;
@@ -2978,15 +2997,28 @@ xmlRelaxNGTryCompile(xmlRelaxNGParserCtxtPtr ctxt, xmlRelaxNGDefinePtr def) {
 	if ((def->dflags & IS_COMPILABLE) && (def->depth != -25)) {
 	    ctxt->am = NULL;
 	    ret = xmlRelaxNGCompile(ctxt, def);
+#ifdef DEBUG_PROGRESSIVE
+	    if (ret == 0) {
+	        if (def->type == XML_RELAXNG_START)
+		    xmlGenericError(xmlGenericErrorContext,
+			"compiled the start\n");
+		else
+		    xmlGenericError(xmlGenericErrorContext,
+			"compiled element %s\n", def->name);
+	    } else {
+	        if (def->type == XML_RELAXNG_START)
+		    xmlGenericError(xmlGenericErrorContext,
+			"failed to compile the start\n");
+		else
+		    xmlGenericError(xmlGenericErrorContext,
+			"failed to compile element %s\n", def->name);
+	    }
+#endif
 	    return(ret);
 	}
     }
     switch(def->type) {
-        case XML_RELAXNG_REF:
-        case XML_RELAXNG_EXTERNALREF:
-        case XML_RELAXNG_PARENTREF:
         case XML_RELAXNG_NOOP:
-        case XML_RELAXNG_START:
 	    ret = xmlRelaxNGTryCompile(ctxt, def->content);
 	    break;
         case XML_RELAXNG_TEXT:
@@ -3004,6 +3036,10 @@ xmlRelaxNGTryCompile(xmlRelaxNGParserCtxtPtr ctxt, xmlRelaxNGDefinePtr def) {
         case XML_RELAXNG_CHOICE:
         case XML_RELAXNG_GROUP:
         case XML_RELAXNG_DEF:
+        case XML_RELAXNG_START:
+        case XML_RELAXNG_REF:
+        case XML_RELAXNG_EXTERNALREF:
+        case XML_RELAXNG_PARENTREF:
 	    list = def->content;
 	    while (list != NULL) {
 		ret = xmlRelaxNGTryCompile(ctxt, list);

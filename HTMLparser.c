@@ -2457,6 +2457,11 @@ htmlParseCharData(htmlParserCtxtPtr ctxt) {
 	}
 	NEXTL(l);
 	cur = CUR_CHAR(l);
+	if (cur == 0) {
+	    SHRINK;
+	    GROW;
+	    cur = CUR_CHAR(l);
+	}
     }
     if (nbchar != 0) {
 	/*

@@ -1,3 +1,8 @@
+Tue Feb  4 16:21:07 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: applied patch from Arne de Bruijn fixing 
+	  bug #103827
+
 Tue Feb  4 16:17:09 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: updating a comment, fixing #103776

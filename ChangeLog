@@ -1,3 +1,7 @@
+Fri Sep 24 16:14:12 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am: fixed make valgrind xstc 
+
 Thu Sep 23 18:23:46 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemastypes.c: fixing an out of bound adressing issue

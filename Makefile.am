@@ -970,7 +970,7 @@ SchemasPythonTests:
 	    echo "## It is normal to see 6 errors reported" ; \
 	    $(CHECKER) $(PYTHON) $(srcdir)/check-xsddata-test-suite.py ; \
 	  fi)
-	@(if [ -x $(PYTHON) -a -d xstc ] ; then cd xstc ; $(MAKE) CHECKER=$(CHECKER) MAKEFLAGS+=--silent pytests ; fi)
+	@(if [ -x $(PYTHON) -a -d xstc ] ; then cd xstc ; $(MAKE) CHECKER="$(CHECKER)" MAKEFLAGS+=--silent pytests ; fi)
 
 cleanup:
 	-@(find . -name .\#\* -exec rm {} \;)

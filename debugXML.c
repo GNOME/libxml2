@@ -264,7 +264,7 @@ xmlDebugDumpElemDecl(FILE *output, xmlElementPtr elem, int depth) {
 	char buf[5001];
 
 	buf[0] = 0;
-	xmlSprintfElementContent(buf, elem->content, 1);
+	xmlSnprintfElementContent(buf, 5000, elem->content, 1);
 	buf[5000] = 0;
 	fprintf(output, "%s", buf);
     }

@@ -240,7 +240,7 @@ xmlValidDebug(xmlNodePtr cur, xmlElementContentPtr cont) {
     xmlGenericError(xmlGenericErrorContext, "valid: ");
     xmlValidPrintNodeList(cur);
     xmlGenericError(xmlGenericErrorContext, "against ");
-    xmlSprintfElementContent(expr, cont, 1);
+    xmlSnprintfElementContent(expr, 5000, cont, 1);
     xmlGenericError(xmlGenericErrorContext, "%s\n", expr);
 }
 
@@ -551,43 +551,82 @@ xmlDumpElementContent(xmlBufferPtr buf, xmlElementContentPtr content, int glob) 
  * @content:  An element table
  * @glob: 1 if one must print the englobing parenthesis, 0 otherwise
  *
+ * Deprecated, unsafe, use xmlSnprintfElementContent
+ */
+void
+xmlSprintfElementContent(char *buf ATTRIBUTE_UNUSED,
+	                 xmlElementContentPtr content ATTRIBUTE_UNUSED,
+			 int glob ATTRIBUTE_UNUSED) {
+}
+
+/**
+ * xmlSnprintfElementContent:
+ * @buf:  an output buffer
+ * @size:  the buffer size
+ * @content:  An element table
+ * @glob: 1 if one must print the englobing parenthesis, 0 otherwise
+ *
  * This will dump the content of the element content definition
  * Intended just for the debug routine
  */
 void
-xmlSprintfElementContent(char *buf, xmlElementContentPtr content, int glob) {
+xmlSnprintfElementContent(char *buf, int size, xmlElementContentPtr content, int glob) {
+    int len;
+
     if (content == NULL) return;
+    len = strlen(buf);
+    if (size - len < 50) {
+	if ((size - len > 4) && (buf[len - 1] != '.'))
+	    strcat(buf, " ...");
+	return;
+    }
     if (glob) strcat(buf, "(");
     switch (content->type) {
         case XML_ELEMENT_CONTENT_PCDATA:
             strcat(buf, "#PCDATA");
 	    break;
 	case XML_ELEMENT_CONTENT_ELEMENT:
+	    if (size - len < xmlStrlen(content->name + 10)) {
+		strcat(buf, " ...");
+		return;
+	    }
 	    strcat(buf, (char *) content->name);
 	    break;
 	case XML_ELEMENT_CONTENT_SEQ:
 	    if ((content->c1->type == XML_ELEMENT_CONTENT_OR) ||
 	        (content->c1->type == XML_ELEMENT_CONTENT_SEQ))
-		xmlSprintfElementContent(buf, content->c1, 1);
+		xmlSnprintfElementContent(buf, size, content->c1, 1);
 	    else
-		xmlSprintfElementContent(buf, content->c1, 0);
+		xmlSnprintfElementContent(buf, size, content->c1, 0);
+	    len = strlen(buf);
+	    if (size - len < 50) {
+		if ((size - len > 4) && (buf[len - 1] != '.'))
+		    strcat(buf, " ...");
+		return;
+	    }
             strcat(buf, " , ");
 	    if (content->c2->type == XML_ELEMENT_CONTENT_OR)
-		xmlSprintfElementContent(buf, content->c2, 1);
+		xmlSnprintfElementContent(buf, size, content->c2, 1);
 	    else
-		xmlSprintfElementContent(buf, content->c2, 0);
+		xmlSnprintfElementContent(buf, size, content->c2, 0);
 	    break;
 	case XML_ELEMENT_CONTENT_OR:
 	    if ((content->c1->type == XML_ELEMENT_CONTENT_OR) ||
 	        (content->c1->type == XML_ELEMENT_CONTENT_SEQ))
-		xmlSprintfElementContent(buf, content->c1, 1);
+		xmlSnprintfElementContent(buf, size, content->c1, 1);
 	    else
-		xmlSprintfElementContent(buf, content->c1, 0);
+		xmlSnprintfElementContent(buf, size, content->c1, 0);
+	    len = strlen(buf);
+	    if (size - len < 50) {
+		if ((size - len > 4) && (buf[len - 1] != '.'))
+		    strcat(buf, " ...");
+		return;
+	    }
             strcat(buf, " | ");
 	    if (content->c2->type == XML_ELEMENT_CONTENT_SEQ)
-		xmlSprintfElementContent(buf, content->c2, 1);
+		xmlSnprintfElementContent(buf, size, content->c2, 1);
 	    else
-		xmlSprintfElementContent(buf, content->c2, 0);
+		xmlSnprintfElementContent(buf, size, content->c2, 0);
 	    break;
     }
     if (glob)
@@ -3634,8 +3673,9 @@ analyze:
 }
 
 /**
- * xmlSprintfElements:
+ * xmlSnprintfElements:
  * @buf:  an output buffer
+ * @size:  the size of the buffer
  * @content:  An element
  * @glob: 1 if one must print the englobing parenthesis, 0 otherwise
  *
@@ -3643,28 +3683,40 @@ analyze:
  * Intended just for the debug routine
  */
 static void
-xmlSprintfElements(char *buf, xmlNodePtr node, int glob) {
+xmlSnprintfElements(char *buf, int size, xmlNodePtr node, int glob) {
     xmlNodePtr cur;
+    int len;
 
     if (node == NULL) return;
     if (glob) strcat(buf, "(");
     cur = node;
     while (cur != NULL) {
+	len = strlen(buf);
+	if (size - len < 50) {
+	    if ((size - len > 4) && (buf[len - 1] != '.'))
+		strcat(buf, " ...");
+	    return;
+	}
         switch (cur->type) {
             case XML_ELEMENT_NODE:
-	         strcat(buf, (char *) cur->name);
-		 if (cur->next != NULL)
-		     strcat(buf, " ");
-		 break;
+                if (size - len < xmlStrlen(cur->name + 10)) {
+		    if ((size - len > 4) && (buf[len - 1] != '.'))
+			strcat(buf, " ...");
+		    return;
+		}
+	        strcat(buf, (char *) cur->name);
+		if (cur->next != NULL)
+		    strcat(buf, " ");
+		break;
             case XML_TEXT_NODE:
-		 if (xmlIsBlankNode(cur))
-		     break;
+		if (xmlIsBlankNode(cur))
+		    break;
             case XML_CDATA_SECTION_NODE:
             case XML_ENTITY_REF_NODE:
-	         strcat(buf, "CDATA");
-		 if (cur->next != NULL)
-		     strcat(buf, " ");
-		 break;
+	        strcat(buf, "CDATA");
+		if (cur->next != NULL)
+		    strcat(buf, " ");
+		break;
             case XML_ATTRIBUTE_NODE:
             case XML_DOCUMENT_NODE:
 #ifdef LIBXML_DOCB_ENABLED
@@ -3675,10 +3727,10 @@ xmlSprintfElements(char *buf, xmlNodePtr node, int glob) {
             case XML_DOCUMENT_FRAG_NODE:
             case XML_NOTATION_NODE:
 	    case XML_NAMESPACE_DECL:
-	         strcat(buf, "???");
-		 if (cur->next != NULL)
-		     strcat(buf, " ");
-		 break;
+	        strcat(buf, "???");
+		if (cur->next != NULL)
+		    strcat(buf, " ");
+		break;
             case XML_ENTITY_NODE:
             case XML_PI_NODE:
             case XML_DTD_NODE:
@@ -3688,7 +3740,7 @@ xmlSprintfElements(char *buf, xmlNodePtr node, int glob) {
 	    case XML_ENTITY_DECL:
 	    case XML_XINCLUDE_START:
 	    case XML_XINCLUDE_END:
-		 break;
+		break;
 	}
 	cur = cur->next;
     }
@@ -3824,12 +3876,12 @@ xmlValidateElementContent(xmlValidCtxtPtr ctxt, xmlNodePtr child,
 	char list[5000];
 
 	expr[0] = 0;
-	xmlSprintfElementContent(expr, cont, 1);
+	xmlSnprintfElementContent(expr, 5000, cont, 1);
 	list[0] = 0;
 	if (repl != NULL)
-	    xmlSprintfElements(list, repl, 1);
+	    xmlSnprintfElements(list, 5000, repl, 1);
 	else
-	    xmlSprintfElements(list, child, 1);
+	    xmlSnprintfElements(list, 5000, child, 1);
 
 	if (name != NULL) {
 	    VERROR(ctxt->userData,

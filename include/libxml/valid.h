@@ -116,9 +116,15 @@ xmlElementContentPtr xmlNewElementContent (xmlChar *name,
 					   xmlElementContentType type);
 xmlElementContentPtr xmlCopyElementContent(xmlElementContentPtr content);
 void		     xmlFreeElementContent(xmlElementContentPtr cur);
+void		     xmlSnprintfElementContent(char *buf,
+					   int size,
+	                                   xmlElementContentPtr content,
+					   int glob);
+/* DEPRECATED */
 void		     xmlSprintfElementContent(char *buf,
 	                                   xmlElementContentPtr content,
 					   int glob);
+/* DEPRECATED */
 
 /* Element */
 xmlElementPtr	   xmlAddElementDecl	(xmlValidCtxtPtr ctxt,

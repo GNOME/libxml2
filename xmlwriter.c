@@ -8,6 +8,7 @@
  * alfred@mickautsch.de
  */
 
+#define IN_LIBXML
 #include <string.h>
 
 #include "libxml.h"

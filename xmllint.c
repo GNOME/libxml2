@@ -432,7 +432,7 @@ void parseAndPrintFile(char *filename) {
 		 strange happened so we don't want to do anything.  Do
 		 we want to print an error message here?
 		 <sven@zen.org> */
-	      doc == NULL;
+	      doc = NULL;
 	    } else {
 	      memcpy(&silent, ctxt->sax, sizeof(silent));
 	      old = ctxt->sax;

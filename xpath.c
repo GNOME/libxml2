@@ -6146,10 +6146,12 @@ xmlXPathCompNodeTest(xmlXPathParserContextPtr ctxt, xmlXPathTestVal *test,
 	     */
 	    if (name != NULL)
 		xmlFree(name);
-
-	    name = xmlXPathParseLiteral(ctxt);
-	    CHECK_ERROR 0;
-	    SKIP_BLANKS;
+	    name = NULL;
+	    if (CUR != ')') {
+		name = xmlXPathParseLiteral(ctxt);
+		CHECK_ERROR 0;
+		SKIP_BLANKS;
+	    }
 	}
 	if (CUR != ')') {
 	    if (name != NULL)

@@ -235,6 +235,7 @@
      <exports symbol='htmlParseEntityRef'/>
      <exports symbol='htmlParseCharRef'/>
      <exports symbol='htmlParseElement'/>
+     <exports symbol='htmlParseDocument'/>
      <exports symbol='htmlSAXParseDoc'/>
      <exports symbol='htmlParseDoc'/>
      <exports symbol='htmlSAXParseFile'/>
@@ -782,6 +783,7 @@
      <exports symbol='xmlXPathNewValueTree'/>
      <exports symbol='xmlXPathNodeSetAdd'/>
      <exports symbol='xmlXPathNodeSetAddUnique'/>
+     <exports symbol='xmlXPathNodeSetAddNs'/>
      <exports symbol='xmlXPathNodeSetSort'/>
      <exports symbol='xmlXPathRoot'/>
      <exports symbol='xmlXPathEvalExpr'/>
@@ -953,6 +955,7 @@
      <exports symbol='xmlGenericErrorContext'/>
      <exports symbol='xmlGetWarningsDefaultValue'/>
      <exports symbol='xmlIndentTreeOutput'/>
+     <exports symbol='xmlTreeIndentString'/>
      <exports symbol='xmlKeepBlanksDefaultValue'/>
      <exports symbol='xmlLineNumbersDefaultValue'/>
      <exports symbol='xmlLoadExtDtdDefaultValue'/>
@@ -1227,6 +1230,18 @@
      <exports symbol='xmlIOHTTPOpenW'/>
      <exports symbol='xmlRegisterHTTPPostCallbacks'/>
      <exports symbol='xmlNoNetExternalEntityLoader'/>
+     <exports symbol='xmlFileMatch'/>
+     <exports symbol='xmlFileOpen'/>
+     <exports symbol='xmlFileRead'/>
+     <exports symbol='xmlFileClose'/>
+     <exports symbol='xmlIOHTTPMatch'/>
+     <exports symbol='xmlIOHTTPOpen'/>
+     <exports symbol='xmlIOHTTPRead'/>
+     <exports symbol='xmlIOHTTPClose'/>
+     <exports symbol='xmlIOFTPMatch'/>
+     <exports symbol='xmlIOFTPOpen'/>
+     <exports symbol='xmlIOFTPRead'/>
+     <exports symbol='xmlIOFTPClose'/>
     </file>
     <file name='xpath'>
      <exports symbol='xmlXPathContext'/>
@@ -2373,6 +2388,10 @@
       <return type='htmlDocPtr' info='the resulting document tree '/>
       <arg name='cur' type='xmlChar *' info='a pointer to an array of xmlChar '/>
       <arg name='encoding' type='const char *' info='a free form C string describing the HTML document encoding, or NULL '/>
+    </function>
+    <function name='htmlParseDocument' file='HTMLparser'>
+      <return type='int'/>
+      <arg name='ctxt' type='htmlParserCtxtPtr'/>
     </function>
     <function name='htmlParseElement' file='HTMLparser'>
       <info>parse an HTML element, this is highly recursive </info>
@@ -3655,6 +3674,24 @@
       <arg name='ID' type='const char *' info='The Public ID of the resource requested '/>
       <arg name='context' type='xmlParserCtxtPtr' info='the XML parser context '/>
     </functype>
+    <function name='xmlFileClose' file='xmlIO'>
+      <return type='int'/>
+      <arg name='context' type='void *'/>
+    </function>
+    <function name='xmlFileMatch' file='xmlIO'>
+      <return type='int'/>
+      <arg name='filename' type='const char *'/>
+    </function>
+    <function name='xmlFileOpen' file='xmlIO'>
+      <return type='void *'/>
+      <arg name='filename' type='const char *'/>
+    </function>
+    <function name='xmlFileRead' file='xmlIO'>
+      <return type='int'/>
+      <arg name='context' type='void *'/>
+      <arg name='buffer' type='char *'/>
+      <arg name='len' type='int'/>
+    </function>
     <function name='xmlFindCharEncodingHandler' file='encoding'>
       <info>Search in the registered set the handler able to read/write that encoding.</info>
       <return type='xmlCharEncodingHandlerPtr' info='the handler or NULL if not found '/>
@@ -4165,11 +4202,47 @@
     <struct name='xmlID' file='tree' info='An XML ID instance.'/>
     <typedef name='xmlIDPtr' file='tree'/>
     <typedef name='xmlIDTablePtr' file='valid'/>
+    <function name='xmlIOFTPClose' file='xmlIO'>
+      <return type='int'/>
+      <arg name='context' type='void *'/>
+    </function>
+    <function name='xmlIOFTPMatch' file='xmlIO'>
+      <return type='int'/>
+      <arg name='filename' type='const char *'/>
+    </function>
+    <function name='xmlIOFTPOpen' file='xmlIO'>
+      <return type='void *'/>
+      <arg name='filename' type='const char *'/>
+    </function>
+    <function name='xmlIOFTPRead' file='xmlIO'>
+      <return type='int'/>
+      <arg name='context' type='void *'/>
+      <arg name='buffer' type='char *'/>
+      <arg name='len' type='int'/>
+    </function>
+    <function name='xmlIOHTTPClose' file='xmlIO'>
+      <return type='int'/>
+      <arg name='context' type='void *'/>
+    </function>
+    <function name='xmlIOHTTPMatch' file='xmlIO'>
+      <return type='int'/>
+      <arg name='filename' type='const char *'/>
+    </function>
+    <function name='xmlIOHTTPOpen' file='xmlIO'>
+      <return type='void *'/>
+      <arg name='filename' type='const char *'/>
+    </function>
     <function name='xmlIOHTTPOpenW' file='xmlIO'>
       <info>Open a temporary buffer to collect the document for a subsequent HTTP POST request. Non-static as is called from the output buffer creation routine.</info>
       <return type='void *'/>
       <arg name='post_uri' type='const char *' info='The destination URI for the document '/>
       <arg name='compression' type='int' info='The compression desired for the document. '/>
+    </function>
+    <function name='xmlIOHTTPRead' file='xmlIO'>
+      <return type='int'/>
+      <arg name='context' type='void *'/>
+      <arg name='buffer' type='char *'/>
+      <arg name='len' type='int'/>
     </function>
     <function name='xmlIOParseDTD' file='parser'>
       <info>Load and parse a DTD</info>
@@ -4179,7 +4252,7 @@
       <arg name='enc' type='xmlCharEncoding' info='the charset encoding if known '/>
     </function>
     <macro name='xmlIndentTreeOutput' file='globals'>
-      <info>Global setting, asking the serializer to indent the output tree by default Disabled by default</info>
+      <info>Global setting, asking the serializer to indent the output tree by default Enabled by default</info>
     </macro>
     <function name='xmlInitCharEncodingHandlers' file='encoding'>
       <info>Initialize the char encoding support, it registers the default encoding supported. NOTE: while public, this function usually doesn&apos;t need to be called in normal processing.</info>
@@ -6448,6 +6521,8 @@
       <arg name='first' type='xmlNodePtr' info='the first text node '/>
       <arg name='second' type='xmlNodePtr' info='the second text node being merged '/>
     </function>
+    <macro name='xmlTreeIndentString' file='globals'>
+    </macro>
     <struct name='xmlURI' file='uri' info='A parsed URI reference. This is a struct containing the various fields as described in RFC 2396 but separated for further processing.'/>
     <function name='xmlURIEscape' file='uri'>
       <info>Escaping routine, does not do validity checks ! It will try to escape the chars needing this, but this is heuristic based it&apos;s impossible to be sure.</info>
@@ -7242,6 +7317,12 @@
       <return type='void'/>
       <arg name='cur' type='xmlNodeSetPtr' info='the initial node set '/>
       <arg name='val' type='xmlNodePtr' info='a new xmlNodePtr '/>
+    </function>
+    <function name='xmlXPathNodeSetAddNs' file='xpathInternals'>
+      <return type='void'/>
+      <arg name='cur' type='xmlNodeSetPtr'/>
+      <arg name='node' type='xmlNodePtr'/>
+      <arg name='ns' type='xmlNsPtr'/>
     </function>
     <function name='xmlXPathNodeSetAddUnique' file='xpathInternals'>
       <info>add a new xmlNodePtr to an existing NodeSet, optimized version when we are sure the node is not already in the set.</info>

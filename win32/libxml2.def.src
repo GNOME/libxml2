@@ -323,6 +323,7 @@ xmlCleanupPredefinedEntities
 	htmlParseEntityRef
 	htmlParseCharRef
 	htmlParseElement
+	htmlParseDocument
 	htmlSAXParseDoc
 	htmlParseDoc
 	htmlSAXParseFile

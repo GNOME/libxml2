@@ -3033,6 +3033,9 @@
       <ref name='xmlInputOpenCallback'/>
       <ref name='xmlOutputOpenCallback'/>
       <ref name='xmlIOHTTPOpenW'/>
+      <ref name='xmlFileOpen'/>
+      <ref name='xmlIOHTTPOpen'/>
+      <ref name='xmlIOFTPOpen'/>
       <ref name='xmlMallocFunc'/>
       <ref name='xmlReallocFunc'/>
       <ref name='xmlMallocLoc'/>
@@ -3926,6 +3929,7 @@
       <ref name='htmlParseEntityRef'/>
       <ref name='htmlParseCharRef'/>
       <ref name='htmlParseElement'/>
+      <ref name='htmlParseDocument'/>
       <ref name='htmlFreeParserCtxt'/>
       <ref name='htmlParseChunk'/>
     </type>
@@ -4091,6 +4095,12 @@
       <ref name='xmlOutputCloseCallback'/>
       <ref name='xmlParserInputBufferCreateIO'/>
       <ref name='xmlOutputBufferCreateIO'/>
+      <ref name='xmlFileRead'/>
+      <ref name='xmlFileClose'/>
+      <ref name='xmlIOHTTPRead'/>
+      <ref name='xmlIOHTTPClose'/>
+      <ref name='xmlIOFTPRead'/>
+      <ref name='xmlIOFTPClose'/>
       <ref name='xmlGenericErrorFunc'/>
       <ref name='xmlSetGenericErrorFunc'/>
       <ref name='xmlParserError'/>
@@ -4748,6 +4758,7 @@
       <ref name='xmlXPathNewValueTree'/>
       <ref name='xmlXPathNodeSetAdd'/>
       <ref name='xmlXPathNodeSetAddUnique'/>
+      <ref name='xmlXPathNodeSetAddNs'/>
       <ref name='xmlXPathNodeSetDel'/>
       <ref name='xmlXPathNextSelf'/>
       <ref name='xmlXPathNextChild'/>
@@ -4808,6 +4819,7 @@
       <ref name='xmlXPathTrailing'/>
       <ref name='xmlXPathNodeSetAdd'/>
       <ref name='xmlXPathNodeSetAddUnique'/>
+      <ref name='xmlXPathNodeSetAddNs'/>
       <ref name='xmlXPathNodeSetSort'/>
       <ref name='xmlXPathNodeSetMerge'/>
       <ref name='xmlXPathNodeSetMerge'/>
@@ -4843,6 +4855,7 @@
       <ref name='xmlCopyNamespaceList'/>
       <ref name='xmlSetNsProp'/>
       <ref name='xmlUnsetNsProp'/>
+      <ref name='xmlXPathNodeSetAddNs'/>
     </type>
     <type name='xmlOutputBufferPtr'>
       <ref name='htmlNodeDumpFormatOutput'/>
@@ -5259,6 +5272,7 @@
       <ref name='htmlParseEntityRef'/>
       <ref name='htmlParseCharRef'/>
       <ref name='htmlParseElement'/>
+      <ref name='htmlParseDocument'/>
       <ref name='htmlSAXParseDoc'/>
       <ref name='htmlParseDoc'/>
       <ref name='htmlSAXParseFile'/>
@@ -5489,6 +5503,7 @@
       <ref name='xmlGenericErrorContext'/>
       <ref name='xmlGetWarningsDefaultValue'/>
       <ref name='xmlIndentTreeOutput'/>
+      <ref name='xmlTreeIndentString'/>
       <ref name='xmlKeepBlanksDefaultValue'/>
       <ref name='xmlLineNumbersDefaultValue'/>
       <ref name='xmlLoadExtDtdDefaultValue'/>
@@ -6211,6 +6226,18 @@
       <ref name='xmlIOHTTPOpenW'/>
       <ref name='xmlRegisterHTTPPostCallbacks'/>
       <ref name='xmlNoNetExternalEntityLoader'/>
+      <ref name='xmlFileMatch'/>
+      <ref name='xmlFileOpen'/>
+      <ref name='xmlFileRead'/>
+      <ref name='xmlFileClose'/>
+      <ref name='xmlIOHTTPMatch'/>
+      <ref name='xmlIOHTTPOpen'/>
+      <ref name='xmlIOHTTPRead'/>
+      <ref name='xmlIOHTTPClose'/>
+      <ref name='xmlIOFTPMatch'/>
+      <ref name='xmlIOFTPOpen'/>
+      <ref name='xmlIOFTPRead'/>
+      <ref name='xmlIOFTPClose'/>
     </file>
     <file name='xmlerror'>
       <ref name='xmlParserErrors'/>
@@ -6418,6 +6445,7 @@
       <ref name='xmlXPathNewValueTree'/>
       <ref name='xmlXPathNodeSetAdd'/>
       <ref name='xmlXPathNodeSetAddUnique'/>
+      <ref name='xmlXPathNodeSetAddNs'/>
       <ref name='xmlXPathNodeSetSort'/>
       <ref name='xmlXPathRoot'/>
       <ref name='xmlXPathEvalExpr'/>
@@ -7184,7 +7212,6 @@
         </word>
         <word name='Disabled'>
           <ref name='xmlDoValidityCheckingDefaultValue'/>
-          <ref name='xmlIndentTreeOutput'/>
           <ref name='xmlLineNumbersDefaultValue'/>
           <ref name='xmlLoadExtDtdDefaultValue'/>
           <ref name='xmlParserDebugEntities'/>
@@ -7356,6 +7383,9 @@
         </word>
         <word name='EmptyElement'>
           <ref name='xmlParseStartTag'/>
+        </word>
+        <word name='Enabled'>
+          <ref name='xmlIndentTreeOutput'/>
         </word>
         <word name='Encapsulating'>
           <ref name='xmlNodeGetBase'/>

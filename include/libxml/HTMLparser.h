@@ -72,6 +72,7 @@ const htmlEntityDesc * 	htmlParseEntityRef(htmlParserCtxtPtr ctxt,
 int			htmlParseCharRef(htmlParserCtxtPtr ctxt);
 void			htmlParseElement(htmlParserCtxtPtr ctxt);
 
+int			htmlParseDocument(htmlParserCtxtPtr ctxt);
 htmlDocPtr		htmlSAXParseDoc	(xmlChar *cur,
 					 const char *encoding,
 					 htmlSAXHandlerPtr sax,

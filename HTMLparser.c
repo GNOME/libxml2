@@ -3578,7 +3578,7 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
  *                as a result of the parsing.
  */
 
-static int
+int
 htmlParseDocument(htmlParserCtxtPtr ctxt) {
     xmlDtdPtr dtd;
 

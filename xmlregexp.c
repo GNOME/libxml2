@@ -2335,8 +2335,10 @@ xmlRegFreeExecCtxt(xmlRegExecCtxtPtr exec) {
     if (exec->inputStack != NULL) {
 	int i;
 
-	for (i = 0;i < exec->inputStackNr;i++)
-	    xmlFree(exec->inputStack[i].value);
+	for (i = 0;i < exec->inputStackNr;i++) {
+	    if (exec->inputStack[i].value != NULL)
+		xmlFree(exec->inputStack[i].value);
+	}
 	xmlFree(exec->inputStack);
     }
     xmlFree(exec);

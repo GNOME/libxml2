@@ -5,5 +5,3 @@ Type of choice 3 : ./test/schemas/choice_2.xsd:6 :elements
 Building content model for doc
 xmlSchemaValidateCallback: b, b, b
 Element doc content check succeeded
-(nil) : Freed()
-xmlMallocBreakpoint reached on block 0

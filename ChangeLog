@@ -1,3 +1,11 @@
+Wed Oct 16 16:05:38 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xmlregexp.c xmlschemas.c: fixed the validation of sequences
+	  content model when some of the blocks have min or max, and a couple
+	  of bugs found in the process.
+	* result/schemas/list0* test/schemas/list0*: added some specific
+	  regression tests
+
 Tue Oct 15 12:41:01 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* README: updated the contact informations

@@ -304,6 +304,8 @@ xmlSchemaFreeElement(xmlSchemaElementPtr elem)
         xmlFree((xmlChar *) elem->ref);
     if (elem->refNs != NULL)
         xmlFree((xmlChar *) elem->refNs);
+    if (elem->annot != NULL)
+        xmlSchemaFreeAnnot(elem->annot);
     if (elem->contModel != NULL)
 	xmlRegFreeRegexp(elem->contModel);
     xmlFree(elem);
@@ -351,7 +353,7 @@ xmlSchemaFreeType(xmlSchemaTypePtr type)
     if (type->baseNs != NULL)
         xmlFree((xmlChar *) type->baseNs);
     if (type->annot != NULL)
-        xmlFree((xmlChar *) type->annot);
+        xmlSchemaFreeAnnot(type->annot);
     if (type->facets != NULL) {
 	xmlSchemaFacetPtr facet, next;
 
@@ -3099,6 +3101,57 @@ xmlSchemaBuildAContentModel(xmlSchemaTypePtr type,
 	    /* TODO : handle the namespace too */
 	    xmlAutomataStatePtr oldstate = ctxt->state;
 	    if (elem->maxOccurs >= UNBOUNDED) {
+		if (elem->minOccurs > 1) {
+		    xmlAutomataStatePtr tmp;
+		    int counter;
+
+		    ctxt->state = xmlAutomataNewEpsilon(ctxt->am,
+			                                oldstate, NULL);
+		    oldstate = ctxt->state;
+
+		    counter = xmlAutomataNewCounter(ctxt->am,
+				    elem->minOccurs - 1, UNBOUNDED);
+
+		    if (elem->refDecl != NULL) {
+			xmlSchemaBuildAContentModel(
+				(xmlSchemaTypePtr) elem->refDecl,
+				ctxt, elem->refDecl->name);
+		    } else {
+			ctxt->state = xmlAutomataNewTransition(ctxt->am,
+				ctxt->state, NULL, elem->name, type);
+		    }
+		    tmp = ctxt->state;
+		    xmlAutomataNewCountedTrans(ctxt->am, tmp, oldstate,
+			                       counter);
+		    ctxt->state = xmlAutomataNewCounterTrans(ctxt->am, tmp,
+			                       NULL, counter);
+
+		} else {
+		    if (elem->refDecl != NULL) {
+			xmlSchemaBuildAContentModel(
+				(xmlSchemaTypePtr) elem->refDecl,
+				ctxt, elem->refDecl->name);
+		    } else {
+			ctxt->state = xmlAutomataNewTransition(ctxt->am,
+				ctxt->state, NULL, elem->name, type);
+		    }
+		    xmlAutomataNewEpsilon(ctxt->am, ctxt->state, oldstate);
+		    if (elem->minOccurs == 0) {
+			/* basically an elem* */
+			xmlAutomataNewEpsilon(ctxt->am, oldstate, ctxt->state);
+		    }
+		}
+	    } else if ((elem->maxOccurs > 1) || (elem->minOccurs > 1)) {
+		xmlAutomataStatePtr tmp;
+		int counter;
+
+		ctxt->state = xmlAutomataNewEpsilon(ctxt->am,
+						    oldstate, NULL);
+		oldstate = ctxt->state;
+
+		counter = xmlAutomataNewCounter(ctxt->am,
+				elem->minOccurs - 1, elem->maxOccurs - 1);
+
 		if (elem->refDecl != NULL) {
 		    xmlSchemaBuildAContentModel(
 			    (xmlSchemaTypePtr) elem->refDecl,
@@ -3107,22 +3160,12 @@ xmlSchemaBuildAContentModel(xmlSchemaTypePtr type,
 		    ctxt->state = xmlAutomataNewTransition(ctxt->am,
 			    ctxt->state, NULL, elem->name, type);
 		}
-		xmlAutomataNewEpsilon(ctxt->am, ctxt->state, oldstate);
-		if (elem->minOccurs == 0) {
-		    /* basically an elem* */
-		    xmlAutomataNewEpsilon(ctxt->am, oldstate, ctxt->state);
-		}
-	    } else if (elem->maxOccurs > 1) {
-		if (elem->refDecl != NULL) {
-		    TODO
-		    xmlSchemaBuildAContentModel(
-			    (xmlSchemaTypePtr) elem->refDecl,
-			    ctxt, elem->refDecl->name);
-		} else {
-		    ctxt->state = xmlAutomataNewCountTrans(ctxt->am,
-			    ctxt->state, NULL, elem->name,
-			    elem->minOccurs, elem->maxOccurs, type);
-		}
+		tmp = ctxt->state;
+		xmlAutomataNewCountedTrans(ctxt->am, tmp, oldstate,
+					   counter);
+		ctxt->state = xmlAutomataNewCounterTrans(ctxt->am, tmp,
+					   NULL, counter);
+
 	    } else {
 		if (elem->refDecl != NULL) {
 		    xmlSchemaBuildAContentModel(

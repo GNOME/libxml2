@@ -1,3 +1,10 @@
+Wed Oct 23 16:42:29 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am config.h.in libxml.spec.in doc/Makefile.am:
+	  serious cleanup of the spec file and associated changes
+	  in the Makefiles.
+	* valid.c: try to remove some warnings on x86_64
+
 Wed Oct 23 10:53:42 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* include/Makefile.am: added winsockcompat.h to EXTRA_DIST to

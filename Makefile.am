@@ -707,7 +707,7 @@ pkgconfig_DATA = libxml-2.0.pc
 #
 # Instll the tests program sources as examples 
 #
-BASE_DIR=@HTML_DIR@
+BASE_DIR=$(datadir)/doc
 DOC_MODULE=libxml2-$(VERSION)
 EXAMPLES_DIR=$(BASE_DIR)/$(DOC_MODULE)/examples
 

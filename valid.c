@@ -323,11 +323,11 @@ xmlValidStateDebug(xmlValidCtxtPtr ctxt) {
        xmlChar *base = xmlNodeGetBase(NULL,node);		\
        if (base != NULL) {					\
 	   ctxt->error(ctxt->userData, "%s:%d: ", base,		\
-		       (int) node->content);			\
+		       (int) (long) node->content);		\
 	   xmlFree(base);					\
        } else							\
 	   ctxt->error(ctxt->userData, ":%d: ", 		\
-		       (int) node->content);			\
+		       (int) (long) node->content);		\
    }
 
 #define VWCTXT(ctxt, node)					\
@@ -336,11 +336,11 @@ xmlValidStateDebug(xmlValidCtxtPtr ctxt) {
        xmlChar *base = xmlNodeGetBase(NULL,node);		\
        if (base != NULL) {					\
 	   ctxt->warning(ctxt->userData, "%s:%d: ", base,	\
-		       (int) node->content);			\
+		       (int) (long) node->content);		\
 	   xmlFree(base);					\
        } else							\
 	   ctxt->warning(ctxt->userData, ":%d: ", 		\
-		       (int) node->content);			\
+		       (int) (long) node->content);		\
    }
 
 #define VERROR							\

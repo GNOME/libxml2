@@ -55,67 +55,47 @@ This library allows to manipulate XML files. It includes support
 to read, modify and write XML and HTML files. There is DTDs support
 this includes parsing and validation even with complex DTDs, either
 at parse time or later once the document has been modified.
+
 %prep
 %setup -q
 
 %build
-# Needed for snapshot releases.
-if [ ! -f configure ]; then
-%ifarch alpha
-  CFLAGS="$RPM_OPT_FLAGS" ./autogen.sh --host=alpha-redhat-linux --prefix=%prefix --sysconfdir="/etc" --mandir=%{_mandir} --libdir=%{_libdir}
-%else
-  CFLAGS="$RPM_OPT_FLAGS" ./autogen.sh --prefix=%prefix --sysconfdir="/etc" --mandir=%{_mandir} --libdir=%{_libdir}
-%endif
-else
-%ifarch alpha
-  CFLAGS="$RPM_OPT_FLAGS" ./configure --host=alpha-redhat-linux --prefix=%prefix --sysconfdir="/etc" --mandir=%{_mandir} --libdir=%{_libdir}
-%else
-  CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%prefix --sysconfdir="/etc" --mandir=%{_mandir} --libdir=%{_libdir}
-%endif
-fi
-
-if [ "$SMP" != "" ]; then
-  (make "MAKE=make -k -j $SMP"; exit 0)
-  make
-else
-  make
-fi
+%configure
+make
 
 %install
-rm -rf $RPM_BUILD_ROOT
+rm -fr %{buildroot}
 
-install -d $RPM_BUILD_ROOT%{_mandir}/man1
-install -d $RPM_BUILD_ROOT%{_mandir}/man4
 %makeinstall
-# make prefix=$RPM_BUILD_ROOT%{prefix} libdir=$RPM_BUILD_ROOT%{_libdir} mandir=$RPM_BUILD_ROOT%{_mandir} install
 
 #
 # this is a bit ugly but tries to generate the bindings for all versions
 # of python installed
+#
 for i in %{prefix}/include/python*
 do
     py_version=`echo $i | sed "s+%{prefix}/include/python++"`
     if test -x %{prefix}/bin/python$py_version
     then
         echo generating bindings for Python $py_version
-	(cd python ; make clean ; \
+      (cd python ; make clean ; \
          make PYTHON="%{prefix}/bin/python$py_version" \
-	      PYTHON_INCLUDES="%{prefix}/include/python$py_version" \
-	      PYTHON_VERSION="$py_version"; \
-         make PYTHON="%{prefix}/bin/python$py_version" \
-	      PYTHON_INCLUDES="%{prefix}/include/python$py_version" \
-	      PYTHON_VERSION="$py_version" \
-	      prefix=$RPM_BUILD_ROOT%{prefix} \
-	      libdir=$RPM_BUILD_ROOT%{_libdir} \
-	      mandir=$RPM_BUILD_ROOT%{_mandir} install)
+            PYTHON_INCLUDES="%{prefix}/include/python$py_version" \
+            PYTHON_VERSION="$py_version"; \
+%makeinstall PYTHON="%{prefix}/bin/python$py_version" \
+            PYTHON_INCLUDES="%{prefix}/include/python$py_version" \
+            PYTHON_VERSION="$py_version" )
     fi
 done
+
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -fr %{buildroot}
 
-%post -p /sbin/ldconfig
+%post
+/sbin/ldconfig
 
-%postun -p /sbin/ldconfig
+%postun
+/sbin/ldconfig
 
 %files
 %defattr(-, root, root)
@@ -148,12 +128,18 @@ rm -rf $RPM_BUILD_ROOT
 
 %doc AUTHORS ChangeLog NEWS README Copyright
 %{_libdir}/python*/site-packages/libxml2.py
-%{_libdir}/python*/site-packages/libxml2mod.so
+%{_libdir}/python*/site-packages/libxml2mod*
 %doc python/TODO
 %doc python/libxml2class.txt
 %doc python/tests/*.py
 
 %changelog
+* Wed Oct 23 2002 Daniel Veillard <veillard@redhat.com>
+- revamped the spec file, cleaned up some rpm building problems
+
+* Fri Oct  4 2002 Jeremy Katz <katzj@redhat.com>
+- build with 'make LIBTOOL=/usr/bin/libtool' to use system libtool
+
 * Wed Sep  4 2002 Daniel Veillard <veillard@redhat.com>
 
 - library paths fixed for x86-64

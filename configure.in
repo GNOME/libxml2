@@ -363,7 +363,7 @@ WITH_THREADS=0
 THREAD_CFLAGS=""
 TEST_THREADS=""
 
-AC_ARG_WITH(threads, [  --with-threads          Add multithread support(off)])
+AC_ARG_WITH(threads, [  --with-threads          Add multithread support(on)])
 if test "$with_threads" = "no" ; then
     echo Disabling multithreaded support
 else

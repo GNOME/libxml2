@@ -1,3 +1,9 @@
+Tue Apr 22 01:06:09 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* TODO: updated a bit
+	* configure.in: fixed the comment, threads now default to on
+	* parserInternals.c: fixed an erroneous xmlMallocAtomic() call
+
 Mon Apr 21 23:33:38 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* globals.c libxml.h parser.c parserInternals.c tree.c xmllint.c

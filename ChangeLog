@@ -1,3 +1,8 @@
+Sun Nov 17 23:36:06 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* python/libxml.c: fixing bug #98792 , node may have no doc
+	  and dereferencing without checking ain't good ...
+
 Sun Nov 17 10:25:43 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in: preparing release 2.4.27

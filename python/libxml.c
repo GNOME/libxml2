@@ -1995,7 +1995,7 @@ libxml_serializeNode(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
         py_retval = libxml_charPtrWrap((char *) c_retval);
     } else {
         doc = node->doc;
-        if (doc->type == XML_DOCUMENT_NODE) {
+        if ((doc == NULL) || (doc->type == XML_DOCUMENT_NODE)) {
             xmlOutputBufferPtr buf;
             xmlCharEncodingHandlerPtr handler = NULL;
 

@@ -1356,10 +1356,13 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *elem,
     if (elemDef != NULL) {
 
         if ((type == XML_ATTRIBUTE_ID) &&
-	    (xmlScanIDAttributeDecl(NULL, elemDef) != 0))
+	    (xmlScanIDAttributeDecl(NULL, elemDef) != 0)) {
 	    VERROR(ctxt->userData, 
 	   "Element %s has too may ID attributes defined : %s\n",
 		   elem, name);
+	    ctxt->valid = 0;
+	}
+
 	/*
 	 * Insert namespace default def first they need to be
 	 * processed first.
@@ -4466,6 +4469,7 @@ child_ok:
 			    VERROR(ctxt->userData,
    "Element %s namespace name for default namespace does not match the DTD\n",
 				   elem->name);
+			    ret = 0;
 			}
 			goto found;
 		    }
@@ -4481,6 +4485,7 @@ child_ok:
 			    VERROR(ctxt->userData,
 		   "Element %s namespace name for %s doesn't match the DTD\n",
 				   elem->name, ns->prefix);
+			    ret = 0;
 			}
 			goto found;
 		    }

@@ -479,6 +479,7 @@ attributeDecl(void *ctx, const xmlChar *elem, const xmlChar *fullname,
             elem, fullname, type, def, defaultValue);
 #endif
     name = xmlSplitQName(ctxt, fullname, &prefix);
+    ctxt->vctxt.valid = 1;
     if (ctxt->inSubset == 1)
 	attr = xmlAddAttributeDecl(&ctxt->vctxt, ctxt->myDoc->intSubset, elem,
 	       name, prefix, (xmlAttributeType) type,
@@ -493,7 +494,8 @@ attributeDecl(void *ctx, const xmlChar *elem, const xmlChar *fullname,
 	     "SAX.attributeDecl(%s) called while not in subset\n", name);
 	return;
     }
-    /* if (attr == 0) ctxt->valid = 0; */
+    if (ctxt->vctxt.valid == 0)
+	ctxt->valid = 0;
     if (ctxt->validate && ctxt->wellFormed &&
         ctxt->myDoc && ctxt->myDoc->intSubset)
 	ctxt->valid &= xmlValidateAttributeDecl(&ctxt->vctxt, ctxt->myDoc,
@@ -892,10 +894,25 @@ attribute(void *ctx, const xmlChar *fullname, const xmlChar *value)
 	    val = xmlStringDecodeEntities(ctxt, value, XML_SUBSTITUTE_REF,
 		                          0,0,0);
 	    ctxt->depth--;
+	    
 	    if (val == NULL)
 		ctxt->valid &= xmlValidateOneAttribute(&ctxt->vctxt,
 				ctxt->myDoc, ctxt->node, ret, value);
 	    else {
+		xmlChar *nvalnorm;
+
+		/*
+		 * Do the last stage of the attribute normalization
+		 * It need to be done twice ... it's an extra burden related
+		 * to the ability to keep references in attributes
+		 */
+		nvalnorm = xmlValidNormalizeAttributeValue(ctxt->myDoc,
+					    ctxt->node, fullname, val);
+		if (nvalnorm != NULL) {
+		    xmlFree(val);
+		    val = nvalnorm;
+		}
+
 		ctxt->valid &= xmlValidateOneAttribute(&ctxt->vctxt,
 			        ctxt->myDoc, ctxt->node, ret, val);
                 xmlFree(val);

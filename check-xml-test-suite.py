@@ -17,10 +17,17 @@ log = open(LOG, "w")
 # Error and warning handlers
 #
 error_nr = 0
+error_msg = ''
 def errorHandler(ctx, str):
     global error_nr
+    global error_msg
 
     error_nr = error_nr + 1
+    if len(error_msg) < 300:
+        if len(error_msg) == 0 or error_msg[-1] == '\n':
+	    error_msg = error_msg + "   >>" + str
+	else:
+	    error_msg = error_msg + str
 
 libxml2.registerErrorHandler(errorHandler, None)
 
@@ -56,9 +63,11 @@ def loadNoentDoc(filename):
 
 def testNotWf(filename, id):
     global error_nr
+    global error_msg
     global log
 
     error_nr = 0
+    error_msg = ''
 
     ctxt = libxml2.createFileParserCtxt(filename)
     if ctxt == None:
@@ -75,9 +84,11 @@ def testNotWf(filename, id):
 
 def testNotWfEnt(filename, id):
     global error_nr
+    global error_msg
     global log
 
     error_nr = 0
+    error_msg = ''
 
     ctxt = libxml2.createFileParserCtxt(filename)
     if ctxt == None:
@@ -95,10 +106,11 @@ def testNotWfEnt(filename, id):
 
 def testNotWfEntDtd(filename, id):
     global error_nr
+    global error_msg
     global log
 
-    error = ''
     error_nr = 0
+    error_msg = ''
 
     ctxt = libxml2.createFileParserCtxt(filename)
     if ctxt == None:
@@ -117,10 +129,11 @@ def testNotWfEntDtd(filename, id):
 
 def testWfEntDtd(filename, id):
     global error_nr
+    global error_msg
     global log
 
-    error = ''
     error_nr = 0
+    error_msg = ''
 
     ctxt = libxml2.createFileParserCtxt(filename)
     if ctxt == None:
@@ -144,9 +157,11 @@ def testWfEntDtd(filename, id):
 
 def testInvalid(filename, id):
     global error_nr
+    global error_msg
     global log
 
     error_nr = 0
+    error_msg = ''
 
     ctxt = libxml2.createFileParserCtxt(filename)
     if ctxt == None:
@@ -176,8 +191,10 @@ def testInvalid(filename, id):
 
 def testValid(filename, id):
     global error_nr
+    global error_msg
 
     error_nr = 0
+    error_msg = ''
 
     ctxt = libxml2.createFileParserCtxt(filename)
     if ctxt == None:
@@ -213,6 +230,7 @@ def runTest(test):
     global test_failed
     global test_error
     global test_succeed
+    global error_msg
     global log
 
     uri = test.prop('URI')
@@ -269,11 +287,17 @@ def runTest(test):
     # Log the ontext
     if res != 1:
 	log.write("   File: %s\n" % (URI))
-	content = test.content
+	content = string.strip(test.content)
+	while content[-1] == '\n':
+	    content = content[0:-1]
 	if extra != None:
-	    log.write("   %s:%s:%s\n\n" % (type, extra, content))
+	    log.write("   %s:%s:%s\n" % (type, extra, content))
 	else:
 	    log.write("   %s:%s\n\n" % (type, content))
+	if error_msg != '':
+	    log.write("   ----\n%s   ----\n" % (error_msg))
+	    error_msg = ''
+	log.write("\n")
 
     return 0
 	    

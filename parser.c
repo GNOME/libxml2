@@ -7625,7 +7625,10 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
 	(!ctxt->disableSAX))
         ctxt->sax->endDocument(ctxt->userData);
 
-    if (! ctxt->wellFormed) return(-1);
+    if (! ctxt->wellFormed) {
+	ctxt->valid = 0;
+	return(-1);
+    }
     return(0);
 }
 

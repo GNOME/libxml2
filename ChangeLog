@@ -1,3 +1,10 @@
+Sun Feb 17 23:45:40 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* check-xml-test-suite.py: improved the behaviour a bit as
+	  well as the logs
+	* parser.c valid.c SAX.c: fixed a few more bugs 
+	  "Ran 1819 tests: 1778 suceeded, 41 failed, and 0 generated an error"
+
 Sun Feb 17 20:41:37 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* check-xml-test-suite.py: python script to run regression tests

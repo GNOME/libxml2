@@ -1,3 +1,8 @@
+Mon Nov  5 15:20:16 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* catalog.c: dohhhh XML catalog add and remove ops were broken too.
+	  Side effect of the progressive catalog loading
+
 Mon Nov  5 12:40:54 CET 2001 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am: confexecdir and confexec_DATA were defined twice

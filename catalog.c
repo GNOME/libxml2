@@ -1297,6 +1297,9 @@ xmlAddXMLCatalog(xmlCatalogEntryPtr catal, const xmlChar *type,
 	((catal->type != XML_CATA_CATALOG) &&
 	 (catal->type != XML_CATA_BROKEN_CATALOG)))
 	return(-1);
+    if (catal->children == NULL) {
+	xmlFetchXMLCatalogFile(catal);
+    }
     typ = xmlGetXMLCatalogEntryType(type);
     if (typ == XML_CATA_NONE) {
 	if (xmlDebugCatalogs)
@@ -1357,6 +1360,9 @@ xmlDelXMLCatalog(xmlCatalogEntryPtr catal, const xmlChar *value) {
 	return(-1);
     if (value == NULL)
 	return(-1);
+    if (catal->children == NULL) {
+	xmlFetchXMLCatalogFile(catal);
+    }
 
     /*
      * Scan the children

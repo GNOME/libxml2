@@ -1,3 +1,8 @@
+Wed Jun 13 09:44:15 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* HTMLtree.h: cleanup and started evaluating the work needed on
+	  revamping the HTML output code
+
 Mon Jun 11 19:29:40 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* DOCBparser.c: handling of PIs and <?sgml-declaration in entities.

@@ -10,8 +10,6 @@
 #include "libxml.h"
 #ifdef LIBXML_HTML_ENABLED
 
-#include <string.h> /* for memset() only ! */
-
 #ifdef HAVE_CTYPE_H
 #include <ctype.h>
 #endif
@@ -182,26 +180,6 @@ htmlSetMetaEncoding(htmlDocPtr doc, const xmlChar *encoding) {
      */
     while (cur != NULL) {
 	if (cur->name != NULL) {
-/*
-	    if (xmlStrEqual(cur->name, BAD_CAST"html"))
-		break;
-	    if (xmlStrEqual(cur->name, BAD_CAST"body")) {
-		if (encoding == NULL)
-		    return(0);
-		meta = xmlNewDocNode(doc, NULL, BAD_CAST"head", NULL);
-		xmlAddPrevSibling(cur, meta);
-		cur = meta;
-		meta = xmlNewDocNode(doc, NULL, BAD_CAST"meta", NULL);
-		xmlAddChild(cur, meta);
-		xmlNewProp(meta, BAD_CAST"http-equiv", BAD_CAST"Content-Type");
-		xmlNewProp(meta, BAD_CAST"content", BAD_CAST newcontent);
-		return(0);
-	    }
-	    if (xmlStrEqual(cur->name, BAD_CAST"head"))
-		goto found_head;
-	    if (xmlStrEqual(cur->name, BAD_CAST"meta"))
-		goto found_meta;
-*/
 	    if (xmlStrcasecmp(cur->name, BAD_CAST"html") == 0)
 		break;
 	    if (xmlStrcasecmp(cur->name, BAD_CAST"head") == 0)
@@ -220,24 +198,6 @@ htmlSetMetaEncoding(htmlDocPtr doc, const xmlChar *encoding) {
      */
     while (cur != NULL) {
 	if (cur->name != NULL) {
-/*
-	    if (xmlStrEqual(cur->name, BAD_CAST"head"))
-		break;
-	    if (xmlStrEqual(cur->name, BAD_CAST"body")) {
-		if (encoding == NULL)
-		    return(0);
-		meta = xmlNewDocNode(doc, NULL, BAD_CAST"head", NULL);
-		xmlAddPrevSibling(cur, meta);
-		cur = meta;
-		meta = xmlNewDocNode(doc, NULL, BAD_CAST"meta", NULL);
-		xmlAddChild(cur, meta);
-		xmlNewProp(meta, BAD_CAST"http-equiv", BAD_CAST"Content-Type");
-		xmlNewProp(meta, BAD_CAST"content", BAD_CAST newcontent);
-		return(0);
-	    }
-	    if (xmlStrEqual(cur->name, BAD_CAST"meta"))
-		goto found_meta;
-*/
 	    if (xmlStrcasecmp(cur->name, BAD_CAST"head") == 0)
 		break;
 	    if (xmlStrcasecmp(cur->name, BAD_CAST"meta") == 0)
@@ -380,6 +340,12 @@ htmlDtdDump(xmlBufferPtr buf, xmlDocPtr doc) {
 static void
 htmlAttrDump(xmlBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur) {
     xmlChar *value;
+
+    /*
+     * TODO: The html output method should not escape a & character
+     *       occurring in an attribute value immediately followed by
+     *       a { character (see Section B.7.1 of the HTML 4.0 Recommendation).
+     */
 
     if (cur == NULL) {
         xmlGenericError(xmlGenericErrorContext,
@@ -561,7 +527,8 @@ htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
     }
     if ((cur->content == NULL) && (cur->children == NULL)) {
         if ((info != NULL) && (info->saveEndTag != 0) &&
-	    (strcmp(info->name, "html")) && (strcmp(info->name, "body"))) {
+	    (xmlStrcmp(BAD_CAST info->name, BAD_CAST "html")) &&
+	    (xmlStrcmp(BAD_CAST info->name, BAD_CAST "body"))) {
 	    xmlBufferWriteChar(buf, ">");
 	} else {
 	    xmlBufferWriteChar(buf, "></");
@@ -745,7 +712,7 @@ htmlDocDumpMemory(xmlDocPtr cur, xmlChar**mem, int *size) {
  ************************************************************************/
 
 /**
- * htmlDtdDump:
+ * htmlDtdDumpOutput:
  * @buf:  the HTML buffer output
  * @doc:  the document
  * @encoding:  the encoding string
@@ -781,7 +748,7 @@ htmlDtdDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
 }
 
 /**
- * htmlAttrDump:
+ * htmlAttrDumpOutput:
  * @buf:  the HTML buffer output
  * @doc:  the document
  * @cur:  the attribute pointer
@@ -793,6 +760,12 @@ static void
 htmlAttrDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur,
 	           const char *encoding ATTRIBUTE_UNUSED) {
     xmlChar *value;
+
+    /*
+     * TODO: The html output method should not escape a & character
+     *       occurring in an attribute value immediately followed by
+     *       a { character (see Section B.7.1 of the HTML 4.0 Recommendation).
+     */
 
     if (cur == NULL) {
         xmlGenericError(xmlGenericErrorContext,
@@ -814,7 +787,7 @@ htmlAttrDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur,
 }
 
 /**
- * htmlAttrListDump:
+ * htmlAttrListDumpOutput:
  * @buf:  the HTML buffer output
  * @doc:  the document
  * @cur:  the first attribute pointer
@@ -840,7 +813,7 @@ void htmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
 	                xmlNodePtr cur, const char *encoding);
 
 /**
- * htmlNodeListDump:
+ * htmlNodeListDumpOutput:
  * @buf:  the HTML buffer output
  * @doc:  the document
  * @cur:  the first node
@@ -984,7 +957,8 @@ htmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
     }
     if ((cur->content == NULL) && (cur->children == NULL)) {
         if ((info != NULL) && (info->saveEndTag != 0) &&
-	    (strcmp(info->name, "html")) && (strcmp(info->name, "body"))) {
+	    (xmlStrcmp(BAD_CAST info->name, BAD_CAST "html")) &&
+	    (xmlStrcmp(BAD_CAST info->name, BAD_CAST "body"))) {
 	    xmlOutputBufferWriteString(buf, ">");
 	} else {
 	    xmlOutputBufferWriteString(buf, "></");
@@ -1040,7 +1014,7 @@ htmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
 }
 
 /**
- * htmlDocContentDump:
+ * htmlDocContentDumpOutput:
  * @buf:  the HTML buffer output
  * @cur:  the document
  * @encoding:  the encoding string
@@ -1048,7 +1022,8 @@ htmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
  * Dump an HTML document.
  */
 void
-htmlDocContentDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr cur, const char *encoding) {
+htmlDocContentDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr cur,
+	                 const char *encoding) {
     int type;
 
     /*

@@ -1,6 +1,9 @@
 #ifndef __XML_ERROR_H__
 #define __XML_ERROR_H__
 
+#ifdef __cplusplus
+#define extern "C" {
+#endif
 #include "parser.h"
 
 typedef enum {
@@ -131,4 +134,7 @@ void	xmlParserValidityWarning(void *ctx,
 void	xmlParserPrintFileInfo	(xmlParserInputPtr input);
 void	xmlParserPrintFileContext(xmlParserInputPtr input);
 
+#ifdef __cplusplus
+}
+#endif
 #endif /* __XML_ERROR_H__ */

@@ -12,6 +12,9 @@
 #ifndef __XML_XPATH_H__
 #define __XML_XPATH_H__
 
+#ifdef __cplusplus
+#define extern "C" {
+#endif
 #include "tree.h"
 
 typedef struct xmlXPathParserContext *xmlXPathParserContextPtr;
@@ -202,4 +205,7 @@ void		   xmlXPathFreeObject		(xmlXPathObjectPtr obj);
 xmlXPathObjectPtr  xmlXPathEvalExpression	(const xmlChar *str,
 						 xmlXPathContextPtr ctxt);
 
+#ifdef __cplusplus
+}
+#endif
 #endif /* ! __XML_XPATH_H__ */

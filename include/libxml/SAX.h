@@ -1,5 +1,5 @@
 /*
- * SAX.c : Default SAX handler interfaces.
+ * SAX.h : Default SAX handler interfaces.
  *
  * See Copyright for the status of this software.
  *
@@ -14,6 +14,10 @@
 
 #ifndef __XML_SAX_H__
 #define __XML_SAX_H__
+
+#ifdef __cplusplus
+#define extern "C" {
+#endif
 const xmlChar *	getPublicId			(void *ctx);
 const xmlChar *	getSystemId			(void *ctx);
 void	setDocumentLocator			(void *ctx,
@@ -105,4 +109,7 @@ void		cdataBlock			(void *ctx,
 
 void		xmlDefaultSAXHandlerInit	(void);
 void		htmlDefaultSAXHandlerInit	(void);
+#ifdef __cplusplus
+}
+#endif
 #endif /* __XML_SAX_H__ */

@@ -1,3 +1,7 @@
+Sat Oct 13 16:17:13 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/Makefile.am: missing globals.h
+
 Sat Oct 13 14:15:00 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* globals.c: added a couple of standard includes.

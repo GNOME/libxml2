@@ -30,7 +30,8 @@ xmlinc_HEADERS = \
 		xmlwin32version.h \
 		DOCBparser.h \
 		catalog.h \
-		threads.h
+		threads.h \
+		globals.h
 
 install-exec-hook:
 	$(mkinstalldirs) $(DESTDIR)$(xmlincdir)

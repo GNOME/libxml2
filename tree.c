@@ -2091,6 +2091,8 @@ xmlNewChild(xmlNodePtr parent, xmlNsPtr ns,
 	    cur = xmlNewDocNode((xmlDocPtr) parent, NULL, name, content);
 	else
 	    cur = xmlNewDocNode((xmlDocPtr) parent, ns, name, content);
+    } else if (parent->type == XML_DOCUMENT_FRAG_NODE) {
+	    cur = xmlNewDocNode( parent->doc, ns, name, content);
     } else {
 	return(NULL);
     }

@@ -1,3 +1,8 @@
+Mon Oct 28 13:51:55 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: applied patch from Christian Glahn to allow
+	  xmlNewChild() on document fragment nodes
+
 Sat Oct 26 15:27:00 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: Christian Glahn found a problem with a recent

@@ -16,3 +16,7 @@ ltconfig
 ltmain.sh
 update.log
 .deps
+*.lo
+.libs
+*.la
+tester

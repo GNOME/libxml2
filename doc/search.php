@@ -95,8 +95,8 @@ A:link, A:visited, A:active { text-decoration: underline }
         echo "<h1 align='center'>Search the documentation on XMLSoft.org</h1>";
     }
 ?>
-<p> The search service is very recent and should be based on a set
-of keywords.
+<p> The search service indexes only the XML API at the moment. To use it
+simply provide a set of keywords:
 <p>
 <form action="<?php echo "$PHP_SELF", "?query=", rawurlencode($query) ?>"
       enctype="application/x-www-form-urlencoded" method="GET">

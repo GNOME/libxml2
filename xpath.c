@@ -9529,6 +9529,8 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
     int equal, ret;
     xmlXPathCompExprPtr comp;
     xmlXPathObjectPtr arg1, arg2;
+    xmlNodePtr bak;
+    xmlDocPtr bakd;
 
     CHECK_ERROR0;
     comp = ctxt->comp;
@@ -9536,12 +9538,16 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
         case XPATH_OP_END:
             return (0);
         case XPATH_OP_AND:
+	    bakd = ctxt->context->doc;
+	    bak = ctxt->context->node;
             total += xmlXPathCompOpEval(ctxt, &comp->steps[op->ch1]);
 	    CHECK_ERROR0;
             xmlXPathBooleanFunction(ctxt, 1);
             if ((ctxt->value == NULL) || (ctxt->value->boolval == 0))
                 return (total);
             arg2 = valuePop(ctxt);
+	    ctxt->context->doc = bakd;
+	    ctxt->context->node = bak;
             total += xmlXPathCompOpEval(ctxt, &comp->steps[op->ch2]);
 	    if (ctxt->error) {
 		xmlXPathFreeObject(arg2);
@@ -9554,12 +9560,16 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
             xmlXPathFreeObject(arg2);
             return (total);
         case XPATH_OP_OR:
+	    bakd = ctxt->context->doc;
+	    bak = ctxt->context->node;
             total += xmlXPathCompOpEval(ctxt, &comp->steps[op->ch1]);
 	    CHECK_ERROR0;
             xmlXPathBooleanFunction(ctxt, 1);
             if ((ctxt->value == NULL) || (ctxt->value->boolval == 1))
                 return (total);
             arg2 = valuePop(ctxt);
+	    ctxt->context->doc = bakd;
+	    ctxt->context->node = bak;
             total += xmlXPathCompOpEval(ctxt, &comp->steps[op->ch2]);
 	    if (ctxt->error) {
 		xmlXPathFreeObject(arg2);
@@ -9572,8 +9582,12 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
             xmlXPathFreeObject(arg2);
             return (total);
         case XPATH_OP_EQUAL:
+	    bakd = ctxt->context->doc;
+	    bak = ctxt->context->node;
             total += xmlXPathCompOpEval(ctxt, &comp->steps[op->ch1]);
 	    CHECK_ERROR0;
+	    ctxt->context->doc = bakd;
+	    ctxt->context->node = bak;
             total += xmlXPathCompOpEval(ctxt, &comp->steps[op->ch2]);
 	    CHECK_ERROR0;
             equal = xmlXPathEqualValues(ctxt);
@@ -9583,18 +9597,27 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                 valuePush(ctxt, xmlXPathNewBoolean(!equal));
             return (total);
         case XPATH_OP_CMP:
+	    bakd = ctxt->context->doc;
+	    bak = ctxt->context->node;
             total += xmlXPathCompOpEval(ctxt, &comp->steps[op->ch1]);
 	    CHECK_ERROR0;
+	    ctxt->context->doc = bakd;
+	    ctxt->context->node = bak;
             total += xmlXPathCompOpEval(ctxt, &comp->steps[op->ch2]);
 	    CHECK_ERROR0;
             ret = xmlXPathCompareValues(ctxt, op->value, op->value2);
             valuePush(ctxt, xmlXPathNewBoolean(ret));
             return (total);
         case XPATH_OP_PLUS:
+	    bakd = ctxt->context->doc;
+	    bak = ctxt->context->node;
             total += xmlXPathCompOpEval(ctxt, &comp->steps[op->ch1]);
 	    CHECK_ERROR0;
-            if (op->ch2 != -1)
+            if (op->ch2 != -1) {
+		ctxt->context->doc = bakd;
+		ctxt->context->node = bak;
                 total += xmlXPathCompOpEval(ctxt, &comp->steps[op->ch2]);
+	    }
 	    CHECK_ERROR0;
             if (op->value == 0)
                 xmlXPathSubValues(ctxt);
@@ -9608,8 +9631,12 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
             }
             return (total);
         case XPATH_OP_MULT:
+	    bakd = ctxt->context->doc;
+	    bak = ctxt->context->node;
             total += xmlXPathCompOpEval(ctxt, &comp->steps[op->ch1]);
 	    CHECK_ERROR0;
+	    ctxt->context->doc = bakd;
+	    ctxt->context->node = bak;
             total += xmlXPathCompOpEval(ctxt, &comp->steps[op->ch2]);
 	    CHECK_ERROR0;
             if (op->value == 0)
@@ -9620,8 +9647,12 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                 xmlXPathModValues(ctxt);
             return (total);
         case XPATH_OP_UNION:
+	    bakd = ctxt->context->doc;
+	    bak = ctxt->context->node;
             total += xmlXPathCompOpEval(ctxt, &comp->steps[op->ch1]);
 	    CHECK_ERROR0;
+	    ctxt->context->doc = bakd;
+	    ctxt->context->node = bak;
             total += xmlXPathCompOpEval(ctxt, &comp->steps[op->ch2]);
 	    CHECK_ERROR0;
             CHECK_TYPE0(XPATH_NODESET);

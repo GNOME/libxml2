@@ -1,3 +1,8 @@
+Fri Mar 29 18:25:54 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c: Fix bug #76927 forgot to save some context
+	  when evaluating binary expressions
+
 Thu Mar 28 19:22:48 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in: fixed configure for MPE/iX from Markus Henke

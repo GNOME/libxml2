@@ -98,6 +98,7 @@ void testXPath(const char *str) {
     } else {
 #endif
 	ctxt = xmlXPathNewContext(document);
+	ctxt->node = xmlDocGetRootElement(document);
 	if (expr)
 	    res = xmlXPathEvalExpression(BAD_CAST str, ctxt);
 	else

@@ -1,3 +1,8 @@
+Wed Jan  3 16:19:39 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* testXPath.c xpath.c: fixing the XPath union expressions problem
+	  reported by  Martin Vidner <martin@artax.karlin.mff.cuni.cz>
+
 Wed Jan  3 14:22:33 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xmllint.c: Made is so if the file name is "-" is will read form

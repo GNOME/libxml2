@@ -4730,12 +4730,13 @@ xmlXPathEvalUnionExpr(xmlXPathParserContextPtr ctxt) {
     xmlXPathEvalPathExpr(ctxt);
     CHECK_ERROR;
     SKIP_BLANKS;
-    if (CUR == '|') {
-	xmlXPathObjectPtr obj1,obj2;
+    while (CUR == '|') {
+	xmlXPathObjectPtr obj1,obj2, tmp;
 
 	CHECK_TYPE(XPATH_NODESET);
 	obj1 = valuePop(ctxt);
-	valuePush(ctxt, xmlXPathNewNodeSet(ctxt->context->node));
+	tmp = xmlXPathNewNodeSet(ctxt->context->node);
+	valuePush(ctxt, tmp);
 
 	NEXT;
 	SKIP_BLANKS;
@@ -4745,6 +4746,10 @@ xmlXPathEvalUnionExpr(xmlXPathParserContextPtr ctxt) {
 	obj2 = valuePop(ctxt);
 	obj1->nodesetval = xmlXPathNodeSetMerge(obj1->nodesetval,
 		                                obj2->nodesetval);
+	if (ctxt->value == tmp) {
+	    tmp = valuePop(ctxt);
+	    xmlXPathFreeObject(tmp);
+	}
 	valuePush(ctxt, obj1);
 	xmlXPathFreeObject(obj2);
 	SKIP_BLANKS;

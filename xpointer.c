@@ -656,41 +656,6 @@ xmlXPtrWrapLocationSet(xmlLocationSetPtr val) {
 #define CURRENT (*ctxt->cur)
 #define NEXT ((*ctxt->cur) ?  ctxt->cur++: ctxt->cur)
 
-/**
- * xmlXPtrParseName:
- * @ctxt:  the XPointer Parser context
- *
- * parse an XML name
- *
- * [4] NameChar ::= Letter | Digit | '.' | '-' | '_' | ':' |
- *                  CombiningChar | Extender
- *
- * [5] Name ::= (Letter | '_' | ':') (NameChar)*
- *
- * Returns the namespace name or NULL
- */
-
-xmlChar *
-xmlXPtrParseName(xmlXPathParserContextPtr ctxt) {
-    const xmlChar *q;
-    xmlChar *ret = NULL;
-
-    if (!IS_LETTER(CUR) && (CUR != '_')) return(NULL);
-    q = NEXT;
-
-    /* TODO Make this UTF8 compliant !!! */
-    while ((IS_LETTER(CUR)) || (IS_DIGIT(CUR)) ||
-           (CUR == '.') || (CUR == '-') ||
-	   (CUR == '_') || (CUR == ':') ||
-	   (IS_COMBINING(CUR)) ||
-	   (IS_EXTENDER(CUR)))
-	NEXT;
-    
-    ret = xmlStrndup(q, CUR_PTR - q);
-
-    return(ret);
-}
-
 /*
  * xmlXPtrGetChildNo:
  * @ctxt:  the XPointer Parser context
@@ -781,7 +746,7 @@ xmlXPtrEvalXPtrPart(xmlXPathParserContextPtr ctxt, xmlChar *name) {
     int level;
 
     if (name == NULL)
-    name = xmlXPtrParseName(ctxt);
+    name = xmlXPathParseName(ctxt);
     if (name == NULL)
 	XP_ERROR(XPATH_EXPR_ERROR);
 
@@ -878,7 +843,7 @@ xmlXPtrEvalXPtrPart(xmlXPathParserContextPtr ctxt, xmlChar *name) {
 void
 xmlXPtrEvalFullXPtr(xmlXPathParserContextPtr ctxt, xmlChar *name) {
     if (name == NULL)
-    name = xmlXPtrParseName(ctxt);
+    name = xmlXPathParseName(ctxt);
     if (name == NULL)
 	XP_ERROR(XPATH_EXPR_ERROR);
     while (name != NULL) {
@@ -928,7 +893,7 @@ xmlXPtrEvalFullXPtr(xmlXPathParserContextPtr ctxt, xmlChar *name) {
 	 * Is there another XPoointer part.
 	 */
 	SKIP_BLANKS;
-	name = xmlXPtrParseName(ctxt);
+	name = xmlXPathParseName(ctxt);
     }
 }
 
@@ -992,7 +957,7 @@ xmlXPtrEvalXPointer(xmlXPathParserContextPtr ctxt) {
     } else {
 	xmlChar *name;
 
-	name = xmlXPtrParseName(ctxt);
+	name = xmlXPathParseName(ctxt);
 	if (name == NULL)
 	    XP_ERROR(XPATH_EXPR_ERROR);
 	if (CUR == '(') {

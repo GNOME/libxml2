@@ -413,10 +413,11 @@ xmlXPathNodeSetAdd(xmlNodeSetPtr cur, xmlNodePtr val) {
 
 /**
  * xmlXPathNodeSetMerge:
- * @val1:  the first NodeSet
+ * @val1:  the first NodeSet or NULL
  * @val2:  the second NodeSet
  *
  * Merges two nodesets, all nodes from @val2 are added to @val1
+ * if @val1 is NULL, a new set is created and copied from @val2
  *
  * Returns val1 once extended or NULL in case of error.
  */
@@ -424,8 +425,10 @@ xmlNodeSetPtr
 xmlXPathNodeSetMerge(xmlNodeSetPtr val1, xmlNodeSetPtr val2) {
     int i;
 
-    if (val1 == NULL) return(NULL);
     if (val2 == NULL) return(val1);
+    if (val1 == NULL) {
+	val1 = xmlXPathNodeSetCreate(NULL);
+    }
 
     /*
      * !!!!! this can be optimized a lot, knowing that both
@@ -644,29 +647,216 @@ xmlXPathFreeNodeSetList(xmlXPathObjectPtr obj) {
 
 /************************************************************************
  *									*
- *			Routines to handle Variable			*
- *									*
- *			UNIMPLEMENTED CURRENTLY				*
+ *		Routines to handle extra functions			*
  *									*
  ************************************************************************/
 
 /**
- * xmlXPathVariablelookup:
- * @ctxt:  the XPath Parser context
- * @prefix:  the variable name namespace if any
+ * xmlXPathRegisterFunc:
+ * @ctxt:  the XPath context
+ * @name:  the function name
+ * @f:  the function implementation or NULL
+ *
+ * Register a new function. If @f is NULL it unregisters the function
+ *
+ * Returns 0 in case of success, -1 in case of error
+ */
+int		  
+xmlXPathRegisterFunc(xmlXPathContextPtr ctxt, const xmlChar *name,
+		     xmlXPathFunction f) {
+    int i;
+
+    if (ctxt == NULL)
+	return(-1);
+    if (name == NULL)
+	return(-1);
+
+    for (i = 0;i < ctxt->nb_funcs;i++) {
+	if (xmlStrEqual(ctxt->funcs[i]->name, name)) {
+	    /*
+	     * It's just an update or a removal
+	     */
+	    ctxt->funcs[i]->func = f;
+	    return(0);
+	}
+    }
+    if (ctxt->max_funcs <= 0) {
+	ctxt->max_funcs = 10;
+	ctxt->nb_funcs = 0;
+	ctxt->funcs = (xmlXPathFuncPtr *) xmlMalloc(ctxt->max_funcs *
+		                                    sizeof(xmlXPathFuncPtr));
+    } else if (ctxt->max_funcs <= ctxt->nb_funcs) {
+	ctxt->max_funcs *= 2;
+	ctxt->funcs = (xmlXPathFuncPtr *) xmlRealloc(ctxt->funcs,
+		                  ctxt->max_funcs * sizeof(xmlXPathFuncPtr));
+    }
+    if (ctxt->funcs == NULL) {
+        fprintf(xmlXPathDebug, "xmlXPathRegisterFunc: out of memory\n");
+	return(-1);
+    }
+    ctxt->funcs[i]->name = xmlStrdup(name);
+    ctxt->funcs[i]->func = f;
+    return(0);
+}
+
+/**
+ * xmlXPathFunctionLookup:
+ * @ctxt:  the XPath context
+ * @name:  the function name
+ *
+ * Search in the Function array of the context for the given
+ * function.
+ *
+ * Returns the xmlXPathFunction or NULL if not found
+ */
+xmlXPathFunction
+xmlXPathFunctionLookup(xmlXPathContextPtr ctxt, const xmlChar *name) {
+    int i;
+
+    if (ctxt == NULL)
+	return(NULL);
+    if (name == NULL)
+	return(NULL);
+
+    for (i = 0;i < ctxt->nb_funcs;i++) {
+	if (xmlStrEqual(ctxt->funcs[i]->name, name)) {
+	    return(ctxt->funcs[i]->func);
+	}
+    }
+    return(NULL);
+}
+
+/**
+ * xmlXPathRegisteredFuncsCleanup:
+ * @ctxt:  the XPath context
+ *
+ * Cleanup the XPath context data associated to registered functions
+ */
+void
+xmlXPathRegisteredFuncsCleanup(xmlXPathContextPtr ctxt) {
+    int i;
+
+    if (ctxt == NULL)
+	return;
+
+    for (i = 0;i < ctxt->nb_funcs;i++) {
+	xmlFree((xmlChar *) ctxt->funcs[i]->name);
+    }
+    ctxt->nb_funcs = -1;
+    ctxt->max_funcs = -1;
+    if (ctxt->funcs != NULL)
+	xmlFree(ctxt->funcs);
+    ctxt->funcs = NULL;
+}
+
+/************************************************************************
+ *									*
+ *			Routines to handle Variable			*
+ *									*
+ ************************************************************************/
+
+/**
+ * xmlXPathRegisterVariable:
+ * @ctxt:  the XPath context
+ * @name:  the variable name
+ * @value:  the variable value or NULL
+ *
+ * Register a new variable value. If @value is NULL it unregisters
+ * the variable
+ *
+ * Returns 0 in case of success, -1 in case of error
+ */
+int		  
+xmlXPathRegisterVariable(xmlXPathContextPtr ctxt, const xmlChar *name,
+			 xmlXPathObjectPtr value) {
+    int i;
+
+    if (ctxt == NULL)
+	return(-1);
+    if (name == NULL)
+	return(-1);
+
+    for (i = 0;i < ctxt->nb_variables;i++) {
+	if (xmlStrEqual(ctxt->variables[i]->name, name)) {
+	    /*
+	     * It's just an update or a removal
+	     */
+	    if (ctxt->variables[i]->value != NULL) {
+		xmlXPathFreeObject(ctxt->variables[i]->value);
+	    }
+	    ctxt->variables[i]->value = xmlXPathObjectCopy(value);
+	    return(0);
+	}
+    }
+    if (ctxt->max_variables <= 0) {
+	ctxt->max_variables = 10;
+	ctxt->nb_variables = 0;
+	ctxt->variables = (xmlXPathVariablePtr *)
+	    xmlMalloc(ctxt->max_variables * sizeof(xmlXPathVariablePtr));
+    } else if (ctxt->max_variables <= ctxt->nb_variables) {
+	ctxt->max_variables *= 2;
+	ctxt->variables = (xmlXPathVariablePtr *)
+	    xmlRealloc(ctxt->variables,
+		       ctxt->max_variables * sizeof(xmlXPathVariablePtr));
+    }
+    if (ctxt->variables == NULL) {
+        fprintf(xmlXPathDebug, "xmlXPathRegisterVariable: out of memory\n");
+	return(-1);
+    }
+    ctxt->variables[i]->name = xmlStrdup(name);
+    ctxt->variables[i]->value = xmlXPathObjectCopy(value);
+    return(0);
+}
+
+/**
+ * xmlXPathVariableLookup:
+ * @ctxt:  the XPath context
  * @name:  the variable name
  *
  * Search in the Variable array of the context for the given
  * variable value.
  *
- * UNIMPLEMENTED: always return NULL.
- *
  * Returns the value or NULL if not found
  */
 xmlXPathObjectPtr
-xmlXPathVariablelookup(xmlXPathParserContextPtr ctxt,
-                       const xmlChar *prefix, const xmlChar *name) {
+xmlXPathVariableLookup(xmlXPathContextPtr ctxt, const xmlChar *name) {
+    int i;
+
+    if (ctxt == NULL)
+	return(NULL);
+    if (name == NULL)
+	return(NULL);
+
+    for (i = 0;i < ctxt->nb_variables;i++) {
+	if (xmlStrEqual(ctxt->variables[i]->name, name)) {
+	    return(xmlXPathObjectCopy(ctxt->variables[i]->value));
+	}
+    }
     return(NULL);
+}
+
+/**
+ * xmlXPathRegisteredVariablesCleanup:
+ * @ctxt:  the XPath context
+ *
+ * Cleanup the XPath context data associated to registered variables
+ */
+void
+xmlXPathRegisteredVariablesCleanup(xmlXPathContextPtr ctxt) {
+    int i;
+
+    if (ctxt == NULL)
+	return;
+
+    for (i = 0;i < ctxt->nb_variables;i++) {
+	xmlFree((xmlChar *) ctxt->variables[i]->name);
+	xmlXPathFreeObject(ctxt->variables[i]->value);
+    }
+    ctxt->nb_variables = -1;
+    ctxt->max_variables = -1;
+    if (ctxt->variables != NULL)
+	xmlFree(ctxt->variables);
+    ctxt->variables = NULL;
 }
 
 /************************************************************************
@@ -770,6 +960,53 @@ xmlXPathNewCString(const char *val) {
 }
 
 /**
+ * xmlXPathObjectCopy:
+ * @val:  the original object
+ *
+ * allocate a new copy of a given object
+ *
+ * Returns the newly created object.
+ */
+xmlXPathObjectPtr
+xmlXPathObjectCopy(xmlXPathObjectPtr val) {
+    xmlXPathObjectPtr ret;
+
+    if (val == NULL)
+	return(NULL);
+
+    ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
+    if (ret == NULL) {
+        fprintf(xmlXPathDebug, "xmlXPathObjectCopy: out of memory\n");
+	return(NULL);
+    }
+    memcpy(ret, val , (size_t) sizeof(xmlXPathObject));
+    switch (val->type) {
+	case XPATH_BOOLEAN:
+	case XPATH_NUMBER:
+	case XPATH_STRING:
+	case XPATH_POINT:
+	case XPATH_RANGE:
+	    break;
+	case XPATH_NODESET:
+	    ret->nodesetval = xmlXPathNodeSetMerge(NULL, val->nodesetval);
+	    break;
+	case XPATH_LOCATIONSET:
+#ifdef LIBXML_XPTR_ENABLED
+	{
+	    xmlLocationSetPtr loc = val->user;
+	    ret->user = (void *) xmlXPtrLocationSetMerge(NULL, loc);
+	    break;
+	}
+#endif
+	case XPATH_UNDEFINED:
+	case XPATH_USERS:
+	    fprintf(xmlXPathDebug, "xmlXPathObjectCopy: unsupported type %d\n",
+		    val->type);
+    }
+    return(ret);
+}
+
+/**
  * xmlXPathFreeObject:
  * @obj:  the object to free
  *
@@ -860,6 +1097,8 @@ xmlXPathFreeContext(xmlXPathContextPtr ctxt) {
     if (ctxt->namespaces != NULL)
         xmlFree(ctxt->namespaces);
 
+    xmlXPathRegisteredFuncsCleanup(ctxt);
+    xmlXPathRegisteredVariablesCleanup(ctxt);
 #ifdef DEBUG
     memset(ctxt, 0xB , (size_t) sizeof(xmlXPathContext));
 #endif
@@ -3349,6 +3588,41 @@ xmlXPathParseQName(xmlXPathParserContextPtr ctxt, xmlChar **prefix) {
 }
 
 /**
+ * xmlXPathParseName:
+ * @ctxt:  the XPointer Parser context
+ *
+ * parse an XML name
+ *
+ * [4] NameChar ::= Letter | Digit | '.' | '-' | '_' | ':' |
+ *                  CombiningChar | Extender
+ *
+ * [5] Name ::= (Letter | '_' | ':') (NameChar)*
+ *
+ * Returns the namespace name or NULL
+ */
+
+xmlChar *
+xmlXPathParseName(xmlXPathParserContextPtr ctxt) {
+    const xmlChar *q;
+    xmlChar *ret = NULL;
+
+    if (!IS_LETTER(CUR) && (CUR != '_')) return(NULL);
+    q = NEXT;
+
+    /* TODO Make this UTF8 compliant !!! */
+    while ((IS_LETTER(CUR)) || (IS_DIGIT(CUR)) ||
+           (CUR == '.') || (CUR == '-') ||
+	   (CUR == '_') || (CUR == ':') ||
+	   (IS_COMBINING(CUR)) ||
+	   (IS_EXTENDER(CUR)))
+	NEXT;
+    
+    ret = xmlStrndup(q, CUR_PTR - q);
+
+    return(ret);
+}
+
+/**
  * xmlXPathStringEvalNumber:
  * @str:  A string to scan
  *
@@ -3503,23 +3777,21 @@ xmlXPathEvalLiteral(xmlXPathParserContextPtr ctxt) {
 void
 xmlXPathEvalVariableReference(xmlXPathParserContextPtr ctxt) {
     xmlChar *name;
-    xmlChar *prefix;
     xmlXPathObjectPtr value;
 
     SKIP_BLANKS;
     if (CUR != '$') {
 	XP_ERROR(XPATH_VARIABLE_REF_ERROR);
     }
-    name = xmlXPathParseQName(ctxt, &prefix);
+    name = xmlXPathParseName(ctxt);
     if (name == NULL) {
 	XP_ERROR(XPATH_VARIABLE_REF_ERROR);
     }
-    value = xmlXPathVariablelookup(ctxt, prefix, name);
+    value = xmlXPathVariableLookup(ctxt->context, name);
     if (value == NULL) {
 	XP_ERROR(XPATH_UNDEF_VARIABLE_ERROR);
     }
     valuePush(ctxt, value);
-    if (prefix != NULL) xmlFree(prefix);
     xmlFree(name);
     SKIP_BLANKS;
 }
@@ -3570,6 +3842,9 @@ xmlXPathIsNodeType(const xmlChar *name) {
  */
 xmlXPathFunction
 xmlXPathIsFunction(xmlXPathParserContextPtr ctxt, const xmlChar *name) {
+    if (name == NULL)
+	return(NULL);
+
     switch (name[0]) {
         case 'b':
 	    if (xmlStrEqual(name, BAD_CAST "boolean"))
@@ -3648,7 +3923,7 @@ xmlXPathIsFunction(xmlXPathParserContextPtr ctxt, const xmlChar *name) {
 	        return(xmlXPathTranslateFunction);
 	    break;
     }
-    return(NULL);
+    return(xmlXPathFunctionLookup(ctxt->context, name));
 }
  
 /**

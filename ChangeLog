@@ -1,3 +1,8 @@
+Wed Oct 11 12:41:30 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* xpath.[ch] xpointer.[ch]: worked on XPath functions and variable
+	  handlings (registration, lookup, cleanup)
+
 Wed Oct 11 01:46:44 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* configure.in Makefile.am include/makefile.am: adding XPointer

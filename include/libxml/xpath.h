@@ -288,6 +288,7 @@ void		  xmlXPathIdFunction		(xmlXPathParserContextPtr ctxt,
 					 	int nargs);
 void		  xmlXPathRoot			(xmlXPathParserContextPtr ctxt);
 void		  xmlXPathEvalExpr		(xmlXPathParserContextPtr ctxt);
+xmlChar *	  xmlXPathParseName		(xmlXPathParserContextPtr ctxt);
 
 /************************************************************************
  *									*
@@ -296,20 +297,14 @@ void		  xmlXPathEvalExpr		(xmlXPathParserContextPtr ctxt);
  ************************************************************************/
 
 /**
- * Registering extensions to the expression language
+ * Extending a context
  */
-/* TODO */ int	   xmlXPathRegisterType		(xmlXPathContextPtr ctxt,
-						 const xmlChar *name,
-                                                 xmlXPathConvertFunc f);
-/* TODO */ int	   xmlXPathRegisterAxis		(xmlXPathContextPtr ctxt,
-						 const xmlChar *name,
-						 xmlXPathAxisFunc f);
-/* TODO */ int	   xmlXPathRegisterFunc		(xmlXPathContextPtr ctxt,
+int		   xmlXPathRegisterFunc		(xmlXPathContextPtr ctxt,
 						 const xmlChar *name,
 						 xmlXPathFunction f);
-/* TODO */ int	   xmlXPathRegisterVariable	(xmlXPathContextPtr ctxt,
+int		   xmlXPathRegisterVariable	(xmlXPathContextPtr ctxt,
 						 const xmlChar *name,
-						 xmlXPathObject value);
+						 xmlXPathObjectPtr value);
 
 /**
  * Evaluation functions.
@@ -327,6 +322,7 @@ xmlXPathObjectPtr  xmlXPathEvalExpression	(const xmlChar *str,
 xmlNodeSetPtr	   xmlXPathNodeSetCreate	(xmlNodePtr val);
 void		   xmlXPathFreeNodeSetList	(xmlXPathObjectPtr obj);
 void		   xmlXPathFreeNodeSet		(xmlNodeSetPtr obj);
+xmlXPathObjectPtr  xmlXPathObjectCopy		(xmlXPathObjectPtr val);
 
 
 #ifdef __cplusplus

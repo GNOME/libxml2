@@ -1,3 +1,11 @@
+Sun Jan 28 08:37:03 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* Makefile.am configure.in libxml.spec.in example/Makefile.am:
+	  Changed the library name, in order to get libxml-devel and
+	  libxml2-devel to coexist on a single system
+	* xml-config.1 xml-config.in xmlConf.sh.in: renamed
+	* xml2-config.1 xml2-config.in xml2Conf.sh.in: new files
+
 Sat Jan 27 19:58:22 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* Makefile.am configure.in libxml-2.0.pc.in: started working on getting

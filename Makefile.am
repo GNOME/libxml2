@@ -8,9 +8,9 @@ noinst_PROGRAMS=testSAX testHTML testXPath testURI
 
 bin_PROGRAMS = xmllint
 
-bin_SCRIPTS=xml-config
+bin_SCRIPTS=xml2-config
 
-lib_LTLIBRARIES = libxml.la
+lib_LTLIBRARIES = libxml2.la
 libxml2_la_LIBADD = @Z_LIBS@
 
 libxml2_la_LDFLAGS = -version-info @LIBXML_VERSION_INFO@
@@ -41,7 +41,7 @@ libxml2_la_SOURCES = \
 DEPS = $(top_builddir)/libxml2.la
 LDADDS = $(top_builddir)/libxml2.la @Z_LIBS@ @M_LIBS@
 
-man_MANS = xmllint.1 xml-config.1 libxml.4
+man_MANS = xmllint.1 xml2-config.1 libxml.4
 
 m4datadir = $(datadir)/aclocal
 m4data_DATA = libxml.m4
@@ -392,19 +392,19 @@ cleantar:
 rpm: cleantar distcheck
 	rpm -ta $(distdir).tar.gz
 
-## We create xmlConf.sh here and not from configure because we want
+## We create xml2Conf.sh here and not from configure because we want
 ## to get the paths expanded correctly.  Macros like srcdir are given
 ## the value NONE in configure if the user doesn't specify them (this
 ## is an autoconf feature, not a bug).
 
 confexecdir=$(libdir)
-confexec_DATA = xmlConf.sh
+confexec_DATA = xml2Conf.sh
 
-CLEANFILES=xmlConf.sh
+CLEANFILES=xml2Conf.sh
 
 confexecdir=$(libdir)
-confexec_DATA = xmlConf.sh
-EXTRA_DIST = xmlConf.sh.in libxml.spec.in libxml.spec libxml.m4 \
+confexec_DATA = xml2Conf.sh
+EXTRA_DIST = xml2Conf.sh.in libxml.spec.in libxml.spec libxml.m4 \
              example/Makefile.am example/gjobread.c example/gjobs.xml \
 	     $(man_MANS) libxml-2.0.pc.in xmlversion.h.in \
 	     win32/README.MSDev win32/Makefile.mingw \
@@ -414,11 +414,11 @@ EXTRA_DIST = xmlConf.sh.in libxml.spec.in libxml.spec libxml.m4 \
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libxml-2.0.pc
 
-xmlConf.sh: xmlConf.sh.in Makefile
+xml2Conf.sh: xml2Conf.sh.in Makefile
 ## Use sed and then mv to avoid problems if the user interrupts.
 	sed -e 's?\@XML_LIBDIR\@?$(XML_LIBDIR)?g' \
 	    -e 's?\@XML_INCLUDEDIR\@?$(XML_INCLUDEDIR)?g' \
 	    -e 's?\@XML_LIBS\@?$(XML_LIBS)?g' \
 	    -e 's?\@VERSION\@?$(VERSION)?g' \
-	      < $(srcdir)/xmlConf.sh.in > xmlConf.tmp \
-	  && mv xmlConf.tmp xmlConf.sh
+	      < $(srcdir)/xml2Conf.sh.in > xml2Conf.tmp \
+	  && mv xml2Conf.tmp xml2Conf.sh

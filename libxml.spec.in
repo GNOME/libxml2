@@ -110,7 +110,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %doc AUTHORS ChangeLog NEWS README COPYING COPYING.LIB TODO
 %doc /usr/man/man1/xmllint.1*
-%doc /usr/man/man1/xml-config.1*
+%doc /usr/man/man1/xml2-config.1*
 %doc /usr/man/man4/libxml.4*
 %doc doc/*.html doc/html
 
@@ -124,4 +124,4 @@ rm -rf $RPM_BUILD_ROOT
 %{prefix}/lib/*a
 %{prefix}/lib/*.sh
 %{prefix}/include/*
-%{prefix}/bin/xml-config
+%{prefix}/bin/xml2-config

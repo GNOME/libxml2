@@ -1,3 +1,8 @@
+2002-03-13  jacob berkman  <jacob@ximian.com>
+
+	* python/Makefile.am: remove LDADD and CFLAGS as this is broken
+	usage, redundant, and gcc specific
+
 Wed Mar 13 11:00:59 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: speedup some node selection operations, this can

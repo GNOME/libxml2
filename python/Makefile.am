@@ -28,9 +28,6 @@ mylibs = \
 
 all: libxml2mod.so libxml2.py
 
-LDADD = -lxml2
-CFLAGS = -Wall -g
-
 pythondir = $(prefix)/lib/python${PYTHON_VERSION}/site-packages
 python_PROGRAMS = libxml2mod.so
 

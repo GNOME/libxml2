@@ -1,3 +1,9 @@
+Wed Feb 25 12:50:53 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* debugXML.c relaxng.c valid.c xinclude.c xmllint.c xmlreader.c:
+	  fixing compilation and link option when configuring with
+	  --without-valid should fix #135309
+
 Wed Feb 25 11:36:06 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* catalog.c: fixed the main issues reported by Peter Breitenlohner

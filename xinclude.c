@@ -132,6 +132,7 @@ xmlXIncludeErr(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node, int error,
 		    msg, (const char *) extra);
 }
 
+#if 0
 /**
  * xmlXIncludeWarn:
  * @ctxt: the XInclude context
@@ -150,6 +151,7 @@ xmlXIncludeWarn(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node, int error,
 		    (const char *) extra, NULL, NULL, 0, 0,
 		    msg, (const char *) extra);
 }
+#endif
 
 /**
  * xmlXIncludeGetProp:

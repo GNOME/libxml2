@@ -704,20 +704,16 @@ static void streamFile(char *filename) {
 	}
 	if ((timing) && (!repeat)) {
 #ifdef LIBXML_SCHEMAS_ENABLED
-	    if ((valid) || (relaxng != NULL))
+	    if (relaxng != NULL)
 		endTimer("Parsing and validating");
 	    else
-		endTimer("Parsing");
-#else
+#endif
 #ifdef LIBXML_VALID_ENABLED
 	    if (valid)
 		endTimer("Parsing and validating");
 	    else
-		endTimer("Parsing");
-#else
-	    endTimer("Parsing");
-#endif /* LIBXML_VALID_ENABLED */
 #endif
+	    endTimer("Parsing");
 	}
 
 #ifdef LIBXML_VALID_ENABLED

@@ -877,6 +877,7 @@ static void
 xmlTextReaderValidatePush(xmlTextReaderPtr reader ATTRIBUTE_UNUSED) {
     xmlNodePtr node = reader->node;
 
+#ifdef LIBXML_VALID_ENABLED
     if ((reader->validate == XML_TEXTREADER_VALIDATE_DTD) &&
         (reader->ctxt != NULL) && (reader->ctxt->validate == 1)) {
 	if ((node->ns == NULL) || (node->ns->prefix == NULL)) {
@@ -894,8 +895,10 @@ xmlTextReaderValidatePush(xmlTextReaderPtr reader ATTRIBUTE_UNUSED) {
 	    if (qname != NULL)
 		xmlFree(qname);
 	}
+    }
+#endif /* LIBXML_VALID_ENABLED */
 #ifdef LIBXML_SCHEMAS_ENABLED
-    } else if ((reader->validate == XML_TEXTREADER_VALIDATE_RNG) &&
+    if ((reader->validate == XML_TEXTREADER_VALIDATE_RNG) &&
                (reader->rngValidCtxt != NULL)) {
 	int ret;
 
@@ -920,8 +923,8 @@ printf("Expand failed !\n");
 	}
 	if (ret != 1)
 	    reader->rngValidErrors++;
-#endif
     }
+#endif
 }
 
 /**
@@ -935,12 +938,15 @@ printf("Expand failed !\n");
 static void
 xmlTextReaderValidateCData(xmlTextReaderPtr reader,
                            const xmlChar *data, int len) {
+#ifdef LIBXML_VALID_ENABLED
     if ((reader->validate == XML_TEXTREADER_VALIDATE_DTD) &&
         (reader->ctxt != NULL) && (reader->ctxt->validate == 1)) {
 	reader->ctxt->valid &= xmlValidatePushCData(&reader->ctxt->vctxt,
 	                                            data, len);
+    }
+#endif /* LIBXML_VALID_ENABLED */
 #ifdef LIBXML_SCHEMAS_ENABLED
-    } else if ((reader->validate == XML_TEXTREADER_VALIDATE_RNG) &&
+    if ((reader->validate == XML_TEXTREADER_VALIDATE_RNG) &&
                (reader->rngValidCtxt != NULL)) {
 	int ret;
 
@@ -948,8 +954,8 @@ xmlTextReaderValidateCData(xmlTextReaderPtr reader,
 	ret = xmlRelaxNGValidatePushCData(reader->rngValidCtxt, data, len);
 	if (ret != 1)
 	    reader->rngValidErrors++;
-#endif
     }
+#endif
 }
 
 /**
@@ -962,6 +968,7 @@ static void
 xmlTextReaderValidatePop(xmlTextReaderPtr reader) {
     xmlNodePtr node = reader->node;
 
+#ifdef LIBXML_VALID_ENABLED
     if ((reader->validate == XML_TEXTREADER_VALIDATE_DTD) &&
         (reader->ctxt != NULL) && (reader->ctxt->validate == 1)) {
 	if ((node->ns == NULL) || (node->ns->prefix == NULL)) {
@@ -979,8 +986,10 @@ xmlTextReaderValidatePop(xmlTextReaderPtr reader) {
 	    if (qname != NULL)
 		xmlFree(qname);
 	}
+    }
+#endif /* LIBXML_VALID_ENABLED */
 #ifdef LIBXML_SCHEMAS_ENABLED
-    } else if ((reader->validate == XML_TEXTREADER_VALIDATE_RNG) &&
+    if ((reader->validate == XML_TEXTREADER_VALIDATE_RNG) &&
                (reader->rngValidCtxt != NULL)) {
 	int ret;
 
@@ -994,8 +1003,8 @@ xmlTextReaderValidatePop(xmlTextReaderPtr reader) {
 					   node);
 	if (ret != 1)
 	    reader->rngValidErrors++;
-#endif
     }
+#endif
 }
 
 /**

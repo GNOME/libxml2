@@ -10464,6 +10464,7 @@ xmlRelaxNGValidateDocument(xmlRelaxNGValidCtxtPtr ctxt, xmlDocPtr doc)
         xmlRelaxNGDumpValidError(ctxt);
     }
 #endif
+#ifdef LIBXML_VALID_ENABLED
     if (ctxt->idref == 1) {
         xmlValidCtxt vctxt;
 
@@ -10476,6 +10477,7 @@ xmlRelaxNGValidateDocument(xmlRelaxNGValidCtxtPtr ctxt, xmlDocPtr doc)
         if (xmlValidateDocumentFinal(&vctxt, doc) != 1)
             ret = -1;
     }
+#endif /* LIBXML_VALID_ENABLED */
     if ((ret == 0) && (ctxt->errNo != XML_RELAXNG_OK))
         ret = -1;
 

@@ -34,6 +34,7 @@
 
 /*
  * Setup stuff for floating point
+ * The lack of portability of this section of the libc is annoying !
  */
 double xmlXPathNAN = 0;
 double xmlXPathPINF = 1;
@@ -88,7 +89,16 @@ int isinf(double d) {
 }
 #elif defined(finite) || defined(HAVE_FINITE)
 int isinf(double x) { return !finite(x) && x==x; }
-#endif /* ! HAVE_FPCLASS */
+#elif defined(HUGE_VAL)
+static int isinf(double x)
+{
+    if (x == HUGE_VAL)
+        return(1);
+    if (x == -HUGE_VAL)
+        return(-1);
+    return(0);
+}
+#endif 
 
 #endif /* ! HAVE_ISINF */
 #endif /* ! defined(isinf) */
@@ -309,6 +319,10 @@ xmlXPatherror(xmlXPathParserContextPtr ctxt, const char *file,
 #define ERROR(X)							\
     { xmlXPatherror(ctxt, __FILE__, __LINE__, X);			\
       ctxt->error = (X); return; }
+
+#define ERROR0(X)							\
+    { xmlXPatherror(ctxt, __FILE__, __LINE__, X);			\
+      ctxt->error = (X); return(0); }
 
 #define CHECK_TYPE(typeval)						\
     if ((ctxt->value == NULL) || (ctxt->value->type != typeval))	\
@@ -875,69 +889,272 @@ void xmlXPathNumberFunction(xmlXPathParserContextPtr ctxt, int nargs);
     }
 
 /**
+ * xmlXPathEqualNodeSetString
+ * @arg:  the nodeset object argument
+ * @str:  the string to compare to.
+ *
+ * Implement the equal operation on XPath objects content: @arg1 == @arg2
+ * If one object to be compared is a node-set and the other is a string,
+ * then the comparison will be true if and only if there is a node in
+ * the node-set such that the result of performing the comparison on the
+ * string-value of the node and the other string is true.
+ *
+ * Returns 0 or 1 depending on the results of the test.
+ */
+int
+xmlXPathEqualNodeSetString(xmlXPathObjectPtr arg, const CHAR *str) {
+    int i;
+    xmlNodeSetPtr ns;
+    CHAR *str2;
+
+    if ((str == NULL) || (arg == NULL) || (arg->type != XPATH_NODESET))
+        return(0);
+    ns = arg->nodesetval;
+    for (i = 0;i < ns->nodeNr;i++) {
+         str2 = xmlNodeGetContent(ns->nodeTab[i]);
+	 if ((str2 != NULL) && (!xmlStrcmp(str, str2))) {
+	     free(str2);
+	     return(1);
+	 }
+	 free(str2);
+    }
+    return(0);
+}
+
+/**
+ * xmlXPathEqualNodeSetFloat
+ * @arg:  the nodeset object argument
+ * @f:  the float to compare to
+ *
+ * Implement the equal operation on XPath objects content: @arg1 == @arg2
+ * If one object to be compared is a node-set and the other is a number,
+ * then the comparison will be true if and only if there is a node in
+ * the node-set such that the result of performing the comparison on the
+ * number to be compared and on the result of converting the string-value
+ * of that node to a number using the number function is true.
+ *
+ * Returns 0 or 1 depending on the results of the test.
+ */
+int
+xmlXPathEqualNodeSetFloat(xmlXPathObjectPtr arg, float f) {
+    CHAR buf[100] = "";
+
+    if ((arg == NULL) || (arg->type != XPATH_NODESET))
+        return(0);
+
+    if (isnan(f))
+	sprintf(buf, "NaN");
+    else if (isinf(f) > 0)
+	sprintf(buf, "+Infinity");
+    else if (isinf(f) < 0)
+	sprintf(buf, "-Infinity");
+    else
+	sprintf(buf, "%0g", f);
+
+    return(xmlXPathEqualNodeSetString(arg, buf));
+}
+
+
+/**
+ * xmlXPathEqualNodeSets
+ * @arg1:  first nodeset object argument
+ * @arg2:  second nodeset object argument
+ *
+ * Implement the equal operation on XPath nodesets: @arg1 == @arg2
+ * If both objects to be compared are node-sets, then the comparison
+ * will be true if and only if there is a node in the first node-set and
+ * a node in the second node-set such that the result of performing the
+ * comparison on the string-values of the two nodes is true.
+ *
+ * (needless to say, this is a costly operation)
+ *
+ * Returns 0 or 1 depending on the results of the test.
+ */
+int
+xmlXPathEqualNodeSets(xmlXPathObjectPtr arg1, xmlXPathObjectPtr arg2) {
+    int i;
+    xmlNodeSetPtr ns;
+    CHAR *str;
+
+    if ((arg1 == NULL) || (arg1->type != XPATH_NODESET))
+        return(0);
+    if ((arg2 == NULL) || (arg2->type != XPATH_NODESET))
+        return(0);
+
+    ns = arg1->nodesetval;
+    for (i = 0;i < ns->nodeNr;i++) {
+         str = xmlNodeGetContent(ns->nodeTab[i]);
+	 if ((str != NULL) && (xmlXPathEqualNodeSetString(arg2, str))) {
+	     free(str);
+	     return(1);
+	 }
+	 free(str);
+    }
+    return(0);
+}
+
+/**
  * xmlXPathEqualValues:
- * @arg1:  first XPath object argument
- * @arg2:  second XPath object argument
+ * @ctxt:  the XPath Parser context
  *
  * Implement the equal operation on XPath objects content: @arg1 == @arg2
  *
  * Returns 0 or 1 depending on the results of the test.
- * TODO: rewrite using the stack for evaluation
  */
 int
-xmlXPathEqualValues(xmlXPathObjectPtr arg1, xmlXPathObjectPtr arg2) {
+xmlXPathEqualValues(xmlXPathParserContextPtr ctxt) {
+    xmlXPathObjectPtr arg1, arg2;
+    int ret = 0;
+
+    arg1 = valuePop(ctxt);
+    if (arg1 == NULL)
+	ERROR0(XPATH_INVALID_OPERAND);
+
+    arg2 = valuePop(ctxt);
+    if (arg2 == NULL) {
+	xmlXPathFreeObject(arg1);
+	ERROR0(XPATH_INVALID_OPERAND);
+    }
+  
     if (arg1 == arg2) {
 #ifdef DEBUG_EXPR
         fprintf(xmlXPathDebug, "Equal: by pointer\n");
 #endif
         return(1);
     }
-    if ((arg1 == NULL) || (arg2 == NULL)) {
-#ifdef DEBUG_EXPR
-        fprintf(xmlXPathDebug, "Equal: arg NULL\n");
-#endif
-        return(0);
-    }
-    if (arg1->type != arg2->type) {
-        /* TODO : see 4.3 Boolean section !!!!!!!!!!! */
-#ifdef DEBUG_EXPR
-        fprintf(xmlXPathDebug, "Equal: distinct types\n");
-#endif
-        return(0);
-    }
+
     switch (arg1->type) {
         case XPATH_UNDEFINED:
 #ifdef DEBUG_EXPR
 	    fprintf(xmlXPathDebug, "Equal: undefined\n");
 #endif
-	    return(0);
+	    break;
         case XPATH_NODESET:
-	    TODO /* compare nodesets */
+	    switch (arg2->type) {
+	        case XPATH_UNDEFINED:
+#ifdef DEBUG_EXPR
+		    fprintf(xmlXPathDebug, "Equal: undefined\n");
+#endif
+		    break;
+		case XPATH_NODESET:
+		    ret = xmlXPathEqualNodeSets(arg1, arg2);
+		    break;
+		case XPATH_BOOLEAN:
+		    if ((arg1->nodesetval == NULL) ||
+			(arg1->nodesetval->nodeNr == 0)) ret = 0;
+		    else 
+			ret = 1;
+		    ret = (ret == arg2->boolval);
+		    break;
+		case XPATH_NUMBER:
+		    ret = xmlXPathEqualNodeSetFloat(arg1, arg2->floatval);
+		    break;
+		case XPATH_STRING:
+		    ret = xmlXPathEqualNodeSetString(arg1, arg2->stringval);
+		    break;
+	    }
 	    break;
         case XPATH_BOOLEAN:
+	    switch (arg2->type) {
+	        case XPATH_UNDEFINED:
 #ifdef DEBUG_EXPR
-	    fprintf(xmlXPathDebug, "Equal: %d boolean %d \n",
-	            arg1->boolval, arg2->boolval);
+		    fprintf(xmlXPathDebug, "Equal: undefined\n");
 #endif
-	    return(arg1->boolval == arg2->boolval);
+		    break;
+		case XPATH_NODESET:
+		    if ((arg2->nodesetval == NULL) ||
+			(arg2->nodesetval->nodeNr == 0)) ret = 0;
+		    else 
+			ret = 1;
+		    break;
+		case XPATH_BOOLEAN:
+#ifdef DEBUG_EXPR
+		    fprintf(xmlXPathDebug, "Equal: %d boolean %d \n",
+			    arg1->boolval, arg2->boolval);
+#endif
+		    ret = (arg1->boolval == arg2->boolval);
+		    break;
+		case XPATH_NUMBER:
+		    if (arg2->floatval) ret = 1;
+		    else ret = 0;
+		    ret = (arg1->boolval == ret);
+		    break;
+		case XPATH_STRING:
+		    if ((arg2->stringval == NULL) ||
+			(arg2->stringval[0] == 0)) ret = 0;
+		    else 
+			ret = 1;
+		    ret = (arg1->boolval == ret);
+		    break;
+	    }
+	    break;
         case XPATH_NUMBER:
+	    switch (arg2->type) {
+	        case XPATH_UNDEFINED:
 #ifdef DEBUG_EXPR
-	    fprintf(xmlXPathDebug, "Equal: %f number %f \n",
-	            arg1->floatval, arg2->floatval);
+		    fprintf(xmlXPathDebug, "Equal: undefined\n");
 #endif
-	    return(arg1->floatval == arg2->floatval);
+		    break;
+		case XPATH_NODESET:
+		    ret = xmlXPathEqualNodeSetFloat(arg2, arg1->floatval);
+		    break;
+		case XPATH_BOOLEAN:
+		    if (arg1->floatval) ret = 1;
+		    else ret = 0;
+		    ret = (arg2->boolval == ret);
+		    break;
+		case XPATH_STRING:
+		    valuePush(ctxt, arg2);
+		    xmlXPathNumberFunction(ctxt, 1);
+		    arg2 = valuePop(ctxt);
+		    /* no break on purpose */
+		case XPATH_NUMBER:
+		    ret = (arg1->floatval == arg2->floatval);
+		    break;
+	    }
+	    break;
         case XPATH_STRING:
+	    switch (arg2->type) {
+	        case XPATH_UNDEFINED:
+#ifdef DEBUG_EXPR
+		    fprintf(xmlXPathDebug, "Equal: undefined\n");
+#endif
+		    break;
+		case XPATH_NODESET:
+		    ret = xmlXPathEqualNodeSetString(arg2, arg1->stringval);
+		    break;
+		case XPATH_BOOLEAN:
+		    if ((arg1->stringval == NULL) ||
+			(arg1->stringval[0] == 0)) ret = 0;
+		    else 
+			ret = 1;
+		    ret = (arg2->boolval == ret);
+		    break;
+		case XPATH_STRING:
+		    ret = !xmlStrcmp(arg1->stringval, arg2->stringval);
+		    break;
+		case XPATH_NUMBER:
+		    valuePush(ctxt, arg1);
+		    xmlXPathNumberFunction(ctxt, 1);
+		    arg1 = valuePop(ctxt);
+		    ret = (arg1->floatval == arg2->floatval);
+		    break;
+	    }
+	    break;
 #ifdef DEBUG_EXPR
 	    fprintf(xmlXPathDebug, "Equal: %s string %s \n",
 	            arg1->stringval, arg2->stringval);
 #endif
-	    return(!xmlStrcmp(arg1->stringval, arg2->stringval));
+	    ret = !xmlStrcmp(arg1->stringval, arg2->stringval);
     }
-    return(1);
+    xmlXPathFreeObject(arg1);
+    xmlXPathFreeObject(arg2);
+    return(ret);
 }
 
 /**
  * xmlXPathCompareValues:
+ * @ctxt:  the XPath Parser context
  * @inf:  less than (1) or greater than (2)
  * @strict:  is the comparison strict
  *
@@ -947,11 +1164,71 @@ xmlXPathEqualValues(xmlXPathObjectPtr arg1, xmlXPathObjectPtr arg2) {
  *     @arg1 > @arg2    (0, 1, ...
  *     @arg1 >= @arg2   (0, 0, ...
  *
+ * When neither object to be compared is a node-set and the operator is
+ * <=, <, >=, >, then the objects are compared by converted both objects
+ * to numbers and comparing the numbers according to IEEE 754. The <
+ * comparison will be true if and only if the first number is less than the
+ * second number. The <= comparison will be true if and only if the first
+ * number is less than or equal to the second number. The > comparison
+ * will be true if and only if the first number is greater than the second
+ * number. The >= comparison will be true if and only if the first number
+ * is greater than or equal to the second number.
  */
 int
-xmlXPathCompareValues(int inf, int strict) {
-    TODO /* compare */
-    return(0);
+xmlXPathCompareValues(xmlXPathParserContextPtr ctxt, int inf, int strict) {
+    int ret = 0;
+    xmlXPathObjectPtr arg1, arg2;
+
+    arg2 = valuePop(ctxt);
+    if ((arg2 == NULL) || (arg2->type == XPATH_NODESET)) {
+        if (arg2 != NULL)
+	    xmlXPathFreeObject(arg2);
+	ERROR0(XPATH_INVALID_OPERAND);
+    }
+  
+    arg1 = valuePop(ctxt);
+    if ((arg1 == NULL) || (arg1->type == XPATH_NODESET)) {
+        if (arg1 != NULL)
+	    xmlXPathFreeObject(arg1);
+	xmlXPathFreeObject(arg2);
+	ERROR0(XPATH_INVALID_OPERAND);
+    }
+
+    if (arg1->type != XPATH_NUMBER) {
+	valuePush(ctxt, arg1);
+	xmlXPathNumberFunction(ctxt, 1);
+	arg1 = valuePop(ctxt);
+    }
+    if (arg1->type != XPATH_NUMBER) {
+	xmlXPathFreeObject(arg1);
+	xmlXPathFreeObject(arg2);
+	ERROR0(XPATH_INVALID_OPERAND);
+    }
+    if (arg2->type != XPATH_NUMBER) {
+	valuePush(ctxt, arg2);
+	xmlXPathNumberFunction(ctxt, 1);
+	arg2 = valuePop(ctxt);
+    }
+    if (arg2->type != XPATH_NUMBER) {
+	xmlXPathFreeObject(arg1);
+	xmlXPathFreeObject(arg2);
+	ERROR0(XPATH_INVALID_OPERAND);
+    }
+    /*
+     * Add tests for infinity and nan
+     * => feedback on 3.4 for Inf and NaN
+     */
+    if (inf && strict) 
+        ret = (arg1->floatval < arg2->floatval);
+    else if (inf && !strict)
+        ret = (arg1->floatval <= arg2->floatval);
+    else if (!inf && strict)
+        ret = (arg1->floatval > arg2->floatval);
+    else if (!inf && !strict)
+        ret = (arg1->floatval >= arg2->floatval);
+    xmlXPathFreeObject(arg1);
+    xmlXPathFreeObject(arg2);
+    return(ret);
 }
 
 /**
@@ -1416,8 +1693,11 @@ xmlXPathNextNamespace(xmlXPathParserContextPtr ctxt, xmlAttrPtr cur) {
  */
 xmlAttrPtr
 xmlXPathNextAttribute(xmlXPathParserContextPtr ctxt, xmlAttrPtr cur) {
-    if (cur == NULL)
+    if (cur == NULL) {
+        if (ctxt->context->node == (xmlNodePtr) ctxt->context->doc)
+	    return(NULL);
         return(ctxt->context->node->properties);
+    }
     return(cur->next);
 }
 
@@ -3005,13 +3285,6 @@ xmlXPathEvalFilterExpr(xmlXPathParserContextPtr ctxt) {
 
     CHECK_TYPE(XPATH_NODESET);
 
-    /******
-    TODO:  transition from PathExpr to Expr using paths ...
-    arg = valuePop(ctxt);
-    oldset = ctxt->context->nodeset;
-    ctxt->context->nodeset = arg->nodesetval;
-     ******/
-
     while (CUR == '[') {
 	xmlXPathEvalPredicate(ctxt);
     }
@@ -3230,7 +3503,7 @@ xmlXPathEvalRelationalExpr(xmlXPathParserContextPtr ctxt) {
            (CUR == '>') ||
            ((CUR == '<') && (NXT(1) == '=')) ||
            ((CUR == '>') && (NXT(1) == '='))) {
-	int inf, strict;
+	int inf, strict, ret;
 
         if (CUR == '<') inf = 1;
 	else inf = 0;
@@ -3240,7 +3513,8 @@ xmlXPathEvalRelationalExpr(xmlXPathParserContextPtr ctxt) {
 	if (!strict) NEXT;
         xmlXPathEvalAdditiveExpr(ctxt);
 	CHECK_ERROR;
-	xmlXPathCompareValues(inf, strict);
+	ret = xmlXPathCompareValues(ctxt, inf, strict);
+	valuePush(ctxt, xmlXPathNewBoolean(ret));
     }
 }
 
@@ -3265,7 +3539,7 @@ xmlXPathEvalEqualityExpr(xmlXPathParserContextPtr ctxt) {
     xmlXPathEvalRelationalExpr(ctxt);
     CHECK_ERROR;
     while ((CUR == '=') || ((CUR == '!') && (NXT(1) == '='))) {
-	xmlXPathObjectPtr arg1, arg2, res;
+	xmlXPathObjectPtr res;
 	int eq, equal;
 
         if (CUR == '=') eq = 1;
@@ -3274,14 +3548,10 @@ xmlXPathEvalEqualityExpr(xmlXPathParserContextPtr ctxt) {
 	if (!eq) NEXT;
         xmlXPathEvalRelationalExpr(ctxt);
 	CHECK_ERROR;
-	arg2 = valuePop(ctxt);
-	arg1 = valuePop(ctxt);
-	equal = xmlXPathEqualValues(arg1, arg2);
+	equal = xmlXPathEqualValues(ctxt);
 	if (eq) res = xmlXPathNewBoolean(equal);
 	else res = xmlXPathNewBoolean(!equal);
 	valuePush(ctxt, res);
-	xmlXPathFreeObject(arg1);
-	xmlXPathFreeObject(arg2);
     }
 }
 

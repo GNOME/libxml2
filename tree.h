@@ -197,6 +197,17 @@ typedef struct xmlAttr {
 typedef xmlAttr *xmlAttrPtr;
 
 /*
+ * An XML ID instance.
+ */
+
+typedef struct xmlID {
+    struct xmlID     *next;	/* next ID */
+    const CHAR       *value;	/* The ID name */
+    xmlAttrPtr        attr;	/* The attribut holding it */
+} xmlID;
+typedef xmlID *xmlIDPtr;
+
+/*
  * A node in an XML tree.
  */
 typedef struct xmlNode {
@@ -238,6 +249,7 @@ typedef struct xmlDoc {
     struct xmlDtd  *extSubset;	/* the document external subset */
     struct xmlNs   *oldNs;	/* Global namespace, the old way */
     struct xmlNode *root;	/* the document tree */
+    void           *ids;        /* Hash table for ID attributes if any */
 } _xmlDoc;
 typedef _xmlDoc xmlDoc;
 typedef xmlDoc *xmlDocPtr;

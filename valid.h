@@ -69,6 +69,20 @@ typedef struct xmlAttributeTable {
 } xmlAttributeTable;
 typedef xmlAttributeTable *xmlAttributeTablePtr;
 
+/*
+ * ALl IDs attributes are stored in a table
+ * there is one table per document
+ */
+
+#define XML_MIN_ID_TABLE	32
+
+typedef struct xmlIDTable {
+    int nb_ids;			/* number of ids stored */
+    int max_ids;		/* maximum number of ids */
+    xmlIDPtr *table;		/* the table of ids */
+} xmlIDTable;
+typedef xmlIDTable *xmlIDTablePtr;
+
 /* Notation */
 xmlNotationPtr xmlAddNotationDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd,
 	   const CHAR *name, const CHAR *PublicID, const CHAR *SystemID);
@@ -100,6 +114,12 @@ xmlAttributePtr xmlAddAttributeDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd,
 xmlAttributeTablePtr xmlCopyAttributeTable(xmlAttributeTablePtr table);
 void xmlFreeAttributeTable(xmlAttributeTablePtr table);
 void xmlDumpAttributeTable(xmlBufferPtr buf, xmlAttributeTablePtr table);
+
+/* IDs */
+xmlIDPtr xmlAddID(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
+               const CHAR *value, xmlAttrPtr attr);
+xmlIDTablePtr xmlCopyIDTable(xmlIDTablePtr table);
+void xmlFreeIDTable(xmlIDTablePtr table);
 
 /**
  * The public function calls related to validity checking

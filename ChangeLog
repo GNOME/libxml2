@@ -1,3 +1,9 @@
+Mon Aug 16 03:27:38 CEST 1999
+
+	* tree.h, valid.c, valid.h: more work on validity, IDs
+	* xpath.c: added/fixed comparidon and equlity, added a new isinf
+	  definition for AIX
+
 Sun Aug 15 21:15:17 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* Makefile.am libxml.spec.in: corrected missing xmlConf.sh in

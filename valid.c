@@ -1306,6 +1306,200 @@ xmlDumpNotationTable(xmlBufferPtr buf, xmlNotationTablePtr table) {
 
 /************************************************************************
  *									*
+ *				NOTATIONs				*
+ *									*
+ ************************************************************************/
+/**
+ * xmlCreateIDTable:
+ *
+ * create and initialize an empty id hash table.
+ *
+ * Returns the xmlIDTablePtr just created or NULL in case
+ *                of error.
+ */
+xmlIDTablePtr
+xmlCreateIDTable(void) {
+    xmlIDTablePtr ret;
+
+    ret = (xmlIDTablePtr) 
+         malloc(sizeof(xmlIDTable));
+    if (ret == NULL) {
+        fprintf(stderr, "xmlCreateIDTable : malloc(%ld) failed\n",
+	        (long)sizeof(xmlIDTable));
+        return(NULL);
+    }
+    ret->max_ids = XML_MIN_NOTATION_TABLE;
+    ret->nb_ids = 0;
+    ret->table = (xmlIDPtr *) 
+         malloc(ret->max_ids * sizeof(xmlIDPtr));
+    if (ret == NULL) {
+        fprintf(stderr, "xmlCreateIDTable : malloc(%ld) failed\n",
+	        ret->max_ids * (long)sizeof(xmlID));
+	free(ret);
+        return(NULL);
+    }
+    return(ret);
+}
+
+
+/**
+ * xmlAddID:
+ * @ctxt:  the validation context
+ * @doc:  pointer to the document
+ * @value:  the value name
+ * @attr:  the attribute holding the ID
+ *
+ * Register a new id declaration
+ *
+ * Returns NULL if not, othervise the new xmlIDPtr
+ */
+xmlIDPtr 
+xmlAddID(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const CHAR *value,
+         xmlAttrPtr attr) {
+    xmlIDPtr ret, cur;
+    xmlIDTablePtr table;
+    int i;
+
+    if (doc == NULL) {
+        fprintf(stderr, "xmlAddIDDecl: doc == NULL\n");
+	return(NULL);
+    }
+    if (value == NULL) {
+        fprintf(stderr, "xmlAddIDDecl: value == NULL\n");
+	return(NULL);
+    }
+    if (attr == NULL) {
+        fprintf(stderr, "xmlAddIDDecl: attr == NULL\n");
+	return(NULL);
+    }
+
+    /*
+     * Create the ID table if needed.
+     */
+    table = doc->ids;
+    if (table == NULL) 
+        table = doc->ids = xmlCreateIDTable();
+    if (table == NULL) {
+	fprintf(stderr, "xmlAddID: Table creation failed!\n");
+        return(NULL);
+    }
+
+    /*
+     * Validity Check:
+     * Search the DTD for previous declarations of the ATTLIST
+     */
+    for (i = 0;i < table->nb_ids;i++) {
+        cur = table->table[i];
+	if (!xmlStrcmp(cur->value, value)) {
+	    /*
+	     * The id is already defined in this Dtd.
+	     */
+	    VERROR(ctxt->userData, "ID %s already defined\n", value);
+	    return(NULL);
+	}
+    }
+
+    /*
+     * Grow the table, if needed.
+     */
+    if (table->nb_ids >= table->max_ids) {
+        /*
+	 * need more ids.
+	 */
+	table->max_ids *= 2;
+	table->table = (xmlIDPtr *) 
+	    realloc(table->table, table->max_ids *
+	            sizeof(xmlIDPtr));
+	if (table->table == NULL) {
+	    fprintf(stderr, "xmlAddID: out of memory\n");
+	    return(NULL);
+	}
+    }
+    ret = (xmlIDPtr) malloc(sizeof(xmlID));
+    if (ret == NULL) {
+	fprintf(stderr, "xmlAddID: out of memory\n");
+	return(NULL);
+    }
+    table->table[table->nb_ids] = ret;
+
+    /*
+     * fill the structure.
+     */
+    ret->value = xmlStrdup(value);
+    ret->attr = attr;
+    table->nb_ids++;
+
+    return(ret);
+}
+
+/**
+ * xmlFreeID:
+ * @not:  A id
+ *
+ * Deallocate the memory used by an id definition
+ */
+void
+xmlFreeID(xmlIDPtr id) {
+    if (id == NULL) return;
+    if (id->value != NULL)
+	free((CHAR *) id->value);
+    memset(id, -1, sizeof(xmlID));
+    free(id);
+}
+
+/**
+ * xmlFreeIDTable:
+ * @table:  An id table
+ *
+ * Deallocate the memory used by an ID hash table.
+ */
+void
+xmlFreeIDTable(xmlIDTablePtr table) {
+    int i;
+
+    if (table == NULL) return;
+
+    for (i = 0;i < table->nb_ids;i++) {
+        xmlFreeID(table->table[i]);
+    }
+    free(table->table);
+    free(table);
+}
+
+/**
+ * xmlIsID
+ * @doc:  the document
+ * @elem:  the element carrying the attribute
+ * @attr:  the attribute
+ *
+ * Determine whether an attribute is of type ID. In case we have Dtd(s)
+ * then this is simple, otherwise we use an heuristic: name ID (upper
+ * or lowercase).
+ *
+ * Returns 0 or 1 depending on the lookup result
+ */
+int
+xmlIsID(xmlDocPtr doc, xmlNodePtr elem, xmlAttrPtr attr) {
+    if ((doc->intSubset == NULL) && (doc->extSubset == NULL)) {
+        if (((attr->name[0] == 'I') || (attr->name[0] == 'i')) &&
+            ((attr->name[1] == 'D') || (attr->name[1] == 'd')) &&
+	    (attr->name[2] == 0)) return(1);
+    } else {
+	xmlAttributePtr attrDecl;
+
+	attrDecl = xmlGetDtdAttrDesc(doc->intSubset, elem->name, attr->name);
+	if ((attrDecl == NULL) && (doc->extSubset != NULL))
+	    attrDecl = xmlGetDtdAttrDesc(doc->extSubset, elem->name,
+	                                 attr->name);
+
+        if ((attrDecl == NULL) || (attrDecl->type == XML_ATTRIBUTE_ID))
+	    return(1);
+    }
+    return(0);
+}
+
+/************************************************************************
+ *									*
  *		Routines for validity checking				*
  *									*
  ************************************************************************/

@@ -1,3 +1,8 @@
+Thu Mar  1 17:53:39 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* configure.in: bumped to 2.3.3
+	* doc/xml.html: updated
+
 Wed Feb 28 00:43:58 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* tree.c: minor doc fix

@@ -507,6 +507,9 @@ A:link, A:visited, A:active { text-decoration: underline }
     <xsl:param name="title" select="'Main Page'"/>
     <table border="0" width="100%" cellpadding="5" cellspacing="0" align="center">
     <tr>
+    <td width="120">
+    <a href="http://swpat.ffii.org/"><img src="epatents.png" alt="Action against software patents"/></a>
+    </td>
     <td width="180">
     <a href="http://www.gnome.org/"><img src="gnome2.png" alt="Gnome2 Logo"/></a>
     <a href="http://www.w3.org/Status"><img src="w3c.png" alt="W3C Logo"/></a>

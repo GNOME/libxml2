@@ -3118,7 +3118,7 @@ xmlSchemaAddNotation(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
         return (NULL);
 
     if (schema->notaDecl == NULL)
-        schema->notaDecl = xmlHashCreate(10);
+        schema->notaDecl = xmlHashCreateDict(10, ctxt->dict);
     if (schema->notaDecl == NULL)
         return (NULL);
 
@@ -3177,7 +3177,7 @@ xmlSchemaAddAttribute(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 #endif
 
     if (schema->attrDecl == NULL)
-        schema->attrDecl = xmlHashCreate(10);
+        schema->attrDecl = xmlHashCreateDict(10, ctxt->dict);
     if (schema->attrDecl == NULL)
         return (NULL);
 
@@ -3226,7 +3226,7 @@ xmlSchemaAddAttributeGroup(xmlSchemaParserCtxtPtr ctxt,
         return (NULL);
 
     if (schema->attrgrpDecl == NULL)
-        schema->attrgrpDecl = xmlHashCreate(10);
+        schema->attrgrpDecl = xmlHashCreateDict(10, ctxt->dict);
     if (schema->attrgrpDecl == NULL)
         return (NULL);
 
@@ -3284,7 +3284,7 @@ xmlSchemaAddElement(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 #endif
 
     if (schema->elemDecl == NULL)
-        schema->elemDecl = xmlHashCreate(10);
+        schema->elemDecl = xmlHashCreateDict(10, ctxt->dict);
     if (schema->elemDecl == NULL)
         return (NULL);
 
@@ -3360,7 +3360,7 @@ xmlSchemaAddType(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 #endif
 
     if (schema->typeDecl == NULL)
-        schema->typeDecl = xmlHashCreate(10);
+        schema->typeDecl = xmlHashCreateDict(10, ctxt->dict);
     if (schema->typeDecl == NULL)
         return (NULL);
 
@@ -3429,7 +3429,7 @@ xmlSchemaAddGroup(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
         return (NULL);
 
     if (schema->groupDecl == NULL)
-        schema->groupDecl = xmlHashCreate(10);
+        schema->groupDecl = xmlHashCreateDict(10, ctxt->dict);
     if (schema->groupDecl == NULL)
         return (NULL);
 
@@ -6639,7 +6639,7 @@ xmlSchemaAddImport(xmlSchemaParserCtxtPtr ctxt,
     xmlSchemaImportPtr ret;
 
     if (*imports == NULL) {
-	*imports = xmlHashCreate(10);
+	*imports = xmlHashCreateDict(10, ctxt->dict);
 	if (*imports == NULL) {
 	    xmlSchemaPCustomErr(ctxt, 
 		XML_SCHEMAP_FAILED_BUILD_IMPORT,

@@ -611,6 +611,7 @@ static void parseAndPrintFile(char *filename) {
 	    if ((timing) && (!repeat)) {
 		gettimeofday(&begin, NULL);
 	    }
+#ifdef HAVE_SYS_MMAN_H
 	    if (memory) {
 		xmlChar *result;
 		int len;
@@ -626,7 +627,9 @@ static void parseAndPrintFile(char *filename) {
 		    write(1, result, len);
 		    xmlFree(result);
 		}
-	    } else if (compress)
+	    } else
+#endif /* HAVE_SYS_MMAN_H */
+	    if (compress)
 		xmlSaveFile("-", doc);
 	    else if (encoding != NULL)
 	        xmlSaveFileEnc("-", doc, encoding);

@@ -1,3 +1,8 @@
+Wed Apr  4 02:07:53 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xmllint.c: Dan Timis reported a portability problem
+	  on Macs without mmap, fixed it.
+
 Tue Apr  3 20:20:51 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* testXPath.c : added a --tree option allowing to display the

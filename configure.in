@@ -45,6 +45,7 @@ dnl Checks for zlib library.
 _cppflags="${CPPFLAGS}"
 _ldflags="${LDFLAGS}"
 
+
 AC_ARG_WITH(zlib,
 [  --with-zlib[=DIR]       use libz in DIR],[
   if test "$withval" != "no" -a "$withval" != "yes"; then
@@ -52,7 +53,10 @@ AC_ARG_WITH(zlib,
     CPPFLAGS="${CPPFLAGS} -I$withval/include"
     LDFLAGS="${LDFLAGS} -L$withval/lib"
   fi
-  if test "$withval" != "no"; then
+])
+if test "$with_zlib" = "no"; then
+    echo "Disabling compression support"
+else
     AC_CHECK_HEADERS(zlib.h,
 	AC_CHECK_LIB(z, gzread,[
 	    AC_DEFINE(HAVE_LIBZ)
@@ -67,8 +71,7 @@ AC_ARG_WITH(zlib,
 	    else
 		Z_LIBS="-lz"
 	    fi]))
-  fi
-])
+fi
 
 AC_SUBST(Z_CFLAGS)
 AC_SUBST(Z_LIBS)
@@ -244,7 +247,7 @@ dnl Aloow to disable various pieces
 dnl
 
 AC_ARG_WITH(history, [  --with-history        Add history support to xmllint shell(off)])
-if test "$with_ftp" = "yes" ; then
+if test "$with_history" = "yes" ; then
     echo Enabling xmllint shell history
     dnl check for terminal library. this is a very cool solution
     dnl from octave's configure.in

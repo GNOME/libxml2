@@ -52,6 +52,7 @@ SAX.characters(
 SAX.startElement(option, value='WA', selected)
 SAX.characters(WA
 , 4)
+SAX.endElement(option)
 SAX.startElement(option, value='AL')
 SAX.characters(AL, 2)
 SAX.endElement(option)
@@ -282,7 +283,6 @@ SAX.characters(WY, 2)
 SAX.endElement(option)
 SAX.characters(
 , 2)
-SAX.endElement(option)
 SAX.endElement(select)
 SAX.startElement(input, type='hidden', name='source', value='2hb8bhc059')
 SAX.endElement(input)
@@ -1014,44 +1014,57 @@ SAX.characters(
 SAX.startElement(option, value='301')
 SAX.characters(Business Top 20
 , 16)
+SAX.endElement(option)
 SAX.startElement(option, value='500')
 SAX.characters(Computers
 , 10)
+SAX.endElement(option)
 SAX.startElement(option, value='503')
 SAX.characters(Computer Games
 , 15)
+SAX.endElement(option)
 SAX.startElement(option, value='1604')
 SAX.characters(Current Affairs
 , 16)
+SAX.endElement(option)
 SAX.startElement(option, value='511')
 SAX.characters(Cyberculture
 , 13)
+SAX.endElement(option)
 SAX.startElement(option, value='510')
 SAX.characters(Internet/Web
 , 13)
+SAX.endElement(option)
 SAX.startElement(option, value='303')
 SAX.characters(Investing
 , 10)
+SAX.endElement(option)
 SAX.startElement(option, value='1606')
 SAX.characters(Law
 , 4)
+SAX.endElement(option)
 SAX.startElement(option, value='513')
 SAX.characters(Multimedia
 
 , 12)
+SAX.endElement(option)
 SAX.startElement(option, value='1605')
 SAX.characters(Newsmakers
 , 11)
+SAX.endElement(option)
 SAX.startElement(option, value='1607')
 SAX.characters(Politics/Govt.
 
  , 17)
+SAX.endElement(option)
 SAX.startElement(option, value='315')
 SAX.characters( Web Business
   , 16)
+SAX.endElement(option)
 SAX.startElement(option, value='2800')
 SAX.characters( Bargain Books
                , 40)
+SAX.endElement(option)
 SAX.startElement(option, value='4')
 SAX.characters(Other 
 
@@ -1060,19 +1073,6 @@ SAX.characters(Other
  
 
  , 14)
-SAX.endElement(option)
-SAX.endElement(option)
-SAX.endElement(option)
-SAX.endElement(option)
-SAX.endElement(option)
-SAX.endElement(option)
-SAX.endElement(option)
-SAX.endElement(option)
-SAX.endElement(option)
-SAX.endElement(option)
-SAX.endElement(option)
-SAX.endElement(option)
-SAX.endElement(option)
 SAX.endElement(option)
 SAX.endElement(select)
 SAX.endElement(font)

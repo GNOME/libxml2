@@ -320,10 +320,8 @@ SAX.characters(
 SAX.startElement(p, align='center')
 SAX.startElement(a, href='http://www.gentus.com/')
 SAX.error: error parsing attribute name
-SAX.error: htmlParseStartTag: problem parsing attributes
 SAX.startElement(img, align='bottom', alt='Taking a first look at the Abit Linux release called ', border='0', height='45', src='doc3_files/gentusbox.gif', width='70', gentus)
-SAX.error: Couldn't find end of Start Tag img
-SAX.characters(?.?&gt;, 4)
+SAX.endElement(img)
 SAX.endElement(a)
 SAX.startElement(br)
 SAX.endElement(br)

@@ -25,32 +25,17 @@ extern "C" {
 #endif
 
 /*
- * A single entry in the hash table
- */
-typedef struct _xmlHashEntry xmlHashEntry;
-typedef xmlHashEntry *xmlHashEntryPtr;
-struct _xmlHashEntry {
-    struct _xmlHashEntry *next;
-    xmlChar *name;
-    void *payload;
-};
-
-/*
- * The entire hash table
+ * The hash table
  */
 typedef struct _xmlHashTable xmlHashTable;
 typedef xmlHashTable *xmlHashTablePtr;
-struct _xmlHashTable {
-    struct _xmlHashEntry **table;
-    int size;
-};
 
 /*
  * function types:
  */
-typedef void (*xmlHashDeallocator)(void *payload);
-typedef void *(*xmlHashCopier)(void *payload);
-typedef void *(*xmlHashScanner)(void *payload, void *data);
+typedef void (*xmlHashDeallocator)(void *payload, xmlChar *name);
+typedef void *(*xmlHashCopier)(void *payload, xmlChar *name);
+typedef void *(*xmlHashScanner)(void *payload, void *data, xmlChar *name);
 
 /*
  * Constructor and destructor
@@ -69,11 +54,38 @@ int			xmlHashUpdateEntry(xmlHashTablePtr table,
 		                         const xmlChar *name,
 		                         void *userdata,
 					 xmlHashDeallocator f);
+int			xmlHashAddEntry2(xmlHashTablePtr table,
+		                         const xmlChar *name,
+		                         const xmlChar *name2,
+		                         void *userdata);
+int			xmlHashUpdateEntry2(xmlHashTablePtr table,
+		                         const xmlChar *name,
+		                         const xmlChar *name2,
+		                         void *userdata,
+					 xmlHashDeallocator f);
+int			xmlHashAddEntry3(xmlHashTablePtr table,
+		                         const xmlChar *name,
+		                         const xmlChar *name2,
+		                         const xmlChar *name3,
+		                         void *userdata);
+int			xmlHashUpdateEntry3(xmlHashTablePtr table,
+		                         const xmlChar *name,
+		                         const xmlChar *name2,
+		                         const xmlChar *name3,
+		                         void *userdata,
+					 xmlHashDeallocator f);
 /*
  * Retrieve the userdata
  */
 void *			xmlHashLookup	(xmlHashTablePtr table,
 					 const xmlChar *name);
+void *			xmlHashLookup2	(xmlHashTablePtr table,
+					 const xmlChar *name,
+					 const xmlChar *name2);
+void *			xmlHashLookup3	(xmlHashTablePtr table,
+					 const xmlChar *name,
+					 const xmlChar *name2,
+					 const xmlChar *name3);
 
 /*
  * Helpers
@@ -81,6 +93,21 @@ void *			xmlHashLookup	(xmlHashTablePtr table,
 xmlHashTablePtr		xmlHashCopy	(xmlHashTablePtr table,
 					 xmlHashCopier f);
 void			xmlHashScan	(xmlHashTablePtr table,
+					 xmlHashScanner f,
+					 void *data);
+void			xmlHashScan1	(xmlHashTablePtr table,
+					 const xmlChar *name,
+					 xmlHashScanner f,
+					 void *data);
+void			xmlHashScan2	(xmlHashTablePtr table,
+					 const xmlChar *name,
+					 const xmlChar *name2,
+					 xmlHashScanner f,
+					 void *data);
+void			xmlHashScan3	(xmlHashTablePtr table,
+					 const xmlChar *name,
+					 const xmlChar *name2,
+					 const xmlChar *name3,
 					 xmlHashScanner f,
 					 void *data);
 #ifdef __cplusplus

@@ -384,6 +384,11 @@ xmlMemContentShow(FILE *fp, MEMHDR *p)
     int i,j,len = p->mh_size;
     const char *buf = (const char *) HDR_2_CLIENT(p);
 
+    if (p == NULL) {
+	fprintf(fp, " NULL");
+	return;
+    }
+
     for (i = 0;i < len;i++) {
         if (buf[i] == 0) break;
 	if (!isprint(buf[i])) break;
@@ -401,7 +406,7 @@ xmlMemContentShow(FILE *fp, MEMHDR *p)
 		    if (p == q) break;
 		    p = p->mh_next;
 		}
-		if (p == q) {
+		if ((p != NULL) && (p == q)) {
 		    fprintf(fp, " pointer to #%lu at index %d",
 		            p->mh_number, j);
 		    return;

@@ -37,6 +37,8 @@ struct _xmlValidCtxt {
     xmlNodePtr        *nodeTab;       /* array of nodes */
 
     int              finishDtd;       /* finished validating the Dtd ? */
+    xmlDocPtr              doc;       /* the document */
+    int                  valid;       /* temporary validity check result */
 };
 
 /*
@@ -44,76 +46,40 @@ struct _xmlValidCtxt {
  * there is one table per DTD
  */
 
-#define XML_MIN_NOTATION_TABLE	32
-
-typedef struct _xmlNotationTable xmlNotationTable;
+typedef struct _xmlHashTable xmlNotationTable;
 typedef xmlNotationTable *xmlNotationTablePtr;
-struct _xmlNotationTable {
-    int nb_notations;		/* number of notations stored */
-    int max_notations;		/* maximum number of notations */
-    xmlNotationPtr *table;	/* the table of attributes */
-};
 
 /*
  * ALl element declarations are stored in a table
  * there is one table per DTD
  */
 
-#define XML_MIN_ELEMENT_TABLE	32
-
-typedef struct _xmlElementTable xmlElementTable;
+typedef struct _xmlHashTable xmlElementTable;
 typedef xmlElementTable *xmlElementTablePtr;
-struct _xmlElementTable {
-    int nb_elements;		/* number of elements stored */
-    int max_elements;		/* maximum number of elements */
-    xmlElementPtr *table;	/* the table of elements */
-    int last;			/* last element accessed */
-};
 
 /*
  * ALl attribute declarations are stored in a table
  * there is one table per DTD
  */
 
-#define XML_MIN_ATTRIBUTE_TABLE	32
-
-typedef struct _xmlAttributeTable xmlAttributeTable;
+typedef struct _xmlHashTable xmlAttributeTable;
 typedef xmlAttributeTable *xmlAttributeTablePtr;
-struct _xmlAttributeTable {
-    int nb_attributes;		/* number of attributes stored */
-    int max_attributes;		/* maximum number of attributes */
-    xmlAttributePtr *table;	/* the table of attributes */
-};
 
 /*
  * ALl IDs attributes are stored in a table
  * there is one table per document
  */
 
-#define XML_MIN_ID_TABLE	32
-
-typedef struct _xmlIDTable xmlIDTable;
+typedef struct _xmlHashTable xmlIDTable;
 typedef xmlIDTable *xmlIDTablePtr;
-struct _xmlIDTable {
-    int nb_ids;			/* number of ids stored */
-    int max_ids;		/* maximum number of ids */
-    xmlIDPtr *table;		/* the table of ids */
-};
 
 /*
  * ALl Refs attributes are stored in a table
  * there is one table per document
  */
 
-#define XML_MIN_REF_TABLE	32
-
-typedef struct _xmlRefTable xmlRefTable;
+typedef struct _xmlHashTable xmlRefTable;
 typedef xmlRefTable *xmlRefTablePtr;
-struct _xmlRefTable {
-    int nb_refs;			/* number of refs stored */
-    int max_refs;		/* maximum number of refs */
-    xmlRefPtr *table;		/* the table of refs */
-};
 
 /* Notation */
 xmlNotationPtr	    xmlAddNotationDecl	(xmlValidCtxtPtr ctxt,

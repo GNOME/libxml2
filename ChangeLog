@@ -1,3 +1,21 @@
+Tue Oct 24 18:49:34 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* hash.[ch] debugXML.c: expanded/enhanced the API, added
+	  multikey tuples, made hash structure opaque
+	* valid.[ch]: moved elements, attributes, notations decalarations
+	  as well as ID and refs to hash tables.
+	* entities.c: hash cleanup
+	* xmlmemory.c: fixed a dump problem in debug mode
+	* include/Makefile.am: problem passing in DESTDIR= values patch
+	  from Marc Christensen <marc@calderasystems.com>
+	* nanohttp.c: removed debugging remains
+	* HTMLparser.c: the bogus tag should be ignored (Wayne)
+	* HTMLparser.c parser.c: fixing a number of problems with the
+	  macros in the *parser.c files (Wayne).
+	* HTMLparser.c: close the previous option when opening a new one
+	  (Marc Sanfacon).
+	* result/HTML/*: updated the HTML results accordingly
+
 Sun Oct 22 18:39:19 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* entities.[ch] xpath.[ch] hash.[ch] debugXML.c tree.h: added/hacked

@@ -153,6 +153,7 @@ xmlAddEntity(xmlDtdPtr dtd, const xmlChar *name, int type,
 	 * entity was already defined at another level.
 	 */
         xmlFreeEntity(ret);
+	return(NULL);
     }
     return(ret);
 }

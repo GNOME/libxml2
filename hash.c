@@ -22,6 +22,27 @@
 #include <libxml/parser.h>
 
 /*
+ * A single entry in the hash table
+ */
+typedef struct _xmlHashEntry xmlHashEntry;
+typedef xmlHashEntry *xmlHashEntryPtr;
+struct _xmlHashEntry {
+    struct _xmlHashEntry *next;
+    xmlChar *name;
+    xmlChar *name2;
+    xmlChar *name3;
+    void *payload;
+};
+
+/*
+ * The entire hash table
+ */
+struct _xmlHashTable {
+    struct _xmlHashEntry **table;
+    int size;
+};
+
+/*
  * xmlHashComputeKey:
  * Calculate the hash key
  */
@@ -88,8 +109,12 @@ xmlHashFree(xmlHashTablePtr table, xmlHashDeallocator f) {
 		next = iter->next;
 		if (iter->name)
 		    xmlFree(iter->name);
+		if (iter->name2)
+		    xmlFree(iter->name2);
+		if (iter->name3)
+		    xmlFree(iter->name3);
 		if (f)
-		    f(iter->payload);
+		    f(iter->payload, iter->name);
 		iter->payload = NULL;
 		xmlFree(iter);
 		iter = next;
@@ -114,43 +139,25 @@ xmlHashFree(xmlHashTablePtr table, xmlHashDeallocator f) {
  */
 int
 xmlHashAddEntry(xmlHashTablePtr table, const xmlChar *name, void *userdata) {
-    unsigned long key;
-    xmlHashEntryPtr entry;
-    xmlHashEntryPtr insert;
+    return(xmlHashAddEntry3(table, name, NULL, NULL, userdata));
+}
 
-    if ((table == NULL) || name == NULL)
-	return(-1);
-
-    /*
-     * Check for duplicate and insertion location.
-     */
-    key = xmlHashComputeKey(table, name);
-    if (table->table[key] == NULL) {
-	insert = NULL;
-    } else {
-	for (insert = table->table[key]; insert->next != NULL;
-	     insert = insert->next) {
-	    if (xmlStrEqual(insert->name, name))
-		return(-1);
-	}
-	if (xmlStrEqual(insert->name, name))
-	    return(-1);
-    }
-
-    entry = xmlMalloc(sizeof(xmlHashEntry));
-    if (entry == NULL)
-	return(-1);
-    entry->name = xmlStrdup(name);
-    entry->payload = userdata;
-    entry->next = NULL;
-
-
-    if (insert == NULL) {
-	table->table[key] = entry;
-    } else {
-	insert->next = entry;
-    }
-    return(0);
+/**
+ * xmlHashAddEntry2:
+ * @table: the hash table
+ * @name: the name of the userdata
+ * @name2: a second name of the userdata
+ * @userdata: a pointer to the userdata
+ *
+ * Add the userdata to the hash table. This can later be retrieved
+ * by using the (name, name2) tuple. Duplicate tuples generate errors.
+ *
+ * Returns 0 the addition succeeded and -1 in case of error.
+ */
+int
+xmlHashAddEntry2(xmlHashTablePtr table, const xmlChar *name,
+	        const xmlChar *name2, void *userdata) {
+    return(xmlHashAddEntry3(table, name, name2, NULL, userdata));
 }
 
 /**
@@ -169,6 +176,78 @@ xmlHashAddEntry(xmlHashTablePtr table, const xmlChar *name, void *userdata) {
 int
 xmlHashUpdateEntry(xmlHashTablePtr table, const xmlChar *name,
 	           void *userdata, xmlHashDeallocator f) {
+    return(xmlHashUpdateEntry3(table, name, NULL, NULL, userdata, f));
+}
+
+/**
+ * xmlHashUpdateEntry2:
+ * @table: the hash table
+ * @name: the name of the userdata
+ * @name2: a second name of the userdata
+ * @userdata: a pointer to the userdata
+ * @f: the deallocator function for replaced item (if any)
+ *
+ * Add the userdata to the hash table. This can later be retrieved
+ * by using the (name, name2) tuple. Existing entry for this tuple will
+ * be removed and freed with @f if found.
+ *
+ * Returns 0 the addition succeeded and -1 in case of error.
+ */
+int
+xmlHashUpdateEntry2(xmlHashTablePtr table, const xmlChar *name,
+	           const xmlChar *name2, void *userdata,
+		   xmlHashDeallocator f) {
+    return(xmlHashUpdateEntry3(table, name, name2, NULL, userdata, f));
+}
+
+/**
+ * xmlHashLookup:
+ * @table: the hash table
+ * @name: the name of the userdata
+ *
+ * Find the userdata specified by the name.
+ *
+ * Returns the a pointer to the userdata
+ */
+void *
+xmlHashLookup(xmlHashTablePtr table, const xmlChar *name) {
+    return(xmlHashLookup3(table, name, NULL, NULL));
+}
+
+/**
+ * xmlHashLookup2:
+ * @table: the hash table
+ * @name: the name of the userdata
+ * @name2: a second name of the userdata
+ *
+ * Find the userdata specified by the (name, name2) tuple.
+ *
+ * Returns the a pointer to the userdata
+ */
+void *
+xmlHashLookup2(xmlHashTablePtr table, const xmlChar *name,
+	      const xmlChar *name2) {
+    return(xmlHashLookup3(table, name, name2, NULL));
+}
+
+/**
+ * xmlHashAddEntry3:
+ * @table: the hash table
+ * @name: the name of the userdata
+ * @name2: a second name of the userdata
+ * @name3: a third name of the userdata
+ * @userdata: a pointer to the userdata
+ *
+ * Add the userdata to the hash table. This can later be retrieved
+ * by using the tuple (name, name2, name3). Duplicate entries generate
+ * errors.
+ *
+ * Returns 0 the addition succeeded and -1 in case of error.
+ */
+int
+xmlHashAddEntry3(xmlHashTablePtr table, const xmlChar *name,
+	         const xmlChar *name2, const xmlChar *name3,
+		 void *userdata) {
     unsigned long key;
     xmlHashEntryPtr entry;
     xmlHashEntryPtr insert;
@@ -185,16 +264,84 @@ xmlHashUpdateEntry(xmlHashTablePtr table, const xmlChar *name,
     } else {
 	for (insert = table->table[key]; insert->next != NULL;
 	     insert = insert->next) {
-	    if (xmlStrEqual(insert->name, name)) {
+	    if ((xmlStrEqual(insert->name, name)) &&
+		(xmlStrEqual(insert->name2, name2)) &&
+		(xmlStrEqual(insert->name3, name3)))
+		return(-1);
+	}
+	if ((xmlStrEqual(insert->name, name)) &&
+	    (xmlStrEqual(insert->name2, name2)) &&
+	    (xmlStrEqual(insert->name3, name3)))
+	    return(-1);
+    }
+
+    entry = xmlMalloc(sizeof(xmlHashEntry));
+    if (entry == NULL)
+	return(-1);
+    entry->name = xmlStrdup(name);
+    entry->name2 = xmlStrdup(name2);
+    entry->name3 = xmlStrdup(name3);
+    entry->payload = userdata;
+    entry->next = NULL;
+
+
+    if (insert == NULL) {
+	table->table[key] = entry;
+    } else {
+	insert->next = entry;
+    }
+    return(0);
+}
+
+/**
+ * xmlHashUpdateEntry3:
+ * @table: the hash table
+ * @name: the name of the userdata
+ * @name2: a second name of the userdata
+ * @name3: a third name of the userdata
+ * @userdata: a pointer to the userdata
+ * @f: the deallocator function for replaced item (if any)
+ *
+ * Add the userdata to the hash table. This can later be retrieved
+ * by using the tuple (name, name2, name3). Existing entry for this tuple
+ * will be removed and freed with @f if found.
+ *
+ * Returns 0 the addition succeeded and -1 in case of error.
+ */
+int
+xmlHashUpdateEntry3(xmlHashTablePtr table, const xmlChar *name,
+	           const xmlChar *name2, const xmlChar *name3,
+		   void *userdata, xmlHashDeallocator f) {
+    unsigned long key;
+    xmlHashEntryPtr entry;
+    xmlHashEntryPtr insert;
+
+    if ((table == NULL) || name == NULL)
+	return(-1);
+
+    /*
+     * Check for duplicate and insertion location.
+     */
+    key = xmlHashComputeKey(table, name);
+    if (table->table[key] == NULL) {
+	insert = NULL;
+    } else {
+	for (insert = table->table[key]; insert->next != NULL;
+	     insert = insert->next) {
+	    if ((xmlStrEqual(insert->name, name)) &&
+		(xmlStrEqual(insert->name2, name2)) &&
+		(xmlStrEqual(insert->name3, name3))) {
 		if (f)
-		    f(insert->payload);
+		    f(insert->payload, insert->name);
 		insert->payload = userdata;
 		return(0);
 	    }
 	}
-	if (xmlStrEqual(insert->name, name)) {
+	if ((xmlStrEqual(insert->name, name)) &&
+	    (xmlStrEqual(insert->name2, name2)) &&
+	    (xmlStrEqual(insert->name3, name3))) {
 	    if (f)
-		f(insert->payload);
+		f(insert->payload, insert->name);
 	    insert->payload = userdata;
 	    return(0);
 	}
@@ -204,6 +351,8 @@ xmlHashUpdateEntry(xmlHashTablePtr table, const xmlChar *name,
     if (entry == NULL)
 	return(-1);
     entry->name = xmlStrdup(name);
+    entry->name2 = xmlStrdup(name2);
+    entry->name3 = xmlStrdup(name3);
     entry->payload = userdata;
     entry->next = NULL;
 
@@ -220,13 +369,16 @@ xmlHashUpdateEntry(xmlHashTablePtr table, const xmlChar *name,
  * xmlHashLookup:
  * @table: the hash table
  * @name: the name of the userdata
+ * @name2: a second name of the userdata
+ * @name3: a third name of the userdata
  *
- * Find the userdata specified by the name.
+ * Find the userdata specified by the (name, name2, name3) tuple.
  *
  * Returns the a pointer to the userdata
  */
 void *
-xmlHashLookup(xmlHashTablePtr table, const xmlChar *name) {
+xmlHashLookup3(xmlHashTablePtr table, const xmlChar *name, 
+	       const xmlChar *name2, const xmlChar *name3) {
     unsigned long key;
     xmlHashEntryPtr entry;
 
@@ -236,7 +388,9 @@ xmlHashLookup(xmlHashTablePtr table, const xmlChar *name) {
 	return(NULL);
     key = xmlHashComputeKey(table, name);
     for (entry = table->table[key]; entry != NULL; entry = entry->next) {
-	if (xmlStrEqual(name, entry->name))
+	if ((xmlStrEqual(entry->name, name)) &&
+	    (xmlStrEqual(entry->name2, name2)) &&
+	    (xmlStrEqual(entry->name3, name3)))
 	    return(entry->payload);
     }
     return(NULL);
@@ -267,7 +421,49 @@ xmlHashScan(xmlHashTablePtr table, xmlHashScanner f, void *data) {
 	    while (iter) {
 		next = iter->next;
 		if (f)
-		    f(iter->payload, data);
+		    f(iter->payload, data, iter->name);
+		iter = next;
+	    }
+	}
+    }
+}
+
+/**
+ * xmlHashScan3:
+ * @table: the hash table
+ * @name: the name of the userdata or NULL
+ * @name2: a second name of the userdata or NULL
+ * @name3: a third name of the userdata or NULL
+ * @f:  the scanner function for items in the hash
+ * @data:  extra data passed to f
+ *
+ * Scan the hash table and applied f to each value matching
+ * (name, name2, name3) tuple. If one of the names is null,
+ * the comparison is considered to match.
+ */
+void
+xmlHashScan3(xmlHashTablePtr table, const xmlChar *name, 
+	     const xmlChar *name2, const xmlChar *name3,
+	     xmlHashScanner f, void *data) {
+    int i;
+    xmlHashEntryPtr iter;
+    xmlHashEntryPtr next;
+
+    if (table == NULL)
+	return;
+    if (f == NULL)
+	return;
+
+    if (table->table) {
+	for(i = 0; i < table->size; i++) {
+	    iter = table->table[i];
+	    while (iter) {
+		next = iter->next;
+		if (((name == NULL) || (xmlStrEqual(name, iter->name))) &&
+		    ((name2 == NULL) || (xmlStrEqual(name2, iter->name2))) &&
+		    ((name3 == NULL) || (xmlStrEqual(name3, iter->name3)))) {
+		    f(iter->payload, data, iter->name);
+		}
 		iter = next;
 	    }
 	}
@@ -301,7 +497,8 @@ xmlHashCopy(xmlHashTablePtr table, xmlHashCopier f) {
 	    iter = table->table[i];
 	    while (iter) {
 		next = iter->next;
-		xmlHashAddEntry(ret, iter->name, f(iter));
+		xmlHashAddEntry3(ret, iter->name, iter->name2,
+			         iter->name3, f(iter->payload, iter->name));
 		iter = next;
 	    }
 	}

@@ -13,12 +13,6 @@ _top"><img src="http://ads.gamesquad.net/addclick.exe/adcycle.cgi?group=52&medi
 ./test/HTML/doc3.htm:140: error: error parsing attribute name
                         width=70 Gentus?.?></A><BR><A 
                                        ^
-./test/HTML/doc3.htm:140: error: htmlParseStartTag: problem parsing attributes
-                        width=70 Gentus?.?></A><BR><A 
-                                       ^
-./test/HTML/doc3.htm:140: error: Couldn't find end of Start Tag img
-                        width=70 Gentus?.?></A><BR><A 
-                                       ^
 ./test/HTML/doc3.htm:143: error: Unexpected end tag : p
   </P></TD></TR></TBODY></TABLE></CENTER></TD></TR></TBODY></TABLE></CENTER></P
                                                                                 ^

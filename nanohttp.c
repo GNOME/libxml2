@@ -966,9 +966,6 @@ xmlNanoHTTPClose(void *ctx) {
     xmlNanoHTTPFreeCtxt(ctxt);
 }
 
-#ifndef DEBUG_HTTP
-#define DEBUG_HTTP
-#endif
 /**
  * xmlNanoHTTPMethod:
  * @URL:  The URL to load

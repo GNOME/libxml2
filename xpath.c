@@ -903,44 +903,17 @@ xmlXPathRegisteredFuncsCleanup(xmlXPathContextPtr ctxt) {
 int		  
 xmlXPathRegisterVariable(xmlXPathContextPtr ctxt, const xmlChar *name,
 			 xmlXPathObjectPtr value) {
-    int i;
-
     if (ctxt == NULL)
 	return(-1);
     if (name == NULL)
 	return(-1);
 
-    for (i = 0;i < ctxt->nb_variables;i++) {
-	if (xmlStrEqual(ctxt->variables[i].name, name)) {
-	    /*
-	     * It's just an update or a removal
-	     */
-	    if (ctxt->variables[i].value != NULL) {
-		xmlXPathFreeObject(ctxt->variables[i].value);
-	    }
-	    ctxt->variables[i].value = xmlXPathObjectCopy(value);
-	    return(0);
-	}
-    }
-    if (ctxt->max_variables <= 0) {
-	ctxt->max_variables = 10;
-	ctxt->nb_variables = 0;
-	ctxt->variables = (xmlXPathVariablePtr)
-	    xmlMalloc(ctxt->max_variables * sizeof(xmlXPathVariable));
-    } else if (ctxt->max_variables <= ctxt->nb_variables) {
-	ctxt->max_variables *= 2;
-	ctxt->variables = (xmlXPathVariablePtr)
-	    xmlRealloc(ctxt->variables,
-		       ctxt->max_variables * sizeof(xmlXPathVariable));
-    }
-    if (ctxt->variables == NULL) {
-        fprintf(xmlXPathDebug, "xmlXPathRegisterVariable: out of memory\n");
+    if (ctxt->varHash == NULL)
+	ctxt->varHash = xmlHashCreate(0);
+    if (ctxt->varHash == NULL)
 	return(-1);
-    }
-    ctxt->variables[ctxt->nb_variables].name = xmlStrdup(name);
-    ctxt->variables[ctxt->nb_variables].value = xmlXPathObjectCopy(value);
-    ctxt->nb_variables++;
-    return(0);
+    return(xmlHashUpdateEntry(ctxt->varHash, name, (void *) value,
+		              (xmlHashDeallocator)xmlXPathFreeObject));
 }
 
 /**
@@ -955,19 +928,14 @@ xmlXPathRegisterVariable(xmlXPathContextPtr ctxt, const xmlChar *name,
  */
 xmlXPathObjectPtr
 xmlXPathVariableLookup(xmlXPathContextPtr ctxt, const xmlChar *name) {
-    int i;
-
     if (ctxt == NULL)
+	return(NULL);
+    if (ctxt->varHash == NULL)
 	return(NULL);
     if (name == NULL)
 	return(NULL);
 
-    for (i = 0;i < ctxt->nb_variables;i++) {
-	if (xmlStrEqual(ctxt->variables[i].name, name)) {
-	    return(xmlXPathObjectCopy(ctxt->variables[i].value));
-	}
-    }
-    return(NULL);
+    return((xmlXPathObjectPtr) xmlHashLookup(ctxt->varHash, name));
 }
 
 /**
@@ -978,20 +946,11 @@ xmlXPathVariableLookup(xmlXPathContextPtr ctxt, const xmlChar *name) {
  */
 void
 xmlXPathRegisteredVariablesCleanup(xmlXPathContextPtr ctxt) {
-    int i;
-
     if (ctxt == NULL)
 	return;
 
-    for (i = 0;i < ctxt->nb_variables;i++) {
-	xmlFree((xmlChar *) ctxt->variables[i].name);
-	xmlXPathFreeObject(ctxt->variables[i].value);
-    }
-    ctxt->nb_variables = -1;
-    ctxt->max_variables = -1;
-    if (ctxt->variables != NULL)
-	xmlFree(ctxt->variables);
-    ctxt->variables = NULL;
+    xmlHashFree(ctxt->varHash, NULL);
+    ctxt->varHash = NULL;
 }
 
 /************************************************************************
@@ -1196,9 +1155,7 @@ xmlXPathNewContext(xmlDocPtr doc) {
     ret->doc = doc;
     ret->node = NULL;
 
-    ret->nb_variables = 0;
-    ret->max_variables = 0;
-    ret->variables = NULL;
+    ret->varHash = NULL;
 
     ret->nb_types = 0;
     ret->max_types = 0;

@@ -27,6 +27,6 @@ xmlinc_HEADERS = \
 		libxml/xmlversion.h
 
 install-exec-hook:
-	$(mkinstalldirs) $(xmlincdir) $(xmlincdir)/libxml
+	$(mkinstalldirs) $(DESTDIR)$(xmlincdir) $(DESTDIR)$(xmlincdir)/libxml
 
 EXTRA_DIST = win32config.h

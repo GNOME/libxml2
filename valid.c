@@ -21,6 +21,7 @@
 #endif
 
 #include <libxml/xmlmemory.h>
+#include <libxml/hash.h>
 #include <libxml/valid.h>
 #include <libxml/parser.h>
 #include <libxml/parserInternals.h>
@@ -453,27 +454,26 @@ xmlSprintfElementContent(char *buf, xmlElementContentPtr content, int glob) {
  */
 xmlElementTablePtr
 xmlCreateElementTable(void) {
-    xmlElementTablePtr ret;
+    return(xmlHashCreate(0));
+}
 
-    ret = (xmlElementTablePtr) 
-         xmlMalloc(sizeof(xmlElementTable));
-    if (ret == NULL) {
-        fprintf(stderr, "xmlCreateElementTable : xmlMalloc(%ld) failed\n",
-	        (long)sizeof(xmlElementTable));
-        return(NULL);
-    }
-    ret->max_elements = XML_MIN_ELEMENT_TABLE;
-    ret->nb_elements = 0;
-    ret->last = 0;
-    ret->table = (xmlElementPtr *) 
-         xmlMalloc(ret->max_elements * sizeof(xmlElementPtr));
-    if (ret->table == NULL) {
-        fprintf(stderr, "xmlCreateElementTable : xmlMalloc(%ld) failed\n",
-	        ret->max_elements * (long)sizeof(xmlElement));
-	xmlFree(ret);
-        return(NULL);
-    }
-    return(ret);
+/**
+ * xmlFreeElement:
+ * @elem:  An element
+ *
+ * Deallocate the memory used by an element definition
+ */
+void
+xmlFreeElement(xmlElementPtr elem) {
+    if (elem == NULL) return;
+    xmlUnlinkNode((xmlNodePtr) elem);
+    xmlFreeElementContent(elem->content);
+    if (elem->name != NULL)
+	xmlFree((xmlChar *) elem->name);
+    if (elem->prefix != NULL)
+	xmlFree((xmlChar *) elem->prefix);
+    memset(elem, -1, sizeof(xmlElement));
+    xmlFree(elem);
 }
 
 
@@ -493,10 +493,9 @@ xmlElementPtr
 xmlAddElementDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *name,
                   xmlElementTypeVal type,
 		  xmlElementContentPtr content) {
-    xmlElementPtr ret, cur;
+    xmlElementPtr ret;
     xmlElementTablePtr table;
     xmlChar *ns, *uqname;
-    int i;
 
     if (dtd == NULL) {
         fprintf(stderr, "xmlAddElementDecl: dtd == NULL\n");
@@ -560,39 +559,6 @@ xmlAddElementDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *name,
         return(NULL);
     }
 
-    /*
-     * Validity Check:
-     * Search the DTD for previous declarations of the ELEMENT
-     */
-    for (i = 0;i < table->nb_elements;i++) {
-        cur = table->table[i];
-	if ((ns != NULL) && (cur->prefix == NULL)) continue;
-	if ((ns == NULL) && (cur->prefix != NULL)) continue;
-	if ((xmlStrEqual(cur->name, name)) &&
-	    ((ns == NULL) || (xmlStrEqual(cur->prefix, ns)))) {
-	    /*
-	     * The element is already defined in this Dtd.
-	     */
-	    VERROR(ctxt->userData, "Redefinition of element %s\n", name);
-	    return(NULL);
-	}
-    }
-
-    /*
-     * Grow the table, if needed.
-     */
-    if (table->nb_elements >= table->max_elements) {
-        /*
-	 * need more elements.
-	 */
-	table->max_elements *= 2;
-	table->table = (xmlElementPtr *) 
-	    xmlRealloc(table->table, table->max_elements * sizeof(xmlElementPtr));
-	if (table->table == NULL) {
-	    fprintf(stderr, "xmlAddElementDecl: out of memory\n");
-	    return(NULL);
-	}
-    }
     ret = (xmlElementPtr) xmlMalloc(sizeof(xmlElement));
     if (ret == NULL) {
 	fprintf(stderr, "xmlAddElementDecl: out of memory\n");
@@ -600,7 +566,6 @@ xmlAddElementDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *name,
     }
     memset(ret, 0, sizeof(xmlElement));
     ret->type = XML_ELEMENT_DECL;
-    table->table[table->nb_elements] = ret;
 
     /*
      * fill the structure.
@@ -610,7 +575,21 @@ xmlAddElementDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *name,
     ret->prefix = ns;
     ret->content = xmlCopyElementContent(content);
     ret->attributes = xmlScanAttributeDecl(dtd, name);
-    table->nb_elements++;
+
+    /*
+     * Validity Check:
+     * Insertion must not fail
+     */
+    if (xmlHashAddEntry2(table, name, ns, ret)) {
+	/*
+	 * The element is already defined in this Dtd.
+	 */
+	VERROR(ctxt->userData, "Redefinition of element %s\n", name);
+	xmlFreeElement(ret);
+	if (uqname != NULL)
+	    xmlFree(uqname);
+	return(NULL);
+    }
 
     /*
      * Link it to the Dtd
@@ -630,25 +609,6 @@ xmlAddElementDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *name,
 }
 
 /**
- * xmlFreeElement:
- * @elem:  An element
- *
- * Deallocate the memory used by an element definition
- */
-void
-xmlFreeElement(xmlElementPtr elem) {
-    if (elem == NULL) return;
-    xmlUnlinkNode((xmlNodePtr) elem);
-    xmlFreeElementContent(elem->content);
-    if (elem->name != NULL)
-	xmlFree((xmlChar *) elem->name);
-    if (elem->prefix != NULL)
-	xmlFree((xmlChar *) elem->prefix);
-    memset(elem, -1, sizeof(xmlElement));
-    xmlFree(elem);
-}
-
-/**
  * xmlFreeElementTable:
  * @table:  An element table
  *
@@ -656,15 +616,41 @@ xmlFreeElement(xmlElementPtr elem) {
  */
 void
 xmlFreeElementTable(xmlElementTablePtr table) {
-    int i;
+    xmlHashFree(table, (xmlHashDeallocator) xmlFreeElement);
+}
 
-    if (table == NULL) return;
+/**
+ * xmlCopyElement:
+ * @elem:  An element
+ *
+ * Build a copy of an element.
+ * 
+ * Returns the new xmlElementPtr or NULL in case of error.
+ */
+xmlElementPtr
+xmlCopyElement(xmlElementPtr elem) {
+    xmlElementPtr cur;
 
-    for (i = 0;i < table->nb_elements;i++) {
-        xmlFreeElement(table->table[i]);
+    cur = (xmlElementPtr) xmlMalloc(sizeof(xmlElement));
+    if (cur == NULL) {
+	fprintf(stderr, "xmlCopyElement: out of memory !\n");
+	return(NULL);
     }
-    xmlFree(table->table);
-    xmlFree(table);
+    memset(cur, 0, sizeof(xmlElement));
+    cur->type = XML_ELEMENT_DECL;
+    cur->etype = elem->etype;
+    if (elem->name != NULL)
+	cur->name = xmlStrdup(elem->name);
+    else
+	cur->name = NULL;
+    if (elem->prefix != NULL)
+	cur->prefix = xmlStrdup(elem->prefix);
+    else
+	cur->prefix = NULL;
+    cur->content = xmlCopyElementContent(elem->content);
+    /* TODO : rebuild the attribute list on the copy */
+    cur->attributes = NULL;
+    return(cur);
 }
 
 /**
@@ -677,46 +663,8 @@ xmlFreeElementTable(xmlElementTablePtr table) {
  */
 xmlElementTablePtr
 xmlCopyElementTable(xmlElementTablePtr table) {
-    xmlElementTablePtr ret;
-    xmlElementPtr cur, ent;
-    int i;
-
-    ret = (xmlElementTablePtr) xmlMalloc(sizeof(xmlElementTable));
-    if (ret == NULL) {
-        fprintf(stderr, "xmlCopyElementTable: out of memory !\n");
-	return(NULL);
-    }
-    ret->table = (xmlElementPtr *) xmlMalloc(table->max_elements *
-                                         sizeof(xmlElementPtr));
-    if (ret->table == NULL) {
-        fprintf(stderr, "xmlCopyElementTable: out of memory !\n");
-	xmlFree(ret);
-	return(NULL);
-    }
-    ret->max_elements = table->max_elements;
-    ret->nb_elements = table->nb_elements;
-    for (i = 0;i < ret->nb_elements;i++) {
-	cur = (xmlElementPtr) xmlMalloc(sizeof(xmlElement));
-	if (cur == NULL) {
-	    fprintf(stderr, "xmlCopyElementTable: out of memory !\n");
-	    xmlFree(ret);
-	    xmlFree(ret->table);
-	    return(NULL);
-	}
-	memset(cur, 0, sizeof(xmlElement));
-	cur->type = XML_ELEMENT_DECL;
-	ret->table[i] = cur;
-	ent = table->table[i];
-	cur->etype = ent->etype;
-	if (ent->name != NULL)
-	    cur->name = xmlStrdup(ent->name);
-	else
-	    cur->name = NULL;
-	cur->content = xmlCopyElementContent(ent->content);
-	/* TODO : rebuild the attribute list on the copy */
-	cur->attributes = NULL;
-    }
-    return(ret);
+    return((xmlElementTablePtr) xmlHashCopy(table,
+		                            (xmlHashCopier) xmlCopyElement));
 }
 
 /**
@@ -770,15 +718,7 @@ xmlDumpElementDecl(xmlBufferPtr buf, xmlElementPtr elem) {
  */
 void
 xmlDumpElementTable(xmlBufferPtr buf, xmlElementTablePtr table) {
-    int i;
-    xmlElementPtr cur;
-
-    if (table == NULL) return;
-
-    for (i = 0;i < table->nb_elements;i++) {
-        cur = table->table[i];
-	xmlDumpElementDecl(buf, cur);
-    }
+    xmlHashScan(table, (xmlHashScanner) xmlDumpElementDecl, buf);
 }
 
 /**
@@ -876,26 +816,22 @@ xmlDumpEnumeration(xmlBufferPtr buf, xmlEnumerationPtr cur) {
  */
 xmlAttributeTablePtr
 xmlCreateAttributeTable(void) {
-    xmlAttributeTablePtr ret;
+    return(xmlHashCreate(0));
+}
 
-    ret = (xmlAttributeTablePtr) 
-         xmlMalloc(sizeof(xmlAttributeTable));
-    if (ret == NULL) {
-        fprintf(stderr, "xmlCreateAttributeTable : xmlMalloc(%ld) failed\n",
-	        (long)sizeof(xmlAttributeTable));
-        return(NULL);
-    }
-    ret->max_attributes = XML_MIN_ATTRIBUTE_TABLE;
-    ret->nb_attributes = 0;
-    ret->table = (xmlAttributePtr *) 
-         xmlMalloc(ret->max_attributes * sizeof(xmlAttributePtr));
-    if (ret->table == NULL) {
-        fprintf(stderr, "xmlCreateAttributeTable : xmlMalloc(%ld) failed\n",
-	        ret->max_attributes * (long)sizeof(xmlAttributePtr));
-	xmlFree(ret);
-        return(NULL);
-    }
-    return(ret);
+/**
+ * xmlScanAttributeDeclCallback:
+ * @attr:  the attribute decl
+ * @list:  the list to update
+ *
+ * Callback called by xmlScanAttributeDecl when a new attribute
+ * has to be entered in the list.
+ */
+void
+xmlScanAttributeDeclCallback(xmlAttributePtr attr, xmlAttributePtr *list,
+	                     const xmlChar* name) {
+    attr->nexth = *list;
+    *list = attr;
 }
 
 /**
@@ -913,7 +849,6 @@ xmlAttributePtr
 xmlScanAttributeDecl(xmlDtdPtr dtd, const xmlChar *elem) {
     xmlAttributePtr ret = NULL;
     xmlAttributeTablePtr table;
-    int i;
 
     if (dtd == NULL) {
         fprintf(stderr, "xmlScanAttributeDecl: dtd == NULL\n");
@@ -927,12 +862,9 @@ xmlScanAttributeDecl(xmlDtdPtr dtd, const xmlChar *elem) {
     if (table == NULL) 
         return(NULL);
 
-    for (i = 0;i < table->nb_attributes;i++) {
-        if (xmlStrEqual(table->table[i]->elem, elem)) {
-	    table->table[i]->nexth = ret;
-	    ret = table->table[i];
-	}
-    }
+    /* WRONG !!! */
+    xmlHashScan3(table, NULL, NULL, elem,
+	        (xmlHashScanner) xmlScanAttributeDeclCallback, &ret);
     return(ret);
 }
 
@@ -966,6 +898,30 @@ xmlScanIDAttributeDecl(xmlValidCtxtPtr ctxt, xmlElementPtr elem) {
     return(ret);
 }
 
+/**
+ * xmlFreeAttribute:
+ * @elem:  An attribute
+ *
+ * Deallocate the memory used by an attribute definition
+ */
+void
+xmlFreeAttribute(xmlAttributePtr attr) {
+    if (attr == NULL) return;
+    xmlUnlinkNode((xmlNodePtr) attr);
+    if (attr->tree != NULL)
+        xmlFreeEnumeration(attr->tree);
+    if (attr->elem != NULL)
+	xmlFree((xmlChar *) attr->elem);
+    if (attr->name != NULL)
+	xmlFree((xmlChar *) attr->name);
+    if (attr->defaultValue != NULL)
+	xmlFree((xmlChar *) attr->defaultValue);
+    if (attr->prefix != NULL)
+	xmlFree((xmlChar *) attr->prefix);
+    memset(attr, -1, sizeof(xmlAttribute));
+    xmlFree(attr);
+}
+
 
 /**
  * xmlAddAttributeDecl:
@@ -989,10 +945,9 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *elem,
                     const xmlChar *name, const xmlChar *ns,
 		    xmlAttributeType type, xmlAttributeDefault def,
 		    const xmlChar *defaultValue, xmlEnumerationPtr tree) {
-    xmlAttributePtr ret, cur;
+    xmlAttributePtr ret;
     xmlAttributeTablePtr table;
     xmlElementPtr elemDef;
-    int i;
 
     if (dtd == NULL) {
         fprintf(stderr, "xmlAddAttributeDecl: dtd == NULL\n");
@@ -1058,81 +1013,7 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *elem,
         return(NULL);
     }
 
-    /*
-     * Validity Check:
-     * Search the DTD for previous declarations of the ATTLIST
-     * The initial code used to walk the attribute table comparing
-     * all pairs of element/attribute names, and was far too slow
-     * for large DtDs, we now walk the attribute list associated to
-     * the element declaration instead if this declaration is found.
-     */
-    elemDef = xmlGetDtdElementDesc(dtd, elem);
-    if (elemDef != NULL) {
-	/*
-	 * follow the attribute list.
-	 */
-	cur = elemDef->attributes;
-	while (cur != NULL) {
-	    if ((ns != NULL) && (cur->prefix == NULL)) {
-		cur = cur->nexth;
-		continue;
-	    }
-	    if ((ns == NULL) && (cur->prefix != NULL)) {
-		cur = cur->nexth;
-		continue;
-	    }
-	    if ((xmlStrEqual(cur->name, name)) &&
-		((ns == NULL) || (xmlStrEqual(cur->prefix, ns)))) {
-		/*
-		 * The attribute is already defined in this Dtd.
-		 */
-		VWARNING(ctxt->userData,
-			 "Attribute %s on %s: already defined\n",
-		         name, elem);
-		xmlFreeEnumeration(tree);
-		return(NULL);
-	    }
-	    cur = cur->nexth;
-	}
-    } else {
-	/*
-	 * Walk down the attribute table.
-	 */
-	for (i = 0;i < table->nb_attributes;i++) {
-	    cur = table->table[i];
-	    if ((ns != NULL) && (cur->prefix == NULL)) continue;
-	    if ((ns == NULL) && (cur->prefix != NULL)) continue;
-	    if ((xmlStrEqual(cur->name, name)) &&
-		(xmlStrEqual(cur->elem, elem)) &&
-		((ns == NULL) || (xmlStrEqual(cur->prefix, ns)))) {
-		/*
-		 * The attribute is already defined in this Dtd.
-		 */
-		VWARNING(ctxt->userData,
-			 "Attribute %s on %s: already defined\n",
-		         elem, name);
-		xmlFreeEnumeration(tree);
-		return(NULL);
-	    }
-	}
-    }
 
-    /*
-     * Grow the table, if needed.
-     */
-    if (table->nb_attributes >= table->max_attributes) {
-        /*
-	 * need more attributes.
-	 */
-	table->max_attributes *= 2;
-	table->table = (xmlAttributePtr *) 
-	    xmlRealloc(table->table, table->max_attributes * 
-	            sizeof(xmlAttributePtr));
-	if (table->table == NULL) {
-	    fprintf(stderr, "xmlAddAttributeDecl: out of memory\n");
-	    return(NULL);
-	}
-    }
     ret = (xmlAttributePtr) xmlMalloc(sizeof(xmlAttribute));
     if (ret == NULL) {
 	fprintf(stderr, "xmlAddAttributeDecl: out of memory\n");
@@ -1140,7 +1021,6 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *elem,
     }
     memset(ret, 0, sizeof(xmlAttribute));
     ret->type = XML_ATTRIBUTE_DECL;
-    table->table[table->nb_attributes] = ret;
 
     /*
      * fill the structure.
@@ -1153,6 +1033,27 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *elem,
     ret->tree = tree;
     if (defaultValue != NULL)
 	ret->defaultValue = xmlStrdup(defaultValue);
+
+    /*
+     * Validity Check:
+     * Search the DTD for previous declarations of the ATTLIST
+     */
+    if (xmlHashAddEntry3(table, name, ns, elem, ret) < 0) {
+	/*
+	 * The attribute is already defined in this Dtd.
+	 */
+	VWARNING(ctxt->userData,
+		 "Attribute %s on %s: already defined\n",
+		 name, elem);
+	xmlFreeAttribute(ret);
+	return(NULL);
+    }
+
+    /*
+     * Validity Check:
+     * Multiple ID per element
+     */
+    elemDef = xmlGetDtdElementDesc(dtd, elem);
     if (elemDef != NULL) {
         if ((type == XML_ATTRIBUTE_ID) &&
 	    (xmlScanIDAttributeDecl(NULL, elemDef) != 0))
@@ -1162,7 +1063,6 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *elem,
         ret->nexth = elemDef->attributes;
         elemDef->attributes = ret;
     }
-    table->nb_attributes++;
 
     /*
      * Link it to the Dtd
@@ -1180,30 +1080,6 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *elem,
 }
 
 /**
- * xmlFreeAttribute:
- * @elem:  An attribute
- *
- * Deallocate the memory used by an attribute definition
- */
-void
-xmlFreeAttribute(xmlAttributePtr attr) {
-    if (attr == NULL) return;
-    xmlUnlinkNode((xmlNodePtr) attr);
-    if (attr->tree != NULL)
-        xmlFreeEnumeration(attr->tree);
-    if (attr->elem != NULL)
-	xmlFree((xmlChar *) attr->elem);
-    if (attr->name != NULL)
-	xmlFree((xmlChar *) attr->name);
-    if (attr->defaultValue != NULL)
-	xmlFree((xmlChar *) attr->defaultValue);
-    if (attr->prefix != NULL)
-	xmlFree((xmlChar *) attr->prefix);
-    memset(attr, -1, sizeof(xmlAttribute));
-    xmlFree(attr);
-}
-
-/**
  * xmlFreeAttributeTable:
  * @table:  An attribute table
  *
@@ -1211,15 +1087,37 @@ xmlFreeAttribute(xmlAttributePtr attr) {
  */
 void
 xmlFreeAttributeTable(xmlAttributeTablePtr table) {
-    int i;
+    xmlHashFree(table, (xmlHashDeallocator) xmlFreeAttribute);
+}
 
-    if (table == NULL) return;
+/**
+ * xmlCopyAttribute:
+ * @attr:  An attribute
+ *
+ * Build a copy of an attribute.
+ * 
+ * Returns the new xmlAttributePtr or NULL in case of error.
+ */
+xmlAttributePtr
+xmlCopyAttribute(xmlAttributePtr attr) {
+    xmlAttributePtr cur;
 
-    for (i = 0;i < table->nb_attributes;i++) {
-        xmlFreeAttribute(table->table[i]);
+    cur = (xmlAttributePtr) xmlMalloc(sizeof(xmlAttribute));
+    if (cur == NULL) {
+	fprintf(stderr, "xmlCopyAttribute: out of memory !\n");
+	return(NULL);
     }
-    xmlFree(table->table);
-    xmlFree(table);
+    memset(cur, 0, sizeof(xmlAttribute));
+    cur->atype = attr->atype;
+    cur->def = attr->def;
+    cur->tree = xmlCopyEnumeration(attr->tree);
+    if (attr->elem != NULL)
+	cur->elem = xmlStrdup(attr->elem);
+    if (attr->name != NULL)
+	cur->name = xmlStrdup(attr->name);
+    if (attr->defaultValue != NULL)
+	cur->defaultValue = xmlStrdup(attr->defaultValue);
+    return(cur);
 }
 
 /**
@@ -1232,48 +1130,8 @@ xmlFreeAttributeTable(xmlAttributeTablePtr table) {
  */
 xmlAttributeTablePtr
 xmlCopyAttributeTable(xmlAttributeTablePtr table) {
-    xmlAttributeTablePtr ret;
-    xmlAttributePtr cur, attr;
-    int i;
-
-    ret = (xmlAttributeTablePtr) xmlMalloc(sizeof(xmlAttributeTable));
-    if (ret == NULL) {
-        fprintf(stderr, "xmlCopyAttributeTable: out of memory !\n");
-	return(NULL);
-    }
-    ret->table = (xmlAttributePtr *) xmlMalloc(table->max_attributes *
-                                          sizeof(xmlAttributePtr));
-    if (ret->table == NULL) {
-        fprintf(stderr, "xmlCopyAttributeTable: out of memory !\n");
-	xmlFree(ret);
-	return(NULL);
-    }
-    ret->max_attributes = table->max_attributes;
-    ret->nb_attributes = table->nb_attributes;
-    for (i = 0;i < ret->nb_attributes;i++) {
-	attr = table->table[i];
-	cur = (xmlAttributePtr) xmlMalloc(sizeof(xmlAttribute));
-	if (cur == NULL) {
-	    fprintf(stderr, "xmlCopyAttributeTable: out of memory !\n");
-	    xmlFree(ret);
-	    xmlFree(ret->table);
-	    return(NULL);
-	}
-	memset(cur, 0, sizeof(xmlAttribute));
-	/* !!! cur->type = XML_ATTRIBUTE_DECL; */
-	ret->table[i] = cur;
-	cur->atype = attr->atype;
-	cur->def = attr->def;
-	cur->tree = xmlCopyEnumeration(attr->tree);
-	if (attr->elem != NULL)
-	    cur->elem = xmlStrdup(attr->elem);
-	if (attr->name != NULL)
-	    cur->name = xmlStrdup(attr->name);
-	if (attr->defaultValue != NULL)
-	    cur->defaultValue = xmlStrdup(attr->defaultValue);
-	/* NEED to rebuild the next chain !!!!!! */
-    }
-    return(ret);
+    return((xmlAttributeTablePtr) xmlHashCopy(table,
+				    (xmlHashCopier) xmlCopyAttribute));
 }
 
 /**
@@ -1365,15 +1223,7 @@ xmlDumpAttributeDecl(xmlBufferPtr buf, xmlAttributePtr attr) {
  */
 void
 xmlDumpAttributeTable(xmlBufferPtr buf, xmlAttributeTablePtr table) {
-    int i;
-    xmlAttributePtr cur;
-
-    if (table == NULL) return;
-
-    for (i = 0;i < table->nb_attributes;i++) {
-        cur = table->table[i];
-	xmlDumpAttributeDecl(buf, cur);
-    }
+    xmlHashScan(table, (xmlHashScanner) xmlDumpAttributeDecl, buf);
 }
 
 /************************************************************************
@@ -1391,26 +1241,26 @@ xmlDumpAttributeTable(xmlBufferPtr buf, xmlAttributeTablePtr table) {
  */
 xmlNotationTablePtr
 xmlCreateNotationTable(void) {
-    xmlNotationTablePtr ret;
+    return(xmlHashCreate(0));
+}
 
-    ret = (xmlNotationTablePtr) 
-         xmlMalloc(sizeof(xmlNotationTable));
-    if (ret == NULL) {
-        fprintf(stderr, "xmlCreateNotationTable : xmlMalloc(%ld) failed\n",
-	        (long)sizeof(xmlNotationTable));
-        return(NULL);
-    }
-    ret->max_notations = XML_MIN_NOTATION_TABLE;
-    ret->nb_notations = 0;
-    ret->table = (xmlNotationPtr *) 
-         xmlMalloc(ret->max_notations * sizeof(xmlNotationPtr));
-    if (ret->table == NULL) {
-        fprintf(stderr, "xmlCreateNotationTable : xmlMalloc(%ld) failed\n",
-	        ret->max_notations * (long)sizeof(xmlNotation));
-	xmlFree(ret);
-        return(NULL);
-    }
-    return(ret);
+/**
+ * xmlFreeNotation:
+ * @not:  A notation
+ *
+ * Deallocate the memory used by an notation definition
+ */
+void
+xmlFreeNotation(xmlNotationPtr nota) {
+    if (nota == NULL) return;
+    if (nota->name != NULL)
+	xmlFree((xmlChar *) nota->name);
+    if (nota->PublicID != NULL)
+	xmlFree((xmlChar *) nota->PublicID);
+    if (nota->SystemID != NULL)
+	xmlFree((xmlChar *) nota->SystemID);
+    memset(nota, -1, sizeof(xmlNotation));
+    xmlFree(nota);
 }
 
 
@@ -1429,9 +1279,8 @@ xmlCreateNotationTable(void) {
 xmlNotationPtr
 xmlAddNotationDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *name,
                    const xmlChar *PublicID, const xmlChar *SystemID) {
-    xmlNotationPtr ret, cur;
+    xmlNotationPtr ret;
     xmlNotationTablePtr table;
-    int i;
 
     if (dtd == NULL) {
         fprintf(stderr, "xmlAddNotationDecl: dtd == NULL\n");
@@ -1456,44 +1305,12 @@ xmlAddNotationDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *name,
         return(NULL);
     }
 
-    /*
-     * Validity Check:
-     * Search the DTD for previous declarations of the ATTLIST
-     */
-    for (i = 0;i < table->nb_notations;i++) {
-        cur = table->table[i];
-	if (xmlStrEqual(cur->name, name)) {
-	    /*
-	     * The notation is already defined in this Dtd.
-	     */
-	    fprintf(stderr,
-		    "xmlAddNotationDecl: %s already defined\n", name);
-	}
-    }
-
-    /*
-     * Grow the table, if needed.
-     */
-    if (table->nb_notations >= table->max_notations) {
-        /*
-	 * need more notations.
-	 */
-	table->max_notations *= 2;
-	table->table = (xmlNotationPtr *) 
-	    xmlRealloc(table->table, table->max_notations *
-	            sizeof(xmlNotationPtr));
-	if (table->table == NULL) {
-	    fprintf(stderr, "xmlAddNotationDecl: out of memory\n");
-	    return(NULL);
-	}
-    }
     ret = (xmlNotationPtr) xmlMalloc(sizeof(xmlNotation));
     if (ret == NULL) {
 	fprintf(stderr, "xmlAddNotationDecl: out of memory\n");
 	return(NULL);
     }
     memset(ret, 0, sizeof(xmlNotation));
-    table->table[table->nb_notations] = ret;
 
     /*
      * fill the structure.
@@ -1503,28 +1320,18 @@ xmlAddNotationDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *name,
         ret->SystemID = xmlStrdup(SystemID);
     if (PublicID != NULL)
         ret->PublicID = xmlStrdup(PublicID);
-    table->nb_notations++;
 
+    /*
+     * Validity Check:
+     * Check the DTD for previous declarations of the ATTLIST
+     */
+    if (xmlHashAddEntry(table, name, ret)) {
+	fprintf(stderr,
+		"xmlAddNotationDecl: %s already defined\n", name);
+	xmlFreeNotation(ret);
+	return(NULL);
+    }
     return(ret);
-}
-
-/**
- * xmlFreeNotation:
- * @not:  A notation
- *
- * Deallocate the memory used by an notation definition
- */
-void
-xmlFreeNotation(xmlNotationPtr nota) {
-    if (nota == NULL) return;
-    if (nota->name != NULL)
-	xmlFree((xmlChar *) nota->name);
-    if (nota->PublicID != NULL)
-	xmlFree((xmlChar *) nota->PublicID);
-    if (nota->SystemID != NULL)
-	xmlFree((xmlChar *) nota->SystemID);
-    memset(nota, -1, sizeof(xmlNotation));
-    xmlFree(nota);
 }
 
 /**
@@ -1535,15 +1342,39 @@ xmlFreeNotation(xmlNotationPtr nota) {
  */
 void
 xmlFreeNotationTable(xmlNotationTablePtr table) {
-    int i;
+    xmlHashFree(table, (xmlHashDeallocator) xmlFreeNotation);
+}
 
-    if (table == NULL) return;
+/**
+ * xmlCopyNotation:
+ * @nota:  A notation
+ *
+ * Build a copy of a notation.
+ * 
+ * Returns the new xmlNotationPtr or NULL in case of error.
+ */
+xmlNotationPtr
+xmlCopyNotation(xmlNotationPtr nota) {
+    xmlNotationPtr cur;
 
-    for (i = 0;i < table->nb_notations;i++) {
-        xmlFreeNotation(table->table[i]);
+    cur = (xmlNotationPtr) xmlMalloc(sizeof(xmlNotation));
+    if (cur == NULL) {
+	fprintf(stderr, "xmlCopyNotation: out of memory !\n");
+	return(NULL);
     }
-    xmlFree(table->table);
-    xmlFree(table);
+    if (nota->name != NULL)
+	cur->name = xmlStrdup(nota->name);
+    else
+	cur->name = NULL;
+    if (nota->PublicID != NULL)
+	cur->PublicID = xmlStrdup(nota->PublicID);
+    else
+	cur->PublicID = NULL;
+    if (nota->SystemID != NULL)
+	cur->SystemID = xmlStrdup(nota->SystemID);
+    else
+	cur->SystemID = NULL;
+    return(cur);
 }
 
 /**
@@ -1556,48 +1387,8 @@ xmlFreeNotationTable(xmlNotationTablePtr table) {
  */
 xmlNotationTablePtr
 xmlCopyNotationTable(xmlNotationTablePtr table) {
-    xmlNotationTablePtr ret;
-    xmlNotationPtr cur, nota;
-    int i;
-
-    ret = (xmlNotationTablePtr) xmlMalloc(sizeof(xmlNotationTable));
-    if (ret == NULL) {
-        fprintf(stderr, "xmlCopyNotationTable: out of memory !\n");
-	return(NULL);
-    }
-    ret->table = (xmlNotationPtr *) xmlMalloc(table->max_notations *
-                                         sizeof(xmlNotationPtr));
-    if (ret->table == NULL) {
-        fprintf(stderr, "xmlCopyNotationTable: out of memory !\n");
-	xmlFree(ret);
-	return(NULL);
-    }
-    ret->max_notations = table->max_notations;
-    ret->nb_notations = table->nb_notations;
-    for (i = 0;i < ret->nb_notations;i++) {
-	cur = (xmlNotationPtr) xmlMalloc(sizeof(xmlNotation));
-	if (cur == NULL) {
-	    fprintf(stderr, "xmlCopyNotationTable: out of memory !\n");
-	    xmlFree(ret);
-	    xmlFree(ret->table);
-	    return(NULL);
-	}
-	ret->table[i] = cur;
-	nota = table->table[i];
-	if (nota->name != NULL)
-	    cur->name = xmlStrdup(nota->name);
-	else
-	    cur->name = NULL;
-	if (nota->PublicID != NULL)
-	    cur->PublicID = xmlStrdup(nota->PublicID);
-	else
-	    cur->PublicID = NULL;
-	if (nota->SystemID != NULL)
-	    cur->SystemID = xmlStrdup(nota->SystemID);
-	else
-	    cur->SystemID = NULL;
-    }
-    return(ret);
+    return((xmlNotationTablePtr) xmlHashCopy(table,
+				    (xmlHashCopier) xmlCopyNotation));
 }
 
 /**
@@ -1634,15 +1425,7 @@ xmlDumpNotationDecl(xmlBufferPtr buf, xmlNotationPtr nota) {
  */
 void
 xmlDumpNotationTable(xmlBufferPtr buf, xmlNotationTablePtr table) {
-    int i;
-    xmlNotationPtr cur;
-
-    if (table == NULL) return;
-
-    for (i = 0;i < table->nb_notations;i++) {
-        cur = table->table[i];
-	xmlDumpNotationDecl(buf, cur);
-    }
+    xmlHashScan(table, (xmlHashScanner) xmlDumpNotationDecl, buf);
 }
 
 /************************************************************************
@@ -1660,28 +1443,23 @@ xmlDumpNotationTable(xmlBufferPtr buf, xmlNotationTablePtr table) {
  */
 xmlIDTablePtr
 xmlCreateIDTable(void) {
-    xmlIDTablePtr ret;
-
-    ret = (xmlIDTablePtr) 
-         xmlMalloc(sizeof(xmlIDTable));
-    if (ret == NULL) {
-        fprintf(stderr, "xmlCreateIDTable : xmlMalloc(%ld) failed\n",
-	        (long)sizeof(xmlIDTable));
-        return(NULL);
-    }
-    ret->max_ids = XML_MIN_NOTATION_TABLE;
-    ret->nb_ids = 0;
-    ret->table = (xmlIDPtr *) 
-         xmlMalloc(ret->max_ids * sizeof(xmlIDPtr));
-    if (ret->table == NULL) {
-        fprintf(stderr, "xmlCreateIDTable : xmlMalloc(%ld) failed\n",
-	        ret->max_ids * (long)sizeof(xmlID));
-	xmlFree(ret);
-        return(NULL);
-    }
-    return(ret);
+    return(xmlHashCreate(0));
 }
 
+/**
+ * xmlFreeID:
+ * @not:  A id
+ *
+ * Deallocate the memory used by an id definition
+ */
+void
+xmlFreeID(xmlIDPtr id) {
+    if (id == NULL) return;
+    if (id->value != NULL)
+	xmlFree((xmlChar *) id->value);
+    memset(id, -1, sizeof(xmlID));
+    xmlFree(id);
+}
 
 /**
  * xmlAddID:
@@ -1697,9 +1475,8 @@ xmlCreateIDTable(void) {
 xmlIDPtr 
 xmlAddID(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const xmlChar *value,
          xmlAttrPtr attr) {
-    xmlIDPtr ret, cur;
+    xmlIDPtr ret;
     xmlIDTablePtr table;
-    int i;
 
     if (doc == NULL) {
         fprintf(stderr, "xmlAddIDDecl: doc == NULL\n");
@@ -1725,67 +1502,27 @@ xmlAddID(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const xmlChar *value,
         return(NULL);
     }
 
-    /*
-     * Validity Check:
-     * Search the DTD for previous declarations of the ATTLIST
-     */
-    for (i = 0;i < table->nb_ids;i++) {
-        cur = table->table[i];
-	if (xmlStrEqual(cur->value, value)) {
-	    /*
-	     * The id is already defined in this Dtd.
-	     */
-	    VERROR(ctxt->userData, "ID %s already defined\n", value);
-	    return(NULL);
-	}
-    }
-
-    /*
-     * Grow the table, if needed.
-     */
-    if (table->nb_ids >= table->max_ids) {
-        /*
-	 * need more ids.
-	 */
-	table->max_ids *= 2;
-	table->table = (xmlIDPtr *) 
-	    xmlRealloc(table->table, table->max_ids *
-	            sizeof(xmlIDPtr));
-	if (table->table == NULL) {
-	    fprintf(stderr, "xmlAddID: out of memory\n");
-	    return(NULL);
-	}
-    }
     ret = (xmlIDPtr) xmlMalloc(sizeof(xmlID));
     if (ret == NULL) {
 	fprintf(stderr, "xmlAddID: out of memory\n");
 	return(NULL);
     }
-    table->table[table->nb_ids] = ret;
 
     /*
      * fill the structure.
      */
     ret->value = xmlStrdup(value);
     ret->attr = attr;
-    table->nb_ids++;
 
+    if (xmlHashAddEntry(table, value, ret) < 0) {
+	/*
+	 * The id is already defined in this Dtd.
+	 */
+	VERROR(ctxt->userData, "ID %s already defined\n", value);
+	xmlFreeID(ret);
+	return(NULL);
+    }
     return(ret);
-}
-
-/**
- * xmlFreeID:
- * @not:  A id
- *
- * Deallocate the memory used by an id definition
- */
-void
-xmlFreeID(xmlIDPtr id) {
-    if (id == NULL) return;
-    if (id->value != NULL)
-	xmlFree((xmlChar *) id->value);
-    memset(id, -1, sizeof(xmlID));
-    xmlFree(id);
 }
 
 /**
@@ -1796,15 +1533,7 @@ xmlFreeID(xmlIDPtr id) {
  */
 void
 xmlFreeIDTable(xmlIDTablePtr table) {
-    int i;
-
-    if (table == NULL) return;
-
-    for (i = 0;i < table->nb_ids;i++) {
-        xmlFreeID(table->table[i]);
-    }
-    xmlFree(table->table);
-    xmlFree(table);
+    xmlHashFree(table, (xmlHashDeallocator) xmlFreeID);
 }
 
 /**
@@ -1856,9 +1585,9 @@ xmlIsID(xmlDocPtr doc, xmlNodePtr elem, xmlAttrPtr attr) {
  */
 int
 xmlRemoveID(xmlDocPtr doc, xmlAttrPtr attr) {
-    xmlIDPtr cur;
+    xmlAttrPtr cur;
     xmlIDTablePtr table;
-    int i;
+    xmlChar *ID;
 
     if (doc == NULL) return(-1);
     if (attr == NULL) return(-1);
@@ -1866,19 +1595,19 @@ xmlRemoveID(xmlDocPtr doc, xmlAttrPtr attr) {
     if (table == NULL) 
         return(-1);
 
-    /*
-     * Search the ID list.
-     */
-    for (i = 0;i < table->nb_ids;i++) {
-        cur = table->table[i];
-	if (cur->attr == attr) {
-	    table->nb_ids--;
-	    memmove(&table->table[i], &table->table[i+1],
-	            (table->nb_ids - i) * sizeof(xmlIDPtr));
-	    return(0);
-	}
+    if (attr == NULL)
+	return(-1);
+    ID = xmlNodeListGetString(doc, attr->children, 1);
+    if (ID == NULL)
+	return(-1);
+    cur = xmlHashLookup(table, ID);
+    if (cur != attr) {
+	xmlFree(ID);
+	return(-1);
     }
-    return(-1);
+    xmlHashUpdateEntry(table, ID, NULL, (xmlHashDeallocator) xmlFreeID);
+    xmlFree(ID);
+    return(0);
 }
 
 /**
@@ -1892,9 +1621,8 @@ xmlRemoveID(xmlDocPtr doc, xmlAttrPtr attr) {
  */
 xmlAttrPtr 
 xmlGetID(xmlDocPtr doc, const xmlChar *ID) {
-    xmlIDPtr cur;
     xmlIDTablePtr table;
-    int i;
+    xmlIDPtr id;
 
     if (doc == NULL) {
         fprintf(stderr, "xmlGetID: doc == NULL\n");
@@ -1910,16 +1638,10 @@ xmlGetID(xmlDocPtr doc, const xmlChar *ID) {
     if (table == NULL) 
         return(NULL);
 
-    /*
-     * Search the ID list.
-     */
-    for (i = 0;i < table->nb_ids;i++) {
-        cur = table->table[i];
-	if (xmlStrEqual(cur->value, ID)) {
-	    return(cur->attr);
-	}
-    }
-    return(NULL);
+    id = xmlHashLookup(table, ID);
+    if (id == NULL)
+	return(NULL);
+    return(id->attr);
 }
 
 /************************************************************************
@@ -1937,28 +1659,23 @@ xmlGetID(xmlDocPtr doc, const xmlChar *ID) {
  */
 xmlRefTablePtr
 xmlCreateRefTable(void) {
-    xmlRefTablePtr ret;
-
-    ret = (xmlRefTablePtr) 
-         xmlMalloc(sizeof(xmlRefTable));
-    if (ret == NULL) {
-        fprintf(stderr, "xmlCreateRefTable : xmlMalloc(%ld) failed\n",
-	        (long)sizeof(xmlRefTable));
-        return(NULL);
-    }
-    ret->max_refs = XML_MIN_NOTATION_TABLE;
-    ret->nb_refs = 0;
-    ret->table = (xmlRefPtr *) 
-         xmlMalloc(ret->max_refs * sizeof(xmlRefPtr));
-    if (ret->table == NULL) {
-        fprintf(stderr, "xmlCreateRefTable : xmlMalloc(%ld) failed\n",
-	        ret->max_refs * (long)sizeof(xmlRef));
-	xmlFree(ret);
-        return(NULL);
-    }
-    return(ret);
+    return(xmlHashCreate(0));
 }
 
+/**
+ * xmlFreeRef:
+ * @ref:  A ref
+ *
+ * Deallocate the memory used by an ref definition
+ */
+void
+xmlFreeRef(xmlRefPtr ref) {
+    if (ref == NULL) return;
+    if (ref->value != NULL)
+	xmlFree((xmlChar *) ref->value);
+    memset(ref, -1, sizeof(xmlRef));
+    xmlFree(ref);
+}
 
 /**
  * xmlAddRef:
@@ -2001,52 +1718,26 @@ xmlAddRef(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const xmlChar *value,
         return(NULL);
     }
 
-    /*
-     * Grow the table, if needed.
-     */
-    if (table->nb_refs >= table->max_refs) {
-        /*
-	 * need more refs.
-	 */
-	table->max_refs *= 2;
-	table->table = (xmlRefPtr *) 
-	    xmlRealloc(table->table, table->max_refs *
-	            sizeof(xmlRefPtr));
-	if (table->table == NULL) {
-	    fprintf(stderr, "xmlAddRef: out of memory\n");
-	    return(NULL);
-	}
-    }
     ret = (xmlRefPtr) xmlMalloc(sizeof(xmlRef));
     if (ret == NULL) {
 	fprintf(stderr, "xmlAddRef: out of memory\n");
 	return(NULL);
     }
-    table->table[table->nb_refs] = ret;
 
     /*
      * fill the structure.
      */
     ret->value = xmlStrdup(value);
     ret->attr = attr;
-    table->nb_refs++;
 
+    /*
+     * !!! Should we keep track of all refs ? and use xmlHashAddEntry2 ?
+     */
+    if (xmlHashAddEntry(table, value, ret) < 0) {
+	xmlFreeRef(ret);
+	return(NULL);
+    }
     return(ret);
-}
-
-/**
- * xmlFreeRef:
- * @not:  A ref
- *
- * Deallocate the memory used by an ref definition
- */
-void
-xmlFreeRef(xmlRefPtr ref) {
-    if (ref == NULL) return;
-    if (ref->value != NULL)
-	xmlFree((xmlChar *) ref->value);
-    memset(ref, -1, sizeof(xmlRef));
-    xmlFree(ref);
 }
 
 /**
@@ -2057,15 +1748,7 @@ xmlFreeRef(xmlRefPtr ref) {
  */
 void
 xmlFreeRefTable(xmlRefTablePtr table) {
-    int i;
-
-    if (table == NULL) return;
-
-    for (i = 0;i < table->nb_refs;i++) {
-        xmlFreeRef(table->table[i]);
-    }
-    xmlFree(table->table);
-    xmlFree(table);
+    xmlHashFree(table, (xmlHashDeallocator) xmlFreeRef);
 }
 
 /**
@@ -2084,11 +1767,6 @@ int
 xmlIsRef(xmlDocPtr doc, xmlNodePtr elem, xmlAttrPtr attr) {
     if ((doc->intSubset == NULL) && (doc->extSubset == NULL)) {
         return(0);
-	/*******************
-        if (((attr->name[0] == 'I') || (attr->name[0] == 'i')) &&
-            ((attr->name[1] == 'D') || (attr->name[1] == 'd')) &&
-	    (attr->name[2] == 0)) return(1);
-	 *******************/
     } else if (doc->type == XML_HTML_DOCUMENT_NODE) {
 	/* TODO @@@ */
 	return(0);    
@@ -2117,9 +1795,9 @@ xmlIsRef(xmlDocPtr doc, xmlNodePtr elem, xmlAttrPtr attr) {
  */
 int
 xmlRemoveRef(xmlDocPtr doc, xmlAttrPtr attr) {
-    xmlRefPtr cur;
+    xmlAttrPtr cur;
     xmlRefTablePtr table;
-    int i;
+    xmlChar *ID;
 
     if (doc == NULL) return(-1);
     if (attr == NULL) return(-1);
@@ -2127,19 +1805,19 @@ xmlRemoveRef(xmlDocPtr doc, xmlAttrPtr attr) {
     if (table == NULL) 
         return(-1);
 
-    /*
-     * Search the Ref list.
-     */
-    for (i = 0;i < table->nb_refs;i++) {
-        cur = table->table[i];
-	if (cur->attr == attr) {
-	    table->nb_refs--;
-	    memmove(&table->table[i], &table->table[i+1],
-	            (table->nb_refs - i) * sizeof(xmlRefPtr));
-	    return(0);
-	}
+    if (attr == NULL)
+	return(-1);
+    ID = xmlNodeListGetString(doc, attr->children, 1);
+    if (ID == NULL)
+	return(-1);
+    cur = xmlHashLookup(table, ID);
+    if (cur != attr) {
+	xmlFree(ID);
+	return(-1);
     }
-    return(-1);
+    xmlHashUpdateEntry(table, ID, NULL, (xmlHashDeallocator) xmlFreeRef);
+    xmlFree(ID);
+    return(0);
 }
 
 /**
@@ -2153,9 +1831,7 @@ xmlRemoveRef(xmlDocPtr doc, xmlAttrPtr attr) {
  */
 xmlAttrPtr 
 xmlGetRef(xmlDocPtr doc, const xmlChar *Ref) {
-    xmlRefPtr cur;
     xmlRefTablePtr table;
-    int i;
 
     if (doc == NULL) {
         fprintf(stderr, "xmlGetRef: doc == NULL\n");
@@ -2171,16 +1847,7 @@ xmlGetRef(xmlDocPtr doc, const xmlChar *Ref) {
     if (table == NULL) 
         return(NULL);
 
-    /*
-     * Search the Ref list.
-     */
-    for (i = 0;i < table->nb_refs;i++) {
-        cur = table->table[i];
-	if (xmlStrEqual(cur->value, Ref)) {
-	    return(cur->attr);
-	}
-    }
-    return(NULL);
+    return(xmlHashLookup(table, Ref));
 }
 
 /************************************************************************
@@ -2204,45 +1871,19 @@ xmlGetDtdElementDesc(xmlDtdPtr dtd, const xmlChar *name) {
     xmlElementTablePtr table;
     xmlElementPtr cur;
     xmlChar *uqname = NULL, *prefix = NULL;
-    int i;
 
     if (dtd == NULL) return(NULL);
     if (dtd->elements == NULL) return(NULL);
     table = (xmlElementTablePtr) dtd->elements;
 
-    if ((table->last >= 0) && (table->last < table->nb_elements)) {
-	cur = table->table[table->last];
-	if (xmlStrEqual(cur->name, name))
-	    return(cur);
-    }
-    for (i = 0;i < table->nb_elements;i++) {
-        cur = table->table[i];
-	if (xmlStrEqual(cur->name, name)) {
-	    table->last = i;
-	    return(cur);
-	}
-    }
-
-    /*
-     * Specific case if name is a QName.
-     */
     uqname = xmlSplitQName2(name, &prefix);
-    if (uqname == NULL) return(NULL);
-
-    for (i = 0;i < table->nb_elements;i++) {
-        cur = table->table[i];
-	if ((xmlStrEqual(cur->name, uqname)) &&
-	    ((prefix == cur->prefix) ||
-	     ((prefix != NULL) && (cur->prefix != NULL) &&
-	      (xmlStrEqual(cur->prefix, prefix))))) {
-	    if (prefix != NULL) xmlFree(prefix);
-	    if (uqname != NULL) xmlFree(uqname);
-	    return(cur);
-	}
-    }
-    if (prefix != NULL) xmlFree(prefix);
-    if (uqname != NULL) xmlFree(uqname);
-    return(NULL);
+    if (uqname != NULL) {
+	cur = xmlHashLookup2(table, uqname, prefix);
+	if (prefix != NULL) xmlFree(prefix);
+	if (uqname != NULL) xmlFree(uqname);
+    } else
+	cur = xmlHashLookup2(table, name, NULL);
+    return(cur);
 }
 
 /**
@@ -2260,22 +1901,12 @@ xmlElementPtr
 xmlGetDtdQElementDesc(xmlDtdPtr dtd, const xmlChar *name,
 	              const xmlChar *prefix) {
     xmlElementTablePtr table;
-    xmlElementPtr cur;
-    int i;
 
     if (dtd == NULL) return(NULL);
     if (dtd->elements == NULL) return(NULL);
     table = (xmlElementTablePtr) dtd->elements;
 
-    for (i = 0;i < table->nb_elements;i++) {
-        cur = table->table[i];
-	if (xmlStrEqual(cur->name, name) &&
-	    ((prefix == cur->prefix) ||
-	     ((prefix != NULL) && (cur->prefix != NULL) &&
-	      (xmlStrEqual(cur->prefix, prefix)))))
-	    return(cur);
-    }
-    return(NULL);
+    return(xmlHashLookup2(table, name, prefix));
 }
 
 /**
@@ -2293,69 +1924,25 @@ xmlGetDtdQElementDesc(xmlDtdPtr dtd, const xmlChar *name,
 xmlAttributePtr
 xmlGetDtdAttrDesc(xmlDtdPtr dtd, const xmlChar *elem, const xmlChar *name) {
     xmlAttributeTablePtr table;
-    xmlElementTablePtr etable;
     xmlAttributePtr cur;
-    xmlElementPtr ecur;
     xmlChar *uqname = NULL, *prefix = NULL;
-    int i;
 
     if (dtd == NULL) return(NULL);
     if (dtd->attributes == NULL) return(NULL);
 
-    /*
-     * Faster lookup through the element table
-     */
-    etable = (xmlElementTablePtr) dtd->elements;
-    if (etable != NULL) {
-	for (i = 0;i < etable->nb_elements;i++) {
-	    ecur = etable->table[i];
-	    if (xmlStrEqual(ecur->name, elem)) {
-		cur = ecur->attributes;
-		while (cur != NULL) {
-		    if (xmlStrEqual(cur->name, name))
-			return(cur);
-                    cur = cur->nexth;
-		}
-		/* TODO: same accelerator for QNames !!! */
-		break;
-	    }
-	}
-    }
-    /*
-     * Miss on the element table, retry on the attribute one
-     */
-
     table = (xmlAttributeTablePtr) dtd->attributes;
     if (table == NULL)
 	return(NULL);
-    for (i = 0;i < table->nb_attributes;i++) {
-        cur = table->table[i];
-	if ((xmlStrEqual(cur->name, name)) &&
-	    (xmlStrEqual(cur->elem, elem)))
-	    return(cur);
-    }
 
-    /*
-     * Specific case if name is a QName.
-     */
     uqname = xmlSplitQName2(name, &prefix);
-    if (uqname == NULL) return(NULL);
 
-    for (i = 0;i < table->nb_attributes;i++) {
-        cur = table->table[i];
-	if ((xmlStrEqual(cur->name, uqname)) &&
-	    (xmlStrEqual(cur->elem, elem)) &&
-	    ((prefix == cur->prefix) ||
-	     ((prefix != NULL) && (cur->prefix != NULL) &&
-	      (xmlStrEqual(cur->prefix, prefix))))) {
-	    if (prefix != NULL) xmlFree(prefix);
-	    if (uqname != NULL) xmlFree(uqname);
-	    return(cur);
-	}
-    }
-    if (prefix != NULL) xmlFree(prefix);
-    if (uqname != NULL) xmlFree(uqname);
-    return(NULL);
+    if (uqname != NULL) {
+	cur = xmlHashLookup3(table, uqname, prefix, elem);
+	if (prefix != NULL) xmlFree(prefix);
+	if (uqname != NULL) xmlFree(uqname);
+    } else
+	cur = xmlHashLookup3(table, name, NULL, elem);
+    return(cur);
 }
 
 /**
@@ -2375,23 +1962,12 @@ xmlAttributePtr
 xmlGetDtdQAttrDesc(xmlDtdPtr dtd, const xmlChar *elem, const xmlChar *name,
 	          const xmlChar *prefix) {
     xmlAttributeTablePtr table;
-    xmlAttributePtr cur;
-    int i;
 
     if (dtd == NULL) return(NULL);
     if (dtd->attributes == NULL) return(NULL);
     table = (xmlAttributeTablePtr) dtd->attributes;
 
-    for (i = 0;i < table->nb_attributes;i++) {
-        cur = table->table[i];
-	if ((xmlStrEqual(cur->name, name)) &&
-	    (xmlStrEqual(cur->elem, elem)) &&
-	    ((prefix == cur->prefix) ||
-	     ((prefix != NULL) && (cur->prefix != NULL) &&
-	      (xmlStrEqual(cur->prefix, prefix)))))
-	    return(cur);
-    }
-    return(NULL);
+    return(xmlHashLookup3(table, name, prefix, elem));
 }
 
 /**
@@ -2407,19 +1983,12 @@ xmlGetDtdQAttrDesc(xmlDtdPtr dtd, const xmlChar *elem, const xmlChar *name,
 xmlNotationPtr
 xmlGetDtdNotationDesc(xmlDtdPtr dtd, const xmlChar *name) {
     xmlNotationTablePtr table;
-    xmlNotationPtr cur;
-    int i;
 
     if (dtd == NULL) return(NULL);
     if (dtd->notations == NULL) return(NULL);
     table = (xmlNotationTablePtr) dtd->notations;
 
-    for (i = 0;i < table->nb_notations;i++) {
-        cur = table->table[i];
-	if (xmlStrEqual(cur->name, name))
-	    return(cur);
-    }
-    return(NULL);
+    return(xmlHashLookup(table, name));
 }
 
 /**
@@ -2917,6 +2486,12 @@ xmlValidNormalizeAttributeValue(xmlDocPtr doc, xmlNodePtr elem,
     return(ret);
 }
 
+void
+xmlValidateAttributeIdCallback(xmlAttributePtr attr, int *count,
+	                       const xmlChar* name) {
+    if (attr->atype == XML_ATTRIBUTE_ID) (*count)++;
+}
+
 /**
  * xmlValidateAttributeDecl:
  * @ctxt:  the validation context
@@ -2976,7 +2551,6 @@ xmlValidateAttributeDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 	    nbId = xmlScanIDAttributeDecl(NULL, elem);
 	} else {
 	    xmlAttributeTablePtr table;
-	    int i;
 
 	    /*
 	     * The attribute may be declared in the internal subset and the
@@ -2984,14 +2558,8 @@ xmlValidateAttributeDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 	     */
 	    nbId = 0;
 	    table = (xmlAttributeTablePtr) doc->intSubset->attributes;
-	    if (table != NULL) {
-		for (i = 0;i < table->nb_attributes;i++) {
-		    if ((table->table[i]->atype == XML_ATTRIBUTE_ID) &&
-			(xmlStrEqual(table->table[i]->elem, attr->elem))) {
-			nbId++;
-		    }
-		}
-	    }	
+	    xmlHashScan3(table, NULL, NULL, attr->elem, (xmlHashScanner)
+		         xmlValidateAttributeIdCallback, &nbId);
 	}
 	if (nbId > 1) {
 	    VERROR(ctxt->userData, 
@@ -4011,6 +3579,56 @@ xmlValidateElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr elem) {
     return(ret);
 }
 
+
+void
+xmlValidateCheckRefCallback(xmlRefPtr ref, xmlValidCtxtPtr ctxt,
+	                   const xmlChar *name) {
+    xmlAttrPtr id;
+    xmlAttrPtr attr;
+
+    if (ref == NULL)
+	return;
+    attr = ref->attr;
+    if (attr == NULL)
+	return;
+    if (attr->atype == XML_ATTRIBUTE_IDREF) {
+	id = xmlGetID(ctxt->doc, name);
+	if (id == NULL) {
+	    VERROR(ctxt->userData, 
+	       "IDREF attribute %s reference an unknown ID \"%s\"\n",
+		   attr->name, name);
+	    ctxt->valid = 0;
+	}
+    } else if (attr->atype == XML_ATTRIBUTE_IDREFS) {
+	xmlChar *dup, *str = NULL, *cur, save;
+
+	dup = xmlStrdup(name);
+	if (dup == NULL) {
+	    ctxt->valid = 0;
+	    return;
+	}
+	cur = dup;
+	while (*cur != 0) {
+	    str = cur;
+	    while ((*cur != 0) && (!IS_BLANK(*cur))) cur++;
+	    save = *cur;
+	    *cur = 0;
+	    id = xmlGetID(ctxt->doc, str);
+	    if (id == NULL) {
+		VERROR(ctxt->userData, 
+	       "IDREFS attribute %s reference an unknown ID \"%s\"\n",
+		       attr->name, str);
+		ctxt->valid = 0;
+	    }
+	    if (save == 0)
+		break;
+	    *cur = save;
+	    while (IS_BLANK(*cur)) cur++;
+	}
+	xmlFree(dup);
+    }
+}
+
 /**
  * xmlValidateDocumentFinal:
  * @ctxt:  the validation context
@@ -4027,9 +3645,7 @@ xmlValidateElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr elem) {
 
 int
 xmlValidateDocumentFinal(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
-    int ret = 1, i;
     xmlRefTablePtr table;
-    xmlAttrPtr id;
 
     if (doc == NULL) {
         fprintf(stderr, "xmlValidateDocumentFinal: doc == NULL\n");
@@ -4046,45 +3662,10 @@ xmlValidateDocumentFinal(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
      * Check all the IDREF/IDREFS attributes definition for validity
      */
     table = (xmlRefTablePtr) doc->refs;
-    if (table != NULL) {
-        for (i = 0; i < table->nb_refs; i++) {
-	    if (table->table[i]->attr->atype == XML_ATTRIBUTE_IDREF) {
-		id = xmlGetID(doc, table->table[i]->value);
-		if (id == NULL) {
-		    VERROR(ctxt->userData, 
-		       "IDREF attribute %s reference an unknown ID \"%s\"\n",
-			   table->table[i]->attr->name, table->table[i]->value);
-		    ret = 0;
-		}
-	    } else if (table->table[i]->attr->atype == XML_ATTRIBUTE_IDREFS) {
-		xmlChar *dup, *name = NULL, *cur, save;
-
-		dup = xmlStrdup(table->table[i]->value);
-		if (dup == NULL)
-		    return(0);
-		cur = dup;
-		while (*cur != 0) {
-		    name = cur;
-		    while ((*cur != 0) && (!IS_BLANK(*cur))) cur++;
-		    save = *cur;
-		    *cur = 0;
-		    id = xmlGetID(doc, name);
-		    if (id == NULL) {
-			VERROR(ctxt->userData, 
-		       "IDREFS attribute %s reference an unknown ID \"%s\"\n",
-			       table->table[i]->attr->name, name);
-			ret = 0;
-		    }
-		    if (save == 0)
-			break;
-		    *cur = save;
-                    while (IS_BLANK(*cur)) cur++;
-		}
-		xmlFree(dup);
-	    }
-	}
-    }
-    return(ret);
+    ctxt->doc = doc;
+    ctxt->valid = 1;
+    xmlHashScan(table, (xmlHashScanner) xmlValidateCheckRefCallback, ctxt);
+    return(ctxt->valid);
 }
 
 /**
@@ -4122,6 +3703,38 @@ xmlValidateDtd(xmlValidCtxtPtr ctxt, xmlDocPtr doc, xmlDtdPtr dtd) {
     return(ret);
 }
 
+void
+xmlValidateAttributeCallback(xmlAttributePtr cur, xmlValidCtxtPtr ctxt,
+	                    const xmlChar *name) {
+    if (cur == NULL)
+	return;
+    switch (cur->atype) {
+	case XML_ATTRIBUTE_CDATA:
+	case XML_ATTRIBUTE_ID:
+	case XML_ATTRIBUTE_IDREF	:
+	case XML_ATTRIBUTE_IDREFS:
+	case XML_ATTRIBUTE_NMTOKEN:
+	case XML_ATTRIBUTE_NMTOKENS:
+	case XML_ATTRIBUTE_ENUMERATION:
+	    break;
+	case XML_ATTRIBUTE_ENTITY:
+	case XML_ATTRIBUTE_ENTITIES:
+	case XML_ATTRIBUTE_NOTATION:
+	    if (cur->defaultValue != NULL) {
+		ctxt->valid &= xmlValidateAttributeValue2(ctxt, ctxt->doc,
+			    cur->name, cur->atype, cur->defaultValue);
+	    }
+	    if (cur->tree != NULL) {
+		xmlEnumerationPtr tree = cur->tree;
+		while (tree != NULL) {
+		    ctxt->valid &= xmlValidateAttributeValue2(ctxt, ctxt->doc,
+				    cur->name, cur->atype, tree->name);
+		    tree = tree->next;
+		}
+	    }
+    }
+}
+
 /**
  * xmlValidateDtdFinal:
  * @ctxt:  the validation context
@@ -4141,81 +3754,26 @@ xmlValidateDtd(xmlValidCtxtPtr ctxt, xmlDocPtr doc, xmlDtdPtr dtd) {
 
 int
 xmlValidateDtdFinal(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
-    int ret = 1, i;
+    int ret = 1;
     xmlDtdPtr dtd;
     xmlAttributeTablePtr table;
-    xmlAttributePtr cur;
 
     if (doc == NULL) return(0);
     if ((doc->intSubset == NULL) && (doc->extSubset == NULL))
 	return(0);
+    ctxt->doc = doc;
+    ctxt->valid = ret;
     dtd = doc->intSubset;
     if ((dtd != NULL) && (dtd->attributes != NULL)) {
 	table = (xmlAttributeTablePtr) dtd->attributes;
-
-	for (i = 0;i < table->nb_attributes;i++) {
-	    cur = table->table[i];
-	    switch (cur->atype) {
-		case XML_ATTRIBUTE_CDATA:
-		case XML_ATTRIBUTE_ID:
-		case XML_ATTRIBUTE_IDREF	:
-		case XML_ATTRIBUTE_IDREFS:
-		case XML_ATTRIBUTE_NMTOKEN:
-		case XML_ATTRIBUTE_NMTOKENS:
-		case XML_ATTRIBUTE_ENUMERATION:
-		    break;
-		case XML_ATTRIBUTE_ENTITY:
-		case XML_ATTRIBUTE_ENTITIES:
-		case XML_ATTRIBUTE_NOTATION:
-		    if (cur->defaultValue != NULL) {
-			ret &= xmlValidateAttributeValue2(ctxt, doc, cur->name,
-					       cur->atype, cur->defaultValue);
-		    }
-		    if (cur->tree != NULL) {
-			xmlEnumerationPtr tree = cur->tree;
-			while (tree != NULL) {
-			    ret &= xmlValidateAttributeValue2(ctxt, doc,
-				            cur->name, cur->atype, tree->name);
-			    tree = tree->next;
-			}
-		    }
-	    }
-	}
+	xmlHashScan(table, (xmlHashScanner) xmlValidateAttributeCallback, ctxt);
     }
     dtd = doc->extSubset;
     if ((dtd != NULL) && (dtd->attributes != NULL)) {
 	table = (xmlAttributeTablePtr) dtd->attributes;
-
-	for (i = 0;i < table->nb_attributes;i++) {
-	    cur = table->table[i];
-	    switch (cur->atype) {
-		case XML_ATTRIBUTE_CDATA:
-		case XML_ATTRIBUTE_ID:
-		case XML_ATTRIBUTE_IDREF	:
-		case XML_ATTRIBUTE_IDREFS:
-		case XML_ATTRIBUTE_NMTOKEN:
-		case XML_ATTRIBUTE_NMTOKENS:
-		case XML_ATTRIBUTE_ENUMERATION:
-		    break;
-		case XML_ATTRIBUTE_ENTITY:
-		case XML_ATTRIBUTE_ENTITIES:
-		case XML_ATTRIBUTE_NOTATION:
-		    if (cur->defaultValue != NULL) {
-			ret &= xmlValidateAttributeValue2(ctxt, doc, cur->name,
-					       cur->atype, cur->defaultValue);
-		    }
-		    if (cur->tree != NULL) {
-			xmlEnumerationPtr tree = cur->tree;
-			while (tree != NULL) {
-			    ret &= xmlValidateAttributeValue2(ctxt, doc,
-				            cur->name, cur->atype, tree->name);
-			    tree = tree->next;
-			}
-		    }
-	    }
-	}
+	xmlHashScan(table, (xmlHashScanner) xmlValidateAttributeCallback, ctxt);
     }
-    return(ret);
+    return(ctxt->valid);
 }
 
 /**

@@ -139,24 +139,25 @@ PUSH_AND_POP(extern, xmlChar*, name)
 
 #define CURRENT ((int) (*ctxt->input->cur))
 
-#define SKIP_BLANKS htmlSkipBlankChars(ctxt);
+#define SKIP_BLANKS htmlSkipBlankChars(ctxt)
 
 /* Inported from XML */
 
 /* #define CUR (ctxt->token ? ctxt->token : (int) (*ctxt->input->cur)) */
 #define CUR ((int) (*ctxt->input->cur))
-#define NEXT xmlNextChar(ctxt);ctxt->nbChars++;
+#define NEXT xmlNextChar(ctxt),ctxt->nbChars++
 
 #define RAW (ctxt->token ? -1 : (*ctxt->input->cur))
 #define NXT(val) ctxt->input->cur[(val)]
 #define CUR_PTR ctxt->input->cur
 
 
-#define NEXTL(l)							\
+#define NEXTL(l) do {							\
     if (*(ctxt->input->cur) == '\n') {					\
 	ctxt->input->line++; ctxt->input->col = 1;			\
     } else ctxt->input->col++;						\
-    ctxt->token = 0; ctxt->input->cur += l; ctxt->nbChars++;
+    ctxt->token = 0; ctxt->input->cur += l; ctxt->nbChars++;		\
+  } while (0)
     
 /************
     \
@@ -164,12 +165,12 @@ PUSH_AND_POP(extern, xmlChar*, name)
     if (*ctxt->input->cur == '&') xmlParserHandleReference(ctxt);
  ************/
 
-#define CUR_CHAR(l) htmlCurrentChar(ctxt, &l);
-#define CUR_SCHAR(s, l) xmlStringCurrentChar(ctxt, s, &l);
+#define CUR_CHAR(l) htmlCurrentChar(ctxt, &l)
+#define CUR_SCHAR(s, l) xmlStringCurrentChar(ctxt, s, &l)
 
 #define COPY_BUF(l,b,i,v)						\
     if (l == 1) b[i++] = (xmlChar) v;					\
-    else i += xmlCopyChar(l,&b[i],v);
+    else i += xmlCopyChar(l,&b[i],v)
 
 /**
  * htmlCurrentChar:
@@ -540,6 +541,7 @@ char *htmlStartClose[] = {
 "tbody",	"th", "td", "tr", "caption", "col", "colgroup", "thead",
 		"tfoot", "tbody", "p", NULL,
 "optgroup",	"option", NULL,
+"option",	"option", NULL,
 "fieldset",	"legend", "p", "head", "h1", "h2", "h3", "h4", "h5", "h6",
 		"pre", "listing", "xmp", "a", NULL,
 NULL
@@ -2894,6 +2896,9 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
 	    ctxt->sax->error(ctxt->userData, 
 	     "htmlParseStartTag: invalid element name\n");
 	ctxt->wellFormed = 0;
+	/* Dump the bogus tag like browsers do */
+	while ((IS_CHAR(CUR)) && (CUR != '>'))
+	    NEXT;
         return;
     }
     if (xmlStrEqual(name, BAD_CAST"meta"))
@@ -2968,6 +2973,13 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
 	    atts[nbatts++] = attvalue;
 	    atts[nbatts] = NULL;
 	    atts[nbatts + 1] = NULL;
+	}
+	else {
+	    /* Dump the bogus attribute string up to the next blank or
+	     * the end of the tag. */
+	    while ((IS_CHAR(CUR)) && !(IS_BLANK(CUR)) && (CUR != '>')
+	     && ((CUR != '/') || (NXT(1) != '>')))
+		NEXT;
 	}
 
 failed:

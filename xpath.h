@@ -177,9 +177,9 @@ struct _xmlXPathContext {
     xmlDocPtr doc;			/* The current document */
     xmlNodePtr node;			/* The current node */
 
-    int nb_variables;			/* number of defined variables */
-    int max_variables;			/* max number of variables */
-    xmlXPathVariablePtr variables;	/* Array of defined variables */
+    int nb_variables_unused;		/* unused (hash table) */
+    int max_variables_unused;		/* unused (hash table) */
+    xmlHashTablePtr varHash;		/* Hash table of defined variables */
 
     int nb_types;			/* number of defined types */
     int max_types;			/* max number of types */

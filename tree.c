@@ -480,6 +480,8 @@ xmlFreeDtd(xmlDtdPtr cur) {
         xmlFreeAttributeTable((xmlAttributeTablePtr) cur->attributes);
     if (cur->entities != NULL)
         xmlFreeEntitiesTable((xmlEntitiesTablePtr) cur->entities);
+    if (cur->pentities != NULL)
+        xmlFreeEntitiesTable((xmlEntitiesTablePtr) cur->pentities);
 
     memset(cur, -1, sizeof(xmlDtd));
     xmlFree(cur);

@@ -215,41 +215,48 @@ int spacePop(xmlParserCtxtPtr ctxt) {
 #define NXT(val) ctxt->input->cur[(val)]
 #define CUR_PTR ctxt->input->cur
 
-#define SKIP(val) ctxt->nbChars += (val),ctxt->input->cur += (val);	\
+#define SKIP(val) do {							\
+    ctxt->nbChars += (val),ctxt->input->cur += (val);			\
     if (*ctxt->input->cur == '%') xmlParserHandlePEReference(ctxt);	\
     /* DEPR if (*ctxt->input->cur == '&') xmlParserHandleReference(ctxt); */\
     if ((*ctxt->input->cur == 0) &&					\
         (xmlParserInputGrow(ctxt->input, INPUT_CHUNK) <= 0))		\
-	    xmlPopInput(ctxt)
+	    xmlPopInput(ctxt);						\
+  } while (0)
 
-#define SHRINK  xmlParserInputShrink(ctxt->input);			\
+#define SHRINK do {							\
+    xmlParserInputShrink(ctxt->input);					\
     if ((*ctxt->input->cur == 0) &&					\
         (xmlParserInputGrow(ctxt->input, INPUT_CHUNK) <= 0))		\
-	    xmlPopInput(ctxt)
+	    xmlPopInput(ctxt);						\
+  } while (0)
 
-#define GROW  xmlParserInputGrow(ctxt->input, INPUT_CHUNK);		\
+#define GROW do {							\
+    xmlParserInputGrow(ctxt->input, INPUT_CHUNK);			\
     if ((*ctxt->input->cur == 0) &&					\
         (xmlParserInputGrow(ctxt->input, INPUT_CHUNK) <= 0))		\
-	    xmlPopInput(ctxt)
+	    xmlPopInput(ctxt);						\
+  } while (0)
 
-#define SKIP_BLANKS xmlSkipBlankChars(ctxt);
+#define SKIP_BLANKS xmlSkipBlankChars(ctxt)
 
-#define NEXT xmlNextChar(ctxt);
+#define NEXT xmlNextChar(ctxt)
 
-#define NEXTL(l)							\
+#define NEXTL(l) do {							\
     if (*(ctxt->input->cur) == '\n') {					\
 	ctxt->input->line++; ctxt->input->col = 1;			\
     } else ctxt->input->col++;						\
     ctxt->token = 0; ctxt->input->cur += l;				\
     if (*ctxt->input->cur == '%') xmlParserHandlePEReference(ctxt);	\
-    /* DEPR if (*ctxt->input->cur == '&') xmlParserHandleReference(ctxt); */
+    /* DEPR if (*ctxt->input->cur == '&') xmlParserHandleReference(ctxt); */\
+  } while (0)
 
-#define CUR_CHAR(l) xmlCurrentChar(ctxt, &l);
-#define CUR_SCHAR(s, l) xmlStringCurrentChar(ctxt, s, &l);
+#define CUR_CHAR(l) xmlCurrentChar(ctxt, &l)
+#define CUR_SCHAR(s, l) xmlStringCurrentChar(ctxt, s, &l)
 
 #define COPY_BUF(l,b,i,v)						\
     if (l == 1) b[i++] = (xmlChar) v;					\
-    else i += xmlCopyChar(l,&b[i],v);
+    else i += xmlCopyChar(l,&b[i],v)
 
 /**
  * xmlSkipBlankChars:

@@ -1,3 +1,5 @@
+AUTOMAKE_OPTIONS=no-dependencies
+
 noinst_PROGRAMS	= gjobread
 
 INCLUDES =					\

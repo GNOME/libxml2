@@ -1,8 +1,9 @@
 ## Process this file with automake to produce Makefile.in
+AUTOMAKE_OPTIONS=no-dependencies
 
 SUBDIRS = include . doc example
 
-INCLUDES = -I@srcdir@/include -I./include @Z_CFLAGS@ @CORBA_CFLAGS@ 
+INCLUDES = -I@srcdir@/include -I$(top_builddir)/include @Z_CFLAGS@ @CORBA_CFLAGS@ 
 
 noinst_PROGRAMS=testSAX testHTML testXPath testURI testDocbook testCatalog
 

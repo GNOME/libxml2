@@ -1,3 +1,9 @@
+Thu Jun 28 18:16:28 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* configure.in include/libxml/xmlwin32version.h: released 2.3.13
+	* Makefile.am example/Makefile.am: workaround automake generating
+	  erroneous deps
+
 Thu Jun 28 15:08:22 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* include/win32config.h: bug #56801 Yon Derek provided a patch

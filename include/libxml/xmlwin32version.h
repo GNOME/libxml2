@@ -18,10 +18,10 @@ extern "C" {
  * use those to be sure nothing nasty will happen if
  * your library and includes mismatch
  */
-#define LIBXML_DOTTED_VERSION "2.3.12"
-#define LIBXML_VERSION 20312
-#define LIBXML_VERSION_STRING "20312"
-#define LIBXML_TEST_VERSION xmlCheckVersion(20312);
+#define LIBXML_DOTTED_VERSION "2.3.13"
+#define LIBXML_VERSION 20313
+#define LIBXML_VERSION_STRING "20313"
+#define LIBXML_TEST_VERSION xmlCheckVersion(20313);
 
 /**
  * WITH_TRIO:

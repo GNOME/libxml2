@@ -480,6 +480,9 @@ xmlInitializeGlobalState(xmlGlobalStatePtr gs)
     /*
      * Perform initialization as required by libxml
      */
+    if (xmlThrDefMutex == NULL)
+        xmlInitGlobals();
+
     xmlMutexLock(xmlThrDefMutex);
 
 #ifdef LIBXML_DOCB_ENABLED

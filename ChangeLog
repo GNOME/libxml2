@@ -1,3 +1,8 @@
+Thu Aug 28 10:01:44 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* globals.c threads.c: fixing bug #120870 try to avoid problem
+	  with uninitialized mutexes
+
 Wed Aug 27 16:12:41 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c: fixed an error reporting bug in Relax-NG when we end

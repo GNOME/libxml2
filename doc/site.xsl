@@ -213,6 +213,7 @@
  - Write the styles in the head
  -->
   <xsl:template name="style">
+    <link rel="SHORTCUT ICON" href="/favicon.ico"/> 
     <style type="text/css"><xsl:text disable-output-escaping="yes">&lt;!--</xsl:text>
 TD {font-family: Verdana,Arial,Helvetica}
 BODY {font-family: Verdana,Arial,Helvetica; margin-top: 2em; margin-left: 0em; margin-right: 0em}

@@ -182,6 +182,10 @@ newTextReaderFilename()
 # functions from module xmlregexp
 regexpCompile()
 
+# functions from module xmlschemastypes
+schemaCleanupTypes()
+schemaInitTypes()
+
 # functions from module xmlunicode
 uCSIsAlphabeticPresentationForms()
 uCSIsArabic()

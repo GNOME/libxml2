@@ -940,7 +940,7 @@ xmlTextReaderReadState(xmlTextReaderPtr reader) {
  * @reader:  the xmlTextReaderPtr used
  *
  * Reads the contents of the current node and the full subtree. It then makes
- * the subtree availsble until the next xmlTextReaderRead() call
+ * the subtree available until the next xmlTextReaderRead() call
  *
  * Returns a node pointer valid until the next xmlTextReaderRead() call
  *         or NULL in case of error.

@@ -1,3 +1,9 @@
+Wed Apr 30 14:16:08 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xml2-config.in: try to fix Red hat bug #89957, do not
+	  output -L/usr/lib64
+	* xmlreader.c: fixed a typo in a comment
+
 Tue Apr 29 07:32:02 MDT 2003 John Fleck <jfleck@inkstain.ent>
 
 	* doc/tutorial/aph.html, ix01.html

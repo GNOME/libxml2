@@ -19,39 +19,6 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-typedef struct _xmlSAXHandlerV1 xmlSAXHandlerV1;
-typedef xmlSAXHandlerV1 *xmlSAXHandlerV1Ptr;
-struct _xmlSAXHandlerV1 {
-    internalSubsetSAXFunc internalSubset;
-    isStandaloneSAXFunc isStandalone;
-    hasInternalSubsetSAXFunc hasInternalSubset;
-    hasExternalSubsetSAXFunc hasExternalSubset;
-    resolveEntitySAXFunc resolveEntity;
-    getEntitySAXFunc getEntity;
-    entityDeclSAXFunc entityDecl;
-    notationDeclSAXFunc notationDecl;
-    attributeDeclSAXFunc attributeDecl;
-    elementDeclSAXFunc elementDecl;
-    unparsedEntityDeclSAXFunc unparsedEntityDecl;
-    setDocumentLocatorSAXFunc setDocumentLocator;
-    startDocumentSAXFunc startDocument;
-    endDocumentSAXFunc endDocument;
-    startElementSAXFunc startElement;
-    endElementSAXFunc endElement;
-    referenceSAXFunc reference;
-    charactersSAXFunc characters;
-    ignorableWhitespaceSAXFunc ignorableWhitespace;
-    processingInstructionSAXFunc processingInstruction;
-    commentSAXFunc comment;
-    warningSAXFunc warning;
-    errorSAXFunc error;
-    fatalErrorSAXFunc fatalError; /* unused error() get all the errors */
-    getParameterEntitySAXFunc getParameterEntity;
-    cdataBlockSAXFunc cdataBlock;
-    externalSubsetSAXFunc externalSubset;
-    unsigned int initialized;
-};
-
 XMLPUBFUN const xmlChar * XMLCALL
 		getPublicId			(void *ctx);
 XMLPUBFUN const xmlChar * XMLCALL	

@@ -186,6 +186,8 @@ XMLPUBFUN int XMLCALL
 						 int prop);
 XMLPUBFUN xmlNodePtr XMLCALL	
 		    xmlTextReaderCurrentNode	(xmlTextReaderPtr reader);
+XMLPUBFUN xmlNodePtr XMLCALL	
+		    xmlTextReaderPreserve	(xmlTextReaderPtr reader);
 XMLPUBFUN xmlDocPtr XMLCALL	
 		    xmlTextReaderCurrentDoc	(xmlTextReaderPtr reader);
 XMLPUBFUN xmlNodePtr XMLCALL	

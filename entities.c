@@ -766,7 +766,7 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
  * Returns A newly allocated string with the substitution done.
  */
 xmlChar *
-xmlEncodeSpecialChars(xmlDocPtr doc, const xmlChar *input) {
+xmlEncodeSpecialChars(xmlDocPtr doc ATTRIBUTE_UNUSED, const xmlChar *input) {
     const xmlChar *cur = input;
     xmlChar *buffer = NULL;
     xmlChar *out = NULL;

@@ -7809,7 +7809,7 @@ failed:
 
 		    if ((atts == NULL) || (nbatts + 5 > maxatts)) {
 			if (xmlCtxtGrowAttrs(ctxt, nbatts + 5) < 0) {
-			    goto failed;
+			    return(NULL);
 			}
 			maxatts = ctxt->maxatts;
 			atts = ctxt->atts;

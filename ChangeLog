@@ -1,3 +1,13 @@
+Sun Sep 28 02:15:07 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: fix a bug raised by the Mips compiler.
+	* include/libxml/SAX.h include/libxml/parser.h: move the 
+	  SAXv1 block definitions to parser.h fixes bug #123380
+	* xmlreader.c include/libxml/xmlreader.h: reinstanciate
+	  the attribute and element pool borken 2 commits ago.
+	  Start playing with an entry point to preserve a subtree.
+	* entities.c: remove a warning.
+
 Sat Sep 27 12:19:38 PDT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* encoding.c, parser.c, relaxng.c: further (final?) minor
@@ -10,8 +20,8 @@ Fri Sep 26 18:03:42 PDT 2003 William Brack <wbrack@mmm.com.hk>
 Sat Sep 27 01:25:39 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: William's change allowed to spot a nasty bug in xmlDoRead
-	  if the result is well formed that ctxt->myDoc is not NULL and uses
-	  the context dictionnary.
+	  if the result is not well formed that ctxt->myDoc is not NULL
+	  and uses the context dictionnary.
 
 Fri Sep 26 21:09:34 CEST 2003 Daniel Veillard <daniel@veillard.com>
 

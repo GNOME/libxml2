@@ -712,6 +712,43 @@ struct _xmlSAXHandler {
     endElementNsSAX2Func endElementNs;
 };
 
+/*
+ * SAX Version 1
+ */
+typedef struct _xmlSAXHandlerV1 xmlSAXHandlerV1;
+typedef xmlSAXHandlerV1 *xmlSAXHandlerV1Ptr;
+struct _xmlSAXHandlerV1 {
+    internalSubsetSAXFunc internalSubset;
+    isStandaloneSAXFunc isStandalone;
+    hasInternalSubsetSAXFunc hasInternalSubset;
+    hasExternalSubsetSAXFunc hasExternalSubset;
+    resolveEntitySAXFunc resolveEntity;
+    getEntitySAXFunc getEntity;
+    entityDeclSAXFunc entityDecl;
+    notationDeclSAXFunc notationDecl;
+    attributeDeclSAXFunc attributeDecl;
+    elementDeclSAXFunc elementDecl;
+    unparsedEntityDeclSAXFunc unparsedEntityDecl;
+    setDocumentLocatorSAXFunc setDocumentLocator;
+    startDocumentSAXFunc startDocument;
+    endDocumentSAXFunc endDocument;
+    startElementSAXFunc startElement;
+    endElementSAXFunc endElement;
+    referenceSAXFunc reference;
+    charactersSAXFunc characters;
+    ignorableWhitespaceSAXFunc ignorableWhitespace;
+    processingInstructionSAXFunc processingInstruction;
+    commentSAXFunc comment;
+    warningSAXFunc warning;
+    errorSAXFunc error;
+    fatalErrorSAXFunc fatalError; /* unused error() get all the errors */
+    getParameterEntitySAXFunc getParameterEntity;
+    cdataBlockSAXFunc cdataBlock;
+    externalSubsetSAXFunc externalSubset;
+    unsigned int initialized;
+};
+
+
 /**
  * xmlExternalEntityLoader:
  * @URL: The System ID of the resource requested

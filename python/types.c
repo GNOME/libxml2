@@ -342,13 +342,37 @@ libxml_xmlXPathObjectPtrWrap(xmlXPathObjectPtr obj)
         return (Py_None);
     }
     switch (obj->type) {
-        case XPATH_XSLT_TREE:
-            /* TODO !!!! Allocation problems */
+        case XPATH_XSLT_TREE: {
+            if ((obj->nodesetval == NULL) ||
+		(obj->nodesetval->nodeNr == 0) ||
+		(obj->nodesetval->nodeTab == NULL)) {
+                ret = PyList_New(0);
+	    } else {
+		int i, len = 0;
+		xmlNodePtr node;
+
+		node = obj->nodesetval->nodeTab[0]->children;
+		while (node != NULL) {
+		    len++;
+		    node = node->next;
+		}
+		ret = PyList_New(len);
+		node = obj->nodesetval->nodeTab[0]->children;
+		for (i = 0;i < len;i++) {
+                    PyList_SetItem(ret, i, libxml_xmlNodePtrWrap(node));
+		    node = node->next;
+		}
+	    }
+	    /*
+	     * Return now, do not free the object passed down
+	     */
+	    return (ret);
+	}
         case XPATH_NODESET:
             if ((obj->nodesetval == NULL)
-                || (obj->nodesetval->nodeNr == 0))
+                || (obj->nodesetval->nodeNr == 0)) {
                 ret = PyList_New(0);
-            else {
+	    } else {
                 int i;
                 xmlNodePtr node;
 

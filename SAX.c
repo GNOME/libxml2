@@ -971,6 +971,8 @@ startElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
 	      "Validation failed: no DTD found !\n");
 	}
 	ctxt->validate = 0;
+	ctxt->valid = 0;
+	ctxt->errNo = XML_ERR_NO_DTD;
     }
        
 

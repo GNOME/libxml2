@@ -133,7 +133,8 @@ typedef enum {
     XML_ERR_ENTITY_BOUNDARY, /* 90 */
     XML_ERR_INVALID_URI, /* 91 */
     XML_ERR_URI_FRAGMENT, /* 92 */
-    XML_WAR_CATALOG_PI  /* 93 */
+    XML_WAR_CATALOG_PI, /* 93 */
+    XML_ERR_NO_DTD  /* 94 */
 }xmlParserErrors;
 
 /*

@@ -1,3 +1,8 @@
+Thu Feb 19 13:56:53 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: some clarification in xmlDocDumpMemory() documentation
+	* xmllint.c: fixed xmllint --stream --timing to get timings back
+
 Wed Feb 18 15:20:42 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: fixed a problem in push mode when attribute contains

@@ -8386,8 +8386,10 @@ xmlDocDumpFormatMemoryEnc(xmlDocPtr out_doc, xmlChar **doc_txt_ptr,
  * @mem:  OUT: the memory pointer
  * @size:  OUT: the memory length
  *
- * Dump an XML document in memory and return the #xmlChar * and it's size.
- * It's up to the caller to free the memory with xmlFree().
+ * Dump an XML document in memory and return the #xmlChar * and it's size
+ * in bytes. It's up to the caller to free the memory with xmlFree().
+ * The resulting byte array is zero terminated, though the last 0 is not
+ * included in the returned size.
  */
 void
 xmlDocDumpMemory(xmlDocPtr cur, xmlChar**mem, int *size) {

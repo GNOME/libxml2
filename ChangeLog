@@ -1,3 +1,7 @@
+Mon May 21 10:14:07 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xpath.c: Joe Orton reported a bug found with IRIx compiler.
+
 Sun May 20 15:15:46 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* parser.c: fixed propagation context info when parsing an

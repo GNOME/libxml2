@@ -5665,7 +5665,6 @@ xmlXPathParseNameComplex(xmlXPathParserContextPtr ctxt, int qualified) {
 		    max *= 2;
 		    buffer = (xmlChar *) xmlRealloc(buffer,
 			                            max * sizeof(xmlChar));
-		    XP_ERROR0(XPATH_MEMORY_ERROR);
 		    if (buffer == NULL) {
 			XP_ERROR0(XPATH_MEMORY_ERROR);
 		    }

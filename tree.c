@@ -6609,7 +6609,7 @@ void
 xmlBufferWriteQuotedString(xmlBufferPtr buf, const xmlChar *string) {
     const xmlChar *cur, *base;
     if (xmlStrchr(string, '\"')) {
-        if (xmlStrchr(string, '"')) {
+        if (xmlStrchr(string, '\'')) {
 #ifdef DEBUG_BUFFER
 	    xmlGenericError(xmlGenericErrorContext,
  "xmlBufferWriteQuotedString: string contains quote and double-quotes !\n");

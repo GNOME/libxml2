@@ -1,3 +1,8 @@
+Mon Aug  4 21:40:34 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: fixed a small problem in the patch for #118763
+	* result/HTML/doc3.htm*: this reverts back to the previous result
+
 Sun Aug  3 21:41:49 EDT 2003 Daniel Veillard <daniel@veillard.com>
 
 	* doc/FAQ.html doc/xml.html: applied doc patch to xml.html

@@ -74,11 +74,6 @@ struct _xmlRelaxNGGrammar {
 };
 
 
-#if 0
-struct _xmlRelaxNGSchema {
-};
-#endif
-
 typedef enum {
     XML_RELAXNG_EMPTY = 0,	/* an empty pattern */
     XML_RELAXNG_NOT_ALLOWED,    /* not allowed top */
@@ -103,6 +98,7 @@ struct _xmlRelaxNGDefine {
     xmlNodePtr	   node;	/* the node in the source */
     xmlChar       *name;	/* the element local name if present */
     xmlChar       *ns;		/* the namespace local name if present */
+    void          *data;	/* data lib or specific pointer */
     xmlRelaxNGDefinePtr content;/* the expected content */
     xmlRelaxNGDefinePtr next;	/* list within grouping sequences */
     xmlRelaxNGDefinePtr attrs;	/* list of attributes for elements */
@@ -193,6 +189,61 @@ struct _xmlRelaxNGValidCtxt {
     xmlDocPtr               doc;	/* the document being validated */
     xmlRelaxNGValidStatePtr state;	/* the current validation state */
     int                     flags;	/* validation flags */
+};
+
+/************************************************************************
+ * 									*
+ * 		Preliminary type checking interfaces			*
+ * 									*
+ ************************************************************************/
+/**
+ * xmlRelaxNGTypeHave:
+ * @data:  data needed for the library
+ * @type:  the type name
+ * @value:  the value to check
+ *
+ * Function provided by a type library to check if a type is exported
+ *
+ * Returns 1 if yes, 0 if no and -1 in case of error.
+ */
+typedef int (*xmlRelaxNGTypeHave) (void *data, const xmlChar *type);
+
+/**
+ * xmlRelaxNGTypeCheck:
+ * @data:  data needed for the library
+ * @type:  the type name
+ * @value:  the value to check
+ *
+ * Function provided by a type library to check if a value match a type
+ *
+ * Returns 1 if yes, 0 if no and -1 in case of error.
+ */
+typedef int (*xmlRelaxNGTypeCheck) (void *data, const xmlChar *type,
+	                            const xmlChar *value);
+
+/**
+ * xmlRelaxNGTypeCompare:
+ * @data:  data needed for the library
+ * @type:  the type name
+ * @value1:  the first value
+ * @value2:  the second value
+ *
+ * Function provided by a type library to compare two values accordingly
+ * to a type.
+ *
+ * Returns 1 if yes, 0 if no and -1 in case of error.
+ */
+typedef int (*xmlRelaxNGTypeCompare) (void *data, const xmlChar *type,
+	                              const xmlChar *value1,
+				      const xmlChar *value2);
+typedef struct _xmlRelaxNGTypeLibrary xmlRelaxNGTypeLibrary;
+typedef xmlRelaxNGTypeLibrary *xmlRelaxNGTypeLibraryPtr;
+struct _xmlRelaxNGTypeLibrary {
+    const xmlChar     *namespace;	/* the datatypeLibrary value */
+    void                   *data;	/* data needed for the library */
+    xmlRelaxNGTypeHave      have;	/* the export function */
+    xmlRelaxNGTypeCheck    check;	/* the checking function */
+    xmlRelaxNGTypeCompare   comp;	/* the compare function */
 };
 
 /************************************************************************
@@ -600,8 +651,226 @@ xmlRelaxNGErrorContext(xmlRelaxNGParserCtxtPtr ctxt, xmlRelaxNGPtr schema,
  * 									*
  ************************************************************************/
 
+/**
+ * xmlRelaxNGSchemaTypeHave:
+ * @data:  data needed for the library
+ * @type:  the type name
+ *
+ * Check if the given type is provided by
+ * the W3C XMLSchema Datatype library.
+ *
+ * Returns 1 if yes, 0 if no and -1 in case of error.
+ */
+static int
+xmlRelaxNGSchemaTypeHave(void *data ATTRIBUTE_UNUSED,
+	                 const xmlChar *type ATTRIBUTE_UNUSED) {
+    TODO
+    return(1);
+}
+
+/**
+ * xmlRelaxNGSchemaTypeCheck:
+ * @data:  data needed for the library
+ * @type:  the type name
+ * @value:  the value to check
+ *
+ * Check if the given type and value are validated by
+ * the W3C XMLSchema Datatype library.
+ *
+ * Returns 1 if yes, 0 if no and -1 in case of error.
+ */
+static int
+xmlRelaxNGSchemaTypeCheck(void *data ATTRIBUTE_UNUSED,
+	                  const xmlChar *type ATTRIBUTE_UNUSED,
+			  const xmlChar *value ATTRIBUTE_UNUSED) {
+    TODO
+    return(1);
+}
+
+/**
+ * xmlRelaxNGSchemaTypeCompare:
+ * @data:  data needed for the library
+ * @type:  the type name
+ * @value1:  the first value
+ * @value2:  the second value
+ *
+ * Compare two values accordingly a type from the W3C XMLSchema
+ * Datatype library.
+ *
+ * Returns 1 if yes, 0 if no and -1 in case of error.
+ */
+static int
+xmlRelaxNGSchemaTypeCompare(void *data ATTRIBUTE_UNUSED,
+	                    const xmlChar *type ATTRIBUTE_UNUSED,
+	                    const xmlChar *value1 ATTRIBUTE_UNUSED,
+			    const xmlChar *value2 ATTRIBUTE_UNUSED) {
+    TODO
+    return(1);
+}
+ 
+/**
+ * xmlRelaxNGDefaultTypeHave:
+ * @data:  data needed for the library
+ * @type:  the type name
+ *
+ * Check if the given type is provided by
+ * the default datatype library.
+ *
+ * Returns 1 if yes, 0 if no and -1 in case of error.
+ */
+static int
+xmlRelaxNGDefaultTypeHave(void *data ATTRIBUTE_UNUSED, const xmlChar *type) {
+    if (type == NULL)
+	return(-1);
+    if (xmlStrEqual(type, BAD_CAST "string"))
+	return(1);
+    if (xmlStrEqual(type, BAD_CAST "token"))
+	return(1);
+    return(0);
+}
+
+/**
+ * xmlRelaxNGDefaultTypeCheck:
+ * @data:  data needed for the library
+ * @type:  the type name
+ * @value:  the value to check
+ *
+ * Check if the given type and value are validated by
+ * the default datatype library.
+ *
+ * Returns 1 if yes, 0 if no and -1 in case of error.
+ */
+static int
+xmlRelaxNGDefaultTypeCheck(void *data ATTRIBUTE_UNUSED,
+	                   const xmlChar *type ATTRIBUTE_UNUSED,
+			  const xmlChar *value ATTRIBUTE_UNUSED) {
+    return(1);
+}
+
+/**
+ * xmlRelaxNGDefaultTypeCompare:
+ * @data:  data needed for the library
+ * @type:  the type name
+ * @value1:  the first value
+ * @value2:  the second value
+ *
+ * Compare two values accordingly a type from the default
+ * datatype library.
+ *
+ * Returns 1 if yes, 0 if no and -1 in case of error.
+ */
+static int
+xmlRelaxNGDefaultTypeCompare(void *data ATTRIBUTE_UNUSED,
+	                     const xmlChar *type ATTRIBUTE_UNUSED,
+	                     const xmlChar *value1 ATTRIBUTE_UNUSED,
+			     const xmlChar *value2 ATTRIBUTE_UNUSED) {
+    TODO
+    return(1);
+}
+ 
+static int xmlRelaxNGTypeInitialized = 0;
+static xmlHashTablePtr xmlRelaxNGRegisteredTypes = NULL;
+
+/**
+ * xmlRelaxNGFreeTypeLibrary:
+ * @lib:  the type library structure
+ * @namespace:  the URI bound to the library
+ *
+ * Free the structure associated to the type library
+ */
 static void
+xmlRelaxNGFreeTypeLibrary(xmlRelaxNGTypeLibraryPtr lib,
+	                  const xmlChar *namespace ATTRIBUTE_UNUSED) {
+    if (lib == NULL)
+	return;
+    if (lib->namespace != NULL)
+	xmlFree((xmlChar *)lib->namespace);
+    xmlFree(lib);
+}
+
+/**
+ * xmlRelaxNGRegisterTypeLibrary:
+ * @namespace:  the URI bound to the library
+ * @data:  data associated to the library
+ * @have:  the provide function
+ * @check:  the checking function
+ * @comp:  the comparison function
+ *
+ * Register a new type library
+ *
+ * Returns 0 in case of success and -1 in case of error.
+ */
+static int
+xmlRelaxNGRegisterTypeLibrary(const xmlChar *namespace, void *data,
+    xmlRelaxNGTypeHave have, xmlRelaxNGTypeCheck check,
+    xmlRelaxNGTypeCompare comp) {
+    xmlRelaxNGTypeLibraryPtr lib;
+    int ret;
+
+    if ((xmlRelaxNGRegisteredTypes == NULL) || (namespace == NULL) ||
+	(check == NULL) || (comp == NULL))
+	return(-1);
+    if (xmlHashLookup(xmlRelaxNGRegisteredTypes, namespace) != NULL) {
+	xmlGenericError(xmlGenericErrorContext,
+		"Relax-NG types library '%s' already registered\n",
+		        namespace);
+	return(-1);
+    }
+    lib = (xmlRelaxNGTypeLibraryPtr) xmlMalloc(sizeof(xmlRelaxNGTypeLibrary));
+    if (lib == NULL) {
+	xmlGenericError(xmlGenericErrorContext,
+		"Relax-NG types library '%s' malloc() failed\n",
+		        namespace);
+        return (-1);
+    }
+    memset(lib, 0, sizeof(xmlRelaxNGTypeLibrary));
+    lib->namespace = xmlStrdup(namespace);
+    lib->data = data;
+    lib->have = have;
+    lib->comp = comp;
+    lib->check = check;
+    ret = xmlHashAddEntry(xmlRelaxNGRegisteredTypes, namespace, lib);
+    if (ret < 0) {
+	xmlGenericError(xmlGenericErrorContext,
+		"Relax-NG types library failed to register '%s'\n",
+		        namespace);
+	xmlRelaxNGFreeTypeLibrary(lib, namespace);
+	return(-1);
+    }
+    return(0);
+}
+
+/**
+ * xmlRelaxNGInitTypes:
+ *
+ * Initilize the default type libraries.
+ *
+ * Returns 0 in case of success and -1 in case of error.
+ */
+static int
 xmlRelaxNGInitTypes(void) {
+    if (xmlRelaxNGTypeInitialized != 0)
+	return(0);
+    xmlRelaxNGRegisteredTypes = xmlHashCreate(10);
+    if (xmlRelaxNGRegisteredTypes == NULL) {
+	xmlGenericError(xmlGenericErrorContext,
+		"Failed to allocate sh table for Relax-NG types\n");
+	return(-1);
+    }
+    xmlRelaxNGRegisterTypeLibrary(
+	    BAD_CAST "http://www.w3.org/2001/XMLSchema-datatypes",
+	    NULL,
+	    xmlRelaxNGSchemaTypeHave,
+	    xmlRelaxNGSchemaTypeCheck,
+	    xmlRelaxNGSchemaTypeCompare);
+    xmlRelaxNGRegisterTypeLibrary(
+	    xmlRelaxNGNs,
+	    NULL,
+	    xmlRelaxNGDefaultTypeHave,
+	    xmlRelaxNGDefaultTypeCheck,
+	    xmlRelaxNGDefaultTypeCompare);
+    xmlRelaxNGTypeInitialized = 1;
+    return(0);
 }
 
 /**
@@ -611,7 +880,12 @@ xmlRelaxNGInitTypes(void) {
  */
 void	
 xmlRelaxNGCleanupTypes(void) {
+    if (xmlRelaxNGTypeInitialized == 0)
+	return;
     xmlSchemaCleanupTypes();
+    xmlHashFree(xmlRelaxNGRegisteredTypes, (xmlHashDeallocator)
+	        xmlRelaxNGFreeTypeLibrary);
+    xmlRelaxNGTypeInitialized = 0;
 }
 
 /************************************************************************
@@ -650,7 +924,6 @@ xmlRelaxNGIsBlank(xmlChar *str) {
     return(1);
 }
 
-#if 0
 /**
  * xmlRelaxNGGetDataTypeLibrary:
  * @ctxt:  a Relax-NG parser context
@@ -665,15 +938,10 @@ xmlRelaxNGGetDataTypeLibrary(xmlRelaxNGParserCtxtPtr ctxt ATTRIBUTE_UNUSED,
 	                     xmlNodePtr node) {
     xmlChar *ret, *escape;
 
-#ifdef DEBUG
-    xmlGenericError(xmlGenericErrorContext,
-		    "xmlRelaxNGGetDataTypeLibrary()\n");
-#endif
-
     if ((IS_RELAXNG(node, "data")) || (IS_RELAXNG(node, "value"))) {
 	ret = xmlGetProp(node, BAD_CAST "datatypeLibrary");
 	if (ret != NULL) {
-	    escape = xmlURIEscapeStr(ret, BAD_CAST "");
+	    escape = xmlURIEscapeStr(ret, BAD_CAST ":/#?");
 	    if (escape == NULL) {
 		return(ret);
 	    }
@@ -686,7 +954,7 @@ xmlRelaxNGGetDataTypeLibrary(xmlRelaxNGParserCtxtPtr ctxt ATTRIBUTE_UNUSED,
 	if (IS_RELAXNG(node, "element")) {
 	    ret = xmlGetProp(node, BAD_CAST "datatypeLibrary");
 	    if (ret != NULL) {
-		escape = xmlURIEscapeStr(ret, BAD_CAST "");
+		escape = xmlURIEscapeStr(ret, BAD_CAST ":/#?");
 		if (escape == NULL) {
 		    return(ret);
 		}
@@ -698,7 +966,81 @@ xmlRelaxNGGetDataTypeLibrary(xmlRelaxNGParserCtxtPtr ctxt ATTRIBUTE_UNUSED,
     }
     return(NULL);
 }
-#endif
+
+/**
+ * xmlRelaxNGParseData:
+ * @ctxt:  a Relax-NG parser context
+ * @node:  the data node.
+ *
+ * parse the content of a RelaxNG data node.
+ *
+ * Returns the definition pointer or NULL in case of error
+ */
+static xmlRelaxNGDefinePtr
+xmlRelaxNGParseData(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
+    xmlRelaxNGDefinePtr def = NULL;
+    xmlRelaxNGTypeLibraryPtr lib;
+    xmlChar *type;
+    xmlChar *library;
+    xmlNodePtr content;
+    int tmp;
+
+    type = xmlGetProp(node, BAD_CAST "type");
+    if (type == NULL) {
+	if (ctxt->error != NULL)
+	    ctxt->error(ctxt->userData,
+			"data has no type\n");
+	ctxt->nbErrors++;
+	return(NULL);
+    }
+    library = xmlRelaxNGGetDataTypeLibrary(ctxt, node);
+    if (library == NULL)
+	library = xmlStrdup(BAD_CAST "http://relaxng.org/ns/structure/1.0");
+
+    def = xmlRelaxNGNewDefine(ctxt, node);
+    if (def == NULL) {
+	xmlFree(type);
+	return(NULL);
+    }
+    def->type = XML_RELAXNG_DATATYPE;
+    def->name = type;
+    def->ns = library;
+
+    lib = (xmlRelaxNGTypeLibraryPtr)
+	xmlHashLookup(xmlRelaxNGRegisteredTypes, library);
+    if (lib == NULL) {
+	if (ctxt->error != NULL)
+	    ctxt->error(ctxt->userData,
+		"Use of unregistered type library '%s'\n",
+		        library);
+	ctxt->nbErrors++;
+	def->data = NULL;
+    } else {
+	def->data = lib;
+	if (lib->have == NULL) {
+	    ctxt->error(ctxt->userData,
+		"Internal error with type library '%s': no 'have'\n",
+		        library);
+	    ctxt->nbErrors++;
+	} else {
+	    tmp = lib->have(lib->data, def->name);
+	    if (tmp != 1) {
+		ctxt->error(ctxt->userData,
+		    "Error type '%s' is not exported by type library '%s'\n",
+			    def->name, library);
+		ctxt->nbErrors++;
+	    }
+	}
+    }
+    content = node->children;
+    while (content != NULL) {
+	TODO
+	content = content->next;
+    }
+
+    return(def);
+}
+
 
 /**
  * xmlRelaxNGParseDefine:
@@ -887,6 +1229,8 @@ xmlRelaxNGParsePattern(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
 		}
 	    }
 	}
+    } else if (IS_RELAXNG(node, "data")) {
+	def = xmlRelaxNGParseData(ctxt, node);
     } else if (IS_RELAXNG(node, "define")) {
 	xmlRelaxNGParseDefine(ctxt, node);
 	def = NULL;
@@ -2202,6 +2546,45 @@ xmlRelaxNGSkipIgnored(xmlRelaxNGValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
 }
 
 /**
+ * xmlRelaxNGValidateDatatype:
+ * @ctxt:  a Relax-NG validation context
+ * @value:  the string value
+ * @type:  the datatype definition
+ *
+ * Validate the given value against the dataype
+ *
+ * Returns 0 if the validation succeeded or an error code.
+ */
+static int
+xmlRelaxNGValidateDatatype(xmlRelaxNGValidCtxtPtr ctxt, const xmlChar *value,
+	                   xmlRelaxNGDefinePtr define) {
+    int ret;
+    xmlRelaxNGTypeLibraryPtr lib;
+
+    if ((define == NULL) || (define->data == NULL)) {
+	return(-1);
+    }
+    lib = (xmlRelaxNGTypeLibraryPtr) define->data;
+    if (lib->check != NULL)
+	ret = lib->check(lib->data, define->name, value);
+    else 
+	ret = -1;
+    if (ret < 0) {
+	VALID_CTXT();
+	VALID_ERROR("Internal: failed to validate type %s\n", define->name);
+	return(-1);
+    } else if (ret == 1) {
+	ret = 0;
+    } else {
+	VALID_CTXT();
+	VALID_ERROR("Type %s doesn't allow value %s\n", define->name, value);
+	return(-1);
+	ret = -1;
+    }
+    return(ret);
+}
+
+/**
  * xmlRelaxNGValidateValue:
  * @ctxt:  a Relax-NG validation context
  * @define:  the definition to verify
@@ -2590,7 +2973,32 @@ xmlRelaxNGValidateDefinition(xmlRelaxNGValidCtxtPtr ctxt,
         case XML_RELAXNG_DEF:
 	    ret = xmlRelaxNGValidateDefinition(ctxt, define->content);
 	    break;
-        case XML_RELAXNG_DATATYPE:
+        case XML_RELAXNG_DATATYPE: {
+	    xmlChar *content;
+
+	    content = xmlNodeGetContent(node);
+	    ret = xmlRelaxNGValidateDatatype(ctxt, content, define);
+	    if (ret == -1) {
+		VALID_CTXT();
+		VALID_ERROR("internal error validating %s\n", define->name);
+	    } else if (ret == 0) {
+		ctxt->state->seq = node->next;
+	    }
+	    /*
+	     * TODO cover the problems with
+	     * <p>12<!-- comment -->34</p>
+	     * TODO detect full element coverage at compilation time.
+	     */
+	    if ((node != NULL) && (node->next != NULL)) {
+		VALID_CTXT();
+		VALID_ERROR("The data does not cover the full element %s\n",
+			    node->parent->name);
+		ret = -1;
+	    }
+	    if (content != NULL)
+		xmlFree(content);
+	    break;
+	}
         case XML_RELAXNG_VALUE:
 	    TODO
 	    break;

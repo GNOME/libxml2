@@ -1545,16 +1545,18 @@ xmlRelaxNGValidErrorPush(xmlRelaxNGValidCtxtPtr ctxt, xmlRelaxNGValidErr err,
             xmlGenericError(xmlGenericErrorContext, "malloc failed !\n");
             return (0);
         }
+	ctxt->err = NULL;
     }
     if (ctxt->errNr >= ctxt->errMax) {
-        ctxt->errMax *= 2;
+	ctxt->errMax *= 2;
         ctxt->errTab =
             (xmlRelaxNGValidErrorPtr) xmlRealloc(ctxt->errTab,
-			      ctxt->errMax * sizeof(xmlRelaxNGValidError));
+			    ctxt->errMax * sizeof(xmlRelaxNGValidError));
         if (ctxt->errTab == NULL) {
             xmlGenericError(xmlGenericErrorContext, "realloc failed !\n");
             return (0);
         }
+	ctxt->err = &ctxt->errTab[ctxt->errNr - 1];
     }
     if ((ctxt->err != NULL) && (ctxt->state != NULL) &&
 	(ctxt->err->node == ctxt->state->node) &&
@@ -3588,6 +3590,7 @@ xmlRelaxNGComputeInterleaves(xmlRelaxNGDefinePtr def,
 		xmlMalloc(sizeof(xmlRelaxNGPartition));
     if (partitions == NULL)
         goto error;
+    memset(partitions, 0, sizeof(xmlRelaxNGPartition));
     partitions->nbgroups = nbgroups;
     partitions->triage = xmlHashCreate(nbgroups);
     for (i = 0;i < nbgroups;i++) {

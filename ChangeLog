@@ -1,3 +1,9 @@
+Sat Jun 19 18:34:11 MDT 2004 John Fleck <jfleck@inkstain.net>
+
+	* doc/xmllint.xml, xmllint.html, xmllint.1
+	update man page to reflect William's newly disciplined return
+	code mojo
+
 Thu Jun 17 00:51:55 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* doc/examples/io2.c doc/examples/parse4.c: fixing a couple of

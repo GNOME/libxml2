@@ -277,5 +277,50 @@ Catalog behavior can be changed by redirecting queries to the user's own set of 
 .PP
 Setting the environment variable \fIXML_DEBUG_CATALOG\fR using the command \fB"export XML_DEBUG_CATALOG="\fR outputs debugging information related to catalog operations\&.
 
+.SH "ERROR RETURN CODES"
+
+.PP
+On the completion of execution, Xmllint returns the following error codes:
+
+.TP
+0
+No error
+
+.TP
+1
+Unclassified
+
+.TP
+2
+Error in DTD
+
+.TP
+3
+Validation error
+
+.TP
+4
+Validation error
+
+.TP
+5
+Error in schema compilation
+
+.TP
+6
+Error writing output
+
+.TP
+7
+Error in pattern (generated when [\-\-pattern] option is used)
+
+.TP
+8
+Error in Reader registration (generated when [\-\-chkregister] option is used)
+
+.TP
+9
+Out of memory error
+
 .SH AUTHORS
 John Fleck, Ziying Sherwin, Heiko Rupp.

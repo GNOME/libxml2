@@ -29,7 +29,7 @@
     </author>
     <address><email>hwr@pilhuhn.de</email></address>
     
-    <releaseinfo>This is release 0.3 of the xmllint Manual.</releaseinfo>
+    <releaseinfo>This is release 0.4 of the xmllint Manual.</releaseinfo>
   </refentryinfo>
 
   <refmeta>
@@ -639,5 +639,74 @@
     <para>Setting the environment variable <varname>XML_DEBUG_CATALOG</varname>
     using the command <command>&quot;export XML_DEBUG_CATALOG=&quot;</command>
     outputs debugging information related to catalog operations.</para>
+  </refsect1>
+  <refsect1>
+    <title>Error Return Codes</title>
+    <para>On the completion of execution, <application>Xmllint</application>
+    returns the following error codes:</para>
+    <variablelist>
+      <varlistentry>
+	<term>0</term>
+	<listitem>
+	  <simpara>No error</simpara>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>1</term>
+	<listitem>
+	  <simpara>Unclassified</simpara>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>2</term>
+	<listitem>
+	  <simpara>Error in DTD</simpara>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>3</term>
+	<listitem>
+	  <simpara>Validation error</simpara>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>4</term>
+	<listitem>
+	  <simpara>Validation error</simpara>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>5</term>
+	<listitem>
+	  <simpara>Error in schema compilation</simpara>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>6</term>
+	<listitem>
+	  <simpara>Error writing output</simpara>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>7</term>
+	<listitem>
+	  <simpara>Error in pattern (generated when
+	  <optional>--pattern</optional> option is used)</simpara>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>8</term>
+	<listitem>
+	  <simpara>Error in Reader registration (generated when
+	  <optional>--chkregister</optional> option is used)</simpara>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>9</term>
+	<listitem>
+	  <simpara>Out of memory error</simpara>
+	</listitem>
+      </varlistentry>
+    </variablelist>
   </refsect1>
 </refentry>

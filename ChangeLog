@@ -1,3 +1,11 @@
+Wed Dec 25 19:22:06 MST 2002 John Fleck <jfleck@inkstain.net>
+
+	* doc/xmllint.xml
+	* doc/xmllint.1
+	Add discussion of XML_DEBUG_CATALOG to xmllint man
+	page - bug #100907
+
+
 Mon Dec 23 16:54:22 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c: Fixed the empty node detection to avoid reporting

@@ -557,4 +557,10 @@
      
     </variablelist>
   </refsect1>
+  <refsect1>
+    <title>Debugging Catalogs</title>
+    <para>Setting the environment variable <varname>XML_DEBUG_CATALOG</varname>
+    using the command <command>&quot;export XML_DEBUG_CATALOG=&quot;</command>
+    outputs debugging information related to catalog operations.</para>
+  </refsect1>
 </refentry>

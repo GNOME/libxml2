@@ -1,4 +1,4 @@
-/*
+/**
  * ftp.c: basic handling of an FTP command connection to check for
  *        directory availability. No transfer is needed.
  *
@@ -154,7 +154,7 @@ xmlNanoFTPScanURL(void *ctx, const char *URL) {
  * Returns an FTP context or NULL in case of error.
  */
 
-xmlNanoFTPCtxtPtr
+void *
 xmlNanoFTPNewCtxt(const char *URL) {
     xmlNanoFTPCtxtPtr ret;
 
@@ -174,13 +174,14 @@ xmlNanoFTPNewCtxt(const char *URL) {
 
 /**
  * xmlNanoFTPFreeCtxt:
- * @ctxt:  an FTP context
+ * @ctx:  an FTP context
  *
  * Frees the context after closing the connection.
  */
 
-static void
-xmlNanoFTPFreeCtxt(xmlNanoFTPCtxtPtr ctxt) {
+void
+xmlNanoFTPFreeCtxt(void * ctx) {
+    xmlNanoFTPCtxtPtr ctxt = (xmlNanoFTPCtxtPtr) ctx;
     if (ctxt == NULL) return;
     if (ctxt->hostname != NULL) xmlFree(ctxt->hostname);
     if (ctxt->protocol != NULL) xmlFree(ctxt->protocol);
@@ -191,24 +192,27 @@ xmlNanoFTPFreeCtxt(xmlNanoFTPCtxtPtr ctxt) {
     xmlFree(ctxt);
 }
 
-/*
+/**
+ * xmlNanoFTPInit:
+ *
  * Initialize the FTP handling.
  */
 
-void xmlNanoFTPInit(void) {
+void
+xmlNanoFTPInit(void) {
     static int done = 0;
     if (done) return;
     gethostname(hostname, sizeof(hostname));
     done = 1;
 }
 
-/*
+/**
  * Parsing of the server answer, we just extract the code.
  * return 0 for errors
  *     +XXX for last line of response
  *     -XXX for response to be continued
  */
-int
+static int
 xmlNanoFTPParseResponse(void *ctx, char *buf, int len) {
     int val = 0;
 
@@ -233,12 +237,16 @@ xmlNanoFTPParseResponse(void *ctx, char *buf, int len) {
     return(val);
 }
 
-/*
+/**
+ * xmlNanoFTPReadResponse:
+ * @ctx:  an FTP context
+ * @buf:  buffer to read in
+ * @size:  buffer length
+ *
  * Read the response from the FTP server after a command.
  * Returns the code number
- *
  */
-int
+static int
 xmlNanoFTPReadResponse(void *ctx, char *buf, int size) {
     xmlNanoFTPCtxtPtr ctxt = (xmlNanoFTPCtxtPtr) ctx;
     char *ptr, *end;
@@ -290,11 +298,14 @@ get_more:
     return(res / 100);
 }
 
-/*
+/**
+ * xmlNanoFTPGetResponse:
+ * @ctx:  an FTP context
+ *
  * Get the response from the FTP server after a command.
  * Returns the code number
- *
  */
+
 int
 xmlNanoFTPGetResponse(void *ctx) {
     char buf[16 * 1024 + 1];
@@ -315,10 +326,14 @@ xmlNanoFTPGetResponse(void *ctx) {
     return(xmlNanoFTPReadResponse(ctx, buf, 16 * 1024));
 }
 
-/*
+/**
+ * xmlNanoFTPCheckResponse:
+ * @ctx:  an FTP context
+ *
  * Check if there is a response from the FTP server after a command.
  * Returns the code number, or 0
  */
+
 int
 xmlNanoFTPCheckResponse(void *ctx) {
     xmlNanoFTPCtxtPtr ctxt = (xmlNanoFTPCtxtPtr) ctx;
@@ -344,12 +359,12 @@ xmlNanoFTPCheckResponse(void *ctx) {
     return(xmlNanoFTPReadResponse(ctx, buf, 1024));
 }
 
-/*
+/**
  * Send the user authentification
  */
 
-int
-sendUser(void *ctx) {
+static int
+xmlNanoFTPSendUser(void *ctx) {
     xmlNanoFTPCtxtPtr ctxt = (xmlNanoFTPCtxtPtr) ctx;
     char buf[200];
     int len;
@@ -367,12 +382,12 @@ sendUser(void *ctx) {
     return(0);
 }
 
-/*
+/**
  * Send the password authentification
  */
 
-int
-sendPasswd(void *ctx) {
+static int
+xmlNanoFTPSendPasswd(void *ctx) {
     xmlNanoFTPCtxtPtr ctxt = (xmlNanoFTPCtxtPtr) ctx;
     char buf[200];
     int len;
@@ -390,12 +405,18 @@ sendPasswd(void *ctx) {
     return(0);
 }
 
-/*
- * Send a QUIT
+/**
+ * xmlNanoFTPQuit:
+ * @ctx:  an FTP context
+ *
+ * Send a QUIT command to the server
+ *
+ * Returns -1 in case of error, 0 otherwise
  */
 
+
 int
-sendQuit(void *ctx) {
+xmlNanoFTPQuit(void *ctx) {
     xmlNanoFTPCtxtPtr ctxt = (xmlNanoFTPCtxtPtr) ctx;
     char buf[200];
     int len;
@@ -409,8 +430,13 @@ sendQuit(void *ctx) {
     return(0);
 }
 
-/*
- * Connecting to the server, port 21 by default.
+/**
+ * xmlNanoFTPConnect:
+ * @ctx:  an FTP context
+ *
+ * Tries to open a control connection
+ *
+ * Returns -1 in case of error, 0 otherwise
  */
 
 int
@@ -496,7 +522,7 @@ xmlNanoFTPConnect(void *ctx) {
      * |   |---------->| W | 4,5 -------->| F |
      * +---+           +---+------------->+---+
      */
-    res = sendUser(ctxt);
+    res = xmlNanoFTPSendUser(ctxt);
     if (res < 0) {
         close(ctxt->controlFd); ctxt->controlFd = -1;
         ctxt->controlFd = -1;
@@ -517,7 +543,7 @@ xmlNanoFTPConnect(void *ctx) {
 	    ctxt->controlFd = -1;
 	    return(-1);
     }
-    res = sendPasswd(ctxt);
+    res = xmlNanoFTPSendPasswd(ctxt);
     if (res < 0) {
         close(ctxt->controlFd); ctxt->controlFd = -1;
         ctxt->controlFd = -1;
@@ -542,9 +568,16 @@ xmlNanoFTPConnect(void *ctx) {
     return(0);
 }
 
-/*
- * Connecting to a given server server/port
+/**
+ * xmlNanoFTPConnectTo:
+ * @server:  an FTP server name
+ * @directory:  the port (use 21 if 0)
+ *
+ * Tries to open a control connection to the given server/port
+ *
+ * Returns and fTP context or NULL if it failed
  */
+
 
 void *
 xmlNanoFTPConnectTo(const char *server, int port) {
@@ -566,8 +599,14 @@ xmlNanoFTPConnectTo(const char *server, int port) {
     return(ctxt);
 }
 
-/*
- * Check an FTP directory on the server
+/**
+ * xmlNanoFTPGetConnection:
+ * @ctx:  an FTP context
+ * @directory:  a directory on the server
+ *
+ * Tries to change the remote directory
+ *
+ * Returns -1 incase of error, 1 if CWD worked, 0 if it failed
  */
 
 int
@@ -592,8 +631,6 @@ xmlNanoFTPCwd(void *ctx, char *directory) {
     if (res < 0) return(res);
     res = xmlNanoFTPGetResponse(ctxt);
     if (res == 4) {
-	close(ctxt->controlFd); ctxt->controlFd = -1;
-	ctxt->controlFd = -1;
 	return(-1);
     }
     if (res == 2) return(1);
@@ -603,9 +640,16 @@ xmlNanoFTPCwd(void *ctx, char *directory) {
     return(0);
 }
 
-/*
- * xmlNanoFTPGetConnection
+/**
+ * xmlNanoFTPGetConnection:
+ * @ctx:  an FTP context
+ *
+ * Try to open a data connection to the server. Currently only
+ * passive mode is supported.
+ *
+ * Returns -1 incase of error, 0 otherwise
  */
+
 int
 xmlNanoFTPGetConnection(void *ctx) {
     xmlNanoFTPCtxtPtr ctxt = (xmlNanoFTPCtxtPtr) ctx;
@@ -705,9 +749,15 @@ xmlNanoFTPGetConnection(void *ctx) {
     
 }
 
-/*
- * xmlNanoFTPCloseConnection
+/**
+ * xmlNanoFTPCloseConnection:
+ * @ctx:  an FTP context
+ *
+ * Close the data connection from the server
+ *
+ * Returns -1 incase of error, 0 otherwise
  */
+
 int
 xmlNanoFTPCloseConnection(void *ctx) {
     xmlNanoFTPCtxtPtr ctxt = (xmlNanoFTPCtxtPtr) ctx;
@@ -716,15 +766,21 @@ xmlNanoFTPCloseConnection(void *ctx) {
     close(ctxt->dataFd); ctxt->dataFd = -1;
     res = xmlNanoFTPGetResponse(ctxt);
     if (res != 2) {
-	close(ctxt->dataFd); ctxt->dataFd = -1;
 	close(ctxt->controlFd); ctxt->controlFd = -1;
 	return(-1);
     }
     return(0);
 }
 
-/*
- * xmlNanoFTPParseList
+/**
+ * xmlNanoFTPParseList:
+ * @list:  some data listing received from the server
+ * @callback:  the user callback
+ * @userData:  the user callback data
+ *
+ * Parse at most one entry from the listing. 
+ *
+ * Returns -1 incase of error, the lenght of data parsed otherwise
  */
 
 static int
@@ -842,11 +898,22 @@ xmlNanoFTPParseList(const char *list, ftpListCallback callback, void *userData) 
     return(cur - list);
 }
 
-/*
- * xmlNanoFTPList
+/**
+ * xmlNanoFTPList:
+ * @ctx:  an FTP context
+ * @callback:  the user callback
+ * @userData:  the user callback data
+ * @filename:  optional files to list
+ *
+ * Do a listing on the server. All files info are passed back
+ * in the callbacks.
+ *
+ * Returns -1 incase of error, 0 otherwise
  */
+
 int
-xmlNanoFTPList(void *ctx, ftpListCallback callback, void *userData) {
+xmlNanoFTPList(void *ctx, ftpListCallback callback, void *userData,
+	       char *filename) {
     xmlNanoFTPCtxtPtr ctxt = (xmlNanoFTPCtxtPtr) ctx;
     char buf[4096 + 1];
     int len, res;
@@ -856,7 +923,10 @@ xmlNanoFTPList(void *ctx, ftpListCallback callback, void *userData) {
 
     ctxt->dataFd = xmlNanoFTPGetConnection(ctxt);
 
-    len = snprintf(buf, sizeof(buf), "LIST -L\r\n");
+    if (filename != NULL)
+	len = snprintf(buf, sizeof(buf), "LIST -L %s\r\n", filename);
+    else
+	len = snprintf(buf, sizeof(buf), "LIST -L\r\n");
 #ifdef DEBUG_FTP
     printf(buf);
 #endif
@@ -927,9 +997,16 @@ xmlNanoFTPList(void *ctx, ftpListCallback callback, void *userData) {
     return(0);
 }
 
-/*
+/**
  * xmlNanoFTPGetSocket:
+ * @ctx:  an FTP context
+ * @filename:  the file to retrieve
+ *
+ * Initiate fetch of the given file from the server.
+ *
+ * Returns the socket for the data connection, or <0 in case of error
  */
+
 
 int
 xmlNanoFTPGetSocket(void *ctx, const char *filename) {
@@ -971,11 +1048,22 @@ xmlNanoFTPGetSocket(void *ctx, const char *filename) {
     return(ctxt->dataFd);
 }
 
-/*
- * xmlNanoFTPList
+/**
+ * xmlNanoFTPGet:
+ * @ctx:  an FTP context
+ * @callback:  the user callback
+ * @userData:  the user callback data
+ * @filename:  the file to retrieve
+ *
+ * Fetch the given file from the server. All data are passed back
+ * in the callbacks. The last callback has a size of 0 block.
+ *
+ * Returns -1 incase of error, 0 otherwise
  */
+
 int
-xmlNanoFTPGet(void *ctx, ftpDataCallback callback, void *userData, const char *filename) {
+xmlNanoFTPGet(void *ctx, ftpDataCallback callback, void *userData,
+	      const char *filename) {
     xmlNanoFTPCtxtPtr ctxt = (xmlNanoFTPCtxtPtr) ctx;
     char buf[4096];
     int len = 0, res;
@@ -1058,11 +1146,13 @@ xmlNanoFTPRead(void *ctx, void *dest, int len) {
     return(len);
 }
 
-/*
+/**
  * xmlNanoFTPOpen:
  * @URL: the URL to the resource
  *
  * Start to fetch the given ftp:// resource
+ *
+ * Returns an FTP context, or NULL 
  */
 
 void *
@@ -1088,8 +1178,13 @@ xmlNanoFTPOpen(const char *URL) {
     return(ctxt);
 }
 
-/*
- * Disconnect from the FTP server.
+/**
+ * xmlNanoFTPClose:
+ * @ctx: an FTP context
+ *
+ * Close the connection and both control and transport
+ *
+ * Returns -1 incase of error, 0 otherwise
  */
 
 int
@@ -1104,7 +1199,7 @@ xmlNanoFTPClose(void *ctx) {
 	ctxt->dataFd = -1;
     }
     if (ctxt->controlFd >= 0) {
-	sendQuit(ctxt);
+	xmlNanoFTPQuit(ctxt);
 	close(ctxt->controlFd);
 	ctxt->controlFd = -1;
     }
@@ -1171,7 +1266,7 @@ int main(int argc, char **argv) {
     } else {
         fprintf(stderr, "/toto : CWD successful\n");
     }
-    xmlNanoFTPList(ctxt, ftpList, NULL);
+    xmlNanoFTPList(ctxt, ftpList, NULL, NULL);
     output = fopen("/tmp/tstdata", "w");
     if (output != NULL) {
 	if (xmlNanoFTPGet(ctxt, ftpData, (void *) output, tstfile) < 0)

@@ -1,20 +1,24 @@
 <HTML
 ><HEAD
 ><TITLE
->Gnome XML Library Reference Manual</TITLE
+>Libxml Library Reference</TITLE
 ><META
 NAME="GENERATOR"
 CONTENT="Modular DocBook HTML Stylesheet Version 1.33"><LINK
-REL="NEXT"
+REL="HOME"
+TITLE="Gnome XML Library Reference Manual"
+HREF="book1.html"><LINK
+REL="PREVIOUS"
 TITLE="Libxml Programming Notes"
-HREF="libxml-notes.html"></HEAD
+HREF="libxml-notes.html"><LINK
+REL="NEXT"
+TITLE="parser"
+HREF="gnome-xml-parser.html"></HEAD
 ><BODY
 BGCOLOR="#FFFFFF"
 TEXT="#000000"
 ><DIV
-CLASS="BOOK"
-><DIV
-CLASS="TITLEPAGE"
+CLASS="NAVHEADER"
 ><TABLE
 WIDTH="100%"
 BORDER="0"
@@ -23,75 +27,84 @@ CELLPADDING="1"
 CELLSPACING="0"
 ><TR
 ><TH
+COLSPAN="4"
 ALIGN="center"
-VALIGN="center"
 ><FONT
 COLOR="#FFFFFF"
-SIZE="7"
-><P
-CLASS="TITLE"
-><A
-NAME="AEN2"
->Gnome XML Library Reference Manual</A
-></P
-></FONT
+SIZE="5"
+>Gnome XML Library Reference Manual</FONT
 ></TH
 ></TR
+><TR
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="left"
+><A
+HREF="libxml-notes.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>&#60;&#60;&#60; Previous Page</B
+></FONT
+></A
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="book1.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#00C000"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>&nbsp;</B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="right"
+><A
+HREF="gnome-xml-parser.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Next Page &#62;&#62;&#62;</B
+></FONT
+></A
+></TD
+></TR
 ></TABLE
-><H3
-CLASS="AUTHOR"
->Daniel Veillard</H3
-><DIV
-CLASS="AFFILIATION"
-><DIV
-CLASS="ADDRESS"
-><P
-CLASS="LITERALLAYOUT"
->	&nbsp;&nbsp;&nbsp;&nbsp;Daniel.Veillard@w3.org<br>
-	&nbsp;&nbsp;</P
-></DIV
-></DIV
-><P
-CLASS="COPYRIGHT"
->Copyright © 1999 by <SPAN
-CLASS="HOLDER"
->Daniel Veillard</SPAN
-></P
-><DIV
-><DIV
-CLASS="ABSTRACT"
-><P
-></P
-><P
->This manual documents the interfaces of the libxml
-      library and has some short notes to help get you up to speed
-      with using the library.</P
-><P
-></P
-></DIV
 ></DIV
 ><DIV
-CLASS="LEGALNOTICE"
-><P
-></P
-><P
->Permission is granted to make and distribute verbatim
-      copies of this manual provided the copyright notice and this
-      permission notice are preserved on all copies.</P
-><P
->Permission is granted to copy and distribute modified
-      versions of this manual under the conditions for verbatim
-      copying, provided also that the entire resulting derived work is
-      distributed under the terms of a permission notice identical to
-      this one.</P
-><P
->Permission is granted to copy and distribute translations
-      of this manual into another language, under the above conditions
-      for modified versions.</P
-><P
-></P
-></DIV
-></DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="LIBXML-LIB"
+>Libxml Library Reference</A
+></H1
 ><DIV
 CLASS="TOC"
 ><DL
@@ -99,18 +112,6 @@ CLASS="TOC"
 ><B
 >Table of Contents</B
 ></DT
-><DT
-><A
-HREF="libxml-notes.html"
->Libxml Programming Notes</A
-></DT
-><DT
-><A
-HREF="libxml-lib.html"
->Libxml Library Reference</A
-></DT
-><DD
-><DL
 ><DT
 ><A
 HREF="gnome-xml-parser.html"
@@ -192,9 +193,11 @@ HREF="gnome-xml-xmlmemory.html"
 >xmlmemory</A
 > &#8212; </DT
 ></DL
-></DD
-></DL
 ></DIV
+><P
+>This section contains the API reference for libxml. All
+    the public interfaces are documented here. This reference guide is
+    build by extracting comments from the code sources. </P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"
@@ -210,7 +213,16 @@ CELLSPACING="0"
 WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="left"
->&nbsp;</TD
+><A
+HREF="libxml-notes.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>&#60;&#60;&#60; Previous Page</B
+></FONT
+></A
+></TD
 ><TD
 WIDTH="25%"
 BGCOLOR="#0000C0"
@@ -219,7 +231,16 @@ ALIGN="center"
 COLOR="#FFFFFF"
 SIZE="3"
 ><B
->&nbsp;</B
+><A
+HREF="book1.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
 ></FONT
 ></TD
 ><TD
@@ -238,7 +259,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="right"
 ><A
-HREF="libxml-notes.html"
+HREF="gnome-xml-parser.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -252,7 +273,13 @@ SIZE="3"
 ><TD
 COLSPAN="2"
 ALIGN="left"
->&nbsp;</TD
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Libxml Programming Notes</B
+></FONT
+></TD
 ><TD
 COLSPAN="2"
 ALIGN="right"
@@ -260,7 +287,7 @@ ALIGN="right"
 COLOR="#FFFFFF"
 SIZE="3"
 ><B
->Libxml Programming Notes</B
+>parser</B
 ></FONT
 ></TD
 ></TR

@@ -12,24 +12,70 @@
 extern "C" {
 #endif
 
+/**
+ * ftpListCallback: 
+ * A callback for the xmlNanoFTPList command
+ */
 typedef void (*ftpListCallback) (void *userData,
 	                         const char *filename, const char* attrib,
 	                         const char *owner, const char *group,
 				 unsigned long size, int links, int year,
 				 const char *month, int day, int minute);
+/**
+ * ftpDataCallback: 
+ * A callback for the xmlNanoFTPGet command
+ */
 typedef void (*ftpDataCallback) (void *userData, const char *data, int len);
 
+/*
+ * Init
+ */
+void	xmlNanoFTPInit		(void);
 
-void *	xmlNanoFTPConnectTo	(const char *hostname, int port);
+/*
+ * Creating/freeing contexts
+ */
+void *	xmlNanoFTPNewCtxt	(const char *URL);
+void	xmlNanoFTPFreeCtxt	(void * ctx);
+void * 	xmlNanoFTPConnectTo	(const char *server,
+				 int port);
+/*
+ * Opening/closing session connections
+ */
+void * 	xmlNanoFTPOpen		(const char *URL);
+int	xmlNanoFTPConnect	(void *ctx);
 int	xmlNanoFTPClose		(void *ctx);
-void *	xmlNanoFTPOpen		(const char *URL);
-int	xmlNanoFTPFetch		(const char *URL,
+int	xmlNanoFTPQuit		(void *ctx);
+
+
+/*
+ * Rathern internal commands
+ */
+int	xmlNanoFTPGetResponse	(void *ctx);
+int	xmlNanoFTPCheckResponse	(void *ctx);
+
+/*
+ * CD/DIR/GET handlers
+ */
+int	xmlNanoFTPCwd		(void *ctx,
+				 char *directory);
+
+int	xmlNanoFTPGetConnection	(void *ctx);
+int	xmlNanoFTPCloseConnection(void *ctx);
+int	xmlNanoFTPList		(void *ctx,
+				 ftpListCallback callback,
+				 void *userData,
+				 char *filename);
+int	xmlNanoFTPGetSocket	(void *ctx,
+				 const char *filename);
+int	xmlNanoFTPGet		(void *ctx,
+				 ftpDataCallback callback,
+				 void *userData,
 				 const char *filename);
 int	xmlNanoFTPRead		(void *ctx,
 				 void *dest,
 				 int len);
-int	xmlNanoFTPGet		(void *ctxt, ftpDataCallback callback,
-	                         void *userData, const char *filename);
+
 #ifdef __cplusplus
 }
 #endif

@@ -673,7 +673,17 @@ xmlShellDir(xmlShellCtxtPtr ctxt, char *arg, xmlNodePtr node,
 int
 xmlShellCat(xmlShellCtxtPtr ctxt, char *arg, xmlNodePtr node,
                   xmlNodePtr node2) {
-    xmlElemDump(stdout, ctxt->doc, node);
+    if (ctxt->doc->type == XML_HTML_DOCUMENT_NODE) {
+	if (node->type == XML_HTML_DOCUMENT_NODE)
+	    htmlDocDump(stdout, (htmlDocPtr) node);
+	else
+	    htmlNodeDump(stdout, ctxt->doc, node);
+    } else {
+	if (node->type == XML_DOCUMENT_NODE)
+	    xmlDocDump(stdout, (xmlDocPtr) node);
+	else
+	    xmlElemDump(stdout, ctxt->doc, node);
+    }
     printf("\n");
     return(0);
 }

@@ -1,3 +1,9 @@
+Wed Jan 26 18:14:55 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* nanoftp.[ch]: cleanup, comments, API
+	* debugXML.c : fixed a bug in the cat command
+	* doc/*: regenerated the docs
+
 Wed Jan 26 16:52:50 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* nanoftp.[ch] parser.c xmlIO.[ch]: added a Nano FTP implementation

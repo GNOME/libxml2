@@ -13,6 +13,7 @@
 <!entity xmlIO SYSTEM "sgml/xmlIO.sgml">
 <!entity xmlmemory SYSTEM "sgml/xmlmemory.sgml">
 <!entity nanohttp SYSTEM "sgml/nanohttp.sgml">
+<!entity nanoftp SYSTEM "sgml/nanoftp.sgml">
 <!entity valid SYSTEM "sgml/valid.sgml">
 ]>
 
@@ -82,6 +83,7 @@
     &HTMLtree;
     &xpath;
     &nanohttp;
+    &nanoftp;
     &xmlIO;
     &parserInternals;
     &encoding;

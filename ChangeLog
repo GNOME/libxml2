@@ -1,3 +1,8 @@
+Tue Dec  9 14:52:59 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmllint.c: some flags were not passed down correctly as
+	  parsing options. Fixes #126806
+
 Tue Dec  9 12:29:26 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xinclude.c xmllint.c xmlreader.c include/libxml/xinclude.h

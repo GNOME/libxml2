@@ -1611,16 +1611,19 @@ main(int argc, char **argv) {
 	         (!strcmp(argv[i], "--postvalid"))) {
 	    postvalid++;
 	    loaddtd++;
+	    options |= XML_PARSE_DTDLOAD;
 	} else if ((!strcmp(argv[i], "-dtdvalid")) ||
 	         (!strcmp(argv[i], "--dtdvalid"))) {
 	    i++;
 	    dtdvalid = argv[i];
 	    loaddtd++;
+	    options |= XML_PARSE_DTDLOAD;
 	} else if ((!strcmp(argv[i], "-dtdvalidfpi")) ||
 	         (!strcmp(argv[i], "--dtdvalidfpi"))) {
 	    i++;
 	    dtdvalidfpi = argv[i];
 	    loaddtd++;
+	    options |= XML_PARSE_DTDLOAD;
         }
 #endif /* LIBXML_VALID_ENABLED */
 	else if ((!strcmp(argv[i], "-dropdtd")) ||

@@ -7394,6 +7394,7 @@ xmlXPathCompFunctionCall(xmlXPathParserContextPtr ctxt) {
 	int op1 = ctxt->comp->last;
 	ctxt->comp->last = -1;
         xmlXPathCompileExpr(ctxt);
+	CHECK_ERROR;
 	PUSH_BINARY_EXPR(XPATH_OP_ARG, op1, ctxt->comp->last, 0, 0);
 	nbargs++;
 	if (CUR == ')') break;
@@ -7429,6 +7430,7 @@ xmlXPathCompPrimaryExpr(xmlXPathParserContextPtr ctxt) {
 	NEXT;
 	SKIP_BLANKS;
 	xmlXPathCompileExpr(ctxt);
+	CHECK_ERROR;
 	if (CUR != ')') {
 	    XP_ERROR(XPATH_EXPR_ERROR);
 	}
@@ -10335,8 +10337,14 @@ xmlXPathCompile(const xmlChar *str) {
 
     ctxt = xmlXPathNewParserContext(str, NULL);
     xmlXPathCompileExpr(ctxt);
-
+    
     if (*ctxt->cur != 0) {
+	/* 
+	 * aleksey: in some cases this line prints *second* error message
+	 * (see bug #78858) and probably this should be fixed.
+	 * However, we are not sure that all error messages are printed
+	 * out in other places. It's not critical so we leave it as-is for now
+	 */
 	xmlXPatherror(ctxt, __FILE__, __LINE__, XPATH_EXPR_ERROR);
 	comp = NULL;
     } else {
@@ -10440,6 +10448,7 @@ xmlXPathCompiledEval(xmlXPathCompExprPtr comp, xmlXPathContextPtr ctx) {
 void
 xmlXPathEvalExpr(xmlXPathParserContextPtr ctxt) {
     xmlXPathCompileExpr(ctxt);
+    CHECK_ERROR;
     xmlXPathRunEval(ctxt);
 }
 

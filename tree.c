@@ -6993,6 +6993,10 @@ xmlNodeDumpOutputInternal(xmlOutputBufferPtr buf, xmlDocPtr doc,
         xmlOutputBufferWriteString(buf, "]]>");
 	return;
     }
+    if (cur->type == XML_ATTRIBUTE_NODE) {
+	xmlAttrDumpOutput(buf,doc,cur,encoding);
+	return;
+    }
     if (cur->type == XML_NAMESPACE_DECL) {
 	xmlNsDumpOutput(buf, (xmlNsPtr) cur);
 	return;

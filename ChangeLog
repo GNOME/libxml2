@@ -1,3 +1,9 @@
+Fri Feb 28 00:23:00 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: fixed a node dump crash on attributes
+	* test/xsdtest/xsdtest.xml test/xsdtest/xsdtest.xsl: fixed
+	  an URI test bug and get better output.
+
 Thu Feb 27 22:28:40 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* check-xsddata-test-suite.py: give more infos

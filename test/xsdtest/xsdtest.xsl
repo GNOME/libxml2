@@ -12,6 +12,8 @@
 </xsl:template>
 
 <xsl:template match="datatype">
+<testSuite>
+<documentation>Datatype <xsl:value-of select="@name"/></documentation>
 <testCase>
 <requires datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"/>
 <correct>
@@ -27,6 +29,7 @@
 <xsl:apply-templates select="valid|invalid"/>
 </testCase>
 <xsl:apply-templates select="equiv/class|length|lessThan|incomparable"/>
+</testSuite>
 </xsl:template>
 
 <xsl:template match="valid">

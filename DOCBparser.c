@@ -3,7 +3,7 @@
  *
  * This is deprecated !!!
  * Code removed with release 2.6.0 it was broken.
- * Empty interface kept purely for symbols binary compatibility
+ * The doc are expect to be migrated to XML DocBook
  *
  * See Copyright for the status of this software.
  *
@@ -71,7 +71,7 @@ docbParseDocument(docbParserCtxtPtr ctxt ATTRIBUTE_UNUSED)
                         "docbParseDocument() deprecated function reached\n");
         deprecated = 1;
     }
-    return (-1);
+    return (xmlParseDocument(ctxt));
 }
 
 /**
@@ -92,6 +92,7 @@ docbFreeParserCtxt(docbParserCtxtPtr ctxt ATTRIBUTE_UNUSED)
                         "docbFreeParserCtxt() deprecated function reached\n");
         deprecated = 1;
     }
+    xmlFreeParserCtxt(ctxt);
 }
 
 /**
@@ -119,7 +120,7 @@ docbParseChunk(docbParserCtxtPtr ctxt ATTRIBUTE_UNUSED,
         deprecated = 1;
     }
 
-    return (-1);
+    return (xmlParseChunk(ctxt, chunk, size, terminate));
 }
 
 /**
@@ -154,7 +155,7 @@ docbCreatePushParserCtxt(docbSAXHandlerPtr sax ATTRIBUTE_UNUSED,
         deprecated = 1;
     }
 
-    return (NULL);
+    return(xmlCreatePushParserCtxt(sax, user_data, chunk, size, filename));
 }
 
 /**
@@ -185,7 +186,8 @@ docbSAXParseDoc(xmlChar * cur ATTRIBUTE_UNUSED,
         deprecated = 1;
     }
 
-    return (NULL);
+    return (xmlSAXParseMemoryWithData(sax, (const char *)cur,
+			  xmlStrlen((const xmlChar *) cur), 0,  userData));
 }
 
 /**
@@ -210,7 +212,7 @@ docbParseDoc(xmlChar * cur ATTRIBUTE_UNUSED,
         deprecated = 1;
     }
 
-    return (NULL);
+    return (xmlParseDoc(cur));
 }
 
 
@@ -237,7 +239,7 @@ docbCreateFileParserCtxt(const char *filename ATTRIBUTE_UNUSED,
         deprecated = 1;
     }
 
-    return (NULL);
+    return (xmlCreateFileParserCtxt(filename));
 }
 
 /**
@@ -269,7 +271,7 @@ docbSAXParseFile(const char *filename ATTRIBUTE_UNUSED,
         deprecated = 1;
     }
 
-    return (NULL);
+    return (xmlSAXParseFileWithData(sax, filename, 0, userData));
 }
 
 /**
@@ -296,6 +298,6 @@ docbParseFile(const char *filename ATTRIBUTE_UNUSED,
         deprecated = 1;
     }
 
-    return (NULL);
+    return (xmlParseFile(filename));
 }
 #endif /* LIBXML_DOCB_ENABLED */

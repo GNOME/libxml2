@@ -1,3 +1,8 @@
+Wed Oct  1 14:20:10 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* DOCBparser.c include/libxml/DOCBparser.h: let's see how much
+	  of a pain murrayc is really gonna be.
+
 Wed Oct  1 11:03:40 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c: Applied fix for bug #123481 reported by Peter Derr

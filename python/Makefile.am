@@ -40,11 +40,11 @@ libxml2.py: $(srcdir)/libxml.py libxml2class.py
 	cat $(srcdir)/libxml.py libxml2class.py > libxml2.py
 
 install-data-local:
-	$(mkinstalldirs) $(libdir)/python${PYTHON_VERSION}/site-packages
-	@INSTALL@ -m 0644 libxml2.py $(libdir)/python${PYTHON_VERSION}/site-packages
-	$(mkinstalldirs) $(DOCS_DIR)
+	$(mkinstalldirs) $(DESTDIR)$(libdir)/python${PYTHON_VERSION}/site-packages
+	@INSTALL@ -m 0644 libxml2.py $(DESTDIR)$(libdir)/python${PYTHON_VERSION}/site-packages
+	$(mkinstalldirs) $(DESTDIR)$(DOCS_DIR)
 	@(for doc in $(DOCS) ; \
-	   do @INSTALL@ -m 0644 $$doc $(DOCS_DIR) ; done)
+	   do @INSTALL@ -m 0644 $$doc $(DESTDIR)$(DOCS_DIR) ; done)
 
 GENERATE = generator.py
 API_DESC = $(top_srcdir)/doc/libxml2-api.xml $(srcdir)/libxml2-python-api.xml

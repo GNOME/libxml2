@@ -1,3 +1,8 @@
+Thu Sep  5 10:07:13 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* python/Makefile.am: applied patch from Christophe Merlet to
+	  reestablish DESTDIR
+
 Wed Sep  4 14:13:34 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* libxml.spec.in: fixes libary path for x86_64 AMD

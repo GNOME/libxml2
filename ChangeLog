@@ -1,3 +1,7 @@
+Thu Nov  7 15:16:02 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: make xmlFreeNode() handle attributes correctly.
+
 Wed Nov  6 23:51:11 CET 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
 
 	* catalog.c: completed the #96963 fix, as reported by Karl

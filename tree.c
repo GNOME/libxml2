@@ -2653,6 +2653,10 @@ xmlFreeNode(xmlNodePtr cur) {
 	xmlFreeNs((xmlNsPtr) cur);
         return;
     }
+    if (cur->type == XML_ATTRIBUTE_NODE) {
+	xmlFreeProp((xmlAttrPtr) cur);
+	return;
+    }
     if ((cur->children != NULL) &&
 	(cur->type != XML_ENTITY_REF_NODE))
 	xmlFreeNodeList(cur->children);

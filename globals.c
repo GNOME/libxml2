@@ -11,6 +11,7 @@
  * daniel@veillard.com
  */
 
+#define IN_LIBXML
 #include "libxml.h"
 
 #ifdef HAVE_STDLIB_H

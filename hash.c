@@ -17,6 +17,7 @@
  * Author: breese@users.sourceforge.net
  */
 
+#define IN_LIBXML
 #include "libxml.h"
 
 #include <string.h>

@@ -14,6 +14,7 @@
  * TODO: add an node intermediate API and handle recursion at this level
  */
 
+#define IN_LIBXML
 #include "libxml.h"
 
 #include <string.h>

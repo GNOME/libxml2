@@ -16,6 +16,7 @@
 #define NEED_SOCKETS
 #endif /* TESTING */
 
+#define IN_LIBXML
 #include "libxml.h"
 
 #ifdef LIBXML_FTP_ENABLED

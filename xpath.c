@@ -16,6 +16,7 @@
  * for VMS
  */
 
+#define IN_LIBXML
 #include "libxml.h"
 #ifdef LIBXML_XPATH_ENABLED
 

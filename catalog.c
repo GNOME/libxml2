@@ -12,6 +12,7 @@
  * Daniel.Veillard@imag.fr
  */
 
+#define IN_LIBXML
 #include "libxml.h"
 
 #ifdef LIBXML_CATALOG_ENABLED

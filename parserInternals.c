@@ -7,6 +7,7 @@
  * daniel@veillard.com
  */
 
+#define IN_LIBXML
 #include "libxml.h"
 
 #if defined(WIN32) && !defined (__CYGWIN__)

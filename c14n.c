@@ -9,6 +9,7 @@
  * 
  * Author: Aleksey Sanin <aleksey@aleksey.com>
  */
+#define IN_LIBXML
 #include "libxml.h"
 #ifdef LIBXML_C14N_ENABLED
 

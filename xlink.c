@@ -8,6 +8,7 @@
  */
 
 
+#define IN_LIBXML
 #include "libxml.h"
 
 #include <string.h> /* for memset() only */

@@ -556,6 +556,16 @@ you want to test those</p>
     href="http://www.w3.org/TR/xinclude">XInclude</a></li>
 </ul>
 
+<h3>2.4.18: Mar 18 2002</h3>
+<ul>
+  <li>bug fixes: tree, SAX, canonicalization, validation, portability,
+  xpath</li>
+  <li>removed the --with-buffer option it was becoming unmaintainable</li>
+  <li>serious cleanup of the Python makefiles</li>
+  <li>speedup patch to XPath very effective for DocBook stylesheets</li>
+  <li>Fixes for Windows build, cleanup of the documentation</li>
+</ul>
+
 <h3>2.4.17: Mar 8 2002</h3>
 <ul>
   <li>a lot of bug fixes, including "namespace nodes have no parents in
@@ -2527,6 +2537,8 @@ xmlOutputBufferCreateOwn(FILE *file, xmlCharEncodingHandlerPtr encoder) {
         ret-&gt;closecallback = NULL;  /* No close callback */
     }
     return(ret); <br>
+
+
 
 } </pre>
   </li>

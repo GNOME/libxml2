@@ -9,9 +9,6 @@
 #ifndef __XML_LIBXML_H__
 #define __XML_LIBXML_H__
 
-#ifndef IN_LIBXML
-#define IN_LIBXML
-#endif
 #if defined(WIN32) && !defined(__CYGWIN__)
 #include "win32config.h"
 #elif defined(macintosh)

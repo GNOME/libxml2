@@ -1,5 +1,9 @@
 Mon Mar 18 19:18:13 CET 2002 Daniel Veillard <daniel@veillard.com>
 
+	* configure.in: preparing 2.4.18
+	* doc/*: updated and rebuilt the web site
+	* *.c libxml.h: implement the new IN_LIBXML scheme discussed with
+	  the Windows and Cygwin maintainers.
 	* parser.c: humm, changed the way the SAX parser work when
 	  xmlSubstituteEntitiesDefault(1) is set, it will then 
 	  do the entity registration and loading by itself in case the

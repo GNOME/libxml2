@@ -10,6 +10,7 @@
  * daniel@veillard.com
  */
 
+#define IN_LIBXML
 #include "libxml.h"
 #ifdef LIBXML_DOCB_ENABLED
 

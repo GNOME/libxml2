@@ -8,6 +8,7 @@
  * 14 Nov 2000 ht - for VMS, truncated name of long functions to under 32 char
  */
 
+#define IN_LIBXML
 #include "libxml.h"
 
 #include <string.h>

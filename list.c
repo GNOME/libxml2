@@ -15,6 +15,7 @@
  * Author: Gary.Pennington@uk.sun.com
  */
 
+#define IN_LIBXML
 #include "libxml.h"
 
 #include <stdlib.h>

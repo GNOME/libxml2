@@ -1135,7 +1135,8 @@ xmlCleanupPredefinedEntities
 
 /* xmlregexp.h 
    --------------------------------------------------------------------- */
-#ifdef LIBXML_SCHEMAS_ENABLED
+
+#ifdef LIBXML_REGEXP_ENABLED
 	/* The POSIX like API */
 	xmlRegexpCompile
 	xmlRegFreeRegexp
@@ -1145,8 +1146,22 @@ xmlCleanupPredefinedEntities
 	/* The progressive API */
 	xmlRegNewExecCtxt
 	xmlRegFreeExecCtxt
-	xmlRegExecPushString			
-#endif /* LIBXML_SCHEMAS_ENABLED */
+	xmlRegExecPushString		
+	xmlRegFreeRegexp
+	xmlRegFreeExecCtxt
+	xmlRegExecPushString
+	xmlRegNewExecCtxt
+	xmlRegexpPrint
+	xmlFreeAutomata
+	xmlAutomataCompile
+	xmlAutomataSetFinalState
+	xmlAutomataNewCountTrans
+	xmlAutomataNewTransition
+	xmlAutomataGetInitState
+	xmlNewAutomata
+	xmlAutomataNewEpsilon
+	xmlAutomataNewState
+#endif /* LIBXML_REGEXP_ENABLED */
 
 
 /* xmlschemas.h 
@@ -1546,6 +1561,7 @@ xmlCleanupPredefinedEntities
 	/* really internal functions */
 	xmlXPathNodeSetFreeNs
 #endif /* LIBXML_XPATH_ENABLED */
+
 
 
 /* xpointer.h 

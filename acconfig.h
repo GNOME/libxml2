@@ -6,3 +6,4 @@
 #undef HAVE_ISNAN
 #undef HAVE_LIBHISTORY
 #undef HAVE_LIBREADLINE
+#undef SOCKLEN_T

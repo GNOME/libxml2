@@ -1,3 +1,9 @@
+Thu Oct 12 10:02:59 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* Makefile.am include/Makefile.am include/win32config.h
+	  win32/Makefile.mingw: fixed problems reported by Wayne Davison
+	  and make distcheck
+
 Thu Oct 12 01:44:08 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* nanohttp.c: added xmlNanoHTTPTimeout(int delay), removed a bug

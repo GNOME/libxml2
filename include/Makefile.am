@@ -22,8 +22,10 @@ xmlinc_HEADERS = \
 		libxml/nanoftp.h \
 		libxml/uri.h \
 		libxml/valid.h \
-		libxml/xlink.h
+		libxml/xlink.h \
+		libxml/xmlversion.h
 
 install-exec-hook:
 	$(mkinstalldirs) $(xmlincdir) $(xmlincdir)/libxml
 
+EXTRA_DIST = win32config.h

@@ -4794,8 +4794,13 @@ xmlParseElementChildrenContentDecl (xmlParserCtxtPtr ctxt, int inputchk) {
     }
     NEXT;
     if (RAW == '?') {
-	if (ret != NULL)
-	    ret->ocur = XML_ELEMENT_CONTENT_OPT;
+	if (ret != NULL) {
+	    if ((ret->ocur == XML_ELEMENT_CONTENT_PLUS) ||
+	        (ret->ocur == XML_ELEMENT_CONTENT_MULT))
+	        ret->ocur = XML_ELEMENT_CONTENT_MULT;
+	    else
+	        ret->ocur = XML_ELEMENT_CONTENT_OPT;
+	}
 	NEXT;
     } else if (RAW == '*') {
 	if (ret != NULL) {
@@ -4822,8 +4827,9 @@ xmlParseElementChildrenContentDecl (xmlParserCtxtPtr ctxt, int inputchk) {
 	if (ret != NULL) {
 	    int found = 0;
 
-	    if (ret->ocur == XML_ELEMENT_CONTENT_OPT)
-	        ret->ocur == XML_ELEMENT_CONTENT_MULT;
+	    if ((ret->ocur == XML_ELEMENT_CONTENT_OPT) ||
+	        (ret->ocur == XML_ELEMENT_CONTENT_MULT))
+	        ret->ocur = XML_ELEMENT_CONTENT_MULT;
 	    else
 	        ret->ocur = XML_ELEMENT_CONTENT_PLUS;
 	    /*

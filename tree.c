@@ -2107,7 +2107,8 @@ xmlNewPI(const xmlChar *name, const xmlChar *content) {
  *
  * Creation of a new node element. @ns is optional (NULL).
  *
- * Returns a pointer to the new node object.
+ * Returns a pointer to the new node object. Uses xmlStrdup() to make
+ * copy of @name.
  */
 xmlNodePtr
 xmlNewNode(xmlNsPtr ns, const xmlChar *name) {
@@ -2147,7 +2148,9 @@ xmlNewNode(xmlNsPtr ns, const xmlChar *name) {
  *
  * Creation of a new node element. @ns is optional (NULL).
  *
- * Returns a pointer to the new node object.
+ * Returns a pointer to the new node object, with pointer @name as
+ * new node's name. Use xmlNewNode() if a copy of @name string is
+ * is needed as new node's name.
  */
 xmlNodePtr
 xmlNewNodeEatName(xmlNsPtr ns, xmlChar *name) {
@@ -2346,8 +2349,9 @@ xmlNewText(const xmlChar *content) {
  * @content:  the text content of the child if any.
  *
  * Creation of a new child element, added at the end of @parent children list.
- * @ns and @content parameters are optional (NULL). If content is non NULL,
- * a child TEXT node will be created containing the string content.
+ * @ns and @content parameters are optional (NULL). If @content is non NULL,
+ * a child TEXT node will be created containing the string @content.
+ * NOTE: Use xmlNewChild() if entity support for @content is needed.
  *
  * Returns a pointer to the new node object.
  */
@@ -2716,7 +2720,7 @@ xmlSetListDoc(xmlNodePtr list, xmlDocPtr doc) {
  * @content:  the XML content of the child if any.
  *
  * Creation of a new child element, added at the end of @parent children list.
- * @ns and @content parameters are optional (NULL). If content is non NULL,
+ * @ns and @content parameters are optional (NULL). If @content is non NULL,
  * a child list containing the TEXTs and ENTITY_REFs node will be created.
  * NOTE: @content is supposed to be a piece of XML CDATA, so it allow entities
  *       references, but XML special chars need to be escaped first by using
@@ -3424,7 +3428,7 @@ xmlUnlinkNode(xmlNodePtr cur) {
  * @old:  the old node
  * @cur:  the node
  *
- * Unlink the old node from it's current context, prune the new one
+ * Unlink the old node from its current context, prune the new one
  * at the same place. If @cur was already inserted in a document it is
  * first unlinked from its existing context.
  *
@@ -4072,7 +4076,7 @@ xmlCopyDoc(xmlDocPtr doc, int recursive) {
  * xmlGetLineNo:
  * @node: valid node
  *
- * Get line number of node. this requires activation of this option
+ * Get line number of @node. This requires activation of this option
  * before invoking the parser by calling xmlLineNumbersDefault(1)
  *
  * Returns the line number if successful, -1 otherwise

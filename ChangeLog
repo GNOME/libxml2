@@ -1,3 +1,9 @@
+Fri Nov 14 15:08:13 HKT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* tree.c: minor changes to some comments
+	* doc/*.html: rebuilt the generated HTML pages for changes
+	  from jfleck (bug 126945)
+	  
 Thu Nov 13 12:44:14 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* doc/examples/*: added Dodji's example, added output handling

@@ -219,6 +219,10 @@ readerForMemory()
 # functions from module xmlregexp
 regexpCompile()
 
+# functions from module xmlschemas
+schemaNewMemParserCtxt()
+schemaNewParserCtxt()
+
 # functions from module xmlschemastypes
 schemaCleanupTypes()
 schemaCollapseString()
@@ -630,6 +634,10 @@ Class xmlDoc(xmlNode)
     NewWalker()
     readerWalker()
 
+    # functions from module xmlschemas
+    schemaNewDocParserCtxt()
+    schemaValidateDoc()
+
     # functions from module xpath
     xpathNewContext()
     xpathOrderDocElems()
@@ -781,6 +789,11 @@ Class relaxNgSchema()
 
     # functions from module xmlreader
     RelaxNGSetSchema()
+Class Schema()
+
+    # functions from module xmlschemas
+    schemaDump()
+    schemaNewValidCtxt()
 Class Error()
     # accessors
     code()
@@ -1032,6 +1045,14 @@ Class outputBuffer(ioWriteWrapper)
     # functions from module xmlIO
     write()
     writeString()
+Class SchemaParserCtxt()
+
+    # functions from module xmlschemas
+    schemaParse()
+Class SchemaValidCtxt()
+
+    # functions from module xmlschemas
+    schemaValidateDoc()
 Class xmlTextReaderLocator()
 
     # functions from module xmlreader

@@ -18,7 +18,10 @@
 #include <libxml/xmlregexp.h>
 #include <libxml/xmlautomata.h>
 #include <libxml/xmlreader.h>
+#ifdef LIBXML_SCHEMAS_ENABLED
 #include <libxml/relaxng.h>
+#include <libxml/xmlschemas.h>
+#endif
 
 /**
  * ATTRIBUTE_UNUSED:
@@ -165,6 +168,30 @@ typedef struct {
 #define PyrelaxNgValidCtxt_Get(v) (((v) == Py_None) ? NULL : \
 	(((PyrelaxNgValidCtxt_Object *)(v))->obj))
 
+typedef struct {
+	PyObject_HEAD
+	xmlSchemaPtr obj;
+} PySchema_Object;
+
+#define PySchema_Get(v) (((v) == Py_None) ? NULL : \
+	(((PySchema_Object *)(v))->obj))
+
+typedef struct {
+	PyObject_HEAD
+	xmlSchemaParserCtxtPtr obj;
+} PySchemaParserCtxt_Object;
+
+#define PySchemaParserCtxt_Get(v) (((v) == Py_None) ? NULL : \
+	(((PySchemaParserCtxt_Object *)(v))->obj))
+
+typedef struct {
+	PyObject_HEAD
+	xmlSchemaValidCtxtPtr obj;
+} PySchemaValidCtxt_Object;
+
+#define PySchemaValidCtxt_Get(v) (((v) == Py_None) ? NULL : \
+	(((PySchemaValidCtxt_Object *)(v))->obj))
+
 #endif /* LIBXML_SCHEMAS_ENABLED */
 
 PyObject * libxml_intWrap(int val);
@@ -201,5 +228,8 @@ xmlXPathObjectPtr libxml_xmlXPathObjectPtrConvert(PyObject * obj);
 PyObject * libxml_xmlRelaxNGPtrWrap(xmlRelaxNGPtr ctxt);
 PyObject * libxml_xmlRelaxNGParserCtxtPtrWrap(xmlRelaxNGParserCtxtPtr ctxt);
 PyObject * libxml_xmlRelaxNGValidCtxtPtrWrap(xmlRelaxNGValidCtxtPtr valid);
+PyObject * libxml_xmlSchemaPtrWrap(xmlSchemaPtr ctxt);
+PyObject * libxml_xmlSchemaParserCtxtPtrWrap(xmlSchemaParserCtxtPtr ctxt);
+PyObject * libxml_xmlSchemaValidCtxtPtrWrap(xmlSchemaValidCtxtPtr valid);
 #endif /* LIBXML_SCHEMAS_ENABLED */
 PyObject * libxml_xmlErrorPtrWrap(xmlErrorPtr error);

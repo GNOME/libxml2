@@ -79,6 +79,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 </dd><dt>partial</dt><dd><a href="html/libxml-xmlIO.html#xmlOutputBufferWrite">xmlOutputBufferWrite</a><br />
 <a href="html/libxml-xmlIO.html#xmlOutputBufferWriteEscape">xmlOutputBufferWriteEscape</a><br />
 <a href="html/libxml-xmlIO.html#xmlOutputBufferWriteString">xmlOutputBufferWriteString</a><br />
+</dd><dt>particle</dt><dd><a href="html/libxml-schemasInternals.html#_xmlSchemaAttribute">_xmlSchemaAttribute</a><br />
+<a href="html/libxml-schemasInternals.html#_xmlSchemaElement">_xmlSchemaElement</a><br />
 </dd><dt>particular</dt><dd><a href="html/libxml-xpath.html#_xmlNodeSet">_xmlNodeSet</a><br />
 </dd><dt>pass</dt><dd><a href="html/libxml-parserInternals.html#xmlCurrentChar">xmlCurrentChar</a><br />
 <a href="html/libxml-relaxng.html#xmlRelaxParserSetFlag">xmlRelaxParserSetFlag</a><br />
@@ -193,11 +195,10 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-encoding.html#xmlCharEncodingOutputFunc">xmlCharEncodingOutputFunc</a><br />
 <a href="html/libxml-relaxng.html#xmlRelaxNGValidateDoc">xmlRelaxNGValidateDoc</a><br />
 <a href="html/libxml-xmlschemastypes.html#xmlSchemaValPredefTypeNode">xmlSchemaValPredefTypeNode</a><br />
-<a href="html/libxml-xmlschemas.html#xmlSchemaValidateDoc">xmlSchemaValidateDoc</a><br />
+<a href="html/libxml-xmlschemastypes.html#xmlSchemaValPredefTypeNodeNoNorm">xmlSchemaValPredefTypeNodeNoNorm</a><br />
 <a href="html/libxml-xmlschemastypes.html#xmlSchemaValidateFacet">xmlSchemaValidateFacet</a><br />
 <a href="html/libxml-xmlschemastypes.html#xmlSchemaValidateListSimpleTypeFacet">xmlSchemaValidateListSimpleTypeFacet</a><br />
 <a href="html/libxml-xmlschemastypes.html#xmlSchemaValidatePredefinedType">xmlSchemaValidatePredefinedType</a><br />
-<a href="html/libxml-xmlschemas.html#xmlSchemaValidateStream">xmlSchemaValidateStream</a><br />
 <a href="html/libxml-xmlreader.html#xmlTextReaderPreservePattern">xmlTextReaderPreservePattern</a><br />
 <a href="html/libxml-tree.html#xmlValidateNCName">xmlValidateNCName</a><br />
 <a href="html/libxml-tree.html#xmlValidateNMToken">xmlValidateNMToken</a><br />
@@ -245,7 +246,6 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-pattern.html#xmlPatternMatch">xmlPatternMatch</a><br />
 <a href="html/libxml-xmlregexp.html#xmlRegNewExecCtxt">xmlRegNewExecCtxt</a><br />
 <a href="html/libxml-relaxng.html#xmlRelaxNGNewValidCtxt">xmlRelaxNGNewValidCtxt</a><br />
-<a href="html/libxml-xmlschemas.html#xmlSchemaNewValidCtxt">xmlSchemaNewValidCtxt</a><br />
 <a href="html/libxml-xmlreader.html#xmlTextReaderRelaxNGSetSchema">xmlTextReaderRelaxNGSetSchema</a><br />
 <a href="html/libxml-xpathInternals.html#xmlXPathDebugDumpCompExpr">xmlXPathDebugDumpCompExpr</a><br />
 </dd><dt>precomputed</dt><dd><a href="html/libxml-xmlschemastypes.html#xmlSchemaValidateFacet">xmlSchemaValidateFacet</a><br />
@@ -258,6 +258,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-entities.html#xmlInitializePredefinedEntities">xmlInitializePredefinedEntities</a><br />
 <a href="html/libxml-parserInternals.html#xmlParseReference">xmlParseReference</a><br />
 <a href="html/libxml-xmlschemastypes.html#xmlSchemaValPredefTypeNode">xmlSchemaValPredefTypeNode</a><br />
+<a href="html/libxml-xmlschemastypes.html#xmlSchemaValPredefTypeNodeNoNorm">xmlSchemaValPredefTypeNodeNoNorm</a><br />
 <a href="html/libxml-xmlschemastypes.html#xmlSchemaValidatePredefinedType">xmlSchemaValidatePredefinedType</a><br />
 </dd><dt>predicate</dt><dd><a href="html/libxml-xpath.html#xmlXPathEvalPredicate">xmlXPathEvalPredicate</a><br />
 <a href="html/libxml-xpathInternals.html#xmlXPathEvaluatePredicateResult">xmlXPathEvaluatePredicateResult</a><br />
@@ -320,8 +321,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-SAX2.html#xmlSAXDefaultVersion">xmlSAXDefaultVersion</a><br />
 <a href="html/libxml-parser.html#xmlSubstituteEntitiesDefault">xmlSubstituteEntitiesDefault</a><br />
 <a href="html/libxml-xpath.html#xmlXPathAxisFunc">xmlXPathAxisFunc</a><br />
-</dd><dt>primitive</dt><dd><a href="html/libxml-schemasInternals.html#XML_SCHEMAS_TYPE_BUILTIN_PRIMITIVE">XML_SCHEMAS_TYPE_BUILTIN_PRIMITIVE</a><br />
-<a href="html/libxml-xpath.html#xmlXPathConvertFunc">xmlXPathConvertFunc</a><br />
+</dd><dt>primitive</dt><dd><a href="html/libxml-xpath.html#xmlXPathConvertFunc">xmlXPathConvertFunc</a><br />
 </dd><dt>print</dt><dd><a href="html/libxml-debugXML.html#xmlShellPrintNode">xmlShellPrintNode</a><br />
 <a href="html/libxml-valid.html#xmlSnprintfElementContent">xmlSnprintfElementContent</a><br />
 <a href="html/libxml-valid.html#xmlSprintfElementContent">xmlSprintfElementContent</a><br />
@@ -457,7 +457,6 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlIO.html#xmlOutputMatchCallback">xmlOutputMatchCallback</a><br />
 <a href="html/libxml-tree.html#xmlSaveFormatFile">xmlSaveFormatFile</a><br />
 <a href="html/libxml-tree.html#xmlSaveFormatFileEnc">xmlSaveFormatFileEnc</a><br />
-<a href="html/libxml-xmlschemas.html#xmlSchemaValidateStream">xmlSchemaValidateStream</a><br />
 <a href="html/libxml-xmlstring.html#xmlUTF8Strloc">xmlUTF8Strloc</a><br />
 <a href="html/libxml-xmlstring.html#xmlUTF8Strpos">xmlUTF8Strpos</a><br />
 </dd><dt>provides</dt><dd><a href="html/libxml-parser.html#endElementNsSAX2Func">endElementNsSAX2Func</a><br />

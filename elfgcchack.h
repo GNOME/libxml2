@@ -2958,6 +2958,10 @@ extern __typeof (xmlParseFile) xmlParseFile__internal_alias __attribute((visibil
 extern __typeof (xmlParseFile) xmlParseFile __attribute((alias("xmlParseFile__internal_alias")));
 #define xmlParseFile xmlParseFile__internal_alias
 
+extern __typeof (xmlParseInNodeContext) xmlParseInNodeContext__internal_alias __attribute((visibility("hidden")));
+extern __typeof (xmlParseInNodeContext) xmlParseInNodeContext __attribute((alias("xmlParseInNodeContext__internal_alias")));
+#define xmlParseInNodeContext xmlParseInNodeContext__internal_alias
+
 extern __typeof (xmlParseMarkupDecl) xmlParseMarkupDecl__internal_alias __attribute((visibility("hidden")));
 extern __typeof (xmlParseMarkupDecl) xmlParseMarkupDecl __attribute((alias("xmlParseMarkupDecl__internal_alias")));
 #define xmlParseMarkupDecl xmlParseMarkupDecl__internal_alias
@@ -3913,9 +3917,27 @@ extern __typeof (xmlSchemaGetBuiltInType) xmlSchemaGetBuiltInType __attribute((a
 #endif
 
 #ifdef LIBXML_SCHEMAS_ENABLED
+extern __typeof (xmlSchemaGetFacetValueAsULong) xmlSchemaGetFacetValueAsULong__internal_alias __attribute((visibility("hidden")));
+extern __typeof (xmlSchemaGetFacetValueAsULong) xmlSchemaGetFacetValueAsULong __attribute((alias("xmlSchemaGetFacetValueAsULong__internal_alias")));
+#define xmlSchemaGetFacetValueAsULong xmlSchemaGetFacetValueAsULong__internal_alias
+#endif
+
+#ifdef LIBXML_SCHEMAS_ENABLED
+extern __typeof (xmlSchemaGetParserErrors) xmlSchemaGetParserErrors__internal_alias __attribute((visibility("hidden")));
+extern __typeof (xmlSchemaGetParserErrors) xmlSchemaGetParserErrors __attribute((alias("xmlSchemaGetParserErrors__internal_alias")));
+#define xmlSchemaGetParserErrors xmlSchemaGetParserErrors__internal_alias
+#endif
+
+#ifdef LIBXML_SCHEMAS_ENABLED
 extern __typeof (xmlSchemaGetPredefinedType) xmlSchemaGetPredefinedType__internal_alias __attribute((visibility("hidden")));
 extern __typeof (xmlSchemaGetPredefinedType) xmlSchemaGetPredefinedType __attribute((alias("xmlSchemaGetPredefinedType__internal_alias")));
 #define xmlSchemaGetPredefinedType xmlSchemaGetPredefinedType__internal_alias
+#endif
+
+#ifdef LIBXML_SCHEMAS_ENABLED
+extern __typeof (xmlSchemaGetValidErrors) xmlSchemaGetValidErrors__internal_alias __attribute((visibility("hidden")));
+extern __typeof (xmlSchemaGetValidErrors) xmlSchemaGetValidErrors __attribute((alias("xmlSchemaGetValidErrors__internal_alias")));
+#define xmlSchemaGetValidErrors xmlSchemaGetValidErrors__internal_alias
 #endif
 
 #ifdef LIBXML_SCHEMAS_ENABLED
@@ -3985,6 +4007,12 @@ extern __typeof (xmlSchemaValPredefTypeNode) xmlSchemaValPredefTypeNode __attrib
 #endif
 
 #ifdef LIBXML_SCHEMAS_ENABLED
+extern __typeof (xmlSchemaValPredefTypeNodeNoNorm) xmlSchemaValPredefTypeNodeNoNorm__internal_alias __attribute((visibility("hidden")));
+extern __typeof (xmlSchemaValPredefTypeNodeNoNorm) xmlSchemaValPredefTypeNodeNoNorm __attribute((alias("xmlSchemaValPredefTypeNodeNoNorm__internal_alias")));
+#define xmlSchemaValPredefTypeNodeNoNorm xmlSchemaValPredefTypeNodeNoNorm__internal_alias
+#endif
+
+#ifdef LIBXML_SCHEMAS_ENABLED
 extern __typeof (xmlSchemaValidateDoc) xmlSchemaValidateDoc__internal_alias __attribute((visibility("hidden")));
 extern __typeof (xmlSchemaValidateDoc) xmlSchemaValidateDoc __attribute((alias("xmlSchemaValidateDoc__internal_alias")));
 #define xmlSchemaValidateDoc xmlSchemaValidateDoc__internal_alias
@@ -3994,6 +4022,12 @@ extern __typeof (xmlSchemaValidateDoc) xmlSchemaValidateDoc __attribute((alias("
 extern __typeof (xmlSchemaValidateFacet) xmlSchemaValidateFacet__internal_alias __attribute((visibility("hidden")));
 extern __typeof (xmlSchemaValidateFacet) xmlSchemaValidateFacet __attribute((alias("xmlSchemaValidateFacet__internal_alias")));
 #define xmlSchemaValidateFacet xmlSchemaValidateFacet__internal_alias
+#endif
+
+#ifdef LIBXML_SCHEMAS_ENABLED
+extern __typeof (xmlSchemaValidateLengthFacet) xmlSchemaValidateLengthFacet__internal_alias __attribute((visibility("hidden")));
+extern __typeof (xmlSchemaValidateLengthFacet) xmlSchemaValidateLengthFacet __attribute((alias("xmlSchemaValidateLengthFacet__internal_alias")));
+#define xmlSchemaValidateLengthFacet xmlSchemaValidateLengthFacet__internal_alias
 #endif
 
 #ifdef LIBXML_SCHEMAS_ENABLED

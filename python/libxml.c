@@ -2948,6 +2948,171 @@ libxml_xmlRelaxNGFreeValidCtxt(ATTRIBUTE_UNUSED PyObject *self, PyObject *args) 
     return(Py_None);
 }
 
+typedef struct
+{
+	PyObject *warn;
+	PyObject *error;
+	PyObject *arg;
+} xmlSchemaValidCtxtPyCtxt;
+typedef xmlSchemaValidCtxtPyCtxt *xmlSchemaValidCtxtPyCtxtPtr;
+
+static void
+libxml_xmlSchemaValidityGenericErrorFuncHandler(void *ctx, char *str)
+{
+	PyObject *list;
+	PyObject *result;
+	xmlSchemaValidCtxtPyCtxtPtr pyCtxt;
+
+#ifdef DEBUG_ERROR
+	printf("libxml_xmlSchemaValiditiyGenericErrorFuncHandler(%p, %s, ...) called\n", ctx, str);
+#endif
+
+	pyCtxt = (xmlSchemaValidCtxtPyCtxtPtr) ctx;
+
+	list = PyTuple_New(2);
+	PyTuple_SetItem(list, 0, libxml_charPtrWrap(str));
+	PyTuple_SetItem(list, 1, pyCtxt->arg);
+	Py_XINCREF(pyCtxt->arg);
+	result = PyEval_CallObject(pyCtxt->error, list);
+	if (result == NULL) 
+	{
+		/* TODO: manage for the exception to be propagated... */
+		PyErr_Print();
+	}
+	Py_XDECREF(list);
+	Py_XDECREF(result);
+}
+
+static void
+libxml_xmlSchemaValidityGenericWarningFuncHandler(void *ctx, char *str)
+{
+	PyObject *list;
+	PyObject *result;
+	xmlSchemaValidCtxtPyCtxtPtr pyCtxt;
+
+#ifdef DEBUG_ERROR
+	printf("libxml_xmlSchemaValidityGenericWarningFuncHandler(%p, %s, ...) called\n", ctx, str);
+#endif
+	
+	pyCtxt = (xmlSchemaValidCtxtPyCtxtPtr) ctx;
+
+	list = PyTuple_New(2);
+	PyTuple_SetItem(list, 0, libxml_charPtrWrap(str));
+	PyTuple_SetItem(list, 1, pyCtxt->arg);
+	Py_XINCREF(pyCtxt->arg);
+	result = PyEval_CallObject(pyCtxt->warn, list);
+	if (result == NULL)
+	{
+		/* TODO: manage for the exception to be propagated... */
+		PyErr_Print();
+	}
+	Py_XDECREF(list);
+	Py_XDECREF(result);
+}
+
+static void
+libxml_xmlSchemaValidityErrorFunc(void *ctx, const char *msg, ...)
+{
+	va_list ap;
+	
+	va_start(ap, msg);
+	libxml_xmlSchemaValidityGenericErrorFuncHandler(ctx, libxml_buildMessage(msg, ap));
+	va_end(ap);
+}
+
+static void
+libxml_xmlSchemaValidityWarningFunc(void *ctx, const char *msg, ...)
+{
+	va_list ap;
+
+	va_start(ap, msg);
+	libxml_xmlSchemaValidityGenericWarningFuncHandler(ctx, libxml_buildMessage(msg, ap));
+	va_end(ap);
+}
+
+static PyObject *
+libxml_xmlSchemaSetValidErrors(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
+{
+	PyObject *py_retval;
+	PyObject *pyobj_error;
+	PyObject *pyobj_warn;
+	PyObject *pyobj_ctx;
+	PyObject *pyobj_arg = Py_None;
+	xmlSchemaValidCtxtPtr ctxt;
+	xmlSchemaValidCtxtPyCtxtPtr pyCtxt;
+
+	if (!PyArg_ParseTuple
+		(args, (char *) "OOO|O:xmlSchemaSetValidErrors", &pyobj_ctx, &pyobj_error, &pyobj_warn, &pyobj_arg))
+		return (NULL);
+
+#ifdef DEBUG_ERROR
+	printf("libxml_xmlSchemaSetValidErrors(%p, %p, %p) called\n", pyobj_ctx, pyobj_error, pyobj_warn);
+#endif
+
+	ctxt = PySchemaValidCtxt_Get(pyobj_ctx);
+	if (xmlSchemaGetValidErrors(ctxt, NULL, NULL, (void **) &pyCtxt) == -1)
+	{
+		py_retval = libxml_intWrap(-1);
+		return(py_retval);
+	}
+
+	if (pyCtxt == NULL)
+	{
+		/* first time to set the error handlers */
+		pyCtxt = xmlMalloc(sizeof(xmlSchemaValidCtxtPyCtxt));
+		if (pyCtxt == NULL) {
+			py_retval = libxml_intWrap(-1);
+			return(py_retval);
+		}
+		memset(pyCtxt, 0, sizeof(xmlSchemaValidCtxtPyCtxt));
+	}
+
+	/* TODO: check warn and error is a function ! */
+	Py_XDECREF(pyCtxt->error);
+	Py_XINCREF(pyobj_error);
+	pyCtxt->error = pyobj_error;
+
+	Py_XDECREF(pyCtxt->warn);
+	Py_XINCREF(pyobj_warn);
+	pyCtxt->warn = pyobj_warn;
+
+	Py_XDECREF(pyCtxt->arg);
+	Py_XINCREF(pyobj_arg);
+	pyCtxt->arg = pyobj_arg;
+
+	xmlSchemaSetValidErrors(ctxt, &libxml_xmlSchemaValidityErrorFunc, &libxml_xmlSchemaValidityWarningFunc, pyCtxt);
+
+	py_retval = libxml_intWrap(1);
+	return(py_retval);
+}
+
+static PyObject *
+libxml_xmlSchemaFreeValidCtxt(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
+{
+	xmlSchemaValidCtxtPtr ctxt;
+	xmlSchemaValidCtxtPyCtxtPtr pyCtxt;
+	PyObject *pyobj_ctxt;
+
+	if (!PyArg_ParseTuple(args, (char *)"O:xmlSchemaFreeValidCtxt", &pyobj_ctxt))
+		return(NULL);
+	ctxt = (xmlSchemaValidCtxtPtr) PySchemaValidCtxt_Get(pyobj_ctxt);
+
+	if (xmlSchemaGetValidErrors(ctxt, NULL, NULL, (void **) &pyCtxt) == 0)
+	{
+		if (pyCtxt != NULL)
+		{
+			Py_XDECREF(pyCtxt->error);
+			Py_XDECREF(pyCtxt->warn);
+			Py_XDECREF(pyCtxt->arg);
+			xmlFree(pyCtxt);
+		}
+	}
+
+	xmlSchemaFreeValidCtxt(ctxt);
+	Py_INCREF(Py_None);
+	return(Py_None);
+}
+
 #endif
 
 #ifdef LIBXML_C14N_ENABLED

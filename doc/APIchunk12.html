@@ -42,6 +42,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-hash.html#xmlHashScanFull">xmlHashScanFull</a><br />
 <a href="html/libxml-hash.html#xmlHashScanFull3">xmlHashScanFull3</a><br />
 <a href="html/libxml-parserInternals.html#xmlParseAttributeType">xmlParseAttributeType</a><br />
+<a href="html/libxml-xmlerror.html#xmlSetGenericErrorFunc">xmlSetGenericErrorFunc</a><br />
+<a href="html/libxml-xmlerror.html#xmlSetStructuredErrorFunc">xmlSetStructuredErrorFunc</a><br />
 <a href="html/libxml-valid.html#xmlValidateOneElement">xmlValidateOneElement</a><br />
 <a href="html/libxml-xpathInternals.html#xmlXPathIdFunction">xmlXPathIdFunction</a><br />
 <a href="html/libxml-xpathInternals.html#xmlXPathSubstringFunction">xmlXPathSubstringFunction</a><br />
@@ -69,7 +71,6 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-parserInternals.html#xmlParseMarkupDecl">xmlParseMarkupDecl</a><br />
 </dd><dt>elements</dt><dd><a href="html/libxml-catalog.html#XML_CATALOGS_NAMESPACE">XML_CATALOGS_NAMESPACE</a><br />
 <a href="html/libxml-parser.html#XML_COMPLETE_ATTRS">XML_COMPLETE_ATTRS</a><br />
-<a href="html/libxml-schemasInternals.html#XML_SCHEMAS_ATTR_GLOBAL">XML_SCHEMAS_ATTR_GLOBAL</a><br />
 <a href="html/libxml-schemasInternals.html#XML_SCHEMAS_ATTR_NSDEFAULT">XML_SCHEMAS_ATTR_NSDEFAULT</a><br />
 <a href="html/libxml-schemasInternals.html#XML_SCHEMAS_ELEM_NSDEFAULT">XML_SCHEMAS_ELEM_NSDEFAULT</a><br />
 <a href="html/libxml-schemasInternals.html#XML_SCHEMAS_QUALIF_ELEM">XML_SCHEMAS_QUALIF_ELEM</a><br />
@@ -248,6 +249,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-hash.html#xmlHashAddEntry3">xmlHashAddEntry3</a><br />
 <a href="html/libxml-relaxng.html#xmlRelaxNGGetParserErrors">xmlRelaxNGGetParserErrors</a><br />
 <a href="html/libxml-relaxng.html#xmlRelaxNGSetParserErrors">xmlRelaxNGSetParserErrors</a><br />
+<a href="html/libxml-xmlschemas.html#xmlSchemaGetParserErrors">xmlSchemaGetParserErrors</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaSetParserErrors">xmlSchemaSetParserErrors</a><br />
 <a href="html/libxml-debugXML.html#xmlShellCmd">xmlShellCmd</a><br />
 </dd><dt>escape</dt><dd><a href="html/libxml-DOCBparser.html#docbEncodeEntities">docbEncodeEntities</a><br />
@@ -272,6 +274,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 </dd><dt>established</dt><dd><a href="html/libxml-nanoftp.html#xmlNanoFTPUpdateURL">xmlNanoFTPUpdateURL</a><br />
 </dd><dt>etc</dt><dd><a href="html/libxml-tree.html#xmlDocGetRootElement">xmlDocGetRootElement</a><br />
 <a href="html/libxml-tree.html#xmlDocSetRootElement">xmlDocSetRootElement</a><br />
+<a href="html/libxml-parser.html#xmlParseInNodeContext">xmlParseInNodeContext</a><br />
 </dd><dt>evaluate</dt><dd><a href="html/libxml-xpathInternals.html#xmlXPathEvalExpr">xmlXPathEvalExpr</a><br />
 </dd><dt>evaluated</dt><dd><a href="html/libxml-xpath.html#xmlXPathEvalPredicate">xmlXPathEvalPredicate</a><br />
 <a href="html/libxml-xpathInternals.html#xmlXPathEvaluatePredicateResult">xmlXPathEvaluatePredicateResult</a><br />
@@ -299,7 +302,6 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlwriter.html#xmlTextWriterFullEndElement">xmlTextWriterFullEndElement</a><br />
 <a href="html/libxml-xpathInternals.html#xmlXPathRoundFunction">xmlXPathRoundFunction</a><br />
 </dd><dt>events</dt><dd><a href="html/libxml-HTMLparser.html#htmlSAXParseDoc">htmlSAXParseDoc</a><br />
-<a href="html/libxml-xmlschemas.html#xmlSchemaValidateStream">xmlSchemaValidateStream</a><br />
 </dd><dt>everywhere</dt><dd><a href="html/libxml-parser.html#xmlSAXParseFileWithData">xmlSAXParseFileWithData</a><br />
 <a href="html/libxml-parser.html#xmlSAXParseMemoryWithData">xmlSAXParseMemoryWithData</a><br />
 </dd><dt>exact</dt><dd><a href="html/libxml-tree.html#xmlGetBufferAllocationScheme">xmlGetBufferAllocationScheme</a><br />
@@ -321,6 +323,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 </dd><dt>excluding</dt><dd><a href="html/libxml-parserInternals.html#IS_CHAR">IS_CHAR</a><br />
 <a href="html/libxml-xpathInternals.html#xmlXPathNextFollowing">xmlXPathNextFollowing</a><br />
 <a href="html/libxml-xpathInternals.html#xmlXPathNextPreceding">xmlXPathNextPreceding</a><br />
+</dd><dt>exclusions</dt><dd><a href="html/libxml-schemasInternals.html#XML_SCHEMAS_ELEM_FINAL_ABSENT">XML_SCHEMAS_ELEM_FINAL_ABSENT</a><br />
 </dd><dt>exclusive</dt><dd><a href="html/libxml-c14n.html#xmlC14NDocDumpMemory">xmlC14NDocDumpMemory</a><br />
 <a href="html/libxml-c14n.html#xmlC14NDocSave">xmlC14NDocSave</a><br />
 <a href="html/libxml-c14n.html#xmlC14NDocSaveTo">xmlC14NDocSaveTo</a><br />
@@ -365,7 +368,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xlink.html#xlinkExtendedLinkSetFunk">xlinkExtendedLinkSetFunk</a><br />
 <a href="html/libxml-xpathInternals.html#xmlXPathNodeSetMerge">xmlXPathNodeSetMerge</a><br />
 <a href="html/libxml-xpointer.html#xmlXPtrLocationSetMerge">xmlXPtrLocationSetMerge</a><br />
-</dd><dt>extension</dt><dd><a href="html/libxml-schemasInternals.html#XML_SCHEMAS_FINAL_DEFAULT_EXTENSION">XML_SCHEMAS_FINAL_DEFAULT_EXTENSION</a><br />
+</dd><dt>extension</dt><dd><a href="html/libxml-schemasInternals.html#XML_SCHEMAS_BLOCK_DEFAULT_EXTENSION">XML_SCHEMAS_BLOCK_DEFAULT_EXTENSION</a><br />
+<a href="html/libxml-schemasInternals.html#XML_SCHEMAS_FINAL_DEFAULT_EXTENSION">XML_SCHEMAS_FINAL_DEFAULT_EXTENSION</a><br />
 <a href="html/libxml-schemasInternals.html#XML_SCHEMAS_TYPE_DERIVATION_METHOD_EXTENSION">XML_SCHEMAS_TYPE_DERIVATION_METHOD_EXTENSION</a><br />
 <a href="html/libxml-schemasInternals.html#XML_SCHEMAS_TYPE_FINAL_EXTENSION">XML_SCHEMAS_TYPE_FINAL_EXTENSION</a><br />
 </dd><dt>extensions</dt><dd><a href="html/libxml-parser.html#_xmlSAXHandler">_xmlSAXHandler</a><br />

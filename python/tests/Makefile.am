@@ -32,6 +32,7 @@ PYTESTS=	\
     ctxterror.py\
     readererr.py\
     relaxng.py	\
+    schema.py	\
     thread2.py \
     sync.py \
     tstLastError.py \

@@ -1222,6 +1222,7 @@ xmlParseExternalEntity
 xmlParseExternalID
 xmlParseExternalSubset
 xmlParseFile
+xmlParseInNodeContext
 xmlParseMarkupDecl
 xmlParseMemory
 xmlParseMisc
@@ -1508,7 +1509,16 @@ xmlSchemaGetBuiltInListSimpleTypeItemType
 xmlSchemaGetBuiltInType
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
+xmlSchemaGetFacetValueAsULong
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlSchemaGetParserErrors
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
 xmlSchemaGetPredefinedType
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlSchemaGetValidErrors
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
 xmlSchemaInitTypes
@@ -1544,10 +1554,16 @@ xmlSchemaSetValidErrors
 xmlSchemaValPredefTypeNode
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
+xmlSchemaValPredefTypeNodeNoNorm
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
 xmlSchemaValidateDoc
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
 xmlSchemaValidateFacet
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlSchemaValidateLengthFacet
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
 xmlSchemaValidateListSimpleTypeFacet

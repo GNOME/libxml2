@@ -1,3 +1,12 @@
+Wed Aug 18 11:14:06 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemas.c include/libxml/xmlschemas.h python/generator.py
+	  python/libxml.c python/libxml_wrap.h python/types.c
+	  python/tests/schema.py python/tests/Makefile.am: Applied patch
+	  from Torkel Lyng to add Schemas support to the Python bindings
+	  and extend the schemas error API, registered a new test.
+	* doc/* elfgcchack.h: rebuilt to regenerate the bindings
+
 Mon Aug 16 14:36:25 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* debugXML.c: added help for new set shell command

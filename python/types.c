@@ -640,6 +640,63 @@ libxml_xmlRelaxNGValidCtxtPtrWrap(xmlRelaxNGValidCtxtPtr valid)
                                      (char *) "xmlRelaxNGValidCtxtPtr", NULL);
     return (ret);
 }
+
+PyObject *
+libxml_xmlSchemaPtrWrap(xmlSchemaPtr ctxt)
+{
+	PyObject *ret;
+
+#ifdef DEBUG
+	printf("libxml_xmlSchemaPtrWrap: ctxt = %p\n", ctxt);
+#endif
+	if (ctxt == NULL) {
+		Py_INCREF(Py_None);
+		return (Py_None);
+	}
+	ret =
+		PyCObject_FromVoidPtrAndDesc((void *) ctxt,
+									 (char *) "xmlSchemaPtr", NULL);
+	return (ret);
+}
+
+PyObject *
+libxml_xmlSchemaParserCtxtPtrWrap(xmlSchemaParserCtxtPtr ctxt)
+{
+	PyObject *ret;
+
+#ifdef DEBUG
+	printf("libxml_xmlSchemaParserCtxtPtrWrap: ctxt = %p\n", ctxt);
+#endif
+	if (ctxt == NULL) {
+		Py_INCREF(Py_None);
+		return (Py_None);
+	}
+	ret = 
+		PyCObject_FromVoidPtrAndDesc((void *) ctxt,
+									 (char *) "xmlSchemaParserCtxtPtr", NULL);
+
+	return (ret);
+}
+
+PyObject *
+libxml_xmlSchemaValidCtxtPtrWrap(xmlSchemaValidCtxtPtr valid)
+{
+	PyObject *ret;
+	
+#ifdef DEBUG
+	printf("libxml_xmlSchemaValidCtxtPtrWrap: valid = %p\n", valid);
+#endif
+	if (valid == NULL) {
+		Py_INCREF(Py_None);
+		return (Py_None);
+	}
+
+	ret = 
+		PyCObject_FromVoidPtrAndDesc((void *) valid,
+									 (char *) "xmlSchemaValidCtxtPtr", NULL);
+
+	return (ret);
+}
 #endif /* LIBXML_SCHEMAS_ENABLED */
 
 PyObject *

@@ -61,6 +61,9 @@ languages:</p>
     href="http://www.w3.org/TR/xml-exc-c14n">http://www.w3.org/TR/xml-exc-c14n</a></li>
   <li>Relax NG Committee Specification 3 December 2001 <a
     href="http://www.oasis-open.org/committees/relax-ng/spec-20011203.html">http://www.oasis-open.org/committees/relax-ng/spec-20011203.html</a></li>
+  <li>W3C XML Schemas Part 2: Datatypes <a
+    href="http://www.w3.org/TR/2001/REC-xmlschema-2-20010502/">REC 02 May
+    2001</a> except the base64Binary and hexBinary types</li>
 </ul>
 
 <p>In most cases libxml tries to implement the specifications in a relatively
@@ -86,8 +89,10 @@ specifications but doesn't claim to implement them completely:</p>
   XML</li>
 </ul>
 
-<p>A partial implementation of XML Schemas is being worked on but it would be
-far too early to make any conformance statement about it at the moment.</p>
+<p>A partial implementation of <a
+href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/">XML Schemas Part
+1: Structure</a> is being worked on but it would be far too early to make any
+conformance statement about it at the moment.</p>
 
 <p>Separate documents:</p>
 <ul>
@@ -574,8 +579,8 @@ packages installed to compile applications using libxml.)</p>
   <li>Red Hat RPMs for i386 are available directly on <a
     href="ftp://xmlsoft.org/">xmlsoft.org</a>, the source RPM will compile on
     any architecture supported by Red Hat.</li>
-  <li><a href="mailto:igor@zlatkovic.com"><p>Igor  Zlatkovic</p>
-    </a> is now the maintainer of the Windows port, <a
+  <li><p><a href="mailto:igor@zlatkovic.com">Igor  Zlatkovic</a></p>
+     is now the maintainer of the Windows port, <a
     href="http://www.zlatkovic.com/projects/libxml/index.html">he provides
     binaries</a>.</li>
   <li><a href="mailto:Gary.Pennington@sun.com">Gary Pennington</a> provides
@@ -2889,48 +2894,7 @@ xmlOutputBufferCreateOwn(FILE *file, xmlCharEncodingHandlerPtr encoder) {
         ret-&gt;writecallback = xmlFileWrite;
         ret-&gt;closecallback = NULL;  /* No close callback */
     }
-    return(ret); <br>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    return(ret);
 } </pre>
   </li>
   <li>And then use it to save the document:

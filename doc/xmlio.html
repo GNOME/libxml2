@@ -230,48 +230,7 @@ xmlOutputBufferCreateOwn(FILE *file, xmlCharEncodingHandlerPtr encoder) {
         ret-&gt;writecallback = xmlFileWrite;
         ret-&gt;closecallback = NULL;  /* No close callback */
     }
-    return(ret); <br>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    return(ret);
 } </pre>
   </li>
   <li>And then use it to save the document:

@@ -1,3 +1,8 @@
+Mon Nov 17 00:58:09 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* doc/newapi.xsl: stylesheet to build HTML pages from the
+	  API XML description, Work in Progress
+
 Sun Nov 16 16:03:24 HKT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* xpath.c: fixed bug 126976 (string != empty nodeset
@@ -26,7 +31,7 @@ Sat Nov 15 19:20:32 CET 2003 Daniel Veillard <daniel@veillard.com>
 	* libxml.spec.in: make sure doc/examples is packaged
 	* include/libxml/tree.h valid.c xmlreader.c: fixed the really
 	  annoying problem about xmlRemoveID and xmlReader streaming.
-	  Thing looks fixed now, add to add a doc reference to the
+	  Thing looks fixed now, had to add a doc reference to the
 	  xmlID structure though...
 
 Sat Nov 15 09:53:36 MST 2003 John Fleck <jfleck@inkstain.net>

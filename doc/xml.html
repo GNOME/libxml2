@@ -17,8 +17,8 @@ href="http://www.w3.org/DOM/">DOM</a> interfaces.</p>
 
 <h2>xml</h2>
 <p>
-XML is a standard for markup based structured documents, here is an
-example:</p>
+XML is a standard for markup based structured documents, here is <a
+name="example">an example</a>:</p>
 <pre>&lt;?xml version="1.0"?>
 &lt;EXAMPLE prop1="gnome is great" prop2="&amp;linux; too">
   &lt;head>
@@ -32,9 +32,12 @@ example:</p>
   &lt;/chapter>
 &lt;/EXAMPLE></pre>
 <p>
- </p>
-
-<h2>Invoking the parser</h2>
+The first line specify that it's an XML document and gives useful informations
+about it's encoding. Then the document is a text format whose structure is
+specified by tags between brackets. <strong>Each tag opened have to be
+closed</strong> XML is pedantic about this, not that for example the image
+tage has no content (just an attribute) and is closed by ending up the tag
+with <code>/></code>.</p>
 
 <h2>The tree output</h2>
 <p>
@@ -53,13 +56,88 @@ one ELEMENT under the root):</p>
 <p>
 <img src="structure.gif" alt=" structure.gif "></p>
 <p>
-</p>
+In the source package there is a small program (not installed by default)
+called <strong>tester</strong> which parses XML files given as argument and
+prints them back as parsed, this is useful to detect errors both in XML code
+and in the XML parser itself. It has an option <strong>--debug</strong> which
+prints the actual in-memory structure of the document, here is the result with
+the <a href="#example">example</a> given before:</p>
+<pre>DOCUMENT
+version=1.0
+standalone=true
+  ELEMENT EXAMPLE
+    ATTRIBUTE prop1
+      TEXT
+      content=gnome is great
+    ATTRIBUTE prop2
+      ENTITY_REF
+      TEXT
+      content= too
+    ELEMENT head
+      ELEMENT title
+      content=Welcome to Gnome
+    ELEMENT chapter
+      ELEMENT title
+      content=The Linux adventure
+      ELEMENT p
+      content=bla bla bla ...
+      ELEMENT image
+        ATTRIBUTE href
+          TEXT
+          content=linus.gif
+      ELEMENT p
+      content=...</pre>
+<p>
+This should be useful to learn the internal representation model.</p>
 
-<h2>Modifying the tree</h2>
+<h2>The XML library interfaces</h2>
+<p>
+This section is directly intended to help programmers getting bootstrapped
+using the XML library from the C language. It doesn't intent to be extensive,
+I hope the automatically generated docs will provide the completeness
+required, but as a separated set of documents. The interfaces of the XML
+library are by principle low level, there is nearly zero abstration. Those
+interested in a higher level API should <a href="#DOM">look at DOM</a>
+(unfortunately not completed).</p>
 
-<h2>Saving a tree</h2>
+<h3>Invoking the parser</h3>
+<p>
+Usually, the first thing to do is to read an XML input, the parser accepts to
+parse both memory mapped documents or direct files. The functions are defined
+in "parser.h":</p>
+<dl>
+<dt>xmlDocPtr xmlParseMemory(char *buffer, int size);</dt>
+<dd><p>
+parse a zero terminated string containing the document</p>
+</dd>
+</dl>
+<dl>
+<dt>xmlDocPtr xmlParseFile(const char *filename);</dt>
+<dd><p>
+parse an XML document contained in a file (possibly compressed)</p>
+</dd>
+</dl>
+<p>
+ This returns a pointer to the document structure (or NULL in case of
+failure).</p>
+<p>
+A couple of comments can be made, first this mean that the parser is
+memory-hungry, first to load the document in memory, second to build the tree.
+Reading a document without building the tree will be possible in the future by
+pluggin the code to the SAX interface (see SAX.c).</p>
 
-<h2>DOM interfaces</h2>
+<h3>Traversing the tree</h3>
+<p>
+Basically by including "tree.h" your code has access to the internal structure
+of all the element of the tree. The names should be somewhat simple like
+<strong>parent</strong>, <strong>childs</strong>, <strong>next</strong>,
+<strong>prev</strong>, <strong>properties</strong>, etc... </p>
+
+<h3>Modifying the tree</h3>
+
+<h3>Saving a tree</h3>
+
+<h2><a name="DOM">DOM interfaces</a></h2>
 <p>
 <a href="http://www.w3.org/DOM/">DOM</a> stands for the <em>Document Object
 Model</em> this is an API for accessing XML or HTML structured documents.

@@ -747,7 +747,7 @@ xmlNewReference(xmlDocPtr doc, const CHAR *name) {
     }
 
     cur->type = XML_ENTITY_REF_NODE;
-    cur->doc = NULL;
+    cur->doc = doc;
     cur->parent = NULL; 
     cur->next = NULL; 
     cur->prev = NULL; 

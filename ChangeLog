@@ -1,3 +1,7 @@
+2004-04-01  Johan Dahlin  <johan@gnome.org>
+
+	* python/.cvsignore: Add generated files, to make cvs silent.
+
 Thu Apr  1 12:41:36 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemas.c: small signed-ness patch from Steve Little

@@ -1,3 +1,10 @@
+Sat Oct  4 01:58:27 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am configure.in xmldwalk.c include/libxml/Makefile.am
+	  include/libxml/xmldwalk.h include/libxml/xmlversion.h.in:
+	  integrated the xmlDocWalker API given by Alfred Mickautsch,
+	  and providing an xmlReader like API but working on a xmlDocPtr.
+
 Sat Oct  4 00:18:29 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am: more cleanup in make tests

@@ -637,6 +637,23 @@ fi
 AC_SUBST(WITH_SAX1)
 AC_SUBST(TEST_SAX)
 
+AC_ARG_WITH(walker,
+[  --with-walker             add the xmlDocWalker interface (on)])
+if test "$with_minimum" = "yes" -a "$with_walker" = ""
+then
+    with_walker=no
+fi
+if test "$with_walker" = "no" ; then
+    echo Disabling the xmlDocWalker interface
+    WITH_WALKER=0
+    TEST_WALKER=
+else    
+    WITH_WALKER=1
+    TEST_WALKER=WALKERtests
+fi
+AC_SUBST(WITH_WALKER)
+AC_SUBST(TEST_WALKER)
+
 AC_ARG_WITH(push,
 [  --with-push             add the PUSH parser interfaces (on)])
 if test "$with_minimum" = "yes" -a "$with_push" = ""

@@ -129,6 +129,15 @@ XMLPUBFUN void XMLCALL xmlCheckVersion(int version);
 #endif
 
 /**
+ * LIBXML_WALKER_ENABLED:
+ *
+ * Whether the xmlDocWalker interface is configured in
+ */
+#if @WITH_WALKER@
+#define LIBXML_WALKER_ENABLED
+#endif
+
+/**
  * LIBXML_FTP_ENABLED:
  *
  * Whether the FTP support is configured in

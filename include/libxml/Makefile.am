@@ -42,7 +42,8 @@ xmlinc_HEADERS = \
 		relaxng.h \
 		dict.h \
 		SAX2.h \
-		xmlexports.h
+		xmlexports.h \
+		xmldwalk.h
 
 install-exec-hook:
 	$(mkinstalldirs) $(DESTDIR)$(xmlincdir)

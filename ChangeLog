@@ -1,3 +1,7 @@
+Sat Nov 23 17:22:22 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* doc/Makefile.am: Jan Rafaj pointed a bug in the Makefile.
+
 Sat Nov 23 12:21:24 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* python/generator.py python/libxml.c python/setup.py.in: trying

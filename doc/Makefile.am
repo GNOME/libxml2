@@ -80,6 +80,6 @@ install-data-local:
 	-@INSTALL@ -m 0644 $(srcdir)/html/*.html $(DESTDIR)$(TARGET_DIR)
 	-@INSTALL@ -m 0644 $(srcdir)/html/index.sgml $(DESTDIR)$(TARGET_DIR)
 	-(cd $(DESTDIR); gtkdoc-fixxref --module=libxml --html-dir=$(HTML_DIR))
-	-@(tar cf - tutorial | (cd $(DESTDIR)$(TARGET_DIR) && tar xvf -)
+	-@(tar cf - tutorial | (cd $(DESTDIR)$(TARGET_DIR) && tar xvf -))
 
 .PHONY : html sgml templates scan

@@ -766,7 +766,7 @@ xmlCheckUTF8(const unsigned char *utf)
 
     for (ix = 0; (c = utf[ix]);) {
         if (c & 0x80) {
-            if ((utf[ix + 1] & 0xc0) != 0x80)
+            if ((c & 0xc0) != 0x80 || (utf[ix + 1] & 0xc0) != 0x80)
                 return(0);
             if ((c & 0xe0) == 0xe0) {
                 if ((utf[ix + 2] & 0xc0) != 0x80)

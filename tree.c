@@ -4284,8 +4284,8 @@ xmlGetNodePath(xmlNodePtr node)
             if (occur == 0) {
                 tmp = cur->next;
                 while (tmp != NULL && occur == 0) {
-		  if ((cur->type == XML_TEXT_NODE) ||
-		      (cur->type == XML_CDATA_SECTION_NODE))
+		  if ((tmp->type == XML_TEXT_NODE) ||
+		      (tmp->type == XML_CDATA_SECTION_NODE))
 		    occur++;
                     tmp = tmp->next;
                 }

@@ -488,19 +488,19 @@ class xmlCoreBreadthFirstItertor:
 #
 def nodeWrap(o):
     # TODO try to cast to the most appropriate node class
-    name = libxml2mod.name(o)
+    name = libxml2mod.type(o)
     if name == "element" or name == "text":
         return xmlNode(_obj=o)
     if name == "attribute":
         return xmlAttr(_obj=o)
     if name[0:8] == "document":
         return xmlDoc(_obj=o)
-    if name[0:8] == "namespace":
+    if name == "namespace":
         return xmlNs(_obj=o)
     if name == "elem_decl":
         return xmlElement(_obj=o)
     if name == "attribute_decl":
-        return xmlAtribute(_obj=o)
+        return xmlAttribute(_obj=o)
     if name == "entity_decl":
         return xmlEntity(_obj=o)
     if name == "dtd":

@@ -37,6 +37,7 @@ static int create = 0;
 static int add = 0;
 static int del = 0;
 static int convert = 0;
+static int no_super_update = 0;
 static int verbose = 0;
 static char *filename = NULL;
 
@@ -306,17 +307,20 @@ static void usershell(void) {
  * 									*
  ************************************************************************/
 static void usage(const char *name) {
-    printf("Usage : %s [options] catalogfile entities...\n", name);
-    printf("\tParse the catalog file and query it for the entities\n");
-    printf("\t--sgml : handle SGML Super catalogs for --add and --del\n");
-    printf("\t--shell : run a shell allowing interactive queries\n");
-    printf("\t--create : create a new catalog\n");
-    printf("\t--add 'type' 'orig' 'replace' : add an entry\n");
-    printf("\t--del 'values' : remove values\n");
-    printf("\t--noout: avoid dumping the result on stdout\n");
-    printf("\t         used with add or del, it saves the catalog changes\n");
-    printf("\t         and with --sgml it also updates the super catalog\n");
-    printf("\t-v --verbose : provide debug informations\n");
+    printf("\
+Usage : %s [options] catalogfile entities...\n\
+\tParse the catalog file and query it for the entities\n\
+\t--sgml : handle SGML Super catalogs for --add and --del\n\
+\t--shell : run a shell allowing interactive queries\n\
+\t--create : create a new catalog\n\
+\t--add 'type' 'orig' 'replace' : add an XML entry\n\
+\t--add 'entry' : add an SGML entry\n\
+\t--del 'values' : remove values\n\
+\t--noout: avoid dumping the result on stdout\n\
+\t         used with --add or --del, it saves the catalog changes\n\
+\t         and with --sgml it automatically updates the super catalog\n\
+\t--no-super-update: do not update the SGML super catalog\n\
+\t-v --verbose : provide debug informations\n", name);
 }
 int main(int argc, char **argv) {
     int i;
@@ -357,6 +361,9 @@ int main(int argc, char **argv) {
 	} else if ((!strcmp(argv[i], "-convert")) ||
 	    (!strcmp(argv[i], "--convert"))) {
 	    convert++;
+	} else if ((!strcmp(argv[i], "-no-super-update")) ||
+	    (!strcmp(argv[i], "--no-super-update"))) {
+	    no_super_update++;
 	} else if ((!strcmp(argv[i], "-add")) ||
 	    (!strcmp(argv[i], "--add"))) {
 	    if (sgml)
@@ -386,6 +393,14 @@ int main(int argc, char **argv) {
 	} else if ((!strcmp(argv[i], "-del")) ||
 	    (!strcmp(argv[i], "--del"))) {
 	    i += 1;
+
+	    /* No catalog entry specified */
+	    if (i == argc || (sgml && i + 1 == argc)) {
+		fprintf(stderr, "No catalog entry specified to remove from\n");
+		usage (argv[0]);
+		return(1);
+	    }
+
 	    continue;
 	} else if (argv[i][0] == '-')
 	    continue;
@@ -424,14 +439,17 @@ int main(int argc, char **argv) {
 		    (!strcmp(argv[i], "--add"))) {
 		    if (catal == NULL)
 			catal = xmlNewCatalog(1);
-		    super = xmlLoadSGMLSuperCatalog(XML_SGML_DEFAULT_CATALOG);
-		    if (super == NULL)
-			super = xmlNewCatalog(1);
-
 		    xmlACatalogAdd(catal, BAD_CAST "CATALOG",
 					 BAD_CAST argv[i + 2], NULL);
-		    xmlACatalogAdd(super, BAD_CAST "CATALOG",
-					 BAD_CAST argv[i + 1], NULL);
+
+		    if (!no_super_update) {
+			super = xmlLoadSGMLSuperCatalog(XML_SGML_DEFAULT_CATALOG);
+			if (super == NULL)
+			    super = xmlNewCatalog(1);
+
+			xmlACatalogAdd(super, BAD_CAST "CATALOG",
+					     BAD_CAST argv[i + 1], NULL);
+		    }
 		} else {
 		    if (catal != NULL)
 			ret = xmlACatalogRemove(catal, BAD_CAST argv[i + 2]);
@@ -442,7 +460,7 @@ int main(int argc, char **argv) {
 				argv[i + 1]);
 			exit_value = 1;
 		    }
-		    if ((noout) && (catal != NULL) &&
+		    if ((!no_super_update) && (noout) && (catal != NULL) &&
 			(xmlCatalogIsEmpty(catal))) {
 			super = xmlLoadSGMLSuperCatalog(
 				   XML_SGML_DEFAULT_CATALOG);
@@ -475,7 +493,7 @@ int main(int argc, char **argv) {
 			    fclose(out);
 			}
 		    }
-		    if (super != NULL) {
+		    if (!no_super_update && super != NULL) {
 			if (xmlCatalogIsEmpty(super)) {
 			    remove(XML_SGML_DEFAULT_CATALOG);
 			} else {

@@ -1,3 +1,17 @@
+Sat Aug 14 23:50:10 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: Dodji pointed out a bug in xmlGetNodePath()
+	* xmlcatalog.c: applied patch from Albert Chin to add a
+	  --no-super-update option to xmlcatalog see #145461
+	  and another patch also from Albert Chin to not crash 
+	  on -sgml --del without args see #145462
+	* Makefile.am: applied another patch from Albert Chin to
+	  fix a problem with diff on Solaris #145511
+	* xmlstring.c: fix xmlCheckUTF8() according to the suggestion
+	  in bug #148115
+	* python/libxml.py: apply fix from Marc-Antoine Parent about
+	  the errors in libxml(2).py on the node wrapper #135547
+
 Sat Aug 14 13:18:57 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am: added a dumb rule to able to compile tst.c

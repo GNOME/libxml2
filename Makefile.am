@@ -470,7 +470,7 @@ XIncludetests : xmllint$(EXEEXT)
 	      $(CHECKER) $(top_builddir)/xmllint --nowarning --xinclude $$i > $(srcdir)/result/XInclude/$$name 2> $(srcdir)/result/XInclude/$$name.err ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	  else \
-	      log=`$(CHECKER) $(top_builddir)/xmllint --nowarning --xinclude $$i > result.$$name 2>error.$$name | grep -v 'failed to load external entity' ; \
+	      log=`$(CHECKER) $(top_builddir)/xmllint --nowarning --xinclude $$i > result.$$name 2>error.$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	      diff $(srcdir)/result/XInclude/$$name result.$$name ; \
 	      diff $(srcdir)/result/XInclude/$$name.err error.$$name` ; \
@@ -487,7 +487,7 @@ XIncludetests : xmllint$(EXEEXT)
 	      $(CHECKER) $(top_builddir)/xmllint --nowarning --xinclude --stream --debug $$i > $(srcdir)/result/XInclude/$$name.rdr ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	  else \
-	      log=`$(CHECKER) $(top_builddir)/xmllint --nowarning --xinclude --stream --debug $$i > result.$$name 2>error.$$name | grep -v 'failed to load external entity' ; \
+	      log=`$(CHECKER) $(top_builddir)/xmllint --nowarning --xinclude --stream --debug $$i > result.$$name 2>error.$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	      diff $(srcdir)/result/XInclude/$$name.err error.$$name ; \
 	      diff $(srcdir)/result/XInclude/$$name.rdr result.$$name` ; \

@@ -9477,6 +9477,29 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 			    quote = 0;
 			continue;    
 		    }
+		    if ((quote == 0) && (buf[base] == '<')) {
+		        int found  = 0;
+			/* special handling of comments */
+		        if (((unsigned int) base + 4 <
+			     ctxt->input->buf->buffer->use) &&
+			    (buf[base + 1] == '!') &&
+			    (buf[base + 2] == '-') &&
+			    (buf[base + 3] == '-')) {
+			    for (;(unsigned int) base + 3 <
+			          ctxt->input->buf->buffer->use; base++) {
+				if ((buf[base] == '-') &&
+				    (buf[base + 1] == '-') &&
+				    (buf[base + 2] == '>')) {
+				    found = 1;
+				    base += 2;
+				    break;
+				}
+		            }
+			    if (!found)
+			        break;
+		            continue;
+			}
+		    }
 		    if (buf[base] == '"') {
 		        quote = '"';
 			continue;

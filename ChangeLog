@@ -1,3 +1,10 @@
+Thu Feb 12 12:54:26 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: fixed bug #132575 about finding the end of the
+	  internal subset in push mode.
+	* test/intsubset.xml result/intsubset.xml* result/noent/intsubset.xml:
+	  added the test to the regression suite
+
 Wed Feb 11 14:19:31 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* parserInternals.c xmlIO.c encoding.c include/libxml/parser.h

@@ -577,7 +577,8 @@ encoding_error:
     __xmlErrEncoding(ctxt, XML_ERR_INVALID_CHAR,
 		   "Input is not proper UTF-8, indicate encoding !\n",
 		   NULL, NULL);
-    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL)) {
+    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL) &&
+        (ctxt->input != NULL)) {
         ctxt->sax->error(ctxt->userData,
                          "Bytes: 0x%02X 0x%02X 0x%02X 0x%02X\n",
                          ctxt->input->cur[0], ctxt->input->cur[1],
@@ -724,7 +725,8 @@ encoding_error:
     __xmlErrEncoding(ctxt, XML_ERR_INVALID_CHAR,
 		   "Input is not proper UTF-8, indicate encoding !\n",
 		   NULL, NULL);
-    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL)) {
+    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL) &&
+        (ctxt->input != NULL)) {
 	ctxt->sax->error(ctxt->userData, "Bytes: 0x%02X 0x%02X 0x%02X 0x%02X\n",
 			ctxt->input->cur[0], ctxt->input->cur[1],
 			ctxt->input->cur[2], ctxt->input->cur[3]);
@@ -825,7 +827,8 @@ encoding_error:
     __xmlErrEncoding(ctxt, XML_ERR_INVALID_CHAR,
 		   "Input is not proper UTF-8, indicate encoding !\n",
 		   NULL, NULL);
-    if ((ctxt != NULL) && (ctxt->sax != NULL) && (ctxt->sax->error != NULL)) {
+    if ((ctxt != NULL) && (ctxt->sax != NULL) && (ctxt->sax->error != NULL) &&
+        (ctxt->input != NULL)) {
 	ctxt->sax->error(ctxt->userData,
 			 "Bytes: 0x%02X 0x%02X 0x%02X 0x%02X\n",
 			 ctxt->input->cur[0], ctxt->input->cur[1],

@@ -1,3 +1,8 @@
+Mon Nov  8 18:54:52 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* testapi.c: more types.
+	* parserInternals.c xpath.c: more fixes
+
 Mon Nov  8 18:16:43 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* gentest.py testapi.c: better parser options coverage

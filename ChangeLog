@@ -1,3 +1,10 @@
+Wed Jun  2 21:16:26 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemas.c include/libxml/schemasInternals.h 
+	  include/libxml/xmlerror.h: applied a patch from Kasimier Buchcik
+	  implementing attribute uses and wildcards.
+	* test/schemas/* result/schemas/*: added/fixed a bunch of tests
+
 Wed Jun  2 18:15:51 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* globals.c xmlIO.c include/libxml/globals.h: applied patch from 

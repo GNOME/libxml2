@@ -112,27 +112,48 @@ struct _xmlSchemaAnnot {
  * Apply strict validation rules on attributes
  */
 #define XML_SCHEMAS_ANYATTR_STRICT	3
-
+/**
+ * XML_SCHEMAS_ANY_SKIP:
+ *
+ * Skip unknown attribute from validation
+ */
+#define XML_SCHEMAS_ANY_SKIP        1
+/**
+ * XML_SCHEMAS_ANY_LAX:
+ *
+ * Ignore validation non definition on attributes
+ */
+#define XML_SCHEMAS_ANY_LAX                2
+/**
+ * XML_SCHEMAS_ANY_STRICT:
+ *
+ * Apply strict validation rules on attributes
+ */
+#define XML_SCHEMAS_ANY_STRICT        3
 /**
  * XML_SCHEMAS_ATTR_USE_PROHIBITED:
  *
  * The attribute is prohibited.
  */
 #define XML_SCHEMAS_ATTR_USE_PROHIBITED 0
-
 /**
  * XML_SCHEMAS_ATTR_USE_REQUIRED:
  *
  * The attribute is required.
  */
 #define XML_SCHEMAS_ATTR_USE_REQUIRED 1
-
 /**
  * XML_SCHEMAS_ATTR_USE_OPTIONAL:
  *
  * The attribute is optional.
  */
 #define XML_SCHEMAS_ATTR_USE_OPTIONAL 2
+/**
+ * XML_SCHEMAS_ATTR_GLOABAL:
+ *
+ * allow elements in no namespace
+ */
+#define XML_SCHEMAS_ATTR_GLOBAL        1 << 0
 
 /**
  * XML_SCHEMAS_ATTR_NSDEFAULT:
@@ -169,6 +190,68 @@ struct _xmlSchemaAttribute {
 };
 
 /**
+ * xmlSchemaAttributeLink:
+ * Used to build a list of attribute uses on complexType definitions.
+ */
+typedef struct _xmlSchemaAttributeLink xmlSchemaAttributeLink;
+typedef xmlSchemaAttributeLink *xmlSchemaAttributeLinkPtr;
+struct _xmlSchemaAttributeLink {
+    struct _xmlSchemaAttributeLink *next;/* the next attribute link ... */
+    struct _xmlSchemaAttribute *attr;/* the linked attribute */
+};
+
+/**
+ * XML_SCHEMAS_WILDCARD_COMPLETE:
+ *
+ * If the wildcard is complete.
+ */
+#define XML_SCHEMAS_WILDCARD_COMPLETE 1 << 0
+
+/**
+ * xmlSchemaCharValueLink:
+ * Used to build a list of namespaces on wildcards.
+ */
+typedef struct _xmlSchemaWildcardNs xmlSchemaWildcardNs;
+typedef xmlSchemaWildcardNs *xmlSchemaWildcardNsPtr;
+struct _xmlSchemaWildcardNs {
+    struct _xmlSchemaWildcardNs *next;/* the next constraint link ... */
+    const xmlChar *value;/* the value */
+};
+
+/**
+ * xmlSchemaWildcard.
+ * A wildcard.
+ */
+typedef struct _xmlSchemaWildcard xmlSchemaWildcard;
+typedef xmlSchemaWildcard *xmlSchemaWildcardPtr;
+struct _xmlSchemaWildcard {
+    xmlSchemaTypeType type;        /* The kind of type */
+    const xmlChar *id;
+    xmlSchemaAnnotPtr annot;
+    xmlNodePtr node;
+    int minOccurs;
+    int maxOccurs;
+    int processContents;
+    int any; /* Indicates if the ns constraint is of ##any */
+    xmlSchemaWildcardNsPtr nsSet; /* The list of allowed namespaces */
+    xmlSchemaWildcardNsPtr negNsSet; /* The negated namespace */
+    int flags;
+};
+
+/**
+ * XML_SCHEMAS_ATTRGROUP_WILDCARD_BUILDED:
+ *
+ * The attribute wildcard has been already builded.
+ */
+#define XML_SCHEMAS_ATTRGROUP_WILDCARD_BUILDED 1 << 0
+/**
+ * XML_SCHEMAS_ATTRGROUP_GLOBAL:
+ *
+ * The attribute wildcard has been already builded.
+ */
+#define XML_SCHEMAS_ATTRGROUP_GLOBAL 1 << 1
+
+/**
  * An attribute group definition.
  *
  * xmlSchemaAttribute and xmlSchemaAttributeGroup start of structures
@@ -187,6 +270,8 @@ struct _xmlSchemaAttributeGroup {
 
     xmlSchemaAttributePtr attributes;
     xmlNodePtr node;
+    int flags;
+    xmlSchemaWildcardPtr attributeWildcard;
 };
 
 
@@ -196,6 +281,31 @@ struct _xmlSchemaAttributeGroup {
  * the element content type is mixed
  */
 #define XML_SCHEMAS_TYPE_MIXED		1 << 0
+/**
+ * XML_SCHEMAS_TYPE_DERIVATION_METHOD_EXTENSION:
+ *
+ * the simple or complex type has a derivation method of "extension".
+ */
+#define XML_SCHEMAS_TYPE_DERIVATION_METHOD_EXTENSION                1 << 1
+/**
+ * XML_SCHEMAS_TYPE_DERIVATION_METHOD_RESTRICTION:
+ *
+ * the simple or complex type has a derivation method of "restriction".
+ */
+#define XML_SCHEMAS_TYPE_DERIVATION_METHOD_RESTRICTION                1 << 2
+/**
+ * XML_SCHEMAS_TYPE_GLOBAL:
+ *
+ * the type is global
+ */
+#define XML_SCHEMAS_TYPE_GLOBAL                1 << 3
+/**
+ * XML_SCHEMAS_TYPE_OWNED_ATTR_WILDCARD:
+ *
+ * the complexType owns an attribute wildcard, i.e.
+ * it can be freed by the complexType
+ */
+#define XML_SCHEMAS_TYPE_OWNED_ATTR_WILDCARD    1 << 4
 
 /**
  * _xmlSchemaType:
@@ -224,6 +334,8 @@ struct _xmlSchemaType {
     xmlSchemaFacetPtr facets;
     struct _xmlSchemaType *redef;/* possible redefinitions for the type */
     int recurse;
+    xmlSchemaAttributeLinkPtr attributeUses;
+    xmlSchemaWildcardPtr attributeWildcard;
 };
 
 /*
@@ -267,6 +379,7 @@ struct _xmlSchemaType {
  * XML_SCHEMAS_ELEM_TOPLEVEL:
  *
  * the element is top level
+ * obsolete: use XML_SCHEMAS_ELEM_GLOBAL instead
  */
 #define XML_SCHEMAS_ELEM_TOPLEVEL	1 << 5
 /**
@@ -413,5 +526,4 @@ XMLPUBFUN void XMLCALL 	xmlSchemaFreeType	(xmlSchemaTypePtr type);
 
 #endif /* LIBXML_SCHEMAS_ENABLED */
 #endif /* __XML_SCHEMA_INTERNALS_H__ */
-
 

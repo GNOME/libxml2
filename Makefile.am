@@ -125,7 +125,7 @@ check-local: tests
 
 testall : tests SVGtests SAXtests
 
-tests: XMLtests XMLenttests HTMLtests Validtests URItests XPathtests XPtrtests XIncludetests C14Ntests Scripttests Catatests @TEST_REGEXPS@ @TEST_SCHEMAS@ @TEST_THREADS@
+tests: XMLtests XMLenttests SAXtests HTMLtests Validtests URItests XPathtests XPtrtests XIncludetests C14Ntests Scripttests Catatests @TEST_REGEXPS@ @TEST_SCHEMAS@ @TEST_THREADS@
 	@(if [ "@PYTHON_SUBDIR@" != "" ] ; then cd python ; $(MAKE) tests ; fi)
 
 valgrind:
@@ -537,13 +537,13 @@ SAXtests : testSAX$(EXEEXT)
 	-@(for i in $(srcdir)/test/* ; do \
 	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \
-	  if [ ! -f $(srcdir)/SAXresult/$$name ] ; then \
+	  if [ ! -f $(srcdir)/result/$$name.sax ] ; then \
 	      echo New test file $$name ; \
-	      $(CHECKER) $(top_builddir)/testSAX $$i > $(srcdir)/SAXresult/$$name ; \
+	      $(CHECKER) $(top_builddir)/testSAX $$i > $(srcdir)/result/$$name.sax ; \
 	  else \
 	      echo Testing $$name ; \
 	      $(CHECKER) $(top_builddir)/testSAX $$i > result.$$name ; \
-	      diff $(srcdir)/SAXresult/$$name result.$$name ; \
+	      diff $(srcdir)/result/$$name.sax result.$$name ; \
 	      rm result.$$name ; \
 	  fi ; fi ; done)
 

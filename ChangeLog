@@ -1,3 +1,9 @@
+Wed Sep  3 15:08:06 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am results/*.sax SAXResult/*: removing the SAXresults
+	  tree, keeping result in the same tree, added SAXtests to the
+	  default "make tests"
+
 Tue Sep  2 15:59:04 CEST 2003 Igor Zlatkovic <igor@zlatkovic.com>
 
 	* include/libxml/xmlexports.h: defined additional macros which

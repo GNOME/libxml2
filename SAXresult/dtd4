@@ -1,7 +1,0 @@
-SAX.setDocumentLocator()
-SAX.startDocument()
-SAX.internalSubset(doc, , )
-SAX.elementDecl(doc, 1, ...)
-SAX.startElement(doc)
-SAX.endElement(doc)
-SAX.endDocument()

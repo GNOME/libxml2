@@ -38,7 +38,7 @@
 #ifdef LIBXML_PATTERN_ENABLED
 
 /* #define DEBUG_STREAMING */
-/* #define SUPPORT_IDC */
+#define SUPPORT_IDC
 
 #define ERROR(a, b, c, d)
 #define ERROR5(a, b, c, d, e)
@@ -47,6 +47,8 @@
 #define XML_STREAM_STEP_FINAL	2
 #define XML_STREAM_STEP_ROOT	4
 #define XML_STREAM_STEP_ATTR	8
+
+#define XML_PATTERN_NOTPATTERN 1
 
 typedef struct _xmlStreamStep xmlStreamStep;
 typedef xmlStreamStep *xmlStreamStepPtr;
@@ -72,6 +74,7 @@ struct _xmlStreamCtxt {
     int maxState;		/* allocated number of state */
     int level;			/* how deep are we ? */
     int *states;		/* the array of step indexes */
+    int flags;			/* validation options */
 };
 
 static void xmlFreeStreamComp(xmlStreamCompPtr comp);
@@ -1660,23 +1663,34 @@ xmlStreamPushInternal(xmlStreamCtxtPtr stream,
 		
 	/*
 	* Check the start only if this is a "desc" evaluation
-	* of if we are at the first level of evaluation.
+	* or if we are at the first level of evaluation.
 	*/
-#ifdef SUPPORT_IDC
 	desc = comp->steps[0].flags & XML_STREAM_STEP_DESC;
+	if ( ((comp->steps[0].flags & XML_STREAM_STEP_ROOT) == 0) &&
+	     ( ((stream->flags & XML_PATTERN_NOTPATTERN) == 0) ||
+	       ( (desc || (stream->level == 1)) )
+	     )
+	   ) {
+
+/*
+#ifdef SUPPORT_IDC
+
+	
 	if ((desc || (stream->level == 1)) &&
 	    (!(comp->steps[0].flags & XML_STREAM_STEP_ROOT))) {
 
-	    /* 
+	    * 
 	    * Workaround for missing "self::node()" on "@foo".
-	    */
+	    *
 	    if (comp->steps[0].flags & XML_STREAM_STEP_ATTR) {
 		xmlStreamCtxtAddState(stream, 0, stream->level);
 		goto stream_next;
 	    }
 #else
+	    
 	if (!(comp->steps[0].flags & XML_STREAM_STEP_ROOT)) {
 #endif
+	*/
 	    match = 0;
 	    if (comp->dict) {
 		if (comp->steps[0].name == NULL) {
@@ -1685,21 +1699,21 @@ xmlStreamPushInternal(xmlStreamCtxtPtr stream,
 		    else
 			match = (comp->steps[0].ns == ns);
 		} else {
-#ifdef SUPPORT_IDC
-		    /* 
-		    * Workaround for missing "self::node() on "foo".
-		    */
-		    if (!desc) {
-			xmlStreamCtxtAddState(stream, 0, stream->level);
-			goto stream_next;
+		    if (stream->flags & XML_PATTERN_NOTPATTERN) {
+			/* 
+			* Workaround for missing "self::node() on "foo".
+			*/
+			if (!desc) {
+			    xmlStreamCtxtAddState(stream, 0, stream->level);
+			    goto stream_next;
+			} else {
+			    match = ((comp->steps[0].name == name) &&
+				 (comp->steps[0].ns == ns));
+			}
 		    } else {
 			match = ((comp->steps[0].name == name) &&
 			     (comp->steps[0].ns == ns));
 		    }
-#else
-		    match = ((comp->steps[0].name == name) &&
-			     (comp->steps[0].ns == ns));
-#endif
 		}
 	    } else {
 		if (comp->steps[0].name == NULL) {
@@ -1708,21 +1722,21 @@ xmlStreamPushInternal(xmlStreamCtxtPtr stream,
 		    else
 			match = xmlStrEqual(comp->steps[0].ns, ns);
 		} else {
-#ifdef SUPPORT_IDC
-		    /* 
-		    * Workaround for missing "self::node() on "foo".
-		    */
-		    if (!desc) {
-			xmlStreamCtxtAddState(stream, 0, stream->level);
-			goto stream_next;
+		    if (stream->flags & XML_PATTERN_NOTPATTERN) {
+			/* 
+			* Workaround for missing "self::node() on "foo".
+			*/
+			if (!desc) {
+			    xmlStreamCtxtAddState(stream, 0, stream->level);
+			    goto stream_next;
+			} else {
+			    match = ((xmlStrEqual(comp->steps[0].name, name)) &&
+				 (xmlStrEqual(comp->steps[0].ns, ns)));
+			}
 		    } else {
 			match = ((xmlStrEqual(comp->steps[0].name, name)) &&
 			     (xmlStrEqual(comp->steps[0].ns, ns)));
 		    }
-#else
-		    match = ((xmlStrEqual(comp->steps[0].name, name)) &&
-			     (xmlStrEqual(comp->steps[0].ns, ns)));
-#endif
 		}
 	    }
 	    if (match) {
@@ -1876,6 +1890,7 @@ xmlPatterncompile(const xmlChar *pattern, xmlDict *dict,
 	    cur->next = ret->next;
 	    ret->next = cur;
 	}
+	cur->flags = flags;
 	ctxt->comp = cur;
 
 	xmlCompilePathPattern(ctxt);
@@ -1915,6 +1930,7 @@ xmlPatterncompile(const xmlChar *pattern, xmlDict *dict,
 	    cur = cur->next;
 	}
     }
+
     return(ret);
 error:
     if (ctxt != NULL) xmlFreePatParserContext(ctxt);
@@ -1978,6 +1994,7 @@ xmlPatternGetStreamCtxt(xmlPatternPtr comp)
 	    cur->next = ret->next;
 	    ret->next = cur;
 	}
+	cur->flags = comp->flags;
 	comp = comp->next;
     }
     return(ret);

@@ -108,7 +108,9 @@ XMLPUBFUN int XMLCALL
 		xmlSchemaCompareValuesWhtsp	(xmlSchemaValPtr x,
 						 xmlSchemaWhitespaceValueType xws,
 						 xmlSchemaValPtr y,
-						 xmlSchemaWhitespaceValueType yws); 
+						 xmlSchemaWhitespaceValueType yws);
+XMLPUBFUN xmlSchemaValPtr XMLCALL
+		xmlSchemaCopyValue		(xmlSchemaValPtr val); 
 
 #ifdef __cplusplus
 }

@@ -54,11 +54,11 @@
 
 #define ELEM_INFO_ENABLED 1 
 
-/* #define IDC_ENABLED 1 */
+#define IDC_ENABLED 1
 
-/* #define IDC_VALUE_SUPPORT 1 */
+#define IDC_VALUE_SUPPORT 1
 
-/* #define IDC_XPATH_SUPPORT 1 */
+#define IDC_XPATH_SUPPORT 1
 
 /* #define DEBUG_IDC 1 */
 
@@ -5984,10 +5984,10 @@ xmlSchemaCheckCSelectorXPath(xmlSchemaParserCtxtPtr ctxt,
 	}
 	if (isField)
 	    selector->xpathComp = (void *) xmlPatterncompile(selector->xpath,
-		NULL, 0, nsArray);
+		NULL, 1, nsArray);
 	else
 	    selector->xpathComp = (void *) xmlPatterncompile(selector->xpath,
-		NULL, 0, nsArray);
+		NULL, 1, nsArray);
 	if (nsArray != NULL)
 	    xmlFree((xmlChar **) nsArray);
 	
@@ -19876,6 +19876,7 @@ xmlSchemaValidateAttributes(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr elem, xmlSche
 		}
 		/*
 		* Init the attribute info.
+		* TODO: Hmm, maby a bit oversized this all.
 		*/
 		ctxt->attrInfo->flags = 0;		
 		ctxt->attrInfo->decl = (xmlSchemaTypePtr) attrDecl;
@@ -19895,13 +19896,14 @@ xmlSchemaValidateAttributes(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr elem, xmlSche
 		    ctxt->attrInfo->value = NULL;
 		}
 		if (ret > 0) {
+		    /*
+		    * IDCs will consume the precomputed default value,
+		    * so we need to clone it somehow.
+		    */
 		    ctxt->attrInfo->value = xmlSchemaCopyValue(attrDecl->defVal);
 		    /* TODO: error on NULL return. */
 		}
-		/*
-		* TODO URGENT: This will consume the precomputed default value,
-		* so we need to clone it somehow.
-		*/
+		
 		if (xmlSchemaXPathProcessHistory(ctxt, ctxt->depth +1) == -1)
 		    goto fatal_exit;
 	    }

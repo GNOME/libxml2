@@ -3051,6 +3051,73 @@ xmlSchemaDupVal (xmlSchemaValPtr v)
 }
 
 /**
+ * xmlSchemaCopyValue:
+ * @val:  the precomputed value to be copied
+ *
+ * Copies the precomputed value. This duplicates any string within.
+ *
+ * Returns the copy or NULL if a copy for a data-type is not implemented.
+ */
+xmlSchemaValPtr
+xmlSchemaCopyValue(xmlSchemaValPtr val)
+{
+    xmlSchemaValPtr ret;
+
+    if (val == NULL)
+        return (NULL);
+    /*
+    * Copy the string values.
+    */
+    switch (val->type) {
+        case XML_SCHEMAS_IDREFS:
+        case XML_SCHEMAS_ENTITIES:
+        case XML_SCHEMAS_NMTOKENS:
+        case XML_SCHEMAS_ANYTYPE:
+        case XML_SCHEMAS_ANYSIMPLETYPE:
+            return (NULL);
+        case XML_SCHEMAS_STRING:
+        case XML_SCHEMAS_NORMSTRING:
+        case XML_SCHEMAS_TOKEN:
+        case XML_SCHEMAS_LANGUAGE:
+        case XML_SCHEMAS_NAME:
+        case XML_SCHEMAS_NCNAME:
+        case XML_SCHEMAS_ID:
+        case XML_SCHEMAS_IDREF:
+        case XML_SCHEMAS_ENTITY:
+        case XML_SCHEMAS_NMTOKEN:
+            ret = xmlSchemaDupVal(val);
+            if (val->value.str != NULL)
+                ret->value.str = xmlStrdup(BAD_CAST val->value.str);
+            return (ret);
+        case XML_SCHEMAS_QNAME:
+        case XML_SCHEMAS_ANYURI:
+        case XML_SCHEMAS_NOTATION:
+            ret = xmlSchemaDupVal(val);
+            if (val->value.qname.name != NULL)
+                ret->value.qname.name =
+                    xmlStrdup(BAD_CAST val->value.qname.name);
+            if (val->value.qname.uri != NULL)
+                ret->value.qname.uri =
+                    xmlStrdup(BAD_CAST val->value.qname.uri);
+            return (ret);
+        case XML_SCHEMAS_HEXBINARY:
+            ret = xmlSchemaDupVal(val);
+            if (val->value.hex.str != NULL)
+                ret->value.hex.str = xmlStrdup(BAD_CAST val->value.hex.str);
+            return (ret);
+        case XML_SCHEMAS_BASE64BINARY:
+            ret = xmlSchemaDupVal(val);
+            if (val->value.base64.str != NULL)
+                ret->value.base64.str =
+                    xmlStrdup(BAD_CAST val->value.base64.str);
+            return (ret);
+        default:
+            return (xmlSchemaDupVal(val));
+    }
+    return (NULL);
+}
+
+/**
  * _xmlSchemaDateAdd:
  * @dt: an #xmlSchemaValPtr
  * @dur: an #xmlSchemaValPtr of type #XS_DURATION

@@ -1,3 +1,13 @@
+Fri Mar  4 18:57:44 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c: Enabled IDC parsing and validation.
+	* xmlschemastypes.c include/libxml/xmlschemastypes.h: 
+	  Added xmlSchemaCopyValue to the API; this was done due to
+	  validation of default attributes against IDCs: since IDC keys
+	  consume the precomputed value, one needs a copy.
+	* pattern.c: Enabled IDC support; this is currently done
+	  via calling xmlPatterncompile with a flag arg of 1.
+
 Wed Mar  2 11:45:18 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am doc/examples/Makefile.am python/tests/Makefile.am

@@ -1,3 +1,11 @@
+Wed Jul 30 11:08:21 EDT 2003 Daniel Veillard <daniel@veillard.com>
+
+	* encoding.c: applying patch from Peter Jacobi to added 
+	  ISO-8859-x encoding support when iconv is not available
+	* configure.in include/libxml/xmlversion.h.in
+	  include/libxml/xmlwin32version.h.in: added the glue needed
+	  at the configure level and made it the default for Windows
+
 Tue Jul 29 16:43:48 EDT 2003 Daniel Veillard <daniel@veillard.com>
 
 	* python/generator.py python/libxml.c python/libxml2class.txt:

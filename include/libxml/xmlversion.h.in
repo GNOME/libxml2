@@ -172,6 +172,15 @@ extern void xmlCheckVersion(int version);
 #endif
 
 /**
+ * LIBXML_ISO8859X_ENABLED:
+ *
+ * Whether ISO-8859-* support is made available in case iconv is not
+ */
+#if @WITH_ISO8859X@
+#define LIBXML_ISO8859X_ENABLED
+#endif
+
+/**
  * LIBXML_DEBUG_ENABLED:
  *
  * Whether Debugging module is configured in

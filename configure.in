@@ -649,6 +649,17 @@ M_LIBS="-lm"
 XML_LIBS="-lxml2 $Z_LIBS $THREAD_LIBS $ICONV_LIBS $M_LIBS $LIBS"
 AC_SUBST(WITH_ICONV)
 
+WITH_ISO8859X=1
+AC_ARG_WITH(iso8859x,
+[  --with-iso8859x         add ISO8859X support if no iconv (on)])
+if test "$WITH_ICONV" != "1" ; then
+if test "$with_iso8859x" = "no" ; then
+    echo Disabling ISO8859X support
+    WITH_ISO8859X=0
+fi
+fi
+AC_SUBST(WITH_ISO8859X)
+
 AC_ARG_WITH(schemas,
 [  --with-schemas          add experimental Schemas/RelaxNG support (on)])
 if test "$with_schemas" = "no" ; then

@@ -36,6 +36,7 @@ AUTOCONF = .\configure.txt
 #WITH_XPTR = 1
 #WITH_XINCLUDE = 1
 #WITH_ICONV = 1
+#WITH_ZLIB = 0
 #WITH_DEBUG = 1
 #WITH_MEM_DEBUG = 0
 #WITH_SCHEMAS = 1
@@ -80,6 +81,9 @@ CFLAGS = $(CFLAGS) /I$(XML_SRCDIR) /I$(XML_SRCDIR)\include /I$(INCPREFIX)
 !if "$(WITH_THREADS)" == "1"
 CFLAGS = $(CFLAGS) /D "_REENTRANT"
 !endif
+!if "$(WITH_ZLIB)" == "1"
+CFLAGS = $(CFLAGS) /D "HAVE_ZLIB_H"
+!endif
 
 # The linker and its options.
 LD = link.exe
@@ -96,6 +100,9 @@ LIBS = $(LIBS) iconv_a.lib
 LIBS = $(LIBS) iconv.lib
 !endif 
 !endif 
+!if "$(WITH_ZLIB)" == "1"
+LIBS = $(LIBS) zlib.lib
+!endif
 
 # The archiver and its options.
 AR = lib.exe

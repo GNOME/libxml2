@@ -42,6 +42,7 @@ var withXpath = true;
 var withXptr = true;
 var withXinclude = true;
 var withIconv = true;
+var withZlib = false;
 var withDebug = true;
 var withMemDebug = false;
 var withSchemas = true;
@@ -104,7 +105,8 @@ function usage()
 	txt += "  xpath:      Enable XPath support (" + (withXpath? "yes" : "no")  + ")\n";
 	txt += "  xptr:       Enable XPointer support (" + (withXptr? "yes" : "no")  + ")\n";
 	txt += "  xinclude:   Enable XInclude support (" + (withXinclude? "yes" : "no")  + ")\n";
-	txt += "  iconv:      Enable ICONV support (" + (withIconv? "yes" : "no")  + ")\n";
+	txt += "  iconv:      Enable iconv support (" + (withIconv? "yes" : "no")  + ")\n";
+	txt += "  zlib:       Enable zlib support (" + (withZlib? "yes" : "no")  + ")\n";
 	txt += "  xml_debug:  Enable XML debbugging module (" + (withDebug? "yes" : "no")  + ")\n";
 	txt += "  mem_debug:  Enable memory debugger (" + (withMemDebug? "yes" : "no")  + ")\n";
 	txt += "  regexps:    Enable regular expressions (" + (withRegExps? "yes" : "no") + ")\n";
@@ -170,6 +172,7 @@ function discoverVersion()
 	vf.WriteLine("WITH_XPTR=" + (withXptr? "1" : "0"));
 	vf.WriteLine("WITH_XINCLUDE=" + (withXinclude? "1" : "0"));
 	vf.WriteLine("WITH_ICONV=" + (withIconv? "1" : "0"));
+	vf.WriteLine("WITH_ZLIB=" + (withZlib? "1" : "0"));
 	vf.WriteLine("WITH_DEBUG=" + (withDebug? "1" : "0"));
 	vf.WriteLine("WITH_MEM_DEBUG=" + (withMemDebug? "1" : "0"));
 	vf.WriteLine("WITH_SCHEMAS=" + (withSchemas? "1" : "0"));
@@ -227,6 +230,8 @@ function configureLibxml()
 			of.WriteLine(s.replace(/\@WITH_XINCLUDE\@/, withXinclude? "1" : "0"));
 		} else if (s.search(/\@WITH_ICONV\@/) != -1) {
 			of.WriteLine(s.replace(/\@WITH_ICONV\@/, withIconv? "1" : "0"));
+		} else if (s.search(/\@WITH_ZLIB\@/) != -1) {
+			of.WriteLine(s.replace(/\@WITH_ZLIB\@/, withZlib? "1" : "0"));
 		} else if (s.search(/\@WITH_DEBUG\@/) != -1) {
 			of.WriteLine(s.replace(/\@WITH_DEBUG\@/, withDebug? "1" : "0"));
 		} else if (s.search(/\@WITH_MEM_DEBUG\@/) != -1) {
@@ -333,6 +338,8 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 			withXinclude = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "iconv")
 			withIconv = strToBool(arg.substring(opt.length + 1, arg.length));
+		else if (opt == "zlib")
+			withZlib = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "xml_debug")
 			withDebug = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "mem_debug")
@@ -417,7 +424,8 @@ txtOut += "   DocBook support: " + boolToStr(withDocb) + "\n";
 txtOut += "     XPath support: " + boolToStr(withXpath) + "\n";
 txtOut += "  XPointer support: " + boolToStr(withXptr) + "\n";
 txtOut += "  XInclude support: " + boolToStr(withXinclude) + "\n";
-txtOut += "     ICONV support: " + boolToStr(withIconv) + "\n";
+txtOut += "     iconv support: " + boolToStr(withIconv) + "\n";
+txtOut += "      zlib support: " + boolToStr(withZlib) + "\n";
 txtOut += "  Debugging module: " + boolToStr(withDebug) + "\n";
 txtOut += "  Memory debugging: " + boolToStr(withMemDebug) + "\n";
 txtOut += "    Regexp support: " + boolToStr(withRegExps) + "\n";

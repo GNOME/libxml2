@@ -25,11 +25,11 @@
 #include <zlib.h>
 #endif
 
-#include "xmlmemory.h"
-#include "tree.h"
-#include "parser.h"
-#include "entities.h"
-#include "valid.h"
+#include <libxml/xmlmemory.h>
+#include <libxml/tree.h>
+#include <libxml/parser.h>
+#include <libxml/entities.h>
+#include <libxml/valid.h>
 
 static xmlChar xmlStringText[] = { 't', 'e', 'x', 't', 0 };
 static xmlChar xmlStringComment[] = { 'c', 'o', 'm', 'm', 'e', 'n', 't', 0 };
@@ -4451,7 +4451,11 @@ xmlElemDump(FILE *f, xmlDocPtr doc, xmlNodePtr cur) {
     if (buf == NULL) return;
     if ((doc != NULL) && 
         (doc->type == XML_HTML_DOCUMENT_NODE)) {
+#ifdef LIBXML_HTML_ENABLED
         htmlNodeDump(buf, doc, cur);
+#else	
+	printf("HTML support not compiled in\n");
+#endif /* LIBXML_HTML_ENABLED */
     } else
         xmlNodeDump(buf, doc, cur, 0, 1);
     xmlBufferDump(f, buf);

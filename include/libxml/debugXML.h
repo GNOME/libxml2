@@ -8,8 +8,11 @@
 #ifndef __DEBUG_XML__
 #define __DEBUG_XML__
 #include <stdio.h>
-#include "tree.h"
-#include "xpath.h"
+#include <libxml/tree.h>
+
+#ifdef LIBXML_DEBUG_ENABLED
+
+#include <libxml/xpath.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -103,4 +106,6 @@ void	xmlShell	(xmlDocPtr doc,
 #ifdef __cplusplus
 }
 #endif
+
+#endif /* LIBXML_DEBUG_ENABLED */
 #endif /* __DEBUG_XML__ */

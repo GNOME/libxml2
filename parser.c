@@ -33,20 +33,20 @@
 #include <zlib.h>
 #endif
 
-#include "xmlmemory.h"
-#include "tree.h"
-#include "parser.h"
-#include "entities.h"
-#include "encoding.h"
-#include "valid.h"
-#include "parserInternals.h"
-#include "xmlIO.h"
+#include <libxml/xmlmemory.h>
+#include <libxml/tree.h>
+#include <libxml/parser.h>
+#include <libxml/entities.h>
+#include <libxml/encoding.h>
+#include <libxml/valid.h>
+#include <libxml/parserInternals.h>
+#include <libxml/xmlIO.h>
 #include "xml-error.h"
 
 #define XML_PARSER_BIG_BUFFER_SIZE 1000
 #define XML_PARSER_BUFFER_SIZE 100
 
-const char *xmlParserVersion = LIBXML_VERSION;
+const char *xmlParserVersion = LIBXML_VERSION_STRING;
 int xmlGetWarningsDefaultValue = 1;
 
 /*

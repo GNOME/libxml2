@@ -19,6 +19,9 @@
 #include "config.h"
 #endif
 
+#include "xmlversion.h"
+#ifdef LIBXML_XPATH_ENABLED
+
 #include <stdio.h>
 #include <string.h>
 
@@ -41,11 +44,11 @@
 #include <ctype.h>
 #endif
 
-#include "xmlmemory.h"
-#include "tree.h"
-#include "valid.h"
-#include "xpath.h"
-#include "parserInternals.h"
+#include <libxml/xmlmemory.h>
+#include <libxml/tree.h>
+#include <libxml/valid.h>
+#include <libxml/xpath.h>
+#include <libxml/parserInternals.h>
 
 /* #define DEBUG */
 /* #define DEBUG_STEP */
@@ -4579,3 +4582,4 @@ xmlXPathEvalExpression(const xmlChar *str, xmlXPathContextPtr ctxt) {
     return(res);
 }
 
+#endif /* LIBXML_XPATH_ENABLED */

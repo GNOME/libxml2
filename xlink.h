@@ -13,7 +13,7 @@
 #ifndef __XML_XLINK_H__
 #define __XML_XLINK_H__
 
-#include "tree.h"
+#include <libxml/tree.h>
 
 #ifdef __cplusplus
 #define extern "C" {

@@ -35,11 +35,11 @@
 #include <zlib.h>
 #endif
 
-#include "xmlmemory.h"
-#include "tree.h"
-#include "parser.h"
-#include "valid.h"
-#include "xlink.h"
+#include <libxml/xmlmemory.h>
+#include <libxml/tree.h>
+#include <libxml/parser.h>
+#include <libxml/valid.h>
+#include <libxml/xlink.h>
 
 #define XLINK_NAMESPACE (BAD_CAST "http://www.w3.org/1999/xlink/namespace/")
 #define XHTML_NAMESPACE (BAD_CAST "http://www.w3.org/1999/xhtml/")

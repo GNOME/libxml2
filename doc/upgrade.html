@@ -3,7 +3,7 @@
 <html>
 <head>
   <title>Upgrading libxml client code from 1.x to 2.x</title>
-  <meta name="GENERATOR" content="amaya V2.1">
+  <meta name="GENERATOR" content="amaya V2.4">
   <meta http-equiv="Content-Type" content="text/html">
 </head>
 
@@ -67,6 +67,14 @@ mail</a>:</p>
     (read and save) without inflating the document with extra formatting
     chars.</p>
   </li>
+  <li>The include path has changed to $prefix/libxml/ and the includes
+    themselves uses this new prefix in includes instructions... If you are
+    using (as expected) the 
+    <pre>xml-config --cflags</pre>
+    <p>output to generate you compile commands this will probably work out of
+    the box</p>
+    <p> </p>
+  </li>
 </ol>
 
 <p>Let me put some emphasis on the fact that there is far more changes from
@@ -77,6 +85,6 @@ upgrade, it may cost a lot on the long term ...</p>
 
 <p><a href="mailto:Daniel.Veillard@w3.org">Daniel Veillard</a></p>
 
-<p>$Id: upgrade.html,v 1.1 2000/03/04 11:39:43 veillard Exp $</p>
+<p>$Id: upgrade.html,v 1.2 2000/03/06 07:41:49 veillard Exp $</p>
 </body>
 </html>

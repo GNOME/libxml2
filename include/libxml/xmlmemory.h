@@ -9,6 +9,7 @@
 #define _DEBUG_MEMORY_ALLOC_
 
 #include <stdio.h>
+#include <libxml/xmlversion.h>
 
 /*
  * DEBUG_MEMORY_LOCATION should be activated only done when debugging 

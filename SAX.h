@@ -12,8 +12,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "parser.h"
-#include "xlink.h"
+#include <libxml/parser.h>
+#include <libxml/xlink.h>
 
 #ifdef __cplusplus
 #define extern "C" {

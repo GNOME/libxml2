@@ -2,11 +2,11 @@
 
 SUBDIRS = doc
 
-INCLUDES = -I@srcdir@ @Z_CFLAGS@ @CORBA_CFLAGS@ $(VERSION_FLAGS)
+INCLUDES = -I@srcdir@ @Z_CFLAGS@ @CORBA_CFLAGS@ 
 
-VERSION_FLAGS = -DLIBXML_VERSION=\"@LIBXML_VERSION@\"
+noinst_PROGRAMS=testSAX testHTML testXPath testURI
 
-noinst_PROGRAMS=tester testSAX testHTML testXPath testURI
+bin_PROGRAMS = xmllint
 
 bin_SCRIPTS=xml-config
 
@@ -21,20 +21,20 @@ libxml_la_SOURCES = \
 		encoding.c \
 		error.c \
 		parser.c \
+		tree.c \
+		xmlIO.c \
+		xmlmemory.c \
+		uri.c \
+		valid.c \
+		xlink.c \
 		HTMLparser.c \
 		HTMLtree.c \
 		debugXML.c \
-		tree.c \
 		xpath.c \
-		xmlIO.c \
-		xmlmemory.c \
 		nanohttp.c \
-		nanoftp.c \
-		uri.c \
-		valid.c \
-		xlink.c
+		nanoftp.c
 
-xmlincdir = $(includedir)/gnome-xml
+xmlincdir = $(includedir)/libxml
 xmlinc_HEADERS = \
 		SAX.h \
 		entities.h \
@@ -53,15 +53,16 @@ xmlinc_HEADERS = \
 		nanoftp.h \
 		uri.h \
 		valid.h \
-		xlink.h
+		xlink.h \
+		xmlversion.h
 
 DEPS = $(top_builddir)/libxml.la
 LDADDS = $(top_builddir)/libxml.la @Z_LIBS@ @M_LIBS@
 
-tester_SOURCES=tester.c
-tester_LDFLAGS = 
-tester_DEPENDENCIES = $(DEPS)
-tester_LDADD=  @RDL_LIBS@ $(LDADDS)
+xmllint_SOURCES=xmllint.c
+xmllint_LDFLAGS = 
+xmllint_DEPENDENCIES = $(DEPS)
+xmllint_LDADD=  @RDL_LIBS@ $(LDADDS)
 
 testSAX_SOURCES=testSAX.c
 testSAX_LDFLAGS = 
@@ -78,14 +79,22 @@ testXPath_LDFLAGS =
 testXPath_DEPENDENCIES = $(DEPS)
 testXPath_LDADD= $(LDADDS)
 
+testURI_SOURCES=testURI.c
+testURI_LDFLAGS = 
+testURI_DEPENDENCIES = $(DEPS)
+testURI_LDADD= $(LDADDS)
+
 check-local: tests
+
+install-data: $(srcdir)/libxml
+
+$(srcdir)/libxml:
+	-$(RM) $(srcdir)/libxml
+	ln -s $(srcdir)/. $(srcdir)/libxml
 
 testall : tests SVGtests SAXtests XPathtests XMLenttests
 
 tests: XMLtests HTMLtests Validtests
-
-testURI: $(srcdir)/uri.c $(srcdir)/uri.h xmlmemory.o
-	$(CC) $(CFLAGS) -DSTANDALONE -o testURI $(srcdir)/uri.c xmlmemory.o 
 
 HTMLtests : testHTML
 	@echo "##"
@@ -107,7 +116,7 @@ HTMLtests : testHTML
 	      rm result.$$name result2.$$name error.$$name ; \
 	  fi ; fi ; done)
 
-XMLtests : tester
+XMLtests : xmllint
 	@echo "##"
 	@echo "## XML regression tests"
 	@echo "##"
@@ -116,17 +125,17 @@ XMLtests : tester
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/result/$$name ] ; then \
 	      echo New test file $$name ; \
-	      $(top_builddir)/tester $$i > $(srcdir)/result/$$name ; \
+	      $(top_builddir)/xmllint $$i > $(srcdir)/result/$$name ; \
 	  else \
 	      echo Testing $$name ; \
-	      $(top_builddir)/tester $$i > result.$$name ; \
+	      $(top_builddir)/xmllint $$i > result.$$name ; \
 	      diff $(srcdir)/result/$$name result.$$name ; \
-	      $(top_builddir)/tester result.$$name > result2.$$name ; \
+	      $(top_builddir)/xmllint result.$$name > result2.$$name ; \
 	      diff result.$$name result2.$$name ; \
 	      rm result.$$name result2.$$name ; \
 	  fi ; fi ; done)
 
-XMLenttests : tester
+XMLenttests : xmllint
 	@echo "##"
 	@echo "## XML entity subst regression tests"
 	@echo "##"
@@ -135,12 +144,12 @@ XMLenttests : tester
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/result/noent/$$name ] ; then \
 	      echo New test file $$name ; \
-	      $(top_builddir)/tester --noent $$i > $(srcdir)/result/noent/$$name ; \
+	      $(top_builddir)/xmllint --noent $$i > $(srcdir)/result/noent/$$name ; \
 	  else \
 	      echo Testing $$name ; \
-	      $(top_builddir)/tester --noent $$i > result.$$name ; \
+	      $(top_builddir)/xmllint --noent $$i > result.$$name ; \
 	      diff $(srcdir)/result/noent/$$name result.$$name ; \
-	      $(top_builddir)/tester --noent result.$$name > result2.$$name ; \
+	      $(top_builddir)/xmllint --noent result.$$name > result2.$$name ; \
 	      diff result.$$name result2.$$name ; \
 	      rm result.$$name result2.$$name ; \
 	  fi ; fi ; done)
@@ -177,7 +186,7 @@ XPathtests : testXPath
 	      rm result.$$name ; \
 	  fi ; fi ; done ; fi ; done)
 
-SVGtests : tester
+SVGtests : xmllint
 	@echo "##"
 	@echo "## SVG parsing regression tests"
 	@echo "##"
@@ -186,12 +195,12 @@ SVGtests : tester
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/result/SVG/$$name ] ; then \
 	      echo New test file $$name ; \
-	      $(top_builddir)/tester $$i > $(srcdir)/result/SVG/$$name ; \
+	      $(top_builddir)/xmllint $$i > $(srcdir)/result/SVG/$$name ; \
 	  else \
 	      echo Testing $$name ; \
-	      $(top_builddir)/tester $$i > result.$$name ; \
+	      $(top_builddir)/xmllint $$i > result.$$name ; \
 	      diff $(srcdir)/result/SVG/$$name result.$$name ; \
-	      $(top_builddir)/tester result.$$name > result2.$$name ; \
+	      $(top_builddir)/xmllint result.$$name > result2.$$name ; \
 	      diff result.$$name result2.$$name ; \
 	      rm result.$$name result2.$$name ; \
 	  fi ; fi ; done)
@@ -214,7 +223,7 @@ SAXtests : testSAX
 	  fi ; fi ; done)
 
 
-Validtests : tester
+Validtests : xmllint
 	@echo "##"
 	@echo "## Validity checking regression tests"
 	@echo "##"
@@ -223,10 +232,10 @@ Validtests : tester
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/result/VC/$$name ] ; then \
 	      echo New test file $$name ; \
-	      $(top_builddir)/tester --noout --valid $$i 2> $(srcdir)/result/VC/$$name ; \
+	      $(top_builddir)/xmllint --noout --valid $$i 2> $(srcdir)/result/VC/$$name ; \
 	  else \
 	      echo Testing $$name ; \
-	      $(top_builddir)/tester --noout --valid $$i 2> result.$$name ; \
+	      $(top_builddir)/xmllint --noout --valid $$i 2> result.$$name ; \
 	      diff $(srcdir)/result/VC/$$name result.$$name ; \
 	      rm result.$$name ; \
 	  fi ; fi ; done)
@@ -238,10 +247,10 @@ Validtests : tester
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/result/valid/$$name ] ; then \
 	      echo New test file $$name ; \
-	      $(top_builddir)/tester --valid $$i > $(srcdir)/result/valid/$$name 2>$(srcdir)/result/valid/$$name.err ; \
+	      $(top_builddir)/xmllint --valid $$i > $(srcdir)/result/valid/$$name 2>$(srcdir)/result/valid/$$name.err ; \
 	  else \
 	      echo Testing $$name ; \
-	      $(top_builddir)/tester --valid $$i > result.$$name 2>error.$$name ; \
+	      $(top_builddir)/xmllint --valid $$i > result.$$name 2>error.$$name ; \
 	      diff $(srcdir)/result/valid/$$name result.$$name ; \
 	      diff $(srcdir)/result/valid/$$name.err error.$$name ; \
 	      rm result.$$name error.$$name ; \

@@ -12,6 +12,9 @@
 #include "config.h"
 #endif
 
+#include "xmlversion.h"
+#ifdef LIBXML_HTML_ENABLED
+
 #include <stdio.h>
 #include <string.h>
 #include <stdarg.h>
@@ -33,12 +36,14 @@
 #include <stdlib.h>
 #endif
 
-#include "xmlmemory.h"
-#include "HTMLparser.h"
-#include "HTMLtree.h"
-#include "debugXML.h"
+#include <libxml/xmlmemory.h>
+#include <libxml/HTMLparser.h>
+#include <libxml/HTMLtree.h>
+#include <libxml/debugXML.h>
 
+#ifdef LIBXML_DEBUG_ENABLED
 static int debug = 0;
+#endif
 static int copy = 0;
 static int sax = 0;
 static int repeat = 0;
@@ -632,10 +637,14 @@ void parseAndPrintFile(char *filename) {
      * print it.
      */
     if (!noout) { 
+#ifdef LIBXML_DEBUG_ENABLED
 	if (!debug)
 	    htmlDocDump(stdout, doc);
 	else
 	    xmlDebugDumpDocument(stdout, doc);
+#else
+	htmlDocDump(stdout, doc);
+#endif
     }	
 
     /*
@@ -649,9 +658,12 @@ int main(int argc, char **argv) {
     int files = 0;
 
     for (i = 1; i < argc ; i++) {
+#ifdef LIBXML_DEBUG_ENABLED
 	if ((!strcmp(argv[i], "-debug")) || (!strcmp(argv[i], "--debug")))
 	    debug++;
-	else if ((!strcmp(argv[i], "-copy")) || (!strcmp(argv[i], "--copy")))
+	else
+#endif
+	    if ((!strcmp(argv[i], "-copy")) || (!strcmp(argv[i], "--copy")))
 	    copy++;
 	else if ((!strcmp(argv[i], "-push")) || (!strcmp(argv[i], "--push")))
 	    push++;
@@ -685,7 +697,9 @@ int main(int argc, char **argv) {
 	printf("Usage : %s [--debug] [--copy] [--copy] HTMLfiles ...\n",
 	       argv[0]);
 	printf("\tParse the HTML files and output the result of the parsing\n");
+#ifdef LIBXML_DEBUG_ENABLED
 	printf("\t--debug : dump a debug tree of the in-memory document\n");
+#endif
 	printf("\t--copy : used to test the internal copy implementation\n");
 	printf("\t--sax : debug the sequence of SAX callbacks\n");
 	printf("\t--repeat : parse the file 100 times, for timing\n");
@@ -697,3 +711,10 @@ int main(int argc, char **argv) {
 
     return(0);
 }
+#else /* !LIBXML_HTML_ENABLED */
+#include <stdio.h>
+int main(int argc, char **argv) {
+    printf("%s : HTML support not compiled in\n", argv[0]);
+    return(0);
+}
+#endif

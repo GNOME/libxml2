@@ -9,7 +9,7 @@
 #ifndef __XML_PARSER_INTERNALS_H__
 #define __XML_PARSER_INTERNALS_H__
 
-#include "parser.h"
+#include <libxml/parser.h>
 
 #ifdef __cplusplus
 extern "C" {

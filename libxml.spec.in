@@ -92,7 +92,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %doc AUTHORS ChangeLog NEWS README COPYING COPYING.LIB TODO
 %{prefix}/lib/lib*.so.*
-%{prefix}/bin/xml-config
+%{prefix}/bin/xmllint
 
 %files devel
 %defattr(-, root, root)
@@ -101,3 +101,4 @@ rm -rf $RPM_BUILD_ROOT
 %{prefix}/lib/*a
 %{prefix}/lib/*.sh
 %{prefix}/include/*
+%{prefix}/bin/xml-config

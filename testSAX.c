@@ -36,11 +36,11 @@
 #endif
 
 
-#include "parser.h"
-#include "parserInternals.h" /* only for xmlNewInputFromFile() */
-#include "tree.h"
-#include "debugXML.h"
-#include "xmlmemory.h"
+#include <libxml/parser.h>
+#include <libxml/parserInternals.h> /* only for xmlNewInputFromFile() */
+#include <libxml/tree.h>
+#include <libxml/debugXML.h>
+#include <libxml/xmlmemory.h>
 
 static int debug = 0;
 static int copy = 0;

@@ -20,10 +20,10 @@
 #include <stdlib.h>
 #endif
 
-#include "xmlmemory.h"
-#include "valid.h"
-#include "parser.h"
-#include "parserInternals.h"
+#include <libxml/xmlmemory.h>
+#include <libxml/valid.h>
+#include <libxml/parser.h>
+#include <libxml/parserInternals.h>
 
 /*
  * Generic function for accessing stacks in the Validity Context

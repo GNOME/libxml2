@@ -9,7 +9,7 @@
 #ifndef __XML_ENTITIES_H__
 #define __XML_ENTITIES_H__
 
-#include "tree.h"
+#include <libxml/tree.h>
 
 #ifdef __cplusplus
 extern "C" {

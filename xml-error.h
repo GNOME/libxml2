@@ -1,7 +1,7 @@
 #ifndef __XML_ERROR_H__
 #define __XML_ERROR_H__
 
-#include "parser.h"
+#include <libxml/parser.h>
 #ifdef __cplusplus
 extern "C" {
 #endif

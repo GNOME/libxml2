@@ -34,8 +34,8 @@
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
 #endif
-#include "encoding.h"
-#include "xmlmemory.h"
+#include <libxml/encoding.h>
+#include <libxml/xmlmemory.h>
 
 xmlCharEncodingHandlerPtr xmlUTF16LEHandler = NULL;
 xmlCharEncodingHandlerPtr xmlUTF16BEHandler = NULL;

@@ -11,7 +11,7 @@
 #ifndef __XML_URI_H__
 #define __XML_URI_H__
 
-#include "tree.h"
+#include <libxml/tree.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -24,10 +24,11 @@ typedef struct _xmlURI xmlURI;
 typedef xmlURI *xmlURIPtr;
 struct _xmlURI {
     char *scheme;
+    char *opaque;
     char *authority;
     char *server;
+    char *user;
     int port;
-    char *opaque;
     char *path;
     char *query;
     char *fragment;
@@ -42,7 +43,13 @@ xmlChar *	xmlBuildURI		(const xmlChar *URI,
 	                        	 const xmlChar *base);
 xmlURIPtr	xmlParseURI		(const char *URI);
 xmlChar *	xmlSaveUri		(xmlURIPtr uri);
+void		xmlPrintURI		(FILE *stream,
+					 xmlURIPtr uri);
+char *		xmlURIUnescapeString	(const char *str,
+					 int len,
+					 char *target);
 int		xmlNormalizeURIPath	(char *path);
+void		xmlFreeURI		(xmlURIPtr uri);
 
 #ifdef __cplusplus
 }

@@ -21,6 +21,7 @@
 #ifndef __XML_CHAR_ENCODING_H__
 #define __XML_CHAR_ENCODING_H__
 
+#include <libxml/xmlversion.h>
 #ifdef __cplusplus
 extern "C" {
 #endif

@@ -14,16 +14,16 @@
 #endif
 #include <stdio.h>
 #include <stdlib.h>
-#include "xmlmemory.h"
-#include "tree.h"
-#include "parser.h"
-#include "parserInternals.h"
-#include "valid.h"
-#include "entities.h"
+#include <libxml/xmlmemory.h>
+#include <libxml/tree.h>
+#include <libxml/parser.h>
+#include <libxml/parserInternals.h>
+#include <libxml/valid.h>
+#include <libxml/entities.h>
 #include "xml-error.h"
-#include "debugXML.h"
-#include "xmlIO.h"
-#include "SAX.h"
+#include <libxml/debugXML.h>
+#include <libxml/xmlIO.h>
+#include <libxml/SAX.h>
 
 /* #define DEBUG_SAX */
 /* #define DEBUG_SAX_TREE */

@@ -11,6 +11,7 @@
 #define __XML_TREE_H__
 
 #include <stdio.h>
+#include <libxml/xmlversion.h>
 
 
 #ifdef __cplusplus

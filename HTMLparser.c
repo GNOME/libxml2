@@ -12,6 +12,9 @@
 #include "config.h"
 #endif
 
+#include "xmlversion.h"
+#ifdef LIBXML_HTML_ENABLED
+
 #include <stdio.h>
 #include <string.h> /* for memset() only */
 #ifdef HAVE_CTYPE_H
@@ -33,14 +36,14 @@
 #include <zlib.h>
 #endif
 
-#include "xmlmemory.h"
-#include "tree.h"
-#include "HTMLparser.h"
-#include "entities.h"
-#include "encoding.h"
-#include "valid.h"
-#include "parserInternals.h"
-#include "xmlIO.h"
+#include <libxml/xmlmemory.h>
+#include <libxml/tree.h>
+#include <libxml/HTMLparser.h>
+#include <libxml/entities.h>
+#include <libxml/encoding.h>
+#include <libxml/valid.h>
+#include <libxml/parserInternals.h>
+#include <libxml/xmlIO.h>
 #include "xml-error.h"
 
 #define HTML_MAX_NAMELEN 1000
@@ -3843,3 +3846,5 @@ htmlDocPtr
 htmlParseFile(const char *filename, const char *encoding) {
     return(htmlSAXParseFile(filename, encoding, NULL, NULL));
 }
+
+#endif /* LIBXML_HTML_ENABLED */

@@ -30,7 +30,7 @@
 #endif
 
 
-#include "xmlmemory.h"
+#include <libxml/xmlmemory.h>
 
 #ifdef xmlMalloc
 #undef xmlMalloc

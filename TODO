@@ -2,6 +2,10 @@
            TODO for the XML parser and stuff:
 	   ==================================
 
+CVS:
+====
+  rename tester.c to xmllint.c
+
 TODO:
 =====
 
@@ -14,6 +18,9 @@ TODO:
   be saved back.
 - Go through erratas and do the cleanup.
   http://www.w3.org/XML/xml-19980210-errata ... bummmer 
+- Handle undefined namespaces in entity contents better ... at least
+  issue a warning
+- General checking of DTD validation in presence of namespaces ... hairy
 
 TODO:
 =====
@@ -36,14 +43,6 @@ TODO:
 EXTENSIONS:
 ===========
 
-- Check attribute normalization especially xmlGetProp()
-- Validity checking problems for NOTATIONS attributes
-- Validity checking problems for ENTITY ENTITIES attributes
-- dynamically adapt the alloc entry point to use g_alloc()/g_free()
-  if the programmer wants it: 
-    - use xmlMemSetup() to reset the routines used.
-- Parsing of a well balanced chunk
-- URI module: validation, base, etc ...
 - Tools to produce man pages from the SGML docs.
 - Finish XPath
   => attributes addressing troubles
@@ -79,8 +78,7 @@ EXTENSIONS:
 - Add a DTD cache prefilled with xhtml DTDs and entities and a program to
   manage them -> like the /usr/bin/install-catalog from SGML
   right place seems $datadir/xmldtds
-
-- turn tester into a generic program xml-test installed with xml-devel
+  Maybe this is better left to user apps
 
 - Add output to XHTML in case of HTML documents.
 
@@ -88,6 +86,15 @@ EXTENSIONS:
 Done:
 =====
 
+- dynamically adapt the alloc entry point to use g_alloc()/g_free()
+  if the programmer wants it: 
+    - use xmlMemSetup() to reset the routines used.
+- Check attribute normalization especially xmlGetProp()
+- Validity checking problems for NOTATIONS attributes
+- Validity checking problems for ENTITY ENTITIES attributes
+- Parsing of a well balanced chunk xmlParseBalancedChunkMemory()
+- URI module: validation, base, etc ... see uri.[ch]
+- turn tester into a generic program xmllint installed with libxml
 - extend validity checks to go through entities content instead of
   just labelling them PCDATA
 - Save Dtds using the children list instead of dumping the tables,

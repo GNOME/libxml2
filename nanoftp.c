@@ -11,7 +11,9 @@
 #else
 #include "config.h"
 #endif
+#include "xmlversion.h"
 
+#ifdef LIBXML_FTP_ENABLED
 #include <stdio.h>
 #include <string.h>
 
@@ -60,8 +62,8 @@
 #include <strings.h>
 #endif
 
-#include "xmlmemory.h"
-#include "nanoftp.h"
+#include <libxml/xmlmemory.h>
+#include <libxml/nanoftp.h>
 
 /* #define DEBUG_FTP 1  */
 #ifdef STANDALONE
@@ -1815,3 +1817,12 @@ int main(int argc, char **argv) {
     exit(0);
 }
 #endif /* STANDALONE */
+#else /* !LIBXML_FTP_ENABLED */
+#ifdef STANDALONE
+#include <stdio.h>
+int main(int argc, char **argv) {
+    printf("%s : FTP support not compiled in\n", argv[0]);
+    return(0);
+}
+#endif /* STANDALONE */
+#endif /* LIBXML_FTP_ENABLED */

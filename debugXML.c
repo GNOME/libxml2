@@ -12,6 +12,10 @@
 #else
 #include "config.h"
 #endif
+
+#include "xmlversion.h"
+#ifdef LIBXML_DEBUG_ENABLED
+
 #include <stdio.h>
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
@@ -19,13 +23,13 @@
 #ifdef HAVE_STRING_H
 #include <string.h>
 #endif
-#include "xmlmemory.h"
-#include "tree.h"
-#include "parser.h"
-#include "valid.h"
-#include "debugXML.h"
-#include "HTMLtree.h"
-#include "HTMLparser.h"
+#include <libxml/xmlmemory.h>
+#include <libxml/tree.h>
+#include <libxml/parser.h>
+#include <libxml/valid.h>
+#include <libxml/debugXML.h>
+#include <libxml/HTMLtree.h>
+#include <libxml/HTMLparser.h>
 
 #define IS_BLANK(c)							\
   (((c) == '\n') || ((c) == '\r') || ((c) == '\t') || ((c) == ' '))
@@ -1059,10 +1063,17 @@ int
 xmlShellCat(xmlShellCtxtPtr ctxt, char *arg, xmlNodePtr node,
                   xmlNodePtr node2) {
     if (ctxt->doc->type == XML_HTML_DOCUMENT_NODE) {
+#ifdef LIBXML_HTML_ENABLED
 	if (node->type == XML_HTML_DOCUMENT_NODE)
 	    htmlDocDump(stdout, (htmlDocPtr) node);
 	else
 	    htmlNodeDumpFile(stdout, ctxt->doc, node);
+#else
+	if (node->type == XML_DOCUMENT_NODE)
+	    xmlDocDump(stdout, (xmlDocPtr) node);
+	else
+	    xmlElemDump(stdout, ctxt->doc, node);
+#endif /* LIBXML_HTML_ENABLED */
     } else {
 	if (node->type == XML_DOCUMENT_NODE)
 	    xmlDocDump(stdout, (xmlDocPtr) node);
@@ -1095,7 +1106,12 @@ xmlShellLoad(xmlShellCtxtPtr ctxt, char *filename, xmlNodePtr node,
 	html = (ctxt->doc->type == XML_HTML_DOCUMENT_NODE);
 
     if (html) {
+#ifdef LIBXML_HTML_ENABLED
 	doc = htmlParseFile(filename, NULL);
+#else	
+	printf("HTML support not compiled in\n");
+	doc = NULL;
+#endif /* LIBXML_HTML_ENABLED */
     } else {
 	doc = xmlParseFile(filename);
     }
@@ -1104,11 +1120,15 @@ xmlShellLoad(xmlShellCtxtPtr ctxt, char *filename, xmlNodePtr node,
 	    xmlFreeDoc(ctxt->doc);
 	}
 	ctxt->loaded = 1;
+#ifdef LIBXML_XPATH_ENABLED
 	xmlXPathFreeContext(ctxt->pctxt);
+#endif /* LIBXML_XPATH_ENABLED */
 	xmlFree(ctxt->filename);
 	ctxt->doc = doc;
 	ctxt->node = (xmlNodePtr) doc;	 
+#ifdef LIBXML_XPATH_ENABLED
 	ctxt->pctxt = xmlXPathNewContext(doc);
+#endif /* LIBXML_XPATH_ENABLED */
 	ctxt->filename = (char *) xmlStrdup((xmlChar *) filename);
     } else
         return(-1);
@@ -1151,10 +1171,17 @@ xmlShellWrite(xmlShellCtxtPtr ctxt, char *filename, xmlNodePtr node,
 	    }
 	    break;
         case XML_HTML_DOCUMENT_NODE:
+#ifdef LIBXML_HTML_ENABLED
 	    if (htmlSaveFile((char *) filename, ctxt->doc) < 0) {
 		fprintf(stderr, "Failed to write to %s\n", filename);
 		return(-1);
 	    }
+#else
+	    if (xmlSaveFile((char *) filename, ctxt->doc) < -1) {
+		fprintf(stderr, "Failed to write to %s\n", filename);
+		return(-1);
+	    }
+#endif /* LIBXML_HTML_ENABLED */
 	    break;
 	default: {
 	    FILE *f;
@@ -1203,9 +1230,15 @@ xmlShellSave(xmlShellCtxtPtr ctxt, char *filename, xmlNodePtr node,
 	    }
 	    break;
         case XML_HTML_DOCUMENT_NODE:
+#ifdef LIBXML_HTML_ENABLED
 	    if (htmlSaveFile((char *) filename, ctxt->doc) < 0) {
 		fprintf(stderr, "Failed to save to %s\n", filename);
 	    }
+#else
+	    if (xmlSaveFile((char *) filename, ctxt->doc) < 0) {
+		fprintf(stderr, "Failed to save to %s\n", filename);
+	    }
+#endif /* LIBXML_HTML_ENABLED */
 	    break;
 	default:
 	    fprintf(stderr, 
@@ -1444,11 +1477,13 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
     ctxt->filename = (char *) xmlStrdup((xmlChar *) filename);
     ctxt->node = (xmlNodePtr) ctxt->doc;	 
 
+#ifdef LIBXML_XPATH_ENABLED
     ctxt->pctxt = xmlXPathNewContext(ctxt->doc);
     if (ctxt->pctxt == NULL) {
 	xmlFree(ctxt);
 	return;
     }
+#endif /* LIBXML_XPATH_ENABLED */
     while (1) {
         if (ctxt->node == (xmlNodePtr) ctxt->doc)
 	    sprintf(prompt, "%s > ", "/");
@@ -1503,10 +1538,14 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
 		    xmlShellList(ctxt, NULL, ctxt->node, NULL);
 	    } else {
 	        ctxt->pctxt->node = ctxt->node;
+#ifdef LIBXML_XPATH_ENABLED
 		if (ctxt->pctxt->nodelist != NULL)
 		    xmlXPathFreeNodeSet(ctxt->pctxt->nodelist);
 	        ctxt->pctxt->nodelist = xmlXPathNodeSetCreate(ctxt->node);
 		list = xmlXPathEval((xmlChar *) arg, ctxt->pctxt);
+#else
+		list = NULL;
+#endif /* LIBXML_XPATH_ENABLED */
 		if (list != NULL) {
 		    switch (list->type) {
 			case XPATH_UNDEFINED:
@@ -1539,8 +1578,10 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
 		} else {
 		    fprintf(stderr, "%s: no such node\n", arg);
 		}
+#ifdef LIBXML_XPATH_ENABLED
 		if (ctxt->pctxt->nodelist != NULL)
 		    xmlXPathFreeNodeSet(ctxt->pctxt->nodelist);
+#endif /* LIBXML_XPATH_ENABLED */
 		ctxt->pctxt->nodelist = NULL;
 	    }
 	} else if (!strcmp(command, "cd")) {
@@ -1548,10 +1589,14 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
 		ctxt->node = (xmlNodePtr) ctxt->doc;
 	    } else {
 	        ctxt->pctxt->node = ctxt->node;
+#ifdef LIBXML_XPATH_ENABLED
 		if (ctxt->pctxt->nodelist != NULL)
 		    xmlXPathFreeNodeSet(ctxt->pctxt->nodelist);
 	        ctxt->pctxt->nodelist = xmlXPathNodeSetCreate(ctxt->node);
 		list = xmlXPathEval((xmlChar *) arg, ctxt->pctxt);
+#else
+		list = NULL;
+#endif /* LIBXML_XPATH_ENABLED */
 		if (list != NULL) {
 		    switch (list->type) {
 			case XPATH_UNDEFINED:
@@ -1578,8 +1623,10 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
 		} else {
 		    fprintf(stderr, "%s: no such node\n", arg);
 		}
+#ifdef LIBXML_XPATH_ENABLED
 		if (ctxt->pctxt->nodelist != NULL)
 		    xmlXPathFreeNodeSet(ctxt->pctxt->nodelist);
+#endif /* LIBXML_XPATH_ENABLED */
 		ctxt->pctxt->nodelist = NULL;
 	    }
 	} else if (!strcmp(command, "cat")) {
@@ -1587,10 +1634,14 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
 		xmlShellCat(ctxt, NULL, ctxt->node, NULL);
 	    } else {
 	        ctxt->pctxt->node = ctxt->node;
+#ifdef LIBXML_XPATH_ENABLED
 		if (ctxt->pctxt->nodelist != NULL)
 		    xmlXPathFreeNodeSet(ctxt->pctxt->nodelist);
 	        ctxt->pctxt->nodelist = xmlXPathNodeSetCreate(ctxt->node);
 		list = xmlXPathEval((xmlChar *) arg, ctxt->pctxt);
+#else
+		list = NULL;
+#endif /* LIBXML_XPATH_ENABLED */
 		if (list != NULL) {
 		    switch (list->type) {
 			case XPATH_UNDEFINED:
@@ -1620,8 +1671,10 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
 		} else {
 		    fprintf(stderr, "%s: no such node\n", arg);
 		}
+#ifdef LIBXML_XPATH_ENABLED
 		if (ctxt->pctxt->nodelist != NULL)
 		    xmlXPathFreeNodeSet(ctxt->pctxt->nodelist);
+#endif /* LIBXML_XPATH_ENABLED */
 		ctxt->pctxt->nodelist = NULL;
 	    }
 	} else {
@@ -1629,7 +1682,9 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
 	}
 	free(cmdline); /* not xmlFree here ! */
     }
+#ifdef LIBXML_XPATH_ENABLED
     xmlXPathFreeContext(ctxt->pctxt);
+#endif /* LIBXML_XPATH_ENABLED */
     if (ctxt->loaded) {
         xmlFreeDoc(ctxt->doc);
     }
@@ -1638,3 +1693,4 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
         free(cmdline); /* not xmlFree here ! */
 }
 
+#endif /* LIBXML_DEBUG_ENABLED */

@@ -9,13 +9,16 @@ LIBXML_MICRO_VERSION=0
 LIBXML_VERSION=$LIBXML_MAJOR_VERSION.$LIBXML_MINOR_VERSION.$LIBXML_MICRO_VERSION
 LIBXML_VERSION_INFO=`expr $LIBXML_MAJOR_VERSION + $LIBXML_MINOR_VERSION`:$LIBXML_MICRO_VERSION:$LIBXML_MINOR_VERSION
 
+LIBXML_VERSION_NUMBER=`expr $LIBXML_MAJOR_VERSION \* 10000 + $LIBXML_MINOR_VERSION \* 100 + $LIBXML_MICRO_VERSION`
+
 AC_SUBST(LIBXML_MAJOR_VERSION)
 AC_SUBST(LIBXML_MINOR_VERSION)
 AC_SUBST(LIBXML_MICRO_VERSION)
 AC_SUBST(LIBXML_VERSION)
 AC_SUBST(LIBXML_VERSION_INFO)
+AC_SUBST(LIBXML_VERSION_NUMBER)
 
-VERSION=${LIBXML_VERSION}beta
+VERSION=${LIBXML_VERSION}
 
 AM_INIT_AUTOMAKE(libxml2, $VERSION)
 
@@ -108,7 +111,7 @@ AC_CHECK_FUNC(isinf, , AC_CHECK_LIB(m, isinf,
   [M_LIBS="-lm"; AC_DEFINE(HAVE_ISINF)]))
 
 XML_LIBDIR='-L${libdir}'
-XML_INCLUDEDIR='-I${includedir}/gnome-xml'
+XML_INCLUDEDIR='-I${includedir}/libxml -I${includedir}'
 XML_LIBS="-lxml $Z_LIBS $M_LIBS $LIBS"
 
 dnl
@@ -147,6 +150,80 @@ AC_CHECK_LIB(history, append_history,
 AC_CHECK_LIB(readline, readline,
              RDL_LIBS="-lreadline ${RDL_LIBS}"; AC_DEFINE(HAVE_LIBREADLINE))
 
+
+dnl
+dnl Aloow to disable various pieces
+dnl
+
+AC_ARG_WITH(ftp, [  --with-ftp              Add the FTP support (on)])
+if test "$with_ftp" = "no" ; then
+    echo Disabling FTP support
+    WITH_FTP=0
+    FTP_OBJ=
+else    
+    WITH_FTP=1
+    FTP_OBJ=nanoftp.o
+fi
+AC_SUBST(WITH_FTP)
+AC_SUBST(FTP_OBJ)
+
+AC_ARG_WITH(http, [  --with-http             Add the HTTP support (on)])
+if test "$with_http" = "no" ; then
+    echo Disabling HTTP support
+    WITH_HTTP=0
+    HTTP_OBJ=
+else    
+    WITH_HTTP=1
+    HTTP_OBJ=nanohttp.o
+fi
+AC_SUBST(WITH_HTTP)
+AC_SUBST(HTTP_OBJ)
+
+AC_ARG_WITH(html, [  --with-html             Add the HTML support (on)])
+if test "$with_html" = "no" ; then
+    echo Disabling HTML support
+    WITH_HTML=0
+    HTML_OBJ=
+else    
+    WITH_HTML=1
+    HTML_OBJ="HTMLparser.o HTMLtree.o"
+fi
+AC_SUBST(WITH_HTML)
+AC_SUBST(HTML_OBJ)
+
+AC_ARG_WITH(xpath, [  --with-xpath            Add the XPATH support (on)])
+if test "$with_xpath" = "no" ; then
+    echo Disabling XPATH support
+    WITH_XPATH=0
+    XPATH_OBJ=
+else    
+    WITH_XPATH=1
+    XPATH_OBJ=xpath.o
+fi
+AC_SUBST(WITH_XPATH)
+AC_SUBST(XPATH_OBJ)
+
+AC_ARG_WITH(debug, [  --with-debug            Add the debugging module (on)])
+if test "$with_debug" = "no" ; then
+    echo Disabling DEBUG support
+    WITH_DEBUG=0
+    DEBUG_OBJ=
+else    
+    WITH_DEBUG=1
+    DEBUG_OBJ=debugXML.o
+fi
+AC_SUBST(WITH_DEBUG)
+AC_SUBST(DEBUG_OBJ)
+
+AC_ARG_WITH(mem_debug, [  --with-mem-debug        Add the memory debugging module (off)])
+if test "$with_mem_debug" = "yes" ; then
+    echo Enabling memory debug support
+    WITH_MEM_DEBUG=1
+else    
+    WITH_MEM_DEBUG=0
+fi
+AC_SUBST(WITH_MEM_DEBUG)
+
 AC_SUBST(CFLAGS)
 AC_SUBST(XML_CFLAGS)
 
@@ -159,5 +236,18 @@ AC_SUBST(HAVE_ISINF)
 
 AC_SUBST(M_LIBS)
 AC_SUBST(RDL_LIBS)
-AC_OUTPUT(libxml.spec Makefile doc/Makefile example/Makefile xml-config win32config.h)
+
+dnl
+dnl create the libxml link needed to get dependencies right
+dnl
+if test -f $srcdir/libxml 
+then
+    rm -f $srcdir/libxml libxml
+    (cd $srcdir ; ln -s . libxml)
+    (ln -s . libxml)
+else
+    (cd $srcdir ; rm -f libxml ; ln -s . libxml)
+    (rm -f libxml ; ln -s . libxml)
+fi
+AC_OUTPUT(libxml.spec Makefile doc/Makefile example/Makefile xmlversion.h xml-config win32config.h)
 

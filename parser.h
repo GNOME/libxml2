@@ -9,10 +9,10 @@
 #ifndef __XML_PARSER_H__
 #define __XML_PARSER_H__
 
-#include "tree.h"
-#include "valid.h"
-#include "xmlIO.h"
-#include "entities.h"
+#include <libxml/tree.h>
+#include <libxml/valid.h>
+#include <libxml/xmlIO.h>
+#include <libxml/entities.h>
 
 
 #ifdef __cplusplus

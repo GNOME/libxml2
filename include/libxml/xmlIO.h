@@ -10,9 +10,9 @@
 #define __XML_IO_H__
 
 #include <stdio.h>
-#include "tree.h"
-#include "parser.h"
-#include "encoding.h"
+#include <libxml/tree.h>
+#include <libxml/parser.h>
+#include <libxml/encoding.h>
 
 #ifdef __cplusplus
 extern "C" {

@@ -17,9 +17,9 @@
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
 #endif
-#include "xmlmemory.h"
-#include "entities.h"
-#include "parser.h"
+#include <libxml/xmlmemory.h>
+#include <libxml/entities.h>
+#include <libxml/parser.h>
 
 #define DEBUG_ENT_REF /* debugging of cross entities dependancies */
 

@@ -1,14 +1,14 @@
 
                   XML parser for Gnome
 
-Documentation is available on-line at
-    http://rufus.w3.org/veillard/XML/xml.html
+Full documentation is available on-line at
+    http://xmlsoft.org/
 
-A mailing-list has been set-up, to subscribe:
+A mailing-list is available, to subscribe:
     echo "subscribe xml" | mail majordomo@rufus.w3.org
 
 The list archive is at:
-    http://rufus.w3.org/veillard/XML/messages/
+    http://xmlsoft.org/messages/
 
 NOTE: I use a second CVS server for experimental version of the XML code,
       this mean that if you commit without a Changelog or without sending

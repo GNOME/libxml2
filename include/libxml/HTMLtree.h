@@ -11,7 +11,7 @@
 #define __HTML_TREE_H__
 
 #include <stdio.h>
-#include "tree.h"
+#include <libxml/tree.h>
 
 
 #ifdef __cplusplus

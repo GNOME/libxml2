@@ -8,6 +8,10 @@
  
 #ifndef __NANO_FTP_H__
 #define __NANO_FTP_H__
+
+#include <libxml/xmlversion.h>
+#ifdef LIBXML_FTP_ENABLED
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -101,5 +105,6 @@ int	xmlNanoFTPRead		(void *ctx,
 
 #ifdef __cplusplus
 }
+#endif /* LIBXML_FTP_ENABLED */
 #endif
 #endif /* __NANO_FTP_H__ */

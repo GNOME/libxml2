@@ -184,11 +184,29 @@ for really accurate description</h3>
 <ul>
   <li>working on HTML and XML links recognition layers, get in touch with me
     if you want to test those.</li>
+  <li>So far the feedback on the libxml2 beta is positive</li>
+</ul>
+
+<h3>2.0.0: Apr 3 2000</h3>
+<ul>
+  <li>First public release of libxml2. If you are using libxml, it's a good
+    idea to check the 1.x to 2.x upgrade instructions</li>
+  <li>The include are now located under $prefix/include/libxml (instead of
+    $prefix/include/gnome-xml), they also are referenced by 
+    <pre>#include &lt;libxml/xxx.h></pre>
+    <p>instead of </p>
+    <pre>#include "xxx.h"</pre>
+  </li>
   <li>a new URI module for parsing URIs and following strictly RFC 2396</li>
   <li>the memory allocation routines used by libxml can now be overloaded
     dynamically by using xmlMemSetup()</li>
-  <li>So far the feedback on the libxml2 beta is positive</li>
+  <li>The previously CVS only tool tester has been renamed
+    <strong>xmllint</strong> and is now installed as part of the libxml2
+    package</li>
+  <li></li>
 </ul>
+
+<p> </p>
 
 <h3>2.0.0beta: Mar 14 2000</h3>
 <ul>
@@ -404,7 +422,7 @@ should be only one ELEMENT under the root):</p>
 <p><img src="structure.gif" alt=" structure.gif "></p>
 
 <p>In the source package there is a small program (not installed by default)
-called <strong>tester</strong> which parses XML files given as argument and
+called <strong>xmllint</strong> which parses XML files given as argument and
 prints them back as parsed. This is useful for detecting errors both in XML
 code and in the XML parser itself. It has an option <strong>--debug</strong>
 which prints the actual in-memory structure of the document, here is the
@@ -590,9 +608,10 @@ limited to SAX. Just use the two first arguments of
 
 <p>The other way to get an XML tree in memory is by building it. Basically
 there is a set of functions dedicated to building new elements. (These are
-also described in "tree.h".) For example, here is a piece of code that
-produces the XML document used in the previous examples:</p>
-<pre>    xmlDocPtr doc;
+also described in &lt;libxml/tree.h>.) For example, here is a piece of code
+that produces the XML document used in the previous examples:</p>
+<pre>    #include &lt;libxml/tree.h>
+    xmlDocPtr doc;
     xmlNodePtr tree, subtree;
 
     doc = xmlNewDoc("1.0");
@@ -759,7 +778,7 @@ substitute entities by default.</p>
 
 <p>Here is the DOM tree built by libxml for the previous document in the
 default case:</p>
-<pre>/gnome/src/gnome-xml -> ./tester --debug test/ent1
+<pre>/gnome/src/gnome-xml -> ./xmllint --debug test/ent1
 DOCUMENT
 version=1.0
    ELEMENT EXAMPLE
@@ -816,7 +835,7 @@ have to point to any existing resource on the Web. It will bind all the
 element and atributes with that URL. I suggest to use an URL within a domain
 you control, and that the URL should contain some kind of version information
 if possible. For example, <code>"http://www.gnome.org/gnumeric/1.0/"</code> is
-a good namespace scheme. </p>
+a good namespace scheme.</p>
 
 <p>Then when you load a file, make sure that a namespace carrying the
 version-independent prefix is installed on the root element of your document,
@@ -1047,7 +1066,8 @@ DEBUG("parsePerson\n");
 
 <p>Here is another piece of code used to parse another level of the
 structure:</p>
-<pre>/*
+<pre>#include &lt;libxml/tree.h>
+/*
  * a Description for a Job
  */
 typedef struct job {
@@ -1112,6 +1132,6 @@ base under gnome-xml/example</p>
 
 <p><a href="mailto:Daniel.Veillard@w3.org">Daniel Veillard</a></p>
 
-<p>$Id: xml.html,v 1.30 2000/03/20 13:07:14 veillard Exp $</p>
+<p>$Id: xml.html,v 1.31 2000/03/24 13:41:54 veillard Exp $</p>
 </body>
 </html>

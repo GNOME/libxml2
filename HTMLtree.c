@@ -12,6 +12,10 @@
 #else
 #include "config.h"
 #endif
+
+#include "xmlversion.h"
+#ifdef LIBXML_HTML_ENABLED
+
 #include <stdio.h>
 #include <string.h> /* for memset() only ! */
 
@@ -22,11 +26,11 @@
 #include <stdlib.h>
 #endif
 
-#include "xmlmemory.h"
-#include "HTMLparser.h"
-#include "HTMLtree.h"
-#include "entities.h"
-#include "valid.h"
+#include <libxml/xmlmemory.h>
+#include <libxml/HTMLparser.h>
+#include <libxml/HTMLtree.h>
+#include <libxml/entities.h>
+#include <libxml/valid.h>
 
 static void
 htmlDocContentDump(xmlBufferPtr buf, xmlDocPtr cur);
@@ -404,3 +408,4 @@ htmlSaveFile(const char *filename, xmlDocPtr cur) {
     return(ret * sizeof(xmlChar));
 }
 
+#endif /* LIBXML_HTML_ENABLED */

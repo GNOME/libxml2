@@ -14,7 +14,7 @@
 
 #include <stdio.h>
 #include <stdarg.h>
-#include "parser.h"
+#include <libxml/parser.h>
 
 /**
  * xmlParserPrintFileInfo:

@@ -12,6 +12,9 @@
 #include "config.h"
 #endif
 
+#include "xmlversion.h"
+#if defined(LIBXML_XPATH_ENABLED) && defined(LIBXML_DEBUG_ENABLED)
+
 #include <stdio.h>
 #include <string.h>
 
@@ -32,11 +35,11 @@
 #endif
 
 
-#include "xpath.h"
-#include "tree.h"
-#include "parser.h"
-#include "debugXML.h"
-#include "xmlmemory.h"
+#include <libxml/xpath.h>
+#include <libxml/tree.h>
+#include <libxml/parser.h>
+#include <libxml/debugXML.h>
+#include <libxml/xmlmemory.h>
 
 static int debug = 0;
 static int expr = 0;
@@ -211,3 +214,10 @@ int main(int argc, char **argv) {
 
     return(0);
 }
+#else
+#include <stdio.h>
+int main(int argc, char **argv) {
+    printf("%s : XPath/Debug support not compiled in\n", argv[0]);
+    return(0);
+}
+#endif /* LIBXML_XPATH_ENABLED */

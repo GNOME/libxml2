@@ -8,6 +8,10 @@
  
 #ifndef __NANO_HTTP_H__
 #define __NANO_HTTP_H__
+
+#include <libxml/xmlversion.h>
+#ifdef LIBXML_HTTP_ENABLED
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -33,5 +37,7 @@ int	xmlNanoHTTPSave		(void *ctxt,
 void	xmlNanoHTTPClose	(void *ctx);
 #ifdef __cplusplus
 }
+
+#endif /* LIBXML_HTTP_ENABLED */
 #endif
 #endif /* __NANO_HTTP_H__ */

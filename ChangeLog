@@ -1,3 +1,11 @@
+Sun Jan 30 19:27:23 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* pattern.c include/libxml/pattern.h xmllint.c: added a 
+	  streaming pattern detector for a subset of XPath, should
+	  help Kasimier for identity constraints
+	* python/generator.py: applied Stephane Bidoul patch to find
+	  paths without breaking.
+
 Fri Jan 28 18:53:40 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemas.c: fixed an untested pointer dereference and a & vs &&

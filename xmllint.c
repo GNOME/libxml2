@@ -186,6 +186,7 @@ static int sax1 = 0;
 #ifdef LIBXML_PATTERN_ENABLED
 static const char *pattern = NULL;
 static xmlPatternPtr patternc = NULL;
+static xmlStreamCtxtPtr patstream = NULL;
 #endif
 static int options = 0;
 
@@ -805,28 +806,78 @@ static void myClose(FILE *f) {
  ************************************************************************/
 static void processNode(xmlTextReaderPtr reader) {
     const xmlChar *name, *value;
+    int type;
 
-    name = xmlTextReaderConstName(reader);
-    if (name == NULL)
-	name = BAD_CAST "--";
+    type = xmlTextReaderNodeType(reader);
 
-    value = xmlTextReaderConstValue(reader);
+    if (debug) {
+	name = xmlTextReaderConstName(reader);
+	if (name == NULL)
+	    name = BAD_CAST "--";
 
-    printf("%d %d %s %d %d", 
-	    xmlTextReaderDepth(reader),
-	    xmlTextReaderNodeType(reader),
-	    name,
-	    xmlTextReaderIsEmptyElement(reader),
-	    xmlTextReaderHasValue(reader));
-    if (value == NULL)
-	printf("\n");
-    else {
-	printf(" %s\n", value);
+	value = xmlTextReaderConstValue(reader);
+
+	
+	printf("%d %d %s %d %d", 
+		xmlTextReaderDepth(reader),
+		type,
+		name,
+		xmlTextReaderIsEmptyElement(reader),
+		xmlTextReaderHasValue(reader));
+	if (value == NULL)
+	    printf("\n");
+	else {
+	    printf(" %s\n", value);
+	}
     }
 #ifdef LIBXML_PATTERN_ENABLED
     if (patternc) {
-        if (xmlPatternMatch(patternc, xmlTextReaderCurrentNode(reader)) == 1) {
-	    printf("Node matches pattern %s\n", pattern);
+        xmlChar *path = NULL;
+        int match = -1;
+	
+	if (type == XML_READER_TYPE_ELEMENT) {
+	    /* do the check only on element start */
+	    match = xmlPatternMatch(patternc, xmlTextReaderCurrentNode(reader));
+
+	    if (match) {
+		path = xmlGetNodePath(xmlTextReaderCurrentNode(reader));
+		printf("Node %s matches pattern %s\n", path, pattern);
+	    }
+	}
+	if (patstream != NULL) {
+	    int ret;
+
+	    if (type == XML_READER_TYPE_ELEMENT) {
+		ret = xmlStreamPush(patstream,
+		                    xmlTextReaderConstLocalName(reader),
+				    xmlTextReaderConstNamespaceUri(reader));
+		if (ret < 0) {
+		    fprintf(stderr, "xmlStreamPush() failure\n");
+                    xmlFreeStreamCtxt(patstream);
+		    patstream = NULL;
+		} else if (ret != match) {
+		    if (path == NULL) {
+		        path = xmlGetNodePath(
+		                       xmlTextReaderCurrentNode(reader));
+		    }
+		    fprintf(stderr,
+		            "xmlPatternMatch and xmlStreamPush disagree\n");
+		    fprintf(stderr,
+		            "  pattern %s node %s\n",
+			    pattern, path);
+		    if (path != NULL)
+		        xmlFree(path);
+		}
+		
+
+	    } else if (type == XML_READER_TYPE_END_ELEMENT) {
+	        ret = xmlStreamPop(patstream);
+		if (ret < 0) {
+		    fprintf(stderr, "xmlStreamPop() failure\n");
+                    xmlFreeStreamCtxt(patstream);
+		    patstream = NULL;
+		}
+	    }
 	}
     }
 #endif
@@ -855,6 +906,19 @@ static void streamFile(char *filename) {
     } else
 #endif
 	reader = xmlReaderForFile(filename, NULL, options);
+#ifdef LIBXML_PATTERN_ENABLED
+    if (patternc != NULL) {
+        patstream = xmlPatternGetStreamCtxt(patternc);
+	if (patstream != NULL) {
+	    ret = xmlStreamPush(patstream, NULL, NULL);
+	    if (ret < 0) {
+		fprintf(stderr, "xmlStreamPush() failure\n");
+		xmlFreeStreamCtxt(patstream);
+		patstream = NULL;
+            }
+	}
+    }
+#endif
 
 
     if (reader != NULL) {
@@ -943,6 +1007,12 @@ static void streamFile(char *filename) {
 	fprintf(stderr, "Unable to open %s\n", filename);
 	progresult = XMLLINT_ERR_UNCLASS;
     }
+#ifdef LIBXML_PATTERN_ENABLED
+    if (patstream != NULL) {
+	xmlFreeStreamCtxt(patstream);
+	patstream = NULL;
+    }
+#endif
 #ifdef HAVE_SYS_MMAN_H
     if (memory) {
         xmlFreeParserInputBuffer(input);

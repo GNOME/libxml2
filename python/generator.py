@@ -6,13 +6,16 @@
 functions = {}
 enums = {} # { enumType: { enumConstant: enumValue } }
 
+import os
 import sys
 import string
 
-if len(sys.argv) > 1:
-    srcPref = sys.argv[1] + '/'
+if __name__ == "__main__":
+    # launched as a script
+    srcPref = os.path.dirname(sys.argv[0])
 else:
-    srcPref = ''
+    # imported
+    srcPref = os.path.dirname(__file__)
 
 #######################################################################
 #
@@ -596,14 +599,14 @@ def buildStubs():
     global unknown_types
 
     try:
-	f = open(srcPref + "libxml2-api.xml")
+	f = open(os.path.join(srcPref,"libxml2-api.xml"))
 	data = f.read()
 	(parser, target)  = getparser()
 	parser.feed(data)
 	parser.close()
     except IOError, msg:
 	try:
-	    f = open(srcPref + "../doc/libxml2-api.xml")
+	    f = open(os.path.join(srcPref,"..","doc","libxml2-api.xml"))
 	    data = f.read()
 	    (parser, target)  = getparser()
 	    parser.feed(data)
@@ -617,7 +620,7 @@ def buildStubs():
 
     py_types['pythonObject'] = ('O', "pythonObject", "pythonObject", "pythonObject")
     try:
-	f = open(srcPref + "libxml2-python-api.xml")
+	f = open(os.path.join(srcPref,"libxml2-python-api.xml"))
 	data = f.read()
 	(parser, target)  = getparser()
 	parser.feed(data)

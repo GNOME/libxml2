@@ -25,8 +25,41 @@
 
 #ifdef LIBXML_PATTERN_ENABLED
 
+#define DEBUG_STREAMING
+
 #define ERROR(a, b, c, d)
 #define ERROR5(a, b, c, d, e)
+
+#define XML_STREAM_STEP_DESC	1
+#define XML_STREAM_STEP_FINAL	2
+#define XML_STREAM_STEP_ROOT	4
+
+typedef struct _xmlStreamStep xmlStreamStep;
+typedef xmlStreamStep *xmlStreamStepPtr;
+struct _xmlStreamStep {
+    int flags;			/* properties of that step */
+    const xmlChar *name;	/* first string value if NULL accept all */
+    const xmlChar *ns;		/* second string value */
+};
+
+typedef struct _xmlStreamComp xmlStreamComp;
+typedef xmlStreamComp *xmlStreamCompPtr;
+struct _xmlStreamComp {
+    xmlDict *dict;		/* the dictionnary if any */
+    int nbStep;			/* number of steps in the automata */
+    int maxStep;		/* allocated number of steps */
+    xmlStreamStepPtr steps;	/* the array of steps */
+};
+
+struct _xmlStreamCtxt {
+    xmlStreamCompPtr comp;	/* the compiled stream */
+    int nbState;		/* number of state in the automata */
+    int maxState;		/* allocated number of state */
+    int level;			/* how deep are we ? */
+    int *states;		/* the array of step indexes */
+};
+
+static void xmlFreeStreamComp(xmlStreamCompPtr comp);
 
 /*
  * Types are private:
@@ -55,12 +88,14 @@ struct _xmlStepOp {
 
 struct _xmlPattern {
     void *data;    		/* the associated template */
-    struct _xmlPattern *next; /* siblings */
+    xmlDictPtr dict;		/* the optional dictionnary */
+    struct _xmlPattern *next;	/* siblings */
     const xmlChar *pattern;	/* the pattern */
 
     int nbStep;
     int maxStep;
     xmlStepOpPtr steps;        /* ops for computation */
+    xmlStreamCompPtr stream;	/* the streaming data if any */
 };
 
 typedef struct _xmlPatParserContext xmlPatParserContext;
@@ -124,18 +159,25 @@ xmlFreePattern(xmlPatternPtr comp) {
 
     if (comp == NULL)
 	return;
+    if (comp->stream != NULL)
+        xmlFreeStreamComp(comp->stream);
     if (comp->pattern != NULL)
 	xmlFree((xmlChar *)comp->pattern);
     if (comp->steps != NULL) {
-	for (i = 0;i < comp->nbStep;i++) {
-	    op = &comp->steps[i];
-	    if (op->value != NULL)
-		xmlFree((xmlChar *) op->value);
-	    if (op->value2 != NULL)
-		xmlFree((xmlChar *) op->value2);
+        if (comp->dict == NULL) {
+	    for (i = 0;i < comp->nbStep;i++) {
+		op = &comp->steps[i];
+		if (op->value != NULL)
+		    xmlFree((xmlChar *) op->value);
+		if (op->value2 != NULL)
+		    xmlFree((xmlChar *) op->value2);
+	    }
 	}
 	xmlFree(comp->steps);
     }
+    if (comp->dict != NULL)
+        xmlDictFree(comp->dict);
+
     memset(comp, -1, sizeof(xmlPattern));
     xmlFree(comp);
 }
@@ -161,7 +203,8 @@ xmlFreePatternList(xmlPatternPtr comp) {
  * xmlNewPatParserContext:
  * @pattern:  the pattern context
  * @dict:  the inherited dictionnary or NULL
- * @namespaces: the prefix definitions, array of [URI, prefix] or NULL
+ * @namespaces: the prefix definitions, array of [URI, prefix] terminated
+ *              with [NULL, NULL] or NULL if no namespace is used
  *
  * Create a new XML pattern parser context
  *
@@ -347,6 +390,9 @@ xmlPatMatch(xmlPatternPtr comp, xmlNodePtr node) {
             case XML_OP_END:
 		return(1);
             case XML_OP_ROOT:
+		if (node->type == XML_NAMESPACE_DECL)
+		    return(0);
+		node = node->parent;
 		if ((node->type == XML_DOCUMENT_NODE) ||
 #ifdef LIBXML_DOCB_ENABLED
 		    (node->type == XML_DOCB_DOCUMENT_NODE) ||
@@ -883,6 +929,10 @@ xmlCompilePathPattern(xmlPatParserContextPtr ctxt) {
     if (CUR == '@') {
 	TODO
     } else {
+        if (CUR == '/') {
+	    PUSH(XML_OP_ROOT, NULL, NULL);
+	    NEXT;
+	}
 	xmlCompileStepPattern(ctxt);
 	SKIP_BLANKS;
 	while (CUR == '/') {
@@ -905,6 +955,465 @@ xmlCompilePathPattern(xmlPatParserContextPtr ctxt) {
 error:
     return;
 }
+
+/************************************************************************
+ *									*
+ *			The streaming code				*
+ *									*
+ ************************************************************************/
+
+#ifdef DEBUG_STREAMING
+static void
+xmlDebugStreamComp(xmlStreamCompPtr stream) {
+    int i;
+
+    if (stream == NULL) {
+        printf("Stream: NULL\n");
+	return;
+    }
+    printf("Stream: %d steps\n", stream->nbStep);
+    for (i = 0;i < stream->nbStep;i++) {
+	if (stream->steps[i].ns != NULL) {
+	    printf("{%s}", stream->steps[i].ns);
+	}
+        if (stream->steps[i].name == NULL) {
+	    printf("* ");
+	} else {
+	    printf("%s ", stream->steps[i].name);
+	}
+	if (stream->steps[i].flags & XML_STREAM_STEP_ROOT)
+	    printf("root ");
+	if (stream->steps[i].flags & XML_STREAM_STEP_DESC)
+	    printf("// ");
+	if (stream->steps[i].flags & XML_STREAM_STEP_FINAL)
+	    printf("final ");
+	printf("\n");
+    }
+}
+static void
+xmlDebugStreamCtxt(xmlStreamCtxtPtr ctxt, int match) {
+    int i;
+
+    if (ctxt == NULL) {
+        printf("Stream: NULL\n");
+	return;
+    }
+    printf("Stream: level %d, %d states: ", ctxt->level, ctxt->nbState);
+    if (match)
+        printf("matches\n");
+    else
+        printf("\n");
+    for (i = 0;i < ctxt->nbState;i++) {
+        if (ctxt->states[2 * i] < 0)
+	    printf(" %d: free\n", i);
+	else {
+	    printf(" %d: step %d, level %d", i, ctxt->states[2 * i],
+	           ctxt->states[(2 * i) + 1]);
+            if (ctxt->comp->steps[ctxt->states[2 * i]].flags &
+	        XML_STREAM_STEP_DESC)
+	        printf(" //\n");
+	    else
+	        printf("\n");
+	}
+	printf("\n");
+    }
+}
+#endif
+/**
+ * xmlNewStreamComp:
+ * @size: the number of expected steps
+ *
+ * build a new compiled pattern for streaming
+ *
+ * Returns the new structure or NULL in case of error.
+ */
+static xmlStreamCompPtr
+xmlNewStreamComp(int size) {
+    xmlStreamCompPtr cur;
+
+    if (size < 4)
+        size  = 4;
+
+    cur = (xmlStreamCompPtr) xmlMalloc(sizeof(xmlStreamComp));
+    if (cur == NULL) {
+	ERROR(NULL, NULL, NULL,
+		"xmlNewStreamComp: malloc failed\n");
+	return(NULL);
+    }
+    memset(cur, 0, sizeof(xmlStreamComp));
+    cur->steps = (xmlStreamStepPtr) xmlMalloc(size * sizeof(xmlStreamStep));
+    if (cur->steps == NULL) {
+	xmlFree(cur);
+	ERROR(NULL, NULL, NULL,
+	      "xmlNewStreamComp: malloc failed\n");
+	return(NULL);
+    }
+    cur->nbStep = 0;
+    cur->maxStep = size;
+    return(cur);
+}
+
+/**
+ * xmlFreeStreamComp:
+ * @comp: the compiled pattern for streaming
+ *
+ * Free the compiled pattern for streaming
+ */
+static void
+xmlFreeStreamComp(xmlStreamCompPtr comp) {
+    if (comp != NULL) {
+        if (comp->steps != NULL)
+	    xmlFree(comp->steps);
+	if (comp->dict != NULL)
+	    xmlDictFree(comp->dict);
+        xmlFree(comp);
+    }
+}
+
+/**
+ * xmlStreamCompAddStep:
+ * @comp: the compiled pattern for streaming
+ * @name: the first string, the name, or NULL for *
+ * @ns: the second step, the namespace name
+ * @flags: the flags for that step
+ *
+ * Add a new step to the compiled pattern
+ *
+ * Returns -1 in case of error or the step index if successful
+ */
+static int
+xmlStreamCompAddStep(xmlStreamCompPtr comp, const xmlChar *name,
+                     const xmlChar *ns, int flags) {
+    xmlStreamStepPtr cur;
+
+    if (comp->nbStep >= comp->maxStep) {
+	cur = (xmlStreamStepPtr) xmlRealloc(comp->steps,
+				 comp->maxStep * 2 * sizeof(xmlStreamStep));
+	if (cur == NULL) {
+	    ERROR(NULL, NULL, NULL,
+		  "xmlNewStreamComp: malloc failed\n");
+	    return(-1);
+	}
+	comp->steps = cur;
+        comp->maxStep *= 2;
+    }
+    cur = &comp->steps[comp->nbStep++];
+    cur->flags = flags;
+    cur->name = name;
+    cur->ns = ns;
+    return(comp->nbStep - 1);
+}
+
+/**
+ * xmlStreamCompile:
+ * @comp: the precompiled pattern
+ * 
+ * Tries to stream compile a pattern
+ *
+ * Returns -1 in case of failure and 0 in case of success.
+ */
+static int
+xmlStreamCompile(xmlPatternPtr comp) {
+    xmlStreamCompPtr stream;
+    int i, s = 0, root = 0, desc = 0;
+
+    if ((comp == NULL) || (comp->steps == NULL))
+        return(-1);
+    stream = xmlNewStreamComp((comp->nbStep / 2) + 1);
+    if (stream == NULL)
+        return(-1);
+    if (comp->dict != NULL) {
+        stream->dict = comp->dict;
+	xmlDictReference(stream->dict);
+    }
+    for (i = 0;i < comp->nbStep;i++) {
+        switch (comp->steps[i].op) {
+	    case XML_OP_END:
+	        break;
+	    case XML_OP_ROOT:
+	        if (i != 0)
+		    goto error;
+		root = 1;
+		break;
+	    case XML_OP_CHILD:
+	    case XML_OP_ATTR:
+	    case XML_OP_NS:
+	        goto error;
+	    case XML_OP_ELEM:
+	        s = xmlStreamCompAddStep(stream, comp->steps[i].value,
+		                         comp->steps[i].value2, desc);
+		desc = 0;
+		if (s < 0)
+		    goto error;
+		break;
+	    case XML_OP_ALL:
+	        s = xmlStreamCompAddStep(stream, NULL, NULL, desc);
+		desc = 0;
+		if (s < 0)
+		    goto error;
+		break;
+	    case XML_OP_PARENT:
+	        break;
+	    case XML_OP_ANCESTOR:
+	        desc = XML_STREAM_STEP_DESC;
+		break;
+	}
+    }
+    stream->steps[s].flags |= XML_STREAM_STEP_FINAL;
+    if (root)
+	stream->steps[0].flags |= XML_STREAM_STEP_ROOT;
+#ifdef DEBUG_STREAMING
+    xmlDebugStreamComp(stream);
+#endif
+    comp->stream = stream;
+    return(0);
+error:
+    xmlFreeStreamComp(stream);
+    return(0);
+}
+
+/**
+ * xmlNewStreamCtxt:
+ * @size: the number of expected states
+ *
+ * build a new stream context
+ *
+ * Returns the new structure or NULL in case of error.
+ */
+static xmlStreamCtxtPtr
+xmlNewStreamCtxt(xmlStreamCompPtr stream) {
+    xmlStreamCtxtPtr cur;
+
+    cur = (xmlStreamCtxtPtr) xmlMalloc(sizeof(xmlStreamCtxt));
+    if (cur == NULL) {
+	ERROR(NULL, NULL, NULL,
+		"xmlNewStreamCtxt: malloc failed\n");
+	return(NULL);
+    }
+    memset(cur, 0, sizeof(xmlStreamCtxt));
+    cur->states = (int *) xmlMalloc(4 * 2 * sizeof(int));
+    if (cur->states == NULL) {
+	xmlFree(cur);
+	ERROR(NULL, NULL, NULL,
+	      "xmlNewStreamCtxt: malloc failed\n");
+	return(NULL);
+    }
+    cur->nbState = 0;
+    cur->maxState = 4;
+    cur->level = 0;
+    cur->comp = stream;
+    return(cur);
+}
+
+/**
+ * xmlFreeStreamCtxt:
+ * @stream: the stream context
+ *
+ * Free the stream context
+ */
+void
+xmlFreeStreamCtxt(xmlStreamCtxtPtr stream) {
+    if (stream != NULL) {
+        if (stream->states != NULL)
+	    xmlFree(stream->states);
+        xmlFree(stream);
+    }
+}
+
+/**
+ * xmlStreamCtxtAddState:
+ * @comp: the stream context
+ * @idx: the step index for that streaming state
+ *
+ * Add a new state to the stream context
+ *
+ * Returns -1 in case of error or the state index if successful
+ */
+static int
+xmlStreamCtxtAddState(xmlStreamCtxtPtr comp, int idx, int level) {
+    int i;
+    for (i = 0;i < comp->nbState;i++) {
+        if (comp->states[2 * i] < 0) {
+	    comp->states[2 * i] = idx;
+	    comp->states[2 * i + 1] = level;
+	    return(i);
+	}
+    }
+    if (comp->nbState >= comp->maxState) {
+        int *cur;
+
+	cur = (int *) xmlRealloc(comp->states,
+				 comp->maxState * 4 * sizeof(int));
+	if (cur == NULL) {
+	    ERROR(NULL, NULL, NULL,
+		  "xmlNewStreamCtxt: malloc failed\n");
+	    return(-1);
+	}
+	comp->states = cur;
+        comp->maxState *= 2;
+    }
+    comp->states[2 * comp->nbState] = idx;
+    comp->states[2 * comp->nbState++ + 1] = level;
+    return(comp->nbState - 1);
+}
+
+/**
+ * xmlStreamPush:
+ * @stream: the stream context
+ * @name: the current name
+ * @ns: the namespace name
+ *
+ * push new data onto the stream. NOTE: if the call xmlPatterncompile()
+ * indicated a dictionnary, then strings for name and ns will be expected
+ * to come from the dictionary.
+ * Both @name and @ns being NULL means the / i.e. the root of the document.
+ * This can also act as a reset.
+ *
+ * Returns: -1 in case of error, 1 if the current state in the stream is a
+ *    match and 0 otherwise.
+ */
+int
+xmlStreamPush(xmlStreamCtxtPtr stream,
+              const xmlChar *name, const xmlChar *ns) {
+    int ret = 0, tmp, i, m, match, step;
+    xmlStreamCompPtr comp;
+
+    if ((stream == NULL) || (stream->nbState < 0))
+        return(-1);
+    comp = stream->comp;
+    if ((name == NULL) && (ns == NULL)) {
+        stream->nbState = 0;
+	stream->level = 0;
+	if (comp->steps[0].flags & XML_STREAM_STEP_ROOT) {
+	    tmp = xmlStreamCtxtAddState(stream, 0, 0);
+	    if (tmp < 0)
+	        return(-1);
+	    if (comp->steps[tmp].flags & XML_STREAM_STEP_FINAL)
+		return(1);
+	}
+	return(0);
+    }
+    /*
+     * Check evolution of existing states
+     */
+    m = stream->nbState;
+    for (i = 0;i < m;i++) {
+        match = 0;
+	step = stream->states[2 * i];
+	/* dead states */
+	if (step < 0) continue;
+	/* skip new states just added */
+	if (stream->states[(2 * i) + 1] > stream->level) continue;
+
+	/* discard old states */
+	/* something needed about old level discarded */
+
+        if (comp->dict) {
+	    if (comp->steps[step].name == NULL) {
+	        if (comp->steps[step].ns == NULL)
+		    match = 1;
+		else
+		    match = (comp->steps[step].ns == ns);
+	    } else {
+		match = ((comp->steps[step].name == name) &&
+			 (comp->steps[step].ns == ns));
+	    }
+	} else {
+	    if (comp->steps[step].name == NULL) {
+	        if (comp->steps[step].ns == NULL)
+		    match = 1;
+		else
+		    match = xmlStrEqual(comp->steps[step].ns, ns);
+	    } else {
+		match = ((xmlStrEqual(comp->steps[step].name, name)) &&
+			 (xmlStrEqual(comp->steps[step].ns, ns)));
+	    }
+	}
+	if (match) {
+	    if (comp->steps[step].flags & XML_STREAM_STEP_DESC) {
+		if (comp->steps[step].flags & XML_STREAM_STEP_FINAL) {
+		    ret = 1;
+		} else {
+		    /* descending match create a new state */
+		    xmlStreamCtxtAddState(stream, step + 1, stream->level + 1);
+		}
+	    } else {
+		if (comp->steps[step].flags & XML_STREAM_STEP_FINAL) {
+		    ret = 1;
+		    stream->states[2 * i] = -1;
+		} else {
+		    stream->states[2 * i] = step + 1;
+		    stream->states[2 * i + 1] = stream->level + 1;
+		}
+	    }
+	} else if (!(comp->steps[step].flags & XML_STREAM_STEP_DESC)) {
+	    /* didn't match, discard */
+	    printf("discard %d\n", i); 
+	    stream->states[2 * i] = -1;
+	}
+    }
+
+    /*
+     * Check creating a new state.
+     */
+    stream->level++;
+    if (!(comp->steps[0].flags & XML_STREAM_STEP_ROOT)) {
+        match = 0;
+        if (comp->dict) {
+	    if (comp->steps[0].name == NULL) {
+	        if (comp->steps[0].ns == NULL)
+		    match = 1;
+		else
+		    match = (comp->steps[0].ns == ns);
+	    } else {
+		match = ((comp->steps[0].name == name) &&
+			 (comp->steps[0].ns == ns));
+	    }
+	} else {
+	    if (comp->steps[0].name == NULL) {
+	        if (comp->steps[0].ns == NULL)
+		    match = 1;
+		else
+		    match = xmlStrEqual(comp->steps[0].ns, ns);
+	    } else {
+		match = ((xmlStrEqual(comp->steps[0].name, name)) &&
+			 (xmlStrEqual(comp->steps[0].ns, ns)));
+	    }
+	}
+	if (match) {
+	    if (comp->steps[0].flags & XML_STREAM_STEP_FINAL)
+	        ret = 1;
+            else
+	        xmlStreamCtxtAddState(stream, 1, stream->level);
+	}
+    }
+    
+#ifdef DEBUG_STREAMING
+    xmlDebugStreamCtxt(stream, ret);
+#endif
+    return(ret);
+}
+
+/**
+ * xmlStreamPop:
+ * @stream: the stream context
+ *
+ * push one level from the stream.
+ *
+ * Returns: -1 in case of error, 0 otherwise.
+ */
+int
+xmlStreamPop(xmlStreamCtxtPtr stream) {
+    if (stream == NULL)
+        return(-1);
+    stream->level--;
+    if (stream->level < 0)
+        return(-1);
+    
+    /* something is certainly needed here */
+    return(0);
+}
+
 /************************************************************************
  *									*
  *			The public interfaces				*
@@ -938,6 +1447,7 @@ xmlPatterncompile(const xmlChar *pattern, xmlDict *dict,
     xmlCompilePathPattern(ctxt);
     xmlFreePatParserContext(ctxt);
 
+    xmlStreamCompile(ret);
     if (xmlReversePattern(ret) < 0)
         goto error;
     return(ret);
@@ -962,6 +1472,23 @@ xmlPatternMatch(xmlPatternPtr comp, xmlNodePtr node)
     if ((comp == NULL) || (node == NULL))
         return(-1);
     return(xmlPatMatch(comp, node));
+}
+
+/**
+ * xmlPatternGetStreamCtxt:
+ * @comp: the precompiled pattern
+ *
+ * Get a streaming context for that pattern
+ * Use xmlFreeStreamCtxt to free the context.
+ *
+ * Returns a pointer to the context or NULL in case of failure
+ */
+xmlStreamCtxtPtr
+xmlPatternGetStreamCtxt(xmlPatternPtr comp)
+{
+    if ((comp == NULL) || (comp->stream == NULL))
+        return(NULL);
+    return(xmlNewStreamCtxt(comp->stream));
 }
 
 #endif /* LIBXML_PATTERN_ENABLED */

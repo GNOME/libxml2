@@ -44,6 +44,20 @@ XMLPUBFUN int XMLCALL
 			xmlPatternMatch		(xmlPatternPtr comp,
 						 xmlNodePtr node);
 
+/* streaming interfaces */
+typedef struct _xmlStreamCtxt xmlStreamCtxt;
+typedef xmlStreamCtxt *xmlStreamCtxtPtr;
+
+XMLPUBFUN xmlStreamCtxtPtr XMLCALL
+			xmlPatternGetStreamCtxt	(xmlPatternPtr comp);
+XMLPUBFUN void XMLCALL
+			xmlFreeStreamCtxt	(xmlStreamCtxtPtr stream);
+XMLPUBFUN int XMLCALL
+			xmlStreamPush		(xmlStreamCtxtPtr stream,
+						 const xmlChar *name,
+						 const xmlChar *ns);
+XMLPUBFUN int XMLCALL
+			xmlStreamPop		(xmlStreamCtxtPtr stream);
 #ifdef __cplusplus
 }
 #endif

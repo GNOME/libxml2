@@ -2234,13 +2234,13 @@ xmlAttrDump(xmlDocPtr doc, xmlAttrPtr cur) {
     }
     xmlBufferWriteChar(" ");
     xmlBufferWriteCHAR(cur->name);
+    xmlBufferWriteChar("=\"");
     value = xmlNodeListGetString(doc, cur->val, 0);
     if (value) {
-	xmlBufferWriteChar("=\"");
 	xmlBufferWriteCHAR(value);
-	xmlBufferWriteChar("\"");
 	free(value);
     }
+    xmlBufferWriteChar("\"");
 }
 
 /**

@@ -1,3 +1,7 @@
+Sat Dec  5 12:25:09 EST 1998 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* tree.c: patched a bug in the generation of empty attributes
+
 Fri Nov 27 01:36:54 EST 1998 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* entities.[ch], tree.[ch], tester.c: added copy interfaces

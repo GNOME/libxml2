@@ -2226,9 +2226,28 @@ xmlOldParseAttValue(xmlParserCtxtPtr ctxt) {
      * Ok loop until we reach one of the ending char or a size limit.
      */
     cur = CUR;
-    while ((cur != limit) && (cur != '<')) {
+    while ((ctxt->token != 0) ||
+	   ((cur != limit) && (cur != '<'))) {
 	if (cur == 0) break;
-        if ((cur == '&') && (NXT(1) == '#')) {
+	if (ctxt->token == '&') {
+	    /*
+	     * The reparsing will be done in xmlStringGetNodeList()
+	     * called by the attribute() function in SAX.c
+	     */
+	    static xmlChar quote[6] = "&#38;";
+
+	    if (out - buffer > buffer_size - 10) {
+		int index = out - buffer;
+
+		growBuffer(buffer);
+		out = &buffer[index];
+	    }
+	    current = &quote[0];
+	    while (*current != 0) { /* non input consuming */
+		*out++ = *current++;
+	    }
+	    NEXT;
+	} else if ((cur == '&') && (NXT(1) == '#')) {
 	    int val = xmlOldParseCharRef(ctxt);
 	    *out++ = val;
 	    if (out - buffer > buffer_size - 10) {
@@ -2268,7 +2287,7 @@ xmlOldParseAttValue(xmlParserCtxtPtr ctxt) {
 	    }
 	} else {
 	    /*  invalid for UTF-8 , use COPY(out); !!!!!! */
-	    if ((cur == 0x20) || (cur == 0xD) || (cur == 0xA) || (cur == 0x9)) {
+	    if ((ctxt->token == 0) && ((cur == 0x20) || (cur == 0xD) || (cur == 0xA) || (cur == 0x9))) {
 		*out++ = 0x20;
 		if (out - buffer > buffer_size - 10) {
 		  int index = out - buffer;

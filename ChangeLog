@@ -1,3 +1,12 @@
+2001-08-13  Alex Larsson  <alexl@redhat.com>
+
+	* parserold.c:
+	Fix a parser bug. When reading attribute values with &#34; the parser
+	thought this was the ending quote. Also fixes problems with some other
+	escaped values (<, & and escaped whitespace).
+	This fixes a bug in nautilus where sometimes the tree view didn't show
+	up.
+
 Mon Aug 13 12:51:17 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* libxml.spec.in: applied patch from Jens Finke to improve the

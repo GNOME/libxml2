@@ -313,6 +313,7 @@ struct _xmlNs {
     xmlNsType      type;	/* global or local */
     const xmlChar *href;	/* URL for the namespace */
     const xmlChar *prefix;	/* prefix for the namespace */
+    void           *_private;   /* application data */
 };
 
 /**

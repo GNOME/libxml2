@@ -108,6 +108,7 @@ xmlNodePtr	xmlTextReaderCurrentNode	(xmlTextReaderPtr reader);
 xmlDocPtr	xmlTextReaderCurrentDoc		(xmlTextReaderPtr reader);
 xmlNodePtr	xmlTextReaderExpand		(xmlTextReaderPtr reader);
 int		xmlTextReaderNext		(xmlTextReaderPtr reader);
+int		xmlTextReaderIsValid		(xmlTextReaderPtr reader);
 
 /*
  * Error handling extensions

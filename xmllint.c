@@ -635,15 +635,24 @@ static void streamFile(char *filename) {
 	    ret = xmlTextReaderRead(reader);
 	}
 
+	if (valid) {
+	    if (xmlTextReaderIsValid(reader) != 1) {
+		xmlGenericError(xmlGenericErrorContext,
+			"Document %s does not validate\n", filename);
+		progresult = 3;
+	    }
+	}
 	/*
 	 * Done, cleanup and status
 	 */
 	xmlFreeTextReader(reader);
 	if (ret != 0) {
 	    printf("%s : failed to parse\n", filename);
+	    progresult = 1;
 	}
     } else {
 	fprintf(stderr, "Unable to open %s\n", filename);
+	progresult = 1;
     }
 }
 

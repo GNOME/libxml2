@@ -2612,6 +2612,20 @@ xmlTextReaderSetErrorHandler(xmlTextReaderPtr reader,
 }
 
 /**
+ * xmlTextReaderIsValid:
+ * @reader:  the xmlTextReaderPtr used
+ *
+ * Retrieve the validity status from the parser context
+ *
+ * Returns the flag value 1 if valid, 0 if no, and -1 in case of error
+ */
+int
+xmlTextReaderIsValid(xmlTextReaderPtr reader) {
+    if ((reader == NULL) || (reader->ctxt == NULL)) return(-1);
+    return(reader->ctxt->valid);
+}
+
+/**
  * xmlTextReaderGetErrorHandler:
  * @reader:  the xmlTextReaderPtr used
  * @f:	the callback function or NULL is no callback has been registered

@@ -1,3 +1,8 @@
+Fri Sep 12 17:24:11 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c: fix a problem with strcpy() in xmlXPathFormatNumber()
+	  valgrind pointed out the strings overlapped. cleanup .
+
 Fri Sep 12 11:43:12 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: applied speedup to xmlSearchNs() as suggested by

@@ -822,6 +822,12 @@ xmlEncodeSpecialChars(xmlDocPtr doc, const xmlChar *input) {
 	    *out++ = 'o';
 	    *out++ = 't';
 	    *out++ = ';';
+	} else if (*cur == '\r') {
+	    *out++ = '&';
+	    *out++ = '#';
+	    *out++ = '1';
+	    *out++ = '3';
+	    *out++ = ';';
 	} else {
 	    /*
 	     * Works because on UTF-8, all extended sequences cannot

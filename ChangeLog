@@ -1,3 +1,9 @@
+Wed Aug  4 16:58:08 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am config.h.in configure.in python/Makefile.am:
+	  applied a patch from Gerrit P. Haase to get python bindings
+	  on Cygwin
+
 Tue Aug  3 15:08:22 PDT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* include/libxml/valid.h: elaborated on description of
@@ -10,7 +16,7 @@ Tue Aug  3 15:08:22 PDT 2004 William Brack <wbrack@mmm.com.hk>
 Tue Aug  3 23:59:23 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* doc/ChangeLog.xsl doc/downloads.html doc/xml.html doc/*:
-	  fixes documetation glitches raised by Oliver Stoeneberg
+	  fixes documentation glitches raised by Oliver Stoeneberg
 
 Tue Aug  3 09:42:31 PDT 2004 William Brack <wbrack@mmm.com.hk>
 

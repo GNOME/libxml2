@@ -35,28 +35,28 @@ libxml_la_SOURCES = \
 		nanohttp.c \
 		nanoftp.c
 
-xmlincdir = $(srcdir)/include/libxml
+xmlincdir = $(includedir)/libxml
 
 xmlinc_HEADERS = \
-		$(xmlincdir)/SAX.h \
-		$(xmlincdir)/entities.h \
-		$(xmlincdir)/encoding.h \
-		$(xmlincdir)/parser.h \
-		$(xmlincdir)/parserInternals.h \
-		$(xmlincdir)/xml-error.h \
-		$(xmlincdir)/HTMLparser.h \
-		$(xmlincdir)/HTMLtree.h \
-		$(xmlincdir)/debugXML.h \
-		$(xmlincdir)/tree.h \
-		$(xmlincdir)/xpath.h \
-		$(xmlincdir)/xmlIO.h \
-		$(xmlincdir)/xmlmemory.h \
-		$(xmlincdir)/nanohttp.h \
-		$(xmlincdir)/nanoftp.h \
-		$(xmlincdir)/uri.h \
-		$(xmlincdir)/valid.h \
-		$(xmlincdir)/xlink.h \
-		$(xmlincdir)/xmlversion.h
+		include/libxml/SAX.h \
+		include/libxml/entities.h \
+		include/libxml/encoding.h \
+		include/libxml/parser.h \
+		include/libxml/parserInternals.h \
+		include/libxml/xmlerror.h \
+		include/libxml/HTMLparser.h \
+		include/libxml/HTMLtree.h \
+		include/libxml/debugXML.h \
+		include/libxml/tree.h \
+		include/libxml/xpath.h \
+		include/libxml/xmlIO.h \
+		include/libxml/xmlmemory.h \
+		include/libxml/nanohttp.h \
+		include/libxml/nanoftp.h \
+		include/libxml/uri.h \
+		include/libxml/valid.h \
+		include/libxml/xlink.h \
+		include/libxml/xmlversion.h
 
 DEPS = $(top_builddir)/libxml.la
 LDADDS = $(top_builddir)/libxml.la @Z_LIBS@ @M_LIBS@

@@ -13,7 +13,7 @@
 #include "config.h"
 #endif
 
-#include "xmlversion.h"
+#include <libxml/xmlversion.h>
 #ifdef LIBXML_DEBUG_ENABLED
 
 #include <stdio.h>

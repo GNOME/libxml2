@@ -12,7 +12,7 @@
 #include "config.h"
 #endif
 
-#include "xmlversion.h"
+#include <libxml/xmlversion.h>
 #if defined(LIBXML_XPATH_ENABLED) && defined(LIBXML_DEBUG_ENABLED)
 
 #include <stdio.h>

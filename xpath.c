@@ -19,7 +19,7 @@
 #include "config.h"
 #endif
 
-#include "xmlversion.h"
+#include <libxml/xmlversion.h>
 #ifdef LIBXML_XPATH_ENABLED
 
 #include <stdio.h>
@@ -269,6 +269,10 @@ const char *xmlXPathErrorMessages[] = {
     "Invalid number of arguments",
     "Invalid context size",
     "Invalid context position",
+    "Memory allocation error",
+    "Syntax error",
+    "Resource error",
+    "Sub resource error"
 };
 
 /**
@@ -777,9 +781,11 @@ xmlXPathFreeObject(xmlXPathObjectPtr obj) {
     if (obj->type == XPATH_NODESET) {
 	if (obj->nodesetval != NULL)
 	    xmlXPathFreeNodeSet(obj->nodesetval);
+#ifdef LIBXML_XPTR_ENABLED
     } else if (obj->type == XPATH_LOCATIONSET) {
 	if (obj->user != NULL)
 	    xmlXPathFreeLocationSet(obj->user);
+#endif
     } else if (obj->type == XPATH_STRING) {
 	if (obj->stringval != NULL)
 	    xmlFree(obj->stringval);
@@ -4861,68 +4867,6 @@ xmlXPathEval(const xmlChar *str, xmlXPathContextPtr ctx) {
     } while (tmp != NULL);
     if (stack != 0) {
 	fprintf(xmlXPathDebug, "xmlXPathEval: %d object left on the stack\n",
-	        stack);
-    }
-    if (ctxt->error != XPATH_EXPRESSION_OK) {
-	xmlXPathFreeObject(res);
-	res = NULL;
-    }
-        
-    xmlXPathFreeParserContext(ctxt);
-    return(res);
-}
-
-/**
- * xmlXPathEvalXPtrExpr:
- * @str:  the XPointer XPtrExpr expression
- * @ctx:  the XPointer context
- *
- * Evaluate the location set corresponding to this expression.
- *
- * Returns the xmlXPathObjectPtr resulting from the eveluation or NULL.
- *         the caller has to free the object.
- */
-xmlXPathObjectPtr
-xmlXPathEvalXPtrExpr(const xmlChar *str, xmlXPathContextPtr ctx) {
-    xmlXPathParserContextPtr ctxt;
-    xmlXPathObjectPtr res = NULL, tmp;
-    xmlXPathObjectPtr init = NULL;
-    int stack = 0;
-
-    xmlXPathInit();
-
-    CHECK_CONTEXT(ctx)
-
-    if (xmlXPathDebug == NULL)
-        xmlXPathDebug = stderr;
-    ctxt = xmlXPathNewParserContext(str, ctx);
-    if (ctx->node != NULL) {
-	init = xmlXPathNewNodeSet(ctx->node);
-	valuePush(ctxt, init);
-    }
-    if (str[0] == '/')
-	xmlXPathRoot(ctxt);
-    xmlXPathEvalExpr(ctxt);
-
-    if ((ctxt->value == NULL) ||
-	((ctxt->value->type != XPATH_NODESET) &&
-	 (ctxt->value->type != XPATH_LOCATIONSET))) {
-	fprintf(xmlXPathDebug,
-		"xmlXPathEvalXPtrExpr: evaluation failed to return a node set\n");
-    } else {
-	res = valuePop(ctxt);
-    }
-
-    do {
-        tmp = valuePop(ctxt);
-	if (tmp != NULL) {
-	    xmlXPathFreeObject(tmp);
-	    if (tmp != init)
-		stack++;    
-        }
-    } while (tmp != NULL);
-    if (stack != 0) {
-	fprintf(xmlXPathDebug, "xmlXPathEvalXPtrExpr: %d object left on the stack\n",
 	        stack);
     }
     if (ctxt->error != XPATH_EXPRESSION_OK) {

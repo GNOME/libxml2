@@ -21,7 +21,7 @@
 #endif
 #endif /* STANDALONE */
 
-#include "xmlversion.h"
+#include <libxml/xmlversion.h>
 
 #ifdef LIBXML_FTP_ENABLED
 #include <stdio.h>

@@ -42,7 +42,7 @@
 #include <libxml/parserInternals.h>
 #include <libxml/valid.h>
 #include <libxml/entities.h>
-#include <libxml/xml-error.h>
+#include <libxml/xmlerror.h>
 #include <libxml/encoding.h>
 #include <libxml/valid.h>
 #include <libxml/xmlIO.h>

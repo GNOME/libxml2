@@ -42,7 +42,11 @@ typedef enum {
     XPATH_INVALID_TYPE,
     XPATH_INVALID_ARITY,
     XPATH_INVALID_CTXT_SIZE,
-    XPATH_INVALID_CTXT_POSITION
+    XPATH_INVALID_CTXT_POSITION,
+    XPATH_MEMORY_ERROR,
+    XPTR_SYNTAX_ERROR,
+    XPTR_RESOURCE_ERROR,
+    XPTR_SUB_RESOURCE_ERROR
 } xmlXPathError;
 
 /*
@@ -263,8 +267,13 @@ void		xmlXPatherror	(xmlXPathParserContextPtr ctxt,
 				 int no);
 
 /**
- * Utilities for implementing more functions
+ * Utilities to extend XPath (XPointer)
  */
+xmlXPathParserContextPtr
+		  xmlXPathNewParserContext	(const xmlChar *str,
+			  			 xmlXPathContextPtr ctxt);
+void		  xmlXPathFreeParserContext	(xmlXPathParserContextPtr ctxt);
+
 xmlXPathObjectPtr valuePop			(xmlXPathParserContextPtr ctxt);
 int		  valuePush			(xmlXPathParserContextPtr ctxt,
 					 	xmlXPathObjectPtr value);

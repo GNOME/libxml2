@@ -21,7 +21,7 @@
 #include "config.h"
 #endif
 
-#include "xmlversion.h"
+#include <libxml/xmlversion.h>
 
 #ifdef LIBXML_HTTP_ENABLED
 #include <stdio.h>

@@ -39,7 +39,19 @@
 #endif
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <libxml/xmlmemory.h>
+#include <libxml/tree.h>
+#include <libxml/parser.h>
+#include <libxml/parserInternals.h>
+#include <libxml/valid.h>
+#include <libxml/entities.h>
+#include <libxml/xmlerror.h>
+#include <libxml/encoding.h>
+#include <libxml/xmlIO.h>
+#include <libxml/uri.h>
+
 #ifdef HAVE_CTYPE_H
 #include <ctype.h>
 #endif
@@ -59,16 +71,6 @@
 #include <zlib.h>
 #endif
 
-#include <libxml/xmlmemory.h>
-#include <libxml/tree.h>
-#include <libxml/parser.h>
-#include <libxml/parserInternals.h>
-#include <libxml/xml-error.h>
-#include <libxml/entities.h>
-#include <libxml/encoding.h>
-#include <libxml/valid.h>
-#include <libxml/xmlIO.h>
-#include <libxml/uri.h>
 
 #define XML_PARSER_BIG_BUFFER_SIZE 1000
 #define XML_PARSER_BUFFER_SIZE 100

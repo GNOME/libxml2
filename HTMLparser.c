@@ -12,7 +12,7 @@
 #include "config.h"
 #endif
 
-#include "xmlversion.h"
+#include <libxml/xmlversion.h>
 #ifdef LIBXML_HTML_ENABLED
 
 #include <stdio.h>
@@ -40,7 +40,7 @@
 #include <libxml/tree.h>
 #include <libxml/parser.h>
 #include <libxml/parserInternals.h>
-#include <libxml/xml-error.h>
+#include <libxml/xmlerror.h>
 #include <libxml/HTMLparser.h>
 #include <libxml/entities.h>
 #include <libxml/encoding.h>

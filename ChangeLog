@@ -1,3 +1,8 @@
+Thu Feb  8 10:37:00 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* hash.[ch]: added a first version of xmlHashSize()
+	* valid.c: another bug fix from Gary Pennington
+
 Wed Feb  7 19:22:37 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* valid.c: couple of bug fixes pointed by Gary Pennington

@@ -1775,8 +1775,12 @@ xmlAddRef(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const xmlChar *value,
      * !!! Should we keep track of all refs ? and use xmlHashAddEntry2 ?
      */
     if (xmlHashAddEntry(table, value, ret) < 0) {
-	xmlFreeRef(ret);
-	return(NULL);
+	/*
+	 * Since there is no discrimination on error returns
+	 * from xmlHashAddEntry, I'm presuming <0 means the
+	 * key already exists.
+	 */
+	xmlHashUpdateEntry(table, value, ret, (xmlHashDeallocator) xmlFreeRef);
     }
     return(ret);
 }

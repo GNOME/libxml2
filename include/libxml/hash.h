@@ -92,6 +92,7 @@ void *			xmlHashLookup3	(xmlHashTablePtr table,
  */
 xmlHashTablePtr		xmlHashCopy	(xmlHashTablePtr table,
 					 xmlHashCopier f);
+int			xmlHashSize	(xmlHashTablePtr);
 void			xmlHashScan	(xmlHashTablePtr table,
 					 xmlHashScanner f,
 					 void *data);

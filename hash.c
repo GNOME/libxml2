@@ -47,6 +47,7 @@ struct _xmlHashEntry {
 struct _xmlHashTable {
     struct _xmlHashEntry **table;
     int size;
+    int nbElems;
 };
 
 /*
@@ -83,6 +84,7 @@ xmlHashCreate(int size) {
     table = xmlMalloc(sizeof(xmlHashTable));
     if (table) {
         table->size = size;
+	table->nbElems = 0;
         table->table = xmlMalloc(size * sizeof(xmlHashEntry));
         if (table->table) {
   	    memset(table->table, 0, size * sizeof(xmlHashEntry));
@@ -297,6 +299,7 @@ xmlHashAddEntry3(xmlHashTablePtr table, const xmlChar *name,
     } else {
 	insert->next = entry;
     }
+    table->nbElems++;
     return(0);
 }
 
@@ -362,6 +365,7 @@ xmlHashUpdateEntry3(xmlHashTablePtr table, const xmlChar *name,
     entry->name3 = xmlStrdup(name3);
     entry->payload = userdata;
     entry->next = NULL;
+    table->nbElems++;
 
 
     if (insert == NULL) {
@@ -510,6 +514,20 @@ xmlHashCopy(xmlHashTablePtr table, xmlHashCopier f) {
 	    }
 	}
     }
+    ret->nbElems = table->nbElems;
     return(ret);
 }
 
+/**
+ * xmlHashSize:
+ * @table: the hash table
+ *
+ * Returns the number of elements in the hash table or
+ * -1 in case of error
+ */
+int
+xmlHashSize(xmlHashTablePtr table) {
+    if (table == NULL)
+	return(-1);
+    return(table->nbElems);
+}

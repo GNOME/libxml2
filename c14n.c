@@ -425,15 +425,13 @@ xmlExcC14NProcessNamespacesAxis(xmlC14NCtxPtr ctx, xmlNodePtr cur)
     /*
      * First of all, add all namespaces required by current node
      * (i.e. node namespace and all attribute namespaces)
-     * todo: do we need to check for default "xml:" namespace
+     * we also need to check for default "xml:" namespace
      */
     ns = (cur->ns != NULL) ? cur->ns : xmlSearchNs(ctx->doc, cur, NULL);
     if ((ns != NULL) && (!xmlC14NIsXmlNs(ns)) &&
-        (xmlListSearch(list, ns) == NULL)) {
-        if (!xmlExcC14NIsRendered(ctx, ns)) {
+	(xmlListSearch(list, ns) == NULL) && !xmlExcC14NIsRendered(ctx, ns)) {
             xmlListInsert(list, ns);
             xmlXPathNodeSetAdd(ctx->ns_rendered, (xmlNodePtr) ns);
-        }
     }
     attr = cur->properties;
     while (attr != NULL) {
@@ -443,10 +441,10 @@ xmlExcC14NProcessNamespacesAxis(xmlC14NCtxPtr ctx, xmlNodePtr cur)
 	   * do not apply directly to attributes")	 
          */
         if ((attr->ns != NULL) && xmlC14NIsVisible(ctx, attr) && 
-        			 (xmlListSearch(list, attr->ns) == NULL) && 
-				 (!xmlExcC14NIsRendered(ctx, attr->ns))) {
-            xmlListInsert(list, attr->ns);
-            xmlXPathNodeSetAdd(ctx->ns_rendered, (xmlNodePtr) attr->ns);
+	    (!xmlC14NIsXmlNs(attr->ns)) && 
+            (xmlListSearch(list, attr->ns) == NULL) && (!xmlExcC14NIsRendered(ctx, attr->ns))) {
+        	xmlListInsert(list, attr->ns);
+        	xmlXPathNodeSetAdd(ctx->ns_rendered, (xmlNodePtr) attr->ns);
         }
         attr = attr->next;
     }

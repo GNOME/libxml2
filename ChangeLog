@@ -1,3 +1,8 @@
+Thu Apr 18 23:00:02 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* c14n.c: patch from Aleksey Sanin reflecting a change in the
+	  ExcC14N specification
+
 Thu Apr 18 18:38:30 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: patch from Markus Henke, fix for recursive entities.

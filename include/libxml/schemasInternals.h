@@ -222,6 +222,7 @@ struct _xmlSchemaType {
     xmlSchemaTypePtr baseType;
     xmlSchemaFacetPtr facets;
     struct _xmlSchemaType *redef;/* possible redefinitions for the type */
+    int recurse;
 };
 
 /*

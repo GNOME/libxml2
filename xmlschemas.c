@@ -4548,7 +4548,16 @@ xmlSchemaTypeFixup(xmlSchemaTypePtr typeDecl,
                                       typeDecl->base, name);
                         return;
                     }
+                    if (typeDecl->recurse) {
+                        xmlSchemaPErr(ctxt, typeDecl->node,
+                                      XML_SCHEMAP_UNKNOWN_BASE_TYPE,
+				  "Schemas: extension type %s is recursive\n",
+                                      name, NULL);
+                        return;
+		    }
+		    typeDecl->recurse = 1;
                     xmlSchemaTypeFixup(base, ctxt, NULL);
+		    typeDecl->recurse = 0;
                     if (explicitContentType == XML_SCHEMA_CONTENT_EMPTY) {
                         /* 2.1 */
                         typeDecl->contentType = base->contentType;

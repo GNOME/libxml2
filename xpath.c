@@ -10917,7 +10917,12 @@ xmlXPathEvaluatePredicateResult(xmlXPathParserContextPtr ctxt,
         case XPATH_BOOLEAN:
 	    return(res->boolval);
         case XPATH_NUMBER:
+#ifdef WIN32
+	    return(((res->floatval == ctxt->context->proximityPosition) &&
+	           (!xmlXPathIsNaN(res->floatval)) /* MSC pbm Mark Vadoc !*/);
+#else
 	    return(res->floatval == ctxt->context->proximityPosition);
+#endif
         case XPATH_NODESET:
         case XPATH_XSLT_TREE:
 	    if (res->nodesetval == NULL)

@@ -1,3 +1,12 @@
+Thu Dec 12 01:09:34 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLtree.c include/libxml/HTMLtree.h: patch from Mark Vadok
+	  about htmlNodeDumpOutput location.
+	* xpath.c: removed an undefined function signature
+	* doc/apibuild.py doc/libxml2-api.xml: the script was exporting
+	  too many symbols in the API breaking the python bindings.
+	  Updated with the libxslt/libexslt changes.
+
 Wed Dec 11 20:26:15 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in: preparing release of 2.4.29

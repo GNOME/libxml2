@@ -165,15 +165,8 @@ registerDefaultInputCallbacks()
 registerDefaultOutputCallbacks()
 registerHTTPPostCallbacks()
 
-# functions from module xmlmemory.c
-mallocBreakpoint()
-
 # functions from module xmlregexp
 regexpCompile()
-
-# functions from module xmlschemastypes
-schemaCleanupTypes()
-schemaInitTypes()
 
 # functions from module xmlunicode
 uCSIsAlphabeticPresentationForms()
@@ -395,9 +388,6 @@ Class xmlNode(xmlCore)
     unsetNsProp()
     unsetProp()
 
-    # functions from module tree.c
-    newReconciliedNs()
-
     # functions from module valid
     isID()
     isRef()
@@ -425,9 +415,6 @@ Class xmlNode(xmlCore)
     xpathNextPrecedingSibling()
     xpathNextSelf()
 
-    # functions from module xpointer.c
-    xpointerAdvanceNode()
-
 
 Class xmlDoc(xmlNode)
 
@@ -448,9 +435,6 @@ Class xmlDoc(xmlNode)
     htmlSaveFileFormat()
     htmlSetMetaEncoding()
 
-    # functions from module HTMLtree.c
-    htmlNodeDumpOutput()
-
     # functions from module debugXML
     debugDumpDocument()
     debugDumpDocumentHead()
@@ -465,9 +449,6 @@ Class xmlDoc(xmlNode)
     encodeEntitiesReentrant()
     encodeSpecialChars()
     parameterEntity()
-
-    # functions from module parserInternals.c
-    upgradeOldNs()
 
     # functions from module tree
     copyDoc()
@@ -636,15 +617,6 @@ Class xpathParserContext()
     xpathTrueFunction()
     xpathValueFlipSign()
     xpatherror()
-
-    # functions from module xpointer.c
-    xpointerEndPointFunction()
-    xpointerHereFunction()
-    xpointerOriginFunction()
-    xpointerRangeFunction()
-    xpointerRangeInsideFunction()
-    xpointerStartPointFunction()
-    xpointerStringRangeFunction()
 Class parserCtxt()
     # accessors
     doc()
@@ -663,9 +635,6 @@ Class parserCtxt()
     htmlParseDocument()
     htmlParseElement()
 
-    # functions from module HTMLparser.c
-    htmlDecodeEntities()
-
     # functions from module parser
     clearParserCtxt()
     freeParserCtxt()
@@ -675,10 +644,6 @@ Class parserCtxt()
     parseExtParsedEnt()
     setupParserForBuffer()
     stopParser()
-
-    # functions from module parser.c
-    parseAttValueComplex()
-    parseCharDataComplex()
 
     # functions from module parserInternals
     decodeEntities()
@@ -742,9 +707,6 @@ Class xmlDtd(xmlNode)
     dtdElementDesc()
     dtdQAttrDesc()
     dtdQElementDesc()
-
-    # functions from module valid.c
-    scanAttributeDecl()
 
 
 Class xmlNs(xmlNode)

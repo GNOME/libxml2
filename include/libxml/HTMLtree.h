@@ -103,6 +103,9 @@ void		htmlDocContentDumpFormatOutput(xmlOutputBufferPtr buf,
 					 int format);
 
 int		htmlIsBooleanAttr	(const xmlChar *name);
+void htmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
+	                xmlNodePtr cur, const char *encoding);
+
 
 
 

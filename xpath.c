@@ -59,8 +59,6 @@
 /* #define DEBUG_EXPR */
 /* #define DEBUG_EVAL_COUNTS */
 
-double xmlXPathDivideBy(double f, double fzero);
-
 static xmlNs xmlXPathXMLNamespaceStruct = {
     NULL,
     XML_NAMESPACE_DECL,

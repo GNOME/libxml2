@@ -182,9 +182,6 @@ class index:
 	      if self.functions.has_key(id):
 	          up = idx.functions[id]
 	          self.functions[id].update(None, up.type, up.info, up.extra)
-	      else:
-	          if idx.functions[id].static == 0:
-		      self.functions[id] = idx.functions[id]
 
      def analyze_dict(self, type, dict):
          count = 0
@@ -225,6 +222,8 @@ ignored_words = {
   "LIBXML_DLL_IMPORT": (0, "Special macro to flag external keywords"),
   "__declspec": (3, "Windows keyword"),
   "ATTRIBUTE_UNUSED": (0, "macro keyword"),
+  "LIBEXSLT_PUBLIC": (0, "macro keyword"),
+  "X_IN_Y": (5, "macro function builder"),
 }
 
 class CLexer:
@@ -1342,15 +1341,20 @@ class docBuilder:
 	     output.write("    <struct name='%s' file='%s' type='%s'" % (
 	              name, self.modulename_file(id.module), id.info))
 	     name = id.info[7:]
-	     if self.idx.structs.has_key(name):
+	     if self.idx.structs.has_key(name) and \
+	        type(self.idx.structs[name]) == type(()):
 	         output.write(">\n");
-		 for field in self.idx.structs[name].info:
-		     desc = field[2]
-		     if desc == None:
-		         desc = ''
-	             else:
-		         desc = escape(desc)
-		     output.write("      <field name='%s' type='%s' info='%s'/>\n" % (field[1] , field[0], desc))
+		 try:
+		     for field in self.idx.structs[name].info:
+			 print name, field
+			 desc = field[2]
+			 if desc == None:
+			     desc = ''
+			 else:
+			     desc = escape(desc)
+			 output.write("      <field name='%s' type='%s' info='%s'/>\n" % (field[1] , field[0], desc))
+		 except:
+		     print "Failed to serialize struct %s" % (name)
 		 output.write("    </struct>\n")
 	     else:
 	         output.write("/>\n");
@@ -1433,17 +1437,23 @@ def rebuild():
     if glob.glob("../parser.c") != [] :
         print "Rebuilding API description for libxml2"
 	builder = docBuilder("libxml2", ["..", "../include/libxml"],
-	                     ["xmlwin32version.h", "tst.c"])
+	                     ["xmlwin32version.h", "tst.c",
+			      "schemasInternals.h", "xmlschemas" ])
     elif glob.glob("../libxslt/transform.c") != [] :
         print "Rebuilding API description for libxslt"
 	builder = docBuilder("libxslt", ["../libxslt"],
-	                     ["win32config.h", "tst.c"])
+	                     ["win32config.h", "libxslt.h", "tst.c"])
     else:
         print "rebuild() failed, unable to guess the module"
 	return None
     builder.scan()
     builder.analyze()
     builder.serialize()
+    if glob.glob("../libexslt/exslt.c") != [] :
+        extra = docBuilder("libexslt", ["../libexslt"], ["libexslt.h"])
+	extra.scan()
+	extra.analyze()
+	extra.serialize()
     return builder
 
 #

@@ -651,8 +651,6 @@ htmlAttrListDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur, co
 }
 
 
-void htmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
-	                xmlNodePtr cur, const char *encoding);
 
 /**
  * htmlNodeListDumpOutput:

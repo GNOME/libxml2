@@ -1,3 +1,5 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
   <title>The XML C library for Gnome</title>
@@ -78,8 +80,8 @@ structured documents/data.</p>
   <li>It is written in plain C, making as few assumptions as possible, and
     sticking closely to ANSI C/POSIX for easy embedding. Works on
     Linux/Unix/Windows, ported to a number of other platforms.</li>
-  <li>Basic support for HTTP and FTP client allowing aplications to fetch remote
-  resources</li>
+  <li>Basic support for HTTP and FTP client allowing aplications to fetch
+    remote resources</li>
   <li>The design is modular, most of the extensions can be compiled out.</li>
   <li>The internal document repesentation is as close as possible to the <a
     href="http://www.w3.org/DOM/">DOM</a> interfaces.</li>
@@ -239,7 +241,7 @@ you want to test those</p>
     docs</li>
 </ul>
 
-<h3>2.3.2: Feb 24 2000</h3>
+<h3>2.3.2: Feb 24 2001</h3>
 <ul>
   <li>chasing XPath bugs, found a bunch, completed some TODO</li>
   <li>fixed a Dtd parsing bug</li>
@@ -247,7 +249,7 @@ you want to test those</p>
   <li>ID/IDREF support partly rewritten by Gary Pennington</li>
 </ul>
 
-<h3>2.3.1: Feb 15 2000</h3>
+<h3>2.3.1: Feb 15 2001</h3>
 <ul>
   <li>some XPath and HTML bug fixes for XSLT</li>
   <li>small extension of the hash table interfaces for DOM gdome2
@@ -255,7 +257,7 @@ you want to test those</p>
   <li>A few bug fixes</li>
 </ul>
 
-<h3>2.3.0: Feb 8 2000 (2.2.12 was on 25 Jan but I didn't kept track)</h3>
+<h3>2.3.0: Feb 8 2001 (2.2.12 was on 25 Jan but I didn't kept track)</h3>
 <ul>
   <li>Lots of XPath bug fixes</li>
   <li>Add a mode with Dtd lookup but without validation error reporting for
@@ -273,7 +275,7 @@ you want to test those</p>
   <li>optimisation patch from Bjorn Reese</li>
 </ul>
 
-<h3>2.2.11: Jan 4 2000</h3>
+<h3>2.2.11: Jan 4 2001</h3>
 <ul>
   <li>bunch of bug fixes (memory I/O, xpath, ftp/http, ...)</li>
   <li>added htmlHandleOmittedElem()</li>
@@ -666,9 +668,8 @@ href="http://cvs.gnome.org/lxr/source/libxslt/ChangeLog">Changelog</a></p>
 
 <h2>An overview of libxml architecture</h2>
 
-<p>Libxml is made of multiple components; some of them are optional,
-and most of
-the block interfaces are public. The main components are:</p>
+<p>Libxml is made of multiple components; some of them are optional, and most
+of the block interfaces are public. The main components are:</p>
 <ul>
   <li>an Input/Output layer</li>
   <li>FTP and HTTP client layers (optional)</li>
@@ -801,11 +802,11 @@ SAX.characters( , 1)
 SAX.endElement(EXAMPLE)
 SAX.endDocument()</pre>
 
-<p>Most of the other interfaces of libxml are based on the DOM
-tree-building facility, so nearly everything up to the end of this document
-presupposes the use of the standard DOM tree build. Note that the DOM tree
-itself is built by a set of registered default callbacks, without internal
-specific interface.</p>
+<p>Most of the other interfaces of libxml are based on the DOM tree-building
+facility, so nearly everything up to the end of this document presupposes the
+use of the standard DOM tree build. Note that the DOM tree itself is built by
+a set of registered default callbacks, without internal specific
+interface.</p>
 
 <h2><a name="library">The XML library interfaces</a></h2>
 
@@ -877,17 +878,15 @@ int              xmlParseChunk          (xmlParserCtxtPtr ctxt,
                 }
             }</pre>
 
-<p>The HTML parser embedded into libxml also has a push
-interface; the functions are just prefixed by "html" rather than "xml".</p>
+<p>The HTML parser embedded into libxml also has a push interface; the
+functions are just prefixed by "html" rather than "xml".</p>
 
 <h3 id="Invoking2">Invoking the parser: the SAX interface</h3>
 
-<p>The tree-building interface makes the parser
-memory-hungry, first loading the document in memory and then building
-the tree itself.
-Reading a document without building the tree is possible using the SAX
-interfaces (see SAX.h and <a
-href="http://www.daa.com.au/~james/gnome/xml-sax/xml-sax.html">James
+<p>The tree-building interface makes the parser memory-hungry, first loading
+the document in memory and then building the tree itself. Reading a document
+without building the tree is possible using the SAX interfaces (see SAX.h and
+<a href="http://www.daa.com.au/~james/gnome/xml-sax/xml-sax.html">James
 Henstridge's documentation</a>). Note also that the push interface can be
 limited to SAX: just use the two first arguments of
 <code>xmlCreatePushParserCtxt()</code>.</p>
@@ -961,10 +960,11 @@ elements:</p>
 <dl>
   <dt><code>xmlNodePtr xmlStringGetNodeList(xmlDocPtr doc, const xmlChar
   *value);</code></dt>
-    <dd><p>This function takes an "external" string and converts it to one text
-      node or possibly to a list of entity and text nodes. All non-predefined
-      entity references like &amp;Gnome; will be stored internally as entity
-      nodes, hence the result of the function may not be a single node.</p>
+    <dd><p>This function takes an "external" string and converts it to one
+      text node or possibly to a list of entity and text nodes. All
+      non-predefined entity references like &amp;Gnome; will be stored
+      internally as entity nodes, hence the result of the function may not be
+      a single node.</p>
     </dd>
 </dl>
 <dl>
@@ -1117,19 +1117,19 @@ equality operation at the user level.</p>
 root element of their document as the default namespace. Then they don't need
 to use the prefix in the content but we will have a basis for future semantic
 refinement and  merging of data from different sources. This doesn't increase
-the size of the XML output significantly, but significantly increases its value
-in the long-term. Example:</p>
+the size of the XML output significantly, but significantly increases its
+value in the long-term. Example:</p>
 <pre>&lt;mydoc xmlns="http://mydoc.example.org/schemas/"&gt;
    &lt;elem1&gt;...&lt;/elem1&gt;
    &lt;elem2&gt;...&lt;/elem2&gt;
 &lt;/mydoc&gt;</pre>
 
-<p>The namespace value has to be an absolute URL, but the URL doesn't
-have to point to any existing resource on the Web. It will bind all the
-element and atributes with that URL. I suggest to use an URL within a domain
-you control, and that the URL should contain some kind of version information
-if possible. For example, <code>"http://www.gnome.org/gnumeric/1.0/"</code> is
-a good namespace scheme.</p>
+<p>The namespace value has to be an absolute URL, but the URL doesn't have to
+point to any existing resource on the Web. It will bind all the element and
+atributes with that URL. I suggest to use an URL within a domain you control,
+and that the URL should contain some kind of version information if possible.
+For example, <code>"http://www.gnome.org/gnumeric/1.0/"</code> is a good
+namespace scheme.</p>
 
 <p>Then when you load a file, make sure that a namespace carrying the
 version-independent prefix is installed on the root element of your document,
@@ -1169,13 +1169,11 @@ found within your document, what is the formal shape of your document tree (by
 defining the allowed content of an element, either text, a regular expression
 for the allowed list of children, or mixed content i.e. both text and
 children). The DTD also defines the allowed attributes for all elements and
-the types of the attributes. For more detailed information,
-I suggest that you  read
-the related parts of the XML specification, the examples found under
-gnome-xml/test/valid/dtd and any of the
-large number of books available on XML. The
-dia example in gnome-xml/test/valid should be both simple and complete enough
-to allow you to build your own.</p>
+the types of the attributes. For more detailed information, I suggest that you
+ read the related parts of the XML specification, the examples found under
+gnome-xml/test/valid/dtd and any of the large number of books available on
+XML. The dia example in gnome-xml/test/valid should be both simple and
+complete enough to allow you to build your own.</p>
 
 <p>A word of warning, building a good DTD which will fit the needs of your
 application in the long-term is far from trivial; however, the extra level of
@@ -1206,8 +1204,8 @@ core.</p>
 
 <p><a href="http://www.w3.org/DOM/">DOM</a> stands for the <em>Document Object
 Model</em>; this is an API for accessing XML or HTML structured documents.
-Native support for DOM in Gnome is on the way (module gnome-dom), and will
-be based on gnome-xml. This will be a far cleaner interface to manipulate XML
+Native support for DOM in Gnome is on the way (module gnome-dom), and will be
+based on gnome-xml. This will be a far cleaner interface to manipulate XML
 files within Gnome since it won't expose the internal structure. DOM defines a
 set of IDL (or Java) interfaces allowing you to traverse and manipulate a
 document. The DOM library will allow accessing and modifying "live" documents
@@ -1290,15 +1288,14 @@ base</a>:</p>
 &lt;/gjob:Helping&gt;</pre>
 
 <p>While loading the XML file into an internal DOM tree is a matter of calling
-only a couple of functions, browsing the tree to gather the ata and
-generate the internal structures is harder, and more error prone.</p>
+only a couple of functions, browsing the tree to gather the ata and generate
+the internal structures is harder, and more error prone.</p>
 
 <p>The suggested principle is to be tolerant with respect to the input
-structure. For example, the ordering of the attributes is not significant,
-the XML specification is clear about it. It's also usually a good idea not to
-depend on the order of the children of a given node, unless it really
-makes things harder. Here is some code to parse the information for a
-person:</p>
+structure. For example, the ordering of the attributes is not significant, the
+XML specification is clear about it. It's also usually a good idea not to
+depend on the order of the children of a given node, unless it really makes
+things harder. Here is some code to parse the information for a person:</p>
 <pre>/*
  * A person record
  */
@@ -1354,10 +1351,9 @@ DEBUG("parsePerson\n");
     application set of data and test that the element and attributes you're
     analyzing actually pertains to your application space. This is done by a
     simple equality test (cur-&gt;ns == ns).</li>
-  <li>To retrieve text and attributes value, you can use the
-    function <em>xmlNodeListGetString</em> to gather all the text and entity
-    reference nodes generated by the DOM output and produce an single text
-    string.</li>
+  <li>To retrieve text and attributes value, you can use the function
+    <em>xmlNodeListGetString</em> to gather all the text and entity reference
+    nodes generated by the DOM output and produce an single text string.</li>
 </ul>
 
 <p>Here is another piece of code used to parse another level of the
@@ -1414,11 +1410,11 @@ DEBUG("parseJob\n");
     return(ret);
 }</pre>
 
-<p>Once you are used to it, writing this kind of code is quite
-simple, but boring. Ultimately, it could be possble to write stubbers taking
-either C data structure definitions, a set of XML examples or an XML DTD and
-produce the code needed to import and export the content between C data and
-XML storage. This is left as an exercise to the reader :-)</p>
+<p>Once you are used to it, writing this kind of code is quite simple, but
+boring. Ultimately, it could be possble to write stubbers taking either C data
+structure definitions, a set of XML examples or an XML DTD and produce the
+code needed to import and export the content between C data and XML storage.
+This is left as an exercise to the reader :-)</p>
 
 <p>Feel free to use <a href="example/gjobread.c">the code for the full C
 parsing example</a> as a template, it is also available with Makefile in the
@@ -1450,6 +1446,6 @@ Gnome CVS base under gnome-xml/example</p>
 
 <p><a href="mailto:Daniel.Veillard@w3.org">Daniel Veillard</a></p>
 
-<p>$Id: xml.html,v 1.68 2001/02/24 17:48:53 veillard Exp $</p>
+<p>$Id: xml.html,v 1.69 2001/02/26 07:31:12 veillard Exp $</p>
 </body>
 </html>

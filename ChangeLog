@@ -1,3 +1,7 @@
+Mon Feb 26 22:09:45 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* doc/xml.html: oops corrected dates s/2000/2001
+
 Mon Feb 26 12:48:35 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* valid.c: new patch from Gary Pennington

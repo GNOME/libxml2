@@ -1,3 +1,11 @@
+Sun Oct  1 16:28:22 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* xpath.[ch] : fixed some serious XPath Predicate evaluation
+	  problems
+	* Makefile.am : added XPath regression tests to normal tests
+	* uri.c: fixed a problem with local paths, cleanup
+	* parser.c: fixed a problem with large CData sections
+
 Sat Sep 30 16:35:54 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* configure.in xml-config.in: patch from "Ben Taylor"

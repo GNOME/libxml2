@@ -6014,6 +6014,7 @@ xmlParseCDSect(xmlParserCtxtPtr ctxt) {
     int r, rl;
     int	s, sl;
     int cur, l;
+    int count = 0;
 
     if ((NXT(0) == '<') && (NXT(1) == '!') &&
 	(NXT(2) == '[') && (NXT(3) == 'C') &&
@@ -6070,6 +6071,11 @@ xmlParseCDSect(xmlParserCtxtPtr ctxt) {
 	rl = sl;
 	s = cur;
 	sl = l;
+	count++;
+	if (count > 50) {
+	    GROW;
+	    count = 0;
+	}
 	NEXTL(l);
 	cur = CUR_CHAR(l);
     }

@@ -99,9 +99,9 @@ install-data: $(srcdir)/libxml
 
 $(libxml_la_SOURCES): $(srcdir)/libxml
 
-testall : tests SVGtests SAXtests XPathtests
+testall : tests SVGtests SAXtests
 
-tests: XMLtests XMLenttests HTMLtests Validtests URItests
+tests: XMLtests XMLenttests HTMLtests Validtests URItests XPathtests
 
 HTMLtests : testHTML
 	@(rm -f .memdump ; touch .memdump)

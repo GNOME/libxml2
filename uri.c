@@ -1372,15 +1372,10 @@ xmlNormalizeURIPath(char *path) {
 xmlChar *
 xmlBuildURI(const xmlChar *URI, const xmlChar *base) {
     xmlChar *val = NULL;
-    int ret, len, index, cur, out;
+    int ret, ret2, len, index, cur, out;
     xmlURIPtr ref = NULL;
     xmlURIPtr bas = NULL;
     xmlURIPtr res = NULL;
-
-    if ((URI == NULL) && (base == NULL))
-	return(NULL);
-    if (URI == NULL)
-	return((xmlChar *) xmlMemStrdup((const char *) base));
 
     /*
      * 1) The URI reference is parsed into the potential four components and
@@ -1390,20 +1385,43 @@ xmlBuildURI(const xmlChar *URI, const xmlChar *base) {
      *    as a reference to "." rather than as a synonym for the current
      *    URI.  Should we do that here?
      */
-    ref = xmlCreateURI();
-    if (ref == NULL)
-	goto done;
-    if (*URI) {
-	ret = xmlParseURIReference(ref, (const char *) URI);
-	if (ret != 0)
+    if (URI == NULL) 
+	ret = -1;
+    else {
+	ref = xmlCreateURI();
+	if (ref == NULL)
 	    goto done;
+	if (*URI)
+	    ret = xmlParseURIReference(ref, (const char *) URI);
+	else
+	    ret = -1;
     }
-    bas = xmlCreateURI();
-    if (bas == NULL)
+    if (base == NULL)
+	ret2 = -1;
+    else {
+	bas = xmlCreateURI();
+	if (bas == NULL)
+	    goto done;
+	ret2 = xmlParseURIReference(bas, (const char *) base);
+    }
+    if ((ret != 0) && (ret2 != 0))
 	goto done;
-    ret = xmlParseURIReference(bas, (const char *) base);
-    if (ret != 0)
+    if (ret != 0) {
+	/*
+	 * the base fragment must be ignored
+	 */
+	if (bas->fragment != NULL) {
+	    xmlFree(bas->fragment);
+	    bas->fragment = NULL;
+	}
+	val = xmlSaveUri(bas);
 	goto done;
+    }
+    if (ret2 != 0) {
+	val = xmlSaveUri(ref);
+	goto done;
+    }
+
 
     /*
      * 2) If the path component is empty and the scheme, authority, and
@@ -1552,7 +1570,7 @@ xmlBuildURI(const xmlChar *URI, const xmlChar *base) {
 	/*
 	 * Ensure the path includes a '/'
 	 */
-	if (out == 0)
+	if ((out == 0) && (bas->server != NULL))
 	    res->path[out++] = '/';
 	while (ref->path[index] != 0) {
 	    res->path[out++] = ref->path[index++];

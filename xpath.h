@@ -45,17 +45,19 @@ struct _xmlNodeSet {
  * @@ XPointer will add more types !
  */
 
-#define XPATH_UNDEFINED	0
-#define XPATH_NODESET	1
-#define XPATH_BOOLEAN	2
-#define XPATH_NUMBER	3
-#define XPATH_STRING	4
-#define XPATH_USERS	5
+typedef enum {
+    XPATH_UNDEFINED = 0,
+    XPATH_NODESET = 1,
+    XPATH_BOOLEAN = 2,
+    XPATH_NUMBER = 3,
+    XPATH_STRING = 4,
+    XPATH_USERS = 5
+} xmlXPathObjectType;
 
 typedef struct _xmlXPathObject xmlXPathObject;
 typedef xmlXPathObject *xmlXPathObjectPtr;
 struct _xmlXPathObject {
-    int type;
+    xmlXPathObjectType type;
     xmlNodeSetPtr nodesetval;
     int boolval;
     double floatval;
@@ -163,6 +165,10 @@ struct _xmlXPathContext {
     xmlNsPtr *namespaces;		/* The namespaces lookup */
     int nsNr;				/* the current Namespace index */
     void *user;				/* user defined extra info */
+
+    /* extra variables */
+    int contextSize;			/* the context size */
+    int proximityPosition;		/* the proximity position */
 };
 
 /*

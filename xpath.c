@@ -262,6 +262,8 @@ PUSH_AND_POP(xmlXPathObjectPtr, value)
 #define XPATH_INVALID_OPERAND		10
 #define XPATH_INVALID_TYPE		11
 #define XPATH_INVALID_ARITY		12
+#define XPATH_INVALID_CTXT_SIZE		13
+#define XPATH_INVALID_CTXT_POSITION	14
 
 const char *xmlXPathErrorMessages[] = {
     "Ok",
@@ -277,6 +279,8 @@ const char *xmlXPathErrorMessages[] = {
     "Invalid operand",
     "Invalid type",
     "Invalid number of arguments",
+    "Invalid context size",
+    "Invalid context position",
 };
 
 /**
@@ -835,6 +839,9 @@ xmlXPathNewContext(xmlDocPtr doc) {
     ret->namespaces = NULL;
     ret->user = NULL;
     ret->nsNr = 0;
+
+    ret->contextSize = -1;
+    ret->proximityPosition = -1;
     return(ret);
 }
 
@@ -2191,13 +2198,13 @@ xmlXPathRoot(xmlXPathParserContextPtr ctxt) {
 void
 xmlXPathLastFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     CHECK_ARITY(0);
-    if ((ctxt->context->nodelist == NULL) ||
-        (ctxt->context->node == NULL) ||
-        (ctxt->context->nodelist->nodeNr == 0)) {
-	valuePush(ctxt, xmlXPathNewFloat((double) 0));
+    if (ctxt->context->contextSize > 0) {
+	valuePush(ctxt, xmlXPathNewFloat((double) ctxt->context->contextSize));
+#ifdef DEBUG_EXPR
+	fprintf(xmlXPathDebug, "last() : %d\n", ctxt->context->contextSize);
+#endif
     } else {
-	valuePush(ctxt, 
-	          xmlXPathNewFloat((double) ctxt->context->nodelist->nodeNr));
+	XP_ERROR(XPATH_INVALID_CTXT_SIZE);
     }
 }
 
@@ -2212,21 +2219,17 @@ xmlXPathLastFunction(xmlXPathParserContextPtr ctxt, int nargs) {
  */
 void
 xmlXPathPositionFunction(xmlXPathParserContextPtr ctxt, int nargs) {
-    int i;
-
     CHECK_ARITY(0);
-    if ((ctxt->context->nodelist == NULL) ||
-        (ctxt->context->node == NULL) ||
-        (ctxt->context->nodelist->nodeNr == 0)) {
-	valuePush(ctxt, xmlXPathNewFloat((double) 0));
+    if (ctxt->context->proximityPosition > 0) {
+	valuePush(ctxt,
+		  xmlXPathNewFloat((double) ctxt->context->proximityPosition));
+#ifdef DEBUG_EXPR
+	fprintf(xmlXPathDebug, "position() : %d\n",
+		ctxt->context->proximityPosition);
+#endif
+    } else {
+	XP_ERROR(XPATH_INVALID_CTXT_POSITION);
     }
-    for (i = 0; i < ctxt->context->nodelist->nodeNr;i++) {
-        if (ctxt->context->node == ctxt->context->nodelist->nodeTab[i]) {
-	    valuePush(ctxt, xmlXPathNewFloat((double) i + 1));
-	    return;
-	}
-    }
-    valuePush(ctxt, xmlXPathNewFloat((double) 0));
 }
 
 /**
@@ -4137,13 +4140,13 @@ xmlXPathEvalExpr(xmlXPathParserContextPtr ctxt) {
  */
 int
 xmlXPathEvaluatePredicateResult(xmlXPathParserContextPtr ctxt, 
-                                xmlXPathObjectPtr res, int index) {
+                                xmlXPathObjectPtr res) {
     if (res == NULL) return(0);
     switch (res->type) {
         case XPATH_BOOLEAN:
 	    return(res->boolval);
         case XPATH_NUMBER:
-	    return(res->floatval == index);
+	    return(res->floatval == ctxt->context->proximityPosition);
         case XPATH_NODESET:
 	    return(res->nodesetval->nodeNr != 0);
         case XPATH_STRING:
@@ -4162,6 +4165,15 @@ xmlXPathEvaluatePredicateResult(xmlXPathParserContextPtr ctxt,
  *  [8]   Predicate ::=   '[' PredicateExpr ']'
  *  [9]   PredicateExpr ::=   Expr 
  *
+ * ---------------------
+ * For each node in the node-set to be filtered, the PredicateExpr is
+ * evaluated with that node as the context node, with the number of nodes
+ * in the node-set as the context size, and with the proximity position
+ * of the node in the node-set with respect to the axis as the context
+ * position; if PredicateExpr evaluates to true for that node, the node
+ * is included in the new node-set; otherwise, it is not included.
+ * ---------------------
+ *
  * Parse and evaluate a predicate for all the elements of the
  * current node list. Then refine the list by removing all
  * nodes where the predicate is false.
@@ -4169,8 +4181,9 @@ xmlXPathEvaluatePredicateResult(xmlXPathParserContextPtr ctxt,
 void
 xmlXPathEvalPredicate(xmlXPathParserContextPtr ctxt) {
     const xmlChar *cur;
-    xmlXPathObjectPtr res, listHolder = NULL;
+    xmlXPathObjectPtr res;
     xmlNodeSetPtr newset = NULL;
+    xmlNodeSetPtr oldset;
     int i;
 
     SKIP_BLANKS;
@@ -4179,59 +4192,75 @@ xmlXPathEvalPredicate(xmlXPathParserContextPtr ctxt) {
     }
     NEXT;
     SKIP_BLANKS;
-    if ((ctxt->context->nodelist == NULL) ||
-        (ctxt->context->nodelist->nodeNr == 0)) {
-        ctxt->context->node = NULL;
+
+    /*
+     * Extract the old set, and then evaluate the result of the
+     * expression for all the element in the set. use it to grow
+     * up a new set.
+     */
+    oldset = ctxt->context->nodelist;
+    ctxt->context->nodelist = NULL;
+    ctxt->context->node = NULL;
+
+    if ((oldset == NULL) || (oldset->nodeNr == 0)) {
 	xmlXPathEvalExpr(ctxt);
 	CHECK_ERROR;
+	ctxt->context->contextSize = 0;
+	ctxt->context->proximityPosition = 0;
 	res = valuePop(ctxt);
 	if (res != NULL)
 	    xmlXPathFreeObject(res);
     } else {
+	/*
+	 * Save the expression pointer since we will have to evaluate
+	 * it multiple times. Initialize the new set.
+	 */
         cur = ctxt->cur;
 	newset = xmlXPathNodeSetCreate(NULL);
 	
-	/*	Create a copy of the current node set because it is important:	*/	
-	listHolder = xmlXPathNewNodeSetList(ctxt->context->nodelist);
-		
-        for (i = 0; i < ctxt->context->nodelist->nodeNr; i++) {
+        for (i = 0; i < oldset->nodeNr; i++) {
 	    ctxt->cur = cur;
-	    ctxt->context->node = ctxt->context->nodelist->nodeTab[i];
 
-		/*	This nodeset is useful for the loop but no, longer necessary this iteration:	*/
-		if (ctxt->context->nodelist != NULL)
-		    xmlXPathFreeNodeSet(ctxt->context->nodelist);
-
-		/*	This line was missed out:	*/
-		ctxt->context->nodelist = xmlXPathNodeSetCreate(ctxt->context->node);
+	    /*
+	     * Run the evaluation with a node list made of a single item
+	     * in the nodeset.
+	     */
+	    ctxt->context->node = oldset->nodeTab[i];
+	    ctxt->context->nodelist = NULL;
+	    ctxt->context->contextSize = oldset->nodeNr;
+	    ctxt->context->proximityPosition = i + 1;
 
 	    xmlXPathEvalExpr(ctxt);
 	    CHECK_ERROR;
+
+	    /*
+	     * The result of the evaluation need to be tested to
+	     * decided whether the filter succeeded or not
+	     */
 	    res = valuePop(ctxt);
-	    if (xmlXPathEvaluatePredicateResult(ctxt, res, i + 1))
-	    	{
-		    /*	Add the current node as the result has proven correct:	*/
-	        xmlXPathNodeSetAdd(newset, listHolder->nodesetval->nodeTab[i]);
-		    }
+	    if (xmlXPathEvaluatePredicateResult(ctxt, res)) {
+	        xmlXPathNodeSetAdd(newset, oldset->nodeTab[i]);
+	    }
 	    if (res != NULL)
-	    xmlXPathFreeObject(res);
+		xmlXPathFreeObject(res);
 	    
-	    /*	Copy the contents of the temporary list back to the node list for the next round:	*/
-        ctxt->context->nodelist = xmlXPathNewNodeSetList(listHolder->nodesetval)->nodesetval;
+	    ctxt->context->node = NULL;
 	}
-	if (ctxt->context->nodelist != NULL)
-	    xmlXPathFreeNodeSet(ctxt->context->nodelist);
-	    
-	/*	Clean up after temporary variable holder:	*/    
-	if (listHolder != NULL)
-		xmlXPathFreeObject(listHolder);
-		
+
+	/*
+	 * The result is used as the new evaluation set.
+	 */
 	ctxt->context->nodelist = newset;
 	ctxt->context->node = NULL;
+	ctxt->context->contextSize = -1;
+	ctxt->context->proximityPosition = -1;
     }
     if (CUR != ']') {
 	XP_ERROR(XPATH_INVALID_PREDICATE_ERROR);
     }
+    if (oldset != NULL)
+	xmlXPathFreeNodeSet(oldset);
+
     NEXT;
     SKIP_BLANKS;
 #ifdef DEBUG_STEP

@@ -2482,6 +2482,30 @@ xmlStrPrintf(xmlChar *buf, int len, const xmlChar *msg, ...) {
     return(ret);
 }
 
+/**
+ * xmlStrVPrintf:
+ * @buf:   the result buffer.
+ * @len:   the result buffer length.
+ * @msg:   the message with printf formatting.
+ * @ap:    extra parameters for the message.
+ *
+ * Formats @msg and places result into @buf.
+ *
+ * Returns the number of characters written to @buf or -1 if an error occurs.
+ */
+int 
+xmlStrVPrintf(xmlChar *buf, int len, const xmlChar *msg, va_list ap) {
+    int ret;
+    
+    if((buf == NULL) || (msg == NULL)) {
+	return(-1);
+    }
+    
+    ret = vsnprintf((char *) buf, len, (const char *) msg, ap);
+    buf[len - 1] = 0; /* be safe ! */
+    
+    return(ret);
+}
 /************************************************************************
  *									*
  *		Commodity functions, cleanup needed ?			*

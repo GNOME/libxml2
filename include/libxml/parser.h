@@ -9,6 +9,8 @@
 #ifndef __XML_PARSER_H__
 #define __XML_PARSER_H__
 
+#include <stdarg.h>
+
 #include <libxml/xmlversion.h>
 #include <libxml/tree.h>
 #include <libxml/dict.h>
@@ -863,6 +865,12 @@ XMLPUBFUN int XMLCALL
 					 int len,
 					 const xmlChar *msg,
 					 ...);
+
+XMLPUBFUN int XMLCALL	
+		xmlStrVPrintf		(xmlChar *buf,
+					 int len,
+					 const xmlChar *msg,
+					 va_list ap);
 
 /*
  * Basic parsing Interfaces

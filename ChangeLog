@@ -1,3 +1,7 @@
+Wed Oct 29 07:49:52 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* include/libxml/parser.h parser.c: added xmlStrVPrintf function
+
 Wed Oct 29 14:37:40 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* nanoftp.c nanohttp.c testThreads.c threads.c: applied patch from

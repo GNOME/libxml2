@@ -1,12 +1,15 @@
-LIBS=-L../.libs -L..
+LIBS=-L../.libs -L.. $(XML_LIBS)
 INCLUDES=-I$(PYTHON_INCLUDES) -I$(top_srcdir)/include
 SHCFLAGS=$(INCLUDES) -Wall -fPIC
-LINK_FLAGS= $(LIBS) -shared -lxml2
+LINK_FLAGS= -shared
 if WITH_PYTHON
-all: _libxml.so
+all: _libxml.so libxml2.py
+
+libxml2.py: libxml.py libxml2class.py
+	cat libxml.py libxml2class.py > libxml2.py
 
 _libxml.so: libxml.o libxml2-py.o
-	$(CC) $(LINK_FLAGS) libxml2-py.o libxml.o -o _libxml.so
+	$(CC) $(LINK_FLAGS) libxml2-py.o libxml.o $(LIBS) -o _libxml.so
 else
 all: 
 endif
@@ -28,4 +31,4 @@ $(GENERATED): $(srcdir)/$(GENERATE) $(API_DESC)
 	cd $(srcdir) && $(PYTHON) $(GENERATE)
 
 clean:
-	rm -f $(GENERATED) *.o _libxml.so
+	rm -f $(GENERATED) *.o _libxml.so *.pyc

@@ -15660,7 +15660,7 @@ xmlSchemaValidateFacetsInternal(xmlSchemaValidCtxtPtr ctxt,
 		tmpType = tmpType->baseType;
 	} while ((tmpType != NULL) && (tmpType->type != XML_SCHEMA_TYPE_BASIC));
 	if (retFacet > 0) {
-	    ret = XML_SCHEMAV_CVC_PATTERN_VALID;
+	    ret = XML_SCHEMAV_CVC_ENUMERATION_VALID;
 	    if (fireErrors) {
 		xmlSchemaVFacetErr(ctxt, ret, node, value, 0, type, NULL, 
 		    NULL, NULL, NULL, NULL);

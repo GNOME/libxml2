@@ -14,9 +14,9 @@ NOTE:
 
   BEFORE READING FURTHER: DO NOT COMMIT DIRECTLY !
 
-If what you are patching is a non-compilation issue either at compile
-time or linking time on one of the main Linux platforms, then feel free
-to patch first and send mail afterward as long as the change is limited.
+ In the exceptional case where a serious breakage in this module
+prevents other core projects from making progress, then feel free
+to patch first and send mail afterward as long as the changes are limited.
 Please keep in mind that a large part of my user base is on Windows, so
 be careful with potential portability problems there.
 
@@ -32,4 +32,5 @@ Daniel
 
 P.S.: Bjorn Reese, William Brack and Thomas Broyer get an exception for
       the send before commit rule as well as John Fleck for the doc maintenance
+      Send them mail if I don't answer to request in a timely fashion
 

@@ -1388,7 +1388,7 @@ xmlParseURIPathSegments(xmlURIPtr uri, const char **str, int slash)
     do {
         while (IS_PCHAR(cur) || ((uri->cleanup) && (IS_UNWISE(cur))))
             NEXT(cur);
-        if (*cur == ';') {
+        while (*cur == ';') {
             cur++;
             while (IS_PCHAR(cur) || ((uri->cleanup) && (IS_UNWISE(cur))))
                 NEXT(cur);

@@ -47,15 +47,15 @@ var withSchemas = true;
 var withRegExps = true;
 var withPython = false;
 /* Win32 build options. */
-var dirSep = "/";
+var dirSep = "\\";
 var compiler = "msvc";
 var buildDebug = 0;
 var buildStatic = 0;
 var buildPrefix = ".";
-var buildBinPrefix = "$(PREFIX)" + dirSep + "bin";
-var buildIncPrefix = "$(PREFIX)" + dirSep + "include";
-var buildLibPrefix = "$(PREFIX)" + dirSep + "lib";
-var buildSoPrefix = "$(PREFIX)" + dirSep + "lib";
+var buildBinPrefix = "";
+var buildIncPrefix = "";
+var buildLibPrefix = "";
+var buildSoPrefix = "";
 var buildInclude = ".";
 var buildLib = ".";
 /* Local stuff */
@@ -434,8 +434,9 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 			WScript.Quit(0);
 		}
 
-	} else
+	} else {
 		error = 1;
+	}
 }
 
 
@@ -444,7 +445,17 @@ if (error != 0) {
 	usage();
 	WScript.Quit(error);
 }
-
+dirSep = "\\";
+if (compiler == "mingw")
+	dirSep = "/";
+if (buildBinPrefix == "")
+	buildBinPrefix = "$(PREFIX)" + dirSep + "bin";
+if (buildIncPrefix == "")
+	buildIncPrefix = "$(PREFIX)" + dirSep + "include";
+if (buildLibPrefix == "")
+	buildLibPrefix = "$(PREFIX)" + dirSep + "lib";
+if (buildSoPrefix == "")
+	buildSoPrefix = "$(PREFIX)" + dirSep + "lib";
 
 // Discover the version.
 discoverVersion();

@@ -1,3 +1,7 @@
+Thu Oct 28 17:49:26 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* xmlmemory.h: turned off mem debug :-\
+
 Mon Oct 25 12:13:25 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* parser.c: closed bug #2784 a one line fix, but worth pushing

@@ -8,7 +8,7 @@
 #ifndef _DEBUG_MEMORY_ALLOC_
 #define _DEBUG_MEMORY_ALLOC_
 
-/* #define NO_DEBUG_MEMORY */
+#define NO_DEBUG_MEMORY
 
 #ifdef NO_DEBUG_MEMORY
 #ifdef HAVE_MALLOC_H

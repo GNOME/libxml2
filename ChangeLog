@@ -1,3 +1,8 @@
+Tue Feb  4 16:05:53 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: fixing bug 105049 for validity checking of content
+	  within recursive entities.
+
 Tue Feb  4 15:40:54 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: try to fix # 105049

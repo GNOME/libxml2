@@ -9949,9 +9949,6 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
     ctxt->instate = XML_PARSER_CONTENT;
     ctxt->depth = oldctxt->depth + 1;
 
-    /*
-     * Doing validity checking on chunk doesn't make sense
-     */
     ctxt->validate = 0;
     ctxt->loadsubset = oldctxt->loadsubset;
 
@@ -9999,6 +9996,11 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
 	cur = ctxt->myDoc->children->children;
 	*lst = cur;
 	while (cur != NULL) {
+	    if (oldctxt->validate && oldctxt->wellFormed &&
+		oldctxt->myDoc && oldctxt->myDoc->intSubset) {
+		oldctxt->valid &= xmlValidateElement(&oldctxt->vctxt,
+			oldctxt->myDoc, cur);
+	    }
 	    cur->parent = NULL;
 	    cur = cur->next;
 	}

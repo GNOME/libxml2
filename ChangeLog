@@ -1,3 +1,8 @@
+Sun Mar 21 19:19:41 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* relaxng.c: added an error message when an element is not
+	  found within a <choice> (bug 126093)
+	  
 Sat Mar 20 22:25:18 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* xmlregexp.c: enhanced the logic of parsing char groups to

@@ -1,3 +1,8 @@
+Fri Sep  3 10:08:13 PDT 2004 William Brack <wbrack@mmmm.com.hk>
+
+	* xmlstring.c: modified comments on xmlGetUTF8Char in
+	  response to bug 151760 (no change to logic)
+
 Tue Aug 31 09:46:18 PDT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* xmlstring.c: fixed error reported on the list caused by

@@ -475,11 +475,13 @@ xmlXPathDebugDumpNodeSet(FILE *output, xmlNodeSetPtr cur, int depth) {
         
     }
 
-    fprintf(output, "Set contains %d nodes:\n", cur->nodeNr);
-    for (i = 0;i < cur->nodeNr;i++) {
-	fprintf(output, shift);
-        fprintf(output, "%d", i + 1);
-	xmlXPathDebugDumpNode(output, cur->nodeTab[i], depth + 1);
+    if (cur != NULL) {
+	fprintf(output, "Set contains %d nodes:\n", cur->nodeNr);
+	for (i = 0;i < cur->nodeNr;i++) {
+	    fprintf(output, shift);
+	    fprintf(output, "%d", i + 1);
+	    xmlXPathDebugDumpNode(output, cur->nodeTab[i], depth + 1);
+	}
     }
 }
 
@@ -2446,18 +2448,20 @@ xmlXPathCompareNodeSetFloat(xmlXPathParserContextPtr ctxt, int inf, int strict,
         return(0);
     }
     ns = arg->nodesetval;
-    for (i = 0;i < ns->nodeNr;i++) {
-         str2 = xmlNodeGetContent(ns->nodeTab[i]);
-	 if (str2 != NULL) {
-	     valuePush(ctxt,
-		       xmlXPathNewString(str2));
-	     xmlFree(str2);
-	     xmlXPathNumberFunction(ctxt, 1);
-	     valuePush(ctxt, xmlXPathObjectCopy(f));
-	     ret = xmlXPathCompareValues(ctxt, inf, strict);
-	     if (ret)
-		 break;
-	 }
+    if (ns != NULL) {
+	for (i = 0;i < ns->nodeNr;i++) {
+	     str2 = xmlNodeGetContent(ns->nodeTab[i]);
+	     if (str2 != NULL) {
+		 valuePush(ctxt,
+			   xmlXPathNewString(str2));
+		 xmlFree(str2);
+		 xmlXPathNumberFunction(ctxt, 1);
+		 valuePush(ctxt, xmlXPathObjectCopy(f));
+		 ret = xmlXPathCompareValues(ctxt, inf, strict);
+		 if (ret)
+		     break;
+	     }
+	}
     }
     xmlXPathFreeObject(arg);
     xmlXPathFreeObject(f);
@@ -2499,17 +2503,19 @@ xmlXPathCompareNodeSetString(xmlXPathParserContextPtr ctxt, int inf, int strict,
         return(0);
     }
     ns = arg->nodesetval;
-    for (i = 0;i < ns->nodeNr;i++) {
-         str2 = xmlNodeGetContent(ns->nodeTab[i]);
-	 if (str2 != NULL) {
-	     valuePush(ctxt,
-		       xmlXPathNewString(str2));
-	     xmlFree(str2);
-	     valuePush(ctxt, xmlXPathObjectCopy(s));
-	     ret = xmlXPathCompareValues(ctxt, inf, strict);
-	     if (ret)
-		 break;
-	 }
+    if (ns != NULL) {
+	for (i = 0;i < ns->nodeNr;i++) {
+	     str2 = xmlNodeGetContent(ns->nodeTab[i]);
+	     if (str2 != NULL) {
+		 valuePush(ctxt,
+			   xmlXPathNewString(str2));
+		 xmlFree(str2);
+		 valuePush(ctxt, xmlXPathObjectCopy(s));
+		 ret = xmlXPathCompareValues(ctxt, inf, strict);
+		 if (ret)
+		     break;
+	     }
+	}
     }
     xmlXPathFreeObject(arg);
     xmlXPathFreeObject(s);
@@ -2777,9 +2783,9 @@ xmlXPathEqualNodeSets(xmlXPathObjectPtr arg1, xmlXPathObjectPtr arg2) {
     ns1 = arg1->nodesetval;
     ns2 = arg2->nodesetval;
 
-    if (ns1->nodeNr <= 0)
+    if ((ns1 == NULL) || (ns1->nodeNr <= 0))
 	return(0);
-    if (ns2->nodeNr <= 0)
+    if ((ns2 == NULL) || (ns2->nodeNr <= 0))
 	return(0);
 
     /*
@@ -3864,7 +3870,10 @@ xmlXPathCountFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 	XP_ERROR(XPATH_INVALID_TYPE);
     cur = valuePop(ctxt);
 
-    valuePush(ctxt, xmlXPathNewFloat((double) cur->nodesetval->nodeNr));
+    if ((cur == NULL) || (cur->nodesetval == NULL))
+	valuePush(ctxt, xmlXPathNewFloat((double) 0));
+    else
+	valuePush(ctxt, xmlXPathNewFloat((double) cur->nodesetval->nodeNr));
     xmlXPathFreeObject(cur);
 }
 
@@ -3904,15 +3913,17 @@ xmlXPathIdFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 
 	ret = xmlXPathNewNodeSet(NULL);
 
-	for (i = 0; i < obj->nodesetval->nodeNr; i++) {
-	    valuePush(ctxt,
-		      xmlXPathNewNodeSet(obj->nodesetval->nodeTab[i]));
-	    xmlXPathStringFunction(ctxt, 1);
-	    xmlXPathIdFunction(ctxt, 1);
-	    newobj = valuePop(ctxt);
-	    ret->nodesetval = xmlXPathNodeSetMerge(ret->nodesetval,
-						   newobj->nodesetval);
-	    xmlXPathFreeObject(newobj);
+	if (obj->nodesetval != NULL) {
+	    for (i = 0; i < obj->nodesetval->nodeNr; i++) {
+		valuePush(ctxt,
+			  xmlXPathNewNodeSet(obj->nodesetval->nodeTab[i]));
+		xmlXPathStringFunction(ctxt, 1);
+		xmlXPathIdFunction(ctxt, 1);
+		newobj = valuePop(ctxt);
+		ret->nodesetval = xmlXPathNodeSetMerge(ret->nodesetval,
+						       newobj->nodesetval);
+		xmlXPathFreeObject(newobj);
+	    }
 	}
 
 	xmlXPathFreeObject(obj);
@@ -3995,7 +4006,7 @@ xmlXPathLocalNameFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 	XP_ERROR(XPATH_INVALID_TYPE);
     cur = valuePop(ctxt);
 
-    if (cur->nodesetval->nodeNr == 0) {
+    if ((cur->nodesetval == NULL) || (cur->nodesetval->nodeNr == 0)) {
 	valuePush(ctxt, xmlXPathNewCString(""));
     } else {
 	int i = 0; /* Should be first in document order !!!!! */
@@ -4046,7 +4057,7 @@ xmlXPathNamespaceURIFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 	XP_ERROR(XPATH_INVALID_TYPE);
     cur = valuePop(ctxt);
 
-    if (cur->nodesetval->nodeNr == 0) {
+    if ((cur->nodesetval == NULL) || (cur->nodesetval->nodeNr == 0)) {
 	valuePush(ctxt, xmlXPathNewCString(""));
     } else {
 	int i = 0; /* Should be first in document order !!!!! */
@@ -4104,7 +4115,7 @@ xmlXPathNameFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 	XP_ERROR(XPATH_INVALID_TYPE);
     cur = valuePop(ctxt);
 
-    if (cur->nodesetval->nodeNr == 0) {
+    if ((cur->nodesetval == NULL) || (cur->nodesetval->nodeNr == 0)) {
 	valuePush(ctxt, xmlXPathNewCString(""));
     } else {
 	int i = 0; /* Should be first in document order !!!!! */
@@ -4159,9 +4170,7 @@ xmlXPathConvertString(xmlXPathObjectPtr val) {
 	    break;
         case XPATH_XSLT_TREE:
         case XPATH_NODESET:
-	    if (val->nodesetval == NULL)
-		ret = xmlXPathNewCString("");
-	    else if (val->nodesetval->nodeNr == 0) {
+	    if ((val->nodesetval == NULL) || (val->nodesetval->nodeNr == 0)) {
 		ret = xmlXPathNewCString("");
 	    } else {
 		xmlChar *res;
@@ -7157,6 +7166,7 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op) {
 	    CHECK_TYPE(XPATH_NODESET);
 	    obj = valuePop(ctxt);
 	    oldset = obj->nodesetval;
+
 	    oldnode = ctxt->context->node;
 	    ctxt->context->node = NULL;
 
@@ -7169,6 +7179,7 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op) {
 		if (res != NULL)
 		    xmlXPathFreeObject(res);
 		valuePush(ctxt, obj);
+		ctxt->context->node = oldnode;
 		CHECK_ERROR;
 	    } else {
 		/*
@@ -7254,6 +7265,7 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op) {
 
 	    newset = xmlXPtrLocationSetCreate(NULL);
 	    
+	    if (oldset != NULL) {
 	    for (i = 0; i < oldset->nodeNr; i++) {
 		/*
 		 * Run the evaluation with a node list made of a single item
@@ -7288,6 +7300,7 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op) {
 		}
 		
 		ctxt->context->node = NULL;
+	    }
 	    }
 
 	    /*
@@ -7410,6 +7423,8 @@ xmlXPathEvaluatePredicateResult(xmlXPathParserContextPtr ctxt,
 	    return(res->floatval == ctxt->context->proximityPosition);
         case XPATH_NODESET:
         case XPATH_XSLT_TREE:
+	    if (res->nodesetval)
+		return(0);
 	    return(res->nodesetval->nodeNr != 0);
         case XPATH_STRING:
 	    return((res->stringval != NULL) &&

@@ -1,3 +1,8 @@
+Wed Mar 16 22:53:53 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemas.c: more debug messages from Matthew Burgess
+	* xmlschemastypes.c: xmlSchemaValidateLengthFacet API missing check.
+
 Wed Mar 16 17:37:04 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemastypes.c: Aaaannnd putting back the previous changes done

@@ -1431,6 +1431,16 @@ xmlSchemaVFacetErr(xmlSchemaValidCtxtPtr ctxt,
 		"by the pattern '%s'.\n");
 	    xmlSchemaVErr(ctxt, node, error, (const char *) msg, value, 
 		facet->value);	       
+	} else if (facetType == XML_SCHEMA_FACET_MININCLUSIVE) {
+	    msg = xmlStrcat(msg, BAD_CAST "The value '%s' is less than the "
+		"minimum value allowed ('%s').\n");
+	    xmlSchemaVErr(ctxt, node, error, (const char *) msg, value, 
+		facet->value);
+	} else if (facetType == XML_SCHEMA_FACET_MAXINCLUSIVE) {
+	    msg = xmlStrcat(msg, BAD_CAST "The value '%s' is greater than the "
+		"maximum value allowed ('%s').\n");
+	    xmlSchemaVErr(ctxt, node, error, (const char *) msg, value, 
+		facet->value);
 	} else if (node->type == XML_ATTRIBUTE_NODE) {		
 	    msg = xmlStrcat(msg, BAD_CAST "The value '%s' is not facet-valid.\n");
 	    xmlSchemaVErr(ctxt, node, error, (const char *) msg, value, NULL);

@@ -4688,6 +4688,8 @@ xmlSchemaValidateLengthFacet(xmlSchemaTypePtr type,
 			     xmlSchemaValPtr val,
 			     unsigned long *length)  
 {
+    if (type == NULL)
+        return(-1);
     return (xmlSchemaValidateLengthFacetInternal(facet,
 	type->builtInType, value, val, length,
 	XML_SCHEMA_WHITESPACE_UNKNOWN));

@@ -1,3 +1,10 @@
+Sun Jan 16 01:04:18 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemastypes.c: trying to fix at least the message from
+	  bug #158628
+	* include/libxml/xmlsave.h xmlsave.c: added first xmlsave option
+	  for format, c.f. bug #159997
+
 Sat Jan 15 18:44:30 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* python/libxml.py: make __str__ call serialize() on nodes, c.f. 

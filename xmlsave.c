@@ -377,7 +377,14 @@ xmlNewSaveCtxt(const char *encoding, int options)
 	return ( NULL );
     }
     memset(ret, 0, sizeof(xmlSaveCtxt));
+
+    /*
+     * Use the options
+     */
     ret->options = options;
+    if (options & XML_SAVE_FORMAT)
+        ret->format = 1;
+
     if (encoding != NULL) {
         ret->handler = xmlFindCharEncodingHandler(encoding);
 	if (ret->handler == NULL) {

@@ -1656,6 +1656,9 @@ xmlSchemaValAtomicListNode(xmlSchemaTypePtr type, const xmlChar *value,
     if (val == NULL) {
 	return(-1);
     }
+    if (ret != NULL) {
+        *ret = NULL;
+    }
     cur = val;
     /*
      * Split the list
@@ -1673,9 +1676,6 @@ xmlSchemaValAtomicListNode(xmlSchemaTypePtr type, const xmlChar *value,
 	}
     }
     if (nb_values == 0) {
-	if (ret != NULL) {
-	    TODO
-	}
 	xmlFree(val);
 	return(nb_values);
     }
@@ -1689,10 +1689,11 @@ xmlSchemaValAtomicListNode(xmlSchemaTypePtr type, const xmlChar *value,
 	while (*cur != 0) cur++;
 	while ((*cur == 0) && (cur != endval)) cur++;
     }
-    xmlFree(val);
+    /* TODO what return value ? c.f. bug #158628
     if (ret != NULL) {
 	TODO
-    }
+    } */
+    xmlFree(val);
     if (tmp == 0)
 	return(nb_values);
     return(-1);

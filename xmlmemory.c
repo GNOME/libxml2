@@ -45,6 +45,8 @@
 #include <libxml/xmlerror.h>
 
 static int xmlMemInitialized = 0;
+static unsigned long  debugMemSize = 0;
+static unsigned long  debugMaxMemSize = 0;
 
 #ifdef DEBUG_MEMORY_LOCATION
 void xmlMallocBreakpoint(void);
@@ -107,8 +109,6 @@ typedef struct memnod {
 #define HDR_2_CLIENT(a)    ((void *) (((char *) (a)) + RESERVE_SIZE))
 
 
-static unsigned long  debugMemSize = 0;
-static unsigned long  debugMaxMemSize = 0;
 static int block=0;
 static int xmlMemStopAtBlock = 0;
 static void *xmlMemTraceBlockAt = NULL;
@@ -563,52 +563,6 @@ xmlMemContentShow(FILE *fp, MEMHDR *p)
 #endif
 
 /**
- * xmlMemShow:
- * @fp:  a FILE descriptor used as the output file
- * @nr:  number of entries to dump
- *
- * show a show display of the memory allocated, and dump
- * the @nr last allocated areas which were not freed
- */
-
-void
-xmlMemShow(FILE *fp, int nr)
-{
-#ifdef MEM_LIST
-    MEMHDR *p;
-#endif
-
-    if (fp != NULL)
-	fprintf(fp,"      MEMORY ALLOCATED : %lu, MAX was %lu\n",
-		debugMemSize, debugMaxMemSize);
-#ifdef MEM_LIST
-    if (nr > 0) {
-	fprintf(fp,"NUMBER   SIZE  TYPE   WHERE\n");
-	p = memlist;
-	while ((p) && nr > 0) {
-	      fprintf(fp,"%6lu %6lu ",p->mh_number,(unsigned long)p->mh_size);
-	    switch (p->mh_type) {
-	       case STRDUP_TYPE:fprintf(fp,"strdup()  in ");break;
-	       case MALLOC_TYPE:fprintf(fp,"malloc()  in ");break;
-	       case MALLOC_ATOMIC_TYPE:fprintf(fp,"atomicmalloc()  in ");break;
-	      case REALLOC_TYPE:fprintf(fp,"realloc() in ");break;
-	      case REALLOC_ATOMIC_TYPE:fprintf(fp,"atomicrealloc() in ");break;
-		default:fprintf(fp,"   ???    in ");break;
-	    }
-	    if (p->mh_file != NULL)
-	        fprintf(fp,"%s(%d)", p->mh_file, p->mh_line);
-	    if (p->mh_tag != MEMTAG)
-		fprintf(fp,"  INVALID");
-	    xmlMemContentShow(fp, p);
-	    fprintf(fp,"\n");
-	    nr--;
-	    p = p->mh_next;
-	}
-    }
-#endif /* MEM_LIST */    
-}
-
-/**
  * xmlMemDisplay:
  * @fp:  a FILE descriptor used as the output file, if NULL, the result is
  *       written to the file .memorylist
@@ -716,6 +670,56 @@ static void debugmem_tag_error(void *p)
 static FILE *xmlMemoryDumpFile = NULL;
 
 #endif /* DEBUG_MEMORY_LOCATION */
+
+/**
+ * xmlMemShow:
+ * @fp:  a FILE descriptor used as the output file
+ * @nr:  number of entries to dump
+ *
+ * show a show display of the memory allocated, and dump
+ * the @nr last allocated areas which were not freed
+ */
+
+void
+xmlMemShow(FILE *fp, int nr)
+{
+#ifdef DEBUG_MEMORY_LOCATION
+#ifdef MEM_LIST
+    MEMHDR *p;
+#endif
+#endif /* DEBUG_MEMORY_LOCATION */
+
+    if (fp != NULL)
+	fprintf(fp,"      MEMORY ALLOCATED : %lu, MAX was %lu\n",
+		debugMemSize, debugMaxMemSize);
+#ifdef DEBUG_MEMORY_LOCATION
+#ifdef MEM_LIST
+    if (nr > 0) {
+	fprintf(fp,"NUMBER   SIZE  TYPE   WHERE\n");
+	p = memlist;
+	while ((p) && nr > 0) {
+	      fprintf(fp,"%6lu %6lu ",p->mh_number,(unsigned long)p->mh_size);
+	    switch (p->mh_type) {
+	       case STRDUP_TYPE:fprintf(fp,"strdup()  in ");break;
+	       case MALLOC_TYPE:fprintf(fp,"malloc()  in ");break;
+	       case MALLOC_ATOMIC_TYPE:fprintf(fp,"atomicmalloc()  in ");break;
+	      case REALLOC_TYPE:fprintf(fp,"realloc() in ");break;
+	      case REALLOC_ATOMIC_TYPE:fprintf(fp,"atomicrealloc() in ");break;
+		default:fprintf(fp,"   ???    in ");break;
+	    }
+	    if (p->mh_file != NULL)
+	        fprintf(fp,"%s(%d)", p->mh_file, p->mh_line);
+	    if (p->mh_tag != MEMTAG)
+		fprintf(fp,"  INVALID");
+	    xmlMemContentShow(fp, p);
+	    fprintf(fp,"\n");
+	    nr--;
+	    p = p->mh_next;
+	}
+    }
+#endif /* MEM_LIST */    
+#endif /* DEBUG_MEMORY_LOCATION */
+}
 
 /**
  * xmlMemoryDump:

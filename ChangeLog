@@ -1,3 +1,8 @@
+Mon Sep 29 11:21:33 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmlmemory.c: fix a compilation problem when configuring
+	  with debug but without mem-debug
+
 Sun Sep 28 20:53:17 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am: cleanup, creating a new legacy.c module,

@@ -52,6 +52,11 @@
 #include <libxml/threads.h>
 #include <libxml/globals.h>
 
+#define TODO 								\
+    xmlGenericError(xmlGenericErrorContext,				\
+	    "Unimplemented block at %s:%d\n",				\
+            __FILE__, __LINE__);
+
 #if defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_XPATH_ENABLED)
 /************************************************************************
  * 									*
@@ -163,6 +168,161 @@ static xmlNsPtr xmlXPathXMLNamespace = &xmlXPathXMLNamespaceStruct;
  */
 static int xmlXPathDisableOptimizer = 0;
 #endif
+
+/************************************************************************
+ *									*
+ *			Error handling routines				*
+ *									*
+ ************************************************************************/
+
+
+static const char *xmlXPathErrorMessages[] = {
+    "Ok\n",
+    "Number encoding\n",
+    "Unfinished literal\n",
+    "Start of literal\n",
+    "Expected $ for variable reference\n",
+    "Undefined variable\n",
+    "Invalid predicate\n",
+    "Invalid expression\n",
+    "Missing closing curly brace\n",
+    "Unregistered function\n",
+    "Invalid operand\n",
+    "Invalid type\n",
+    "Invalid number of arguments\n",
+    "Invalid context size\n",
+    "Invalid context position\n",
+    "Memory allocation error\n",
+    "Syntax error\n",
+    "Resource error\n",
+    "Sub resource error\n",
+    "Undefined namespace prefix\n",
+    "Encoding error\n",
+    "Char out of XML range\n"
+};
+
+
+/**
+ * xmlXPathErrMemory:
+ * @ctxt:  an XPath context
+ * @extra:  extra informations
+ *
+ * Handle a redefinition of attribute error
+ */
+static void
+xmlXPathErrMemory(xmlXPathContextPtr ctxt, const char *extra)
+{
+    if (ctxt != NULL) {
+        if (extra) {
+            xmlChar buf[200];
+
+            xmlStrPrintf(buf, 200,
+                         BAD_CAST "Memory allocation failed : %s\n",
+                         extra);
+            ctxt->lastError.message = (char *) xmlStrdup(buf);
+        } else {
+            ctxt->lastError.message = (char *)
+	       xmlStrdup(BAD_CAST "Memory allocation failed\n");
+        }
+        ctxt->lastError.domain = XML_FROM_XPATH;
+        ctxt->lastError.code = XML_ERR_NO_MEMORY;
+	if (ctxt->error != NULL)
+	    ctxt->error(ctxt->userData, &ctxt->lastError);
+    } else {
+        if (extra)
+            __xmlRaiseError(NULL, NULL,
+                            NULL, NULL, XML_FROM_XPATH,
+                            XML_ERR_NO_MEMORY, XML_ERR_FATAL, NULL, 0,
+                            extra, NULL, NULL, 0, 0,
+                            "Memory allocation failed : %s\n", extra);
+        else
+            __xmlRaiseError(NULL, NULL,
+                            NULL, NULL, XML_FROM_XPATH,
+                            XML_ERR_NO_MEMORY, XML_ERR_FATAL, NULL, 0,
+                            NULL, NULL, NULL, 0, 0,
+                            "Memory allocation failed\n");
+    }
+}
+
+/**
+ * xmlXPathErrMemory:
+ * @ctxt:  an XPath parser context
+ * @extra:  extra informations
+ *
+ * Handle a redefinition of attribute error
+ */
+static void
+xmlXPathPErrMemory(xmlXPathParserContextPtr ctxt, const char *extra)
+{
+    ctxt->error = XPATH_MEMORY_ERROR;
+    if (ctxt == NULL)
+	xmlXPathErrMemory(NULL, extra);
+    else
+	xmlXPathErrMemory(ctxt->context, extra);
+}
+
+/**
+ * xmlXPathErr:
+ * @ctxt:  a XPath parser context
+ * @node:  the node raising the error
+ * @error:  the error code
+ * @msg:  message
+ * @str1:  extra info
+ * @str2:  extra info
+ *
+ * Handle a Relax NG Parsing error
+ */
+void
+xmlXPathErr(xmlXPathParserContextPtr ctxt, int error)
+{
+    if (ctxt != NULL)
+        ctxt->error = error;
+    if ((ctxt == NULL) || (ctxt->context == NULL)) {
+	__xmlRaiseError(NULL, NULL,
+			NULL, NULL, XML_FROM_XPATH,
+			error + XML_XPATH_EXPRESSION_OK - XPATH_EXPRESSION_OK,
+			XML_ERR_ERROR, NULL, 0,
+			NULL, NULL, NULL, 0, 0,
+			xmlXPathErrorMessages[error]);
+	return;
+    }
+    ctxt->context->lastError.domain = XML_FROM_XPATH;
+    ctxt->context->lastError.code = error + XML_XPATH_EXPRESSION_OK -
+                           XPATH_EXPRESSION_OK;
+    ctxt->context->lastError.level = XML_ERR_FATAL;
+    ctxt->context->lastError.str1 = (char *) xmlStrdup(ctxt->base);
+    ctxt->context->lastError.int1 = ctxt->cur - ctxt->base;
+    ctxt->context->lastError.node = ctxt->context->debugNode;
+    if (ctxt->context->error != NULL) {
+	ctxt->context->error(ctxt->context->userData,
+	                     &ctxt->context->lastError);
+    } else {
+	__xmlRaiseError(NULL, NULL,
+			NULL, ctxt->context->debugNode, XML_FROM_XPATH,
+			error + XML_XPATH_EXPRESSION_OK - XPATH_EXPRESSION_OK,
+			XML_ERR_ERROR, NULL, 0,
+			(const char *) ctxt->base, NULL, NULL,
+			ctxt->cur - ctxt->base, 0,
+			xmlXPathErrorMessages[error]);
+    }
+
+}
+
+/**
+ * xmlXPatherror:
+ * @ctxt:  the XPath Parser context
+ * @file:  the file name
+ * @line:  the line number
+ * @no:  the error number
+ *
+ * Formats an error message.
+ */
+void
+xmlXPatherror(xmlXPathParserContextPtr ctxt, const char *file ATTRIBUTE_UNUSED,
+              int line ATTRIBUTE_UNUSED, int no) {
+    xmlXPathErr(ctxt, no);
+}
+
 
 /************************************************************************
  * 									*
@@ -278,8 +438,7 @@ xmlXPathNewCompExpr(void) {
 
     cur = (xmlXPathCompExprPtr) xmlMalloc(sizeof(xmlXPathCompExpr));
     if (cur == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlXPathNewCompExpr : malloc failed\n");
+        xmlXPathErrMemory(NULL, "allocating component\n");
 	return(NULL);
     }
     memset(cur, 0, sizeof(xmlXPathCompExpr));
@@ -288,8 +447,7 @@ xmlXPathNewCompExpr(void) {
     cur->steps = (xmlXPathStepOp *) xmlMalloc(cur->maxStep *
 	                                   sizeof(xmlXPathStepOp));
     if (cur->steps == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlXPathNewCompExpr : malloc failed\n");
+        xmlXPathErrMemory(NULL, "allocating steps\n");
 	xmlFree(cur);
 	return(NULL);
     }
@@ -369,8 +527,7 @@ xmlXPathCompExprAdd(xmlXPathCompExprPtr comp, int ch1, int ch2,
 		                      comp->maxStep * sizeof(xmlXPathStepOp));
 	if (real == NULL) {
 	    comp->maxStep /= 2;
-	    xmlGenericError(xmlGenericErrorContext,
-		    "xmlXPathCompExprAdd : realloc failed\n");
+	    xmlXPathErrMemory(NULL, "adding step\n");
 	    return(-1);
 	}
 	comp->steps = real;
@@ -435,11 +592,6 @@ xmlXPathCompExprAdd(ctxt->comp, (ch1), (ch2), (op), (val), (val2), 0 ,NULL ,NULL
  * 		Debugging related functions				*
  *									*
  ************************************************************************/
-
-#define TODO 								\
-    xmlGenericError(xmlGenericErrorContext,				\
-	    "Unimplemented block at %s:%d\n",				\
-            __FILE__, __LINE__);
 
 #define STRANGE 							\
     xmlGenericError(xmlGenericErrorContext,				\
@@ -1247,96 +1399,6 @@ xmlXPathFormatNumber(double number, char buffer[], int buffersize)
     }
 }
 
-/************************************************************************
- *									*
- *			Error handling routines				*
- *									*
- ************************************************************************/
-
-
-static const char *xmlXPathErrorMessages[] = {
-    "Ok",
-    "Number encoding",
-    "Unfinished literal",
-    "Start of literal",
-    "Expected $ for variable reference",
-    "Undefined variable",
-    "Invalid predicate",
-    "Invalid expression",
-    "Missing closing curly brace",
-    "Unregistered function",
-    "Invalid operand",
-    "Invalid type",
-    "Invalid number of arguments",
-    "Invalid context size",
-    "Invalid context position",
-    "Memory allocation error",
-    "Syntax error",
-    "Resource error",
-    "Sub resource error",
-    "Undefined namespace prefix",
-    "Encoding error",
-    "Char out of XML range"
-};
-
-/**
- * xmlXPatherror:
- * @ctxt:  the XPath Parser context
- * @file:  the file name
- * @line:  the line number
- * @no:  the error number
- *
- * Formats an error message.
- */
-void
-xmlXPatherror(xmlXPathParserContextPtr ctxt, const char *file ATTRIBUTE_UNUSED,
-              int line ATTRIBUTE_UNUSED, int no) {
-    int n;
-    const xmlChar *cur;
-    const xmlChar *base;
-
-    cur = ctxt->cur;
-    base = ctxt->base;
-    if ((cur == NULL) || (base == NULL)) {
-	if ((ctxt->comp != NULL) && (ctxt->comp->expr != NULL)) {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "XPath error %s in %s\n", xmlXPathErrorMessages[no],
-			    ctxt->comp->expr);
-	} else {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "XPath error %s\n", xmlXPathErrorMessages[no]);
-	}
-
-	return;
-    }
-    xmlGenericError(xmlGenericErrorContext,
-	    "XPath error %s\n", xmlXPathErrorMessages[no]);
-
-    while ((cur > base) && ((*cur == '\n') || (*cur == '\r'))) {
-	cur--;
-    }
-    n = 0;
-    while ((n++ < 80) && (cur > base) && (*cur != '\n') && (*cur != '\r'))
-        cur--;
-    if ((*cur == '\n') || (*cur == '\r')) cur++;
-    base = cur;
-    n = 0;
-    while ((*cur != 0) && (*cur != '\n') && (*cur != '\r') && (n < 79)) {
-        xmlGenericError(xmlGenericErrorContext, "%c", (unsigned char) *cur++);
-	n++;
-    }
-    xmlGenericError(xmlGenericErrorContext, "\n");
-    cur = ctxt->cur;
-    while ((*cur == '\n') || (*cur == '\r'))
-	cur--;
-    n = 0;
-    while ((cur != base) && (n++ < 80)) {
-        xmlGenericError(xmlGenericErrorContext, " ");
-        base++;
-    }
-    xmlGenericError(xmlGenericErrorContext,"^\n");
-}
-
 
 /************************************************************************
  *									*
@@ -1564,8 +1626,7 @@ xmlXPathNodeSetDupNs(xmlNodePtr node, xmlNsPtr ns) {
      */
     cur = (xmlNsPtr) xmlMalloc(sizeof(xmlNs));
     if (cur == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlXPathNodeSetDupNs : malloc failed\n");
+        xmlXPathErrMemory(NULL, "duplicating namespace\n");
 	return(NULL);
     }
     memset(cur, 0, sizeof(xmlNs));
@@ -1614,8 +1675,7 @@ xmlXPathNodeSetCreate(xmlNodePtr val) {
 
     ret = (xmlNodeSetPtr) xmlMalloc(sizeof(xmlNodeSet));
     if (ret == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlXPathNodeSetCreate: out of memory\n");
+        xmlXPathErrMemory(NULL, "creating nodeset\n");
 	return(NULL);
     }
     memset(ret, 0 , (size_t) sizeof(xmlNodeSet));
@@ -1623,8 +1683,8 @@ xmlXPathNodeSetCreate(xmlNodePtr val) {
         ret->nodeTab = (xmlNodePtr *) xmlMalloc(XML_NODESET_DEFAULT *
 					     sizeof(xmlNodePtr));
 	if (ret->nodeTab == NULL) {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "xmlXPathNodeSetCreate: out of memory\n");
+	    xmlXPathErrMemory(NULL, "creating nodeset\n");
+	    xmlFree(ret);
 	    return(NULL);
 	}
 	memset(ret->nodeTab, 0 ,
@@ -1712,8 +1772,7 @@ xmlXPathNodeSetAddNs(xmlNodeSetPtr cur, xmlNodePtr node, xmlNsPtr ns) {
         cur->nodeTab = (xmlNodePtr *) xmlMalloc(XML_NODESET_DEFAULT *
 					     sizeof(xmlNodePtr));
 	if (cur->nodeTab == NULL) {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "xmlXPathNodeSetAdd: out of memory\n");
+	    xmlXPathErrMemory(NULL, "growing nodeset\n");
 	    return;
 	}
 	memset(cur->nodeTab, 0 ,
@@ -1726,8 +1785,7 @@ xmlXPathNodeSetAddNs(xmlNodeSetPtr cur, xmlNodePtr node, xmlNsPtr ns) {
 	temp = (xmlNodePtr *) xmlRealloc(cur->nodeTab, cur->nodeMax *
 				      sizeof(xmlNodePtr));
 	if (temp == NULL) {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "xmlXPathNodeSetAdd: out of memory\n");
+	    xmlXPathErrMemory(NULL, "growing nodeset\n");
 	    return;
 	}
 	cur->nodeTab = temp;
@@ -1767,8 +1825,7 @@ xmlXPathNodeSetAdd(xmlNodeSetPtr cur, xmlNodePtr val) {
         cur->nodeTab = (xmlNodePtr *) xmlMalloc(XML_NODESET_DEFAULT *
 					     sizeof(xmlNodePtr));
 	if (cur->nodeTab == NULL) {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "xmlXPathNodeSetAdd: out of memory\n");
+	    xmlXPathErrMemory(NULL, "growing nodeset\n");
 	    return;
 	}
 	memset(cur->nodeTab, 0 ,
@@ -1781,8 +1838,7 @@ xmlXPathNodeSetAdd(xmlNodeSetPtr cur, xmlNodePtr val) {
 	temp = (xmlNodePtr *) xmlRealloc(cur->nodeTab, cur->nodeMax *
 				      sizeof(xmlNodePtr));
 	if (temp == NULL) {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "xmlXPathNodeSetAdd: out of memory\n");
+	    xmlXPathErrMemory(NULL, "growing nodeset\n");
 	    return;
 	}
 	cur->nodeTab = temp;
@@ -1821,8 +1877,7 @@ xmlXPathNodeSetAddUnique(xmlNodeSetPtr cur, xmlNodePtr val) {
         cur->nodeTab = (xmlNodePtr *) xmlMalloc(XML_NODESET_DEFAULT *
 					     sizeof(xmlNodePtr));
 	if (cur->nodeTab == NULL) {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "xmlXPathNodeSetAddUnique: out of memory\n");
+	    xmlXPathErrMemory(NULL, "growing nodeset\n");
 	    return;
 	}
 	memset(cur->nodeTab, 0 ,
@@ -1835,8 +1890,7 @@ xmlXPathNodeSetAddUnique(xmlNodeSetPtr cur, xmlNodePtr val) {
 	temp = (xmlNodePtr *) xmlRealloc(cur->nodeTab, cur->nodeMax *
 				      sizeof(xmlNodePtr));
 	if (temp == NULL) {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "xmlXPathNodeSetAddUnique: out of memory\n");
+	    xmlXPathErrMemory(NULL, "growing nodeset\n");
 	    return;
 	}
 	cur->nodeTab = temp;
@@ -1903,8 +1957,7 @@ xmlXPathNodeSetMerge(xmlNodeSetPtr val1, xmlNodeSetPtr val2) {
 	    val1->nodeTab = (xmlNodePtr *) xmlMalloc(XML_NODESET_DEFAULT *
 						    sizeof(xmlNodePtr));
 	    if (val1->nodeTab == NULL) {
-		xmlGenericError(xmlGenericErrorContext,
-				"xmlXPathNodeSetMerge: out of memory\n");
+	        xmlXPathErrMemory(NULL, "merging nodeset\n");
 		return(NULL);
 	    }
 	    memset(val1->nodeTab, 0 ,
@@ -1917,8 +1970,7 @@ xmlXPathNodeSetMerge(xmlNodeSetPtr val1, xmlNodeSetPtr val2) {
 	    temp = (xmlNodePtr *) xmlRealloc(val1->nodeTab, val1->nodeMax *
 					     sizeof(xmlNodePtr));
 	    if (temp == NULL) {
-		xmlGenericError(xmlGenericErrorContext,
-				"xmlXPathNodeSetMerge: out of memory\n");
+	        xmlXPathErrMemory(NULL, "merging nodeset\n");
 		return(NULL);
 	    }
 	    val1->nodeTab = temp;
@@ -1964,8 +2016,7 @@ xmlXPathNodeSetMergeUnique(xmlNodeSetPtr val1, xmlNodeSetPtr val2) {
 	    val1->nodeTab = (xmlNodePtr *) xmlMalloc(XML_NODESET_DEFAULT *
 						    sizeof(xmlNodePtr));
 	    if (val1->nodeTab == NULL) {
-		xmlGenericError(xmlGenericErrorContext,
-				"xmlXPathNodeSetMerge: out of memory\n");
+	        xmlXPathErrMemory(NULL, "merging nodeset\n");
 		return(NULL);
 	    }
 	    memset(val1->nodeTab, 0 ,
@@ -1978,8 +2029,7 @@ xmlXPathNodeSetMergeUnique(xmlNodeSetPtr val1, xmlNodeSetPtr val2) {
 	    temp = (xmlNodePtr *) xmlRealloc(val1->nodeTab, val1->nodeMax *
 					     sizeof(xmlNodePtr));
 	    if (temp == NULL) {
-		xmlGenericError(xmlGenericErrorContext,
-				"xmlXPathNodeSetMerge: out of memory\n");
+	        xmlXPathErrMemory(NULL, "merging nodeset\n");
 		return(NULL);
 	    }
 	    val1->nodeTab = temp;
@@ -2159,8 +2209,7 @@ xmlXPathNewNodeSet(xmlNodePtr val) {
 
     ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
     if (ret == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlXPathNewNodeSet: out of memory\n");
+        xmlXPathErrMemory(NULL, "creating nodeset\n");
 	return(NULL);
     }
     memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
@@ -2186,8 +2235,7 @@ xmlXPathNewValueTree(xmlNodePtr val) {
 
     ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
     if (ret == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlXPathNewNodeSet: out of memory\n");
+        xmlXPathErrMemory(NULL, "creating result value tree\n");
 	return(NULL);
     }
     memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
@@ -2240,8 +2288,7 @@ xmlXPathWrapNodeSet(xmlNodeSetPtr val) {
 
     ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
     if (ret == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlXPathWrapNodeSet: out of memory\n");
+        xmlXPathErrMemory(NULL, "creating node set object\n");
 	return(NULL);
     }
     memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
@@ -3007,8 +3054,7 @@ xmlXPathNewFloat(double val) {
 
     ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
     if (ret == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlXPathNewFloat: out of memory\n");
+        xmlXPathErrMemory(NULL, "creating float object\n");
 	return(NULL);
     }
     memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
@@ -3031,8 +3077,7 @@ xmlXPathNewBoolean(int val) {
 
     ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
     if (ret == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlXPathNewBoolean: out of memory\n");
+        xmlXPathErrMemory(NULL, "creating boolean object\n");
 	return(NULL);
     }
     memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
@@ -3055,8 +3100,7 @@ xmlXPathNewString(const xmlChar *val) {
 
     ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
     if (ret == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlXPathNewString: out of memory\n");
+        xmlXPathErrMemory(NULL, "creating string object\n");
 	return(NULL);
     }
     memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
@@ -3082,8 +3126,7 @@ xmlXPathWrapString (xmlChar *val) {
 
     ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
     if (ret == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlXPathWrapString: out of memory\n");
+        xmlXPathErrMemory(NULL, "creating string object\n");
 	return(NULL);
     }
     memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
@@ -3106,8 +3149,7 @@ xmlXPathNewCString(const char *val) {
 
     ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
     if (ret == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlXPathNewCString: out of memory\n");
+        xmlXPathErrMemory(NULL, "creating string object\n");
 	return(NULL);
     }
     memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
@@ -3143,8 +3185,7 @@ xmlXPathWrapExternal (void *val) {
 
     ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
     if (ret == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlXPathWrapExternal: out of memory\n");
+        xmlXPathErrMemory(NULL, "creating user object\n");
 	return(NULL);
     }
     memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
@@ -3170,8 +3211,7 @@ xmlXPathObjectCopy(xmlXPathObjectPtr val) {
 
     ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
     if (ret == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlXPathObjectCopy: out of memory\n");
+        xmlXPathErrMemory(NULL, "copying object\n");
 	return(NULL);
     }
     memcpy(ret, val , (size_t) sizeof(xmlXPathObject));
@@ -3722,8 +3762,7 @@ xmlXPathNewContext(xmlDocPtr doc) {
 
     ret = (xmlXPathContextPtr) xmlMalloc(sizeof(xmlXPathContext));
     if (ret == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlXPathNewContext: out of memory\n");
+        xmlXPathErrMemory(NULL, "creating context\n");
 	return(NULL);
     }
     memset(ret, 0 , (size_t) sizeof(xmlXPathContext));
@@ -3814,8 +3853,7 @@ xmlXPathNewParserContext(const xmlChar *str, xmlXPathContextPtr ctxt) {
 
     ret = (xmlXPathParserContextPtr) xmlMalloc(sizeof(xmlXPathParserContext));
     if (ret == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlXPathNewParserContext: out of memory\n");
+        xmlXPathErrMemory(ctxt, "creating parser context\n");
 	return(NULL);
     }
     memset(ret, 0 , (size_t) sizeof(xmlXPathParserContext));
@@ -3847,8 +3885,7 @@ xmlXPathCompParserContext(xmlXPathCompExprPtr comp, xmlXPathContextPtr ctxt) {
 
     ret = (xmlXPathParserContextPtr) xmlMalloc(sizeof(xmlXPathParserContext));
     if (ret == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlXPathCompParserContext: out of memory\n");
+        xmlXPathErrMemory(ctxt, "creating evaluation context\n");
 	return(NULL);
     }
     memset(ret, 0 , (size_t) sizeof(xmlXPathParserContext));
@@ -3858,8 +3895,7 @@ xmlXPathCompParserContext(xmlXPathCompExprPtr comp, xmlXPathContextPtr ctxt) {
                      xmlMalloc(10 * sizeof(xmlXPathObjectPtr));
     if (ret->valueTab == NULL) {
 	xmlFree(ret);
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlXPathCompParserContext: out of memory\n");
+	xmlXPathErrMemory(ctxt, "creating evaluation context\n");
 	return(NULL);
     }
     ret->valueNr = 0;
@@ -4210,6 +4246,7 @@ xmlXPathCompareNodeSets(int inf, int strict,
 
     values2 = (double *) xmlMalloc(ns2->nodeNr * sizeof(double));
     if (values2 == NULL) {
+        xmlXPathErrMemory(NULL, "comparing nodesets\n");
 	xmlXPathFreeObject(arg1);
 	xmlXPathFreeObject(arg2);
 	return(0);
@@ -4460,22 +4497,27 @@ xmlXPathEqualNodeSets(xmlXPathObjectPtr arg1, xmlXPathObjectPtr arg2, int neq) {
 		    return(1);
 
     values1 = (xmlChar **) xmlMalloc(ns1->nodeNr * sizeof(xmlChar *));
-    if (values1 == NULL)
+    if (values1 == NULL) {
+        xmlXPathErrMemory(NULL, "comparing nodesets\n");
 	return(0);
+    }
     hashs1 = (unsigned int *) xmlMalloc(ns1->nodeNr * sizeof(unsigned int));
     if (hashs1 == NULL) {
+        xmlXPathErrMemory(NULL, "comparing nodesets\n");
 	xmlFree(values1);
 	return(0);
     }
     memset(values1, 0, ns1->nodeNr * sizeof(xmlChar *));
     values2 = (xmlChar **) xmlMalloc(ns2->nodeNr * sizeof(xmlChar *));
     if (values2 == NULL) {
+        xmlXPathErrMemory(NULL, "comparing nodesets\n");
 	xmlFree(hashs1);
 	xmlFree(values1);
 	return(0);
     }
     hashs2 = (unsigned int *) xmlMalloc(ns2->nodeNr * sizeof(unsigned int));
     if (hashs2 == NULL) {
+        xmlXPathErrMemory(NULL, "comparing nodesets\n");
 	xmlFree(hashs1);
 	xmlFree(values1);
 	xmlFree(values2);
@@ -10608,6 +10650,7 @@ xmlXPathRunEval(xmlXPathParserContextPtr ctxt) {
 	ctxt->valueTab = (xmlXPathObjectPtr *) 
 			 xmlMalloc(10 * sizeof(xmlXPathObjectPtr));
 	if (ctxt->valueTab == NULL) {
+	    xmlXPathPErrMemory(ctxt, "creating evaluation context\n");
 	    xmlFree(ctxt);
 	}
 	ctxt->valueNr = 0;

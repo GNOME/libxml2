@@ -13,6 +13,7 @@
 #define __XML_XPATH_H__
 
 #include <libxml/xmlversion.h>
+#include <libxml/xmlerror.h>
 #include <libxml/tree.h>
 #include <libxml/hash.h>
 
@@ -253,6 +254,12 @@ struct _xmlXPathContext {
     /* temporary namespace lists kept for walking the namespace axis */
     xmlNsPtr *tmpNsList;		/* Array of namespaces */
     int tmpNsNr;			/* number of namespace in scope */
+
+    /* error reporting mechanism */
+    void *userData;                     /* user specific data block */
+    xmlStructuredErrorFunc error;       /* the callback in case of errors */
+    xmlError lastError;			/* the last error */
+    xmlNodePtr debugNode;		/* the source node XSLT */
 };
 
 /*

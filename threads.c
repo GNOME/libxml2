@@ -336,7 +336,8 @@ xmlNewGlobalState(void)
 
 
 #ifdef HAVE_WIN32_THREADS
-#if !defined(HAVE_COMPILER_TLS) && defined(LIBXML_STATIC)
+#if !defined(HAVE_COMPILER_TLS)
+#if defined(LIBXML_STATIC) && !defined(LIBXML_STATIC_FOR_DLL)
 typedef struct _xmlGlobalStateCleanupHelperParams
 {
     HANDLE thread;
@@ -352,7 +353,20 @@ static void xmlGlobalStateCleanupHelper (void *p)
     free(params);
     _endthread();
 }
-#endif /* HAVE_COMPILER_TLS && LIBXML_STATIC */
+#else /* LIBXML_STATIC && !LIBXML_STATIC_FOR_DLL */
+
+typedef struct _xmlGlobalStateCleanupHelperParams
+{
+    void *memory;
+    struct _xmlGlobalStateCleanupHelperParams * prev;
+    struct _xmlGlobalStateCleanupHelperParams * next;
+} xmlGlobalStateCleanupHelperParams;
+
+static xmlGlobalStateCleanupHelperParams * cleanup_helpers_head = NULL;
+static CRITICAL_SECTION cleanup_helpers_cs;
+
+#endif /* LIBXMLSTATIC && !LIBXML_STATIC_FOR_DLL */
+#endif /* HAVE_COMPILER_TLS */
 #endif /* HAVE_WIN32_THREADS */
 
 /**
@@ -387,23 +401,37 @@ xmlGetGlobalState(void)
     return &tlstate;
 #else /* HAVE_COMPILER_TLS */
     xmlGlobalState *globalval;
+    xmlGlobalStateCleanupHelperParams * p;
 
     if (run_once_init) { 
 	run_once_init = 0; 
 	xmlOnceInit(); 
     }
-    if ((globalval = (xmlGlobalState *) TlsGetValue(globalkey)) == NULL) {
+#if defined(LIBXML_STATIC) && !defined(LIBXML_STATIC_FOR_DLL)
+    globalval = (xmlGlobalState *)TlsGetValue(globalkey);
+#else
+    p = (xmlGlobalStateCleanupHelperParams*)TlsGetValue(globalkey);
+    globalval = (xmlGlobalState *)(p ? p->memory : NULL);
+#endif
+    if (globalval == NULL) {
 	xmlGlobalState *tsd = xmlNewGlobalState();
-#if defined(LIBXML_STATIC)
-	xmlGlobalStateCleanupHelperParams *p = 
-	    (xmlGlobalStateCleanupHelperParams *) malloc(sizeof(xmlGlobalStateCleanupHelperParams));
+	p = (xmlGlobalStateCleanupHelperParams *) malloc(sizeof(xmlGlobalStateCleanupHelperParams));
 	p->memory = tsd;
+#if defined(LIBXML_STATIC) && !defined(LIBXML_STATIC_FOR_DLL)
 	DuplicateHandle(GetCurrentProcess(), GetCurrentThread(), 
 		GetCurrentProcess(), &p->thread, 0, TRUE, DUPLICATE_SAME_ACCESS);
-#endif
 	TlsSetValue(globalkey, tsd);
-#if defined(LIBXML_STATIC)
 	_beginthread(xmlGlobalStateCleanupHelper, 0, p);
+#else
+	EnterCriticalSection(&cleanup_helpers_cs);	
+        if (cleanup_helpers_head != NULL) {
+            cleanup_helpers_head->prev = p;
+        }
+	p->next = cleanup_helpers_head;
+	p->prev = NULL;
+	cleanup_helpers_head = p;
+	TlsSetValue(globalkey, p);
+	LeaveCriticalSection(&cleanup_helpers_cs);	
 #endif
 
 	return (tsd);
@@ -513,6 +541,9 @@ xmlInitThreads(void)
 #ifdef DEBUG_THREADS
     xmlGenericError(xmlGenericErrorContext, "xmlInitThreads()\n");
 #endif
+#if defined(HAVE_WIN32_THREADS) && !defined(HAVE_COMPILER_TLS)
+    InitializeCriticalSection(&cleanup_helpers_cs);
+#endif
 }
 
 /**
@@ -526,6 +557,24 @@ xmlCleanupThreads(void)
 {
 #ifdef DEBUG_THREADS
     xmlGenericError(xmlGenericErrorContext, "xmlCleanupThreads()\n");
+#endif
+#if defined(HAVE_WIN32_THREADS) && !defined(HAVE_COMPILER_TLS)
+    if (globalkey != TLS_OUT_OF_INDEXES) {
+	xmlGlobalStateCleanupHelperParams * p;
+	EnterCriticalSection(&cleanup_helpers_cs);
+	p = cleanup_helpers_head;
+	while (p != NULL) {
+		xmlGlobalStateCleanupHelperParams * temp = p;
+		p = p->next;
+		xmlFreeGlobalState(temp->memory);
+		free(temp);
+	}
+	cleanup_helpers_head = 0;
+	LeaveCriticalSection(&cleanup_helpers_cs);
+	TlsFree(globalkey);
+	globalkey = TLS_OUT_OF_INDEXES;
+    }
+    DeleteCriticalSection(&cleanup_helpers_cs);
 #endif
 }
 
@@ -566,27 +615,39 @@ xmlOnceInit(void) {
  *
  * Returns TRUE always
  */
-#if defined(HAVE_WIN32_THREADS) && !defined(LIBXML_STATIC)
+#if defined(HAVE_WIN32_THREADS) && !defined(HAVE_COMPILER_TLS) && (!defined(LIBXML_STATIC) || defined(LIBXML_STATIC_FOR_DLL))
+#if defined(LIBXML_STATIC_FOR_DLL)
+BOOL WINAPI xmlDllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved) 
+#else
 BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved) 
+#endif
 {
     switch(fdwReason) {
     case DLL_THREAD_DETACH:
 	if (globalkey != TLS_OUT_OF_INDEXES) {
-	    xmlGlobalState *globalval = (xmlGlobalState *)TlsGetValue(globalkey);
-	    if (globalval) {
-		xmlFreeGlobalState(globalval);
-		TlsSetValue(globalkey, NULL);
+	    xmlGlobalState *globalval = NULL;
+	    xmlGlobalStateCleanupHelperParams * p =
+		(xmlGlobalStateCleanupHelperParams*)TlsGetValue(globalkey);
+	    globalval = (xmlGlobalState *)(p ? p->memory : NULL);
+            if (globalval) {
+                xmlFreeGlobalState(globalval);
+                TlsSetValue(globalkey,NULL);
+            }
+	    if (p)
+	    {
+		EnterCriticalSection(&cleanup_helpers_cs);
+                if (p == cleanup_helpers_head)
+		    cleanup_helpers_head = p->next;
+                else
+		    p->prev->next = p->next;
+                if (p->next != NULL)
+                    p->next->prev = p->prev;
+		LeaveCriticalSection(&cleanup_helpers_cs);
+		free(p);
 	    }
-	}
-	break;
-    case DLL_PROCESS_DETACH:
-	if (globalkey != TLS_OUT_OF_INDEXES) {
-	    TlsFree(globalkey);
-	    globalkey = TLS_OUT_OF_INDEXES;
 	}
 	break;
     }
     return TRUE;
 }
 #endif
-

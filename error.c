@@ -262,13 +262,13 @@ xmlReportError(xmlErrorPtr err, xmlParserCtxtPtr ctxt, const char *str,
         if (input != NULL) {
             if (input->filename)
                 channel(data, "%s:%d: ", input->filename, input->line);
-            else
+            else if ((line != 0) && (domain == XML_FROM_PARSER))
                 channel(data, "Entity: line %d: ", input->line);
         }
     } else {
         if (file != NULL)
             channel(data, "%s:%d: ", file, line);
-        else
+        else if ((line != 0) && (domain == XML_FROM_PARSER))
             channel(data, "Entity: line %d: ", line);
     }
     if (name != NULL) {
@@ -362,10 +362,23 @@ xmlReportError(xmlErrorPtr err, xmlParserCtxtPtr ctxt, const char *str,
         if (cur != NULL) {
             if (cur->filename)
                 channel(data, "%s:%d: \n", cur->filename, cur->line);
-            else
+            else if ((line != 0) && (domain == XML_FROM_PARSER))
                 channel(data, "Entity: line %d: \n", cur->line);
             xmlParserPrintFileContextInternal(cur, channel, data);
         }
+    }
+    if ((domain == XML_FROM_XPATH) && (err->str1 != NULL) &&
+        (err->int1 < 100) &&
+	(err->int1 < xmlStrlen((const xmlChar *)err->str1))) {
+	xmlChar buf[150];
+	int i;
+
+	channel(data, "%s\n", err->str1);
+	for (i=0;i < err->int1;i++)
+	     buf[i] = ' ';
+	buf[i++] = '^';
+	buf[i] = 0;
+	channel(data, "%s\n", buf);
     }
 }
 

@@ -250,8 +250,7 @@ XMLPUBFUN void * XMLCALL
  * Macro to raise an XPath error and return.
  */
 #define XP_ERROR(X)							\
-    { xmlXPatherror(ctxt, __FILE__, __LINE__, X);			\
-      ctxt->error = (X); return; }
+    { xmlXPathErr(ctxt, X); return; }
 
 /**
  * XP_ERROR0:
@@ -260,8 +259,7 @@ XMLPUBFUN void * XMLCALL
  * Macro to raise an XPath error and return 0.
  */
 #define XP_ERROR0(X)							\
-    { xmlXPatherror(ctxt, __FILE__, __LINE__, X);			\
-      ctxt->error = (X); return(0); }
+    { xmlXPathErr(ctxt, X); return(0); }
 
 /**
  * CHECK_TYPE:
@@ -376,6 +374,10 @@ XMLPUBFUN void XMLCALL
 				 const char *file,
 				 int line,
 				 int no);
+
+XMLPUBFUN void XMLCALL
+		xmlXPathErr	(xmlXPathParserContextPtr ctxt,
+				 int error);
 
 #ifdef LIBXML_DEBUG_ENABLED
 XMLPUBFUN void XMLCALL		

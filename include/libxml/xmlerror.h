@@ -375,7 +375,29 @@ typedef enum {
     XML_RNGP_VALUE_EMPTY,
     XML_RNGP_VALUE_NO_CONTENT,
     XML_RNGP_XMLNS_NAME,
-    XML_RNGP_XML_NS
+    XML_RNGP_XML_NS,
+    XML_XPATH_EXPRESSION_OK = 1200,
+    XML_XPATH_NUMBER_ERROR,
+    XML_XPATH_UNFINISHED_LITERAL_ERROR,
+    XML_XPATH_START_LITERAL_ERROR,
+    XML_XPATH_VARIABLE_REF_ERROR,
+    XML_XPATH_UNDEF_VARIABLE_ERROR,
+    XML_XPATH_INVALID_PREDICATE_ERROR,
+    XML_XPATH_EXPR_ERROR,
+    XML_XPATH_UNCLOSED_ERROR,
+    XML_XPATH_UNKNOWN_FUNC_ERROR,
+    XML_XPATH_INVALID_OPERAND,
+    XML_XPATH_INVALID_TYPE,
+    XML_XPATH_INVALID_ARITY,
+    XML_XPATH_INVALID_CTXT_SIZE,
+    XML_XPATH_INVALID_CTXT_POSITION,
+    XML_XPATH_MEMORY_ERROR,
+    XML_XPTR_SYNTAX_ERROR,
+    XML_XPTR_RESOURCE_ERROR,
+    XML_XPTR_SUB_RESOURCE_ERROR,
+    XML_XPATH_UNDEF_PREFIX_ERROR,
+    XML_XPATH_ENCODING_ERROR,
+    XML_XPATH_INVALID_CHAR_ERROR
 } xmlParserErrors;
 
 /**
@@ -389,7 +411,16 @@ typedef enum {
  */
 typedef void (*xmlGenericErrorFunc) (void *ctx,
 				 const char *msg,
-				 ...);
+	 			 ...);
+/**
+ * xmlStructuredErrorFunc:
+ * @userData:  user provided data for the error callback
+ * @error:  the error being raised.
+ *
+ * Signature of the function to use when there is an error and
+ * the module handles the new error reporting mechanism.
+ */
+typedef void (*xmlStructuredErrorFunc) (void *userData, xmlErrorPtr error);
 
 /*
  * Use the following function to reset the two global variables

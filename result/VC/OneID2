@@ -1,7 +1,7 @@
 ./test/VC/OneID2:3: validity error : Element doc has too may ID attributes defined : id
 <!ATTLIST doc id ID #IMPLIED>
                             ^
-Element doc has too many ID attributes defined : id
+Entity: line 0: validity error : Element doc has too many ID attributes defined : id
 ./test/VC/OneID2:3: validity error : Element doc has 2 ID attribute defined in the internal subset : id
 <!ATTLIST doc id ID #IMPLIED>
                             ^

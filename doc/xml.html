@@ -244,6 +244,26 @@ you want to test those</p>
     docs</li>
 </ul>
 
+<h3>2.3.9: May 19 2001</h3>
+
+<p>Lots of bugfixes, and added a basic SGML catalog support:</p>
+<ul>
+  <li>HTML push bugfix #54891 and another patch from Jonas Borgström</li>
+  <li>some serious speed optimisation again</li>
+  <li>some documentation cleanups</li>
+  <li>trying to get better linking on solaris (-R)</li>
+  <li>XPath API cleanup from Thomas Broyer</li>
+  <li>Validation bug fixed #54631, added a patch from Gary Pennington, fixed
+    xmlValidGetValidElements()</li>
+  <li>Added an INSTALL file</li>
+  <li>Attribute removal added to API: #54433</li>
+  <li>added a basic support for SGML catalogs</li>
+  <li>fixed xmlKeepBlanksDefault(0) API</li>
+  <li>bugfix in xmlNodeGetLang()</li>
+  <li>fixed a small configure portability problem</li>
+  <li>fixed an inversion of SYSTEM and PUBLIC identifier in HTML document</li>
+</ul>
+
 <h3>1.8.13: May 14 2001</h3>
 <ul>
   <li>bugfixes release of the old libxml1 branch used by Gnome</li>
@@ -1527,6 +1547,6 @@ Gnome CVS base under gnome-xml/example</p>
 
 <p><a href="mailto:Daniel.Veillard@imag.fr">Daniel Veillard</a></p>
 
-<p>$Id: xml.html,v 1.82 2001/05/03 11:15:36 veillard Exp $</p>
+<p>$Id: xml.html,v 1.83 2001/05/14 11:13:58 veillard Exp $</p>
 </body>
 </html>

@@ -1,3 +1,7 @@
+Sat May 19 17:11:15 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* doc/xml.html: update with 2.3.9 informations
+
 Sat May 19 16:50:47 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* HTMLtree.h debugXML.h parserInternals.h tree.h valid.c

@@ -1,3 +1,8 @@
+Sun Oct 19 16:39:36 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: applied patch from Chris Anderson to change back
+	  memcmp with CMPx()
+
 Sun Oct 19 16:24:19 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: fixed to not send NULL to %s printing

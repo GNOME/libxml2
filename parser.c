@@ -102,6 +102,7 @@ static const char *xmlW3CPIs[] = {
     NULL
 };
 
+
 /* DEPR void xmlParserHandleReference(xmlParserCtxtPtr ctxt); */
 xmlEntityPtr xmlParseStringPEReference(xmlParserCtxtPtr ctxt,
                                        const xmlChar **str);
@@ -1202,6 +1203,24 @@ static int spacePop(xmlParserCtxtPtr ctxt) {
 #define NXT(val) ctxt->input->cur[(val)]
 #define CUR_PTR ctxt->input->cur
 
+#define CMP4( s, c1, c2, c3, c4 ) \
+  ( ((unsigned char *) s)[ 0 ] == c1 && ((unsigned char *) s)[ 1 ] == c2 && \
+    ((unsigned char *) s)[ 2 ] == c3 && ((unsigned char *) s)[ 3 ] == c4 )
+#define CMP5( s, c1, c2, c3, c4, c5 ) \
+  ( CMP4( s, c1, c2, c3, c4 ) && ((unsigned char *) s)[ 4 ] == c5 )
+#define CMP6( s, c1, c2, c3, c4, c5, c6 ) \
+  ( CMP5( s, c1, c2, c3, c4, c5 ) && ((unsigned char *) s)[ 5 ] == c6 )
+#define CMP7( s, c1, c2, c3, c4, c5, c6, c7 ) \
+  ( CMP6( s, c1, c2, c3, c4, c5, c6 ) && ((unsigned char *) s)[ 6 ] == c7 )
+#define CMP8( s, c1, c2, c3, c4, c5, c6, c7, c8 ) \
+  ( CMP7( s, c1, c2, c3, c4, c5, c6, c7 ) && ((unsigned char *) s)[ 7 ] == c8 )
+#define CMP9( s, c1, c2, c3, c4, c5, c6, c7, c8, c9 ) \
+  ( CMP8( s, c1, c2, c3, c4, c5, c6, c7, c8 ) && \
+    ((unsigned char *) s)[ 8 ] == c9 )
+#define CMP10( s, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10 ) \
+  ( CMP9( s, c1, c2, c3, c4, c5, c6, c7, c8, c9 ) && \
+    ((unsigned char *) s)[ 9 ] == c10 )
+
 #define SKIP(val) do {							\
     ctxt->nbChars += (val),ctxt->input->cur += (val),ctxt->input->col+=(val);			\
     if (*ctxt->input->cur == '%') xmlParserHandlePEReference(ctxt);	\
@@ -1774,8 +1793,8 @@ xmlParserHandlePEReference(xmlParserCtxtPtr ctxt) {
 		    }
 
 		    if ((entity->etype == XML_EXTERNAL_PARAMETER_ENTITY) &&
-			(memcmp(CUR_PTR, "<?xml", 5) == 0) && 
-				(IS_BLANK_CH(NXT(5)))) {
+			(CMP5(CUR_PTR, '<', '?', 'x', 'm', 'l' )) &&
+			(IS_BLANK_CH(NXT(5)))) {
 			xmlParseTextDecl(ctxt);
 		    }
 		} else {
@@ -3718,7 +3737,7 @@ xmlParseExternalID(xmlParserCtxtPtr ctxt, xmlChar **publicID, int strict) {
     SHRINK;
 
     *publicID = NULL;
-    if (memcmp(CUR_PTR, "SYSTEM", 6) == 0) {
+    if (CMP6(CUR_PTR, 'S', 'Y', 'S', 'T', 'E', 'M')) {
         SKIP(6);
 	if (!IS_BLANK_CH(CUR)) {
 	    xmlFatalErrMsg(ctxt, XML_ERR_SPACE_REQUIRED,
@@ -3729,7 +3748,7 @@ xmlParseExternalID(xmlParserCtxtPtr ctxt, xmlChar **publicID, int strict) {
 	if (URI == NULL) {
 	    xmlFatalErr(ctxt, XML_ERR_URI_REQUIRED, NULL);
         }
-    } else if (memcmp(CUR_PTR, "PUBLIC", 6) == 0) {
+    } else if (CMP6(CUR_PTR, 'P', 'U', 'B', 'L', 'I', 'C')) {
         SKIP(6);
 	if (!IS_BLANK_CH(CUR)) {
 	    xmlFatalErrMsg(ctxt, XML_ERR_SPACE_REQUIRED,
@@ -4137,7 +4156,7 @@ xmlParseNotationDecl(xmlParserCtxtPtr ctxt) {
     xmlChar *Pubid;
     xmlChar *Systemid;
     
-    if (memcmp(CUR_PTR, "<!NOTATION", 10) == 0) {
+    if (CMP10(CUR_PTR, '<', '!', 'N', 'O', 'T', 'A', 'T', 'I', 'O', 'N')) {
 	xmlParserInputPtr input = ctxt->input;
 	SHRINK;
 	SKIP(10);
@@ -4216,7 +4235,7 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
     int skipped;
     
     GROW;
-    if (memcmp(CUR_PTR, "<!ENTITY", 8) == 0) {
+    if (CMP8(CUR_PTR, '<', '!', 'E', 'N', 'T', 'I', 'T', 'Y')) {
 	xmlParserInputPtr input = ctxt->input;
 	SHRINK;
 	SKIP(8);
@@ -4354,7 +4373,7 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 				   "Space required before 'NDATA'\n");
 		}
 		SKIP_BLANKS;
-		if (memcmp(CUR_PTR, "NDATA", 5) == 0) {
+		if (CMP5(CUR_PTR, 'N', 'D', 'A', 'T', 'A')) {
 		    SKIP(5);
 		    if (!IS_BLANK_CH(CUR)) {
 			xmlFatalErrMsg(ctxt, XML_ERR_SPACE_REQUIRED,
@@ -4471,16 +4490,16 @@ xmlParseDefaultDecl(xmlParserCtxtPtr ctxt, xmlChar **value) {
     xmlChar *ret;
 
     *value = NULL;
-    if (memcmp(CUR_PTR, "#REQUIRED", 9) == 0) {
+    if (CMP9(CUR_PTR, '#', 'R', 'E', 'Q', 'U', 'I', 'R', 'E', 'D')) {
 	SKIP(9);
 	return(XML_ATTRIBUTE_REQUIRED);
     }
-    if (memcmp(CUR_PTR, "#IMPLIED", 8) == 0) {
+    if (CMP8(CUR_PTR, '#', 'I', 'M', 'P', 'L', 'I', 'E', 'D')) {
 	SKIP(8);
 	return(XML_ATTRIBUTE_IMPLIED);
     }
     val = XML_ATTRIBUTE_NONE;
-    if (memcmp(CUR_PTR, "#FIXED", 6) == 0) {
+    if (CMP6(CUR_PTR, '#', 'F', 'I', 'X', 'E', 'D')) {
 	SKIP(6);
 	val = XML_ATTRIBUTE_FIXED;
 	if (!IS_BLANK_CH(CUR)) {
@@ -4622,7 +4641,7 @@ xmlParseEnumerationType(xmlParserCtxtPtr ctxt) {
 
 int
 xmlParseEnumeratedType(xmlParserCtxtPtr ctxt, xmlEnumerationPtr *tree) {
-    if (memcmp(CUR_PTR, "NOTATION", 8) == 0) {
+    if (CMP8(CUR_PTR, 'N', 'O', 'T', 'A', 'T', 'I', 'O', 'N')) {
 	SKIP(8);
 	if (!IS_BLANK_CH(CUR)) {
 	    xmlFatalErrMsg(ctxt, XML_ERR_SPACE_REQUIRED,
@@ -4687,28 +4706,28 @@ xmlParseEnumeratedType(xmlParserCtxtPtr ctxt, xmlEnumerationPtr *tree) {
 int 
 xmlParseAttributeType(xmlParserCtxtPtr ctxt, xmlEnumerationPtr *tree) {
     SHRINK;
-    if (memcmp(CUR_PTR, "CDATA", 5) == 0) {
+    if (CMP5(CUR_PTR, 'C', 'D', 'A', 'T', 'A')) {
 	SKIP(5);
 	return(XML_ATTRIBUTE_CDATA);
-     } else if (memcmp(CUR_PTR, "IDREFS", 6) == 0) {
+     } else if (CMP6(CUR_PTR, 'I', 'D', 'R', 'E', 'F', 'S')) {
 	SKIP(6);
 	return(XML_ATTRIBUTE_IDREFS);
-     } else if (memcmp(CUR_PTR, "IDREF", 5) == 0) {
+     } else if (CMP5(CUR_PTR, 'I', 'D', 'R', 'E', 'F')) {
 	SKIP(5);
 	return(XML_ATTRIBUTE_IDREF);
      } else if ((RAW == 'I') && (NXT(1) == 'D')) {
         SKIP(2);
 	return(XML_ATTRIBUTE_ID);
-     } else if (memcmp(CUR_PTR, "ENTITY", 6) == 0) {
+     } else if (CMP6(CUR_PTR, 'E', 'N', 'T', 'I', 'T', 'Y')) {
 	SKIP(6);
 	return(XML_ATTRIBUTE_ENTITY);
-     } else if (memcmp(CUR_PTR, "ENTITIES", 8) == 0) {
+     } else if (CMP8(CUR_PTR, 'E', 'N', 'T', 'I', 'T', 'I', 'E', 'S')) {
 	SKIP(8);
 	return(XML_ATTRIBUTE_ENTITIES);
-     } else if (memcmp(CUR_PTR, "NMTOKENS", 8) == 0) {
+     } else if (CMP8(CUR_PTR, 'N', 'M', 'T', 'O', 'K', 'E', 'N', 'S')) {
 	SKIP(8);
 	return(XML_ATTRIBUTE_NMTOKENS);
-     } else if (memcmp(CUR_PTR, "NMTOKEN", 7) == 0) {
+     } else if (CMP7(CUR_PTR, 'N', 'M', 'T', 'O', 'K', 'E', 'N')) {
 	SKIP(7);
 	return(XML_ATTRIBUTE_NMTOKEN);
      }
@@ -4732,7 +4751,7 @@ xmlParseAttributeListDecl(xmlParserCtxtPtr ctxt) {
     const xmlChar *attrName;
     xmlEnumerationPtr tree;
 
-    if (memcmp(CUR_PTR, "<!ATTLIST", 9) == 0) {
+    if (CMP9(CUR_PTR, '<', '!', 'A', 'T', 'T', 'L', 'I', 'S', 'T')) {
 	xmlParserInputPtr input = ctxt->input;
 
 	SKIP(9);
@@ -4877,7 +4896,7 @@ xmlParseElementMixedContentDecl(xmlParserCtxtPtr ctxt, int inputchk) {
     const xmlChar *elem = NULL;
 
     GROW;
-    if (memcmp(CUR_PTR, "#PCDATA", 7) == 0) {
+    if (CMP7(CUR_PTR, '#', 'P', 'C', 'D', 'A', 'T', 'A')) {
 	SKIP(7);
 	SKIP_BLANKS;
 	SHRINK;
@@ -5259,7 +5278,7 @@ xmlParseElementContentDecl(xmlParserCtxtPtr ctxt, const xmlChar *name,
     NEXT;
     GROW;
     SKIP_BLANKS;
-    if (memcmp(CUR_PTR, "#PCDATA", 7) == 0) {
+    if (CMP7(CUR_PTR, '#', 'P', 'C', 'D', 'A', 'T', 'A')) {
         tree = xmlParseElementMixedContentDecl(ctxt, inputid);
 	res = XML_ELEMENT_TYPE_MIXED;
     } else {
@@ -5291,7 +5310,7 @@ xmlParseElementDecl(xmlParserCtxtPtr ctxt) {
     xmlElementContentPtr content  = NULL;
 
     GROW;
-    if (memcmp(CUR_PTR, "<!ELEMENT", 9) == 0) {
+    if (CMP9(CUR_PTR, '<', '!', 'E', 'L', 'E', 'M', 'E', 'N', 'T')) {
 	xmlParserInputPtr input = ctxt->input;
 
 	SKIP(9);
@@ -5313,7 +5332,7 @@ xmlParseElementDecl(xmlParserCtxtPtr ctxt) {
 			   "Space required after the element name\n");
 	}
         SKIP_BLANKS;
-	if (memcmp(CUR_PTR, "EMPTY", 5) == 0) {
+	if (CMP5(CUR_PTR, 'E', 'M', 'P', 'T', 'Y')) {
 	    SKIP(5);
 	    /*
 	     * Element must always be empty.
@@ -5387,7 +5406,7 @@ static void
 xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
     SKIP(3);
     SKIP_BLANKS;
-    if (memcmp(CUR_PTR, "INCLUDE", 7) == 0) {
+    if (CMP7(CUR_PTR, 'I', 'N', 'C', 'L', 'U', 'D', 'E')) {
 	SKIP(7);
 	SKIP_BLANKS;
 	if (RAW != '[') {
@@ -5438,7 +5457,7 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
 		    "Leaving INCLUDE Conditional Section\n");
 	}
 
-    } else if (memcmp(CUR_PTR, "IGNORE", 6) == 0) {
+    } else if (CMP6(CUR_PTR, 'I', 'G', 'N', 'O', 'R', 'E')) {
 	int state;
 	xmlParserInputState instate;
 	int depth = 0;
@@ -5577,7 +5596,7 @@ xmlParseTextDecl(xmlParserCtxtPtr ctxt) {
     /*
      * We know that '<?xml' is here.
      */
-    if ((memcmp(CUR_PTR, "<?xml", 5) == 0) && (IS_BLANK_CH(NXT(5)))) {
+    if ((CMP5(CUR_PTR, '<', '?', 'x', 'm', 'l')) && (IS_BLANK_CH(NXT(5)))) {
 	SKIP(5);
     } else {
 	xmlFatalErr(ctxt, XML_ERR_XMLDECL_NOT_STARTED, NULL);
@@ -5646,7 +5665,7 @@ xmlParseExternalSubset(xmlParserCtxtPtr ctxt, const xmlChar *ExternalID,
                        const xmlChar *SystemID) {
     xmlDetectSAX2(ctxt);
     GROW;
-    if (memcmp(CUR_PTR, "<?xml", 5) == 0) {
+    if (CMP5(CUR_PTR, '<', '?', 'x', 'm', 'l')) {
 	xmlParseTextDecl(ctxt);
 	if (ctxt->errNo == XML_ERR_UNSUPPORTED_ENCODING) {
 	    /*
@@ -6003,8 +6022,8 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 		    input = xmlNewEntityInputStream(ctxt, ent);
 		    xmlPushInput(ctxt, input);
 		    if ((ent->etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY) &&
-			(memcmp(CUR_PTR, "<?xml", 5) == 0) &&
-				(IS_BLANK_CH(NXT(5)))) {
+			(CMP5(CUR_PTR, '<', '?', 'x', 'm', 'l')) &&
+			(IS_BLANK_CH(NXT(5)))) {
 			xmlParseTextDecl(ctxt);
 			if (ctxt->errNo == XML_ERR_UNSUPPORTED_ENCODING) {
 			    /*
@@ -6460,7 +6479,7 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt)
                         input = xmlNewEntityInputStream(ctxt, entity);
                         xmlPushInput(ctxt, input);
                         if ((entity->etype == XML_EXTERNAL_PARAMETER_ENTITY) &&
-			    (memcmp(CUR_PTR, "<?xml", 5) == 0) &&
+			    (CMP5(CUR_PTR, '<', '?', 'x', 'm', 'l')) &&
 			    (IS_BLANK_CH(NXT(5)))) {
                             xmlParseTextDecl(ctxt);
                             if (ctxt->errNo ==
@@ -8011,7 +8030,7 @@ xmlParseCDSect(xmlParserCtxtPtr ctxt) {
     int count = 0;
 
     /* Check 2.6.0 was NXT(0) not RAW */
-    if (memcmp(CUR_PTR, "<![CDATA[", 9) == 0) {
+    if (CMP9(CUR_PTR, '<', '!', '[', 'C', 'D', 'A', 'T', 'A', '[')) {
 	SKIP(9);
     } else
         return;
@@ -8111,7 +8130,7 @@ xmlParseContent(xmlParserCtxtPtr ctxt) {
 	 * Second case : a CDSection
 	 */
 	/* 2.6.0 test was *cur not RAW */
-	else if (memcmp(CUR_PTR, "<![CDATA[", 9) == 0) {
+	else if (CMP9(CUR_PTR, '<', '!', '[', 'C', 'D', 'A', 'T', 'A', '[')) {
 	    xmlParseCDSect(ctxt);
 	}
 
@@ -8390,7 +8409,7 @@ xmlChar *
 xmlParseVersionInfo(xmlParserCtxtPtr ctxt) {
     xmlChar *version = NULL;
 
-    if (memcmp(CUR_PTR, "version", 7) == 0) {
+    if (CMP7(CUR_PTR, 'v', 'e', 'r', 's', 'i', 'o', 'n')) {
 	SKIP(7);
 	SKIP_BLANKS;
 	if (RAW != '=') {
@@ -8496,7 +8515,7 @@ xmlParseEncodingDecl(xmlParserCtxtPtr ctxt) {
     xmlChar *encoding = NULL;
 
     SKIP_BLANKS;
-    if (memcmp(CUR_PTR, "encoding", 8) == 0) {
+    if (CMP8(CUR_PTR, 'e', 'n', 'c', 'o', 'd', 'i', 'n', 'g')) {
 	SKIP(8);
 	SKIP_BLANKS;
 	if (RAW != '=') {
@@ -8594,7 +8613,7 @@ xmlParseSDDecl(xmlParserCtxtPtr ctxt) {
     int standalone = -1;
 
     SKIP_BLANKS;
-    if (memcmp(CUR_PTR, "standalone", 10) == 0) {
+    if (CMP10(CUR_PTR, 's', 't', 'a', 'n', 'd', 'a', 'l', 'o', 'n', 'e')) {
 	SKIP(10);
         SKIP_BLANKS;
 	if (RAW != '=') {
@@ -8743,7 +8762,7 @@ xmlParseXMLDecl(xmlParserCtxtPtr ctxt) {
 void
 xmlParseMisc(xmlParserCtxtPtr ctxt) {
     while (((RAW == '<') && (NXT(1) == '?')) ||
-           (memcmp(CUR_PTR, "<!--", 4) == 0) ||
+           (CMP4(CUR_PTR, '<', '!', '-', '-')) ||
            IS_BLANK_CH(CUR)) {
         if ((RAW == '<') && (NXT(1) == '?')) {
 	    xmlParsePI(ctxt);
@@ -8815,7 +8834,7 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
      * Check for the XMLDecl in the Prolog.
      */
     GROW;
-    if ((memcmp(CUR_PTR, "<?xml", 5) == 0) && (IS_BLANK_CH(NXT(5)))) {
+    if ((CMP5(CUR_PTR, '<', '?', 'x', 'm', 'l')) && (IS_BLANK_CH(NXT(5)))) {
 
 	/*
 	 * Note that we will switch encoding on the fly.
@@ -8846,7 +8865,7 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
      * (doctypedecl Misc*)?
      */
     GROW;
-    if (memcmp(CUR_PTR, "<!DOCTYPE", 9) == 0) {
+    if (CMP9(CUR_PTR, '<', '!', 'D', 'O', 'C', 'T', 'Y', 'P', 'E')) {
 
 	ctxt->inSubset = 1;
 	xmlParseDocTypeDecl(ctxt);
@@ -8972,7 +8991,7 @@ xmlParseExtParsedEnt(xmlParserCtxtPtr ctxt) {
      * Check for the XMLDecl in the Prolog.
      */
     GROW;
-    if ((memcmp(CUR_PTR, "<?xml", 5) == 0) && (IS_BLANK_CH(NXT(5)))) {
+    if ((CMP5(CUR_PTR, '<', '?', 'x', 'm', 'l')) && (IS_BLANK_CH(NXT(5)))) {
 
 	/*
 	 * Note that we will switch encoding on the fly.
@@ -10593,7 +10612,7 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
     /*
      * Parse a possible text declaration first
      */
-    if ((memcmp(CUR_PTR, "<?xml", 5) == 0) && (IS_BLANK_CH(NXT(5)))) {
+    if ((CMP5(CUR_PTR, '<', '?', 'x', 'm', 'l')) && (IS_BLANK_CH(NXT(5)))) {
 	xmlParseTextDecl(ctxt);
     }
 
@@ -10791,7 +10810,7 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
     /*
      * Parse a possible text declaration first
      */
-    if ((memcmp(CUR_PTR, "<?xml", 5) == 0) && (IS_BLANK_CH(NXT(5)))) {
+    if ((CMP5(CUR_PTR, '<', '?', 'x', 'm', 'l')) && (IS_BLANK_CH(NXT(5)))) {
 	xmlParseTextDecl(ctxt);
     }
 

@@ -321,11 +321,11 @@ $(UTILS_INTDIR) :
 ifeq ($(STATIC),1)
 $(BINDIR)/%.exe : $(UTILS_SRCDIR)/%.c
 	$(CC) -DLIBXML_STATIC $(CFLAGS) -o $(subst .c,.o,$(UTILS_INTDIR)/$(<F)) -c $< 
-	$(LD) $(LDFLAGS) -o $@ -l$(XML_BASENAME) $(LIBS) $(subst .c,.o,$(UTILS_INTDIR)/$(<F))
+	$(LD) $(LDFLAGS) -o $@ $(subst .c,.o,$(UTILS_INTDIR)/$(<F)) -l$(XML_BASENAME) $(LIBS) 
 else
 $(BINDIR)/%.exe : $(UTILS_SRCDIR)/%.c
 	$(CC) $(CFLAGS) -o $(subst .c,.o,$(UTILS_INTDIR)/$(<F)) -c $< 
-	$(LD) $(LDFLAGS) -o $@ -l$(XML_BASENAME) $(subst .c,.o,$(UTILS_INTDIR)/$(<F)) 
+	$(LD) $(LDFLAGS) -o $@ $(subst .c,.o,$(UTILS_INTDIR)/$(<F)) -l$(XML_BASENAME) $(LIBS) 
 endif
 
 # Builds xmllint and friends. Uses the implicit rule for commands.

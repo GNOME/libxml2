@@ -1,3 +1,11 @@
+Sun Jan 26 17:02:29 MST 2003 John Fleck <jfleck@inkstain.net>
+
+	* doc/xmlcatalog.1
+	* doc/xmlcatalog_man.html
+	* doc/xmlcatalog_man.xml
+	belatedly fixing bug #93622 (adds rewriteURI type to
+	"--add" option in xmlcatalog man page
+
 Sun Jan 26 20:47:26 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlcatalog.c xmllint.c: applied patch for FreeBSD by

@@ -1,3 +1,8 @@
+Sat Jun  9 18:39:03 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* valid.c: (a? , b? , c? , ... , z?) was storing/restauring
+	  state far too often, simple fix used to avoid it.
+
 Sat Jun  9 16:10:36 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xinclude.c: Raphael Hertzog had a trouble with DTD nodes

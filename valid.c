@@ -3417,6 +3417,19 @@ cont:
 	    CONT = CONT->c1;
 	    goto cont;
 	case XML_ELEMENT_CONTENT_SEQ:
+	    /*
+	     * Small optimization.
+	     */
+	    if ((CONT->c1->type == XML_ELEMENT_CONTENT_ELEMENT) &&
+		((CONT->c1->ocur == XML_ELEMENT_CONTENT_OPT) ||
+		 (CONT->c1->ocur == XML_ELEMENT_CONTENT_MULT))) {
+		if ((NODE == NULL) ||
+		    (!xmlStrEqual(NODE->name, CONT->c1->name))) {
+		    DEPTH++;
+		    CONT = CONT->c2;
+		    goto cont;
+		}
+	    }
 	    DEPTH++;
 	    CONT = CONT->c1;
 	    goto cont;

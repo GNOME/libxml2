@@ -22,14 +22,6 @@
 #ifndef TRIO_TRIO_H
 #define TRIO_TRIO_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#if defined(TRIO_COMPILER_ANCIENT)
-# include <varargs.h>
-#else
-# include <stdarg.h>
-#endif
-
 #if !defined(WITHOUT_TRIO)
 
 /*
@@ -41,6 +33,14 @@
 #endif
 
 #include "triodef.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+#if defined(TRIO_COMPILER_ANCIENT)
+# include <varargs.h>
+#else
+# include <stdarg.h>
+#endif
 
 #ifdef __cplusplus
 extern "C" {

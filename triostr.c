@@ -62,7 +62,11 @@
 #if defined(TRIO_PLATFORM_UNIX)
 # define USE_STRCASECMP
 # define USE_STRNCASECMP
-# define USE_STRERROR
+# if defined(TRIO_PLATFORM_SUNOS)
+#  define USE_SYS_ERRLIST
+# else
+#  define USE_STRERROR
+# endif
 # if defined(TRIO_PLATFORM_QNX)
 #  define strcasecmp(x,y) stricmp(x,y)
 #  define strncasecmp(x,y,n) strnicmp(x,y,n)
@@ -70,6 +74,11 @@
 #elif defined(TRIO_PLATFORM_WIN32)
 # define USE_STRCASECMP
 # define strcasecmp(x,y) strcmpi(x,y)
+#endif
+
+#if !(defined(TRIO_PLATFORM_SUNOS))
+# define USE_TOLOWER
+# define USE_TOUPPER
 #endif
 
 /*************************************************************************
@@ -393,7 +402,7 @@ TRIO_ARGS2((first, second),
 #else
       while ((*first != NIL) && (*second != NIL))
 	{
-	  if (toupper(*first) != toupper(*second))
+	  if (trio_to_upper(*first) != trio_to_upper(*second))
 	    {
 	      break;
 	    }
@@ -518,7 +527,7 @@ TRIO_ARGS3((first, max, second),
       size_t cnt = 0;
       while ((*first != NIL) && (*second != NIL) && (cnt <= max))
 	{
-	  if (toupper(*first) != toupper(*second))
+	  if (trio_to_upper(*first) != trio_to_upper(*second))
 	    {
 	      break;
 	    }
@@ -545,9 +554,22 @@ TRIO_ARGS1((error_number),
 	   int error_number)
 {
 #if defined(USE_STRERROR)
+  
   return strerror(error_number);
+
+#elif defined(USE_SYS_ERRLIST)
+
+  extern char *sys_errlist[];
+  extern int sys_nerr;
+
+  return ((error_number < 0) || (error_number >= sys_nerr))
+    ? "unknown"
+    : sys_errlist[error_number];
+ 
 #else
+  
   return "unknown";
+  
 #endif
 }
 
@@ -679,7 +701,7 @@ TRIO_ARGS1((target),
 {
   assert(target);
 
-  return trio_span_function(target, target, tolower);
+  return trio_span_function(target, target, trio_to_lower);
 }
 #endif /* !defined(TRIO_MINIMAL) */
 
@@ -713,7 +735,7 @@ TRIO_ARGS2((string, pattern),
 	{
 	  return (NIL == *pattern);
 	}
-      if ((toupper((int)*string) != toupper((int)*pattern))
+      if ((trio_to_upper((int)*string) != trio_to_upper((int)*pattern))
 	  && ('?' != *pattern))
 	{
 	  return FALSE;
@@ -959,7 +981,7 @@ TRIO_ARGS2((source, endp),
 	  integer *= base;
 	  integer += (isdigit((int)*source)
 		      ? (*source - '0')
-		      : 10 + (toupper((int)*source) - 'A'));
+		      : 10 + (trio_to_upper((int)*source) - 'A'));
 	  source++;
 	}
       if (*source == '.')
@@ -970,7 +992,7 @@ TRIO_ARGS2((source, endp),
 	      fracdiv /= base;
 	      fraction += fracdiv * (isdigit((int)*source)
 				     ? (*source - '0')
-				     : 10 + (toupper((int)*source) - 'A'));
+				     : 10 + (trio_to_upper((int)*source) - 'A'));
 	      source++;
 	    }
 	  if ((*source == 'p') || (*source == 'P'))
@@ -983,12 +1005,14 @@ TRIO_ARGS2((source, endp),
 		}
 	      while (isdigit((int)*source))
 		{
-		  exponent *= (int)base;
+		  exponent *= 10;
 		  exponent += (*source - '0');
 		  source++;
 		}
 	    }
 	}
+      /* For later use with exponent */
+      base = 2.0;
     }
   else /* Then try normal decimal floats */
     {
@@ -1125,6 +1149,33 @@ TRIO_ARGS3((string, endp, base),
 
 #if !defined(TRIO_MINIMAL)
 /**
+   Convert one alphabetic letter to lower-case.
+
+   @param source The letter to be converted.
+   @return The converted letter.
+*/
+TRIO_STRING_PUBLIC int
+trio_to_lower
+TRIO_ARGS1((source),
+	   int source)
+{
+#if defined(USE_TOLOWER)
+  
+  return tolower(source);
+  
+#else
+
+  /* Does not handle locales or non-contiguous alphabetic characters */
+  return ((source >= (int)'A') && (source <= (int)'Z'))
+    ? source - 'A' + 'a'
+    : source;
+  
+#endif
+}
+#endif /* !defined(TRIO_MINIMAL) */
+
+#if !defined(TRIO_MINIMAL)
+/**
    Convert string to unsigned integer.
 
    @param string String to be converted.
@@ -1146,6 +1197,31 @@ TRIO_ARGS3((string, endp, base),
 #endif /* !defined(TRIO_MINIMAL) */
 
 
+/**
+   Convert one alphabetic letter to upper-case.
+
+   @param source The letter to be converted.
+   @return The converted letter.
+*/
+TRIO_STRING_PUBLIC int
+trio_to_upper
+TRIO_ARGS1((source),
+	   int source)
+{
+#if defined(USE_TOUPPER)
+  
+  return toupper(source);
+  
+#else
+
+  /* Does not handle locales or non-contiguous alphabetic characters */
+  return ((source >= (int)'a') && (source <= (int)'z'))
+    ? source - 'a' + 'A'
+    : source;
+  
+#endif
+}
+
 #if !defined(TRIO_MINIMAL)
 /**
    Convert the alphabetic letters in the string to upper-case.
@@ -1160,7 +1236,7 @@ TRIO_ARGS1((target),
 {
   assert(target);
 
-  return trio_span_function(target, target, toupper);
+  return trio_span_function(target, target, trio_to_upper);
 }
 #endif /* !defined(TRIO_MINIMAL) */
 
@@ -1229,6 +1305,7 @@ TRIO_ARGS2((self, delta),
 }
 
 
+#if !defined(TRIO_MINIMAL)
 /*
  * TrioStringGrowTo
  *
@@ -1247,6 +1324,7 @@ TRIO_ARGS2((self, length),
     ? TrioStringGrow(self, length - self->allocated)
     : TRUE;
 }
+#endif /* !defined(TRIO_MINIMAL) */
 
 
 #if !defined(TRIO_MINIMAL)

@@ -1,3 +1,7 @@
+Thu Sep  7 01:27:42 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* configure.in: released 1.8.10
+
 Sat Sep  2 10:26:36 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* entities.c: added missing tests for doc == NULL as pointed by

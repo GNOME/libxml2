@@ -8,7 +8,6 @@ BODY {font-family: Verdana,Arial,Helvetica; margin-top: 2em; margin-left: 0em; m
 H1 {font-family: Verdana,Arial,Helvetica}
 H2 {font-family: Verdana,Arial,Helvetica}
 H3 {font-family: Verdana,Arial,Helvetica}
-CODE {white-space: pre}
 A:link, A:visited, A:active { text-decoration: underline }
 --></style>
 <title>Python and bindings</title>
@@ -128,7 +127,7 @@ the <code>python/tests</code> directory. Here are some excepts from those
 tests:</p>
 <h3>tst.py:</h3>
 <p>This is a basic test of the file interface and DOM navigation:</p>
-<code>import libxml2
+<pre>import libxml2
 
 doc = libxml2.parseFile(&quot;tst.xml&quot;)
 if doc.name != &quot;tst.xml&quot;:
@@ -142,7 +141,7 @@ child = root.children
 if child.name != &quot;foo&quot;:
     print &quot;child.name failed&quot;
     sys.exit(1)
-doc.freeDoc()</code>
+doc.freeDoc()</pre>
 <p>The Python module is called libxml2, parseFile is the equivalent of
 xmlParseFile (most of the bindings are automatically generated, and the xml
 prefix is removed and the casing convention are kept). All node seen at the
@@ -175,7 +174,7 @@ collected.</p>
 <h3>validate.py:</h3>
 <p>This test check the validation interfaces and redirection of error
 messages:</p>
-<code>import libxml2
+<pre>import libxml2
 
 #desactivate error messages from the validation
 def noerr(ctx, str):
@@ -190,7 +189,7 @@ doc = ctxt.doc()
 valid = ctxt.isValid()
 doc.freeDoc()
 if valid != 0:
-    print &quot;validity chec failed&quot;</code>
+    print &quot;validity chec failed&quot;</pre>
 <p>The first thing to notice is the call to registerErrorHandler(), it
 defines a new error handler global to the library. It is used to avoid seeing
 the error messages when trying to validate the invalid document.</p>
@@ -204,13 +203,13 @@ best to get a complete view of what methods are supported is to look at the
 libxml2.py module containing all the wrappers.</p>
 <h3>push.py:</h3>
 <p>This test show how to activate the push parser interface:</p>
-<code>import libxml2
+<pre>import libxml2
 
 ctxt = libxml2.createPushParser(None, &quot;&lt;foo&quot;, 4, &quot;test.xml&quot;)
 ctxt.parseChunk(&quot;/&gt;&quot;, 2, 1)
 doc = ctxt.doc()
 
-doc.freeDoc()</code>
+doc.freeDoc()</pre>
 <p>The context is created with a speciall call based on the
 xmlCreatePushParser() from the C library. The first argument is an optional
 SAX callback object, then the initial set of data, the lenght and the name of
@@ -221,7 +220,7 @@ setting the thrird argument terminate to 1.</p>
 <p>this test show the use of the event based parsing interfaces. In this case
 the parser does not build a document, but provides callback information as
 the parser makes progresses analyzing the data being provided:</p>
-<code>import libxml2
+<pre>import libxml2
 log = &quot;&quot;
 
 class callback:
@@ -265,10 +264,11 @@ ctxt.parseChunk(chunk, len(chunk), 0)
 chunk = &quot;ar&lt;/foo&gt;&quot;
 ctxt.parseChunk(chunk, len(chunk), 1)
 
-reference = &quot;startDocument:startElement foo {'url': 'tst'}:characters: bar:endElement foo:endDocument:&quot;
+reference = &quot;startDocument:startElement foo {'url': 'tst'}:
+characters: bar:endElement foo:endDocument:&quot;
 if log != reference:
     print &quot;Error got: %s&quot; % log
-    print &quot;Exprected: %s&quot; % reference</code>
+    print &quot;Exprected: %s&quot; % reference</pre>
 <p>The key object in that test is the handler, it provides a number of entry
 points which can be called by the parser as it makes progresses to indicate
 the information set obtained. The full set of callback is larger than what
@@ -281,7 +281,7 @@ single character call even though the string &quot;bar&quot; is passed to the pa
 from 2 different call to parseChunk()</p>
 <h3>xpath.py:</h3>
 <p>This is a basic test of XPath warppers support</p>
-<code>import libxml2
+<pre>import libxml2
 
 doc = libxml2.parseFile(&quot;tst.xml&quot;)
 ctxt = doc.xpathNewContext()
@@ -293,7 +293,7 @@ if res[0].name != &quot;doc&quot; or res[1].name != &quot;foo&quot;:
     print &quot;xpath query: wrong node set value&quot;
     sys.exit(1)
 doc.freeDoc()
-ctxt.xpathFreeContext()</code>
+ctxt.xpathFreeContext()</pre>
 <p>This test parses a file, then create an XPath context to evaluate XPath
 expression on it. The xpathEval() method execute an XPath query and returns
 the result mapped in a Python way. String and numbers are natively converted,
@@ -304,7 +304,7 @@ the document must be freed after the result of the query is used.</p>
 <h3>xpathext.py:</h3>
 <p>This test shows how to extend the XPath engine with functions written in
 python:</p>
-<code>import libxml2
+<pre>import libxml2
 
 def foo(ctx, x):
     return x + 1
@@ -316,13 +316,13 @@ res = ctxt.xpathEval(&quot;foo(1)&quot;)
 if res != 2:
     print &quot;xpath extension failure&quot;
 doc.freeDoc()
-ctxt.xpathFreeContext()</code>
+ctxt.xpathFreeContext()</pre>
 <p>Note how the extension function is registered with the context (but that
 part is not yet finalized, ths may change slightly in the future).</p>
 <h3>tstxpath.py:</h3>
 <p>This test is similar to the previousone but shows how the extension
 function can access the XPath evaluation context:</p>
-<code>def foo(ctx, x):
+<pre>def foo(ctx, x):
     global called
 
     #
@@ -331,23 +331,23 @@ function can access the XPath evaluation context:</p>
     pctxt = libxml2.xpathParserContext(_obj=ctx)
     ctxt = pctxt.context()
     called = ctxt.function()
-    return x + 1</code>
+    return x + 1</pre>
 <p>All the interfaces around the XPath parser(or rather evaluation) context
 are not finalized, but it should be sufficient to do contextual work at the
 evaluation point.</p>
 <h3>Memory debugging:</h3>
 <p>last but not least, all tests starts with the following prologue:</p>
-<code>#memory debug specific
+<pre>#memory debug specific
 libxml2.debugMemory(1)
-</code>
+</pre>
 <p>and ends with the following epilogue:</p>
-<code>#memory debug specific
+<pre>#memory debug specific
 libxml2.cleanupParser()
 if libxml2.debugMemory(1) == 0:
     print &quot;OK&quot;
 else:
     print &quot;Memory leak %d bytes&quot; % (libxml2.debugMemory(1))
-    libxml2.dumpMemory()</code>
+    libxml2.dumpMemory()</pre>
 <p>Those activate the memory debugging interface of libxml2 where all
 alloacted block in the library are tracked. The prologue then cleans up the
 library state and checks that all allocated memory has been freed. If not it

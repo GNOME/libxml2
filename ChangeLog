@@ -1,3 +1,8 @@
+Fri Apr  1 17:54:22 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xstc/fixup-tests.py: A tiny script to fixup some of the schema
+	  files used for the tests.
+
 Fri Apr  1 17:33:50 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c include/libxml/schemasInternals.h

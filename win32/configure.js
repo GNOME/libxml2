@@ -18,9 +18,7 @@ var baseName = "libxml2";
    we can store our build configuration. */
 var configFile = srcDirXml + "\\configure.in";
 var versionFile = ".\\config.msvc";
-/* Input and output files regarding the libxml features. The second
-   output file is there for the compatibility reasons, otherwise it
-   is identical to the first. */
+/* Input and output files regarding the libxml features. */
 var optsFileIn = srcDirXml + "\\include\\libxml\\xmlversion.h.in";
 var optsFile = srcDirXml + "\\include\\libxml\\xmlversion.h";
 /* Version strings for the binary distribution. Will be filled later 
@@ -46,6 +44,7 @@ var withDebug = true;
 var withMemDebug = false;
 var withSchemas = true;
 var withRegExps = true;
+var withPython = false;
 /* Win32 build options. */
 var compiler = "msvc";
 var buildDebug = 0;
@@ -111,6 +110,7 @@ function usage()
 	txt += "  mem_debug:  Enable memory debugger (" + (withMemDebug? "yes" : "no")  + ")\n";
 	txt += "  regexps:    Enable regular expressions (" + (withRegExps? "yes" : "no") + ")\n";
 	txt += "  schemas:    Enable XML Schema support (" + (withSchemas? "yes" : "no")  + ")\n";
+	txt += "  python:     Build Python bindings (" + (withPython? "yes" : "no")  + ")\n";
 	txt += "\nWin32 build options, default value given in parentheses:\n\n";
 	txt += "  compiler:   Compiler to be used [msvc|mingw] (" + compiler + ")\n";
 	txt += "  debug:      Build unoptimised debug executables (" + (buildDebug? "yes" : "no")  + ")\n";
@@ -182,6 +182,7 @@ function discoverVersion()
 	vf.WriteLine("WITH_MEM_DEBUG=" + (withMemDebug? "1" : "0"));
 	vf.WriteLine("WITH_SCHEMAS=" + (withSchemas? "1" : "0"));
 	vf.WriteLine("WITH_REGEXPS=" + (withRegExps? "1" : "0"));
+	vf.WriteLine("WITH_PYTHON=" + (withPython? "1" : "0"));
 	vf.WriteLine("DEBUG=" + (buildDebug? "1" : "0"));
 	vf.WriteLine("STATIC=" + (buildStatic? "1" : "0"));
 	vf.WriteLine("PREFIX=" + buildPrefix);
@@ -250,6 +251,29 @@ function configureLibxml()
 			of.WriteLine(s.replace(/\@WITH_SCHEMAS\@/, withSchemas? "1" : "0"));
 		} else if (s.search(/\@WITH_REGEXPS\@/) != -1) {
 			of.WriteLine(s.replace(/\@WITH_REGEXPS\@/, withRegExps? "1" : "0"));
+		} else
+			of.WriteLine(ln);
+	}
+	ofi.Close();
+	of.Close();
+}
+/* Configures Python bindings. Otherwise identical to the above */
+function configureLibxmlPy()
+{
+	var pyOptsFileIn = srcDirXml + "\\python\\setup.py.in";
+	var pyOptsFile = srcDirXml + "\\python\\setup.py";
+	var fso, ofi, of, ln, s;
+	fso = new ActiveXObject("Scripting.FileSystemObject");
+	ofi = fso.OpenTextFile(pyOptsFileIn, 1);
+	of = fso.CreateTextFile(pyOptsFile, true);
+	while (ofi.AtEndOfStream != true) {
+		ln = ofi.ReadLine();
+		s = new String(ln);
+		if (s.search(/\@LIBXML_VERSION\@/) != -1) {
+			of.WriteLine(s.replace(/\@LIBXML_VERSION\@/, 
+				verMajor + "." + verMinor + "." + verMicro));
+		} else if (s.search(/\@prefix\@/) != -1) {
+			of.WriteLine(s.replace(/\@prefix\@/, buildPrefix));
 		} else
 			of.WriteLine(ln);
 	}
@@ -357,6 +381,8 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 			withSchemas = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "regexps")
 			withRegExps = strToBool(arg.substring(opt.length + 1, arg.length));
+		else if (opt == "python")
+			withPython = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "compiler")
 			compiler = arg.substring(opt.length + 1, arg.length);
 		else if (opt == "debug")
@@ -415,6 +441,14 @@ if (error != 0) {
 	WScript.Echo("Configuration failed, aborting.");
 	WScript.Quit(error);
 }
+if (withPython == true) {
+	configureLibxmlPy();
+	if (error != 0) {
+		WScript.Echo("Configuration failed, aborting.");
+		WScript.Quit(error);
+	}
+}
+
 
 // Create the makefile.
 var fso = new ActiveXObject("Scripting.FileSystemObject");
@@ -444,6 +478,7 @@ txtOut += "  Debugging module: " + boolToStr(withDebug) + "\n";
 txtOut += "  Memory debugging: " + boolToStr(withMemDebug) + "\n";
 txtOut += "    Regexp support: " + boolToStr(withRegExps) + "\n";
 txtOut += "XML Schema support: " + boolToStr(withSchemas) + "\n";
+txtOut += "   Python bindings: " + boolToStr(withPython) + "\n";
 txtOut += "\n";
 txtOut += "Win32 build configuration\n";
 txtOut += "-------------------------\n";

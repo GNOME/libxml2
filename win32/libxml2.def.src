@@ -673,6 +673,7 @@ xmlDictFree
 xmlDictLookup
 xmlDictOwns
 xmlDictQLookup
+xmlDictReference
 xmlDictSize
 xmlDocCopyNode
 xmlDocDump

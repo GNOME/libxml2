@@ -12102,6 +12102,7 @@ xmlCtxtUseOptions(xmlParserCtxtPtr ctxt, int options)
 /**
  * xmlDoRead:
  * @ctxt:  an XML parser context
+ * @URL:  the base URL to use for the document
  * @encoding:  the document encoding, or NULL
  * @options:  a combination of xmlParserOption(s)
  * @reuse:  keep the context for reuse
@@ -12111,7 +12112,8 @@ xmlCtxtUseOptions(xmlParserCtxtPtr ctxt, int options)
  * Returns the resulting document tree or NULL
  */
 static xmlDocPtr
-xmlDoRead(xmlParserCtxtPtr ctxt, const char *encoding, int options, int reuse)
+xmlDoRead(xmlParserCtxtPtr ctxt, const char *URL, const char *encoding,
+          int options, int reuse)
 {
     xmlDocPtr ret;
     
@@ -12123,6 +12125,9 @@ xmlDoRead(xmlParserCtxtPtr ctxt, const char *encoding, int options, int reuse)
 	if (hdlr != NULL)
 	    xmlSwitchToEncoding(ctxt, hdlr);
     }
+    if ((URL != NULL) && (ctxt->input != NULL) &&
+        (ctxt->input->filename == NULL))
+        ctxt->input->filename = (char *) xmlStrdup((const xmlChar *) URL);
     xmlParseDocument(ctxt);
     if ((ctxt->wellFormed) || ctxt->recovery)
         ret = ctxt->myDoc;
@@ -12154,6 +12159,7 @@ xmlDoRead(xmlParserCtxtPtr ctxt, const char *encoding, int options, int reuse)
 /**
  * xmlReadDoc:
  * @cur:  a pointer to a zero terminated string
+ * @URL:  the base URL to use for the document
  * @encoding:  the document encoding, or NULL
  * @options:  a combination of xmlParserOption(s)
  *
@@ -12162,7 +12168,7 @@ xmlDoRead(xmlParserCtxtPtr ctxt, const char *encoding, int options, int reuse)
  * Returns the resulting document tree
  */
 xmlDocPtr
-xmlReadDoc(const xmlChar * cur, const char *encoding, int options)
+xmlReadDoc(const xmlChar * cur, const char *URL, const char *encoding, int options)
 {
     xmlParserCtxtPtr ctxt;
 
@@ -12172,7 +12178,7 @@ xmlReadDoc(const xmlChar * cur, const char *encoding, int options)
     ctxt = xmlCreateDocParserCtxt(cur);
     if (ctxt == NULL)
         return (NULL);
-    return (xmlDoRead(ctxt, encoding, options, 0));
+    return (xmlDoRead(ctxt, URL, encoding, options, 0));
 }
 
 /**
@@ -12193,13 +12199,14 @@ xmlReadFile(const char *filename, const char *encoding, int options)
     ctxt = xmlCreateFileParserCtxt(filename);
     if (ctxt == NULL)
         return (NULL);
-    return (xmlDoRead(ctxt, encoding, options, 0));
+    return (xmlDoRead(ctxt, NULL, encoding, options, 0));
 }
 
 /**
  * xmlReadMemory:
  * @buffer:  a pointer to a char array
  * @size:  the size of the array
+ * @URL:  the base URL to use for the document
  * @encoding:  the document encoding, or NULL
  * @options:  a combination of xmlParserOption(s)
  *
@@ -12208,19 +12215,20 @@ xmlReadFile(const char *filename, const char *encoding, int options)
  * Returns the resulting document tree
  */
 xmlDocPtr
-xmlReadMemory(const char *buffer, int size, const char *encoding, int options)
+xmlReadMemory(const char *buffer, int size, const char *URL, const char *encoding, int options)
 {
     xmlParserCtxtPtr ctxt;
 
     ctxt = xmlCreateMemoryParserCtxt(buffer, size);
     if (ctxt == NULL)
         return (NULL);
-    return (xmlDoRead(ctxt, encoding, options, 0));
+    return (xmlDoRead(ctxt, URL, encoding, options, 0));
 }
 
 /**
  * xmlReadFd:
  * @fd:  an open file descriptor
+ * @URL:  the base URL to use for the document
  * @encoding:  the document encoding, or NULL
  * @options:  a combination of xmlParserOption(s)
  *
@@ -12229,7 +12237,7 @@ xmlReadMemory(const char *buffer, int size, const char *encoding, int options)
  * Returns the resulting document tree
  */
 xmlDocPtr
-xmlReadFd(int fd, const char *encoding, int options)
+xmlReadFd(int fd, const char *URL, const char *encoding, int options)
 {
     xmlParserCtxtPtr ctxt;
     xmlParserInputBufferPtr input;
@@ -12253,7 +12261,7 @@ xmlReadFd(int fd, const char *encoding, int options)
         return (NULL);
     }
     inputPush(ctxt, stream);
-    return (xmlDoRead(ctxt, encoding, options, 0));
+    return (xmlDoRead(ctxt, URL, encoding, options, 0));
 }
 
 /**
@@ -12261,6 +12269,7 @@ xmlReadFd(int fd, const char *encoding, int options)
  * @ioread:  an I/O read function
  * @ioclose:  an I/O close function
  * @ioctx:  an I/O handler
+ * @URL:  the base URL to use for the document
  * @encoding:  the document encoding, or NULL
  * @options:  a combination of xmlParserOption(s)
  *
@@ -12270,7 +12279,7 @@ xmlReadFd(int fd, const char *encoding, int options)
  */
 xmlDocPtr
 xmlReadIO(xmlInputReadCallback ioread, xmlInputCloseCallback ioclose,
-          void *ioctx, const char *encoding, int options)
+          void *ioctx, const char *URL, const char *encoding, int options)
 {
     xmlParserCtxtPtr ctxt;
     xmlParserInputBufferPtr input;
@@ -12295,13 +12304,14 @@ xmlReadIO(xmlInputReadCallback ioread, xmlInputCloseCallback ioclose,
         return (NULL);
     }
     inputPush(ctxt, stream);
-    return (xmlDoRead(ctxt, encoding, options, 0));
+    return (xmlDoRead(ctxt, URL, encoding, options, 0));
 }
 
 /**
  * xmlCtxtReadDoc:
  * @ctxt:  an XML parser context
  * @cur:  a pointer to a zero terminated string
+ * @URL:  the base URL to use for the document
  * @encoding:  the document encoding, or NULL
  * @options:  a combination of xmlParserOption(s)
  *
@@ -12312,7 +12322,7 @@ xmlReadIO(xmlInputReadCallback ioread, xmlInputCloseCallback ioclose,
  */
 xmlDocPtr
 xmlCtxtReadDoc(xmlParserCtxtPtr ctxt, const xmlChar * cur,
-               const char *encoding, int options)
+               const char *URL, const char *encoding, int options)
 {
     xmlParserInputPtr stream;
 
@@ -12328,7 +12338,7 @@ xmlCtxtReadDoc(xmlParserCtxtPtr ctxt, const xmlChar * cur,
         return (NULL);
     }
     inputPush(ctxt, stream);
-    return (xmlDoRead(ctxt, encoding, options, 1));
+    return (xmlDoRead(ctxt, URL, encoding, options, 1));
 }
 
 /**
@@ -12361,7 +12371,7 @@ xmlCtxtReadFile(xmlParserCtxtPtr ctxt, const char *filename,
         return (NULL);
     }
     inputPush(ctxt, stream);
-    return (xmlDoRead(ctxt, encoding, options, 1));
+    return (xmlDoRead(ctxt, NULL, encoding, options, 1));
 }
 
 /**
@@ -12369,6 +12379,7 @@ xmlCtxtReadFile(xmlParserCtxtPtr ctxt, const char *filename,
  * @ctxt:  an XML parser context
  * @buffer:  a pointer to a char array
  * @size:  the size of the array
+ * @URL:  the base URL to use for the document
  * @encoding:  the document encoding, or NULL
  * @options:  a combination of xmlParserOption(s)
  *
@@ -12379,7 +12390,7 @@ xmlCtxtReadFile(xmlParserCtxtPtr ctxt, const char *filename,
  */
 xmlDocPtr
 xmlCtxtReadMemory(xmlParserCtxtPtr ctxt, const char *buffer, int size,
-                  const char *encoding, int options)
+                  const char *URL, const char *encoding, int options)
 {
     xmlParserInputBufferPtr input;
     xmlParserInputPtr stream;
@@ -12403,13 +12414,14 @@ xmlCtxtReadMemory(xmlParserCtxtPtr ctxt, const char *buffer, int size,
     }
 
     inputPush(ctxt, stream);
-    return (xmlDoRead(ctxt, encoding, options, 1));
+    return (xmlDoRead(ctxt, URL, encoding, options, 1));
 }
 
 /**
  * xmlCtxtReadFd:
  * @ctxt:  an XML parser context
  * @fd:  an open file descriptor
+ * @URL:  the base URL to use for the document
  * @encoding:  the document encoding, or NULL
  * @options:  a combination of xmlParserOption(s)
  *
@@ -12419,8 +12431,8 @@ xmlCtxtReadMemory(xmlParserCtxtPtr ctxt, const char *buffer, int size,
  * Returns the resulting document tree
  */
 xmlDocPtr
-xmlCtxtReadFd(xmlParserCtxtPtr ctxt, int fd, const char *encoding,
-              int options)
+xmlCtxtReadFd(xmlParserCtxtPtr ctxt, int fd,
+              const char *URL, const char *encoding, int options)
 {
     xmlParserInputBufferPtr input;
     xmlParserInputPtr stream;
@@ -12442,7 +12454,7 @@ xmlCtxtReadFd(xmlParserCtxtPtr ctxt, int fd, const char *encoding,
         return (NULL);
     }
     inputPush(ctxt, stream);
-    return (xmlDoRead(ctxt, encoding, options, 1));
+    return (xmlDoRead(ctxt, URL, encoding, options, 1));
 }
 
 /**
@@ -12451,6 +12463,7 @@ xmlCtxtReadFd(xmlParserCtxtPtr ctxt, int fd, const char *encoding,
  * @ioread:  an I/O read function
  * @ioclose:  an I/O close function
  * @ioctx:  an I/O handler
+ * @URL:  the base URL to use for the document
  * @encoding:  the document encoding, or NULL
  * @options:  a combination of xmlParserOption(s)
  *
@@ -12462,6 +12475,7 @@ xmlCtxtReadFd(xmlParserCtxtPtr ctxt, int fd, const char *encoding,
 xmlDocPtr
 xmlCtxtReadIO(xmlParserCtxtPtr ctxt, xmlInputReadCallback ioread,
               xmlInputCloseCallback ioclose, void *ioctx,
+	      const char *URL,
               const char *encoding, int options)
 {
     xmlParserInputBufferPtr input;
@@ -12484,5 +12498,5 @@ xmlCtxtReadIO(xmlParserCtxtPtr ctxt, xmlInputReadCallback ioread,
         return (NULL);
     }
     inputPush(ctxt, stream);
-    return (xmlDoRead(ctxt, encoding, options, 1));
+    return (xmlDoRead(ctxt, URL, encoding, options, 1));
 }

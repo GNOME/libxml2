@@ -806,7 +806,7 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 	    }
 	} else if (testIO) {
 	    if ((filename[0] == '-') && (filename[1] == 0)) {
-	        doc = xmlReadFd(0, NULL, options);
+	        doc = xmlReadFd(0, NULL, NULL, options);
 	    } else {
 	        FILE *f;
 
@@ -815,12 +815,12 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 		    if (rectxt == NULL)
 			doc = xmlReadIO((xmlInputReadCallback) myRead,
 					(xmlInputCloseCallback) myClose, f,
-					NULL, options);
+					filename, NULL, options);
 		    else
 			doc = xmlCtxtReadIO(rectxt,
 			                (xmlInputReadCallback) myRead,
 					(xmlInputCloseCallback) myClose, f,
-					NULL, options);
+					filename, NULL, options);
 		} else
 		    doc = NULL;
 	    }
@@ -858,10 +858,11 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 	        return;
 
 	    if (rectxt == NULL)
-		doc = xmlReadMemory((char *) base, info.st_size, NULL, options);
+		doc = xmlReadMemory((char *) base, info.st_size,
+		                    filename, NULL, options);
 	    else
-		doc = xmlCtxtReadMemory(rectxt,
-			       (char *) base, info.st_size, NULL, options);
+		doc = xmlCtxtReadMemory(rectxt, (char *) base, info.st_size,
+			                filename, NULL, options);
 	        
 	    munmap((char *) base, info.st_size);
 #endif

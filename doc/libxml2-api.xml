@@ -5746,6 +5746,7 @@ actually an xmlCharEncoding'/>
       <return type='xmlDocPtr' info='the resulting document tree'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='cur' type='const xmlChar *' info='a pointer to a zero terminated string'/>
+      <arg name='URL' type='const char *' info='the base URL to use for the document'/>
       <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
       <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
     </function>
@@ -5754,6 +5755,7 @@ actually an xmlCharEncoding'/>
       <return type='xmlDocPtr' info='the resulting document tree'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='fd' type='int' info='an open file descriptor'/>
+      <arg name='URL' type='const char *' info='the base URL to use for the document'/>
       <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
       <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
     </function>
@@ -5772,6 +5774,7 @@ actually an xmlCharEncoding'/>
       <arg name='ioread' type='xmlInputReadCallback' info='an I/O read function'/>
       <arg name='ioclose' type='xmlInputCloseCallback' info='an I/O close function'/>
       <arg name='ioctx' type='void *' info='an I/O handler'/>
+      <arg name='URL' type='const char *' info='the base URL to use for the document'/>
       <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
       <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
     </function>
@@ -5781,6 +5784,7 @@ actually an xmlCharEncoding'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='buffer' type='const char *' info='a pointer to a char array'/>
       <arg name='size' type='int' info='the size of the array'/>
+      <arg name='URL' type='const char *' info='the base URL to use for the document'/>
       <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
       <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
     </function>
@@ -6554,9 +6558,9 @@ actually an xmlCharEncoding'/>
       <info>Find the userdata specified by the QNames tuple</info>
       <return type='void *' info='the pointer to the userdata'/>
       <arg name='table' type='xmlHashTablePtr' info='the hash table'/>
-      <arg name='prefix' type='const xmlChar *' info='the second prefix of the userdata'/>
+      <arg name='prefix' type='const xmlChar *' info='the prefix of the userdata'/>
       <arg name='name' type='const xmlChar *' info='the name of the userdata'/>
-      <arg name='prefix2' type='const xmlChar *' info=''/>
+      <arg name='prefix2' type='const xmlChar *' info='the second prefix of the userdata'/>
       <arg name='name2' type='const xmlChar *' info='a second name of the userdata'/>
     </function>
     <function name='xmlHashQLookup3' file='hash'>
@@ -8402,6 +8406,7 @@ actually an xmlCharEncoding'/>
       <info>parse an XML in-memory document and build a tree.</info>
       <return type='xmlDocPtr' info='the resulting document tree'/>
       <arg name='cur' type='const xmlChar *' info='a pointer to a zero terminated string'/>
+      <arg name='URL' type='const char *' info='the base URL to use for the document'/>
       <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
       <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
     </function>
@@ -8409,6 +8414,7 @@ actually an xmlCharEncoding'/>
       <info>parse an XML from a file descriptor and build a tree.</info>
       <return type='xmlDocPtr' info='the resulting document tree'/>
       <arg name='fd' type='int' info='an open file descriptor'/>
+      <arg name='URL' type='const char *' info='the base URL to use for the document'/>
       <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
       <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
     </function>
@@ -8425,6 +8431,7 @@ actually an xmlCharEncoding'/>
       <arg name='ioread' type='xmlInputReadCallback' info='an I/O read function'/>
       <arg name='ioclose' type='xmlInputCloseCallback' info='an I/O close function'/>
       <arg name='ioctx' type='void *' info='an I/O handler'/>
+      <arg name='URL' type='const char *' info='the base URL to use for the document'/>
       <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
       <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
     </function>
@@ -8433,6 +8440,7 @@ actually an xmlCharEncoding'/>
       <return type='xmlDocPtr' info='the resulting document tree'/>
       <arg name='buffer' type='const char *' info='a pointer to a char array'/>
       <arg name='size' type='int' info='the size of the array'/>
+      <arg name='URL' type='const char *' info='the base URL to use for the document'/>
       <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
       <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
     </function>

@@ -1055,30 +1055,35 @@ XMLPUBFUN int XMLCALL
 					 int options);
 XMLPUBFUN xmlDocPtr XMLCALL
 		xmlReadDoc		(const xmlChar *cur,
+					 const char *URL,
 					 const char *encoding,
 					 int options);
 XMLPUBFUN xmlDocPtr XMLCALL
-		xmlReadFile		(const char *filename,
+		xmlReadFile		(const char *URL,
 					 const char *encoding,
 					 int options);
 XMLPUBFUN xmlDocPtr XMLCALL
 		xmlReadMemory		(const char *buffer,
 					 int size,
+					 const char *URL,
 					 const char *encoding,
 					 int options);
 XMLPUBFUN xmlDocPtr XMLCALL
 		xmlReadFd		(int fd,
+					 const char *URL,
 					 const char *encoding,
 					 int options);
 XMLPUBFUN xmlDocPtr XMLCALL
 		xmlReadIO		(xmlInputReadCallback ioread,
 					 xmlInputCloseCallback ioclose,
 					 void *ioctx,
+					 const char *URL,
 					 const char *encoding,
 					 int options);
 XMLPUBFUN xmlDocPtr XMLCALL
 		xmlCtxtReadDoc		(xmlParserCtxtPtr ctxt,
 					 const xmlChar *cur,
+					 const char *URL,
 					 const char *encoding,
 					 int options);
 XMLPUBFUN xmlDocPtr XMLCALL
@@ -1090,11 +1095,13 @@ XMLPUBFUN xmlDocPtr XMLCALL
 		xmlCtxtReadMemory		(xmlParserCtxtPtr ctxt,
 					 const char *buffer,
 					 int size,
+					 const char *URL,
 					 const char *encoding,
 					 int options);
 XMLPUBFUN xmlDocPtr XMLCALL
 		xmlCtxtReadFd		(xmlParserCtxtPtr ctxt,
 					 int fd,
+					 const char *URL,
 					 const char *encoding,
 					 int options);
 XMLPUBFUN xmlDocPtr XMLCALL
@@ -1102,6 +1109,7 @@ XMLPUBFUN xmlDocPtr XMLCALL
 					 xmlInputReadCallback ioread,
 					 xmlInputCloseCallback ioclose,
 					 void *ioctx,
+					 const char *URL,
 					 const char *encoding,
 					 int options);
 

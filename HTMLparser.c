@@ -4950,19 +4950,15 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 			/* TODO: check generation of subtrees if noent !!! */
 			htmlParseReference(ctxt);
 		    } else {
-			/* TODO Avoid the extra copy, handle directly !!!!!! */
-			/*
-			 * Goal of the following test is:
-			 *  - minimize calls to the SAX 'character' callback
-			 *    when they are mergeable
+		        /*
+			 * check that the text sequence is complete
+			 * before handing out the data to the parser
+			 * to avoid problems with erroneous end of
+			 * data detection.
 			 */
-			if ((ctxt->inputNr == 1) &&
-			    (avail < HTML_PARSER_BIG_BUFFER_SIZE)) {
-			    if ((!terminate) &&
-				(htmlParseLookupSequence(
-					ctxt, '<', 0, 0, 0) < 0))
-				goto done;
-			}
+			if ((!terminate) &&
+			    (htmlParseLookupSequence(ctxt, '<', 0, 0, 0) < 0))
+			    goto done;
 			ctxt->checkIndex = 0;
 #ifdef DEBUG_PUSH
 			xmlGenericError(xmlGenericErrorContext,
@@ -5160,12 +5156,27 @@ htmlParseChunk(htmlParserCtxtPtr ctxt, const char *chunk, int size,
 	xmlGenericError(xmlGenericErrorContext, "HPP: pushed %d\n", size);
 #endif
 
+#if 0
 	if ((terminate) || (ctxt->input->buf->buffer->use > 80))
 	    htmlParseTryOrFinish(ctxt, terminate);
+#endif
     } else if (ctxt->instate != XML_PARSER_EOF) {
-	xmlParserInputBufferPush(ctxt->input->buf, 0, "");
-        htmlParseTryOrFinish(ctxt, terminate);
+	if ((ctxt->input != NULL) && ctxt->input->buf != NULL) {
+	    xmlParserInputBufferPtr in = ctxt->input->buf;
+	    if ((in->encoder != NULL) && (in->buffer != NULL) &&
+		    (in->raw != NULL)) {
+		int nbchars;
+		    
+		nbchars = xmlCharEncInFunc(in->encoder, in->buffer, in->raw);
+		if (nbchars < 0) {
+		    xmlGenericError(xmlGenericErrorContext,
+				    "htmlParseChunk: encoder error\n");
+		    return(XML_ERR_INVALID_ENCODING);
+		}
+	    }
+	}
     }
+    htmlParseTryOrFinish(ctxt, terminate);
     if (terminate) {
 	if ((ctxt->instate != XML_PARSER_EOF) &&
 	    (ctxt->instate != XML_PARSER_EPILOG) &&

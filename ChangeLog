@@ -1,3 +1,11 @@
+Sat Aug  9 13:41:21 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: fixed a nasty bug #119387, bad heuristic from
+	  the progressive HTML parser front-end on large character data
+	  island leading to an erroneous end of data detection by the
+	  parser. Some cleanup too to get closer from the XML progressive
+	  parser.
+
 Sat Aug  9 00:42:47 HKT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* win32/configure.js: Added in support for the ISO8859X

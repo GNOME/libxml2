@@ -1,7 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
 # The name of the module.
-DOC_MODULE=gnome-xml
+DOC_MODULE=libxml2-$(VERSION)
 
 # The top-level SGML file.
 DOC_MAIN_SGML_FILE=gnome-xml.sgml
@@ -9,9 +9,9 @@ DOC_MAIN_SGML_FILE=gnome-xml.sgml
 # The directory containing the source code (if it contains documentation).
 DOC_SOURCE_DIR=..
 
-HTML_DIR=$(datadir)/gnome-xml/html
+HTML_DIR=$(prefix)/doc
 
-TARGET_DIR=$(HTML_DIR)/$(DOC_MODULE)
+TARGET_DIR=$(HTML_DIR)/$(DOC_MODULE)/html
 
 # htmldir = $(prefix)/html
 # html_DATA = gnome-dev-info.html

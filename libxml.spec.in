@@ -112,6 +112,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc /usr/man/man1/xmllint.1*
 %doc /usr/man/man1/xml-config.1*
 %doc /usr/man/man4/libxml.4*
+%doc doc/*.html doc/html
 
 %{prefix}/lib/lib*.so.*
 %{prefix}/bin/xmllint

@@ -386,7 +386,10 @@ dist-hook: libxml.spec
 	-cp libxml.spec $(distdir)
 	(cd $(srcdir) ; tar -cf - --exclude CVS test result SAXresult ) | (cd $(distdir); tar xf -)
 
-rpm: $(distdir).tar.gz
+cleantar:
+	@(rm -f libxslt*.tar.gz)
+
+rpm: cleantar distcheck
 	rpm -ta $(distdir).tar.gz
 
 ## We create xmlConf.sh here and not from configure because we want

@@ -1,3 +1,8 @@
+Fri Mar 22 13:22:09 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c: Richard Jinks spotted an incoherent memory allocation
+	  behaviour in xmlXPathCastToString()
+
 Thu Mar 21 14:25:29 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* encoding.c: fixed a bug in the ISO-Latin 1 to UTF8 encoder

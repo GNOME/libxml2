@@ -3237,7 +3237,7 @@ xmlXPathCastToString(xmlXPathObjectPtr val) {
 	    ret = xmlXPathCastNodeSetToString(val->nodesetval);
 	    break;
 	case XPATH_STRING:
-	    return(val->stringval);
+	    return(xmlStrdup(val->stringval));
         case XPATH_BOOLEAN:
 	    ret = xmlXPathCastBooleanToString(val->boolval);
 	    break;

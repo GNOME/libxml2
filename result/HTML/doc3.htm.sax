@@ -2789,8 +2789,10 @@ SAX.endElement(font)
 SAX.endElement(a)
 SAX.characters( , 1)
 SAX.error: Unexpected end tag : p
+SAX.error: Opening and ending tag mismatch: center and td
 SAX.endElement(td)
 SAX.endElement(tr)
+SAX.error: Opening and ending tag mismatch: center and tbody
 SAX.endElement(tbody)
 SAX.error: Opening and ending tag mismatch: center and table
 SAX.endElement(table)

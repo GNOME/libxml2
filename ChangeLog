@@ -1,3 +1,12 @@
+Tue Feb 13 18:01:48 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xpath.c result/XPath/tests/chaptersprefol: bugfixes on order and
+	  on predicate
+	* HTMLparser.[ch] HTMLtree.c result/HTML/doc3.htm.err
+	  result/HTML/doc3.htm.sax result/HTML/wired.html: sometimes one
+	  really want to have tags closed on output even if we accept
+	  unclosed ones on input
+
 Mon Feb 12 18:33:20 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xpath.c: ouch don't free NULL, rare case fixed

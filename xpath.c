@@ -584,6 +584,31 @@ xmlXPathCmpNodes(xmlNodePtr node1, xmlNodePtr node2) {
     return(-1); /* assume there is no sibling list corruption */
 }
 
+/**
+ * xmlXPathNodeSetSort:
+ * @set:  the node set
+ *
+ * Sort the node set in document order
+ */
+void
+xmlXPathNodeSetSort(xmlNodeSetPtr set) {
+    int i, j;
+    xmlNodePtr tmp;
+
+    if (set == NULL)
+	return;
+
+    for (i = 0;i < set->nodeNr -1;i++) {
+	for (j = i + 1; j < set->nodeNr; j++) {
+	    if (xmlXPathCmpNodes(set->nodeTab[i], set->nodeTab[j]) == -1) {
+		tmp = set->nodeTab[i];
+		set->nodeTab[i] = set->nodeTab[j];
+		set->nodeTab[j] = tmp;
+	    }
+	}
+    }
+}
+
 #define XML_NODESET_DEFAULT	10
 /**
  * xmlXPathNodeSetCreate:
@@ -5228,12 +5253,14 @@ xmlXPathEvalPathExpr(xmlXPathParserContextPtr ctxt) {
 
 void
 xmlXPathEvalUnionExpr(xmlXPathParserContextPtr ctxt) {
+    int sort = 0;
     xmlXPathEvalPathExpr(ctxt);
     CHECK_ERROR;
     SKIP_BLANKS;
     while (CUR == '|') {
 	xmlXPathObjectPtr obj1,obj2, tmp;
 
+	sort = 1;
 	CHECK_TYPE(XPATH_NODESET);
 	obj1 = valuePop(ctxt);
 	tmp = xmlXPathNewNodeSet(ctxt->context->node);
@@ -5254,6 +5281,8 @@ xmlXPathEvalUnionExpr(xmlXPathParserContextPtr ctxt) {
 	valuePush(ctxt, obj1);
 	xmlXPathFreeObject(obj2);
 	SKIP_BLANKS;
+    }
+    if (sort) {
     }
 }
 
@@ -5515,6 +5544,9 @@ xmlXPathEvalExpr(xmlXPathParserContextPtr ctxt) {
 	xmlXPathFreeObject(arg2);
 	SKIP_BLANKS;
     }
+    if ((ctxt->value != NULL) && (ctxt->value->type == XPATH_NODESET) &&
+	(ctxt->value->nodesetval != NULL))
+	xmlXPathNodeSetSort(ctxt->value->nodesetval);
 }
 
 /**
@@ -5581,6 +5613,7 @@ xmlXPathEvalPredicate(xmlXPathParserContextPtr ctxt) {
     xmlXPathObjectPtr obj, tmp;
     xmlNodeSetPtr newset = NULL;
     xmlNodeSetPtr oldset;
+    xmlNodePtr oldnode;
     int i;
 
     SKIP_BLANKS;
@@ -5598,6 +5631,7 @@ xmlXPathEvalPredicate(xmlXPathParserContextPtr ctxt) {
     CHECK_TYPE(XPATH_NODESET);
     obj = valuePop(ctxt);
     oldset = obj->nodesetval;
+    oldnode = ctxt->context->node;
     ctxt->context->node = NULL;
 
     if ((oldset == NULL) || (oldset->nodeNr == 0)) {
@@ -5675,6 +5709,7 @@ xmlXPathEvalPredicate(xmlXPathParserContextPtr ctxt) {
     xmlGenericErrorContextNodeSet(xmlGenericErrorContext,
 	    ctxt->value->nodesetval);
 #endif
+    ctxt->context->node = oldnode;
 }
 
 /**

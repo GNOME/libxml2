@@ -70,6 +70,12 @@ om/ad_static.asp?pid=2097&sid=1881&asid=7708"></a></IFRAME></CENTER></LI></FONT
 ./test/HTML/doc3.htm:828: error: Unexpected end tag : p
             Special<BR>Code:BP6-hd</FONT></A> </P></CENTER></TD></TR></TBODY></
                                                   ^
+./test/HTML/doc3.htm:828: error: Opening and ending tag mismatch: center and td
+            Special<BR>Code:BP6-hd</FONT></A> </P></CENTER></TD></TR></TBODY></
+                                                           ^
+./test/HTML/doc3.htm:828: error: Opening and ending tag mismatch: center and tbody
+            Special<BR>Code:BP6-hd</FONT></A> </P></CENTER></TD></TR></TBODY></
+                                                           ^
 ./test/HTML/doc3.htm:828: error: Opening and ending tag mismatch: center and table
             Special<BR>Code:BP6-hd</FONT></A> </P></CENTER></TD></TR></TBODY></
                                                            ^

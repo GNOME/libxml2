@@ -34,11 +34,12 @@ typedef struct _htmlElemDesc htmlElemDesc;
 typedef htmlElemDesc *htmlElemDescPtr;
 struct _htmlElemDesc {
     const char *name;	/* The tag name */
-    int startTag;       /* Whether the start tag can be implied */
-    int endTag;         /* Whether the end tag can be implied */
-    int empty;          /* Is this an empty element ? */
-    int depr;           /* Is this a deprecated element ? */
-    int dtd;            /* 1: only in Loose DTD, 2: only Frameset one */
+    char startTag;       /* Whether the start tag can be implied */
+    char endTag;         /* Whether the end tag can be implied */
+    char saveEndTag;     /* Whether the end tag should be saved */
+    char empty;          /* Is this an empty element ? */
+    char depr;           /* Is this a deprecated element ? */
+    char dtd;            /* 1: only in Loose DTD, 2: only Frameset one */
     const char *desc;   /* the description */
 };
 

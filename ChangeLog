@@ -1,3 +1,8 @@
+Thu Dec 13 09:44:58 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* valid.c: fix bug #66816 when validating.
+	* xmllint.c: don't use sys/time.h if configure did not found it
+
 Mon Dec 10 21:39:55 MST 2001 John Fleck <jfleck@inkstain.net>
 
 	* docs/xmllint.1, xmllint.xml, xmlcatalog.1, xmlcatalog_man.html,

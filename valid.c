@@ -3938,6 +3938,7 @@ xmlValidateElementContent(xmlValidCtxtPtr ctxt, xmlNodePtr child,
 		    tmp->name = cur->name;
 		    tmp->ns = cur->ns;
 		    tmp->next = NULL;
+		    tmp->content = NULL;
 		    if (repl == NULL)
 			repl = last = tmp;
 		    else {

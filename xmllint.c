@@ -20,7 +20,9 @@
 #include <sys/time.h>
 #endif /* _MSC_VER */
 #else /* _WIN32 */
+#ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>
+#endif
 #endif /* _WIN32 */
 
 

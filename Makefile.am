@@ -86,7 +86,7 @@ testall : tests SVGtests SAXtests
 
 tests: XMLtests XMLenttests HTMLtests Validtests URItests XPathtests XPtrtests XIncludetests Scripttests Catatests @TEST_THREADS@
 
-HTMLtests : testHTML
+HTMLtests : testHTML$(EXEEXT)
 	@(echo > .memdump)
 	@echo "##"
 	@echo "## HTML regression tests"
@@ -162,7 +162,7 @@ HTMLtests : testHTML
 	  fi ; fi ; done)
 
 
-XMLtests : xmllint
+XMLtests : xmllint$(EXEEXT)
 	@(echo > .memdump)
 	@echo "##"
 	@echo "## XML regression tests"
@@ -224,7 +224,7 @@ XMLtests : xmllint
 	      rm result.$$name result2.$$name ; \
 	  fi ; fi ; done)
 
-Docbtests : xmllint
+Docbtests : xmllint$(EXEEXT)
 	@(echo > .memdump)
 	@echo "##"
 	@echo "## SGML DocBook regression tests"
@@ -244,7 +244,7 @@ Docbtests : xmllint
 	      rm result.$$name ; \
 	  fi ; fi ; done)
 
-XMLenttests : xmllint
+XMLenttests : xmllint$(EXEEXT)
 	@(echo > .memdump)
 	@echo "##"
 	@echo "## XML entity subst regression tests"
@@ -264,7 +264,7 @@ XMLenttests : xmllint
 	      rm result.$$name result2.$$name ; \
 	  fi ; fi ; done)
 
-URItests : testURI
+URItests : testURI$(EXEEXT)
 	@(echo > .memdump)
 	@echo "##"
 	@echo "## URI module regression tests"
@@ -296,7 +296,7 @@ URItests : testURI
 	      rm result.$$name ; \
 	  fi ; fi ; done)
 
-XPathtests : testXPath
+XPathtests : testXPath$(EXEEXT)
 	@(echo > .memdump)
 	@echo "##"
 	@echo "## XPath regression tests"
@@ -336,7 +336,7 @@ XPathtests : testXPath
 	      rm result.$$name ; \
 	  fi ; fi ; done ; fi ; done)
 
-XPtrtests : testXPath
+XPtrtests : testXPath$(EXEEXT)
 	@(echo > .memdump)
 	@echo "##"
 	@echo "## XPointer regression tests"
@@ -361,7 +361,7 @@ XPtrtests : testXPath
 	      rm result.$$name ; \
 	  fi ; fi ; done ; fi ; done)
 
-XIncludetests : xmllint
+XIncludetests : xmllint$(EXEEXT)
 	@(echo > .memdump)
 	@echo "##"
 	@echo "## XInclude regression tests"
@@ -380,7 +380,7 @@ XIncludetests : xmllint
 	      rm result.$$name ; \
 	  fi ; fi ; done)
 
-Scripttests : xmllint
+Scripttests : xmllint$(EXEEXT)
 	@(echo > .memdump)
 	@echo "##"
 	@echo "## Scripts regression tests"
@@ -401,7 +401,7 @@ Scripttests : xmllint
 	      rm result.$$name ; \
 	  fi ; fi ; done)
 
-Catatests : xmlcatalog
+Catatests : xmlcatalog$(EXEEXT)
 	@(echo > .memdump)
 	@echo "##"
 	@echo "## Catalog regression tests"
@@ -455,7 +455,7 @@ Catatests : xmlcatalog
 	grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
 	rm -f result/catalogs/mycatalog)
 
-SVGtests : xmllint
+SVGtests : xmllint$(EXEEXT)
 	@echo "##"
 	@echo "## SVG parsing regression tests"
 	@echo "##"
@@ -474,13 +474,13 @@ SVGtests : xmllint
 	      rm result.$$name result2.$$name ; \
 	  fi ; fi ; done)
 
-Threadtests : testThreads
+Threadtests : testThreads$(EXEEXT)
 	@echo "##"
 	@echo "## Threaded regression tests"
 	@echo "##"
 	$(top_builddir)/testThreads
 
-SAXtests : testSAX
+SAXtests : testSAX$(EXEEXT)
 	@(echo > .memdump)
 	@echo "##"
 	@echo "## SAX callbacks regression tests"
@@ -499,7 +499,7 @@ SAXtests : testSAX
 	  fi ; fi ; done)
 
 
-Validtests : xmllint
+Validtests : xmllint$(EXEEXT)
 	@(echo > .memdump)
 	@echo "##"
 	@echo "## Valid documents regression tests"

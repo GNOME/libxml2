@@ -1,3 +1,8 @@
+Fri Feb  8 15:19:28 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am: applied patch from Andris Pavenis for binary
+	  name suffixes
+
 Fri Feb  8 14:43:17 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xmllint.c win32/win32config.h: fixing #68748

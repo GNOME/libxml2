@@ -1,4 +1,8 @@
-Tue Jan 22 22:42:23 CET 2002  Daniel Veillard <daniel@veillard.com>
+Tue Jan 22 23:11:26 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* debugXML.c: added an xpath function to the shell for T. V. Raman
+
+Tue Jan 22 22:42:23 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* debugXML.c: patch from Anthony Jones to catch NULL nodes in
 	  debug routines.

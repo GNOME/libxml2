@@ -2048,6 +2048,9 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
 		  fprintf(stdout, "\tfree         display memory usage\n");
 		  fprintf(stdout, "\tload [name]  load a new document with name\n");
 		  fprintf(stdout, "\tls [path]    list contents of path or the current directory\n");
+#ifdef LIBXML_XPATH_ENABLED
+		  fprintf(stdout, "\txpath expr   evaluate the XPath expression in that context and print the result\n");
+#endif /* LIBXML_XPATH_ENABLED */
 		  fprintf(stdout, "\tpwd          display current working directory\n");
 		  fprintf(stdout, "\tquit         leave shell\n");
 		  fprintf(stdout, "\tsave [name]  save this document to name or the original name\n");
@@ -2079,6 +2082,18 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
             xmlShellDu(ctxt, NULL, ctxt->node, NULL);
         } else if (!strcmp(command, "base")) {
             xmlShellBase(ctxt, NULL, ctxt->node, NULL);
+#ifdef LIBXML_XPATH_ENABLED
+        } else if (!strcmp(command, "xpath")) {
+            if (arg[0] == 0) {
+		xmlGenericError(xmlGenericErrorContext,
+				"xpath: expression required\n");
+	    } else {
+                ctxt->pctxt->node = ctxt->node;
+                list = xmlXPathEval((xmlChar *) arg, ctxt->pctxt);
+		xmlXPathDebugDumpObject(stdout, list, 0);
+		xmlXPathFreeObject(list);
+	    }
+#endif /* LIBXML_XPATH_ENABLED */
         } else if (!strcmp(command, "setbase")) {
             xmlShellSetBase(ctxt, arg, ctxt->node, NULL);
         } else if ((!strcmp(command, "ls")) || (!strcmp(command, "dir"))) {

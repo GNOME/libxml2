@@ -25,6 +25,7 @@
 #include <libxml/xpointer.h>
 #include <libxml/parserInternals.h>
 #include <libxml/xmlerror.h>
+#include <libxml/encoding.h>
 #include <libxml/globals.h>
 
 #ifdef LIBXML_XINCLUDE_ENABLED
@@ -37,6 +38,7 @@
 #define XINCLUDE_PARSE (const xmlChar *) "parse"
 #define XINCLUDE_PARSE_XML (const xmlChar *) "xml"
 #define XINCLUDE_PARSE_TEXT (const xmlChar *) "text"
+#define XINCLUDE_PARSE_ENCODING (const xmlChar *) "encoding"
 
 /* #define DEBUG_XINCLUDE  */
 #ifdef DEBUG_XINCLUDE
@@ -1106,6 +1108,9 @@ xmlXIncludeLoadTxt(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
     xmlURIPtr uri;
     xmlChar *URL;
     int i;
+    xmlChar *encoding = NULL;
+    xmlCharEncoding enc = 0;
+
     /*
      * Check the URL and remove any fragment identifier
      */
@@ -1151,10 +1156,33 @@ xmlXIncludeLoadTxt(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
 	}
     }
     /*
-     * Load it.
-     * Issue 62: how to detect the encoding
+     * Try to get the encoding if available
      */
-    buf = xmlParserInputBufferCreateFilename((const char *)URL, 0);
+    if ((ctxt->incTab[nr] != NULL) && (ctxt->incTab[nr]->ref != NULL)) {
+	encoding = xmlGetProp(ctxt->incTab[nr]->ref, XINCLUDE_PARSE_ENCODING);
+    }
+    if (encoding != NULL) {
+	/*
+	 * TODO: we should not have to remap to the xmlCharEncoding
+	 *       predefined set, a better interface than
+	 *       xmlParserInputBufferCreateFilename should allow any
+	 *       encoding supported by iconv
+	 */
+        enc = xmlParseCharEncoding((const char *) encoding);
+	if (enc == XML_CHAR_ENCODING_ERROR) {
+	    xmlGenericError(xmlGenericErrorContext,
+		    "XInclude: encoding %s not supported\n", encoding);
+	    xmlFree(encoding);
+	    xmlFree(URL);
+	    return(-1);
+	}
+	xmlFree(encoding);
+    }
+
+    /*
+     * Load it.
+     */
+    buf = xmlParserInputBufferCreateFilename((const char *)URL, enc);
     if (buf == NULL) {
 	xmlFree(URL);
 	return(-1);
@@ -1170,16 +1198,18 @@ xmlXIncludeLoadTxt(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
 
 	content = xmlBufferContent(buf->buffer);
 	len = xmlBufferLength(buf->buffer);
-	for (i = 0;i < len; i++) {
-	    /*
-	     * TODO: if the encoding issue is solved, scan UTF8 chars instead
-	     */
-	    if (!IS_CHAR(content[i])) {
+	for (i = 0;i < len;) {
+	    int cur;
+	    int l;
+
+	    cur = xmlStringCurrentChar(NULL, &content[i], &l);
+	    if (!IS_CHAR(cur)) {
 		xmlGenericError(xmlGenericErrorContext,
-		    "XInclude: %s contains invalid char %d\n", URL, content[i]);
+		    "XInclude: %s contains invalid char %d\n", URL, cur);
 	    } else {
-		xmlNodeAddContentLen(node, &content[i], 1);
+		xmlNodeAddContentLen(node, &content[i], l);
 	    }
+	    i += l;
 	}
 	xmlBufferShrink(buf->buffer, len);
     }

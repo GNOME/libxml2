@@ -746,7 +746,7 @@ def writeDoc(name, args, indent, output):
          output.write('\n  ');
          output.write(indent)
      output.write(val);
-     output.write('"""\n')
+     output.write(' """\n')
 
 def buildWrappers():
     global ctypes

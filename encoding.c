@@ -2120,7 +2120,7 @@ xmlCharEncInFunc(xmlCharEncodingHandler * handler, xmlBufferPtr out,
      */
     if (ret == -3)
         ret = 0;
-    return (ret);
+    return (written);
 }
 
 /**

@@ -1,3 +1,13 @@
+Wed Nov 20 14:24:56 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xinclude.c parserInternals.c encoding.c: fixed #99082
+	  for xi:include encoding="..." support on text includes.
+	* result/XInclude/tstencoding.xml test/XInclude/docs/tstencoding.xml
+	  test/XInclude/ents/isolatin.txt : added a specific regression test
+	* python/generator.py python/libxml2class.txt: fixed the generator
+	  the new set of comments generated for doc/libxml2-api.xml were
+	  breaking the python generation.
+
 Tue Nov 19 23:25:47 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* doc/Makefile.am: repair some problem if gtk-doc fail or such

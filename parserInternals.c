@@ -1436,9 +1436,11 @@ xmlStringCurrentChar(xmlParserCtxtPtr ctxt, const xmlChar * cur, int *len)
                     ctxt->sax->error(ctxt->userData,
                                      "Char 0x%X out of allowed range\n",
                                      val);
-                ctxt->errNo = XML_ERR_INVALID_ENCODING;
-                ctxt->wellFormed = 0;
-                if (ctxt->recovery == 0) ctxt->disableSAX = 1;
+		if (ctxt != NULL) {
+		    ctxt->errNo = XML_ERR_INVALID_ENCODING;
+		    ctxt->wellFormed = 0;
+		    if (ctxt->recovery == 0) ctxt->disableSAX = 1;
+		}
             }
             return (val);
         } else {

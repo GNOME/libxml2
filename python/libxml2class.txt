@@ -150,6 +150,13 @@ validateNamesValue()
 validateNmtokenValue()
 validateNmtokensValue()
 
+# functions from module wincecompat
+close()
+getenv()
+read()
+strerror()
+write()
+
 # functions from module xmlIO
 checkFilename()
 cleanupInputCallbacks()
@@ -302,7 +309,7 @@ uCSIsUnifiedCanadianAboriginalSyllabics()
 uCSIsYiRadicals()
 uCSIsYiSyllables()
 
-# functions from module xmlversion
+# functions from module xmlwin32version
 checkVersion()
 
 # functions from module xpathInternals

@@ -155,15 +155,18 @@ function discoverVersion()
 	while (cf.AtEndOfStream != true) {
 		ln = cf.ReadLine();
 		s = new String(ln);
-		if (s.search(/^LIBXML_MAJOR_VERSION/) != -1) {
+		if (s.search(/^LIBXML_MAJOR_VERSION=/) != -1) {
 			vf.WriteLine(s);
 			verMajor = s.substring(s.indexOf("=") + 1, s.length)
-		} else if(s.search(/^LIBXML_MINOR_VERSION/) != -1) {
+		} else if(s.search(/^LIBXML_MINOR_VERSION=/) != -1) {
 			vf.WriteLine(s);
 			verMinor = s.substring(s.indexOf("=") + 1, s.length)
-		} else if(s.search(/^LIBXML_MICRO_VERSION/) != -1) {
+		} else if(s.search(/^LIBXML_MICRO_VERSION=/) != -1) {
 			vf.WriteLine(s);
 			verMicro = s.substring(s.indexOf("=") + 1, s.length)
+		} else if(s.search(/^LIBXML_MICRO_VERSION_SUFFIX=/) != -1) {
+			vf.WriteLine(s);
+			verMicroSuffix = s.substring(s.indexOf("=") + 1, s.length)
 		}
 	}
 	cf.Close();
@@ -222,7 +225,7 @@ function configureLibxml()
 		s = new String(ln);
 		if (s.search(/\@VERSION\@/) != -1) {
 			of.WriteLine(s.replace(/\@VERSION\@/, 
-				verMajor + "." + verMinor + "." + verMicro));
+				verMajor + "." + verMinor + "." + verMicro + verMicroSuffix));
 		} else if (s.search(/\@LIBXML_VERSION_NUMBER\@/) != -1) {
 			of.WriteLine(s.replace(/\@LIBXML_VERSION_NUMBER\@/, 
 				verMajor*10000 + verMinor*100 + verMicro*1));

@@ -1,3 +1,8 @@
+Sat Nov  1 17:42:27 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c nanohttp.c threads.c: second BeOS patch from 
+	  Marcin 'Shard' Konicki
+
 Fri Oct 31 15:35:20 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: always generate line numbers

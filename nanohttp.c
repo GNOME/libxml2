@@ -909,6 +909,12 @@ xmlNanoHTTPConnectAttempt(struct sockaddr *addr)
 	status = ioctl(s, FIONBIO, &enable);
     }
 #else /* VMS */
+#if defined(__BEOS__)
+	{
+		bool noblock = true;
+		status = setsockopt(s, SOL_SOCKET, SO_NONBLOCK, &noblock, sizeof(noblock));
+	}
+#else /* __BEOS__ */
     if ((status = fcntl(s, F_GETFL, 0)) != -1) {
 #ifdef O_NONBLOCK
 	status |= O_NONBLOCK;
@@ -927,6 +933,7 @@ xmlNanoHTTPConnectAttempt(struct sockaddr *addr)
 	closesocket(s);
 	return(-1);
     }
+#endif /* !__BEOS__ */
 #endif /* !VMS */
 #endif /* !_WINSOCKAPI_ */
 

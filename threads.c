@@ -62,6 +62,7 @@ struct _xmlMutex {
     HANDLE mutex;
 #elif defined HAVE_BEOS_THREADS
 	sem_id sem;
+	thread_id tid;
 #else
     int empty;
 #endif
@@ -143,6 +144,7 @@ xmlNewMutex(void)
 		free(tok);
 		return NULL;
 	}
+	tok->tid = -1;
 #endif
     return (tok);
 }
@@ -191,6 +193,7 @@ xmlMutexLock(xmlMutexPtr tok)
 		exit();
 #endif
 	}
+	tok->tid = find_thread(NULL);
 #endif
 
 }
@@ -211,7 +214,10 @@ xmlMutexUnlock(xmlMutexPtr tok)
 #elif defined HAVE_WIN32_THREADS
     ReleaseMutex(tok->mutex);
 #elif defined HAVE_BEOS_THREADS
-	release_sem(tok->sem);
+	if (tok->tid == find_thread(NULL)) {
+		tok->tid = -1;
+		release_sem(tok->sem);
+	}
 #endif
 }
 
@@ -246,7 +252,6 @@ xmlNewRMutex(void)
 		return NULL;
 	}
 	tok->count = 0;
-	tok->tid = 0;
 #endif
     return (tok);
 }
@@ -303,12 +308,11 @@ xmlRMutexLock(xmlRMutexPtr tok)
     EnterCriticalSection(&tok->cs);
     ++tok->count;
 #elif defined HAVE_BEOS_THREADS
-	if (tok->tid == find_thread(NULL)) {
+	if (tok->lock->tid == find_thread(NULL)) {
 		tok->count++;
 		return;
 	} else {
 		xmlMutexLock(tok->lock);
-		tok->tid = find_thread(NULL);
 		tok->count = 1;
 	}
 #endif
@@ -338,10 +342,9 @@ xmlRMutexUnlock(xmlRMutexPtr tok ATTRIBUTE_UNUSED)
     if (!--tok->count) 
 	LeaveCriticalSection(&tok->cs);
 #elif defined HAVE_BEOS_THREADS
-	if (tok->tid == find_thread(NULL)) {
+	if (tok->lock->tid == find_thread(NULL)) {
 		tok->count--;
 		if (tok->count == 0) {
-			tok->tid = 0;
 			xmlMutexUnlock(tok->lock);
 		}
 		return;

@@ -1,3 +1,8 @@
+Wed Oct 29 14:13:03 PDT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* xmlIO.c: enhanced to bypass compression detection code
+	  when input file is stdin (bug 125801)
+
 Wed Oct 29 18:21:00 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlIO.c: fix needed when HTTP is not compiled in by Mark Vakoc

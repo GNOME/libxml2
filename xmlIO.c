@@ -2145,7 +2145,8 @@ xmlParserInputBufferCreateFilename(const char *URI, xmlCharEncoding enc) {
 	ret->readcallback = xmlInputCallbackTable[i].readcallback;
 	ret->closecallback = xmlInputCallbackTable[i].closecallback;
 #ifdef HAVE_ZLIB_H
-	if (xmlInputCallbackTable[i].opencallback == xmlGzfileOpen) {
+	if ((xmlInputCallbackTable[i].opencallback == xmlGzfileOpen) &&
+		(strcmp(URI, "-") != 0)) {
 	    if (((z_stream *)context)->avail_in > 4) {
 	        char *cptr, buff4[4];
 		cptr = (char *) ((z_stream *)context)->next_in;

@@ -1,0 +1,36 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+USEUNIT("..\..\xpointer.c");
+USEUNIT("..\..\debugXML.c");
+USEUNIT("..\..\DOCBparser.c");
+USEUNIT("..\..\encoding.c");
+USEUNIT("..\..\entities.c");
+USEUNIT("..\..\error.c");
+USEUNIT("..\..\globals.c");
+USEUNIT("..\..\hash.c");
+USEUNIT("..\..\HTMLparser.c");
+USEUNIT("..\..\HTMLtree.c");
+USEUNIT("..\..\list.c");
+USEUNIT("..\..\nanoftp.c");
+USEUNIT("..\..\nanohttp.c");
+USEUNIT("..\..\parser.c");
+USEUNIT("..\..\parserInternals.c");
+USEUNIT("..\..\SAX.c");
+USEUNIT("..\..\threads.c");
+USEUNIT("..\..\tree.c");
+USEUNIT("..\..\uri.c");
+USEUNIT("..\..\valid.c");
+USEUNIT("..\..\xinclude.c");
+USEUNIT("..\..\xlink.c");
+USEUNIT("..\..\xmlIO.c");
+USEUNIT("..\..\xmlmemory.c");
+USEUNIT("..\..\xpath.c");
+USEUNIT("..\..\catalog.c");
+USEUNIT("..\..\c14n.c");
+//---------------------------------------------------------------------------
+#define Library
+
+// To add a file to the library use the Project menu 'Add to Project'.
+

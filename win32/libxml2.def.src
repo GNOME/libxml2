@@ -195,7 +195,7 @@ EXPORTS
 	xmlFreeEntitiesTable
 	xmlDumpEntitiesTable
 	xmlDumpEntityDecl
-	xmlCleanupPredefinedEntities
+xmlCleanupPredefinedEntities
 
 
 /* globals.h 
@@ -687,6 +687,8 @@ EXPORTS
 		htmlCreateFileParserCtxt
 	#endif /* LIBXML_HTML_ENABLED */
 
+	/* Specific function to keep track of entities references and used by the XSLT debugger. */
+	xmlSetEntityReferenceFunc
 
 /* SAX.h
    --------------------------------------------------------------------- */
@@ -1011,6 +1013,23 @@ EXPORTS
 #endif
 
 
+/* xmlautomata.h 
+   --------------------------------------------------------------------- */
+#ifdef LIBXML_SCHEMAS_ENABLED
+	/* Building API */
+	xmlNewAutomata
+	xmlFreeAutomata
+	xmlAutomataGetInitState
+	xmlAutomataSetFinalState
+	xmlAutomataNewState
+	xmlAutomataNewTransition
+	xmlAutomataNewCountTrans
+	xmlAutomataNewEpsilon
+	// xmlAutomataNewCounter <-- not activated in the source (xmlregexp.c).
+	xmlAutomataCompile
+#endif /* LIBXML_SCHEMAS_ENABLED */
+
+
 /* xmlerror.h 
    --------------------------------------------------------------------- */
 	xmlSetGenericErrorFunc
@@ -1081,6 +1100,194 @@ EXPORTS
 		xmlReallocLoc
 		xmlMemStrdupLoc
 	#endif /* DEBUG_MEMORY_LOCATION */
+
+
+/* xmlregexp.h 
+   --------------------------------------------------------------------- */
+#ifdef LIBXML_SCHEMAS_ENABLED
+	/* The POSIX like API */
+	xmlRegexpCompile
+	xmlRegFreeRegexp
+	xmlRegexpExec
+	xmlRegexpPrint
+
+	/* The progressive API */
+	xmlRegNewExecCtxt
+	xmlRegFreeExecCtxt
+	xmlRegExecPushString			
+#endif /* LIBXML_SCHEMAS_ENABLED */
+
+
+/* xmlschemas.h 
+   --------------------------------------------------------------------- */
+#ifdef LIBXML_SCHEMAS_ENABLED
+	/* Interfaces for parsing. */
+	xmlSchemaNewParserCtxt
+	xmlSchemaFreeParserCtxt
+	xmlSchemaSetParserErrors
+	xmlSchemaParse
+	xmlSchemaFree
+	xmlSchemaDump
+
+	/* Interfaces for validating */
+	xmlSchemaSetValidErrors
+	xmlSchemaNewValidCtxt
+	xmlSchemaFreeValidCtxt
+	xmlSchemaValidateDoc
+	xmlSchemaValidateStream
+#endif /* LIBXML_SCHEMAS_ENABLED */
+
+
+/* xmlschemastypes.h 
+   --------------------------------------------------------------------- */
+#ifdef LIBXML_SCHEMAS_ENABLED
+	xmlSchemaInitTypes
+	xmlSchemaCleanupTypes
+	xmlSchemaGetPredefinedType
+	xmlSchemaValidatePredefinedType
+	xmlSchemaValidateFacet
+	xmlSchemaFreeValue
+#endif /* LIBXML_SCHEMAS_ENABLED */
+
+
+/* xmlunicode.h 
+   --------------------------------------------------------------------- */
+#ifdef LIBXML_SCHEMAS_ENABLED
+	xmlUCSIsAlphabeticPresentationForms
+	xmlUCSIsArabic
+	xmlUCSIsArabicPresentationFormsA
+	xmlUCSIsArabicPresentationFormsB
+	xmlUCSIsArmenian
+	xmlUCSIsArrows
+	xmlUCSIsBasicLatin
+	xmlUCSIsBengali
+	xmlUCSIsBlockElements
+	xmlUCSIsBopomofo
+	xmlUCSIsBopomofoExtended
+	xmlUCSIsBoxDrawing
+	xmlUCSIsBraillePatterns
+	xmlUCSIsByzantineMusicalSymbols
+	xmlUCSIsCJKCompatibility
+	xmlUCSIsCJKCompatibilityForms
+	xmlUCSIsCJKCompatibilityIdeographs
+	xmlUCSIsCJKCompatibilityIdeographsSupplement
+	xmlUCSIsCJKRadicalsSupplement
+	xmlUCSIsCJKSymbolsandPunctuation
+	xmlUCSIsCJKUnifiedIdeographs
+	xmlUCSIsCJKUnifiedIdeographsExtensionA
+	xmlUCSIsCJKUnifiedIdeographsExtensionB
+	xmlUCSIsCherokee
+	xmlUCSIsCombiningDiacriticalMarks
+	xmlUCSIsCombiningHalfMarks
+	xmlUCSIsCombiningMarksforSymbols
+	xmlUCSIsControlPictures
+	xmlUCSIsCurrencySymbols
+	xmlUCSIsCyrillic
+	xmlUCSIsDeseret
+	xmlUCSIsDevanagari
+	xmlUCSIsDingbats
+	xmlUCSIsEnclosedAlphanumerics
+	xmlUCSIsEnclosedCJKLettersandMonths
+	xmlUCSIsEthiopic
+	xmlUCSIsGeneralPunctuation
+	xmlUCSIsGeometricShapes
+	xmlUCSIsGeorgian
+	xmlUCSIsGothic
+	xmlUCSIsGreek
+	xmlUCSIsGreekExtended
+	xmlUCSIsGujarati
+	xmlUCSIsGurmukhi
+	xmlUCSIsHalfwidthandFullwidthForms
+	xmlUCSIsHangulCompatibilityJamo
+	xmlUCSIsHangulJamo
+	xmlUCSIsHangulSyllables
+	xmlUCSIsHebrew
+	xmlUCSIsHighPrivateUseSurrogates
+	xmlUCSIsHighSurrogates
+	xmlUCSIsHiragana
+	xmlUCSIsIPAExtensions
+	xmlUCSIsIdeographicDescriptionCharacters
+	xmlUCSIsKanbun
+	xmlUCSIsKangxiRadicals
+	xmlUCSIsKannada
+	xmlUCSIsKatakana
+	xmlUCSIsKhmer
+	xmlUCSIsLao
+	xmlUCSIsLatin1Supplement
+	xmlUCSIsLatinExtendedA
+	xmlUCSIsLatinExtendedB
+	xmlUCSIsLatinExtendedAdditional
+	xmlUCSIsLetterlikeSymbols
+	xmlUCSIsLowSurrogates
+	xmlUCSIsMalayalam
+	xmlUCSIsMathematicalAlphanumericSymbols
+	xmlUCSIsMathematicalOperators
+	xmlUCSIsMiscellaneousSymbols
+	xmlUCSIsMiscellaneousTechnical
+	xmlUCSIsMongolian
+	xmlUCSIsMusicalSymbols
+	xmlUCSIsMyanmar
+	xmlUCSIsNumberForms
+	xmlUCSIsOgham
+	xmlUCSIsOldItalic
+	xmlUCSIsOpticalCharacterRecognition
+	xmlUCSIsOriya
+	xmlUCSIsPrivateUse
+	xmlUCSIsRunic
+	xmlUCSIsSinhala
+	xmlUCSIsSmallFormVariants
+	xmlUCSIsSpacingModifierLetters
+	xmlUCSIsSpecials
+	xmlUCSIsSuperscriptsandSubscripts
+	xmlUCSIsSyriac
+	xmlUCSIsTags
+	xmlUCSIsTamil
+	xmlUCSIsTelugu
+	xmlUCSIsThaana
+	xmlUCSIsThai
+	xmlUCSIsTibetan
+	xmlUCSIsUnifiedCanadianAboriginalSyllabics
+	xmlUCSIsYiRadicals
+	xmlUCSIsYiSyllables
+	xmlUCSIsBlock
+	xmlUCSIsCatC
+	xmlUCSIsCatCc
+	xmlUCSIsCatCf
+	xmlUCSIsCatCo
+	xmlUCSIsCatCs
+	xmlUCSIsCatL
+	xmlUCSIsCatLl
+	xmlUCSIsCatLm
+	xmlUCSIsCatLo
+	xmlUCSIsCatLt
+	xmlUCSIsCatLu
+	xmlUCSIsCatM
+	xmlUCSIsCatMc
+	xmlUCSIsCatMe
+	xmlUCSIsCatMn
+	xmlUCSIsCatN
+	xmlUCSIsCatNd
+	xmlUCSIsCatNl
+	xmlUCSIsCatNo
+	xmlUCSIsCatP
+	xmlUCSIsCatPc
+	xmlUCSIsCatPd
+	xmlUCSIsCatPe
+	xmlUCSIsCatPf
+	xmlUCSIsCatPi
+	xmlUCSIsCatPo
+	xmlUCSIsCatPs
+	xmlUCSIsCatS
+	xmlUCSIsCatSc
+	xmlUCSIsCatSk
+	xmlUCSIsCatSm
+	xmlUCSIsCatSo
+	xmlUCSIsCatZ
+	xmlUCSIsCatZl
+	xmlUCSIsCatZp
+	xmlUCSIsCatZs
+	xmlUCSIsCat
+#endif /* LIBXML_SCHEMAS_ENABLED */
 
 
 /* xmlversion.h 

@@ -38,6 +38,7 @@ AUTOCONF = .\configure.txt
 #WITH_ICONV = 1
 #WITH_DEBUG = 1
 #WITH_MEM_DEBUG = 0
+#WITH_SCHEMAS = 1
 #DEBUG = 0
 #STATIC = 0
 #PREFIX = . # set this to the right value.
@@ -135,16 +136,23 @@ XML_OBJS = $(XML_INTDIR)\c14n.obj\
 	$(XML_INTDIR)\xlink.obj\
 	$(XML_INTDIR)\xmlIO.obj\
 	$(XML_INTDIR)\xmlmemory.obj\
+	$(XML_INTDIR)\xmlregexp.obj\
+	$(XML_INTDIR)\xmlschemas.obj\
+	$(XML_INTDIR)\xmlschemastypes.obj\
+	$(XML_INTDIR)\xmlunicode.obj\
 	$(XML_INTDIR)\xpath.obj\
 	$(XML_INTDIR)\xpointer.obj
 
 # Xmllint and friends executables.
 UTILS = $(BINDIR)\xmllint.exe\
 	$(BINDIR)\xmlcatalog.exe\
+	$(BINDIR)\testAutomata.exe\
 	$(BINDIR)\testC14N.exe\
 	$(BINDIR)\testDocbook.exe\
 	$(BINDIR)\testHTML.exe\
+	$(BINDIR)\testRegexp.exe\
 	$(BINDIR)\testSAX.exe\
+	$(BINDIR)\testSchemas.exe\
 	$(BINDIR)\testURI.exe\
 	$(BINDIR)\testXPath.exe
 

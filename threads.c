@@ -87,7 +87,7 @@ static pthread_key_t	globalkey;
 static pthread_t	mainthread;
 static pthread_once_t once_control = PTHREAD_ONCE_INIT;
 #elif defined HAVE_WIN32_THREADS
-#ifdef _MSC_VER
+#if defined(_MSC_VER) || defined(__BORLANDC__)
 static __declspec (thread) xmlGlobalState tlstate;
 static __declspec (thread) int tlstate_inited = 0;
 #else
@@ -330,7 +330,7 @@ xmlNewGlobalState(void)
  */
 
 #ifdef HAVE_WIN32_THREADS
-#ifndef _MSC_VER
+#if !defined(_MSC_VER) && !defined(__BORLANDC__)
 typedef struct _xmlGlobalStateCleanupHelperParams
 {
 	HANDLE thread;
@@ -366,7 +366,7 @@ xmlGetGlobalState(void)
     }
     return (globalval);
 #elif defined HAVE_WIN32_THREADS
-#ifdef _MSC_VER
+#if defined(_MSC_VER) || defined(__BORLANDC__)
 	if (!tlstate_inited)
 	{
 		tlstate_inited = 1;
@@ -525,7 +525,7 @@ xmlOnceInit(void) {
    (void) pthread_key_create(&globalkey, xmlFreeGlobalState);
     mainthread = pthread_self();
 #elif defined HAVE_WIN32_THREADS
-#ifndef _MSC_VER
+#if !defined(_MSC_VER) && !defined(__BORLANDC__)
 	globalkey = TlsAlloc ();
 #endif /* _MSC_VER */
 	mainthread = GetCurrentThreadId ();

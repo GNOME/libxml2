@@ -44,6 +44,7 @@ var withXinclude = true;
 var withIconv = true;
 var withDebug = true;
 var withMemDebug = false;
+var withSchemas = true;
 /* Win32 build options. */
 var buildDebug = 0;
 var buildStatic = 0;
@@ -105,6 +106,7 @@ function usage()
 	txt += "  iconv:      Enable ICONV support (" + (withIconv? "yes" : "no")  + ")\n";
 	txt += "  xml_debug:  Enable XML debbugging module (" + (withDebug? "yes" : "no")  + ")\n";
 	txt += "  mem_debug:  Enable memory debugger (" + (withMemDebug? "yes" : "no")  + ")\n";
+	txt += "  schemas:    Enable XML Schema support (" + (withSchemas? "yes" : "no")  + ")\n";
 	txt += "\nWin32 build options, default value given in parentheses:\n\n";
 	txt += "  debug:      Build unoptimised debug executables (" + (buildDebug? "yes" : "no")  + ")\n";
 	txt += "  static:     Link xmllint statically to libxml2 (" + (buildStatic? "yes" : "no")  + ")\n";
@@ -168,6 +170,7 @@ function discoverVersion()
 	vf.WriteLine("WITH_ICONV=" + (withIconv? "1" : "0"));
 	vf.WriteLine("WITH_DEBUG=" + (withDebug? "1" : "0"));
 	vf.WriteLine("WITH_MEM_DEBUG=" + (withMemDebug? "1" : "0"));
+	vf.WriteLine("WITH_SCHEMAS=" + (withSchemas? "1" : "0"));
 	vf.WriteLine("DEBUG=" + (buildDebug? "1" : "0"));
 	vf.WriteLine("STATIC=" + (buildStatic? "1" : "0"));
 	vf.WriteLine("PREFIX=" + buildPrefix);
@@ -225,6 +228,8 @@ function configureLibxml()
 			of.WriteLine(s.replace(/\@WITH_DEBUG\@/, withDebug? "1" : "0"));
 		} else if (s.search(/\@WITH_MEM_DEBUG\@/) != -1) {
 			of.WriteLine(s.replace(/\@WITH_MEM_DEBUG\@/, withMemDebug? "1" : "0"));
+		} else if (s.search(/\@WITH_SCHEMAS\@/) != -1) {
+			of.WriteLine(s.replace(/\@WITH_SCHEMAS\@/, withSchemas? "1" : "0"));
 		} else
 			of.WriteLine(ln);
 	}
@@ -305,6 +310,8 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 			withDebug = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "mem_debug")
 			withMemDebug = strToBool(arg.substring(opt.length + 1, arg.length));
+		else if (opt == "schemas")
+			withSchemas = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "debug")
 			buildDebug = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "static")
@@ -384,6 +391,7 @@ txtOut += "  XInclude support: " + boolToStr(withXinclude) + "\n";
 txtOut += "     ICONV support: " + boolToStr(withIconv) + "\n";
 txtOut += "  Debugging module: " + boolToStr(withDebug) + "\n";
 txtOut += "  Memory debugging: " + boolToStr(withMemDebug) + "\n";
+txtOut += "XML Schema support: " + boolToStr(withSchemas) + "\n";
 txtOut += "\n";
 txtOut += "Win32 build configuration\n";
 txtOut += "-------------------------\n";

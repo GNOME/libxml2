@@ -25,7 +25,7 @@ refer to your compiler's documentation regarding that.
 The first thing you want to do is configure the source. You can have
 the configuration script do this automatically for you. The
 configuration script is written in JScript, a Microsoft's
-implementation of the ECMS scripting language. Almost every Windows
+implementation of the ECMA scripting language. Almost every Windows
 machine can execute this through the Windows Scripting Host. If your
 system lacks the ability to execute JScript for some reason, you must
 perform the configuration manually.

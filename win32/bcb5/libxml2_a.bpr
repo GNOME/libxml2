@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!-- C++Builder XML Project -->
+<PROJECT>
+  <MACROS>
+    <VERSION value="BCB.05.03"/>
+    <PROJECT value="libxml2_a.lib"/>
+    <OBJFILES value="..\..\xpointer.obj ..\..\debugXML.obj ..\..\DOCBparser.obj 
+      ..\..\encoding.obj ..\..\entities.obj ..\..\error.obj ..\..\globals.obj 
+      ..\..\hash.obj ..\..\HTMLparser.obj ..\..\HTMLtree.obj ..\..\list.obj 
+      ..\..\nanoftp.obj ..\..\nanohttp.obj ..\..\parser.obj 
+      ..\..\parserInternals.obj ..\..\SAX.obj ..\..\threads.obj ..\..\tree.obj 
+      ..\..\uri.obj ..\..\valid.obj ..\..\xinclude.obj ..\..\xlink.obj 
+      ..\..\xmlIO.obj ..\..\xmlmemory.obj ..\..\xpath.obj ..\..\catalog.obj 
+      ..\..\c14n.obj"/>
+    <RESFILES value=""/>
+    <DEFFILE value=""/>
+    <RESDEPEN value="$(RESFILES)"/>
+    <LIBFILES value=""/>
+    <LIBRARIES value=""/>
+    <PACKAGES value=""/>
+    <PATHCPP value=".;..\.."/>
+    <PATHPAS value=".;"/>
+    <PATHRC value=".;"/>
+    <PATHASM value=".;"/>
+    <LINKER value="TLib"/>
+    <USERDEFINES value="WIN32"/>
+    <SYSDEFINES value="_RTLDLL;NO_STRICT"/>
+    <MAINSOURCE value="libxml2_a.bpf"/>
+    <INCLUDEPATH value="..\..;$(BCB)\include;..\..\include;..\..\include\xmllib"/>
+    <LIBPATH value="..\..;$(BCB)\lib\obj;$(BCB)\lib"/>
+    <WARNINGS value="-w-par"/>
+    <LISTFILE value=""/>
+  </MACROS>
+  <OPTIONS>
+    <CFLAG1 value="-O2 -H=$(BCB)\lib\vcl50.csm -Hc -Vx -Ve -X- -A -a8 -b- -k- -vi -c -tW -tWM"/>
+    <PFLAGS value="-$Y- -$L- -$D- -v -JPHNE -M"/>
+    <AFLAGS value="/mx /w2 /zn"/>
+    <LFLAGS value="/0"/>
+  </OPTIONS>
+  <LINKER>
+    <ALLOBJ value="$(OBJFILES)"/>
+    <ALLLIB value=""/>
+  </LINKER>
+  <IDEOPTIONS>
+[Version Info]
+IncludeVerInfo=0
+AutoIncBuild=0
+MajorVer=1
+MinorVer=0
+Release=0
+Build=0
+Debug=0
+PreRelease=0
+Special=0
+Private=0
+DLL=0
+Locale=1031
+CodePage=1252
+
+[Version Info Keys]
+CompanyName=
+FileDescription=
+FileVersion=1.0.0.0
+InternalName=
+LegalCopyright=
+LegalTrademarks=
+OriginalFilename=
+ProductName=
+ProductVersion=1.0.0.0
+Comments=
+
+[HistoryLists\hlIncludePath]
+Count=5
+Item0=$(BCB)\include;..\..\include;..\..\include\xmllib
+Item1=..\..;$(BCB)\include;..\..\include;..\..\include\xmllib
+Item2=..\..;$(BCB)\include;D:\Programme\Borland\include\;D:\Programme\Borland\include\libxml\
+Item3=$(BCB)\include;..\..\include;..\..\include\libxml
+Item4=G:\cvs_src\herrmann\libxml2-2.4.19;$(BCB)\include;$(BCB)\include\vcl
+
+[HistoryLists\hlLibraryPath]
+Count=3
+Item0=..\..;$(BCB)\lib\obj;$(BCB)\lib
+Item1=$(BCB)\lib\obj;$(BCB)\lib
+Item2=G:\cvs_src\herrmann\libxml2-2.4.19;$(BCB)\lib\obj;$(BCB)\lib
+
+[HistoryLists\hlDebugSourcePath]
+Count=1
+Item0=$(BCB)\source\vcl
+
+[HistoryLists\hlConditionals]
+Count=1
+Item0=WIN32
+
+[HistoryLists\hlTlibPageSize]
+Count=1
+Item0=0x0010
+
+[Debugging]
+DebugSourceDirs=$(BCB)\source\vcl
+
+[Parameters]
+RunParams=
+HostApplication=
+RemoteHost=
+RemotePath=
+RemoteDebug=0
+
+[Compiler]
+ShowInfoMsgs=0
+LinkDebugVcl=0
+LinkCGLIB=0
+
+[Language]
+ActiveLang=
+ProjectLang=
+RootDir=
+  </IDEOPTIONS>
+</PROJECT>

@@ -1,3 +1,9 @@
+Tue Apr 16 19:52:01 CEST 2002 Igor Zlatkovic <izlatkovic@stud.fh-frankfurt.de>
+
+	* include/libxml/encoding.h: Patch for the Borland C++ builder
+	* include/libxml/tree.h: Patch for the Borland C++ builder
+	* threads.c: Patch for the Borland C++ builder
+
 Tue Apr 16 19:46:55 CEST 2002 Igor Zlatkovic <izlatkovic@stud.fh-frankfurt.de>
 
 	* win32/Makefile.msvc: Update for XML Schema support

@@ -43,7 +43,6 @@ static void
 example4Func(const char *filename) {
     xmlParserCtxtPtr ctxt;
     char chars[4];
-    int size = 4;
     xmlDocPtr doc; /* the resulting document tree */
     int res;
 

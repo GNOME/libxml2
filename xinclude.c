@@ -1816,8 +1816,10 @@ xmlXIncludeLoadFallback(xmlXIncludeCtxtPtr ctxt, xmlNodePtr fallback, int nr) {
 	    return (-1);
 	xmlXIncludeSetFlags(newctxt, ctxt->parseFlags);
 	ret = xmlXIncludeDoProcess(newctxt, ctxt->doc, fallback->children);
-	if ((ret >=0) && (ctxt->nbErrors > 0))
+	if (ctxt->nbErrors > 0)
 	    ret = -1;
+	else if (ret > 0)
+	    ret = 0;	/* xmlXIncludeDoProcess can return +ve number */
 	xmlXIncludeFreeContext(newctxt);
 
 	ctxt->incTab[nr]->inc = xmlCopyNodeList(fallback->children);

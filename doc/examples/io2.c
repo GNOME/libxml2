@@ -12,7 +12,7 @@
 #include <libxml/parser.h>
 
 int
-main() {
+main(void) {
 
 	xmlNodePtr n;
 	xmlDocPtr doc;

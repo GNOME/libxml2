@@ -44,7 +44,7 @@ typedef enum {
     XML_TEXTWRITER_DTD_ENTY,    /* entity */
     XML_TEXTWRITER_DTD_ENTY_TEXT,
     XML_TEXTWRITER_DTD_PENT,    /* parameter entity */
-    XML_TEXTWRITER_COMMENT,
+    XML_TEXTWRITER_COMMENT
 } xmlTextWriterState;
 
 typedef struct _xmlTextWriterStackEntry xmlTextWriterStackEntry;
@@ -1326,7 +1326,6 @@ xmlTextWriterWriteString(xmlTextWriterPtr writer, const xmlChar * content)
             switch (p->state) {
                 case XML_TEXTWRITER_NAME:
                 case XML_TEXTWRITER_TEXT:
-                  encode:
                     buf = xmlEncodeSpecialChars(NULL, content);
                     break;
                 case XML_TEXTWRITER_ATTRIBUTE:
@@ -1334,6 +1333,8 @@ xmlTextWriterWriteString(xmlTextWriterPtr writer, const xmlChar * content)
                     xmlAttrSerializeTxtContent(writer->out->buffer, NULL,
                                                NULL, content);
                     break;
+		default:
+		    break;
             }
         }
     }
@@ -3556,7 +3557,6 @@ xmlTextWriterEndDTDEntity(xmlTextWriterPtr writer)
             sum += count;
         case XML_TEXTWRITER_DTD_ENTY:
         case XML_TEXTWRITER_DTD_PENT:
-          enddtd:
             count = xmlOutputBufferWriteString(writer->out, ">");
             if (count < 0)
                 return -1;

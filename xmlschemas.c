@@ -183,6 +183,12 @@ static int xmlSchemaValidateSimpleValue(xmlSchemaValidCtxtPtr ctxt,
 static int xmlSchemaParseInclude(xmlSchemaParserCtxtPtr ctxt,
                                  xmlSchemaPtr schema,
                                  xmlNodePtr node);
+static int
+xmlSchemaValidateSimpleValueInternal(xmlSchemaValidCtxtPtr ctxt,
+                             xmlSchemaTypePtr type,
+			     const xmlChar * value,
+			     int fireErrors);
+
 /************************************************************************
  *									*
  * 			Datatype error handlers				*
@@ -4409,7 +4415,8 @@ xmlSchemaParseUnionRefCheck(xmlSchemaTypePtr typeDecl,
         if (ns == NULL) {
             xmlSchemaPErr(ctxt, typeDecl->node, XML_SCHEMAP_PREFIX_UNDEFINED,
                   "Union %s: the namespace of member type %s is undefined\n",
-                  typeDecl->name, (const char *) tmp);                        
+                  typeDecl->name, (const xmlChar *) tmp);
+	    namespace = NULL;
         } else {
             namespace = xmlDictLookup(ctxt->dict, ns->href, -1);
         }
@@ -4418,7 +4425,7 @@ xmlSchemaParseUnionRefCheck(xmlSchemaTypePtr typeDecl,
         if (subtype == NULL) {
             xmlSchemaPErr(ctxt, typeDecl->node, XML_SCHEMAP_UNKNOWN_MEMBER_TYPE,
                        "Union %s references an unknown member type >%s<\n",
-                       typeDecl->name,  (const char *) tmp);
+                       typeDecl->name,  (const xmlChar *) tmp);
         } 
 	 xmlFree(tmp);
         cur = end;
@@ -5129,27 +5136,6 @@ xmlSchemaFacetTypeToString(xmlSchemaTypeType type)
 }
 
 /**
- * xmlSchemaValidateFacets:
- * @ctxt:  a schema validation context
- * @base:  the base type
- * @facets:  the list of facets to check
- * @value:  the lexical repr of the value to validate
- * @val:  the precomputed value
- *
- * Check a value against all facet conditions
- *
- * Returns 0 if the element is schemas valid, a positive error code
- *     number otherwise and -1 in case of internal or API error.
- */
-static int
-xmlSchemaValidateFacets(xmlSchemaValidCtxtPtr ctxt,
-                        xmlSchemaTypePtr base,
-                        xmlSchemaFacetPtr facets, const xmlChar * value)
-{
-    return(xmlSchemaValidateFacetsInternal(ctxt, base, facets, value, 1));
-}
-
-/**
  * xmlSchemaValidateFacetsInternal:
  * @ctxt:  a schema validation context
  * @base:  the base type
@@ -5199,6 +5185,27 @@ xmlSchemaValidateFacetsInternal(xmlSchemaValidCtxtPtr ctxt,
             facet = facet->next;
     }
     return (ret);
+}
+
+/**
+ * xmlSchemaValidateFacets:
+ * @ctxt:  a schema validation context
+ * @base:  the base type
+ * @facets:  the list of facets to check
+ * @value:  the lexical repr of the value to validate
+ * @val:  the precomputed value
+ *
+ * Check a value against all facet conditions
+ *
+ * Returns 0 if the element is schemas valid, a positive error code
+ *     number otherwise and -1 in case of internal or API error.
+ */
+static int
+xmlSchemaValidateFacets(xmlSchemaValidCtxtPtr ctxt,
+                        xmlSchemaTypePtr base,
+                        xmlSchemaFacetPtr facets, const xmlChar * value)
+{
+    return(xmlSchemaValidateFacetsInternal(ctxt, base, facets, value, 1));
 }
 
 /************************************************************************
@@ -5256,7 +5263,7 @@ xmlSchemaValidateSimpleValueUnion(xmlSchemaValidCtxtPtr ctxt,
 	if (tmp != NULL)
 	    xmlFree(tmp);
 	if (prefix != NULL)
-	    xmlFree(prefix);
+	    xmlFree((void *)prefix);
         ret = xmlSchemaValidateSimpleValueInternal(ctxt, subtype, value, 0);
         if ((ret == 0) || (ret == -1)) {
             return (ret);
@@ -6227,7 +6234,7 @@ static int
 xmlSchemaValidateAttributes(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr elem,
                             xmlSchemaAttributePtr attributes)
 {
-    int i, ret, count = 1;
+    int i, ret;
     xmlAttrPtr attr;
     xmlChar *value;
     xmlSchemaAttributeGroupPtr group = NULL;

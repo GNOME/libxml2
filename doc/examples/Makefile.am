@@ -11,9 +11,9 @@ examples.xml: index.py *.c
 index.html: examples.xml examples.xsl
 	-@(xsltproc examples.xsl examples.xml && echo "Rebuilt web page" && xmllint --valid --noout index.html)
 
-EXTRA_DIST=examples.xsl index.py test1.xml examples.xml test2.xml 
+EXTRA_DIST=examples.xsl index.py test1.xml examples.xml test2.xml tree1.out 
 
-noinst_PROGRAMS=xpath1 parse1 parse2 
+noinst_PROGRAMS=xpath1 parse1 parse2 tree1 
 
 xpath1_SOURCES=xpath1.c
 xpath1_LDFLAGS=
@@ -30,8 +30,14 @@ parse2_LDFLAGS=
 parse2_DEPENDENCIES= $(DEPS)
 parse2_LDADD= @RDL_LIBS@ $(LDADDS)
 
+tree1_SOURCES=tree1.c
+tree1_LDFLAGS=
+tree1_DEPENDENCIES= $(DEPS)
+tree1_LDADD= @RDL_LIBS@ $(LDADDS)
+
 tests: $(noinst_PROGRAMS)
 	parse1 test1.xml
 	parse2 test2.xml
+	tree1 test2.xml > tree1.tmp ; diff tree1.tmp tree1.out ; rm tree1.tmp
 
 

@@ -78,14 +78,37 @@
       <typedef line='26' file='tree' name='xmlDocPtr'/>
     </uses>
   </example>
+  <example filename='tree1.c'>
+    <synopsis>Navigates a tree to print element names</synopsis>
+    <purpose>Parse a file to a tree, use xmlDocGetRootElement() to get the root element, then walk the document and print all the element name in document order.</purpose>
+    <usage>tree1 filename_or_URL</usage>
+    <test>tree1 test2.xml &gt; tree1.tmp ; diff tree1.tmp tree1.out ; rm tree1.tmp</test>
+    <author>Dodji Seketeli</author>
+    <copy>see Copyright for the status of this software. </copy>
+    <section>Tree</section>
+    <includes>
+      <include>&lt;libxml/tree.h&gt;</include>
+      <include>&lt;libxml/parser.h&gt;</include>
+    </includes>
+    <uses>
+      <function line='83' file='parser' name='xmlCleanupParser'/>
+      <macro line='65' file='xmlversion' name='LIBXML_TEST_VERSION'/>
+      <enum line='34' file='tree' name='XML_ELEMENT_NODE'/>
+      <function line='77' file='tree' name='xmlFreeDoc'/>
+      <function line='65' file='parser' name='xmlParseFile'/>
+      <function line='72' file='tree' name='xmlDocGetRootElement'/>
+    </uses>
+  </example>
   <symbols>
     <symbol name='LIBXML_TEST_VERSION'>
       <ref filename='xpath1.c'/>
       <ref filename='parse1.c'/>
       <ref filename='parse2.c'/>
+      <ref filename='tree1.c'/>
     </symbol>
     <symbol name='XML_ELEMENT_NODE'>
       <ref filename='xpath1.c'/>
+      <ref filename='tree1.c'/>
     </symbol>
     <symbol name='XML_NAMESPACE_DECL'>
       <ref filename='xpath1.c'/>
@@ -97,9 +120,13 @@
       <ref filename='xpath1.c'/>
       <ref filename='parse1.c'/>
       <ref filename='parse2.c'/>
+      <ref filename='tree1.c'/>
     </symbol>
     <symbol name='xmlCtxtReadFile'>
       <ref filename='parse2.c'/>
+    </symbol>
+    <symbol name='xmlDocGetRootElement'>
+      <ref filename='tree1.c'/>
     </symbol>
     <symbol name='xmlDocPtr'>
       <ref filename='xpath1.c'/>
@@ -110,6 +137,7 @@
       <ref filename='xpath1.c'/>
       <ref filename='parse1.c'/>
       <ref filename='parse2.c'/>
+      <ref filename='tree1.c'/>
     </symbol>
     <symbol name='xmlFreeParserCtxt'>
       <ref filename='parse2.c'/>
@@ -128,6 +156,7 @@
     </symbol>
     <symbol name='xmlParseFile'>
       <ref filename='xpath1.c'/>
+      <ref filename='tree1.c'/>
     </symbol>
     <symbol name='xmlParserCtxtPtr'>
       <ref filename='parse2.c'/>
@@ -167,6 +196,9 @@
     <section name='Parsing'>
       <example filename='parse1.c'/>
       <example filename='parse2.c'/>
+    </section>
+    <section name='Tree'>
+      <example filename='tree1.c'/>
     </section>
     <section name='XPath'>
       <example filename='xpath1.c'/>

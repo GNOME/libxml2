@@ -1,3 +1,7 @@
+Thu Nov 13 12:44:14 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* doc/examples/*: added Dodji's example, added output handling
+
 Thu Nov 13 11:35:35 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* doc/examples/*: added Aleksey XPath example, fixed bugs

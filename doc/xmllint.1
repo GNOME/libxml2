@@ -24,7 +24,7 @@ xmllint \- command line XML tool
 .ad l
 .hy 0
 .HP 8
-\fBxmllint\fR [\fB\-\-version\fR | \fB\-\-debug\fR | \fB\-\-shell\fR | \fB\-\-debugent\fR | \fB\-\-copy\fR | \fB\-\-recover\fR | \fB\-\-noent\fR | \fB\-\-noout\fR | \fB\-\-nonet\fR | \fB\-\-htmlout\fR | \fB\-\-nowrap\fR | \fB\-\-valid\fR | \fB\-\-postvalid\fR | \fB\-\-dtdvalid\ \fIURL\fR\fR | \fB\-\-dtdvalidfpi\ \fIFPI\fR\fR | \fB\-\-timing\fR | \fB\-\-output\ \fIfile\fR\fR | \fB\-\-repeat\fR | \fB\-\-insert\fR | \fB\-\-compress\fR | \fB\-\-html\fR | \fB\-\-xmlout\fR | \fB\-\-push\fR | \fB\-\-memory\fR | \fB\-\-maxmem\ \fInbbytes\fR\fR | \fB\-\-nowarning\fR | \fB\-\-noblanks\fR | \fB\-\-nocdata\fR | \fB\-\-format\fR | \fB\-\-encode\ \fIencoding\fR\fR | \fB\-\-dropdtd\fR | \fB\-\-nsclean\fR | \fB\-\-testIO\fR | \fB\-\-catalogs\fR | \fB\-\-nocatalogs\fR | \fB\-\-auto\fR | \fB\-\-xinclude\fR | \fB\-\-loaddtd\fR | \fB\-\-dtdattr\fR | \fB\-\-stream\fR | \fB\-\-walker\fR | \fB\-\-pattern\ \fIpatternvalue\fR\fR | \fB\-\-chkregister\fR | \fB\-\-relaxng\fR | \fB\-\-schema\fR] [\fB\fIxmlfile\fR\fR]
+\fBxmllint\fR [\fB\-\-version\fR | \fB\-\-debug\fR | \fB\-\-shell\fR | \fB\-\-debugent\fR | \fB\-\-copy\fR | \fB\-\-recover\fR | \fB\-\-noent\fR | \fB\-\-noout\fR | \fB\-\-nonet\fR | \fB\-\-htmlout\fR | \fB\-\-nowrap\fR | \fB\-\-valid\fR | \fB\-\-postvalid\fR | \fB\-\-dtdvalid\ \fIURL\fR\fR | \fB\-\-dtdvalidfpi\ \fIFPI\fR\fR | \fB\-\-timing\fR | \fB\-\-output\ \fIfile\fR\fR | \fB\-\-repeat\fR | \fB\-\-insert\fR | \fB\-\-compress\fR | \fB\-\-html\fR | \fB\-\-xmlout\fR | \fB\-\-push\fR | \fB\-\-memory\fR | \fB\-\-maxmem\ \fInbbytes\fR\fR | \fB\-\-nowarning\fR | \fB\-\-noblanks\fR | \fB\-\-nocdata\fR | \fB\-\-format\fR | \fB\-\-encode\ \fIencoding\fR\fR | \fB\-\-dropdtd\fR | \fB\-\-nsclean\fR | \fB\-\-testIO\fR | \fB\-\-catalogs\fR | \fB\-\-nocatalogs\fR | \fB\-\-auto\fR | \fB\-\-xinclude\fR | \fB\-\-loaddtd\fR | \fB\-\-dtdattr\fR | \fB\-\-stream\fR | \fB\-\-walker\fR | \fB\-\-pattern\ \fIpatternvalue\fR\fR | \fB\-\-chkregister\fR | \fB\-\-relaxng\fR | \fB\-\-schema\fR | \fB\-\-c14n\fR] [\fB\fIxmlfile\fR\fR]
 .ad
 .hy
 
@@ -213,6 +213,10 @@ Use RelaxNG file named \fIschema\fR for validation\&.
 .TP
 \fB\-\-schema\fR \fIschema\fR
 Use a W3C XML Schema file named \fIschema\fR for validation\&.
+
+.TP
+\fB\-\-c14n\fR
+Output canonical XML\&.
 
 .TP
 \fB\-\-nonet\fR

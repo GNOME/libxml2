@@ -1,3 +1,8 @@
+Sat Aug 14 18:53:08 MDT 2004 John Fleck <jfleck@inkstain.net>
+	* doc/xmllint.xml, xmllint.html, xmllint.1
+	add c14n to man page (man, it's hard to keep up with
+	Daniel!)
+	
 Sat Aug 14 18:45:38 MDT 2004 John Fleck <jfleck@inkstain.net>
 
 	* doc/xmllint.xml, xmllint.html, xmllint.1

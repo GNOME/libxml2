@@ -91,6 +91,7 @@
 	<arg>--chkregister</arg>
 	<arg>--relaxng</arg>
 	<arg>--schema</arg>
+	<arg>--c14n</arg>
       </group>
       <arg><option><replaceable>xmlfile</replaceable></option></arg>
   </cmdsynopsis>
@@ -518,6 +519,12 @@
 	<term><option>--schema</option> <replaceable>schema</replaceable></term>
 	<listitem>
 	  <simpara>Use a W3C XML Schema file named <replaceable>schema</replaceable> for validation.</simpara>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><option>--c14n</option></term>
+	<listitem>
+	  <simpara>Output canonical XML.</simpara>
 	</listitem>
       </varlistentry>
       <varlistentry>

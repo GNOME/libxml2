@@ -1531,4 +1531,93 @@
 </invalid>
 </testCase>
 </testSuite>
+<testSuite>
+<documentation>Test of Mixed</documentation>
+<testCase>
+<correct>
+<element name="mix" xmlns="http://relaxng.org/ns/structure/1.0">
+  <mixed>
+    <zeroOrMore>
+      <choice>
+        <element name="a">
+	  <empty/>
+	</element>
+        <element name="b">
+	  <empty/>
+	</element>
+        <element name="c">
+	  <empty/>
+	</element>
+      </choice>
+    </zeroOrMore>
+  </mixed>
+  <element name="d">
+    <empty/>
+  </element>
+</element>
+</correct>
+<valid>
+<mix>
+  <d/>
+</mix>
+</valid>
+<valid>
+<mix>
+  <b/>
+  <a/>
+  <c/>
+  <b/>
+  <d/>
+</mix>
+</valid>
+<valid>
+<mix>
+  mixed
+  <c/>
+  <d/>
+</mix>
+</valid>
+<valid>
+<mix>
+  <c/>
+  mixed
+  <d/>
+</mix>
+</valid>
+<valid>
+<mix>
+  <b/>
+  is
+  <a/>
+  inter
+  <c/>
+  mixed
+  <b/>
+  <d/>
+</mix>
+</valid>
+<valid>
+<mix>
+  mixed
+  <b/>
+  .
+  <d/>
+</mix>
+</valid>
+<valid>
+<mix>
+  this
+  <b/>
+  is
+  <a/>
+  inter
+  <c/>
+  mixed
+  <b/>
+  .
+  <d/>
+</mix>
+</valid>
+</testCase>
+</testSuite>
 </testSuite>

@@ -2287,6 +2287,8 @@ xmlAddID(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const xmlChar *value,
 	xmlFreeID(ret);
 	return(NULL);
     }
+    if (attr != NULL)
+	attr->atype = XML_ATTRIBUTE_ID;
     return(ret);
 }
 

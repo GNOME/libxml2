@@ -1,3 +1,12 @@
+Wed Mar 19 21:58:47 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* valid.c xmlschemastypes.c: attempt to cope with ID/IDREF(S)
+	  declared both in the DTD and in the Schemas <grin/>
+	* relaxng.c: more debug, added a big optimization for <mixed>
+	* test/relaxng/testsuite.xml: augmented the testsuite
+	* test/relaxng/ result/relaxng: added the RelaxNG spec and a 
+	  DocBook example to the regression tests
+
 Wed Mar 19 11:34:10 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* check-xsddata-test-suite.py: cosmetic change for output

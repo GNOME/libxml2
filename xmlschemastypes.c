@@ -1526,15 +1526,22 @@ xmlSchemaValPredefTypeNode(xmlSchemaTypePtr type, const xmlChar *value,
 	if ((ret == 0) && (node != NULL) &&
 	    (node->type == XML_ATTRIBUTE_NODE)) {
 	    xmlAttrPtr attr = (xmlAttrPtr) node;
-	    xmlChar *strip;
 
-	    strip = xmlSchemaStrip(value);
-	    if (strip != NULL) {
-		xmlAddRef(NULL, node->doc, strip, attr);
-		xmlFree(strip);
-	    } else
-		xmlAddRef(NULL, node->doc, value, attr);
-	    attr->atype = XML_ATTRIBUTE_IDREF;
+	    /*
+	     * NOTE: the REFness might have already be declared in the DTD
+	     */
+	    if ((attr->atype != XML_ATTRIBUTE_IDREF) &&
+		(attr->atype != XML_ATTRIBUTE_IDREFS)) {
+		xmlChar *strip;
+
+		strip = xmlSchemaStrip(value);
+		if (strip != NULL) {
+		    xmlAddRef(NULL, node->doc, strip, attr);
+		    xmlFree(strip);
+		} else
+		    xmlAddRef(NULL, node->doc, value, attr);
+		attr->atype = XML_ATTRIBUTE_IDREF;
+	    }
 	}
 	return(ret);
     } else if (type == xmlSchemaTypeIdrefsDef) {
@@ -1559,19 +1566,24 @@ xmlSchemaValPredefTypeNode(xmlSchemaTypePtr type, const xmlChar *value,
 	if ((ret == 0) && (node != NULL) &&
 	    (node->type == XML_ATTRIBUTE_NODE)) {
 	    xmlAttrPtr attr = (xmlAttrPtr) node;
-	    xmlIDPtr res;
-	    xmlChar *strip;
+	    /*
+	     * NOTE: the IDness might have already be declared in the DTD
+	     */
+	    if (attr->atype != XML_ATTRIBUTE_ID) {
+		xmlIDPtr res;
+		xmlChar *strip;
 
-	    strip = xmlSchemaStrip(value);
-	    if (strip != NULL) {
-		res = xmlAddID(NULL, node->doc, strip, attr);
-		xmlFree(strip);
-	    } else
-		res = xmlAddID(NULL, node->doc, value, attr);
-	    if (res == NULL) {
-		ret = 2;
-	    } else {
-		attr->atype = XML_ATTRIBUTE_ID;
+		strip = xmlSchemaStrip(value);
+		if (strip != NULL) {
+		    res = xmlAddID(NULL, node->doc, strip, attr);
+		    xmlFree(strip);
+		} else
+		    res = xmlAddID(NULL, node->doc, value, attr);
+		if (res == NULL) {
+		    ret = 2;
+		} else {
+		    attr->atype = XML_ATTRIBUTE_ID;
+		}
 	    }
 	}
 	return(ret);

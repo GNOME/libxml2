@@ -6,7 +6,6 @@
  * Daniel Veillard <veillard@redhat.com>
  */
 
-#define FS
 /**
  * TODO:
  * - error reporting
@@ -131,6 +130,7 @@ typedef enum {
 #define IS_NULLABLE		1
 #define IS_NOT_NULLABLE		2
 #define IS_INDETERMINIST	4
+#define IS_MIXED		8
 
 struct _xmlRelaxNGDefine {
     xmlRelaxNGType type;	/* the type of definition */
@@ -228,6 +228,7 @@ struct _xmlRelaxNGParserCtxt {
 
 #define FLAGS_IGNORABLE		1
 #define FLAGS_NEGATIVE		2
+#define FLAGS_MIXED_CONTENT	4
 
 /**
  * xmlRelaxNGInterleaveGroup:
@@ -795,7 +796,6 @@ xmlRelaxNGNewStates(xmlRelaxNGValidCtxtPtr ctxt, int size)
 {
     xmlRelaxNGStatesPtr ret;
 
-#ifdef FS
     if ((ctxt != NULL) &&
 	(ctxt->freeState != NULL) && 
 	(ctxt->freeStatesNr > 0)) {
@@ -804,7 +804,6 @@ xmlRelaxNGNewStates(xmlRelaxNGValidCtxtPtr ctxt, int size)
 	ret->nbState = 0;
 	return(ret);
     }
-#endif
     if (size < 16) size = 16;
 
     ret = (xmlRelaxNGStatesPtr) xmlMalloc(sizeof(xmlRelaxNGStates) +
@@ -922,7 +921,6 @@ xmlRelaxNGFreeStates(xmlRelaxNGValidCtxtPtr ctxt,
 {
     if (states == NULL)
 	return;
-#ifdef FS
     if ((ctxt != NULL) && (ctxt->freeStates == NULL)) {
 	ctxt->freeStatesMax = 40;
 	ctxt->freeStatesNr = 0;
@@ -953,10 +951,6 @@ xmlRelaxNGFreeStates(xmlRelaxNGValidCtxtPtr ctxt,
     } else {
 	ctxt->freeStates[ctxt->freeStatesNr++] = states;
     }
-#else
-	xmlFree(states->tabState);
-	xmlFree(states);
-#endif
 }
 
 /**
@@ -1555,7 +1549,7 @@ xmlRelaxNGValidErrorPush(xmlRelaxNGValidCtxtPtr ctxt, xmlRelaxNGValidErr err,
             return (0);
         }
     }
-    if ((ctxt->err != NULL) &&
+    if ((ctxt->err != NULL) && (ctxt->state != NULL) &&
 	(ctxt->err->node == ctxt->state->node) &&
 	(ctxt->err->err == err))
 	return(ctxt->errNr);
@@ -1601,9 +1595,11 @@ xmlRelaxNGValidErrorPop(xmlRelaxNGValidCtxtPtr ctxt)
         ctxt->err = NULL;
     cur = &ctxt->errTab[ctxt->errNr];
     if (cur->flags & ERROR_IS_DUP) {
-	xmlFree((xmlChar *)cur->arg1);
+	if (cur->arg1 != NULL)
+	    xmlFree((xmlChar *)cur->arg1);
 	cur->arg1 = NULL;
-	xmlFree((xmlChar *)cur->arg2);
+	if (cur->arg2 != NULL)
+	    xmlFree((xmlChar *)cur->arg2);
 	cur->arg2 = NULL;
 	cur->flags = 0;
     }
@@ -2625,10 +2621,7 @@ static int xmlRelaxNGElementMatch(xmlRelaxNGValidCtxtPtr ctxt,
 	      xmlRelaxNGDefinePtr define, xmlNodePtr elem);
 
 
-#define IS_BLANK_NODE(n)						\
-    ((((n)->type == XML_TEXT_NODE) ||					\
-      ((n)->type == XML_CDATA_SECTION_NODE)) &&				\
-     (xmlRelaxNGIsBlank((n)->content)))
+#define IS_BLANK_NODE(n) (xmlRelaxNGIsBlank((n)->content))
 
 /**
  * xmlRelaxNGIsNullable:
@@ -3455,6 +3448,7 @@ xmlRelaxNGComputeInterleaves(xmlRelaxNGDefinePtr def,
     int i,j,ret;
     int nbgroups = 0;
     int nbchild = 0;
+    int is_mixed = 0;
 
     /*
      * Don't run that check in case of error. Infinite recursion
@@ -3487,6 +3481,8 @@ xmlRelaxNGComputeInterleaves(xmlRelaxNGDefinePtr def,
 	    xmlMalloc(sizeof(xmlRelaxNGInterleaveGroup));
 	if (groups[nbgroups] == NULL)
 	    goto error;
+	if (cur->type == XML_RELAXNG_TEXT)
+	    is_mixed++;
 	groups[nbgroups]->rule = cur;
 	groups[nbgroups]->defs = xmlRelaxNGGetElements(ctxt, cur, 0);
 	groups[nbgroups]->attrs = xmlRelaxNGGetElements(ctxt, cur, 1);
@@ -3534,6 +3530,8 @@ xmlRelaxNGComputeInterleaves(xmlRelaxNGDefinePtr def,
      * and save the partition list back in the def
      */
     def->data = partitions;
+    if (is_mixed != 0)
+	def->flags |= IS_MIXED;
     return;
 
 error:
@@ -6836,7 +6834,8 @@ xmlRelaxNGSkipIgnored(xmlRelaxNGValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
 	    (node->type == XML_PI_NODE) ||
 	    (((node->type == XML_TEXT_NODE) || 
 	      (node->type == XML_CDATA_SECTION_NODE)) &&
-	     (IS_BLANK_NODE(node))))) {
+	     ((ctxt->flags & FLAGS_MIXED_CONTENT) ||
+	     (IS_BLANK_NODE(node)))))) {
 	node = node->next;
     }
     return(node);
@@ -7529,6 +7528,7 @@ xmlRelaxNGValidateInterleave(xmlRelaxNGValidCtxtPtr ctxt,
 	                     xmlRelaxNGDefinePtr define) {
     int ret = 0, i, nbgroups, left;
     int errNr = ctxt->errNr;
+    int oldflags;
 
     xmlRelaxNGValidStatePtr oldstate;
     xmlRelaxNGPartitionPtr partitions;
@@ -7543,6 +7543,34 @@ xmlRelaxNGValidateInterleave(xmlRelaxNGValidCtxtPtr ctxt,
     } else {
 	VALID_ERR(XML_RELAXNG_ERR_INTERNODATA);
 	return(-1);
+    }
+    /*
+     * Optimizations for MIXED
+     */
+    oldflags = ctxt->flags;
+    if (define->flags & IS_MIXED) {
+	ctxt->flags |= FLAGS_MIXED_CONTENT;
+	if (nbgroups == 2) {
+	    /*
+	     * this is a pure <mixed> case
+	     */
+	    if (ctxt->state != NULL)
+		ctxt->state->seq = xmlRelaxNGSkipIgnored(ctxt,
+			                                 ctxt->state->seq);
+	    if (partitions->groups[0]->rule->type == XML_RELAXNG_TEXT)
+		ret = xmlRelaxNGValidateDefinition(ctxt, 
+			           partitions->groups[1]->rule);
+	    else
+		ret = xmlRelaxNGValidateDefinition(ctxt, 
+			           partitions->groups[0]->rule);
+	    if (ret == 0) {
+		if (ctxt->state != NULL)
+		    ctxt->state->seq = xmlRelaxNGSkipIgnored(ctxt,
+			                                 ctxt->state->seq);
+	    }
+	    ctxt->flags = oldflags;
+	    return(ret);
+	}
     }
 
     /*
@@ -7673,6 +7701,7 @@ xmlRelaxNGValidateInterleave(xmlRelaxNGValidCtxtPtr ctxt,
     }
 
 done:
+    ctxt->flags = oldflags;
     /*
      * builds the next links chain from the prev one
      */
@@ -7942,6 +7971,14 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
 	     */
 	    if (node->_private == define) {
 		ctxt->state->seq = xmlRelaxNGSkipIgnored(ctxt, node->next);
+		if (ctxt->errNr != 0) {
+		    while ((ctxt->err != NULL) &&
+			   (((ctxt->err->err == XML_RELAXNG_ERR_ELEMNAME) &&
+			     (xmlStrEqual(ctxt->err->arg2, node->name))) ||
+			    (ctxt->err->err == XML_RELAXNG_ERR_NOELEM) ||
+			    (ctxt->err->err == XML_RELAXNG_ERR_NOTELEM)))
+			xmlRelaxNGValidErrorPop(ctxt);
+		}
 		break;
 	    }
 
@@ -7963,6 +8000,10 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
 	    }
 	    errNr = ctxt->errNr;
 	    
+	    oldflags = ctxt->flags;
+	    if (ctxt->flags & FLAGS_MIXED_CONTENT) {
+		ctxt->flags -= FLAGS_MIXED_CONTENT;
+	    }
 	    state = xmlRelaxNGNewValidState(ctxt, node);
 	    if (state == NULL) {
 		ret = -1;
@@ -7990,7 +8031,6 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
 	    if (ctxt->states != NULL) {
 		tmp = -1;
 
-		oldflags = ctxt->flags;
 		ctxt->flags |= FLAGS_IGNORABLE;
 
 		for (i = 0;i < ctxt->states->nbState;i++) {
@@ -8012,6 +8052,7 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
 		    ret = xmlRelaxNGValidateElementEnd(ctxt);
 		xmlRelaxNGFreeValidState(ctxt,state);
 	    }
+	    ctxt->flags = oldflags;
 	    ctxt->state = oldstate;
 	    if (oldstate != NULL)
 		oldstate->seq = xmlRelaxNGSkipIgnored(ctxt, node->next);
@@ -8695,14 +8736,12 @@ xmlRelaxNGFreeValidCtxt(xmlRelaxNGValidCtxtPtr ctxt) {
 	}
 	xmlRelaxNGFreeStates(NULL, ctxt->freeState);
     }
-#ifdef FS
     if (ctxt->freeStates != NULL) {
 	for (k = 0;k < ctxt->freeStatesNr;k++) {
 	    xmlRelaxNGFreeStates(NULL, ctxt->freeStates[k]);
 	}
 	xmlFree(ctxt->freeStates);
     }
-#endif
     if (ctxt->errTab != NULL)
 	xmlFree(ctxt->errTab);
     xmlFree(ctxt);

@@ -1,3 +1,15 @@
+Mon Feb 24 12:41:54 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* uri.c parser.c: some warning removal on Igor's patch
+	* tree.c: seems I messed up with #106788 fix
+	* python/libxml.c: fixed some base problems when Python provides
+	  the resolver.
+	* relaxng.c: fixed the interleave algorithm 
+	  found 373 test schemas: 364 success 9 failures
+	  found 529 test instances: 525 success 4 failures
+	  the resulting failures are bug in the algorithm from 7.3 and
+	  lack of support for params
+
 Sun Feb 23 14:49:39 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: another fix for nodeinfo in entities problem

@@ -463,6 +463,9 @@ pythonExternalEntityLoader(const char *URL, const char *ID,
 	    }
 	    if (result == NULL) {
 		Py_DECREF(ret);
+	    } else if (URL != NULL) {
+		result->filename = xmlStrdup(URL);
+		result->directory = xmlParserGetDirectory((const char *) URL);
 	    }
 	}
     }

@@ -6452,14 +6452,16 @@ xmlRelaxNGValidatePartGroup(xmlRelaxNGValidCtxtPtr ctxt,
 static int
 xmlRelaxNGValidateInterleave(xmlRelaxNGValidCtxtPtr ctxt, 
 	                     xmlRelaxNGDefinePtr define) {
-    int ret = 0, nbchildren, nbtot, i, j;
+    int ret = 0, i, nbgroups, left;
     xmlRelaxNGPartitionPtr partitions;
-    xmlNodePtr *children = NULL;
-    xmlNodePtr *order = NULL;
-    xmlNodePtr cur, oldseq;
+    xmlRelaxNGInterleaveGroupPtr group = NULL;
+    xmlNodePtr cur, start, last, lastchg = NULL, lastelem;
+    xmlNodePtr *list = NULL, *lasts = NULL;
 
     if (define->data != NULL) {
 	partitions = (xmlRelaxNGPartitionPtr) define->data;
+	nbgroups = partitions->nbgroups;
+	left = nbgroups;
     } else {
 	VALID_CTXT();
 	VALID_ERROR("Internal: interleave block has no data\n");
@@ -6467,91 +6469,111 @@ xmlRelaxNGValidateInterleave(xmlRelaxNGValidCtxtPtr ctxt,
     }
 
     /*
-     * Build the sequence of child and an array preserving the children
-     * initial order.
+     * Build arrays to store the first and last node of the chain
+     * pertaining to each group
      */
-    cur = ctxt->state->seq;
-    oldseq = ctxt->state->seq;
-    nbchildren = 0;
-    nbtot = 0;
-    while (cur != NULL) {
-	if ((cur->type == XML_COMMENT_NODE) ||
-	    (cur->type == XML_PI_NODE) ||
-	    ((cur->type == XML_TEXT_NODE) &&
-	     (IS_BLANK_NODE(cur)))) {
-	    nbtot++;
-	} else {
-	    nbchildren++;
-	    nbtot++;
-	}
-	cur = cur->next;
+    list = (xmlNodePtr *) xmlMalloc(nbgroups * sizeof(xmlNodePtr));
+    if (list == NULL) {
+	VALID_CTXT();
+	VALID_ERROR("Internal: out of memory in interleave check\n");
+	return(-1);
     }
-    children = (xmlNodePtr *) xmlMalloc(nbchildren * sizeof(xmlNodePtr));
-    if (children == NULL)
-	goto error;
-    order = (xmlNodePtr *) xmlMalloc(nbtot * sizeof(xmlNodePtr));
-    if (order == NULL)
-	goto error;
-    cur = ctxt->state->seq;
-    i = 0;
-    j = 0;
-    while (cur != NULL) {
-	if ((cur->type == XML_COMMENT_NODE) ||
-	    (cur->type == XML_PI_NODE) ||
-	    ((cur->type == XML_TEXT_NODE) &&
-	     (IS_BLANK_NODE(cur)))) {
-	    order[j++] = cur;
-	} else {
-	    order[j++] = cur;
-	    children[i++] = cur;
-	}
-	cur = cur->next;
+    memset(list, 0, nbgroups * sizeof(xmlNodePtr));
+    lasts = (xmlNodePtr *) xmlMalloc(nbgroups * sizeof(xmlNodePtr));
+    if (lasts == NULL) {
+	VALID_CTXT();
+	VALID_ERROR("Internal: out of memory in interleave check\n");
+	return(-1);
     }
-
-    /* TODO: retry with a maller set of child if there is a next... */
-    ret = xmlRelaxNGValidatePartGroup(ctxt, partitions->groups,
-	        partitions->nbgroups, children, nbchildren);
-    if (ret != 0)
-	ctxt->state->seq = oldseq;
+    memset(lasts, 0, nbgroups * sizeof(xmlNodePtr));
 
     /*
-     * Cleanup: rebuid the child sequence and free the structure
+     * Walk the sequence of children finding the right group and
+     * sorting them in sequences.
      */
-    if (order != NULL) {
-	for (i = 0;i < nbtot;i++) {
-	    if (i == 0)
-		order[i]->prev = NULL;
-	    else
-		order[i]->prev = order[i - 1];
-	    if (i == nbtot - 1)
-		order[i]->next = NULL;
-	    else
-		order[i]->next = order[i + 1];
+    cur = ctxt->state->seq;
+    cur = xmlRelaxNGSkipIgnored(ctxt, cur);
+    start = cur;
+    while (cur != NULL) {
+	ctxt->state->seq = cur;
+	for (i = 0;i < nbgroups;i++) {
+	    group = partitions->groups[i];
+	    if (group == NULL)
+		continue;
+	    if (xmlRelaxNGNodeMatchesList(cur, group->defs))
+		break;
 	}
-	xmlFree(order);
+	/*
+	 * We break as soon as an element not matched is found
+	 */
+	if (i >= nbgroups) {
+	    break;
+	}
+	if (lasts[i] != NULL) {
+	    lasts[i]->next = cur;
+	    lasts[i] = cur;
+	} else {
+	    list[i] = cur;
+	    lasts[i] = cur;
+	}
+	if (cur->next != NULL)
+	    lastchg = cur->next;
+	else
+	    lastchg = cur;
+	cur = xmlRelaxNGSkipIgnored(ctxt, cur->next);
     }
-    if (children != NULL)
-	xmlFree(children);
+    if (ret != 0) {
+	VALID_CTXT();
+	VALID_ERROR("Invalid sequence in interleave\n");
+	ret = -1;
+	goto done;
+    }
+    lastelem = cur;
+    for (i = 0;i < nbgroups;i++) {
+	group = partitions->groups[i];
+	if (lasts[i] != NULL) {
+	    last = lasts[i]->next;
+	    lasts[i]->next = NULL;
+	}
+	ctxt->state->seq = list[i];
+	ret = xmlRelaxNGValidateDefinition(ctxt, group->rule);
+	if (ret != 0)
+	    break;
+	cur = ctxt->state->seq;
+	cur = xmlRelaxNGSkipIgnored(ctxt, cur);
+	if (cur != NULL) {
+	    VALID_CTXT();
+	    VALID_ERROR2("Extra element %s in interleave\n", cur->name);
+	    ret = -1;
+	    goto done;
+	}
+	if (lasts[i] != NULL) {
+	    lasts[i]->next = last;
+	}
+    }
+    ctxt->state->seq = lastelem;
+    if (ret != 0) {
+	VALID_CTXT();
+	VALID_ERROR("Invalid sequence in interleave\n");
+	ret = -1;
+	goto done;
+    }
 
+done:
+    /*
+     * builds the next links chain from the prev one
+     */
+    cur = lastchg;
+    while (cur != NULL) {
+	if ((cur == start) || (cur->prev == NULL))
+	    break;
+	cur->prev->next = cur;
+	cur = cur->prev;
+    }
+
+    xmlFree(list);
+    xmlFree(lasts);
     return(ret);
-
-error:
-    if (order != NULL) {
-	for (i = 0;i < nbtot;i++) {
-	    if (i == 0)
-		order[i]->prev = NULL;
-	    else
-		order[i]->prev = order[i - 1];
-	    if (i == nbtot - 1)
-		order[i]->next = NULL;
-	    else
-		order[i]->next = order[i + 1];
-	}
-	xmlFree(order);
-    }
-    if (children != NULL)
-	xmlFree(children);
-    return(-1);
 }
 
 /**
@@ -6776,8 +6798,10 @@ xmlRelaxNGValidateDefinition(xmlRelaxNGValidCtxtPtr ctxt,
 	     * This node was already validated successfully against
 	     * this definition.
 	     */
-	    if (node->_private == define)
+	    if (node->_private == define) {
+		ctxt->state->seq = xmlRelaxNGSkipIgnored(ctxt, node->next);
 		break;
+	    }
 
 	    ret = xmlRelaxNGElementMatch(ctxt, define, node);
 	    if (ret <= 0) {

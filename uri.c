@@ -1985,15 +1985,17 @@ done:
 xmlChar*
 xmlCanonicPath(const xmlChar *path)
 {
+#if defined(_WIN32) && !defined(__CYGWIN__)    
     int len = 0;
     int i = 0;
-    xmlChar *ret;
     xmlChar *p = NULL;
+#endif
+    xmlChar *ret;
     xmlURIPtr uri;
 
     if (path == NULL)
 	return(NULL);
-    if ((uri = xmlParseURI(path)) != NULL) {
+    if ((uri = xmlParseURI((const char *) path)) != NULL) {
 	xmlFreeURI(uri);
 	return xmlStrdup(path);
     }
@@ -2018,7 +2020,7 @@ xmlCanonicPath(const xmlChar *path)
 	p++;
     }
 #else
-    uri->path = xmlStrdup(path);
+    uri->path = (char *) xmlStrdup((const char *) path);
 #endif
     
     ret = xmlSaveUri(uri);

@@ -10356,7 +10356,7 @@ xmlCreateFileParserCtxt(const char *filename)
 	return(NULL);
     }
 
-    canonicFilename = xmlCanonicPath(filename);
+    canonicFilename = (char *) xmlCanonicPath((const xmlChar *) filename);
     if (canonicFilename == NULL) {
 	if (xmlDefaultSAXHandler.error != NULL) {
 	    xmlDefaultSAXHandler.error(NULL, "out of memory\n");

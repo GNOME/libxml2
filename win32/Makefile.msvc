@@ -141,6 +141,7 @@ XML_OBJS = $(XML_INTDIR)\c14n.obj\
 	$(XML_INTDIR)\nanohttp.obj\
 	$(XML_INTDIR)\parser.obj\
 	$(XML_INTDIR)\parserInternals.obj\
+	$(XML_INTDIR)\relaxng.obj\
 	$(XML_INTDIR)\SAX.obj\
 	$(XML_INTDIR)\threads.obj\
 	$(XML_INTDIR)\tree.obj\
@@ -175,6 +176,7 @@ XML_OBJS_A = $(XML_INTDIR_A)\c14n.obj\
 	$(XML_INTDIR_A)\nanohttp.obj\
 	$(XML_INTDIR_A)\parser.obj\
 	$(XML_INTDIR_A)\parserInternals.obj\
+	$(XML_INTDIR_A)\relaxng.obj\
 	$(XML_INTDIR_A)\SAX.obj\
 	$(XML_INTDIR_A)\threads.obj\
 	$(XML_INTDIR_A)\tree.obj\
@@ -200,6 +202,7 @@ UTILS = $(BINDIR)\xmllint.exe\
 	$(BINDIR)\testDocbook.exe\
 	$(BINDIR)\testHTML.exe\
 	$(BINDIR)\testReader.exe\
+	$(BINDIR)\testRelax.exe\
 	$(BINDIR)\testRegexp.exe\
 	$(BINDIR)\testSAX.exe\
 	$(BINDIR)\testSchemas.exe\

@@ -104,7 +104,8 @@ main()
 		for (i = 0; i < num_threads; i++)
 		{
 			DWORD useless;
-			tid[i] = CreateThread (NULL, 0, thread_specific_data, testfiles[i], 0, &useless);
+			tid[i] = CreateThread(NULL, 0, 
+				thread_specific_data, testfiles[i], 0, &useless);
 			if (tid[i] == NULL)
 			{
 				perror("CreateThread");
@@ -112,7 +113,8 @@ main()
 			}
 		}
 
-		if (WaitForMultipleObjects (num_threads, tid, TRUE, INFINITE) == WAIT_FAILED) perror ("WaitForMultipleObjects failed");
+		if (WaitForMultipleObjects (num_threads, tid, TRUE, INFINITE) == WAIT_FAILED) 
+			perror ("WaitForMultipleObjects failed");
 
 		for (i = 0; i < num_threads; i++)
 		{
@@ -126,8 +128,10 @@ main()
 		}
 
 		xmlCatalogCleanup();
-		for (i = 0; i < num_threads; i++)
-			if (results[i] != (DWORD) Okay) printf("Thread %d handling %s failed\n", i, testfiles[i]);
+		for (i = 0; i < num_threads; i++) {
+		    if (results[i] != (DWORD) Okay) 
+			printf("Thread %d handling %s failed\n", i, testfiles[i]);
+		}
 	}
 
 	xmlCleanupParser();

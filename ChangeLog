@@ -1,3 +1,8 @@
+Sun Aug 10 00:22:55 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* News configure.in: preparing libxml2-2.5.9 release
+	* doc/* : updated the doc and rebuilt
+
 Sat Aug  9 20:00:13 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/xmlreader.h doc/libxml2-api.xml: changing an enum
@@ -293,7 +298,7 @@ Mon Jul  7 16:39:31 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 Sun Jul  6 23:09:13 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
-	* configure.in doc/*: preparing release 1.5.8
+	* configure.in doc/*: preparing release 2.5.8
 	* nanohttp.c: changed some preprocessor block
 	* xmlschemastypes.c: applied patch from Charles Bozeman adding
 	  hexBinary schema datatype and adding support for totalDigits and

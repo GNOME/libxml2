@@ -8,26 +8,25 @@
   </vendor>
   <product id="libxml2">
     <name>libxml2</name>
-    <version>2.5.8</version>
-    <last-release> Jul 6 2003</last-release>
+    <version>2.5.9</version>
+    <last-release> Aug 9 2003</last-release>
     <info-url>http://xmlsoft.org/</info-url>
-    <changes>   - bugfixes: XPath, XInclude, file/URI mapping, UTF-16 save (Mark
-    Itzcovitz), UTF-8 checking, URI saving, error printing (William Brack),
-    PI related memleak, compilation without schemas or without xpath (Joerg
-    Schmitz-Linneweber/Garry Pennington), xmlUnlinkNode problem with DTDs,
-    rpm problem on , i86_64, removed a few compilation problems from 2.5.7,
-    xmlIOParseDTD, and xmlSAXParseDTD (Malcolm Tredinnick)
-   - portability: DJGPP (MsDos) , OpenVMS (Craig A. Berry)
-   - William Brack fixed multithreading lock problems
-   - IPv6 patch for FTP and HTTP accesses (Archana Shah/Wipro)
-   - Windows fixes (Igor Zlatkovic,  Eric Zurcher), threading (St&#xE9;phane
-    Bidoul)
-   - A few W3C Schemas Structure improvements
-   - W3C Schemas Datatype improvements (Charlie Bozeman)
-   - Python bindings for thread globals (St&#xE9;phane Bidoul), and method/class
-    generator 
-   - added --nonet option to xmllint 
-   - documentation improvements (John Fleck)
+    <changes>   - bugfixes: IPv6 portability, xmlHasNsProp (Markus Keim), Windows build
+    (Wiliam Brake, Jesse Pelton, Igor), Schemas (Peter Sobisch), threading
+    (Rob Richards), hexBinary type (), UTF-16 BOM (Dodji Seketeli),
+    xmlReader, Relax-NG schemas compilation, namespace handling,  EXSLT (Sean
+    Griffin), HTML parsing problem (William Brack), DTD validation for mixed
+    content + namespaces, HTML serialization, library initialization,
+    progressive HTML parser
+   - better interfaces for Relax-NG error handling (Joachim Bauch, )
+   - adding xmlXIncludeProcessTree() for XInclud'ing in a subtree
+   - doc fixes and improvements (John Fleck)
+   - configure flag for -with-fexceptions when embedding in C++
+   - couple of new UTF-8 helper functions (William Brack)
+   - general encoding cleanup + ISO-8859-x without iconv (Peter Jacobi)
+   - xmlTextReader cleanup + enum for node types (Bjorn Reese)
+   - general compilation/warning cleanup Solaris/HP-UX/... (William
+  Brack)
 
 </changes>
   </product>

@@ -12,6 +12,22 @@ for a really accurate description</h3><p>Items not finished and worked on, get i
 to test those</p><ul><li>More testing on RelaxNG</li>
   <li>Finishing up <a href="http://www.w3.org/TR/xmlschema-1/">XML
   Schemas</a></li>
+</ul><h3>2.5.9: Aug 9 2003</h3><ul><li>bugfixes: IPv6 portability, xmlHasNsProp (Markus Keim), Windows build
+    (Wiliam Brake, Jesse Pelton, Igor), Schemas (Peter Sobisch), threading
+    (Rob Richards), hexBinary type (), UTF-16 BOM (Dodji Seketeli),
+    xmlReader, Relax-NG schemas compilation, namespace handling,  EXSLT (Sean
+    Griffin), HTML parsing problem (William Brack), DTD validation for mixed
+    content + namespaces, HTML serialization, library initialization,
+    progressive HTML parser</li>
+  <li>better interfaces for Relax-NG error handling (Joachim Bauch, )</li>
+  <li>adding xmlXIncludeProcessTree() for XInclud'ing in a subtree</li>
+  <li>doc fixes and improvements (John Fleck)</li>
+  <li>configure flag for -with-fexceptions when embedding in C++</li>
+  <li>couple of new UTF-8 helper functions (William Brack)</li>
+  <li>general encoding cleanup + ISO-8859-x without iconv (Peter Jacobi)</li>
+  <li>xmlTextReader cleanup + enum for node types (Bjorn Reese)</li>
+  <li>general compilation/warning cleanup Solaris/HP-UX/... (William
+  Brack)</li>
 </ul><h3>2.5.8: Jul 6 2003</h3><ul><li>bugfixes: XPath, XInclude, file/URI mapping, UTF-16 save (Mark
     Itzcovitz), UTF-8 checking, URI saving, error printing (William Brack),
     PI related memleak, compilation without schemas or without xpath (Joerg
@@ -26,8 +42,8 @@ to test those</p><ul><li>More testing on RelaxNG</li>
   <li>A few W3C Schemas Structure improvements</li>
   <li>W3C Schemas Datatype improvements (Charlie Bozeman)</li>
   <li>Python bindings for thread globals (Stéphane Bidoul), and method/class
-    generator </li>
-  <li>added --nonet option to xmllint </li>
+    generator</li>
+  <li>added --nonet option to xmllint</li>
   <li>documentation improvements (John Fleck)</li>
 </ul><h3>2.5.7: Apr 25 2003</h3><ul><li>Relax-NG: Compiling to regexp and streaming validation on top of the
     xmlReader interface, added to xmllint --stream</li>

@@ -15,6 +15,25 @@ to test those   - More testing on RelaxNG
   Schemas
 
 
+2.5.9: Aug 9 2003:
+   - bugfixes: IPv6 portability, xmlHasNsProp (Markus Keim), Windows build
+    (Wiliam Brake, Jesse Pelton, Igor), Schemas (Peter Sobisch), threading
+    (Rob Richards), hexBinary type (), UTF-16 BOM (Dodji Seketeli),
+    xmlReader, Relax-NG schemas compilation, namespace handling,  EXSLT (Sean
+    Griffin), HTML parsing problem (William Brack), DTD validation for mixed
+    content + namespaces, HTML serialization, library initialization,
+    progressive HTML parser
+   - better interfaces for Relax-NG error handling (Joachim Bauch, )
+   - adding xmlXIncludeProcessTree() for XInclud'ing in a subtree
+   - doc fixes and improvements (John Fleck)
+   - configure flag for -with-fexceptions when embedding in C++
+   - couple of new UTF-8 helper functions (William Brack)
+   - general encoding cleanup + ISO-8859-x without iconv (Peter Jacobi)
+   - xmlTextReader cleanup + enum for node types (Bjorn Reese)
+   - general compilation/warning cleanup Solaris/HP-UX/... (William
+  Brack)
+
+
 2.5.8: Jul 6 2003:
    - bugfixes: XPath, XInclude, file/URI mapping, UTF-16 save (Mark
     Itzcovitz), UTF-8 checking, URI saving, error printing (William Brack),
@@ -30,8 +49,8 @@ to test those   - More testing on RelaxNG
    - A few W3C Schemas Structure improvements
    - W3C Schemas Datatype improvements (Charlie Bozeman)
    - Python bindings for thread globals (Stéphane Bidoul), and method/class
-    generator 
-   - added --nonet option to xmllint 
+    generator
+   - added --nonet option to xmllint
    - documentation improvements (John Fleck)
 
 

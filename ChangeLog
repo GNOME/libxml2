@@ -1,3 +1,8 @@
+Mon Aug 13 12:51:17 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* libxml.spec.in: applied patch from Jens Finke to improve the
+	  default spec file (bug # 58583)
+
 Thu Jun 28 17:11:10 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* configure.in: released 1.8.14

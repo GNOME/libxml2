@@ -1,3 +1,8 @@
+Thu May 23 13:55:57 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am: Merijn Broeren pointed out a problem when compiling
+	  with trio and schemas.
+
 Wed May 22 11:57:49 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: patch from Richard Jinks to fix the problem raised in

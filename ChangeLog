@@ -1,3 +1,8 @@
+Mon Jan 26 12:53:11 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* doc/examples/index.py: don't rely on . being on the path for
+	  make tests, should keep Mr. Crozat quiet until next time...
+
 Sun Jan 25 21:45:03 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in NEWS doc/*: preparing release 2.6.5, rebuilt the

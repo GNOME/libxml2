@@ -116,7 +116,9 @@ def parse(filename, output):
     try:
         test = info['test']
 	output.write("    <test>%s</test>\n" % escape(test));
-	tests.append(test)
+	progname=filename[0:-2]
+	command=string.replace(test, progname, './' + progname, 1)
+	tests.append(command)
     except:
         pass
     try:

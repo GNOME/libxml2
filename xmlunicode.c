@@ -943,6 +943,8 @@ static xmlIntFunc
     int low, high, mid, cmp;
     xmlUnicodeRange *sptr;
 
+    if ((tptr == NULL) || (tname == NULL)) return(NULL);
+
     low = 0;
     high = tptr->numentries - 1;
     sptr = tptr->table;

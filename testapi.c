@@ -64,7 +64,7 @@ get_api_dtd(void) {
         get_api_doc();
 	if ((api_doc != NULL) && (api_doc->children != NULL) &&
 	    (api_doc->children->type == XML_DTD_NODE))
-	    api_dtd = api_doc->children;
+	    api_dtd = (xmlDtdPtr) api_doc->children;
     }
     return(api_dtd);
 }
@@ -331,7 +331,7 @@ static void des_filepath(int no ATTRIBUTE_UNUSED, const char *val ATTRIBUTE_UNUS
 #define gen_nb_eaten_name 2
 
 static xmlChar *gen_eaten_name(int no, int nr ATTRIBUTE_UNUSED) {
-    if (no == 0) return(xmlStrdup("eaten"));
+    if (no == 0) return(xmlStrdup(BAD_CAST "eaten"));
     return(NULL);
 }
 static void des_eaten_name(int no ATTRIBUTE_UNUSED, xmlChar *val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
@@ -441,15 +441,16 @@ static void des_xmlNodePtr(int no, xmlNodePtr val, int nr ATTRIBUTE_UNUSED) {
 
 #define gen_nb_xmlDtdPtr 3
 static xmlDtdPtr gen_xmlDtdPtr(int no, int nr ATTRIBUTE_UNUSED) {
-    if (no == 0) return(xmlNewDtd(NULL, BAD_CAST "dtd", "foo", "bar"));
+    if (no == 0) 
+        return(xmlNewDtd(NULL, BAD_CAST "dtd", BAD_CAST"foo", BAD_CAST"bar"));
     if (no == 1) return(get_api_dtd());
     return(NULL);
 }
 static void des_xmlDtdPtr(int no, xmlDtdPtr val, int nr ATTRIBUTE_UNUSED) {
     if (no == 1) free_api_doc();
     else if (val != NULL) {
-        xmlUnlinkNode(val);
-        xmlFreeNode(val);
+        xmlUnlinkNode((xmlNodePtr) val);
+        xmlFreeNode((xmlNodePtr) val);
     }
 }
 
@@ -566,7 +567,7 @@ static void des_xmlNanoFTPCtxtPtr(int no ATTRIBUTE_UNUSED, void *val, int nr ATT
 }
 
 #define gen_nb_xmlNanoHTTPCtxtPtr 1
-static void *gen_xmlNanoHTTPCtxtPtr(int no, int nr ATTRIBUTE_UNUSED) {
+static void *gen_xmlNanoHTTPCtxtPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
     return(NULL);
 }
 static void des_xmlNanoHTTPCtxtPtr(int no ATTRIBUTE_UNUSED, void *val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
@@ -658,6 +659,7 @@ static void desret_xmlParserCtxtPtr(xmlParserCtxtPtr val) {
 #include <libxml/xmlschemas.h>
 #include <libxml/xmlschemastypes.h>
 #include <libxml/xmlstring.h>
+#include <libxml/xmlunicode.h>
 #include <libxml/xmlwriter.h>
 #include <libxml/xpath.h>
 #include <libxml/xpointer.h>
@@ -687,6 +689,7 @@ static int test_xmlsave(void);
 static int test_xmlschemas(void);
 static int test_xmlschemastypes(void);
 static int test_xmlstring(void);
+static int test_xmlunicode(void);
 static int test_xmlwriter(void);
 static int test_xpath(void);
 static int test_xpointer(void);
@@ -730,6 +733,7 @@ testlibxml2(void)
     ret += test_xmlschemas();
     ret += test_xmlschemastypes();
     ret += test_xmlstring();
+    ret += test_xmlunicode();
     ret += test_xmlwriter();
     ret += test_xpath();
     ret += test_xpointer();
@@ -21110,6 +21114,5840 @@ test_xmlstring(void) {
 }
 
 static int
+test_xmlUCSIsAegeanNumbers(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsAegeanNumbers(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsAegeanNumbers",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsAlphabeticPresentationForms(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsAlphabeticPresentationForms(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsAlphabeticPresentationForms",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsArabic(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsArabic(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsArabic",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsArabicPresentationFormsA(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsArabicPresentationFormsA(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsArabicPresentationFormsA",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsArabicPresentationFormsB(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsArabicPresentationFormsB(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsArabicPresentationFormsB",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsArmenian(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsArmenian(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsArmenian",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsArrows(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsArrows(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsArrows",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsBasicLatin(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsBasicLatin(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsBasicLatin",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsBengali(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsBengali(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsBengali",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsBlock(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+    const char * block; /* UCS block name */
+    int n_block;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+    for (n_block = 0;n_block < gen_nb_const_char_ptr;n_block++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+        block = gen_const_char_ptr(n_block, 1);
+
+        ret_val = xmlUCSIsBlock(code, block);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        des_const_char_ptr(n_block, block, 1);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsBlock",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf(" %d", n_block);
+            printf("\n");
+        }
+    }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsBlockElements(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsBlockElements(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsBlockElements",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsBopomofo(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsBopomofo(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsBopomofo",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsBopomofoExtended(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsBopomofoExtended(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsBopomofoExtended",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsBoxDrawing(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsBoxDrawing(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsBoxDrawing",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsBraillePatterns(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsBraillePatterns(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsBraillePatterns",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsBuhid(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsBuhid(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsBuhid",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsByzantineMusicalSymbols(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsByzantineMusicalSymbols(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsByzantineMusicalSymbols",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCJKCompatibility(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCJKCompatibility(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCJKCompatibility",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCJKCompatibilityForms(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCJKCompatibilityForms(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCJKCompatibilityForms",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCJKCompatibilityIdeographs(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCJKCompatibilityIdeographs(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCJKCompatibilityIdeographs",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCJKCompatibilityIdeographsSupplement(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCJKCompatibilityIdeographsSupplement(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCJKCompatibilityIdeographsSupplement",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCJKRadicalsSupplement(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCJKRadicalsSupplement(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCJKRadicalsSupplement",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCJKSymbolsandPunctuation(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCJKSymbolsandPunctuation(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCJKSymbolsandPunctuation",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCJKUnifiedIdeographs(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCJKUnifiedIdeographs(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCJKUnifiedIdeographs",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCJKUnifiedIdeographsExtensionA(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCJKUnifiedIdeographsExtensionA(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCJKUnifiedIdeographsExtensionA",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCJKUnifiedIdeographsExtensionB(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCJKUnifiedIdeographsExtensionB(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCJKUnifiedIdeographsExtensionB",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCat(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+    const char * cat; /* UCS Category name */
+    int n_cat;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+    for (n_cat = 0;n_cat < gen_nb_const_char_ptr;n_cat++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+        cat = gen_const_char_ptr(n_cat, 1);
+
+        ret_val = xmlUCSIsCat(code, cat);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        des_const_char_ptr(n_cat, cat, 1);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCat",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf(" %d", n_cat);
+            printf("\n");
+        }
+    }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCatC(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCatC(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCatC",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCatCc(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCatCc(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCatCc",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCatCf(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCatCf(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCatCf",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCatCo(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCatCo(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCatCo",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCatCs(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCatCs(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCatCs",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCatL(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCatL(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCatL",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCatLl(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCatLl(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCatLl",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCatLm(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCatLm(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCatLm",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCatLo(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCatLo(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCatLo",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCatLt(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCatLt(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCatLt",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCatLu(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCatLu(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCatLu",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCatM(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCatM(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCatM",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCatMc(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCatMc(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCatMc",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCatMe(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCatMe(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCatMe",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCatMn(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCatMn(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCatMn",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCatN(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCatN(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCatN",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCatNd(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCatNd(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCatNd",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCatNl(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCatNl(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCatNl",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCatNo(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCatNo(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCatNo",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCatP(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCatP(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCatP",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCatPc(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCatPc(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCatPc",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCatPd(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCatPd(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCatPd",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCatPe(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCatPe(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCatPe",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCatPf(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCatPf(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCatPf",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCatPi(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCatPi(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCatPi",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCatPo(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCatPo(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCatPo",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCatPs(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCatPs(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCatPs",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCatS(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCatS(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCatS",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCatSc(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCatSc(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCatSc",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCatSk(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCatSk(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCatSk",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCatSm(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCatSm(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCatSm",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCatSo(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCatSo(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCatSo",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCatZ(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCatZ(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCatZ",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCatZl(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCatZl(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCatZl",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCatZp(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCatZp(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCatZp",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCatZs(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCatZs(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCatZs",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCherokee(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCherokee(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCherokee",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCombiningDiacriticalMarks(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCombiningDiacriticalMarks(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCombiningDiacriticalMarks",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCombiningDiacriticalMarksforSymbols(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCombiningDiacriticalMarksforSymbols(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCombiningDiacriticalMarksforSymbols",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCombiningHalfMarks(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCombiningHalfMarks(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCombiningHalfMarks",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCombiningMarksforSymbols(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCombiningMarksforSymbols(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCombiningMarksforSymbols",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsControlPictures(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsControlPictures(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsControlPictures",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCurrencySymbols(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCurrencySymbols(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCurrencySymbols",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCypriotSyllabary(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCypriotSyllabary(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCypriotSyllabary",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCyrillic(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCyrillic(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCyrillic",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsCyrillicSupplement(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsCyrillicSupplement(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsCyrillicSupplement",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsDeseret(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsDeseret(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsDeseret",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsDevanagari(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsDevanagari(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsDevanagari",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsDingbats(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsDingbats(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsDingbats",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsEnclosedAlphanumerics(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsEnclosedAlphanumerics(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsEnclosedAlphanumerics",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsEnclosedCJKLettersandMonths(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsEnclosedCJKLettersandMonths(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsEnclosedCJKLettersandMonths",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsEthiopic(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsEthiopic(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsEthiopic",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsGeneralPunctuation(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsGeneralPunctuation(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsGeneralPunctuation",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsGeometricShapes(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsGeometricShapes(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsGeometricShapes",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsGeorgian(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsGeorgian(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsGeorgian",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsGothic(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsGothic(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsGothic",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsGreek(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsGreek(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsGreek",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsGreekExtended(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsGreekExtended(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsGreekExtended",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsGreekandCoptic(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsGreekandCoptic(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsGreekandCoptic",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsGujarati(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsGujarati(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsGujarati",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsGurmukhi(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsGurmukhi(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsGurmukhi",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsHalfwidthandFullwidthForms(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsHalfwidthandFullwidthForms(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsHalfwidthandFullwidthForms",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsHangulCompatibilityJamo(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsHangulCompatibilityJamo(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsHangulCompatibilityJamo",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsHangulJamo(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsHangulJamo(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsHangulJamo",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsHangulSyllables(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsHangulSyllables(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsHangulSyllables",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsHanunoo(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsHanunoo(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsHanunoo",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsHebrew(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsHebrew(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsHebrew",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsHighPrivateUseSurrogates(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsHighPrivateUseSurrogates(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsHighPrivateUseSurrogates",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsHighSurrogates(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsHighSurrogates(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsHighSurrogates",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsHiragana(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsHiragana(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsHiragana",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsIPAExtensions(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsIPAExtensions(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsIPAExtensions",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsIdeographicDescriptionCharacters(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsIdeographicDescriptionCharacters(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsIdeographicDescriptionCharacters",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsKanbun(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsKanbun(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsKanbun",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsKangxiRadicals(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsKangxiRadicals(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsKangxiRadicals",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsKannada(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsKannada(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsKannada",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsKatakana(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsKatakana(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsKatakana",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsKatakanaPhoneticExtensions(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsKatakanaPhoneticExtensions(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsKatakanaPhoneticExtensions",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsKhmer(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsKhmer(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsKhmer",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsKhmerSymbols(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsKhmerSymbols(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsKhmerSymbols",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsLao(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsLao(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsLao",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsLatin1Supplement(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsLatin1Supplement(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsLatin1Supplement",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsLatinExtendedA(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsLatinExtendedA(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsLatinExtendedA",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsLatinExtendedAdditional(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsLatinExtendedAdditional(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsLatinExtendedAdditional",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsLatinExtendedB(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsLatinExtendedB(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsLatinExtendedB",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsLetterlikeSymbols(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsLetterlikeSymbols(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsLetterlikeSymbols",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsLimbu(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsLimbu(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsLimbu",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsLinearBIdeograms(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsLinearBIdeograms(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsLinearBIdeograms",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsLinearBSyllabary(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsLinearBSyllabary(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsLinearBSyllabary",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsLowSurrogates(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsLowSurrogates(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsLowSurrogates",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsMalayalam(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsMalayalam(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsMalayalam",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsMathematicalAlphanumericSymbols(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsMathematicalAlphanumericSymbols(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsMathematicalAlphanumericSymbols",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsMathematicalOperators(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsMathematicalOperators(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsMathematicalOperators",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsMiscellaneousMathematicalSymbolsA(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsMiscellaneousMathematicalSymbolsA(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsMiscellaneousMathematicalSymbolsA",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsMiscellaneousMathematicalSymbolsB(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsMiscellaneousMathematicalSymbolsB(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsMiscellaneousMathematicalSymbolsB",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsMiscellaneousSymbols(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsMiscellaneousSymbols(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsMiscellaneousSymbols",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsMiscellaneousSymbolsandArrows(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsMiscellaneousSymbolsandArrows(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsMiscellaneousSymbolsandArrows",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsMiscellaneousTechnical(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsMiscellaneousTechnical(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsMiscellaneousTechnical",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsMongolian(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsMongolian(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsMongolian",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsMusicalSymbols(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsMusicalSymbols(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsMusicalSymbols",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsMyanmar(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsMyanmar(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsMyanmar",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsNumberForms(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsNumberForms(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsNumberForms",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsOgham(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsOgham(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsOgham",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsOldItalic(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsOldItalic(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsOldItalic",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsOpticalCharacterRecognition(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsOpticalCharacterRecognition(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsOpticalCharacterRecognition",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsOriya(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsOriya(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsOriya",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsOsmanya(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsOsmanya(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsOsmanya",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsPhoneticExtensions(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsPhoneticExtensions(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsPhoneticExtensions",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsPrivateUse(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsPrivateUse(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsPrivateUse",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsPrivateUseArea(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsPrivateUseArea(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsPrivateUseArea",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsRunic(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsRunic(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsRunic",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsShavian(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsShavian(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsShavian",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsSinhala(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsSinhala(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsSinhala",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsSmallFormVariants(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsSmallFormVariants(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsSmallFormVariants",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsSpacingModifierLetters(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsSpacingModifierLetters(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsSpacingModifierLetters",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsSpecials(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsSpecials(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsSpecials",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsSuperscriptsandSubscripts(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsSuperscriptsandSubscripts(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsSuperscriptsandSubscripts",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsSupplementalArrowsA(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsSupplementalArrowsA(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsSupplementalArrowsA",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsSupplementalArrowsB(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsSupplementalArrowsB(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsSupplementalArrowsB",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsSupplementalMathematicalOperators(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsSupplementalMathematicalOperators(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsSupplementalMathematicalOperators",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsSupplementaryPrivateUseAreaA(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsSupplementaryPrivateUseAreaA(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsSupplementaryPrivateUseAreaA",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsSupplementaryPrivateUseAreaB(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsSupplementaryPrivateUseAreaB(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsSupplementaryPrivateUseAreaB",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsSyriac(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsSyriac(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsSyriac",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsTagalog(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsTagalog(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsTagalog",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsTagbanwa(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsTagbanwa(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsTagbanwa",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsTags(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsTags(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsTags",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsTaiLe(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsTaiLe(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsTaiLe",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsTaiXuanJingSymbols(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsTaiXuanJingSymbols(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsTaiXuanJingSymbols",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsTamil(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsTamil(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsTamil",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsTelugu(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsTelugu(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsTelugu",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsThaana(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsThaana(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsThaana",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsThai(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsThai(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsThai",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsTibetan(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsTibetan(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsTibetan",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsUgaritic(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsUgaritic(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsUgaritic",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsUnifiedCanadianAboriginalSyllabics(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsUnifiedCanadianAboriginalSyllabics(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsUnifiedCanadianAboriginalSyllabics",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsVariationSelectors(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsVariationSelectors(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsVariationSelectors",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsVariationSelectorsSupplement(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsVariationSelectorsSupplement(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsVariationSelectorsSupplement",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsYiRadicals(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsYiRadicals(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsYiRadicals",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsYiSyllables(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsYiSyllables(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsYiSyllables",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+
+static int
+test_xmlUCSIsYijingHexagramSymbols(void) {
+    int ret = 0;
+
+#ifdef LIBXML_UNICODE_ENABLED
+    int mem_base;
+    int ret_val;
+    int code; /* UCS code point */
+    int n_code;
+
+    for (n_code = 0;n_code < gen_nb_int;n_code++) {
+        mem_base = xmlMemBlocks();
+        code = gen_int(n_code, 0);
+
+        ret_val = xmlUCSIsYijingHexagramSymbols(code);
+        desret_int(ret_val);
+        call_tests++;
+        des_int(n_code, code, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlUCSIsYijingHexagramSymbols",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_code);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
+    return(ret);
+}
+
+static int
+test_xmlunicode(void) {
+    int ret = 0;
+
+    printf("Testing xmlunicode : 166 of 166 functions ...\n");
+    ret += test_xmlUCSIsAegeanNumbers();
+    ret += test_xmlUCSIsAlphabeticPresentationForms();
+    ret += test_xmlUCSIsArabic();
+    ret += test_xmlUCSIsArabicPresentationFormsA();
+    ret += test_xmlUCSIsArabicPresentationFormsB();
+    ret += test_xmlUCSIsArmenian();
+    ret += test_xmlUCSIsArrows();
+    ret += test_xmlUCSIsBasicLatin();
+    ret += test_xmlUCSIsBengali();
+    ret += test_xmlUCSIsBlock();
+    ret += test_xmlUCSIsBlockElements();
+    ret += test_xmlUCSIsBopomofo();
+    ret += test_xmlUCSIsBopomofoExtended();
+    ret += test_xmlUCSIsBoxDrawing();
+    ret += test_xmlUCSIsBraillePatterns();
+    ret += test_xmlUCSIsBuhid();
+    ret += test_xmlUCSIsByzantineMusicalSymbols();
+    ret += test_xmlUCSIsCJKCompatibility();
+    ret += test_xmlUCSIsCJKCompatibilityForms();
+    ret += test_xmlUCSIsCJKCompatibilityIdeographs();
+    ret += test_xmlUCSIsCJKCompatibilityIdeographsSupplement();
+    ret += test_xmlUCSIsCJKRadicalsSupplement();
+    ret += test_xmlUCSIsCJKSymbolsandPunctuation();
+    ret += test_xmlUCSIsCJKUnifiedIdeographs();
+    ret += test_xmlUCSIsCJKUnifiedIdeographsExtensionA();
+    ret += test_xmlUCSIsCJKUnifiedIdeographsExtensionB();
+    ret += test_xmlUCSIsCat();
+    ret += test_xmlUCSIsCatC();
+    ret += test_xmlUCSIsCatCc();
+    ret += test_xmlUCSIsCatCf();
+    ret += test_xmlUCSIsCatCo();
+    ret += test_xmlUCSIsCatCs();
+    ret += test_xmlUCSIsCatL();
+    ret += test_xmlUCSIsCatLl();
+    ret += test_xmlUCSIsCatLm();
+    ret += test_xmlUCSIsCatLo();
+    ret += test_xmlUCSIsCatLt();
+    ret += test_xmlUCSIsCatLu();
+    ret += test_xmlUCSIsCatM();
+    ret += test_xmlUCSIsCatMc();
+    ret += test_xmlUCSIsCatMe();
+    ret += test_xmlUCSIsCatMn();
+    ret += test_xmlUCSIsCatN();
+    ret += test_xmlUCSIsCatNd();
+    ret += test_xmlUCSIsCatNl();
+    ret += test_xmlUCSIsCatNo();
+    ret += test_xmlUCSIsCatP();
+    ret += test_xmlUCSIsCatPc();
+    ret += test_xmlUCSIsCatPd();
+    ret += test_xmlUCSIsCatPe();
+    ret += test_xmlUCSIsCatPf();
+    ret += test_xmlUCSIsCatPi();
+    ret += test_xmlUCSIsCatPo();
+    ret += test_xmlUCSIsCatPs();
+    ret += test_xmlUCSIsCatS();
+    ret += test_xmlUCSIsCatSc();
+    ret += test_xmlUCSIsCatSk();
+    ret += test_xmlUCSIsCatSm();
+    ret += test_xmlUCSIsCatSo();
+    ret += test_xmlUCSIsCatZ();
+    ret += test_xmlUCSIsCatZl();
+    ret += test_xmlUCSIsCatZp();
+    ret += test_xmlUCSIsCatZs();
+    ret += test_xmlUCSIsCherokee();
+    ret += test_xmlUCSIsCombiningDiacriticalMarks();
+    ret += test_xmlUCSIsCombiningDiacriticalMarksforSymbols();
+    ret += test_xmlUCSIsCombiningHalfMarks();
+    ret += test_xmlUCSIsCombiningMarksforSymbols();
+    ret += test_xmlUCSIsControlPictures();
+    ret += test_xmlUCSIsCurrencySymbols();
+    ret += test_xmlUCSIsCypriotSyllabary();
+    ret += test_xmlUCSIsCyrillic();
+    ret += test_xmlUCSIsCyrillicSupplement();
+    ret += test_xmlUCSIsDeseret();
+    ret += test_xmlUCSIsDevanagari();
+    ret += test_xmlUCSIsDingbats();
+    ret += test_xmlUCSIsEnclosedAlphanumerics();
+    ret += test_xmlUCSIsEnclosedCJKLettersandMonths();
+    ret += test_xmlUCSIsEthiopic();
+    ret += test_xmlUCSIsGeneralPunctuation();
+    ret += test_xmlUCSIsGeometricShapes();
+    ret += test_xmlUCSIsGeorgian();
+    ret += test_xmlUCSIsGothic();
+    ret += test_xmlUCSIsGreek();
+    ret += test_xmlUCSIsGreekExtended();
+    ret += test_xmlUCSIsGreekandCoptic();
+    ret += test_xmlUCSIsGujarati();
+    ret += test_xmlUCSIsGurmukhi();
+    ret += test_xmlUCSIsHalfwidthandFullwidthForms();
+    ret += test_xmlUCSIsHangulCompatibilityJamo();
+    ret += test_xmlUCSIsHangulJamo();
+    ret += test_xmlUCSIsHangulSyllables();
+    ret += test_xmlUCSIsHanunoo();
+    ret += test_xmlUCSIsHebrew();
+    ret += test_xmlUCSIsHighPrivateUseSurrogates();
+    ret += test_xmlUCSIsHighSurrogates();
+    ret += test_xmlUCSIsHiragana();
+    ret += test_xmlUCSIsIPAExtensions();
+    ret += test_xmlUCSIsIdeographicDescriptionCharacters();
+    ret += test_xmlUCSIsKanbun();
+    ret += test_xmlUCSIsKangxiRadicals();
+    ret += test_xmlUCSIsKannada();
+    ret += test_xmlUCSIsKatakana();
+    ret += test_xmlUCSIsKatakanaPhoneticExtensions();
+    ret += test_xmlUCSIsKhmer();
+    ret += test_xmlUCSIsKhmerSymbols();
+    ret += test_xmlUCSIsLao();
+    ret += test_xmlUCSIsLatin1Supplement();
+    ret += test_xmlUCSIsLatinExtendedA();
+    ret += test_xmlUCSIsLatinExtendedAdditional();
+    ret += test_xmlUCSIsLatinExtendedB();
+    ret += test_xmlUCSIsLetterlikeSymbols();
+    ret += test_xmlUCSIsLimbu();
+    ret += test_xmlUCSIsLinearBIdeograms();
+    ret += test_xmlUCSIsLinearBSyllabary();
+    ret += test_xmlUCSIsLowSurrogates();
+    ret += test_xmlUCSIsMalayalam();
+    ret += test_xmlUCSIsMathematicalAlphanumericSymbols();
+    ret += test_xmlUCSIsMathematicalOperators();
+    ret += test_xmlUCSIsMiscellaneousMathematicalSymbolsA();
+    ret += test_xmlUCSIsMiscellaneousMathematicalSymbolsB();
+    ret += test_xmlUCSIsMiscellaneousSymbols();
+    ret += test_xmlUCSIsMiscellaneousSymbolsandArrows();
+    ret += test_xmlUCSIsMiscellaneousTechnical();
+    ret += test_xmlUCSIsMongolian();
+    ret += test_xmlUCSIsMusicalSymbols();
+    ret += test_xmlUCSIsMyanmar();
+    ret += test_xmlUCSIsNumberForms();
+    ret += test_xmlUCSIsOgham();
+    ret += test_xmlUCSIsOldItalic();
+    ret += test_xmlUCSIsOpticalCharacterRecognition();
+    ret += test_xmlUCSIsOriya();
+    ret += test_xmlUCSIsOsmanya();
+    ret += test_xmlUCSIsPhoneticExtensions();
+    ret += test_xmlUCSIsPrivateUse();
+    ret += test_xmlUCSIsPrivateUseArea();
+    ret += test_xmlUCSIsRunic();
+    ret += test_xmlUCSIsShavian();
+    ret += test_xmlUCSIsSinhala();
+    ret += test_xmlUCSIsSmallFormVariants();
+    ret += test_xmlUCSIsSpacingModifierLetters();
+    ret += test_xmlUCSIsSpecials();
+    ret += test_xmlUCSIsSuperscriptsandSubscripts();
+    ret += test_xmlUCSIsSupplementalArrowsA();
+    ret += test_xmlUCSIsSupplementalArrowsB();
+    ret += test_xmlUCSIsSupplementalMathematicalOperators();
+    ret += test_xmlUCSIsSupplementaryPrivateUseAreaA();
+    ret += test_xmlUCSIsSupplementaryPrivateUseAreaB();
+    ret += test_xmlUCSIsSyriac();
+    ret += test_xmlUCSIsTagalog();
+    ret += test_xmlUCSIsTagbanwa();
+    ret += test_xmlUCSIsTags();
+    ret += test_xmlUCSIsTaiLe();
+    ret += test_xmlUCSIsTaiXuanJingSymbols();
+    ret += test_xmlUCSIsTamil();
+    ret += test_xmlUCSIsTelugu();
+    ret += test_xmlUCSIsThaana();
+    ret += test_xmlUCSIsThai();
+    ret += test_xmlUCSIsTibetan();
+    ret += test_xmlUCSIsUgaritic();
+    ret += test_xmlUCSIsUnifiedCanadianAboriginalSyllabics();
+    ret += test_xmlUCSIsVariationSelectors();
+    ret += test_xmlUCSIsVariationSelectorsSupplement();
+    ret += test_xmlUCSIsYiRadicals();
+    ret += test_xmlUCSIsYiSyllables();
+    ret += test_xmlUCSIsYijingHexagramSymbols();
+
+    if (ret != 0)
+	printf("Module xmlunicode: %d errors\n", ret);
+    return(ret);
+}
+
+static int
 test_xmlNewTextWriter(void) {
     int ret = 0;
 
@@ -24878,6 +30716,7 @@ test_module(const char *module) {
     if (!strcmp(module, "xmlschemas")) return(test_xmlschemas());
     if (!strcmp(module, "xmlschemastypes")) return(test_xmlschemastypes());
     if (!strcmp(module, "xmlstring")) return(test_xmlstring());
+    if (!strcmp(module, "xmlunicode")) return(test_xmlunicode());
     if (!strcmp(module, "xmlwriter")) return(test_xmlwriter());
     if (!strcmp(module, "xpath")) return(test_xpath());
     if (!strcmp(module, "xpointer")) return(test_xpointer());

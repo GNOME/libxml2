@@ -15,7 +15,7 @@ except:
 # Modules we don't want skip in API test
 #
 skipped_modules = [ "SAX", "SAX2", "xlink", "threads", "globals",
-  "xpathInternals", "xmlunicode", "parserInternals", "xmlmemory",
+  "xpathInternals", "parserInternals", "xmlmemory",
   "xmlversion", "debugXML", "xmlexports", "DOCBparser",
 
   # temporary
@@ -146,7 +146,11 @@ def add_missing_type(name, func):
         missing_types[name] = [func]
 
 missing_functions = {}
+missing_functions_nr = 0
 def add_missing_functions(name, module):
+    global missing_functions_nr
+
+    missing_functions_nr = missing_functions_nr + 1
     try:
         list = missing_functions[module]
 	list.append(name)
@@ -361,13 +365,6 @@ def generate_test(module, node):
     if is_skipped_function(name):
         return
 
-    test.write("""
-static int
-test_%s(void) {
-    int ret = 0;
-
-""" % (name))
-
     #
     # check we know how to handle the args and return values
     # and store the informations for the generation
@@ -407,6 +404,13 @@ test_%s(void) {
 	    no_gen = 1
 	t_ret = (type, rtype, info)
 	break
+
+    test.write("""
+static int
+test_%s(void) {
+    int ret = 0;
+
+""" % (name))
 
     if no_gen == 1:
         add_missing_functions(name, module)
@@ -606,7 +610,7 @@ def compare_missing(a, b):
     return b[0] - a[0]
 
 missing_list.sort(compare_missing)
-print "Missing support for %d types see missing.lst" % (len(missing_list))
+print "Missing support for %d functions and %d types see missing.lst" % (missing_functions_nr, len(missing_list))
 lst = open("missing.lst", "w")
 lst.write("Missing support for %d types" % (len(missing_list)))
 lst.write("\n")

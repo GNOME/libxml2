@@ -1,3 +1,8 @@
+Fri Nov  5 15:30:43 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* gentest.py testapi.c: more coverage
+	* xmlunicode.c: one fix
+
 Fri Nov  5 23:15:51 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* entities.c: fixed a compilation problem on a recent change

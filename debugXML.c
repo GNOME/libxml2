@@ -1552,6 +1552,84 @@ xmlShellSetBase(xmlShellCtxtPtr ctxt ATTRIBUTE_UNUSED,
 }
 
 /**
+ * xmlShellGrep:
+ * @ctxt:  the shell context
+ * @arg:  the string or regular expression to find
+ * @node:  a node
+ * @node2:  unused
+ *
+ * Implements the XML shell function "grep"
+ * dumps informations about the node (namespace, attributes, content).
+ *
+ * Returns 0
+ */
+int
+xmlShellGrep(xmlShellCtxtPtr ctxt ATTRIBUTE_UNUSED,
+            char *arg, xmlNodePtr node, xmlNodePtr node2 ATTRIBUTE_UNUSED)
+{
+    if (!ctxt)
+        return (0);
+    if (node == NULL)
+	return (0);
+    if (arg == NULL)
+	return (0);
+#ifdef LIBXML_REGEXP_ENABLED
+    if ((xmlStrchr((xmlChar *) arg, '?')) ||
+	(xmlStrchr((xmlChar *) arg, '*')) ||
+	(xmlStrchr((xmlChar *) arg, '.')) ||
+	(xmlStrchr((xmlChar *) arg, '['))) {
+    }
+#endif
+    while (node != NULL) {
+        if (node->type == XML_COMMENT_NODE) {
+	    if (xmlStrstr(node->content, arg)) {
+
+		fprintf(ctxt->output, "%s : ", xmlGetNodePath(node));
+                xmlShellList(ctxt, NULL, node, NULL);
+	    }
+        } else if (node->type == XML_TEXT_NODE) {
+	    if (xmlStrstr(node->content, arg)) {
+
+		fprintf(ctxt->output, "%s : ", xmlGetNodePath(node->parent));
+                xmlShellList(ctxt, NULL, node, NULL);
+	    }
+        }
+
+        /*
+         * Browse the full subtree, deep first
+         */
+
+        if ((node->type == XML_DOCUMENT_NODE) ||
+            (node->type == XML_HTML_DOCUMENT_NODE)) {
+            node = ((xmlDocPtr) node)->children;
+        } else if ((node->children != NULL)
+                   && (node->type != XML_ENTITY_REF_NODE)) {
+            /* deep first */
+            node = node->children;
+        } else if (node->next != NULL) {
+            /* then siblings */
+            node = node->next;
+        } else {
+            /* go up to parents->next if needed */
+            while (node != NULL) {
+                if (node->parent != NULL) {
+                    node = node->parent;
+                }
+                if (node->next != NULL) {
+                    node = node->next;
+                    break;
+                }
+                if (node->parent == NULL) {
+                    node = NULL;
+                    break;
+                }
+            }
+	}
+    }
+    return (0);
+}
+
+/**
  * xmlShellDir:
  * @ctxt:  the shell context
  * @arg:  unused
@@ -2102,6 +2180,7 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
 		  fprintf(ctxt->output, "\tsave [name]  save this document to name or the original name\n");
 		  fprintf(ctxt->output, "\tvalidate     check the document for errors\n");
 		  fprintf(ctxt->output, "\twrite [name] write the current node to the filename\n");
+		  fprintf(ctxt->output, "\tgrep string  search for a string in the subtree\n");
         } else if (!strcmp(command, "validate")) {
             xmlShellValidate(ctxt, arg, NULL, NULL);
         } else if (!strcmp(command, "load")) {
@@ -2110,6 +2189,8 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
             xmlShellSave(ctxt, arg, NULL, NULL);
         } else if (!strcmp(command, "write")) {
             xmlShellWrite(ctxt, arg, NULL, NULL);
+        } else if (!strcmp(command, "grep")) {
+            xmlShellGrep(ctxt, arg, ctxt->node, NULL);
         } else if (!strcmp(command, "free")) {
             if (arg[0] == 0) {
                 xmlMemShow(ctxt->output, 0);

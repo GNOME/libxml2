@@ -22,19 +22,19 @@ A:link, A:visited, A:active { text-decoration: underline }
 is inserted between the moment the reference is recognized by the software
 (XML parser, stylesheet processing, or even images referenced for inclusion
 in a rendering) and the time where loading that resource is actually
-started.</p><p>It is basically used for 3 things:</p><ul><li>mapping from &quot;logical&quot; names, the public identifiers and a more
+started.</p><p>It is basically used for 3 things:</p><ul><li>mapping from "logical" names, the public identifiers and a more
     concrete name usable for download (and URI). For example it can associate
     the logical name
-    <p>&quot;-//OASIS//DTD DocBook XML V4.1.2//EN&quot;</p>
+    <p>"-//OASIS//DTD DocBook XML V4.1.2//EN"</p>
     <p>of the DocBook 4.1.2 XML DTD with the actual URL where it can be
     downloaded</p>
     <p>http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd</p>
   </li>
   <li>remapping from a given URL to another one, like an HTTP indirection
     saying that
-    <p>&quot;http://www.oasis-open.org/committes/tr.xsl&quot;</p>
+    <p>"http://www.oasis-open.org/committes/tr.xsl"</p>
     <p>should really be looked at</p>
-    <p>&quot;http://www.oasis-open.org/committes/entity/stylesheets/base/tr.xsl&quot;</p>
+    <p>"http://www.oasis-open.org/committes/entity/stylesheets/base/tr.xsl"</p>
   </li>
   <li>providing a local cache mechanism allowing to load the entities
     associated to public identifiers or remote resources, this is a really
@@ -53,11 +53,11 @@ catalog in /etc/xml/catalog, and assuming it has been correctly populated,
 the processing is completely transparent to the document user. To take a
 concrete example, suppose you are authoring a DocBook document, this one
 starts with the following DOCTYPE definition:</p><pre>&lt;?xml version='1.0'?&gt;
-&lt;!DOCTYPE book PUBLIC &quot;-//Norman Walsh//DTD DocBk XML V3.1.4//EN&quot;
-          &quot;http://nwalsh.com/docbook/xml/3.1.4/db3xml.dtd&quot;&gt;</pre><p>When validating the document with libxml, the catalog will be
-automatically consulted to lookup the public identifier &quot;-//Norman Walsh//DTD
-DocBk XML V3.1.4//EN&quot; and the system identifier
-&quot;http://nwalsh.com/docbook/xml/3.1.4/db3xml.dtd&quot;, and if these entities have
+&lt;!DOCTYPE book PUBLIC "-//Norman Walsh//DTD DocBk XML V3.1.4//EN"
+          "http://nwalsh.com/docbook/xml/3.1.4/db3xml.dtd"&gt;</pre><p>When validating the document with libxml, the catalog will be
+automatically consulted to lookup the public identifier "-//Norman Walsh//DTD
+DocBk XML V3.1.4//EN" and the system identifier
+"http://nwalsh.com/docbook/xml/3.1.4/db3xml.dtd", and if these entities have
 been installed on your system and the catalogs actually point to them, libxml
 will fetch them from the local disk.</p><p style="font-size: 10pt"><strong>Note</strong>: Really don't use this
 DOCTYPE example it's a really old version, but is fine as an example.</p><p>Libxml2 will check the catalog each time that it is requested to load an
@@ -65,36 +65,36 @@ entity, this includes DTD, external parsed entities, stylesheets, etc ... If
 your system is correctly configured all the authoring phase and processing
 should use only local files, even if your document stays portable because it
 uses the canonical public and system ID, referencing the remote document.</p><h3><a name="Some" id="Some">Some examples:</a></h3><p>Here is a couple of fragments from XML Catalogs used in libxml2 early
-regression tests in <code>test/catalogs</code> :</p><pre>&lt;?xml version=&quot;1.0&quot;?&gt;
+regression tests in <code>test/catalogs</code> :</p><pre>&lt;?xml version="1.0"?&gt;
 &lt;!DOCTYPE catalog PUBLIC 
-   &quot;-//OASIS//DTD Entity Resolution XML Catalog V1.0//EN&quot;
-   &quot;http://www.oasis-open.org/committees/entity/release/1.0/catalog.dtd&quot;&gt;
-&lt;catalog xmlns=&quot;urn:oasis:names:tc:entity:xmlns:xml:catalog&quot;&gt;
-  &lt;public publicId=&quot;-//OASIS//DTD DocBook XML V4.1.2//EN&quot;
-   uri=&quot;http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd&quot;/&gt;
+   "-//OASIS//DTD Entity Resolution XML Catalog V1.0//EN"
+   "http://www.oasis-open.org/committees/entity/release/1.0/catalog.dtd"&gt;
+&lt;catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog"&gt;
+  &lt;public publicId="-//OASIS//DTD DocBook XML V4.1.2//EN"
+   uri="http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd"/&gt;
 ...</pre><p>This is the beginning of a catalog for DocBook 4.1.2, XML Catalogs are
 written in XML,  there is a specific namespace for catalog elements
-&quot;urn:oasis:names:tc:entity:xmlns:xml:catalog&quot;. The first entry in this
+"urn:oasis:names:tc:entity:xmlns:xml:catalog". The first entry in this
 catalog is a <code>public</code> mapping it allows to associate a Public
 Identifier with an URI.</p><pre>...
-    &lt;rewriteSystem systemIdStartString=&quot;http://www.oasis-open.org/docbook/&quot;
-                   rewritePrefix=&quot;file:///usr/share/xml/docbook/&quot;/&gt;
+    &lt;rewriteSystem systemIdStartString="http://www.oasis-open.org/docbook/"
+                   rewritePrefix="file:///usr/share/xml/docbook/"/&gt;
 ...</pre><p>A <code>rewriteSystem</code> is a very powerful instruction, it says that
 any URI starting with a given prefix should be looked at another  URI
 constructed by replacing the prefix with an new one. In effect this acts like
 a cache system for a full area of the Web. In practice it is extremely useful
 with a file prefix if you have installed a copy of those resources on your
 local system.</p><pre>...
-&lt;delegatePublic publicIdStartString=&quot;-//OASIS//DTD XML Catalog //&quot;
-                catalog=&quot;file:///usr/share/xml/docbook.xml&quot;/&gt;
-&lt;delegatePublic publicIdStartString=&quot;-//OASIS//ENTITIES DocBook XML&quot;
-                catalog=&quot;file:///usr/share/xml/docbook.xml&quot;/&gt;
-&lt;delegatePublic publicIdStartString=&quot;-//OASIS//DTD DocBook XML&quot;
-                catalog=&quot;file:///usr/share/xml/docbook.xml&quot;/&gt;
-&lt;delegateSystem systemIdStartString=&quot;http://www.oasis-open.org/docbook/&quot;
-                catalog=&quot;file:///usr/share/xml/docbook.xml&quot;/&gt;
-&lt;delegateURI uriStartString=&quot;http://www.oasis-open.org/docbook/&quot;
-                catalog=&quot;file:///usr/share/xml/docbook.xml&quot;/&gt;
+&lt;delegatePublic publicIdStartString="-//OASIS//DTD XML Catalog //"
+                catalog="file:///usr/share/xml/docbook.xml"/&gt;
+&lt;delegatePublic publicIdStartString="-//OASIS//ENTITIES DocBook XML"
+                catalog="file:///usr/share/xml/docbook.xml"/&gt;
+&lt;delegatePublic publicIdStartString="-//OASIS//DTD DocBook XML"
+                catalog="file:///usr/share/xml/docbook.xml"/&gt;
+&lt;delegateSystem systemIdStartString="http://www.oasis-open.org/docbook/"
+                catalog="file:///usr/share/xml/docbook.xml"/&gt;
+&lt;delegateURI uriStartString="http://www.oasis-open.org/docbook/"
+                catalog="file:///usr/share/xml/docbook.xml"/&gt;
 ...</pre><p>Delegation is the core features which allows to build a tree of catalogs,
 easier to maintain than a single catalog, based on Public Identifier, System
 Identifier or URI prefixes it instructs the catalog software to look up
@@ -110,34 +110,34 @@ empty one should deactivate loading the default <code>/etc/xml/catalog</code>
 default catalog</p><h3><a name="validate" id="validate">How to debug catalog processing:</a></h3><p>Setting up the <code>XML_DEBUG_CATALOG</code> environment variable will
 make libxml2 output debugging informations for each catalog operations, for
 example:</p><pre>orchis:~/XML -&gt; xmllint --memory --noout test/ent2
-warning: failed to load external entity &quot;title.xml&quot;
+warning: failed to load external entity "title.xml"
 orchis:~/XML -&gt; export XML_DEBUG_CATALOG=
 orchis:~/XML -&gt; xmllint --memory --noout test/ent2
 Failed to parse catalog /etc/xml/catalog
 Failed to parse catalog /etc/xml/catalog
-warning: failed to load external entity &quot;title.xml&quot;
+warning: failed to load external entity "title.xml"
 Catalogs cleanup
 orchis:~/XML -&gt; </pre><p>The test/ent2 references an entity, running the parser from memory makes
-the base URI unavailable and the the &quot;title.xml&quot; entity cannot be loaded.
+the base URI unavailable and the the "title.xml" entity cannot be loaded.
 Setting up the debug environment variable allows to detect that an attempt is
 made to load the <code>/etc/xml/catalog</code> but since it's not present the
 resolution fails.</p><p>But the most advanced way to debug XML catalog processing is to use the
 <strong>xmlcatalog</strong> command shipped with libxml2, it allows to load
 catalogs and make resolution queries to see what is going on. This is also
 used for the regression tests:</p><pre>orchis:~/XML -&gt; ./xmlcatalog test/catalogs/docbook.xml \
-                   &quot;-//OASIS//DTD DocBook XML V4.1.2//EN&quot;
+                   "-//OASIS//DTD DocBook XML V4.1.2//EN"
 http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd
 orchis:~/XML -&gt; </pre><p>For debugging what is going on, adding one -v flags increase the verbosity
 level to indicate the processing done (adding a second flag also indicate
 what elements are recognized at parsing):</p><pre>orchis:~/XML -&gt; ./xmlcatalog -v test/catalogs/docbook.xml \
-                   &quot;-//OASIS//DTD DocBook XML V4.1.2//EN&quot;
+                   "-//OASIS//DTD DocBook XML V4.1.2//EN"
 Parsing catalog test/catalogs/docbook.xml's content
 Found public match -//OASIS//DTD DocBook XML V4.1.2//EN
 http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd
 Catalogs cleanup
 orchis:~/XML -&gt; </pre><p>A shell interface is also available to debug and process multiple queries
 (and for regression tests):</p><pre>orchis:~/XML -&gt; ./xmlcatalog -shell test/catalogs/docbook.xml \
-                   &quot;-//OASIS//DTD DocBook XML V4.1.2//EN&quot;
+                   "-//OASIS//DTD DocBook XML V4.1.2//EN"
 &gt; help   
 Commands available:
 public PublicID: make a PUBLIC identifier lookup
@@ -149,40 +149,40 @@ dump: print the current catalog state
 debug: increase the verbosity level
 quiet: decrease the verbosity level
 exit:  quit the shell
-&gt; public &quot;-//OASIS//DTD DocBook XML V4.1.2//EN&quot;
+&gt; public "-//OASIS//DTD DocBook XML V4.1.2//EN"
 http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd
 &gt; quit
 orchis:~/XML -&gt; </pre><p>This should be sufficient for most debugging purpose, this was actually
 used heavily to debug the XML Catalog implementation itself.</p><h3><a name="Declaring" id="Declaring">How to create and maintain</a> catalogs:</h3><p>Basically XML Catalogs are XML files, you can either use XML tools to
 manage them or use  <strong>xmlcatalog</strong> for this. The basic step is
 to create a catalog the -create option provide this facility:</p><pre>orchis:~/XML -&gt; ./xmlcatalog --create tst.xml
-&lt;?xml version=&quot;1.0&quot;?&gt;
-&lt;!DOCTYPE catalog PUBLIC &quot;-//OASIS//DTD Entity Resolution XML Catalog V1.0//EN&quot;
-         &quot;http://www.oasis-open.org/committees/entity/release/1.0/catalog.dtd&quot;&gt;
-&lt;catalog xmlns=&quot;urn:oasis:names:tc:entity:xmlns:xml:catalog&quot;/&gt;
+&lt;?xml version="1.0"?&gt;
+&lt;!DOCTYPE catalog PUBLIC "-//OASIS//DTD Entity Resolution XML Catalog V1.0//EN"
+         "http://www.oasis-open.org/committees/entity/release/1.0/catalog.dtd"&gt;
+&lt;catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog"/&gt;
 orchis:~/XML -&gt; </pre><p>By default xmlcatalog does not overwrite the original catalog and save the
 result on the standard output, this can be overridden using the -noout
 option. The <code>-add</code> command allows to add entries in the
-catalog:</p><pre>orchis:~/XML -&gt; ./xmlcatalog --noout --create --add &quot;public&quot; \
-  &quot;-//OASIS//DTD DocBook XML V4.1.2//EN&quot; \
+catalog:</p><pre>orchis:~/XML -&gt; ./xmlcatalog --noout --create --add "public" \
+  "-//OASIS//DTD DocBook XML V4.1.2//EN" \
   http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd tst.xml
 orchis:~/XML -&gt; cat tst.xml
-&lt;?xml version=&quot;1.0&quot;?&gt;
-&lt;!DOCTYPE catalog PUBLIC &quot;-//OASIS//DTD Entity Resolution XML Catalog V1.0//EN&quot; \
-  &quot;http://www.oasis-open.org/committees/entity/release/1.0/catalog.dtd&quot;&gt;
-&lt;catalog xmlns=&quot;urn:oasis:names:tc:entity:xmlns:xml:catalog&quot;&gt;
-&lt;public publicId=&quot;-//OASIS//DTD DocBook XML V4.1.2//EN&quot;
-        uri=&quot;http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd&quot;/&gt;
+&lt;?xml version="1.0"?&gt;
+&lt;!DOCTYPE catalog PUBLIC "-//OASIS//DTD Entity Resolution XML Catalog V1.0//EN" \
+  "http://www.oasis-open.org/committees/entity/release/1.0/catalog.dtd"&gt;
+&lt;catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog"&gt;
+&lt;public publicId="-//OASIS//DTD DocBook XML V4.1.2//EN"
+        uri="http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd"/&gt;
 &lt;/catalog&gt;
 orchis:~/XML -&gt; </pre><p>The <code>-add</code> option will always take 3 parameters even if some of
 the XML Catalog constructs (like nextCatalog) will have only a single
 argument, just pass a third empty string, it will be ignored.</p><p>Similarly the <code>-del</code> option remove matching entries from the
 catalog:</p><pre>orchis:~/XML -&gt; ./xmlcatalog --del \
-  &quot;http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd&quot; tst.xml
-&lt;?xml version=&quot;1.0&quot;?&gt;
-&lt;!DOCTYPE catalog PUBLIC &quot;-//OASIS//DTD Entity Resolution XML Catalog V1.0//EN&quot;
-    &quot;http://www.oasis-open.org/committees/entity/release/1.0/catalog.dtd&quot;&gt;
-&lt;catalog xmlns=&quot;urn:oasis:names:tc:entity:xmlns:xml:catalog&quot;/&gt;
+  "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" tst.xml
+&lt;?xml version="1.0"?&gt;
+&lt;!DOCTYPE catalog PUBLIC "-//OASIS//DTD Entity Resolution XML Catalog V1.0//EN"
+    "http://www.oasis-open.org/committees/entity/release/1.0/catalog.dtd"&gt;
+&lt;catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog"/&gt;
 orchis:~/XML -&gt; </pre><p>The catalog is now empty. Note that the matching of <code>-del</code> is
 exact and would have worked in a similar fashion with the Public ID
 string.</p><p>This is rudimentary but should be sufficient to manage a not too complex

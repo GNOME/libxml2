@@ -40,7 +40,7 @@ harder to design. I will just focus on DTDs for a formats with a fixed simple
 structure. It is just a set of basic rules, and definitely not exhaustive nor
 usable for complex DTD design.</p><h4><a name="reference1" id="reference1">How to reference a DTD from a document</a>:</h4><p>Assuming the top element of the document is <code>spec</code> and the dtd
 is placed in the file <code>mydtd</code> in the subdirectory
-<code>dtds</code> of the directory from where the document were loaded:</p><p><code>&lt;!DOCTYPE spec SYSTEM &quot;dtds/mydtd&quot;&gt;</code></p><p>Notes:</p><ul><li>The system string is actually an URI-Reference (as defined in <a href="http://www.ietf.org/rfc/rfc2396.txt">RFC 2396</a>) so you can use a
+<code>dtds</code> of the directory from where the document were loaded:</p><p><code>&lt;!DOCTYPE spec SYSTEM "dtds/mydtd"&gt;</code></p><p>Notes:</p><ul><li>The system string is actually an URI-Reference (as defined in <a href="http://www.ietf.org/rfc/rfc2396.txt">RFC 2396</a>) so you can use a
     full URL string indicating the location of your DTD on the Web. This is a
     really good thing to do if you want others to validate your document.</li>
   <li>It is also possible to associate a <code>PUBLIC</code> identifier (a
@@ -64,9 +64,9 @@ order.</p><h4><a name="Declaring1" id="Declaring1">Declaring attributes</a>:</h4
 attribute containing text (<code>CDATA</code>) and which is optional
 (<code>#IMPLIED</code>). The attribute value can also be defined within a
 set:</p><p><code>&lt;!ATTLIST list type (bullets|ordered|glossary)
-&quot;ordered&quot;&gt;</code></p><p>means <code>list</code> element have a <code>type</code> attribute with 3
-allowed values &quot;bullets&quot;, &quot;ordered&quot; or &quot;glossary&quot; and which default to
-&quot;ordered&quot; if the attribute is not explicitly specified.</p><p>The content type of an attribute can be text (<code>CDATA</code>),
+"ordered"&gt;</code></p><p>means <code>list</code> element have a <code>type</code> attribute with 3
+allowed values "bullets", "ordered" or "glossary" and which default to
+"ordered" if the attribute is not explicitly specified.</p><p>The content type of an attribute can be text (<code>CDATA</code>),
 anchor/reference/references
 (<code>ID</code>/<code>IDREF</code>/<code>IDREFS</code>), entity(ies)
 (<code>ENTITY</code>/<code>ENTITIES</code>) or name(s)

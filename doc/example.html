@@ -11,12 +11,12 @@ A:link, A:visited, A:active { text-decoration: underline }
 data is not kept in the DOM tree but uses internal structures. It is based on
 a proposal to keep a database of jobs related to Gnome, with an XML based
 storage structure. Here is an <a href="gjobs.xml">XML encoded jobs
-base</a>:</p><pre>&lt;?xml version=&quot;1.0&quot;?&gt;
-&lt;gjob:Helping xmlns:gjob=&quot;http://www.gnome.org/some-location&quot;&gt;
+base</a>:</p><pre>&lt;?xml version="1.0"?&gt;
+&lt;gjob:Helping xmlns:gjob="http://www.gnome.org/some-location"&gt;
   &lt;gjob:Jobs&gt;
 
     &lt;gjob:Job&gt;
-      &lt;gjob:Project ID=&quot;3&quot;/&gt;
+      &lt;gjob:Project ID="3"/&gt;
       &lt;gjob:Application&gt;GBackup&lt;/gjob:Application&gt;
       &lt;gjob:Category&gt;Development&lt;/gjob:Category&gt;
 
@@ -91,13 +91,13 @@ typedef struct person {
 personPtr parsePerson(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur) {
     personPtr ret = NULL;
 
-DEBUG(&quot;parsePerson\n&quot;);
+DEBUG("parsePerson\n");
     /*
      * allocate the struct
      */
     ret = (personPtr) malloc(sizeof(person));
     if (ret == NULL) {
-        fprintf(stderr,&quot;out of memory\n&quot;);
+        fprintf(stderr,"out of memory\n");
         return(NULL);
     }
     memset(ret, 0, sizeof(person));
@@ -105,9 +105,9 @@ DEBUG(&quot;parsePerson\n&quot;);
     /* We don't care what the top level element name is */
     cur = cur-&gt;xmlChildrenNode;
     while (cur != NULL) {
-        if ((!strcmp(cur-&gt;name, &quot;Person&quot;)) &amp;&amp; (cur-&gt;ns == ns))
+        if ((!strcmp(cur-&gt;name, "Person")) &amp;&amp; (cur-&gt;ns == ns))
             ret-&gt;name = xmlNodeListGetString(doc, cur-&gt;xmlChildrenNode, 1);
-        if ((!strcmp(cur-&gt;name, &quot;Email&quot;)) &amp;&amp; (cur-&gt;ns == ns))
+        if ((!strcmp(cur-&gt;name, "Email")) &amp;&amp; (cur-&gt;ns == ns))
             ret-&gt;email = xmlNodeListGetString(doc, cur-&gt;xmlChildrenNode, 1);
         cur = cur-&gt;next;
     }
@@ -146,13 +146,13 @@ typedef struct job {
 jobPtr parseJob(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur) {
     jobPtr ret = NULL;
 
-DEBUG(&quot;parseJob\n&quot;);
+DEBUG("parseJob\n");
     /*
      * allocate the struct
      */
     ret = (jobPtr) malloc(sizeof(job));
     if (ret == NULL) {
-        fprintf(stderr,&quot;out of memory\n&quot;);
+        fprintf(stderr,"out of memory\n");
         return(NULL);
     }
     memset(ret, 0, sizeof(job));
@@ -161,17 +161,17 @@ DEBUG(&quot;parseJob\n&quot;);
     cur = cur-&gt;xmlChildrenNode;
     while (cur != NULL) {
         
-        if ((!strcmp(cur-&gt;name, &quot;Project&quot;)) &amp;&amp; (cur-&gt;ns == ns)) {
-            ret-&gt;projectID = xmlGetProp(cur, &quot;ID&quot;);
+        if ((!strcmp(cur-&gt;name, "Project")) &amp;&amp; (cur-&gt;ns == ns)) {
+            ret-&gt;projectID = xmlGetProp(cur, "ID");
             if (ret-&gt;projectID == NULL) {
-                fprintf(stderr, &quot;Project has no ID\n&quot;);
+                fprintf(stderr, "Project has no ID\n");
             }
         }
-        if ((!strcmp(cur-&gt;name, &quot;Application&quot;)) &amp;&amp; (cur-&gt;ns == ns))
+        if ((!strcmp(cur-&gt;name, "Application")) &amp;&amp; (cur-&gt;ns == ns))
             ret-&gt;application = xmlNodeListGetString(doc, cur-&gt;xmlChildrenNode, 1);
-        if ((!strcmp(cur-&gt;name, &quot;Category&quot;)) &amp;&amp; (cur-&gt;ns == ns))
+        if ((!strcmp(cur-&gt;name, "Category")) &amp;&amp; (cur-&gt;ns == ns))
             ret-&gt;category = xmlNodeListGetString(doc, cur-&gt;xmlChildrenNode, 1);
-        if ((!strcmp(cur-&gt;name, &quot;Contact&quot;)) &amp;&amp; (cur-&gt;ns == ns))
+        if ((!strcmp(cur-&gt;name, "Contact")) &amp;&amp; (cur-&gt;ns == ns))
             ret-&gt;contact = parsePerson(doc, ns, cur);
         cur = cur-&gt;next;
     }

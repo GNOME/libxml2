@@ -33,7 +33,7 @@ or libxslt wrappers or bindings:</p><ul><li><a href="http://libxmlplusplus.sourc
     libxml2</a> with Kylix, Delphi and other Pascal compilers.</li>
   <li>Uwe Fechner also provides <a href="http://sourceforge.net/projects/idom2-pas/">idom2</a>, a DOM2
     implementation for Kylix2/D5/D6 from Borland.</li>
-  <li>Wai-Sun &quot;Squidster&quot; Chia provides <a href="http://www.rubycolor.org/arc/redist/">bindings for Ruby</a>  and
+  <li>Wai-Sun "Squidster" Chia provides <a href="http://www.rubycolor.org/arc/redist/">bindings for Ruby</a>  and
     libxml2 bindings are also available in Ruby through the <a href="http://libgdome-ruby.berlios.de/">libgdome-ruby</a> module
     maintained by Tobias Peters.</li>
   <li>Steve Ball and contributors maintains <a href="http://tclxml.sourceforge.net/">libxml2 and libxslt bindings for
@@ -58,23 +58,23 @@ build the bindings is python/generator.py in the source distribution.</p><p>To i
   <li>Otherwise use the <a href="ftp://xmlsoft.org/python/">libxml2-python
     module distribution</a> corresponding to your installed version of
     libxml2 and libxslt. Note that to install it you will need both libxml2
-    and libxslt installed and run &quot;python setup.py build install&quot; in the
+    and libxslt installed and run "python setup.py build install" in the
     module tree.</li>
 </ul><p>The distribution includes a set of examples and regression tests for the
 python bindings in the <code>python/tests</code> directory. Here are some
 excerpts from those tests:</p><h3>tst.py:</h3><p>This is a basic test of the file interface and DOM navigation:</p><pre>import libxml2, sys
 
-doc = libxml2.parseFile(&quot;tst.xml&quot;)
-if doc.name != &quot;tst.xml&quot;:
-    print &quot;doc.name failed&quot;
+doc = libxml2.parseFile("tst.xml")
+if doc.name != "tst.xml":
+    print "doc.name failed"
     sys.exit(1)
 root = doc.children
-if root.name != &quot;doc&quot;:
-    print &quot;root.name failed&quot;
+if root.name != "doc":
+    print "root.name failed"
     sys.exit(1)
 child = root.children
-if child.name != &quot;foo&quot;:
-    print &quot;child.name failed&quot;
+if child.name != "foo":
+    print "child.name failed"
     sys.exit(1)
 doc.freeDoc()</pre><p>The Python module is called libxml2; parseFile is the equivalent of
 xmlParseFile (most of the bindings are automatically generated, and the xml
@@ -101,14 +101,14 @@ def noerr(ctx, str):
 
 libxml2.registerErrorHandler(noerr, None)
 
-ctxt = libxml2.createFileParserCtxt(&quot;invalid.xml&quot;)
+ctxt = libxml2.createFileParserCtxt("invalid.xml")
 ctxt.validate(1)
 ctxt.parseDocument()
 doc = ctxt.doc()
 valid = ctxt.isValid()
 doc.freeDoc()
 if valid != 0:
-    print &quot;validity check failed&quot;</pre><p>The first thing to notice is the call to registerErrorHandler(), it
+    print "validity check failed"</pre><p>The first thing to notice is the call to registerErrorHandler(), it
 defines a new error handler global to the library. It is used to avoid seeing
 the error messages when trying to validate the invalid document.</p><p>The main interest of that test is the creation of a parser context with
 createFileParserCtxt() and how the behaviour can be changed before calling
@@ -118,8 +118,8 @@ C function interfaces in terms of objects method as much as possible. The
 best to get a complete view of what methods are supported is to look at the
 libxml2.py module containing all the wrappers.</p><h3>push.py:</h3><p>This test show how to activate the push parser interface:</p><pre>import libxml2
 
-ctxt = libxml2.createPushParser(None, &quot;&lt;foo&quot;, 4, &quot;test.xml&quot;)
-ctxt.parseChunk(&quot;/&gt;&quot;, 2, 1)
+ctxt = libxml2.createPushParser(None, "&lt;foo", 4, "test.xml")
+ctxt.parseChunk("/&gt;", 2, 1)
 doc = ctxt.doc()
 
 doc.freeDoc()</pre><p>The context is created with a special call based on the
@@ -129,71 +129,71 @@ the resource in case URI-References need to be computed by the parser.</p><p>The
 setting the third argument terminate to 1.</p><h3>pushSAX.py:</h3><p>this test show the use of the event based parsing interfaces. In this case
 the parser does not build a document, but provides callback information as
 the parser makes progresses analyzing the data being provided:</p><pre>import libxml2
-log = &quot;&quot;
+log = ""
 
 class callback:
     def startDocument(self):
         global log
-        log = log + &quot;startDocument:&quot;
+        log = log + "startDocument:"
 
     def endDocument(self):
         global log
-        log = log + &quot;endDocument:&quot;
+        log = log + "endDocument:"
 
     def startElement(self, tag, attrs):
         global log
-        log = log + &quot;startElement %s %s:&quot; % (tag, attrs)
+        log = log + "startElement %s %s:" % (tag, attrs)
 
     def endElement(self, tag):
         global log
-        log = log + &quot;endElement %s:&quot; % (tag)
+        log = log + "endElement %s:" % (tag)
 
     def characters(self, data):
         global log
-        log = log + &quot;characters: %s:&quot; % (data)
+        log = log + "characters: %s:" % (data)
 
     def warning(self, msg):
         global log
-        log = log + &quot;warning: %s:&quot; % (msg)
+        log = log + "warning: %s:" % (msg)
 
     def error(self, msg):
         global log
-        log = log + &quot;error: %s:&quot; % (msg)
+        log = log + "error: %s:" % (msg)
 
     def fatalError(self, msg):
         global log
-        log = log + &quot;fatalError: %s:&quot; % (msg)
+        log = log + "fatalError: %s:" % (msg)
 
 handler = callback()
 
-ctxt = libxml2.createPushParser(handler, &quot;&lt;foo&quot;, 4, &quot;test.xml&quot;)
-chunk = &quot; url='tst'&gt;b&quot;
+ctxt = libxml2.createPushParser(handler, "&lt;foo", 4, "test.xml")
+chunk = " url='tst'&gt;b"
 ctxt.parseChunk(chunk, len(chunk), 0)
-chunk = &quot;ar&lt;/foo&gt;&quot;
+chunk = "ar&lt;/foo&gt;"
 ctxt.parseChunk(chunk, len(chunk), 1)
 
-reference = &quot;startDocument:startElement foo {'url': 'tst'}:&quot; + \ 
-            &quot;characters: bar:endElement foo:endDocument:&quot;
+reference = "startDocument:startElement foo {'url': 'tst'}:" + \ 
+            "characters: bar:endElement foo:endDocument:"
 if log != reference:
-    print &quot;Error got: %s&quot; % log
-    print &quot;Expected: %s&quot; % reference</pre><p>The key object in that test is the handler, it provides a number of entry
+    print "Error got: %s" % log
+    print "Expected: %s" % reference</pre><p>The key object in that test is the handler, it provides a number of entry
 points which can be called by the parser as it makes progresses to indicate
 the information set obtained. The full set of callback is larger than what
 the callback class in that specific example implements (see the SAX
 definition for a complete list). The wrapper will only call those supplied by
 the object when activated. The startElement receives the names of the element
 and a dictionary containing the attributes carried by this element.</p><p>Also note that the reference string generated from the callback shows a
-single character call even though the string &quot;bar&quot; is passed to the parser
+single character call even though the string "bar" is passed to the parser
 from 2 different call to parseChunk()</p><h3>xpath.py:</h3><p>This is a basic test of XPath wrappers support</p><pre>import libxml2
 
-doc = libxml2.parseFile(&quot;tst.xml&quot;)
+doc = libxml2.parseFile("tst.xml")
 ctxt = doc.xpathNewContext()
-res = ctxt.xpathEval(&quot;//*&quot;)
+res = ctxt.xpathEval("//*")
 if len(res) != 2:
-    print &quot;xpath query: wrong node set size&quot;
+    print "xpath query: wrong node set size"
     sys.exit(1)
-if res[0].name != &quot;doc&quot; or res[1].name != &quot;foo&quot;:
-    print &quot;xpath query: wrong node set value&quot;
+if res[0].name != "doc" or res[1].name != "foo":
+    print "xpath query: wrong node set value"
     sys.exit(1)
 doc.freeDoc()
 ctxt.xpathFreeContext()</pre><p>This test parses a file, then create an XPath context to evaluate XPath
@@ -208,12 +208,12 @@ python:</p><pre>import libxml2
 def foo(ctx, x):
     return x + 1
 
-doc = libxml2.parseFile(&quot;tst.xml&quot;)
+doc = libxml2.parseFile("tst.xml")
 ctxt = doc.xpathNewContext()
-libxml2.registerXPathFunction(ctxt._o, &quot;foo&quot;, None, foo)
-res = ctxt.xpathEval(&quot;foo(1)&quot;)
+libxml2.registerXPathFunction(ctxt._o, "foo", None, foo)
+res = ctxt.xpathEval("foo(1)")
 if res != 2:
-    print &quot;xpath extension failure&quot;
+    print "xpath extension failure"
 doc.freeDoc()
 ctxt.xpathFreeContext()</pre><p>Note how the extension function is registered with the context (but that
 part is not yet finalized, this may change slightly in the future).</p><h3>tstxpath.py:</h3><p>This test is similar to the previous one but shows how the extension
@@ -232,9 +232,9 @@ evaluation point.</p><h3>Memory debugging:</h3><p>last but not least, all tests 
 libxml2.debugMemory(1)</pre><p>and ends with the following epilogue:</p><pre>#memory debug specific
 libxml2.cleanupParser()
 if libxml2.debugMemory(1) == 0:
-    print &quot;OK&quot;
+    print "OK"
 else:
-    print &quot;Memory leak %d bytes&quot; % (libxml2.debugMemory(1))
+    print "Memory leak %d bytes" % (libxml2.debugMemory(1))
     libxml2.dumpMemory()</pre><p>Those activate the memory debugging interface of libxml2 where all
 allocated block in the library are tracked. The prologue then cleans up the
 library state and checks that all allocated memory has been freed. If not it

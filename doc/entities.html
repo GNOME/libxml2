@@ -12,9 +12,9 @@ abbreviation for a given string that you can reuse many times throughout the
 content of your document. Entities are especially useful when a given string
 may occur frequently within a document, or to confine the change needed to a
 document to a restricted area in the internal subset of the document (at the
-beginning). Example:</p><pre>1 &lt;?xml version=&quot;1.0&quot;?&gt;
-2 &lt;!DOCTYPE EXAMPLE SYSTEM &quot;example.dtd&quot; [
-3 &lt;!ENTITY xml &quot;Extensible Markup Language&quot;&gt;
+beginning). Example:</p><pre>1 &lt;?xml version="1.0"?&gt;
+2 &lt;!DOCTYPE EXAMPLE SYSTEM "example.dtd" [
+3 &lt;!ENTITY xml "Extensible Markup Language"&gt;
 4 ]&gt;
 5 &lt;EXAMPLE&gt;
 6    &amp;xml;
@@ -24,7 +24,7 @@ are 5 predefined entities in libxml2 allowing you to escape characters with
 predefined meaning in some parts of the xml document content:
 <strong>&amp;lt;</strong> for the character '&lt;', <strong>&amp;gt;</strong>
 for the character '&gt;',  <strong>&amp;apos;</strong> for the character ''',
-<strong>&amp;quot;</strong> for the character '&quot;', and
+<strong>&amp;quot;</strong> for the character '"', and
 <strong>&amp;amp;</strong> for the character '&amp;'.</p><p>One of the problems related to entities is that you may want the parser to
 substitute an entity's content so that you can see the replacement text in
 your application. Or you may prefer to keep entity references as such in the

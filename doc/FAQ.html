@@ -25,7 +25,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 </ol><h3><a name="Installati" id="Installati">Installation</a></h3><ol><li><strong><span style="background-color: #FF0000">Do Not Use
     libxml1</span></strong>, use libxml2</li>
   <li><em>Where can I get libxml</em> ?
-    <p>The original distribution comes from <a href="ftp://rpmfind.net/pub/libxml/">rpmfind.net</a> or <a href="ftp://ftp.gnome.org/pub/GNOME/sources/libxml2/2.5/">gnome.org</a></p>
+    <p>The original distribution comes from <a href="ftp://rpmfind.net/pub/libxml/">rpmfind.net</a> or <a href="ftp://ftp.gnome.org/pub/GNOME/sources/libxml2/2.6/">gnome.org</a></p>
     <p>Most Linux and BSD distributions include libxml, this is probably the
     safer way for end-users to use libxml.</p>
     <p>David Doolin provides precompiled Windows versions at <a href="http://www.ce.berkeley.edu/~doolin/code/libxmlwin32/         ">http://www.ce.berkeley.edu/~doolin/code/libxmlwin32/</a></p>
@@ -61,7 +61,7 @@ A:link, A:visited, A:active { text-decoration: underline }
     applications with libxml(2)) that you can install locally.</p>
   </li>
 </ol><h3><a name="Compilatio" id="Compilatio">Compilation</a></h3><ol><li><em>What is the process to compile libxml2 ?</em>
-    <p>As most UNIX libraries libxml2 follows the &quot;standard&quot;:</p>
+    <p>As most UNIX libraries libxml2 follows the "standard":</p>
     <p><code>gunzip -c xxx.tar.gz | tar xvf -</code></p>
     <p><code>cd libxml-xxxx</code></p>
     <p><code>./configure --help</code></p>
@@ -134,15 +134,15 @@ A:link, A:visited, A:active { text-decoration: underline }
     </ol></li>
   <li>Extra nodes in the document:
     <p><em>For a XML file as below:</em></p>
-    <pre>&lt;?xml version=&quot;1.0&quot;?&gt;
-&lt;PLAN xmlns=&quot;http://www.argus.ca/autotest/1.0/&quot;&gt;
-&lt;NODE CommFlag=&quot;0&quot;/&gt;
-&lt;NODE CommFlag=&quot;1&quot;/&gt;
+    <pre>&lt;?xml version="1.0"?&gt;
+&lt;PLAN xmlns="http://www.argus.ca/autotest/1.0/"&gt;
+&lt;NODE CommFlag="0"/&gt;
+&lt;NODE CommFlag="1"/&gt;
 &lt;/PLAN&gt;</pre>
     <p><em>after parsing it with the function
     pxmlDoc=xmlParseFile(...);</em></p>
     <p><em>I want to the get the content of the first node (node with the
-    CommFlag=&quot;0&quot;)</em></p>
+    CommFlag="0")</em></p>
     <p><em>so I did it as following;</em></p>
     <pre>xmlNodePtr pnode;
 pnode=pxmlDoc-&gt;children-&gt;children;</pre>
@@ -227,14 +227,14 @@ pnode=pxmlDoc-&gt;children-&gt;children;</pre>
     <pre>xmlDocPtr doc; /* your existing document */
 xmlDtdPtr dtd = xmlParseDTD(NULL, filename_of_dtd); /* parse the DTD */
 
-        dtd-&gt;name = xmlStrDup((xmlChar*)&quot;root_name&quot;); /* use the given root */
+        dtd-&gt;name = xmlStrDup((xmlChar*)"root_name"); /* use the given root */
 
         doc-&gt;intSubset = dtd;
         if (doc-&gt;children == NULL) xmlAddChild((xmlNodePtr)doc, (xmlNodePtr)dtd);
         else xmlAddPrevSibling(doc-&gt;children, (xmlNodePtr)dtd);
           </pre>
   </li>
-  <li>So what is this funky &quot;xmlChar&quot; used all the time?
+  <li>So what is this funky "xmlChar" used all the time?
     <p>It is a null terminated sequence of utf-8 characters. And only utf-8!
     You need to convert strings encoded in different ways to utf-8 before
     passing them to the API.  This can be accomplished with the iconv library

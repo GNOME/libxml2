@@ -17,14 +17,14 @@ root element of their document as the default namespace. Then they don't need
 to use the prefix in the content but we will have a basis for future semantic
 refinement and  merging of data from different sources. This doesn't increase
 the size of the XML output significantly, but significantly increases its
-value in the long-term. Example:</p><pre>&lt;mydoc xmlns=&quot;http://mydoc.example.org/schemas/&quot;&gt;
+value in the long-term. Example:</p><pre>&lt;mydoc xmlns="http://mydoc.example.org/schemas/"&gt;
    &lt;elem1&gt;...&lt;/elem1&gt;
    &lt;elem2&gt;...&lt;/elem2&gt;
 &lt;/mydoc&gt;</pre><p>The namespace value has to be an absolute URL, but the URL doesn't have to
 point to any existing resource on the Web. It will bind all the element and
 attributes with that URL. I suggest to use an URL within a domain you
 control, and that the URL should contain some kind of version information if
-possible. For example, <code>&quot;http://www.gnome.org/gnumeric/1.0/&quot;</code> is a
+possible. For example, <code>"http://www.gnome.org/gnumeric/1.0/"</code> is a
 good namespace scheme.</p><p>Then when you load a file, make sure that a namespace carrying the
 version-independent prefix is installed on the root element of your document,
 and if the version information don't match something you know, warn the user
@@ -35,15 +35,15 @@ associated with the element or the attribute, not the prefix string (which is
 just a shortcut for the full URI). In libxml, element and attributes have an
 <code>ns</code> field pointing to an xmlNs structure detailing the namespace
 prefix and its URI.</p><p>@@Interfaces@@</p><pre>xmlNodePtr node;
-if(!strncmp(node-&gt;name,&quot;mytag&quot;,5)
+if(!strncmp(node-&gt;name,"mytag",5)
   &amp;&amp; node-&gt;ns
-  &amp;&amp; !strcmp(node-&gt;ns-&gt;href,&quot;http://www.mysite.com/myns/1.0&quot;)) {
+  &amp;&amp; !strcmp(node-&gt;ns-&gt;href,"http://www.mysite.com/myns/1.0")) {
   ...
 }</pre><p>Usually people object to using namespaces together with validity checking.
 I will try to make sure that using namespaces won't break validity checking,
 so even if you plan to use or currently are using validation I strongly
 suggest adding namespaces to your document. A default namespace scheme
-<code>xmlns=&quot;http://....&quot;</code> should not break validity even on less
+<code>xmlns="http://...."</code> should not break validity even on less
 flexible parsers. Using namespaces to mix and differentiate content coming
 from multiple DTDs will certainly break current validation schemes. To check
 such documents one needs to use schema-validation, which is supported in

@@ -1,3 +1,11 @@
+Fri Apr 25 21:52:33 MDT 2003 John Fleck <jfleck@inkstain.net>
+
+	* doc/tutorial:
+	xmltutorial.xml
+	xmltutorial.pdf
+	*.html
+	add appendix on generating compiler flags, more indexing
+
 Sat Apr 26 01:10:48 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* triodef.h vms/build_libxml.com: applied patch from Craig A. Berry

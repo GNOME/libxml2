@@ -51,6 +51,11 @@
 	<date>Jan. 26. 2003</date>
 	<revremark>add index</revremark>
       </revision>
+      <revision>
+	<revnumber>7</revnumber>
+	<date>April 25, 2003</date>
+	<revremark>add compilation appendix</revremark>
+      </revision>
     </revhistory>
   </articleinfo>
   <abstract>
@@ -152,7 +157,8 @@
   <sect1 id="xmltutorialparsing">
     <title>Parsing the file</title>
     <para><indexterm id="fileparsing" class="startofrange">
-	<primary>file parsing</primary>
+	<primary>file</primary>
+	<secondary>parsing</secondary>
       </indexterm>
 Parsing the file requires only the name of the file and a single
       function call, plus error checking. Full code: <xref
@@ -353,6 +359,10 @@ parseStory (xmlDocPtr doc, xmlNodePtr cur, char *keyword) {
          </para>
 
     <para>
+      <indexterm>
+	<primary>file</primary>
+	<secondary>saving</secondary>
+      </indexterm>
       Once the node has been added, we would like to write the document to
       file. Is you want the element to have a namespace, you can add it here as
       well. In our case, the namespace is NULL.
@@ -563,12 +573,20 @@ Data encoding compatibility problems are one of the most common
     </para>
   </sect1>
 
-<!--
-  <appendix id="furtherresources">
-    <title>Further Resources</title>
-    <para></para>
+  <appendix id="compilation">
+    <title>Compilation</title>
+    <para><indexterm>
+	<primary>compiler flags</primary>
+      </indexterm>
+      <application>Libxml</application> includes a script,
+    <application>xml2-config</application>, that can be used to generate
+    flags for compilation and linking of programs written with the
+      library. For pre-processor and compiler flags, use <command>xml2-config
+	--cflags</command>. For library linking flags, use <command>xml2-config
+	--libs</command>. Other options are available using <command>xml2-config
+    --help</command>.</para>   
   </appendix>
--->
+
   <appendix id="sampledoc">
     <title>Sample Document</title>
     <programlisting>&STORY;</programlisting>
@@ -603,8 +621,6 @@ Data encoding compatibility problems are one of the most common
       <programlisting>&CONVERT;</programlisting>
     </para>
   </appendix>
-  <index>
-  </index>
   <appendix>
     <title>Acknowledgements</title>
     <para>A number of people have generously offered feedback, code and
@@ -618,4 +634,5 @@ Data encoding compatibility problems are one of the most common
       </simplelist>
     </para>
   </appendix>
+  <index />
 </article>

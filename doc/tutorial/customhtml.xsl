@@ -9,5 +9,10 @@
 
 <!-- use admonition graphics -->
 <xsl:param name="admon.graphics">1</xsl:param>
+<xsl:template match="revhistory"></xsl:template>
+<xsl:template match="revision"></xsl:template>
+<xsl:template match="revnumber"></xsl:template>
+
+<xsl:template match="revremark"></xsl:template>
 
 </xsl:stylesheet>

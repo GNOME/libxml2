@@ -1,1 +1,1 @@
-./test/schemas/ns0_1.xml:1: element foo: Schemas validity error : Attribute id on foo is unknown
+./test/schemas/ns0_1.xml:1: element foo: Schemas validity error : Attribute "id" is not allowed.

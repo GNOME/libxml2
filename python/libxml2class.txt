@@ -220,6 +220,7 @@ regexpCompile()
 
 # functions from module xmlschemastypes
 schemaCleanupTypes()
+schemaCollapseString()
 schemaInitTypes()
 
 # functions from module xmlstring

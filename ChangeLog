@@ -1,3 +1,12 @@
+Tue Jun 29 19:00:32 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemas.c xmlschemastypes.c include/libxml/xmlerror.h
+	  include/libxml/schemasInternals.h include/libxml/xmlschemastypes.h:
+	  applied Schemas patches from Kasimier Buchcik, there is still
+	  one open issue about referencing freed memory.
+	* test/schemas/* result/schemas/*: updated with new tests from 
+	  Kasimier
+
 Tue Jun 29 14:52:18 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/globals.h include/libxml/xmlIO.h

@@ -1,0 +1,1 @@
+./test/schemas/cos-st-restricts-1-2-err_0.xml:3: element foo: Schemas validity error : The value with length "2" is not facet-valid with respect to length = "3".

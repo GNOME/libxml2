@@ -1,0 +1,2 @@
+./test/schemas/facet-unionST-err1_0.xml:3: element foo: Schemas validity error : The value failed to validate against the facet "enumeration".
+./test/schemas/facet-unionST-err1_0.xml:3: element foo: Schemas validity error : The value is not valid.

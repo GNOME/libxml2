@@ -58,6 +58,20 @@ XMLPUBFUN void XMLCALL
 XMLPUBFUN int XMLCALL		
 		xmlSchemaCompareValues		(xmlSchemaValPtr x,
 						 xmlSchemaValPtr y);
+XMLPUBFUN xmlSchemaTypePtr XMLCALL		
+		xmlSchemaGetBuiltInListSimpleTypeItemType(xmlSchemaTypePtr type);
+XMLPUBFUN int XMLCALL
+xmlSchemaValidateListSimpleTypeFacet(xmlSchemaFacetPtr facet,
+				     const xmlChar *value,
+				     unsigned long actualLen,
+				     unsigned long *expectedLen);
+XMLPUBFUN xmlSchemaTypePtr XMLCALL
+xmlSchemaGetBuiltInType(xmlSchemaValType type);
+XMLPUBFUN int XMLCALL
+xmlSchemaIsBuiltInTypeFacet(xmlSchemaTypePtr type, 
+			    int facetType);
+XMLPUBFUN xmlChar *  XMLCALL
+xmlSchemaCollapseString(const xmlChar *value);
 
 #ifdef __cplusplus
 }

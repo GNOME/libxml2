@@ -37,6 +37,7 @@ web: $(PAGES)
 	  echo "Rebuilding the elfgcchack.h header" ; \
 	  $(bindir)/xsltproc --nonet $(srcdir)/elfgcchack.xsl $(srcdir)/libxml2-api.xml > elfgcchack.h ; \
 	  if [ "`diff -q elfgcchack.h ../elfgcchack.h`" ] ; then \
+	    echo "updating ../elfgcchack.h"; \
 	    cp elfgcchack.h ../elfgcchack.h; \
 	  fi ; rm -f elfgcchack.h ;  fi );
 

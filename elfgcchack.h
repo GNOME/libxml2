@@ -3837,6 +3837,12 @@ extern __typeof (xmlSchemaCleanupTypes) xmlSchemaCleanupTypes __attribute((alias
 #endif
 
 #ifdef LIBXML_SCHEMAS_ENABLED
+extern __typeof (xmlSchemaCollapseString) xmlSchemaCollapseString__internal_alias __attribute((visibility("hidden")));
+extern __typeof (xmlSchemaCollapseString) xmlSchemaCollapseString __attribute((alias("xmlSchemaCollapseString__internal_alias")));
+#define xmlSchemaCollapseString xmlSchemaCollapseString__internal_alias
+#endif
+
+#ifdef LIBXML_SCHEMAS_ENABLED
 extern __typeof (xmlSchemaCompareValues) xmlSchemaCompareValues__internal_alias __attribute((visibility("hidden")));
 extern __typeof (xmlSchemaCompareValues) xmlSchemaCompareValues __attribute((alias("xmlSchemaCompareValues__internal_alias")));
 #define xmlSchemaCompareValues xmlSchemaCompareValues__internal_alias
@@ -3887,6 +3893,24 @@ extern __typeof (xmlSchemaFreeValue) xmlSchemaFreeValue __attribute((alias("xmlS
 #endif
 
 #ifdef LIBXML_SCHEMAS_ENABLED
+extern __typeof (xmlSchemaFreeWildcard) xmlSchemaFreeWildcard__internal_alias __attribute((visibility("hidden")));
+extern __typeof (xmlSchemaFreeWildcard) xmlSchemaFreeWildcard __attribute((alias("xmlSchemaFreeWildcard__internal_alias")));
+#define xmlSchemaFreeWildcard xmlSchemaFreeWildcard__internal_alias
+#endif
+
+#ifdef LIBXML_SCHEMAS_ENABLED
+extern __typeof (xmlSchemaGetBuiltInListSimpleTypeItemType) xmlSchemaGetBuiltInListSimpleTypeItemType__internal_alias __attribute((visibility("hidden")));
+extern __typeof (xmlSchemaGetBuiltInListSimpleTypeItemType) xmlSchemaGetBuiltInListSimpleTypeItemType __attribute((alias("xmlSchemaGetBuiltInListSimpleTypeItemType__internal_alias")));
+#define xmlSchemaGetBuiltInListSimpleTypeItemType xmlSchemaGetBuiltInListSimpleTypeItemType__internal_alias
+#endif
+
+#ifdef LIBXML_SCHEMAS_ENABLED
+extern __typeof (xmlSchemaGetBuiltInType) xmlSchemaGetBuiltInType__internal_alias __attribute((visibility("hidden")));
+extern __typeof (xmlSchemaGetBuiltInType) xmlSchemaGetBuiltInType __attribute((alias("xmlSchemaGetBuiltInType__internal_alias")));
+#define xmlSchemaGetBuiltInType xmlSchemaGetBuiltInType__internal_alias
+#endif
+
+#ifdef LIBXML_SCHEMAS_ENABLED
 extern __typeof (xmlSchemaGetPredefinedType) xmlSchemaGetPredefinedType__internal_alias __attribute((visibility("hidden")));
 extern __typeof (xmlSchemaGetPredefinedType) xmlSchemaGetPredefinedType __attribute((alias("xmlSchemaGetPredefinedType__internal_alias")));
 #define xmlSchemaGetPredefinedType xmlSchemaGetPredefinedType__internal_alias
@@ -3896,6 +3920,12 @@ extern __typeof (xmlSchemaGetPredefinedType) xmlSchemaGetPredefinedType __attrib
 extern __typeof (xmlSchemaInitTypes) xmlSchemaInitTypes__internal_alias __attribute((visibility("hidden")));
 extern __typeof (xmlSchemaInitTypes) xmlSchemaInitTypes __attribute((alias("xmlSchemaInitTypes__internal_alias")));
 #define xmlSchemaInitTypes xmlSchemaInitTypes__internal_alias
+#endif
+
+#ifdef LIBXML_SCHEMAS_ENABLED
+extern __typeof (xmlSchemaIsBuiltInTypeFacet) xmlSchemaIsBuiltInTypeFacet__internal_alias __attribute((visibility("hidden")));
+extern __typeof (xmlSchemaIsBuiltInTypeFacet) xmlSchemaIsBuiltInTypeFacet __attribute((alias("xmlSchemaIsBuiltInTypeFacet__internal_alias")));
+#define xmlSchemaIsBuiltInTypeFacet xmlSchemaIsBuiltInTypeFacet__internal_alias
 #endif
 
 #ifdef LIBXML_SCHEMAS_ENABLED
@@ -3962,6 +3992,12 @@ extern __typeof (xmlSchemaValidateDoc) xmlSchemaValidateDoc __attribute((alias("
 extern __typeof (xmlSchemaValidateFacet) xmlSchemaValidateFacet__internal_alias __attribute((visibility("hidden")));
 extern __typeof (xmlSchemaValidateFacet) xmlSchemaValidateFacet __attribute((alias("xmlSchemaValidateFacet__internal_alias")));
 #define xmlSchemaValidateFacet xmlSchemaValidateFacet__internal_alias
+#endif
+
+#ifdef LIBXML_SCHEMAS_ENABLED
+extern __typeof (xmlSchemaValidateListSimpleTypeFacet) xmlSchemaValidateListSimpleTypeFacet__internal_alias __attribute((visibility("hidden")));
+extern __typeof (xmlSchemaValidateListSimpleTypeFacet) xmlSchemaValidateListSimpleTypeFacet __attribute((alias("xmlSchemaValidateListSimpleTypeFacet__internal_alias")));
+#define xmlSchemaValidateListSimpleTypeFacet xmlSchemaValidateListSimpleTypeFacet__internal_alias
 #endif
 
 #ifdef LIBXML_SCHEMAS_ENABLED

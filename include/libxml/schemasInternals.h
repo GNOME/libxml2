@@ -24,12 +24,61 @@
 extern "C" {
 #endif
 
+typedef enum {
+    XML_SCHEMAS_UNKNOWN = 0,
+    XML_SCHEMAS_STRING,
+    XML_SCHEMAS_NORMSTRING,
+    XML_SCHEMAS_DECIMAL,
+    XML_SCHEMAS_TIME,
+    XML_SCHEMAS_GDAY,
+    XML_SCHEMAS_GMONTH,
+    XML_SCHEMAS_GMONTHDAY,
+    XML_SCHEMAS_GYEAR,
+    XML_SCHEMAS_GYEARMONTH,
+    XML_SCHEMAS_DATE,
+    XML_SCHEMAS_DATETIME,
+    XML_SCHEMAS_DURATION,
+    XML_SCHEMAS_FLOAT,
+    XML_SCHEMAS_DOUBLE,
+    XML_SCHEMAS_BOOLEAN,
+    XML_SCHEMAS_TOKEN,
+    XML_SCHEMAS_LANGUAGE,
+    XML_SCHEMAS_NMTOKEN,
+    XML_SCHEMAS_NMTOKENS, 
+    XML_SCHEMAS_NAME,
+    XML_SCHEMAS_QNAME,
+    XML_SCHEMAS_NCNAME,
+    XML_SCHEMAS_ID,
+    XML_SCHEMAS_IDREF,
+    XML_SCHEMAS_IDREFS, 
+    XML_SCHEMAS_ENTITY,
+    XML_SCHEMAS_ENTITIES, 
+    XML_SCHEMAS_NOTATION,
+    XML_SCHEMAS_ANYURI,
+    XML_SCHEMAS_INTEGER,
+    XML_SCHEMAS_NPINTEGER,
+    XML_SCHEMAS_NINTEGER,
+    XML_SCHEMAS_NNINTEGER,
+    XML_SCHEMAS_PINTEGER,
+    XML_SCHEMAS_INT,
+    XML_SCHEMAS_UINT,
+    XML_SCHEMAS_LONG,
+    XML_SCHEMAS_ULONG,
+    XML_SCHEMAS_SHORT,
+    XML_SCHEMAS_USHORT,
+    XML_SCHEMAS_BYTE,
+    XML_SCHEMAS_UBYTE,
+    XML_SCHEMAS_HEXBINARY,
+    XML_SCHEMAS_BASE64BINARY,
+    XML_SCHEMAS_ANYTYPE,
+    XML_SCHEMAS_ANYSIMPLETYPE   
+} xmlSchemaValType;
 
 /*
  * XML Schemas defines multiple type of types.
  */
 typedef enum {
-    XML_SCHEMA_TYPE_BASIC = 1,
+    XML_SCHEMA_TYPE_BASIC = 1, /* A built-in datatype */
     XML_SCHEMA_TYPE_ANY,
     XML_SCHEMA_TYPE_FACET,
     XML_SCHEMA_TYPE_SIMPLE,
@@ -70,7 +119,7 @@ typedef enum {
     XML_SCHEMA_CONTENT_ELEMENTS,
     XML_SCHEMA_CONTENT_MIXED,
     XML_SCHEMA_CONTENT_SIMPLE,
-    XML_SCHEMA_CONTENT_MIXED_OR_ELEMENTS,
+    XML_SCHEMA_CONTENT_MIXED_OR_ELEMENTS, /* obsolete, not used */
     XML_SCHEMA_CONTENT_BASIC,
     XML_SCHEMA_CONTENT_ANY
 } xmlSchemaContentType;
@@ -98,41 +147,47 @@ struct _xmlSchemaAnnot {
  * XML_SCHEMAS_ANYATTR_SKIP:
  *
  * Skip unknown attribute from validation
+ * Obsolete, not used anymore.
  */
 #define XML_SCHEMAS_ANYATTR_SKIP	1
 /**
  * XML_SCHEMAS_ANYATTR_LAX:
  *
  * Ignore validation non definition on attributes
+ * Obsolete, not used anymore.
  */
 #define XML_SCHEMAS_ANYATTR_LAX		2
 /**
  * XML_SCHEMAS_ANYATTR_STRICT:
  *
  * Apply strict validation rules on attributes
+ * Obsolete, not used anymore.
  */
 #define XML_SCHEMAS_ANYATTR_STRICT	3
 /**
  * XML_SCHEMAS_ANY_SKIP:
  *
- * Skip unknown attribute from validation
+ * Skip unknown attribute from validation 
  */
 #define XML_SCHEMAS_ANY_SKIP        1
 /**
  * XML_SCHEMAS_ANY_LAX:
  *
- * Ignore validation non definition on attributes
+ * Used by wildcards.
+ * Validate if type found, don't worry if not found
  */
 #define XML_SCHEMAS_ANY_LAX                2
 /**
  * XML_SCHEMAS_ANY_STRICT:
  *
- * Apply strict validation rules on attributes
+ * Used by wildcards.
+ * Apply strict validation rules
  */
 #define XML_SCHEMAS_ANY_STRICT        3
 /**
  * XML_SCHEMAS_ATTR_USE_PROHIBITED:
  *
+ * Used by wildcards.
  * The attribute is prohibited.
  */
 #define XML_SCHEMAS_ATTR_USE_PROHIBITED 0
@@ -274,6 +329,28 @@ struct _xmlSchemaAttributeGroup {
     xmlSchemaWildcardPtr attributeWildcard;
 };
 
+/**
+ * xmlSchemaTypeLink:
+ * Used to build a list of types (e.g. member types of
+ * simpleType with variety "union").
+ */
+typedef struct _xmlSchemaTypeLink xmlSchemaTypeLink;
+typedef xmlSchemaTypeLink *xmlSchemaTypeLinkPtr;
+struct _xmlSchemaTypeLink {
+    struct _xmlSchemaTypeLink *next;/* the next type link ... */
+    xmlSchemaTypePtr type;/* the linked type*/
+};
+
+/**
+ * xmlSchemaFacetLink:
+ * Used to build a list of facets.
+ */
+typedef struct _xmlSchemaFacetLink xmlSchemaFacetLink;
+typedef xmlSchemaFacetLink *xmlSchemaFacetLinkPtr;
+struct _xmlSchemaFacetLink {
+    struct _xmlSchemaFacetLink *next;/* the next facet link ... */
+    xmlSchemaFacetPtr facet;/* the linked facet */
+};
 
 /**
  * XML_SCHEMAS_TYPE_MIXED:
@@ -306,6 +383,66 @@ struct _xmlSchemaAttributeGroup {
  * it can be freed by the complexType
  */
 #define XML_SCHEMAS_TYPE_OWNED_ATTR_WILDCARD    1 << 4
+/**
+ * XML_SCHEMAS_TYPE_VARIETY_ABSENT:
+ *
+ * the simpleType has a variety of "absent".
+ */
+#define XML_SCHEMAS_TYPE_VARIETY_ABSENT    1 << 5
+/**
+ * XML_SCHEMAS_TYPE_VARIETY_LIST:
+ *
+ * the simpleType has a variety of "list".
+ */
+#define XML_SCHEMAS_TYPE_VARIETY_LIST    1 << 6
+/**
+ * XML_SCHEMAS_TYPE_VARIETY_UNION:
+ *
+ * the simpleType has a variety of "union".
+ */
+#define XML_SCHEMAS_TYPE_VARIETY_UNION    1 << 7
+/**
+ * XML_SCHEMAS_TYPE_VARIETY_ATOMIC:
+ *
+ * the simpleType has a variety of "union".
+ */
+#define XML_SCHEMAS_TYPE_VARIETY_ATOMIC    1 << 8
+/**
+ * XML_SCHEMAS_TYPE_FINAL_EXTENSION:
+ *
+ * the complexType has a final of "extension".
+ */
+#define XML_SCHEMAS_TYPE_FINAL_EXTENSION    1 << 9
+/**
+ * XML_SCHEMAS_TYPE_FINAL_RESTRICTION:
+ *
+ * the simpleType/complexType has a final of "restriction".
+ */
+#define XML_SCHEMAS_TYPE_FINAL_RESTRICTION    1 << 10
+/**
+ * XML_SCHEMAS_TYPE_FINAL_LIST:
+ *
+ * the simpleType has a final of "list".
+ */
+#define XML_SCHEMAS_TYPE_FINAL_LIST    1 << 11
+/**
+ * XML_SCHEMAS_TYPE_FINAL_UNION:
+ *
+ * the simpleType has a final of "union".
+ */
+#define XML_SCHEMAS_TYPE_FINAL_UNION    1 << 12
+/**
+ * XML_SCHEMAS_TYPE_FINAL_UNION:
+ *
+ * the simpleType has a final of "union".
+ */
+#define XML_SCHEMAS_TYPE_FINAL_DEFAULT    1 << 13
+/**
+ * XML_SCHEMAS_TYPE_FINAL_UNION:
+ *
+ * the simpleType has a final of "union".
+ */
+#define XML_SCHEMAS_TYPE_BUILTIN_PRIMITIVE    1 << 14
 
 /**
  * _xmlSchemaType:
@@ -336,6 +473,9 @@ struct _xmlSchemaType {
     int recurse;
     xmlSchemaAttributeLinkPtr attributeUses;
     xmlSchemaWildcardPtr attributeWildcard;
+    int builtInType;
+    xmlSchemaTypeLinkPtr memberTypes;
+    xmlSchemaFacetLinkPtr facetSet;
 };
 
 /*
@@ -392,6 +532,7 @@ struct _xmlSchemaType {
  * XML_SCHEMAS_ELEM_NSDEFAULT:
  *
  * allow elements in no namespace
+ * Obsolete, not used anymore.
  */
 #define XML_SCHEMAS_ELEM_NSDEFAULT	1 << 7
 
@@ -448,7 +589,6 @@ struct _xmlSchemaElement {
  * collapse the types of the facet
  */
 #define XML_SCHEMAS_FACET_COLLAPSE	3
-
 /**
  * A facet definition.
  */
@@ -488,7 +628,31 @@ struct _xmlSchemaNotation {
  *
  * the shemas requires qualified attributes
  */
-#define XML_SCHEMAS_QUALIF_ATTR		1 << 1
+#define XML_SCHEMAS_QUALIF_ATTR	    1 << 1
+/**
+ * XML_SCHEMAS_FINAL_DEFAULT_EXTENSION:
+ *
+ * the shema has "extension" in the set of finalDefault.
+ */
+#define XML_SCHEMAS_FINAL_DEFAULT_EXTENSION	1 << 2
+/**
+ * XML_SCHEMAS_FINAL_DEFAULT_RESTRICTION:
+ *
+ * the shema has "restriction" in the set of finalDefault.
+ */
+#define XML_SCHEMAS_FINAL_DEFAULT_RESTRICTION	    1 << 3
+/**
+ * XML_SCHEMAS_FINAL_DEFAULT_LIST:
+ *
+ * the shema has "list" in the set of finalDefault.
+ */
+#define XML_SCHEMAS_FINAL_DEFAULT_LIST	    1 << 4
+/**
+ * XML_SCHEMAS_FINAL_DEFAULT_UNION:
+ *
+ * the shema has "union" in the set of finalDefault.
+ */
+#define XML_SCHEMAS_FINAL_DEFAULT_UNION	    1 << 5
 /**
  * _xmlSchema:
  *
@@ -519,6 +683,7 @@ struct _xmlSchema {
 };
 
 XMLPUBFUN void XMLCALL 	xmlSchemaFreeType	(xmlSchemaTypePtr type);
+XMLPUBFUN void XMLCALL 	xmlSchemaFreeWildcard(xmlSchemaWildcardPtr wildcard);
 
 #ifdef __cplusplus
 }

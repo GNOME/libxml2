@@ -1,1 +1,1 @@
-./test/schemas/length3_0.xsd:5: element element: Schemas parser error : Schemas: element size type non-positive-integer not found
+./test/schemas/length3_0.xsd:5: element element: Schemas parser error : Element "size": the QName "non-positive-integer" of the attribute "type" does not resolve to a schema component.

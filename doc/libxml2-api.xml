@@ -1030,93 +1030,158 @@
      <summary>internal interfaces for XML Schemas</summary>
      <description>internal interfaces for the XML Schemas handling and schema validity checking </description>
      <author>Daniel Veillard </author>
+     <exports symbol='XML_SCHEMAS_FINAL_DEFAULT_EXTENSION' type='macro'/>
+     <exports symbol='XML_SCHEMAS_TYPE_BUILTIN_PRIMITIVE' type='macro'/>
+     <exports symbol='XML_SCHEMAS_TYPE_VARIETY_UNION' type='macro'/>
+     <exports symbol='XML_SCHEMAS_FINAL_DEFAULT_RESTRICTION' type='macro'/>
+     <exports symbol='XML_SCHEMAS_QUALIF_ATTR' type='macro'/>
+     <exports symbol='XML_SCHEMAS_TYPE_FINAL_LIST' type='macro'/>
+     <exports symbol='XML_SCHEMAS_ATTR_USE_REQUIRED' type='macro'/>
+     <exports symbol='XML_SCHEMAS_FACET_COLLAPSE' type='macro'/>
+     <exports symbol='XML_SCHEMAS_ANY_STRICT' type='macro'/>
+     <exports symbol='XML_SCHEMAS_FINAL_DEFAULT_UNION' type='macro'/>
+     <exports symbol='XML_SCHEMAS_TYPE_VARIETY_LIST' type='macro'/>
+     <exports symbol='XML_SCHEMAS_TYPE_OWNED_ATTR_WILDCARD' type='macro'/>
+     <exports symbol='XML_SCHEMAS_ATTR_USE_PROHIBITED' type='macro'/>
+     <exports symbol='XML_SCHEMAS_FACET_PRESERVE' type='macro'/>
+     <exports symbol='XML_SCHEMAS_FACET_UNKNOWN' type='macro'/>
+     <exports symbol='XML_SCHEMAS_WILDCARD_COMPLETE' type='macro'/>
+     <exports symbol='XML_SCHEMAS_TYPE_FINAL_EXTENSION' type='macro'/>
+     <exports symbol='XML_SCHEMAS_ELEM_FIXED' type='macro'/>
+     <exports symbol='XML_SCHEMAS_TYPE_VARIETY_ATOMIC' type='macro'/>
+     <exports symbol='XML_SCHEMAS_ATTR_USE_OPTIONAL' type='macro'/>
+     <exports symbol='XML_SCHEMAS_ATTR_NSDEFAULT' type='macro'/>
+     <exports symbol='XML_SCHEMAS_ANYATTR_STRICT' type='macro'/>
+     <exports symbol='XML_SCHEMAS_TYPE_VARIETY_ABSENT' type='macro'/>
+     <exports symbol='XML_SCHEMAS_TYPE_DERIVATION_METHOD_RESTRICTION' type='macro'/>
+     <exports symbol='XML_SCHEMAS_TYPE_FINAL_DEFAULT' type='macro'/>
+     <exports symbol='XML_SCHEMAS_ATTR_GLOBAL' type='macro'/>
+     <exports symbol='XML_SCHEMAS_ANYATTR_SKIP' type='macro'/>
+     <exports symbol='XML_SCHEMAS_TYPE_DERIVATION_METHOD_EXTENSION' type='macro'/>
      <exports symbol='XML_SCHEMAS_ANYATTR_LAX' type='macro'/>
      <exports symbol='XML_SCHEMAS_TYPE_GLOBAL' type='macro'/>
-     <exports symbol='XML_SCHEMAS_ANYATTR_STRICT' type='macro'/>
-     <exports symbol='XML_SCHEMAS_QUALIF_ATTR' type='macro'/>
+     <exports symbol='XML_SCHEMAS_ELEM_NILLABLE' type='macro'/>
      <exports symbol='XML_SCHEMAS_ANY_SKIP' type='macro'/>
-     <exports symbol='XML_SCHEMAS_FACET_COLLAPSE' type='macro'/>
+     <exports symbol='XML_SCHEMAS_FINAL_DEFAULT_LIST' type='macro'/>
      <exports symbol='XML_SCHEMAS_ATTRGROUP_WILDCARD_BUILDED' type='macro'/>
      <exports symbol='XML_SCHEMAS_ELEM_NSDEFAULT' type='macro'/>
      <exports symbol='XML_SCHEMAS_ELEM_GLOBAL' type='macro'/>
-     <exports symbol='XML_SCHEMAS_TYPE_MIXED' type='macro'/>
-     <exports symbol='XML_SCHEMAS_ANY_LAX' type='macro'/>
-     <exports symbol='XML_SCHEMAS_TYPE_OWNED_ATTR_WILDCARD' type='macro'/>
-     <exports symbol='XML_SCHEMAS_ATTR_USE_PROHIBITED' type='macro'/>
-     <exports symbol='XML_SCHEMAS_ELEM_NILLABLE' type='macro'/>
-     <exports symbol='XML_SCHEMAS_FACET_UNKNOWN' type='macro'/>
-     <exports symbol='XML_SCHEMAS_WILDCARD_COMPLETE' type='macro'/>
      <exports symbol='XML_SCHEMAS_ELEM_TOPLEVEL' type='macro'/>
+     <exports symbol='XML_SCHEMAS_ANY_LAX' type='macro'/>
+     <exports symbol='XML_SCHEMAS_TYPE_FINAL_RESTRICTION' type='macro'/>
+     <exports symbol='XML_SCHEMAS_TYPE_MIXED' type='macro'/>
      <exports symbol='XML_SCHEMAS_ELEM_ABSTRACT' type='macro'/>
-     <exports symbol='XML_SCHEMAS_ANY_STRICT' type='macro'/>
-     <exports symbol='XML_SCHEMAS_ELEM_FIXED' type='macro'/>
+     <exports symbol='XML_SCHEMAS_TYPE_FINAL_UNION' type='macro'/>
      <exports symbol='XML_SCHEMAS_QUALIF_ELEM' type='macro'/>
-     <exports symbol='XML_SCHEMAS_ATTRGROUP_GLOBAL' type='macro'/>
-     <exports symbol='XML_SCHEMAS_ATTR_USE_OPTIONAL' type='macro'/>
-     <exports symbol='XML_SCHEMAS_ATTR_NSDEFAULT' type='macro'/>
-     <exports symbol='XML_SCHEMAS_ANYATTR_SKIP' type='macro'/>
-     <exports symbol='XML_SCHEMAS_ELEM_DEFAULT' type='macro'/>
-     <exports symbol='XML_SCHEMAS_ATTR_USE_REQUIRED' type='macro'/>
-     <exports symbol='XML_SCHEMAS_TYPE_DERIVATION_METHOD_RESTRICTION' type='macro'/>
-     <exports symbol='XML_SCHEMAS_FACET_REPLACE' type='macro'/>
-     <exports symbol='XML_SCHEMAS_FACET_PRESERVE' type='macro'/>
-     <exports symbol='XML_SCHEMAS_ATTR_GLOBAL' type='macro'/>
      <exports symbol='XML_SCHEMAS_ELEM_REF' type='macro'/>
-     <exports symbol='XML_SCHEMAS_TYPE_DERIVATION_METHOD_EXTENSION' type='macro'/>
-     <exports symbol='XML_SCHEMA_TYPE_SIMPLE' type='enum'/>
-     <exports symbol='XML_SCHEMA_TYPE_GROUP' type='enum'/>
-     <exports symbol='XML_SCHEMA_TYPE_SEQUENCE' type='enum'/>
-     <exports symbol='XML_SCHEMA_TYPE_SIMPLE_CONTENT' type='enum'/>
+     <exports symbol='XML_SCHEMAS_ELEM_DEFAULT' type='macro'/>
+     <exports symbol='XML_SCHEMAS_ATTRGROUP_GLOBAL' type='macro'/>
+     <exports symbol='XML_SCHEMAS_FACET_REPLACE' type='macro'/>
+     <exports symbol='XML_SCHEMAS_GMONTH' type='enum'/>
      <exports symbol='XML_SCHEMA_CONTENT_ELEMENTS' type='enum'/>
-     <exports symbol='XML_SCHEMA_FACET_MININCLUSIVE' type='enum'/>
-     <exports symbol='XML_SCHEMA_FACET_WHITESPACE' type='enum'/>
-     <exports symbol='XML_SCHEMA_FACET_MINEXCLUSIVE' type='enum'/>
-     <exports symbol='XML_SCHEMA_CONTENT_MIXED' type='enum'/>
-     <exports symbol='XML_SCHEMA_FACET_MAXEXCLUSIVE' type='enum'/>
-     <exports symbol='XML_SCHEMA_TYPE_FACET' type='enum'/>
-     <exports symbol='XML_SCHEMA_TYPE_COMPLEX' type='enum'/>
-     <exports symbol='XML_SCHEMA_TYPE_LIST' type='enum'/>
-     <exports symbol='XML_SCHEMA_TYPE_ATTRIBUTEGROUP' type='enum'/>
-     <exports symbol='XML_SCHEMA_CONTENT_MIXED_OR_ELEMENTS' type='enum'/>
+     <exports symbol='XML_SCHEMAS_GYEAR' type='enum'/>
+     <exports symbol='XML_SCHEMAS_BYTE' type='enum'/>
      <exports symbol='XML_SCHEMA_TYPE_ALL' type='enum'/>
-     <exports symbol='XML_SCHEMA_CONTENT_EMPTY' type='enum'/>
-     <exports symbol='XML_SCHEMA_TYPE_BASIC' type='enum'/>
+     <exports symbol='XML_SCHEMAS_NOTATION' type='enum'/>
      <exports symbol='XML_SCHEMA_TYPE_EXTENSION' type='enum'/>
-     <exports symbol='XML_SCHEMA_TYPE_CHOICE' type='enum'/>
      <exports symbol='XML_SCHEMA_FACET_MAXINCLUSIVE' type='enum'/>
-     <exports symbol='XML_SCHEMA_TYPE_ATTRIBUTE' type='enum'/>
+     <exports symbol='XML_SCHEMAS_NAME' type='enum'/>
+     <exports symbol='XML_SCHEMAS_ANYSIMPLETYPE' type='enum'/>
+     <exports symbol='XML_SCHEMAS_NMTOKEN' type='enum'/>
+     <exports symbol='XML_SCHEMAS_ID' type='enum'/>
+     <exports symbol='XML_SCHEMAS_TIME' type='enum'/>
+     <exports symbol='XML_SCHEMAS_UBYTE' type='enum'/>
+     <exports symbol='XML_SCHEMAS_DATETIME' type='enum'/>
+     <exports symbol='XML_SCHEMAS_NNINTEGER' type='enum'/>
+     <exports symbol='XML_SCHEMAS_IDREFS' type='enum'/>
+     <exports symbol='XML_SCHEMAS_INT' type='enum'/>
+     <exports symbol='XML_SCHEMAS_UNKNOWN' type='enum'/>
+     <exports symbol='XML_SCHEMAS_IDREF' type='enum'/>
+     <exports symbol='XML_SCHEMAS_UINT' type='enum'/>
+     <exports symbol='XML_SCHEMAS_GDAY' type='enum'/>
+     <exports symbol='XML_SCHEMAS_GMONTHDAY' type='enum'/>
+     <exports symbol='XML_SCHEMA_TYPE_ANY' type='enum'/>
+     <exports symbol='XML_SCHEMA_FACET_MINEXCLUSIVE' type='enum'/>
+     <exports symbol='XML_SCHEMAS_ANYURI' type='enum'/>
+     <exports symbol='XML_SCHEMA_FACET_MAXEXCLUSIVE' type='enum'/>
+     <exports symbol='XML_SCHEMA_TYPE_COMPLEX' type='enum'/>
+     <exports symbol='XML_SCHEMA_TYPE_ATTRIBUTEGROUP' type='enum'/>
+     <exports symbol='XML_SCHEMAS_ULONG' type='enum'/>
+     <exports symbol='XML_SCHEMAS_PINTEGER' type='enum'/>
+     <exports symbol='XML_SCHEMA_TYPE_BASIC' type='enum'/>
+     <exports symbol='XML_SCHEMAS_HEXBINARY' type='enum'/>
+     <exports symbol='XML_SCHEMA_TYPE_CHOICE' type='enum'/>
      <exports symbol='XML_SCHEMA_TYPE_UNION' type='enum'/>
-     <exports symbol='XML_SCHEMA_TYPE_ELEMENT' type='enum'/>
-     <exports symbol='XML_SCHEMA_FACET_TOTALDIGITS' type='enum'/>
-     <exports symbol='XML_SCHEMA_TYPE_ANY_ATTRIBUTE' type='enum'/>
-     <exports symbol='XML_SCHEMA_TYPE_NOTATION' type='enum'/>
+     <exports symbol='XML_SCHEMAS_DECIMAL' type='enum'/>
+     <exports symbol='XML_SCHEMA_TYPE_UR' type='enum'/>
      <exports symbol='XML_SCHEMA_FACET_LENGTH' type='enum'/>
      <exports symbol='XML_SCHEMA_CONTENT_SIMPLE' type='enum'/>
+     <exports symbol='XML_SCHEMAS_DOUBLE' type='enum'/>
+     <exports symbol='XML_SCHEMA_FACET_PATTERN' type='enum'/>
+     <exports symbol='XML_SCHEMAS_SHORT' type='enum'/>
+     <exports symbol='XML_SCHEMAS_LANGUAGE' type='enum'/>
+     <exports symbol='XML_SCHEMAS_NINTEGER' type='enum'/>
+     <exports symbol='XML_SCHEMAS_NORMSTRING' type='enum'/>
+     <exports symbol='XML_SCHEMA_CONTENT_MIXED' type='enum'/>
+     <exports symbol='XML_SCHEMAS_ANYTYPE' type='enum'/>
+     <exports symbol='XML_SCHEMAS_DURATION' type='enum'/>
+     <exports symbol='XML_SCHEMA_TYPE_FACET' type='enum'/>
+     <exports symbol='XML_SCHEMAS_NMTOKENS' type='enum'/>
+     <exports symbol='XML_SCHEMA_CONTENT_MIXED_OR_ELEMENTS' type='enum'/>
+     <exports symbol='XML_SCHEMAS_USHORT' type='enum'/>
+     <exports symbol='XML_SCHEMAS_GYEARMONTH' type='enum'/>
+     <exports symbol='XML_SCHEMAS_NCNAME' type='enum'/>
+     <exports symbol='XML_SCHEMAS_NPINTEGER' type='enum'/>
+     <exports symbol='XML_SCHEMAS_INTEGER' type='enum'/>
+     <exports symbol='XML_SCHEMAS_BASE64BINARY' type='enum'/>
+     <exports symbol='XML_SCHEMAS_LONG' type='enum'/>
+     <exports symbol='XML_SCHEMA_TYPE_COMPLEX_CONTENT' type='enum'/>
+     <exports symbol='XML_SCHEMA_FACET_FRACTIONDIGITS' type='enum'/>
+     <exports symbol='XML_SCHEMAS_BOOLEAN' type='enum'/>
+     <exports symbol='XML_SCHEMAS_ENTITY' type='enum'/>
+     <exports symbol='XML_SCHEMA_TYPE_GROUP' type='enum'/>
+     <exports symbol='XML_SCHEMA_TYPE_SIMPLE' type='enum'/>
+     <exports symbol='XML_SCHEMA_TYPE_SIMPLE_CONTENT' type='enum'/>
+     <exports symbol='XML_SCHEMAS_FLOAT' type='enum'/>
+     <exports symbol='XML_SCHEMA_TYPE_ANY_ATTRIBUTE' type='enum'/>
+     <exports symbol='XML_SCHEMA_FACET_WHITESPACE' type='enum'/>
+     <exports symbol='XML_SCHEMAS_ENTITIES' type='enum'/>
+     <exports symbol='XML_SCHEMA_TYPE_ELEMENT' type='enum'/>
+     <exports symbol='XML_SCHEMAS_DATE' type='enum'/>
+     <exports symbol='XML_SCHEMAS_STRING' type='enum'/>
+     <exports symbol='XML_SCHEMA_TYPE_LIST' type='enum'/>
+     <exports symbol='XML_SCHEMA_TYPE_ATTRIBUTE' type='enum'/>
+     <exports symbol='XML_SCHEMA_FACET_TOTALDIGITS' type='enum'/>
+     <exports symbol='XML_SCHEMAS_QNAME' type='enum'/>
+     <exports symbol='XML_SCHEMA_TYPE_NOTATION' type='enum'/>
+     <exports symbol='XML_SCHEMAS_TOKEN' type='enum'/>
      <exports symbol='XML_SCHEMA_CONTENT_ANY' type='enum'/>
      <exports symbol='XML_SCHEMA_CONTENT_BASIC' type='enum'/>
      <exports symbol='XML_SCHEMA_FACET_MINLENGTH' type='enum'/>
-     <exports symbol='XML_SCHEMA_TYPE_UR' type='enum'/>
-     <exports symbol='XML_SCHEMA_TYPE_COMPLEX_CONTENT' type='enum'/>
-     <exports symbol='XML_SCHEMA_FACET_FRACTIONDIGITS' type='enum'/>
-     <exports symbol='XML_SCHEMA_FACET_PATTERN' type='enum'/>
+     <exports symbol='XML_SCHEMA_TYPE_SEQUENCE' type='enum'/>
+     <exports symbol='XML_SCHEMA_CONTENT_EMPTY' type='enum'/>
+     <exports symbol='XML_SCHEMA_FACET_MININCLUSIVE' type='enum'/>
      <exports symbol='XML_SCHEMA_FACET_MAXLENGTH' type='enum'/>
      <exports symbol='XML_SCHEMA_FACET_ENUMERATION' type='enum'/>
      <exports symbol='XML_SCHEMA_CONTENT_UNKNOWN' type='enum'/>
-     <exports symbol='XML_SCHEMA_TYPE_ANY' type='enum'/>
      <exports symbol='XML_SCHEMA_TYPE_RESTRICTION' type='enum'/>
      <exports symbol='xmlSchemaValPtr' type='typedef'/>
+     <exports symbol='xmlSchemaFacetLink' type='typedef'/>
      <exports symbol='xmlSchemaWildcardNsPtr' type='typedef'/>
      <exports symbol='xmlSchemaAttributeGroup' type='typedef'/>
      <exports symbol='xmlSchemaAttributeGroupPtr' type='typedef'/>
      <exports symbol='xmlSchemaElementPtr' type='typedef'/>
+     <exports symbol='xmlSchemaFacetLinkPtr' type='typedef'/>
      <exports symbol='xmlSchemaWildcardPtr' type='typedef'/>
      <exports symbol='xmlSchemaVal' type='typedef'/>
+     <exports symbol='xmlSchemaTypeLinkPtr' type='typedef'/>
      <exports symbol='xmlSchemaAttributeLinkPtr' type='typedef'/>
      <exports symbol='xmlSchemaWildcardNs' type='typedef'/>
      <exports symbol='xmlSchemaType' type='typedef'/>
      <exports symbol='xmlSchemaAttributePtr' type='typedef'/>
      <exports symbol='xmlSchemaNotationPtr' type='typedef'/>
      <exports symbol='xmlSchemaAnnot' type='typedef'/>
+     <exports symbol='xmlSchemaValType' type='typedef'/>
      <exports symbol='xmlSchemaTypePtr' type='typedef'/>
      <exports symbol='xmlSchemaNotation' type='typedef'/>
      <exports symbol='xmlSchemaAnnotPtr' type='typedef'/>
@@ -1127,19 +1192,23 @@
      <exports symbol='xmlSchemaAttribute' type='typedef'/>
      <exports symbol='xmlSchemaFacetPtr' type='typedef'/>
      <exports symbol='xmlSchemaWildcard' type='typedef'/>
+     <exports symbol='xmlSchemaTypeLink' type='typedef'/>
      <exports symbol='xmlSchemaAttributeLink' type='typedef'/>
      <exports symbol='_xmlSchemaWildcardNs' type='struct'/>
      <exports symbol='_xmlSchemaAttribute' type='struct'/>
+     <exports symbol='_xmlSchemaFacet' type='struct'/>
      <exports symbol='_xmlSchemaType' type='struct'/>
      <exports symbol='_xmlSchemaAttributeGroup' type='struct'/>
      <exports symbol='_xmlSchemaNotation' type='struct'/>
      <exports symbol='_xmlSchemaElement' type='struct'/>
      <exports symbol='_xmlSchema' type='struct'/>
      <exports symbol='_xmlSchemaAttributeLink' type='struct'/>
-     <exports symbol='_xmlSchemaFacet' type='struct'/>
+     <exports symbol='_xmlSchemaFacetLink' type='struct'/>
      <exports symbol='_xmlSchemaWildcard' type='struct'/>
+     <exports symbol='_xmlSchemaTypeLink' type='struct'/>
      <exports symbol='_xmlSchemaAnnot' type='struct'/>
      <exports symbol='xmlSchemaFreeType' type='function'/>
+     <exports symbol='xmlSchemaFreeWildcard' type='function'/>
     </file>
     <file name='threads'>
      <summary>interfaces for thread handling</summary>
@@ -1694,21 +1763,26 @@
      <summary>error handling</summary>
      <description>the API used to report errors </description>
      <author>Daniel Veillard </author>
+     <exports symbol='XML_SCHEMAP_SRC_SIMPLE_TYPE_1' type='enum'/>
      <exports symbol='XML_DTD_CONTENT_ERROR' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_MEMBER_TYPE' type='enum'/>
-     <exports symbol='XML_SCHEMAV_NOROOT' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_COMPLEX_TYPE_2_4' type='enum'/>
      <exports symbol='XML_DTD_ATTRIBUTE_VALUE' type='enum'/>
      <exports symbol='XML_ERR_INVALID_DEC_CHARREF' type='enum'/>
      <exports symbol='XML_RNGP_PARENTREF_NO_PARENT' type='enum'/>
      <exports symbol='XML_ERR_CDATA_NOT_FINISHED' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_TYPE_3_1_2' type='enum'/>
      <exports symbol='XML_XINCLUDE_INCLUDE_IN_INCLUDE' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_TYPE_3_1_1' type='enum'/>
      <exports symbol='XML_XPATH_EXPRESSION_OK' type='enum'/>
      <exports symbol='XML_ERR_DOCUMENT_END' type='enum'/>
      <exports symbol='XML_ERR_ENTITY_NOT_STARTED' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_ENUMERATION_VALID' type='enum'/>
      <exports symbol='XML_ERR_CHARREF_IN_PROLOG' type='enum'/>
      <exports symbol='XML_RNGP_INVALID_DEFINE_NAME' type='enum'/>
      <exports symbol='XML_SAVE_UNKNOWN_ENCODING' type='enum'/>
      <exports symbol='XML_ERR_CONDSEC_INVALID_KEYWORD' type='enum'/>
+     <exports symbol='XML_SCHEMAP_S4S_ATTR_MISSING' type='enum'/>
      <exports symbol='XML_CATALOG_MISSING_ATTR' type='enum'/>
      <exports symbol='XML_ERR_NO_MEMORY' type='enum'/>
      <exports symbol='XML_ERR_PEREF_SEMICOL_MISSING' type='enum'/>
@@ -1718,6 +1792,8 @@
      <exports symbol='XML_HTML_UNKNOWN_TAG' type='enum'/>
      <exports symbol='XML_DTD_NOT_STANDALONE' type='enum'/>
      <exports symbol='XML_RNGP_PAT_START_ATTR' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_MINEXCLUSIVE_VALID' type='enum'/>
+     <exports symbol='XML_SCHEMAV_NOROOT' type='enum'/>
      <exports symbol='XML_SCHEMAV_NOTEMPTY' type='enum'/>
      <exports symbol='XML_RNGP_NEED_COMBINE' type='enum'/>
      <exports symbol='XML_IO_EROFS' type='enum'/>
@@ -1727,6 +1803,8 @@
      <exports symbol='XML_XINCLUDE_NO_FALLBACK' type='enum'/>
      <exports symbol='XML_RNGP_URI_FRAGMENT' type='enum'/>
      <exports symbol='XML_FROM_MEMORY' type='enum'/>
+     <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_3_3_1_2' type='enum'/>
+     <exports symbol='XML_XPATH_INVALID_CHAR_ERROR' type='enum'/>
      <exports symbol='XML_SCHEMAP_INVALID_MAXOCCURS' type='enum'/>
      <exports symbol='XML_ERR_MISSING_ENCODING' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_ATTR_CHILD' type='enum'/>
@@ -1738,7 +1816,7 @@
      <exports symbol='XML_ERR_GT_REQUIRED' type='enum'/>
      <exports symbol='XML_SCHEMAP_FACET_NO_VALUE' type='enum'/>
      <exports symbol='XML_HTTP_UNKNOWN_HOST' type='enum'/>
-     <exports symbol='XML_XPTR_EXTRA_OBJECTS' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_MAXEXCLUSIVE_VALID' type='enum'/>
      <exports symbol='XML_ERR_ENTITY_NOT_FINISHED' type='enum'/>
      <exports symbol='XML_SCHEMAP_INVALID_ATTR_USE' type='enum'/>
      <exports symbol='XML_IO_UNKNOWN' type='enum'/>
@@ -1767,7 +1845,8 @@
      <exports symbol='XML_SCHEMAP_REGEXP_INVALID' type='enum'/>
      <exports symbol='XML_XPTR_CHILDSEQ_START' type='enum'/>
      <exports symbol='XML_C14N_CREATE_STACK' type='enum'/>
-     <exports symbol='XML_XINCLUDE_TEXT_FRAGMENT' type='enum'/>
+     <exports symbol='XML_SCHEMAP_UNKNOWN_ANYATTRIBUTE_CHILD' type='enum'/>
+     <exports symbol='XML_SCHEMAP_WILDCARD_INVALID_NS_MEMBER' type='enum'/>
      <exports symbol='XML_XPATH_INVALID_PREDICATE_ERROR' type='enum'/>
      <exports symbol='XML_ERR_EXT_SUBSET_NOT_FINISHED' type='enum'/>
      <exports symbol='XML_RNGP_PARENTREF_NAME_INVALID' type='enum'/>
@@ -1776,10 +1855,14 @@
      <exports symbol='XML_RNGP_EXTERNALREF_RECURSE' type='enum'/>
      <exports symbol='XML_DTD_ATTRIBUTE_DEFAULT' type='enum'/>
      <exports symbol='XML_RNGP_UNKNOWN_COMBINE' type='enum'/>
+     <exports symbol='XML_SCHEMAV_EXTRACONTENT' type='enum'/>
      <exports symbol='XML_RNGP_START_EMPTY' type='enum'/>
+     <exports symbol='XML_SCHEMAP_SRC_SIMPLE_TYPE_4' type='enum'/>
+     <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_3_3_2_2' type='enum'/>
      <exports symbol='XML_RNGP_ELEM_CONTENT_EMPTY' type='enum'/>
      <exports symbol='XML_WAR_NS_URI' type='enum'/>
      <exports symbol='XML_IO_EMLINK' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_COMPLEX_TYPE_2_2' type='enum'/>
      <exports symbol='XML_ERR_NMTOKEN_REQUIRED' type='enum'/>
      <exports symbol='XML_RNGP_ANYNAME_ATTR_ANCESTOR' type='enum'/>
      <exports symbol='XML_ERR_ENTITY_IS_EXTERNAL' type='enum'/>
@@ -1792,8 +1875,11 @@
      <exports symbol='XML_IO_ENODEV' type='enum'/>
      <exports symbol='XML_RNGP_PAT_DATA_EXCEPT_REF' type='enum'/>
      <exports symbol='XML_FROM_PARSER' type='enum'/>
+     <exports symbol='XML_SCHEMAP_UNKNOWN_REF' type='enum'/>
      <exports symbol='XML_XINCLUDE_RECURSION' type='enum'/>
+     <exports symbol='XML_SCHEMAP_SRC_RESOLVE' type='enum'/>
      <exports symbol='XML_C14N_CREATE_CTXT' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_FACET_VALID' type='enum'/>
      <exports symbol='XML_SCHEMAP_ATTRGRP_NONAME_NOREF' type='enum'/>
      <exports symbol='XML_SCHEMAP_RESTRICTION_NONAME_NOREF' type='enum'/>
      <exports symbol='XML_XINCLUDE_TEXT_DOCUMENT' type='enum'/>
@@ -1811,15 +1897,18 @@
      <exports symbol='XML_IO_EFAULT' type='enum'/>
      <exports symbol='XML_XPATH_INVALID_CTXT_POSITION' type='enum'/>
      <exports symbol='XML_ERR_NOTATION_NOT_FINISHED' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_LENGTH_VALID' type='enum'/>
      <exports symbol='XML_DTD_STANDALONE_DEFAULTED' type='enum'/>
      <exports symbol='XML_DTD_INVALID_DEFAULT' type='enum'/>
      <exports symbol='XML_DTD_UNKNOWN_ELEM' type='enum'/>
      <exports symbol='XML_SCHEMAP_REDEFINED_TYPE' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_MAXINCLUSIVE_VALID' type='enum'/>
      <exports symbol='XML_SCHEMAV_NOTYPE' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_FACET_CHILD' type='enum'/>
      <exports symbol='XML_SCHEMAP_NOTATION_NO_NAME' type='enum'/>
      <exports symbol='XML_DTD_EMPTY_NOTATION' type='enum'/>
      <exports symbol='XML_RNGP_ELEMENT_EMPTY' type='enum'/>
+     <exports symbol='XML_SCHEMAP_S4S_ELEM_NOT_ALLOWED' type='enum'/>
      <exports symbol='XML_RNGP_PAT_LIST_TEXT' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_ALL_CHILD' type='enum'/>
      <exports symbol='XML_SCHEMAP_INCLUDE_SCHEMA_NOT_URI' type='enum'/>
@@ -1827,7 +1916,9 @@
      <exports symbol='XML_RNGP_INCLUDE_FAILURE' type='enum'/>
      <exports symbol='XML_RNGP_INVALID_VALUE' type='enum'/>
      <exports symbol='XML_ERR_COMMENT_NOT_FINISHED' type='enum'/>
-     <exports symbol='XML_SCHEMAP_REDEFINED_ATTRGROUP' type='enum'/>
+     <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_2_3_1_2' type='enum'/>
+     <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_2_3_1_1' type='enum'/>
+     <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_1_1' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_SIMPLETYPE_CHILD' type='enum'/>
      <exports symbol='XML_IO_EMSGSIZE' type='enum'/>
      <exports symbol='XML_FROM_CATALOG' type='enum'/>
@@ -1853,7 +1944,9 @@
      <exports symbol='XML_SCHEMAP_IMPORT_REDEFINE_NSNAME' type='enum'/>
      <exports symbol='XML_RNGP_PAT_NSNAME_EXCEPT_NSNAME' type='enum'/>
      <exports symbol='XML_IO_ECANCELED' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_DATATYPE_VALID_1_2_2' type='enum'/>
      <exports symbol='XML_SCHEMAP_INVALID_ATTR_NAME' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_DATATYPE_VALID_1_2_1' type='enum'/>
      <exports symbol='XML_ERR_UNKNOWN_ENCODING' type='enum'/>
      <exports symbol='XML_SCHEMAV_NOTSIMPLE' type='enum'/>
      <exports symbol='XML_HTTP_URL_SYNTAX' type='enum'/>
@@ -1883,7 +1976,7 @@
      <exports symbol='XML_XPATH_UNFINISHED_LITERAL_ERROR' type='enum'/>
      <exports symbol='XML_RNGP_EXTERNALREF_EMTPY' type='enum'/>
      <exports symbol='XML_ERR_SPACE_REQUIRED' type='enum'/>
-     <exports symbol='XML_SCHEMAV_EXTRACONTENT' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_MAXLENGTH_VALID' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_SCHEMAS_CHILD' type='enum'/>
      <exports symbol='XML_DTD_DIFFERENT_PREFIX' type='enum'/>
      <exports symbol='XML_RNGP_INTERLEAVE_NO_CONTENT' type='enum'/>
@@ -1923,12 +2016,14 @@
      <exports symbol='XML_C14N_REQUIRES_UTF8' type='enum'/>
      <exports symbol='XML_FROM_XINCLUDE' type='enum'/>
      <exports symbol='XML_SCHEMAP_TYPE_AND_SUBTYPE' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_DATATYPE_VALID_1_2_3' type='enum'/>
      <exports symbol='XML_RNGP_GRAMMAR_EMPTY' type='enum'/>
      <exports symbol='XML_IO_ENOTDIR' type='enum'/>
      <exports symbol='XML_SAVE_CHAR_INVALID' type='enum'/>
      <exports symbol='XML_RNGP_ELEMENT_NO_CONTENT' type='enum'/>
      <exports symbol='XML_ERR_ENTITYREF_NO_NAME' type='enum'/>
      <exports symbol='XML_DTD_ID_FIXED' type='enum'/>
+     <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_2_3_2_2' type='enum'/>
      <exports symbol='XML_XINCLUDE_NO_HREF' type='enum'/>
      <exports symbol='XML_XPATH_INVALID_OPERAND' type='enum'/>
      <exports symbol='XML_IO_ENOEXEC' type='enum'/>
@@ -1949,15 +2044,17 @@
      <exports symbol='XML_SCHEMAP_ELEM_NONAME_NOREF' type='enum'/>
      <exports symbol='XML_DTD_ID_SUBSET' type='enum'/>
      <exports symbol='XML_ERR_ENTITY_CHAR_ERROR' type='enum'/>
-     <exports symbol='XML_SCHEMAP_UNKNOWN_ANYATTRIBUTE_CHILD' type='enum'/>
+     <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_3_3_2_3' type='enum'/>
      <exports symbol='XML_RNGP_PAT_START_EMPTY' type='enum'/>
      <exports symbol='XML_DTD_UNKNOWN_ENTITY' type='enum'/>
      <exports symbol='XML_RNGP_PARSE_ERROR' type='enum'/>
+     <exports symbol='XML_XINCLUDE_PARSE_VALUE' type='enum'/>
      <exports symbol='XML_RNGP_XML_NS' type='enum'/>
      <exports symbol='XML_ERR_MISPLACED_CDATA_END' type='enum'/>
      <exports symbol='XML_FROM_HTTP' type='enum'/>
      <exports symbol='XML_RNGP_PAT_DATA_EXCEPT_ONEMORE' type='enum'/>
-     <exports symbol='XML_WAR_LANG_VALUE' type='enum'/>
+     <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_3_3_1' type='enum'/>
+     <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_3_3_2_5' type='enum'/>
      <exports symbol='XML_RNGP_REF_CREATE_FAILED' type='enum'/>
      <exports symbol='XML_ERR_SEPARATOR_REQUIRED' type='enum'/>
      <exports symbol='XML_DTD_ROOT_NAME' type='enum'/>
@@ -1966,6 +2063,7 @@
      <exports symbol='XML_RNGP_ATTRIBUTE_CONTENT' type='enum'/>
      <exports symbol='XML_RNGP_REF_NOT_EMPTY' type='enum'/>
      <exports symbol='XML_DTD_XMLID_TYPE' type='enum'/>
+     <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_1_2' type='enum'/>
      <exports symbol='XML_XPATH_VARIABLE_REF_ERROR' type='enum'/>
      <exports symbol='XML_RNGP_INTERLEAVE_ADD' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_CHOICE_CHILD' type='enum'/>
@@ -1997,6 +2095,7 @@
      <exports symbol='XML_DTD_NOT_PCDATA' type='enum'/>
      <exports symbol='XML_SCHEMAP_INVALID_ATTR_COMBINATION' type='enum'/>
      <exports symbol='XML_WAR_UNKNOWN_VERSION' type='enum'/>
+     <exports symbol='XML_XPTR_EXTRA_OBJECTS' type='enum'/>
      <exports symbol='XML_RNGP_PARAM_FORBIDDEN' type='enum'/>
      <exports symbol='XML_ERR_OK' type='enum'/>
      <exports symbol='XML_SCHEMAP_NOTHING_TO_PARSE' type='enum'/>
@@ -2005,10 +2104,11 @@
      <exports symbol='XML_SCHEMAP_GROUP_NONAME_NOREF' type='enum'/>
      <exports symbol='XML_RNGP_PAT_NSNAME_EXCEPT_ANYNAME' type='enum'/>
      <exports symbol='XML_ERR_ENTITYREF_IN_PROLOG' type='enum'/>
+     <exports symbol='XML_SCHEMAP_S4S_ELEM_MISSING' type='enum'/>
      <exports symbol='XML_ERR_CHARREF_IN_DTD' type='enum'/>
      <exports symbol='XML_DTD_LOAD_ERROR' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_NOTATION_CHILD' type='enum'/>
-     <exports symbol='XML_SCHEMAP_UNKNOWN_TYPE' type='enum'/>
+     <exports symbol='XML_SCHEMAP_SRC_UNION_MEMBERTYPES_OR_SIMPLETYPES' type='enum'/>
      <exports symbol='XML_IO_ENOTTY' type='enum'/>
      <exports symbol='XML_RNGP_EMPTY_CONTENT' type='enum'/>
      <exports symbol='XML_IO_EALREADY' type='enum'/>
@@ -2037,6 +2137,7 @@
      <exports symbol='XML_SCHEMAP_INVALID_MINOCCURS' type='enum'/>
      <exports symbol='XML_SCHEMAP_COS_CT_EXTENDS_1_3' type='enum'/>
      <exports symbol='XML_SCHEMAP_SUPERNUMEROUS_LIST_ITEM_TYPE' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_TOTALDIGITS_VALID' type='enum'/>
      <exports symbol='XML_IO_ENOLCK' type='enum'/>
      <exports symbol='XML_XINCLUDE_DEPRECATED_NS' type='enum'/>
      <exports symbol='XML_RNGP_CHOICE_EMPTY' type='enum'/>
@@ -2047,13 +2148,16 @@
      <exports symbol='XML_IO_EPIPE' type='enum'/>
      <exports symbol='XML_TREE_INVALID_DEC' type='enum'/>
      <exports symbol='XML_SCHEMAP_EXTENSION_NO_BASE' type='enum'/>
+     <exports symbol='XML_XPTR_SYNTAX_ERROR' type='enum'/>
      <exports symbol='XML_SCHEMAP_NOTYPE_NOREF' type='enum'/>
      <exports symbol='XML_RNGP_ATTRIBUTE_EMPTY' type='enum'/>
      <exports symbol='XML_SCHEMAV_ISABSTRACT' type='enum'/>
      <exports symbol='XML_SCHEMAP_MISSING_SIMPLETYPE_CHILD' type='enum'/>
      <exports symbol='XML_SCHEMAP_DERIVATION_OK_RESTRICTION_1' type='enum'/>
+     <exports symbol='XML_SCHEMAP_SRC_SIMPLE_TYPE_2' type='enum'/>
      <exports symbol='XML_SCHEMAP_DERIVATION_OK_RESTRICTION_3' type='enum'/>
      <exports symbol='XML_IO_LOAD_ERROR' type='enum'/>
+     <exports symbol='XML_SCHEMAP_SRC_SIMPLE_TYPE_3' type='enum'/>
      <exports symbol='XML_RNGP_PAT_LIST_ELEM' type='enum'/>
      <exports symbol='XML_SCHEMAV_UNDECLAREDELEM' type='enum'/>
      <exports symbol='XML_RNGP_CREATE_FAILURE' type='enum'/>
@@ -2064,6 +2168,7 @@
      <exports symbol='XML_ERR_EQUAL_REQUIRED' type='enum'/>
      <exports symbol='XML_XPATH_UNKNOWN_FUNC_ERROR' type='enum'/>
      <exports symbol='XML_SCHEMAP_INVALID_WHITE_SPACE' type='enum'/>
+     <exports symbol='XML_SCHEMAP_SRC_RESTRICTION_BASE_OR_SIMPLETYPE' type='enum'/>
      <exports symbol='XML_RNGP_INCLUDE_EMPTY' type='enum'/>
      <exports symbol='XML_IO_ENOTSUP' type='enum'/>
      <exports symbol='XML_DTD_UNKNOWN_ATTRIBUTE' type='enum'/>
@@ -2078,11 +2183,13 @@
      <exports symbol='XML_FTP_EPSV_ANSWER' type='enum'/>
      <exports symbol='XML_DTD_ENTITY_TYPE' type='enum'/>
      <exports symbol='XML_ERR_FATAL' type='enum'/>
+     <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_3_1' type='enum'/>
      <exports symbol='XML_DTD_ID_REDEFINED' type='enum'/>
      <exports symbol='XML_XPATH_ENCODING_ERROR' type='enum'/>
      <exports symbol='XML_RNGP_REF_NO_NAME' type='enum'/>
      <exports symbol='XML_ERR_NONE' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_COMPLEXTYPE_CHILD' type='enum'/>
+     <exports symbol='XML_XPATH_NUMBER_ERROR' type='enum'/>
      <exports symbol='XML_RNGP_NSNAME_ATTR_ANCESTOR' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_FACET_TYPE' type='enum'/>
      <exports symbol='XML_RNGP_PAT_START_ONEMORE' type='enum'/>
@@ -2102,10 +2209,11 @@
      <exports symbol='XML_RNGP_VALUE_NO_CONTENT' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_SIMPLECONTENT_CHILD' type='enum'/>
      <exports symbol='XML_IO_EAFNOSUPPORT' type='enum'/>
-     <exports symbol='XML_XPTR_SYNTAX_ERROR' type='enum'/>
+     <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_3_3_2_1' type='enum'/>
      <exports symbol='XML_CATALOG_NOT_CATALOG' type='enum'/>
-     <exports symbol='XML_SCHEMAP_UNKNOWN_REF' type='enum'/>
+     <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_2_3_2_4' type='enum'/>
      <exports symbol='XML_RNGP_PAT_DATA_EXCEPT_EMPTY' type='enum'/>
+     <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_3_3_2_4' type='enum'/>
      <exports symbol='XML_IO_EFBIG' type='enum'/>
      <exports symbol='XML_ERR_NS_DECL_ERROR' type='enum'/>
      <exports symbol='XML_WAR_UNDECLARED_ENTITY' type='enum'/>
@@ -2119,15 +2227,18 @@
      <exports symbol='XML_XINCLUDE_FRAGMENT_ID' type='enum'/>
      <exports symbol='XML_IO_NO_INPUT' type='enum'/>
      <exports symbol='XML_NS_ERR_UNDEFINED_NAMESPACE' type='enum'/>
-     <exports symbol='XML_XPATH_INVALID_ARITY' type='enum'/>
-     <exports symbol='XML_XPATH_INVALID_CHAR_ERROR' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_MINLENGTH_VALID' type='enum'/>
+     <exports symbol='XML_SCHEMAP_ST_PROPS_CORRECT_3' type='enum'/>
      <exports symbol='XML_REGEXP_COMPILE_ERROR' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_MININCLUSIVE_VALID' type='enum'/>
      <exports symbol='XML_IO_WRITE' type='enum'/>
      <exports symbol='XML_ERR_ENTITY_PE_INTERNAL' type='enum'/>
      <exports symbol='XML_RNGP_DEFINE_MISSING' type='enum'/>
      <exports symbol='XML_ERR_NOTATION_NOT_STARTED' type='enum'/>
      <exports symbol='XML_ERR_INTERNAL_ERROR' type='enum'/>
-     <exports symbol='XML_SCHEMAP_WILDCARD_INVALID_NS_MEMBER' type='enum'/>
+     <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_1_3_1' type='enum'/>
+     <exports symbol='XML_SCHEMAP_COS_ST_DERIVED_OK_2_2' type='enum'/>
+     <exports symbol='XML_SCHEMAP_COS_ST_DERIVED_OK_2_1' type='enum'/>
      <exports symbol='XML_IO_EBADMSG' type='enum'/>
      <exports symbol='XML_RNGP_PAT_LIST_INTERLEAVE' type='enum'/>
      <exports symbol='XML_ERR_DOCUMENT_EMPTY' type='enum'/>
@@ -2137,6 +2248,7 @@
      <exports symbol='XML_FROM_NAMESPACE' type='enum'/>
      <exports symbol='XML_IO_EBUSY' type='enum'/>
      <exports symbol='XML_ERR_ATTLIST_NOT_FINISHED' type='enum'/>
+     <exports symbol='XML_XINCLUDE_TEXT_FRAGMENT' type='enum'/>
      <exports symbol='XML_RNGP_INCLUDE_RECURSE' type='enum'/>
      <exports symbol='XML_ERR_INVALID_URI' type='enum'/>
      <exports symbol='XML_SCHEMAP_INVALID_ENUM' type='enum'/>
@@ -2152,22 +2264,28 @@
      <exports symbol='XML_SCHEMAP_ELEM_DEFAULT_FIXED' type='enum'/>
      <exports symbol='XML_SCHEMAP_REDEFINED_ELEMENT' type='enum'/>
      <exports symbol='XML_RNGP_REF_NO_DEF' type='enum'/>
+     <exports symbol='XML_SCHEMAP_S4S_ATTR_NOT_ALLOWED' type='enum'/>
      <exports symbol='XML_ERR_NOT_WELL_BALANCED' type='enum'/>
      <exports symbol='XML_SCHEMAP_CT_PROPS_CORRECT_5' type='enum'/>
      <exports symbol='XML_NS_ERR_XML_NAMESPACE' type='enum'/>
      <exports symbol='XML_ERR_INVALID_CHARREF' type='enum'/>
+     <exports symbol='XML_SCHEMAP_UNKNOWN_TYPE' type='enum'/>
      <exports symbol='XML_SCHEMAP_CT_PROPS_CORRECT_2' type='enum'/>
      <exports symbol='XML_ERR_INVALID_CHAR' type='enum'/>
      <exports symbol='XML_RNGP_FOREIGN_ELEMENT' type='enum'/>
-     <exports symbol='XML_XINCLUDE_PARSE_VALUE' type='enum'/>
+     <exports symbol='XML_SCHEMAP_DEF_AND_PREFIX' type='enum'/>
      <exports symbol='XML_RNGP_PAT_ANYNAME_EXCEPT_ANYNAME' type='enum'/>
      <exports symbol='XML_RNGP_NSNAME_NO_NS' type='enum'/>
      <exports symbol='XML_ERR_MIXED_NOT_STARTED' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNION_NOT_EXPRESSIBLE' type='enum'/>
+     <exports symbol='XML_WAR_LANG_VALUE' type='enum'/>
      <exports symbol='XML_SCHEMAV_INVALIDELEM' type='enum'/>
      <exports symbol='XML_NS_ERR_QNAME' type='enum'/>
      <exports symbol='XML_DTD_NOTATION_VALUE' type='enum'/>
+     <exports symbol='XML_SCHEMAP_ST_PROPS_CORRECT_2' type='enum'/>
      <exports symbol='XML_ERR_INVALID_ENCODING' type='enum'/>
+     <exports symbol='XML_SCHEMAP_ST_PROPS_CORRECT_1' type='enum'/>
+     <exports symbol='XML_XPATH_INVALID_ARITY' type='enum'/>
      <exports symbol='XML_RNGP_EXCEPT_MISSING' type='enum'/>
      <exports symbol='XML_ERR_TAG_NOT_FINISHED' type='enum'/>
      <exports symbol='XML_RNGP_XMLNS_NAME' type='enum'/>
@@ -2185,6 +2303,8 @@
      <exports symbol='XML_RNGP_EXCEPT_MULTIPLE' type='enum'/>
      <exports symbol='XML_IO_EDEADLK' type='enum'/>
      <exports symbol='XML_ERR_ATTRIBUTE_NOT_FINISHED' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_FRACTIONDIGITS_VALID' type='enum'/>
+     <exports symbol='XML_SCHEMAP_SRC_LIST_ITEMTYPE_OR_SIMPLETYPE' type='enum'/>
      <exports symbol='XML_IO_EINVAL' type='enum'/>
      <exports symbol='XML_IO_ENAMETOOLONG' type='enum'/>
      <exports symbol='XML_ERR_PEREF_IN_PROLOG' type='enum'/>
@@ -2194,12 +2314,18 @@
      <exports symbol='XML_RNGP_PAT_START_TEXT' type='enum'/>
      <exports symbol='XML_SAVE_NOT_UTF8' type='enum'/>
      <exports symbol='XML_DTD_INVALID_CHILD' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_PATTERN_VALID' type='enum'/>
      <exports symbol='XML_RNGP_TYPE_MISSING' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_COMPLEX_TYPE_2_1' type='enum'/>
+     <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_2_3_2_1' type='enum'/>
      <exports symbol='XML_ERR_TAG_NAME_MISMATCH' type='enum'/>
+     <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_2_3_2_3' type='enum'/>
      <exports symbol='XML_ERR_ENCODING_NAME' type='enum'/>
+     <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_2_3_2_5' type='enum'/>
      <exports symbol='XML_ERR_ATTRIBUTE_REDEFINED' type='enum'/>
      <exports symbol='XML_IO_ECONNREFUSED' type='enum'/>
      <exports symbol='XML_ERR_XMLDECL_NOT_FINISHED' type='enum'/>
+     <exports symbol='XML_SCHEMAP_REDEFINED_ATTRGROUP' type='enum'/>
      <exports symbol='XML_XINCLUDE_XPTR_RESULT' type='enum'/>
      <exports symbol='XML_SCHEMAP_SIMPLETYPE_NONAME' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_ATTRIBUTE_GROUP' type='enum'/>
@@ -2214,7 +2340,8 @@
      <exports symbol='XML_IO_ETIMEDOUT' type='enum'/>
      <exports symbol='XML_RNGP_ATTRIBUTE_CHILDREN' type='enum'/>
      <exports symbol='XML_RNGP_DEFINE_NAME_MISSING' type='enum'/>
-     <exports symbol='XML_XPATH_NUMBER_ERROR' type='enum'/>
+     <exports symbol='XML_SCHEMAV_WRONGELEM' type='enum'/>
+     <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_1_3_2' type='enum'/>
      <exports symbol='XML_SAVE_NO_DOCTYPE' type='enum'/>
      <exports symbol='XML_RNGP_CHOICE_CONTENT' type='enum'/>
      <exports symbol='XML_RNGP_EMPTY_CONSTRUCT' type='enum'/>
@@ -2231,13 +2358,13 @@
      <exports symbol='XML_FROM_SCHEMASV' type='enum'/>
      <exports symbol='XML_FROM_SCHEMASP' type='enum'/>
      <exports symbol='XML_ERR_MIXED_NOT_FINISHED' type='enum'/>
-     <exports symbol='XML_SCHEMAP_DEF_AND_PREFIX' type='enum'/>
+     <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_2_1' type='enum'/>
      <exports symbol='XML_SCHEMAP_PREFIX_UNDEFINED' type='enum'/>
      <exports symbol='XML_DTD_STANDALONE_WHITE_SPACE' type='enum'/>
      <exports symbol='XML_HTTP_USE_IP' type='enum'/>
      <exports symbol='XML_IO_ENCODER' type='enum'/>
      <exports symbol='XML_IO_ENOTEMPTY' type='enum'/>
-     <exports symbol='XML_SCHEMAV_WRONGELEM' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_COMPLEX_TYPE_2_3' type='enum'/>
      <exports symbol='XML_RNGP_START_CHOICE_AND_INTERLEAVE' type='enum'/>
      <exports symbol='XML_SCHEMAP_CT_PROPS_CORRECT_3' type='enum'/>
      <exports symbol='XML_XINCLUDE_INVALID_CHAR' type='enum'/>
@@ -2522,12 +2649,17 @@
      <author>Daniel Veillard </author>
      <exports symbol='xmlSchemaNewFacet' type='function'/>
      <exports symbol='xmlSchemaValPredefTypeNode' type='function'/>
+     <exports symbol='xmlSchemaIsBuiltInTypeFacet' type='function'/>
      <exports symbol='xmlSchemaFreeFacet' type='function'/>
+     <exports symbol='xmlSchemaGetBuiltInListSimpleTypeItemType' type='function'/>
      <exports symbol='xmlSchemaValidatePredefinedType' type='function'/>
      <exports symbol='xmlSchemaCompareValues' type='function'/>
-     <exports symbol='xmlSchemaValidateFacet' type='function'/>
-     <exports symbol='xmlSchemaCleanupTypes' type='function'/>
      <exports symbol='xmlSchemaInitTypes' type='function'/>
+     <exports symbol='xmlSchemaValidateFacet' type='function'/>
+     <exports symbol='xmlSchemaValidateListSimpleTypeFacet' type='function'/>
+     <exports symbol='xmlSchemaCleanupTypes' type='function'/>
+     <exports symbol='xmlSchemaCollapseString' type='function'/>
+     <exports symbol='xmlSchemaGetBuiltInType' type='function'/>
      <exports symbol='xmlSchemaFreeValue' type='function'/>
      <exports symbol='xmlSchemaGetPredefinedType' type='function'/>
      <exports symbol='xmlSchemaCheckFacet' type='function'/>
@@ -3468,22 +3600,22 @@
       <info>Special constant found in SAX2 blocks initialized fields</info>
     </macro>
     <macro name='XML_SCHEMAS_ANYATTR_LAX' file='schemasInternals'>
-      <info>Ignore validation non definition on attributes</info>
+      <info>Ignore validation non definition on attributes Obsolete, not used anymore.</info>
     </macro>
     <macro name='XML_SCHEMAS_ANYATTR_SKIP' file='schemasInternals'>
-      <info>Skip unknown attribute from validation</info>
+      <info>Skip unknown attribute from validation Obsolete, not used anymore.</info>
     </macro>
     <macro name='XML_SCHEMAS_ANYATTR_STRICT' file='schemasInternals'>
-      <info>Apply strict validation rules on attributes</info>
+      <info>Apply strict validation rules on attributes Obsolete, not used anymore.</info>
     </macro>
     <macro name='XML_SCHEMAS_ANY_LAX' file='schemasInternals'>
-      <info>Ignore validation non definition on attributes</info>
+      <info>Used by wildcards. Validate if type found, don&apos;t worry if not found</info>
     </macro>
     <macro name='XML_SCHEMAS_ANY_SKIP' file='schemasInternals'>
       <info>Skip unknown attribute from validation</info>
     </macro>
     <macro name='XML_SCHEMAS_ANY_STRICT' file='schemasInternals'>
-      <info>Apply strict validation rules on attributes</info>
+      <info>Used by wildcards. Apply strict validation rules</info>
     </macro>
     <macro name='XML_SCHEMAS_ATTRGROUP_GLOBAL' file='schemasInternals'>
       <info>The attribute wildcard has been already builded.</info>
@@ -3500,7 +3632,7 @@
       <info>The attribute is optional.</info>
     </macro>
     <macro name='XML_SCHEMAS_ATTR_USE_PROHIBITED' file='schemasInternals'>
-      <info>The attribute is prohibited.</info>
+      <info>Used by wildcards. The attribute is prohibited.</info>
     </macro>
     <macro name='XML_SCHEMAS_ATTR_USE_REQUIRED' file='schemasInternals'>
       <info>The attribute is required.</info>
@@ -3521,7 +3653,7 @@
       <info>the element is nillable</info>
     </macro>
     <macro name='XML_SCHEMAS_ELEM_NSDEFAULT' file='schemasInternals'>
-      <info>allow elements in no namespace</info>
+      <info>allow elements in no namespace Obsolete, not used anymore.</info>
     </macro>
     <macro name='XML_SCHEMAS_ELEM_REF' file='schemasInternals'>
       <info>the element is a reference to a type</info>
@@ -3541,17 +3673,45 @@
     <macro name='XML_SCHEMAS_FACET_UNKNOWN' file='schemasInternals'>
       <info>unknown facet handling</info>
     </macro>
+    <macro name='XML_SCHEMAS_FINAL_DEFAULT_EXTENSION' file='schemasInternals'>
+      <info>the shema has &quot;extension&quot; in the set of finalDefault.</info>
+    </macro>
+    <macro name='XML_SCHEMAS_FINAL_DEFAULT_LIST' file='schemasInternals'>
+      <info>the shema has &quot;list&quot; in the set of finalDefault.</info>
+    </macro>
+    <macro name='XML_SCHEMAS_FINAL_DEFAULT_RESTRICTION' file='schemasInternals'>
+      <info>the shema has &quot;restriction&quot; in the set of finalDefault.</info>
+    </macro>
+    <macro name='XML_SCHEMAS_FINAL_DEFAULT_UNION' file='schemasInternals'>
+      <info>the shema has &quot;union&quot; in the set of finalDefault.</info>
+    </macro>
     <macro name='XML_SCHEMAS_QUALIF_ATTR' file='schemasInternals'>
       <info>the shemas requires qualified attributes</info>
     </macro>
     <macro name='XML_SCHEMAS_QUALIF_ELEM' file='schemasInternals'>
       <info>the shemas requires qualified elements</info>
     </macro>
+    <macro name='XML_SCHEMAS_TYPE_BUILTIN_PRIMITIVE' file='schemasInternals'>
+    </macro>
     <macro name='XML_SCHEMAS_TYPE_DERIVATION_METHOD_EXTENSION' file='schemasInternals'>
       <info>the simple or complex type has a derivation method of &quot;extension&quot;.</info>
     </macro>
     <macro name='XML_SCHEMAS_TYPE_DERIVATION_METHOD_RESTRICTION' file='schemasInternals'>
       <info>the simple or complex type has a derivation method of &quot;restriction&quot;.</info>
+    </macro>
+    <macro name='XML_SCHEMAS_TYPE_FINAL_DEFAULT' file='schemasInternals'>
+    </macro>
+    <macro name='XML_SCHEMAS_TYPE_FINAL_EXTENSION' file='schemasInternals'>
+      <info>the complexType has a final of &quot;extension&quot;.</info>
+    </macro>
+    <macro name='XML_SCHEMAS_TYPE_FINAL_LIST' file='schemasInternals'>
+      <info>the simpleType has a final of &quot;list&quot;.</info>
+    </macro>
+    <macro name='XML_SCHEMAS_TYPE_FINAL_RESTRICTION' file='schemasInternals'>
+      <info>the simpleType/complexType has a final of &quot;restriction&quot;.</info>
+    </macro>
+    <macro name='XML_SCHEMAS_TYPE_FINAL_UNION' file='schemasInternals'>
+      <info>the simpleType has a final of &quot;union&quot;.</info>
     </macro>
     <macro name='XML_SCHEMAS_TYPE_GLOBAL' file='schemasInternals'>
       <info>the type is global</info>
@@ -3561,6 +3721,18 @@
     </macro>
     <macro name='XML_SCHEMAS_TYPE_OWNED_ATTR_WILDCARD' file='schemasInternals'>
       <info>the complexType owns an attribute wildcard, i.e. it can be freed by the complexType</info>
+    </macro>
+    <macro name='XML_SCHEMAS_TYPE_VARIETY_ABSENT' file='schemasInternals'>
+      <info>the simpleType has a variety of &quot;absent&quot;.</info>
+    </macro>
+    <macro name='XML_SCHEMAS_TYPE_VARIETY_ATOMIC' file='schemasInternals'>
+      <info>the simpleType has a variety of &quot;union&quot;.</info>
+    </macro>
+    <macro name='XML_SCHEMAS_TYPE_VARIETY_LIST' file='schemasInternals'>
+      <info>the simpleType has a variety of &quot;list&quot;.</info>
+    </macro>
+    <macro name='XML_SCHEMAS_TYPE_VARIETY_UNION' file='schemasInternals'>
+      <info>the simpleType has a variety of &quot;union&quot;.</info>
     </macro>
     <macro name='XML_SCHEMAS_WILDCARD_COMPLETE' file='schemasInternals'>
       <info>If the wildcard is complete.</info>
@@ -4051,7 +4223,7 @@
     <enum name='XML_HTML_DOCUMENT_NODE' file='tree' value='13' type='xmlElementType'/>
     <enum name='XML_HTML_STRUCURE_ERROR' file='xmlerror' value='800' type='xmlParserErrors'/>
     <enum name='XML_HTML_UNKNOWN_TAG' file='xmlerror' value='801' type='xmlParserErrors' info='801'/>
-    <enum name='XML_HTTP_UNKNOWN_HOST' file='xmlerror' value='2022' type='xmlParserErrors' info=' 2022'/>
+    <enum name='XML_HTTP_UNKNOWN_HOST' file='xmlerror' value='2022' type='xmlParserErrors' info='2022'/>
     <enum name='XML_HTTP_URL_SYNTAX' file='xmlerror' value='2020' type='xmlParserErrors'/>
     <enum name='XML_HTTP_USE_IP' file='xmlerror' value='2021' type='xmlParserErrors' info='2021'/>
     <enum name='XML_INTERNAL_GENERAL_ENTITY' file='entities' value='1' type='xmlEntityType'/>
@@ -4362,6 +4534,28 @@
     <enum name='XML_SCHEMAP_ATTR_NONAME_NOREF' file='xmlerror' value='1703' type='xmlParserErrors' info='1703'/>
     <enum name='XML_SCHEMAP_COMPLEXTYPE_NONAME_NOREF' file='xmlerror' value='1704' type='xmlParserErrors' info='1704'/>
     <enum name='XML_SCHEMAP_COS_CT_EXTENDS_1_3' file='xmlerror' value='1800' type='xmlParserErrors' info='1799'/>
+    <enum name='XML_SCHEMAP_COS_ST_DERIVED_OK_2_1' file='xmlerror' value='3031' type='xmlParserErrors' info='3031'/>
+    <enum name='XML_SCHEMAP_COS_ST_DERIVED_OK_2_2' file='xmlerror' value='3032' type='xmlParserErrors' info='3032'/>
+    <enum name='XML_SCHEMAP_COS_ST_RESTRICTS_1_1' file='xmlerror' value='3011' type='xmlParserErrors' info='3010'/>
+    <enum name='XML_SCHEMAP_COS_ST_RESTRICTS_1_2' file='xmlerror' value='3012' type='xmlParserErrors' info='3011'/>
+    <enum name='XML_SCHEMAP_COS_ST_RESTRICTS_1_3_1' file='xmlerror' value='3013' type='xmlParserErrors' info='3012'/>
+    <enum name='XML_SCHEMAP_COS_ST_RESTRICTS_1_3_2' file='xmlerror' value='3014' type='xmlParserErrors' info='3013'/>
+    <enum name='XML_SCHEMAP_COS_ST_RESTRICTS_2_1' file='xmlerror' value='3015' type='xmlParserErrors' info='3014'/>
+    <enum name='XML_SCHEMAP_COS_ST_RESTRICTS_2_3_1_1' file='xmlerror' value='3016' type='xmlParserErrors' info='3015'/>
+    <enum name='XML_SCHEMAP_COS_ST_RESTRICTS_2_3_1_2' file='xmlerror' value='3017' type='xmlParserErrors' info='3016'/>
+    <enum name='XML_SCHEMAP_COS_ST_RESTRICTS_2_3_2_1' file='xmlerror' value='3018' type='xmlParserErrors' info='3017'/>
+    <enum name='XML_SCHEMAP_COS_ST_RESTRICTS_2_3_2_2' file='xmlerror' value='3019' type='xmlParserErrors' info='3018'/>
+    <enum name='XML_SCHEMAP_COS_ST_RESTRICTS_2_3_2_3' file='xmlerror' value='3020' type='xmlParserErrors' info='3019'/>
+    <enum name='XML_SCHEMAP_COS_ST_RESTRICTS_2_3_2_4' file='xmlerror' value='3021' type='xmlParserErrors' info='3021'/>
+    <enum name='XML_SCHEMAP_COS_ST_RESTRICTS_2_3_2_5' file='xmlerror' value='3022' type='xmlParserErrors' info='3022'/>
+    <enum name='XML_SCHEMAP_COS_ST_RESTRICTS_3_1' file='xmlerror' value='3023' type='xmlParserErrors' info='3023'/>
+    <enum name='XML_SCHEMAP_COS_ST_RESTRICTS_3_3_1' file='xmlerror' value='3024' type='xmlParserErrors' info='3024'/>
+    <enum name='XML_SCHEMAP_COS_ST_RESTRICTS_3_3_1_2' file='xmlerror' value='3025' type='xmlParserErrors' info='3025'/>
+    <enum name='XML_SCHEMAP_COS_ST_RESTRICTS_3_3_2_1' file='xmlerror' value='3027' type='xmlParserErrors' info='3027'/>
+    <enum name='XML_SCHEMAP_COS_ST_RESTRICTS_3_3_2_2' file='xmlerror' value='3026' type='xmlParserErrors' info='3026'/>
+    <enum name='XML_SCHEMAP_COS_ST_RESTRICTS_3_3_2_3' file='xmlerror' value='3028' type='xmlParserErrors' info='3028'/>
+    <enum name='XML_SCHEMAP_COS_ST_RESTRICTS_3_3_2_4' file='xmlerror' value='3029' type='xmlParserErrors' info='3029'/>
+    <enum name='XML_SCHEMAP_COS_ST_RESTRICTS_3_3_2_5' file='xmlerror' value='3030' type='xmlParserErrors' info='3030'/>
     <enum name='XML_SCHEMAP_CT_PROPS_CORRECT_1' file='xmlerror' value='1782' type='xmlParserErrors' info='1781'/>
     <enum name='XML_SCHEMAP_CT_PROPS_CORRECT_2' file='xmlerror' value='1783' type='xmlParserErrors' info='1782'/>
     <enum name='XML_SCHEMAP_CT_PROPS_CORRECT_3' file='xmlerror' value='1784' type='xmlParserErrors' info='1783'/>
@@ -4422,9 +4616,24 @@
     <enum name='XML_SCHEMAP_REF_AND_SUBTYPE' file='xmlerror' value='1725' type='xmlParserErrors' info='1725'/>
     <enum name='XML_SCHEMAP_REGEXP_INVALID' file='xmlerror' value='1756' type='xmlParserErrors' info='1756'/>
     <enum name='XML_SCHEMAP_RESTRICTION_NONAME_NOREF' file='xmlerror' value='1726' type='xmlParserErrors' info='1726'/>
+    <enum name='XML_SCHEMAP_S4S_ATTR_MISSING' file='xmlerror' value='3036' type='xmlParserErrors' info=' 3036'/>
+    <enum name='XML_SCHEMAP_S4S_ATTR_NOT_ALLOWED' file='xmlerror' value='3035' type='xmlParserErrors' info='3035'/>
+    <enum name='XML_SCHEMAP_S4S_ELEM_MISSING' file='xmlerror' value='3034' type='xmlParserErrors' info='3034'/>
+    <enum name='XML_SCHEMAP_S4S_ELEM_NOT_ALLOWED' file='xmlerror' value='3033' type='xmlParserErrors' info='3033'/>
     <enum name='XML_SCHEMAP_SIMPLETYPE_NONAME' file='xmlerror' value='1727' type='xmlParserErrors' info='1727'/>
     <enum name='XML_SCHEMAP_SRC_IMPORT_3_1' file='xmlerror' value='1795' type='xmlParserErrors' info='1794'/>
     <enum name='XML_SCHEMAP_SRC_IMPORT_3_2' file='xmlerror' value='1796' type='xmlParserErrors' info='1795'/>
+    <enum name='XML_SCHEMAP_SRC_LIST_ITEMTYPE_OR_SIMPLETYPE' file='xmlerror' value='3006' type='xmlParserErrors' info='3005'/>
+    <enum name='XML_SCHEMAP_SRC_RESOLVE' file='xmlerror' value='3004' type='xmlParserErrors' info='3004'/>
+    <enum name='XML_SCHEMAP_SRC_RESTRICTION_BASE_OR_SIMPLETYPE' file='xmlerror' value='3005' type='xmlParserErrors' info='3004'/>
+    <enum name='XML_SCHEMAP_SRC_SIMPLE_TYPE_1' file='xmlerror' value='3000' type='xmlParserErrors'/>
+    <enum name='XML_SCHEMAP_SRC_SIMPLE_TYPE_2' file='xmlerror' value='3001' type='xmlParserErrors' info='3001'/>
+    <enum name='XML_SCHEMAP_SRC_SIMPLE_TYPE_3' file='xmlerror' value='3002' type='xmlParserErrors' info='3002'/>
+    <enum name='XML_SCHEMAP_SRC_SIMPLE_TYPE_4' file='xmlerror' value='3003' type='xmlParserErrors' info='3003'/>
+    <enum name='XML_SCHEMAP_SRC_UNION_MEMBERTYPES_OR_SIMPLETYPES' file='xmlerror' value='3007' type='xmlParserErrors' info='3006'/>
+    <enum name='XML_SCHEMAP_ST_PROPS_CORRECT_1' file='xmlerror' value='3008' type='xmlParserErrors' info='3007'/>
+    <enum name='XML_SCHEMAP_ST_PROPS_CORRECT_2' file='xmlerror' value='3009' type='xmlParserErrors' info='3008'/>
+    <enum name='XML_SCHEMAP_ST_PROPS_CORRECT_3' file='xmlerror' value='3010' type='xmlParserErrors' info='3009'/>
     <enum name='XML_SCHEMAP_SUPERNUMEROUS_LIST_ITEM_TYPE' file='xmlerror' value='1776' type='xmlParserErrors' info='1775'/>
     <enum name='XML_SCHEMAP_TYPE_AND_SUBTYPE' file='xmlerror' value='1728' type='xmlParserErrors' info='1728'/>
     <enum name='XML_SCHEMAP_UNION_NOT_EXPRESSIBLE' file='xmlerror' value='1794' type='xmlParserErrors' info='1793'/>
@@ -4458,6 +4667,19 @@
     <enum name='XML_SCHEMAP_UNKNOWN_TYPE' file='xmlerror' value='1753' type='xmlParserErrors' info='1753'/>
     <enum name='XML_SCHEMAP_UNKNOWN_UNION_CHILD' file='xmlerror' value='1754' type='xmlParserErrors' info='1754'/>
     <enum name='XML_SCHEMAP_WILDCARD_INVALID_NS_MEMBER' file='xmlerror' value='1792' type='xmlParserErrors' info='1791'/>
+    <enum name='XML_SCHEMAS_ANYSIMPLETYPE' file='schemasInternals' value='46' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMAS_ANYTYPE' file='schemasInternals' value='45' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMAS_ANYURI' file='schemasInternals' value='29' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMAS_BASE64BINARY' file='schemasInternals' value='44' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMAS_BOOLEAN' file='schemasInternals' value='15' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMAS_BYTE' file='schemasInternals' value='41' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMAS_DATE' file='schemasInternals' value='10' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMAS_DATETIME' file='schemasInternals' value='11' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMAS_DECIMAL' file='schemasInternals' value='3' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMAS_DOUBLE' file='schemasInternals' value='14' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMAS_DURATION' file='schemasInternals' value='12' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMAS_ENTITIES' file='schemasInternals' value='27' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMAS_ENTITY' file='schemasInternals' value='26' type='xmlSchemaValType'/>
     <enum name='XML_SCHEMAS_ERR_' file='xmlschemas' value='24' type='xmlSchemaValidError'/>
     <enum name='XML_SCHEMAS_ERR_ATTRINVALID' file='xmlschemas' value='21' type='xmlSchemaValidError'/>
     <enum name='XML_SCHEMAS_ERR_ATTRUNKNOWN' file='xmlschemas' value='20' type='xmlSchemaValidError'/>
@@ -4484,9 +4706,64 @@
     <enum name='XML_SCHEMAS_ERR_VALUE' file='xmlschemas' value='22' type='xmlSchemaValidError'/>
     <enum name='XML_SCHEMAS_ERR_WRONGELEM' file='xmlschemas' value='5' type='xmlSchemaValidError'/>
     <enum name='XML_SCHEMAS_ERR_XXX' file='xmlschemas' value='25' type='xmlSchemaValidError'/>
+    <enum name='XML_SCHEMAS_FLOAT' file='schemasInternals' value='13' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMAS_GDAY' file='schemasInternals' value='5' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMAS_GMONTH' file='schemasInternals' value='6' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMAS_GMONTHDAY' file='schemasInternals' value='7' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMAS_GYEAR' file='schemasInternals' value='8' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMAS_GYEARMONTH' file='schemasInternals' value='9' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMAS_HEXBINARY' file='schemasInternals' value='43' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMAS_ID' file='schemasInternals' value='23' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMAS_IDREF' file='schemasInternals' value='24' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMAS_IDREFS' file='schemasInternals' value='25' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMAS_INT' file='schemasInternals' value='35' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMAS_INTEGER' file='schemasInternals' value='30' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMAS_LANGUAGE' file='schemasInternals' value='17' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMAS_LONG' file='schemasInternals' value='37' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMAS_NAME' file='schemasInternals' value='20' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMAS_NCNAME' file='schemasInternals' value='22' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMAS_NINTEGER' file='schemasInternals' value='32' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMAS_NMTOKEN' file='schemasInternals' value='18' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMAS_NMTOKENS' file='schemasInternals' value='19' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMAS_NNINTEGER' file='schemasInternals' value='33' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMAS_NORMSTRING' file='schemasInternals' value='2' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMAS_NOTATION' file='schemasInternals' value='28' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMAS_NPINTEGER' file='schemasInternals' value='31' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMAS_PINTEGER' file='schemasInternals' value='34' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMAS_QNAME' file='schemasInternals' value='21' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMAS_SHORT' file='schemasInternals' value='39' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMAS_STRING' file='schemasInternals' value='1' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMAS_TIME' file='schemasInternals' value='4' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMAS_TOKEN' file='schemasInternals' value='16' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMAS_UBYTE' file='schemasInternals' value='42' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMAS_UINT' file='schemasInternals' value='36' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMAS_ULONG' file='schemasInternals' value='38' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMAS_UNKNOWN' file='schemasInternals' value='0' type='xmlSchemaValType'/>
+    <enum name='XML_SCHEMAS_USHORT' file='schemasInternals' value='40' type='xmlSchemaValType'/>
     <enum name='XML_SCHEMAV_ATTRINVALID' file='xmlerror' value='1820' type='xmlParserErrors' info='1820'/>
     <enum name='XML_SCHEMAV_ATTRUNKNOWN' file='xmlerror' value='1819' type='xmlParserErrors' info='1819'/>
     <enum name='XML_SCHEMAV_CONSTRUCT' file='xmlerror' value='1816' type='xmlParserErrors' info='1816'/>
+    <enum name='XML_SCHEMAV_CVC_COMPLEX_TYPE_2_1' file='xmlerror' value='1840' type='xmlParserErrors' info='1840'/>
+    <enum name='XML_SCHEMAV_CVC_COMPLEX_TYPE_2_2' file='xmlerror' value='1841' type='xmlParserErrors' info='1841'/>
+    <enum name='XML_SCHEMAV_CVC_COMPLEX_TYPE_2_3' file='xmlerror' value='1842' type='xmlParserErrors' info='1842'/>
+    <enum name='XML_SCHEMAV_CVC_COMPLEX_TYPE_2_4' file='xmlerror' value='1843' type='xmlParserErrors' info='1843'/>
+    <enum name='XML_SCHEMAV_CVC_DATATYPE_VALID_1_2_1' file='xmlerror' value='1823' type='xmlParserErrors' info='1823'/>
+    <enum name='XML_SCHEMAV_CVC_DATATYPE_VALID_1_2_2' file='xmlerror' value='1824' type='xmlParserErrors' info='1824'/>
+    <enum name='XML_SCHEMAV_CVC_DATATYPE_VALID_1_2_3' file='xmlerror' value='1825' type='xmlParserErrors' info='1825'/>
+    <enum name='XML_SCHEMAV_CVC_ENUMERATION_VALID' file='xmlerror' value='1839' type='xmlParserErrors' info='1839'/>
+    <enum name='XML_SCHEMAV_CVC_FACET_VALID' file='xmlerror' value='1828' type='xmlParserErrors' info='1828'/>
+    <enum name='XML_SCHEMAV_CVC_FRACTIONDIGITS_VALID' file='xmlerror' value='1837' type='xmlParserErrors' info='1837'/>
+    <enum name='XML_SCHEMAV_CVC_LENGTH_VALID' file='xmlerror' value='1829' type='xmlParserErrors' info='1829'/>
+    <enum name='XML_SCHEMAV_CVC_MAXEXCLUSIVE_VALID' file='xmlerror' value='1835' type='xmlParserErrors' info='1835'/>
+    <enum name='XML_SCHEMAV_CVC_MAXINCLUSIVE_VALID' file='xmlerror' value='1833' type='xmlParserErrors' info='1833'/>
+    <enum name='XML_SCHEMAV_CVC_MAXLENGTH_VALID' file='xmlerror' value='1831' type='xmlParserErrors' info='1831'/>
+    <enum name='XML_SCHEMAV_CVC_MINEXCLUSIVE_VALID' file='xmlerror' value='1834' type='xmlParserErrors' info='1834'/>
+    <enum name='XML_SCHEMAV_CVC_MININCLUSIVE_VALID' file='xmlerror' value='1832' type='xmlParserErrors' info='1832'/>
+    <enum name='XML_SCHEMAV_CVC_MINLENGTH_VALID' file='xmlerror' value='1830' type='xmlParserErrors' info='1830'/>
+    <enum name='XML_SCHEMAV_CVC_PATTERN_VALID' file='xmlerror' value='1838' type='xmlParserErrors' info='1838'/>
+    <enum name='XML_SCHEMAV_CVC_TOTALDIGITS_VALID' file='xmlerror' value='1836' type='xmlParserErrors' info='1836'/>
+    <enum name='XML_SCHEMAV_CVC_TYPE_3_1_1' file='xmlerror' value='1826' type='xmlParserErrors' info='1826'/>
+    <enum name='XML_SCHEMAV_CVC_TYPE_3_1_2' file='xmlerror' value='1827' type='xmlParserErrors' info='1827'/>
     <enum name='XML_SCHEMAV_ELEMCONT' file='xmlerror' value='1809' type='xmlParserErrors' info='1809'/>
     <enum name='XML_SCHEMAV_EXTRACONTENT' file='xmlerror' value='1812' type='xmlParserErrors' info='1812'/>
     <enum name='XML_SCHEMAV_FACET' file='xmlerror' value='1822' type='xmlParserErrors' info='1822'/>
@@ -4512,7 +4789,7 @@
     <enum name='XML_SCHEMA_CONTENT_ELEMENTS' file='schemasInternals' value='2' type='xmlSchemaContentType'/>
     <enum name='XML_SCHEMA_CONTENT_EMPTY' file='schemasInternals' value='1' type='xmlSchemaContentType'/>
     <enum name='XML_SCHEMA_CONTENT_MIXED' file='schemasInternals' value='3' type='xmlSchemaContentType'/>
-    <enum name='XML_SCHEMA_CONTENT_MIXED_OR_ELEMENTS' file='schemasInternals' value='5' type='xmlSchemaContentType'/>
+    <enum name='XML_SCHEMA_CONTENT_MIXED_OR_ELEMENTS' file='schemasInternals' value='5' type='xmlSchemaContentType' info='obsolete, not used'/>
     <enum name='XML_SCHEMA_CONTENT_SIMPLE' file='schemasInternals' value='4' type='xmlSchemaContentType'/>
     <enum name='XML_SCHEMA_CONTENT_UNKNOWN' file='schemasInternals' value='0' type='xmlSchemaContentType'/>
     <enum name='XML_SCHEMA_FACET_ENUMERATION' file='schemasInternals' value='1007' type='xmlSchemaTypeType'/>
@@ -4532,7 +4809,7 @@
     <enum name='XML_SCHEMA_TYPE_ANY_ATTRIBUTE' file='schemasInternals' value='21' type='xmlSchemaTypeType'/>
     <enum name='XML_SCHEMA_TYPE_ATTRIBUTE' file='schemasInternals' value='15' type='xmlSchemaTypeType'/>
     <enum name='XML_SCHEMA_TYPE_ATTRIBUTEGROUP' file='schemasInternals' value='16' type='xmlSchemaTypeType'/>
-    <enum name='XML_SCHEMA_TYPE_BASIC' file='schemasInternals' value='1' type='xmlSchemaTypeType'/>
+    <enum name='XML_SCHEMA_TYPE_BASIC' file='schemasInternals' value='1' type='xmlSchemaTypeType' info='A built-in datatype'/>
     <enum name='XML_SCHEMA_TYPE_CHOICE' file='schemasInternals' value='7' type='xmlSchemaTypeType'/>
     <enum name='XML_SCHEMA_TYPE_COMPLEX' file='schemasInternals' value='5' type='xmlSchemaTypeType'/>
     <enum name='XML_SCHEMA_TYPE_COMPLEX_CONTENT' file='schemasInternals' value='10' type='xmlSchemaTypeType'/>
@@ -5374,6 +5651,11 @@ actually an xmlCharEncoding'/>
       <field name='val' type='xmlSchemaValPtr' info=''/>
       <field name='regexp' type='xmlRegexpPtr' info=''/>
     </struct>
+    <struct name='xmlSchemaFacetLink' file='schemasInternals' type='struct _xmlSchemaFacetLink'>
+      <field name='next' type='struct _xmlSchemaFacetLink *' info=' the next facet link ...'/>
+      <field name='facet' type='xmlSchemaFacetPtr' info=' the linked facet'/>
+    </struct>
+    <typedef name='xmlSchemaFacetLinkPtr' file='schemasInternals' type='xmlSchemaFacetLink *'/>
     <typedef name='xmlSchemaFacetPtr' file='schemasInternals' type='xmlSchemaFacet *'/>
     <struct name='xmlSchemaNotation' file='schemasInternals' type='struct _xmlSchemaNotation'>
       <field name='type' type='xmlSchemaTypeType' info=' The kind of type'/>
@@ -5408,11 +5690,20 @@ actually an xmlCharEncoding'/>
       <field name='recurse' type='int' info=''/>
       <field name='attributeUses' type='xmlSchemaAttributeLinkPtr' info=''/>
       <field name='attributeWildcard' type='xmlSchemaWildcardPtr' info=''/>
+      <field name='builtInType' type='int' info=''/>
+      <field name='memberTypes' type='xmlSchemaTypeLinkPtr' info=''/>
+      <field name='facetSet' type='xmlSchemaFacetLinkPtr' info=''/>
     </struct>
+    <struct name='xmlSchemaTypeLink' file='schemasInternals' type='struct _xmlSchemaTypeLink'>
+      <field name='next' type='struct _xmlSchemaTypeLink *' info=' the next type link ...'/>
+      <field name='type' type='xmlSchemaTypePtr' info=' the linked typ'/>
+    </struct>
+    <typedef name='xmlSchemaTypeLinkPtr' file='schemasInternals' type='xmlSchemaTypeLink *'/>
     <typedef name='xmlSchemaTypePtr' file='schemasInternals' type='xmlSchemaType *'/>
     <typedef name='xmlSchemaTypeType' file='schemasInternals' type='enum'/>
     <struct name='xmlSchemaVal' file='schemasInternals' type='struct _xmlSchemaVal'/>
     <typedef name='xmlSchemaValPtr' file='schemasInternals' type='xmlSchemaVal *'/>
+    <typedef name='xmlSchemaValType' file='schemasInternals' type='enum'/>
     <struct name='xmlSchemaValidCtxt' file='xmlschemas' type='struct _xmlSchemaValidCtxt'/>
     <typedef name='xmlSchemaValidCtxtPtr' file='xmlschemas' type='xmlSchemaValidCtxt *'/>
     <typedef name='xmlSchemaValidError' file='xmlschemas' type='enum'/>
@@ -11629,6 +11920,12 @@ actually an xmlCharEncoding'/>
       <info>Cleanup the default XML Schemas type library</info>
       <return type='void'/>
     </function>
+    <function name='xmlSchemaCollapseString' file='xmlschemastypes'>
+      <cond>LIBXML_SCHEMAS_ENABLED</cond>
+      <info>Removes and normalize white spaces in the string</info>
+      <return type='xmlChar *' info='the new string or NULL if no change was required.'/>
+      <arg name='value' type='const xmlChar *' info='a value'/>
+    </function>
     <function name='xmlSchemaCompareValues' file='xmlschemastypes'>
       <cond>LIBXML_SCHEMAS_ENABLED</cond>
       <info>Compare 2 values</info>
@@ -11680,6 +11977,24 @@ actually an xmlCharEncoding'/>
       <return type='void'/>
       <arg name='value' type='xmlSchemaValPtr' info='the value to free'/>
     </function>
+    <function name='xmlSchemaFreeWildcard' file='schemasInternals'>
+      <cond>LIBXML_SCHEMAS_ENABLED</cond>
+      <info>Deallocates a wildcard structure.</info>
+      <return type='void'/>
+      <arg name='wildcard' type='xmlSchemaWildcardPtr' info='a wildcard structure'/>
+    </function>
+    <function name='xmlSchemaGetBuiltInListSimpleTypeItemType' file='xmlschemastypes'>
+      <cond>LIBXML_SCHEMAS_ENABLED</cond>
+      <info></info>
+      <return type='xmlSchemaTypePtr' info='the item type of @type as defined by the built-in datatype hierarchy of XML Schema Part 2: Datatypes, or NULL in case of an error.'/>
+      <arg name='type' type='xmlSchemaTypePtr' info='the built-in simple type.'/>
+    </function>
+    <function name='xmlSchemaGetBuiltInType' file='xmlschemastypes'>
+      <cond>LIBXML_SCHEMAS_ENABLED</cond>
+      <info>Gives you the type struct for a built-in type by its type id.</info>
+      <return type='xmlSchemaTypePtr' info='the type if found, NULL otherwise.'/>
+      <arg name='type' type='xmlSchemaValType' info='the type of the built in type'/>
+    </function>
     <function name='xmlSchemaGetPredefinedType' file='xmlschemastypes'>
       <cond>LIBXML_SCHEMAS_ENABLED</cond>
       <info>Lookup a type in the default XML Schemas type library</info>
@@ -11691,6 +12006,13 @@ actually an xmlCharEncoding'/>
       <cond>LIBXML_SCHEMAS_ENABLED</cond>
       <info>Initialize the default XML Schemas type library</info>
       <return type='void'/>
+    </function>
+    <function name='xmlSchemaIsBuiltInTypeFacet' file='xmlschemastypes'>
+      <cond>LIBXML_SCHEMAS_ENABLED</cond>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='type' type='xmlSchemaTypePtr' info=''/>
+      <arg name='facetType' type='int' info=''/>
     </function>
     <function name='xmlSchemaNewDocParserCtxt' file='xmlschemas'>
       <cond>LIBXML_SCHEMAS_ENABLED</cond>
@@ -11770,6 +12092,15 @@ actually an xmlCharEncoding'/>
       <arg name='facet' type='xmlSchemaFacetPtr' info='the facet to check'/>
       <arg name='value' type='const xmlChar *' info='the lexical repr of the value to validate'/>
       <arg name='val' type='xmlSchemaValPtr' info='the precomputed value'/>
+    </function>
+    <function name='xmlSchemaValidateListSimpleTypeFacet' file='xmlschemastypes'>
+      <cond>LIBXML_SCHEMAS_ENABLED</cond>
+      <info>Checks the value of a list simple type against a facet.</info>
+      <return type='int' info='0 if the value is valid, a positive error code number otherwise and -1 in case of an internal error.'/>
+      <arg name='facet' type='xmlSchemaFacetPtr' info='the facet to check'/>
+      <arg name='value' type='const xmlChar *' info='the lexical repr of the value to validate'/>
+      <arg name='actualLen' type='unsigned long' info='the number of list items'/>
+      <arg name='expectedLen' type='unsigned long *' info='the resulting expected number of list items'/>
     </function>
     <function name='xmlSchemaValidatePredefinedType' file='xmlschemastypes'>
       <cond>LIBXML_SCHEMAS_ENABLED</cond>

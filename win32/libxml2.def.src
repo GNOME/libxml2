@@ -1476,6 +1476,9 @@ xmlSchemaCheckFacet
 xmlSchemaCleanupTypes
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
+xmlSchemaCollapseString
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
 xmlSchemaCompareValues
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
@@ -1497,11 +1500,21 @@ xmlSchemaFreeValidCtxt
 #ifdef LIBXML_SCHEMAS_ENABLED
 xmlSchemaFreeValue
 #endif
+xmlSchemaFreeWildcard
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlSchemaGetBuiltInListSimpleTypeItemType
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlSchemaGetBuiltInType
+#endif
 #ifdef LIBXML_SCHEMAS_ENABLED
 xmlSchemaGetPredefinedType
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
 xmlSchemaInitTypes
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlSchemaIsBuiltInTypeFacet
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
 xmlSchemaNewDocParserCtxt
@@ -1535,6 +1548,9 @@ xmlSchemaValidateDoc
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
 xmlSchemaValidateFacet
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlSchemaValidateListSimpleTypeFacet
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
 xmlSchemaValidatePredefinedType

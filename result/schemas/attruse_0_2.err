@@ -1,1 +1,1 @@
-./test/schemas/attruse_0_2.xml:6: element barC: Schemas validity error : Attribute attr on barC is unknown
+./test/schemas/attruse_0_2.xml:6: element barC: Schemas validity error : Attribute "attr" is not allowed.

@@ -364,6 +364,26 @@
       <function line='94' file='parser' name='xmlParseFile'/>
     </uses>
   </example>
+  <example filename='reader4.c'>
+    <synopsis>Parse multiple XML files reusing an xmlReader</synopsis>
+    <purpose>Demonstrate the use of xmlReaderForFile() and xmlReaderNewFile to parse XML files while reusing the reader object and parser context.  (Note that the XMLReader functions require libxml2 version later than 2.6.)</purpose>
+    <usage>reader4 &lt;filename&gt; [ filename ... ]</usage>
+    <test>reader4 test1.xml test2.xml test3.xml &gt; reader4.tmp ; diff reader4.tmp reader4.res ; rm reader4.tmp</test>
+    <author>Graham Bennett</author>
+    <copy>see Copyright for the status of this software. </copy>
+    <section>xmlReader</section>
+    <includes>
+      <include>&lt;libxml/xmlreader.h&gt;</include>
+    </includes>
+    <uses>
+      <function line='104' file='xmlreader' name='xmlFreeTextReader'/>
+      <typedef line='54' file='xmlreader' name='xmlTextReaderPtr'/>
+      <function line='83' file='xmlreader' name='xmlReaderNewFile'/>
+      <function line='26' file='xmlreader' name='xmlTextReaderRead'/>
+      <function line='97' file='xmlreader' name='xmlTextReaderCurrentDoc'/>
+      <function line='72' file='xmlreader' name='xmlReaderForFile'/>
+    </uses>
+  </example>
   <symbols>
     <symbol name='LIBXML_TEST_VERSION'>
       <ref filename='xpath1.c'/>
@@ -474,6 +494,7 @@
       <ref filename='reader1.c'/>
       <ref filename='reader2.c'/>
       <ref filename='reader3.c'/>
+      <ref filename='reader4.c'/>
     </symbol>
     <symbol name='xmlFreeTextWriter'>
       <ref filename='testWriter.c'/>
@@ -564,6 +585,10 @@
       <ref filename='reader1.c'/>
       <ref filename='reader2.c'/>
       <ref filename='reader3.c'/>
+      <ref filename='reader4.c'/>
+    </symbol>
+    <symbol name='xmlReaderNewFile'>
+      <ref filename='reader4.c'/>
     </symbol>
     <symbol name='xmlRealloc'>
       <ref filename='testWriter.c'/>
@@ -597,6 +622,7 @@
     </symbol>
     <symbol name='xmlTextReaderCurrentDoc'>
       <ref filename='reader3.c'/>
+      <ref filename='reader4.c'/>
     </symbol>
     <symbol name='xmlTextReaderDepth'>
       <ref filename='reader1.c'/>
@@ -624,11 +650,13 @@
       <ref filename='reader1.c'/>
       <ref filename='reader2.c'/>
       <ref filename='reader3.c'/>
+      <ref filename='reader4.c'/>
     </symbol>
     <symbol name='xmlTextReaderRead'>
       <ref filename='reader1.c'/>
       <ref filename='reader2.c'/>
       <ref filename='reader3.c'/>
+      <ref filename='reader4.c'/>
     </symbol>
     <symbol name='xmlTextWriterEndDocument'>
       <ref filename='testWriter.c'/>
@@ -714,6 +742,7 @@
       <example filename='reader1.c'/>
       <example filename='reader2.c'/>
       <example filename='reader3.c'/>
+      <example filename='reader4.c'/>
     </section>
     <section name='xmlWriter'>
       <example filename='testWriter.c'/>

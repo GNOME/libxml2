@@ -17,7 +17,7 @@ install-data-local:
 
 EXTRA_DIST=examples.xsl index.py test1.xml examples.xml test2.xml writer.xml test3.xml tst.xml reader1.res reader3.res tree1.res tree2.res io1.res io2.res xpath1.res xpath2.res 
 
-noinst_PROGRAMS=xpath1 parse1 parse2 tree1 tree2 testWriter reader1 reader2 reader3 io1 parse3 parse4 io2 xpath2 
+noinst_PROGRAMS=xpath1 parse1 parse2 tree1 tree2 testWriter reader1 reader2 reader3 io1 parse3 parse4 io2 xpath2 reader4 
 
 xpath1_SOURCES=xpath1.c
 xpath1_LDFLAGS=
@@ -89,6 +89,11 @@ xpath2_LDFLAGS=
 xpath2_DEPENDENCIES= $(DEPS)
 xpath2_LDADD= @RDL_LIBS@ $(LDADDS)
 
+reader4_SOURCES=reader4.c
+reader4_LDFLAGS=
+reader4_DEPENDENCIES= $(DEPS)
+reader4_LDADD= @RDL_LIBS@ $(LDADDS)
+
 valgrind: 
 	$(MAKE) CHECKER='valgrind -q' tests
 
@@ -122,6 +127,8 @@ tests: $(noinst_PROGRAMS)
 	@($(CHECKER) ./io2 > io2.tmp ; diff io2.tmp io2.res ; rm -f io2.tmp)
 	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
 	@($(CHECKER) ./xpath2 test3.xml '//discarded' discarded > xpath2.tmp ; diff xpath2.tmp xpath2.res ; rm xpath2.tmp)
+	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
+	@($(CHECKER) ./reader4 test1.xml test2.xml test3.xml > reader4.tmp ; diff reader4.tmp reader4.res ; rm reader4.tmp)
 	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
 
 

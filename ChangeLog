@@ -1,3 +1,9 @@
+Thu Oct 21 18:03:21 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemas.c: fixed a memory bug
+	* doc/examples/reader4.c doc/examples/*: added test from Graham Bennett
+	  and regenerated the directory
+
 Tue Oct 19 11:06:39 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/xmlreader.h xmlreader.c: applied patch from

@@ -7748,6 +7748,8 @@ xmlSchemaParseComplexType(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     xmlAttrPtr attr;
     const xmlChar *attrValue;
     xmlChar *des = NULL; /* The reported designation. */
+    char buf[40];
+
 
     if ((ctxt == NULL) || (schema == NULL) || (node == NULL))
         return (NULL);
@@ -7770,8 +7772,6 @@ xmlSchemaParseComplexType(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     }
             
     if (topLevel == 0) {
-        char buf[40];
-
 	/*
 	* Parse as local complex type definition.
 	*/

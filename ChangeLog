@@ -1,3 +1,9 @@
+Wed Nov 28 10:09:51 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* xmlIO.c: as robert pointed again, xmlInputCallbackInitialized
+	  gets reset by xmlCleanupInputCallbacks() and this makes the
+	  function useless. Same for output.
+
 Tue Nov 27 17:22:36 CET 2001 Daniel Veillard <daniel@veillard.com>
 
 	* xmlIO.c: robert pointed out a loop error in callback cleanups

@@ -1,3 +1,8 @@
+Mon Nov  5 20:26:41 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* debugXML.c: applied an improvement to xmlGetLineNo() from
+	  Keith Isdale
+
 Mon Nov  5 15:20:16 CET 2001 Daniel Veillard <daniel@veillard.com>
 
 	* catalog.c: dohhhh XML catalog add and remove ops were broken too.

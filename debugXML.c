@@ -1194,11 +1194,13 @@ xmlGetLineNo(xmlNodePtr node)
     if (node->type == XML_ELEMENT_NODE)
         result = (long) node->content;
     else if ((node->prev != NULL) &&
-             (node->prev->type == XML_ELEMENT_NODE))
-        result = (long) node->prev->content;
+             ((node->prev->type == XML_ELEMENT_NODE) ||
+	      (node->prev->type == XML_TEXT_NODE)))
+        result = xmlGetLineNo(node->prev);
     else if ((node->parent != NULL) &&
-             (node->parent->type == XML_ELEMENT_NODE))
-        result = (long) node->parent->content;
+             ((node->parent->type == XML_ELEMENT_NODE) ||
+      	      (node->parent->type == XML_TEXT_NODE)))
+        result = xmlGetLineNo(node->parent);
 
     return result;
 }

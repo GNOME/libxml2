@@ -1,3 +1,8 @@
+Fri Oct 27 13:45:28 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* xml-config.1: received a fixed version from Fredrik Hallenberg
+	  <hallon@lysator.liu.se>
+
 Thu Oct 26 16:05:25 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* xpath.c textXPath.c xpathInternals.h: applied TOM <ptittom@free.fr>

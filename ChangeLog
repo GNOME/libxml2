@@ -1,3 +1,9 @@
+Sat Sep 27 01:25:39 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: William's change allowed to spot a nasty bug in xmlDoRead
+	  if the result is well formed that ctxt->myDoc is not NULL and uses
+	  the context dictionnary.
+
 Fri Sep 26 21:09:34 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: other patches from William Brack to avoid

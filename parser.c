@@ -12149,7 +12149,9 @@ xmlDoRead(xmlParserCtxtPtr ctxt, const char *URL, const char *encoding,
     else {
         ret = NULL;
 	if (ctxt->myDoc != NULL) {
-	    ctxt->myDoc->dict = NULL;
+	    if ((ctxt->dictNames) &&
+		(ctxt->myDoc->dict == ctxt->dict))
+		xmlDictReference(ctxt->dict);
 	    xmlFreeDoc(ctxt->myDoc);
 	}
     }

@@ -3,7 +3,7 @@
 <html>
 <head>
   <title>The XML C library for Gnome</title>
-  <meta name="GENERATOR" content="amaya V3.2">
+  <meta name="GENERATOR" content="amaya V3.2.1">
   <meta http-equiv="Content-Type" content="text/html">
 </head>
 
@@ -53,6 +53,7 @@ alt="W3C Logo"></a></p>
   libxml2</a></li>
   <li><a href="encoding.html">libxml Internationalization support</a></li>
   <li><a href="xmlio.html">libxml Input/Output interfaces</a></li>
+  <li><a href="xmlmem.html">libxml Memory interfaces</a></li>
 </ul>
 
 <h2><a name="Introducti">Introduction</a></h2>
@@ -65,23 +66,29 @@ structured documents/data.</p>
 
 <p>Here are some key points about libxml:</p>
 <ul>
+  <li>Libxml exports Push and Pull type parser interfaces for both XML and
+    HTML.</li>
+  <li>Libxml can do Dtd validation at parse time, using a parsed document
+    instance, or with an arbitrary Dtd.</li>
+  <li>Libxml now includes a nearly complete <a
+    href="http://www.w3.org/TR/xpath">XPath</a> and <a
+    href="http://www.w3.org/TR/xptr/">XPointer</a> implementations.</li>
   <li>It is written in plain C, making as few assumptions as possible, and
-    sticking closely to ANSI C for easy embedding.</li>
+    sticking closely to ANSI C/POSIX for easy embedding. Works on
+    Linux/Unix/Windows, ported to a number of other platforms. </li>
+  <li>Basic support for HTTP and FTP client allowing to fetch remote
+  resources</li>
+  <li>The design of modular, most of the extensions can be compiled out.</li>
   <li>The internal document repesentation is as close as possible to the <a
     href="http://www.w3.org/DOM/">DOM</a> interfaces.</li>
   <li>Libxml also has a <a href="http://www.megginson.com/SAX/index.html">SAX
     like interface</a>; the interface is designed to be compatible with <a
     href="http://www.jclark.com/xml/expat.html">Expat</a>.</li>
-  <li>Libxml now includes a nearly complete <a
-    href="http://www.w3.org/TR/xpath">XPath</a> implementation.</li>
-  <li>Libxml exports Push and Pull type parser interfaces for both XML and
-    HTML.</li>
   <li>This library is released both under the <a
     href="http://www.w3.org/Consortium/Legal/copyright-software-19980720.html">W3C
-    IPR</a> and the GNU LGPL. Use either at your convenience, basically this
-    should make everybody happy, if not, drop me a mail.</li>
-  <li>There is <a href="upgrade.html">a first set of instructions</a>
-    concerning upgrade from libxml-1.x to libxml-2.x</li>
+    IPR</a> and the <a href="http://www.gnu.org/copyleft/lesser.html">GNU
+    LGPL</a>. Use either at your convenience, basically this should make
+    everybody happy, if not, drop me a mail.</li>
 </ul>
 
 <h2><a name="Documentat">Documentation</a></h2>
@@ -125,8 +132,9 @@ structured documents/data.</p>
 <p>Well, bugs or missing features are always possible, and I will make a point
 of fixing them in a timely fashion. The best way to report a bug is to use the
 <a href="http://bugs.gnome.org/db/pa/lgnome-xml.html">Gnome bug tracking
-database</a>. I look at reports there regularly and it's good to have a
-reminder when a bug is still open. Check the <a
+database</a> (make sure to use the "gnome-xml" module name, not libxml or
+libxml2). I look at reports there regularly and it's good to have a reminder
+when a bug is still open. Check the <a
 href="http://bugs.gnome.org/Reporting.html">instructions on reporting bugs</a>
 and be sure to specify that the bug is for the package gnome-xml.</p>
 
@@ -160,6 +168,9 @@ href="http://bugs.gnome.org/db/pa/lgnome-xml.html">Gnome bug
 database:</a>:</p>
 <ol>
   <li>provide patches when you find problems</li>
+  <li>provide the diffs when you port libxml to a new platform. They may not
+    be integrated in all cases but help pinpointing portability problems and
+  </li>
   <li>provice documentation fixes (either as patches to the code comments or
     as HTML diffs).</li>
   <li>provide new documentations pieces (translations, examples, etc ...)</li>
@@ -219,10 +230,30 @@ platform, get in touch with me to upload the package. I will keep them in the
 
 <h3>CVS only : check the <a
 href="http://cvs.gnome.org/lxr/source/gnome-xml/ChangeLog">Changelog</a> file
-for really accurate description</h3>
+for a really accurate description</h3>
 <ul>
-  <li>working on HTML and XML links recognition layers, get in touch with me
-    if you want to test those.</li>
+  <li>XPointer implementation and testsuite</li>
+  <li>Lot of XPath fixes, added variable and functions registration, more
+    tests</li>
+  <li>Portability fixes, lots of enhancements toward an easy Windows build and
+    release</li>
+  <li>Late validation fixes</li>
+  <li>Integrated a lot of contributed patches</li>
+  <li>added memory management docs</li>
+</ul>
+
+<p>Item floating around but not actively worked on, get in touch with me if
+you want to test those</p>
+<ul>
+  <li>working on HTML and XML links recognition layers</li>
+  <li>parsing/import of Docbook SGML docs</li>
+</ul>
+
+<h3>2.2.4: Oct 1 2000:</h3>
+<ul>
+  <li>main XPath problem fixed</li>
+  <li>Integrated portability patches for Windows</li>
+  <li>Serious bug fixes on the URI and HTML code</li>
 </ul>
 
 <h3>2.2.3: Sep 17 2000</h3>
@@ -1308,6 +1339,6 @@ Gnome CVS base under gnome-xml/example</p>
 
 <p><a href="mailto:Daniel.Veillard@w3.org">Daniel Veillard</a></p>
 
-<p>$Id: xml.html,v 1.52 2000/09/17 16:38:14 veillard Exp $</p>
+<p>$Id: xml.html,v 1.53 2000/09/29 02:42:04 veillard Exp $</p>
 </body>
 </html>

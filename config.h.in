@@ -14,6 +14,7 @@
 #undef HAVE_ISNAN
 #undef HAVE_LIBHISTORY
 #undef HAVE_LIBREADLINE
+#undef SOCKLEN_T
 
 /* Define if you have the class function.  */
 #undef HAVE_CLASS
@@ -153,5 +154,3 @@
 /* Define if compiler has function prototypes */
 #undef PROTOTYPES
 
-/* Type of socket length (socklen_t) */
-#undef SOCKLEN_T

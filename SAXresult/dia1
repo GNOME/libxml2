@@ -11,7 +11,7 @@ SAX.startElement(dia:attribute, name='background')
 SAX.characters(
       <dia:color val="#ffffff, 7)
 SAX.startElement(dia:color, val='#ffffff')
-SAX.endElement((null))
+SAX.endElement(dia:color)
 SAX.characters(
     </dia:attribute>
   </dia:, 5)
@@ -32,7 +32,7 @@ SAX.startElement(dia:attribute, name='obj_pos')
 SAX.characters(
         <dia:point val="1.95,, 9)
 SAX.startElement(dia:point, val='1.95,6.85')
-SAX.endElement((null))
+SAX.endElement(dia:point)
 SAX.characters(
       </dia:attribute>
       , 7)
@@ -43,7 +43,7 @@ SAX.startElement(dia:attribute, name='obj_bb')
 SAX.characters(
         <dia:rectangle val="1, 9)
 SAX.startElement(dia:rectangle, val='1.9,6.8;11,8.55')
-SAX.endElement((null))
+SAX.endElement(dia:rectangle)
 SAX.characters(
       </dia:attribute>
       , 7)
@@ -54,11 +54,11 @@ SAX.startElement(dia:attribute, name='conn_endpoints')
 SAX.characters(
         <dia:point val="1.95,, 9)
 SAX.startElement(dia:point, val='1.95,6.85')
-SAX.endElement((null))
+SAX.endElement(dia:point)
 SAX.characters(
         <dia:point val="10.95, 9)
 SAX.startElement(dia:point, val='10.95,8.5')
-SAX.endElement((null))
+SAX.endElement(dia:point)
 SAX.characters(
       </dia:attribute>
       , 7)
@@ -69,7 +69,7 @@ SAX.startElement(dia:attribute, name='line_color')
 SAX.characters(
         <dia:color val="#0000, 9)
 SAX.startElement(dia:color, val='#000000')
-SAX.endElement((null))
+SAX.endElement(dia:color)
 SAX.characters(
       </dia:attribute>
       , 7)
@@ -80,7 +80,7 @@ SAX.startElement(dia:attribute, name='line_width')
 SAX.characters(
         <dia:real val="0.1"/>, 9)
 SAX.startElement(dia:real, val='0.1')
-SAX.endElement((null))
+SAX.endElement(dia:real)
 SAX.characters(
       </dia:attribute>
       , 7)
@@ -92,7 +92,7 @@ SAX.characters(
         <dia:enum val="0"/>
  , 9)
 SAX.startElement(dia:enum, val='0')
-SAX.endElement((null))
+SAX.endElement(dia:enum)
 SAX.characters(
       </dia:attribute>
       , 7)
@@ -104,7 +104,7 @@ SAX.characters(
         <dia:enum val="0"/>
  , 9)
 SAX.startElement(dia:enum, val='0')
-SAX.endElement((null))
+SAX.endElement(dia:enum)
 SAX.characters(
       </dia:attribute>
       , 7)
@@ -116,7 +116,7 @@ SAX.characters(
         <dia:enum val="0"/>
  , 9)
 SAX.startElement(dia:enum, val='0')
-SAX.endElement((null))
+SAX.endElement(dia:enum)
 SAX.characters(
       </dia:attribute>
       , 7)
@@ -128,7 +128,7 @@ SAX.startElement(dia:connections)
 SAX.characters(
         <dia:connection handl, 9)
 SAX.startElement(dia:connection, handle='1', to='O2', connection='3')
-SAX.endElement((null))
+SAX.endElement(dia:connection)
 SAX.characters(
       </dia:connections>
     , 7)
@@ -146,7 +146,7 @@ SAX.startElement(dia:attribute, name='obj_pos')
 SAX.characters(
         <dia:point val="4.8,4, 9)
 SAX.startElement(dia:point, val='4.8,4.75')
-SAX.endElement((null))
+SAX.endElement(dia:point)
 SAX.characters(
       </dia:attribute>
       , 7)
@@ -157,7 +157,7 @@ SAX.startElement(dia:attribute, name='obj_bb')
 SAX.characters(
         <dia:rectangle val="2, 9)
 SAX.startElement(dia:rectangle, val='2.579,3.96359;7.021,4.96359')
-SAX.endElement((null))
+SAX.endElement(dia:rectangle)
 SAX.characters(
       </dia:attribute>
       , 7)
@@ -174,7 +174,7 @@ SAX.startElement(dia:attribute, name='string')
 SAX.characters(
             <dia:string val=", 13)
 SAX.startElement(dia:string, val='sdfsdfg')
-SAX.endElement((null))
+SAX.endElement(dia:string)
 SAX.characters(
           </dia:attribute>
   , 11)
@@ -185,7 +185,7 @@ SAX.startElement(dia:attribute, name='font')
 SAX.characters(
             <dia:font name="C, 13)
 SAX.startElement(dia:font, name='Courier')
-SAX.endElement((null))
+SAX.endElement(dia:font)
 SAX.characters(
           </dia:attribute>
   , 11)
@@ -196,7 +196,7 @@ SAX.startElement(dia:attribute, name='height')
 SAX.characters(
             <dia:real val="1", 13)
 SAX.startElement(dia:real, val='1')
-SAX.endElement((null))
+SAX.endElement(dia:real)
 SAX.characters(
           </dia:attribute>
   , 11)
@@ -207,7 +207,7 @@ SAX.startElement(dia:attribute, name='pos')
 SAX.characters(
             <dia:point val="4, 13)
 SAX.startElement(dia:point, val='4.8,4.75')
-SAX.endElement((null))
+SAX.endElement(dia:point)
 SAX.characters(
           </dia:attribute>
   , 11)
@@ -218,7 +218,7 @@ SAX.startElement(dia:attribute, name='color')
 SAX.characters(
             <dia:color val="#, 13)
 SAX.startElement(dia:color, val='#000000')
-SAX.endElement((null))
+SAX.endElement(dia:color)
 SAX.characters(
           </dia:attribute>
   , 11)
@@ -229,7 +229,7 @@ SAX.startElement(dia:attribute, name='alignment')
 SAX.characters(
             <dia:enum val="1", 13)
 SAX.startElement(dia:enum, val='1')
-SAX.endElement((null))
+SAX.endElement(dia:enum)
 SAX.characters(
           </dia:attribute>
   , 11)
@@ -255,7 +255,7 @@ SAX.startElement(dia:attribute, name='obj_pos')
 SAX.characters(
         <dia:point val="10.95, 9)
 SAX.startElement(dia:point, val='10.95,7.5')
-SAX.endElement((null))
+SAX.endElement(dia:point)
 SAX.characters(
       </dia:attribute>
       , 7)
@@ -266,7 +266,7 @@ SAX.startElement(dia:attribute, name='obj_bb')
 SAX.characters(
         <dia:rectangle val="1, 9)
 SAX.startElement(dia:rectangle, val='10.9,7.45;13.05,9.55')
-SAX.endElement((null))
+SAX.endElement(dia:rectangle)
 SAX.characters(
       </dia:attribute>
       , 7)
@@ -277,7 +277,7 @@ SAX.startElement(dia:attribute, name='elem_corner')
 SAX.characters(
         <dia:point val="10.95, 9)
 SAX.startElement(dia:point, val='10.95,7.5')
-SAX.endElement((null))
+SAX.endElement(dia:point)
 SAX.characters(
       </dia:attribute>
       , 7)
@@ -288,7 +288,7 @@ SAX.startElement(dia:attribute, name='elem_width')
 SAX.characters(
         <dia:real val="2.05"/, 9)
 SAX.startElement(dia:real, val='2.05')
-SAX.endElement((null))
+SAX.endElement(dia:real)
 SAX.characters(
       </dia:attribute>
       , 7)
@@ -300,7 +300,7 @@ SAX.characters(
         <dia:real val="2"/>
  , 9)
 SAX.startElement(dia:real, val='2')
-SAX.endElement((null))
+SAX.endElement(dia:real)
 SAX.characters(
       </dia:attribute>
       , 7)
@@ -311,7 +311,7 @@ SAX.startElement(dia:attribute, name='border_width')
 SAX.characters(
         <dia:real val="0.1"/>, 9)
 SAX.startElement(dia:real, val='0.1')
-SAX.endElement((null))
+SAX.endElement(dia:real)
 SAX.characters(
       </dia:attribute>
       , 7)
@@ -322,7 +322,7 @@ SAX.startElement(dia:attribute, name='border_color')
 SAX.characters(
         <dia:color val="#0000, 9)
 SAX.startElement(dia:color, val='#000000')
-SAX.endElement((null))
+SAX.endElement(dia:color)
 SAX.characters(
       </dia:attribute>
       , 7)
@@ -333,7 +333,7 @@ SAX.startElement(dia:attribute, name='inner_color')
 SAX.characters(
         <dia:color val="#ffff, 9)
 SAX.startElement(dia:color, val='#ffffff')
-SAX.endElement((null))
+SAX.endElement(dia:color)
 SAX.characters(
       </dia:attribute>
       , 7)
@@ -345,7 +345,7 @@ SAX.characters(
         <dia:enum val="0"/>
  , 9)
 SAX.startElement(dia:enum, val='0')
-SAX.endElement((null))
+SAX.endElement(dia:enum)
 SAX.characters(
       </dia:attribute>
     </, 7)

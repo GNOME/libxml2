@@ -1,7 +1,7 @@
 SAX.setDocumentLocator()
 SAX.startDocument()
 SAX.internalSubset(EXAMPLE, (null), example.dtd)
-SAX.resolveEntity((null), example.dtd)
+SAX.resolveEntity( , example.dtd)
 SAX.entityDecl(xml, 1, (null), (null), Extensible Markup Language)
 SAX.getEntity(xml)
 SAX.entityDecl(title, 2, -//MY-TITLE//FR, title.xml, (null))
@@ -24,7 +24,7 @@ SAX.hasExternalSubset()
 SAX.error: Entity 'xml' not defined
 SAX.characters( and this is an embedded <IMG , 25)
 SAX.startElement(IMG, src='image')
-SAX.endElement((null))
+SAX.endElement(IMG)
 SAX.characters(
 </EXAMPLE>
 

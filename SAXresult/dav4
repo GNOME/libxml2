@@ -53,7 +53,7 @@ SAX.characters(
       <Z:Copyright-Owner/>
   , 7)
 SAX.startElement(Z:Copyright-Owner)
-SAX.endElement((null))
+SAX.endElement(Z:Copyright-Owner)
 SAX.characters(
     </D:prop>
   </D:remove>

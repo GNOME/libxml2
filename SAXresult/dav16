@@ -9,7 +9,7 @@ SAX.characters(
     <lockdiscovery/>
   </D:pr, 5)
 SAX.startElement(lockdiscovery)
-SAX.endElement((null))
+SAX.endElement(lockdiscovery)
 SAX.characters(
   </D:prop>
 </D:propfind>

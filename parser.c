@@ -4438,6 +4438,8 @@ xmlSAXParseDoc(xmlSAXHandlerPtr sax, CHAR *cur, int recovery) {
        xmlFreeDoc(ctxt->myDoc);
        ctxt->myDoc = NULL;
     }
+    if (sax != NULL) 
+	ctxt->sax = NULL;
     xmlFreeParserCtxt(ctxt);
     
     return(ret);
@@ -4501,6 +4503,7 @@ xmlSAXParseDTD(xmlSAXHandlerPtr sax, const CHAR *ExternalID,
     if ((ctxt->sax != NULL) && (ctxt->sax->resolveEntity != NULL))
 	input = ctxt->sax->resolveEntity(ctxt->userData, ExternalID, SystemID);
     if (input == NULL) {
+        if (sax != NULL) ctxt->sax = NULL;
 	xmlFreeParserCtxt(ctxt);
 	return(NULL);
     }
@@ -4534,6 +4537,7 @@ xmlSAXParseDTD(xmlSAXHandlerPtr sax, const CHAR *ExternalID,
         xmlFreeDoc(ctxt->myDoc);
         ctxt->myDoc = NULL;
     }
+    if (sax != NULL) ctxt->sax = NULL;
     xmlFreeParserCtxt(ctxt);
     
     return(ret);
@@ -4726,6 +4730,8 @@ xmlSAXParseFile(xmlSAXHandlerPtr sax, const char *filename,
        xmlFreeDoc(ctxt->myDoc);
        ctxt->myDoc = NULL;
     }
+    if (sax != NULL)
+        ctxt->sax = NULL;
     xmlFreeParserCtxt(ctxt);
     
     return(ret);
@@ -4868,6 +4874,8 @@ xmlSAXParseMemory(xmlSAXHandlerPtr sax, char *buffer, int size, int recovery) {
        xmlFreeDoc(ctxt->myDoc);
        ctxt->myDoc = NULL;
     }
+    if (sax != NULL) 
+	ctxt->sax = NULL;
     xmlFreeParserCtxt(ctxt);
     
     return(ret);
@@ -4912,6 +4920,13 @@ xmlDocPtr xmlRecoverMemory(char *buffer, int size) {
 void
 xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
 {
+    xmlSAXHandler *sax;
+
+    sax = (xmlSAXHandler *) malloc(sizeof(xmlSAXHandler));
+    if (sax == NULL) {
+        fprintf(stderr, "xmlInitParserCtxt: out of memory\n");
+    }
+
     /* Allocate the Input stack */
     ctxt->inputTab = (xmlParserInputPtr *) malloc(5 * sizeof(xmlParserInputPtr));
     ctxt->inputNr = 0;
@@ -4927,7 +4942,11 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
     ctxt->nodeMax = 10;
     ctxt->node = NULL;
 
-    ctxt->sax = &xmlDefaultSAXHandler;
+    if (sax == NULL) ctxt->sax = &xmlDefaultSAXHandler;
+    else {
+        ctxt->sax = sax;
+	memcpy(sax, &xmlDefaultSAXHandler, sizeof(xmlSAXHandler));
+    }
     ctxt->userData = ctxt;
     ctxt->myDoc = NULL;
     ctxt->wellFormed = 1;
@@ -4958,6 +4977,8 @@ xmlFreeParserCtxt(xmlParserCtxtPtr ctxt)
     if (ctxt->nodeTab != NULL) free(ctxt->nodeTab);
     if (ctxt->inputTab != NULL) free(ctxt->inputTab);
     if (ctxt->version != NULL) free((char *) ctxt->version);
+    if ((ctxt->sax != NULL) && (ctxt->sax != &xmlDefaultSAXHandler))
+        free(ctxt->sax);
     free(ctxt);
 }
 

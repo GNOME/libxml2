@@ -64,12 +64,12 @@ SAX.characters(
       <R:DingALing/>
       <R, 7)
 SAX.startElement(R:DingALing)
-SAX.endElement((null))
+SAX.endElement(R:DingALing)
 SAX.characters(
       <R:Random/>
     </D:pro, 7)
 SAX.startElement(R:Random)
-SAX.endElement((null))
+SAX.endElement(R:Random)
 SAX.characters(
     </D:prop>
     <D:status>H, 5)

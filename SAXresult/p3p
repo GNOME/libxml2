@@ -18,16 +18,16 @@ SAX.startElement(PREFIX, name='User.')
 SAX.characters(
      <REF name="Name.First"/>, 6)
 SAX.startElement(REF, name='Name.First')
-SAX.endElement((null))
+SAX.endElement(REF)
 SAX.characters(
      <REF name="Bdate.Year" o, 6)
 SAX.startElement(REF, name='Bdate.Year', optional='1')
-SAX.endElement((null))
+SAX.endElement(REF)
 SAX.characters(
      <REF name="Gender"/>
    , 6)
 SAX.startElement(REF, name='Gender')
-SAX.endElement((null))
+SAX.endElement(REF)
 SAX.characters(
     </PREFIX></WITH>
   </STAT, 5)
@@ -53,7 +53,7 @@ SAX.startElement(STATEMENT, action='read&amp;write', purp='0', recpnt='0', id='1
 SAX.characters(
     <REF name="User.Shipping., 5)
 SAX.startElement(REF, name='User.Shipping.')
-SAX.endElement((null))
+SAX.endElement(REF)
 SAX.characters(
   </STATEMENT>
   </USES>
@@ -66,7 +66,7 @@ SAX.endElement(USES)
 SAX.characters(
   <DISCLOSURE discURI="http:/, 3)
 SAX.startElement(DISCLOSURE, discURI='http://www.CoolCatalog.com/PrivacyPractice.html', access='3', other='0,1')
-SAX.endElement((null))
+SAX.endElement(DISCLOSURE)
 SAX.characters(
 </PROP></RDF:RDF>
 , 1)

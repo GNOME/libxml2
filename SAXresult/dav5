@@ -14,7 +14,7 @@ SAX.characters(
       <Z:Authors/>
     </D:pr, 7)
 SAX.startElement(Z:Authors)
-SAX.endElement((null))
+SAX.endElement(Z:Authors)
 SAX.characters(
     </D:prop>
     <D:status>H, 5)
@@ -41,7 +41,7 @@ SAX.characters(
       <Z:Copyright-Owner/>
   , 7)
 SAX.startElement(Z:Copyright-Owner)
-SAX.endElement((null))
+SAX.endElement(Z:Copyright-Owner)
 SAX.characters(
     </D:prop>
     <D:status>H, 5)

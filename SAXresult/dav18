@@ -9,7 +9,7 @@ SAX.characters(
     <supportedlock/>
   </D:pr, 5)
 SAX.startElement(supportedlock)
-SAX.endElement((null))
+SAX.endElement(supportedlock)
 SAX.characters(
   </D:prop>
 </D:propfind>

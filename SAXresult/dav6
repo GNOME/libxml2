@@ -22,7 +22,7 @@ SAX.characters(
         <D:collection/>
      , 9)
 SAX.startElement(D:collection)
-SAX.endElement((null))
+SAX.endElement(D:collection)
 SAX.characters(
       </D:resourcetype>
     <, 7)
@@ -61,7 +61,7 @@ SAX.characters(
       <D:resourcetype/>
     <, 7)
 SAX.startElement(D:resourcetype)
-SAX.endElement((null))
+SAX.endElement(D:resourcetype)
 SAX.characters(
     </D:prop>
     <D:status>H, 5)

@@ -18,12 +18,12 @@ SAX.characters(
       <R:bigbox/>
       <R:au, 7)
 SAX.startElement(R:bigbox)
-SAX.endElement((null))
+SAX.endElement(R:bigbox)
 SAX.characters(
       <R:author/>
     </D:pro, 7)
 SAX.startElement(R:author)
-SAX.endElement((null))
+SAX.endElement(R:author)
 SAX.characters(
     </D:prop>
     <D:status>H, 5)
@@ -55,7 +55,7 @@ SAX.characters(
       <R:bigbox/>
     </D:pro, 7)
 SAX.startElement(R:bigbox)
-SAX.endElement((null))
+SAX.endElement(R:bigbox)
 SAX.characters(
     </D:prop>
     <D:status>H, 5)

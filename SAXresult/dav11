@@ -25,7 +25,7 @@ SAX.characters(
       <D:addlocks/>
       <D:, 7)
 SAX.startElement(D:addlocks)
-SAX.endElement((null))
+SAX.endElement(D:addlocks)
 SAX.characters(
       <D:owner>
         <D:hr, 7)

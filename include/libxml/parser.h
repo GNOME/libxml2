@@ -148,6 +148,7 @@ typedef struct _xmlParserCtxt {
     int                nameMax;       /* Max depth of the parsing stack */
     xmlChar *         *nameTab;       /* array of nodes */
 
+    long               nbChars;       /* number of xmlChar processed */
 } _xmlParserCtxt;
 typedef _xmlParserCtxt xmlParserCtxt;
 typedef xmlParserCtxt *xmlParserCtxtPtr;

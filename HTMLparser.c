@@ -120,7 +120,7 @@ PUSH_AND_POP(xmlChar*, name)
 
 #define CUR (*ctxt->input->cur)
 #define UPPER (toupper(*ctxt->input->cur))
-#define SKIP(val) ctxt->input->cur += (val)
+#define SKIP(val) ctxt->nbChars += (val),ctxt->input->cur += (val)
 #define NXT(val) ctxt->input->cur[(val)]
 #define UPP(val) (toupper(ctxt->input->cur[(val)]))
 #define CUR_PTR ctxt->input->cur
@@ -141,6 +141,7 @@ PUSH_AND_POP(xmlChar*, name)
 	    ctxt->input->line++; ctxt->input->col = 1;			\
 	} else ctxt->input->col++;					\
 	ctxt->input->cur++;						\
+	ctxt->nbChars++;						\
         if (*ctxt->input->cur == 0)					\
 	    xmlParserInputGrow(ctxt->input, INPUT_CHUNK);		\
     }}
@@ -181,97 +182,97 @@ PUSH_AND_POP(xmlChar*, name)
  * Name,Start Tag,End Tag,  Empty,  Depr.,    DTD, Description
  */
 htmlElemDesc  html40ElementTable[] = {
-{ "A",		0,	0,	0,	0,	0, "anchor " },
-{ "ABBR",	0,	0,	0,	0,	0, "abbreviated form" },
-{ "ACRONYM",	0,	0,	0,	0,	0, "" },
-{ "ADDRESS",	0,	0,	0,	0,	0, "information on author " },
-{ "APPLET",	0,	0,	0,	1,	1, "Java applet " },
-{ "AREA",	0,	2,	1,	0,	0, "client-side image map area " },
-{ "B",		0,	0,	0,	0,	0, "bold text style" },
-{ "BASE",	0,	2,	1,	0,	0, "document base URI " },
-{ "BASEFONT",	0,	2,	1,	1,	1, "base font size " },
-{ "BDO",	0,	0,	0,	0,	0, "I18N BiDi over-ride " },
-{ "BIG",	0,	0,	0,	0,	0, "large text style" },
-{ "BLOCKQUOTE",	0,	0,	0,	0,	0, "long quotation " },
-{ "BODY",	1,	1,	0,	0,	0, "document body " },
-{ "BR",		0,	2,	1,	0,	0, "forced line break " },
-{ "BUTTON",	0,	0,	0,	0,	0, "push button " },
-{ "CAPTION",	0,	0,	0,	0,	0, "table caption " },
-{ "CENTER",	0,	0,	0,	1,	1, "shorthand for DIV align=center " },
-{ "CITE",	0,	0,	0,	0,	0, "citation" },
-{ "CODE",	0,	0,	0,	0,	0, "computer code fragment" },
-{ "COL",	0,	2,	1,	0,	0, "table column " },
-{ "COLGROUP",	0,	1,	0,	0,	0, "table column group " },
-{ "DD",		0,	1,	0,	0,	0, "definition description " },
-{ "DEL",	0,	0,	0,	0,	0, "deleted text " },
-{ "DFN",	0,	0,	0,	0,	0, "instance definition" },
-{ "DIR",	0,	0,	0,	1,	1, "directory list" },
-{ "DIV",	0,	0,	0,	0,	0, "generic language/style container"},
-{ "DL",		0,	0,	0,	0,	0, "definition list " },
-{ "DT",		0,	1,	0,	0,	0, "definition term " },
-{ "EM",		0,	0,	0,	0,	0, "emphasis" },
-{ "FIELDSET",	0,	0,	0,	0,	0, "form control group " },
-{ "FONT",	0,	0,	0,	1,	1, "local change to font " },
-{ "FORM",	0,	0,	0,	0,	0, "interactive form " },
-{ "FRAME",	0,	2,	1,	0,	2, "subwindow " },
-{ "FRAMESET",	0,	0,	0,	0,	2, "window subdivision" },
-{ "H1",		0,	0,	0,	0,	0, "heading " },
-{ "H2",		0,	0,	0,	0,	0, "heading " },
-{ "H3",		0,	0,	0,	0,	0, "heading " },
-{ "H4",		0,	0,	0,	0,	0, "heading " },
-{ "H5",		0,	0,	0,	0,	0, "heading " },
-{ "H6",		0,	0,	0,	0,	0, "heading " },
-{ "HEAD",	1,	1,	0,	0,	0, "document head " },
-{ "HR",		0,	2,	1,	0,	0, "horizontal rule " },
-{ "HTML",	1,	1,	0,	0,	0, "document root element " },
-{ "I",		0,	0,	0,	0,	0, "italic text style" },
-{ "IFRAME",	0,	0,	0,	0,	1, "inline subwindow " },
-{ "IMG",	0,	2,	1,	0,	0, "Embedded image " },
-{ "INPUT",	0,	2,	1,	0,	0, "form control " },
-{ "INS",	0,	0,	0,	0,	0, "inserted text" },
-{ "ISINDEX",	0,	2,	1,	1,	1, "single line prompt " },
-{ "KBD",	0,	0,	0,	0,	0, "text to be entered by the user" },
-{ "LABEL",	0,	0,	0,	0,	0, "form field label text " },
-{ "LEGEND",	0,	0,	0,	0,	0, "fieldset legend " },
-{ "LI",		0,	1,	0,	0,	0, "list item " },
-{ "LINK",	0,	2,	1,	0,	0, "a media-independent link " },
-{ "MAP",	0,	0,	0,	0,	0, "client-side image map " },
-{ "MENU",	0,	0,	0,	1,	1, "menu list " },
-{ "META",	0,	2,	1,	0,	0, "generic metainformation " },
-{ "NOFRAMES",	0,	0,	0,	0,	2, "alternate content container for non frame-based rendering " },
-{ "NOSCRIPT",	0,	0,	0,	0,	0, "alternate content container for non script-based rendering " },
-{ "OBJECT",	0,	0,	0,	0,	0, "generic embedded object " },
-{ "OL",		0,	0,	0,	0,	0, "ordered list " },
-{ "OPTGROUP",	0,	0,	0,	0,	0, "option group " },
-{ "OPTION",	0,	1,	0,	0,	0, "selectable choice " },
-{ "P",		0,	1,	0,	0,	0, "paragraph " },
-{ "PARAM",	0,	2,	1,	0,	0, "named property value " },
-{ "PRE",	0,	0,	0,	0,	0, "preformatted text " },
-{ "Q",		0,	0,	0,	0,	0, "short inline quotation " },
-{ "S",		0,	0,	0,	1,	1, "strike-through text style" },
-{ "SAMP",	0,	0,	0,	0,	0, "sample program output, scripts, etc." },
-{ "SCRIPT",	0,	0,	0,	0,	0, "script statements " },
-{ "SELECT",	0,	0,	0,	0,	0, "option selector " },
-{ "SMALL",	0,	0,	0,	0,	0, "small text style" },
-{ "SPAN",	0,	0,	0,	0,	0, "generic language/style container " },
-{ "STRIKE",	0,	0,	0,	1,	1, "strike-through text" },
-{ "STRONG",	0,	0,	0,	0,	0, "strong emphasis" },
-{ "STYLE",	0,	0,	0,	0,	0, "style info " },
-{ "SUB",	0,	0,	0,	0,	0, "subscript" },
-{ "SUP",	0,	0,	0,	0,	0, "superscript " },
-{ "TABLE",	0,	0,	0,	0,	0, "&#160;" },
-{ "TBODY",	1,	1,	0,	0,	0, "table body " },
-{ "TD",		0,	1,	0,	0,	0, "table data cell" },
-{ "TEXTAREA",	0,	0,	0,	0,	0, "multi-line text field " },
-{ "TFOOT",	0,	1,	0,	0,	0, "table footer " },
-{ "TH",		0,	1,	0,	0,	0, "table header cell" },
-{ "THEAD",	0,	1,	0,	0,	0, "table header " },
-{ "TITLE",	0,	0,	0,	0,	0, "document title " },
-{ "TR",		0,	1,	0,	0,	0, "table row " },
-{ "TT",		0,	0,	0,	0,	0, "teletype or monospaced text style" },
-{ "U",		0,	0,	0,	1,	1, "underlined text style" },
-{ "UL",		0,	0,	0,	0,	0, "unordered list " },
-{ "VAR",	0,	0,	0,	0,	0, "instance of a variable or program argument" },
+{ "a",		0,	0,	0,	0,	0, "anchor " },
+{ "abbr",	0,	0,	0,	0,	0, "abbreviated form" },
+{ "acronym",	0,	0,	0,	0,	0, "" },
+{ "address",	0,	0,	0,	0,	0, "information on author " },
+{ "applet",	0,	0,	0,	1,	1, "java applet " },
+{ "area",	0,	2,	1,	0,	0, "client-side image map area " },
+{ "b",		0,	0,	0,	0,	0, "bold text style" },
+{ "base",	0,	2,	1,	0,	0, "document base uri " },
+{ "basefont",	0,	2,	1,	1,	1, "base font size " },
+{ "bdo",	0,	0,	0,	0,	0, "i18n bidi over-ride " },
+{ "big",	0,	0,	0,	0,	0, "large text style" },
+{ "blockquote",	0,	0,	0,	0,	0, "long quotation " },
+{ "body",	1,	1,	0,	0,	0, "document body " },
+{ "br",		0,	2,	1,	0,	0, "forced line break " },
+{ "button",	0,	0,	0,	0,	0, "push button " },
+{ "caption",	0,	0,	0,	0,	0, "table caption " },
+{ "center",	0,	0,	0,	1,	1, "shorthand for div align=center " },
+{ "cite",	0,	0,	0,	0,	0, "citation" },
+{ "code",	0,	0,	0,	0,	0, "computer code fragment" },
+{ "col",	0,	2,	1,	0,	0, "table column " },
+{ "colgroup",	0,	1,	0,	0,	0, "table column group " },
+{ "dd",		0,	1,	0,	0,	0, "definition description " },
+{ "del",	0,	0,	0,	0,	0, "deleted text " },
+{ "dfn",	0,	0,	0,	0,	0, "instance definition" },
+{ "dir",	0,	0,	0,	1,	1, "directory list" },
+{ "div",	0,	0,	0,	0,	0, "generic language/style container"},
+{ "dl",		0,	0,	0,	0,	0, "definition list " },
+{ "dt",		0,	1,	0,	0,	0, "definition term " },
+{ "em",		0,	0,	0,	0,	0, "emphasis" },
+{ "fieldset",	0,	0,	0,	0,	0, "form control group " },
+{ "font",	0,	0,	0,	1,	1, "local change to font " },
+{ "form",	0,	0,	0,	0,	0, "interactive form " },
+{ "frame",	0,	2,	1,	0,	2, "subwindow " },
+{ "frameset",	0,	0,	0,	0,	2, "window subdivision" },
+{ "h1",		0,	0,	0,	0,	0, "heading " },
+{ "h2",		0,	0,	0,	0,	0, "heading " },
+{ "h3",		0,	0,	0,	0,	0, "heading " },
+{ "h4",		0,	0,	0,	0,	0, "heading " },
+{ "h5",		0,	0,	0,	0,	0, "heading " },
+{ "h6",		0,	0,	0,	0,	0, "heading " },
+{ "head",	1,	1,	0,	0,	0, "document head " },
+{ "hr",		0,	2,	1,	0,	0, "horizontal rule " },
+{ "html",	1,	1,	0,	0,	0, "document root element " },
+{ "i",		0,	0,	0,	0,	0, "italic text style" },
+{ "iframe",	0,	0,	0,	0,	1, "inline subwindow " },
+{ "img",	0,	2,	1,	0,	0, "embedded image " },
+{ "input",	0,	2,	1,	0,	0, "form control " },
+{ "ins",	0,	0,	0,	0,	0, "inserted text" },
+{ "isindex",	0,	2,	1,	1,	1, "single line prompt " },
+{ "kbd",	0,	0,	0,	0,	0, "text to be entered by the user" },
+{ "label",	0,	0,	0,	0,	0, "form field label text " },
+{ "legend",	0,	0,	0,	0,	0, "fieldset legend " },
+{ "li",		0,	1,	0,	0,	0, "list item " },
+{ "link",	0,	2,	1,	0,	0, "a media-independent link " },
+{ "map",	0,	0,	0,	0,	0, "client-side image map " },
+{ "menu",	0,	0,	0,	1,	1, "menu list " },
+{ "meta",	0,	2,	1,	0,	0, "generic metainformation " },
+{ "noframes",	0,	0,	0,	0,	2, "alternate content container for non frame-based rendering " },
+{ "noscript",	0,	0,	0,	0,	0, "alternate content container for non script-based rendering " },
+{ "object",	0,	0,	0,	0,	0, "generic embedded object " },
+{ "ol",		0,	0,	0,	0,	0, "ordered list " },
+{ "optgroup",	0,	0,	0,	0,	0, "option group " },
+{ "option",	0,	1,	0,	0,	0, "selectable choice " },
+{ "p",		0,	1,	0,	0,	0, "paragraph " },
+{ "param",	0,	2,	1,	0,	0, "named property value " },
+{ "pre",	0,	0,	0,	0,	0, "preformatted text " },
+{ "q",		0,	0,	0,	0,	0, "short inline quotation " },
+{ "s",		0,	0,	0,	1,	1, "strike-through text style" },
+{ "samp",	0,	0,	0,	0,	0, "sample program output, scripts, etc." },
+{ "script",	0,	0,	0,	0,	0, "script statements " },
+{ "select",	0,	0,	0,	0,	0, "option selector " },
+{ "small",	0,	0,	0,	0,	0, "small text style" },
+{ "span",	0,	0,	0,	0,	0, "generic language/style container " },
+{ "strike",	0,	0,	0,	1,	1, "strike-through text" },
+{ "strong",	0,	0,	0,	0,	0, "strong emphasis" },
+{ "style",	0,	0,	0,	0,	0, "style info " },
+{ "sub",	0,	0,	0,	0,	0, "subscript" },
+{ "sup",	0,	0,	0,	0,	0, "superscript " },
+{ "table",	0,	0,	0,	0,	0, "&#160;" },
+{ "tbody",	1,	1,	0,	0,	0, "table body " },
+{ "td",		0,	1,	0,	0,	0, "table data cell" },
+{ "textarea",	0,	0,	0,	0,	0, "multi-line text field " },
+{ "tfoot",	0,	1,	0,	0,	0, "table footer " },
+{ "th",		0,	1,	0,	0,	0, "table header cell" },
+{ "thead",	0,	1,	0,	0,	0, "table header " },
+{ "title",	0,	0,	0,	0,	0, "document title " },
+{ "tr",		0,	1,	0,	0,	0, "table row " },
+{ "tt",		0,	0,	0,	0,	0, "teletype or monospaced text style" },
+{ "u",		0,	0,	0,	1,	1, "underlined text style" },
+{ "ul",		0,	0,	0,	0,	0, "unordered list " },
+{ "var",	0,	0,	0,	0,	0, "instance of a variable or program argument" },
 };
 
 /*
@@ -280,9 +281,9 @@ htmlElemDesc  html40ElementTable[] = {
  * that element is in the same line
  */
 char *htmlEquEnd[] = {
-"DT", "DD", "LI", "OPTION", NULL,
-"H1", "H2", "H3", "H4", "H5", "H6", NULL,
-"OL", "MENU", "DIR", "ADDRESS", "PRE", "LISTING", "XMP", NULL,
+"dt", "dd", "li", "option", NULL,
+"h1", "h2", "h3", "h4", "h5", "h6", NULL,
+"ol", "menu", "dir", "address", "pre", "listing", "xmp", NULL,
 NULL
 };
 /*
@@ -295,58 +296,58 @@ NULL
  * start tags that imply the end of current element
  */
 char *htmlStartClose[] = {
-"FORM",		"FORM", "P", "HR", "H1", "H2", "H3", "H4", "H5", "H6",
-		"DL", "UL", "OL", "MENU", "DIR", "ADDRESS", "PRE",
-		"LISTING", "XMP", "HEAD", NULL,
-"HEAD",		"P", NULL,
-"TITLE",	"P", NULL,
-"BODY",		"HEAD", "STYLE", "LINK", "TITLE", "P", NULL,
-"LI",		"P", "H1", "H2", "H3", "H4", "H5", "H6", "DL", "ADDRESS",
-		"PRE", "LISTING", "XMP", "HEAD", "LI", NULL,
-"HR",		"P", "HEAD", NULL,
-"H1",		"P", "HEAD", NULL,
-"H2",		"P", "HEAD", NULL,
-"H3",		"P", "HEAD", NULL,
-"H4",		"P", "HEAD", NULL,
-"H5",		"P", "HEAD", NULL,
-"H6",		"P", "HEAD", NULL,
-"DIR",		"P", "HEAD", NULL,
-"ADDRESS",	"P", "HEAD", "UL", NULL,
-"PRE",		"P", "HEAD", "UL", NULL,
-"LISTING",	"P", "HEAD", NULL,
-"XMP",		"P", "HEAD", NULL,
-"BLOCKQUOTE",	"P", "HEAD", NULL,
-"DL",		"P", "DT", "MENU", "DIR", "ADDRESS", "PRE", "LISTING",
-		"XMP", "HEAD", NULL,
-"DT",		"P", "MENU", "DIR", "ADDRESS", "PRE", "LISTING", "XMP",
-                "HEAD", "DD", NULL,
-"DD",		"P", "MENU", "DIR", "ADDRESS", "PRE", "LISTING", "XMP",
-                "HEAD", "DT", NULL,
-"UL",		"P", "HEAD", "OL", "MENU", "DIR", "ADDRESS", "PRE",
-		"LISTING", "XMP", NULL,
-"OL",		"P", "HEAD", "UL", NULL,
-"MENU",		"P", "HEAD", "UL", NULL,
-"P",		"P", "HEAD", "H1", "H2", "H3", "H4", "H5", "H6", NULL,
-"DIV",		"P", "HEAD", NULL,
-"NOSCRIPT",	"P", "HEAD", NULL,
-"CENTER",	"FONT", "B", "I", "P", "HEAD", NULL,
-"A",		"A", NULL,
-"CAPTION",	"P", NULL,
-"COLGROUP",	"CAPTION", "COLGROUP", "COL", "P", NULL,
-"COL",		"CAPTION", "COL", "P", NULL,
-"TABLE",	"P", "HEAD", "H1", "H2", "H3", "H4", "H5", "H6", "PRE",
-		"LISTING", "XMP", "A", NULL,
-"TH",		"TH", "TD", NULL,
-"TD",		"TH", "TD", "P", NULL,
-"TR",		"TH", "TD", "TR", "CAPTION", "COL", "COLGROUP", "P", NULL,
-"THEAD",	"CAPTION", "COL", "COLGROUP", NULL,
-"TFOOT",	"TH", "TD", "TR", "CAPTION", "COL", "COLGROUP", "THEAD",
-		"TBODY", "P", NULL,
-"TBODY",	"TH", "TD", "TR", "CAPTION", "COL", "COLGROUP", "THEAD",
-		"TFOOT", "TBODY", "P", NULL,
-"OPTGROUP",	"OPTION", NULL,
-"FIELDSET",	"LEGEND", "P", "HEAD", "H1", "H2", "H3", "H4", "H5", "H6",
-		"PRE", "LISTING", "XMP", "A", NULL,
+"form",		"form", "p", "hr", "h1", "h2", "h3", "h4", "h5", "h6",
+		"dl", "ul", "ol", "menu", "dir", "address", "pre",
+		"listing", "xmp", "head", NULL,
+"head",		"p", NULL,
+"title",	"p", NULL,
+"body",		"head", "style", "link", "title", "p", NULL,
+"li",		"p", "h1", "h2", "h3", "h4", "h5", "h6", "dl", "address",
+		"pre", "listing", "xmp", "head", "li", NULL,
+"hr",		"p", "head", NULL,
+"h1",		"p", "head", NULL,
+"h2",		"p", "head", NULL,
+"h3",		"p", "head", NULL,
+"h4",		"p", "head", NULL,
+"h5",		"p", "head", NULL,
+"h6",		"p", "head", NULL,
+"dir",		"p", "head", NULL,
+"address",	"p", "head", "ul", NULL,
+"pre",		"p", "head", "ul", NULL,
+"listing",	"p", "head", NULL,
+"xmp",		"p", "head", NULL,
+"blockquote",	"p", "head", NULL,
+"dl",		"p", "dt", "menu", "dir", "address", "pre", "listing",
+		"xmp", "head", NULL,
+"dt",		"p", "menu", "dir", "address", "pre", "listing", "xmp",
+                "head", "dd", NULL,
+"dd",		"p", "menu", "dir", "address", "pre", "listing", "xmp",
+                "head", "dt", NULL,
+"ul",		"p", "head", "ol", "menu", "dir", "address", "pre",
+		"listing", "xmp", NULL,
+"ol",		"p", "head", "ul", NULL,
+"menu",		"p", "head", "ul", NULL,
+"p",		"p", "head", "h1", "h2", "h3", "h4", "h5", "h6", NULL,
+"div",		"p", "head", NULL,
+"noscript",	"p", "head", NULL,
+"center",	"font", "b", "i", "p", "head", NULL,
+"a",		"a", NULL,
+"caption",	"p", NULL,
+"colgroup",	"caption", "colgroup", "col", "p", NULL,
+"col",		"caption", "col", "p", NULL,
+"table",	"p", "head", "h1", "h2", "h3", "h4", "h5", "h6", "pre",
+		"listing", "xmp", "a", NULL,
+"th",		"th", "td", NULL,
+"td",		"th", "td", "p", NULL,
+"tr",		"th", "td", "tr", "caption", "col", "colgroup", "p", NULL,
+"thead",	"caption", "col", "colgroup", NULL,
+"tfoot",	"th", "td", "tr", "caption", "col", "colgroup", "thead",
+		"tbody", "p", NULL,
+"tbody",	"th", "td", "tr", "caption", "col", "colgroup", "thead",
+		"tfoot", "tbody", "p", NULL,
+"optgroup",	"option", NULL,
+"fieldset",	"legend", "p", "head", "h1", "h2", "h3", "h4", "h5", "h6",
+		"pre", "listing", "xmp", "a", NULL,
 NULL
 };
 
@@ -1200,7 +1201,7 @@ htmlNewDoc(const xmlChar *URI, const xmlChar *ExternalID) {
  * htmlParseHTMLName:
  * @ctxt:  an HTML parser context
  *
- * parse an HTML tag or attribute name, note that we convert it to uppercase
+ * parse an HTML tag or attribute name, note that we convert it to lowercase
  * since HTML names are not case-sensitive.
  *
  * Returns the Tag Name parsed or NULL
@@ -1216,7 +1217,7 @@ htmlParseHTMLName(htmlParserCtxtPtr ctxt) {
         (CUR != ':')) return(NULL);
 
     while ((i < 100) && ((IS_LETTER(CUR)) || (IS_DIGIT(CUR)))) {
-	if ((CUR >= 0x61) && (CUR <= 0x7a)) loc[i] = CUR - 0x20;
+	if ((CUR >= 'A') && (CUR <= 'Z')) loc[i] = CUR + 0x20;
         else loc[i] = CUR;
 	i++;
 	
@@ -1555,12 +1556,21 @@ htmlParsePubidLiteral(htmlParserCtxtPtr ctxt) {
 
 void
 htmlParseCharData(htmlParserCtxtPtr ctxt, int cdata) {
-    const xmlChar *q;
+    xmlChar *buf = NULL;
+    int len = 0;
+    int size = 100;
+    xmlChar q;
 
-    q = CUR_PTR;
-    while ((IS_CHAR(CUR)) && (CUR != '<') &&
-           (CUR != '&')) {
-	if ((CUR == ']') && (NXT(1) == ']') &&
+    buf = (xmlChar *) xmlMalloc(size * sizeof(xmlChar));
+    if (buf == NULL) {
+	fprintf(stderr, "malloc of %d byte failed\n", size);
+	return;
+    }
+
+    q = CUR;
+    while ((IS_CHAR(q)) && (q != '<') &&
+           (q != '&')) {
+	if ((q == ']') && (NXT(1) == ']') &&
 	    (NXT(2) == '>')) {
 	    if (cdata) break;
 	    else {
@@ -1570,22 +1580,36 @@ htmlParseCharData(htmlParserCtxtPtr ctxt, int cdata) {
 		ctxt->wellFormed = 0;
 	    }
 	}
+	if (len + 1 >= size) {
+	    size *= 2;
+	    buf = xmlRealloc(buf, size * sizeof(xmlChar));
+	    if (buf == NULL) {
+		fprintf(stderr, "realloc of %d byte failed\n", size);
+		return;
+	    }
+	}
+	buf[len++] = q;
         NEXT;
+	q = CUR;
     }
-    if (q == CUR_PTR) return;
+    if (len == 0) {
+	xmlFree(buf);
+	return;
+    }
 
     /*
-     * Ok the segment [q CUR_PTR] is to be consumed as chars.
+     * Ok the buffer is to be consumed as chars.
      */
     if (ctxt->sax != NULL) {
-	if (areBlanks(ctxt, q, CUR_PTR - q)) {
+	if (areBlanks(ctxt, buf, len)) {
 	    if (ctxt->sax->ignorableWhitespace != NULL)
-		ctxt->sax->ignorableWhitespace(ctxt->userData, q, CUR_PTR - q);
+		ctxt->sax->ignorableWhitespace(ctxt->userData, buf, len);
 	} else {
 	    if (ctxt->sax->characters != NULL)
-		ctxt->sax->characters(ctxt->userData, q, CUR_PTR - q);
+		ctxt->sax->characters(ctxt->userData, buf, len);
         }
     }
+    xmlFree(buf);
 }
 
 /**
@@ -1669,9 +1693,10 @@ htmlParseExternalID(htmlParserCtxtPtr ctxt, xmlChar **publicID, int strict) {
  */
 void
 htmlParseComment(htmlParserCtxtPtr ctxt, int create) {
-    const xmlChar *q, *start;
-    const xmlChar *r;
-    xmlChar *val;
+    xmlChar *buf = NULL;
+    int len = 0;
+    int size = 100;
+    register xmlChar s, r, q;
 
     /*
      * Check that there is a comment right here.
@@ -1679,30 +1704,45 @@ htmlParseComment(htmlParserCtxtPtr ctxt, int create) {
     if ((CUR != '<') || (NXT(1) != '!') ||
         (NXT(2) != '-') || (NXT(3) != '-')) return;
 
-    SKIP(4);
-    start = q = CUR_PTR;
-    NEXT;
-    r = CUR_PTR;
-    NEXT;
-    while (IS_CHAR(CUR) &&
-           ((CUR == ':') || (CUR != '>') ||
-	    (*r != '-') || (*q != '-'))) {
-        NEXT;r++;q++;
+    buf = (xmlChar *) xmlMalloc(size * sizeof(xmlChar));
+    if (buf == NULL) {
+	fprintf(stderr, "malloc of %d byte failed\n", size);
+	return;
     }
-    if (!IS_CHAR(CUR)) {
+    q = r = '-'; /* 0 or '-' to cover our ass against <!--> and <!---> ? !!! */
+    SKIP(4);
+    s = CUR;
+    
+    while (IS_CHAR(s) &&
+           ((s != '>') || (r != '-') || (q != '-'))) {
+	if (len + 1 >= size) {
+	    size *= 2;
+	    buf = xmlRealloc(buf, size * sizeof(xmlChar));
+	    if (buf == NULL) {
+		fprintf(stderr, "realloc of %d byte failed\n", size);
+		return;
+	    }
+	}
+	buf[len++] = s;
+        NEXT;
+	q = r;
+	r = s;
+	s = CUR;
+    }
+    buf[len - 2] = 0;
+    if (!IS_CHAR(s)) {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt->userData, "Comment not terminated \n<!--%.50s\n", start);
+	    ctxt->sax->error(ctxt->userData, "Comment not terminated \n<!--%.50s\n", buf);
 	ctxt->wellFormed = 0;
     } else {
         NEXT;
 	if (create) {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->comment != NULL)) {
-		val = xmlStrndup(start, q - start);
-		ctxt->sax->comment(ctxt->userData, val);
-		xmlFree(val);
+		ctxt->sax->comment(ctxt->userData, buf);
 	    }
 	}
     }
+    xmlFree(buf);
 }
 
 /**
@@ -1958,8 +1998,7 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
     while ((IS_CHAR(CUR)) &&
            (CUR != '>') && 
 	   ((CUR != '/') || (NXT(1) != '>'))) {
-	const xmlChar *q = CUR_PTR;
-	int cons = ctxt->input->consumed;
+	long cons = ctxt->nbChars;
 
 	GROW;
 	attname = htmlParseAttribute(ctxt, &attvalue);
@@ -2010,7 +2049,7 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
 
 failed:
 	SKIP_BLANKS;
-        if ((cons == ctxt->input->consumed) && (q == CUR_PTR)) {
+        if (cons == ctxt->nbChars) {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	        ctxt->sax->error(ctxt->userData, 
 	         "htmlParseStartTag: problem parsing attributes\n");
@@ -2203,10 +2242,10 @@ htmlParseContent(htmlParserCtxtPtr ctxt) {
     xmlChar *currentNode;
     int depth;
 
-    currentNode = ctxt->name;
+    currentNode = xmlStrdup(ctxt->name);
     depth = ctxt->nameNr;
     while (1) {
-	const xmlChar *test = CUR_PTR;
+	long cons = ctxt->nbChars;
 
         GROW;
 	/*
@@ -2214,6 +2253,7 @@ htmlParseContent(htmlParserCtxtPtr ctxt) {
 	 */
         if ((CUR == '<') && (NXT(1) == '/')) {
 	    htmlParseEndTag(ctxt);
+	    if (currentNode != NULL) xmlFree(currentNode);
 	    return;
         }
 
@@ -2221,8 +2261,11 @@ htmlParseContent(htmlParserCtxtPtr ctxt) {
 	 * Has this node been popped out during parsing of
 	 * the next element
 	 */
-        if ((currentNode != ctxt->name) &&
-	    (depth >= ctxt->nameNr)) return;
+        if ((xmlStrcmp(currentNode, ctxt->name)) &&
+	    (depth >= ctxt->nameNr)) {
+	    if (currentNode != NULL) xmlFree(currentNode);
+	    return;
+	}
 
 	/*
 	 * First case :  a comment
@@ -2254,7 +2297,7 @@ htmlParseContent(htmlParserCtxtPtr ctxt) {
 	    htmlParseCharData(ctxt, 0);
 	}
 
-	if (test == CUR_PTR) {
+	if (cons == ctxt->nbChars) {
 	    if (ctxt->node != NULL) {
 		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		    ctxt->sax->error(ctxt->userData,
@@ -2266,6 +2309,7 @@ htmlParseContent(htmlParserCtxtPtr ctxt) {
 
         GROW;
     }
+    if (currentNode != NULL) xmlFree(currentNode);
 }
 
 /**
@@ -2296,7 +2340,7 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
 	node_info.begin_line = ctxt->input->line;
     }
 
-    oldname = ctxt->name;
+    oldname = xmlStrdup(ctxt->name);
     htmlParseStartTag(ctxt);
     name = ctxt->name;
 #ifdef DEBUG
@@ -2307,12 +2351,16 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
     else	
 	fprintf(stderr, "Start of element %s, was %s\n", name, oldname);
 #endif
-    if (((depth == ctxt->nameNr) && (oldname == ctxt->name)) ||
+    if (((depth == ctxt->nameNr) && (!xmlStrcmp(oldname, ctxt->name))) ||
         (name == NULL)) {
 	if (CUR == '>')
 	    NEXT;
+	if (oldname != NULL)
+	    xmlFree(oldname);
         return;
     }
+    if (oldname != NULL)
+	xmlFree(oldname);
 
     /*
      * Lookup the info for that element.
@@ -2399,7 +2447,7 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
     /*
      * Parse the content of the element:
      */
-    currentNode = ctxt->name;
+    currentNode = xmlStrdup(ctxt->name);
     depth = ctxt->nameNr;
     while (IS_CHAR(CUR)) {
 	htmlParseContent(ctxt);
@@ -2422,6 +2470,8 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
 #endif
 	if (oldname != NULL)
 	    xmlFree(oldname);
+	if (currentNode != NULL)
+	    xmlFree(currentNode);
 	return;
     }
 
@@ -2435,6 +2485,8 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
        node_info.node = ctxt->node;
        xmlParserAddNodeInfo(ctxt, &node_info);
     }
+    if (currentNode != NULL)
+	xmlFree(currentNode);
 }
 
 /**
@@ -2580,6 +2632,7 @@ htmlInitParserCtxt(htmlParserCtxtPtr ctxt)
     ctxt->html = 1;
     ctxt->record_info = 0;
     ctxt->validate = 0;
+    ctxt->nbChars = 0;
     xmlInitNodeInfoSeq(&ctxt->node_seq);
 }
 

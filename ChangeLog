@@ -1,3 +1,7 @@
+Tue Mar 23 11:10:15 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* xml-config.in : applied patch to make --version work
+
 1999-03-05  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* Makefile.am (check-local): Alias for `tests' target.  This will

@@ -3138,7 +3138,7 @@ xmlParseEntityRef(xmlParserCtxtPtr ctxt) {
 		 * TODO: to be double checked !!!
 		 */
 		ent = xmlGetDocEntity(ctxt->doc, name);
-		if ((ctxt->doc->standalone) ||
+		if ((ctxt->doc->standalone == 1) ||
 		    ((ctxt->doc->intSubset == NULL) &&
 		     (ctxt->doc->extSubset == NULL))) {
 		    if (ent == NULL) {

@@ -820,6 +820,7 @@
 <ANCHOR id ="XMLCATALOGRESOLVEURI" href="libxml/libxml-catalog.html#XMLCATALOGRESOLVEURI">
 <ANCHOR id ="XMLCATALOGADD" href="libxml/libxml-catalog.html#XMLCATALOGADD">
 <ANCHOR id ="XMLCATALOGREMOVE" href="libxml/libxml-catalog.html#XMLCATALOGREMOVE">
+<ANCHOR id ="XMLPARSECATALOGFILE" href="libxml/libxml-catalog.html#XMLPARSECATALOGFILE">
 <ANCHOR id ="XMLCATALOGFREELOCAL" href="libxml/libxml-catalog.html#XMLCATALOGFREELOCAL">
 <ANCHOR id ="XMLCATALOGADDLOCAL" href="libxml/libxml-catalog.html#XMLCATALOGADDLOCAL">
 <ANCHOR id ="XMLCATALOGLOCALRESOLVE" href="libxml/libxml-catalog.html#XMLCATALOGLOCALRESOLVE">

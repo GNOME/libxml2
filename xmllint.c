@@ -672,7 +672,11 @@ static void parseAndPrintFile(char *filename) {
 		int len;
 
 		if (encoding != NULL) {
-		    xmlDocDumpMemoryEnc(doc, &result, &len, encoding);
+		    if ( format ) {
+		        xmlDocDumpFormatMemoryEnc(doc, &result, &len, encoding, 1);
+		    } else { 
+			xmlDocDumpMemoryEnc(doc, &result, &len, encoding);
+		    }
 		} else {
 		    if (format)
 			xmlDocDumpFormatMemory(doc, &result, &len, 1);
@@ -689,8 +693,14 @@ static void parseAndPrintFile(char *filename) {
 #endif /* HAVE_SYS_MMAN_H */
 	    if (compress)
 		xmlSaveFile("-", doc);
-	    else if (encoding != NULL)
-	        xmlSaveFileEnc("-", doc, encoding);
+	    else if (encoding != NULL) {
+	        if ( format ) {
+	            xmlSaveFormatFileEnc("-", doc, encoding, 1);
+		}  
+		else {
+		    xmlSaveFileEnc("-", doc, encoding);
+		}
+	    }
 	    else if (format)
 		xmlSaveFormatFile("-", doc, 1);
 	    else

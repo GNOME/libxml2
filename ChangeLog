@@ -1,3 +1,7 @@
+Thu Nov  8 18:31:40 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* xmllint.c: Morus Walter patch to allow --format and --encode
+
 Thu Nov  8 14:52:18 CET 2001 Daniel Veillard <daniel@veillard.com>
 
 	* debugXML.c: Stefan Kost provided an help command for the shell

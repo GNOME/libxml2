@@ -1066,7 +1066,7 @@ main(int argc, char **argv) {
 	         (!strcmp(argv[i], "-output")) ||
 	         (!strcmp(argv[i], "--output"))) {
 	    i++;
-	    output = argv[i++];
+	    output = argv[i];
 	}
 	else if ((!strcmp(argv[i], "-htmlout")) ||
 	         (!strcmp(argv[i], "--htmlout")))

@@ -1,7 +1,10 @@
+Tue Apr  9 11:51:25 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xmllint.c: applied a fix from Anthony Jones for -o /--output
+
 Tue Apr  2 20:27:11 MST 2002 John Fleck <jfleck@inkstain.net>
 
-	* doc/example.html
-	fixing typo
+	* doc/example.html: fixing typo
 
 Mon Apr  1 10:02:57 CEST 2002 Daniel Veillard <daniel@veillard.com>
 

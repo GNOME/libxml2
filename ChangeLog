@@ -1,3 +1,8 @@
+Sat Sep 11 09:04:22 PDT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* xmlwriter.c: changed char array initialisation to avoid a
+	  complaint from some compiler(s) (bug 152308)
+
 Thu Sep  9 07:22:11 PDT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* encoding.c: applied fixes for the UTF8ToISO8859x transcoding

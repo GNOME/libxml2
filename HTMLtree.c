@@ -1053,6 +1053,9 @@ htmlSaveFile(const char *filename, xmlDocPtr cur) {
     const char *encoding;
     int ret;
 
+    if ((cur == NULL) || (filename == NULL))
+        return(-1);
+       
     xmlInitParser();
 
     encoding = (const char *) htmlGetMetaEncoding(cur);
@@ -1113,6 +1116,9 @@ htmlSaveFileFormat(const char *filename, xmlDocPtr cur,
     xmlCharEncodingHandlerPtr handler = NULL;
     int ret;
 
+    if ((cur == NULL) || (filename == NULL))
+        return(-1);
+       
     xmlInitParser();
 
     if (encoding != NULL) {

@@ -345,6 +345,9 @@ xmlValidateNCName(const xmlChar *value, int space) {
     const xmlChar *cur = value;
     int c,l;
 
+    if (value == NULL)
+        return(-1);
+
     /*
      * First quick algorithm for ASCII range
      */
@@ -416,6 +419,8 @@ xmlValidateQName(const xmlChar *value, int space) {
     const xmlChar *cur = value;
     int c,l;
 
+    if (value == NULL)
+        return(-1);
     /*
      * First quick algorithm for ASCII range
      */
@@ -512,6 +517,8 @@ xmlValidateName(const xmlChar *value, int space) {
     const xmlChar *cur = value;
     int c,l;
 
+    if (value == NULL)
+        return(-1);
     /*
      * First quick algorithm for ASCII range
      */
@@ -579,6 +586,8 @@ xmlValidateNMToken(const xmlChar *value, int space) {
     const xmlChar *cur = value;
     int c,l;
 
+    if (value == NULL)
+        return(-1);
     /*
      * First quick algorithm for ASCII range
      */
@@ -2503,6 +2512,9 @@ xmlNodePtr
 xmlNewCharRef(xmlDocPtr doc, const xmlChar *name) {
     xmlNodePtr cur;
 
+    if (name == NULL)
+        return(NULL);
+
     /*
      * Allocate a new node and fill the fields.
      */
@@ -2543,6 +2555,9 @@ xmlNodePtr
 xmlNewReference(xmlDocPtr doc, const xmlChar *name) {
     xmlNodePtr cur;
     xmlEntityPtr ent;
+
+    if (name == NULL)
+        return(NULL);
 
     /*
      * Allocate a new node and fill the fields.

@@ -139,6 +139,8 @@ XMLPUBFUN void XMLCALL
  */
 XMLPUBFUN int XMLCALL	
 	xmlMemUsed	(void);
+XMLPUBFUN int XMLCALL	
+	xmlMemBlocks	(void);
 XMLPUBFUN void XMLCALL	
 	xmlMemDisplay	(FILE *fp);
 XMLPUBFUN void XMLCALL	

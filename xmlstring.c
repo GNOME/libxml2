@@ -807,13 +807,15 @@ xmlCheckUTF8(const unsigned char *utf)
  *
  * Returns the storage size of
  * the first 'len' characters of ARRAY
- *
  */
 
 int
 xmlUTF8Strsize(const xmlChar *utf, int len) {
     const xmlChar   *ptr=utf;
     xmlChar         ch;
+
+    if (utf == NULL)
+        return(0);
 
     if (len <= 0)
         return(0);

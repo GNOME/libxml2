@@ -50,6 +50,7 @@
 
 static int xmlMemInitialized = 0;
 static unsigned long  debugMemSize = 0;
+static unsigned long  debugMemBlocks = 0;
 static unsigned long  debugMaxMemSize = 0;
 static xmlMutexPtr xmlMemMutex = NULL;
 
@@ -186,6 +187,7 @@ xmlMallocLoc(size_t size, const char * file, int line)
     xmlMutexLock(xmlMemMutex);
     p->mh_number = ++block;
     debugMemSize += size;
+    debugMemBlocks++;
     if (debugMemSize > debugMaxMemSize) debugMaxMemSize = debugMemSize;
 #ifdef MEM_LIST
     debugmem_list_add(p);
@@ -253,6 +255,7 @@ xmlMallocAtomicLoc(size_t size, const char * file, int line)
     xmlMutexLock(xmlMemMutex);
     p->mh_number = ++block;
     debugMemSize += size;
+    debugMemBlocks++;
     if (debugMemSize > debugMaxMemSize) debugMaxMemSize = debugMemSize;
 #ifdef MEM_LIST
     debugmem_list_add(p);
@@ -329,6 +332,7 @@ xmlReallocLoc(void *ptr,size_t size, const char * file, int line)
     p->mh_tag = ~MEMTAG;
     xmlMutexLock(xmlMemMutex);
     debugMemSize -= p->mh_size;
+    debugMemBlocks--;
 #ifdef DEBUG_MEMORY
     oldsize = p->mh_size;
 #endif
@@ -355,6 +359,7 @@ xmlReallocLoc(void *ptr,size_t size, const char * file, int line)
     p->mh_line = line;
     xmlMutexLock(xmlMemMutex);
     debugMemSize += size;
+    debugMemBlocks++;
     if (debugMemSize > debugMaxMemSize) debugMaxMemSize = debugMemSize;
 #ifdef MEM_LIST
     debugmem_list_add(p);
@@ -428,6 +433,7 @@ xmlMemFree(void *ptr)
     memset(target, -1, p->mh_size);
     xmlMutexLock(xmlMemMutex);
     debugMemSize -= p->mh_size;
+    debugMemBlocks--;
 #ifdef DEBUG_MEMORY
     size = p->mh_size;
 #endif
@@ -487,6 +493,7 @@ xmlMemStrdupLoc(const char *str, const char *file, int line)
     xmlMutexLock(xmlMemMutex);
     p->mh_number = ++block;
     debugMemSize += size;
+    debugMemBlocks++;
     if (debugMemSize > debugMaxMemSize) debugMaxMemSize = debugMemSize;
 #ifdef MEM_LIST
     debugmem_list_add(p);
@@ -541,6 +548,19 @@ xmlMemoryStrdup(const char *str) {
 int
 xmlMemUsed(void) {
      return(debugMemSize);
+}
+
+/**
+ * xmlMemBlocks:
+ *
+ * Provides the number of memory areas currently allocated
+ *
+ * Returns an int representing the number of blocks
+ */
+
+int
+xmlMemBlocks(void) {
+     return(debugMemBlocks);
 }
 
 #ifdef MEM_LIST

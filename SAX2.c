@@ -890,7 +890,9 @@ xmlSAX2EndDocument(void *ctx)
 	ctxt->myDoc->encoding = ctxt->encoding;
 	ctxt->encoding = NULL;
     }
-    if ((ctxt->inputTab[0]->encoding != NULL) && (ctxt->myDoc != NULL) &&
+    if ((ctxt->inputTab != NULL) &&
+        (ctxt->inputNr > 0) && (ctxt->inputTab[0] != NULL) &&
+        (ctxt->inputTab[0]->encoding != NULL) && (ctxt->myDoc != NULL) &&
 	(ctxt->myDoc->encoding == NULL)) {
 	ctxt->myDoc->encoding = xmlStrdup(ctxt->inputTab[0]->encoding);
     }

@@ -949,6 +949,8 @@ mem_error:
 int
 inputPush(xmlParserCtxtPtr ctxt, xmlParserInputPtr value)
 {
+    if ((ctxt == NULL) || (value == NULL))
+        return(0);
     if (ctxt->inputNr >= ctxt->inputMax) {
         ctxt->inputMax *= 2;
         ctxt->inputTab =
@@ -977,6 +979,8 @@ inputPop(xmlParserCtxtPtr ctxt)
 {
     xmlParserInputPtr ret;
 
+    if (ctxt == NULL)
+        return(NULL);
     if (ctxt->inputNr <= 0)
         return (0);
     ctxt->inputNr--;
@@ -8541,6 +8545,9 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
 
     xmlInitParser();
 
+    if ((ctxt == NULL) || (ctxt->input == NULL))
+        return(-1);
+
     GROW;
 
     /*
@@ -8699,6 +8706,9 @@ int
 xmlParseExtParsedEnt(xmlParserCtxtPtr ctxt) {
     xmlChar start[4];
     xmlCharEncoding enc;
+
+    if ((ctxt == NULL) || (ctxt->input == NULL))
+        return(-1);
 
     xmlDefaultSAXHandlerInit();
 
@@ -8941,6 +8951,9 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
     int avail, tlen;
     xmlChar cur, next;
     const xmlChar *lastlt, *lastgt;
+
+    if (ctxt->input == NULL)
+        return(0);
 
 #ifdef DEBUG_PUSH
     switch (ctxt->instate) {
@@ -9801,6 +9814,8 @@ done:
 int
 xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
               int terminate) {
+    if (ctxt == NULL)
+        return(XML_ERR_INTERNAL_ERROR);
     if ((ctxt->errNo != XML_ERR_OK) && (ctxt->disableSAX == 1))
         return(ctxt->errNo);
     if (ctxt->instate == XML_PARSER_START)
@@ -9849,13 +9864,16 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
 	/*
 	 * Check for termination
 	 */
-	    int avail = 0;
+	int avail = 0;
+
+	if (ctxt->input != NULL) {
 	    if (ctxt->input->buf == NULL)
-                avail = ctxt->input->length -
-		        (ctxt->input->cur - ctxt->input->base);
-            else
-                avail = ctxt->input->buf->buffer->use -
-		        (ctxt->input->cur - ctxt->input->base);
+		avail = ctxt->input->length -
+			(ctxt->input->cur - ctxt->input->base);
+	    else
+		avail = ctxt->input->buf->buffer->use -
+			(ctxt->input->cur - ctxt->input->base);
+	}
 			    
 	if ((ctxt->instate != XML_PARSER_EOF) &&
 	    (ctxt->instate != XML_PARSER_EPILOG)) {
@@ -11638,10 +11656,13 @@ xmlSetupParserForBuffer(xmlParserCtxtPtr ctxt, const xmlChar* buffer,
 {
     xmlParserInputPtr input;
 
+    if ((ctxt == NULL) || (buffer == NULL))
+        return;
+
     input = xmlNewInputStream(ctxt);
     if (input == NULL) {
         xmlErrMemory(NULL, "parsing new buffer: out of memory\n");
-        xmlFree(ctxt);
+        xmlClearParserCtxt(ctxt);
         return;
     }
   
@@ -12094,6 +12115,9 @@ xmlCleanupParser(void) {
 #ifdef LIBXML_OUTPUT_ENABLED
     xmlCleanupOutputCallbacks();
 #endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+    xmlSchemaCleanupTypes();
+#endif
     xmlCleanupGlobals();
     xmlResetLastError();
     xmlCleanupThreads(); /* must be last if called not from the main thread */
@@ -12129,7 +12153,12 @@ void
 xmlCtxtReset(xmlParserCtxtPtr ctxt)
 {
     xmlParserInputPtr input;
-    xmlDictPtr dict = ctxt->dict;
+    xmlDictPtr dict;
+    
+    if (ctxt == NULL)
+        return;
+
+    dict = ctxt->dict;
 
     while ((input = inputPop(ctxt)) != NULL) { /* Non consuming */
         xmlFreeInputStream(input);
@@ -12325,6 +12354,8 @@ xmlCtxtResetPush(xmlParserCtxtPtr ctxt, const char *chunk,
 int
 xmlCtxtUseOptions(xmlParserCtxtPtr ctxt, int options)
 {
+    if (ctxt == NULL)
+        return(-1);
     if (options & XML_PARSE_RECOVER) {
         ctxt->recovery = 1;
         options -= XML_PARSE_RECOVER;

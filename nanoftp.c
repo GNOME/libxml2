@@ -260,12 +260,18 @@ xmlNanoFTPCleanup(void) {
 void
 xmlNanoFTPProxy(const char *host, int port, const char *user,
 	        const char *passwd, int type) {
-    if (proxy != NULL)
+    if (proxy != NULL) {
 	xmlFree(proxy);
-    if (proxyUser != NULL)
+	proxy = NULL;
+    }
+    if (proxyUser != NULL) {
 	xmlFree(proxyUser);
-    if (proxyPasswd != NULL)
+	proxyUser = NULL;
+    }
+    if (proxyPasswd != NULL) {
 	xmlFree(proxyPasswd);
+	proxyPasswd = NULL;
+    }
     if (host)
 	proxy = xmlMemStrdup(host);
     if (user)

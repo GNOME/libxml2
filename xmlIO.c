@@ -551,6 +551,9 @@ xmlCleanupOutputCallbacks(void)
 int
 xmlCheckFilename (const char *path)
 {
+    if (path == NULL)
+        return(0);
+
 #ifdef HAVE_STAT
     struct stat stat_buffer;
 

@@ -1520,12 +1520,14 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
 
     xmlDefaultSAXHandlerInit();
 
-    ctxt->dict = xmlDictCreate();
+    if (ctxt->dict == NULL)
+	ctxt->dict = xmlDictCreate();
     if (ctxt->dict == NULL) {
         xmlErrMemory(NULL, "cannot initialize parser context\n");
 	return(-1);
     }
-    ctxt->sax = (xmlSAXHandler *) xmlMalloc(sizeof(xmlSAXHandler));
+    if (ctxt->sax == NULL)
+	ctxt->sax = (xmlSAXHandler *) xmlMalloc(sizeof(xmlSAXHandler));
     if (ctxt->sax == NULL) {
         xmlErrMemory(NULL, "cannot initialize parser context\n");
 	return(-1);
@@ -1536,8 +1538,11 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
     ctxt->maxatts = 0;
     ctxt->atts = NULL;
     /* Allocate the Input stack */
-    ctxt->inputTab = (xmlParserInputPtr *)
-	        xmlMalloc(5 * sizeof(xmlParserInputPtr));
+    if (ctxt->inputTab == NULL) {
+	ctxt->inputTab = (xmlParserInputPtr *)
+		    xmlMalloc(5 * sizeof(xmlParserInputPtr));
+	ctxt->inputMax = 5;
+    }
     if (ctxt->inputTab == NULL) {
         xmlErrMemory(NULL, "cannot initialize parser context\n");
 	ctxt->inputNr = 0;
@@ -1546,7 +1551,6 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
 	return(-1);
     }
     ctxt->inputNr = 0;
-    ctxt->inputMax = 5;
     ctxt->input = NULL;
 
     ctxt->version = NULL;
@@ -1561,7 +1565,10 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
     ctxt->directory = NULL;
 
     /* Allocate the Node stack */
-    ctxt->nodeTab = (xmlNodePtr *) xmlMalloc(10 * sizeof(xmlNodePtr));
+    if (ctxt->nodeTab == NULL) {
+	ctxt->nodeTab = (xmlNodePtr *) xmlMalloc(10 * sizeof(xmlNodePtr));
+	ctxt->nodeMax = 10;
+    }
     if (ctxt->nodeTab == NULL) {
         xmlErrMemory(NULL, "cannot initialize parser context\n");
 	ctxt->nodeNr = 0;
@@ -1573,11 +1580,13 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
 	return(-1);
     }
     ctxt->nodeNr = 0;
-    ctxt->nodeMax = 10;
     ctxt->node = NULL;
 
     /* Allocate the Name stack */
-    ctxt->nameTab = (const xmlChar **) xmlMalloc(10 * sizeof(xmlChar *));
+    if (ctxt->nameTab == NULL) {
+	ctxt->nameTab = (const xmlChar **) xmlMalloc(10 * sizeof(xmlChar *));
+	ctxt->nameMax = 10;
+    }
     if (ctxt->nameTab == NULL) {
         xmlErrMemory(NULL, "cannot initialize parser context\n");
 	ctxt->nodeNr = 0;
@@ -1592,11 +1601,13 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
 	return(-1);
     }
     ctxt->nameNr = 0;
-    ctxt->nameMax = 10;
     ctxt->name = NULL;
 
     /* Allocate the space stack */
-    ctxt->spaceTab = (int *) xmlMalloc(10 * sizeof(int));
+    if (ctxt->spaceTab == NULL) {
+	ctxt->spaceTab = (int *) xmlMalloc(10 * sizeof(int));
+	ctxt->spaceMax = 10;
+    }
     if (ctxt->spaceTab == NULL) {
         xmlErrMemory(NULL, "cannot initialize parser context\n");
 	ctxt->nodeNr = 0;
@@ -1784,7 +1795,7 @@ xmlClearParserCtxt(xmlParserCtxtPtr ctxt)
   if (ctxt==NULL)
     return;
   xmlClearNodeInfoSeq(&ctxt->node_seq);
-  xmlInitParserCtxt(ctxt);
+  xmlCtxtReset(ctxt);
 }
 
 /**

@@ -1,6 +1,6 @@
-error detected at relaxng.c:6123
+error detected at relaxng.c:6200
 Element bad has child elements
-error detected at relaxng.c:5917
+error detected at relaxng.c:5994
 Expecting an element got 3 type
-error detected at relaxng.c:5970
+error detected at relaxng.c:6047
 Extra content for element bad: text

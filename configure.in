@@ -334,8 +334,12 @@ if test "${LOGNAME}" = "veillard" -a "`pwd`" = "/u/veillard/XML" ; then
         with_docbook="yes"
     fi
     CFLAGS="-g -O -pedantic -W -Wunused -Wimplicit -Wreturn-type -Wswitch -Wcomment -Wtrigraphs -Wformat -Wchar-subscripts -Wuninitialized -Wparentheses -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline -Wredundant-decls "
+    STATIC_BINARIES="-static"
 dnl -Wcast-qual -ansi
+else
+    STATIC_BINARIES=
 fi
+AC_SUBST(STATIC_BINARIES)
 
 dnl
 dnl Check for trio string functions

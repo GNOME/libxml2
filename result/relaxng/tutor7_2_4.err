@@ -1,4 +1,4 @@
-error detected at relaxng.c:4901
-Type double doesn't allow value 
-error detected at relaxng.c:6261
-internal error validating list
+error detected at relaxng.c:4943
+Internal: failed to validate type double
+error detected at relaxng.c:6338
+error validating list

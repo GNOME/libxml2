@@ -2998,9 +2998,24 @@ xmlRelaxNGParseExceptNameClass(xmlRelaxNGParserCtxtPtr ctxt,
 static xmlRelaxNGDefinePtr
 xmlRelaxNGParseNameClass(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node,
 	                 xmlRelaxNGDefinePtr def) {
-    xmlRelaxNGDefinePtr ret = def;
+    xmlRelaxNGDefinePtr ret, tmp;
     xmlChar *val;
 
+    ret = def;
+    if ((IS_RELAXNG(node, "name")) || (IS_RELAXNG(node, "anyName"))  ||
+        (IS_RELAXNG(node, "nsName"))) {
+	if ((def->type != XML_RELAXNG_ELEMENT) &&
+	    (def->type != XML_RELAXNG_ATTRIBUTE)) {
+	    ret = xmlRelaxNGNewDefine(ctxt, node);
+	    if (ret == NULL)
+		return(NULL);
+	    ret->parent = def;
+	    if (ctxt->flags & XML_RELAXNG_IN_ATTRIBUTE)
+		ret->type = XML_RELAXNG_ATTRIBUTE;
+	    else
+		ret->type = XML_RELAXNG_ELEMENT;
+	}
+    }
     if (IS_RELAXNG(node, "name")) {
 	val = xmlNodeGetContent(node);
 	xmlRelaxNGNormExtSpace(val);
@@ -3068,6 +3083,9 @@ xmlRelaxNGParseNameClass(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node,
 			       (def->type == XML_RELAXNG_ATTRIBUTE));
 	}
     } else if (IS_RELAXNG(node, "choice")) {
+	xmlNodePtr child;
+	xmlRelaxNGDefinePtr last = NULL;
+
 	ret = xmlRelaxNGNewDefine(ctxt, node);
 	if (ret == NULL)
 	    return(NULL);
@@ -3080,8 +3098,6 @@ xmlRelaxNGParseNameClass(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node,
 		    "Element choice is empty\n");
 	    ctxt->nbErrors++;
 	} else {
-	    xmlNodePtr child;
-	    xmlRelaxNGDefinePtr last = NULL, tmp;
 
 	    child = node->children;
 	    while (child != NULL) {
@@ -3104,6 +3120,17 @@ xmlRelaxNGParseNameClass(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node,
 			node->name);
 	ctxt->nbErrors++;
 	return(NULL);
+    }
+    if (ret != def) {
+	if (def->nameClass == NULL) {
+	    def->nameClass = ret;
+	} else {
+	    tmp = def->nameClass;
+	    while (tmp->next != NULL) {
+		tmp = tmp->next;
+	    }
+	    tmp->next = ret;
+	}
     }
     return(ret);
 }
@@ -5134,6 +5161,8 @@ xmlRelaxNGValidateValue(xmlRelaxNGValidCtxtPtr ctxt,
 	    ctxt->state->value = cur;
 
 	    while (list != NULL) {
+		if (ctxt->state->value == ctxt->state->endvalue)
+		    ctxt->state->value = NULL;
 		ret = xmlRelaxNGValidateValue(ctxt, list);
 		if (ret != 0) {
 #ifdef DEBUG_LIST
@@ -5148,6 +5177,7 @@ xmlRelaxNGValidateValue(xmlRelaxNGValidCtxtPtr ctxt,
 #endif
 		list = list->next;
 	    }
+
 	    if ((ret == 0) && (ctxt->state->value != NULL) &&
 		(ctxt->state->value != ctxt->state->endvalue)) {
 		VALID_CTXT();
@@ -5852,11 +5882,33 @@ xmlRelaxNGElementMatch(xmlRelaxNGValidCtxtPtr ctxt,
 	    }
 	    list = list->next;
 	}
+	ret = 1;
+	ctxt->flags = oldflags;
+    } else if (define->type == XML_RELAXNG_CHOICE) {
+	xmlRelaxNGDefinePtr list;
+	oldflags = ctxt->flags;
+	ctxt->flags |= FLAGS_IGNORABLE;
+
+	list = define->nameClass;
+	while (list != NULL) {
+	    ret = xmlRelaxNGElementMatch(ctxt, list, elem);
+	    if (ret == 1) {
+		ctxt->flags = oldflags;
+		return(1);
+	    }
+	    if (ret < 0) {
+		ctxt->flags = oldflags;
+		return(ret);
+	    }
+	    list = list->next;
+	}
+	ret = 0;
 	ctxt->flags = oldflags;
     } else {
 	TODO
+	ret = -1;
     }
-    return(1);
+    return(ret);
 }
 
 /**
@@ -6284,7 +6336,7 @@ xmlRelaxNGValidateDefinition(xmlRelaxNGValidCtxtPtr ctxt,
 	    ctxt->state->endvalue = oldendvalue;
 	    if (ret == -1) {
 		VALID_CTXT();
-		VALID_ERROR("internal error validating list\n");
+		VALID_ERROR("error validating list\n");
 	    } else if ((ret == 0) && (node != NULL)) {
 		ctxt->state->seq = node->next;
 	    }

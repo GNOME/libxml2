@@ -1,6 +1,6 @@
-error detected at relaxng.c:4895
+error detected at relaxng.c:4943
 Internal: failed to validate type double
-error detected at relaxng.c:6261
-internal error validating list
-error detected at relaxng.c:5970
+error detected at relaxng.c:6338
+error validating list
+error detected at relaxng.c:6047
 Extra content for element path: text

@@ -39,7 +39,7 @@ libxml2_la_SOURCES = SAX.c entities.c encoding.c error.c parserInternals.c  \
 endif
 
 DEPS = $(top_builddir)/libxml2.la
-LDADDS = $(top_builddir)/libxml2.la @THREAD_LIBS@ @Z_LIBS@ $(ICONV_LIBS) -lm
+LDADDS = @STATIC_BINARIES@ $(top_builddir)/libxml2.la @THREAD_LIBS@ @Z_LIBS@ $(ICONV_LIBS) -lm
 
 man_MANS = xml2-config.1 libxml.3
 

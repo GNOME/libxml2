@@ -1117,6 +1117,9 @@ xmlOutputBufferWriteBase64(xmlOutputBufferPtr out, int len,
 
             linelen += 4;
         }
+
+        if (i >= len)
+            break;
     }
 
     count = xmlOutputBufferWrite(out, 2, B64CRLF);

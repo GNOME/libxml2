@@ -60,7 +60,7 @@ xmlcatalog.1: xmlcatalog_man.xml
 	-@(xsltproc --nonet xmlcatalog_man.xml)
 
 scan:
-	-gtkdoc-scan --module=libxml --source-dir=$(DOC_SOURCE_DIR) --ignore-headers="acconfig.h config.h win32config.h trio.h triostr.h triop.h config-mac.h XMLTestPrefix2.h  XMLTestPrefix.h triodef.h trionan.h xlink.h libxml.h libxml2-py.h libxml_wrap.h chvalid.h"
+	-gtkdoc-scan --module=libxml --source-dir=$(DOC_SOURCE_DIR) --ignore-headers="acconfig.h config.h win32config.h trio.h triostr.h triop.h config-mac.h XMLTestPrefix2.h  XMLTestPrefix.h triodef.h trionan.h xlink.h libxml.h libxml2-py.h libxml_wrap.h"
 
 templates: scan
 	-gtkdoc-mktmpl --module=libxml

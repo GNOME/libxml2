@@ -235,17 +235,12 @@ static void
 xmlTextReaderStartElement(void *ctx, const xmlChar *fullname,
 	                  const xmlChar **atts) {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
-    xmlParserCtxtPtr origctxt;
     xmlTextReaderPtr reader = ctxt->_private;
 
 #ifdef DEBUG_CALLBACKS
     printf("xmlTextReaderStartElement(%s)\n", fullname);
 #endif
     if ((reader != NULL) && (reader->startElement != NULL)) {
-	/*
-	 * when processing an entity, the context may have been changed
-	 */
-	origctxt = reader->ctxt;
 	reader->startElement(ctx, fullname, atts);
 	if ((ctxt->node != NULL) && (ctxt->input != NULL) &&
 	    (ctxt->input->cur != NULL) && (ctxt->input->cur[0] == '/') &&
@@ -266,18 +261,12 @@ xmlTextReaderStartElement(void *ctx, const xmlChar *fullname,
 static void
 xmlTextReaderEndElement(void *ctx, const xmlChar *fullname) {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
-    xmlParserCtxtPtr origctxt;
     xmlTextReaderPtr reader = ctxt->_private;
 
 #ifdef DEBUG_CALLBACKS
     printf("xmlTextReaderEndElement(%s)\n", fullname);
 #endif
     if ((reader != NULL) && (reader->endElement != NULL)) {
-	/*
-	 * when processing an entity, the context may have been changed
-	 */
-	origctxt = reader->ctxt;
-
 	reader->endElement(ctx, fullname);
     }
 }
@@ -294,7 +283,6 @@ static void
 xmlTextReaderCharacters(void *ctx, const xmlChar *ch, int len)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
-    xmlParserCtxtPtr origctxt;
     xmlTextReaderPtr reader = ctxt->_private;
 
 #ifdef DEBUG_CALLBACKS
@@ -302,10 +290,6 @@ xmlTextReaderCharacters(void *ctx, const xmlChar *ch, int len)
 #endif
     if ((reader != NULL) && (reader->characters != NULL)) {
 	reader->characters(ctx, ch, len);
-	/*
-	 * when processing an entity, the context may have been changed
-	 */
-	origctxt = reader->ctxt;
     }
 }
 

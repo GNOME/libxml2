@@ -4331,7 +4331,7 @@ htmlCreateDocParserCtxt(xmlChar *cur, const char *encoding ATTRIBUTE_UNUSED) {
  */
 static int
 htmlParseLookupSequence(htmlParserCtxtPtr ctxt, xmlChar first,
-                        xmlChar next, xmlChar third, int comment) {
+                        xmlChar next, xmlChar third, int iscomment) {
     int base, len;
     htmlParserInputPtr in;
     const xmlChar *buf;
@@ -4354,7 +4354,7 @@ htmlParseLookupSequence(htmlParserCtxtPtr ctxt, xmlChar first,
     if (third) len -= 2;
     else if (next) len --;
     for (;base < len;base++) {
-	if (!incomment && (base + 4 < len) && !comment) {
+	if (!incomment && (base + 4 < len) && !iscomment) {
 	    if ((buf[base] == '<') && (buf[base + 1] == '!') &&
 		(buf[base + 2] == '-') && (buf[base + 3] == '-')) {
 		incomment = 1;

@@ -469,7 +469,7 @@ pythonExternalEntityLoader(const char *URL, const char *ID,
 	    if (result == NULL) {
 		Py_DECREF(ret);
 	    } else if (URL != NULL) {
-		result->filename = xmlStrdup((const xmlChar *)URL);
+		result->filename = (char *) xmlStrdup((const xmlChar *)URL);
 		result->directory = xmlParserGetDirectory((const char *) URL);
 	    }
 	}
@@ -2690,7 +2690,7 @@ libxml_xmlRelaxNGSetValidErrors(ATTRIBUTE_UNUSED PyObject * self, PyObject * arg
 #endif
 
     ctxt = PyrelaxNgValidCtxt_Get(pyobj_ctx);
-    if (xmlRelaxNGGetValidErrors(ctxt, NULL, NULL, &pyCtxt) == -1)
+    if (xmlRelaxNGGetValidErrors(ctxt, NULL, NULL, (void **) &pyCtxt) == -1)
     {
         py_retval = libxml_intWrap(-1);
         return(py_retval);
@@ -2736,7 +2736,7 @@ libxml_xmlRelaxNGFreeValidCtxt(ATTRIBUTE_UNUSED PyObject *self, PyObject *args) 
         return(NULL);
     ctxt = (xmlRelaxNGValidCtxtPtr) PyrelaxNgValidCtxt_Get(pyobj_ctxt);
 
-    if (xmlRelaxNGGetValidErrors(ctxt, NULL, NULL, &pyCtxt) == 0)
+    if (xmlRelaxNGGetValidErrors(ctxt, NULL, NULL, (void **) &pyCtxt) == 0)
     {
         if (pyCtxt != NULL)
         {

@@ -35,7 +35,7 @@ static void handleURI(const char *str) {
 	    if (escape != 0) {
 		parsed = xmlSaveUri(uri);
 		res = xmlURIEscape(parsed);
-		printf("%s\n", res);
+		printf("%s\n", (char *) res);
 
 	    } else {
 		xmlPrintURI(stdout, uri);
@@ -45,7 +45,7 @@ static void handleURI(const char *str) {
     } else {
 	res = xmlBuildURI((xmlChar *)str, (xmlChar *) base);
 	if (res != NULL) {
-	    printf("%s\n", res);
+	    printf("%s\n", (char *) res);
 	}
 	else
 	    printf("::ERROR::\n");

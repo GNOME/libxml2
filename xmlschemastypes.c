@@ -123,8 +123,8 @@ struct _xmlSchemaValDecimal {
     unsigned long hi;
     unsigned int extra;
     unsigned int sign:1;
-    int frac:7;
-    int total:8;
+    unsigned int frac:7;
+    unsigned int total:8;
 };
 
 typedef struct _xmlSchemaValQName xmlSchemaValQName;
@@ -1413,7 +1413,7 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar *value,
 	    goto return0;
         case XML_SCHEMAS_DECIMAL: {
 	    const xmlChar *cur = value, *tmp;
-	    int frac = 0, len, neg = 0;
+	    unsigned int frac = 0, len, neg = 0;
 	    unsigned long base = 0;
 	    if (cur == NULL)
 		goto return1;

@@ -44,10 +44,6 @@
 #include <libxml/xmlerror.h>
 
 void xmlMallocBreakpoint(void);
-void * xmlMemMalloc(size_t size);
-void * xmlMemRealloc(void *ptr,size_t size);
-void xmlMemFree(void *ptr);
-char * xmlMemoryStrdup(const char *str);
 
 /************************************************************************
  *									*

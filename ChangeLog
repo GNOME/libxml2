@@ -1,3 +1,11 @@
+Tue Aug  5 23:51:21 HKT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* error.c HTMLparser.c testC14N.c testHTML.c testURI.c
+	  xmlcatalog.c xmlmemory.c xmlreader.c xmlschemastypes.c
+	  python/libxml.c include/libxml/xmlmemory.h: small changes
+	  to syntax to get rid of compiler warnings.  No changes
+	  to logic.
+
 Mon Aug  4 22:40:54 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* doc/libxml2-api.xml doc/html/*: rebuilt the API and docs.

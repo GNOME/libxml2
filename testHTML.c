@@ -376,7 +376,7 @@ startElementDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *name, const xmlChar
 		    outlen = sizeof output - 1;
 		    htmlEncodeEntities(output, &outlen, att, &attlen, '\'');
 		    output[outlen] = 0;
-		    fprintf(stdout, "%s", output);
+		    fprintf(stdout, "%s", (char *) output);
 		    att += attlen;
 		}
 		fprintf(stdout, "'");

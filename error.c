@@ -11,6 +11,7 @@
 
 #include <stdarg.h>
 #include <libxml/parser.h>
+#include <libxml/parserInternals.h>	/* for char constants */
 #include <libxml/xmlerror.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/globals.h>
@@ -149,7 +150,7 @@ xmlParserPrintFileInfo(xmlParserInputPtr input) {
 void
 xmlParserPrintFileContext(xmlParserInputPtr input) {
     const xmlChar *cur, *base;
-    int n, col;
+    unsigned int n, col;	/* GCC warns if signed, because compared with sizeof() */
     xmlChar  content[81]; /* space for 80 chars + line terminator */
     xmlChar *ctnt;
 
@@ -157,21 +158,23 @@ xmlParserPrintFileContext(xmlParserInputPtr input) {
     cur = input->cur;
     base = input->base;
     /* skip backwards over any end-of-lines */
-    while ((cur > base) && ((*cur == '\n') || (*cur == '\r'))) {
+    while ((cur > base) && ((*(cur) == '\n') || (*(cur) == '\r'))) {
 	cur--;
     }
     n = 0;
     /* search backwards for beginning-of-line (to max buff size) */
-    while ((n++ < sizeof(content)-1) && (cur > base) && (*cur != '\n') && (*cur != '\r'))
+    while ((n++ < (sizeof(content)-1)) && (cur > base) && 
+    	   (*(cur) != '\n') && (*(cur) != '\r'))
         cur--;
-    if ((*cur == '\n') || (*cur == '\r')) cur++;
+    if ((*(cur) == '\n') || (*(cur) == '\r')) cur++;
     /* calculate the error position in terms of the current position */
     col = input->cur - cur;
     /* search forward for end-of-line (to max buff size) */
     n = 0;
     ctnt = content;
     /* copy selected text to our buffer */
-    while ((*cur != 0) && (*cur != '\n') && (*cur != '\r') && (n < sizeof(content)-1)) {
+    while ((*cur != 0) && (*(cur) != '\n') && 
+    	   (*(cur) != '\r') && (n < sizeof(content)-1)) {
 		*ctnt++ = *cur++;
 	n++;
     }
@@ -183,8 +186,8 @@ xmlParserPrintFileContext(xmlParserInputPtr input) {
     ctnt = content;
     /* (leave buffer space for pointer + line terminator) */
     while ((n<col) && (n++ < sizeof(content)-2) && (*ctnt != 0)) {
-	if (*ctnt!='\t')
-	    *ctnt = ' ';
+	if (*(ctnt) != '\t')
+	    *(ctnt) = ' ';
 	*ctnt++;
     }
     *ctnt++ = '^';

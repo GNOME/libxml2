@@ -121,7 +121,7 @@ int     xmlGcMemGet	(xmlFreeFunc *freeFunc,
 int	xmlInitMemory	(void);
 
 /*
- * Those are specific to the XML debug memory wrapper.
+ * These are specific to the XML debug memory wrapper.
  */
 int	xmlMemUsed	(void);
 void	xmlMemDisplay	(FILE *fp);
@@ -131,6 +131,11 @@ void *	xmlMemMalloc	(size_t size);
 void *	xmlMemRealloc	(void *ptr,size_t size);
 void	xmlMemFree	(void *ptr);
 char *	xmlMemoryStrdup	(const char *str);
+void *  xmlMallocLoc	(size_t size, const char *file, int line);
+void *	xmlReallocLoc	(void *ptr, size_t size, const char *file, int line);
+void *	xmlMallocAtomicLoc (size_t size, const char *file, int line);
+char *	xmlMemStrdupLoc	(const char *str, const char *file, int line);
+
 
 #ifdef DEBUG_MEMORY_LOCATION
 /**

@@ -194,7 +194,7 @@ static void usershell(void) {
 		if (ans == NULL) {
 		    printf("No entry for PUBLIC %s\n", argv[0]);
 		} else {
-		    printf("%s\n", ans);
+		    printf("%s\n", (char *) ans);
 		    xmlFree(ans);
 		}
 	    }
@@ -206,7 +206,7 @@ static void usershell(void) {
 		if (ans == NULL) {
 		    printf("No entry for SYSTEM %s\n", argv[0]);
 		} else {
-		    printf("%s\n", ans);
+		    printf("%s\n", (char *) ans);
 		    xmlFree(ans);
 		}
 	    }
@@ -256,7 +256,7 @@ static void usershell(void) {
 		if (ans == NULL) {
 		    printf("Resolver failed to find an answer\n");
 		} else {
-		    printf("%s\n", ans);
+		    printf("%s\n", (char *) ans);
 		    xmlFree(ans);
 		}
 	    }
@@ -539,7 +539,7 @@ int main(int argc, char **argv) {
 		    printf("No entry for PUBLIC %s\n", argv[i]);
 		    exit_value = 4;
 		} else {
-		    printf("%s\n", ans);
+		    printf("%s\n", (char *) ans);
 		    xmlFree(ans);
 		}
 	    } else {
@@ -549,7 +549,7 @@ int main(int argc, char **argv) {
 		    printf("No entry for SYSTEM %s\n", argv[i]);
 		    exit_value = 4;
 		} else {
-		    printf("%s\n", ans);
+		    printf("%s\n", (char *) ans);
 		    xmlFree(ans);
 		}
 	    }

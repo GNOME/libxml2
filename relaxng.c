@@ -154,8 +154,11 @@ struct _xmlRelaxNGDefine {
  * A RelaxNGs definition
  */
 struct _xmlRelaxNG {
+    void *_private;	/* unused by the library for users or bindings */
     xmlRelaxNGGrammarPtr topgrammar;
     xmlDocPtr doc;
+
+    int             idref;      /* requires idref checking */
 
     xmlHashTablePtr defs;	/* define */
     xmlHashTablePtr refs;	/* references */
@@ -163,7 +166,7 @@ struct _xmlRelaxNG {
     xmlRelaxNGIncludePtr includes;   /* all the includes loaded */
     int                  defNr; /* number of defines used */
     xmlRelaxNGDefinePtr *defTab;/* pointer to the allocated definitions */
-    void *_private;	/* unused by the library for users or bindings */
+
 };
 
 #define XML_RELAXNG_IN_ATTRIBUTE	(1 << 0)
@@ -218,6 +221,8 @@ struct _xmlRelaxNGParserCtxt {
     int                   incNr;      /* Depth of the include parsing stack */
     int                   incMax;     /* Max depth of the parsing stack */
     xmlRelaxNGIncludePtr *incTab;     /* array of incs */
+
+    int                   idref;      /* requires idref checking */
 };
 
 #define FLAGS_IGNORABLE		1
@@ -279,6 +284,7 @@ struct _xmlRelaxNGStates {
     xmlRelaxNGValidStatePtr *tabState;
 };
 
+#define ERROR_IS_DUP	1
 /**
  * xmlRelaxNGValidError:
  *
@@ -288,6 +294,7 @@ typedef struct _xmlRelaxNGValidError xmlRelaxNGValidError;
 typedef xmlRelaxNGValidError *xmlRelaxNGValidErrorPtr;
 struct _xmlRelaxNGValidError {
     xmlRelaxNGValidErr	err;	/* the error number */
+    int			flags;	/* flags */
     xmlNodePtr		node;	/* the current node */
     xmlNodePtr		seq;	/* the current child */
     const xmlChar *	arg1;	/* first arg */
@@ -309,6 +316,7 @@ struct _xmlRelaxNGValidCtxt {
     xmlDocPtr               doc;	/* the document being validated */
     int                     flags;	/* validation flags */
     int                     depth;	/* validation depth */
+    int                     idref;	/* requires idref checking */
 
     /*
      * Errors accumulated in branches may have to be stacked to be
@@ -379,7 +387,8 @@ typedef int (*xmlRelaxNGTypeHave) (void *data, const xmlChar *type);
  * Returns 1 if yes, 0 if no and -1 in case of error.
  */
 typedef int (*xmlRelaxNGTypeCheck) (void *data, const xmlChar *type,
-	                            const xmlChar *value, void **result);
+	                            const xmlChar *value, void **result,
+				    xmlNodePtr node);
 
 /**
  * xmlRelaxNGFacetCheck:
@@ -1355,6 +1364,7 @@ xmlRelaxNGLoadInclude(xmlRelaxNGParserCtxtPtr ctxt, const xmlChar *URL,
  * @err:  the error code
  * @arg1:  the first string argument
  * @arg2:  the second string argument
+ * @dup:  arg need to be duplicated
  *
  * Pushes a new error on top of the error stack
  *
@@ -1362,7 +1372,7 @@ xmlRelaxNGLoadInclude(xmlRelaxNGParserCtxtPtr ctxt, const xmlChar *URL,
  */
 static int
 xmlRelaxNGValidErrorPush(xmlRelaxNGValidCtxtPtr ctxt, xmlRelaxNGValidErr err,
-	const xmlChar *arg1, const xmlChar *arg2)
+	const xmlChar *arg1, const xmlChar *arg2, int dup)
 {
     xmlRelaxNGValidErrorPtr cur;
     if (ctxt->errTab == NULL) {
@@ -1391,8 +1401,15 @@ xmlRelaxNGValidErrorPush(xmlRelaxNGValidCtxtPtr ctxt, xmlRelaxNGValidErr err,
 	return(ctxt->errNr);
     cur = &ctxt->errTab[ctxt->errNr];
     cur->err = err;
-    cur->arg1 = arg1;
-    cur->arg2 = arg2;
+    if (dup) {
+        cur->arg1 = xmlStrdup(arg1);
+        cur->arg2 = xmlStrdup(arg2);
+	cur->flags = ERROR_IS_DUP;
+    } else {
+        cur->arg1 = arg1;
+        cur->arg2 = arg2;
+	cur->flags = 0;
+    }
     if (ctxt->state != NULL) {
 	cur->node = ctxt->state->node;
 	cur->seq = ctxt->state->seq;
@@ -1409,23 +1426,27 @@ xmlRelaxNGValidErrorPush(xmlRelaxNGValidCtxtPtr ctxt, xmlRelaxNGValidErr err,
  * @ctxt: the validation context
  *
  * Pops the top error from the error stack
- *
- * Returns the error just removed
  */
-static xmlRelaxNGValidErrorPtr
+static void
 xmlRelaxNGValidErrorPop(xmlRelaxNGValidCtxtPtr ctxt)
 {
-    xmlRelaxNGValidErrorPtr ret;
+    xmlRelaxNGValidErrorPtr cur;
 
     if (ctxt->errNr <= 0)
-        return (NULL);
+        return;
     ctxt->errNr--;
     if (ctxt->errNr > 0)
         ctxt->err = &ctxt->errTab[ctxt->errNr - 1];
     else
         ctxt->err = NULL;
-    ret = &ctxt->errTab[ctxt->errNr];
-    return (ret);
+    cur = &ctxt->errTab[ctxt->errNr];
+    if (cur->flags & ERROR_IS_DUP) {
+	xmlFree((xmlChar *)cur->arg1);
+	cur->arg1 = NULL;
+	xmlFree((xmlChar *)cur->arg2);
+	cur->arg2 = NULL;
+	cur->flags = 0;
+    }
 }
 
 /**
@@ -1593,9 +1614,11 @@ xmlRelaxNGLoadExternalRef(xmlRelaxNGParserCtxtPtr ctxt, const xmlChar *URL,
  * 									*
  ************************************************************************/
 
-#define VALID_ERR(a) xmlRelaxNGAddValidError(ctxt, a, NULL, NULL);
-#define VALID_ERR2(a, b) xmlRelaxNGAddValidError(ctxt, a, b, NULL);
-#define VALID_ERR3(a, b, c) xmlRelaxNGAddValidError(ctxt, a, b, c);
+#define VALID_ERR(a) xmlRelaxNGAddValidError(ctxt, a, NULL, NULL, 0);
+#define VALID_ERR2(a, b) xmlRelaxNGAddValidError(ctxt, a, b, NULL, 0);
+#define VALID_ERR3(a, b, c) xmlRelaxNGAddValidError(ctxt, a, b, c, 0);
+#define VALID_ERR2P(a, b) xmlRelaxNGAddValidError(ctxt, a, b, NULL, 1);
+#define VALID_ERR3P(a, b, c) xmlRelaxNGAddValidError(ctxt, a, b, c, 1);
 
 #ifdef DEBUG
 static const char *
@@ -1661,6 +1684,9 @@ xmlRelaxNGGetErrorString(xmlRelaxNGValidErr err, const xmlChar *arg1,
 	    break;
 	case XML_RELAXNG_ERR_TYPEVAL:
 	    snprintf(msg, 1000, "Type %s doesn't allow value %s", arg1, arg2);
+	    break;
+	case XML_RELAXNG_ERR_DUPID:
+	    snprintf(msg, 1000, "ID %s redefined", arg1);
 	    break;
 	case XML_RELAXNG_ERR_TYPECMP:
 	    snprintf(msg, 1000, "failed to compare type %s", arg1);
@@ -1867,6 +1893,15 @@ xmlRelaxNGDumpValidError(xmlRelaxNGValidCtxtPtr ctxt) {
 	err = &ctxt->errTab[i];
 	xmlRelaxNGShowValidError(ctxt, err->err, err->node, err->seq,
 		                 err->arg1, err->arg2);
+	if (err->flags & ERROR_IS_DUP) {
+	    if (err->arg1 != NULL)
+		xmlFree((xmlChar *)err->arg1);
+	    err->arg1 = NULL;
+	    if (err->arg2 != NULL)
+		xmlFree((xmlChar *)err->arg2);
+	    err->arg2 = NULL;
+	    err->flags = 0;
+	}
     }
     ctxt->errNr = 0;
 }
@@ -1876,13 +1911,14 @@ xmlRelaxNGDumpValidError(xmlRelaxNGValidCtxtPtr ctxt) {
  * @err:  the error number
  * @arg1:  the first argument
  * @arg2:  the second argument
+ * @dup:  need to dup the args
  *
  * Register a validation error, either generating it if it's sure
  * or stacking it for later handling if unsure.
  */
 static void
 xmlRelaxNGAddValidError(xmlRelaxNGValidCtxtPtr ctxt, xmlRelaxNGValidErr err,
-			const xmlChar *arg1, const xmlChar *arg2)
+			const xmlChar *arg1, const xmlChar *arg2, int dup)
 {
     if ((ctxt == NULL) || (ctxt->error == NULL))
 	return;
@@ -1910,7 +1946,7 @@ xmlRelaxNGAddValidError(xmlRelaxNGValidCtxtPtr ctxt, xmlRelaxNGValidErr err,
      * Stack the error for later processing if needed
      */
     else {
-	xmlRelaxNGValidErrorPush(ctxt, err, arg1, arg2);
+	xmlRelaxNGValidErrorPush(ctxt, err, arg1, arg2, dup);
     }
 }
 
@@ -1952,6 +1988,7 @@ xmlRelaxNGSchemaTypeHave(void *data ATTRIBUTE_UNUSED,
  * @data:  data needed for the library
  * @type:  the type name
  * @value:  the value to check
+ * @node:  the node
  *
  * Check if the given type and value are validated by
  * the W3C XMLSchema Datatype library.
@@ -1962,7 +1999,8 @@ static int
 xmlRelaxNGSchemaTypeCheck(void *data ATTRIBUTE_UNUSED,
 	                  const xmlChar *type,
 			  const xmlChar *value,
-			  void **result) {
+			  void **result,
+			  xmlNodePtr node) {
     xmlSchemaTypePtr typ;
     int ret;
 
@@ -1978,8 +2016,10 @@ xmlRelaxNGSchemaTypeCheck(void *data ATTRIBUTE_UNUSED,
 	       BAD_CAST "http://www.w3.org/2001/XMLSchema");
     if (typ == NULL)
 	return(-1);
-    ret = xmlSchemaValidatePredefinedType(typ, value,
-	                                  (xmlSchemaValPtr *) result);
+    ret = xmlSchemaValPredefTypeNode(typ, value,
+	                             (xmlSchemaValPtr *) result, node);
+    if (ret == 2) /* special ID error code */
+	return(2);
     if (ret == 0)
 	return(1);
     if (ret > 0)
@@ -2107,6 +2147,7 @@ xmlRelaxNGDefaultTypeHave(void *data ATTRIBUTE_UNUSED, const xmlChar *type) {
  * @data:  data needed for the library
  * @type:  the type name
  * @value:  the value to check
+ * @node:  the node
  *
  * Check if the given type and value are validated by
  * the default datatype library.
@@ -2117,7 +2158,8 @@ static int
 xmlRelaxNGDefaultTypeCheck(void *data ATTRIBUTE_UNUSED,
 	                   const xmlChar *type ATTRIBUTE_UNUSED,
 			   const xmlChar *value ATTRIBUTE_UNUSED,
-			   void **result ATTRIBUTE_UNUSED) {
+			   void **result ATTRIBUTE_UNUSED,
+			   xmlNodePtr node ATTRIBUTE_UNUSED) {
     if (value == NULL)
 	return(-1);
     if (xmlStrEqual(type, BAD_CAST "string"))
@@ -2707,6 +2749,11 @@ xmlRelaxNGParseData(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
 		    "Error type '%s' is not exported by type library '%s'\n",
 			    def->name, library);
 		ctxt->nbErrors++;
+	    } else if ((xmlStrEqual(library, BAD_CAST
+			   "http://www.w3.org/2001/XMLSchema-datatypes")) &&
+		       ((xmlStrEqual(def->name, BAD_CAST "IDREF")) ||
+		        (xmlStrEqual(def->name, BAD_CAST "IDREFS")))) {
+		ctxt->idref = 1;
 	    }
 	}
     }
@@ -6317,6 +6364,8 @@ xmlRelaxNGParse(xmlRelaxNGParserCtxtPtr ctxt)
     ret->defNr = ctxt->defNr;
     ret->defTab = ctxt->defTab;
     ctxt->defTab = NULL;
+    if (ctxt->idref == 1)
+	ret->idref = 1;
 
     return (ret);
 }
@@ -6659,6 +6708,7 @@ xmlRelaxNGNormalize(xmlRelaxNGValidCtxtPtr ctxt, const xmlChar *str) {
  * @ctxt:  a Relax-NG validation context
  * @value:  the string value
  * @type:  the datatype definition
+ * @node:  the node
  *
  * Validate the given value against the dataype
  *
@@ -6666,7 +6716,7 @@ xmlRelaxNGNormalize(xmlRelaxNGValidCtxtPtr ctxt, const xmlChar *str) {
  */
 static int
 xmlRelaxNGValidateDatatype(xmlRelaxNGValidCtxtPtr ctxt, const xmlChar *value,
-	                   xmlRelaxNGDefinePtr define) {
+	                   xmlRelaxNGDefinePtr define, xmlNodePtr node) {
     int ret, tmp;
     xmlRelaxNGTypeLibraryPtr lib;
     void *result = NULL;
@@ -6679,9 +6729,9 @@ xmlRelaxNGValidateDatatype(xmlRelaxNGValidCtxtPtr ctxt, const xmlChar *value,
     if (lib->check != NULL) {
 	if ((define->attrs != NULL) &&
 	    (define->attrs->type == XML_RELAXNG_PARAM)) {
-	    ret = lib->check(lib->data, define->name, value, &result);
+	    ret = lib->check(lib->data, define->name, value, &result, node);
 	} else {
-	    ret = lib->check(lib->data, define->name, value, NULL);
+	    ret = lib->check(lib->data, define->name, value, NULL, node);
 	}
     } else 
 	ret = -1;
@@ -6692,8 +6742,10 @@ xmlRelaxNGValidateDatatype(xmlRelaxNGValidCtxtPtr ctxt, const xmlChar *value,
 	return(-1);
     } else if (ret == 1) {
 	ret = 0;
+    } else if (ret == 2) {
+	VALID_ERR2P(XML_RELAXNG_ERR_DUPID, value);
     } else {
-	VALID_ERR3(XML_RELAXNG_ERR_TYPEVAL, define->name, value);
+	VALID_ERR3P(XML_RELAXNG_ERR_TYPEVAL, define->name, value);
 	ret = -1;
     }
     cur = define->attrs;
@@ -6845,7 +6897,8 @@ xmlRelaxNGValidateValue(xmlRelaxNGValidCtxtPtr ctxt,
 	    break;
 	}
 	case XML_RELAXNG_DATATYPE: {
-	    ret = xmlRelaxNGValidateDatatype(ctxt, value, define);
+	    ret = xmlRelaxNGValidateDatatype(ctxt, value, define,
+		                             ctxt->state->seq);
 	    if (ret == 0)
 		xmlRelaxNGNextValue(ctxt);
 	    
@@ -7112,6 +7165,7 @@ xmlRelaxNGValidateAttribute(xmlRelaxNGValidCtxtPtr ctxt,
     int ret = 0, i;
     xmlChar *value, *oldvalue;
     xmlAttrPtr prop = NULL, tmp;
+    xmlNodePtr oldseq;
 
     if (ctxt->state->nbAttrLeft <= 0)
 	return(-1);
@@ -7131,6 +7185,8 @@ xmlRelaxNGValidateAttribute(xmlRelaxNGValidCtxtPtr ctxt,
 	if (prop != NULL) {
 	    value = xmlNodeListGetString(prop->doc, prop->children, 1);
 	    oldvalue = ctxt->state->value;
+	    oldseq = ctxt->state->seq;
+	    ctxt->state->seq = (xmlNodePtr) prop;
 	    ctxt->state->value = value;
 	    ctxt->state->endvalue = NULL;
 	    ret = xmlRelaxNGValidateValueContent(ctxt, define->content);
@@ -7139,6 +7195,7 @@ xmlRelaxNGValidateAttribute(xmlRelaxNGValidCtxtPtr ctxt,
 	    if (value != NULL)
 		xmlFree(value);
 	    ctxt->state->value = oldvalue;
+	    ctxt->state->seq = oldseq;
 	    if (ret == 0) {
 		/*
 		 * flag the attribute as processed
@@ -7165,6 +7222,8 @@ xmlRelaxNGValidateAttribute(xmlRelaxNGValidCtxtPtr ctxt,
 	if (prop != NULL) {
 	    value = xmlNodeListGetString(prop->doc, prop->children, 1);
 	    oldvalue = ctxt->state->value;
+	    oldseq = ctxt->state->seq;
+	    ctxt->state->seq = (xmlNodePtr) prop;
 	    ctxt->state->value = value;
 	    ret = xmlRelaxNGValidateValueContent(ctxt, define->content);
 	    if (ctxt->state->value != NULL)
@@ -7172,6 +7231,7 @@ xmlRelaxNGValidateAttribute(xmlRelaxNGValidCtxtPtr ctxt,
 	    if (value != NULL)
 		xmlFree(value);
 	    ctxt->state->value = oldvalue;
+	    ctxt->state->seq = oldseq;
 	    if (ret == 0) {
 		/*
 		 * flag the attribute as processed
@@ -8050,7 +8110,8 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
 		    break;
 		}
 	    }
-	    ret = xmlRelaxNGValidateDatatype(ctxt, content, define);
+	    ret = xmlRelaxNGValidateDatatype(ctxt, content, define,
+		                             ctxt->state->seq);
 	    if (ret == -1) {
 		VALID_ERR2(XML_RELAXNG_ERR_DATATYPE, define->name);
 	    } else if (ret == 0) {
@@ -8374,6 +8435,18 @@ xmlRelaxNGValidateDocument(xmlRelaxNGValidCtxtPtr ctxt, xmlDocPtr doc) {
     xmlRelaxNGFreeValidState(state);
     if (ret != 0)
 	xmlRelaxNGDumpValidError(ctxt);
+    if (ctxt->idref == 1) {
+	xmlValidCtxt vctxt;
+
+	memset(&vctxt, 0, sizeof(xmlValidCtxt));
+	vctxt.valid = 1;
+	vctxt.error = ctxt->error;
+	vctxt.warning = ctxt->warning;
+	vctxt.userData = ctxt->userData;
+
+	if (xmlValidateDocumentFinal(&vctxt, doc) != 1)
+	    ret = -1;
+    }
 
     return(ret);
 }
@@ -8409,6 +8482,7 @@ xmlRelaxNGNewValidCtxt(xmlRelaxNGPtr schema) {
     ret->errMax = 0;
     ret->err = NULL;
     ret->errTab = NULL;
+    ret->idref = schema->idref;
     return (ret);
 }
 

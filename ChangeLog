@@ -1,3 +1,11 @@
+Tue Mar 18 01:28:15 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c valid.c xmlschemastypes.c: added Datatype ID
+	  and IDREF, usable from RelaxNG now
+	* include/libxml/xmlschemastypes.h: need to add a new interface
+	  because the validation modifies the infoset
+	* test/relaxng/testsuite.xml: extended the testsuite
+
 Mon Mar 17 16:34:07 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c: fixed the last core RelaxNG bug known #107083,

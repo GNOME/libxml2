@@ -29,6 +29,10 @@ xmlSchemaTypePtr xmlSchemaGetPredefinedType	(const xmlChar *name,
 int		xmlSchemaValidatePredefinedType	(xmlSchemaTypePtr type,
 						 const xmlChar *value,
 						 xmlSchemaValPtr *val);
+int		xmlSchemaValPredefTypeNode	(xmlSchemaTypePtr type,
+						 const xmlChar *value,
+						 xmlSchemaValPtr *val,
+						 xmlNodePtr node);
 int		xmlSchemaValidateFacet		(xmlSchemaTypePtr base,
 						 xmlSchemaFacetPtr facet,
 						 const xmlChar *value,

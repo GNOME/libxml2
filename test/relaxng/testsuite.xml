@@ -1331,4 +1331,62 @@
 </valid>
 </testCase>
 </testSuite>
+<testSuite>
+<documentation>Test of ID/IDREF</documentation>
+<testCase>
+<correct>
+<element name="top" xmlns="http://relaxng.org/ns/structure/1.0"
+         datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+  <zeroOrMore>
+    <choice>
+      <element name="ref">
+        <attribute name="id">
+	  <data type="ID"/>
+	</attribute>
+	<text/>
+      </element>
+      <element name="xref">
+        <attribute name="link">
+	  <data type="IDREF"/>
+	</attribute>
+	<text/>
+      </element>
+    </choice>
+  </zeroOrMore>
+</element>
+</correct>
+<valid>
+<top>
+</top>
+</valid>
+<invalid>
+<top>
+  <xref link="id1"/>
+</top>
+</invalid>
+<valid>
+<top>
+  <ref id="id1"/>
+</top>
+</valid>
+<valid>
+<top>
+  <xref link="id1"/>
+  <ref id="id1"/>
+</top>
+</valid>
+<valid>
+<top>
+  <ref id="id1"/>
+  <xref link="id1"/>
+</top>
+</valid>
+<invalid>
+<top>
+  <ref id="id1"/>
+  <ref id="id1"/>
+</top>
+</invalid>
+</testCase>
+</testSuite>
 </testSuite>

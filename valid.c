@@ -5988,6 +5988,7 @@ xmlValidateCheckRefCallback(xmlListPtr ref_list, xmlValidCtxtPtr ctxt,
  *
  * basically it does the following checks described by the XML Rec
  * 
+ * Check all the IDREF/IDREFS attributes definition for validity
  *
  * returns 1 if valid or 0 otherwise
  */

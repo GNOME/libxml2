@@ -1057,10 +1057,11 @@ error:
 
 
 /**
- * xmlSchemaValidatePredefinedType:
+ * xmlSchemaValPredefTypeNode:
  * @type: the predefined type
  * @value: the value to check
  * @val:  the return computed value
+ * @node:  the node containing the value
  *
  * Check that a value conforms to the lexical space of the predefined type.
  * if true a value is computed and returned in @val.
@@ -1069,8 +1070,8 @@ error:
  *         and -1 in case of internal or API error.
  */
 int
-xmlSchemaValidatePredefinedType(xmlSchemaTypePtr type, const xmlChar *value,
-	                        xmlSchemaValPtr *val) {
+xmlSchemaValPredefTypeNode(xmlSchemaTypePtr type, const xmlChar *value,
+	                   xmlSchemaValPtr *val, xmlNodePtr node) {
     xmlSchemaValPtr v;
     int ret;
 
@@ -1411,11 +1412,60 @@ xmlSchemaValidatePredefinedType(xmlSchemaTypePtr type, const xmlChar *value,
 	    }
 	}
 	return(0);
+    } else if (type == xmlSchemaTypeIdrefDef) {
+	ret = xmlValidateNCName(value, 1);
+	if ((ret == 0) && (val != NULL)) {
+	    TODO;
+	}
+	if ((ret == 0) && (node != NULL) &&
+	    (node->type == XML_ATTRIBUTE_NODE)) {
+	    xmlAttrPtr attr = (xmlAttrPtr) node;
+
+	    xmlAddRef(NULL, node->doc, value, attr);
+	    attr->atype = XML_ATTRIBUTE_IDREF;
+	}
+	return(ret);
+    } else if (type == xmlSchemaTypeIdDef) {
+	ret = xmlValidateNCName(value, 1);
+	if ((ret == 0) && (val != NULL)) {
+	    TODO;
+	}
+	if ((ret == 0) && (node != NULL) &&
+	    (node->type == XML_ATTRIBUTE_NODE)) {
+	    xmlAttrPtr attr = (xmlAttrPtr) node;
+	    xmlIDPtr res;
+
+	    res = xmlAddID(NULL, node->doc, value, attr);
+	    if (res == NULL) {
+		ret = 2;
+	    } else {
+		attr->atype = XML_ATTRIBUTE_ID;
+	    }
+	}
+	return(ret);
     } else {
 	TODO
 	return(0);
     }
     return(-1);
+}
+
+/**
+ * xmlSchemaValidatePredefinedType:
+ * @type: the predefined type
+ * @value: the value to check
+ * @val:  the return computed value
+ *
+ * Check that a value conforms to the lexical space of the predefined type.
+ * if true a value is computed and returned in @val.
+ *
+ * Returns 0 if this validates, a positive error code number otherwise
+ *         and -1 in case of internal or API error.
+ */
+int
+xmlSchemaValidatePredefinedType(xmlSchemaTypePtr type, const xmlChar *value,
+	                        xmlSchemaValPtr *val) {
+    return(xmlSchemaValPredefTypeNode(type, value, val, NULL));
 }
 
 /**

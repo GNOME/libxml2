@@ -1,3 +1,10 @@
+Thu Mar 25 20:21:01 MST 2004 John Fleck <jfleck@inkstain.net>
+
+	* doc/examples/io2.c
+	* doc/examples/io2.res
+	add xmlDocDumpMemory example in response to mailing list FAQ
+	(rebuilt xml and html also)
+
 Thu Mar 25 10:33:05 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* debugXML.c testXPath.c xmllint.c xmlschemastypes.c: applied

@@ -9,78 +9,7 @@
 #ifndef __XML_VERSION_H__
 #define __XML_VERSION_H__
 
-/**
- * XMLPUBFUN, XMLPUBVAR, XMLCALL
- *
- * Macros which declare an exportable function, an exportable variable and
- * the calling convention used for functions.
- *
- * Please use an extra block for every platform/compiler combination when
- * modifying this, rather than overlong #ifdef lines. This helps
- * readability as well as the fact that different compilers on the same
- * platform might need different definitions.
- */
-#define XMLPUBFUN
-#define XMLPUBVAR
-#define XMLCALL
-/* Windows platform with MS compiler */
-#if defined(_WIN32) && defined(_MSC_VER)
-  #undef XMLPUBFUN
-  #undef XMLPUBVAR
-  #undef XMLCALL
-  #if defined(IN_LIBXML) && !defined(LIBXML_STATIC)
-    #define XMLPUBFUN __declspec(dllexport)
-    #define XMLPUBVAR __declspec(dllexport)
-  #else
-    #define XMLPUBFUN
-    #if !defined(LIBXML_STATIC)
-      #define XMLPUBVAR __declspec(dllimport) extern
-    #else
-      #define XMLPUBVAR
-    #endif
-  #endif
-  #define XMLCALL __cdecl
-#endif
-/* Windows platform with Borland compiler */
-#if defined(_WIN32) && defined(__BORLANDC__)
-  #undef XMLPUBFUN
-  #undef XMLPUBVAR
-  #undef XMLCALL
-  #if defined(IN_LIBXML) && !defined(LIBXML_STATIC)
-    #define XMLPUBFUN __declspec(dllexport)
-    #define XMLPUBVAR __declspec(dllexport)
-  #else
-    #define XMLPUBFUN
-    #if !defined(LIBXML_STATIC)
-      #define XMLPUBVAR __declspec(dllimport) extern
-    #else
-      #define XMLPUBVAR
-    #endif
-  #endif
-  #define XMLCALL __cdecl
-#endif
-/* Cygwin platform, GNU compiler */
-#if defined(_WIN32) && defined(__CYGWIN__)
-  #undef XMLPUBFUN
-  #undef XMLPUBVAR
-  #undef XMLCALL
-  #if defined(IN_LIBXML) && !defined(LIBXML_STATIC)
-    #define XMLPUBFUN __declspec(dllexport)
-    #define XMLPUBVAR __declspec(dllexport)
-  #else
-    #define XMLPUBFUN
-    #if !defined(LIBXML_STATIC)
-      #define XMLPUBVAR __declspec(dllimport) extern
-    #else
-      #define XMLPUBVAR
-    #endif
-  #endif
-  #define XMLCALL __cdecl
-#endif
-/* Compatibility */
-#if !defined(LIBXML_DLL_IMPORT)
-#define LIBXML_DLL_IMPORT XMLPUBVAR
-#endif
+#include <libxml/xmlexports.h>
 
 #ifdef __cplusplus
 extern "C" {

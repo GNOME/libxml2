@@ -577,9 +577,13 @@ isolat1ToUTF8(unsigned char* out, int *outlen,
 	    processed++;
 	    continue;
 	} else {
-	    *out++= ((c >>  6) & 0x1F) | 0xC0;
-            if (out >= outend)
+	    /*
+	     * make sure there is 2 chars left in advance
+	     */
+            if (out + 1 >= outend) {
 		break;
+	    }
+	    *out++= ((c >>  6) & 0x1F) | 0xC0;
             *out++= (c & 0x3F) | 0x80;
 	    processed++;
         }

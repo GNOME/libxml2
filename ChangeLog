@@ -1,3 +1,8 @@
+Thu Mar 21 14:25:29 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* encoding.c: fixed a bug in the ISO-Latin 1 to UTF8 encoder
+	  raised by Morus Walter
+
 Thu Mar 21 14:07:13 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xmlcatalog.c include/libxml/xmlversion.h.in: applied 2 fixups

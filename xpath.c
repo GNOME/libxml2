@@ -7024,6 +7024,18 @@ xmlXPathParseNameComplex(xmlXPathParserContextPtr ctxt, int qualified) {
 	return(NULL);
     return(xmlStrndup(buf, len));
 }
+
+#define MAX_FRAC 20
+
+static double my_pow10[MAX_FRAC] = {
+    1.0, 10.0, 100.0, 1000.0, 10000.0,
+    100000.0, 1000000.0, 10000000.0, 100000000.0, 1000000000.0,
+    10000000000.0, 100000000000.0, 1000000000000.0, 10000000000000.0,
+    100000000000000.0,
+    1000000000000000.0, 10000000000000000.0, 100000000000000000.0,
+    1000000000000000000.0, 10000000000000000000.0
+};
+
 /**
  * xmlXPathStringEvalNumber:
  * @str:  A string to scan
@@ -7044,7 +7056,6 @@ double
 xmlXPathStringEvalNumber(const xmlChar *str) {
     const xmlChar *cur = str;
     double ret;
-    double mult = 1;
     int ok = 0;
     int isneg = 0;
     int exponent = 0;
@@ -7087,15 +7098,23 @@ xmlXPathStringEvalNumber(const xmlChar *str) {
 #endif
 
     if (*cur == '.') {
+	int v, frac = 0;
+	double fraction = 0;
+
         cur++;
 	if (((*cur < '0') || (*cur > '9')) && (!ok)) {
 	    return(xmlXPathNAN);
 	}
-	while ((*cur >= '0') && (*cur <= '9')) {
-	    mult /= 10;
-	    ret = ret  + (*cur - '0') * mult;
+	while (((*cur >= '0') && (*cur <= '9')) && (frac < MAX_FRAC)) {
+	    v = (*cur - '0');
+	    fraction = fraction * 10 + v;
+	    frac = frac + 1;
 	    cur++;
 	}
+	fraction /= my_pow10[frac];
+	ret = ret + fraction;
+	while ((*cur >= '0') && (*cur <= '9'))
+	    cur++;
     }
     if ((*cur == 'e') || (*cur == 'E')) {
       cur++;

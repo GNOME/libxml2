@@ -530,6 +530,8 @@ classes_type = {
     "xmlXPathParserContextPtr": ("._o", "xpathParserContext(_obj=%s)", "xpathParserContext"),
     "xmlParserCtxtPtr": ("._o", "parserCtxt(_obj=%s)", "parserCtxt"),
     "xmlParserCtxt *": ("._o", "parserCtxt(_obj=%s)", "parserCtxt"),
+    "htmlParserCtxtPtr": ("._o", "parserCtxt(_obj=%s)", "parserCtxt"),
+    "htmlParserCtxt *": ("._o", "parserCtxt(_obj=%s)", "parserCtxt"),
     "xmlCatalogPtr": ("._o", "catalog(_obj=%s)", "catalog"),
     "xmlURIPtr": ("._o", "URI(_obj=%s)", "URI"),
 }

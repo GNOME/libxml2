@@ -1,3 +1,10 @@
+Mon May 13 12:32:22 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* python/generator.py python/libxml2class.txt : fixed a problem
+	  with the HTML parser pointed by Gary Benson
+	* python/tests/Makefile.am python/tests/pushSAXhtml.py: sdding the
+	  example
+
 Thu 09 May 2002 11:19:00 AM PDT Aleksey Sanin <aleksey@aleksey.com>
 	* parser.c: fixed bug #81159 (memory growth in SAX)
 	

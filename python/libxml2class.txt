@@ -6,13 +6,9 @@
 
 
 # functions from module HTMLparser
-htmlFreeParserCtxt()
 htmlHandleOmittedElem()
 htmlIsScriptAttribute()
-htmlParseCharRef()
-htmlParseChunk()
 htmlParseDoc()
-htmlParseElement()
 htmlParseFile()
 
 # functions from module HTMLtree
@@ -439,6 +435,12 @@ Class parserCtxt()
     replaceEntities()
     validate()
     wellFormed()
+
+    # functions from module HTMLparser
+    htmlFreeParserCtxt()
+    htmlParseCharRef()
+    htmlParseChunk()
+    htmlParseElement()
 
     # functions from module parser
     clearParserCtxt()

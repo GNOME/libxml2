@@ -8,6 +8,7 @@ PYTESTS=	\
     xpathext.py	\
     push.py	\
     pushSAX.py	\
+    pushSAXhtml.py \
     error.py	\
     serialize.py\
     validate.py	\

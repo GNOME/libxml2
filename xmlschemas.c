@@ -13326,7 +13326,9 @@ xmlSchemaTypeFixup(xmlSchemaTypePtr item,
 		    * introduce the correct usage of contentType to store the
 		    * facets in!
 		    */
-		    if (item->baseType->flags && XML_SCHEMAS_TYPE_FACETSNEEDVALUE)
+		    if ((item->baseType != NULL) &&
+		        (item->baseType->flags &
+			 XML_SCHEMAS_TYPE_FACETSNEEDVALUE))
 			item->flags |= XML_SCHEMAS_TYPE_FACETSNEEDVALUE;
 		    else {
 			xmlSchemaFacetLinkPtr cur;

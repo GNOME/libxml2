@@ -1,3 +1,7 @@
+Fri Jan 28 18:53:40 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemas.c: fixed an untested pointer dereference and a & vs &&
+
 Fri Jan 28 18:37:18 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c: implementation of xmlTextReaderReadString by

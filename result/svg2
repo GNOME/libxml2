@@ -8,7 +8,8 @@
   <g style="stroke: #800040">
     <polyline verts=" 32,100 72,50 90,82 73,16 120,64 152,9 177,107"/>
   </g>
-  <g style="stroke: #000000"/>
+  <g style="stroke: #000000"> 
+</g>
   <g style="stroke: #0000ff">
     <rect x="30" y="101" width="51" height="33"/>
   </g>
@@ -38,11 +39,13 @@
   <g style="stroke: #008080">
     <text x="176" y="85">sadfsadfsad</text>
   </g>
-  <g style="stroke: #000000"/>
+  <g style="stroke: #000000"> 
+</g>
   <g style="fill: #800040">
     <ellipse cx="208" cy="180" major="45" minor="31" angle="0"/>
   </g>
-  <g style="stroke: #000000"/>
+  <g style="stroke: #000000"> 
+</g>
   <g style="fill: #ffffff">
     <g>
       <desc> Java Font definition:Dialog 700</desc>

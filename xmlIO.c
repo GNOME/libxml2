@@ -79,6 +79,8 @@ xmlAllocParserInputBuffer(xmlCharEncoding enc) {
     ret->fd = -1;
     ret->httpIO = NULL;
     ret->ftpIO = NULL;
+    /* 2.3.5 */
+    ret->raw = NULL;
 
     return(ret);
 }
@@ -105,6 +107,11 @@ xmlFreeParserInputBuffer(xmlParserInputBufferPtr in) {
         xmlNanoFTPClose(in->ftpIO);
     if (in->fd >= 0)
         close(in->fd);
+    /* 2.3.5 */
+    if (in->raw) {
+        xmlBufferFree(in->raw);
+	in->raw = NULL;
+    }
     memset(in, 0xbe, (size_t) sizeof(xmlParserInputBuffer));
     xmlFree(in);
 }

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<?xml version="1.0"?>
 <!DOCTYPE spec SYSTEM "dtds/spec.dtd" [
 <!ENTITY XML.version "1.0">
 <!ENTITY doc.date "10 February 1998">
@@ -34,7 +34,7 @@ all text and legal notices remain intact">
 need to be made after approval of the document by the ERB, before
 publication.  -->
 <!-- &#x2014, but nsgmls doesn't grok hex -->
-<!-- <!ENTITY nbsp " "> -->
+<!-- <!ENTITY nbsp "Â "> -->
 <!-- audience and distribution status:  for use at publication time -->
 <!-- for Panorama *-->
 <?VERBATIM "eg" ?>
@@ -110,7 +110,7 @@ HTML.</p>
 other interested parties and has been endorsed by the
 Director as a W3C Recommendation. It is a stable
 document and may be used as reference material or cited
-as a normative reference from another document. W3C&apos;s
+as a normative reference from another document. W3C's
 role in making the Recommendation is to draw attention
 to the specification and to promote its widespread
 deployment. This enhances the functionality and
@@ -155,24 +155,24 @@ entify hard-coded document date in pubdate element,
 change expansion of entity WebSGML,
 update status description as per Dan Connolly (am not sure
 about refernece to Berners-Lee et al.),
-add &apos;The&apos; to abstract as per WG decision,
+add 'The' to abstract as per WG decision,
 move Relationship to Existing Standards to back matter and
 combine with References,
 re-order back matter so normative appendices come first,
 re-tag back matter so informative appendices are tagged informdiv1,
-remove XXX XXX from list of &apos;normative&apos; specs in prose,
+remove XXX XXX from list of 'normative' specs in prose,
 move some references from Other References to Normative References,
 add RFC 1738, 1808, and 2141 to Other References (they are not
 normative since we do not require the processor to enforce any 
 rules based on them),
-add reference to &apos;Fielding draft&apos; (Berners-Lee et al.),
+add reference to 'Fielding draft' (Berners-Lee et al.),
 move notation section to end of body,
 drop URIchar non-terminal and use SkipLit instead,
-lose stray reference to defunct nonterminal &apos;markupdecls&apos;,
-move reference to Aho et al. into appendix (Tim&apos;s right),
+lose stray reference to defunct nonterminal 'markupdecls',
+move reference to Aho et al. into appendix (Tim's right),
 add prose note saying that hash marks and fragment identifiers are
 NOT part of the URI formally speaking, and are NOT legal in 
-system identifiers (processor &apos;may&apos; signal an error).
+system identifiers (processor 'may' signal an error).
 Work through:
 Tim Bray reacting to James Clark,
 Tim Bray on his own,
@@ -180,7 +180,7 @@ Eve Maler,
 
 NOT DONE YET:
 change binary / text to unparsed / parsed.
-handle James&apos;s suggestion about &lt; in attriubte values
+handle James's suggestion about &lt; in attriubte values
 uppercase hex characters,
 namechar list,
 </sitem>
@@ -193,7 +193,7 @@ drop SDD from EncodingDecl,
 change text at version number 1.0,
 drop misleading (wrong!) sentence about ignorables and extenders,
 modify definition of PCData to make bar on msc grammatical,
-change grammar&apos;s handling of internal subset (drop non-terminal markupdecls),
+change grammar's handling of internal subset (drop non-terminal markupdecls),
 change definition of includeSect to allow conditional sections,
 add integral-declaration constraint on internal subset,
 drop misleading / dangerous sentence about relationship of
@@ -207,14 +207,14 @@ Unicode character database (needs further work!).
 for PE appearance.</sitem>
         <sitem>1997-10-01 : TB : Case-sensitive markup; cleaned up
 element-type defs, lotsa little edits for style</sitem>
-        <sitem>1997-09-25 : TB : Change to elm&apos;s new DTD, with
+        <sitem>1997-09-25 : TB : Change to elm's new DTD, with
 substantial detail cleanup as a side-effect</sitem>
         <sitem>1997-07-24 : CMSMcQ : correct error (lost *) in definition 
 of ignoreSectContents (thanks to Makoto Murata)</sitem>
         <sitem>Allow all empty elements to have end-tags, consistent with
 SGML TC (as per JJC).</sitem>
         <sitem>1997-07-23 : CMSMcQ : pre-emptive strike on pending corrections:
-introduce the term &apos;empty-element tag&apos;, note that all empty elements
+introduce the term 'empty-element tag', note that all empty elements
 may use it, and elements declared EMPTY must use it.
 Add WFC requiring encoding decl to come first in an entity.
 Redefine notations to point to PIs as well as binary entities.
@@ -225,15 +225,15 @@ mixed and element content.
 </sitem>
         <sitem>1997-06-30 : CMSMcQ : change date, some cosmetic changes,
 changes to productions for choice, seq, Mixed, NotationType,
-Enumeration.  Follow James Clark&apos;s suggestion and prohibit 
+Enumeration.  Follow James Clark's suggestion and prohibit 
 conditional sections in internal subset.  TO DO:  simplify
-production for ignored sections as a result, since we don&apos;t 
-need to worry about parsers which don&apos;t expand PErefs finding
+production for ignored sections as a result, since we don't 
+need to worry about parsers which don't expand PErefs finding
 a conditional section.</sitem>
         <sitem>1997-06-29 : TB : various edits</sitem>
         <sitem>1997-06-29 : CMSMcQ : further changes:
 Suppress old FINAL EDIT comments and some dead material.
-Revise occurrences of % in grammar to exploit Henry Thompson&apos;s pun,
+Revise occurrences of % in grammar to exploit Henry Thompson's pun,
 especially markupdecl and attdef.
 Remove RMD requirement relating to element content (?).
 </sitem>
@@ -249,8 +249,8 @@ Change def of %operator.
 Change standard definitions of lt, gt, amp.
 Strip leading zeros from #x00nn forms.</sitem>
         <sitem>1997-04-02 : CMSMcQ : final corrections of editorial errors
-found in last night&apos;s proofreading.  Reverse course once more on
-well-formed:   Webster&apos;s Second hyphenates it, and that&apos;s enough
+found in last night's proofreading.  Reverse course once more on
+well-formed:   Webster's Second hyphenates it, and that's enough
 for me.</sitem>
         <sitem>1997-04-01 : CMSMcQ : corrections from JJC, EM, HT, and self</sitem>
         <sitem>1997-03-31 : Tim Bray : many changes</sitem>
@@ -265,11 +265,11 @@ Paul Grosso, and self.  Among other things:  give in on &quot;well formed&quot;
 (Terry is right), tentatively rename QuotedCData as AttValue
 and Literal as EntityValue to be more informative, since attribute
 values are the <emph>only</emph> place QuotedCData was used, and
-vice versa for entity text and Literal. (I&apos;d call it Entity Text, 
+vice versa for entity text and Literal. (I'd call it Entity Text, 
 but 8879 uses that name for both internal and external entities.)</sitem>
         <sitem>1997-03-26 : CMSMcQ : resynch the two forks of this draft, reapply
-my changes dated 03-20 and 03-21.  Normalize old &apos;may not&apos; to &apos;must not&apos;
-except in the one case where it meant &apos;may or may not&apos;.</sitem>
+my changes dated 03-20 and 03-21.  Normalize old 'may not' to 'must not'
+except in the one case where it meant 'may or may not'.</sitem>
         <sitem>1997-03-21 : TB : massive changes on plane flight from Chicago
 to Vancouver</sitem>
         <sitem>1997-03-21 : CMSMcQ : correct as many reported errors as possible.
@@ -280,12 +280,12 @@ WWW conference April 1997:  restore some of the internal entity
 references (e.g. to docdate, etc.), change character xA0 to &amp;nbsp;
 and define nbsp as &amp;#160;, and refill a lot of paragraphs for
 legibility.</sitem>
-        <sitem>1996-11-12 : CMSMcQ : revise using Tim&apos;s edits:
+        <sitem>1996-11-12 : CMSMcQ : revise using Tim's edits:
 Add list type of NUMBERED and change most lists either to
 BULLETS or to NUMBERED.
 Suppress QuotedNames, Names (not used).
 Correct trivial-grammar doc type decl.
-Rename &apos;marked section&apos; as &apos;CDATA section&apos; passim.
+Rename 'marked section' as 'CDATA section' passim.
 Also edits from James Clark:
 Define the set of characters from which [^abc] subtracts.
 Charref should use just [0-9] not Digit.
@@ -293,9 +293,9 @@ Location info needs cleaner treatment:  remove?  (ERB
 question).
 One example of a PI has wrong pic.
 Clarify discussion of encoding names.
-Encoding failure should lead to unspecified results; don&apos;t
+Encoding failure should lead to unspecified results; don't
 prescribe error recovery.
-Don&apos;t require exposure of entity boundaries.
+Don't require exposure of entity boundaries.
 Ignore white space in element content.
 Reserve entity names of the form u-NNNN.
 Clarify relative URLs.
@@ -313,17 +313,17 @@ Finish stylistic revision.</sitem>
         <sitem>1996-10-31 : TB : Add Entity Handling section</sitem>
         <sitem>1996-10-30 : TB : Clean up term &amp; termdef.  Slip in
 ERB decision re EMPTY.</sitem>
-        <sitem>1996-10-28 : TB : Change DTD.  Implement some of Michael&apos;s
+        <sitem>1996-10-28 : TB : Change DTD.  Implement some of Michael's
 suggestions.  Change comments back to //.  Introduce language for
 XML namespace reservation.  Add section on white-space handling.
 Lots more cleanup.</sitem>
         <sitem>1996-10-24 : CMSMcQ : quick tweaks, implement some ERB
 decisions.  Characters are not integers.  Comments are /* */ not //.
 Add bibliographic refs to 10646, HyTime, Unicode.
-Rename old Cdata as MsData since it&apos;s <emph>only</emph> seen
+Rename old Cdata as MsData since it's <emph>only</emph> seen
 in marked sections.  Call them attribute-value pairs not
 name-value pairs, except once.  Internal subset is optional, needs
-&apos;?&apos;.  Implied attributes should be signaled to the app, not
+'?'.  Implied attributes should be signaled to the app, not
 have values supplied by processor.</sitem>
         <sitem>1996-10-16 : TB : track down &amp; excise all DSD references;
 introduce some EBNF for entity declarations.</sitem>
@@ -340,10 +340,10 @@ Move old 2.2 XML Processors and Apps into intro.
 Mention comments, PIs, and marked sections in discussion of
 delimiter escaping.
 Streamline discussion of doctype decl syntax.
-Drop old section of &apos;PI syntax&apos; for doctype decl, and add
+Drop old section of 'PI syntax' for doctype decl, and add
 section on partial-DTD summary PIs to end of Logical Structures
 section.
-Revise DSD syntax section to use Tim&apos;s subset-in-a-PI
+Revise DSD syntax section to use Tim's subset-in-a-PI
 mechanism.</sitem>
         <sitem>1996-10-10 : TB : eliminate name recognizers (and more?)</sitem>
         <sitem>1996-10-09 : CMSMcQ : revise for style, consistency through 2.3
@@ -381,7 +381,7 @@ Parsed data is made up of <termref def="dt-character">characters</termref>,
 some 
 of which form <termref def="dt-chardata">character data</termref>, 
 and some of which form <termref def="dt-markup">markup</termref>.
-Markup encodes a description of the document&apos;s storage layout and
+Markup encodes a description of the document's storage layout and
 logical structure. XML provides a mechanism to impose constraints on
 the storage layout and logical structure.</p>
       <p><termdef id="dt-xml-proc" term="XML Processor">A software module
@@ -400,7 +400,7 @@ It was chaired by Jon Bosak of Sun
 Microsystems with the active participation of an XML Special
 Interest Group (previously known as the SGML Working Group) also
 organized by the W3C. The membership of the XML Working Group is given
-in an appendix. Dan Connolly served as the WG&apos;s contact with the W3C.
+in an appendix. Dan Connolly served as the WG's contact with the W3C.
 </p>
         <p>The design goals for XML are:<olist><item><p>XML shall be straightforwardly usable over the
 Internet.</p></item><item><p>XML shall support a wide variety of applications.</p></item><item><p>XML shall be compatible with SGML.</p></item><item><p>It shall be easy to write programs which process XML
@@ -447,7 +447,7 @@ the processor may make unprocessed data from the document (with
 intermingled character data and markup) available to the application.
 Once a fatal error is detected, however, the processor must not
 continue normal processing (i.e., it must not
-continue to pass character data and information about the document&apos;s
+continue to pass character data and information about the document's
 logical structure to the application in the normal way).
 </termdef></p></def></gitem><gitem><label>at user option</label><def><p>Conforming software may or must (depending on the modal verb in the
 sentence) behave as described; if it does, it must
@@ -608,7 +608,7 @@ beginning with a letter or one of a few punctuation characters, and continuing
 with letters, digits, hyphens, underscores, colons, or full stops, together
 known as name characters.</termdef>
 Names beginning with the string &quot;<code>xml</code>&quot;, or any string
-which would match <code>((&apos;X&apos;|&apos;x&apos;) (&apos;M&apos;|&apos;m&apos;) (&apos;L&apos;|&apos;l&apos;))</code>, are
+which would match <code>(('X'|'x') ('M'|'m') ('L'|'l'))</code>, are
 reserved for standardization in this or future versions of this
 specification.
 </p>
@@ -629,9 +629,9 @@ should accept the colon as a name character.</p>
 name characters.
 <scrap lang="ebnf"><head>Names and Tokens</head><prod id="NT-NameChar"><lhs>NameChar</lhs><rhs><nt def="NT-Letter">Letter</nt> 
 | <nt def="NT-Digit">Digit</nt> 
-| &apos;.&apos; | &apos;-&apos; | &apos;_&apos; | &apos;:&apos;
+| '.' | '-' | '_' | ':'
 | <nt def="NT-CombiningChar">CombiningChar</nt> 
-| <nt def="NT-Extender">Extender</nt></rhs></prod><prod id="NT-Name"><lhs>Name</lhs><rhs>(<nt def="NT-Letter">Letter</nt> | &apos;_&apos; | &apos;:&apos;)
+| <nt def="NT-Extender">Extender</nt></rhs></prod><prod id="NT-Name"><lhs>Name</lhs><rhs>(<nt def="NT-Letter">Letter</nt> | '_' | ':')
 (<nt def="NT-NameChar">NameChar</nt>)*</rhs></prod><prod id="NT-Names"><lhs>Names</lhs><rhs><nt def="NT-Name">Name</nt> 
 (<nt def="NT-S">S</nt> <nt def="NT-Name">Name</nt>)*</rhs></prod><prod id="NT-Nmtoken"><lhs>Nmtoken</lhs><rhs>(<nt def="NT-NameChar">NameChar</nt>)+</rhs></prod><prod id="NT-Nmtokens"><lhs>Nmtokens</lhs><rhs><nt def="NT-Nmtoken">Nmtoken</nt> (<nt def="NT-S">S</nt> <nt def="NT-Nmtoken">Nmtoken</nt>)*</rhs></prod></scrap>
 </p>
@@ -645,30 +645,30 @@ and external identifiers
 (<nt def="NT-SystemLiteral">SystemLiteral</nt>).  
 Note that a <nt def="NT-SystemLiteral">SystemLiteral</nt>
 can be parsed without scanning for markup.
-<scrap lang="ebnf"><head>Literals</head><prod id="NT-EntityValue"><lhs>EntityValue</lhs><rhs>&apos;&quot;&apos; 
+<scrap lang="ebnf"><head>Literals</head><prod id="NT-EntityValue"><lhs>EntityValue</lhs><rhs>'&quot;' 
 ([^%&amp;&quot;] 
 | <nt def="NT-PEReference">PEReference</nt> 
 | <nt def="NT-Reference">Reference</nt>)*
-&apos;&quot;&apos; 
+'&quot;' 
 </rhs><rhs>|&nbsp; 
-&quot;&apos;&quot; 
-([^%&amp;&apos;] 
+&quot;'&quot; 
+([^%&amp;'] 
 | <nt def="NT-PEReference">PEReference</nt> 
 | <nt def="NT-Reference">Reference</nt>)* 
-&quot;&apos;&quot;</rhs></prod><prod id="NT-AttValue"><lhs>AttValue</lhs><rhs>&apos;&quot;&apos; 
+&quot;'&quot;</rhs></prod><prod id="NT-AttValue"><lhs>AttValue</lhs><rhs>'&quot;' 
 ([^&lt;&amp;&quot;] 
 | <nt def="NT-Reference">Reference</nt>)* 
-&apos;&quot;&apos; 
+'&quot;' 
 </rhs><rhs>|&nbsp; 
-&quot;&apos;&quot; 
-([^&lt;&amp;&apos;] 
+&quot;'&quot; 
+([^&lt;&amp;'] 
 | <nt def="NT-Reference">Reference</nt>)* 
-&quot;&apos;&quot;</rhs></prod><prod id="NT-SystemLiteral"><lhs>SystemLiteral</lhs><rhs>(&apos;&quot;&apos; [^&quot;]* &apos;&quot;&apos;) |&nbsp;(&quot;&apos;&quot; [^&apos;]* &quot;&apos;&quot;)
-</rhs></prod><prod id="NT-PubidLiteral"><lhs>PubidLiteral</lhs><rhs>&apos;&quot;&apos; <nt def="NT-PubidChar">PubidChar</nt>* 
-&apos;&quot;&apos; 
-| &quot;&apos;&quot; (<nt def="NT-PubidChar">PubidChar</nt> - &quot;&apos;&quot;)* &quot;&apos;&quot;</rhs></prod><prod id="NT-PubidChar"><lhs>PubidChar</lhs><rhs>#x20 | #xD | #xA 
+&quot;'&quot;</rhs></prod><prod id="NT-SystemLiteral"><lhs>SystemLiteral</lhs><rhs>('&quot;' [^&quot;]* '&quot;') |&nbsp;(&quot;'&quot; [^']* &quot;'&quot;)
+</rhs></prod><prod id="NT-PubidLiteral"><lhs>PubidLiteral</lhs><rhs>'&quot;' <nt def="NT-PubidChar">PubidChar</nt>* 
+'&quot;' 
+| &quot;'&quot; (<nt def="NT-PubidChar">PubidChar</nt> - &quot;'&quot;)* &quot;'&quot;</rhs></prod><prod id="NT-PubidChar"><lhs>PubidChar</lhs><rhs>#x20 | #xD | #xA 
 |&nbsp;[a-zA-Z0-9]
-|&nbsp;[-&apos;()+,./:=?;!*#@$_%]</rhs></prod></scrap>
+|&nbsp;[-'()+,./:=?;!*#@$_%]</rhs></prod></scrap>
 </p>
       </div2>
       <div2 id="syntax">
@@ -729,10 +729,10 @@ is any string of characters not including the CDATA-section-close
 delimiter, &quot;<code>]]&gt;</code>&quot;.</p>
         <p>
 To allow attribute values to contain both single and double quotes, the
-apostrophe or single-quote character (&apos;) may be represented as
+apostrophe or single-quote character (') may be represented as
 &quot;<code>&amp;apos;</code>&quot;, and the double-quote character (&quot;) as
 &quot;<code>&amp;quot;</code>&quot;.
-<scrap lang="ebnf"><head>Character Data</head><prod id="NT-CharData"><lhs>CharData</lhs><rhs>[^&lt;&amp;]* - ([^&lt;&amp;]* &apos;]]&gt;&apos; [^&lt;&amp;]*)</rhs></prod></scrap>
+<scrap lang="ebnf"><head>Character Data</head><prod id="NT-CharData"><lhs>CharData</lhs><rhs>[^&lt;&amp;]* - ([^&lt;&amp;]* ']]&gt;' [^&lt;&amp;]*)</rhs></prod></scrap>
 </p>
       </div2>
       <div2 id="sec-comments">
@@ -743,17 +743,17 @@ appear anywhere in a document outside other
 <termref def="dt-markup">markup</termref>; in addition,
 they may appear within the document type declaration
 at places allowed by the grammar.
-They are not part of the document&apos;s <termref def="dt-chardata">character
+They are not part of the document's <termref def="dt-chardata">character
 data</termref>; an XML
 processor may, but need not, make it possible for an application to
 retrieve the text of comments.
 <termref def="dt-compat">For compatibility</termref>, the string
 &quot;<code>--</code>&quot; (double-hyphen) must not occur within
 comments.
-<scrap lang="ebnf"><head>Comments</head><prod id="NT-Comment"><lhs>Comment</lhs><rhs>&apos;&lt;!--&apos;
-((<nt def="NT-Char">Char</nt> - &apos;-&apos;) 
-| (&apos;-&apos; (<nt def="NT-Char">Char</nt> - &apos;-&apos;)))* 
-&apos;--&gt;&apos;</rhs></prod></scrap>
+<scrap lang="ebnf"><head>Comments</head><prod id="NT-Comment"><lhs>Comment</lhs><rhs>'&lt;!--'
+((<nt def="NT-Char">Char</nt> - '-') 
+| ('-' (<nt def="NT-Char">Char</nt> - '-')))* 
+'--&gt;'</rhs></prod></scrap>
 </termdef>
         </p>
         <p>An example of a comment:
@@ -766,13 +766,13 @@ comments.
 instructions</term> (PIs) allow documents to contain instructions
 for applications.
  
-<scrap lang="ebnf"><head>Processing Instructions</head><prod id="NT-PI"><lhs>PI</lhs><rhs>&apos;&lt;?&apos; <nt def="NT-PITarget">PITarget</nt> 
+<scrap lang="ebnf"><head>Processing Instructions</head><prod id="NT-PI"><lhs>PI</lhs><rhs>'&lt;?' <nt def="NT-PITarget">PITarget</nt> 
 (<nt def="NT-S">S</nt> 
 (<nt def="NT-Char">Char</nt>* - 
 (<nt def="NT-Char">Char</nt>* &pic; <nt def="NT-Char">Char</nt>*)))?
 &pic;</rhs></prod><prod id="NT-PITarget"><lhs>PITarget</lhs><rhs><nt def="NT-Name">Name</nt> - 
-((&apos;X&apos; | &apos;x&apos;) (&apos;M&apos; | &apos;m&apos;) (&apos;L&apos; | &apos;l&apos;))</rhs></prod></scrap></termdef>
-PIs are not part of the document&apos;s <termref def="dt-chardata">character
+(('X' | 'x') ('M' | 'm') ('L' | 'l'))</rhs></prod></scrap></termdef>
+PIs are not part of the document's <termref def="dt-chardata">character
 data</termref>, but must be passed through to the application. The
 PI begins with a target (<nt def="NT-PITarget">PITarget</nt>) used
 to identify the application to which the instruction is directed.  
@@ -796,9 +796,9 @@ string &quot;<code>&lt;![CDATA[</code>&quot; and end with the string
 &quot;<code>]]&gt;</code>&quot;:
 <scrap lang="ebnf"><head>CDATA Sections</head><prod id="NT-CDSect"><lhs>CDSect</lhs><rhs><nt def="NT-CDStart">CDStart</nt> 
 <nt def="NT-CData">CData</nt> 
-<nt def="NT-CDEnd">CDEnd</nt></rhs></prod><prod id="NT-CDStart"><lhs>CDStart</lhs><rhs>&apos;&lt;![CDATA[&apos;</rhs></prod><prod id="NT-CData"><lhs>CData</lhs><rhs>(<nt def="NT-Char">Char</nt>* - 
-(<nt def="NT-Char">Char</nt>* &apos;]]&gt;&apos; <nt def="NT-Char">Char</nt>*))
-</rhs></prod><prod id="NT-CDEnd"><lhs>CDEnd</lhs><rhs>&apos;]]&gt;&apos;</rhs></prod></scrap>
+<nt def="NT-CDEnd">CDEnd</nt></rhs></prod><prod id="NT-CDStart"><lhs>CDStart</lhs><rhs>'&lt;![CDATA['</rhs></prod><prod id="NT-CData"><lhs>CData</lhs><rhs>(<nt def="NT-Char">Char</nt>* - 
+(<nt def="NT-Char">Char</nt>* ']]&gt;' <nt def="NT-Char">Char</nt>*))
+</rhs></prod><prod id="NT-CDEnd"><lhs>CDEnd</lhs><rhs>']]&gt;'</rhs></prod></scrap>
 
 Within a CDATA section, only the <nt def="NT-CDEnd">CDEnd</nt> string is
 recognized as markup, so that left angle brackets and ampersands may occur in
@@ -865,9 +865,9 @@ the first <termref def="dt-element">element</termref> in the document.
 <nt def="NT-EncodingDecl">EncodingDecl</nt>? 
 <nt def="NT-SDDecl">SDDecl</nt>? 
 <nt def="NT-S">S</nt>? 
-&pic;</rhs></prod><prod id="NT-VersionInfo"><lhs>VersionInfo</lhs><rhs><nt def="NT-S">S</nt> &apos;version&apos; <nt def="NT-Eq">Eq</nt> 
-(&apos; <nt def="NT-VersionNum">VersionNum</nt> &apos; 
-| &quot; <nt def="NT-VersionNum">VersionNum</nt> &quot;)</rhs></prod><prod id="NT-Eq"><lhs>Eq</lhs><rhs><nt def="NT-S">S</nt>? &apos;=&apos; <nt def="NT-S">S</nt>?</rhs></prod><prod id="NT-VersionNum"><lhs>VersionNum</lhs><rhs>([a-zA-Z0-9_.:] | &apos;-&apos;)+</rhs></prod><prod id="NT-Misc"><lhs>Misc</lhs><rhs><nt def="NT-Comment">Comment</nt> | <nt def="NT-PI">PI</nt> | 
+&pic;</rhs></prod><prod id="NT-VersionInfo"><lhs>VersionInfo</lhs><rhs><nt def="NT-S">S</nt> 'version' <nt def="NT-Eq">Eq</nt> 
+(' <nt def="NT-VersionNum">VersionNum</nt> ' 
+| &quot; <nt def="NT-VersionNum">VersionNum</nt> &quot;)</rhs></prod><prod id="NT-Eq"><lhs>Eq</lhs><rhs><nt def="NT-S">S</nt>? '=' <nt def="NT-S">S</nt>?</rhs></prod><prod id="NT-VersionNum"><lhs>VersionNum</lhs><rhs>([a-zA-Z0-9_.:] | '-')+</rhs></prod><prod id="NT-Misc"><lhs>Misc</lhs><rhs><nt def="NT-Comment">Comment</nt> | <nt def="NT-PI">PI</nt> | 
 <nt def="NT-S">S</nt></rhs></prod></prodgroup></scrap></p>
         <p><termdef id="dt-doctype" term="Document Type Declaration">The XML
 <term>document type declaration</term> 
@@ -903,15 +903,15 @@ For fuller information, see
           <prodgroup pcw2="6" pcw4="17.5" pcw5="9">
             <prod id="NT-doctypedecl">
               <lhs>doctypedecl</lhs>
-              <rhs>&apos;&lt;!DOCTYPE&apos; <nt def="NT-S">S</nt> 
+              <rhs>'&lt;!DOCTYPE' <nt def="NT-S">S</nt> 
 <nt def="NT-Name">Name</nt> (<nt def="NT-S">S</nt> 
 <nt def="NT-ExternalID">ExternalID</nt>)? 
-<nt def="NT-S">S</nt>? (&apos;[&apos; 
+<nt def="NT-S">S</nt>? ('[' 
 (<nt def="NT-markupdecl">markupdecl</nt> 
 | <nt def="NT-PEReference">PEReference</nt> 
 | <nt def="NT-S">S</nt>)*
-&apos;]&apos; 
-<nt def="NT-S">S</nt>?)? &apos;&gt;&apos;</rhs>
+']' 
+<nt def="NT-S">S</nt>?)? '&gt;'</rhs>
               <vc def="vc-roottype"/>
             </prod>
             <prod id="NT-markupdecl">
@@ -1025,8 +1025,8 @@ whether or not there are such declarations which appear external to
 the <termref def="dt-docent">document entity</termref>.
 <scrap lang="ebnf" id="fulldtd"><head>Standalone Document Declaration</head><prodgroup pcw2="4" pcw4="19.5" pcw5="9"><prod id="NT-SDDecl"><lhs>SDDecl</lhs><rhs>
 <nt def="NT-S">S</nt> 
-&apos;standalone&apos; <nt def="NT-Eq">Eq</nt> 
-((&quot;&apos;&quot; (&apos;yes&apos; | &apos;no&apos;) &quot;&apos;&quot;) | (&apos;&quot;&apos; (&apos;yes&apos; | &apos;no&apos;) &apos;&quot;&apos;))
+'standalone' <nt def="NT-Eq">Eq</nt> 
+((&quot;'&quot; ('yes' | 'no') &quot;'&quot;) | ('&quot;' ('yes' | 'no') '&quot;'))
 </rhs><vc def="vc-check-rmd"/></prod></prodgroup></scrap></p>
         <p>
 In a standalone document declaration, the value &quot;<code>yes</code>&quot; indicates
@@ -1082,7 +1082,7 @@ directly within any instance of those types.
             </item>
           </ulist>
         </vcnote>
-        <p>An example XML declaration with a standalone document declaration:<eg>&lt;?xml version=&quot;&XML.version;&quot; standalone=&apos;yes&apos;?&gt;</eg></p>
+        <p>An example XML declaration with a standalone document declaration:<eg>&lt;?xml version=&quot;&XML.version;&quot; standalone='yes'?&gt;</eg></p>
       </div2>
       <div2 id="sec-white-space">
         <head>White Space Handling</head>
@@ -1111,7 +1111,7 @@ When declared, it must be given as an
 <termref def="dt-enumerated">enumerated type</termref> whose only
 possible values are &quot;<code>default</code>&quot; and &quot;<code>preserve</code>&quot;.
 For example:<eg><![CDATA[    <!ATTLIST poem   xml:space (default|preserve) 'preserve'>]]></eg></p>
-        <p>The value &quot;<code>default</code>&quot; signals that applications&apos;
+        <p>The value &quot;<code>default</code>&quot; signals that applications'
 default white-space processing modes are acceptable for this element; the
 value &quot;<code>preserve</code>&quot; indicates the intent that applications preserve
 all the white space.
@@ -1158,9 +1158,9 @@ In valid documents, this attribute, like any other, must be
 The values of the attribute are language identifiers as defined
 by <bibref ref="RFC1766"/>, &quot;Tags for the Identification of Languages&quot;:
 <scrap lang="ebnf"><head>Language Identification</head><prod id="NT-LanguageID"><lhs>LanguageID</lhs><rhs><nt def="NT-Langcode">Langcode</nt> 
-(&apos;-&apos; <nt def="NT-Subcode">Subcode</nt>)*</rhs></prod><prod id="NT-Langcode"><lhs>Langcode</lhs><rhs><nt def="NT-ISO639Code">ISO639Code</nt> | 
+('-' <nt def="NT-Subcode">Subcode</nt>)*</rhs></prod><prod id="NT-Langcode"><lhs>Langcode</lhs><rhs><nt def="NT-ISO639Code">ISO639Code</nt> | 
 <nt def="NT-IanaCode">IanaCode</nt> | 
-<nt def="NT-UserCode">UserCode</nt></rhs></prod><prod id="NT-ISO639Code"><lhs>ISO639Code</lhs><rhs>([a-z] | [A-Z]) ([a-z] | [A-Z])</rhs></prod><prod id="NT-IanaCode"><lhs>IanaCode</lhs><rhs>(&apos;i&apos; | &apos;I&apos;) &apos;-&apos; ([a-z] | [A-Z])+</rhs></prod><prod id="NT-UserCode"><lhs>UserCode</lhs><rhs>(&apos;x&apos; | &apos;X&apos;) &apos;-&apos; ([a-z] | [A-Z])+</rhs></prod><prod id="NT-Subcode"><lhs>Subcode</lhs><rhs>([a-z] | [A-Z])+</rhs></prod></scrap>
+<nt def="NT-UserCode">UserCode</nt></rhs></prod><prod id="NT-ISO639Code"><lhs>ISO639Code</lhs><rhs>([a-z] | [A-Z]) ([a-z] | [A-Z])</rhs></prod><prod id="NT-IanaCode"><lhs>IanaCode</lhs><rhs>('i' | 'I') '-' ([a-z] | [A-Z])+</rhs></prod><prod id="NT-UserCode"><lhs>UserCode</lhs><rhs>('x' | 'X') '-' ([a-z] | [A-Z])+</rhs></prod><prod id="NT-Subcode"><lhs>Subcode</lhs><rhs>([a-z] | [A-Z])+</rhs></prod></scrap>
 The <nt def="NT-Langcode">Langcode</nt> may be any of the following:
 <ulist><item><p>a two-letter language code as defined by 
 <bibref ref="ISO639"/>, &quot;Codes
@@ -1194,7 +1194,7 @@ are case insensitive.</p>
   <l>Habe nun, ach! Philosophie,</l>
   <l>Juristerei, und Medizin</l>
   <l>und leider auch Theologie</l>
-  <l>durchaus studiert mit heißem Bemüh'n.</l>
+  <l>durchaus studiert mit heiÃŸem BemÃ¼h'n.</l>
   </sp>]]></eg></p>
 <!--<p>The xml:lang value is considered to apply both to the contents of an
 element and 
@@ -1258,14 +1258,14 @@ has a <termref def="dt-attrname">name</termref> and a <termref def="dt-attrval">
       </scrap>
       <p>This specification does not constrain the semantics, use, or (beyond
 syntax) names of the element types and attributes, except that names
-beginning with a match to <code>((&apos;X&apos;|&apos;x&apos;)(&apos;M&apos;|&apos;m&apos;)(&apos;L&apos;|&apos;l&apos;))</code>
+beginning with a match to <code>(('X'|'x')('M'|'m')('L'|'l'))</code>
 are reserved for standardization in this or future versions of this
 specification.
 </p>
       <wfcnote id="GIMatch">
         <head>Element Type Match</head>
         <p>
-The <nt def="NT-Name">Name</nt> in an element&apos;s end-tag must match 
+The <nt def="NT-Name">Name</nt> in an element's end-tag must match 
 the element type in
 the start-tag.
 </p>
@@ -1309,13 +1309,13 @@ been declared.</p>
         <head>Start-Tags, End-Tags, and Empty-Element Tags</head>
         <p><termdef id="dt-stag" term="Start-Tag">The beginning of every
 non-empty XML element is marked by a <term>start-tag</term>.
-<scrap lang="ebnf"><head>Start-tag</head><prodgroup pcw2="6" pcw4="15" pcw5="11.5"><prod id="NT-STag"><lhs>STag</lhs><rhs>&apos;&lt;&apos; <nt def="NT-Name">Name</nt> 
+<scrap lang="ebnf"><head>Start-tag</head><prodgroup pcw2="6" pcw4="15" pcw5="11.5"><prod id="NT-STag"><lhs>STag</lhs><rhs>'&lt;' <nt def="NT-Name">Name</nt> 
 (<nt def="NT-S">S</nt> <nt def="NT-Attribute">Attribute</nt>)* 
-<nt def="NT-S">S</nt>? &apos;&gt;&apos;</rhs><wfc def="uniqattspec"/></prod><prod id="NT-Attribute"><lhs>Attribute</lhs><rhs><nt def="NT-Name">Name</nt> <nt def="NT-Eq">Eq</nt> 
+<nt def="NT-S">S</nt>? '&gt;'</rhs><wfc def="uniqattspec"/></prod><prod id="NT-Attribute"><lhs>Attribute</lhs><rhs><nt def="NT-Name">Name</nt> <nt def="NT-Eq">Eq</nt> 
 <nt def="NT-AttValue">AttValue</nt></rhs><vc def="ValueType"/><wfc def="NoExternalRefs"/><wfc def="CleanAttrVals"/></prod></prodgroup></scrap>
 The <nt def="NT-Name">Name</nt> in
 the start- and end-tags gives the 
-element&apos;s <term>type</term>.</termdef>
+element's <term>type</term>.</termdef>
 <termdef id="dt-attr" term="Attribute">
 The <nt def="NT-Name">Name</nt>-<nt def="NT-AttValue">AttValue</nt> pairs are
 referred to as 
@@ -1325,7 +1325,7 @@ the <term>attribute specifications</term> of the element</termdef>,
 referred to as the <term>attribute name</term></termdef> and
 <termdef id="dt-attrval" term="Attribute Value">the content of the
 <nt def="NT-AttValue">AttValue</nt> (the text between the
-<code>&apos;</code> or <code>&quot;</code> delimiters)
+<code>'</code> or <code>&quot;</code> delimiters)
 as the <term>attribute value</term>.</termdef>
 </p>
         <wfcnote id="uniqattspec">
@@ -1364,17 +1364,17 @@ a <code>&lt;</code>.
           <termdef id="dt-etag" term="End Tag">The end of every element 
 that begins with a start-tag must
 be marked by an <term>end-tag</term>
-containing a name that echoes the element&apos;s type as given in the
+containing a name that echoes the element's type as given in the
 start-tag:
-<scrap lang="ebnf"><head>End-tag</head><prodgroup pcw2="6" pcw4="15" pcw5="11.5"><prod id="NT-ETag"><lhs>ETag</lhs><rhs>&apos;&lt;/&apos; <nt def="NT-Name">Name</nt> 
-<nt def="NT-S">S</nt>? &apos;&gt;&apos;</rhs></prod></prodgroup></scrap>
+<scrap lang="ebnf"><head>End-tag</head><prodgroup pcw2="6" pcw4="15" pcw5="11.5"><prod id="NT-ETag"><lhs>ETag</lhs><rhs>'&lt;/' <nt def="NT-Name">Name</nt> 
+<nt def="NT-S">S</nt>? '&gt;'</rhs></prod></prodgroup></scrap>
 </termdef>
         </p>
         <p>An example of an end-tag:<eg>&lt;/termdef&gt;</eg></p>
         <p>
           <termdef id="dt-content" term="Content">The 
 <termref def="dt-text">text</termref> between the start-tag and
-end-tag is called the element&apos;s
+end-tag is called the element's
 <term>content</term>:
 <scrap lang="ebnf"><head>Content of Elements</head><prodgroup pcw2="6" pcw4="15" pcw5="11.5"><prod id="NT-content"><lhs>content</lhs><rhs>(<nt def="NT-element">element</nt> | <nt def="NT-CharData">CharData</nt> 
 | <nt def="NT-Reference">Reference</nt> | <nt def="NT-CDSect">CDSect</nt> 
@@ -1386,9 +1386,9 @@ it must be represented either by a start-tag immediately followed
 by an end-tag or by an empty-element tag.</termdef>
 <termdef id="dt-eetag" term="empty-element tag">An 
 <term>empty-element tag</term> takes a special form:
-<scrap lang="ebnf"><head>Tags for Empty Elements</head><prodgroup pcw2="6" pcw4="15" pcw5="11.5"><prod id="NT-EmptyElemTag"><lhs>EmptyElemTag</lhs><rhs>&apos;&lt;&apos; <nt def="NT-Name">Name</nt> (<nt def="NT-S">S</nt> 
+<scrap lang="ebnf"><head>Tags for Empty Elements</head><prodgroup pcw2="6" pcw4="15" pcw5="11.5"><prod id="NT-EmptyElemTag"><lhs>EmptyElemTag</lhs><rhs>'&lt;' <nt def="NT-Name">Name</nt> (<nt def="NT-S">S</nt> 
 <nt def="NT-Attribute">Attribute</nt>)* <nt def="NT-S">S</nt>? 
-&apos;/&gt;&apos;</rhs><wfc def="uniqattspec"/></prod></prodgroup></scrap>
+'/&gt;'</rhs><wfc def="uniqattspec"/></prod></prodgroup></scrap>
 </termdef></p>
         <p>Empty-element tags may be used for any element which has no
 content, whether or not it is declared using the keyword
@@ -1409,7 +1409,7 @@ tag must be used, and can only be used, for elements which are
 <termref def="dt-valid">validation</termref> purposes, 
 be constrained
 using element type and attribute-list declarations.
-An element type declaration constrains the element&apos;s
+An element type declaration constrains the element's
 <termref def="dt-content">content</termref>.
 </p>
         <p>Element type declarations often constrain which element types can
@@ -1419,12 +1419,12 @@ when a declaration mentions an element type for which no declaration
 is provided, but this is not an error.</p>
         <p><termdef id="dt-eldecl" term="Element Type declaration">An <term>element
 type declaration</term> takes the form:
-<scrap lang="ebnf"><head>Element Type Declaration</head><prodgroup pcw2="5.5" pcw4="18" pcw5="9"><prod id="NT-elementdecl"><lhs>elementdecl</lhs><rhs>&apos;&lt;!ELEMENT&apos; <nt def="NT-S">S</nt> 
+<scrap lang="ebnf"><head>Element Type Declaration</head><prodgroup pcw2="5.5" pcw4="18" pcw5="9"><prod id="NT-elementdecl"><lhs>elementdecl</lhs><rhs>'&lt;!ELEMENT' <nt def="NT-S">S</nt> 
 <nt def="NT-Name">Name</nt> 
 <nt def="NT-S">S</nt> 
 <nt def="NT-contentspec">contentspec</nt>
-<nt def="NT-S">S</nt>? &apos;&gt;&apos;</rhs><vc def="EDUnique"/></prod><prod id="NT-contentspec"><lhs>contentspec</lhs><rhs>&apos;EMPTY&apos; 
-| &apos;ANY&apos; 
+<nt def="NT-S">S</nt>? '&gt;'</rhs><vc def="EDUnique"/></prod><prod id="NT-contentspec"><lhs>contentspec</lhs><rhs>'EMPTY' 
+| 'ANY' 
 | <nt def="NT-Mixed">Mixed</nt> 
 | <nt def="NT-children">children</nt>
 </rhs></prod></prodgroup></scrap>
@@ -1461,14 +1461,14 @@ choice lists of content particles, or
 sequence lists of content particles:
 <scrap lang="ebnf"><head>Element-content Models</head><prodgroup pcw2="5.5" pcw4="16" pcw5="11"><prod id="NT-children"><lhs>children</lhs><rhs>(<nt def="NT-choice">choice</nt> 
 | <nt def="NT-seq">seq</nt>) 
-(&apos;?&apos; | &apos;*&apos; | &apos;+&apos;)?</rhs></prod><prod id="NT-cp"><lhs>cp</lhs><rhs>(<nt def="NT-Name">Name</nt> 
+('?' | '*' | '+')?</rhs></prod><prod id="NT-cp"><lhs>cp</lhs><rhs>(<nt def="NT-Name">Name</nt> 
 | <nt def="NT-choice">choice</nt> 
 | <nt def="NT-seq">seq</nt>) 
-(&apos;?&apos; | &apos;*&apos; | &apos;+&apos;)?</rhs></prod><prod id="NT-choice"><lhs>choice</lhs><rhs>&apos;(&apos; <nt def="NT-S">S</nt>? cp 
-( <nt def="NT-S">S</nt>? &apos;|&apos; <nt def="NT-S">S</nt>? <nt def="NT-cp">cp</nt> )*
-<nt def="NT-S">S</nt>? &apos;)&apos;</rhs><vc def="vc-PEinGroup"/></prod><prod id="NT-seq"><lhs>seq</lhs><rhs>&apos;(&apos; <nt def="NT-S">S</nt>? cp 
-( <nt def="NT-S">S</nt>? &apos;,&apos; <nt def="NT-S">S</nt>? <nt def="NT-cp">cp</nt> )*
-<nt def="NT-S">S</nt>? &apos;)&apos;</rhs><vc def="vc-PEinGroup"/></prod></prodgroup></scrap>
+('?' | '*' | '+')?</rhs></prod><prod id="NT-choice"><lhs>choice</lhs><rhs>'(' <nt def="NT-S">S</nt>? cp 
+( <nt def="NT-S">S</nt>? '|' <nt def="NT-S">S</nt>? <nt def="NT-cp">cp</nt> )*
+<nt def="NT-S">S</nt>? ')'</rhs><vc def="vc-PEinGroup"/></prod><prod id="NT-seq"><lhs>seq</lhs><rhs>'(' <nt def="NT-S">S</nt>? cp 
+( <nt def="NT-S">S</nt>? ',' <nt def="NT-S">S</nt>? <nt def="NT-cp">cp</nt> )*
+<nt def="NT-S">S</nt>? ')'</rhs><vc def="vc-PEinGroup"/></prod></prodgroup></scrap>
 where each <nt def="NT-Name">Name</nt> is the type of an element which may
 appear as a <termref def="dt-parentchild">child</termref>.  
 Any content
@@ -1532,14 +1532,14 @@ character data, optionally interspersed with
 <termref def="dt-parentchild">child</termref> elements.</termdef>
 In this case, the types of the child elements
 may be constrained, but not their order or their number of occurrences:
-<scrap lang="ebnf"><head>Mixed-content Declaration</head><prodgroup pcw2="5.5" pcw4="16" pcw5="11"><prod id="NT-Mixed"><lhs>Mixed</lhs><rhs>&apos;(&apos; <nt def="NT-S">S</nt>? 
-&apos;#PCDATA&apos;
+<scrap lang="ebnf"><head>Mixed-content Declaration</head><prodgroup pcw2="5.5" pcw4="16" pcw5="11"><prod id="NT-Mixed"><lhs>Mixed</lhs><rhs>'(' <nt def="NT-S">S</nt>? 
+'#PCDATA'
 (<nt def="NT-S">S</nt>? 
-&apos;|&apos; 
+'|' 
 <nt def="NT-S">S</nt>? 
 <nt def="NT-Name">Name</nt>)* 
 <nt def="NT-S">S</nt>? 
-&apos;)*&apos; </rhs><rhs>| &apos;(&apos; <nt def="NT-S">S</nt>? &apos;#PCDATA&apos; <nt def="NT-S">S</nt>? &apos;)&apos;
+')*' </rhs><rhs>| '(' <nt def="NT-S">S</nt>? '#PCDATA' <nt def="NT-S">S</nt>? ')'
 </rhs><vc def="vc-PEinGroup"/><vc def="vc-MixedChildrenUnique"/></prod></prodgroup></scrap>
 where the <nt def="NT-Name">Name</nt>s give the types of elements
 that may appear as children.
@@ -1575,10 +1575,10 @@ for attributes.</p></item></ulist>
           <termdef id="dt-attdecl" term="Attribute-List Declaration">
 <term>Attribute-list declarations</term> specify the name, data type, and default
 value (if any) of each attribute associated with a given element type:
-<scrap lang="ebnf"><head>Attribute-list Declaration</head><prod id="NT-AttlistDecl"><lhs>AttlistDecl</lhs><rhs>&apos;&lt;!ATTLIST&apos; <nt def="NT-S">S</nt> 
+<scrap lang="ebnf"><head>Attribute-list Declaration</head><prod id="NT-AttlistDecl"><lhs>AttlistDecl</lhs><rhs>'&lt;!ATTLIST' <nt def="NT-S">S</nt> 
 <nt def="NT-Name">Name</nt> 
 <nt def="NT-AttDef">AttDef</nt>*
-<nt def="NT-S">S</nt>? &apos;&gt;&apos;</rhs></prod><prod id="NT-AttDef"><lhs>AttDef</lhs><rhs><nt def="NT-S">S</nt> <nt def="NT-Name">Name</nt> 
+<nt def="NT-S">S</nt>? '&gt;'</rhs></prod><prod id="NT-AttDef"><lhs>AttDef</lhs><rhs><nt def="NT-S">S</nt> <nt def="NT-Name">Name</nt> 
 <nt def="NT-S">S</nt> <nt def="NT-AttType">AttType</nt> 
 <nt def="NT-S">S</nt> <nt def="NT-DefaultDecl">DefaultDecl</nt></rhs></prod></scrap>
 The <nt def="NT-Name">Name</nt> in the
@@ -1615,7 +1615,7 @@ and semantic constraints, as noted:
 <scrap lang="ebnf"><head>Attribute Types</head><prodgroup pcw4="14" pcw5="11.5"><prod id="NT-AttType"><lhs>AttType</lhs><rhs><nt def="NT-StringType">StringType</nt> 
 | <nt def="NT-TokenizedType">TokenizedType</nt> 
 | <nt def="NT-EnumeratedType">EnumeratedType</nt>
-</rhs></prod><prod id="NT-StringType"><lhs>StringType</lhs><rhs>&apos;CDATA&apos;</rhs></prod><prod id="NT-TokenizedType"><lhs>TokenizedType</lhs><rhs>&apos;ID&apos;</rhs><vc def="id"/><vc def="one-id-per-el"/><vc def="id-default"/><rhs>| &apos;IDREF&apos;</rhs><vc def="idref"/><rhs>| &apos;IDREFS&apos;</rhs><vc def="idref"/><rhs>| &apos;ENTITY&apos;</rhs><vc def="entname"/><rhs>| &apos;ENTITIES&apos;</rhs><vc def="entname"/><rhs>| &apos;NMTOKEN&apos;</rhs><vc def="nmtok"/><rhs>| &apos;NMTOKENS&apos;</rhs><vc def="nmtok"/></prod></prodgroup></scrap>
+</rhs></prod><prod id="NT-StringType"><lhs>StringType</lhs><rhs>'CDATA'</rhs></prod><prod id="NT-TokenizedType"><lhs>TokenizedType</lhs><rhs>'ID'</rhs><vc def="id"/><vc def="one-id-per-el"/><vc def="id-default"/><rhs>| 'IDREF'</rhs><vc def="idref"/><rhs>| 'IDREFS'</rhs><vc def="idref"/><rhs>| 'ENTITY'</rhs><vc def="entname"/><rhs>| 'ENTITIES'</rhs><vc def="entname"/><rhs>| 'NMTOKEN'</rhs><vc def="nmtok"/><rhs>| 'NMTOKENS'</rhs><vc def="nmtok"/></prod></prodgroup></scrap>
 </p>
           <vcnote id="id">
             <head>ID</head>
@@ -1679,21 +1679,21 @@ of a list of values provided in the declaration</termdef>. There are two
 kinds of enumerated types:
 <scrap lang="ebnf"><head>Enumerated Attribute Types</head><prod id="NT-EnumeratedType"><lhs>EnumeratedType</lhs><rhs><nt def="NT-NotationType">NotationType</nt> 
 | <nt def="NT-Enumeration">Enumeration</nt>
-</rhs></prod><prod id="NT-NotationType"><lhs>NotationType</lhs><rhs>&apos;NOTATION&apos; 
+</rhs></prod><prod id="NT-NotationType"><lhs>NotationType</lhs><rhs>'NOTATION' 
 <nt def="NT-S">S</nt> 
-&apos;(&apos; 
+'(' 
 <nt def="NT-S">S</nt>?  
 <nt def="NT-Name">Name</nt> 
-(<nt def="NT-S">S</nt>? &apos;|&apos; <nt def="NT-S">S</nt>?  
+(<nt def="NT-S">S</nt>? '|' <nt def="NT-S">S</nt>?  
 <nt def="NT-Name">Name</nt>)*
-<nt def="NT-S">S</nt>? &apos;)&apos;
-</rhs><vc def="notatn"/></prod><prod id="NT-Enumeration"><lhs>Enumeration</lhs><rhs>&apos;(&apos; <nt def="NT-S">S</nt>?
+<nt def="NT-S">S</nt>? ')'
+</rhs><vc def="notatn"/></prod><prod id="NT-Enumeration"><lhs>Enumeration</lhs><rhs>'(' <nt def="NT-S">S</nt>?
 <nt def="NT-Nmtoken">Nmtoken</nt> 
-(<nt def="NT-S">S</nt>? &apos;|&apos; 
+(<nt def="NT-S">S</nt>? '|' 
 <nt def="NT-S">S</nt>?  
 <nt def="NT-Nmtoken">Nmtoken</nt>)* 
 <nt def="NT-S">S</nt>? 
-&apos;)&apos;</rhs><vc def="enum"/></prod></scrap>
+')'</rhs><vc def="enum"/></prod></scrap>
 A <kw>NOTATION</kw> attribute identifies a 
 <termref def="dt-notation">notation</termref>, declared in the 
 DTD with associated system and/or public identifiers, to
@@ -1726,10 +1726,10 @@ enumerated attribute types of a single element type.
           <head>Attribute Defaults</head>
           <p>An <termref def="dt-attdecl">attribute declaration</termref> provides
 information on whether
-the attribute&apos;s presence is required, and if not, how an XML processor should
+the attribute's presence is required, and if not, how an XML processor should
 react if a declared attribute is absent in a document.
-<scrap lang="ebnf"><head>Attribute Defaults</head><prodgroup pcw4="14" pcw5="11.5"><prod id="NT-DefaultDecl"><lhs>DefaultDecl</lhs><rhs>&apos;#REQUIRED&apos; 
-|&nbsp;&apos;#IMPLIED&apos; </rhs><rhs>| ((&apos;#FIXED&apos; S)? <nt def="NT-AttValue">AttValue</nt>)</rhs><vc def="RequiredAttr"/><vc def="defattrvalid"/><wfc def="CleanAttrVals"/><vc def="FixedAttr"/></prod></prodgroup></scrap>
+<scrap lang="ebnf"><head>Attribute Defaults</head><prodgroup pcw4="14" pcw5="11.5"><prod id="NT-DefaultDecl"><lhs>DefaultDecl</lhs><rhs>'#REQUIRED' 
+|&nbsp;'#IMPLIED' </rhs><rhs>| (('#FIXED' S)? <nt def="NT-AttValue">AttValue</nt>)</rhs><vc def="RequiredAttr"/><vc def="defattrvalid"/><wfc def="CleanAttrVals"/><vc def="FixedAttr"/></prod></prodgroup></scrap>
 
 </p>
           <p>In an attribute declaration, <kw>#REQUIRED</kw> means that the
@@ -1817,16 +1817,16 @@ included in, or excluded from, the logical structure of the DTD based on
 the keyword which governs them.</termdef>
 <scrap lang="ebnf"><head>Conditional Section</head><prodgroup pcw2="9" pcw4="14.5"><prod id="NT-conditionalSect"><lhs>conditionalSect</lhs><rhs><nt def="NT-includeSect">includeSect</nt>
 | <nt def="NT-ignoreSect">ignoreSect</nt>
-</rhs></prod><prod id="NT-includeSect"><lhs>includeSect</lhs><rhs>&apos;&lt;![&apos; S? &apos;INCLUDE&apos; S? &apos;[&apos; 
+</rhs></prod><prod id="NT-includeSect"><lhs>includeSect</lhs><rhs>'&lt;![' S? 'INCLUDE' S? '[' 
 
 <nt def="NT-extSubsetDecl">extSubsetDecl</nt>
-&apos;]]&gt;&apos;
-</rhs></prod><prod id="NT-ignoreSect"><lhs>ignoreSect</lhs><rhs>&apos;&lt;![&apos; S? &apos;IGNORE&apos; S? &apos;[&apos; 
+']]&gt;'
+</rhs></prod><prod id="NT-ignoreSect"><lhs>ignoreSect</lhs><rhs>'&lt;![' S? 'IGNORE' S? '[' 
 <nt def="NT-ignoreSectContents">ignoreSectContents</nt>*
-&apos;]]&gt;&apos;</rhs></prod><prod id="NT-ignoreSectContents"><lhs>ignoreSectContents</lhs><rhs><nt def="NT-Ignore">Ignore</nt>
-(&apos;&lt;![&apos; <nt def="NT-ignoreSectContents">ignoreSectContents</nt> &apos;]]&gt;&apos; 
+']]&gt;'</rhs></prod><prod id="NT-ignoreSectContents"><lhs>ignoreSectContents</lhs><rhs><nt def="NT-Ignore">Ignore</nt>
+('&lt;![' <nt def="NT-ignoreSectContents">ignoreSectContents</nt> ']]&gt;' 
 <nt def="NT-Ignore">Ignore</nt>)*</rhs></prod><prod id="NT-Ignore"><lhs>Ignore</lhs><rhs><nt def="NT-Char">Char</nt>* - 
-(<nt def="NT-Char">Char</nt>* (&apos;&lt;![&apos; | &apos;]]&gt;&apos;) 
+(<nt def="NT-Char">Char</nt>* ('&lt;![' | ']]&gt;') 
 <nt def="NT-Char">Char</nt>*)
 </rhs></prod></prodgroup></scrap>
 </p>
@@ -1854,8 +1854,8 @@ parameter-entity reference, the parameter entity must be replaced by its
 content before the processor decides whether to
 include or ignore the conditional section.</p>
         <p>An example:
-<eg>&lt;!ENTITY % draft &apos;INCLUDE&apos; &gt;
-&lt;!ENTITY % final &apos;IGNORE&apos; &gt;
+<eg>&lt;!ENTITY % draft 'INCLUDE' &gt;
+&lt;!ENTITY % final 'IGNORE' &gt;
  
 &lt;![%draft;[
 &lt;!ELEMENT book (comments*, title, body, supplements?)&gt;
@@ -1903,7 +1903,7 @@ called the <termref def="dt-docent">document entity</termref>, which serves
 as the starting point for the <termref def="dt-xml-proc">XML
 processor</termref> and may contain the whole document.</p>
       <p>Entities may be either parsed or unparsed.
-<termdef id="dt-parsedent" term="Text Entity">A <term>parsed entity&apos;s</term>
+<termdef id="dt-parsedent" term="Text Entity">A <term>parsed entity's</term>
 contents are referred to as its 
 <termref def="dt-repltext">replacement text</termref>;
 this <termref def="dt-text">text</termref> is considered an
@@ -1942,15 +1942,15 @@ a general entity with the same name are two distinct entities.
 A <term>character reference</term> refers to a specific character in the
 ISO/IEC 10646 character set, for example one not directly accessible from
 available input devices.
-<scrap lang="ebnf"><head>Character Reference</head><prod id="NT-CharRef"><lhs>CharRef</lhs><rhs>&apos;&amp;#&apos; [0-9]+ &apos;;&apos; </rhs><rhs>| &apos;&hcro;&apos; [0-9a-fA-F]+ &apos;;&apos;</rhs><wfc def="wf-Legalchar"/></prod></scrap>
+<scrap lang="ebnf"><head>Character Reference</head><prod id="NT-CharRef"><lhs>CharRef</lhs><rhs>'&amp;#' [0-9]+ ';' </rhs><rhs>| '&hcro;' [0-9a-fA-F]+ ';'</rhs><wfc def="wf-Legalchar"/></prod></scrap>
 <wfcnote id="wf-Legalchar"><head>Legal Character</head><p>Characters referred to using character references must
 match the production for
 <termref def="NT-Char">Char</termref>.</p></wfcnote>
 If the character reference begins with &quot;<code>&amp;#x</code>&quot;, the digits and
 letters up to the terminating <code>;</code> provide a hexadecimal
-representation of the character&apos;s code point in ISO/IEC 10646.
+representation of the character's code point in ISO/IEC 10646.
 If it begins just with &quot;<code>&amp;#</code>&quot;, the digits up to the terminating
-<code>;</code> provide a decimal representation of the character&apos;s 
+<code>;</code> provide a decimal representation of the character's 
 code point.
 </termdef>
 </p>
@@ -1974,7 +1974,7 @@ semicolon
           </prod>
           <prod id="NT-EntityRef">
             <lhs>EntityRef</lhs>
-            <rhs>&apos;&amp;&apos; <nt def="NT-Name">Name</nt> &apos;;&apos;</rhs>
+            <rhs>'&amp;' <nt def="NT-Name">Name</nt> ';'</rhs>
             <wfc def="wf-entdeclared"/>
             <vc def="vc-entdeclared"/>
             <wfc def="textent"/>
@@ -1982,7 +1982,7 @@ semicolon
           </prod>
           <prod id="NT-PEReference">
             <lhs>PEReference</lhs>
-            <rhs>&apos;%&apos; <nt def="NT-Name">Name</nt> &apos;;&apos;</rhs>
+            <rhs>'%' <nt def="NT-Name">Name</nt> ';'</rhs>
             <vc def="vc-entdeclared"/>
             <wfc def="norecursion"/>
             <wfc def="indtd"/>
@@ -1992,7 +1992,7 @@ semicolon
           <head>Entity Declared</head>
           <p>In a document without any DTD, a document with only an internal
 DTD subset which contains no parameter entity references, or a document with
-&quot;<code>standalone=&apos;yes&apos;</code>&quot;, 
+&quot;<code>standalone='yes'</code>&quot;, 
 the <nt def="NT-Name">Name</nt> given in the entity reference must 
 <termref def="dt-match">match</termref> that in an 
 <titleref href="sec-entity-decl">entity declaration</titleref>, except that
@@ -2007,12 +2007,12 @@ external parameter entities, a non-validating processor is
 <titleref href="include-if-valid">not obligated to</titleref> read
 and process their declarations; for such documents, the rule that
 an entity must be declared is a well-formedness constraint only
-if <titleref href="sec-rmd">standalone=&apos;yes&apos;</titleref>.</p>
+if <titleref href="sec-rmd">standalone='yes'</titleref>.</p>
         </wfcnote>
         <vcnote id="vc-entdeclared">
           <head>Entity Declared</head>
           <p>In a document with an external subset or external parameter
-entities with &quot;<code>standalone=&apos;no&apos;</code>&quot;,
+entities with &quot;<code>standalone='no'</code>&quot;,
 the <nt def="NT-Name">Name</nt> given in the entity reference must <termref def="dt-match">match</termref> that in an 
 <titleref href="sec-entity-decl">entity declaration</titleref>.
 For interoperability, valid documents should declare the entities 
@@ -2062,11 +2062,11 @@ is classified &amp;security-level;.</eg></p>
         <p><termdef id="dt-entdecl" term="entity declaration">
 Entities are declared thus:
 <scrap lang="ebnf"><head>Entity Declaration</head><prodgroup pcw2="5" pcw4="18.5"><prod id="NT-EntityDecl"><lhs>EntityDecl</lhs><rhs><nt def="NT-GEDecl">GEDecl</nt><!--</rhs><com>General entities</com>
-<rhs>--> | <nt def="NT-PEDecl">PEDecl</nt></rhs><!--<com>Parameter entities</com>--></prod><prod id="NT-GEDecl"><lhs>GEDecl</lhs><rhs>&apos;&lt;!ENTITY&apos; <nt def="NT-S">S</nt> <nt def="NT-Name">Name</nt> 
+<rhs>--> | <nt def="NT-PEDecl">PEDecl</nt></rhs><!--<com>Parameter entities</com>--></prod><prod id="NT-GEDecl"><lhs>GEDecl</lhs><rhs>'&lt;!ENTITY' <nt def="NT-S">S</nt> <nt def="NT-Name">Name</nt> 
 <nt def="NT-S">S</nt> <nt def="NT-EntityDef">EntityDef</nt> 
-<nt def="NT-S">S</nt>? &apos;&gt;&apos;</rhs></prod><prod id="NT-PEDecl"><lhs>PEDecl</lhs><rhs>&apos;&lt;!ENTITY&apos; <nt def="NT-S">S</nt> &apos;%&apos; <nt def="NT-S">S</nt> 
+<nt def="NT-S">S</nt>? '&gt;'</rhs></prod><prod id="NT-PEDecl"><lhs>PEDecl</lhs><rhs>'&lt;!ENTITY' <nt def="NT-S">S</nt> '%' <nt def="NT-S">S</nt> 
 <nt def="NT-Name">Name</nt> <nt def="NT-S">S</nt> 
-<nt def="NT-PEDef">PEDef</nt> <nt def="NT-S">S</nt>? &apos;&gt;&apos;</rhs><!--<com>Parameter entities</com>--></prod><prod id="NT-EntityDef"><lhs>EntityDef</lhs><rhs><nt def="NT-EntityValue">EntityValue</nt>
+<nt def="NT-PEDef">PEDef</nt> <nt def="NT-S">S</nt>? '&gt;'</rhs><!--<com>Parameter entities</com>--></prod><prod id="NT-EntityDef"><lhs>EntityDef</lhs><rhs><nt def="NT-EntityValue">EntityValue</nt>
 <!--</rhs>
 <rhs>-->| (<nt def="NT-ExternalID">ExternalID</nt> 
 <nt def="NT-NDataDecl">NDataDecl</nt>?)</rhs><!-- <nt def='NT-ExternalDef'>ExternalDef</nt></rhs> --></prod><!-- FINAL EDIT: what happened to WFs here? --><prod id="NT-PEDef"><lhs>PEDef</lhs><rhs><nt def="NT-EntityValue">EntityValue</nt> 
@@ -2107,12 +2107,12 @@ internal, it is an <term>external
 entity</term>, declared as follows:
 <scrap lang="ebnf"><head>External Entity Declaration</head><!--
 <prod id='NT-ExternalDef'><lhs>ExternalDef</lhs>
-<rhs></prod> --><prod id="NT-ExternalID"><lhs>ExternalID</lhs><rhs>&apos;SYSTEM&apos; <nt def="NT-S">S</nt> 
-<nt def="NT-SystemLiteral">SystemLiteral</nt></rhs><rhs>| &apos;PUBLIC&apos; <nt def="NT-S">S</nt> 
+<rhs></prod> --><prod id="NT-ExternalID"><lhs>ExternalID</lhs><rhs>'SYSTEM' <nt def="NT-S">S</nt> 
+<nt def="NT-SystemLiteral">SystemLiteral</nt></rhs><rhs>| 'PUBLIC' <nt def="NT-S">S</nt> 
 <nt def="NT-PubidLiteral">PubidLiteral</nt> 
 <nt def="NT-S">S</nt> 
 <nt def="NT-SystemLiteral">SystemLiteral</nt>
-</rhs></prod><prod id="NT-NDataDecl"><lhs>NDataDecl</lhs><rhs><nt def="NT-S">S</nt> &apos;NDATA&apos; <nt def="NT-S">S</nt> 
+</rhs></prod><prod id="NT-NDataDecl"><lhs>NDataDecl</lhs><rhs><nt def="NT-S">S</nt> 'NDATA' <nt def="NT-S">S</nt> 
 <nt def="NT-Name">Name</nt></rhs><vc def="not-declared"/></prod></scrap>
 If the <nt def="NT-NDataDecl">NDataDecl</nt> is present, this is a
 general <termref def="dt-unparsed">unparsed
@@ -2127,7 +2127,7 @@ The <nt def="NT-Name">Name</nt> must match the declared name of a
           </vcnote>
           <p><termdef id="dt-sysid" term="System Identifier">The
 <nt def="NT-SystemLiteral">SystemLiteral</nt> 
-is called the entity&apos;s <term>system identifier</term>. It is a URI,
+is called the entity's <term>system identifier</term>. It is a URI,
 which may be used to retrieve the entity.</termdef>
 Note that the hash mark (<code>#</code>) and fragment identifier 
 frequently used with URIs are not, formally, part of the URI itself; 
@@ -2151,7 +2151,7 @@ byte value).</p>
           <p><termdef id="dt-pubid" term="Public identifier">
 In addition to a system identifier, an external identifier may
 include a <term>public identifier</term>.</termdef>  
-An XML processor attempting to retrieve the entity&apos;s content may use the public
+An XML processor attempting to retrieve the entity's content may use the public
 identifier to try to generate an alternative URI.  If the processor
 is unable to do so, it must use the URI specified in the system
 literal.  Before a match is attempted, all strings
@@ -2237,10 +2237,10 @@ Parsed entities which are stored in an encoding other than
 UTF-8 or UTF-16 must begin with a <titleref href="TextDecl">text
 declaration</titleref> containing an encoding declaration:
 <scrap lang="ebnf"><head>Encoding Declaration</head><prod id="NT-EncodingDecl"><lhs>EncodingDecl</lhs><rhs><nt def="NT-S">S</nt>
-&apos;encoding&apos; <nt def="NT-Eq">Eq</nt> 
-(&apos;&quot;&apos; <nt def="NT-EncName">EncName</nt> &apos;&quot;&apos; | 
-&quot;&apos;&quot; <nt def="NT-EncName">EncName</nt> &quot;&apos;&quot; )
-</rhs></prod><prod id="NT-EncName"><lhs>EncName</lhs><rhs>[A-Za-z] ([A-Za-z0-9._] | &apos;-&apos;)*</rhs><com>Encoding name contains only Latin characters</com></prod></scrap>
+'encoding' <nt def="NT-Eq">Eq</nt> 
+('&quot;' <nt def="NT-EncName">EncName</nt> '&quot;' | 
+&quot;'&quot; <nt def="NT-EncName">EncName</nt> &quot;'&quot; )
+</rhs></prod><prod id="NT-EncName"><lhs>EncName</lhs><rhs>[A-Za-z] ([A-Za-z0-9._] | '-')*</rhs><com>Encoding name contains only Latin characters</com></prod></scrap>
 In the <termref def="dt-docent">document entity</termref>, the encoding
 declaration is part of the <termref def="dt-xmldecl">XML declaration</termref>.
 The <nt def="NT-EncName">EncName</nt> is the name of the encoding used.
@@ -2286,8 +2286,8 @@ an encoding declaration.</p>
           <p>It is a <termref def="dt-fatal">fatal error</termref> when an XML processor
 encounters an entity with an encoding that it is unable to process.</p>
           <p>Examples of encoding declarations:
-<eg>&lt;?xml encoding=&apos;UTF-8&apos;?&gt;
-&lt;?xml encoding=&apos;EUC-JP&apos;?&gt;</eg></p>
+<eg>&lt;?xml encoding='UTF-8'?&gt;
+&lt;?xml encoding='EUC-JP'?&gt;</eg></p>
         </div3>
       </div2>
       <div2 id="entproc">
@@ -2309,9 +2309,9 @@ the value of an
 attribute which has been declared as type <kw>ENTITY</kw>, or as one of
 the space-separated tokens in the value of an attribute which has been
 declared as type <kw>ENTITIES</kw>.</p></def></gitem><gitem><label>Reference in Entity Value</label><def><p>as a reference
-within a parameter or internal entity&apos;s 
+within a parameter or internal entity's 
 <termref def="dt-litentval">literal entity value</termref> in
-the entity&apos;s declaration; corresponds to the nonterminal 
+the entity's declaration; corresponds to the nonterminal 
 <nt def="NT-EntityValue">EntityValue</nt>.</p></def></gitem><gitem><label>Reference in DTD</label><def><p>as a reference within either the internal or external subsets of the 
 <termref def="dt-doctype">DTD</termref>, but outside
 of an <nt def="NT-EntityValue">EntityValue</nt> or
@@ -2470,7 +2470,7 @@ replacement text.
 If the entity is external, and the processor is not
 attempting to validate the XML document, the
 processor <termref def="dt-may">may</termref>, but need not, 
-include the entity&apos;s replacement text.
+include the entity's replacement text.
 If a non-validating parser does not include the replacement text,
 it must inform the application that it recognized, but did not
 read, the entity.</p>
@@ -2479,7 +2479,7 @@ provided by the SGML and XML entity mechanism, primarily designed
 to support modularity in authoring, is not necessarily 
 appropriate for other applications, in particular document browsing.
 Browsers, for example, when encountering an external parsed entity reference,
-might choose to provide a visual indication of the entity&apos;s
+might choose to provide a visual indication of the entity's
 presence and retrieve it for display only on demand.
 </p>
         </div3>
@@ -2508,8 +2508,8 @@ For example, this is well-formed:
 <eg><![CDATA[<!ENTITY % YN '"Yes"' >
 <!ENTITY WhatHeSaid "He said &YN;" >]]></eg>
 while this is not:
-<eg>&lt;!ENTITY EndAttr &quot;27&apos;&quot; &gt;
-&lt;element attribute=&apos;a-&amp;EndAttr;&gt;</eg>
+<eg>&lt;!ENTITY EndAttr &quot;27'&quot; &gt;
+&lt;element attribute='a-&amp;EndAttr;&gt;</eg>
 </p>
         </div3>
         <div3 id="notify">
@@ -2548,7 +2548,7 @@ entities to contain an integral number of grammatical tokens in the DTD.
         <head>Construction of Internal Entity Replacement Text</head>
         <p>In discussing the treatment
 of internal entities, it is  
-useful to distinguish two forms of the entity&apos;s value.
+useful to distinguish two forms of the entity's value.
 <termdef id="dt-litentval" term="Literal Entity Value">The <term>literal
 entity value</term> is the quoted string actually
 present in the entity declaration, corresponding to the
@@ -2581,7 +2581,7 @@ then the replacement text for the entity &quot;<code>book</code>&quot; is:
 <eg>La Peste: Albert Camus, 
 &#169; 1947 &#201;ditions Gallimard. &amp;rights;</eg>
 The general-entity reference &quot;<code>&amp;rights;</code>&quot; would be expanded
-should the reference &quot;<code>&amp;book;</code>&quot; appear in the document&apos;s
+should the reference &quot;<code>&amp;book;</code>&quot; appear in the document's
 content or an attribute value.</p>
         <p>These simple rules may have complex interactions; for a detailed
 discussion of a difficult example, see
@@ -2642,11 +2642,11 @@ entity and attribute-list declarations and in attribute specifications,
 and an external identifier for the notation which may allow an XML
 processor or its client application to locate a helper application
 capable of processing data in the given notation.
-<scrap lang="ebnf"><head>Notation Declarations</head><prod id="NT-NotationDecl"><lhs>NotationDecl</lhs><rhs>&apos;&lt;!NOTATION&apos; <nt def="NT-S">S</nt> <nt def="NT-Name">Name</nt> 
+<scrap lang="ebnf"><head>Notation Declarations</head><prod id="NT-NotationDecl"><lhs>NotationDecl</lhs><rhs>'&lt;!NOTATION' <nt def="NT-S">S</nt> <nt def="NT-Name">Name</nt> 
 <nt def="NT-S">S</nt> 
 (<nt def="NT-ExternalID">ExternalID</nt> | 
 <nt def="NT-PublicID">PublicID</nt>)
-<nt def="NT-S">S</nt>? &apos;&gt;&apos;</rhs></prod><prod id="NT-PublicID"><lhs>PublicID</lhs><rhs>&apos;PUBLIC&apos; <nt def="NT-S">S</nt> 
+<nt def="NT-S">S</nt>? '&gt;'</rhs></prod><prod id="NT-PublicID"><lhs>PublicID</lhs><rhs>'PUBLIC' <nt def="NT-S">S</nt> 
 <nt def="NT-PubidLiteral">PubidLiteral</nt> 
 </rhs></prod></scrap>
 </termdef>
@@ -2683,7 +2683,7 @@ without any identification at all.</p>
         <p>Conforming <termref def="dt-xml-proc">XML processors</termref> fall into two
 classes: validating and non-validating.</p>
         <p>Validating and non-validating processors alike must report
-violations of this specification&apos;s well-formedness constraints
+violations of this specification's well-formedness constraints
 in the content of the
 <termref def="dt-docent">document entity</termref> and any 
 other <termref def="dt-parsedent">parsed entities</termref> that 
@@ -2784,7 +2784,7 @@ with a value in the range(s) indicated (inclusive).</p></def></gitem><gitem><lab
 with a value <emph>outside</emph> the
 range indicated.</p></def></gitem><gitem><label><code>[^abc]</code>, <code>[^#xN#xN#xN]</code></label><def><p>matches any <termref def="dt-character">character</termref>
 with a value not among the characters given.</p></def></gitem><gitem><label><code>&quot;string&quot;</code></label><def><p>matches a literal string <termref def="dt-match">matching</termref>
-that given inside the double quotes.</p></def></gitem><gitem><label><code>&apos;string&apos;</code></label><def><p>matches a literal string <termref def="dt-match">matching</termref>
+that given inside the double quotes.</p></def></gitem><gitem><label><code>'string'</code></label><def><p>matches a literal string <termref def="dt-match">matching</termref>
 that given inside the single quotes.</p></def></gitem></glist>
 These symbols may be combined to match more complex patterns as follows,
 where <code>A</code> and <code>B</code> represent simple expressions:
@@ -3268,7 +3268,7 @@ rather than name characters, because the property file classifies
 them as Alphabetic:  [#x02BB-#x02C1], #x0559, #x06E5, #x06E6.</p></item><item><p>Characters #x20DD-#x20E0 are excluded (in accordance with 
 Unicode, section 5.14).</p></item><item><p>Character #x00B7 is classified as an extender, because the
 property list so identifies it.</p></item><item><p>Character #x0387 is added as a name character, because #x00B7
-is its canonical equivalent.</p></item><item><p>Characters &apos;:&apos; and &apos;_&apos; are allowed as name-start characters.</p></item><item><p>Characters &apos;-&apos; and &apos;.&apos; are allowed as name characters.</p></item></ulist>
+is its canonical equivalent.</p></item><item><p>Characters ':' and '_' are allowed as name-start characters.</p></item><item><p>Characters '-' and '.' are allowed as name characters.</p></item></ulist>
 </p>
     </div1>
     <inform-div1 id="sec-xml-and-sgml">
@@ -3365,7 +3365,7 @@ In this case, the two references to
 <code>b</code> can be collapsed 
 into a single reference, making the model read
 <code>(b, (c | d))</code>.  An initial <code>b</code> now clearly
-matches only a single name in the content model.  The parser doesn&apos;t
+matches only a single name in the content model.  The parser doesn't
 need to look ahead to see what follows; either <code>c</code> or
 <code>d</code> would be accepted.</p>
       <p>More formally:  a finite state automaton may be constructed from the
@@ -3408,10 +3408,10 @@ processor without, or with, any accompanying
       <p>
 Because each XML entity not in UTF-8 or UTF-16 format <emph>must</emph>
 begin with an XML encoding declaration, in which the first  characters
-must be &apos;<code>&lt;?xml</code>&apos;, any conforming processor can detect,
+must be '<code>&lt;?xml</code>', any conforming processor can detect,
 after two to four octets of input, which of the following cases apply. 
-In reading this list, it may help to know that in UCS-4, &apos;&lt;&apos; is
-&quot;<code>#x0000003C</code>&quot; and &apos;?&apos; is &quot;<code>#x0000003F</code>&quot;, and the Byte
+In reading this list, it may help to know that in UCS-4, '&lt;' is
+&quot;<code>#x0000003C</code>&quot; and '?' is &quot;<code>#x0000003F</code>&quot;, and the Byte
 Order Mark required of UTF-16 data streams is &quot;<code>#xFEFF</code>&quot;.</p>
       <p>
 <ulist><item><p><code>00 00 00 3C</code>: UCS-4, big-endian machine (1234 order)</p></item><item><p><code>3C 00 00 00</code>: UCS-4, little-endian machine (4321 order)</p></item><item><p><code>00 00 3C 00</code>: UCS-4, unusual octet order (2143)</p></item><item><p><code>00 3C 00 00</code>: UCS-4, unusual octet order (3412)</p></item><item><p><code>FE FF</code>: UTF-16, big-endian</p></item><item><p><code>FF FE</code>: UTF-16, little-endian</p></item><item><p><code>00 3C 00 3F</code>: UTF-16, big-endian, no Byte Order Mark
@@ -3456,7 +3456,7 @@ character of input.
 </p>
       <p>
 Like any self-labeling system, the XML encoding declaration will not
-work if any software changes the entity&apos;s character set or encoding
+work if any software changes the entity's character set or encoding
 without updating the encoding declaration.  Implementors of
 character-encoding routines should be careful to ensure the accuracy
 of the internal and external information used to label the entity.
@@ -3556,7 +3556,7 @@ Co-editor</role>
           <name>Joel Nava, Adobe</name>
         </member>
         <member>
-          <name>Conleth O&apos;Connell, Vignette</name>
+          <name>Conleth O'Connell, Vignette</name>
         </member>
         <member>
           <name>Peter Sharpe, SoftQuad</name>

@@ -14,7 +14,7 @@
     <RPM:Description>Diese Library stellt dem Programmierer vom Terminal unabh&#228;ngige
 Routinen zur Ansteuerung Ihres Bildschirms zur Verf&#252;gung, die
 speziell optimiert sind.
-Diese Version ist die &apos;new curses&apos; (ncurses) Variante und ist der
+Diese Version ist die 'new curses' (ncurses) Variante und ist der
 anerkannte Ersatz f&#252;r die klassische Curses-Library, die nicht mehr
 weiterentwickelt wird.</RPM:Description>
     <RPM:Copyright>GPL</RPM:Copyright>

@@ -1,3 +1,24 @@
+Wed Mar 21 13:17:24 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+  It's hard to estimate how much I hated to do this, but it's done ...
+  The best way to solve the I18N problen is unfortunately to fix libxml1
+parser to at least deal correctly with UTF8 and ISO-Latin-1 encodings.
+I have plugged in the 2.3.5 (or what will be it's not released yet) core
+XML parser in the libxml1 framework. No changes API wise. The only changes
+will be backward binary compatible extensions of some of the parser
+structures and the number of parser states.
+
+	* configure.in: version will be 1.8.12
+	* Makefile.am: added .memdump tests
+	* SAX.c entities.[ch] parser.[ch] tree.c valid.c xml-error.h
+	  xmlIO.[ch]: plugged the 2.3.5 libxml2 XML parser in, while
+	  preserving binary compatibility
+	* uri.[ch]: the parser code really requires URI manipulation
+	  add this from 2.3.5 too
+	* results/* : of course this changed the output of a number of tests
+	* test/dtd12 : this test was actually not wellformed, the new
+	  parser pukes at it, fixed ...
+
 Tue Mar 20 12:22:36 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* parser.c: fixing bug 52299 strange condition leading

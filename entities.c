@@ -55,6 +55,11 @@ void xmlFreeEntity(xmlEntityPtr entity) {
         xmlFree((char *) entity->content);
     if (entity->orig != NULL)
         xmlFree((char *) entity->orig);
+    /* 2.3.5 */
+    if (entity->children != NULL)
+	xmlFreeNodeList(entity->children);
+    if (entity->URI != NULL)
+	xmlFree(entity->URI);
     memset(entity, -1, sizeof(xmlEntity));
 }
 
@@ -122,6 +127,11 @@ xmlAddEntity(xmlEntitiesTablePtr table, const xmlChar *name, int type,
         cur->content = NULL;
     }
     cur->orig = NULL;
+
+    /* 2.3.5 */
+    cur->children = NULL;
+    cur->last = NULL;
+    cur->URI = NULL;
     table->nb_entities++;
 }
 
@@ -432,8 +442,10 @@ xmlEncodeEntities(xmlDocPtr doc, const xmlChar *input) {
 
 
     if (warning) {
-    fprintf(stderr, "Deprecated API xmlEncodeEntities() used\n");
-    fprintf(stderr, "   change code to use xmlEncodeEntitiesReentrant()\n");
+    fprintf(stderr,
+	    "Deprecated API xmlEncodeEntities() used\n");
+    fprintf(stderr,
+	    "   change code to use xmlEncodeEntitiesReentrant()\n");
     warning = 0;
     }
 
@@ -500,11 +512,13 @@ xmlEncodeEntities(xmlDocPtr doc, const xmlChar *input) {
 #ifndef USE_UTF_8
 	} else if ((sizeof(xmlChar) == 1) && (*cur >= 0x80)) {
 	    char buf[10], *ptr;
+
 #ifdef HAVE_SNPRINTF
-	    snprintf(buf, 9, "&#%d;", *cur);
+	    snprintf(buf, sizeof(buf), "&#%d;", *cur);
 #else
 	    sprintf(buf, "&#%d;", *cur);
 #endif
+            buf[sizeof(buf) - 1] = 0;
             ptr = buf;
 	    while (*ptr != 0) *out++ = *ptr++;
 #endif
@@ -512,10 +526,11 @@ xmlEncodeEntities(xmlDocPtr doc, const xmlChar *input) {
 	    char buf[10], *ptr;
 
 #ifdef HAVE_SNPRINTF
-	    snprintf(buf, 9, "&#%d;", *cur);
+	    snprintf(buf, sizeof(buf), "&#%d;", *cur);
 #else
 	    sprintf(buf, "&#%d;", *cur);
 #endif
+            buf[sizeof(buf) - 1] = 0;
             ptr = buf;
 	    while (*ptr != 0) *out++ = *ptr++;
 	}
@@ -525,7 +540,8 @@ xmlEncodeEntities(xmlDocPtr doc, const xmlChar *input) {
 	     * default case, this is not a valid char !
 	     * Skip it...
 	     */
-	    fprintf(stderr, "xmlEncodeEntities: invalid char %d\n", (int) *cur);
+	    xmlGenericError(xmlGenericErrorContext,
+		    "xmlEncodeEntities: invalid char %d\n", (int) *cur);
 	}
 #endif
 	cur++;
@@ -557,9 +573,6 @@ xmlEncodeEntities(xmlDocPtr doc, const xmlChar *input) {
  * and non ASCII values with their entities and CharRef counterparts.
  * Contrary to xmlEncodeEntities, this routine is reentrant, and result
  * must be deallocated.
- *
- * TODO !!!! Once moved to UTF-8 internal encoding, the encoding of non-ascii
- *           get erroneous.
  *
  * Returns A newly allocated string with the substitution done.
  */
@@ -620,6 +633,7 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
 	    *out++ = 'o';
 	    *out++ = 't';
 	    *out++ = ';';
+#if 0
 	} else if ((*cur == '\'') && (!html)) {
 	    *out++ = '&';
 	    *out++ = 'a';
@@ -627,31 +641,105 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
 	    *out++ = 'o';
 	    *out++ = 's';
 	    *out++ = ';';
+#endif
 	} else if (((*cur >= 0x20) && (*cur < 0x80)) ||
 	    (*cur == '\n') || (*cur == '\r') || (*cur == '\t')) {
 	    /*
 	     * default case, just copy !
 	     */
 	    *out++ = *cur;
-#ifndef USE_UTF_8
-	} else if ((sizeof(xmlChar) == 1) && (*cur >= 0x80)) {
-	    char buf[10], *ptr;
+	} else if (*cur >= 0x80) {
+	    if ((doc->encoding != NULL) || (html)) {
+		char buf[10], *ptr;
+
 #ifdef HAVE_SNPRINTF
-	    snprintf(buf, 9, "&#%d;", *cur);
+		snprintf(buf, sizeof(buf), "&#%d;", *cur);
 #else
-	    sprintf(buf, "&#%d;", *cur);
+		sprintf(buf, "&#%d;", *cur);
 #endif
-            ptr = buf;
-	    while (*ptr != 0) *out++ = *ptr++;
+		buf[sizeof(buf) - 1] = 0;
+		ptr = buf;
+		while (*ptr != 0) *out++ = *ptr++;
+	    } else {
+		/*
+		 * We assume we have UTF-8 input.
+		 */
+		char buf[10], *ptr;
+		int val = 0, l = 1;
+
+		if (*cur < 0xC0) {
+		    fprintf(stderr,
+			    "xmlEncodeEntitiesReentrant : input not UTF-8\n");
+		    doc->encoding = xmlStrdup(BAD_CAST "ISO-8859-1");
+#ifdef HAVE_SNPRINTF
+		    snprintf(buf, sizeof(buf), "&#%d;", *cur);
+#else
+		    sprintf(buf, "&#%d;", *cur);
 #endif
+		    buf[sizeof(buf) - 1] = 0;
+		    ptr = buf;
+		    while (*ptr != 0) *out++ = *ptr++;
+		    continue;
+		} else if (*cur < 0xE0) {
+                    val = (cur[0]) & 0x1F;
+		    val <<= 6;
+		    val |= (cur[1]) & 0x3F;
+		    l = 2;
+		} else if (*cur < 0xF0) {
+                    val = (cur[0]) & 0x0F;
+		    val <<= 6;
+		    val |= (cur[1]) & 0x3F;
+		    val <<= 6;
+		    val |= (cur[2]) & 0x3F;
+		    l = 3;
+		} else if (*cur < 0xF8) {
+                    val = (cur[0]) & 0x07;
+		    val <<= 6;
+		    val |= (cur[1]) & 0x3F;
+		    val <<= 6;
+		    val |= (cur[2]) & 0x3F;
+		    val <<= 6;
+		    val |= (cur[3]) & 0x3F;
+		    l = 4;
+		}
+		if ((l == 1) || (!IS_CHAR(val))) {
+		    fprintf(stderr,
+			"xmlEncodeEntitiesReentrant : char out of range\n");
+		    doc->encoding = xmlStrdup(BAD_CAST "ISO-8859-1");
+#ifdef HAVE_SNPRINTF
+		    snprintf(buf, sizeof(buf), "&#%d;", *cur);
+#else
+		    sprintf(buf, "&#%d;", *cur);
+#endif
+		    buf[sizeof(buf) - 1] = 0;
+		    ptr = buf;
+		    while (*ptr != 0) *out++ = *ptr++;
+		    cur++;
+		    continue;
+		}
+		/*
+		 * We could do multiple things here. Just save as a char ref
+		 */
+#ifdef HAVE_SNPRINTF
+		snprintf(buf, sizeof(buf), "&#%d;", val);
+#else
+		sprintf(buf, "&#%d;", val);
+#endif
+		buf[sizeof(buf) - 1] = 0;
+		ptr = buf;
+		while (*ptr != 0) *out++ = *ptr++;
+		cur += l;
+		continue;
+	    }
 	} else if (IS_CHAR(*cur)) {
 	    char buf[10], *ptr;
 
 #ifdef HAVE_SNPRINTF
-	    snprintf(buf, 9, "&#%d;", *cur);
+	    snprintf(buf, sizeof(buf), "&#%d;", *cur);
 #else
 	    sprintf(buf, "&#%d;", *cur);
 #endif
+	    buf[sizeof(buf) - 1] = 0;
             ptr = buf;
 	    while (*ptr != 0) *out++ = *ptr++;
 	}
@@ -661,7 +749,8 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
 	     * default case, this is not a valid char !
 	     * Skip it...
 	     */
-	    fprintf(stderr, "xmlEncodeEntities: invalid char %d\n", (int) *cur);
+	    xmlGenericError(xmlGenericErrorContext,
+		    "xmlEncodeEntities: invalid char %d\n", (int) *cur);
 	}
 #endif
 	cur++;
@@ -669,7 +758,6 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
     *out++ = 0;
     return(buffer);
 }
-
 /**
  * xmlCreateEntitiesTable:
  *

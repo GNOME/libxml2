@@ -49,6 +49,11 @@ struct _xmlParserInput {
     int col;                          /* Current column */
     int consumed;                     /* How many xmlChars already consumed */
     xmlParserInputDeallocate free;    /* function to deallocate the base */
+    /* added after 2.3.5 integration */
+    const xmlChar *end;               /* end of the arry to parse */
+    const xmlChar *encoding;          /* the encoding string for entity */
+    const xmlChar *version;           /* the version string for entity */
+    int standalone;                   /* Was that entity marked standalone */
 };
 
 /**
@@ -95,7 +100,10 @@ typedef enum {
     XML_PARSER_ENTITY_DECL,	/* within an entity declaration */
     XML_PARSER_ENTITY_VALUE,	/* within an entity value in a decl */
     XML_PARSER_ATTRIBUTE_VALUE,	/* within an attribute value */
-    XML_PARSER_EPILOG 		/* the Misc* after the last end tag */
+    XML_PARSER_EPILOG, 		/* the Misc* after the last end tag */
+    /* added after 2.3.5 integration */
+    XML_PARSER_SYSTEM_LITERAL,	/* within a SYSTEM value */
+    XML_PARSER_IGNORE		/* within an IGNORED section */
 } xmlParserInputState;
 
 /**
@@ -160,6 +168,30 @@ struct _xmlParserCtxt {
     long               nbChars;       /* number of xmlChar processed */
     long            checkIndex;       /* used by progressive parsing lookup */
     int             keepBlanks;       /* ugly but ... */
+
+    /* Added after integration of 2.3.5 parser */
+    int             disableSAX;       /* SAX callbacks are disabled */
+    int               inSubset;       /* Parsing is in int 1/ext 2 subset */
+    xmlChar *          intSubName;    /* name of subset */
+    xmlChar *          extSubURI;     /* URI of external subset */
+    xmlChar *          extSubSystem;  /* SYSTEM ID of external subset */
+
+    /* xml:space values */
+    int *              space;         /* Should the parser preserve spaces */
+    int                spaceNr;       /* Depth of the parsing stack */
+    int                spaceMax;      /* Max depth of the parsing stack */
+    int *              spaceTab;      /* array of space infos */
+
+    int                depth;         /* to prevent entity substitution loops */
+    xmlParserInputPtr  entity;        /* used to check entities boundaries */
+    int                charset;       /* encoding of the in-memory content
+				         actually an xmlCharEncoding */
+    int                nodelen;       /* Those two fields are there to */
+    int                nodemem;       /* Speed up large node parsing */
+    int                pedantic;      /* signal pedantic warnings */
+    void              *_private;      /* For user data, libxml won't touch it */
+
+    int                loadsubset;    /* should the external subset be loaded */
 };
 
 /**

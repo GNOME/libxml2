@@ -4425,9 +4425,11 @@ xmlDocContentDump(xmlBufferPtr buf, xmlDocPtr cur) {
 	xmlBufferWriteQuotedString(buf, cur->encoding);
     }
     switch (cur->standalone) {
+/************************************************* 2.3.5 **********
         case 0:
 	    xmlBufferWriteChar(buf, " standalone=\"no\"");
 	    break;
+ ******************************************************************/
         case 1:
 	    xmlBufferWriteChar(buf, " standalone=\"yes\"");
 	    break;

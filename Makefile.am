@@ -31,7 +31,8 @@ libxml_la_SOURCES = \
 		nanohttp.c \
 		nanoftp.c \
 		valid.c \
-		xlink.c
+		xlink.c \
+		uri.c
 
 xmlincdir = $(includedir)/gnome-xml
 xmlinc_HEADERS = \
@@ -51,7 +52,8 @@ xmlinc_HEADERS = \
 		nanohttp.h \
 		nanoftp.h \
 		valid.h \
-		xlink.h
+		xlink.h \
+		uri.h
 
 DEPS = $(top_builddir)/libxml.la
 LDADDS = $(top_builddir)/libxml.la @M_LIBS@
@@ -103,6 +105,7 @@ HTMLtests : testHTML
 	  fi ; fi ; done)
 
 XMLtests : tester
+	@(rm -f .memdump ; touch .memdump)
 	@echo "##"
 	@echo "## XML regression tests"
 	@echo "##"
@@ -112,9 +115,11 @@ XMLtests : tester
 	  if [ ! -f $(srcdir)/result/$$name ] ; then \
 	      echo New test file $$name ; \
 	      $(top_builddir)/tester $$i > $(srcdir)/result/$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	  else \
 	      echo Testing $$name ; \
 	      $(top_builddir)/tester $$i > result.$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	      diff $(srcdir)/result/$$name result.$$name ; \
 	      $(top_builddir)/tester result.$$name > result2.$$name ; \
 	      diff result.$$name result2.$$name ; \
@@ -122,6 +127,7 @@ XMLtests : tester
 	  fi ; fi ; done)
 
 XMLenttests : tester
+	@(rm -f .memdump ; touch .memdump)
 	@echo "##"
 	@echo "## XML entity subst regression tests"
 	@echo "##"
@@ -131,9 +137,11 @@ XMLenttests : tester
 	  if [ ! -f $(srcdir)/result/noent/$$name ] ; then \
 	      echo New test file $$name ; \
 	      $(top_builddir)/tester --noent $$i > $(srcdir)/result/noent/$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	  else \
 	      echo Testing $$name ; \
 	      $(top_builddir)/tester --noent $$i > result.$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	      diff $(srcdir)/result/noent/$$name result.$$name ; \
 	      $(top_builddir)/tester --noent result.$$name > result2.$$name ; \
 	      diff result.$$name result2.$$name ; \
@@ -141,6 +149,7 @@ XMLenttests : tester
 	  fi ; fi ; done)
 
 XPathtests : testXPath
+	@(rm -f .memdump ; touch .memdump)
 	@echo "##"
 	@echo "## XPath regression tests"
 	@echo "##"
@@ -153,6 +162,7 @@ XPathtests : testXPath
 	  else \
 	      echo Testing $$name ; \
 	      $(top_builddir)/testXPath -f --expr $$i > result.$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	      diff $(srcdir)/result/XPath/expr/$$name result.$$name ; \
 	      rm result.$$name ; \
 	  fi ; fi ; done)
@@ -165,14 +175,17 @@ XPathtests : testXPath
 	  if [ ! -f $(srcdir)/result/XPath/tests/$$name ] ; then \
 	      echo New test file $$name ; \
 	      $(top_builddir)/testXPath -f -i $$i $$j > $(srcdir)/result/XPath/tests/$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	  else \
 	      echo Testing $$name ; \
 	      $(top_builddir)/testXPath -f -i $$i $$j > result.$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	      diff $(srcdir)/result/XPath/tests/$$name result.$$name ; \
 	      rm result.$$name ; \
 	  fi ; fi ; done ; fi ; done)
 
 SVGtests : tester
+	@(rm -f .memdump ; touch .memdump)
 	@echo "##"
 	@echo "## SVG parsing regression tests"
 	@echo "##"
@@ -182,9 +195,11 @@ SVGtests : tester
 	  if [ ! -f $(srcdir)/result/SVG/$$name ] ; then \
 	      echo New test file $$name ; \
 	      $(top_builddir)/tester $$i > $(srcdir)/result/SVG/$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	  else \
 	      echo Testing $$name ; \
 	      $(top_builddir)/tester $$i > result.$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	      diff $(srcdir)/result/SVG/$$name result.$$name ; \
 	      $(top_builddir)/tester result.$$name > result2.$$name ; \
 	      diff result.$$name result2.$$name ; \
@@ -192,6 +207,7 @@ SVGtests : tester
 	  fi ; fi ; done)
 
 SAXtests : testSAX
+	@(rm -f .memdump ; touch .memdump)
 	@echo "##"
 	@echo "## SAX callbacks regression tests"
 	@echo "##"
@@ -201,6 +217,7 @@ SAXtests : testSAX
 	  if [ ! -f $(srcdir)/SAXresult/$$name ] ; then \
 	      echo New test file $$name ; \
 	      $(top_builddir)/testSAX $$i > $(srcdir)/SAXresult/$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	  else \
 	      echo Testing $$name ; \
 	      $(top_builddir)/testSAX $$i > result.$$name ; \
@@ -210,6 +227,7 @@ SAXtests : testSAX
 
 
 Validtests : tester
+	@(rm -f .memdump ; touch .memdump)
 	@echo "##"
 	@echo "## Validity checking regression tests"
 	@echo "##"
@@ -219,9 +237,11 @@ Validtests : tester
 	  if [ ! -f $(srcdir)/result/VC/$$name ] ; then \
 	      echo New test file $$name ; \
 	      $(top_builddir)/tester --noout --valid $$i 2> $(srcdir)/result/VC/$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	  else \
 	      echo Testing $$name ; \
 	      $(top_builddir)/tester --noout --valid $$i 2> result.$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	      diff $(srcdir)/result/VC/$$name result.$$name ; \
 	      rm result.$$name ; \
 	  fi ; fi ; done)
@@ -234,9 +254,11 @@ Validtests : tester
 	  if [ ! -f $(srcdir)/result/valid/$$name ] ; then \
 	      echo New test file $$name ; \
 	      $(top_builddir)/tester --valid $$i > $(srcdir)/result/valid/$$name 2>$(srcdir)/result/valid/$$name.err ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	  else \
 	      echo Testing $$name ; \
 	      $(top_builddir)/tester --valid $$i > result.$$name 2>error.$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	      diff $(srcdir)/result/valid/$$name result.$$name ; \
 	      diff $(srcdir)/result/valid/$$name.err error.$$name ; \
 	      rm result.$$name error.$$name ; \

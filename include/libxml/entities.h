@@ -38,6 +38,10 @@ struct _xmlEntity {
     xmlChar *content;		/* The entity content or ndata if unparsed */
     int length;			/* the content length */
     xmlChar *orig;		/* The entity cont without ref substitution */
+    /* Extended when merging 2,3,5 */
+    struct _xmlNode    *children;/* NULL */
+    struct _xmlNode    *last;	/* NULL */
+    const xmlChar      *URI;	/* the full URI as computed */
 };
 
 /*

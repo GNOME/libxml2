@@ -2339,7 +2339,7 @@ xmlValidateAttributeDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 	if (elem != NULL) {
 	    nbId = xmlScanIDAttributeDecl(NULL, elem);
 	}
-	if (nbId >= 1)
+	if (nbId > 1)
 	    VERROR(ctxt->userData, 
 	   "Element %s has ID attribute defined in the external subset : %s\n",
 		   attr->elem, attr->name);

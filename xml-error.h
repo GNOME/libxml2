@@ -115,8 +115,25 @@ typedef enum {
 
     XML_ERR_ENCODING_NAME, /* 80 */
 
-    XML_ERR_HYPHEN_IN_COMMENT /* 81 */
+    XML_ERR_HYPHEN_IN_COMMENT, /* 81 */
 
+    /* Added after 2.3.5 integration */
+    XML_ERR_INVALID_ENCODING, /* 82 */
+
+    XML_ERR_EXT_ENTITY_STANDALONE, /* 83 */
+
+    XML_ERR_CONDSEC_INVALID, /* 84 */
+
+    XML_ERR_VALUE_REQUIRED, /* 85 */
+
+    XML_ERR_NOT_WELL_BALANCED, /* 86 */
+    XML_ERR_EXTRA_CONTENT, /* 87 */
+    XML_ERR_ENTITY_CHAR_ERROR, /* 88 */
+    XML_ERR_ENTITY_PE_INTERNAL, /* 88 */
+    XML_ERR_ENTITY_LOOP, /* 89 */
+    XML_ERR_ENTITY_BOUNDARY, /* 90 */
+    XML_ERR_INVALID_URI, /* 91 */
+    XML_ERR_URI_FRAGMENT /* 92 */
 }xmlParserErrors;
 
 void	xmlParserError		(void *ctx,

@@ -416,7 +416,7 @@ xmlChar *	xmlStrncat		(xmlChar *cur,
  * Basic parsing Interfaces
  */
 xmlDocPtr	xmlParseDoc		(xmlChar *cur);
-xmlDocPtr	xmlParseMemory		(char *buffer,
+xmlDocPtr	xmlParseMemory		(const char *buffer,
 					 int size);
 xmlDocPtr	xmlParseFile		(const char *filename);
 int		xmlSubstituteEntitiesDefault(int val);
@@ -429,7 +429,7 @@ int		xmlLineNumbersDefault	(int val);
  * Recovery mode 
  */
 xmlDocPtr	xmlRecoverDoc		(xmlChar *cur);
-xmlDocPtr	xmlRecoverMemory	(char *buffer,
+xmlDocPtr	xmlRecoverMemory	(const char *buffer,
 					 int size);
 xmlDocPtr	xmlRecoverFile		(const char *filename);
 
@@ -449,7 +449,7 @@ int		xmlSAXUserParseMemory	(xmlSAXHandlerPtr sax,
 					 const char *buffer,
 					 int size);
 xmlDocPtr	xmlSAXParseMemory	(xmlSAXHandlerPtr sax,
-					 char *buffer,
+					 const char *buffer,
                                    	 int size,
 					 int recovery);
 xmlDocPtr	xmlSAXParseFile		(xmlSAXHandlerPtr sax,

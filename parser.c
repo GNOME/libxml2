@@ -9861,7 +9861,8 @@ xmlCreateMemoryParserCtxt(const char *buffer, int size) {
  * Returns the resulting document tree
  */
 xmlDocPtr
-xmlSAXParseMemory(xmlSAXHandlerPtr sax, char *buffer, int size, int recovery) {
+xmlSAXParseMemory(xmlSAXHandlerPtr sax, const char *buffer,
+	          int size, int recovery) {
     xmlDocPtr ret;
     xmlParserCtxtPtr ctxt;
 
@@ -9896,7 +9897,7 @@ xmlSAXParseMemory(xmlSAXHandlerPtr sax, char *buffer, int size, int recovery) {
  * Returns the resulting document tree
  */
 
-xmlDocPtr xmlParseMemory(char *buffer, int size) {
+xmlDocPtr xmlParseMemory(const char *buffer, int size) {
    return(xmlSAXParseMemory(NULL, buffer, size, 0));
 }
 
@@ -9911,7 +9912,7 @@ xmlDocPtr xmlParseMemory(char *buffer, int size) {
  * Returns the resulting document tree
  */
 
-xmlDocPtr xmlRecoverMemory(char *buffer, int size) {
+xmlDocPtr xmlRecoverMemory(const char *buffer, int size) {
    return(xmlSAXParseMemory(NULL, buffer, size, 1));
 }
 

@@ -1,3 +1,9 @@
+Wed Oct 29 18:05:53 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c: more fixes about unregistering objects
+	* include/libxml/relaxng.h: applied patch from Mark Vakoc
+	  missing _cplusplus processing clause
+
 Wed Oct 29 07:49:52 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* include/libxml/parser.h parser.c: added xmlStrVPrintf function

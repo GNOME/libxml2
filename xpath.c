@@ -2709,6 +2709,8 @@ xmlXPathRegisterFuncNS(xmlXPathContextPtr ctxt, const xmlChar *name,
 	ctxt->funcHash = xmlHashCreate(0);
     if (ctxt->funcHash == NULL)
 	return(-1);
+    if (f == NULL)
+        return(xmlHashRemoveEntry2(ctxt->funcHash, name, ns_uri, NULL));
     return(xmlHashAddEntry2(ctxt->funcHash, name, ns_uri, (void *) f));
 }
 
@@ -2855,6 +2857,9 @@ xmlXPathRegisterVariableNS(xmlXPathContextPtr ctxt, const xmlChar *name,
 	ctxt->varHash = xmlHashCreate(0);
     if (ctxt->varHash == NULL)
 	return(-1);
+    if (value == NULL)
+        return(xmlHashRemoveEntry2(ctxt->varHash, name, ns_uri, 
+	                           (xmlHashDeallocator)xmlXPathFreeObject));
     return(xmlHashUpdateEntry2(ctxt->varHash, name, ns_uri,
 			       (void *) value,
 			       (xmlHashDeallocator)xmlXPathFreeObject));
@@ -2975,7 +2980,7 @@ xmlXPathRegisterNs(xmlXPathContextPtr ctxt, const xmlChar *prefix,
     if (ctxt->nsHash == NULL)
 	return(-1);
     if (ns_uri == NULL)
-        return(xmlHashRemoveEntry(ctxt->nsHash, ns_uri,
+        return(xmlHashRemoveEntry(ctxt->nsHash, prefix,
 	                          (xmlHashDeallocator)xmlFree));
     return(xmlHashUpdateEntry(ctxt->nsHash, prefix, (void *) xmlStrdup(ns_uri),
 			      (xmlHashDeallocator)xmlFree));

@@ -12,6 +12,10 @@
 #include <libxml/xmlversion.h>
 #include <libxml/hash.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct _xmlRelaxNG xmlRelaxNG;
 typedef xmlRelaxNG *xmlRelaxNGPtr;
 
@@ -152,4 +156,8 @@ XMLPUBFUN int XMLCALL
 		    xmlRelaxNGValidateFullElement	(xmlRelaxNGValidCtxtPtr ctxt,
 					 xmlDocPtr doc,
 					 xmlNodePtr elem);
+
+#ifdef __cplusplus
+}
+#endif
 #endif /* __XML_RELAX_NG__ */

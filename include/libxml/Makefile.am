@@ -27,7 +27,6 @@ xmlinc_HEADERS = \
 		valid.h \
 		xlink.h \
 		xmlversion.h \
-		xmlwin32version.h \
 		DOCBparser.h \
 		catalog.h \
 		threads.h \
@@ -43,4 +42,4 @@ xmlinc_HEADERS = \
 install-exec-hook:
 	$(mkinstalldirs) $(DESTDIR)$(xmlincdir)
 
-EXTRA_DIST = xmlversion.h.in xmlwin32version.h.in
+EXTRA_DIST = xmlversion.h.in

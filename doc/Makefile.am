@@ -16,14 +16,22 @@ PAGES= architecture.html bugs.html contribs.html docs.html DOM.html \
     downloads.html entities.html example.html help.html index.html \
     interface.html intro.html library.html namespaces.html news.html \
     tree.html xmldtd.html XMLinfo.html XSLT.html
+APIPAGES=APIconstructors.html APIfiles.html APIfunctions.html \
+    APIsymbols.html
 
 man_MANS = xmllint.1 xmlcatalog.1
 
 all: $(PAGES)
 
+web: $(PAGES) $(APIPAGES)
+
 $(PAGES): xml.html site.xsl
 	-@(if [ -x $(bindir)/xsltproc ] ; then \
 	  $(bindir)/xsltproc --html $(top_srcdir)/doc/site.xsl $(top_srcdir)/doc/xml.html > index.html ; fi );
+
+$(APIPAGES): libxml2-refs.xml site.xsl api.xsl
+	-@(if [ -x $(bindir)/xsltproc ] ; then \
+	  $(bindir)/xsltproc --html $(top_srcdir)/doc/api.xsl $(top_srcdir)/doc/xml.html ; fi );
 
 scan:
 	gtkdoc-scan --module=libxml --source-dir=$(DOC_SOURCE_DIR) --ignore-headers="acconfig.h config.h xmlwin32version.h win32config.h trio.h triostr.h triop.h config-mac.h XMLTestPrefix2.h  XMLTestPrefix.h triodef.h trionan.h xlink.h libxml.h"
@@ -41,10 +49,10 @@ xml: sgml
 	       xml/"$$name".xml ;\
 	   grep -v "^<colspec" $$s >> xml/"$$name".xml ; done)
 	   
-libxml2-api.xml: xml parsedecl.py libxml-decl.txt libxml-decl-list.txt
-	-./parsedecl.py
+libxml2-api.xml libxml2-refs.xml: xml parsedecl.py libxml-decl.txt libxml-decl-list.txt
+	-(./parsedecl.py)
 
-api: libxml2-api.xml
+api: libxml2-api.xml libxml2-refs.xml
 
 html:
 	if test -n -d html ; then mkdir html ; fi

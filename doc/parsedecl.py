@@ -8,6 +8,8 @@
 import sys
 import string
 
+ids = {}
+
 macros = {}
 variables = {}
 structs = {}
@@ -369,9 +371,10 @@ def insertParameterComment(id, name, value, is_param):
 	return
     nbcomments = nbcomments + 1
 
-def insertComment(name, title, value):
+def insertComment(name, title, value, id):
     global nbcomments
 
+    ids[name] = id
     if functions.has_key(name):
         functions[name][2] = value
 	return "function"
@@ -397,6 +400,7 @@ def insertComment(name, title, value):
         print "lost comment %s: %s" % (name, value)
 	return "unknown"
     nbcomments = nbcomments + 1
+
 
 import os
 import xmllib
@@ -514,15 +518,16 @@ class docParser:
 	    self._data = []
 	elif tag == 'anchor' and self.id == None:
 	    if attrs.has_key('id'):
-	        self.id = attrs['id']
-		self.id = string.replace(self.id, '-CAPS', '')
+	        self.orig_id = attrs['id']
+		self.id = string.replace(self.orig_id, '-CAPS', '')
 		self.id = string.replace(self.id, '-', '_')
 
     def end(self, tag):
         if debug:
 	    print "end %s" % tag
 	if tag == 'refsect2':
-	    self.type = insertComment(self.id, self.title, self.string)
+	    self.type = insertComment(self.id, self.title, self.string,
+	                              self.orig_id)
 	    self.string = None
 	elif tag == 'row':
 	    if self.parameter_info != None and self.parameter_info != '':
@@ -727,4 +732,87 @@ for i in symbols:
         print "Symbol %s not found in identifiers list" % (i)
 output.write("  </symbols>\n")
 output.write("</api>\n")
+output.close()
 print "generated XML for %d symbols" % (len(symbols))
+
+##################################################################
+#
+#          Saving: libxml2-api.xml
+#
+##################################################################
+
+hash = {}
+for file in files.keys():
+    for symbol in files[file]:
+        hash[symbol] = file
+
+def link(id):
+    if ids.has_key(id):
+        target = string.upper(ids[id])
+    else:
+	target = string.upper(id)
+    file = 'html/libxml-' + string.lower(hash[id]) + '.html';
+    return file + '#' + target
+    
+print "Saving XML crossreferences libxml2-refs.xml"
+output = open("libxml2-refs.xml", "w")
+output.write("<apirefs name='libxml2'>\n")
+output.write("  <references>\n")
+typ = ids.keys()
+typ.sort()
+for id in typ:
+    output.write("    <reference name='%s' href='%s'/>\n" % (id, link(id)))
+output.write("  </references>\n")
+output.write("  <alpha>\n")
+letter = None
+ids = ids.keys()
+ids.sort()
+for id in ids:
+    if id[0] != letter:
+        if letter != None:
+	    output.write("    </letter>\n")
+        letter = id[0]
+	output.write("    <letter name='%s'>\n" % (letter))
+    output.write("    <ref name='%s'/>\n" % (id))
+if letter != None:
+    output.write("    </letter>\n")
+output.write("  </alpha>\n")
+output.write("  <constructors>\n")
+typ = ret_types.keys()
+typ.sort()
+for type in typ:
+    if type == '' or type == 'void' or type == "int" or type == "char *" or \
+       type == "const char *" :
+        continue
+    output.write("    <type name='%s'>\n" % (type))
+    ids = ret_types[type]
+    for id in ids:
+	output.write("      <ref name='%s'/>\n" % (id))
+    output.write("    </type>\n")
+output.write("  </constructors>\n")
+output.write("  <functions>\n")
+typ = types.keys()
+typ.sort()
+for type in typ:
+    if type == '' or type == 'void' or type == "int" or type == "char *" or \
+       type == "const char *" :
+        continue
+    output.write("    <type name='%s'>\n" % (type))
+    ids = types[type]
+    for id in ids:
+	output.write("      <ref name='%s'/>\n" % (id))
+    output.write("    </type>\n")
+output.write("  </functions>\n")
+
+output.write("  <files>\n")
+typ = files.keys()
+typ.sort()
+for file in typ:
+    output.write("    <file name='%s'>\n" % (file))
+    for id in files[file]:
+	output.write("      <ref name='%s'/>\n" % (id))
+    output.write("    </file>\n")
+output.write("  </files>\n")
+output.write("</apirefs>\n")
+output.close()
+print "generated %d XML references" % (len(ids))

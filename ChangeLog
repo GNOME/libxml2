@@ -1,3 +1,13 @@
+Wed Jan 23 13:32:40 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* doc/api.xsl doc/APIconstructors.html doc/APIfiles.html
+	  doc/APIfunctions.html doc/APIsymbols.html doc/libxml2-refs.xml
+	  doc/parsedecl.py doc/Makefile.am: updated the python extractor
+	  to generate cross-references, and added/updated the stylesheets
+	  to generate and link API indexes. The generic keyword index
+	  is not done yet.
+	* doc/*.html: regenerated all the usual docs too
+
 Tue Jan 22 23:11:26 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* debugXML.c: added an xpath function to the shell for T. V. Raman

@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
   <xsl:output method="html" version="4.01" encoding="ISO-8859-1"/>
+
 <!--
  - returns the filename associated to an ID in the original file
  -->
@@ -127,6 +128,14 @@
       <li><a href="xml.html">flat page</a>, <a href="site.xsl">stylesheet</a></li>
     </ul>
   </xsl:variable>
+  <xsl:variable name="api">
+    <ul><!-- style="margin-left: -1em" -->
+      <li><a href="APIconstructors.html">Constructors</a></li>
+      <li><a href="APIfunctions.html">Functions/Types</a></li>
+      <li><a href="APIfiles.html">Modules</a></li>
+      <li><a href="APIsymbols.html">Symbols</a></li>
+    </ul>
+  </xsl:variable>
   <xsl:variable name="related">
     <ul><!-- style="margin-left: -1em" -->
       <li><a href="http://mail.gnome.org/archives/xml/">Mail archive</a></li>
@@ -153,6 +162,20 @@
             <tr>
               <td bgcolor="#fffacd">
                 <xsl:copy-of select="$toc"/>
+              </td>
+            </tr>
+          </table>
+          <table width="100%" border="0" cellspacing="1" cellpadding="3">
+            <tr>
+              <td colspan="1" bgcolor="#eecfa1" align="center">
+                <center>
+                  <b>API Indexes</b>
+                </center>
+              </td>
+            </tr>
+            <tr>
+              <td bgcolor="#fffacd">
+                <xsl:copy-of select="$api"/>
               </td>
             </tr>
           </table>
@@ -388,6 +411,7 @@ A:link, A:visited, A:active { text-decoration: underline }
     </head>
   </xsl:template>
   <xsl:template match="html">
+    <xsl:message>Generating the Web pages</xsl:message>
     <html>
       <xsl:apply-templates/>
     </html>

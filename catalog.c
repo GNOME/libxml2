@@ -2447,12 +2447,12 @@ xmlCatalogAdd(const xmlChar *type, const xmlChar *orig, const xmlChar *replace) 
     if (xmlDefaultXMLCatalogList != NULL) {
 	res = xmlAddXMLCatalog(xmlDefaultXMLCatalogList, type, orig, replace);
     } else if (xmlDefaultCatalog != NULL) {
-	xmlCatalogEntryType typ;
+	xmlCatalogEntryType cattype;
 
-	typ = xmlGetSGMLCatalogEntryType(type);
-	if (type != XML_CATA_NONE) {
+	cattype = xmlGetSGMLCatalogEntryType(type);
+	if (cattype != XML_CATA_NONE) {
 	    xmlCatalogEntryPtr entry;
-	    entry = xmlNewCatalogEntry(typ, orig, replace,
+	    entry = xmlNewCatalogEntry(cattype, orig, replace,
 		                       XML_CATA_PREFER_NONE);
 	    res = xmlHashAddEntry(xmlDefaultCatalog, orig, entry);
 	}

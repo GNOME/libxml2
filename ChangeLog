@@ -1,3 +1,7 @@
+Sat Sep 29 00:15:00 HKT 2001 William Brack <wbrack@mmm.com.hk>
+
+	* catalog.c - fixed typing error reported by M. Barros
+
 Sun Sep 23 21:02:39 MDT 2001 John Fleck <jfleck@inkstain.net>
 
 	* xmllint.c - fixing typo

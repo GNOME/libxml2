@@ -56,7 +56,7 @@ GENERATED= $(srcdir)/libxml2class.py \
 $(GENERATED): $(srcdir)/$(GENERATE) $(API_DESC)
 	cd $(srcdir) && $(PYTHON) $(GENERATE)
 
-$(libxmlmodule_la_OBJECTS): $(GENERATED)
+$(libxml2mod_la_OBJECTS): $(GENERATED)
 else
 all: 
 endif

@@ -1,3 +1,10 @@
+Sat Mar 16 23:01:42 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c: small fix to avoid potential problem due to
+	  ordering of freeing data
+	* python/Makefile.am: people were complaining about 
+	  the generated file in python dir not being built
+
 Fri Mar 15 23:21:40 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* libxml.spec.in python/Makefile.am python/tests/Makefile.am

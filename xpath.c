@@ -3071,8 +3071,8 @@ xmlXPathFreeObject(xmlXPathObjectPtr obj) {
     if ((obj->type == XPATH_NODESET) || (obj->type == XPATH_XSLT_TREE)) {
 	if (obj->boolval) {
 	    if (obj->user != NULL) {
-		xmlFreeNodeList((xmlNodePtr) obj->user);
                 xmlXPathFreeNodeSet(obj->nodesetval);
+		xmlFreeNodeList((xmlNodePtr) obj->user);
 	    } else if (obj->nodesetval != NULL)
 		xmlXPathFreeValueTree(obj->nodesetval);
 	} else {

@@ -587,8 +587,12 @@ xmlChar *	xmlNodeGetLang		(xmlNodePtr cur);
 void		xmlNodeSetLang		(xmlNodePtr cur,
 					 const xmlChar *lang);
 int		xmlNodeGetSpacePreserve	(xmlNodePtr cur);
+void		xmlNodeSetSpacePreserve (xmlNodePtr cur, int
+					 val);
 xmlChar *	xmlNodeGetBase		(xmlDocPtr doc,
 					 xmlNodePtr cur);
+void		xmlNodeSetBase		(xmlNodePtr cur,
+					 xmlChar *uri);
 
 /*
  * Removing content.

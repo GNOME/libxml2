@@ -2790,12 +2790,60 @@ xmlNodeGetLang(xmlNodePtr cur) {
     return(NULL);
 }
  
+
+/**
+ * xmlNodeSetSpacePreserve:
+ * @cur:  the node being changed
+ * @val:  the xml:space value ("0": default, 1: "preserve")
+ *
+ * Set (or reset) the space preserving behaviour of a node, i.e. the
+ * value of the xml:space attribute.
+ */
+void
+xmlNodeSetSpacePreserve(xmlNodePtr cur, int val) {
+    if (cur == NULL) return;
+    switch(cur->type) {
+        case XML_TEXT_NODE:
+        case XML_CDATA_SECTION_NODE:
+        case XML_COMMENT_NODE:
+        case XML_DOCUMENT_NODE:
+        case XML_DOCUMENT_TYPE_NODE:
+        case XML_DOCUMENT_FRAG_NODE:
+        case XML_NOTATION_NODE:
+        case XML_HTML_DOCUMENT_NODE:
+        case XML_DTD_NODE:
+        case XML_ELEMENT_DECL:
+        case XML_ATTRIBUTE_DECL:
+        case XML_ENTITY_DECL:
+        case XML_PI_NODE:
+        case XML_ENTITY_REF_NODE:
+        case XML_ENTITY_NODE:
+#ifdef LIBXML_SGML_ENABLED
+	case XML_SGML_DOCUMENT_NODE:
+#endif
+	    return;
+        case XML_ELEMENT_NODE:
+        case XML_ATTRIBUTE_NODE:
+	    break;
+    }
+    switch (val) {
+    case 0:
+	xmlSetProp(cur, BAD_CAST "xml:space", BAD_CAST "default");
+	break;
+    case 1:
+	xmlSetProp(cur, BAD_CAST "xml:space", 
+		       BAD_CAST "preserve");
+	break;
+    }
+}
+
 /**
  * xmlNodeGetSpacePreserve:
  * @cur:  the node being checked
  *
- * Searches the language of a node, i.e. the values of the xml:space
- * attribute or the one carried by the nearest ancestor.
+ * Searches the space preserving behaviour of a node, i.e. the values
+ * of the xml:space attribute or the one carried by the nearest
+ * ancestor.
  *
  * Returns -1 if xml:space is not inheried, 0 if "default", 1 if "preserve"
  */
@@ -2826,8 +2874,7 @@ xmlNodeGetSpacePreserve(xmlNodePtr cur) {
  * @cur:  the node being changed
  * @name:  the new tag name
  *
- * Searches the language of a node, i.e. the values of the xml:lang
- * attribute or the one carried by the nearest ancestor.
+ * Set (or reset) the name of a node.
  */
 void
 xmlNodeSetName(xmlNodePtr cur, const xmlChar *name) {
@@ -2861,6 +2908,44 @@ xmlNodeSetName(xmlNodePtr cur, const xmlChar *name) {
     cur->name = xmlStrdup(name);
 }
  
+/**
+ * xmlNodeSetBase:
+ * @cur:  the node being changed
+ * @uri:  the new base URI
+ *
+ * Set (or reset) the base URI of a node, i.e. the value of the
+ * xml:base attribute.
+ */
+void
+xmlNodeSetBase(xmlNodePtr cur, xmlChar* uri) {
+    if (cur == NULL) return;
+    switch(cur->type) {
+        case XML_TEXT_NODE:
+        case XML_CDATA_SECTION_NODE:
+        case XML_COMMENT_NODE:
+        case XML_DOCUMENT_NODE:
+        case XML_DOCUMENT_TYPE_NODE:
+        case XML_DOCUMENT_FRAG_NODE:
+        case XML_NOTATION_NODE:
+        case XML_HTML_DOCUMENT_NODE:
+        case XML_DTD_NODE:
+        case XML_ELEMENT_DECL:
+        case XML_ATTRIBUTE_DECL:
+        case XML_ENTITY_DECL:
+        case XML_PI_NODE:
+        case XML_ENTITY_REF_NODE:
+        case XML_ENTITY_NODE:
+#ifdef LIBXML_SGML_ENABLED
+	case XML_SGML_DOCUMENT_NODE:
+#endif
+	    return;
+        case XML_ELEMENT_NODE:
+        case XML_ATTRIBUTE_NODE:
+	    break;
+    }
+    xmlSetProp(cur, BAD_CAST "xml:base", uri);
+}
+
 /**
  * xmlNodeGetBase:
  * @doc:  the document the node pertains to

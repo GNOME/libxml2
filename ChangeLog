@@ -1,3 +1,9 @@
+Wed Oct 25 12:48:55 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* nanohttp.c : applied Wayne HTTP cleanup patch
+	* tree.[ch]: applied TOM <ptittom@free.fr> for xmlNodeSetBase()
+	  and xmlNodeSetSpacePreserve()
+
 Wed Oct 25 12:11:03 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* xpath.c: closing bug #29260

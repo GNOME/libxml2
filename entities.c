@@ -865,7 +865,7 @@ xmlCopyEntity(xmlEntityPtr ent) {
 	return(NULL);
     }
     memset(cur, 0, sizeof(xmlEntity));
-    cur->type = XML_ELEMENT_DECL;
+    cur->type = XML_ENTITY_DECL;
 
     cur->etype = ent->etype;
     if (ent->name != NULL)

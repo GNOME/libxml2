@@ -991,6 +991,7 @@ int
 main(int argc, char **argv) {
     int i, count;
     int files = 0;
+    int version = 0;
 
     if (argc <= 1) {
 	usage(argv[0]);
@@ -1021,10 +1022,11 @@ main(int argc, char **argv) {
 	         (!strcmp(argv[i], "--noent")))
 	    noent++;
 	else if ((!strcmp(argv[i], "-version")) ||
-	         (!strcmp(argv[i], "--version")))
+	         (!strcmp(argv[i], "--version"))) {
 	    fprintf(stderr, "xmllint: using libxml version %s\n",
 		    xmlParserVersion);
-	else if ((!strcmp(argv[i], "-noout")) ||
+	    version = 1;
+	} else if ((!strcmp(argv[i], "-noout")) ||
 	         (!strcmp(argv[i], "--noout")))
 	    noout++;
 	else if ((!strcmp(argv[i], "-o")) ||
@@ -1230,7 +1232,7 @@ main(int argc, char **argv) {
     if ((htmlout) && (!nowrap)) {
 	xmlGenericError(xmlGenericErrorContext, "</body></html>\n");
     }
-    if ((files == 0) && (!generate)) {
+    if ((files == 0) && (!generate) && (version == 0)) {
 	usage(argv[0]);
     }
     xmlCleanupParser();

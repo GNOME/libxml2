@@ -1,3 +1,7 @@
+Wed Jan  9 12:50:39 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* entities.c: Anthony Jones pointed a bug in xmlCopyEntity()
+
 Tue Jan  8 14:23:22 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* doc/*.html doc/site.xsl doc/Makefile: renamed XML.html

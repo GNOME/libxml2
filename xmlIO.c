@@ -157,8 +157,7 @@ xmlNormalizeWindowsPath(const xmlChar *path)
 	return(xmlStrdup(path));
 
     len = xmlStrlen(path);
-    len += 10;
-    ret = xmlMalloc(len);
+    ret = xmlMalloc(len + 10);
     if (ret == NULL)
 	return(NULL);
 

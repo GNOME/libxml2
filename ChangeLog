@@ -1,3 +1,14 @@
+Tue Sep 10 14:15:18 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xmlIO.c: fixed a stupid out of bound array error
+
+Tue Sep 10 13:09:14 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/xmlIO.h xmlIO.c parser.c HTMLparser.c DOCBparser.c:
+	  messing around with support for Windows path, cleanups,
+	  trying to identify and fix the various code path to the
+	  filename access. Added xmlNormalizeWindowsPath()
+
 Thu Sep  5 16:19:18 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* error.c valid.c: working on better error reporting of validity

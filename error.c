@@ -353,7 +353,6 @@ xmlParserValidityError(void *ctx, const char *msg, ...)
     int len = xmlStrlen((const xmlChar *) msg);
     static int had_info = 0;
     int need_context = 0;
-    int need_info = 0;
 
     if ((len > 1) && (msg[len - 2] != ':')) {
 	if (ctxt != NULL) {

@@ -17,6 +17,7 @@ xmlinc_HEADERS = \
 		libxml/xpath.h \
 		libxml/xpathInternals.h \
 		libxml/xpointer.h \
+		libxml/xinclude.h \
 		libxml/xmlIO.h \
 		libxml/xmlmemory.h \
 		libxml/nanohttp.h \

@@ -6186,18 +6186,20 @@ xmlXPathNameFunction(xmlXPathParserContextPtr ctxt, int nargs)
 		else if ((cur->nodesetval->nodeTab[i]->ns == NULL) ||
                          (cur->nodesetval->nodeTab[i]->ns->prefix == NULL)) {
                     valuePush(ctxt,
-                              xmlXPathNewString(cur->nodesetval->
-                                                nodeTab[i]->name));
+		        xmlXPathNewString(cur->nodesetval->nodeTab[i]->name));
 
 		} else {
-                    char name[2000];
-
-                    snprintf(name, sizeof(name), "%s:%s",
-                             (char *) cur->nodesetval->nodeTab[i]->ns->
-                             prefix,
-                             (char *) cur->nodesetval->nodeTab[i]->name);
-                    name[sizeof(name) - 1] = 0;
-                    valuePush(ctxt, xmlXPathNewCString(name));
+		    xmlChar *fullname;
+		    
+		    fullname = xmlBuildQName(cur->nodesetval->nodeTab[i]->name,
+				     cur->nodesetval->nodeTab[i]->ns->prefix,
+				     NULL, 0);
+		    if (fullname == cur->nodesetval->nodeTab[i]->name)
+			fullname = xmlStrdup(cur->nodesetval->nodeTab[i]->name);
+		    if (fullname == NULL) {
+			XP_ERROR(XPATH_MEMORY_ERROR);
+		    }
+                    valuePush(ctxt, xmlXPathWrapString(fullname));
                 }
                 break;
             default:

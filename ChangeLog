@@ -1,3 +1,9 @@
+Mon Apr  7 12:19:26 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c valid.c xpath.c include/libxml/tree.h include/libxml/valid.h:
+	  fixing bug #107129, removing excessive allocation and calls
+	  to *printf in the code to build QName strings.
+
 Sat Apr  5 11:41:36 CEST 2003 Igoe Zlatkovic <igor@zlatkovic.com>
 
 	* win32/libxml2.def.src: fixed conditional exports, reported by

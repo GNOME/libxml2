@@ -125,6 +125,102 @@ xmlGetParameterEntityFromDtd(xmlDtdPtr dtd, const xmlChar *name) {
 
 /************************************************************************
  *									*
+ *			QName handling helper				*
+ *									*
+ ************************************************************************/
+
+/**
+ * xmlBuildQName:
+ * @ncname:  the Name
+ * @prefix:  the prefix
+ * @memory:  preallocated memory
+ * @len:  preallocated memory length
+ *
+ * Builds the QName @prefix:@ncname in @memory if there is enough space
+ * and prefix is not NULL nor empty, otherwise allocate a new string.
+ * If prefix is NULL or empty it returns ncname.
+ *
+ * Returns the new string which must be freed by the caller if different from
+ *         @memory and @ncname or NULL in case of error
+ */
+xmlChar *
+xmlBuildQName(const xmlChar *ncname, const xmlChar *prefix,
+	      xmlChar *memory, int len) {
+    int lenn, lenp;
+    xmlChar *ret;
+
+    if ((ncname == NULL) || (*ncname == 0)) return(NULL);
+    if ((prefix == NULL) || (*prefix == 0)) return((xmlChar *) ncname);
+
+    lenn = strlen((char *) ncname);
+    lenp = strlen((char *) prefix);
+
+    if ((memory == NULL) || (len < lenn + lenp + 2)) {
+	ret = (xmlChar *) xmlMalloc(lenn + lenp + 2);
+	if (ret == NULL) return(NULL);
+    } else {
+	ret = memory;
+    }
+    memcpy(&ret[0], prefix, lenp);
+    ret[lenp] = ':';
+    memcpy(&ret[lenp + 1], ncname, lenn);
+    ret[lenn + lenp + 1] = 0;
+    return(ret);
+}
+
+/**
+ * xmlSplitQName2:
+ * @name:  the full QName
+ * @prefix:  a xmlChar ** 
+ *
+ * parse an XML qualified name string
+ *
+ * [NS 5] QName ::= (Prefix ':')? LocalPart
+ *
+ * [NS 6] Prefix ::= NCName
+ *
+ * [NS 7] LocalPart ::= NCName
+ *
+ * Returns NULL if not a QName, otherwise the local part, and prefix
+ *   is updated to get the Prefix if any.
+ */
+
+xmlChar *
+xmlSplitQName2(const xmlChar *name, xmlChar **prefix) {
+    int len = 0;
+    xmlChar *ret = NULL;
+
+    *prefix = NULL;
+
+#ifndef XML_XML_NAMESPACE
+    /* xml: prefix is not really a namespace */
+    if ((name[0] == 'x') && (name[1] == 'm') &&
+        (name[2] == 'l') && (name[3] == ':'))
+	return(NULL);
+#endif
+
+    /* nasty but valid */
+    if (name[0] == ':')
+	return(NULL);
+
+    /*
+     * we are not trying to validate but just to cut, and yes it will
+     * work even if this is as set of UTF-8 encoded chars
+     */
+    while ((name[len] != 0) && (name[len] != ':')) 
+	len++;
+    
+    if (name[len] == 0)
+	return(NULL);
+
+    *prefix = xmlStrndup(name, len);
+    ret = xmlStrdup(&name[len + 1]);
+
+    return(ret);
+}
+
+/************************************************************************
+ *									*
  *		Check Name, NCName and QName strings			*
  *									*
  ************************************************************************/
@@ -3915,6 +4011,7 @@ xmlGetNodePath(xmlNodePtr node)
 
             /*
              * Thumbler index computation
+	     * TODO: the ocurence test seems bogus for namespaced names
              */
             tmp = cur->prev;
             while (tmp != NULL) {

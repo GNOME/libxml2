@@ -510,6 +510,19 @@ xmlHashLookup3(xmlHashTablePtr table, const xmlChar *name,
  */
 void
 xmlHashScan(xmlHashTablePtr table, xmlHashScanner f, void *data) {
+    xmlHashScanFull (table, (xmlHashScannerFull) f, data);
+}
+
+/**
+ * xmlHashScanFull:
+ * @table: the hash table
+ * @f:  the scanner function for items in the hash
+ * @data:  extra data passed to f
+ *
+ * Scan the hash table and applied f to each value.
+ */
+void
+xmlHashScanFull(xmlHashTablePtr table, xmlHashScannerFull f, void *data) {
     int i;
     xmlHashEntryPtr iter;
     xmlHashEntryPtr next;
@@ -525,7 +538,8 @@ xmlHashScan(xmlHashTablePtr table, xmlHashScanner f, void *data) {
 	    while (iter) {
 		next = iter->next;
 		if (f)
-		    f(iter->payload, data, iter->name);
+		    f(iter->payload, data, iter->name,
+		      iter->name2, iter->name3);
 		iter = next;
 	    }
 	}
@@ -549,6 +563,27 @@ void
 xmlHashScan3(xmlHashTablePtr table, const xmlChar *name, 
 	     const xmlChar *name2, const xmlChar *name3,
 	     xmlHashScanner f, void *data) {
+    xmlHashScanFull3 (table, name, name2, name3,
+		      (xmlHashScannerFull) f, data);
+}
+
+/**
+ * xmlHashScanFull3:
+ * @table: the hash table
+ * @name: the name of the userdata or NULL
+ * @name2: a second name of the userdata or NULL
+ * @name3: a third name of the userdata or NULL
+ * @f:  the scanner function for items in the hash
+ * @data:  extra data passed to f
+ *
+ * Scan the hash table and applied f to each value matching
+ * (name, name2, name3) tuple. If one of the names is null,
+ * the comparison is considered to match.
+ */
+void
+xmlHashScanFull3(xmlHashTablePtr table, const xmlChar *name, 
+		 const xmlChar *name2, const xmlChar *name3,
+		 xmlHashScannerFull f, void *data) {
     int i;
     xmlHashEntryPtr iter;
     xmlHashEntryPtr next;
@@ -566,7 +601,8 @@ xmlHashScan3(xmlHashTablePtr table, const xmlChar *name,
 		if (((name == NULL) || (xmlStrEqual(name, iter->name))) &&
 		    ((name2 == NULL) || (xmlStrEqual(name2, iter->name2))) &&
 		    ((name3 == NULL) || (xmlStrEqual(name3, iter->name3)))) {
-		    f(iter->payload, data, iter->name);
+		    f(iter->payload, data, iter->name,
+		      iter->name2, iter->name3);
 		}
 		iter = next;
 	    }

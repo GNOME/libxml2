@@ -1,3 +1,9 @@
+Sun Jul 22 05:56:16 CEST 2001 Thomas Broyer <tbroyer@ltgt.net>
+
+	* hash.c include/libxml/hash.h: added xmlHashScannerFull,
+	  xmlHashScanFull and xmlHashScannFull3 to get passed the
+	  three keys as arguments to the callback function
+
 Thu Jul 19 15:29:26 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* configure.in Makefile.am: removed libxml softlink for good

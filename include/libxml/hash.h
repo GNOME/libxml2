@@ -36,6 +36,9 @@ typedef xmlHashTable *xmlHashTablePtr;
 typedef void (*xmlHashDeallocator)(void *payload, xmlChar *name);
 typedef void *(*xmlHashCopier)(void *payload, xmlChar *name);
 typedef void *(*xmlHashScanner)(void *payload, void *data, xmlChar *name);
+typedef void (*xmlHashScannerFull)(void *payload, void *data,
+				   const xmlChar *name, const xmlChar *name2,
+				   const xmlChar *name3);
 
 /*
  * Constructor and destructor
@@ -113,6 +116,15 @@ void			xmlHashScan3	(xmlHashTablePtr table,
 					 const xmlChar *name2,
 					 const xmlChar *name3,
 					 xmlHashScanner f,
+					 void *data);
+void			xmlHashScanFull	(xmlHashTablePtr table,
+					 xmlHashScannerFull f,
+					 void *data);
+void			xmlHashScanFull3(xmlHashTablePtr table,
+					 const xmlChar *name,
+					 const xmlChar *name2,
+					 const xmlChar *name3,
+					 xmlHashScannerFull f,
 					 void *data);
 #ifdef __cplusplus
 }

@@ -661,10 +661,10 @@ xmlValidBuildAContentModel(xmlElementContentPtr content,
 			                     ctxt->state, fullname, NULL);
 		    break;
 		case XML_ELEMENT_CONTENT_MULT:
-		    xmlAutomataNewTransition(ctxt->am, ctxt->state,
-			                     ctxt->state, fullname, NULL);
-		    ctxt->state = xmlAutomataNewEpsilon(ctxt->am, ctxt->state,
-			                     NULL);
+		    ctxt->state = xmlAutomataNewEpsilon(ctxt->am,
+		    			    ctxt->state, NULL);
+		    xmlAutomataNewTransition(ctxt->am,
+		    	    ctxt->state, ctxt->state, fullname, NULL);
 		    break;
 	    }
 	    if ((fullname != fn) && (fullname != content->name))

@@ -1,3 +1,7 @@
+Sat Apr 17 21:32:32 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* valid.c: small enhancement to fix bug 139791
+
 Fri Apr 16 18:44:47 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemas.c include/libxml/schemasInternals.h

@@ -1,3 +1,7 @@
+Thu Jun 28 17:11:10 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* configure.in: released 1.8.14
+
 Wed Jun 27 23:47:29 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* Makefile.am: patch from brad@openbsd.org to handle DESTDIR

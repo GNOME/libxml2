@@ -12,6 +12,8 @@
 #include "tree.h"
 #include "valid.h"
 #include "xmlIO.h"
+#include "entities.h"
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -170,8 +172,6 @@ typedef xmlSAXLocator *xmlSAXLocatorPtr;
  * of the input generate data or structure informations.
  */
 
-#include "entities.h"
-
 typedef xmlParserInputPtr (*resolveEntitySAXFunc) (void *ctx,
 			    const xmlChar *publicId, const xmlChar *systemId);
 typedef void (*internalSubsetSAXFunc) (void *ctx, const xmlChar *name,
@@ -265,8 +265,6 @@ extern xmlSAXHandler htmlDefaultSAXHandler;
 extern int xmlSubstituteEntitiesDefaultValue;
 
 
-#include "entities.h"
-#include "xml-error.h"
 
 /**
  * Cleanup
@@ -381,6 +379,7 @@ xmlParserInputPtr
 		xmlLoadExternalEntity	(const char *URL,
 					 const char *ID,
 					 xmlParserInputPtr context);
+
 #ifdef __cplusplus
 }
 #endif

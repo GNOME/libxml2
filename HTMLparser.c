@@ -1931,6 +1931,7 @@ htmlParseAttribute(htmlParserCtxtPtr ctxt, xmlChar **value) {
 	SKIP_BLANKS;
 	val = htmlParseAttValue(ctxt);
     } else {
+        /* TODO : some attribute must have values, some may not */
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt->userData,
 	       "Specification mandate value for attribute %s\n", name);

@@ -1,3 +1,8 @@
+Tue Sep 11 11:25:36 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c result/noent/wml.xml: fixed bug #59981 related
+	  to handling of '&' in attributes when entities are substitued
+
 Mon Sep 10 22:14:42 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* libxml.h include/libxml/xmlversion.h.in

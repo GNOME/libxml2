@@ -2212,36 +2212,50 @@ xmlParseAttValue(xmlParserCtxtPtr ctxt) {
 	   (c != '<')) || (ctxt->token != 0)) {
 	if (c == 0) break;
 	if (ctxt->token == '&') {
-	    /*
-	     * The reparsing will be done in xmlStringGetNodeList()
-	     * called by the attribute() function in SAX.c
-	     */
-	    static xmlChar buffer[6] = "&#38;";
+	    if (ctxt->replaceEntities) {
+		if (len > buf_size - 10) {
+		    growBuffer(buf);
+		}
+		buf[len++] = '&';
+	    } else {
+		/*
+		 * The reparsing will be done in xmlStringGetNodeList()
+		 * called by the attribute() function in SAX.c
+		 */
+		static xmlChar buffer[6] = "&#38;";
 
-	    if (len > buf_size - 10) {
-		growBuffer(buf);
+		if (len > buf_size - 10) {
+		    growBuffer(buf);
+		}
+		current = &buffer[0];
+		while (*current != 0) { /* non input consuming */
+		    buf[len++] = *current++;
+		}
+		ctxt->token = 0;
 	    }
-	    current = &buffer[0];
-	    while (*current != 0) { /* non input consuming */
-		buf[len++] = *current++;
-	    }
-	    ctxt->token = 0;
 	} else if (c == '&') {
 	    if (NXT(1) == '#') {
 		int val = xmlParseCharRef(ctxt);
 		if (val == '&') {
-		    /*
-		     * The reparsing will be done in xmlStringGetNodeList()
-		     * called by the attribute() function in SAX.c
-		     */
-		    static xmlChar buffer[6] = "&#38;";
+		    if (ctxt->replaceEntities) {
+			if (len > buf_size - 10) {
+			    growBuffer(buf);
+			}
+			buf[len++] = '&';
+		    } else {
+			/*
+			 * The reparsing will be done in xmlStringGetNodeList()
+			 * called by the attribute() function in SAX.c
+			 */
+			static xmlChar buffer[6] = "&#38;";
 
-		    if (len > buf_size - 10) {
-			growBuffer(buf);
-		    }
-		    current = &buffer[0];
-		    while (*current != 0) { /* non input consuming */
-			buf[len++] = *current++;
+			if (len > buf_size - 10) {
+			    growBuffer(buf);
+			}
+			current = &buffer[0];
+			while (*current != 0) { /* non input consuming */
+			    buf[len++] = *current++;
+			}
 		    }
 		} else {
 		    if (len > buf_size - 10) {

@@ -1,3 +1,12 @@
+Sun Jul 11 22:38:29 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* python/drv_libxml.py: added an encoding "special comment" to avoid
+	  warning message in python2.3 (bug 146889)
+	* Makefile.am, python/Makefile.am, python/tests/Makefile.am: small
+	  change to make "make tests" a little quieter (MAKEFLAGS+=--silent)
+	* xpath.c: enhanced to take advantage of current libxslt handling
+	  of tmpRVT.  Fixes bug 145547.
+
 Fri Jul  9 14:02:54 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* libxml.h uri.c: fixed a couple of problems in the new

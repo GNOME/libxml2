@@ -69,5 +69,5 @@ else
 all: 
 endif
 tests test: all
-	cd tests && $(MAKE) tests
+	cd tests && $(MAKE) MAKEFLAGS+=--silent tests
 

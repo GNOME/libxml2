@@ -1235,9 +1235,11 @@ xmlXPathPopNodeSet (xmlXPathParserContextPtr ctxt) {
     }
     obj = valuePop(ctxt);
     ret = obj->nodesetval;
+#if 0
     /* to fix memory leak of not clearing obj->user */
     if (obj->boolval && obj->user != NULL)
         xmlFreeNodeList((xmlNodePtr) obj->user);
+#endif
     xmlXPathFreeNodeSetList(obj);
     return(ret);
 }
@@ -3310,6 +3312,12 @@ xmlXPathObjectCopy(xmlXPathObjectPtr val) {
 	    ret->stringval = xmlStrdup(val->stringval);
 	    break;
 	case XPATH_XSLT_TREE:
+#if 0
+/*
+  Removed 11 July 2004 - the current handling of xslt tmpRVT nodes means that
+  this previous handling is no longer correct, and can cause some serious
+  problems (ref. bug 145547)
+*/
 	    if ((val->nodesetval != NULL) &&
 		(val->nodesetval->nodeTab != NULL)) {
 		xmlNodePtr cur, tmp;
@@ -3329,11 +3337,13 @@ xmlXPathObjectCopy(xmlXPathObjectPtr val) {
 			cur = cur->next;
 		    }
 		}
+
 		ret->nodesetval = xmlXPathNodeSetCreate((xmlNodePtr) top);
 	    } else
 		ret->nodesetval = xmlXPathNodeSetCreate(NULL);
 	    /* Deallocate the copied tree value */
 	    break;
+#endif
 	case XPATH_NODESET:
 	    ret->nodesetval = xmlXPathNodeSetMerge(NULL, val->nodesetval);
 	    /* Do not deallocate the copied tree value */
@@ -3370,10 +3380,13 @@ xmlXPathFreeObject(xmlXPathObjectPtr obj) {
     if (obj == NULL) return;
     if ((obj->type == XPATH_NODESET) || (obj->type == XPATH_XSLT_TREE)) {
 	if (obj->boolval) {
+#if 0
 	    if (obj->user != NULL) {
                 xmlXPathFreeNodeSet(obj->nodesetval);
 		xmlFreeNodeList((xmlNodePtr) obj->user);
-	    } else if (obj->nodesetval != NULL)
+	    } else
+#endif
+	    if (obj->nodesetval != NULL)
 		xmlXPathFreeValueTree(obj->nodesetval);
 	} else {
 	    if (obj->nodesetval != NULL)

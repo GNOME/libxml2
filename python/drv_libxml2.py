@@ -1,3 +1,4 @@
+# -*- coding: iso-8859-1 -*-
 """ A SAX2 driver for libxml2, on top of it's XmlReader API
 
 USAGE

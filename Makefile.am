@@ -123,8 +123,9 @@ check-local: all tests
 testall : tests SVGtests SAXtests
 
 tests: XMLtests XMLenttests NStests IDtests Errtests @READER_TEST@ @TEST_SAX@ @TEST_PUSH@ @TEST_HTML@ @TEST_PHTML@  @TEST_VALID@ URItests @TEST_XPATH@ @TEST_XPTR@ @TEST_XINCLUDE@ @TEST_C14N@ @TEST_DEBUG@ @TEST_CATALOG@ @TEST_REGEXPS@ @TEST_SCHEMAS@ @TEST_THREADS@ Timingtests @TEST_VTIME@ @PYTHON_TESTS@
-	@(if [ "@PYTHON_SUBDIR@" != "" ] ; then cd python ; $(MAKE) tests ; fi)
-	@(cd doc/examples ; $(MAKE) tests)
+	@(if [ "@PYTHON_SUBDIR@" != "" ] ; then cd python ; \
+	    $(MAKE) MAKEFLAGS+=--silent tests ; fi)
+	@(cd doc/examples ; $(MAKE) MAKEFLAGS+=--silent tests)
 
 valgrind:
 	@echo '## Running the regression tests under Valgrind'

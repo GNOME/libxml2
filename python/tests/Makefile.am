@@ -46,7 +46,7 @@ EXTRA_DIST = $(PYTESTS) $(XMLS)
 
 if WITH_PYTHON
 tests: $(PYTESTS)
-	echo "## running Python regression tests"
+	@echo "## running Python regression tests"
 	-@(PYTHONPATH="..:../.libs:$(srcdir)/..:$$PYTHONPATH" ; \
 	   export PYTHONPATH; \
 	   for test in $(PYTESTS) ; \

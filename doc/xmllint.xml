@@ -104,7 +104,8 @@
     <title>Introduction</title>
     <para>
       The xmllint program parses one or more XML files, specified on the
-      command line as <replaceable>xmlfile</replaceable>. It prints various
+      command line as <replaceable>xmlfile</replaceable> (or the standard
+      input if the filename provided is - ). It prints various
       types of output, depending upon the options selected. It is useful for
       detecting errors both in <acronym>XML</acronym> code and in the
       <acronym>XML</acronym> parser itself.

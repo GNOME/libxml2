@@ -34,13 +34,15 @@
 			<xsl:if test="@file = 'debugXML'">
 				<xsl:text>#ifdef LIBXML_DEBUG_ENABLED&nl;</xsl:text>
 			</xsl:if>
-			<xsl:if test="@file = 'DOCBParser'">
+			<xsl:if test="@file = 'DOCBparser'">
 				<xsl:text>#ifdef LIBXML_DOCB_ENABLED&nl;</xsl:text>
 			</xsl:if>
 			<xsl:if test="(@file = 'HTMLparser') 
-					or (@file = 'HTMLtree') 
-					or (@file = 'nanohtml')">
+					or (@file = 'HTMLtree')">
 				<xsl:text>#ifdef LIBXML_HTML_ENABLED&nl;</xsl:text>
+			</xsl:if>
+			<xsl:if test="@file = 'nanohttp'">
+				<xsl:text>#ifdef LIBXML_HTTP_ENABLED&nl;</xsl:text>
 			</xsl:if>
 			<xsl:if test="@file = 'nanoftp'">
 				<xsl:text>#ifdef LIBXML_FTP_ENABLED&nl;</xsl:text>
@@ -201,12 +203,14 @@
 			<xsl:if test="@file = 'debugXML'">
 				<xsl:text>#endif&nl;</xsl:text>
 			</xsl:if>
-			<xsl:if test="@file = 'DOCBParser'">
+			<xsl:if test="@file = 'DOCBparser'">
 				<xsl:text>#endif&nl;</xsl:text>
 			</xsl:if>
 			<xsl:if test="(@file = 'HTMLparser') 
-					or (@file = 'HTMLtree') 
-					or (@file = 'nanohtml')">
+					or (@file = 'HTMLtree')">
+				<xsl:text>#endif&nl;</xsl:text>
+			</xsl:if>
+			<xsl:if test="@file = 'nanohttp'">
 				<xsl:text>#endif&nl;</xsl:text>
 			</xsl:if>
 			<xsl:if test="@file = 'nanoftp'">

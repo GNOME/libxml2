@@ -1,3 +1,9 @@
+Fri Aug  8 18:47:38 HKT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* win32/defgen.xsl, win32/libxml2.def.src: Bug 119343
+	  (with apologies to Igor) - Enhanced handling of docb and
+	  nanohttp.
+	  
 Thu Aug  7 21:13:22 HKT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* encoding.c: further small changes for warnings when

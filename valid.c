@@ -6095,8 +6095,12 @@ xmlValidateElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr elem) {
     }
     ns = elem->nsDef;
     while (ns != NULL) {
-	ret &= xmlValidateOneNamespace(ctxt, doc, elem, elem->ns->prefix,
-	                               ns, ns->href);
+        if (elem->ns == NULL)
+	    ret &= xmlValidateOneNamespace(ctxt, doc, elem, NULL,
+					   ns, ns->href);
+	else
+	    ret &= xmlValidateOneNamespace(ctxt, doc, elem, elem->ns->prefix,
+					   ns, ns->href);
         ns = ns->next;
     }
     child = elem->children;

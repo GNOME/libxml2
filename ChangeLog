@@ -1,3 +1,9 @@
+Mon Dec 29 18:08:05 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* valid.c: xmlValidateElement could crash for element holding a 
+	  namespace declaration but not in a namespace. Oliver Fischer 
+	  provided the example.
+
 Mon Dec 29 11:29:31 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmllint.c: issue validation status on stderr, not stdout as suggested

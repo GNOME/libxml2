@@ -127,14 +127,31 @@ XML_CFLAGS=""
 dnl
 dnl Workaround wor HP native compiler
 dnl http://bugs.gnome.org/db/31/3163.html
+dnl DEC : Enable NaN/Inf
 dnl
-if test "${CC}" != "gcc" ; then
+if test "${GCC}" != "yes" ; then
     case "${host}" in
           *-*-hpux* )
-	       CFLAGS="${CFLAGS} -Wp,-H16800 -Ae"
+	       CFLAGS="${CFLAGS} -Wp,-H30000"
+	       ;;
+          *-dec-osf* )
+               CFLAGS="${CFLAGS} -ieee"
+               ;;
+    esac
+else
+    CFLAGS="${CFLAGS} -Wall"
+    case "${host}" in
+          alpha*-*-linux* )
+	       CFLAGS="${CFLAGS} -mieee"
 	       ;;
     esac
 fi
+case ${host} in
+    *-*-solaris*)
+        XML_LIBDIR="${XML_LIBDIR} -R${libdir}"
+        ;;
+esac
+
 
 dnl
 dnl Use buffers for content

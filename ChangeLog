@@ -1,3 +1,16 @@
+Sun Sep 14 21:43:32 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c include/libxml/xmlerror.h: factoring of more 
+	  error handling code, serious size reduction and more lisibility
+	  of the resulting code.
+	* parserInternals.c parser.c include/libxml/parserInternals.h
+	  include/libxml/parser.h: changing the way VC:Proper Group/PE Nesting
+	  checks are done, use a counter for entities. Entities where freed and
+	  reallocated at the same address failing the check.
+	* tree.c: avoid a warning
+	* result/valid/* result/VC/*: this slightly changes some validation
+	  error messages.
+
 Sun Sep 14 11:03:27 PDT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* valid.c: fixed bug 121759 - early declaration of

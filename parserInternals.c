@@ -1973,6 +1973,7 @@ xmlFreeInputStream(xmlParserInputPtr input) {
 xmlParserInputPtr
 xmlNewInputStream(xmlParserCtxtPtr ctxt) {
     xmlParserInputPtr input;
+    static int id = 0;
 
     input = (xmlParserInputPtr) xmlMalloc(sizeof(xmlParserInput));
     if (input == NULL) {
@@ -1989,6 +1990,11 @@ xmlNewInputStream(xmlParserCtxtPtr ctxt) {
     input->line = 1;
     input->col = 1;
     input->standalone = -1;
+    /*
+     * we don't care about thread reentrancy unicity for a single
+     * parser context (and hence thread) is sufficient.
+     */
+    input->id = id++;
     return(input);
 }
 

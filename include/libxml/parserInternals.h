@@ -313,11 +313,11 @@ XMLPUBFUN void XMLCALL
 XMLPUBFUN xmlElementContentPtr XMLCALL	
 			xmlParseElementMixedContentDecl
 						(xmlParserCtxtPtr ctxt,
-						 xmlParserInputPtr inputchk);
+						 int inputchk);
 XMLPUBFUN xmlElementContentPtr XMLCALL	
 			xmlParseElementChildrenContentDecl
 						(xmlParserCtxtPtr ctxt,
-						 xmlParserInputPtr inputchk);
+						 int inputchk);
 XMLPUBFUN int XMLCALL			
 			xmlParseElementContentDecl(xmlParserCtxtPtr ctxt,
 						 const xmlChar *name,

@@ -5303,8 +5303,8 @@ xmlSearchNs(xmlDocPtr doc, xmlNodePtr node, const xmlChar *nameSpace) {
  * Returns 1 if true, 0 if false and -1 in case of error.
  */
 static int
-xmlNsInScope(xmlDocPtr doc, xmlNodePtr node, xmlNodePtr ancestor,
-             const xmlChar * prefix)
+xmlNsInScope(xmlDocPtr doc ATTRIBUTE_UNUSED, xmlNodePtr node,
+             xmlNodePtr ancestor, const xmlChar * prefix)
 {
     xmlNsPtr tst;
 

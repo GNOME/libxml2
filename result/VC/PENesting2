@@ -1,4 +1,4 @@
-./test/VC/PENesting2:1: error: xmlParseStartTag: invalid element name
+./test/VC/PENesting2:1: error: StartTag: invalid element name
 <!ENTITY % p1 "(A|B">
  ^
 ./test/VC/PENesting2:1: error: Extra content at the end of the document

@@ -1175,11 +1175,11 @@ xmlTextWriterWriteVFormatString(xmlTextWriterPtr writer,
 int
 xmlTextWriterWriteString(xmlTextWriterPtr writer, const xmlChar * content)
 {
-    int count;
+    int count=0;
     int sum;
     xmlLinkPtr lk;
     xmlTextWriterStackEntry *p;
-    xmlChar *buf = NULL;
+    xmlChar *buf=NULL;
 
     if (writer == NULL)
         return -1;
@@ -1212,10 +1212,15 @@ xmlTextWriterWriteString(xmlTextWriterPtr writer, const xmlChar * content)
             /* fallthrough */
         case XML_TEXTWRITER_PI_TEXT:
         case XML_TEXTWRITER_TEXT:
-        case XML_TEXTWRITER_ATTRIBUTE:
           encode:
             buf = xmlEncodeSpecialChars(NULL, content);
+	    if (buf == NULL)
+	        count = -1;
             break;
+        case XML_TEXTWRITER_ATTRIBUTE:
+	    xmlAttrSerializeTxtContent(writer->out->buffer, NULL,
+	    		NULL, content);
+	    break;
         case XML_TEXTWRITER_DTD:
             count = xmlOutputBufferWriteString(writer->out, " [");
             if (count < 0)
@@ -1227,6 +1232,8 @@ xmlTextWriterWriteString(xmlTextWriterPtr writer, const xmlChar * content)
         case XML_TEXTWRITER_DTD_ELEM:
         case XML_TEXTWRITER_CDATA:
             buf = xmlStrdup(content);
+	    if (buf == NULL)
+	        count = -1;
             break;
 	default:
 	    break;
@@ -1239,8 +1246,7 @@ xmlTextWriterWriteString(xmlTextWriterPtr writer, const xmlChar * content)
         count =
             xmlOutputBufferWriteString(writer->out, (const char *) buf);
         xmlFree(buf);
-    } else
-        count = -1;
+    }
     if (count < 0)
         return -1;
     sum += count;

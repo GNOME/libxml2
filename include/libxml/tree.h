@@ -966,6 +966,11 @@ XMLPUBFUN void XMLCALL
 		xmlBufferWriteQuotedString(xmlBufferPtr buf,
 					 const xmlChar *string);
 
+XMLPUBFUN void xmlAttrSerializeTxtContent(xmlBufferPtr buf,
+					 xmlDocPtr doc,
+					 xmlAttrPtr attr,
+					 const xmlChar *string);
+
 /*
  * Namespace handling.
  */

@@ -1,3 +1,11 @@
+Sun Feb  1 01:48:14 PST 2004 William Brack <wbrack@mmm.com.hk>
+
+	* tree.c, include/libxml/tree.h: moved serialization of
+	  attribute text data (xmlSerializeContent) into a separate
+	  routine (xmlSerializeTxtContent) so it can be used by xmlwriter.c
+	* xmlwriter.c: changed handling of attribute string to use the
+	  routine above (fixed bug 131548)
+
 Sat Jan 31 08:22:02 MST 2004 John Fleck <jfleck@inkstain.net
 
 	* doc/examples/reader1.c, reader2.c, reader3.c

@@ -1769,7 +1769,7 @@ xmlSAXHandler htmlDefaultSAXHandler = {
     endElement,
     NULL,
     characters,
-    characters,
+    ignorableWhitespace,
     NULL,
     comment,
     xmlParserWarning,

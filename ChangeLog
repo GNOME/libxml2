@@ -1,3 +1,7 @@
+Mon Sep 10 20:46:03 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* SAX.c: fixed a bug in the HTML parser introduced Sep  9
+
 Mon Sep 10 20:13:09 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* SAX.c: fixing bug #59946 on xmlns=""

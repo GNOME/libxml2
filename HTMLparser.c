@@ -3394,6 +3394,7 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
     htmlParserNodeInfo node_info;
     xmlChar *oldname;
     int depth = ctxt->nameNr;
+    xmlChar *oldptr;
 
     /* Capture start position */
     if (ctxt->record_info) {
@@ -3516,7 +3517,9 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
     currentNode = xmlStrdup(ctxt->name);
     depth = ctxt->nameNr;
     while (IS_CHAR(CUR)) {
+	oldptr = ctxt->input->cur;
 	htmlParseContent(ctxt);
+	if (oldptr==ctxt->input->cur) break;
 	if (ctxt->nameNr < depth) break; 
     }	
 

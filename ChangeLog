@@ -1,3 +1,8 @@
+Sat Sep 22 10:00:00 HKT 2001 William Brack <wbrack@mmm.com.hk>
+
+	* HTMLparser.c: small enhancement to prevent loop on
+	  unrecognizable data
+
 Fri Sep 21 11:45:53 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* parserInternals.c: applying patch from bug #60757 this

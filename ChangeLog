@@ -1,3 +1,11 @@
+2001-07-10  Darin Adler  <darin@bentspoon.com>
+
+	* .cvsignore:
+	* example/.cvsignore:
+	* include/.cvsignore:
+	* include/libxml/.cvsignore:
+	Various things that are generated and should be ignored.
+
 Tue Jul 10 17:47:09 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* configure.in include/libxml/xmlwin32version.h: release of 2.4.0

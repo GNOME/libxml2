@@ -20,8 +20,8 @@ update.log
 .libs
 *.la
 tester
-xml-config
-xmlConf.sh
+xml2-config
+xml2Conf.sh
 COPYING
 libxml.spec
 testHTML
@@ -29,3 +29,7 @@ testSAX
 testXPath
 libxml-2.0.pc
 xmlversion.h
+xmllint
+testURI
+testDocbook
+testCatalog

@@ -610,7 +610,7 @@ xmlNodePtr	xmlNewCharRef		(xmlDocPtr doc,
 					 const xmlChar *name);
 xmlNodePtr	xmlNewReference		(xmlDocPtr doc,
 					 const xmlChar *name);
-xmlNodePtr	xmlCopyNode		(xmlNodePtr node,
+xmlNodePtr	xmlCopyNode		(const xmlNodePtr node,
 					 int recursive);
 xmlNodePtr	xmlDocCopyNode		(xmlNodePtr node,
 					 xmlDocPtr doc,

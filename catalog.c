@@ -2869,6 +2869,9 @@ xmlLoadCatalogs(const char *pathss) {
  */
 void
 xmlCatalogCleanup(void) {
+    if (xmlCatalogInitialized == 0)
+        return;
+
     xmlRMutexLock(xmlCatalogMutex);
     if (xmlDebugCatalogs)
 	xmlGenericError(xmlGenericErrorContext,

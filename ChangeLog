@@ -1,3 +1,8 @@
+Tue Oct 16 08:43:43 EDT 2001 Daniel Veillard <daniel@veillard.com>
+
+	* catalog.c: avoid a problem in catalog cleanup on SMP if
+	  catalogs were not initialized.
+
 Tue Oct 16 14:33:19 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* catalog.c xpath.c: trying to cleanup the not thread safe

@@ -1054,6 +1054,8 @@
     <reference name='XML_SCHEMAS_TYPE_FINAL_RESTRICTION' href='html/libxml-schemasInternals.html#XML_SCHEMAS_TYPE_FINAL_RESTRICTION'/>
     <reference name='XML_SCHEMAS_TYPE_FINAL_UNION' href='html/libxml-schemasInternals.html#XML_SCHEMAS_TYPE_FINAL_UNION'/>
     <reference name='XML_SCHEMAS_TYPE_GLOBAL' href='html/libxml-schemasInternals.html#XML_SCHEMAS_TYPE_GLOBAL'/>
+    <reference name='XML_SCHEMAS_TYPE_INTERNAL_INVALID' href='html/libxml-schemasInternals.html#XML_SCHEMAS_TYPE_INTERNAL_INVALID'/>
+    <reference name='XML_SCHEMAS_TYPE_INTERNAL_RESOLVED' href='html/libxml-schemasInternals.html#XML_SCHEMAS_TYPE_INTERNAL_RESOLVED'/>
     <reference name='XML_SCHEMAS_TYPE_MARKED' href='html/libxml-schemasInternals.html#XML_SCHEMAS_TYPE_MARKED'/>
     <reference name='XML_SCHEMAS_TYPE_MIXED' href='html/libxml-schemasInternals.html#XML_SCHEMAS_TYPE_MIXED'/>
     <reference name='XML_SCHEMAS_TYPE_OWNED_ATTR_WILDCARD' href='html/libxml-schemasInternals.html#XML_SCHEMAS_TYPE_OWNED_ATTR_WILDCARD'/>
@@ -1153,6 +1155,7 @@
     <reference name='XML_SCHEMA_CONTENT_MIXED_OR_ELEMENTS' href='html/libxml-schemasInternals.html#XML_SCHEMA_CONTENT_MIXED_OR_ELEMENTS'/>
     <reference name='XML_SCHEMA_CONTENT_SIMPLE' href='html/libxml-schemasInternals.html#XML_SCHEMA_CONTENT_SIMPLE'/>
     <reference name='XML_SCHEMA_CONTENT_UNKNOWN' href='html/libxml-schemasInternals.html#XML_SCHEMA_CONTENT_UNKNOWN'/>
+    <reference name='XML_SCHEMA_EXTRA_QNAMEREF' href='html/libxml-schemasInternals.html#XML_SCHEMA_EXTRA_QNAMEREF'/>
     <reference name='XML_SCHEMA_FACET_ENUMERATION' href='html/libxml-schemasInternals.html#XML_SCHEMA_FACET_ENUMERATION'/>
     <reference name='XML_SCHEMA_FACET_FRACTIONDIGITS' href='html/libxml-schemasInternals.html#XML_SCHEMA_FACET_FRACTIONDIGITS'/>
     <reference name='XML_SCHEMA_FACET_LENGTH' href='html/libxml-schemasInternals.html#XML_SCHEMA_FACET_LENGTH'/>
@@ -1183,6 +1186,7 @@
     <reference name='XML_SCHEMA_TYPE_IDC_UNIQUE' href='html/libxml-schemasInternals.html#XML_SCHEMA_TYPE_IDC_UNIQUE'/>
     <reference name='XML_SCHEMA_TYPE_LIST' href='html/libxml-schemasInternals.html#XML_SCHEMA_TYPE_LIST'/>
     <reference name='XML_SCHEMA_TYPE_NOTATION' href='html/libxml-schemasInternals.html#XML_SCHEMA_TYPE_NOTATION'/>
+    <reference name='XML_SCHEMA_TYPE_PARTICLE' href='html/libxml-schemasInternals.html#XML_SCHEMA_TYPE_PARTICLE'/>
     <reference name='XML_SCHEMA_TYPE_RESTRICTION' href='html/libxml-schemasInternals.html#XML_SCHEMA_TYPE_RESTRICTION'/>
     <reference name='XML_SCHEMA_TYPE_SEQUENCE' href='html/libxml-schemasInternals.html#XML_SCHEMA_TYPE_SEQUENCE'/>
     <reference name='XML_SCHEMA_TYPE_SIMPLE' href='html/libxml-schemasInternals.html#XML_SCHEMA_TYPE_SIMPLE'/>
@@ -4371,6 +4375,8 @@
       <ref name='XML_SCHEMAS_TYPE_FINAL_RESTRICTION'/>
       <ref name='XML_SCHEMAS_TYPE_FINAL_UNION'/>
       <ref name='XML_SCHEMAS_TYPE_GLOBAL'/>
+      <ref name='XML_SCHEMAS_TYPE_INTERNAL_INVALID'/>
+      <ref name='XML_SCHEMAS_TYPE_INTERNAL_RESOLVED'/>
       <ref name='XML_SCHEMAS_TYPE_MARKED'/>
       <ref name='XML_SCHEMAS_TYPE_MIXED'/>
       <ref name='XML_SCHEMAS_TYPE_OWNED_ATTR_WILDCARD'/>
@@ -4470,6 +4476,7 @@
       <ref name='XML_SCHEMA_CONTENT_MIXED_OR_ELEMENTS'/>
       <ref name='XML_SCHEMA_CONTENT_SIMPLE'/>
       <ref name='XML_SCHEMA_CONTENT_UNKNOWN'/>
+      <ref name='XML_SCHEMA_EXTRA_QNAMEREF'/>
       <ref name='XML_SCHEMA_FACET_ENUMERATION'/>
       <ref name='XML_SCHEMA_FACET_FRACTIONDIGITS'/>
       <ref name='XML_SCHEMA_FACET_LENGTH'/>
@@ -4500,6 +4507,7 @@
       <ref name='XML_SCHEMA_TYPE_IDC_UNIQUE'/>
       <ref name='XML_SCHEMA_TYPE_LIST'/>
       <ref name='XML_SCHEMA_TYPE_NOTATION'/>
+      <ref name='XML_SCHEMA_TYPE_PARTICLE'/>
       <ref name='XML_SCHEMA_TYPE_RESTRICTION'/>
       <ref name='XML_SCHEMA_TYPE_SEQUENCE'/>
       <ref name='XML_SCHEMA_TYPE_SIMPLE'/>
@@ -11009,6 +11017,8 @@
       <ref name='XML_SCHEMAS_TYPE_FINAL_RESTRICTION'/>
       <ref name='XML_SCHEMAS_TYPE_FINAL_UNION'/>
       <ref name='XML_SCHEMAS_TYPE_GLOBAL'/>
+      <ref name='XML_SCHEMAS_TYPE_INTERNAL_INVALID'/>
+      <ref name='XML_SCHEMAS_TYPE_INTERNAL_RESOLVED'/>
       <ref name='XML_SCHEMAS_TYPE_MARKED'/>
       <ref name='XML_SCHEMAS_TYPE_MIXED'/>
       <ref name='XML_SCHEMAS_TYPE_OWNED_ATTR_WILDCARD'/>
@@ -11030,6 +11040,7 @@
       <ref name='XML_SCHEMA_CONTENT_MIXED_OR_ELEMENTS'/>
       <ref name='XML_SCHEMA_CONTENT_SIMPLE'/>
       <ref name='XML_SCHEMA_CONTENT_UNKNOWN'/>
+      <ref name='XML_SCHEMA_EXTRA_QNAMEREF'/>
       <ref name='XML_SCHEMA_FACET_ENUMERATION'/>
       <ref name='XML_SCHEMA_FACET_FRACTIONDIGITS'/>
       <ref name='XML_SCHEMA_FACET_LENGTH'/>
@@ -11060,6 +11071,7 @@
       <ref name='XML_SCHEMA_TYPE_IDC_UNIQUE'/>
       <ref name='XML_SCHEMA_TYPE_LIST'/>
       <ref name='XML_SCHEMA_TYPE_NOTATION'/>
+      <ref name='XML_SCHEMA_TYPE_PARTICLE'/>
       <ref name='XML_SCHEMA_TYPE_RESTRICTION'/>
       <ref name='XML_SCHEMA_TYPE_SEQUENCE'/>
       <ref name='XML_SCHEMA_TYPE_SIMPLE'/>
@@ -15404,6 +15416,7 @@
           <ref name='xmlNanoHTTPMimeType'/>
         </word>
         <word name='Misc'>
+          <ref name='_xmlSchema'/>
           <ref name='xmlParseDocument'/>
           <ref name='xmlParseMisc'/>
         </word>
@@ -21838,6 +21851,7 @@
         </word>
         <word name='helper'>
           <ref name='XML_SCHEMAS_ELEM_CIRCULAR'/>
+          <ref name='_xmlSchema'/>
         </word>
         <word name='here'>
           <ref name='_xmlXPathContext'/>
@@ -22248,6 +22262,8 @@
         </word>
         <word name='indicates'>
           <ref name='XML_SCHEMAS_TYPE_FACETSNEEDVALUE'/>
+          <ref name='XML_SCHEMAS_TYPE_INTERNAL_INVALID'/>
+          <ref name='XML_SCHEMAS_TYPE_INTERNAL_RESOLVED'/>
           <ref name='xmlHasNsProp'/>
           <ref name='xmlNanoFTPRead'/>
           <ref name='xmlNanoFTPScanProxy'/>
@@ -22617,6 +22633,7 @@
           <ref name='xmlXPathWrapString'/>
         </word>
         <word name='invalid'>
+          <ref name='XML_SCHEMAS_TYPE_INTERNAL_INVALID'/>
           <ref name='xmlReconciliateNs'/>
           <ref name='xmlValidateDtdFinal'/>
         </word>
@@ -22658,6 +22675,7 @@
           <ref name='xmlXPathNodeSetItem'/>
         </word>
         <word name='items'>
+          <ref name='_xmlSchema'/>
           <ref name='valuePush'/>
           <ref name='xmlHashCopy'/>
           <ref name='xmlHashFree'/>
@@ -27692,6 +27710,9 @@
         </word>
         <word name='typ'>
           <ref name='_xmlSchemaTypeLink'/>
+        </word>
+        <word name='typefixed'>
+          <ref name='XML_SCHEMAS_TYPE_INTERNAL_RESOLVED'/>
         </word>
         <word name='types'>
           <ref name='XML_SCHEMAS_FACET_COLLAPSE'/>

@@ -1,3 +1,8 @@
+Fri Apr  1 19:14:18 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemastypes.c: fixed a lack of comment and missing test for
+	  a pointer in the API.
+
 Fri Apr  1 17:54:22 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xstc/fixup-tests.py: A tiny script to fixup some of the schema

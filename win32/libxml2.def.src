@@ -1525,6 +1525,9 @@ xmlSchemaCompareValues
 xmlSchemaCompareValuesWhtsp
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
+xmlSchemaCopyValue
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
 xmlSchemaDump
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
@@ -1561,6 +1564,9 @@ xmlSchemaGetParserErrors
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
 xmlSchemaGetPredefinedType
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlSchemaGetValType
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
 xmlSchemaGetValidErrors
@@ -1620,7 +1626,13 @@ xmlSchemaValidateDoc
 xmlSchemaValidateFacet
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
+xmlSchemaValidateFacetWhtsp
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
 xmlSchemaValidateLengthFacet
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlSchemaValidateLengthFacetWhtsp
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
 xmlSchemaValidateListSimpleTypeFacet

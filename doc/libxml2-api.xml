@@ -1063,6 +1063,7 @@
      <exports symbol='XML_SCHEMAS_ATTR_USE_REQUIRED' type='macro'/>
      <exports symbol='XML_SCHEMAS_FACET_COLLAPSE' type='macro'/>
      <exports symbol='XML_SCHEMAS_ANY_STRICT' type='macro'/>
+     <exports symbol='XML_SCHEMAS_TYPE_INTERNAL_RESOLVED' type='macro'/>
      <exports symbol='XML_SCHEMAS_QUALIF_ELEM' type='macro'/>
      <exports symbol='XML_SCHEMAS_TYPE_VARIETY_LIST' type='macro'/>
      <exports symbol='XML_SCHEMAS_TYPE_DERIVATION_METHOD_RESTRICTION' type='macro'/>
@@ -1107,6 +1108,7 @@
      <exports symbol='XML_SCHEMAS_ELEM_FINAL_EXTENSION' type='macro'/>
      <exports symbol='XML_SCHEMAS_ELEM_FINAL_ABSENT' type='macro'/>
      <exports symbol='XML_SCHEMAS_TYPE_BLOCK_EXTENSION' type='macro'/>
+     <exports symbol='XML_SCHEMAS_TYPE_INTERNAL_INVALID' type='macro'/>
      <exports symbol='XML_SCHEMAS_ELEM_TOPLEVEL' type='macro'/>
      <exports symbol='XML_SCHEMAS_ELEM_ABSTRACT' type='macro'/>
      <exports symbol='XML_SCHEMAS_BLOCK_DEFAULT_EXTENSION' type='macro'/>
@@ -1121,6 +1123,7 @@
      <exports symbol='XML_SCHEMAS_ELEM_BLOCK_ABSENT' type='macro'/>
      <exports symbol='XML_SCHEMAS_ATTRGROUP_GLOBAL' type='macro'/>
      <exports symbol='XML_SCHEMAS_ELEM_REF' type='macro'/>
+     <exports symbol='XML_SCHEMA_EXTRA_QNAMEREF' type='enum'/>
      <exports symbol='XML_SCHEMA_TYPE_EXTENSION' type='enum'/>
      <exports symbol='XML_SCHEMAS_NMTOKEN' type='enum'/>
      <exports symbol='XML_SCHEMAS_ID' type='enum'/>
@@ -1143,6 +1146,7 @@
      <exports symbol='XML_SCHEMAS_DOUBLE' type='enum'/>
      <exports symbol='XML_SCHEMAS_NINTEGER' type='enum'/>
      <exports symbol='XML_SCHEMAS_NORMSTRING' type='enum'/>
+     <exports symbol='XML_SCHEMA_TYPE_PARTICLE' type='enum'/>
      <exports symbol='XML_SCHEMA_CONTENT_MIXED_OR_ELEMENTS' type='enum'/>
      <exports symbol='XML_SCHEMA_TYPE_SIMPLE' type='enum'/>
      <exports symbol='XML_SCHEMAS_NCNAME' type='enum'/>
@@ -1164,7 +1168,7 @@
      <exports symbol='XML_SCHEMA_CONTENT_EMPTY' type='enum'/>
      <exports symbol='XML_SCHEMA_FACET_ENUMERATION' type='enum'/>
      <exports symbol='XML_SCHEMA_CONTENT_UNKNOWN' type='enum'/>
-     <exports symbol='XML_SCHEMA_TYPE_RESTRICTION' type='enum'/>
+     <exports symbol='XML_SCHEMA_FACET_MININCLUSIVE' type='enum'/>
      <exports symbol='XML_SCHEMAS_GMONTH' type='enum'/>
      <exports symbol='XML_SCHEMA_CONTENT_ELEMENTS' type='enum'/>
      <exports symbol='XML_SCHEMAS_GYEAR' type='enum'/>
@@ -1208,9 +1212,9 @@
      <exports symbol='XML_SCHEMA_TYPE_NOTATION' type='enum'/>
      <exports symbol='XML_SCHEMA_CONTENT_ANY' type='enum'/>
      <exports symbol='XML_SCHEMA_FACET_MINLENGTH' type='enum'/>
+     <exports symbol='XML_SCHEMA_TYPE_RESTRICTION' type='enum'/>
      <exports symbol='XML_SCHEMA_TYPE_SEQUENCE' type='enum'/>
      <exports symbol='XML_SCHEMA_TYPE_ELEMENT' type='enum'/>
-     <exports symbol='XML_SCHEMA_FACET_MININCLUSIVE' type='enum'/>
      <exports symbol='XML_SCHEMA_FACET_MAXLENGTH' type='enum'/>
      <exports symbol='xmlSchemaAttributeGroupPtr' type='typedef'/>
      <exports symbol='xmlSchemaElementPtr' type='typedef'/>
@@ -4047,6 +4051,12 @@
     <macro name='XML_SCHEMAS_TYPE_GLOBAL' file='schemasInternals'>
       <info>the type is global</info>
     </macro>
+    <macro name='XML_SCHEMAS_TYPE_INTERNAL_INVALID' file='schemasInternals'>
+      <info>indicates that the type is invalid</info>
+    </macro>
+    <macro name='XML_SCHEMAS_TYPE_INTERNAL_RESOLVED' file='schemasInternals'>
+      <info>indicates that the type was typefixed</info>
+    </macro>
     <macro name='XML_SCHEMAS_TYPE_MARKED' file='schemasInternals'>
       <info>Marks the item as marked; used for circular checks.</info>
     </macro>
@@ -5255,6 +5265,7 @@
     <enum name='XML_SCHEMA_CONTENT_MIXED_OR_ELEMENTS' file='schemasInternals' value='5' type='xmlSchemaContentType' info='obsolete, not used'/>
     <enum name='XML_SCHEMA_CONTENT_SIMPLE' file='schemasInternals' value='4' type='xmlSchemaContentType'/>
     <enum name='XML_SCHEMA_CONTENT_UNKNOWN' file='schemasInternals' value='0' type='xmlSchemaContentType'/>
+    <enum name='XML_SCHEMA_EXTRA_QNAMEREF' file='schemasInternals' value='2000' type='xmlSchemaTypeType'/>
     <enum name='XML_SCHEMA_FACET_ENUMERATION' file='schemasInternals' value='1007' type='xmlSchemaTypeType'/>
     <enum name='XML_SCHEMA_FACET_FRACTIONDIGITS' file='schemasInternals' value='1005' type='xmlSchemaTypeType'/>
     <enum name='XML_SCHEMA_FACET_LENGTH' file='schemasInternals' value='1009' type='xmlSchemaTypeType'/>
@@ -5285,6 +5296,7 @@
     <enum name='XML_SCHEMA_TYPE_IDC_UNIQUE' file='schemasInternals' value='22' type='xmlSchemaTypeType'/>
     <enum name='XML_SCHEMA_TYPE_LIST' file='schemasInternals' value='19' type='xmlSchemaTypeType'/>
     <enum name='XML_SCHEMA_TYPE_NOTATION' file='schemasInternals' value='18' type='xmlSchemaTypeType'/>
+    <enum name='XML_SCHEMA_TYPE_PARTICLE' file='schemasInternals' value='25' type='xmlSchemaTypeType'/>
     <enum name='XML_SCHEMA_TYPE_RESTRICTION' file='schemasInternals' value='12' type='xmlSchemaTypeType'/>
     <enum name='XML_SCHEMA_TYPE_SEQUENCE' file='schemasInternals' value='6' type='xmlSchemaTypeType'/>
     <enum name='XML_SCHEMA_TYPE_SIMPLE' file='schemasInternals' value='4' type='xmlSchemaTypeType'/>
@@ -6048,6 +6060,7 @@ actually an xmlCharEncoding'/>
       <field name='preserve' type='int' info=' whether to free the document'/>
       <field name='counter' type='int' info=' used to give ononymous components unique names'/>
       <field name='idcDef' type='xmlHashTablePtr' info=''/>
+      <field name='volatiles' type='void *' info=' Misc. helper items (e.g. reference items)'/>
     </struct>
     <struct name='xmlSchemaAnnot' file='schemasInternals' type='struct _xmlSchemaAnnot'>
       <field name='next' type='struct _xmlSchemaAnnot *' info=''/>

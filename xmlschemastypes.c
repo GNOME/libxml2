@@ -5083,9 +5083,19 @@ xmlSchemaGetCanonValue(xmlSchemaValPtr val, const xmlChar **retValue)
     return (0);
 }
 
+/**
+ * xmlSchemaGetValType:
+ * @val: a schemas value
+ *
+ * Accessor for the type of a value
+ *
+ * Returns the xmlSchemaValType of the value
+ */
 xmlSchemaValType
 xmlSchemaGetValType(xmlSchemaValPtr val)
 {
+    if (val == NULL)
+        return(XML_SCHEMAS_UNKNOWN);
     return (val->type);
 }
 

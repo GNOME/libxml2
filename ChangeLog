@@ -1,3 +1,7 @@
+Wed Apr 25 17:52:27 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* DOCBparser.c include/Makefile.am: two patches from  László Kovács
+
 Wed Apr 25 14:56:26 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* tree.c: trying to fix #53574, not completely complete,

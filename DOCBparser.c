@@ -438,6 +438,7 @@ docbookElementTable[] = {
 { "areaset",   0,      0,      0,      9,      0, "" }, /* area */
 { "areaspec",  0,      0,      0,      9,      0, "" }, /* area */
 { "arg",       0,      0,      0,      1,      0, "" },
+{ "artheader", 0,      0,      0,      9,      0, "" },
 { "article",   0,      0,      0,      9,      0, "" }, /* div.title.content */
 { "articleinfo",0,     0,      0,      9,      0, "" }, /* graphic */
 { "artpagenums",0,     0,      0,      4,      0, "" }, /* docinfo */
@@ -540,7 +541,7 @@ docbookElementTable[] = {
 { "glossseealso",0,    0,      0,      2,      0, "" }, /* para */
 { "glosssee",  0,      0,      0,      2,      0, "" }, /* para */
 { "glossterm", 0,      0,      0,      2,      0, "" }, /* para */
-{ "graphic",   0,      2,      1,      0,      0, "" },
+{ "graphic",   0,      0,      0,      9,      0, "" },
 { "graphicco", 0,      0,      0,      9,      0, "" }, /* areaspec */
 { "group",     0,      0,      0,      9,      0, "" }, /* arg */
 { "guibutton", 0,      0,      0,      7,      0, "" }, /* smallcptr */

@@ -7092,11 +7092,22 @@ xhtmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
 	while (child != NULL) {
 	    if ((child->type == XML_TEXT_NODE) ||
 		(child->type == XML_CDATA_SECTION_NODE)) {
-		xmlOutputBufferWriteString(buf, "<![CDATA[");
-		if (child->content != NULL)
-		    xmlOutputBufferWriteString(buf,
-			    (const char *)child->content);
-		xmlOutputBufferWriteString(buf, "]]>");
+		/*
+		 * Apparently CDATA escaping for style just break on IE,
+		 * mozilla and galeon, so ...
+		 */
+		if (xmlStrEqual(cur->name, BAD_CAST "style") &&
+		    (xmlStrchr(child->content, '<') == NULL) &&
+		    (xmlStrchr(child->content, '>') == NULL) &&
+		    (xmlStrchr(child->content, '&') == NULL)) {
+		    xhtmlNodeDumpOutput(buf, doc, child, 0, 0, encoding);
+		} else {
+		    xmlOutputBufferWriteString(buf, "<![CDATA[");
+		    if (child->content != NULL)
+			xmlOutputBufferWriteString(buf,
+				(const char *)child->content);
+		    xmlOutputBufferWriteString(buf, "]]>");
+		}
 	    } else {
 		xhtmlNodeDumpOutput(buf, doc, child, 0, 0, encoding);
 	    }

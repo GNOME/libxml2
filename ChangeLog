@@ -1,3 +1,9 @@
+Wed Dec  4 16:08:49 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: Chip turner indicated that XHTML1 serialization
+	  rule for style actually break on both IE and Mozilla, 
+	  try to avoid the rule if escaping ain't necessary
+
 Wed Dec  4 12:43:28 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* nanhttp.c: handle HTTP URL escaping, problem reported by

@@ -4915,8 +4915,6 @@ xmlHasNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *nameSpace) {
 	 * One need to have
 	 *   - same attribute names
 	 *   - and the attribute carrying that namespace
-	 *         or
-	 *         no namespace on the attribute and the element carrying it
 	 */
         if ((xmlStrEqual(prop->name, name)) &&
 	    ((prop->ns != NULL) && (xmlStrEqual(prop->ns->href, nameSpace)))) {
@@ -5210,13 +5208,9 @@ xmlSetNsProp(xmlNodePtr node, xmlNsPtr ns, const xmlChar *name,
 	 * One need to have
 	 *   - same attribute names
 	 *   - and the attribute carrying that namespace
-	 *         or
-	 *         no namespace on the attribute and the element carrying it
 	 */
         if ((xmlStrEqual(prop->name, name)) &&
-	    (((prop->ns == NULL) && (node->ns != NULL) &&
-	      (xmlStrEqual(node->ns->href, ns->href))) ||
-	     ((prop->ns != NULL) && (xmlStrEqual(prop->ns->href, ns->href))))) {
+	    (prop->ns != NULL) && (xmlStrEqual(prop->ns->href, ns->href))) {
 	    if (prop->children != NULL) 
 	        xmlFreeNodeList(prop->children);
 	    prop->children = NULL;

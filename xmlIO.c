@@ -1588,6 +1588,7 @@ xmlAllocParserInputBuffer(xmlCharEncoding enc) {
     ret->readcallback = NULL;
     ret->closecallback = NULL;
     ret->context = NULL;
+    ret->compressed = -1;
 
     return(ret);
 }
@@ -1699,13 +1700,6 @@ xmlOutputBufferClose(xmlOutputBufferPtr out) {
 }
 
 /**
- * xmlParserInputBufferCreateFname:
- * @URI:  a C string containing the URI or filename
- * @enc:  the charset encoding if known
- *
- * Returns the new parser input or NULL
- */
-/**
  * xmlParserInputBufferCreateFilename:
  * @URI:  a C string containing the URI or filename
  * @enc:  the charset encoding if known
@@ -1728,9 +1722,6 @@ xmlParserInputBufferCreateFilename(const char *URI, xmlCharEncoding enc) {
 	xmlRegisterDefaultInputCallbacks();
 
     if (URI == NULL) return(NULL);
-
-#ifdef LIBXML_CATALOG_ENABLED
-#endif
 
     /*
      * Try to find one of the input accept method accepting that scheme
@@ -1758,6 +1749,21 @@ xmlParserInputBufferCreateFilename(const char *URI, xmlCharEncoding enc) {
 	ret->context = context;
 	ret->readcallback = xmlInputCallbackTable[i].readcallback;
 	ret->closecallback = xmlInputCallbackTable[i].closecallback;
+#ifdef HAVE_ZLIB_H
+	if (xmlInputCallbackTable[i].opencallback == xmlGzfileOpen) {
+	    if (((z_stream *)context)->avail_in > 4) {
+	        char *cptr, buff4[4];
+		cptr = ((z_stream *)context)->next_in;
+		if (gzread(context, buff4, 4) == 4) {
+		    if (strncmp(buff4, cptr, 4) == 0)
+		        ret->compressed = 0;
+		    else
+		        ret->compressed = 1;
+		    gzrewind(context);
+		}
+	    }
+	}
+#endif
     }
     return(ret);
 }

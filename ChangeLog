@@ -1,3 +1,9 @@
+Sun Sep  7 19:58:33 PTD 2003 William Brack <wbrack@mmm.com.hk>
+
+	* xmlIO.c include/libxml/xmlIO.h parser.c: Implemented detection
+	  of compressed files, setting doc->compressed appropriately
+	  (bug #120503).
+
 Sun Sep  7 22:53:06 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: try to cope with the fact that apps may still

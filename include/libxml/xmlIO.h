@@ -129,6 +129,7 @@ struct _xmlParserInputBuffer {
     
     xmlBufferPtr buffer;    /* Local buffer encoded in UTF-8 */
     xmlBufferPtr raw;       /* if encoder != NULL buffer for raw input */
+    int	compressed;	    /* -1=unknown, 0=not compressed, 1=compressed */
 };
 
 

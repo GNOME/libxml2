@@ -2923,7 +2923,7 @@ get_more:
 	    SHRINK;
 	    GROW;
 	    in = ctxt->input->cur;
-	} while ((*in >= 0x20) && (*in <= 0x7F) || (*in == 0x09));
+	} while (((*in >= 0x20) && (*in <= 0x7F)) || (*in == 0x09));
 	nbchar = 0;
     }
     ctxt->input->line = line;
@@ -11345,7 +11345,13 @@ xmlSAXParseFileWithData(xmlSAXHandlerPtr sax, const char *filename,
 
     xmlParseDocument(ctxt);
 
-    if ((ctxt->wellFormed) || recovery) ret = ctxt->myDoc;
+    if ((ctxt->wellFormed) || recovery) {
+        ret = ctxt->myDoc;
+	if (ctxt->input->buf->compressed > 0)
+	    ret->compression = 9;
+	else
+	    ret->compression = ctxt->input->buf->compressed;
+    }
     else {
        ret = NULL;
        xmlFreeDoc(ctxt->myDoc);

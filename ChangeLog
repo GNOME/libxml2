@@ -1,3 +1,8 @@
+Sat Aug  9 00:42:47 HKT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* win32/configure.js: Added in support for the ISO8859X
+	  module (patch provided by Jesse Pelton)
+
 Fri Aug  8 15:56:32 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLtree.c tree.c threads.c: hum try to avoid some troubles

@@ -39,6 +39,7 @@ var withXpath = true;
 var withXptr = true;
 var withXinclude = true;
 var withIconv = true;
+var withIso8859x = false;
 var withZlib = false;
 var withDebug = true;
 var withMemDebug = false;
@@ -105,6 +106,7 @@ function usage()
 	txt += "  xptr:       Enable XPointer support (" + (withXptr? "yes" : "no")  + ")\n";
 	txt += "  xinclude:   Enable XInclude support (" + (withXinclude? "yes" : "no")  + ")\n";
 	txt += "  iconv:      Enable iconv support (" + (withIconv? "yes" : "no")  + ")\n";
+	txt += "  iso8859x:   Enable ISO8859X support (" + (withIso8859x? "yes" : "no")  + ")\n";
 	txt += "  zlib:       Enable zlib support (" + (withZlib? "yes" : "no")  + ")\n";
 	txt += "  xml_debug:  Enable XML debbugging module (" + (withDebug? "yes" : "no")  + ")\n";
 	txt += "  mem_debug:  Enable memory debugger (" + (withMemDebug? "yes" : "no")  + ")\n";
@@ -179,6 +181,7 @@ function discoverVersion()
 	vf.WriteLine("WITH_XPTR=" + (withXptr? "1" : "0"));
 	vf.WriteLine("WITH_XINCLUDE=" + (withXinclude? "1" : "0"));
 	vf.WriteLine("WITH_ICONV=" + (withIconv? "1" : "0"));
+	vf.WriteLine("WITH_ISO8859X=" + (withIso8859x? "1" : "0"));
 	vf.WriteLine("WITH_ZLIB=" + (withZlib? "1" : "0"));
 	vf.WriteLine("WITH_DEBUG=" + (withDebug? "1" : "0"));
 	vf.WriteLine("WITH_MEM_DEBUG=" + (withMemDebug? "1" : "0"));
@@ -246,6 +249,8 @@ function configureLibxml()
 			of.WriteLine(s.replace(/\@WITH_XINCLUDE\@/, withXinclude? "1" : "0"));
 		} else if (s.search(/\@WITH_ICONV\@/) != -1) {
 			of.WriteLine(s.replace(/\@WITH_ICONV\@/, withIconv? "1" : "0"));
+		} else if (s.search(/\@WITH_ISO8859X\@/) != -1) {
+			of.WriteLine(s.replace(/\@WITH_ISO8859X\@/, withIso8859x? "1" : "0"));
 		} else if (s.search(/\@WITH_ZLIB\@/) != -1) {
 			of.WriteLine(s.replace(/\@WITH_ZLIB\@/, withZlib? "1" : "0"));
 		} else if (s.search(/\@WITH_DEBUG\@/) != -1) {
@@ -341,6 +346,7 @@ function genReadme(bname, ver, file)
 	f.Close();
 }
 
+
 /*
  * main(),
  * Execution begins here.
@@ -378,6 +384,8 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 			withXinclude = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "iconv")
 			withIconv = strToBool(arg.substring(opt.length + 1, arg.length));
+		else if (opt == "iso8859x")
+			withIso8859x = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "zlib")
 			withZlib = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "xml_debug")
@@ -424,9 +432,11 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 			usage();
 			WScript.Quit(0);
 		}
+
 	} else
 		error = 1;
 }
+
 
 // If we fail here, it is because the user supplied an unrecognised argument.
 if (error != 0) {
@@ -434,12 +444,14 @@ if (error != 0) {
 	WScript.Quit(error);
 }
 
+
 // Discover the version.
 discoverVersion();
 if (error != 0) {
 	WScript.Echo("Version discovery failed, aborting.");
 	WScript.Quit(error);
 }
+
 WScript.Echo(baseName + " version: " + verMajor + "." + verMinor + "." + verMicro);
 
 // Configure libxml.
@@ -448,12 +460,14 @@ if (error != 0) {
 	WScript.Echo("Configuration failed, aborting.");
 	WScript.Quit(error);
 }
+
 if (withPython == true) {
 	configureLibxmlPy();
 	if (error != 0) {
 		WScript.Echo("Configuration failed, aborting.");
 		WScript.Quit(error);
 	}
+
 }
 
 // Create the makefile.
@@ -481,6 +495,7 @@ txtOut += "     XPath support: " + boolToStr(withXpath) + "\n";
 txtOut += "  XPointer support: " + boolToStr(withXptr) + "\n";
 txtOut += "  XInclude support: " + boolToStr(withXinclude) + "\n";
 txtOut += "     iconv support: " + boolToStr(withIconv) + "\n";
+txtOut += "  iso8859x support: " + boolToStr(withIso8859x) + "\n";
 txtOut += "      zlib support: " + boolToStr(withZlib) + "\n";
 txtOut += "  Debugging module: " + boolToStr(withDebug) + "\n";
 txtOut += "  Memory debugging: " + boolToStr(withMemDebug) + "\n";
@@ -502,4 +517,5 @@ txtOut += "      Include path: " + buildInclude + "\n";
 txtOut += "          Lib path: " + buildLib + "\n";
 WScript.Echo(txtOut);
 
-// Done.
+//
+

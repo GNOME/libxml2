@@ -606,8 +606,13 @@ get_next_node:
     while (((oldstate == XML_TEXTREADER_BACKTRACK) ||
             (reader->node->children == NULL) ||
 	    (reader->node->type == XML_ENTITY_REF_NODE) ||
-	    (reader->node->type == XML_DTD_NODE)) &&
+	    (reader->node->type == XML_DTD_NODE) ||
+	    (reader->node->type == XML_DOCUMENT_NODE) ||
+	    (reader->node->type == XML_HTML_DOCUMENT_NODE)) &&
 	   (reader->node->next == NULL) &&
+	   ((reader->ctxt->node == NULL) ||
+	    (reader->ctxt->node == reader->node) ||
+	    (reader->ctxt->node == reader->node->parent)) &&
 	   (reader->ctxt->nodeNr == olddepth) &&
 	   (reader->ctxt->instate != XML_PARSER_EOF)) {
 	val = xmlTextReaderPushData(reader);
@@ -643,9 +648,11 @@ get_next_node:
 	/*
 	 * Cleanup of the old node
 	 */
-	if (oldnode->type != XML_DTD_NODE) {
-	    xmlUnlinkNode(oldnode);
-	    xmlFreeNode(oldnode);
+	if ((reader->node->prev != NULL) &&
+            (reader->node->prev->type != XML_DTD_NODE)) {
+	    xmlNodePtr tmp = reader->node->prev;
+	    xmlUnlinkNode(tmp);
+	    xmlFreeNode(tmp);
 	}
 
 	goto node_found;

@@ -1,3 +1,10 @@
+Tue Jan 14 01:15:04 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmlreader.c: fixed the streaming property of the reader,
+	  it was generating tree faster than consuming it. Pointed out
+	  by Nate Myers
+	* tree.c: fixed a bug in xmlSaveFormatFileEnc if passed a NULL doc
+
 Sun Jan 12 22:18:02 CET 2003 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
 
 	* win32/libxml2.def.src: added more xmlreader and other exports

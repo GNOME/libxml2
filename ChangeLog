@@ -1,3 +1,8 @@
+Wed Jul 10 21:26:13 CEST 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
+	
+	* win32/Makefile.msvc: Added a copy *.pdb to install, few have
+	  asked for this.
+	
 Sat Jul  6 21:55:59 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in: preparing 2.4.23

@@ -10416,6 +10416,7 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                 xmlNodeSetPtr newset = NULL;
                 xmlNodeSetPtr oldset;
                 xmlNodePtr oldnode;
+		xmlDocPtr oldDoc;
                 int i;
 
                 /*
@@ -10600,6 +10601,7 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                 oldset = obj->nodesetval;
 
                 oldnode = ctxt->context->node;
+		oldDoc = ctxt->context->doc;
                 ctxt->context->node = NULL;
 
                 if ((oldset == NULL) || (oldset->nodeNr == 0)) {
@@ -10621,6 +10623,8 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                 } else {
                     /*
                      * Initialize the new set.
+		     * Also set the xpath document in case things like
+		     * key() evaluation are attempted on the predicate
                      */
                     newset = xmlXPathNodeSetCreate(NULL);
 
@@ -10630,6 +10634,9 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                          * a single item in the nodeset.
                          */
                         ctxt->context->node = oldset->nodeTab[i];
+			if ((oldset->nodeTab[i]->type != XML_NAMESPACE_DECL) &&
+			    (oldset->nodeTab[i]->doc != NULL))
+		            ctxt->context->doc = oldset->nodeTab[i]->doc;
                         tmp = xmlXPathNewNodeSet(ctxt->context->node);
                         valuePush(ctxt, tmp);
                         ctxt->context->contextSize = oldset->nodeNr;
@@ -10670,6 +10677,8 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                     ctxt->context->node = NULL;
                     ctxt->context->contextSize = -1;
                     ctxt->context->proximityPosition = -1;
+		    /* may want to move this past the '}' later */
+		    ctxt->context->doc = oldDoc;
                     valuePush(ctxt, xmlXPathWrapNodeSet(newset));
                 }
                 ctxt->context->node = oldnode;

@@ -1,3 +1,9 @@
+Tue Jul 13 23:02:19 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* xpath.c: Added code to in PREDICATE/FILTER handling to reset
+	  the xpath context document pointer (part of fix to libxslt
+	  bug 147445)
+
 Tue Jul 13 00:14:08 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* python/libxml.py: ran 'expand' on the file to get rid of mixture

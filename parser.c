@@ -7985,6 +7985,8 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 #endif
 
     while (1) {
+	SHRINK;
+
 	/*
 	 * Pop-up of finished entities.
 	 */

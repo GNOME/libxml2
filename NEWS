@@ -17,6 +17,16 @@ to test those
   Schemas
 
 
+2.5.5: Mar 24 2003
+   - Lot of fixes on the Relax NG implementation. More testing including
+    DocBook and TEI examples.
+   - Increased the support for W3C XML Schemas datatype
+   - Several bug fixes in the URI handling layer
+   - Bug fixes: HTML parser, xmlReader, DTD validation, XPath, encoding
+    conversion, line counting in the parser.
+   - Added support for $XMLLINT_INDENT environment variable, FTP delete
+   - Fixed the RPM spec file name
+
 
 2.5.4: Feb 20 2003:
    - Conformance testing and lot of fixes on Relax NG and XInclude

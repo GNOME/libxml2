@@ -1224,7 +1224,6 @@
      <exports symbol='xmlRelaxNGValidCtxtPtr'/>
      <exports symbol='xmlRelaxNGValidErr'/>
      <exports symbol='xmlRelaxNGValidateDoc'/>
-     <exports symbol='xmlRelaxNGValidateStream'/>
      <exports symbol='xmlRelaxNGValidityErrorFunc'/>
      <exports symbol='xmlRelaxNGValidityWarningFunc'/>
     </file>
@@ -7688,15 +7687,6 @@ actually an xmlCharEncoding'/>
       <return type='int' info='0 if the document is valid, a positive error code number otherwise and -1 in case of internal or API error.'/>
       <arg name='ctxt' type='xmlRelaxNGValidCtxtPtr' info='a Relax-NG validation context'/>
       <arg name='doc' type='xmlDocPtr' info='a parsed document tree'/>
-    </function>
-    <function name='xmlRelaxNGValidateStream' file='relaxng'>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='ctxt' type='xmlRelaxNGValidCtxtPtr' info=''/>
-      <arg name='input' type='xmlParserInputBufferPtr' info=''/>
-      <arg name='enc' type='xmlCharEncoding' info=''/>
-      <arg name='sax' type='xmlSAXHandlerPtr' info=''/>
-      <arg name='user_data' type='void *' info=''/>
     </function>
     <functype name='xmlRelaxNGValidityErrorFunc' file='relaxng'>
       <info></info>

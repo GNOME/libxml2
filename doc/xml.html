@@ -106,7 +106,9 @@ far too early to make any conformance statement about it at the moment.</p>
 <p>Results of the <a
 href="http://xmlbench.sourceforge.net/results/benchmark/index.html">xmlbench
 benchmark</a> on sourceforge 19 March 2003 (smaller is better):</p>
-<p align="center"><img src="benchmark.gif" alt="benchmark results for Expat Xerces libxml2 Oracle and Sun toolkits"></p>
+
+<p align="center"><img src="benchmark.gif"
+alt="benchmark results for Expat Xerces libxml2 Oracle and Sun toolkits"></p>
 
 <p>Logo designed by <a href="mailto:liyanage@access.ch">Marc Liyanage</a>.</p>
 
@@ -613,6 +615,18 @@ to test those</p>
   <li>More testing on RelaxNG</li>
   <li>Finishing up <a href="http://www.w3.org/TR/xmlschema-1/">XML
   Schemas</a></li>
+</ul>
+
+<p>2.5.5: Mar 24 2003</p>
+<ul>
+  <li>Lot of fixes on the Relax NG implementation. More testing including
+    DocBook and TEI examples.</li>
+  <li>Increased the support for W3C XML Schemas datatype</li>
+  <li>Several bug fixes in the URI handling layer</li>
+  <li>Bug fixes: HTML parser, xmlReader, DTD validation, XPath, encoding
+    conversion, line counting in the parser.</li>
+  <li>Added support for $XMLLINT_INDENT environment variable, FTP delete</li>
+  <li>Fixed the RPM spec file name</li>
 </ul>
 
 <h3>2.5.4: Feb 20 2003</h3>
@@ -2845,6 +2859,7 @@ xmlOutputBufferCreateOwn(FILE *file, xmlCharEncodingHandlerPtr encoder) {
         ret-&gt;closecallback = NULL;  /* No close callback */
     }
     return(ret); <br>
+
 
 
 

@@ -123,7 +123,7 @@ NAME="LIBXML-RELAXNG"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN12160"
+NAME="AEN12085"
 ></A
 ><H2
 >Name</H2
@@ -131,7 +131,7 @@ NAME="AEN12160"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN12163"
+NAME="AEN12088"
 ></A
 ><H2
 >Synopsis</H2
@@ -310,27 +310,7 @@ HREF="libxml-relaxng.html#XMLRELAXNGVALIDCTXTPTR"
                                              <A
 HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
-> instance);
-int         <A
-HREF="libxml-relaxng.html#XMLRELAXNGVALIDATESTREAM"
->xmlRelaxNGValidateStream</A
->        (<A
-HREF="libxml-relaxng.html#XMLRELAXNGVALIDCTXTPTR"
->xmlRelaxNGValidCtxtPtr</A
-> ctxt,
-                                             <A
-HREF="libxml-tree.html#XMLPARSERINPUTBUFFERPTR"
->xmlParserInputBufferPtr</A
-> input,
-                                             <A
-HREF="libxml-encoding.html#XMLCHARENCODING"
->xmlCharEncoding</A
-> enc,
-                                             <A
-HREF="libxml-tree.html#XMLSAXHANDLERPTR"
->xmlSAXHandlerPtr</A
-> sax,
-                                             void *user_data);
+> doc);
 void        <A
 HREF="libxml-relaxng.html#XMLRELAXNGCLEANUPTYPES"
 >xmlRelaxNGCleanupTypes</A
@@ -342,7 +322,7 @@ HREF="libxml-relaxng.html#XMLRELAXNGCLEANUPTYPES"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN12214"
+NAME="AEN12134"
 ></A
 ><H2
 >Description</H2
@@ -352,14 +332,14 @@ NAME="AEN12214"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN12217"
+NAME="AEN12137"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12219"
+NAME="AEN12139"
 ></A
 ><H3
 ><A
@@ -385,33 +365,20 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12224"
+NAME="AEN12144"
 ></A
 ><H3
 ><A
 NAME="XMLRELAXNGPTR"
 ></A
 >xmlRelaxNGPtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlRelaxNG *xmlRelaxNGPtr;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12229"
+NAME="AEN12148"
 ></A
 ><H3
 ><A
@@ -438,7 +405,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN12234"
+NAME="AEN12153"
 ></A
 ><P
 ></P
@@ -510,7 +477,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12251"
+NAME="AEN12170"
 ></A
 ><H3
 ><A
@@ -538,7 +505,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN12256"
+NAME="AEN12175"
 ></A
 ><P
 ></P
@@ -610,7 +577,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12273"
+NAME="AEN12192"
 ></A
 ><H3
 ><A
@@ -636,33 +603,20 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12278"
+NAME="AEN12197"
 ></A
 ><H3
 ><A
 NAME="XMLRELAXNGPARSERCTXTPTR"
 ></A
 >xmlRelaxNGParserCtxtPtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlRelaxNGParserCtxt *xmlRelaxNGParserCtxtPtr;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12283"
+NAME="AEN12201"
 ></A
 ><H3
 ><A
@@ -690,33 +644,20 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12289"
+NAME="AEN12207"
 ></A
 ><H3
 ><A
 NAME="XMLRELAXNGVALIDCTXTPTR"
 ></A
 >xmlRelaxNGValidCtxtPtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlRelaxNGValidCtxt *xmlRelaxNGValidCtxtPtr;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12294"
+NAME="AEN12211"
 ></A
 ><H3
 ><A
@@ -781,7 +722,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12299"
+NAME="AEN12216"
 ></A
 ><H3
 ><A
@@ -813,7 +754,7 @@ to contain an XML RelaxNGs file.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN12306"
+NAME="AEN12223"
 ></A
 ><P
 ></P
@@ -840,7 +781,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the location of the schema</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -858,7 +799,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the parser context or NULL in case of error</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -869,7 +810,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12319"
+NAME="AEN12236"
 ></A
 ><H3
 ><A
@@ -902,7 +843,7 @@ to contain an XML RelaxNGs file.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN12326"
+NAME="AEN12243"
 ></A
 ><P
 ></P
@@ -929,7 +870,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a pointer to a char array containing the schemas</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -946,7 +887,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the size of the array</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -964,7 +905,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the parser context or NULL in case of error</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -975,7 +916,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12343"
+NAME="AEN12260"
 ></A
 ><H3
 ><A
@@ -1005,7 +946,7 @@ HREF="libxml-relaxng.html#XMLRELAXNGPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN12350"
+NAME="AEN12267"
 ></A
 ><P
 ></P
@@ -1032,7 +973,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the schema parser context</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1043,7 +984,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12359"
+NAME="AEN12276"
 ></A
 ><H3
 ><A
@@ -1082,7 +1023,7 @@ HREF="libxml-relaxng.html#XMLRELAXNGVALIDITYWARNINGFUNC"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN12368"
+NAME="AEN12285"
 ></A
 ><P
 ></P
@@ -1109,7 +1050,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a Relax-NG validation context</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1126,7 +1067,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the error callback</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1143,7 +1084,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the warning callback</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1160,7 +1101,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  contextual data for the callbacks</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1171,7 +1112,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12389"
+NAME="AEN12306"
 ></A
 ><H3
 ><A
@@ -1206,7 +1147,7 @@ XML Shema struture which can be used to validate instances.
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN12397"
+NAME="AEN12314"
 ></A
 ><P
 ></P
@@ -1233,7 +1174,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a Relax-NG parser context</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1251,8 +1192,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the internal XML RelaxNG structure built from the resource or
-        NULL in case of error</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1263,7 +1203,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12410"
+NAME="AEN12327"
 ></A
 ><H3
 ><A
@@ -1293,7 +1233,7 @@ HREF="libxml-relaxng.html#XMLRELAXNGPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN12417"
+NAME="AEN12334"
 ></A
 ><P
 ></P
@@ -1320,7 +1260,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a schema structure</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1331,7 +1271,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12426"
+NAME="AEN12343"
 ></A
 ><H3
 ><A
@@ -1365,7 +1305,7 @@ HREF="libxml-relaxng.html#XMLRELAXNGPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN12434"
+NAME="AEN12351"
 ></A
 ><P
 ></P
@@ -1392,7 +1332,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the file output</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1409,7 +1349,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a schema structure</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1420,7 +1360,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12447"
+NAME="AEN12364"
 ></A
 ><H3
 ><A
@@ -1454,7 +1394,7 @@ HREF="libxml-relaxng.html#XMLRELAXNGPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN12455"
+NAME="AEN12372"
 ></A
 ><P
 ></P
@@ -1481,7 +1421,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the file output</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1498,7 +1438,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a schema structure</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1509,7 +1449,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12468"
+NAME="AEN12385"
 ></A
 ><H3
 ><A
@@ -1548,7 +1488,7 @@ HREF="libxml-relaxng.html#XMLRELAXNGVALIDITYWARNINGFUNC"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN12477"
+NAME="AEN12394"
 ></A
 ><P
 ></P
@@ -1575,7 +1515,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a Relax-NG validation context</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1592,7 +1532,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the error function</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1609,7 +1549,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the warning function</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1626,7 +1566,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the functions context</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1637,7 +1577,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12498"
+NAME="AEN12415"
 ></A
 ><H3
 ><A
@@ -1671,7 +1611,7 @@ HREF="libxml-relaxng.html#XMLRELAXNGPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN12506"
+NAME="AEN12423"
 ></A
 ><P
 ></P
@@ -1698,7 +1638,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a precompiled XML RelaxNGs</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1716,7 +1656,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the validation context or NULL in case of error</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1727,7 +1667,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12519"
+NAME="AEN12436"
 ></A
 ><H3
 ><A
@@ -1757,7 +1697,7 @@ HREF="libxml-relaxng.html#XMLRELAXNGVALIDCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN12526"
+NAME="AEN12443"
 ></A
 ><P
 ></P
@@ -1784,7 +1724,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the schema validation context</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1795,7 +1735,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12535"
+NAME="AEN12452"
 ></A
 ><H3
 ><A
@@ -1818,7 +1758,7 @@ HREF="libxml-relaxng.html#XMLRELAXNGVALIDCTXTPTR"
                                              <A
 HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
-> instance);</PRE
+> doc);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -1829,122 +1769,7 @@ HREF="libxml-tree.html#XMLDOCPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN12543"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctxt</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  a Relax-NG validation context</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->instance</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->0 if the document is valid, a positive error code
-    number otherwise and -1 in case of internal or API error.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN12560"
-></A
-><H3
-><A
-NAME="XMLRELAXNGVALIDATESTREAM"
-></A
->xmlRelaxNGValidateStream ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlRelaxNGValidateStream        (<A
-HREF="libxml-relaxng.html#XMLRELAXNGVALIDCTXTPTR"
->xmlRelaxNGValidCtxtPtr</A
-> ctxt,
-                                             <A
-HREF="libxml-tree.html#XMLPARSERINPUTBUFFERPTR"
->xmlParserInputBufferPtr</A
-> input,
-                                             <A
-HREF="libxml-encoding.html#XMLCHARENCODING"
->xmlCharEncoding</A
-> enc,
-                                             <A
-HREF="libxml-tree.html#XMLSAXHANDLERPTR"
->xmlSAXHandlerPtr</A
-> sax,
-                                             void *user_data);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN12569"
+NAME="AEN12460"
 ></A
 ><P
 ></P
@@ -1981,58 +1806,7 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->input</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->enc</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->sax</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->user_data</I
+>doc</I
 ></TT
 >&nbsp;:</TD
 ><TD
@@ -2068,7 +1842,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12598"
+NAME="AEN12477"
 ></A
 ><H3
 ><A

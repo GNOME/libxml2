@@ -1,3 +1,8 @@
+Mon Mar 24 16:36:23 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in NEWS: preparing release 2.5.5
+	* doc/* : updated the documentation and regenerated it.
+
 Mon Mar 24 14:56:01 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: fixed some problems related to #75813 about handling

@@ -59,7 +59,7 @@ void xmlFreeEntity(xmlEntityPtr entity) {
     if (entity->children != NULL)
 	xmlFreeNodeList(entity->children);
     if (entity->URI != NULL)
-	xmlFree(entity->URI);
+	xmlFree((char *)entity->URI);
     memset(entity, -1, sizeof(xmlEntity));
 }
 

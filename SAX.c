@@ -29,6 +29,11 @@
 /* #define DEBUG_SAX */
 /* #define DEBUG_SAX_TREE */
 
+/* a couple of the old parser 1.8.11 entry points needed */
+void xmlOldParseExternalSubset(xmlParserCtxtPtr ctxt,
+	const xmlChar *ExternalID, const xmlChar *SystemID);
+void xmlOldPushInput(xmlParserCtxtPtr ctxt, xmlParserInputPtr input);
+
 /**
  * getPublicId:
  * @ctx: the user data (XML parser context)
@@ -160,103 +165,171 @@ internalSubset(void *ctx, const xmlChar *name,
 #endif
     if (ctxt->myDoc == NULL)
 	return;
-    if (ctxt->myDoc->intSubset == NULL) 
-	xmlCreateIntSubset(ctxt->myDoc, name, ExternalID, SystemID);
-    if (((ExternalID != NULL) || (SystemID != NULL)) &&
-        (ctxt->validate && ctxt->wellFormed && ctxt->myDoc)) {
-	/*
-	 * Try to fetch and parse the external subset.
-	 * Grabbed from externalSubset in 2.3.5
-	 */
-	xmlParserInputPtr oldinput;
-	int oldinputNr;
-	int oldinputMax;
-	xmlParserInputPtr *oldinputTab;
-	int oldwellFormed;
-	xmlParserInputPtr input = NULL;
-	xmlCharEncoding enc;
-	int oldcharset;
+    if (ctxt->pedantic) {
+	/* 2.3.5 parser handler */
+	if (ctxt->myDoc->intSubset == NULL) 
+	    xmlCreateIntSubset(ctxt->myDoc, name, ExternalID, SystemID);
+	if (((ExternalID != NULL) || (SystemID != NULL)) &&
+	    (ctxt->validate && ctxt->wellFormed && ctxt->myDoc)) {
+	    /*
+	     * Try to fetch and parse the external subset.
+	     * Grabbed from externalSubset in 2.3.5
+	     */
+	    xmlParserInputPtr oldinput;
+	    int oldinputNr;
+	    int oldinputMax;
+	    xmlParserInputPtr *oldinputTab;
+	    int oldwellFormed;
+	    xmlParserInputPtr input = NULL;
+	    xmlCharEncoding enc;
+	    int oldcharset;
 
-	/*
-	 * Ask the Entity resolver to load the damn thing
-	 */
-	if ((ctxt->sax != NULL) && (ctxt->sax->resolveEntity != NULL))
-	    input = ctxt->sax->resolveEntity(ctxt->userData, ExternalID,
-	                                        SystemID);
-	if (input == NULL) {
-	    return;
-	}
+	    /*
+	     * Ask the Entity resolver to load the damn thing
+	     */
+	    if ((ctxt->sax != NULL) && (ctxt->sax->resolveEntity != NULL))
+		input = ctxt->sax->resolveEntity(ctxt->userData, ExternalID,
+						    SystemID);
+	    if (input == NULL) {
+		return;
+	    }
 
-	xmlNewDtd(ctxt->myDoc, name, ExternalID, SystemID);
+	    xmlNewDtd(ctxt->myDoc, name, ExternalID, SystemID);
 
-	/*
-	 * make sure we won't destroy the main document context
-	 */
-	oldinput = ctxt->input;
-	oldinputNr = ctxt->inputNr;
-	oldinputMax = ctxt->inputMax;
-	oldinputTab = ctxt->inputTab;
-	oldwellFormed = ctxt->wellFormed;
-	oldcharset = ctxt->charset;
+	    /*
+	     * make sure we won't destroy the main document context
+	     */
+	    oldinput = ctxt->input;
+	    oldinputNr = ctxt->inputNr;
+	    oldinputMax = ctxt->inputMax;
+	    oldinputTab = ctxt->inputTab;
+	    oldwellFormed = ctxt->wellFormed;
+	    oldcharset = ctxt->charset;
 
-	ctxt->inputTab = (xmlParserInputPtr *)
-	                 xmlMalloc(5 * sizeof(xmlParserInputPtr));
-	if (ctxt->inputTab == NULL) {
-	    ctxt->errNo = XML_ERR_NO_MEMORY;
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		ctxt->sax->error(ctxt->userData, 
-		     "externalSubset: out of memory\n");
-	    ctxt->errNo = XML_ERR_NO_MEMORY;
+	    ctxt->inputTab = (xmlParserInputPtr *)
+			     xmlMalloc(5 * sizeof(xmlParserInputPtr));
+	    if (ctxt->inputTab == NULL) {
+		ctxt->errNo = XML_ERR_NO_MEMORY;
+		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		    ctxt->sax->error(ctxt->userData, 
+			 "externalSubset: out of memory\n");
+		ctxt->errNo = XML_ERR_NO_MEMORY;
+		ctxt->input = oldinput;
+		ctxt->inputNr = oldinputNr;
+		ctxt->inputMax = oldinputMax;
+		ctxt->inputTab = oldinputTab;
+		ctxt->charset = oldcharset;
+		return;
+	    }
+	    ctxt->inputNr = 0;
+	    ctxt->inputMax = 5;
+	    ctxt->input = NULL;
+	    xmlPushInput(ctxt, input);
+
+	    /*
+	     * On the fly encoding conversion if needed
+	     */
+	    enc = xmlDetectCharEncoding(ctxt->input->cur);
+	    xmlSwitchEncoding(ctxt, enc);
+
+	    if (input->filename == NULL)
+		input->filename = (char *) xmlStrdup(SystemID);
+	    input->line = 1;
+	    input->col = 1;
+	    input->base = ctxt->input->cur;
+	    input->cur = ctxt->input->cur;
+	    input->free = NULL;
+
+	    /*
+	     * let's parse that entity knowing it's an external subset.
+	     */
+	    ctxt->inSubset = 2;
+	    xmlParseExternalSubset(ctxt, ExternalID, SystemID);
+
+	    /*
+	     * Free up the external entities
+	     */
+
+	    while (ctxt->inputNr > 1)
+		xmlPopInput(ctxt);
+	    xmlFreeInputStream(ctxt->input);
+	    xmlFree(ctxt->inputTab);
+
+	    /*
+	     * Restore the parsing context of the main entity
+	     */
 	    ctxt->input = oldinput;
 	    ctxt->inputNr = oldinputNr;
 	    ctxt->inputMax = oldinputMax;
 	    ctxt->inputTab = oldinputTab;
 	    ctxt->charset = oldcharset;
-	    return;
+	    /* ctxt->wellFormed = oldwellFormed; */
 	}
-	ctxt->inputNr = 0;
-	ctxt->inputMax = 5;
-	ctxt->input = NULL;
-	xmlPushInput(ctxt, input);
+    } else {
+	/* old 1.8.11 code */
+	xmlCreateIntSubset(ctxt->myDoc, name, ExternalID, SystemID);
+	if (((ExternalID != NULL) || (SystemID != NULL)) &&
+	    (ctxt->validate && ctxt->wellFormed && ctxt->myDoc)) {
+	    /*
+	     * Try to fetch and parse the external subset.
+	     */
+	    xmlDtdPtr ret = NULL;
+	    xmlParserCtxtPtr dtdCtxt;
+	    xmlParserInputPtr input = NULL;
+	    xmlCharEncoding enc;
 
-	/*
-	 * On the fly encoding conversion if needed
-	 */
-	enc = xmlDetectCharEncoding(ctxt->input->cur);
-	xmlSwitchEncoding(ctxt, enc);
+	    dtdCtxt = xmlNewParserCtxt();
+	    if (dtdCtxt == NULL) return;
+	    ctxt->pedantic = 0;
 
-	if (input->filename == NULL)
-	    input->filename = (char *) xmlStrdup(SystemID);
-	input->line = 1;
-	input->col = 1;
-	input->base = ctxt->input->cur;
-	input->cur = ctxt->input->cur;
-	input->free = NULL;
+	    /*
+	     * Ask the Entity resolver to load the damn thing
+	     */
+	    if ((ctxt->directory != NULL) && (dtdCtxt->directory == NULL))
+		dtdCtxt->directory = (char *) xmlStrdup(BAD_CAST ctxt->directory);
 
-	/*
-	 * let's parse that entity knowing it's an external subset.
-	 */
-	ctxt->inSubset = 2;
-	xmlParseExternalSubset(ctxt, ExternalID, SystemID);
+	    if ((dtdCtxt->sax != NULL) && (dtdCtxt->sax->resolveEntity != NULL))
+		input = dtdCtxt->sax->resolveEntity(dtdCtxt->userData, ExternalID,
+						    SystemID);
+	    if (input == NULL) {
+		xmlFreeParserCtxt(dtdCtxt);
+		return;
+	    }
 
-        /*
-	 * Free up the external entities
-	 */
+	    /*
+	     * plug some encoding conversion routines here. !!!
+	     */
+	    xmlOldPushInput(dtdCtxt, input);
+	    enc = xmlDetectCharEncoding(dtdCtxt->input->cur);
+	    xmlSwitchEncoding(dtdCtxt, enc);
 
-	while (ctxt->inputNr > 1)
-	    xmlPopInput(ctxt);
-	xmlFreeInputStream(ctxt->input);
-        xmlFree(ctxt->inputTab);
+	    if (input->filename == NULL)
+		input->filename = (char *) xmlStrdup(SystemID);
+	    input->line = 1;
+	    input->col = 1;
+	    input->base = dtdCtxt->input->cur;
+	    input->cur = dtdCtxt->input->cur;
+	    input->free = NULL;
 
-	/*
-	 * Restore the parsing context of the main entity
-	 */
-	ctxt->input = oldinput;
-	ctxt->inputNr = oldinputNr;
-	ctxt->inputMax = oldinputMax;
-	ctxt->inputTab = oldinputTab;
-	ctxt->charset = oldcharset;
-	/* ctxt->wellFormed = oldwellFormed; */
+	    /*
+	     * let's parse that entity knowing it's an external subset.
+	     */
+	    xmlOldParseExternalSubset(dtdCtxt, ExternalID, SystemID);
+
+	    if (dtdCtxt->myDoc != NULL) {
+		if (dtdCtxt->wellFormed) {
+		    ret = dtdCtxt->myDoc->intSubset;
+		    dtdCtxt->myDoc->intSubset = NULL;
+		} else {
+		    ret = NULL;
+		}
+		xmlFreeDoc(dtdCtxt->myDoc);
+		dtdCtxt->myDoc = NULL;
+	    }
+	    xmlFreeParserCtxt(dtdCtxt);
+	    
+	    ctxt->myDoc->extSubset = ret;
+	}
     }
 }
 
@@ -357,58 +430,64 @@ entityDecl(void *ctx, const xmlChar *name, int type,
 	    "SAX.entityDecl(%s, %d, %s, %s, %s)\n",
             name, type, publicId, systemId, content);
 #endif
-    if (ctxt->inSubset == 1) {
-	xmlAddDocEntity(ctxt->myDoc, name, type, publicId,
-		              systemId, content);
-	if ((type == XML_INTERNAL_PARAMETER_ENTITY) ||
-	    (type == XML_EXTERNAL_PARAMETER_ENTITY))
-	    ent = xmlGetParameterEntity(ctxt->myDoc, name);
-	else
-	    ent = xmlGetDocEntity(ctxt->myDoc, name);
-	if ((ent == NULL) && (ctxt->pedantic) &&
-	    (ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
-	    ctxt->sax->warning(ctxt, 
-	     "Entity(%s) already defined in the internal subset\n", name);
-	if ((ent != NULL) && (ent->URI == NULL) && (systemId != NULL)) {
-	    xmlChar *URI;
-	    const char *base = NULL;
+    if (ctxt->pedantic) {
+	/* 2.3.5 parser */
+	if (ctxt->inSubset == 1) {
+	    xmlAddDocEntity(ctxt->myDoc, name, type, publicId,
+				  systemId, content);
+	    if ((type == XML_INTERNAL_PARAMETER_ENTITY) ||
+		(type == XML_EXTERNAL_PARAMETER_ENTITY))
+		ent = xmlGetParameterEntity(ctxt->myDoc, name);
+	    else
+		ent = xmlGetDocEntity(ctxt->myDoc, name);
+	    if ((ent == NULL) && (ctxt->pedantic) &&
+		(ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
+		ctxt->sax->warning(ctxt, 
+		 "Entity(%s) already defined in the internal subset\n", name);
+	    if ((ent != NULL) && (ent->URI == NULL) && (systemId != NULL)) {
+		xmlChar *URI;
+		const char *base = NULL;
 
-	    if (ctxt->input != NULL)
-		base = ctxt->input->filename;
-	    if (base == NULL)
-		base = ctxt->directory;
-	
-	    URI = xmlBuildURI(systemId, (const xmlChar *) base);
-	    ent->URI = URI;
-	}
-    } else if (ctxt->inSubset == 2) {
-	xmlAddDtdEntity(ctxt->myDoc, name, type, publicId,
-		              systemId, content);
-	if ((type == XML_INTERNAL_PARAMETER_ENTITY) ||
-	    (type == XML_EXTERNAL_PARAMETER_ENTITY))
-	    ent = xmlGetParameterEntity(ctxt->myDoc, name);
-	else
-	    ent = xmlGetDtdEntity(ctxt->myDoc, name);
-	if ((ent == NULL) && (ctxt->pedantic) &&
-	    (ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
-	    ctxt->sax->warning(ctxt, 
-	     "Entity(%s) already defined in the external subset\n", name);
-	if ((ent != NULL) && (ent->URI == NULL) && (systemId != NULL)) {
-	    xmlChar *URI;
-	    const char *base = NULL;
+		if (ctxt->input != NULL)
+		    base = ctxt->input->filename;
+		if (base == NULL)
+		    base = ctxt->directory;
+	    
+		URI = xmlBuildURI(systemId, (const xmlChar *) base);
+		ent->URI = URI;
+	    }
+	} else if (ctxt->inSubset == 2) {
+	    xmlAddDtdEntity(ctxt->myDoc, name, type, publicId,
+				  systemId, content);
+	    if ((type == XML_INTERNAL_PARAMETER_ENTITY) ||
+		(type == XML_EXTERNAL_PARAMETER_ENTITY))
+		ent = xmlGetParameterEntity(ctxt->myDoc, name);
+	    else
+		ent = xmlGetDtdEntity(ctxt->myDoc, name);
+	    if ((ent == NULL) && (ctxt->pedantic) &&
+		(ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
+		ctxt->sax->warning(ctxt, 
+		 "Entity(%s) already defined in the external subset\n", name);
+	    if ((ent != NULL) && (ent->URI == NULL) && (systemId != NULL)) {
+		xmlChar *URI;
+		const char *base = NULL;
 
-	    if (ctxt->input != NULL)
-		base = ctxt->input->filename;
-	    if (base == NULL)
-		base = ctxt->directory;
-	
-	    URI = xmlBuildURI(systemId, (const xmlChar *) base);
-	    ent->URI = URI;
+		if (ctxt->input != NULL)
+		    base = ctxt->input->filename;
+		if (base == NULL)
+		    base = ctxt->directory;
+	    
+		URI = xmlBuildURI(systemId, (const xmlChar *) base);
+		ent->URI = URI;
+	    }
+	} else {
+	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		ctxt->sax->error(ctxt, 
+		 "SAX.entityDecl(%s) called while not in subset\n", name);
 	}
     } else {
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt, 
-	     "SAX.entityDecl(%s) called while not in subset\n", name);
+	/* 1.8.11 parser */
+	xmlAddDocEntity(ctxt->myDoc, name, type, publicId, systemId, content);
     }
 }
 
@@ -435,17 +514,24 @@ attributeDecl(void *ctx, const xmlChar *elem, const xmlChar *name,
     fprintf(stderr, "SAX.attributeDecl(%s, %s, %d, %d, %s, ...)\n",
             elem, name, type, def, defaultValue);
 #endif
-    if (ctxt->inSubset == 1)
-	attr = xmlAddAttributeDecl(&ctxt->vctxt, ctxt->myDoc->intSubset,
-		             elem, name, type, def, defaultValue, tree);
-    else if (ctxt->inSubset == 2)
-	attr = xmlAddAttributeDecl(&ctxt->vctxt, ctxt->myDoc->extSubset,
-		             elem, name, type, def, defaultValue, tree);
-    else {
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt, 
-	     "SAX.attributeDecl(%s) called while not in subset\n", name);
-	return;
+    if (ctxt->pedantic) {
+	/* 2.3.5 parser code */
+	if (ctxt->inSubset == 1)
+	    attr = xmlAddAttributeDecl(&ctxt->vctxt, ctxt->myDoc->intSubset,
+				 elem, name, type, def, defaultValue, tree);
+	else if (ctxt->inSubset == 2)
+	    attr = xmlAddAttributeDecl(&ctxt->vctxt, ctxt->myDoc->extSubset,
+				 elem, name, type, def, defaultValue, tree);
+	else {
+	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		ctxt->sax->error(ctxt, 
+		 "SAX.attributeDecl(%s) called while not in subset\n", name);
+	    return;
+	}
+    } else {
+	/* 1.8.11 parser */
+	attr = xmlAddAttributeDecl(&ctxt->vctxt, ctxt->myDoc->intSubset, elem,
+				   name, type, def, defaultValue, tree);
     }
     if (attr == 0) ctxt->valid = 0;
     if (ctxt->validate && ctxt->wellFormed &&
@@ -477,17 +563,24 @@ elementDecl(void *ctx, const xmlChar *name, int type,
             name, type);
 #endif
     
-    if (ctxt->inSubset == 1)
+    if (ctxt->pedantic) {
+	/* 2.3.5 parser code */
+	if (ctxt->inSubset == 1)
+	    elem = xmlAddElementDecl(&ctxt->vctxt, ctxt->myDoc->intSubset,
+				 name, (xmlElementTypeVal) type, content);
+	else if (ctxt->inSubset == 2)
+	    elem = xmlAddElementDecl(&ctxt->vctxt, ctxt->myDoc->extSubset,
+				 name, (xmlElementTypeVal) type, content);
+	else {
+	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		ctxt->sax->error(ctxt, 
+		 "SAX.elementDecl(%s) called while not in subset\n", name);
+	    return;
+	}
+    } else {
+	/* 1.8.11 parser code */
 	elem = xmlAddElementDecl(&ctxt->vctxt, ctxt->myDoc->intSubset,
-                             name, (xmlElementTypeVal) type, content);
-    else if (ctxt->inSubset == 2)
-	elem = xmlAddElementDecl(&ctxt->vctxt, ctxt->myDoc->extSubset,
-                             name, (xmlElementTypeVal) type, content);
-    else {
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt, 
-	     "SAX.elementDecl(%s) called while not in subset\n", name);
-	return;
+				 name, type, content);
     }
     if (elem == 0) ctxt->valid = 0;
     if (ctxt->validate && ctxt->wellFormed &&
@@ -515,17 +608,23 @@ notationDecl(void *ctx, const xmlChar *name,
     fprintf(stderr, "SAX.notationDecl(%s, %s, %s)\n", name, publicId, systemId);
 #endif
 
-    if (ctxt->inSubset == 1)
+    if (ctxt->pedantic) {
+	/* 2.3.5 parser code */
+	if (ctxt->inSubset == 1)
+	    nota = xmlAddNotationDecl(&ctxt->vctxt, ctxt->myDoc->intSubset, name,
+				  publicId, systemId);
+	else if (ctxt->inSubset == 2)
+	    nota = xmlAddNotationDecl(&ctxt->vctxt, ctxt->myDoc->extSubset, name,
+				  publicId, systemId);
+	else {
+	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		ctxt->sax->error(ctxt, 
+		 "SAX.notationDecl(%s) called while not in subset\n", name);
+	    return;
+	}
+    } else {
 	nota = xmlAddNotationDecl(&ctxt->vctxt, ctxt->myDoc->intSubset, name,
-                              publicId, systemId);
-    else if (ctxt->inSubset == 2)
-	nota = xmlAddNotationDecl(&ctxt->vctxt, ctxt->myDoc->extSubset, name,
-                              publicId, systemId);
-    else {
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt, 
-	     "SAX.notationDecl(%s) called while not in subset\n", name);
-	return;
+				  publicId, systemId);
     }
     if (nota == NULL) ctxt->valid = 0;
     if (ctxt->validate && ctxt->wellFormed &&

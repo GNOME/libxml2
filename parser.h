@@ -188,7 +188,8 @@ struct _xmlParserCtxt {
 				         actually an xmlCharEncoding */
     int                nodelen;       /* Those two fields are there to */
     int                nodemem;       /* Speed up large node parsing */
-    int                pedantic;      /* signal pedantic warnings */
+    int                pedantic;      /* signal pedantic warnings or loose
+					 behaviour */
     void              *_private;      /* For user data, libxml won't touch it */
 
     int                loadsubset;    /* should the external subset be loaded */
@@ -449,6 +450,11 @@ xmlParserInputPtr
 		xmlLoadExternalEntity	(const char *URL,
 					 const char *ID,
 					 xmlParserCtxtPtr context);
+
+/*
+ * Interface for the compatibility mode of 1.8.11/2.3.5
+ */
+int		xmlUseNewParser		(int val);
 
 #ifdef __cplusplus
 }

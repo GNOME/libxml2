@@ -60,6 +60,7 @@ static int html = 0;
 static int shell = 0;
 static int push = 0;
 static int blanks = 0;
+static int oldparser = 0;
 
 extern int xmlDoValidityCheckingDefaultValue;
 
@@ -254,6 +255,10 @@ int main(int argc, char **argv) {
 	         (!strcmp(argv[i], "--html"))) {
 	    html++;
         }
+	else if ((!strcmp(argv[i], "-oldparser")) ||
+	         (!strcmp(argv[i], "--oldparser"))) {
+	    oldparser++;
+        }
 	else if ((!strcmp(argv[i], "-shell")) ||
 	         (!strcmp(argv[i], "--shell"))) {
 	    shell++;
@@ -262,6 +267,11 @@ int main(int argc, char **argv) {
     }
     if (noent != 0) xmlSubstituteEntitiesDefault(1);
     if (valid != 0) xmlDoValidityCheckingDefaultValue = 1;
+
+    xmlInitParser();
+    if ((!oldparser) && (!getenv("LIBXML_USE_OLD_PARSER")))
+	xmlUseNewParser(1);
+
     for (i = 1; i < argc ; i++) {
 	if (argv[i][0] != '-') {
 	    if (repeat) {
@@ -291,6 +301,7 @@ int main(int argc, char **argv) {
 	printf("\t--shell : run a navigating shell\n");
 	printf("\t--blanks : keep blank text node\n");
 	printf("\t--push : use the push mode of the parser\n");
+	printf("\t--oldparser : use the old 1.8.11 parser\n");
     }
     xmlCleanupParser();
     xmlMemoryDump();

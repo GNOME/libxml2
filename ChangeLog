@@ -1,3 +1,16 @@
+Sun Mar 25 01:03:10 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* Makefile.am parserold.c: added back the 1.8.11 parser for compatibility
+	* README: updated
+	* SAX.c: integrate back 1.8.11 callback code and call it when
+	  we are using the old parser
+	* entities.c: fixed a small problem
+	* parser.[ch]: allow to use either parser, add xmlUseNewParser(),
+	  and modify the Initialization code to check LIBXML_USE_NEW_PARSER
+	  or LIBXML_USE_OLD_PARSER
+	* tester.c: make it use the new parser by default, but check
+	  LIBXML_USE_OLD_PARSER and add the --oldparser option
+
 Sat Mar 24 09:41:28 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
         Applied patch from Darin:

@@ -21,6 +21,7 @@ libxml_la_SOURCES = \
 		encoding.c \
 		error.c \
 		parser.c \
+		parserold.c \
 		HTMLparser.c \
 		HTMLtree.c \
 		debugXML.c \

@@ -49,6 +49,9 @@
 
 const char *xmlParserVersion = LIBXML_VERSION;
 
+static int xmlUseNewParserDefault = 0;
+int xmlOldParseDocument(xmlParserCtxtPtr ctxt);
+
 /*
  * List of XML prefixed PI allowed by W3C specs
  */
@@ -652,6 +655,13 @@ static int xmlParserInitialized = 0;
 void
 xmlInitParser(void) {
     if (xmlParserInitialized) return;
+
+    /* make this user selectable */
+    xmlUseNewParserDefault = 0;
+    if (getenv("LIBXML_USE_NEW_PARSER"))
+	xmlUseNewParserDefault = 1;
+    else if (getenv("LIBXML_USE_OLD_PARSER"))
+	xmlUseNewParserDefault = 0;
 
     xmlInitCharEncodingHandlers();
     xmlInitializePredefinedEntities();
@@ -8629,6 +8639,8 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
     xmlCharEncoding enc;
 
     xmlInitParser();
+    
+    ctxt->pedantic = 1; /* we run the 2.3.5 parser */
 
     GROW;
 
@@ -9877,7 +9889,11 @@ xmlSAXParseDoc(xmlSAXHandlerPtr sax, xmlChar *cur, int recovery) {
         ctxt->userData = NULL;
     }
 
-    xmlParseDocument(ctxt);
+    if (xmlUseNewParserDefault)
+	xmlParseDocument(ctxt);
+    else
+	xmlOldParseDocument(ctxt);
+
     if ((ctxt->wellFormed) || recovery) ret = ctxt->myDoc;
     else {
        ret = NULL;
@@ -10553,7 +10569,10 @@ xmlSAXParseFile(xmlSAXHandlerPtr sax, const char *filename,
     if ((ctxt->directory == NULL) && (directory != NULL))
         ctxt->directory = (char *) xmlStrdup((xmlChar *) directory); /* !!!!!!! */
 
-    xmlParseDocument(ctxt);
+    if (xmlUseNewParserDefault)
+	xmlParseDocument(ctxt);
+    else
+	xmlOldParseDocument(ctxt);
 
     if ((ctxt->wellFormed) || recovery) ret = ctxt->myDoc;
     else {
@@ -10674,7 +10693,10 @@ xmlSAXParseMemory(xmlSAXHandlerPtr sax, char *buffer, int size, int recovery) {
         ctxt->userData = NULL;
     }
 
-    xmlParseDocument(ctxt);
+    if (xmlUseNewParserDefault)
+	xmlParseDocument(ctxt);
+    else
+	xmlOldParseDocument(ctxt);
 
     if ((ctxt->wellFormed) || recovery) ret = ctxt->myDoc;
     else {
@@ -10775,7 +10797,10 @@ xmlSAXUserParseFile(xmlSAXHandlerPtr sax, void *user_data,
     if (user_data != NULL)
 	ctxt->userData = user_data;
     
-    xmlParseDocument(ctxt);
+    if (xmlUseNewParserDefault)
+	xmlParseDocument(ctxt);
+    else
+	xmlOldParseDocument(ctxt);
     
     if (ctxt->wellFormed)
 	ret = 0;
@@ -10814,7 +10839,10 @@ int xmlSAXUserParseMemory(xmlSAXHandlerPtr sax, void *user_data,
     ctxt->sax = sax;
     ctxt->userData = user_data;
     
-    xmlParseDocument(ctxt);
+    if (xmlUseNewParserDefault)
+	xmlParseDocument(ctxt);
+    else
+	xmlOldParseDocument(ctxt);
     
     if (ctxt->wellFormed)
 	ret = 0;
@@ -11056,6 +11084,28 @@ xmlKeepBlanksDefault(int val) {
 
     xmlKeepBlanksDefaultValue = val;
     xmlIndentTreeOutput = !val;
+    return(old);
+}
+
+/**
+ * xmlUseNewParser:
+ * @val:  int 0 or 1 
+ *
+ * Set and return the previous value for the default XML parser to use
+ * The 1.x version of the parser up to 1.8.11 is horribly broken
+ * The 2.x and later version aim at completete compliance to the standard
+ * This function is provided as a way to force using the new parser
+ * on 1.X libs when the applications are ready to handle correct XML
+ * and the UTF8 character flow provided by the new parser.
+ *
+ * Returns the last value for 0 for no substitution, 1 for substitution.
+ */
+
+int
+xmlUseNewParser(int val) {
+    int old = xmlUseNewParserDefault;
+
+    xmlUseNewParserDefault = val;
     return(old);
 }
 

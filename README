@@ -1,21 +1,23 @@
 
-                  XML parser for Gnome
+                  XML version 1 parser for Gnome
+
+This is the old parser, the new version libxml2 is in the CVS head of
+the gnome-xml module.
+This parser embbed the old 1.8.11 parser and a new one based on 2.3.5
+which is far more compliant. You can toggle libxml to use the new parser
+by using xmlUseNewParser(1) or setting up the LIBXML_USE_NEW_PARSER
+environment variable. The old parser is the default and can be forced
+by calling xmlUseNewParser(0) or setting up the LIBXML_USE_OLD_PARSER
+environment variable.
 
 Documentation is available on-line at
-    http://rufus.w3.org/veillard/XML/xml.html
+    http://xmlsoft.org/
 
-A mailing-list has been set-up, to subscribe:
-    echo "subscribe xml" | mail majordomo@rufus.w3.org
+There is also a mailing-list xml@gnome.org for libxml
+List page at
+    http://mail.gnome.org/mailman/listinfo/xml
+Archive at
+    http://xmlsoft.org/messages/
 
-The list archive is at:
-    http://rufus.w3.org/veillard/XML/messages/
-
-NOTE: I use a second CVS server for experimental version of the XML code,
-      this mean that if you commit without a Changelog or without sending
-      the patch to me or the list, it may well get lost. I usually check
-      before copying over the Gnome directory, but it may happen.
-
-    People interested in the bleeding edge or what I'm up to can check
-    at http://dev.w3.org/cgi-bin/cvsweb/XML/
 
 Daniel.Veillard@w3.org

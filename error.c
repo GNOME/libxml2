@@ -107,34 +107,44 @@ void
 xmlParserPrintFileContext(xmlParserInputPtr input) {
     const xmlChar *cur, *base;
     int n;
+    xmlChar  content[81];
+    xmlChar *ctnt;
 
     if (input == NULL) return;
     cur = input->cur;
     base = input->base;
+    /* skip backwards over any end-of-lines */
     while ((cur > base) && ((*cur == '\n') || (*cur == '\r'))) {
 	cur--;
     }
     n = 0;
+    /* search backwards for beginning-of-line maximum 80 characters */
     while ((n++ < 80) && (cur > base) && (*cur != '\n') && (*cur != '\r'))
         cur--;
     if ((*cur == '\n') || (*cur == '\r')) cur++;
-    base = cur;
+	/* search forward for end-of-line maximum 80 characters */
     n = 0;
+    ctnt = content;
     while ((*cur != 0) && (*cur != '\n') && (*cur != '\r') && (n < 79)) {
-        xmlGenericError(xmlGenericErrorContext,
-		"%c", (unsigned char) *cur++);
+		*ctnt++ = *cur++;
 	n++;
     }
-    xmlGenericError(xmlGenericErrorContext, "\n");
+    *ctnt = 0;
+    xmlGenericError(xmlGenericErrorContext,"%s\n", content);
+    /* create blank line with problem pointer */
     cur = input->cur;
-    while ((*cur == '\n') || (*cur == '\r'))
-	cur--;
+    while ((cur > base) && ((*cur == '\n') || (*cur == '\r'))) {
+		cur--;
+	}
     n = 0;
-    while ((cur != base) && (n++ < 80)) {
-        xmlGenericError(xmlGenericErrorContext, " ");
-        base++;
+	ctnt = content;
+    while ((n++ < 79) && (cur > base) && (*cur != '\n') && (*cur != '\r')) {
+	*ctnt++ = ' ';
+	cur--;
     }
-    xmlGenericError(xmlGenericErrorContext,"^\n");
+    *(--ctnt) = '^';
+    *(++ctnt) = 0;
+    xmlGenericError(xmlGenericErrorContext,"%s\n", content);
 }
 
 /**

@@ -1,3 +1,9 @@
+Tue Mar 27 02:30:23 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* error.c: applied the context output patch of the error
+	  handling submitted by Chuck Griffith
+	* error/VC/*: this slightly change some error logs
+
 Tue Mar 27 00:51:27 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* parser.c: fixed line number reporting on error

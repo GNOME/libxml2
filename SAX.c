@@ -236,6 +236,28 @@ endElement(xmlParserCtxtPtr ctxt, const CHAR *name)
 }
 
 /**
+ * attribute:
+ * @ctxt:  An XML parser context
+ * @name:  The attribute name
+ * @value:  The attribute value
+ *
+ * called when an attribute has been read by the parser.
+ * The default handling is to convert the attribute into an
+ * DOM subtree and past it in a new xmlAttr element added to
+ * the element.
+ *
+ * return values: 
+ */
+void
+attribute(xmlParserCtxtPtr ctxt, const CHAR *name, const CHAR *value)
+{
+#ifdef DEBUG_SAX
+    fprintf(stderr, "SAX.attribute(%s, %s)\n", name, value);
+#endif
+    xmlNewProp(ctxt->node, name, value);
+}
+
+/**
  * characters:
  * @ctxt:  An XML parser context
  * @ch:  a CHAR string
@@ -323,6 +345,7 @@ xmlSAXHandler xmlDefaultSAXHandler = {
     endDocument,
     startElement,
     endElement,
+    attribute,
     characters,
     ignorableWhitespace,
     processingInstruction,
@@ -335,8 +358,6 @@ xmlSAXHandler xmlDefaultSAXHandler = {
  * xmlDefaultSAXHandlerInit:
  *
  * Initialize the default SAX handler
- *
- * return values: 
  */
 void
 xmlDefaultSAXHandlerInit(void)
@@ -349,6 +370,7 @@ xmlDefaultSAXHandlerInit(void)
     xmlDefaultSAXHandler.endDocument = endDocument;
     xmlDefaultSAXHandler.startElement = startElement;
     xmlDefaultSAXHandler.endElement = endElement;
+    xmlDefaultSAXHandler.attribute = attribute;
     xmlDefaultSAXHandler.characters = characters;
     xmlDefaultSAXHandler.ignorableWhitespace = ignorableWhitespace;
     xmlDefaultSAXHandler.processingInstruction = processingInstruction;

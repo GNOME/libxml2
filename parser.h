@@ -91,6 +91,8 @@ typedef void (*startDocumentSAXFunc) (xmlParserCtxtPtr ctxt);
 typedef void (*endDocumentSAXFunc) (xmlParserCtxtPtr ctxt);
 typedef void (*startElementSAXFunc) (xmlParserCtxtPtr ctxt, const CHAR *name);
 typedef void (*endElementSAXFunc) (xmlParserCtxtPtr ctxt, const CHAR *name);
+typedef void (*attributeSAXFunc) (xmlParserCtxtPtr ctxt, const CHAR *name,
+                                  const CHAR *value);
 typedef void (*charactersSAXFunc) (xmlParserCtxtPtr ctxt, const CHAR *ch,
 		            int start, int len);
 typedef void (*ignorableWhitespaceSAXFunc) (xmlParserCtxtPtr ctxt,
@@ -110,6 +112,7 @@ typedef struct xmlSAXHandler {
     endDocumentSAXFunc endDocument;
     startElementSAXFunc startElement;
     endElementSAXFunc endElement;
+    attributeSAXFunc attribute;
     charactersSAXFunc characters;
     ignorableWhitespaceSAXFunc ignorableWhitespace;
     processingInstructionSAXFunc processingInstruction;

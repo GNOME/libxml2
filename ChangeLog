@@ -1,3 +1,11 @@
+Sat Oct 24 14:23:51 EDT 1998 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* parser.c: Set up the fonctions comment block, boring but useful.
+	* parser.h, SAX.c, parser.c: now attributes are processed through
+	  the SAX interface. The problem is that my SAX interface diverged
+	  quite a bit from the original one, well this is not an official
+	  spec, and translating it from Java to C is hairy anyway...
+
 Tue Oct 20 02:11:21 EDT 1998 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* SAX.c, entities.c, tree.c, encoding.c, error.c: Set up the

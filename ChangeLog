@@ -1,3 +1,8 @@
+Thu Aug 31 14:59:28 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* doc/xmlio.html doc/xml.html: added a doc on the I/O mechanism
+	  used by libxml
+
 Tue Aug 29 20:22:53 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* parser.c: Fixed bug on invalid ontent characters and when using

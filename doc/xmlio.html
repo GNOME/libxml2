@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+                      "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Libxml Input/Output handling</title>
+  <meta name="GENERATOR" content="amaya V3.2.1">
+  <meta http-equiv="Content-Type" content="text/html">
+</head>
+
+<body bgcolor="#ffffff">
+<h1 align="center">Libxml Input/Output handling</h1>
+
+<p>Location: <a
+href="http://xmlsoft.org/xmlio.html">http://xmlsoft.org/xmlio.html</a></p>
+
+<p>Libxml home page: <a href="http://xmlsoft.org/">http://xmlsoft.org/</a></p>
+
+<p>Mailing-list archive:  <a
+href="http://xmlsoft.org/messages/">http://xmlsoft.org/messages/</a></p>
+
+<p>Version: $Revision:$</p>
+
+<p>Table of Content:</p>
+<ol>
+  <li><a href="#General">General overview</a></li>
+  <li><a href="#basic">The basic buffer type</a></li>
+  <li><a href="#Input">Input I/O handlers</a></li>
+  <li><a href="#Output">Output I/O handlers</a></li>
+  <li><a href="#Example">Example of customized I/O</a></li>
+</ol>
+
+<h2><a name="General">General overview</a></h2>
+
+<p>The module <code><a
+href="http://xmlsoft.org/html/gnome-xml-xmlio.html">xmlIO.h</a></code>
+provides the interfaces to the libxml I/O system. This consists of 3 main
+parts:</p>
+<ul>
+  <li>Input I/O buffers which are a commodity structure used by the parser(s)
+    input layer to handle fetching the informations to feed the parser. This
+    provides buffering and is also a placeholder where the encoding convertors
+    to UTF8 are piggy-backed.</li>
+  <li>Output I/O buffers are similar to the Input ones and fulfill similar
+    task but when generating a serialization from a tree.</li>
+  <li>A mechanism to register sets of I/O callbacks and associate them with
+    specific naming schemes like the protocol part of the URIs.
+    <p>This affect the default I/O operations and allows to use specific I/O
+    handlers for certain names.</p>
+  </li>
+</ul>
+
+<p> The general mechanism used when loading http://rpmfind.net/xml.html for
+example in the HTML parser is the following:</p>
+<ol>
+  <li>the URI string is checked against the existing registered handlers using
+    their match() callback function, if the HTTP module was compiled in, it is
+    registered and its macth() function will succeed</li>
+  <li>the open() function of the handler is called and if successful will
+    return an I/O Input buffer</li>
+  <li>the parser will the start reading from this buffer and progressively
+    fetch information from the resource, calling the read() function of the
+    handler until the resource is exhausted</li>
+  <li>if an encoding change is detected it will be installed on the input
+    buffer, providing buffering and efficient use of the conversion
+  routines</li>
+  <li>once the parser has finished, the close() function of the handler is
+    called once and the Input buffer and associed resources are
+  deallocated.</li>
+</ol>
+
+<p>The user defined callbacks are checked first to allow overriding of the
+default libxml I/O routines.</p>
+
+<h2><a name="basic">The basic buffer type</a></h2>
+
+<p>All the buffer manipulation handling is done using the
+<code>xmlBuffer</code> type define in <code><a
+href="http://xmlsoft.org/html/gnome-xml-tree.html">tree.h</a> </code>which is
+a resizable memory buffer. The buffer allocation strategy can be selected to
+be either best-fit or use an exponential doubling one (CPU vs. memory use
+tradeoff). The values are <code>XML_BUFFER_ALLOC_EXACT</code> and
+<code>XML_BUFFER_ALLOC_DOUBLEIT</code>, and can be set individually or on a
+system wide basis using <code>xmlBufferSetAllocationScheme()</code>. A number
+of functions allows to manipulate buffers with names starting with the
+<code>xmlBuffer...</code> prefix.</p>
+
+<h2><a name="Input">Input I/O handlers</a></h2>
+
+<p>An Input I/O handler is a simple structure
+<code>xmlParserInputBuffer</code> containing a context associated to the
+resource (file descriptor, or pointer to a protocol handler), the read() and
+close() callbacks to use and an xmlBuffer. And extra xmlBuffer and a charset
+encoding handler are also present to support charset conversion when
+needed.</p>
+
+<h2><a name="Output">Output I/O handlers</a></h2>
+
+<p>An Output handler <code>xmlOutputBuffer</code> is completely similar to an
+Input one except the callbacks are write() and close().</p>
+
+<h2><a name="Example">Example of customized I/O</a></h2>
+
+<p>This example come from <a href="http://xmlsoft.org/messages/0708.html">a
+real use case</a>,  xmlDocDump() closes the FILE * passed by the application
+and this was a problem. The <a
+href="http://xmlsoft.org/messages/0711.html">solution</a> was to redefine a
+new output handler with the closing call deactivated:</p>
+<ol>
+  <li>First define a new I/O ouput allocator where the output don't close the
+    file:
+    <pre>xmlOutputBufferPtr <br>
+xmlOutputBufferCreateOwn(FILE *file, xmlCharEncodingHandlerPtr encoder) { <br>
+    xmlOutputBufferPtr ret; <br>
+     <br>
+    if (xmlOutputCallbackInitialized == 0) <br>
+        xmlRegisterDefaultOutputCallbacks(); <br>
+     <br>
+    if (file == NULL) return(NULL); <br>
+    </pre>
+    <pre>    ret = xmlAllocOutputBuffer(encoder); <br>
+    if (ret != NULL) { <br>
+        ret-&gt;context = file; <br>
+        ret-&gt;writecallback = xmlFileWrite; <br>
+        ret-&gt;closecallback = NULL;  /* No close callback */ <br>
+    } <br>
+    </pre>
+    <pre>    return(ret); <br>
+} </pre>
+  </li>
+  <li>And then use it to save the document:
+    <pre>FILE *f;
+xmlOutputBufferPtr output;</pre>
+    <pre>xmlDocPtr doc;
+int res;
+<br>
+f = ...
+doc = ....
+output = xmlOutputBufferCreateOwn(f, NULL);
+<br>
+res = xmlSaveFileTo(output, doc, NULL);
+
+    </pre>
+  </li>
+</ol>
+
+<p><a href="mailto:Daniel.Veillard@w3.org">Daniel Veillard</a></p>
+
+<p>$Id$</p>
+</body>
+</html>

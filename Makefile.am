@@ -967,6 +967,7 @@ SchemasPythonTests:
 	    PYTHONPATH=$(top_builddir)/python:$(top_builddir)/python/.libs:$$PYTHONPATH; \
 	    export PYTHONPATH; \
 	    echo "## XML Schemas datatypes Python based test suite" ; \
+	    echo "## It is normal to see 6 errors reported" ; \
 	    $(CHECKER) $(PYTHON) $(srcdir)/check-xsddata-test-suite.py ; \
 	  fi)
 

@@ -1,3 +1,12 @@
+Tue Aug 31 10:37:23 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemastypes.c: "" is a valid hexbinary string dixit xmlschema-dev
+	* result/schemas/hexbinary_0_1.err test/schemas/hexbinary_1.xml: 
+	  update the test.
+	* test/ns5 result//ns5*: added a test for the namespace bug fixed
+	  in previous commit.
+	* Makefile.am: added a message in the regression tests
+
 Mon Aug 30 23:36:21 PDT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* SAX2.c: fixed bug introduced during OOM fixup causing problems

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<!-- all should fail to validate -->
+<!-- all (except 2 first) should fail to validate -->
 <xsd_hexBinary>
   <hex></hex>
   <hex/>

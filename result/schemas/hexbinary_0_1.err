@@ -1,5 +1,3 @@
-./test/schemas/hexbinary_1.xml:4: element hex: Schemas validity error : Element 'hex' ['hexBinary']: The character content is not valid.
-./test/schemas/hexbinary_1.xml:5: element hex: Schemas validity error : Element 'hex' ['hexBinary']: The character content is not valid.
 ./test/schemas/hexbinary_1.xml:6: element hex: Schemas validity error : Element 'hex' ['hexBinary']: The character content is not valid.
 ./test/schemas/hexbinary_1.xml:7: element hex: Schemas validity error : Element 'hex' ['hexBinary']: The character content is not valid.
 ./test/schemas/hexbinary_1.xml:8: element hex: Schemas validity error : Element 'hex' ['hexBinary']: The character content is not valid.

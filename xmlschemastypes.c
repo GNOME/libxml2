@@ -2304,7 +2304,7 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
                 xmlChar *base;
                 int total, i = 0;
 
-                if ((cur == NULL) || (*cur == 0))
+                if (cur == NULL)
                     goto return1;
 
                 while (((*cur >= '0') && (*cur <= '9')) ||

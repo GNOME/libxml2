@@ -22,7 +22,7 @@ skipped_modules = [ "SAX", "SAX2", "xlink", "threads", "globals",
 #
 skipped_functions = [ "xmlFdRead", "xmlReadFd", "xmlCtxtReadFd",
                       "htmlFdRead", "htmlReadFd", "htmlCtxtReadFd",
-                      "xmlCleanupParser" ]
+                      "xmlCleanupParser", "xmlStrcat", "xmlStrncat" ]
 
 #
 # Those functions have side effect on the global state
@@ -58,6 +58,11 @@ extra_post_call = {
    "xmlTextMerge": 
        """if ((first != NULL) && (first->type != XML_TEXT_NODE)) {
               xmlFreeNode(second) ; second = NULL ; }""",
+   "xmlBuildQName": 
+       """if ((ret_val != NULL) && (ret_val != ncname) &&
+              (ret_val != prefix) && (ret_val != memory))
+              xmlFree(ret_val);
+	  ret_val = NULL;""",
 }
 
 modules = []
@@ -122,6 +127,8 @@ static int testlibxml2(void);
 
 static int generic_errors = 0;
 static int call_tests = 0;
+
+static xmlChar chartab[1024] = "  chartab\n";
 
 static void
 structured_errors(void *userData ATTRIBUTE_UNUSED,
@@ -211,6 +218,8 @@ def type_convert(str, name, info, module, function, pos):
 	    return('xmlNanoFTPCtxtPtr')
         if module == 'nanohttp' and name == 'ctx':
 	    return('xmlNanoHTTPCtxtPtr')
+	if string.find(name, "data") != -1:
+	    return('userdata');
     if res == 'xmlNodePtr' and pos != 0:
         if (function == 'xmlAddChild' and pos == 2) or \
 	   (function == 'xmlAddChildList' and pos == 2) or \
@@ -226,7 +235,7 @@ def type_convert(str, name, info, module, function, pos):
 
 known_param_types = [ "int", "const_char_ptr", "const_xmlChar_ptr",
    "xmlParserCtxtPtr", "xmlDocPtr", "filepath", "fileoutput" ,
-   "xmlNodePtr", "xmlNodePtr_in" ];
+   "xmlNodePtr", "xmlNodePtr_in", "userdata", "xmlChar_ptr" ];
 
 def is_known_param_type(name):
     for type in known_param_types:
@@ -235,6 +244,17 @@ def is_known_param_type(name):
     return 0
 
 test.write("""
+#define gen_nb_userdata 3
+
+static void *gen_userdata(int no) {
+    if (no == 0) return((void *) &call_tests);
+    if (no == 1) return((void *) -1);
+    return(NULL);
+}
+static void des_userdata(int no ATTRIBUTE_UNUSED, void *val ATTRIBUTE_UNUSED) {
+}
+
+
 #define gen_nb_int 4
 
 static int gen_int(int no) {
@@ -256,6 +276,15 @@ static const char *gen_const_char_ptr(int no) {
     return(NULL);
 }
 static void des_const_char_ptr(int no ATTRIBUTE_UNUSED, const char *val ATTRIBUTE_UNUSED) {
+}
+
+#define gen_nb_xmlChar_ptr 2
+
+static xmlChar *gen_xmlChar_ptr(int no) {
+    if (no == 0) return(&chartab);
+    return(NULL);
+}
+static void des_xmlChar_ptr(int no ATTRIBUTE_UNUSED, xmlChar *val ATTRIBUTE_UNUSED) {
 }
 
 #define gen_nb_const_xmlChar_ptr 5
@@ -346,7 +375,8 @@ static void des_xmlNodePtr_in(int no ATTRIBUTE_UNUSED, xmlNodePtr val ATTRIBUTE_
 # Provide the type destructors for the return values
 #
 
-known_return_types = [ "int", "const_char_ptr", "xmlDocPtr", "xmlNodePtr" ];
+known_return_types = [ "int", "const_char_ptr", "xmlDocPtr", "xmlNodePtr",
+                       "xmlChar_ptr" ];
 
 def is_known_return_type(name):
     for type in known_return_types:
@@ -358,6 +388,10 @@ test.write("""
 static void desret_int(int val ATTRIBUTE_UNUSED) {
 }
 static void desret_const_char_ptr(const char *val ATTRIBUTE_UNUSED) {
+}
+static void desret_xmlChar_ptr(xmlChar *val) {
+    if (val != NULL)
+	xmlFree(val);
 }
 static void desret_xmlDocPtr(xmlDocPtr val) {
     xmlFreeDoc(val);
@@ -522,7 +556,10 @@ test_%s(void) {
 	    else:
 	        need = 1
 	    test.write("%s" % nam);
-	test.write(");\n        desret_%s(ret_val);\n" % t_ret[0])
+	test.write(");\n")
+	if extra_post_call.has_key(name):
+	    test.write("        %s\n"% (extra_post_call[name]))
+	test.write("        desret_%s(ret_val);\n" % t_ret[0])
     else:
 	test.write("\n        %s(" % (name));
 	need = 0;
@@ -534,10 +571,10 @@ test_%s(void) {
 	        need = 1
 	    test.write("%s" % nam)
 	test.write(");\n")
-    test.write("        call_tests++;\n");
+	if extra_post_call.has_key(name):
+	    test.write("        %s\n"% (extra_post_call[name]))
 
-    if extra_post_call.has_key(name):
-        test.write("        %s\n"% (extra_post_call[name]))
+    test.write("        call_tests++;\n");
 
     # Free the arguments
     for arg in t_args:

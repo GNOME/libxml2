@@ -2154,6 +2154,10 @@ extern __typeof (xmlMallocLoc) xmlMallocLoc__internal_alias __attribute((visibil
 extern __typeof (xmlMallocLoc) xmlMallocLoc __attribute((alias("xmlMallocLoc__internal_alias")));
 #define xmlMallocLoc xmlMallocLoc__internal_alias
 
+extern __typeof (xmlMemBlocks) xmlMemBlocks__internal_alias __attribute((visibility("hidden")));
+extern __typeof (xmlMemBlocks) xmlMemBlocks __attribute((alias("xmlMemBlocks__internal_alias")));
+#define xmlMemBlocks xmlMemBlocks__internal_alias
+
 extern __typeof (xmlMemDisplay) xmlMemDisplay__internal_alias __attribute((visibility("hidden")));
 extern __typeof (xmlMemDisplay) xmlMemDisplay __attribute((alias("xmlMemDisplay__internal_alias")));
 #define xmlMemDisplay xmlMemDisplay__internal_alias

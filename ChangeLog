@@ -1,3 +1,9 @@
+Tue Nov  2 23:09:06 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* gentest.py testapi.c: more testing and coverage
+	* elfgcchack.h xmlstring.c include/libxml/xmlstring.h: more cleanups
+	* doc/*: rebuilt
+
 Tue Nov  2 19:44:32 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* gentest.py testapi.c: more developments on the API testing

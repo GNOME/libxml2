@@ -976,6 +976,7 @@ xmlMallocAtomicLoc
 #ifdef DEBUG_MEMORY_LOCATION
 xmlMallocLoc
 #endif
+xmlMemBlocks
 xmlMemDisplay
 xmlMemFree
 xmlMemGet

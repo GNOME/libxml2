@@ -117,7 +117,7 @@ XMLPUBFUN int XMLCALL
 XMLPUBFUN xmlChar * XMLCALL 
         xmlUTF8Strndup                   (const xmlChar *utf,
                                          int len);
-XMLPUBFUN xmlChar * XMLCALL 
+XMLPUBFUN const xmlChar * XMLCALL 
         xmlUTF8Strpos                    (const xmlChar *utf,
                                          int pos);
 XMLPUBFUN int XMLCALL

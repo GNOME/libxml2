@@ -478,6 +478,8 @@ xmlStrncatNew(const xmlChar *str1, const xmlChar *str2, int len) {
     int size;
     xmlChar *ret;
 
+    if (len < 0)
+        len = xmlStrlen(str2);
     if ((str2 == NULL) || (len == 0))
         return(xmlStrdup(str1));
     if (str1 == NULL)
@@ -869,7 +871,7 @@ xmlUTF8Strndup(const xmlChar *utf, int len) {
  *
  * Returns a pointer to the UTF8 character or NULL
  */
-xmlChar *
+const xmlChar *
 xmlUTF8Strpos(const xmlChar *utf, int pos) {
     xmlChar ch;
 

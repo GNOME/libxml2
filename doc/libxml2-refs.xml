@@ -6561,6 +6561,7 @@
       <ref name='xmlTextReaderConstValue'/>
       <ref name='xmlTextReaderConstXmlLang'/>
       <ref name='xmlTextReaderConstXmlVersion'/>
+      <ref name='xmlUTF8Strpos'/>
       <ref name='xmlXPathNsLookup'/>
     </type>
     <type name='const xmlParserNodeInfo *'>
@@ -6802,7 +6803,6 @@
       <ref name='xmlURIEscape'/>
       <ref name='xmlURIEscapeStr'/>
       <ref name='xmlUTF8Strndup'/>
-      <ref name='xmlUTF8Strpos'/>
       <ref name='xmlUTF8Strsub'/>
       <ref name='xmlValidCtxtNormalizeAttributeValue'/>
       <ref name='xmlValidNormalizeAttributeValue'/>

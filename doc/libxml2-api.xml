@@ -15276,7 +15276,7 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlUTF8Strpos' file='xmlstring'>
       <info>a function to provide the equivalent of fetching a character from a string array</info>
-      <return type='xmlChar *' info='a pointer to the UTF8 character or NULL'/>
+      <return type='const xmlChar *' info='a pointer to the UTF8 character or NULL'/>
       <arg name='utf' type='const xmlChar *' info='the input UTF8 *'/>
       <arg name='pos' type='int' info='the position of the desired UTF8 char (in chars)'/>
     </function>

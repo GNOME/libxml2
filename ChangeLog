@@ -1,3 +1,8 @@
+Fri Sep 21 11:45:53 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* parserInternals.c: applying patch from bug #60757 this
+	  should close it
+
 Thu Sep 20 15:54:29 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* catalog.c xmlcatalog.c: removed a couple of warning

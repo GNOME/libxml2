@@ -2392,7 +2392,7 @@ const xmlParserNodeInfo* xmlParserFindNodeInfo(const xmlParserCtxt* ctx,
 
   /* Find position where node should be at */
   pos = xmlParserFindNodeInfoIndex(&ctx->node_seq, node);
-  if ( ctx->node_seq.buffer[pos].node == node )
+  if (pos < ctx->node_seq.length && ctx->node_seq.buffer[pos].node == node)
     return &ctx->node_seq.buffer[pos];
   else
     return NULL;

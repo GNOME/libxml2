@@ -22,7 +22,7 @@ This library allows you to manipulate XML files.
 %package devel
 Summary: Libraries, includes, etc to develop libxml applications
 Group: X11/libraries
-Requires: libxml
+Requires: libxml=%ver
 
 %description devel
 Libraries, include files, etc you can use to develop libxml applications.

@@ -2,7 +2,7 @@
 %define ver      @VERSION@
 %define prefix   /usr
 
-Summary: libXML library
+Summary: Library providing XML and HTML support
 Name: libxml2
 Version: %ver
 Release: 1
@@ -15,15 +15,32 @@ URL: http://xmlsoft.org/
 Docdir: %{prefix}/doc
 
 %description
-This library allows you to manipulate XML files.
+This library allows to manipulate XML files. It includes support 
+to read, modify and write XML and HTML files. There is DTDs support
+this includes parsing and validation even with complex DtDs, either
+at parse time or later once the document has been modified. The output
+can be a simple SAX stream or and in-memory DOM like representations.
+In this case one can use the built-in XPath and XPointer implementation
+to select subnodes or ranges. A flexible Input/Output mechanism is
+available, with existing HTTP and FTP modules and combined to an
+URI library.
 
 %package devel
-Summary: Libraries, includes, etc to develop libxml applications
+Summary: Libraries, includes, etc. to develop XML and HTML applications
 Group: Development/Libraries
 Requires: libxml2 = %{version}
 
 %description devel
-Libraries, include files, etc you can use to develop libxml applications.
+Libraries, include files, etc you can use to develop XML applications.
+This library allows to manipulate XML files. It includes support 
+to read, modify and write XML and HTML files. There is DTDs support
+this includes parsing and validation even with complex DtDs, either
+at parse time or later once the document has been modified. The output
+can be a simple SAX stream or and in-memory DOM like representations.
+In this case one can use the built-in XPath and XPointer implementation
+to select subnodes or ranges. A flexible Input/Output mechanism is
+available, with existing HTTP and FTP modules and combined to an
+URI library.
 
 
 %changelog

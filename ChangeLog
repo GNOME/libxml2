@@ -1,3 +1,7 @@
+Mon Oct 30 10:26:43 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* libxml.spec.in: improved package descriptions
+
 Sun Oct 29 19:03:11 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* xpath.c xpathInternals.h: applied a large cleaning patch

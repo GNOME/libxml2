@@ -1,3 +1,8 @@
+Mon Jan 14 17:53:41 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* debugXML.c tree.c: some cleanup after an unsuccessful attempt
+	  at fixing #61290 :-(
+
 Sun Jan 13 21:30:54 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: fixed xmlSaveFormatFileEnc() when encoding == NULL

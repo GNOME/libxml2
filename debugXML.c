@@ -1111,17 +1111,22 @@ xmlLsOneNode(FILE *output, xmlNodePtr node) {
 	case XML_NOTATION_NODE:
 	    fprintf(output, "N");
 	    break;
+	case XML_NAMESPACE_DECL:
+	    fprintf(output, "n");
+	    break;
 	default:
 	    fprintf(output, "?");
     }
-    if (node->properties != NULL)
-	fprintf(output, "a");
-    else	
-	fprintf(output, "-");
-    if (node->nsDef != NULL) 
-	fprintf(output, "n");
-    else	
-	fprintf(output, "-");
+    if (node->type != XML_NAMESPACE_DECL) {
+	if (node->properties != NULL)
+	    fprintf(output, "a");
+	else	
+	    fprintf(output, "-");
+	if (node->nsDef != NULL) 
+	    fprintf(output, "n");
+	else	
+	    fprintf(output, "-");
+    }
 
     fprintf(output, " %8d ", xmlLsCountNode(node));
 
@@ -1169,6 +1174,15 @@ xmlLsOneNode(FILE *output, xmlNodePtr node) {
 	    break;
 	case XML_NOTATION_NODE:
 	    break;
+	case XML_NAMESPACE_DECL: {
+	    xmlNsPtr ns = (xmlNsPtr) node;
+
+	    if (ns->prefix == NULL)
+		fprintf(output, "default -> %s", ns->href);
+	    else
+		fprintf(output, "%s -> %s", ns->prefix, ns->href);
+	    break;
+	}
 	default:
 	    if (node->name != NULL)
 		fprintf(output, "%s", node->name);
@@ -1363,6 +1377,9 @@ xmlShellList(xmlShellCtxtPtr ctxt ATTRIBUTE_UNUSED,
     if ((node->type == XML_DOCUMENT_NODE) ||
         (node->type == XML_HTML_DOCUMENT_NODE)) {
         cur = ((xmlDocPtr) node)->children;
+    } else if (node->type == XML_NAMESPACE_DECL) {
+        xmlLsOneNode(stdout, node);
+        return (0);
     } else if (node->children != NULL) {
         cur = node->children;
     } else {

@@ -2352,6 +2352,10 @@ xmlFreeNodeList(xmlNodePtr cur) {
 #endif
 	return;
     }
+    if (cur->type == XML_NAMESPACE_DECL) {
+	xmlFreeNsList((xmlNsPtr) cur);
+	return;
+    }
     while (cur != NULL) {
         next = cur->next;
 	/* unroll to speed up freeing the document */
@@ -2425,8 +2429,14 @@ xmlFreeNode(xmlNodePtr cur) {
 	return;
     }
     /* use xmlFreeDtd for DTD nodes */
-    if (cur->type == XML_DTD_NODE)
+    if (cur->type == XML_DTD_NODE) {
+	xmlFreeDtd((xmlDtdPtr) cur);
 	return;
+    }
+    if (cur->type == XML_NAMESPACE_DECL) {
+	xmlFreeNs((xmlNsPtr) cur);
+        return;
+    }
     if ((cur->children != NULL) &&
 	(cur->type != XML_ENTITY_REF_NODE))
 	xmlFreeNodeList(cur->children);

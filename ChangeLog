@@ -1,3 +1,7 @@
+Wed Oct 29 18:21:00 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmlIO.c: fix needed when HTTP is not compiled in by Mark Vakoc
+
 Wed Oct 29 18:05:53 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: more fixes about unregistering objects

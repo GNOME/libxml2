@@ -1,3 +1,9 @@
+Tue Mar  9 18:48:51 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* win32/Makefile.bcb, win32/Makefile.mingw, win32/Makefile.msvc:
+	  added new module xmlsave with patch supplied by Eric Zurcher
+	  (second attempt - don't know what happened to the first one!)
+
 Tue Mar  9 09:59:25 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* python/libxml.c python/libxml.py: applied patch from Anthony Carrico

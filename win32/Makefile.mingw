@@ -133,6 +133,7 @@ XML_OBJS = $(XML_INTDIR)/c14n.o\
 	$(XML_INTDIR)/xmlmemory.o\
 	$(XML_INTDIR)/xmlreader.o\
 	$(XML_INTDIR)/xmlregexp.o\
+	$(XML_INTDIR)/xmlsave.o\
 	$(XML_INTDIR)/xmlschemas.o\
 	$(XML_INTDIR)/xmlschemastypes.o\
 	$(XML_INTDIR)/xmlunicode.o\
@@ -177,6 +178,7 @@ XML_OBJS_A = $(XML_INTDIR_A)/c14n.o\
 	$(XML_INTDIR_A)/xmlmemory.o\
 	$(XML_INTDIR_A)/xmlreader.o\
 	$(XML_INTDIR_A)/xmlregexp.o\
+	$(XML_INTDIR_A)/xmlsave.o\
 	$(XML_INTDIR_A)/xmlschemas.o\
 	$(XML_INTDIR_A)/xmlschemastypes.o\
 	$(XML_INTDIR_A)/xmlunicode.o\

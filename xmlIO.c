@@ -74,7 +74,7 @@
 #define xmlRegisterDefaultOutputCallbacks xmlRegisterDefOutputCallbacks
 #endif
 
-#define DEBUG_EXTERNAL_ENTITIES 
+/* #define DEBUG_EXTERNAL_ENTITIES */
 /* #define DEBUG_INPUT */
 
 #ifdef DEBUG_INPUT

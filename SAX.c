@@ -26,12 +26,6 @@
 /* #define DEBUG_SAX */
 /* #define DEBUG_SAX_TREE */
 
-#ifdef __GNUC__
-#ifdef DEBUG_SAX
-#define ATTRIBUTE_UNUSED
-#endif
-#endif
-
 /**
  * getPublicId:
  * @ctx: the user data (XML parser context)
@@ -369,7 +363,7 @@ getEntity(void *ctx, const xmlChar *name)
 	xmlNodePtr children;
 
         parse = xmlParseCtxtExternalEntity(ctxt,
-		  ret->SystemID, ret->ExternalID, &children);
+		  ret->URI, ret->ExternalID, &children);
 	xmlAddChildList((xmlNodePtr) ret, children);
     }
     return(ret);
@@ -530,34 +524,36 @@ attributeDecl(void *ctx, const xmlChar *elem, const xmlChar *fullname,
  * An element definition has been parsed
  */
 void
-elementDecl(void *ctx, const xmlChar *name, int type,
-	    xmlElementContentPtr content)
+elementDecl(void *ctx, const xmlChar * name, int type,
+            xmlElementContentPtr content)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlElementPtr elem = NULL;
 
 #ifdef DEBUG_SAX
     xmlGenericError(xmlGenericErrorContext,
-	    "SAX.elementDecl(%s, %d, ...)\n",
-            fullname, type);
+                    "SAX.elementDecl(%s, %d, ...)\n", name, type);
 #endif
-    
+
     if (ctxt->inSubset == 1)
-	elem = xmlAddElementDecl(&ctxt->vctxt, ctxt->myDoc->intSubset,
-                             name, (xmlElementTypeVal) type, content);
+        elem = xmlAddElementDecl(&ctxt->vctxt, ctxt->myDoc->intSubset,
+                                 name, (xmlElementTypeVal) type, content);
     else if (ctxt->inSubset == 2)
-	elem = xmlAddElementDecl(&ctxt->vctxt, ctxt->myDoc->extSubset,
-                             name, (xmlElementTypeVal) type, content);
+        elem = xmlAddElementDecl(&ctxt->vctxt, ctxt->myDoc->extSubset,
+                                 name, (xmlElementTypeVal) type, content);
     else {
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt, 
-	     "SAX.elementDecl(%s) called while not in subset\n", name);
-	return;
+        if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+            ctxt->sax->error(ctxt,
+                             "SAX.elementDecl(%s) called while not in subset\n",
+                             name);
+        return;
     }
-    if (elem == NULL) ctxt->valid = 0;
+    if (elem == NULL)
+        ctxt->valid = 0;
     if (ctxt->validate && ctxt->wellFormed &&
         ctxt->myDoc && ctxt->myDoc->intSubset)
-	ctxt->valid &= xmlValidateElementDecl(&ctxt->vctxt, ctxt->myDoc, elem);
+        ctxt->valid &=
+            xmlValidateElementDecl(&ctxt->vctxt, ctxt->myDoc, elem);
 }
 
 /**

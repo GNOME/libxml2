@@ -1,3 +1,8 @@
+Sun Feb  3 00:17:26 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* python/Makefile.am python/TODO python/libxml.py: fixed a small
+	  bug a bit of cleanup.
+
 Sat Feb  2 22:47:10 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* python/Makefile.am python/libxml.c python/libxml2-python-api.xml

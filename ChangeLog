@@ -1,3 +1,10 @@
+Thu Aug 14 17:10:39 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* DOCBparser.c globals.c include/libxml/xmlmemory.h: get rid of
+	  some compilation warnings.
+	* xinclude.c: fix the performance problem reported by Kevin Ruscoe
+	  plus some cleanup and better error reporting.
+
 Thu Aug 14 14:13:43 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* encoding.c: applied UTF-16 encoding handling patch provided by

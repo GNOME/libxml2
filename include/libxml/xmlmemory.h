@@ -177,9 +177,6 @@ char *	xmlMemStrdupLoc	(const char *str, const char *file, int line);
  */
 #define xmlMemStrdup(str) xmlMemStrdupLoc((str), __FILE__, __LINE__)
 
-void *	xmlMallocLoc(size_t size, const char *file, int line);
-void *	xmlReallocLoc(void *ptr,size_t size, const char *file, int line);
-char *	xmlMemStrdupLoc(const char *str, const char *file, int line);
 #endif /* DEBUG_MEMORY_LOCATION */
 
 #ifdef __cplusplus

@@ -3156,7 +3156,7 @@ docbParsePI(xmlParserCtxtPtr ctxt) {
 	 */
 	target = xmlParseName(ctxt);
 	if (target != NULL) {
-	    xmlChar *encoding = NULL;
+	    const xmlChar *encoding = NULL;
 
 	    if ((RAW == '?') && (NXT(1) == '>')) {
 		if (input != ctxt->input) {

@@ -62,10 +62,12 @@ void xmlCleanupGlobals()
  * Memory allocation routines
  */
 #if defined(DEBUG_MEMORY_LOCATION) || defined(DEBUG_MEMORY)
+#ifndef _DEBUG_MEMORY_ALLOC_
 extern void xmlMemFree(void *ptr);
 extern void * xmlMemMalloc(size_t size);
 extern void * xmlMemRealloc(void *ptr,size_t size);
 extern char * xmlMemoryStrdup(const char *str);
+#endif
 
 xmlFreeFunc xmlFree = (xmlFreeFunc) xmlMemFree;
 xmlMallocFunc xmlMalloc = (xmlMallocFunc) xmlMemMalloc;

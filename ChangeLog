@@ -1,3 +1,9 @@
+Thu Jul 12 21:20:17 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* DOCBparser.c HTMLparser.c HTMLtree.c SAX.c debugXML.c parser.c
+	  tree.c xpointer.c: store the line numbder in element->content,
+	  may break some software, need a configuration mechanism
+
 2001-07-10  Darin Adler  <darin@bentspoon.com>
 
 	* .cvsignore:

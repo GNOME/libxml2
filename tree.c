@@ -904,7 +904,8 @@ xmlNodeListGetRawString(xmlDocPtr doc, xmlNodePtr list, int inLine) {
     if (list == NULL) return(NULL);
 
     while (node != NULL) {
-        if (node->type == XML_TEXT_NODE) {
+        if ((node->type == XML_TEXT_NODE) ||
+	    (node->type == XML_CDATA_SECTION_NODE)) {
 	    if (inLine) {
 #ifndef XML_USE_BUFFER_CONTENT
 		ret = xmlStrcat(ret, node->content);
@@ -2248,12 +2249,10 @@ xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
 
     /*
      * If cur is a TEXT node, merge its content with adjacent TEXT nodes
-     * or with parent->content if parent->content != NULL.
      * cur is then freed.
      */
     if (cur->type == XML_TEXT_NODE) {
-	if (((parent->type == XML_ELEMENT_NODE) || 
-	     (parent->type == XML_TEXT_NODE)) &&
+	if ((parent->type == XML_TEXT_NODE) &&
 	    (parent->content != NULL)) {
 #ifndef XML_USE_BUFFER_CONTENT
 	    xmlNodeAddContent(parent, cur->content);
@@ -2284,31 +2283,17 @@ xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
     }
 
     /*
-     * Handle the case where parent->content != NULL, in that case it will
-     * create a intermediate TEXT node.
+     * Coalescing
      */
-    if (((parent->type == XML_ELEMENT_NODE) || (parent->type == XML_TEXT_NODE)) &&
+    if ((parent->type == XML_TEXT_NODE) &&
 	(parent->content != NULL)) {
-        xmlNodePtr text;
-	
 #ifndef XML_USE_BUFFER_CONTENT
-	text = xmlNewDocText(parent->doc, parent->content);
+	xmlNodeAddContent(parent, cur->content);
 #else
-	text = xmlNewDocText(parent->doc, xmlBufferContent(parent->content));
+	xmlNodeAddContent(parent, xmlBufferContent(cur->content));
 #endif
-	if (text != NULL) {
-	    text->next = parent->children;
-	    if (text->next != NULL)
-		text->next->prev = text;
-	    parent->children = text;
-	    UPDATE_LAST_CHILD_AND_PARENT(parent)
-#ifndef XML_USE_BUFFER_CONTENT
-	    xmlFree(parent->content);
-#else
-	    xmlBufferFree(parent->content);
-#endif
-	    parent->content = NULL;
-	}
+	xmlFreeNode(cur);
+	return(parent);
     }
     if (parent->children == NULL) {
         parent->children = cur;
@@ -2368,13 +2353,22 @@ xmlFreeNodeList(xmlNodePtr cur) {
 		xmlFreeNodeList(cur->children);
 	    if (cur->properties != NULL)
 		xmlFreePropList(cur->properties);
-	    if (cur->type != XML_ENTITY_REF_NODE)
+	    if ((cur->type != XML_ELEMENT_NODE) &&
+		(cur->type != XML_XINCLUDE_START) &&
+		(cur->type != XML_XINCLUDE_END) &&
+		(cur->type != XML_ENTITY_REF_NODE)) {
 #ifndef XML_USE_BUFFER_CONTENT
 		if (cur->content != NULL) xmlFree(cur->content);
 #else
 		if (cur->content != NULL) xmlBufferFree(cur->content);
 #endif
-	    if (cur->nsDef != NULL) xmlFreeNsList(cur->nsDef);
+	    }
+	    if (((cur->type == XML_ELEMENT_NODE) ||
+	         (cur->type == XML_XINCLUDE_START) ||
+		 (cur->type == XML_XINCLUDE_END)) &&
+		(cur->nsDef != NULL))
+		xmlFreeNsList(cur->nsDef);
+
 	    /*
 	     * When a node is a text node or a comment, it uses a global static
 	     * variable for the name of the node.
@@ -2430,12 +2424,18 @@ xmlFreeNode(xmlNodePtr cur) {
 	xmlFreeNodeList(cur->children);
     if (cur->properties != NULL)
 	xmlFreePropList(cur->properties);
-    if (cur->type != XML_ENTITY_REF_NODE)
+    if ((cur->type != XML_ELEMENT_NODE) &&
+	(cur->content != NULL) &&
+	(cur->type != XML_ENTITY_REF_NODE) &&
+	(cur->type != XML_XINCLUDE_END) &&
+	(cur->type != XML_XINCLUDE_START)) {
 #ifndef XML_USE_BUFFER_CONTENT
-	if (cur->content != NULL) xmlFree(cur->content);
+	xmlFree(cur->content);
 #else
-    	if (cur->content != NULL) xmlBufferFree(cur->content);
+    	xmlBufferFree(cur->content);
 #endif
+    }
+
     /*
      * When a node is a text node or a comment, it uses a global static
      * variable for the name of the node.
@@ -2756,7 +2756,11 @@ xmlStaticCopyNode(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
 	ret->name = xmlStringComment;
     else if (node->name != NULL)
 	ret->name = xmlStrdup(node->name);
-    if ((node->content != NULL) && (node->type != XML_ENTITY_REF_NODE)) {
+    if ((node->type != XML_ELEMENT_NODE) &&
+	(node->content != NULL) &&
+	(node->type != XML_ENTITY_REF_NODE) &&
+	(node->type != XML_XINCLUDE_END) &&
+	(node->type != XML_XINCLUDE_START)) {
 #ifndef XML_USE_BUFFER_CONTENT
 	ret->content = xmlStrdup(node->content);
 #else
@@ -2899,32 +2903,6 @@ xmlNodePtr xmlCopyNodeList(xmlNodePtr node) {
     xmlNodePtr ret = xmlStaticCopyNodeList(node, NULL, NULL);
     return(ret);
 }
-
-/**
- * xmlCopyElement:
- * @elem:  the element
- *
- * Do a copy of the element definition.
- *
- * Returns: a new xmlElementPtr, or NULL in case of error.
-xmlElementPtr
-xmlCopyElement(xmlElementPtr elem) {
-    xmlElementPtr ret;
-
-    if (elem == NULL) return(NULL);
-    ret = xmlNewDocElement(elem->doc, elem->ns, elem->name, elem->content);
-    if (ret == NULL) return(NULL);
-    if (!recursive) return(ret);
-    if (elem->properties != NULL)
-        ret->properties = xmlCopyPropList(elem->properties);
-    
-    if (elem->nsDef != NULL)
-        ret->nsDef = xmlCopyNamespaceList(elem->nsDef);
-    if (elem->children != NULL)
-        ret->children = xmlCopyElementList(elem->children);
-    return(ret);
-}
- */
 
 /**
  * xmlCopyDtd:
@@ -3412,7 +3390,6 @@ xmlNodeGetContent(xmlNodePtr cur) {
 		return(NULL);
 	    while (tmp != NULL) {
 		switch (tmp->type) {
-		    case XML_ELEMENT_NODE: 
 		    case XML_CDATA_SECTION_NODE:
 		    case XML_TEXT_NODE:
 			if (tmp->content != NULL)
@@ -3547,14 +3524,6 @@ xmlNodeSetContent(xmlNodePtr cur, const xmlChar *content) {
     switch (cur->type) {
         case XML_DOCUMENT_FRAG_NODE:
         case XML_ELEMENT_NODE:
-	    if (cur->content != NULL) {
-#ifndef XML_USE_BUFFER_CONTENT
-	        xmlFree(cur->content);
-#else
-		xmlBufferFree(cur->content);
-#endif
-		cur->content = NULL;
-	    }
 	    if (cur->children != NULL) xmlFreeNodeList(cur->children);
 	    cur->children = xmlStringGetNodeList(cur->doc, content);
 	    UPDATE_LAST_CHILD_AND_PARENT(cur)
@@ -3635,14 +3604,6 @@ xmlNodeSetContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
     switch (cur->type) {
         case XML_DOCUMENT_FRAG_NODE:
         case XML_ELEMENT_NODE:
-	    if (cur->content != NULL) {
-#ifndef XML_USE_BUFFER_CONTENT
-	        xmlFree(cur->content);
-#else
-		xmlBufferFree(cur->content);
-#endif
-		cur->content = NULL;
-	    }
 	    if (cur->children != NULL) xmlFreeNodeList(cur->children);
 	    cur->children = xmlStringLenGetNodeList(cur->doc, content, len);
 	    UPDATE_LAST_CHILD_AND_PARENT(cur)
@@ -3721,28 +3682,9 @@ xmlNodeAddContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
     switch (cur->type) {
         case XML_DOCUMENT_FRAG_NODE:
         case XML_ELEMENT_NODE: {
-	    xmlNodePtr last = NULL, newNode;
+	    xmlNodePtr last, newNode;
 
-	    if (cur->children != NULL) {
-		last = cur->last;
-	    } else {
-	        if (cur->content != NULL) {
-#ifndef XML_USE_BUFFER_CONTENT
-		    cur->children = xmlStringGetNodeList(cur->doc, cur->content);
-#else
-		    cur->children = xmlStringGetNodeList(cur->doc,
-			                       xmlBufferContent(cur->content));
-#endif
-		    UPDATE_LAST_CHILD_AND_PARENT(cur)
-#ifndef XML_USE_BUFFER_CONTENT
-		    xmlFree(cur->content);
-#else
-		    xmlBufferFree(cur->content);
-#endif
-		    cur->content = NULL;
-		    last = cur->last;
-		}
-	    }
+	    last = cur->last;
 	    newNode = xmlNewTextLen(content, len);
 	    if (newNode != NULL) {
 		xmlAddChild(cur, newNode);
@@ -4738,7 +4680,9 @@ xmlIsBlankNode(xmlNodePtr node) {
     const xmlChar *cur;
     if (node == NULL) return(0);
 
-    if (node->type != XML_TEXT_NODE) return(0);
+    if ((node->type != XML_TEXT_NODE) &&
+        (node->type != XML_CDATA_SECTION_NODE))
+	return(0);
     if (node->content == NULL) return(1);
 #ifndef XML_USE_BUFFER_CONTENT
     cur = node->content;
@@ -5619,13 +5563,14 @@ xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
     if (cur->properties != NULL)
         xmlAttrListDump(buf, doc, cur->properties);
 
-    if ((cur->content == NULL) && (cur->children == NULL) &&
+    if (((cur->type == XML_ELEMENT_NODE) || (cur->content == NULL)) &&
+	(cur->children == NULL) &&
 	(!xmlSaveNoEmptyTags)) {
         xmlBufferWriteChar(buf, "/>");
 	return;
     }
     xmlBufferWriteChar(buf, ">");
-    if (cur->content != NULL) {
+    if ((cur->type != XML_ELEMENT_NODE) && (cur->content != NULL)) {
 	xmlChar *buffer;
 
 #ifndef XML_USE_BUFFER_CONTENT
@@ -6047,13 +5992,13 @@ xmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
     if (cur->properties != NULL)
         xmlAttrListDumpOutput(buf, doc, cur->properties, encoding);
 
-    if ((cur->content == NULL) && (cur->children == NULL) &&
-	(!xmlSaveNoEmptyTags)) {
+    if (((cur->type == XML_ELEMENT_NODE) || (cur->content == NULL)) &&
+	(cur->children == NULL) && (!xmlSaveNoEmptyTags)) {
         xmlOutputBufferWriteString(buf, "/>");
 	return;
     }
     xmlOutputBufferWriteString(buf, ">");
-    if (cur->content != NULL) {
+    if ((cur->type != XML_ELEMENT_NODE) && (cur->content != NULL)) {
 	xmlChar *buffer;
 
 #ifndef XML_USE_BUFFER_CONTENT

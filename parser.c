@@ -1477,7 +1477,8 @@ static int areBlanks(xmlParserCtxtPtr ctxt, const xmlChar *str, int len) {
 
     lastChild = xmlGetLastChild(ctxt->node);
     if (lastChild == NULL) {
-        if (ctxt->node->content != NULL) return(0);
+        if ((ctxt->node->type != XML_ELEMENT_NODE) &&
+            (ctxt->node->content != NULL)) return(0);
     } else if (xmlNodeIsText(lastChild))
         return(0);
     else if ((ctxt->node->children != NULL) &&

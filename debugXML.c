@@ -248,7 +248,8 @@ xmlDebugDumpElemDecl(FILE *output, xmlElementPtr elem, int depth) {
 	    fprintf(output, ", MIXED ");
 	    break;
     }
-    if (elem->content != NULL) {
+    if ((elem->type != XML_ELEMENT_NODE) &&
+	(elem->content != NULL)) {
 	char buf[5001];
 
 	buf[0] = 0;
@@ -602,7 +603,8 @@ void xmlDebugDumpOneNode(FILE *output, xmlNodePtr node, int depth) {
     if (node->properties != NULL)
 	xmlDebugDumpAttrList(output, node->properties, depth + 1);
     if (node->type != XML_ENTITY_REF_NODE) {
-	if (node->content != NULL) {
+	if ((node->type != XML_ELEMENT_NODE) &&
+	    (node->content != NULL)) {
             shift[2 * i] = shift[2 * i + 1] = ' ' ;
             shift[2 * i + 2] = shift[2 * i + 3] = 0 ;
 	    fprintf(output, shift);
@@ -818,7 +820,8 @@ xmlDebugDumpEntityCallback(xmlEntityPtr cur, FILE *output) {
 	fprintf(output, "SYSTEM \"%s\"", cur->SystemID);
     if (cur->orig != NULL)
 	fprintf(output, "\n orig \"%s\"", cur->orig);
-    if (cur->content != NULL)
+    if ((cur->type != XML_ELEMENT_NODE) &&
+	(cur->content != NULL))
 	fprintf(output, "\n content \"%s\"", cur->content);
     fprintf(output, "\n");	
 }

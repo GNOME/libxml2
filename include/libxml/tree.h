@@ -405,6 +405,9 @@ struct _xmlNode {
     xmlNs           *nsDef;     /* namespace definitions on this node */
 };
 
+#define XML_GET_CONTENT(n) ((n)->type == XML_ELEMENT_PTR ? NULL : (n)->content)
+#define XML_GET_LINE(n) ((n)->type == XML_ELEMENT_PTR ? (int) (n)->content : 0)
+
 /**
  * xmlDoc:
  *

@@ -966,6 +966,8 @@ startElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
         parent = ctxt->myDoc->children;
     }
     ctxt->nodemem = -1;
+    if (ctxt->input != NULL)
+	ret->content = (void *) ctxt->input->line;
 
     /*
      * We are parsing a new node.

@@ -2458,7 +2458,8 @@ static int areBlanks(docbParserCtxtPtr ctxt, const xmlChar *str, int len) {
     if (ctxt->node == NULL) return(0);
     lastChild = xmlGetLastChild(ctxt->node);
     if (lastChild == NULL) {
-        if (ctxt->node->content != NULL) return(0);
+        if ((ctxt->node->type != XML_ELEMENT_NODE) &&
+	    (ctxt->node->content != NULL)) return(0);
     } else if (xmlNodeIsText(lastChild))
         return(0);
     return(1);

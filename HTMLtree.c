@@ -538,7 +538,8 @@ htmlNodeDumpFormat(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
 	}
 	return;
     }
-    if ((cur->content == NULL) && (cur->children == NULL)) {
+    if (((cur->type == XML_ELEMENT_NODE) || (cur->content == NULL)) &&
+	(cur->children == NULL)) {
         if ((info != NULL) && (info->saveEndTag != 0) &&
 	    (xmlStrcmp(BAD_CAST info->name, BAD_CAST "html")) &&
 	    (xmlStrcmp(BAD_CAST info->name, BAD_CAST "body"))) {
@@ -557,7 +558,7 @@ htmlNodeDumpFormat(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
 	return;
     }
     xmlBufferWriteChar(buf, ">");
-    if (cur->content != NULL) {
+    if ((cur->type != XML_ELEMENT_NODE) && (cur->content != NULL)) {
 	xmlChar *buffer;
 
 #ifndef XML_USE_BUFFER_CONTENT
@@ -1039,7 +1040,8 @@ htmlNodeDumpFormatOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
 	}
 	return;
     }
-    if ((cur->content == NULL) && (cur->children == NULL)) {
+    if (((cur->type == XML_ELEMENT_NODE) || (cur->content == NULL)) &&
+	(cur->children == NULL)) {
         if ((info != NULL) && (info->saveEndTag != 0) &&
 	    (xmlStrcmp(BAD_CAST info->name, BAD_CAST "html")) &&
 	    (xmlStrcmp(BAD_CAST info->name, BAD_CAST "body"))) {
@@ -1060,7 +1062,8 @@ htmlNodeDumpFormatOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
 	return;
     }
     xmlOutputBufferWriteString(buf, ">");
-    if (cur->content != NULL) {
+    if ((cur->type != XML_ELEMENT_NODE) &&
+	(cur->content != NULL)) {
 	    /*
 	     * Uses the OutputBuffer property to automatically convert
 	     * invalids to charrefs

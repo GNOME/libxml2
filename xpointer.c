@@ -1421,7 +1421,8 @@ xmlXPtrBuildRangeNodeList(xmlXPathObjectPtr range) {
 	    }
 	} else if ((cur == start) &&
 		   (list == NULL) /* looks superfluous but ... */ ) {
-	    if (cur->type == XML_TEXT_NODE) {
+	    if ((cur->type == XML_TEXT_NODE) ||
+		(cur->type == XML_CDATA_SECTION_NODE)) {
 		const xmlChar *content = cur->content;
 
 		if (content == NULL) {
@@ -2317,7 +2318,8 @@ xmlXPtrAdvanceChar(xmlNodePtr *node, int *indx, int bytes) {
 	 * We should have a text (or cdata) node ... 
 	 */
 	len = 0;
-	if (cur->content != NULL) {
+	if ((cur->type != XML_ELEMENT_NODE) &&
+            (cur->content != NULL)) {
 #ifndef XML_USE_BUFFER_CONTENT
 	    len = xmlStrlen(cur->content);
 #else
@@ -2383,7 +2385,8 @@ xmlXPtrMatchString(const xmlChar *string, xmlNodePtr start, int startindex,
     while (stringlen > 0) {
 	if ((cur == *end) && (pos + stringlen > *endindex))
 	    return(0);
-	if (cur->content != NULL) {
+
+	if ((cur->type != XML_ELEMENT_NODE) && (cur->content != NULL)) {
 #ifndef XML_USE_BUFFER_CONTENT
 	    len = xmlStrlen(cur->content);
 #else
@@ -2481,7 +2484,7 @@ xmlXPtrSearchString(const xmlChar *string, xmlNodePtr *start, int *startindex,
     stringlen = xmlStrlen(string);
 
     while (cur != NULL) {
-	if (cur->content != NULL) {
+	if ((cur->type != XML_ELEMENT_NODE) && (cur->content != NULL)) {
 #ifndef XML_USE_BUFFER_CONTENT
 	    len = xmlStrlen(cur->content);
 #else
@@ -2578,7 +2581,8 @@ xmlXPtrGetLastChar(xmlNodePtr *node, int *indx) {
     while (cur != NULL) {
 	if (cur->last != NULL)
 	    cur = cur->last;
-	else if (cur->content != NULL) {
+	else if ((cur->type != XML_ELEMENT_NODE) &&
+	         (cur->content != NULL)) {
 #ifndef XML_USE_BUFFER_CONTENT
 	    len = xmlStrlen(cur->content);
 #else

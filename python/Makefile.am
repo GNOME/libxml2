@@ -38,4 +38,4 @@ $(GENERATED): $(srcdir)/$(GENERATE) $(API_DESC)
 	cd $(srcdir) && $(PYTHON) $(GENERATE)
 
 clean:
-	rm -f $(GENERATED) *.o _libxml.so *.pyc
+	rm -f $(GENERATED) *.o _libxml.so *.pyc libxml2.py

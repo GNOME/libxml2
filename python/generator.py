@@ -672,6 +672,10 @@ for classname in function_classes.keys():
 	    classes.write("            _libxml.%s(self._o)\n" %
 	                  classes_destructors[classname]);
 	    classes.write("        self._o = None\n\n");
+	classes.write("    def __repr__(self):\n")
+	format = "%s:%%s" % (classname)
+	classes.write("        return \"%s\" %% (self.name)\n\n" % (
+	              format))
 	flist = function_classes[classname]
 	flist.sort(functionCompare)
 	oldfile = ""

@@ -1,3 +1,9 @@
+Fri Feb  1 18:48:19 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* python/Makefile.am python/generator.py python/libxml.c
+	  python/libxml.py: more work, now able to extend the
+	  XPath interpreter with functions written in python.
+
 Fri Feb  1 10:28:51 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* python/Makefile.am: Jacob sent a patch to allow building from

@@ -142,6 +142,12 @@ def xpathObjectRet(o):
     return o
 
 #
+# register an XPath function
+#
+def registerXPathFunction(ctxt, name, ns_uri, f):
+    ret = _libxml.registerXPathFunction(ctxt, name, ns_uri, f)
+
+#
 # Everything below this point is automatically generated
 #
 

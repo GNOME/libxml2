@@ -3,10 +3,13 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 #include <libxml/tree.h>
+#include <libxml/xpath.h>
+#include <libxml/xpathInternals.h>
 #include "libxml_wrap.h"
 #include "libxml2-py.h"
 
 /* #define DEBUG */
+/* #define DEBUG_XPATH */
 
 /************************************************************************
  *									*
@@ -256,6 +259,170 @@ libxml_xmlXPathObjectPtrWrap(xmlXPathObjectPtr obj) {
     }
     xmlXPathFreeObject(obj);
     return(ret);
+}
+
+xmlXPathObjectPtr
+libxml_xmlXPathObjectPtrConvert(PyObject * obj) {
+    xmlXPathObjectPtr ret;
+
+#ifdef DEBUG
+    printf("libxml_xmlXPathObjectPtrConvert: obj = %p\n", obj);
+#endif
+    if (obj == NULL) {
+	return(NULL);
+    }
+    if PyFloat_Check(obj) {
+	ret = xmlXPathNewFloat((double) PyFloat_AS_DOUBLE(obj));
+    } else if PyString_Check(obj) {
+	xmlChar *str;
+
+	str = xmlStrndup((const xmlChar *)PyString_AS_STRING(obj),
+		         PyString_GET_SIZE(obj));
+	ret = xmlXPathWrapString(str);
+    } else {
+	printf("Unable to convert Python Object to XPath");
+    }
+    Py_DECREF(obj);
+    return(ret);
+}
+/************************************************************************
+ *									*
+ *			XPath extensions				*
+ *									*
+ ************************************************************************/
+
+static int libxml_xpathCallbacksInitialized = 0;
+
+typedef struct libxml_xpathCallback {
+    xmlXPathContextPtr ctx;
+    xmlChar *name;
+    xmlChar *ns_uri;
+    PyObject *function;
+} libxml_xpathCallback, *libxml_xpathCallbackPtr;
+static libxml_xpathCallback libxml_xpathCallbacks[10];
+static int libxml_xpathCallbacksNb = 0;
+static int libxml_xpathCallbacksMax = 10;
+
+/* TODO: this is not reentrant !!! MUST FIX with a per context hash */
+static PyObject *current_function = NULL;
+
+static void
+libxml_xmlXPathFuncCallback(xmlXPathParserContextPtr ctxt, int nargs) {
+    PyObject *list, *cur, *result;
+    xmlXPathObjectPtr obj;
+    int i;
+
+#ifdef DEBUG_XPATH
+    printf("libxml_xmlXPathFuncCallback called\n");
+#endif
+
+    list = PyTuple_New(nargs);
+    for (i = 0;i < nargs;i++) {
+	obj = valuePop(ctxt);
+	cur = libxml_xmlXPathObjectPtrWrap(obj);
+	PyTuple_SetItem(list, i, cur);
+    }
+    result = PyEval_CallObject(current_function, list);
+    Py_DECREF(list);
+
+    obj = libxml_xmlXPathObjectPtrConvert(result);
+    valuePush(ctxt, obj);
+}
+
+static xmlXPathFunction
+libxml_xmlXPathFuncLookupFunc(void *ctxt, const xmlChar *name,
+	                      const xmlChar *ns_uri) {
+    int i;
+#ifdef DEBUG_XPATH
+    printf("libxml_xmlXPathFuncLookupFunc(%p, %s, %s) called\n",
+	   ctxt, name, ns_uri);
+#endif
+    for (i = 0;i < libxml_xpathCallbacksNb;i++) {
+	if ((ctxt == libxml_xpathCallbacks[i].ctx) &&
+	    (xmlStrEqual(name, libxml_xpathCallbacks[i].name)) &&
+	    (xmlStrEqual(ns_uri, libxml_xpathCallbacks[i].ns_uri))) {
+	    current_function = libxml_xpathCallbacks[i].function;
+	    return(libxml_xmlXPathFuncCallback);
+	}
+    }
+    current_function = NULL;
+    return(NULL);
+}
+
+static void
+libxml_xpathCallbacksInitialize(void) {
+    int i;
+
+    if (libxml_xpathCallbacksInitialized != 0)
+	return;
+
+#ifdef DEBUG_XPATH
+    printf("libxml_xpathCallbacksInitialized called\n");
+#endif
+
+    for (i = 0;i < 10;i++) {
+	libxml_xpathCallbacks[i].ctx = NULL;
+	libxml_xpathCallbacks[i].name = NULL;
+	libxml_xpathCallbacks[i].ns_uri = NULL;
+	libxml_xpathCallbacks[i].function = NULL;
+    }
+    current_function = NULL;
+    libxml_xpathCallbacksInitialized = 1;
+}
+
+PyObject *
+libxml_registerXPathFunction(PyObject *self, PyObject *args) {
+    PyObject *py_retval;
+    int c_retval = 0;
+    xmlChar *name;
+    xmlChar *ns_uri;
+    xmlXPathContextPtr ctx;
+    PyObject *pyobj_ctx;
+    PyObject *pyobj_f;
+    int i;
+
+    if (!PyArg_ParseTuple(args, "OszO:registerXPathFunction", &pyobj_ctx,
+		          &name, &ns_uri, &pyobj_f))
+        return(NULL);
+
+    ctx = (xmlXPathContextPtr) PyxmlXPathContext_Get(pyobj_ctx);
+    if (libxml_xpathCallbacksInitialized == 0)
+	libxml_xpathCallbacksInitialize();
+    xmlXPathRegisterFuncLookup(ctx, libxml_xmlXPathFuncLookupFunc, ctx);
+
+    if ((pyobj_ctx == NULL) || (name == NULL) || (pyobj_f == NULL)) {
+	py_retval = libxml_intWrap(-1);
+	return(py_retval);
+    }
+
+#ifdef DEBUG_XPATH
+    printf("libxml_registerXPathFunction(%p, %s, %s) called\n",
+	   ctx, name, ns_uri);
+#endif
+    for (i = 0;i < libxml_xpathCallbacksNb;i++) {
+	if ((ctx == libxml_xpathCallbacks[i].ctx) &&
+	    (xmlStrEqual(name, libxml_xpathCallbacks[i].name)) &&
+	    (xmlStrEqual(ns_uri, libxml_xpathCallbacks[i].ns_uri))) {
+	    Py_XINCREF(pyobj_f);
+	    Py_XDECREF(libxml_xpathCallbacks[i].function);
+	    libxml_xpathCallbacks[i].function = pyobj_f;
+	    c_retval = 1;
+	    goto done;
+	}
+    }
+    if (libxml_xpathCallbacksNb >= libxml_xpathCallbacksMax) {
+	printf("libxml_registerXPathFunction() table full\n");
+    } else {
+	i = libxml_xpathCallbacksNb++;
+	Py_XINCREF(pyobj_f);
+        libxml_xpathCallbacks[i].ctx = ctx;
+        libxml_xpathCallbacks[i].name = xmlStrdup(name);
+        libxml_xpathCallbacks[i].ns_uri = xmlStrdup(ns_uri);
+	libxml_xpathCallbacks[i].function = pyobj_f;
+    }
+done:
+    py_retval = libxml_intWrap((int) c_retval);
+    return(py_retval);
 }
 
 /************************************************************************
@@ -777,7 +944,8 @@ static PyMethodDef libxmlMethods[] = {
     { "next", libxml_next, METH_VARARGS },
     { "parent", libxml_parent, METH_VARARGS },
     { "type", libxml_type, METH_VARARGS },
-    { "doc", libxml_doc, METH_VARARGS }
+    { "doc", libxml_doc, METH_VARARGS },
+    { "registerXPathFunction", libxml_registerXPathFunction, METH_VARARGS }
 };
 
 void init_libxml(void) {

@@ -2,70 +2,33 @@
 #define __LIBXML_WIN32_CONFIG__
 
 #define HAVE_CTYPE_H
-#define HAVE_STDLIB_H
 #define HAVE_STDARG_H
 #define HAVE_MALLOC_H
+#define HAVE_ERRNO_H
+
+#ifdef _WIN32_WCE
+#undef HAVE_ERRNO_H
+#include <windows.h>
+#include "wincecompat.h"
+#else
+#define HAVE_SYS_STAT_H
+#define HAVE__STAT
+#define HAVE_STAT
+#define HAVE_STDLIB_H
 #define HAVE_TIME_H
 #define HAVE_FCNTL_H
-
 #include <io.h>
-
-#ifdef NEED_SOCKETS
-#include <winsock2.h>
-
-#if !defined SOCKLEN_T
-#define SOCKLEN_T int
+#include <direct.h>
 #endif
 
-#define EWOULDBLOCK             WSAEWOULDBLOCK
-#define EINPROGRESS             WSAEINPROGRESS
-#define EALREADY                WSAEALREADY
-#define ENOTSOCK                WSAENOTSOCK
-#define EDESTADDRREQ            WSAEDESTADDRREQ
-#define EMSGSIZE                WSAEMSGSIZE
-#define EPROTOTYPE              WSAEPROTOTYPE
-#define ENOPROTOOPT             WSAENOPROTOOPT
-#define EPROTONOSUPPORT         WSAEPROTONOSUPPORT
-#define ESOCKTNOSUPPORT         WSAESOCKTNOSUPPORT
-#define EOPNOTSUPP              WSAEOPNOTSUPP
-#define EPFNOSUPPORT            WSAEPFNOSUPPORT
-#define EAFNOSUPPORT            WSAEAFNOSUPPORT
-#define EADDRINUSE              WSAEADDRINUSE
-#define EADDRNOTAVAIL           WSAEADDRNOTAVAIL
-#define ENETDOWN                WSAENETDOWN
-#define ENETUNREACH             WSAENETUNREACH
-#define ENETRESET               WSAENETRESET
-#define ECONNABORTED            WSAECONNABORTED
-#define ECONNRESET              WSAECONNRESET
-#define ENOBUFS                 WSAENOBUFS
-#define EISCONN                 WSAEISCONN
-#define ENOTCONN                WSAENOTCONN
-#define ESHUTDOWN               WSAESHUTDOWN
-#define ETOOMANYREFS            WSAETOOMANYREFS
-#define ETIMEDOUT               WSAETIMEDOUT
-#define ECONNREFUSED            WSAECONNREFUSED
-#define ELOOP                   WSAELOOP
-#define EHOSTDOWN               WSAEHOSTDOWN
-#define EHOSTUNREACH            WSAEHOSTUNREACH
-#define EPROCLIM                WSAEPROCLIM
-#define EUSERS                  WSAEUSERS
-#define EDQUOT                  WSAEDQUOT
-#define ESTALE                  WSAESTALE
-#define EREMOTE                 WSAEREMOTE
-/* These cause conflicts with the codes from errno.h. Since they are 
-   not used in the relevant code (nanoftp, nanohttp), we can leave 
-   them disabled.
-#define ENAMETOOLONG            WSAENAMETOOLONG
-#define ENOTEMPTY               WSAENOTEMPTY
-*/
+#include <libxml/xmlwin32version.h>
 
-#else
-#define HAVE_ERRNO_H
-#endif /* NEED_SOCKETS */
+#ifdef NEED_SOCKETS
+#include <wsockcompat.h>
+#endif
 
 #define HAVE_ISINF
 #define HAVE_ISNAN
-
 #include <math.h>
 #ifdef _MSC_VER
 /* MS C-runtime has functions which can be used in order to determine if
@@ -117,14 +80,6 @@ static int isnan (double d) {
 }
 #endif /* _MSC_VER */
 
-#include <direct.h>
-
-#define HAVE_SYS_STAT_H
-#define HAVE__STAT
-#define HAVE_STAT
-
-#include <libxml/xmlwin32version.h>
-
 #ifdef _MSC_VER
 /* We don't use trio when compiling under MSVC. This is not because trio
    is bad, but because MSVC has no easy way to conditionally include a .c
@@ -142,18 +97,6 @@ static int isnan (double d) {
 #define snprintf _snprintf
 #define vsnprintf _vsnprintf
 #endif /* _MSC_VER */
-
-#ifndef LIBXML_DLL_IMPORT
-#if defined(_MSC_VER) && !defined(IN_LIBXML) && !defined(LIBXML_STATIC)
-#define LIBXML_DLL_IMPORT __declspec(dllimport)
-#else
-#define LIBXML_DLL_IMPORT
-#endif
-#endif
-
-#ifndef ATTRIBUTE_UNUSED
-#define ATTRIBUTE_UNUSED
-#endif
 
 /* Define this if you want to use Windows native thread implementation.
    Undefine it if you wish to use another, pthreads for example. Note

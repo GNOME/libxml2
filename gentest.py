@@ -45,6 +45,7 @@ modules_defines = {
     "xmlsave" : "LIBXML_OUTPUT_ENABLED",
     "DOCBparser" : "LIBXML_DOCB_ENABLED",
     "xmlmodule" : "LIBXML_MODULES_ENABLED",
+    "pattern" : "LIBXML_PATTERN_ENABLED",
 }
 
 #

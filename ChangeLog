@@ -1,3 +1,9 @@
+Thu Mar 24 19:01:22 PST 2005 William Brack <wbrack@mmm.com.hk>
+
+	* gentest.py, testapi.c: fixed problem with 'minimal library'
+	  compilation (LIBXML_PATTERN_ENABLED not properly checked) reported
+	  by Greg Morgan
+
 Thu Mar 24 12:01:30 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: Fixed call to a facet error report: the type of

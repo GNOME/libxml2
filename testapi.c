@@ -16733,6 +16733,7 @@ test_xmlPatterncompile(void) {
     return(test_ret);
 }
 
+#ifdef LIBXML_PATTERN_ENABLED
 
 #define gen_nb_xmlStreamCtxtPtr 1
 static xmlStreamCtxtPtr gen_xmlStreamCtxtPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
@@ -16740,6 +16741,8 @@ static xmlStreamCtxtPtr gen_xmlStreamCtxtPtr(int no ATTRIBUTE_UNUSED, int nr ATT
 }
 static void des_xmlStreamCtxtPtr(int no ATTRIBUTE_UNUSED, xmlStreamCtxtPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
 }
+#endif
+
 
 static int
 test_xmlStreamPop(void) {

@@ -800,6 +800,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-parser.html#xmlSAXParseMemoryWithData">xmlSAXParseMemoryWithData</a><br />
 <a href="html/libxml-parser.html#xmlSAXUserParseFile">xmlSAXUserParseFile</a><br />
 <a href="html/libxml-parser.html#xmlSAXUserParseMemory">xmlSAXUserParseMemory</a><br />
+<a href="html/libxml-xmlsave.html#xmlSaveToIO">xmlSaveToIO</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaSetParserErrors">xmlSchemaSetParserErrors</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaSetValidErrors">xmlSchemaSetValidErrors</a><br />
 <a href="html/libxml-xmlschemas.html#xmlSchemaValidateStream">xmlSchemaValidateStream</a><br />
@@ -908,6 +909,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlwriter.html#xmlNewTextWriterMemory">xmlNewTextWriterMemory</a><br />
 <a href="html/libxml-tree.html#xmlNodeBufGetContent">xmlNodeBufGetContent</a><br />
 <a href="html/libxml-tree.html#xmlNodeDump">xmlNodeDump</a><br />
+<a href="html/libxml-xmlsave.html#xmlSaveToBuffer">xmlSaveToBuffer</a><br />
 </p><h2>Type xmlC14NIsVisibleCallback:</h2><p><a href="html/libxml-c14n.html#xmlC14NExecute">xmlC14NExecute</a><br />
 </p><h2>Type xmlCatalogAllow:</h2><p><a href="html/libxml-catalog.html#xmlCatalogSetDefaults">xmlCatalogSetDefaults</a><br />
 </p><h2>Type xmlCatalogPrefer:</h2><p><a href="html/libxml-catalog.html#xmlCatalogSetDefaultPrefer">xmlCatalogSetDefaultPrefer</a><br />
@@ -1093,6 +1095,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-relaxng.html#xmlRelaxNGValidatePushElement">xmlRelaxNGValidatePushElement</a><br />
 <a href="html/libxml-valid.html#xmlRemoveID">xmlRemoveID</a><br />
 <a href="html/libxml-valid.html#xmlRemoveRef">xmlRemoveRef</a><br />
+<a href="html/libxml-xmlsave.html#xmlSaveDoc">xmlSaveDoc</a><br />
 <a href="html/libxml-tree.html#xmlSaveFile">xmlSaveFile</a><br />
 <a href="html/libxml-tree.html#xmlSaveFileEnc">xmlSaveFileEnc</a><br />
 <a href="html/libxml-tree.html#xmlSaveFileTo">xmlSaveFileTo</a><br />
@@ -1363,6 +1366,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-relaxng.html#xmlRelaxNGValidatePopElement">xmlRelaxNGValidatePopElement</a><br />
 <a href="html/libxml-relaxng.html#xmlRelaxNGValidatePushElement">xmlRelaxNGValidatePushElement</a><br />
 <a href="html/libxml-tree.html#xmlReplaceNode">xmlReplaceNode</a><br />
+<a href="html/libxml-xmlsave.html#xmlSaveTree">xmlSaveTree</a><br />
 <a href="html/libxml-xmlschemastypes.html#xmlSchemaValPredefTypeNode">xmlSchemaValPredefTypeNode</a><br />
 <a href="html/libxml-tree.html#xmlSearchNs">xmlSearchNs</a><br />
 <a href="html/libxml-tree.html#xmlSearchNsByHref">xmlSearchNsByHref</a><br />
@@ -1510,10 +1514,12 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-tree.html#xmlSaveFormatFileTo">xmlSaveFormatFileTo</a><br />
 </p><h2>Type xmlOutputCloseCallback:</h2><p><a href="html/libxml-xmlIO.html#xmlOutputBufferCreateIO">xmlOutputBufferCreateIO</a><br />
 <a href="html/libxml-xmlIO.html#xmlRegisterOutputCallbacks">xmlRegisterOutputCallbacks</a><br />
+<a href="html/libxml-xmlsave.html#xmlSaveToIO">xmlSaveToIO</a><br />
 </p><h2>Type xmlOutputMatchCallback:</h2><p><a href="html/libxml-xmlIO.html#xmlRegisterOutputCallbacks">xmlRegisterOutputCallbacks</a><br />
 </p><h2>Type xmlOutputOpenCallback:</h2><p><a href="html/libxml-xmlIO.html#xmlRegisterOutputCallbacks">xmlRegisterOutputCallbacks</a><br />
 </p><h2>Type xmlOutputWriteCallback:</h2><p><a href="html/libxml-xmlIO.html#xmlOutputBufferCreateIO">xmlOutputBufferCreateIO</a><br />
 <a href="html/libxml-xmlIO.html#xmlRegisterOutputCallbacks">xmlRegisterOutputCallbacks</a><br />
+<a href="html/libxml-xmlsave.html#xmlSaveToIO">xmlSaveToIO</a><br />
 </p><h2>Type xmlParserCtxtPtr:</h2><p><a href="html/libxml-parserInternals.html#inputPop">inputPop</a><br />
 <a href="html/libxml-parserInternals.html#inputPush">inputPush</a><br />
 <a href="html/libxml-parserInternals.html#namePop">namePop</a><br />
@@ -1714,6 +1720,10 @@ A:link, A:visited, A:active { text-decoration: underline }
 </p><h2>Type xmlSAXLocatorPtr:</h2><p><a href="html/libxml-SAX.html#setDocumentLocator">setDocumentLocator</a><br />
 <a href="html/libxml-parser.html#setDocumentLocatorSAXFunc">setDocumentLocatorSAXFunc</a><br />
 <a href="html/libxml-SAX2.html#xmlSAX2SetDocumentLocator">xmlSAX2SetDocumentLocator</a><br />
+</p><h2>Type xmlSaveCtxtPtr:</h2><p><a href="html/libxml-xmlsave.html#xmlSaveClose">xmlSaveClose</a><br />
+<a href="html/libxml-xmlsave.html#xmlSaveDoc">xmlSaveDoc</a><br />
+<a href="html/libxml-xmlsave.html#xmlSaveFlush">xmlSaveFlush</a><br />
+<a href="html/libxml-xmlsave.html#xmlSaveTree">xmlSaveTree</a><br />
 </p><h2>Type xmlSchemaFacetPtr:</h2><p><a href="html/libxml-xmlschemastypes.html#xmlSchemaCheckFacet">xmlSchemaCheckFacet</a><br />
 <a href="html/libxml-xmlschemastypes.html#xmlSchemaFreeFacet">xmlSchemaFreeFacet</a><br />
 <a href="html/libxml-xmlschemastypes.html#xmlSchemaValidateFacet">xmlSchemaValidateFacet</a><br />

@@ -46,7 +46,8 @@ xmlinc_HEADERS = \
 		xmlexports.h \
 		xmlwriter.h \
 		chvalid.h \
-		pattern.h
+		pattern.h \
+		xmlsave.h
 
 install-exec-hook:
 	$(mkinstalldirs) $(DESTDIR)$(xmlincdir)

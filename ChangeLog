@@ -1,3 +1,11 @@
+Thu Mar  4 23:03:02 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in doc/Makefile.am include/libxml/Makefile.am:
+	  paalied patch from Julio M. Merino Vidal fixing bug #134751
+	  to fix --with-html-dir option.
+	* doc/*: rebuilt fully the docs 
+	* doc/html/libxml-xmlsave.html: new file from new header.
+
 Thu Mar  4 16:57:50 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* debugXML.c testHTML.c tree.c doc/examples/*.c

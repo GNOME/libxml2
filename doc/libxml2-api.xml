@@ -2372,6 +2372,21 @@
      <exports symbol='xmlRegFreeRegexp' type='function'/>
      <exports symbol='xmlRegexpPrint' type='function'/>
     </file>
+    <file name='xmlsave'>
+     <summary>the XML document serializer</summary>
+     <description>API to save document or subtree of document </description>
+     <author>Daniel Veillard </author>
+     <exports symbol='xmlSaveCtxt' type='typedef'/>
+     <exports symbol='xmlSaveCtxtPtr' type='typedef'/>
+     <exports symbol='xmlSaveToIO' type='function'/>
+     <exports symbol='xmlSaveToBuffer' type='function'/>
+     <exports symbol='xmlSaveToFd' type='function'/>
+     <exports symbol='xmlSaveToFilename' type='function'/>
+     <exports symbol='xmlSaveClose' type='function'/>
+     <exports symbol='xmlSaveFlush' type='function'/>
+     <exports symbol='xmlSaveDoc' type='function'/>
+     <exports symbol='xmlSaveTree' type='function'/>
+    </file>
     <file name='xmlschemas'>
      <summary>incomplete XML Schemas structure implementation</summary>
      <description>interface to the XML Schemas handling and schema validity checking, it is incomplete right now. </description>
@@ -5096,6 +5111,8 @@ actually an xmlCharEncoding'/>
       <field name='getColumnNumber' type='int(*getColumnNumber)' info=''/>
     </struct>
     <typedef name='xmlSAXLocatorPtr' file='tree' type='xmlSAXLocator *'/>
+    <struct name='xmlSaveCtxt' file='xmlsave' type='struct _xmlSaveCtxt'/>
+    <typedef name='xmlSaveCtxtPtr' file='xmlsave' type='xmlSaveCtxt *'/>
     <struct name='xmlSchema' file='xmlschemas' type='struct _xmlSchema'>
       <field name='name' type='const xmlChar *' info=' schema name'/>
       <field name='targetNamespace' type='const xmlChar *' info=' the target namespace'/>
@@ -10920,6 +10937,17 @@ actually an xmlCharEncoding'/>
       <arg name='hdlr' type='xmlSAXHandler *' info='the SAX handler'/>
       <arg name='version' type='int' info='the version, 1 or 2'/>
     </function>
+    <function name='xmlSaveClose' file='xmlsave'>
+      <info>Close a document saving context, i.e. make sure that all bytes have been output and free the associated data.</info>
+      <return type='int' info='the number of byte written or -1 in case of error.'/>
+      <arg name='ctxt' type='xmlSaveCtxtPtr' info='a document saving context'/>
+    </function>
+    <function name='xmlSaveDoc' file='xmlsave'>
+      <info>Save a full document to a saving context</info>
+      <return type='long' info='the number of byte written or -1 in case of error'/>
+      <arg name='ctxt' type='xmlSaveCtxtPtr' info='a document saving context'/>
+      <arg name='doc' type='xmlDocPtr' info='a document'/>
+    </function>
     <function name='xmlSaveFile' file='tree'>
       <info>Dump an XML document to a file. Will use compression if compiled in and enabled. If @filename is &quot;-&quot; the stdout file is used.</info>
       <return type='int' info='the number of bytes written or -1 in case of failure.'/>
@@ -10939,6 +10967,11 @@ actually an xmlCharEncoding'/>
       <arg name='buf' type='xmlOutputBufferPtr' info='an output I/O buffer'/>
       <arg name='cur' type='xmlDocPtr' info='the document'/>
       <arg name='encoding' type='const char *' info='the encoding if any assuming the I/O layer handles the trancoding'/>
+    </function>
+    <function name='xmlSaveFlush' file='xmlsave'>
+      <info>Flush a document saving context, i.e. make sure that all bytes have been output.</info>
+      <return type='int' info='the number of byte written or -1 in case of error.'/>
+      <arg name='ctxt' type='xmlSaveCtxtPtr' info='a document saving context'/>
     </function>
     <function name='xmlSaveFormatFile' file='tree'>
       <info>Dump an XML document to a file. Will use compression if compiled in and enabled. If @filename is &quot;-&quot; the stdout file is used. If @format is set then the document will be indented on output. Note that @format = 1 provide node indenting only if xmlIndentTreeOutput = 1 or xmlKeepBlanksDefault(0) was called</info>
@@ -10962,6 +10995,42 @@ actually an xmlCharEncoding'/>
       <arg name='cur' type='xmlDocPtr' info='the document'/>
       <arg name='encoding' type='const char *' info='the encoding if any assuming the I/O layer handles the trancoding'/>
       <arg name='format' type='int' info='should formatting spaces been added'/>
+    </function>
+    <function name='xmlSaveToBuffer' file='xmlsave'>
+      <info>Create a document saving context serializing to a buffer with the encoding and the options given</info>
+      <return type='xmlSaveCtxtPtr' info='a new serialization context or NULL in case of error.'/>
+      <arg name='buffer' type='xmlBufferPtr' info='a buffer'/>
+      <arg name='encoding' type='const char *' info='the encoding name to use or NULL'/>
+      <arg name='options' type='int' info='a set of xmlSaveOptions'/>
+    </function>
+    <function name='xmlSaveToFd' file='xmlsave'>
+      <info>Create a document saving context serializing to a file descriptor with the encoding and the options given.</info>
+      <return type='xmlSaveCtxtPtr' info='a new serialization context or NULL in case of error.'/>
+      <arg name='fd' type='int' info='a file descriptor number'/>
+      <arg name='encoding' type='const char *' info='the encoding name to use or NULL'/>
+      <arg name='options' type='int' info='a set of xmlSaveOptions'/>
+    </function>
+    <function name='xmlSaveToFilename' file='xmlsave'>
+      <info>Create a document saving context serializing to a filename or possibly to an URL (but this is less reliable) with the encoding and the options given.</info>
+      <return type='xmlSaveCtxtPtr' info='a new serialization context or NULL in case of error.'/>
+      <arg name='filename' type='const char *' info='a file name or an URL'/>
+      <arg name='encoding' type='const char *' info='the encoding name to use or NULL'/>
+      <arg name='options' type='int' info='a set of xmlSaveOptions'/>
+    </function>
+    <function name='xmlSaveToIO' file='xmlsave'>
+      <info>Create a document saving context serializing to a file descriptor with the encoding and the options given</info>
+      <return type='xmlSaveCtxtPtr' info='a new serialization context or NULL in case of error.'/>
+      <arg name='iowrite' type='xmlOutputWriteCallback' info='an I/O write function'/>
+      <arg name='ioclose' type='xmlOutputCloseCallback' info='an I/O close function'/>
+      <arg name='ioctx' type='void *' info='an I/O handler'/>
+      <arg name='encoding' type='const char *' info='the encoding name to use or NULL'/>
+      <arg name='options' type='int' info='a set of xmlSaveOptions'/>
+    </function>
+    <function name='xmlSaveTree' file='xmlsave'>
+      <info>Save a subtree starting at the node parameter to a saving context</info>
+      <return type='long' info='the number of byte written or -1 in case of error'/>
+      <arg name='ctxt' type='xmlSaveCtxtPtr' info='a document saving context'/>
+      <arg name='node' type='xmlNodePtr' info='a document'/>
     </function>
     <function name='xmlSaveUri' file='uri'>
       <info>Save the URI as an escaped string</info>

@@ -5746,8 +5746,10 @@ xmlValidateDocument(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
     int ret;
     xmlNodePtr root;
 
-    if ((doc->intSubset == NULL) && (doc->extSubset == NULL))
+    if ((doc->intSubset == NULL) && (doc->extSubset == NULL)) {
+	VERROR(ctxt->userData, "no DTD found!\n" );
 	return(0);
+    }
     if ((doc->intSubset != NULL) && ((doc->intSubset->SystemID != NULL) ||
 	(doc->intSubset->ExternalID != NULL)) && (doc->extSubset == NULL)) {
         doc->extSubset = xmlParseDTD(doc->intSubset->ExternalID,

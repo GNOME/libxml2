@@ -1,3 +1,8 @@
+Wed Oct 16 16:31:05 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* valid.c: make xmlValidateDocument emit a warning msg if there
+	  is no DTD, pointed by Christian Glahn
+
 Wed Oct 16 16:05:38 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xmlregexp.c xmlschemas.c: fixed the validation of sequences

@@ -1,6 +1,6 @@
-error detected at relaxng.c:5224
+error detected at relaxng.c:5401
 Extra data in list: 5.6
-error detected at relaxng.c:6394
+error detected at relaxng.c:6571
 error validating list
-error detected at relaxng.c:6092
+error detected at relaxng.c:6269
 Extra content for element vector: text

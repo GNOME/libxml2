@@ -3777,6 +3777,182 @@ xmlRelaxNGCheckCycles(xmlRelaxNGParserCtxtPtr ctxt,
 }
 
 /**
+ * xmlRelaxNGCheckRules:
+ * @ctxt:  a Relax-NG parser context
+ * @nodes:  grammar children nodes
+ *
+ * Check for simplification of empty and notAllowed
+ */
+static void
+xmlRelaxNGSimplify(xmlRelaxNGParserCtxtPtr ctxt, 
+	             xmlRelaxNGDefinePtr cur,
+		     xmlRelaxNGDefinePtr parent) {
+    xmlRelaxNGDefinePtr prev = NULL;
+
+    while (cur != NULL) {
+	if ((cur->type == XML_RELAXNG_REF) ||
+	    (cur->type == XML_RELAXNG_PARENTREF)) {
+	    if (cur->depth != -3) {
+		cur->depth = -3;
+		xmlRelaxNGSimplify(ctxt, cur->content, cur);
+	    }
+	} else if (cur->type == XML_RELAXNG_NOT_ALLOWED) {
+	    if ((parent != NULL) &&
+		((parent->type == XML_RELAXNG_ATTRIBUTE) ||
+		 (parent->type == XML_RELAXNG_LIST) ||
+		 (parent->type == XML_RELAXNG_GROUP) ||
+		 (parent->type == XML_RELAXNG_INTERLEAVE) ||
+		 (parent->type == XML_RELAXNG_ONEORMORE) ||
+		 (parent->type == XML_RELAXNG_ZEROORMORE))) {
+		parent->type = XML_RELAXNG_NOT_ALLOWED;
+		break;
+	    }
+	    if ((parent != NULL) &&
+		(parent->type == XML_RELAXNG_CHOICE)) {
+		if (prev == NULL) {
+		    if (parent != NULL)
+			parent->content = cur->next;
+		} else
+		    prev->next = cur->next;
+	    } else
+		prev = cur;
+	} else if (cur->type == XML_RELAXNG_EMPTY){
+	    if ((parent != NULL) &&
+		((parent->type == XML_RELAXNG_ONEORMORE) ||
+		 (parent->type == XML_RELAXNG_ZEROORMORE))) {
+		parent->type = XML_RELAXNG_EMPTY;
+		break;
+	    }
+	    if ((parent != NULL) &&
+		((parent->type == XML_RELAXNG_GROUP) ||
+		 (parent->type == XML_RELAXNG_INTERLEAVE))) {
+		if (prev == NULL) {
+		    if (parent != NULL)
+			parent->content = cur->next;
+		} else
+		    prev->next = cur->next;
+	    } else
+		prev = cur;
+	} else {
+	    if (cur->content != NULL)
+		xmlRelaxNGSimplify(ctxt, cur->content, cur);
+	    /*
+	     * This may result in a simplification
+	     */
+	    if ((cur->type == XML_RELAXNG_GROUP) ||
+		(cur->type == XML_RELAXNG_INTERLEAVE)) {
+		if (cur->content == NULL)
+		    cur->type = XML_RELAXNG_EMPTY;
+		else if (cur->content->next == NULL) {
+		    cur->content->next = cur->next;
+		    if (prev == NULL) {
+			if (parent != NULL)
+			    parent->content = cur->content;
+		    } else {
+			prev->next = cur->content;
+		    }
+		    cur = cur->content;
+		}
+	    }
+	    /*
+	     * the current node may have been transformed back
+	     */
+	    if ((cur->type == XML_RELAXNG_EXCEPT) &&
+		(cur->content != NULL) &&
+		(cur->content->type == XML_RELAXNG_NOT_ALLOWED)) {
+		if (prev == NULL) {
+		    if (parent != NULL)
+			parent->content = cur->next;
+		} else
+		    prev->next = cur->next;
+	    } else if (cur->type == XML_RELAXNG_NOT_ALLOWED) {
+		if ((parent != NULL) &&
+		    ((parent->type == XML_RELAXNG_ATTRIBUTE) ||
+		     (parent->type == XML_RELAXNG_LIST) ||
+		     (parent->type == XML_RELAXNG_GROUP) ||
+		     (parent->type == XML_RELAXNG_INTERLEAVE) ||
+		     (parent->type == XML_RELAXNG_ONEORMORE) ||
+		     (parent->type == XML_RELAXNG_ZEROORMORE))) {
+		    parent->type = XML_RELAXNG_NOT_ALLOWED;
+		    break;
+		}
+		if ((parent != NULL) &&
+		    (parent->type == XML_RELAXNG_CHOICE)) {
+		    if (prev == NULL) {
+			if (parent != NULL)
+			    parent->content = cur->next;
+		    } else
+			prev->next = cur->next;
+		} else
+		    prev = cur;
+	    } else if (cur->type == XML_RELAXNG_EMPTY){
+		if ((parent != NULL) &&
+		    ((parent->type == XML_RELAXNG_ONEORMORE) ||
+		     (parent->type == XML_RELAXNG_ZEROORMORE))) {
+		    parent->type = XML_RELAXNG_EMPTY;
+		    break;
+		}
+		if ((parent != NULL) &&
+		    ((parent->type == XML_RELAXNG_GROUP) ||
+		     (parent->type == XML_RELAXNG_INTERLEAVE) ||
+		     (parent->type == XML_RELAXNG_CHOICE))) {
+		    if (prev == NULL) {
+			if (parent != NULL)
+			    parent->content = cur->next;
+		    } else
+			prev->next = cur->next;
+		} else
+		    prev = cur;
+	    } else {
+		prev = cur;
+	    }
+	}
+	cur = cur->next;
+    }
+}
+
+#if 0
+/**
+ * xmlRelaxNGCheckRules:
+ * @ctxt:  a Relax-NG parser context
+ * @nodes:  grammar children nodes
+ * @state:  a state
+ *
+ * Check for rules in 
+ *
+ * Returns 0 if check passed, and -1 in case of error
+ */
+static int
+xmlRelaxNGCheckRules(xmlRelaxNGParserCtxtPtr ctxt, 
+	              xmlRelaxNGDefinePtr cur, int depth) {
+    int ret = 0;
+
+    while ((ret == 0) && (cur != NULL)) {
+	if ((cur->type == XML_RELAXNG_REF) ||
+	    (cur->type == XML_RELAXNG_PARENTREF)) {
+	    if (cur->depth == -1) {
+		cur->depth = depth;
+		ret = xmlRelaxNGCheckCycles(ctxt, cur->content, depth);
+		cur->depth = -2;
+	    } else if (depth == cur->depth) {
+		if (ctxt->error != NULL)
+		    ctxt->error(ctxt->userData,
+		    "Detected a cycle in %s references\n", cur->name);
+		ctxt->nbErrors++;
+		return(-1);
+	    }
+	} else if (cur->type == XML_RELAXNG_ELEMENT) {
+	    ret = xmlRelaxNGCheckCycles(ctxt, cur->content, depth + 1);
+	} else {
+	    ret = xmlRelaxNGCheckCycles(ctxt, cur->content, depth);
+	}
+	cur = cur->next;
+    }
+    return(ret);
+}
+#endif
+
+/**
  * xmlRelaxNGParseGrammar:
  * @ctxt:  a Relax-NG parser context
  * @nodes:  grammar children nodes
@@ -3888,6 +4064,7 @@ xmlRelaxNGParseDocument(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
     ctxt->define = olddefine;
     if (schema->topgrammar->start != NULL) {
 	xmlRelaxNGCheckCycles(ctxt, schema->topgrammar->start, 0);
+	xmlRelaxNGSimplify(ctxt, schema->topgrammar->start, NULL);
     }
 
 #ifdef DEBUG

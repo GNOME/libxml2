@@ -1,3 +1,9 @@
+Wed Mar  7 20:43:47 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* parser.c SAX.c: the new content parsing code raised an
+	  ugly bug in the characters() SAX callback. Found it
+	  just because of strangeness in XSLT XML Rec ouptut :-(
+
 Wed Mar  7 16:50:22 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* Makefile.am: Martin Baulig suggested to add -lm

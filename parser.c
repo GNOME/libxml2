@@ -2450,15 +2450,17 @@ xmlParseCharData(xmlParserCtxtPtr ctxt, int cdata) {
 		continue; /* while */
 	    }
 	    nbchar = in - ctxt->input->cur;
-	    if (IS_BLANK(*ctxt->input->cur) &&
-		areBlanks(ctxt, ctxt->input->cur, nbchar)) {
-		if (ctxt->sax->ignorableWhitespace != NULL)
-		    ctxt->sax->ignorableWhitespace(ctxt->userData,
-					   ctxt->input->cur, nbchar);
-	    } else {
-		if (ctxt->sax->characters != NULL)
-		    ctxt->sax->characters(ctxt->userData,
-					  ctxt->input->cur, nbchar);
+	    if (nbchar > 0) {
+		if (IS_BLANK(*ctxt->input->cur) &&
+		    areBlanks(ctxt, ctxt->input->cur, nbchar)) {
+		    if (ctxt->sax->ignorableWhitespace != NULL)
+			ctxt->sax->ignorableWhitespace(ctxt->userData,
+					       ctxt->input->cur, nbchar);
+		} else {
+		    if (ctxt->sax->characters != NULL)
+			ctxt->sax->characters(ctxt->userData,
+					      ctxt->input->cur, nbchar);
+		}
 	    }
 	    ctxt->input->cur = in;
 	    if (*in == 0xD) {
@@ -2471,7 +2473,10 @@ xmlParseCharData(xmlParserCtxtPtr ctxt, int cdata) {
 		}
 		in--;
 	    }
-	    if ((*in == '<') || (*in == '&')) {
+	    if (*in == '<') {
+		return;
+	    }
+	    if (*in == '&') {
 		return;
 	    }
 	    SHRINK;

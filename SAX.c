@@ -1189,7 +1189,8 @@ characters(void *ctx, const xmlChar *ch, int len)
 	}
 #endif
     } else {
-	if ((xmlNodeIsText(lastChild)) && (ctxt->nodemem != 0)) {
+	int isText = xmlNodeIsText(lastChild);
+	if ((isText) && (ctxt->nodemem != 0)) {
 #ifndef XML_USE_BUFFER_CONTENT
 	    /*
 	     * The whole point of maintaining nodelen and nodemem,
@@ -1220,6 +1221,12 @@ characters(void *ctx, const xmlChar *ch, int len)
 #else
 	    xmlTextConcat(lastChild, ch, len);
 #endif
+	} else if (isText) {
+	    xmlTextConcat(lastChild, ch, len);
+	    if (ctxt->node->children != NULL) {
+		ctxt->nodelen = xmlStrlen(lastChild->content);
+		ctxt->nodemem = ctxt->nodelen + 1;
+	    }
 	} else {
 	    /* Mixed content, first time */
 	    lastChild = xmlNewTextLen(ch, len);

@@ -1,3 +1,9 @@
+Mon Jun 14 21:56:31 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xmlreader.c: fix from Steve Ball and update of the comment.
+	* Makefile.am result/errors/*.str: William pointed out that 
+	  the streaming error checking part wasn't streaming, fixing
+
 Mon Jun 14 14:11:52 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* catalog.c: patch from Igor for the default catalog path on Windows

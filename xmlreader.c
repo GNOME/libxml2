@@ -3547,9 +3547,9 @@ xmlTextReaderCurrentNode(xmlTextReaderPtr reader) {
  * xmlTextReaderPreserve:
  * @reader:  the xmlTextReaderPtr used
  *
- * 
- * current node being accessed by the xmlTextReader. This is dangerous
- * because the underlying node may be destroyed on the next Reads.
+ * This tells the XML Reader to preserve the current node.
+ * The caller must also use xmlTextReaderCurrentDoc() to
+ * keep an handle on the resulting document once parsing has finished
  *
  * Returns the xmlNodePtr or NULL in case of error.
  */
@@ -3567,7 +3567,7 @@ xmlTextReaderPreserve(xmlTextReaderPtr reader) {
     if (cur == NULL)
         return(NULL);
 
-    if (cur->type != XML_DOCUMENT_NODE) {
+    if ((cur->type != XML_DOCUMENT_NODE) && (cur->type != XML_DTD_NODE)) {
 	cur->extra |= NODE_IS_PRESERVED;
 	cur->extra |= NODE_IS_SPRESERVED;
     }

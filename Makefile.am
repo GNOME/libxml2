@@ -328,12 +328,12 @@ Errtests : xmllint$(EXEEXT)
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/result/errors/$$name.str ] ; then \
 	      echo New test file $$name ; \
-	      $(CHECKER) $(top_builddir)/xmllint $$i \
+	      $(CHECKER) $(top_builddir)/xmllint --stream $$i \
 	         2> $(srcdir)/result/errors/$$name.str \
 		 > $(srcdir)/result/errors/$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
 	  else \
-	      log=`$(CHECKER) $(top_builddir)/xmllint $$i 2> error.$$name > result.$$name ; \
+	      log=`$(CHECKER) $(top_builddir)/xmllint --stream $$i 2> error.$$name > result.$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
 	      diff $(srcdir)/result/errors/$$name result.$$name ; \
 	      diff $(srcdir)/result/errors/$$name.str error.$$name` ; \

@@ -6546,10 +6546,13 @@ xmlXPathStringEvalNumber(const xmlChar *str) {
     const xmlChar *cur = str;
     double ret = 0.0;
     double mult = 1;
-    int ok = 0, tmp = 0;
+    int ok = 0;
     int isneg = 0;
     int exponent = 0;
     int is_exponent_negative = 0;
+#ifdef __GNUC__
+    unsigned long tmp = 0;
+#endif
     
     while (IS_BLANK(*cur)) cur++;
     if ((*cur != '.') && ((*cur < '0') || (*cur > '9')) && (*cur != '-')) {
@@ -6559,8 +6562,10 @@ xmlXPathStringEvalNumber(const xmlChar *str) {
 	isneg = 1;
 	cur++;
     }
+
+#ifdef __GNUC__
     /*
-     * tmp is a workaroudn against a gcc compiler bug
+     * tmp is a workaround against a gcc compiler bug
      */
     while ((*cur >= '0') && (*cur <= '9')) {
 	tmp = tmp * 10 + (*cur - '0');
@@ -6568,6 +6573,13 @@ xmlXPathStringEvalNumber(const xmlChar *str) {
 	cur++;
     }
     ret = (double) tmp;
+#else
+    while ((*cur >= '0') && (*cur <= '9')) {
+	ret = ret * 10 + (*cur - '0');
+	ok = 1;
+	cur++;
+    }
+#endif
 
     if (*cur == '.') {
         cur++;

@@ -1,3 +1,10 @@
+Mon Aug 27 16:24:47 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c: hum, restrict the integer usage gcc bug workaround
+	  to only gcc compilers so that other architecture don't get
+	  penalized by this limitation.
+	* include/libxml/xpath.h: small typo fix from Heiko W. Rupp
+
 Sun Aug 26 20:45:04 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* valid.c: fixed a Windows compiler warning (Chris Poblete)

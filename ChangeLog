@@ -1,3 +1,8 @@
+Tue Apr 24 13:21:36 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* HTMLparser.c: Jonas Borgström patch, the <td>, and <th> elements
+	  now means the end of any open <span>,<font>,<a>,<b>,<i>,<u>.
+
 Mon Apr 23 15:40:04 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* DOCBparser.c DOCBparser.h testDocbook.c configure.in Makefile.am

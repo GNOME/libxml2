@@ -1,3 +1,8 @@
+Wed Dec 24 12:54:25 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in NEWS doc/*: updated the docs and prepared a new
+	  release 2.6.4
+
 Wed Dec 24 12:07:52 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* legacy.c: remove deprecated warning on startElement()

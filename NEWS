@@ -15,10 +15,24 @@ to test those   - More testing on RelaxNG
   Schemas
 
 
+2.6.4: Dec 24 2003:
+   - Windows build fixes (Igor Zlatkovic)
+   - Some serious XInclude problems reported by Oleg Paraschenko and 
+   - Unix and Makefile packaging fixes (me, William Brack, 
+   - Documentation improvements (John Fleck, William Brack), example fix
+    (Lucas Brasilino)
+   - bugfixes: xmlTextReaderExpand() with xmlReaderWalker, XPath handling of
+    NULL strings (William Brack) , API building reader or parser from
+    filedescriptor should not close it, changed XPath sorting to be stable
+    again (William Brack), xmlGetNodePath() generating '(null)' (William
+    Brack), DTD validation and namespace bug (William Brack), XML Schemas
+    double inclusion behaviour
+
+
 2.6.3: Dec 10 2003:
    - documentation updates and cleanup (DV, William Brack, John Fleck)
    - added a repository of examples, examples from Aleksey Sanin, Dodji
-    Seketeli, Alfred Mickautsch 
+    Seketeli, Alfred Mickautsch
    - Windows updates: Mark Vakoc, Igor Zlatkovic, Eric Zurcher, Mingw
     (Kenneth Haley)
    - Unicode range checking (William Brack)
@@ -35,7 +49,7 @@ to test those   - More testing on RelaxNG
     namespace change.
    - XML Schemas improvements: include (Robert Stepanek), import and
     namespace handling, fixed the regression tests troubles, added examples
-    based on Eric van der Vlist book, regexp fixes 
+    based on Eric van der Vlist book, regexp fixes
    - preliminary pattern support for streaming (needed for schemas
     constraints), added xmlTextReaderPreservePattern() to collect subdocument
     when streaming.

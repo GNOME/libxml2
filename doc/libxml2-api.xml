@@ -5194,6 +5194,7 @@ actually an xmlCharEncoding'/>
       <field name='baseNs' type='const xmlChar *' info=''/>
       <field name='baseType' type='xmlSchemaTypePtr' info=''/>
       <field name='facets' type='xmlSchemaFacetPtr' info=''/>
+      <field name='redef' type='struct _xmlSchemaType *' info=' possible redefinitions for the type'/>
     </struct>
     <typedef name='xmlSchemaTypePtr' file='schemasInternals' type='xmlSchemaType *'/>
     <typedef name='xmlSchemaTypeType' file='schemasInternals' type='enum'/>
@@ -7302,7 +7303,7 @@ actually an xmlCharEncoding'/>
       <info>Create a parser context for a file or URL content. Automatic support for ZLIB/Compress compressed document is provided by default if found at compile-time and for file accesses</info>
       <return type='xmlParserCtxtPtr' info='the new parser context or NULL'/>
       <arg name='filename' type='const char *' info='the filename or URL'/>
-      <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
+      <arg name='options' type='int' info='a combination of xmlParserOption'/>
     </function>
     <function name='xmlCtxtGetLastError' file='xmlerror'>
       <info>Get the last parsing error registered.</info>
@@ -7316,16 +7317,16 @@ actually an xmlCharEncoding'/>
       <arg name='cur' type='const xmlChar *' info='a pointer to a zero terminated string'/>
       <arg name='URL' type='const char *' info='the base URL to use for the document'/>
       <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
-      <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
+      <arg name='options' type='int' info='a combination of xmlParserOption'/>
     </function>
     <function name='xmlCtxtReadFd' file='parser'>
-      <info>parse an XML from a file descriptor and build a tree. This reuses the existing @ctxt parser context</info>
+      <info>parse an XML from a file descriptor and build a tree. This reuses the existing @ctxt parser context NOTE that the file descriptor will not be closed when the reader is closed or reset.</info>
       <return type='xmlDocPtr' info='the resulting document tree'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='fd' type='int' info='an open file descriptor'/>
       <arg name='URL' type='const char *' info='the base URL to use for the document'/>
       <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
-      <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
+      <arg name='options' type='int' info='a combination of xmlParserOption'/>
     </function>
     <function name='xmlCtxtReadFile' file='parser'>
       <info>parse an XML file from the filesystem or the network. This reuses the existing @ctxt parser context</info>
@@ -7333,7 +7334,7 @@ actually an xmlCharEncoding'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='filename' type='const char *' info='a file or URL'/>
       <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
-      <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
+      <arg name='options' type='int' info='a combination of xmlParserOption'/>
     </function>
     <function name='xmlCtxtReadIO' file='parser'>
       <info>parse an XML document from I/O functions and source and build a tree. This reuses the existing @ctxt parser context</info>
@@ -7344,7 +7345,7 @@ actually an xmlCharEncoding'/>
       <arg name='ioctx' type='void *' info='an I/O handler'/>
       <arg name='URL' type='const char *' info='the base URL to use for the document'/>
       <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
-      <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
+      <arg name='options' type='int' info='a combination of xmlParserOption'/>
     </function>
     <function name='xmlCtxtReadMemory' file='parser'>
       <info>parse an XML in-memory document and build a tree. This reuses the existing @ctxt parser context</info>
@@ -7354,7 +7355,7 @@ actually an xmlCharEncoding'/>
       <arg name='size' type='int' info='the size of the array'/>
       <arg name='URL' type='const char *' info='the base URL to use for the document'/>
       <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
-      <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
+      <arg name='options' type='int' info='a combination of xmlParserOption'/>
     </function>
     <function name='xmlCtxtReset' file='parser'>
       <info>Reset a parser context</info>
@@ -7379,7 +7380,7 @@ actually an xmlCharEncoding'/>
       <info>Applies the options to the parser context</info>
       <return type='int' info='0 in case of success, the set of unknown or unimplemented options in case of error.'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
-      <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
+      <arg name='options' type='int' info='a combination of xmlParserOption'/>
     </function>
     <function name='xmlCurrentChar' file='parserInternals'>
       <info>The current char value, if using UTF-8 this may actually span multiple bytes in the input buffer. Implement the end of line normalization: 2.11 End-of-Line Handling Wherever an external parsed entity or the literal entity value of an internal parsed entity contains either the literal two-character sequence &quot;#xD#xA&quot; or a standalone literal #xD, an XML processor must pass to the application the single character #xA. This behavior can conveniently be produced by normalizing all line breaks to #xA on input, before parsing.)</info>
@@ -8729,9 +8730,9 @@ actually an xmlCharEncoding'/>
       <arg name='fp' type='FILE *' info='a FILE descriptor used as the output file, if NULL, the result is written to the file .memorylist'/>
     </function>
     <function name='xmlMemFree' file='xmlmemory'>
-      <info></info>
+      <info>a free() equivalent, with error checking.</info>
       <return type='void'/>
-      <arg name='ptr' type='void *' info=''/>
+      <arg name='ptr' type='void *' info='the memory block pointer'/>
     </function>
     <function name='xmlMemGet' file='xmlmemory'>
       <info>Provides the memory access functions set currently in use</info>
@@ -8742,15 +8743,15 @@ actually an xmlCharEncoding'/>
       <arg name='strdupFunc' type='xmlStrdupFunc *' info='place to save the strdup() function in use'/>
     </function>
     <function name='xmlMemMalloc' file='xmlmemory'>
-      <info></info>
-      <return type='void *' info=''/>
-      <arg name='size' type='size_t' info=''/>
+      <info>a malloc() equivalent, with logging of the allocation info.</info>
+      <return type='void *' info='a pointer to the allocated area or NULL in case of lack of memory.'/>
+      <arg name='size' type='size_t' info='an int specifying the size in byte to allocate.'/>
     </function>
     <function name='xmlMemRealloc' file='xmlmemory'>
-      <info></info>
-      <return type='void *' info=''/>
-      <arg name='ptr' type='void *' info=''/>
-      <arg name='size' type='size_t' info=''/>
+      <info>a realloc() equivalent, with logging of the allocation info.</info>
+      <return type='void *' info='a pointer to the allocated area or NULL in case of lack of memory.'/>
+      <arg name='ptr' type='void *' info='the initial memory block pointer'/>
+      <arg name='size' type='size_t' info='an int specifying the size in byte to allocate.'/>
     </function>
     <function name='xmlMemSetup' file='xmlmemory'>
       <info>Override the default memory access functions with a new set This has to be called before any other libxml routines !  Should this be blocked if there was already some allocations done ?</info>
@@ -8782,9 +8783,9 @@ actually an xmlCharEncoding'/>
       <return type='void'/>
     </function>
     <function name='xmlMemoryStrdup' file='xmlmemory'>
-      <info></info>
-      <return type='char *' info=''/>
-      <arg name='str' type='const char *' info=''/>
+      <info>a strdup() equivalent, with logging of the allocation info.</info>
+      <return type='char *' info='a pointer to the new string or NULL if allocation error occurred.'/>
+      <arg name='str' type='const char *' info='the initial string pointer'/>
     </function>
     <function name='xmlMutexLock' file='threads'>
       <info>xmlMutexLock() is used to lock a libxml2 token.</info>
@@ -9064,7 +9065,7 @@ actually an xmlCharEncoding'/>
       <arg name='name' type='const xmlChar *' info='the char ref string, starting with # or &quot;&amp;# ... ;&quot;'/>
     </function>
     <function name='xmlNewChild' file='tree'>
-      <info>Creation of a new child element, added at the end of @parent children list. @ns and @content parameters are optional (NULL). If @content is non NULL, a child list containing the TEXTs and ENTITY_REFs node will be created. NOTE: @content is supposed to be a piece of XML CDATA, so it allows entity references. XML special chars must be escaped first by using xmlEncodeEntitiesReentrant(), or xmlNewTextChild() should be used.</info>
+      <info>Creation of a new child element, added at the end of @parent children list. @ns and @content parameters are optional (NULL). If @ns is NULL, the newly created element inherits the namespace of @parent. If @content is non NULL, a child list containing the TEXTs and ENTITY_REFs node will be created. NOTE: @content is supposed to be a piece of XML CDATA, so it allows entity references. XML special chars must be escaped first by using xmlEncodeEntitiesReentrant(), or xmlNewTextChild() should be used.</info>
       <return type='xmlNodePtr' info='a pointer to the new node object.'/>
       <arg name='parent' type='xmlNodePtr' info='the parent node'/>
       <arg name='ns' type='xmlNsPtr' info='a namespace if any'/>
@@ -9259,7 +9260,7 @@ actually an xmlCharEncoding'/>
       <arg name='content' type='const xmlChar *' info='the text content'/>
     </function>
     <function name='xmlNewTextChild' file='tree'>
-      <info>Creation of a new child element, added at the end of @parent children list. @ns and @content parameters are optional (NULL). If @content is non NULL, a child TEXT node will be created containing the string @content. NOTE: Use xmlNewChild() if @content will contain entities that need to be preserved. Use this function, xmlNewTextChild(), if you need to ensure that reserved XML chars that might appear in @content, such as the ampersand, greater-than or less-than signs, are automatically replaced by their XML escaped entity representations.</info>
+      <info>Creation of a new child element, added at the end of @parent children list. @ns and @content parameters are optional (NULL). If @ns is NULL, the newly created element inherits the namespace of @parent. If @content is non NULL, a child TEXT node will be created containing the string @content. NOTE: Use xmlNewChild() if @content will contain entities that need to be preserved. Use this function, xmlNewTextChild(), if you need to ensure that reserved XML chars that might appear in @content, such as the ampersand, greater-than or less-than signs, are automatically replaced by their XML escaped entity representations.</info>
       <return type='xmlNodePtr' info='a pointer to the new node object.'/>
       <arg name='parent' type='xmlNodePtr' info='the parent node'/>
       <arg name='ns' type='xmlNsPtr' info='a namespace if any'/>
@@ -10086,22 +10087,22 @@ actually an xmlCharEncoding'/>
       <arg name='cur' type='const xmlChar *' info='a pointer to a zero terminated string'/>
       <arg name='URL' type='const char *' info='the base URL to use for the document'/>
       <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
-      <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
+      <arg name='options' type='int' info='a combination of xmlParserOption'/>
     </function>
     <function name='xmlReadFd' file='parser'>
-      <info>parse an XML from a file descriptor and build a tree.</info>
+      <info>parse an XML from a file descriptor and build a tree. NOTE that the file descriptor will not be closed when the reader is closed or reset.</info>
       <return type='xmlDocPtr' info='the resulting document tree'/>
       <arg name='fd' type='int' info='an open file descriptor'/>
       <arg name='URL' type='const char *' info='the base URL to use for the document'/>
       <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
-      <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
+      <arg name='options' type='int' info='a combination of xmlParserOption'/>
     </function>
     <function name='xmlReadFile' file='parser'>
       <info>parse an XML file from the filesystem or the network.</info>
       <return type='xmlDocPtr' info='the resulting document tree'/>
       <arg name='filename' type='const char *' info='a file or URL'/>
       <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
-      <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
+      <arg name='options' type='int' info='a combination of xmlParserOption'/>
     </function>
     <function name='xmlReadIO' file='parser'>
       <info>parse an XML document from I/O functions and source and build a tree.</info>
@@ -10111,7 +10112,7 @@ actually an xmlCharEncoding'/>
       <arg name='ioctx' type='void *' info='an I/O handler'/>
       <arg name='URL' type='const char *' info='the base URL to use for the document'/>
       <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
-      <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
+      <arg name='options' type='int' info='a combination of xmlParserOption'/>
     </function>
     <function name='xmlReadMemory' file='parser'>
       <info>parse an XML in-memory document and build a tree.</info>
@@ -10120,78 +10121,78 @@ actually an xmlCharEncoding'/>
       <arg name='size' type='int' info='the size of the array'/>
       <arg name='URL' type='const char *' info='the base URL to use for the document'/>
       <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
-      <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
+      <arg name='options' type='int' info='a combination of xmlParserOption'/>
     </function>
     <function name='xmlReaderForDoc' file='xmlreader'>
-      <info>Create an xmltextReader for an XML in-memory document. The parsing flags @options are a combination of xmlParserOption(s).</info>
+      <info>Create an xmltextReader for an XML in-memory document. The parsing flags @options are a combination of xmlParserOption.</info>
       <return type='xmlTextReaderPtr' info='the new reader or NULL in case of error.'/>
       <arg name='cur' type='const xmlChar *' info='a pointer to a zero terminated string'/>
       <arg name='URL' type='const char *' info='the base URL to use for the document'/>
       <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
-      <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
+      <arg name='options' type='int' info='a combination of xmlParserOption'/>
     </function>
     <function name='xmlReaderForFd' file='xmlreader'>
-      <info>Create an xmltextReader for an XML from a file descriptor. The parsing flags @options are a combination of xmlParserOption(s).</info>
+      <info>Create an xmltextReader for an XML from a file descriptor. The parsing flags @options are a combination of xmlParserOption. NOTE that the file descriptor will not be closed when the reader is closed or reset.</info>
       <return type='xmlTextReaderPtr' info='the new reader or NULL in case of error.'/>
       <arg name='fd' type='int' info='an open file descriptor'/>
       <arg name='URL' type='const char *' info='the base URL to use for the document'/>
       <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
-      <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
+      <arg name='options' type='int' info='a combination of xmlParserOption'/>
     </function>
     <function name='xmlReaderForFile' file='xmlreader'>
-      <info>parse an XML file from the filesystem or the network. The parsing flags @options are a combination of xmlParserOption(s).</info>
+      <info>parse an XML file from the filesystem or the network. The parsing flags @options are a combination of xmlParserOption.</info>
       <return type='xmlTextReaderPtr' info='the new reader or NULL in case of error.'/>
       <arg name='filename' type='const char *' info='a file or URL'/>
       <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
-      <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
+      <arg name='options' type='int' info='a combination of xmlParserOption'/>
     </function>
     <function name='xmlReaderForIO' file='xmlreader'>
-      <info>Create an xmltextReader for an XML document from I/O functions and source. The parsing flags @options are a combination of xmlParserOption(s).</info>
+      <info>Create an xmltextReader for an XML document from I/O functions and source. The parsing flags @options are a combination of xmlParserOption.</info>
       <return type='xmlTextReaderPtr' info='the new reader or NULL in case of error.'/>
       <arg name='ioread' type='xmlInputReadCallback' info='an I/O read function'/>
       <arg name='ioclose' type='xmlInputCloseCallback' info='an I/O close function'/>
       <arg name='ioctx' type='void *' info='an I/O handler'/>
       <arg name='URL' type='const char *' info='the base URL to use for the document'/>
       <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
-      <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
+      <arg name='options' type='int' info='a combination of xmlParserOption'/>
     </function>
     <function name='xmlReaderForMemory' file='xmlreader'>
-      <info>Create an xmltextReader for an XML in-memory document. The parsing flags @options are a combination of xmlParserOption(s).</info>
+      <info>Create an xmltextReader for an XML in-memory document. The parsing flags @options are a combination of xmlParserOption.</info>
       <return type='xmlTextReaderPtr' info='the new reader or NULL in case of error.'/>
       <arg name='buffer' type='const char *' info='a pointer to a char array'/>
       <arg name='size' type='int' info='the size of the array'/>
       <arg name='URL' type='const char *' info='the base URL to use for the document'/>
       <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
-      <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
+      <arg name='options' type='int' info='a combination of xmlParserOption'/>
     </function>
     <function name='xmlReaderNewDoc' file='xmlreader'>
-      <info>Setup an xmltextReader to parse an XML in-memory document. The parsing flags @options are a combination of xmlParserOption(s). This reuses the existing @reader xmlTextReader.</info>
+      <info>Setup an xmltextReader to parse an XML in-memory document. The parsing flags @options are a combination of xmlParserOption. This reuses the existing @reader xmlTextReader.</info>
       <return type='int' info='0 in case of success and -1 in case of error'/>
       <arg name='reader' type='xmlTextReaderPtr' info='an XML reader'/>
       <arg name='cur' type='const xmlChar *' info='a pointer to a zero terminated string'/>
       <arg name='URL' type='const char *' info='the base URL to use for the document'/>
       <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
-      <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
+      <arg name='options' type='int' info='a combination of xmlParserOption'/>
     </function>
     <function name='xmlReaderNewFd' file='xmlreader'>
-      <info>Setup an xmltextReader to parse an XML from a file descriptor. The parsing flags @options are a combination of xmlParserOption(s). This reuses the existing @reader xmlTextReader.</info>
+      <info>Setup an xmltextReader to parse an XML from a file descriptor. NOTE that the file descriptor will not be closed when the reader is closed or reset. The parsing flags @options are a combination of xmlParserOption. This reuses the existing @reader xmlTextReader.</info>
       <return type='int' info='0 in case of success and -1 in case of error'/>
       <arg name='reader' type='xmlTextReaderPtr' info='an XML reader'/>
       <arg name='fd' type='int' info='an open file descriptor'/>
       <arg name='URL' type='const char *' info='the base URL to use for the document'/>
       <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
-      <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
+      <arg name='options' type='int' info='a combination of xmlParserOption'/>
     </function>
     <function name='xmlReaderNewFile' file='xmlreader'>
-      <info>parse an XML file from the filesystem or the network. The parsing flags @options are a combination of xmlParserOption(s). This reuses the existing @reader xmlTextReader.</info>
+      <info>parse an XML file from the filesystem or the network. The parsing flags @options are a combination of xmlParserOption. This reuses the existing @reader xmlTextReader.</info>
       <return type='int' info='0 in case of success and -1 in case of error'/>
       <arg name='reader' type='xmlTextReaderPtr' info='an XML reader'/>
       <arg name='filename' type='const char *' info='a file or URL'/>
       <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
-      <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
+      <arg name='options' type='int' info='a combination of xmlParserOption'/>
     </function>
     <function name='xmlReaderNewIO' file='xmlreader'>
-      <info>Setup an xmltextReader to parse an XML document from I/O functions and source. The parsing flags @options are a combination of xmlParserOption(s). This reuses the existing @reader xmlTextReader.</info>
+      <info>Setup an xmltextReader to parse an XML document from I/O functions and source. The parsing flags @options are a combination of xmlParserOption. This reuses the existing @reader xmlTextReader.</info>
       <return type='int' info='0 in case of success and -1 in case of error'/>
       <arg name='reader' type='xmlTextReaderPtr' info='an XML reader'/>
       <arg name='ioread' type='xmlInputReadCallback' info='an I/O read function'/>
@@ -10199,17 +10200,17 @@ actually an xmlCharEncoding'/>
       <arg name='ioctx' type='void *' info='an I/O handler'/>
       <arg name='URL' type='const char *' info='the base URL to use for the document'/>
       <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
-      <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
+      <arg name='options' type='int' info='a combination of xmlParserOption'/>
     </function>
     <function name='xmlReaderNewMemory' file='xmlreader'>
-      <info>Setup an xmltextReader to parse an XML in-memory document. The parsing flags @options are a combination of xmlParserOption(s). This reuses the existing @reader xmlTextReader.</info>
+      <info>Setup an xmltextReader to parse an XML in-memory document. The parsing flags @options are a combination of xmlParserOption. This reuses the existing @reader xmlTextReader.</info>
       <return type='int' info='0 in case of success and -1 in case of error'/>
       <arg name='reader' type='xmlTextReaderPtr' info='an XML reader'/>
       <arg name='buffer' type='const char *' info='a pointer to a char array'/>
       <arg name='size' type='int' info='the size of the array'/>
       <arg name='URL' type='const char *' info='the base URL to use for the document'/>
       <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
-      <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
+      <arg name='options' type='int' info='a combination of xmlParserOption'/>
     </function>
     <function name='xmlReaderNewWalker' file='xmlreader'>
       <info>Setup an xmltextReader to parse a preparsed XML document. This reuses the existing @reader xmlTextReader.</info>

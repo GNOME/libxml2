@@ -5734,7 +5734,6 @@
       <ref name='htmlGetMetaEncoding'/>
       <ref name='xmlTextReaderConstLocalName'/>
       <ref name='xmlParseName'/>
-      <ref name='getSystemId'/>
       <ref name='namePop'/>
       <ref name='xmlStrcasestr'/>
       <ref name='xmlDictLookup'/>
@@ -5744,6 +5743,7 @@
       <ref name='xmlParseEncodingDecl'/>
       <ref name='xmlBufferContent'/>
       <ref name='xmlTextReaderConstString'/>
+      <ref name='getSystemId'/>
       <ref name='xmlCatalogGetSystem'/>
       <ref name='xmlSAX2GetPublicId'/>
       <ref name='xmlTextReaderConstName'/>
@@ -5783,6 +5783,7 @@
     </type>
     <type name='htmlDocPtr'>
       <ref name='htmlParseDoc'/>
+      <ref name='htmlReadIO'/>
       <ref name='htmlCtxtReadFile'/>
       <ref name='htmlSAXParseDoc'/>
       <ref name='htmlCtxtReadFd'/>
@@ -5796,7 +5797,6 @@
       <ref name='htmlParseFile'/>
       <ref name='htmlReadDoc'/>
       <ref name='htmlNewDoc'/>
-      <ref name='htmlReadIO'/>
       <ref name='htmlReadFd'/>
     </type>
     <type name='htmlParserCtxtPtr'>
@@ -5923,11 +5923,11 @@
       <ref name='xmlScanName'/>
       <ref name='xmlValidCtxtNormalizeAttributeValue'/>
       <ref name='xmlGetNoNsProp'/>
+      <ref name='xmlStrcat'/>
       <ref name='xmlTextReaderReadOuterXml'/>
       <ref name='xmlNodeListGetRawString'/>
       <ref name='xmlTextReaderNamespaceUri'/>
       <ref name='xmlCatalogResolvePublic'/>
-      <ref name='xmlStrcat'/>
       <ref name='xmlXPathPopString'/>
       <ref name='xmlTextReaderReadString'/>
       <ref name='xmlCatalogResolveSystem'/>
@@ -6048,10 +6048,10 @@
       <ref name='xmlNewDoc'/>
     </type>
     <type name='xmlDtdPtr'>
+      <ref name='xmlIOParseDTD'/>
       <ref name='xmlCopyDtd'/>
       <ref name='xmlGetIntSubset'/>
       <ref name='xmlCreateIntSubset'/>
-      <ref name='xmlIOParseDTD'/>
       <ref name='xmlSAXParseDTD'/>
       <ref name='xmlParseDTD'/>
       <ref name='xmlNewDtd'/>
@@ -14134,8 +14134,12 @@
           <ref name='xmlValidateDtdFinal'/>
         </word>
         <word name='NOTE'>
+          <ref name='xmlCtxtReadFd'/>
           <ref name='xmlParseExternalID'/>
           <ref name='xmlParseNotationDecl'/>
+          <ref name='xmlReadFd'/>
+          <ref name='xmlReaderForFd'/>
+          <ref name='xmlReaderNewFd'/>
         </word>
         <word name='NOTE:'>
           <ref name='_xmlParserInput'/>
@@ -16263,6 +16267,8 @@
           <ref name='xmlBuildQName'/>
           <ref name='xmlMallocAtomicLoc'/>
           <ref name='xmlMallocLoc'/>
+          <ref name='xmlMemMalloc'/>
+          <ref name='xmlMemRealloc'/>
           <ref name='xmlNewMutex'/>
           <ref name='xmlNewRMutex'/>
           <ref name='xmlReallocLoc'/>
@@ -16273,7 +16279,10 @@
           <ref name='xmlGetBufferAllocationScheme'/>
           <ref name='xmlMallocAtomicLoc'/>
           <ref name='xmlMallocLoc'/>
+          <ref name='xmlMemMalloc'/>
+          <ref name='xmlMemRealloc'/>
           <ref name='xmlMemStrdupLoc'/>
+          <ref name='xmlMemoryStrdup'/>
           <ref name='xmlNormalizeURIPath'/>
           <ref name='xmlReallocLoc'/>
           <ref name='xmlSetBufferAllocationScheme'/>
@@ -16545,6 +16554,8 @@
           <ref name='xmlBufferCreateStatic'/>
           <ref name='xmlMallocAtomicLoc'/>
           <ref name='xmlMallocLoc'/>
+          <ref name='xmlMemMalloc'/>
+          <ref name='xmlMemRealloc'/>
           <ref name='xmlParserInputBufferCreateMem'/>
           <ref name='xmlParserInputBufferCreateStatic'/>
           <ref name='xmlReallocLoc'/>
@@ -16979,6 +16990,8 @@
           <ref name='xmlCharEncOutFunc'/>
           <ref name='xmlMallocAtomicLoc'/>
           <ref name='xmlMallocLoc'/>
+          <ref name='xmlMemMalloc'/>
+          <ref name='xmlMemRealloc'/>
           <ref name='xmlNanoFTPRead'/>
           <ref name='xmlNanoHTTPRead'/>
           <ref name='xmlOutputBufferClose'/>
@@ -17268,6 +17281,7 @@
           <ref name='xlinkIsLink'/>
           <ref name='xmlBufferWriteQuotedString'/>
           <ref name='xmlBuildURI'/>
+          <ref name='xmlMemFree'/>
           <ref name='xmlUTF8Strlen'/>
         </word>
         <word name='checkings'>
@@ -17403,6 +17417,10 @@
           <ref name='xmlTextReaderClose'/>
         </word>
         <word name='closed'>
+          <ref name='xmlCtxtReadFd'/>
+          <ref name='xmlReadFd'/>
+          <ref name='xmlReaderForFd'/>
+          <ref name='xmlReaderNewFd'/>
           <ref name='xmlTextWriterEndDocument'/>
         </word>
         <word name='closes'>
@@ -19084,7 +19102,11 @@
         <word name='equivalent'>
           <ref name='xmlMallocAtomicLoc'/>
           <ref name='xmlMallocLoc'/>
+          <ref name='xmlMemFree'/>
+          <ref name='xmlMemMalloc'/>
+          <ref name='xmlMemRealloc'/>
           <ref name='xmlMemStrdupLoc'/>
+          <ref name='xmlMemoryStrdup'/>
           <ref name='xmlNodeListGetRawString'/>
           <ref name='xmlNodeListGetString'/>
           <ref name='xmlReallocLoc'/>
@@ -20515,7 +20537,10 @@
           <ref name='xmlInitNodeInfoSeq'/>
           <ref name='xmlMallocAtomicLoc'/>
           <ref name='xmlMallocLoc'/>
+          <ref name='xmlMemMalloc'/>
+          <ref name='xmlMemRealloc'/>
           <ref name='xmlMemStrdupLoc'/>
+          <ref name='xmlMemoryStrdup'/>
           <ref name='xmlNanoFTPList'/>
           <ref name='xmlParserAddNodeInfo'/>
           <ref name='xmlParserFindNodeInfo'/>
@@ -20580,12 +20605,18 @@
           <ref name='xmlNodeGetSpacePreserve'/>
           <ref name='xmlXPathNextAttribute'/>
         </word>
+        <word name='inherits'>
+          <ref name='xmlNewChild'/>
+          <ref name='xmlNewTextChild'/>
+        </word>
         <word name='initial'>
           <ref name='_xmlDoc'/>
           <ref name='xmlAutomataGetInitState'/>
           <ref name='xmlBufferCreateSize'/>
           <ref name='xmlInitNodeInfoSeq'/>
+          <ref name='xmlMemRealloc'/>
           <ref name='xmlMemStrdupLoc'/>
+          <ref name='xmlMemoryStrdup'/>
           <ref name='xmlReallocLoc'/>
           <ref name='xmlShell'/>
           <ref name='xmlXPathNodeSetAdd'/>
@@ -20703,29 +20734,6 @@
         </word>
         <word name='insufficient'>
           <ref name='xmlCanonicPath'/>
-        </word>
-        <word name='int'>
-          <ref name='_xmlParserCtxt'/>
-          <ref name='c'/>
-          <ref name='getColumnNumber'/>
-          <ref name='getLineNumber'/>
-          <ref name='htmlHandleOmittedElem'/>
-          <ref name='htmlParseCharRef'/>
-          <ref name='xmlIsLetter'/>
-          <ref name='xmlKeepBlanksDefault'/>
-          <ref name='xmlLineNumbersDefault'/>
-          <ref name='xmlMallocAtomicLoc'/>
-          <ref name='xmlMallocLoc'/>
-          <ref name='xmlMemUsed'/>
-          <ref name='xmlParseCharData'/>
-          <ref name='xmlParseCharRef'/>
-          <ref name='xmlPedanticParserDefault'/>
-          <ref name='xmlReallocLoc'/>
-          <ref name='xmlSAX2GetColumnNumber'/>
-          <ref name='xmlSAX2GetLineNumber'/>
-          <ref name='xmlShellCmd'/>
-          <ref name='xmlSplitQName3'/>
-          <ref name='xmlSubstituteEntitiesDefault'/>
         </word>
         <word name='integer'>
           <ref name='xmlStrcasecmp'/>
@@ -20962,6 +20970,8 @@
           <ref name='xmlCharEncodingOutputFunc'/>
           <ref name='xmlMallocAtomicLoc'/>
           <ref name='xmlMallocLoc'/>
+          <ref name='xmlMemMalloc'/>
+          <ref name='xmlMemRealloc'/>
           <ref name='xmlReallocLoc'/>
         </word>
         <word name='lang'>
@@ -21309,7 +21319,10 @@
         <word name='logging'>
           <ref name='xmlMallocAtomicLoc'/>
           <ref name='xmlMallocLoc'/>
+          <ref name='xmlMemMalloc'/>
+          <ref name='xmlMemRealloc'/>
           <ref name='xmlMemStrdupLoc'/>
+          <ref name='xmlMemoryStrdup'/>
           <ref name='xmlReallocLoc'/>
         </word>
         <word name='long'>
@@ -21408,6 +21421,7 @@
           <ref name='xmlMallocFunc'/>
           <ref name='xmlMallocLoc'/>
           <ref name='xmlMemGet'/>
+          <ref name='xmlMemMalloc'/>
           <ref name='xmlMemSetup'/>
         </word>
         <word name='mallocAtomicFunc'>
@@ -22167,6 +22181,7 @@
         </word>
         <word name='occurred'>
           <ref name='xmlMemStrdupLoc'/>
+          <ref name='xmlMemoryStrdup'/>
         </word>
         <word name='occurrence'>
           <ref name='xmlStrcasestr'/>
@@ -22767,6 +22782,7 @@
           <ref name='xmlXPathStringFunction'/>
         </word>
         <word name='possible'>
+          <ref name='_xmlSchemaType'/>
           <ref name='xmlCreateEntityParserCtxt'/>
           <ref name='xmlParseDefaultDecl'/>
           <ref name='xmlParseExternalID'/>
@@ -23313,7 +23329,9 @@
           <ref name='xmlStrEqual'/>
         </word>
         <word name='reader'>
+          <ref name='xmlCtxtReadFd'/>
           <ref name='xmlFreeTextReader'/>
+          <ref name='xmlReadFd'/>
           <ref name='xmlReaderForDoc'/>
           <ref name='xmlReaderForFd'/>
           <ref name='xmlReaderForFile'/>
@@ -23351,6 +23369,7 @@
           <ref name='xmlGcMemGet'/>
           <ref name='xmlGcMemSetup'/>
           <ref name='xmlMemGet'/>
+          <ref name='xmlMemRealloc'/>
           <ref name='xmlMemSetup'/>
           <ref name='xmlReallocFunc'/>
           <ref name='xmlReallocLoc'/>
@@ -23472,6 +23491,9 @@
         </word>
         <word name='redefinition'>
           <ref name='xmlErrMemory'/>
+        </word>
+        <word name='redefinitions'>
+          <ref name='_xmlSchemaType'/>
         </word>
         <word name='redir'>
           <ref name='xmlNanoHTTPMethodRedir'/>
@@ -23793,9 +23815,13 @@
         </word>
         <word name='reset'>
           <ref name='initGenericErrorDefaultFunc'/>
+          <ref name='xmlCtxtReadFd'/>
           <ref name='xmlNodeSetBase'/>
           <ref name='xmlNodeSetName'/>
           <ref name='xmlNodeSetSpacePreserve'/>
+          <ref name='xmlReadFd'/>
+          <ref name='xmlReaderForFd'/>
+          <ref name='xmlReaderNewFd'/>
           <ref name='xmlSetGenericErrorFunc'/>
           <ref name='xmlSetNsProp'/>
           <ref name='xmlSetProp'/>
@@ -24582,6 +24608,8 @@
         <word name='specifying'>
           <ref name='xmlMallocAtomicLoc'/>
           <ref name='xmlMallocLoc'/>
+          <ref name='xmlMemMalloc'/>
+          <ref name='xmlMemRealloc'/>
           <ref name='xmlReallocLoc'/>
         </word>
         <word name='speed'>
@@ -24786,6 +24814,7 @@
           <ref name='xmlMemGet'/>
           <ref name='xmlMemSetup'/>
           <ref name='xmlMemStrdupLoc'/>
+          <ref name='xmlMemoryStrdup'/>
           <ref name='xmlStrdup'/>
           <ref name='xmlStrdupFunc'/>
         </word>

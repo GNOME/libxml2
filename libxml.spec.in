@@ -14,7 +14,7 @@ Source: ftp://ftp.gnome.org/pub/GNOME/sources/libxml/libxml-%{ver}.tar.gz
 BuildRoot: /var/tmp/libxml-%{PACKAGE_VERSION}-root
 Provides: libxml.so.0
 
-URL: http://www.gnome.org
+URL: http://rpmfind.net/veillard/XML/
 Prereq: /sbin/install-info
 Docdir: %{prefix}/doc
 

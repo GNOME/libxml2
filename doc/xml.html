@@ -12,6 +12,31 @@
 <h2 style="text-align: center">libxml, a.k.a. gnome-xml</h2>
 
 <p></p>
+<ul>
+  <li><a href="#Introducti">Introduction</a></li>
+  <li><a href="#Documentat">Documentation</a></li>
+  <li><a href="#News">News</a></li>
+  <li><a href="#XML">XML</a></li>
+  <li><a href="#tree">The tree output</a></li>
+  <li><a href="#interface">The SAX interface</a></li>
+  <li><a href="#library">The XML library interfaces</a>
+    <ul>
+      <li><a href="#Invoking">Invoking the parser</a></li>
+      <li><a href="#Building">Building a tree from scratch</a></li>
+      <li><a href="#Traversing">Traversing the tree</a></li>
+      <li><a href="#Modifying">Modifying the tree</a></li>
+      <li><a href="#Saving">Saving the tree</a></li>
+      <li><a href="#Compressio">Compression</a></li>
+    </ul>
+  </li>
+  <li><a href="#Entities">Entities or no entities</a></li>
+  <li><a href="#Namespaces">Namespaces</a></li>
+  <li><a href="#Validation">Validation</a></li>
+  <li><a href="#Principles">DOM principles</a></li>
+  <li><a href="#real">A real example</a></li>
+</ul>
+
+<h2><a name="Introducti">Introduction</a></h2>
 
 <p>This document describes the <a href="http://www.w3.org/XML/">XML</a>
 library provideed in the <a href="http://www.gnome.org/">Gnome</a> framework.
@@ -46,7 +71,7 @@ uses it for his implementation of <a
 href="http://www.w3.org/Graphics/SVG/">SVG</a> called <a
 href="http://www.levien.com/svg/">gill</a>.</p>
 
-<h2>Extensive documentation</h2>
+<h2><a name="Documentat">Documentation</a></h2>
 
 <p>The code is commented in a <a href=""></a>way which allow <a
 href="http://rpmfind.net/veillard/XML/libxml.html">extensive documentation</a>
@@ -55,7 +80,47 @@ to be automatically extracted.</p>
 <p>At some point I will change the back-end to produce XML documentation in
 addition to SGML Docbook and HTML.</p>
 
-<h2>XML</h2>
+<h2><a name="News">News</a></h2>
+
+<p>Latest version is 1.7.1, you can find it on <a
+href="ftp://rpmfind.net/pub/veillard/">rpmfind.net</a> or on the <a
+href="ftp://ftp.gnome.org/pub/GNOME/MIRRORS.html">Gnome FTP server</a> either
+as a <a href="ftp://ftp.gnome.org/pub/GNOME/sources/libxml/">source
+archive</a> or <a href="ftp://ftp.gnome.org/pub/GNOME/contrib/rpms/">RPMs
+packages</a>.</p>
+
+<h3>CVS only</h3>
+<ul>
+  <li>snprintf was used unconditionnally, leading to link problems on system
+    were it's not available, fixed </li>
+</ul>
+
+<h3>1.7.1: Sep 24 1999</h3>
+<ul>
+  <li>The basic type for strings manipulated by libxml has been renamed in
+    1.7.1 from <strong>CHAR</strong> to <strong>xmlChar</strong>. The reason
+    is that CHAR was conflicting with a predefined type on Windows. However on
+    non WIN32 environment, compatibility is provided by the way of  a
+    <strong>#define </strong>.</li>
+  <li>Changed another error : the use of a structure field called errno, and
+    leading to troubles on platforms where it's a macro</li>
+</ul>
+
+<h3>1.7.0: sep 23 1999</h3>
+<ul>
+  <li>Added the ability to fetch remote DTD or parsed entities, see the <a
+    href="gnome-xml-nanohttp.html">nanohttp</a> module.</li>
+  <li>Added an errno to report errors by another mean than a simple printf
+    like callback</li>
+  <li>Finished ID/IDREF support and checking when validation</li>
+  <li>Serious memory leaks fixed (there is now a <a
+    href="gnome-xml-xmlmemory.html">memory wrapper</a> module)</li>
+  <li>Improvement of <a href="http://www.w3.org/TR/xpath">XPath</a>
+    implementation</li>
+  <li>Added an HTML parser front-end</li>
+</ul>
+
+<h2><a name="XML">XML</a></h2>
 
 <p><a href="http://www.w3.org/TR/REC-xml">XML is a standard</a> for markup
 based structured documents, here is <a name="example">an example</a>:</p>
@@ -85,7 +150,7 @@ data encoding mechanism like configuration file format (glade), spreadsheets
 (gnumeric), or even shorter lived document like in WebDAV where it is used to
 encode remote call between a client and a server.</p>
 
-<h2>The tree output</h2>
+<h2><a name="tree">The tree output</a></h2>
 
 <p>The parser returns a tree built during the document analysis. The value
 returned is an <strong>xmlDocPtr</strong> (i.e. a pointer to an
@@ -140,7 +205,7 @@ standalone=true
 
 <p>This should be useful to learn the internal representation model.</p>
 
-<h2>The SAX interface</h2>
+<h2><a name="interface">The SAX interface</a></h2>
 
 <p>Sometimes the DOM tree output is just to large to fit reasonably into
 memory. In that case and if you don't expect to save back the XML document
@@ -200,7 +265,7 @@ presuppose the use of the standard DOM tree build. Note that the DOM tree
 itself is built by a set of registered default callbacks, without internal
 specific interface.</p>
 
-<h2>The XML library interfaces</h2>
+<h2><a name="library">The XML library interfaces</a></h2>
 
 <p>This section is directly intended to help programmers getting bootstrapped
 using the XML library from the C language. It doesn't intent to be extensive,
@@ -209,7 +274,7 @@ required, but as a separated set of documents. The interfaces of the XML
 library are by principle low level, there is nearly zero abstration. Those
 interested in a higher level API should <a href="#DOM">look at DOM</a>.</p>
 
-<h3>Invoking the parser</h3>
+<h3><a name="Invoking">Invoking the parser</a></h3>
 
 <p>Usually, the first thing to do is to read an XML input, the parser accepts
 to parse both memory mapped documents or direct files. The functions are
@@ -233,7 +298,7 @@ memory-hungry, first to load the document in memory, second to build the tree.
 Reading a document without building the tree will be possible in the future by
 pluggin the code to the SAX interface (see SAX.c).</p>
 
-<h3>Building a tree from scratch</h3>
+<h3><a name="Building">Building a tree from scratch</a></h3>
 
 <p>The other way to get an XML tree in memory is by building it. Basically
 there is a set of functions dedicated to building new elements, those are also
@@ -256,7 +321,7 @@ example used before:</p>
 
 <p>Not really rocket science ...</p>
 
-<h3>Traversing the tree</h3>
+<h3><a name="Traversing">Traversing the tree</a></h3>
 
 <p>Basically by including "tree.h" your code has access to the internal
 structure of all the element of the tree. The names should be somewhat simple
@@ -275,7 +340,7 @@ and</p>
 <p>points to the entity reference containing the value of "&amp;linux" at the
 beginning of the second attribute of the root element "EXAMPLE".</p>
 
-<h3>Modifying the tree</h3>
+<h3><a name="Modifying">Modifying the tree</a></h3>
 
 <p>functions are provided to read and write the document content:</p>
 <dl>
@@ -317,7 +382,7 @@ elements:</p>
     </dd>
 </dl>
 
-<h3>Saving a tree</h3>
+<h3><a name="Saving">Saving a tree</a></h3>
 
 <p>Basically 3 options are possible:</p>
 <dl>
@@ -338,7 +403,7 @@ elements:</p>
     </dd>
 </dl>
 
-<h3>Compression</h3>
+<h3><a name="Compressio">Compression</a></h3>
 
 <p>The library handle transparently compression when doing file based
 accesses, the level of compression on saves can be tuned either globally or
@@ -364,7 +429,7 @@ individually for one file:</p>
     </dd>
 </dl>
 
-<h2>Entities or no entities</h2>
+<h2><a name="Entities">Entities or no entities</a></h2>
 
 <p>Entities principle is similar to simple C macros. They define an
 abbreviation for a given string that you can reuse many time through the
@@ -379,17 +444,16 @@ the beginning). Example:</p>
 5 &lt;EXAMPLE>
 6    &amp;xml;
 7 &lt;/EXAMPLE>
-
 </pre>
 
 <p>Line 3 declares the xml entity. Line 6 uses the xml entity, by prefixing
-it's name with '&amp;' and following it by ';' without any spaces added.
-There are 5 predefined entities in libxml allowing to escape charaters with
+it's name with '&amp;' and following it by ';' without any spaces added. There
+are 5 predefined entities in libxml allowing to escape charaters with
 predefined meaning in some parts of the xml document content:
 <strong>&amp;lt;</strong> for the letter '&lt;', <strong>&amp;gt;</strong> for
 the letter '>',  <strong>&amp;apos;</strong> for the letter ''',
-<strong>&amp;quot;</strong> for the letter '"', and 
-<strong>&amp;amp;</strong> for the letter '&amp;'.</p>
+<strong>&amp;quot;</strong> for the letter '"', and <strong>&amp;amp;</strong>
+for the letter '&amp;'.</p>
 
 <p>One of the problems related to entities is that you may want the parser to
 substitute entities content to see the replacement text in your application,
@@ -435,14 +499,14 @@ transparently replace those with chars (i.e. will not generate entity
 reference elements in the DOM tree nor call the reference() SAX callback when
 finding them in the input).</p>
 
-<h2>Namespaces</h2>
+<h2><a name="Namespaces">Namespaces</a></h2>
 
 <p>The libxml library implement namespace @@ support by recognizing namespace
 contructs in the input, and does namespace lookup automatically when building
 the DOM tree. A namespace declaration is associated with an in-memory
 structure and all elements or attributes within that namespace point to it.
 Hence testing the namespace is a simple and fast equality operation at the
-user level. </p>
+user level.</p>
 
 <p>I suggest it that people using libxml use a namespace, and declare it on
 the root element of their document as the default namespace. Then they dont
@@ -478,7 +542,7 @@ flexible parsers. Now using namespace to mix and differenciate content coming
 from mutliple Dtd will certainly break current validation schemes, I will try
 to provide ways to do this, but this may not be portable or standardized.</p>
 
-<h2>Validation, or are you afraid of DTDs ?</h2>
+<h2><a name="Validation">Validation, or are you afraid of DTDs ?</a></h2>
 
 <p>Well what is validation and what is a DTD ?</p>
 
@@ -523,7 +587,7 @@ core.</p>
 
 <p>@@interfaces@@</p>
 
-<h2><a name="DOM">DOM Principles</a></h2>
+<h2><a name="DOM"><a name="Principles">DOM Principles</a></a></h2>
 
 <p><a href="http://www.w3.org/DOM/">DOM</a> stands for the <em>Document Object
 Model</em> this is an API for accessing XML or HTML structured documents.
@@ -546,7 +610,7 @@ Levien</a>.</p>
 
 <p>The gnome-dom module in the Gnome CVS base is obsolete</p>
 
-<h2><a name="Example">A real example</a></h2>
+<h2><a name="Example"><a name="real">A real example</a></a></h2>
 
 <p>Here is a real size example, where the actual content of the application
 data is not kept in the DOM tree but uses internal structures. It is based on
@@ -747,6 +811,6 @@ base under gnome-xml/example</p>
 
 <p><a href="mailto:Daniel.Veillard@w3.org">Daniel Veillard</a></p>
 
-<p>$Id: xml.html,v 1.8 1999/09/08 21:35:25 veillard Exp $</p>
+<p>$Id: xml.html,v 1.9 1999/09/23 22:19:20 veillard Exp $</p>
 </body>
 </html>

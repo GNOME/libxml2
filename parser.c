@@ -110,9 +110,10 @@ xmlEntityPtr xmlParseStringPEReference(xmlParserCtxtPtr ctxt,
                                        const xmlChar **str);
 
 static int
-xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlSAXHandlerPtr sax,
+xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
+	              xmlSAXHandlerPtr sax,
 		      void *user_data, int depth, const xmlChar *URL,
-		      const xmlChar *ID, xmlNodePtr *list, void *private);
+		      const xmlChar *ID, xmlNodePtr *list);
 
 /************************************************************************
  *									*
@@ -5004,10 +5005,9 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 		    } else if (ent->etype ==
 			       XML_EXTERNAL_GENERAL_PARSED_ENTITY) {
 			ctxt->depth++;
-			ret = xmlParseExternalEntityPrivate(ctxt->myDoc,
+			ret = xmlParseExternalEntityPrivate(ctxt->myDoc, ctxt,
 				   ctxt->sax, NULL, ctxt->depth,
-				   ent->URI, ent->ExternalID, &list,
-				   ctxt->_private);
+				   ent->URI, ent->ExternalID, &list);
 			ctxt->depth--;
 		    } else {
 			ret = -1;
@@ -8928,13 +8928,13 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
 /**
  * xmlParseExternalEntityPrivate:
  * @doc:  the document the chunk pertains to
+ * @oldctxt:  the previous parser context if available
  * @sax:  the SAX handler bloc (possibly NULL)
  * @user_data:  The user data returned on SAX callbacks (possibly NULL)
  * @depth:  Used for loop detection, use 0
  * @URL:  the URL for the entity to load
  * @ID:  the System ID for the entity to load
  * @list:  the return value for the set of parsed nodes
- * @private:  extra field for the _private parser context
  *
  * Private version of xmlParseExternalEntity()
  *
@@ -8943,9 +8943,10 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
  */
 
 static int
-xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlSAXHandlerPtr sax,
+xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
+	              xmlSAXHandlerPtr sax,
 		      void *user_data, int depth, const xmlChar *URL,
-		      const xmlChar *ID, xmlNodePtr *list, void *private) {
+		      const xmlChar *ID, xmlNodePtr *list) {
     xmlParserCtxtPtr ctxt;
     xmlDocPtr newDoc;
     xmlSAXHandlerPtr oldsax = NULL;
@@ -8968,7 +8969,21 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlSAXHandlerPtr sax,
     ctxt = xmlCreateEntityParserCtxt(URL, ID, NULL);
     if (ctxt == NULL) return(-1);
     ctxt->userData = ctxt;
-    ctxt->_private = private;
+    if (oldctxt != NULL) {
+	ctxt->_private = oldctxt->_private;
+	ctxt->loadsubset = oldctxt->loadsubset;
+	ctxt->validate = oldctxt->validate;
+	ctxt->external = oldctxt->external;
+    } else {
+	/*
+	 * Doing validity checking on chunk without context
+	 * doesn't make sense
+	 */
+	ctxt->_private = NULL;
+	ctxt->validate = 0;
+	ctxt->external = 2;
+	ctxt->loadsubset = 0;
+    }
     if (sax != NULL) {
 	oldsax = ctxt->sax;
         ctxt->sax = sax;
@@ -9015,13 +9030,7 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlSAXHandlerPtr sax,
 	xmlParseTextDecl(ctxt);
     }
 
-    /*
-     * Doing validity checking on chunk doesn't make sense
-     */
     ctxt->instate = XML_PARSER_CONTENT;
-    ctxt->validate = 0;
-    ctxt->external = 2;
-    ctxt->loadsubset = 0;
     ctxt->depth = depth;
 
     xmlParseContent(ctxt);
@@ -9106,8 +9115,8 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlSAXHandlerPtr sax,
 int
 xmlParseExternalEntity(xmlDocPtr doc, xmlSAXHandlerPtr sax, void *user_data,
 	  int depth, const xmlChar *URL, const xmlChar *ID, xmlNodePtr *list) {
-    return(xmlParseExternalEntityPrivate(doc, sax, user_data, depth, URL,
-		                       ID, list, NULL));
+    return(xmlParseExternalEntityPrivate(doc, NULL, sax, user_data, depth, URL,
+		                       ID, list));
 }
 
 /**

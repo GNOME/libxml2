@@ -1,3 +1,9 @@
+Sun May 20 15:15:46 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* parser.c: fixed propagation context info when parsing an
+	  external entity.
+	* doc/html/*.html: regenerated a couple of docs
+
 Sat May 19 17:11:15 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* doc/xml.html: update with 2.3.9 informations

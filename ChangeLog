@@ -1,3 +1,8 @@
+Tue Jun 12 06:29:39 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* libxml.h: fixed an error in last commit
+	* doc/FAQ.html: added an entry for compilation from CVS
+
 Mon Jun 11 10:07:29 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xmlversion.h.in libxml.h: Cygwin patches

@@ -148,6 +148,11 @@ href="http://xmlsoft.org/messages/">http://xmlsoft.org/messages/</a></p>
     some platforms the diff return breaks the compilation process, if the diff
     is small this is probably not a serious problem</p>
   </li>
+  <li><em>I use the CVS version and there is no configure script</em>
+    <p>The configure (and other Makefiles) are generated. Use the autogen.sh
+    script to regenerate the configure and Makefiles, like:</p>
+    <p><code>./autogen.sh --prefix=/usr --disable-shared</code></p>
+  </li>
 </ol>
 
 <h2><a name="Developer">Developer</a> corner</h2>

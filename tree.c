@@ -2718,21 +2718,20 @@ xmlStaticCopyNode(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
         case XML_ENTITY_NODE:
         case XML_PI_NODE:
         case XML_COMMENT_NODE:
+        case XML_XINCLUDE_START:
+        case XML_XINCLUDE_END:
+	    break;
+        case XML_ATTRIBUTE_NODE:
+	    return((xmlNodePtr) xmlCopyProp(parent, (xmlAttrPtr) node));
+        case XML_NAMESPACE_DECL:
+	    return((xmlNodePtr) xmlCopyNamespaceList((xmlNsPtr) node));
+	    
         case XML_DOCUMENT_NODE:
         case XML_HTML_DOCUMENT_NODE:
 #ifdef LIBXML_DOCB_ENABLED
         case XML_DOCB_DOCUMENT_NODE:
 #endif
-        case XML_XINCLUDE_START:
-        case XML_XINCLUDE_END:
-	    break;
-        case XML_ATTRIBUTE_NODE:
-	    return((xmlNodePtr)
-		   xmlCopyProp(parent, (xmlAttrPtr) node));
-        case XML_NAMESPACE_DECL:
-	    return((xmlNodePtr)
-		   xmlCopyNamespaceList((xmlNsPtr) node));
-	    
+	    return((xmlNodePtr) xmlCopyDoc((xmlDocPtr) node, recursive));
         case XML_DOCUMENT_TYPE_NODE:
         case XML_DOCUMENT_FRAG_NODE:
         case XML_NOTATION_NODE:
@@ -2838,7 +2837,7 @@ xmlStaticCopyNodeList(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent) {
     xmlNodePtr p = NULL,q;
 
     while (node != NULL) {
-	if( node->type == XML_DTD_NODE ) {
+	if (node->type == XML_DTD_NODE ) {
 	    if (doc == NULL) {
 		node = node->next;
 		continue;

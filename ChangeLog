@@ -1,3 +1,7 @@
+Fri Jul 27 01:50:20 EDT 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* tree.c: fixed xmlCopyNode() for documents
+
 Thu Jul 26 12:40:35 EDT 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* parser.c: fixed bugs #58073 reported by Greg Shtilman

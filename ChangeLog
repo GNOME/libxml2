@@ -1,3 +1,8 @@
+Tue Oct 29 18:32:33 CET 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
+
+	* configure.in: removed xmlwin32version.h
+	* include/libxml/Makefile.am: removed xmlwin32version.h
+
 Mon Oct 28 14:01:29 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: applied patch from Brian Stafford to fix a bug

@@ -1485,12 +1485,11 @@ href="http://mail.gnome.org/mailman/listinfo/xml-bindings">xml-bindings@gnome.or
 order to get updates to this list or to discuss the specific topic of libxml2
 or libxslt wrappers or bindings:</p>
 <ul>
-  <li><a href="mailto:ari@lusis.org">Ari Johnson</a> provides a  C++ wrapper
-    for libxml:<br>
-    Website: <a
-    href="http://lusis.org/~ari/xml++/">http://lusis.org/~ari/xml++/</a><br>
-    Download: <a
-    href="http://lusis.org/~ari/xml++/libxml++.tar.gz">http://lusis.org/~ari/xml++/libxml++.tar.gz</a></li>
+  <li><a href="http://libxmlplusplus.sourceforge.net/">Libxml++</a> seems the
+    most up-to-date C++ bindings for libxml2, check the <a
+    href="http://libxmlplusplus.sourceforge.net/reference/html/hierarchy.html">documentation</a>
+    and the <a
+    href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/libxmlplusplus/libxml%2b%2b/examples/">examples</a>.</li>
   <li>There is another <a href="http://libgdome-cpp.berlios.de/">C++ wrapper
     based on the gdome2 bindings</a> maintained by Tobias Peters.</li>
   <li>and a third C++ wrapper by Peter Jones &lt;pjones@pmade.org&gt;
@@ -2704,6 +2703,7 @@ xmlOutputBufferCreateOwn(FILE *file, xmlCharEncodingHandlerPtr encoder) {
         ret-&gt;closecallback = NULL;  /* No close callback */
     }
     return(ret); <br>
+
 
 
 

@@ -1901,6 +1901,7 @@ CHAR *xmlParseCharRef(xmlParserCtxtPtr ctxt, int inLine) {
 		val = 0;
 		break;
 	    }
+	    NEXT;
 	}
 	if (CUR != ';')
 	    NEXT;
@@ -1914,6 +1915,7 @@ CHAR *xmlParseCharRef(xmlParserCtxtPtr ctxt, int inLine) {
 		val = 0;
 		break;
 	    }
+	    NEXT;
 	}
 	if (CUR != ';')
 	    NEXT;

@@ -1,3 +1,8 @@
+Thu Aug 13 00:40:14 EDT 1998  Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* applied small patch on numeric entities from
+	  Christopher Blizzard <blizzard@appliedtheory.com>
+
 Wed Aug 12 23:12:58 EDT 1998  Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* New release 0.2, removed the old xml_* files so that it's

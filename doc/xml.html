@@ -9,12 +9,16 @@
 <body bgcolor="#ffffff">
 <h1 align="center">The XML library for Gnome</h1>
 
+<h2 style="text-align: center">libxml, a.k.a. gnome-xml</h2>
+
+<p></p>
+
 <p>This document describes the <a href="http://www.w3.org/XML/">XML</a>
 library provideed in the <a href="http://www.gnome.org/">Gnome</a> framework.
-XML is a standard to build tag based structured documents/data. </p>
+XML is a standard to build tag based structured documents/data.</p>
 
 <p>The internal document repesentation is as close as possible to the <a
-href="http://www.w3.org/DOM/">DOM</a> interfaces. </p>
+href="http://www.w3.org/DOM/">DOM</a> interfaces.</p>
 
 <p>Libxml also has a <a href="http://www.megginson.com/SAX/index.html">SAX
 interface</a>, <a href="mailto:james@daa.com.au">James Henstridge</a> made <a
@@ -22,10 +26,6 @@ href="http://www.daa.com.au/~james/gnome/xml-sax/xml-sax.html">a nice
 documentation</a> expaining how to use it. The interface is as compatible as
 possible with <a href="http://www.jclark.com/xml/expat.html">Expat</a>
 one.</p>
-
-<p>The code is commented in a <a href=""></a>way which allow <a
-href="http://rpmfind.net/veillard/XML/libxml.html">extensive documentation</a>
-to be automatically extracted.</p>
 
 <p>There is also a mailing-list <a
 href="mailto:xml@rufus.w3.org">xml@rufus.w3.org</a> for libxml, with an <a
@@ -46,10 +46,19 @@ uses it for his implementation of <a
 href="http://www.w3.org/Graphics/SVG/">SVG</a> called <a
 href="http://www.levien.com/svg/">gill</a>.</p>
 
-<h2>xml</h2>
+<h2>Extensive documentation</h2>
 
-<p>XML is a standard for markup based structured documents, here is <a
-name="example">an example</a>:</p>
+<p>The code is commented in a <a href=""></a>way which allow <a
+href="http://rpmfind.net/veillard/XML/libxml.html">extensive documentation</a>
+to be automatically extracted.</p>
+
+<p>At some point I will change the back-end to produce XML documentation in
+addition to SGML Docbook and HTML.</p>
+
+<h2>XML</h2>
+
+<p><a href="http://www.w3.org/TR/REC-xml">XML is a standard</a> for markup
+based structured documents, here is <a name="example">an example</a>:</p>
 <pre>&lt;?xml version="1.0"?>
 &lt;EXAMPLE prop1="gnome is great" prop2="&amp;amp; linux too">
   &lt;head>
@@ -69,6 +78,12 @@ structure is specified by tags between brackets. <strong>Each tag opened have
 to be closed</strong> XML is pedantic about this, not that for example the
 image tag has no content (just an attribute) and is closed by ending up the
 tag with <code>/></code>.</p>
+
+<p>XML can be applied sucessfully to a wide range or usage from long term
+structured document maintenance where it follows the steps of SGML to simple
+data encoding mechanism like configuration file format (glade), spreadsheets
+(gnumeric), or even shorter lived document like in WebDAV where it is used to
+encode remote call between a client and a server.</p>
 
 <h2>The tree output</h2>
 
@@ -125,6 +140,66 @@ standalone=true
 
 <p>This should be useful to learn the internal representation model.</p>
 
+<h2>The SAX interface</h2>
+
+<p>Sometimes the DOM tree output is just to large to fit reasonably into
+memory. In that case and if you don't expect to save back the XML document
+loaded using libxml, it's better to use the SAX interface of libxml. SAX is a
+<strong>callback based interface</strong> to the parser. Before parsing, the
+application layer register a customized set of callbacks which will be called
+by the library as it progresses through the XML input.</p>
+
+<p>To get a more detailed step-by-step guidance on using the SAX interface of
+libxml, <a href="mailto:james@daa.com.au">James Henstridge</a> made <a
+href="http://www.daa.com.au/~james/gnome/xml-sax/xml-sax.html">a nice
+documentation.</a></p>
+
+<p>You can debug the SAX behaviour by using the <strong>testSAX</strong>
+program located in the gnome-xml module (it's usually not shipped in the
+binary packages of libxml, but you can also find it in the tar source
+distribution). Here is the sequence of callback that would be generated when
+parsing the example given before as reported by testSAX:</p>
+<pre>SAX.setDocumentLocator()
+SAX.startDocument()
+SAX.getEntity(amp)
+SAX.startElement(EXAMPLE, prop1='gnome is great', prop2='&amp;amp; linux too')
+SAX.characters(   , 3)
+SAX.startElement(head)
+SAX.characters(    , 4)
+SAX.startElement(title)
+SAX.characters(Welcome to Gnome, 16)
+SAX.endElement(title)
+SAX.characters(   , 3)
+SAX.endElement(head)
+SAX.characters(   , 3)
+SAX.startElement(chapter)
+SAX.characters(    , 4)
+SAX.startElement(title)
+SAX.characters(The Linux adventure, 19)
+SAX.endElement(title)
+SAX.characters(    , 4)
+SAX.startElement(p)
+SAX.characters(bla bla bla ..., 15)
+SAX.endElement(p)
+SAX.characters(    , 4)
+SAX.startElement(image, href='linus.gif')
+SAX.endElement(image)
+SAX.characters(    , 4)
+SAX.startElement(p)
+SAX.characters(..., 3)
+SAX.endElement(p)
+SAX.characters(   , 3)
+SAX.endElement(chapter)
+SAX.characters( , 1)
+SAX.endElement(EXAMPLE)
+SAX.endDocument()</pre>
+
+<p>Most of the other functionnalities of libxml are based on the DOM tree
+building facility, so nearly everything up to the end of this document
+presuppose the use of the standard DOM tree build. Note that the DOM tree
+itself is built by a set of registered default callbacks, without internal
+specific interface.</p>
+
 <h2>The XML library interfaces</h2>
 
 <p>This section is directly intended to help programmers getting bootstrapped
@@ -132,8 +207,7 @@ using the XML library from the C language. It doesn't intent to be extensive,
 I hope the automatically generated docs will provide the completeness
 required, but as a separated set of documents. The interfaces of the XML
 library are by principle low level, there is nearly zero abstration. Those
-interested in a higher level API should <a href="#DOM">look at DOM</a>
-(unfortunately not completed).</p>
+interested in a higher level API should <a href="#DOM">look at DOM</a>.</p>
 
 <h3>Invoking the parser</h3>
 
@@ -290,6 +364,165 @@ individually for one file:</p>
     </dd>
 </dl>
 
+<h2>Entities or no entities</h2>
+
+<p>Entities principle is similar to simple C macros. They define an
+abbreviation for a given string that you can reuse many time through the
+content of your document. They are especially useful when frequent occurrences
+of a given string may occur within a document or to confine the change needed
+to a document to a restricted area in the internal subset of the document (at
+the beginning). Example:</p>
+<pre>1 &lt;?xml version="1.0"?>
+2 &lt;!DOCTYPE EXAMPLE SYSTEM "example.dtd" [
+3 &lt;!ENTITY xml "Extensible Markup Language">
+4 ]>
+5 &lt;EXAMPLE>
+6    &amp;xml;
+7 &lt;/EXAMPLE>
+
+</pre>
+
+<p>Line 3 declares the xml entity. Line 6 uses the xml entity, by prefixing
+it's name with '&amp;' and following it by ';' without any spaces added.
+There are 5 predefined entities in libxml allowing to escape charaters with
+predefined meaning in some parts of the xml document content:
+<strong>&amp;lt;</strong> for the letter '&lt;', <strong>&amp;gt;</strong> for
+the letter '>',  <strong>&amp;apos;</strong> for the letter ''',
+<strong>&amp;quot;</strong> for the letter '"', and 
+<strong>&amp;amp;</strong> for the letter '&amp;'.</p>
+
+<p>One of the problems related to entities is that you may want the parser to
+substitute entities content to see the replacement text in your application,
+or you may prefer keeping entities references as such in the content to be
+able to save the document back without loosing this usually precious
+information (if the user went through the pain of explicitley defining
+entities, he may have a a rather negative attitude if you blindly susbtitute
+them as saving time). The function <a
+href="gnome-xml-parser.html#XMLSUBSTITUTEENTITIESDEFAULT">xmlSubstituteEntitiesDefault()</a>
+allows to check and change the behaviour, which is to not substitute entities
+by default.</p>
+
+<p>Here is the DOM tree built by libxml for the previous document in the
+default case:</p>
+<pre>/gnome/src/gnome-xml -> ./tester --debug test/ent1
+DOCUMENT
+version=1.0
+   ELEMENT EXAMPLE
+     TEXT
+     content=
+     ENTITY_REF
+       INTERNAL_GENERAL_ENTITY xml
+       content=Extensible Markup Language
+     TEXT
+     content=</pre>
+
+<p>And here is the result when substituting entities:</p>
+<pre>/gnome/src/gnome-xml -> ./tester --debug --noent test/ent1
+DOCUMENT
+version=1.0
+   ELEMENT EXAMPLE
+     TEXT
+     content=     Extensible Markup Language</pre>
+
+<p>So entities or no entities ? Basically it depends on your use case, I
+suggest to keep the non-substituting default behaviour and avoid using
+entities in your XML document or data if you are not willing to handle the
+entity references elements in the DOM tree.</p>
+
+<p>Note that at save time libxml enforce the conversion of the predefined
+entities where necessary to prevent well-formedness problems, and will also
+transparently replace those with chars (i.e. will not generate entity
+reference elements in the DOM tree nor call the reference() SAX callback when
+finding them in the input).</p>
+
+<h2>Namespaces</h2>
+
+<p>The libxml library implement namespace @@ support by recognizing namespace
+contructs in the input, and does namespace lookup automatically when building
+the DOM tree. A namespace declaration is associated with an in-memory
+structure and all elements or attributes within that namespace point to it.
+Hence testing the namespace is a simple and fast equality operation at the
+user level. </p>
+
+<p>I suggest it that people using libxml use a namespace, and declare it on
+the root element of their document as the default namespace. Then they dont
+need to happend the prefix in the content but we will have a basis for future
+semantic refinement and  merging of data from different sources. This doesn't
+augment significantly the size of the XML output, but significantly increase
+it's value in the long-term.</p>
+
+<p>Concerning the namespace value, this has to be an URL, but this doesn't
+have to point to any existing resource on the Web. I suggest using an URL
+within a domain you control, which makes sense and if possible holding some
+kind of versionning informations. For example
+<code>"http://www.gnome.org/gnumeric/1.0"</code> is a good namespace scheme.
+Then when you load a file, make sure that a namespace carrying the
+version-independant prefix is installed on the root element of your document,
+and if the version information don't match something you know, warn the user
+and be liberal in what you accept as the input. Also do *not* try to base
+namespace checking on the prefix value &lt;foo:text> may be exactly the same
+as &lt;bar:text>  in another document, what really matter is the URI
+associated with the element or the attribute, not the prefix string which is
+just a shortcut for the full URI.</p>
+
+<p>@@Interfaces@@</p>
+
+<p>@@Examples@@</p>
+
+<p>Usually people object using namespace in the case of validation, I object
+this and will make sure that using namespaces won't break validity checking,
+so even is you plan or are using validation I strongly suggest to add
+namespaces to your document. A default namespace scheme
+<code>xmlns="http://...."</code> should not break validity even on less
+flexible parsers. Now using namespace to mix and differenciate content coming
+from mutliple Dtd will certainly break current validation schemes, I will try
+to provide ways to do this, but this may not be portable or standardized.</p>
+
+<h2>Validation, or are you afraid of DTDs ?</h2>
+
+<p>Well what is validation and what is a DTD ?</p>
+
+<p>Validation is the process of checking a document against a set of
+construction rules, a <strong>DTD</strong> (Document Type Definition) is such
+a set of rules.</p>
+
+<p>The validation process and building DTDs are the two most difficult parts
+of  XML life cycle. Briefly a DTD defines all the possibles element to be
+found within your document, what is the formal shape of your document tree (by
+defining the allowed content of an element, either text, a regular expression
+for the allowed list of children, or mixed content i.e. both text and childs).
+The DTD also defines the allowed attributes for all elements and the types of
+the attributes. For more detailed informations, I suggest to read the related
+parts of the XML specification, the examples found under
+gnome-xml/test/valid/dtd and the large amount of books available on XML. The
+dia example in gnome-xml/test/valid should be both simple and complete enough
+to allow you to build your own.</p>
+
+<p>A word of warning, building a good DTD which will fit your needs of your
+application in the long-term is far from trivial, however the extra level of
+quality it can insure is well worth the price for some sets of applications or
+if you already have already a DTD defined for your application field.</p>
+
+<p>The validation is not completely finished but in a (very IMHO) usable
+state. Until a real validation interface is defined the way to do it is to
+define and set the <strong>xmlDoValidityCheckingDefaultValue</strong> external
+variable to 1, this will of course be changed at some point:</p>
+
+<p>extern int xmlDoValidityCheckingDefaultValue;</p>
+
+<p>...</p>
+
+<p>xmlDoValidityCheckingDefaultValue = 1;</p>
+
+<p></p>
+
+<p>To handle external entities, use the function
+<strong>xmlSetExternalEntityLoader</strong>(xmlExternalEntityLoader f); to
+link in you HTTP/FTP/Entities database library to the standard libxml
+core.</p>
+
+<p>@@interfaces@@</p>
+
 <h2><a name="DOM">DOM Principles</a></h2>
 
 <p><a href="http://www.w3.org/DOM/">DOM</a> stands for the <em>Document Object
@@ -306,7 +539,14 @@ presents on other programs like this:</p>
 <p>This should help greatly doing things like modifying a gnumeric spreadsheet
 embedded in a GWP document for example.</p>
 
-<h3><a name="Example">A real example</a></h3>
+<p>The current DOM implementation on top of libxml is the <a
+href="http://cvs.gnome.org/lxr/source/gdome/">gdome Gnome module</a>, this is
+a full DOM interface, thanks to <a href="mailto:raph@levien.com">Raph
+Levien</a>.</p>
+
+<p>The gnome-dom module in the Gnome CVS base is obsolete</p>
+
+<h2><a name="Example">A real example</a></h2>
 
 <p>Here is a real size example, where the actual content of the application
 data is not kept in the DOM tree but uses internal structures. It is based on
@@ -368,8 +608,7 @@ base</a>:</p>
     &lt;/gjob:Job>
 
   &lt;/gjob:Jobs>
-&lt;/gjob:Helping>
-</pre>
+&lt;/gjob:Helping></pre>
 
 <p>While loading the XML file into an internal DOM tree is a matter of calling
 only a couple of functions, browsing the tree to gather the informations and
@@ -501,8 +740,13 @@ produce the code needed to import and export the content between C data and
 XML storage. This is left as an exercise to the reader :-)</p>
 
 <p>Feel free to use <a href="gjobread.c">the code for the full C parsing
-example</a> as a template,</p>
+example</a> as a template, it is also available with Makefile in the Gnome CVS
+base under gnome-xml/example</p>
 
-<p> <a href="mailto:Daniel.Veillard@w3.org">Daniel Veillard</a></p>
+<p></p>
+
+<p><a href="mailto:Daniel.Veillard@w3.org">Daniel Veillard</a></p>
+
+<p>$Id$</p>
 </body>
 </html>

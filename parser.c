@@ -9499,6 +9499,10 @@ xmlParseDoc(xmlChar *cur) {
  *									*
  ************************************************************************/
 
+#ifdef LIBXML_XPATH_ENABLED
+#include <libxml/xpath.h>
+#endif
+
 static int xmlParserInitialized = 0;
 
 /**
@@ -9516,9 +9520,14 @@ xmlInitParser(void) {
     xmlInitCharEncodingHandlers();
     xmlInitializePredefinedEntities();
     xmlDefaultSAXHandlerInit();
+    xmlRegisterDefaultInputCallbacks();
+    xmlRegisterDefaultOutputCallbacks();
 #ifdef LIBXML_HTML_ENABLED
     htmlInitAutoClose();
     htmlDefaultSAXHandlerInit();
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+    xmlXPathInit();
 #endif
     xmlParserInitialized = 1;
 }

@@ -1,3 +1,8 @@
+Wed Oct  4 14:39:01 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* parser.c xmlIO.c xmlIO.h: fixed bug 26650, and improved
+	  the global init function.
+
 Tue Oct  3 11:28:52 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* HTMLparser.c: Doohhh, attribute name parsing was still case

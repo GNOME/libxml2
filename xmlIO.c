@@ -644,6 +644,9 @@ xmlRegisterOutputCallbacks(xmlOutputMatchCallback match,
  */
 void
 xmlRegisterDefaultInputCallbacks(void) {
+    if (xmlInputCallbackInitialized)
+	return;
+
     xmlRegisterInputCallbacks(xmlFileMatch, xmlFileOpen,
 	                      xmlFileRead, xmlFileClose);
 #ifdef HAVE_ZLIB_H
@@ -660,6 +663,7 @@ xmlRegisterDefaultInputCallbacks(void) {
     xmlRegisterInputCallbacks(xmlIOFTPMatch, xmlIOFTPOpen,
 	                      xmlIOFTPRead, xmlIOFTPClose);
 #endif /* LIBXML_FTP_ENABLED */
+    xmlInputCallbackInitialized = 1;
 }
 
 /**
@@ -669,6 +673,9 @@ xmlRegisterDefaultInputCallbacks(void) {
  */
 void
 xmlRegisterDefaultOutputCallbacks(void) {
+    if (xmlOutputCallbackInitialized)
+	return;
+
     xmlRegisterOutputCallbacks(xmlFileMatch, xmlFileOpenW,
 	                      xmlFileWrite, xmlFileClose);
 /*********************************
@@ -693,6 +700,7 @@ xmlRegisterDefaultOutputCallbacks(void) {
 	                       xmlIOFTPWrite, xmlIOFTPClose);
 #endif
  **********************************/
+    xmlOutputCallbackInitialized = 1;
 }
 
 /**

@@ -71,6 +71,7 @@ struct _xmlOutputBuffer {
  * Interfaces for input
  */
 
+void	xmlRegisterDefaultInputCallbacks	(void);
 xmlParserInputBufferPtr
 	xmlAllocParserInputBuffer		(xmlCharEncoding enc);
 
@@ -108,6 +109,7 @@ int     xmlRegisterInputCallbacks		(xmlInputMatchCallback match,
 /*
  * Interfaces for output
  */
+void	xmlRegisterDefaultOutputCallbacks(void);
 xmlOutputBufferPtr
 	xmlAllocOutputBuffer		(xmlCharEncodingHandlerPtr encoder);
 

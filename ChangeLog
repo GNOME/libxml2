@@ -1,3 +1,8 @@
+Sat Jul  5 22:40:23 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmlIO.c: applied small changes to portability layer for 
+	  compilation on DJGPP Ms-DOS compiler.
+
 Sat Jul  5 22:30:25 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c HTMLparser.c: use the character() SAX callback

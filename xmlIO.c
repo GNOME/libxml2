@@ -308,13 +308,13 @@ xmlFileOpen_real (const char *filename) {
     }
 
     if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "file://localhost/", 17))
-#if defined (_WIN32) && !defined(__CYGWIN__)
+#if defined (_WIN32) || defined (__DJGPP__) && !defined(__CYGWIN__)
 	path = &filename[17];
 #else
 	path = &filename[16];
 #endif
     else if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "file:///", 8)) {
-#if defined (_WIN32) && !defined(__CYGWIN__)
+#if defined (_WIN32) || defined (__DJGPP__) && !defined(__CYGWIN__)
 	path = &filename[8];
 #else
 	path = &filename[7];
@@ -327,7 +327,7 @@ xmlFileOpen_real (const char *filename) {
     if (!xmlCheckFilename(path))
         return(NULL);
 
-#if defined(WIN32) || defined (__CYGWIN__)
+#if defined(WIN32) || defined (__DJGPP__) && !defined (__CYGWIN__)
     fd = fopen(path, "rb");
 #else
     fd = fopen(path, "r");
@@ -378,13 +378,13 @@ xmlFileOpenW (const char *filename) {
     }
 
     if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "file://localhost/", 17))
-#if defined (_WIN32) && !defined(__CYGWIN__)
+#if defined (_WIN32) || defined (__DJGPP__) && !defined(__CYGWIN__)
 	path = &filename[17];
 #else
 	path = &filename[16];
 #endif
     else if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "file:///", 8)) {
-#if defined (_WIN32) && !defined(__CYGWIN__)
+#if defined (_WIN32) || defined (__DJGPP__) && !defined(__CYGWIN__)
 	path = &filename[8];
 #else
 	path = &filename[7];
@@ -505,13 +505,13 @@ xmlGzfileOpen_real (const char *filename) {
     }
 
     if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "file://localhost/", 17))
-#if defined (_WIN32) && !defined(__CYGWIN__)
+#if defined (_WIN32) || defined (__DJGPP__) && !defined(__CYGWIN__)
 	path = &filename[17];
 #else
 	path = &filename[16];
 #endif
     else if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "file:///", 8)) {
-#if defined (_WIN32) && !defined(__CYGWIN__)
+#if defined (_WIN32) || defined (__DJGPP__) && !defined(__CYGWIN__)
 	path = &filename[8];
 #else
 	path = &filename[7];
@@ -574,13 +574,13 @@ xmlGzfileOpenW (const char *filename, int compression) {
     }
 
     if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "file://localhost/", 17))
-#if defined (_WIN32) && !defined(__CYGWIN__)
+#if defined (_WIN32) || defined (__DJGPP__) && !defined(__CYGWIN__)
 	path = &filename[17];
 #else
 	path = &filename[16];
 #endif
     else if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "file:///", 8)) {
-#if defined (_WIN32) && !defined(__CYGWIN__)
+#if defined (_WIN32) || defined (__DJGPP__) && !defined(__CYGWIN__)
 	path = &filename[8];
 #else
 	path = &filename[7];
@@ -2499,13 +2499,13 @@ static int xmlSysIDExists(const char *URL) {
 	return(0);
 
     if (!xmlStrncasecmp(BAD_CAST URL, BAD_CAST "file://localhost/", 17))
-#if defined (_WIN32) && !defined(__CYGWIN__)
+#if defined (_WIN32) || defined (__DJGPP__) && !defined(__CYGWIN__)
 	path = &URL[17];
 #else
 	path = &URL[16];
 #endif
     else if (!xmlStrncasecmp(BAD_CAST URL, BAD_CAST "file:///", 8)) {
-#if defined (_WIN32) && !defined(__CYGWIN__)
+#if defined (_WIN32) || defined (__DJGPP__) && !defined(__CYGWIN__)
 	path = &URL[8];
 #else
 	path = &URL[7];
@@ -2707,13 +2707,13 @@ xmlNoNetExists(const char *URL)
         return (0);
 
     if (!xmlStrncasecmp(BAD_CAST URL, BAD_CAST "file://localhost/", 17))
-#if defined (_WIN32) && !defined(__CYGWIN__)
+#if defined (_WIN32) || defined (__DJGPP__) && !defined(__CYGWIN__)
 	path = &URL[17];
 #else
 	path = &URL[16];
 #endif
     else if (!xmlStrncasecmp(BAD_CAST URL, BAD_CAST "file:///", 8)) {
-#if defined (_WIN32) && !defined(__CYGWIN__)
+#if defined (_WIN32) || defined (__DJGPP__) && !defined(__CYGWIN__)
         path = &URL[8];
 #else
         path = &URL[7];

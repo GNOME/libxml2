@@ -2180,6 +2180,9 @@ __xmlParserInputBufferCreateFilename(const char *URI, xmlCharEncoding enc) {
 	}
 #endif
     }
+    else
+      xmlInputCallbackTable[i].closecallback (context);
+
     return(ret);
 }
 

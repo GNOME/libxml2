@@ -44,6 +44,20 @@
 	    "Unimplemented block at %s:%d\n",				\
             __FILE__, __LINE__);
 
+/*
+ * xmlSAX2ErrMemory:
+ * @ctxt:  an XML validation parser context
+ * @msg:   a string to accompany the error message
+ */
+static void
+xmlSAX2ErrMemory(xmlParserCtxtPtr ctxt, char *msg) {
+    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+        ctxt->sax->error(ctxt->userData, "%s: out of memory\n", msg);
+    ctxt->errNo = XML_ERR_NO_MEMORY;
+    ctxt->instate = XML_PARSER_EOF;
+    ctxt->disableSAX = 1;
+}
+
 /**
  * xmlValidError:
  * @ctxt:  an XML validation parser context
@@ -214,6 +228,8 @@ xmlSAX2InternalSubset(void *ctx, const xmlChar *name,
     }
     ctxt->myDoc->intSubset = 
 	xmlCreateIntSubset(ctxt->myDoc, name, ExternalID, SystemID);
+    if (ctxt->myDoc->intSubset == NULL)
+        xmlSAX2ErrMemory(ctxt, "xmlSAX2InternalSubset");
 }
 
 /**
@@ -273,13 +289,7 @@ xmlSAX2ExternalSubset(void *ctx, const xmlChar *name,
 	ctxt->inputTab = (xmlParserInputPtr *)
 	                 xmlMalloc(5 * sizeof(xmlParserInputPtr));
 	if (ctxt->inputTab == NULL) {
-	    ctxt->errNo = XML_ERR_NO_MEMORY;
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		ctxt->sax->error(ctxt->userData, 
-		     "xmlSAX2ExternalSubset: out of memory\n");
-	    ctxt->errNo = XML_ERR_NO_MEMORY;
-	    ctxt->instate = XML_PARSER_EOF;
-	    ctxt->disableSAX = 1;
+	    xmlSAX2ErrMemory(ctxt, "xmlSAX2ExternalSubset");
 	    ctxt->input = oldinput;
 	    ctxt->inputNr = oldinputNr;
 	    ctxt->inputMax = oldinputMax;
@@ -816,12 +826,7 @@ xmlSAX2StartDocument(void *ctx)
 	if (ctxt->myDoc == NULL)
 	    ctxt->myDoc = htmlNewDocNoDtD(NULL, NULL);
 	if (ctxt->myDoc == NULL) {
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		ctxt->sax->error(ctxt->userData, 
-		     "SAX.xmlSAX2StartDocument(): out of memory\n");
-	    ctxt->errNo = XML_ERR_NO_MEMORY;
-	    ctxt->instate = XML_PARSER_EOF;
-	    ctxt->disableSAX = 1;
+	    xmlSAX2ErrMemory(ctxt, "xmlSAX2StartDocument");
 	    return;
 	}
 #else
@@ -841,12 +846,7 @@ xmlSAX2StartDocument(void *ctx)
 		doc->encoding = NULL;
 	    doc->standalone = ctxt->standalone;
 	} else {
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		ctxt->sax->error(ctxt->userData, 
-		     "SAX.xmlSAX2StartDocument(): out of memory\n");
-	    ctxt->errNo = XML_ERR_NO_MEMORY;
-	    ctxt->instate = XML_PARSER_EOF;
-	    ctxt->disableSAX = 1;
+	    xmlSAX2ErrMemory(ctxt, "xmlSAX2StartDocument");
 	    return;
 	}
 	if ((ctxt->dictNames) && (doc != NULL)) {
@@ -945,12 +945,7 @@ xmlSAX2AttributeInternal(void *ctx, const xmlChar *fullname,
 	name = xmlStrdup(fullname);
     }
     if (name == NULL) {
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt->userData, 
-		 "SAX.xmlSAX2StartElement(): out of memory\n");
-	ctxt->errNo = XML_ERR_NO_MEMORY;
-	ctxt->instate = XML_PARSER_EOF;
-	ctxt->disableSAX = 1;
+        xmlSAX2ErrMemory(ctxt, "xmlSAX2StartElement");
 	if (ns != NULL)
 	    xmlFree(ns);
 	return;
@@ -1044,12 +1039,7 @@ xmlSAX2AttributeInternal(void *ctx, const xmlChar *fullname,
 		                          0,0,0);
 	    ctxt->depth--;
 	    if (val == NULL) {
-		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		    ctxt->sax->error(ctxt->userData, 
-			 "SAX.xmlSAX2StartElement(): out of memory\n");
-		ctxt->errNo = XML_ERR_NO_MEMORY;
-		ctxt->instate = XML_PARSER_EOF;
-		ctxt->disableSAX = 1;
+	        xmlSAX2ErrMemory(ctxt, "xmlSAX2StartElement");
 	        xmlFree(ns);
 		if (name != NULL) 
 		    xmlFree(name);
@@ -1345,13 +1335,7 @@ process_external_subset:
 
                         fulln = xmlBuildQName(attr->name, attr->prefix, fn, 50);
 			if (fulln == NULL) {
-			    if ((ctxt->sax != NULL) &&
-			        (ctxt->sax->error != NULL))
-				ctxt->sax->error(ctxt->userData, 
-				     "SAX.xmlSAX2StartElement(): out of memory\n");
-			    ctxt->errNo = XML_ERR_NO_MEMORY;
-			    ctxt->instate = XML_PARSER_EOF;
-			    ctxt->disableSAX = 1;
+			    xmlSAX2ErrMemory(ctxt, "xmlSAX2StartElement");
 			    return;
 			}
 
@@ -1446,9 +1430,7 @@ xmlSAX2StartElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
     if (ret == NULL) {
         if (prefix != NULL)
 	    xmlFree(prefix);
-	ctxt->errNo = XML_ERR_NO_MEMORY;
-	ctxt->instate = XML_PARSER_EOF;
-	ctxt->disableSAX = 1;
+	xmlSAX2ErrMemory(ctxt, "xmlSAX2StartElement");
         return;
     }
     if (ctxt->myDoc->children == NULL) {
@@ -1672,12 +1654,7 @@ xmlSAX2TextNode(xmlParserCtxtPtr ctxt, const xmlChar *str, int len) {
 	ret = (xmlNodePtr) xmlMalloc(sizeof(xmlNode));
     }
     if (ret == NULL) {
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt->userData, 
-		 "SAX.xmlSAX2Characters(): out of memory\n");
-	ctxt->errNo = XML_ERR_NO_MEMORY;
-	ctxt->instate = XML_PARSER_EOF;
-	ctxt->disableSAX = 1;
+        xmlErrMemory(ctxt, "xmlSAX2Characters");
 	return(NULL);
     }
     /*
@@ -1708,9 +1685,8 @@ skip:
     if (intern == NULL) {
 	ret->content = xmlStrndup(str, len);
 	if (ret->content == NULL) {
-	    ctxt->errNo = XML_ERR_NO_MEMORY;
-	    ctxt->instate = XML_PARSER_EOF;
-	    ctxt->disableSAX = 1;
+	    xmlSAX2ErrMemory(ctxt, "xmlSAX2TextNode");
+	    xmlFree(ret);
 	    return(NULL);
 	}
     } else
@@ -1822,9 +1798,7 @@ xmlSAX2AttributeNs(xmlParserCtxtPtr ctxt,
 	else
 	    ret = xmlNewNsProp(ctxt->node, namespace, localname, NULL);
 	if (ret == NULL) {
-	    ctxt->errNo = XML_ERR_NO_MEMORY;
-	    ctxt->instate = XML_PARSER_EOF;
-	    ctxt->disableSAX = 1;
+	    xmlErrMemory(ctxt, "xmlSAX2AttributeNs");
 	    return;
 	}
     }
@@ -2042,9 +2016,7 @@ xmlSAX2StartElementNs(void *ctx,
 	else {
 	    ret->name = xmlStrdup(localname);
 	    if (ret->name == NULL) {
-		ctxt->errNo = XML_ERR_NO_MEMORY;
-		ctxt->instate = XML_PARSER_EOF;
-		ctxt->disableSAX = 1;
+	        xmlSAX2ErrMemory(ctxt, "xmlSAX2StartElementNs");
 		return;
 	    }
 	}
@@ -2057,9 +2029,7 @@ xmlSAX2StartElementNs(void *ctx,
 	else
 	    ret = xmlNewDocNode(ctxt->myDoc, NULL, localname, NULL);
 	if (ret == NULL) {
-	    ctxt->errNo = XML_ERR_NO_MEMORY;
-	    ctxt->instate = XML_PARSER_EOF;
-	    ctxt->disableSAX = 1;
+	    xmlSAX2ErrMemory(ctxt, "xmlSAX2StartElementNs");
 	    return;
 	}
     }
@@ -2094,9 +2064,7 @@ xmlSAX2StartElementNs(void *ctx,
 	    if ((URI != NULL) && (prefix == pref))
 		ret->ns = ns;
 	} else {
-	    ctxt->errNo = XML_ERR_NO_MEMORY;
-	    ctxt->instate = XML_PARSER_EOF;
-	    ctxt->disableSAX = 1;
+	    xmlSAX2ErrMemory(ctxt, "xmlSAX2StartElementNs");
 	    return;
 	}
 #ifdef LIBXML_VALID_ENABLED
@@ -2143,9 +2111,7 @@ xmlSAX2StartElementNs(void *ctx,
 	if (ret->ns == NULL) {
 	    ns = xmlNewNs(ret, NULL, prefix);
 	    if (ns == NULL) {
-	        ctxt->errNo = XML_ERR_NO_MEMORY;
-		ctxt->instate = XML_PARSER_EOF;
-		ctxt->disableSAX = 1;
+	        xmlSAX2ErrMemory(ctxt, "xmlSAX2StartElementNs");
 		return;
 	    }
 	    if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
@@ -2327,12 +2293,7 @@ xmlSAX2Characters(void *ctx, const xmlChar *ch, int len)
 		size *= 2;
                 newbuf = (xmlChar *) xmlRealloc(lastChild->content,size);
 		if (newbuf == NULL) {
-		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-			ctxt->sax->error(ctxt->userData, 
-			     "SAX.xmlSAX2Characters(): out of memory\n");
-		    ctxt->errNo = XML_ERR_NO_MEMORY;
-		    ctxt->instate = XML_PARSER_EOF;
-		    ctxt->disableSAX = 1;
+		    xmlSAX2ErrMemory(ctxt, "xmlSAX2Characters");
 		    return;
 		}
 		ctxt->nodemem = size;
@@ -2343,12 +2304,7 @@ xmlSAX2Characters(void *ctx, const xmlChar *ch, int len)
 	    lastChild->content[ctxt->nodelen] = 0;
 	} else if (coalesceText) {
 	    if (xmlTextConcat(lastChild, ch, len)) {
-		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		    ctxt->sax->error(ctxt->userData, 
-			 "SAX.xmlSAX2Characters(): out of memory\n");
-		ctxt->errNo = XML_ERR_NO_MEMORY;
-		ctxt->instate = XML_PARSER_EOF;
-		ctxt->disableSAX = 1;
+		xmlSAX2ErrMemory(ctxt, "xmlSAX2Characters");
 	    }
 	    if (ctxt->node->children != NULL) {
 		ctxt->nodelen = xmlStrlen(lastChild->content);

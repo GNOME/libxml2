@@ -6747,8 +6747,8 @@ xmlBufferResize(xmlBufferPtr buf, unsigned int size)
 	if (rebuf != NULL) {
 	    memcpy(rebuf, buf->content, buf->use);
 	    xmlFree(buf->content);
+	    rebuf[buf->use] = 0;
 	}
-	rebuf[buf->use] = 0;
     }
     if (rebuf == NULL) {
 	xmlTreeErrMemory("growing buffer");

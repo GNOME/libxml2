@@ -1390,7 +1390,8 @@ node_found:
         (reader->node->next == NULL) &&
         ((reader->node->type == XML_TEXT_NODE) ||
 	 (reader->node->type == XML_CDATA_SECTION_NODE))) {
-            xmlTextReaderExpand(reader);
+            if (xmlTextReaderExpand(reader) == NULL)
+	        return -1;
     }
 
 #ifdef LIBXML_XINCLUDE_ENABLED
@@ -1409,7 +1410,8 @@ node_found:
 	/*
 	 * expand that node and process it
 	 */
-	xmlTextReaderExpand(reader);
+	if (xmlTextReaderExpand(reader) == NULL)
+	    return -1;
 	xmlXIncludeProcessNode(reader->xincctxt, reader->node);
     }
     if (reader->node->type == XML_XINCLUDE_START) {
@@ -1878,6 +1880,7 @@ xmlNewTextReader(xmlParserInputBufferPtr input, const char *URI) {
     ret->buffer = xmlBufferCreateSize(100);
     ret->sax = (xmlSAXHandler *) xmlMalloc(sizeof(xmlSAXHandler));
     if (ret->sax == NULL) {
+	xmlBufferFree(ret->buffer);
 	xmlFree(ret);
         xmlGenericError(xmlGenericErrorContext,
 		"xmlNewTextReader : malloc failed\n");
@@ -1927,6 +1930,7 @@ xmlNewTextReader(xmlParserInputBufferPtr input, const char *URI) {
     if (ret->ctxt == NULL) {
         xmlGenericError(xmlGenericErrorContext,
 		"xmlNewTextReader : malloc failed\n");
+	xmlBufferFree(ret->buffer);
 	xmlFree(ret->sax);
 	xmlFree(ret);
 	return(NULL);

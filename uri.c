@@ -2124,6 +2124,8 @@ xmlBuildRelativeURI (const xmlChar * URI, const xmlChar * base)
     ix = xmlStrlen (uptr) + 1;
     val = (xmlChar *) xmlMalloc (ix + 3 * nbslash);
     if (val == NULL) {
+	xmlGenericError(xmlGenericErrorContext,
+		"xmlBuildRelativeURI: out of memory\n");
 	goto done;
     }
     vptr = val;
@@ -2195,7 +2197,7 @@ xmlCanonicPath(const xmlChar *path)
     len = xmlStrlen(path);
     if ((len > 2) && IS_WINDOWS_PATH(path)) {
 	uri->scheme = xmlStrdup(BAD_CAST "file");
-	uri->path = xmlMallocAtomic(len + 2);
+	uri->path = xmlMallocAtomic(len + 2);	/* FIXME - check alloc! */
 	uri->path[0] = '/';
 	p = uri->path + 1;
 	strncpy(p, path, len + 1);

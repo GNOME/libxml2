@@ -933,6 +933,7 @@ xmlSchemaGetNamespace(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
  * @schema:  the schemas context
  * @name:  the element name
  * @ns:  the element namespace
+ * @level: how deep is the request
  *
  * Lookup a an element in the schemas or the accessible schemas
  *
@@ -940,33 +941,40 @@ xmlSchemaGetNamespace(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
  */
 static xmlSchemaElementPtr
 xmlSchemaGetElem(xmlSchemaPtr schema, const xmlChar * name,
-                 const xmlChar * namespace)
+                 const xmlChar * namespace, int level)
 {
     xmlSchemaElementPtr ret;
-    xmlSchemaImportPtr import;
+    xmlSchemaImportPtr import = NULL;
 
     if ((name == NULL) || (schema == NULL))
         return (NULL);
     
     if (namespace == NULL) {
         ret = xmlHashLookup2(schema->elemDecl, name, namespace);
-        if (ret != NULL)
+        if ((ret != NULL) &&
+	    ((level == 0) || (ret->flags & XML_SCHEMAS_ELEM_TOPLEVEL))) {
             return (ret);
+	}
     } else if ((schema->flags & XML_SCHEMAS_QUALIF_ELEM) == 0) {
         if (xmlStrEqual(namespace, schema->targetNamespace))
 	    ret = xmlHashLookup2(schema->elemDecl, name, NULL);
 	else
 	    ret = xmlHashLookup2(schema->elemDecl, name, namespace);
-        if (ret != NULL)
+        if ((ret != NULL) &&
+	    ((level == 0) || (ret->flags & XML_SCHEMAS_ELEM_TOPLEVEL))) {
             return (ret);
+	}
     } else {
 	ret = xmlHashLookup2(schema->elemDecl, name, namespace);
-        if (ret != NULL)
+        if ((ret != NULL) &&
+	    ((level == 0) || (ret->flags & XML_SCHEMAS_ELEM_TOPLEVEL))) {
             return (ret);
+	}
     }
+    if (level > 0)
     import = xmlHashLookup(schema->schemasImports, namespace);
     if (import != NULL)
-	ret = xmlSchemaGetElem(import->schema, name, namespace);
+	ret = xmlSchemaGetElem(import->schema, name, namespace, level + 1);
 #ifdef DEBUG
     if (ret == NULL) {
         if (namespace == NULL)
@@ -3947,7 +3955,7 @@ xmlSchemaRefFixupCallback(xmlSchemaElementPtr elem,
                           name, NULL);
             return;
         }
-        elemDecl = xmlSchemaGetElem(ctxt->schema, elem->ref, elem->refNs);
+        elemDecl = xmlSchemaGetElem(ctxt->schema, elem->ref, elem->refNs, 0);
 
         if (elemDecl == NULL) {
             xmlSchemaPErr(ctxt, elem->node, XML_SCHEMAP_UNKNOWN_REF,
@@ -4123,6 +4131,9 @@ xmlSchemaTypeFixup(xmlSchemaTypePtr typeDecl,
                                 typeDecl->contentType =
                                     typeDecl->subtypes->contentType;
                         }
+			if (typeDecl->attributes == NULL)
+			    typeDecl->attributes =
+			        typeDecl->subtypes->attributes;
                     }
                     break;
                 }
@@ -4140,6 +4151,9 @@ xmlSchemaTypeFixup(xmlSchemaTypePtr typeDecl,
                                 typeDecl->contentType =
                                     typeDecl->subtypes->contentType;
                         }
+			if (typeDecl->attributes == NULL)
+			    typeDecl->attributes =
+			        typeDecl->subtypes->attributes;
                     }
                     break;
                 }
@@ -4614,6 +4628,17 @@ xmlSchemaParse(xmlSchemaParserCtxtPtr ctxt)
                     (xmlHashScannerFull) xmlSchemaRefFixupCallback, ctxt);
 
     /*
+     * Then fixup all attributes declarations
+     */
+    xmlHashScan(ret->attrDecl, (xmlHashScanner) xmlSchemaAttrFixup, ctxt);
+
+    /*
+     * Then fixup all attributes group declarations
+     */
+    xmlHashScan(ret->attrgrpDecl, (xmlHashScanner) xmlSchemaAttrGrpFixup,
+                ctxt);
+
+    /*
      * Then fixup all types properties
      */
     xmlHashScan(ret->typeDecl, (xmlHashScanner) xmlSchemaTypeFixup, ctxt);
@@ -4628,17 +4653,6 @@ xmlSchemaParse(xmlSchemaParserCtxtPtr ctxt)
      * Then check the defaults part of the type like facets values
      */
     xmlHashScan(ret->typeDecl, (xmlHashScanner) xmlSchemaCheckDefaults,
-                ctxt);
-
-    /*
-     * Then fixup all attributes declarations
-     */
-    xmlHashScan(ret->attrDecl, (xmlHashScanner) xmlSchemaAttrFixup, ctxt);
-
-    /*
-     * Then fixup all attributes group declarations
-     */
-    xmlHashScan(ret->attrgrpDecl, (xmlHashScanner) xmlSchemaAttrGrpFixup,
                 ctxt);
 
     if (ctxt->nberrors != 0) {
@@ -4815,7 +4829,8 @@ xmlSchemaValidateSimpleValue(xmlSchemaValidCtxtPtr ctxt,
         }
 
         /*
-         * Do not validate facets when working on building the Schemas
+         * Do not validate facets or attributes when working on
+	 * building the Schemas
          */
         if (ctxt->schema != NULL) {
             if (ret == 0) {
@@ -4991,6 +5006,10 @@ xmlSchemaValidateSimpleContent(xmlSchemaValidCtxtPtr ctxt,
                     ret =
                         xmlSchemaValidateFacets(ctxt, base, facet, value);
                 }
+		if ((ret == 0) && (type->attributes != NULL)) {
+		    ret = xmlSchemaValidateAttributes(ctxt, node,
+		                                      type->attributes);
+		}
                 break;
             }
         case XML_SCHEMA_TYPE_EXTENSION:{
@@ -5444,6 +5463,9 @@ xmlSchemaValidateComplexType(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr node)
                  * Skip ignorable nodes in that context
                  */
                 child = xmlSchemaSkipIgnored(ctxt, type, child);
+            }
+            if (type->attributes != NULL) {
+                xmlSchemaValidateAttributes(ctxt, node, type->attributes);
             }
             break;
         case XML_SCHEMA_CONTENT_BASIC:{

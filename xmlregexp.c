@@ -1992,6 +1992,7 @@ xmlRegCheckCharacter(xmlRegAtomPtr atom, int codepoint) {
             return(codepoint == atom->codepoint);
         case XML_REGEXP_RANGES: {
 	    int accept = 0;
+
 	    for (i = 0;i < atom->nbRanges;i++) {
 		range = atom->ranges[i];
 		if (range->neg) {
@@ -2000,6 +2001,8 @@ xmlRegCheckCharacter(xmlRegAtomPtr atom, int codepoint) {
 						range->blockName);
 		    if (ret != 0)
 			return(0); /* excluded char */
+		    else
+		        accept = 1;
 		} else {
 		    ret = xmlRegCheckCharacterRange(range->type, codepoint,
 						0, range->start, range->end,
@@ -2199,6 +2202,8 @@ xmlFARegExec(xmlRegexpPtr comp, const xmlChar *content) {
     exec->state = comp->states[0];
     exec->transno = 0;
     exec->transcount = 0;
+    exec->inputStack = NULL;
+    exec->inputStackMax = 0;
     if (comp->nbCounters > 0) {
 	exec->counts = (int *) xmlMalloc(comp->nbCounters * sizeof(int));
 	if (exec->counts == NULL) {

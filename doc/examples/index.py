@@ -227,7 +227,7 @@ INCLUDES = -I$(top_builddir)/include -I@srcdir@/include @THREAD_CFLAGS@ @Z_CFLAG
 DEPS = $(top_builddir)/libxml2.la
 LDADDS = @STATIC_BINARIES@ $(top_builddir)/libxml2.la @THREAD_LIBS@ @Z_LIBS@ $(ICONV_LIBS) -lm @WIN32_EXTRA_LIBADD@
 
-all: examples.xml index.html
+rebuild: examples.xml index.html
 
 examples.xml: index.py *.c
 	-@($(srcdir)/index.py)

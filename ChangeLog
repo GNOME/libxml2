@@ -1,3 +1,13 @@
+Mon Nov 24 14:01:57 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmlregexp.c xmlschemas.c: more XML Schemas fixes based
+	  on Eric van der Vlist examples
+	* result/schemas/vdv-first4* test/schemas/vdv-first4*:
+	  added regression tests
+	* doc/examples/Makefile.am doc/examples/index.py: do not
+	  regenerate the index on make all target, but only on
+	  make rebuild to avoid troubles.
+
 Sat Nov 22 21:35:42 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemas.c xmlschemastypes.c include/libxml/xmlerror.h

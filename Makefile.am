@@ -39,7 +39,7 @@ libxml_la_SOURCES = \
 DEPS = $(top_builddir)/libxml.la
 LDADDS = $(top_builddir)/libxml.la @Z_LIBS@ @M_LIBS@
 
-man_MANS = xmllint.1 libxml.4
+man_MANS = xmllint.1 xml-config.1 libxml.4
 
 m4datadir = $(datadir)/aclocal                                                  m4data_DATA = libxml.m4
 

@@ -1,3 +1,8 @@
+Wed Oct 11 15:01:29 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* xml-config.1 Makefile.am libxml.spec.in: adding a man page for
+	  xml-config by Fredrik Hallenberg <hallon@lysator.liu.se>
+
 Wed Oct 11 12:41:30 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* xpath.[ch] xpointer.[ch]: worked on XPath functions and variable

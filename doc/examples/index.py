@@ -1,8 +1,9 @@
 #!/usr/bin/python -u
 #
-# Indexes the examples and build doc and web pages.
+# Indexes the examples and build an XML description
 #
 import string
+import glob
 import sys
 try:
     import libxml2
@@ -11,6 +12,7 @@ except:
 sys.path.append("..")
 from apibuild import CParser, escape
 
+sections = {}
 symbols = {}
 api_dict = None
 api_doc = None
@@ -86,6 +88,7 @@ def parse_top_comment(filename, comment):
 
 def parse(filename, output):
     global symbols
+    global sections
 
     parser = CParser(filename)
     parser.collect_references()
@@ -112,16 +115,26 @@ def parse(filename, output):
 	output.write("    <copy>%s</copy>\n" % copy);
     except:
         print "Example %s lacks a copyright description" % (filename)
+    try:
+        section = info['section']
+	output.write("    <section>%s</section>\n" % section);
+	if sections.has_key(section):
+	    sections[section].append(filename)
+	else:
+	    sections[section] = [filename]
+    except:
+        print "Example %s lacks a section description" % (filename)
     for topic in info.keys():
         if topic != "purpose" and topic != "usage" and \
-	   topic != "author" and topic != "copy":
+	   topic != "author" and topic != "copy" and topic != "section":
 	    str = info[topic]
 	    output.write("    <extra topic='%s'>%s</extra>\n" % str)
-#    print idx.functions
-    output.write("    <uses>\n")
+    output.write("    <includes>\n")
     for include in idx.includes.keys():
         if include.find("libxml") != -1:
 	    output.write("      <include>%s</include>\n" % (escape(include)))
+    output.write("    </includes>\n")
+    output.write("    <uses>\n")
     for ref in idx.references.keys():
         id = idx.references[ref]
 	name = id.get_name()
@@ -140,12 +153,12 @@ def parse(filename, output):
 	if info != None:
 	    type = info[0]
 	    file = info[1]
-	    output.write("      <%s line='%d' file='%s'>%s</%s>\n" % (type,
-	                 line, file, name, type))
+	    output.write("      <%s line='%d' file='%s' name='%s'/>\n" % (type,
+	                 line, file, name))
 	else:
 	    type = id.get_type()
-	    output.write("      <%s line='%d'>%s</%s>\n" % (type,
-	                 line, name, type))
+	    output.write("      <%s line='%d' name='%s'/>\n" % (type,
+	                 line, name))
 	    
     output.write("    </uses>\n")
     output.write("  </example>\n")
@@ -168,14 +181,32 @@ def dump_symbols(output):
         output.write("    </symbol>\n")
     output.write("  </symbols>\n")
 
+def dump_sections(output):
+    global sections
+
+    output.write("  <sections>\n")
+    keys = sections.keys()
+    keys.sort()
+    for section in keys:
+        output.write("    <section name='%s'>\n" % (section))
+	info = sections[section]
+	i = 0
+	while i < len(info):
+	    output.write("      <example filename='%s'/>\n" % (info[i]))
+	    i = i + 1
+        output.write("    </section>\n")
+    output.write("  </sections>\n")
+
 if __name__ == "__main__":
     load_api()
     output = open("examples.xml", "w")
     output.write("<examples>\n")
 
-    parse("example1.c", output)
+    for file in glob.glob('*.c'):
+	parse(file, output)
 
     dump_symbols(output)
+    dump_sections(output)
     output.write("</examples>\n")
     output.close()
 

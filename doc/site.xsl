@@ -4,6 +4,7 @@
       doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
       doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"/>
 
+  <xsl:variable name="href_base">../</xsl:variable>
 <!--
  - returns the filename associated to an ID in the original file
  -->
@@ -508,14 +509,14 @@ A:link, A:visited, A:active { text-decoration: underline }
     <table border="0" width="100%" cellpadding="5" cellspacing="0" align="center">
     <tr>
     <td width="120">
-    <a href="http://swpat.ffii.org/"><img src="epatents.png" alt="Action against software patents"/></a>
+    <a href="http://swpat.ffii.org/"><img src="{$href_base}epatents.png" alt="Action against software patents"/></a>
     </td>
     <td width="180">
-    <a href="http://www.gnome.org/"><img src="gnome2.png" alt="Gnome2 Logo"/></a>
-    <a href="http://www.w3.org/Status"><img src="w3c.png" alt="W3C Logo"/></a>
-    <a href="http://www.redhat.com/"><img src="redhat.gif" alt="Red Hat Logo"/></a>
+    <a href="http://www.gnome.org/"><img src="{$href_base}gnome2.png" alt="Gnome2 Logo"/></a>
+    <a href="http://www.w3.org/Status"><img src="{$href_base}w3c.png" alt="W3C Logo"/></a>
+    <a href="http://www.redhat.com/"><img src="{$href_base}redhat.gif" alt="Red Hat Logo"/></a>
     <div align="left">
-    <a href="http://xmlsoft.org/"><img src="Libxml2-Logo-180x168.gif" alt="Made with Libxml2 Logo"/></a>
+    <a href="http://xmlsoft.org/"><img src="{$href_base}Libxml2-Logo-180x168.gif" alt="Made with Libxml2 Logo"/></a>
     </div>
     </td>
     <td>

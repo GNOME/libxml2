@@ -11,7 +11,10 @@ example1_LDFLAGS =
 example1_DEPENDENCIES = $(DEPS)
 example1_LDADD=  @RDL_LIBS@ $(LDADDS)
 
-all: examples.xml
+all: examples.xml index.html
 
 examples.xml: index.py *.c
 	-@($(srcdir)/index.py)
+
+index.html: examples.xml examples.xsl
+	-@(xsltproc examples.xsl examples.xml && echo "Rebuilt web page" && xmllint --valid --noout index.html)

@@ -1,3 +1,11 @@
+Wed Nov 12 01:38:16 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* doc/site.xsl doc/examples/Makefile.am doc/examples/index.html:
+	  added autogeneration of a web page for the examples
+	* doc/examples/example1.c doc/examples/.cvsignore
+	  doc/examples/examples.xml doc/examples/index.py: updated the
+	  informations extracted, improved the format and indexing.
+
 Tue Nov 11 22:08:59 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* check-xinclude-test-suite.py: less verbose on difference

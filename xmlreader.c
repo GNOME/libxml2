@@ -2629,6 +2629,34 @@ xmlTextReaderReadAttributeValue(xmlTextReaderPtr reader) {
     return(1);
 }
 
+/**
+ * xmlTextReaderConstEncoding:
+ * @reader:  the xmlTextReaderPtr used
+ *
+ * Determine the encoding of the document being read.
+ *
+ * Returns a string containing the encoding of the document or NULL in
+ * case of error.  The string is deallocated with the reader.
+ */
+const xmlChar *
+xmlTextReaderConstEncoding(xmlTextReaderPtr reader) {
+    xmlDocPtr doc = NULL;
+    if (reader == NULL)
+	return(NULL);
+    if (reader->doc != NULL)
+        doc = reader->doc;
+    else if (reader->ctxt != NULL)
+	doc = reader->ctxt->myDoc;
+    if (doc == NULL)
+	return(NULL);
+    
+    if (doc->encoding == NULL)
+	return(NULL);
+    else
+      return(CONSTSTR(doc->encoding));
+}
+
+
 /************************************************************************
  *									*
  *			Acces API to the current node			*
@@ -3798,6 +3826,87 @@ xmlTextReaderRelaxNGValidate(xmlTextReaderPtr reader, const char *rng) {
     return(0);
 }
 #endif
+
+/**
+ * xmlTextReaderIsNamespaceDecl:
+ * @reader: the xmlTextReaderPtr used
+ *
+ * Determine whether the current node is a namespace declaration
+ * rather than a regular attribute.
+ *
+ * Returns 1 if the current node is a namespace declaration, 0 if it
+ * is a regular attribute or other type of node, or -1 in case of
+ * error.
+ */
+int
+xmlTextReaderIsNamespaceDecl(xmlTextReaderPtr reader) {
+    xmlNodePtr node;
+    if (reader == NULL)
+	return(-1);
+    if (reader->node == NULL)
+	return(-1);
+    if (reader->curnode != NULL)
+	node = reader->curnode;
+    else
+	node = reader->node;
+    
+    if (XML_NAMESPACE_DECL == node->type)
+	return(1);
+    else
+	return(0);
+}
+
+/**
+ * xmlTextReaderConstXmlVersion:
+ * @reader:  the xmlTextReaderPtr used
+ *
+ * Determine the XML version of the document being read.
+ *
+ * Returns a string containing the XML version of the document or NULL
+ * in case of error.  The string is deallocated with the reader.
+ */
+const xmlChar *
+xmlTextReaderConstXmlVersion(xmlTextReaderPtr reader) {
+    xmlDocPtr doc = NULL;
+    if (reader == NULL)
+	return(NULL);
+    if (reader->doc != NULL)
+        doc = reader->doc;
+    else if (reader->ctxt != NULL)
+	doc = reader->ctxt->myDoc; 
+    if (doc == NULL)
+	return(NULL);
+    
+    if (doc->version == NULL)
+	return(NULL);
+    else
+      return(CONSTSTR(doc->version));
+}
+
+/**
+ * xmlTextReaderStandalone:
+ * @reader:  the xmlTextReaderPtr used
+ *
+ * Determine the standalone status of the document being read.
+ *
+ * Returns 1 if the document was declared to be standalone, 0 if it
+ * was declared to be not standalone, or -1 if the document did not
+ * specify its standalone status or in case of error.
+ */
+int
+xmlTextReaderStandalone(xmlTextReaderPtr reader) {
+    xmlDocPtr doc = NULL;
+    if (reader == NULL)
+	return(-1);
+    if (reader->doc != NULL)
+        doc = reader->doc;
+    else if (reader->ctxt != NULL)
+	doc = reader->ctxt->myDoc;
+    if (doc == NULL)
+	return(-1);
+
+    return(doc->standalone);
+}
 
 /************************************************************************
  *									*

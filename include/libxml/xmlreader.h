@@ -150,6 +150,8 @@ XMLPUBFUN int XMLCALL
 			xmlTextReaderQuoteChar	(xmlTextReaderPtr reader);
 XMLPUBFUN int XMLCALL		
 			xmlTextReaderReadState	(xmlTextReaderPtr reader);
+XMLPUBFUN int XMLCALL
+                        xmlTextReaderIsNamespaceDecl(xmlTextReaderPtr reader);
 
 XMLPUBFUN const xmlChar * XMLCALL	
 		    xmlTextReaderConstBaseUri	(xmlTextReaderPtr reader);
@@ -226,6 +228,8 @@ XMLPUBFUN int XMLCALL
 		    xmlTextReaderMoveToElement	(xmlTextReaderPtr reader);
 XMLPUBFUN int XMLCALL		
 		    xmlTextReaderNormalization	(xmlTextReaderPtr reader);
+XMLPUBFUN const xmlChar * XMLCALL
+		    xmlTextReaderConstEncoding  (xmlTextReaderPtr reader);
 
 /*
  * Extensions
@@ -263,6 +267,10 @@ XMLPUBFUN int XMLCALL
 		    xmlTextReaderRelaxNGSetSchema(xmlTextReaderPtr reader,
 						 xmlRelaxNGPtr schema);
 #endif
+XMLPUBFUN const xmlChar * XMLCALL
+		    xmlTextReaderConstXmlVersion(xmlTextReaderPtr reader);
+XMLPUBFUN int XMLCALL
+		    xmlTextReaderStandalone     (xmlTextReaderPtr reader);
 
 /*
  * New more complete APIs for simpler creation and reuse of readers

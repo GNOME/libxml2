@@ -1,3 +1,8 @@
+Tue Oct 19 11:06:39 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/xmlreader.h xmlreader.c: applied patch from
+	  Graham Bennett adding 4 convenience functions to the reader API.
+
 Fri Oct 15 11:22:48 PDT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* debugXML.c: excluded a few nodes (with no content) from the

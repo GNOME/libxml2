@@ -1,3 +1,7 @@
+Thu Apr 18 18:38:30 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: patch from Markus Henke, fix for recursive entities.
+
 Thu Apr 18 17:49:24 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: fix a problem with string() on a document node.

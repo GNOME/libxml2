@@ -658,6 +658,17 @@ xmlStringLenGetNodeList(xmlDocPtr doc, const xmlChar *value, int len) {
 			if (val != NULL) xmlFree(val);
 		        return(ret);
 		    }
+			else if ((ent != NULL) && (ent->children == NULL)) {
+				xmlNodePtr tmp;
+
+				ent->children =
+					xmlStringGetNodeList(doc, (const xmlChar*)node->content);
+				tmp = ent->children;
+				while (tmp) {
+					tmp->parent = (xmlNodePtr)ent;
+					tmp = tmp->next;
+				}
+			}
 		    if (last == NULL)
 			last = ret = node;
 		    else {
@@ -818,6 +829,17 @@ xmlStringGetNodeList(xmlDocPtr doc, const xmlChar *value) {
 			if (node == NULL) {
 			    if (val != NULL) xmlFree(val);
 			    return(ret);
+			}
+			else if ((ent != NULL) && (ent->children == NULL)) {
+			    xmlNodePtr temp;
+
+			    ent->children = xmlStringGetNodeList(doc,
+				    (const xmlChar*)node->content);
+			    temp = ent->children;
+			    while (temp) {
+				temp->parent = (xmlNodePtr)ent;
+				temp = temp->next;
+			    }
 			}
 			if (last == NULL) {
 			    last = ret = node;

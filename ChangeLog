@@ -1,3 +1,8 @@
+Fri Oct  8 16:35:37 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* HTMLparser.c parser.h : Fixed problems with HTML parsing
+	    reported by Kristian Hogsberg Kristensen <hogsberg@daimi.au.dk>
+
 Fri Oct  8 11:37:11 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* tree.c : Raph patch for initialization of CORBA fields

@@ -87,6 +87,7 @@ type html##name##Pop(htmlParserCtxtPtr ctxt) {				\
 }									\
 
 PUSH_AND_POP(xmlNodePtr, node)
+PUSH_AND_POP(xmlChar*, name)
 
 /*
  * Macros for accessing the content. Those should be used only by the parser,
@@ -300,7 +301,7 @@ char *htmlStartClose[] = {
 "TITLE",	"P", NULL,
 "BODY",		"HEAD", "STYLE", "LINK", "TITLE", "P", NULL,
 "LI",		"P", "H1", "H2", "H3", "H4", "H5", "H6", "DL", "ADDRESS",
-		"PRE", "LISTING", "XMP", "HEAD", NULL,
+		"PRE", "LISTING", "XMP", "HEAD", "LI", NULL,
 "HR",		"P", "HEAD", NULL,
 "H1",		"P", "HEAD", NULL,
 "H2",		"P", "HEAD", NULL,
@@ -443,14 +444,18 @@ htmlCheckAutoClose(const xmlChar *new, const xmlChar *old) {
  */
 void
 htmlAutoClose(htmlParserCtxtPtr ctxt, const xmlChar *new) {
+    xmlChar *oldname;
 
-    while ((ctxt->node != NULL) && 
-           (htmlCheckAutoClose(new, ctxt->node->name))) {
+    while ((ctxt->name != NULL) && 
+           (htmlCheckAutoClose(new, ctxt->name))) {
 #ifdef DEBUG
-	printf("htmlAutoClose: %s closes %s\n", new, ctxt->node->name);
+	printf("htmlAutoClose: %s closes %s\n", new, ctxt->name);
 #endif
 	if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
-	    ctxt->sax->endElement(ctxt->userData, ctxt->node->name);
+	    ctxt->sax->endElement(ctxt->userData, ctxt->name);
+	oldname = ctxt->name;
+	htmlnamePop(ctxt);
+	xmlFree(oldname);
     }
 }
 
@@ -464,16 +469,20 @@ htmlAutoClose(htmlParserCtxtPtr ctxt, const xmlChar *new) {
 void
 htmlAutoCloseOnClose(htmlParserCtxtPtr ctxt, const xmlChar *new) {
     htmlElemDescPtr info;
+    xmlChar *oldname;
 
-    while ((ctxt->node != NULL) && 
-           (xmlStrcmp(new, ctxt->node->name))) {
-	info = htmlTagLookup(ctxt->node->name);
+    while ((ctxt->name != NULL) && 
+           (xmlStrcmp(new, ctxt->name))) {
+	info = htmlTagLookup(ctxt->name);
 	if ((info == NULL) || (info->endTag == 1)) {
 #ifdef DEBUG
-	    printf("htmlAutoCloseOnClose: %s closes %s\n", new, ctxt->node->name);
+	    printf("htmlAutoCloseOnClose: %s closes %s\n", new, ctxt->name);
 #endif
 	    if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
-		ctxt->sax->endElement(ctxt->userData, ctxt->node->name);
+		ctxt->sax->endElement(ctxt->userData, ctxt->name);
+	    oldname = ctxt->name;
+	    htmlnamePop(ctxt);
+	    xmlFree(oldname);
         } else
 	    break;
     }
@@ -2000,6 +2009,7 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
     /*
      * SAX: Start of Element !
      */
+    htmlnamePush(ctxt, xmlStrdup(name));
     if ((ctxt->sax != NULL) && (ctxt->sax->startElement != NULL))
         ctxt->sax->startElement(ctxt->userData, name, atts);
 
@@ -2027,6 +2037,7 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
 void
 htmlParseEndTag(htmlParserCtxtPtr ctxt, const xmlChar *tagname) {
     xmlChar *name;
+    xmlChar *oldname;
     int i;
 
     if ((CUR != '<') || (NXT(1) != '/')) {
@@ -2054,9 +2065,9 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt, const xmlChar *tagname) {
      * Check that we are not closing an already closed tag,
      * <p><b>...</p></b> is a really common error !
      */
-    for (i = ctxt->nodeNr - 1;i >= 0;i--) {
-        if ((ctxt->nodeTab[i] != NULL) &&
-	    (!xmlStrcmp(tagname, ctxt->nodeTab[i]->name)))
+    for (i = ctxt->nameNr - 1;i >= 0;i--) {
+        if ((ctxt->nameTab[i] != NULL) &&
+	    (!xmlStrcmp(tagname, ctxt->nameTab[i])))
 	    break;
     }
     if (i < 0) {
@@ -2080,12 +2091,12 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt, const xmlChar *tagname) {
      * of the stack.
      */
     if (xmlStrcmp(name, tagname)) {
-        if ((ctxt->node != NULL) && 
-	    (xmlStrcmp(ctxt->node->name, name))) {
+        if ((ctxt->name != NULL) && 
+	    (xmlStrcmp(ctxt->name, name))) {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		ctxt->sax->error(ctxt->userData,
 		 "Opening and ending tag mismatch: %s and %s\n",
-		                 name, ctxt->node->name);
+		                 name, ctxt->name);
 	    ctxt->wellFormed = 0;
         }
     }
@@ -2095,6 +2106,9 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt, const xmlChar *tagname) {
      */
     if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
         ctxt->sax->endElement(ctxt->userData, name);
+    oldname = ctxt->name;
+    htmlnamePop(ctxt);
+    xmlFree(oldname);
 
     if (name != NULL)
 	xmlFree(name);
@@ -2157,9 +2171,9 @@ htmlParseReference(htmlParserCtxtPtr ctxt) {
 
 void
 htmlParseContent(htmlParserCtxtPtr ctxt, const xmlChar *name) {
-    htmlNodePtr currentNode;
+    xmlChar *currentNode;
 
-    currentNode = ctxt->node;
+    currentNode = ctxt->name;
     while ((CUR != '<') || (NXT(1) != '/')) {
 	const xmlChar *test = CUR_PTR;
 
@@ -2167,7 +2181,7 @@ htmlParseContent(htmlParserCtxtPtr ctxt, const xmlChar *name) {
 	 * Has this node been popped out during parsing of
 	 * the next element
 	 */
-        if (currentNode != ctxt->node) return;
+        if (currentNode != ctxt->name) return;
 
 	/*
 	 * First case :  a comment
@@ -2230,7 +2244,8 @@ void
 htmlParseElement(htmlParserCtxtPtr ctxt) {
     const xmlChar *openTag = CUR_PTR;
     xmlChar *name;
-    htmlNodePtr currentNode;
+    xmlChar *oldname;
+    xmlChar *currentNode;
     htmlElemDescPtr info;
     htmlParserNodeInfo node_info;
 
@@ -2245,7 +2260,6 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
     if (name == NULL) {
         return;
     }
-    currentNode = ctxt->node;
 
     /*
      * Lookup the info for that element.
@@ -2271,6 +2285,9 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
         SKIP(2);
 	if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
 	    ctxt->sax->endElement(ctxt->userData, name);
+	oldname = ctxt->name;
+	htmlnamePop(ctxt);
+	xmlFree(oldname);
 	xmlFree(name);
 	return;
     }
@@ -2288,6 +2305,9 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
 	 */
 	nodePop(ctxt);
 	xmlFree(name);
+	oldname = ctxt->name;
+	htmlnamePop(ctxt);
+	xmlFree(oldname);
 
 	/*
 	 * Capture end position and add node
@@ -2296,7 +2316,7 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
 	   node_info.end_pos = ctxt->input->consumed +
 			      (CUR_PTR - ctxt->input->base);
 	   node_info.end_line = ctxt->input->line;
-	   node_info.node = currentNode;
+	   node_info.node = ctxt->node;
 	   xmlParserAddNodeInfo(ctxt, &node_info);
 	}
 	return;
@@ -2309,20 +2329,23 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
 	if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
 	    ctxt->sax->endElement(ctxt->userData, name);
 	xmlFree(name);
+	oldname = ctxt->name;
+	htmlnamePop(ctxt);
+	xmlFree(oldname);
 	return;
     }
 
     /*
      * Parse the content of the element:
      */
-    currentNode = ctxt->node;
+    currentNode = ctxt->name;
     htmlParseContent(ctxt, name);
 
     /*
      * check whether the element get popped due to auto closure
      * on start tag
      */
-    if (currentNode != ctxt->node) {
+    if (currentNode != ctxt->name) {
 	xmlFree(name);
         return;
     }
@@ -2338,6 +2361,9 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
 	 */
 	nodePop(ctxt);
 	xmlFree(name);
+	oldname = ctxt->name;
+	htmlnamePop(ctxt);
+	xmlFree(oldname);
 	return;
     }
 
@@ -2350,7 +2376,7 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
        node_info.end_pos = ctxt->input->consumed +
                           (CUR_PTR - ctxt->input->base);
        node_info.end_line = ctxt->input->line;
-       node_info.node = currentNode;
+       node_info.node = ctxt->node;
        xmlParserAddNodeInfo(ctxt, &node_info);
     }
 }
@@ -2469,6 +2495,12 @@ htmlInitParserCtxt(htmlParserCtxtPtr ctxt)
     ctxt->nodeMax = 10;
     ctxt->node = NULL;
 
+    /* Allocate the Name stack */
+    ctxt->nameTab = (xmlChar **) xmlMalloc(10 * sizeof(xmlChar *));
+    ctxt->nameNr = 0;
+    ctxt->nameMax = 10;
+    ctxt->name = NULL;
+
     if (sax == NULL) ctxt->sax = &htmlDefaultSAXHandler;
     else {
         ctxt->sax = sax;
@@ -2495,6 +2527,7 @@ void
 htmlFreeParserCtxt(htmlParserCtxtPtr ctxt)
 {
     htmlParserInputPtr input;
+    xmlChar *oldname;
 
     if (ctxt == NULL) return;
 
@@ -2503,6 +2536,11 @@ htmlFreeParserCtxt(htmlParserCtxtPtr ctxt)
     }
 
     if (ctxt->nodeTab != NULL) xmlFree(ctxt->nodeTab);
+    while ((oldname = ctxt->name) != NULL) {
+        htmlnamePop(ctxt);
+	xmlFree(oldname);
+    }
+    if (ctxt->nameTab != NULL) xmlFree(ctxt->nameTab);
     if (ctxt->inputTab != NULL) xmlFree(ctxt->inputTab);
     if (ctxt->version != NULL) xmlFree((char *) ctxt->version);
     if ((ctxt->sax != NULL) && (ctxt->sax != &htmlDefaultSAXHandler))

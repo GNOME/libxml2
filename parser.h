@@ -141,6 +141,13 @@ typedef struct _xmlParserCtxt {
     int                 token;        /* next char look-ahead */    
 
     char           *directory;        /* the data directory */
+
+    /* Node name stack only used for HTML parsing */
+    xmlChar           *name;          /* Current parsed Node */
+    int                nameNr;        /* Depth of the parsing stack */
+    int                nameMax;       /* Max depth of the parsing stack */
+    xmlChar *         *nameTab;       /* array of nodes */
+
 } _xmlParserCtxt;
 typedef _xmlParserCtxt xmlParserCtxt;
 typedef xmlParserCtxt *xmlParserCtxtPtr;

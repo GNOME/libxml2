@@ -457,7 +457,7 @@ xmlSchemaCleanupTypes(void) {
 }
 
 /**
- * xmlSchemaGetBuiltInType:
+ * xmlSchemaIsBuiltInTypeFacet:
  * @type: the built-in type
  * @facetType:  the facet type
  *
@@ -738,6 +738,8 @@ xmlSchemaGetPredefinedType(const xmlChar *name, const xmlChar *ns) {
 /**
  * xmlSchemaGetBuiltInListSimpleTypeItemType:
  * @type: the built-in simple type.
+ *
+ * Lookup function
  *
  * Returns the item type of @type as defined by the built-in datatype
  * hierarchy of XML Schema Part 2: Datatypes, or NULL in case of an error.
@@ -3752,6 +3754,14 @@ xmlSchemaNormLen(const xmlChar *value) {
     return(ret);
 }
 
+/**
+ * xmlSchemaGetFacetValueAsULong:
+ * @facet: an schemas type facet
+ *
+ * Extract the value of a facet
+ *
+ * Returns the value as a long
+ */
 unsigned long
 xmlSchemaGetFacetValueAsULong(xmlSchemaFacetPtr facet)
 {
@@ -3812,7 +3822,7 @@ xmlSchemaValidateListSimpleTypeFacet(xmlSchemaFacetPtr facet,
 }
 
 /**
- * xmlSchemaValidateFacet:
+ * xmlSchemaValidateLengthFacet:
  * @type:  the built-in type
  * @facet:  the facet to check
  * @value:  the lexical repr. of the value to be validated

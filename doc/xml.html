@@ -680,18 +680,37 @@ to the <a href="http://cvs.gnome.org/viewcvs/libxml2/">CVS</a> code base.</p>
 
 <p>There is the list of public releases:</p>
 
+<p>2.6.15: Oct 27 2004</p>
+<ul>
+  <li>security fixes on the nanoftp and nanohttp modules</li>
+  <li>build fixes: xmllint detection bug in configure, building outside the
+    source tree (Thomas Fitzsimmons)</li>
+  <li>bug fixes: HTML parser on broken ASCII chars in names (William), Python
+    paths (Malcolm Tredinnick), xmlHasNsProp and default namespace (William),
+    saving to python file objects (Malcolm Tredinnick), DTD lookup fix
+    (Malcolm), save back &lt;group&gt; in catalogs (William), tree build
+    fixes (DV and Rob Richards), Schemas memory bug, structured error handler
+    on Python 64bits, thread local memory deallocation, memory leak reported
+    by Volker Roth, xmlValidateDtd in the presence of an internal subset,
+    entities and _private problem (William), xmlBuildRelativeURI error
+    (William).</li>
+  <li>improvements: better XInclude error reports (William), tree debugging
+    module and tests, convenience functions at the Reader API (Graham
+    Bennett), add support for PI in the HTML parser.</li>
+</ul>
+
 <h3>2.6.14: Sep 29 2004</h3>
 <ul>
   <li>build fixes: configure paths for xmllint and xsltproc, compilation
     without HTML parser, compilation warning cleanups (William Brack &amp;
-    Malcolm Tredinnick), VMS makefile update (Craig Berry), </li>
+    Malcolm Tredinnick), VMS makefile update (Craig Berry),</li>
   <li>bug fixes: xmlGetUTF8Char (William Brack), QName properties (Kasimier
     Buchcik), XInclude testing, Notation serialization, UTF8ToISO8859x
     transcoding (Mark Itzcovitz), lots of XML Schemas cleanup and fixes
     (Kasimier), ChangeLog cleanup (Stepan Kasal), memory fixes (Mark Vakoc),
     handling of failed realloc(), out of bound array adressing in Schemas
     date handling, Python space/tabs cleanups (Malcolm Tredinnick), NMTOKENS
-    E20 validation fix (Malcolm), </li>
+    E20 validation fix (Malcolm),</li>
   <li>improvements: added W3C XML Schemas testsuite (Kasimier Buchcik), add
     xmlSchemaValidateOneElement (Kasimier), Python exception hierearchy
     (Malcolm Tredinnick), Python libxml2 driver improvement (Malcolm

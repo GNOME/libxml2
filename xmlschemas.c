@@ -16811,7 +16811,7 @@ xmlSchemaGetValidErrors(xmlSchemaValidCtxtPtr ctxt,
 
 
 /**
- * xmlSchemaValidCtxtSetOptions:
+ * xmlSchemaSetValidOptions:
  * @ctxt:	a schema validation context
  * @options: a combination of xmlSchemaValidOption
  *
@@ -16849,7 +16849,7 @@ xmlSchemaSetValidOptions(xmlSchemaValidCtxtPtr ctxt,
 }
 
 /**
- * xmlSchemaGetValidOptions:
+ * xmlSchemaValidCtxtGetOptions:
  * @ctxt:	a schema validation context 
  *
  * Returns the option combination of the validation context.

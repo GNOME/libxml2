@@ -1,3 +1,8 @@
+Wed Oct 27 19:26:20 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* ChangeLog NEWS configure.in doc/*: preparing release 2.6.15
+	* debugXML.c nanoftp.c xmlschemas.c xmlschemastypes.c: cleanups
+
 Wed Oct 27 09:31:24 PDT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* uri.c: fixed a stupid mistake in xmlBuildRelativeURI
@@ -49,7 +54,7 @@ Fri Oct 22 15:20:23 CEST 2004 Daniel Veillard <daniel@veillard.com>
 Fri Oct 22 21:04:20 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* python/libxml.c: fixed a problem occuring only in x86_64 when
-	  very large error messages are raied to the Python handlers.
+	  very large error messages are raised to the Python handlers.
 
 Thu Oct 21 18:03:21 CEST 2004 Daniel Veillard <daniel@veillard.com>
 

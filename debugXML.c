@@ -62,6 +62,7 @@ xmlCtxtDumpInitCtxt(xmlDebugCtxtPtr ctxt)
     ctxt->doc = NULL;
     ctxt->node = NULL;
     ctxt->dict = NULL;
+    ctxt->nodict = 0;
     for (i = 0; i < 100; i++)
         ctxt->shift[i] = ' ';
     ctxt->shift[100] = 0;
@@ -279,8 +280,12 @@ xmlCtxtGenericNodeCheck(xmlDebugCtxtPtr ctxt, xmlNodePtr node) {
     } else {
 	dict = doc->dict;
 	if ((dict == NULL) && (ctxt->nodict == 0)) {
-	    xmlDebugErr(ctxt, XML_CHECK_NO_DICT,
-			"Document has no dictionnary\n");
+#if 0
+            /* desactivated right now as it raises too many errors */
+	    if (doc->type == XML_DOCUMENT_NODE)
+		xmlDebugErr(ctxt, XML_CHECK_NO_DICT,
+			    "Document has no dictionnary\n");
+#endif
 	    ctxt->nodict = 1;
 	}
 	if (ctxt->doc == NULL)
@@ -357,7 +362,8 @@ xmlCtxtGenericNodeCheck(xmlDebugCtxtPtr ctxt, xmlNodePtr node) {
 		break;
 	    /* some case of entity substitution can lead to this */
 	    if ((ctxt->dict != NULL) &&
-	        (node->name == xmlDictLookup(ctxt->dict, "nbktext", 7)))
+	        (node->name == xmlDictLookup(ctxt->dict, BAD_CAST "nbktext",
+		                             7)))
 		break;
 
 	    xmlDebugErr3(ctxt, XML_CHECK_WRONG_NAME,

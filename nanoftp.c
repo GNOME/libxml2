@@ -1137,7 +1137,7 @@ xmlNanoFTPConnect(void *ctx) {
 	    __xmlIOErr(XML_FROM_FTP, 0, "gethostbyname failed");
 	    return (-1);
 	}
-	if (hp->h_length >
+	if ((unsigned int) hp->h_length >
 	    sizeof(((struct sockaddr_in *)&ctxt->ftpAddr)->sin_addr)) {
 	    __xmlIOErr(XML_FROM_FTP, 0, "gethostbyname address mismatch");
 	    return (-1);

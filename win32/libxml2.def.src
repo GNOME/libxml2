@@ -502,6 +502,9 @@ xmlAutomataNewAllTrans
 xmlAutomataNewCountTrans
 #endif
 #ifdef LIBXML_AUTOMATA_ENABLED
+xmlAutomataNewCountTrans2
+#endif
+#ifdef LIBXML_AUTOMATA_ENABLED
 xmlAutomataNewCountedTrans
 #endif
 #ifdef LIBXML_AUTOMATA_ENABLED
@@ -515,6 +518,9 @@ xmlAutomataNewEpsilon
 #endif
 #ifdef LIBXML_AUTOMATA_ENABLED
 xmlAutomataNewOnceTrans
+#endif
+#ifdef LIBXML_AUTOMATA_ENABLED
+xmlAutomataNewOnceTrans2
 #endif
 #ifdef LIBXML_AUTOMATA_ENABLED
 xmlAutomataNewState
@@ -693,6 +699,9 @@ xmlCtxtResetPush
 xmlCtxtUseOptions
 xmlCurrentChar
 #ifdef LIBXML_DEBUG_ENABLED
+xmlDebugCheckDocument
+#endif
+#ifdef LIBXML_DEBUG_ENABLED
 xmlDebugDumpAttr
 #endif
 #ifdef LIBXML_DEBUG_ENABLED
@@ -736,6 +745,7 @@ xmlDictQLookup
 xmlDictReference
 xmlDictSize
 xmlDocCopyNode
+xmlDocCopyNodeList
 xmlDocDump
 xmlDocDumpFormatMemory
 xmlDocDumpFormatMemoryEnc
@@ -1060,6 +1070,9 @@ xmlNanoHTTPCleanup
 xmlNanoHTTPClose
 #endif
 #ifdef LIBXML_HTTP_ENABLED
+xmlNanoHTTPContentLength
+#endif
+#ifdef LIBXML_HTTP_ENABLED
 xmlNanoHTTPEncoding
 #endif
 #ifdef LIBXML_HTTP_ENABLED
@@ -1114,6 +1127,7 @@ xmlNewDocComment
 xmlNewDocFragment
 xmlNewDocNode
 xmlNewDocNodeEatName
+xmlNewDocPI
 xmlNewDocProp
 xmlNewDocRawNode
 xmlNewDocText
@@ -1551,10 +1565,16 @@ xmlSchemaSetParserErrors
 xmlSchemaSetValidErrors
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
+xmlSchemaSetValidOptions
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
 xmlSchemaValPredefTypeNode
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
 xmlSchemaValPredefTypeNodeNoNorm
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlSchemaValidCtxtGetOptions
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
 xmlSchemaValidateDoc
@@ -1567,6 +1587,9 @@ xmlSchemaValidateLengthFacet
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
 xmlSchemaValidateListSimpleTypeFacet
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlSchemaValidateOneElement
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
 xmlSchemaValidatePredefinedType
@@ -1672,6 +1695,7 @@ xmlTextReaderAttributeCount
 xmlTextReaderBaseUri
 xmlTextReaderClose
 xmlTextReaderConstBaseUri
+xmlTextReaderConstEncoding
 xmlTextReaderConstLocalName
 xmlTextReaderConstName
 xmlTextReaderConstNamespaceUri
@@ -1679,6 +1703,7 @@ xmlTextReaderConstPrefix
 xmlTextReaderConstString
 xmlTextReaderConstValue
 xmlTextReaderConstXmlLang
+xmlTextReaderConstXmlVersion
 xmlTextReaderCurrentDoc
 xmlTextReaderCurrentNode
 xmlTextReaderDepth
@@ -1693,6 +1718,7 @@ xmlTextReaderHasAttributes
 xmlTextReaderHasValue
 xmlTextReaderIsDefault
 xmlTextReaderIsEmptyElement
+xmlTextReaderIsNamespaceDecl
 xmlTextReaderIsValid
 xmlTextReaderLocalName
 xmlTextReaderLocatorBaseURI
@@ -1729,6 +1755,7 @@ xmlTextReaderRelaxNGValidate
 xmlTextReaderSetErrorHandler
 xmlTextReaderSetParserProp
 xmlTextReaderSetStructuredErrorHandler
+xmlTextReaderStandalone
 xmlTextReaderValue
 xmlTextReaderXmlLang
 xmlTextWriterEndAttribute

@@ -157,14 +157,18 @@ dnl
 XML_CFLAGS=""
 
 dnl
-dnl Workaround for HP native compiler
-dnl http://bugs.gnome.org/db/31/3163.html
+dnl Workaround for native compilers
+dnl  HP  : http://bugs.gnome.org/db/31/3163.html
+dnl  DEC : Enable NaN/Inf
 dnl
 if test "${GCC}" != "yes" ; then
     case "${host}" in
           *-*-hpux* )
 	       CFLAGS="${CFLAGS} -Wp,-H30000"
 	       ;;
+          *-dec-osf* )
+               CFLAGS="${CFLAGS} -ieee"
+               ;;
     esac
 else
     CFLAGS="${CFLAGS} -Wall"

@@ -39,6 +39,10 @@
 #ifdef HAVE_CTYPE_H
 #include <ctype.h>
 #endif
+#if defined(__osf__) && defined(__GNUC__)
+#include <signal.h>
+#define FPE_WORKAROUND
+#endif
 
 #include <libxml/xmlmemory.h>
 #include <libxml/tree.h>
@@ -156,6 +160,10 @@ xmlXPathInit(void) {
     static int initialized = 0;
 
     if (initialized) return;
+
+#ifdef FPE_WORKAROUND
+    signal(SIGFPE, SIG_IGN);
+#endif
 
 #ifdef XPATH_USE_DIVISION_SHORTCUTS
     xmlXPathNAN = 0;

@@ -2545,6 +2545,36 @@ libxml_xmlNewNode(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
     return (py_retval);
 }
 
+
+/************************************************************************
+ *									*
+ *			Local Catalog stuff				*
+ *									*
+ ************************************************************************/
+static PyObject *
+libxml_addLocalCatalog(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
+{
+    xmlChar *URL;
+    xmlParserCtxtPtr ctxt;
+    PyObject *pyobj_ctxt;
+
+    if (!PyArg_ParseTuple(args, (char *)"Os:addLocalCatalog", &pyobj_ctxt, &URL))
+        return(NULL);
+
+    ctxt = (xmlParserCtxtPtr) PyparserCtxt_Get(pyobj_ctxt);
+
+    if (URL != NULL) {
+	ctxt->catalogs = xmlCatalogAddLocal(ctxt->catalogs, URL);
+    }
+
+#ifdef DEBUG
+    printf("LocalCatalog: %s\n", URL);
+#endif
+
+    Py_INCREF(Py_None);
+    return (Py_None);
+}
+
 /************************************************************************
  *									*
  *			The registration stuff				*
@@ -2574,6 +2604,7 @@ static PyMethodDef libxmlMethods[] = {
     {(char *)"xmlTextReaderSetErrorHandler", libxml_xmlTextReaderSetErrorHandler, METH_VARARGS, NULL },
     {(char *)"xmlTextReaderGetErrorHandler", libxml_xmlTextReaderGetErrorHandler, METH_VARARGS, NULL },
     {(char *)"xmlFreeTextReader", libxml_xmlFreeTextReader, METH_VARARGS, NULL },
+    {(char *)"addLocalCatalog", libxml_addLocalCatalog, METH_VARARGS, NULL },
     {NULL, NULL, 0, NULL}
 };
 

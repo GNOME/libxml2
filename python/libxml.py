@@ -511,6 +511,11 @@ class parserCtxtCore:
            or (None,None)."""
         return libxml2mod.xmlParserCtxtGetErrorHandler(self._o)
 
+    def addLocalCatalog(self, uri):
+        """Register a local catalog with the parser"""
+        return libxml2mod.addLocalCatalog(self._o, uri)
+    
+
 def _xmlTextReaderErrorFunc((f,arg),msg,severity,locator):
     """Intermediate callback to wrap the locator"""
     return f(arg,msg,severity,xmlTextReaderLocator(locator))

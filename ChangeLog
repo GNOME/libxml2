@@ -1,3 +1,8 @@
+Wed Apr 23 09:35:12 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* python/libxml.c python/libxml.py: applied patch from 
+	  Brent M Hendricks adding binding for xmlCatalogAddLocal
+
 Tue Apr 22 15:18:01 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: tried to fix #98879 again in a more solid

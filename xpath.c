@@ -1970,7 +1970,7 @@ xmlXPathEqualNodeSetString(xmlXPathObjectPtr arg, const xmlChar *str) {
  * Returns 0 or 1 depending on the results of the test.
  */
 int
-xmlXPathEqualNodeSetFloat(xmlXPathObjectPtr arg, float f) {
+xmlXPathEqualNodeSetFloat(xmlXPathObjectPtr arg, double f) {
     char buf[100] = "";
 
     if ((arg == NULL) ||

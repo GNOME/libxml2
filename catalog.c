@@ -3544,7 +3544,37 @@ xmlCatalogLocalResolveURI(void *catalogs, const xmlChar *URI) {
  */
 const xmlChar *
 xmlCatalogGetSystem(const xmlChar *sysID) {
-	return xmlCatalogResolveSystem(sysID);
+    xmlChar *ret;
+    static xmlChar result[1000];
+    static int msg = 0;
+
+    if (!xmlCatalogInitialized)
+	xmlInitializeCatalog();
+
+    if (msg == 0) {
+	xmlGenericError(xmlGenericErrorContext,
+		"Use of deprecated xmlCatalogGetSystem() call\n");
+	msg++;
+    }
+
+    if (sysID == NULL)
+	return(NULL);
+    
+    /*
+     * Check first the XML catalogs
+     */
+    if (xmlDefaultCatalog != NULL) {
+	ret = xmlCatalogListXMLResolve(xmlDefaultCatalog->xml, NULL, sysID);
+	if ((ret != NULL) && (ret != XML_CATAL_BREAK)) {
+	    snprintf((char *) result, sizeof(result) - 1, "%s", (char *) ret);
+	    result[sizeof(result) - 1] = 0;
+	    return(result);
+	}
+    }
+
+    if (xmlDefaultCatalog != NULL)
+	return(xmlCatalogGetSGMLSystem(xmlDefaultCatalog->sgml, sysID));
+    return(NULL);
 }
 
 /**
@@ -3558,7 +3588,37 @@ xmlCatalogGetSystem(const xmlChar *sysID) {
  */
 const xmlChar *
 xmlCatalogGetPublic(const xmlChar *pubID) {
-	return xmlCatalogResolvePublic(pubID);
+    xmlChar *ret;
+    static xmlChar result[1000];
+    static int msg = 0;
+
+    if (!xmlCatalogInitialized)
+	xmlInitializeCatalog();
+
+    if (msg == 0) {
+	xmlGenericError(xmlGenericErrorContext,
+		"Use of deprecated xmlCatalogGetPublic() call\n");
+	msg++;
+    }
+
+    if (pubID == NULL)
+	return(NULL);
+    
+    /*
+     * Check first the XML catalogs
+     */
+    if (xmlDefaultCatalog != NULL) {
+	ret = xmlCatalogListXMLResolve(xmlDefaultCatalog->xml, pubID, NULL);
+	if ((ret != NULL) && (ret != XML_CATAL_BREAK)) {
+	    snprintf((char *) result, sizeof(result) - 1, "%s", (char *) ret);
+	    result[sizeof(result) - 1] = 0;
+	    return(result);
+	}
+    }
+
+    if (xmlDefaultCatalog != NULL)
+	return(xmlCatalogGetSGMLPublic(xmlDefaultCatalog->sgml, pubID));
+    return(NULL);
 }
 
 #endif /* LIBXML_CATALOG_ENABLED */

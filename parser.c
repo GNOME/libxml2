@@ -5753,9 +5753,10 @@ xmlParseEntityRef(xmlParserCtxtPtr ctxt) {
 		if (ctxt->sax != NULL) {
 		    if (ctxt->sax->getEntity != NULL)
 			ent = ctxt->sax->getEntity(ctxt->userData, name);
-		    if (ent == NULL)
+		    if ((ctxt->wellFormed == 1 ) && (ent == NULL))
 		        ent = xmlGetPredefinedEntity(name);
-		    if ((ent == NULL) && (ctxt->userData==ctxt)) {
+		    if ((ctxt->wellFormed == 1 ) && (ent == NULL) &&
+			(ctxt->userData==ctxt)) {
 			ent = getEntity(ctxt, name);
 		    }
 		}

@@ -46,7 +46,7 @@ static const xmlChar *xmlRelaxNGNs = (const xmlChar *)
     (xmlStrEqual(node->ns->href, xmlRelaxNGNs)))
 
 
-/* #define DEBUG 1 */               /* very verbose output */
+/* #define DEBUG 1 */
 /* #define DEBUG_GRAMMAR 1 */
 /* #define DEBUG_CONTENT 1 */
 /* #define DEBUG_TYPE 1 */
@@ -2191,7 +2191,9 @@ static int xmlRelaxNGElementMatch(xmlRelaxNGValidCtxtPtr ctxt,
 
 
 #define IS_BLANK_NODE(n)						\
-    (((n)->type == XML_TEXT_NODE) && (xmlRelaxNGIsBlank((n)->content)))
+    ((((n)->type == XML_TEXT_NODE) ||					\
+      ((n)->type == XML_CDATA_SECTION_NODE)) &&				\
+     (xmlRelaxNGIsBlank((n)->content)))
 
 /**
  * xmlRelaxNGIsBlank:
@@ -2331,7 +2333,8 @@ xmlRelaxNGParseValue(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
     }
     if (node->children == NULL) {
 	def->value = xmlStrdup(BAD_CAST "");
-    } else if ((node->children->type != XML_TEXT_NODE) ||
+    } else if (((node->children->type != XML_TEXT_NODE) &&
+	        (node->children->type != XML_CDATA_SECTION_NODE)) ||
 	       (node->children->next != NULL)) {
 	if (ctxt->error != NULL)
 	    ctxt->error(ctxt->userData,
@@ -5738,7 +5741,8 @@ xmlRelaxNGCleanupTree(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr root) {
 	/*
 	 * Simplification 4.2 whitespaces
 	 */
-	else if (cur->type == XML_TEXT_NODE) {
+	else if ((cur->type == XML_TEXT_NODE) ||
+		 (cur->type == XML_CDATA_SECTION_NODE)) {
 	    if (IS_BLANK_NODE(cur)) {
 	        if (cur->parent->type == XML_ELEMENT_NODE) {
 		    if ((!xmlStrEqual(cur->parent->name, BAD_CAST "value")) &&
@@ -5749,7 +5753,7 @@ xmlRelaxNGCleanupTree(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr root) {
 		    goto skip_children;
 		}
 	    }
-	} else if (cur->type != XML_CDATA_SECTION_NODE) {
+	} else {
 	    delete = cur;
 	    goto skip_children;
 	}
@@ -6220,7 +6224,8 @@ xmlRelaxNGSkipIgnored(xmlRelaxNGValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
     while ((node != NULL) &&
 	   ((node->type == XML_COMMENT_NODE) ||
 	    (node->type == XML_PI_NODE) ||
-	    ((node->type == XML_TEXT_NODE) &&
+	    (((node->type == XML_TEXT_NODE) || 
+	      (node->type == XML_CDATA_SECTION_NODE)) &&
 	     (IS_BLANK_NODE(node))))) {
 	node = node->next;
     }
@@ -6874,7 +6879,8 @@ xmlRelaxNGNodeMatchesList(xmlNodePtr node, xmlRelaxNGDefinePtr *list) {
 			return(1);
 		}
 	    }
-	} else if ((node->type == XML_TEXT_NODE) &&
+	} else if (((node->type == XML_TEXT_NODE) ||
+		    (node->type == XML_CDATA_SECTION_NODE)) &&
 		   (cur->type == XML_RELAXNG_TEXT)) {
 	    return(1);
 	}
@@ -7188,12 +7194,14 @@ xmlRelaxNGValidateDefinition(xmlRelaxNGValidCtxtPtr ctxt,
     switch (define->type) {
         case XML_RELAXNG_EMPTY:
 	    node = xmlRelaxNGSkipIgnored(ctxt, node);
+#if 0
 	    if (node != NULL) {
 		VALID_ERR2(XML_RELAXNG_ERR_ELEMNOTEMPTY,
 			     ctxt->state->node->name);
 		ret = -1;
 		break;
 	    }
+#endif
 	    ret = 0;
 	    break;
         case XML_RELAXNG_NOT_ALLOWED:
@@ -7378,9 +7386,11 @@ xmlRelaxNGValidateDefinition(xmlRelaxNGValidCtxtPtr ctxt,
         case XML_RELAXNG_CHOICE: {
 	    xmlRelaxNGDefinePtr list = define->content;
 	    int success = 0;
+	    xmlRelaxNGValidStatePtr sstate = NULL;
 
 	    oldflags = ctxt->flags;
 	    ctxt->flags |= FLAGS_IGNORABLE;
+	    node = xmlRelaxNGSkipIgnored(ctxt, node);
 
 	    while (list != NULL) {
 		oldstate = xmlRelaxNGCopyValidState(ctxt, ctxt->state);
@@ -7392,6 +7402,10 @@ xmlRelaxNGValidateDefinition(xmlRelaxNGValidCtxtPtr ctxt,
 			 * to make more progresses
 			 */
 			success = 1;
+			if (sstate != NULL) {
+			    xmlRelaxNGFreeValidState(sstate);
+			}
+			sstate = xmlRelaxNGCopyValidState(ctxt, ctxt->state);
 		    } else {
 			xmlRelaxNGFreeValidState(oldstate);
 			break;
@@ -7402,8 +7416,15 @@ xmlRelaxNGValidateDefinition(xmlRelaxNGValidCtxtPtr ctxt,
 		list = list->next;
 	    }
 	    ctxt->flags = oldflags;
-	    if (success == 1)
+	    if (success == 1) {
+		if (ret != 0) {
+		    xmlRelaxNGFreeValidState(ctxt->state);
+		    ctxt->state = sstate;
+		} else {
+		    xmlRelaxNGFreeValidState(sstate);
+		}
 		ret = 0;
+	    }
 	    if (ret != 0) {
 		if ((ctxt->flags & FLAGS_IGNORABLE) == 0)
 		    xmlRelaxNGDumpValidError(ctxt);

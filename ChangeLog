@@ -1,3 +1,10 @@
+Tue Mar 11 12:08:23 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* SAX.c parser.c: fix some recursion problems introduced in the
+	  last release.
+	* relaxng.c: more debugging of the RNG validation engine, still
+	  problems though.
+
 Mon Mar 10 14:10:47 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am: stop generating wrong result file with * in name

@@ -378,14 +378,26 @@ getEntity(void *ctx, const xmlChar *name)
 	((ctxt->validate) || (ctxt->replaceEntities)) &&
 	(ret->children == NULL) &&
 	(ret->etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY)) {
+	int val;
+
 	/*
 	 * for validation purposes we really need to fetch and
 	 * parse the external entity
 	 */
 	xmlNodePtr children;
 
-        xmlParseCtxtExternalEntity(ctxt, ret->URI, ret->ExternalID, &children);
-	xmlAddChildList((xmlNodePtr) ret, children);
+        val = xmlParseCtxtExternalEntity(ctxt, ret->URI,
+		                         ret->ExternalID, &children);
+	if (val == 0) {
+	    xmlAddChildList((xmlNodePtr) ret, children);
+	} else {
+	    ctxt->sax->error(ctxt, 
+	     "Failure to process entity %s\n", name);
+	    ctxt->wellFormed = 0;
+	    ctxt->valid = 0;
+	    ctxt->validate = 0;
+	    return(NULL);
+	}
 	ret->owner = 1;
     }
     return(ret);

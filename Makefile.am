@@ -32,14 +32,15 @@ libxml_la_SOURCES = \
 
 xmlincdir = $(includedir)/gnome-xml
 xmlinc_HEADERS = \
+		SAX.h \
 		entities.h \
 		encoding.h \
 		parser.h \
+		parserInternals.h \
+		xml-error.h \
 		HTMLparser.h \
 		HTMLtree.h \
-		parserInternals.h \
 		debugXML.h \
-		xml-error.h \
 		tree.h \
 		xpath.h \
 		xmlIO.h \

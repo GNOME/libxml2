@@ -17,6 +17,7 @@
 #include "entities.h"
 #include "xml-error.h"
 #include "debugXML.h"
+#include "SAX.h"
 
 /* #define DEBUG_SAX */
 /* #define DEBUG_SAX_TREE */

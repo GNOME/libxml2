@@ -582,7 +582,7 @@ xmlNewInputFromFile(xmlParserCtxtPtr ctxt, const char *filename) {
     inputStream->base = inputStream->buf->buffer->content;
     inputStream->cur = inputStream->buf->buffer->content;
     if ((ctxt->directory == NULL) && (directory != NULL))
-        ctxt->directory = directory;
+        ctxt->directory = (char *) xmlStrdup((const xmlChar *) directory);
     return(inputStream);
 }
 
@@ -4441,7 +4441,11 @@ xmlParseExternalSubset(xmlParserCtxtPtr ctxt, const xmlChar *ExternalID,
     if ((CUR == '<') && (NXT(1) == '?') &&
         (NXT(2) == 'x') && (NXT(3) == 'm') &&
 	(NXT(4) == 'l')) {
-	xmlParseTextDecl(ctxt);
+	xmlChar *decl;
+
+	decl = xmlParseTextDecl(ctxt);
+	if (decl != NULL)
+	    xmlFree(decl);
     }
     if (ctxt->myDoc == NULL) {
         ctxt->myDoc = xmlNewDoc(BAD_CAST "1.0");
@@ -6662,6 +6666,8 @@ xmlSAXUserParseFile(xmlSAXHandlerPtr sax, void *user_data,
     
     ctxt = xmlCreateFileParserCtxt(filename);
     if (ctxt == NULL) return -1;
+    if (ctxt->sax != &xmlDefaultSAXHandler)
+	xmlFree(ctxt->sax);
     ctxt->sax = sax;
     ctxt->userData = user_data;
     

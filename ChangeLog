@@ -1,3 +1,12 @@
+Fri Dec  3 13:46:32 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* SAX.h, SAX.c, makefile.am: added SAX.h mostly useful for the
+	         doc generation
+	* parser.c: fixed bugs #3908 and #3937 and a memory leak
+	         in the SAX API
+	* doc/*: rebuilt the doc making sure everything appears in the
+	         HTML files
+
 Wed Dec  1 10:27:47 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* tree.[ch] HTMLtree.c, debugXML.c, configure.in, xml-config.in:

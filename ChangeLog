@@ -1,3 +1,11 @@
+Sat Feb  5 14:58:46 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* pattern.c: fixed the namespaces support
+	* tree.c: fixed xmlGetNodePath when namespaces are used
+	* result/pattern/multiple result/pattern/namespaces
+	  test/pattern/multiple.* test/pattern/namespaces.*: added
+	  more regression tests
+
 Fri Feb  4 18:26:43 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemas.c: fixed one internal function

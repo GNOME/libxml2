@@ -901,7 +901,11 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
     else if ((html) && (push)) {
         FILE *f;
 
-        f = fopen(filename, "r");
+#if defined(_WIN32) || defined (__DJGPP__) && !defined (__CYGWIN__)
+	f = fopen(filename, "rb");
+#else
+	f = fopen(filename, "r");
+#endif
         if (f != NULL) {
             int res, size = 3;
             char chars[4096];
@@ -940,7 +944,11 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 	    if ((filename[0] == '-') && (filename[1] == 0)) {
 	      f = stdin;
 	    } else {
-	      f = fopen(filename, "r");
+#if defined(_WIN32) || defined (__DJGPP__) && !defined (__CYGWIN__)
+		f = fopen(filename, "rb");
+#else
+		f = fopen(filename, "r");
+#endif
 	    }
 	    if (f != NULL) {
 		int ret;
@@ -975,7 +983,11 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 	    } else {
 	        FILE *f;
 
+#if defined(_WIN32) || defined (__DJGPP__) && !defined (__CYGWIN__)
+		f = fopen(filename, "rb");
+#else
 		f = fopen(filename, "r");
+#endif
 		if (f != NULL) {
 		    if (rectxt == NULL)
 			doc = xmlReadIO((xmlInputReadCallback) myRead,

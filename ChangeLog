@@ -1,3 +1,12 @@
+Sun Jun 27 10:02:28 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* regressions.py, regressions.xml: new files for running
+	  regression tests under Python.  Not yet complete, but
+	  should provide good testing under both Linux and Windows.
+	* testHTML.c, testSAX.c, xmllint.c: changed the 'fopen' used
+	  for --push testing to include the 'rb' param when compiled
+	  under Windows.
+	  
 Fri Jun 25 13:38:57 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* uri.c: fixed a problem when base path was "./xxx"

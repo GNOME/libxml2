@@ -2220,18 +2220,22 @@ void
 htmlParseElement(htmlParserCtxtPtr ctxt) {
     const CHAR *openTag = CUR_PTR;
     CHAR *name;
-    htmlParserNodeInfo node_info;
     htmlNodePtr currentNode;
     htmlElemDescPtr info;
+    htmlParserNodeInfo node_info;
 
     /* Capture start position */
-    node_info.begin_pos = CUR_PTR - ctxt->input->base;
-    node_info.begin_line = ctxt->input->line;
+    if (ctxt->record_info) {
+        node_info.begin_pos = ctxt->input->consumed +
+                          (CUR_PTR - ctxt->input->base);
+	node_info.begin_line = ctxt->input->line;
+    }
 
     name = htmlParseStartTag(ctxt);
     if (name == NULL) {
         return;
     }
+    currentNode = ctxt->node;
 
     /*
      * Lookup the info for that element.
@@ -2274,6 +2278,17 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
 	 */
 	nodePop(ctxt);
 	free(name);
+
+	/*
+	 * Capture end position and add node
+	 */
+	if ( currentNode != NULL && ctxt->record_info ) {
+	   node_info.end_pos = ctxt->input->consumed +
+			      (CUR_PTR - ctxt->input->base);
+	   node_info.end_line = ctxt->input->line;
+	   node_info.node = currentNode;
+	   xmlParserAddNodeInfo(ctxt, &node_info);
+	}
 	return;
     }
 
@@ -2317,6 +2332,17 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
     }
 
     free(name);
+
+    /*
+     * Capture end position and add node
+     */
+    if ( currentNode != NULL && ctxt->record_info ) {
+       node_info.end_pos = ctxt->input->consumed +
+                          (CUR_PTR - ctxt->input->base);
+       node_info.end_line = ctxt->input->line;
+       node_info.node = currentNode;
+       xmlParserAddNodeInfo(ctxt, &node_info);
+    }
 }
 
 /**

@@ -1,4 +1,12 @@
-Mon Aug 30 13:22:26 CEST 1999
+Wed Sep  1 14:15:09 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* HTMLparser.c: corrected a stupid bug leading to core dump at
+	                tree deallocation. Removed warnings indicated by
+			Stephane.Conversy@lri.fr
+	* entities.c: Fixes Yet Another Stupid Bug, entities were not
+	              looked for in the external subset
+
+Mon Aug 30 13:22:26 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* parser.c valid.[ch] xpath.c: patched compilation warnings reported
 	  on SGI by Stephane.Conversy@lri.fr

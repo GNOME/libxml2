@@ -260,6 +260,15 @@ xmlGetParameterEntity(xmlDocPtr doc, const CHAR *name) {
 		(!xmlStrcmp(cur->name, name))) return(cur);
 	}
     }
+    if ((doc->extSubset != NULL) && (doc->extSubset->entities != NULL)) {
+	table = (xmlEntitiesTablePtr) doc->extSubset->entities;
+	for (i = 0;i < table->nb_entities;i++) {
+	    cur = &table->table[i];
+	    if (((cur->type ==  XML_INTERNAL_PARAMETER_ENTITY) ||
+	         (cur->type ==  XML_EXTERNAL_PARAMETER_ENTITY)) &&
+		(!xmlStrcmp(cur->name, name))) return(cur);
+	}
+    }
     return(NULL);
 }
 
@@ -310,6 +319,15 @@ xmlGetDocEntity(xmlDocPtr doc, const CHAR *name) {
 
     if ((doc->intSubset != NULL) && (doc->intSubset->entities != NULL)) {
 	table = (xmlEntitiesTablePtr) doc->intSubset->entities;
+	for (i = 0;i < table->nb_entities;i++) {
+	    cur = &table->table[i];
+	    if ((cur->type !=  XML_INTERNAL_PARAMETER_ENTITY) &&
+	        (cur->type !=  XML_EXTERNAL_PARAMETER_ENTITY) &&
+	        (!xmlStrcmp(cur->name, name))) return(cur);
+	}
+    }
+    if ((doc->extSubset != NULL) && (doc->extSubset->entities != NULL)) {
+	table = (xmlEntitiesTablePtr) doc->extSubset->entities;
 	for (i = 0;i < table->nb_entities;i++) {
 	    cur = &table->table[i];
 	    if ((cur->type !=  XML_INTERNAL_PARAMETER_ENTITY) &&

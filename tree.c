@@ -2642,9 +2642,13 @@ xmlCopyProp(xmlNodePtr target, xmlAttrPtr cur) {
     ret->parent = target;
     
     if ((cur->ns != NULL) && (target != NULL)) {
-        xmlNsPtr ns;
-
+      xmlNsPtr ns;
+      if (target->doc) 
 	ns = xmlSearchNs(target->doc, target, cur->ns->prefix);
+      else if (cur->doc)  /* target may not yet have a doc : KPI */
+	ns = xmlSearchNs(cur->doc, target, cur->ns->prefix);       
+      else
+	ns = NULL;
 	ret->ns = ns;
     } else
         ret->ns = NULL;
@@ -2786,6 +2790,9 @@ xmlStaticCopyNode(const xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
 		     xmlBufferContent(node->content),
 		     xmlBufferLength(node->content));
 #endif
+    }else{
+      if (node->type == XML_ELEMENT_NODE)
+        ret->content = (void*)(long) node->content;
     }
     if (parent != NULL)
         xmlAddChild(parent, ret);

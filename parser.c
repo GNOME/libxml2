@@ -99,6 +99,10 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
 		      void *user_data, int depth, const xmlChar *URL,
 		      const xmlChar *ID, xmlNodePtr *list);
 
+static void
+xmlAddEntityReference(xmlEntityPtr ent, xmlNodePtr firstNode,
+                      xmlNodePtr lastNode);
+
 /************************************************************************
  *									*
  * 		Parser stacks related functions and macros		*
@@ -5254,8 +5258,10 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 					if (list->next == NULL)
 					    ent->last = list;
 					list = list->next;
-				    }
+			 	    }
 				    list = ent->children;
+				    if (ent->etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY)
+				      xmlAddEntityReference(ent, list, NULL);
 				}
 			    } else {
 				while (list != NULL) {
@@ -5297,15 +5303,20 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 		     * In the first occurrence list contains the replacement
 		     */
 		    if (list == NULL) {
-			xmlNodePtr new, cur;
+			xmlNodePtr new = NULL, cur, firstChild = NULL;
 			cur = ent->children;
 			while (cur != NULL) {
 			    new = xmlCopyNode(cur, 1);
+			    if (firstChild == NULL){
+			      firstChild = new;
+			    }
 			    xmlAddChild(ctxt->node, new);
 			    if (cur == ent->last)
 				break;
 			    cur = cur->next;
 			}
+			if (ent->etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY)			      
+			  xmlAddEntityReference(ent, firstChild, new);
 		    } else {
 			/*
 			 * the name change is to avoid coalescing of the
@@ -10226,6 +10237,44 @@ xmlParseDoc(xmlChar *cur) {
     return(xmlSAXParseDoc(NULL, cur, 0));
 }
 
+/************************************************************************
+ *									*
+ * 	Specific function to keep track of entities references		*
+ * 	and used by the XSLT debugger					*
+ *									*
+ ************************************************************************/
+
+static xmlEntityReferenceFunc xmlEntityRefFunc = NULL;
+
+/**
+ * xmlAddEntityReference:
+ * @ent : A valid entity
+ * @firstNode : A valid first node for children of entity
+ * @lastNode : A valid last node of children entity 
+ *
+ * Notify of a reference to an entity of type XML_EXTERNAL_GENERAL_PARSED_ENTITY
+ */
+static void
+xmlAddEntityReference(xmlEntityPtr ent, xmlNodePtr firstNode,
+                      xmlNodePtr lastNode)
+{
+    if (xmlEntityRefFunc != NULL) {
+        (*xmlEntityRefFunc) (ent, firstNode, lastNode);
+    }
+}
+
+
+/**
+ * xmlSetEntityReferenceFunc:
+ * @func : A valid function
+ *
+ * Set the function to call call back when a xml reference has been made
+ */
+void
+xmlSetEntityReferenceFunc(xmlEntityReferenceFunc func)
+{
+    xmlEntityRefFunc = func;
+}
 
 /************************************************************************
  *									*

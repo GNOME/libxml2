@@ -394,6 +394,18 @@ void			xmlParserInputShrink	(xmlParserInputPtr in);
 void			htmlInitAutoClose	(void);
 htmlParserCtxtPtr	htmlCreateFileParserCtxt(const char *filename,
 	                                         const char *encoding);
+
+/*
+ * Specific function to keep track of entities references
+ * and used by the XSLT debugger
+ */
+typedef	void	(*xmlEntityReferenceFunc)	(xmlEntityPtr ent,
+						 xmlNodePtr firstNode,
+						 xmlNodePtr lastNode);
+  
+void		xmlSetEntityReferenceFunc	(xmlEntityReferenceFunc func);
+
+
 #endif
 #ifdef __cplusplus
 }

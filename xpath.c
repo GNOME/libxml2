@@ -7092,8 +7092,8 @@ xmlXPathFalseFunction(xmlXPathParserContextPtr ctxt, int nargs) {
  */
 void
 xmlXPathLangFunction(xmlXPathParserContextPtr ctxt, int nargs) {
-    xmlXPathObjectPtr val;
-    const xmlChar *theLang;
+    xmlXPathObjectPtr val = NULL;
+    const xmlChar *theLang = NULL;
     const xmlChar *lang;
     int ret = 0;
     int i;
@@ -7108,10 +7108,12 @@ xmlXPathLangFunction(xmlXPathParserContextPtr ctxt, int nargs) {
         for (i = 0;lang[i] != 0;i++)
 	    if (toupper(lang[i]) != toupper(theLang[i]))
 	        goto not_equal;
-        ret = 1;
+	if ((theLang[i] == 0) || (theLang[i] == '-'))
+	    ret = 1;
     }
 not_equal:
-    xmlFree((void *)theLang);
+    if (theLang != NULL)
+	xmlFree((void *)theLang);
     xmlXPathFreeObject(val);
     valuePush(ctxt, xmlXPathNewBoolean(ret));
 }

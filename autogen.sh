@@ -26,9 +26,14 @@ DIE=0
 
 (automake-1.4 --version) < /dev/null > /dev/null 2>&1 || {
 	echo
-	echo "You must have automake installed to compile libxml."
-	echo "Get ftp://ftp.cygnus.com/pub/home/tromey/automake-1.2d.tar.gz"
-	echo "(or a newer version if it is available)"
+	echo "You must have latest automake 1.4 installed to compile libxml,"
+        echo "or alternatively create a symlink from automake-1.4 to "
+        echo "plain automake."
+        echo "Newer versions of automake 1.4 come with the symlink "
+        echo "pregenerated. This will allow you to compile libxml "
+        echo "while also installing newer automakes such as 1.6."
+	echo "Get ftp://sources.redhat.com/pub/automake/automake-1.4l.tar.gz"
+	echo "(or a newer version in the 1.4 series if it is available)."              
 	DIE=1
 }
 

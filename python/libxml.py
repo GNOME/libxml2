@@ -1,4 +1,5 @@
 import libxml2mod
+import types
 
 #
 # Errors raised by the wrappers when some tree handling failed.
@@ -79,18 +80,37 @@ class ioReadWrapper(ioWrapper):
 
 class ioWriteWrapper(ioWrapper):
     def __init__(self, _obj, enc = ""):
-        ioWrapper.__init__(self, _obj)
-        self._o = libxml2mod.xmlCreateOutputBuffer(self, enc)
+#        print "ioWriteWrapper.__init__", _obj
+        if type(_obj) == type(''):
+	    print "write io from a string"
+	    self.o = None
+	elif type(_obj) == types.InstanceType:
+	    print "write io from instance of %s" % (_obj.__class__)
+	    ioWrapper.__init__(self, _obj)
+	    self._o = libxml2mod.xmlCreateOutputBuffer(self, enc)
+	else:
+	    file = libxml2mod.outputBufferGetPythonFile(_obj)
+	    if file != None:
+		ioWrapper.__init__(self, file)
+	    else:
+	        ioWrapper.__init__(self, _obj)
+	    self._o = _obj
 
     def __del__(self):
-        print "__del__"
+#        print "__del__"
         self.io_close()
         if self._o != None:
             libxml2mod.xmlOutputBufferClose(self._o)
         self._o = None
 
+    def flush(self):
+        self.io_flush()
+        if self._o != None:
+            libxml2mod.xmlOutputBufferClose(self._o)
+        self._o = None
+
     def close(self):
-        self.io_close()
+        self.io_flush()
         if self._o != None:
             libxml2mod.xmlOutputBufferClose(self._o)
         self._o = None

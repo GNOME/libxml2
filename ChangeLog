@@ -1,3 +1,8 @@
+Fri Jan 10 13:47:55 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: fixed bug #102960 by reusing the XML name parsing
+	  routines.
+
 Fri Jan 10 00:16:49 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: one more IsEmptyElement crazyness, that time in

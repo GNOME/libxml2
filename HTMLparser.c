@@ -1831,6 +1831,8 @@ htmlNewDoc(const xmlChar *URI, const xmlChar *ExternalID) {
  *									*
  ************************************************************************/
 
+static xmlChar * htmlParseNameComplex(xmlParserCtxtPtr ctxt);
+
 /**
  * htmlParseHTMLName:
  * @ctxt:  an HTML parser context
@@ -1876,35 +1878,114 @@ htmlParseHTMLName(htmlParserCtxtPtr ctxt) {
 
 static xmlChar *
 htmlParseName(htmlParserCtxtPtr ctxt) {
-    xmlChar buf[HTML_MAX_NAMELEN];
-    int len = 0;
+    const xmlChar *in;
+    xmlChar *ret;
+    int count = 0;
 
     GROW;
-    if (!IS_LETTER(CUR) && (CUR != '_')) {
+
+    /*
+     * Accelerator for simple ASCII names
+     */
+    in = ctxt->input->cur;
+    if (((*in >= 0x61) && (*in <= 0x7A)) ||
+	((*in >= 0x41) && (*in <= 0x5A)) ||
+	(*in == '_') || (*in == ':')) {
+	in++;
+	while (((*in >= 0x61) && (*in <= 0x7A)) ||
+	       ((*in >= 0x41) && (*in <= 0x5A)) ||
+	       ((*in >= 0x30) && (*in <= 0x39)) ||
+	       (*in == '_') || (*in == '-') ||
+	       (*in == ':') || (*in == '.'))
+	    in++;
+	if ((*in > 0) && (*in < 0x80)) {
+	    count = in - ctxt->input->cur;
+	    ret = xmlStrndup(ctxt->input->cur, count);
+	    ctxt->input->cur = in;
+	    return(ret);
+	}
+    }
+    return(htmlParseNameComplex(ctxt));
+}
+
+static xmlChar *
+htmlParseNameComplex(xmlParserCtxtPtr ctxt) {
+    xmlChar buf[XML_MAX_NAMELEN + 5];
+    int len = 0, l;
+    int c;
+    int count = 0;
+
+    /*
+     * Handler for more complex cases
+     */
+    GROW;
+    c = CUR_CHAR(l);
+    if ((c == ' ') || (c == '>') || (c == '/') || /* accelerators */
+	(!IS_LETTER(c) && (c != '_') &&
+         (c != ':'))) {
 	return(NULL);
     }
 
-    while ((IS_LETTER(CUR)) || (IS_DIGIT(CUR)) ||
-           (CUR == '.') || (CUR == '-') ||
-	   (CUR == '_') || (CUR == ':') || 
-	   (IS_COMBINING(CUR)) ||
-	   (IS_EXTENDER(CUR))) {
-	buf[len++] = CUR;
-	NEXT;
-	if (len >= HTML_MAX_NAMELEN) {
-	    xmlGenericError(xmlGenericErrorContext, 
-	       "htmlParseName: reached HTML_MAX_NAMELEN limit\n");
-	    while ((IS_LETTER(CUR)) || (IS_DIGIT(CUR)) ||
-		   (CUR == '.') || (CUR == '-') ||
-		   (CUR == '_') || (CUR == ':') || 
-		   (IS_COMBINING(CUR)) ||
-		   (IS_EXTENDER(CUR)))
-		 NEXT;
-	    break;
+    while ((c != ' ') && (c != '>') && (c != '/') && /* test bigname.xml */
+	   ((IS_LETTER(c)) || (IS_DIGIT(c)) ||
+            (c == '.') || (c == '-') ||
+	    (c == '_') || (c == ':') || 
+	    (IS_COMBINING(c)) ||
+	    (IS_EXTENDER(c)))) {
+	if (count++ > 100) {
+	    count = 0;
+	    GROW;
+	}
+	COPY_BUF(l,buf,len,c);
+	NEXTL(l);
+	c = CUR_CHAR(l);
+	if (len >= XML_MAX_NAMELEN) {
+	    /*
+	     * Okay someone managed to make a huge name, so he's ready to pay
+	     * for the processing speed.
+	     */
+	    xmlChar *buffer;
+	    int max = len * 2;
+	    
+	    buffer = (xmlChar *) xmlMalloc(max * sizeof(xmlChar));
+	    if (buffer == NULL) {
+		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		    ctxt->sax->error(ctxt->userData,
+			             "htmlParseNameComplex: out of memory\n");
+		return(NULL);
+	    }
+	    memcpy(buffer, buf, len);
+	    while ((IS_LETTER(c)) || (IS_DIGIT(c)) || /* test bigname.xml */
+		   (c == '.') || (c == '-') ||
+		   (c == '_') || (c == ':') || 
+		   (IS_COMBINING(c)) ||
+		   (IS_EXTENDER(c))) {
+		if (count++ > 100) {
+		    count = 0;
+		    GROW;
+		}
+		if (len + 10 > max) {
+		    max *= 2;
+		    buffer = (xmlChar *) xmlRealloc(buffer,
+			                            max * sizeof(xmlChar));
+		    if (buffer == NULL) {
+			if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+			    ctxt->sax->error(ctxt->userData,
+				     "htmlParseNameComplex: out of memory\n");
+			return(NULL);
+		    }
+		}
+		COPY_BUF(l,buffer,len,c);
+		NEXTL(l);
+		c = CUR_CHAR(l);
+	    }
+	    buffer[len] = 0;
+	    return(buffer);
 	}
     }
     return(xmlStrndup(buf, len));
 }
+
 
 /**
  * htmlParseHTMLAttribute:

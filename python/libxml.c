@@ -3030,7 +3030,7 @@ libxml_xmlSchemaValidityWarningFunc(void *ctx, const char *msg, ...)
 	va_end(ap);
 }
 
-static PyObject *
+PyObject *
 libxml_xmlSchemaSetValidErrors(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
 {
 	PyObject *py_retval;
@@ -3086,7 +3086,7 @@ libxml_xmlSchemaSetValidErrors(ATTRIBUTE_UNUSED PyObject * self, PyObject * args
 	return(py_retval);
 }
 
-static PyObject *
+PyObject *
 libxml_xmlSchemaFreeValidCtxt(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
 {
 	xmlSchemaValidCtxtPtr ctxt;

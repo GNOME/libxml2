@@ -327,20 +327,6 @@ XMLPUBFUN void * XMLCALL
 /*
  * Variable Lookup forwarding.
  */
-/**
- * xmlXPathVariableLookupFunc:
- * @ctxt:  an XPath context
- * @name:  name of the variable
- * @ns_uri:  the namespace name hosting this variable
- *
- * Prototype for callbacks used to plug variable lookup in the XPath
- * engine.
- *
- * Returns the XPath object value or NULL if not found.
- */
-typedef xmlXPathObjectPtr (*xmlXPathVariableLookupFunc) (void *ctxt,
-					 const xmlChar *name,
-					 const xmlChar *ns_uri);
 
 XMLPUBFUN void XMLCALL	
 	xmlXPathRegisterVariableLookup	(xmlXPathContextPtr ctxt,
@@ -350,20 +336,6 @@ XMLPUBFUN void XMLCALL
 /*
  * Function Lookup forwarding.
  */
-/**
- * xmlXPathFuncLookupFunc:
- * @ctxt:  an XPath context
- * @name:  name of the function
- * @ns_uri:  the namespace name hosting this function
- *
- * Prototype for callbacks used to plug function lookup in the XPath
- * engine.
- *
- * Returns the XPath function or NULL if not found.
- */
-typedef xmlXPathFunction (*xmlXPathFuncLookupFunc) (void *ctxt,
-					 const xmlChar *name,
-					 const xmlChar *ns_uri);
 
 XMLPUBFUN void XMLCALL	
 	    xmlXPathRegisterFuncLookup	(xmlXPathContextPtr ctxt,

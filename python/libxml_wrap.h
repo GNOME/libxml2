@@ -233,3 +233,4 @@ PyObject * libxml_xmlSchemaParserCtxtPtrWrap(xmlSchemaParserCtxtPtr ctxt);
 PyObject * libxml_xmlSchemaValidCtxtPtrWrap(xmlSchemaValidCtxtPtr valid);
 #endif /* LIBXML_SCHEMAS_ENABLED */
 PyObject * libxml_xmlErrorPtrWrap(xmlErrorPtr error);
+PyObject * libxml_xmlSchemaSetValidErrors(PyObject * self, PyObject * args);

@@ -1,3 +1,10 @@
+Sun Aug 22 15:16:53 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xmllint.c xpath.c include/libxml/xpath.h 
+	  include/libxml/xpathInternals.h python/libxml.c 
+	  python/libxml_wrap.h: trying to remove some warning when compiling
+	  on Fedora Core 3 and 64bits
+
 Sat Aug 21 0:035:10 CET 2004 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: modified parsing of <list>, <union>, <restriction>,

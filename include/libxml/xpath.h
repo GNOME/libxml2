@@ -198,6 +198,52 @@ struct _xmlXPathAxis {
 };
 
 /**
+ * xmlXPathFunction:
+ * @ctxt:  the XPath interprestation context
+ * @nargs:  the number of arguments
+ *
+ * An XPath function.
+ * The arguments (if any) are popped out from the context stack
+ * and the result is pushed on the stack.
+ */
+
+typedef void (*xmlXPathFunction) (xmlXPathParserContextPtr ctxt, int nargs);
+
+/*
+ * Function and Variable Lookup.
+ */
+
+/**
+ * xmlXPathVariableLookupFunc:
+ * @ctxt:  an XPath context
+ * @name:  name of the variable
+ * @ns_uri:  the namespace name hosting this variable
+ *
+ * Prototype for callbacks used to plug variable lookup in the XPath
+ * engine.
+ *
+ * Returns the XPath object value or NULL if not found.
+ */
+typedef xmlXPathObjectPtr (*xmlXPathVariableLookupFunc) (void *ctxt,
+                                         const xmlChar *name,
+                                         const xmlChar *ns_uri);
+
+/**
+ * xmlXPathFuncLookupFunc:
+ * @ctxt:  an XPath context
+ * @name:  name of the function
+ * @ns_uri:  the namespace name hosting this function
+ *
+ * Prototype for callbacks used to plug function lookup in the XPath
+ * engine.
+ *
+ * Returns the XPath function or NULL if not found.
+ */
+typedef xmlXPathFunction (*xmlXPathFuncLookupFunc) (void *ctxt,
+					 const xmlChar *name,
+					 const xmlChar *ns_uri);
+
+/**
  * xmlXPathContext:
  *
  * Expression evaluation occurs with respect to a context.
@@ -247,7 +293,7 @@ struct _xmlXPathContext {
 
     /* the set of namespace declarations in scope for the expression */
     xmlHashTablePtr nsHash;		/* The namespaces hash table */
-    void *varLookupFunc;		/* variable lookup func */
+    xmlXPathVariableLookupFunc varLookupFunc;/* variable lookup func */
     void *varLookupData;		/* variable lookup data */
 
     /* Possibility to link in an extra item */
@@ -258,7 +304,7 @@ struct _xmlXPathContext {
     const xmlChar *functionURI;
 
     /* function lookup function and data */
-    void *funcLookupFunc;		/* function lookup func */
+    xmlXPathFuncLookupFunc funcLookupFunc;/* function lookup func */
     void *funcLookupData;		/* function lookup data */
 
     /* temporary namespace lists kept for walking the namespace axis */
@@ -304,18 +350,6 @@ struct _xmlXPathParserContext {
     int xptr;				/* it this an XPointer expression */
     xmlNodePtr         ancestor;	/* used for walking preceding axis */
 };
-
-/**
- * xmlXPathFunction:
- * @ctxt:  the XPath interprestation context
- * @nargs:  the number of arguments
- *
- * An XPath function.
- * The arguments (if any) are popped out from the context stack
- * and the result is pushed on the stack.
- */
-
-typedef void (*xmlXPathFunction) (xmlXPathParserContextPtr ctxt, int nargs);
 
 /************************************************************************
  *									*

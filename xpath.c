@@ -2811,7 +2811,7 @@ xmlXPathRegisterFuncLookup (xmlXPathContextPtr ctxt,
 			    void *funcCtxt) {
     if (ctxt == NULL)
 	return;
-    ctxt->funcLookupFunc = (void *) f;
+    ctxt->funcLookupFunc = f;
     ctxt->funcLookupData = funcCtxt;
 }
 
@@ -2834,7 +2834,7 @@ xmlXPathFunctionLookup(xmlXPathContextPtr ctxt, const xmlChar *name) {
 	xmlXPathFunction ret;
 	xmlXPathFuncLookupFunc f;
 
-	f = (xmlXPathFuncLookupFunc) ctxt->funcLookupFunc;
+	f = ctxt->funcLookupFunc;
 	ret = f(ctxt->funcLookupData, name, NULL);
 	if (ret != NULL)
 	    return(ret);
@@ -2865,7 +2865,7 @@ xmlXPathFunctionLookupNS(xmlXPathContextPtr ctxt, const xmlChar *name,
 	xmlXPathFunction ret;
 	xmlXPathFuncLookupFunc f;
 
-	f = (xmlXPathFuncLookupFunc) ctxt->funcLookupFunc;
+	f = ctxt->funcLookupFunc;
 	ret = f(ctxt->funcLookupData, name, ns_uri);
 	if (ret != NULL)
 	    return(ret);
@@ -2961,7 +2961,7 @@ xmlXPathRegisterVariableLookup(xmlXPathContextPtr ctxt,
 	 xmlXPathVariableLookupFunc f, void *data) {
     if (ctxt == NULL)
 	return;
-    ctxt->varLookupFunc = (void *) f;
+    ctxt->varLookupFunc = f;
     ctxt->varLookupData = data;
 }
 

@@ -1,3 +1,8 @@
+Fri Aug 15 00:41:58 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* uri.c: fixing an use of strcpy() where both strings overlap
+	  pointed out by valgrind.
+
 Thu Aug 14 17:10:39 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* DOCBparser.c globals.c include/libxml/xmlmemory.h: get rid of

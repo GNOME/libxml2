@@ -691,7 +691,7 @@ xmlNormalizeURIPath(char *path) {
      * "current position" pointer.
      */
     while (1) {
-        char *segp;
+        char *segp, *tmp;
 
         /* At the beginning of each iteration of this loop, "cur" points to
          * the first character of the segment we want to examine.
@@ -731,7 +731,11 @@ xmlNormalizeURIPath(char *path) {
           cur[0] = '\0';
           break;
         }
-        strcpy(cur, segp + 3);
+        /* Valgrind complained, strcpy(cur, segp + 3); */
+	/* string will overlap, do not use strcpy */
+	tmp = cur;
+	segp += 3;
+	while ((*tmp++ = *segp++) != 0);
 
         /* If there are no previous segments, then keep going from here.  */
         segp = cur;

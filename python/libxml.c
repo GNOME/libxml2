@@ -35,7 +35,7 @@ libxml_doubleWrap(double val) {
 }
 
 PyObject *
-libxml_charPtrWrap(const char *str) {
+libxml_charPtrWrap(char *str) {
     PyObject *ret;
 
 #ifdef DEBUG
@@ -52,7 +52,40 @@ libxml_charPtrWrap(const char *str) {
 }
 
 PyObject *
-libxml_xmlCharPtrWrap(const xmlChar *str) {
+libxml_xmlCharPtrWrap(xmlChar *str) {
+    PyObject *ret;
+
+#ifdef DEBUG
+    printf("libxml_xmlCharPtrWrap: str = %s\n", str);
+#endif
+    if (str == NULL) {
+	Py_INCREF(Py_None);
+	return(Py_None);
+    }
+    /* TODO: look at deallocation */
+    ret = PyString_FromString(str);
+    xmlFree(str);
+    return(ret);
+}
+
+PyObject *
+libxml_constcharPtrWrap(const char *str) {
+    PyObject *ret;
+
+#ifdef DEBUG
+    printf("libxml_xmlcharPtrWrap: str = %s\n", str);
+#endif
+    if (str == NULL) {
+	Py_INCREF(Py_None);
+	return(Py_None);
+    }
+    /* TODO: look at deallocation */
+    ret = PyString_FromString(str);
+    return(ret);
+}
+
+PyObject *
+libxml_constxmlCharPtrWrap(const xmlChar *str) {
     PyObject *ret;
 
 #ifdef DEBUG
@@ -99,11 +132,26 @@ libxml_xmlNodePtrWrap(xmlNodePtr node) {
 }
 
 PyObject *
+libxml_xmlNsPtrWrap(xmlNsPtr ns) {
+    PyObject *ret;
+
+#ifdef DEBUG
+    printf("libxml_xmlNsPtrWrap: node = %p\n", ns);
+#endif
+    if (ns == NULL) {
+	Py_INCREF(Py_None);
+	return(Py_None);
+    }
+    ret = PyCObject_FromVoidPtrAndDesc((void *) ns, "xmlNsPtr", NULL);
+    return(ret);
+}
+
+PyObject *
 libxml_xmlAttrPtrWrap(xmlAttrPtr attr) {
     PyObject *ret;
 
 #ifdef DEBUG
-    printf("libxml_xmlNodePtrWrap: attr = %p\n", attr);
+    printf("libxml_xmlAttrNodePtrWrap: attr = %p\n", attr);
 #endif
     if (attr == NULL) {
 	Py_INCREF(Py_None);
@@ -113,6 +161,107 @@ libxml_xmlAttrPtrWrap(xmlAttrPtr attr) {
     return(ret);
 }
 
+PyObject *
+libxml_xmlAttributePtrWrap(xmlAttributePtr attr) {
+    PyObject *ret;
+
+#ifdef DEBUG
+    printf("libxml_xmlAttributePtrWrap: attr = %p\n", attr);
+#endif
+    if (attr == NULL) {
+	Py_INCREF(Py_None);
+	return(Py_None);
+    }
+    ret = PyCObject_FromVoidPtrAndDesc((void *) attr, "xmlAttributePtr", NULL);
+    return(ret);
+}
+
+PyObject *
+libxml_xmlElementPtrWrap(xmlElementPtr elem) {
+    PyObject *ret;
+
+#ifdef DEBUG
+    printf("libxml_xmlElementNodePtrWrap: elem = %p\n", elem);
+#endif
+    if (elem == NULL) {
+	Py_INCREF(Py_None);
+	return(Py_None);
+    }
+    ret = PyCObject_FromVoidPtrAndDesc((void *) elem, "xmlElementPtr", NULL);
+    return(ret);
+}
+
+PyObject *
+libxml_xmlXPathContextPtrWrap(xmlXPathContextPtr ctxt) {
+    PyObject *ret;
+
+#ifdef DEBUG
+    printf("libxml_xmlXPathContextPtrWrap: ctxt = %p\n", ctxt);
+#endif
+    if (ctxt == NULL) {
+	Py_INCREF(Py_None);
+	return(Py_None);
+    }
+    ret = PyCObject_FromVoidPtrAndDesc((void *) ctxt, "xmlXPathContextPtr",
+	                               NULL);
+    return(ret);
+}
+
+PyObject *
+libxml_xmlXPathObjectPtrWrap(xmlXPathObjectPtr obj) {
+    PyObject *ret;
+
+#ifdef DEBUG
+    printf("libxml_xmlXPathObjectPtrWrap: ctxt = %p\n", obj);
+#endif
+    if (obj == NULL) {
+	Py_INCREF(Py_None);
+	return(Py_None);
+    }
+    switch(obj->type) {
+        case XPATH_XSLT_TREE:
+	    /* TODO !!!! Allocation problems */
+        case XPATH_NODESET:
+	    if ((obj->nodesetval == NULL) || (obj->nodesetval->nodeNr == 0))
+		ret = PyList_New(0);
+	    else {
+		int i;
+		xmlNodePtr node;
+
+		ret = PyList_New(obj->nodesetval->nodeNr);
+		for (i = 0;i < obj->nodesetval->nodeNr;i++) {
+		    node = obj->nodesetval->nodeTab[i];
+		    /* TODO: try to cast directly to the proper node type */
+		    PyList_SetItem(ret, i, libxml_xmlNodePtrWrap(node));
+		}
+	    }
+	    break;
+        case XPATH_BOOLEAN:
+	    ret = PyInt_FromLong((long) obj->boolval);
+	    break;
+        case XPATH_NUMBER:
+	    ret = PyFloat_FromDouble(obj->floatval);
+	    break;
+        case XPATH_STRING:
+	    ret = PyString_FromString(obj->stringval);
+	    break;
+        case XPATH_POINT:
+        case XPATH_RANGE:
+        case XPATH_LOCATIONSET:
+	default:
+	    printf("Unable to convert XPath object type %d\n", obj->type);
+	    Py_INCREF(Py_None);
+	    ret = Py_None;
+    }
+    xmlXPathFreeObject(obj);
+    return(ret);
+}
+
+/************************************************************************
+ *									*
+ *		The PyxmlNode type					*
+ *									*
+ ************************************************************************/
 static void
 PyxmlNode_dealloc(PyxmlNode_Object * self)
 {
@@ -173,6 +322,68 @@ static PyTypeObject PyxmlNode_Type = {
 
 /************************************************************************
  *									*
+ *		The PyxmlXPathContext type					*
+ *									*
+ ************************************************************************/
+static void
+PyxmlXPathContext_dealloc(PyxmlXPathContext_Object * self)
+{
+    printf("TODO PyxmlXPathContext_dealloc\n");
+    PyMem_DEL(self);
+}
+
+static int
+PyxmlXPathContext_compare(PyxmlXPathContext_Object * self, PyxmlXPathContext_Object * v)
+{
+    if (self->obj == v->obj)
+        return 0;
+    if (self->obj > v->obj)
+        return -1;
+    return 1;
+}
+
+static long
+PyxmlXPathContext_hash(PyxmlXPathContext_Object * self)
+{
+    return (long) self->obj;
+}
+
+static PyObject *
+PyxmlXPathContext_repr(PyxmlXPathContext_Object * self)
+{
+    char buf[100];
+
+    sprintf(buf, "<xmlXPathContext at %lx>",
+            (long) PyxmlXPathContext_Get(self));
+    return PyString_FromString(buf);
+}
+
+static char PyxmlXPathContext_Type__doc__[] = "This is the type of XPath evaluation contexts";
+
+PyTypeObject PyxmlXPathContext_Type = {
+    PyObject_HEAD_INIT(&PyType_Type)
+        0,                      /*ob_size */
+    "xmlXPathContext",                  /*tp_name */
+    sizeof(PyxmlXPathContext_Object),   /*tp_basicsize */
+    0,                          /*tp_itemsize */
+    (destructor) PyxmlXPathContext_dealloc,/*tp_dealloc */
+    (printfunc) 0,              /*tp_print */
+    (getattrfunc) 0,            /*tp_getattr */
+    (setattrfunc) 0,            /*tp_setattr */
+    (cmpfunc) PyxmlXPathContext_compare,/*tp_compare */
+    (reprfunc) PyxmlXPathContext_repr,  /*tp_repr */
+    0,                          /*tp_as_number */
+    0,                          /*tp_as_sequence */
+    0,                          /*tp_as_mapping */
+    (hashfunc) PyxmlXPathContext_hash,  /*tp_hash */
+    (ternaryfunc) 0,            /*tp_call */
+    (reprfunc) 0,               /*tp_str */
+    0L, 0L, 0L, 0L,
+    PyxmlXPathContext_Type__doc__
+};
+
+/************************************************************************
+ *									*
  *			Global properties access			*
  *									*
  ************************************************************************/
@@ -215,7 +426,7 @@ libxml_name(PyObject *self, PyObject *args)
 	    res = cur->name;
 	    break;
     }
-    resultobj = libxml_xmlCharPtrWrap(res);
+    resultobj = libxml_constxmlCharPtrWrap(res);
 
     return resultobj;
 }
@@ -546,55 +757,8 @@ libxml_type(PyObject *self, PyObject *args)
     printf("libxml_type: cur = %p: %s\n", cur, res);
 #endif
 
-    resultobj = libxml_xmlCharPtrWrap(res);
+    resultobj = libxml_constxmlCharPtrWrap(res);
     return resultobj;
-}
-
-/************************************************************************
- *									*
- *			The interface raw code				*
- *									*
- ************************************************************************/
-static PyObject *
-libxml_parseFile(PyObject *self, PyObject *args)
-{
-    PyObject *resultobj;
-    char *arg0;
-    xmlDocPtr result;
-
-    if (!PyArg_ParseTuple(args, "s:parseFile", &arg0))
-        return NULL;
-#ifdef DEBUG
-    printf("libxml_parseFile: arg0 = %s\n", arg0);
-#endif
-    result = (xmlDocPtr )xmlParseFile((char const *)arg0);
-    resultobj = libxml_xmlDocPtrWrap(result);
-#ifdef DEBUG
-    printf("libxml_parseFile: resultobj = %p\n", resultobj);
-#endif
-    return resultobj;
-}
-
-static PyObject *
-libxml_freeDoc(PyObject *self, PyObject *args)
-{
-    xmlDocPtr doc;
-
-    if (!PyArg_ParseTuple(args, "O:freeDoc", &doc))
-        return NULL;
-    switch(doc->type) {
-	case XML_DOCUMENT_NODE:
-	case XML_HTML_DOCUMENT_NODE:
-#ifdef LIBXML_DOCB_ENABLED
-	case XML_DOCB_DOCUMENT_NODE:
-#endif
-	    xmlFreeDoc(doc);
-	    break;
-	default:
-	    break;
-    }
-    Py_INCREF(Py_None);
-    return(Py_None);
 }
 
 /************************************************************************
@@ -604,8 +768,6 @@ libxml_freeDoc(PyObject *self, PyObject *args)
  ************************************************************************/
 static PyMethodDef libxmlMethods[] = {
 #include "libxml2-export.c"
-    { "parseFile", libxml_parseFile, METH_VARARGS },
-    { "freeDoc", libxml_freeDoc, METH_VARARGS },
     { "name", libxml_name, METH_VARARGS },
     { "children", libxml_children, METH_VARARGS },
     { "properties", libxml_properties, METH_VARARGS },
@@ -622,5 +784,6 @@ void init_libxml(void) {
     m = Py_InitModule("_libxml", libxmlMethods);
     d = PyModule_GetDict(m);
     PyDict_SetItemString(d, "xmlNodeType", (PyObject *)&PyxmlNode_Type);
+    PyDict_SetItemString(d, "xmlXPathContextType", (PyObject *)&PyxmlXPathContext_Type);
 }
 

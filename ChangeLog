@@ -1,3 +1,10 @@
+Thu Jan 31 21:27:37 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c: minor optimization
+	* python/generator.py python/libxml.c python/libxml.py
+	  python/libxml_wrap.h: more work on the python bindings,
+	  they now support XPath and there is no evident leak
+
 Thu Jan 31 00:48:06 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* python/generator.py python/libxml.c python/libxml.py:

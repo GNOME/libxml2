@@ -1,5 +1,11 @@
 import _libxml
 
+#
+# This class is the ancestor of all the Node classes. It provides
+# the basic functionalities shared by all nodes (and handle
+# gracefylly the exception), like name, navigation in the tree,
+# doc reference and content access
+#
 class xmlCore:
     def __init__(self, _obj=None):
         if _obj != None: 
@@ -17,7 +23,7 @@ class xmlCore:
 	    ret = _libxml.properties(self._o)
 	    if ret == None:
 	        return None
-	    return xmlNode(_obj=ret)
+	    return xmlAttr(_obj=ret)
 	elif attr == "children":
 	    ret = _libxml.children(self._o)
 	    if ret == None:
@@ -74,13 +80,25 @@ class xmlCore:
 	if ret == None:
 	    return None
 	return xmlNode(_obj=ret)
+    def get_properties(self):
+	ret = _libxml.properties(self._o)
+	if ret == None:
+	    return None
+	return xmlAttr(_obj=ret)
+    def get_doc(self):
+	ret = _libxml.doc(self._o)
+	if ret == None:
+	    return None
+	return xmlDoc(_obj=ret)
     def get_prev(self):
 	ret = _libxml.prev(self._o)
 	if ret == None:
 	    return None
 	return xmlNode(_obj=ret)
     def get_content(self):
-	return self.content()
+	return _libxml.xmlNodeGetContent(self._o)
+    def getContent(self):
+	return _libxml.xmlNodeGetContent(self._o)
     def get_name(self):
 	return _libxml.name(self._o)
     def get_type(self):
@@ -94,5 +112,36 @@ class xmlCore:
         _libxml.freeDoc(self._o)
 	    
 #
+# converters to present a nicer view of the XPath returns
+#
+def nodeWrap(o):
+    # TODO try to cast to the most appropriate node class
+    name = _libxml.name(o)
+    if name == "element" or name == "text":
+        return xmlNode(_obj=o)
+    if name == "attribute":
+        return xmlAttr(_obj=o)
+    if name[0:8] == "document":
+        return xmlDoc(_obj=o)
+    if name[0:8] == "namespace":
+        return xmlNs(_obj=o)
+    if name == "elem_decl":
+        return xmlElement(_obj=o)
+    if name == "attribute_decl":
+        return xmlAtribute(_obj=o)
+    if name == "entity_decl":
+        return xmlEntity(_obj=o)
+    if name == "dtd":
+        return xmlAttr(_obj=o)
+    return xmlNode(_obj=o)
+
+def xpathObjectRet(o):
+    if type(o) == type([]) or type(o) == type(()):
+        ret = map(lambda x: nodeWrap(x), o)
+	return ret
+    return o
+
+#
 # Everything below this point is automatically generated
 #
+

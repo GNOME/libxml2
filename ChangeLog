@@ -1,3 +1,10 @@
+Sun Jan 23 18:35:00 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: boosting common commnent parsing code, it was really
+	  slow.
+	* test/comment[3-5].xml result//comment[3-5].xml*: added sprecific
+	  regression tests
+
 Sun Jan 23 01:00:09 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: small optimization back.

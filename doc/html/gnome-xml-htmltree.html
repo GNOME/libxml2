@@ -115,7 +115,7 @@ SIZE="3"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN9569"
+NAME="AEN9653"
 ></A
 ><H2
 >Name</H2
@@ -123,7 +123,7 @@ NAME="AEN9569"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN9572"
+NAME="AEN9656"
 ></A
 ><H2
 >Synopsis</H2
@@ -150,6 +150,41 @@ HREF="gnome-xml-htmltree.html#HTML-ENTITY-REF-NODE"
 HREF="gnome-xml-htmltree.html#HTML-COMMENT-NODE"
 >HTML_COMMENT_NODE</A
 >
+<A
+HREF="gnome-xml-htmlparser.html#HTMLDOCPTR"
+>htmlDocPtr</A
+>  <A
+HREF="gnome-xml-htmltree.html#HTMLNEWDOC"
+>htmlNewDoc</A
+>                      (const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *URI,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *ExternalID);
+const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+>* <A
+HREF="gnome-xml-htmltree.html#HTMLGETMETAENCODING"
+>htmlGetMetaEncoding</A
+>          (<A
+HREF="gnome-xml-htmlparser.html#HTMLDOCPTR"
+>htmlDocPtr</A
+> doc);
+int         <A
+HREF="gnome-xml-htmltree.html#HTMLSETMETAENCODING"
+>htmlSetMetaEncoding</A
+>             (<A
+HREF="gnome-xml-htmlparser.html#HTMLDOCPTR"
+>htmlDocPtr</A
+> doc,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *encoding);
 void        <A
 HREF="gnome-xml-htmltree.html#HTMLDOCDUMPMEMORY"
 >htmlDocDumpMemory</A
@@ -162,7 +197,7 @@ HREF="gnome-xml-tree.html#XMLCHAR"
 >xmlChar</A
 > **mem,
                                              int *size);
-void        <A
+int         <A
 HREF="gnome-xml-htmltree.html#HTMLDOCDUMP"
 >htmlDocDump</A
 >                     (<GTKDOCLINK
@@ -210,7 +245,16 @@ HREF="gnome-xml-tree.html#XMLDOCPTR"
                                              <A
 HREF="gnome-xml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
-> cur);</PRE
+> cur);
+int         <A
+HREF="gnome-xml-htmltree.html#HTMLSAVEFILEENC"
+>htmlSaveFileEnc</A
+>                 (const char *filename,
+                                             <A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> cur,
+                                             const char *encoding);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -218,7 +262,7 @@ HREF="gnome-xml-tree.html#XMLNODEPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN9594"
+NAME="AEN9690"
 ></A
 ><H2
 >Description</H2
@@ -228,14 +272,14 @@ NAME="AEN9594"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN9597"
+NAME="AEN9693"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9599"
+NAME="AEN9695"
 ></A
 ><H3
 ><A
@@ -261,7 +305,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9604"
+NAME="AEN9700"
 ></A
 ><H3
 ><A
@@ -287,7 +331,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9609"
+NAME="AEN9705"
 ></A
 ><H3
 ><A
@@ -313,7 +357,291 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9614"
+NAME="AEN9710"
+></A
+><H3
+><A
+NAME="HTMLNEWDOC"
+></A
+>htmlNewDoc ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-htmlparser.html#HTMLDOCPTR"
+>htmlDocPtr</A
+>  htmlNewDoc                      (const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *URI,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *ExternalID);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>URI</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  URI for the dtd, or NULL</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ExternalID</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the external ID of the DTD, or NULL</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a new document</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN9736"
+></A
+><H3
+><A
+NAME="HTMLGETMETAENCODING"
+></A
+>htmlGetMetaEncoding ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+>* htmlGetMetaEncoding          (<A
+HREF="gnome-xml-htmlparser.html#HTMLDOCPTR"
+>htmlDocPtr</A
+> doc);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Encoding definition lookup in the Meta tags</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the document</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the current encoding as flagged in the HTML source</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN9757"
+></A
+><H3
+><A
+NAME="HTMLSETMETAENCODING"
+></A
+>htmlSetMetaEncoding ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         htmlSetMetaEncoding             (<A
+HREF="gnome-xml-htmlparser.html#HTMLDOCPTR"
+>htmlDocPtr</A
+> doc,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *encoding);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Sets the current encoding in the Meta tags
+NOTE: this will not change the document content encoding, just
+the META flag associated.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the document</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>encoding</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the encoding string</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 in case of success and -1 in case of error</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN9782"
 ></A
 ><H3
 ><A
@@ -416,7 +744,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9639"
+NAME="AEN9807"
 ></A
 ><H3
 ><A
@@ -432,7 +760,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void        htmlDocDump                     (<GTKDOCLINK
+>int         htmlDocDump                     (<GTKDOCLINK
 HREF="FILE"
 >FILE</GTKDOCLINK
 > *f,
@@ -492,6 +820,21 @@ ALIGN="LEFT"
 VALIGN="TOP"
 >  the document</TD
 ></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the number of byte written or -1 in case of failure.</TD
+></TR
 ></TABLE
 ><P
 ></P
@@ -500,7 +843,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9660"
+NAME="AEN9832"
 ></A
 ><H3
 ><A
@@ -525,7 +868,13 @@ HREF="gnome-xml-tree.html#XMLDOCPTR"
 ></TR
 ></TABLE
 ><P
->Dump an HTML document to a file.</P
+>Dump an HTML document to a file. If <TT
+CLASS="PARAMETER"
+><I
+>filename</I
+></TT
+> is "-" the stdout file is
+used.</P
 ><P
 ></P
 ><DIV
@@ -554,7 +903,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the filename</TD
+>  the filename (or URL)</TD
 ></TR
 ><TR
 ><TD
@@ -596,7 +945,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9684"
+NAME="AEN9857"
 ></A
 ><H3
 ><A
@@ -701,7 +1050,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9710"
+NAME="AEN9883"
 ></A
 ><H3
 ><A
@@ -797,6 +1146,120 @@ WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
 >  the current node</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN9909"
+></A
+><H3
+><A
+NAME="HTMLSAVEFILEENC"
+></A
+>htmlSaveFileEnc ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         htmlSaveFileEnc                 (const char *filename,
+                                             <A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> cur,
+                                             const char *encoding);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Dump an HTML document to a file using a given encoding.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>filename</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the filename</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the document</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>encoding</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the number of byte written or -1 in case of failure.</TD
 ></TR
 ></TABLE
 ><P

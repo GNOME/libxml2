@@ -1004,10 +1004,9 @@ xmlURIEscape(const xmlChar * str)
     if (uri->port) {
         xmlChar port[10];
 
-        snprintf((char *) segment, 10, "%d", uri->port);
+        snprintf((char *) port, 10, "%d", uri->port);
         ret = xmlStrcat(ret, BAD_CAST ":");
         ret = xmlStrcat(ret, port);
-        xmlFree(segment);
     }
 
     if (uri->path) {
@@ -1042,6 +1041,8 @@ xmlURIEscape(const xmlChar * str)
         ret = xmlStrcat(ret, segment);
         xmlFree(segment);
     }
+
+    xmlFreeURI(uri);
 #undef NULLCHK
 
     return (ret);

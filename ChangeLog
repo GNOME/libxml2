@@ -1,3 +1,8 @@
+Sat Nov 10 12:55:42 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in include/libxml/xmlwin32version.h: preparing 2.4.10
+	* doc/*: upgraded and rebuilt the docs
+
 Sat Nov 10 12:33:38 CET 2001 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: fix comment in scripts element parsing.

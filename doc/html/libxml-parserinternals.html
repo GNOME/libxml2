@@ -123,7 +123,7 @@ NAME="LIBXML-PARSERINTERNALS"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN20574"
+NAME="AEN20746"
 ></A
 ><H2
 >Name</H2
@@ -131,7 +131,7 @@ NAME="AEN20574"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN20577"
+NAME="AEN20749"
 ></A
 ><H2
 >Synopsis</H2
@@ -239,7 +239,7 @@ HREF="libxml-parserinternals.html#XMLISCHAR"
 >xmlIsChar</A
 >                       (int c);
 <A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > <A
 HREF="libxml-parser.html#XMLCREATEDOCPARSERCTXT"
@@ -249,14 +249,14 @@ HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *cur);
 <A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > <A
 HREF="libxml-parserinternals.html#XMLCREATEFILEPARSERCTXT"
 >xmlCreateFileParserCtxt</A
 >    (const char *filename);
 <A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > <A
 HREF="libxml-parserinternals.html#XMLCREATEMEMORYPARSERCTXT"
@@ -264,14 +264,14 @@ HREF="libxml-parserinternals.html#XMLCREATEMEMORYPARSERCTXT"
 >  (const char *buffer,
                                              int size);
 <A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > <A
 HREF="libxml-parserinternals.html#XMLNEWPARSERCTXT"
 >xmlNewParserCtxt</A
 >           (void);
 <A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > <A
 HREF="libxml-parserinternals.html#XMLCREATEENTITYPARSERCTXT"
@@ -292,7 +292,7 @@ int         <A
 HREF="libxml-parserinternals.html#XMLSWITCHENCODING"
 >xmlSwitchEncoding</A
 >               (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              <A
@@ -303,7 +303,7 @@ int         <A
 HREF="libxml-parserinternals.html#XMLSWITCHTOENCODING"
 >xmlSwitchToEncoding</A
 >             (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              <A
@@ -314,14 +314,14 @@ void        <A
 HREF="libxml-parser.html#XMLFREEPARSERCTXT"
 >xmlFreeParserCtxt</A
 >               (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 void        <A
 HREF="libxml-parserinternals.html#XMLHANDLEENTITY"
 >xmlHandleEntity</A
 >                 (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              <A
@@ -329,13 +329,13 @@ HREF="libxml-entities.html#XMLENTITYPTR"
 >xmlEntityPtr</A
 > entity);
 <A
-HREF="libxml-parser.html#XMLPARSERINPUTPTR"
+HREF="libxml-tree.html#XMLPARSERINPUTPTR"
 >xmlParserInputPtr</A
 > <A
 HREF="libxml-parserinternals.html#XMLNEWSTRINGINPUTSTREAM"
 >xmlNewStringInputStream</A
 >   (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              const <A
@@ -343,13 +343,13 @@ HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 > *buffer);
 <A
-HREF="libxml-parser.html#XMLPARSERINPUTPTR"
+HREF="libxml-tree.html#XMLPARSERINPUTPTR"
 >xmlParserInputPtr</A
 > <A
 HREF="libxml-parserinternals.html#XMLNEWENTITYINPUTSTREAM"
 >xmlNewEntityInputStream</A
 >   (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              <A
@@ -360,11 +360,11 @@ void        <A
 HREF="libxml-parserinternals.html#XMLPUSHINPUT"
 >xmlPushInput</A
 >                    (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              <A
-HREF="libxml-parser.html#XMLPARSERINPUTPTR"
+HREF="libxml-tree.html#XMLPARSERINPUTPTR"
 >xmlParserInputPtr</A
 > input);
 <A
@@ -374,35 +374,35 @@ HREF="libxml-tree.html#XMLCHAR"
 HREF="libxml-parserinternals.html#XMLPOPINPUT"
 >xmlPopInput</A
 >                     (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 void        <A
 HREF="libxml-parserinternals.html#XMLFREEINPUTSTREAM"
 >xmlFreeInputStream</A
 >              (<A
-HREF="libxml-parser.html#XMLPARSERINPUTPTR"
+HREF="libxml-tree.html#XMLPARSERINPUTPTR"
 >xmlParserInputPtr</A
 > input);
 <A
-HREF="libxml-parser.html#XMLPARSERINPUTPTR"
+HREF="libxml-tree.html#XMLPARSERINPUTPTR"
 >xmlParserInputPtr</A
 > <A
 HREF="libxml-parserinternals.html#XMLNEWINPUTFROMFILE"
 >xmlNewInputFromFile</A
 >       (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              const char *filename);
 <A
-HREF="libxml-parser.html#XMLPARSERINPUTPTR"
+HREF="libxml-tree.html#XMLPARSERINPUTPTR"
 >xmlParserInputPtr</A
 > <A
 HREF="libxml-parserinternals.html#XMLNEWINPUTSTREAM"
 >xmlNewInputStream</A
 >         (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 <A
@@ -412,7 +412,7 @@ HREF="libxml-tree.html#XMLCHAR"
 HREF="libxml-parserinternals.html#XMLSPLITQNAME"
 >xmlSplitQName</A
 >                   (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              const <A
@@ -430,7 +430,7 @@ HREF="libxml-tree.html#XMLCHAR"
 HREF="libxml-parserinternals.html#XMLNAMESPACEPARSENCNAME"
 >xmlNamespaceParseNCName</A
 >         (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 <A
@@ -440,7 +440,7 @@ HREF="libxml-tree.html#XMLCHAR"
 HREF="libxml-parserinternals.html#XMLNAMESPACEPARSEQNAME"
 >xmlNamespaceParseQName</A
 >          (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              <A
@@ -454,7 +454,7 @@ HREF="libxml-tree.html#XMLCHAR"
 HREF="libxml-parserinternals.html#XMLNAMESPACEPARSENSDEF"
 >xmlNamespaceParseNSDef</A
 >          (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 <A
@@ -464,14 +464,14 @@ HREF="libxml-tree.html#XMLCHAR"
 HREF="libxml-parserinternals.html#XMLPARSEQUOTEDSTRING"
 >xmlParseQuotedString</A
 >            (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 void        <A
 HREF="libxml-parserinternals.html#XMLPARSENAMESPACE"
 >xmlParseNamespace</A
 >               (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 <A
@@ -481,7 +481,7 @@ HREF="libxml-tree.html#XMLCHAR"
 HREF="libxml-parserinternals.html#XMLSCANNAME"
 >xmlScanName</A
 >                     (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 <A
@@ -491,7 +491,7 @@ HREF="libxml-tree.html#XMLCHAR"
 HREF="libxml-parserinternals.html#XMLPARSENAME"
 >xmlParseName</A
 >                    (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 <A
@@ -501,7 +501,7 @@ HREF="libxml-tree.html#XMLCHAR"
 HREF="libxml-parserinternals.html#XMLPARSENMTOKEN"
 >xmlParseNmtoken</A
 >                 (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 <A
@@ -511,7 +511,7 @@ HREF="libxml-tree.html#XMLCHAR"
 HREF="libxml-parserinternals.html#XMLPARSEENTITYVALUE"
 >xmlParseEntityValue</A
 >             (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              <A
@@ -525,7 +525,7 @@ HREF="libxml-tree.html#XMLCHAR"
 HREF="libxml-parserinternals.html#XMLPARSEATTVALUE"
 >xmlParseAttValue</A
 >                (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 <A
@@ -535,7 +535,7 @@ HREF="libxml-tree.html#XMLCHAR"
 HREF="libxml-parserinternals.html#XMLPARSESYSTEMLITERAL"
 >xmlParseSystemLiteral</A
 >           (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 <A
@@ -545,14 +545,14 @@ HREF="libxml-tree.html#XMLCHAR"
 HREF="libxml-parserinternals.html#XMLPARSEPUBIDLITERAL"
 >xmlParsePubidLiteral</A
 >            (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 void        <A
 HREF="libxml-parserinternals.html#XMLPARSECHARDATA"
 >xmlParseCharData</A
 >                (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              int cdata);
@@ -563,7 +563,7 @@ HREF="libxml-tree.html#XMLCHAR"
 HREF="libxml-parserinternals.html#XMLPARSEEXTERNALID"
 >xmlParseExternalID</A
 >              (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              <A
@@ -575,7 +575,7 @@ void        <A
 HREF="libxml-parserinternals.html#XMLPARSECOMMENT"
 >xmlParseComment</A
 >                 (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 <A
@@ -585,35 +585,35 @@ HREF="libxml-tree.html#XMLCHAR"
 HREF="libxml-parserinternals.html#XMLPARSEPITARGET"
 >xmlParsePITarget</A
 >                (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 void        <A
 HREF="libxml-parserinternals.html#XMLPARSEPI"
 >xmlParsePI</A
 >                      (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 void        <A
 HREF="libxml-parserinternals.html#XMLPARSENOTATIONDECL"
 >xmlParseNotationDecl</A
 >            (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 void        <A
 HREF="libxml-parserinternals.html#XMLPARSEENTITYDECL"
 >xmlParseEntityDecl</A
 >              (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 int         <A
 HREF="libxml-parserinternals.html#XMLPARSEDEFAULTDECL"
 >xmlParseDefaultDecl</A
 >             (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              <A
@@ -627,7 +627,7 @@ HREF="libxml-tree.html#XMLENUMERATIONPTR"
 HREF="libxml-parserinternals.html#XMLPARSENOTATIONTYPE"
 >xmlParseNotationType</A
 >      (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 <A
@@ -637,14 +637,14 @@ HREF="libxml-tree.html#XMLENUMERATIONPTR"
 HREF="libxml-parserinternals.html#XMLPARSEENUMERATIONTYPE"
 >xmlParseEnumerationType</A
 >   (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 int         <A
 HREF="libxml-parserinternals.html#XMLPARSEENUMERATEDTYPE"
 >xmlParseEnumeratedType</A
 >          (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              <A
@@ -655,7 +655,7 @@ int         <A
 HREF="libxml-parserinternals.html#XMLPARSEATTRIBUTETYPE"
 >xmlParseAttributeType</A
 >           (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              <A
@@ -666,7 +666,7 @@ void        <A
 HREF="libxml-parserinternals.html#XMLPARSEATTRIBUTELISTDECL"
 >xmlParseAttributeListDecl</A
 >       (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 <A
@@ -677,7 +677,7 @@ HREF="libxml-parserinternals.html#XMLPARSEELEMENTMIXEDCONTENTDECL"
 >xmlParseElementMixedContentDecl</A
 >
                                             (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 <A
@@ -688,7 +688,7 @@ HREF="libxml-parserinternals.html#XMLPARSEELEMENTCHILDRENCONTENTD"
 >xmlParseElementChildrenContentD</A
 >
                                             (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 <A
@@ -699,14 +699,14 @@ HREF="libxml-parserinternals.html#XMLPARSEELEMENTCHILDRENCONTENTDECL"
 >xmlParseElementChildrenContentDecl</A
 >
                                             (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 int         <A
 HREF="libxml-parserinternals.html#XMLPARSEELEMENTCONTENTDECL"
 >xmlParseElementContentDecl</A
 >      (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              <A
@@ -721,21 +721,21 @@ int         <A
 HREF="libxml-parserinternals.html#XMLPARSEELEMENTDECL"
 >xmlParseElementDecl</A
 >             (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 void        <A
 HREF="libxml-parserinternals.html#XMLPARSEMARKUPDECL"
 >xmlParseMarkupDecl</A
 >              (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 int         <A
 HREF="libxml-parserinternals.html#XMLPARSECHARREF"
 >xmlParseCharRef</A
 >                 (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 <A
@@ -745,28 +745,28 @@ HREF="libxml-entities.html#XMLENTITYPTR"
 HREF="libxml-parserinternals.html#XMLPARSEENTITYREF"
 >xmlParseEntityRef</A
 >              (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 void        <A
 HREF="libxml-parserinternals.html#XMLPARSEREFERENCE"
 >xmlParseReference</A
 >               (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 void        <A
 HREF="libxml-parserinternals.html#XMLPARSEPEREFERENCE"
 >xmlParsePEReference</A
 >             (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 void        <A
 HREF="libxml-parserinternals.html#XMLPARSEDOCTYPEDECL"
 >xmlParseDocTypeDecl</A
 >             (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 <A
@@ -776,7 +776,7 @@ HREF="libxml-tree.html#XMLCHAR"
 HREF="libxml-parserinternals.html#XMLPARSEATTRIBUTE"
 >xmlParseAttribute</A
 >               (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              <A
@@ -790,35 +790,35 @@ HREF="libxml-tree.html#XMLCHAR"
 HREF="libxml-parserinternals.html#XMLPARSESTARTTAG"
 >xmlParseStartTag</A
 >                (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 void        <A
 HREF="libxml-parserinternals.html#XMLPARSEENDTAG"
 >xmlParseEndTag</A
 >                  (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 void        <A
 HREF="libxml-parserinternals.html#XMLPARSECDSECT"
 >xmlParseCDSect</A
 >                  (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 void        <A
 HREF="libxml-parserinternals.html#XMLPARSECONTENT"
 >xmlParseContent</A
 >                 (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 void        <A
 HREF="libxml-parserinternals.html#XMLPARSEELEMENT"
 >xmlParseElement</A
 >                 (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 <A
@@ -828,7 +828,7 @@ HREF="libxml-tree.html#XMLCHAR"
 HREF="libxml-parserinternals.html#XMLPARSEVERSIONNUM"
 >xmlParseVersionNum</A
 >              (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 <A
@@ -838,7 +838,7 @@ HREF="libxml-tree.html#XMLCHAR"
 HREF="libxml-parserinternals.html#XMLPARSEVERSIONINFO"
 >xmlParseVersionInfo</A
 >             (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 <A
@@ -848,7 +848,7 @@ HREF="libxml-tree.html#XMLCHAR"
 HREF="libxml-parserinternals.html#XMLPARSEENCNAME"
 >xmlParseEncName</A
 >                 (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 <A
@@ -858,42 +858,42 @@ HREF="libxml-tree.html#XMLCHAR"
 HREF="libxml-parserinternals.html#XMLPARSEENCODINGDECL"
 >xmlParseEncodingDecl</A
 >            (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 int         <A
 HREF="libxml-parserinternals.html#XMLPARSESDDECL"
 >xmlParseSDDecl</A
 >                  (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 void        <A
 HREF="libxml-parserinternals.html#XMLPARSEXMLDECL"
 >xmlParseXMLDecl</A
 >                 (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 void        <A
 HREF="libxml-parserinternals.html#XMLPARSETEXTDECL"
 >xmlParseTextDecl</A
 >                (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 void        <A
 HREF="libxml-parserinternals.html#XMLPARSEMISC"
 >xmlParseMisc</A
 >                    (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 void        <A
 HREF="libxml-parserinternals.html#XMLPARSEEXTERNALSUBSET"
 >xmlParseExternalSubset</A
 >          (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              const <A
@@ -927,7 +927,7 @@ HREF="libxml-tree.html#XMLCHAR"
 HREF="libxml-parserinternals.html#XMLDECODEENTITIES"
 >xmlDecodeEntities</A
 >               (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              int len,
@@ -951,7 +951,7 @@ HREF="libxml-tree.html#XMLCHAR"
 HREF="libxml-parserinternals.html#XMLSTRINGDECODEENTITIES"
 >xmlStringDecodeEntities</A
 >         (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              const <A
@@ -975,7 +975,7 @@ int         <A
 HREF="libxml-parserinternals.html#NODEPUSH"
 >nodePush</A
 >                        (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              <A
@@ -989,28 +989,28 @@ HREF="libxml-tree.html#XMLNODEPTR"
 HREF="libxml-parserinternals.html#NODEPOP"
 >nodePop</A
 >                         (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 int         <A
 HREF="libxml-parserinternals.html#INPUTPUSH"
 >inputPush</A
 >                       (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              <A
-HREF="libxml-parser.html#XMLPARSERINPUTPTR"
+HREF="libxml-tree.html#XMLPARSERINPUTPTR"
 >xmlParserInputPtr</A
 > value);
 <A
-HREF="libxml-parser.html#XMLPARSERINPUTPTR"
+HREF="libxml-tree.html#XMLPARSERINPUTPTR"
 >xmlParserInputPtr</A
 > <A
 HREF="libxml-parserinternals.html#INPUTPOP"
 >inputPop</A
 >                  (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 <A
@@ -1020,14 +1020,14 @@ HREF="libxml-tree.html#XMLCHAR"
 HREF="libxml-parserinternals.html#NAMEPOP"
 >namePop</A
 >                         (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 int         <A
 HREF="libxml-parserinternals.html#NAMEPUSH"
 >namePush</A
 >                        (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              <A
@@ -1038,14 +1038,14 @@ int         <A
 HREF="libxml-parserinternals.html#XMLSKIPBLANKCHARS"
 >xmlSkipBlankChars</A
 >               (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 int         <A
 HREF="libxml-parserinternals.html#XMLSTRINGCURRENTCHAR"
 >xmlStringCurrentChar</A
 >            (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              const <A
@@ -1057,14 +1057,14 @@ void        <A
 HREF="libxml-parserinternals.html#XMLPARSERHANDLEPEREFERENCE"
 >xmlParserHandlePEReference</A
 >      (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 void        <A
 HREF="libxml-parserinternals.html#XMLPARSERHANDLEREFERENCE"
 >xmlParserHandleReference</A
 >        (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 int         <A
@@ -1078,7 +1078,7 @@ int         <A
 HREF="libxml-parserinternals.html#XMLCURRENTCHAR"
 >xmlCurrentChar</A
 >                  (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              int *len);
@@ -1103,14 +1103,14 @@ void        <A
 HREF="libxml-parserinternals.html#XMLNEXTCHAR"
 >xmlNextChar</A
 >                     (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 void        <A
 HREF="libxml-parserinternals.html#XMLPARSERINPUTSHRINK"
 >xmlParserInputShrink</A
 >            (<A
-HREF="libxml-parser.html#XMLPARSERINPUTPTR"
+HREF="libxml-tree.html#XMLPARSERINPUTPTR"
 >xmlParserInputPtr</A
 > in);
 void        <A
@@ -1132,7 +1132,7 @@ HREF="libxml-parserinternals.html#HTMLCREATEFILEPARSERCTXT"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN20852"
+NAME="AEN21024"
 ></A
 ><H2
 >Description</H2
@@ -1142,14 +1142,14 @@ NAME="AEN20852"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN20855"
+NAME="AEN21027"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20857"
+NAME="AEN21029"
 ></A
 ><H3
 ><A
@@ -1178,7 +1178,7 @@ at runtime.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20863"
+NAME="AEN21035"
 ></A
 ><H3
 ><A
@@ -1207,7 +1207,7 @@ one of the point is providing context when reporting errors</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20869"
+NAME="AEN21041"
 ></A
 ><H3
 ><A
@@ -1265,7 +1265,7 @@ any Unicode character, excluding the surrogate blocks, FFFE, and FFFF.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20885"
+NAME="AEN21057"
 ></A
 ><P
 ></P
@@ -1303,7 +1303,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20894"
+NAME="AEN21066"
 ></A
 ><H3
 ><A
@@ -1344,7 +1344,7 @@ HREF="XA"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20905"
+NAME="AEN21077"
 ></A
 ><P
 ></P
@@ -1382,7 +1382,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20914"
+NAME="AEN21086"
 ></A
 ><H3
 ><A
@@ -1411,7 +1411,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20921"
+NAME="AEN21093"
 ></A
 ><P
 ></P
@@ -1449,7 +1449,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20930"
+NAME="AEN21102"
 ></A
 ><H3
 ><A
@@ -1478,7 +1478,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20937"
+NAME="AEN21109"
 ></A
 ><P
 ></P
@@ -1516,7 +1516,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20946"
+NAME="AEN21118"
 ></A
 ><H3
 ><A
@@ -1545,7 +1545,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20953"
+NAME="AEN21125"
 ></A
 ><P
 ></P
@@ -1583,7 +1583,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20962"
+NAME="AEN21134"
 ></A
 ><H3
 ><A
@@ -1656,7 +1656,7 @@ HREF="X30FE"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20983"
+NAME="AEN21155"
 ></A
 ><P
 ></P
@@ -1694,7 +1694,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20992"
+NAME="AEN21164"
 ></A
 ><H3
 ><A
@@ -1738,7 +1738,7 @@ HREF="X3029"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21004"
+NAME="AEN21176"
 ></A
 ><P
 ></P
@@ -1776,7 +1776,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21013"
+NAME="AEN21185"
 ></A
 ><H3
 ><A
@@ -1805,7 +1805,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21020"
+NAME="AEN21192"
 ></A
 ><P
 ></P
@@ -1843,7 +1843,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21029"
+NAME="AEN21201"
 ></A
 ><H3
 ><A
@@ -1881,7 +1881,7 @@ HREF="XA"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21039"
+NAME="AEN21211"
 ></A
 ><P
 ></P
@@ -1919,7 +1919,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21048"
+NAME="AEN21220"
 ></A
 ><H3
 ><A
@@ -1946,7 +1946,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21054"
+NAME="AEN21226"
 ></A
 ><P
 ></P
@@ -1984,7 +1984,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21063"
+NAME="AEN21235"
 ></A
 ><H3
 ><A
@@ -2011,7 +2011,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21069"
+NAME="AEN21241"
 ></A
 ><P
 ></P
@@ -2049,7 +2049,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21078"
+NAME="AEN21250"
 ></A
 ><H3
 ><A
@@ -2076,7 +2076,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21084"
+NAME="AEN21256"
 ></A
 ><P
 ></P
@@ -2114,7 +2114,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21093"
+NAME="AEN21265"
 ></A
 ><H3
 ><A
@@ -2156,7 +2156,7 @@ HREF="X"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21103"
+NAME="AEN21275"
 ></A
 ><P
 ></P
@@ -2209,7 +2209,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21116"
+NAME="AEN21288"
 ></A
 ><H3
 ><A
@@ -2253,7 +2253,7 @@ HREF="libxml-parserinternals.html#IS-BLANK-CAPS"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21127"
+NAME="AEN21299"
 ></A
 ><P
 ></P
@@ -2306,7 +2306,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21140"
+NAME="AEN21312"
 ></A
 ><H3
 ><A
@@ -2343,7 +2343,7 @@ HREF="XA"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21149"
+NAME="AEN21321"
 ></A
 ><P
 ></P
@@ -2396,7 +2396,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21162"
+NAME="AEN21334"
 ></A
 ><H3
 ><A
@@ -2424,7 +2424,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21168"
+NAME="AEN21340"
 ></A
 ><P
 ></P
@@ -2477,7 +2477,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21181"
+NAME="AEN21353"
 ></A
 ><H3
 ><A
@@ -2505,7 +2505,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21187"
+NAME="AEN21359"
 ></A
 ><P
 ></P
@@ -2558,7 +2558,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21200"
+NAME="AEN21372"
 ></A
 ><H3
 ><A
@@ -2601,7 +2601,7 @@ HREF="X3029"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21211"
+NAME="AEN21383"
 ></A
 ><P
 ></P
@@ -2654,7 +2654,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21224"
+NAME="AEN21396"
 ></A
 ><H3
 ><A
@@ -2682,7 +2682,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21230"
+NAME="AEN21402"
 ></A
 ><P
 ></P
@@ -2735,7 +2735,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21243"
+NAME="AEN21415"
 ></A
 ><H3
 ><A
@@ -2807,7 +2807,7 @@ HREF="X30FE"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21263"
+NAME="AEN21435"
 ></A
 ><P
 ></P
@@ -2860,7 +2860,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21276"
+NAME="AEN21448"
 ></A
 ><H3
 ><A
@@ -2921,7 +2921,7 @@ HREF="libxml-parserinternals.html#IS-CHAR-CAPS"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21292"
+NAME="AEN21464"
 ></A
 ><P
 ></P
@@ -2974,7 +2974,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21305"
+NAME="AEN21477"
 ></A
 ><H3
 ><A
@@ -2991,7 +2991,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > xmlCreateDocParserCtxt     (<A
 HREF="libxml-tree.html#XMLCHAR"
@@ -3007,7 +3007,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21313"
+NAME="AEN21485"
 ></A
 ><P
 ></P
@@ -3060,7 +3060,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21326"
+NAME="AEN21498"
 ></A
 ><H3
 ><A
@@ -3077,7 +3077,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > xmlCreateFileParserCtxt    (const char *filename);</PRE
 ></TD
@@ -3092,7 +3092,7 @@ by default if found at compile-time.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21333"
+NAME="AEN21505"
 ></A
 ><P
 ></P
@@ -3145,7 +3145,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21346"
+NAME="AEN21518"
 ></A
 ><H3
 ><A
@@ -3162,7 +3162,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > xmlCreateMemoryParserCtxt  (const char *buffer,
                                              int size);</PRE
@@ -3176,7 +3176,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21353"
+NAME="AEN21525"
 ></A
 ><P
 ></P
@@ -3246,7 +3246,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21370"
+NAME="AEN21542"
 ></A
 ><H3
 ><A
@@ -3263,7 +3263,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > xmlNewParserCtxt           (void);</PRE
 ></TD
@@ -3276,7 +3276,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21377"
+NAME="AEN21549"
 ></A
 ><P
 ></P
@@ -3312,7 +3312,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21386"
+NAME="AEN21558"
 ></A
 ><H3
 ><A
@@ -3329,7 +3329,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > xmlCreateEntityParserCtxt  (const <A
 HREF="libxml-tree.html#XMLCHAR"
@@ -3355,7 +3355,7 @@ by default if found at compile-time.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21396"
+NAME="AEN21568"
 ></A
 ><P
 ></P
@@ -3442,7 +3442,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21417"
+NAME="AEN21589"
 ></A
 ><H3
 ><A
@@ -3459,7 +3459,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlSwitchEncoding               (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              <A
@@ -3477,7 +3477,7 @@ of a given entity.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21425"
+NAME="AEN21597"
 ></A
 ><P
 ></P
@@ -3547,7 +3547,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21442"
+NAME="AEN21614"
 ></A
 ><H3
 ><A
@@ -3564,7 +3564,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlSwitchToEncoding             (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              <A
@@ -3582,7 +3582,7 @@ of a given entity.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21450"
+NAME="AEN21622"
 ></A
 ><P
 ></P
@@ -3652,7 +3652,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21467"
+NAME="AEN21639"
 ></A
 ><H3
 ><A
@@ -3669,7 +3669,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlFreeParserCtxt               (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -3683,7 +3683,7 @@ document in ctxt-&gt;myDoc is not freed.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21474"
+NAME="AEN21646"
 ></A
 ><P
 ></P
@@ -3721,7 +3721,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21483"
+NAME="AEN21655"
 ></A
 ><H3
 ><A
@@ -3738,7 +3738,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlHandleEntity                 (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              <A
@@ -3758,7 +3758,7 @@ stream ? When do we just handle that as a set of chars ?</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21492"
+NAME="AEN21664"
 ></A
 ><P
 ></P
@@ -3813,7 +3813,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21505"
+NAME="AEN21677"
 ></A
 ><H3
 ><A
@@ -3830,10 +3830,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="libxml-parser.html#XMLPARSERINPUTPTR"
+HREF="libxml-tree.html#XMLPARSERINPUTPTR"
 >xmlParserInputPtr</A
 > xmlNewStringInputStream   (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              const <A
@@ -3850,7 +3850,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21514"
+NAME="AEN21686"
 ></A
 ><P
 ></P
@@ -3920,7 +3920,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21531"
+NAME="AEN21703"
 ></A
 ><H3
 ><A
@@ -3937,10 +3937,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="libxml-parser.html#XMLPARSERINPUTPTR"
+HREF="libxml-tree.html#XMLPARSERINPUTPTR"
 >xmlParserInputPtr</A
 > xmlNewEntityInputStream   (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              <A
@@ -3957,7 +3957,7 @@ HREF="libxml-entities.html#XMLENTITYPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21540"
+NAME="AEN21712"
 ></A
 ><P
 ></P
@@ -4027,7 +4027,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21557"
+NAME="AEN21729"
 ></A
 ><H3
 ><A
@@ -4044,11 +4044,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlPushInput                    (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              <A
-HREF="libxml-parser.html#XMLPARSERINPUTPTR"
+HREF="libxml-tree.html#XMLPARSERINPUTPTR"
 >xmlParserInputPtr</A
 > input);</PRE
 ></TD
@@ -4062,7 +4062,7 @@ of the previous one(s).</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21565"
+NAME="AEN21737"
 ></A
 ><P
 ></P
@@ -4117,7 +4117,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21578"
+NAME="AEN21750"
 ></A
 ><H3
 ><A
@@ -4137,7 +4137,7 @@ CLASS="PROGRAMLISTING"
 HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >     xmlPopInput                     (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -4151,7 +4151,7 @@ pop it and return the next char.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21586"
+NAME="AEN21758"
 ></A
 ><P
 ></P
@@ -4204,7 +4204,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21599"
+NAME="AEN21771"
 ></A
 ><H3
 ><A
@@ -4221,7 +4221,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlFreeInputStream              (<A
-HREF="libxml-parser.html#XMLPARSERINPUTPTR"
+HREF="libxml-tree.html#XMLPARSERINPUTPTR"
 >xmlParserInputPtr</A
 > input);</PRE
 ></TD
@@ -4234,7 +4234,7 @@ HREF="libxml-parser.html#XMLPARSERINPUTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21606"
+NAME="AEN21778"
 ></A
 ><P
 ></P
@@ -4272,7 +4272,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21615"
+NAME="AEN21787"
 ></A
 ><H3
 ><A
@@ -4289,10 +4289,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="libxml-parser.html#XMLPARSERINPUTPTR"
+HREF="libxml-tree.html#XMLPARSERINPUTPTR"
 >xmlParserInputPtr</A
 > xmlNewInputFromFile       (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              const char *filename);</PRE
@@ -4306,7 +4306,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21623"
+NAME="AEN21795"
 ></A
 ><P
 ></P
@@ -4376,7 +4376,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21640"
+NAME="AEN21812"
 ></A
 ><H3
 ><A
@@ -4393,10 +4393,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="libxml-parser.html#XMLPARSERINPUTPTR"
+HREF="libxml-tree.html#XMLPARSERINPUTPTR"
 >xmlParserInputPtr</A
 > xmlNewInputStream         (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -4409,7 +4409,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21648"
+NAME="AEN21820"
 ></A
 ><P
 ></P
@@ -4462,7 +4462,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21661"
+NAME="AEN21833"
 ></A
 ><H3
 ><A
@@ -4482,7 +4482,7 @@ CLASS="PROGRAMLISTING"
 HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    xmlSplitQName                   (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              const <A
@@ -4509,7 +4509,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21674"
+NAME="AEN21846"
 ></A
 ><P
 ></P
@@ -4597,7 +4597,7 @@ to get the Prefix if any.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21695"
+NAME="AEN21867"
 ></A
 ><H3
 ><A
@@ -4617,7 +4617,7 @@ CLASS="PROGRAMLISTING"
 HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    xmlNamespaceParseNCName         (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -4638,7 +4638,7 @@ CombiningChar | Extender</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21706"
+NAME="AEN21878"
 ></A
 ><P
 ></P
@@ -4691,7 +4691,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21719"
+NAME="AEN21891"
 ></A
 ><H3
 ><A
@@ -4711,7 +4711,7 @@ CLASS="PROGRAMLISTING"
 HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    xmlNamespaceParseQName          (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              <A
@@ -4737,7 +4737,7 @@ top of the SAX interfaces, i.e. not on raw input.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21732"
+NAME="AEN21904"
 ></A
 ><P
 ></P
@@ -4808,7 +4808,7 @@ to get the Prefix if any.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21749"
+NAME="AEN21921"
 ></A
 ><H3
 ><A
@@ -4828,7 +4828,7 @@ CLASS="PROGRAMLISTING"
 HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    xmlNamespaceParseNSDef          (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -4848,7 +4848,7 @@ top of the SAX interfaces, i.e. not on raw input.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21760"
+NAME="AEN21932"
 ></A
 ><P
 ></P
@@ -4901,7 +4901,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21773"
+NAME="AEN21945"
 ></A
 ><H3
 ><A
@@ -4921,7 +4921,7 @@ CLASS="PROGRAMLISTING"
 HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    xmlParseQuotedString            (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -4936,7 +4936,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21782"
+NAME="AEN21954"
 ></A
 ><P
 ></P
@@ -4989,7 +4989,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21795"
+NAME="AEN21967"
 ></A
 ><H3
 ><A
@@ -5006,7 +5006,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlParseNamespace               (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -5027,7 +5027,7 @@ if it was declared on the root of the Tree:-(</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21805"
+NAME="AEN21977"
 ></A
 ><P
 ></P
@@ -5065,7 +5065,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21814"
+NAME="AEN21986"
 ></A
 ><H3
 ><A
@@ -5085,7 +5085,7 @@ CLASS="PROGRAMLISTING"
 HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    xmlScanName                     (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -5109,7 +5109,7 @@ CombiningChar | Extender</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21826"
+NAME="AEN21998"
 ></A
 ><P
 ></P
@@ -5162,7 +5162,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21839"
+NAME="AEN22011"
 ></A
 ><H3
 ><A
@@ -5182,7 +5182,7 @@ CLASS="PROGRAMLISTING"
 HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    xmlParseName                    (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -5202,7 +5202,7 @@ CombiningChar | Extender</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21850"
+NAME="AEN22022"
 ></A
 ><P
 ></P
@@ -5255,7 +5255,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21863"
+NAME="AEN22035"
 ></A
 ><H3
 ><A
@@ -5275,7 +5275,7 @@ CLASS="PROGRAMLISTING"
 HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    xmlParseNmtoken                 (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -5292,7 +5292,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21873"
+NAME="AEN22045"
 ></A
 ><P
 ></P
@@ -5345,7 +5345,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21886"
+NAME="AEN22058"
 ></A
 ><H3
 ><A
@@ -5365,7 +5365,7 @@ CLASS="PROGRAMLISTING"
 HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    xmlParseEntityValue             (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              <A
@@ -5385,7 +5385,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21896"
+NAME="AEN22068"
 ></A
 ><P
 ></P
@@ -5455,7 +5455,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21913"
+NAME="AEN22085"
 ></A
 ><H3
 ><A
@@ -5475,7 +5475,7 @@ CLASS="PROGRAMLISTING"
 HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    xmlParseAttValue                (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -5545,7 +5545,7 @@ by a non-validating parser as if declared CDATA.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21934"
+NAME="AEN22106"
 ></A
 ><P
 ></P
@@ -5598,7 +5598,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21947"
+NAME="AEN22119"
 ></A
 ><H3
 ><A
@@ -5618,7 +5618,7 @@ CLASS="PROGRAMLISTING"
 HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    xmlParseSystemLiteral           (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -5633,7 +5633,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21956"
+NAME="AEN22128"
 ></A
 ><P
 ></P
@@ -5686,7 +5686,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21969"
+NAME="AEN22141"
 ></A
 ><H3
 ><A
@@ -5706,7 +5706,7 @@ CLASS="PROGRAMLISTING"
 HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    xmlParsePubidLiteral            (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -5721,7 +5721,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21978"
+NAME="AEN22150"
 ></A
 ><P
 ></P
@@ -5774,7 +5774,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21991"
+NAME="AEN22163"
 ></A
 ><H3
 ><A
@@ -5791,7 +5791,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlParseCharData                (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              int cdata);</PRE
@@ -5813,7 +5813,7 @@ string is not marking the end of a CDATA section. </P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22000"
+NAME="AEN22172"
 ></A
 ><P
 ></P
@@ -5868,7 +5868,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22013"
+NAME="AEN22185"
 ></A
 ><H3
 ><A
@@ -5888,7 +5888,7 @@ CLASS="PROGRAMLISTING"
 HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    xmlParseExternalID              (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              <A
@@ -5914,7 +5914,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22025"
+NAME="AEN22197"
 ></A
 ><P
 ></P
@@ -6004,7 +6004,7 @@ it is possible to return NULL and have publicID set.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22046"
+NAME="AEN22218"
 ></A
 ><H3
 ><A
@@ -6021,7 +6021,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlParseComment                 (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -6038,7 +6038,7 @@ must not occur within comments. "</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22054"
+NAME="AEN22226"
 ></A
 ><P
 ></P
@@ -6076,7 +6076,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22063"
+NAME="AEN22235"
 ></A
 ><H3
 ><A
@@ -6096,7 +6096,7 @@ CLASS="PROGRAMLISTING"
 HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    xmlParsePITarget                (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -6111,7 +6111,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22072"
+NAME="AEN22244"
 ></A
 ><P
 ></P
@@ -6164,7 +6164,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22085"
+NAME="AEN22257"
 ></A
 ><H3
 ><A
@@ -6181,7 +6181,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlParsePI                      (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -6198,7 +6198,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22094"
+NAME="AEN22266"
 ></A
 ><P
 ></P
@@ -6236,7 +6236,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22103"
+NAME="AEN22275"
 ></A
 ><H3
 ><A
@@ -6253,7 +6253,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlParseNotationDecl            (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -6278,7 +6278,7 @@ HREF="libxml-parserinternals.html#XMLPARSEEXTERNALID"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22114"
+NAME="AEN22286"
 ></A
 ><P
 ></P
@@ -6316,7 +6316,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22123"
+NAME="AEN22295"
 ></A
 ><H3
 ><A
@@ -6333,7 +6333,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlParseEntityDecl              (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -6361,7 +6361,7 @@ The Name must match the declared name of a notation.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22137"
+NAME="AEN22309"
 ></A
 ><P
 ></P
@@ -6399,7 +6399,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22146"
+NAME="AEN22318"
 ></A
 ><H3
 ><A
@@ -6416,7 +6416,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlParseDefaultDecl             (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              <A
@@ -6472,7 +6472,7 @@ HREF="libxml-parserinternals.html#XMLPARSEATTVALUE"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22166"
+NAME="AEN22338"
 ></A
 ><P
 ></P
@@ -6543,7 +6543,7 @@ or XML_ATTRIBUTE_FIXED. </TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22183"
+NAME="AEN22355"
 ></A
 ><H3
 ><A
@@ -6563,7 +6563,7 @@ CLASS="PROGRAMLISTING"
 HREF="libxml-tree.html#XMLENUMERATIONPTR"
 >xmlEnumerationPtr</A
 > xmlParseNotationType      (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -6584,7 +6584,7 @@ in the declaration; all notation names in the declaration must be declared.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22194"
+NAME="AEN22366"
 ></A
 ><P
 ></P
@@ -6637,7 +6637,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22207"
+NAME="AEN22379"
 ></A
 ><H3
 ><A
@@ -6657,7 +6657,7 @@ CLASS="PROGRAMLISTING"
 HREF="libxml-tree.html#XMLENUMERATIONPTR"
 >xmlEnumerationPtr</A
 > xmlParseEnumerationType   (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -6676,7 +6676,7 @@ the declaration</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22217"
+NAME="AEN22389"
 ></A
 ><P
 ></P
@@ -6729,7 +6729,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22230"
+NAME="AEN22402"
 ></A
 ><H3
 ><A
@@ -6746,7 +6746,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlParseEnumeratedType          (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              <A
@@ -6767,7 +6767,7 @@ HREF="libxml-tree.html#XMLENUMERATIONPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22240"
+NAME="AEN22412"
 ></A
 ><P
 ></P
@@ -6837,7 +6837,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22257"
+NAME="AEN22429"
 ></A
 ><H3
 ><A
@@ -6854,7 +6854,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlParseAttributeType           (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              <A
@@ -6916,7 +6916,7 @@ of type NMTOKENS must match Nmtokens.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22278"
+NAME="AEN22450"
 ></A
 ><P
 ></P
@@ -6986,7 +6986,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22295"
+NAME="AEN22467"
 ></A
 ><H3
 ><A
@@ -7003,7 +7003,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlParseAttributeListDecl       (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -7020,7 +7020,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22304"
+NAME="AEN22476"
 ></A
 ><P
 ></P
@@ -7058,7 +7058,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22313"
+NAME="AEN22485"
 ></A
 ><H3
 ><A
@@ -7079,7 +7079,7 @@ HREF="libxml-tree.html#XMLELEMENTCONTENTPTR"
 >xmlElementContentPtr</A
 > xmlParseElementMixedContentDecl
                                             (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -7108,7 +7108,7 @@ mixed-content declaration.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22326"
+NAME="AEN22498"
 ></A
 ><P
 ></P
@@ -7161,7 +7161,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22339"
+NAME="AEN22511"
 ></A
 ><H3
 ><A
@@ -7182,7 +7182,7 @@ HREF="libxml-tree.html#XMLELEMENTCONTENTPTR"
 >xmlElementContentPtr</A
 > xmlParseElementChildrenContentD
                                             (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -7198,7 +7198,7 @@ HREF="libxml-parserinternals.html#XMLPARSEELEMENTCHILDRENCONTENTDECL"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22348"
+NAME="AEN22520"
 ></A
 ><P
 ></P
@@ -7252,7 +7252,7 @@ hierarchy.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22361"
+NAME="AEN22533"
 ></A
 ><H3
 ><A
@@ -7273,7 +7273,7 @@ HREF="libxml-tree.html#XMLELEMENTCONTENTPTR"
 >xmlElementContentPtr</A
 > xmlParseElementChildrenContentDecl
                                             (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -7306,7 +7306,7 @@ the replacement text should be a connector (| or ,).</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22374"
+NAME="AEN22546"
 ></A
 ><P
 ></P
@@ -7360,7 +7360,7 @@ hierarchy.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22387"
+NAME="AEN22559"
 ></A
 ><H3
 ><A
@@ -7377,7 +7377,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlParseElementContentDecl      (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              <A
@@ -7401,7 +7401,7 @@ the cases EMPTY and ANY are handled directly in xmlParseElementDecl</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22397"
+NAME="AEN22569"
 ></A
 ><P
 ></P
@@ -7488,7 +7488,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22418"
+NAME="AEN22590"
 ></A
 ><H3
 ><A
@@ -7505,7 +7505,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlParseElementDecl             (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -7523,7 +7523,7 @@ No element type may be declared more than once</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22427"
+NAME="AEN22599"
 ></A
 ><P
 ></P
@@ -7576,7 +7576,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22440"
+NAME="AEN22612"
 ></A
 ><H3
 ><A
@@ -7593,7 +7593,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlParseMarkupDecl              (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -7622,7 +7622,7 @@ entities or to the external subset.)</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22450"
+NAME="AEN22622"
 ></A
 ><P
 ></P
@@ -7660,7 +7660,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22459"
+NAME="AEN22631"
 ></A
 ><H3
 ><A
@@ -7677,7 +7677,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlParseCharRef                 (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -7700,7 +7700,7 @@ production for Char.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22469"
+NAME="AEN22641"
 ></A
 ><P
 ></P
@@ -7753,7 +7753,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22482"
+NAME="AEN22654"
 ></A
 ><H3
 ><A
@@ -7773,7 +7773,7 @@ CLASS="PROGRAMLISTING"
 HREF="libxml-entities.html#XMLENTITYPTR"
 >xmlEntityPtr</A
 > xmlParseEntityRef              (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -7806,7 +7806,7 @@ An entity reference must not contain the name of an unparsed entity</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22493"
+NAME="AEN22665"
 ></A
 ><P
 ></P
@@ -7859,7 +7859,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22506"
+NAME="AEN22678"
 ></A
 ><H3
 ><A
@@ -7876,7 +7876,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlParseReference               (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -7900,7 +7900,7 @@ or if the parser was asked to switch to that mode.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22516"
+NAME="AEN22688"
 ></A
 ><P
 ></P
@@ -7938,7 +7938,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22525"
+NAME="AEN22697"
 ></A
 ><H3
 ><A
@@ -7955,7 +7955,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlParsePEReference             (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -7991,7 +7991,7 @@ NOTE: misleading but this is handled.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22537"
+NAME="AEN22709"
 ></A
 ><P
 ></P
@@ -8029,7 +8029,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22546"
+NAME="AEN22718"
 ></A
 ><H3
 ><A
@@ -8046,7 +8046,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlParseDocTypeDecl             (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -8066,7 +8066,7 @@ type of the root element.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22555"
+NAME="AEN22727"
 ></A
 ><P
 ></P
@@ -8104,7 +8104,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22564"
+NAME="AEN22736"
 ></A
 ><H3
 ><A
@@ -8124,7 +8124,7 @@ CLASS="PROGRAMLISTING"
 HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    xmlParseAttribute               (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              <A
@@ -8164,7 +8164,7 @@ definition.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22581"
+NAME="AEN22753"
 ></A
 ><P
 ></P
@@ -8234,7 +8234,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22598"
+NAME="AEN22770"
 ></A
 ><H3
 ><A
@@ -8254,7 +8254,7 @@ CLASS="PROGRAMLISTING"
 HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    xmlParseStartTag                (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -8286,7 +8286,7 @@ empty-element tag. </P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22613"
+NAME="AEN22785"
 ></A
 ><P
 ></P
@@ -8339,7 +8339,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22626"
+NAME="AEN22798"
 ></A
 ><H3
 ><A
@@ -8356,7 +8356,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlParseEndTag                  (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -8375,7 +8375,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22636"
+NAME="AEN22808"
 ></A
 ><P
 ></P
@@ -8413,7 +8413,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22645"
+NAME="AEN22817"
 ></A
 ><H3
 ><A
@@ -8430,7 +8430,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlParseCDSect                  (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -8451,7 +8451,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22656"
+NAME="AEN22828"
 ></A
 ><P
 ></P
@@ -8489,7 +8489,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22665"
+NAME="AEN22837"
 ></A
 ><H3
 ><A
@@ -8506,7 +8506,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlParseContent                 (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -8521,7 +8521,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22673"
+NAME="AEN22845"
 ></A
 ><P
 ></P
@@ -8559,7 +8559,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22682"
+NAME="AEN22854"
 ></A
 ><H3
 ><A
@@ -8576,7 +8576,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlParseElement                 (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -8608,7 +8608,7 @@ been declared.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22692"
+NAME="AEN22864"
 ></A
 ><P
 ></P
@@ -8646,7 +8646,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22701"
+NAME="AEN22873"
 ></A
 ><H3
 ><A
@@ -8666,7 +8666,7 @@ CLASS="PROGRAMLISTING"
 HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    xmlParseVersionNum              (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -8681,7 +8681,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22710"
+NAME="AEN22882"
 ></A
 ><P
 ></P
@@ -8734,7 +8734,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22723"
+NAME="AEN22895"
 ></A
 ><H3
 ><A
@@ -8754,7 +8754,7 @@ CLASS="PROGRAMLISTING"
 HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    xmlParseVersionInfo             (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -8771,7 +8771,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22733"
+NAME="AEN22905"
 ></A
 ><P
 ></P
@@ -8824,7 +8824,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22746"
+NAME="AEN22918"
 ></A
 ><H3
 ><A
@@ -8844,7 +8844,7 @@ CLASS="PROGRAMLISTING"
 HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    xmlParseEncName                 (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -8859,7 +8859,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22755"
+NAME="AEN22927"
 ></A
 ><P
 ></P
@@ -8912,7 +8912,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22768"
+NAME="AEN22940"
 ></A
 ><H3
 ><A
@@ -8932,7 +8932,7 @@ CLASS="PROGRAMLISTING"
 HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    xmlParseEncodingDecl            (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -8949,7 +8949,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22778"
+NAME="AEN22950"
 ></A
 ><P
 ></P
@@ -9002,7 +9002,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22791"
+NAME="AEN22963"
 ></A
 ><H3
 ><A
@@ -9019,7 +9019,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlParseSDDecl                  (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -9049,7 +9049,7 @@ within any instance of those types.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22800"
+NAME="AEN22972"
 ></A
 ><P
 ></P
@@ -9102,7 +9102,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22813"
+NAME="AEN22985"
 ></A
 ><H3
 ><A
@@ -9119,7 +9119,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlParseXMLDecl                 (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -9134,7 +9134,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22821"
+NAME="AEN22993"
 ></A
 ><P
 ></P
@@ -9172,7 +9172,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22830"
+NAME="AEN23002"
 ></A
 ><H3
 ><A
@@ -9189,7 +9189,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlParseTextDecl                (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -9206,7 +9206,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22839"
+NAME="AEN23011"
 ></A
 ><P
 ></P
@@ -9244,7 +9244,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22848"
+NAME="AEN23020"
 ></A
 ><H3
 ><A
@@ -9261,7 +9261,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlParseMisc                    (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -9276,7 +9276,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22856"
+NAME="AEN23028"
 ></A
 ><P
 ></P
@@ -9314,7 +9314,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22865"
+NAME="AEN23037"
 ></A
 ><H3
 ><A
@@ -9331,7 +9331,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlParseExternalSubset          (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              const <A
@@ -9356,7 +9356,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22876"
+NAME="AEN23048"
 ></A
 ><P
 ></P
@@ -9428,7 +9428,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22893"
+NAME="AEN23065"
 ></A
 ><H3
 ><A
@@ -9456,7 +9456,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22899"
+NAME="AEN23071"
 ></A
 ><H3
 ><A
@@ -9484,7 +9484,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22905"
+NAME="AEN23077"
 ></A
 ><H3
 ><A
@@ -9512,7 +9512,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22911"
+NAME="AEN23083"
 ></A
 ><H3
 ><A
@@ -9540,7 +9540,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22917"
+NAME="AEN23089"
 ></A
 ><H3
 ><A
@@ -9560,7 +9560,7 @@ CLASS="PROGRAMLISTING"
 HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    xmlDecodeEntities               (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              int len,
@@ -9594,7 +9594,7 @@ through xmlStringDecodeEntities</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22931"
+NAME="AEN23103"
 ></A
 ><P
 ></P
@@ -9733,7 +9733,7 @@ must deallocate it !</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN22964"
+NAME="AEN23136"
 ></A
 ><H3
 ><A
@@ -9753,7 +9753,7 @@ CLASS="PROGRAMLISTING"
 HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    xmlStringDecodeEntities         (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              const <A
@@ -9787,7 +9787,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN22978"
+NAME="AEN23150"
 ></A
 ><P
 ></P
@@ -9926,7 +9926,7 @@ must deallocate it !</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23011"
+NAME="AEN23183"
 ></A
 ><H3
 ><A
@@ -9943,7 +9943,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         nodePush                        (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              <A
@@ -9960,7 +9960,7 @@ HREF="libxml-tree.html#XMLNODEPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN23019"
+NAME="AEN23191"
 ></A
 ><P
 ></P
@@ -10030,7 +10030,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23036"
+NAME="AEN23208"
 ></A
 ><H3
 ><A
@@ -10050,7 +10050,7 @@ CLASS="PROGRAMLISTING"
 HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  nodePop                         (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -10063,7 +10063,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN23044"
+NAME="AEN23216"
 ></A
 ><P
 ></P
@@ -10116,7 +10116,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23057"
+NAME="AEN23229"
 ></A
 ><H3
 ><A
@@ -10133,11 +10133,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         inputPush                       (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              <A
-HREF="libxml-parser.html#XMLPARSERINPUTPTR"
+HREF="libxml-tree.html#XMLPARSERINPUTPTR"
 >xmlParserInputPtr</A
 > value);</PRE
 ></TD
@@ -10150,7 +10150,7 @@ HREF="libxml-parser.html#XMLPARSERINPUTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN23065"
+NAME="AEN23237"
 ></A
 ><P
 ></P
@@ -10220,7 +10220,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23082"
+NAME="AEN23254"
 ></A
 ><H3
 ><A
@@ -10237,10 +10237,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="libxml-parser.html#XMLPARSERINPUTPTR"
+HREF="libxml-tree.html#XMLPARSERINPUTPTR"
 >xmlParserInputPtr</A
 > inputPop                  (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -10253,7 +10253,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN23090"
+NAME="AEN23262"
 ></A
 ><P
 ></P
@@ -10306,7 +10306,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23103"
+NAME="AEN23275"
 ></A
 ><H3
 ><A
@@ -10326,7 +10326,7 @@ CLASS="PROGRAMLISTING"
 HREF="libxml-tree.html#XMLCHAR"
 >xmlChar</A
 >*    namePop                         (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -10339,7 +10339,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN23111"
+NAME="AEN23283"
 ></A
 ><P
 ></P
@@ -10392,7 +10392,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23124"
+NAME="AEN23296"
 ></A
 ><H3
 ><A
@@ -10409,7 +10409,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         namePush                        (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              <A
@@ -10426,7 +10426,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN23132"
+NAME="AEN23304"
 ></A
 ><P
 ></P
@@ -10496,7 +10496,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23149"
+NAME="AEN23321"
 ></A
 ><H3
 ><A
@@ -10513,7 +10513,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlSkipBlankChars               (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -10527,7 +10527,7 @@ It pops up finished entities in the process if allowable at that point.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN23156"
+NAME="AEN23328"
 ></A
 ><P
 ></P
@@ -10580,7 +10580,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23169"
+NAME="AEN23341"
 ></A
 ><H3
 ><A
@@ -10597,7 +10597,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlStringCurrentChar            (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              const <A
@@ -10616,7 +10616,7 @@ bytes in the input buffer.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN23177"
+NAME="AEN23349"
 ></A
 ><P
 ></P
@@ -10703,7 +10703,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23198"
+NAME="AEN23370"
 ></A
 ><H3
 ><A
@@ -10720,7 +10720,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlParserHandlePEReference      (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -10762,7 +10762,7 @@ i.e.
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN23211"
+NAME="AEN23383"
 ></A
 ><P
 ></P
@@ -10800,7 +10800,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23220"
+NAME="AEN23392"
 ></A
 ><H3
 ><A
@@ -10817,7 +10817,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlParserHandleReference        (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -10857,7 +10857,7 @@ HREF="ENTPROC"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN23235"
+NAME="AEN23407"
 ></A
 ><P
 ></P
@@ -10895,7 +10895,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23244"
+NAME="AEN23416"
 ></A
 ><H3
 ><A
@@ -10935,7 +10935,7 @@ the XML Second edition.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN23253"
+NAME="AEN23425"
 ></A
 ><P
 ></P
@@ -10988,7 +10988,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23266"
+NAME="AEN23438"
 ></A
 ><H3
 ><A
@@ -11005,7 +11005,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlCurrentChar                  (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              int *len);</PRE
@@ -11042,7 +11042,7 @@ HREF="XA"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN23278"
+NAME="AEN23450"
 ></A
 ><P
 ></P
@@ -11112,7 +11112,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23295"
+NAME="AEN23467"
 ></A
 ><H3
 ><A
@@ -11143,7 +11143,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN23302"
+NAME="AEN23474"
 ></A
 ><P
 ></P
@@ -11213,7 +11213,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23319"
+NAME="AEN23491"
 ></A
 ><H3
 ><A
@@ -11245,7 +11245,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN23326"
+NAME="AEN23498"
 ></A
 ><P
 ></P
@@ -11332,7 +11332,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23347"
+NAME="AEN23519"
 ></A
 ><H3
 ><A
@@ -11349,7 +11349,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlNextChar                     (<A
-HREF="libxml-parser.html#XMLPARSERCTXTPTR"
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);</PRE
 ></TD
@@ -11362,7 +11362,7 @@ HREF="libxml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN23354"
+NAME="AEN23526"
 ></A
 ><P
 ></P
@@ -11400,7 +11400,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23363"
+NAME="AEN23535"
 ></A
 ><H3
 ><A
@@ -11417,7 +11417,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlParserInputShrink            (<A
-HREF="libxml-parser.html#XMLPARSERINPUTPTR"
+HREF="libxml-tree.html#XMLPARSERINPUTPTR"
 >xmlParserInputPtr</A
 > in);</PRE
 ></TD
@@ -11430,7 +11430,7 @@ HREF="libxml-parser.html#XMLPARSERINPUTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN23370"
+NAME="AEN23542"
 ></A
 ><P
 ></P
@@ -11468,7 +11468,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23379"
+NAME="AEN23551"
 ></A
 ><H3
 ><A
@@ -11501,7 +11501,7 @@ case of use in multithreaded programs.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN23386"
+NAME="AEN23558"
 ></A
 ><H3
 ><A
@@ -11534,7 +11534,7 @@ by default if found at compile-time.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN23393"
+NAME="AEN23565"
 ></A
 ><P
 ></P

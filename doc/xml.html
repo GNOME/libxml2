@@ -559,6 +559,23 @@ you want to test those</p>
     SGML docs</li>
 </ul>
 
+<h3>2.4.10: Nov 10 2001</h3>
+<ul>
+  <li>URI escaping fix (Joel Young)</li>
+  <li>added xmlGetNodePath() (for paths or XPointers generation)</li>
+  <li>Fixes namespace handling problems when using DTD and validation</li>
+  <li>improvements on xmllint: Morus Walter patches for --format and
+    --encode, Stefan Kost and Heiko Rupp improvements on the --shell</li>
+  <li>fixes for xmlcatalog linking pointed by Weiqi Gao</li>
+  <li>fixes to the HTML parser</li>
+</ul>
+
+<h3>2.4.9: Nov 6 2001</h3>
+<ul>
+  <li>fixes more catalog bugs</li>
+  <li>avoid a compilation problem, improve xmlGetLineNo()</li>
+</ul>
+
 <h3>2.4.8: Nov 4 2001</h3>
 <ul>
   <li>fixed SGML catalogs broken in previous release, updated xmlcatalog
@@ -2140,6 +2157,7 @@ xmlOutputBufferCreateOwn(FILE *file, xmlCharEncodingHandlerPtr encoder) {
         ret-&gt;closecallback = NULL;  /* No close callback */
     }
     return(ret); <br>
+
 
 
 

@@ -123,7 +123,7 @@ NAME="LIBXML-XMLIO"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN17774"
+NAME="AEN18020"
 ></A
 ><H2
 >Name</H2
@@ -131,7 +131,7 @@ NAME="AEN17774"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN17777"
+NAME="AEN18023"
 ></A
 ><H2
 >Synopsis</H2
@@ -165,12 +165,8 @@ HREF="libxml-xmlio.html#XMLINPUTCLOSECALLBACK"
 >*xmlInputCloseCallback</A
 >)        (void *context);
 struct      <A
-HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFER"
+HREF="libxml-tree.html#XMLPARSERINPUTBUFFER"
 >xmlParserInputBuffer</A
->;
-typedef     <A
-HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
->xmlParserInputBufferPtr</A
 >;
 int         (<A
 HREF="libxml-xmlio.html#XMLOUTPUTMATCHCALLBACK"
@@ -191,12 +187,8 @@ HREF="libxml-xmlio.html#XMLOUTPUTCLOSECALLBACK"
 >*xmlOutputCloseCallback</A
 >)       (void *context);
 struct      <A
-HREF="libxml-xmlio.html#XMLOUTPUTBUFFER"
+HREF="libxml-tree.html#XMLOUTPUTBUFFER"
 >xmlOutputBuffer</A
->;
-typedef     <A
-HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
->xmlOutputBufferPtr</A
 >;
 void        <A
 HREF="libxml-xmlio.html#XMLCLEANUPINPUTCALLBACKS"
@@ -212,7 +204,7 @@ HREF="libxml-xmlio.html#XMLREGISTERDEFAULTINPUTCALLBACKS"
 >
                                             (void);
 <A
-HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-tree.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > <A
 HREF="libxml-xmlio.html#XMLALLOCPARSERINPUTBUFFER"
@@ -223,7 +215,7 @@ HREF="libxml-encoding.html#XMLCHARENCODING"
 >xmlCharEncoding</A
 > enc);
 <A
-HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-tree.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > <A
 HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERCREATEFNAME"
@@ -235,7 +227,7 @@ HREF="libxml-encoding.html#XMLCHARENCODING"
 >xmlCharEncoding</A
 > enc);
 <A
-HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-tree.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > <A
 HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERCREATEFILENAME"
@@ -247,7 +239,7 @@ HREF="libxml-encoding.html#XMLCHARENCODING"
 >xmlCharEncoding</A
 > enc);
 <A
-HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-tree.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > <A
 HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERCREATEFILE"
@@ -262,7 +254,7 @@ HREF="libxml-encoding.html#XMLCHARENCODING"
 >xmlCharEncoding</A
 > enc);
 <A
-HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-tree.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > <A
 HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERCREATEFD"
@@ -274,7 +266,7 @@ HREF="libxml-encoding.html#XMLCHARENCODING"
 >xmlCharEncoding</A
 > enc);
 <A
-HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-tree.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > <A
 HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERCREATEMEM"
@@ -287,7 +279,7 @@ HREF="libxml-encoding.html#XMLCHARENCODING"
 >xmlCharEncoding</A
 > enc);
 <A
-HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-tree.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > <A
 HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERCREATEIO"
@@ -310,7 +302,7 @@ int         <A
 HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERREAD"
 >xmlParserInputBufferRead</A
 >        (<A
-HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-tree.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > in,
                                              int len);
@@ -318,7 +310,7 @@ int         <A
 HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERGROW"
 >xmlParserInputBufferGrow</A
 >        (<A
-HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-tree.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > in,
                                              int len);
@@ -326,7 +318,7 @@ int         <A
 HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPUSH"
 >xmlParserInputBufferPush</A
 >        (<A
-HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-tree.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > in,
                                              int len,
@@ -335,7 +327,7 @@ void        <A
 HREF="libxml-xmlio.html#XMLFREEPARSERINPUTBUFFER"
 >xmlFreeParserInputBuffer</A
 >        (<A
-HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-tree.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > in);
 char*       <A
@@ -367,7 +359,7 @@ HREF="libxml-xmlio.html#XMLREGISTERDEFAULTOUTPUTCALLBACKS"
 >
                                             (void);
 <A
-HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
+HREF="libxml-tree.html#XMLOUTPUTBUFFERPTR"
 >xmlOutputBufferPtr</A
 > <A
 HREF="libxml-xmlio.html#XMLALLOCOUTPUTBUFFER"
@@ -377,7 +369,7 @@ HREF="libxml-encoding.html#XMLCHARENCODINGHANDLERPTR"
 >xmlCharEncodingHandlerPtr</A
 > encoder);
 <A
-HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
+HREF="libxml-tree.html#XMLOUTPUTBUFFERPTR"
 >xmlOutputBufferPtr</A
 > <A
 HREF="libxml-xmlio.html#XMLOUTPUTBUFFERCREATEFILENAME"
@@ -390,7 +382,7 @@ HREF="libxml-encoding.html#XMLCHARENCODINGHANDLERPTR"
 > encoder,
                                              int compression);
 <A
-HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
+HREF="libxml-tree.html#XMLOUTPUTBUFFERPTR"
 >xmlOutputBufferPtr</A
 > <A
 HREF="libxml-xmlio.html#XMLOUTPUTBUFFERCREATEFILE"
@@ -405,7 +397,7 @@ HREF="libxml-encoding.html#XMLCHARENCODINGHANDLERPTR"
 >xmlCharEncodingHandlerPtr</A
 > encoder);
 <A
-HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
+HREF="libxml-tree.html#XMLOUTPUTBUFFERPTR"
 >xmlOutputBufferPtr</A
 > <A
 HREF="libxml-xmlio.html#XMLOUTPUTBUFFERCREATEFD"
@@ -416,7 +408,7 @@ HREF="libxml-encoding.html#XMLCHARENCODINGHANDLERPTR"
 >xmlCharEncodingHandlerPtr</A
 > encoder);
 <A
-HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
+HREF="libxml-tree.html#XMLOUTPUTBUFFERPTR"
 >xmlOutputBufferPtr</A
 > <A
 HREF="libxml-xmlio.html#XMLOUTPUTBUFFERCREATEIO"
@@ -438,7 +430,7 @@ int         <A
 HREF="libxml-xmlio.html#XMLOUTPUTBUFFERWRITE"
 >xmlOutputBufferWrite</A
 >            (<A
-HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
+HREF="libxml-tree.html#XMLOUTPUTBUFFERPTR"
 >xmlOutputBufferPtr</A
 > out,
                                              int len,
@@ -447,7 +439,7 @@ int         <A
 HREF="libxml-xmlio.html#XMLOUTPUTBUFFERWRITESTRING"
 >xmlOutputBufferWriteString</A
 >      (<A
-HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
+HREF="libxml-tree.html#XMLOUTPUTBUFFERPTR"
 >xmlOutputBufferPtr</A
 > out,
                                              const char *str);
@@ -455,14 +447,14 @@ int         <A
 HREF="libxml-xmlio.html#XMLOUTPUTBUFFERFLUSH"
 >xmlOutputBufferFlush</A
 >            (<A
-HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
+HREF="libxml-tree.html#XMLOUTPUTBUFFERPTR"
 >xmlOutputBufferPtr</A
 > out);
 int         <A
 HREF="libxml-xmlio.html#XMLOUTPUTBUFFERCLOSE"
 >xmlOutputBufferClose</A
 >            (<A
-HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
+HREF="libxml-tree.html#XMLOUTPUTBUFFERPTR"
 >xmlOutputBufferPtr</A
 > out);
 int         <A
@@ -493,61 +485,19 @@ void        <A
 HREF="libxml-xmlio.html#XMLREGISTERHTTPPOSTCALLBACKS"
 >xmlRegisterHTTPPostCallbacks</A
 >    (void);
-int         <A
-HREF="libxml-xmlio.html#XMLSAVEFILETO"
->xmlSaveFileTo</A
->                   (<A
-HREF="libxml-xmlio.html#XMLOUTPUTBUFFER"
->xmlOutputBuffer</A
-> *buf,
+<A
+HREF="libxml-tree.html#XMLPARSERINPUTPTR"
+>xmlParserInputPtr</A
+> <A
+HREF="libxml-xmlio.html#XMLNONETEXTERNALENTITYLOADER"
+>xmlNoNetExternalEntityLoader</A
+>
+                                            (const char *URL,
+                                             const char *ID,
                                              <A
-HREF="libxml-tree.html#XMLDOCPTR"
->xmlDocPtr</A
-> cur,
-                                             const char *encoding);
-int         <A
-HREF="libxml-xmlio.html#XMLSAVEFORMATFILETO"
->xmlSaveFormatFileTo</A
->             (<A
-HREF="libxml-xmlio.html#XMLOUTPUTBUFFER"
->xmlOutputBuffer</A
-> *buf,
-                                             <A
-HREF="libxml-tree.html#XMLDOCPTR"
->xmlDocPtr</A
-> cur,
-                                             const char *encoding,
-                                             int format);
-void        <A
-HREF="libxml-xmlio.html#XMLNODEDUMPOUTPUT"
->xmlNodeDumpOutput</A
->               (<A
-HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
->xmlOutputBufferPtr</A
-> buf,
-                                             <A
-HREF="libxml-tree.html#XMLDOCPTR"
->xmlDocPtr</A
-> doc,
-                                             <A
-HREF="libxml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
-> cur,
-                                             int level,
-                                             int format,
-                                             const char *encoding);
-void        <A
-HREF="libxml-xmlio.html#HTMLDOCCONTENTDUMPOUTPUT"
->htmlDocContentDumpOutput</A
->        (<A
-HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
->xmlOutputBufferPtr</A
-> buf,
-                                             <A
-HREF="libxml-tree.html#XMLDOCPTR"
->xmlDocPtr</A
-> cur,
-                                             const char *encoding);</PRE
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -555,7 +505,7 @@ HREF="libxml-tree.html#XMLDOCPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN17880"
+NAME="AEN18114"
 ></A
 ><H2
 >Description</H2
@@ -565,14 +515,14 @@ NAME="AEN17880"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN17883"
+NAME="AEN18117"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17885"
+NAME="AEN18119"
 ></A
 ><H3
 ><A
@@ -597,7 +547,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN17890"
+NAME="AEN18124"
 ></A
 ><P
 ></P
@@ -650,7 +600,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17903"
+NAME="AEN18137"
 ></A
 ><H3
 ><A
@@ -675,7 +625,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN17908"
+NAME="AEN18142"
 ></A
 ><P
 ></P
@@ -713,7 +663,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17917"
+NAME="AEN18151"
 ></A
 ><H3
 ><A
@@ -740,7 +690,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN17922"
+NAME="AEN18156"
 ></A
 ><P
 ></P
@@ -827,7 +777,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17943"
+NAME="AEN18177"
 ></A
 ><H3
 ><A
@@ -852,7 +802,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN17948"
+NAME="AEN18182"
 ></A
 ><P
 ></P
@@ -905,7 +855,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17961"
+NAME="AEN18195"
 ></A
 ><H3
 ><A
@@ -940,33 +890,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17966"
-></A
-><H3
-><A
-NAME="XMLPARSERINPUTBUFFERPTR"
-></A
->xmlParserInputBufferPtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlParserInputBuffer *xmlParserInputBufferPtr;</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN17971"
+NAME="AEN18200"
 ></A
 ><H3
 ><A
@@ -991,7 +915,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN17976"
+NAME="AEN18205"
 ></A
 ><P
 ></P
@@ -1044,7 +968,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN17989"
+NAME="AEN18218"
 ></A
 ><H3
 ><A
@@ -1069,7 +993,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN17994"
+NAME="AEN18223"
 ></A
 ><P
 ></P
@@ -1107,7 +1031,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18003"
+NAME="AEN18232"
 ></A
 ><H3
 ><A
@@ -1134,7 +1058,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18008"
+NAME="AEN18237"
 ></A
 ><P
 ></P
@@ -1221,7 +1145,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18029"
+NAME="AEN18258"
 ></A
 ><H3
 ><A
@@ -1246,7 +1170,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18034"
+NAME="AEN18263"
 ></A
 ><P
 ></P
@@ -1299,7 +1223,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18047"
+NAME="AEN18276"
 ></A
 ><H3
 ><A
@@ -1335,33 +1259,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18052"
-></A
-><H3
-><A
-NAME="XMLOUTPUTBUFFERPTR"
-></A
->xmlOutputBufferPtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlOutputBuffer *xmlOutputBufferPtr;</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN18057"
+NAME="AEN18281"
 ></A
 ><H3
 ><A
@@ -1390,7 +1288,7 @@ compiled-in I/O.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18063"
+NAME="AEN18287"
 ></A
 ><H3
 ><A
@@ -1419,7 +1317,7 @@ compiled-in I/O callbacks.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18069"
+NAME="AEN18293"
 ></A
 ><H3
 ><A
@@ -1448,7 +1346,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18075"
+NAME="AEN18299"
 ></A
 ><H3
 ><A
@@ -1465,7 +1363,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-tree.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > xmlAllocParserInputBuffer
                                             (<A
@@ -1482,7 +1380,7 @@ HREF="libxml-encoding.html#XMLCHARENCODING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18083"
+NAME="AEN18307"
 ></A
 ><P
 ></P
@@ -1535,7 +1433,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18096"
+NAME="AEN18320"
 ></A
 ><H3
 ><A
@@ -1552,7 +1450,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-tree.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > xmlParserInputBufferCreateFname
                                             (const char *URI,
@@ -1573,7 +1471,7 @@ HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERCREATEFILENAME"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18105"
+NAME="AEN18329"
 ></A
 ><P
 ></P
@@ -1643,7 +1541,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18122"
+NAME="AEN18346"
 ></A
 ><H3
 ><A
@@ -1660,7 +1558,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-tree.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > xmlParserInputBufferCreateFilename
                                             (const char *URI,
@@ -1682,7 +1580,7 @@ Do an encoding check if enc == XML_CHAR_ENCODING_NONE</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18130"
+NAME="AEN18354"
 ></A
 ><P
 ></P
@@ -1752,7 +1650,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18147"
+NAME="AEN18371"
 ></A
 ><H3
 ><A
@@ -1769,7 +1667,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-tree.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > xmlParserInputBufferCreateFile
                                             (<GTKDOCLINK
@@ -1791,7 +1689,7 @@ buffered C I/O</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18156"
+NAME="AEN18380"
 ></A
 ><P
 ></P
@@ -1861,7 +1759,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18173"
+NAME="AEN18397"
 ></A
 ><H3
 ><A
@@ -1878,7 +1776,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-tree.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > xmlParserInputBufferCreateFd
                                             (int fd,
@@ -1897,7 +1795,7 @@ from a file descriptor</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18181"
+NAME="AEN18405"
 ></A
 ><P
 ></P
@@ -1967,7 +1865,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18198"
+NAME="AEN18422"
 ></A
 ><H3
 ><A
@@ -1984,7 +1882,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-tree.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > xmlParserInputBufferCreateMem
                                             (const char *mem,
@@ -2004,7 +1902,7 @@ from a memory area.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18206"
+NAME="AEN18430"
 ></A
 ><P
 ></P
@@ -2091,7 +1989,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18227"
+NAME="AEN18451"
 ></A
 ><H3
 ><A
@@ -2108,7 +2006,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-tree.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > xmlParserInputBufferCreateIO
                                             (<A
@@ -2135,7 +2033,7 @@ from an I/O handler</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18237"
+NAME="AEN18461"
 ></A
 ><P
 ></P
@@ -2239,7 +2137,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18262"
+NAME="AEN18486"
 ></A
 ><H3
 ><A
@@ -2256,7 +2154,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlParserInputBufferRead        (<A
-HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-tree.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > in,
                                              int len);</PRE
@@ -2272,7 +2170,7 @@ This routine handle the I18N transcoding to internal UTF-8</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18269"
+NAME="AEN18493"
 ></A
 ><P
 ></P
@@ -2343,7 +2241,7 @@ in case of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18286"
+NAME="AEN18510"
 ></A
 ><H3
 ><A
@@ -2360,7 +2258,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlParserInputBufferGrow        (<A
-HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-tree.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > in,
                                              int len);</PRE
@@ -2379,7 +2277,7 @@ onto in-&gt;buffer or in-&gt;raw</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18294"
+NAME="AEN18518"
 ></A
 ><P
 ></P
@@ -2450,7 +2348,7 @@ in case of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18311"
+NAME="AEN18535"
 ></A
 ><H3
 ><A
@@ -2467,7 +2365,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlParserInputBufferPush        (<A
-HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-tree.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > in,
                                              int len,
@@ -2484,7 +2382,7 @@ This is used when operating the parser in progressive (push) mode.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18318"
+NAME="AEN18542"
 ></A
 ><P
 ></P
@@ -2572,7 +2470,7 @@ in case of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18339"
+NAME="AEN18563"
 ></A
 ><H3
 ><A
@@ -2589,7 +2487,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        xmlFreeParserInputBuffer        (<A
-HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+HREF="libxml-tree.html#XMLPARSERINPUTBUFFERPTR"
 >xmlParserInputBufferPtr</A
 > in);</PRE
 ></TD
@@ -2602,7 +2500,7 @@ HREF="libxml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18346"
+NAME="AEN18570"
 ></A
 ><P
 ></P
@@ -2640,7 +2538,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18355"
+NAME="AEN18579"
 ></A
 ><H3
 ><A
@@ -2667,7 +2565,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18361"
+NAME="AEN18585"
 ></A
 ><P
 ></P
@@ -2720,7 +2618,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18374"
+NAME="AEN18598"
 ></A
 ><H3
 ><A
@@ -2762,7 +2660,7 @@ HREF="libxml-xmlio.html#XMLINPUTCLOSECALLBACK"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18384"
+NAME="AEN18608"
 ></A
 ><P
 ></P
@@ -2866,7 +2764,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18409"
+NAME="AEN18633"
 ></A
 ><H3
 ><A
@@ -2895,7 +2793,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18415"
+NAME="AEN18639"
 ></A
 ><H3
 ><A
@@ -2912,7 +2810,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
+HREF="libxml-tree.html#XMLOUTPUTBUFFERPTR"
 >xmlOutputBufferPtr</A
 > xmlAllocOutputBuffer     (<A
 HREF="libxml-encoding.html#XMLCHARENCODINGHANDLERPTR"
@@ -2928,7 +2826,7 @@ HREF="libxml-encoding.html#XMLCHARENCODINGHANDLERPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18423"
+NAME="AEN18647"
 ></A
 ><P
 ></P
@@ -2981,7 +2879,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18436"
+NAME="AEN18660"
 ></A
 ><H3
 ><A
@@ -2998,7 +2896,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
+HREF="libxml-tree.html#XMLOUTPUTBUFFERPTR"
 >xmlOutputBufferPtr</A
 > xmlOutputBufferCreateFilename
                                             (const char *URI,
@@ -3022,7 +2920,7 @@ writing to a local file.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18444"
+NAME="AEN18668"
 ></A
 ><P
 ></P
@@ -3109,7 +3007,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18465"
+NAME="AEN18689"
 ></A
 ><H3
 ><A
@@ -3126,7 +3024,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
+HREF="libxml-tree.html#XMLOUTPUTBUFFERPTR"
 >xmlOutputBufferPtr</A
 > xmlOutputBufferCreateFile
                                             (<GTKDOCLINK
@@ -3148,7 +3046,7 @@ buffered C I/O</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18474"
+NAME="AEN18698"
 ></A
 ><P
 ></P
@@ -3218,7 +3116,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18491"
+NAME="AEN18715"
 ></A
 ><H3
 ><A
@@ -3235,7 +3133,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
+HREF="libxml-tree.html#XMLOUTPUTBUFFERPTR"
 >xmlOutputBufferPtr</A
 > xmlOutputBufferCreateFd  (int fd,
                                              <A
@@ -3253,7 +3151,7 @@ to a file descriptor</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18499"
+NAME="AEN18723"
 ></A
 ><P
 ></P
@@ -3323,7 +3221,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18516"
+NAME="AEN18740"
 ></A
 ><H3
 ><A
@@ -3340,7 +3238,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
+HREF="libxml-tree.html#XMLOUTPUTBUFFERPTR"
 >xmlOutputBufferPtr</A
 > xmlOutputBufferCreateIO  (<A
 HREF="libxml-xmlio.html#XMLOUTPUTWRITECALLBACK"
@@ -3366,7 +3264,7 @@ to an I/O handler</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18526"
+NAME="AEN18750"
 ></A
 ><P
 ></P
@@ -3470,7 +3368,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18551"
+NAME="AEN18775"
 ></A
 ><H3
 ><A
@@ -3487,7 +3385,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlOutputBufferWrite            (<A
-HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
+HREF="libxml-tree.html#XMLOUTPUTBUFFERPTR"
 >xmlOutputBufferPtr</A
 > out,
                                              int len,
@@ -3505,7 +3403,7 @@ or delayed writes.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18558"
+NAME="AEN18782"
 ></A
 ><P
 ></P
@@ -3593,7 +3491,7 @@ in case of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18579"
+NAME="AEN18803"
 ></A
 ><H3
 ><A
@@ -3610,7 +3508,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlOutputBufferWriteString      (<A
-HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
+HREF="libxml-tree.html#XMLOUTPUTBUFFERPTR"
 >xmlOutputBufferPtr</A
 > out,
                                              const char *str);</PRE
@@ -3627,7 +3525,7 @@ or delayed writes.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18586"
+NAME="AEN18810"
 ></A
 ><P
 ></P
@@ -3698,7 +3596,7 @@ in case of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18603"
+NAME="AEN18827"
 ></A
 ><H3
 ><A
@@ -3715,7 +3613,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlOutputBufferFlush            (<A
-HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
+HREF="libxml-tree.html#XMLOUTPUTBUFFERPTR"
 >xmlOutputBufferPtr</A
 > out);</PRE
 ></TD
@@ -3728,7 +3626,7 @@ HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18610"
+NAME="AEN18834"
 ></A
 ><P
 ></P
@@ -3781,7 +3679,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18623"
+NAME="AEN18847"
 ></A
 ><H3
 ><A
@@ -3798,7 +3696,7 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlOutputBufferClose            (<A
-HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
+HREF="libxml-tree.html#XMLOUTPUTBUFFERPTR"
 >xmlOutputBufferPtr</A
 > out);</PRE
 ></TD
@@ -3812,7 +3710,7 @@ and free up all the associated resources</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18630"
+NAME="AEN18854"
 ></A
 ><P
 ></P
@@ -3865,7 +3763,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18643"
+NAME="AEN18867"
 ></A
 ><H3
 ><A
@@ -3907,7 +3805,7 @@ HREF="libxml-xmlio.html#XMLOUTPUTCLOSECALLBACK"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18653"
+NAME="AEN18877"
 ></A
 ><P
 ></P
@@ -4011,7 +3909,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18678"
+NAME="AEN18902"
 ></A
 ><H3
 ><A
@@ -4040,7 +3938,7 @@ request.  Non-static as is called from the output buffer creation routine.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18684"
+NAME="AEN18908"
 ></A
 ><P
 ></P
@@ -4095,7 +3993,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18697"
+NAME="AEN18921"
 ></A
 ><H3
 ><A
@@ -4125,13 +4023,13 @@ method instead.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN18703"
+NAME="AEN18927"
 ></A
 ><H3
 ><A
-NAME="XMLSAVEFILETO"
+NAME="XMLNONETEXTERNALENTITYLOADER"
 ></A
->xmlSaveFileTo ()</H3
+>xmlNoNetExternalEntityLoader ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -4141,26 +4039,28 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->int         xmlSaveFileTo                   (<A
-HREF="libxml-xmlio.html#XMLOUTPUTBUFFER"
->xmlOutputBuffer</A
-> *buf,
+><A
+HREF="libxml-tree.html#XMLPARSERINPUTPTR"
+>xmlParserInputPtr</A
+> xmlNoNetExternalEntityLoader
+                                            (const char *URL,
+                                             const char *ID,
                                              <A
-HREF="libxml-tree.html#XMLDOCPTR"
->xmlDocPtr</A
-> cur,
-                                             const char *encoding);</PRE
+HREF="libxml-tree.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
->Dump an XML document to an I/O buffer.</P
+>A specific entity loader disabling network accesses, though still
+allowing local catalog accesses for resolution.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN18711"
+NAME="AEN18935"
 ></A
 ><P
 ></P
@@ -4180,14 +4080,14 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->buf</I
+>URL</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an output I/O buffer</TD
+>  the URL for the entity to load</TD
 ></TR
 ><TR
 ><TD
@@ -4197,14 +4097,14 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->cur</I
+>ID</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>  the System ID for the entity to load</TD
 ></TR
 ><TR
 ><TD
@@ -4214,14 +4114,14 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->encoding</I
+>ctxt</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the encoding if any assuming the i/O layer handles the trancoding</TD
+>  the context in which the entity is called or NULL</TD
 ></TR
 ><TR
 ><TD
@@ -4236,418 +4136,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the number of byte written or -1 in case of failure.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN18732"
-></A
-><H3
-><A
-NAME="XMLSAVEFORMATFILETO"
-></A
->xmlSaveFormatFileTo ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSaveFormatFileTo             (<A
-HREF="libxml-xmlio.html#XMLOUTPUTBUFFER"
->xmlOutputBuffer</A
-> *buf,
-                                             <A
-HREF="libxml-tree.html#XMLDOCPTR"
->xmlDocPtr</A
-> cur,
-                                             const char *encoding,
-                                             int format);</PRE
-></TD
-></TR
-></TABLE
-><P
->Dump an XML document to an I/O buffer.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN18740"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->buf</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  an output I/O buffer</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->cur</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the document</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->encoding</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the encoding if any assuming the i/O layer handles the trancoding</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->format</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> should formatting spaces been added</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><I
-CLASS="EMPHASIS"
->Returns</I
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the number of byte written or -1 in case of failure.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN18765"
-></A
-><H3
-><A
-NAME="XMLNODEDUMPOUTPUT"
-></A
->xmlNodeDumpOutput ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlNodeDumpOutput               (<A
-HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
->xmlOutputBufferPtr</A
-> buf,
-                                             <A
-HREF="libxml-tree.html#XMLDOCPTR"
->xmlDocPtr</A
-> doc,
-                                             <A
-HREF="libxml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
-> cur,
-                                             int level,
-                                             int format,
-                                             const char *encoding);</PRE
-></TD
-></TR
-></TABLE
-><P
->Dump an XML node, recursive behaviour,children are printed too.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN18774"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->buf</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the XML buffer output</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->doc</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the document</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->cur</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the current node</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->level</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the imbrication level for indenting</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->format</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> is formatting allowed</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->encoding</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  an optional encoding string</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN18803"
-></A
-><H3
-><A
-NAME="HTMLDOCCONTENTDUMPOUTPUT"
-></A
->htmlDocContentDumpOutput ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        htmlDocContentDumpOutput        (<A
-HREF="libxml-xmlio.html#XMLOUTPUTBUFFERPTR"
->xmlOutputBufferPtr</A
-> buf,
-                                             <A
-HREF="libxml-tree.html#XMLDOCPTR"
->xmlDocPtr</A
-> cur,
-                                             const char *encoding);</PRE
-></TD
-></TR
-></TABLE
-><P
->Dump an HTML document. Formating return/spaces are added.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN18811"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->buf</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the HTML buffer output</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->cur</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the document</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->encoding</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the encoding string</TD
+>a new allocated xmlParserInputPtr, or NULL.</TD
 ></TR
 ></TBODY
 ></TABLE

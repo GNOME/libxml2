@@ -2941,7 +2941,8 @@ xmlNodePtr xmlParseElement(xmlParserCtxtPtr ctxt) {
     if (CUR == '>') NEXT;
     else {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt, "Couldn't find end of Start Tag\n%.30s\n",openTag);
+	    ctxt->sax->error(ctxt, "Couldn't find end of Start Tag\n%.30s\n",
+	                     openTag);
 
 	/*
 	 * end of parsing of this node.
@@ -2957,8 +2958,8 @@ xmlNodePtr xmlParseElement(xmlParserCtxtPtr ctxt) {
     xmlParseContent(ctxt);
     if (!IS_CHAR(CUR)) {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt, "Premature end of data in tag %.30s\n%.30s\n",
-	               openTag);
+	    ctxt->sax->error(ctxt,
+	         "Premature end of data in tag %.30s\n", openTag);
 
 	/*
 	 * end of parsing of this node.
@@ -3463,7 +3464,7 @@ xmlDocPtr xmlSAXParseDoc(xmlSAXHandlerPtr sax, CHAR *cur) {
 	return(NULL);
     }
     xmlInitParserCtxt(ctxt);
-    if (sax != NULL) ctxt->sax == sax;
+    if (sax != NULL) ctxt->sax = sax;
     input = (xmlParserInputPtr) malloc(sizeof(xmlParserInput));
     if (input == NULL) {
         perror("malloc");
@@ -3598,7 +3599,7 @@ retry_bigger:
 	return(NULL);
     }
     xmlInitParserCtxt(ctxt);
-    if (sax != NULL) ctxt->sax == sax;
+    if (sax != NULL) ctxt->sax = sax;
     inputStream = (xmlParserInputPtr) malloc(sizeof(xmlParserInput));
     if (inputStream == NULL) {
         perror("malloc");
@@ -3674,7 +3675,7 @@ xmlDocPtr xmlSAXParseMemory(xmlSAXHandlerPtr sax, char *buffer, int size) {
 	return(NULL);
     }
     xmlInitParserCtxt(ctxt);
-    if (sax != NULL) ctxt->sax == sax;
+    if (sax != NULL) ctxt->sax = sax;
     input = (xmlParserInputPtr) malloc(sizeof(xmlParserInput));
     if (input == NULL) {
         perror("malloc");

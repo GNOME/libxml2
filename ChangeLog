@@ -1,3 +1,8 @@
+Fri Nov 13 13:03:10 EST 1998 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* parser.c, entities.c: simple bug hunting done during rpm2html and
+	  rpmfind integration.
+
 Sun Nov  8 13:11:07 EST 1998 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* parser.[ch]: Added interfaces allowing to specify a SAX

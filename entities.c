@@ -259,6 +259,7 @@ CHAR *xmlEncodeEntities(xmlDocPtr doc, const CHAR *input) {
     const CHAR *cur = input;
     CHAR *out = buffer;
 
+    if (input == NULL) return(NULL);
     if (buffer == NULL) {
         buffer_size = 1000;
         buffer = (CHAR *) malloc(buffer_size * sizeof(CHAR));

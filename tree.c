@@ -427,7 +427,10 @@ xmlStringLenGetNodeList(xmlDocPtr doc, const CHAR *value, int len) {
 		     * Create a new REFERENCE_REF node
 		     */
 		    node = xmlNewReference(doc, val);
-		    if (node == NULL) return(ret);
+		    if (node == NULL) {
+			if (val != NULL) free(val);
+		        return(ret);
+		    }
 		    if (last == NULL)
 			last = ret = node;
 		    else {
@@ -534,9 +537,11 @@ xmlStringGetNodeList(xmlDocPtr doc, const CHAR *value) {
 		    /*
 		     * Create a new REFERENCE_REF node
 		     */
-		    val = xmlStrndup(q, cur - q);
 		    node = xmlNewReference(doc, val);
-		    if (node == NULL) return(ret);
+		    if (node == NULL) {
+			if (val != NULL) free(val);
+		        return(ret);
+		    }
 		    if (last == NULL)
 			last = ret = node;
 		    else {

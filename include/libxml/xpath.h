@@ -178,19 +178,19 @@ struct _xmlXPathContext {
 
     int nb_variables;			/* number of defined variables */
     int max_variables;			/* max number of variables */
-    xmlXPathVariablePtr *variables;	/* Array of defined variables */
+    xmlXPathVariablePtr variables;	/* Array of defined variables */
 
     int nb_types;			/* number of defined types */
     int max_types;			/* max number of types */
-    xmlXPathTypePtr *types;		/* Array of defined types */
+    xmlXPathTypePtr types;		/* Array of defined types */
 
     int nb_funcs;			/* number of defined funcs */
     int max_funcs;			/* max number of funcs */
-    xmlXPathFuncPtr *funcs;		/* Array of defined funcs */
+    xmlXPathFuncPtr funcs;		/* Array of defined funcs */
 
     int nb_axis;			/* number of defined axis */
     int max_axis;			/* max number of axis */
-    xmlXPathAxisPtr *axis;		/* Array of defined axis */
+    xmlXPathAxisPtr axis;		/* Array of defined axis */
 
     /* Namespace traversal should be implemented with user */
     xmlNsPtr *namespaces;		/* The namespaces lookup */
@@ -265,6 +265,10 @@ void		xmlXPatherror	(xmlXPathParserContextPtr ctxt,
 				 const char *file,
 				 int line,
 				 int no);
+
+void		xmlXPathDebugDumpObject	(FILE *output,
+					 xmlXPathObjectPtr cur,
+					 int depth);
 
 /**
  * Utilities to extend XPath (XPointer)

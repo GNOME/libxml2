@@ -1,3 +1,10 @@
+Fri Oct 13 02:54:37 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* testXPath.c xpath.[ch]: moved some debug functions to xpath core
+	* xpointer.c: implemented string-range() at least a good first version
+	* test/XPath/docs/str test/XPath/xptr/strrange
+	  result/XPath/xptr/strrange: the string-range() tests
+
 Thu Oct 12 10:02:59 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* Makefile.am include/Makefile.am include/win32config.h

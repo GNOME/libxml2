@@ -345,6 +345,9 @@ dist-hook: libxml.spec
 	-cp libxml.spec $(distdir)
 	(cd $(srcdir) ; tar -cf - --exclude CVS test result SAXresult ) | (cd $(distdir); tar xf -)
 
+rpm: $(distdir).tar.gz
+	rpm -ta $(distdir).tar.gz
+
 ## We create xmlConf.sh here and not from configure because we want
 ## to get the paths expanded correctly.  Macros like srcdir are given
 ## the value NONE in configure if the user doesn't specify them (this

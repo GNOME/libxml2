@@ -154,7 +154,7 @@ class MSTestCase:
         self.log.append("'%s'   descr: %s\n" % (self.name, self.descr))
         self.log.append("'%s'   exp schema   valid: %d\n" % (self.name, self.schema_Val))
         if (self.instance_Exists):
-            self.log.append("'%s'   exp instance valid: %d\n" % (self.name, self.schema_Val))                       
+            self.log.append("'%s'   exp instance valid: %d\n" % (self.name, self.instance_Val))                       
        
     def addLibLog(self, msg):
         """This one is intended to be used by the error handler

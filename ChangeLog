@@ -1,3 +1,29 @@
+Thu Sep 16 13:24:27 CEST 2004 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c include/libxml/schemasInternals.h 
+	  test/schemas/bug152470_1.* result/schemas/bug152470_1_1*: 
+	  Simpified attribute wildcard creation and assignment to get rid 
+	  of memory leaks.
+	  Restructured the validation process.
+	  Restructured and expanded parsing of <attributeGroup>.
+	  Added initial handing of xsi:type.
+	  Advanced handling of xsi:nil (should work now for simple types).
+	  Added construction of schemata using xsi:schemaLocation and 
+	  xsi:noNamespaceSchemaLocation; this is not enabled, since 
+	  no corresponding API exists yet.
+	  Moved the content model to complex type components.
+	  Resolution of types for attributes will look for simple types
+	  only (incl. all the built-in simple types).
+	  Extended parsing of 'anyAttribute'.
+	  Fixed content-type type for complex types if derived from 
+	  'anyType' using the short-hand form (see bug # 152470,
+	  submitted by Thilo Jeremias).
+	* include/libxml/xmlschematypes.h: Cleaned up some comments.
+	* xstc/xstc.py: Workaround to accomodate case insensitive
+	  test definitions in ms-test.def.xml.
+	* result/schemas/deter0_0_0.err result/schemas/ns0_0_2.err
+	  result/schemas/ns0_1_2.err: Adapted.
+
 Sat Sep 11 09:04:22 PDT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* xmlwriter.c: changed char array initialisation to avoid a

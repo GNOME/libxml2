@@ -43,7 +43,7 @@ XMLPUBFUN int XMLCALL
 		xmlSchemaValidateFacet		(xmlSchemaTypePtr base,
 						 xmlSchemaFacetPtr facet,
 						 const xmlChar *value,
-						 xmlSchemaValPtr val);
+						 xmlSchemaValPtr val);	
 XMLPUBFUN void XMLCALL		
 		xmlSchemaFreeValue		(xmlSchemaValPtr val);
 XMLPUBFUN xmlSchemaFacetPtr XMLCALL 

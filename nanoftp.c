@@ -261,6 +261,31 @@ xmlNanoFTPScanURL(void *ctx, const char *URL) {
     if (*cur == 0) return;
 
     buf[indx] = 0;
+    /* allow user@ and user:pass@ forms */
+    {
+	const char *p = strchr(cur, '@');
+	if(p) {
+	    while(1) {
+		if(cur[0] == ':' || cur[0] == '@') break;
+		buf[indx++] = *cur++;
+	    }
+	    buf[indx] = 0;
+	    ctxt->user = xmlMemStrdup(buf);
+	    indx = 0;
+	    if(cur[0] == ':') {
+		cur++;
+		while(1) {
+		    if(cur[0] == '@') break;
+		    buf[indx++] = *cur++;
+		}
+		buf[indx] = 0;
+		ctxt->passwd = xmlMemStrdup(buf);
+		indx = 0;
+	    }
+	    cur = p+1;
+	}
+    }
+
     while (1) {
         if (cur[0] == ':') {
 	    buf[indx] = 0;
@@ -480,6 +505,7 @@ xmlNanoFTPNewCtxt(const char *URL) {
     ret->returnValue = 0;
     ret->controlBufIndex = 0;
     ret->controlBufUsed = 0;
+    ret->controlFd = -1;
 
     if (URL != NULL)
 	xmlNanoFTPScanURL(ret, URL);

@@ -1,3 +1,9 @@
+Tue Nov 20 09:30:02 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* nanoftp.c: applied a couple of patches from Brian D Ripley.
+	* parserInternals.c: removed the last exit() call. Print an
+	  unmaskable error on stderr instead (library mismatch detection)
+
 Sat Nov 17 17:16:51 MST 2001 John Fleck <jfleck@inkstain.net>
 
 	* doc/xmllint.xml, doc/xmllint.1 - update xmllint man page with

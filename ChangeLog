@@ -1,3 +1,9 @@
+Mon Apr 28 00:12:11 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* win32/configure.js python/setup.py.in: applied patch
+	  from Stéphane Bidoul for the Python bindings on the new
+	  release.
+
 Sun Apr 27 17:56:21 CEST 2003 Igor Zlatkovic <igor@zlatkovic.com>
 
 	* debugXML.c: included libxml/uri.h for xmlCanonicPath

@@ -274,6 +274,8 @@ function configureLibxmlPy()
 				verMajor + "." + verMinor + "." + verMicro));
 		} else if (s.search(/\@prefix\@/) != -1) {
 			of.WriteLine(s.replace(/\@prefix\@/, buildPrefix));
+		} else if (s.search(/\@WITH_THREADS\@/) != -1) {
+			of.WriteLine(s.replace(/\@WITH_THREADS\@/, withThreads == "no"? "0" : "1"));
 		} else
 			of.WriteLine(ln);
 	}

@@ -52,22 +52,24 @@ AC_ARG_WITH(zlib,
     CPPFLAGS="${CPPFLAGS} -I$withval/include"
     LDFLAGS="${LDFLAGS} -L$withval/lib"
   fi
+  if test "$withval" != "no"; then
+    AC_CHECK_HEADERS(zlib.h,
+	AC_CHECK_LIB(z, gzread,[
+	    AC_DEFINE(HAVE_LIBZ)
+	    if test "x${Z_DIR}" != "x"; then
+		Z_CFLAGS="-I${Z_DIR}/include"
+		Z_LIBS="-L${Z_DIR}/lib -lz"
+		[case ${host} in
+		    *-*-solaris*)
+			Z_LIBS="-L${Z_DIR}/lib -R${Z_DIR}/lib -lz"
+			;;
+		esac]
+	    else
+		Z_LIBS="-lz"
+	    fi]))
+  fi
 ])
 
-AC_CHECK_HEADERS(zlib.h,
-    AC_CHECK_LIB(z, gzread,[
-	AC_DEFINE(HAVE_LIBZ)
-        if test "x${Z_DIR}" != "x"; then
-            Z_CFLAGS="-I${Z_DIR}/include"
-            Z_LIBS="-L${Z_DIR}/lib -lz"
-	    [case ${host} in
-		*-*-solaris*)
-		    Z_LIBS="-L${Z_DIR}/lib -R${Z_DIR}/lib -lz"
-		    ;;
-	    esac]
-        else
-            Z_LIBS="-lz"
-        fi]))
 AC_SUBST(Z_CFLAGS)
 AC_SUBST(Z_LIBS)
 

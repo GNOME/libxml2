@@ -3395,7 +3395,7 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
     htmlParserNodeInfo node_info;
     xmlChar *oldname;
     int depth = ctxt->nameNr;
-    xmlChar *oldptr;
+    const xmlChar *oldptr;
 
     /* Capture start position */
     if (ctxt->record_info) {

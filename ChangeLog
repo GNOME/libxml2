@@ -1,3 +1,8 @@
+Sat Oct  6 15:27:12 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in: closing bug #61832
+	* HTMLparser.c: removed a warning
+
 Sat Oct  6 15:07:14 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: fixing #61673 part I, do not loose doc information

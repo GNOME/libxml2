@@ -1,3 +1,11 @@
+Wed Apr 17 11:03:03 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemas.c xmlschemastypes.c include/libxml/xmlschemas.h:
+	  a bit of work on Schemas
+	* testSchemas.c: try to make it more useful
+	* test/schemas/* result/schemas/* Makefile.am: changed the
+	  Schemas regression test procedure, started adding a few samples
+
 Tue Apr 16 19:52:01 CEST 2002 Igor Zlatkovic <izlatkovic@stud.fh-frankfurt.de>
 
 	* include/libxml/encoding.h: Patch for the Borland C++ builder

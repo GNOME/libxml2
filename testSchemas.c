@@ -88,6 +88,14 @@ int main(int argc, char **argv) {
 			    (xmlSchemaValidityWarningFunc) fprintf,
 			    stderr);
 		    ret = xmlSchemaValidateDoc(ctxt, doc);
+		    if (ret == 0) {
+			printf("%s validates\n", argv[i]);
+		    } else if (ret > 0) {
+			printf("%s fails to validate\n", argv[i]);
+		    } else {
+			printf("%s validation generated an internal error\n",
+			       argv[i]);
+		    }
 		    xmlSchemaFreeValidCtxt(ctxt);
 		    xmlFreeDoc(doc);
 		}

@@ -24,8 +24,9 @@
 #include <libxml/xmlautomata.h>
 #include <libxml/xmlregexp.h>
 
-#define DEBUG 1                 /* very verobose output */
-/* #define DEBUG_CONTENT 1 */
+#define DEBUG 1                 /* very verbose output */
+#define DEBUG_CONTENT 1
+#define DEBUG_TYPE 1
 /* #define DEBUG_AUTOMATA 1 */
 
 #define UNBOUNDED (1 << 30)
@@ -3058,8 +3059,9 @@ xmlSchemaBuildContentModel(xmlSchemaElementPtr elem,
     xmlAutomataSetFinalState(ctxt->am, ctxt->state);
     elem->contModel = xmlAutomataCompile(ctxt->am);
 #ifdef DEBUG_CONTENT
-    printf("Content model of %s:\n", name);
-    xmlRegexpPrint(stdout, elem->contModel);
+    xmlGenericError(xmlGenericErrorContext,
+                    "Content model of %s:\n", name);
+    xmlRegexpPrint(stderr, elem->contModel);
 #endif
     ctxt->state = NULL;
     xmlFreeAutomata(ctxt->am);
@@ -3205,6 +3207,7 @@ xmlSchemaTypeFixup(xmlSchemaTypePtr typeDecl,
 		if (typeDecl->subtypes != NULL)
 		    xmlSchemaTypeFixup(typeDecl->subtypes, ctxt, NULL);
 
+		explicitContentType = XML_SCHEMA_CONTENT_ELEMENTS;
 		if (typeDecl->subtypes == NULL)
 		    /* 1.1.1 */
 		    explicitContentType = XML_SCHEMA_CONTENT_EMPTY;
@@ -3299,6 +3302,37 @@ xmlSchemaTypeFixup(xmlSchemaTypePtr typeDecl,
 		break;
 	}
     } 
+#ifdef DEBUG_TYPE
+    xmlGenericError(xmlGenericErrorContext,
+	    "Type of %s : %s:%d :", name, typeDecl->node->doc->URL,
+	            xmlGetLineNo(typeDecl->node));
+    switch (typeDecl->contentType) {
+	case XML_SCHEMA_CONTENT_SIMPLE:
+	    xmlGenericError(xmlGenericErrorContext,
+		    "simple\n"); break;
+	case XML_SCHEMA_CONTENT_ELEMENTS:
+	    xmlGenericError(xmlGenericErrorContext,
+		    "elements\n"); break;
+        case XML_SCHEMA_CONTENT_UNKNOWN:
+	    xmlGenericError(xmlGenericErrorContext,
+		    "unknown !!!\n"); break;
+        case XML_SCHEMA_CONTENT_EMPTY:
+	    xmlGenericError(xmlGenericErrorContext,
+		    "empty\n"); break;
+        case XML_SCHEMA_CONTENT_MIXED:
+	    xmlGenericError(xmlGenericErrorContext,
+		    "mixed\n"); break;
+        case XML_SCHEMA_CONTENT_MIXED_OR_ELEMENTS:
+	    xmlGenericError(xmlGenericErrorContext,
+		    "mixed or elems\n"); break;
+        case XML_SCHEMA_CONTENT_BASIC:
+	    xmlGenericError(xmlGenericErrorContext,
+		    "basic\n"); break;
+	default:
+	    xmlGenericError(xmlGenericErrorContext,
+		    "not registered !!!\n"); break;
+    }
+#endif
 }
 
 /**
@@ -3970,8 +4004,9 @@ xmlSchemaValidateCallback(xmlSchemaValidCtxtPtr ctxt,
     xmlSchemaTypePtr oldtype = ctxt->type;
     xmlNodePtr oldnode = ctxt->node;
 #ifdef DEBUG_CONTENT
-    printf("xmlSchemaValidateCallback: %s, %s, %s\n",
-	   name, type->name, node->name);
+    xmlGenericError(xmlGenericErrorContext,
+                    "xmlSchemaValidateCallback: %s, %s, %s\n",
+		    name, type->name, node->name);
 #endif
     ctxt->type = type;
     ctxt->node = node;
@@ -4195,10 +4230,12 @@ xmlSchemaValidateElementType(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr node) {
 		"====> %s : %d\n", node->name, ret);
 #endif
 	if (ret == 0) {
+	    ctxt->err = XML_SCHEMAS_ERR_ELEMCONT;
 	    if (ctxt->error != NULL)
 		ctxt->error(ctxt->userData, "Element %s content check failed\n",
 			    node->name);
 	} else if (ret < 0) {
+	    ctxt->err = XML_SCHEMAS_ERR_ELEMCONT;
 	    if (ctxt->error != NULL)
 		ctxt->error(ctxt->userData, "Element %s content check failure\n",
 			    node->name);
@@ -4335,7 +4372,7 @@ xmlSchemaValidateBasicType(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr node) {
 static int
 xmlSchemaValidateComplexType(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr node) {
     xmlNodePtr child;
-    xmlSchemaTypePtr type, subtype, model;
+    xmlSchemaTypePtr type, subtype;
     int ret;
 
     child = ctxt->node;
@@ -4360,7 +4397,6 @@ xmlSchemaValidateComplexType(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr node) {
 	     */
 	    child = xmlSchemaSkipIgnored(ctxt, type, child);
 	    subtype = type->subtypes;
-	    ctxt->type = model;
 	    while (child != NULL) {
 		if (child->type == XML_ELEMENT_NODE) {
 		    ret = xmlRegExecPushString(ctxt->regexp,
@@ -4735,10 +4771,12 @@ xmlSchemaValidateElement(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr elem) {
 	    "====> %s : %d\n", elem->name, ret);
 #endif
     if (ret == 0) {
+	ctxt->err = XML_SCHEMAS_ERR_ELEMCONT;
         if (ctxt->error != NULL)
             ctxt->error(ctxt->userData, "Element %s content check failed\n",
                         elem->name);
     } else if (ret < 0) {
+	ctxt->err = XML_SCHEMAS_ERR_ELEMCONT;
         if (ctxt->error != NULL)
             ctxt->error(ctxt->userData, "Element %s content check failed\n",
                         elem->name);

@@ -1,0 +1,23 @@
+Type of choice 3 : ./test/schemas/choice_0.xsd:6 :elements
+Type of sequence 2 : ./test/schemas/choice_0.xsd:5 :elements
+Type of anontype1 : ./test/schemas/choice_0.xsd:4 :elements
+Type of sequence 2 : ./test/schemas/choice_0.xsd:5 :elements
+Building content model for doc
+Content model of doc:
+ regexp: '(null)' 
+2 atoms:
+ 00  atom: string once 'a' 
+ 01  atom: string once 'b' 
+4 states:
+ state: 0, 2 transitions:
+  trans: atom 0, to 2
+  trans: atom 1, to 3
+ state: FINAL 1, 0 transitions:
+ state: FINAL 2, 1 transitions:
+  trans: removed
+ state: FINAL 3, 1 transitions:
+  trans: removed
+0 counters:
+Building content model for a
+Building content model for b
+Element doc content check failed

@@ -481,6 +481,9 @@ xmlSchemaValidateFacet(xmlSchemaTypePtr base, xmlSchemaFacetPtr facet,
 		return(0);
 	    TODO /* error code */
 	    return(1);
+	case XML_SCHEMA_FACET_WHITESPACE:
+	    TODO /* whitespaces */
+	    return(0);
 	default:
 	    TODO
     }

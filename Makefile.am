@@ -617,22 +617,29 @@ Schemastests: testSchemas$(EXEEXT)
 	@echo "##"
 	@echo "## Schemas regression tests"
 	@echo "##"
-	-@(for i in $(srcdir)/test/schemas/*.xml ; do \
-	  name=`basename $$i .xml`; \
-	  if [ ! -f $(srcdir)/test/schemas/$$name.xsd ] ; then continue ; fi ; \
-	  schemas="$(srcdir)/test/schemas/$$name.xsd" ; \
-	  if [ ! -d $$i ] ; then \
-	  if [ ! -f $(srcdir)/result/schemas/$$name ] ; then \
-	      echo New test file $$name ; \
-	      $(CHECKER) $(top_builddir)/testSchemas $$schemas $$i > $(srcdir)/result/schemas/$$name; \
-	  else \
-	      echo Testing $$name ; \
-	      $(CHECKER) $(top_builddir)/testSchemas $$schemas $$i > result.$$name ; \
-	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
-	      diff $(srcdir)/result/schemas/$$name result.$$name ; \
-	      rm result.$$name ; \
-	  fi ; fi ; done)
-
+	-@(for i in $(srcdir)/test/schemas/*_*.xsd ; do \
+	  name=`basename $$i | sed 's+_.*++'`; \
+	  sno=`basename $$i | sed 's+.*_\(.*\).xsd+\1+'`; \
+	  for j in $(srcdir)/test/schemas/"$$name"_*.xml ; do \
+	      xno=`basename $$j | sed 's+.*_\(.*\).xml+\1+'`; \
+	      if [ ! -f $(srcdir)/result/schemas/"$$name"_"$$sno"_"$$xno" ]; \
+	      then \
+		  echo New test file "$$name"_"$$xno" ; \
+		  $(CHECKER) $(top_builddir)/testSchemas $$i $$j \
+		    > $(srcdir)/result/schemas/"$$name"_"$$sno"_"$$xno" \
+		    2> $(srcdir)/result/schemas/"$$name"_"$$sno"_"$$xno".err; \
+	      else \
+		  echo Testing "$$name"_"$$xno" ; \
+	          $(CHECKER) $(top_builddir)/testSchemas $$i $$j \
+		    > res.$$name 2> err.$$name;\
+	          grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
+	          diff $(srcdir)/result/schemas/"$$name"_"$$sno"_"$$xno" \
+		       res.$$name;\
+	          diff $(srcdir)/result/schemas/"$$name"_"$$sno"_"$$xno".err \
+		       err.$$name;\
+	          rm res.$$name err.$$name ; \
+	       fi ; \
+	  done; done)
 
 dist-hook: libxml.spec
 	-cp libxml.spec $(distdir)
@@ -659,7 +666,7 @@ EXTRA_DIST = xml2-config.in xml2Conf.sh.in libxml.spec.in libxml.spec \
 	     $(man_MANS) libxml-2.0.pc.in \
 	     trionan.c trionan.h triostr.c triostr.h trio.c trio.h \
 	     triop.h triodef.h libxml.h \
-	     testThreadsWin32.c genUnicode.py
+	     testThreadsWin32.c genUnicode.py TODO_SCHEMAS
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libxml-2.0.pc

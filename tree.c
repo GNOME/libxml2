@@ -8346,7 +8346,7 @@ xmlDocFormatDump(FILE *f, xmlDocPtr cur, int format) {
  */
 int
 xmlDocDump(FILE *f, xmlDocPtr cur) {
-	return(xmlDocFormatDump (f, cur, 0));
+    return(xmlDocFormatDump (f, cur, 0));
 }
 
 /**

@@ -1066,7 +1066,8 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 		    out = fopen(output,"wb");
 		}
 		if (out != NULL) {
-		    xmlDocDump(out, doc);
+		    if (xmlDocDump(out, doc) < 0)
+		        progresult = 6;
 
 		    if (output != NULL)
 			fclose(out);

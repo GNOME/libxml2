@@ -1,3 +1,8 @@
+Wed Oct  8 21:18:12 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* error.c tree.c xmlIO.c xmllint.c: more cleanup through the
+	  I/O error path
+
 Wed Oct  8 20:57:27 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlIO.c: better handling of error cases

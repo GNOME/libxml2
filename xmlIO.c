@@ -1974,32 +1974,35 @@ xmlFreeParserInputBuffer(xmlParserInputBufferPtr in) {
  * Returns the number of byte written or -1 in case of error.
  */
 int
-xmlOutputBufferClose(xmlOutputBufferPtr out) {
+xmlOutputBufferClose(xmlOutputBufferPtr out)
+{
     int written;
     int err_rc = 0;
 
     if (out == NULL)
-        return(-1);
+        return (-1);
     if (out->writecallback != NULL)
-	xmlOutputBufferFlush(out);
+        xmlOutputBufferFlush(out);
     if (out->closecallback != NULL) {
-	err_rc = out->closecallback(out->context);
+        err_rc = out->closecallback(out->context);
     }
     written = out->written;
     if (out->conv) {
         xmlBufferFree(out->conv);
-	out->conv = NULL;
+        out->conv = NULL;
     }
     if (out->encoder != NULL) {
         xmlCharEncCloseFunc(out->encoder);
     }
     if (out->buffer != NULL) {
         xmlBufferFree(out->buffer);
-	out->buffer = NULL;
+        out->buffer = NULL;
     }
 
+    if (out->error)
+        err_rc = -1;
     xmlFree(out);
-    return( ( err_rc == 0 ) ? written : err_rc );
+    return ((err_rc == 0) ? written : err_rc);
 }
 #endif /* LIBXML_OUTPUT_ENABLED */
 

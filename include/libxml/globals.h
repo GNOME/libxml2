@@ -380,7 +380,7 @@ XMLPUBFUN xmlRegisterNodeFunc * XMLCALL __xmlRegisterNodeDefaultValue(void);
 #define xmlRegisterNodeDefaultValue \
 (*(__xmlRegisterNodeDefaultValue()))
 #else
-XMLPUBVAR xmlRegisterNodeFunc XMLCALL xmlRegisterNodeDefaultValue;
+XMLPUBVAR xmlRegisterNodeFunc xmlRegisterNodeDefaultValue;
 #endif
 
 XMLPUBFUN xmlDeregisterNodeFunc * XMLCALL __xmlDeregisterNodeDefaultValue(void);

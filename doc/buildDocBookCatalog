@@ -224,18 +224,18 @@ xmlcatalog --noout --add "delegatePublic" \
 # find the prefix for XSLT stylesheets
 #
 top=`dirname $docbookdir`
-found=`find $top -name chunk-common.xsl`
+found=`find $top -name chunk.xsl`
 if [ "$found" = "" ] ; then
-    found=`find /usr/share/xml -name chunk-common.xsl`
+    found=`find /usr/share/xml -name chunk.xsl`
 fi
 if [ "$found" = "" ] ; then
-    found=`find $HOME -name chunk-common.xsl`
+    found=`find $HOME -name chunk.xsl`
 fi
 if [ "$found" = "" ] ; then
-    found=`find /usr/local -name chunk-common.xsl`
+    found=`find /usr/local -name chunk.xsl`
 fi
 if [ "$found" = "" ] ; then
-    found=`find /usr/share/sgml -name chunk-common.xsl`
+    found=`find /usr/share/sgml -name chunk.xsl`
 fi
 if [ "$found" = "" ] ; then
     echo could not locate chunk-common.xsl of DocBook XSLT stylesheets

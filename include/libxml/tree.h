@@ -644,10 +644,10 @@ xmlNodePtr	xmlNewReference		(xmlDocPtr doc,
 					 const xmlChar *name);
 xmlNodePtr	xmlCopyNode		(const xmlNodePtr node,
 					 int recursive);
-xmlNodePtr	xmlDocCopyNode		(xmlNodePtr node,
+xmlNodePtr	xmlDocCopyNode		(const xmlNodePtr node,
 					 xmlDocPtr doc,
 					 int recursive);
-xmlNodePtr	xmlCopyNodeList		(xmlNodePtr node);
+xmlNodePtr	xmlCopyNodeList		(const xmlNodePtr node);
 xmlNodePtr	xmlNewDocFragment	(xmlDocPtr doc);
 
 /*

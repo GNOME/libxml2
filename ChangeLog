@@ -1,3 +1,9 @@
+Wed Apr 17 20:34:37 CEST 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
+
+	* include/libxml/tree.h: eliminated 'declaration different than
+	 prototype' warning
+	* include/win32config.h: "resolved" conflicts with errno.h
+
 Wed Apr 17 18:26:07 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xmlregexp.c xmlschemas.c include/libxml/xmlautomata.h: more work

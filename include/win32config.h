@@ -10,9 +10,12 @@
 
 #include <io.h>
 
-#define SOCKLEN_T int
 #ifdef NEED_SOCKETS
 #include <winsock2.h>
+
+#if !defined SOCKLEN_T
+#define SOCKLEN_T int
+#endif
 
 #define EWOULDBLOCK             WSAEWOULDBLOCK
 #define EINPROGRESS             WSAEINPROGRESS
@@ -42,16 +45,21 @@
 #define ETIMEDOUT               WSAETIMEDOUT
 #define ECONNREFUSED            WSAECONNREFUSED
 #define ELOOP                   WSAELOOP
-#define ENAMETOOLONG            WSAENAMETOOLONG
 #define EHOSTDOWN               WSAEHOSTDOWN
 #define EHOSTUNREACH            WSAEHOSTUNREACH
-#define ENOTEMPTY               WSAENOTEMPTY
 #define EPROCLIM                WSAEPROCLIM
 #define EUSERS                  WSAEUSERS
 #define EDQUOT                  WSAEDQUOT
 #define ESTALE                  WSAESTALE
 #define EREMOTE                 WSAEREMOTE
-#endif /* INCLUDE_WINSOCK */
+/* These cause conflicts with the codes from errno.h. Since they are 
+   not used in the relevant code (nanoftp, nanohttp), we can leave 
+   them disabled.
+#define ENAMETOOLONG            WSAENAMETOOLONG
+#define ENOTEMPTY               WSAENOTEMPTY
+*/
+
+#endif /* NEED_SOCKETS */
 
 #define HAVE_ISINF
 #define HAVE_ISNAN

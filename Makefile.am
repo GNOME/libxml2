@@ -559,10 +559,10 @@ SAXtests : testSAX$(EXEEXT)
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/result/$$name.sax ] ; then \
 	      echo New test file $$name ; \
-	      $(CHECKER) $(top_builddir)/testSAX $$i > $(srcdir)/result/$$name.sax ; \
+	      $(CHECKER) $(top_builddir)/testSAX $$i > $(srcdir)/result/$$name.sax 2> /dev/null ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	  else \
-	      log=`$(CHECKER) $(top_builddir)/testSAX $$i > result.$$name ; \
+	      log=`$(CHECKER) $(top_builddir)/testSAX $$i > result.$$name 2> /dev/null ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	      diff $(srcdir)/result/$$name.sax result.$$name` ; \
 	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \

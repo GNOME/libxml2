@@ -934,7 +934,7 @@ xmlNextChar(xmlParserCtxtPtr ctxt)
         (xmlParserInputGrow(ctxt->input, INPUT_CHUNK) <= 0))
         xmlPopInput(ctxt);
     return;
-  encoding_error:
+encoding_error:
     /*
      * If we detect an UTF8 error that probably mean that the
      * input encoding didn't get properly advertised in the
@@ -1045,7 +1045,7 @@ xmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
 		    (ctxt->sax->error != NULL))
 		    ctxt->sax->error(ctxt->userData, 
 				     "Char 0x%X out of allowed range\n", val);
-		ctxt->errNo = XML_ERR_INVALID_ENCODING;
+		ctxt->errNo = XML_ERR_INVALID_CHAR;
 		ctxt->wellFormed = 0;
 		if (ctxt->recovery == 0) ctxt->disableSAX = 1;
 	    }    

@@ -17,6 +17,7 @@
 #include <libxml/entities.h>
 #include <libxml/SAX.h>
 #include <libxml/parserInternals.h>
+#include <libxml/HTMLparser.h>
 
 void xmlUpgradeOldNs(xmlDocPtr doc);
 
@@ -26,13 +27,49 @@ void xmlUpgradeOldNs(xmlDocPtr doc);
  *									*
  ************************************************************************/
 
+xmlChar *htmlDecodeEntities(htmlParserCtxtPtr ctxt, int len, xmlChar end,
+                            xmlChar end2, xmlChar end3);
+
+/**
+ * htmlDecodeEntities:
+ * @ctxt:  the parser context
+ * @len:  the len to decode (in bytes !), -1 for no size limit
+ * @end:  an end marker xmlChar, 0 if none
+ * @end2:  an end marker xmlChar, 0 if none
+ * @end3:  an end marker xmlChar, 0 if none
+ *
+ * Substitute the HTML entities by their value
+ *
+ * DEPRECATED !!!!
+ *
+ * Returns A newly allocated string with the substitution done. The caller
+ *      must deallocate it !
+ */
+xmlChar *
+htmlDecodeEntities(htmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED,
+                   int len ATTRIBUTE_UNUSED, xmlChar end ATTRIBUTE_UNUSED,
+                   xmlChar end2 ATTRIBUTE_UNUSED,
+                   xmlChar end3 ATTRIBUTE_UNUSED)
+{
+    static int deprecated = 0;
+
+    if (!deprecated) {
+        xmlGenericError(xmlGenericErrorContext,
+                        "htmlDecodeEntities() deprecated function reached\n");
+        deprecated = 1;
+    }
+    return (NULL);
+}
+
 /**
  * xmlInitializePredefinedEntities:
  *
  * Set up the predefined entities.
  * Deprecated call
  */
-void xmlInitializePredefinedEntities(void) {
+void
+xmlInitializePredefinedEntities(void)
+{
 }
 
 /**
@@ -41,7 +78,9 @@ void xmlInitializePredefinedEntities(void) {
  * Cleanup up the predefined entities table.
  * Deprecated call
  */
-void xmlCleanupPredefinedEntities(void) {
+void
+xmlCleanupPredefinedEntities(void)
+{
 }
 
 static const char *xmlFeaturesList[] = {
@@ -101,19 +140,20 @@ static const char *xmlFeaturesList[] = {
  *            strings must not be deallocated
  */
 int
-xmlGetFeaturesList(int *len, const char **result) {
+xmlGetFeaturesList(int *len, const char **result)
+{
     int ret, i;
 
-    ret = sizeof(xmlFeaturesList)/sizeof(xmlFeaturesList[0]);
+    ret = sizeof(xmlFeaturesList) / sizeof(xmlFeaturesList[0]);
     if ((len == NULL) || (result == NULL))
-	return(ret);
+        return (ret);
     if ((*len < 0) || (*len >= 1000))
-	return(-1);
+        return (-1);
     if (*len > ret)
-	*len = ret;
-    for (i = 0;i < *len;i++)
-	result[i] = xmlFeaturesList[i];
-    return(ret);
+        *len = ret;
+    for (i = 0; i < *len; i++)
+        result[i] = xmlFeaturesList[i];
+    return (ret);
 }
 
 /**
@@ -127,44 +167,47 @@ xmlGetFeaturesList(int *len, const char **result) {
  * Returns -1 in case or error, 0 otherwise
  */
 int
-xmlGetFeature(xmlParserCtxtPtr ctxt, const char *name, void *result) {
+xmlGetFeature(xmlParserCtxtPtr ctxt, const char *name, void *result)
+{
     if ((ctxt == NULL) || (name == NULL) || (result == NULL))
-	return(-1);
+        return (-1);
 
     if (!strcmp(name, "validate")) {
-	*((int *) result) = ctxt->validate;
+        *((int *) result) = ctxt->validate;
     } else if (!strcmp(name, "keep blanks")) {
-	*((int *) result) = ctxt->keepBlanks;
+        *((int *) result) = ctxt->keepBlanks;
     } else if (!strcmp(name, "disable SAX")) {
-	*((int *) result) = ctxt->disableSAX;
+        *((int *) result) = ctxt->disableSAX;
     } else if (!strcmp(name, "fetch external entities")) {
-	*((int *) result) = ctxt->loadsubset;
+        *((int *) result) = ctxt->loadsubset;
     } else if (!strcmp(name, "substitute entities")) {
-	*((int *) result) = ctxt->replaceEntities;
+        *((int *) result) = ctxt->replaceEntities;
     } else if (!strcmp(name, "gather line info")) {
-	*((int *) result) = ctxt->record_info;
+        *((int *) result) = ctxt->record_info;
     } else if (!strcmp(name, "user data")) {
-	*((void **)result) = ctxt->userData;
+        *((void **) result) = ctxt->userData;
     } else if (!strcmp(name, "is html")) {
-	*((int *) result) = ctxt->html;
+        *((int *) result) = ctxt->html;
     } else if (!strcmp(name, "is standalone")) {
-	*((int *) result) = ctxt->standalone;
+        *((int *) result) = ctxt->standalone;
     } else if (!strcmp(name, "document")) {
-	*((xmlDocPtr *) result) = ctxt->myDoc;
+        *((xmlDocPtr *) result) = ctxt->myDoc;
     } else if (!strcmp(name, "is well formed")) {
-	*((int *) result) = ctxt->wellFormed;
+        *((int *) result) = ctxt->wellFormed;
     } else if (!strcmp(name, "is valid")) {
-	*((int *) result) = ctxt->valid;
+        *((int *) result) = ctxt->valid;
     } else if (!strcmp(name, "SAX block")) {
-	*((xmlSAXHandlerPtr *) result) = ctxt->sax;
+        *((xmlSAXHandlerPtr *) result) = ctxt->sax;
     } else if (!strcmp(name, "SAX function internalSubset")) {
         *((internalSubsetSAXFunc *) result) = ctxt->sax->internalSubset;
     } else if (!strcmp(name, "SAX function isStandalone")) {
         *((isStandaloneSAXFunc *) result) = ctxt->sax->isStandalone;
     } else if (!strcmp(name, "SAX function hasInternalSubset")) {
-        *((hasInternalSubsetSAXFunc *) result) = ctxt->sax->hasInternalSubset;
+        *((hasInternalSubsetSAXFunc *) result) =
+            ctxt->sax->hasInternalSubset;
     } else if (!strcmp(name, "SAX function hasExternalSubset")) {
-        *((hasExternalSubsetSAXFunc *) result) = ctxt->sax->hasExternalSubset;
+        *((hasExternalSubsetSAXFunc *) result) =
+            ctxt->sax->hasExternalSubset;
     } else if (!strcmp(name, "SAX function resolveEntity")) {
         *((resolveEntitySAXFunc *) result) = ctxt->sax->resolveEntity;
     } else if (!strcmp(name, "SAX function getEntity")) {
@@ -178,9 +221,11 @@ xmlGetFeature(xmlParserCtxtPtr ctxt, const char *name, void *result) {
     } else if (!strcmp(name, "SAX function elementDecl")) {
         *((elementDeclSAXFunc *) result) = ctxt->sax->elementDecl;
     } else if (!strcmp(name, "SAX function unparsedEntityDecl")) {
-        *((unparsedEntityDeclSAXFunc *) result) = ctxt->sax->unparsedEntityDecl;
+        *((unparsedEntityDeclSAXFunc *) result) =
+            ctxt->sax->unparsedEntityDecl;
     } else if (!strcmp(name, "SAX function setDocumentLocator")) {
-        *((setDocumentLocatorSAXFunc *) result) = ctxt->sax->setDocumentLocator;
+        *((setDocumentLocatorSAXFunc *) result) =
+            ctxt->sax->setDocumentLocator;
     } else if (!strcmp(name, "SAX function startDocument")) {
         *((startDocumentSAXFunc *) result) = ctxt->sax->startDocument;
     } else if (!strcmp(name, "SAX function endDocument")) {
@@ -194,9 +239,11 @@ xmlGetFeature(xmlParserCtxtPtr ctxt, const char *name, void *result) {
     } else if (!strcmp(name, "SAX function characters")) {
         *((charactersSAXFunc *) result) = ctxt->sax->characters;
     } else if (!strcmp(name, "SAX function ignorableWhitespace")) {
-        *((ignorableWhitespaceSAXFunc *) result) = ctxt->sax->ignorableWhitespace;
+        *((ignorableWhitespaceSAXFunc *) result) =
+            ctxt->sax->ignorableWhitespace;
     } else if (!strcmp(name, "SAX function processingInstruction")) {
-        *((processingInstructionSAXFunc *) result) = ctxt->sax->processingInstruction;
+        *((processingInstructionSAXFunc *) result) =
+            ctxt->sax->processingInstruction;
     } else if (!strcmp(name, "SAX function comment")) {
         *((commentSAXFunc *) result) = ctxt->sax->comment;
     } else if (!strcmp(name, "SAX function warning")) {
@@ -206,15 +253,16 @@ xmlGetFeature(xmlParserCtxtPtr ctxt, const char *name, void *result) {
     } else if (!strcmp(name, "SAX function fatalError")) {
         *((fatalErrorSAXFunc *) result) = ctxt->sax->fatalError;
     } else if (!strcmp(name, "SAX function getParameterEntity")) {
-        *((getParameterEntitySAXFunc *) result) = ctxt->sax->getParameterEntity;
+        *((getParameterEntitySAXFunc *) result) =
+            ctxt->sax->getParameterEntity;
     } else if (!strcmp(name, "SAX function cdataBlock")) {
         *((cdataBlockSAXFunc *) result) = ctxt->sax->cdataBlock;
     } else if (!strcmp(name, "SAX function externalSubset")) {
         *((externalSubsetSAXFunc *) result) = ctxt->sax->externalSubset;
     } else {
-	return(-1);
+        return (-1);
     }
-    return(0);
+    return (0);
 }
 
 /**
@@ -227,33 +275,35 @@ xmlGetFeature(xmlParserCtxtPtr ctxt, const char *name, void *result) {
  *
  * Returns -1 in case or error, 0 otherwise
  */
-int	
-xmlSetFeature(xmlParserCtxtPtr ctxt, const char *name, void *value) {
+int
+xmlSetFeature(xmlParserCtxtPtr ctxt, const char *name, void *value)
+{
     if ((ctxt == NULL) || (name == NULL) || (value == NULL))
-	return(-1);
+        return (-1);
 
     if (!strcmp(name, "validate")) {
-	int newvalidate = *((int *) value);
-	if ((!ctxt->validate) && (newvalidate != 0)) {
-	    if (ctxt->vctxt.warning == NULL)
-		ctxt->vctxt.warning = xmlParserValidityWarning;
-	    if (ctxt->vctxt.error == NULL)
-		ctxt->vctxt.error = xmlParserValidityError;
-	    ctxt->vctxt.nodeMax = 0;
-	}
+        int newvalidate = *((int *) value);
+
+        if ((!ctxt->validate) && (newvalidate != 0)) {
+            if (ctxt->vctxt.warning == NULL)
+                ctxt->vctxt.warning = xmlParserValidityWarning;
+            if (ctxt->vctxt.error == NULL)
+                ctxt->vctxt.error = xmlParserValidityError;
+            ctxt->vctxt.nodeMax = 0;
+        }
         ctxt->validate = newvalidate;
     } else if (!strcmp(name, "keep blanks")) {
         ctxt->keepBlanks = *((int *) value);
     } else if (!strcmp(name, "disable SAX")) {
         ctxt->disableSAX = *((int *) value);
     } else if (!strcmp(name, "fetch external entities")) {
-	ctxt->loadsubset = *((int *) value);
+        ctxt->loadsubset = *((int *) value);
     } else if (!strcmp(name, "substitute entities")) {
         ctxt->replaceEntities = *((int *) value);
     } else if (!strcmp(name, "gather line info")) {
         ctxt->record_info = *((int *) value);
     } else if (!strcmp(name, "user data")) {
-        ctxt->userData = *((void **)value);
+        ctxt->userData = *((void **) value);
     } else if (!strcmp(name, "is html")) {
         ctxt->html = *((int *) value);
     } else if (!strcmp(name, "is standalone")) {
@@ -271,9 +321,11 @@ xmlSetFeature(xmlParserCtxtPtr ctxt, const char *name, void *value) {
     } else if (!strcmp(name, "SAX function isStandalone")) {
         ctxt->sax->isStandalone = *((isStandaloneSAXFunc *) value);
     } else if (!strcmp(name, "SAX function hasInternalSubset")) {
-        ctxt->sax->hasInternalSubset = *((hasInternalSubsetSAXFunc *) value);
+        ctxt->sax->hasInternalSubset =
+            *((hasInternalSubsetSAXFunc *) value);
     } else if (!strcmp(name, "SAX function hasExternalSubset")) {
-        ctxt->sax->hasExternalSubset = *((hasExternalSubsetSAXFunc *) value);
+        ctxt->sax->hasExternalSubset =
+            *((hasExternalSubsetSAXFunc *) value);
     } else if (!strcmp(name, "SAX function resolveEntity")) {
         ctxt->sax->resolveEntity = *((resolveEntitySAXFunc *) value);
     } else if (!strcmp(name, "SAX function getEntity")) {
@@ -287,9 +339,11 @@ xmlSetFeature(xmlParserCtxtPtr ctxt, const char *name, void *value) {
     } else if (!strcmp(name, "SAX function elementDecl")) {
         ctxt->sax->elementDecl = *((elementDeclSAXFunc *) value);
     } else if (!strcmp(name, "SAX function unparsedEntityDecl")) {
-        ctxt->sax->unparsedEntityDecl = *((unparsedEntityDeclSAXFunc *) value);
+        ctxt->sax->unparsedEntityDecl =
+            *((unparsedEntityDeclSAXFunc *) value);
     } else if (!strcmp(name, "SAX function setDocumentLocator")) {
-        ctxt->sax->setDocumentLocator = *((setDocumentLocatorSAXFunc *) value);
+        ctxt->sax->setDocumentLocator =
+            *((setDocumentLocatorSAXFunc *) value);
     } else if (!strcmp(name, "SAX function startDocument")) {
         ctxt->sax->startDocument = *((startDocumentSAXFunc *) value);
     } else if (!strcmp(name, "SAX function endDocument")) {
@@ -303,9 +357,11 @@ xmlSetFeature(xmlParserCtxtPtr ctxt, const char *name, void *value) {
     } else if (!strcmp(name, "SAX function characters")) {
         ctxt->sax->characters = *((charactersSAXFunc *) value);
     } else if (!strcmp(name, "SAX function ignorableWhitespace")) {
-        ctxt->sax->ignorableWhitespace = *((ignorableWhitespaceSAXFunc *) value);
+        ctxt->sax->ignorableWhitespace =
+            *((ignorableWhitespaceSAXFunc *) value);
     } else if (!strcmp(name, "SAX function processingInstruction")) {
-        ctxt->sax->processingInstruction = *((processingInstructionSAXFunc *) value);
+        ctxt->sax->processingInstruction =
+            *((processingInstructionSAXFunc *) value);
     } else if (!strcmp(name, "SAX function comment")) {
         ctxt->sax->comment = *((commentSAXFunc *) value);
     } else if (!strcmp(name, "SAX function warning")) {
@@ -315,15 +371,16 @@ xmlSetFeature(xmlParserCtxtPtr ctxt, const char *name, void *value) {
     } else if (!strcmp(name, "SAX function fatalError")) {
         ctxt->sax->fatalError = *((fatalErrorSAXFunc *) value);
     } else if (!strcmp(name, "SAX function getParameterEntity")) {
-        ctxt->sax->getParameterEntity = *((getParameterEntitySAXFunc *) value);
+        ctxt->sax->getParameterEntity =
+            *((getParameterEntitySAXFunc *) value);
     } else if (!strcmp(name, "SAX function cdataBlock")) {
         ctxt->sax->cdataBlock = *((cdataBlockSAXFunc *) value);
     } else if (!strcmp(name, "SAX function externalSubset")) {
         ctxt->sax->externalSubset = *((externalSubsetSAXFunc *) value);
     } else {
-	return(-1);
+        return (-1);
     }
-    return(0);
+    return (0);
 }
 
 /**
@@ -666,17 +723,18 @@ xmlUpgradeOldNs(xmlDocPtr doc ATTRIBUTE_UNUSED)
  */
 const xmlChar *
 xmlEncodeEntities(xmlDocPtr doc ATTRIBUTE_UNUSED,
-                  const xmlChar *input ATTRIBUTE_UNUSED) {
+                  const xmlChar * input ATTRIBUTE_UNUSED)
+{
     static int warning = 1;
 
     if (warning) {
-	xmlGenericError(xmlGenericErrorContext,
-		"Deprecated API xmlEncodeEntities() used\n");
-	xmlGenericError(xmlGenericErrorContext,
-		"   change code to use xmlEncodeEntitiesReentrant()\n");
-	warning = 0;
+        xmlGenericError(xmlGenericErrorContext,
+                        "Deprecated API xmlEncodeEntities() used\n");
+        xmlGenericError(xmlGenericErrorContext,
+                        "   change code to use xmlEncodeEntitiesReentrant()\n");
+        warning = 0;
     }
-    return(NULL);
+    return (NULL);
 }
 
 /************************************************************************
@@ -705,7 +763,7 @@ const xmlChar *
 getPublicId(void *ctx)
 {
     DEPRECATED("getPublicId")
-    return(xmlSAX2GetPublicId(ctx));
+        return (xmlSAX2GetPublicId(ctx));
 }
 
 /**
@@ -722,7 +780,7 @@ const xmlChar *
 getSystemId(void *ctx)
 {
     DEPRECATED("getSystemId")
-    return(xmlSAX2GetSystemId(ctx)); 
+        return (xmlSAX2GetSystemId(ctx));
 }
 
 /**
@@ -738,7 +796,7 @@ int
 getLineNumber(void *ctx)
 {
     DEPRECATED("getLineNumber")
-    return(xmlSAX2GetLineNumber(ctx));
+        return (xmlSAX2GetLineNumber(ctx));
 }
 
 /**
@@ -754,7 +812,7 @@ int
 getColumnNumber(void *ctx)
 {
     DEPRECATED("getColumnNumber")
-    return(xmlSAX2GetColumnNumber(ctx));
+        return (xmlSAX2GetColumnNumber(ctx));
 }
 
 /**
@@ -770,7 +828,7 @@ int
 isStandalone(void *ctx)
 {
     DEPRECATED("isStandalone")
-    return(xmlSAX2IsStandalone(ctx));
+        return (xmlSAX2IsStandalone(ctx));
 }
 
 /**
@@ -786,7 +844,7 @@ int
 hasInternalSubset(void *ctx)
 {
     DEPRECATED("hasInternalSubset")
-    return(xmlSAX2HasInternalSubset(ctx));
+        return (xmlSAX2HasInternalSubset(ctx));
 }
 
 /**
@@ -802,7 +860,7 @@ int
 hasExternalSubset(void *ctx)
 {
     DEPRECATED("hasExternalSubset")
-    return(xmlSAX2HasExternalSubset(ctx));
+        return (xmlSAX2HasExternalSubset(ctx));
 }
 
 /**
@@ -816,11 +874,11 @@ hasExternalSubset(void *ctx)
  * DEPRECATED: use xmlSAX2InternalSubset()
  */
 void
-internalSubset(void *ctx, const xmlChar *name,
-	       const xmlChar *ExternalID, const xmlChar *SystemID)
+internalSubset(void *ctx, const xmlChar * name,
+               const xmlChar * ExternalID, const xmlChar * SystemID)
 {
     DEPRECATED("internalSubset")
-    xmlSAX2InternalSubset(ctx, name, ExternalID, SystemID);
+        xmlSAX2InternalSubset(ctx, name, ExternalID, SystemID);
 }
 
 /**
@@ -834,11 +892,11 @@ internalSubset(void *ctx, const xmlChar *name,
  * DEPRECATED: use xmlSAX2ExternalSubset()
  */
 void
-externalSubset(void *ctx, const xmlChar *name,
-	       const xmlChar *ExternalID, const xmlChar *SystemID)
+externalSubset(void *ctx, const xmlChar * name,
+               const xmlChar * ExternalID, const xmlChar * SystemID)
 {
     DEPRECATED("externalSubset")
-    xmlSAX2ExternalSubset(ctx, name, ExternalID, SystemID);
+        xmlSAX2ExternalSubset(ctx, name, ExternalID, SystemID);
 }
 
 /**
@@ -857,10 +915,11 @@ externalSubset(void *ctx, const xmlChar *name,
  * Returns the xmlParserInputPtr if inlined or NULL for DOM behaviour.
  */
 xmlParserInputPtr
-resolveEntity(void *ctx, const xmlChar *publicId, const xmlChar *systemId)
+resolveEntity(void *ctx, const xmlChar * publicId,
+              const xmlChar * systemId)
 {
     DEPRECATED("resolveEntity")
-    return(xmlSAX2ResolveEntity(ctx, publicId, systemId));
+        return (xmlSAX2ResolveEntity(ctx, publicId, systemId));
 }
 
 /**
@@ -874,10 +933,10 @@ resolveEntity(void *ctx, const xmlChar *publicId, const xmlChar *systemId)
  * Returns the xmlEntityPtr if found.
  */
 xmlEntityPtr
-getEntity(void *ctx, const xmlChar *name)
+getEntity(void *ctx, const xmlChar * name)
 {
     DEPRECATED("getEntity")
-    return(xmlSAX2GetEntity(ctx, name));
+        return (xmlSAX2GetEntity(ctx, name));
 }
 
 /**
@@ -891,10 +950,10 @@ getEntity(void *ctx, const xmlChar *name)
  * Returns the xmlEntityPtr if found.
  */
 xmlEntityPtr
-getParameterEntity(void *ctx, const xmlChar *name)
+getParameterEntity(void *ctx, const xmlChar * name)
 {
     DEPRECATED("getParameterEntity")
-    return(xmlSAX2GetParameterEntity(ctx, name));
+        return (xmlSAX2GetParameterEntity(ctx, name));
 }
 
 
@@ -911,11 +970,12 @@ getParameterEntity(void *ctx, const xmlChar *name)
  * DEPRECATED: use xmlSAX2EntityDecl()
  */
 void
-entityDecl(void *ctx, const xmlChar *name, int type,
-          const xmlChar *publicId, const xmlChar *systemId, xmlChar *content)
+entityDecl(void *ctx, const xmlChar * name, int type,
+           const xmlChar * publicId, const xmlChar * systemId,
+           xmlChar * content)
 {
     DEPRECATED("entityDecl")
-    xmlSAX2EntityDecl(ctx, name, type, publicId, systemId, content);
+        xmlSAX2EntityDecl(ctx, name, type, publicId, systemId, content);
 }
 
 /**
@@ -932,12 +992,13 @@ entityDecl(void *ctx, const xmlChar *name, int type,
  * DEPRECATED: use xmlSAX2AttributeDecl()
  */
 void
-attributeDecl(void *ctx, const xmlChar *elem, const xmlChar *fullname,
-              int type, int def, const xmlChar *defaultValue,
-	      xmlEnumerationPtr tree)
+attributeDecl(void *ctx, const xmlChar * elem, const xmlChar * fullname,
+              int type, int def, const xmlChar * defaultValue,
+              xmlEnumerationPtr tree)
 {
     DEPRECATED("attributeDecl")
-    xmlSAX2AttributeDecl(ctx, elem, fullname, type, def, defaultValue, tree);
+        xmlSAX2AttributeDecl(ctx, elem, fullname, type, def, defaultValue,
+                             tree);
 }
 
 /**
@@ -955,7 +1016,7 @@ elementDecl(void *ctx, const xmlChar * name, int type,
             xmlElementContentPtr content)
 {
     DEPRECATED("elementDecl")
-    xmlSAX2ElementDecl(ctx, name, type, content);
+        xmlSAX2ElementDecl(ctx, name, type, content);
 }
 
 /**
@@ -969,11 +1030,11 @@ elementDecl(void *ctx, const xmlChar * name, int type,
  * DEPRECATED: use xmlSAX2NotationDecl()
  */
 void
-notationDecl(void *ctx, const xmlChar *name,
-	     const xmlChar *publicId, const xmlChar *systemId)
+notationDecl(void *ctx, const xmlChar * name,
+             const xmlChar * publicId, const xmlChar * systemId)
 {
     DEPRECATED("notationDecl")
-    xmlSAX2NotationDecl(ctx, name, publicId, systemId);
+        xmlSAX2NotationDecl(ctx, name, publicId, systemId);
 }
 
 /**
@@ -988,12 +1049,13 @@ notationDecl(void *ctx, const xmlChar *name,
  * DEPRECATED: use xmlSAX2UnparsedEntityDecl()
  */
 void
-unparsedEntityDecl(void *ctx, const xmlChar *name,
-		   const xmlChar *publicId, const xmlChar *systemId,
-		   const xmlChar *notationName)
+unparsedEntityDecl(void *ctx, const xmlChar * name,
+                   const xmlChar * publicId, const xmlChar * systemId,
+                   const xmlChar * notationName)
 {
     DEPRECATED("unparsedEntityDecl")
-    xmlSAX2UnparsedEntityDecl(ctx, name, publicId, systemId, notationName);
+        xmlSAX2UnparsedEntityDecl(ctx, name, publicId, systemId,
+                                  notationName);
 }
 
 /**
@@ -1006,7 +1068,8 @@ unparsedEntityDecl(void *ctx, const xmlChar *name,
  * DEPRECATED
  */
 void
-setDocumentLocator(void *ctx ATTRIBUTE_UNUSED, xmlSAXLocatorPtr loc ATTRIBUTE_UNUSED)
+setDocumentLocator(void *ctx ATTRIBUTE_UNUSED,
+                   xmlSAXLocatorPtr loc ATTRIBUTE_UNUSED)
 {
     DEPRECATED("setDocumentLocator")
 }
@@ -1022,7 +1085,7 @@ void
 startDocument(void *ctx)
 {
     DEPRECATED("startDocument")
-    xmlSAX2StartDocument(ctx);
+        xmlSAX2StartDocument(ctx);
 }
 
 /**
@@ -1036,7 +1099,7 @@ void
 endDocument(void *ctx)
 {
     DEPRECATED("endDocument")
-    xmlSAX2EndDocument(ctx);
+        xmlSAX2EndDocument(ctx);
 }
 
 /**
@@ -1052,7 +1115,9 @@ endDocument(void *ctx)
  * DEPRECATED: use xmlSAX2Attribute()
  */
 void
-attribute(void *ctx ATTRIBUTE_UNUSED, const xmlChar *fullname ATTRIBUTE_UNUSED, const xmlChar *value ATTRIBUTE_UNUSED)
+attribute(void *ctx ATTRIBUTE_UNUSED,
+          const xmlChar * fullname ATTRIBUTE_UNUSED,
+          const xmlChar * value ATTRIBUTE_UNUSED)
 {
     DEPRECATED("attribute")
 }
@@ -1067,10 +1132,10 @@ attribute(void *ctx ATTRIBUTE_UNUSED, const xmlChar *fullname ATTRIBUTE_UNUSED, 
  * DEPRECATED: use xmlSAX2StartElement()
  */
 void
-startElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
+startElement(void *ctx, const xmlChar * fullname, const xmlChar ** atts)
 {
     DEPRECATED("startElement")
-    xmlSAX2StartElement(ctx, fullname, atts);
+        xmlSAX2StartElement(ctx, fullname, atts);
 }
 
 /**
@@ -1082,10 +1147,10 @@ startElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
  * DEPRECATED: use xmlSAX2EndElement()
  */
 void
-endElement(void *ctx, const xmlChar *name ATTRIBUTE_UNUSED)
+endElement(void *ctx, const xmlChar * name ATTRIBUTE_UNUSED)
 {
     DEPRECATED("endElement")
-    xmlSAX2EndElement(ctx, name);
+        xmlSAX2EndElement(ctx, name);
 }
 
 /**
@@ -1097,10 +1162,10 @@ endElement(void *ctx, const xmlChar *name ATTRIBUTE_UNUSED)
  * DEPRECATED: use xmlSAX2Reference()
  */
 void
-reference(void *ctx, const xmlChar *name)
+reference(void *ctx, const xmlChar * name)
 {
     DEPRECATED("reference")
-    xmlSAX2Reference(ctx, name);
+        xmlSAX2Reference(ctx, name);
 }
 
 /**
@@ -1113,10 +1178,10 @@ reference(void *ctx, const xmlChar *name)
  * DEPRECATED: use xmlSAX2Characters()
  */
 void
-characters(void *ctx, const xmlChar *ch, int len)
+characters(void *ctx, const xmlChar * ch, int len)
 {
     DEPRECATED("characters")
-    xmlSAX2Characters(ctx, ch, len);
+        xmlSAX2Characters(ctx, ch, len);
 }
 
 /**
@@ -1130,7 +1195,9 @@ characters(void *ctx, const xmlChar *ch, int len)
  * DEPRECATED: use xmlSAX2IgnorableWhitespace()
  */
 void
-ignorableWhitespace(void *ctx ATTRIBUTE_UNUSED, const xmlChar *ch ATTRIBUTE_UNUSED, int len ATTRIBUTE_UNUSED)
+ignorableWhitespace(void *ctx ATTRIBUTE_UNUSED,
+                    const xmlChar * ch ATTRIBUTE_UNUSED,
+                    int len ATTRIBUTE_UNUSED)
 {
     DEPRECATED("ignorableWhitespace")
 }
@@ -1145,11 +1212,11 @@ ignorableWhitespace(void *ctx ATTRIBUTE_UNUSED, const xmlChar *ch ATTRIBUTE_UNUS
  * DEPRECATED: use xmlSAX2ProcessingInstruction()
  */
 void
-processingInstruction(void *ctx, const xmlChar *target,
-                      const xmlChar *data)
+processingInstruction(void *ctx, const xmlChar * target,
+                      const xmlChar * data)
 {
     DEPRECATED("processingInstruction")
-    xmlSAX2ProcessingInstruction(ctx, target, data);
+        xmlSAX2ProcessingInstruction(ctx, target, data);
 }
 
 /**
@@ -1162,7 +1229,9 @@ processingInstruction(void *ctx, const xmlChar *target,
  * DEPRECATED
  */
 void
-globalNamespace(void *ctx ATTRIBUTE_UNUSED, const xmlChar *href ATTRIBUTE_UNUSED, const xmlChar *prefix ATTRIBUTE_UNUSED)
+globalNamespace(void *ctx ATTRIBUTE_UNUSED,
+                const xmlChar * href ATTRIBUTE_UNUSED,
+                const xmlChar * prefix ATTRIBUTE_UNUSED)
 {
     DEPRECATED("globalNamespace")
 }
@@ -1177,7 +1246,8 @@ globalNamespace(void *ctx ATTRIBUTE_UNUSED, const xmlChar *href ATTRIBUTE_UNUSED
  */
 
 void
-setNamespace(void *ctx ATTRIBUTE_UNUSED, const xmlChar *name ATTRIBUTE_UNUSED)
+setNamespace(void *ctx ATTRIBUTE_UNUSED,
+             const xmlChar * name ATTRIBUTE_UNUSED)
 {
     DEPRECATED("setNamespace")
 }
@@ -1196,7 +1266,7 @@ xmlNsPtr
 getNamespace(void *ctx ATTRIBUTE_UNUSED)
 {
     DEPRECATED("getNamespace")
-    return(NULL);
+        return (NULL);
 }
 
 /**
@@ -1212,10 +1282,11 @@ getNamespace(void *ctx ATTRIBUTE_UNUSED)
  */
 
 int
-checkNamespace(void *ctx ATTRIBUTE_UNUSED, xmlChar *namespace ATTRIBUTE_UNUSED)
+checkNamespace(void *ctx ATTRIBUTE_UNUSED,
+               xmlChar * namespace ATTRIBUTE_UNUSED)
 {
     DEPRECATED("checkNamespace")
-    return(0);
+        return (0);
 }
 
 /**
@@ -1228,7 +1299,9 @@ checkNamespace(void *ctx ATTRIBUTE_UNUSED, xmlChar *namespace ATTRIBUTE_UNUSED)
  * DEPRECATED
  */
 void
-namespaceDecl(void *ctx ATTRIBUTE_UNUSED, const xmlChar *href ATTRIBUTE_UNUSED, const xmlChar *prefix ATTRIBUTE_UNUSED)
+namespaceDecl(void *ctx ATTRIBUTE_UNUSED,
+              const xmlChar * href ATTRIBUTE_UNUSED,
+              const xmlChar * prefix ATTRIBUTE_UNUSED)
 {
     DEPRECATED("namespaceDecl")
 }
@@ -1242,10 +1315,10 @@ namespaceDecl(void *ctx ATTRIBUTE_UNUSED, const xmlChar *href ATTRIBUTE_UNUSED, 
  * DEPRECATED: use xmlSAX2Comment()
  */
 void
-comment(void *ctx, const xmlChar *value)
+comment(void *ctx, const xmlChar * value)
 {
     DEPRECATED("comment")
-    xmlSAX2Comment(ctx, value);
+        xmlSAX2Comment(ctx, value);
 }
 
 /**
@@ -1258,11 +1331,10 @@ comment(void *ctx, const xmlChar *value)
  * DEPRECATED: use xmlSAX2CDataBlock()
  */
 void
-cdataBlock(void *ctx, const xmlChar *value, int len)
+cdataBlock(void *ctx, const xmlChar * value, int len)
 {
     DEPRECATED("cdataBlock")
-    xmlSAX2CDataBlock(ctx, value, len);
+        xmlSAX2CDataBlock(ctx, value, len);
 }
-
 #endif /* LIBXML_LEGACY_ENABLED */
 

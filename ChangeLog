@@ -1,3 +1,11 @@
+Sun Oct  5 15:49:14 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c Makefile.am legacy.c parser.c parserInternals.c
+	  include/libxml/xmlerror.h: more code cleanup, especially around
+	  error messages, the HTML parser has now been upgraded to the new
+	  handling.
+	* result/HTML/*: a few changes in the resulting error messages
+
 Sat Oct  4 23:06:41 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c include/libxml/xmlerror.h: more error/warning

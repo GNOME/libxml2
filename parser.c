@@ -128,7 +128,6 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
  *									*
  ************************************************************************/
 
-
 /**
  * xmlErrMemory:
  * @ctxt:  an XML parser context
@@ -472,6 +471,32 @@ xmlFatalErrMsgInt(xmlParserCtxtPtr ctxt, xmlParserErrors error,
 }
 
 /**
+ * xmlFatalErrMsgStrIntStr:
+ * @ctxt:  an XML parser context
+ * @error:  the error number
+ * @msg:  the error message
+ * @str1:  an string info
+ * @val:  an integer value
+ * @str2:  an string info
+ *
+ * Handle a fatal parser error, i.e. violating Well-Formedness constraints
+ */
+static void
+xmlFatalErrMsgStrIntStr(xmlParserCtxtPtr ctxt, xmlParserErrors error,
+                  const char *msg, const xmlChar *str1, int val, 
+		  const xmlChar *str2)
+{
+    ctxt->errNo = error;
+    __xmlRaiseError(NULL, NULL,
+                    ctxt, NULL, XML_FROM_PARSER, error, XML_ERR_FATAL,
+                    NULL, 0, (const char *) str1, (const char *) str2,
+		    NULL, val, 0, msg, str1, val, str2);
+    ctxt->wellFormed = 0;
+    if (ctxt->recovery == 0)
+        ctxt->disableSAX = 1;
+}
+
+/**
  * xmlFatalErrMsgStr:
  * @ctxt:  an XML parser context
  * @error:  the error number
@@ -492,6 +517,26 @@ xmlFatalErrMsgStr(xmlParserCtxtPtr ctxt, xmlParserErrors error,
     ctxt->wellFormed = 0;
     if (ctxt->recovery == 0)
         ctxt->disableSAX = 1;
+}
+
+/**
+ * xmlErrMsgStr:
+ * @ctxt:  an XML parser context
+ * @error:  the error number
+ * @msg:  the error message
+ * @val:  a string value
+ *
+ * Handle a non fatal parser error
+ */
+static void
+xmlErrMsgStr(xmlParserCtxtPtr ctxt, xmlParserErrors error,
+                  const char *msg, const xmlChar * val)
+{
+    ctxt->errNo = error;
+    __xmlRaiseError(NULL, NULL, ctxt, NULL,
+                    XML_FROM_PARSER, error, XML_ERR_ERROR,
+                    NULL, 0, (const char *) val, NULL, NULL, 0, 0, msg,
+                    val);
 }
 
 /**
@@ -1849,9 +1894,8 @@ xmlStringLenDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
 		if (ent->content != NULL) {
 		    COPY_BUF(0,buffer,nbchars,ent->content[0]);
 		} else {
-		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-			ctxt->sax->error(ctxt->userData,
-			    "internal error entity has no content\n");
+		    xmlFatalErrMsg(ctxt, XML_ERR_INTERNAL_ERROR,
+			    "predefined entity has no content\n");
 		}
 	    } else if ((ent != NULL) && (ent->content != NULL)) {
 		xmlChar *rep;
@@ -4244,12 +4288,8 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 
 		    uri = xmlParseURI((const char *) URI);
 		    if (uri == NULL) {
-			ctxt->errNo = XML_ERR_INVALID_URI;
-			if ((ctxt->sax != NULL) &&
-			    (!ctxt->disableSAX) &&
-			    (ctxt->sax->error != NULL))
-			    ctxt->sax->error(ctxt->userData,
-				        "Invalid URI: %s\n", URI);
+		        xmlErrMsgStr(ctxt, XML_ERR_INVALID_URI,
+				     "Invalid URI: %s\n", URI);
 			/*
 			 * This really ought to be a well formedness error
 			 * but the XML Core WG decided otherwise c.f. issue
@@ -4307,12 +4347,8 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 
 		    uri = xmlParseURI((const char *)URI);
 		    if (uri == NULL) {
-			ctxt->errNo = XML_ERR_INVALID_URI;
-			if ((ctxt->sax != NULL) &&
-			    (!ctxt->disableSAX) &&
-			    (ctxt->sax->error != NULL))
-			    ctxt->sax->error(ctxt->userData,
-				        "Invalid URI: %s\n", URI);
+		        xmlErrMsgStr(ctxt, XML_ERR_INVALID_URI,
+				     "Invalid URI: %s\n", URI);
 			/*
 			 * This really ought to be a well formedness error
 			 * but the XML Core WG decided otherwise c.f. issue
@@ -5361,18 +5397,12 @@ xmlParseElementDecl(xmlParserCtxtPtr ctxt) {
 	     */
 	    if ((RAW == '%') && (ctxt->external == 0) &&
 	        (ctxt->inputNr == 1)) {
-		ctxt->errNo = XML_ERR_PEREF_IN_INT_SUBSET;
-		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		    ctxt->sax->error(ctxt->userData, 
+		xmlFatalErrMsg(ctxt, XML_ERR_PEREF_IN_INT_SUBSET,
 	  "PEReference: forbidden within markup decl in internal subset\n");
 	    } else {
-		ctxt->errNo = XML_ERR_ELEMCONTENT_NOT_STARTED;
-		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		    ctxt->sax->error(ctxt->userData, 
+		xmlFatalErrMsg(ctxt, XML_ERR_ELEMCONTENT_NOT_STARTED,
 		      "xmlParseElementDecl: 'EMPTY', 'ANY' or '(' expected\n");
             }
-	    ctxt->wellFormed = 0;
-	    if (ctxt->recovery == 0) ctxt->disableSAX = 1;
 	    return(-1);
 	}
 
@@ -5886,9 +5916,8 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 			ctxt->depth--;
 		    } else {
 			ret = XML_ERR_ENTITY_PE_INTERNAL;
-			if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-			    ctxt->sax->error(ctxt->userData,
-				"Internal: invalid entity type\n");
+			xmlErrMsgStr(ctxt, XML_ERR_INTERNAL_ERROR,
+				     "invalid entity type found\n", NULL);
 		    }
 		    if (ret == XML_ERR_ENTITY_LOOP) {
 			xmlFatalErr(ctxt, XML_ERR_ENTITY_LOOP, NULL);
@@ -6161,14 +6190,11 @@ xmlParseEntityRef(xmlParserCtxtPtr ctxt) {
 			 (ctxt->hasPErefs == 0))) {
 			xmlFatalErrMsgStr(ctxt, XML_ERR_UNDECLARED_ENTITY,
 				 "Entity '%s' not defined\n", name);
-			ctxt->valid = 0;
 		    } else {
-			ctxt->errNo = XML_WAR_UNDECLARED_ENTITY;
-			if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-			    ctxt->sax->error(ctxt->userData, 
+		        xmlErrMsgStr(ctxt, XML_WAR_UNDECLARED_ENTITY,
 				 "Entity '%s' not defined\n", name);
-			ctxt->valid = 0;
 		    }
+		    ctxt->valid = 0;
 		}
 
 		/*
@@ -6330,9 +6356,9 @@ xmlParseStringEntityRef(xmlParserCtxtPtr ctxt, const xmlChar ** str) {
 			xmlFatalErrMsgStr(ctxt, XML_ERR_UNDECLARED_ENTITY,
 				 "Entity '%s' not defined\n", name);
 		    } else {
-			xmlWarningMsg(ctxt, XML_WAR_UNDECLARED_ENTITY,
+			xmlErrMsgStr(ctxt, XML_WAR_UNDECLARED_ENTITY,
 				      "Entity '%s' not defined\n",
-				      name, NULL);
+				      name);
 		    }
 		    /* TODO ? check regressions ctxt->valid = 0; */
 		}
@@ -6343,12 +6369,8 @@ xmlParseStringEntityRef(xmlParserCtxtPtr ctxt, const xmlChar ** str) {
 		 * unparsed entity
 		 */
 		else if (ent->etype == XML_EXTERNAL_GENERAL_UNPARSED_ENTITY) {
-		    ctxt->errNo = XML_ERR_UNPARSED_ENTITY;
-		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-			ctxt->sax->error(ctxt->userData, 
+		    xmlFatalErrMsgStr(ctxt, XML_ERR_UNPARSED_ENTITY,
 			     "Entity reference to unparsed entity %s\n", name);
-		    ctxt->wellFormed = 0;
-		    if (ctxt->recovery == 0) ctxt->disableSAX = 1;
 		}
 
 		/*
@@ -6358,12 +6380,8 @@ xmlParseStringEntityRef(xmlParserCtxtPtr ctxt, const xmlChar ** str) {
 		 */
 		else if ((ctxt->instate == XML_PARSER_ATTRIBUTE_VALUE) &&
 		         (ent->etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY)) {
-		    ctxt->errNo = XML_ERR_ENTITY_IS_EXTERNAL;
-		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-			ctxt->sax->error(ctxt->userData, 
+		    xmlFatalErrMsgStr(ctxt, XML_ERR_ENTITY_IS_EXTERNAL,
 		     "Attribute references external entity '%s'\n", name);
-		    ctxt->wellFormed = 0;
-		    if (ctxt->recovery == 0) ctxt->disableSAX = 1;
 		}
 		/*
 		 * [ WFC: No < in Attribute Values ]
@@ -6376,12 +6394,9 @@ xmlParseStringEntityRef(xmlParserCtxtPtr ctxt, const xmlChar ** str) {
 			 (!xmlStrEqual(ent->name, BAD_CAST "lt")) &&
 		         (ent->content != NULL) &&
 			 (xmlStrchr(ent->content, '<'))) {
-		    ctxt->errNo = XML_ERR_LT_IN_ATTRIBUTE;
-		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-			ctxt->sax->error(ctxt->userData, 
-	 "'<' in entity '%s' is not allowed in attributes values\n", name);
-		    ctxt->wellFormed = 0;
-		    if (ctxt->recovery == 0) ctxt->disableSAX = 1;
+		    xmlFatalErrMsgStr(ctxt, XML_ERR_LT_IN_ATTRIBUTE,
+		 "'<' in entity '%s' is not allowed in attributes values\n",
+	                              name);
 		}
 
 		/*
@@ -6391,12 +6406,9 @@ xmlParseStringEntityRef(xmlParserCtxtPtr ctxt, const xmlChar ** str) {
 		    switch (ent->etype) {
 			case XML_INTERNAL_PARAMETER_ENTITY:
 			case XML_EXTERNAL_PARAMETER_ENTITY:
-			ctxt->errNo = XML_ERR_ENTITY_IS_PARAMETER;
-			if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-			    ctxt->sax->error(ctxt->userData, 
-		     "Attempt to reference the parameter entity '%s'\n", name);
-			ctxt->wellFormed = 0;
-			if (ctxt->recovery == 0) ctxt->disableSAX = 1;
+			    xmlFatalErrMsgStr(ctxt, XML_ERR_ENTITY_IS_PARAMETER,
+			 "Attempt to reference the parameter entity '%s'\n",
+			                      name);
 			break;
 			default:
 			break;
@@ -6820,7 +6832,7 @@ xmlParseAttribute(xmlParserCtxtPtr ctxt, xmlChar **value) {
     GROW;
     name = xmlParseName(ctxt);
     if (name == NULL) {
-	xmlFatalErrMsg(ctxt, XML_ERR_SPACE_REQUIRED,
+	xmlFatalErrMsg(ctxt, XML_ERR_NAME_REQUIRED,
 	               "error parsing attribute name\n");
         return(NULL);
     }
@@ -7049,7 +7061,7 @@ xmlParseEndTag1(xmlParserCtxtPtr ctxt, int line) {
 
     GROW;
     if ((RAW != '<') || (NXT(1) != '/')) {
-	xmlFatalErrMsg(ctxt, XML_ERR_SPACE_REQUIRED,
+	xmlFatalErrMsg(ctxt, XML_ERR_LTSLASH_REQUIRED,
 		       "xmlParseEndTag: '</' not found\n");
 	return;
     }
@@ -7074,20 +7086,10 @@ xmlParseEndTag1(xmlParserCtxtPtr ctxt, int line) {
      *
      */
     if (name != (xmlChar*)1) {
-	ctxt->errNo = XML_ERR_TAG_NAME_MISMATCH;
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL)) {
-	    if (name != NULL) {
-		ctxt->sax->error(ctxt->userData,
+        if (name == NULL) name = BAD_CAST "unparseable";
+        xmlFatalErrMsgStrIntStr(ctxt, XML_ERR_TAG_NAME_MISMATCH,
 		     "Opening and ending tag mismatch: %s line %d and %s\n",
-		                 ctxt->name, line, name);
-            } else {
-		ctxt->sax->error(ctxt->userData,
-		     "Ending tag error for: %s line %d\n", ctxt->name, line);
-	    }
-
-	}     
-	ctxt->wellFormed = 0;
-	if (ctxt->recovery == 0) ctxt->disableSAX = 1;
+		                ctxt->name, line, name);
     }
 
     /*
@@ -8033,20 +8035,10 @@ xmlParseEndTag2(xmlParserCtxtPtr ctxt, const xmlChar *prefix,
      *
      */
     if (name != (xmlChar*)1) {
-	ctxt->errNo = XML_ERR_TAG_NAME_MISMATCH;
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL)) {
-	    if (name != NULL) {
-		ctxt->sax->error(ctxt->userData,
+        if (name == NULL) name = BAD_CAST "unparseable";
+        xmlFatalErrMsgStrIntStr(ctxt, XML_ERR_TAG_NAME_MISMATCH,
 		     "Opening and ending tag mismatch: %s line %d and %s\n",
-		                 ctxt->name, line, name);
-            } else {
-		ctxt->sax->error(ctxt->userData,
-		     "Ending tag error for: %s line %d\n", ctxt->name, line);
-	    }
-
-	}     
-	ctxt->wellFormed = 0;
-	if (ctxt->recovery == 0) ctxt->disableSAX = 1;
+		                ctxt->name, line, name);
     }
 
     /*
@@ -8341,13 +8333,9 @@ xmlParseElement(xmlParserCtxtPtr ctxt) {
     if (RAW == '>') {
         NEXT1;
     } else {
-	ctxt->errNo = XML_ERR_GT_REQUIRED;
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt->userData,
-	                     "Couldn't find end of Start Tag %s line %d\n",
-	                     name, line);
-	ctxt->wellFormed = 0;
-	if (ctxt->recovery == 0) ctxt->disableSAX = 1;
+        xmlFatalErrMsgStrIntStr(ctxt, XML_ERR_GT_REQUIRED,
+		     "Couldn't find end of Start Tag %s line %d\n",
+		                name, line, NULL);
 
 	/*
 	 * end of parsing of this node.
@@ -8376,12 +8364,10 @@ xmlParseElement(xmlParserCtxtPtr ctxt) {
      */
     xmlParseContent(ctxt);
     if (!IS_BYTE_CHAR(RAW)) {
-	ctxt->errNo = XML_ERR_TAG_NOT_FINISHED;
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt->userData,
-	         "Premature end of data in tag %s line %d\n", name, line);
-	ctxt->wellFormed = 0;
-	if (ctxt->recovery == 0) ctxt->disableSAX = 1;
+        xmlFatalErrMsgStrIntStr(ctxt, XML_ERR_TAG_NOT_FINISHED,
+		     "Premature end of data in tag %s line %d\n"
+		     "Couldn't find end of Start Tag %s line %d\n",
+		                name, line, NULL);
 
 	/*
 	 * end of parsing of this node.
@@ -8649,9 +8635,7 @@ xmlParseEncodingDecl(xmlParserCtxtPtr ctxt) {
 	    if (handler != NULL) {
 		xmlSwitchToEncoding(ctxt, handler);
 	    } else {
-		ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
-		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		    ctxt->sax->error(ctxt->userData,
+		xmlFatalErrMsgStr(ctxt, XML_ERR_UNSUPPORTED_ENCODING,
 			"Unsupported encoding %s\n", encoding);
 		return(NULL);
 	    }

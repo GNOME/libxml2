@@ -4370,12 +4370,6 @@ xmlRelaxNGCheckRules(xmlRelaxNGParserCtxtPtr ctxt,
 		"Found forbidden pattern list//ref\n");
 		ctxt->nbErrors++;
 	    }
-	    if (flags & XML_RELAXNG_IN_ATTRIBUTE) {
-		if (ctxt->error != NULL)
-		    ctxt->error(ctxt->userData,
-			"Found forbidden pattern attribute//ref\n");
-		ctxt->nbErrors++;
-	    }
 	    if (flags & XML_RELAXNG_IN_DATAEXCEPT) {
 		if (ctxt->error != NULL)
 		    ctxt->error(ctxt->userData,
@@ -4413,6 +4407,12 @@ xmlRelaxNGCheckRules(xmlRelaxNGParserCtxtPtr ctxt,
 		if (ctxt->error != NULL)
 		    ctxt->error(ctxt->userData,
 		"Found forbidden pattern attribute//element(ref)\n");
+		ctxt->nbErrors++;
+	    }
+	    if (flags & XML_RELAXNG_IN_ATTRIBUTE) {
+		if (ctxt->error != NULL)
+		    ctxt->error(ctxt->userData,
+			"Found forbidden pattern attribute//element(ref)\n");
 		ctxt->nbErrors++;
 	    }
 	    /*
@@ -6258,6 +6258,7 @@ xmlRelaxNGValidateValue(xmlRelaxNGValidCtxtPtr ctxt,
 	    }
 	    break;
 	}
+        case XML_RELAXNG_DEF:
         case XML_RELAXNG_GROUP: {
 	    xmlRelaxNGDefinePtr list;
 
@@ -6273,6 +6274,10 @@ xmlRelaxNGValidateValue(xmlRelaxNGValidCtxtPtr ctxt,
 	    }
 	    break;
 	}
+        case XML_RELAXNG_REF:
+        case XML_RELAXNG_PARENTREF:
+	    ret = xmlRelaxNGValidateValue(ctxt, define->content);
+	    break;
 	default:
 	    TODO
 	    ret = -1;

@@ -1,3 +1,9 @@
+Thu Feb 27 22:28:40 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* check-xsddata-test-suite.py: give more infos
+	* relaxng.c: fix a bug reported by Sebastian Rahtz and
+	  REF->DEF in attribute values.
+
 Thu Feb 27 21:09:32 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* check-xsddata-test-suite.py test/xsdtest/xsdtest.xml

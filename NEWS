@@ -15,6 +15,33 @@ to test those   - More testing on RelaxNG
   Schemas
 
 
+2.6.3: Dec 10 2003:
+   - documentation updates and cleanup (DV, William Brack, John Fleck)
+   - added a repository of examples, examples from Aleksey Sanin, Dodji
+    Seketeli, Alfred Mickautsch 
+   - Windows updates: Mark Vakoc, Igor Zlatkovic, Eric Zurcher, Mingw
+    (Kenneth Haley)
+   - Unicode range checking (William Brack)
+   - code cleanup (William Brack)
+   - Python bindings: doc (John Fleck),  bug fixes
+   - UTF-16 cleanup and BOM issues (William Brack)
+   - bug fixes: ID and xmlReader validation, XPath (William Brack),
+    xmlWriter (Alfred Mickautsch), hash.h inclusion problem, HTML parser
+    (James Bursa), attribute defaulting and validation, some serialization
+    cleanups, XML_GET_LINE macro, memory debug when using threads (William
+    Brack), serialization of attributes and entities content, xmlWriter
+    (Daniel Schulman)
+   - XInclude bugfix, new APIs and update to the last version including the
+    namespace change.
+   - XML Schemas improvements: include (Robert Stepanek), import and
+    namespace handling, fixed the regression tests troubles, added examples
+    based on Eric van der Vlist book, regexp fixes 
+   - preliminary pattern support for streaming (needed for schemas
+    constraints), added xmlTextReaderPreservePattern() to collect subdocument
+    when streaming.
+   - various fixes in the structured error handling
+
+
 2.6.2: Nov 4 2003:
    - XPath context unregistration fixes
    - text node coalescing fixes (Mark Lilback)
@@ -24,7 +51,7 @@ to test those   - More testing on RelaxNG
    - compilation fixes (Mark Vakoc)
    - stdin parsing fix (William Brack)
    - a posteriori DTD validation fixes
-   - xmlReader bug fixes: Walker fixes, python bindings 
+   - xmlReader bug fixes: Walker fixes, python bindings
    - fixed xmlStopParser() to really stop the parser and errors
    - always generate line numbers when using the new xmlReadxxx
   functions

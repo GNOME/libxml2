@@ -386,7 +386,8 @@ pnode=pxmlDoc-&gt;children-&gt;children;</pre>
     <ul>
       <li>check more deeply the <a href="html/libxml-lib.html">existing
         generated doc</a></li>
-      <li>have a look at <a href="examples/index.html">the set of examples</a>.
+      <li>have a look at <a href="examples/index.html">the set of
+        examples</a>.</li>
       <li>look for examples of use for libxml2 function using the Gnome code.
         For example the following will query the full Gnome CVS base for the
         use of the <strong>xmlAddChild()</strong> function:
@@ -396,8 +397,8 @@ pnode=pxmlDoc-&gt;children-&gt;children;</pre>
         could cure this :-)</p>
       </li>
       <li><a
-        href="http://cvs.gnome.org/bonsai/rview.cgi?cvsroot=/cvs/gnome&amp;dir=gnome-xml">Browse the libxml2 source</a> , I try to write code as clean and
-	documented
+        href="http://cvs.gnome.org/bonsai/rview.cgi?cvsroot=/cvs/gnome&amp;dir=gnome-xml">Browse
+        the libxml2 source</a> , I try to write code as clean and documented
         as possible, so looking at it may be helpful. In particular the code
         of xmllint.c and of the various testXXX.c test programs should
         provide good examples of how to do things with the library.</li>
@@ -464,7 +465,7 @@ xmlDtdPtr dtd = xmlParseDTD(NULL, filename_of_dtd); /* parse the DTD */
     internationalization support</a>.</li>
   <li>This page provides a global overview and <a href="example.html">some
     examples</a> on how to use libxml.</li>
-  <li><a href="examples/index.html">Code examples</a></li> 
+  <li><a href="examples/index.html">Code examples</a></li>
   <li>John Fleck's libxml2 tutorial: <a href="tutorial/index.html">html</a>
     or <a href="tutorial/xmltutorial.pdf">pdf</a>.</li>
   <li>If you need to parse large files, check the <a
@@ -472,7 +473,7 @@ xmlDtdPtr dtd = xmlParseDTD(NULL, filename_of_dtd); /* parse the DTD */
   <li><a href="mailto:james@daa.com.au">James Henstridge</a> wrote <a
     href="http://www.daa.com.au/~james/gnome/xml-sax/xml-sax.html">some nice
     documentation</a> explaining how to use the libxml SAX interface.</li>
-<li>George Lebl wrote <a
+  <li>George Lebl wrote <a
     href="http://www-106.ibm.com/developerworks/library/l-gnome3/">an article
     for IBM developerWorks</a> about using libxml.</li>
   <li>Check <a href="http://cvs.gnome.org/lxr/source/gnome-xml/TODO">the TODO
@@ -661,6 +662,34 @@ to test those</p>
   Schemas</a></li>
 </ul>
 
+<h3>2.6.3: Dec 10 2003</h3>
+<ul>
+  <li>documentation updates and cleanup (DV, William Brack, John Fleck)</li>
+  <li>added a repository of examples, examples from Aleksey Sanin, Dodji
+    Seketeli, Alfred Mickautsch </li>
+  <li>Windows updates: Mark Vakoc, Igor Zlatkovic, Eric Zurcher, Mingw
+    (Kenneth Haley)</li>
+  <li>Unicode range checking (William Brack)</li>
+  <li>code cleanup (William Brack)</li>
+  <li>Python bindings: doc (John Fleck),  bug fixes</li>
+  <li>UTF-16 cleanup and BOM issues (William Brack)</li>
+  <li>bug fixes: ID and xmlReader validation, XPath (William Brack),
+    xmlWriter (Alfred Mickautsch), hash.h inclusion problem, HTML parser
+    (James Bursa), attribute defaulting and validation, some serialization
+    cleanups, XML_GET_LINE macro, memory debug when using threads (William
+    Brack), serialization of attributes and entities content, xmlWriter
+    (Daniel Schulman)</li>
+  <li>XInclude bugfix, new APIs and update to the last version including the
+    namespace change.</li>
+  <li>XML Schemas improvements: include (Robert Stepanek), import and
+    namespace handling, fixed the regression tests troubles, added examples
+    based on Eric van der Vlist book, regexp fixes </li>
+  <li>preliminary pattern support for streaming (needed for schemas
+    constraints), added xmlTextReaderPreservePattern() to collect subdocument
+    when streaming.</li>
+  <li>various fixes in the structured error handling</li>
+</ul>
+
 <h3>2.6.2: Nov 4 2003</h3>
 <ul>
   <li>XPath context unregistration fixes</li>
@@ -671,7 +700,7 @@ to test those</p>
   <li>compilation fixes (Mark Vakoc)</li>
   <li>stdin parsing fix (William Brack)</li>
   <li>a posteriori DTD validation fixes</li>
-  <li>xmlReader bug fixes: Walker fixes, python bindings </li>
+  <li>xmlReader bug fixes: Walker fixes, python bindings</li>
   <li>fixed xmlStopParser() to really stop the parser and errors</li>
   <li>always generate line numbers when using the new xmlReadxxx
   functions</li>

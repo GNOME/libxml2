@@ -12,6 +12,30 @@ for a really accurate description</h3><p>Items not finished and worked on, get i
 to test those</p><ul><li>More testing on RelaxNG</li>
   <li>Finishing up <a href="http://www.w3.org/TR/xmlschema-1/">XML
   Schemas</a></li>
+</ul><h3>2.6.3: Dec 10 2003</h3><ul><li>documentation updates and cleanup (DV, William Brack, John Fleck)</li>
+  <li>added a repository of examples, examples from Aleksey Sanin, Dodji
+    Seketeli, Alfred Mickautsch </li>
+  <li>Windows updates: Mark Vakoc, Igor Zlatkovic, Eric Zurcher, Mingw
+    (Kenneth Haley)</li>
+  <li>Unicode range checking (William Brack)</li>
+  <li>code cleanup (William Brack)</li>
+  <li>Python bindings: doc (John Fleck),  bug fixes</li>
+  <li>UTF-16 cleanup and BOM issues (William Brack)</li>
+  <li>bug fixes: ID and xmlReader validation, XPath (William Brack),
+    xmlWriter (Alfred Mickautsch), hash.h inclusion problem, HTML parser
+    (James Bursa), attribute defaulting and validation, some serialization
+    cleanups, XML_GET_LINE macro, memory debug when using threads (William
+    Brack), serialization of attributes and entities content, xmlWriter
+    (Daniel Schulman)</li>
+  <li>XInclude bugfix, new APIs and update to the last version including the
+    namespace change.</li>
+  <li>XML Schemas improvements: include (Robert Stepanek), import and
+    namespace handling, fixed the regression tests troubles, added examples
+    based on Eric van der Vlist book, regexp fixes </li>
+  <li>preliminary pattern support for streaming (needed for schemas
+    constraints), added xmlTextReaderPreservePattern() to collect subdocument
+    when streaming.</li>
+  <li>various fixes in the structured error handling</li>
 </ul><h3>2.6.2: Nov 4 2003</h3><ul><li>XPath context unregistration fixes</li>
   <li>text node coalescing fixes (Mark Lilback)</li>
   <li>API to screate a W3C Schemas from an existing document (Steve Ball)</li>
@@ -20,7 +44,7 @@ to test those</p><ul><li>More testing on RelaxNG</li>
   <li>compilation fixes (Mark Vakoc)</li>
   <li>stdin parsing fix (William Brack)</li>
   <li>a posteriori DTD validation fixes</li>
-  <li>xmlReader bug fixes: Walker fixes, python bindings </li>
+  <li>xmlReader bug fixes: Walker fixes, python bindings</li>
   <li>fixed xmlStopParser() to really stop the parser and errors</li>
   <li>always generate line numbers when using the new xmlReadxxx
   functions</li>

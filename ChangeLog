@@ -1,3 +1,8 @@
+Wed Dec 10 14:11:20 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in doc/* libxml.spec.in: preparing release of
+	  libxml2-2.6.3, updated and regenerated the docs.
+
 Wed Dec 10 11:43:33 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* SAX2.c pattern.c: removed some compilation warnings

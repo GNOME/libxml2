@@ -62,6 +62,7 @@ at parse time or later once the document has been modified.
 %build
 %configure
 make
+(cd doc/examples ; make clean)
 
 %install
 rm -fr %{buildroot}

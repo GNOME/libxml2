@@ -224,10 +224,10 @@ URItests : testURI
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/result/URI/$$name ] ; then \
 	      echo New test file $$name ; \
-	      $(top_builddir)/testURI -base 'http://foo.com/path/to/index.html#help' < $$i > $(srcdir)/result/URI/$$name ; \
+	      $(top_builddir)/testURI -base 'http://foo.com/path/to/index.html?orig#help' < $$i > $(srcdir)/result/URI/$$name ; \
 	  else \
 	      echo Testing $$name ; \
-	      $(top_builddir)/testURI -base 'http://foo.com/path/to/index.html#help' < $$i > result.$$name ; \
+	      $(top_builddir)/testURI -base 'http://foo.com/path/to/index.html?orig#help' < $$i > result.$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	      diff $(srcdir)/result/URI/$$name result.$$name ; \
 	      rm result.$$name ; \

@@ -1,3 +1,8 @@
+Tue Sep  5 12:41:15 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* uri.c: applied Wayne Davidson patch
+	* Makefile.in test/URI/uri.data result/URI/uri.data: updated URI tests
+
 Mon Sep  4 13:01:45 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* uri.c testUri.c: applied Wayne Davidson patches

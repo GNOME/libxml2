@@ -1,3 +1,7 @@
+Tue Oct  2 11:27:58 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* valid.c: close bug #61550 when xml: wasn't considered a namespace
+
 Tue Oct  2 11:18:32 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* win32/dsp/libxml2.def.src: Igor Zlatkovic patches

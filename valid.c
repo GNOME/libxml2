@@ -344,10 +344,12 @@ xmlSplitQName2(const xmlChar *name, xmlChar **prefix) {
 
     *prefix = NULL;
 
+#ifndef XML_XML_NAMESPACE
     /* xml: prefix is not really a namespace */
     if ((name[0] == 'x') && (name[1] == 'm') &&
         (name[2] == 'l') && (name[3] == ':'))
 	return(NULL);
+#endif
 
     /* nasty but valid */
     if (name[0] == ':')

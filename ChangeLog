@@ -1,3 +1,8 @@
+Fri Feb 11 22:20:41 HKT 2005 William Brack <wbrack@mmm.com.hk>
+
+	* parser.c: fixed problem when no initial "chunk" was
+	  given to xmlCreatePushParser (bug 162613)
+
 Fri Feb 11 18:37:22 HKT 2005 William Brack <wbrack@mmm.com.hk>
 
 	* dict.c: fixed compilation warning

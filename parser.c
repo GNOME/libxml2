@@ -9272,16 +9272,16 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		    /* 
 		     * Get the 4 first bytes and decode the charset
 		     * if enc != XML_CHAR_ENCODING_NONE
-		     * plug some encoding conversion routines.
+		     * plug some encoding conversion routines,
+		     * else xmlSwitchEncoding will set to (default)
+		     * UTF8.
 		     */
 		    start[0] = RAW;
 		    start[1] = NXT(1);
 		    start[2] = NXT(2);
 		    start[3] = NXT(3);
 		    enc = xmlDetectCharEncoding(start, 4);
-		    if (enc != XML_CHAR_ENCODING_NONE) {
-			xmlSwitchEncoding(ctxt, enc);
-		    }
+		    xmlSwitchEncoding(ctxt, enc);
 		    break;
 		}
 
@@ -10239,8 +10239,14 @@ xmlCreatePushParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
 
     inputPush(ctxt, inputStream);
 
-    if ((size > 0) && (chunk != NULL) && (ctxt->input != NULL) &&
-        (ctxt->input->buf != NULL))  {	      
+    /*
+     * If the caller didn't provide an initial 'chunk' for determining
+     * the encoding, we set the context to XML_CHAR_ENCODING_NONE so
+     * that it can be automatically determined later
+     */
+    if ((size == 0) || (chunk == NULL)) {
+	ctxt->charset = XML_CHAR_ENCODING_NONE;
+    } else if ((ctxt->input != NULL) && (ctxt->input->buf != NULL)) {
 	int base = ctxt->input->base - ctxt->input->buf->buffer->content;
 	int cur = ctxt->input->cur - ctxt->input->base;
 

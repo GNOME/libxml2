@@ -587,6 +587,45 @@ class parserCtxtCore:
         return libxml2mod.addLocalCatalog(self._o, uri)
     
 
+class ValidCtxtCore:
+
+    def __init__(self, *args, **kw):
+        pass
+
+    def setValidityErrorHandler(self, err_func, warn_func, arg=None):
+        """
+        Register error and warning handlers for DTD validation.
+        These will be called back as f(msg,arg)
+        """
+        libxml2mod.xmlSetValidErrors(self._o, err_func, warn_func, arg)
+    
+
+class SchemaValidCtxtCore:
+
+    def __init__(self, *args, **kw):
+        pass
+
+    def setValidityErrorHandler(self, err_func, warn_func, arg=None):
+        """
+        Register error and warning handlers for Schema validation.
+        These will be called back as f(msg,arg)
+        """
+        libxml2mod.xmlSchemaSetValidErrors(self._o, err_func, warn_func, arg)
+
+
+class relaxNgValidCtxtCore:
+
+    def __init__(self, *args, **kw):
+        pass
+
+    def setValidityErrorHandler(self, err_func, warn_func, arg=None):
+        """
+        Register error and warning handlers for RelaxNG validation.
+        These will be called back as f(msg,arg)
+        """
+        libxml2mod.xmlRelaxNGSetValidErrors(self._o, err_func, warn_func, arg)
+
+    
 def _xmlTextReaderErrorFunc((f,arg),msg,severity,locator):
     """Intermediate callback to wrap the locator"""
     return f(arg,msg,severity,xmlTextReaderLocator(locator))

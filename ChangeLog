@@ -1,3 +1,11 @@
+Thu Mar 31 00:45:18 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* python/generator.py python/libxml.py: another patch from Brent
+	  Hendricks to add new handlers with the various validity contexts
+	* python/tests/Makefile.am python/tests/validDTD.py
+	  python/tests/validRNG.py python/tests/validSchemas.py: also 
+	  added the regression tests he provided
+
 Wed Mar 30 09:39:27 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* python/generator.py python/libxml.c: applied patch from Brent

@@ -694,7 +694,9 @@ Class xmlReg()
     regexpExec()
     regexpIsDeterminist()
     regexpPrint()
-Class relaxNgValidCtxt()
+
+
+Class relaxNgValidCtxt(relaxNgValidCtxtCore)
 
     # functions from module relaxng
     relaxNGValidateDoc()
@@ -885,7 +887,9 @@ Class SchemaParserCtxt()
 
     # functions from module xmlschemas
     schemaParse()
-Class ValidCtxt()
+
+
+Class ValidCtxt(ValidCtxtCore)
 
     # functions from module valid
     validCtxtNormalizeAttributeValue()
@@ -1111,7 +1115,9 @@ Class inputBuffer(ioReadWrapper)
 
     # functions from module xmlreader
     newTextReader()
-Class SchemaValidCtxt()
+
+
+Class SchemaValidCtxt(SchemaValidCtxtCore)
 
     # functions from module xmlschemas
     schemaSetValidOptions()

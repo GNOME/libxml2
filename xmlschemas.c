@@ -19677,27 +19677,25 @@ xmlSchemaValidateElementByComplexType(xmlSchemaValidCtxtPtr ctxt,
 		if (ret == 0) {
 		    xmlRegExecNextValues(ctxt->regexp, &nbval, &nbneg,
 			&values[0], &terminal);
-		    if (nbval + nbneg != 0) {
-			/*
-			* If a next value still exists, I does not have to
-			* mean that there's an element missing, since it
-			* might be an optional element. So double check it.
-			*/
-			ret = xmlRegExecPushString(ctxt->regexp,
-			    NULL, NULL);
-			if (ret <= 0) {
-			    ret = 1;
-    			    xmlSchemaVComplexTypeElemErr(ctxt,
-				XML_SCHEMAV_ELEMENT_CONTENT,
-				elem, type, "Missing child element(s)",
-				nbval, nbneg, values);			    
-			} else
-			    ret = 0;			
+		    /*
+		    * If a next value still exists, I does not have to
+		    * mean that there's an element missing, since it
+		    * might be an optional element. So double check it.
+		    */
+		    ret = xmlRegExecPushString(ctxt->regexp,
+			NULL, NULL);
+		    if (ret <= 0) {
+			ret = 1;
+			xmlSchemaVComplexTypeElemErr(ctxt,
+			    XML_SCHEMAV_ELEMENT_CONTENT,
+			    elem, type, "Missing child element(s)",
+			    nbval, nbneg, values);			    
+		    } else
+			ret = 0;			
 #ifdef DEBUG_AUTOMATA
-			xmlGenericError(xmlGenericErrorContext,
-			    "====> %s : %d\n", elem->name, ret);
+		    xmlGenericError(xmlGenericErrorContext,
+			"====> %s : %d\n", elem->name, ret);
 #endif
-		    }		    
 #ifdef DEBUG_CONTENT
 		    if (ret == 0)
 			xmlGenericError(xmlGenericErrorContext,

@@ -1082,7 +1082,7 @@ xmlCompileStepPattern(xmlPatParserContextPtr ctxt) {
 		ctxt->error = 1;
 		goto error;
 	    }
-	    xmlFree(name);
+	    /* NOT REACHED xmlFree(name); */
 	}
     } else if (CUR == '*') {
         if (name != NULL) {

@@ -747,6 +747,9 @@ classes_ancestor = {
     "inputBuffer": "ioReadWrapper",
     "parserCtxt": "parserCtxtCore",
     "xmlTextReader": "xmlTextReaderCore",
+    "ValidCtxt": "ValidCtxtCore",
+    "SchemaValidCtxt": "SchemaValidCtxtCore",
+    "relaxNgValidCtxt": "relaxNgValidCtxtCore",
 }
 classes_destructors = {
     "parserCtxt": "xmlFreeParserCtxt",

@@ -39,7 +39,10 @@ PYTESTS=	\
     tstLastError.py \
     indexes.py \
     dtdvalid.py \
-    tstmem.py
+    tstmem.py	\
+    validDTD.py	\
+    validSchemas.py \
+    validRNG.py
 
 XMLS=		\
     tst.xml	\

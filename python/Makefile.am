@@ -9,7 +9,7 @@ INCLUDES = \
 
 DOCS_DIR = $(datadir)/doc/libxml2-python-$(LIBXML_VERSION)
 # libxml2class.txt is generated
-DOCS = TODO
+DOCS = ${srcdir}/TODO
 
 EXTRA_DIST = 			\
 	libxml.c		\
@@ -42,7 +42,7 @@ libxml2.py: $(srcdir)/libxml.py $(srcdir)/libxml2class.py
 install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(pythondir)
 	@INSTALL@ -m 0644 libxml2.py $(DESTDIR)$(pythondir)
-	@INSTALL@ -m 0644 drv_libxml2.py $(DESTDIR)$(pythondir)
+	@INSTALL@ -m 0644 $(srcdir)/drv_libxml2.py $(DESTDIR)$(pythondir)
 	$(mkinstalldirs) $(DESTDIR)$(DOCS_DIR)
 	@(for doc in $(DOCS) ; \
 	   do @INSTALL@ -m 0644 $$doc $(DESTDIR)$(DOCS_DIR) ; done)

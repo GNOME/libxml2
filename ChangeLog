@@ -1,3 +1,9 @@
+Sun Dec 21 18:14:04 HKT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* python/Makefile.am, python/tests/Makefile.am,
+	  doc/Makefile.am: applied fixes to allow build from
+	  'outside' directory (Bug 129172)
+
 Sat Dec 20 16:42:07 MST 2003 John Fleck <jfleck@inkstain.net>
 
 	* tree.c - add explanation of namespace inheritance when

@@ -109,6 +109,5 @@ install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)/tutorial/images/callouts
 	-@INSTALL@ -m 0644 $(srcdir)/tutorial/images/callouts/*.* \
 		$(DESTDIR)$(TARGET_DIR)/tutorial/images/callouts
-	-(cd $(DESTDIR); gtkdoc-fixxref --module=libxml --html-dir=$(HTML_DIR))
 
 .PHONY : html xml templates scan

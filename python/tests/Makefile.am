@@ -54,5 +54,5 @@ clean:
 install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(EXAMPLE_DIR)
 	-(for test in $(PYTESTS) $(XMLS); \
-	  do @INSTALL@ -m 0644 $$test $(DESTDIR)$(EXAMPLE_DIR) ; done)
+	  do @INSTALL@ -m 0644 $(srcdir)/$$test $(DESTDIR)$(EXAMPLE_DIR) ; done)
 

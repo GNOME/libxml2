@@ -2993,8 +2993,8 @@ xmlValidGetPotentialChildren(xmlElementContent *ctree, const xmlChar **list,
     switch (ctree->type) {
 	case XML_ELEMENT_CONTENT_PCDATA: 
 	    for (i = 0; i < *len;i++)
-		if (!xmlStrcmp("#PCDATA", list[i])) return(*len);
-	    list[(*len)++] = "#PCDATA";
+		if (!xmlStrcmp(BAD_CAST "#PCDATA", list[i])) return(*len);
+	    list[(*len)++] = BAD_CAST "#PCDATA";
 	    break;
 	case XML_ELEMENT_CONTENT_ELEMENT: 
 	    for (i = 0; i < *len;i++)
@@ -3088,7 +3088,7 @@ xmlValidGetValidElements(xmlNode *prev, xmlNode *next, const xmlChar **list,
     /*
      * Creates a dummy node and insert it into the tree
      */    
-    test_node = xmlNewNode (NULL, "<!dummy?>");
+    test_node = xmlNewNode (NULL, BAD_CAST "<!dummy?>");
     test_node->doc = ref_node->doc;
     test_node->parent = parent;
     test_node->prev = prev;

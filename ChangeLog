@@ -1,3 +1,10 @@
+Wed Nov 24 19:00:06 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* tree.[ch] xmlIO.[ch] parser.c valid.c: code cleanup with -pedantic
+	* parser.[ch] encoding.[ch]: added memory cleanup routines
+	* parser.c: closing bug #3788
+	* doc/*: rebuilt the doc
+
 Tue Nov 23 11:23:55 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* tree.[ch]: closing bug 3748, added xmlNewDocRawNode(), 

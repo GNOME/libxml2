@@ -432,6 +432,29 @@ xmlInitCharEncodingHandlers(void) {
 }
 
 /**
+ * xmlCleanupCharEncodingHandlers:
+ *
+ * Cleanup the memory allocated for the char encoding support, it
+ * unregisters all the encoding handlers.
+ */
+void
+xmlCleanupCharEncodingHandlers(void) {
+    if (handlers == NULL) return;
+
+    for (;nbCharEncodingHandler > 0;) {
+        nbCharEncodingHandler--;
+	if (handlers[nbCharEncodingHandler] != NULL) {
+	    xmlFree(handlers[nbCharEncodingHandler]->name);
+	    xmlFree(handlers[nbCharEncodingHandler]);
+	}
+    }
+    xmlFree(handlers);
+    handlers = NULL;
+    nbCharEncodingHandler = 0;
+    xmlDefaultCharEncodingHandler = NULL;
+}
+
+/**
  * xmlRegisterCharEncodingHandler:
  * @handler:  the xmlCharEncodingHandlerPtr handler block
  *

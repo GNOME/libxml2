@@ -2063,10 +2063,11 @@ xmlNodeSetLang(xmlNodePtr cur, const xmlChar *lang) {
  * attribute or the one carried by the nearest ancestor.
  *
  * Returns a pointer to the lang value, or NULL if not found
+ *     It's up to the caller to free the memory.
  */
-const xmlChar *
+xmlChar *
 xmlNodeGetLang(xmlNodePtr cur) {
-    const xmlChar *lang;
+    xmlChar *lang;
 
     while (cur != NULL) {
         lang = xmlGetProp(cur, BAD_CAST "xml:lang");
@@ -2470,8 +2471,10 @@ xmlSearchNsByHref(xmlDocPtr doc, xmlNodePtr node, const xmlChar *href) {
  * Search and get the value of an attribute associated to a node
  * This does the entity substitution.
  * Returns the attribute value or NULL if not found.
+ *     It's up to the caller to free the memory.
  */
-xmlChar *xmlGetProp(xmlNodePtr node, const xmlChar *name) {
+xmlChar *
+xmlGetProp(xmlNodePtr node, const xmlChar *name) {
     xmlAttrPtr prop = node->properties;
 
     while (prop != NULL) {

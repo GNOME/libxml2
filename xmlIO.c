@@ -263,7 +263,7 @@ xmlParserInputBufferCreateFd(int fd, xmlCharEncoding enc) {
  *         in case of error.
  */
 int
-xmlParserInputBufferPush(xmlParserInputBufferPtr in, int len, char *buf) {
+xmlParserInputBufferPush(xmlParserInputBufferPtr in, int len, const char *buf) {
     char *buffer = NULL;
     int nbchars = 0;
 

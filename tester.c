@@ -280,6 +280,7 @@ int main(int argc, char **argv) {
 	printf("\t--insert : test for valid insertions\n");
 	printf("\t--compress : turn on gzip compression of output\n");
     }
+    xmlCleanupParser();
     xmlMemoryDump();
 
     return(0);

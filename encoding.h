@@ -97,14 +97,14 @@ typedef struct xmlCharEncodingHandler {
 } xmlCharEncodingHandler;
 typedef xmlCharEncodingHandler *xmlCharEncodingHandlerPtr;
 
-void xmlRegisterCharEncodingHandler(xmlCharEncodingHandlerPtr handler);
+void	xmlInitCharEncodingHandlers	(void);
+void	xmlCleanupCharEncodingHandlers	(void);
+void	xmlRegisterCharEncodingHandler	(xmlCharEncodingHandlerPtr handler);
+xmlCharEncoding xmlDetectCharEncoding	(const unsigned char* in);
+xmlCharEncoding xmlParseCharEncoding	(const char* name);
 xmlCharEncodingHandlerPtr xmlGetCharEncodingHandler(xmlCharEncoding enc);
 xmlCharEncodingHandlerPtr xmlFindCharEncodingHandler(const char *name);
 
-xmlCharEncoding xmlDetectCharEncoding(const unsigned char* in);
-xmlCharEncoding xmlParseCharEncoding(const char* name);
-
-void xmlInitCharEncodingHandlers(void);
 
 #ifdef __cplusplus
 }

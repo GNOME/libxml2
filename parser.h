@@ -268,9 +268,13 @@ extern int xmlSubstituteEntitiesDefaultValue;
 #include "xml-error.h"
 
 /**
+ * Cleanup
+ */
+void		xmlCleanupParser	(void);
+
+/**
  * Input functions
  */
-
 int		xmlParserInputRead	(xmlParserInputPtr in,
 					 int len);
 int		xmlParserInputGrow	(xmlParserInputPtr in,

@@ -4437,6 +4437,7 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
 void
 xmlParseExternalSubset(xmlParserCtxtPtr ctxt, const xmlChar *ExternalID,
                        const xmlChar *SystemID) {
+    GROW;
     if ((CUR == '<') && (NXT(1) == '?') &&
         (NXT(2) == 'x') && (NXT(3) == 'm') &&
 	(NXT(4) == 'l')) {
@@ -6122,6 +6123,7 @@ xmlParseTry(xmlParserCtxtPtr ctxt) {
             case XML_PARSER_EPILOG:
             case XML_PARSER_COMMENT:
             case XML_PARSER_CDATA_SECTION:
+	        break;
 	}
     }
     return(ret);
@@ -6141,8 +6143,9 @@ xmlParseTry(xmlParserCtxtPtr ctxt) {
 xmlParserErrors
 xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
               int terminate) {
-    if ((size > 0) && (chunk != NULL)) {	      
-	xmlParserInputBufferPush(ctxt->input, size, chunk);	      
+    if ((size > 0) && (chunk != NULL) && (ctxt->input != NULL) &&
+        (ctxt->input->buf != NULL))  {	      
+	xmlParserInputBufferPush(ctxt->input->buf, size, chunk);	      
     }
     return((xmlParserErrors) ctxt->errNo);	      
 }
@@ -6725,6 +6728,19 @@ int xmlSAXUserParseMemory(xmlSAXHandlerPtr sax, void *user_data,
  *									*
  ************************************************************************/
 
+/**
+ * xmlCleanupParser:
+ *
+ * Cleanup function for the XML parser. It tries to reclaim all
+ * parsing related global memory allocated for the parser processing.
+ * It doesn't deallocate any document related memory. Calling this
+ * function should not prevent reusing the parser.
+ */
+
+void
+xmlCleanupParser(void) {
+    xmlCleanupCharEncodingHandlers();
+}
 
 /**
  * xmlParserFindNodeInfo:

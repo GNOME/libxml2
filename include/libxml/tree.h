@@ -464,7 +464,7 @@ void		xmlNodeAddContentLen	(xmlNodePtr cur,
 					 const xmlChar *content,
 					 int len);
 xmlChar *	xmlNodeGetContent	(xmlNodePtr cur);
-const xmlChar *	xmlNodeGetLang		(xmlNodePtr cur);
+xmlChar *	xmlNodeGetLang		(xmlNodePtr cur);
 void		xmlNodeSetLang		(xmlNodePtr cur,
 					 const xmlChar *lang);
 

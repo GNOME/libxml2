@@ -44,6 +44,7 @@
 <ANCHOR id ="XMLDEFAULTSAXHANDLER" href="gnome-xml/gnome-xml-parser.html#XMLDEFAULTSAXHANDLER">
 <ANCHOR id ="HTMLDEFAULTSAXHANDLER" href="gnome-xml/gnome-xml-parser.html#HTMLDEFAULTSAXHANDLER">
 <ANCHOR id ="XMLSUBSTITUTEENTITIESDEFAULTVALUE" href="gnome-xml/gnome-xml-parser.html#XMLSUBSTITUTEENTITIESDEFAULTVALUE">
+<ANCHOR id ="XMLCLEANUPPARSER" href="gnome-xml/gnome-xml-parser.html#XMLCLEANUPPARSER">
 <ANCHOR id ="XMLPARSERINPUTREAD" href="gnome-xml/gnome-xml-parser.html#XMLPARSERINPUTREAD">
 <ANCHOR id ="XMLPARSERINPUTGROW" href="gnome-xml/gnome-xml-parser.html#XMLPARSERINPUTGROW">
 <ANCHOR id ="XMLSTRDUP" href="gnome-xml/gnome-xml-parser.html#XMLSTRDUP">

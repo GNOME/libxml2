@@ -1565,6 +1565,47 @@ xmlSAX2EndElement(void *ctx, const xmlChar *name ATTRIBUTE_UNUSED)
 }
 
 /*
+ * xmlSAX2TextNode:
+ * @ctxt:  the parser context
+ * @str:  the input string
+ * @len: the string length
+ * 
+ * Remove the entities from an attribute value
+ *
+ * Returns the newly allocated string or NULL if not needed or error
+ */
+static xmlNodePtr
+xmlSAX2TextNode(xmlParserCtxtPtr ctxt, const xmlChar *str, int len) {
+    xmlNodePtr ret;
+
+    if (ctxt->freeElems != NULL) {
+	ret = ctxt->freeElems;
+	ctxt->freeElems = ret->next;
+	ctxt->freeElemsNr--;
+	memset(ret, 0, sizeof(xmlNode));
+	ret->type = XML_TEXT_NODE;
+
+	ret->name = xmlStringText;
+	ret->content = xmlStrndup(str, len);
+
+	if ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
+	    xmlRegisterNodeDefaultValue(ret);
+    } else {
+	ret = xmlNewTextLen(str, len);
+    }
+    if (ret == NULL) {
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt->userData, 
+		 "SAX.xmlSAX2Characters(): out of memory\n");
+	ctxt->errNo = XML_ERR_NO_MEMORY;
+	ctxt->instate = XML_PARSER_EOF;
+	ctxt->disableSAX = 1;
+	return(NULL);
+    }
+    return(ret);
+}
+
+/*
  * xmlSAX2DecodeAttrEntities:
  * @ctxt:  the parser context
  * @str:  the input string
@@ -1630,6 +1671,7 @@ xmlSAX2AttributeNs(xmlParserCtxtPtr ctxt,
     if (ctxt->freeAttrs != NULL) {
         ret = ctxt->freeAttrs;
 	ctxt->freeAttrs = ret->next;
+	ctxt->freeAttrsNr--;
 	memset(ret, 0, sizeof(xmlAttr));
 	ret->type = XML_ATTRIBUTE_NODE;
 
@@ -1672,21 +1714,40 @@ xmlSAX2AttributeNs(xmlParserCtxtPtr ctxt,
     if ((ctxt->replaceEntities == 0) && (!ctxt->html)) {
 	xmlNodePtr tmp;
 
-	ret->children = xmlStringLenGetNodeList(ctxt->myDoc, value,
-						valueend - value);
-	tmp = ret->children;
-	while (tmp != NULL) {
-	    tmp->parent = (xmlNodePtr) ret;
-	    if (tmp->next == NULL)
-		ret->last = tmp;
-	    tmp = tmp->next;
+	/*
+	 * We know that if there is an entity reference, then
+	 * the string has been dup'ed and terminates with 0
+	 * otherwise with ' or "
+	 */
+	if (*valueend != 0) {
+	    tmp = xmlSAX2TextNode(ctxt, value, valueend - value);
+	    ret->children = tmp;
+	    ret->last = tmp;
+	    if (tmp != NULL) {
+		tmp->doc = ret->doc;
+		tmp->parent = (xmlNodePtr) ret;
+	    }
+	} else {
+	    ret->children = xmlStringLenGetNodeList(ctxt->myDoc, value,
+						    valueend - value);
+	    tmp = ret->children;
+	    while (tmp != NULL) {
+		tmp->parent = (xmlNodePtr) ret;
+		if (tmp->next == NULL)
+		    ret->last = tmp;
+		tmp = tmp->next;
+	    }
 	}
     } else if (value != NULL) {
-	ret->children = xmlNewDocTextLen(ctxt->myDoc, value,
-					 valueend - value);
-	ret->last = ret->children;
-	if (ret->children != NULL)
-	    ret->children->parent = (xmlNodePtr) ret;
+	xmlNodePtr tmp;
+
+	tmp = xmlSAX2TextNode(ctxt, value, valueend - value);
+	ret->children = tmp;
+	ret->last = tmp;
+	if (tmp != NULL) {
+	    tmp->doc = ret->doc;
+	    tmp->parent = (xmlNodePtr) ret;
+	}
     }
 
     if ((!ctxt->html) && ctxt->validate && ctxt->wellFormed &&
@@ -1837,6 +1898,7 @@ xmlSAX2StartElementNs(void *ctx,
     if (ctxt->freeElems != NULL) {
         ret = ctxt->freeElems;
 	ctxt->freeElems = ret->next;
+	ctxt->freeElemsNr--;
 	memset(ret, 0, sizeof(xmlNode));
 	ret->type = XML_ELEMENT_NODE;
 
@@ -2056,7 +2118,7 @@ xmlSAX2Characters(void *ctx, const xmlChar *ch, int len)
 #endif
         return;
     }
-    lastChild = xmlGetLastChild(ctxt->node);
+    lastChild = ctxt->node->last;
 #ifdef DEBUG_SAX_TREE
     xmlGenericError(xmlGenericErrorContext,
 	    "add chars to %s \n", ctxt->node->name);
@@ -2067,9 +2129,12 @@ xmlSAX2Characters(void *ctx, const xmlChar *ch, int len)
      * elements. Use an attribute in the structure !!!
      */
     if (lastChild == NULL) {
-	/* first node, first time */
-	xmlNodeAddContentLen(ctxt->node, ch, len);
-	if (ctxt->node->children != NULL) {
+        lastChild = xmlSAX2TextNode(ctxt, ch, len);
+	if (lastChild != NULL) {
+	    ctxt->node->children = lastChild;
+	    ctxt->node->last = lastChild;
+	    lastChild->parent = ctxt->node;
+	    lastChild->doc = ctxt->node->doc;
 	    ctxt->nodelen = len;
 	    ctxt->nodemem = len + 1;
 	}
@@ -2122,15 +2187,8 @@ xmlSAX2Characters(void *ctx, const xmlChar *ch, int len)
 	    }
 	} else {
 	    /* Mixed content, first time */
-	    lastChild = xmlNewTextLen(ch, len);
-	    if (lastChild == NULL) {
-		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		    ctxt->sax->error(ctxt->userData, 
-			 "SAX.xmlSAX2Characters(): out of memory\n");
-		ctxt->errNo = XML_ERR_NO_MEMORY;
-		ctxt->instate = XML_PARSER_EOF;
-		ctxt->disableSAX = 1;
-	    } else {
+	    lastChild = xmlSAX2TextNode(ctxt, ch, len);
+	    if (lastChild != NULL) {
 		xmlAddChild(ctxt->node, lastChild);
 		if (ctxt->node->children != NULL) {
 		    ctxt->nodelen = len;

@@ -263,9 +263,11 @@ xmlTextReaderFreeProp(xmlTextReaderPtr reader, xmlAttrPtr cur) {
 	(xmlDictOwns(reader->ctxt->dict, cur->name) != 1) &&
 	(cur->name != NULL))
 	xmlFree((xmlChar *)cur->name);
-    if ((reader != NULL) && (reader->ctxt != NULL)) {
+    if ((reader != NULL) && (reader->ctxt != NULL) &&
+        (reader->ctxt->freeAttrsNr < 100)) {
         cur->next = reader->ctxt->freeAttrs;
 	reader->ctxt->freeAttrs = cur;
+	reader->ctxt->freeAttrsNr++;
     } else {
 	xmlFree(cur);
     }
@@ -347,10 +349,13 @@ xmlTextReaderFreeNodeList(xmlTextReaderPtr reader, xmlNodePtr cur) {
 		(cur->type != XML_COMMENT_NODE) &&
 		(cur->name != NULL))
 		xmlFree((xmlChar *)cur->name);
-	    if ((cur->type == XML_ELEMENT_NODE) &&
-	        (reader != NULL) && (reader->ctxt != NULL)) {
+	    if (((cur->type == XML_ELEMENT_NODE) ||
+		 (cur->type == XML_TEXT_NODE)) &&
+	        (reader != NULL) && (reader->ctxt != NULL) &&
+		(reader->ctxt->freeElemsNr < 100)) {
 	        cur->next = reader->ctxt->freeElems;
 		reader->ctxt->freeElems = cur;
+		reader->ctxt->freeElemsNr++;
 	    } else {
 		xmlFree(cur);
 	    }
@@ -414,10 +419,13 @@ xmlTextReaderFreeNode(xmlTextReaderPtr reader, xmlNodePtr cur) {
 	(cur->type != XML_COMMENT_NODE) &&
 	(cur->name != NULL))
 	xmlFree((xmlChar *)cur->name);
-    if ((cur->type == XML_ELEMENT_NODE) &&
-	(reader != NULL) && (reader->ctxt != NULL)) {
+    if (((cur->type == XML_ELEMENT_NODE) ||
+	 (cur->type == XML_TEXT_NODE)) &&
+	(reader != NULL) && (reader->ctxt != NULL) &&
+	(reader->ctxt->freeElemsNr < 100)) {
 	cur->next = reader->ctxt->freeElems;
 	reader->ctxt->freeElems = cur;
+	reader->ctxt->freeElemsNr++;
     } else {
 	xmlFree(cur);
     }

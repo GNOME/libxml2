@@ -267,7 +267,9 @@ struct _xmlParserCtxt {
      * Those fields are needed only for treaming parsing so far
      */
      int               dictNames;    /* Use dictionary names for the tree */
+     int               freeElemsNr;  /* number of freed element nodes */
      xmlNodePtr        freeElems;    /* List of freed element nodes */
+     int               freeAttrsNr;  /* number of freed attributes nodes */
      xmlAttrPtr        freeAttrs;    /* List of freed attributes nodes */
 };
 

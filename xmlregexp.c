@@ -2235,12 +2235,24 @@ xmlFARegExec(xmlRegexpPtr comp, const xmlChar *content) {
 	xmlRegAtomPtr atom;
 
 	/*
-	 * End of input on non-terminal state, rollback, however we may
+	 * If end of input on non-terminal state, rollback, however we may
 	 * still have epsilon like transition for counted transitions
-	 * on counters, in that case don't break too early.
+	 * on counters, in that case don't break too early.  Additionally,
+	 * if we are working on a range like "AB{0,2}", where B is not present,
+	 * we don't want to break.
 	 */
-	if ((exec->inputString[exec->index] == 0) && (exec->counts == NULL))
-	    goto rollback;
+	if ((exec->inputString[exec->index] == 0) && (exec->counts == NULL)) {
+	    /* must check if atom allows minOccurs of 0 */
+	    if (exec->transno < exec->state->nbTrans) { /* there is a transition */
+	        trans = &exec->state->trans[exec->transno];
+		if (trans->to >=0) {
+		    atom = trans->atom;
+		    if (!((atom->min == 0) && (atom->max > 0)))
+		        goto rollback;
+		}
+	    } else
+	        goto rollback;
+	}
 
 	exec->transcount = 0;
 	for (;exec->transno < exec->state->nbTrans;exec->transno++) {
@@ -2271,7 +2283,7 @@ xmlFARegExec(xmlRegexpPtr comp, const xmlChar *content) {
 	    } else if (exec->inputString[exec->index] != 0) {
                 codepoint = CUR_SCHAR(&(exec->inputString[exec->index]), len);
 		ret = xmlRegCheckCharacter(atom, codepoint);
-		if ((ret == 1) && (atom->min > 0) && (atom->max > 0)) {
+		if ((ret == 1) && (atom->min >= 0) && (atom->max > 0)) {
 		    xmlRegStatePtr to = comp->states[trans->to];
 
 		    /*
@@ -2326,7 +2338,21 @@ xmlFARegExec(xmlRegexpPtr comp, const xmlChar *content) {
 		    if (ret == 0) {
 			goto rollback;
 		    }
+		} else if ((ret == 0) && (atom->min == 0) && (atom->max > 0)) {
+		    /*
+		     * we don't match on the codepoint, but minOccurs of 0
+		     * says that's ok.  Setting len to 0 inhibits stepping
+		     * over the codepoint.
+		     */
+		    exec->transcount = 1;
+		    len = 0;
+		    ret = 1;
 		}
+	    } else if ((atom->min == 0) && (atom->max > 0)) {
+	        /* another spot to match when minOccurs is 0 */
+		exec->transcount = 1;
+		len = 0;
+		ret = 1;
 	    }
 	    if (ret == 1) {
 		if (exec->state->nbTrans > exec->transno + 1) {

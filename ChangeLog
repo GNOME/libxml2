@@ -1,3 +1,8 @@
+Mon Apr 26 23:37:12 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* xmlregexp.c: enhanced xmlFARegExec range evaluation for min
+	  occurs 0 problems - fixes bug 140478.
+
 Thu Apr 22 09:12:47 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* rngparser.c: tiny path fixes the "xmlConvertCRNGFile" function name

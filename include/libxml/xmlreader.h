@@ -206,6 +206,69 @@ XMLPUBFUN int XMLCALL
 #endif
 
 /*
+ * New more complete APIs for simpler creation and reuse of readers
+ */
+XMLPUBFUN xmlTextReaderPtr XMLCALL
+		xmlReaderForDoc		(const xmlChar * cur,
+					 const char *URL,
+					 const char *encoding,
+					 int options);
+XMLPUBFUN xmlTextReaderPtr XMLCALL
+		xmlReaderForFile	(const char *filename,
+					 const char *encoding,
+					 int options);
+XMLPUBFUN xmlTextReaderPtr XMLCALL
+		xmlReaderForMemory	(const char *buffer,
+					 int size,
+					 const char *URL,
+					 const char *encoding,
+					 int options);
+XMLPUBFUN xmlTextReaderPtr XMLCALL
+		xmlReaderForFd		(int fd,
+					 const char *URL,
+					 const char *encoding,
+					 int options);
+XMLPUBFUN xmlTextReaderPtr XMLCALL
+		xmlReaderForIO		(xmlInputReadCallback ioread,
+					 xmlInputCloseCallback ioclose,
+					 void *ioctx,
+					 const char *URL,
+					 const char *encoding,
+					 int options);
+
+XMLPUBFUN int XMLCALL
+		xmlReaderNewDoc		(xmlTextReaderPtr reader,
+					 const xmlChar * cur,
+					 const char *URL,
+					 const char *encoding,
+					 int options);
+XMLPUBFUN int XMLCALL
+		xmlReaderNewFile	(xmlTextReaderPtr reader,
+					 const char *filename,
+					 const char *encoding,
+					 int options);
+XMLPUBFUN int XMLCALL
+		xmlReaderNewMemory	(xmlTextReaderPtr reader,
+					 const char *buffer,
+					 int size,
+					 const char *URL,
+					 const char *encoding,
+					 int options);
+XMLPUBFUN int XMLCALL
+		xmlReaderNewFd		(xmlTextReaderPtr reader,
+					 int fd,
+					 const char *URL,
+					 const char *encoding,
+					 int options);
+XMLPUBFUN int XMLCALL
+		xmlReaderNewIO		(xmlTextReaderPtr reader,
+					 xmlInputReadCallback ioread,
+					 xmlInputCloseCallback ioclose,
+					 void *ioctx,
+					 const char *URL,
+					 const char *encoding,
+					 int options);
+/*
  * Error handling extensions
  */
 typedef void *  xmlTextReaderLocatorPtr;

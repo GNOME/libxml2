@@ -3758,7 +3758,14 @@ prefix and its URI.</p>
 
 <p>@@Interfaces@@</p>
 
-<p>@@Examples@@</p>
+<pre>
+xmlNodePtr node;
+if(!strncmp(node-&gt;name,"mytag",5)
+  &amp;&amp; node-&gt;ns
+  &amp;&amp; !strcmp(node-&gt;ns-&gt;href,"http://www.mysite.com/myns/1.0")) {
+  ...
+}
+</pre>
 
 <p>Usually people object to using namespaces together with validity checking.
 I will try to make sure that using namespaces won't break validity checking,
@@ -3766,9 +3773,11 @@ so even if you plan to use or currently are using validation I strongly
 suggest adding namespaces to your document. A default namespace scheme
 <code>xmlns="http://...."</code> should not break validity even on less
 flexible parsers. Using namespaces to mix and differentiate content coming
-from multiple DTDs will certainly break current validation schemes. I will
-try to provide ways to do this, but this may not be portable or
-standardized.</p>
+from multiple DTDs will certainly break current validation schemes.
+To check such documents one needs to use schema-validation, which is supported
+in libxml2 as well. See <a href="http://www.relaxng.org/">relagx-ng</a> and
+<a href="http://www.w3c.org/XML/Schema">w3c-schema</a>.
+</p>
 
 <h2><a name="Upgrading">Upgrading 1.x code</a></h2>
 
@@ -3796,7 +3805,7 @@ incompatible changes. The main goals were:</p>
 <p>So client code of libxml designed to run with version 1.x may have to be
 changed to compile against version 2.x of libxml. Here is a list of changes
 that I have collected, they may not be sufficient, so in case you find other
-change which are required, <a href="mailto:Daniel.Ïeillardw3.org">drop me a
+change which are required, <a href="mailto:Daniel.Veillard@w3.org">drop me a
 mail</a>:</p>
 <ol>
   <li>The package name have changed from libxml to libxml2, the library name

@@ -35,6 +35,7 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/xmlIO.h>
 #include <libxml/xmlreader.h>
+#include <libxml/parserInternals.h>
 #include <libxml/relaxng.h>
 
 /* #define DEBUG_CALLBACKS */
@@ -3523,6 +3524,392 @@ xmlTextReaderGetErrorHandler(xmlTextReaderPtr reader,
     *arg = reader->errorFuncArg;
 }
 
+
+/************************************************************************
+ *									*
+ *	New set (2.6.0) of simpler and more flexible APIs		*
+ *									*
+ ************************************************************************/
+
+/**
+ * xmlTextReaderSetup:
+ * @reader:  an XML reader
+ * @URL:  the base URL to use for the document
+ * @encoding:  the document encoding, or NULL
+ * @options:  a combination of xmlParserOption(s)
+ * @reuse:  keep the context for reuse
+ *
+ * Setup an XML reader with new options
+ * 
+ * Returns 0 in case of success and -1 in case of error.
+ */
+static int
+xmlTextReaderSetup(xmlTextReaderPtr reader, const char *URL,
+                   const char *encoding, int options)
+{
+    if ((reader == NULL) || (reader->ctxt == NULL))
+        return (-1);
+
+    xmlCtxtUseOptions(reader->ctxt, options);
+    if (encoding != NULL) {
+        xmlCharEncodingHandlerPtr hdlr;
+
+        hdlr = xmlFindCharEncodingHandler(encoding);
+        if (hdlr != NULL)
+            xmlSwitchToEncoding(reader->ctxt, hdlr);
+    }
+    if ((URL != NULL) && (reader->ctxt->input != NULL) &&
+        (reader->ctxt->input->filename == NULL))
+        reader->ctxt->input->filename = (char *)
+            xmlStrdup((const xmlChar *) URL);
+    return (0);
+}
+
+/**
+ * xmlReaderForDoc:
+ * @cur:  a pointer to a zero terminated string
+ * @URL:  the base URL to use for the document
+ * @encoding:  the document encoding, or NULL
+ * @options:  a combination of xmlParserOption(s)
+ *
+ * Create an xmltextReader for an XML in-memory document.
+ * 
+ * Returns the new reader or NULL in case of error.
+ */
+xmlTextReaderPtr
+xmlReaderForDoc(const xmlChar * cur, const char *URL, const char *encoding,
+                int options)
+{
+    int len;
+
+    if (cur == NULL)
+        return (NULL);
+    len = xmlStrlen(cur);
+
+    return (xmlReaderForMemory
+            ((const char *) cur, len, URL, encoding, options));
+}
+
+/**
+ * xmlReaderForFile:
+ * @filename:  a file or URL
+ * @encoding:  the document encoding, or NULL
+ * @options:  a combination of xmlParserOption(s)
+ *
+ * parse an XML file from the filesystem or the network.
+ * 
+ * Returns the new reader or NULL in case of error.
+ */
+xmlTextReaderPtr
+xmlReaderForFile(const char *filename, const char *encoding, int options)
+{
+    xmlTextReaderPtr reader;
+
+    reader = xmlNewTextReaderFilename(filename);
+    if (reader == NULL)
+        return (NULL);
+    xmlTextReaderSetup(reader, NULL, encoding, options);
+    return (reader);
+}
+
+/**
+ * xmlReaderForMemory:
+ * @buffer:  a pointer to a char array
+ * @size:  the size of the array
+ * @URL:  the base URL to use for the document
+ * @encoding:  the document encoding, or NULL
+ * @options:  a combination of xmlParserOption(s)
+ *
+ * Create an xmltextReader for an XML in-memory document.
+ * 
+ * Returns the new reader or NULL in case of error.
+ */
+xmlTextReaderPtr
+xmlReaderForMemory(const char *buffer, int size, const char *URL,
+                   const char *encoding, int options)
+{
+    xmlTextReaderPtr reader;
+    xmlParserInputBufferPtr buf;
+
+    buf =
+        xmlParserInputBufferCreateMem(buffer, size,
+                                      XML_CHAR_ENCODING_NONE);
+    if (buf == NULL) {
+        return (NULL);
+    }
+    reader = xmlNewTextReader(buf, URL);
+    if (reader == NULL) {
+        xmlFreeParserInputBuffer(buf);
+        return (NULL);
+    }
+    xmlTextReaderSetup(reader, URL, encoding, options);
+    return (reader);
+}
+
+/**
+ * xmlReaderForFd:
+ * @fd:  an open file descriptor
+ * @URL:  the base URL to use for the document
+ * @encoding:  the document encoding, or NULL
+ * @options:  a combination of xmlParserOption(s)
+ *
+ * Create an xmltextReader for an XML from a file descriptor.
+ * 
+ * Returns the new reader or NULL in case of error.
+ */
+xmlTextReaderPtr
+xmlReaderForFd(int fd, const char *URL, const char *encoding, int options)
+{
+    xmlTextReaderPtr reader;
+    xmlParserInputBufferPtr input;
+
+    if (fd < 0)
+        return (NULL);
+
+    input = xmlParserInputBufferCreateFd(fd, XML_CHAR_ENCODING_NONE);
+    if (input == NULL)
+        return (NULL);
+    reader = xmlNewTextReader(input, URL);
+    if (reader == NULL) {
+        xmlFreeParserInputBuffer(input);
+        return (NULL);
+    }
+    xmlTextReaderSetup(reader, URL, encoding, options);
+    return (reader);
+}
+
+/**
+ * xmlReaderForIO:
+ * @ioread:  an I/O read function
+ * @ioclose:  an I/O close function
+ * @ioctx:  an I/O handler
+ * @URL:  the base URL to use for the document
+ * @encoding:  the document encoding, or NULL
+ * @options:  a combination of xmlParserOption(s)
+ *
+ * Create an xmltextReader for an XML document from I/O functions and source.
+ * 
+ * Returns the new reader or NULL in case of error.
+ */
+xmlTextReaderPtr
+xmlReaderForIO(xmlInputReadCallback ioread, xmlInputCloseCallback ioclose,
+               void *ioctx, const char *URL, const char *encoding,
+               int options)
+{
+    xmlTextReaderPtr reader;
+    xmlParserInputBufferPtr input;
+
+    if (ioread == NULL)
+        return (NULL);
+
+    input = xmlParserInputBufferCreateIO(ioread, ioclose, ioctx,
+                                         XML_CHAR_ENCODING_NONE);
+    if (input == NULL)
+        return (NULL);
+    reader = xmlNewTextReader(input, URL);
+    if (reader == NULL) {
+        xmlFreeParserInputBuffer(input);
+        return (NULL);
+    }
+    xmlTextReaderSetup(reader, URL, encoding, options);
+    return (reader);
+}
+
+/**
+ * xmlReaderNewDoc:
+ * @reader:  an XML reader
+ * @cur:  a pointer to a zero terminated string
+ * @URL:  the base URL to use for the document
+ * @encoding:  the document encoding, or NULL
+ * @options:  a combination of xmlParserOption(s)
+ *
+ * Setup an xmltextReader to parse an XML in-memory document.
+ * This reuses the existing @reader xmlTextReader.
+ * 
+ * Returns 0 in case of success and -1 in case of error
+ */
+int
+xmlReaderNewDoc(xmlTextReaderPtr reader, const xmlChar * cur,
+                const char *URL, const char *encoding, int options)
+{
+    xmlParserInputPtr stream;
+
+    if (cur == NULL)
+        return (-1);
+    if ((reader == NULL) || (reader->ctxt == NULL))
+        return (-1);
+
+    xmlCtxtReset(reader->ctxt);
+
+    stream = xmlNewStringInputStream(reader->ctxt, cur);
+    if (stream == NULL) {
+        return (-1);
+    }
+    inputPush(reader->ctxt, stream);
+    return (xmlTextReaderSetup(reader, URL, encoding, options));
+}
+
+/**
+ * xmlReaderNewFile:
+ * @reader:  an XML reader
+ * @filename:  a file or URL
+ * @encoding:  the document encoding, or NULL
+ * @options:  a combination of xmlParserOption(s)
+ *
+ * parse an XML file from the filesystem or the network.
+ * This reuses the existing @reader xmlTextReader.
+ * 
+ * Returns 0 in case of success and -1 in case of error
+ */
+int
+xmlReaderNewFile(xmlTextReaderPtr reader, const char *filename,
+                 const char *encoding, int options)
+{
+    xmlParserInputPtr stream;
+
+    if (filename == NULL)
+        return (-1);
+    if ((reader == NULL) || (reader->ctxt == NULL))
+        return (-1);
+
+    xmlCtxtReset(reader->ctxt);
+
+    stream = xmlNewInputFromFile(reader->ctxt, filename);
+    if (stream == NULL) {
+        return (-1);
+    }
+    inputPush(reader->ctxt, stream);
+    return (xmlTextReaderSetup(reader, NULL, encoding, options));
+}
+
+/**
+ * xmlReaderNewMemory:
+ * @reader:  an XML reader
+ * @buffer:  a pointer to a char array
+ * @size:  the size of the array
+ * @URL:  the base URL to use for the document
+ * @encoding:  the document encoding, or NULL
+ * @options:  a combination of xmlParserOption(s)
+ *
+ * Setup an xmltextReader to parse an XML in-memory document.
+ * This reuses the existing @reader xmlTextReader.
+ * 
+ * Returns 0 in case of success and -1 in case of error
+ */
+int
+xmlReaderNewMemory(xmlTextReaderPtr reader, const char *buffer, int size,
+                   const char *URL, const char *encoding, int options)
+{
+    xmlParserInputBufferPtr input;
+    xmlParserInputPtr stream;
+
+    if ((reader == NULL) || (reader->ctxt == NULL))
+        return (-1);
+    if (buffer == NULL)
+        return (-1);
+
+    xmlCtxtReset(reader->ctxt);
+
+    input =
+        xmlParserInputBufferCreateMem(buffer, size,
+                                      XML_CHAR_ENCODING_NONE);
+    if (input == NULL) {
+        return (-1);
+    }
+
+    stream = xmlNewIOInputStream(reader->ctxt, input, XML_CHAR_ENCODING_NONE);
+    if (stream == NULL) {
+        xmlFreeParserInputBuffer(input);
+        return (-1);
+    }
+
+    inputPush(reader->ctxt, stream);
+    return (xmlTextReaderSetup(reader, URL, encoding, options));
+}
+
+/**
+ * xmlReaderNewFd:
+ * @reader:  an XML reader
+ * @fd:  an open file descriptor
+ * @URL:  the base URL to use for the document
+ * @encoding:  the document encoding, or NULL
+ * @options:  a combination of xmlParserOption(s)
+ *
+ * Setup an xmltextReader to parse an XML from a file descriptor.
+ * This reuses the existing @reader xmlTextReader.
+ * 
+ * Returns 0 in case of success and -1 in case of error
+ */
+int
+xmlReaderNewFd(xmlTextReaderPtr reader, int fd,
+               const char *URL, const char *encoding, int options)
+{
+    xmlParserInputBufferPtr input;
+    xmlParserInputPtr stream;
+
+    if (fd < 0)
+        return (-1);
+    if ((reader == NULL) || (reader->ctxt == NULL))
+        return (-1);
+
+    xmlCtxtReset(reader->ctxt);
+
+
+    input = xmlParserInputBufferCreateFd(fd, XML_CHAR_ENCODING_NONE);
+    if (input == NULL)
+        return (-1);
+    stream = xmlNewIOInputStream(reader->ctxt, input, XML_CHAR_ENCODING_NONE);
+    if (stream == NULL) {
+        xmlFreeParserInputBuffer(input);
+        return (-1);
+    }
+    inputPush(reader->ctxt, stream);
+    return (xmlTextReaderSetup(reader, URL, encoding, options));
+}
+
+/**
+ * xmlReaderNewIO:
+ * @reader:  an XML reader
+ * @ioread:  an I/O read function
+ * @ioclose:  an I/O close function
+ * @ioctx:  an I/O handler
+ * @URL:  the base URL to use for the document
+ * @encoding:  the document encoding, or NULL
+ * @options:  a combination of xmlParserOption(s)
+ *
+ * Setup an xmltextReader to parse an XML document from I/O functions
+ * and source.
+ * This reuses the existing @reader xmlTextReader.
+ * 
+ * Returns 0 in case of success and -1 in case of error
+ */
+int
+xmlReaderNewIO(xmlTextReaderPtr reader, xmlInputReadCallback ioread,
+               xmlInputCloseCallback ioclose, void *ioctx,
+               const char *URL, const char *encoding, int options)
+{
+    xmlParserInputBufferPtr input;
+    xmlParserInputPtr stream;
+
+    if (ioread == NULL)
+        return (-1);
+    if ((reader == NULL) || (reader->ctxt == NULL))
+        return (-1);
+
+    xmlCtxtReset(reader->ctxt);
+
+    input = xmlParserInputBufferCreateIO(ioread, ioclose, ioctx,
+                                         XML_CHAR_ENCODING_NONE);
+    if (input == NULL)
+        return (-1);
+    stream = xmlNewIOInputStream(reader->ctxt, input, XML_CHAR_ENCODING_NONE);
+    if (stream == NULL) {
+        xmlFreeParserInputBuffer(input);
+        return (-1);
+    }
+    inputPush(reader->ctxt, stream);
+    return (xmlTextReaderSetup(reader, URL, encoding, options));
+}
 /************************************************************************
  *									*
  *			Utilities					*

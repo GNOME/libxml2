@@ -25,6 +25,9 @@ ignored_files = {
   "testOOM.c": "out of memory tester",
   "testOOMlib.h": "out of memory tester",
   "testOOMlib.c": "out of memory tester",
+  "chvalid.h":  "internal only + parsing problems",
+  "pattern.c": "not integrated yet",
+  "pattern.h": "not integrated yet",
 }
 
 ignored_words = {

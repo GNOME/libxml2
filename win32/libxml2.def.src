@@ -85,6 +85,7 @@ __xmlKeepBlanksDefaultValue
 #else
 xmlKeepBlanksDefaultValue DATA
 #endif
+xmlLastError DATA
 #ifdef LIBXML_THREAD_ENABLED
 __xmlLineNumbersDefaultValue
 #else
@@ -115,6 +116,7 @@ __xmlParserDebugEntities
 #else
 xmlParserDebugEntities DATA
 #endif
+xmlParserMaxDepth DATA
 #ifdef LIBXML_THREAD_ENABLED
 __xmlParserVersion
 #else
@@ -143,6 +145,7 @@ xmlSaveNoEmptyTags DATA
 xmlStringComment DATA
 xmlStringText DATA
 xmlStringTextNoenc DATA
+xmlStructuredError DATA
 #ifdef LIBXML_THREAD_ENABLED
 __xmlSubstituteEntitiesDefaultValue
 #else
@@ -644,6 +647,7 @@ xmlCopyElementContent
 xmlCopyElementTable
 xmlCopyEntitiesTable
 xmlCopyEnumeration
+xmlCopyError
 xmlCopyNamespace
 xmlCopyNamespaceList
 xmlCopyNode
@@ -661,12 +665,14 @@ xmlCreateIntSubset
 xmlCreateMemoryParserCtxt
 xmlCreatePushParserCtxt
 xmlCreateURI
+xmlCtxtGetLastError
 xmlCtxtReadDoc
 xmlCtxtReadFd
 xmlCtxtReadFile
 xmlCtxtReadIO
 xmlCtxtReadMemory
 xmlCtxtReset
+xmlCtxtResetLastError
 xmlCtxtUseOptions
 xmlCurrentChar
 #ifdef LIBXML_DEBUG_ENABLED
@@ -720,6 +726,33 @@ xmlDocDumpMemoryEnc
 xmlDocFormatDump
 xmlDocGetRootElement
 xmlDocSetRootElement
+xmlDocWalkerAttributeCount
+xmlDocWalkerBaseUri
+xmlDocWalkerCurrentDoc
+xmlDocWalkerCurrentNode
+xmlDocWalkerDepth
+xmlDocWalkerGetAttribute
+xmlDocWalkerGetAttributeNo
+xmlDocWalkerGetAttributeNs
+xmlDocWalkerHasAttributes
+xmlDocWalkerHasValue
+xmlDocWalkerIsEmptyElement
+xmlDocWalkerLocalName
+xmlDocWalkerLookupNamespace
+xmlDocWalkerMoveToAttribute
+xmlDocWalkerMoveToAttributeNo
+xmlDocWalkerMoveToAttributeNs
+xmlDocWalkerMoveToElement
+xmlDocWalkerMoveToFirstAttribute
+xmlDocWalkerMoveToNextAttribute
+xmlDocWalkerName
+xmlDocWalkerNamespaceUri
+xmlDocWalkerNext
+xmlDocWalkerNodeType
+xmlDocWalkerPrefix
+xmlDocWalkerRewind
+xmlDocWalkerStep
+xmlDocWalkerValue
 xmlDumpAttributeDecl
 xmlDumpAttributeTable
 xmlDumpElementDecl
@@ -732,6 +765,7 @@ xmlElemDump
 xmlEncodeEntities
 xmlEncodeEntitiesReentrant
 xmlEncodeSpecialChars
+xmlErrMemory
 xmlFileClose
 xmlFileMatch
 xmlFileOpen
@@ -745,6 +779,7 @@ xmlFreeAutomata
 xmlFreeCatalog
 #endif
 xmlFreeDoc
+xmlFreeDocWalker
 xmlFreeDtd
 xmlFreeElementContent
 xmlFreeElementTable
@@ -789,6 +824,7 @@ xmlGetGlobalState
 xmlGetID
 xmlGetIntSubset
 xmlGetLastChild
+xmlGetLastError
 xmlGetLineNo
 xmlGetNoNsProp
 xmlGetNodePath
@@ -866,19 +902,11 @@ xmlInitializeCatalog
 #endif
 xmlInitializeGlobalState
 xmlInitializePredefinedEntities
-xmlIsBaseChar
-xmlIsBlank
 xmlIsBlankNode
-xmlIsChar
-xmlIsCombining
-xmlIsDigit
-xmlIsExtender
 xmlIsID
-xmlIsIdeographic
 xmlIsLetter
 xmlIsMainThread
 xmlIsMixedElement
-xmlIsPubidChar
 xmlIsRef
 #ifdef LIBXML_HTML_ENABLED
 xmlIsXHTML
@@ -1080,6 +1108,7 @@ xmlNewDocProp
 xmlNewDocRawNode
 xmlNewDocText
 xmlNewDocTextLen
+xmlNewDocWalker
 xmlNewDtd
 xmlNewElementContent
 xmlNewEntityInputStream
@@ -1233,6 +1262,16 @@ xmlReadFd
 xmlReadFile
 xmlReadIO
 xmlReadMemory
+xmlReaderForDoc
+xmlReaderForFd
+xmlReaderForFile
+xmlReaderForIO
+xmlReaderForMemory
+xmlReaderNewDoc
+xmlReaderNewFd
+xmlReaderNewFile
+xmlReaderNewIO
+xmlReaderNewMemory
 #ifdef DEBUG_MEMORY_LOCATION
 xmlReallocLoc
 #endif
@@ -1340,6 +1379,8 @@ xmlRemoveID
 xmlRemoveProp
 xmlRemoveRef
 xmlReplaceNode
+xmlResetError
+xmlResetLastError
 xmlSAX2AttributeDecl
 xmlSAX2CDataBlock
 xmlSAX2Characters
@@ -1480,6 +1521,7 @@ xmlSetListDoc
 xmlSetNs
 xmlSetNsProp
 xmlSetProp
+xmlSetStructuredErrorFunc
 xmlSetTreeDoc
 xmlSetupParserForBuffer
 #ifdef LIBXML_DEBUG_ENABLED
@@ -1532,6 +1574,7 @@ xmlSplitQName3
 xmlSprintfElementContent
 xmlStopParser
 xmlStrEqual
+xmlStrPrintf
 xmlStrQEqual
 xmlStrcasecmp
 xmlStrcasestr
@@ -1629,6 +1672,7 @@ xmlThrDefPedanticParserDefaultValue
 xmlThrDefRegisterNodeDefault
 xmlThrDefSaveNoEmptyTags
 xmlThrDefSetGenericErrorFunc
+xmlThrDefSetStructuredErrorFunc
 xmlThrDefSubstituteEntitiesDefaultValue
 xmlThrDefTreeIndentString
 #ifdef LIBXML_REGEXP_ENABLED
@@ -2191,6 +2235,9 @@ xmlXPathDivValues
 #endif
 #ifdef LIBXML_XPATH_ENABLED
 xmlXPathEqualValues
+#endif
+#ifdef LIBXML_XPATH_ENABLED
+xmlXPathErr
 #endif
 #ifdef LIBXML_XPATH_ENABLED
 xmlXPathEval

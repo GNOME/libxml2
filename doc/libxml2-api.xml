@@ -140,15 +140,7 @@
      <exports symbol='xmlErrMemory'/>
      <exports symbol='xmlFreeInputStream'/>
      <exports symbol='xmlHandleEntity'/>
-     <exports symbol='xmlIsBaseChar'/>
-     <exports symbol='xmlIsBlank'/>
-     <exports symbol='xmlIsChar'/>
-     <exports symbol='xmlIsCombining'/>
-     <exports symbol='xmlIsDigit'/>
-     <exports symbol='xmlIsExtender'/>
-     <exports symbol='xmlIsIdeographic'/>
      <exports symbol='xmlIsLetter'/>
-     <exports symbol='xmlIsPubidChar'/>
      <exports symbol='xmlNamespaceParseNCName'/>
      <exports symbol='xmlNamespaceParseNSDef'/>
      <exports symbol='xmlNamespaceParseQName'/>
@@ -206,6 +198,7 @@
      <exports symbol='xmlParserHandlePEReference'/>
      <exports symbol='xmlParserHandleReference'/>
      <exports symbol='xmlParserInputShrink'/>
+     <exports symbol='xmlParserMaxDepth'/>
      <exports symbol='xmlPopInput'/>
      <exports symbol='xmlPushInput'/>
      <exports symbol='xmlScanName'/>
@@ -1385,6 +1378,16 @@
      <exports symbol='xmlNewTextReaderFilename'/>
      <exports symbol='xmlParserProperties'/>
      <exports symbol='xmlParserSeverities'/>
+     <exports symbol='xmlReaderForDoc'/>
+     <exports symbol='xmlReaderForFd'/>
+     <exports symbol='xmlReaderForFile'/>
+     <exports symbol='xmlReaderForIO'/>
+     <exports symbol='xmlReaderForMemory'/>
+     <exports symbol='xmlReaderNewDoc'/>
+     <exports symbol='xmlReaderNewFd'/>
+     <exports symbol='xmlReaderNewFile'/>
+     <exports symbol='xmlReaderNewIO'/>
+     <exports symbol='xmlReaderNewMemory'/>
      <exports symbol='xmlReaderTypes'/>
      <exports symbol='xmlTextReader'/>
      <exports symbol='xmlTextReaderAttributeCount'/>
@@ -4911,6 +4914,7 @@ actually an xmlCharEncoding'/>
     <variable name='xmlMallocAtomic' file='globals' type='xmlMallocFunc'/>
     <variable name='xmlMemStrdup' file='globals' type='xmlStrdupFunc'/>
     <variable name='xmlParserDebugEntities' file='globals' type='int'/>
+    <variable name='xmlParserMaxDepth' file='parserInternals' type='unsigned int'/>
     <variable name='xmlParserVersion' file='globals' type='const char *'/>
     <variable name='xmlPedanticParserDefaultValue' file='globals' type='int'/>
     <variable name='xmlRealloc' file='globals' type='xmlReallocFunc'/>
@@ -8053,40 +8057,10 @@ actually an xmlCharEncoding'/>
       <arg name='buffer' type='char *' info='the buffer to store data read'/>
       <arg name='len' type='int' info='the length of the buffer in bytes'/>
     </functype>
-    <function name='xmlIsBaseChar' file='parserInternals'>
-      <info>Check whether the character is allowed by the production [85] BaseChar ::= ... long list see REC ...  VI is your friend ! :1,$ s/\[#x\([0-9A-Z]*\)-#x\([0-9A-Z]*\)\]/     (((c) &gt;= 0x\1) \&amp;\&amp; ((c) &lt;= 0x\2)) ||/ and :1,$ s/#x\([0-9A-Z]*\)/     ((c) == 0x\1) ||/</info>
-      <return type='int' info='0 if not, non-zero otherwise'/>
-      <arg name='c' type='int' info='an unicode character (int)'/>
-    </function>
-    <function name='xmlIsBlank' file='parserInternals'>
-      <info>Check whether the character is allowed by the production [3] S ::= (#x20 | #x9 | #xD | #xA)+ Also available as a macro IS_BLANK()</info>
-      <return type='int' info='0 if not, non-zero otherwise'/>
-      <arg name='c' type='int' info='an unicode character (int)'/>
-    </function>
     <function name='xmlIsBlankNode' file='tree'>
       <info>Checks whether this node is an empty or whitespace only (and possibly ignorable) text-node.</info>
       <return type='int' info='1 yes, 0 no'/>
       <arg name='node' type='xmlNodePtr' info='the node'/>
-    </function>
-    <function name='xmlIsChar' file='parserInternals'>
-      <info>Check whether the character is allowed by the production [2] Char ::= #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] | [#x10000-#x10FFFF] any Unicode character, excluding the surrogate blocks, FFFE, and FFFF. Also available as a macro IS_CHAR()</info>
-      <return type='int' info='0 if not, non-zero otherwise'/>
-      <arg name='c' type='int' info='an unicode character (int)'/>
-    </function>
-    <function name='xmlIsCombining' file='parserInternals'>
-      <info>Check whether the character is allowed by the production [87] CombiningChar ::= ... long list see REC ...</info>
-      <return type='int' info='0 if not, non-zero otherwise'/>
-      <arg name='c' type='int' info='an unicode character (int)'/>
-    </function>
-    <function name='xmlIsDigit' file='parserInternals'>
-      <info>Check whether the character is allowed by the production [88] Digit ::= ... long list see REC ...</info>
-      <return type='int' info='0 if not, non-zero otherwise'/>
-      <arg name='c' type='int' info='an unicode character (int)'/>
-    </function>
-    <function name='xmlIsExtender' file='parserInternals'>
-      <info>Check whether the character is allowed by the production [89] Extender ::= #x00B7 | #x02D0 | #x02D1 | #x0387 | #x0640 | #x0E46 | #x0EC6 | #x3005 | [#x3031-#x3035] | [#x309D-#x309E] | [#x30FC-#x30FE]</info>
-      <return type='int' info='0 if not, non-zero otherwise'/>
-      <arg name='c' type='int' info='an unicode character (int)'/>
     </function>
     <function name='xmlIsID' file='valid'>
       <info>Determine whether an attribute is of type ID. In case we have DTD(s) then this is done if DTD loading has been requested. In the case of HTML documents parsed with the HTML parser, then ID detection is done systematically.</info>
@@ -8094,11 +8068,6 @@ actually an xmlCharEncoding'/>
       <arg name='doc' type='xmlDocPtr' info='the document'/>
       <arg name='elem' type='xmlNodePtr' info='the element carrying the attribute'/>
       <arg name='attr' type='xmlAttrPtr' info='the attribute'/>
-    </function>
-    <function name='xmlIsIdeographic' file='parserInternals'>
-      <info>Check whether the character is allowed by the production [86] Ideographic ::= [#x4E00-#x9FA5] | #x3007 | [#x3021-#x3029]</info>
-      <return type='int' info='0 if not, non-zero otherwise'/>
-      <arg name='c' type='int' info='an unicode character (int)'/>
     </function>
     <function name='xmlIsLetter' file='parserInternals'>
       <info>Check whether the character is allowed by the production [84] Letter ::= BaseChar | Ideographic</info>
@@ -8114,11 +8083,6 @@ actually an xmlCharEncoding'/>
       <return type='int' info='0 if no, 1 if yes, and -1 if no element description is available'/>
       <arg name='doc' type='xmlDocPtr' info='the document'/>
       <arg name='name' type='const xmlChar *' info='the element name'/>
-    </function>
-    <function name='xmlIsPubidChar' file='parserInternals'>
-      <info>Check whether the character is allowed by the production [13] PubidChar ::= #x20 | #xD | #xA | [a-zA-Z0-9] | [-&apos;()+,./:=?;!*#@$_%]</info>
-      <return type='int' info='0 if not, non-zero otherwise'/>
-      <arg name='c' type='int' info='an unicode character (int)'/>
     </function>
     <function name='xmlIsRef' file='valid'>
       <info>Determine whether an attribute is of type Ref. In case we have DTD(s) then this is simple, otherwise we use an heuristic: name Ref (upper or lowercase).</info>
@@ -9694,6 +9658,95 @@ actually an xmlCharEncoding'/>
     <function name='xmlReadMemory' file='parser'>
       <info>parse an XML in-memory document and build a tree.</info>
       <return type='xmlDocPtr' info='the resulting document tree'/>
+      <arg name='buffer' type='const char *' info='a pointer to a char array'/>
+      <arg name='size' type='int' info='the size of the array'/>
+      <arg name='URL' type='const char *' info='the base URL to use for the document'/>
+      <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
+      <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
+    </function>
+    <function name='xmlReaderForDoc' file='xmlreader'>
+      <info>Create an xmltextReader for an XML in-memory document.</info>
+      <return type='xmlTextReaderPtr' info='the new reader or NULL in case of error.'/>
+      <arg name='cur' type='const xmlChar *' info='a pointer to a zero terminated string'/>
+      <arg name='URL' type='const char *' info='the base URL to use for the document'/>
+      <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
+      <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
+    </function>
+    <function name='xmlReaderForFd' file='xmlreader'>
+      <info>Create an xmltextReader for an XML from a file descriptor.</info>
+      <return type='xmlTextReaderPtr' info='the new reader or NULL in case of error.'/>
+      <arg name='fd' type='int' info='an open file descriptor'/>
+      <arg name='URL' type='const char *' info='the base URL to use for the document'/>
+      <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
+      <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
+    </function>
+    <function name='xmlReaderForFile' file='xmlreader'>
+      <info>parse an XML file from the filesystem or the network.</info>
+      <return type='xmlTextReaderPtr' info='the new reader or NULL in case of error.'/>
+      <arg name='filename' type='const char *' info='a file or URL'/>
+      <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
+      <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
+    </function>
+    <function name='xmlReaderForIO' file='xmlreader'>
+      <info>Create an xmltextReader for an XML document from I/O functions and source.</info>
+      <return type='xmlTextReaderPtr' info='the new reader or NULL in case of error.'/>
+      <arg name='ioread' type='xmlInputReadCallback' info='an I/O read function'/>
+      <arg name='ioclose' type='xmlInputCloseCallback' info='an I/O close function'/>
+      <arg name='ioctx' type='void *' info='an I/O handler'/>
+      <arg name='URL' type='const char *' info='the base URL to use for the document'/>
+      <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
+      <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
+    </function>
+    <function name='xmlReaderForMemory' file='xmlreader'>
+      <info>Create an xmltextReader for an XML in-memory document.</info>
+      <return type='xmlTextReaderPtr' info='the new reader or NULL in case of error.'/>
+      <arg name='buffer' type='const char *' info='a pointer to a char array'/>
+      <arg name='size' type='int' info='the size of the array'/>
+      <arg name='URL' type='const char *' info='the base URL to use for the document'/>
+      <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
+      <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
+    </function>
+    <function name='xmlReaderNewDoc' file='xmlreader'>
+      <info>Setup an xmltextReader to parse an XML in-memory document. This reuses the existing @reader xmlTextReader.</info>
+      <return type='int' info='0 in case of success and -1 in case of error'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='an XML reader'/>
+      <arg name='cur' type='const xmlChar *' info='a pointer to a zero terminated string'/>
+      <arg name='URL' type='const char *' info='the base URL to use for the document'/>
+      <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
+      <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
+    </function>
+    <function name='xmlReaderNewFd' file='xmlreader'>
+      <info>Setup an xmltextReader to parse an XML from a file descriptor. This reuses the existing @reader xmlTextReader.</info>
+      <return type='int' info='0 in case of success and -1 in case of error'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='an XML reader'/>
+      <arg name='fd' type='int' info='an open file descriptor'/>
+      <arg name='URL' type='const char *' info='the base URL to use for the document'/>
+      <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
+      <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
+    </function>
+    <function name='xmlReaderNewFile' file='xmlreader'>
+      <info>parse an XML file from the filesystem or the network. This reuses the existing @reader xmlTextReader.</info>
+      <return type='int' info='0 in case of success and -1 in case of error'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='an XML reader'/>
+      <arg name='filename' type='const char *' info='a file or URL'/>
+      <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
+      <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
+    </function>
+    <function name='xmlReaderNewIO' file='xmlreader'>
+      <info>Setup an xmltextReader to parse an XML document from I/O functions and source. This reuses the existing @reader xmlTextReader.</info>
+      <return type='int' info='0 in case of success and -1 in case of error'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='an XML reader'/>
+      <arg name='ioread' type='xmlInputReadCallback' info='an I/O read function'/>
+      <arg name='ioclose' type='xmlInputCloseCallback' info='an I/O close function'/>
+      <arg name='ioctx' type='void *' info='an I/O handler'/>
+      <arg name='URL' type='const char *' info='the base URL to use for the document'/>
+      <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
+      <arg name='options' type='int' info='a combination of xmlParserOption(s)'/>
+    </function>
+    <function name='xmlReaderNewMemory' file='xmlreader'>
+      <info>Setup an xmltextReader to parse an XML in-memory document. This reuses the existing @reader xmlTextReader.</info>
+      <return type='int' info='0 in case of success and -1 in case of error'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='an XML reader'/>
       <arg name='buffer' type='const char *' info='a pointer to a char array'/>
       <arg name='size' type='int' info='the size of the array'/>
       <arg name='URL' type='const char *' info='the base URL to use for the document'/>

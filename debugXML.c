@@ -30,6 +30,9 @@
 #include <libxml/globals.h>
 #include <libxml/xpathInternals.h>
 #include <libxml/uri.h>
+#ifdef LIBXML_SCHEMAS_ENABLED
+#include <libxml/relaxng.h>
+#endif
 
 /**
  * xmlDebugDumpString:
@@ -1668,6 +1671,62 @@ xmlShellDir(xmlShellCtxtPtr ctxt ATTRIBUTE_UNUSED,
     return (0);
 }
 
+#ifdef LIBXML_SCHEMAS_ENABLED
+/**
+ * xmlShellRNGValidate:
+ * @ctxt:  the shell context
+ * @schemas:  the path to the Relax-NG schemas
+ * @node:  a node
+ * @node2:  unused
+ *
+ * Implements the XML shell function "relaxng"
+ * validating the instance against a Relax-NG schemas
+ *
+ * Returns 0
+ */
+static int
+xmlShellRNGValidate(xmlShellCtxtPtr sctxt, char *schemas,
+            xmlNodePtr node ATTRIBUTE_UNUSED,
+	    xmlNodePtr node2 ATTRIBUTE_UNUSED)
+{
+    xmlRelaxNGPtr relaxngschemas;
+    xmlRelaxNGParserCtxtPtr ctxt;
+    xmlRelaxNGValidCtxtPtr vctxt;
+    int ret;
+
+    ctxt = xmlRelaxNGNewParserCtxt(schemas);
+    xmlRelaxNGSetParserErrors(ctxt,
+	    (xmlRelaxNGValidityErrorFunc) fprintf,
+	    (xmlRelaxNGValidityWarningFunc) fprintf,
+	    stderr);
+    relaxngschemas = xmlRelaxNGParse(ctxt);
+    xmlRelaxNGFreeParserCtxt(ctxt);
+    if (relaxngschemas == NULL) {
+	xmlGenericError(xmlGenericErrorContext,
+		"Relax-NG schema %s failed to compile\n", schemas);
+	return(-1);
+    }
+    vctxt = xmlRelaxNGNewValidCtxt(relaxngschemas);
+    xmlRelaxNGSetValidErrors(vctxt,
+	    (xmlRelaxNGValidityErrorFunc) fprintf,
+	    (xmlRelaxNGValidityWarningFunc) fprintf,
+	    stderr);
+    ret = xmlRelaxNGValidateDoc(vctxt, sctxt->doc);
+    if (ret == 0) {
+	fprintf(stderr, "%s validates\n", sctxt->filename);
+    } else if (ret > 0) {
+	fprintf(stderr, "%s fails to validate\n", sctxt->filename);
+    } else {
+	fprintf(stderr, "%s validation generated an internal error\n",
+	       sctxt->filename);
+    }
+    xmlRelaxNGFreeValidCtxt(vctxt);
+    if (relaxngschemas != NULL)
+	xmlRelaxNGFree(relaxngschemas);
+    return(0);
+}
+#endif
+
 #ifdef LIBXML_OUTPUT_ENABLED
 /**
  * xmlShellCat:
@@ -2191,11 +2250,18 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
 		  fprintf(ctxt->output, "\twrite [name] write the current node to the filename\n");
 #endif /* LIBXML_OUTPUT_ENABLED */
 		  fprintf(ctxt->output, "\tvalidate     check the document for errors\n");
+#ifdef LIBXML_SCHEMAS_ENABLED
+		  fprintf(ctxt->output, "\trelaxng rng  validate the document agaisnt the Relax-NG schemas\n");
+#endif
 		  fprintf(ctxt->output, "\tgrep string  search for a string in the subtree\n");
         } else if (!strcmp(command, "validate")) {
             xmlShellValidate(ctxt, arg, NULL, NULL);
         } else if (!strcmp(command, "load")) {
             xmlShellLoad(ctxt, arg, NULL, NULL);
+#ifdef LIBXML_SCHEMAS_ENABLED
+        } else if (!strcmp(command, "relaxng")) {
+            xmlShellRNGValidate(ctxt, arg, NULL, NULL);
+#endif
 #ifdef LIBXML_OUTPUT_ENABLED
         } else if (!strcmp(command, "save")) {
             xmlShellSave(ctxt, arg, NULL, NULL);

@@ -1,3 +1,9 @@
+Sat Feb 21 13:52:30 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* debugXML.c: added "relaxng" option to the debugging shell
+	* Makefile.am test/errors/* result/errors/*: some regression tests
+	  for some error tests cases.
+
 Fri Feb 20 09:56:47 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: xmlAttrSerializeTxtContent don't segfault if NULL

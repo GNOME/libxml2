@@ -122,7 +122,7 @@ check-local: tests
 
 testall : tests SVGtests SAXtests
 
-tests: XMLtests XMLenttests NStests @READER_TEST@ @TEST_SAX@ @TEST_PUSH@ @TEST_HTML@ @TEST_PHTML@  @TEST_VALID@ URItests @TEST_XPATH@ @TEST_XPTR@ @TEST_XINCLUDE@ @TEST_C14N@ @TEST_DEBUG@ @TEST_CATALOG@ @TEST_REGEXPS@ @TEST_SCHEMAS@ @TEST_THREADS@ Timingtests @TEST_VTIME@
+tests: XMLtests XMLenttests NStests Errtests @READER_TEST@ @TEST_SAX@ @TEST_PUSH@ @TEST_HTML@ @TEST_PHTML@  @TEST_VALID@ URItests @TEST_XPATH@ @TEST_XPTR@ @TEST_XINCLUDE@ @TEST_C14N@ @TEST_DEBUG@ @TEST_CATALOG@ @TEST_REGEXPS@ @TEST_SCHEMAS@ @TEST_THREADS@ Timingtests @TEST_VTIME@
 	@(if [ "@PYTHON_SUBDIR@" != "" ] ; then cd python ; $(MAKE) tests ; fi)
 	@(cd doc/examples ; $(MAKE) tests)
 
@@ -277,6 +277,45 @@ NStests : xmllint$(EXEEXT)
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
 	      diff $(srcdir)/result/namespaces/$$name result.$$name ; \
 	      diff $(srcdir)/result/namespaces/$$name.err error.$$name` ; \
+	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
+	      rm result.$$name error.$$name ; \
+	  fi ; fi ; done)
+
+Errtests : xmllint$(EXEEXT)
+	@(echo > .memdump)
+	@echo "## Error cases regression tests"
+	-@(for i in $(srcdir)/test/errors/*.xml ; do \
+	  name=`basename $$i`; \
+	  if [ ! -d $$i ] ; then \
+	  if [ ! -f $(srcdir)/result/errors/$$name ] ; then \
+	      echo New test file $$name ; \
+	      $(CHECKER) $(top_builddir)/xmllint $$i \
+	         2> $(srcdir)/result/errors/$$name.err \
+		 > $(srcdir)/result/errors/$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
+	  else \
+	      log=`$(CHECKER) $(top_builddir)/xmllint $$i 2> error.$$name > result.$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
+	      diff $(srcdir)/result/errors/$$name result.$$name ; \
+	      diff $(srcdir)/result/errors/$$name.err error.$$name` ; \
+	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
+	      rm result.$$name error.$$name ; \
+	  fi ; fi ; done)
+	@echo "## Error cases stream regression tests"
+	-@(for i in $(srcdir)/test/errors/*.xml ; do \
+	  name=`basename $$i`; \
+	  if [ ! -d $$i ] ; then \
+	  if [ ! -f $(srcdir)/result/errors/$$name.str ] ; then \
+	      echo New test file $$name ; \
+	      $(CHECKER) $(top_builddir)/xmllint $$i \
+	         2> $(srcdir)/result/errors/$$name.str \
+		 > $(srcdir)/result/errors/$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
+	  else \
+	      log=`$(CHECKER) $(top_builddir)/xmllint $$i 2> error.$$name > result.$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
+	      diff $(srcdir)/result/errors/$$name result.$$name ; \
+	      diff $(srcdir)/result/errors/$$name.str error.$$name` ; \
 	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
 	      rm result.$$name error.$$name ; \
 	  fi ; fi ; done)

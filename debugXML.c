@@ -44,6 +44,9 @@ struct _xmlDebugCtxt {
     xmlNodePtr node;		/* current node */
     int check;                  /* do just checkings */
     int errors;                 /* number of errors found */
+    int                nsNr;    /* the number of inherited namespaces */
+    int                nsMax;   /* the size of the arrays */
+    xmlNsPtr          *nsTab;   /* the array of namespace nodes */
 };
 
 static void xmlCtxtDumpNodeList(xmlDebugCtxtPtr ctxt, xmlNodePtr node);
@@ -54,6 +57,9 @@ xmlCtxtDumpInitCtxt(xmlDebugCtxtPtr ctxt)
     int i;
 
     ctxt->depth = 0;
+    ctxt->nsNr = 0;
+    ctxt->nsMax = 0;
+    ctxt->nsTab = NULL;
     ctxt->check = 0;
     ctxt->errors = 0;
     ctxt->output = stdout;
@@ -62,6 +68,80 @@ xmlCtxtDumpInitCtxt(xmlDebugCtxtPtr ctxt)
     ctxt->shift[100] = 0;
 }
 
+static void
+xmlCtxtDumpCleanCtxt(xmlDebugCtxtPtr ctxt)
+{
+    if (ctxt->nsTab != NULL)
+        xmlFree(ctxt->nsTab);
+}
+
+/**
+ * xmlNsCheckPush:
+ * @ctxt:  an XML parser context
+ * @ns:  the namespace node
+ *
+ * Pushes a new namespace on top of the ns stack
+ *
+ * Returns -1 in case of error, and the index in the stack otherwise.
+ */
+static int
+xmlNsCheckPush(xmlDebugCtxtPtr ctxt, xmlNsPtr ns)
+{
+    if (ns == NULL)
+        return(ctxt->nsNr);
+
+    if ((ctxt->nsMax == 0) || (ctxt->nsTab == NULL)) {
+	ctxt->nsMax = 10;
+	ctxt->nsNr = 0;
+	ctxt->nsTab = (xmlNsPtr *)
+	              xmlMalloc(ctxt->nsMax * sizeof(ctxt->nsTab[0]));
+	if (ctxt->nsTab == NULL) {
+	    xmlErrMemory(NULL, NULL);
+	    ctxt->nsMax = 0;
+            return (-1);
+	}
+    } else if (ctxt->nsNr >= ctxt->nsMax) {
+        ctxt->nsMax *= 2;
+        ctxt->nsTab = (xmlNsPtr *)
+	              xmlRealloc((char *) ctxt->nsTab,
+				 ctxt->nsMax * sizeof(ctxt->nsTab[0]));
+        if (ctxt->nsTab == NULL) {
+            xmlErrMemory(NULL, NULL);
+	    ctxt->nsMax /= 2;
+            return (-1);
+        }
+    }
+    ctxt->nsTab[ctxt->nsNr++] = ns;
+    return (ctxt->nsNr);
+}
+/**
+ * xmlNsCheckPop:
+ * @ctxt: an XML parser context
+ * @nr:  the number to pop
+ *
+ * Pops the top @nr parser prefix/namespace from the ns stack
+ *
+ * Returns the number of namespaces removed
+ */
+static int
+xmlNsCheckPop(xmlDebugCtxtPtr ctxt, int nr)
+{
+    int i;
+
+    if (ctxt->nsTab == NULL) return(0);
+    if (ctxt->nsNr < nr) {
+        xmlGenericError(xmlGenericErrorContext, "Pbm popping %d NS\n", nr);
+        nr = ctxt->nsNr;
+    }
+    if (ctxt->nsNr <= 0)
+        return (0);
+    
+    for (i = 0;i < nr;i++) {
+         ctxt->nsNr--;
+	 ctxt->nsTab[ctxt->nsNr] = NULL;
+    }
+    return(nr);
+}
 static void
 xmlCtxtDumpSpaces(xmlDebugCtxtPtr ctxt)
 {
@@ -1101,6 +1181,7 @@ xmlDebugDumpAttr(FILE *output, xmlAttrPtr attr, int depth) {
     ctxt.output = output;
     ctxt.depth = depth;
     xmlCtxtDumpAttr(&ctxt, attr);
+    xmlCtxtDumpCleanCtxt(&ctxt);
 }
 
 
@@ -1119,6 +1200,7 @@ xmlDebugDumpEntities(FILE * output, xmlDocPtr doc)
     xmlCtxtDumpInitCtxt(&ctxt);
     ctxt.output = output;
     xmlCtxtDumpEntities(&ctxt, doc);
+    xmlCtxtDumpCleanCtxt(&ctxt);
 }
 
 /**
@@ -1138,6 +1220,7 @@ xmlDebugDumpAttrList(FILE * output, xmlAttrPtr attr, int depth)
     ctxt.output = output;
     ctxt.depth = depth;
     xmlCtxtDumpAttrList(&ctxt, attr);
+    xmlCtxtDumpCleanCtxt(&ctxt);
 }
 
 /**
@@ -1157,6 +1240,7 @@ xmlDebugDumpOneNode(FILE * output, xmlNodePtr node, int depth)
     ctxt.output = output;
     ctxt.depth = depth;
     xmlCtxtDumpOneNode(&ctxt, node);
+    xmlCtxtDumpCleanCtxt(&ctxt);
 }
 
 /**
@@ -1178,6 +1262,7 @@ xmlDebugDumpNode(FILE * output, xmlNodePtr node, int depth)
     ctxt.output = output;
     ctxt.depth = depth;
     xmlCtxtDumpNode(&ctxt, node);
+    xmlCtxtDumpCleanCtxt(&ctxt);
 }
 
 /**
@@ -1199,6 +1284,7 @@ xmlDebugDumpNodeList(FILE * output, xmlNodePtr node, int depth)
     ctxt.output = output;
     ctxt.depth = depth;
     xmlCtxtDumpNodeList(&ctxt, node);
+    xmlCtxtDumpCleanCtxt(&ctxt);
 }
 
 /**
@@ -1218,6 +1304,7 @@ xmlDebugDumpDocumentHead(FILE * output, xmlDocPtr doc)
     xmlCtxtDumpInitCtxt(&ctxt);
     ctxt.output = output;
     xmlCtxtDumpDocumentHead(&ctxt, doc);
+    xmlCtxtDumpCleanCtxt(&ctxt);
 }
 
 /**
@@ -1237,6 +1324,7 @@ xmlDebugDumpDocument(FILE * output, xmlDocPtr doc)
     xmlCtxtDumpInitCtxt(&ctxt);
     ctxt.output = output;
     xmlCtxtDumpDocument(&ctxt, doc);
+    xmlCtxtDumpCleanCtxt(&ctxt);
 }
 
 /**
@@ -1256,6 +1344,7 @@ xmlDebugDumpDTD(FILE * output, xmlDtdPtr dtd)
     xmlCtxtDumpInitCtxt(&ctxt);
     ctxt.output = output;
     xmlCtxtDumpDTD(&ctxt, dtd);
+    xmlCtxtDumpCleanCtxt(&ctxt);
 }
 
 /************************************************************************
@@ -1285,6 +1374,7 @@ xmlDebugCheckDocument(FILE * output, xmlDocPtr doc)
     ctxt.output = output;
     ctxt.check = 1;
     xmlCtxtDumpDocument(&ctxt, doc);
+    xmlCtxtDumpCleanCtxt(&ctxt);
     return(ctxt.errors);
 }
 

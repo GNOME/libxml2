@@ -47,4 +47,4 @@ autoconf
 ./configure "$@"
 
 echo 
-echo "Now type 'make' to compile GLIB."
+echo "Now type 'make' to compile gnome-xml."

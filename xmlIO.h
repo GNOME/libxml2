@@ -157,7 +157,7 @@ int     xmlRegisterOutputCallbacks	(xmlOutputMatchCallback match,
 					 xmlOutputCloseCallback close);
 
 /*
- * This save function is part of tree.h actually
+ * This save function are part of tree.h and HTMLtree.h actually
  */
 int		xmlSaveFileTo		(xmlOutputBuffer *buf,
 					 xmlDocPtr cur,
@@ -167,6 +167,9 @@ void		xmlNodeDumpOutput	(xmlOutputBufferPtr buf,
 					 xmlNodePtr cur,
 					 int level,
 					 int format,
+					 const char *encoding);
+void		htmlDocContentDumpOutput(xmlOutputBufferPtr buf,
+					 xmlDocPtr cur,
 					 const char *encoding);
 #ifdef __cplusplus
 }

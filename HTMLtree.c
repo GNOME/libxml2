@@ -937,7 +937,7 @@ htmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, const 
  *
  * Dump an HTML document.
  */
-static void
+void
 htmlDocContentDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr cur, const char *encoding) {
     int type;
 

@@ -48,6 +48,11 @@ int		htmlSaveFileEnc		(const char *filename,
 					 xmlDocPtr cur,
 					 const char *encoding);
 
+/* This one is imported from xmlIO.h
+void		htmlDocContentDumpOutput(xmlOutputBufferPtr buf,
+					 xmlDocPtr cur,
+					 const char *encoding);
+ */
 #ifdef __cplusplus
 }
 #endif

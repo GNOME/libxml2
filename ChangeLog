@@ -1,3 +1,7 @@
+Sun Jan 21 10:47:38 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* htmlTree.[ch] xmlIO.h: exported htmlDocContentDumpOutput
+
 Fri Jan 19 18:15:50 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xpath.c: seems I finally killed that ugly path evaluation

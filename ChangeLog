@@ -1,3 +1,8 @@
+Fri May  4 17:19:39 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* valid.c: applied small patch from Gary Pennington, reindented
+	  some part of the code.
+
 Thu May  3 13:10:43 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* configure.in doc/xml.html doc/html/*: preparing for 2.3.8

@@ -1127,10 +1127,14 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
 	    child = child->next;
 	}
     } else if (cur->children != NULL) {
+	int indent = ctxt->format;
+	
 	if (format) xmlOutputBufferWriteString(buf, "\n");
 	if (ctxt->level >= 0) ctxt->level++;
+	ctxt->format = format;
 	xhtmlNodeListDumpOutput(ctxt, cur->children);
 	if (ctxt->level > 0) ctxt->level--;
+	ctxt->format = indent;
 	if ((xmlIndentTreeOutput) && (format))
 	    xmlOutputBufferWrite(buf, ctxt->indent_size *
 	                         (ctxt->level > ctxt->indent_nr ? 

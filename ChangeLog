@@ -1,3 +1,10 @@
+Sun May  9 19:46:13 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xmlsave.c: apply fix for XHTML1 formating from Nick Wellnhofer
+	  fixes bug #141266
+	* test/xhtmlcomp result//xhtmlcomp*: added the specific regression
+	  test
+
 Sun May  9 14:07:21 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am: fix for a pedantic make check without make all request

@@ -1162,7 +1162,7 @@ def analyzeAPI():
     print "Found %d associations, skipped %d words" % (i, skipped)
 
 def usage():
-    print "Usage index.py [--force] [--archive] [--archive-month month] [--API] [--docs]"
+    print "Usage index.py [--force] [--archive]  [--archive-year year] [--archive-month month] [--API] [--docs]"
     sys.exit(1)
 
 def main():
@@ -1174,7 +1174,22 @@ def main():
 	    if args[i] == '--force':
 	        force = 1
 	    elif args[i] == '--archive':
-	        analyzeArchives(force)
+	        analyzeArchives(None, force)
+	    elif args[i] == '--archive-year':
+	        i = i + 1;
+		year = args[i]
+		months = ["January" , "February", "March", "April", "May",
+			  "June", "July", "August", "September", "October",
+			  "November", "December"];
+	        for month in months:
+		    try:
+		        str = "%s-%s" % (year, month)
+			T = time.strptime(str, "%Y-%B")
+			t = time.mktime(T) + 3600 * 24 * 10;
+			analyzeArchives(t, force)
+		    except:
+			print "Failed to index month archive:"
+			print sys.exc_type, sys.exc_value
 	    elif args[i] == '--archive-month':
 	        i = i + 1;
 		month = args[i]

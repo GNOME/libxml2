@@ -1,3 +1,9 @@
+Sat Feb 28 22:35:32 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* testSAX.c: small enhancement to prevent trying to print
+	  strings with null pointers (caused "make tests" errors on
+	  HP-UX)
+
 Thu Feb 26 20:19:40 MST 2004 John Fleck <jfleck@inkstain.net>
 
 	* doc/xmllint.xml

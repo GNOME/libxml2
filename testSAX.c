@@ -437,6 +437,14 @@ static void
 entityDeclDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *name, int type,
           const xmlChar *publicId, const xmlChar *systemId, xmlChar *content)
 {
+const xmlChar *nullstr = BAD_CAST "(null)";
+    /* not all libraries handle printing null pointers nicely */
+    if (publicId == NULL)
+        publicId = nullstr;
+    if (systemId == NULL)
+        systemId = nullstr;
+    if (content == NULL)
+        content = (xmlChar *)nullstr;
     callbacks++;
     if (quiet)
 	return;
@@ -524,6 +532,14 @@ unparsedEntityDeclDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *name,
 		   const xmlChar *publicId, const xmlChar *systemId,
 		   const xmlChar *notationName)
 {
+const xmlChar *nullstr = BAD_CAST "(null)";
+
+    if (publicId == NULL)
+        publicId = nullstr;
+    if (systemId == NULL)
+        systemId = nullstr;
+    if (notationName == NULL)
+        notationName = nullstr;
     callbacks++;
     if (quiet)
 	return;

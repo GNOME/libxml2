@@ -7755,7 +7755,8 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
 	fprintf(stderr, "PP: pushed %d\n", size);
 #endif
 
-        xmlParseTryOrFinish(ctxt, terminate);
+	if ((terminate) || (ctxt->input->buf->buffer->use > 80))
+	    xmlParseTryOrFinish(ctxt, terminate);
     } else if (ctxt->instate != XML_PARSER_EOF)
         xmlParseTryOrFinish(ctxt, terminate);
     if (terminate) {

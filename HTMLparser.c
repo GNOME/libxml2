@@ -3527,7 +3527,8 @@ htmlParseChunk(htmlParserCtxtPtr ctxt, const char *chunk, int size,
 	fprintf(stderr, "HPP: pushed %d\n", size);
 #endif
 
-        htmlParseTryOrFinish(ctxt, terminate);
+	if ((terminate) || (ctxt->input->buf->buffer->use > 80))
+	    htmlParseTryOrFinish(ctxt, terminate);
     } else if (ctxt->instate != XML_PARSER_EOF)
         htmlParseTryOrFinish(ctxt, terminate);
     if (terminate) {

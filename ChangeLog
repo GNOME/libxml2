@@ -1,3 +1,7 @@
+Thu Feb  3 16:36:39 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* parser.c HTMLparser.c: do a bit of bufferization in push mode.
+
 Thu Feb  3 15:59:37 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* nanoftp.c nanohttp.c tree.c HTMLtree.[ch] debugXML.c xpath.c: Fixed

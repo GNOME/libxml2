@@ -1,3 +1,8 @@
+Sat Nov 23 12:21:24 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* python/generator.py python/libxml.c python/setup.py.in: trying
+	  to fix the Python bindings build on Windows (Stéphane Bidoul)
+
 Fri Nov 22 22:41:34 CEST 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
 
 	* win32/configure.js: added option for python bindings

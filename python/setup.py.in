@@ -5,6 +5,16 @@
 import sys, os
 from distutils.core import setup, Extension
 
+# Below ROOT, we expect to find include, include/libxml2, lib and bin
+# TBC: on unix, it is not needed (but should not harm), 
+#      on Windows, it can be set by configure.js
+ROOT = r'../../_bin' 
+
+# If this flag is set (windows only), 
+# a private copy of the dlls are included in the package.
+# If this flag is not set, the libxml2 and libxslt
+# dlls must be found somewhere in the PATH at runtime.
+WITHDLLS = 1 and sys.platform.startswith('win')
 
 def missing(file):
     if os.access(file, os.R_OK) == 0:
@@ -12,15 +22,41 @@ def missing(file):
     return 0
 
 try:
-    import posix
-    HOME = posix.environ['HOME']
+    HOME = os.environ['HOME']
 except:
     HOME="C:"
 
+if WITHDLLS:
+    # libxml dlls (expected in ROOT/bin)
+    dlls = [ 'iconv.dll','libxml2.dll','libxslt.dll','libexslt.dll' ]
+    dlls = map(lambda dll: os.path.join(ROOT,'bin',dll),dlls)
+
+    # create __init__.py for the libxmlmods package
+    if not os.path.exists("libxmlmods"):
+        os.mkdir("libxmlmods")
+        open("libxmlmods/__init__.py","w").close()
+
+    def altImport(s):
+        s = s.replace("import libxml2mod","from libxmlmods import libxml2mod")
+        s = s.replace("import libxsltmod","from libxmlmods import libxsltmod")
+        return s
+
+if sys.platform.startswith('win'):
+    libraryPrefix = 'lib'
+    platformLibs = []
+else:
+    libraryPrefix = ''
+    platformLibs = ["m","z"]
+
+# those are examined to find 
+# - libxml2/libxml/tree.h
+# - iconv.h 
+# - libxslt/xsltconfig.h
 includes_dir = [
 "/usr/include",
 "/usr/local/include",
 "/opt/include",
+os.path.join(ROOT,'include'),
 HOME
 ];
 
@@ -33,7 +69,22 @@ for dir in includes_dir:
 if xml_includes == "":
     print "failed to find headers for libxml2: update includes_dir"
     sys.exit(1)
-        
+
+iconv_includes=""
+for dir in includes_dir:
+    if not missing(dir + "/iconv.h"):
+        iconv_includes=dir
+	break;
+
+if iconv_includes == "":
+    print "failed to find headers for libiconv: update includes_dir"
+    sys.exit(1)
+
+# those are added in the linker search path for libraries
+libdirs = [
+os.path.join(ROOT,'lib'),
+]
+
 xml_files = ["libxml2-api.xml", "libxml2-python-api.xml",
              "libxml.c", "libxml.py", "libxml_wrap.h", "types.c",
 	     "xmlgenerator.py", "README", "TODO"]
@@ -57,7 +108,10 @@ if missing("libxml2-py.c") or missing("libxml2.py"):
     generated = open("libxml2class.py", "r")
     result = open("libxml2.py", "w")
     for line in head.readlines():
-	result.write(line)
+        if WITHDLLS:
+            result.write(altImport(line))
+        else:
+            result.write(line)
     for line in generated.readlines():
 	result.write(line)
     head.close()
@@ -79,7 +133,10 @@ if missing("libxslt-py.c") or missing("libxslt.py"):
 	    generated = open("libxsltclass.py", "r")
 	    result = open("libxslt.py", "w")
 	    for line in head.readlines():
-		result.write(line)
+                if WITHDLLS:
+                    result.write(altImport(line))
+                else:
+                    result.write(line)
 	    for line in generated.readlines():
 		result.write(line)
 	    head.close()
@@ -103,9 +160,11 @@ if with_xslt == 1:
 
 descr = "libxml2 package"
 modules = [ 'libxml2' ]
+if WITHDLLS:
+    modules.append('libxmlmods.__init__')
 c_files = ['libxml2-py.c', 'libxml.c', 'types.c' ]
-includes= [xml_includes]
-libs    = ["xml2", "m", "z"]
+includes= [xml_includes, iconv_includes]
+libs    = [libraryPrefix + "xml2"] + platformLibs
 macros  = []
 if with_xslt == 1:
     descr = "libxml2 and libxslt package"
@@ -114,17 +173,19 @@ if with_xslt == 1:
     # both libxml2mod and libxsltmod
     #
     c_files = c_files + ['libxslt-py.c', 'libxslt.c']
-    libs.insert(0, 'xslt')
+    libs.insert(0, libraryPrefix + 'xslt')
     includes.append(xslt_includes)
     modules.append('libxslt')
     macros.append(('MERGED_MODULES', '1'))
 
 
 extens=[Extension('libxml2mod', c_files, include_dirs=includes,
+                  library_dirs=libdirs, 
                   libraries=libs, define_macros=macros)] 
 if with_xslt == 1:
     extens.append(Extension('libxsltmod', c_files, include_dirs=includes,
-			    libraries=libs))
+			    library_dirs=libdirs, 
+                            libraries=libs))
 
 if missing("MANIFEST"):
 
@@ -137,16 +198,27 @@ if missing("MANIFEST"):
 	    manifest.write(file + "\n")
     manifest.close()
 
+if WITHDLLS:
+    ext_package = "libxmlmods"
+    data_files = [("lib/site-packages/libxmlmods",dlls)]
+else:
+    ext_package = None
+    data_files = []
+
 setup (name = "libxml2-python",
+       # TBC: extract the version number from somewhere 
+       # On *nix, this is created from setup.py.in
+       # On windows, this could be set by configure.js
        version = "@LIBXML_VERSION@",
        description = descr,
        author = "Daniel Veillard",
        author_email = "veillard@redhat.com",
        url = "http://xmlsoft.org/python.html",
        licence="MIT Licence",
-
        py_modules=modules,
        ext_modules=extens,
+       ext_package=ext_package,
+       data_files=data_files,
        )
 
 sys.exit(0)

@@ -280,7 +280,7 @@ xmlHashFree(xmlHashTablePtr table, xmlHashDeallocator f) {
 	    inside_table = 1;
 	    while (iter) {
 		next = iter->next;
-		if (f)
+		if ((f != NULL) && (iter->payload != NULL))
 		    f(iter->payload, iter->name);
 		if (iter->name)
 		    xmlFree(iter->name);
@@ -718,7 +718,7 @@ xmlHashScanFull(xmlHashTablePtr table, xmlHashScannerFull f, void *data) {
 	    iter = &(table->table[i]);
 	    while (iter) {
 		next = iter->next;
-		if (f)
+		if ((f != NULL) && (iter->payload != NULL))
 		    f(iter->payload, data, iter->name,
 		      iter->name2, iter->name3);
 		iter = next;
@@ -783,7 +783,8 @@ xmlHashScanFull3(xmlHashTablePtr table, const xmlChar *name,
 		next = iter->next;
 		if (((name == NULL) || (xmlStrEqual(name, iter->name))) &&
 		    ((name2 == NULL) || (xmlStrEqual(name2, iter->name2))) &&
-		    ((name3 == NULL) || (xmlStrEqual(name3, iter->name3)))) {
+		    ((name3 == NULL) || (xmlStrEqual(name3, iter->name3))) &&
+		    (iter->payload != NULL)) {
 		    f(iter->payload, data, iter->name,
 		      iter->name2, iter->name3);
 		}
@@ -916,7 +917,7 @@ xmlHashRemoveEntry3(xmlHashTablePtr table, const xmlChar *name,
             if (xmlStrEqual(entry->name, name) &&
                     xmlStrEqual(entry->name2, name2) &&
                     xmlStrEqual(entry->name3, name3)) {
-                if(f)
+                if ((f != NULL) && (entry->payload != NULL))
                     f(entry->payload, entry->name);
                 entry->payload = NULL;
                 if(entry->name)

@@ -1,3 +1,9 @@
+Wed Oct 29 12:16:52 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c: change suggested by Anthony Carrico when unregistering
+	  a namespace prefix to a context
+	* hash.c: be more careful about calling callbacks with NULL payloads.
+
 Wed Oct 29 00:04:26 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in NEWS doc/*: preparing release 2.6.1, updated and

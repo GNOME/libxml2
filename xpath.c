@@ -2974,6 +2974,9 @@ xmlXPathRegisterNs(xmlXPathContextPtr ctxt, const xmlChar *prefix,
 	ctxt->nsHash = xmlHashCreate(10);
     if (ctxt->nsHash == NULL)
 	return(-1);
+    if (ns_uri == NULL)
+        return(xmlHashRemoveEntry(ctxt->nsHash, ns_uri,
+	                          (xmlHashDeallocator)xmlFree));
     return(xmlHashUpdateEntry(ctxt->nsHash, prefix, (void *) xmlStrdup(ns_uri),
 			      (xmlHashDeallocator)xmlFree));
 }

@@ -18,6 +18,7 @@ extern "C" {
  * use those to be sure nothing nasty will happen if
  * your library and includes mismatch
  */
+extern void xmlCheckVersion(int version);
 #define LIBXML_DOTTED_VERSION "2.4.0"
 #define LIBXML_VERSION 20400
 #define LIBXML_VERSION_STRING "20400"

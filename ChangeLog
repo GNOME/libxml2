@@ -1,3 +1,7 @@
+Thu Apr 26 12:57:58 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* DOCBparser.c: patche from  László Kovács
+
 Thu Apr 26 11:31:54 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* parser.c: applied fixes from Christian Glahn bug report #53391

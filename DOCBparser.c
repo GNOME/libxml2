@@ -570,7 +570,7 @@ docbookElementTable[] = {
 { "informaltable",0,   0,      0,      9,      0, "" }, /* graphic */
 { "initializer",0,     0,      0,      7,      0, "" }, /* smallcptr */
 { "inlineequation",0,  0,      0,      9,      0, "" }, /* inlineequation.content */
-{ "inlinegraphic",0,   2,      1,      0,      0, "" },
+{ "inlinegraphic",0,   0,      0,      9,      0, "" },
 { "inlinemediaobject",0,0,     0,      9,      0, "" }, /* objectinfo */
 { "interfacename",0,   0,      0,      7,      0, "" }, /* smallcptr */
 { "interface", 0,      0,      0,      7,      0, "" }, /* smallcptr */

@@ -709,13 +709,13 @@ xmlCleanupPredefinedEntities
 	/* Interfaces for parsing. */
 	xmlRelaxNGNewParserCtxt
 	xmlRelaxNGNewMemParserCtxt
+	xmlRelaxNGNewDocParserCtxt
 	xmlRelaxNGFreeParserCtxt
 	xmlRelaxNGSetParserErrors
 	xmlRelaxNGParse
 	xmlRelaxNGFree
 	xmlRelaxNGDump
-	xmlRelaxNGDumpTree
-	
+	xmlRelaxNGDumpTree	
 	/* Interfaces for validating */
 	xmlRelaxNGSetValidErrors
 	xmlRelaxNGNewValidCtxt
@@ -724,6 +724,11 @@ xmlCleanupPredefinedEntities
 	/* not existent in the source */
 	/*xmlRelaxNGValidateStream*/
 	xmlRelaxNGCleanupTypes
+	/* Interfaces for progressive validation when possible */
+	xmlRelaxNGValidatePushElement
+	xmlRelaxNGValidatePushCData
+	xmlRelaxNGValidatePopElement
+	xmlRelaxNGValidateFullElement
 #endif /* LIBXML_SCHEMAS_ENABLED */
 
 
@@ -1244,12 +1249,19 @@ xmlCleanupPredefinedEntities
 	xmlTextReaderGetParserProp
 	xmlTextReaderCurrentNode
 	xmlTextReaderCurrentDoc
+	xmlTextReaderExpand
+	xmlTextReaderNext
+	xmlTextReaderIsValid
+	#ifdef LIBXML_SCHEMAS_ENABLED
+		xmlTextReaderRelaxNGValidate
+		xmlTextReaderRelaxNGSetSchema
+	#endif /* LIBXML_SCHEMAS_ENABLED */
 	/* Error handling extensions */
-	xmlTextReaderSetErrorHandler
-	xmlTextReaderGetErrorHandler
 	xmlTextReaderLocatorLineNumber
 	/*xmlTextReaderLocatorLinePosition*/
 	xmlTextReaderLocatorBaseURI
+	xmlTextReaderSetErrorHandler
+	xmlTextReaderGetErrorHandler
 
 
 

@@ -1688,7 +1688,7 @@ xmlParseNameComplex(xmlParserCtxtPtr ctxt) {
 	    if (buffer == NULL) {
 		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		    ctxt->sax->error(ctxt->userData,
-			             "xmlParseName: out of memory\n");
+			             "xmlParseNameComplex: out of memory\n");
 		return(NULL);
 	    }
 	    memcpy(buffer, buf, len);
@@ -1708,7 +1708,7 @@ xmlParseNameComplex(xmlParserCtxtPtr ctxt) {
 		    if (buffer == NULL) {
 			if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 			    ctxt->sax->error(ctxt->userData,
-					     "xmlParseName: out of memory\n");
+				     "xmlParseNameComplex: out of memory\n");
 			return(NULL);
 		    }
 		}
@@ -1874,7 +1874,7 @@ xmlParseNmtoken(xmlParserCtxtPtr ctxt) {
 		    if (buffer == NULL) {
 			if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 			    ctxt->sax->error(ctxt->userData,
-					     "xmlParseName: out of memory\n");
+				     "xmlParseNameComplex: out of memory\n");
 			return(NULL);
 		    }
 		}
@@ -3011,7 +3011,7 @@ xmlParseNotationDecl(xmlParserCtxtPtr ctxt) {
 	}
 	SKIP_BLANKS;
 
-        name = xmlParseName(ctxt);
+        name = xmlParseNameComplex(ctxt);
 	if (name == NULL) {
 	    ctxt->errNo = XML_ERR_NOTATION_NOT_STARTED;
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
@@ -3129,7 +3129,7 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 	    isParameter = 1;
 	}
 
-        name = xmlParseName(ctxt);
+        name = xmlParseNameComplex(ctxt);
 	if (name == NULL) {
 	    ctxt->errNo = XML_ERR_NAME_REQUIRED;
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
@@ -3269,7 +3269,7 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 			ctxt->disableSAX = 1;
 		    }
 		    SKIP_BLANKS;
-		    ndata = xmlParseName(ctxt);
+		    ndata = xmlParseNameComplex(ctxt);
 		    if ((ctxt->sax != NULL) && (!ctxt->disableSAX) &&
 		        (ctxt->sax->unparsedEntityDecl != NULL))
 			ctxt->sax->unparsedEntityDecl(ctxt->userData, name,
@@ -3447,7 +3447,7 @@ xmlParseNotationType(xmlParserCtxtPtr ctxt) {
     do {
         NEXT;
 	SKIP_BLANKS;
-        name = xmlParseName(ctxt);
+        name = xmlParseNameComplex(ctxt);
 	if (name == NULL) {
 	    ctxt->errNo = XML_ERR_NAME_REQUIRED;
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
@@ -3716,7 +3716,7 @@ xmlParseAttributeListDecl(xmlParserCtxtPtr ctxt) {
 	    ctxt->disableSAX = 1;
 	}
         SKIP_BLANKS;
-        elemName = xmlParseName(ctxt);
+        elemName = xmlParseNameComplex(ctxt);
 	if (elemName == NULL) {
 	    ctxt->errNo = XML_ERR_NAME_REQUIRED;
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
@@ -3736,7 +3736,7 @@ xmlParseAttributeListDecl(xmlParserCtxtPtr ctxt) {
 
 	    GROW;
             tree = NULL;
-	    attrName = xmlParseName(ctxt);
+	    attrName = xmlParseNameComplex(ctxt);
 	    if (attrName == NULL) {
 		ctxt->errNo = XML_ERR_NAME_REQUIRED;
 		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
@@ -3919,7 +3919,7 @@ xmlParseElementMixedContentDecl(xmlParserCtxtPtr ctxt) {
 		xmlFree(elem);
 	    }
 	    SKIP_BLANKS;
-	    elem = xmlParseName(ctxt);
+	    elem = xmlParseNameComplex(ctxt);
 	    if (elem == NULL) {
 		ctxt->errNo = XML_ERR_NAME_REQUIRED;
 		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
@@ -4016,7 +4016,7 @@ xmlParseElementChildrenContentDecl
 	SKIP_BLANKS;
 	GROW;
     } else {
-	elem = xmlParseName(ctxt);
+	elem = xmlParseNameComplex(ctxt);
 	if (elem == NULL) {
 	    ctxt->errNo = XML_ERR_ELEMCONTENT_NOT_STARTED;
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
@@ -4159,7 +4159,7 @@ xmlParseElementChildrenContentDecl
 	    last = xmlParseElementChildrenContentDecl(ctxt);
 	    SKIP_BLANKS;
 	} else {
-	    elem = xmlParseName(ctxt);
+	    elem = xmlParseNameComplex(ctxt);
 	    if (elem == NULL) {
 		ctxt->errNo = XML_ERR_ELEMCONTENT_NOT_STARTED;
 		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
@@ -4308,7 +4308,7 @@ xmlParseElementDecl(xmlParserCtxtPtr ctxt) {
 	    ctxt->disableSAX = 1;
 	}
         SKIP_BLANKS;
-        name = xmlParseName(ctxt);
+        name = xmlParseNameComplex(ctxt);
 	if (name == NULL) {
 	    ctxt->errNo = XML_ERR_NAME_REQUIRED;
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
@@ -5443,7 +5443,7 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt) {
 
     if (RAW == '%') {
         NEXT;
-        name = xmlParseName(ctxt);
+        name = xmlParseNameComplex(ctxt);
 	if (name == NULL) {
 	    ctxt->errNo = XML_ERR_NAME_REQUIRED;
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))

@@ -1,3 +1,11 @@
+Fri 24 May 2002 12:17:45 AM PDT Aleksey Sanin <aleksey@aleksey.com>
+	* global.data globals.c tree.c include/libxml/globals.h 
+	win32/libxml2.def.src win32/dsp/libxml2.def.src: changed
+	default value for global parameter xmlIndentTreeOutput to 1 and
+	introduced new global parameter xmlTreeIndentString (the string
+	used to do one-level indent) with default value "  " (as it was
+	in tree.c)
+
 Thu May 23 13:55:57 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am: Merijn Broeren pointed out a problem when compiling

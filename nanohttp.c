@@ -415,7 +415,9 @@ xmlNanoHTTPSend(xmlNanoHTTPCtxtPtr ctxt, const char * xmt_ptr, int outlen) {
             if (nsent>0)
                 total_sent += nsent;
 	    else if ( ( nsent == -1 ) && 
+#if defined(EAGAIN) && EAGAIN != EWOULDBLOCK
 	    	      ( socket_errno( ) != EAGAIN ) &&
+#endif
 		        ( socket_errno( ) != EWOULDBLOCK ) ) {
 	        xmlGenericError( xmlGenericErrorContext,
 				"xmlNanoHTTPSend error:  %s",

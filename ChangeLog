@@ -1,3 +1,7 @@
+Tue Jul 31 18:24:34 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* nanohttp.c: protected an use of EAGAIN, Brian Stafford
+
 Tue Jul 31 17:48:44 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* include/libxml/xmlIO.h: apply change to close #58141 

@@ -44,7 +44,7 @@ URI library.
 Summary: Python bindings for the libxml2 library
 Group: Development/Libraries
 Requires: libxml2 = %{version}
-Requires: python
+Requires: python = %(echo `python -c "import sys; print sys.version[0:3]"`)
 
 %description python
 The libxml2-python package contains a module that permits applications

@@ -1,3 +1,8 @@
+Fri Apr  9 11:56:08 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* libxml.spec.in: fixing Red Hat bug #120482 , libxml2-python
+	  should depend on the version of python used to compile it.
+
 Mon Apr  5 09:07:24 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: applied patch from James Bursa, frameset should

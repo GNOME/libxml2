@@ -9,7 +9,7 @@ to help those   - More testing on RelaxNG
    - Finishing up XML
   Schemas
 
- There is the list of public releases:
+There is the list of public releases:
 2.6.8: Mar 23 2004:
    - First step of the cleanup of the serialization code and APIs
    - XML Schemas: mixed content (Adam Dickmeiss), QName handling fixes (Adam
@@ -26,7 +26,7 @@ to help those   - More testing on RelaxNG
     XInclude and XPointer fixes for entities (William), XML parser bug
     reported by Holger Rauch, nanohttp fd leak (William),  regexps char
     groups '-' handling (William), dictionnary reference counting problems,
-    do not close stderr. 
+    do not close stderr.
    - performance patches from Petr Pajas
    - Documentation fixes: XML_CATALOG_FILES in man pages (Mike Hommey)
    - compilation and portability fixes: --without-valid, catalog cleanups

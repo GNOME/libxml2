@@ -27,6 +27,9 @@
 #ifdef HAVE_FCNTL_H
 #include <fcntl.h>
 #endif
+#ifdef HAVE_STDLIB_H
+#include <stdlib.h>
+#endif
 #include <string.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/hash.h>

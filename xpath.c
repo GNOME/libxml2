@@ -68,7 +68,9 @@ double xmlXPathDivideBy(double f, double fzero);
  * 									*
  ************************************************************************/
 
+#ifndef TRIO_REPLACE_STDIO
 #define TRIO_PUBLIC static
+#endif
 #include "trionan.c"
 
 /*

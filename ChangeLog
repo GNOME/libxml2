@@ -1,3 +1,12 @@
+Wed Jun 12 21:26:08 MDT 2002 John Fleck <jfleck@inkstain.net>
+
+	* doc/tutorial/xmltutorial.xml
+	* doc/tutorial/ar01s07.html
+	* doc/tutorial/ape.html
+	* doc/tutorial/includegetattribute.c
+	adding section to tutorial about retrieving an attribute
+	value
+
 Tue Jun 11 12:07:04 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: applied a couple of patches from Peter Jacobi to start

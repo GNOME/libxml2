@@ -5,6 +5,7 @@
 <!ENTITY STORY SYSTEM "includestory.xml">
 <!ENTITY ADDKEYWORD SYSTEM "includeaddkeyword.c">
 <!ENTITY ADDATTRIBUTE SYSTEM "includeaddattribute.c">
+<!ENTITY GETATTRIBUTE SYSTEM "includegetattribute.c">
 ]>
 <article>
   <articleinfo>
@@ -21,6 +22,10 @@
       <revision>
 	<revnumber>1</revnumber>
 	<date>June 4,2002</date>
+      </revision>
+      <revision>
+	<revnumber>2</revnumber>
+	<date>June 12, 2002</date>
       </revision>
     </revhistory>
   </articleinfo>
@@ -59,13 +64,12 @@
 	  <para>Add an element and its content.</para>
 	</listitem>
 	<listitem>
+	  <para>Add an attribute.</para>
+	</listitem>      
+	<listitem>
 	  <para>Extract the value of an attribute.</para>
 	</listitem>
-	<listitem>
-	  <para>Add an attribute.</para>
-	</listitem>
       </itemizedlist>
-
     </para>
     <para>Full code for the examples is included in the appendices.</para>
 
@@ -288,15 +292,7 @@ parseStory (xmlDocPtr doc, xmlNodePtr cur, char *keyword) {
       the old file. The second parameter is a pointer to the xmlDoc
       structure. Setting the third parameter equal to one ensures indenting on output.
     </para>
-
   </sect1>
-<!--
-  <sect1 id="xmltutorialattribute">
-    <title>Retrieving Attributes</title>
-    <para>Retrieving</para>
-  </sect1>
--->
- 
 
   <sect1 id="xmltutorialwritingattribute">
     <title>Writing Attribute</title>
@@ -341,6 +337,52 @@ parseStory (xmlDocPtr doc, xmlNodePtr cur, char *keyword) {
 
   </sect1>
 
+  <sect1 id="xmltutorialattribute">
+    <title>Retrieving Attributes</title>
+    <para>Retrieving the value of an attribute is similar to the previous
+    example in which we retrieved a node's text contents. In this case we'll
+      extract the value of the <acronym>URI</acronym> we added in the previous
+      section. Full code: <xref linkend="getattributeappendix" />.</para>
+    <para>
+      The initial steps for this example are similar to the previous ones: parse
+      the doc, find the element you are interested in, then enter a function to
+      carry out the specific task required. In this case, we call
+      <function>getReference</function>:
+      <programlisting>
+void
+getReference (xmlDocPtr doc, xmlNodePtr cur) {
+
+	cur = cur->xmlChildrenNode;
+	while (cur != NULL) {
+	    if ((!xmlStrcmp(cur->name, (const xmlChar *)"reference"))) {
+	<co id="getattributevalue" /> printf("uri: %s\n", xmlGetProp(cur, "uri"));
+		    }
+	    cur = cur->next;
+	}
+    return;
+}
+      </programlisting>
+    
+      <calloutlist>
+	<callout arearefs="getattributevalue">
+	  <para>
+	    The key function is <function><ulink
+					   url="http://xmlsoft.org/html/libxml-tree.html#XMLGETPROP">xmlGetProp</ulink></function>, which returns an
+      <varname>xmlChar</varname> containing the attribute's value. In this case,
+					   we just print it out.
+      <note>
+	<para>
+	  If you are using a <acronym>DTD</acronym> that declares a fixed or
+	  default value for the attribute, this function will retrieve it.
+	</para>
+	    </note>
+	  </para>
+	</callout>
+      </calloutlist>
+     
+    </para>
+  </sect1>
+
 <!--
   <appendix id="furtherresources">
     <title>Further Resources</title>
@@ -367,6 +409,12 @@ parseStory (xmlDocPtr doc, xmlNodePtr cur, char *keyword) {
     <title>Code for Add Attribute Example</title>
     <para>
       <programlisting>&ADDATTRIBUTE;</programlisting>
+    </para>
+  </appendix>
+<appendix id="getattributeappendix">
+    <title>Code for Retrieving Attribute Value Example</title>
+    <para>
+      <programlisting>&GETATTRIBUTE;</programlisting>
     </para>
   </appendix>
 </article>

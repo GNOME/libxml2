@@ -949,6 +949,48 @@ HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
                                              const char *chunk,
                                              int size,
                                              int terminate);
+<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> <A
+HREF="gnome-xml-parser.html#XMLCREATEIOPARSERCTXT"
+>xmlCreateIOParserCtxt</A
+>      (<A
+HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
+>xmlSAXHandlerPtr</A
+> sax,
+                                             void *user_data,
+                                             <A
+HREF="gnome-xml-xmlio.html#XMLINPUTREADCALLBACK"
+>xmlInputReadCallback</A
+> ioread,
+                                             <A
+HREF="gnome-xml-xmlio.html#XMLINPUTCLOSECALLBACK"
+>xmlInputCloseCallback</A
+> ioclose,
+                                             void *ioctx,
+                                             <A
+HREF="gnome-xml-encoding.html#XMLCHARENCODING"
+>xmlCharEncoding</A
+> enc);
+<A
+HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
+>xmlParserInputPtr</A
+> <A
+HREF="gnome-xml-parser.html#XMLNEWIOINPUTSTREAM"
+>xmlNewIOInputStream</A
+>       (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             <A
+HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+>xmlParserInputBufferPtr</A
+> input,
+                                             <A
+HREF="gnome-xml-encoding.html#XMLCHARENCODING"
+>xmlCharEncoding</A
+> enc);
 const <A
 HREF="gnome-xml-parser.html#XMLPARSERNODEINFO"
 >xmlParserNodeInfo</A
@@ -1037,7 +1079,7 @@ HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN264"
+NAME="AEN275"
 ></A
 ><H2
 >Description</H2
@@ -1047,14 +1089,14 @@ NAME="AEN264"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN267"
+NAME="AEN278"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN269"
+NAME="AEN280"
 ></A
 ><H3
 ><A
@@ -1080,7 +1122,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN274"
+NAME="AEN285"
 ></A
 ><H3
 ><A
@@ -1141,7 +1183,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN289"
+NAME="AEN300"
 ></A
 ><H3
 ><A
@@ -1183,7 +1225,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN294"
+NAME="AEN305"
 ></A
 ><H3
 ><A
@@ -1209,7 +1251,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN299"
+NAME="AEN310"
 ></A
 ><H3
 ><A
@@ -1242,7 +1284,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN304"
+NAME="AEN315"
 ></A
 ><H3
 ><A
@@ -1268,7 +1310,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN309"
+NAME="AEN320"
 ></A
 ><H3
 ><A
@@ -1298,7 +1340,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN314"
+NAME="AEN325"
 ></A
 ><H3
 ><A
@@ -1324,7 +1366,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN319"
+NAME="AEN330"
 ></A
 ><H3
 ><A
@@ -1367,7 +1409,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN324"
+NAME="AEN335"
 ></A
 ><H3
 ><A
@@ -1457,7 +1499,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN329"
+NAME="AEN340"
 ></A
 ><H3
 ><A
@@ -1483,7 +1525,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN334"
+NAME="AEN345"
 ></A
 ><H3
 ><A
@@ -1514,7 +1556,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN339"
+NAME="AEN350"
 ></A
 ><H3
 ><A
@@ -1540,7 +1582,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN344"
+NAME="AEN355"
 ></A
 ><H3
 ><A
@@ -1658,7 +1700,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN373"
+NAME="AEN384"
 ></A
 ><H3
 ><A
@@ -1779,7 +1821,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN402"
+NAME="AEN413"
 ></A
 ><H3
 ><A
@@ -1900,7 +1942,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN431"
+NAME="AEN442"
 ></A
 ><H3
 ><A
@@ -1997,7 +2039,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN455"
+NAME="AEN466"
 ></A
 ><H3
 ><A
@@ -2094,7 +2136,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN479"
+NAME="AEN490"
 ></A
 ><H3
 ><A
@@ -2254,7 +2296,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN517"
+NAME="AEN528"
 ></A
 ><H3
 ><A
@@ -2375,7 +2417,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN546"
+NAME="AEN557"
 ></A
 ><H3
 ><A
@@ -2553,7 +2595,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN588"
+NAME="AEN599"
 ></A
 ><H3
 ><A
@@ -2671,7 +2713,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN616"
+NAME="AEN627"
 ></A
 ><H3
 ><A
@@ -2813,7 +2855,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN650"
+NAME="AEN661"
 ></A
 ><H3
 ><A
@@ -2892,7 +2934,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN669"
+NAME="AEN680"
 ></A
 ><H3
 ><A
@@ -2950,7 +2992,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN683"
+NAME="AEN694"
 ></A
 ><H3
 ><A
@@ -3008,7 +3050,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN697"
+NAME="AEN708"
 ></A
 ><H3
 ><A
@@ -3108,7 +3150,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN721"
+NAME="AEN732"
 ></A
 ><H3
 ><A
@@ -3187,7 +3229,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN740"
+NAME="AEN751"
 ></A
 ><H3
 ><A
@@ -3287,7 +3329,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN764"
+NAME="AEN775"
 ></A
 ><H3
 ><A
@@ -3366,7 +3408,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN783"
+NAME="AEN794"
 ></A
 ><H3
 ><A
@@ -3463,7 +3505,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN806"
+NAME="AEN817"
 ></A
 ><H3
 ><A
@@ -3560,7 +3602,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN829"
+NAME="AEN840"
 ></A
 ><H3
 ><A
@@ -3660,7 +3702,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN853"
+NAME="AEN864"
 ></A
 ><H3
 ><A
@@ -3739,7 +3781,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN872"
+NAME="AEN883"
 ></A
 ><H3
 ><A
@@ -3836,7 +3878,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN895"
+NAME="AEN906"
 ></A
 ><H3
 ><A
@@ -3930,7 +3972,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN917"
+NAME="AEN928"
 ></A
 ><H3
 ><A
@@ -4024,7 +4066,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN939"
+NAME="AEN950"
 ></A
 ><H3
 ><A
@@ -4118,7 +4160,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN961"
+NAME="AEN972"
 ></A
 ><H3
 ><A
@@ -4191,7 +4233,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN979"
+NAME="AEN990"
 ></A
 ><H3
 ><A
@@ -4264,7 +4306,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN997"
+NAME="AEN1008"
 ></A
 ><H3
 ><A
@@ -4337,7 +4379,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1015"
+NAME="AEN1026"
 ></A
 ><H3
 ><A
@@ -4391,7 +4433,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1020"
+NAME="AEN1031"
 ></A
 ><H3
 ><A
@@ -4417,7 +4459,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1025"
+NAME="AEN1036"
 ></A
 ><H3
 ><A
@@ -4533,7 +4575,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1053"
+NAME="AEN1064"
 ></A
 ><H3
 ><A
@@ -4559,7 +4601,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1058"
+NAME="AEN1069"
 ></A
 ><H3
 ><A
@@ -4585,7 +4627,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1063"
+NAME="AEN1074"
 ></A
 ><H3
 ><A
@@ -4611,7 +4653,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1068"
+NAME="AEN1079"
 ></A
 ><H3
 ><A
@@ -4637,7 +4679,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1073"
+NAME="AEN1084"
 ></A
 ><H3
 ><A
@@ -4663,7 +4705,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1078"
+NAME="AEN1089"
 ></A
 ><H3
 ><A
@@ -4689,7 +4731,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1083"
+NAME="AEN1094"
 ></A
 ><H3
 ><A
@@ -4720,7 +4762,7 @@ function should not prevent reusing the parser.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1089"
+NAME="AEN1100"
 ></A
 ><H3
 ><A
@@ -4818,7 +4860,7 @@ end of this entity</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1113"
+NAME="AEN1124"
 ></A
 ><H3
 ><A
@@ -4916,7 +4958,7 @@ end of this entity</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1137"
+NAME="AEN1148"
 ></A
 ><H3
 ><A
@@ -4999,7 +5041,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1158"
+NAME="AEN1169"
 ></A
 ><H3
 ><A
@@ -5103,7 +5145,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1184"
+NAME="AEN1195"
 ></A
 ><H3
 ><A
@@ -5220,7 +5262,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1213"
+NAME="AEN1224"
 ></A
 ><H3
 ><A
@@ -5322,7 +5364,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1239"
+NAME="AEN1250"
 ></A
 ><H3
 ><A
@@ -5424,7 +5466,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1265"
+NAME="AEN1276"
 ></A
 ><H3
 ><A
@@ -5523,7 +5565,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1290"
+NAME="AEN1301"
 ></A
 ><H3
 ><A
@@ -5640,7 +5682,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1319"
+NAME="AEN1330"
 ></A
 ><H3
 ><A
@@ -5718,7 +5760,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1339"
+NAME="AEN1350"
 ></A
 ><H3
 ><A
@@ -5822,7 +5864,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1365"
+NAME="AEN1376"
 ></A
 ><H3
 ><A
@@ -5947,7 +5989,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1396"
+NAME="AEN1407"
 ></A
 ><H3
 ><A
@@ -6028,7 +6070,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1417"
+NAME="AEN1428"
 ></A
 ><H3
 ><A
@@ -6124,7 +6166,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1441"
+NAME="AEN1452"
 ></A
 ><H3
 ><A
@@ -6203,7 +6245,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1461"
+NAME="AEN1472"
 ></A
 ><H3
 ><A
@@ -6286,7 +6328,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1481"
+NAME="AEN1492"
 ></A
 ><H3
 ><A
@@ -6388,7 +6430,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1504"
+NAME="AEN1515"
 ></A
 ><H3
 ><A
@@ -6470,7 +6512,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1525"
+NAME="AEN1536"
 ></A
 ><H3
 ><A
@@ -6567,7 +6609,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1549"
+NAME="AEN1560"
 ></A
 ><H3
 ><A
@@ -6647,7 +6689,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1569"
+NAME="AEN1580"
 ></A
 ><H3
 ><A
@@ -6731,7 +6773,7 @@ as a result of the parsing.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1591"
+NAME="AEN1602"
 ></A
 ><H3
 ><A
@@ -6854,7 +6896,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1621"
+NAME="AEN1632"
 ></A
 ><H3
 ><A
@@ -6969,7 +7011,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1649"
+NAME="AEN1660"
 ></A
 ><H3
 ><A
@@ -7102,7 +7144,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1681"
+NAME="AEN1692"
 ></A
 ><H3
 ><A
@@ -7240,7 +7282,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1714"
+NAME="AEN1725"
 ></A
 ><H3
 ><A
@@ -7361,7 +7403,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1743"
+NAME="AEN1754"
 ></A
 ><H3
 ><A
@@ -7463,7 +7505,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1769"
+NAME="AEN1780"
 ></A
 ><H3
 ><A
@@ -7586,7 +7628,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1800"
+NAME="AEN1811"
 ></A
 ><H3
 ><A
@@ -7761,7 +7803,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1842"
+NAME="AEN1853"
 ></A
 ><H3
 ><A
@@ -7964,7 +8006,7 @@ the parser error code otherwise</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1891"
+NAME="AEN1902"
 ></A
 ><H3
 ><A
@@ -7992,7 +8034,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1897"
+NAME="AEN1908"
 ></A
 ><H3
 ><A
@@ -8020,7 +8062,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1903"
+NAME="AEN1914"
 ></A
 ><H3
 ><A
@@ -8083,7 +8125,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1919"
+NAME="AEN1930"
 ></A
 ><H3
 ><A
@@ -8146,7 +8188,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1935"
+NAME="AEN1946"
 ></A
 ><H3
 ><A
@@ -8210,7 +8252,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1951"
+NAME="AEN1962"
 ></A
 ><H3
 ><A
@@ -8314,7 +8356,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1976"
+NAME="AEN1987"
 ></A
 ><H3
 ><A
@@ -8395,7 +8437,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1997"
+NAME="AEN2008"
 ></A
 ><H3
 ><A
@@ -8561,7 +8603,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2036"
+NAME="AEN2047"
 ></A
 ><H3
 ><A
@@ -8693,7 +8735,317 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2068"
+NAME="AEN2079"
+></A
+><H3
+><A
+NAME="XMLCREATEIOPARSERCTXT"
+></A
+>xmlCreateIOParserCtxt ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> xmlCreateIOParserCtxt      (<A
+HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
+>xmlSAXHandlerPtr</A
+> sax,
+                                             void *user_data,
+                                             <A
+HREF="gnome-xml-xmlio.html#XMLINPUTREADCALLBACK"
+>xmlInputReadCallback</A
+> ioread,
+                                             <A
+HREF="gnome-xml-xmlio.html#XMLINPUTCLOSECALLBACK"
+>xmlInputCloseCallback</A
+> ioclose,
+                                             void *ioctx,
+                                             <A
+HREF="gnome-xml-encoding.html#XMLCHARENCODING"
+>xmlCharEncoding</A
+> enc);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Create a parser context for using the XML parser with an existing
+I/O stream</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>sax</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a SAX handler</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>user_data</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  The user data returned on SAX callbacks</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ioread</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an I/O read function</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ioclose</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an I/O close function</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ioctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an I/O handler</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>enc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the charset encoding if known</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the new parser context or NULL</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2123"
+></A
+><H3
+><A
+NAME="XMLNEWIOINPUTSTREAM"
+></A
+>xmlNewIOInputStream ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
+>xmlParserInputPtr</A
+> xmlNewIOInputStream       (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             <A
+HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+>xmlParserInputBufferPtr</A
+> input,
+                                             <A
+HREF="gnome-xml-encoding.html#XMLCHARENCODING"
+>xmlCharEncoding</A
+> enc);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Create a new input stream structure encapsulating the <TT
+CLASS="PARAMETER"
+><I
+>input</I
+></TT
+> into
+a stream suitable for the parser.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>input</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an I/O Input</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>enc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the charset encoding if known</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the new input stream or NULL</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2155"
 ></A
 ><H3
 ><A
@@ -8796,7 +9148,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2094"
+NAME="AEN2181"
 ></A
 ><H3
 ><A
@@ -8859,7 +9211,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2110"
+NAME="AEN2197"
 ></A
 ><H3
 ><A
@@ -8923,7 +9275,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2126"
+NAME="AEN2213"
 ></A
 ><H3
 ><A
@@ -9026,7 +9378,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2152"
+NAME="AEN2239"
 ></A
 ><H3
 ><A
@@ -9110,7 +9462,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2173"
+NAME="AEN2260"
 ></A
 ><H3
 ><A
@@ -9171,7 +9523,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2188"
+NAME="AEN2275"
 ></A
 ><H3
 ><A
@@ -9231,7 +9583,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2203"
+NAME="AEN2290"
 ></A
 ><H3
 ><A

@@ -115,7 +115,7 @@ SIZE="3"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN10489"
+NAME="AEN10710"
 ></A
 ><H2
 >Name</H2
@@ -123,7 +123,7 @@ NAME="AEN10489"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN10492"
+NAME="AEN10713"
 ></A
 ><H2
 >Synopsis</H2
@@ -138,6 +138,24 @@ CELLPADDING="6"
 CLASS="SYNOPSIS"
 >&#13;
 
+int         (<A
+HREF="gnome-xml-xmlio.html#XMLINPUTMATCHCALLBACK"
+>*xmlInputMatchCallback</A
+>)        (char const *filename);
+void*       (<A
+HREF="gnome-xml-xmlio.html#XMLINPUTOPENCALLBACK"
+>*xmlInputOpenCallback</A
+>)         (char const *filename);
+int         (<A
+HREF="gnome-xml-xmlio.html#XMLINPUTREADCALLBACK"
+>*xmlInputReadCallback</A
+>)         (void *context,
+                                             char *buffer,
+                                             int len);
+void        (<A
+HREF="gnome-xml-xmlio.html#XMLINPUTCLOSECALLBACK"
+>*xmlInputCloseCallback</A
+>)        (void *context);
 struct      <A
 HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFER"
 >xmlParserInputBuffer</A
@@ -196,6 +214,26 @@ HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERCREATEFD"
 HREF="gnome-xml-encoding.html#XMLCHARENCODING"
 >xmlCharEncoding</A
 > enc);
+<A
+HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+>xmlParserInputBufferPtr</A
+> <A
+HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERCREATEIO"
+>xmlParserInputBufferCreateIO</A
+>
+                                            (<A
+HREF="gnome-xml-xmlio.html#XMLINPUTREADCALLBACK"
+>xmlInputReadCallback</A
+> ioread,
+                                             <A
+HREF="gnome-xml-xmlio.html#XMLINPUTCLOSECALLBACK"
+>xmlInputCloseCallback</A
+> ioclose,
+                                             void *ioctx,
+                                             <A
+HREF="gnome-xml-encoding.html#XMLCHARENCODING"
+>xmlCharEncoding</A
+> enc);
 int         <A
 HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERREAD"
 >xmlParserInputBufferRead</A
@@ -231,7 +269,26 @@ HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
 char*       <A
 HREF="gnome-xml-xmlio.html#XMLPARSERGETDIRECTORY"
 >xmlParserGetDirectory</A
->           (const char *filename);</PRE
+>           (const char *filename);
+int         <A
+HREF="gnome-xml-xmlio.html#XMLREGISTERINPUTCALLBACKS"
+>xmlRegisterInputCallbacks</A
+>       (<A
+HREF="gnome-xml-xmlio.html#XMLINPUTMATCHCALLBACK"
+>xmlInputMatchCallback</A
+> match,
+                                             <A
+HREF="gnome-xml-xmlio.html#XMLINPUTOPENCALLBACK"
+>xmlInputOpenCallback</A
+> open,
+                                             <A
+HREF="gnome-xml-xmlio.html#XMLINPUTREADCALLBACK"
+>xmlInputReadCallback</A
+> read,
+                                             <A
+HREF="gnome-xml-xmlio.html#XMLINPUTCLOSECALLBACK"
+>xmlInputCloseCallback</A
+> close);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -239,7 +296,7 @@ HREF="gnome-xml-xmlio.html#XMLPARSERGETDIRECTORY"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN10519"
+NAME="AEN10754"
 ></A
 ><H2
 >Description</H2
@@ -249,14 +306,312 @@ NAME="AEN10519"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN10522"
+NAME="AEN10757"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10524"
+NAME="AEN10759"
+></A
+><H3
+><A
+NAME="XMLINPUTMATCHCALLBACK"
+></A
+>xmlInputMatchCallback ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         (*xmlInputMatchCallback)        (char const *filename);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>filename</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN10777"
+></A
+><H3
+><A
+NAME="XMLINPUTOPENCALLBACK"
+></A
+>xmlInputOpenCallback ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void*       (*xmlInputOpenCallback)         (char const *filename);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>filename</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN10791"
+></A
+><H3
+><A
+NAME="XMLINPUTREADCALLBACK"
+></A
+>xmlInputReadCallback ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         (*xmlInputReadCallback)         (void *context,
+                                             char *buffer,
+                                             int len);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>context</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buffer</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>len</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN10817"
+></A
+><H3
+><A
+NAME="XMLINPUTCLOSECALLBACK"
+></A
+>xmlInputCloseCallback ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        (*xmlInputCloseCallback)        (void *context);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>context</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN10831"
 ></A
 ><H3
 ><A
@@ -273,12 +628,9 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >struct xmlParserInputBuffer {
-    /* Inputs */
-    FILE          *file;    /* Input on file handler */
-    void*        gzfile;    /* Input on a compressed stream */
-    int              fd;    /* Input on a file descriptor */
-    void        *httpIO;    /* Input from an HTTP stream */
-    void         *ftpIO;    /* Input from an FTP stream */
+    void*                  context;
+    xmlInputReadCallback   readcallback;
+    xmlInputCloseCallback  closecallback;
     
     xmlCharEncodingHandlerPtr encoder; /* I18N conversions to UTF-8 */
     
@@ -293,7 +645,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10529"
+NAME="AEN10836"
 ></A
 ><H3
 ><A
@@ -319,7 +671,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10534"
+NAME="AEN10841"
 ></A
 ><H3
 ><A
@@ -401,7 +753,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10555"
+NAME="AEN10862"
 ></A
 ><H3
 ><A
@@ -463,7 +815,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a C string containing the filename</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -505,7 +857,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10580"
+NAME="AEN10887"
 ></A
 ><H3
 ><A
@@ -609,7 +961,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10606"
+NAME="AEN10913"
 ></A
 ><H3
 ><A
@@ -710,7 +1062,150 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10631"
+NAME="AEN10938"
+></A
+><H3
+><A
+NAME="XMLPARSERINPUTBUFFERCREATEIO"
+></A
+>xmlParserInputBufferCreateIO ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-xmlio.html#XMLPARSERINPUTBUFFERPTR"
+>xmlParserInputBufferPtr</A
+> xmlParserInputBufferCreateIO
+                                            (<A
+HREF="gnome-xml-xmlio.html#XMLINPUTREADCALLBACK"
+>xmlInputReadCallback</A
+> ioread,
+                                             <A
+HREF="gnome-xml-xmlio.html#XMLINPUTCLOSECALLBACK"
+>xmlInputCloseCallback</A
+> ioclose,
+                                             void *ioctx,
+                                             <A
+HREF="gnome-xml-encoding.html#XMLCHARENCODING"
+>xmlCharEncoding</A
+> enc);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Create a buffered parser input for the progressive parsing for the input
+from a file descriptor</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ioread</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an I/O read function</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ioclose</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an I/O close function</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ioctx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an I/O handler</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>enc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the charset encoding if known</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the new parser input or NULL</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN10973"
 ></A
 ><H3
 ><A
@@ -809,7 +1304,7 @@ in case of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10655"
+NAME="AEN10997"
 ></A
 ><H3
 ><A
@@ -909,7 +1404,7 @@ in case of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10679"
+NAME="AEN11021"
 ></A
 ><H3
 ><A
@@ -1026,7 +1521,7 @@ in case of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10707"
+NAME="AEN11049"
 ></A
 ><H3
 ><A
@@ -1089,7 +1584,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10723"
+NAME="AEN11065"
 ></A
 ><H3
 ><A
@@ -1153,6 +1648,147 @@ WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
 >&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11083"
+></A
+><H3
+><A
+NAME="XMLREGISTERINPUTCALLBACKS"
+></A
+>xmlRegisterInputCallbacks ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlRegisterInputCallbacks       (<A
+HREF="gnome-xml-xmlio.html#XMLINPUTMATCHCALLBACK"
+>xmlInputMatchCallback</A
+> match,
+                                             <A
+HREF="gnome-xml-xmlio.html#XMLINPUTOPENCALLBACK"
+>xmlInputOpenCallback</A
+> open,
+                                             <A
+HREF="gnome-xml-xmlio.html#XMLINPUTREADCALLBACK"
+>xmlInputReadCallback</A
+> read,
+                                             <A
+HREF="gnome-xml-xmlio.html#XMLINPUTCLOSECALLBACK"
+>xmlInputCloseCallback</A
+> close);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Register a new set of I/O callback for handling parser input.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>match</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlInputMatchCallback</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>open</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlInputOpenCallback</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>read</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlInputReadCallback</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>close</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlInputCloseCallback</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the registered handler number or -1 in case of error</TD
 ></TR
 ></TABLE
 ><P

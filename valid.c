@@ -28,14 +28,22 @@
 #include <libxml/xmlerror.h>
 #include <libxml/list.h>
 
-#define ALLOW_UNDETERMINISTIC_MODELS
-
 /*
  * Generic function for accessing stacks in the Validity Context
  */
 
 #define PUSH_AND_POP(scope, type, name)					\
 scope int name##VPush(xmlValidCtxtPtr ctxt, type value) {		\
+    if (ctxt->name##Max <= 0) {						\
+	ctxt->name##Max = 4;						\
+        ctxt->name##Tab = (type *) xmlMalloc(				\
+	             ctxt->name##Max * sizeof(ctxt->name##Tab[0]));	\
+        if (ctxt->name##Tab == NULL) {					\
+	    xmlGenericError(xmlGenericErrorContext,			\
+		    "malloc failed !\n");				\
+	    return(0);							\
+	}								\
+    }									\
     if (ctxt->name##Nr >= ctxt->name##Max) {				\
 	ctxt->name##Max *= 2;						\
         ctxt->name##Tab = (type *) xmlRealloc(ctxt->name##Tab,		\
@@ -62,8 +70,6 @@ scope type name##VPop(xmlValidCtxtPtr ctxt) {				\
     ctxt->name##Tab[ctxt->name##Nr] = 0;				\
     return(ret);							\
 }									\
-
-#ifdef ALLOW_UNDETERMINISTIC_MODELS
 
 /*
  * I will use a home made algorithm less complex and easier to
@@ -132,9 +138,6 @@ vstateVPop(xmlValidCtxtPtr ctxt) {
     ctxt->vstate->state = ctxt->vstateTab[ctxt->vstateNr].state;
     return(ctxt->vstateNr);
 }
-
-
-#endif /* ALLOW_UNDETERMINISTIC_MODELS */
 
 PUSH_AND_POP(static, xmlNodePtr, node)
 
@@ -3228,270 +3231,6 @@ xmlValidateOneAttribute(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
     return(ret);
 }
 
-#ifndef ALLOW_UNDETERMINISTIC_MODELS
-
-/* Find the next XML_ELEMENT_NODE, subject to the content constraints.
- * Return -1 if we found something unexpected, or 1 otherwise.
- */
-
-static int
-xmlValidateFindNextElement(xmlValidCtxtPtr ctxt, xmlNodePtr *child,
-                           xmlElementContentPtr cont)
-{
-    DEBUG_VALID_MSG("skipping to next element");
-    while (*child && (*child)->type != XML_ELEMENT_NODE) {
-	switch ((*child)->type) {
-	    /*
-	     * If there is an entity declared and it's not empty
-	     * Push the current node on the stack and process with the
-	     * entity content.
-	     */
-	    case XML_ENTITY_REF_NODE:
-		if (((*child)->children != NULL) &&
-		    ((*child)->children->children != NULL)) {
-		    nodeVPush(ctxt, *child);
-		    *child = (*child)->children->children;
-		    continue;
-		}
-		break;
-
-	    /* These things are ignored (skipped) during validation.  */
-	    case XML_PI_NODE:
-	    case XML_COMMENT_NODE:
-	    case XML_XINCLUDE_START:
-	    case XML_XINCLUDE_END:
-		break;
-
-	    case XML_TEXT_NODE:
-		if (xmlIsBlankNode(*child)
-		    && (cont->type == XML_ELEMENT_CONTENT_ELEMENT
-		    || cont->type == XML_ELEMENT_CONTENT_SEQ
-		    || cont->type == XML_ELEMENT_CONTENT_OR))
-		    break;
-		DEBUG_VALID_MSG("failed non-blank");
-		return(-1);
-
-	    default:
-		DEBUG_VALID_MSG("failed unknown type");
-		return(-1);
-	}
-	*child = (*child)->next;
-    }
-#ifdef DEBUG_VALID_ALGO
-    if (*child != NULL) {
-	DEBUG_VALID_MSG((*child)->name);
-    }
-    DEBUG_VALID_MSG("found ...");
-#endif
-
-    return(1);
-}
-
-int xmlValidateElementTypeElement(xmlValidCtxtPtr ctxt, xmlNodePtr *child,
-				  xmlElementContentPtr cont);
-
-/**
- * xmlValidateElementTypeExpr:
- * @ctxt:  the validation context
- * @child:  pointer to the child list
- * @cont:  pointer to the content declaration
- *
- * Try to validate the content of an element of type element
- * but don't handle the occurence factor
- *
- * returns 1 if valid or 0 and -1 if PCDATA stuff is found,
- *         also update child value in-situ.
- */
-
-static int
-xmlValidateElementTypeExpr(xmlValidCtxtPtr ctxt, xmlNodePtr *child,
-			   xmlElementContentPtr cont) {
-    xmlNodePtr cur;
-    int ret = 1;
-
-    if (cont == NULL) return(-1);
-    DEBUG_VALID_STATE(*child, cont)
-    ret = xmlValidateFindNextElement(ctxt, child, cont);
-    if (ret < 0)
-	    return(-1);
-    DEBUG_VALID_STATE(*child, cont)
-    switch (cont->type) {
-	case XML_ELEMENT_CONTENT_PCDATA:
-	    if (*child == NULL) return(0);
-	    if ((*child)->type == XML_TEXT_NODE) {
-		DEBUG_VALID_MSG("pcdata found");
-		return(1);
-	    }
-	    return(0);
-	case XML_ELEMENT_CONTENT_ELEMENT:
-	    if (*child == NULL) return(0);
-	    ret = (xmlStrEqual((*child)->name, cont->name));
-	    if (ret == 1) {
-		DEBUG_VALID_MSG("element found, skip to next");
-		while ((*child)->next == NULL) {
-                    if (((*child)->parent != NULL) &&
-			((*child)->parent->type == XML_ENTITY_DECL)) {
-			*child = nodeVPop(ctxt);
-		    } else
-			break;
-		}
-	        *child = (*child)->next;
-	    }
-	    return(ret);
-	case XML_ELEMENT_CONTENT_OR:
-	    cur = *child;
-	    ret = xmlValidateElementTypeElement(ctxt, child, cont->c1);
-	    if (ret == -1) return(-1);
-	    if (ret == 1) {
-		DEBUG_VALID_MSG("or succeeded first branch");
-		return(1);
-	    }
-	    /* rollback and retry the other path */
-	    *child = cur;
-	    ret = xmlValidateElementTypeElement(ctxt, child, cont->c2);
-	    if (ret == -1) return(-1);
-	    if (ret == 0) {
-		DEBUG_VALID_MSG("or failed both branches");
-		*child = cur;
-		return(0);
-	    }
-	    DEBUG_VALID_MSG("or succeeded second branch");
-	    return(1);
-	case XML_ELEMENT_CONTENT_SEQ:
-	    cur = *child;
-	    ret = xmlValidateElementTypeElement(ctxt, child, cont->c1);
-	    if (ret == -1) return(-1);
-	    if (ret == 0) {
-		DEBUG_VALID_MSG("sequence failed");
-		*child = cur;
-		return(0);
-	    }
-	    ret = xmlValidateElementTypeElement(ctxt, child, cont->c2);
-	    if (ret == -1) return(-1);
-	    if (ret == 0) {
-		*child = cur;
-		return(0);
-	    }
-	    DEBUG_VALID_MSG("sequence succeeded");
-	    return(1);
-    }
-    return(ret);
-}
-
-/**
- * xmlValidateElementTypeElement:
- * @ctxt:  the validation context
- * @child:  pointer to the child list
- * @cont:  pointer to the content declaration
- *
- * Try to validate the content of an element of type element
- * yeah, Yet Another Regexp Implementation, and recursive
- *
- * returns 1 if valid or 0 and -1 if PCDATA stuff is found,
- *         also update child and content values in-situ.
- */
-
-int
-xmlValidateElementTypeElement(xmlValidCtxtPtr ctxt, xmlNodePtr *child,
-			      xmlElementContentPtr cont) {
-    xmlNodePtr cur;
-    int ret;
-
-    if (cont == NULL) return(-1);
-
-    DEBUG_VALID_STATE(*child, cont)
-    ret = xmlValidateFindNextElement(ctxt, child, cont);
-    if (ret < 0)
-	    return(-1);
-    DEBUG_VALID_STATE(*child, cont)
-    cur = *child;
-    ret = xmlValidateElementTypeExpr(ctxt, child, cont);
-    if (ret == -1) return(-1);
-    switch (cont->ocur) {
-	case XML_ELEMENT_CONTENT_ONCE:
-	    if (ret == 1) {
-		DEBUG_VALID_MSG("once found, skip to next");
-		/* skip ignorable elems */
-		while ((*child != NULL) &&
-		       ((*child)->type == XML_PI_NODE
-                        || (*child)->type == XML_COMMENT_NODE
-                        || (*child)->type == XML_XINCLUDE_START
-                        || (*child)->type == XML_XINCLUDE_END)) {
-		    while ((*child)->next == NULL) {
-			if (((*child)->parent != NULL) &&
-			    ((*child)->parent->type == XML_ENTITY_REF_NODE)) {
-			    *child = (*child)->parent;
-			} else
-			    break;
-		    }
-		    *child = (*child)->next;
-		}
-		return(1);
-	    }
-	    *child = cur;
-	    return(0);
-	case XML_ELEMENT_CONTENT_OPT:
-	    if (ret == 0) {
-		*child = cur;
-	        return(1);
-	    }
-	    if (ret == 1) {
-		DEBUG_VALID_MSG("optional found, skip to next");
-		/* skip ignorable elems */
-		while ((*child != NULL) &&
-		       ((*child)->type == XML_PI_NODE
-                        || (*child)->type == XML_COMMENT_NODE
-                        || (*child)->type == XML_XINCLUDE_START
-                        || (*child)->type == XML_XINCLUDE_END)) {
-		    while ((*child)->next == NULL) {
-			if (((*child)->parent != NULL) &&
-			    ((*child)->parent->type == XML_ENTITY_REF_NODE)) {
-			    *child = (*child)->parent;
-			} else
-			    break;
-		    }
-		    *child = (*child)->next;
-		}
-		return(1);
-	    }
-	    break;
-	case XML_ELEMENT_CONTENT_MULT:
-	    if (ret == 0) {
-		*child = cur;
-	        break;
-	    }
-	    /* no break on purpose */
-	case XML_ELEMENT_CONTENT_PLUS:
-	    if (ret == 0) {
-		*child = cur;
-	        return(0);
-	    }
-	    DEBUG_VALID_MSG("mult/plus found");
-	    if (ret == -1) return(-1);
-	    cur = *child;
-	    do {
-		if (*child == NULL)
-		    break; /* while */
-		if ((*child)->type == XML_TEXT_NODE
-                    && xmlIsBlankNode(*child)) {
-		    *child = (*child)->next;
-		    continue;
-		}
-		ret = xmlValidateElementTypeExpr(ctxt, child, cont);
-		if (ret == 1)
-		    cur = *child;
-	    } while (ret == 1);
-	    if (ret == -1) return(-1);
-	    *child = cur;
-	    break;
-    }
-    if (ret == -1) return(-1);
-
-    return(xmlValidateFindNextElement(ctxt, child, cont));
-}
-
-#else /* ALLOW_UNDETERMINISTIC_MODELS */
-
 /**
  * xmlValidateSkipIgnorable:
  * @ctxt:  the validation context
@@ -3833,10 +3572,73 @@ analyze:
 }
 
 /**
+ * xmlSprintfElements:
+ * @buf:  an output buffer
+ * @content:  An element
+ * @glob: 1 if one must print the englobing parenthesis, 0 otherwise
+ *
+ * This will dump the list of elements to the buffer
+ * Intended just for the debug routine
+ */
+static void
+xmlSprintfElements(char *buf, xmlNodePtr node, int glob) {
+    xmlNodePtr cur;
+
+    if (node == NULL) return;
+    if (glob) strcat(buf, "(");
+    cur = node;
+    while (cur != NULL) {
+        switch (cur->type) {
+            case XML_ELEMENT_NODE:
+	         strcat(buf, (char *) cur->name);
+		 if (cur->next != NULL)
+		     strcat(buf, " ");
+		 break;
+            case XML_TEXT_NODE:
+		 if (xmlIsBlankNode(cur))
+		     break;
+            case XML_CDATA_SECTION_NODE:
+            case XML_ENTITY_REF_NODE:
+	         strcat(buf, "CDATA");
+		 if (cur->next != NULL)
+		     strcat(buf, " ");
+		 break;
+            case XML_ATTRIBUTE_NODE:
+            case XML_DOCUMENT_NODE:
+#ifdef LIBXML_SGML_ENABLED
+	    case XML_SGML_DOCUMENT_NODE:
+#endif
+	    case XML_HTML_DOCUMENT_NODE:
+            case XML_DOCUMENT_TYPE_NODE:
+            case XML_DOCUMENT_FRAG_NODE:
+            case XML_NOTATION_NODE:
+	    case XML_NAMESPACE_DECL:
+	         strcat(buf, "???");
+		 if (cur->next != NULL)
+		     strcat(buf, " ");
+		 break;
+            case XML_ENTITY_NODE:
+            case XML_PI_NODE:
+            case XML_DTD_NODE:
+            case XML_COMMENT_NODE:
+	    case XML_ELEMENT_DECL:
+	    case XML_ATTRIBUTE_DECL:
+	    case XML_ENTITY_DECL:
+	    case XML_XINCLUDE_START:
+	    case XML_XINCLUDE_END:
+		 break;
+	}
+	cur = cur->next;
+    }
+    if (glob) strcat(buf, ")");
+}
+
+/**
  * xmlValidateElementContent:
  * @ctxt:  the validation context
  * @child:  the child list
  * @cont:  pointer to the content declaration
+ * @warn:  emit the error message
  *
  * Try to validate the content model of an element
  *
@@ -3845,9 +3647,9 @@ analyze:
 
 static int
 xmlValidateElementContent(xmlValidCtxtPtr ctxt, xmlNodePtr child,
-		   xmlElementContentPtr cont) {
+		   xmlElementContentPtr cont, int warn) {
     int ret;
-    xmlNodePtr repl = NULL, last = NULL, tmp;
+    xmlNodePtr repl = NULL, last = NULL, cur, tmp;
 
     /*
      * Allocate the stack
@@ -3878,21 +3680,22 @@ xmlValidateElementContent(xmlValidCtxtPtr ctxt, xmlNodePtr child,
 	 * sufficient to run the validation process on it
 	 */
 	DEBUG_VALID_MSG("Found an entity reference, linearizing");
-	while (child != NULL) {
-	    switch (child->type) {
+	cur = child;
+	while (cur != NULL) {
+	    switch (cur->type) {
 		case XML_ENTITY_REF_NODE:
 		    /*
 		     * Push the current node to be able to roll back
 		     * and process within the entity
 		     */
-		    if ((child->children != NULL) &&
-			(child->children->children != NULL)) {
-			nodeVPush(ctxt, child);
-			child = child->children->children;
+		    if ((cur->children != NULL) &&
+			(cur->children->children != NULL)) {
+			nodeVPush(ctxt, cur);
+			cur = cur->children->children;
 			continue;
 		    }
 		case XML_TEXT_NODE:
-		    if (xmlIsBlankNode(child))
+		    if (xmlIsBlankNode(cur))
 			break;
 		case XML_ELEMENT_NODE:
 		    /*
@@ -3907,9 +3710,9 @@ xmlValidateElementContent(xmlValidCtxtPtr ctxt, xmlNodePtr child,
 			ret = -1;
 			goto done;
 		    }
-		    tmp->type = child->type;
-		    tmp->name = child->name;
-		    tmp->ns = child->ns;
+		    tmp->type = cur->type;
+		    tmp->name = cur->name;
+		    tmp->ns = cur->ns;
 		    tmp->next = NULL;
 		    if (repl == NULL)
 			repl = last = tmp;
@@ -3924,12 +3727,12 @@ xmlValidateElementContent(xmlValidCtxtPtr ctxt, xmlNodePtr child,
 	    /*
 	     * Switch to next element
 	     */
-	    child = child->next;
-	    while (child == NULL) {
-		child = nodeVPop(ctxt);
-		if (child == NULL)
+	    cur = cur->next;
+	    while (cur == NULL) {
+		cur = nodeVPop(ctxt);
+		if (cur == NULL)
 		    break;
-		child = child->next;
+		cur = cur->next;
 	    }
 	}
 
@@ -3945,6 +3748,29 @@ xmlValidateElementContent(xmlValidCtxtPtr ctxt, xmlNodePtr child,
 	STATE = 0;
 	ret = xmlValidateElementType(ctxt);
     }
+    if ((warn) && (ret != 1)) {
+	char expr[5000];
+	char list[5000];
+
+	expr[0] = 0;
+	xmlSprintfElementContent(expr, cont, 1);
+	list[0] = 0;
+	if (repl != NULL)
+	    xmlSprintfElements(list, repl, 1);
+	else
+	    xmlSprintfElements(list, child, 1);
+
+	if ((child->parent != NULL) && (child->parent->name != NULL)) {
+	    VERROR(ctxt->userData,
+   "Element %s content doesn't follow the Dtd\nExpecting %s, got %s\n",
+	       child->parent->name, expr, list);
+	} else {
+	    VERROR(ctxt->userData,
+       "Element content doesn't follow the Dtd\nExpecting %s, got %s\n",
+	       expr, list);
+	}
+	ret = 0;
+    }
 
 
 done:
@@ -3957,11 +3783,18 @@ done:
 	repl = tmp;
     }
     ctxt->vstateMax = 0;
-    xmlFree(ctxt->vstateTab);
+    if (ctxt->vstateTab != NULL) {
+	xmlFree(ctxt->vstateTab);
+	ctxt->vstateTab = NULL;
+    }
+    ctxt->nodeMax = 0;
+    if (ctxt->nodeTab != NULL) {
+	xmlFree(ctxt->nodeTab);
+	ctxt->nodeTab = NULL;
+    }
     return(ret);
 
 }
-#endif /* ALLOW_UNDETERMINISTIC_MODELS */
 
 /**
  * xmlSprintfElementChilds:
@@ -4229,45 +4062,8 @@ child_ok:
         case XML_ELEMENT_TYPE_ELEMENT:
 	    child = elem->children;
 	    cont = elemDecl->content;
-#ifdef ALLOW_UNDETERMINISTIC_MODELS
-	    ret = xmlValidateElementContent(ctxt, child, cont);
-	    if (ret != 1) {
-	        char expr[1000];
-	        char list[2000];
-
-		expr[0] = 0;
-		xmlSprintfElementContent(expr, cont, 1);
-		list[0] = 0;
-		xmlSprintfElementChilds(list, elem, 1);
-
-		VERROR(ctxt->userData,
-	   "Element %s content doesn't follow the Dtd\nExpecting %s, got %s\n",
-	               elem->name, expr, list);
-		ret = 0;
-	    }
-#else
-	    ret = xmlValidateElementTypeElement(ctxt, &child, cont);
-	    while ((child != NULL) && (child->type == XML_TEXT_NODE) &&
-		(xmlIsBlankNode(child))) {
-		child = child->next;
-		continue;
-	    }
-	    if ((ret == 0) || (child != NULL)) {
-	        char expr[1000];
-	        char list[2000];
-
-		expr[0] = 0;
-		xmlSprintfElementContent(expr, cont, 1);
-		list[0] = 0;
-		xmlSprintfElementChilds(list, elem, 1);
-
-		VERROR(ctxt->userData,
-	   "Element %s content doesn't follow the Dtd\nExpecting %s, got %s\n",
-	               elem->name, expr, list);
-		ret = 0;
-	    }
+	    ret = xmlValidateElementContent(ctxt, child, cont, 1);
 	    break;
-#endif
     }
 
     /* [ VC: Required Attribute ] */
@@ -4293,7 +4089,8 @@ child_ok:
 			if (nameSpace == NULL) {
 			    if (qualified < 0) 
 				qualified = 0;
-	    		} else if (!xmlStrEqual(nameSpace->prefix, attr->prefix)) {
+	    		} else if (!xmlStrEqual(nameSpace->prefix,
+				                attr->prefix)) {
 			    if (qualified < 1) 
 				qualified = 1;
 			} else

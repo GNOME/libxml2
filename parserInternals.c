@@ -277,17 +277,7 @@ xmlSetFeature(xmlParserCtxtPtr ctxt, const char *name, void *value) {
 		ctxt->vctxt.warning = xmlParserValidityWarning;
 	    if (ctxt->vctxt.error == NULL)
 		ctxt->vctxt.error = xmlParserValidityError;
-	    /* Allocate the Node stack */
-	    ctxt->vctxt.nodeTab = (xmlNodePtr *)
-		       xmlMalloc(4 * sizeof(xmlNodePtr));
-	    if (ctxt->vctxt.nodeTab == NULL) {
-		ctxt->vctxt.nodeMax = 0;
-		ctxt->validate = 0;
-		return(-1);
-	    }
-	    ctxt->vctxt.nodeNr = 0;
-	    ctxt->vctxt.nodeMax = 4;
-	    ctxt->vctxt.node = NULL;
+	    ctxt->vctxt.nodeMax = 0;
 	}
         ctxt->validate = newvalidate;
     } else if (!strcmp(name, "keep blanks")) {
@@ -2223,20 +2213,7 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
 	    ctxt->vctxt.warning = NULL;
 	else
 	    ctxt->vctxt.warning = xmlParserValidityWarning;
-	/* Allocate the Node stack */
-	ctxt->vctxt.nodeTab = (xmlNodePtr *) xmlMalloc(4 * sizeof(xmlNodePtr));
-	if (ctxt->vctxt.nodeTab == NULL) {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "xmlInitParserCtxt: out of memory\n");
-	    ctxt->vctxt.nodeMax = 0;
-	    ctxt->validate = 0;
-	    ctxt->vctxt.error = NULL;
-	    ctxt->vctxt.warning = NULL;
-	} else {
-	    ctxt->vctxt.nodeNr = 0;
-	    ctxt->vctxt.nodeMax = 4;
-	    ctxt->vctxt.node = NULL;
-	}
+	ctxt->vctxt.nodeMax = 0;
     } else {
 	ctxt->vctxt.error = NULL;
 	ctxt->vctxt.warning = NULL;
@@ -2283,7 +2260,6 @@ xmlFreeParserCtxt(xmlParserCtxtPtr ctxt)
     if (ctxt->intSubName != NULL) xmlFree((char *) ctxt->intSubName);
     if (ctxt->extSubURI != NULL) xmlFree((char *) ctxt->extSubURI);
     if (ctxt->extSubSystem != NULL) xmlFree((char *) ctxt->extSubSystem);
-    if (ctxt->vctxt.nodeTab != NULL) xmlFree(ctxt->vctxt.nodeTab);
     if ((ctxt->sax != NULL) && (ctxt->sax != &xmlDefaultSAXHandler))
         xmlFree(ctxt->sax);
     if (ctxt->directory != NULL) xmlFree((char *) ctxt->directory);

@@ -1598,14 +1598,22 @@ xmlDefaultExternalEntityLoader(const char *URL, const char *ID,
 	    "xmlDefaultExternalEntityLoader(%s, xxx)\n", URL);
 #endif
     if (URL == NULL) {
-        if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
+	if ((ctxt->validate) && (ctxt->sax != NULL) && 
+            (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt,
+		    "failed to load external entity \"%s\"\n", ID);
+	else if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
 	    ctxt->sax->warning(ctxt,
 		    "failed to load external entity \"%s\"\n", ID);
         return(NULL);
     }
     ret = xmlNewInputFromFile(ctxt, URL);
     if (ret == NULL) {
-        if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
+	if ((ctxt->validate) && (ctxt->sax != NULL) && 
+            (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt,
+		    "failed to load external entity \"%s\"\n", URL);
+	else if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
 	    ctxt->sax->warning(ctxt,
 		    "failed to load external entity \"%s\"\n", URL);
     }

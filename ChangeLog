@@ -1,3 +1,9 @@
+Sat Apr 21 16:12:59 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* valid.c: cleanup, more useful debugging
+	* parserInternals.c: cleanup vctxt.nodeTab (de)allocation
+	* xmlIO.c: entity loading is printed as an error when validating
+
 Sat Apr 21 12:25:49 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* valid.c: fixed to validate within entities

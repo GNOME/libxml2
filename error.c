@@ -457,8 +457,17 @@ __xmlRaiseError(xmlStructuredErrorFunc schannel,
 	    (ctxt->sax->initialized == XML_SAX2_MAGIC))
 	    schannel = ctxt->sax->serror;
     }
-    if (schannel == NULL)
+    /*
+     * Check if structured error handler set
+     */
+    if (schannel == NULL) {
 	schannel = xmlStructuredError;
+	/*
+	 * if user has defined handler, change data ptr to user's choice
+	 */
+	if (schannel != NULL)
+	    data = xmlGenericErrorContext;
+    }
     if ((domain == XML_FROM_VALID) &&
         ((channel == xmlParserValidityError) ||
 	 (channel == xmlParserValidityWarning))) {
@@ -541,7 +550,7 @@ __xmlRaiseError(xmlStructuredErrorFunc schannel,
         xmlCopyError(to,&xmlLastError);
 
     /*
-     * Find the callback channel.
+     * Find the callback channel if channel param is NULL
      */
     if ((ctxt != NULL) && (channel == NULL) && (xmlStructuredError == NULL)) {
         if (level == XML_ERR_WARNING)

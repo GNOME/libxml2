@@ -1,8 +1,8 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS = include . doc example @PYTHON_SUBDIR@
+SUBDIRS = include . doc example xstc @PYTHON_SUBDIR@
 
-DIST_SUBDIRS = include . doc example python
+DIST_SUBDIRS = include . doc example python xstc
 
 INCLUDES = -I$(top_builddir)/include -I@srcdir@/include @THREAD_CFLAGS@ @Z_CFLAGS@ 
 
@@ -126,6 +126,7 @@ tests: XMLtests XMLenttests NStests IDtests Errtests @READER_TEST@ @TEST_SAX@ @T
 	@(if [ "@PYTHON_SUBDIR@" != "" ] ; then cd python ; \
 	    $(MAKE) MAKEFLAGS+=--silent tests ; fi)
 	@(cd doc/examples ; $(MAKE) MAKEFLAGS+=--silent tests)
+	@(cd xstc ; $(MAKE) MAKEFLAGS+=--silent tests)
 
 valgrind:
 	@echo '## Running the regression tests under Valgrind'

@@ -1,3 +1,9 @@
+Mon Sep  6 13:56:28 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am configure.in xstc/.cvsignore xstc/Makefile.am:
+	  starting to integrate the xstc suite in the normal regression
+	  tests
+
 Mon Sep  6 13:14:11 CEST 2004 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xstc/sun-test-def.xml: The "tsDir" attribute was not

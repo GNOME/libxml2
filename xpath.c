@@ -207,7 +207,8 @@ static const char *xmlXPathErrorMessages[] = {
     "Sub resource error\n",
     "Undefined namespace prefix\n",
     "Encoding error\n",
-    "Char out of XML range\n"
+    "Char out of XML range\n",
+    "Invalid or inclomplete context\n"
 };
 
 
@@ -3928,24 +3929,11 @@ xmlXPathFreeContext(xmlXPathContextPtr ctxt) {
 
 
 #define CHECK_CONTEXT(ctxt)						\
-    if (ctxt == NULL) { 						\
-        xmlGenericError(xmlGenericErrorContext,				\
-		"%s:%d Internal error: no context\n",			\
-	        __FILE__, __LINE__);					\
+    if ((ctxt == NULL) || (ctxt->doc == NULL) ||			\
+        (ctxt->doc->children == NULL)) { 				\
+	xmlXPatherror(ctxt, __FILE__, __LINE__, XPATH_INVALID_CTXT);	\
 	return(NULL);							\
-    }									\
-    else if (ctxt->doc == NULL) { 					\
-        xmlGenericError(xmlGenericErrorContext,				\
-		"%s:%d Internal error: no document\n",			\
-	        __FILE__, __LINE__);					\
-	return(NULL);							\
-    }									\
-    else if (ctxt->doc->children == NULL) { 				\
-        xmlGenericError(xmlGenericErrorContext,				\
-	        "%s:%d Internal error: document without root\n",	\
-	        __FILE__, __LINE__);					\
-	return(NULL);							\
-    }									\
+    }
 
 
 /**

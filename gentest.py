@@ -319,11 +319,56 @@ if doc == None:
     print "Failed to load doc/libxml2-api.xml"
     sys.exit(1)
 ctxt = doc.xpathNewContext()
-headers = ctxt.xpathEval("/api/files/file")
+
+#
+# Generate constructors and return type handling for all enums
+#
+enums = ctxt.xpathEval("/api/symbols/typedef[@type='enum']")
+for enum in enums:
+    name = enum.xpathEval('string(@name)')
+    if name == None:
+        continue;
+
+    if is_known_param_type(name, name) == 0:
+	values = ctxt.xpathEval("/api/symbols/enum[@type='%s']" % name)
+	i = 0
+	vals = []
+	for value in values:
+	    vname = value.xpathEval('string(@name)')
+	    if vname == None:
+		continue;
+	    i = i + 1
+	    if i >= 5:
+		break;
+	    vals.append(vname)
+	if vals == []:
+	    print "Didn't found any value for enum %s" % (name)
+	    continue
+	test.write("#define gen_nb_%s %d\n" % (name, len(vals)))
+	test.write("""static %s gen_%s(int no, int nr ATTRIBUTE_UNUSED) {\n""" %
+	           (name, name))
+	i = 1
+	for value in vals:
+	    test.write("    if (no == %d) return(%s);\n" % (i, value))
+	    i = i + 1
+	test.write("""    return(0);
+}
+""");
+	known_param_types.append(name)
+
+    if is_known_return_type(name) == 0:
+        test.write("""static void des_%s(int no ATTRIBUTE_UNUSED, %s val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+}
+static void desret_%s(%s val ATTRIBUTE_UNUSED) {
+}
+
+""" % (name, name, name, name))
+	known_return_types.append(name)
 
 #
 # Load the interfaces
 # 
+headers = ctxt.xpathEval("/api/files/file")
 for file in headers:
     name = file.xpathEval('string(@name)')
     if (name == None) or (name == ''):

@@ -1,3 +1,8 @@
+Sat Nov  6 15:50:11 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* gentest.py testapi.c: augmented type autogeneration for enums
+	* xpath.c include/libxml/xpath.h: removed direct error reporting.
+
 Sat Nov  6 14:27:18 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* encoding.c: fixed a regression in iconv support.

@@ -2770,21 +2770,16 @@ xmlNodeGetBase(xmlDocPtr doc, xmlNodePtr cur) {
 	        cur = cur->next;
 		continue;
 	    }
-	    if ((!xmlStrcmp(cur->name, BAD_CAST "html")) ||
-	        (!xmlStrcmp(cur->name, BAD_CAST "HTML"))) {
+	    if (!xmlStrcasecmp(cur->name, BAD_CAST "html")) {
 	        cur = cur->children;
 		continue;
 	    }
-	    if ((!xmlStrcmp(cur->name, BAD_CAST "head")) ||
-	        (!xmlStrcmp(cur->name, BAD_CAST "HEAD"))) {
+	    if (!xmlStrcasecmp(cur->name, BAD_CAST "head")) {
 	        cur = cur->children;
 		continue;
 	    }
-	    if ((!xmlStrcmp(cur->name, BAD_CAST "base")) ||
-	        (!xmlStrcmp(cur->name, BAD_CAST "BASE"))) {
-                base = xmlGetProp(cur, BAD_CAST "href");
-		if (base != NULL) return(base);
-                return(xmlGetProp(cur, BAD_CAST "HREF"));
+	    if (!xmlStrcasecmp(cur->name, BAD_CAST "base")) {
+                return(xmlGetProp(cur, BAD_CAST "href"));
 	    }
 	    cur = cur->next;
 	}
@@ -4311,7 +4306,7 @@ xmlBufferWriteQuotedString(xmlBufferPtr buf, const xmlChar *string) {
  *									*
  ************************************************************************/
 
-static void
+void
 xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
             int format);
 static void
@@ -4556,7 +4551,7 @@ xmlNodeListDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
  *
  * Dump an XML node, recursive behaviour,children are printed too.
  */
-static void
+void
 xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
             int format) {
     int i;
@@ -4800,7 +4795,7 @@ xmlDocContentDump(xmlBufferPtr buf, xmlDocPtr cur) {
  *									*
  ************************************************************************/
 
-static void
+void
 xmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
                   int level, int format, const char *encoding);
 static void
@@ -5049,7 +5044,7 @@ xmlNodeListDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
  *
  * Dump an XML node, recursive behaviour,children are printed too.
  */
-static void
+void
 xmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
             int level, int format, const char *encoding) {
     int i;

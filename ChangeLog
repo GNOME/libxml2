@@ -1,3 +1,11 @@
+Fri Sep 22 14:17:53 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* xmlIO.h tree.h: made xmlNodeDump() and xmlNodeDumpOutput() public
+	* parser.[ch] nanohttp.c HTMLtree.c HTMLparser.c tree.c: applied and
+	  modified slightly Wayne Davison patch adding xmlStrcasecmp and
+	  related function, fixing xmlStrncmp(), and associated cleanup
+	* result/HTML/entities.html.sax: updating result
+
 Tue Sep 19 14:20:10 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* uri.c: applied patch for URI escaping from Wayne Davison

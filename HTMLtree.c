@@ -113,17 +113,11 @@ found_meta:
 #else
 			value = xmlBufferContent(attr->children->content);
 #endif
-			if (((!xmlStrcmp(attr->name, BAD_CAST"http-equiv")) ||
-			     (!xmlStrcmp(attr->name, BAD_CAST"Http-Equiv")) ||
-			     (!xmlStrcmp(attr->name, BAD_CAST"HTTP-EQUIV"))) &&
-			    ((!xmlStrcmp(value, BAD_CAST"Content-Type")) ||
-			     (!xmlStrcmp(value, BAD_CAST"content-type")) ||
-			     (!xmlStrcmp(value, BAD_CAST"CONTENT-TYPE"))))
+			if ((!xmlStrcasecmp(attr->name, BAD_CAST"http-equiv"))
+			 && (!xmlStrcasecmp(value, BAD_CAST"Content-Type")))
 			    http = 1;
-			else if ((value != NULL) &&
-				 ((!xmlStrcmp(attr->name, BAD_CAST"content")) ||
-				  (!xmlStrcmp(attr->name, BAD_CAST"Content")) ||
-				  (!xmlStrcmp(attr->name, BAD_CAST"CONTENT"))))
+			else if ((value != NULL)
+			 && (!xmlStrcasecmp(attr->name, BAD_CAST"content")))
 			    content = value;
 			if ((http != 0) && (content != NULL))
 			    goto found_content;
@@ -294,17 +288,11 @@ found_meta:
 #else
 			value = xmlBufferContent(attr->children->content);
 #endif
-			if (((!xmlStrcmp(attr->name, BAD_CAST"http-equiv")) ||
-			     (!xmlStrcmp(attr->name, BAD_CAST"Http-Equiv")) ||
-			     (!xmlStrcmp(attr->name, BAD_CAST"HTTP-EQUIV"))) &&
-			    ((!xmlStrcmp(value, BAD_CAST"Content-Type")) ||
-			     (!xmlStrcmp(value, BAD_CAST"content-type")) ||
-			     (!xmlStrcmp(value, BAD_CAST"CONTENT-TYPE"))))
+			if ((!xmlStrcasecmp(attr->name, BAD_CAST"http-equiv"))
+			 && (!xmlStrcasecmp(value, BAD_CAST"Content-Type")))
 			    http = 1;
-			else if ((value != NULL) &&
-				 ((!xmlStrcmp(attr->name, BAD_CAST"content")) ||
-				  (!xmlStrcmp(attr->name, BAD_CAST"Content")) ||
-				  (!xmlStrcmp(attr->name, BAD_CAST"CONTENT"))))
+			else if ((value != NULL)
+			 && (!xmlStrcasecmp(attr->name, BAD_CAST"content")))
 			    content = value;
 			if ((http != 0) && (content != NULL))
 			    break;

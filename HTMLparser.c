@@ -598,7 +598,7 @@ htmlInitAutoClose(void) {
 
 /**
  * htmlTagLookup:
- * @tag:  The tag name
+ * @tag:  The tag name in lowercase
  *
  * Lookup the HTML tag in the ElementTable
  *
@@ -2663,19 +2663,11 @@ htmlCheckEncoding(htmlParserCtxtPtr ctxt, const xmlChar *attvalue) {
     if ((ctxt == NULL) || (attvalue == NULL))
 	return;
 
-    encoding = xmlStrstr(attvalue, BAD_CAST"charset=");
-    if (encoding == NULL) 
-	encoding = xmlStrstr(attvalue, BAD_CAST"Charset=");
-    if (encoding == NULL) 
-	encoding = xmlStrstr(attvalue, BAD_CAST"CHARSET=");
+    encoding = xmlStrcasestr(attvalue, BAD_CAST"charset=");
     if (encoding != NULL) {
 	encoding += 8;
     } else {
-	encoding = xmlStrstr(attvalue, BAD_CAST"charset =");
-	if (encoding == NULL) 
-	    encoding = xmlStrstr(attvalue, BAD_CAST"Charset =");
-	if (encoding == NULL) 
-	    encoding = xmlStrstr(attvalue, BAD_CAST"CHARSET =");
+	encoding = xmlStrcasestr(attvalue, BAD_CAST"charset =");
 	if (encoding != NULL)
 	    encoding += 9;
     }
@@ -2757,18 +2749,10 @@ htmlCheckMeta(htmlParserCtxtPtr ctxt, const xmlChar **atts) {
     att = atts[i++];
     while (att != NULL) {
 	value = atts[i++];
-	if ((value != NULL) &&
-	    ((!xmlStrcmp(att, BAD_CAST"http-equiv")) ||
-	     (!xmlStrcmp(att, BAD_CAST"Http-Equiv")) ||
-	     (!xmlStrcmp(att, BAD_CAST"HTTP-EQUIV"))) &&
-	    ((!xmlStrcmp(value, BAD_CAST"Content-Type")) ||
-	     (!xmlStrcmp(value, BAD_CAST"content-type")) ||
-	     (!xmlStrcmp(value, BAD_CAST"CONTENT-TYPE"))))
+	if ((value != NULL) && (!xmlStrcasecmp(att, BAD_CAST"http-equiv"))
+	 && (!xmlStrcasecmp(value, BAD_CAST"Content-Type")))
 	    http = 1;
-	else if ((value != NULL) &&
-		 ((!xmlStrcmp(att, BAD_CAST"content")) ||
-		  (!xmlStrcmp(att, BAD_CAST"Content")) ||
-		  (!xmlStrcmp(att, BAD_CAST"CONTENT"))))
+	else if ((value != NULL) && (!xmlStrcasecmp(att, BAD_CAST"content")))
 	    content = value;
 	att = atts[i++];
     }

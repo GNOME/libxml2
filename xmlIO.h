@@ -150,6 +150,12 @@ int     xmlRegisterOutputCallbacks	(xmlOutputMatchCallback match,
 int		xmlSaveFileTo		(xmlOutputBuffer *buf,
 					 xmlDocPtr cur,
 					 const char *encoding);
+void		xmlNodeDumpOutput	(xmlOutputBufferPtr buf,
+					 xmlDocPtr doc,
+					 xmlNodePtr cur,
+					 int level,
+					 int format,
+					 const char *encoding);
 #ifdef __cplusplus
 }
 #endif

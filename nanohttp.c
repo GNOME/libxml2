@@ -62,10 +62,13 @@
 #endif
 
 #include <libxml/xmlmemory.h>
+#include <libxml/parser.h> /* for xmlStr(n)casecmp() */
 #include <libxml/nanohttp.h>
 
 #ifdef STANDALONE
 #define DEBUG_HTTP
+#define xmlStrncasecmp(a, b, n) strncasecmp((char *)a, (char *)b, n)
+#define xmlStrcasecmpi(a, b) strcasecmp((char *)a, (char *)b)
 #endif
 
 #define XML_NANO_HTTP_MAX_REDIR	10
@@ -523,37 +526,22 @@ xmlNanoHTTPScanAnswer(xmlNanoHTTPCtxtPtr ctxt, const char *line) {
 	}
 	if ((*cur != 0) && (*cur != ' ') && (*cur != '\t')) return;
 	ctxt->returnValue = ret;
-    } else if (!strncmp(line, "Content-Type:", 13)) {
+    } else if (!xmlStrncasecmp(BAD_CAST line, BAD_CAST"Content-Type:", 13)) {
         cur += 13;
 	while ((*cur == ' ') || (*cur == '\t')) cur++;
 	if (ctxt->contentType != NULL)
 	    xmlFree(ctxt->contentType);
 	ctxt->contentType = xmlMemStrdup(cur);
-    } else if (!strncmp(line, "ContentType:", 12)) {
+    } else if (!xmlStrncasecmp(BAD_CAST line, BAD_CAST"ContentType:", 12)) {
         cur += 12;
 	if (ctxt->contentType != NULL) return;
 	while ((*cur == ' ') || (*cur == '\t')) cur++;
 	ctxt->contentType = xmlMemStrdup(cur);
-    } else if (!strncmp(line, "content-type:", 13)) {
-        cur += 13;
-	if (ctxt->contentType != NULL) return;
-	while ((*cur == ' ') || (*cur == '\t')) cur++;
-	ctxt->contentType = xmlMemStrdup(cur);
-    } else if (!strncmp(line, "contenttype:", 12)) {
-        cur += 12;
-	if (ctxt->contentType != NULL) return;
-	while ((*cur == ' ') || (*cur == '\t')) cur++;
-	ctxt->contentType = xmlMemStrdup(cur);
-    } else if (!strncmp(line, "Location:", 9)) {
+    } else if (!xmlStrncasecmp(BAD_CAST line, BAD_CAST"Location:", 9)) {
         cur += 9;
 	while ((*cur == ' ') || (*cur == '\t')) cur++;
 	if (ctxt->location != NULL)
 	    xmlFree(ctxt->location);
-	ctxt->location = xmlMemStrdup(cur);
-    } else if (!strncmp(line, "location:", 9)) {
-        cur += 9;
-	if (ctxt->location != NULL) return;
-	while ((*cur == ' ') || (*cur == '\t')) cur++;
 	ctxt->location = xmlMemStrdup(cur);
     }
 }

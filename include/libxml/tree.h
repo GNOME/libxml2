@@ -13,7 +13,6 @@
 #include <stdio.h>
 #include <libxml/xmlversion.h>
 
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -625,6 +624,11 @@ void		xmlElemDump		(FILE *f,
 					 xmlNodePtr cur);
 int		xmlSaveFile		(const char *filename,
 					 xmlDocPtr cur);
+void		xmlNodeDump		(xmlBufferPtr buf,
+					 xmlDocPtr doc,
+					 xmlNodePtr cur,
+					 int level,
+					 int format);
 
 /* This one is exported from xmlIO.h
  

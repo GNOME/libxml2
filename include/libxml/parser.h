@@ -335,9 +335,16 @@ const xmlChar *	xmlStrchr		(const xmlChar *str,
 					 xmlChar val);
 const xmlChar *	xmlStrstr		(const xmlChar *str,
 					 xmlChar *val);
+const xmlChar *	xmlStrcasestr		(const xmlChar *str,
+					 xmlChar *val);
 int		xmlStrcmp		(const xmlChar *str1,
 					 const xmlChar *str2);
 int		xmlStrncmp		(const xmlChar *str1,
+					 const xmlChar *str2,
+					 int len);
+int		xmlStrcasecmp		(const xmlChar *str1,
+					 const xmlChar *str2);
+int		xmlStrncasecmp		(const xmlChar *str1,
 					 const xmlChar *str2,
 					 int len);
 int		xmlStrlen		(const xmlChar *str);

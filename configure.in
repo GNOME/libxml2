@@ -274,6 +274,9 @@ if test "${LOGNAME}" = "veillard" -a "`pwd`" = "/u/veillard/XML" ; then
     if test "${with_xptr}" = "" ; then
         with_xptr="yes"
     fi
+    if test "${with_schemas}" = "" ; then
+        with_schemas="yes"
+    fi
     CFLAGS="-g -O -pedantic -W -Wunused -Wimplicit -Wreturn-type -Wswitch -Wcomment -Wtrigraphs -Wformat -Wchar-subscripts -Wuninitialized -Wparentheses -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline -Wredundant-decls "
 dnl -Wcast-qual -ansi
 fi
@@ -512,6 +515,18 @@ fi
 M_LIBS="-lm"
 XML_LIBS="-lxml2 $Z_LIBS $THREAD_LIBS $ICONV_LIBS $M_LIBS $LIBS"
 AC_SUBST(WITH_ICONV)
+
+AC_ARG_WITH(schemas, [  --with-schemas              Add experimental Schemas support (off)])
+if test "$with_schemas" = "yes" ; then
+    echo Enabling Schemas support
+    WITH_SCHEMAS=1
+    TEST_SCHEMAS="Regexptests Automatatests Schemastests"
+else    
+    WITH_SCHEMAS=0
+    TEST_SCHEMAS=
+fi
+AC_SUBST(WITH_SCHEMAS)
+AC_SUBST(TEST_SCHEMAS)
 
 AC_ARG_WITH(debug, [  --with-debug            Add the debugging module (on)])
 if test "$with_debug" = "no" ; then

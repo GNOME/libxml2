@@ -32,7 +32,13 @@ xmlinc_HEADERS = \
 		catalog.h \
 		threads.h \
 		globals.h \
-		c14n.h
+		c14n.h \
+		xmlautomata.h \
+		xmlregexp.h \
+		xmlschemas.h \
+		schemasInternals.h \
+		xmlschemastypes.h \
+		xmlunicode.h
 
 install-exec-hook:
 	$(mkinstalldirs) $(DESTDIR)$(xmlincdir)

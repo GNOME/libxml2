@@ -190,6 +190,42 @@ extern void xmlCheckVersion(int version);
 #endif
 
 /**
+ * LIBXML_UNICODE_ENABLED
+ *
+ * Whether the Unicode related interfaces are compiled in
+ */
+#if @WITH_SCHEMAS@
+#define LIBXML_UNICODE_ENABLED
+#endif
+
+/**
+ * LIBXML_REGEXP_ENABLED
+ *
+ * Whether the regular expressions interfaces are compiled in
+ */
+#if @WITH_SCHEMAS@
+#define LIBXML_REGEXP_ENABLED
+#endif
+
+/**
+ * LIBXML_AUTOMATA_ENABLED
+ *
+ * Whether the automata interfaces are compiled in
+ */
+#if @WITH_SCHEMAS@
+#define LIBXML_AUTOMATA_ENABLED
+#endif
+
+/**
+ * LIBXML_SCHEMAS_ENABLED
+ *
+ * Whether the Schemas validation interfaces are compiled in
+ */
+#if @WITH_SCHEMAS@
+#define LIBXML_SCHEMAS_ENABLED
+#endif
+
+/**
  * LIBXML_DLL_IMPORT:
  *
  * Used on Windows (MS C compiler only) to declare a variable as 

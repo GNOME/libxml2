@@ -1,12 +1,12 @@
 ## Process this file with automake to produce Makefile.in
-#AUTOMAKE_ OPTIONS=no-dependencies
+# AUTOMAKE_ OPTIONS=no-dependencies
 
 SUBDIRS = include . doc example python
 
 INCLUDES = -I@srcdir@/include -I$(top_builddir)/include @THREAD_CFLAGS@ @Z_CFLAGS@ 
 
 noinst_PROGRAMS=testSAX testHTML testXPath testURI testDocbook testThreads \
-                testC14N
+                testC14N testAutomata testSchemas testRegexp
 
 bin_PROGRAMS = xmllint xmlcatalog
 
@@ -22,15 +22,16 @@ libxml2_la_SOURCES = SAX.c entities.c encoding.c error.c parserInternals.c  \
 		parser.c tree.c hash.c list.c xmlIO.c xmlmemory.c uri.c  \
 		valid.c xlink.c HTMLparser.c HTMLtree.c debugXML.c xpath.c  \
 		xpointer.c xinclude.c nanohttp.c nanoftp.c DOCBparser.c \
-		catalog.c globals.c threads.c c14n.c triostr.c trio.c
-
+		catalog.c globals.c threads.c c14n.c \
+		xmlregexp.c xmlschemas.c schemastypes.c xmlunicode.c \
+		triostr.c trio.c
 else
 libxml2_la_SOURCES = SAX.c entities.c encoding.c error.c parserInternals.c  \
 		parser.c tree.c hash.c list.c xmlIO.c xmlmemory.c uri.c  \
 		valid.c xlink.c HTMLparser.c HTMLtree.c debugXML.c xpath.c  \
 		xpointer.c xinclude.c nanohttp.c nanoftp.c DOCBparser.c \
-		catalog.c globals.c threads.c c14n.c
-
+		catalog.c globals.c threads.c c14n.c \
+		xmlregexp.c xmlschemas.c xmlschemastypes.c xmlunicode.c
 endif
 
 DEPS = $(top_builddir)/libxml2.la
@@ -86,11 +87,26 @@ testURI_LDFLAGS =
 testURI_DEPENDENCIES = $(DEPS)
 testURI_LDADD= $(LDADDS)
 
+testRegexp_SOURCES=testRegexp.c
+testRegexp_LDFLAGS = 
+testRegexp_DEPENDENCIES = $(DEPS)
+testRegexp_LDADD= $(LDADDS)
+
+testAutomata_SOURCES=testAutomata.c
+testAutomata_LDFLAGS = 
+testAutomata_DEPENDENCIES = $(DEPS)
+testAutomata_LDADD= $(LDADDS)
+
+testSchemas_SOURCES=testSchemas.c
+testSchemas_LDFLAGS = 
+testSchemas_DEPENDENCIES = $(DEPS)
+testSchemas_LDADD= $(LDADDS)
+
 check-local: tests
 
 testall : tests SVGtests SAXtests
 
-tests: XMLtests XMLenttests HTMLtests Validtests URItests XPathtests XPtrtests XIncludetests Scripttests Catatests @TEST_THREADS@
+tests: XMLtests XMLenttests HTMLtests Validtests URItests XPathtests XPtrtests XIncludetests Scripttests Catatests @TEST_SCHEMAS@ @TEST_THREADS@
 	@(cd python ; $(MAKE) tests)
 
 valgrind:
@@ -557,6 +573,67 @@ Validtests : xmllint$(EXEEXT)
 	      rm result.$$name error.$$name ; \
 	  fi ; fi ; done)
 
+Regexptests: testRegexp$(EXEEXT)
+	@(echo > .memdump)
+	@echo "##"
+	@echo "## Regexp regression tests"
+	@echo "##"
+	-@(for i in $(srcdir)/test/regexp/* ; do \
+	  name=`basename $$i`; \
+	  if [ ! -d $$i ] ; then \
+	  if [ ! -f $(srcdir)/result/regexp/$$name ] ; then \
+	      echo New test file $$name ; \
+	      $(CHECKER) $(top_builddir)/testRegexp -i $$i > $(srcdir)/result/regexp/$$name; \
+	  else \
+	      echo Testing $$name ; \
+	      $(CHECKER) $(top_builddir)/testRegexp -i $$i > result.$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
+	      diff $(srcdir)/result/regexp/$$name result.$$name ; \
+	      rm result.$$name ; \
+	  fi ; fi ; done)
+
+Automatatests: testAutomata$(EXEEXT)
+	@(echo > .memdump)
+	@echo "##"
+	@echo "## Automata regression tests"
+	@echo "##"
+	-@(for i in $(srcdir)/test/automata/* ; do \
+	  name=`basename $$i`; \
+	  if [ ! -d $$i ] ; then \
+	  if [ ! -f $(srcdir)/result/automata/$$name ] ; then \
+	      echo New test file $$name ; \
+	      $(CHECKER) $(top_builddir)/testAutomata $$i > $(srcdir)/result/automata/$$name; \
+	  else \
+	      echo Testing $$name ; \
+	      $(CHECKER) $(top_builddir)/testAutomata $$i > result.$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
+	      diff $(srcdir)/result/automata/$$name result.$$name ; \
+	      rm result.$$name ; \
+	  fi ; fi ; done)
+
+
+Schemastests: testSchemas$(EXEEXT)
+	@(echo > .memdump)
+	@echo "##"
+	@echo "## Schemas regression tests"
+	@echo "##"
+	-@(for i in $(srcdir)/test/schemas/*.xml ; do \
+	  name=`basename $$i .xml`; \
+	  if [ ! -f $(srcdir)/test/schemas/$$name.xsd ] ; then continue ; fi ; \
+	  schemas="$(srcdir)/test/schemas/$$name.xsd" ; \
+	  if [ ! -d $$i ] ; then \
+	  if [ ! -f $(srcdir)/result/schemas/$$name ] ; then \
+	      echo New test file $$name ; \
+	      $(CHECKER) $(top_builddir)/testSchemas $$schemas $$i > $(srcdir)/result/schemas/$$name; \
+	  else \
+	      echo Testing $$name ; \
+	      $(CHECKER) $(top_builddir)/testSchemas $$schemas $$i > result.$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
+	      diff $(srcdir)/result/schemas/$$name result.$$name ; \
+	      rm result.$$name ; \
+	  fi ; fi ; done)
+
+
 dist-hook: libxml.spec
 	-cp libxml.spec $(distdir)
 	(cd $(srcdir) ; tar -cf - --exclude CVS win32 macos vms test result SAXresult ) | (cd $(distdir); tar xf -)
@@ -582,7 +659,7 @@ EXTRA_DIST = xml2-config.in xml2Conf.sh.in libxml.spec.in libxml.spec \
 	     $(man_MANS) libxml-2.0.pc.in \
 	     trionan.c trionan.h triostr.c triostr.h trio.c trio.h \
 	     triop.h triodef.h libxml.h \
-	     testThreadsWin32.c
+	     testThreadsWin32.c genUnicode.py
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libxml-2.0.pc

@@ -1,3 +1,18 @@
+Tue Apr 16 17:46:43 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am TODO_SCHEMAS configure.in genUnicode.py testAutomata.c
+	 testRegexp.c testSchemas.c xmlregexp.c xmlschemas.c xmlschemastypes.c
+	 xmlunicode.c include/libxml/Makefile.am
+	 include/libxml/schemasInternals.h include/libxml/xmlautomata.h
+	 include/libxml/xmlregexp.h include/libxml/xmlschemas.h
+	 include/libxml/xmlschemastypes.h include/libxml/xmlunicode.h
+	 include/libxml/xmlversion.h.in : merged the current state of
+	 XML Schemas implementation, it is not configured in by default,
+	 a specific --schemas configure option has been added.
+	* test/automata test/regexp test/schemas Makefile.am
+	  result/automata result/regexp result/schemas:
+	  merged automata/regexp/schemas regression tests
+
 Tue Apr 16 09:48:44 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: Gary found a compile time problem, fixes #78823

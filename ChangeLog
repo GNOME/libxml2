@@ -1,3 +1,8 @@
+Thu Mar 22 13:41:22 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* config.h.in configure.in error.c: fix a compilation problem
+	  on platforms without vsnprintf (xml@thewrittenword.com)
+
 Wed Mar 21 19:04:34 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* parser.c: fixed a function name header typo

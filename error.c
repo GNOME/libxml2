@@ -163,7 +163,11 @@ xmlGetVarStr(const char * msg, va_list args) {
     while (1) {
 	left = size - length;
 		    /* Try to print in the allocated space. */
-	chars = vsnprintf(str + length, left, msg, args);
+#ifdef HAVE_VSNPRINTF
+  	chars = vsnprintf(str + length, left, msg, args);
+#else
+	chars = vsprintf(str + length, msg, args);
+#endif
 			  /* If that worked, we're done. */
 	if ((chars > -1) && (chars < left ))
 	    break;

@@ -921,11 +921,13 @@ xmlNewInputStream(xmlParserCtxtPtr ctxt) {
 
     input = (xmlParserInputPtr) xmlMalloc(sizeof(xmlParserInput));
     if (input == NULL) {
-        ctxt->errNo = XML_ERR_NO_MEMORY;
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt->userData, 
-	                     "malloc: couldn't allocate a new input stream\n");
-	ctxt->errNo = XML_ERR_NO_MEMORY;
+	if (ctxt != NULL) {
+	    ctxt->errNo = XML_ERR_NO_MEMORY;
+	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		ctxt->sax->error(ctxt->userData, 
+			 "malloc: couldn't allocate a new input stream\n");
+	    ctxt->errNo = XML_ERR_NO_MEMORY;
+	}
 	return(NULL);
     }
     memset(input, 0, sizeof(xmlParserInput));
@@ -933,6 +935,37 @@ xmlNewInputStream(xmlParserCtxtPtr ctxt) {
     input->col = 1;
     input->standalone = -1;
     return(input);
+}
+
+/**
+ * xmlNewIOInputStream:
+ * @ctxt:  an XML parser context
+ * @input:  an I/O Input
+ * @enc:  the charset encoding if known
+ *
+ * Create a new input stream structure encapsulating the @input into
+ * a stream suitable for the parser.
+ *
+ * Returns the new input stream or NULL
+ */
+xmlParserInputPtr
+xmlNewIOInputStream(xmlParserCtxtPtr ctxt, xmlParserInputBufferPtr input,
+	            xmlCharEncoding enc) {
+    xmlParserInputPtr inputStream;
+
+    inputStream = xmlNewInputStream(ctxt);
+    if (inputStream == NULL) {
+	return(NULL);
+    }
+    inputStream->filename = NULL;
+    inputStream->buf = input;
+    inputStream->base = inputStream->buf->buffer->content;
+    inputStream->cur = inputStream->buf->buffer->content;
+    if (enc != XML_CHAR_ENCODING_NONE) {
+        xmlSwitchEncoding(ctxt, enc);
+    }
+
+    return(inputStream);
 }
 
 /**
@@ -3403,16 +3436,18 @@ xmlParseName(xmlParserCtxtPtr ctxt) {
 
     GROW;
     c = CUR_CHAR(l);
-    if (!IS_LETTER(c) && (c != '_') &&
-        (c != ':')) {
+    if ((c == ' ') || (c == '>') || (c == '/') || /* accelerators */
+	(!IS_LETTER(c) && (c != '_') &&
+         (c != ':'))) {
 	return(NULL);
     }
 
-    while ((IS_LETTER(c)) || (IS_DIGIT(c)) ||
-           (c == '.') || (c == '-') ||
-	   (c == '_') || (c == ':') || 
-	   (IS_COMBINING(c)) ||
-	   (IS_EXTENDER(c))) {
+    while ((c != ' ') && (c != '>') && (c != '/') && /* accelerators */
+	   ((IS_LETTER(c)) || (IS_DIGIT(c)) ||
+            (c == '.') || (c == '-') ||
+	    (c == '_') || (c == ':') || 
+	    (IS_COMBINING(c)) ||
+	    (IS_EXTENDER(c)))) {
 	COPY_BUF(l,buf,len,c);
 	NEXTL(l);
 	c = CUR_CHAR(l);
@@ -4041,8 +4076,9 @@ xmlParseCharData(xmlParserCtxtPtr ctxt, int cdata) {
 
     SHRINK;
     cur = CUR_CHAR(l);
-    while ((IS_CHAR(cur)) && ((cur != '<') || (ctxt->token == '<')) &&
-           ((cur != '&') || (ctxt->token == '&'))) {
+    while (((cur != '<') || (ctxt->token == '<')) &&
+           ((cur != '&') || (ctxt->token == '&')) && 
+	   (IS_CHAR(cur))) {
 	if ((cur == ']') && (NXT(1) == ']') &&
 	    (NXT(2) == '>')) {
 	    if (cdata) break;
@@ -9520,6 +9556,60 @@ xmlCreatePushParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
 	fprintf(stderr, "PP: pushed %d\n", size);
 #endif
     }
+
+    return(ctxt);
+}
+
+/**
+ * xmlCreateIOParserCtxt:
+ * @sax:  a SAX handler
+ * @user_data:  The user data returned on SAX callbacks
+ * @ioread:  an I/O read function
+ * @ioclose:  an I/O close function
+ * @ioctx:  an I/O handler
+ * @enc:  the charset encoding if known
+ *
+ * Create a parser context for using the XML parser with an existing
+ * I/O stream
+ *
+ * Returns the new parser context or NULL
+ */
+xmlParserCtxtPtr
+xmlCreateIOParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
+	xmlInputReadCallback   ioread, xmlInputCloseCallback  ioclose,
+	void *ioctx, xmlCharEncoding enc) {
+    xmlParserCtxtPtr ctxt;
+    xmlParserInputPtr inputStream;
+    xmlParserInputBufferPtr buf;
+
+    buf = xmlParserInputBufferCreateIO(ioread, ioclose, ioctx, enc);
+    if (buf == NULL) return(NULL);
+
+    ctxt = xmlNewParserCtxt();
+    if (ctxt == NULL) {
+	xmlFree(buf);
+	return(NULL);
+    }
+    if (sax != NULL) {
+	if (ctxt->sax != &xmlDefaultSAXHandler)
+	    xmlFree(ctxt->sax);
+	ctxt->sax = (xmlSAXHandlerPtr) xmlMalloc(sizeof(xmlSAXHandler));
+	if (ctxt->sax == NULL) {
+	    xmlFree(buf);
+	    xmlFree(ctxt);
+	    return(NULL);
+	}
+	memcpy(ctxt->sax, sax, sizeof(xmlSAXHandler));
+	if (user_data != NULL)
+	    ctxt->userData = user_data;
+    }	
+
+    inputStream = xmlNewIOInputStream(ctxt, buf, enc);
+    if (inputStream == NULL) {
+	xmlFreeParserCtxt(ctxt);
+	return(NULL);
+    }
+    inputPush(ctxt, inputStream);
 
     return(ctxt);
 }

@@ -636,6 +636,35 @@ xmlParserInputBufferCreateFd(int fd, xmlCharEncoding enc) {
 }
 
 /**
+ * xmlParserInputBufferCreateIO:
+ * @ioread:  an I/O read function
+ * @ioclose:  an I/O close function
+ * @ioctx:  an I/O handler
+ * @enc:  the charset encoding if known
+ *
+ * Create a buffered parser input for the progressive parsing for the input
+ * from a file descriptor
+ *
+ * Returns the new parser input or NULL
+ */
+xmlParserInputBufferPtr
+xmlParserInputBufferCreateIO(xmlInputReadCallback   ioread,
+	 xmlInputCloseCallback  ioclose, void *ioctx, xmlCharEncoding enc) {
+    xmlParserInputBufferPtr ret;
+
+    if (ioread == NULL) return(NULL);
+
+    ret = xmlAllocParserInputBuffer(enc);
+    if (ret != NULL) {
+        ret->context = (void *) ioctx;
+	ret->readcallback = ioread;
+	ret->closecallback = ioclose;
+    }
+
+    return(ret);
+}
+
+/**
  * xmlParserInputBufferPush:
  * @in:  a buffered parser input
  * @buf:  an char array

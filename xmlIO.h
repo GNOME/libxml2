@@ -52,6 +52,11 @@ xmlParserInputBufferPtr
 xmlParserInputBufferPtr
 	xmlParserInputBufferCreateFd		(int fd,
 	                                         xmlCharEncoding enc);
+xmlParserInputBufferPtr
+	xmlParserInputBufferCreateIO		(xmlInputReadCallback   ioread,
+						 xmlInputCloseCallback  ioclose,
+						 void *ioctx,
+	                                         xmlCharEncoding enc);
 int	xmlParserInputBufferRead		(xmlParserInputBufferPtr in,
 						 int len);
 int	xmlParserInputBufferGrow		(xmlParserInputBufferPtr in,

@@ -67,6 +67,7 @@ static int html = 0;
 static int htmlout = 0;
 static int push = 0;
 static int noblanks = 0;
+static int testIO = 0;
 
 extern int xmlDoValidityCheckingDefaultValue;
 extern int xmlGetWarningsDefaultValue;
@@ -338,6 +339,19 @@ xmlShellReadline(char *prompt) {
 
 /************************************************************************
  * 									*
+ * 			I/O Interfaces					*
+ * 									*
+ ************************************************************************/
+
+int myRead(FILE *f, char * buffer, int len) {
+    return(fread(buffer, 1, len, f));
+}
+void myClose(FILE *f) {
+    fclose(f);
+}
+
+/************************************************************************
+ * 									*
  * 			Test processing					*
  * 									*
  ************************************************************************/
@@ -374,6 +388,28 @@ void parseAndPrintFile(char *filename) {
 		    doc = ctxt->myDoc;
 		    xmlFreeParserCtxt(ctxt);
 	        }
+	    }
+	} else if (testIO) {
+	    int ret;
+	    FILE *f;
+
+	    f = fopen(filename, "r");
+	    if (f != NULL) {
+                xmlParserCtxtPtr ctxt;
+
+		ctxt = xmlCreateIOParserCtxt(NULL, NULL,
+			    (xmlInputReadCallback) myRead,
+			    (xmlInputCloseCallback) myClose,
+			    f, XML_CHAR_ENCODING_NONE);
+		xmlParseDocument(ctxt);
+
+		ret = ctxt->wellFormed;
+		doc = ctxt->myDoc;
+		xmlFreeParserCtxt(ctxt);
+		if (!ret) {
+		    xmlFreeDoc(doc);
+		    doc = NULL;
+		}
 	    }
 	} else if (recovery) {
 	    doc = xmlRecoverFile(filename);
@@ -545,6 +581,9 @@ int main(int argc, char **argv) {
 	else if ((!strcmp(argv[i], "-push")) ||
 	         (!strcmp(argv[i], "--push")))
 	    push++;
+	else if ((!strcmp(argv[i], "-testIO")) ||
+	         (!strcmp(argv[i], "--testIO")))
+	    testIO++;
 	else if ((!strcmp(argv[i], "-compress")) ||
 	         (!strcmp(argv[i], "--compress"))) {
 	    compress++;
@@ -612,6 +651,7 @@ int main(int argc, char **argv) {
 	printf("\t--push : use the push mode of the parser\n");
 	printf("\t--nowarning : do not emit warnings from parser/validator\n");
 	printf("\t--noblanks : drop (ignorable?) blanks spaces\n");
+	printf("\t--testIO : test user I/O support\n");
     }
     xmlCleanupParser();
     xmlMemoryDump();

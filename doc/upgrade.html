@@ -44,7 +44,17 @@ mail</a>:</p>
     Use <strong>xmlDocGetRootElement(doc)</strong> to get the root element of
     a document. Alternatively if you are sure to not reference Dtds nor have
     PIs or comments before or after the root element s/->root/->children/g
-    will probably do it.</li>
+    will probably do it.
+    <p><strong>Note</strong>: libxml2 final version now export a version
+    number as the LIBXML_VERSION preprocessor token. In most case the changes
+    required for 1/ and 2/ can be dealt with using the following construct (if
+    you don't use root identifier for other purposes):</p>
+    <pre>#if defined(LIBXML_VERSION) &amp;&amp; LIBXML_VERSION >= 20000
+#define root children
+#define childs children
+#endif
+    </pre>
+  </li>
   <li>The white space issue, this one is more complex, unless special case of
     validating parsing, the line breaks and spaces usually used for indenting
     and formatting the document content becomes significant. So they are
@@ -69,11 +79,11 @@ mail</a>:</p>
   </li>
   <li>The include path has changed to $prefix/libxml/ and the includes
     themselves uses this new prefix in includes instructions... If you are
-    using (as expected) the 
+    using (as expected) the
     <pre>xml-config --cflags</pre>
     <p>output to generate you compile commands this will probably work out of
     the box</p>
-    <p> </p>
+    <p></p>
   </li>
 </ol>
 
@@ -85,6 +95,6 @@ upgrade, it may cost a lot on the long term ...</p>
 
 <p><a href="mailto:Daniel.Veillard@w3.org">Daniel Veillard</a></p>
 
-<p>$Id: upgrade.html,v 1.2 2000/03/06 07:41:49 veillard Exp $</p>
+<p>$Id: upgrade.html,v 1.3 2000/04/03 19:48:13 veillard Exp $</p>
 </body>
 </html>

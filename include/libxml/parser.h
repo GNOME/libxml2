@@ -429,6 +429,21 @@ int		 xmlParseChunk		(xmlParserCtxtPtr ctxt,
 					 int terminate);
 
 /**
+ * Special I/O mode
+ */
+
+xmlParserCtxtPtr xmlCreateIOParserCtxt	(xmlSAXHandlerPtr sax,
+					 void *user_data,
+					 xmlInputReadCallback   ioread,
+					 xmlInputCloseCallback  ioclose,
+					 void *ioctx,
+					 xmlCharEncoding enc);
+
+xmlParserInputPtr xmlNewIOInputStream	(xmlParserCtxtPtr ctxt,
+					 xmlParserInputBufferPtr input,
+					 xmlCharEncoding enc);
+
+/**
  * Node infos
  */
 const xmlParserNodeInfo*

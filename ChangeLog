@@ -1,3 +1,14 @@
+Wed Apr 12 15:47:22 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* xmlIO.[ch] parser.[ch]: More interfaces for new I/O functions
+	  xmlNewIOInputStream, xmlParserInputBufferCreateIO,
+	  xmlCreateIOParserCtxt
+	* parser.c parserInternals.h: speedup of IS_CHAR like macros,
+	  significant overall improvement
+	* xmllint.c: added I/O test to xmllint
+	* testSAX.c: added a speed test
+	* doc/* : updated/regenerated
+
 Sat Apr  8 14:54:54 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* xpath.c uri.h parserInternals.h: cosmetic changes from

@@ -46,6 +46,7 @@ static int debug = 0;
 static int copy = 0;
 static int recovery = 0;
 static int push = 0;
+static int speed = 0;
 
 xmlSAXHandler emptySAXHandlerStruct = {
     NULL, /* internalSubset */
@@ -635,20 +636,33 @@ void parseAndPrintFile(char *filename) {
 	    fclose(f);
 	}
     } else {
-	/*
-	 * Empty callbacks for checking
-	 */
-	res = xmlSAXUserParseFile(emptySAXHandler, NULL, filename);
-	if (res != 0) {
-	    fprintf(stdout, "xmlSAXUserParseFile returned error %d\n", res);
-	}
+	if (!speed) {
+	    /*
+	     * Empty callbacks for checking
+	     */
+	    res = xmlSAXUserParseFile(emptySAXHandler, NULL, filename);
+	    if (res != 0) {
+		fprintf(stdout, "xmlSAXUserParseFile returned error %d\n", res);
+	    }
 
-	/*
-	 * Debug callback
-	 */
-	res = xmlSAXUserParseFile(debugSAXHandler, NULL, filename);
-	if (res != 0) {
-	    fprintf(stdout, "xmlSAXUserParseFile returned error %d\n", res);
+	    /*
+	     * Debug callback
+	     */
+	    res = xmlSAXUserParseFile(debugSAXHandler, NULL, filename);
+	    if (res != 0) {
+		fprintf(stdout, "xmlSAXUserParseFile returned error %d\n", res);
+	    }
+	} else {
+	    /*
+	     * test 100x the SAX parse
+	     */
+	    int i;
+
+	    for (i = 0; i<100;i++)
+		res = xmlSAXUserParseFile(emptySAXHandler, NULL, filename);
+	    if (res != 0) {
+		fprintf(stdout, "xmlSAXUserParseFile returned error %d\n", res);
+	    }
 	}
     }
 }
@@ -669,6 +683,9 @@ int main(int argc, char **argv) {
 	else if ((!strcmp(argv[i], "-push")) ||
 	         (!strcmp(argv[i], "--push")))
 	    push++;
+	else if ((!strcmp(argv[i], "-speed")) ||
+	         (!strcmp(argv[i], "--speed")))
+	    speed++;
     }
     for (i = 1; i < argc ; i++) {
 	if (argv[i][0] != '-') {

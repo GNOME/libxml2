@@ -128,7 +128,7 @@ xmlUTF8Charcmp(const xmlChar *utf1, const xmlChar *utf2) {
             return 0;
         return -1;
     }
-    return xmlStrncmp(utf1, utf2, xsltUTF8Size(utf1));
+    return xmlStrncmp(utf1, utf2, xmlUTF8Size(utf1));
 }
 
 /**

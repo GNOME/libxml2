@@ -105,16 +105,16 @@ typedef xmlRefTable *xmlRefTablePtr;
 /* Notation */
 xmlNotationPtr	    xmlAddNotationDecl	(xmlValidCtxtPtr ctxt,
 					 xmlDtdPtr dtd,
-					 const CHAR *name,
-					 const CHAR *PublicID,
-					 const CHAR *SystemID);
+					 const xmlChar *name,
+					 const xmlChar *PublicID,
+					 const xmlChar *SystemID);
 xmlNotationTablePtr xmlCopyNotationTable(xmlNotationTablePtr table);
 void		    xmlFreeNotationTable(xmlNotationTablePtr table);
 void		    xmlDumpNotationTable(xmlBufferPtr buf,
 					 xmlNotationTablePtr table);
 
 /* Element Content */
-xmlElementContentPtr xmlNewElementContent (CHAR *name,
+xmlElementContentPtr xmlNewElementContent (xmlChar *name,
 					   xmlElementContentType type);
 xmlElementContentPtr xmlCopyElementContent(xmlElementContentPtr content);
 void		     xmlFreeElementContent(xmlElementContentPtr cur);
@@ -122,7 +122,7 @@ void		     xmlFreeElementContent(xmlElementContentPtr cur);
 /* Element */
 xmlElementPtr	   xmlAddElementDecl	(xmlValidCtxtPtr ctxt,
 					 xmlDtdPtr dtd,
-					 const CHAR *name,
+					 const xmlChar *name,
 					 xmlElementContentType type,
 					 xmlElementContentPtr content);
 xmlElementTablePtr xmlCopyElementTable	(xmlElementTablePtr table);
@@ -131,18 +131,18 @@ void		   xmlDumpElementTable	(xmlBufferPtr buf,
 					 xmlElementTablePtr table);
 
 /* Enumeration */
-xmlEnumerationPtr  xmlCreateEnumeration	(CHAR *name);
+xmlEnumerationPtr  xmlCreateEnumeration	(xmlChar *name);
 void		   xmlFreeEnumeration	(xmlEnumerationPtr cur);
 xmlEnumerationPtr  xmlCopyEnumeration	(xmlEnumerationPtr cur);
 
 /* Attribute */
 xmlAttributePtr	    xmlAddAttributeDecl	    (xmlValidCtxtPtr ctxt,
 					     xmlDtdPtr dtd,
-					     const CHAR *elem,
-					     const CHAR *name,
+					     const xmlChar *elem,
+					     const xmlChar *name,
 					     xmlAttributeType type,
 					     xmlAttributeDefault def,
-					     const CHAR *defaultValue,
+					     const xmlChar *defaultValue,
 					     xmlEnumerationPtr tree);
 xmlAttributeTablePtr xmlCopyAttributeTable  (xmlAttributeTablePtr table);
 void		     xmlFreeAttributeTable  (xmlAttributeTablePtr table);
@@ -152,12 +152,12 @@ void		     xmlDumpAttributeTable  (xmlBufferPtr buf,
 /* IDs */
 xmlIDPtr	xmlAddID	(xmlValidCtxtPtr ctxt,
 				 xmlDocPtr doc,
-				 const CHAR *value,
+				 const xmlChar *value,
 				 xmlAttrPtr attr);
 xmlIDTablePtr	xmlCopyIDTable	(xmlIDTablePtr table);
 void		xmlFreeIDTable	(xmlIDTablePtr table);
 xmlAttrPtr	xmlGetID	(xmlDocPtr doc,
-				 const CHAR *ID);
+				 const xmlChar *ID);
 int		xmlIsID		(xmlDocPtr doc,
 				 xmlNodePtr elem,
 				 xmlAttrPtr attr);
@@ -165,7 +165,7 @@ int		xmlIsID		(xmlDocPtr doc,
 /* IDREFs */
 xmlRefPtr	xmlAddRef	(xmlValidCtxtPtr ctxt,
 				 xmlDocPtr doc,
-				 const CHAR *value,
+				 const xmlChar *value,
 				 xmlAttrPtr attr);
 xmlRefTablePtr	xmlCopyRefTable	(xmlRefTablePtr table);
 void		xmlFreeRefTable	(xmlRefTablePtr table);
@@ -186,7 +186,7 @@ int		xmlValidateAttributeDecl(xmlValidCtxtPtr ctxt,
 					 xmlDocPtr doc,
 		                         xmlAttributePtr attr);
 int		xmlValidateAttributeValue(xmlAttributeType type,
-					 const CHAR *value);
+					 const xmlChar *value);
 int		xmlValidateNotationDecl	(xmlValidCtxtPtr ctxt,
 					 xmlDocPtr doc,
 		                         xmlNotationPtr nota);
@@ -205,21 +205,21 @@ int		xmlValidateOneAttribute	(xmlValidCtxtPtr ctxt,
 					 xmlDocPtr doc,
 					 xmlNodePtr	elem,
 					 xmlAttrPtr attr,
-					 const CHAR *value);
+					 const xmlChar *value);
 int		xmlValidateDocumentFinal(xmlValidCtxtPtr ctxt,
 					 xmlDocPtr doc);
 int		xmlValidateNotationUse	(xmlValidCtxtPtr ctxt,
 					 xmlDocPtr doc,
-					 const CHAR *notationName);
+					 const xmlChar *notationName);
 int		xmlIsMixedElement	(xmlDocPtr doc,
-					 const CHAR *name);
+					 const xmlChar *name);
 xmlAttributePtr	xmlGetDtdAttrDesc	(xmlDtdPtr dtd,
-					 const CHAR *elem,
-					 const CHAR *name);
+					 const xmlChar *elem,
+					 const xmlChar *name);
 xmlNotationPtr	xmlGetDtdNotationDesc	(xmlDtdPtr dtd,
-					 const CHAR *name);
+					 const xmlChar *name);
 xmlElementPtr	xmlGetDtdElementDesc	(xmlDtdPtr dtd,
-					 const CHAR *name);
+					 const xmlChar *name);
 
 #ifdef __cplusplus
 }

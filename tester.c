@@ -49,7 +49,7 @@ extern int xmlDoValidityCheckingDefaultValue;
 
 /*
  * Note: there is a couple of errors introduced on purpose.
-static CHAR buffer[] = 
+static xmlChar buffer[] = 
 "<?xml version=\"1.0\"?>\n\
 <?xml:namespace ns = \"http://www.ietf.org/standards/dav/\" prefix = \"D\"?>\n\
 <?xml:namespace ns = \"http://www.w3.com/standards/z39.50/\" prefix = \"Z\"?>\n\
@@ -156,7 +156,7 @@ void parseAndPrintFile(char *filename) {
     xmlFreeDoc(doc);
 }
 
-void parseAndPrintBuffer(CHAR *buf) {
+void parseAndPrintBuffer(xmlChar *buf) {
     xmlDocPtr doc, tmp;
 
     /*

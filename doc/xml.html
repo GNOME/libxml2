@@ -279,14 +279,14 @@ beginning of the second attribute of the root element "EXAMPLE".</p>
 
 <p>functions are provided to read and write the document content:</p>
 <dl>
-  <dt><code>xmlAttrPtr xmlSetProp(xmlNodePtr node, const CHAR *name, const
-  CHAR *value);</code></dt>
+  <dt><code>xmlAttrPtr xmlSetProp(xmlNodePtr node, const xmlChar *name, const
+  xmlChar *value);</code></dt>
     <dd><p>This set (or change) an attribute carried by an ELEMENT node the
       value can be NULL</p>
     </dd>
 </dl>
 <dl>
-  <dt><code>const CHAR *xmlGetProp(xmlNodePtr node, const CHAR
+  <dt><code>const xmlChar *xmlGetProp(xmlNodePtr node, const xmlChar
   *name);</code></dt>
     <dd><p>This function returns a pointer to the property content, note that
       no extra copy is made</p>
@@ -296,7 +296,7 @@ beginning of the second attribute of the root element "EXAMPLE".</p>
 <p>Two functions must be used to read an write the text associated to
 elements:</p>
 <dl>
-  <dt><code>xmlNodePtr xmlStringGetNodeList(xmlDocPtr doc, const CHAR
+  <dt><code>xmlNodePtr xmlStringGetNodeList(xmlDocPtr doc, const xmlChar
   *value);</code></dt>
     <dd><p>This function takes an "external" string and convert it to one text
       node or possibly to a list of entity and text nodes. All non-predefined
@@ -306,7 +306,7 @@ elements:</p>
     </dd>
 </dl>
 <dl>
-  <dt><code>CHAR *xmlNodeListGetString(xmlDocPtr doc, xmlNodePtr list, int
+  <dt><code>xmlChar *xmlNodeListGetString(xmlDocPtr doc, xmlNodePtr list, int
   inLine);</code></dt>
     <dd><p>this is the dual function, which generate a new string containing
       the content of the text and entity nodes. Note the extra argument
@@ -321,7 +321,7 @@ elements:</p>
 
 <p>Basically 3 options are possible:</p>
 <dl>
-  <dt><code>void xmlDocDumpMemory(xmlDocPtr cur, CHAR**mem, int
+  <dt><code>void xmlDocDumpMemory(xmlDocPtr cur, xmlChar**mem, int
   *size);</code></dt>
     <dd><p>returns a buffer where the document has been saved</p>
     </dd>
@@ -747,6 +747,6 @@ base under gnome-xml/example</p>
 
 <p><a href="mailto:Daniel.Veillard@w3.org">Daniel Veillard</a></p>
 
-<p>$Id: xml.html,v 1.7 1999/09/04 18:27:23 veillard Exp $</p>
+<p>$Id: xml.html,v 1.8 1999/09/08 21:35:25 veillard Exp $</p>
 </body>
 </html>

@@ -37,7 +37,7 @@ xmlParserPrintFileInfo(xmlParserInputPtr input) {
 
 void
 xmlParserPrintFileContext(xmlParserInputPtr input) {
-    const CHAR *cur, *base;
+    const xmlChar *cur, *base;
     int n;
 
     cur = input->cur;

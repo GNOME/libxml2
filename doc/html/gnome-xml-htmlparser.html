@@ -115,7 +115,7 @@ SIZE="3"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN6149"
+NAME="AEN6155"
 ></A
 ><H2
 >Name</H2
@@ -123,7 +123,7 @@ NAME="AEN6149"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN6152"
+NAME="AEN6158"
 ></A
 ><H2
 >Synopsis</H2
@@ -181,8 +181,8 @@ HREF="HTMLELEMDESCPTR"
 HREF="gnome-xml-htmlparser.html#HTMLTAGLOOKUP"
 >htmlTagLookup</A
 >               (const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *tag);
 <GTKDOCLINK
 HREF="HTMLENTITYDESCPTR"
@@ -191,8 +191,8 @@ HREF="HTMLENTITYDESCPTR"
 HREF="gnome-xml-htmlparser.html#HTMLENTITYLOOKUP"
 >htmlEntityLookup</A
 >          (const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *name);
 <GTKDOCLINK
 HREF="HTMLENTITYDESCPTR"
@@ -205,8 +205,8 @@ HREF="gnome-xml-htmlparser.html#HTMLPARSERCTXTPTR"
 >htmlParserCtxtPtr</A
 > ctxt,
                                              <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > **str);
 int         <A
 HREF="gnome-xml-htmlparser.html#HTMLPARSECHARREF"
@@ -229,8 +229,8 @@ HREF="gnome-xml-htmlparser.html#HTMLDOCPTR"
 HREF="gnome-xml-htmlparser.html#HTMLSAXPARSEDOC"
 >htmlSAXParseDoc</A
 >                 (<A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *cur,
                                              const char *encoding,
                                              <A
@@ -245,8 +245,8 @@ HREF="gnome-xml-htmlparser.html#HTMLDOCPTR"
 HREF="gnome-xml-htmlparser.html#HTMLPARSEDOC"
 >htmlParseDoc</A
 >                    (<A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *cur,
                                              const char *encoding);
 <A
@@ -277,7 +277,7 @@ HREF="gnome-xml-htmlparser.html#HTMLPARSEFILE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN6190"
+NAME="AEN6196"
 ></A
 ><H2
 >Description</H2
@@ -287,14 +287,14 @@ NAME="AEN6190"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN6193"
+NAME="AEN6199"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6195"
+NAME="AEN6201"
 ></A
 ><H3
 ><A
@@ -307,7 +307,7 @@ NAME="HTMLPARSERCTXT"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6199"
+NAME="AEN6205"
 ></A
 ><H3
 ><A
@@ -320,7 +320,7 @@ NAME="HTMLPARSERCTXTPTR"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6203"
+NAME="AEN6209"
 ></A
 ><H3
 ><A
@@ -333,7 +333,7 @@ NAME="HTMLPARSERNODEINFO"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6207"
+NAME="AEN6213"
 ></A
 ><H3
 ><A
@@ -346,7 +346,7 @@ NAME="HTMLSAXHANDLER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6211"
+NAME="AEN6217"
 ></A
 ><H3
 ><A
@@ -359,7 +359,7 @@ NAME="HTMLSAXHANDLERPTR"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6215"
+NAME="AEN6221"
 ></A
 ><H3
 ><A
@@ -372,7 +372,7 @@ NAME="HTMLPARSERINPUT"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6219"
+NAME="AEN6225"
 ></A
 ><H3
 ><A
@@ -385,7 +385,7 @@ NAME="HTMLPARSERINPUTPTR"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6223"
+NAME="AEN6229"
 ></A
 ><H3
 ><A
@@ -398,7 +398,7 @@ NAME="HTMLDOCPTR"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6227"
+NAME="AEN6233"
 ></A
 ><H3
 ><A
@@ -411,7 +411,7 @@ NAME="HTMLNODEPTR"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6231"
+NAME="AEN6237"
 ></A
 ><H3
 ><A
@@ -431,8 +431,8 @@ CLASS="PROGRAMLISTING"
 HREF="HTMLELEMDESCPTR"
 >htmlElemDescPtr</GTKDOCLINK
 > htmlTagLookup               (const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *tag);</PRE
 ></TD
 ></TR
@@ -492,7 +492,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6252"
+NAME="AEN6258"
 ></A
 ><H3
 ><A
@@ -512,8 +512,8 @@ CLASS="PROGRAMLISTING"
 HREF="HTMLENTITYDESCPTR"
 >htmlEntityDescPtr</GTKDOCLINK
 > htmlEntityLookup          (const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *name);</PRE
 ></TD
 ></TR
@@ -575,7 +575,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6274"
+NAME="AEN6280"
 ></A
 ><H3
 ><A
@@ -599,8 +599,8 @@ HREF="gnome-xml-htmlparser.html#HTMLPARSERCTXTPTR"
 >htmlParserCtxtPtr</A
 > ctxt,
                                              <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > **str);</PRE
 ></TD
 ></TR
@@ -679,7 +679,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6301"
+NAME="AEN6307"
 ></A
 ><H3
 ><A
@@ -763,7 +763,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6323"
+NAME="AEN6329"
 ></A
 ><H3
 ><A
@@ -830,7 +830,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6341"
+NAME="AEN6347"
 ></A
 ><H3
 ><A
@@ -850,8 +850,8 @@ CLASS="PROGRAMLISTING"
 HREF="gnome-xml-htmlparser.html#HTMLDOCPTR"
 >htmlDocPtr</A
 >  htmlSAXParseDoc                 (<A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *cur,
                                              const char *encoding,
                                              <A
@@ -970,7 +970,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6375"
+NAME="AEN6381"
 ></A
 ><H3
 ><A
@@ -990,8 +990,8 @@ CLASS="PROGRAMLISTING"
 HREF="gnome-xml-htmlparser.html#HTMLDOCPTR"
 >htmlDocPtr</A
 >  htmlParseDoc                    (<A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *cur,
                                              const char *encoding);</PRE
 ></TD
@@ -1069,7 +1069,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6400"
+NAME="AEN6406"
 ></A
 ><H3
 ><A
@@ -1207,7 +1207,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6433"
+NAME="AEN6439"
 ></A
 ><H3
 ><A

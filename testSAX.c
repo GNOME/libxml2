@@ -77,7 +77,7 @@ extern xmlSAXHandlerPtr debugSAXHandler;
 /*
  * Note: there is a couple of errors introduced on purpose.
  */
-static CHAR buffer[] = 
+static xmlChar buffer[] = 
 "<?xml version=\"1.0\"?>\n\
 <?xml:namespace ns = \"http://www.ietf.org/standards/dav/\" prefix = \"D\"?>\n\
 <?xml:namespace ns = \"http://www.w3.com/standards/z39.50/\" prefix = \"Z\"?>\n\
@@ -155,8 +155,8 @@ hasExternalSubsetDebug(void *ctx)
  * Does this document has an internal subset
  */
 void
-internalSubsetDebug(void *ctx, const CHAR *name,
-	       const CHAR *ExternalID, const CHAR *SystemID)
+internalSubsetDebug(void *ctx, const xmlChar *name,
+	       const xmlChar *ExternalID, const xmlChar *SystemID)
 {
     xmlDtdPtr externalSubset;
 
@@ -186,7 +186,7 @@ internalSubsetDebug(void *ctx, const CHAR *name,
  * Returns the xmlParserInputPtr if inlined or NULL for DOM behaviour.
  */
 xmlParserInputPtr
-resolveEntityDebug(void *ctx, const CHAR *publicId, const CHAR *systemId)
+resolveEntityDebug(void *ctx, const xmlChar *publicId, const xmlChar *systemId)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
 
@@ -216,7 +216,7 @@ resolveEntityDebug(void *ctx, const CHAR *publicId, const CHAR *systemId)
  * Returns the xmlParserInputPtr if inlined or NULL for DOM behaviour.
  */
 xmlEntityPtr
-getEntityDebug(void *ctx, const CHAR *name)
+getEntityDebug(void *ctx, const xmlChar *name)
 {
     fprintf(stdout, "SAX.getEntity(%s)\n", name);
     return(NULL);
@@ -232,7 +232,7 @@ getEntityDebug(void *ctx, const CHAR *name)
  * Returns the xmlParserInputPtr
  */
 xmlEntityPtr
-getParameterEntityDebug(void *ctx, const CHAR *name)
+getParameterEntityDebug(void *ctx, const xmlChar *name)
 {
     fprintf(stdout, "SAX.getParameterEntity(%s)\n", name);
     return(NULL);
@@ -251,8 +251,8 @@ getParameterEntityDebug(void *ctx, const CHAR *name)
  * An entity definition has been parsed
  */
 void
-entityDeclDebug(void *ctx, const CHAR *name, int type,
-          const CHAR *publicId, const CHAR *systemId, CHAR *content)
+entityDeclDebug(void *ctx, const xmlChar *name, int type,
+          const xmlChar *publicId, const xmlChar *systemId, xmlChar *content)
 {
     fprintf(stdout, "SAX.entityDecl(%s, %d, %s, %s, %s)\n",
             name, type, publicId, systemId, content);
@@ -267,8 +267,8 @@ entityDeclDebug(void *ctx, const CHAR *name, int type,
  * An attribute definition has been parsed
  */
 void
-attributeDeclDebug(void *ctx, const CHAR *elem, const CHAR *name,
-              int type, int def, const CHAR *defaultValue,
+attributeDeclDebug(void *ctx, const xmlChar *elem, const xmlChar *name,
+              int type, int def, const xmlChar *defaultValue,
 	      xmlEnumerationPtr tree)
 {
     fprintf(stdout, "SAX.attributeDecl(%s, %s, %d, %d, %s, ...)\n",
@@ -285,7 +285,7 @@ attributeDeclDebug(void *ctx, const CHAR *elem, const CHAR *name,
  * An element definition has been parsed
  */
 void
-elementDeclDebug(void *ctx, const CHAR *name, int type,
+elementDeclDebug(void *ctx, const xmlChar *name, int type,
 	    xmlElementContentPtr content)
 {
     fprintf(stdout, "SAX.elementDecl(%s, %d, ...)\n",
@@ -302,8 +302,8 @@ elementDeclDebug(void *ctx, const CHAR *name, int type,
  * What to do when a notation declaration has been parsed.
  */
 void
-notationDeclDebug(void *ctx, const CHAR *name,
-	     const CHAR *publicId, const CHAR *systemId)
+notationDeclDebug(void *ctx, const xmlChar *name,
+	     const xmlChar *publicId, const xmlChar *systemId)
 {
     fprintf(stdout, "SAX.notationDecl(%s, %s, %s)\n",
             (char *) name, (char *) publicId, (char *) systemId);
@@ -320,9 +320,9 @@ notationDeclDebug(void *ctx, const CHAR *name,
  * What to do when an unparsed entity declaration is parsed
  */
 void
-unparsedEntityDeclDebug(void *ctx, const CHAR *name,
-		   const CHAR *publicId, const CHAR *systemId,
-		   const CHAR *notationName)
+unparsedEntityDeclDebug(void *ctx, const xmlChar *name,
+		   const xmlChar *publicId, const xmlChar *systemId,
+		   const xmlChar *notationName)
 {
     fprintf(stdout, "SAX.unparsedEntityDecl(%s, %s, %s, %s)\n",
             (char *) name, (char *) publicId, (char *) systemId,
@@ -375,7 +375,7 @@ endDocumentDebug(void *ctx)
  * called when an opening tag has been processed.
  */
 void
-startElementDebug(void *ctx, const CHAR *name, const CHAR **atts)
+startElementDebug(void *ctx, const xmlChar *name, const xmlChar **atts)
 {
     int i;
 
@@ -397,7 +397,7 @@ startElementDebug(void *ctx, const CHAR *name, const CHAR **atts)
  * called when the end of an element has been detected.
  */
 void
-endElementDebug(void *ctx, const CHAR *name)
+endElementDebug(void *ctx, const xmlChar *name)
 {
     fprintf(stdout, "SAX.endElement(%s)\n", (char *) name);
 }
@@ -405,14 +405,14 @@ endElementDebug(void *ctx, const CHAR *name)
 /**
  * charactersDebug:
  * @ctxt:  An XML parser context
- * @ch:  a CHAR string
- * @len: the number of CHAR
+ * @ch:  a xmlChar string
+ * @len: the number of xmlChar
  *
  * receiving some chars from the parser.
  * Question: how much at a time ???
  */
 void
-charactersDebug(void *ctx, const CHAR *ch, int len)
+charactersDebug(void *ctx, const xmlChar *ch, int len)
 {
     int i;
 
@@ -430,7 +430,7 @@ charactersDebug(void *ctx, const CHAR *ch, int len)
  * called when an entity reference is detected. 
  */
 void
-referenceDebug(void *ctx, const CHAR *name)
+referenceDebug(void *ctx, const xmlChar *name)
 {
     fprintf(stdout, "SAX.reference(%s)\n", name);
 }
@@ -438,15 +438,15 @@ referenceDebug(void *ctx, const CHAR *name)
 /**
  * ignorableWhitespaceDebug:
  * @ctxt:  An XML parser context
- * @ch:  a CHAR string
+ * @ch:  a xmlChar string
  * @start: the first char in the string
- * @len: the number of CHAR
+ * @len: the number of xmlChar
  *
  * receiving some ignorable whitespaces from the parser.
  * Question: how much at a time ???
  */
 void
-ignorableWhitespaceDebug(void *ctx, const CHAR *ch, int len)
+ignorableWhitespaceDebug(void *ctx, const xmlChar *ch, int len)
 {
     fprintf(stdout, "SAX.ignorableWhitespace(%.30s, %d)\n",
             (char *) ch, len);
@@ -457,13 +457,13 @@ ignorableWhitespaceDebug(void *ctx, const CHAR *ch, int len)
  * @ctxt:  An XML parser context
  * @target:  the target name
  * @data: the PI data's
- * @len: the number of CHAR
+ * @len: the number of xmlChar
  *
  * A processing instruction has been parsed.
  */
 void
-processingInstructionDebug(void *ctx, const CHAR *target,
-                      const CHAR *data)
+processingInstructionDebug(void *ctx, const xmlChar *target,
+                      const xmlChar *data)
 {
     fprintf(stdout, "SAX.processingInstruction(%s, %s)\n",
             (char *) target, (char *) data);
@@ -477,7 +477,7 @@ processingInstructionDebug(void *ctx, const CHAR *target,
  * A comment has been parsed.
  */
 void
-commentDebug(void *ctx, const CHAR *value)
+commentDebug(void *ctx, const xmlChar *value)
 {
     fprintf(stdout, "SAX.comment(%s)\n", value);
 }
@@ -600,7 +600,7 @@ void parseAndPrintFile(char *filename) {
     }
 }
 
-void parseAndPrintBuffer(CHAR *buf) {
+void parseAndPrintBuffer(xmlChar *buf) {
     xmlDocPtr doc;
 
     /*

@@ -27,9 +27,9 @@
  *
  * Return the public ID e.g. "-//SGMLSOURCE//DTD DEMO//EN"
  *
- * Returns a CHAR *
+ * Returns a xmlChar *
  */
-const CHAR *
+const xmlChar *
 getPublicId(void *ctx)
 {
     /* xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx; */
@@ -43,9 +43,9 @@ getPublicId(void *ctx)
  * Return the system ID, basically URL or filename e.g.
  * http://www.sgmlsource.com/dtds/memo.dtd
  *
- * Returns a CHAR *
+ * Returns a xmlChar *
  */
-const CHAR *
+const xmlChar *
 getSystemId(void *ctx)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
@@ -142,8 +142,8 @@ hasExternalSubset(void *ctx)
  * Does this document has an internal subset
  */
 void
-internalSubset(void *ctx, const CHAR *name,
-	       const CHAR *ExternalID, const CHAR *SystemID)
+internalSubset(void *ctx, const xmlChar *name,
+	       const xmlChar *ExternalID, const xmlChar *SystemID)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
 #ifdef DEBUG_SAX
@@ -229,7 +229,7 @@ internalSubset(void *ctx, const CHAR *name,
  * Returns the xmlParserInputPtr if inlined or NULL for DOM behaviour.
  */
 xmlParserInputPtr
-resolveEntity(void *ctx, const CHAR *publicId, const CHAR *systemId)
+resolveEntity(void *ctx, const xmlChar *publicId, const xmlChar *systemId)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
 
@@ -253,7 +253,7 @@ resolveEntity(void *ctx, const CHAR *publicId, const CHAR *systemId)
  * Returns the xmlEntityPtr if found.
  */
 xmlEntityPtr
-getEntity(void *ctx, const CHAR *name)
+getEntity(void *ctx, const xmlChar *name)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlEntityPtr ret;
@@ -276,7 +276,7 @@ getEntity(void *ctx, const CHAR *name)
  * Returns the xmlEntityPtr if found.
  */
 xmlEntityPtr
-getParameterEntity(void *ctx, const CHAR *name)
+getParameterEntity(void *ctx, const xmlChar *name)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlEntityPtr ret;
@@ -302,8 +302,8 @@ getParameterEntity(void *ctx, const CHAR *name)
  * An entity definition has been parsed
  */
 void
-entityDecl(void *ctx, const CHAR *name, int type,
-          const CHAR *publicId, const CHAR *systemId, CHAR *content)
+entityDecl(void *ctx, const xmlChar *name, int type,
+          const xmlChar *publicId, const xmlChar *systemId, xmlChar *content)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
 
@@ -326,8 +326,8 @@ entityDecl(void *ctx, const CHAR *name, int type,
  * An attribute definition has been parsed
  */
 void
-attributeDecl(void *ctx, const CHAR *elem, const CHAR *name,
-              int type, int def, const CHAR *defaultValue,
+attributeDecl(void *ctx, const xmlChar *elem, const xmlChar *name,
+              int type, int def, const xmlChar *defaultValue,
 	      xmlEnumerationPtr tree)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
@@ -358,7 +358,7 @@ attributeDecl(void *ctx, const CHAR *elem, const CHAR *name,
  * An element definition has been parsed
  */
 void
-elementDecl(void *ctx, const CHAR *name, int type,
+elementDecl(void *ctx, const xmlChar *name, int type,
 	    xmlElementContentPtr content)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
@@ -387,8 +387,8 @@ elementDecl(void *ctx, const CHAR *name, int type,
  * What to do when a notation declaration has been parsed.
  */
 void
-notationDecl(void *ctx, const CHAR *name,
-	     const CHAR *publicId, const CHAR *systemId)
+notationDecl(void *ctx, const xmlChar *name,
+	     const xmlChar *publicId, const xmlChar *systemId)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlNotationPtr nota;
@@ -417,9 +417,9 @@ notationDecl(void *ctx, const CHAR *name,
  * What to do when an unparsed entity declaration is parsed
  */
 void
-unparsedEntityDecl(void *ctx, const CHAR *name,
-		   const CHAR *publicId, const CHAR *systemId,
-		   const CHAR *notationName)
+unparsedEntityDecl(void *ctx, const xmlChar *name,
+		   const xmlChar *publicId, const xmlChar *systemId,
+		   const xmlChar *notationName)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
 #ifdef DEBUG_SAX
@@ -507,12 +507,12 @@ endDocument(void *ctx)
  * the element.
  */
 void
-attribute(void *ctx, const CHAR *fullname, const CHAR *value)
+attribute(void *ctx, const xmlChar *fullname, const xmlChar *value)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlAttrPtr ret;
-    CHAR *name;
-    CHAR *ns;
+    xmlChar *name;
+    xmlChar *ns;
     xmlNsPtr namespace;
 
 /****************
@@ -588,16 +588,16 @@ attribute(void *ctx, const CHAR *fullname, const CHAR *value)
  * called when an opening tag has been processed.
  */
 void
-startElement(void *ctx, const CHAR *fullname, const CHAR **atts)
+startElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlNodePtr ret;
     xmlNodePtr parent = ctxt->node;
     xmlNsPtr ns;
-    CHAR *name;
-    CHAR *prefix;
-    const CHAR *att;
-    const CHAR *value;
+    xmlChar *name;
+    xmlChar *prefix;
+    const xmlChar *att;
+    const xmlChar *value;
     int i;
 
 #ifdef DEBUG_SAX
@@ -728,7 +728,7 @@ startElement(void *ctx, const CHAR *fullname, const CHAR **atts)
  * called when the end of an element has been detected.
  */
 void
-endElement(void *ctx, const CHAR *name)
+endElement(void *ctx, const xmlChar *name)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlParserNodeInfo node_info;
@@ -772,7 +772,7 @@ endElement(void *ctx, const CHAR *name)
  * called when an entity reference is detected. 
  */
 void
-reference(void *ctx, const CHAR *name)
+reference(void *ctx, const xmlChar *name)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlNodePtr ret;
@@ -790,14 +790,14 @@ reference(void *ctx, const CHAR *name)
 /**
  * characters:
  * @ctx: the user data (XML parser context)
- * @ch:  a CHAR string
- * @len: the number of CHAR
+ * @ch:  a xmlChar string
+ * @len: the number of xmlChar
  *
  * receiving some chars from the parser.
  * Question: how much at a time ???
  */
 void
-characters(void *ctx, const CHAR *ch, int len)
+characters(void *ctx, const xmlChar *ch, int len)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlNodePtr lastChild;
@@ -830,14 +830,14 @@ characters(void *ctx, const CHAR *ch, int len)
 /**
  * ignorableWhitespace:
  * @ctx: the user data (XML parser context)
- * @ch:  a CHAR string
- * @len: the number of CHAR
+ * @ch:  a xmlChar string
+ * @len: the number of xmlChar
  *
  * receiving some ignorable whitespaces from the parser.
  * Question: how much at a time ???
  */
 void
-ignorableWhitespace(void *ctx, const CHAR *ch, int len)
+ignorableWhitespace(void *ctx, const xmlChar *ch, int len)
 {
     /* xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx; */
 #ifdef DEBUG_SAX
@@ -850,13 +850,13 @@ ignorableWhitespace(void *ctx, const CHAR *ch, int len)
  * @ctx: the user data (XML parser context)
  * @target:  the target name
  * @data: the PI data's
- * @len: the number of CHAR
+ * @len: the number of xmlChar
  *
  * A processing instruction has been parsed.
  */
 void
-processingInstruction(void *ctx, const CHAR *target,
-                      const CHAR *data)
+processingInstruction(void *ctx, const xmlChar *target,
+                      const xmlChar *data)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlNodePtr ret;
@@ -903,7 +903,7 @@ processingInstruction(void *ctx, const CHAR *target,
  * An old global namespace has been parsed.
  */
 void
-globalNamespace(void *ctx, const CHAR *href, const CHAR *prefix)
+globalNamespace(void *ctx, const xmlChar *href, const xmlChar *prefix)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
 #ifdef DEBUG_SAX
@@ -920,7 +920,7 @@ globalNamespace(void *ctx, const CHAR *href, const CHAR *prefix)
  * Set the current element namespace.
  */
 void
-setNamespace(void *ctx, const CHAR *name)
+setNamespace(void *ctx, const xmlChar *name)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlNsPtr ns;
@@ -968,7 +968,7 @@ getNamespace(void *ctx)
  * one read upon parsing.
  */
 int
-checkNamespace(void *ctx, CHAR *namespace)
+checkNamespace(void *ctx, xmlChar *namespace)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlNodePtr cur = ctxt->node;
@@ -1016,7 +1016,7 @@ checkNamespace(void *ctx, CHAR *namespace)
  * A namespace has been parsed.
  */
 void
-namespaceDecl(void *ctx, const CHAR *href, const CHAR *prefix)
+namespaceDecl(void *ctx, const xmlChar *href, const xmlChar *prefix)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
 #ifdef DEBUG_SAX
@@ -1036,7 +1036,7 @@ namespaceDecl(void *ctx, const CHAR *href, const CHAR *prefix)
  * A comment has been parsed.
  */
 void
-comment(void *ctx, const CHAR *value)
+comment(void *ctx, const xmlChar *value)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlNodePtr ret;
@@ -1081,7 +1081,7 @@ comment(void *ctx, const CHAR *value)
  * called when a pcdata block has been parsed
  */
 void
-cdataBlock(void *ctx, const CHAR *value, int len)
+cdataBlock(void *ctx, const xmlChar *value, int len)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlNodePtr ret;

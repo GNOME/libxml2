@@ -36,8 +36,8 @@
    if (doc == NULL) return(0);					\
    else if (doc->intSubset == NULL) return(0)
 
-xmlElementPtr xmlGetDtdElementDesc(xmlDtdPtr dtd, const CHAR *name);
-xmlAttributePtr xmlScanAttributeDecl(xmlDtdPtr dtd, const CHAR *elem);
+xmlElementPtr xmlGetDtdElementDesc(xmlDtdPtr dtd, const xmlChar *name);
+xmlAttributePtr xmlScanAttributeDecl(xmlDtdPtr dtd, const xmlChar *elem);
 
 /****************************************************************
  *								*
@@ -55,7 +55,7 @@ xmlAttributePtr xmlScanAttributeDecl(xmlDtdPtr dtd, const CHAR *elem);
  * Returns NULL if not, othervise the new element content structure
  */
 xmlElementContentPtr
-xmlNewElementContent(CHAR *name, xmlElementContentType type) {
+xmlNewElementContent(xmlChar *name, xmlElementContentType type) {
     xmlElementContentPtr ret;
 
     switch(type) {
@@ -103,7 +103,7 @@ xmlCopyElementContent(xmlElementContentPtr cur) {
     xmlElementContentPtr ret;
 
     if (cur == NULL) return(NULL);
-    ret = xmlNewElementContent((CHAR *) cur->name, cur->type);
+    ret = xmlNewElementContent((xmlChar *) cur->name, cur->type);
     if (ret == NULL) {
         fprintf(stderr, "xmlCopyElementContent : out of memory\n");
 	return(NULL);
@@ -125,7 +125,7 @@ xmlFreeElementContent(xmlElementContentPtr cur) {
     if (cur == NULL) return;
     if (cur->c1 != NULL) xmlFreeElementContent(cur->c1);
     if (cur->c2 != NULL) xmlFreeElementContent(cur->c2);
-    if (cur->name != NULL) xmlFree((CHAR *) cur->name);
+    if (cur->name != NULL) xmlFree((xmlChar *) cur->name);
     memset(cur, -1, sizeof(xmlElementContent));
     xmlFree(cur);
 }
@@ -307,7 +307,7 @@ xmlCreateElementTable(void) {
  * Returns NULL if not, othervise the entity
  */
 xmlElementPtr
-xmlAddElementDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const CHAR *name,
+xmlAddElementDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *name,
                   xmlElementContentType type, xmlElementContentPtr content) {
     xmlElementPtr ret, cur;
     xmlElementTablePtr table;
@@ -426,7 +426,7 @@ xmlFreeElement(xmlElementPtr elem) {
     if (elem == NULL) return;
     xmlFreeElementContent(elem->content);
     if (elem->name != NULL)
-	xmlFree((CHAR *) elem->name);
+	xmlFree((xmlChar *) elem->name);
     memset(elem, -1, sizeof(xmlElement));
     xmlFree(elem);
 }
@@ -558,7 +558,7 @@ xmlDumpElementTable(xmlBufferPtr buf, xmlElementTablePtr table) {
  *                of error.
  */
 xmlEnumerationPtr
-xmlCreateEnumeration(CHAR *name) {
+xmlCreateEnumeration(xmlChar *name) {
     xmlEnumerationPtr ret;
 
     ret = (xmlEnumerationPtr) xmlMalloc(sizeof(xmlEnumeration));
@@ -588,7 +588,7 @@ xmlFreeEnumeration(xmlEnumerationPtr cur) {
 
     if (cur->next != NULL) xmlFreeEnumeration(cur->next);
 
-    if (cur->name != NULL) xmlFree((CHAR *) cur->name);
+    if (cur->name != NULL) xmlFree((xmlChar *) cur->name);
     memset(cur, -1, sizeof(xmlEnumeration));
     xmlFree(cur);
 }
@@ -607,7 +607,7 @@ xmlCopyEnumeration(xmlEnumerationPtr cur) {
     xmlEnumerationPtr ret;
 
     if (cur == NULL) return(NULL);
-    ret = xmlCreateEnumeration((CHAR *) cur->name);
+    ret = xmlCreateEnumeration((xmlChar *) cur->name);
 
     if (cur->next != NULL) ret->next = xmlCopyEnumeration(cur->next);
     else ret->next = NULL;
@@ -679,7 +679,7 @@ xmlCreateAttributeTable(void) {
  *         possibly NULL.
  */
 xmlAttributePtr
-xmlScanAttributeDecl(xmlDtdPtr dtd, const CHAR *elem) {
+xmlScanAttributeDecl(xmlDtdPtr dtd, const xmlChar *elem) {
     xmlAttributePtr ret = NULL;
     xmlAttributeTablePtr table;
     int i;
@@ -752,9 +752,9 @@ xmlScanIDAttributeDecl(xmlValidCtxtPtr ctxt, xmlElementPtr elem) {
  * Returns NULL if not, othervise the entity
  */
 xmlAttributePtr
-xmlAddAttributeDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const CHAR *elem,
-                    const CHAR *name, xmlAttributeType type, 
-                    xmlAttributeDefault def, const CHAR *defaultValue,
+xmlAddAttributeDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *elem,
+                    const xmlChar *name, xmlAttributeType type, 
+                    xmlAttributeDefault def, const xmlChar *defaultValue,
                     xmlEnumerationPtr tree) {
     xmlAttributePtr ret, cur;
     xmlAttributeTablePtr table;
@@ -896,11 +896,11 @@ xmlFreeAttribute(xmlAttributePtr attr) {
     if (attr->tree != NULL)
         xmlFreeEnumeration(attr->tree);
     if (attr->elem != NULL)
-	xmlFree((CHAR *) attr->elem);
+	xmlFree((xmlChar *) attr->elem);
     if (attr->name != NULL)
-	xmlFree((CHAR *) attr->name);
+	xmlFree((xmlChar *) attr->name);
     if (attr->defaultValue != NULL)
-	xmlFree((CHAR *) attr->defaultValue);
+	xmlFree((xmlChar *) attr->defaultValue);
     memset(attr, -1, sizeof(xmlAttribute));
     xmlFree(attr);
 }
@@ -1116,8 +1116,8 @@ xmlCreateNotationTable(void) {
  * Returns NULL if not, othervise the entity
  */
 xmlNotationPtr
-xmlAddNotationDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const CHAR *name,
-                   const CHAR *PublicID, const CHAR *SystemID) {
+xmlAddNotationDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *name,
+                   const xmlChar *PublicID, const xmlChar *SystemID) {
     xmlNotationPtr ret, cur;
     xmlNotationTablePtr table;
     int i;
@@ -1210,11 +1210,11 @@ void
 xmlFreeNotation(xmlNotationPtr nota) {
     if (nota == NULL) return;
     if (nota->name != NULL)
-	xmlFree((CHAR *) nota->name);
+	xmlFree((xmlChar *) nota->name);
     if (nota->PublicID != NULL)
-	xmlFree((CHAR *) nota->PublicID);
+	xmlFree((xmlChar *) nota->PublicID);
     if (nota->SystemID != NULL)
-	xmlFree((CHAR *) nota->SystemID);
+	xmlFree((xmlChar *) nota->SystemID);
     memset(nota, -1, sizeof(xmlNotation));
     xmlFree(nota);
 }
@@ -1375,7 +1375,7 @@ xmlCreateIDTable(void) {
  * Returns NULL if not, othervise the new xmlIDPtr
  */
 xmlIDPtr 
-xmlAddID(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const CHAR *value,
+xmlAddID(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const xmlChar *value,
          xmlAttrPtr attr) {
     xmlIDPtr ret, cur;
     xmlIDTablePtr table;
@@ -1463,7 +1463,7 @@ void
 xmlFreeID(xmlIDPtr id) {
     if (id == NULL) return;
     if (id->value != NULL)
-	xmlFree((CHAR *) id->value);
+	xmlFree((xmlChar *) id->value);
     memset(id, -1, sizeof(xmlID));
     xmlFree(id);
 }
@@ -1529,7 +1529,7 @@ xmlIsID(xmlDocPtr doc, xmlNodePtr elem, xmlAttrPtr attr) {
  * Returns NULL if not found, otherwise the xmlAttrPtr defining the ID
  */
 xmlAttrPtr 
-xmlGetID(xmlDocPtr doc, const CHAR *ID) {
+xmlGetID(xmlDocPtr doc, const xmlChar *ID) {
     xmlIDPtr cur;
     xmlIDTablePtr table;
     int i;
@@ -1610,7 +1610,7 @@ xmlCreateRefTable(void) {
  * Returns NULL if not, othervise the new xmlRefPtr
  */
 xmlRefPtr 
-xmlAddRef(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const CHAR *value,
+xmlAddRef(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const xmlChar *value,
          xmlAttrPtr attr) {
     xmlRefPtr ret;
     xmlRefTablePtr table;
@@ -1682,7 +1682,7 @@ void
 xmlFreeRef(xmlRefPtr ref) {
     if (ref == NULL) return;
     if (ref->value != NULL)
-	xmlFree((CHAR *) ref->value);
+	xmlFree((xmlChar *) ref->value);
     memset(ref, -1, sizeof(xmlRef));
     xmlFree(ref);
 }
@@ -1751,7 +1751,7 @@ xmlIsRef(xmlDocPtr doc, xmlNodePtr elem, xmlAttrPtr attr) {
  * Returns NULL if not found, otherwise the xmlAttrPtr defining the Ref
  */
 xmlAttrPtr 
-xmlGetRef(xmlDocPtr doc, const CHAR *Ref) {
+xmlGetRef(xmlDocPtr doc, const xmlChar *Ref) {
     xmlRefPtr cur;
     xmlRefTablePtr table;
     int i;
@@ -1799,7 +1799,7 @@ xmlGetRef(xmlDocPtr doc, const CHAR *Ref) {
  */
 
 xmlElementPtr
-xmlGetDtdElementDesc(xmlDtdPtr dtd, const CHAR *name) {
+xmlGetDtdElementDesc(xmlDtdPtr dtd, const xmlChar *name) {
     xmlElementTablePtr table;
     xmlElementPtr cur;
     int i;
@@ -1829,7 +1829,7 @@ xmlGetDtdElementDesc(xmlDtdPtr dtd, const CHAR *name) {
  */
 
 xmlAttributePtr
-xmlGetDtdAttrDesc(xmlDtdPtr dtd, const CHAR *elem, const CHAR *name) {
+xmlGetDtdAttrDesc(xmlDtdPtr dtd, const xmlChar *elem, const xmlChar *name) {
     xmlAttributeTablePtr table;
     xmlAttributePtr cur;
     int i;
@@ -1858,7 +1858,7 @@ xmlGetDtdAttrDesc(xmlDtdPtr dtd, const CHAR *elem, const CHAR *name) {
  */
 
 xmlNotationPtr
-xmlGetDtdNotationDesc(xmlDtdPtr dtd, const CHAR *name) {
+xmlGetDtdNotationDesc(xmlDtdPtr dtd, const xmlChar *name) {
     xmlNotationTablePtr table;
     xmlNotationPtr cur;
     int i;
@@ -1889,7 +1889,7 @@ xmlGetDtdNotationDesc(xmlDtdPtr dtd, const CHAR *name) {
 
 int
 xmlValidateNotationUse(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
-                       const CHAR *notationName) {
+                       const xmlChar *notationName) {
     xmlNotationPtr notaDecl;
     if ((doc == NULL) || (doc->intSubset == NULL)) return(-1);
 
@@ -1917,7 +1917,7 @@ xmlValidateNotationUse(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
  */
 
 int
-xmlIsMixedElement(xmlDocPtr doc, const CHAR *name) {
+xmlIsMixedElement(xmlDocPtr doc, const xmlChar *name) {
     xmlElementPtr elemDecl;
 
     if ((doc == NULL) || (doc->intSubset == NULL)) return(-1);
@@ -1951,8 +1951,8 @@ xmlIsMixedElement(xmlDocPtr doc, const CHAR *name) {
  */
 
 int
-xmlValidateNameValue(const CHAR *value) {
-    const CHAR *cur;
+xmlValidateNameValue(const xmlChar *value) {
+    const xmlChar *cur;
 
     if (value == NULL) return(0);
     cur = value;
@@ -1984,8 +1984,8 @@ xmlValidateNameValue(const CHAR *value) {
  */
 
 int
-xmlValidateNamesValue(const CHAR *value) {
-    const CHAR *cur;
+xmlValidateNamesValue(const xmlChar *value) {
+    const xmlChar *cur;
 
     if (value == NULL) return(0);
     cur = value;
@@ -2035,8 +2035,8 @@ xmlValidateNamesValue(const CHAR *value) {
  */
 
 int
-xmlValidateNmtokenValue(const CHAR *value) {
-    const CHAR *cur;
+xmlValidateNmtokenValue(const xmlChar *value) {
+    const xmlChar *cur;
 
     if (value == NULL) return(0);
     cur = value;
@@ -2073,8 +2073,8 @@ xmlValidateNmtokenValue(const CHAR *value) {
  */
 
 int
-xmlValidateNmtokensValue(const CHAR *value) {
-    const CHAR *cur;
+xmlValidateNmtokensValue(const xmlChar *value) {
+    const xmlChar *cur;
 
     if (value == NULL) return(0);
     cur = value;
@@ -2165,7 +2165,7 @@ xmlValidateNotationDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
  */
 
 int
-xmlValidateAttributeValue(xmlAttributeType type, const CHAR *value) {
+xmlValidateAttributeValue(xmlAttributeType type, const xmlChar *value) {
     switch (type) {
 	case XML_ATTRIBUTE_ENTITIES:
 	case XML_ATTRIBUTE_IDREFS:
@@ -2282,7 +2282,7 @@ xmlValidateElementDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
     /* No Duplicate Types */
     if (elem->type == XML_ELEMENT_TYPE_MIXED) {
 	xmlElementContentPtr cur, next;
-        const CHAR *name;
+        const xmlChar *name;
 
 	cur = elem->content;
 	while (cur != NULL) {
@@ -2363,7 +2363,7 @@ xmlValidateElementDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 
 int
 xmlValidateOneAttribute(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
-                        xmlNodePtr elem, xmlAttrPtr attr, const CHAR *value) {
+                        xmlNodePtr elem, xmlAttrPtr attr, const xmlChar *value) {
     /* xmlElementPtr elemDecl; */
     xmlAttributePtr attrDecl;
     int val;
@@ -2711,7 +2711,7 @@ xmlValidateOneElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
     xmlElementContentPtr cont;
     xmlNodePtr child;
     int ret = 1;
-    const CHAR *name;
+    const xmlChar *name;
 
     CHECK_DTD;
 
@@ -2849,7 +2849,7 @@ int
 xmlValidateElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr elem) {
     xmlNodePtr child;
     xmlAttrPtr attr;
-    CHAR *value;
+    xmlChar *value;
     int ret = 1;
 
     /* TODO xmlValidateElement */

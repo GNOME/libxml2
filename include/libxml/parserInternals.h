@@ -511,7 +511,7 @@ typedef unsigned char CHARVAL;
 /**
  * Parser context
  */
-xmlParserCtxtPtr	xmlCreateDocParserCtxt	(CHAR *cur);
+xmlParserCtxtPtr	xmlCreateDocParserCtxt	(xmlChar *cur);
 xmlParserCtxtPtr	xmlCreateFileParserCtxt	(const char *filename);
 xmlParserCtxtPtr	xmlCreateMemoryParserCtxt(char *buffer,
 						 int size);
@@ -533,7 +533,7 @@ xmlParserInputPtr	xmlNewEntityInputStream	(xmlParserCtxtPtr ctxt,
 						 xmlEntityPtr entity);
 void			xmlPushInput		(xmlParserCtxtPtr ctxt,
 						 xmlParserInputPtr input);
-CHAR			xmlPopInput		(xmlParserCtxtPtr ctxt);
+xmlChar			xmlPopInput		(xmlParserCtxtPtr ctxt);
 void			xmlFreeInputStream	(xmlParserInputPtr input);
 xmlParserInputPtr	xmlNewInputFromFile	(xmlParserCtxtPtr ctxt,
 						 const char *filename);
@@ -541,38 +541,38 @@ xmlParserInputPtr	xmlNewInputFromFile	(xmlParserCtxtPtr ctxt,
 /**
  * Namespaces.
  */
-CHAR *			xmlSplitQName		(const CHAR *name,
-						 CHAR **prefix);
-CHAR *			xmlNamespaceParseNCName	(xmlParserCtxtPtr ctxt);
-CHAR *			xmlNamespaceParseQName	(xmlParserCtxtPtr ctxt,
-						 CHAR **prefix);
-CHAR *			xmlNamespaceParseNSDef	(xmlParserCtxtPtr ctxt);
-CHAR *			xmlParseQuotedString	(xmlParserCtxtPtr ctxt);
+xmlChar *			xmlSplitQName		(const xmlChar *name,
+						 xmlChar **prefix);
+xmlChar *			xmlNamespaceParseNCName	(xmlParserCtxtPtr ctxt);
+xmlChar *			xmlNamespaceParseQName	(xmlParserCtxtPtr ctxt,
+						 xmlChar **prefix);
+xmlChar *			xmlNamespaceParseNSDef	(xmlParserCtxtPtr ctxt);
+xmlChar *			xmlParseQuotedString	(xmlParserCtxtPtr ctxt);
 void			xmlParseNamespace	(xmlParserCtxtPtr ctxt);
 
 /**
  * Generic production rules
  */
-CHAR *			xmlScanName		(xmlParserCtxtPtr ctxt);
-CHAR *			xmlParseName		(xmlParserCtxtPtr ctxt);
-CHAR *			xmlParseNmtoken		(xmlParserCtxtPtr ctxt);
-CHAR *			xmlParseEntityValue	(xmlParserCtxtPtr ctxt,
-						 CHAR **orig);
-CHAR *			xmlParseAttValue	(xmlParserCtxtPtr ctxt);
-CHAR *			xmlParseSystemLiteral	(xmlParserCtxtPtr ctxt);
-CHAR *			xmlParsePubidLiteral	(xmlParserCtxtPtr ctxt);
+xmlChar *			xmlScanName		(xmlParserCtxtPtr ctxt);
+xmlChar *			xmlParseName		(xmlParserCtxtPtr ctxt);
+xmlChar *			xmlParseNmtoken		(xmlParserCtxtPtr ctxt);
+xmlChar *			xmlParseEntityValue	(xmlParserCtxtPtr ctxt,
+						 xmlChar **orig);
+xmlChar *			xmlParseAttValue	(xmlParserCtxtPtr ctxt);
+xmlChar *			xmlParseSystemLiteral	(xmlParserCtxtPtr ctxt);
+xmlChar *			xmlParsePubidLiteral	(xmlParserCtxtPtr ctxt);
 void			xmlParseCharData	(xmlParserCtxtPtr ctxt,
 						 int cdata);
-CHAR *			xmlParseExternalID	(xmlParserCtxtPtr ctxt,
-						 CHAR **publicID,
+xmlChar *			xmlParseExternalID	(xmlParserCtxtPtr ctxt,
+						 xmlChar **publicID,
 						 int strict);
 void			xmlParseComment		(xmlParserCtxtPtr ctxt);
-CHAR *			xmlParsePITarget	(xmlParserCtxtPtr ctxt);
+xmlChar *			xmlParsePITarget	(xmlParserCtxtPtr ctxt);
 void			xmlParsePI		(xmlParserCtxtPtr ctxt);
 void			xmlParseNotationDecl	(xmlParserCtxtPtr ctxt);
 void			xmlParseEntityDecl	(xmlParserCtxtPtr ctxt);
 int			xmlParseDefaultDecl	(xmlParserCtxtPtr ctxt,
-						 CHAR **value);
+						 xmlChar **value);
 xmlEnumerationPtr	xmlParseNotationType	(xmlParserCtxtPtr ctxt);
 xmlEnumerationPtr	xmlParseEnumerationType	(xmlParserCtxtPtr ctxt);
 int			xmlParseEnumeratedType	(xmlParserCtxtPtr ctxt,
@@ -585,7 +585,7 @@ xmlElementContentPtr	xmlParseElementMixedContentDecl
 xmlElementContentPtr	xmlParseElementChildrenContentDecl
 						(xmlParserCtxtPtr ctxt);
 int			xmlParseElementContentDecl(xmlParserCtxtPtr ctxt,
-						 CHAR *name,
+						 xmlChar *name,
 						 xmlElementContentPtr *result);
 int			xmlParseElementDecl	(xmlParserCtxtPtr ctxt);
 void			xmlParseMarkupDecl	(xmlParserCtxtPtr ctxt);
@@ -594,24 +594,24 @@ xmlEntityPtr		xmlParseEntityRef	(xmlParserCtxtPtr ctxt);
 void			xmlParseReference	(xmlParserCtxtPtr ctxt);
 void			xmlParsePEReference	(xmlParserCtxtPtr ctxt);
 void			xmlParseDocTypeDecl	(xmlParserCtxtPtr ctxt);
-CHAR *			xmlParseAttribute	(xmlParserCtxtPtr ctxt,
-						 CHAR **value);
-CHAR *			xmlParseStartTag	(xmlParserCtxtPtr ctxt);
+xmlChar *			xmlParseAttribute	(xmlParserCtxtPtr ctxt,
+						 xmlChar **value);
+xmlChar *			xmlParseStartTag	(xmlParserCtxtPtr ctxt);
 void			xmlParseEndTag		(xmlParserCtxtPtr ctxt,
-						 CHAR *tagname);
+						 xmlChar *tagname);
 void			xmlParseCDSect		(xmlParserCtxtPtr ctxt);
 void			xmlParseContent		(xmlParserCtxtPtr ctxt);
 void			xmlParseElement		(xmlParserCtxtPtr ctxt);
-CHAR *			xmlParseVersionNum	(xmlParserCtxtPtr ctxt);
-CHAR *			xmlParseVersionInfo	(xmlParserCtxtPtr ctxt);
-CHAR *			xmlParseEncName		(xmlParserCtxtPtr ctxt);
-CHAR *			xmlParseEncodingDecl	(xmlParserCtxtPtr ctxt);
+xmlChar *			xmlParseVersionNum	(xmlParserCtxtPtr ctxt);
+xmlChar *			xmlParseVersionInfo	(xmlParserCtxtPtr ctxt);
+xmlChar *			xmlParseEncName		(xmlParserCtxtPtr ctxt);
+xmlChar *			xmlParseEncodingDecl	(xmlParserCtxtPtr ctxt);
 int			xmlParseSDDecl		(xmlParserCtxtPtr ctxt);
 void			xmlParseXMLDecl		(xmlParserCtxtPtr ctxt);
 void			xmlParseMisc		(xmlParserCtxtPtr ctxt);
 void			xmlParseExternalSubset	(xmlParserCtxtPtr ctxt,
-						 const CHAR *ExternalID,
-						 const CHAR *SystemID); 
+						 const xmlChar *ExternalID,
+						 const xmlChar *SystemID); 
 /*
  * Entities substitution
  */
@@ -620,12 +620,12 @@ void			xmlParseExternalSubset	(xmlParserCtxtPtr ctxt,
 #define XML_SUBSTITUTE_PEREF	2
 #define XML_SUBSTITUTE_BOTH 	3
 
-CHAR *			xmlDecodeEntities	(xmlParserCtxtPtr ctxt,
+xmlChar *			xmlDecodeEntities	(xmlParserCtxtPtr ctxt,
 						 int len,
 						 int what,
-						 CHAR end,
-						 CHAR  end2,
-						 CHAR end3);
+						 xmlChar end,
+						 xmlChar  end2,
+						 xmlChar end3);
 
 /*
  * Generated by MACROS on top of parser.c c.f. PUSH_AND_POP

@@ -15,7 +15,7 @@
 #define IS_BLANK(c)							\
   (((c) == '\n') || ((c) == '\r') || ((c) == '\t') || ((c) == ' '))
 
-void xmlDebugDumpString(FILE *output, const CHAR *str) {
+void xmlDebugDumpString(FILE *output, const xmlChar *str) {
     int i;
     for (i = 0;i < 40;i++)
         if (str[i] == 0) return;

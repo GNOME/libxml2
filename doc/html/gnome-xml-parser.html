@@ -146,8 +146,8 @@ void        (<A
 HREF="gnome-xml-parser.html#XMLPARSERINPUTDEALLOCATE"
 >*xmlParserInputDeallocate</A
 >)     (<A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 >*);
 typedef     <A
 HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
@@ -206,28 +206,28 @@ HREF="gnome-xml-parser.html#RESOLVEENTITYSAXFUNC"
 >*resolveEntitySAXFunc</A
 >)   (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *publicId,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *systemId);
 void        (<A
 HREF="gnome-xml-parser.html#INTERNALSUBSETSAXFUNC"
 >*internalSubsetSAXFunc</A
 >)        (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *ExternalID,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *SystemID);
 <A
 HREF="gnome-xml-entities.html#XMLENTITYPTR"
@@ -237,8 +237,8 @@ HREF="gnome-xml-parser.html#GETENTITYSAXFUNC"
 >*getEntitySAXFunc</A
 >)            (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *name);
 <A
 HREF="gnome-xml-entities.html#XMLENTITYPTR"
@@ -248,63 +248,63 @@ HREF="gnome-xml-parser.html#GETPARAMETERENTITYSAXFUNC"
 >*getParameterEntitySAXFunc</A
 >)   (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *name);
 void        (<A
 HREF="gnome-xml-parser.html#ENTITYDECLSAXFUNC"
 >*entityDeclSAXFunc</A
 >)            (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *name,
                                              int type,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *publicId,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *systemId,
                                              <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *content);
 void        (<A
 HREF="gnome-xml-parser.html#NOTATIONDECLSAXFUNC"
 >*notationDeclSAXFunc</A
 >)          (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *publicId,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *systemId);
 void        (<A
 HREF="gnome-xml-parser.html#ATTRIBUTEDECLSAXFUNC"
 >*attributeDeclSAXFunc</A
 >)         (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *elem,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *name,
                                              int type,
                                              int def,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *defaultValue,
                                              <A
 HREF="gnome-xml-tree.html#XMLENUMERATIONPTR"
@@ -315,8 +315,8 @@ HREF="gnome-xml-parser.html#ELEMENTDECLSAXFUNC"
 >*elementDeclSAXFunc</A
 >)           (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *name,
                                              int type,
                                              <A
@@ -328,20 +328,20 @@ HREF="gnome-xml-parser.html#UNPARSEDENTITYDECLSAXFUNC"
 >*unparsedEntityDeclSAXFunc</A
 >)    (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *publicId,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *systemId,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *notationName);
 void        (<A
 HREF="gnome-xml-parser.html#SETDOCUMENTLOCATORSAXFUNC"
@@ -364,48 +364,48 @@ HREF="gnome-xml-parser.html#STARTELEMENTSAXFUNC"
 >*startElementSAXFunc</A
 >)          (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > **atts);
 void        (<A
 HREF="gnome-xml-parser.html#ENDELEMENTSAXFUNC"
 >*endElementSAXFunc</A
 >)            (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *name);
 void        (<A
 HREF="gnome-xml-parser.html#ATTRIBUTESAXFUNC"
 >*attributeSAXFunc</A
 >)             (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *value);
 void        (<A
 HREF="gnome-xml-parser.html#REFERENCESAXFUNC"
 >*referenceSAXFunc</A
 >)             (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *name);
 void        (<A
 HREF="gnome-xml-parser.html#CHARACTERSSAXFUNC"
 >*charactersSAXFunc</A
 >)            (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *ch,
                                              int len);
 void        (<A
@@ -413,8 +413,8 @@ HREF="gnome-xml-parser.html#IGNORABLEWHITESPACESAXFUNC"
 >*ignorableWhitespaceSAXFunc</A
 >)   (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *ch,
                                              int len);
 void        (<A
@@ -422,28 +422,28 @@ HREF="gnome-xml-parser.html#PROCESSINGINSTRUCTIONSAXFUNC"
 >*processingInstructionSAXFunc</A
 >) (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *target,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *data);
 void        (<A
 HREF="gnome-xml-parser.html#COMMENTSAXFUNC"
 >*commentSAXFunc</A
 >)               (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *value);
 void        (<A
 HREF="gnome-xml-parser.html#CDATABLOCKSAXFUNC"
 >*cdataBlockSAXFunc</A
 >)            (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *value,
                                              int len);
 void        (<A
@@ -517,123 +517,123 @@ HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
 > in,
                                              int len);
 <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
->*       <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    <A
 HREF="gnome-xml-parser.html#XMLSTRDUP"
 >xmlStrdup</A
 >                       (const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *cur);
 <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
->*       <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    <A
 HREF="gnome-xml-parser.html#XMLSTRNDUP"
 >xmlStrndup</A
 >                      (const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *cur,
                                              int len);
 <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
->*       <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    <A
 HREF="gnome-xml-parser.html#XMLSTRSUB"
 >xmlStrsub</A
 >                       (const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *str,
                                              int start,
                                              int len);
 const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 >* <A
 HREF="gnome-xml-parser.html#XMLSTRCHR"
 >xmlStrchr</A
->                       (const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+>                    (const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *str,
                                              <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > val);
 const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 >* <A
 HREF="gnome-xml-parser.html#XMLSTRSTR"
 >xmlStrstr</A
->                       (const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+>                    (const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *str,
                                              <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *val);
 int         <A
 HREF="gnome-xml-parser.html#XMLSTRCMP"
 >xmlStrcmp</A
 >                       (const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *str1,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *str2);
 int         <A
 HREF="gnome-xml-parser.html#XMLSTRNCMP"
 >xmlStrncmp</A
 >                      (const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *str1,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *str2,
                                              int len);
 int         <A
 HREF="gnome-xml-parser.html#XMLSTRLEN"
 >xmlStrlen</A
 >                       (const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *str);
 <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
->*       <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    <A
 HREF="gnome-xml-parser.html#XMLSTRCAT"
 >xmlStrcat</A
 >                       (<A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *cur,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *add);
 <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
->*       <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    <A
 HREF="gnome-xml-parser.html#XMLSTRNCAT"
 >xmlStrncat</A
 >                      (<A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *cur,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *add,
                                              int len);
 <A
@@ -643,8 +643,8 @@ HREF="gnome-xml-tree.html#XMLDOCPTR"
 HREF="gnome-xml-parser.html#XMLPARSEDOC"
 >xmlParseDoc</A
 >                     (<A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *cur);
 <A
 HREF="gnome-xml-tree.html#XMLDOCPTR"
@@ -672,8 +672,8 @@ HREF="gnome-xml-tree.html#XMLDOCPTR"
 HREF="gnome-xml-parser.html#XMLRECOVERDOC"
 >xmlRecoverDoc</A
 >                   (<A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *cur);
 <A
 HREF="gnome-xml-tree.html#XMLDOCPTR"
@@ -708,8 +708,8 @@ HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *cur,
                                              int recovery);
 <A
@@ -744,12 +744,12 @@ HREF="gnome-xml-tree.html#XMLDTDPTR"
 HREF="gnome-xml-parser.html#XMLPARSEDTD"
 >xmlParseDTD</A
 >                     (const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *ExternalID,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *SystemID);
 <A
 HREF="gnome-xml-tree.html#XMLDTDPTR"
@@ -762,12 +762,12 @@ HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *ExternalID,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *SystemID);
 void        <A
 HREF="gnome-xml-parser.html#XMLINITPARSERCTXT"
@@ -791,8 +791,8 @@ HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *buffer,
                                              const char *filename);
 void        <A
@@ -951,8 +951,8 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >void        (*xmlParserInputDeallocate)     (<A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 >*);</PRE
 ></TD
 ></TR
@@ -1273,12 +1273,12 @@ HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
 >xmlParserInputPtr</A
 > (*resolveEntitySAXFunc)   (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *publicId,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *systemId);</PRE
 ></TD
 ></TR
@@ -1388,16 +1388,16 @@ CELLPADDING="6"
 CLASS="PROGRAMLISTING"
 >void        (*internalSubsetSAXFunc)        (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *ExternalID,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *SystemID);</PRE
 ></TD
 ></TR
@@ -1512,8 +1512,8 @@ HREF="gnome-xml-entities.html#XMLENTITYPTR"
 >xmlEntityPtr</A
 > (*getEntitySAXFunc)            (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *name);</PRE
 ></TD
 ></TR
@@ -1609,8 +1609,8 @@ HREF="gnome-xml-entities.html#XMLENTITYPTR"
 >xmlEntityPtr</A
 > (*getParameterEntitySAXFunc)   (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *name);</PRE
 ></TD
 ></TR
@@ -1703,21 +1703,21 @@ CELLPADDING="6"
 CLASS="PROGRAMLISTING"
 >void        (*entityDeclSAXFunc)            (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *name,
                                              int type,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *publicId,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *systemId,
                                              <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *content);</PRE
 ></TD
 ></TR
@@ -1863,16 +1863,16 @@ CELLPADDING="6"
 CLASS="PROGRAMLISTING"
 >void        (*notationDeclSAXFunc)          (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *publicId,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *systemId);</PRE
 ></TD
 ></TR
@@ -1984,18 +1984,18 @@ CELLPADDING="6"
 CLASS="PROGRAMLISTING"
 >void        (*attributeDeclSAXFunc)         (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *elem,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *name,
                                              int type,
                                              int def,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *defaultValue,
                                              <A
 HREF="gnome-xml-tree.html#XMLENUMERATIONPTR"
@@ -2162,8 +2162,8 @@ CELLPADDING="6"
 CLASS="PROGRAMLISTING"
 >void        (*elementDeclSAXFunc)           (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *name,
                                              int type,
                                              <A
@@ -2280,20 +2280,20 @@ CELLPADDING="6"
 CLASS="PROGRAMLISTING"
 >void        (*unparsedEntityDeclSAXFunc)    (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *publicId,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *systemId,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *notationName);</PRE
 ></TD
 ></TR
@@ -2617,12 +2617,12 @@ CELLPADDING="6"
 CLASS="PROGRAMLISTING"
 >void        (*startElementSAXFunc)          (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > **atts);</PRE
 ></TD
 ></TR
@@ -2717,8 +2717,8 @@ CELLPADDING="6"
 CLASS="PROGRAMLISTING"
 >void        (*endElementSAXFunc)            (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *name);</PRE
 ></TD
 ></TR
@@ -2796,12 +2796,12 @@ CELLPADDING="6"
 CLASS="PROGRAMLISTING"
 >void        (*attributeSAXFunc)             (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *name,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *value);</PRE
 ></TD
 ></TR
@@ -2896,8 +2896,8 @@ CELLPADDING="6"
 CLASS="PROGRAMLISTING"
 >void        (*referenceSAXFunc)             (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *name);</PRE
 ></TD
 ></TR
@@ -2975,8 +2975,8 @@ CELLPADDING="6"
 CLASS="PROGRAMLISTING"
 >void        (*charactersSAXFunc)            (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *ch,
                                              int len);</PRE
 ></TD
@@ -3072,8 +3072,8 @@ CELLPADDING="6"
 CLASS="PROGRAMLISTING"
 >void        (*ignorableWhitespaceSAXFunc)   (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *ch,
                                              int len);</PRE
 ></TD
@@ -3169,12 +3169,12 @@ CELLPADDING="6"
 CLASS="PROGRAMLISTING"
 >void        (*processingInstructionSAXFunc) (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *target,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *data);</PRE
 ></TD
 ></TR
@@ -3269,8 +3269,8 @@ CELLPADDING="6"
 CLASS="PROGRAMLISTING"
 >void        (*commentSAXFunc)               (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *value);</PRE
 ></TD
 ></TR
@@ -3348,8 +3348,8 @@ CELLPADDING="6"
 CLASS="PROGRAMLISTING"
 >void        (*cdataBlockSAXFunc)            (void *ctx,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *value,
                                              int len);</PRE
 ></TD
@@ -4282,17 +4282,17 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
->*       xmlStrdup                       (const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    xmlStrdup                       (const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *cur);</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
->a strdup for array of CHAR's</P
+>a strdup for array of xmlChar's</P
 ><P
 ></P
 ><DIV
@@ -4363,18 +4363,18 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
->*       xmlStrndup                      (const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    xmlStrndup                      (const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *cur,
                                              int len);</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
->a strndup for array of CHAR's</P
+>a strndup for array of xmlChar's</P
 ><P
 ></P
 ><DIV
@@ -4462,11 +4462,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
->*       xmlStrsub                       (const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    xmlStrsub                       (const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *str,
                                              int start,
                                              int len);</PRE
@@ -4579,21 +4579,21 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
->* xmlStrchr                       (const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+>* xmlStrchr                    (const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *str,
                                              <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > val);</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
->a strchr for CHAR's</P
+>a strchr for xmlChar's</P
 ><P
 ></P
 ><DIV
@@ -4681,21 +4681,21 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
->* xmlStrstr                       (const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+>* xmlStrstr                    (const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *str,
                                              <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *val);</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
->a strstr for CHAR's</P
+>a strstr for xmlChar's</P
 ><P
 ></P
 ><DIV
@@ -4783,18 +4783,18 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlStrcmp                       (const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *str1,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *str2);</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
->a strcmp for CHAR's</P
+>a strcmp for xmlChar's</P
 ><P
 ></P
 ><DIV
@@ -4882,19 +4882,19 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlStrncmp                      (const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *str1,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *str2,
                                              int len);</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
->a strncmp for CHAR's</P
+>a strncmp for xmlChar's</P
 ><P
 ></P
 ><DIV
@@ -4999,14 +4999,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >int         xmlStrlen                       (const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *str);</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
->lenght of a CHAR's string</P
+>lenght of a xmlChar's string</P
 ><P
 ></P
 ><DIV
@@ -5077,21 +5077,21 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
->*       xmlStrcat                       (<A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    xmlStrcat                       (<A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *cur,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *add);</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
->a strcat for array of CHAR's</P
+>a strcat for array of xmlChar's</P
 ><P
 ></P
 ><DIV
@@ -5179,22 +5179,22 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
->*       xmlStrncat                      (<A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    xmlStrncat                      (<A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *cur,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *add,
                                              int len);</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
->a strncat for array of CHAR's</P
+>a strncat for array of xmlChar's</P
 ><P
 ></P
 ><DIV
@@ -5302,8 +5302,8 @@ CLASS="PROGRAMLISTING"
 HREF="gnome-xml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 >   xmlParseDoc                     (<A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *cur);</PRE
 ></TD
 ></TR
@@ -5641,8 +5641,8 @@ CLASS="PROGRAMLISTING"
 HREF="gnome-xml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 >   xmlRecoverDoc                   (<A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *cur);</PRE
 ></TD
 ></TR
@@ -5987,8 +5987,8 @@ HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *cur,
                                              int recovery);</PRE
 ></TD
@@ -6362,12 +6362,12 @@ CLASS="PROGRAMLISTING"
 HREF="gnome-xml-tree.html#XMLDTDPTR"
 >xmlDtdPtr</A
 >   xmlParseDTD                     (const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *ExternalID,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *SystemID);</PRE
 ></TD
 ></TR
@@ -6468,12 +6468,12 @@ HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 > sax,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *ExternalID,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *SystemID);</PRE
 ></TD
 ></TR
@@ -6714,8 +6714,8 @@ HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              const <A
-HREF="gnome-xml-tree.html#CHAR"
->CHAR</A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
 > *buffer,
                                              const char *filename);</PRE
 ></TD

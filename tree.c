@@ -31,7 +31,7 @@
 #include "entities.h"
 #include "valid.h"
 
-static CHAR xmlStringText[] = { 't', 'e', 'x', 't', 0 };
+static xmlChar xmlStringText[] = { 't', 'e', 'x', 't', 0 };
 int oldXMLWDcompatibility = 0;
 int xmlIndentTreeOutput = 1;
 
@@ -89,7 +89,7 @@ xmlUpgradeOldNs(xmlDocPtr doc) {
  * Returns returns a new namespace pointer
  */
 xmlNsPtr
-xmlNewNs(xmlNodePtr node, const CHAR *href, const CHAR *prefix) {
+xmlNewNs(xmlNodePtr node, const xmlChar *href, const xmlChar *prefix) {
     xmlNsPtr cur;
 
     if (href == NULL) {
@@ -144,7 +144,7 @@ xmlNewNs(xmlNodePtr node, const CHAR *href, const CHAR *prefix) {
  * Returns returns a new namespace pointer
  */
 xmlNsPtr
-xmlNewGlobalNs(xmlDocPtr doc, const CHAR *href, const CHAR *prefix) {
+xmlNewGlobalNs(xmlDocPtr doc, const xmlChar *href, const xmlChar *prefix) {
     xmlNsPtr cur;
 
     /*
@@ -249,8 +249,8 @@ xmlFreeNsList(xmlNsPtr cur) {
  * Returns a pointer to the new DTD structure
  */
 xmlDtdPtr
-xmlNewDtd(xmlDocPtr doc, const CHAR *name,
-                    const CHAR *ExternalID, const CHAR *SystemID) {
+xmlNewDtd(xmlDocPtr doc, const xmlChar *name,
+                    const xmlChar *ExternalID, const xmlChar *SystemID) {
     xmlDtdPtr cur;
 
     if ((doc != NULL) && (doc->extSubset != NULL)) {
@@ -301,8 +301,8 @@ xmlNewDtd(xmlDocPtr doc, const CHAR *name,
  * Returns a pointer to the new DTD structure
  */
 xmlDtdPtr
-xmlCreateIntSubset(xmlDocPtr doc, const CHAR *name,
-                   const CHAR *ExternalID, const CHAR *SystemID) {
+xmlCreateIntSubset(xmlDocPtr doc, const xmlChar *name,
+                   const xmlChar *ExternalID, const xmlChar *SystemID) {
     xmlDtdPtr cur;
 
     if ((doc != NULL) && (doc->intSubset != NULL)) {
@@ -372,12 +372,12 @@ xmlFreeDtd(xmlDtdPtr cur) {
 
 /**
  * xmlNewDoc:
- * @version:  CHAR string giving the version of XML "1.0"
+ * @version:  xmlChar string giving the version of XML "1.0"
  *
  * Returns a new document
  */
 xmlDocPtr
-xmlNewDoc(const CHAR *version) {
+xmlNewDoc(const xmlChar *version) {
     xmlDocPtr cur;
 
     if (version == NULL) {
@@ -452,12 +452,12 @@ xmlFreeDoc(xmlDocPtr cur) {
  * Returns a pointer to the first child
  */
 xmlNodePtr
-xmlStringLenGetNodeList(xmlDocPtr doc, const CHAR *value, int len) {
+xmlStringLenGetNodeList(xmlDocPtr doc, const xmlChar *value, int len) {
     xmlNodePtr ret = NULL, last = NULL;
     xmlNodePtr node;
-    CHAR *val;
-    const CHAR *cur = value;
-    const CHAR *q;
+    xmlChar *val;
+    const xmlChar *cur = value;
+    const xmlChar *q;
     xmlEntityPtr ent;
 
     if (value == NULL) return(NULL);
@@ -563,12 +563,12 @@ xmlStringLenGetNodeList(xmlDocPtr doc, const CHAR *value, int len) {
  * Returns a pointer to the first child
  */
 xmlNodePtr
-xmlStringGetNodeList(xmlDocPtr doc, const CHAR *value) {
+xmlStringGetNodeList(xmlDocPtr doc, const xmlChar *value) {
     xmlNodePtr ret = NULL, last = NULL;
     xmlNodePtr node;
-    CHAR *val;
-    const CHAR *cur = value;
-    const CHAR *q;
+    xmlChar *val;
+    const xmlChar *cur = value;
+    const xmlChar *q;
     xmlEntityPtr ent;
 
     if (value == NULL) return(NULL);
@@ -674,10 +674,10 @@ xmlStringGetNodeList(xmlDocPtr doc, const CHAR *value) {
  * made of TEXTs and ENTITY_REFs
  * Returns a pointer to the string copy, the calller must free it.
  */
-CHAR *
+xmlChar *
 xmlNodeListGetString(xmlDocPtr doc, xmlNodePtr list, int inLine) {
     xmlNodePtr node = list;
-    CHAR *ret = NULL;
+    xmlChar *ret = NULL;
     xmlEntityPtr ent;
 
     if (list == NULL) return(NULL);
@@ -687,7 +687,7 @@ xmlNodeListGetString(xmlDocPtr doc, xmlNodePtr list, int inLine) {
 	    if (inLine)
 		ret = xmlStrcat(ret, node->content);
 	    else {
-	        CHAR *buffer;
+	        xmlChar *buffer;
 
 		buffer = xmlEncodeEntitiesReentrant(doc, node->content);
 		if (buffer != NULL) {
@@ -703,7 +703,7 @@ xmlNodeListGetString(xmlDocPtr doc, xmlNodePtr list, int inLine) {
 		else
 		    ret = xmlStrcat(ret, node->content);
             } else {
-	        CHAR buf[2];
+	        xmlChar buf[2];
 		buf[0] = '&'; buf[1] = 0;
 		ret = xmlStrncat(ret, buf, 1);
 		ret = xmlStrcat(ret, node->name);
@@ -732,7 +732,7 @@ xmlNodeListGetString(xmlDocPtr doc, xmlNodePtr list, int inLine) {
  * Returns a pointer to the attribute
  */
 xmlAttrPtr
-xmlNewProp(xmlNodePtr node, const CHAR *name, const CHAR *value) {
+xmlNewProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
     xmlAttrPtr cur;
 
     if (name == NULL) {
@@ -790,8 +790,8 @@ xmlNewProp(xmlNodePtr node, const CHAR *name, const CHAR *value) {
  * Returns a pointer to the attribute
  */
 xmlAttrPtr
-xmlNewNsProp(xmlNodePtr node, xmlNsPtr ns, const CHAR *name,
-           const CHAR *value) {
+xmlNewNsProp(xmlNodePtr node, xmlNsPtr ns, const xmlChar *name,
+           const xmlChar *value) {
     xmlAttrPtr cur;
 
     if (name == NULL) {
@@ -848,7 +848,7 @@ xmlNewNsProp(xmlNodePtr node, xmlNsPtr ns, const CHAR *name,
  * Returns a pointer to the attribute
  */
 xmlAttrPtr
-xmlNewDocProp(xmlDocPtr doc, const CHAR *name, const CHAR *value) {
+xmlNewDocProp(xmlDocPtr doc, const xmlChar *name, const xmlChar *value) {
     xmlAttrPtr cur;
 
     if (name == NULL) {
@@ -928,7 +928,7 @@ xmlFreeProp(xmlAttrPtr cur) {
  * Returns a pointer to the new node object.
  */
 xmlNodePtr
-xmlNewPI(const CHAR *name, const CHAR *content) {
+xmlNewPI(const xmlChar *name, const xmlChar *content) {
     xmlNodePtr cur;
 
     if (name == NULL) {
@@ -978,7 +978,7 @@ xmlNewPI(const CHAR *name, const CHAR *content) {
  * Returns a pointer to the new node object.
  */
 xmlNodePtr
-xmlNewNode(xmlNsPtr ns, const CHAR *name) {
+xmlNewNode(xmlNsPtr ns, const xmlChar *name) {
     xmlNodePtr cur;
 
     if (name == NULL) {
@@ -1027,7 +1027,7 @@ xmlNewNode(xmlNsPtr ns, const CHAR *name) {
  */
 xmlNodePtr
 xmlNewDocNode(xmlDocPtr doc, xmlNsPtr ns,
-                         const CHAR *name, const CHAR *content) {
+                         const xmlChar *name, const xmlChar *content) {
     xmlNodePtr cur;
 
     cur = xmlNewNode(ns, name);
@@ -1050,7 +1050,7 @@ xmlNewDocNode(xmlDocPtr doc, xmlNsPtr ns,
  * Returns a pointer to the new node object.
  */
 xmlNodePtr
-xmlNewText(const CHAR *content) {
+xmlNewText(const xmlChar *content) {
     xmlNodePtr cur;
 
     /*
@@ -1090,7 +1090,7 @@ xmlNewText(const CHAR *content) {
  * Returns a pointer to the new node object.
  */
 xmlNodePtr
-xmlNewReference(xmlDocPtr doc, const CHAR *name) {
+xmlNewReference(xmlDocPtr doc, const xmlChar *name) {
     xmlNodePtr cur;
     xmlEntityPtr ent;
 
@@ -1141,7 +1141,7 @@ xmlNewReference(xmlDocPtr doc, const CHAR *name) {
  * Returns a pointer to the new node object.
  */
 xmlNodePtr
-xmlNewDocText(xmlDocPtr doc, const CHAR *content) {
+xmlNewDocText(xmlDocPtr doc, const xmlChar *content) {
     xmlNodePtr cur;
 
     cur = xmlNewText(content);
@@ -1158,7 +1158,7 @@ xmlNewDocText(xmlDocPtr doc, const CHAR *content) {
  * Returns a pointer to the new node object.
  */
 xmlNodePtr
-xmlNewTextLen(const CHAR *content, int len) {
+xmlNewTextLen(const xmlChar *content, int len) {
     xmlNodePtr cur;
 
     /*
@@ -1200,7 +1200,7 @@ xmlNewTextLen(const CHAR *content, int len) {
  * Returns a pointer to the new node object.
  */
 xmlNodePtr
-xmlNewDocTextLen(xmlDocPtr doc, const CHAR *content, int len) {
+xmlNewDocTextLen(xmlDocPtr doc, const xmlChar *content, int len) {
     xmlNodePtr cur;
 
     cur = xmlNewTextLen(content, len);
@@ -1216,7 +1216,7 @@ xmlNewDocTextLen(xmlDocPtr doc, const CHAR *content, int len) {
  * Returns a pointer to the new node object.
  */
 xmlNodePtr
-xmlNewComment(const CHAR *content) {
+xmlNewComment(const xmlChar *content) {
     xmlNodePtr cur;
 
     /*
@@ -1257,7 +1257,7 @@ xmlNewComment(const CHAR *content) {
  * Returns a pointer to the new node object.
  */
 xmlNodePtr
-xmlNewCDataBlock(xmlDocPtr doc, const CHAR *content, int len) {
+xmlNewCDataBlock(xmlDocPtr doc, const xmlChar *content, int len) {
     xmlNodePtr cur;
 
     /*
@@ -1296,7 +1296,7 @@ xmlNewCDataBlock(xmlDocPtr doc, const CHAR *content, int len) {
  * Returns a pointer to the new node object.
  */
 xmlNodePtr
-xmlNewDocComment(xmlDocPtr doc, const CHAR *content) {
+xmlNewDocComment(xmlDocPtr doc, const xmlChar *content) {
     xmlNodePtr cur;
 
     cur = xmlNewComment(content);
@@ -1319,7 +1319,7 @@ xmlNewDocComment(xmlDocPtr doc, const CHAR *content) {
  */
 xmlNodePtr
 xmlNewChild(xmlNodePtr parent, xmlNsPtr ns,
-                       const CHAR *name, const CHAR *content) {
+                       const xmlChar *name, const xmlChar *content) {
     xmlNodePtr cur, prev;
 
     if (parent == NULL) {
@@ -1929,7 +1929,7 @@ xmlCopyDoc(xmlDocPtr doc, int recursive) {
  * Returns a pointer to the lang value, or NULL if not found
  */
 void
-xmlNodeSetLang(xmlNodePtr cur, const CHAR *lang) {
+xmlNodeSetLang(xmlNodePtr cur, const xmlChar *lang) {
     /* TODO xmlNodeSetLang check against the production [33] LanguageID */
     xmlSetProp(cur, BAD_CAST "xml:lang", lang);
 }
@@ -1943,9 +1943,9 @@ xmlNodeSetLang(xmlNodePtr cur, const CHAR *lang) {
  *
  * Returns a pointer to the lang value, or NULL if not found
  */
-const CHAR *
+const xmlChar *
 xmlNodeGetLang(xmlNodePtr cur) {
-    const CHAR *lang;
+    const xmlChar *lang;
 
     while (cur != NULL) {
         lang = xmlGetProp(cur, BAD_CAST "xml:lang");
@@ -1964,10 +1964,10 @@ xmlNodeGetLang(xmlNodePtr cur) {
  * directly by this node if it's a TEXT node or the aggregate string
  * of the values carried by this node child's (TEXT and ENTITY_REF).
  * Entity references are substitued.
- * Returns a new CHAR * or NULL if no content is available.
+ * Returns a new xmlChar * or NULL if no content is available.
  *     It's up to the caller to free the memory.
  */
-CHAR *
+xmlChar *
 xmlNodeGetContent(xmlNodePtr cur) {
     if (cur == NULL) return(NULL);
     switch (cur->type) {
@@ -2011,7 +2011,7 @@ xmlNodeGetContent(xmlNodePtr cur) {
  * Replace the content of a node.
  */
 void
-xmlNodeSetContent(xmlNodePtr cur, const CHAR *content) {
+xmlNodeSetContent(xmlNodePtr cur, const xmlChar *content) {
     if (cur == NULL) {
         fprintf(stderr, "xmlNodeSetContent : node == NULL\n");
 	return;
@@ -2060,7 +2060,7 @@ xmlNodeSetContent(xmlNodePtr cur, const CHAR *content) {
  * Replace the content of a node.
  */
 void
-xmlNodeSetContentLen(xmlNodePtr cur, const CHAR *content, int len) {
+xmlNodeSetContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
     if (cur == NULL) {
         fprintf(stderr, "xmlNodeSetContentLen : node == NULL\n");
 	return;
@@ -2116,7 +2116,7 @@ xmlNodeSetContentLen(xmlNodePtr cur, const CHAR *content, int len) {
  * Append the extra substring to the node content.
  */
 void
-xmlNodeAddContentLen(xmlNodePtr cur, const CHAR *content, int len) {
+xmlNodeAddContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
     if (cur == NULL) {
         fprintf(stderr, "xmlNodeAddContentLen : node == NULL\n");
 	return;
@@ -2175,7 +2175,7 @@ xmlNodeAddContentLen(xmlNodePtr cur, const CHAR *content, int len) {
  * Append the extra substring to the node content.
  */
 void
-xmlNodeAddContent(xmlNodePtr cur, const CHAR *content) {
+xmlNodeAddContent(xmlNodePtr cur, const xmlChar *content) {
     int len;
 
     if (cur == NULL) {
@@ -2274,7 +2274,7 @@ xmlGetNsList(xmlDocPtr doc, xmlNodePtr node) {
  * Returns the namespace pointer or NULL.
  */
 xmlNsPtr
-xmlSearchNs(xmlDocPtr doc, xmlNodePtr node, const CHAR *nameSpace) {
+xmlSearchNs(xmlDocPtr doc, xmlNodePtr node, const xmlChar *nameSpace) {
     xmlNsPtr cur;
 
     while (node != NULL) {
@@ -2312,7 +2312,7 @@ xmlSearchNs(xmlDocPtr doc, xmlNodePtr node, const CHAR *nameSpace) {
  * Returns the namespace pointer or NULL.
  */
 xmlNsPtr
-xmlSearchNsByHref(xmlDocPtr doc, xmlNodePtr node, const CHAR *href) {
+xmlSearchNsByHref(xmlDocPtr doc, xmlNodePtr node, const xmlChar *href) {
     xmlNsPtr cur;
 
     while (node != NULL) {
@@ -2346,15 +2346,15 @@ xmlSearchNsByHref(xmlDocPtr doc, xmlNodePtr node, const CHAR *href) {
  * This does the entity substitution.
  * Returns the attribute value or NULL if not found.
  */
-CHAR *xmlGetProp(xmlNodePtr node, const CHAR *name) {
+xmlChar *xmlGetProp(xmlNodePtr node, const xmlChar *name) {
     xmlAttrPtr prop = node->properties;
 
     while (prop != NULL) {
         if (!xmlStrcmp(prop->name, name))  {
-	    CHAR *ret;
+	    xmlChar *ret;
 
 	    ret = xmlNodeListGetString(node->doc, prop->val, 1);
-	    if (ret == NULL) return(xmlStrdup((CHAR *)""));
+	    if (ret == NULL) return(xmlStrdup((xmlChar *)""));
 	    return(ret);
         }
 	prop = prop->next;
@@ -2372,7 +2372,7 @@ CHAR *xmlGetProp(xmlNodePtr node, const CHAR *name) {
  * Returns the attribute pointer.
  */
 xmlAttrPtr
-xmlSetProp(xmlNodePtr node, const CHAR *name, const CHAR *value) {
+xmlSetProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
     xmlAttrPtr prop = node->properties;
 
     while (prop != NULL) {
@@ -2415,7 +2415,7 @@ xmlNodeIsText(xmlNodePtr node) {
  */
 
 void
-xmlTextConcat(xmlNodePtr node, const CHAR *content, int len) {
+xmlTextConcat(xmlNodePtr node, const xmlChar *content, int len) {
     if (node == NULL) return;
 
     if (node->type != XML_TEXT_NODE) {
@@ -2450,7 +2450,7 @@ xmlBufferCreate(void) {
     }
     ret->use = 0;
     ret->size = BASE_BUFFER_SIZE;
-    ret->content = (CHAR *) xmlMalloc(ret->size * sizeof(CHAR));
+    ret->content = (xmlChar *) xmlMalloc(ret->size * sizeof(xmlChar));
     if (ret->content == NULL) {
 	fprintf(stderr, "xmlBufferCreate : out of memory!\n");
 	xmlFree(ret);
@@ -2497,11 +2497,11 @@ xmlBufferEmpty(xmlBufferPtr buf) {
 /**
  * xmlBufferShrink:
  * @buf:  the buffer to dump
- * @len:  the number of CHAR to remove
+ * @len:  the number of xmlChar to remove
  *
  * Remove the beginning of an XML buffer.
  *
- * Returns the number of CHAR removed, or -1 in case of failure.
+ * Returns the number of xmlChar removed, or -1 in case of failure.
  */
 int
 xmlBufferShrink(xmlBufferPtr buf, int len) {
@@ -2509,7 +2509,7 @@ xmlBufferShrink(xmlBufferPtr buf, int len) {
     if (len > buf->use) return(-1);
 
     buf->use -= len;
-    memmove(buf->content, &buf->content[len], buf->use * sizeof(CHAR));
+    memmove(buf->content, &buf->content[len], buf->use * sizeof(xmlChar));
 
     buf->content[buf->use] = 0;
     return(len);
@@ -2521,7 +2521,7 @@ xmlBufferShrink(xmlBufferPtr buf, int len) {
  * @buf:  the buffer to dump
  *
  * Dumps an XML buffer to  a FILE *.
- * Returns the number of CHAR written
+ * Returns the number of xmlChar written
  */
 int
 xmlBufferDump(FILE *file, xmlBufferPtr buf) {
@@ -2536,20 +2536,20 @@ xmlBufferDump(FILE *file, xmlBufferPtr buf) {
 	return(0);
     }
     if (file == NULL) file = stdout;
-    ret = fwrite(buf->content, sizeof(CHAR), buf->use, file);
+    ret = fwrite(buf->content, sizeof(xmlChar), buf->use, file);
     return(ret);
 }
 
 /**
  * xmlBufferAdd:
  * @buf:  the buffer to dump
- * @str:  the CHAR string
- * @len:  the number of CHAR to add
+ * @str:  the xmlChar string
+ * @len:  the number of xmlChar to add
  *
  * Add a string range to an XML buffer.
  */
 void
-xmlBufferAdd(xmlBufferPtr buf, const CHAR *str, int len) {
+xmlBufferAdd(xmlBufferPtr buf, const xmlChar *str, int len) {
     int l;
 
     if (str == NULL) {
@@ -2561,12 +2561,12 @@ xmlBufferAdd(xmlBufferPtr buf, const CHAR *str, int len) {
     if (len <= 0) return;
 
     if (buf->use + len + 10 >= buf->size) {
-	CHAR *rebuf;
+	xmlChar *rebuf;
 
         buf->size *= 2;
 	if (buf->use + len + 10 > buf->size)
 	    buf->size = buf->use + len + 10;
-	rebuf = (CHAR *) xmlRealloc(buf->content, buf->size * sizeof(CHAR));
+	rebuf = (xmlChar *) xmlRealloc(buf->content, buf->size * sizeof(xmlChar));
 	if (rebuf == NULL) {
 	    fprintf(stderr, "xmlBufferAdd : out of memory!\n");
 	    return;
@@ -2581,13 +2581,13 @@ xmlBufferAdd(xmlBufferPtr buf, const CHAR *str, int len) {
 /**
  * xmlBufferCat:
  * @buf:  the buffer to dump
- * @str:  the CHAR string
+ * @str:  the xmlChar string
  *
  * Append a zero terminated string to an XML buffer.
  */
 void
-xmlBufferCat(xmlBufferPtr buf, const CHAR *str) {
-    const CHAR *cur;
+xmlBufferCat(xmlBufferPtr buf, const xmlChar *str) {
+    const xmlChar *cur;
 
     if (str == NULL) {
         fprintf(stderr, "xmlBufferAdd: str == NULL\n");
@@ -2595,10 +2595,10 @@ xmlBufferCat(xmlBufferPtr buf, const CHAR *str) {
     }
     for (cur = str;*cur != 0;cur++) {
         if (buf->use  + 10 >= buf->size) {
-	    CHAR *rebuf;
+	    xmlChar *rebuf;
 
 	    buf->size *= 2;
-	    rebuf = (CHAR *) xmlRealloc(buf->content, buf->size * sizeof(CHAR));
+	    rebuf = (xmlChar *) xmlRealloc(buf->content, buf->size * sizeof(xmlChar));
 	    if (rebuf == NULL) {
 	        fprintf(stderr, "xmlBufferAdd : out of memory!\n");
 		return;
@@ -2626,10 +2626,10 @@ xmlBufferCCat(xmlBufferPtr buf, const char *str) {
     }
     for (cur = str;*cur != 0;cur++) {
         if (buf->use  + 10 >= buf->size) {
-	    CHAR *rebuf;
+	    xmlChar *rebuf;
 
 	    buf->size *= 2;
-	    rebuf = (CHAR *) xmlRealloc(buf->content, buf->size * sizeof(CHAR));
+	    rebuf = (xmlChar *) xmlRealloc(buf->content, buf->size * sizeof(xmlChar));
 	    if (rebuf == NULL) {
 	        fprintf(stderr, "xmlBufferAdd : out of memory!\n");
 		return;
@@ -2646,10 +2646,10 @@ xmlBufferCCat(xmlBufferPtr buf, const char *str) {
  * @string:  the string to add
  *
  * routine which manage and grows an output buffer. This one add
- * CHARs at the end of the buffer.
+ * xmlChars at the end of the buffer.
  */
 void
-xmlBufferWriteCHAR(xmlBufferPtr buf, const CHAR *string) {
+xmlBufferWriteCHAR(xmlBufferPtr buf, const xmlChar *string) {
     xmlBufferCat(buf, string);
 }
 
@@ -2673,11 +2673,11 @@ xmlBufferWriteChar(xmlBufferPtr buf, const char *string) {
  * @string:  the string to add
  *
  * routine which manage and grows an output buffer. This one writes
- * a quoted or double quoted CHAR string, checking first if it holds
+ * a quoted or double quoted xmlChar string, checking first if it holds
  * quote or double-quotes internally
  */
 void
-xmlBufferWriteQuotedString(xmlBufferPtr buf, const CHAR *string) {
+xmlBufferWriteQuotedString(xmlBufferPtr buf, const xmlChar *string) {
     if (xmlStrchr(string, '"')) {
         if (xmlStrchr(string, '\'')) {
 	    fprintf(stderr,
@@ -2833,7 +2833,7 @@ xmlDtdDump(xmlBufferPtr buf, xmlDocPtr doc) {
  */
 static void
 xmlAttrDump(xmlBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur) {
-    CHAR *value;
+    xmlChar *value;
 
     if (cur == NULL) {
         fprintf(stderr, "xmlAttrDump : property == NULL\n");
@@ -2930,7 +2930,7 @@ xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level) {
     }
     if (cur->type == XML_TEXT_NODE) {
 	if (cur->content != NULL) {
-            CHAR *buffer;
+            xmlChar *buffer;
 
             buffer = xmlEncodeEntitiesReentrant(doc, cur->content);
 	    if (buffer != NULL) {
@@ -2995,7 +2995,7 @@ xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level) {
     }
     xmlBufferWriteChar(buf, ">");
     if (cur->content != NULL) {
-	CHAR *buffer;
+	xmlChar *buffer;
 
 	buffer = xmlEncodeEntitiesReentrant(doc, cur->content);
 	if (buffer != NULL) {
@@ -3067,11 +3067,11 @@ xmlDocContentDump(xmlBufferPtr buf, xmlDocPtr cur) {
  * @mem:  OUT: the memory pointer
  * @size:  OUT: the memory lenght
  *
- * Dump an XML document in memory and return the CHAR * and it's size.
+ * Dump an XML document in memory and return the xmlChar * and it's size.
  * It's up to the caller to free the memory.
  */
 void
-xmlDocDumpMemory(xmlDocPtr cur, CHAR**mem, int *size) {
+xmlDocDumpMemory(xmlDocPtr cur, xmlChar**mem, int *size) {
     xmlBufferPtr buf;
 
     if (cur == NULL) {
@@ -3211,7 +3211,7 @@ xmlSaveFile(const char *filename, xmlDocPtr cur) {
     }
 
     if (zoutput != NULL) {
-        ret = gzwrite(zoutput, buf->content, sizeof(CHAR) * buf->use);
+        ret = gzwrite(zoutput, buf->content, sizeof(xmlChar) * buf->use);
 	gzclose(zoutput);
     } else {
 #endif
@@ -3221,6 +3221,6 @@ xmlSaveFile(const char *filename, xmlDocPtr cur) {
     }
 #endif
     xmlBufferFree(buf);
-    return(ret * sizeof(CHAR));
+    return(ret * sizeof(xmlChar));
 }
 

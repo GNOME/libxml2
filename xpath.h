@@ -46,7 +46,7 @@ typedef struct xmlXPathObject {
     xmlNodeSetPtr nodesetval;
     int boolval;
     double floatval;
-    CHAR *stringval;
+    xmlChar *stringval;
     void *user;
 } xmlXPathObject, *xmlXPathObjectPtr;
 
@@ -61,7 +61,7 @@ typedef int (*xmlXPathConvertFunc) (xmlXPathObjectPtr obj, int type);
  */
 
 typedef struct xmlXPathType {
-    const CHAR         *name;		/* the type name */
+    const xmlChar         *name;		/* the type name */
     xmlXPathConvertFunc func;		/* the conversion function */
 } xmlXPathType, *xmlXPathTypePtr;
 
@@ -70,7 +70,7 @@ typedef struct xmlXPathType {
  */
 
 typedef struct xmlXPathVariable {
-    const CHAR       *name;		/* the variable name */
+    const xmlChar       *name;		/* the variable name */
     xmlXPathObjectPtr value;		/* the value */
 } xmlXPathVariable, *xmlXPathVariablePtr;
 
@@ -85,7 +85,7 @@ typedef void (*xmlXPathEvalFunc)(xmlXPathParserContextPtr ctxt, int nargs);
  */
 
 typedef struct xmlXPathFunct {
-    const CHAR      *name;		/* the function name */
+    const xmlChar      *name;		/* the function name */
     xmlXPathEvalFunc func;		/* the evaluation function */
 } xmlXPathFunc, *xmlXPathFuncPtr;
 
@@ -103,7 +103,7 @@ typedef xmlXPathObjectPtr (*xmlXPathAxisFunc)	(xmlXPathParserContextPtr ctxt,
  */
 
 typedef struct xmlXPathAxis {
-    const CHAR      *name;		/* the axis name */
+    const xmlChar      *name;		/* the axis name */
     xmlXPathAxisFunc func;		/* the search function */
 } xmlXPathAxis, *xmlXPathAxisPtr;
 
@@ -149,8 +149,8 @@ typedef struct xmlXPathContext {
  * an xmlXPathContext, and the stack of objects.
  */
 typedef struct xmlXPathParserContext {
-    const CHAR *cur;			/* the current char being parsed */
-    const CHAR *base;			/* the full expression */
+    const xmlChar *cur;			/* the current char being parsed */
+    const xmlChar *base;			/* the full expression */
 
     int error;				/* error code */
 
@@ -179,16 +179,16 @@ typedef void (*xmlXPathFunction) (xmlXPathParserContextPtr ctxt, int nargs);
  * Registering extensions to the expression language
  */
 /* TODO */ int	   xmlXPathRegisterType		(xmlXPathContextPtr ctxt,
-						 const CHAR *name,
+						 const xmlChar *name,
                                                  xmlXPathConvertFunc f);
 /* TODO */ int	   xmlXPathRegisterAxis		(xmlXPathContextPtr ctxt,
-						 const CHAR *name,
+						 const xmlChar *name,
 						 xmlXPathAxisFunc f);
 /* TODO */ int	   xmlXPathRegisterFunc		(xmlXPathContextPtr ctxt,
-						 const CHAR *name,
+						 const xmlChar *name,
 						 xmlXPathFunction f);
 /* TODO */ int	   xmlXPathRegisterVariable	(xmlXPathContextPtr ctxt,
-						 const CHAR *name,
+						 const xmlChar *name,
 						 xmlXPathObject value);
 
 /**
@@ -196,10 +196,10 @@ typedef void (*xmlXPathFunction) (xmlXPathParserContextPtr ctxt, int nargs);
  */
 xmlXPathContextPtr xmlXPathNewContext		(xmlDocPtr doc);
 void		   xmlXPathFreeContext		(xmlXPathContextPtr ctxt);
-xmlXPathObjectPtr  xmlXPathEval			(const CHAR *str,
+xmlXPathObjectPtr  xmlXPathEval			(const xmlChar *str,
 						 xmlXPathContextPtr ctxt);
 void		   xmlXPathFreeObject		(xmlXPathObjectPtr obj);
-xmlXPathObjectPtr  xmlXPathEvalExpression	(const CHAR *str,
+xmlXPathObjectPtr  xmlXPathEvalExpression	(const xmlChar *str,
 						 xmlXPathContextPtr ctxt);
 
 #endif /* ! __XML_XPATH_H__ */

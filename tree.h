@@ -44,25 +44,32 @@ typedef enum {
  * Currently we use 8bit chars internal representation for memory efficiency,
  * but the parser is not tied to that, just define UNICODE to switch to
  * a 16 bits internal representation. Note that with 8 bits wide
- * CHARs one can still use UTF-8 to handle correctly non ISO-Latin
+ * xmlChars one can still use UTF-8 to handle correctly non ISO-Latin
  * input.
  */
+
 #ifdef UNICODE
-typedef unsigned short CHAR;
+typedef unsigned short xmlChar;
 #else
-typedef unsigned char CHAR;
+typedef unsigned char xmlChar;
 #endif
 
-#define BAD_CAST (CHAR *)
+#ifndef WIN32
+#ifndef CHAR
+#define CHAR xmlChar
+#endif
+#endif
+
+#define BAD_CAST (xmlChar *)
 
 /*
  * a DTD Notation definition
  */
 
 typedef struct xmlNotation {
-    const CHAR               *name;	/* Notation name */
-    const CHAR               *PublicID;	/* Public identifier, if any */
-    const CHAR               *SystemID;	/* System identifier, if any */
+    const xmlChar               *name;	/* Notation name */
+    const xmlChar               *PublicID;	/* Public identifier, if any */
+    const xmlChar               *SystemID;	/* System identifier, if any */
 } xmlNotation;
 typedef xmlNotation *xmlNotationPtr;
 
@@ -92,17 +99,17 @@ typedef enum {
 
 typedef struct xmlEnumeration {
     struct xmlEnumeration    *next;	/* next one */
-    const CHAR               *name;	/* Enumeration name */
+    const xmlChar               *name;	/* Enumeration name */
 } xmlEnumeration;
 typedef xmlEnumeration *xmlEnumerationPtr;
 
 typedef struct xmlAttribute {
-    const CHAR            *elem;	/* Element holding the attribute */
-    const CHAR            *name;	/* Attribute name */
+    const xmlChar            *elem;	/* Element holding the attribute */
+    const xmlChar            *name;	/* Attribute name */
     struct xmlAttribute   *next;        /* list of attributes of an element */
     xmlAttributeType       type;	/* The type */
     xmlAttributeDefault    def;		/* the default */
-    const CHAR            *defaultValue;/* or the default value */
+    const xmlChar            *defaultValue;/* or the default value */
     xmlEnumerationPtr      tree;        /* or the enumeration tree if any */
 } xmlAttribute;
 typedef xmlAttribute *xmlAttributePtr;
@@ -127,7 +134,7 @@ typedef enum {
 typedef struct xmlElementContent {
     xmlElementContentType     type;	/* PCDATA, ELEMENT, SEQ or OR */
     xmlElementContentOccur    ocur;	/* ONCE, OPT, MULT or PLUS */
-    const CHAR               *name;	/* Element name */
+    const xmlChar               *name;	/* Element name */
     struct xmlElementContent *c1;	/* first child */
     struct xmlElementContent *c2;	/* second child */
 } xmlElementContent;
@@ -141,7 +148,7 @@ typedef enum {
 } xmlElementTypeVal;
 
 typedef struct xmlElement {
-    const CHAR             *name;	/* Element name */
+    const xmlChar             *name;	/* Element name */
     xmlElementTypeVal       type;	/* The type */
     xmlElementContentPtr content;	/* the allowed element content */
     xmlAttributePtr   attributes;	/* List of the declared attributes */
@@ -162,8 +169,8 @@ typedef enum {
 typedef struct xmlNs {
     struct xmlNs  *next;	/* next Ns link for this node  */
     xmlNsType      type;	/* global or local */
-    const CHAR    *href;	/* URL for the namespace */
-    const CHAR    *prefix;	/* prefix for the namespace */
+    const xmlChar    *href;	/* URL for the namespace */
+    const xmlChar    *prefix;	/* prefix for the namespace */
 } xmlNs;
 typedef xmlNs *xmlNsPtr;
 
@@ -171,9 +178,9 @@ typedef xmlNs *xmlNsPtr;
  * An XML DtD, as defined by <!DOCTYPE.
  */
 typedef struct xmlDtd {
-    const CHAR    *name;	/* Name of the DTD */
-    const CHAR    *ExternalID;	/* External identifier for PUBLIC DTD */
-    const CHAR    *SystemID;	/* URI for a SYSTEM or PUBLIC DTD */
+    const xmlChar    *name;	/* Name of the DTD */
+    const xmlChar    *ExternalID;	/* External identifier for PUBLIC DTD */
+    const xmlChar    *SystemID;	/* URI for a SYSTEM or PUBLIC DTD */
     void          *notations;   /* Hash table for notations if any */
     void          *elements;    /* Hash table for elements if any */
     void          *attributes;  /* Hash table for attributes if any */
@@ -193,7 +200,7 @@ typedef struct xmlAttr {
     xmlElementType  type;       /* XML_ATTRIBUTE_NODE, must be third ! */
     struct xmlNode *node;	/* attr->node link */
     struct xmlAttr *next;	/* attribute list link */
-    const CHAR     *name;       /* the name of the property */
+    const xmlChar     *name;       /* the name of the property */
     struct xmlNode *val;        /* the value of the property */
     xmlNs          *ns;         /* pointer to the associated namespace */
 } xmlAttr;
@@ -205,7 +212,7 @@ typedef xmlAttr *xmlAttrPtr;
 
 typedef struct xmlID {
     struct xmlID     *next;	/* next ID */
-    const CHAR       *value;	/* The ID name */
+    const xmlChar       *value;	/* The ID name */
     xmlAttrPtr        attr;	/* The attribut holding it */
 } xmlID;
 typedef xmlID *xmlIDPtr;
@@ -216,7 +223,7 @@ typedef xmlID *xmlIDPtr;
 
 typedef struct xmlRef {
     struct xmlRef     *next;	/* next Ref */
-    const CHAR       *value;	/* The Ref name */
+    const xmlChar       *value;	/* The Ref name */
     xmlAttrPtr        attr;	/* The attribut holding it */
 } xmlRef;
 typedef xmlRef *xmlRefPtr;
@@ -237,10 +244,10 @@ typedef struct xmlNode {
     struct xmlNode *childs;	/* parent->childs link */
     struct xmlNode *last;	/* last child link */
     struct xmlAttr *properties;	/* properties list */
-    const CHAR     *name;       /* the name of the node, or the entity */
+    const xmlChar     *name;       /* the name of the node, or the entity */
     xmlNs          *ns;         /* pointer to the associated namespace */
     xmlNs          *nsDef;      /* namespace definitions on this node */
-    CHAR           *content;    /* the content */
+    xmlChar           *content;    /* the content */
 } _xmlNode;
 typedef _xmlNode xmlNode;
 typedef _xmlNode *xmlNodePtr;
@@ -255,8 +262,8 @@ typedef struct xmlDoc {
 #endif
     xmlElementType  type;       /* XML_DOCUMENT_NODE, must be second ! */
     char           *name;	/* name/filename/URI of the document */
-    const CHAR     *version;	/* the XML version string */
-    const CHAR     *encoding;   /* encoding, if any */
+    const xmlChar     *version;	/* the XML version string */
+    const xmlChar     *encoding;   /* encoding, if any */
     int             compression;/* level of zlib compression */
     int             standalone; /* standalone document (no external refs) */
     struct xmlDtd  *intSubset;	/* the document internal subset */
@@ -274,7 +281,7 @@ typedef xmlDoc *xmlDocPtr;
  */
 
 typedef struct xmlBuffer {
-    CHAR *content;		/* The buffer content UTF8 */
+    xmlChar *content;		/* The buffer content UTF8 */
     unsigned int use;		/* The buffer size used */
     unsigned int size;		/* The buffer size */
 } _xmlBuffer;
@@ -297,10 +304,10 @@ void		xmlBufferFree		(xmlBufferPtr buf);
 int		xmlBufferDump		(FILE *file,
 					 xmlBufferPtr buf);
 void		xmlBufferAdd		(xmlBufferPtr buf,
-					 const CHAR *str,
+					 const xmlChar *str,
 					 int len);
 void		xmlBufferCat		(xmlBufferPtr buf,
-					 const CHAR *str);
+					 const xmlChar *str);
 void		xmlBufferCCat		(xmlBufferPtr buf,
 					 const char *str);
 int		xmlBufferShrink		(xmlBufferPtr buf,
@@ -311,33 +318,33 @@ void		xmlBufferEmpty		(xmlBufferPtr buf);
  * Creating/freeing new structures
  */
 xmlDtdPtr	xmlCreateIntSubset	(xmlDocPtr doc,
-					 const CHAR *name,
-					 const CHAR *ExternalID,
-					 const CHAR *SystemID);
+					 const xmlChar *name,
+					 const xmlChar *ExternalID,
+					 const xmlChar *SystemID);
 xmlDtdPtr	xmlNewDtd		(xmlDocPtr doc,
-					 const CHAR *name,
-					 const CHAR *ExternalID,
-					 const CHAR *SystemID);
+					 const xmlChar *name,
+					 const xmlChar *ExternalID,
+					 const xmlChar *SystemID);
 void		xmlFreeDtd		(xmlDtdPtr cur);
 xmlNsPtr	xmlNewGlobalNs		(xmlDocPtr doc,
-					 const CHAR *href,
-					 const CHAR *prefix);
+					 const xmlChar *href,
+					 const xmlChar *prefix);
 xmlNsPtr	xmlNewNs		(xmlNodePtr node,
-					 const CHAR *href,
-					 const CHAR *prefix);
+					 const xmlChar *href,
+					 const xmlChar *prefix);
 void		xmlFreeNs		(xmlNsPtr cur);
-xmlDocPtr xmlNewDoc			(const CHAR *version);
+xmlDocPtr xmlNewDoc			(const xmlChar *version);
 void		xmlFreeDoc		(xmlDocPtr cur);
 xmlAttrPtr	xmlNewDocProp		(xmlDocPtr doc,
-					 const CHAR *name,
-					 const CHAR *value);
+					 const xmlChar *name,
+					 const xmlChar *value);
 xmlAttrPtr	xmlNewProp		(xmlNodePtr node,
-					 const CHAR *name,
-					 const CHAR *value);
+					 const xmlChar *name,
+					 const xmlChar *value);
 xmlAttrPtr	xmlNewNsProp		(xmlNodePtr node,
 					 xmlNsPtr ns,
-					 const CHAR *name,
-					 const CHAR *value);
+					 const xmlChar *name,
+					 const xmlChar *value);
 void		xmlFreePropList		(xmlAttrPtr cur);
 void		xmlFreeProp		(xmlAttrPtr cur);
 xmlAttrPtr	xmlCopyProp		(xmlNodePtr target,
@@ -353,32 +360,32 @@ xmlDocPtr	xmlCopyDoc		(xmlDocPtr doc,
  */
 xmlNodePtr	xmlNewDocNode		(xmlDocPtr doc,
 					 xmlNsPtr ns,
-					 const CHAR *name,
-					 const CHAR *content);
+					 const xmlChar *name,
+					 const xmlChar *content);
 xmlNodePtr	xmlNewNode		(xmlNsPtr ns,
-					 const CHAR *name);
+					 const xmlChar *name);
 xmlNodePtr	xmlNewChild		(xmlNodePtr parent,
 					 xmlNsPtr ns,
-					 const CHAR *name,
-					 const CHAR *content);
+					 const xmlChar *name,
+					 const xmlChar *content);
 xmlNodePtr	xmlNewDocText		(xmlDocPtr doc,
-					 const CHAR *content);
-xmlNodePtr	xmlNewText		(const CHAR *content);
-xmlNodePtr	xmlNewPI		(const CHAR *name,
-					 const CHAR *content);
+					 const xmlChar *content);
+xmlNodePtr	xmlNewText		(const xmlChar *content);
+xmlNodePtr	xmlNewPI		(const xmlChar *name,
+					 const xmlChar *content);
 xmlNodePtr	xmlNewDocTextLen	(xmlDocPtr doc,
-					 const CHAR *content,
+					 const xmlChar *content,
 					 int len);
-xmlNodePtr	xmlNewTextLen		(const CHAR *content,
+xmlNodePtr	xmlNewTextLen		(const xmlChar *content,
 					 int len);
 xmlNodePtr	xmlNewDocComment	(xmlDocPtr doc,
-					 const CHAR *content);
-xmlNodePtr	xmlNewComment		(const CHAR *content);
+					 const xmlChar *content);
+xmlNodePtr	xmlNewComment		(const xmlChar *content);
 xmlNodePtr	xmlNewCDataBlock	(xmlDocPtr doc,
-					 const CHAR *content,
+					 const xmlChar *content,
 					 int len);
 xmlNodePtr	xmlNewReference		(xmlDocPtr doc,
-					 const CHAR *name);
+					 const xmlChar *name);
 xmlNodePtr	xmlCopyNode		(xmlNodePtr node,
 					 int recursive);
 xmlNodePtr	xmlCopyNodeList		(xmlNodePtr node);
@@ -400,7 +407,7 @@ void		xmlUnlinkNode		(xmlNodePtr cur);
 xmlNodePtr	xmlTextMerge		(xmlNodePtr first,
 					 xmlNodePtr second);
 void		xmlTextConcat		(xmlNodePtr node,
-					 const CHAR *content,
+					 const xmlChar *content,
 					 int len);
 void		xmlFreeNodeList		(xmlNodePtr cur);
 void		xmlFreeNode		(xmlNodePtr cur);
@@ -410,10 +417,10 @@ void		xmlFreeNode		(xmlNodePtr cur);
  */
 xmlNsPtr	xmlSearchNs		(xmlDocPtr doc,
 					 xmlNodePtr node,
-					 const CHAR *nameSpace);
+					 const xmlChar *nameSpace);
 xmlNsPtr	xmlSearchNsByHref	(xmlDocPtr doc,
 					 xmlNodePtr node,
-					 const CHAR *href);
+					 const xmlChar *href);
 xmlNsPtr *	xmlGetNsList		(xmlDocPtr doc,
 					 xmlNodePtr node);
 void		xmlSetNs		(xmlNodePtr node,
@@ -425,32 +432,32 @@ xmlNsPtr	xmlCopyNamespaceList	(xmlNsPtr cur);
  * Changing the content.
  */
 xmlAttrPtr	xmlSetProp		(xmlNodePtr node,
-					 const CHAR *name,
-					 const CHAR *value);
-CHAR *		xmlGetProp		(xmlNodePtr node,
-					 const CHAR *name);
+					 const xmlChar *name,
+					 const xmlChar *value);
+xmlChar *		xmlGetProp		(xmlNodePtr node,
+					 const xmlChar *name);
 xmlNodePtr	xmlStringGetNodeList	(xmlDocPtr doc,
-					 const CHAR *value);
+					 const xmlChar *value);
 xmlNodePtr	xmlStringLenGetNodeList	(xmlDocPtr doc,
-					 const CHAR *value,
+					 const xmlChar *value,
 					 int len);
-CHAR *		xmlNodeListGetString	(xmlDocPtr doc,
+xmlChar *		xmlNodeListGetString	(xmlDocPtr doc,
 					 xmlNodePtr list,
 					 int inLine);
 void		xmlNodeSetContent	(xmlNodePtr cur,
-					 const CHAR *content);
+					 const xmlChar *content);
 void		xmlNodeSetContentLen	(xmlNodePtr cur,
-					 const CHAR *content,
+					 const xmlChar *content,
 					 int len);
 void		xmlNodeAddContent	(xmlNodePtr cur,
-					 const CHAR *content);
+					 const xmlChar *content);
 void		xmlNodeAddContentLen	(xmlNodePtr cur,
-					 const CHAR *content,
+					 const xmlChar *content,
 					 int len);
-CHAR *		xmlNodeGetContent	(xmlNodePtr cur);
-const CHAR *	xmlNodeGetLang		(xmlNodePtr cur);
+xmlChar *		xmlNodeGetContent	(xmlNodePtr cur);
+const xmlChar *	xmlNodeGetLang		(xmlNodePtr cur);
 void		xmlNodeSetLang		(xmlNodePtr cur,
-					 const CHAR *lang);
+					 const xmlChar *lang);
 
 /*
  * Removing content.
@@ -462,17 +469,17 @@ int		xmlRemoveNode		(xmlNodePtr node); /* TODO */
  * Internal, don't use
  */
 void		xmlBufferWriteCHAR	(xmlBufferPtr buf,
-					 const CHAR *string);
+					 const xmlChar *string);
 void		xmlBufferWriteChar	(xmlBufferPtr buf,
 					 const char *string);
 void		xmlBufferWriteQuotedString(xmlBufferPtr buf,
-					 const CHAR *string);
+					 const xmlChar *string);
 
 /*
  * Saving
  */
 void		xmlDocDumpMemory	(xmlDocPtr cur,
-					 CHAR**mem,
+					 xmlChar**mem,
 					 int *size);
 void		xmlDocDump		(FILE *f,
 					 xmlDocPtr cur);

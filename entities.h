@@ -30,11 +30,11 @@ extern "C" {
 typedef struct xmlEntity {
     int type;			/* The entity type */
     int len;			/* The lenght of the name */
-    const CHAR    *name;	/* Name of the entity */
-    const CHAR    *ExternalID;	/* External identifier for PUBLIC Entity */
-    const CHAR    *SystemID;	/* URI for a SYSTEM or PUBLIC Entity */
-    CHAR *content;		/* The entity content or ndata if unparsed */
-    CHAR *orig;			/* The entity cont without ref substitution */
+    const xmlChar    *name;	/* Name of the entity */
+    const xmlChar    *ExternalID;	/* External identifier for PUBLIC Entity */
+    const xmlChar    *SystemID;	/* URI for a SYSTEM or PUBLIC Entity */
+    xmlChar *content;		/* The entity content or ndata if unparsed */
+    xmlChar *orig;			/* The entity cont without ref substitution */
 } xmlEntity;
 typedef xmlEntity *xmlEntityPtr;
 
@@ -60,28 +60,28 @@ typedef xmlEntitiesTable *xmlEntitiesTablePtr;
 #include "parser.h"
 
 void			xmlAddDocEntity		(xmlDocPtr doc,
-						 const CHAR *name,
+						 const xmlChar *name,
 						 int type,
-						 const CHAR *ExternalID,
-						 const CHAR *SystemID,
-						 const CHAR *content);
+						 const xmlChar *ExternalID,
+						 const xmlChar *SystemID,
+						 const xmlChar *content);
 void			xmlAddDtdEntity		(xmlDocPtr doc,
-						 const CHAR *name,
+						 const xmlChar *name,
 						 int type,
-						 const CHAR *ExternalID,
-						 const CHAR *SystemID,
-						 const CHAR *content);
-xmlEntityPtr		xmlGetPredefinedEntity	(const CHAR *name);
+						 const xmlChar *ExternalID,
+						 const xmlChar *SystemID,
+						 const xmlChar *content);
+xmlEntityPtr		xmlGetPredefinedEntity	(const xmlChar *name);
 xmlEntityPtr		xmlGetDocEntity		(xmlDocPtr doc,
-						 const CHAR *name);
+						 const xmlChar *name);
 xmlEntityPtr		xmlGetDtdEntity		(xmlDocPtr doc,
-						 const CHAR *name);
+						 const xmlChar *name);
 xmlEntityPtr		xmlGetParameterEntity	(xmlDocPtr doc,
-						 const CHAR *name);
-const CHAR *		xmlEncodeEntities	(xmlDocPtr doc,
-						 const CHAR *input);
-CHAR *			xmlEncodeEntitiesReentrant(xmlDocPtr doc,
-						 const CHAR *input);
+						 const xmlChar *name);
+const xmlChar *		xmlEncodeEntities	(xmlDocPtr doc,
+						 const xmlChar *input);
+xmlChar *			xmlEncodeEntitiesReentrant(xmlDocPtr doc,
+						 const xmlChar *input);
 xmlEntitiesTablePtr	xmlCreateEntitiesTable	(void);
 xmlEntitiesTablePtr	xmlCopyEntitiesTable	(xmlEntitiesTablePtr table);
 void			xmlFreeEntitiesTable	(xmlEntitiesTablePtr table);

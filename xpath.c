@@ -166,7 +166,7 @@ FILE *xmlXPathDebug = NULL;
     fprintf(xmlXPathDebug, "Internal error at %s:%d\n",			\
             __FILE__, __LINE__);
 
-double xmlXPathStringEvalNumber(const CHAR *str);
+double xmlXPathStringEvalNumber(const xmlChar *str);
 void xmlXPathStringFunction(xmlXPathParserContextPtr ctxt, int nargs);
 
 /************************************************************************
@@ -215,21 +215,21 @@ PUSH_AND_POP(xmlXPathObjectPtr, value)
  *
  * Dirty macros, i.e. one need to make assumption on the context to use them
  *
- *   CUR_PTR return the current pointer to the CHAR to be parsed.
- *   CUR     returns the current CHAR value, i.e. a 8 bit value if compiled
+ *   CUR_PTR return the current pointer to the xmlChar to be parsed.
+ *   CUR     returns the current xmlChar value, i.e. a 8 bit value if compiled
  *           in ISO-Latin or UTF-8, and the current 16 bit value if compiled
  *           in UNICODE mode. This should be used internally by the parser
  *           only to compare to ASCII values otherwise it would break when
  *           running with UTF-8 encoding.
- *   NXT(n)  returns the n'th next CHAR. Same as CUR is should be used only
+ *   NXT(n)  returns the n'th next xmlChar. Same as CUR is should be used only
  *           to compare on ASCII based substring.
- *   SKIP(n) Skip n CHAR, and must also be used only to skip ASCII defined
+ *   SKIP(n) Skip n xmlChar, and must also be used only to skip ASCII defined
  *           strings within the parser.
  *   CURRENT Returns the current char value, with the full decoding of
  *           UTF-8 if we are using this mode. It returns an int.
  *   NEXT    Skip to the next character, this does the proper decoding
  *           in UTF-8 mode. It also pop-up unfinished entities on the fly.
- *           It returns the pointer to the current CHAR.
+ *           It returns the pointer to the current xmlChar.
  */
 
 #define CUR (*ctxt->cur)
@@ -297,8 +297,8 @@ void
 xmlXPatherror(xmlXPathParserContextPtr ctxt, const char *file,
               int line, int no) {
     int n;
-    const CHAR *cur;
-    const CHAR *base;
+    const xmlChar *cur;
+    const xmlChar *base;
 
     fprintf(xmlXPathDebug, "Error %s:%d: %s\n", file, line,
             xmlXPathErrorMessages[no]);
@@ -595,7 +595,7 @@ xmlXPathDebugNodeSet(FILE *output, xmlNodeSetPtr obj) {
  */
 xmlXPathObjectPtr
 xmlXPathVariablelookup(xmlXPathParserContextPtr ctxt,
-                       const CHAR *prefix, const CHAR *name) {
+                       const xmlChar *prefix, const xmlChar *name) {
     return(NULL);
 }
 
@@ -655,14 +655,14 @@ xmlXPathNewBoolean(int val) {
 
 /**
  * xmlXPathNewString:
- * @val:  the CHAR * value
+ * @val:  the xmlChar * value
  *
  * Create a new xmlXPathObjectPtr of type string and of value @val
  *
  * Returns the newly created object.
  */
 xmlXPathObjectPtr
-xmlXPathNewString(const CHAR *val) {
+xmlXPathNewString(const xmlChar *val) {
     xmlXPathObjectPtr ret;
 
     ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
@@ -872,7 +872,7 @@ xmlXPathFreeContext(xmlXPathContextPtr ctxt) {
  * Returns the xmlXPathParserContext just allocated.
  */
 xmlXPathParserContextPtr
-xmlXPathNewParserContext(const CHAR *str, xmlXPathContextPtr ctxt) {
+xmlXPathNewParserContext(const xmlChar *str, xmlXPathContextPtr ctxt) {
     xmlXPathParserContextPtr ret;
 
     ret = (xmlXPathParserContextPtr) xmlMalloc(sizeof(xmlXPathParserContext));
@@ -955,10 +955,10 @@ void xmlXPathNumberFunction(xmlXPathParserContextPtr ctxt, int nargs);
  * Returns 0 or 1 depending on the results of the test.
  */
 int
-xmlXPathEqualNodeSetString(xmlXPathObjectPtr arg, const CHAR *str) {
+xmlXPathEqualNodeSetString(xmlXPathObjectPtr arg, const xmlChar *str) {
     int i;
     xmlNodeSetPtr ns;
-    CHAR *str2;
+    xmlChar *str2;
 
     if ((str == NULL) || (arg == NULL) || (arg->type != XPATH_NODESET))
         return(0);
@@ -1027,7 +1027,7 @@ int
 xmlXPathEqualNodeSets(xmlXPathObjectPtr arg1, xmlXPathObjectPtr arg2) {
     int i;
     xmlNodeSetPtr ns;
-    CHAR *str;
+    xmlChar *str;
 
     if ((arg1 == NULL) || (arg1->type != XPATH_NODESET))
         return(0);
@@ -1820,7 +1820,7 @@ xmlXPathNextAttribute(xmlXPathParserContextPtr ctxt, xmlAttrPtr cur) {
  */
 xmlNodeSetPtr
 xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt, int axis,
-                 int test, int type, const CHAR *prefix, const CHAR *name) {
+                 int test, int type, const xmlChar *prefix, const xmlChar *name) {
 #ifdef DEBUG_STEP
     int n = 0, t = 0;
 #endif
@@ -2141,9 +2141,9 @@ xmlXPathCountFunction(xmlXPathParserContextPtr ctxt, int nargs) {
  */
 void
 xmlXPathIdFunction(xmlXPathParserContextPtr ctxt, int nargs) {
-    const CHAR *tokens;
-    const CHAR *cur;
-    CHAR *ID;
+    const xmlChar *tokens;
+    const xmlChar *cur;
+    xmlChar *ID;
     xmlAttrPtr attr;
     xmlNodePtr elem = NULL;
     xmlXPathObjectPtr ret, obj;
@@ -2357,7 +2357,7 @@ xmlXPathStringFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 	    if (cur->nodesetval->nodeNr == 0) {
 		valuePush(ctxt, xmlXPathNewCString(""));
 	    } else {
-		CHAR *res;
+		xmlChar *res;
 	        int i = 0; /* Should be first in document order !!!!! */
 		res = xmlNodeGetContent(cur->nodesetval->nodeTab[i]);
 		valuePush(ctxt, xmlXPathNewString(res));
@@ -2410,7 +2410,7 @@ xmlXPathStringLengthFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 	if (ctxt->context->node == NULL) {
 	    valuePush(ctxt, xmlXPathNewFloat(0));
 	} else {
-	    CHAR *content;
+	    xmlChar *content;
 
 	    content = xmlNodeGetContent(ctxt->context->node);
 	    valuePush(ctxt, xmlXPathNewFloat(xmlStrlen(content)));
@@ -2435,7 +2435,7 @@ xmlXPathStringLengthFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 void
 xmlXPathConcatFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     xmlXPathObjectPtr cur, new;
-    CHAR *tmp;
+    xmlChar *tmp;
 
     if (nargs < 2) {
 	CHECK_ARITY(2);
@@ -2556,7 +2556,7 @@ xmlXPathSubstringFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     xmlXPathObjectPtr str, start, len;
     double le, in;
     int i, l;
-    CHAR *ret;
+    xmlChar *ret;
 
     /* 
      * Conformance needs to be checked !!!!!
@@ -2800,8 +2800,8 @@ xmlXPathFalseFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 void
 xmlXPathLangFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     xmlXPathObjectPtr val;
-    const CHAR *theLang;
-    const CHAR *lang;
+    const xmlChar *theLang;
+    const xmlChar *lang;
     int ret = 0;
     int i;
 
@@ -2959,10 +2959,10 @@ void xmlXPathEvalRelativeLocationPath(xmlXPathParserContextPtr ctxt);
  * Returns the namespace name or NULL
  */
 
-CHAR *
+xmlChar *
 xmlXPathParseNCName(xmlXPathParserContextPtr ctxt) {
-    const CHAR *q;
-    CHAR *ret = NULL;
+    const xmlChar *q;
+    xmlChar *ret = NULL;
 
     if (!IS_LETTER(CUR) && (CUR != '_')) return(NULL);
     q = NEXT;
@@ -2982,7 +2982,7 @@ xmlXPathParseNCName(xmlXPathParserContextPtr ctxt) {
 /**
  * xmlXPathParseQName:
  * @ctxt:  the XPath Parser context
- * @prefix:  a CHAR ** 
+ * @prefix:  a xmlChar ** 
  *
  * parse an XML qualified name
  *
@@ -2996,9 +2996,9 @@ xmlXPathParseNCName(xmlXPathParserContextPtr ctxt) {
  *   to get the Prefix if any.
  */
 
-CHAR *
-xmlXPathParseQName(xmlXPathParserContextPtr ctxt, CHAR **prefix) {
-    CHAR *ret = NULL;
+xmlChar *
+xmlXPathParseQName(xmlXPathParserContextPtr ctxt, xmlChar **prefix) {
+    xmlChar *ret = NULL;
 
     *prefix = NULL;
     ret = xmlXPathParseNCName(ctxt);
@@ -3026,8 +3026,8 @@ xmlXPathParseQName(xmlXPathParserContextPtr ctxt, CHAR **prefix) {
  * Returns the double value.
  */
 double
-xmlXPathStringEvalNumber(const CHAR *str) {
-    const CHAR *cur = str;
+xmlXPathStringEvalNumber(const xmlChar *str) {
+    const xmlChar *cur = str;
     double ret = 0.0;
     double mult = 1;
     int ok = 0;
@@ -3112,8 +3112,8 @@ xmlXPathEvalNumber(xmlXPathParserContextPtr ctxt) {
  */
 void
 xmlXPathEvalLiteral(xmlXPathParserContextPtr ctxt) {
-    const CHAR *q;
-    CHAR *ret = NULL;
+    const xmlChar *q;
+    xmlChar *ret = NULL;
 
     if (CUR == '"') {
         NEXT;
@@ -3164,8 +3164,8 @@ xmlXPathEvalLiteral(xmlXPathParserContextPtr ctxt) {
  */
 void
 xmlXPathEvalVariableReference(xmlXPathParserContextPtr ctxt) {
-    CHAR *name;
-    CHAR *prefix;
+    xmlChar *name;
+    xmlChar *prefix;
     xmlXPathObjectPtr value;
 
     if (CUR != '$') {
@@ -3199,7 +3199,7 @@ xmlXPathEvalVariableReference(xmlXPathParserContextPtr ctxt) {
  * Returns the xmlXPathFunction if found, or NULL otherwise
  */
 xmlXPathFunction
-xmlXPathIsFunction(xmlXPathParserContextPtr ctxt, const CHAR *name) {
+xmlXPathIsFunction(xmlXPathParserContextPtr ctxt, const xmlChar *name) {
     switch (name[0]) {
         case 'b':
 	    if (!xmlStrcmp(name, BAD_CAST "boolean"))
@@ -3306,7 +3306,7 @@ xmlXPathIsFunction(xmlXPathParserContextPtr ctxt, const CHAR *name) {
  *                    | 'node'
  */
 int
-xmlXPathGetNameType(xmlXPathParserContextPtr ctxt, const CHAR *name) {
+xmlXPathGetNameType(xmlXPathParserContextPtr ctxt, const xmlChar *name) {
     switch (name[0]) {
         case 'a':
 	    if (!xmlStrcmp(name, BAD_CAST "ancestor")) return(AXIS_ANCESTOR);
@@ -3364,8 +3364,8 @@ xmlXPathGetNameType(xmlXPathParserContextPtr ctxt, const CHAR *name) {
  */
 void
 xmlXPathEvalFunctionCall(xmlXPathParserContextPtr ctxt) {
-    CHAR *name;
-    CHAR *prefix;
+    xmlChar *name;
+    xmlChar *prefix;
     xmlXPathFunction func;
     int nbargs = 0;
 
@@ -3487,9 +3487,9 @@ xmlXPathEvalFilterExpr(xmlXPathParserContextPtr ctxt) {
  * Returns the Name parsed or NULL
  */
 
-CHAR *
+xmlChar *
 xmlXPathScanName(xmlXPathParserContextPtr ctxt) {
-    CHAR buf[XML_MAX_NAMELEN];
+    xmlChar buf[XML_MAX_NAMELEN];
     int len = 0;
 
     if (!IS_LETTER(CUR) && (CUR != '_') &&
@@ -3562,7 +3562,7 @@ xmlXPathEvalPathExpr(xmlXPathParserContextPtr ctxt) {
 	    xmlXPathEvalRelativeLocationPath(ctxt);
 	}
     } else {
-        CHAR *name;
+        xmlChar *name;
 
 	name = xmlXPathScanName(ctxt);
 	if ((name == NULL) || (!xmlXPathIsFunction(ctxt, name)))
@@ -3887,7 +3887,7 @@ xmlXPathEvaluatePredicateResult(xmlXPathParserContextPtr ctxt,
  */
 void
 xmlXPathEvalPredicate(xmlXPathParserContextPtr ctxt) {
-    const CHAR *cur;
+    const xmlChar *cur;
     xmlXPathObjectPtr res;
     xmlNodeSetPtr newset = NULL;
     int i;
@@ -3953,8 +3953,8 @@ xmlXPathEvalPredicate(xmlXPathParserContextPtr ctxt) {
  */
 void
 xmlXPathEvalBasis(xmlXPathParserContextPtr ctxt) {
-    CHAR *name = NULL;
-    CHAR *prefix = NULL;
+    xmlChar *name = NULL;
+    xmlChar *prefix = NULL;
     int type = 0;
     int axis = AXIS_CHILD; /* the default on abbreviated syntax */
     int nodetest = NODE_TEST_NONE;
@@ -4370,7 +4370,7 @@ xmlXPathEvalLocationPath(xmlXPathParserContextPtr ctxt) {
  *         the caller has to free the object.
  */
 xmlXPathObjectPtr
-xmlXPathEval(const CHAR *str, xmlXPathContextPtr ctxt) {
+xmlXPathEval(const xmlChar *str, xmlXPathContextPtr ctxt) {
     xmlXPathParserContextPtr pctxt;
     xmlXPathObjectPtr res = NULL, tmp;
 
@@ -4406,7 +4406,7 @@ xmlXPathEval(const CHAR *str, xmlXPathContextPtr ctxt) {
  *         the caller has to free the object.
  */
 xmlXPathObjectPtr
-xmlXPathEvalExpression(const CHAR *str, xmlXPathContextPtr ctxt) {
+xmlXPathEvalExpression(const xmlChar *str, xmlXPathContextPtr ctxt) {
     xmlXPathParserContextPtr pctxt;
     xmlXPathObjectPtr res, tmp;
 

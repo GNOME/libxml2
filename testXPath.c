@@ -45,7 +45,7 @@ static xmlDocPtr document = NULL;
 /*
  * Default document
  */
-static CHAR buffer[] = 
+static xmlChar buffer[] = 
 "<?xml version=\"1.0\"?>\n\
 <EXAMPLE prop1=\"gnome is great\" prop2=\"&amp; linux too\">\n\
   <head>\n\

@@ -48,16 +48,16 @@ typedef struct htmlEntityDesc {
 /*
  * There is only few public functions.
  */
-htmlElemDescPtr htmlTagLookup(const CHAR *tag);
-htmlEntityDescPtr htmlEntityLookup(const CHAR *name);
+htmlElemDescPtr htmlTagLookup(const xmlChar *tag);
+htmlEntityDescPtr htmlEntityLookup(const xmlChar *name);
 
-htmlEntityDescPtr htmlParseEntityRef(htmlParserCtxtPtr ctxt, CHAR **str);
+htmlEntityDescPtr htmlParseEntityRef(htmlParserCtxtPtr ctxt, xmlChar **str);
 int htmlParseCharRef(htmlParserCtxtPtr ctxt);
 void htmlParseElement(htmlParserCtxtPtr ctxt);
 
-htmlDocPtr htmlSAXParseDoc(CHAR *cur, const char *encoding,
+htmlDocPtr htmlSAXParseDoc(xmlChar *cur, const char *encoding,
                            htmlSAXHandlerPtr sax, void *userData);
-htmlDocPtr htmlParseDoc(CHAR *cur, const char *encoding);
+htmlDocPtr htmlParseDoc(xmlChar *cur, const char *encoding);
 htmlDocPtr htmlSAXParseFile(const char *filename, const char *encoding,
                             htmlSAXHandlerPtr sax, void *userData);
 htmlDocPtr htmlParseFile(const char *filename, const char *encoding);

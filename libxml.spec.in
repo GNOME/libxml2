@@ -32,6 +32,13 @@ Libraries, include files, etc you can use to develop libxml applications.
 
 %changelog
 
+* Thu Sep 23 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+- corrected the spec file alpha stuff
+- switched to version 1.7.1
+- Added validation, XPath, nanohttp, removed memory leaks
+- Renamed CHAR to xmlChar
+
 * Wed Jun  2 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 - Switched to version 1.1: SAX extensions, better entities support, lots of
@@ -52,15 +59,13 @@ Libraries, include files, etc you can use to develop libxml applications.
 # Needed for snapshot releases.
 if [ ! -f configure ]; then
 %ifarch alpha
-  CFLAGS="$RPM_OPT_FLAGS" ./autogen.sh --host=alpha-redhat-linux --prefix=%prefi
-x --sysconfdir="/etc"
+  CFLAGS="$RPM_OPT_FLAGS" ./autogen.sh --host=alpha-redhat-linux --prefix=%prefix --sysconfdir="/etc"
 %else
   CFLAGS="$RPM_OPT_FLAGS" ./autogen.sh --prefix=%prefix --sysconfdir="/etc"
 %endif
 else
 %ifarch alpha
-  CFLAGS="$RPM_OPT_FLAGS" ./configure --host=alpha-redhat-linux --prefix=%prefix
- --sysconfdir="/etc"
+  CFLAGS="$RPM_OPT_FLAGS" ./configure --host=alpha-redhat-linux --prefix=%prefix --sysconfdir="/etc"
 %else
   CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%prefix --sysconfdir="/etc"
 %endif

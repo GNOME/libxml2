@@ -59,8 +59,8 @@ void xmlFreeEntity(xmlEntityPtr entity) {
  * xmlAddEntity : register a new entity for an entities table.
  */
 static void
-xmlAddEntity(xmlEntitiesTablePtr table, const CHAR *name, int type,
-	  const CHAR *ExternalID, const CHAR *SystemID, const CHAR *content) {
+xmlAddEntity(xmlEntitiesTablePtr table, const xmlChar *name, int type,
+	  const xmlChar *ExternalID, const xmlChar *SystemID, const xmlChar *content) {
     int i;
     xmlEntityPtr cur;
     int len;
@@ -126,10 +126,10 @@ xmlAddEntity(xmlEntitiesTablePtr table, const CHAR *name, int type,
  */
 void xmlInitializePredefinedEntities(void) {
     int i;
-    CHAR name[50];
-    CHAR value[50];
+    xmlChar name[50];
+    xmlChar value[50];
     const char *in;
-    CHAR *out;
+    xmlChar *out;
 
     if (xmlPredefinedEntities != NULL) return;
 
@@ -138,11 +138,11 @@ void xmlInitializePredefinedEntities(void) {
                    sizeof(xmlPredefinedEntityValues[0]);i++) {
         in = xmlPredefinedEntityValues[i].name;
 	out = &name[0];
-	for (;(*out++ = (CHAR) *in);)in++;
+	for (;(*out++ = (xmlChar) *in);)in++;
         in = xmlPredefinedEntityValues[i].value;
 	out = &value[0];
-	for (;(*out++ = (CHAR) *in);)in++;
-        xmlAddEntity(xmlPredefinedEntities, (const CHAR *) &name[0],
+	for (;(*out++ = (xmlChar) *in);)in++;
+        xmlAddEntity(xmlPredefinedEntities, (const xmlChar *) &name[0],
 	             XML_INTERNAL_PREDEFINED_ENTITY, NULL, NULL,
 		     &value[0]);
     }
@@ -157,7 +157,7 @@ void xmlInitializePredefinedEntities(void) {
  * Returns NULL if not, othervise the entity
  */
 xmlEntityPtr
-xmlGetPredefinedEntity(const CHAR *name) {
+xmlGetPredefinedEntity(const xmlChar *name) {
     int i;
     xmlEntityPtr cur;
 
@@ -182,8 +182,8 @@ xmlGetPredefinedEntity(const CHAR *name) {
  * Register a new entity for this document DTD.
  */
 void
-xmlAddDtdEntity(xmlDocPtr doc, const CHAR *name, int type,
-	  const CHAR *ExternalID, const CHAR *SystemID, const CHAR *content) {
+xmlAddDtdEntity(xmlDocPtr doc, const xmlChar *name, int type,
+	  const xmlChar *ExternalID, const xmlChar *SystemID, const xmlChar *content) {
     xmlEntitiesTablePtr table;
 
     if (doc->extSubset == NULL) {
@@ -211,8 +211,8 @@ xmlAddDtdEntity(xmlDocPtr doc, const CHAR *name, int type,
  * Register a new entity for this document.
  */
 void
-xmlAddDocEntity(xmlDocPtr doc, const CHAR *name, int type,
-	  const CHAR *ExternalID, const CHAR *SystemID, const CHAR *content) {
+xmlAddDocEntity(xmlDocPtr doc, const xmlChar *name, int type,
+	  const xmlChar *ExternalID, const xmlChar *SystemID, const xmlChar *content) {
     xmlEntitiesTablePtr table;
 
     if (doc == NULL) {
@@ -244,7 +244,7 @@ xmlAddDocEntity(xmlDocPtr doc, const CHAR *name, int type,
  * Returns A pointer to the entity structure or NULL if not found.
  */
 xmlEntityPtr
-xmlGetParameterEntity(xmlDocPtr doc, const CHAR *name) {
+xmlGetParameterEntity(xmlDocPtr doc, const xmlChar *name) {
     int i;
     xmlEntityPtr cur;
     xmlEntitiesTablePtr table;
@@ -290,7 +290,7 @@ xmlGetParameterEntity(xmlDocPtr doc, const CHAR *name) {
  * Returns A pointer to the entity structure or NULL if not found.
  */
 xmlEntityPtr
-xmlGetDtdEntity(xmlDocPtr doc, const CHAR *name) {
+xmlGetDtdEntity(xmlDocPtr doc, const xmlChar *name) {
     int i;
     xmlEntityPtr cur;
     xmlEntitiesTablePtr table;
@@ -319,7 +319,7 @@ xmlGetDtdEntity(xmlDocPtr doc, const CHAR *name) {
  * Returns A pointer to the entity structure or NULL if not found.
  */
 xmlEntityPtr
-xmlGetDocEntity(xmlDocPtr doc, const CHAR *name) {
+xmlGetDocEntity(xmlDocPtr doc, const xmlChar *name) {
     int i;
     xmlEntityPtr cur;
     xmlEntitiesTablePtr table;
@@ -368,11 +368,11 @@ xmlGetDocEntity(xmlDocPtr doc, const CHAR *name) {
  * A buffer used for converting entities to their equivalent and back.
  */
 static int buffer_size = 0;
-static CHAR *buffer = NULL;
+static xmlChar *buffer = NULL;
 
 void growBuffer(void) {
     buffer_size *= 2;
-    buffer = (CHAR *) xmlRealloc(buffer, buffer_size * sizeof(CHAR));
+    buffer = (xmlChar *) xmlRealloc(buffer, buffer_size * sizeof(xmlChar));
     if (buffer == NULL) {
         perror("realloc failed");
         exit(1);
@@ -396,10 +396,10 @@ void growBuffer(void) {
  * 
  * Returns A newly allocated string with the substitution done.
  */
-const CHAR *
-xmlEncodeEntities(xmlDocPtr doc, const CHAR *input) {
-    const CHAR *cur = input;
-    CHAR *out = buffer;
+const xmlChar *
+xmlEncodeEntities(xmlDocPtr doc, const xmlChar *input) {
+    const xmlChar *cur = input;
+    xmlChar *out = buffer;
     static int warning = 1;
 
     if (warning) {
@@ -411,7 +411,7 @@ xmlEncodeEntities(xmlDocPtr doc, const CHAR *input) {
     if (input == NULL) return(NULL);
     if (buffer == NULL) {
         buffer_size = 1000;
-        buffer = (CHAR *) xmlMalloc(buffer_size * sizeof(CHAR));
+        buffer = (xmlChar *) xmlMalloc(buffer_size * sizeof(xmlChar));
 	if (buffer == NULL) {
 	    perror("malloc failed");
             exit(1);
@@ -466,7 +466,7 @@ xmlEncodeEntities(xmlDocPtr doc, const CHAR *input) {
 	     */
 	    *out++ = *cur;
 #ifndef USE_UTF_8
-	} else if ((sizeof(CHAR) == 1) && (*cur >= 0x80)) {
+	} else if ((sizeof(xmlChar) == 1) && (*cur >= 0x80)) {
 	    char buf[10], *ptr;
 #ifdef HAVE_SNPRINTF
 	    snprintf(buf, 9, "&#%d;", *cur);
@@ -507,7 +507,7 @@ xmlEncodeEntities(xmlDocPtr doc, const CHAR *input) {
  */
 #define growBufferReentrant() {						\
     buffer_size *= 2;							\
-    buffer = (CHAR *) xmlRealloc(buffer, buffer_size * sizeof(CHAR));	\
+    buffer = (xmlChar *) xmlRealloc(buffer, buffer_size * sizeof(xmlChar));	\
     if (buffer == NULL) {						\
 	perror("realloc failed");					\
 	exit(1);							\
@@ -530,11 +530,11 @@ xmlEncodeEntities(xmlDocPtr doc, const CHAR *input) {
  *
  * Returns A newly allocated string with the substitution done.
  */
-CHAR *
-xmlEncodeEntitiesReentrant(xmlDocPtr doc, const CHAR *input) {
-    const CHAR *cur = input;
-    CHAR *buffer = NULL;
-    CHAR *out = NULL;
+xmlChar *
+xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
+    const xmlChar *cur = input;
+    xmlChar *buffer = NULL;
+    xmlChar *out = NULL;
     int buffer_size = 0;
 
     if (input == NULL) return(NULL);
@@ -543,7 +543,7 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const CHAR *input) {
      * allocate an translation buffer.
      */
     buffer_size = 1000;
-    buffer = (CHAR *) xmlMalloc(buffer_size * sizeof(CHAR));
+    buffer = (xmlChar *) xmlMalloc(buffer_size * sizeof(xmlChar));
     if (buffer == NULL) {
 	perror("malloc failed");
 	exit(1);
@@ -598,7 +598,7 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const CHAR *input) {
 	     */
 	    *out++ = *cur;
 #ifndef USE_UTF_8
-	} else if ((sizeof(CHAR) == 1) && (*cur >= 0x80)) {
+	} else if ((sizeof(xmlChar) == 1) && (*cur >= 0x80)) {
 	    char buf[10], *ptr;
 #ifdef HAVE_SNPRINTF
 	    snprintf(buf, 9, "&#%d;", *cur);

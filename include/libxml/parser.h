@@ -31,18 +31,18 @@ extern "C" {
  * progressive reading and I18N conversions to the internal UTF-8 format.
  */
 
-typedef void (* xmlParserInputDeallocate)(CHAR *);
+typedef void (* xmlParserInputDeallocate)(xmlChar *);
 typedef struct xmlParserInput {
     /* Input buffer */
     xmlParserInputBufferPtr buf;      /* UTF-8 encoded buffer */
 
     const char *filename;             /* The file analyzed, if any */
     const char *directory;            /* the directory/base of teh file */
-    const CHAR *base;                 /* Base of the array to parse */
-    const CHAR *cur;                  /* Current char being parsed */
+    const xmlChar *base;                 /* Base of the array to parse */
+    const xmlChar *cur;                  /* Current char being parsed */
     int line;                         /* Current line */
     int col;                          /* Current column */
-    int consumed;                     /* How many CHARs were already consumed */
+    int consumed;                     /* How many xmlChars were already consumed */
     xmlParserInputDeallocate free;    /* function to deallocate the base */
 } xmlParserInput;
 typedef xmlParserInput *xmlParserInputPtr;
@@ -107,8 +107,8 @@ typedef struct _xmlParserCtxt {
     xmlDocPtr           myDoc;        /* the document being built */
     int            wellFormed;        /* is the document well formed */
     int       replaceEntities;        /* shall we replace entities ? */
-    const CHAR       *version;        /* the XML version string */
-    const CHAR      *encoding;        /* encoding, if any */
+    const xmlChar       *version;        /* the XML version string */
+    const xmlChar      *encoding;        /* encoding, if any */
     int            standalone;        /* standalone document */
     int                  html;        /* are we parsing an HTML document */
 
@@ -127,7 +127,7 @@ typedef struct _xmlParserCtxt {
     int record_info;                  /* Whether node info should be kept */
     xmlParserNodeInfoSeq node_seq;    /* info about each node parsed */
 
-    int errno;                        /* error code */
+    int errNo;                        /* error code */
 
     int     hasExternalSubset;        /* reference and external subset */
     int             hasPErefs;        /* the internal subset has PE refs */
@@ -149,8 +149,8 @@ typedef xmlParserCtxt *xmlParserCtxtPtr;
  * a SAX Locator.
  */
 typedef struct xmlSAXLocator {
-    const CHAR *(*getPublicId)(void *ctx);
-    const CHAR *(*getSystemId)(void *ctx);
+    const xmlChar *(*getPublicId)(void *ctx);
+    const xmlChar *(*getSystemId)(void *ctx);
     int (*getLineNumber)(void *ctx);
     int (*getColumnNumber)(void *ctx);
 } _xmlSAXLocator;
@@ -165,44 +165,44 @@ typedef xmlSAXLocator *xmlSAXLocatorPtr;
 #include "entities.h"
 
 typedef xmlParserInputPtr (*resolveEntitySAXFunc) (void *ctx,
-			    const CHAR *publicId, const CHAR *systemId);
-typedef void (*internalSubsetSAXFunc) (void *ctx, const CHAR *name,
-                            const CHAR *ExternalID, const CHAR *SystemID);
+			    const xmlChar *publicId, const xmlChar *systemId);
+typedef void (*internalSubsetSAXFunc) (void *ctx, const xmlChar *name,
+                            const xmlChar *ExternalID, const xmlChar *SystemID);
 typedef xmlEntityPtr (*getEntitySAXFunc) (void *ctx,
-                            const CHAR *name);
+                            const xmlChar *name);
 typedef xmlEntityPtr (*getParameterEntitySAXFunc) (void *ctx,
-                            const CHAR *name);
+                            const xmlChar *name);
 typedef void (*entityDeclSAXFunc) (void *ctx,
-                            const CHAR *name, int type, const CHAR *publicId,
-			    const CHAR *systemId, CHAR *content);
-typedef void (*notationDeclSAXFunc)(void *ctx, const CHAR *name,
-			    const CHAR *publicId, const CHAR *systemId);
-typedef void (*attributeDeclSAXFunc)(void *ctx, const CHAR *elem,
-                            const CHAR *name, int type, int def,
-			    const CHAR *defaultValue, xmlEnumerationPtr tree);
-typedef void (*elementDeclSAXFunc)(void *ctx, const CHAR *name,
+                            const xmlChar *name, int type, const xmlChar *publicId,
+			    const xmlChar *systemId, xmlChar *content);
+typedef void (*notationDeclSAXFunc)(void *ctx, const xmlChar *name,
+			    const xmlChar *publicId, const xmlChar *systemId);
+typedef void (*attributeDeclSAXFunc)(void *ctx, const xmlChar *elem,
+                            const xmlChar *name, int type, int def,
+			    const xmlChar *defaultValue, xmlEnumerationPtr tree);
+typedef void (*elementDeclSAXFunc)(void *ctx, const xmlChar *name,
 			    int type, xmlElementContentPtr content);
 typedef void (*unparsedEntityDeclSAXFunc)(void *ctx,
-                            const CHAR *name, const CHAR *publicId,
-			    const CHAR *systemId, const CHAR *notationName);
+                            const xmlChar *name, const xmlChar *publicId,
+			    const xmlChar *systemId, const xmlChar *notationName);
 typedef void (*setDocumentLocatorSAXFunc) (void *ctx,
                             xmlSAXLocatorPtr loc);
 typedef void (*startDocumentSAXFunc) (void *ctx);
 typedef void (*endDocumentSAXFunc) (void *ctx);
-typedef void (*startElementSAXFunc) (void *ctx, const CHAR *name,
-                            const CHAR **atts);
-typedef void (*endElementSAXFunc) (void *ctx, const CHAR *name);
-typedef void (*attributeSAXFunc) (void *ctx, const CHAR *name,
-                                  const CHAR *value);
-typedef void (*referenceSAXFunc) (void *ctx, const CHAR *name);
-typedef void (*charactersSAXFunc) (void *ctx, const CHAR *ch,
+typedef void (*startElementSAXFunc) (void *ctx, const xmlChar *name,
+                            const xmlChar **atts);
+typedef void (*endElementSAXFunc) (void *ctx, const xmlChar *name);
+typedef void (*attributeSAXFunc) (void *ctx, const xmlChar *name,
+                                  const xmlChar *value);
+typedef void (*referenceSAXFunc) (void *ctx, const xmlChar *name);
+typedef void (*charactersSAXFunc) (void *ctx, const xmlChar *ch,
 		            int len);
 typedef void (*ignorableWhitespaceSAXFunc) (void *ctx,
-			    const CHAR *ch, int len);
+			    const xmlChar *ch, int len);
 typedef void (*processingInstructionSAXFunc) (void *ctx,
-                            const CHAR *target, const CHAR *data);
-typedef void (*commentSAXFunc) (void *ctx, const CHAR *value);
-typedef void (*cdataBlockSAXFunc) (void *ctx, const CHAR *value, int len);
+                            const xmlChar *target, const xmlChar *data);
+typedef void (*commentSAXFunc) (void *ctx, const xmlChar *value);
+typedef void (*cdataBlockSAXFunc) (void *ctx, const xmlChar *value, int len);
 typedef void (*warningSAXFunc) (void *ctx, const char *msg, ...);
 typedef void (*errorSAXFunc) (void *ctx, const char *msg, ...);
 typedef void (*fatalErrorSAXFunc) (void *ctx, const char *msg, ...);
@@ -270,34 +270,34 @@ int		xmlParserInputGrow	(xmlParserInputPtr in,
 					 int len);
 
 /**
- * CHAR handling
+ * xmlChar handling
  */
-CHAR *		xmlStrdup		(const CHAR *cur);
-CHAR *		xmlStrndup		(const CHAR *cur,
+xmlChar *		xmlStrdup		(const xmlChar *cur);
+xmlChar *		xmlStrndup		(const xmlChar *cur,
 					 int len);
-CHAR *		xmlStrsub		(const CHAR *str,
+xmlChar *		xmlStrsub		(const xmlChar *str,
 					 int start,
 					 int len);
-const CHAR *	xmlStrchr		(const CHAR *str,
-					 CHAR val);
-const CHAR *	xmlStrstr		(const CHAR *str,
-					 CHAR *val);
-int		xmlStrcmp		(const CHAR *str1,
-					 const CHAR *str2);
-int		xmlStrncmp		(const CHAR *str1,
-					 const CHAR *str2,
+const xmlChar *	xmlStrchr		(const xmlChar *str,
+					 xmlChar val);
+const xmlChar *	xmlStrstr		(const xmlChar *str,
+					 xmlChar *val);
+int		xmlStrcmp		(const xmlChar *str1,
+					 const xmlChar *str2);
+int		xmlStrncmp		(const xmlChar *str1,
+					 const xmlChar *str2,
 					 int len);
-int		xmlStrlen		(const CHAR *str);
-CHAR *		xmlStrcat		(CHAR *cur,
-					 const CHAR *add);
-CHAR *		xmlStrncat		(CHAR *cur,
-					 const CHAR *add,
+int		xmlStrlen		(const xmlChar *str);
+xmlChar *		xmlStrcat		(xmlChar *cur,
+					 const xmlChar *add);
+xmlChar *		xmlStrncat		(xmlChar *cur,
+					 const xmlChar *add,
 					 int len);
 
 /**
  * Basic parsing Interfaces
  */
-xmlDocPtr	xmlParseDoc		(CHAR *cur);
+xmlDocPtr	xmlParseDoc		(xmlChar *cur);
 xmlDocPtr	xmlParseMemory		(char *buffer,
 					 int size);
 xmlDocPtr	xmlParseFile		(const char *filename);
@@ -306,7 +306,7 @@ int		xmlSubstituteEntitiesDefault(int val);
 /**
  * Recovery mode 
  */
-xmlDocPtr	xmlRecoverDoc		(CHAR *cur);
+xmlDocPtr	xmlRecoverDoc		(xmlChar *cur);
 xmlDocPtr	xmlRecoverMemory	(char *buffer,
 					 int size);
 xmlDocPtr	xmlRecoverFile		(const char *filename);
@@ -316,7 +316,7 @@ xmlDocPtr	xmlRecoverFile		(const char *filename);
  */
 int		xmlParseDocument	(xmlParserCtxtPtr ctxt);
 xmlDocPtr	xmlSAXParseDoc		(xmlSAXHandlerPtr sax,
-					 CHAR *cur,
+					 xmlChar *cur,
 					 int recovery);
 xmlDocPtr	xmlSAXParseMemory	(xmlSAXHandlerPtr sax,
 					 char *buffer,
@@ -325,15 +325,15 @@ xmlDocPtr	xmlSAXParseMemory	(xmlSAXHandlerPtr sax,
 xmlDocPtr	xmlSAXParseFile		(xmlSAXHandlerPtr sax,
 					 const char *filename,
 					 int recovery);
-xmlDtdPtr	xmlParseDTD		(const CHAR *ExternalID,
-					 const CHAR *SystemID);
+xmlDtdPtr	xmlParseDTD		(const xmlChar *ExternalID,
+					 const xmlChar *SystemID);
 xmlDtdPtr	xmlSAXParseDTD		(xmlSAXHandlerPtr sax,
-					 const CHAR *ExternalID,
-					 const CHAR *SystemID);
+					 const xmlChar *ExternalID,
+					 const xmlChar *SystemID);
 void		xmlInitParserCtxt	(xmlParserCtxtPtr ctxt);
 void		xmlClearParserCtxt	(xmlParserCtxtPtr ctxt);
 void		xmlSetupParserForBuffer	(xmlParserCtxtPtr ctxt,
-					 const CHAR* buffer,
+					 const xmlChar* buffer,
 					 const char* filename);
 void		xmlDefaultSAXHandlerInit(void);
 void		htmlDefaultSAXHandlerInit(void);

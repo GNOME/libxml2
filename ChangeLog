@@ -1,3 +1,12 @@
+Fri Sep 24 00:15:58 CEST 1999
+
+	* libxml.spec.in: fixed the alpha compile problem
+	* parser.[ch]: changed errno to errNo in the parser context :-(
+	* *.[ch]: changed CHAR to xmlChar to avoid problem on WIN32
+	* doc/xml.html: changed CHAR to xmlChar
+	* doc/html/*: recompiled the documentation
+	* configure.in: 1.7.1
+
 Wed Sep 22 11:40:31 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* parser.h: modified the parser context struct to regain 1.4.0

@@ -9,7 +9,7 @@
 #define __DEBUG_XML__
 #include "tree.h"
 
-extern void xmlDebugDumpString(FILE *output, const CHAR *str);
+extern void xmlDebugDumpString(FILE *output, const xmlChar *str);
 extern void xmlDebugDumpAttr(FILE *output, xmlAttrPtr attr, int depth);
 extern void xmlDebugDumpAttrList(FILE *output, xmlAttrPtr attr, int depth);
 extern void xmlDebugDumpOneNode(FILE *output, xmlNodePtr node, int depth);

@@ -67,7 +67,7 @@ htmlDtdDump(xmlBufferPtr buf, xmlDocPtr doc) {
  */
 static void
 htmlAttrDump(xmlBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur) {
-    CHAR *value;
+    xmlChar *value;
 
     if (cur == NULL) {
         fprintf(stderr, "htmlAttrDump : property == NULL\n");
@@ -149,7 +149,7 @@ htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
      */
     if (cur->type == HTML_TEXT_NODE) {
 	if (cur->content != NULL) {
-            CHAR *buffer;
+            xmlChar *buffer;
 
 	    /* uses the HTML encoding routine !!!!!!!!!! */
             buffer = xmlEncodeEntitiesReentrant(doc, cur->content);
@@ -211,7 +211,7 @@ htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
     }
     xmlBufferWriteChar(buf, ">");
     if (cur->content != NULL) {
-	CHAR *buffer;
+	xmlChar *buffer;
 
 	buffer = xmlEncodeEntitiesReentrant(doc, cur->content);
 	if (buffer != NULL) {
@@ -261,11 +261,11 @@ htmlDocContentDump(xmlBufferPtr buf, xmlDocPtr cur) {
  * @mem:  OUT: the memory pointer
  * @size:  OUT: the memory lenght
  *
- * Dump an HTML document in memory and return the CHAR * and it's size.
+ * Dump an HTML document in memory and return the xmlChar * and it's size.
  * It's up to the caller to free the memory.
  */
 void
-htmlDocDumpMemory(xmlDocPtr cur, CHAR**mem, int *size) {
+htmlDocDumpMemory(xmlDocPtr cur, xmlChar**mem, int *size) {
     xmlBufferPtr buf;
 
     if (cur == NULL) {
@@ -342,6 +342,6 @@ htmlSaveFile(const char *filename, xmlDocPtr cur) {
     fclose(output);
 
     xmlBufferFree(buf);
-    return(ret * sizeof(CHAR));
+    return(ret * sizeof(xmlChar));
 }
 

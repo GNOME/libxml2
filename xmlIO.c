@@ -311,23 +311,23 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
 	return(-1);
     }
     if (in->encoder != NULL) {
-        CHAR *buf;
+        xmlChar *buf;
 
-	buf = (CHAR *) xmlMalloc((res + 1) * 2 * sizeof(CHAR));
+	buf = (xmlChar *) xmlMalloc((res + 1) * 2 * sizeof(xmlChar));
 	if (buf == NULL) {
 	    fprintf(stderr, "xmlParserInputBufferGrow : out of memory !\n");
 	    xmlFree(buffer);
 	    return(-1);
 	}
-	nbchars = in->encoder->input(buf, (res + 1) * 2 * sizeof(CHAR),
+	nbchars = in->encoder->input(buf, (res + 1) * 2 * sizeof(xmlChar),
 	                             BAD_CAST buffer, res);
         buf[nbchars] = 0;
-        xmlBufferAdd(in->buffer, (CHAR *) buf, nbchars);
+        xmlBufferAdd(in->buffer, (xmlChar *) buf, nbchars);
 	xmlFree(buf);
     } else {
 	nbchars = res;
         buffer[nbchars] = 0;
-        xmlBufferAdd(in->buffer, (CHAR *) buffer, nbchars);
+        xmlBufferAdd(in->buffer, (xmlChar *) buffer, nbchars);
     }
 #ifdef DEBUG_INPUT
     fprintf(stderr, "I/O: read %d chars, buffer %d/%d\n",

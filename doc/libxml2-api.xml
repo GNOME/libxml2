@@ -1800,6 +1800,7 @@
      <exports symbol='XML_SAVE_UNKNOWN_ENCODING' type='enum'/>
      <exports symbol='XML_ERR_CONDSEC_INVALID_KEYWORD' type='enum'/>
      <exports symbol='XML_SCHEMAP_S4S_ATTR_MISSING' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_ELT_7' type='enum'/>
      <exports symbol='XML_CATALOG_MISSING_ATTR' type='enum'/>
      <exports symbol='XML_ERR_NO_MEMORY' type='enum'/>
      <exports symbol='XML_ERR_PEREF_SEMICOL_MISSING' type='enum'/>
@@ -1818,7 +1819,7 @@
      <exports symbol='XML_ERR_DOCTYPE_NOT_FINISHED' type='enum'/>
      <exports symbol='XML_ERR_XMLDECL_NOT_STARTED' type='enum'/>
      <exports symbol='XML_IO_EXDEV' type='enum'/>
-     <exports symbol='XML_XINCLUDE_NO_FALLBACK' type='enum'/>
+     <exports symbol='XML_SCHEMAV_DOCUMENT_ELEMENT_MISSING' type='enum'/>
      <exports symbol='XML_RNGP_URI_FRAGMENT' type='enum'/>
      <exports symbol='XML_FROM_MEMORY' type='enum'/>
      <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_3_3_1_2' type='enum'/>
@@ -1828,6 +1829,8 @@
      <exports symbol='XML_ERR_MISSING_ENCODING' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_ATTR_CHILD' type='enum'/>
      <exports symbol='XML_RNGP_ELEMENT_CONTENT' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_ATTRIBUTE_2' type='enum'/>
+     <exports symbol='XML_SCHEMAP_SRC_ATTRIBUTE_3_1' type='enum'/>
      <exports symbol='XML_ERR_LT_IN_ATTRIBUTE' type='enum'/>
      <exports symbol='XML_XINCLUDE_ENTITY_DEF_MISMATCH' type='enum'/>
      <exports symbol='XML_XPTR_RESOURCE_ERROR' type='enum'/>
@@ -1865,6 +1868,7 @@
      <exports symbol='XML_SCHEMAP_REGEXP_INVALID' type='enum'/>
      <exports symbol='XML_XPTR_CHILDSEQ_START' type='enum'/>
      <exports symbol='XML_C14N_CREATE_STACK' type='enum'/>
+     <exports symbol='XML_WAR_LANG_VALUE' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_ANYATTRIBUTE_CHILD' type='enum'/>
      <exports symbol='XML_SCHEMAP_SRC_ATTRIBUTE_2' type='enum'/>
      <exports symbol='XML_SCHEMAP_WILDCARD_INVALID_NS_MEMBER' type='enum'/>
@@ -1879,6 +1883,7 @@
      <exports symbol='XML_RNGP_UNKNOWN_COMBINE' type='enum'/>
      <exports symbol='XML_SCHEMAV_EXTRACONTENT' type='enum'/>
      <exports symbol='XML_RNGP_START_EMPTY' type='enum'/>
+     <exports symbol='XML_XINCLUDE_XPTR_RESULT' type='enum'/>
      <exports symbol='XML_SCHEMAP_SRC_SIMPLE_TYPE_4' type='enum'/>
      <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_3_3_2_2' type='enum'/>
      <exports symbol='XML_RNGP_ELEM_CONTENT_EMPTY' type='enum'/>
@@ -1890,7 +1895,7 @@
      <exports symbol='XML_RNGP_ANYNAME_ATTR_ANCESTOR' type='enum'/>
      <exports symbol='XML_ERR_ENTITY_IS_EXTERNAL' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_INCLUDE_CHILD' type='enum'/>
-     <exports symbol='XML_SCHEMAP_SRC_ATTRIBUTE_3_1' type='enum'/>
+     <exports symbol='XML_SCHEMAP_NOT_DETERMINISTIC' type='enum'/>
      <exports symbol='XML_ERR_PI_NOT_STARTED' type='enum'/>
      <exports symbol='XML_RNGP_START_CONTENT' type='enum'/>
      <exports symbol='XML_SCHEMAP_SRC_ATTRIBUTE_3_2' type='enum'/>
@@ -1902,6 +1907,7 @@
      <exports symbol='XML_FROM_PARSER' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_REF' type='enum'/>
      <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_3_3_2_5' type='enum'/>
+     <exports symbol='XML_XINCLUDE_NO_FALLBACK' type='enum'/>
      <exports symbol='XML_SCHEMAP_SRC_RESOLVE' type='enum'/>
      <exports symbol='XML_C14N_CREATE_CTXT' type='enum'/>
      <exports symbol='XML_SCHEMAV_CVC_FACET_VALID' type='enum'/>
@@ -1909,11 +1915,11 @@
      <exports symbol='XML_SCHEMAP_RESTRICTION_NONAME_NOREF' type='enum'/>
      <exports symbol='XML_XINCLUDE_TEXT_DOCUMENT' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_PREFIX' type='enum'/>
-     <exports symbol='XML_XINCLUDE_FALLBACKS_IN_INCLUDE' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_COMPLEX_TYPE_3_2_1' type='enum'/>
      <exports symbol='XML_ERR_STANDALONE_VALUE' type='enum'/>
      <exports symbol='XML_SCHEMAP_REDEFINED_ATTR' type='enum'/>
      <exports symbol='XML_ERR_ENTITY_LOOP' type='enum'/>
-     <exports symbol='XML_XPATH_INVALID_TYPE' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_COMPLEX_TYPE_5_1' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_RESTRICTION_CHILD' type='enum'/>
      <exports symbol='XML_IO_EINPROGRESS' type='enum'/>
      <exports symbol='XML_IO_FLUSH' type='enum'/>
@@ -1948,6 +1954,8 @@
      <exports symbol='XML_IO_EMSGSIZE' type='enum'/>
      <exports symbol='XML_FROM_CATALOG' type='enum'/>
      <exports symbol='XML_SCHEMAV_ATTRINVALID' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_ELT_1' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_ELT_2' type='enum'/>
      <exports symbol='XML_SCHEMAV_VALUE' type='enum'/>
      <exports symbol='XML_DTD_NOT_EMPTY' type='enum'/>
      <exports symbol='XML_FROM_HTML' type='enum'/>
@@ -2056,6 +2064,7 @@
      <exports symbol='XML_ERR_ENTITYREF_NO_NAME' type='enum'/>
      <exports symbol='XML_DTD_ID_FIXED' type='enum'/>
      <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_2_3_2_2' type='enum'/>
+     <exports symbol='XML_XPTR_EXTRA_OBJECTS' type='enum'/>
      <exports symbol='XML_XINCLUDE_NO_HREF' type='enum'/>
      <exports symbol='XML_XPATH_INVALID_OPERAND' type='enum'/>
      <exports symbol='XML_IO_ENOEXEC' type='enum'/>
@@ -2074,6 +2083,7 @@
      <exports symbol='XML_RNGP_ELEM_TEXT_CONFLICT' type='enum'/>
      <exports symbol='XML_SCHEMAP_ATTR_NONAME_NOREF' type='enum'/>
      <exports symbol='XML_SCHEMAP_SRC_ELEMENT_1' type='enum'/>
+     <exports symbol='XML_XPATH_INVALID_TYPE' type='enum'/>
      <exports symbol='XML_SCHEMAP_INTERSECTION_NOT_EXPRESSIBLE' type='enum'/>
      <exports symbol='XML_SCHEMAP_ELEM_NONAME_NOREF' type='enum'/>
      <exports symbol='XML_DTD_ID_SUBSET' type='enum'/>
@@ -2113,9 +2123,13 @@
      <exports symbol='XML_SCHEMAP_COS_VALID_DEFAULT_2_2_2' type='enum'/>
      <exports symbol='XML_RNGP_NOTALLOWED_NOT_EMPTY' type='enum'/>
      <exports symbol='XML_RNGP_MISSING_HREF' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_ATTRIBUTE_3' type='enum'/>
      <exports symbol='XML_ERR_PI_NOT_FINISHED' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_ATTRIBUTE_1' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_PATTERN_VALID' type='enum'/>
      <exports symbol='XML_FROM_RELAXNGP' type='enum'/>
      <exports symbol='XML_RNGP_PAT_DATA_EXCEPT_ATTR' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_ELT_4_3' type='enum'/>
      <exports symbol='XML_FTP_ACCNT' type='enum'/>
      <exports symbol='XML_SCHEMAP_S4S_ATTR_INVALID_VALUE' type='enum'/>
      <exports symbol='XML_FROM_RELAXNGV' type='enum'/>
@@ -2132,16 +2146,18 @@
      <exports symbol='XML_DTD_NOT_PCDATA' type='enum'/>
      <exports symbol='XML_SCHEMAP_INVALID_ATTR_COMBINATION' type='enum'/>
      <exports symbol='XML_WAR_UNKNOWN_VERSION' type='enum'/>
-     <exports symbol='XML_XPTR_EXTRA_OBJECTS' type='enum'/>
+     <exports symbol='XML_XINCLUDE_MULTIPLE_ROOT' type='enum'/>
      <exports symbol='XML_RNGP_PARAM_FORBIDDEN' type='enum'/>
      <exports symbol='XML_ERR_OK' type='enum'/>
      <exports symbol='XML_SCHEMAP_NOTHING_TO_PARSE' type='enum'/>
      <exports symbol='XML_SCHEMAP_RECURSIVE' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_ELT_5_2_2_2_1' type='enum'/>
      <exports symbol='XML_ERR_UNSUPPORTED_ENCODING' type='enum'/>
      <exports symbol='XML_SCHEMAP_GROUP_NONAME_NOREF' type='enum'/>
      <exports symbol='XML_RNGP_PAT_NSNAME_EXCEPT_ANYNAME' type='enum'/>
      <exports symbol='XML_ERR_ENTITYREF_IN_PROLOG' type='enum'/>
      <exports symbol='XML_SCHEMAP_S4S_ELEM_MISSING' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_ELT_5_1_1' type='enum'/>
      <exports symbol='XML_ERR_CHARREF_IN_DTD' type='enum'/>
      <exports symbol='XML_DTD_LOAD_ERROR' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_NOTATION_CHILD' type='enum'/>
@@ -2159,7 +2175,7 @@
      <exports symbol='XML_IO_EISDIR' type='enum'/>
      <exports symbol='XML_RNGP_PAT_DATA_EXCEPT_INTERLEAVE' type='enum'/>
      <exports symbol='XML_ERR_VERSION_MISSING' type='enum'/>
-     <exports symbol='XML_XINCLUDE_MULTIPLE_ROOT' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_COMPLEX_TYPE_3_1' type='enum'/>
      <exports symbol='XML_XPATH_INVALID_CTXT_SIZE' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_UNION_CHILD' type='enum'/>
      <exports symbol='XML_ERR_PEREF_AT_EOF' type='enum'/>
@@ -2168,13 +2184,17 @@
      <exports symbol='XML_XPATH_EXPR_ERROR' type='enum'/>
      <exports symbol='XML_SCHEMAP_INCLUDE_SCHEMA_NO_URI' type='enum'/>
      <exports symbol='XML_RNGP_DEFINE_EMPTY' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_COMPLEX_TYPE_5_2' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_ELT_3_2_1' type='enum'/>
      <exports symbol='XML_ERR_ATTRIBUTE_NOT_STARTED' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_ELT_3_2_2' type='enum'/>
      <exports symbol='XML_XPATH_UNCLOSED_ERROR' type='enum'/>
      <exports symbol='XML_WAR_CATALOG_PI' type='enum'/>
      <exports symbol='XML_SCHEMAP_INVALID_MINOCCURS' type='enum'/>
      <exports symbol='XML_SCHEMAP_COS_CT_EXTENDS_1_3' type='enum'/>
      <exports symbol='XML_SCHEMAP_SUPERNUMEROUS_LIST_ITEM_TYPE' type='enum'/>
      <exports symbol='XML_SCHEMAV_CVC_TOTALDIGITS_VALID' type='enum'/>
+     <exports symbol='XML_XINCLUDE_FALLBACKS_IN_INCLUDE' type='enum'/>
      <exports symbol='XML_IO_ENOLCK' type='enum'/>
      <exports symbol='XML_XINCLUDE_DEPRECATED_NS' type='enum'/>
      <exports symbol='XML_RNGP_CHOICE_EMPTY' type='enum'/>
@@ -2183,7 +2203,7 @@
      <exports symbol='XML_DTD_MULTIPLE_ID' type='enum'/>
      <exports symbol='XML_FROM_XPATH' type='enum'/>
      <exports symbol='XML_IO_EPIPE' type='enum'/>
-     <exports symbol='XML_TREE_INVALID_DEC' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_ELT_6' type='enum'/>
      <exports symbol='XML_SCHEMAP_EXTENSION_NO_BASE' type='enum'/>
      <exports symbol='XML_XPTR_SYNTAX_ERROR' type='enum'/>
      <exports symbol='XML_SCHEMAP_E_PROPS_CORRECT_5' type='enum'/>
@@ -2244,11 +2264,14 @@
      <exports symbol='XML_SCHEMAP_NOATTR_NOREF' type='enum'/>
      <exports symbol='XML_RNGP_GRAMMAR_MISSING' type='enum'/>
      <exports symbol='XML_DTD_CONTENT_NOT_DETERMINIST' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_ELT_5_1_2' type='enum'/>
      <exports symbol='XML_DTD_NO_ELEM_NAME' type='enum'/>
      <exports symbol='XML_RNGP_GRAMMAR_NO_START' type='enum'/>
      <exports symbol='XML_RNGP_VALUE_NO_CONTENT' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_SIMPLECONTENT_CHILD' type='enum'/>
      <exports symbol='XML_IO_EAFNOSUPPORT' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_COMPLEX_TYPE_3_2_2' type='enum'/>
+     <exports symbol='XML_SCHEMAV_ELEMENT_CONTENT' type='enum'/>
      <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_3_3_2_1' type='enum'/>
      <exports symbol='XML_SCHEMAP_SRC_ELEMENT_3' type='enum'/>
      <exports symbol='XML_CATALOG_NOT_CATALOG' type='enum'/>
@@ -2288,6 +2311,7 @@
      <exports symbol='XML_IO_NETWORK_ATTEMPT' type='enum'/>
      <exports symbol='XML_FROM_OUTPUT' type='enum'/>
      <exports symbol='XML_FROM_NAMESPACE' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_ATTRIBUTE_4' type='enum'/>
      <exports symbol='XML_XPTR_EVAL_FAILED' type='enum'/>
      <exports symbol='XML_IO_EBUSY' type='enum'/>
      <exports symbol='XML_ERR_ATTLIST_NOT_FINISHED' type='enum'/>
@@ -2300,6 +2324,7 @@
      <exports symbol='XML_IO_ESRCH' type='enum'/>
      <exports symbol='XML_IO_ENXIO' type='enum'/>
      <exports symbol='XML_FROM_XPOINTER' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_COMPLEX_TYPE_4' type='enum'/>
      <exports symbol='XML_ERR_ATTRIBUTE_WITHOUT_VALUE' type='enum'/>
      <exports symbol='XML_RNGP_TEXT_HAS_CHILD' type='enum'/>
      <exports symbol='XML_DTD_ELEM_REDEFINED' type='enum'/>
@@ -2319,9 +2344,10 @@
      <exports symbol='XML_SCHEMAP_DEF_AND_PREFIX' type='enum'/>
      <exports symbol='XML_RNGP_PAT_ANYNAME_EXCEPT_ANYNAME' type='enum'/>
      <exports symbol='XML_RNGP_NSNAME_NO_NS' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_ELT_5_2_2_2_2' type='enum'/>
      <exports symbol='XML_ERR_MIXED_NOT_STARTED' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNION_NOT_EXPRESSIBLE' type='enum'/>
-     <exports symbol='XML_WAR_LANG_VALUE' type='enum'/>
+     <exports symbol='XML_SCHEMAP_INTERNAL' type='enum'/>
      <exports symbol='XML_SCHEMAV_INVALIDELEM' type='enum'/>
      <exports symbol='XML_NS_ERR_QNAME' type='enum'/>
      <exports symbol='XML_XPATH_VARIABLE_REF_ERROR' type='enum'/>
@@ -2344,10 +2370,12 @@
      <exports symbol='XML_RNGP_DATA_CONTENT' type='enum'/>
      <exports symbol='XML_ERR_STRING_NOT_STARTED' type='enum'/>
      <exports symbol='XML_SCHEMAP_DERIVATION_OK_RESTRICTION_2_1_2' type='enum'/>
+     <exports symbol='XML_TREE_INVALID_DEC' type='enum'/>
      <exports symbol='XML_SCHEMAP_DERIVATION_OK_RESTRICTION_2_1_1' type='enum'/>
      <exports symbol='XML_RNGP_EXCEPT_MULTIPLE' type='enum'/>
      <exports symbol='XML_SCHEMAP_NOTYPE_NOREF' type='enum'/>
      <exports symbol='XML_IO_EDEADLK' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_ELT_5_2_1' type='enum'/>
      <exports symbol='XML_ERR_ATTRIBUTE_NOT_FINISHED' type='enum'/>
      <exports symbol='XML_SCHEMAV_CVC_FRACTIONDIGITS_VALID' type='enum'/>
      <exports symbol='XML_SCHEMAP_SRC_LIST_ITEMTYPE_OR_SIMPLETYPE' type='enum'/>
@@ -2360,7 +2388,7 @@
      <exports symbol='XML_RNGP_PAT_START_TEXT' type='enum'/>
      <exports symbol='XML_SAVE_NOT_UTF8' type='enum'/>
      <exports symbol='XML_DTD_INVALID_CHILD' type='enum'/>
-     <exports symbol='XML_SCHEMAV_CVC_PATTERN_VALID' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_ELT_4_1' type='enum'/>
      <exports symbol='XML_RNGP_TYPE_MISSING' type='enum'/>
      <exports symbol='XML_SCHEMAP_COS_VALID_DEFAULT_2_2_1' type='enum'/>
      <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_2_3_2_1' type='enum'/>
@@ -2373,13 +2401,14 @@
      <exports symbol='XML_ERR_XMLDECL_NOT_FINISHED' type='enum'/>
      <exports symbol='XML_SCHEMAP_P_PROPS_CORRECT_1' type='enum'/>
      <exports symbol='XML_SCHEMAP_REDEFINED_ATTRGROUP' type='enum'/>
-     <exports symbol='XML_XINCLUDE_XPTR_RESULT' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_ELT_5_2_2_1' type='enum'/>
      <exports symbol='XML_SCHEMAP_SIMPLETYPE_NONAME' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_ATTRIBUTE_GROUP' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_GROUP_CHILD' type='enum'/>
      <exports symbol='XML_XINCLUDE_BUILD_FAILED' type='enum'/>
      <exports symbol='XML_RNGP_PARENTREF_NOT_EMPTY' type='enum'/>
      <exports symbol='XML_ERR_PEREF_NO_NAME' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_ELT_4_2' type='enum'/>
      <exports symbol='XML_ERR_ENTITYREF_AT_EOF' type='enum'/>
      <exports symbol='XML_SCHEMAP_UNKNOWN_PROCESSCONTENT_CHILD' type='enum'/>
      <exports symbol='XML_NS_ERR_ATTRIBUTE_REDEFINED' type='enum'/>
@@ -2405,6 +2434,7 @@
      <exports symbol='XML_SCHEMAP_NOT_SCHEMA' type='enum'/>
      <exports symbol='XML_FROM_SCHEMASV' type='enum'/>
      <exports symbol='XML_FROM_SCHEMASP' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_ELT_3_1' type='enum'/>
      <exports symbol='XML_SCHEMAP_COS_VALID_DEFAULT_1' type='enum'/>
      <exports symbol='XML_ERR_MIXED_NOT_FINISHED' type='enum'/>
      <exports symbol='XML_SCHEMAP_COS_ST_RESTRICTS_2_1' type='enum'/>
@@ -4694,6 +4724,7 @@
     <enum name='XML_SCHEMAP_IMPORT_SCHEMA_NOT_URI' file='xmlerror' value='1713' type='xmlParserErrors' info='1713'/>
     <enum name='XML_SCHEMAP_INCLUDE_SCHEMA_NOT_URI' file='xmlerror' value='1770' type='xmlParserErrors' info='1769'/>
     <enum name='XML_SCHEMAP_INCLUDE_SCHEMA_NO_URI' file='xmlerror' value='1771' type='xmlParserErrors' info='1770'/>
+    <enum name='XML_SCHEMAP_INTERNAL' file='xmlerror' value='3069' type='xmlParserErrors' info='non-W3C'/>
     <enum name='XML_SCHEMAP_INTERSECTION_NOT_EXPRESSIBLE' file='xmlerror' value='1793' type='xmlParserErrors' info='1792'/>
     <enum name='XML_SCHEMAP_INVALID_ATTR_COMBINATION' file='xmlerror' value='1777' type='xmlParserErrors' info='1776'/>
     <enum name='XML_SCHEMAP_INVALID_ATTR_INLINE_COMBINATION' file='xmlerror' value='1778' type='xmlParserErrors' info='1777'/>
@@ -4713,6 +4744,7 @@
     <enum name='XML_SCHEMAP_NOTATION_NO_NAME' file='xmlerror' value='1723' type='xmlParserErrors' info='1723'/>
     <enum name='XML_SCHEMAP_NOTHING_TO_PARSE' file='xmlerror' value='1758' type='xmlParserErrors' info='1757'/>
     <enum name='XML_SCHEMAP_NOTYPE_NOREF' file='xmlerror' value='1724' type='xmlParserErrors' info='1724'/>
+    <enum name='XML_SCHEMAP_NOT_DETERMINISTIC' file='xmlerror' value='3070' type='xmlParserErrors' info=' non-W3C'/>
     <enum name='XML_SCHEMAP_NOT_SCHEMA' file='xmlerror' value='1772' type='xmlParserErrors' info='1771'/>
     <enum name='XML_SCHEMAP_NO_XMLNS' file='xmlerror' value='3056' type='xmlParserErrors' info='3056'/>
     <enum name='XML_SCHEMAP_NO_XSI' file='xmlerror' value='3057' type='xmlParserErrors' info='3057'/>
@@ -4874,13 +4906,39 @@
     <enum name='XML_SCHEMAV_ATTRINVALID' file='xmlerror' value='1820' type='xmlParserErrors' info='1820'/>
     <enum name='XML_SCHEMAV_ATTRUNKNOWN' file='xmlerror' value='1819' type='xmlParserErrors' info='1819'/>
     <enum name='XML_SCHEMAV_CONSTRUCT' file='xmlerror' value='1816' type='xmlParserErrors' info='1816'/>
+    <enum name='XML_SCHEMAV_CVC_ATTRIBUTE_1' file='xmlerror' value='1860' type='xmlParserErrors'/>
+    <enum name='XML_SCHEMAV_CVC_ATTRIBUTE_2' file='xmlerror' value='1861' type='xmlParserErrors'/>
+    <enum name='XML_SCHEMAV_CVC_ATTRIBUTE_3' file='xmlerror' value='1862' type='xmlParserErrors'/>
+    <enum name='XML_SCHEMAV_CVC_ATTRIBUTE_4' file='xmlerror' value='1863' type='xmlParserErrors'/>
     <enum name='XML_SCHEMAV_CVC_COMPLEX_TYPE_2_1' file='xmlerror' value='1840' type='xmlParserErrors' info='1840'/>
     <enum name='XML_SCHEMAV_CVC_COMPLEX_TYPE_2_2' file='xmlerror' value='1841' type='xmlParserErrors' info='1841'/>
     <enum name='XML_SCHEMAV_CVC_COMPLEX_TYPE_2_3' file='xmlerror' value='1842' type='xmlParserErrors' info='1842'/>
     <enum name='XML_SCHEMAV_CVC_COMPLEX_TYPE_2_4' file='xmlerror' value='1843' type='xmlParserErrors' info='1843'/>
+    <enum name='XML_SCHEMAV_CVC_COMPLEX_TYPE_3_1' file='xmlerror' value='1864' type='xmlParserErrors'/>
+    <enum name='XML_SCHEMAV_CVC_COMPLEX_TYPE_3_2_1' file='xmlerror' value='1865' type='xmlParserErrors'/>
+    <enum name='XML_SCHEMAV_CVC_COMPLEX_TYPE_3_2_2' file='xmlerror' value='1866' type='xmlParserErrors'/>
+    <enum name='XML_SCHEMAV_CVC_COMPLEX_TYPE_4' file='xmlerror' value='1867' type='xmlParserErrors'/>
+    <enum name='XML_SCHEMAV_CVC_COMPLEX_TYPE_5_1' file='xmlerror' value='1868' type='xmlParserErrors'/>
+    <enum name='XML_SCHEMAV_CVC_COMPLEX_TYPE_5_2' file='xmlerror' value='1869' type='xmlParserErrors'/>
     <enum name='XML_SCHEMAV_CVC_DATATYPE_VALID_1_2_1' file='xmlerror' value='1823' type='xmlParserErrors' info='1823'/>
     <enum name='XML_SCHEMAV_CVC_DATATYPE_VALID_1_2_2' file='xmlerror' value='1824' type='xmlParserErrors' info='1824'/>
     <enum name='XML_SCHEMAV_CVC_DATATYPE_VALID_1_2_3' file='xmlerror' value='1825' type='xmlParserErrors' info='1825'/>
+    <enum name='XML_SCHEMAV_CVC_ELT_1' file='xmlerror' value='1844' type='xmlParserErrors' info='1844'/>
+    <enum name='XML_SCHEMAV_CVC_ELT_2' file='xmlerror' value='1845' type='xmlParserErrors' info='1845'/>
+    <enum name='XML_SCHEMAV_CVC_ELT_3_1' file='xmlerror' value='1846' type='xmlParserErrors'/>
+    <enum name='XML_SCHEMAV_CVC_ELT_3_2_1' file='xmlerror' value='1847' type='xmlParserErrors'/>
+    <enum name='XML_SCHEMAV_CVC_ELT_3_2_2' file='xmlerror' value='1848' type='xmlParserErrors'/>
+    <enum name='XML_SCHEMAV_CVC_ELT_4_1' file='xmlerror' value='1849' type='xmlParserErrors'/>
+    <enum name='XML_SCHEMAV_CVC_ELT_4_2' file='xmlerror' value='1850' type='xmlParserErrors'/>
+    <enum name='XML_SCHEMAV_CVC_ELT_4_3' file='xmlerror' value='1851' type='xmlParserErrors'/>
+    <enum name='XML_SCHEMAV_CVC_ELT_5_1_1' file='xmlerror' value='1852' type='xmlParserErrors'/>
+    <enum name='XML_SCHEMAV_CVC_ELT_5_1_2' file='xmlerror' value='1853' type='xmlParserErrors'/>
+    <enum name='XML_SCHEMAV_CVC_ELT_5_2_1' file='xmlerror' value='1854' type='xmlParserErrors'/>
+    <enum name='XML_SCHEMAV_CVC_ELT_5_2_2_1' file='xmlerror' value='1855' type='xmlParserErrors'/>
+    <enum name='XML_SCHEMAV_CVC_ELT_5_2_2_2_1' file='xmlerror' value='1856' type='xmlParserErrors'/>
+    <enum name='XML_SCHEMAV_CVC_ELT_5_2_2_2_2' file='xmlerror' value='1857' type='xmlParserErrors'/>
+    <enum name='XML_SCHEMAV_CVC_ELT_6' file='xmlerror' value='1858' type='xmlParserErrors'/>
+    <enum name='XML_SCHEMAV_CVC_ELT_7' file='xmlerror' value='1859' type='xmlParserErrors'/>
     <enum name='XML_SCHEMAV_CVC_ENUMERATION_VALID' file='xmlerror' value='1839' type='xmlParserErrors' info='1839'/>
     <enum name='XML_SCHEMAV_CVC_FACET_VALID' file='xmlerror' value='1828' type='xmlParserErrors' info='1828'/>
     <enum name='XML_SCHEMAV_CVC_FRACTIONDIGITS_VALID' file='xmlerror' value='1837' type='xmlParserErrors' info='1837'/>
@@ -4895,7 +4953,9 @@
     <enum name='XML_SCHEMAV_CVC_TOTALDIGITS_VALID' file='xmlerror' value='1836' type='xmlParserErrors' info='1836'/>
     <enum name='XML_SCHEMAV_CVC_TYPE_3_1_1' file='xmlerror' value='1826' type='xmlParserErrors' info='1826'/>
     <enum name='XML_SCHEMAV_CVC_TYPE_3_1_2' file='xmlerror' value='1827' type='xmlParserErrors' info='1827'/>
+    <enum name='XML_SCHEMAV_DOCUMENT_ELEMENT_MISSING' file='xmlerror' value='1871' type='xmlParserErrors' info='non-W3C'/>
     <enum name='XML_SCHEMAV_ELEMCONT' file='xmlerror' value='1809' type='xmlParserErrors' info='1809'/>
+    <enum name='XML_SCHEMAV_ELEMENT_CONTENT' file='xmlerror' value='1870' type='xmlParserErrors' info='1846 non-W3C'/>
     <enum name='XML_SCHEMAV_EXTRACONTENT' file='xmlerror' value='1812' type='xmlParserErrors' info='1812'/>
     <enum name='XML_SCHEMAV_FACET' file='xmlerror' value='1822' type='xmlParserErrors' info='1822'/>
     <enum name='XML_SCHEMAV_HAVEDEFAULT' file='xmlerror' value='1810' type='xmlParserErrors' info='1810'/>

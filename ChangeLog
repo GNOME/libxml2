@@ -1,3 +1,10 @@
+Tue Aug 31 11:34:04 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am: also produce a tar ball with just the sources
+	* xmllint.c: added --path option and --load-trace options to
+	  xmllint, RFE #147740 based on xsltproc versions
+	* doc/xmllint.* doc/*: updated the man page and rebuilt
+
 Tue Aug 31 10:37:23 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemastypes.c: "" is a valid hexbinary string dixit xmlschema-dev

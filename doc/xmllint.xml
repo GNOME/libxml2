@@ -55,6 +55,8 @@
 	<arg>--noent</arg>
 	<arg>--noout</arg>
 	<arg>--nonet</arg>
+	<arg>--path <replaceable>paths</replaceable></arg>
+	<arg>--load-trace</arg>
 	<arg>--htmlout</arg>
 	<arg>--nowrap</arg>
 	<arg>--valid</arg>
@@ -209,6 +211,44 @@
 	  <simpara>
 	    Suppress output. By default,
 	    <application>xmllint</application> outputs the result tree.
+	  </simpara>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><option>--nonet</option></term>
+	<listitem>
+	  <simpara>
+	    Do not use the Internet to fetch DTD's or entities.
+	  </simpara>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><option>--nonet</option></term>
+	<listitem>
+	  <simpara>
+	    Do not use the Internet to fetch DTD's or entities.
+	  </simpara>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term> <option>--path</option> <replaceable>paths</replaceable></term>
+	<listitem>
+	  <simpara>
+	    Use the list (separated by space or column) of filesystem path
+	specified by <replaceable>paths</replaceable>  to load
+        <acronym>DTDs</acronym> or entities .
+	  </simpara>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><option>--load-trace</option></term>
+	<listitem>
+	  <simpara>
+	    Display to stderr all the documents loaded during the processing.
 	  </simpara>
 	</listitem>
       </varlistentry>

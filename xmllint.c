@@ -190,6 +190,115 @@ static xmlPatternPtr patternc = NULL;
 static int options = 0;
 
 /************************************************************************
+ *									*
+ *		 Entity loading control and customization.		*
+ *									*
+ ************************************************************************/
+#define MAX_PATHS 64
+static xmlChar *paths[MAX_PATHS + 1];
+static int nbpaths = 0;
+static int load_trace = 0;
+
+static
+void parsePath(const xmlChar *path) {
+    const xmlChar *cur;
+
+    if (path == NULL)
+	return;
+    while (*path != 0) {
+	if (nbpaths >= MAX_PATHS) {
+	    fprintf(stderr, "MAX_PATHS reached: too many paths\n");
+	    return;
+	}
+	cur = path;
+	while ((*cur == ' ') || (*cur == ':'))
+	    cur++;
+	path = cur;
+	while ((*cur != 0) && (*cur != ' ') && (*cur != ':'))
+	    cur++;
+	if (cur != path) {
+	    paths[nbpaths] = xmlStrndup(path, cur - path);
+	    if (paths[nbpaths] != NULL)
+		nbpaths++;
+	    path = cur;
+	}
+    }
+}
+
+xmlExternalEntityLoader defaultEntityLoader = NULL;
+
+static xmlParserInputPtr 
+xmllintExternalEntityLoader(const char *URL, const char *ID,
+			     xmlParserCtxtPtr ctxt) {
+    xmlParserInputPtr ret;
+    warningSAXFunc warning = NULL;
+
+    int i;
+    const char *lastsegment = URL;
+    const char *iter = URL;
+
+    if (nbpaths > 0) {
+	while (*iter != 0) {
+	    if (*iter == '/')
+		lastsegment = iter + 1;
+	    iter++;
+	}
+    }
+
+    if ((ctxt != NULL) && (ctxt->sax != NULL)) {
+	warning = ctxt->sax->warning;
+	ctxt->sax->warning = NULL;
+    }
+
+    if (defaultEntityLoader != NULL) {
+	ret = defaultEntityLoader(URL, ID, ctxt);
+	if (ret != NULL) {
+	    if (warning != NULL)
+		ctxt->sax->warning = warning;
+	    if (load_trace) {
+		fprintf \
+			(stderr,
+			 "Loaded URL=\"%s\" ID=\"%s\"\n",
+			 URL ? URL : "(null)",
+			 ID ? ID : "(null)");
+	    }
+	    return(ret);
+	}
+    }
+    for (i = 0;i < nbpaths;i++) {
+	xmlChar *newURL;
+
+	newURL = xmlStrdup((const xmlChar *) paths[i]);
+	newURL = xmlStrcat(newURL, (const xmlChar *) "/");
+	newURL = xmlStrcat(newURL, (const xmlChar *) lastsegment);
+	if (newURL != NULL) {
+	    ret = defaultEntityLoader((const char *)newURL, ID, ctxt);
+	    if (ret != NULL) {
+		if (warning != NULL)
+		    ctxt->sax->warning = warning;
+		if (load_trace) {
+		    fprintf \
+		    	(stderr,
+		    	 "Loaded URL=\"%s\" ID=\"%s\"\n",
+			 newURL,
+		    	 ID ? ID : "(null)");
+		}
+		xmlFree(newURL);
+		return(ret);
+	    }
+	    xmlFree(newURL);
+	}
+    }
+    if (warning != NULL) {
+	ctxt->sax->warning = warning;
+	if (URL != NULL)
+	    warning(ctxt, "failed to load external entity \"%s\"\n", URL);
+	else if (ID != NULL)
+	    warning(ctxt, "failed to load external entity \"%s\"\n", ID);
+    }
+    return(NULL);
+}
+/************************************************************************
  * 									*
  * Memory allocation consumption debugging				*
  * 									*
@@ -1564,6 +1673,8 @@ static void usage(const char *name) {
     printf("\t--recover : output what was parsable on broken XML documents\n");
     printf("\t--noent : substitute entity references by their value\n");
     printf("\t--noout : don't output the result tree\n");
+    printf("\t--path 'paths': provide a set of paths for resources\n");
+    printf("\t--load-trace : print trace of all external entites loaded\n");
     printf("\t--nonet : refuse to fetch DTDs or entities over network\n");
     printf("\t--htmlout : output results as HTML\n");
     printf("\t--nowrap : do not put HTML doc wrapper\n");
@@ -1922,6 +2033,13 @@ main(int argc, char **argv) {
         } else if ((!strcmp(argv[i], "-nonet")) ||
                    (!strcmp(argv[i], "--nonet"))) {
 	    options |= XML_PARSE_NONET;
+	} else if ((!strcmp(argv[i], "-load-trace")) ||
+	           (!strcmp(argv[i], "--load-trace"))) {
+	    load_trace++;
+        } else if ((!strcmp(argv[i], "-path")) ||
+                   (!strcmp(argv[i], "--path"))) {
+	    i++;
+	    parsePath(BAD_CAST argv[i]);
 #ifdef LIBXML_PATTERN_ENABLED
         } else if ((!strcmp(argv[i], "-pattern")) ||
                    (!strcmp(argv[i], "--pattern"))) {
@@ -1967,6 +2085,9 @@ main(int argc, char **argv) {
 	xmlTreeIndentString = indent;
     }
     
+
+    defaultEntityLoader = xmlGetExternalEntityLoader();
+    xmlSetExternalEntityLoader(xmllintExternalEntityLoader);
 
     xmlLineNumbersDefault(1);
     if (loaddtd != 0)
@@ -2074,6 +2195,11 @@ main(int argc, char **argv) {
 	if ((!strcmp(argv[i], "-dtdvalid")) ||
 	         (!strcmp(argv[i], "--dtdvalid"))) {
 	    i++;
+	    continue;
+        } 
+	if ((!strcmp(argv[i], "-path")) ||
+                   (!strcmp(argv[i], "--path"))) {
+            i++;
 	    continue;
         }
 	if ((!strcmp(argv[i], "-dtdvalidfpi")) ||

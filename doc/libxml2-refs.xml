@@ -751,6 +751,7 @@
     <reference name='XML_SCHEMAP_IMPORT_SCHEMA_NOT_URI' href='html/libxml-xmlerror.html#XML_SCHEMAP_IMPORT_SCHEMA_NOT_URI'/>
     <reference name='XML_SCHEMAP_INCLUDE_SCHEMA_NOT_URI' href='html/libxml-xmlerror.html#XML_SCHEMAP_INCLUDE_SCHEMA_NOT_URI'/>
     <reference name='XML_SCHEMAP_INCLUDE_SCHEMA_NO_URI' href='html/libxml-xmlerror.html#XML_SCHEMAP_INCLUDE_SCHEMA_NO_URI'/>
+    <reference name='XML_SCHEMAP_INTERNAL' href='html/libxml-xmlerror.html#XML_SCHEMAP_INTERNAL'/>
     <reference name='XML_SCHEMAP_INTERSECTION_NOT_EXPRESSIBLE' href='html/libxml-xmlerror.html#XML_SCHEMAP_INTERSECTION_NOT_EXPRESSIBLE'/>
     <reference name='XML_SCHEMAP_INVALID_ATTR_COMBINATION' href='html/libxml-xmlerror.html#XML_SCHEMAP_INVALID_ATTR_COMBINATION'/>
     <reference name='XML_SCHEMAP_INVALID_ATTR_INLINE_COMBINATION' href='html/libxml-xmlerror.html#XML_SCHEMAP_INVALID_ATTR_INLINE_COMBINATION'/>
@@ -770,6 +771,7 @@
     <reference name='XML_SCHEMAP_NOTATION_NO_NAME' href='html/libxml-xmlerror.html#XML_SCHEMAP_NOTATION_NO_NAME'/>
     <reference name='XML_SCHEMAP_NOTHING_TO_PARSE' href='html/libxml-xmlerror.html#XML_SCHEMAP_NOTHING_TO_PARSE'/>
     <reference name='XML_SCHEMAP_NOTYPE_NOREF' href='html/libxml-xmlerror.html#XML_SCHEMAP_NOTYPE_NOREF'/>
+    <reference name='XML_SCHEMAP_NOT_DETERMINISTIC' href='html/libxml-xmlerror.html#XML_SCHEMAP_NOT_DETERMINISTIC'/>
     <reference name='XML_SCHEMAP_NOT_SCHEMA' href='html/libxml-xmlerror.html#XML_SCHEMAP_NOT_SCHEMA'/>
     <reference name='XML_SCHEMAP_NO_XMLNS' href='html/libxml-xmlerror.html#XML_SCHEMAP_NO_XMLNS'/>
     <reference name='XML_SCHEMAP_NO_XSI' href='html/libxml-xmlerror.html#XML_SCHEMAP_NO_XSI'/>
@@ -993,13 +995,39 @@
     <reference name='XML_SCHEMAV_ATTRINVALID' href='html/libxml-xmlerror.html#XML_SCHEMAV_ATTRINVALID'/>
     <reference name='XML_SCHEMAV_ATTRUNKNOWN' href='html/libxml-xmlerror.html#XML_SCHEMAV_ATTRUNKNOWN'/>
     <reference name='XML_SCHEMAV_CONSTRUCT' href='html/libxml-xmlerror.html#XML_SCHEMAV_CONSTRUCT'/>
+    <reference name='XML_SCHEMAV_CVC_ATTRIBUTE_1' href='html/libxml-xmlerror.html#XML_SCHEMAV_CVC_ATTRIBUTE_1'/>
+    <reference name='XML_SCHEMAV_CVC_ATTRIBUTE_2' href='html/libxml-xmlerror.html#XML_SCHEMAV_CVC_ATTRIBUTE_2'/>
+    <reference name='XML_SCHEMAV_CVC_ATTRIBUTE_3' href='html/libxml-xmlerror.html#XML_SCHEMAV_CVC_ATTRIBUTE_3'/>
+    <reference name='XML_SCHEMAV_CVC_ATTRIBUTE_4' href='html/libxml-xmlerror.html#XML_SCHEMAV_CVC_ATTRIBUTE_4'/>
     <reference name='XML_SCHEMAV_CVC_COMPLEX_TYPE_2_1' href='html/libxml-xmlerror.html#XML_SCHEMAV_CVC_COMPLEX_TYPE_2_1'/>
     <reference name='XML_SCHEMAV_CVC_COMPLEX_TYPE_2_2' href='html/libxml-xmlerror.html#XML_SCHEMAV_CVC_COMPLEX_TYPE_2_2'/>
     <reference name='XML_SCHEMAV_CVC_COMPLEX_TYPE_2_3' href='html/libxml-xmlerror.html#XML_SCHEMAV_CVC_COMPLEX_TYPE_2_3'/>
     <reference name='XML_SCHEMAV_CVC_COMPLEX_TYPE_2_4' href='html/libxml-xmlerror.html#XML_SCHEMAV_CVC_COMPLEX_TYPE_2_4'/>
+    <reference name='XML_SCHEMAV_CVC_COMPLEX_TYPE_3_1' href='html/libxml-xmlerror.html#XML_SCHEMAV_CVC_COMPLEX_TYPE_3_1'/>
+    <reference name='XML_SCHEMAV_CVC_COMPLEX_TYPE_3_2_1' href='html/libxml-xmlerror.html#XML_SCHEMAV_CVC_COMPLEX_TYPE_3_2_1'/>
+    <reference name='XML_SCHEMAV_CVC_COMPLEX_TYPE_3_2_2' href='html/libxml-xmlerror.html#XML_SCHEMAV_CVC_COMPLEX_TYPE_3_2_2'/>
+    <reference name='XML_SCHEMAV_CVC_COMPLEX_TYPE_4' href='html/libxml-xmlerror.html#XML_SCHEMAV_CVC_COMPLEX_TYPE_4'/>
+    <reference name='XML_SCHEMAV_CVC_COMPLEX_TYPE_5_1' href='html/libxml-xmlerror.html#XML_SCHEMAV_CVC_COMPLEX_TYPE_5_1'/>
+    <reference name='XML_SCHEMAV_CVC_COMPLEX_TYPE_5_2' href='html/libxml-xmlerror.html#XML_SCHEMAV_CVC_COMPLEX_TYPE_5_2'/>
     <reference name='XML_SCHEMAV_CVC_DATATYPE_VALID_1_2_1' href='html/libxml-xmlerror.html#XML_SCHEMAV_CVC_DATATYPE_VALID_1_2_1'/>
     <reference name='XML_SCHEMAV_CVC_DATATYPE_VALID_1_2_2' href='html/libxml-xmlerror.html#XML_SCHEMAV_CVC_DATATYPE_VALID_1_2_2'/>
     <reference name='XML_SCHEMAV_CVC_DATATYPE_VALID_1_2_3' href='html/libxml-xmlerror.html#XML_SCHEMAV_CVC_DATATYPE_VALID_1_2_3'/>
+    <reference name='XML_SCHEMAV_CVC_ELT_1' href='html/libxml-xmlerror.html#XML_SCHEMAV_CVC_ELT_1'/>
+    <reference name='XML_SCHEMAV_CVC_ELT_2' href='html/libxml-xmlerror.html#XML_SCHEMAV_CVC_ELT_2'/>
+    <reference name='XML_SCHEMAV_CVC_ELT_3_1' href='html/libxml-xmlerror.html#XML_SCHEMAV_CVC_ELT_3_1'/>
+    <reference name='XML_SCHEMAV_CVC_ELT_3_2_1' href='html/libxml-xmlerror.html#XML_SCHEMAV_CVC_ELT_3_2_1'/>
+    <reference name='XML_SCHEMAV_CVC_ELT_3_2_2' href='html/libxml-xmlerror.html#XML_SCHEMAV_CVC_ELT_3_2_2'/>
+    <reference name='XML_SCHEMAV_CVC_ELT_4_1' href='html/libxml-xmlerror.html#XML_SCHEMAV_CVC_ELT_4_1'/>
+    <reference name='XML_SCHEMAV_CVC_ELT_4_2' href='html/libxml-xmlerror.html#XML_SCHEMAV_CVC_ELT_4_2'/>
+    <reference name='XML_SCHEMAV_CVC_ELT_4_3' href='html/libxml-xmlerror.html#XML_SCHEMAV_CVC_ELT_4_3'/>
+    <reference name='XML_SCHEMAV_CVC_ELT_5_1_1' href='html/libxml-xmlerror.html#XML_SCHEMAV_CVC_ELT_5_1_1'/>
+    <reference name='XML_SCHEMAV_CVC_ELT_5_1_2' href='html/libxml-xmlerror.html#XML_SCHEMAV_CVC_ELT_5_1_2'/>
+    <reference name='XML_SCHEMAV_CVC_ELT_5_2_1' href='html/libxml-xmlerror.html#XML_SCHEMAV_CVC_ELT_5_2_1'/>
+    <reference name='XML_SCHEMAV_CVC_ELT_5_2_2_1' href='html/libxml-xmlerror.html#XML_SCHEMAV_CVC_ELT_5_2_2_1'/>
+    <reference name='XML_SCHEMAV_CVC_ELT_5_2_2_2_1' href='html/libxml-xmlerror.html#XML_SCHEMAV_CVC_ELT_5_2_2_2_1'/>
+    <reference name='XML_SCHEMAV_CVC_ELT_5_2_2_2_2' href='html/libxml-xmlerror.html#XML_SCHEMAV_CVC_ELT_5_2_2_2_2'/>
+    <reference name='XML_SCHEMAV_CVC_ELT_6' href='html/libxml-xmlerror.html#XML_SCHEMAV_CVC_ELT_6'/>
+    <reference name='XML_SCHEMAV_CVC_ELT_7' href='html/libxml-xmlerror.html#XML_SCHEMAV_CVC_ELT_7'/>
     <reference name='XML_SCHEMAV_CVC_ENUMERATION_VALID' href='html/libxml-xmlerror.html#XML_SCHEMAV_CVC_ENUMERATION_VALID'/>
     <reference name='XML_SCHEMAV_CVC_FACET_VALID' href='html/libxml-xmlerror.html#XML_SCHEMAV_CVC_FACET_VALID'/>
     <reference name='XML_SCHEMAV_CVC_FRACTIONDIGITS_VALID' href='html/libxml-xmlerror.html#XML_SCHEMAV_CVC_FRACTIONDIGITS_VALID'/>
@@ -1014,7 +1042,9 @@
     <reference name='XML_SCHEMAV_CVC_TOTALDIGITS_VALID' href='html/libxml-xmlerror.html#XML_SCHEMAV_CVC_TOTALDIGITS_VALID'/>
     <reference name='XML_SCHEMAV_CVC_TYPE_3_1_1' href='html/libxml-xmlerror.html#XML_SCHEMAV_CVC_TYPE_3_1_1'/>
     <reference name='XML_SCHEMAV_CVC_TYPE_3_1_2' href='html/libxml-xmlerror.html#XML_SCHEMAV_CVC_TYPE_3_1_2'/>
+    <reference name='XML_SCHEMAV_DOCUMENT_ELEMENT_MISSING' href='html/libxml-xmlerror.html#XML_SCHEMAV_DOCUMENT_ELEMENT_MISSING'/>
     <reference name='XML_SCHEMAV_ELEMCONT' href='html/libxml-xmlerror.html#XML_SCHEMAV_ELEMCONT'/>
+    <reference name='XML_SCHEMAV_ELEMENT_CONTENT' href='html/libxml-xmlerror.html#XML_SCHEMAV_ELEMENT_CONTENT'/>
     <reference name='XML_SCHEMAV_EXTRACONTENT' href='html/libxml-xmlerror.html#XML_SCHEMAV_EXTRACONTENT'/>
     <reference name='XML_SCHEMAV_FACET' href='html/libxml-xmlerror.html#XML_SCHEMAV_FACET'/>
     <reference name='XML_SCHEMAV_HAVEDEFAULT' href='html/libxml-xmlerror.html#XML_SCHEMAV_HAVEDEFAULT'/>
@@ -3893,6 +3923,7 @@
       <ref name='XML_SCHEMAP_IMPORT_SCHEMA_NOT_URI'/>
       <ref name='XML_SCHEMAP_INCLUDE_SCHEMA_NOT_URI'/>
       <ref name='XML_SCHEMAP_INCLUDE_SCHEMA_NO_URI'/>
+      <ref name='XML_SCHEMAP_INTERNAL'/>
       <ref name='XML_SCHEMAP_INTERSECTION_NOT_EXPRESSIBLE'/>
       <ref name='XML_SCHEMAP_INVALID_ATTR_COMBINATION'/>
       <ref name='XML_SCHEMAP_INVALID_ATTR_INLINE_COMBINATION'/>
@@ -3912,6 +3943,7 @@
       <ref name='XML_SCHEMAP_NOTATION_NO_NAME'/>
       <ref name='XML_SCHEMAP_NOTHING_TO_PARSE'/>
       <ref name='XML_SCHEMAP_NOTYPE_NOREF'/>
+      <ref name='XML_SCHEMAP_NOT_DETERMINISTIC'/>
       <ref name='XML_SCHEMAP_NOT_SCHEMA'/>
       <ref name='XML_SCHEMAP_NO_XMLNS'/>
       <ref name='XML_SCHEMAP_NO_XSI'/>
@@ -4135,13 +4167,39 @@
       <ref name='XML_SCHEMAV_ATTRINVALID'/>
       <ref name='XML_SCHEMAV_ATTRUNKNOWN'/>
       <ref name='XML_SCHEMAV_CONSTRUCT'/>
+      <ref name='XML_SCHEMAV_CVC_ATTRIBUTE_1'/>
+      <ref name='XML_SCHEMAV_CVC_ATTRIBUTE_2'/>
+      <ref name='XML_SCHEMAV_CVC_ATTRIBUTE_3'/>
+      <ref name='XML_SCHEMAV_CVC_ATTRIBUTE_4'/>
       <ref name='XML_SCHEMAV_CVC_COMPLEX_TYPE_2_1'/>
       <ref name='XML_SCHEMAV_CVC_COMPLEX_TYPE_2_2'/>
       <ref name='XML_SCHEMAV_CVC_COMPLEX_TYPE_2_3'/>
       <ref name='XML_SCHEMAV_CVC_COMPLEX_TYPE_2_4'/>
+      <ref name='XML_SCHEMAV_CVC_COMPLEX_TYPE_3_1'/>
+      <ref name='XML_SCHEMAV_CVC_COMPLEX_TYPE_3_2_1'/>
+      <ref name='XML_SCHEMAV_CVC_COMPLEX_TYPE_3_2_2'/>
+      <ref name='XML_SCHEMAV_CVC_COMPLEX_TYPE_4'/>
+      <ref name='XML_SCHEMAV_CVC_COMPLEX_TYPE_5_1'/>
+      <ref name='XML_SCHEMAV_CVC_COMPLEX_TYPE_5_2'/>
       <ref name='XML_SCHEMAV_CVC_DATATYPE_VALID_1_2_1'/>
       <ref name='XML_SCHEMAV_CVC_DATATYPE_VALID_1_2_2'/>
       <ref name='XML_SCHEMAV_CVC_DATATYPE_VALID_1_2_3'/>
+      <ref name='XML_SCHEMAV_CVC_ELT_1'/>
+      <ref name='XML_SCHEMAV_CVC_ELT_2'/>
+      <ref name='XML_SCHEMAV_CVC_ELT_3_1'/>
+      <ref name='XML_SCHEMAV_CVC_ELT_3_2_1'/>
+      <ref name='XML_SCHEMAV_CVC_ELT_3_2_2'/>
+      <ref name='XML_SCHEMAV_CVC_ELT_4_1'/>
+      <ref name='XML_SCHEMAV_CVC_ELT_4_2'/>
+      <ref name='XML_SCHEMAV_CVC_ELT_4_3'/>
+      <ref name='XML_SCHEMAV_CVC_ELT_5_1_1'/>
+      <ref name='XML_SCHEMAV_CVC_ELT_5_1_2'/>
+      <ref name='XML_SCHEMAV_CVC_ELT_5_2_1'/>
+      <ref name='XML_SCHEMAV_CVC_ELT_5_2_2_1'/>
+      <ref name='XML_SCHEMAV_CVC_ELT_5_2_2_2_1'/>
+      <ref name='XML_SCHEMAV_CVC_ELT_5_2_2_2_2'/>
+      <ref name='XML_SCHEMAV_CVC_ELT_6'/>
+      <ref name='XML_SCHEMAV_CVC_ELT_7'/>
       <ref name='XML_SCHEMAV_CVC_ENUMERATION_VALID'/>
       <ref name='XML_SCHEMAV_CVC_FACET_VALID'/>
       <ref name='XML_SCHEMAV_CVC_FRACTIONDIGITS_VALID'/>
@@ -4156,7 +4214,9 @@
       <ref name='XML_SCHEMAV_CVC_TOTALDIGITS_VALID'/>
       <ref name='XML_SCHEMAV_CVC_TYPE_3_1_1'/>
       <ref name='XML_SCHEMAV_CVC_TYPE_3_1_2'/>
+      <ref name='XML_SCHEMAV_DOCUMENT_ELEMENT_MISSING'/>
       <ref name='XML_SCHEMAV_ELEMCONT'/>
+      <ref name='XML_SCHEMAV_ELEMENT_CONTENT'/>
       <ref name='XML_SCHEMAV_EXTRACONTENT'/>
       <ref name='XML_SCHEMAV_FACET'/>
       <ref name='XML_SCHEMAV_HAVEDEFAULT'/>
@@ -11585,6 +11645,7 @@
       <ref name='XML_SCHEMAP_IMPORT_SCHEMA_NOT_URI'/>
       <ref name='XML_SCHEMAP_INCLUDE_SCHEMA_NOT_URI'/>
       <ref name='XML_SCHEMAP_INCLUDE_SCHEMA_NO_URI'/>
+      <ref name='XML_SCHEMAP_INTERNAL'/>
       <ref name='XML_SCHEMAP_INTERSECTION_NOT_EXPRESSIBLE'/>
       <ref name='XML_SCHEMAP_INVALID_ATTR_COMBINATION'/>
       <ref name='XML_SCHEMAP_INVALID_ATTR_INLINE_COMBINATION'/>
@@ -11604,6 +11665,7 @@
       <ref name='XML_SCHEMAP_NOTATION_NO_NAME'/>
       <ref name='XML_SCHEMAP_NOTHING_TO_PARSE'/>
       <ref name='XML_SCHEMAP_NOTYPE_NOREF'/>
+      <ref name='XML_SCHEMAP_NOT_DETERMINISTIC'/>
       <ref name='XML_SCHEMAP_NOT_SCHEMA'/>
       <ref name='XML_SCHEMAP_NO_XMLNS'/>
       <ref name='XML_SCHEMAP_NO_XSI'/>
@@ -11692,13 +11754,39 @@
       <ref name='XML_SCHEMAV_ATTRINVALID'/>
       <ref name='XML_SCHEMAV_ATTRUNKNOWN'/>
       <ref name='XML_SCHEMAV_CONSTRUCT'/>
+      <ref name='XML_SCHEMAV_CVC_ATTRIBUTE_1'/>
+      <ref name='XML_SCHEMAV_CVC_ATTRIBUTE_2'/>
+      <ref name='XML_SCHEMAV_CVC_ATTRIBUTE_3'/>
+      <ref name='XML_SCHEMAV_CVC_ATTRIBUTE_4'/>
       <ref name='XML_SCHEMAV_CVC_COMPLEX_TYPE_2_1'/>
       <ref name='XML_SCHEMAV_CVC_COMPLEX_TYPE_2_2'/>
       <ref name='XML_SCHEMAV_CVC_COMPLEX_TYPE_2_3'/>
       <ref name='XML_SCHEMAV_CVC_COMPLEX_TYPE_2_4'/>
+      <ref name='XML_SCHEMAV_CVC_COMPLEX_TYPE_3_1'/>
+      <ref name='XML_SCHEMAV_CVC_COMPLEX_TYPE_3_2_1'/>
+      <ref name='XML_SCHEMAV_CVC_COMPLEX_TYPE_3_2_2'/>
+      <ref name='XML_SCHEMAV_CVC_COMPLEX_TYPE_4'/>
+      <ref name='XML_SCHEMAV_CVC_COMPLEX_TYPE_5_1'/>
+      <ref name='XML_SCHEMAV_CVC_COMPLEX_TYPE_5_2'/>
       <ref name='XML_SCHEMAV_CVC_DATATYPE_VALID_1_2_1'/>
       <ref name='XML_SCHEMAV_CVC_DATATYPE_VALID_1_2_2'/>
       <ref name='XML_SCHEMAV_CVC_DATATYPE_VALID_1_2_3'/>
+      <ref name='XML_SCHEMAV_CVC_ELT_1'/>
+      <ref name='XML_SCHEMAV_CVC_ELT_2'/>
+      <ref name='XML_SCHEMAV_CVC_ELT_3_1'/>
+      <ref name='XML_SCHEMAV_CVC_ELT_3_2_1'/>
+      <ref name='XML_SCHEMAV_CVC_ELT_3_2_2'/>
+      <ref name='XML_SCHEMAV_CVC_ELT_4_1'/>
+      <ref name='XML_SCHEMAV_CVC_ELT_4_2'/>
+      <ref name='XML_SCHEMAV_CVC_ELT_4_3'/>
+      <ref name='XML_SCHEMAV_CVC_ELT_5_1_1'/>
+      <ref name='XML_SCHEMAV_CVC_ELT_5_1_2'/>
+      <ref name='XML_SCHEMAV_CVC_ELT_5_2_1'/>
+      <ref name='XML_SCHEMAV_CVC_ELT_5_2_2_1'/>
+      <ref name='XML_SCHEMAV_CVC_ELT_5_2_2_2_1'/>
+      <ref name='XML_SCHEMAV_CVC_ELT_5_2_2_2_2'/>
+      <ref name='XML_SCHEMAV_CVC_ELT_6'/>
+      <ref name='XML_SCHEMAV_CVC_ELT_7'/>
       <ref name='XML_SCHEMAV_CVC_ENUMERATION_VALID'/>
       <ref name='XML_SCHEMAV_CVC_FACET_VALID'/>
       <ref name='XML_SCHEMAV_CVC_FRACTIONDIGITS_VALID'/>
@@ -11713,7 +11801,9 @@
       <ref name='XML_SCHEMAV_CVC_TOTALDIGITS_VALID'/>
       <ref name='XML_SCHEMAV_CVC_TYPE_3_1_1'/>
       <ref name='XML_SCHEMAV_CVC_TYPE_3_1_2'/>
+      <ref name='XML_SCHEMAV_DOCUMENT_ELEMENT_MISSING'/>
       <ref name='XML_SCHEMAV_ELEMCONT'/>
+      <ref name='XML_SCHEMAV_ELEMENT_CONTENT'/>
       <ref name='XML_SCHEMAV_EXTRACONTENT'/>
       <ref name='XML_SCHEMAV_FACET'/>
       <ref name='XML_SCHEMAV_HAVEDEFAULT'/>

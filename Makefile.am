@@ -978,11 +978,14 @@ dist-hook: cleanup libxml2.spec
 	-cp libxml2.spec $(distdir)
 	(cd $(srcdir) ; tar -cf - --exclude CVS win32 macos vms test result SAXresult ) | (cd $(distdir); tar xf -)
 
+dist-source: distdir
+	$(AMTAR) -chof - --exclude test --exclude result $(distdir) | GZIP=$(GZIP_ENV) gzip -c >`echo "$(distdir)" | sed "s+libxml2+libxml2-sources+"`.tar.gz
+
 cleantar:
 	@(rm -f libxml*.tar.gz COPYING.LIB)
 
 rpm: cleanup cleantar
-	@(unset CDPATH ; $(MAKE) dist && rpmbuild -ta $(distdir).tar.gz)
+	@(unset CDPATH ; $(MAKE) dist-source dist && rpmbuild -ta $(distdir).tar.gz)
 
 ## We create xml2Conf.sh here and not from configure because we want
 ## to get the paths expanded correctly.  Macros like srcdir are given

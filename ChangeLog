@@ -1,3 +1,10 @@
+Wed Sep 17 01:07:56 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* dict.c include/libxml/dict.h: do string allocations in large
+	  pools, allowing to find if a string pertain to a dict quickly
+	* xmllint.c: fix --stream --repeat --timing
+	* Makefile.am: the testThreads run output should be seen.
+
 Mon Sep 15 16:46:28 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* SAX2.c include/libxml/parser.h: starting work on reusing the

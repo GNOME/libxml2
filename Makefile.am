@@ -566,10 +566,10 @@ Threadtests : testThreads$(EXEEXT)
 	@echo "##"
 	@echo "## Threaded regression tests"
 	@echo "##"
-	-@($(CHECKER) $(top_builddir)/testThreads ; \
+	-($(CHECKER) $(top_builddir)/testThreads ; \
 	   grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";)
 
-Readertests : testReader$(EXEEXT)
+Readertests : xmllint$(EXEEXT)
 	@(echo > .memdump)
 	@echo "##"
 	@echo "## Reader regression tests"

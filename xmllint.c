@@ -618,7 +618,7 @@ static void streamFile(char *filename) {
 	    xmlTextReaderSetParserProp(reader, XML_PARSER_LOADDTD, 1);
 #ifdef LIBXML_SCHEMAS_ENABLED
 	if (relaxng != NULL) {
-	    if (timing) {
+	    if ((timing) && (!repeat)) {
 		startTimer();
 	    }
 	    ret = xmlTextReaderRelaxNGValidate(reader, relaxng);
@@ -627,7 +627,7 @@ static void streamFile(char *filename) {
 			"Relax-NG schema %s failed to compile\n", relaxng);
 		relaxng = NULL;
 	    }
-	    if (timing) {
+	    if ((timing) && (!repeat)) {
 		endTimer("Compiling the schemas");
 	    }
 	}
@@ -636,7 +636,7 @@ static void streamFile(char *filename) {
 	/*
 	 * Process all nodes in sequence
 	 */
-	if (timing) {
+	if ((timing) && (!repeat)) {
 	    startTimer();
 	}
 	ret = xmlTextReaderRead(reader);
@@ -645,7 +645,7 @@ static void streamFile(char *filename) {
 		processNode(reader);
 	    ret = xmlTextReaderRead(reader);
 	}
-	if (timing) {
+	if ((timing) && (!repeat)) {
 #ifdef LIBXML_SCHEMAS_ENABLED
 	    if ((valid) || (relaxng != NULL))
 #else

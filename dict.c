@@ -40,11 +40,21 @@ typedef struct _xmlDictEntry xmlDictEntry;
 typedef xmlDictEntry *xmlDictEntryPtr;
 struct _xmlDictEntry {
     struct _xmlDictEntry *next;
-    xmlChar *name;
+    const xmlChar *name;
     int len;
     int valid;
 };
 
+typedef struct _xmlDictStrings xmlDictStrings;
+typedef xmlDictStrings *xmlDictStringsPtr;
+struct _xmlDictStrings {
+    xmlDictStringsPtr next;
+    xmlChar *free;
+    xmlChar *end;
+    int size;
+    int nbStrings;
+    xmlChar array[1];
+};
 /*
  * The entire dictionnary
  */
@@ -52,7 +62,57 @@ struct _xmlDict {
     struct _xmlDictEntry *dict;
     int size;
     int nbElems;
+    xmlDictStringsPtr strings;
 };
+
+/*
+ * xmlDictAddString:
+ * @dict: the dictionnary
+ * @name: the name of the userdata
+ * @len: the length of the name, if -1 it is recomputed
+ *
+ * Add the string to the array[s]
+ *
+ * Returns the pointer of the local string, or NULL in case of error.
+ */
+static const xmlChar *
+xmlDictAddString(xmlDictPtr dict, const xmlChar *name, int namelen) {
+    xmlDictStringsPtr pool;
+    const xmlChar *ret;
+    int size = 0; /* + sizeof(_xmlDictStrings) == 1024 */
+
+    pool = dict->strings;
+    while (pool != NULL) {
+	if (pool->end - pool->free > namelen)
+	    goto found_pool;
+	if (pool->size > size) size = pool->size;
+	pool = pool->next;
+    }
+    /*
+     * Not found, need to allocate
+     */
+    if (pool == NULL) {
+        if (size == 0) size = 1000;
+	else size *= 4; /* exponential growth */
+        if (size < 4 * namelen) 
+	    size = 4 * namelen; /* just in case ! */
+	pool = (xmlDictStringsPtr) xmlMalloc(sizeof(xmlDictStrings) + size);
+	if (pool == NULL)
+	    return(NULL);
+	pool->size = size;
+	pool->nbStrings = 0;
+	pool->free = &pool->array[0];
+	pool->end = &pool->array[size];
+	pool->next = dict->strings;
+	dict->strings = pool;
+    }
+found_pool:
+    ret = pool->free;
+    memcpy(pool->free, name, namelen);
+    pool->free += namelen;
+    *(pool->free++) = 0;
+    return(ret);
+}
 
 /*
  * xmlDictComputeKey:
@@ -110,6 +170,7 @@ xmlDictCreate(void) {
         dict->size = MIN_DICT_SIZE;
 	dict->nbElems = 0;
         dict->dict = xmlMalloc(MIN_DICT_SIZE * sizeof(xmlDictEntry));
+	dict->strings = NULL;
         if (dict->dict) {
   	    memset(dict->dict, 0, MIN_DICT_SIZE * sizeof(xmlDictEntry));
   	    return(dict);
@@ -226,6 +287,7 @@ xmlDictFree(xmlDictPtr dict) {
     xmlDictEntryPtr iter;
     xmlDictEntryPtr next;
     int inside_dict = 0;
+    xmlDictStringsPtr pool, nextp;
 
     if (dict == NULL)
 	return;
@@ -237,8 +299,6 @@ xmlDictFree(xmlDictPtr dict) {
 	    inside_dict = 1;
 	    while (iter) {
 		next = iter->next;
-		if (iter->name)
-		    xmlFree(iter->name);
 		if (!inside_dict)
 		    xmlFree(iter);
 		dict->nbElems--;
@@ -248,6 +308,12 @@ xmlDictFree(xmlDictPtr dict) {
 	    inside_dict = 0;
 	}
 	xmlFree(dict->dict);
+    }
+    pool = dict->strings;
+    while (pool != NULL) {
+        nextp = pool->next;
+	xmlFree(pool);
+	pool = nextp;
     }
     xmlFree(dict);
 }
@@ -294,6 +360,9 @@ xmlDictLookup(xmlDictPtr dict, const xmlChar *name, int len) {
 	    return(insert->name);
     }
 
+    ret = xmlDictAddString(dict, name, len);
+    if (ret == NULL)
+        return(NULL);
     if (insert == NULL) {
 	entry = &(dict->dict[key]);
     } else {
@@ -301,8 +370,7 @@ xmlDictLookup(xmlDictPtr dict, const xmlChar *name, int len) {
 	if (entry == NULL)
 	     return(NULL);
     }
-
-    ret = entry->name = xmlStrndup(name, len);
+    entry->name = ret;
     entry->len = len;
     entry->next = NULL;
     entry->valid = 1;
@@ -321,6 +389,30 @@ xmlDictLookup(xmlDictPtr dict, const xmlChar *name, int len) {
     return(ret);
 }
 
+/**
+ * xmlDictOwns:
+ * @dict: the dictionnary
+ * @str: the string
+ *
+ * check if a string is owned by the disctionary
+ *
+ * Returns 1 if true, 0 if false and -1 in case of error
+ * -1 in case of error
+ */
+int
+xmlDictOwns(xmlDictPtr dict, const xmlChar *str) {
+    xmlDictStringsPtr pool;
+
+    if ((dict == NULL) || (str == NULL))
+	return(-1);
+    pool = dict->strings;
+    while (pool != NULL) {
+        if ((str >= pool->array) && (str <= pool->free))
+	    return(1);
+	pool = pool->next;
+    }
+    return(0);
+}
 /**
  * xmlDictSize:
  * @dict: the dictionnary

@@ -192,6 +192,7 @@ dnl
 PYTHON=
 PYTHON_VERSION=
 PYTHON_INCLUDES=
+PYTHON_SITE_PACKAGES=
 AC_ARG_WITH(python, [  --with-python[=DIR]    Build Python bindings if found])
 if test "$with_python" != "no" ; then
     if test -x "$with_python/bin/python"
@@ -208,17 +209,21 @@ if test "$with_python" != "no" ; then
     fi
     if test "$PYTHON_VERSION" != ""
     then
-	if test -r $with_python/include/python$PYTHON_VERSION/Python.h
+	if test -r $with_python/include/python$PYTHON_VERSION/Python.h -a \
+	   -d $with_python/lib/python$PYTHON_VERSION/site-packages
 	then
 	    PYTHON_INCLUDES=$with_python/include/python$PYTHON_VERSION
+	    PYTHON_SITE_PACKAGES=$with_python/lib/python$PYTHON_VERSION/site-packages
 	else
 	    if test -r $prefix/include/python$PYTHON_VERSION/Python.h
 	    then
-	        PYTHON_INCLUDES=$prefix/include/python$PYTHON_VERSION
+	        PYTHON_INCLUDES='$(prefix)/include/python$(PYTHON_VERSION)'
+		PYTHON_SITE_PACKAGES='$(prefix)/lib/python$(PYTHON_VERSION)/site-packages'
 	    else
 		if test -r /usr/include/python$PYTHON_VERSION/Python.h
 		then
 		    PYTHON_INCLUDES=/usr/include/python$PYTHON_VERSION
+		    PYTHON_SITE_PACKAGES=/usr/lib/python$PYTHON_VERSION/site-packages
 		else
 		    echo could not find python$PYTHON_VERSION/Python.h
 		fi
@@ -528,9 +533,10 @@ AC_SUBST(HAVE_ISINF)
 AC_SUBST(PYTHON)
 AC_SUBST(PYTHON_VERSION)
 AC_SUBST(PYTHON_INCLUDES)
+AC_SUBST(PYTHON_SITE_PACKAGES)
 
 AC_SUBST(M_LIBS)
 AC_SUBST(RDL_LIBS)
 
-AC_OUTPUT(libxml.spec Makefile include/Makefile include/libxml/Makefile doc/Makefile example/Makefile python/Makefile include/libxml/xmlversion.h include/libxml/xmlwin32version.h xml2-config libxml-2.0.pc xml2Conf.sh)
+AC_OUTPUT(libxml.spec Makefile include/Makefile include/libxml/Makefile doc/Makefile example/Makefile python/Makefile python/tests/Makefile include/libxml/xmlversion.h include/libxml/xmlwin32version.h xml2-config libxml-2.0.pc xml2Conf.sh)
 

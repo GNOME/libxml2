@@ -1,3 +1,16 @@
+Sat Feb  2 10:13:52 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in libxml.spec.in python/Makefile.am python/TODO
+	  python/generator.py python/libxml2class.txt: added more informations
+	  in the libxml2-python package including docs. Slightly changed
+	  the class hierarchy
+	* python/tests/*: added basic regression tests infrastructure too
+
+Fri Feb  1 23:11:58 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in libxml.spec.in example/Makefile.am python/Makefile.am:
+	  added libxml2-python as part of the packages installed
+
 Fri Feb  1 18:48:19 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* python/Makefile.am python/generator.py python/libxml.c

@@ -6,6 +6,7 @@ License: LGPL
 Group: Development/Libraries
 Source: ftp://xmlsoft.org/libxml2-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
+BuildRequires: python python-devel
 URL: http://xmlsoft.org/
 Prefix: %{_prefix}
 Docdir: %{_docdir}
@@ -38,6 +39,21 @@ to select subnodes or ranges. A flexible Input/Output mechanism is
 available, with existing HTTP and FTP modules and combined to an
 URI library.
 
+%package python
+Summary: Python bindings for the libxml2 library
+Group: Development/Libraries
+Requires: libxml2 = %{version}
+Requires: python
+
+%description python
+The libxml2-python package contains a module that permits applications
+written in the Python programming language to use the interface
+supplied by the libxml2 library to manipulate XML files.
+
+This library allows to manipulate XML files. It includes support 
+to read, modify and write XML and HTML files. There is DTDs support
+this includes parsing and validation even with complex DTDs, either
+at parse time or later once the document has been modified.
 %prep
 %setup -q
 
@@ -103,8 +119,19 @@ rm -rf $RPM_BUILD_ROOT
 %{prefix}/bin/xml2-config
 %{prefix}/share/aclocal/libxml.m4
 %{prefix}/lib/pkgconfig/libxml-2.0.pc
+%files python
+%defattr(-, root, root)
+
+%{prefix}/lib/python*/site-packages/libxml2.py
+%{prefix}/lib/python*/site-packages/_libxml.so
+%doc python/TODO
+%doc python/libxml2class.txt
+%doc python/tests/*.py
 
 %changelog
+* Fri Feb  1 2002 Daniel Veillard <veillard@redhat.com>
+
+- Added the python package
 
 * Sun Nov  4 2001 Daniel Veillard <veillard@redhat.com>
 

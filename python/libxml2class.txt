@@ -1,0 +1,330 @@
+          Generated Classes for libxml2-python
+
+#
+# Global functions of the module
+#
+
+
+# functions from module HTMLparser
+htmlHandleOmittedElem()
+htmlIsScriptAttribute()
+htmlParseDoc()
+htmlParseFile()
+
+# functions from module HTMLtree
+htmlNewDoc()
+htmlNewDocNoDtD()
+
+# functions from module catalog
+catalogAdd()
+catalogCleanup()
+catalogConvert()
+catalogGetPublic()
+catalogGetSystem()
+catalogRemove()
+catalogResolve()
+catalogResolvePublic()
+catalogResolveSystem()
+catalogResolveURI()
+catalogSetDebug()
+initializeCatalog()
+loadCatalog()
+loadCatalogs()
+parseCatalogFile()
+
+# functions from module debugXML
+shellPrintXPathError()
+
+# functions from module encoding
+UTF8Strlen()
+UTF8Strloc()
+UTF8Strndup()
+UTF8Strpos()
+UTF8Strsize()
+UTF8Strsub()
+addEncodingAlias()
+checkUTF8()
+cleanupCharEncodingHandlers()
+cleanupEncodingAliases()
+delEncodingAlias()
+encodingAlias()
+initCharEncodingHandlers()
+
+# functions from module entities
+cleanupPredefinedEntities()
+initializePredefinedEntities()
+predefinedEntity()
+
+# functions from module nanoftp
+nanoFTPCleanup()
+nanoFTPInit()
+nanoFTPProxy()
+nanoFTPScanProxy()
+
+# functions from module nanohttp
+nanoHTTPCleanup()
+nanoHTTPInit()
+nanoHTTPScanProxy()
+
+# functions from module parser
+cleanupParser()
+defaultSAXHandlerInit()
+htmlDefaultSAXHandlerInit()
+initParser()
+keepBlanksDefault()
+lineNumbersDefault()
+parseDTD()
+parseDoc()
+parseEntity()
+parseFile()
+parseMemory()
+pedanticParserDefault()
+recoverDoc()
+recoverFile()
+recoverMemory()
+substituteEntitiesDefault()
+
+# functions from module parserInternals
+checkLanguageID()
+copyChar()
+copyCharMultiByte()
+htmlInitAutoClose()
+isBaseChar()
+isBlank()
+isChar()
+isCombining()
+isDigit()
+isExtender()
+isIdeographic()
+isLetter()
+isPubidChar()
+
+# functions from module tree
+compressMode()
+newComment()
+newDoc()
+newPI()
+newText()
+newTextLen()
+setCompressMode()
+
+# functions from module uri
+URIEscape()
+URIEscapeStr()
+URIUnescapeString()
+buildURI()
+normalizeURIPath()
+
+# functions from module xmlIO
+cleanupInputCallbacks()
+cleanupOutputCallbacks()
+parserGetDirectory()
+registerDefaultInputCallbacks()
+registerDefaultOutputCallbacks()
+registerHTTPPostCallbacks()
+
+# functions from module xmlversion
+checkVersion()
+
+
+#
+# Set of classes of the module
+#
+
+Class xpathContext()
+
+    # functions from module xpath
+    xpathEval()
+    xpathEvalExpression()
+
+    # functions from module xpathInternals
+    xpathFreeContext()
+    xpathNsLookup()
+    xpathRegisterAllFunctions()
+    xpathRegisterNs()
+    xpathRegisteredFuncsCleanup()
+    xpathRegisteredNsCleanup()
+    xpathRegisteredVariablesCleanup()
+    xpathVariableLookup()
+    xpathVariableLookupNS()
+
+
+Class xmlDoc(xmlNode)
+
+    # functions from module HTMLparser
+    htmlAutoCloseTag()
+    htmlIsAutoClosed()
+
+    # functions from module HTMLtree
+    htmlGetMetaEncoding()
+    htmlSaveFile()
+    htmlSaveFileEnc()
+    htmlSaveFileFormat()
+    htmlSetMetaEncoding()
+
+    # functions from module entities
+    addDocEntity()
+    addDtdEntity()
+    docEntity()
+    dtdEntity()
+    encodeEntities()
+    encodeEntitiesReentrant()
+    encodeSpecialChars()
+    parameterEntity()
+
+    # functions from module tree
+    copyDoc()
+    createIntSubset()
+    docCompressMode()
+    freeDoc()
+    getRootElement()
+    intSubset()
+    newCDataBlock()
+    newCharRef()
+    newDocComment()
+    newDocFragment()
+    newDocNode()
+    newDocProp()
+    newDocRawNode()
+    newDocText()
+    newDocTextLen()
+    newDtd()
+    newGlobalNs()
+    newReference()
+    saveFile()
+    saveFileEnc()
+    saveFormatFile()
+    saveFormatFileEnc()
+    setDocCompressMode()
+    stringGetNodeList()
+    stringLenGetNodeList()
+
+    # functions from module valid
+    ID()
+    isMixedElement()
+    removeID()
+    removeRef()
+
+    # functions from module xinclude
+    xincludeProcess()
+
+    # functions from module xpathInternals
+    xpathNewContext()
+
+
+Class xmlNode(xmlCore)
+
+    # functions from module debugXML
+    lsCountNode()
+    shellPrintNode()
+
+    # functions from module tree
+    addChild()
+    addChildList()
+    addContent()
+    addContentLen()
+    addNextSibling()
+    addPrevSibling()
+    addSibling()
+    copyNode()
+    copyNodeList()
+    copyProp()
+    copyPropList()
+    docCopyNode()
+    docSetRootElement()
+    freeNode()
+    freeNodeList()
+    getBase()
+    getContent()
+    getLang()
+    getSpacePreserve()
+    hasNsProp()
+    hasProp()
+    isBlankNode()
+    isText()
+    lastChild()
+    lineNo()
+    listGetRawString()
+    listGetString()
+    newChild()
+    newNs()
+    newNsProp()
+    newProp()
+    newTextChild()
+    nodePath()
+    nsProp()
+    prop()
+    reconciliateNs()
+    replaceNode()
+    searchNs()
+    searchNsByHref()
+    setBase()
+    setContent()
+    setContentLen()
+    setLang()
+    setListDoc()
+    setName()
+    setNs()
+    setNsProp()
+    setProp()
+    setSpacePreserve()
+    setTreeDoc()
+    textConcat()
+    textMerge()
+    unlinkNode()
+    unsetNsProp()
+    unsetProp()
+
+    # functions from module valid
+    isID()
+    isRef()
+    validNormalizeAttributeValue()
+
+    # functions from module xpath
+    xpathCastNodeToNumber()
+    xpathCastNodeToString()
+    xpathCmpNodes()
+
+    # functions from module xpathInternals
+    xpathNewNodeSet()
+    xpathNewValueTree()
+
+
+Class xmlAttribute(xmlNode)
+
+
+Class xmlDtd(xmlNode)
+
+    # functions from module tree
+    copyDtd()
+    freeDtd()
+
+    # functions from module valid
+    dtdAttrDesc()
+    dtdElementDesc()
+    dtdQAttrDesc()
+    dtdQElementDesc()
+
+
+Class xmlAttr(xmlNode)
+
+    # functions from module tree
+    freeProp()
+    freePropList()
+    removeProp()
+
+
+Class xmlEntity(xmlNode)
+
+
+Class xmlElement(xmlNode)
+
+
+Class xmlNs(xmlNode)
+
+    # functions from module tree
+    copyNamespace()
+    copyNamespaceList()
+    freeNs()
+    freeNsList()
+    newNode()

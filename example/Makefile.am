@@ -1,4 +1,4 @@
-AUTOMAKE_OPTIONS=no-dependencies
+# AUTOMAKE_ OPTIONS=no-dependencies
 
 noinst_PROGRAMS	= gjobread
 

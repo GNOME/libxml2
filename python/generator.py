@@ -210,11 +210,11 @@ py_types = {
     'double':  ('d', None, "double", "double"),
     'unsigned int':  ('i', None, "int", "int"),
     'xmlChar':  ('c', None, "int", "int"),
-    'unsigned char *':  ('s', None, "charPtr", "char *"),
-    'char *':  ('s', None, "charPtr", "char *"),
-    'const char *':  ('s', None, "charPtr", "char *"),
-    'xmlChar *':  ('s', None, "xmlCharPtr", "xmlChar *"),
-    'const xmlChar *':  ('s', None, "xmlCharPtr", "xmlChar *"),
+    'unsigned char *':  ('z', None, "charPtr", "char *"),
+    'char *':  ('z', None, "charPtr", "char *"),
+    'const char *':  ('z', None, "charPtr", "char *"),
+    'xmlChar *':  ('z', None, "xmlCharPtr", "xmlChar *"),
+    'const xmlChar *':  ('z', None, "xmlCharPtr", "xmlChar *"),
     'xmlNodePtr':  ('O', "xmlNode", "xmlNodePtr", "xmlNodePtr"),
     'const xmlNodePtr':  ('O', "xmlNode", "xmlNodePtr", "xmlNodePtr"),
     'xmlNode *':  ('O', "xmlNode", "xmlNodePtr", "xmlNodePtr"),
@@ -465,13 +465,13 @@ primary_classes = ["xmlNode", "xmlDoc"]
 
 classes_ancestor = {
     "xmlNode" : "xmlCore",
-    "xmlDoc" : "xmlCore",
-    "xmlAttr" : "xmlCore",
-    "xmlNs" : "xmlCore",
-    "xmlDtd" : "xmlCore",
-    "xmlEntity" : "xmlCore",
-    "xmlElement" : "xmlCore",
-    "xmlAttribute" : "xmlCore",
+    "xmlDtd" : "xmlNode",
+    "xmlDoc" : "xmlNode",
+    "xmlAttr" : "xmlNode",
+    "xmlNs" : "xmlNode",
+    "xmlEntity" : "xmlNode",
+    "xmlElement" : "xmlNode",
+    "xmlAttribute" : "xmlNode",
 }
 classes_destructors = {
     "xpathContext": "xmlXPathFreeContext",
@@ -574,6 +574,8 @@ for name in functions.keys():
     function_classes['None'].append(info)
 
 classes = open("libxml2class.py", "w")
+txt = open("libxml2class.txt", "w")
+txt.write("          Generated Classes for libxml2-python\n\n")
 
 def functionCompare(info1, info2):
     (index1, func1, name1, ret1, args1, file1) = info1
@@ -608,6 +610,7 @@ def writeDoc(name, args, indent, output):
      output.write(val);
      output.write('"""\n')
 
+txt.write("#\n# Global functions of the module\n#\n\n")
 if function_classes.has_key("None"):
     flist = function_classes["None"]
     flist.sort(functionCompare)
@@ -616,8 +619,10 @@ if function_classes.has_key("None"):
 	(index, func, name, ret, args, file) = info
 	if file != oldfile:
 	    classes.write("#\n# Functions from module %s\n#\n\n" % file)
+	    txt.write("\n# functions from module %s\n" % file)
 	    oldfile = file
 	classes.write("def %s(" % func)
+	txt.write("%s()\n" % func);
 	n = 0
 	for arg in args:
 	    if n != 0:
@@ -650,11 +655,14 @@ if function_classes.has_key("None"):
 		classes.write("    return ret\n");
 	classes.write("\n");
 
+txt.write("\n\n#\n# Set of classes of the module\n#\n\n")
 for classname in function_classes.keys():
     if classname == "None":
         pass
     else:
         if classes_ancestor.has_key(classname):
+	    txt.write("\n\nClass %s(%s)\n" % (classname,
+	              classes_ancestor[classname]))
 	    classes.write("class %s(%s):\n" % (classname,
 	                  classes_ancestor[classname]))
 	    classes.write("    def __init__(self, _obj=None):\n")
@@ -662,6 +670,7 @@ for classname in function_classes.keys():
 	    classes.write("        %s.__init__(self, _obj=_obj)\n\n" % (
 	                  classes_ancestor[classname]))
 	else:
+	    txt.write("Class %s()\n" % (classname))
 	    classes.write("class %s:\n" % (classname))
 	    classes.write("    def __init__(self, _obj=None):\n")
 	    classes.write("        if _obj != None:self._o = _obj;return\n")
@@ -685,9 +694,11 @@ for classname in function_classes.keys():
 		classes.write("    #\n")
 		classes.write("    # %s functions from module %s\n" % (
 		              classname, file))
+		txt.write("\n    # functions from module %s\n" % file)
 		classes.write("    #\n\n")
 	    oldfile = file
 	    classes.write("    def %s(self" % func)
+	    txt.write("    %s()\n" % func);
 	    n = 0
 	    for arg in args:
 	        if n != index:
@@ -727,4 +738,5 @@ for classname in function_classes.keys():
 		    classes.write("        return ret\n");
 	    classes.write("\n");
 
+txt.close()
 classes.close()

@@ -1,0 +1,41 @@
+             TODO for the libxml2 Python wrappers
+
+               $Id$
+
+Things to do:
+-------------
+
+- handling of node.content
+- SAX interfaces
+- error redirections and preformat
+- class hierarchy:
+  + get the generator to output a classes.txt description
+- extensions based on a python.xml description of the new specific
+  interfaces
+- memory debug interfaces
+- enums -> libxml.py
+- spec file: automatically generate for pythonX.Y if found
+- access to XPath variables
+- parserCtxt exposure:
+  - entry points
+  - wrappers
+  - decent interface for setting/getting behaviour
+- xmlBuffer exposure
+- xpathContext, being able to set/get info and clean it up
+- add regression tests
+   - check memory
+   - build tree
+   - saving
+   - SAX flow
+
+
+Done:
+-----
+- class hierarchy:
+  + make specific node type inherit from xmlNode
+- add regression tests
+   - tests/Makefile.am: export the Python class path
+   - xpath queries
+   - xpath extension
+
+Daniel Veillard

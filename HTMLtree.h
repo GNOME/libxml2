@@ -75,9 +75,18 @@ void		htmlNodeDump		(xmlBufferPtr buf,
 void		htmlNodeDumpFile	(FILE *out,
 					 xmlDocPtr doc,
 					 xmlNodePtr cur);
+void		htmlNodeDumpFileFormat	(FILE *out,
+					 xmlDocPtr doc,
+					 xmlNodePtr cur,
+					 const char *encoding,
+					 int format);
 int		htmlSaveFileEnc		(const char *filename,
 					 xmlDocPtr cur,
 					 const char *encoding);
+int		htmlSaveFileFormat	(const char *filename,
+					 xmlDocPtr cur,
+					 const char *encoding,
+					 int format);
 
 /* This one is imported from xmlIO.h
 void		htmlDocContentDumpOutput(xmlOutputBufferPtr buf,

@@ -1,3 +1,8 @@
+Mon Feb 11 08:53:33 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/xmlmemory.h: reverted part of the previous
+	  attempt to provide #69655, this was breaking the build.
+
 Sun Feb 10 14:13:34 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLtree.c Makefile.am build_glob.py configure.in debugXML.c

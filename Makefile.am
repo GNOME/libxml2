@@ -57,7 +57,8 @@ tests : tester
 confexecdir=$(libdir)
 confexec_DATA = xmlConf.sh
 
-EXTRA_DIST = xmlConf.sh.in libxml.spec doc/*.html doc/*.gif
+EXTRA_DIST = xmlConf.sh.in libxml.spec doc/xml.html doc/structure.gif \
+             doc/DOM.gif
 
 ## We create xmlConf.sh here and not from configure because we want
 ## to get the paths expanded correctly.  Macros like srcdir are given

@@ -31,9 +31,12 @@ clean-local:
 maintainer-clean-local: clean
 	rm -rf sgml html $(DOC_MODULE)-decl-list.txt $(DOC_MODULE)-decl.txt 
 
-install-data-local:
-	install -d -m 0755 $(TARGET_DIR)
-	install -m 0644 xml.html structure.gif DOM.gif $(TARGET_DIR)
+docdatadir = $(datadir)/aclocal
+docdata_DATA = xml.html structure.gif DOM.gif
+
+#install-data-local:
+#	install -d -m 0755 $(TARGET_DIR)
+#	install -m 0644 xml.html structure.gif DOM.gif $(TARGET_DIR)
 #	install -m 0644 html/*.html $(TARGET_DIR)
 #	install -m 0644 html/index.sgml $(TARGET_DIR)
 #	gtkdoc-fixxref --module=$(DOC_MODULE) --html-dir=$(HTML_DIR)

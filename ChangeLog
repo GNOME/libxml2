@@ -1,3 +1,11 @@
+Mon Feb 17 18:23:32 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c check-relaxng-test-suite.py: more work on the
+	  RelaxNG implementation conformance testing.
+	  found 373 test schemas: 284 success 89 failures
+	  found 529 test instances: 448 success 47 failures
+	* result/relaxng/*: updated the results
+
 Sun Feb 16 16:48:38 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* ChangeLog tree.c doc/libxml-doc.el doc/libxml2-api.xml: applied

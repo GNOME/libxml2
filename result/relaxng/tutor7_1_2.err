@@ -1,6 +1,6 @@
-error detected at relaxng.c:4564
+error detected at relaxng.c:4817
 Internal: failed to validate type float
-error detected at relaxng.c:5735
+error detected at relaxng.c:6090
 internal error validating list
-error detected at relaxng.c:5511
+error detected at relaxng.c:5866
 Extra content for element vector: text

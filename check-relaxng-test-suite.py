@@ -7,12 +7,13 @@ import StringIO
 sys.path.append("python")
 import libxml2
 
-
 #
 # the testsuite description
 #
 CONF="test/relaxng/OASIS/spectest.xml"
 LOG="check-relaxng-test-suite.log"
+RES="relaxng-test-results.xml"
+
 
 log = open(LOG, "w")
 nb_schemas_tests = 0
@@ -45,7 +46,17 @@ def resolver(URL, ID, ctxt):
     log.write("resources: %s\n" % (resources))
     return None
 
-
+#
+# Load the previous results
+#
+#results = {}
+#previous = {}
+#
+#try:
+#    res = libxml2.parseFile(RES)
+#except:
+#    log.write("Could not parse %s" % (RES))
+    
 #
 # handle a valid instance
 #

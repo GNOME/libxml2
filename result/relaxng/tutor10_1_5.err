@@ -1,4 +1,4 @@
-error detected at relaxng.c:5461
+error detected at relaxng.c:5691
 Expecting element foo has wrong namespace: expecting http://www.example.com
-error detected at relaxng.c:5812
+error detected at relaxng.c:6174
 extra data on the document

@@ -309,6 +309,7 @@ struct _xmlRelaxNGDocument {
     xmlRelaxNGPtr	schema; /* the schema */
 };
 
+
 /************************************************************************
  * 									*
  * 		Preliminary type checking interfaces			*
@@ -969,7 +970,6 @@ xmlRelaxNGLoadInclude(xmlRelaxNGParserCtxtPtr ctxt, const xmlChar *URL,
      */
     doc = xmlRelaxNGCleanupDoc(ctxt, doc);
     if (doc == NULL) {
-	/* xmlFreeDoc(ctxt->include); */
 	ctxt->inc = NULL;
 	return(NULL);
     }
@@ -988,7 +988,6 @@ xmlRelaxNGLoadInclude(xmlRelaxNGParserCtxtPtr ctxt, const xmlChar *URL,
 	    ctxt->error(ctxt->userData,
 			"xmlRelaxNG: included document is empty %s\n", URL);
 	ctxt->nbErrors++;
-	xmlFreeDoc(doc);
 	return (NULL);
     }
     if (!IS_RELAXNG(root, "grammar")) {
@@ -997,7 +996,6 @@ xmlRelaxNGLoadInclude(xmlRelaxNGParserCtxtPtr ctxt, const xmlChar *URL,
 		    "xmlRelaxNG: included document %s root is not a grammar\n",
 		        URL);
 	ctxt->nbErrors++;
-	xmlFreeDoc(doc);
 	return (NULL);
     }
 
@@ -1248,7 +1246,6 @@ xmlRelaxNGLoadExternalRef(xmlRelaxNGParserCtxtPtr ctxt, const xmlChar *URL,
      */
     doc = xmlRelaxNGCleanupDoc(ctxt, doc);
     if (doc == NULL) {
-	xmlFreeDoc(ctxt->document);
 	ctxt->doc = NULL;
 	return(NULL);
     }
@@ -2052,14 +2049,114 @@ xmlRelaxNGParseData(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
     return(def);
 }
 
+static const xmlChar *invalidName = BAD_CAST "\1";
+
 /**
- * xmlRelaxNGCompareElemDefLists:
- * @ctxt:  a Relax-NG parser context
- * @defs1:  the first list of element defs
- * @defs2:  the second list of element defs
+ * xmlRelaxNGCompareNameClasses:
+ * @defs1:  the first element/attribute defs
+ * @defs2:  the second element/attribute defs
+ * @name:  the restriction on the name
+ * @ns:  the restriction on the namespace
  *
  * Compare the 2 lists of element definitions. The comparison is
  * that if both lists do not accept the same QNames, it returns 1
+ * If the 2 lists can accept the same QName the comparison returns 0
+ *
+ * Returns 1 disttinct, 0 if equal
+ */
+static int
+xmlRelaxNGCompareNameClasses(xmlRelaxNGDefinePtr def1,
+	                     xmlRelaxNGDefinePtr def2) {
+    int ret = 1;
+    xmlNode node;
+    xmlNs ns;
+    xmlRelaxNGValidCtxt ctxt;
+    ctxt.flags = FLAGS_IGNORABLE;
+
+    if ((def1->type == XML_RELAXNG_ELEMENT) ||
+	(def1->type == XML_RELAXNG_ATTRIBUTE)) {
+	if (def2->type == XML_RELAXNG_TEXT)
+	    return(1);
+	if (def1->name != NULL) {
+	    node.name = def1->name;
+	} else {
+	    node.name = invalidName;
+	}
+	node.ns = &ns;
+	if (def1->ns != NULL) {
+	    if (def1->ns[0] == 0) {
+		node.ns = NULL;
+	    } else {
+		ns.href = def1->ns;
+	    }
+	} else {
+	    ns.href = invalidName;
+	}
+        if (xmlRelaxNGElementMatch(&ctxt, def2, &node)) {
+	    if (def1->nameClass != NULL) {
+		ret = xmlRelaxNGCompareNameClasses(def1->nameClass, def2);
+	    } else {
+		ret = 0;
+	    }
+	} else {
+	    ret = 1;
+	}
+    } else if (def1->type == XML_RELAXNG_TEXT) {
+	if (def2->type == XML_RELAXNG_TEXT)
+	    return(0);
+	return(1);
+    } else if (def1->type == XML_RELAXNG_EXCEPT) {
+	xmlRelaxNGDefinePtr tmp = def1->content;
+	TODO
+	ret = 0;
+    } else {
+	TODO
+	ret = 0;
+    }
+    if (ret == 0)
+	return(ret);
+    if ((def2->type == XML_RELAXNG_ELEMENT) ||
+	(def2->type == XML_RELAXNG_ATTRIBUTE)) {
+	if (def2->name != NULL) {
+	    node.name = def2->name;
+	} else {
+	    node.name = invalidName;
+	}
+	node.ns = &ns;
+	if (def2->ns != NULL) {
+	    if (def2->ns[0] == 0) {
+		node.ns = NULL;
+	    } else {
+		ns.href = def2->ns;
+	    }
+	} else {
+	    ns.href = invalidName;
+	}
+        if (xmlRelaxNGElementMatch(&ctxt, def1, &node)) {
+	    if (def2->nameClass != NULL) {
+		ret = xmlRelaxNGCompareNameClasses(def2->nameClass, def1);
+	    } else {
+		ret = 0;
+	    }
+	} else {
+	    ret = 1;
+	}
+    } else {
+	TODO
+	ret = 0;
+    }
+
+    return(ret);
+}
+
+/**
+ * xmlRelaxNGCompareElemDefLists:
+ * @ctxt:  a Relax-NG parser context
+ * @defs1:  the first list of element/attribute defs
+ * @defs2:  the second list of element/attribute defs
+ *
+ * Compare the 2 lists of element or attribute definitions. The comparison
+ * is that if both lists do not accept the same QNames, it returns 1
  * If the 2 lists can accept the same QName the comparison returns 0
  *
  * Returns 1 disttinct, 0 if equal
@@ -2076,16 +2173,8 @@ xmlRelaxNGCompareElemDefLists(xmlRelaxNGParserCtxtPtr ctxt ATTRIBUTE_UNUSED,
 	return(1);
     while (*def1 != NULL) {
 	while ((*def2) != NULL) {
-	    if ((*def1)->name == NULL) {
-		if (xmlStrEqual((*def2)->ns, (*def1)->ns))
-		    return(0);
-	    } else if ((*def2)->name == NULL) {
-		if (xmlStrEqual((*def2)->ns, (*def1)->ns))
-		    return(0);
-	    } else if (xmlStrEqual((*def1)->name, (*def2)->name)) {
-		if (xmlStrEqual((*def2)->ns, (*def1)->ns))
-		    return(0);
-	    }
+	    if (xmlRelaxNGCompareNameClasses(*def1, *def2) == 0)
+		return(0);
 	    def2++;
 	}
 	def2 = basedef2;
@@ -4656,6 +4745,9 @@ xmlRelaxNGFreeParserCtxt(xmlRelaxNGParserCtxtPtr ctxt) {
     if (ctxt->documents != NULL)
 	xmlHashFree(ctxt->documents, (xmlHashDeallocator)
 		xmlRelaxNGFreeDocument);
+    if (ctxt->includes != NULL)
+	xmlHashFree(ctxt->includes, (xmlHashDeallocator)
+		xmlRelaxNGFreeInclude);
     if (ctxt->docTab != NULL)
 	xmlFree(ctxt->docTab);
     if (ctxt->incTab != NULL)
@@ -4912,6 +5004,8 @@ xmlRelaxNGCleanupTree(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr root) {
 			delete = cur;
 			goto skip_children;
 		    }
+		    if (ns != NULL)
+			xmlFree(ns);
 		    xmlFree(URL);
 		    cur->_private = docu;
 		} else if (xmlStrEqual(cur->name, BAD_CAST "include")) {
@@ -5311,11 +5405,14 @@ xmlRelaxNGParse(xmlRelaxNGParserCtxtPtr ctxt)
             ctxt->error(ctxt->userData, "xmlRelaxNGParse: %s is empty\n",
                         ctxt->URL);
 	ctxt->nbErrors++;
+	xmlFreeDoc(doc);
         return (NULL);
     }
     ret = xmlRelaxNGParseDocument(ctxt, root);
-    if (ret == NULL)
+    if (ret == NULL) {
+	xmlFreeDoc(doc);
 	return(NULL);
+    }
 
     /*
      * Check the ref/defines links
@@ -5345,6 +5442,7 @@ xmlRelaxNGParse(xmlRelaxNGParserCtxtPtr ctxt)
     ctxt->document = NULL;
     ret->documents = ctxt->documents;
     ctxt->documents = NULL;
+    
     ret->includes = ctxt->includes;
     ctxt->includes = NULL;
     ret->defNr = ctxt->defNr;
@@ -6222,96 +6320,6 @@ xmlRelaxNGValidateAttributeList(xmlRelaxNGValidCtxtPtr ctxt,
 }
 
 /**
- * xmlRelaxNGValidateTryPermutation:
- * @ctxt:  a Relax-NG validation context
- * @groups:  the array of groups
- * @nbgroups:  the number of groups in the array
- * @array:  the permutation to try
- * @len:  the size of the set
- *
- * Try to validate a permutation for the group of definitions.
- *
- * Returns 0 if the validation succeeded or an error code.
- */
-static int
-xmlRelaxNGValidateTryPermutation(xmlRelaxNGValidCtxtPtr ctxt, 
-			    xmlRelaxNGDefinePtr rule,
-			    xmlNodePtr *array, int len) {
-    int i, ret;
-
-    if (len > 0) {
-	/*
-	 * One only need the next pointer set-up to do the validation
-	 */
-	for (i = 0;i < (len - 1);i++)
-	    array[i]->next = array[i + 1];
-	array[i]->next = NULL;
-
-	/*
-	 * Now try to validate the sequence
-	 */
-	ctxt->state->seq = array[0];
-	ret = xmlRelaxNGValidateDefinition(ctxt, rule);
-    } else {
-	ctxt->state->seq = NULL;
-	ret = xmlRelaxNGValidateDefinition(ctxt, rule);
-    }
-
-    /*
-     * the sequence must be fully consumed
-     */
-    if (ctxt->state->seq != NULL)
-	return(-1);
-
-    return(ret);
-}
-
-/**
- * xmlRelaxNGValidateWalkPermutations:
- * @ctxt:  a Relax-NG validation context
- * @groups:  the array of groups
- * @nbgroups:  the number of groups in the array
- * @nodes:  the set of nodes
- * @array:  the current state of the parmutation
- * @len:  the size of the set
- * @level:  a pointer to the level variable
- * @k:  the index in the array to fill
- *
- * Validate a set of nodes for a groups of definitions, will try the
- * full set of permutations
- *
- * Returns 0 if the validation succeeded or an error code.
- */
-static int
-xmlRelaxNGValidateWalkPermutations(xmlRelaxNGValidCtxtPtr ctxt, 
-			    xmlRelaxNGDefinePtr rule, xmlNodePtr *nodes,
-			    xmlNodePtr *array, int len,
-			    int *level, int k) {
-    int i, ret;
-
-    if ((k >= 0) && (k < len))
-	array[k] = nodes[*level];
-    *level = *level + 1;
-    if (*level == len) {
-	ret = xmlRelaxNGValidateTryPermutation(ctxt, rule, array, len);
-	if (ret == 0)
-	    return(0);
-    } else {
-	for (i = 0;i < len;i++) {
-	    if (array[i] == NULL) {
-		ret = xmlRelaxNGValidateWalkPermutations(ctxt, rule,
-				    nodes, array, len, level, i);
-	        if (ret == 0)
-		    return(0);
-	    }
-	}
-    }
-    *level = *level - 1;
-    array[k] = NULL;
-    return(-1);
-}
-
-/**
  * xmlRelaxNGNodeMatchesList:
  * @node:  the node
  * @list:  a NULL terminated array of definitions
@@ -6356,91 +6364,6 @@ xmlRelaxNGNodeMatchesList(xmlNodePtr node, xmlRelaxNGDefinePtr *list) {
 }
 
 /**
- * xmlRelaxNGValidatePartGroup:
- * @ctxt:  a Relax-NG validation context
- * @groups:  the array of groups
- * @nbgroups:  the number of groups in the array
- * @nodes:  the set of nodes
- * @len:  the size of the set of nodes
- *
- * Validate a set of nodes for a groups of definitions
- *
- * Returns 0 if the validation succeeded or an error code.
- */
-static int
-xmlRelaxNGValidatePartGroup(xmlRelaxNGValidCtxtPtr ctxt, 
-			    xmlRelaxNGInterleaveGroupPtr *groups,
-			    int nbgroups, xmlNodePtr *nodes, int len) {
-    int level, ret = -1, i, j, k, top_j, max_j;
-    xmlNodePtr *array = NULL, *list, oldseq;
-    xmlRelaxNGInterleaveGroupPtr group;
-
-    list = (xmlNodePtr *) xmlMalloc(len * sizeof(xmlNodePtr));
-    if (list == NULL) {
-	return(-1);
-    }
-    array = (xmlNodePtr *) xmlMalloc(len * sizeof(xmlNodePtr));
-    if (array == NULL) {
-	xmlFree(list);
-	return(-1);
-    }
-    memset(array, 0, len * sizeof(xmlNodePtr));
-
-    /*
-     * Partition the elements and validate the subsets.
-     */
-    oldseq = ctxt->state->seq;
-    max_j = -1;
-    for (i = 0;i < nbgroups;i++) {
-	group = groups[i];
-	if (group == NULL)
-	    continue;
-	k = 0;
-	top_j = -1;
-	for (j = 0;j < len;j++) {
-	    if (nodes[j] == NULL)
-		continue;
-	    if (xmlRelaxNGNodeMatchesList(nodes[j], group->defs)) {
-		list[k++] = nodes[j];
-		nodes[j] = NULL;
-		top_j = j;
-	    }
-	}
-	if (top_j > max_j)
-	    max_j = top_j;
-	ctxt->state->seq = oldseq;
-	if (k > 1) {
-	    memset(array, 0, k * sizeof(xmlNodePtr));
-	    level = -1;
-	    ret = xmlRelaxNGValidateWalkPermutations(ctxt, group->rule,
-					  list, array, k, &level, -1);
-	} else {
-            ret = xmlRelaxNGValidateTryPermutation(ctxt, group->rule, list, k);
-	}
-	if (ret != 0) {
-	    ctxt->state->seq = oldseq;
-	    break;
-	}
-    }
-
-    for (j = 0;j < max_j;j++) {
-	if (nodes[j] != NULL) {
-	    TODO /* problem, one of the nodes didn't got a match */
-	}
-    }
-    if (ret == 0) {
-	if (max_j + 1 < len)
-	    ctxt->state->seq = nodes[max_j + 1];
-	else
-	    ctxt->state->seq = NULL;
-    }
-
-    xmlFree(list);
-    xmlFree(array);
-    return(ret);
-}
-
-/**
  * xmlRelaxNGValidateInterleave:
  * @ctxt:  a Relax-NG validation context
  * @define:  the definition to verify
@@ -6455,7 +6378,7 @@ xmlRelaxNGValidateInterleave(xmlRelaxNGValidCtxtPtr ctxt,
     int ret = 0, i, nbgroups, left;
     xmlRelaxNGPartitionPtr partitions;
     xmlRelaxNGInterleaveGroupPtr group = NULL;
-    xmlNodePtr cur, start, last, lastchg = NULL, lastelem;
+    xmlNodePtr cur, start, last = NULL, lastchg = NULL, lastelem;
     xmlNodePtr *list = NULL, *lasts = NULL;
 
     if (define->data != NULL) {

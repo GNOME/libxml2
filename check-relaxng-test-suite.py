@@ -7,6 +7,8 @@ import StringIO
 sys.path.append("python")
 import libxml2
 
+# Memory debug specific
+libxml2.debugMemory(1)
 debug = 0
 
 #
@@ -97,6 +99,7 @@ def handle_valid(node, schema):
 	nb_instances_failed = nb_instances_failed + 1
     else:
 	nb_instances_success = nb_instances_success + 1
+    doc.freeDoc()
 
 #
 # handle an invalid instance
@@ -136,6 +139,7 @@ def handle_invalid(node, schema):
 	nb_instances_failed = nb_instances_failed + 1
     else:
 	nb_instances_success = nb_instances_success + 1
+    doc.freeDoc()
 
 #
 # handle an incorrect test
@@ -364,3 +368,14 @@ print "\nTOTAL:\nfound %d test schemas: %d success %d failures" % (
       nb_schemas_tests, nb_schemas_success, nb_schemas_failed)
 print "found %d test instances: %d success %d failures" % (
       nb_instances_tests, nb_instances_success, nb_instances_failed)
+
+testsuite.freeDoc()
+
+# Memory debug specific
+libxml2.relaxNGCleanupTypes()
+libxml2.cleanupParser()
+if libxml2.debugMemory(1) == 0:
+    print "OK"
+else:
+    print "Memory leak %d bytes" % (libxml2.debugMemory(1))
+    libxml2.dumpMemory()

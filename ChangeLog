@@ -1,3 +1,12 @@
+Mon Feb 24 18:14:16 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: fixed xmlSetProp and al. when the node passed is not an
+	  element.
+	* relaxng.c: fixed bugs 7.3 (though not complete) and memory leaks
+	  found 373 test schemas: 369 success 4 failures
+	  found 529 test instances: 525 success 4 failures
+	* check-relaxng-test-suite.py: added memory debug reporting
+	  
 Mon Feb 24 12:41:54 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* uri.c parser.c: some warning removal on Igor's patch

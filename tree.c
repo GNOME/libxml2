@@ -1402,6 +1402,8 @@ xmlNewProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
 #endif
 	return(NULL);
     }
+    if ((node != NULL) && (node->type != XML_ELEMENT_NODE))
+	return(NULL);
 
     /*
      * Allocate a new property and fill the fields.
@@ -5699,7 +5701,7 @@ xmlSetProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
     xmlAttrPtr prop;
     xmlDocPtr doc;
 
-    if ((node == NULL) || (name == NULL))
+    if ((node == NULL) || (name == NULL) || (node->type != XML_ELEMENT_NODE))
 	return(NULL);
     doc = node->doc;
     prop = node->properties;

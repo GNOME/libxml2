@@ -1427,34 +1427,24 @@ static PyObject *libxml_xmlPythonErrorFuncHandler = NULL;
 static PyObject *libxml_xmlPythonErrorFuncCtxt = NULL;
 
 /* helper to build a xmlMalloc'ed string from a format and va_list */
+/* 
+ * disabled the loop, the repeated call to vsnprintf without reset of ap
+ * in case the initial buffer was too small segfaulted on x86_64
+ * we now directly vsnprintf on a large buffer.
+ */
 static char *
 libxml_buildMessage(const char *msg, va_list ap)
 {
-    int size;
     int chars;
-    char *larger;
     char *str;
 
-    str = (char *) xmlMalloc(150);
+    str = (char *) xmlMalloc(1000);
     if (str == NULL)
         return NULL;
 
-    size = 150;
-
-    while (1) {
-        chars = vsnprintf(str, size, msg, ap);
-        if ((chars > -1) && (chars < size))
-            break;
-        if (chars > -1)
-            size += chars + 1;
-        else
-            size += 100;
-        if ((larger = (char *) xmlRealloc(str, size)) == NULL) {
-            xmlFree(str);
-            return NULL;
-        }
-        str = larger;
-    }
+    chars = vsnprintf(str, 999, msg, ap);
+    if (chars >= 998)
+        str[999] = 0;
 
     return str;
 }
@@ -1464,10 +1454,10 @@ libxml_xmlErrorFuncHandler(ATTRIBUTE_UNUSED void *ctx, const char *msg,
                            ...)
 {
     va_list ap;
-    char *str;
     PyObject *list;
     PyObject *message;
     PyObject *result;
+    char str[1000];
 
 #ifdef DEBUG_ERROR
     printf("libxml_xmlErrorFuncHandler(%p, %s, ...) called\n", ctx, msg);
@@ -1480,13 +1470,14 @@ libxml_xmlErrorFuncHandler(ATTRIBUTE_UNUSED void *ctx, const char *msg,
         va_end(ap);
     } else {
         va_start(ap, msg);
-        str = libxml_buildMessage(msg,ap);
+        if (vsnprintf(str, 999, msg, ap) >= 998)
+	    str[999] = 0;
         va_end(ap);
 
         list = PyTuple_New(2);
         PyTuple_SetItem(list, 0, libxml_xmlPythonErrorFuncCtxt);
         Py_XINCREF(libxml_xmlPythonErrorFuncCtxt);
-        message = libxml_charPtrWrap(str);
+        message = libxml_charPtrConstWrap(str);
         PyTuple_SetItem(list, 1, message);
         result = PyEval_CallObject(libxml_xmlPythonErrorFuncHandler, list);
         Py_XDECREF(list);

@@ -1,0 +1,4 @@
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): -1
+error detected at relaxng.c:4968
+xmlRelaxNGValidateDefinition(): validated card : -1

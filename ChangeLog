@@ -1,3 +1,9 @@
+Mon Feb  3 14:16:59 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng: more work on name classes, except support
+	* test/relaxng/* result/relaxng/*: augmented/updated the
+	  regression tests
+
 Mon Feb  3 11:56:05 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng: more work on name classes, the "validate all" schemas

@@ -95,6 +95,7 @@ struct _xmlRelaxNGGrammar {
 typedef enum {
     XML_RELAXNG_EMPTY = 0,	/* an empty pattern */
     XML_RELAXNG_NOT_ALLOWED,    /* not allowed top */
+    XML_RELAXNG_EXCEPT,    	/* except present in nameclass defs */
     XML_RELAXNG_TEXT,		/* textual content */
     XML_RELAXNG_ELEMENT,	/* an element */
     XML_RELAXNG_DATATYPE,	/* extenal data type definition */
@@ -596,6 +597,8 @@ xmlRelaxNGFreeDefine(xmlRelaxNGDefinePtr define)
 	(define->type != XML_RELAXNG_REF) &&
 	(define->type != XML_RELAXNG_EXTERNALREF))
 	xmlRelaxNGFreeDefineList(define->content);
+    if (define->nameClass != NULL)
+	xmlRelaxNGFreeDefineList(define->nameClass);
     if ((define->data != NULL) &&
 	(define->type == XML_RELAXNG_INTERLEAVE))
 	xmlRelaxNGFreePartition((xmlRelaxNGPartitionPtr) define->data);
@@ -2493,6 +2496,7 @@ xmlRelaxNGParseAttribute(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
 		    ret->attrs = cur;
 		    break;
 		case XML_RELAXNG_START:
+		case XML_RELAXNG_EXCEPT:
 		    TODO
 		    break;
 	    }
@@ -2507,15 +2511,56 @@ xmlRelaxNGParseAttribute(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
  * xmlRelaxNGParseExceptNameClass:
  * @ctxt:  a Relax-NG parser context
  * @node:  the except node
+ * @attr:  1 if within an attribute, 0 if within an element
  *
  * parse the content of a RelaxNG nameClass node.
  *
  * Returns the definition pointer or NULL in case of error.
  */
 static xmlRelaxNGDefinePtr
-xmlRelaxNGParseExceptNameClass(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
-    TODO
-    return(NULL);
+xmlRelaxNGParseExceptNameClass(xmlRelaxNGParserCtxtPtr ctxt,
+	                       xmlNodePtr node, int attr) {
+    xmlRelaxNGDefinePtr ret, cur, last = NULL;
+    xmlNodePtr child;
+
+    if (!IS_RELAXNG(node, "except"))
+	return(NULL);
+    if (node->children == NULL) {
+	if (ctxt->error != NULL)
+	    ctxt->error(ctxt->userData,
+		"except has no content\n");
+	ctxt->nbErrors++;
+	return(NULL);
+    }
+
+    ret = xmlRelaxNGNewDefine(ctxt, node);
+    if (ret == NULL)
+	return(NULL);
+    ret->type = XML_RELAXNG_EXCEPT;
+    child = node->children;
+    while (child != NULL) {
+	cur = xmlRelaxNGNewDefine(ctxt, child);
+	if (cur == NULL)
+	    break;
+	if (attr)
+	    cur->type = XML_RELAXNG_ATTRIBUTE;
+	else
+	    cur->type = XML_RELAXNG_ELEMENT;
+	
+        if (xmlRelaxNGParseNameClass(ctxt, child, cur) == NULL) {
+	    xmlRelaxNGFreeDefine(cur);
+	} else {
+	    if (last == NULL) {
+		ret->content = cur;
+	    } else {
+		last->next = cur;
+	    }
+	    last = cur;
+	}
+	child = child->next;
+    }
+
+    return(ret);
 }
 
 /**
@@ -2544,7 +2589,8 @@ xmlRelaxNGParseNameClass(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node,
 	ret->ns = NULL;
 	if (node->children != NULL) {
 	    ret->nameClass =
-		xmlRelaxNGParseExceptNameClass(ctxt, node->children);
+		xmlRelaxNGParseExceptNameClass(ctxt, node->children,
+			       (def->type == XML_RELAXNG_ATTRIBUTE));
 	}
     } else if (IS_RELAXNG(node, "nsName")) {
 	ret->name = NULL;
@@ -2557,7 +2603,8 @@ xmlRelaxNGParseNameClass(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node,
 	}
 	if (node->children != NULL) {
 	    ret->nameClass =
-		xmlRelaxNGParseExceptNameClass(ctxt, node->children);
+		xmlRelaxNGParseExceptNameClass(ctxt, node->children,
+			       (def->type == XML_RELAXNG_ATTRIBUTE));
 	}
     } else if (IS_RELAXNG(node, "choice")) {
 	TODO
@@ -2657,6 +2704,7 @@ xmlRelaxNGParseElement(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
 		    ret->attrs = cur;
 		    break;
 		case XML_RELAXNG_START:
+		case XML_RELAXNG_EXCEPT:
 		    TODO
 		    break;
 	    }
@@ -3842,6 +3890,7 @@ xmlRelaxNGDumpDefine(FILE * output, xmlRelaxNGDefinePtr define) {
 	    TODO
 	    break;
 	case XML_RELAXNG_START:
+	case XML_RELAXNG_EXCEPT:
 	    TODO
 	    break;
     }
@@ -4281,6 +4330,57 @@ xmlRelaxNGValidateValueContent(xmlRelaxNGValidCtxtPtr ctxt,
 }
 
 /**
+ * xmlRelaxNGAttributeMatch:
+ * @ctxt:  a Relax-NG validation context
+ * @define:  the definition to check
+ * @prop:  the attribute
+ *
+ * Check if the attribute matches the definition nameClass
+ *
+ * Returns 1 if the attribute matches, 0 if no, or -1 in case of error
+ */
+static int
+xmlRelaxNGAttributeMatch(xmlRelaxNGValidCtxtPtr ctxt, 
+	                 xmlRelaxNGDefinePtr define,
+			 xmlAttrPtr prop) {
+    int ret;
+
+    if (define->name != NULL) {
+	if (!xmlStrEqual(define->name, prop->name))
+	    return(0);
+    }
+    if (define->ns != NULL) {
+	if (define->ns[0] == 0) {
+	    if (prop->ns != NULL)
+		return(0);
+	} else {
+	    if ((prop->ns == NULL) ||
+		(!xmlStrEqual(define->ns, prop->ns->href)))
+		return(0);
+	}
+    }
+    if (define->nameClass == NULL)
+	return(1);
+    define = define->nameClass;
+    if (define->type == XML_RELAXNG_EXCEPT) {
+	xmlRelaxNGDefinePtr list;
+
+	list = define->content;
+	while (list != NULL) {
+	    ret = xmlRelaxNGAttributeMatch(ctxt, list, prop);
+	    if (ret == 1)
+		return(0);
+	    if (ret < 0)
+		return(ret);
+	    list = list->next;
+	}
+    } else {
+	TODO
+    }
+    return(1);
+}
+
+/**
  * xmlRelaxNGValidateAttribute:
  * @ctxt:  a Relax-NG validation context
  * @define:  the definition to verify
@@ -4334,43 +4434,11 @@ xmlRelaxNGValidateAttribute(xmlRelaxNGValidCtxtPtr ctxt,
 	xmlGenericError(xmlGenericErrorContext,
                     "xmlRelaxNGValidateAttribute(%s): %d\n", define->name, ret);
 #endif
-    } else if (define->ns != NULL) {
-        for (i = 0;i < ctxt->state->nbAttrs;i++) {
-	    tmp = ctxt->state->attrs[i];
-	    if ((tmp != NULL) && (tmp->ns != NULL) &&
-		(xmlStrEqual(define->ns, tmp->ns->href))) {
-		prop = tmp;
-		break;
-	    }
-	}
-	if (prop != NULL) {
-	    value = xmlNodeListGetString(prop->doc, prop->children, 1);
-	    oldvalue = ctxt->state->value;
-	    ctxt->state->value = value;
-	    ret = xmlRelaxNGValidateValueContent(ctxt, define->content);
-	    value = ctxt->state->value;
-	    ctxt->state->value = oldvalue;
-	    if (value != NULL)
-		xmlFree(value);
-	    if (ret == 0) {
-		/*
-		 * flag the attribute as processed
-		 */
-		ctxt->state->attrs[i] = NULL;
-		ctxt->state->nbAttrLeft--;
-	    }
-	} else {
-	    ret = -1;
-	}
-#ifdef DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-                    "xmlRelaxNGValidateAttribute(nsName ns = %s): %d\n",
-		        define->ns, ret);
-#endif
     } else {
         for (i = 0;i < ctxt->state->nbAttrs;i++) {
 	    tmp = ctxt->state->attrs[i];
-	    if (tmp != NULL) {
+	    if ((tmp != NULL) &&
+		(xmlRelaxNGAttributeMatch(ctxt, define, tmp) == 1)) {
 		prop = tmp;
 		break;
 	    }
@@ -4395,11 +4463,16 @@ xmlRelaxNGValidateAttribute(xmlRelaxNGValidCtxtPtr ctxt,
 	    ret = -1;
 	}
 #ifdef DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-                    "xmlRelaxNGValidateAttribute(anyName): %d\n",
-		        ret);
+	if (define->ns != NULL) {
+	    xmlGenericError(xmlGenericErrorContext,
+			"xmlRelaxNGValidateAttribute(nsName ns = %s): %d\n",
+			    define->ns, ret);
+	} else {
+	    xmlGenericError(xmlGenericErrorContext,
+			"xmlRelaxNGValidateAttribute(anyName): %d\n",
+			    ret);
+	}
 #endif
-	
     }
     
     return(ret);
@@ -5104,6 +5177,7 @@ xmlRelaxNGValidateDefinition(xmlRelaxNGValidCtxtPtr ctxt,
 	    break;
         }
 	case XML_RELAXNG_START:
+	case XML_RELAXNG_EXCEPT:
 	    TODO
 	    break;
     }

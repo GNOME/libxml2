@@ -39,7 +39,7 @@
 
 #ifdef LIBXML_PATTERN_ENABLED
 
-/* #define DEBUG_STREAMING */
+#define DEBUG_STREAMING
 
 #define ERROR(a, b, c, d)
 #define ERROR5(a, b, c, d, e)
@@ -1029,7 +1029,6 @@ xmlDebugStreamCtxt(xmlStreamCtxtPtr ctxt, int match) {
 	    else
 	        printf("\n");
 	}
-	printf("\n");
     }
 }
 #endif
@@ -1369,9 +1368,11 @@ xmlStreamPush(xmlStreamCtxtPtr stream,
 		    xmlStreamCtxtAddState(stream, step + 1, stream->level + 1);
 		}
 	    }
+#if 0
 	} else if (!desc) {
 	    /* didn't match, discard */
 	    stream->states[2 * i] = -1;
+#endif
 	}
     }
 
@@ -1426,13 +1427,24 @@ xmlStreamPush(xmlStreamCtxtPtr stream,
  */
 int
 xmlStreamPop(xmlStreamCtxtPtr stream) {
+    int i, m;
+
     if (stream == NULL)
         return(-1);
     stream->level--;
     if (stream->level < 0)
         return(-1);
     
-    /* something is certainly needed here */
+    /*
+     * Check evolution of existing states
+     */
+    m = stream->nbState;
+    for (i = 0;i < m;i++) {
+	if (stream->states[(2 * i)] < 0) break;
+	/* discard obsoleted states */
+	if (stream->states[(2 * i) + 1] > stream->level)
+	    stream->states[(2 * i)] = -1;
+    }
     return(0);
 }
 

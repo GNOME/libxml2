@@ -1,3 +1,7 @@
+Tue Feb  1 18:15:52 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* pattern.c: more bug fixes for the XPath streaming code.
+
 Mon Jan 31 17:59:24 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: Integrated the streaming pattern from the

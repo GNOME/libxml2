@@ -15,7 +15,9 @@ $!
 $! Change History
 $! --------------
 $! Command file author : John A Fotheringham (jaf@jafsoft.com)
-$! Last update         : 28 September 2002	Craig Berry (craigberry@mac.com)
+$! Update history      : 25 April 2003		Craig Berry (craigberry@mac.com)
+$!			 added xmlreader.c and relaxng.c to source list
+$! 		       : 28 September 2002	Craig Berry (craigberry@mac.com)
 $!			 updated to work with current sources
 $!			 miscellaneous enhancements to build process
 $!
@@ -44,7 +46,7 @@ $   sources = sources + " xlink.c HTMLparser.c HTMLtree.c debugXML.c xpath.c "
 $   sources = sources + " xpointer.c xinclude.c nanohttp.c nanoftp.c "
 $   sources = sources + " DOCBparser.c catalog.c globals.c threads.c c14n.c "
 $   sources = sources + " xmlregexp.c xmlschemas.c xmlschemastypes.c xmlunicode.c "
-$   sources = sources + " triostr.c trio.c"
+$   sources = sources + " triostr.c trio.c xmlreader.c relaxng.c"
 $!
 $!- list of main modules to compile and link.  Compare this list to the
 $!  definition of bin_PROGRAMS in MAKEFILE.IN

@@ -194,7 +194,7 @@ typedef void * trio_pointer_t;
  */
 # pragma message disable (UNDERFLOW, FLOATOVERFL)
 
-# if (__CRTL_VER > 80000000)
+# if (__CRTL_VER < 80000000)
 /*
  * Although the compiler supports C99 language constructs, the C
  * run-time library does not contain all C99 functions.

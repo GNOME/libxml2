@@ -1,3 +1,8 @@
+Sat Apr 26 01:10:48 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* triodef.h vms/build_libxml.com: applied patch from Craig A. Berry
+	  to get libxml-2.5.7 to compile on OpenVMS
+
 Fri Apr 25 18:42:35 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: fixing an xmlParseDTD bug raised by Petr Pajas

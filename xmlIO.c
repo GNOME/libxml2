@@ -2182,7 +2182,7 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
     if (needSize > in->buffer->size){
         if (!xmlBufferResize(in->buffer, needSize)){
             xmlGenericError(xmlGenericErrorContext,
-		    "xmlBufferAdd : out of memory!\n");
+		    "xmlParserInputBufferGrow : out of memory!\n");
             return(0);
         }
     }

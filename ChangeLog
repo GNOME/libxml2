@@ -1,3 +1,8 @@
+Mon Jun  2 15:34:17 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* encoding.c: small fix
+	* xmlIO.c: fixed an error message
+
 Tue May 20 14:21:23 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parserInternals.c: fixing Red Hat bug #91013 where xmllint was

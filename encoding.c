@@ -2205,7 +2205,7 @@ retry:
 	if (handler->output != NULL) {
 	    ret = handler->output(&out->content[out->use], &written,
 				  NULL, &toconv);
-	    if (ret == 0) { /* Gennady: check return value */
+	    if (ret >= 0) { /* Gennady: check return value */
 		out->use += written;
 		out->content[out->use] = 0;
 	    }

@@ -1,3 +1,7 @@
+Wed Mar 14 17:28:49 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xmlIO.c: one function comment cleanup.
+
 Wed Mar 14 14:55:46 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* SAX.c: external subset notations were improperly registered

@@ -182,7 +182,7 @@ xmlFdMatch (const char *filename) {
  * @filename:  the URI for matching
  *
  * input from file descriptor, supports compressed input
- * if @filename is " " then the standard input is used
+ * if @filename is "-" then the standard input is used
  *
  * Returns an I/O context or NULL in case of error
  */

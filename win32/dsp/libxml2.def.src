@@ -1238,6 +1238,7 @@ EXPORTS
 	xmlXPathNewValueTree
 	xmlXPathNodeSetAdd
 	xmlXPathNodeSetAddUnique
+	xmlXPathNodeSetAddNs
 	xmlXPathNodeSetSort
 	xmlXPathIdFunction
 	xmlXPathRoot

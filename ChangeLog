@@ -1,3 +1,7 @@
+Tue Mar 20 14:21:28 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* error.c: removed a C++ like comment
+
 Tue Mar 20 12:22:36 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* parser.c: fixing bug 52299 strange condition leading

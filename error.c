@@ -160,7 +160,7 @@ xmlGetVarStr(const char * msg, va_list args) {
     size = 100;
     length = 0;
 
-    while (1) {                       // From the man page for vsnprintf ....
+    while (1) {
 	left = size - length;
 		    /* Try to print in the allocated space. */
 	chars = vsnprintf(str + length, left, msg, args);

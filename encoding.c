@@ -45,8 +45,8 @@
 #endif
 #include <libxml/xmlerror.h>
 
-xmlCharEncodingHandlerPtr xmlUTF16LEHandler = NULL;
-xmlCharEncodingHandlerPtr xmlUTF16BEHandler = NULL;
+static xmlCharEncodingHandlerPtr xmlUTF16LEHandler = NULL;
+static xmlCharEncodingHandlerPtr xmlUTF16BEHandler = NULL;
 
 typedef struct _xmlCharEncodingAlias xmlCharEncodingAlias;
 typedef xmlCharEncodingAlias *xmlCharEncodingAliasPtr;

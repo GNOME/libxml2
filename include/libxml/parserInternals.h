@@ -185,9 +185,13 @@ LIBXML_DLL_IMPORT extern int xmlDoValidityCheckingDefaultValue;
 LIBXML_DLL_IMPORT extern int xmlLoadExtDtdDefaultValue;
 LIBXML_DLL_IMPORT extern int xmlPedanticParserDefaultValue;
 LIBXML_DLL_IMPORT extern int xmlKeepBlanksDefaultValue;
-LIBXML_DLL_IMPORT extern xmlChar xmlStringText[];
-LIBXML_DLL_IMPORT extern xmlChar xmlStringTextNoenc[];
-LIBXML_DLL_IMPORT extern xmlChar xmlStringComment[];
+
+/**
+ * Global variables used for predefined strings
+ */
+LIBXML_DLL_IMPORT extern const xmlChar xmlStringText[];
+LIBXML_DLL_IMPORT extern const xmlChar xmlStringTextNoenc[];
+LIBXML_DLL_IMPORT extern const xmlChar xmlStringComment[];
 
 /*
  * Function to finish teh work of the macros where needed

@@ -96,9 +96,9 @@ typedef struct _xmlInputCallback {
 
 #define MAX_INPUT_CALLBACK 15
 
-xmlInputCallback xmlInputCallbackTable[MAX_INPUT_CALLBACK];
-int xmlInputCallbackNr = 0;
-int xmlInputCallbackInitialized = 0;
+static xmlInputCallback xmlInputCallbackTable[MAX_INPUT_CALLBACK];
+static int xmlInputCallbackNr = 0;
+static int xmlInputCallbackInitialized = 0;
 
 /*
  * Output I/O callback sets
@@ -112,9 +112,9 @@ typedef struct _xmlOutputCallback {
 
 #define MAX_OUTPUT_CALLBACK 15
 
-xmlOutputCallback xmlOutputCallbackTable[MAX_OUTPUT_CALLBACK];
-int xmlOutputCallbackNr = 0;
-int xmlOutputCallbackInitialized = 0;
+static xmlOutputCallback xmlOutputCallbackTable[MAX_OUTPUT_CALLBACK];
+static int xmlOutputCallbackNr = 0;
+static int xmlOutputCallbackInitialized = 0;
 
 /************************************************************************
  *									*

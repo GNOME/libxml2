@@ -48,7 +48,7 @@
 /* #define DEBUG */
 /* #define DEBUG_PUSH */
 
-int htmlOmittedDefaultValue = 1;
+static int htmlOmittedDefaultValue = 1;
 
 xmlChar * htmlDecodeEntities(htmlParserCtxtPtr ctxt, int len,
 			     xmlChar end, xmlChar  end2, xmlChar end3);
@@ -353,7 +353,8 @@ htmlSkipBlankChars(xmlParserCtxtPtr ctxt) {
  *
  * Name,Start Tag,End Tag,Save End,Empty,Deprecated,DTD,inline,Description
  */
-htmlElemDesc  html40ElementTable[] = {
+static const htmlElemDesc
+html40ElementTable[] = {
 { "a",		0, 0, 0, 0, 0, 0, 1, "anchor " },
 { "abbr",	0, 0, 0, 0, 0, 0, 1, "abbreviated form" },
 { "acronym",	0, 0, 0, 0, 0, 0, 1, "" },
@@ -448,26 +449,9 @@ htmlElemDesc  html40ElementTable[] = {
 };
 
 /*
- * start tags that imply the end of a current element
- * any tag of each line implies the end of the current element if the type of
- * that element is in the same line
- */
-const char *htmlEquEnd[] = {
-"dt", "dd", "li", "option", NULL,
-"h1", "h2", "h3", "h4", "h5", "h6", NULL,
-"ol", "menu", "dir", "address", "pre", "listing", "xmp", NULL,
-NULL
-};
-/*
- * acording the HTML DTD, HR should be added to the 2nd line above, as it
- * is not allowed within a H1, H2, H3, etc. But we should tolerate that case
- * because many documents contain rules in headings...
- */
-
-/*
  * start tags that imply the end of current element
  */
-const char *htmlStartClose[] = {
+static const char *htmlStartClose[] = {
 "form",		"form", "p", "hr", "h1", "h2", "h3", "h4", "h5", "h6",
 		"dl", "ul", "ol", "menu", "dir", "address", "pre",
 		"listing", "xmp", "head", NULL,
@@ -577,7 +561,7 @@ typedef struct {
     int priority;
 } elementPriority;
 
-const elementPriority htmlEndPriority[] = {
+static const elementPriority htmlEndPriority[] = {
     {"div",   150},
     {"td",    160},
     {"th",    160},
@@ -632,14 +616,14 @@ htmlInitAutoClose(void) {
  *
  * Returns the related htmlElemDescPtr or NULL if not found.
  */
-htmlElemDescPtr
+const htmlElemDescPtr
 htmlTagLookup(const xmlChar *tag) {
     unsigned int i;
 
     for (i = 0; i < (sizeof(html40ElementTable) /
                      sizeof(html40ElementTable[0]));i++) {
         if (!xmlStrcasecmp(tag, BAD_CAST html40ElementTable[i].name))
-	    return(&html40ElementTable[i]);
+	    return((const htmlElemDescPtr) (const htmlElemDescPtr) (const htmlElemDescPtr) (const htmlElemDescPtr) (const htmlElemDescPtr) (const htmlElemDescPtr) (const htmlElemDescPtr) (const htmlElemDescPtr) (const htmlElemDescPtr) &html40ElementTable[i]);
     }
     return(NULL);
 }
@@ -1042,7 +1026,7 @@ htmlIsScriptAttribute(const xmlChar *name) {
  ************************************************************************/
 
 
-htmlEntityDesc  html40EntitiesTable[] = {
+static const htmlEntityDesc  html40EntitiesTable[] = {
 /*
  * the 4 absolute ones, plus apostrophe.
  */
@@ -1353,7 +1337,7 @@ htmlEntityDesc  html40EntitiesTable[] = {
  *
  * Returns the associated htmlEntityDescPtr if found, NULL otherwise.
  */
-htmlEntityDescPtr
+const htmlEntityDescPtr
 htmlEntityLookup(const xmlChar *name) {
     unsigned int i;
 
@@ -1363,7 +1347,7 @@ htmlEntityLookup(const xmlChar *name) {
 #ifdef DEBUG
             xmlGenericError(xmlGenericErrorContext,"Found entity %s\n", name);
 #endif
-            return(&html40EntitiesTable[i]);
+            return((const htmlEntityDescPtr) &html40EntitiesTable[i]);
 	}
     }
     return(NULL);
@@ -1379,7 +1363,7 @@ htmlEntityLookup(const xmlChar *name) {
  *
  * Returns the associated htmlEntityDescPtr if found, NULL otherwise.
  */
-htmlEntityDescPtr
+const htmlEntityDescPtr
 htmlEntityValueLookup(unsigned int value) {
     unsigned int i;
 #ifdef DEBUG
@@ -1394,7 +1378,7 @@ htmlEntityValueLookup(unsigned int value) {
 #ifdef DEBUG
 	    xmlGenericError(xmlGenericErrorContext,"Found entity %s\n", html40EntitiesTable[i].name);
 #endif
-            return(&html40EntitiesTable[i]);
+            return((const htmlEntityDescPtr) &html40EntitiesTable[i]);
 	}
 #ifdef DEBUG
 	if (lv > html40EntitiesTable[i].value) {

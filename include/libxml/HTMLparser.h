@@ -58,9 +58,9 @@ struct _htmlEntityDesc {
 /*
  * There is only few public functions.
  */
-htmlElemDescPtr		htmlTagLookup	(const xmlChar *tag);
-htmlEntityDescPtr	htmlEntityLookup(const xmlChar *name);
-htmlEntityDescPtr	htmlEntityValueLookup(unsigned int value);
+const htmlElemDescPtr	htmlTagLookup	(const xmlChar *tag);
+const htmlEntityDescPtr	htmlEntityLookup(const xmlChar *name);
+const htmlEntityDescPtr	htmlEntityValueLookup(unsigned int value);
 
 int			htmlIsAutoClosed(htmlDocPtr doc,
 					 htmlNodePtr elem);

@@ -38,15 +38,22 @@ xmlNsPtr xmlNewReconciliedNs(xmlDocPtr doc, xmlNodePtr tree, xmlNsPtr ns);
 
 /************************************************************************
  *									*
+ *			Deprecated					*
+ *									*
+ ************************************************************************/
+int oldXMLWDcompatibility = 0;
+ 
+/************************************************************************
+ *									*
  * 		A few static variables and macros			*
  *									*
  ************************************************************************/
 
-xmlChar xmlStringText[] = { 't', 'e', 'x', 't', 0 };
-xmlChar xmlStringTextNoenc[] =
+const xmlChar xmlStringText[] = { 't', 'e', 'x', 't', 0 };
+const xmlChar xmlStringTextNoenc[] =
               { 't', 'e', 'x', 't', 'n', 'o', 'e', 'n', 'c', 0 };
-xmlChar xmlStringComment[] = { 'c', 'o', 'm', 'm', 'e', 'n', 't', 0 };
-int oldXMLWDcompatibility = 0;
+const xmlChar xmlStringComment[] = { 'c', 'o', 'm', 'm', 'e', 'n', 't', 0 };
+
 int xmlIndentTreeOutput = 0;
 xmlBufferAllocationScheme xmlBufferAllocScheme = XML_BUFFER_ALLOC_EXACT;
 

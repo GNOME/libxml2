@@ -1,3 +1,10 @@
+Mon Jul 16 20:05:27 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* include/libxml/parserInternals.h include/libxml/HTMLparser.h
+	  xmlIO.c tree.c parserInternals.c entities.c encoding.c
+	  HTMLparser.c: cleanup of global variables, marking some
+	  const or private.
+
 Sun Jul 16 00:17:15 CEST 2001 Thomas Broyer <tbroyer@ltgt.net>
 
 	* include/libxml/xpath.h: exported xmlXPath{NAN,PINF,NINF}

@@ -26,7 +26,7 @@ struct xmlPredefinedEntityValue {
     const char *name;
     const char *value;
 };
-struct xmlPredefinedEntityValue xmlPredefinedEntityValues[] = {
+static struct xmlPredefinedEntityValue xmlPredefinedEntityValues[] = {
     { "lt", "<" },
     { "gt", ">" },
     { "apos", "'" },
@@ -46,7 +46,8 @@ xmlHashTablePtr xmlPredefinedEntities = NULL;
 static void xmlFreeEntity(xmlEntityPtr entity) {
     if (entity == NULL) return;
 
-    if ((entity->children) && (entity->children->parent == entity))
+    if ((entity->children) &&
+	(entity == (xmlEntityPtr) entity->children->parent))
 	xmlFreeNodeList(entity->children);
     if (entity->name != NULL)
 	xmlFree((char *) entity->name);

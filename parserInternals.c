@@ -83,7 +83,7 @@ xmlCheckVersion(int version) {
 }
 
 
-const char *xmlFeaturesList[] = {
+static const char *xmlFeaturesList[] = {
     "validate",
     "load subset",
     "keep blanks",

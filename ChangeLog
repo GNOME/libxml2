@@ -7,7 +7,7 @@ Mon Aug 16 02:42:30 CEST 2004 Daniel Veillard <daniel@veillard.com>
 	  Mike Hommey for $no_proxy, c.f. #133470
 	* parserInternals.c include/libxml/parserInternals.h
 	  include/libxml/xmlerror.h: cleanup to avoid 'error' identifier 
-	  in includes #
+	  in includes #137414
 	* parser.c SAX2.c debugXML.c include/libxml/parser.h:
 	  first version of the inplementation of parsing within
 	  the context of a node in the tree #142359, new function

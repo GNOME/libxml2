@@ -99,6 +99,12 @@ TABLES={
 	   Count int(11) NOT NULL,
 	   UNIQUE KEY id (ID,Value(35)),
 	   INDEX (ID))""",
+  "AllQueries" : """CREATE TABLE AllQueries (
+           ID int(11) NOT NULL auto_increment,
+	   Value varchar(50) NOT NULL,
+	   Count int(11) NOT NULL,
+	   UNIQUE KEY id (ID,Value(35)),
+	   INDEX (ID))""",
 }
 
 #
@@ -132,14 +138,15 @@ def createTable(db, name):
 	return -1
     return ret
 
-def checkTables(db):
+def checkTables(db, verbose = 1):
     global TABLES
 
     if db == None:
         return -1
     c = db.cursor()
     nbtables = c.execute("show tables")
-    print "Found %d tables" % (nbtables)
+    if verbose:
+	print "Found %d tables" % (nbtables)
     tables = {}
     i = 0
     while i < nbtables:
@@ -155,7 +162,8 @@ def checkTables(db):
 	try:
 	    ret = c.execute("SELECT count(*) from %s" % table);
 	    row = c.fetchone()
-	    print "Table %s contains %d records" % (table, row[0])
+	    if verbose:
+		print "Table %s contains %d records" % (table, row[0])
 	except:
 	    print "Troubles with table %s : repairing" % (table)
 	    ret = c.execute("repair table %s" % table);
@@ -163,7 +171,8 @@ def checkTables(db):
 	    ret = c.execute("SELECT count(*) from %s" % table);
 	    row = c.fetchone()
 	    print "Table %s contains %d records" % (table, row[0])
-    print "checkTables finished"
+    if verbose:
+	print "checkTables finished"
 
     # make sure apache can access the tables read-only
     try:
@@ -173,7 +182,7 @@ def checkTables(db):
         pass
     return 0
     
-def openMySQL(db="xmlsoft", passwd=None):
+def openMySQL(db="xmlsoft", passwd=None, verbose = 1):
     global DB
 
     if passwd == None:
@@ -186,7 +195,7 @@ def openMySQL(db="xmlsoft", passwd=None):
     DB = MySQLdb.connect(passwd=passwd, db=db)
     if DB == None:
         return -1
-    ret = checkTables(DB)
+    ret = checkTables(DB, verbose)
     return ret
 
 def updateWord(name, symbol, relevance):
@@ -1121,13 +1130,6 @@ def scanXMLDateArchive(t = None, force = 0):
 #          Main code: open the DB, the API XML and analyze it		#
 #									#
 #########################################################################
-try:
-    openMySQL()
-except:
-    print "Failed to open the database"
-    print sys.exc_type, sys.exc_value
-    sys.exit(1)
-
 def analyzeArchives(t = None, force = 0):
     global wordsDictArchive
 
@@ -1201,6 +1203,13 @@ def usage():
     sys.exit(1)
 
 def main():
+    try:
+	openMySQL()
+    except:
+	print "Failed to open the database"
+	print sys.exc_type, sys.exc_value
+	sys.exit(1)
+
     args = sys.argv[1:]
     force = 0
     if args:

@@ -7,7 +7,7 @@
   extension-element-prefixes="exsl"
   exclude-result-prefixes="exsl">
 
-  <!-- Import the resto of the site stylesheets -->
+  <!-- Import the rest of the site stylesheets -->
   <xsl:import href="site.xsl"/>
 
   <!-- Generate XHTML-1.0 transitional -->

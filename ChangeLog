@@ -1,3 +1,9 @@
+Wed Oct  4 15:25:53 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* debugXML.c testXPath.c xpath.[ch]: More work on XPath/Xpointer,
+	  incorporated "(TOM)" <ptittom@free.fr> patches rebuilt the XPath
+	  examples with the extra test
+
 Wed Oct  4 14:39:01 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* parser.c xmlIO.c xmlIO.h: fixed bug 26650, and improved

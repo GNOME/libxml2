@@ -1,7 +1,7 @@
 /*
  * xpath.c: XML Path Language implementation
  *          XPath is a language for addressing parts of an XML document,
- *          designed to be used by both XSLT and XPointer.
+ *          designed to be used by both XSLT and XPtr.
  *
  * Reference: W3C Working Draft internal 5 July 1999
  *     http://www.w3.org/Style/XSL/Group/1999/07/xpath-19990705.html
@@ -49,6 +49,9 @@
 #include <libxml/valid.h>
 #include <libxml/xpath.h>
 #include <libxml/parserInternals.h>
+#ifdef LIBXML_XPTR_ENABLED
+#include <libxml/xpointer.h>
+#endif
 
 /* #define DEBUG */
 /* #define DEBUG_STEP */
@@ -792,6 +795,507 @@ xmlXPathFreeNodeSetList(xmlXPathObjectPtr obj) {
     xmlFree(obj);
 }
 
+#ifdef LIBXML_XPTR_ENABLED
+/**
+ * xmlXPathNewPoint:
+ * @node:  the xmlNodePtr
+ * @index:  the index within the node
+ *
+ * Create a new xmlXPathObjectPtr of type point
+ *
+ * Returns the newly created object.
+ */
+xmlXPathObjectPtr
+xmlXPathNewPoint(xmlNodePtr node, int index) {
+    xmlXPathObjectPtr ret;
+
+    if (node == NULL)
+	return(NULL);
+    if (index < 0)
+	return(NULL);
+
+    ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
+    if (ret == NULL) {
+        fprintf(xmlXPathDebug, "xmlXPathNewPoint: out of memory\n");
+	return(NULL);
+    }
+    memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
+    ret->type = XPATH_POINT;
+    ret->user = (void *) node;
+    ret->index = index;
+    return(ret);
+}
+
+/**
+ * xmlXPathNewRangePoints:
+ * @start:  the starting point
+ * @end:  the ending point
+ *
+ * Create a new xmlXPathObjectPtr of type range using 2 Points
+ *
+ * Returns the newly created object.
+ */
+xmlXPathObjectPtr
+xmlXPathNewRangePoints(xmlXPathObjectPtr start, xmlXPathObjectPtr end) {
+    xmlXPathObjectPtr ret;
+
+    if (start == NULL)
+	return(NULL);
+    if (end == NULL)
+	return(NULL);
+    if (start->type != XPATH_POINT)
+	return(NULL);
+    if (end->type != XPATH_POINT)
+	return(NULL);
+
+    ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
+    if (ret == NULL) {
+        fprintf(xmlXPathDebug, "xmlXPathNewRangePoints: out of memory\n");
+	return(NULL);
+    }
+    memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
+    ret->type = XPATH_RANGE;
+    ret->user = start->user;
+    ret->index = start->index;
+    ret->user2 = end->user;
+    ret->index2 = end->index;
+    return(ret);
+}
+
+/**
+ * xmlXPathNewRangePointNode:
+ * @start:  the starting point
+ * @end:  the ending node
+ *
+ * Create a new xmlXPathObjectPtr of type range from a point to a node
+ *
+ * Returns the newly created object.
+ */
+xmlXPathObjectPtr
+xmlXPathNewRangePointNode(xmlXPathObjectPtr start, xmlNodePtr end) {
+    xmlXPathObjectPtr ret;
+
+    if (start == NULL)
+	return(NULL);
+    if (end == NULL)
+	return(NULL);
+    if (start->type != XPATH_POINT)
+	return(NULL);
+
+    ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
+    if (ret == NULL) {
+        fprintf(xmlXPathDebug, "xmlXPathNewRangePointNode: out of memory\n");
+	return(NULL);
+    }
+    memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
+    ret->type = XPATH_RANGE;
+    ret->user = start->user;
+    ret->index = start->index;
+    ret->user2 = end;
+    ret->index2 = -1;
+    return(ret);
+}
+
+/**
+ * xmlXPathNewRangeNodePoint:
+ * @start:  the starting node
+ * @end:  the ending point
+ *
+ * Create a new xmlXPathObjectPtr of type range from a node to a point
+ *
+ * Returns the newly created object.
+ */
+xmlXPathObjectPtr
+xmlXPathNewRangeNodePoint(xmlNodePtr start, xmlXPathObjectPtr end) {
+    xmlXPathObjectPtr ret;
+
+    if (start == NULL)
+	return(NULL);
+    if (end == NULL)
+	return(NULL);
+    if (start->type != XPATH_POINT)
+	return(NULL);
+    if (end->type != XPATH_POINT)
+	return(NULL);
+
+    ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
+    if (ret == NULL) {
+        fprintf(xmlXPathDebug, "xmlXPathNewRangeNodePoint: out of memory\n");
+	return(NULL);
+    }
+    memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
+    ret->type = XPATH_RANGE;
+    ret->user = start;
+    ret->index = -1;
+    ret->user2 = end->user;
+    ret->index2 = end->index;
+    return(ret);
+}
+
+/**
+ * xmlXPathNewRangeNodes:
+ * @start:  the starting node
+ * @end:  the ending node
+ *
+ * Create a new xmlXPathObjectPtr of type range using 2 nodes
+ *
+ * Returns the newly created object.
+ */
+xmlXPathObjectPtr
+xmlXPathNewRangeNodes(xmlNodePtr start, xmlNodePtr end) {
+    xmlXPathObjectPtr ret;
+
+    if (start == NULL)
+	return(NULL);
+    if (end == NULL)
+	return(NULL);
+
+    ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
+    if (ret == NULL) {
+        fprintf(xmlXPathDebug, "xmlXPathNewRangeNodes: out of memory\n");
+	return(NULL);
+    }
+    memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
+    ret->type = XPATH_RANGE;
+    ret->user = start;
+    ret->index = -1;
+    ret->user2 = end;
+    ret->index2 = -1;
+    return(ret);
+}
+
+/**
+ * xmlXPathNewRangeNodeObject:
+ * @start:  the starting node
+ * @end:  the ending object
+ *
+ * Create a new xmlXPathObjectPtr of type range from a not to an object
+ *
+ * Returns the newly created object.
+ */
+xmlXPathObjectPtr
+xmlXPathNewRangeNodeObject(xmlNodePtr start, xmlXPathObjectPtr end) {
+    xmlXPathObjectPtr ret;
+
+    if (start == NULL)
+	return(NULL);
+    if (end == NULL)
+	return(NULL);
+    switch (end->type) {
+	case XPATH_POINT:
+	    break;
+	case XPATH_NODESET:
+	    /*
+	     * Empty set ... 
+	     */
+	    if (end->nodesetval->nodeNr <= 0)
+		return(NULL);
+	    break;
+	default:
+	    TODO
+	    return(NULL);
+    }
+
+    ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
+    if (ret == NULL) {
+        fprintf(xmlXPathDebug, "xmlXPathNewRangeNodeObject: out of memory\n");
+	return(NULL);
+    }
+    memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
+    ret->type = XPATH_RANGE;
+    ret->user = start;
+    ret->index = -1;
+    switch (end->type) {
+	case XPATH_POINT:
+	    ret->user2 = end->user;
+	    ret->index2 = end->index;
+	case XPATH_NODESET: {
+	    ret->user2 = end->nodesetval->nodeTab[end->nodesetval->nodeNr - -1];
+	    ret->index2 = -1;
+	    break;
+	}
+	default:
+	    STRANGE
+	    return(NULL);
+    }
+    ret->user2 = end;
+    ret->index2 = -1;
+    return(ret);
+}
+
+#define XML_RANGESET_DEFAULT	10
+
+/**
+ * xmlXPathRangeSetCreate:
+ * @val:  an initial xmlXPathObjectPtr, or NULL
+ *
+ * Create a new xmlRangeSetPtr of type double and of value @val
+ *
+ * Returns the newly created object.
+ */
+xmlRangeSetPtr
+xmlXPathRangeSetCreate(xmlXPathObjectPtr val) {
+    xmlRangeSetPtr ret;
+
+    ret = (xmlRangeSetPtr) xmlMalloc(sizeof(xmlRangeSet));
+    if (ret == NULL) {
+        fprintf(xmlXPathDebug, "xmlXPathNewRangeSet: out of memory\n");
+	return(NULL);
+    }
+    memset(ret, 0 , (size_t) sizeof(xmlRangeSet));
+    if (val != NULL) {
+        ret->rangeTab = (xmlXPathObjectPtr *) xmlMalloc(XML_RANGESET_DEFAULT *
+					     sizeof(xmlXPathObjectPtr));
+	if (ret->rangeTab == NULL) {
+	    fprintf(xmlXPathDebug, "xmlXPathNewRangeSet: out of memory\n");
+	    return(NULL);
+	}
+	memset(ret->rangeTab, 0 ,
+	       XML_RANGESET_DEFAULT * (size_t) sizeof(xmlXPathObjectPtr));
+        ret->rangeMax = XML_RANGESET_DEFAULT;
+	ret->rangeTab[ret->rangeNr++] = val;
+    }
+    return(ret);
+}
+
+/**
+ * xmlXPathRangeSetAdd:
+ * @cur:  the initial range set
+ * @val:  a new xmlXPathObjectPtr
+ *
+ * add a new xmlXPathObjectPtr ot an existing RangeSet
+ */
+void
+xmlXPathRangeSetAdd(xmlRangeSetPtr cur, xmlXPathObjectPtr val) {
+    int i;
+
+    if (val == NULL) return;
+
+    /*
+     * check against doublons
+     */
+    for (i = 0;i < cur->rangeNr;i++)
+        if (cur->rangeTab[i] == val) return;
+
+    /*
+     * grow the rangeTab if needed
+     */
+    if (cur->rangeMax == 0) {
+        cur->rangeTab = (xmlXPathObjectPtr *) xmlMalloc(XML_RANGESET_DEFAULT *
+					     sizeof(xmlXPathObjectPtr));
+	if (cur->rangeTab == NULL) {
+	    fprintf(xmlXPathDebug, "xmlXPathRangeSetAdd: out of memory\n");
+	    return;
+	}
+	memset(cur->rangeTab, 0 ,
+	       XML_RANGESET_DEFAULT * (size_t) sizeof(xmlXPathObjectPtr));
+        cur->rangeMax = XML_RANGESET_DEFAULT;
+    } else if (cur->rangeNr == cur->rangeMax) {
+        xmlXPathObjectPtr *temp;
+
+        cur->rangeMax *= 2;
+	temp = (xmlXPathObjectPtr *) xmlRealloc(cur->rangeTab, cur->rangeMax *
+				      sizeof(xmlXPathObjectPtr));
+	if (temp == NULL) {
+	    fprintf(xmlXPathDebug, "xmlXPathRangeSetAdd: out of memory\n");
+	    return;
+	}
+	cur->rangeTab = temp;
+    }
+    cur->rangeTab[cur->rangeNr++] = val;
+}
+
+/**
+ * xmlXPathRangeSetMerge:
+ * @val1:  the first RangeSet
+ * @val2:  the second RangeSet
+ *
+ * Merges two rangesets, all ranges from @val2 are added to @val1
+ *
+ * Returns val1 once extended or NULL in case of error.
+ */
+xmlRangeSetPtr
+xmlXPathRangeSetMerge(xmlRangeSetPtr val1, xmlRangeSetPtr val2) {
+    int i;
+
+    if (val1 == NULL) return(NULL);
+    if (val2 == NULL) return(val1);
+
+    /*
+     * !!!!! this can be optimized a lot, knowing that both
+     *       val1 and val2 already have unicity of their values.
+     */
+
+    for (i = 0;i < val2->rangeNr;i++)
+        xmlXPathRangeSetAdd(val1, val2->rangeTab[i]);
+
+    return(val1);
+}
+
+/**
+ * xmlXPathRangeSetDel:
+ * @cur:  the initial range set
+ * @val:  an xmlXPathObjectPtr
+ *
+ * Removes an xmlXPathObjectPtr from an existing RangeSet
+ */
+void
+xmlXPathRangeSetDel(xmlRangeSetPtr cur, xmlXPathObjectPtr val) {
+    int i;
+
+    if (cur == NULL) return;
+    if (val == NULL) return;
+
+    /*
+     * check against doublons
+     */
+    for (i = 0;i < cur->rangeNr;i++)
+        if (cur->rangeTab[i] == val) break;
+
+    if (i >= cur->rangeNr) {
+#ifdef DEBUG
+        fprintf(xmlXPathDebug, 
+	        "xmlXPathRangeSetDel: Range %s wasn't found in RangeList\n",
+		val->name);
+#endif
+        return;
+    }
+    cur->rangeNr--;
+    for (;i < cur->rangeNr;i++)
+        cur->rangeTab[i] = cur->rangeTab[i + 1];
+    cur->rangeTab[cur->rangeNr] = NULL;
+}
+
+/**
+ * xmlXPathRangeSetRemove:
+ * @cur:  the initial range set
+ * @val:  the index to remove
+ *
+ * Removes an entry from an existing RangeSet list.
+ */
+void
+xmlXPathRangeSetRemove(xmlRangeSetPtr cur, int val) {
+    if (cur == NULL) return;
+    if (val >= cur->rangeNr) return;
+    cur->rangeNr--;
+    for (;val < cur->rangeNr;val++)
+        cur->rangeTab[val] = cur->rangeTab[val + 1];
+    cur->rangeTab[cur->rangeNr] = NULL;
+}
+
+/**
+ * xmlXPathFreeRangeSet:
+ * @obj:  the xmlRangeSetPtr to free
+ *
+ * Free the RangeSet compound (not the actual ranges !).
+ */
+void
+xmlXPathFreeRangeSet(xmlRangeSetPtr obj) {
+    if (obj == NULL) return;
+    if (obj->rangeTab != NULL) {
+#ifdef DEBUG
+	memset(obj->rangeTab, 0xB ,
+	       (size_t) sizeof(xmlXPathObjectPtr) * obj->rangeMax);
+#endif
+	xmlFree(obj->rangeTab);
+    }
+#ifdef DEBUG
+    memset(obj, 0xB , (size_t) sizeof(xmlRangeSet));
+#endif
+    xmlFree(obj);
+}
+
+#if defined(DEBUG) || defined(DEBUG_STEP)
+/**
+ * xmlXPathDebugRangeSet:
+ * @output:  a FILE * for the output
+ * @obj:  the xmlRangeSetPtr to free
+ *
+ * Quick display of a RangeSet
+ */
+void
+xmlXPathDebugRangeSet(FILE *output, xmlRangeSetPtr obj) {
+    int i;
+
+    if (output == NULL) output = xmlXPathDebug;
+    if (obj == NULL)  {
+        fprintf(output, "RangeSet == NULL !\n");
+	return;
+    }
+    if (obj->rangeNr == 0) {
+        fprintf(output, "RangeSet is empty\n");
+	return;
+    }
+    if (obj->rangeTab == NULL) {
+	fprintf(output, " rangeTab == NULL !\n");
+	return;
+    }
+    for (i = 0; i < obj->rangeNr; i++) {
+        if (obj->rangeTab[i] == NULL) {
+	    fprintf(output, " NULL !\n");
+	    return;
+        }
+	if ((obj->rangeTab[i]->type == XML_DOCUMENT_NODE) ||
+	    (obj->rangeTab[i]->type == XML_HTML_DOCUMENT_NODE))
+	    fprintf(output, " /");
+	else if (obj->rangeTab[i]->name == NULL)
+	    fprintf(output, " noname!");
+	else fprintf(output, " %s", obj->rangeTab[i]->name);
+    }
+    fprintf(output, "\n");
+}
+#endif
+
+/**
+ * xmlXPathNewRangeSetNodes:
+ * @start:  the NodePtr value
+ * @end:  the NodePtr value
+ *
+ * Create a new xmlXPathObjectPtr of type RangeSet and initialize
+ * it with the single range made of the two nodes @start and @end
+ *
+ * Returns the newly created object.
+ */
+xmlXPathObjectPtr
+xmlXPathNewRangeSetNodes(xmlNodePtr start, xmlNodePtr end) {
+    xmlXPathObjectPtr ret;
+
+    ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
+    if (ret == NULL) {
+        fprintf(xmlXPathDebug, "xmlXPathNewRangeSet: out of memory\n");
+	return(NULL);
+    }
+    memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
+    ret->type = XPATH_LOCATIONSET;
+    ret->user = xmlXPathRangeSetCreate(xmlXPathNewRangeNodes(start, end));
+    return(ret);
+}
+
+/**
+ * xmlXPathWrapRangeSet:
+ * @val:  the RangeSet value
+ *
+ * Wrap the RangeSet @val in a new xmlXPathObjectPtr
+ *
+ * Returns the newly created object.
+ */
+xmlXPathObjectPtr
+xmlXPathWrapRangeSet(xmlRangeSetPtr val) {
+    xmlXPathObjectPtr ret;
+
+    ret = (xmlXPathObjectPtr) xmlMalloc(sizeof(xmlXPathObject));
+    if (ret == NULL) {
+        fprintf(xmlXPathDebug, "xmlXPathWrapRangeSet: out of memory\n");
+	return(NULL);
+    }
+    memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
+    ret->type = XPATH_LOCATIONSET;
+    ret->user = (void *) val;
+    return(ret);
+}
+
+#endif /* LIBXML_XPTR_ENABLED */
+
 /**
  * xmlXPathFreeObject:
  * @obj:  the object to free
@@ -801,10 +1305,14 @@ xmlXPathFreeNodeSetList(xmlXPathObjectPtr obj) {
 void
 xmlXPathFreeObject(xmlXPathObjectPtr obj) {
     if (obj == NULL) return;
-    if (obj->nodesetval != NULL)
-        xmlXPathFreeNodeSet(obj->nodesetval);
-    if (obj->stringval != NULL)
-        xmlFree(obj->stringval);
+    if (obj->type == XPATH_NODESET) {
+	if (obj->nodesetval != NULL)
+	    xmlXPathFreeNodeSet(obj->nodesetval);
+    } else if (obj->type == XPATH_STRING) {
+	if (obj->stringval != NULL)
+	    xmlFree(obj->stringval);
+    }
+
 #ifdef DEBUG
     memset(obj, 0xB , (size_t) sizeof(xmlXPathObject));
 #endif
@@ -1153,6 +1661,9 @@ xmlXPathEqualValues(xmlXPathParserContextPtr ctxt) {
 		    ret = xmlXPathEqualNodeSetString(arg1, arg2->stringval);
 		    break;
 		case XPATH_USERS:
+		case XPATH_POINT:
+		case XPATH_RANGE:
+		case XPATH_LOCATIONSET:
 		    TODO
 		    break;
 	    }
@@ -1190,6 +1701,9 @@ xmlXPathEqualValues(xmlXPathParserContextPtr ctxt) {
 		    ret = (arg1->boolval == ret);
 		    break;
 		case XPATH_USERS:
+		case XPATH_POINT:
+		case XPATH_RANGE:
+		case XPATH_LOCATIONSET:
 		    TODO
 		    break;
 	    }
@@ -1218,6 +1732,9 @@ xmlXPathEqualValues(xmlXPathParserContextPtr ctxt) {
 		    ret = (arg1->floatval == arg2->floatval);
 		    break;
 		case XPATH_USERS:
+		case XPATH_POINT:
+		case XPATH_RANGE:
+		case XPATH_LOCATIONSET:
 		    TODO
 		    break;
 	    }
@@ -1249,11 +1766,17 @@ xmlXPathEqualValues(xmlXPathParserContextPtr ctxt) {
 		    ret = (arg1->floatval == arg2->floatval);
 		    break;
 		case XPATH_USERS:
+		case XPATH_POINT:
+		case XPATH_RANGE:
+		case XPATH_LOCATIONSET:
 		    TODO
 		    break;
 	    }
 	    break;
         case XPATH_USERS:
+	case XPATH_POINT:
+	case XPATH_RANGE:
+	case XPATH_LOCATIONSET:
 	    TODO
 	    break;
     }
@@ -1852,25 +2375,29 @@ xmlNodePtr
 xmlXPathNextFollowing(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
     if (cur != NULL && cur->children != NULL)
         return cur->children ;
-    if (cur == NULL)
-        if ((cur = ctxt->context->node) == NULL) return(NULL) ;
+    if (cur == NULL) cur = ctxt->context->node;
+    if (cur == NULL) return(NULL) ; /* ERROR */
+    if (cur->next != NULL) return(cur->next) ;
     do {
         cur = cur->parent;
         if (cur == NULL) return(NULL);
-        if (cur == ctxt->context->doc->children) return(NULL);
-        if (cur->next != NULL) {
-            cur = cur->next;
-            return(cur);
-        }
+        if (cur == ctxt->context->doc->children) return(NULL); /* !!!!!?!? */
+        if (cur->next != NULL) return(cur->next);
     } while (cur != NULL);
     return(cur);
 }
 
 /*
+ * xmlXPathIsAncestor:
+ * @ancestor:  the ancestor node
+ * @node:  the current node
+ *
+ * Check that @ancestor is a @node's ancestor
+ *
  * returns 1 if @ancestor is a @node's ancestor, 0 otherwise.
  */
 static int
-isAncestor(xmlNodePtr ancestor, xmlNodePtr node) {
+xmlXPathIsAncestor(xmlNodePtr ancestor, xmlNodePtr node) {
     xmlNodePtr tmp ;
     if (ancestor == NULL || node == NULL) return 0 ;
     for (tmp = node ; tmp->parent != NULL ; tmp = tmp->parent) {
@@ -1907,80 +2434,9 @@ xmlXPathNextPreceding(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
         cur = cur->parent;
         if (cur == NULL) return(NULL);
         if (cur == ctxt->context->doc->children) return(NULL);
-    } while (isAncestor(cur, ctxt->context->node));
+    } while (xmlXPathIsAncestor(cur, ctxt->context->node));
     return(cur);
 }
-
-#if 0
-/* OLD VERSION, I was told they were broken ! */
-/**
- * xmlXPathNextFollowing:
- * @ctxt:  the XPath Parser context
- * @cur:  the current node in the traversal
- *
- * Traversal function for the "following" direction
- * The following axis contains all nodes in the same document as the context
- * node that are after the context node in document order, excluding any
- * descendants and excluding attribute nodes and namespace nodes; the nodes
- * are ordered in document order
- *
- * Returns the next element following that axis
- */
-xmlNodePtr
-xmlXPathNextFollowing(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
-    if (cur == (xmlNodePtr) ctxt->context->doc)
-        return(NULL);
-    if (cur == NULL)
-        return(ctxt->context->node->next);; /* !!!!!!!!! */
-    if (cur->children != NULL) return(cur->children);
-    if (cur->next != NULL) return(cur->next);
-    
-    do {
-        cur = cur->parent;
-	if (cur == NULL) return(NULL);
-	if (cur == ctxt->context->doc->children) return(NULL);
-	if (cur->next != NULL) {
-	    cur = cur->next;
-	    return(cur);
-	}
-    } while (cur != NULL);
-    return(cur);
-}
-
-/**
- * xmlXPathNextPreceding:
- * @ctxt:  the XPath Parser context
- * @cur:  the current node in the traversal
- *
- * Traversal function for the "preceding" direction
- * the preceding axis contains all nodes in the same document as the context
- * node that are before the context node in document order, excluding any
- * ancestors and excluding attribute nodes and namespace nodes; the nodes are
- * ordered in reverse document order
- *
- * Returns the next element following that axis
- */
-xmlNodePtr
-xmlXPathNextPreceding(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
-    if (cur == (xmlNodePtr) ctxt->context->doc)
-        return(NULL);
-    if (cur == NULL)
-        return(ctxt->context->node->prev); /* !!!!!!!!! */
-    if (cur->last != NULL) return(cur->last);
-    if (cur->prev != NULL) return(cur->prev);
-    
-    do {
-        cur = cur->parent;
-	if (cur == NULL) return(NULL);
-	if (cur == ctxt->context->doc->children) return(NULL);
-	if (cur->prev != NULL) {
-	    cur = cur->prev;
-	    return(cur);
-	}
-    } while (cur != NULL);
-    return(cur);
-}
-#endif
 
 /**
  * xmlXPathNextNamespace:
@@ -2653,6 +3109,9 @@ xmlXPathStringFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 	    return;
 	}
 	case XPATH_USERS:
+	case XPATH_POINT:
+	case XPATH_RANGE:
+	case XPATH_LOCATIONSET:
 	    TODO
 	    valuePush(ctxt, xmlXPathNewCString(""));
 	    break;
@@ -3242,6 +3701,9 @@ xmlXPathNumberFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 	    valuePush(ctxt, cur);
 	    return;
 	case XPATH_USERS:
+	case XPATH_POINT:
+	case XPATH_RANGE:
+	case XPATH_LOCATIONSET:
 	    TODO
 	    valuePush(ctxt, xmlXPathNewFloat(0.0));
 	    break;
@@ -4675,10 +5137,17 @@ search_nodes:
  * xmlXPathEvalStep:
  * @ctxt:  the XPath Parser context
  *
- *  [4]   Step ::=   Basis Predicate*
+ *  TODO [4] was changed between the WD and the REC
+ *
+ *  [4]   Step ::=   AxisSpecifier NodeTest Predicate*
  *                     | AbbreviatedStep 
- *  [12]   AbbreviatedStep ::=   '.'
- *                           | '..'
+ *  [12]   AbbreviatedStep ::=   '.' | '..'
+ *
+ * Modified for XPtr range support as:
+ *
+ *  [4xptr] Step ::= AxisSpecifier NodeTest Predicate*
+ *                     | AbbreviatedStep
+ *                     | 'range-to' '(' Expr ')' Predicate*
  *
  * Evaluate one step in a Location Path
  * A location step of . is short for self::node(). This is
@@ -4704,7 +5173,99 @@ xmlXPathEvalStep(xmlXPathParserContextPtr ctxt) {
 	NEXT;
 	SKIP_BLANKS;
     } else {
-	xmlXPathEvalBasis(ctxt);
+#ifdef LIBXML_XPTR_ENABLED
+	if ((CUR == 'r') && (NXT(1) == 'a') && (NXT(2) == 'n') &&
+	    (NXT(3) == 'g') && (NXT(4) == 'e') && (NXT(5) == '-') &&
+	    (NXT(6) == 't') && (NXT(7) == 'o')) {
+	    xmlXPathObjectPtr range;
+	    const xmlChar *cur;
+	    xmlXPathObjectPtr res, obj;
+	    xmlXPathObjectPtr tmp;
+	    xmlRangeSetPtr newset = NULL;
+	    xmlNodeSetPtr oldset;
+	    int i;
+
+	    CHECK_TYPE(XPATH_NODESET);
+	    obj = valuePop(ctxt);
+	    oldset = obj->nodesetval;
+	    ctxt->context->node = NULL;
+
+	    SKIP(8);
+	    SKIP_BLANKS;
+	    if (CUR != '(') {
+		XP_ERROR(XPATH_EXPR_ERROR);
+	    }
+	    NEXT;
+	    SKIP_BLANKS;
+
+	    /*
+	     * Save the expression pointer since we will have to evaluate
+	     * it multiple times. Initialize the new set.
+	     */
+	    cur = ctxt->cur;
+	    newset = xmlXPathRangeSetCreate(NULL);
+	    
+	    for (i = 0; i < oldset->nodeNr; i++) {
+		ctxt->cur = cur;
+
+		/*
+		 * Run the evaluation with a node list made of a single item
+		 * in the nodeset.
+		 */
+		ctxt->context->node = oldset->nodeTab[i];
+		tmp = xmlXPathNewNodeSet(ctxt->context->node);
+		valuePush(ctxt, tmp);
+
+		xmlXPathEvalExpr(ctxt);
+		CHECK_ERROR;
+
+		/*
+		 * The result of the evaluation need to be tested to
+		 * decided whether the filter succeeded or not
+		 */
+		res = valuePop(ctxt);
+		range = xmlXPathNewRangeNodeObject(oldset->nodeTab[0], res);
+		if (range != NULL) {
+		    xmlXPathRangeSetAdd(newset, range);
+		}
+
+		/*
+		 * Cleanup
+		 */
+		if (res != NULL)
+		    xmlXPathFreeObject(res);
+		if (ctxt->value == tmp) {
+		    res = valuePop(ctxt);
+		    xmlXPathFreeObject(res);
+		}
+		
+		ctxt->context->node = NULL;
+	    }
+
+	    /*
+	     * The result is used as the new evaluation set.
+	     */
+	    xmlXPathFreeObject(obj);
+	    ctxt->context->node = NULL;
+	    ctxt->context->contextSize = -1;
+	    ctxt->context->proximityPosition = -1;
+	    valuePush(ctxt, xmlXPathWrapRangeSet(newset));
+
+	    SKIP_BLANKS;
+	    if (CUR != ')') {
+		XP_ERROR(XPATH_EXPR_ERROR);
+	    }
+	    NEXT;
+	    SKIP_BLANKS;
+	} else
+#endif
+	{
+	    /*
+	     * TODO cleanup productions/procedures
+	     * Basis is no more an XPath production !
+	     */
+	    xmlXPathEvalBasis(ctxt);
+	}
 	SKIP_BLANKS;
 	while (CUR == '[') {
 	    xmlXPathEvalPredicate(ctxt);
@@ -4827,6 +5388,63 @@ xmlXPathEval(const xmlChar *str, xmlXPathContextPtr ctx) {
     xmlXPathEvalLocationPath(ctxt);
 
     if ((ctxt->value == NULL) || (ctxt->value->type != XPATH_NODESET)) {
+	fprintf(xmlXPathDebug,
+		"xmlXPathEval: evaluation failed to return a node set\n");
+    } else {
+	res = valuePop(ctxt);
+    }
+
+    do {
+        tmp = valuePop(ctxt);
+	if (tmp != NULL) {
+	    xmlXPathFreeObject(tmp);
+	    stack++;    
+        }
+    } while (tmp != NULL);
+    if (stack != 0) {
+	fprintf(xmlXPathDebug, "xmlXPathEval: %d object left on the stack\n",
+	        stack);
+    }
+    if (ctxt->error != XPATH_EXPRESSION_OK) {
+	xmlXPathFreeObject(res);
+	res = NULL;
+    }
+        
+    xmlXPathFreeParserContext(ctxt);
+    return(res);
+}
+
+/**
+ * xmlXPathEvalXPtrExpr:
+ * @str:  the XPointer XPtrExpr expression
+ * @ctx:  the XPointer context
+ *
+ * Evaluate the location set corresponding to this expression.
+ *
+ * Returns the xmlXPathObjectPtr resulting from the eveluation or NULL.
+ *         the caller has to free the object.
+ */
+xmlXPathObjectPtr
+xmlXPathEvalXPtrExpr(const xmlChar *str, xmlXPathContextPtr ctx) {
+    xmlXPathParserContextPtr ctxt;
+    xmlXPathObjectPtr res = NULL, tmp;
+    int stack = 0;
+
+    xmlXPathInit();
+
+    CHECK_CONTEXT(ctx)
+
+    if (xmlXPathDebug == NULL)
+        xmlXPathDebug = stderr;
+    ctxt = xmlXPathNewParserContext(str, ctx);
+    valuePush(ctxt, xmlXPathNewNodeSet(ctx->node));
+    if (str[0] == '/')
+        xmlXPathRoot(ctxt);
+    xmlXPathEvalExpr(ctxt);
+
+    if ((ctxt->value == NULL) ||
+	((ctxt->value->type != XPATH_NODESET) &&
+	 (ctxt->value->type != XPATH_LOCATIONSET))) {
 	fprintf(xmlXPathDebug,
 		"xmlXPathEval: evaluation failed to return a node set\n");
     } else {

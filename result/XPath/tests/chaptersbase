@@ -1,24 +1,36 @@
+
+========================
+Expression: /child::EXAMPLE
 Object is a Node Set :
 Set contains 1 nodes:
 1    ELEMENT EXAMPLE
       ATTRIBUTE prop1
         TEXT
-        content=gnome is great
+          content=gnome is great
       ATTRIBUTE prop2
         TEXT
-        content=& linux too
+          content=& linux too
+
+========================
+Expression: /child::*
 Object is a Node Set :
 Set contains 1 nodes:
 1    ELEMENT EXAMPLE
       ATTRIBUTE prop1
         TEXT
-        content=gnome is great
+          content=gnome is great
       ATTRIBUTE prop2
         TEXT
-        content=& linux too
+          content=& linux too
+
+========================
+Expression: /child::EXAMPLE/child::head
 Object is a Node Set :
 Set contains 1 nodes:
 1    ELEMENT head
+
+========================
+Expression: /child::EXAMPLE/child::*
 Object is a Node Set :
 Set contains 6 nodes:
 1    ELEMENT head
@@ -27,16 +39,28 @@ Set contains 6 nodes:
 4    ELEMENT chapter
 5    ELEMENT chapter
 6    ELEMENT chapter
+
+========================
+Expression: /child::EXAMPLE/child::head/child::title
 Object is a Node Set :
 Set contains 1 nodes:
 1    ELEMENT title
+
+========================
+Expression: /child::EXAMPLE/child::head/child::title/child::text()
 Object is a Node Set :
 Set contains 1 nodes:
 1    TEXT
-    content=Welcome to Gnome
+      content=Welcome to Gnome
+
+========================
+Expression: /child::EXAMPLE/child::head/node()
 Object is a Node Set :
 Set contains 1 nodes:
 1    ELEMENT title
+
+========================
+Expression: /descendant::title
 Object is a Node Set :
 Set contains 6 nodes:
 1    ELEMENT title
@@ -45,6 +69,9 @@ Set contains 6 nodes:
 4    ELEMENT title
 5    ELEMENT title
 6    ELEMENT title
+
+========================
+Expression: /descendant::p/ancestor::chapter
 Object is a Node Set :
 Set contains 5 nodes:
 1    ELEMENT chapter

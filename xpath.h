@@ -51,7 +51,10 @@ typedef enum {
     XPATH_BOOLEAN = 2,
     XPATH_NUMBER = 3,
     XPATH_STRING = 4,
-    XPATH_USERS = 5
+    XPATH_POINT = 5,
+    XPATH_RANGE = 6,
+    XPATH_LOCATIONSET = 7,
+    XPATH_USERS = 8
 } xmlXPathObjectType;
 
 typedef struct _xmlXPathObject xmlXPathObject;
@@ -63,6 +66,9 @@ struct _xmlXPathObject {
     double floatval;
     xmlChar *stringval;
     void *user;
+    int index;
+    void *user2;
+    int index2;
 };
 
 /*
@@ -168,6 +174,11 @@ struct _xmlXPathContext {
     /* extra variables */
     int contextSize;			/* the context size */
     int proximityPosition;		/* the proximity position */
+
+    /* extra stuff for XPointer */
+    int xptr;				/* it this an XPointer context */
+    xmlNodePtr here;			/* for here() */
+    xmlNodePtr origin;			/* for origin() */
 };
 
 /*
@@ -220,9 +231,12 @@ typedef void (*xmlXPathFunction) (xmlXPathParserContextPtr ctxt, int nargs);
 /**
  * Evaluation functions.
  */
+void		   xmlXPathInit			(void);
 xmlXPathContextPtr xmlXPathNewContext		(xmlDocPtr doc);
 void		   xmlXPathFreeContext		(xmlXPathContextPtr ctxt);
 xmlXPathObjectPtr  xmlXPathEval			(const xmlChar *str,
+						 xmlXPathContextPtr ctxt);
+xmlXPathObjectPtr  xmlXPathEvalXPtrExpr		(const xmlChar *str,
 						 xmlXPathContextPtr ctxt);
 void		   xmlXPathFreeObject		(xmlXPathObjectPtr obj);
 xmlXPathObjectPtr  xmlXPathEvalExpression	(const xmlChar *str,

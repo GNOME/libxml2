@@ -41,7 +41,10 @@
 #include <libxml/debugXML.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/parserInternals.h>
-
+#if defined(LIBXML_XPTR_ENABLED)
+#include <libxml/xpointer.h>
+static int xptr = 0;
+#endif
 static int debug = 0;
 static int valid = 0;
 static int expr = 0;
@@ -138,11 +141,20 @@ void testXPath(const char *str) {
     xmlXPathObjectPtr res;
     xmlXPathContextPtr ctxt;
     
-    ctxt = xmlXPathNewContext(document);
-    if (expr)
-	res = xmlXPathEvalExpression(BAD_CAST str, ctxt);
-    else
-	res = xmlXPathEval(BAD_CAST str, ctxt);
+#if defined(LIBXML_XPTR_ENABLED)
+    if (xptr) {
+	ctxt = xmlXPtrNewContext(document, NULL, NULL);
+	res = xmlXPtrEval(BAD_CAST str, ctxt);
+    } else {
+#endif
+	ctxt = xmlXPathNewContext(document);
+	if (expr)
+	    res = xmlXPathEvalExpression(BAD_CAST str, ctxt);
+	else
+	    res = xmlXPathEval(BAD_CAST str, ctxt);
+#if defined(LIBXML_XPTR_ENABLED)
+    }
+#endif
     xmlXPAthDebugDumpObject(stdout, res);
     xmlXPathFreeObject(res);
     xmlXPathFreeContext(ctxt);
@@ -158,6 +170,7 @@ void testXPathFile(const char *filename) {
 	return;
     }
     while (fscanf(input, "%s", expr) != EOF) {
+        printf("\n========================\nExpression: %s\n", expr) ;
         testXPath(expr);
     }
 
@@ -171,6 +184,10 @@ int main(int argc, char **argv) {
     char *filename = NULL;
 
     for (i = 1; i < argc ; i++) {
+#if defined(LIBXML_XPTR_ENABLED)
+	if ((!strcmp(argv[i], "-xptr")) || (!strcmp(argv[i], "--xptr")))
+	    xptr++;
+#endif
 	if ((!strcmp(argv[i], "-debug")) || (!strcmp(argv[i], "--debug")))
 	    debug++;
 	if ((!strcmp(argv[i], "-valid")) || (!strcmp(argv[i], "--valid")))

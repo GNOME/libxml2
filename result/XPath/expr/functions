@@ -1,5 +1,20 @@
+
+========================
+Expression: true()
 Object is a Boolean : true
+
+========================
+Expression: false()
 Object is a Boolean : false
+
+========================
+Expression: number("1.5")
 Object is a number : 1.5
+
+========================
+Expression: concat("titi",'toto')
 Object is a string : tititoto
+
+========================
+Expression: concat("titi",'toto',"tata","last")
 Object is a string : tititototatalast

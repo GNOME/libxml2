@@ -584,6 +584,8 @@ void xmlDebugDumpOneNode(FILE *output, xmlNodePtr node, int depth) {
 	xmlDebugDumpAttrList(output, node->properties, depth + 1);
     if (node->type != XML_ENTITY_REF_NODE) {
 	if (node->content != NULL) {
+            shift[2 * i] = shift[2 * i + 1] = ' ' ;
+            shift[2 * i + 2] = shift[2 * i + 3] = 0 ;
 	    fprintf(output, shift);
 	    fprintf(output, "content=");
 #ifndef XML_USE_BUFFER_CONTENT	    
@@ -1681,6 +1683,18 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
 			case XPATH_STRING:
 			    fprintf(stderr, "%s is a string\n", arg);
 			    break;
+			case XPATH_POINT:
+			    fprintf(stderr, "%s is a point\n", arg);
+			    break;
+			case XPATH_RANGE:
+			    fprintf(stderr, "%s is a range\n", arg);
+			    break;
+			case XPATH_LOCATIONSET:
+			    fprintf(stderr, "%s is a range\n", arg);
+			    break;
+			case XPATH_USERS:
+			    fprintf(stderr, "%s is user-defined\n", arg);
+			    break;
 		    }
 		    xmlXPathFreeNodeSetList(list);
 		} else {
@@ -1718,6 +1732,18 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
 			    break;
 			case XPATH_STRING:
 			    fprintf(stderr, "%s is a string\n", arg);
+			    break;
+			case XPATH_POINT:
+			    fprintf(stderr, "%s is a point\n", arg);
+			    break;
+			case XPATH_RANGE:
+			    fprintf(stderr, "%s is a range\n", arg);
+			    break;
+			case XPATH_LOCATIONSET:
+			    fprintf(stderr, "%s is a range\n", arg);
+			    break;
+			case XPATH_USERS:
+			    fprintf(stderr, "%s is user-defined\n", arg);
 			    break;
 		    }
 		    xmlXPathFreeNodeSetList(list);
@@ -1760,6 +1786,18 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
 			    break;
 			case XPATH_STRING:
 			    fprintf(stderr, "%s is a string\n", arg);
+			    break;
+			case XPATH_POINT:
+			    fprintf(stderr, "%s is a point\n", arg);
+			    break;
+			case XPATH_RANGE:
+			    fprintf(stderr, "%s is a range\n", arg);
+			    break;
+			case XPATH_LOCATIONSET:
+			    fprintf(stderr, "%s is a range\n", arg);
+			    break;
+			case XPATH_USERS:
+			    fprintf(stderr, "%s is user-defined\n", arg);
 			    break;
 		    }
 		    xmlXPathFreeNodeSetList(list);

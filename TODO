@@ -17,6 +17,54 @@ DOCS:
 TODO:
 =====
 
+- E20
+[17:21:38] <PGrosso> DV, you have an action to Check what your parser does on E20. Have you done this?
+[17:22:42] <PGrosso> DV, ref: http://www.w3.org/XML/xml-V10-2e-errata#E20
+[17:39:07] <DV> paphio:~/XML -> cat tst.xml
+[17:39:07] <DV> <!DOCTYPE test [
+[17:39:07] <DV> <!ELEMENT test EMPTY>
+[17:39:07] <DV> <!ATTLIST test attr1 NMTOKENS #IMPLIED>
+[17:39:07] <DV> <!ATTLIST test attr2 NMTOKENS #IMPLIED>
+[17:39:07] <DV> <!ATTLIST test attr3 NMTOKENS #IMPLIED>
+[17:39:07] <DV> ]>
+[17:39:07] <DV> <test
+[17:39:07] <DV>    attr1=" a b "
+[17:39:07] <DV>    attr2=" a&#x20;b "
+[17:39:07] <DV>    attr3=" a&#x9;b "
+[17:39:07] <DV>    />
+[17:39:07] <DV> paphio:~/XML -> xmllint --valid tst.xml
+[17:39:07] <DV> <?xml version="1.0"?>
+[17:39:07] <DV> <!DOCTYPE test [
+[17:39:07] <DV> <!ELEMENT test EMPTY>
+[17:39:07] <DV> <!ATTLIST test attr1 NMTOKENS #IMPLIED>
+[17:39:07] <DV> <!ATTLIST test attr2 NMTOKENS #IMPLIED>
+[17:39:07] <DV> <!ATTLIST test attr3 NMTOKENS #IMPLIED>
+[17:39:07] <DV> ]>
+[17:39:07] <DV> <test attr1="a b" attr2="a b" attr3="a&#9;b"/>
+[17:39:07] <DV> paphio:~/XML ->
+[17:39:16] <DV> I think it's okay
+[17:40:28] <PGrosso> DV, so you're saying that your parser implements E20 correctly, right?
+[17:40:48] <DV> assuming I understood E20 point correctly, yes
+[17:41:15] <DV> and that's because I'm unsure taht I pasted the est document and result
+[17:41:25] <DV> s/ est/ test/
+[17:48:56] <richard> does your parser say that document is invalid?
+[17:49:03] <DV> richard: did I understood it ?
+[17:49:11] <DV> richard: no it considers it valid
+[17:49:16] <richard> that document is invalid
+[17:49:47] <DV> ah , well it's unclear 
+[17:50:03] <richard> the normalized value is a-tab-b, which you are correctly serializing as a&#9;b, but it is invalid
+[17:50:11] <DV> richard: okay
+[17:50:23] <DV> that should be really easy to fix
+[17:50:39] <richard> the validity check should require a single space between tokens
+[17:51:03] <DV> no leading and no trailing either
+[17:51:07] <richard> right
+[17:51:18] <DV> which makes sense
+[17:52:42] <richard> a&#32;b is valid, because it turns into a-space-b anyway without any normalization
+[17:54:31] <DV> okay that's attr2 attr2=" a&#x20;b "
+[17:54:44] * DV tends to still think in hexa
+[17:55:59] <DV> richard: and attr2="a&#x20; b" would lead to a validity error too then, if I understand correctly
+[17:56:37] <richard> attr2 is valid
+[17:57:11] <richard> the normalized value is a space b
 - XInclude at the SAX level (libSRVG)
 - fix the C code prototype to bring back doc/libxml-undocumented.txt
   to a reasonable level

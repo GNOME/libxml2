@@ -1,3 +1,11 @@
+Fri Oct 24 23:08:17 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* libxml.m4: applied patch from Patrick Welche provided in
+	  bug #125432 , future proofing the .m4 file.
+	* parser.c: resetting the context should also reset the error
+	* TODO: problem of conformance w.r.t. E20 was raised in the
+	  XML Core telconf and libxml2 isn't conformant there.
+
 Wed Oct 22 14:33:05 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlwriter.c: applied patch from Alfred Mickautsch fixing #125180

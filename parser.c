@@ -12108,6 +12108,8 @@ xmlCtxtReset(xmlParserCtxtPtr ctxt)
     if (ctxt->catalogs != NULL)
 	xmlCatalogFreeLocal(ctxt->catalogs);
 #endif
+    if (ctxt->lastError.code != XML_ERR_OK)
+        xmlResetError(&ctxt->lastError);
 }
 
 /**

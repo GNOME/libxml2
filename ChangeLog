@@ -1,3 +1,11 @@
+Thu Mar  7 23:19:28 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c python/tests/Makefile.am python/tests/attribs.py:
+	  fixed xmlHasNsProp() bugs for defaulted from DTD attribs,
+	  added a specific regression test
+	* python/generator.py: xmlHasNsProp() and xmlHasProp() shall
+	  not raise exceptions when failing to find the attribute.
+
 Thu Mar  7 16:11:35 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in xmllint.c: owen pointed out a problem with the

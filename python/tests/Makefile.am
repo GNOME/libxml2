@@ -2,6 +2,7 @@ EXAMPLE_DIR = $(prefix)/share/doc/libxml2-python-$(LIBXML_VERSION)/examples
 
 PYTESTS=	\
     build.py	\
+    attribs.py	\
     tst.py	\
     tstxpath.py	\
     xpathext.py	\

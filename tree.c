@@ -4802,7 +4802,6 @@ xmlAttrPtr
 xmlHasNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *nameSpace) {
     xmlAttrPtr prop;
     xmlDocPtr doc;
-    xmlNsPtr ns;
 
     if (node == NULL)
 	return(NULL);
@@ -4833,20 +4832,39 @@ xmlHasNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *nameSpace) {
     doc =  node->doc;
     if (doc != NULL) {
         if (doc->intSubset != NULL) {
-	    xmlAttributePtr attrDecl;
+	    xmlAttributePtr attrDecl = NULL;
+	    xmlNsPtr *nsList, *cur;
+	    xmlChar *ename;
 
-	    attrDecl = xmlGetDtdAttrDesc(doc->intSubset, node->name, name);
-	    if ((attrDecl == NULL) && (doc->extSubset != NULL))
-		attrDecl = xmlGetDtdAttrDesc(doc->extSubset, node->name, name);
-		
-	    if ((attrDecl != NULL) && (attrDecl->prefix != NULL)) {
-	        /*
-		 * The DTD declaration only allows a prefix search
-		 */
-		ns = xmlSearchNs(doc, node, attrDecl->prefix);
-		if ((ns != NULL) && (xmlStrEqual(ns->href, nameSpace)))
-		    return((xmlAttrPtr) attrDecl);
+	    nsList = xmlGetNsList(node->doc, node);
+	    if (nsList == NULL)
+		return(NULL);
+	    if ((node->ns != NULL) && (node->ns->prefix != NULL)) {
+		ename = xmlStrdup(node->ns->prefix);
+		ename = xmlStrcat(ename, BAD_CAST ":");
+		ename = xmlStrcat(ename, node->name);
+	    } else {
+		ename = xmlStrdup(node->name);
 	    }
+	    if (ename == NULL) {
+		xmlFree(nsList);
+		return(NULL);
+	    }
+
+	    cur = nsList;
+	    while (*cur != NULL) {
+		if (xmlStrEqual((*cur)->href, nameSpace)) {
+		    attrDecl = xmlGetDtdQAttrDesc(doc->intSubset, ename,
+			                          name, (*cur)->prefix);
+		    if ((attrDecl == NULL) && (doc->extSubset != NULL))
+			attrDecl = xmlGetDtdQAttrDesc(doc->extSubset, ename,
+						      name, (*cur)->prefix);
+		}
+		cur++;
+	    }
+	    xmlFree(nsList);
+	    xmlFree(ename);
+	    return((xmlAttrPtr) attrDecl);
 	}
     }
     return(NULL);

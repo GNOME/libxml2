@@ -551,6 +551,11 @@ classes_destructors = {
     "URI": "xmlFreeURI",
 }
 
+functions_noexcept = {
+    "xmlHasProp": 1,
+    "xmlHasNsProp": 1,
+}
+
 function_classes = {}
 
 function_classes["None"] = []
@@ -675,6 +680,7 @@ def buildWrappers():
     global primary_classes
     global classes_ancestor
     global classes_destructors
+    global functions_noexcept
 
     for type in classes_type.keys():
 	function_classes[classes_type[type][2]] = []
@@ -799,7 +805,9 @@ def buildWrappers():
 		    #
 		    # Raise an exception
 		    #
-		    if string.find(name, "URI") >= 0:
+		    if functions_noexcept.has_key(name):
+		        classes.write("    if ret == None:return None\n");
+		    elif string.find(name, "URI") >= 0:
 			classes.write(
 			"    if ret == None:raise uriError('%s() failed')\n"
 			              % (name))
@@ -912,7 +920,10 @@ def buildWrappers():
 			#
 			# Raise an exception
 			#
-			if string.find(name, "URI") >= 0:
+			if functions_noexcept.has_key(name):
+			    classes.write(
+			        "        if ret == None:return None\n");
+			elif string.find(name, "URI") >= 0:
 			    classes.write(
 		    "        if ret == None:raise uriError('%s() failed')\n"
 					  % (name))
@@ -935,7 +946,10 @@ def buildWrappers():
 			#
 			# Raise an exception
 			#
-			if string.find(name, "URI") >= 0:
+			if functions_noexcept.has_key(name):
+			    classes.write(
+			        "        if ret == None:return None");
+			elif string.find(name, "URI") >= 0:
 			    classes.write(
 		    "        if ret == None:raise uriError('%s() failed')\n"
 					  % (name))

@@ -879,9 +879,6 @@ xmlLoadFileContent(const char *filename)
 
 static xmlCatalogEntryPtr
 xmlParseXMLCatalogFile(xmlCatalogPrefer prefer, const xmlChar *filename);
-static xmlCatalogEntryPtr
-xmlParseXMLCatalog(const xmlChar *value, xmlCatalogPrefer prefer,
-	           const char *file);
 static void
 xmlParseXMLCatalogNodeList(xmlNodePtr cur, xmlCatalogPrefer prefer,
 	                   xmlCatalogEntryPtr parent);
@@ -1118,74 +1115,6 @@ xmlParseXMLCatalogNodeList(xmlNodePtr cur, xmlCatalogPrefer prefer,
 	cur = cur->next;
     }
     /* TODO: sort the list according to REWRITE lengths and prefer value */
-}
-
-/**
- * xmlParseXMLCatalog:
- * @value:  the content in-memory of the catalog serialization
- * @prefer:  the PUBLIC vs. SYSTEM current preference value
- * @file:  the filename for the catalog
- *
- * Parses the catalog content to extract the XML tree and then analyze the
- * tree to build a list of Catalog entries corresponding to this catalog
- * 
- * Returns the resulting Catalog entries list
- */
-static xmlCatalogEntryPtr
-xmlParseXMLCatalog(const xmlChar *value, xmlCatalogPrefer prefer,
-	           const char *file) {
-    xmlDocPtr doc;
-    xmlNodePtr cur;
-    xmlChar *prop;
-    xmlCatalogEntryPtr parent = NULL;
-
-    if ((value == NULL) || (file == NULL))
-        return(NULL);
-
-    if (xmlDebugCatalogs)
-	xmlGenericError(xmlGenericErrorContext,
-		"Parsing catalog %s's content\n", file);
-
-    doc = xmlParseDoc((xmlChar *) value);
-    if (doc == NULL) 
-	return(NULL);
-    doc->URL = xmlStrdup((const xmlChar *) file);
-
-    cur = xmlDocGetRootElement(doc);
-    if ((cur != NULL) && (xmlStrEqual(cur->name, BAD_CAST "catalog")) &&
-	(cur->ns != NULL) && (cur->ns->href != NULL) &&
-	(xmlStrEqual(cur->ns->href, XML_CATALOGS_NAMESPACE))) {
-
-	prop = xmlGetProp(cur, BAD_CAST "prefer");
-	if (prop != NULL) {
-	    if (xmlStrEqual(prop, BAD_CAST "system")) {
-		prefer = XML_CATA_PREFER_SYSTEM;
-	    } else if (xmlStrEqual(prop, BAD_CAST "public")) {
-		prefer = XML_CATA_PREFER_PUBLIC;
-	    } else {
-		xmlGenericError(xmlGenericErrorContext,
-			"Invalid value for prefer: '%s'\n",
-			        prop);
-	    }
-	    xmlFree(prop);
-	}
-	parent = xmlNewCatalogEntry(XML_CATA_CATALOG, NULL,
-		                    (const xmlChar *)file, prefer);
-        if (parent == NULL) {
-	    xmlFreeDoc(doc);
-	    return(NULL);
-	}
-
-	cur = cur->children;
-	xmlParseXMLCatalogNodeList(cur, prefer, parent);
-    } else {
-	xmlGenericError(xmlGenericErrorContext,
-			"File %s is not an XML Catalog\n", file);
-	xmlFreeDoc(doc);
-	return(NULL);
-    }
-    xmlFreeDoc(doc);
-    return(parent);
 }
 
 /**

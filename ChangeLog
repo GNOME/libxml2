@@ -1,3 +1,8 @@
+Tue Oct 30 18:38:53 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* catalog.c: Justin Fletcher pointed out that xmlParseXMLCatalog
+	  was not used anymore !
+
 Tue Oct 30 13:33:13 CET 2001 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in: preparing 2.4.7

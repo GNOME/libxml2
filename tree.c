@@ -768,7 +768,8 @@ xmlNodeListGetString(xmlDocPtr doc, xmlNodePtr list, int inLine) {
     if (list == NULL) return(NULL);
 
     while (node != NULL) {
-        if (node->type == XML_TEXT_NODE) {
+        if ((node->type == XML_TEXT_NODE) ||
+	    (node->type == XML_CDATA_SECTION_NODE)) {
 	    if (inLine) {
 #ifndef XML_USE_BUFFER_CONTENT
 		ret = xmlStrcat(ret, node->content);

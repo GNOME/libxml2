@@ -1,3 +1,8 @@
+Mon Aug  7 11:19:00 PDT 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* tree.c : return content from CDATA sections when asking for
+	           node content
+
 Mon Jul 10 16:08:05 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* configure.in: 1.8.9

@@ -6795,7 +6795,7 @@ failed:
 }
 
 /**
- * xmlParseEndTag:
+ * xmlParseEndTagInternal:
  * @ctxt:  an XML parser context
  *
  * parse an end of tag
@@ -6807,8 +6807,8 @@ failed:
  * [NS 9] ETag ::= '</' QName S? '>'
  */
 
-void
-xmlParseEndTag(xmlParserCtxtPtr ctxt) {
+static void
+xmlParseEndTagInternal(xmlParserCtxtPtr ctxt, int line) {
     xmlChar *name;
     xmlChar *oldname;
 
@@ -6850,28 +6850,16 @@ xmlParseEndTag(xmlParserCtxtPtr ctxt) {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL)) {
 	    if (name != NULL) {
 		ctxt->sax->error(ctxt->userData,
-		     "Opening and ending tag mismatch: %s and %s\n",
-		                 ctxt->name, name);
+		     "Opening and ending tag mismatch: %s line %d and %s\n",
+		                 ctxt->name, line, name);
             } else {
 		ctxt->sax->error(ctxt->userData,
-		     "Ending tag error for: %s\n", ctxt->name);
+		     "Ending tag error for: %s line %d\n", ctxt->name, line);
 	    }
 
 	}     
 	ctxt->wellFormed = 0;
 	if (ctxt->recovery == 0) ctxt->disableSAX = 1;
-#if 0
-	else {
-	    /*
-	     * Recover in case of one missing close
-	     */
-	    if ((ctxt->nameNr > 2) && 
-		(xmlStrEqual(ctxt->nameTab[ctxt->nameNr -2], name))) {
-		namePop(ctxt);
-		spacePop(ctxt);
-	    }
-	}
-#endif
 	if (name != NULL)
 	    xmlFree(name);		 
     }
@@ -6892,6 +6880,24 @@ xmlParseEndTag(xmlParserCtxtPtr ctxt) {
 	xmlFree(oldname);
     }
     return;
+}
+
+/**
+ * xmlParseEndTag:
+ * @ctxt:  an XML parser context
+ *
+ * parse an end of tag
+ *
+ * [42] ETag ::= '</' Name S? '>'
+ *
+ * With namespace
+ *
+ * [NS 9] ETag ::= '</' QName S? '>'
+ */
+
+void
+xmlParseEndTag(xmlParserCtxtPtr ctxt) {
+    xmlParseEndTagInternal(ctxt, 0);
 }
 
 /**
@@ -7129,6 +7135,7 @@ xmlParseElement(xmlParserCtxtPtr ctxt) {
     xmlChar *name;
     xmlChar *oldname;
     xmlParserNodeInfo node_info;
+    int line;
     xmlNodePtr ret;
 
     /* Capture start position */
@@ -7143,6 +7150,7 @@ xmlParseElement(xmlParserCtxtPtr ctxt) {
     else
 	spacePush(ctxt, *ctxt->space);
 
+    line = ctxt->input->line;
     name = xmlParseStartTag(ctxt);
     if (name == NULL) {
 	spacePop(ctxt);
@@ -7191,8 +7199,8 @@ xmlParseElement(xmlParserCtxtPtr ctxt) {
 	ctxt->errNo = XML_ERR_GT_REQUIRED;
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt->userData,
-	                     "Couldn't find end of Start Tag %s\n",
-	                     name);
+	                     "Couldn't find end of Start Tag %s line %d\n",
+	                     name, line);
 	ctxt->wellFormed = 0;
 	if (ctxt->recovery == 0) ctxt->disableSAX = 1;
 
@@ -7230,7 +7238,7 @@ xmlParseElement(xmlParserCtxtPtr ctxt) {
 	ctxt->errNo = XML_ERR_TAG_NOT_FINISHED;
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt->userData,
-	         "Premature end of data in tag %s\n", name);
+	         "Premature end of data in tag %s line %d\n", name, line);
 	ctxt->wellFormed = 0;
 	if (ctxt->recovery == 0) ctxt->disableSAX = 1;
 
@@ -7252,7 +7260,7 @@ xmlParseElement(xmlParserCtxtPtr ctxt) {
     /*
      * parse the end of tag: '</' should be here.
      */
-    xmlParseEndTag(ctxt);
+    xmlParseEndTagInternal(ctxt, line);
 
     /*
      * Capture end position and add node

@@ -1,3 +1,10 @@
+Thu Mar 27 15:53:35 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: fixing #109227 providing more context in case of 
+	  start/end tag mismatch
+	* python/tests/ctxterror.py python/tests/readererr.py: update the
+	  tests accordingly
+
 Thu Mar 27 15:22:41 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xinclude.c: should fix #109327 errors on memory accesses

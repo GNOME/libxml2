@@ -548,7 +548,21 @@ you want to test those</p>
     SGML docs</li>
 </ul>
 
-<h3>2.4.13: Jan 14 2001</h3>
+<h3>2.4.14: Feb 8 2002</h3>
+<ul>
+  <li>Change of Licence to the <a
+    href="http://www.opensource.org/licenses/mit-license.html">MIT
+    Licence</a> basisally for integration in XFree86 codebase, and removing
+    confusion around the previous dual-licencing</li>
+  <li>added Python bindings, beta software but should already be quite
+    complete</li>
+  <li>a large number of fixes and cleanups, especially for all tree
+    manipulations</li>
+  <li>cleanup of the headers, generation of a reference API definition in
+  XML</li>
+</ul>
+
+<h3>2.4.13: Jan 14 2002</h3>
 <ul>
   <li>update of the documentation: John Fleck and Charlie Bozeman</li>
   <li>cleanup of timing code from Justin Fletcher</li>
@@ -2174,6 +2188,7 @@ xmlOutputBufferCreateOwn(FILE *file, xmlCharEncodingHandlerPtr encoder) {
         ret-&gt;closecallback = NULL;  /* No close callback */
     }
     return(ret); <br>
+
 
 
 

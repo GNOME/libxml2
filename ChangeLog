@@ -1,3 +1,10 @@
+Thu Aug 14 14:13:43 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* encoding.c: applied UTF-16 encoding handling patch provided by
+	  Mark Itzcovitz
+	* encoding.c parser.c: more cleanup and fixes for UTF-16 when 
+	  not having iconv support.
+
 Thu Aug 14 03:19:08 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am configure.in example/Makefile.am libxml.h nanoftp.c
@@ -8,7 +15,7 @@ Thu Aug 14 02:28:36 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: fixed the serious CPU usage problem reported by
 	  Grant Goodale
-	* HTMLparser.c: applied patch from Oliver Kidman about a free
+	* HTMLparser.c: applied patch from Oliver Stoeneberg about a free
 	  missing in htmlSAXParseDoc
 
 Tue Aug 12 22:48:10 HKT 2003 William Brack <wbrack@mmm.com.hk>

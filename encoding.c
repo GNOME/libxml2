@@ -875,6 +875,7 @@ UTF8ToUTF16LE(unsigned char* outb, int *outlen,
 {
     unsigned short* out = (unsigned short*) outb;
     const unsigned char* processed = in;
+    const unsigned char *const instart = in;
     unsigned short* outstart= out;
     unsigned short* outend;
     const unsigned char* inend= in+*inlen;
@@ -909,7 +910,7 @@ UTF8ToUTF16LE(unsigned char* outb, int *outlen,
       else if (d < 0xC0) {
           /* trailing byte in leading position */
 	  *outlen = (out - outstart) * 2;
-	  *inlen = processed - in;
+	  *inlen = processed - instart;
 	  return(-2);
       } else if (d < 0xE0)  { c= d & 0x1F; trailing= 1; }
       else if (d < 0xF0)  { c= d & 0x0F; trailing= 2; }
@@ -917,7 +918,7 @@ UTF8ToUTF16LE(unsigned char* outb, int *outlen,
       else {
 	/* no chance for this in UTF-16 */
 	*outlen = (out - outstart) * 2;
-	*inlen = processed - in;
+	*inlen = processed - instart;
 	return(-2);
       }
 
@@ -971,7 +972,7 @@ UTF8ToUTF16LE(unsigned char* outb, int *outlen,
 	processed = in;
     }
     *outlen = (out - outstart) * 2;
-    *inlen = processed - in;
+    *inlen = processed - instart;
     return(0);
 }
 
@@ -1086,6 +1087,7 @@ UTF8ToUTF16BE(unsigned char* outb, int *outlen,
 {
     unsigned short* out = (unsigned short*) outb;
     const unsigned char* processed = in;
+    const unsigned char *const instart = in;
     unsigned short* outstart= out;
     unsigned short* outend;
     const unsigned char* inend= in+*inlen;
@@ -1120,7 +1122,7 @@ UTF8ToUTF16BE(unsigned char* outb, int *outlen,
       else if (d < 0xC0)  {
           /* trailing byte in leading position */
 	  *outlen = out - outstart;
-	  *inlen = processed - in;
+	  *inlen = processed - instart;
 	  return(-2);
       } else if (d < 0xE0)  { c= d & 0x1F; trailing= 1; }
       else if (d < 0xF0)  { c= d & 0x0F; trailing= 2; }
@@ -1128,7 +1130,7 @@ UTF8ToUTF16BE(unsigned char* outb, int *outlen,
       else {
           /* no chance for this in UTF-16 */
 	  *outlen = out - outstart;
-	  *inlen = processed - in;
+	  *inlen = processed - instart;
 	  return(-2);
       }
 
@@ -1179,7 +1181,7 @@ UTF8ToUTF16BE(unsigned char* outb, int *outlen,
 	processed = in;
     }
     *outlen = (out - outstart) * 2;
-    *inlen = processed - in;
+    *inlen = processed - instart;
     return(0);
 }
 
@@ -1961,6 +1963,14 @@ xmlFindCharEncodingHandler(const char *name) {
 	    return(xmlFindCharEncodingHandler(canon));
         }
     }
+
+    /*
+     * If nothing was found and it is "UTF-16" then use the Little indian
+     * version.
+     */
+    if ((xmlStrEqual(BAD_CAST upper, BAD_CAST "UTF-16")) ||
+	(xmlStrEqual(BAD_CAST upper, BAD_CAST "UTF16")))
+        return(xmlUTF16LEHandler);
 
     return(NULL);
 }

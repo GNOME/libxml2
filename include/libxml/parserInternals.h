@@ -295,7 +295,7 @@ void			xmlParseElement		(xmlParserCtxtPtr ctxt);
 xmlChar *		xmlParseVersionNum	(xmlParserCtxtPtr ctxt);
 xmlChar *		xmlParseVersionInfo	(xmlParserCtxtPtr ctxt);
 xmlChar *		xmlParseEncName		(xmlParserCtxtPtr ctxt);
-xmlChar *		xmlParseEncodingDecl	(xmlParserCtxtPtr ctxt);
+const xmlChar *		xmlParseEncodingDecl	(xmlParserCtxtPtr ctxt);
 int			xmlParseSDDecl		(xmlParserCtxtPtr ctxt);
 void			xmlParseXMLDecl		(xmlParserCtxtPtr ctxt);
 void			xmlParseTextDecl	(xmlParserCtxtPtr ctxt);

@@ -7518,7 +7518,7 @@ xmlParseEncName(xmlParserCtxtPtr ctxt) {
  * Returns the encoding value or NULL
  */
 
-xmlChar *
+const xmlChar *
 xmlParseEncodingDecl(xmlParserCtxtPtr ctxt) {
     xmlChar *encoding = NULL;
     const xmlChar *q;
@@ -7582,23 +7582,21 @@ xmlParseEncodingDecl(xmlParserCtxtPtr ctxt) {
         if ((encoding != NULL) &&
 	    ((!xmlStrcasecmp(encoding, BAD_CAST "UTF-16")) ||
 	     (!xmlStrcasecmp(encoding, BAD_CAST "UTF16")))) {
-	    if (ctxt->input->encoding != NULL)
-		xmlFree((xmlChar *) ctxt->input->encoding);
-	    ctxt->input->encoding = encoding;
-	    encoding = NULL;
+	    if (ctxt->encoding != NULL)
+		xmlFree((xmlChar *) ctxt->encoding);
+	    ctxt->encoding = encoding;
 	}
 	/*
 	 * UTF-8 encoding is handled natively
 	 */
-        if ((encoding != NULL) &&
+        else if ((encoding != NULL) &&
 	    ((!xmlStrcasecmp(encoding, BAD_CAST "UTF-8")) ||
 	     (!xmlStrcasecmp(encoding, BAD_CAST "UTF8")))) {
-	    if (ctxt->input->encoding != NULL)
-		xmlFree((xmlChar *) ctxt->input->encoding);
-	    ctxt->input->encoding = encoding;
-	    encoding = NULL;
+	    if (ctxt->encoding != NULL)
+		xmlFree((xmlChar *) ctxt->encoding);
+	    ctxt->encoding = encoding;
 	}
-	if (encoding != NULL) {
+	else if (encoding != NULL) {
 	    xmlCharEncodingHandlerPtr handler;
 
 	    if (ctxt->input->encoding != NULL)

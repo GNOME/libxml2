@@ -1,3 +1,7 @@
+Wed Apr 25 12:28:57 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* HTMLtree.c: real fix for  #53402
+
 Tue Apr 24 17:36:35 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* HTMLtree.c HTMLtree.h : closing #53402 i.e. output of

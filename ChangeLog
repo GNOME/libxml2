@@ -1,3 +1,9 @@
+Sat Jun 16 00:20:46 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* Makefile.am example/Makefile.am: Laszlo PETER provided a fix
+	  when using -liconv
+	* TODO: updated
+
 Fri Jun 15 07:08:57 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* HTMLtree.[ch]: more work on the HTML serialization routnes,

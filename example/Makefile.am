@@ -4,5 +4,5 @@ INCLUDES =					\
 	-I$(top_builddir) -I$(top_srcdir)	\
 	-I@srcdir@
 
-LDADD = $(top_builddir)/libxml2.la @Z_LIBS@ -lm
+LDADD = $(top_builddir)/libxml2.la @Z_LIBS@ $(ICONV_LIBS) -lm
 

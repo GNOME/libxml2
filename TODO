@@ -55,19 +55,12 @@ EXTENSIONS:
 ===========
 
 - Tools to produce man pages from the SGML docs.
-- Finish XPath
-  => attributes addressing troubles
-  => defaulted attributes handling
-  => namespace axis ?
 
 - Add Xpointer recognition/API
 
 - Add Xlink recognition/API
   => started adding an xlink.[ch] with a unified API for XML and HTML.
      it's crap :-(
-
-- Implement XSLT
-  => seems that someone volunteered ?!?
 
 - Implement XSchemas
   => Really need to be done <grin/>
@@ -77,6 +70,7 @@ EXTENSIONS:
      routine in the comment parsing code of HTML and plug the XML 
      parsing one in-there should not be too hard. Key point is to get
      XSL to transform all this to something decent ...
+  => forget about it ?
 
 - extend the shell with:
    - edit
@@ -98,6 +92,15 @@ EXTENSIONS:
 
 Done:
 =====
+
+- Implement XSLT
+  => libxslt
+
+- Finish XPath
+  => attributes addressing troubles
+  => defaulted attributes handling
+  => namespace axis ?
+  done as XSLT got debugged
 
 - bug reported by Michael Meallin on validation problems
   => Actually means I need to add support (and warn) for non-deterministic

@@ -1,7 +1,11 @@
+Wed Sep  4 14:13:34 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* libxml.spec.in: fixes libary path for x86_64 AMD
+
 Tue Sep  3 21:14:19 MDT 2002 John Fleck <jfleck@inkstain.net>
 
 	* doc/tutorial/includekeyword.c
-	* doc/tutorial/xmltutorial.xml
+	* doc/tutorial/xmltutorial.xml:
 	(plus resulting generated html files)
 	fixing one spot I missed in the tutorial where I hadn't freed
 	memory properly
@@ -13,10 +17,10 @@ Sat Aug 31 19:31:17 MDT 2002 John Fleck <jfleck@inkstain.net>
 	* doc/tutorial/includegetattribute.c
 	* doc/tutorial/includekeyword.c
 	* doc/tutorial/xmltutorial.xml
-	* doc/tutorial/*.html
+	* doc/tutorial/*.html:
 	update tutorial to properly free memory (thanks to Christopher
 	R. Harris for pointing out that this needs to be done)
-	* doc/tutorial/images/callouts/*.png
+	* doc/tutorial/images/callouts/*.png:
 	added image files so the callouts are graphical, making it
 	easier to read ( use "--param callout.graphics 1" to generate
 	html with graphical callouts)

@@ -62,15 +62,15 @@ at parse time or later once the document has been modified.
 # Needed for snapshot releases.
 if [ ! -f configure ]; then
 %ifarch alpha
-  CFLAGS="$RPM_OPT_FLAGS" ./autogen.sh --host=alpha-redhat-linux --prefix=%prefix --sysconfdir="/etc" --mandir=%{_mandir}
+  CFLAGS="$RPM_OPT_FLAGS" ./autogen.sh --host=alpha-redhat-linux --prefix=%prefix --sysconfdir="/etc" --mandir=%{_mandir} --libdir=%{_libdir}
 %else
-  CFLAGS="$RPM_OPT_FLAGS" ./autogen.sh --prefix=%prefix --sysconfdir="/etc" --mandir=%{_mandir}
+  CFLAGS="$RPM_OPT_FLAGS" ./autogen.sh --prefix=%prefix --sysconfdir="/etc" --mandir=%{_mandir} --libdir=%{_libdir}
 %endif
 else
 %ifarch alpha
-  CFLAGS="$RPM_OPT_FLAGS" ./configure --host=alpha-redhat-linux --prefix=%prefix --sysconfdir="/etc" --mandir=%{_mandir}
+  CFLAGS="$RPM_OPT_FLAGS" ./configure --host=alpha-redhat-linux --prefix=%prefix --sysconfdir="/etc" --mandir=%{_mandir} --libdir=%{_libdir}
 %else
-  CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%prefix --sysconfdir="/etc" --mandir=%{_mandir}
+  CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%prefix --sysconfdir="/etc" --mandir=%{_mandir} --libdir=%{_libdir}
 %endif
 fi
 
@@ -86,7 +86,8 @@ rm -rf $RPM_BUILD_ROOT
 
 install -d $RPM_BUILD_ROOT%{_mandir}/man1
 install -d $RPM_BUILD_ROOT%{_mandir}/man4
-make prefix=$RPM_BUILD_ROOT%{prefix} mandir=$RPM_BUILD_ROOT%{_mandir} install
+%makeinstall
+# make prefix=$RPM_BUILD_ROOT%{prefix} libdir=$RPM_BUILD_ROOT%{_libdir} mandir=$RPM_BUILD_ROOT%{_mandir} install
 
 #
 # this is a bit ugly but tries to generate the bindings for all versions
@@ -105,6 +106,7 @@ do
 	      PYTHON_INCLUDES="%{prefix}/include/python$py_version" \
 	      PYTHON_VERSION="$py_version" \
 	      prefix=$RPM_BUILD_ROOT%{prefix} \
+	      libdir=$RPM_BUILD_ROOT%{_libdir} \
 	      mandir=$RPM_BUILD_ROOT%{_mandir} install)
     fi
 done
@@ -123,7 +125,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc %{_mandir}/man1/xmlcatalog.1*
 %doc %{_mandir}/man3/libxml.3*
 
-%{prefix}/lib/lib*.so.*
+%{_libdir}/lib*.so.*
 %{prefix}/bin/xmllint
 %{prefix}/bin/xmlcatalog
 
@@ -134,24 +136,28 @@ rm -rf $RPM_BUILD_ROOT
 %doc AUTHORS ChangeLog NEWS README Copyright TODO
 %doc doc/*.html doc/html doc/*.gif doc/*.png
 
-%{prefix}/lib/lib*.so
-%{prefix}/lib/*a
-%{prefix}/lib/*.sh
+%{_libdir}/lib*.so
+%{_libdir}/*a
+%{_libdir}/*.sh
 %{prefix}/include/*
 %{prefix}/bin/xml2-config
 %{prefix}/share/aclocal/libxml.m4
-%{prefix}/lib/pkgconfig/libxml-2.0.pc
+%{_libdir}/pkgconfig/libxml-2.0.pc
 %files python
 %defattr(-, root, root)
 
 %doc AUTHORS ChangeLog NEWS README Copyright
-%{prefix}/lib/python*/site-packages/libxml2.py
-%{prefix}/lib/python*/site-packages/libxml2mod.so
+%{_libdir}/python*/site-packages/libxml2.py
+%{_libdir}/python*/site-packages/libxml2mod.so
 %doc python/TODO
 %doc python/libxml2class.txt
 %doc python/tests/*.py
 
 %changelog
+* Wed Sep  4 2002 Daniel Veillard <veillard@redhat.com>
+
+- library paths fixed for x86-64
+
 * Fri Feb  1 2002 Daniel Veillard <veillard@redhat.com>
 
 - Added the python package

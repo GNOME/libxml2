@@ -9603,6 +9603,7 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
      */
     ctxt->instate = XML_PARSER_CONTENT;
     ctxt->validate = ctx->validate;
+    ctxt->valid = ctx->valid;
     ctxt->loadsubset = ctx->loadsubset;
     ctxt->depth = ctx->depth + 1;
     ctxt->replaceEntities = ctx->replaceEntities;
@@ -9620,6 +9621,8 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
 
     xmlParseContent(ctxt);
    
+    ctx->validate = ctxt->validate;
+    ctx->valid = ctxt->valid;
     if ((RAW == '<') && (NXT(1) == '/')) {
 	ctxt->errNo = XML_ERR_NOT_WELL_BALANCED;
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))

@@ -15,7 +15,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h> /* for memset() only */
-#include <malloc.h>
+#include <stdlib.h>
 #include <sys/stat.h>
 #ifdef HAVE_FCNTL_H
 #include <fcntl.h>

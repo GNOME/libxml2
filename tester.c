@@ -24,7 +24,7 @@
 #endif
 #include <stdio.h>
 #include <string.h>
-#include <malloc.h>
+#include <stdlib.h>
 
 #include "parser.h"
 #include "tree.h"

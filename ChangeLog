@@ -1,3 +1,7 @@
+Fri Aug 31 18:30:28 CEST 2001 Bjorn Reese <breese@users.sourceforge.net>
+
+	* trionan.c: Fixed const and volatile re-definition problem
+	
 Fri Aug 31 16:51:28 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* libxml.4 parser.c: doc updates from Heiko Rupp

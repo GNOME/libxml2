@@ -79,9 +79,12 @@ static const char rcsid[] = "@(#)$Id$";
 #endif
 #include <assert.h>
 
-#ifndef __STDC__
-# define volatile
-# define const
+#ifdef __STDC__
+# define CONST const
+# define VOLATILE volatile
+#else
+# define CONST
+# define VOLATILE
 #endif
 
 /*************************************************************************
@@ -134,25 +137,25 @@ static const char rcsid[] = "@(#)$Id$";
  */
 #define TRIO_DOUBLE_INDEX(x) (((unsigned char *)&internalEndianMagic)[(x)])
 
-static const double internalEndianMagic = 1.4015997730788920e-309;
+static CONST double internalEndianMagic = 1.4015997730788920e-309;
 
 /* Mask for the exponent */
-static const unsigned char ieee_754_exponent_mask[] = {
+static CONST unsigned char ieee_754_exponent_mask[] = {
   0x7F, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 };
 
 /* Mask for the mantissa */
-static const unsigned char ieee_754_mantissa_mask[] = {
+static CONST unsigned char ieee_754_mantissa_mask[] = {
   0x00, 0x0F, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
 };
 
 /* Bit-pattern for infinity */
-static const unsigned char ieee_754_infinity_array[] = {
+static CONST unsigned char ieee_754_infinity_array[] = {
   0x7F, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 };
 
 /* Bit-pattern for quiet NaN */
-static const unsigned char ieee_754_qnan_array[] = {
+static CONST unsigned char ieee_754_qnan_array[] = {
   0x7F, 0xF8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 };
 
@@ -161,13 +164,13 @@ static const unsigned char ieee_754_qnan_array[] = {
  * trio_make_double
  */
 static double
-trio_make_double(const unsigned char *values)
+trio_make_double(CONST unsigned char *values)
 {
-  volatile double result;
+  VOLATILE double result;
   int i;
 
   for (i = 0; i < (int)sizeof(double); i++) {
-    ((volatile unsigned char *)&result)[TRIO_DOUBLE_INDEX(i)] = values[i];
+    ((VOLATILE unsigned char *)&result)[TRIO_DOUBLE_INDEX(i)] = values[i];
   }
   return result;
 }
@@ -307,7 +310,7 @@ trio_nan(void)
  * trio_isnan
  */
 TRIO_PUBLIC int
-trio_isnan(volatile double number)
+trio_isnan(VOLATILE double number)
 {
 #if defined(isnan) || defined(TRIO_COMPILER_SUPPORTS_UNIX95)
   /*
@@ -371,7 +374,7 @@ trio_isnan(volatile double number)
  * trio_isinf
  */
 TRIO_PUBLIC int
-trio_isinf(volatile double number)
+trio_isinf(VOLATILE double number)
 {
 #if defined(TRIO_COMPILER_DECC)
   /*

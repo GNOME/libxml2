@@ -1,3 +1,9 @@
+2000-01-29  James Henstridge <james@daa.com.au>
+
+	* nanoftp.c: include <netinet/in.h> for IPPROTO_TCP.
+
+	* Makefile.am: added nanoftp.[ch] to the build.
+
 Wed Jan 26 18:14:55 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* nanoftp.[ch]: cleanup, comments, API

@@ -1,3 +1,10 @@
+Thu Sep  5 16:19:18 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* error.c valid.c: working on better error reporting of validity
+	  errors, especially providing an accurate context.
+	* result/valid/xlink.xml.err result/valid/rss.xml.err: better
+	  error reports in those cases.
+
 Thu Sep  5 13:29:47 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* DOCBparser.c HTMLparser.c c14n.c entities.c list.c

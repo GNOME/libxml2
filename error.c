@@ -350,22 +350,34 @@ xmlParserValidityError(void *ctx, const char *msg, ...)
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlParserInputPtr input = NULL;
     char * str;
+    int len = xmlStrlen((const xmlChar *) msg);
+    static int had_info = 0;
+    int need_context = 0;
+    int need_info = 0;
 
-    if (ctxt != NULL) {
-	input = ctxt->input;
-	if ((input->filename == NULL) && (ctxt->inputNr > 1))
-	    input = ctxt->inputTab[ctxt->inputNr - 2];
-	    
-	xmlParserPrintFileInfo(input);
+    if ((len > 1) && (msg[len - 2] != ':')) {
+	if (ctxt != NULL) {
+	    input = ctxt->input;
+	    if ((input->filename == NULL) && (ctxt->inputNr > 1))
+		input = ctxt->inputTab[ctxt->inputNr - 2];
+		
+	    if (had_info == 0) {
+		xmlParserPrintFileInfo(input);
+	    }
+	}
+	xmlGenericError(xmlGenericErrorContext, "validity error: ");
+	need_context = 1;
+	had_info = 0;
+    } else {
+	had_info = 1;
     }
 
-    xmlGenericError(xmlGenericErrorContext, "validity error: ");
     XML_GET_VAR_STR(msg, str);
     xmlGenericError(xmlGenericErrorContext, "%s", str);
     if (str != NULL)
 	xmlFree(str);
 
-    if (ctxt != NULL) {
+    if ((ctxt != NULL) && (input != NULL)) {
 	xmlParserPrintFileContext(input);
     }
 }
@@ -385,8 +397,9 @@ xmlParserValidityWarning(void *ctx, const char *msg, ...)
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlParserInputPtr input = NULL;
     char * str;
+    int len = xmlStrlen((const xmlChar *) msg);
 
-    if (ctxt != NULL) {
+    if ((ctxt != NULL) && (len != 0) && (msg[len - 1] != ':')) {
 	input = ctxt->input;
 	if ((input->filename == NULL) && (ctxt->inputNr > 1))
 	    input = ctxt->inputTab[ctxt->inputNr - 2];

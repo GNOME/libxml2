@@ -311,23 +311,27 @@ xmlValidStateDebug(xmlValidCtxtPtr ctxt) {
 
 #define VECTXT(ctxt, node)					\
    if ((ctxt != NULL) && (ctxt->error != NULL) &&		\
-       (node != NULL) && (node->type == XML_ELEMENT_NODE)) {	\
-       if ((node->doc != NULL) && (node->doc->URL != NULL))	\
-	   ctxt->error(ctxt->userData, "%s:%d:", node->doc->URL,\
+       (node != NULL)) {					\
+       xmlChar *base = xmlNodeGetBase(NULL,node);		\
+       if (base != NULL) {					\
+	   ctxt->error(ctxt->userData, "%s:%d: ", base,		\
 		       (int) node->content);			\
-       else							\
-	   ctxt->error(ctxt->userData, ":%d:", 			\
+	   xmlFree(base);					\
+       } else							\
+	   ctxt->error(ctxt->userData, ":%d: ", 		\
 		       (int) node->content);			\
    }
 
 #define VWCTXT(ctxt, node)					\
    if ((ctxt != NULL) && (ctxt->warning != NULL) &&		\
-       (node != NULL) && (node->type == XML_ELEMENT_NODE)) {	\
-       if ((node->doc != NULL) && (node->doc->URL != NULL))	\
-	   ctxt->warning(ctxt->userData, "%s:%d:", node->doc->URL,\
+       (node != NULL)) {					\
+       xmlChar *base = xmlNodeGetBase(NULL,node);		\
+       if (base != NULL) {					\
+	   ctxt->warning(ctxt->userData, "%s:%d: ", base,	\
 		       (int) node->content);			\
-       else							\
-	   ctxt->warning(ctxt->userData, ":%d:", 		\
+	   xmlFree(base);					\
+       } else							\
+	   ctxt->warning(ctxt->userData, ":%d: ", 		\
 		       (int) node->content);			\
    }
 
@@ -1904,8 +1908,10 @@ xmlAddID(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const xmlChar *value,
 	/*
 	 * The id is already defined in this DTD.
 	 */
-	if (ctxt != NULL)
+	if (ctxt != NULL) {
+	    VECTXT(ctxt, attr->parent);
 	    VERROR(ctxt->userData, "ID %s already defined\n", value);
+	}
 	xmlFreeID(ret);
 	return(NULL);
     }
@@ -4786,6 +4792,7 @@ xmlValidateRoot(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
 	    if ((xmlStrEqual(doc->intSubset->name, BAD_CAST "HTML")) &&
 		(xmlStrEqual(root->name, BAD_CAST "html")))
 		goto name_ok;
+	    VECTXT(ctxt, root);
 	    VERROR(ctxt->userData,
 		   "Not valid: root and DTD name do not match '%s' and '%s'\n",
 		   root->name, doc->intSubset->name);
@@ -4874,6 +4881,7 @@ xmlValidateRef(xmlRefPtr ref, xmlValidCtxtPtr ctxt,
     if (attr->atype == XML_ATTRIBUTE_IDREF) {
 	id = xmlGetID(ctxt->doc, name);
 	if (id == NULL) {
+	    VECTXT(ctxt, attr->parent);
 	    VERROR(ctxt->userData, 
 	       "IDREF attribute %s references an unknown ID \"%s\"\n",
 		   attr->name, name);
@@ -4895,6 +4903,7 @@ xmlValidateRef(xmlRefPtr ref, xmlValidCtxtPtr ctxt,
 	    *cur = 0;
 	    id = xmlGetID(ctxt->doc, str);
 	    if (id == NULL) {
+		VECTXT(ctxt, attr->parent);
 		VERROR(ctxt->userData, 
 	       "IDREFS attribute %s references an unknown ID \"%s\"\n",
 		       attr->name, str);

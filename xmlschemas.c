@@ -1492,7 +1492,7 @@ xmlGetQNameProp(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node,
     if (val == NULL)
         return (NULL);
 
-    if (!strchr(val, ':')) {
+    if (!strchr((char *) val, ':')) {
 	ns = xmlSearchNs(node->doc, node, 0);
 	if (ns) {
 	    *namespace = xmlDictLookup(ctxt->dict, ns->href, -1);

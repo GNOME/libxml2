@@ -1,3 +1,9 @@
+Mon Jul  9 12:31:05 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* tree.c: set properties doc and call xmlSetListDoc for properties
+	  content when grafting them in a different tree.
+	* aclocal.m4: remove from CVS
+
 Sun Jul  8 23:09:07 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* win32/libxml2/libxml2.def.src: added some missing entry point

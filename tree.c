@@ -1809,11 +1809,19 @@ xmlNewDocComment(xmlDocPtr doc, const xmlChar *content) {
  */
 void
 xmlSetTreeDoc(xmlNodePtr tree, xmlDocPtr doc) {
+    xmlAttrPtr prop;
+
     if (tree == NULL)
 	return;
     if (tree->type == XML_ENTITY_DECL)
 	return;
     if (tree->doc != doc) {
+	prop = tree->properties;
+	while (prop != NULL) {
+	    prop->doc = doc;
+	    xmlSetListDoc(prop->children, doc);
+	    prop = prop->next;
+	}
 	if (tree->children != NULL)
 	    xmlSetListDoc(tree->children, doc);
 	tree->doc = doc;
@@ -2237,14 +2245,6 @@ xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
 	return(NULL);
     }
 
-    if ((cur->doc != NULL) && (parent->doc != NULL) &&
-        (cur->doc != parent->doc)) {
-#ifdef DEBUG_TREE
-	xmlGenericError(xmlGenericErrorContext,
-		"Elements moved to a different document\n");
-#endif
-    }
-
     /*
      * If cur is a TEXT node, merge its content with adjacent TEXT nodes
      * or with parent->content if parent->content != NULL.
@@ -2373,6 +2373,7 @@ xmlFreeNodeList(xmlNodePtr cur) {
 #else
 		if (cur->content != NULL) xmlBufferFree(cur->content);
 #endif
+	    if (cur->nsDef != NULL) xmlFreeNsList(cur->nsDef);
 	    /*
 	     * When a node is a text node or a comment, it uses a global static
 	     * variable for the name of the node.
@@ -2398,7 +2399,6 @@ xmlFreeNodeList(xmlNodePtr cur) {
 		    xmlFree((char *) cur->name);
 	    }
 	    /* TODO : derecursivate this function */
-	    if (cur->nsDef != NULL) xmlFreeNsList(cur->nsDef);
 	    xmlFree(cur);
 	}
 	cur = next;

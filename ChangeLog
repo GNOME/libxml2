@@ -1,3 +1,8 @@
+Wed Feb 25 16:07:14 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* xpath.c: fixed a memory leak (xmlXPathLangFunction) reported
+	  on the list by Mike Hommey
+
 Mon Feb 23 17:28:34 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* doc/* NEWS configure.in: preparing 2.6.7 release, updated and

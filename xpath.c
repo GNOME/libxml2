@@ -7022,6 +7022,7 @@ xmlXPathLangFunction(xmlXPathParserContextPtr ctxt, int nargs) {
         ret = 1;
     }
 not_equal:
+    xmlFree((void *)theLang);
     xmlXPathFreeObject(val);
     valuePush(ctxt, xmlXPathNewBoolean(ret));
 }

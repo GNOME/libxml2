@@ -13,8 +13,6 @@
 /*
  * TODOs:
  *   - XML Schemas validation
- *   - setting(s) for NoBlanks
- *   - performances and tuning ...
  */
 #define IN_LIBXML
 #include "libxml.h"
@@ -1405,7 +1403,8 @@ node_found:
 	 (xmlStrEqual(reader->node->ns->href, XINCLUDE_OLD_NS)))) {
 	if (reader->xincctxt == NULL) {
 	    reader->xincctxt = xmlXIncludeNewContext(reader->ctxt->myDoc);
-	    xmlXIncludeSetFlags(reader->xincctxt, reader->parserFlags);
+	    xmlXIncludeSetFlags(reader->xincctxt, 
+	                        reader->parserFlags & (~XML_PARSE_NOXINCNODE));
 	}
 	/*
 	 * expand that node and process it

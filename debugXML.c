@@ -2349,6 +2349,7 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
 		  fprintf(ctxt->output, "\tfree         display memory usage\n");
 		  fprintf(ctxt->output, "\tload [name]  load a new document with name\n");
 		  fprintf(ctxt->output, "\tls [path]    list contents of path or the current directory\n");
+		  fprintf(ctxt->output, "\tset xml_fragment replace the current node content with the fragment parsed in context\n");
 #ifdef LIBXML_XPATH_ENABLED
 		  fprintf(ctxt->output, "\txpath expr   evaluate the XPath expression in that context and print the result\n");
 		  fprintf(ctxt->output, "\tsetns nsreg  register a namespace to a prefix in the XPath evaluation context\n");

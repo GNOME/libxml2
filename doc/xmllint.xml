@@ -83,6 +83,7 @@
 	<arg>--nocatalogs</arg>
 	<arg>--auto</arg>
 	<arg>--xinclude</arg>
+	<arg>--noxincludenode</arg>
 	<arg>--loaddtd</arg>
 	<arg>--dtdattr</arg>
 	<arg>--stream</arg>
@@ -448,6 +449,15 @@
 	<listitem>
 	  <simpara>
 	   Do XInclude processing.
+	  </simpara>
+	</listitem>
+      </varlistentry>
+    <varlistentry>
+	<term><option>--noxincludenode</option></term>
+	<listitem>
+	  <simpara>
+	   Do XInclude processing but do not generate XInclude start and end
+	   nodes.
 	  </simpara>
 	</listitem>
       </varlistentry>

@@ -1,3 +1,12 @@
+Mon Aug 16 14:36:25 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* debugXML.c: added help for new set shell command
+	* xinclude.c xmllint.c xmlreader.c include/libxml/parser.h:
+	  added parser option to not generate XInclude start/end nodes,
+	  added a specific option to xmllint to test it fixes #130769
+	* Makefile.am: regression test the new feature
+	* doc/xmllint.1 doc/xmllint.xml: updated man page to document option.
+
 Mon Aug 16 02:42:30 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xmlIO.c: small typo pointed out by Mike Hommey

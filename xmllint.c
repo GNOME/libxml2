@@ -1612,6 +1612,7 @@ static void usage(const char *name) {
     printf("\t--auto : generate a small doc on the fly\n");
 #ifdef LIBXML_XINCLUDE_ENABLED
     printf("\t--xinclude : do XInclude processing\n");
+    printf("\t--noxincludenode : same but do not generate XInclude nodes\n");
 #endif
     printf("\t--loaddtd : fetch external DTD\n");
     printf("\t--dtdattr : loaddtd + populate the tree with inherited attributes \n");
@@ -1798,6 +1799,12 @@ main(int argc, char **argv) {
 	         (!strcmp(argv[i], "--xinclude"))) {
 	    xinclude++;
 	    options |= XML_PARSE_XINCLUDE;
+	}
+	else if ((!strcmp(argv[i], "-noxincludenode")) ||
+	         (!strcmp(argv[i], "--noxincludenode"))) {
+	    xinclude++;
+	    options |= XML_PARSE_XINCLUDE;
+	    options |= XML_PARSE_NOXINCNODE;
 	}
 #endif
 #ifdef LIBXML_OUTPUT_ENABLED

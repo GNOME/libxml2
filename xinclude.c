@@ -2116,28 +2116,43 @@ xmlXIncludeIncludeNode(xmlXIncludeCtxtPtr ctxt, int nr) {
 	}
     }
 
-    /*
-     * Change the current node as an XInclude start one, and add an
-     * entity end one
-     */
-    cur->type = XML_XINCLUDE_START;
-    end = xmlNewNode(cur->ns, cur->name);
-    if (end == NULL) {
-	xmlXIncludeErr(ctxt, ctxt->incTab[nr]->ref, XML_XINCLUDE_BUILD_FAILED,
-	               "failed to build node\n", NULL);
-	return(-1);
-    }
-    end->type = XML_XINCLUDE_END;
-    xmlAddNextSibling(cur, end);
+    if (ctxt->parseFlags & XML_PARSE_NOXINCNODE) {
+	/*
+	 * Add the list of nodes
+	 */
+	while (list != NULL) {
+	    end = list;
+	    list = list->next;
 
-    /*
-     * Add the list of nodes
-     */
-    while (list != NULL) {
-	cur = list;
-	list = list->next;
+	    xmlAddPrevSibling(cur, end);
+	}
+	xmlUnlinkNode(cur);
+	xmlFreeNode(cur);
+    } else {
+	/*
+	 * Change the current node as an XInclude start one, and add an
+	 * XInclude end one
+	 */
+	cur->type = XML_XINCLUDE_START;
+	end = xmlNewNode(cur->ns, cur->name);
+	if (end == NULL) {
+	    xmlXIncludeErr(ctxt, ctxt->incTab[nr]->ref,
+	                   XML_XINCLUDE_BUILD_FAILED,
+			   "failed to build node\n", NULL);
+	    return(-1);
+	}
+	end->type = XML_XINCLUDE_END;
+	xmlAddNextSibling(cur, end);
 
-        xmlAddPrevSibling(end, cur);
+	/*
+	 * Add the list of nodes
+	 */
+	while (list != NULL) {
+	    cur = list;
+	    list = list->next;
+
+	    xmlAddPrevSibling(end, cur);
+	}
     }
 
     

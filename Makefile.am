@@ -477,6 +477,21 @@ XIncludetests : xmllint$(EXEEXT)
 	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
 	      rm result.$$name error.$$name ; \
 	  fi ; fi ; done)
+	-@(for i in $(srcdir)/test/XInclude/docs/* ; do \
+	  name=`basename $$i`; \
+	  if [ ! -d $$i ] ; then \
+	  if [ ! -f $(srcdir)/result/XInclude/$$name ] ; then \
+	      echo New test file $$name ; \
+	      $(CHECKER) $(top_builddir)/xmllint --nowarning --noxincludenode $$i > $(srcdir)/result/XInclude/$$name 2> $(srcdir)/result/XInclude/$$name.err ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
+	  else \
+	      log=`$(CHECKER) $(top_builddir)/xmllint --nowarning --noxincludenode $$i > result.$$name 2>error.$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
+	      diff $(srcdir)/result/XInclude/$$name result.$$name ; \
+	      diff $(srcdir)/result/XInclude/$$name.err error.$$name` ; \
+	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
+	      rm result.$$name error.$$name ; \
+	  fi ; fi ; done)
 	@(echo > .memdump)
 	@echo "## XInclude xmlReader regression tests"
 	-@(for i in $(srcdir)/test/XInclude/docs/* ; do \
@@ -485,6 +500,21 @@ XIncludetests : xmllint$(EXEEXT)
 	  if [ ! -f $(srcdir)/result/XInclude/$$name.rdr ] ; then \
 	      echo New test file $$name ; \
 	      $(CHECKER) $(top_builddir)/xmllint --nowarning --xinclude --stream --debug $$i > $(srcdir)/result/XInclude/$$name.rdr ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
+	  else \
+	      log=`$(CHECKER) $(top_builddir)/xmllint --nowarning --xinclude --stream --debug $$i > result.$$name 2>error.$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
+	      diff $(srcdir)/result/XInclude/$$name.err error.$$name ; \
+	      diff $(srcdir)/result/XInclude/$$name.rdr result.$$name` ; \
+	      if [ -n "$$log" ] ; then echo $$name result ; echo $$log ; fi ; \
+	      rm result.$$name error.$$name ; \
+	  fi ; fi ; done)
+	-@(for i in $(srcdir)/test/XInclude/docs/* ; do \
+	  name=`basename $$i`; \
+	  if [ ! -d $$i ] ; then \
+	  if [ ! -f $(srcdir)/result/XInclude/$$name.rdr ] ; then \
+	      echo New test file $$name ; \
+	      $(CHECKER) $(top_builddir)/xmllint --nowarning --noxincludenode --stream --debug $$i > $(srcdir)/result/XInclude/$$name.rdr ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	  else \
 	      log=`$(CHECKER) $(top_builddir)/xmllint --nowarning --xinclude --stream --debug $$i > result.$$name 2>error.$$name ; \

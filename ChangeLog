@@ -1,3 +1,7 @@
+Sat Sep  1 22:39:36 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: David Kaelbling found a == instead of = typo
+
 Tue Aug 28 18:19:30 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: oops forgot to zero terminate that string seems

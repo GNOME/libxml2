@@ -8493,7 +8493,7 @@ xmlParseEncodingDecl(xmlParserCtxtPtr ctxt) {
 		     "xmlParseEncodingDecl : expected ' or \"\n");
 	    ctxt->wellFormed = 0;
 	    ctxt->disableSAX = 1;
-	    ctxt->errNo == XML_ERR_UNSUPPORTED_ENCODING;
+	    ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
 	}
 	/*
 	 * Restricted from 2.3.5 */

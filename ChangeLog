@@ -1,3 +1,9 @@
+Sun Jan 26 01:49:58 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c: more work on Relax-NG
+	* test/relaxng/* result/relaxng/*: augmented/updated the 
+	  regression tests
+
 Sat Jan 25 18:59:54 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* README: updated the policy on private mail answers

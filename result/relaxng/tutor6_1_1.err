@@ -1,0 +1,4 @@
+xmlRelaxNGValidateAttribute(preferredFormat): 0
+xmlRelaxNGValidateAttribute(email): 0
+xmlRelaxNGValidateAttribute(name): 0
+xmlRelaxNGValidateDefinition(): validated card : 0

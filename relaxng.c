@@ -98,6 +98,7 @@ struct _xmlRelaxNGDefine {
     xmlNodePtr	   node;	/* the node in the source */
     xmlChar       *name;	/* the element local name if present */
     xmlChar       *ns;		/* the namespace local name if present */
+    xmlChar       *value;	/* value when available */
     void          *data;	/* data lib or specific pointer */
     xmlRelaxNGDefinePtr content;/* the expected content */
     xmlRelaxNGDefinePtr next;	/* list within grouping sequences */
@@ -438,6 +439,8 @@ xmlRelaxNGFreeDefine(xmlRelaxNGDefinePtr define)
 	xmlFree(define->name);
     if (define->ns != NULL)
 	xmlFree(define->ns);
+    if (define->value != NULL)
+	xmlFree(define->value);
     if (define->attrs != NULL)
 	xmlRelaxNGFreeDefineList(define->attrs);
     if ((define->content != NULL) &&
@@ -968,6 +971,88 @@ xmlRelaxNGGetDataTypeLibrary(xmlRelaxNGParserCtxtPtr ctxt ATTRIBUTE_UNUSED,
 }
 
 /**
+ * xmlRelaxNGParseValue:
+ * @ctxt:  a Relax-NG parser context
+ * @node:  the data node.
+ *
+ * parse the content of a RelaxNG value node.
+ *
+ * Returns the definition pointer or NULL in case of error
+ */
+static xmlRelaxNGDefinePtr
+xmlRelaxNGParseValue(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
+    xmlRelaxNGDefinePtr def = NULL;
+    xmlRelaxNGTypeLibraryPtr lib;
+    xmlChar *type;
+    xmlChar *library;
+    int tmp;
+
+    def = xmlRelaxNGNewDefine(ctxt, node);
+    if (def == NULL)
+	return(NULL);
+    def->type = XML_RELAXNG_VALUE;
+
+    type = xmlGetProp(node, BAD_CAST "type");
+    if (type != NULL) {
+	library = xmlRelaxNGGetDataTypeLibrary(ctxt, node);
+	if (library == NULL)
+	    library = xmlStrdup(BAD_CAST "http://relaxng.org/ns/structure/1.0");
+
+	def->name = type;
+	def->ns = library;
+
+	lib = (xmlRelaxNGTypeLibraryPtr)
+	    xmlHashLookup(xmlRelaxNGRegisteredTypes, library);
+	if (lib == NULL) {
+	    if (ctxt->error != NULL)
+		ctxt->error(ctxt->userData,
+		    "Use of unregistered type library '%s'\n",
+			    library);
+	    ctxt->nbErrors++;
+	    def->data = NULL;
+	} else {
+	    def->data = lib;
+	    if (lib->have == NULL) {
+		ctxt->error(ctxt->userData,
+		    "Internal error with type library '%s': no 'have'\n",
+			    library);
+		ctxt->nbErrors++;
+	    } else {
+		tmp = lib->have(lib->data, def->name);
+		if (tmp != 1) {
+		    ctxt->error(ctxt->userData,
+		    "Error type '%s' is not exported by type library '%s'\n",
+				def->name, library);
+		    ctxt->nbErrors++;
+		}
+	    }
+	}
+    }
+    if (node->children == NULL) {
+	if (ctxt->error != NULL)
+	    ctxt->error(ctxt->userData,
+			"Element <value> has no content\n");
+	ctxt->nbErrors++;
+    } else if ((node->children->type != XML_TEXT_NODE) ||
+	       (node->children->next != NULL)) {
+	if (ctxt->error != NULL)
+	    ctxt->error(ctxt->userData,
+		"Expecting a single text value for <value>content\n");
+	ctxt->nbErrors++;
+    } else {
+	def->value = xmlNodeGetContent(node);
+	if (def->value == NULL) {
+	    if (ctxt->error != NULL)
+		ctxt->error(ctxt->userData,
+			    "Element <value> has no content\n");
+	    ctxt->nbErrors++;
+	}
+    }
+    /* TODO check ahead of time that the value is okay per the type */
+    return(def);
+}
+
+/**
  * xmlRelaxNGParseData:
  * @ctxt:  a Relax-NG parser context
  * @node:  the data node.
@@ -1234,6 +1319,8 @@ xmlRelaxNGParsePattern(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
     } else if (IS_RELAXNG(node, "define")) {
 	xmlRelaxNGParseDefine(ctxt, node);
 	def = NULL;
+    } else if (IS_RELAXNG(node, "value")) {
+	def = xmlRelaxNGParseValue(ctxt, node);
     } else {
 	TODO
     }
@@ -2546,6 +2633,49 @@ xmlRelaxNGSkipIgnored(xmlRelaxNGValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
 }
 
 /**
+ * xmlRelaxNGNormalize:
+ * @ctxt:  a schema validation context
+ * @str:  the string to normalize
+ *
+ * Implements the  normalizeWhiteSpace( s ) function from
+ * section 6.2.9 of the spec
+ *
+ * Returns the new string or NULL in case of error.
+ */
+static xmlChar *
+xmlRelaxNGNormalize(xmlRelaxNGValidCtxtPtr ctxt, const xmlChar *str) {
+    xmlChar *ret, *p;
+    const xmlChar *tmp;
+    int len;
+    
+    if (str == NULL)
+	return(NULL);
+    tmp = str;
+    while (*tmp != 0) tmp++;
+    len = tmp - str;
+
+    ret = (xmlChar *) xmlMalloc((len + 1) * sizeof(xmlChar));
+    if (ret == NULL) {
+	VALID_CTXT();
+	VALID_ERROR("xmlRelaxNGNormalize: out of memory\n");
+        return(NULL);
+    }
+    p = ret;
+    while (IS_BLANK(*str)) str++;
+    while (*str != 0) {
+	if (IS_BLANK(*str)) {
+	    while (IS_BLANK(*str)) str++;
+	    if (*str == 0)
+		break;
+	    *p++ = ' ';
+	} else 
+	    *p++ = *str++;
+    }
+    *p = 0;
+    return(ret);
+}
+
+/**
  * xmlRelaxNGValidateDatatype:
  * @ctxt:  a Relax-NG validation context
  * @value:  the string value
@@ -2596,7 +2726,7 @@ xmlRelaxNGValidateDatatype(xmlRelaxNGValidCtxtPtr ctxt, const xmlChar *value,
 static int
 xmlRelaxNGValidateValue(xmlRelaxNGValidCtxtPtr ctxt, 
 	                xmlRelaxNGDefinePtr define) {
-    int ret = 0;
+    int ret = 0, oldflags;
     xmlChar *value;
 
     value = ctxt->state->value;
@@ -2607,6 +2737,46 @@ xmlRelaxNGValidateValue(xmlRelaxNGValidCtxtPtr ctxt,
 	    break;
 	case XML_RELAXNG_TEXT:
 	    break;
+	case XML_RELAXNG_CHOICE: {
+	    xmlRelaxNGDefinePtr list = define->content;
+
+	    oldflags = ctxt->flags;
+	    ctxt->flags |= FLAGS_IGNORABLE;
+
+	    while (list != NULL) {
+		ret = xmlRelaxNGValidateValue(ctxt, list);
+		if (ret == 0) {
+		    break;
+		}
+		list = list->next;
+	    }
+	    ctxt->flags = oldflags;
+	    break;
+	}
+	case XML_RELAXNG_VALUE: {
+	    if (!xmlStrEqual(value, define->value)) {
+		if (define->name != NULL) {
+		    TODO /* value validation w.r.t. the type */
+		} else {
+		    xmlChar *nval, *nvalue;
+
+		    /*
+		     * TODO: trivial optimizations are possible by
+		     * computing at compile-time
+		     */
+		    nval = xmlRelaxNGNormalize(ctxt, define->value);
+		    nvalue = xmlRelaxNGNormalize(ctxt, value);
+
+		    if (!xmlStrEqual(nval, nvalue))
+			ret = -1;
+		    if (nval != NULL)
+			xmlFree(nval);
+		    if (nvalue != NULL)
+			xmlFree(nvalue);
+		}
+	    }
+	    break;
+	}
 	default:
 	    TODO
 	    ret = -1;

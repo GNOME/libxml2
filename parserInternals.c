@@ -1052,10 +1052,6 @@ xmlParserInputShrink(xmlParserInputPtr in) {
      * Do not shrink on large buffers whose only a tiny fraction
      * was consumed
      */
-#if 0
-    if ((int) in->buf->buffer->use > used + 2 * INPUT_CHUNK)
-	return;
-#endif
     if (used > INPUT_CHUNK) {
 	ret = xmlBufferShrink(in->buf->buffer, used - LINE_LEN);
 	if (ret > 0) {
@@ -2714,56 +2710,57 @@ xmlKeepBlanksDefault(int val) {
  * Returns 1 if correct 0 otherwise
  **/
 int
-xmlCheckLanguageID(const xmlChar *lang) {
+xmlCheckLanguageID(const xmlChar * lang)
+{
     const xmlChar *cur = lang;
 
     if (cur == NULL)
-	return(0);
+        return (0);
     if (((cur[0] == 'i') && (cur[1] == '-')) ||
-	((cur[0] == 'I') && (cur[1] == '-'))) {
-	/*
-	 * IANA code
-	 */
-	cur += 2;
-        while (((cur[0] >= 'A') && (cur[0] <= 'Z')) || /* non input consuming */
-	       ((cur[0] >= 'a') && (cur[0] <= 'z')))
-	    cur++;
+        ((cur[0] == 'I') && (cur[1] == '-'))) {
+        /*
+         * IANA code
+         */
+        cur += 2;
+        while (((cur[0] >= 'A') && (cur[0] <= 'Z')) ||  /* non input consuming */
+               ((cur[0] >= 'a') && (cur[0] <= 'z')))
+            cur++;
     } else if (((cur[0] == 'x') && (cur[1] == '-')) ||
-	       ((cur[0] == 'X') && (cur[1] == '-'))) {
-	/*
-	 * User code
-	 */
-	cur += 2;
-        while (((cur[0] >= 'A') && (cur[0] <= 'Z')) || /* non input consuming */
-	       ((cur[0] >= 'a') && (cur[0] <= 'z')))
-	    cur++;
+               ((cur[0] == 'X') && (cur[1] == '-'))) {
+        /*
+         * User code
+         */
+        cur += 2;
+        while (((cur[0] >= 'A') && (cur[0] <= 'Z')) ||  /* non input consuming */
+               ((cur[0] >= 'a') && (cur[0] <= 'z')))
+            cur++;
     } else if (((cur[0] >= 'A') && (cur[0] <= 'Z')) ||
-	       ((cur[0] >= 'a') && (cur[0] <= 'z'))) {
-	/*
-	 * ISO639
-	 */
-	cur++;
+               ((cur[0] >= 'a') && (cur[0] <= 'z'))) {
+        /*
+         * ISO639
+         */
+        cur++;
         if (((cur[0] >= 'A') && (cur[0] <= 'Z')) ||
-	    ((cur[0] >= 'a') && (cur[0] <= 'z')))
-	    cur++;
-	else
-	    return(0);
+            ((cur[0] >= 'a') && (cur[0] <= 'z')))
+            cur++;
+        else
+            return (0);
     } else
-	return(0);
-    while (cur[0] != 0) { /* non input consuming */
-	if (cur[0] != '-')
-	    return(0);
-	cur++;
+        return (0);
+    while (cur[0] != 0) {       /* non input consuming */
+        if (cur[0] != '-')
+            return (0);
+        cur++;
         if (((cur[0] >= 'A') && (cur[0] <= 'Z')) ||
-	    ((cur[0] >= 'a') && (cur[0] <= 'z')))
-	    cur++;
-	else
-	    return(0);
-        while (((cur[0] >= 'A') && (cur[0] <= 'Z')) || /* non input consuming */
-	       ((cur[0] >= 'a') && (cur[0] <= 'z')))
-	    cur++;
+            ((cur[0] >= 'a') && (cur[0] <= 'z')))
+            cur++;
+        else
+            return (0);
+        while (((cur[0] >= 'A') && (cur[0] <= 'Z')) ||  /* non input consuming */
+               ((cur[0] >= 'a') && (cur[0] <= 'z')))
+            cur++;
     }
-    return(1);
+    return (1);
 }
 
 /**
@@ -2788,121 +2785,20 @@ xmlCheckLanguageID(const xmlChar *lang) {
  *      must deallocate it !
  */
 xmlChar *
-xmlDecodeEntities(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED, int len ATTRIBUTE_UNUSED, int what ATTRIBUTE_UNUSED,
-	      xmlChar end ATTRIBUTE_UNUSED, xmlChar  end2 ATTRIBUTE_UNUSED, xmlChar end3 ATTRIBUTE_UNUSED) {
-#if 0
-    xmlChar *buffer = NULL;
-    unsigned int buffer_size = 0;
-    unsigned int nbchars = 0;
-
-    xmlChar *current = NULL;
-    xmlEntityPtr ent;
-    unsigned int max = (unsigned int) len;
-    int c,l;
-#endif
-
+xmlDecodeEntities(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED,
+                  int len ATTRIBUTE_UNUSED, int what ATTRIBUTE_UNUSED,
+                  xmlChar end ATTRIBUTE_UNUSED,
+                  xmlChar end2 ATTRIBUTE_UNUSED,
+                  xmlChar end3 ATTRIBUTE_UNUSED)
+{
     static int deprecated = 0;
+
     if (!deprecated) {
-	xmlGenericError(xmlGenericErrorContext,
-		"xmlDecodeEntities() deprecated function reached\n");
-	deprecated = 1;
+        xmlGenericError(xmlGenericErrorContext,
+                        "xmlDecodeEntities() deprecated function reached\n");
+        deprecated = 1;
     }
-
-#if 0
-    if (ctxt->depth > 40) {
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt->userData,
-		"Detected entity reference loop\n");
-	ctxt->wellFormed = 0;
-	if (ctxt->recovery == 0) ctxt->disableSAX = 1;
-	ctxt->errNo = XML_ERR_ENTITY_LOOP;
-	return(NULL);
-    }
-
-    /*
-     * allocate a translation buffer.
-     */
-    buffer_size = XML_PARSER_BIG_BUFFER_SIZE;
-    buffer = (xmlChar *) xmlMalloc(buffer_size * sizeof(xmlChar));
-    if (buffer == NULL) {
-	xmlGenericError(xmlGenericErrorContext, 
-		        "xmlDecodeEntities: malloc failed");
-	return(NULL);
-    }
-
-    /*
-     * OK loop until we reach one of the ending char or a size limit.
-     */
-    GROW;
-    c = CUR_CHAR(l);
-    while ((nbchars < max) && (c != end) && /* NOTUSED */
-           (c != end2) && (c != end3)) {
-	GROW;
-	if (c == 0) break;
-        if ((c == '&') && (NXT(1) == '#')) {
-	    int val = xmlParseCharRef(ctxt);
-	    COPY_BUF(0,buffer,nbchars,val);
-	    NEXTL(l);
-	} else if (c == '&') &&
-		   (what & XML_SUBSTITUTE_REF)) {
-	    if (xmlParserDebugEntities)
-		xmlGenericError(xmlGenericErrorContext,
-			"decoding Entity Reference\n");
-	    ent = xmlParseEntityRef(ctxt);
-	    if ((ent != NULL) && 
-		(ctxt->replaceEntities != 0)) {
-		current = ent->content;
-		while (*current != 0) { /* non input consuming loop */
-		    buffer[nbchars++] = *current++;
-		    if (nbchars > buffer_size - XML_PARSER_BUFFER_SIZE) {
-			growBuffer(buffer);
-		    }
-		}
-	    } else if (ent != NULL) {
-		const xmlChar *cur = ent->name;
-
-		buffer[nbchars++] = '&';
-		if (nbchars > buffer_size - XML_PARSER_BUFFER_SIZE) {
-		    growBuffer(buffer);
-		}
-		while (*cur != 0) { /* non input consuming loop */
-		    buffer[nbchars++] = *cur++;
-		}
-		buffer[nbchars++] = ';';
-	    }
-	} else if (c == '%' && (what & XML_SUBSTITUTE_PEREF)) {
-	    /*
-	     * a PEReference induce to switch the entity flow,
-	     * we break here to flush the current set of chars
-	     * parsed if any. We will be called back later.
-	     */
-	    if (xmlParserDebugEntities)
-		xmlGenericError(xmlGenericErrorContext,
-			"decoding PE Reference\n");
-	    if (nbchars != 0) break;
-
-	    xmlParsePEReference(ctxt);
-
-	    /*
-	     * Pop-up of finished entities.
-	     */
-	    while ((RAW == 0) && (ctxt->inputNr > 1)) /* non input consuming */
-		xmlPopInput(ctxt);
-
-	    break;
-	} else {
-	    COPY_BUF(l,buffer,nbchars,c);
-	    NEXTL(l);
-	    if (nbchars > buffer_size - XML_PARSER_BUFFER_SIZE) {
-	      growBuffer(buffer);
-	    }
-	}
-	c = CUR_CHAR(l);
-    }
-    buffer[nbchars++] = 0;
-    return(buffer);
-#endif
-    return(NULL);
+    return (NULL);
 }
 
 /**
@@ -2923,52 +2819,16 @@ xmlDecodeEntities(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED, int len ATTRIBUTE_UNUS
  */
 
 xmlChar *
-xmlNamespaceParseNCName(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED) {
-#if 0
-    xmlChar buf[XML_MAX_NAMELEN + 5];
-    int len = 0, l;
-    int cur = CUR_CHAR(l);
-#endif
-
+xmlNamespaceParseNCName(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED)
+{
     static int deprecated = 0;
+
     if (!deprecated) {
-	xmlGenericError(xmlGenericErrorContext,
-		"xmlNamespaceParseNCName() deprecated function reached\n");
-	deprecated = 1;
+        xmlGenericError(xmlGenericErrorContext,
+                        "xmlNamespaceParseNCName() deprecated function reached\n");
+        deprecated = 1;
     }
-
-#if 0
-    /* load first the value of the char !!! */
-    GROW;
-    if (!IS_LETTER(cur) && (cur != '_')) return(NULL);
-
-xmlGenericError(xmlGenericErrorContext,
-	"xmlNamespaceParseNCName: reached loop 3\n");
-    while ((IS_LETTER(cur)) || (IS_DIGIT(cur)) || /* NOT REACHED */
-           (cur == '.') || (cur == '-') ||
-	   (cur == '_') ||
-	   (IS_COMBINING(cur)) ||
-	   (IS_EXTENDER(cur))) {
-	COPY_BUF(l,buf,len,cur);
-	NEXTL(l);
-	cur = CUR_CHAR(l);
-	if (len >= XML_MAX_NAMELEN) {
-	    xmlGenericError(xmlGenericErrorContext, 
-	       "xmlNamespaceParseNCName: reached XML_MAX_NAMELEN limit\n");
-	    while ((IS_LETTER(cur)) || (IS_DIGIT(cur)) ||/* NOT REACHED */
-		   (cur == '.') || (cur == '-') ||
-		   (cur == '_') ||
-		   (IS_COMBINING(cur)) ||
-		   (IS_EXTENDER(cur))) {
-		NEXTL(l);
-		cur = CUR_CHAR(l);
-	    }
-	    break;
-	}
-    }
-    return(xmlStrndup(buf, len));
-#endif
-    return(NULL);
+    return (NULL);
 }
 
 /**
@@ -2992,29 +2852,18 @@ xmlGenericError(xmlGenericErrorContext,
  */
 
 xmlChar *
-xmlNamespaceParseQName(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED, xmlChar **prefix ATTRIBUTE_UNUSED) {
+xmlNamespaceParseQName(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED,
+                       xmlChar ** prefix ATTRIBUTE_UNUSED)
+{
 
     static int deprecated = 0;
+
     if (!deprecated) {
-	xmlGenericError(xmlGenericErrorContext,
-		"xmlNamespaceParseQName() deprecated function reached\n");
-	deprecated = 1;
+        xmlGenericError(xmlGenericErrorContext,
+                        "xmlNamespaceParseQName() deprecated function reached\n");
+        deprecated = 1;
     }
-
-#if 0
-    xmlChar *ret = NULL;
-
-    *prefix = NULL;
-    ret = xmlNamespaceParseNCName(ctxt);
-    if (RAW == ':') {
-        *prefix = ret;
-	NEXT;
-	ret = xmlNamespaceParseNCName(ctxt);
-    }
-
-    return(ret);
-#endif
-    return(NULL);
+    return (NULL);
 }
 
 /**
@@ -3034,28 +2883,16 @@ xmlNamespaceParseQName(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED, xmlChar **prefix 
  */
 
 xmlChar *
-xmlNamespaceParseNSDef(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED) {
+xmlNamespaceParseNSDef(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED)
+{
     static int deprecated = 0;
-    if (!deprecated) {
-	xmlGenericError(xmlGenericErrorContext,
-		"xmlNamespaceParseNSDef() deprecated function reached\n");
-	deprecated = 1;
-    }
-    return(NULL);
-#if 0
-    xmlChar *name = NULL;
 
-    if ((RAW == 'x') && (NXT(1) == 'm') &&
-        (NXT(2) == 'l') && (NXT(3) == 'n') &&
-	(NXT(4) == 's')) {
-	SKIP(5);
-	if (RAW == ':') {
-	    NEXT;
-	    name = xmlNamespaceParseNCName(ctxt);
-	}
+    if (!deprecated) {
+        xmlGenericError(xmlGenericErrorContext,
+                        "xmlNamespaceParseNSDef() deprecated function reached\n");
+        deprecated = 1;
     }
-    return(name);
-#endif
+    return (NULL);
 }
 
 /**
@@ -3069,86 +2906,16 @@ xmlNamespaceParseNSDef(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED) {
  * Returns the string parser or NULL.
  */
 xmlChar *
-xmlParseQuotedString(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED) {
+xmlParseQuotedString(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED)
+{
     static int deprecated = 0;
+
     if (!deprecated) {
-	xmlGenericError(xmlGenericErrorContext,
-		"xmlParseQuotedString() deprecated function reached\n");
-	deprecated = 1;
+        xmlGenericError(xmlGenericErrorContext,
+                        "xmlParseQuotedString() deprecated function reached\n");
+        deprecated = 1;
     }
-    return(NULL);
-
-#if 0
-    xmlChar *buf = NULL;
-    int len = 0,l;
-    int size = XML_PARSER_BUFFER_SIZE;
-    int c;
-
-    buf = (xmlChar *) xmlMalloc(size * sizeof(xmlChar));
-    if (buf == NULL) {
-	xmlGenericError(xmlGenericErrorContext,
-		"malloc of %d byte failed\n", size);
-	return(NULL);
-    }
-xmlGenericError(xmlGenericErrorContext,
-	"xmlParseQuotedString: reached loop 4\n");
-    if (RAW == '"') {
-        NEXT;
-	c = CUR_CHAR(l);
-	while (IS_CHAR(c) && (c != '"')) { /* NOTUSED */
-	    if (len + 5 >= size) {
-		size *= 2;
-		buf = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
-		if (buf == NULL) {
-		    xmlGenericError(xmlGenericErrorContext,
-			    "realloc of %d byte failed\n", size);
-		    return(NULL);
-		}
-	    }
-	    COPY_BUF(l,buf,len,c);
-	    NEXTL(l);
-	    c = CUR_CHAR(l);
-	}
-	if (c != '"') {
-	    ctxt->errNo = XML_ERR_STRING_NOT_CLOSED;
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	        ctxt->sax->error(ctxt->userData, 
-			         "String not closed \"%.50s\"\n", buf);
-	    ctxt->wellFormed = 0;
-	    if (ctxt->recovery == 0) ctxt->disableSAX = 1;
-        } else {
-	    NEXT;
-	}
-    } else if (RAW == '\''){
-        NEXT;
-	c = CUR;
-	while (IS_CHAR(c) && (c != '\'')) { /* NOTUSED */
-	    if (len + 1 >= size) {
-		size *= 2;
-		buf = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
-		if (buf == NULL) {
-		    xmlGenericError(xmlGenericErrorContext,
-			    "realloc of %d byte failed\n", size);
-		    return(NULL);
-		}
-	    }
-	    buf[len++] = c;
-	    NEXT;
-	    c = CUR;
-	}
-	if (RAW != '\'') {
-	    ctxt->errNo = XML_ERR_STRING_NOT_CLOSED;
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	        ctxt->sax->error(ctxt->userData,
-			         "String not closed \"%.50s\"\n", buf);
-	    ctxt->wellFormed = 0;
-	    if (ctxt->recovery == 0) ctxt->disableSAX = 1;
-        } else {
-	    NEXT;
-	}
-    }
-    return(buf);
-#endif
+    return (NULL);
 }
 
 /**
@@ -3167,110 +2934,15 @@ xmlGenericError(xmlGenericErrorContext,
  */
 
 void
-xmlParseNamespace(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED) {
+xmlParseNamespace(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED)
+{
     static int deprecated = 0;
+
     if (!deprecated) {
-	xmlGenericError(xmlGenericErrorContext,
-		"xmlParseNamespace() deprecated function reached\n");
-	deprecated = 1;
+        xmlGenericError(xmlGenericErrorContext,
+                        "xmlParseNamespace() deprecated function reached\n");
+        deprecated = 1;
     }
-
-#if 0
-    xmlChar *href = NULL;
-    xmlChar *prefix = NULL;
-    int garbage = 0;
-
-    /*
-     * We just skipped "namespace" or "xml:namespace"
-     */
-    SKIP_BLANKS;
-
-xmlGenericError(xmlGenericErrorContext,
-	"xmlParseNamespace: reached loop 5\n");
-    while (IS_CHAR(RAW) && (RAW != '>')) { /* NOT REACHED */
-	/*
-	 * We can have "ns" or "prefix" attributes
-	 * Old encoding as 'href' or 'AS' attributes is still supported
-	 */
-	if ((RAW == 'n') && (NXT(1) == 's')) {
-	    garbage = 0;
-	    SKIP(2);
-	    SKIP_BLANKS;
-
-	    if (RAW != '=') continue;
-	    NEXT;
-	    SKIP_BLANKS;
-
-	    href = xmlParseQuotedString(ctxt);
-	    SKIP_BLANKS;
-	} else if ((RAW == 'h') && (NXT(1) == 'r') &&
-	    (NXT(2) == 'e') && (NXT(3) == 'f')) {
-	    garbage = 0;
-	    SKIP(4);
-	    SKIP_BLANKS;
-
-	    if (RAW != '=') continue;
-	    NEXT;
-	    SKIP_BLANKS;
-
-	    href = xmlParseQuotedString(ctxt);
-	    SKIP_BLANKS;
-	} else if ((RAW == 'p') && (NXT(1) == 'r') &&
-	           (NXT(2) == 'e') && (NXT(3) == 'f') &&
-	           (NXT(4) == 'i') && (NXT(5) == 'x')) {
-	    garbage = 0;
-	    SKIP(6);
-	    SKIP_BLANKS;
-
-	    if (RAW != '=') continue;
-	    NEXT;
-	    SKIP_BLANKS;
-
-	    prefix = xmlParseQuotedString(ctxt);
-	    SKIP_BLANKS;
-	} else if ((RAW == 'A') && (NXT(1) == 'S')) {
-	    garbage = 0;
-	    SKIP(2);
-	    SKIP_BLANKS;
-
-	    if (RAW != '=') continue;
-	    NEXT;
-	    SKIP_BLANKS;
-
-	    prefix = xmlParseQuotedString(ctxt);
-	    SKIP_BLANKS;
-	} else if ((RAW == '?') && (NXT(1) == '>')) {
-	    garbage = 0;
-	    NEXT;
-	} else {
-            /*
-	     * Found garbage when parsing the namespace
-	     */
-	    if (!garbage) {
-		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		    ctxt->sax->error(ctxt->userData,
-		                     "xmlParseNamespace found garbage\n");
-	    }
-	    ctxt->errNo = XML_ERR_NS_DECL_ERROR;
-	    ctxt->wellFormed = 0;
-	    if (ctxt->recovery == 0) ctxt->disableSAX = 1;
-            NEXT;
-        }
-    }
-
-    MOVETO_ENDTAG(CUR_PTR);
-    NEXT;
-
-    /*
-     * Register the DTD.
-    if (href != NULL)
-	if ((ctxt->sax != NULL) && (ctxt->sax->globalNamespace != NULL))
-	    ctxt->sax->globalNamespace(ctxt->userData, href, prefix);
-     */
-
-    if (prefix != NULL) xmlFree(prefix);
-    if (href != NULL) xmlFree(href);
-#endif
 }
 
 /**
@@ -3294,49 +2966,16 @@ xmlGenericError(xmlGenericErrorContext,
  */
 
 xmlChar *
-xmlScanName(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED) {
+xmlScanName(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED)
+{
     static int deprecated = 0;
+
     if (!deprecated) {
-	xmlGenericError(xmlGenericErrorContext,
-		"xmlScanName() deprecated function reached\n");
-	deprecated = 1;
+        xmlGenericError(xmlGenericErrorContext,
+                        "xmlScanName() deprecated function reached\n");
+        deprecated = 1;
     }
-    return(NULL);
-
-#if 0
-    xmlChar buf[XML_MAX_NAMELEN];
-    int len = 0;
-
-    GROW;
-    if (!IS_LETTER(RAW) && (RAW != '_') &&
-        (RAW != ':')) {
-	return(NULL);
-    }
-
-
-    while ((IS_LETTER(NXT(len))) || (IS_DIGIT(NXT(len))) || /* NOT REACHED */
-           (NXT(len) == '.') || (NXT(len) == '-') ||
-	   (NXT(len) == '_') || (NXT(len) == ':') || 
-	   (IS_COMBINING(NXT(len))) ||
-	   (IS_EXTENDER(NXT(len)))) {
-	GROW;
-	buf[len] = NXT(len);
-	len++;
-	if (len >= XML_MAX_NAMELEN) {
-	    xmlGenericError(xmlGenericErrorContext, 
-	       "xmlScanName: reached XML_MAX_NAMELEN limit\n");
-	    while ((IS_LETTER(NXT(len))) || /* NOT REACHED */
-		   (IS_DIGIT(NXT(len))) ||
-		   (NXT(len) == '.') || (NXT(len) == '-') ||
-		   (NXT(len) == '_') || (NXT(len) == ':') || 
-		   (IS_COMBINING(NXT(len))) ||
-		   (IS_EXTENDER(NXT(len))))
-		 len++;
-	    break;
-	}
-    }
-    return(xmlStrndup(buf, len));
-#endif
+    return (NULL);
 }
 
 /**
@@ -3367,12 +3006,14 @@ xmlScanName(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED) {
  *      http://www.w3.org/TR/REC-xml#entproc
  */
 void
-xmlParserHandleReference(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED) {
+xmlParserHandleReference(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED)
+{
     static int deprecated = 0;
+
     if (!deprecated) {
-	xmlGenericError(xmlGenericErrorContext,
-		"xmlParserHandleReference() deprecated function reached\n");
-	deprecated = 1;
+        xmlGenericError(xmlGenericErrorContext,
+                        "xmlParserHandleReference() deprecated function reached\n");
+        deprecated = 1;
     }
 
     return;
@@ -3390,45 +3031,16 @@ xmlParserHandleReference(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED) {
  */
 
 void
-xmlHandleEntity(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED, xmlEntityPtr entity ATTRIBUTE_UNUSED) {
+xmlHandleEntity(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED,
+                xmlEntityPtr entity ATTRIBUTE_UNUSED)
+{
     static int deprecated = 0;
+
     if (!deprecated) {
-	xmlGenericError(xmlGenericErrorContext,
-		"xmlHandleEntity() deprecated function reached\n");
-	deprecated = 1;
+        xmlGenericError(xmlGenericErrorContext,
+                        "xmlHandleEntity() deprecated function reached\n");
+        deprecated = 1;
     }
-
-#if 0
-    int len;
-    xmlParserInputPtr input;
-
-    if (entity->content == NULL) {
-	ctxt->errNo = XML_ERR_INTERNAL_ERROR;
-        if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt->userData, "xmlHandleEntity %s: content == NULL\n",
-	               entity->name);
-	ctxt->wellFormed = 0;
-	if (ctxt->recovery == 0) ctxt->disableSAX = 1;
-        return;
-    }
-    len = xmlStrlen(entity->content);
-    if (len <= 2) goto handle_as_char;
-
-    /*
-     * Redefine its content as an input stream.
-     */
-    input = xmlNewEntityInputStream(ctxt, entity);
-    xmlPushInput(ctxt, input);
-    return;
-
-handle_as_char:
-    /*
-     * Just handle the content as a set of chars.
-     */
-    if ((ctxt->sax != NULL) && (!ctxt->disableSAX) &&
-	(ctxt->sax->characters != NULL))
-	ctxt->sax->characters(ctxt->userData, entity->content, len);
-#endif
 }
 
 /**
@@ -3443,58 +3055,18 @@ handle_as_char:
  * Returns NULL this functionality had been removed
  */
 xmlNsPtr
-xmlNewGlobalNs(xmlDocPtr doc ATTRIBUTE_UNUSED, const xmlChar *href ATTRIBUTE_UNUSED,
-	       const xmlChar *prefix ATTRIBUTE_UNUSED) {
+xmlNewGlobalNs(xmlDocPtr doc ATTRIBUTE_UNUSED,
+               const xmlChar * href ATTRIBUTE_UNUSED,
+               const xmlChar * prefix ATTRIBUTE_UNUSED)
+{
     static int deprecated = 0;
+
     if (!deprecated) {
-	xmlGenericError(xmlGenericErrorContext,
-		"xmlNewGlobalNs() deprecated function reached\n");
-	deprecated = 1;
-    }
-    return(NULL);
-#if 0
-    xmlNodePtr root;
-
-    xmlNsPtr cur;
- 
-    root = xmlDocGetRootElement(doc);
-    if (root != NULL)
-	return(xmlNewNs(root, href, prefix));
-	
-    /*
-     * if there is no root element yet, create an old Namespace type
-     * and it will be moved to the root at save time.
-     */
-    cur = (xmlNsPtr) xmlMalloc(sizeof(xmlNs));
-    if (cur == NULL) {
         xmlGenericError(xmlGenericErrorContext,
-		"xmlNewGlobalNs : malloc failed\n");
-	return(NULL);
+                        "xmlNewGlobalNs() deprecated function reached\n");
+        deprecated = 1;
     }
-    memset(cur, 0, sizeof(xmlNs));
-    cur->type = XML_GLOBAL_NAMESPACE;
-
-    if (href != NULL)
-	cur->href = xmlStrdup(href); 
-    if (prefix != NULL)
-	cur->prefix = xmlStrdup(prefix); 
-
-    /*
-     * Add it at the end to preserve parsing order ...
-     */
-    if (doc != NULL) {
-	if (doc->oldNs == NULL) {
-	    doc->oldNs = cur;
-	} else {
-	    xmlNsPtr prev = doc->oldNs;
-
-	    while (prev->next != NULL) prev = prev->next;
-	    prev->next = cur;
-	}
-    }
-
-  return(NULL);
-#endif
+    return (NULL);
 }
 
 /**
@@ -3505,34 +3077,13 @@ xmlNewGlobalNs(xmlDocPtr doc ATTRIBUTE_UNUSED, const xmlChar *href ATTRIBUTE_UNU
  * DEPRECATED
  */
 void
-xmlUpgradeOldNs(xmlDocPtr doc ATTRIBUTE_UNUSED) {
+xmlUpgradeOldNs(xmlDocPtr doc ATTRIBUTE_UNUSED)
+{
     static int deprecated = 0;
+
     if (!deprecated) {
-	xmlGenericError(xmlGenericErrorContext,
-		"xmlUpgradeOldNs() deprecated function reached\n");
-	deprecated = 1;
-    }
-#if 0
-    xmlNsPtr cur;
-
-    if ((doc == NULL) || (doc->oldNs == NULL)) return;
-    if (doc->children == NULL) {
-#ifdef DEBUG_TREE
         xmlGenericError(xmlGenericErrorContext,
-		"xmlUpgradeOldNs: failed no root !\n");
-#endif
-	return;
+                        "xmlUpgradeOldNs() deprecated function reached\n");
+        deprecated = 1;
     }
-
-    cur = doc->oldNs;
-    while (cur->next != NULL) {
-	cur->type = XML_LOCAL_NAMESPACE;
-        cur = cur->next;
-    }
-    cur->type = XML_LOCAL_NAMESPACE;
-    cur->next = doc->children->nsDef;
-    doc->children->nsDef = doc->oldNs;
-    doc->oldNs = NULL;
-#endif
 }
-

@@ -11,6 +11,9 @@
 #include <libxml/xmlversion.h>
 #include <libxml/parser.h>
 
+#ifndef IN_LIBXML
+#warning "The DOCBparser module has been deprecated in libxml2-2.6.0"
+#else
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -20,13 +23,11 @@ extern "C" {
  */
 typedef xmlParserCtxt docbParserCtxt;
 typedef xmlParserCtxtPtr docbParserCtxtPtr;
-typedef xmlParserNodeInfo docbParserNodeInfo;
 typedef xmlSAXHandler docbSAXHandler;
 typedef xmlSAXHandlerPtr docbSAXHandlerPtr;
 typedef xmlParserInput docbParserInput;
 typedef xmlParserInputPtr docbParserInputPtr;
 typedef xmlDocPtr docbDocPtr;
-typedef xmlNodePtr docbNodePtr;
 
 /*
  * There is only few public functions.
@@ -80,5 +81,6 @@ XMLPUBFUN int XMLCALL
 #ifdef __cplusplus
 }
 #endif
+#endif /* IN_LIBXML */
 
 #endif /* __DOCB_PARSER_H__ */

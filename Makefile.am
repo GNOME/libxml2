@@ -7,7 +7,7 @@ DIST_SUBDIRS = include . doc example python
 INCLUDES = -I$(top_builddir)/include -I@srcdir@/include @THREAD_CFLAGS@ @Z_CFLAGS@ 
 
 noinst_PROGRAMS=testSchemas testRelax testSAX testHTML testXPath testURI \
-                testDocbook testThreads testC14N testAutomata testRegexp \
+                testThreads testC14N testAutomata testRegexp \
 		testReader
 
 bin_PROGRAMS = xmllint xmlcatalog
@@ -60,11 +60,6 @@ testHTML_SOURCES=testHTML.c
 testHTML_LDFLAGS = 
 testHTML_DEPENDENCIES = $(DEPS)
 testHTML_LDADD= $(LDADDS)
-
-testDocbook_SOURCES=testDocbook.c
-testDocbook_LDFLAGS = 
-testDocbook_DEPENDENCIES = $(DEPS)
-testDocbook_LDADD= $(LDADDS)
 
 xmlcatalog_SOURCES=xmlcatalog.c
 xmlcatalog_LDFLAGS = 

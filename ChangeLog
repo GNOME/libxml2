@@ -1,3 +1,9 @@
+Fri Jun 22 18:02:37 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* doc/FAQ.html: added a warning about gcc-3.0
+	* doc/xml.html: added reference to gdome2 and removed a confusing
+	  sentence
+
 Fri Jun 22 17:02:16 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xmlversion.h: okay this is a generated file, but Windows

@@ -8,26 +8,26 @@
   </vendor>
   <product id="libxml2">
     <name>libxml2</name>
-    <version>2.6.9</version>
-    <last-release> Apr 18 2004</last-release>
+    <version>2.6.10</version>
+    <last-release> May 17 2004</last-release>
     <info-url>http://xmlsoft.org/</info-url>
-    <changes>   - implement xml:id Working Draft, relaxed XPath id() checking
-   - bugfixes: xmlCtxtReset (Brent Hendricks), line number and CDATA (Dave
-    Beckett), Relax-NG compilation (William Brack), Regexp patches (with
-    William), xmlUriEscape (Mark Vakoc), a Relax-NG notAllowed problem (with
-    William), Relax-NG name classes compares (William), XInclude duplicate
-    fallback (William), external DTD encoding detection (William), a DTD
-    validation bug (William), xmlReader Close() fix, recusive extention
-    schemas
-   - improvements: use xmlRead* APIs in test tools (Mark Vakoc), indenting
-    save optimization, better handle IIS broken HTTP redirect  behaviour (Ian
-    Hummel), HTML parser frameset (James Bursa), libxml2-python RPM
-    dependancy, XML Schemas union support (Kasimier Buchcik), warning removal
-    clanup (William), keep ChangeLog compressed when installing from RPMs
-   - documentation: examples and xmlDocDumpMemory docs (John Fleck), new
-    example (load, xpath, modify, save), xmlCatalogDump() comments,
-   - Windows: Borland C++ builder (Eric Zurcher), work around Microsoft
-    compiler NaN handling bug (Mark Vakoc)
+    <changes>   - Web page generated for ChangeLog
+   - build fixes: --without-html problems, make check without make all
+   - portability: problem with xpath.c on Windows (MSC and Borland), memcmp
+    vs. strncmp on Solaris, XPath tests on Windows (Mark Vakoc), C++ do not
+    use "list" as parameter name, make tests work with Python 1.5 (Ed
+  Davis),
+   - improvements: made xmlTextReaderMode public, small buffers resizing
+    (Morten Welinder), add --maxmem option to xmllint, add
+    xmlPopInputCallback() for Matt Sergeant, refactoring of serialization
+    escaping, added escaping customization
+   - bugfixes: xsd:extension (Taihei Goi), assorted regexp bugs (William
+    Brack), xmlReader end of stream problem, node deregistration with reader,
+    URI escaping and filemanes,  XHTML1 formatting (Nick Wellnhofer), regexp
+    transition reduction (William), various XSD Schemas fixes (Kasimier
+    Buchcik), XInclude fallback problem (William), weird problems with DTD
+    (William), structured error handler callback context (William), reverse
+    xmlEncodeSpecialChars() behaviour back to escaping '"'
 
 </changes>
   </product>

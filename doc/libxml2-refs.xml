@@ -18032,6 +18032,9 @@
         <word name='cncerning'>
           <ref name='xmlDebugDumpDocumentHead'/>
         </word>
+        <word name='coding'>
+          <ref name='xmlSAXDefaultVersion'/>
+        </word>
         <word name='collapse'>
           <ref name='XML_SCHEMAS_FACET_COLLAPSE'/>
         </word>
@@ -19471,6 +19474,7 @@
           <ref name='xmlXPathNodeSetFreeNs'/>
         </word>
         <word name='during'>
+          <ref name='xmlSAXDefaultVersion'/>
           <ref name='xmlSchemaNewDocParserCtxt'/>
         </word>
       </letter>
@@ -19938,6 +19942,9 @@
           <ref name='xmlSchemaNewMemParserCtxt'/>
           <ref name='xmlSchemaNewParserCtxt'/>
           <ref name='xmlSchemaValidateListSimpleTypeFacet'/>
+        </word>
+        <word name='explicitly'>
+          <ref name='xmlSAXDefaultVersion'/>
         </word>
         <word name='explored'>
           <ref name='xmlXPathAxisFunc'/>
@@ -20522,6 +20529,9 @@
           <ref name='xmlParseExtParsedEnt'/>
           <ref name='xmlParseExternalEntity'/>
         </word>
+        <word name='generally'>
+          <ref name='xmlSAXDefaultVersion'/>
+        </word>
         <word name='generate'>
           <ref name='xmlDocDumpFormatMemoryEnc'/>
           <ref name='xmlDocDumpMemoryEnc'/>
@@ -20623,7 +20633,6 @@
           <ref name='xmlSAXDefaultVersion'/>
         </word>
         <word name='good'>
-          <ref name='xmlSAXDefaultVersion'/>
           <ref name='xmlTextReaderGetRemainder'/>
         </word>
         <word name='grafted'>
@@ -21343,6 +21352,7 @@
           <ref name='xmlInitializeCatalog'/>
           <ref name='xmlLoadCatalog'/>
           <ref name='xmlLoadCatalogs'/>
+          <ref name='xmlSAXDefaultVersion'/>
         </word>
         <word name='initialize'>
           <ref name='XML_COMPLETE_ATTRS'/>
@@ -25431,9 +25441,6 @@
           <ref name='xmlNoNetExternalEntityLoader'/>
           <ref name='xmlParseNamespace'/>
         </word>
-        <word name='specifically'>
-          <ref name='xmlSAXDefaultVersion'/>
-        </word>
         <word name='specification'>
           <ref name='XML_XML_NAMESPACE'/>
           <ref name='xmlTextReaderNormalization'/>
@@ -25756,6 +25763,9 @@
         <word name='stuff'>
           <ref name='_xmlXPathContext'/>
           <ref name='xmlParseNamespace'/>
+        </word>
+        <word name='style'>
+          <ref name='xmlSAXDefaultVersion'/>
         </word>
         <word name='sub-elements'>
           <ref name='_htmlElemDesc'/>
@@ -26157,9 +26167,6 @@
           <ref name='xmlStrQEqual'/>
           <ref name='xmlStrcat'/>
           <ref name='xmlStrdup'/>
-        </word>
-        <word name='thing'>
-          <ref name='xmlSAXDefaultVersion'/>
         </word>
         <word name='third'>
           <ref name='xmlHashAddEntry3'/>

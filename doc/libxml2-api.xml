@@ -11704,7 +11704,7 @@ actually an xmlCharEncoding'/>
       <arg name='notationName' type='const xmlChar *' info='the name of the notation'/>
     </function>
     <function name='xmlSAXDefaultVersion' file='SAX2'>
-      <info>Set the default version of SAX used globally by the library. Note that this may not be a good thing to do from a library it is better to use xmlSAXVersion() to set up specifically the version for a given parsing context.</info>
+      <info>Set the default version of SAX used globally by the library. By default, during initialization the default is set to 2. Note that it is generally a better coding style to use xmlSAXVersion() to set up the version explicitly for a given parsing context.</info>
       <return type='int' info='the previous value in case of success and -1 in case of error.'/>
       <arg name='version' type='int' info='the version, 1 or 2'/>
     </function>

@@ -1,3 +1,8 @@
+Mon Jul  5 19:43:51 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in doc/*: releasing 2.6.11, updated and regenerated the
+	  docs
+
 Mon Jul  5 18:43:47 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: make the push interfaces synchronous

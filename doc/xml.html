@@ -677,6 +677,37 @@ to help those</p>
 
 <p>There is the list of public releases:</p>
 
+<h3>2.6.11: July 5 2004</h3>
+<ul>
+  <li>Schemas: a lot of changes and improvements by Kasimier Buchcik for
+    attributes, namespaces and simple types.</li>
+  <li>build fixes: --with-minimum (William Brack),  some gcc cleanup
+    (William), --with-thread-alloc (William)</li>
+  <li>portability: Windows binary package change (Igor Zlatkovic), Catalog
+    path on Windows</li>
+  <li>documentation: update to the tutorial (John Fleck), xmllint return code
+    (John Fleck), man pages (Ville Skytta), </li>
+  <li>bug fixes: C14N bug serializing namespaces (Aleksey Sanin), testSAX
+    properly initialize the library (William), empty node set in XPath
+    (William), xmlSchemas errors (William), invalid charref problem pointed
+    by Morus Walter, XInclude xml:base generation (William), Relax-NG bug
+    with div processing (William), XPointer and xml:base problem(William), 
+    Reader and entities, xmllint return code for schemas (William), reader
+    streaming problem (Steve Ball), DTD serialization problem (William),
+    libxml.m4 fixes (Mike Hommey), do not provide destructors as methods on
+    Python classes, xmlReader buffer bug, Python bindings memory interfaces
+    improvement (with Stéphane Bidoul), Fixed the push parser to be back to
+    synchronous behaviour.</li>
+  <li>improvement: custom per-thread I/O enhancement (Rob Richards), register
+    namespace in debug shell (Stefano Debenedetti), Python based regression
+    test for non-Unix users (William), dynamically increase the number of
+    XPath extension functions in Python and fix a memory leak (Marc-Antoine
+    Parent and William)</li>
+  <li>performance: hack done with Arjan van de Ven to reduce ELF footprint
+    and generated code on Linux, plus use gcc runtime profiling to optimize
+    the code generated in the RPM packages.</li>
+</ul>
+
 <h3>2.6.10: May 17 2004</h3>
 <ul>
   <li>Web page generated for ChangeLog</li>
@@ -688,7 +719,7 @@ to help those</p>
   <li>improvements: made xmlTextReaderMode public, small buffers resizing
     (Morten Welinder), add --maxmem option to xmllint, add
     xmlPopInputCallback() for Matt Sergeant, refactoring of serialization
-    escaping, added escaping customization  </li>
+    escaping, added escaping customization</li>
   <li>bugfixes: xsd:extension (Taihei Goi), assorted regexp bugs (William
     Brack), xmlReader end of stream problem, node deregistration with reader,
     URI escaping and filemanes,  XHTML1 formatting (Nick Wellnhofer), regexp

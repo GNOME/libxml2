@@ -1,7 +1,12 @@
+Tue Jan  7 12:12:45 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmllint.c: another fix needed as pointed by Christophe Merlet
+	  for --stream --debug if compiled without debug support.
+
 Mon Jan  6 20:53:08 MST 2003 John Fleck <jfleck@inkstain.net>
 
 	* doc/xmllint.xml
-	* doc/xmllint.1
+	* doc/xmllint.1:
 	update man page with --stream and --chkregister
 
 Tue Jan  7 01:17:26 CET 2003 Daniel Veillard <daniel@veillard.com>

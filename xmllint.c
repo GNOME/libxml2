@@ -510,6 +510,7 @@ xmlHTMLValidityWarning(void *ctx, const char *msg, ...)
  * 			Shell Interface					*
  * 									*
  ************************************************************************/
+#ifdef LIBXML_DEBUG_ENABLED
 /**
  * xmlShellReadline:
  * @prompt:  the prompt value
@@ -550,6 +551,7 @@ xmlShellReadline(char *prompt) {
     return(ret);
 #endif
 }
+#endif /* LIBXML_DEBUG_ENABLED */
 
 /************************************************************************
  * 									*
@@ -1215,10 +1217,11 @@ main(int argc, char **argv) {
 
 	if (argv[i][0] != '-')
 	    continue;
-#ifdef LIBXML_DEBUG_ENABLED
 	if ((!strcmp(argv[i], "-debug")) || (!strcmp(argv[i], "--debug")))
 	    debug++;
-	else if ((!strcmp(argv[i], "-shell")) ||
+	else
+#ifdef LIBXML_DEBUG_ENABLED
+	if ((!strcmp(argv[i], "-shell")) ||
 	         (!strcmp(argv[i], "--shell"))) {
 	    shell++;
             noout = 1;

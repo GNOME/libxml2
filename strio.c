@@ -16,7 +16,7 @@
  ************************************************************************/
 
 /* DV for libxml */
-#include "xmlversion.h"
+#include <libxml/xmlversion.h>
 #ifdef WITH_TRIO
 
 /* FIXME

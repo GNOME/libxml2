@@ -3220,8 +3220,9 @@ get_more_space:
 		        (ctxt->sax->ignorableWhitespace !=
 		         ctxt->sax->characters)) {
 			if (areBlanks(ctxt, tmp, nbchar, 1)) {
-			    ctxt->sax->ignorableWhitespace(ctxt->userData,
-						   tmp, nbchar);
+			    if (ctxt->sax->ignorableWhitespace != NULL)
+				ctxt->sax->ignorableWhitespace(ctxt->userData,
+						       tmp, nbchar);
 			} else if (ctxt->sax->characters != NULL)
 			    ctxt->sax->characters(ctxt->userData,
 						  tmp, nbchar);
@@ -3274,8 +3275,9 @@ get_more:
 		    ctxt->input->cur = in;
 
 		    if (areBlanks(ctxt, tmp, nbchar, 0)) {
-			ctxt->sax->ignorableWhitespace(ctxt->userData,
-					       tmp, nbchar);
+		        if (ctxt->sax->ignorableWhitespace != NULL)
+			    ctxt->sax->ignorableWhitespace(ctxt->userData,
+							   tmp, nbchar);
 		    } else if (ctxt->sax->characters != NULL)
 			ctxt->sax->characters(ctxt->userData,
 					      tmp, nbchar);

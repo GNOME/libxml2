@@ -1,6 +1,105 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <api name='libxml2'>
   <files>
+    <file name='debugXML'>
+     <exports symbol='_xmlShellCtxt'/>
+     <exports symbol='xmlBoolToText'/>
+     <exports symbol='xmlDebugDumpAttr'/>
+     <exports symbol='xmlDebugDumpAttrList'/>
+     <exports symbol='xmlDebugDumpDTD'/>
+     <exports symbol='xmlDebugDumpDocument'/>
+     <exports symbol='xmlDebugDumpDocumentHead'/>
+     <exports symbol='xmlDebugDumpEntities'/>
+     <exports symbol='xmlDebugDumpNode'/>
+     <exports symbol='xmlDebugDumpNodeList'/>
+     <exports symbol='xmlDebugDumpOneNode'/>
+     <exports symbol='xmlDebugDumpString'/>
+     <exports symbol='xmlLsCountNode'/>
+     <exports symbol='xmlLsOneNode'/>
+     <exports symbol='xmlShell'/>
+     <exports symbol='xmlShellBase'/>
+     <exports symbol='xmlShellCat'/>
+     <exports symbol='xmlShellCmd'/>
+     <exports symbol='xmlShellCtxt'/>
+     <exports symbol='xmlShellCtxtPtr'/>
+     <exports symbol='xmlShellDir'/>
+     <exports symbol='xmlShellDu'/>
+     <exports symbol='xmlShellList'/>
+     <exports symbol='xmlShellLoad'/>
+     <exports symbol='xmlShellPrintNode'/>
+     <exports symbol='xmlShellPrintXPathError'/>
+     <exports symbol='xmlShellPrintXPathResult'/>
+     <exports symbol='xmlShellPwd'/>
+     <exports symbol='xmlShellReadlineFunc'/>
+     <exports symbol='xmlShellSave'/>
+     <exports symbol='xmlShellValidate'/>
+     <exports symbol='xmlShellWrite'/>
+    </file>
+    <file name='xpointer'>
+     <exports symbol='_xmlLocationSet'/>
+     <exports symbol='xmlLocationSet'/>
+     <exports symbol='xmlLocationSetPtr'/>
+     <exports symbol='xmlXPtrBuildNodeList'/>
+     <exports symbol='xmlXPtrEval'/>
+     <exports symbol='xmlXPtrEvalRangePredicate'/>
+     <exports symbol='xmlXPtrFreeLocationSet'/>
+     <exports symbol='xmlXPtrLocationSetAdd'/>
+     <exports symbol='xmlXPtrLocationSetCreate'/>
+     <exports symbol='xmlXPtrLocationSetDel'/>
+     <exports symbol='xmlXPtrLocationSetMerge'/>
+     <exports symbol='xmlXPtrLocationSetRemove'/>
+     <exports symbol='xmlXPtrNewCollapsedRange'/>
+     <exports symbol='xmlXPtrNewContext'/>
+     <exports symbol='xmlXPtrNewLocationSetNodeSet'/>
+     <exports symbol='xmlXPtrNewLocationSetNodes'/>
+     <exports symbol='xmlXPtrNewRange'/>
+     <exports symbol='xmlXPtrNewRangeNodeObject'/>
+     <exports symbol='xmlXPtrNewRangeNodePoint'/>
+     <exports symbol='xmlXPtrNewRangeNodes'/>
+     <exports symbol='xmlXPtrNewRangePointNode'/>
+     <exports symbol='xmlXPtrNewRangePoints'/>
+     <exports symbol='xmlXPtrRangeToFunction'/>
+     <exports symbol='xmlXPtrWrapLocationSet'/>
+    </file>
+    <file name='SAX'>
+     <exports symbol='attribute'/>
+     <exports symbol='attributeDecl'/>
+     <exports symbol='cdataBlock'/>
+     <exports symbol='characters'/>
+     <exports symbol='checkNamespace'/>
+     <exports symbol='comment'/>
+     <exports symbol='elementDecl'/>
+     <exports symbol='endDocument'/>
+     <exports symbol='endElement'/>
+     <exports symbol='entityDecl'/>
+     <exports symbol='externalSubset'/>
+     <exports symbol='getColumnNumber'/>
+     <exports symbol='getEntity'/>
+     <exports symbol='getLineNumber'/>
+     <exports symbol='getNamespace'/>
+     <exports symbol='getParameterEntity'/>
+     <exports symbol='getPublicId'/>
+     <exports symbol='getSystemId'/>
+     <exports symbol='globalNamespace'/>
+     <exports symbol='hasExternalSubset'/>
+     <exports symbol='hasInternalSubset'/>
+     <exports symbol='ignorableWhitespace'/>
+     <exports symbol='initdocbDefaultSAXHandler'/>
+     <exports symbol='inithtmlDefaultSAXHandler'/>
+     <exports symbol='initxmlDefaultSAXHandler'/>
+     <exports symbol='internalSubset'/>
+     <exports symbol='isStandalone'/>
+     <exports symbol='namespaceDecl'/>
+     <exports symbol='notationDecl'/>
+     <exports symbol='processingInstruction'/>
+     <exports symbol='reference'/>
+     <exports symbol='resolveEntity'/>
+     <exports symbol='setDocumentLocator'/>
+     <exports symbol='setNamespace'/>
+     <exports symbol='startDocument'/>
+     <exports symbol='startElement'/>
+     <exports symbol='unparsedEntityDecl'/>
+    </file>
     <file name='parserInternals'>
      <exports symbol='INPUT_CHUNK'/>
      <exports symbol='IS_BASECHAR'/>
@@ -115,246 +214,11 @@
      <exports symbol='xmlStringComment'/>
      <exports symbol='xmlStringCurrentChar'/>
      <exports symbol='xmlStringDecodeEntities'/>
+     <exports symbol='xmlStringLenDecodeEntities'/>
      <exports symbol='xmlStringText'/>
      <exports symbol='xmlStringTextNoenc'/>
      <exports symbol='xmlSwitchEncoding'/>
      <exports symbol='xmlSwitchToEncoding'/>
-    </file>
-    <file name='xmlschemastypes'>
-     <exports symbol='xmlSchemaCheckFacet'/>
-     <exports symbol='xmlSchemaCleanupTypes'/>
-     <exports symbol='xmlSchemaCompareValues'/>
-     <exports symbol='xmlSchemaFreeFacet'/>
-     <exports symbol='xmlSchemaFreeValue'/>
-     <exports symbol='xmlSchemaGetPredefinedType'/>
-     <exports symbol='xmlSchemaInitTypes'/>
-     <exports symbol='xmlSchemaNewFacet'/>
-     <exports symbol='xmlSchemaValPredefTypeNode'/>
-     <exports symbol='xmlSchemaValidateFacet'/>
-     <exports symbol='xmlSchemaValidatePredefinedType'/>
-    </file>
-    <file name='xpointer'>
-     <exports symbol='_xmlLocationSet'/>
-     <exports symbol='xmlLocationSet'/>
-     <exports symbol='xmlLocationSetPtr'/>
-     <exports symbol='xmlXPtrBuildNodeList'/>
-     <exports symbol='xmlXPtrEval'/>
-     <exports symbol='xmlXPtrEvalRangePredicate'/>
-     <exports symbol='xmlXPtrFreeLocationSet'/>
-     <exports symbol='xmlXPtrLocationSetAdd'/>
-     <exports symbol='xmlXPtrLocationSetCreate'/>
-     <exports symbol='xmlXPtrLocationSetDel'/>
-     <exports symbol='xmlXPtrLocationSetMerge'/>
-     <exports symbol='xmlXPtrLocationSetRemove'/>
-     <exports symbol='xmlXPtrNewCollapsedRange'/>
-     <exports symbol='xmlXPtrNewContext'/>
-     <exports symbol='xmlXPtrNewLocationSetNodeSet'/>
-     <exports symbol='xmlXPtrNewLocationSetNodes'/>
-     <exports symbol='xmlXPtrNewRange'/>
-     <exports symbol='xmlXPtrNewRangeNodeObject'/>
-     <exports symbol='xmlXPtrNewRangeNodePoint'/>
-     <exports symbol='xmlXPtrNewRangeNodes'/>
-     <exports symbol='xmlXPtrNewRangePointNode'/>
-     <exports symbol='xmlXPtrNewRangePoints'/>
-     <exports symbol='xmlXPtrRangeToFunction'/>
-     <exports symbol='xmlXPtrWrapLocationSet'/>
-    </file>
-    <file name='xmlunicode'>
-     <exports symbol='xmlUCSIsAlphabeticPresentationForms'/>
-     <exports symbol='xmlUCSIsArabic'/>
-     <exports symbol='xmlUCSIsArabicPresentationFormsA'/>
-     <exports symbol='xmlUCSIsArabicPresentationFormsB'/>
-     <exports symbol='xmlUCSIsArmenian'/>
-     <exports symbol='xmlUCSIsArrows'/>
-     <exports symbol='xmlUCSIsBasicLatin'/>
-     <exports symbol='xmlUCSIsBengali'/>
-     <exports symbol='xmlUCSIsBlock'/>
-     <exports symbol='xmlUCSIsBlockElements'/>
-     <exports symbol='xmlUCSIsBopomofo'/>
-     <exports symbol='xmlUCSIsBopomofoExtended'/>
-     <exports symbol='xmlUCSIsBoxDrawing'/>
-     <exports symbol='xmlUCSIsBraillePatterns'/>
-     <exports symbol='xmlUCSIsByzantineMusicalSymbols'/>
-     <exports symbol='xmlUCSIsCJKCompatibility'/>
-     <exports symbol='xmlUCSIsCJKCompatibilityForms'/>
-     <exports symbol='xmlUCSIsCJKCompatibilityIdeographs'/>
-     <exports symbol='xmlUCSIsCJKCompatibilityIdeographsSupplement'/>
-     <exports symbol='xmlUCSIsCJKRadicalsSupplement'/>
-     <exports symbol='xmlUCSIsCJKSymbolsandPunctuation'/>
-     <exports symbol='xmlUCSIsCJKUnifiedIdeographs'/>
-     <exports symbol='xmlUCSIsCJKUnifiedIdeographsExtensionA'/>
-     <exports symbol='xmlUCSIsCJKUnifiedIdeographsExtensionB'/>
-     <exports symbol='xmlUCSIsCat'/>
-     <exports symbol='xmlUCSIsCatC'/>
-     <exports symbol='xmlUCSIsCatCc'/>
-     <exports symbol='xmlUCSIsCatCf'/>
-     <exports symbol='xmlUCSIsCatCo'/>
-     <exports symbol='xmlUCSIsCatCs'/>
-     <exports symbol='xmlUCSIsCatL'/>
-     <exports symbol='xmlUCSIsCatLl'/>
-     <exports symbol='xmlUCSIsCatLm'/>
-     <exports symbol='xmlUCSIsCatLo'/>
-     <exports symbol='xmlUCSIsCatLt'/>
-     <exports symbol='xmlUCSIsCatLu'/>
-     <exports symbol='xmlUCSIsCatM'/>
-     <exports symbol='xmlUCSIsCatMc'/>
-     <exports symbol='xmlUCSIsCatMe'/>
-     <exports symbol='xmlUCSIsCatMn'/>
-     <exports symbol='xmlUCSIsCatN'/>
-     <exports symbol='xmlUCSIsCatNd'/>
-     <exports symbol='xmlUCSIsCatNl'/>
-     <exports symbol='xmlUCSIsCatNo'/>
-     <exports symbol='xmlUCSIsCatP'/>
-     <exports symbol='xmlUCSIsCatPc'/>
-     <exports symbol='xmlUCSIsCatPd'/>
-     <exports symbol='xmlUCSIsCatPe'/>
-     <exports symbol='xmlUCSIsCatPf'/>
-     <exports symbol='xmlUCSIsCatPi'/>
-     <exports symbol='xmlUCSIsCatPo'/>
-     <exports symbol='xmlUCSIsCatPs'/>
-     <exports symbol='xmlUCSIsCatS'/>
-     <exports symbol='xmlUCSIsCatSc'/>
-     <exports symbol='xmlUCSIsCatSk'/>
-     <exports symbol='xmlUCSIsCatSm'/>
-     <exports symbol='xmlUCSIsCatSo'/>
-     <exports symbol='xmlUCSIsCatZ'/>
-     <exports symbol='xmlUCSIsCatZl'/>
-     <exports symbol='xmlUCSIsCatZp'/>
-     <exports symbol='xmlUCSIsCatZs'/>
-     <exports symbol='xmlUCSIsCherokee'/>
-     <exports symbol='xmlUCSIsCombiningDiacriticalMarks'/>
-     <exports symbol='xmlUCSIsCombiningHalfMarks'/>
-     <exports symbol='xmlUCSIsCombiningMarksforSymbols'/>
-     <exports symbol='xmlUCSIsControlPictures'/>
-     <exports symbol='xmlUCSIsCurrencySymbols'/>
-     <exports symbol='xmlUCSIsCyrillic'/>
-     <exports symbol='xmlUCSIsDeseret'/>
-     <exports symbol='xmlUCSIsDevanagari'/>
-     <exports symbol='xmlUCSIsDingbats'/>
-     <exports symbol='xmlUCSIsEnclosedAlphanumerics'/>
-     <exports symbol='xmlUCSIsEnclosedCJKLettersandMonths'/>
-     <exports symbol='xmlUCSIsEthiopic'/>
-     <exports symbol='xmlUCSIsGeneralPunctuation'/>
-     <exports symbol='xmlUCSIsGeometricShapes'/>
-     <exports symbol='xmlUCSIsGeorgian'/>
-     <exports symbol='xmlUCSIsGothic'/>
-     <exports symbol='xmlUCSIsGreek'/>
-     <exports symbol='xmlUCSIsGreekExtended'/>
-     <exports symbol='xmlUCSIsGujarati'/>
-     <exports symbol='xmlUCSIsGurmukhi'/>
-     <exports symbol='xmlUCSIsHalfwidthandFullwidthForms'/>
-     <exports symbol='xmlUCSIsHangulCompatibilityJamo'/>
-     <exports symbol='xmlUCSIsHangulJamo'/>
-     <exports symbol='xmlUCSIsHangulSyllables'/>
-     <exports symbol='xmlUCSIsHebrew'/>
-     <exports symbol='xmlUCSIsHighPrivateUseSurrogates'/>
-     <exports symbol='xmlUCSIsHighSurrogates'/>
-     <exports symbol='xmlUCSIsHiragana'/>
-     <exports symbol='xmlUCSIsIPAExtensions'/>
-     <exports symbol='xmlUCSIsIdeographicDescriptionCharacters'/>
-     <exports symbol='xmlUCSIsKanbun'/>
-     <exports symbol='xmlUCSIsKangxiRadicals'/>
-     <exports symbol='xmlUCSIsKannada'/>
-     <exports symbol='xmlUCSIsKatakana'/>
-     <exports symbol='xmlUCSIsKhmer'/>
-     <exports symbol='xmlUCSIsLao'/>
-     <exports symbol='xmlUCSIsLatin1Supplement'/>
-     <exports symbol='xmlUCSIsLatinExtendedA'/>
-     <exports symbol='xmlUCSIsLatinExtendedAdditional'/>
-     <exports symbol='xmlUCSIsLatinExtendedB'/>
-     <exports symbol='xmlUCSIsLetterlikeSymbols'/>
-     <exports symbol='xmlUCSIsLowSurrogates'/>
-     <exports symbol='xmlUCSIsMalayalam'/>
-     <exports symbol='xmlUCSIsMathematicalAlphanumericSymbols'/>
-     <exports symbol='xmlUCSIsMathematicalOperators'/>
-     <exports symbol='xmlUCSIsMiscellaneousSymbols'/>
-     <exports symbol='xmlUCSIsMiscellaneousTechnical'/>
-     <exports symbol='xmlUCSIsMongolian'/>
-     <exports symbol='xmlUCSIsMusicalSymbols'/>
-     <exports symbol='xmlUCSIsMyanmar'/>
-     <exports symbol='xmlUCSIsNumberForms'/>
-     <exports symbol='xmlUCSIsOgham'/>
-     <exports symbol='xmlUCSIsOldItalic'/>
-     <exports symbol='xmlUCSIsOpticalCharacterRecognition'/>
-     <exports symbol='xmlUCSIsOriya'/>
-     <exports symbol='xmlUCSIsPrivateUse'/>
-     <exports symbol='xmlUCSIsRunic'/>
-     <exports symbol='xmlUCSIsSinhala'/>
-     <exports symbol='xmlUCSIsSmallFormVariants'/>
-     <exports symbol='xmlUCSIsSpacingModifierLetters'/>
-     <exports symbol='xmlUCSIsSpecials'/>
-     <exports symbol='xmlUCSIsSuperscriptsandSubscripts'/>
-     <exports symbol='xmlUCSIsSyriac'/>
-     <exports symbol='xmlUCSIsTags'/>
-     <exports symbol='xmlUCSIsTamil'/>
-     <exports symbol='xmlUCSIsTelugu'/>
-     <exports symbol='xmlUCSIsThaana'/>
-     <exports symbol='xmlUCSIsThai'/>
-     <exports symbol='xmlUCSIsTibetan'/>
-     <exports symbol='xmlUCSIsUnifiedCanadianAboriginalSyllabics'/>
-     <exports symbol='xmlUCSIsYiRadicals'/>
-     <exports symbol='xmlUCSIsYiSyllables'/>
-    </file>
-    <file name='encoding'>
-     <exports symbol='UTF8Toisolat1'/>
-     <exports symbol='XML_CHAR_ENCODING_2022_JP'/>
-     <exports symbol='XML_CHAR_ENCODING_8859_1'/>
-     <exports symbol='XML_CHAR_ENCODING_8859_2'/>
-     <exports symbol='XML_CHAR_ENCODING_8859_3'/>
-     <exports symbol='XML_CHAR_ENCODING_8859_4'/>
-     <exports symbol='XML_CHAR_ENCODING_8859_5'/>
-     <exports symbol='XML_CHAR_ENCODING_8859_6'/>
-     <exports symbol='XML_CHAR_ENCODING_8859_7'/>
-     <exports symbol='XML_CHAR_ENCODING_8859_8'/>
-     <exports symbol='XML_CHAR_ENCODING_8859_9'/>
-     <exports symbol='XML_CHAR_ENCODING_ASCII'/>
-     <exports symbol='XML_CHAR_ENCODING_EBCDIC'/>
-     <exports symbol='XML_CHAR_ENCODING_ERROR'/>
-     <exports symbol='XML_CHAR_ENCODING_EUC_JP'/>
-     <exports symbol='XML_CHAR_ENCODING_NONE'/>
-     <exports symbol='XML_CHAR_ENCODING_SHIFT_JIS'/>
-     <exports symbol='XML_CHAR_ENCODING_UCS2'/>
-     <exports symbol='XML_CHAR_ENCODING_UCS4BE'/>
-     <exports symbol='XML_CHAR_ENCODING_UCS4LE'/>
-     <exports symbol='XML_CHAR_ENCODING_UCS4_2143'/>
-     <exports symbol='XML_CHAR_ENCODING_UCS4_3412'/>
-     <exports symbol='XML_CHAR_ENCODING_UTF16BE'/>
-     <exports symbol='XML_CHAR_ENCODING_UTF16LE'/>
-     <exports symbol='XML_CHAR_ENCODING_UTF8'/>
-     <exports symbol='_xmlCharEncodingHandler'/>
-     <exports symbol='isolat1ToUTF8'/>
-     <exports symbol='xmlAddEncodingAlias'/>
-     <exports symbol='xmlCharEncCloseFunc'/>
-     <exports symbol='xmlCharEncFirstLine'/>
-     <exports symbol='xmlCharEncInFunc'/>
-     <exports symbol='xmlCharEncOutFunc'/>
-     <exports symbol='xmlCharEncoding'/>
-     <exports symbol='xmlCharEncodingHandler'/>
-     <exports symbol='xmlCharEncodingHandlerPtr'/>
-     <exports symbol='xmlCharEncodingInputFunc'/>
-     <exports symbol='xmlCharEncodingOutputFunc'/>
-     <exports symbol='xmlCheckUTF8'/>
-     <exports symbol='xmlCleanupCharEncodingHandlers'/>
-     <exports symbol='xmlCleanupEncodingAliases'/>
-     <exports symbol='xmlDelEncodingAlias'/>
-     <exports symbol='xmlDetectCharEncoding'/>
-     <exports symbol='xmlFindCharEncodingHandler'/>
-     <exports symbol='xmlGetCharEncodingHandler'/>
-     <exports symbol='xmlGetCharEncodingName'/>
-     <exports symbol='xmlGetEncodingAlias'/>
-     <exports symbol='xmlGetUTF8Char'/>
-     <exports symbol='xmlInitCharEncodingHandlers'/>
-     <exports symbol='xmlNewCharEncodingHandler'/>
-     <exports symbol='xmlParseCharEncoding'/>
-     <exports symbol='xmlRegisterCharEncodingHandler'/>
-     <exports symbol='xmlUTF8Charcmp'/>
-     <exports symbol='xmlUTF8Size'/>
-     <exports symbol='xmlUTF8Strlen'/>
-     <exports symbol='xmlUTF8Strloc'/>
-     <exports symbol='xmlUTF8Strndup'/>
-     <exports symbol='xmlUTF8Strpos'/>
-     <exports symbol='xmlUTF8Strsize'/>
-     <exports symbol='xmlUTF8Strsub'/>
     </file>
     <file name='c14n'>
      <exports symbol='xmlC14NDocDumpMemory'/>
@@ -563,41 +427,6 @@
      <exports symbol='xmlXPathWrapString'/>
      <exports symbol='xmlXPatherror'/>
     </file>
-    <file name='list'>
-     <exports symbol='xmlLink'/>
-     <exports symbol='xmlLinkGetData'/>
-     <exports symbol='xmlLinkPtr'/>
-     <exports symbol='xmlList'/>
-     <exports symbol='xmlListAppend'/>
-     <exports symbol='xmlListClear'/>
-     <exports symbol='xmlListCopy'/>
-     <exports symbol='xmlListCreate'/>
-     <exports symbol='xmlListDataCompare'/>
-     <exports symbol='xmlListDeallocator'/>
-     <exports symbol='xmlListDelete'/>
-     <exports symbol='xmlListDup'/>
-     <exports symbol='xmlListEmpty'/>
-     <exports symbol='xmlListEnd'/>
-     <exports symbol='xmlListFront'/>
-     <exports symbol='xmlListInsert'/>
-     <exports symbol='xmlListMerge'/>
-     <exports symbol='xmlListPopBack'/>
-     <exports symbol='xmlListPopFront'/>
-     <exports symbol='xmlListPtr'/>
-     <exports symbol='xmlListPushBack'/>
-     <exports symbol='xmlListPushFront'/>
-     <exports symbol='xmlListRemoveAll'/>
-     <exports symbol='xmlListRemoveFirst'/>
-     <exports symbol='xmlListRemoveLast'/>
-     <exports symbol='xmlListReverse'/>
-     <exports symbol='xmlListReverseSearch'/>
-     <exports symbol='xmlListReverseWalk'/>
-     <exports symbol='xmlListSearch'/>
-     <exports symbol='xmlListSize'/>
-     <exports symbol='xmlListSort'/>
-     <exports symbol='xmlListWalk'/>
-     <exports symbol='xmlListWalker'/>
-    </file>
     <file name='xmlautomata'>
      <exports symbol='xmlAutomata'/>
      <exports symbol='xmlAutomataCompile'/>
@@ -669,6 +498,19 @@
      <exports symbol='xmlNanoFTPRead'/>
      <exports symbol='xmlNanoFTPScanProxy'/>
      <exports symbol='xmlNanoFTPUpdateURL'/>
+    </file>
+    <file name='xmlschemastypes'>
+     <exports symbol='xmlSchemaCheckFacet'/>
+     <exports symbol='xmlSchemaCleanupTypes'/>
+     <exports symbol='xmlSchemaCompareValues'/>
+     <exports symbol='xmlSchemaFreeFacet'/>
+     <exports symbol='xmlSchemaFreeValue'/>
+     <exports symbol='xmlSchemaGetPredefinedType'/>
+     <exports symbol='xmlSchemaInitTypes'/>
+     <exports symbol='xmlSchemaNewFacet'/>
+     <exports symbol='xmlSchemaValPredefTypeNode'/>
+     <exports symbol='xmlSchemaValidateFacet'/>
+     <exports symbol='xmlSchemaValidatePredefinedType'/>
     </file>
     <file name='DOCBparser'>
      <exports symbol='docbCreateFileParserCtxt'/>
@@ -798,40 +640,6 @@
      <exports symbol='xmlXPathVariable'/>
      <exports symbol='xmlXPathVariablePtr'/>
     </file>
-    <file name='debugXML'>
-     <exports symbol='_xmlShellCtxt'/>
-     <exports symbol='xmlBoolToText'/>
-     <exports symbol='xmlDebugDumpAttr'/>
-     <exports symbol='xmlDebugDumpAttrList'/>
-     <exports symbol='xmlDebugDumpDTD'/>
-     <exports symbol='xmlDebugDumpDocument'/>
-     <exports symbol='xmlDebugDumpDocumentHead'/>
-     <exports symbol='xmlDebugDumpEntities'/>
-     <exports symbol='xmlDebugDumpNode'/>
-     <exports symbol='xmlDebugDumpNodeList'/>
-     <exports symbol='xmlDebugDumpOneNode'/>
-     <exports symbol='xmlDebugDumpString'/>
-     <exports symbol='xmlLsCountNode'/>
-     <exports symbol='xmlLsOneNode'/>
-     <exports symbol='xmlShell'/>
-     <exports symbol='xmlShellBase'/>
-     <exports symbol='xmlShellCat'/>
-     <exports symbol='xmlShellCmd'/>
-     <exports symbol='xmlShellCtxt'/>
-     <exports symbol='xmlShellCtxtPtr'/>
-     <exports symbol='xmlShellDir'/>
-     <exports symbol='xmlShellDu'/>
-     <exports symbol='xmlShellList'/>
-     <exports symbol='xmlShellLoad'/>
-     <exports symbol='xmlShellPrintNode'/>
-     <exports symbol='xmlShellPrintXPathError'/>
-     <exports symbol='xmlShellPrintXPathResult'/>
-     <exports symbol='xmlShellPwd'/>
-     <exports symbol='xmlShellReadlineFunc'/>
-     <exports symbol='xmlShellSave'/>
-     <exports symbol='xmlShellValidate'/>
-     <exports symbol='xmlShellWrite'/>
-    </file>
     <file name='xlink'>
      <exports symbol='XLINK_ACTUATE_AUTO'/>
      <exports symbol='XLINK_ACTUATE_NONE'/>
@@ -862,55 +670,6 @@
      <exports symbol='xlinkSimpleLinkFunk'/>
      <exports symbol='xlinkTitle'/>
      <exports symbol='xlinkType'/>
-    </file>
-    <file name='xmlschemas'>
-     <exports symbol='XML_SCHEMAS_ERR_'/>
-     <exports symbol='XML_SCHEMAS_ERR_ATTRINVALID'/>
-     <exports symbol='XML_SCHEMAS_ERR_ATTRUNKNOWN'/>
-     <exports symbol='XML_SCHEMAS_ERR_CONSTRUCT'/>
-     <exports symbol='XML_SCHEMAS_ERR_ELEMCONT'/>
-     <exports symbol='XML_SCHEMAS_ERR_EXTRACONTENT'/>
-     <exports symbol='XML_SCHEMAS_ERR_FACET'/>
-     <exports symbol='XML_SCHEMAS_ERR_HAVEDEFAULT'/>
-     <exports symbol='XML_SCHEMAS_ERR_INTERNAL'/>
-     <exports symbol='XML_SCHEMAS_ERR_INVALIDATTR'/>
-     <exports symbol='XML_SCHEMAS_ERR_INVALIDELEM'/>
-     <exports symbol='XML_SCHEMAS_ERR_ISABSTRACT'/>
-     <exports symbol='XML_SCHEMAS_ERR_MISSING'/>
-     <exports symbol='XML_SCHEMAS_ERR_NOROLLBACK'/>
-     <exports symbol='XML_SCHEMAS_ERR_NOROOT'/>
-     <exports symbol='XML_SCHEMAS_ERR_NOTDETERMINIST'/>
-     <exports symbol='XML_SCHEMAS_ERR_NOTEMPTY'/>
-     <exports symbol='XML_SCHEMAS_ERR_NOTNILLABLE'/>
-     <exports symbol='XML_SCHEMAS_ERR_NOTSIMPLE'/>
-     <exports symbol='XML_SCHEMAS_ERR_NOTTOPLEVEL'/>
-     <exports symbol='XML_SCHEMAS_ERR_NOTYPE'/>
-     <exports symbol='XML_SCHEMAS_ERR_OK'/>
-     <exports symbol='XML_SCHEMAS_ERR_UNDECLAREDELEM'/>
-     <exports symbol='XML_SCHEMAS_ERR_VALUE'/>
-     <exports symbol='XML_SCHEMAS_ERR_WRONGELEM'/>
-     <exports symbol='XML_SCHEMAS_ERR_XXX'/>
-     <exports symbol='xmlSchema'/>
-     <exports symbol='xmlSchemaDump'/>
-     <exports symbol='xmlSchemaFree'/>
-     <exports symbol='xmlSchemaFreeParserCtxt'/>
-     <exports symbol='xmlSchemaFreeValidCtxt'/>
-     <exports symbol='xmlSchemaNewMemParserCtxt'/>
-     <exports symbol='xmlSchemaNewParserCtxt'/>
-     <exports symbol='xmlSchemaNewValidCtxt'/>
-     <exports symbol='xmlSchemaParse'/>
-     <exports symbol='xmlSchemaParserCtxt'/>
-     <exports symbol='xmlSchemaParserCtxtPtr'/>
-     <exports symbol='xmlSchemaPtr'/>
-     <exports symbol='xmlSchemaSetParserErrors'/>
-     <exports symbol='xmlSchemaSetValidErrors'/>
-     <exports symbol='xmlSchemaValidCtxt'/>
-     <exports symbol='xmlSchemaValidCtxtPtr'/>
-     <exports symbol='xmlSchemaValidError'/>
-     <exports symbol='xmlSchemaValidateDoc'/>
-     <exports symbol='xmlSchemaValidateStream'/>
-     <exports symbol='xmlSchemaValidityErrorFunc'/>
-     <exports symbol='xmlSchemaValidityWarningFunc'/>
     </file>
     <file name='entities'>
      <exports symbol='XML_EXTERNAL_GENERAL_PARSED_ENTITY'/>
@@ -956,6 +715,7 @@
      <exports symbol='xmlSAX2ElementDecl'/>
      <exports symbol='xmlSAX2EndDocument'/>
      <exports symbol='xmlSAX2EndElement'/>
+     <exports symbol='xmlSAX2EndElementNs'/>
      <exports symbol='xmlSAX2EntityDecl'/>
      <exports symbol='xmlSAX2ExternalSubset'/>
      <exports symbol='xmlSAX2GetColumnNumber'/>
@@ -983,7 +743,45 @@
      <exports symbol='xmlSAX2SetNamespace'/>
      <exports symbol='xmlSAX2StartDocument'/>
      <exports symbol='xmlSAX2StartElement'/>
+     <exports symbol='xmlSAX2StartElementNs'/>
      <exports symbol='xmlSAX2UnparsedEntityDecl'/>
+     <exports symbol='xmlSAXDefaultVersion'/>
+     <exports symbol='xmlSAXVersion'/>
+    </file>
+    <file name='list'>
+     <exports symbol='xmlLink'/>
+     <exports symbol='xmlLinkGetData'/>
+     <exports symbol='xmlLinkPtr'/>
+     <exports symbol='xmlList'/>
+     <exports symbol='xmlListAppend'/>
+     <exports symbol='xmlListClear'/>
+     <exports symbol='xmlListCopy'/>
+     <exports symbol='xmlListCreate'/>
+     <exports symbol='xmlListDataCompare'/>
+     <exports symbol='xmlListDeallocator'/>
+     <exports symbol='xmlListDelete'/>
+     <exports symbol='xmlListDup'/>
+     <exports symbol='xmlListEmpty'/>
+     <exports symbol='xmlListEnd'/>
+     <exports symbol='xmlListFront'/>
+     <exports symbol='xmlListInsert'/>
+     <exports symbol='xmlListMerge'/>
+     <exports symbol='xmlListPopBack'/>
+     <exports symbol='xmlListPopFront'/>
+     <exports symbol='xmlListPtr'/>
+     <exports symbol='xmlListPushBack'/>
+     <exports symbol='xmlListPushFront'/>
+     <exports symbol='xmlListRemoveAll'/>
+     <exports symbol='xmlListRemoveFirst'/>
+     <exports symbol='xmlListRemoveLast'/>
+     <exports symbol='xmlListReverse'/>
+     <exports symbol='xmlListReverseSearch'/>
+     <exports symbol='xmlListReverseWalk'/>
+     <exports symbol='xmlListSearch'/>
+     <exports symbol='xmlListSize'/>
+     <exports symbol='xmlListSort'/>
+     <exports symbol='xmlListWalk'/>
+     <exports symbol='xmlListWalker'/>
     </file>
     <file name='xmlmemory'>
      <exports symbol='DEBUG_MEMORY'/>
@@ -1076,13 +874,13 @@
      <exports symbol='LIBXML_C14N_ENABLED'/>
      <exports symbol='LIBXML_CATALOG_ENABLED'/>
      <exports symbol='LIBXML_DEBUG_ENABLED'/>
-     <exports symbol='LIBXML_DLL_IMPORT'/>
      <exports symbol='LIBXML_DOCB_ENABLED'/>
      <exports symbol='LIBXML_DOTTED_VERSION'/>
      <exports symbol='LIBXML_FTP_ENABLED'/>
      <exports symbol='LIBXML_HTML_ENABLED'/>
      <exports symbol='LIBXML_HTTP_ENABLED'/>
      <exports symbol='LIBXML_ICONV_ENABLED'/>
+     <exports symbol='LIBXML_ISO8859X_ENABLED'/>
      <exports symbol='LIBXML_REGEXP_ENABLED'/>
      <exports symbol='LIBXML_SCHEMAS_ENABLED'/>
      <exports symbol='LIBXML_TEST_VERSION'/>
@@ -1265,7 +1063,6 @@
      <exports symbol='_xmlSAXHandler'/>
      <exports symbol='_xmlSAXLocator'/>
      <exports symbol='attributeDeclSAXFunc'/>
-     <exports symbol='attributeNsSAX2Func'/>
      <exports symbol='attributeSAXFunc'/>
      <exports symbol='cdataBlockSAXFunc'/>
      <exports symbol='charactersSAXFunc'/>
@@ -1359,6 +1156,7 @@
      <exports symbol='xmlSetupParserForBuffer'/>
      <exports symbol='xmlStopParser'/>
      <exports symbol='xmlStrEqual'/>
+     <exports symbol='xmlStrQEqual'/>
      <exports symbol='xmlStrcasecmp'/>
      <exports symbol='xmlStrcasestr'/>
      <exports symbol='xmlStrcat'/>
@@ -1546,6 +1344,141 @@
      <exports symbol='xmlTextReaderValue'/>
      <exports symbol='xmlTextReaderXmlLang'/>
     </file>
+    <file name='xmlschemas'>
+     <exports symbol='XML_SCHEMAS_ERR_'/>
+     <exports symbol='XML_SCHEMAS_ERR_ATTRINVALID'/>
+     <exports symbol='XML_SCHEMAS_ERR_ATTRUNKNOWN'/>
+     <exports symbol='XML_SCHEMAS_ERR_CONSTRUCT'/>
+     <exports symbol='XML_SCHEMAS_ERR_ELEMCONT'/>
+     <exports symbol='XML_SCHEMAS_ERR_EXTRACONTENT'/>
+     <exports symbol='XML_SCHEMAS_ERR_FACET'/>
+     <exports symbol='XML_SCHEMAS_ERR_HAVEDEFAULT'/>
+     <exports symbol='XML_SCHEMAS_ERR_INTERNAL'/>
+     <exports symbol='XML_SCHEMAS_ERR_INVALIDATTR'/>
+     <exports symbol='XML_SCHEMAS_ERR_INVALIDELEM'/>
+     <exports symbol='XML_SCHEMAS_ERR_ISABSTRACT'/>
+     <exports symbol='XML_SCHEMAS_ERR_MISSING'/>
+     <exports symbol='XML_SCHEMAS_ERR_NOROLLBACK'/>
+     <exports symbol='XML_SCHEMAS_ERR_NOROOT'/>
+     <exports symbol='XML_SCHEMAS_ERR_NOTDETERMINIST'/>
+     <exports symbol='XML_SCHEMAS_ERR_NOTEMPTY'/>
+     <exports symbol='XML_SCHEMAS_ERR_NOTNILLABLE'/>
+     <exports symbol='XML_SCHEMAS_ERR_NOTSIMPLE'/>
+     <exports symbol='XML_SCHEMAS_ERR_NOTTOPLEVEL'/>
+     <exports symbol='XML_SCHEMAS_ERR_NOTYPE'/>
+     <exports symbol='XML_SCHEMAS_ERR_OK'/>
+     <exports symbol='XML_SCHEMAS_ERR_UNDECLAREDELEM'/>
+     <exports symbol='XML_SCHEMAS_ERR_VALUE'/>
+     <exports symbol='XML_SCHEMAS_ERR_WRONGELEM'/>
+     <exports symbol='XML_SCHEMAS_ERR_XXX'/>
+     <exports symbol='xmlSchema'/>
+     <exports symbol='xmlSchemaDump'/>
+     <exports symbol='xmlSchemaFree'/>
+     <exports symbol='xmlSchemaFreeParserCtxt'/>
+     <exports symbol='xmlSchemaFreeValidCtxt'/>
+     <exports symbol='xmlSchemaNewMemParserCtxt'/>
+     <exports symbol='xmlSchemaNewParserCtxt'/>
+     <exports symbol='xmlSchemaNewValidCtxt'/>
+     <exports symbol='xmlSchemaParse'/>
+     <exports symbol='xmlSchemaParserCtxt'/>
+     <exports symbol='xmlSchemaParserCtxtPtr'/>
+     <exports symbol='xmlSchemaPtr'/>
+     <exports symbol='xmlSchemaSetParserErrors'/>
+     <exports symbol='xmlSchemaSetValidErrors'/>
+     <exports symbol='xmlSchemaValidCtxt'/>
+     <exports symbol='xmlSchemaValidCtxtPtr'/>
+     <exports symbol='xmlSchemaValidError'/>
+     <exports symbol='xmlSchemaValidateDoc'/>
+     <exports symbol='xmlSchemaValidateStream'/>
+     <exports symbol='xmlSchemaValidityErrorFunc'/>
+     <exports symbol='xmlSchemaValidityWarningFunc'/>
+    </file>
+    <file name='relaxng'>
+     <exports symbol='XML_RELAXNG_ERR_ATTREXTRANS'/>
+     <exports symbol='XML_RELAXNG_ERR_ATTRNAME'/>
+     <exports symbol='XML_RELAXNG_ERR_ATTRNONS'/>
+     <exports symbol='XML_RELAXNG_ERR_ATTRVALID'/>
+     <exports symbol='XML_RELAXNG_ERR_ATTRWRONGNS'/>
+     <exports symbol='XML_RELAXNG_ERR_CONTENTVALID'/>
+     <exports symbol='XML_RELAXNG_ERR_DATAELEM'/>
+     <exports symbol='XML_RELAXNG_ERR_DATATYPE'/>
+     <exports symbol='XML_RELAXNG_ERR_DUPID'/>
+     <exports symbol='XML_RELAXNG_ERR_ELEMEXTRANS'/>
+     <exports symbol='XML_RELAXNG_ERR_ELEMNAME'/>
+     <exports symbol='XML_RELAXNG_ERR_ELEMNONS'/>
+     <exports symbol='XML_RELAXNG_ERR_ELEMNOTEMPTY'/>
+     <exports symbol='XML_RELAXNG_ERR_ELEMWRONG'/>
+     <exports symbol='XML_RELAXNG_ERR_ELEMWRONGNS'/>
+     <exports symbol='XML_RELAXNG_ERR_EXTRACONTENT'/>
+     <exports symbol='XML_RELAXNG_ERR_EXTRADATA'/>
+     <exports symbol='XML_RELAXNG_ERR_INTEREXTRA'/>
+     <exports symbol='XML_RELAXNG_ERR_INTERNAL'/>
+     <exports symbol='XML_RELAXNG_ERR_INTERNODATA'/>
+     <exports symbol='XML_RELAXNG_ERR_INTERSEQ'/>
+     <exports symbol='XML_RELAXNG_ERR_INVALIDATTR'/>
+     <exports symbol='XML_RELAXNG_ERR_LACKDATA'/>
+     <exports symbol='XML_RELAXNG_ERR_LIST'/>
+     <exports symbol='XML_RELAXNG_ERR_LISTELEM'/>
+     <exports symbol='XML_RELAXNG_ERR_LISTEMPTY'/>
+     <exports symbol='XML_RELAXNG_ERR_LISTEXTRA'/>
+     <exports symbol='XML_RELAXNG_ERR_MEMORY'/>
+     <exports symbol='XML_RELAXNG_ERR_NODEFINE'/>
+     <exports symbol='XML_RELAXNG_ERR_NOELEM'/>
+     <exports symbol='XML_RELAXNG_ERR_NOGRAMMAR'/>
+     <exports symbol='XML_RELAXNG_ERR_NOSTATE'/>
+     <exports symbol='XML_RELAXNG_ERR_NOTELEM'/>
+     <exports symbol='XML_RELAXNG_ERR_TEXTWRONG'/>
+     <exports symbol='XML_RELAXNG_ERR_TYPE'/>
+     <exports symbol='XML_RELAXNG_ERR_TYPECMP'/>
+     <exports symbol='XML_RELAXNG_ERR_TYPEVAL'/>
+     <exports symbol='XML_RELAXNG_ERR_VALELEM'/>
+     <exports symbol='XML_RELAXNG_ERR_VALUE'/>
+     <exports symbol='XML_RELAXNG_OK'/>
+     <exports symbol='xmlRelaxNG'/>
+     <exports symbol='xmlRelaxNGCleanupTypes'/>
+     <exports symbol='xmlRelaxNGDump'/>
+     <exports symbol='xmlRelaxNGDumpTree'/>
+     <exports symbol='xmlRelaxNGFree'/>
+     <exports symbol='xmlRelaxNGFreeParserCtxt'/>
+     <exports symbol='xmlRelaxNGFreeValidCtxt'/>
+     <exports symbol='xmlRelaxNGGetParserErrors'/>
+     <exports symbol='xmlRelaxNGGetValidErrors'/>
+     <exports symbol='xmlRelaxNGNewDocParserCtxt'/>
+     <exports symbol='xmlRelaxNGNewMemParserCtxt'/>
+     <exports symbol='xmlRelaxNGNewParserCtxt'/>
+     <exports symbol='xmlRelaxNGNewValidCtxt'/>
+     <exports symbol='xmlRelaxNGParse'/>
+     <exports symbol='xmlRelaxNGParserCtxt'/>
+     <exports symbol='xmlRelaxNGParserCtxtPtr'/>
+     <exports symbol='xmlRelaxNGPtr'/>
+     <exports symbol='xmlRelaxNGSetParserErrors'/>
+     <exports symbol='xmlRelaxNGSetValidErrors'/>
+     <exports symbol='xmlRelaxNGValidCtxt'/>
+     <exports symbol='xmlRelaxNGValidCtxtPtr'/>
+     <exports symbol='xmlRelaxNGValidErr'/>
+     <exports symbol='xmlRelaxNGValidateDoc'/>
+     <exports symbol='xmlRelaxNGValidateFullElement'/>
+     <exports symbol='xmlRelaxNGValidatePopElement'/>
+     <exports symbol='xmlRelaxNGValidatePushCData'/>
+     <exports symbol='xmlRelaxNGValidatePushElement'/>
+     <exports symbol='xmlRelaxNGValidityErrorFunc'/>
+     <exports symbol='xmlRelaxNGValidityWarningFunc'/>
+    </file>
+    <file name='dict'>
+     <exports symbol='xmlDict'/>
+     <exports symbol='xmlDictCreate'/>
+     <exports symbol='xmlDictFree'/>
+     <exports symbol='xmlDictLookup'/>
+     <exports symbol='xmlDictPtr'/>
+     <exports symbol='xmlDictSize'/>
+    </file>
+    <file name='xmlexports'>
+     <exports symbol='LIBXML_DLL_IMPORT'/>
+     <exports symbol='XMLCALL'/>
+     <exports symbol='XMLPUBFUN'/>
+     <exports symbol='XMLPUBVAR'/>
+     <exports symbol='_REENTRANT'/>
+    </file>
     <file name='globals'>
      <exports symbol='_xmlGlobalState'/>
      <exports symbol='docbDefaultSAXHandler'/>
@@ -1630,59 +1563,6 @@
      <exports symbol='xmlTreeIndentString'/>
      <exports symbol='xmlTreeIndentString'/>
     </file>
-    <file name='dict'>
-     <exports symbol='xmlDict'/>
-     <exports symbol='xmlDictCreate'/>
-     <exports symbol='xmlDictFree'/>
-     <exports symbol='xmlDictLookup'/>
-     <exports symbol='xmlDictPtr'/>
-     <exports symbol='xmlDictSize'/>
-    </file>
-    <file name='xmlexports'>
-     <exports symbol='LIBXML_DLL_IMPORT'/>
-     <exports symbol='XMLCALL'/>
-     <exports symbol='XMLPUBFUN'/>
-     <exports symbol='XMLPUBVAR'/>
-    </file>
-    <file name='SAX'>
-     <exports symbol='attribute'/>
-     <exports symbol='attributeDecl'/>
-     <exports symbol='cdataBlock'/>
-     <exports symbol='characters'/>
-     <exports symbol='checkNamespace'/>
-     <exports symbol='comment'/>
-     <exports symbol='elementDecl'/>
-     <exports symbol='endDocument'/>
-     <exports symbol='endElement'/>
-     <exports symbol='entityDecl'/>
-     <exports symbol='externalSubset'/>
-     <exports symbol='getColumnNumber'/>
-     <exports symbol='getEntity'/>
-     <exports symbol='getLineNumber'/>
-     <exports symbol='getNamespace'/>
-     <exports symbol='getParameterEntity'/>
-     <exports symbol='getPublicId'/>
-     <exports symbol='getSystemId'/>
-     <exports symbol='globalNamespace'/>
-     <exports symbol='hasExternalSubset'/>
-     <exports symbol='hasInternalSubset'/>
-     <exports symbol='ignorableWhitespace'/>
-     <exports symbol='initdocbDefaultSAXHandler'/>
-     <exports symbol='inithtmlDefaultSAXHandler'/>
-     <exports symbol='initxmlDefaultSAXHandler'/>
-     <exports symbol='internalSubset'/>
-     <exports symbol='isStandalone'/>
-     <exports symbol='namespaceDecl'/>
-     <exports symbol='notationDecl'/>
-     <exports symbol='processingInstruction'/>
-     <exports symbol='reference'/>
-     <exports symbol='resolveEntity'/>
-     <exports symbol='setDocumentLocator'/>
-     <exports symbol='setNamespace'/>
-     <exports symbol='startDocument'/>
-     <exports symbol='startElement'/>
-     <exports symbol='unparsedEntityDecl'/>
-    </file>
     <file name='threads'>
      <exports symbol='xmlCleanupThreads'/>
      <exports symbol='xmlFreeMutex'/>
@@ -1716,6 +1596,9 @@
      <exports symbol='xmlHashLookup'/>
      <exports symbol='xmlHashLookup2'/>
      <exports symbol='xmlHashLookup3'/>
+     <exports symbol='xmlHashQLookup'/>
+     <exports symbol='xmlHashQLookup2'/>
+     <exports symbol='xmlHashQLookup3'/>
      <exports symbol='xmlHashRemoveEntry'/>
      <exports symbol='xmlHashRemoveEntry2'/>
      <exports symbol='xmlHashRemoveEntry3'/>
@@ -2123,76 +2006,156 @@
      <exports symbol='xmlRegexpPrint'/>
      <exports symbol='xmlRegexpPtr'/>
     </file>
-    <file name='relaxng'>
-     <exports symbol='XML_RELAXNG_ERR_ATTREXTRANS'/>
-     <exports symbol='XML_RELAXNG_ERR_ATTRNAME'/>
-     <exports symbol='XML_RELAXNG_ERR_ATTRNONS'/>
-     <exports symbol='XML_RELAXNG_ERR_ATTRVALID'/>
-     <exports symbol='XML_RELAXNG_ERR_ATTRWRONGNS'/>
-     <exports symbol='XML_RELAXNG_ERR_CONTENTVALID'/>
-     <exports symbol='XML_RELAXNG_ERR_DATAELEM'/>
-     <exports symbol='XML_RELAXNG_ERR_DATATYPE'/>
-     <exports symbol='XML_RELAXNG_ERR_DUPID'/>
-     <exports symbol='XML_RELAXNG_ERR_ELEMEXTRANS'/>
-     <exports symbol='XML_RELAXNG_ERR_ELEMNAME'/>
-     <exports symbol='XML_RELAXNG_ERR_ELEMNONS'/>
-     <exports symbol='XML_RELAXNG_ERR_ELEMNOTEMPTY'/>
-     <exports symbol='XML_RELAXNG_ERR_ELEMWRONG'/>
-     <exports symbol='XML_RELAXNG_ERR_ELEMWRONGNS'/>
-     <exports symbol='XML_RELAXNG_ERR_EXTRACONTENT'/>
-     <exports symbol='XML_RELAXNG_ERR_EXTRADATA'/>
-     <exports symbol='XML_RELAXNG_ERR_INTEREXTRA'/>
-     <exports symbol='XML_RELAXNG_ERR_INTERNAL'/>
-     <exports symbol='XML_RELAXNG_ERR_INTERNODATA'/>
-     <exports symbol='XML_RELAXNG_ERR_INTERSEQ'/>
-     <exports symbol='XML_RELAXNG_ERR_INVALIDATTR'/>
-     <exports symbol='XML_RELAXNG_ERR_LACKDATA'/>
-     <exports symbol='XML_RELAXNG_ERR_LIST'/>
-     <exports symbol='XML_RELAXNG_ERR_LISTELEM'/>
-     <exports symbol='XML_RELAXNG_ERR_LISTEMPTY'/>
-     <exports symbol='XML_RELAXNG_ERR_LISTEXTRA'/>
-     <exports symbol='XML_RELAXNG_ERR_MEMORY'/>
-     <exports symbol='XML_RELAXNG_ERR_NODEFINE'/>
-     <exports symbol='XML_RELAXNG_ERR_NOELEM'/>
-     <exports symbol='XML_RELAXNG_ERR_NOGRAMMAR'/>
-     <exports symbol='XML_RELAXNG_ERR_NOSTATE'/>
-     <exports symbol='XML_RELAXNG_ERR_NOTELEM'/>
-     <exports symbol='XML_RELAXNG_ERR_TEXTWRONG'/>
-     <exports symbol='XML_RELAXNG_ERR_TYPE'/>
-     <exports symbol='XML_RELAXNG_ERR_TYPECMP'/>
-     <exports symbol='XML_RELAXNG_ERR_TYPEVAL'/>
-     <exports symbol='XML_RELAXNG_ERR_VALELEM'/>
-     <exports symbol='XML_RELAXNG_ERR_VALUE'/>
-     <exports symbol='XML_RELAXNG_OK'/>
-     <exports symbol='xmlRelaxNG'/>
-     <exports symbol='xmlRelaxNGCleanupTypes'/>
-     <exports symbol='xmlRelaxNGDump'/>
-     <exports symbol='xmlRelaxNGDumpTree'/>
-     <exports symbol='xmlRelaxNGFree'/>
-     <exports symbol='xmlRelaxNGFreeParserCtxt'/>
-     <exports symbol='xmlRelaxNGFreeValidCtxt'/>
-     <exports symbol='xmlRelaxNGGetParserErrors'/>
-     <exports symbol='xmlRelaxNGGetValidErrors'/>
-     <exports symbol='xmlRelaxNGNewDocParserCtxt'/>
-     <exports symbol='xmlRelaxNGNewMemParserCtxt'/>
-     <exports symbol='xmlRelaxNGNewParserCtxt'/>
-     <exports symbol='xmlRelaxNGNewValidCtxt'/>
-     <exports symbol='xmlRelaxNGParse'/>
-     <exports symbol='xmlRelaxNGParserCtxt'/>
-     <exports symbol='xmlRelaxNGParserCtxtPtr'/>
-     <exports symbol='xmlRelaxNGPtr'/>
-     <exports symbol='xmlRelaxNGSetParserErrors'/>
-     <exports symbol='xmlRelaxNGSetValidErrors'/>
-     <exports symbol='xmlRelaxNGValidCtxt'/>
-     <exports symbol='xmlRelaxNGValidCtxtPtr'/>
-     <exports symbol='xmlRelaxNGValidErr'/>
-     <exports symbol='xmlRelaxNGValidateDoc'/>
-     <exports symbol='xmlRelaxNGValidateFullElement'/>
-     <exports symbol='xmlRelaxNGValidatePopElement'/>
-     <exports symbol='xmlRelaxNGValidatePushCData'/>
-     <exports symbol='xmlRelaxNGValidatePushElement'/>
-     <exports symbol='xmlRelaxNGValidityErrorFunc'/>
-     <exports symbol='xmlRelaxNGValidityWarningFunc'/>
+    <file name='nanohttp'>
+     <exports symbol='xmlNanoHTTPAuthHeader'/>
+     <exports symbol='xmlNanoHTTPCleanup'/>
+     <exports symbol='xmlNanoHTTPClose'/>
+     <exports symbol='xmlNanoHTTPFetch'/>
+     <exports symbol='xmlNanoHTTPInit'/>
+     <exports symbol='xmlNanoHTTPMethod'/>
+     <exports symbol='xmlNanoHTTPMethodRedir'/>
+     <exports symbol='xmlNanoHTTPOpen'/>
+     <exports symbol='xmlNanoHTTPOpenRedir'/>
+     <exports symbol='xmlNanoHTTPRead'/>
+     <exports symbol='xmlNanoHTTPReturnCode'/>
+     <exports symbol='xmlNanoHTTPSave'/>
+     <exports symbol='xmlNanoHTTPScanProxy'/>
+    </file>
+    <file name='xmlunicode'>
+     <exports symbol='xmlUCSIsAlphabeticPresentationForms'/>
+     <exports symbol='xmlUCSIsArabic'/>
+     <exports symbol='xmlUCSIsArabicPresentationFormsA'/>
+     <exports symbol='xmlUCSIsArabicPresentationFormsB'/>
+     <exports symbol='xmlUCSIsArmenian'/>
+     <exports symbol='xmlUCSIsArrows'/>
+     <exports symbol='xmlUCSIsBasicLatin'/>
+     <exports symbol='xmlUCSIsBengali'/>
+     <exports symbol='xmlUCSIsBlock'/>
+     <exports symbol='xmlUCSIsBlockElements'/>
+     <exports symbol='xmlUCSIsBopomofo'/>
+     <exports symbol='xmlUCSIsBopomofoExtended'/>
+     <exports symbol='xmlUCSIsBoxDrawing'/>
+     <exports symbol='xmlUCSIsBraillePatterns'/>
+     <exports symbol='xmlUCSIsByzantineMusicalSymbols'/>
+     <exports symbol='xmlUCSIsCJKCompatibility'/>
+     <exports symbol='xmlUCSIsCJKCompatibilityForms'/>
+     <exports symbol='xmlUCSIsCJKCompatibilityIdeographs'/>
+     <exports symbol='xmlUCSIsCJKCompatibilityIdeographsSupplement'/>
+     <exports symbol='xmlUCSIsCJKRadicalsSupplement'/>
+     <exports symbol='xmlUCSIsCJKSymbolsandPunctuation'/>
+     <exports symbol='xmlUCSIsCJKUnifiedIdeographs'/>
+     <exports symbol='xmlUCSIsCJKUnifiedIdeographsExtensionA'/>
+     <exports symbol='xmlUCSIsCJKUnifiedIdeographsExtensionB'/>
+     <exports symbol='xmlUCSIsCat'/>
+     <exports symbol='xmlUCSIsCatC'/>
+     <exports symbol='xmlUCSIsCatCc'/>
+     <exports symbol='xmlUCSIsCatCf'/>
+     <exports symbol='xmlUCSIsCatCo'/>
+     <exports symbol='xmlUCSIsCatCs'/>
+     <exports symbol='xmlUCSIsCatL'/>
+     <exports symbol='xmlUCSIsCatLl'/>
+     <exports symbol='xmlUCSIsCatLm'/>
+     <exports symbol='xmlUCSIsCatLo'/>
+     <exports symbol='xmlUCSIsCatLt'/>
+     <exports symbol='xmlUCSIsCatLu'/>
+     <exports symbol='xmlUCSIsCatM'/>
+     <exports symbol='xmlUCSIsCatMc'/>
+     <exports symbol='xmlUCSIsCatMe'/>
+     <exports symbol='xmlUCSIsCatMn'/>
+     <exports symbol='xmlUCSIsCatN'/>
+     <exports symbol='xmlUCSIsCatNd'/>
+     <exports symbol='xmlUCSIsCatNl'/>
+     <exports symbol='xmlUCSIsCatNo'/>
+     <exports symbol='xmlUCSIsCatP'/>
+     <exports symbol='xmlUCSIsCatPc'/>
+     <exports symbol='xmlUCSIsCatPd'/>
+     <exports symbol='xmlUCSIsCatPe'/>
+     <exports symbol='xmlUCSIsCatPf'/>
+     <exports symbol='xmlUCSIsCatPi'/>
+     <exports symbol='xmlUCSIsCatPo'/>
+     <exports symbol='xmlUCSIsCatPs'/>
+     <exports symbol='xmlUCSIsCatS'/>
+     <exports symbol='xmlUCSIsCatSc'/>
+     <exports symbol='xmlUCSIsCatSk'/>
+     <exports symbol='xmlUCSIsCatSm'/>
+     <exports symbol='xmlUCSIsCatSo'/>
+     <exports symbol='xmlUCSIsCatZ'/>
+     <exports symbol='xmlUCSIsCatZl'/>
+     <exports symbol='xmlUCSIsCatZp'/>
+     <exports symbol='xmlUCSIsCatZs'/>
+     <exports symbol='xmlUCSIsCherokee'/>
+     <exports symbol='xmlUCSIsCombiningDiacriticalMarks'/>
+     <exports symbol='xmlUCSIsCombiningHalfMarks'/>
+     <exports symbol='xmlUCSIsCombiningMarksforSymbols'/>
+     <exports symbol='xmlUCSIsControlPictures'/>
+     <exports symbol='xmlUCSIsCurrencySymbols'/>
+     <exports symbol='xmlUCSIsCyrillic'/>
+     <exports symbol='xmlUCSIsDeseret'/>
+     <exports symbol='xmlUCSIsDevanagari'/>
+     <exports symbol='xmlUCSIsDingbats'/>
+     <exports symbol='xmlUCSIsEnclosedAlphanumerics'/>
+     <exports symbol='xmlUCSIsEnclosedCJKLettersandMonths'/>
+     <exports symbol='xmlUCSIsEthiopic'/>
+     <exports symbol='xmlUCSIsGeneralPunctuation'/>
+     <exports symbol='xmlUCSIsGeometricShapes'/>
+     <exports symbol='xmlUCSIsGeorgian'/>
+     <exports symbol='xmlUCSIsGothic'/>
+     <exports symbol='xmlUCSIsGreek'/>
+     <exports symbol='xmlUCSIsGreekExtended'/>
+     <exports symbol='xmlUCSIsGujarati'/>
+     <exports symbol='xmlUCSIsGurmukhi'/>
+     <exports symbol='xmlUCSIsHalfwidthandFullwidthForms'/>
+     <exports symbol='xmlUCSIsHangulCompatibilityJamo'/>
+     <exports symbol='xmlUCSIsHangulJamo'/>
+     <exports symbol='xmlUCSIsHangulSyllables'/>
+     <exports symbol='xmlUCSIsHebrew'/>
+     <exports symbol='xmlUCSIsHighPrivateUseSurrogates'/>
+     <exports symbol='xmlUCSIsHighSurrogates'/>
+     <exports symbol='xmlUCSIsHiragana'/>
+     <exports symbol='xmlUCSIsIPAExtensions'/>
+     <exports symbol='xmlUCSIsIdeographicDescriptionCharacters'/>
+     <exports symbol='xmlUCSIsKanbun'/>
+     <exports symbol='xmlUCSIsKangxiRadicals'/>
+     <exports symbol='xmlUCSIsKannada'/>
+     <exports symbol='xmlUCSIsKatakana'/>
+     <exports symbol='xmlUCSIsKhmer'/>
+     <exports symbol='xmlUCSIsLao'/>
+     <exports symbol='xmlUCSIsLatin1Supplement'/>
+     <exports symbol='xmlUCSIsLatinExtendedA'/>
+     <exports symbol='xmlUCSIsLatinExtendedAdditional'/>
+     <exports symbol='xmlUCSIsLatinExtendedB'/>
+     <exports symbol='xmlUCSIsLetterlikeSymbols'/>
+     <exports symbol='xmlUCSIsLowSurrogates'/>
+     <exports symbol='xmlUCSIsMalayalam'/>
+     <exports symbol='xmlUCSIsMathematicalAlphanumericSymbols'/>
+     <exports symbol='xmlUCSIsMathematicalOperators'/>
+     <exports symbol='xmlUCSIsMiscellaneousSymbols'/>
+     <exports symbol='xmlUCSIsMiscellaneousTechnical'/>
+     <exports symbol='xmlUCSIsMongolian'/>
+     <exports symbol='xmlUCSIsMusicalSymbols'/>
+     <exports symbol='xmlUCSIsMyanmar'/>
+     <exports symbol='xmlUCSIsNumberForms'/>
+     <exports symbol='xmlUCSIsOgham'/>
+     <exports symbol='xmlUCSIsOldItalic'/>
+     <exports symbol='xmlUCSIsOpticalCharacterRecognition'/>
+     <exports symbol='xmlUCSIsOriya'/>
+     <exports symbol='xmlUCSIsPrivateUse'/>
+     <exports symbol='xmlUCSIsRunic'/>
+     <exports symbol='xmlUCSIsSinhala'/>
+     <exports symbol='xmlUCSIsSmallFormVariants'/>
+     <exports symbol='xmlUCSIsSpacingModifierLetters'/>
+     <exports symbol='xmlUCSIsSpecials'/>
+     <exports symbol='xmlUCSIsSuperscriptsandSubscripts'/>
+     <exports symbol='xmlUCSIsSyriac'/>
+     <exports symbol='xmlUCSIsTags'/>
+     <exports symbol='xmlUCSIsTamil'/>
+     <exports symbol='xmlUCSIsTelugu'/>
+     <exports symbol='xmlUCSIsThaana'/>
+     <exports symbol='xmlUCSIsThai'/>
+     <exports symbol='xmlUCSIsTibetan'/>
+     <exports symbol='xmlUCSIsUnifiedCanadianAboriginalSyllabics'/>
+     <exports symbol='xmlUCSIsYiRadicals'/>
+     <exports symbol='xmlUCSIsYiSyllables'/>
     </file>
     <file name='uri'>
      <exports symbol='_xmlURI'/>
@@ -2211,20 +2174,66 @@
      <exports symbol='xmlURIPtr'/>
      <exports symbol='xmlURIUnescapeString'/>
     </file>
-    <file name='nanohttp'>
-     <exports symbol='xmlNanoHTTPAuthHeader'/>
-     <exports symbol='xmlNanoHTTPCleanup'/>
-     <exports symbol='xmlNanoHTTPClose'/>
-     <exports symbol='xmlNanoHTTPFetch'/>
-     <exports symbol='xmlNanoHTTPInit'/>
-     <exports symbol='xmlNanoHTTPMethod'/>
-     <exports symbol='xmlNanoHTTPMethodRedir'/>
-     <exports symbol='xmlNanoHTTPOpen'/>
-     <exports symbol='xmlNanoHTTPOpenRedir'/>
-     <exports symbol='xmlNanoHTTPRead'/>
-     <exports symbol='xmlNanoHTTPReturnCode'/>
-     <exports symbol='xmlNanoHTTPSave'/>
-     <exports symbol='xmlNanoHTTPScanProxy'/>
+    <file name='encoding'>
+     <exports symbol='UTF8Toisolat1'/>
+     <exports symbol='XML_CHAR_ENCODING_2022_JP'/>
+     <exports symbol='XML_CHAR_ENCODING_8859_1'/>
+     <exports symbol='XML_CHAR_ENCODING_8859_2'/>
+     <exports symbol='XML_CHAR_ENCODING_8859_3'/>
+     <exports symbol='XML_CHAR_ENCODING_8859_4'/>
+     <exports symbol='XML_CHAR_ENCODING_8859_5'/>
+     <exports symbol='XML_CHAR_ENCODING_8859_6'/>
+     <exports symbol='XML_CHAR_ENCODING_8859_7'/>
+     <exports symbol='XML_CHAR_ENCODING_8859_8'/>
+     <exports symbol='XML_CHAR_ENCODING_8859_9'/>
+     <exports symbol='XML_CHAR_ENCODING_ASCII'/>
+     <exports symbol='XML_CHAR_ENCODING_EBCDIC'/>
+     <exports symbol='XML_CHAR_ENCODING_ERROR'/>
+     <exports symbol='XML_CHAR_ENCODING_EUC_JP'/>
+     <exports symbol='XML_CHAR_ENCODING_NONE'/>
+     <exports symbol='XML_CHAR_ENCODING_SHIFT_JIS'/>
+     <exports symbol='XML_CHAR_ENCODING_UCS2'/>
+     <exports symbol='XML_CHAR_ENCODING_UCS4BE'/>
+     <exports symbol='XML_CHAR_ENCODING_UCS4LE'/>
+     <exports symbol='XML_CHAR_ENCODING_UCS4_2143'/>
+     <exports symbol='XML_CHAR_ENCODING_UCS4_3412'/>
+     <exports symbol='XML_CHAR_ENCODING_UTF16BE'/>
+     <exports symbol='XML_CHAR_ENCODING_UTF16LE'/>
+     <exports symbol='XML_CHAR_ENCODING_UTF8'/>
+     <exports symbol='_xmlCharEncodingHandler'/>
+     <exports symbol='isolat1ToUTF8'/>
+     <exports symbol='xmlAddEncodingAlias'/>
+     <exports symbol='xmlCharEncCloseFunc'/>
+     <exports symbol='xmlCharEncFirstLine'/>
+     <exports symbol='xmlCharEncInFunc'/>
+     <exports symbol='xmlCharEncOutFunc'/>
+     <exports symbol='xmlCharEncoding'/>
+     <exports symbol='xmlCharEncodingHandler'/>
+     <exports symbol='xmlCharEncodingHandlerPtr'/>
+     <exports symbol='xmlCharEncodingInputFunc'/>
+     <exports symbol='xmlCharEncodingOutputFunc'/>
+     <exports symbol='xmlCheckUTF8'/>
+     <exports symbol='xmlCleanupCharEncodingHandlers'/>
+     <exports symbol='xmlCleanupEncodingAliases'/>
+     <exports symbol='xmlDelEncodingAlias'/>
+     <exports symbol='xmlDetectCharEncoding'/>
+     <exports symbol='xmlFindCharEncodingHandler'/>
+     <exports symbol='xmlGetCharEncodingHandler'/>
+     <exports symbol='xmlGetCharEncodingName'/>
+     <exports symbol='xmlGetEncodingAlias'/>
+     <exports symbol='xmlGetUTF8Char'/>
+     <exports symbol='xmlInitCharEncodingHandlers'/>
+     <exports symbol='xmlNewCharEncodingHandler'/>
+     <exports symbol='xmlParseCharEncoding'/>
+     <exports symbol='xmlRegisterCharEncodingHandler'/>
+     <exports symbol='xmlUTF8Charcmp'/>
+     <exports symbol='xmlUTF8Size'/>
+     <exports symbol='xmlUTF8Strlen'/>
+     <exports symbol='xmlUTF8Strloc'/>
+     <exports symbol='xmlUTF8Strndup'/>
+     <exports symbol='xmlUTF8Strpos'/>
+     <exports symbol='xmlUTF8Strsize'/>
+     <exports symbol='xmlUTF8Strsub'/>
     </file>
   </files>
   <symbols>
@@ -2335,8 +2344,7 @@
     <macro name='LIBXML_DEBUG_ENABLED' file='xmlversion'>
       <info>Whether Debugging module is configured in</info>
     </macro>
-    <macro name='LIBXML_DLL_IMPORT' file='xmlversion'>
-      <info>Used on Windows (MS C compiler only) to declare a variable as imported from the library. This macro should be empty when compiling libxml itself. It should expand to __declspec(dllimport) when the client code includes this header, and that only if the client links dynamically against libxml. For this to work, we need three macros. One tells us which compiler is being used and luckily the compiler defines such a thing: _MSC_VER. The second macro tells us if we are compiling libxml or the client code and we define the macro IN_LIBXML on the compiler&apos;s command line for this purpose. The third macro, LIBXML_STATIC, must be defined by any client code which links against libxml statically.</info>
+    <macro name='LIBXML_DLL_IMPORT' file='xmlexports'>
     </macro>
     <macro name='LIBXML_DOCB_ENABLED' file='xmlversion'>
       <info>Whether the SGML Docbook support is configured in</info>
@@ -2355,6 +2363,9 @@
     </macro>
     <macro name='LIBXML_ICONV_ENABLED' file='xmlversion'>
       <info>Whether iconv support is available</info>
+    </macro>
+    <macro name='LIBXML_ISO8859X_ENABLED' file='xmlversion'>
+      <info>Whether ISO-8859-* support is made available in case iconv is not</info>
     </macro>
     <macro name='LIBXML_REGEXP_ENABLED' file='xmlversion'>
     </macro>
@@ -2511,6 +2522,8 @@
       <arg name='X' info='the error code'/>
     </macro>
     <macro name='_DEBUG_MEMORY_ALLOC_' file='xmlmemory'>
+    </macro>
+    <macro name='_REENTRANT' file='xmlexports'>
     </macro>
     <macro name='htmlDefaultSubelement' file='HTMLparser'>
       <info>Returns the default subelement for this element</info>
@@ -3157,6 +3170,7 @@ if necessary or NULL'/>
       <field name='URL' type='const xmlChar *' info=' The URI for that document'/>
       <field name='charset' type='int' info=' encoding of the in-memory content
 actually an xmlCharEncoding'/>
+      <field name='dict' type='struct _xmlDict *' info=' dict used to allocate names or NULL'/>
     </struct>
     <typedef name='xmlDocPtr' file='tree' type='xmlDoc *'/>
     <struct name='xmlDtd' file='tree' type='struct _xmlDtd'>
@@ -3407,6 +3421,20 @@ actually an xmlCharEncoding'/>
       <field name='dict' type='xmlDictPtr' info=' dictionnary for the parser'/>
       <field name='atts' type='const xmlChar * *' info=' array for the attributes callbacks'/>
       <field name='maxatts' type='int' info=' the size of the array'/>
+      <field name='docdict' type='int' info='* pre-interned strings
+*'/>
+      <field name='str_xml' type='const xmlChar *' info=''/>
+      <field name='str_xmlns' type='const xmlChar *' info=''/>
+      <field name='str_xml_ns' type='const xmlChar *' info='* Everything below is used only by the new SAX mode
+*'/>
+      <field name='sax2' type='int' info=' operating in the new SAX mode'/>
+      <field name='nsNr' type='int' info=' the number of inherited namespaces'/>
+      <field name='nsMax' type='int' info=' the size of the arrays'/>
+      <field name='nsTab' type='const xmlChar * *' info=' the array of prefix/namespace name'/>
+      <field name='attallocs' type='int *' info=' which attribute were allocated'/>
+      <field name='pushTab' type='void * *' info=' array of data for push'/>
+      <field name='attsDefault' type='xmlHashTablePtr' info=' defaulted attributes if any'/>
+      <field name='attsSpecial' type='xmlHashTablePtr' info=' non-CDATA attributes if any'/>
     </struct>
     <typedef name='xmlParserCtxtPtr' file='tree' type='xmlParserCtxt *'/>
     <typedef name='xmlParserErrors' file='xmlerror' type='enum'/>
@@ -3436,6 +3464,7 @@ actually an xmlCharEncoding'/>
       <field name='encoder' type='xmlCharEncodingHandlerPtr' info=' I18N conversions to UTF-8'/>
       <field name='buffer' type='xmlBufferPtr' info=' Local buffer encoded in UTF-8'/>
       <field name='raw' type='xmlBufferPtr' info=' if encoder != NULL buffer for raw input'/>
+      <field name='compressed' type='int' info=' -1=unknown, 0=not compressed, 1=compressed'/>
     </struct>
     <typedef name='xmlParserInputBufferPtr' file='tree' type='xmlParserInputBuffer *'/>
     <typedef name='xmlParserInputPtr' file='tree' type='xmlParserInput *'/>
@@ -3508,11 +3537,10 @@ actually an xmlCharEncoding'/>
       <field name='getParameterEntity' type='getParameterEntitySAXFunc' info=''/>
       <field name='cdataBlock' type='cdataBlockSAXFunc' info=''/>
       <field name='externalSubset' type='externalSubsetSAXFunc' info=''/>
-      <field name='initialized' type='int' info=' The following fields are extensions available only on version 2'/>
+      <field name='initialized' type='unsigned int' info=' The following fields are extensions available only on version 2'/>
       <field name='_private' type='void *' info=''/>
       <field name='startElementNs' type='startElementNsSAX2Func' info=''/>
       <field name='endElementNs' type='endElementNsSAX2Func' info=''/>
-      <field name='attributeNs' type='attributeNsSAX2Func' info=''/>
     </struct>
     <typedef name='xmlSAXHandlerPtr' file='tree' type='xmlSAXHandler *'/>
     <struct name='xmlSAXLocator' file='tree' type='struct _xmlSAXLocator'>
@@ -3862,16 +3890,6 @@ actually an xmlCharEncoding'/>
       <arg name='def' type='int' info='the type of default value'/>
       <arg name='defaultValue' type='const xmlChar *' info='the attribute default value'/>
       <arg name='tree' type='xmlEnumerationPtr' info='the tree of enumerated value set'/>
-    </functype>
-    <functype name='attributeNsSAX2Func' file='parser'>
-      <info>SAX2 callback when an attribute has been detected by the parser. It provides the namespace informations for the attribute, as well as the value of the attribute (note that @value may not be zero terminated and use of the @valuelen is needed to find the value end).</info>
-      <return type='void'/>
-      <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
-      <arg name='localname' type='const xmlChar *' info='the local name of the attribute'/>
-      <arg name='prefix' type='const xmlChar *' info='the attribute namespace prefix if available'/>
-      <arg name='URI' type='const xmlChar *' info='the attribute namespace name if available'/>
-      <arg name='value' type='const xmlChar *' info='pointer to the attribute value string'/>
-      <arg name='valuelen' type='int' info='lenght of the attribute value string in bytes'/>
     </functype>
     <functype name='attributeSAXFunc' file='parser'>
       <info>Handle an attribute that has been read by the parser. The default handling is to convert the attribute into an DOM subtree and past it in a new xmlAttr element added to the element.</info>
@@ -4564,7 +4582,7 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='namePush' file='parserInternals'>
       <info>Pushes a new element name on top of the name stack</info>
-      <return type='int' info='0 in case of error, the index in the stack otherwise'/>
+      <return type='int' info='-1 in case of error, the index in the stack otherwise'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='value' type='const xmlChar *' info='the element name'/>
     </function>
@@ -4678,7 +4696,7 @@ actually an xmlCharEncoding'/>
       <arg name='atts' type='const xmlChar **' info='An array of name/value attributes pairs, NULL terminated'/>
     </function>
     <functype name='startElementNsSAX2Func' file='parser'>
-      <info>SAX2 callback when an element start has been detected by the parser. It provides the namespace informations for the element, as well as the new namespace declarations on the element. The number of attributes is given in this callback but the attributes themselves will be provided as separate callbacks.</info>
+      <info>SAX2 callback when an element start has been detected by the parser. It provides the namespace informations for the element, as well as the new namespace declarations on the element.</info>
       <return type='void'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
       <arg name='localname' type='const xmlChar *' info='the local name of the element'/>
@@ -4687,6 +4705,8 @@ actually an xmlCharEncoding'/>
       <arg name='nb_namespaces' type='int' info='number of namespace definitions on that node'/>
       <arg name='namespaces' type='const xmlChar **' info='pointer to the array of prefix/URI pairs namespace definitions'/>
       <arg name='nb_attributes' type='int' info='the number of attributes on that node'/>
+      <arg name='nb_defaulted' type='int' info='the number of defaulted attributes. The defaulted ones are at the end of the array'/>
+      <arg name='attributes' type='const xmlChar **' info='pointer to the array of (localname/prefix/URI/value/end) attribute values.'/>
     </functype>
     <functype name='startElementSAXFunc' file='parser'>
       <info>Called when an opening tag has been processed.</info>
@@ -5732,7 +5752,7 @@ actually an xmlCharEncoding'/>
       <return type='const xmlChar *' info='the internal copy of the name or NULL in case of internal error'/>
       <arg name='dict' type='xmlDictPtr' info='the dictionnary'/>
       <arg name='name' type='const xmlChar *' info='the name of the userdata'/>
-      <arg name='len' type='int' info='the length of the name'/>
+      <arg name='len' type='int' info='the length of the name, if -1 it is recomputed'/>
     </function>
     <function name='xmlDictSize' file='dict'>
       <info>Query the number of elements installed in the hash @dict.</info>
@@ -6342,6 +6362,33 @@ actually an xmlCharEncoding'/>
       <arg name='name2' type='const xmlChar *' info='a second name of the userdata'/>
       <arg name='name3' type='const xmlChar *' info='a third name of the userdata'/>
     </function>
+    <function name='xmlHashQLookup' file='hash'>
+      <info>Find the userdata specified by the QName @prefix:@name/@name.</info>
+      <return type='void *' info='the pointer to the userdata'/>
+      <arg name='table' type='xmlHashTablePtr' info='the hash table'/>
+      <arg name='prefix' type='const xmlChar *' info='the prefix of the userdata'/>
+      <arg name='name' type='const xmlChar *' info='the name of the userdata'/>
+    </function>
+    <function name='xmlHashQLookup2' file='hash'>
+      <info></info>
+      <return type='void *' info=''/>
+      <arg name='table' type='xmlHashTablePtr' info=''/>
+      <arg name='prefix' type='const xmlChar *' info=''/>
+      <arg name='name' type='const xmlChar *' info=''/>
+      <arg name='prefix2' type='const xmlChar *' info=''/>
+      <arg name='name2' type='const xmlChar *' info=''/>
+    </function>
+    <function name='xmlHashQLookup3' file='hash'>
+      <info>Find the userdata specified by the (@name, @name2, @name3) tuple.</info>
+      <return type='void *' info='the a pointer to the userdata'/>
+      <arg name='table' type='xmlHashTablePtr' info='the hash table'/>
+      <arg name='prefix' type='const xmlChar *' info='the prefix of the userdata'/>
+      <arg name='name' type='const xmlChar *' info='the name of the userdata'/>
+      <arg name='prefix2' type='const xmlChar *' info='the second prefix of the userdata'/>
+      <arg name='name2' type='const xmlChar *' info='a second name of the userdata'/>
+      <arg name='prefix3' type='const xmlChar *' info='the third prefix of the userdata'/>
+      <arg name='name3' type='const xmlChar *' info='a third name of the userdata'/>
+    </function>
     <function name='xmlHashRemoveEntry' file='hash'>
       <info>Find the userdata specified by the @name and remove it from the hash @table. Existing userdata for this tuple will be removed and freed with @f.</info>
       <return type='int' info='0 if the removal succeeded and -1 in case of error or not found.'/>
@@ -6890,9 +6937,9 @@ actually an xmlCharEncoding'/>
       <arg name='fp' type='FILE *' info='a FILE descriptor used as the output file, if NULL, the result is written to the file .memorylist'/>
     </function>
     <function name='xmlMemFree' file='xmlmemory'>
-      <info></info>
+      <info>a free() equivalent, with error checking.</info>
       <return type='void'/>
-      <arg name='ptr' type='void *' info=''/>
+      <arg name='ptr' type='void *' info='the memory block pointer'/>
     </function>
     <function name='xmlMemGet' file='xmlmemory'>
       <info>Provides the memory access functions set currently in use</info>
@@ -6903,15 +6950,15 @@ actually an xmlCharEncoding'/>
       <arg name='strdupFunc' type='xmlStrdupFunc *' info='place to save the strdup() function in use'/>
     </function>
     <function name='xmlMemMalloc' file='xmlmemory'>
-      <info></info>
-      <return type='void *' info=''/>
-      <arg name='size' type='size_t' info=''/>
+      <info>a malloc() equivalent, with logging of the allocation info.</info>
+      <return type='void *' info='a pointer to the allocated area or NULL in case of lack of memory.'/>
+      <arg name='size' type='size_t' info='an int specifying the size in byte to allocate.'/>
     </function>
     <function name='xmlMemRealloc' file='xmlmemory'>
-      <info></info>
-      <return type='void *' info=''/>
-      <arg name='ptr' type='void *' info=''/>
-      <arg name='size' type='size_t' info=''/>
+      <info>a realloc() equivalent, with logging of the allocation info.</info>
+      <return type='void *' info='a pointer to the allocated area or NULL in case of lack of memory.'/>
+      <arg name='ptr' type='void *' info='the initial memory block pointer'/>
+      <arg name='size' type='size_t' info='an int specifying the size in byte to allocate.'/>
     </function>
     <function name='xmlMemSetup' file='xmlmemory'>
       <info>Override the default memory access functions with a new set This has to be called before any other libxml routines !  Should this be blocked if there was already some allocations done ?</info>
@@ -6943,9 +6990,9 @@ actually an xmlCharEncoding'/>
       <return type='void'/>
     </function>
     <function name='xmlMemoryStrdup' file='xmlmemory'>
-      <info></info>
-      <return type='char *' info=''/>
-      <arg name='str' type='const char *' info=''/>
+      <info>a strdup() equivalent, with logging of the allocation info.</info>
+      <return type='char *' info='a pointer to the new string or NULL if allocation error occurred.'/>
+      <arg name='str' type='const char *' info='the initial string pointer'/>
     </function>
     <function name='xmlMutexLock' file='threads'>
       <info>xmlMutexLock() is used to lock a libxml2 token.</info>
@@ -7759,7 +7806,7 @@ actually an xmlCharEncoding'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlParseElement' file='parserInternals'>
-      <info>parse an XML element, this is highly recursive  [39] element ::= EmptyElemTag | STag content ETag  [ WFC: Element Type Match ] The Name in an element&apos;s end-tag must match the element type in the start-tag.  [ VC: Element Valid ] An element is valid if there is a declaration matching elementdecl where the Name matches the element type and one of the following holds: - The declaration matches EMPTY and the element has no content. - The declaration matches children and the sequence of child elements belongs to the language generated by the regular expression in the content model, with optional white space (characters matching the nonterminal S) between each pair of child elements. - The declaration matches Mixed and the content consists of character data and child elements whose types match names in the content model. - The declaration matches ANY, and the types of any child elements have been declared.</info>
+      <info>parse an XML element, this is highly recursive  [39] element ::= EmptyElemTag | STag content ETag  [ WFC: Element Type Match ] The Name in an element&apos;s end-tag must match the element type in the start-tag.</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
@@ -8520,6 +8567,14 @@ actually an xmlCharEncoding'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
       <arg name='name' type='const xmlChar *' info='The element name'/>
     </function>
+    <function name='xmlSAX2EndElementNs' file='SAX2'>
+      <info>SAX2 callback when an element end has been detected by the parser. It provides the namespace informations for the element.</info>
+      <return type='void'/>
+      <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
+      <arg name='localname' type='const xmlChar *' info='the local name of the element'/>
+      <arg name='prefix' type='const xmlChar *' info='the element namespace prefix if available'/>
+      <arg name='URI' type='const xmlChar *' info='the element namespace name if available'/>
+    </function>
     <function name='xmlSAX2EntityDecl' file='SAX2'>
       <info>An entity definition has been parsed</info>
       <return type='void'/>
@@ -8687,6 +8742,19 @@ actually an xmlCharEncoding'/>
       <arg name='fullname' type='const xmlChar *' info='The element name, including namespace prefix'/>
       <arg name='atts' type='const xmlChar **' info='An array of name/value attributes pairs, NULL terminated'/>
     </function>
+    <function name='xmlSAX2StartElementNs' file='SAX2'>
+      <info>SAX2 callback when an element start has been detected by the parser. It provides the namespace informations for the element, as well as the new namespace declarations on the element.</info>
+      <return type='void'/>
+      <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
+      <arg name='localname' type='const xmlChar *' info='the local name of the element'/>
+      <arg name='prefix' type='const xmlChar *' info='the element namespace prefix if available'/>
+      <arg name='URI' type='const xmlChar *' info='the element namespace name if available'/>
+      <arg name='nb_namespaces' type='int' info='number of namespace definitions on that node'/>
+      <arg name='namespaces' type='const xmlChar **' info='pointer to the array of prefix/URI pairs namespace definitions'/>
+      <arg name='nb_attributes' type='int' info='the number of attributes on that node nb_defaulted:  the number of defaulted attributes.'/>
+      <arg name='nb_defaulted' type='int' info=''/>
+      <arg name='attributes' type='const xmlChar **' info='pointer to the array of (localname/prefix/URI/value/end) attribute values.'/>
+    </function>
     <function name='xmlSAX2UnparsedEntityDecl' file='SAX2'>
       <info>What to do when an unparsed entity declaration is parsed</info>
       <return type='void'/>
@@ -8695,6 +8763,11 @@ actually an xmlCharEncoding'/>
       <arg name='publicId' type='const xmlChar *' info='The public ID of the entity'/>
       <arg name='systemId' type='const xmlChar *' info='The system ID of the entity'/>
       <arg name='notationName' type='const xmlChar *' info='the name of the notation'/>
+    </function>
+    <function name='xmlSAXDefaultVersion' file='SAX2'>
+      <info>Set the default version of SAX used globally by the library. Note that this may not be a good thing to do from a library it is better to use xmlSAXVersion() to set up specifically the version for a given parsing context.</info>
+      <return type='int' info='the previous value in case of success and -1 in case of error.'/>
+      <arg name='version' type='int' info='the version, 1 or 2'/>
     </function>
     <function name='xmlSAXParseDTD' file='parser'>
       <info>Load and parse an external subset.</info>
@@ -8762,6 +8835,12 @@ actually an xmlCharEncoding'/>
       <arg name='user_data' type='void *' info='The user data returned on SAX callbacks'/>
       <arg name='buffer' type='const char *' info='an in-memory XML document input'/>
       <arg name='size' type='int' info='the length of the XML document in bytes'/>
+    </function>
+    <function name='xmlSAXVersion' file='SAX2'>
+      <info>Initialize the default XML SAX handler according to the version</info>
+      <return type='int' info='0 in case of success and -1 in case of error.'/>
+      <arg name='hdlr' type='xmlSAXHandler *' info='the SAX handler'/>
+      <arg name='version' type='int' info='the version, 1 or 2'/>
     </function>
     <function name='xmlSaveFile' file='tree'>
       <info>Dump an XML document to a file. Will use compression if compiled in and enabled. If @filename is &quot;-&quot; the stdout file is used.</info>
@@ -9233,6 +9312,13 @@ actually an xmlCharEncoding'/>
       <arg name='str1' type='const xmlChar *' info='the first xmlChar *'/>
       <arg name='str2' type='const xmlChar *' info='the second xmlChar *'/>
     </function>
+    <function name='xmlStrQEqual' file='parser'>
+      <info>Check if a QName is Equal to a given string</info>
+      <return type='int' info='1 if they are equal, 0 if they are different'/>
+      <arg name='pref' type='const xmlChar *' info='the prefix of the QName'/>
+      <arg name='name' type='const xmlChar *' info='the localname of the QName'/>
+      <arg name='str' type='const xmlChar *' info='the second xmlChar *'/>
+    </function>
     <function name='xmlStrcasecmp' file='parser'>
       <info>a strcasecmp for xmlChar&apos;s</info>
       <return type='int' info='the integer result of the comparison'/>
@@ -9295,6 +9381,17 @@ actually an xmlCharEncoding'/>
       <return type='xmlNodePtr' info='a pointer to the first child'/>
       <arg name='doc' type='xmlDocPtr' info='the document'/>
       <arg name='value' type='const xmlChar *' info='the value of the attribute'/>
+    </function>
+    <function name='xmlStringLenDecodeEntities' file='parserInternals'>
+      <info></info>
+      <return type='xmlChar *' info=''/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info=''/>
+      <arg name='str' type='const xmlChar *' info=''/>
+      <arg name='len' type='int' info=''/>
+      <arg name='what' type='int' info=''/>
+      <arg name='end' type='xmlChar' info=''/>
+      <arg name='end2' type='xmlChar' info=''/>
+      <arg name='end3' type='xmlChar' info=''/>
     </function>
     <function name='xmlStringLenGetNodeList' file='tree'>
       <info>Parse the value string and build the node list associated. Should produce a flat tree with only TEXTs and ENTITY_REFs.</info>

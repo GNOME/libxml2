@@ -15,6 +15,27 @@ to test those   - More testing on RelaxNG
   Schemas
 
 
+2.6.1: Oct 28 2003:
+   - Mostly bugfixes after the big 2.6.0 changes
+   - Unix compilation patches: libxml.m4 (Patrick Welche), warnings cleanup
+    (William Brack)
+   - Windows compilation patches (Joachim Bauch, Stephane Bidoul, Igor
+    Zlatkovic)
+   - xmlWriter bugfix (Alfred Mickautsch)
+   - chvalid.[ch]: couple of fixes from Stephane Bidoul
+   - context reset: error state reset, push parser reset (Graham Benett)
+   - context reuse: generate errors if file is not readable
+   - defaulted attributes for element coming from internal entities
+    (Stephane Bidoul)
+   - Python: tab and spaces mix (William Brack)
+   - Error handler could crash in DTD validation in 2.6.0
+   - xmlReader: do not use the document or element _private field
+   - testSAX.c: avoid a problem with some PIs (Massimo Morara)
+   - general bug fixes: mandatory encoding in text decl, serializing
+    Document Fragment nodes, xmlSearchNs 2.6.0 problem (Kasimier Buchcik),
+    XPath errors not reported,  slow HTML parsing of large documents.
+
+
 2.6.0: Oct 20 2003:
    - Major revision release: should be API and ABI compatible but got a lot
     of change

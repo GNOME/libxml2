@@ -12,6 +12,24 @@ for a really accurate description</h3><p>Items not finished and worked on, get i
 to test those</p><ul><li>More testing on RelaxNG</li>
   <li>Finishing up <a href="http://www.w3.org/TR/xmlschema-1/">XML
   Schemas</a></li>
+</ul><h3>2.6.1: Oct 28 2003</h3><ul><li>Mostly bugfixes after the big 2.6.0 changes</li>
+  <li>Unix compilation patches: libxml.m4 (Patrick Welche), warnings cleanup
+    (William Brack)</li>
+  <li>Windows compilation patches (Joachim Bauch, Stephane Bidoul, Igor
+    Zlatkovic)</li>
+  <li>xmlWriter bugfix (Alfred Mickautsch)</li>
+  <li>chvalid.[ch]: couple of fixes from Stephane Bidoul</li>
+  <li>context reset: error state reset, push parser reset (Graham Benett)</li>
+  <li>context reuse: generate errors if file is not readable</li>
+  <li>defaulted attributes for element coming from internal entities
+    (Stephane Bidoul)</li>
+  <li>Python: tab and spaces mix (William Brack)</li>
+  <li>Error handler could crash in DTD validation in 2.6.0</li>
+  <li>xmlReader: do not use the document or element _private field</li>
+  <li>testSAX.c: avoid a problem with some PIs (Massimo Morara)</li>
+  <li>general bug fixes: mandatory encoding in text decl, serializing
+    Document Fragment nodes, xmlSearchNs 2.6.0 problem (Kasimier Buchcik),
+    XPath errors not reported,  slow HTML parsing of large documents.</li>
 </ul><h3>2.6.0: Oct 20 2003</h3><ul><li>Major revision release: should be API and ABI compatible but got a lot
     of change</li>
   <li>Increased the library modularity, far more options can be stripped out,

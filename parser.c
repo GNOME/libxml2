@@ -10642,6 +10642,11 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
     ctxt->vctxt.nodeNr = 0;
     ctxt->vctxt.nodeMax = 0;
     ctxt->vctxt.node = NULL;
+    if (ctxt->dict != NULL) xmlDictFree(ctxt->dict);
+    ctxt->dict = ctx->dict;
+    ctxt->dictNames = ctx->dictNames;
+    ctxt->attsDefault = ctx->attsDefault;
+    ctxt->attsSpecial = ctx->attsSpecial;
 
     xmlParseContent(ctxt);
    
@@ -10680,6 +10685,9 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
 	ret = 0;
     }
     ctxt->sax = oldsax;
+    ctxt->dict = NULL;
+    ctxt->attsDefault = NULL;
+    ctxt->attsSpecial = NULL;
     xmlFreeParserCtxt(ctxt);
     newDoc->intSubset = NULL;
     newDoc->extSubset = NULL;
@@ -12129,7 +12137,9 @@ xmlCtxtReset(xmlParserCtxtPtr ctxt)
  * @filename:  an optional file name or URI
  * @encoding:  the document encoding, or NULL
  *
- * Reset a parser context
+ * Reset a push parser context
+ *
+ * Returns 0 in case of success and 1 in case of error
  */
 int
 xmlCtxtResetPush(xmlParserCtxtPtr ctxt, const char *chunk,
@@ -12138,6 +12148,9 @@ xmlCtxtResetPush(xmlParserCtxtPtr ctxt, const char *chunk,
     xmlParserInputPtr inputStream;
     xmlParserInputBufferPtr buf;
     xmlCharEncoding enc = XML_CHAR_ENCODING_NONE;
+
+    if (ctxt == NULL)
+        return(1);
 
     if ((encoding == NULL) && (chunk != NULL) && (size >= 4))
         enc = xmlDetectCharEncoding((const xmlChar *) chunk, size);

@@ -1191,6 +1191,7 @@
      <exports symbol='xmlCtxtReadIO'/>
      <exports symbol='xmlCtxtReadMemory'/>
      <exports symbol='xmlCtxtReset'/>
+     <exports symbol='xmlCtxtResetPush'/>
      <exports symbol='xmlCtxtUseOptions'/>
      <exports symbol='xmlExternalEntityLoader'/>
      <exports symbol='xmlFreeParserCtxt'/>
@@ -1927,6 +1928,7 @@
      <exports symbol='XML_ERR_LT_IN_ATTRIBUTE'/>
      <exports symbol='XML_ERR_LT_REQUIRED'/>
      <exports symbol='XML_ERR_MISPLACED_CDATA_END'/>
+     <exports symbol='XML_ERR_MISSING_ENCODING'/>
      <exports symbol='XML_ERR_MIXED_NOT_FINISHED'/>
      <exports symbol='XML_ERR_MIXED_NOT_STARTED'/>
      <exports symbol='XML_ERR_NAME_REQUIRED'/>
@@ -1987,6 +1989,7 @@
      <exports symbol='XML_FROM_SCHEMASP'/>
      <exports symbol='XML_FROM_SCHEMASV'/>
      <exports symbol='XML_FROM_TREE'/>
+     <exports symbol='XML_FROM_VALID'/>
      <exports symbol='XML_FROM_XINCLUDE'/>
      <exports symbol='XML_FROM_XPATH'/>
      <exports symbol='XML_FROM_XPOINTER'/>
@@ -3598,6 +3601,7 @@
     <enum name='XML_ERR_LT_IN_ATTRIBUTE' file='xmlerror' value='38' type='xmlParserErrors' info='38'/>
     <enum name='XML_ERR_LT_REQUIRED' file='xmlerror' value='72' type='xmlParserErrors' info='72'/>
     <enum name='XML_ERR_MISPLACED_CDATA_END' file='xmlerror' value='62' type='xmlParserErrors' info='62'/>
+    <enum name='XML_ERR_MISSING_ENCODING' file='xmlerror' value='101' type='xmlParserErrors' info='101'/>
     <enum name='XML_ERR_MIXED_NOT_FINISHED' file='xmlerror' value='53' type='xmlParserErrors' info='53'/>
     <enum name='XML_ERR_MIXED_NOT_STARTED' file='xmlerror' value='52' type='xmlParserErrors' info='52'/>
     <enum name='XML_ERR_NAME_REQUIRED' file='xmlerror' value='68' type='xmlParserErrors' info='68'/>
@@ -3645,7 +3649,7 @@
     <enum name='XML_FROM_C14N' file='xmlerror' value='21' type='xmlErrorDomain' info='The Canonicalization module'/>
     <enum name='XML_FROM_CATALOG' file='xmlerror' value='20' type='xmlErrorDomain' info='The Catalog module'/>
     <enum name='XML_FROM_DATATYPE' file='xmlerror' value='15' type='xmlErrorDomain' info='The W3C XML Schemas Datatype module'/>
-    <enum name='XML_FROM_DTD' file='xmlerror' value='4' type='xmlErrorDomain' info='The XML DTD validation'/>
+    <enum name='XML_FROM_DTD' file='xmlerror' value='4' type='xmlErrorDomain' info='The XML DTD validation with parser contex'/>
     <enum name='XML_FROM_FTP' file='xmlerror' value='9' type='xmlErrorDomain' info='The FTP module'/>
     <enum name='XML_FROM_HTML' file='xmlerror' value='5' type='xmlErrorDomain' info='The HTML parser'/>
     <enum name='XML_FROM_HTTP' file='xmlerror' value='10' type='xmlErrorDomain' info='The FTP module'/>
@@ -3661,10 +3665,11 @@
     <enum name='XML_FROM_SCHEMASP' file='xmlerror' value='16' type='xmlErrorDomain' info='The W3C XML Schemas parser module'/>
     <enum name='XML_FROM_SCHEMASV' file='xmlerror' value='17' type='xmlErrorDomain' info='The W3C XML Schemas validation module'/>
     <enum name='XML_FROM_TREE' file='xmlerror' value='2' type='xmlErrorDomain' info='The tree module'/>
+    <enum name='XML_FROM_VALID' file='xmlerror' value='23' type='xmlErrorDomain' info=' The XML DTD validation with valid context'/>
     <enum name='XML_FROM_XINCLUDE' file='xmlerror' value='11' type='xmlErrorDomain' info='The XInclude processing'/>
     <enum name='XML_FROM_XPATH' file='xmlerror' value='12' type='xmlErrorDomain' info='The XPath module'/>
     <enum name='XML_FROM_XPOINTER' file='xmlerror' value='13' type='xmlErrorDomain' info='The XPointer module'/>
-    <enum name='XML_FROM_XSLT' file='xmlerror' value='22' type='xmlErrorDomain' info=' The XSLT engine from libxslt'/>
+    <enum name='XML_FROM_XSLT' file='xmlerror' value='22' type='xmlErrorDomain' info='The XSLT engine from libxslt'/>
     <enum name='XML_FTP_ACCNT' file='xmlerror' value='2002' type='xmlParserErrors' info='2002'/>
     <enum name='XML_FTP_EPSV_ANSWER' file='xmlerror' value='2001' type='xmlParserErrors' info='2001'/>
     <enum name='XML_FTP_PASV_ANSWER' file='xmlerror' value='2000' type='xmlParserErrors'/>
@@ -6809,7 +6814,7 @@ actually an xmlCharEncoding'/>
       <info>Does a binary search of the range table to determine if char is valid</info>
       <return type='int' info='true if character valid, false otherwise'/>
       <arg name='val' type='unsigned int' info='character to be validated'/>
-      <arg name='rptr' type='xmlChRangeGroupPtr' info='pointer to range to be used to validate'/>
+      <arg name='rptr' type='const xmlChRangeGroupPtr' info='pointer to range to be used to validate'/>
     </function>
     <function name='xmlCharStrdup' file='parser'>
       <info>a strdup for char&apos;s to xmlChar&apos;s</info>
@@ -7112,6 +7117,15 @@ actually an xmlCharEncoding'/>
       <info>Cleanup the last global error registered. For parsing error this does not change the well-formedness result.</info>
       <return type='void'/>
       <arg name='ctx' type='void *' info='an XML parser context'/>
+    </function>
+    <function name='xmlCtxtResetPush' file='parser'>
+      <info>Reset a push parser context</info>
+      <return type='int' info='0 in case of success and 1 in case of error'/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
+      <arg name='chunk' type='const char *' info='a pointer to an array of chars'/>
+      <arg name='size' type='int' info='number of chars in the array'/>
+      <arg name='filename' type='const char *' info='an optional file name or URI'/>
+      <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
     </function>
     <function name='xmlCtxtUseOptions' file='parser'>
       <info>Applies the options to the parser context</info>

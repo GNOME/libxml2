@@ -8,73 +8,27 @@
   </vendor>
   <product id="libxml2">
     <name>libxml2</name>
-    <version>2.6.0</version>
-    <last-release> Oct 20 2003</last-release>
+    <version>2.6.1</version>
+    <last-release> Oct 28 2003</last-release>
     <info-url>http://xmlsoft.org/</info-url>
-    <changes>   - Major revision release: should be API and ABI compatible but got a lot
-    of change
-   - Increased the library modularity, far more options can be stripped out,
-    a --with-minimum configuration will weight around 160KBytes
-   - Use per parser and per document dictionnary, allocate names and small
-    text nodes from the dictionnary
-   - Switch to a SAX2 like parser rewrote most of the XML parser core,
-    provides namespace resolution and defaulted attributes, minimize memory
-    allocations and copies, namespace checking and specific error handling,
-    immutable buffers, make predefined entities static structures, etc...
-   - rewrote all the error handling in the library, all errors can be
-    intercepted at a structured level, with precise information
-  available.
-   - New simpler and more generic XML and HTML parser APIs, allowing to
-    easilly modify the parsing options and reuse parser context for multiple
-    consecutive documents.
-   - Similar new APIs for the xmlReader, for options and reuse, provided new
-    functions to access content as const strings, use them for Python
-  bindings
-   - a  lot of other smaller API improvements: xmlStrPrintf (Aleksey Sanin),
-    Walker i.e. reader on a document tree based on Alfred Mickautsch code,
-    make room in nodes for line numbers, reference counting and future PSVI
-    extensions, generation of character ranges to be checked with faster
-    algorithm (William),  xmlParserMaxDepth (Crutcher Dunnavant), buffer
-    access
-   - New xmlWriter API provided by Alfred Mickautsch
-   - Schemas: base64 support by Anthony Carrico
-   - Parser&lt;-&gt;HTTP integration fix, proper processing of the Mime-Type
-    and charset informations if available.
-   - Relax-NG: bug fixes including the one reported by Martijn Faassen and
-    zeroOrMore, better error reporting.
-   - Python bindings (St&#xE9;phane Bidoul), never use stdout for errors
-  output
-   - Portability: all the headers have macros for export and calling
-    convention definitions (Igor Zlatkovic), VMS update (Craig A. Berry),
-    Windows: threads (Jesse Pelton), Borland compiler (Eric Zurcher,  Igor),
-    Mingw (Igor), typos (Mark Vakoc),  beta version (Stephane Bidoul),
-    warning cleanups on AIX and MIPS compilers (William Brack), BeOS (Marcin
-    'Shard' Konicki)
-   - Documentation fixes and README (William Brack), search fix (William),
-    tutorial updates (John Fleck), namespace docs (Stefan Kost)
-   - Bug fixes: xmlCleanupParser (Dave Beckett), threading uninitialized
-    mutexes, HTML doctype lowercase,  SAX/IO (William), compression detection
-    and restore (William), attribute declaration in DTDs (William), namespace
-    on attribute in HTML output (William), input filename (Rob Richards),
-    namespace DTD validation, xmlReplaceNode (Chris Ryland), I/O callbacks
-    (Markus Keim), CDATA serialization (Shaun McCance), xmlReader (Peter
-    Derr), high codepoint charref like &amp;#x10FFFF;, buffer access in push
-    mode (Justin Fletcher), TLS threads on Windows (Jesse Pelton), XPath bug
-    (William), xmlCleanupParser (Marc Liyanage), CDATA output (William), HTTP
-    error handling.
-   - xmllint options: --dtdvalidfpi for Tobias Reif, --sax1 for compat
-    testing,  --nodict for building without tree dictionnary, --nocdata to
-    replace CDATA by text, --nsclean to remove surperfluous  namespace
-    declarations
-   - added xml2-config --libtool-libs option from Kevin P. Fleming
-   - a lot of profiling and tuning of the code, speedup patch for
-    xmlSearchNs() by Luca Padovani. The xmlReader should do far less
-    allocation and it speed should get closer to SAX. Chris Anderson worked
-    on speeding and cleaning up repetitive checking code.
-   - cleanup of "make tests"
-   - libxml-2.0-uninstalled.pc from Malcolm Tredinnick
-   - deactivated the broken docBook SGML parser code and plugged the XML
-    parser instead.
+    <changes>   - Mostly bugfixes after the big 2.6.0 changes
+   - Unix compilation patches: libxml.m4 (Patrick Welche), warnings cleanup
+    (William Brack)
+   - Windows compilation patches (Joachim Bauch, Stephane Bidoul, Igor
+    Zlatkovic)
+   - xmlWriter bugfix (Alfred Mickautsch)
+   - chvalid.[ch]: couple of fixes from Stephane Bidoul
+   - context reset: error state reset, push parser reset (Graham Benett)
+   - context reuse: generate errors if file is not readable
+   - defaulted attributes for element coming from internal entities
+    (Stephane Bidoul)
+   - Python: tab and spaces mix (William Brack)
+   - Error handler could crash in DTD validation in 2.6.0
+   - xmlReader: do not use the document or element _private field
+   - testSAX.c: avoid a problem with some PIs (Massimo Morara)
+   - general bug fixes: mandatory encoding in text decl, serializing
+    Document Fragment nodes, xmlSearchNs 2.6.0 problem (Kasimier Buchcik),
+    XPath errors not reported,  slow HTML parsing of large documents.
 
 </changes>
   </product>

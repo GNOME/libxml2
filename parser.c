@@ -9092,7 +9092,7 @@ xmlParseExternalEntity(xmlDocPtr doc, xmlSAXHandlerPtr sax, void *user_data,
 }
 
 /**
- * xmlParseBalancedChunk:
+ * xmlParseBalancedChunkMemory:
  * @doc:  the document the chunk pertains to
  * @sax:  the SAX handler bloc (possibly NULL)
  * @user_data:  The user data returned on SAX callbacks (possibly NULL)

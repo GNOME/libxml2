@@ -621,12 +621,22 @@ unparsedEntityDecl(void *ctx, const xmlChar *name,
             name, publicId, systemId, notationName);
 #endif
     if (ctxt->validate && ctxt->wellFormed &&
-        ctxt->myDoc && ctxt->myDoc->intSubset)
+        ctxt->myDoc && ctxt->myDoc->extSubset)
 	ctxt->valid &= xmlValidateNotationUse(&ctxt->vctxt, ctxt->myDoc,
 	                                      notationName);
-    xmlAddDocEntity(ctxt->myDoc, name,
-                    XML_EXTERNAL_GENERAL_UNPARSED_ENTITY,
-		    publicId, systemId, notationName);
+    if (ctxt->inSubset == 1)
+	xmlAddDocEntity(ctxt->myDoc, name,
+			XML_EXTERNAL_GENERAL_UNPARSED_ENTITY,
+			publicId, systemId, notationName);
+    else if (ctxt->inSubset == 2)
+	xmlAddDtdEntity(ctxt->myDoc, name,
+			XML_EXTERNAL_GENERAL_UNPARSED_ENTITY,
+			publicId, systemId, notationName);
+    else {
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt, 
+	     "SAX.unparsedEntityDecl(%s) called while not in subset\n", name);
+    }
 }
 
 /**

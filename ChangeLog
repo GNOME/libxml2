@@ -1,4 +1,11 @@
+Tue May 14 13:00:48 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c: fixing an XPath function evalutation bug pointed out
+	  by Alexey Efimov where the context was lost when evaluating
+	  the function arguments
+
 Mon 13 May 2002 11:37:39 PM PDT Aleksey Sanin <aleksey@aleksey.com>
+
 	* xpath.c include/libxml/xpathInternals.h: maked xmlXPathNodeSetAddNs() 
 	  function public for XMLSec performance optimizations
 

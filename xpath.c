@@ -9861,11 +9861,17 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                 return (total);
             }
         case XPATH_OP_ARG:
+	    bakd = ctxt->context->doc;
+	    bak = ctxt->context->node;
             if (op->ch1 != -1)
                 total += xmlXPathCompOpEval(ctxt, &comp->steps[op->ch1]);
+	    ctxt->context->doc = bakd;
+	    ctxt->context->node = bak;
 	    CHECK_ERROR0;
             if (op->ch2 != -1)
                 total += xmlXPathCompOpEval(ctxt, &comp->steps[op->ch2]);
+	    ctxt->context->doc = bakd;
+	    ctxt->context->node = bak;
 	    CHECK_ERROR0;
             return (total);
         case XPATH_OP_PREDICATE:

@@ -1,3 +1,11 @@
+Fri Jan 28 00:57:04 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* bakefile/Readme.txt bakefile/Bakefiles.bkgen bakefile/libxml2.bkl:
+	  files for the Bakefile generator for Makefiles from Francesco
+	  Montorsi
+	* win32/configure.js: fixes for Windows compilation with non-default
+	  flags by Joel Reed
+
 Thu Jan 27 18:23:50 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: fixed xmlCopyDoc to also copy the doc->URL as pointed

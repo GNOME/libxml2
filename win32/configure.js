@@ -145,6 +145,7 @@ function usage()
 	txt += "  dynruntime: Use the dynamic RTL (only bcb) (" + dynruntime + ")\n";
 	txt += "  debug:      Build unoptimised debug executables (" + (buildDebug? "yes" : "no")  + ")\n";
 	txt += "  static:     Link xmllint statically to libxml2 (" + (buildStatic? "yes" : "no")  + ")\n";
+	txt += "              Note: automatically enabled if cruntime is not /MD or /MDd\n";
 	txt += "  prefix:     Base directory for the installation (" + buildPrefix + ")\n";
 	txt += "  bindir:     Directory where xmllint and friends should be installed\n";
 	txt += "              (" + buildBinPrefix + ")\n";
@@ -534,6 +535,14 @@ if (error != 0) {
 	usage();
 	WScript.Quit(error);
 }
+
+// if user choses to link the c-runtime library statically into libxml2
+// with /MT and friends, then we need to enable static linking for xmllint
+if (cruntime == "/MT" || cruntime == "/MTd" ||
+		cruntime == "/ML" || cruntime == "/MLd") {
+	buildStatic = 1;
+}
+
 dirSep = "\\";
 if (compiler == "mingw")
 	dirSep = "/";

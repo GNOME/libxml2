@@ -1135,8 +1135,7 @@ attribute(void *ctx ATTRIBUTE_UNUSED,
 void
 startElement(void *ctx, const xmlChar * fullname, const xmlChar ** atts)
 {
-    DEPRECATED("startElement")
-        xmlSAX2StartElement(ctx, fullname, atts);
+    xmlSAX2StartElement(ctx, fullname, atts);
 }
 
 /**

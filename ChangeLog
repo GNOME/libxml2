@@ -1,3 +1,7 @@
+Wed Dec 24 12:07:52 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* legacy.c: remove deprecated warning on startElement()
+
 Wed Dec 24 12:04:35 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xinclude.c result/XInclude/nodes2.*: XInclude xpointer support

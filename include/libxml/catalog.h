@@ -4,6 +4,9 @@
  * Reference:  SGML Open Technical Resolution TR9401:1997.
  *             http://www.jclark.com/sp/catalog.htm
  *
+ *             XML Catalogs Working Draft 12 Jun 2001
+ *             http://www.oasis-open.org/committees/entity/spec-2001-06-12.html
+ *
  * See Copyright for the status of this software.
  *
  * Daniel.Veillard@w3.org
@@ -20,6 +23,14 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+/**
+ * XML_CATALOGS_NAMESPACE:
+ *
+ * The namespace for the XML Catalogs elements
+ */
+#define XML_CATALOGS_NAMESPACE		\
+    (const xmlChar *) "urn:oasis:names:tc:entity:xmlns:xml:catalog"
 
 int		xmlLoadCatalog		(const char *URL);
 void		xmlLoadCatalogs		(const char *paths);

@@ -1833,9 +1833,7 @@ htmlNewDocNoDtD(const xmlChar *URI, const xmlChar *ExternalID) {
     cur->compression = 0;
     cur->ids = NULL;
     cur->refs = NULL;
-#ifndef XML_WITHOUT_CORBA
     cur->_private = NULL;
-#endif
     return(cur);
 }
 

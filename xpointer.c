@@ -26,9 +26,6 @@
 #include <libxml/uri.h>
 #include <libxml/xpath.h>
 #include <libxml/xpathInternals.h>
-#ifdef LIBXML_DEBUG_ENABLED
-#include <libxml/debugXML.h>
-#endif
 #include <libxml/xmlerror.h>
 
 #ifdef LIBXML_XPTR_ENABLED
@@ -37,6 +34,11 @@
 #define XPTR_XMLNS_SCHEME
 
 /* #define DEBUG_RANGES */
+#ifdef DEBUG_RANGES
+#ifdef LIBXML_DEBUG_ENABLED
+#include <libxml/debugXML.h>
+#endif
+#endif
 
 #define TODO 								\
     xmlGenericError(xmlGenericErrorContext,				\

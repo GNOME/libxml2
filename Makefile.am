@@ -263,7 +263,9 @@ XPathtests : testXPath
 	@echo "##"
 	@echo "## XPath regression tests"
 	@echo "##"
-	@(for i in $(srcdir)/test/XPath/expr/* ; do \
+	@(if [ "`$(top_builddir)/testXPath | grep 'support not compiled in'`" != "" ] ; \
+	  then echo Skipping debug not compiled in ; exit 0 ; fi ; \
+	  for i in $(srcdir)/test/XPath/expr/* ; do \
 	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/result/XPath/expr/$$name ] ; then \
@@ -276,8 +278,8 @@ XPathtests : testXPath
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	      diff $(srcdir)/result/XPath/expr/$$name result.$$name ; \
 	      rm result.$$name ; \
-	  fi ; fi ; done)
-	@(for i in $(srcdir)/test/XPath/docs/* ; do \
+	  fi ; fi ; done ; \
+	  for i in $(srcdir)/test/XPath/docs/* ; do \
 	  if [ ! -d $$i ] ; then \
 	  doc=`basename $$i`; \
 	  for j in $(srcdir)/test/XPath/tests/$$doc* ; do \
@@ -301,7 +303,9 @@ XPtrtests : testXPath
 	@echo "##"
 	@echo "## XPointer regression tests"
 	@echo "##"
-	@(for i in $(srcdir)/test/XPath/docs/* ; do \
+	@(if [ "`$(top_builddir)/testXPath | grep 'support not compiled in'`" != "" ] ; \
+	  then echo Skipping debug not compiled in ; exit 0 ; fi ; \
+	  for i in $(srcdir)/test/XPath/docs/* ; do \
 	  if [ ! -d $$i ] ; then \
 	  doc=`basename $$i`; \
 	  for j in $(srcdir)/test/XPath/xptr/$$doc* ; do \

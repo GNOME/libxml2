@@ -26,6 +26,7 @@ int main(int argc, char **argv) {
 
     xmlCatalogDump(stdout);
     xmlCatalogCleanup();
+    xmlCleanupParser();
     xmlMemoryDump();
 #endif
     return(0);

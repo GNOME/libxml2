@@ -10,6 +10,7 @@
 #ifndef __XML_XPATH_INTERNALS_H__
 #define __XML_XPATH_INTERNALS_H__
 
+#include <libxml/xmlversion.h>
 #include <libxml/xpath.h>
 
 #ifdef __cplusplus
@@ -208,13 +209,12 @@ xmlChar *	  xmlXPathParseNCName		(xmlXPathParserContextPtr ctxt);
  * Debug
  */
 #ifdef LIBXML_DEBUG_ENABLED
-double xmlXPathStringEvalNumber(const xmlChar *str);
 void xmlXPathDebugDumpObject(FILE *output, xmlXPathObjectPtr cur, int depth);
 #endif
 /*
  * Existing functions
  */
-
+double xmlXPathStringEvalNumber(const xmlChar *str);
 int xmlXPathEvaluatePredicateResult(xmlXPathParserContextPtr ctxt, 
                                     xmlXPathObjectPtr res);
 void xmlXPathInit(void);

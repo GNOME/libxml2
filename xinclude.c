@@ -23,9 +23,6 @@
 #include <libxml/uri.h>
 #include <libxml/xpointer.h>
 #include <libxml/parserInternals.h>
-#ifdef LIBXML_DEBUG_ENABLED
-#include <libxml/debugXML.h>
-#endif
 #include <libxml/xmlerror.h>
 
 #ifdef LIBXML_XINCLUDE_ENABLED
@@ -39,6 +36,11 @@
 #define XINCLUDE_PARSE_TEXT (const xmlChar *) "text"
 
 /* #define DEBUG_XINCLUDE  */
+#ifdef DEBUG_XINCLUDE
+#ifdef LIBXML_DEBUG_ENABLED
+#include <libxml/debugXML.h>
+#endif
+#endif
 
 /************************************************************************
  *									*

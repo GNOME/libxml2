@@ -555,7 +555,7 @@ xmlXPathDebugDumpLocationSet(FILE *output, xmlLocationSetPtr cur, int depth) {
 	xmlXPathDebugDumpObject(output, cur->locTab[i], depth + 1);
     }
 }
-#endif
+#endif /* LIBXML_XPTR_ENABLED */
 
 /**
  * xmlXPathDebugDumpObject:
@@ -863,7 +863,7 @@ xmlXPathDebugDumpCompExpr(FILE *output, xmlXPathCompExprPtr comp,
     i = comp->last;
     xmlXPathDebugDumpStepOp(output, comp, &comp->steps[i], depth + 1);
 }
-#endif
+#endif /* LIBXML_DEBUG_ENABLED */
 
 /************************************************************************
  *									*

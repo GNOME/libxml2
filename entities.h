@@ -35,9 +35,7 @@ typedef enum {
 typedef struct _xmlEntity xmlEntity;
 typedef xmlEntity *xmlEntityPtr;
 struct _xmlEntity {
-#ifndef XML_WITHOUT_CORBA
     void           *_private;	        /* for Corba, must be first ! */
-#endif
     xmlElementType          type;       /* XML_ENTITY_DECL, must be second ! */
     const xmlChar          *name;	/* Attribute name */
     struct _xmlNode    *children;	/* NULL */

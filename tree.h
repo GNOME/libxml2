@@ -144,9 +144,7 @@ struct _xmlEnumeration {
 typedef struct _xmlAttribute xmlAttribute;
 typedef xmlAttribute *xmlAttributePtr;
 struct _xmlAttribute {
-#ifndef XML_WITHOUT_CORBA
     void           *_private;	        /* for Corba, must be first ! */
-#endif
     xmlElementType          type;       /* XML_ATTRIBUTE_DECL, must be second ! */
     const xmlChar          *name;	/* Attribute name */
     struct _xmlNode    *children;	/* NULL */
@@ -230,9 +228,7 @@ typedef enum {
 typedef struct _xmlElement xmlElement;
 typedef xmlElement *xmlElementPtr;
 struct _xmlElement {
-#ifndef XML_WITHOUT_CORBA
     void           *_private;	        /* for Corba, must be first ! */
-#endif
     xmlElementType          type;       /* XML_ELEMENT_DECL, must be second ! */
     const xmlChar          *name;	/* Element name */
     struct _xmlNode    *children;	/* NULL */
@@ -281,9 +277,7 @@ struct _xmlNs {
 typedef struct _xmlDtd xmlDtd;
 typedef xmlDtd *xmlDtdPtr;
 struct _xmlDtd {
-#ifndef XML_WITHOUT_CORBA
     void           *_private;	/* for Corba, must be first ! */
-#endif
     xmlElementType  type;       /* XML_DTD_NODE, must be second ! */
     const xmlChar *name;	/* Name of the DTD */
     struct _xmlNode *children;	/* the value of the property link */
@@ -311,9 +305,7 @@ struct _xmlDtd {
 typedef struct _xmlAttr xmlAttr;
 typedef xmlAttr *xmlAttrPtr;
 struct _xmlAttr {
-#ifndef XML_WITHOUT_CORBA
     void           *_private;	/* for Corba, must be first ! */
-#endif
     xmlElementType   type;      /* XML_ATTRIBUTE_NODE, must be second ! */
     const xmlChar   *name;      /* the name of the property */
     struct _xmlNode *children;	/* the value of the property */
@@ -388,9 +380,7 @@ struct _xmlBuffer {
 typedef struct _xmlNode xmlNode;
 typedef xmlNode *xmlNodePtr;
 struct _xmlNode {
-#ifndef XML_WITHOUT_CORBA
     void           *_private;	/* for Corba, must be first ! */
-#endif
     xmlElementType   type;	/* type number, must be second ! */
     const xmlChar   *name;      /* the name of the node, or the entity */
     struct _xmlNode *children;	/* parent->childs link */
@@ -419,9 +409,7 @@ struct _xmlNode {
 typedef struct _xmlDoc xmlDoc;
 typedef xmlDoc *xmlDocPtr;
 struct _xmlDoc {
-#ifndef XML_WITHOUT_CORBA
     void           *_private;	/* for Corba, must be first ! */
-#endif
     xmlElementType  type;       /* XML_DOCUMENT_NODE, must be second ! */
     char           *name;	/* name/filename/URI of the document */
     struct _xmlNode *children;	/* the document tree */

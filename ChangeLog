@@ -1,3 +1,8 @@
+Mon Apr 23 11:05:56 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* HTMLtree.c: applied change for Paul Sponagl on script saving
+	* Makefile.am: the warning about entity title.xml are normal.
+
 Sun Apr 22 22:09:35 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* configure.in: release of 2.3.7

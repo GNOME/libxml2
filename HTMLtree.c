@@ -493,6 +493,16 @@ htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
 	}
 	return;
     }
+    if (cur->type == HTML_PRESERVE_NODE) {
+	if (cur->content != NULL) {
+#ifndef XML_USE_BUFFER_CONTENT
+	    xmlBufferWriteCHAR(buf, cur->content);
+#else
+	    xmlBufferWriteCHAR(buf, xmlBufferContent(cur->content));
+#endif
+	}
+	return;
+    }
     if (cur->type == HTML_COMMENT_NODE) {
 	if (cur->content != NULL) {
 	    xmlBufferWriteChar(buf, "<!--");
@@ -577,17 +587,9 @@ htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
 	xmlBufferWriteCHAR(buf, cur->name);
 	xmlBufferWriteChar(buf, ">");
     }
-#if 0
-    if (!htmlIsAutoClosed(doc, cur)) {
-	xmlBufferWriteChar(buf, "</");
-	xmlBufferWriteCHAR(buf, cur->name);
-	xmlBufferWriteChar(buf, ">");
-    }
-#else
     xmlBufferWriteChar(buf, "</");
     xmlBufferWriteCHAR(buf, cur->name);
     xmlBufferWriteChar(buf, ">");
-#endif
     if (cur->next != NULL) {
         if ((cur->next->type != HTML_TEXT_NODE) &&
 	    (cur->next->type != HTML_ENTITY_REF_NODE))
@@ -947,17 +949,9 @@ htmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
 	    (cur->children != cur->last))
 	    xmlOutputBufferWriteString(buf, "\n");
     }
-#if 0
-    if (!htmlIsAutoClosed(doc, cur)) {
-	xmlOutputBufferWriteString(buf, "</");
-	xmlOutputBufferWriteString(buf, (const char *)cur->name);
-	xmlOutputBufferWriteString(buf, ">");
-    }
-#else
     xmlOutputBufferWriteString(buf, "</");
     xmlOutputBufferWriteString(buf, (const char *)cur->name);
     xmlOutputBufferWriteString(buf, ">");
-#endif
     if (cur->next != NULL) {
         if ((cur->next->type != HTML_TEXT_NODE) &&
 	    (cur->next->type != HTML_ENTITY_REF_NODE))
@@ -984,13 +978,6 @@ htmlDocContentDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr cur, const char *enco
     cur->type = XML_HTML_DOCUMENT_NODE;
     if (cur->intSubset != NULL) {
         htmlDtdDumpOutput(buf, cur, NULL);
-#if 0
-    /* Disabled for XSLT output */
-    } else {
-	/* Default to HTML-4.0 transitionnal @@@@ */
-	xmlOutputBufferWriteString(buf, "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/REC-html40/loose.dtd\">\n");
-
-#endif
     }
     if (cur->children != NULL) {
         htmlNodeListDumpOutput(buf, cur, cur->children, encoding);

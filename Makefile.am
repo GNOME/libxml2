@@ -149,6 +149,8 @@ XMLtests : xmllint
 	@echo "##"
 	@echo "## XML regression tests"
 	@echo "##"
+	@echo "## You should see one warning on entity 'title.xml' for ent2"
+	@echo "##"
 	@(for i in $(srcdir)/test/* ; do \
 	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \
@@ -165,6 +167,8 @@ XMLtests : xmllint
 	  fi ; fi ; done)
 	@echo "##"
 	@echo "## XML regression tests on memory"
+	@echo "##"
+	@echo "## You should see two warnings on entity 'title.xml' for ent2"
 	@echo "##"
 	@(for i in $(srcdir)/test/* ; do \
 	  name=`basename $$i`; \

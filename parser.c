@@ -5474,6 +5474,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 			    (ent->children == NULL)) {
 			    ent->children = list;
 			    ent->last = list;
+			    ent->owner = 1;
 			    list->parent = (xmlNodePtr) ent;
 			} else {
 			    xmlFreeNodeList(list);
@@ -5539,7 +5540,9 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 				    (list->next == NULL)) {
 				    list->parent = (xmlNodePtr) ent;
 				    list = NULL;
+				    ent->owner = 1;
 				} else {
+				    ent->owner = 0;
 				    while (list != NULL) {
 					list->parent = (xmlNodePtr) ctxt->node;
 					list->doc = ctxt->myDoc;
@@ -5552,6 +5555,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 				      xmlAddEntityReference(ent, list, NULL);
 				}
 			    } else {
+				ent->owner = 1;
 				while (list != NULL) {
 				    list->parent = (xmlNodePtr) ent;
 				    if (list->next == NULL)

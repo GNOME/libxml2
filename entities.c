@@ -48,7 +48,7 @@ static xmlHashTablePtr xmlPredefinedEntities = NULL;
 static void xmlFreeEntity(xmlEntityPtr entity) {
     if (entity == NULL) return;
 
-    if ((entity->children) &&
+    if ((entity->children) && (entity->owner == 1) &&
 	(entity == (xmlEntityPtr) entity->children->parent))
 	xmlFreeNodeList(entity->children);
     if (entity->name != NULL)
@@ -127,6 +127,7 @@ xmlAddEntity(xmlDtdPtr dtd, const xmlChar *name, int type,
     ret->URI = NULL; /* to be computed by the layer knowing
 			the defining entity */
     ret->orig = NULL;
+    ret->owner = 0;
 
     if (xmlHashAddEntry(table, name, ret)) {
 	/*
@@ -847,6 +848,20 @@ xmlCreateEntitiesTable(void) {
 }
 
 /**
+ * xmlFreeEntityWrapper:
+ * @entity:  An entity
+ * @name:  its name
+ *
+ * Deallocate the memory used by an entities in the hash table.
+ */
+static void
+xmlFreeEntityWrapper(xmlEntityPtr entity,
+	               const xmlChar *name ATTRIBUTE_UNUSED) {
+    if (entity != NULL)
+	xmlFreeEntity(entity);
+}
+
+/**
  * xmlFreeEntitiesTable:
  * @table:  An entity table
  *
@@ -854,7 +869,7 @@ xmlCreateEntitiesTable(void) {
  */
 void
 xmlFreeEntitiesTable(xmlEntitiesTablePtr table) {
-    xmlHashFree(table, (xmlHashDeallocator) xmlFreeEntity);
+    xmlHashFree(table, (xmlHashDeallocator) xmlFreeEntityWrapper);
 }
 
 /**

@@ -837,6 +837,7 @@ xmlStringGetNodeList(xmlDocPtr doc, const xmlChar *value) {
 
 			    ent->children = xmlStringGetNodeList(doc,
 				    (const xmlChar*)node->content);
+			    ent->owner = 1;
 			    temp = ent->children;
 			    while (temp) {
 				temp->parent = (xmlNodePtr)ent;

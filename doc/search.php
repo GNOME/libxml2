@@ -124,7 +124,7 @@ A:link, A:visited, A:active { text-decoration: underline }
         $result = NULL;
 	$j = 0;
         if ($word) {
-	    $result = mysql_query ("SELECT words.relevance, symbols.name, symbols.type, symbols.module, symbols.descr FROM words, symbols WHERE LCASE(words.name) LIKE LCASE('$word') and words.symbol = symbols.name ORDER BY words.relevance DESC");
+	    $result = mysql_query ("SELECT words.relevance, symbols.name, symbols.type, symbols.module, symbols.descr FROM words, symbols WHERE LCASE(words.name) LIKE LCASE('$word') and words.symbol = symbols.name ORDER BY words.relevance DESC LIMIT 75");
 	    if ($result) {
 		$j = mysql_num_rows($result);
 		if ($j == 0) 
@@ -138,7 +138,7 @@ A:link, A:visited, A:active { text-decoration: underline }
         $result = NULL;
 	$j = 0;
         if ($word) {
-	    $result = mysql_query ("SELECT relevance, name, id, resource, section FROM wordsHTML WHERE LCASE(name) LIKE LCASE('$word') ORDER BY relevance DESC");
+	    $result = mysql_query ("SELECT relevance, name, id, resource, section FROM wordsHTML WHERE LCASE(name) LIKE LCASE('$word') ORDER BY relevance DESC LIMIT 75");
 	    if ($result) {
 		$j = mysql_num_rows($result);
 		if ($j == 0) 
@@ -152,7 +152,7 @@ A:link, A:visited, A:active { text-decoration: underline }
         $result = NULL;
 	$j = 0;
         if ($word) {
-	    $result = mysql_query ("SELECT wordsArchive.relevance, wordsArchive.name, 'mailing-list', archives.resource, archives.title FROM wordsArchive, archives WHERE LCASE(name) LIKE LCASE('$word') and wordsArchive.ID = archives.ID ORDER BY relevance DESC");
+	    $result = mysql_query ("SELECT wordsArchive.relevance, wordsArchive.name, 'mailing-list', archives.resource, archives.title FROM wordsArchive, archives WHERE LCASE(name) LIKE LCASE('$word') and wordsArchive.ID = archives.ID ORDER BY relevance DESC LIMIT 75");
 	    if ($result) {
 		$j = mysql_num_rows($result);
 		if ($j == 0) 

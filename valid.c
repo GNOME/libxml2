@@ -561,6 +561,10 @@ xmlValidBuildAContentModel(xmlElementContentPtr content,
 	     */
 	    oldstate = ctxt->state;
 	    ocur = content->ocur;
+	    if (ocur != XML_ELEMENT_CONTENT_ONCE) {
+		ctxt->state = xmlAutomataNewEpsilon(ctxt->am, oldstate, NULL);
+		oldstate = ctxt->state;
+	    }
 	    do {
 		xmlValidBuildAContentModel(content->c1, ctxt, name);
 		content = content->c2;

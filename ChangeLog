@@ -1,3 +1,7 @@
+Mon Feb 24 20:53:17 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* valid.c: fixes a DTD regexp generation problem.
+
 Mon Feb 24 20:12:57 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: fixes bug #105998 about false detection of

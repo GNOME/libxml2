@@ -1966,8 +1966,15 @@ xmlXPathNsLookup(xmlXPathContextPtr ctxt, const xmlChar *prefix) {
 	return(XML_XML_NAMESPACE);
 #endif
 
-    if (ctxt->nsHash == NULL)
-	return(NULL);
+    if (ctxt->namespaces != NULL) {
+	int i;
+
+	for (i = 0;i < ctxt->nsNr;i++) {
+	    if ((ctxt->namespaces[i] != NULL) &&
+		(xmlStrEqual(ctxt->namespaces[i]->prefix, prefix)))
+		return(ctxt->namespaces[i]->href);
+	}
+    }
 
     return((const xmlChar *) xmlHashLookup(ctxt->nsHash, prefix));
 }

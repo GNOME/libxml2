@@ -1,3 +1,8 @@
+Mon Apr 30 22:29:34 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xpath.c: fix of an XSLT namespace bug reported on the list
+	  general/bug-8-
+
 Mon Apr 30 19:42:58 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* strio.h trio.c: Dan McNichol suggested a couple of small

@@ -1,3 +1,7 @@
+Thu Jun  7 17:29:38 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* configure.in: added tests for signal() and signal.h
+
 Fri Jun  8 10:17:15 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xpath.c: robert pointed out xmlXPathNINF was not initialized

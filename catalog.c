@@ -1225,6 +1225,7 @@ xmlParseXMLCatalogNode(xmlNodePtr cur, xmlCatalogPrefer prefer,
 	prop = xmlGetProp(cur, BAD_CAST "id");
 	base = xmlGetNsProp(cur, BAD_CAST "base", XML_XML_NAMESPACE);
 	entry = xmlNewCatalogEntry(XML_CATA_GROUP, prop, base, NULL, pref, cgroup);
+	xmlFree(prop);
     } else if (xmlStrEqual(cur->name, BAD_CAST "public")) {
 	entry = xmlParseXMLCatalogOneNode(cur, XML_CATA_PUBLIC,
 		BAD_CAST "public", BAD_CAST "publicId", BAD_CAST "uri", prefer, cgroup);

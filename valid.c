@@ -33,8 +33,90 @@
 	    "Unimplemented block at %s:%d\n",				\
             __FILE__, __LINE__);
 
+#define VERROR							\
+   if ((ctxt != NULL) && (ctxt->error != NULL)) ctxt->error
 
-#ifndef LIBXML_REGEXP_ENABLED
+#define VWARNING						\
+   if ((ctxt != NULL) && (ctxt->warning != NULL)) ctxt->warning
+
+
+#ifdef LIBXML_REGEXP_ENABLED
+/*
+ * If regexp are enabled we can do continuous validation without the
+ * need of a tree to validate the content model. this is done in each
+ * callbacks.
+ * Each xmlValidState represent the validation state associated to the
+ * set of nodes currently open from the document root to the current element.
+ */
+
+
+typedef struct _xmlValidState {
+    xmlElementPtr	 elemDecl;	/* pointer to the content model */
+    xmlNodePtr           node;		/* pointer to the current node */
+    xmlRegExecCtxtPtr    exec;		/* regexp runtime */
+} _xmlValidState;
+
+
+static int
+vstateVPush(xmlValidCtxtPtr ctxt, xmlElementPtr elemDecl, xmlNodePtr node) {
+    if (ctxt->vstateMax == 0) {
+	ctxt->vstateMax = 10;
+	ctxt->vstateTab = (xmlValidState *) xmlMalloc(ctxt->vstateMax *
+		              sizeof(ctxt->vstateTab[0]));
+        if (ctxt->vstateTab == NULL) {
+	    VERROR(ctxt->userData, "realloc failed !n");
+	    return(-1);
+	}
+    }
+
+    if (ctxt->vstateNr >= ctxt->vstateMax) {
+	ctxt->vstateMax *= 2;
+        ctxt->vstateTab = (xmlValidState *) xmlRealloc(ctxt->vstateTab,
+	             ctxt->vstateMax * sizeof(ctxt->vstateTab[0]));
+        if (ctxt->vstateTab == NULL) {
+	    VERROR(ctxt->userData, "realloc failed !n");
+	    return(-1);
+	}
+    }
+    ctxt->vstate = &ctxt->vstateTab[ctxt->vstateNr];
+    ctxt->vstateTab[ctxt->vstateNr].elemDecl = elemDecl;
+    ctxt->vstateTab[ctxt->vstateNr].node = node;
+    if ((elemDecl != NULL) && (elemDecl->etype == XML_ELEMENT_TYPE_ELEMENT)) {
+	if (elemDecl->contModel == NULL)
+	    xmlValidBuildContentModel(ctxt, elemDecl);
+	if (elemDecl->contModel != NULL) {
+	    ctxt->vstateTab[ctxt->vstateNr].exec = 
+		xmlRegNewExecCtxt(elemDecl->contModel, NULL, NULL);
+	} else {
+	    ctxt->vstateTab[ctxt->vstateNr].exec = NULL;
+	    VERROR(ctxt->userData,
+		   "Failed to build content model regexp for %s", node->name);
+	}
+    }
+    return(ctxt->vstateNr++);
+}
+
+static int
+vstateVPop(xmlValidCtxtPtr ctxt) {
+    xmlElementPtr elemDecl;
+
+    if (ctxt->vstateNr <= 1) return(-1);
+    ctxt->vstateNr--;
+    elemDecl = ctxt->vstateTab[ctxt->vstateNr].elemDecl;
+    ctxt->vstateTab[ctxt->vstateNr].elemDecl = NULL;
+    ctxt->vstateTab[ctxt->vstateNr].node = NULL;
+    if ((elemDecl != NULL) && (elemDecl->etype == XML_ELEMENT_TYPE_ELEMENT)) {
+	xmlRegFreeExecCtxt(ctxt->vstateTab[ctxt->vstateNr].exec);
+    }
+    ctxt->vstateTab[ctxt->vstateNr].exec = NULL;
+    if (ctxt->vstateNr >= 1)
+	ctxt->vstate = &ctxt->vstateTab[ctxt->vstateNr - 1];
+    else
+	ctxt->vstate = NULL;
+    return(ctxt->vstateNr);
+}
+
+#else /* not LIBXML_REGEXP_ENABLED */
 /*
  * If regexp are not enabled, it uses a home made algorithm less
  * complex and easier to
@@ -345,12 +427,6 @@ xmlValidStateDebug(xmlValidCtxtPtr ctxt) {
 	   ctxt->warning(ctxt->userData, ":%d: ", 		\
 		       (int) (long) node->content);		\
    }
-
-#define VERROR							\
-   if ((ctxt != NULL) && (ctxt->error != NULL)) ctxt->error
-
-#define VWARNING						\
-   if ((ctxt != NULL) && (ctxt->warning != NULL)) ctxt->warning
 
 #define CHECK_DTD						\
    if (doc == NULL) return(0);					\
@@ -2079,6 +2155,8 @@ xmlFreeID(xmlIDPtr id) {
     if (id == NULL) return;
     if (id->value != NULL)
 	xmlFree((xmlChar *) id->value);
+    if (id->name != NULL)
+	xmlFree((xmlChar *) id->name);
     xmlFree(id);
 }
 
@@ -2138,7 +2216,17 @@ xmlAddID(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const xmlChar *value,
      * fill the structure.
      */
     ret->value = xmlStrdup(value);
-    ret->attr = attr;
+    if ((ctxt != NULL) && (ctxt->vstateNr != 0)) {
+	/*
+	 * Operating in streaming mode, attr is gonna disapear
+	 */
+	ret->name = xmlStrdup(attr->name);
+	ret->attr = NULL;
+    } else {
+	ret->attr = attr;
+	ret->name = NULL;
+    }
+    ret->lineno = xmlGetLineNo(attr->parent);
 
     if (xmlHashAddEntry(table, value, ret) < 0) {
 	/*
@@ -2292,6 +2380,13 @@ xmlGetID(xmlDocPtr doc, const xmlChar *ID) {
     id = xmlHashLookup(table, ID);
     if (id == NULL)
 	return(NULL);
+    if (id->attr == NULL) {
+	/*
+	 * We are operating on a stream, return a well known reference
+	 * since the attribute node doesn't exist anymore
+	 */
+	return((xmlAttrPtr) doc);
+    }
     return(id->attr);
 }
 
@@ -2341,6 +2436,8 @@ xmlFreeRef(xmlLinkPtr lk) {
     if (ref == NULL) return;
     if (ref->value != NULL)
         xmlFree((xmlChar *)ref->value);
+    if (ref->name != NULL)
+        xmlFree((xmlChar *)ref->name);
     xmlFree(ref);
 }
 
@@ -2434,7 +2531,17 @@ xmlAddRef(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED, xmlDocPtr doc, const xmlChar *v
      * fill the structure.
      */
     ret->value = xmlStrdup(value);
-    ret->attr = attr;
+    if ((ctxt != NULL) && (ctxt->vstateNr != 0)) {
+	/*
+	 * Operating in streaming mode, attr is gonna disapear
+	 */
+	ret->name = xmlStrdup(attr->name);
+	ret->attr = NULL;
+    } else {
+	ret->name = NULL;
+	ret->attr = attr;
+    }
+    ret->lineno = xmlGetLineNo(attr->parent);
 
     /* To add a reference :-
      * References are maintained as a list of references,
@@ -4601,7 +4708,7 @@ xmlValidateElementContent(xmlValidCtxtPtr ctxt, xmlNodePtr child,
 			ret = 0;
 			goto fail;
 		    case XML_CDATA_SECTION_NODE:
-			TODO
+			/* TODO */
 			ret = 0;
 			goto fail;
 		    case XML_ELEMENT_NODE:
@@ -4897,6 +5004,311 @@ done:
 }
 
 /**
+ * xmlValidateCheckMixed:
+ * @ctxt:  the validation context
+ * @cont:  the mixed content model
+ * @qname:  the qualified name as appearing in the serialization
+ *
+ * Check if the given node is part of the content model.
+ *
+ * Returns 1 if yes, 0 if no, -1 in case of error
+ */
+static int
+xmlValidateCheckMixed(xmlValidCtxtPtr ctxt  ATTRIBUTE_UNUSED,
+	              xmlElementContentPtr cont, const xmlChar *qname) {
+    while (cont != NULL) {
+	if (cont->type == XML_ELEMENT_CONTENT_ELEMENT) {
+	    if (xmlStrEqual(cont->name, qname))
+		return(1);
+	} else if ((cont->type == XML_ELEMENT_CONTENT_OR) &&
+	   (cont->c1 != NULL) &&
+	   (cont->c1->type == XML_ELEMENT_CONTENT_ELEMENT)){
+	    if (xmlStrEqual(cont->c1->name, qname))
+		return(1);
+	} else if ((cont->type != XML_ELEMENT_CONTENT_OR) ||
+	    (cont->c1 == NULL) ||
+	    (cont->c1->type != XML_ELEMENT_CONTENT_PCDATA)){
+	    /* Internal error !!! */
+	    xmlGenericError(xmlGenericErrorContext,
+		    "Internal: MIXED struct bad\n");
+	    break;
+	}
+	cont = cont->c2;
+    }
+    return(0);
+}
+
+/**
+ * xmlValidGetElemDecl:
+ * @ctxt:  the validation context
+ * @doc:  a document instance
+ * @elem:  an element instance
+ * @extsubset:  pointer, (out) indicate if the declaration was found
+ *              in the external subset.
+ *
+ * Finds a declaration associated to an element in the document.
+ *
+ * returns the pointer to the declaration or NULL if not found.
+ */
+static xmlElementPtr
+xmlValidGetElemDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
+	            xmlNodePtr elem, int *extsubset) {
+    xmlElementPtr elemDecl = NULL;
+    const xmlChar *prefix = NULL;
+
+    if ((elem == NULL) || (elem->name == NULL)) return(NULL);
+    if (extsubset != NULL)
+	*extsubset = 0;
+
+    /*
+     * Fetch the declaration for the qualified name
+     */
+    if ((elem->ns != NULL) && (elem->ns->prefix != NULL))
+	prefix = elem->ns->prefix;
+
+    if (prefix != NULL) {
+	elemDecl = xmlGetDtdQElementDesc(doc->intSubset,
+		                         elem->name, prefix);
+	if ((elemDecl == NULL) && (doc->extSubset != NULL)) {
+	    elemDecl = xmlGetDtdQElementDesc(doc->extSubset,
+		                             elem->name, prefix);
+	    if ((elemDecl != NULL) && (extsubset != NULL))
+		*extsubset = 1;
+	}
+    }
+
+    /*
+     * Fetch the declaration for the non qualified name
+     * This is "non-strict" validation should be done on the
+     * full QName but in that case being flexible makes sense.
+     */
+    if (elemDecl == NULL) {
+	elemDecl = xmlGetDtdElementDesc(doc->intSubset, elem->name);
+	if ((elemDecl == NULL) && (doc->extSubset != NULL)) {
+	    elemDecl = xmlGetDtdElementDesc(doc->extSubset, elem->name);
+	    if ((elemDecl != NULL) && (extsubset != NULL))
+		*extsubset = 1;
+	}
+    }
+    if (elemDecl == NULL) {
+	VECTXT(ctxt, elem);
+	VERROR(ctxt->userData, "No declaration for element %s\n",
+	       elem->name);
+    }
+    return(elemDecl);
+}
+
+/**
+ * xmlValidatePushElement:
+ * @ctxt:  the validation context
+ * @doc:  a document instance
+ * @elem:  an element instance
+ * @qname:  the qualified name as appearing in the serialization
+ *
+ * Push a new element start on the validation stack.
+ *
+ * returns 1 if no validation problem was found or 0 otherwise
+ */
+int
+xmlValidatePushElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
+                       xmlNodePtr elem, const xmlChar *qname) {
+    int ret = 1;
+    xmlElementPtr eDecl;
+    int extsubset = 0;
+
+    if ((ctxt->vstateNr > 0) && (ctxt->vstate != NULL)) {
+	xmlValidStatePtr state = ctxt->vstate;
+	xmlElementPtr elemDecl;
+
+	/*
+	 * Check the new element agaisnt the content model of the new elem.
+	 */
+	if (state->elemDecl != NULL) {
+	    elemDecl = state->elemDecl;
+
+	    switch(elemDecl->etype) {
+		case XML_ELEMENT_TYPE_UNDEFINED:
+		    ret = 0;
+		    break;
+		case XML_ELEMENT_TYPE_EMPTY:
+		    VECTXT(ctxt, state->node);
+		    VERROR(ctxt->userData,
+	       "Element %s was declared EMPTY this one has content\n",
+			   state->node->name);
+		    ret = 0;
+		    break;
+		case XML_ELEMENT_TYPE_ANY:
+		    /* I don't think anything is required then */
+		    break;
+		case XML_ELEMENT_TYPE_MIXED:
+		    /* simple case of declared as #PCDATA */
+		    if ((elemDecl->content != NULL) &&
+			(elemDecl->content->type ==
+			 XML_ELEMENT_CONTENT_PCDATA)) {
+			VECTXT(ctxt, state->node);
+			VERROR(ctxt->userData,
+	       "Element %s was declared #PCDATA but contains non text nodes\n",
+				state->node->name);
+			ret = 0;
+		    } else {
+			ret = xmlValidateCheckMixed(ctxt, elemDecl->content,
+				                    qname);
+			if (ret != 1) {
+			    VECTXT(ctxt, state->node);
+			    VERROR(ctxt->userData,
+	       "Element %s is not declared in %s list of possible children\n",
+				    qname, state->node->name);
+			}
+		    }
+		    break;
+		case XML_ELEMENT_TYPE_ELEMENT:
+		    /*
+		     * TODO:
+		     * VC: Standalone Document Declaration
+		     *     - element types with element content, if white space
+		     *       occurs directly within any instance of those types.
+		     */
+		    if (state->exec != NULL) {
+			ret = xmlRegExecPushString(state->exec, qname, NULL);
+			if (ret < 0) {
+			    VECTXT(ctxt, state->node);
+			    VERROR(ctxt->userData,
+	       "Element %s content does not follow the DTD\nMisplaced %s\n",
+				   state->node->name, qname);
+			    ret = 0;
+			} else {
+			    ret = 1;
+			}
+		    }
+		    break;
+	    }
+	}
+    }
+    eDecl = xmlValidGetElemDecl(ctxt, doc, elem, &extsubset);
+    vstateVPush(ctxt, eDecl, elem);
+    return(ret);
+}
+
+/**
+ * xmlValidatePushCData:
+ * @ctxt:  the validation context
+ * @data:  some character data read
+ * @len:  the lenght of the data
+ *
+ * check the CData parsed for validation in the current stack
+ *
+ * returns 1 if no validation problem was found or 0 otherwise
+ */
+int
+xmlValidatePushCData(xmlValidCtxtPtr ctxt, const xmlChar *data, int len) {
+    int ret = 1;
+
+    if (len <= 0)
+	return(ret);
+    if ((ctxt->vstateNr > 0) && (ctxt->vstate != NULL)) {
+	xmlValidStatePtr state = ctxt->vstate;
+	xmlElementPtr elemDecl;
+
+	/*
+	 * Check the new element agaisnt the content model of the new elem.
+	 */
+	if (state->elemDecl != NULL) {
+	    elemDecl = state->elemDecl;
+
+	    switch(elemDecl->etype) {
+		case XML_ELEMENT_TYPE_UNDEFINED:
+		    ret = 0;
+		    break;
+		case XML_ELEMENT_TYPE_EMPTY:
+		    VECTXT(ctxt, state->node);
+		    VERROR(ctxt->userData,
+	       "Element %s was declared EMPTY this one has content\n",
+			   state->node->name);
+		    ret = 0;
+		    break;
+		case XML_ELEMENT_TYPE_ANY:
+		    break;
+		case XML_ELEMENT_TYPE_MIXED:
+		    break;
+		case XML_ELEMENT_TYPE_ELEMENT:
+		    if (len > 0) {
+			int i;
+
+			for (i = 0;i < len;i++) {
+			    if (!IS_BLANK(data[i])) {
+				VECTXT(ctxt, state->node);
+				VERROR(ctxt->userData,
+	   "Element %s content does not follow the DTD\nText not allowed\n",
+				       state->node->name);
+				ret = 0;
+				goto done;
+			    }
+			}
+			/*
+			 * TODO:
+			 * VC: Standalone Document Declaration
+			 *  element types with element content, if white space
+			 *  occurs directly within any instance of those types.
+			 */
+		    }
+		    break;
+	    }
+	}
+    }
+done:
+    return(ret);
+}
+
+/**
+ * xmlValidatePopElement:
+ * @ctxt:  the validation context
+ * @doc:  a document instance
+ * @elem:  an element instance
+ * @qname:  the qualified name as appearing in the serialization
+ *
+ * Pop the element end from the validation stack.
+ *
+ * returns 1 if no validation problem was found or 0 otherwise
+ */
+int
+xmlValidatePopElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc ATTRIBUTE_UNUSED,
+                      xmlNodePtr elem, const xmlChar *qname ATTRIBUTE_UNUSED) {
+    int ret = 1;
+
+    if ((ctxt->vstateNr > 0) && (ctxt->vstate != NULL)) {
+	xmlValidStatePtr state = ctxt->vstate;
+	xmlElementPtr elemDecl;
+
+	/*
+	 * Check the new element agaisnt the content model of the new elem.
+	 */
+	if (state->elemDecl != NULL) {
+	    elemDecl = state->elemDecl;
+
+	    if (elemDecl->etype == XML_ELEMENT_TYPE_ELEMENT) {
+		if (state->exec != NULL) {
+		    ret = xmlRegExecPushString(state->exec, NULL, NULL);
+		    if (ret == 0) {
+			VECTXT(ctxt, state->node);
+			VERROR(ctxt->userData,
+	   "Element %s content does not follow the DTD\nExpecting more child\n",
+			       state->node->name);
+		    } else {
+			/*
+			 * previous validation errors should not generate
+			 * a new one here
+			 */
+			ret = 1;
+		    }
+		}
+	    }
+	}
+	vstateVPop(ctxt);
+    }
+    return(ret);
+}
+
+/**
  * xmlValidateOneElement:
  * @ctxt:  the validation context
  * @doc:  a document instance
@@ -4923,7 +5335,6 @@ xmlValidateOneElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
     xmlNodePtr child;
     int ret = 1, tmp;
     const xmlChar *name;
-    const xmlChar *prefix = NULL;
     int extsubset = 0;
 
     CHECK_DTD;
@@ -5002,45 +5413,19 @@ xmlValidateOneElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 		   "unknown element type %d\n", elem->type);
 	    return(0);
     }
-    if (elem->name == NULL) return(0);
 
     /*
-     * Fetch the declaration for the qualified name
+     * Fetch the declaration
      */
-    if ((elem->ns != NULL) && (elem->ns->prefix != NULL))
-	prefix = elem->ns->prefix;
-
-    if (prefix != NULL) {
-	elemDecl = xmlGetDtdQElementDesc(doc->intSubset,
-		                         elem->name, prefix);
-	if ((elemDecl == NULL) && (doc->extSubset != NULL)) {
-	    elemDecl = xmlGetDtdQElementDesc(doc->extSubset,
-		                             elem->name, prefix);
-	    if (elemDecl != NULL)
-		extsubset = 1;
-	}
-    }
-
-    /*
-     * Fetch the declaration for the non qualified name
-     * This is "non-strict" validation should be done on the
-     * full QName but in that case being flexible makes sense.
-     */
-    if (elemDecl == NULL) {
-	elemDecl = xmlGetDtdElementDesc(doc->intSubset, elem->name);
-	if ((elemDecl == NULL) && (doc->extSubset != NULL)) {
-	    elemDecl = xmlGetDtdElementDesc(doc->extSubset, elem->name);
-	    if (elemDecl != NULL)
-		extsubset = 1;
-	}
-    }
-    if (elemDecl == NULL) {
-	VECTXT(ctxt, elem);
-	VERROR(ctxt->userData, "No declaration for element %s\n",
-	       elem->name);
+    elemDecl = xmlValidGetElemDecl(ctxt, doc, elem, &extsubset);
+    if (elemDecl == NULL)
 	return(0);
-    }
 
+    /*
+     * If vstateNr is not zero that means continuous validation is 
+     * activated, do not try to check the content model at that level.
+     */
+    if (ctxt->vstateNr == 0) {
     /* Check that the element content matches the definition */
     switch (elemDecl->etype) {
         case XML_ELEMENT_TYPE_UNDEFINED:
@@ -5168,6 +5553,7 @@ child_ok:
 		ret = tmp;
 	    break;
     }
+    } /* not continuous */
 
     /* [ VC: Required Attribute ] */
     attr = elemDecl->attributes;
@@ -5433,15 +5819,42 @@ xmlValidateRef(xmlRefPtr ref, xmlValidCtxtPtr ctxt,
 
     if (ref == NULL)
 	return;
-    attr = ref->attr;
-    if (attr == NULL)
+    if ((ref->attr == NULL) && (ref->name == NULL))
 	return;
-    if (attr->atype == XML_ATTRIBUTE_IDREF) {
+    attr = ref->attr;
+    if (attr == NULL) {
+	xmlChar *dup, *str = NULL, *cur, save;
+
+	dup = xmlStrdup(name);
+	if (dup == NULL) {
+	    ctxt->valid = 0;
+	    return;
+	}
+	cur = dup;
+	while (*cur != 0) {
+	    str = cur;
+	    while ((*cur != 0) && (!IS_BLANK(*cur))) cur++;
+	    save = *cur;
+	    *cur = 0;
+	    id = xmlGetID(ctxt->doc, str);
+	    if (id == NULL) {
+		VERROR(ctxt->userData, 
+	   "attribute %s line %d references an unknown ID \"%s\"\n",
+		       ref->name, ref->lineno, str);
+		ctxt->valid = 0;
+	    }
+	    if (save == 0)
+		break;
+	    *cur = save;
+	    while (IS_BLANK(*cur)) cur++;
+	}
+	xmlFree(dup);
+    } else if (attr->atype == XML_ATTRIBUTE_IDREF) {
 	id = xmlGetID(ctxt->doc, name);
 	if (id == NULL) {
 	    VECTXT(ctxt, attr->parent);
 	    VERROR(ctxt->userData, 
-	       "IDREF attribute %s references an unknown ID \"%s\"\n",
+	   "IDREF attribute %s references an unknown ID \"%s\"\n",
 		   attr->name, name);
 	    ctxt->valid = 0;
 	}
@@ -5463,7 +5876,7 @@ xmlValidateRef(xmlRefPtr ref, xmlValidCtxtPtr ctxt,
 	    if (id == NULL) {
 		VECTXT(ctxt, attr->parent);
 		VERROR(ctxt->userData, 
-	       "IDREFS attribute %s references an unknown ID \"%s\"\n",
+	   "IDREFS attribute %s references an unknown ID \"%s\"\n",
 		       attr->name, str);
 		ctxt->valid = 0;
 	    }

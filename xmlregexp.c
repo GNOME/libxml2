@@ -2455,7 +2455,7 @@ xmlRegCompactPushString(xmlRegExecCtxtPtr exec,
 
 /**
  * xmlRegExecPushString:
- * @exec: a regexp execution context
+ * @exec: a regexp execution context or NULL to indicate the end
  * @value: a string token input
  * @data: data associated to the token to reuse in callbacks
  *

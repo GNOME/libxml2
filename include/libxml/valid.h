@@ -312,6 +312,17 @@ int		xmlValidateNmtokensValue(const xmlChar *value);
 int		xmlValidBuildContentModel(xmlValidCtxtPtr ctxt,
 					 xmlElementPtr elem);
 
+int		xmlValidatePushElement	(xmlValidCtxtPtr ctxt,
+					 xmlDocPtr doc,
+					 xmlNodePtr elem,
+					 const xmlChar *qname);
+int		xmlValidatePushCData	(xmlValidCtxtPtr ctxt,
+					 const xmlChar *data,
+					 int len);
+int		xmlValidatePopElement	(xmlValidCtxtPtr ctxt,
+					 xmlDocPtr doc,
+					 xmlNodePtr elem,
+					 const xmlChar *qname);
 #endif /* LIBXML_REGEXP_ENABLED */
 #ifdef __cplusplus
 }

@@ -37,11 +37,13 @@ int debug = 0;
 int dump = 0;
 int noent = 0;
 int count = 0;
+int valid = 0;
 
 static void usage(const char *progname) {
     printf("Usage : %s [options] XMLfiles ...\n", progname);
     printf("\tParse the XML files using the xmlTextReader API\n");
-    printf("\tand output the result of the parsing\n");
+    printf("\t --count: count the number of attribute and elements\n");
+    printf("\t --valid: validate the document\n");
     exit(1);
 }
 static int elem, attrs;
@@ -55,17 +57,6 @@ static void processNode(xmlTextReaderPtr reader) {
 	    elem++;
 	    attrs += xmlTextReaderAttributeCount(reader);
 	}
-    } else {
-	xmlChar *name = xmlTextReaderName(reader);
-	if (name != NULL) {
-	    printf("%s : %d", name, xmlTextReaderNodeType(reader));
-	    xmlFree(name);
-	} else {
-	    printf("NULL: %d", xmlTextReaderNodeType(reader));
-	}
-	if (xmlTextReaderIsEmptyElement(reader))
-	    printf(" empty");
-	printf("\n");
     }
 }
 
@@ -80,6 +71,9 @@ static void handleFile(const char *filename) {
 
     reader = xmlNewTextReaderFilename(filename);
     if (reader != NULL) {
+	if (valid)
+	    xmlTextReaderSetParserProp(reader, XML_PARSER_VALIDATE, 1);
+
 	/*
 	 * Process all nodes in sequence
 	 */
@@ -118,6 +112,8 @@ int main(int argc, char **argv) {
 	    dump++;
 	else if ((!strcmp(argv[i], "-count")) || (!strcmp(argv[i], "--count")))
 	    count++;
+	else if ((!strcmp(argv[i], "-valid")) || (!strcmp(argv[i], "--valid")))
+	    valid++;
 	else if ((!strcmp(argv[i], "-noent")) ||
 	         (!strcmp(argv[i], "--noent")))
 	    noent++;

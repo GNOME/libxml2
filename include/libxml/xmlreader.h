@@ -28,7 +28,8 @@ typedef xmlTextReader *xmlTextReaderPtr;
 /*
  * Constructors & Destructor
  */
-xmlTextReaderPtr	xmlNewTextReader	(xmlParserInputBufferPtr input);
+xmlTextReaderPtr	xmlNewTextReader	(xmlParserInputBufferPtr input,
+	                                         const char *URI);
 xmlTextReaderPtr	xmlNewTextReaderFilename(const char *URI);
 void			xmlFreeTextReader	(xmlTextReaderPtr reader);
 

@@ -540,7 +540,7 @@ xmlPrintURI(FILE *stream, xmlURIPtr uri) {
 
     out = xmlSaveUri(uri);
     if (out != NULL) {
-	fprintf(stream, "%s", out);
+	fprintf(stream, "%s", (char *) out);
 	xmlFree(out);
     }
 }

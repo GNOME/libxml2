@@ -70,7 +70,8 @@ typedef enum {
     XML_TEXTREADER_ELEMENT= 1,
     XML_TEXTREADER_END= 2,
     XML_TEXTREADER_EMPTY= 3,
-    XML_TEXTREADER_BACKTRACK= 4
+    XML_TEXTREADER_BACKTRACK= 4,
+    XML_TEXTREADER_DONE= 5
 } xmlTextReaderState;
 
 struct _xmlTextReader {
@@ -82,6 +83,8 @@ struct _xmlTextReader {
     xmlParserInputBufferPtr	input;	/* the input */
     startElementSAXFunc		startElement;/* initial SAX callbacks */
     endElementSAXFunc		endElement;  /* idem */
+    charactersSAXFunc		characters;
+    cdataBlockSAXFunc		cdataBlock;
     unsigned int 		base;	/* base of the segment in the input */
     unsigned int 		cur;	/* current position in the input */
     xmlNodePtr			node;	/* current node */
@@ -135,8 +138,13 @@ xmlTextReaderStartElement(void *ctx, const xmlChar *fullname,
 #ifdef DEBUG_CALLBACKS
     printf("xmlTextReaderStartElement(%s)\n", fullname);
 #endif
-    if ((reader != NULL) && (reader->startElement != NULL))
+    if ((reader != NULL) && (reader->startElement != NULL)) {
 	reader->startElement(ctx, fullname, atts);
+	if (ctxt->validate) {
+	    ctxt->valid &= xmlValidatePushElement(&ctxt->vctxt, ctxt->myDoc,
+		                                  ctxt->node, fullname);
+	}
+    }
     reader->state = XML_TEXTREADER_ELEMENT;
 }
 
@@ -155,12 +163,72 @@ xmlTextReaderEndElement(void *ctx, const xmlChar *fullname) {
 #ifdef DEBUG_CALLBACKS
     printf("xmlTextReaderEndElement(%s)\n", fullname);
 #endif
-    if ((reader != NULL) && (reader->endElement != NULL))
+    if ((reader != NULL) && (reader->endElement != NULL)) {
+	xmlNodePtr node = ctxt->node;
+
 	reader->endElement(ctx, fullname);
+
+	if (ctxt->validate) {
+	    ctxt->valid &= xmlValidatePopElement(&ctxt->vctxt, ctxt->myDoc,
+		                                 node, fullname);
+	}
+    }
     if (reader->state == XML_TEXTREADER_ELEMENT)
 	reader->state = XML_TEXTREADER_EMPTY;
     else
 	reader->state = XML_TEXTREADER_END;
+}
+
+/**
+ * xmlTextReaderCharacters:
+ * @ctx: the user data (XML parser context)
+ * @ch:  a xmlChar string
+ * @len: the number of xmlChar
+ *
+ * receiving some chars from the parser.
+ */
+static void
+xmlTextReaderCharacters(void *ctx, const xmlChar *ch, int len)
+{
+    xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
+    xmlTextReaderPtr reader = ctxt->_private;
+
+#ifdef DEBUG_CALLBACKS
+    printf("xmlTextReaderCharacters()\n");
+#endif
+    if ((reader != NULL) && (reader->characters != NULL)) {
+	reader->characters(ctx, ch, len);
+
+	if (ctxt->validate) {
+	    ctxt->valid &= xmlValidatePushCData(&ctxt->vctxt, ch, len);
+	}
+    }
+}
+
+/**
+ * xmlTextReaderCDataBlock:
+ * @ctx: the user data (XML parser context)
+ * @value:  The pcdata content
+ * @len:  the block length
+ *
+ * called when a pcdata block has been parsed
+ */
+static void
+xmlTextReaderCDataBlock(void *ctx, const xmlChar *ch, int len)
+{
+    xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
+    xmlTextReaderPtr reader = ctxt->_private;
+
+#ifdef DEBUG_CALLBACKS
+    printf("xmlTextReaderCDataBlock()\n");
+#endif
+    if ((reader != NULL) && (reader->cdataBlock != NULL)) {
+	reader->cdataBlock(ctx, ch, len);
+
+	if (ctxt->validate) {
+	    ctxt->valid &= xmlValidatePushCData(&ctxt->vctxt, ch, len);
+	}
+    }
 }
 
 /**
@@ -177,10 +245,12 @@ xmlTextReaderPushData(xmlTextReaderPtr reader) {
     unsigned int cur = reader->cur;
     xmlBufferPtr inbuf;
     int val;
+    int oldstate;
 
     if ((reader->input == NULL) || (reader->input->buffer == NULL))
 	return(-1);
 
+    oldstate = reader->state;
     reader->state = XML_TEXTREADER_NONE;
     inbuf = reader->input->buffer;
     while (reader->state == XML_TEXTREADER_NONE) {
@@ -192,6 +262,7 @@ xmlTextReaderPushData(xmlTextReaderPtr reader) {
 		val = xmlParserInputBufferRead(reader->input, 4096);
 		if (val <= 0) {
 		    reader->mode = XML_TEXTREADER_MODE_EOF;
+		    reader->state = oldstate;
 		    return(val);
 		}
 	    } else 
@@ -241,10 +312,14 @@ xmlTextReaderPushData(xmlTextReaderPtr reader) {
      * At the end of the stream signal that the work is done to the Push
      * parser.
      */
-    if ((reader->mode == XML_TEXTREADER_MODE_EOF) && (cur >= inbuf->use)) {
-	val = xmlParseChunk(reader->ctxt,
-		(const char *) &inbuf->content[reader->cur], 0, 1);
+    if (reader->mode == XML_TEXTREADER_MODE_EOF) {
+	if (reader->mode != XML_TEXTREADER_DONE) {
+	    val = xmlParseChunk(reader->ctxt,
+		    (const char *) &inbuf->content[reader->cur], 0, 1);
+	    reader->mode = XML_TEXTREADER_DONE;
+	}
     }
+    reader->state = oldstate;
     return(0);
 }
 
@@ -303,19 +378,20 @@ xmlTextReaderRead(xmlTextReaderPtr reader) {
      * that the parser didn't finished or that we arent at the end
      * of stream, continue processing.
      */
+    while (((oldstate == XML_TEXTREADER_BACKTRACK) ||
+            (reader->node->children == NULL) ||
+	    (reader->node->type == XML_ENTITY_REF_NODE) ||
+	    (reader->node->type == XML_DTD_NODE)) &&
+	   (reader->node->next == NULL) &&
+	   (reader->ctxt->nodeNr == olddepth) &&
+	   (reader->ctxt->instate != XML_PARSER_EOF)) {
+	val = xmlTextReaderPushData(reader);
+	if (val < 0)
+	    return(-1);
+	if (reader->node == NULL)
+	    return(0);
+    }
     if (oldstate != XML_TEXTREADER_BACKTRACK) {
-	while (((reader->node->children == NULL) ||
-		(reader->node->type == XML_ENTITY_REF_NODE) ||
-		(reader->node->type == XML_DTD_NODE)) &&
-	       (reader->node->next == NULL) &&
-	       (reader->ctxt->nodeNr == olddepth) &&
-	       (reader->ctxt->instate != XML_PARSER_EOF)) {
-	    val = xmlTextReaderPushData(reader);
-	    if (val < 0)
-		return(-1);
-	    if (reader->node == NULL)
-		return(0);
-	}
 	if ((reader->node->children != NULL) &&
 	    (reader->node->type != XML_ENTITY_REF_NODE) &&
 	    (reader->node->type != XML_DTD_NODE)) {
@@ -348,6 +424,12 @@ xmlTextReaderRead(xmlTextReaderPtr reader) {
 
 	return(1);
     }
+    if ((oldstate == XML_TEXTREADER_ELEMENT) &&
+	(reader->node->type == XML_ELEMENT_NODE)) {
+	reader->state = XML_TEXTREADER_END;
+	DUMP_READER
+	return(1);
+    }
     reader->node = reader->node->parent;
     if ((reader->node == NULL) ||
 	(reader->node->type == XML_DOCUMENT_NODE) ||
@@ -355,6 +437,10 @@ xmlTextReaderRead(xmlTextReaderPtr reader) {
 	(reader->node->type == XML_DOCB_DOCUMENT_NODE) ||
 #endif
 	(reader->node->type == XML_HTML_DOCUMENT_NODE)) {
+	if (reader->mode != XML_TEXTREADER_DONE) {
+	    val = xmlParseChunk(reader->ctxt, "", 0, 1);
+	    reader->mode = XML_TEXTREADER_DONE;
+	}
 	reader->node = NULL;
 	reader->depth = 0;
 
@@ -501,13 +587,14 @@ xmlTextReaderReadBinHex(xmlTextReaderPtr reader, unsigned char *array,
 /**
  * xmlNewTextReader:
  * @input: the xmlParserInputBufferPtr used to read data
+ * @URI: the URI information for the source if available
  *
  * Create an xmlTextReader structure fed with @input
  *
  * Returns the new xmlTextReaderPtr or NULL in case of error
  */
 xmlTextReaderPtr
-xmlNewTextReader(xmlParserInputBufferPtr input) {
+xmlNewTextReader(xmlParserInputBufferPtr input, const char *URI) {
     xmlTextReaderPtr ret;
     int val;
 
@@ -533,6 +620,10 @@ xmlNewTextReader(xmlParserInputBufferPtr input) {
     ret->sax->startElement = xmlTextReaderStartElement;
     ret->endElement = ret->sax->endElement;
     ret->sax->endElement = xmlTextReaderEndElement;
+    ret->characters = ret->sax->characters;
+    ret->sax->characters = xmlTextReaderCharacters;
+    ret->cdataBlock = ret->sax->cdataBlock;
+    ret->sax->cdataBlock = xmlTextReaderCDataBlock;
 
     ret->mode = XML_TEXTREADER_MODE_INITIAL;
     ret->node = NULL;
@@ -540,15 +631,16 @@ xmlNewTextReader(xmlParserInputBufferPtr input) {
     val = xmlParserInputBufferRead(input, 4);
     if (val >= 4) {
 	ret->ctxt = xmlCreatePushParserCtxt(ret->sax, NULL,
-			(const char *) ret->input->buffer->content, 4, NULL);
+			(const char *) ret->input->buffer->content, 4, URI);
 	ret->base = 0;
 	ret->cur = 4;
     } else {
-	ret->ctxt = xmlCreatePushParserCtxt(ret->sax, NULL, NULL, 0, NULL);
+	ret->ctxt = xmlCreatePushParserCtxt(ret->sax, NULL, NULL, 0, URI);
 	ret->base = 0;
 	ret->cur = 0;
     }
     ret->ctxt->_private = ret;
+    ret->ctxt->linenumbers = 1;
     ret->allocs = XML_TEXTREADER_CTXT;
     return(ret);
 
@@ -566,16 +658,23 @@ xmlTextReaderPtr
 xmlNewTextReaderFilename(const char *URI) {
     xmlParserInputBufferPtr input;
     xmlTextReaderPtr ret;
+    char *directory = NULL;
 
     input = xmlParserInputBufferCreateFilename(URI, XML_CHAR_ENCODING_NONE);
     if (input == NULL)
 	return(NULL);
-    ret = xmlNewTextReader(input);
+    ret = xmlNewTextReader(input, URI);
     if (ret == NULL) {
 	xmlFreeParserInputBuffer(input);
 	return(NULL);
     }
     ret->allocs |= XML_TEXTREADER_INPUT;
+    if (ret->ctxt->directory == NULL)
+        directory = xmlParserGetDirectory(URI);
+    if ((ret->ctxt->directory == NULL) && (directory != NULL))
+        ret->ctxt->directory = (char *) xmlStrdup((xmlChar *) directory);
+    if (directory != NULL)
+	xmlFree(directory);
     return(ret);
 }
 

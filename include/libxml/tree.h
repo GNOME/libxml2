@@ -387,6 +387,8 @@ struct _xmlID {
     struct _xmlID    *next;	/* next ID */
     const xmlChar    *value;	/* The ID name */
     xmlAttrPtr        attr;	/* The attribute holding it */
+    const xmlChar    *name;	/* The attribute if attr is not available */
+    int               lineno;	/* The line number if attr is not available */
 };
 
 /**
@@ -401,6 +403,8 @@ struct _xmlRef {
     struct _xmlRef    *next;	/* next Ref */
     const xmlChar     *value;	/* The Ref name */
     xmlAttrPtr        attr;	/* The attribute holding it */
+    const xmlChar    *name;	/* The attribute if attr is not available */
+    int               lineno;	/* The line number if attr is not available */
 };
 
 /**

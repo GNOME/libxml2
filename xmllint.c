@@ -743,8 +743,29 @@ static void parseAndPrintFile(char *filename) {
 	    doc = xmlParseMemory((char *) base, info.st_size);
 	    munmap((char *) base, info.st_size);
 #endif
-	} else
+	} else if (valid) {
+	    int ret;
+	    xmlParserCtxtPtr ctxt;
+
+	    ctxt = xmlCreateFileParserCtxt(filename);
+
+	    if (ctxt == NULL) {	      
+	      doc = NULL;
+	    } else {
+	      xmlParseDocument(ctxt);
+	      if (ctxt->valid == 0)
+		  progresult = 4;
+	      ret = ctxt->wellFormed;
+	      doc = ctxt->myDoc;
+	      xmlFreeParserCtxt(ctxt);
+	      if (!ret) {
+		xmlFreeDoc(doc);
+		doc = NULL;
+	      }
+	    }
+	} else {
 	    doc = xmlParseFile(filename);
+	}
     }
 
     /*

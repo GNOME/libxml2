@@ -1292,6 +1292,7 @@ xmlXPtrEval(const xmlChar *str, xmlXPathContextPtr ctx) {
 	return(NULL);
 
     ctxt = xmlXPathNewParserContext(str, ctx);
+    ctxt->xptr = 1;
     xmlXPtrEvalXPointer(ctxt);
 
     if ((ctxt->value != NULL) &&

@@ -1,3 +1,14 @@
+Mon Mar 19 16:50:52 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xpath.[ch]: still a lot of cleanup based on XSLT, added
+	  xmlXPathConvert{String,Number,Boolean} to be able to make
+	  type casts without a context stack, fixed some implementation
+	  problems related to the absence of context at parse-time,
+	  added xmlXPathEvalPredicate() and xmlXPathFreeCompExpr()
+	  in the public API too
+	* xpointer.c xpathInternals.h: we need to know at parse time
+	  whether we are compiling an XPointer
+
 Mon Mar 19 11:54:31 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xpath.[ch] xpointer.c: restaured the Binary and API compatibility

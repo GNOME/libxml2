@@ -2351,6 +2351,7 @@ xmlXPathCompParserContext(xmlXPathCompExprPtr comp, xmlXPathContextPtr ctxt) {
     ret->valueMax = 10;
     ret->value = NULL;
 
+    ret->context = ctxt;
     ret->comp = comp;
 
     return(ret);
@@ -4444,6 +4445,71 @@ xmlXPathNameFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     xmlXPathFreeObject(cur);
 }
 
+
+/**
+ * xmlXPathConvertString:
+ * @val:  an XPath object
+ *
+ * Converts an existing object to its string() equivalent
+ *
+ * Returns the new object, the old one is freed (or the operation
+ *         is done directly on @val)
+ */
+xmlXPathObjectPtr
+xmlXPathConvertString(xmlXPathObjectPtr val) {
+    xmlXPathObjectPtr ret;
+
+    if (val == NULL)
+	return(xmlXPathNewCString(""));
+    switch (val->type) {
+	case XPATH_UNDEFINED:
+#ifdef DEBUG_EXPR
+	    xmlGenericError(xmlGenericErrorContext, "String: undefined\n");
+#endif
+	    ret = xmlXPathNewCString("");
+	    break;
+        case XPATH_XSLT_TREE:
+        case XPATH_NODESET:
+	    if (val->nodesetval == NULL)
+		ret = xmlXPathNewCString("");
+	    else if (val->nodesetval->nodeNr == 0) {
+		ret = xmlXPathNewCString("");
+	    } else {
+		xmlChar *res;
+
+		xmlXPathNodeSetSort(val->nodesetval);
+		res = xmlNodeGetContent(val->nodesetval->nodeTab[0]);
+		/* TODO: avoid allocating res to free it */
+		ret = xmlXPathNewString(res);
+		if (res != NULL)
+		    xmlFree(res);
+	    }
+	    break;
+	case XPATH_STRING:
+	    return(val);
+        case XPATH_BOOLEAN:
+	    if (val->boolval) ret = xmlXPathNewCString("true");
+	    else ret = xmlXPathNewCString("false");
+	    break;
+	case XPATH_NUMBER: {
+	    char buf[100];
+
+	    xmlXPathFormatNumber(val->floatval, buf, sizeof(buf));
+	    ret = xmlXPathNewCString(buf);
+	    break;
+	}
+	case XPATH_USERS:
+	case XPATH_POINT:
+	case XPATH_RANGE:
+	case XPATH_LOCATIONSET:
+	    TODO
+	    ret = xmlXPathNewCString("");
+	    break;
+    }
+    xmlXPathFreeObject(val);
+    return(ret);
+}
+
 /**
  * xmlXPathStringFunction:
  * @ctxt:  the XPath Parser context
@@ -4492,54 +4558,8 @@ xmlXPathStringFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     CHECK_ARITY(1);
     cur = valuePop(ctxt);
     if (cur == NULL) XP_ERROR(XPATH_INVALID_OPERAND);
-    switch (cur->type) {
-	case XPATH_UNDEFINED:
-#ifdef DEBUG_EXPR
-	    xmlGenericError(xmlGenericErrorContext, "String: undefined\n");
-#endif
-	    valuePush(ctxt, xmlXPathNewCString(""));
-	    break;
-        case XPATH_XSLT_TREE:
-        case XPATH_NODESET:
-	    if (cur->nodesetval == NULL)
-		valuePush(ctxt, xmlXPathNewCString(""));
-	    else if (cur->nodesetval->nodeNr == 0) {
-		valuePush(ctxt, xmlXPathNewCString(""));
-	    } else {
-		xmlChar *res;
-	        int i = 0; /* Should be first in document order !!!!! */
-		res = xmlNodeGetContent(cur->nodesetval->nodeTab[i]);
-		valuePush(ctxt, xmlXPathNewString(res));
-		if (res != NULL)
-		    xmlFree(res);
-	    }
-	    xmlXPathFreeObject(cur);
-	    return;
-	case XPATH_STRING:
-	    valuePush(ctxt, cur);
-	    return;
-        case XPATH_BOOLEAN:
-	    if (cur->boolval) valuePush(ctxt, xmlXPathNewCString("true"));
-	    else valuePush(ctxt, xmlXPathNewCString("false"));
-	    xmlXPathFreeObject(cur);
-	    return;
-	case XPATH_NUMBER: {
-	    char buf[100];
-
-	    xmlXPathFormatNumber(cur->floatval, buf, sizeof(buf));
-	    valuePush(ctxt, xmlXPathNewCString(buf));
-	    xmlXPathFreeObject(cur);
-	    return;
-	}
-	case XPATH_USERS:
-	case XPATH_POINT:
-	case XPATH_RANGE:
-	case XPATH_LOCATIONSET:
-	    TODO
-	    valuePush(ctxt, xmlXPathNewCString(""));
-	    break;
-    }
-    STRANGE
+    cur = xmlXPathConvertString(cur);
+    valuePush(ctxt, cur);
 }
 
 /**
@@ -4996,6 +5016,47 @@ xmlXPathTranslateFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 }
 
 /**
+ * xmlXPathConvertBoolean:
+ * @val:  an XPath object
+ *
+ * Converts an existing object to its boolean() equivalent
+ *
+ * Returns the new object, the old one is freed (or the operation
+ *         is done directly on @val)
+ */
+xmlXPathObjectPtr
+xmlXPathConvertBoolean(xmlXPathObjectPtr val) {
+    int res = 0;
+
+    if (val == NULL)
+	return(NULL);
+    switch (val->type) {
+        case XPATH_NODESET:
+        case XPATH_XSLT_TREE:
+	    if ((val->nodesetval == NULL) ||
+	        (val->nodesetval->nodeNr == 0)) res = 0;
+	    else 
+	        res = 1;
+	    break;
+	case XPATH_STRING:
+	    if ((val->stringval == NULL) ||
+	        (val->stringval[0] == 0)) res = 0;
+	    else 
+	        res = 1;
+	    break;
+        case XPATH_BOOLEAN:
+	    return(val);
+	case XPATH_NUMBER:
+	    if (val->floatval) res = 1;
+	    break;
+	default:
+	    STRANGE
+    }
+    xmlXPathFreeObject(val);
+    return(xmlXPathNewBoolean(res));
+}
+
+/**
  * xmlXPathBooleanFunction:
  * @ctxt:  the XPath Parser context
  * @nargs:  the number of arguments
@@ -5011,36 +5072,12 @@ xmlXPathTranslateFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 void
 xmlXPathBooleanFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     xmlXPathObjectPtr cur;
-    int res = 0;
 
     CHECK_ARITY(1);
     cur = valuePop(ctxt);
     if (cur == NULL) XP_ERROR(XPATH_INVALID_OPERAND);
-    switch (cur->type) {
-        case XPATH_NODESET:
-        case XPATH_XSLT_TREE:
-	    if ((cur->nodesetval == NULL) ||
-	        (cur->nodesetval->nodeNr == 0)) res = 0;
-	    else 
-	        res = 1;
-	    break;
-	case XPATH_STRING:
-	    if ((cur->stringval == NULL) ||
-	        (cur->stringval[0] == 0)) res = 0;
-	    else 
-	        res = 1;
-	    break;
-        case XPATH_BOOLEAN:
-	    valuePush(ctxt, cur);
-	    return;
-	case XPATH_NUMBER:
-	    if (cur->floatval) res = 1;
-	    break;
-	default:
-	    STRANGE
-    }
-    xmlXPathFreeObject(cur);
-    valuePush(ctxt, xmlXPathNewBoolean(res));
+    cur = xmlXPathConvertBoolean(cur);
+    valuePush(ctxt, cur);
 }
 
 /**
@@ -5136,6 +5173,55 @@ not_equal:
 }
 
 /**
+ * xmlXPathConvertNumber:
+ * @val:  an XPath object
+ *
+ * Converts an existing object to its number() equivalent
+ *
+ * Returns the new object, the old one is freed (or the operation
+ *         is done directly on @val)
+ */
+xmlXPathObjectPtr
+xmlXPathConvertNumber(xmlXPathObjectPtr val) {
+    xmlXPathObjectPtr ret;
+    double res;
+
+    if (val == NULL)
+	return(xmlXPathNewFloat(0.0));
+    switch (val->type) {
+	case XPATH_UNDEFINED:
+#ifdef DEBUG_EXPR
+	    xmlGenericError(xmlGenericErrorContext, "NUMBER: undefined\n");
+#endif
+	    ret = xmlXPathNewFloat(0.0);
+	    break;
+        case XPATH_XSLT_TREE:
+        case XPATH_NODESET:
+	    val = xmlXPathConvertString(val);
+	    /* no break on purpose */
+	case XPATH_STRING:
+	    res = xmlXPathStringEvalNumber(val->stringval);
+	    ret = xmlXPathNewFloat(res);
+	    break;
+        case XPATH_BOOLEAN:
+	    if (val->boolval) ret = xmlXPathNewFloat(1.0);
+	    else ret = xmlXPathNewFloat(0.0);
+	    break;
+	case XPATH_NUMBER:
+	    return(val);
+	case XPATH_USERS:
+	case XPATH_POINT:
+	case XPATH_RANGE:
+	case XPATH_LOCATIONSET:
+	    TODO
+	    ret = xmlXPathNewFloat(0.0);
+	    break;
+    }
+    xmlXPathFreeObject(val);
+    return(ret);
+}
+
+/**
  * xmlXPathNumberFunction:
  * @ctxt:  the XPath Parser context
  * @nargs:  the number of arguments
@@ -5163,40 +5249,8 @@ xmlXPathNumberFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 
     CHECK_ARITY(1);
     cur = valuePop(ctxt);
-    switch (cur->type) {
-	case XPATH_UNDEFINED:
-#ifdef DEBUG_EXPR
-	    xmlGenericError(xmlGenericErrorContext, "NUMBER: undefined\n");
-#endif
-	    valuePush(ctxt, xmlXPathNewFloat(0.0));
-	    break;
-        case XPATH_XSLT_TREE:
-        case XPATH_NODESET:
-	    valuePush(ctxt, cur);
-	    xmlXPathStringFunction(ctxt, 1);
-	    cur = valuePop(ctxt);
-	case XPATH_STRING:
-	    res = xmlXPathStringEvalNumber(cur->stringval);
-	    valuePush(ctxt, xmlXPathNewFloat(res));
-	    xmlXPathFreeObject(cur);
-	    return;
-        case XPATH_BOOLEAN:
-	    if (cur->boolval) valuePush(ctxt, xmlXPathNewFloat(1.0));
-	    else valuePush(ctxt, xmlXPathNewFloat(0.0));
-	    xmlXPathFreeObject(cur);
-	    return;
-	case XPATH_NUMBER:
-	    valuePush(ctxt, cur);
-	    return;
-	case XPATH_USERS:
-	case XPATH_POINT:
-	case XPATH_RANGE:
-	case XPATH_LOCATIONSET:
-	    TODO
-	    valuePush(ctxt, xmlXPathNewFloat(0.0));
-	    break;
-    }
-    STRANGE
+    cur = xmlXPathConvertNumber(cur);
+    valuePush(ctxt, cur);
 }
 
 /**
@@ -5536,6 +5590,50 @@ xmlXPathCompNumber(xmlXPathParserContextPtr ctxt) {
 }
 
 /**
+ * xmlXPathParseLiteral:
+ * @ctxt:  the XPath Parser context
+ *
+ * Parse a Literal
+ *
+ *  [29]   Literal ::=   '"' [^"]* '"'
+ *                    | "'" [^']* "'"
+ *
+ * Returns the value found or NULL in case of error
+ */
+static xmlChar *
+xmlXPathParseLiteral(xmlXPathParserContextPtr ctxt) {
+    const xmlChar *q;
+    xmlChar *ret = NULL;
+
+    if (CUR == '"') {
+        NEXT;
+	q = CUR_PTR;
+	while ((IS_CHAR(CUR)) && (CUR != '"'))
+	    NEXT;
+	if (!IS_CHAR(CUR)) {
+	    XP_ERROR0(XPATH_UNFINISHED_LITERAL_ERROR);
+	} else {
+	    ret = xmlStrndup(q, CUR_PTR - q);
+	    NEXT;
+        }
+    } else if (CUR == '\'') {
+        NEXT;
+	q = CUR_PTR;
+	while ((IS_CHAR(CUR)) && (CUR != '\''))
+	    NEXT;
+	if (!IS_CHAR(CUR)) {
+	    XP_ERROR0(XPATH_UNFINISHED_LITERAL_ERROR);
+	} else {
+	    ret = xmlStrndup(q, CUR_PTR - q);
+	    NEXT;
+        }
+    } else {
+	XP_ERROR0(XPATH_START_LITERAL_ERROR);
+    }
+    return(ret);
+}
+
+/**
  * xmlXPathCompLiteral:
  * @ctxt:  the XPath Parser context
  *
@@ -5613,6 +5711,7 @@ xmlXPathCompVariableReference(xmlXPathParserContextPtr ctxt) {
     if (name == NULL) {
 	XP_ERROR(XPATH_VARIABLE_REF_ERROR);
     }
+    ctxt->comp->last = -1;
     PUSH_LONG_EXPR(XPATH_OP_VARIABLE, 0, 0, 0,
 	           name, prefix);
     SKIP_BLANKS;
@@ -6369,13 +6468,8 @@ xmlXPathCompNodeTest(xmlXPathParserContextPtr ctxt, xmlXPathTestVal *test,
 	    if (name != NULL)
 		xmlFree(name);
 
-	    xmlXPathCompLiteral(ctxt);
+	    name = xmlXPathParseLiteral(ctxt);
 	    CHECK_ERROR 0;
-	    xmlXPathStringFunction(ctxt, 1);
-	    CHECK_ERROR0;
-	    cur = valuePop(ctxt);
-	    name = xmlStrdup(cur->stringval);
-	    xmlXPathFreeObject(cur);
 	    SKIP_BLANKS;
 	}
 	if (CUR != ')') {
@@ -6391,14 +6485,22 @@ xmlXPathCompNodeTest(xmlXPathParserContextPtr ctxt, xmlXPathTestVal *test,
 	NEXT;
 
 	/*
-	 * get the namespace name for this prefix
+	 * Since currently the parser context don't have a
+	 * namespace list associated:
+	 * The namespace name for this prefix can be computed
+	 * only at evaluation time. The compilation is done
+	 * outside of any context.
 	 */
+#if 0
 	*prefix = xmlXPathNsLookup(ctxt->context, name);
 	if (name != NULL)
 	    xmlFree(name);
 	if (*prefix == NULL) {
 	    XP_ERROR0(XPATH_UNDEF_PREFIX_ERROR);
 	}
+#else
+	*prefix = name;
+#endif
 
 	if (CUR == '*') {
 	    /*
@@ -6574,7 +6676,7 @@ xmlXPathCompStep(xmlXPathParserContextPtr ctxt) {
 	 * The modification needed for XPointer change to the production
 	 */
 #ifdef LIBXML_XPTR_ENABLED
-	if (ctxt->context->xptr) {
+	if (ctxt->xptr) {
 	    name = xmlXPathParseNCName(ctxt);
 	    if ((name != NULL) && (xmlStrEqual(name, BAD_CAST "range-to"))) {
 		int op1 = ctxt->comp->last;
@@ -6758,7 +6860,7 @@ xmlXPathCompLocationPath(xmlXPathParserContextPtr ctxt) {
  *
  * Evaluate the Precompiled XPath operation
  */
-void
+static void
 xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op) {
     int equal, ret;
     xmlXPathCompExprPtr comp;
@@ -7188,7 +7290,7 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op) {
  *
  * Evaluate the Precompiled XPath expression in the given context.
  */
-void
+static void
 xmlXPathRunEval(xmlXPathParserContextPtr ctxt) {
     xmlXPathCompExprPtr comp;
 
@@ -7218,6 +7320,42 @@ xmlXPathRunEval(xmlXPathParserContextPtr ctxt) {
  * 			Public interfaces				*
  *									*
  ************************************************************************/
+
+/**
+ * xmlXPathEvalPredicate:
+ * @ctxt:  the XPath context
+ * @res:  the Predicate Expression evaluation result
+ *
+ * Evaluate a predicate result for the current node.
+ * A PredicateExpr is evaluated by evaluating the Expr and converting
+ * the result to a boolean. If the result is a number, the result will
+ * be converted to true if the number is equal to the position of the
+ * context node in the context node list (as returned by the position
+ * function) and will be converted to false otherwise; if the result
+ * is not a number, then the result will be converted as if by a call
+ * to the boolean function. 
+ *
+ * Return 1 if predicate is true, 0 otherwise
+ */
+int
+xmlXPathEvalPredicate(xmlXPathContextPtr ctxt, xmlXPathObjectPtr res) {
+    if (res == NULL) return(0);
+    switch (res->type) {
+        case XPATH_BOOLEAN:
+	    return(res->boolval);
+        case XPATH_NUMBER:
+	    return(res->floatval == ctxt->proximityPosition);
+        case XPATH_NODESET:
+        case XPATH_XSLT_TREE:
+	    return(res->nodesetval->nodeNr != 0);
+        case XPATH_STRING:
+	    return((res->stringval != NULL) &&
+	           (xmlStrlen(res->stringval) != 0));
+        default:
+	    STRANGE
+    }
+    return(0);
+}
 
 /**
  * xmlXPathEvaluatePredicateResult:
@@ -7310,9 +7448,6 @@ xmlXPathCompiledEval(xmlXPathCompExprPtr comp, xmlXPathContextPtr ctx) {
 	xmlGenericError(xmlGenericErrorContext,
 		"xmlXPathEval: evaluation failed\n");
 	res = NULL;
-    } else if (*ctxt->cur != 0) {
-	xmlXPatherror(ctxt, __FILE__, __LINE__, XPATH_EXPR_ERROR);
-	res = NULL;
     } else {
 	res = valuePop(ctxt);
     }
@@ -7329,13 +7464,13 @@ xmlXPathCompiledEval(xmlXPathCompExprPtr comp, xmlXPathContextPtr ctx) {
 	xmlGenericError(xmlGenericErrorContext,
 		"xmlXPathEval: %d object left on the stack\n",
 	        stack);
+        xmlXPathDebugDumpCompExpr(stdout, ctxt->comp, 0);
     }
     if (ctxt->error != XPATH_EXPRESSION_OK) {
 	xmlXPathFreeObject(res);
 	res = NULL;
     }
         
-    xmlXPathDebugDumpCompExpr(stdout, ctxt->comp, 0);
 
     ctxt->comp = NULL;
     xmlXPathFreeParserContext(ctxt);

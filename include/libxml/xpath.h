@@ -244,7 +244,7 @@ struct _xmlXPathParserContext {
     xmlXPathObjectPtr *valueTab;	/* stack of values */
 
     xmlXPathCompExprPtr comp;		/* the precompiled expression */
-
+    int xptr;				/* it this an XPointer expression */
 };
 
 /*
@@ -271,6 +271,12 @@ void		   xmlXPathFreeNodeSet		(xmlNodeSetPtr obj);
 xmlXPathObjectPtr  xmlXPathObjectCopy		(xmlXPathObjectPtr val);
 int		   xmlXPathCmpNodes		(xmlNodePtr node1,
 						 xmlNodePtr node2);
+/**
+ * Conversion functions to basic types
+ */
+xmlXPathObjectPtr  xmlXPathConvertBoolean	(xmlXPathObjectPtr val);
+xmlXPathObjectPtr  xmlXPathConvertNumber	(xmlXPathObjectPtr val);
+xmlXPathObjectPtr  xmlXPathConvertString	(xmlXPathObjectPtr val);
 
 /**
  * Context handling
@@ -288,13 +294,15 @@ xmlXPathObjectPtr  xmlXPathEvalXPtrExpr		(const xmlChar *str,
 						 xmlXPathContextPtr ctxt);
 xmlXPathObjectPtr  xmlXPathEvalExpression	(const xmlChar *str,
 						 xmlXPathContextPtr ctxt);
+int                xmlXPathEvalPredicate	(xmlXPathContextPtr ctxt,
+						 xmlXPathObjectPtr res);
 /**
  * Separate compilation/evaluation entry points
  */
 xmlXPathCompExprPtr xmlXPathCompile		(const xmlChar *str);
 xmlXPathObjectPtr   xmlXPathCompiledEval	(xmlXPathCompExprPtr comp,
 						 xmlXPathContextPtr ctx);
-
+void                xmlXPathFreeCompExpr	(xmlXPathCompExprPtr comp);
 #ifdef __cplusplus
 }
 #endif

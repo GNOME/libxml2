@@ -71,6 +71,57 @@ static int xmlCheckDTD = 1;
 
 /************************************************************************
  *									*
+ *		Functions to move to entities.c once the 		*
+ *		API freeze is smoothen and they can be made public.	*
+ *									*
+ ************************************************************************/
+#include <libxml/hash.h>
+ 
+/**
+ * xmlGetEntityFromDtd:
+ * @dtd:  A pointer to the DTD to search
+ * @name:  The entity name
+ *
+ * Do an entity lookup in the DTD entity hash table and
+ * return the corresponding entity, if found.
+ * 
+ * Returns A pointer to the entity structure or NULL if not found.
+ */
+static xmlEntityPtr
+xmlGetEntityFromDtd(xmlDtdPtr dtd, const xmlChar *name) {
+    xmlEntitiesTablePtr table;
+    
+    if((dtd != NULL) && (dtd->entities != NULL)) {
+	table = (xmlEntitiesTablePtr) dtd->entities;
+	return((xmlEntityPtr) xmlHashLookup(table, name));
+    	/* return(xmlGetEntityFromTable(table, name)); */
+    }
+    return(NULL);
+}
+/**
+ * xmlGetParameterEntityFromDtd:
+ * @dtd:  A pointer to the DTD to search
+ * @name:  The entity name
+ * 
+ * Do an entity lookup in the DTD pararmeter entity hash table and
+ * return the corresponding entity, if found.
+ *
+ * Returns A pointer to the entity structure or NULL if not found.
+ */
+static xmlEntityPtr
+xmlGetParameterEntityFromDtd(xmlDtdPtr dtd, const xmlChar *name) {
+    xmlEntitiesTablePtr table;
+    
+    if ((dtd != NULL) && (dtd->pentities != NULL)) {
+	table = (xmlEntitiesTablePtr) dtd->pentities;
+	return((xmlEntityPtr) xmlHashLookup(table, name));
+	/* return(xmlGetEntityFromTable(table, name)); */
+    }
+    return(NULL);
+}
+
+/************************************************************************
+ *									*
  *		Allocation and deallocation of basic structures		*
  *									*
  ************************************************************************/
@@ -1821,8 +1872,6 @@ xmlSetTreeDoc(xmlNodePtr tree, xmlDocPtr doc) {
 
     if (tree == NULL)
 	return;
-    if (tree->type == XML_ENTITY_DECL)
-	return;
     if (tree->doc != doc) {
 	if(tree->type == XML_ELEMENT_NODE) {
 	    prop = tree->properties;
@@ -2989,8 +3038,10 @@ xmlStaticCopyNodeList(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent) {
 		q->doc = doc;
 		q->parent = parent;
 		doc->intSubset = (xmlDtdPtr) q;
+		xmlAddChild(parent, q);
 	    } else {
 		q = (xmlNodePtr) doc->intSubset;
+		xmlAddChild(parent, q);
 	    }
 	} else
 	    q = xmlStaticCopyNode(node, doc, parent, 1);
@@ -3067,6 +3118,7 @@ xmlNodePtr xmlCopyNodeList(const xmlNodePtr node) {
 xmlDtdPtr
 xmlCopyDtd(xmlDtdPtr dtd) {
     xmlDtdPtr ret;
+    xmlNodePtr cur, p = NULL, q;
 
     if (dtd == NULL) return(NULL);
     ret = xmlNewDtd(NULL, dtd->name, dtd->ExternalID, dtd->SystemID);
@@ -3083,6 +3135,60 @@ xmlCopyDtd(xmlDtdPtr dtd) {
     if (dtd->attributes != NULL)
         ret->attributes = (void *) xmlCopyAttributeTable(
 	                    (xmlAttributeTablePtr) dtd->attributes);
+    if (dtd->pentities != NULL)
+	ret->pentities = (void *) xmlCopyEntitiesTable(
+			    (xmlEntitiesTablePtr) dtd->pentities);
+    
+    cur = dtd->children;
+    while (cur != NULL) {
+	q = NULL;
+
+	if (cur->type == XML_ENTITY_DECL) {
+	    xmlEntityPtr tmp = (xmlEntityPtr) cur;
+	    switch (tmp->etype) {
+		case XML_INTERNAL_GENERAL_ENTITY:
+		case XML_EXTERNAL_GENERAL_PARSED_ENTITY:
+		case XML_EXTERNAL_GENERAL_UNPARSED_ENTITY:
+		    q = (xmlNodePtr) xmlGetEntityFromDtd(ret, tmp->name);
+		    break;
+		case XML_INTERNAL_PARAMETER_ENTITY:
+		case XML_EXTERNAL_PARAMETER_ENTITY:
+    		    q = (xmlNodePtr) 
+			xmlGetParameterEntityFromDtd(ret, tmp->name);
+		    break;
+		case XML_INTERNAL_PREDEFINED_ENTITY:
+		    break;
+	    }
+	} else if (cur->type == XML_ELEMENT_DECL) {
+	    xmlElementPtr tmp = (xmlElementPtr) cur;
+	    q = (xmlNodePtr)
+		xmlGetDtdQElementDesc(ret, tmp->name, tmp->prefix);
+	} else if (cur->type == XML_ATTRIBUTE_DECL) {
+	    xmlAttributePtr tmp = (xmlAttributePtr) cur;
+	    q = (xmlNodePtr) 
+		xmlGetDtdQAttrDesc(ret, tmp->elem, tmp->name, tmp->prefix);
+	} else if (cur->type == XML_COMMENT_NODE) {
+	    q = xmlCopyNode(cur, 0);
+	}
+	
+	if (q == NULL) {
+	    cur = cur->next;
+	    continue;
+	}
+	
+	if (p == NULL)
+	    ret->children = q;
+	else
+    	    p->next = q;
+	
+    	q->prev = p;
+    	q->parent = (xmlNodePtr) ret;
+	q->next = NULL;
+	ret->last = q;
+    	p = q;
+	cur = cur->next;
+    }
+
     return(ret);
 }
 
@@ -3116,7 +3222,7 @@ xmlCopyDoc(xmlDocPtr doc, int recursive) {
     ret->children = NULL;
     if (doc->intSubset != NULL) {
         ret->intSubset = xmlCopyDtd(doc->intSubset);
-	ret->intSubset->doc = ret;
+	xmlSetTreeDoc((xmlNodePtr)ret->intSubset, ret);
 	ret->intSubset->parent = ret;
     }
     if (doc->oldNs != NULL)

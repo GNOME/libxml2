@@ -883,6 +883,8 @@ xmlCopyEntity(xmlEntityPtr ent) {
 	cur->content = xmlStrdup(ent->content);
     if (ent->orig != NULL)
 	cur->orig = xmlStrdup(ent->orig);
+    if (ent->URI != NULL)
+	cur->URI = xmlStrdup(ent->URI);
     return(cur);
 }
 

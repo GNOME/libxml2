@@ -243,10 +243,32 @@ AM_CONDITIONAL(WITH_TRIO_SOURCES, test "${NEED_TRIO}" = "1")
 AC_SUBST(WITH_TRIO)
 
 dnl
-dnl Aloow to disable various pieces
+dnl Aloow to enable/disable various pieces
 dnl
 
-AC_ARG_WITH(history, [  --with-history        Add history support to xmllint shell(off)])
+THREAD_LIBS=""
+WITH_THREADS=0
+THREAD_CFLAGS=""
+AC_ARG_WITH(threads, [  --with-threads          Add multithread support(off)])
+if test "$with_threads" = "yes" ; then
+    echo Enabling multithreaded support
+
+    AC_CHECK_HEADER(pthread.h,
+	AC_CHECK_LIB(pthread, pthread_mutex_lock,[
+	   THREAD_LIBS="-lpthread"
+	   AC_DEFINE(HAVE_LIBPTHREAD)
+	   AC_DEFINE(HAVE_PTHREAD_H)
+	   WITH_THREADS=1]))
+
+    if test "$WITH_THREADS" = "1" ; then
+        THREAD_CFLAGS="$XML_CFLAGS -D_REENTRANT"
+    fi
+fi
+AC_SUBST(THREAD_LIBS)
+AC_SUBST(WITH_THREADS)
+AC_SUBST(THREAD_CFLAGS)
+
+AC_ARG_WITH(history, [  --with-history          Add history support to xmllint shell(off)])
 if test "$with_history" = "yes" ; then
     echo Enabling xmllint shell history
     dnl check for terminal library. this is a very cool solution

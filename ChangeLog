@@ -1,3 +1,12 @@
+Fri Oct 12 19:25:55 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am include/libxml/Makefile.am
+	  include/libxml/globals.h globals.c  include/libxml/threads.h
+	  threads.c build_glob.py global.data xmlcatalog.c acconfig.h
+	  configure.in: started integrating the core of the thread support
+	  not activated yet but half integrated. The code should still
+	  compile and work anyway.
+
 Fri Oct 12 00:53:03 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLtree.c catalog.c debugXML.c entities.c nanoftp.c

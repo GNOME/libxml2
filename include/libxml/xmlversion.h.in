@@ -67,6 +67,17 @@ extern void xmlCheckVersion(int version);
 #endif
 
 /**
+ * LIBXML_THREADS_ENABLED:
+ *
+ * Whether the thread support is configured in
+ */
+#if @WITH_THREADS@
+#if defined(_REENTRANT) || (_POSIX_C_SOURCE - 0 >= 199506L)
+#define LIBXML_THREAD_ENABLED
+#endif
+#endif
+
+/**
  * LIBXML_FTP_ENABLED:
  *
  * Whether the FTP support is configured in

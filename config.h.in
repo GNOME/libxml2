@@ -15,6 +15,8 @@
 #undef HAVE_LIBHISTORY
 #undef HAVE_LIBREADLINE
 #undef SOCKLEN_T
+#undef HAVE_LIBPTHREAD
+#undef HAVE_PTHREAD_H
 
 /* Define if you have the _stat function.  */
 #undef HAVE__STAT
@@ -90,6 +92,9 @@
 
 /* Define if you have the <dirent.h> header file.  */
 #undef HAVE_DIRENT_H
+
+/* Define if you have the <dlfcn.h> header file.  */
+#undef HAVE_DLFCN_H
 
 /* Define if you have the <errno.h> header file.  */
 #undef HAVE_ERRNO_H

@@ -370,9 +370,11 @@ int main(int argc, char **argv) {
 	} else if (argv[i][0] == '-')
 	    continue;
 	filename = argv[i];
+	/* !!!!!!!!!!!!!!!!!!  TODO !!!!
 	if (sgml)
 	    ret = xmlLoadSGMLSuperCatalog(argv[i]);
 	else
+	   !!!!!!!!! */
 	    ret = xmlLoadCatalog(argv[i]);
 	if ((!sgml) && (ret < 0) && (create)) {
 	    xmlCatalogAdd(BAD_CAST "catalog", BAD_CAST argv[i], NULL);

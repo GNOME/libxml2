@@ -1,0 +1,27 @@
+xmlSAXHandler,docbDefaultSAXHandler
+xmlSAXHandler,htmlDefaultSAXHandler
+int,oldXMLWDcompatibility
+xmlBufferAllocationScheme,xmlBufferAllocScheme
+int,xmlDefaultBufferSize
+xmlSAXHandler,xmlDefaultSAXHandler
+xmlSAXLocator,xmlDefaultSAXLocator
+int,xmlDoValidityCheckingDefaultValue
+xmlFreeFunc,xmlFree
+xmlGenericErrorFunc,xmlGenericError
+void *,xmlGenericErrorContext
+int,xmlGetWarningsDefaultValue
+int,xmlIndentTreeOutput
+int,xmlKeepBlanksDefaultValue
+int,xmlLineNumbersDefaultValue
+int,xmlLoadExtDtdDefaultValue
+xmlMallocFunc,xmlMalloc
+xmlStrdupFunc,xmlMemStrdup
+int,xmlParserDebugEntities
+const char *,xmlParserVersion
+int,xmlPedanticParserDefaultValue
+xmlReallocFunc,xmlRealloc
+int,xmlSaveNoEmptyTags
+#const xmlChar,xmlStringComment,[]
+#const xmlChar,xmlStringText,[]
+#const xmlChar,xmlStringTextNoenc,[]
+int,xmlSubstituteEntitiesDefaultValue

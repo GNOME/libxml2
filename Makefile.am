@@ -5,7 +5,7 @@ AUTOMAKE_OPTIONS=no-dependencies
 
 SUBDIRS = include . doc example
 
-INCLUDES = -I@srcdir@/include -I$(top_builddir)/include @Z_CFLAGS@ 
+INCLUDES = -I@srcdir@/include -I$(top_builddir)/include @THREAD_CFLAGS@ @Z_CFLAGS@ 
 
 noinst_PROGRAMS=testSAX testHTML testXPath testURI testDocbook
 
@@ -23,19 +23,19 @@ libxml2_la_SOURCES = SAX.c entities.c encoding.c error.c parserInternals.c  \
 		parser.c tree.c hash.c list.c xmlIO.c xmlmemory.c uri.c  \
 		valid.c xlink.c HTMLparser.c HTMLtree.c debugXML.c xpath.c  \
 		xpointer.c xinclude.c nanohttp.c nanoftp.c DOCBparser.c \
-		catalog.c strio.c trio.c
+		catalog.c threads.c strio.c trio.c
 
 else
 libxml2_la_SOURCES = SAX.c entities.c encoding.c error.c parserInternals.c  \
 		parser.c tree.c hash.c list.c xmlIO.c xmlmemory.c uri.c  \
 		valid.c xlink.c HTMLparser.c HTMLtree.c debugXML.c xpath.c  \
 		xpointer.c xinclude.c nanohttp.c nanoftp.c DOCBparser.c \
-		catalog.c 
+		catalog.c threads.c
 
 endif
 
 DEPS = $(top_builddir)/libxml2.la
-LDADDS = $(top_builddir)/libxml2.la @Z_LIBS@ $(ICONV_LIBS) -lm
+LDADDS = $(top_builddir)/libxml2.la @THREAD_LIBS@ @Z_LIBS@ $(ICONV_LIBS) -lm
 
 man_MANS = xmllint.1 xml2-config.1 libxml.4
 

@@ -235,11 +235,13 @@ htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
     }
     if (cur->childs != NULL) {
         if ((cur->childs->type != HTML_TEXT_NODE) &&
-	    (cur->childs->type != HTML_ENTITY_REF_NODE))
+	    (cur->childs->type != HTML_ENTITY_REF_NODE) &&
+	    (cur->childs != cur->last))
 	    xmlBufferWriteChar(buf, "\n");
 	htmlNodeListDump(buf, doc, cur->childs);
         if ((cur->last->type != HTML_TEXT_NODE) &&
-	    (cur->last->type != HTML_ENTITY_REF_NODE))
+	    (cur->last->type != HTML_ENTITY_REF_NODE) &&
+	    (cur->childs != cur->last))
 	    xmlBufferWriteChar(buf, "\n");
     }
     xmlBufferWriteChar(buf, "</");

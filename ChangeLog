@@ -1,3 +1,10 @@
+Sun Feb  8 12:09:55 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* xinclude.c: added a small hack to fix interference between
+	  my fixes for bugs 132585 and 132588.
+	* python/libxml.c: fixed problem with serialization of namespace
+	  reported on the mailing list by Anthony Carrico
+
 Sat Feb  7 16:53:11 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* xinclude.c: fixed problem with function xmlXIncludeCopyRange

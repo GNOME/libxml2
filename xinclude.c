@@ -58,6 +58,7 @@ struct _xmlXIncludeRef {
     int                   xml; /* xml or txt */
     int                 count; /* how many refs use that specific doc */
     xmlXPathObjectPtr    xptr; /* the xpointer if needed */
+    int		      emptyFb; /* flag to show fallback empty */
 };
 
 struct _xmlXIncludeCtxt {
@@ -1795,6 +1796,7 @@ xmlXIncludeLoadFallback(xmlXIncludeCtxtPtr ctxt, xmlNodePtr fallback, int nr) {
 	ctxt->incTab[nr]->inc = xmlCopyNodeList(fallback->children);
     } else {
         ctxt->incTab[nr]->inc = NULL;
+	ctxt->incTab[nr]->emptyFb = 1;	/* flag empty callback */
     }
     return(ret);
 }
@@ -2208,7 +2210,9 @@ xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr tree) {
      *
      */
     for (i = ctxt->incBase;i < ctxt->incNr; i++) {
-	if ((ctxt->incTab[i]->inc != NULL) || (ctxt->incTab[i]->xptr != NULL))
+	if ((ctxt->incTab[i]->inc != NULL) ||
+		(ctxt->incTab[i]->xptr != NULL) ||
+		(ctxt->incTab[i]->emptyFb != 0))	/* (empty fallback) */
 	    xmlXIncludeIncludeNode(ctxt, i);
     }
 

@@ -2473,7 +2473,10 @@ libxml_serializeNode(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
         (void) xmlOutputBufferClose(buf);
         py_retval = libxml_charPtrWrap((char *) c_retval);
     } else {
-        doc = node->doc;
+        if (node->type == XML_NAMESPACE_DECL)
+	    doc = NULL;
+	else
+            doc = node->doc;
         if ((doc == NULL) || (doc->type == XML_DOCUMENT_NODE)) {
             xmlOutputBufferPtr buf;
             xmlCharEncodingHandlerPtr handler = NULL;

@@ -1,3 +1,8 @@
+Thu Feb 26 23:47:43 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am: patch for cross-compilation to Windows from
+	  Christophe de VIENNE.
+
 Thu Feb 26 18:52:11 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* doc/*.html, doc/html/*.html: regenerated docs using older
@@ -5,7 +10,7 @@ Thu Feb 26 18:52:11 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 Thu Feb 26 10:56:29 CET 2004 Daniel Veillard <daniel@veillard.com>
 
-	* Makefile.am: applied patch from Charles Bozeman to nit use
+	* Makefile.am: applied patch from Charles Bozeman to not use
 	  the system xmllint.
 
 Wed Feb 25 18:07:05 CET 2004 Daniel Veillard <daniel@veillard.com>

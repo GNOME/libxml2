@@ -1,3 +1,9 @@
+Tue Feb  4 15:40:54 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: try to fix # 105049
+	* relaxng.c xmlschemastypes.c: a couple of changes and extensions
+	* tree.c: updated a function comment
+
 Tue Feb  4 00:20:58 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng: more work on grammars and refs/defs

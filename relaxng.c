@@ -51,7 +51,7 @@ static const xmlChar *xmlRelaxNGNs = (const xmlChar *)
 #define DEBUG_CONTENT 1
 #define DEBUG_TYPE 1
 #define DEBUG_VALID 1
-#define DEBUG_INTERLEAVE 1 */
+/* #define DEBUG_INTERLEAVE 1 */
 
 #define UNBOUNDED (1 << 30)
 #define TODO 								\
@@ -641,6 +641,8 @@ xmlRelaxNGNewValidState(xmlRelaxNGValidCtxtPtr ctxt, xmlNodePtr node)
             ctxt->error(ctxt->userData, "Out of memory\n");
         return (NULL);
     }
+    ret->value = NULL;
+    ret->endvalue = NULL;
     if (node == NULL) {
 	ret->node = (xmlNodePtr) ctxt->doc;
 	ret->seq = root;
@@ -1619,16 +1621,14 @@ xmlRelaxNGGetDataTypeLibrary(xmlRelaxNGParserCtxtPtr ctxt ATTRIBUTE_UNUSED,
     }
     node = node->parent;
     while ((node != NULL) && (node->type == XML_ELEMENT_NODE)) {
-	if (IS_RELAXNG(node, "element")) {
-	    ret = xmlGetProp(node, BAD_CAST "datatypeLibrary");
-	    if (ret != NULL) {
-		escape = xmlURIEscapeStr(ret, BAD_CAST ":/#?");
-		if (escape == NULL) {
-		    return(ret);
-		}
-		xmlFree(ret);
-		return(escape);
+	ret = xmlGetProp(node, BAD_CAST "datatypeLibrary");
+	if (ret != NULL) {
+	    escape = xmlURIEscapeStr(ret, BAD_CAST ":/#?");
+	    if (escape == NULL) {
+		return(ret);
 	    }
+	    xmlFree(ret);
+	    return(escape);
 	}
 	node = node->parent;
     }
@@ -4190,6 +4190,7 @@ xmlRelaxNGNextValue(xmlRelaxNGValidCtxtPtr ctxt) {
     cur = ctxt->state->value;
     if ((cur == NULL) || (ctxt->state->endvalue == NULL)) {
 	ctxt->state->value = NULL;
+	ctxt->state->endvalue = NULL;
 	return(0);
     }
     while (*cur != 0) cur++;
@@ -4993,6 +4994,12 @@ xmlRelaxNGValidateDefinition(xmlRelaxNGValidCtxtPtr ctxt,
 		VALID_ERROR("Expecting an element\n");
 		return(-1);
 	    }
+	    /*
+	     * This node was already validated successfully against
+	     * this definition.
+	     */
+	    if (node->_private == define)
+		break;
 	    if (define->name != NULL) {
 		if (!xmlStrEqual(node->name, define->name)) {
 		    VALID_CTXT();
@@ -5060,7 +5067,9 @@ xmlRelaxNGValidateDefinition(xmlRelaxNGValidCtxtPtr ctxt,
 	    ctxt->state = oldstate;
 	    xmlRelaxNGFreeValidState(state);
 	    if (oldstate != NULL)
-		oldstate->seq = node->next;
+		oldstate->seq = xmlRelaxNGSkipIgnored(ctxt, node->next);
+	    if (ret == 0)
+		node->_private = define;
 
 
 #ifdef DEBUG

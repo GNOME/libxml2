@@ -2508,8 +2508,6 @@ xmlAddChildList(xmlNodePtr parent, xmlNodePtr cur) {
  *
  * Add a new node to @parent, at the end of the child (or property) list
  * merging adjacent TEXT nodes (in which case @cur is freed)
- * If the new node was already inserted in a document it is
- * first unlinked from its existing context.
  * If the new node is ATTRIBUTE, it is added into properties instead of children.
  * If there is an attribute with equal name, it is first destroyed. 
  *

@@ -3927,11 +3927,49 @@ htmlCreateMemoryParserCtxt(const char *buffer, int size) {
 static htmlParserCtxtPtr
 htmlCreateDocParserCtxt(xmlChar *cur, const char *encoding ATTRIBUTE_UNUSED) {
     int len;
+    htmlParserCtxtPtr ctxt;
 
     if (cur == NULL)
 	return(NULL);
     len = xmlStrlen(cur);
-    return(htmlCreateMemoryParserCtxt((char *)cur, len));
+    ctxt = htmlCreateMemoryParserCtxt((char *)cur, len);
+
+    if (encoding != NULL) {
+	xmlCharEncoding enc;
+	xmlCharEncodingHandlerPtr handler;
+
+	if (ctxt->input->encoding != NULL)
+	    xmlFree((xmlChar *) ctxt->input->encoding);
+	ctxt->input->encoding = (const xmlChar *) encoding;
+
+	enc = xmlParseCharEncoding(encoding);
+	/*
+	 * registered set of known encodings
+	 */
+	if (enc != XML_CHAR_ENCODING_ERROR) {
+	    xmlSwitchEncoding(ctxt, enc);
+	    if (ctxt->errNo == XML_ERR_UNSUPPORTED_ENCODING) {
+		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		    ctxt->sax->error(ctxt->userData,
+			 "Unsupported encoding %s\n", encoding);
+		ctxt->input->encoding = NULL;
+	    }
+	} else {
+	    /*
+	     * fallback for unknown encodings
+	     */
+	    handler = xmlFindCharEncodingHandler((const char *) encoding);
+	    if (handler != NULL) {
+		xmlSwitchToEncoding(ctxt, handler);
+	    } else {
+		ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
+		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		    ctxt->sax->error(ctxt->userData,
+			 "Unsupported encoding %s\n", encoding);
+	    }
+	}
+    }
+    return(ctxt);
 }
 
 /************************************************************************

@@ -129,6 +129,8 @@ static xmlSchemaTypePtr xmlSchemaTypeDurationDef = NULL;
 static xmlSchemaTypePtr xmlSchemaTypeNmtoken = NULL;
 static xmlSchemaTypePtr xmlSchemaTypeFloatDef = NULL;
 static xmlSchemaTypePtr xmlSchemaTypeDoubleDef = NULL;
+static xmlSchemaTypePtr xmlSchemaTypeQNameDef = NULL;
+static xmlSchemaTypePtr xmlSchemaTypeAnyURIDef = NULL;
 
 /*
  * Derived types
@@ -146,6 +148,7 @@ static xmlSchemaTypePtr xmlSchemaTypeUnsignedLongDef = NULL;
 static xmlSchemaTypePtr xmlSchemaTypeUnsignedIntDef = NULL;
 static xmlSchemaTypePtr xmlSchemaTypeUnsignedShortDef = NULL;
 static xmlSchemaTypePtr xmlSchemaTypeUnsignedByteDef = NULL;
+static xmlSchemaTypePtr xmlSchemaTypeNCNameDef = NULL;
 
 /*
  * xmlSchemaInitBasicType:
@@ -202,6 +205,8 @@ xmlSchemaInitTypes(void) {
     xmlSchemaTypeNmtoken = xmlSchemaInitBasicType("NMTOKEN");
     xmlSchemaTypeFloatDef = xmlSchemaInitBasicType("float");
     xmlSchemaTypeDoubleDef = xmlSchemaInitBasicType("double");
+    xmlSchemaTypeQNameDef = xmlSchemaInitBasicType("QName");
+    xmlSchemaTypeAnyURIDef = xmlSchemaInitBasicType("anyURI");
 
     /*
      * derived datatypes
@@ -219,6 +224,7 @@ xmlSchemaInitTypes(void) {
     xmlSchemaTypeUnsignedShortDef = xmlSchemaInitBasicType("insignedShort");;
     xmlSchemaTypeUnsignedByteDef = xmlSchemaInitBasicType("unsignedByte");;
     xmlSchemaTypePositiveIntegerDef = xmlSchemaInitBasicType("positiveInteger");
+    xmlSchemaTypeNCNameDef = xmlSchemaInitBasicType("NCName");
 
     xmlSchemaTypesInitialized = 1;
 }

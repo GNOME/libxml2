@@ -1,3 +1,12 @@
+Sat Feb 12 09:07:11 HKT 2005 William Brack <wbrack@mmm.com.hk>
+
+	* xinclude.c: fixed xmlXIncludeParseFile to prevent
+	  overwriting XML_COMPLETE_ATTRS when setting pctxt->loadsubset
+	  (bug 166199)
+	* Makefile.am, python/tests/Makefile.am, xstc/Makefile.am: added
+	  code to add $(top_builddir)/.libs to LD_LIBRARY_PATH whenever
+	  PYTHONPATH is set, to assure new libxml2 routines are used.
+
 Fri Feb 11 22:20:41 HKT 2005 William Brack <wbrack@mmm.com.hk>
 
 	* parser.c: fixed problem when no initial "chunk" was

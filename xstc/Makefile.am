@@ -64,18 +64,24 @@ $(TESTDIRS):
 pytests: $(PYSCRIPTS) $(TESTDIRS)
 	-@(if [ -x nist-test.py -a -d nisttest ] ; then 		\
 	   echo "## Running NIST Schemas tests";			\
-	   PYTHONPATH="$$PYTHONPATH:../python:../python/.libs:..:../libs" ;\
+	   PYTHONPATH="../python:../python/.libs:..:../libs:$$PYTHONPATH" ;\
 	   export PYTHONPATH;						\
+	   LD_LIBRARY_PATH="$(top_builddir)/.libs:$$LD_LIBRARY_PATH" ;	\
+	   export LD_LIBRARY_PATH;					\
 	   $(CHECKER) $(PYTHON) nist-test.py -s -b $(srcdir) ; fi)
 	-@(if [ -x sun-test.py -a -d suntest ] ; then 			\
 	   echo "## Running Sun Schemas tests";				\
-	   PYTHONPATH="$$PYTHONPATH:../python:../python/.libs:..:../libs" ;\
+	   PYTHONPATH="../python:../python/.libs:..:../libs:$$PYTHONPATH" ;\
 	   export PYTHONPATH;						\
+	   LD_LIBRARY_PATH="$(top_builddir)/.libs:$$LD_LIBRARY_PATH" ;	\
+	   export LD_LIBRARY_PATH;					\
 	   $(CHECKER) $(PYTHON) sun-test.py -s -b $(srcdir) ; fi)
 	-@(if [ -x ms-test.py -a -d msxsdtest ] ; then 			\
 	   echo "## Running Microsoft Schemas tests";			\
-	   PYTHONPATH="$$PYTHONPATH:../python:../python/.libs:..:../libs" ;\
+	   PYTHONPATH="../python:../python/.libs:..:../libs:$$PYTHONPATH" ;\
 	   export PYTHONPATH;						\
+	   LD_LIBRARY_PATH="$(top_builddir)/.libs:$$LD_LIBRARY_PATH" ;	\
+	   export LD_LIBRARY_PATH;					\
 	   $(CHECKER) $(PYTHON) ms-test.py -s -b $(srcdir) ; fi)
 
 tests:

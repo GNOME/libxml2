@@ -451,7 +451,7 @@ xmlXIncludeParseFile(xmlXIncludeCtxtPtr ctxt, const char *URL) {
     if ((pctxt->directory == NULL) && (directory != NULL))
         pctxt->directory = (char *) xmlStrdup((xmlChar *) directory);
 
-    pctxt->loadsubset = XML_DETECT_IDS;
+    pctxt->loadsubset |= XML_DETECT_IDS;
 
     xmlParseDocument(pctxt);
 

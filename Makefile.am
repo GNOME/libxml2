@@ -985,6 +985,8 @@ RelaxNGPythonTests:
 	@(if [ -x $(PYTHON) ] ; then \
 	    PYTHONPATH=$(top_builddir)/python:$(top_builddir)/python/.libs:$$PYTHONPATH ; \
 	    export PYTHONPATH; \
+	    LD_LIBRARY_PATH="$(top_builddir)/.libs:$$LD_LIBRARY_PATH" ; \
+	    export LD_LIBRARY_PATH; \
 	    echo "## Relax-NG Python based test suite 1" ; \
 	    $(CHECKER) $(PYTHON) $(srcdir)/check-relaxng-test-suite.py ; \
 	    echo "## Relax-NG Python based test suite 2" ; \
@@ -995,6 +997,8 @@ SchemasPythonTests:
 	@(if [ -x $(PYTHON) ] ; then \
 	    PYTHONPATH=$(top_builddir)/python:$(top_builddir)/python/.libs:$$PYTHONPATH; \
 	    export PYTHONPATH; \
+	    LD_LIBRARY_PATH="$(top_builddir)/.libs:$$LD_LIBRARY_PATH" ; \
+	    export LD_LIBRARY_PATH; \
 	    echo "## XML Schemas datatypes Python based test suite" ; \
 	    echo "## It is normal to see 6 errors reported" ; \
 	    $(CHECKER) $(PYTHON) $(srcdir)/check-xsddata-test-suite.py ; \

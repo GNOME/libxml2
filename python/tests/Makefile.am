@@ -52,6 +52,8 @@ tests: $(PYTESTS)
 	@echo "## running Python regression tests"
 	-@(PYTHONPATH="..:../.libs:$(srcdir)/..:$$PYTHONPATH" ; \
 	   export PYTHONPATH; \
+	   LD_LIBRARY_PATH="$(top_builddir)/.libs:$$LD_LIBRARY_PATH" ; \
+	   export LD_LIBRARY_PATH; \
 	   for test in $(PYTESTS) ; \
 	   do log=`$(PYTHON) $(srcdir)/$$test` ; \
 	   if [ "`echo $$log | grep OK`" = "" ] ; then \

@@ -22,7 +22,7 @@
  
 static const char rcsid[] = "@(#)$Id$";
 
-#if defined(unix) || defined(__xlC__) || defined(__QNX__)
+#if defined(unix) || defined(__xlC__) || defined(__QNX__) || defined(__CYGWIN__)
 # define PLATFORM_UNIX
 #elif defined(WIN32) || defined(_WIN32)
 # define PLATFORM_WIN32

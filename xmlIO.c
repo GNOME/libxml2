@@ -294,7 +294,7 @@ xmlFileOpen (const char *filename) {
     if (!strncmp(filename, "file://localhost", 16))
 	path = &filename[16];
     else if (!strncmp(filename, "file:///", 8)) {
-#ifdef _WIN32
+#if defined (_WIN32) && !defined(__CYGWIN__)
 	path = &filename[8];
 #else
 	path = &filename[7];
@@ -307,7 +307,7 @@ xmlFileOpen (const char *filename) {
     if (!xmlCheckFilename(path))
         return(NULL);
 
-#ifdef WIN32
+#if defined(WIN32) || defined (__CYGWIN__)
     fd = fopen(path, "rb");
 #else
     fd = fopen(path, "r");
@@ -337,7 +337,7 @@ xmlFileOpenW (const char *filename) {
     if (!strncmp(filename, "file://localhost", 16))
 	path = &filename[16];
     else if (!strncmp(filename, "file:///", 8)) {
-#ifdef _WIN32
+#if defined (_WIN32) && !defined(__CYGWIN__)
 	path = &filename[8];
 #else
 	path = &filename[7];
@@ -454,7 +454,7 @@ xmlGzfileOpen (const char *filename) {
     if (!strncmp(filename, "file://localhost", 16))
 	path = &filename[16];
     else if (!strncmp(filename, "file:///", 8)) {
-#ifdef _WIN32
+#if defined (_WIN32) && !defined(__CYGWIN__)
 	path = &filename[8];
 #else
 	path = &filename[7];
@@ -496,7 +496,7 @@ xmlGzfileOpenW (const char *filename, int compression) {
     if (!strncmp(filename, "file://localhost", 16))
 	path = &filename[16];
     else if (!strncmp(filename, "file:///", 8)) {
-#ifdef _WIN32
+#if defined (_WIN32) && !defined(__CYGWIN__)
 	path = &filename[8];
 #else
 	path = &filename[7];
@@ -2387,7 +2387,7 @@ xmlParserGetDirectory(const char *filename) {
 	xmlRegisterDefaultInputCallbacks();
 
     if (filename == NULL) return(NULL);
-#ifdef WIN32
+#if defined(WIN32) && !defined(__CYGWIN__)
     sep = '\\';
 #endif
 
@@ -2430,7 +2430,7 @@ static int xmlSysIDExists(const char *URL) {
     if (!strncmp(URL, "file://localhost", 16))
 	path = &URL[16];
     else if (!strncmp(URL, "file:///", 8)) {
-#ifdef _WIN32
+#if defined (_WIN32) && !defined(__CYGWIN__)
 	path = &URL[8];
 #else
 	path = &URL[7];
@@ -2617,7 +2617,7 @@ xmlNoNetExists(const char *URL)
     if (!xmlStrncmp(BAD_CAST URL, BAD_CAST "file://localhost", 16))
         path = &URL[16];
     else if (!xmlStrncmp(BAD_CAST URL, BAD_CAST "file:///", 8)) {
-#ifdef _WIN32
+#if defined (_WIN32) && !defined(__CYGWIN__)
         path = &URL[8];
 #else
         path = &URL[7];

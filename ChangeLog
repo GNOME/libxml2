@@ -1,3 +1,19 @@
+Tue Jan  8 11:32:30 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* libxml.h: Applied following patches from Robert Collins
+	  and make sure IN_LIBXML is defined when compiling it
+	-------
+	* include/libxml/xmlversion.h.in (LIBXML_DLL_IMPORT): Use on Cygwin
+	  as well as Visual C.
+	* parser.c (XML_DIR_SEP): Don't use '\\' for Cygwin.
+	* parserInternals.c (XML_DIR_SEP): Don't use '\\' for Cygwin.
+	* strio.c (PLATFORM_UNIX): Define for Cygwin.
+	* triodef.h (TRIO_PLATFORM_UNIX): Define for Cygwin.
+	* xmlIO.c (xmlFileOpen): Use unix behaviour for Cygwin.
+	  Use binary mode opens for Cygwin (xmlFileOpenW xmlParserGetDirectory
+	  xmlSysIDExists xmlNoNetExists).
+	* xmllint.c: Don't include winsock2.h for Cygwin.
+
 Mon Jan  7 17:52:48 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: Jirka Kosek pointer out a bug in xmlParseTextDecl()

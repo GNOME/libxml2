@@ -198,7 +198,7 @@ extern void xmlCheckVersion(int version);
  * code which links against libxml statically. 
  */
 #ifndef LIBXML_DLL_IMPORT
-#if defined(_MSC_VER) && !defined(IN_LIBXML) && !defined(LIBXML_STATIC)
+#if (defined(_MSC_VER) || defined(__CYGWIN__)) && !defined(IN_LIBXML) && !defined(LIBXML_STATIC)
 #define LIBXML_DLL_IMPORT __declspec(dllimport)
 #else
 #define LIBXML_DLL_IMPORT

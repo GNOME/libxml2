@@ -32,7 +32,7 @@
 
 #include "libxml.h"
 
-#ifdef WIN32
+#if defined(WIN32) && !defined (__CYGWIN__)
 #define XML_DIR_SEP '\\'
 #else
 #define XML_DIR_SEP '/'

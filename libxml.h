@@ -30,5 +30,6 @@
 #define TRIO_REPLACE_STDIO
 #include "trio.h"
 #endif
+#define IN_LIBXML
 
 #endif /* ! __XML_LIBXML_H__ */

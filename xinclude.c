@@ -2206,6 +2206,8 @@ xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr tree) {
 	    if (xmlXIncludeTestNode(ctxt, cur))
 		xmlXIncludePreProcessNode(ctxt, cur);
 	} else {
+	    if (cur == tree)
+	        break;
 	    do {
 		cur = cur->parent;
 		if (cur == NULL) break; /* do */

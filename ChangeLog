@@ -1,3 +1,10 @@
+Fri Apr 16 16:09:31 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* xinclude.c: fixed problem causing duplicate fallback
+	  execution (bug 139520)
+	* test/XInclude/docs/fallback2.xml result/XInclude/fallback2.*:
+	  added testcase
+
 Fri Apr  9 23:49:37 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* SAX2.c include/libxml/tree.h: adding xml:id draft support

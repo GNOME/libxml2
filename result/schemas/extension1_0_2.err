@@ -1,1 +1,1 @@
-./test/schemas/extension1_2.xml:1: element title: Schemas validity error : Element children are not allowed, because the content type is a simple type.
+./test/schemas/extension1_2.xml:1: element title: Schemas validity error : Element 'title' [CT local]: Element content is not allowed, because the content type is a simple type.

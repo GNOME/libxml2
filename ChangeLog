@@ -1,3 +1,39 @@
+Sat Aug 21 0:035:10 CET 2004 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c: modified parsing of <list>, <union>, <restriction>,
+	  <sequence>, <choice>, <include>, <import>.
+	  Fixed schema defaults (elementFormDefault, etc.) for included
+	  schemas.
+	  Fixed a bug which reported attributes as invalid on
+	  elements declarations with the built-in type 'anyType'.
+	  Added "lax" validation of the content of elements of type
+	  'anyType'.
+	  Fixed: element declarations with the same name were treated
+	  as duplicate if located in the subtree of <choice> -> <sequence>.
+	  (This was bug 150623, submitted by Roland Lezuo)
+	  Fixed cleanup of error codes in xmlSchemaValidateDoc as proposed
+	  by Igor Kapitanker. (This was bug 150647, submitted by Igor
+	  Kapitanker)
+	* xmlschemastypes.c: Changed the type of anyType to
+	  XML_SCHEMAS_ANYTYPE.
+	* include/libxml/xmlerror.h: Added schema parser errors.
+	* result/schemas/bug145246_0_0*
+	  result/schemas/extension1_0_2.err: Changed test results.
+	* result/schemas/ct-sc-nobase_0_0*
+	  result/schemas/facet-whiteSpace_0_0*
+	  result/schemas/import1_0_0* result/schemas/import2_0_0*
+	  result/schemas/include2_0_0* result/schemas/include3_0_0*
+	  result/schemas/restriction-attr1_0_0*
+	  result/schemas/seq-dubl-elem1_0_0*
+	  result/schemas/xsd-list-itemType_0_0*: Added new rest results.
+	  test/schemas/bug145246.xsd.imp test/schemas/ct-sc-nobase_0*
+	  test/schemas/facet-whiteSpace_0* test/schemas/import1_0*
+	  test/schemas/import2_0* test/schemas/include2_0*
+	  test/schemas/include3_0* test/schemas/restriction-attr1_0*
+	  test/schemas/seq-dubl-elem1_0* test/schemas/xml.xsd
+	  test/schemas/xsd-list-itemType_0*: Added new tests and missing
+	  files.  	      
+	      
 Fri Aug 20 18:51:36 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am configure.in: a bit of cleanup and a extra variable for

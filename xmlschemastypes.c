@@ -226,7 +226,8 @@ xmlSchemaInitBasicType(const char *name, xmlSchemaValType type,
 	(type == XML_SCHEMAS_NMTOKENS) ||
 	(type == XML_SCHEMAS_ENTITIES)) 
 	ret->flags |= XML_SCHEMAS_TYPE_VARIETY_LIST;
-    else if (type != XML_SCHEMAS_UNKNOWN)
+    else if ((type != XML_SCHEMAS_ANYTYPE) &&
+	(type != XML_SCHEMAS_ANYSIMPLETYPE))
 	ret->flags |= XML_SCHEMAS_TYPE_VARIETY_ATOMIC;
     ret->contentType = XML_SCHEMA_CONTENT_BASIC;
     switch (type) {
@@ -277,7 +278,7 @@ xmlSchemaInitTypes(void)
     * 3.4.7 Built-in Complex Type Definition
     */
     xmlSchemaTypeAnyTypeDef = xmlSchemaInitBasicType("anyType",
-                                                     XML_SCHEMAS_UNKNOWN, 
+                                                     XML_SCHEMAS_ANYTYPE, 
 						     NULL);
     xmlSchemaTypeAnyTypeDef->baseType = xmlSchemaTypeAnyTypeDef;
     xmlSchemaTypeAnyTypeDef->contentType = XML_SCHEMA_CONTENT_MIXED;
@@ -286,7 +287,7 @@ xmlSchemaInitTypes(void)
 
 	wild = (xmlSchemaWildcardPtr) xmlMalloc(sizeof(xmlSchemaWildcard));
 	if (wild == NULL) {
-	    xmlSchemaTypeErrMemory(NULL, "could not create a wildcard on anyType");
+	    xmlSchemaTypeErrMemory(NULL, "could not create an attribute wildcard on anyType");
 	    return;
 	}
 	memset(wild, 0, sizeof(xmlSchemaWildcard));
@@ -297,7 +298,7 @@ xmlSchemaInitTypes(void)
 	xmlSchemaTypeAnyTypeDef->attributeWildcard = wild;
     }
     xmlSchemaTypeAnySimpleTypeDef = xmlSchemaInitBasicType("anySimpleType", 
-                                                           XML_SCHEMAS_UNKNOWN,
+                                                           XML_SCHEMAS_ANYSIMPLETYPE,
 							   xmlSchemaTypeAnyTypeDef);
     /*
     * primitive datatypes
@@ -1744,11 +1745,11 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
     }
 
     switch (type->builtInType) {
-        case XML_SCHEMAS_UNKNOWN:
-            if ((type == xmlSchemaTypeAnySimpleTypeDef) ||
-		(type == xmlSchemaTypeAnyTypeDef))
-                goto return0;
+        case XML_SCHEMAS_UNKNOWN:            
             goto error;
+	case XML_SCHEMAS_ANYTYPE:
+	case XML_SCHEMAS_ANYSIMPLETYPE:
+	    goto return0;
         case XML_SCHEMAS_STRING:
             goto return0;
         case XML_SCHEMAS_NORMSTRING:{
@@ -3548,6 +3549,8 @@ xmlSchemaCompareValues(xmlSchemaValPtr x, xmlSchemaValPtr y) {
 
     switch (x->type) {
 	case XML_SCHEMAS_UNKNOWN:
+	case XML_SCHEMAS_ANYTYPE:
+	case XML_SCHEMAS_ANYSIMPLETYPE:
 	    return(-2);
         case XML_SCHEMAS_INTEGER:
         case XML_SCHEMAS_NPINTEGER:
@@ -3687,9 +3690,6 @@ xmlSchemaCompareValues(xmlSchemaValPtr x, xmlSchemaValPtr y) {
         case XML_SCHEMAS_ENTITIES:
         case XML_SCHEMAS_NMTOKENS:
 	    TODO
-	    break;
-	case XML_SCHEMAS_ANYTYPE:
-	case XML_SCHEMAS_ANYSIMPLETYPE:
 	    break;
     }
     return -2;

@@ -689,7 +689,19 @@ typedef enum {
     XML_SCHEMAP_SRC_ATTRIBUTE_3_2, /* 3054 */
     XML_SCHEMAP_SRC_ATTRIBUTE_4, /* 3055 */
     XML_SCHEMAP_NO_XMLNS, /* 3056 */
-    XML_SCHEMAP_NO_XSI /* 3057 */
+    XML_SCHEMAP_NO_XSI, /* 3057 */
+    XML_SCHEMAP_COS_VALID_DEFAULT_1,
+    XML_SCHEMAP_COS_VALID_DEFAULT_2_1,
+    XML_SCHEMAP_COS_VALID_DEFAULT_2_2_1,
+    XML_SCHEMAP_COS_VALID_DEFAULT_2_2_2,
+    XML_SCHEMAP_CVC_SIMPLE_TYPE,
+    XML_SCHEMAP_COS_CT_EXTENDS_1_1,
+    XML_SCHEMAP_SRC_IMPORT_1_1,
+    XML_SCHEMAP_SRC_IMPORT_1_2,
+    XML_SCHEMAP_SRC_IMPORT_2,
+    XML_SCHEMAP_SRC_IMPORT_2_1,
+    XML_SCHEMAP_SRC_IMPORT_2_2
+    
 } xmlParserErrors;
 
 /**
@@ -707,12 +719,12 @@ typedef void (*xmlGenericErrorFunc) (void *ctx,
 /**
  * xmlStructuredErrorFunc:
  * @userData:  user provided data for the error callback
- * @xmlerr:  the error being raised.
+ * @error:  the error being raised.
  *
  * Signature of the function to use when there is an error and
  * the module handles the new error reporting mechanism.
  */
-typedef void (*xmlStructuredErrorFunc) (void *userData, xmlErrorPtr xmlerr);
+typedef void (*xmlStructuredErrorFunc) (void *userData, xmlErrorPtr error);
 
 /*
  * Use the following function to reset the two global variables

@@ -1,3 +1,9 @@
+Sat Nov 29 18:38:22 HKT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* xmlmemory.c: enhanced by adding mutex to protect global
+	  structures in a multi-threading environment.  This fixed
+	  some random errors on the Threads regression tests.
+	  
 Fri Nov 28 21:39:49 MST 2003 John Fleck <jfleck@inkstain.net>
 
 	* doc/xml.html
@@ -6,13 +12,13 @@ Fri Nov 28 21:39:49 MST 2003 John Fleck <jfleck@inkstain.net>
 
 Fri Nov 28 17:28:47 HKT 2003 William Brack <wbrack@mmm.com.hk>
 
-	* encoding.c, include/libxml/encoding.h: Enhanced the handling of UTF-16,
-	  UTF-16LE and UTF-16BE encodings.  Now UTF-16 output is handled internally
-	  by default, with proper BOM and UTF-16LE encoding.  Native UTF-16LE and
-	  UTF-16BE encoding will not generate a BOM on output, and will be
-	  automatically recognized on input.
-	* test/utf16lebom.xml, test/utf16bebom.xml, result/utf16?ebom*: added
-	  regression tests for above.
+	* encoding.c, include/libxml/encoding.h: Enhanced the handling of
+	  UTF-16, UTF-16LE and UTF-16BE encodings.  Now UTF-16 output is
+	  handled internally by default, with proper BOM and UTF-16LE
+	  encoding.  Native UTF-16LE and UTF-16BE encoding will not generate
+	  BOM on output, and will be automatically recognized on input.
+	* test/utf16lebom.xml, test/utf16bebom.xml, result/utf16?ebom*:
+	  added regression tests for above.
 	  
 Thu Nov 27 19:25:10 CET 2003 Igor Zlatkovic <igor@zlatkovic.com>
 

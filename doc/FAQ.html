@@ -165,7 +165,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <ol>
 <li>
 <em>What is the process to compile libxml ?</em>
-    <p>As most UNIX libraries libxml follows the &quot;standard&quot;:</p>
+    <p>As do most UNIX libraries libxml follows the &quot;standard&quot;:</p>
 <p><code>gunzip -c xxx.tar.gz | tar xvf -</code></p>
 <p><code>cd libxml-xxxx</code></p>
 <p><code>./configure --help</code></p>
@@ -178,7 +178,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 </li>
 <li>
 <em>What other libraries are needed to compile/install libxml ?</em>
-    <p>Libxml does not requires any other library, the normal C ANSI API
+    <p>Libxml does not require any other library, the normal C ANSI API
     should be sufficient (please report any violation to this rule you may
     find).</p>
 <p>However if found at configuration time libxml will detect and use the
@@ -186,7 +186,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <ul>
 <li>
 <a href="http://www.info-zip.org/pub/infozip/zlib/">libz</a> : a
-        highly portable and available widely compression library</li>
+        highly portable and widely available compression library</li>
 <li>iconv: a powerful character encoding conversion library. It's
         included by default on recent glibc libraries, so it doesn't need to
         be installed specifically on Linux. It seems it's now <a href="http://www.opennc.org/onlinepubs/7908799/xsh/iconv.html">part
@@ -231,7 +231,7 @@ A:link, A:visited, A:active { text-decoration: underline }
         content <strong>modifying the content of your document in the
         process</strong>. The result may not be what you expect. There is
         <strong>NO</strong> way to guarantee that such a modification won't
-        impact other part of the content of your document. See <a href="http://xmlsoft.org/html/libxml-parser.html#XMLKEEPBLANKSDEFAULT">xmlKeepBlanksDefault
+        impact other parts of the content of your document. See <a href="http://xmlsoft.org/html/libxml-parser.html#XMLKEEPBLANKSDEFAULT">xmlKeepBlanksDefault
         ()</a> and <a href="http://xmlsoft.org/html/libxml-tree.html#XMLSAVEFORMATFILE">xmlSaveFormatFile
         ()</a>
 </li>
@@ -319,7 +319,7 @@ pnode=pxmlDoc-&gt;children-&gt;children;</pre>
     <p>libxml is written in pure C in order to allow easy reuse on a number
     of platforms, including embedded systems. I don't intend to convert to
     C++.</p>
-<p>There is however a few C++ wrappers which may fulfill your needs:</p>
+<p>There are, however, a few C++ wrappers which may fulfill your needs:</p>
 <ul>
 <li>by Ari Johnson &lt;ari@btigate.com&gt;:
         <p>Website: <a href="http://lusis.org/~ari/xml%2B%2B/">http://lusis.org/~ari/xml++/</a>
@@ -335,7 +335,7 @@ pnode=pxmlDoc-&gt;children-&gt;children;</pre>
 </li>
 <li>How to validate a document a posteriori ?
     <p>It is possible to validate documents which had not been validated at
-    initial parsing time or documents who have been built from scratch using
+    initial parsing time or documents which have been built from scratch using
     the API. Use the <a href="http://xmlsoft.org/html/libxml-valid.html#XMLVALIDATEDTD">xmlValidateDtd()</a>
     function. It is also possible to simply add a DTD to an existing
     document:</p>

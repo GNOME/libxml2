@@ -1,3 +1,9 @@
+Wed Jun  5 19:14:49 MDT 2002 John Fleck <jfleck@inkstain.net>
+
+	*doc/FAQ.html
+	fixing typos in FAQ, thanks to Robert Funnell for the
+	editing help
+
 Wed Jun  5 14:50:24 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* NEWS: got complaints from rpmlint that it was empty

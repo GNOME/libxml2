@@ -1616,8 +1616,28 @@ xmlXPathCmpNodes(xmlNodePtr node1, xmlNodePtr node2) {
     /*
      * Find who's first.
      */
+    if (node1 == node2->prev)
+	return(1);
     if (node1 == node2->next)
 	return(-1);
+    /*
+     * Speedup using document order if availble.
+     */
+    if ((node1->type == XML_ELEMENT_NODE) &&
+	(node2->type == XML_ELEMENT_NODE) &&
+	(0 > (long) node1->content) &&
+	(0 > (long) node2->content) &&
+	(node1->doc == node2->doc)) {
+	long l1, l2;
+
+	l1 = -((long) node1->content);
+	l2 = -((long) node2->content);
+	if (l1 < l2)
+	    return(1);
+	if (l1 > l2)
+	    return(-1);
+    }
+
     for (cur = node1->next;cur != NULL;cur = cur->next)
 	if (cur == node2)
 	    return(1);

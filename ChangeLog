@@ -1,3 +1,7 @@
+Tue Feb 17 12:47:20 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c: applied optimization patch from Petr Pajas
+
 Tue Feb 17 12:39:08 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xmlwriter.c include/libxml/xmlwriter.h: applied update

@@ -1,3 +1,7 @@
+Tue Apr  9 15:47:14 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* libxml.m4: got a report that #include <string.h> was needed
+
 Tue Apr  9 11:51:25 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xmllint.c: applied a fix from Anthony Jones for -o /--output

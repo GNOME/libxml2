@@ -59,6 +59,7 @@ dnl
       AC_TRY_RUN([
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include <libxml/tree.h>
 
 int 
@@ -253,6 +254,7 @@ dnl
       AC_TRY_RUN([
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include <libxml/xmlversion.h>
 
 int 

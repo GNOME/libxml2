@@ -1,3 +1,12 @@
+Fri Aug  4 11:21:50 PDT 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* configure.in: patch for HP compiler
+
+2000-08-04  Sven Heinicke  <sven@zen.org>
+
+	* xmllint.c: Was coredumping sometimes when the file given didn't
+	exist.
+
 Sat Jul 22 05:59:05 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* parser.c xmlIO.[ch]: fixed the problem of encoding support

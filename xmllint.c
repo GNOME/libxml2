@@ -426,30 +426,39 @@ void parseAndPrintFile(char *filename) {
 	    xmlSAXHandler silent, *old;
 
 	    ctxt = xmlCreateFileParserCtxt(filename);
-	    memcpy(&silent, ctxt->sax, sizeof(silent));
-	    old = ctxt->sax;
-	    silent.error = xmlHTMLError;
-	    if (xmlGetWarningsDefaultValue)
+
+	    if (ctxt == NULL) {	      
+	      /* If xmlCreateFileParseCtxt() return NULL something
+		 strange happened so we don't want to do anything.  Do
+		 we want to print an error message here?
+		 <sven@zen.org> */
+	      doc == NULL;
+	    } else {
+	      memcpy(&silent, ctxt->sax, sizeof(silent));
+	      old = ctxt->sax;
+	      silent.error = xmlHTMLError;
+	      if (xmlGetWarningsDefaultValue)
 		silent.warning = xmlHTMLWarning;
-	    else 
+	      else 
 		silent.warning = NULL;
-	    silent.fatalError = xmlHTMLError;
-            ctxt->sax = &silent;
-	    ctxt->vctxt.error = xmlHTMLValidityError;
-	    if (xmlGetWarningsDefaultValue)
+	      silent.fatalError = xmlHTMLError;
+	      ctxt->sax = &silent;
+	      ctxt->vctxt.error = xmlHTMLValidityError;
+	      if (xmlGetWarningsDefaultValue)
 		ctxt->vctxt.warning = xmlHTMLValidityWarning;
-	    else 
+	      else 
 		ctxt->vctxt.warning = NULL;
 
-	    xmlParseDocument(ctxt);
+	      xmlParseDocument(ctxt);
 
-	    ret = ctxt->wellFormed;
-	    doc = ctxt->myDoc;
-	    ctxt->sax = old;
-	    xmlFreeParserCtxt(ctxt);
-	    if (!ret) {
+	      ret = ctxt->wellFormed;
+	      doc = ctxt->myDoc;
+	      ctxt->sax = old;
+	      xmlFreeParserCtxt(ctxt);
+	      if (!ret) {
 		xmlFreeDoc(doc);
 		doc = NULL;
+	      }
 	    }
 #ifdef HAVE_SYS_MMAN_H
 	} else if (memory) {
@@ -472,6 +481,14 @@ void parseAndPrintFile(char *filename) {
 #ifdef LIBXML_HTML_ENABLED
     }
 #endif
+
+    /*
+     * If we don't have a document we might as well give up.  Do we
+     * want an error message here?  <sven@zen.org> */
+    if (doc == NULL)
+      {
+	return;
+      }
 
 #ifdef LIBXML_DEBUG_ENABLED
     /*
@@ -703,3 +720,4 @@ int main(int argc, char **argv) {
 
     return(0);
 }
+

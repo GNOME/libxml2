@@ -126,7 +126,7 @@ dnl
 if test "${CC}" != "gcc" ; then
     case "${host}" in
           *-*-hpux* )
-	       CFLAGS="${CFLAGS} -Wp,-H16800 -Ae"
+	       CFLAGS="${CFLAGS} -Wp,-H30000 -Ae"
 	       ;;
     esac
 fi

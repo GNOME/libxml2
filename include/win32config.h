@@ -21,7 +21,7 @@
 #include <direct.h>
 #endif
 
-#include <libxml/xmlwin32version.h>
+#include <libxml/xmlversion.h>
 
 #ifdef NEED_SOCKETS
 #include <wsockcompat.h>
@@ -98,12 +98,22 @@ static int isnan (double d) {
 #define vsnprintf _vsnprintf
 #endif /* _MSC_VER */
 
-/* Define this if you want to use Windows native thread implementation.
-   Undefine it if you wish to use another, pthreads for example. Note
-   that this alone does not enable threads, just specifies the
-   threading model. Threading support is activated in xmlversion.h by
-   defining LIBXML_THREAD_ENABLE. */
+/* Threading API to use should be specified here for compatibility reasons.
+   This is however best specified on the compiler's command-line. */
+#if defined(LIBXML_THREAD_ENABLED)
+#if !defined(HAVE_PTHREAD_H) && !defined(HAVE_WIN32_THREADS)
 #define HAVE_WIN32_THREADS
+#endif
+#endif
+
+/* Some third-party libraries far from our control assume the following
+   is defined, which it is not if we don't include windows.h. */
+#if !defined(FALSE)
+#define FALSE 0
+#endif
+#if !defined(TRUE)
+#define TRUE (!(FALSE))
+#endif
 
 #endif /* __LIBXML_WIN32_CONFIG__ */
 

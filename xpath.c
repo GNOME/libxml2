@@ -5630,8 +5630,8 @@ xmlXPathEvalUnaryExpr(xmlXPathParserContextPtr ctxt) {
     int minus = 0;
 
     SKIP_BLANKS;
-    if (CUR == '-') {
-        minus = 1;
+    while (CUR == '-') {
+        minus = 1 - minus;
 	NEXT;
 	SKIP_BLANKS;
     }

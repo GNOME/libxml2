@@ -570,6 +570,10 @@ xmlChar *	xmlGetProp		(xmlNodePtr node,
 					 const xmlChar *name);
 xmlAttrPtr	xmlHasProp		(xmlNodePtr node,
 					 const xmlChar *name);
+xmlAttrPtr	xmlSetNsProp		(xmlNodePtr node,
+					 xmlNsPtr ns,
+					 const xmlChar *name,
+					 const xmlChar *value);
 xmlChar *	xmlGetNsProp		(xmlNodePtr node,
 					 const xmlChar *name,
 					 const xmlChar *nameSpace);

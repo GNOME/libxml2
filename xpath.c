@@ -1241,7 +1241,10 @@ xmlXPathNewString(const xmlChar *val) {
     }
     memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
     ret->type = XPATH_STRING;
-    ret->stringval = xmlStrdup(val);
+    if (val != NULL)
+	ret->stringval = xmlStrdup(val);
+    else
+	ret->stringval = xmlStrdup((const xmlChar *)"");
     return(ret);
 }
 
@@ -3481,7 +3484,8 @@ xmlXPathStringFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 	        int i = 0; /* Should be first in document order !!!!! */
 		res = xmlNodeGetContent(cur->nodesetval->nodeTab[i]);
 		valuePush(ctxt, xmlXPathNewString(res));
-		xmlFree(res);
+		if (res != NULL)
+		    xmlFree(res);
 	    }
 	    xmlXPathFreeObject(cur);
 	    return;
@@ -4560,6 +4564,7 @@ xmlXPathEvalVariableReference(xmlXPathParserContextPtr ctxt) {
     if (CUR != '$') {
 	XP_ERROR(XPATH_VARIABLE_REF_ERROR);
     }
+    NEXT;
     name = xmlXPathParseQName(ctxt, &prefix);
     if (name == NULL) {
 	XP_ERROR(XPATH_VARIABLE_REF_ERROR);
@@ -4922,6 +4927,10 @@ xmlXPathEvalPathExpr(xmlXPathParserContextPtr ctxt) {
     if (lc) {
 	if (CUR == '/')
 	    xmlXPathRoot(ctxt);
+	else {
+	    /* TAG:9999 */
+	    valuePush(ctxt, xmlXPathNewNodeSet(ctxt->context->node));
+	}
 	xmlXPathEvalLocationPath(ctxt);
     } else {
 	xmlXPathEvalFilterExpr(ctxt);
@@ -5869,10 +5878,12 @@ xmlXPathEval(const xmlChar *str, xmlXPathContextPtr ctx) {
     CHECK_CONTEXT(ctx)
 
     ctxt = xmlXPathNewParserContext(str, ctx);
+    /**** TAG:9999
     if (ctx->node != NULL) {
 	init = xmlXPathNewNodeSet(ctx->node);
 	valuePush(ctxt, init);
     }
+     ****/
     xmlXPathEvalExpr(ctxt);
 
     if (ctxt->value == NULL) {

@@ -1,3 +1,8 @@
+Fri Jan 19 18:15:50 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xpath.c: seems I finally killed that ugly path evaluation
+	  context bug (tagged 9999 in case is is wrong)
+
 Fri Jan 19 06:30:38 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xpath.[ch] xpathInternals.h: added xmlXPathRegisterVariableLookup()

@@ -1337,10 +1337,12 @@ xmlXPtrEval(const xmlChar *str, xmlXPathContextPtr ctx) {
 	return(NULL);
 
     ctxt = xmlXPathNewParserContext(str, ctx);
+    /* TAG:9999
     if (ctx->node != NULL) {
 	init = xmlXPathNewNodeSet(ctx->node);
 	valuePush(ctxt, init);
     }
+     */
     xmlXPtrEvalXPointer(ctxt);
 
     if ((ctxt->value != NULL) &&

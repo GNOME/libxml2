@@ -63,6 +63,10 @@ XMLPUBFUN int XMLCALL
 						 const xmlChar *name,
 						 const xmlChar *ns);
 XMLPUBFUN int XMLCALL
+			xmlStreamPushAttr	(xmlStreamCtxtPtr stream,
+						 const xmlChar *name,
+						 const xmlChar *ns);
+XMLPUBFUN int XMLCALL
 			xmlStreamPop		(xmlStreamCtxtPtr stream);
 #ifdef __cplusplus
 }

@@ -1,3 +1,8 @@
+Thu Jun 17 00:51:55 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* doc/examples/io2.c doc/examples/parse4.c: fixing a couple of
+	  compilation errors when configured with --with-minimum
+
 Wed Jun 16 16:07:10 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* debugXML.c: applied patch from Stefano Debenedetti to register

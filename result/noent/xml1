@@ -5,7 +5,7 @@
   (&amp;amp;).</p>">
 ]>
 <test>
-  <p>An ampersand (&amp;) may be escaped
+<p>An ampersand (&amp;) may be escaped
  numerically (&amp;#38;) or with a general entity
   (&amp;amp;amp;).</p>
 </test>

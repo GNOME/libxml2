@@ -118,6 +118,7 @@ xmlFreeParserInputBuffer(xmlParserInputBufferPtr in) {
  * If filename is "-' then we use stdin as the input.
  * Automatic support for ZLIB/Compress compressed document is provided
  * by default if found at compile-time.
+ * Do an encoding check if enc == XML_CHAR_ENCODING_NONE
  *
  * Returns the new parser input or NULL
  */
@@ -201,13 +202,10 @@ xmlParserInputBufferCreateFilename(const char *filename, xmlCharEncoding enc) {
 	}
 #endif
     }
-    /* 
-     * TODO : get the 4 first bytes and decode the charset
-     * if enc == XML_CHAR_ENCODING_NONE
-     * plug some encoding conversion routines here. !!!
-     * enc = xmlDetectCharEncoding(buffer);
-     */
 
+    /*
+     * Allocate the Input buffer front-end.
+     */
     ret = xmlAllocParserInputBuffer(enc);
     if (ret != NULL) {
 #ifdef HAVE_ZLIB_H
@@ -218,7 +216,6 @@ xmlParserInputBufferCreateFilename(const char *filename, xmlCharEncoding enc) {
         ret->httpIO = httpIO;
         ret->ftpIO = ftpIO;
     }
-    xmlParserInputBufferRead(ret, 4);
 
     return(ret);
 }
@@ -289,19 +286,30 @@ xmlParserInputBufferPush(xmlParserInputBufferPtr in, int len, const char *buf) {
     if (len < 0) return(0);
     if (in->encoder != NULL) {
         xmlChar *buffer;
+	int processed = len;
 
 	buffer = (xmlChar *) xmlMalloc((len + 1) * 2 * sizeof(xmlChar));
 	if (buffer == NULL) {
 	    fprintf(stderr, "xmlParserInputBufferGrow : out of memory !\n");
-	    xmlFree(buffer);
 	    return(-1);
 	}
 	nbchars = in->encoder->input(buffer, (len + 1) * 2 * sizeof(xmlChar),
-	                             (xmlChar *) buf, len);
+	                             (xmlChar *) buf, &processed);
 	/*
 	 * TODO : we really need to have something atomic or the 
 	 *        encoder must report the number of bytes read
 	 */
+	if (nbchars < 0) {
+	    fprintf(stderr, "xmlParserInputBufferPush: encoder error\n");
+	    xmlFree(buffer);
+	    return(-1);
+	}
+	if (processed  != len) {
+	    fprintf(stderr,
+	            "TODO xmlParserInputBufferPush: processed  != len\n");
+	    xmlFree(buffer);
+	    return(-1);
+	}
         buffer[nbchars] = 0;
         xmlBufferAdd(in->buffer, (xmlChar *) buffer, nbchars);
 	xmlFree(buffer);
@@ -382,6 +390,7 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
     }
     if (in->encoder != NULL) {
         xmlChar *buf;
+	int wrote = res;
 
 	buf = (xmlChar *) xmlMalloc((res + 1) * 2 * sizeof(xmlChar));
 	if (buf == NULL) {
@@ -390,10 +399,24 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
 	    return(-1);
 	}
 	nbchars = in->encoder->input(buf, (res + 1) * 2 * sizeof(xmlChar),
-	                             BAD_CAST buffer, res);
+	                             BAD_CAST buffer, &wrote);
         buf[nbchars] = 0;
         xmlBufferAdd(in->buffer, (xmlChar *) buf, nbchars);
 	xmlFree(buf);
+
+	/*
+	 * Check that the encoder was able to process the full input
+	 */
+	if (wrote != res) {
+	    fprintf(stderr, 
+	        "TODO : xmlParserInputBufferGrow wrote %d != res %d\n",
+		wrote, res);
+	    /*
+	     * TODO !!!
+	     * Need to keep the unprocessed input in a buffer in->unprocessed
+	     */
+	}
+
     } else {
 	nbchars = res;
         buffer[nbchars] = 0;

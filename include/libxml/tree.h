@@ -36,24 +36,22 @@ typedef enum {
     XML_DOCUMENT_TYPE_NODE=	10,
     XML_DOCUMENT_FRAG_NODE=	11,
     XML_NOTATION_NODE=		12,
-    XML_HTML_DOCUMENT_NODE=	13
+    XML_HTML_DOCUMENT_NODE=	13,
+    XML_DTD_NODE=		14,
+    XML_ELEMENT_DECL=		15,
+    XML_ATTRIBUTE_DECL=		16,
+    XML_ENTITY_DECL=		17
 } xmlElementType;
 
 /*
  * Size of an internal character representation.
  *
- * Currently we use 8bit chars internal representation for memory efficiency,
- * but the parser is not tied to that, just define UNICODE to switch to
- * a 16 bits internal representation. Note that with 8 bits wide
- * xmlChars one can still use UTF-8 to handle correctly non ISO-Latin
- * input.
+ * We use 8bit chars internal representation for memory efficiency,
+ * Note that with 8 bits wide xmlChars one can still use UTF-8 to handle
+ * correctly non ISO-Latin input.
  */
 
-#ifdef UNICODE
-typedef unsigned short xmlChar;
-#else
 typedef unsigned char xmlChar;
-#endif
 
 #ifndef WIN32
 #ifndef CHAR
@@ -109,14 +107,25 @@ struct _xmlEnumeration {
 typedef struct _xmlAttribute xmlAttribute;
 typedef xmlAttribute *xmlAttributePtr;
 struct _xmlAttribute {
-    const xmlChar         *elem;	/* Element holding the attribute */
-    const xmlChar         *name;	/* Attribute name */
-    struct _xmlAttribute   *next;       /* list of attributes of an element */
-    xmlAttributeType       type;	/* The type */
-    xmlAttributeDefault    def;		/* the default */
-    const xmlChar         *defaultValue;/* or the default value */
-    xmlEnumerationPtr      tree;        /* or the enumeration tree if any */
-    const xmlChar         *prefix;      /* the namespace prefix if any */
+#ifndef XML_WITHOUT_CORBA
+    void           *_private;	        /* for Corba, must be first ! */
+#endif
+    xmlElementType          type;       /* XML_ATTRIBUTE_DECL, must be second ! */
+    const xmlChar          *name;	/* Attribute name */
+    struct _xmlNode    *children;	/* NULL */
+    struct _xmlNode        *last;	/* NULL */
+    struct _xmlDtd       *parent;	/* -> DTD */
+    struct _xmlNode        *next;	/* next sibling link  */
+    struct _xmlNode        *prev;	/* previous sibling link  */
+    struct _xmlDoc          *doc;       /* the containing document */
+
+    struct _xmlAttribute  *nexth;	/* next in hash table */
+    xmlAttributeType       atype;	/* The attribute type */
+    xmlAttributeDefault      def;	/* the default */
+    const xmlChar  *defaultValue;	/* or the default value */
+    xmlEnumerationPtr       tree;       /* or the enumeration tree if any */
+    const xmlChar        *prefix;	/* the namespace prefix if any */
+    const xmlChar          *elem;	/* Element holding the attribute */
 };
 
 /*
@@ -156,8 +165,19 @@ typedef enum {
 typedef struct _xmlElement xmlElement;
 typedef xmlElement *xmlElementPtr;
 struct _xmlElement {
+#ifndef XML_WITHOUT_CORBA
+    void           *_private;	        /* for Corba, must be first ! */
+#endif
+    xmlElementType          type;       /* XML_ELEMENT_DECL, must be second ! */
     const xmlChar          *name;	/* Element name */
-    xmlElementTypeVal       type;	/* The type */
+    struct _xmlNode    *children;	/* NULL */
+    struct _xmlNode        *last;	/* NULL */
+    struct _xmlDtd       *parent;	/* -> DTD */
+    struct _xmlNode        *next;	/* next sibling link  */
+    struct _xmlNode        *prev;	/* previous sibling link  */
+    struct _xmlDoc          *doc;       /* the containing document */
+
+    xmlElementTypeVal      etype;	/* The type */
     xmlElementContentPtr content;	/* the allowed element content */
     xmlAttributePtr   attributes;	/* List of the declared attributes */
 };
@@ -188,14 +208,25 @@ struct _xmlNs {
 typedef struct _xmlDtd xmlDtd;
 typedef xmlDtd *xmlDtdPtr;
 struct _xmlDtd {
+#ifndef XML_WITHOUT_CORBA
+    void           *_private;	/* for Corba, must be first ! */
+#endif
+    xmlElementType  type;       /* XML_DTD_NODE, must be second ! */
     const xmlChar *name;	/* Name of the DTD */
-    const xmlChar *ExternalID;	/* External identifier for PUBLIC DTD */
-    const xmlChar *SystemID;	/* URI for a SYSTEM or PUBLIC DTD */
+    struct _xmlNode *children;	/* the value of the property link */
+    struct _xmlNode *last;	/* last child link */
+    struct _xmlDoc  *parent;	/* child->parent link */
+    struct _xmlNode *next;	/* next sibling link  */
+    struct _xmlNode *prev;	/* previous sibling link  */
+    struct _xmlDoc  *doc;	/* the containing document */
+
+    /* End of common part */
     void          *notations;   /* Hash table for notations if any */
     void          *elements;    /* Hash table for elements if any */
     void          *attributes;  /* Hash table for attributes if any */
     void          *entities;    /* Hash table for entities if any */
-    /* struct xmlDtd *next;	 * next  link for this document  */
+    const xmlChar *ExternalID;	/* External identifier for PUBLIC DTD */
+    const xmlChar *SystemID;	/* URI for a SYSTEM or PUBLIC DTD */
 };
 
 /*
@@ -206,14 +237,17 @@ typedef xmlAttr *xmlAttrPtr;
 struct _xmlAttr {
 #ifndef XML_WITHOUT_CORBA
     void           *_private;	/* for Corba, must be first ! */
-    void           *vepv;	/* for Corba, must be next ! */
 #endif
-    xmlElementType  type;       /* XML_ATTRIBUTE_NODE, must be third ! */
-    struct _xmlNode *node;	/* attr->node link */
-    struct _xmlAttr *next;	/* attribute list link */
+    xmlElementType   type;      /* XML_ATTRIBUTE_NODE, must be second ! */
     const xmlChar   *name;      /* the name of the property */
-    struct _xmlNode *val;       /* the value of the property */
+    struct _xmlNode *children;	/* the value of the property */
+    struct _xmlNode *last;	/* NULL */
+    struct _xmlNode *parent;	/* child->parent link */
+    struct _xmlAttr *next;	/* next sibling link  */
+    struct _xmlAttr *prev;	/* previous sibling link  */
+    struct _xmlDoc  *doc;	/* the containing document */
     xmlNs           *ns;        /* pointer to the associated namespace */
+    xmlAttributeType atype;     /* the attribute type if validating */
 };
 
 /*
@@ -266,24 +300,25 @@ typedef xmlNode *xmlNodePtr;
 struct _xmlNode {
 #ifndef XML_WITHOUT_CORBA
     void           *_private;	/* for Corba, must be first ! */
-    void           *vepv;	/* for Corba, must be next ! */
 #endif
-    xmlElementType  type;	/* type number in the DTD, must be third ! */
-    struct _xmlDoc  *doc;	/* the containing document */
+    xmlElementType   type;	/* type number, must be second ! */
+    const xmlChar   *name;      /* the name of the node, or the entity */
+    struct _xmlNode *children;	/* parent->childs link */
+    struct _xmlNode *last;	/* last child link */
     struct _xmlNode *parent;	/* child->parent link */
     struct _xmlNode *next;	/* next sibling link  */
     struct _xmlNode *prev;	/* previous sibling link  */
-    struct _xmlNode *childs;	/* parent->childs link */
-    struct _xmlNode *last;	/* last child link */
-    struct _xmlAttr *properties;/* properties list */
-    const xmlChar  *name;       /* the name of the node, or the entity */
-    xmlNs          *ns;         /* pointer to the associated namespace */
-    xmlNs          *nsDef;      /* namespace definitions on this node */
+    struct _xmlDoc  *doc;	/* the containing document */
+    xmlNs           *ns;        /* pointer to the associated namespace */
 #ifndef XML_USE_BUFFER_CONTENT    
-    xmlChar        *content;    /* the content */
+    xmlChar         *content;   /* the content */
 #else
-    xmlBufferPtr   content;     /* the content in a buffer */
+    xmlBufferPtr     content;   /* the content in a buffer */
 #endif
+
+    /* End of common part */
+    struct _xmlAttr *properties;/* properties list */
+    xmlNs           *nsDef;     /* namespace definitions on this node */
 };
 
 /*
@@ -294,20 +329,27 @@ typedef xmlDoc *xmlDocPtr;
 struct _xmlDoc {
 #ifndef XML_WITHOUT_CORBA
     void           *_private;	/* for Corba, must be first ! */
-    void           *vepv;	/* for Corba, must be next ! */
 #endif
     xmlElementType  type;       /* XML_DOCUMENT_NODE, must be second ! */
     char           *name;	/* name/filename/URI of the document */
-    const xmlChar  *version;	/* the XML version string */
-    const xmlChar  *encoding;   /* encoding, if any */
+    struct _xmlNode *children;	/* the document tree */
+    struct _xmlNode *last;	/* last child link */
+    struct _xmlNode *parent;	/* child->parent link */
+    struct _xmlNode *next;	/* next sibling link  */
+    struct _xmlNode *prev;	/* previous sibling link  */
+    struct _xmlDoc  *doc;	/* autoreference to itself */
+
+    /* End of common part */
     int             compression;/* level of zlib compression */
     int             standalone; /* standalone document (no external refs) */
     struct _xmlDtd  *intSubset;	/* the document internal subset */
     struct _xmlDtd  *extSubset;	/* the document external subset */
     struct _xmlNs   *oldNs;	/* Global namespace, the old way */
-    struct _xmlNode *root;	/* the document tree */
+    const xmlChar  *version;	/* the XML version string */
+    const xmlChar  *encoding;   /* encoding, if any */
     void           *ids;        /* Hash table for ID attributes if any */
     void           *refs;       /* Hash table for IDREFs attributes if any */
+    const xmlChar  *URL;	/* The URI for that document */
 };
 
 /*
@@ -422,6 +464,8 @@ xmlNodePtr	xmlNewComment		(const xmlChar *content);
 xmlNodePtr	xmlNewCDataBlock	(xmlDocPtr doc,
 					 const xmlChar *content,
 					 int len);
+xmlNodePtr	xmlNewCharRef		(xmlDocPtr doc,
+					 const xmlChar *name);
 xmlNodePtr	xmlNewReference		(xmlDocPtr doc,
 					 const xmlChar *name);
 xmlNodePtr	xmlCopyNode		(xmlNodePtr node,
@@ -513,13 +557,14 @@ xmlChar *	xmlNodeGetContent	(xmlNodePtr cur);
 xmlChar *	xmlNodeGetLang		(xmlNodePtr cur);
 void		xmlNodeSetLang		(xmlNodePtr cur,
 					 const xmlChar *lang);
+int		xmlNodeGetSpacePreserve	(xmlNodePtr cur);
 xmlChar *	xmlNodeGetBase		(xmlDocPtr doc,
 					 xmlNodePtr cur);
 
 /*
  * Removing content.
  */
-int		xmlRemoveProp		(xmlAttrPtr attr); /* TODO */
+int		xmlRemoveProp		(xmlAttrPtr attr);
 int		xmlRemoveNode		(xmlNodePtr node); /* TODO */
 
 /*
@@ -531,6 +576,12 @@ void		xmlBufferWriteChar	(xmlBufferPtr buf,
 					 const char *string);
 void		xmlBufferWriteQuotedString(xmlBufferPtr buf,
 					 const xmlChar *string);
+
+/*
+ * Namespace handling
+ */
+int		xmlReconciliateNs	(xmlDocPtr doc,
+					 xmlNodePtr tree);
 
 /*
  * Saving

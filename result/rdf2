@@ -11,11 +11,11 @@
     <RPM:Packager>Till Bubeck &lt;bubeck@delix.de&gt;, Ngo Than &lt;than@delix.de&gt;</RPM:Packager>
     <RPM:Group>Libraries</RPM:Group>
     <RPM:Summary>Bibliothek zur Ansteuerung von Terminals</RPM:Summary>
-    <RPM:Description>Diese Library stellt dem Programmierer vom Terminal unabh&#228;ngige
-Routinen zur Ansteuerung Ihres Bildschirms zur Verf&#252;gung, die
+    <RPM:Description>Diese Library stellt dem Programmierer vom Terminal unabh&#xE4;ngige
+Routinen zur Ansteuerung Ihres Bildschirms zur Verf&#xFC;gung, die
 speziell optimiert sind.
-Diese Version ist die &apos;new curses&apos; (ncurses) Variante und ist der
-anerkannte Ersatz f&#252;r die klassische Curses-Library, die nicht mehr
+Diese Version ist die 'new curses' (ncurses) Variante und ist der
+anerkannte Ersatz f&#xFC;r die klassische Curses-Library, die nicht mehr
 weiterentwickelt wird.</RPM:Description>
     <RPM:Copyright>GPL</RPM:Copyright>
     <RPM:Sources>ncurses4-4.2-3.src.rpm</RPM:Sources>

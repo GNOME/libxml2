@@ -753,7 +753,7 @@ retry:
     }
     ctxt->fd = ret;
     if (proxy) {
-#ifdef have_snprintf
+#ifdef HAVE_SNPRINTF
 	if (ctxt->port != 80)
 	    snprintf(buf, sizeof(buf),
 		     "GET http://%s:%d%s HTTP/1.0\r\nHost: %s\r\n\r\n",

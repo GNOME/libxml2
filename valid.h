@@ -29,6 +29,14 @@ struct _xmlValidCtxt {
     void *userData;			/* user specific data block */
     xmlValidityErrorFunc error;		/* the callback in case of errors */
     xmlValidityWarningFunc warning;	/* the callback in case of warning */
+
+    /* Node analysis stack used when validating within entities */
+    xmlNodePtr         node;          /* Current parsed Node */
+    int                nodeNr;        /* Depth of the parsing stack */
+    int                nodeMax;       /* Max depth of the parsing stack */
+    xmlNodePtr        *nodeTab;       /* array of nodes */
+
+    int              finishDtd;       /* finished validating the Dtd ? */
 };
 
 /*
@@ -114,6 +122,8 @@ xmlNotationPtr	    xmlAddNotationDecl	(xmlValidCtxtPtr ctxt,
 					 const xmlChar *SystemID);
 xmlNotationTablePtr xmlCopyNotationTable(xmlNotationTablePtr table);
 void		    xmlFreeNotationTable(xmlNotationTablePtr table);
+void		    xmlDumpNotationDecl	(xmlBufferPtr buf,
+					 xmlNotationPtr nota);
 void		    xmlDumpNotationTable(xmlBufferPtr buf,
 					 xmlNotationTablePtr table);
 
@@ -122,6 +132,9 @@ xmlElementContentPtr xmlNewElementContent (xmlChar *name,
 					   xmlElementContentType type);
 xmlElementContentPtr xmlCopyElementContent(xmlElementContentPtr content);
 void		     xmlFreeElementContent(xmlElementContentPtr cur);
+void		     xmlSprintfElementContent(char *buf,
+	                                   xmlElementContentPtr content,
+					   int glob);
 
 /* Element */
 xmlElementPtr	   xmlAddElementDecl	(xmlValidCtxtPtr ctxt,
@@ -133,6 +146,8 @@ xmlElementTablePtr xmlCopyElementTable	(xmlElementTablePtr table);
 void		   xmlFreeElementTable	(xmlElementTablePtr table);
 void		   xmlDumpElementTable	(xmlBufferPtr buf,
 					 xmlElementTablePtr table);
+void		   xmlDumpElementDecl	(xmlBufferPtr buf,
+					 xmlElementPtr elem);
 
 /* Enumeration */
 xmlEnumerationPtr  xmlCreateEnumeration	(xmlChar *name);
@@ -144,6 +159,7 @@ xmlAttributePtr	    xmlAddAttributeDecl	    (xmlValidCtxtPtr ctxt,
 					     xmlDtdPtr dtd,
 					     const xmlChar *elem,
 					     const xmlChar *name,
+					     const xmlChar *prefix,
 					     xmlAttributeType type,
 					     xmlAttributeDefault def,
 					     const xmlChar *defaultValue,
@@ -152,6 +168,8 @@ xmlAttributeTablePtr xmlCopyAttributeTable  (xmlAttributeTablePtr table);
 void		     xmlFreeAttributeTable  (xmlAttributeTablePtr table);
 void		     xmlDumpAttributeTable  (xmlBufferPtr buf,
 					     xmlAttributeTablePtr table);
+void		     xmlDumpAttributeDecl   (xmlBufferPtr buf,
+					     xmlAttributePtr attr);
 
 /* IDs */
 xmlIDPtr	xmlAddID	(xmlValidCtxtPtr ctxt,
@@ -188,6 +206,10 @@ int		xmlValidateRoot		(xmlValidCtxtPtr ctxt,
 int		xmlValidateElementDecl	(xmlValidCtxtPtr ctxt,
 					 xmlDocPtr doc,
 		                         xmlElementPtr elem);
+xmlChar *	xmlValidNormalizeAttributeValue(xmlDocPtr doc,
+					 xmlNodePtr elem,
+					 const xmlChar *name,
+					 const xmlChar *value);
 int		xmlValidateAttributeDecl(xmlValidCtxtPtr ctxt,
 					 xmlDocPtr doc,
 		                         xmlAttributePtr attr);
@@ -199,6 +221,8 @@ int		xmlValidateNotationDecl	(xmlValidCtxtPtr ctxt,
 int		xmlValidateDtd		(xmlValidCtxtPtr ctxt,
 					 xmlDocPtr doc,
 					 xmlDtdPtr dtd);
+int		xmlValidateDtdFinal	(xmlValidCtxtPtr ctxt,
+					 xmlDocPtr doc);
 int		xmlValidateDocument	(xmlValidCtxtPtr ctxt,
 					 xmlDocPtr doc);
 int		xmlValidateElement	(xmlValidCtxtPtr ctxt,

@@ -73,6 +73,7 @@ xmlSAXHandler emptySAXHandlerStruct = {
     NULL, /* xmlParserError */
     NULL, /* xmlParserError */
     NULL, /* getParameterEntity */
+    NULL, /* cdataBlock; */
 };
 
 xmlSAXHandlerPtr emptySAXHandler = &emptySAXHandlerStruct;
@@ -455,6 +456,21 @@ processingInstructionDebug(void *ctx, const xmlChar *target,
 }
 
 /**
+ * cdataBlockDebug:
+ * @ctx: the user data (XML parser context)
+ * @value:  The pcdata content
+ * @len:  the block length
+ *
+ * called when a pcdata block has been parsed
+ */
+void
+cdataBlockDebug(void *ctx, const xmlChar *value, int len)
+{
+    fprintf(stderr, "SAX.pcdata(%.20s, %d)\n",
+	    (char *) value, len);
+}
+
+/**
  * commentDebug:
  * @ctxt:  An XML parser context
  * @value:  the comment content
@@ -553,6 +569,7 @@ xmlSAXHandler debugSAXHandlerStruct = {
     errorDebug,
     fatalErrorDebug,
     getParameterEntityDebug,
+    cdataBlockDebug
 };
 
 xmlSAXHandlerPtr debugSAXHandler = &debugSAXHandlerStruct;

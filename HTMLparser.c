@@ -121,36 +121,81 @@ PUSH_AND_POP(extern, xmlChar*, name)
  *   COPY(to) copy one char to *to, increment CUR_PTR and to accordingly
  */
 
-#define CUR (*ctxt->input->cur)
+#define CUR ((int) (*ctxt->input->cur))
+    
 #define UPPER (toupper(*ctxt->input->cur))
+
 #define SKIP(val) ctxt->nbChars += (val),ctxt->input->cur += (val)
+
 #define NXT(val) ctxt->input->cur[(val)]
+
 #define UPP(val) (toupper(ctxt->input->cur[(val)]))
+
 #define CUR_PTR ctxt->input->cur
+
 #define SHRINK  xmlParserInputShrink(ctxt->input)
+
 #define GROW  xmlParserInputGrow(ctxt->input, INPUT_CHUNK)
 
-#define SKIP_BLANKS 							\
-    while (IS_BLANK(*(ctxt->input->cur))) NEXT
+#define CURRENT ((int) (*ctxt->input->cur))
 
-#ifndef USE_UTF_8
-#define CURRENT (*ctxt->input->cur)
-#define NEXT {								\
-    if ((*ctxt->input->cur == 0) &&					\
-        (xmlParserInputGrow(ctxt->input, INPUT_CHUNK) <= 0)) {		\
-	    xmlPopInput(ctxt);						\
-    } else {								\
-        if (*(ctxt->input->cur) == '\n') {				\
-	    ctxt->input->line++; ctxt->input->col = 1;			\
-	} else ctxt->input->col++;					\
-	ctxt->input->cur++;						\
-	ctxt->nbChars++;						\
-        if (*ctxt->input->cur == 0)					\
-	    xmlParserInputGrow(ctxt->input, INPUT_CHUNK);		\
-    }}
+#define NEXT htmlNextChar(ctxt);
 
-#else
-#endif
+#define SKIP_BLANKS htmlSkipBlankChars(ctxt);
+
+/**
+ * htmlNextChar:
+ * @ctxt:  the HTML parser context
+ *
+ * Skip to the next char input char.
+ */
+
+void
+htmlNextChar(htmlParserCtxtPtr ctxt) {
+    if ((*ctxt->input->cur == 0) &&
+        (xmlParserInputGrow(ctxt->input, INPUT_CHUNK) <= 0)) {
+	    xmlPopInput(ctxt);
+    } else {
+        if (*(ctxt->input->cur) == '\n') {
+	    ctxt->input->line++; ctxt->input->col = 1;
+	} else ctxt->input->col++;
+	ctxt->input->cur++;
+	ctxt->nbChars++;
+        if (*ctxt->input->cur == 0)
+	    xmlParserInputGrow(ctxt->input, INPUT_CHUNK);
+    }
+}
+
+/**
+ * htmlSkipBlankChars:
+ * @ctxt:  the HTML parser context
+ *
+ * skip all blanks character found at that point in the input streams.
+ *
+ * Returns the number of space chars skipped
+ */
+
+int
+htmlSkipBlankChars(xmlParserCtxtPtr ctxt) {
+    int res = 0;
+
+    while (IS_BLANK(*(ctxt->input->cur))) {
+	if ((*ctxt->input->cur == 0) &&
+	    (xmlParserInputGrow(ctxt->input, INPUT_CHUNK) <= 0)) {
+		xmlPopInput(ctxt);
+	} else {
+	    if (*(ctxt->input->cur) == '\n') {
+		ctxt->input->line++; ctxt->input->col = 1;
+	    } else ctxt->input->col++;
+	    ctxt->input->cur++;
+	    ctxt->nbChars++;
+	    if (*ctxt->input->cur == 0)
+		xmlParserInputGrow(ctxt->input, INPUT_CHUNK);
+	}
+	res++;
+    }
+    return(res);
+}
 
 
 
@@ -475,7 +520,7 @@ htmlAutoCloseTag(htmlDocPtr doc, const xmlChar *name, htmlNodePtr elem) {
     if (elem == NULL) return(1);
     if (!xmlStrcmp(name, elem->name)) return(0);
     if (htmlCheckAutoClose(elem->name, name)) return(1);
-    child = elem->childs;
+    child = elem->children;
     while (child != NULL) {
         if (htmlAutoCloseTag(doc, name, child)) return(1);
 	child = child->next;
@@ -499,7 +544,7 @@ htmlIsAutoClosed(htmlDocPtr doc, htmlNodePtr elem) {
     htmlNodePtr child;
 
     if (elem == NULL) return(1);
-    child = elem->childs;
+    child = elem->children;
     while (child != NULL) {
 	if (htmlAutoCloseTag(doc, elem->name, child)) return(1);
 	child = child->next;
@@ -1275,7 +1320,7 @@ htmlNewDoc(const xmlChar *URI, const xmlChar *ExternalID) {
     else
 	xmlCreateIntSubset(cur, BAD_CAST "HTML", ExternalID, URI);
     cur->name = NULL;
-    cur->root = NULL; 
+    cur->children = NULL; 
     cur->extSubset = NULL;
     cur->oldNs = NULL;
     cur->encoding = NULL;
@@ -1285,7 +1330,6 @@ htmlNewDoc(const xmlChar *URI, const xmlChar *ExternalID) {
     cur->refs = NULL;
 #ifndef XML_WITHOUT_CORBA
     cur->_private = NULL;
-    cur->vepv = NULL;
 #endif
     return(cur);
 }
@@ -1667,7 +1711,8 @@ htmlParseSystemLiteral(htmlParserCtxtPtr ctxt) {
         }
     } else {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt->userData, "SystemLiteral \" or ' expected\n");
+	    ctxt->sax->error(ctxt->userData,
+	                     "SystemLiteral \" or ' expected\n");
 	ctxt->wellFormed = 0;
     }
     

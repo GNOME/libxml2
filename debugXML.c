@@ -22,6 +22,7 @@
 #include "xmlmemory.h"
 #include "tree.h"
 #include "parser.h"
+#include "valid.h"
 #include "debugXML.h"
 #include "HTMLtree.h"
 #include "HTMLparser.h"
@@ -36,6 +37,315 @@ void xmlDebugDumpString(FILE *output, const xmlChar *str) {
 	else if (IS_BLANK(str[i])) fputc(' ', output);
 	else fputc(str[i], output);
     fprintf(output, "...");
+}
+
+void xmlDebugDumpDtd(FILE *output, xmlDtdPtr dtd, int depth) {
+    int i;
+    char shift[100];
+
+    for (i = 0;((i < depth) && (i < 25));i++)
+        shift[2 * i] = shift[2 * i + 1] = ' ';
+    shift[2 * i] = shift[2 * i + 1] = 0;
+
+    fprintf(output, shift);
+
+    if (dtd->type != XML_DTD_NODE) {
+	fprintf(output, "PBM: not a DTD\n");
+	return;
+    }
+    if (dtd->name != NULL)
+	fprintf(output, "DTD(%s)", dtd->name);
+    else
+	fprintf(output, "DTD");
+    if (dtd->ExternalID != NULL)
+	fprintf(output, ", PUBLIC %s", dtd->ExternalID);
+    if (dtd->SystemID != NULL)
+	fprintf(output, ", SYSTEM %s", dtd->SystemID);
+    fprintf(output, "\n");
+    /*
+     * Do a bit of checking
+     */
+    if (dtd->parent == NULL)
+	fprintf(output, "PBM: Dtd has no parent\n");
+    if (dtd->doc == NULL)
+	fprintf(output, "PBM: Dtd has no doc\n");
+    if ((dtd->parent != NULL) && (dtd->doc != dtd->parent->doc))
+	fprintf(output, "PBM: Dtd doc differs from parent's one\n");
+    if (dtd->prev == NULL) {
+	if ((dtd->parent != NULL) && (dtd->parent->children != (xmlNodePtr)dtd))
+	    fprintf(output, "PBM: Dtd has no prev and not first of list\n");
+    } else {
+	if (dtd->prev->next != (xmlNodePtr) dtd)
+	    fprintf(output, "PBM: Dtd prev->next : back link wrong\n");
+    }
+    if (dtd->next == NULL) {
+	if ((dtd->parent != NULL) && (dtd->parent->last != (xmlNodePtr) dtd))
+	    fprintf(output, "PBM: Dtd has no next and not last of list\n");
+    } else {
+	if (dtd->next->prev != (xmlNodePtr) dtd)
+	    fprintf(output, "PBM: Dtd next->prev : forward link wrong\n");
+    }
+}
+
+void xmlDebugDumpAttrDecl(FILE *output, xmlAttributePtr attr, int depth) {
+    int i;
+    char shift[100];
+
+    for (i = 0;((i < depth) && (i < 25));i++)
+        shift[2 * i] = shift[2 * i + 1] = ' ';
+    shift[2 * i] = shift[2 * i + 1] = 0;
+
+    fprintf(output, shift);
+
+    if (attr->type != XML_ATTRIBUTE_DECL) {
+	fprintf(output, "PBM: not a Attr\n");
+	return;
+    }
+    if (attr->name != NULL)
+	fprintf(output, "ATTRDECL(%s)", attr->name);
+    else
+	fprintf(output, "PBM ATTRDECL noname!!!");
+    if (attr->elem != NULL)
+	fprintf(output, " for %s", attr->elem);
+    else
+	fprintf(output, " PBM noelem!!!");
+    switch (attr->atype) {
+        case XML_ATTRIBUTE_CDATA:
+	    fprintf(output, " CDATA");
+	    break;
+        case XML_ATTRIBUTE_ID:
+	    fprintf(output, " ID");
+	    break;
+        case XML_ATTRIBUTE_IDREF:
+	    fprintf(output, " IDREF");
+	    break;
+        case XML_ATTRIBUTE_IDREFS:
+	    fprintf(output, " IDREFS");
+	    break;
+        case XML_ATTRIBUTE_ENTITY:
+	    fprintf(output, " ENTITY");
+	    break;
+        case XML_ATTRIBUTE_ENTITIES:
+	    fprintf(output, " ENTITIES");
+	    break;
+        case XML_ATTRIBUTE_NMTOKEN:
+	    fprintf(output, " NMTOKEN");
+	    break;
+        case XML_ATTRIBUTE_NMTOKENS:
+	    fprintf(output, " NMTOKENS");
+	    break;
+        case XML_ATTRIBUTE_ENUMERATION:
+	    fprintf(output, " ENUMERATION");
+	    break;
+        case XML_ATTRIBUTE_NOTATION:
+	    fprintf(output, " NOTATION ");
+	    break;
+    }
+    if (attr->tree != NULL) {
+	int i;
+	xmlEnumerationPtr cur = attr->tree;
+
+	for (i = 0;i < 5; i++) {
+	    if (i != 0)
+		fprintf(output, "|%s", cur->name);
+	    else
+		fprintf(output, " (%s", cur->name);
+	    cur = cur->next;
+	    if (cur == NULL) break;
+	}
+	if (cur == NULL)
+	    fprintf(output, ")");
+	else
+	    fprintf(output, "...)");
+    }
+    switch (attr->def) {
+        case XML_ATTRIBUTE_NONE:
+	    break;
+        case XML_ATTRIBUTE_REQUIRED:
+	    fprintf(output, " REQUIRED");
+	    break;
+        case XML_ATTRIBUTE_IMPLIED:
+	    fprintf(output, " IMPLIED");
+	    break;
+        case XML_ATTRIBUTE_FIXED:
+	    fprintf(output, " FIXED");
+	    break;
+    }
+    if (attr->defaultValue != NULL) {
+	fprintf(output, "\"");
+	xmlDebugDumpString(output, attr->defaultValue);
+	fprintf(output, "\"");
+    }
+    printf("\n");
+
+    /*
+     * Do a bit of checking
+     */
+    if (attr->parent == NULL)
+	fprintf(output, "PBM: Attr has no parent\n");
+    if (attr->doc == NULL)
+	fprintf(output, "PBM: Attr has no doc\n");
+    if ((attr->parent != NULL) && (attr->doc != attr->parent->doc))
+	fprintf(output, "PBM: Attr doc differs from parent's one\n");
+    if (attr->prev == NULL) {
+	if ((attr->parent != NULL) && (attr->parent->children != (xmlNodePtr)attr))
+	    fprintf(output, "PBM: Attr has no prev and not first of list\n");
+    } else {
+	if (attr->prev->next != (xmlNodePtr) attr)
+	    fprintf(output, "PBM: Attr prev->next : back link wrong\n");
+    }
+    if (attr->next == NULL) {
+	if ((attr->parent != NULL) && (attr->parent->last != (xmlNodePtr) attr))
+	    fprintf(output, "PBM: Attr has no next and not last of list\n");
+    } else {
+	if (attr->next->prev != (xmlNodePtr) attr)
+	    fprintf(output, "PBM: Attr next->prev : forward link wrong\n");
+    }
+}
+
+void xmlDebugDumpElemDecl(FILE *output, xmlElementPtr elem, int depth) {
+    int i;
+    char shift[100];
+
+    for (i = 0;((i < depth) && (i < 25));i++)
+        shift[2 * i] = shift[2 * i + 1] = ' ';
+    shift[2 * i] = shift[2 * i + 1] = 0;
+
+    fprintf(output, shift);
+
+    if (elem->type != XML_ELEMENT_DECL) {
+	fprintf(output, "PBM: not a Elem\n");
+	return;
+    }
+    if (elem->name != NULL)
+	fprintf(output, "ELEMDECL(%s)", elem->name);
+    else
+	fprintf(output, "PBM ELEMDECL noname!!!");
+    switch (elem->etype) {
+	case XML_ELEMENT_TYPE_EMPTY: 
+	    fprintf(output, ", EMPTY");
+	    break;
+	case XML_ELEMENT_TYPE_ANY: 
+	    fprintf(output, ", ANY");
+	    break;
+	case XML_ELEMENT_TYPE_MIXED: 
+	    fprintf(output, ", MIXED ");
+	    break;
+	case XML_ELEMENT_TYPE_ELEMENT: 
+	    fprintf(output, ", MIXED ");
+	    break;
+    }
+    if (elem->content != NULL) {
+	char buf[1001];
+
+	buf[0] = 0;
+	xmlSprintfElementContent(buf, elem->content, 1);
+	buf[1000] = 0;
+	fprintf(output, "%s", buf);
+    }
+    printf("\n");
+
+    /*
+     * Do a bit of checking
+     */
+    if (elem->parent == NULL)
+	fprintf(output, "PBM: Elem has no parent\n");
+    if (elem->doc == NULL)
+	fprintf(output, "PBM: Elem has no doc\n");
+    if ((elem->parent != NULL) && (elem->doc != elem->parent->doc))
+	fprintf(output, "PBM: Elem doc differs from parent's one\n");
+    if (elem->prev == NULL) {
+	if ((elem->parent != NULL) && (elem->parent->children != (xmlNodePtr)elem))
+	    fprintf(output, "PBM: Elem has no prev and not first of list\n");
+    } else {
+	if (elem->prev->next != (xmlNodePtr) elem)
+	    fprintf(output, "PBM: Elem prev->next : back link wrong\n");
+    }
+    if (elem->next == NULL) {
+	if ((elem->parent != NULL) && (elem->parent->last != (xmlNodePtr) elem))
+	    fprintf(output, "PBM: Elem has no next and not last of list\n");
+    } else {
+	if (elem->next->prev != (xmlNodePtr) elem)
+	    fprintf(output, "PBM: Elem next->prev : forward link wrong\n");
+    }
+}
+
+void xmlDebugDumpEntityDecl(FILE *output, xmlEntityPtr ent, int depth) {
+    int i;
+    char shift[100];
+
+    for (i = 0;((i < depth) && (i < 25));i++)
+        shift[2 * i] = shift[2 * i + 1] = ' ';
+    shift[2 * i] = shift[2 * i + 1] = 0;
+
+    fprintf(output, shift);
+
+    if (ent->type != XML_ENTITY_DECL) {
+	fprintf(output, "PBM: not a Entity decl\n");
+	return;
+    }
+    if (ent->name != NULL)
+	fprintf(output, "ENTITYDECL(%s)", ent->name);
+    else
+	fprintf(output, "PBM ENTITYDECL noname!!!");
+    switch (ent->etype) {
+	case XML_INTERNAL_GENERAL_ENTITY: 
+	    fprintf(output, ", internal\n");
+	    break;
+	case XML_EXTERNAL_GENERAL_PARSED_ENTITY: 
+	    fprintf(output, ", external parsed\n");
+	    break;
+	case XML_EXTERNAL_GENERAL_UNPARSED_ENTITY: 
+	    fprintf(output, ", unparsed\n");
+	    break;
+	case XML_INTERNAL_PARAMETER_ENTITY: 
+	    fprintf(output, ", parameter\n");
+	    break;
+	case XML_EXTERNAL_PARAMETER_ENTITY: 
+	    fprintf(output, ", external parameter\n");
+	    break;
+	case XML_INTERNAL_PREDEFINED_ENTITY: 
+	    fprintf(output, ", predefined\n");
+	    break;
+    }
+    if (ent->ExternalID) {
+        fprintf(output, shift);
+        fprintf(output, "ExternalID=%s\n", ent->ExternalID);
+    }
+    if (ent->SystemID) {
+        fprintf(output, shift);
+        fprintf(output, "SystemID=%s\n", ent->SystemID);
+    }
+    if (ent->content) {
+        fprintf(output, shift);
+	fprintf(output, "content=");
+	xmlDebugDumpString(output, ent->content);
+	fprintf(output, "\n");
+    }
+
+    /*
+     * Do a bit of checking
+     */
+    if (ent->parent == NULL)
+	fprintf(output, "PBM: Ent has no parent\n");
+    if (ent->doc == NULL)
+	fprintf(output, "PBM: Ent has no doc\n");
+    if ((ent->parent != NULL) && (ent->doc != ent->parent->doc))
+	fprintf(output, "PBM: Ent doc differs from parent's one\n");
+    if (ent->prev == NULL) {
+	if ((ent->parent != NULL) && (ent->parent->children != (xmlNodePtr)ent))
+	    fprintf(output, "PBM: Ent has no prev and not first of list\n");
+    } else {
+	if (ent->prev->next != (xmlNodePtr) ent)
+	    fprintf(output, "PBM: Ent prev->next : back link wrong\n");
+    }
+    if (ent->next == NULL) {
+	if ((ent->parent != NULL) && (ent->parent->last != (xmlNodePtr) ent))
+	    fprintf(output, "PBM: Ent has no next and not last of list\n");
+    } else {
+	if (ent->next->prev != (xmlNodePtr) ent)
+	    fprintf(output, "PBM: Ent next->prev : forward link wrong\n");
+    }
 }
 
 void xmlDebugDumpNamespace(FILE *output, xmlNsPtr ns, int depth) {
@@ -74,7 +384,7 @@ void xmlDebugDumpEntity(FILE *output, xmlEntityPtr ent, int depth) {
     shift[2 * i] = shift[2 * i + 1] = 0;
 
     fprintf(output, shift);
-    switch (ent->type) {
+    switch (ent->etype) {
         case XML_INTERNAL_GENERAL_ENTITY:
 	    fprintf(output, "INTERNAL_GENERAL_ENTITY ");
 	    break;
@@ -91,7 +401,7 @@ void xmlDebugDumpEntity(FILE *output, xmlEntityPtr ent, int depth) {
 	    fprintf(output, "EXTERNAL_PARAMETER_ENTITY ");
 	    break;
 	default:
-	    fprintf(output, "ENTITY_%d ! ", ent->type);
+	    fprintf(output, "ENTITY_%d ! ", ent->etype);
     }
     fprintf(output, "%s\n", ent->name);
     if (ent->ExternalID) {
@@ -119,9 +429,31 @@ void xmlDebugDumpAttr(FILE *output, xmlAttrPtr attr, int depth) {
     shift[2 * i] = shift[2 * i + 1] = 0;
 
     fprintf(output, shift);
+
     fprintf(output, "ATTRIBUTE %s\n", attr->name);
-    if (attr->val != NULL) 
-        xmlDebugDumpNodeList(output, attr->val, depth + 1);
+    if (attr->children != NULL) 
+        xmlDebugDumpNodeList(output, attr->children, depth + 1);
+
+    /*
+     * Do a bit of checking
+     */
+    if (attr->parent == NULL)
+	fprintf(output, "PBM: Attr has no parent\n");
+    if (attr->doc == NULL)
+	fprintf(output, "PBM: Attr has no doc\n");
+    if ((attr->parent != NULL) && (attr->doc != attr->parent->doc))
+	fprintf(output, "PBM: Attr doc differs from parent's one\n");
+    if (attr->prev == NULL) {
+	if ((attr->parent != NULL) && (attr->parent->properties != attr))
+	    fprintf(output, "PBM: Attr has no prev and not first of list\n");
+    } else {
+	if (attr->prev->next != attr)
+	    fprintf(output, "PBM: Attr prev->next : back link wrong\n");
+    }
+    if (attr->next != NULL) {
+	if (attr->next->prev != attr)
+	    fprintf(output, "PBM: Attr next->prev : forward link wrong\n");
+    }
 }
 
 void xmlDebugDumpAttrList(FILE *output, xmlAttrPtr attr, int depth) {
@@ -139,9 +471,9 @@ void xmlDebugDumpOneNode(FILE *output, xmlNodePtr node, int depth) {
         shift[2 * i] = shift[2 * i + 1] = ' ';
     shift[2 * i] = shift[2 * i + 1] = 0;
 
-    fprintf(output, shift);
     switch (node->type) {
 	case XML_ELEMENT_NODE:
+	    fprintf(output, shift);
 	    fprintf(output, "ELEMENT ");
 	    if (node->ns != NULL)
 	        fprintf(output, "%s:%s\n", node->ns->prefix, node->name);
@@ -149,40 +481,63 @@ void xmlDebugDumpOneNode(FILE *output, xmlNodePtr node, int depth) {
 	        fprintf(output, "%s\n", node->name);
 	    break;
 	case XML_ATTRIBUTE_NODE:
+	    fprintf(output, shift);
 	    fprintf(output, "Error, ATTRIBUTE found here\n");
 	    break;
 	case XML_TEXT_NODE:
+	    fprintf(output, shift);
 	    fprintf(output, "TEXT\n");
 	    break;
 	case XML_CDATA_SECTION_NODE:
+	    fprintf(output, shift);
 	    fprintf(output, "CDATA_SECTION\n");
 	    break;
 	case XML_ENTITY_REF_NODE:
-	    fprintf(output, "ENTITY_REF\n");
+	    fprintf(output, shift);
+	    fprintf(output, "ENTITY_REF(%s)\n", node->name);
 	    break;
 	case XML_ENTITY_NODE:
+	    fprintf(output, shift);
 	    fprintf(output, "ENTITY\n");
 	    break;
 	case XML_PI_NODE:
+	    fprintf(output, shift);
 	    fprintf(output, "PI %s\n", node->name);
 	    break;
 	case XML_COMMENT_NODE:
+	    fprintf(output, shift);
 	    fprintf(output, "COMMENT\n");
 	    break;
 	case XML_DOCUMENT_NODE:
 	case XML_HTML_DOCUMENT_NODE:
+	    fprintf(output, shift);
 	    fprintf(output, "Error, DOCUMENT found here\n");
 	    break;
 	case XML_DOCUMENT_TYPE_NODE:
+	    fprintf(output, shift);
 	    fprintf(output, "DOCUMENT_TYPE\n");
 	    break;
 	case XML_DOCUMENT_FRAG_NODE:
+	    fprintf(output, shift);
 	    fprintf(output, "DOCUMENT_FRAG\n");
 	    break;
 	case XML_NOTATION_NODE:
 	    fprintf(output, "NOTATION\n");
 	    break;
+	case XML_DTD_NODE:
+	    xmlDebugDumpDtd(output, (xmlDtdPtr) node, depth);
+	    return;
+	case XML_ELEMENT_DECL:
+	    xmlDebugDumpElemDecl(output, (xmlElementPtr) node, depth);
+	    return;
+	case XML_ATTRIBUTE_DECL:
+	    xmlDebugDumpAttrDecl(output, (xmlAttributePtr) node, depth);
+	    return;
+        case XML_ENTITY_DECL:
+	    xmlDebugDumpEntityDecl(output, (xmlEntityPtr) node, depth);
+	    return;
 	default:
+	    fprintf(output, shift);
 	    fprintf(output, "NODE_%d\n", node->type);
     }
     if (node->doc == NULL) {
@@ -210,12 +565,35 @@ void xmlDebugDumpOneNode(FILE *output, xmlNodePtr node, int depth) {
 	if (ent != NULL)
 	    xmlDebugDumpEntity(output, ent, depth + 1);
     }
+    /*
+     * Do a bit of checking
+     */
+    if (node->parent == NULL)
+	fprintf(output, "PBM: Node has no parent\n");
+    if (node->doc == NULL)
+	fprintf(output, "PBM: Node has no doc\n");
+    if ((node->parent != NULL) && (node->doc != node->parent->doc))
+	fprintf(output, "PBM: Node doc differs from parent's one\n");
+    if (node->prev == NULL) {
+	if ((node->parent != NULL) && (node->parent->children != node))
+	    fprintf(output, "PBM: Node has no prev and not first of list\n");
+    } else {
+	if (node->prev->next != node)
+	    fprintf(output, "PBM: Node prev->next : back link wrong\n");
+    }
+    if (node->next == NULL) {
+	if ((node->parent != NULL) && (node->parent->last != node))
+	    fprintf(output, "PBM: Node has no next and not last of list\n");
+    } else {
+	if (node->next->prev != node)
+	    fprintf(output, "PBM: Node next->prev : forward link wrong\n");
+    }
 }
 
 void xmlDebugDumpNode(FILE *output, xmlNodePtr node, int depth) {
     xmlDebugDumpOneNode(output, node, depth);
-    if (node->childs != NULL)
-	xmlDebugDumpNodeList(output, node->childs, depth + 1);
+    if (node->children != NULL)
+	xmlDebugDumpNodeList(output, node->children, depth + 1);
 }
 
 void xmlDebugDumpNodeList(FILE *output, xmlNodePtr node, int depth) {
@@ -306,8 +684,8 @@ void xmlDebugDumpDocument(FILE *output, xmlDocPtr doc) {
     xmlDebugDumpDocumentHead(output, doc);
     if (((doc->type == XML_DOCUMENT_NODE) ||
          (doc->type == XML_HTML_DOCUMENT_NODE)) &&
-        (doc->root != NULL))
-        xmlDebugDumpNodeList(output, doc->root, 1);
+        (doc->children != NULL))
+        xmlDebugDumpNodeList(output, doc->children, 1);
 }    
 
 void xmlDebugDumpEntities(FILE *output, xmlDocPtr doc) {
@@ -368,27 +746,27 @@ void xmlDebugDumpEntities(FILE *output, xmlDocPtr doc) {
 	                            doc->intSubset->entities;
 	fprintf(output, "Entities in internal subset\n");
 	for (i = 0;i < table->nb_entities;i++) {
-	    cur = &table->table[i];
+	    cur = table->table[i];
 	    fprintf(output, "%d : %s : ", i, cur->name);
-	    switch (cur->type) {
+	    switch (cur->etype) {
 		case XML_INTERNAL_GENERAL_ENTITY:
-		    fprintf(output, "INTERNAL GENERAL");
+		    fprintf(output, "INTERNAL GENERAL, ");
 		    break;
 		case XML_EXTERNAL_GENERAL_PARSED_ENTITY:
-		    fprintf(output, "EXTERNAL PARSED");
+		    fprintf(output, "EXTERNAL PARSED, ");
 		    break;
 		case XML_EXTERNAL_GENERAL_UNPARSED_ENTITY:
-		    fprintf(output, "EXTERNAL UNPARSED");
+		    fprintf(output, "EXTERNAL UNPARSED, ");
 		    break;
 		case XML_INTERNAL_PARAMETER_ENTITY:
-		    fprintf(output, "INTERNAL PARAMETER");
+		    fprintf(output, "INTERNAL PARAMETER, ");
 		    break;
 		case XML_EXTERNAL_PARAMETER_ENTITY:
-		    fprintf(output, "EXTERNAL PARAMETER");
+		    fprintf(output, "EXTERNAL PARAMETER, ");
 		    break;
 		default:
 		    fprintf(output, "UNKNOWN TYPE %d",
-			    cur->type);
+			    cur->etype);
 	    }
 	    if (cur->ExternalID != NULL) 
 	        fprintf(output, "ID \"%s\"", cur->ExternalID);
@@ -407,27 +785,27 @@ void xmlDebugDumpEntities(FILE *output, xmlDocPtr doc) {
 	                            doc->extSubset->entities;
 	fprintf(output, "Entities in external subset\n");
 	for (i = 0;i < table->nb_entities;i++) {
-	    cur = &table->table[i];
+	    cur = table->table[i];
 	    fprintf(output, "%d : %s : ", i, cur->name);
-	    switch (cur->type) {
+	    switch (cur->etype) {
 		case XML_INTERNAL_GENERAL_ENTITY:
-		    fprintf(output, "INTERNAL GENERAL");
+		    fprintf(output, "INTERNAL GENERAL, ");
 		    break;
 		case XML_EXTERNAL_GENERAL_PARSED_ENTITY:
-		    fprintf(output, "EXTERNAL PARSED");
+		    fprintf(output, "EXTERNAL PARSED, ");
 		    break;
 		case XML_EXTERNAL_GENERAL_UNPARSED_ENTITY:
-		    fprintf(output, "EXTERNAL UNPARSED");
+		    fprintf(output, "EXTERNAL UNPARSED, ");
 		    break;
 		case XML_INTERNAL_PARAMETER_ENTITY:
-		    fprintf(output, "INTERNAL PARAMETER");
+		    fprintf(output, "INTERNAL PARAMETER, ");
 		    break;
 		case XML_EXTERNAL_PARAMETER_ENTITY:
-		    fprintf(output, "EXTERNAL PARAMETER");
+		    fprintf(output, "EXTERNAL PARAMETER, ");
 		    break;
 		default:
 		    fprintf(output, "UNKNOWN TYPE %d",
-			    cur->type);
+			    cur->etype);
 	    }
 	    if (cur->ExternalID != NULL) 
 	        fprintf(output, "ID \"%s\"", cur->ExternalID);
@@ -449,14 +827,14 @@ static int xmlLsCountNode(xmlNodePtr node) {
 
     switch (node->type) {
 	case XML_ELEMENT_NODE:
-	    list = node->childs;
+	    list = node->children;
 	    break;
 	case XML_DOCUMENT_NODE:
 	case XML_HTML_DOCUMENT_NODE:
-	    list = ((xmlDocPtr) node)->root;
+	    list = ((xmlDocPtr) node)->children;
 	    break;
 	case XML_ATTRIBUTE_NODE:
-	    list = ((xmlAttrPtr) node)->val;
+	    list = ((xmlAttrPtr) node)->children;
 	    break;
 	case XML_TEXT_NODE:
 	case XML_CDATA_SECTION_NODE:
@@ -475,6 +853,10 @@ static int xmlLsCountNode(xmlNodePtr node) {
 	case XML_ENTITY_NODE:
 	case XML_DOCUMENT_FRAG_NODE:
 	case XML_NOTATION_NODE:
+	case XML_DTD_NODE:
+        case XML_ELEMENT_DECL:
+        case XML_ATTRIBUTE_DECL:
+        case XML_ENTITY_DECL:
 	    ret = 1;
 	    break;
     }
@@ -621,9 +1003,9 @@ xmlShellList(xmlShellCtxtPtr ctxt, char *arg, xmlNodePtr node,
 
     if ((node->type == XML_DOCUMENT_NODE) ||
         (node->type == XML_HTML_DOCUMENT_NODE)) {
-        cur = ((xmlDocPtr) node)->root;
-    } else if (node->childs != NULL) {
-        cur = node->childs;
+        cur = ((xmlDocPtr) node)->children;
+    } else if (node->children != NULL) {
+        cur = node->children;
     } else {
 	xmlLsOneNode(stdout, node);
         return(0);
@@ -910,10 +1292,10 @@ xmlShellDu(xmlShellCtxtPtr ctxt, char *arg, xmlNodePtr tree,
 
         if ((node->type == XML_DOCUMENT_NODE) ||
             (node->type == XML_HTML_DOCUMENT_NODE)) {
-	    node = ((xmlDocPtr) node)->root;
-        } else if (node->childs != NULL) {
+	    node = ((xmlDocPtr) node)->children;
+        } else if (node->children != NULL) {
 	    /* deep first */
-	    node = node->childs;
+	    node = node->children;
 	    indent++;
 	} else if ((node != tree) && (node->next != NULL)) {
 	    /* then siblings */
@@ -1008,7 +1390,7 @@ xmlShellPwd(xmlShellCtxtPtr ctxt, char *buffer, xmlNodePtr node,
 	} else if (cur->type == XML_ATTRIBUTE_NODE) {
 	    sep = '@';
 	    name = (const char *) (((xmlAttrPtr) cur)->name);
-	    next = ((xmlAttrPtr) cur)->node;
+	    next = ((xmlAttrPtr) cur)->parent;
 	} else {
 	    next = cur->parent;
 	}

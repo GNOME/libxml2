@@ -14,6 +14,8 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdio.h>
+#include <stdarg.h>
 
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
@@ -39,6 +41,7 @@
 
 #include "xmlmemory.h"
 #include "parser.h"
+#include "parserInternals.h"
 #include "HTMLparser.h"
 #include "HTMLtree.h"
 #include "tree.h"
@@ -51,18 +54,252 @@ static int copy = 0;
 static int recovery = 0;
 static int noent = 0;
 static int noout = 0;
+static int nowrap = 0;
 static int valid = 0;
 static int postvalid = 0;
 static int repeat = 0;
 static int insert = 0;
 static int compress = 0;
 static int html = 0;
+static int htmlout = 0;
 static int shell = 0;
 static int push = 0;
-static int blanks = 0;
+static int noblanks = 0;
 
 extern int xmlDoValidityCheckingDefaultValue;
+extern int xmlGetWarningsDefaultValue;
 
+/************************************************************************
+ * 									*
+ * 			HTML ouput					*
+ * 									*
+ ************************************************************************/
+char buffer[50000];
+
+void
+xmlHTMLEncodeSend(void) {
+    char *result;
+
+    result = (char *) xmlEncodeEntitiesReentrant(NULL, BAD_CAST buffer);
+    if (result) {
+	fprintf(stderr, "%s", result);
+	xmlFree(result);
+    }
+    buffer[0] = 0;
+}
+
+/**
+ * xmlHTMLPrintFileInfo:
+ * @input:  an xmlParserInputPtr input
+ * 
+ * Displays the associated file and line informations for the current input
+ */
+
+void
+xmlHTMLPrintFileInfo(xmlParserInputPtr input) {
+    fprintf(stderr, "<p>");
+    if (input != NULL) {
+	if (input->filename) {
+	    sprintf(&buffer[strlen(buffer)], "%s:%d: ", input->filename,
+		    input->line);
+	} else {
+	    sprintf(&buffer[strlen(buffer)], "Entity: line %d: ", input->line);
+	}
+    }
+    xmlHTMLEncodeSend();
+}
+
+/**
+ * xmlHTMLPrintFileContext:
+ * @input:  an xmlParserInputPtr input
+ * 
+ * Displays current context within the input content for error tracking
+ */
+
+void
+xmlHTMLPrintFileContext(xmlParserInputPtr input) {
+    const xmlChar *cur, *base;
+    int n;
+
+    if (input == NULL) return;
+    fprintf(stderr, "<pre>\n");
+    cur = input->cur;
+    base = input->base;
+    while ((cur > base) && ((*cur == '\n') || (*cur == '\r'))) {
+	cur--;
+    }
+    n = 0;
+    while ((n++ < 80) && (cur > base) && (*cur != '\n') && (*cur != '\r'))
+        cur--;
+    if ((*cur == '\n') || (*cur == '\r')) cur++;
+    base = cur;
+    n = 0;
+    while ((*cur != 0) && (*cur != '\n') && (*cur != '\r') && (n < 79)) {
+        sprintf(&buffer[strlen(buffer)], "%c", (unsigned char) *cur++);
+	n++;
+    }
+    sprintf(&buffer[strlen(buffer)], "\n");
+    cur = input->cur;
+    while ((*cur == '\n') || (*cur == '\r'))
+	cur--;
+    n = 0;
+    while ((cur != base) && (n++ < 80)) {
+        sprintf(&buffer[strlen(buffer)], " ");
+        base++;
+    }
+    sprintf(&buffer[strlen(buffer)],"^\n");
+    xmlHTMLEncodeSend();
+    fprintf(stderr, "</pre>");
+}
+
+/**
+ * xmlHTMLError:
+ * @ctx:  an XML parser context
+ * @msg:  the message to display/transmit
+ * @...:  extra parameters for the message display
+ * 
+ * Display and format an error messages, gives file, line, position and
+ * extra parameters.
+ */
+void
+xmlHTMLError(void *ctx, const char *msg, ...)
+{
+    xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
+    xmlParserInputPtr input;
+    xmlParserInputPtr cur = NULL;
+    va_list args;
+
+    buffer[0] = 0;
+    input = ctxt->input;
+    if ((input != NULL) && (input->filename == NULL) && (ctxt->inputNr > 1)) {
+	cur = input;
+        input = ctxt->inputTab[ctxt->inputNr - 2];
+    }
+        
+    xmlHTMLPrintFileInfo(input);
+
+    fprintf(stderr, "<b>error</b>: ");
+    va_start(args, msg);
+    vsprintf(&buffer[strlen(buffer)], msg, args);
+    va_end(args);
+    xmlHTMLEncodeSend();
+    fprintf(stderr, "</p>\n");
+
+    xmlHTMLPrintFileContext(input);
+    xmlHTMLEncodeSend();
+}
+
+/**
+ * xmlHTMLWarning:
+ * @ctx:  an XML parser context
+ * @msg:  the message to display/transmit
+ * @...:  extra parameters for the message display
+ * 
+ * Display and format a warning messages, gives file, line, position and
+ * extra parameters.
+ */
+void
+xmlHTMLWarning(void *ctx, const char *msg, ...)
+{
+    xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
+    xmlParserInputPtr input;
+    xmlParserInputPtr cur = NULL;
+    va_list args;
+
+    buffer[0] = 0;
+    input = ctxt->input;
+    if ((input != NULL) && (input->filename == NULL) && (ctxt->inputNr > 1)) {
+	cur = input;
+        input = ctxt->inputTab[ctxt->inputNr - 2];
+    }
+        
+
+    xmlHTMLPrintFileInfo(input);
+        
+    fprintf(stderr, "<b>warning</b>: ");
+    va_start(args, msg);
+    vsprintf(&buffer[strlen(buffer)], msg, args);
+    va_end(args);
+    xmlHTMLEncodeSend();
+    fprintf(stderr, "</p>\n");
+
+    xmlHTMLPrintFileContext(input);
+    xmlHTMLEncodeSend();
+}
+
+/**
+ * xmlHTMLValidityError:
+ * @ctx:  an XML parser context
+ * @msg:  the message to display/transmit
+ * @...:  extra parameters for the message display
+ * 
+ * Display and format an validity error messages, gives file,
+ * line, position and extra parameters.
+ */
+void
+xmlHTMLValidityError(void *ctx, const char *msg, ...)
+{
+    xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
+    xmlParserInputPtr input;
+    va_list args;
+
+    buffer[0] = 0;
+    input = ctxt->input;
+    if ((input->filename == NULL) && (ctxt->inputNr > 1))
+        input = ctxt->inputTab[ctxt->inputNr - 2];
+        
+    xmlHTMLPrintFileInfo(input);
+
+    fprintf(stderr, "<b>validity error</b>: ");
+    va_start(args, msg);
+    vsprintf(&buffer[strlen(buffer)], msg, args);
+    va_end(args);
+    xmlHTMLEncodeSend();
+    fprintf(stderr, "</p>\n");
+
+    xmlHTMLPrintFileContext(input);
+    xmlHTMLEncodeSend();
+}
+
+/**
+ * xmlHTMLValidityWarning:
+ * @ctx:  an XML parser context
+ * @msg:  the message to display/transmit
+ * @...:  extra parameters for the message display
+ * 
+ * Display and format a validity warning messages, gives file, line,
+ * position and extra parameters.
+ */
+void
+xmlHTMLValidityWarning(void *ctx, const char *msg, ...)
+{
+    xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
+    xmlParserInputPtr input;
+    va_list args;
+
+    buffer[0] = 0;
+    input = ctxt->input;
+    if ((input->filename == NULL) && (ctxt->inputNr > 1))
+        input = ctxt->inputTab[ctxt->inputNr - 2];
+
+    xmlHTMLPrintFileInfo(input);
+        
+    fprintf(stderr, "<b>validity warning</b>: ");
+    va_start(args, msg);
+    vsprintf(&buffer[strlen(buffer)], msg, args);
+    va_end(args);
+    xmlHTMLEncodeSend();
+    fprintf(stderr, "</p>\n");
+
+    xmlHTMLPrintFileContext(input);
+    xmlHTMLEncodeSend();
+}
+
+/************************************************************************
+ * 									*
+ * 			Shell Interface					*
+ * 									*
+ ************************************************************************/
 /**
  * xmlShellReadline:
  * @prompt:  the prompt value
@@ -97,6 +334,11 @@ xmlShellReadline(char *prompt) {
 #endif
 }
 
+/************************************************************************
+ * 									*
+ * 			Test processing					*
+ * 									*
+ ************************************************************************/
 void parseAndPrintFile(char *filename) {
     xmlDocPtr doc = NULL, tmp;
 
@@ -129,9 +371,40 @@ void parseAndPrintFile(char *filename) {
 		    xmlFreeParserCtxt(ctxt);
 	        }
 	    }
-	} else if (recovery)
+	} else if (recovery) {
 	    doc = xmlRecoverFile(filename);
-	else
+	} else if (htmlout) {
+	    int ret;
+	    xmlParserCtxtPtr ctxt;
+	    xmlSAXHandler silent, *old;
+
+	    ctxt = xmlCreateFileParserCtxt(filename);
+	    memcpy(&silent, ctxt->sax, sizeof(silent));
+	    old = ctxt->sax;
+	    silent.error = xmlHTMLError;
+	    if (xmlGetWarningsDefaultValue)
+		silent.warning = xmlHTMLWarning;
+	    else 
+		silent.warning = NULL;
+	    silent.fatalError = xmlHTMLError;
+            ctxt->sax = &silent;
+	    ctxt->vctxt.error = xmlHTMLValidityError;
+	    if (xmlGetWarningsDefaultValue)
+		ctxt->vctxt.warning = xmlHTMLValidityWarning;
+	    else 
+		ctxt->vctxt.warning = NULL;
+
+	    xmlParseDocument(ctxt);
+
+	    ret = ctxt->wellFormed;
+	    doc = ctxt->myDoc;
+	    ctxt->sax = old;
+	    xmlFreeParserCtxt(ctxt);
+	    if (!ret) {
+		xmlFreeDoc(doc);
+		doc = NULL;
+	    }
+	} else
 	    doc = xmlParseFile(filename);
     }
 
@@ -155,8 +428,8 @@ void parseAndPrintFile(char *filename) {
 	int nb, i;
 	xmlNodePtr node;
 
-	if (doc->root != NULL) {
-	    node = doc->root;
+	if (doc->children != NULL) {
+	    node = doc->children;
 	    while ((node != NULL) && (node->last == NULL)) node = node->next;
 	    if (node != NULL) {
 		nb = xmlValidGetValidElements(node->last, NULL, list, 256);
@@ -224,6 +497,12 @@ int main(int argc, char **argv) {
 	else if ((!strcmp(argv[i], "-noout")) ||
 	         (!strcmp(argv[i], "--noout")))
 	    noout++;
+	else if ((!strcmp(argv[i], "-htmlout")) ||
+	         (!strcmp(argv[i], "--htmlout")))
+	    htmlout++;
+	else if ((!strcmp(argv[i], "-nowrap")) ||
+	         (!strcmp(argv[i], "--nowrap")))
+	    nowrap++;
 	else if ((!strcmp(argv[i], "-valid")) ||
 	         (!strcmp(argv[i], "--valid")))
 	    valid++;
@@ -244,14 +523,18 @@ int main(int argc, char **argv) {
 	    compress++;
 	    xmlSetCompressMode(9);
         }
-	else if ((!strcmp(argv[i], "-blanks")) ||
-	         (!strcmp(argv[i], "--blanks"))) {
-	    blanks++;
-	    xmlKeepBlanksDefault(1);
-        }
 	else if ((!strcmp(argv[i], "-html")) ||
 	         (!strcmp(argv[i], "--html"))) {
 	    html++;
+        }
+	else if ((!strcmp(argv[i], "-nowarning")) ||
+	         (!strcmp(argv[i], "--nowarning"))) {
+	    xmlGetWarningsDefaultValue = 0;
+        }
+	else if ((!strcmp(argv[i], "-noblanks")) ||
+	         (!strcmp(argv[i], "--noblanks"))) {
+	     noblanks++;
+	     xmlKeepBlanksDefault(0);
         }
 	else if ((!strcmp(argv[i], "-shell")) ||
 	         (!strcmp(argv[i], "--shell"))) {
@@ -261,6 +544,17 @@ int main(int argc, char **argv) {
     }
     if (noent != 0) xmlSubstituteEntitiesDefault(1);
     if (valid != 0) xmlDoValidityCheckingDefaultValue = 1;
+    if ((htmlout) && (!nowrap)) {
+	fprintf(stderr,
+         "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\"\n");
+	fprintf(stderr, "\t\"http://www.w3.org/TR/REC-html40/loose.dtd\">\n");
+	fprintf(stderr,
+	 "<html><head><title>%s output</title></head>\n",
+		argv[0]);
+	fprintf(stderr, 
+	 "<body bgcolor=\"#ffffff\"><h1 align=\"center\">%s output</h1>\n",
+		argv[0]);
+    }
     for (i = 1; i < argc ; i++) {
 	if (argv[i][0] != '-') {
 	    if (repeat) {
@@ -271,8 +565,11 @@ int main(int argc, char **argv) {
 	    files ++;
 	}
     }
+    if ((htmlout) && (!nowrap)) {
+	fprintf(stderr, "</body></html>\n");
+    }
     if (files == 0) {
-	printf("Usage : %s [--debug] [--shell] [--debugent] [--copy] [--recover] [--noent] [--noout] [--valid] [--repeat] XMLfiles ...\n",
+	printf("Usage : %s [--debug] [--debugent] [--copy] [--recover] [--noent] [--noout] [--valid] [--repeat] XMLfiles ...\n",
 	       argv[0]);
 	printf("\tParse the XML files and output the result of the parsing\n");
 	printf("\t--debug : dump a debug tree of the in-memory document\n");
@@ -281,6 +578,8 @@ int main(int argc, char **argv) {
 	printf("\t--recover : output what was parsable on broken XML documents\n");
 	printf("\t--noent : substitute entity references by their value\n");
 	printf("\t--noout : don't output the result tree\n");
+	printf("\t--htmlout : output results as HTML\n");
+	printf("\t--nowarp : do not put HTML doc wrapper\n");
 	printf("\t--valid : validate the document in addition to std well-formed check\n");
 	printf("\t--postvalid : do a posteriori validation, i.e after parsing\n");
 	printf("\t--repeat : repeat 100 times, for timing or profiling\n");
@@ -288,8 +587,9 @@ int main(int argc, char **argv) {
 	printf("\t--compress : turn on gzip compression of output\n");
 	printf("\t--html : use the HTML parser\n");
 	printf("\t--shell : run a navigating shell\n");
-	printf("\t--blanks : keep blank text node\n");
 	printf("\t--push : use the push mode of the parser\n");
+	printf("\t--nowarning : do not emit warnings from parser/validator\n");
+	printf("\t--noblanks : drop (ignorable?) blanks spaces\n");
     }
     xmlCleanupParser();
     xmlMemoryDump();

@@ -869,10 +869,11 @@ xmlNanoFTPConnect(void *ctx) {
 		    else
 #ifndef HAVE_SNPRINTF
 			len = sprintf(buf, "PASS libxml@%s\r\n",
+			               hostname);
 #else /* HAVE_SNPRINTF */
 			len = snprintf(buf, sizeof(buf), "PASS libxml@%s\r\n",
-#endif /* HAVE_SNPRINTF */
 			               hostname);
+#endif /* HAVE_SNPRINTF */
 #ifdef DEBUG_FTP
 		    printf(buf);
 #endif
@@ -1226,11 +1227,13 @@ xmlNanoFTPGetConnection(void *ctx) {
 	portp = (unsigned char *) &dataAddr.sin_port;
 #ifndef HAVE_SNPRINTF
 	len = sprintf(buf, "PORT %d,%d,%d,%d,%d,%d\r\n",
+	       adp[0] & 0xff, adp[1] & 0xff, adp[2] & 0xff, adp[3] & 0xff,
+	       portp[0] & 0xff, portp[1] & 0xff);
 #else /* HAVE_SNPRINTF */
 	len = snprintf(buf, sizeof(buf), "PORT %d,%d,%d,%d,%d,%d\r\n",
+	       adp[0] & 0xff, adp[1] & 0xff, adp[2] & 0xff, adp[3] & 0xff,
+	       portp[0] & 0xff, portp[1] & 0xff);
 #endif /* HAVE_SNPRINTF */
-	               adp[0] & 0xff, adp[1] & 0xff, adp[2] & 0xff, adp[3] & 0xff,
-		       portp[0] & 0xff, portp[1] & 0xff);
         buf[sizeof(buf) - 1] = 0;
 #ifdef DEBUG_FTP
 	printf(buf);
@@ -1264,12 +1267,33 @@ int
 xmlNanoFTPCloseConnection(void *ctx) {
     xmlNanoFTPCtxtPtr ctxt = (xmlNanoFTPCtxtPtr) ctx;
     int res;
+    fd_set rfd, efd;
+    struct timeval tv;
 
     close(ctxt->dataFd); ctxt->dataFd = -1;
-    res = xmlNanoFTPGetResponse(ctxt);
-    if (res != 2) {
+    tv.tv_sec = 15;
+    tv.tv_usec = 0;
+    FD_ZERO(&rfd);
+    FD_SET(ctxt->controlFd, &rfd);
+    FD_ZERO(&efd);
+    FD_SET(ctxt->controlFd, &efd);
+    res = select(ctxt->controlFd + 1, &rfd, NULL, &efd, &tv);
+    if (res < 0) {
+#ifdef DEBUG_FTP
+	perror("select");
+#endif
 	close(ctxt->controlFd); ctxt->controlFd = -1;
 	return(-1);
+    }
+    if (res == 0) {
+	fprintf(stderr, "xmlNanoFTPCloseConnection: timeout\n");
+	close(ctxt->controlFd); ctxt->controlFd = -1;
+    } else {
+	res = xmlNanoFTPGetResponse(ctxt);
+	if (res != 2) {
+	    close(ctxt->controlFd); ctxt->controlFd = -1;
+	    return(-1);
+	}
     }
     return(0);
 }

@@ -4,7 +4,7 @@
 <!ENTITY test2 "test 2">
 ]>
 <doc>
-  <Content>Reten&#231;&#227;o</Content>
-  <Content>&lt;&gt;</Content>
-  <Content>test 1test 2</Content>
+   <Content>Reten&#xE7;&#xE3;o</Content>
+   <Content>&lt;&gt;</Content>
+   <Content>test 1test 2</Content>
 </doc>

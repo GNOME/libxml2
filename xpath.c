@@ -213,9 +213,9 @@ PUSH_AND_POP(xmlXPathObjectPtr, value)
  * Dirty macros, i.e. one need to make assumption on the context to use them
  *
  *   CUR_PTR return the current pointer to the xmlChar to be parsed.
- *   CUR     returns the current xmlChar value, i.e. a 8 bit value if compiled
- *           in ISO-Latin or UTF-8, and the current 16 bit value if compiled
- *           in UNICODE mode. This should be used internally by the parser
+ *   CUR     returns the current xmlChar value, i.e. a 8 bit value
+ *           in ISO-Latin or UTF-8.
+ *           This should be used internally by the parser
  *           only to compare to ASCII values otherwise it would break when
  *           running with UTF-8 encoding.
  *   NXT(n)  returns the n'th next xmlChar. Same as CUR is should be used only
@@ -237,11 +237,8 @@ PUSH_AND_POP(xmlXPathObjectPtr, value)
 #define SKIP_BLANKS 							\
     while (IS_BLANK(*(ctxt->cur))) NEXT
 
-#ifndef USE_UTF_8
 #define CURRENT (*ctxt->cur)
 #define NEXT ((*ctxt->cur) ?  ctxt->cur++: ctxt->cur)
-#else
-#endif
 
 /************************************************************************
  *									*
@@ -877,7 +874,7 @@ xmlXPathFreeContext(xmlXPathContextPtr ctxt) {
         fprintf(xmlXPathDebug, "%s:%d Internal error: no document\n",	\
 	        __FILE__, __LINE__);					\
     }									\
-    if (ctxt->doc->root == NULL) { 					\
+    if (ctxt->doc->children == NULL) { 					\
         fprintf(xmlXPathDebug,						\
 	        "%s:%d Internal error: document without root\n",	\
 	        __FILE__, __LINE__);					\
@@ -1496,14 +1493,18 @@ xmlXPathNextChild(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
             case XML_PI_NODE:
             case XML_COMMENT_NODE:
             case XML_NOTATION_NODE:
-		return(ctxt->context->node->childs);
-            case XML_ATTRIBUTE_NODE:
-		return(NULL);
+            case XML_DTD_NODE:
+		return(ctxt->context->node->children);
             case XML_DOCUMENT_NODE:
             case XML_DOCUMENT_TYPE_NODE:
             case XML_DOCUMENT_FRAG_NODE:
             case XML_HTML_DOCUMENT_NODE:
-		return(((xmlDocPtr) ctxt->context->node)->root);
+		return(((xmlDocPtr) ctxt->context->node)->children);
+	    case XML_ELEMENT_DECL:
+	    case XML_ATTRIBUTE_DECL:
+	    case XML_ENTITY_DECL:
+            case XML_ATTRIBUTE_NODE:
+		return(NULL);
 	}
 	return(NULL);
     }
@@ -1533,11 +1534,11 @@ xmlXPathNextDescendant(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
 	    return(NULL);
 
         if (ctxt->context->node == (xmlNodePtr) ctxt->context->doc)
-	    return(ctxt->context->doc->root);
-        return(ctxt->context->node->childs);
+	    return(ctxt->context->doc->children);
+        return(ctxt->context->node->children);
     }
 
-    if (cur->childs != NULL) return(cur->childs);
+    if (cur->children != NULL) return(cur->children);
     if (cur->next != NULL) return(cur->next);
     
     do {
@@ -1606,13 +1607,17 @@ xmlXPathNextParent(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
             case XML_PI_NODE:
             case XML_COMMENT_NODE:
             case XML_NOTATION_NODE:
+            case XML_DTD_NODE:
+	    case XML_ELEMENT_DECL:
+	    case XML_ATTRIBUTE_DECL:
+	    case XML_ENTITY_DECL:
 		if (ctxt->context->node->parent == NULL)
 		    return((xmlNodePtr) ctxt->context->doc);
 		return(ctxt->context->node->parent);
             case XML_ATTRIBUTE_NODE: {
 		xmlAttrPtr att = (xmlAttrPtr) ctxt->context->node;
 
-		return(att->node);
+		return(att->parent);
 	    }
             case XML_DOCUMENT_NODE:
             case XML_DOCUMENT_TYPE_NODE:
@@ -1655,6 +1660,10 @@ xmlXPathNextAncestor(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
             case XML_ENTITY_NODE:
             case XML_PI_NODE:
             case XML_COMMENT_NODE:
+	    case XML_DTD_NODE:
+	    case XML_ELEMENT_DECL:
+	    case XML_ATTRIBUTE_DECL:
+	    case XML_ENTITY_DECL:
             case XML_NOTATION_NODE:
 		if (ctxt->context->node->parent == NULL)
 		    return((xmlNodePtr) ctxt->context->doc);
@@ -1662,7 +1671,7 @@ xmlXPathNextAncestor(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
             case XML_ATTRIBUTE_NODE: {
 		xmlAttrPtr cur = (xmlAttrPtr) ctxt->context->node;
 
-		return(cur->node);
+		return(cur->parent);
 	    }
             case XML_DOCUMENT_NODE:
             case XML_DOCUMENT_TYPE_NODE:
@@ -1672,7 +1681,7 @@ xmlXPathNextAncestor(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
 	}
 	return(NULL);
     }
-    if (cur == ctxt->context->doc->root)
+    if (cur == ctxt->context->doc->children)
 	return((xmlNodePtr) ctxt->context->doc);
     if (cur == (xmlNodePtr) ctxt->context->doc)
 	return(NULL);
@@ -1685,11 +1694,15 @@ xmlXPathNextAncestor(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
 	case XML_PI_NODE:
 	case XML_COMMENT_NODE:
 	case XML_NOTATION_NODE:
+	case XML_DTD_NODE:
+        case XML_ELEMENT_DECL:
+        case XML_ATTRIBUTE_DECL:
+        case XML_ENTITY_DECL:
 	    return(cur->parent);
 	case XML_ATTRIBUTE_NODE: {
 	    xmlAttrPtr att = (xmlAttrPtr) ctxt->context->node;
 
-	    return(att->node);
+	    return(att->parent);
 	}
 	case XML_DOCUMENT_NODE:
 	case XML_DOCUMENT_TYPE_NODE:
@@ -1780,13 +1793,13 @@ xmlXPathNextFollowing(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
         return(NULL);
     if (cur == NULL)
         return(ctxt->context->node->next);; /* !!!!!!!!! */
-    if (cur->childs != NULL) return(cur->childs);
+    if (cur->children != NULL) return(cur->children);
     if (cur->next != NULL) return(cur->next);
     
     do {
         cur = cur->parent;
 	if (cur == NULL) return(NULL);
-	if (cur == ctxt->context->doc->root) return(NULL);
+	if (cur == ctxt->context->doc->children) return(NULL);
 	if (cur->next != NULL) {
 	    cur = cur->next;
 	    return(cur);
@@ -1820,7 +1833,7 @@ xmlXPathNextPreceding(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
     do {
         cur = cur->parent;
 	if (cur == NULL) return(NULL);
-	if (cur == ctxt->context->doc->root) return(NULL);
+	if (cur == ctxt->context->doc->children) return(NULL);
 	if (cur->prev != NULL) {
 	    cur = cur->prev;
 	    return(cur);
@@ -2278,7 +2291,7 @@ xmlXPathIdFunction(xmlXPathParserContextPtr ctxt, int nargs) {
         ID = xmlStrndup(tokens, cur - tokens);
 	attr = xmlGetID(ctxt->context->doc, ID);
 	if (attr != NULL) {
-	    elem = attr->node;
+	    elem = attr->parent;
             xmlXPathNodeSetAdd(ret->nodesetval, elem);
         }
 	if (ID != NULL)
@@ -3677,6 +3690,8 @@ xmlXPathEvalPathExpr(xmlXPathParserContextPtr ctxt) {
 	if (name != NULL)
 	    xmlFree(name);
     }
+    if (ctxt->context->nodelist != NULL)
+	valuePush(ctxt, xmlXPathNewNodeSetList(ctxt->context->nodelist));
 }
 
 /**

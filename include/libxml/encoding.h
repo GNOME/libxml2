@@ -67,11 +67,11 @@ typedef enum {
  * Returns the number of byte written, or -1 by lack of space.
  */
 typedef int (* xmlCharEncodingInputFunc)(unsigned char* out, int outlen,
-                                         unsigned char* in, int inlen);
+                                         const unsigned char* in, int *inlen);
 
 
 /**
- * xmlCharEncodingInputFunc:
+ * xmlCharEncodingOutputFunc:
  * @out:  a pointer ot an array of bytes to store the result
  * @outlen:  the lenght of @out
  * @in:  a pointer ot an array of UTF-8 chars
@@ -84,7 +84,7 @@ typedef int (* xmlCharEncodingInputFunc)(unsigned char* out, int outlen,
  *     if the transcoding failed.
  */
 typedef int (* xmlCharEncodingOutputFunc)(unsigned char* out, int outlen,
-                                          unsigned char* in, int inlen);
+                                          const unsigned char* in, int *inlen);
 
 /*
  * Block defining the handlers for non UTF-8 encodings.
@@ -101,10 +101,12 @@ struct _xmlCharEncodingHandler {
 void	xmlInitCharEncodingHandlers	(void);
 void	xmlCleanupCharEncodingHandlers	(void);
 void	xmlRegisterCharEncodingHandler	(xmlCharEncodingHandlerPtr handler);
-xmlCharEncoding xmlDetectCharEncoding	(const unsigned char* in);
+xmlCharEncoding xmlDetectCharEncoding	(const unsigned char* in,
+					 int len);
 xmlCharEncoding xmlParseCharEncoding	(const char* name);
 xmlCharEncodingHandlerPtr xmlGetCharEncodingHandler(xmlCharEncoding enc);
 xmlCharEncodingHandlerPtr xmlFindCharEncodingHandler(const char *name);
+int	xmlCheckUTF8			(const unsigned char *utf);
 
 
 #ifdef __cplusplus

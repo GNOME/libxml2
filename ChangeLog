@@ -1,3 +1,11 @@
+Tue Mar 14 19:11:29 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* all: tagged LIB_XML_1_X
+	* *.c *.h : updated from W3C CVS tree
+	* configure.in : 2.0.0-beta
+	* libxml.spec.in : libxml2 package nam
+	* result/* : new version of the tests output
+
 Mon Mar  6 09:34:52 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* doc/xml.html, doc/update.html: updated docs, 1.8.7

@@ -5,6 +5,6 @@
 <!ELEMENT b (#PCDATA)>
 ]>
 <doc>
-  <a>This</a>
-  <b> is a valid document</b>
+<a>This</a>
+<b> is a valid document</b>
 </doc>

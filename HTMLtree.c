@@ -80,7 +80,7 @@ htmlAttrDump(xmlBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur) {
     }
     xmlBufferWriteChar(buf, " ");
     xmlBufferWriteCHAR(buf, cur->name);
-    value = xmlNodeListGetString(doc, cur->val, 0);
+    value = xmlNodeListGetString(doc, cur->children, 0);
     if (value) {
 	xmlBufferWriteChar(buf, "=");
 	xmlBufferWriteQuotedString(buf, value);
@@ -212,7 +212,7 @@ htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
 	}
 	return;
     }
-    if ((cur->content == NULL) && (cur->childs == NULL)) {
+    if ((cur->content == NULL) && (cur->children == NULL)) {
         if ((info != NULL) && (info->endTag != 0))
 	    xmlBufferWriteChar(buf, ">");
 	else {
@@ -242,15 +242,15 @@ htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
 	    xmlFree(buffer);
 	}
     }
-    if (cur->childs != NULL) {
-        if ((cur->childs->type != HTML_TEXT_NODE) &&
-	    (cur->childs->type != HTML_ENTITY_REF_NODE) &&
-	    (cur->childs != cur->last))
+    if (cur->children != NULL) {
+        if ((cur->children->type != HTML_TEXT_NODE) &&
+	    (cur->children->type != HTML_ENTITY_REF_NODE) &&
+	    (cur->children != cur->last))
 	    xmlBufferWriteChar(buf, "\n");
-	htmlNodeListDump(buf, doc, cur->childs);
+	htmlNodeListDump(buf, doc, cur->children);
         if ((cur->last->type != HTML_TEXT_NODE) &&
 	    (cur->last->type != HTML_ENTITY_REF_NODE) &&
-	    (cur->childs != cur->last))
+	    (cur->children != cur->last))
 	    xmlBufferWriteChar(buf, "\n");
     }
     if (!htmlIsAutoClosed(doc, cur)) {
@@ -307,8 +307,8 @@ htmlDocContentDump(xmlBufferPtr buf, xmlDocPtr cur) {
 	xmlBufferWriteChar(buf, "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/REC-html40/loose.dtd\">");
 
     }
-    if (cur->root != NULL) {
-        htmlNodeListDump(buf, cur, cur->root);
+    if (cur->children != NULL) {
+        htmlNodeListDump(buf, cur, cur->children);
     }
     xmlBufferWriteChar(buf, "\n");
     cur->type = type;

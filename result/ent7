@@ -6,5 +6,5 @@
 <!ELEMENT para (#PCDATA)>
 ]>
 <item>
-  <para>&apos;they called me &sampleEnt;&apos;</para>
+<para>'they called me &sampleEnt;'</para>
 </item>

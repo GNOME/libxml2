@@ -206,10 +206,44 @@ typedef enum {
     XML_NS_ERR_ATTRIBUTE_REDEFINED,
     XML_ERR_CONDSEC_INVALID_KEYWORD,
     XML_ERR_VERSION_MISSING,
+    XML_DTD_ATTRIBUTE_DEFAULT,
+    XML_DTD_ATTRIBUTE_REDEFINED,
+    XML_DTD_ATTRIBUTE_VALUE,
+    XML_DTD_CONTENT_ERROR,
+    XML_DTD_CONTENT_MODEL,
+    XML_DTD_CONTENT_NOT_DETERMINIST,
+    XML_DTD_DIFFERENT_PREFIX,
+    XML_DTD_ELEM_DEFAULT_NAMESPACE,
+    XML_DTD_ELEM_NAMESPACE,
+    XML_DTD_ELEM_REDEFINED,
+    XML_DTD_EMPTY_NOTATION,
+    XML_DTD_ENTITY_TYPE,
+    XML_DTD_ID_FIXED,
+    XML_DTD_ID_REDEFINED,
+    XML_DTD_ID_SUBSET,
+    XML_DTD_INVALID_CHILD,
+    XML_DTD_INVALID_DEFAULT,
+    XML_DTD_LOAD_ERROR,
+    XML_DTD_MISSING_ATTRIBUTE,
     XML_DTD_MIXED_CORRUPT,
+    XML_DTD_MULTIPLE_ID,
     XML_DTD_NO_DOC,
+    XML_DTD_NO_DTD,
     XML_DTD_NO_ELEM_NAME,
-    XML_DTD_NOTATION_REDEFINED
+    XML_DTD_NO_PREFIX,
+    XML_DTD_NO_ROOT,
+    XML_DTD_NOTATION_REDEFINED,
+    XML_DTD_NOTATION_VALUE,
+    XML_DTD_NOT_EMPTY,
+    XML_DTD_NOT_PCDATA,
+    XML_DTD_NOT_STANDALONE,
+    XML_DTD_ROOT_NAME,
+    XML_DTD_STANDALONE_WHITE_SPACE,
+    XML_DTD_UNKNOWN_ATTRIBUTE,
+    XML_DTD_UNKNOWN_ELEM,
+    XML_DTD_UNKNOWN_ENTITY,
+    XML_DTD_UNKNOWN_ID,
+    XML_DTD_UNKNOWN_NOTATION
 } xmlParserErrors;
 
 /**
@@ -277,11 +311,15 @@ XMLPUBFUN int XMLCALL
     xmlCopyError		(xmlErrorPtr from,
     				 xmlErrorPtr to);
 
+#ifdef IN_LIBXML
 /*
- * Intended for internal use mostly
+ * Internal callback reporting routine
  */
-XMLPUBFUN void XMLCALL
-    xmlRaiseError		(void *ctx,
+XMLPUBFUN void XMLCALL 
+    __xmlRaiseError		(xmlGenericErrorFunc channel,
+    				 void *data,
+                                 void *ctx,
+    				 void *node,
     				 int domain,
 				 int code,
 				 xmlErrorLevel level,
@@ -294,6 +332,7 @@ XMLPUBFUN void XMLCALL
 				 int int2,
 				 const char *msg,
 				 ...);
+#endif
 #ifdef __cplusplus
 }
 #endif

@@ -208,6 +208,7 @@ xmlParserPrintFileContext(xmlParserInputPtr input) {
 
 /**
  * xmlReportError:
+ * @err: the error
  * @ctx: the parser context or NULL
  * @str: the formatted error message
  *
@@ -215,7 +216,8 @@ xmlParserPrintFileContext(xmlParserInputPtr input) {
  * routines.
  */
 static void
-xmlReportError(xmlParserCtxtPtr ctxt, const char *str) {
+xmlReportError(xmlErrorPtr err, xmlParserCtxtPtr ctxt, const char *str)
+{
     char *file = NULL;
     int line = 0;
     int code = -1;
@@ -226,33 +228,41 @@ xmlReportError(xmlParserCtxtPtr ctxt, const char *str) {
     xmlParserInputPtr cur = NULL;
     void *data;
 
-    if (ctxt == NULL) return;
+    if (err == NULL)
+        return;
 
     channel = xmlGenericError;
     data = xmlGenericErrorContext;
-    file = ctxt->lastError.file;
-    line = ctxt->lastError.line;
-    code = ctxt->lastError.code;
-    domain = ctxt->lastError.domain;
-    level = ctxt->lastError.level;
-    
+    file = err->file;
+    line = err->line;
+    code = err->code;
+    domain = err->domain;
+    level = err->level;
+
     if (code == XML_ERR_OK)
         return;
 
     /*
      * Maintain the compatibility with the legacy error handling
      */
-    input = ctxt->input;
-    if ((input != NULL) && (input->filename == NULL) &&
-	(ctxt->inputNr > 1)) {
-	cur = input;
-	input = ctxt->inputTab[ctxt->inputNr - 2];
-    }
-    if (input != NULL) {
-	if (input->filename)
-	    channel(data, "%s:%d: ", input->filename, input->line);
-	else
-	    channel(data, "Entity: line %d: ", input->line);
+    if (ctxt != NULL) {
+        input = ctxt->input;
+        if ((input != NULL) && (input->filename == NULL) &&
+            (ctxt->inputNr > 1)) {
+            cur = input;
+            input = ctxt->inputTab[ctxt->inputNr - 2];
+        }
+        if (input != NULL) {
+            if (input->filename)
+                channel(data, "%s:%d: ", input->filename, input->line);
+            else
+                channel(data, "Entity: line %d: ", input->line);
+        }
+    } else {
+        if (file != NULL)
+            channel(data, "%s:%d: ", file, line);
+        else
+            channel(data, "Entity: line %d: ", line);
     }
     if (code == XML_ERR_OK)
         return;
@@ -313,16 +323,16 @@ xmlReportError(xmlParserCtxtPtr ctxt, const char *str) {
     switch (level) {
         case XML_ERR_NONE:
             channel(data, ": ");
-	    break;
+            break;
         case XML_ERR_WARNING:
             channel(data, "warning : ");
-	    break;
+            break;
         case XML_ERR_ERROR:
             channel(data, "error : ");
-	    break;
+            break;
         case XML_ERR_FATAL:
             channel(data, "error : ");
-	    break;
+            break;
     }
     if (code == XML_ERR_OK)
         return;
@@ -347,7 +357,10 @@ xmlReportError(xmlParserCtxtPtr ctxt, const char *str) {
 }
 
 /**
- * xmlRaiseError:
+ * __xmlRaiseError:
+ * @channel: the callback channel
+ * @data: the callback data
+ * @ctx: the parser context or NULL
  * @ctx: the parser context or NULL
  * @domain: the domain for the error
  * @code: the code for the error
@@ -367,17 +380,18 @@ xmlReportError(xmlParserCtxtPtr ctxt, const char *str) {
  * error callback handler
  */
 void
-xmlRaiseError(void *ctx, int domain, int code, xmlErrorLevel level,
+__xmlRaiseError(xmlGenericErrorFunc channel, void *data, void *ctx,
+              void *nod, int domain, int code, xmlErrorLevel level,
               const char *file, int line, const char *str1,
               const char *str2, const char *str3, int int1, int int2,
 	      const char *msg, ...)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
+    xmlNodePtr node = (xmlNodePtr) nod;
     char *str = NULL;
     xmlParserInputPtr input = NULL;
     xmlErrorPtr to = &xmlLastError;
-    xmlGenericErrorFunc channel;
-    void *data;
+    xmlChar *base = NULL;
 
     if (code == XML_ERR_OK)
         return;
@@ -406,6 +420,15 @@ xmlRaiseError(void *ctx, int domain, int code, xmlErrorLevel level,
             }
         }
         to = &ctxt->lastError;
+    } else if ((node != NULL) && (file == NULL)) {
+	int i;
+        base = xmlNodeGetBase(NULL, node);
+	for (i = 0;
+	     ((i < 10) && (node != NULL) && (node->type != XML_ELEMENT_NODE));
+	     i++)
+	     node = node->parent;
+	if ((node != NULL) && (node->type == XML_ELEMENT_NODE))
+	    line = (int) node->content;
     }
 
     /*
@@ -418,6 +441,10 @@ xmlRaiseError(void *ctx, int domain, int code, xmlErrorLevel level,
     to->level = level;
     if (file != NULL)
         to->file = (char *) xmlStrdup((const xmlChar *) file);
+    else if (base != NULL) {
+        to->file = (char *) base;
+	file = (char *) base;
+    }
     to->line = line;
     if (str1 != NULL)
         to->str1 = (char *) xmlStrdup((const xmlChar *) str1);
@@ -431,13 +458,13 @@ xmlRaiseError(void *ctx, int domain, int code, xmlErrorLevel level,
     /*
      * Find the callback channel.
      */
-    if (ctxt != NULL) {
+    if ((ctxt != NULL) && (channel == NULL)) {
         if (level == XML_ERR_WARNING)
 	    channel = ctxt->sax->warning;
         else
 	    channel = ctxt->sax->error;
 	data = ctxt;
-    } else {
+    } else if (channel == NULL) {
 	channel = xmlGenericError;
 	data = xmlGenericErrorContext;
     }
@@ -448,7 +475,7 @@ xmlRaiseError(void *ctx, int domain, int code, xmlErrorLevel level,
         (channel == xmlParserWarning) ||
 	(channel == xmlParserValidityError) ||
 	(channel == xmlParserValidityWarning))
-	xmlReportError(ctxt, str);
+	xmlReportError(to, ctxt, str);
     else
 	channel(data, "%s", str);
 }

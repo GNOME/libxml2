@@ -43,12 +43,6 @@ static xmlElementPtr xmlGetDtdElementDesc2(xmlDtdPtr dtd, const xmlChar *name,
  *									*
  ************************************************************************/
 
-#define VERROR							\
-   if ((ctxt != NULL) && (ctxt->error != NULL)) ctxt->error
-
-#define VWARNING						\
-   if ((ctxt != NULL) && (ctxt->warning != NULL)) ctxt->warning
-
 /**
  * xmlErrMemory:
  * @ctxt:  an XML validation parser context
@@ -59,37 +53,157 @@ static xmlElementPtr xmlGetDtdElementDesc2(xmlDtdPtr dtd, const xmlChar *name,
 static void
 xmlErrMemory(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED, const char *extra)
 {
+    xmlGenericErrorFunc channel = NULL;
+    xmlParserCtxtPtr pctxt = NULL;
+    void *data = NULL;
+
+    if (ctxt != NULL) {
+        channel = ctxt->error;
+        data = ctxt->userData;
+	pctxt = ctxt->userData;
+    }
     if (extra)
-        xmlRaiseError(NULL, XML_FROM_DTD, XML_ERR_NO_MEMORY,
-                      XML_ERR_FATAL, NULL, 0, extra, NULL, NULL, 0, 0,
-                      "Memory allocation failed : %s\n", extra);
+        __xmlRaiseError(channel, data,
+                        pctxt, NULL, XML_FROM_DTD, XML_ERR_NO_MEMORY,
+                        XML_ERR_FATAL, NULL, 0, extra, NULL, NULL, 0, 0,
+                        "Memory allocation failed : %s\n", extra);
     else
-        xmlRaiseError(NULL, XML_FROM_DTD, XML_ERR_NO_MEMORY,
-                      XML_ERR_FATAL, NULL, 0, NULL, NULL, NULL, 0, 0,
-                      "Memory allocation failed\n");
+        __xmlRaiseError(channel, data,
+                        pctxt, NULL, XML_FROM_DTD, XML_ERR_NO_MEMORY,
+                        XML_ERR_FATAL, NULL, 0, NULL, NULL, NULL, 0, 0,
+                        "Memory allocation failed\n");
 }
 
 /**
  * xmlErrValid:
  * @ctxt:  an XML validation parser context
- * @
+ * @error:  the error number
  * @extra:  extra informations
  *
  * Handle a validation error
  */
 static void
 xmlErrValid(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED, xmlParserErrors error,
-             const char *msg, const char *extra)
+            const char *msg, const char *extra)
 {
+    xmlGenericErrorFunc channel = NULL;
+    xmlParserCtxtPtr pctxt = NULL;
+    void *data = NULL;
+
+    if (ctxt != NULL) {
+        channel = ctxt->error;
+        data = ctxt->userData;
+	pctxt = ctxt->userData;
+    }
     if (extra)
-        xmlRaiseError(NULL, XML_FROM_DTD, error,
-                      XML_ERR_FATAL, NULL, 0, extra, NULL, NULL, 0, 0,
-                      msg, extra);
+        __xmlRaiseError(channel, data,
+                        pctxt, NULL, XML_FROM_DTD, error,
+                        XML_ERR_ERROR, NULL, 0, extra, NULL, NULL, 0, 0,
+                        msg, extra);
     else
-        xmlRaiseError(NULL, XML_FROM_DTD, error,
-                      XML_ERR_FATAL, NULL, 0, NULL, NULL, NULL, 0, 0,
-                      msg);
+        __xmlRaiseError(channel, data,
+                        pctxt, NULL, XML_FROM_DTD, error,
+                        XML_ERR_ERROR, NULL, 0, NULL, NULL, NULL, 0, 0,
+                        msg);
 }
+
+/**
+ * xmlErrValidNodeNr:
+ * @ctxt:  an XML validation parser context
+ * @node:  the node raising the error
+ * @error:  the error number
+ * @str1:  extra informations
+ * @int2:  extra informations
+ * @str3:  extra informations
+ *
+ * Handle a validation error, provide contextual informations
+ */
+static void
+xmlErrValidNodeNr(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
+                xmlNodePtr node, xmlParserErrors error,
+                const char *msg, const xmlChar * str1,
+                int int2, const xmlChar * str3)
+{
+    xmlGenericErrorFunc channel = NULL;
+    xmlParserCtxtPtr pctxt = NULL;
+    void *data = NULL;
+
+    if (ctxt != NULL) {
+        channel = ctxt->error;
+        data = ctxt->userData;
+	pctxt = ctxt->userData;
+    }
+    __xmlRaiseError(channel, data, pctxt, node, XML_FROM_DTD, error,
+                    XML_ERR_ERROR, NULL, 0,
+                    (const char *) str1,
+                    (const char *) str3,
+                    NULL, int2, 0, msg, str1, int2, str3);
+}
+/**
+ * xmlErrValidNode:
+ * @ctxt:  an XML validation parser context
+ * @node:  the node raising the error
+ * @error:  the error number
+ * @str1:  extra informations
+ * @str2:  extra informations
+ * @str3:  extra informations
+ *
+ * Handle a validation error, provide contextual informations
+ */
+static void
+xmlErrValidNode(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
+                xmlNodePtr node, xmlParserErrors error,
+                const char *msg, const xmlChar * str1,
+                const xmlChar * str2, const xmlChar * str3)
+{
+    xmlGenericErrorFunc channel = NULL;
+    xmlParserCtxtPtr pctxt = NULL;
+    void *data = NULL;
+
+    if (ctxt != NULL) {
+        channel = ctxt->error;
+        data = ctxt->userData;
+	pctxt = ctxt->userData;
+    }
+    __xmlRaiseError(channel, data, pctxt, node, XML_FROM_DTD, error,
+                    XML_ERR_ERROR, NULL, 0,
+                    (const char *) str1,
+                    (const char *) str1,
+                    (const char *) str3, 0, 0, msg, str1, str2, str3);
+}
+/**
+ * xmlErrValidWarning:
+ * @ctxt:  an XML validation parser context
+ * @node:  the node raising the error
+ * @error:  the error number
+ * @str1:  extra informations
+ * @str2:  extra informations
+ * @str3:  extra informations
+ *
+ * Handle a validation error, provide contextual informations
+ */
+static void
+xmlErrValidWarning(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
+                xmlNodePtr node, xmlParserErrors error,
+                const char *msg, const xmlChar * str1,
+                const xmlChar * str2, const xmlChar * str3)
+{
+    xmlGenericErrorFunc channel = NULL;
+    xmlParserCtxtPtr pctxt = NULL;
+    void *data = NULL;
+
+    if (ctxt != NULL) {
+        channel = ctxt->error;
+        data = ctxt->userData;
+	pctxt = ctxt->userData;
+    }
+    __xmlRaiseError(channel, data, pctxt, node, XML_FROM_DTD, error,
+                    XML_ERR_WARNING, NULL, 0,
+                    (const char *) str1,
+                    (const char *) str1,
+                    (const char *) str3, 0, 0, msg, str1, str2, str3);
+}
+
 
 
 #ifdef LIBXML_REGEXP_ENABLED
@@ -144,8 +258,10 @@ vstateVPush(xmlValidCtxtPtr ctxt, xmlElementPtr elemDecl, xmlNodePtr node) {
 		xmlRegNewExecCtxt(elemDecl->contModel, NULL, NULL);
 	} else {
 	    ctxt->vstateTab[ctxt->vstateNr].exec = NULL;
-	    VERROR(ctxt->userData,
-		   "Failed to build content model regexp for %s", node->name);
+	    xmlErrValidNode(ctxt, (xmlNodePtr) elemDecl,
+	                    XML_ERR_INTERNAL_ERROR,
+			    "Failed to build content model regexp for %s\n",
+			    node->name, NULL, NULL);
 	}
     }
     return(ctxt->vstateNr++);
@@ -468,31 +584,6 @@ xmlValidStateDebug(xmlValidCtxtPtr ctxt) {
 
 /* TODO: use hash table for accesses to elem and attribute definitions */
 
-#define VECTXT(ctxt, node)					\
-   if ((ctxt != NULL) && (ctxt->error != NULL) &&		\
-       (node != NULL)) {					\
-       xmlChar *base = xmlNodeGetBase(NULL,node);		\
-       if (base != NULL) {					\
-	   ctxt->error(ctxt->userData, "%s:%d: ", base,		\
-		       (int) (long) node->content);		\
-	   xmlFree(base);					\
-       } else							\
-	   ctxt->error(ctxt->userData, ":%d: ", 		\
-		       (int) (long) node->content);		\
-   }
-
-#define VWCTXT(ctxt, node)					\
-   if ((ctxt != NULL) && (ctxt->warning != NULL) &&		\
-       (node != NULL)) {					\
-       xmlChar *base = xmlNodeGetBase(NULL,node);		\
-       if (base != NULL) {					\
-	   ctxt->warning(ctxt->userData, "%s:%d: ", base,	\
-		       (int) (long) node->content);		\
-	   xmlFree(base);					\
-       } else							\
-	   ctxt->warning(ctxt->userData, ":%d: ", 		\
-		       (int) (long) node->content);		\
-   }
 
 #define CHECK_DTD						\
    if (doc == NULL) return(0);					\
@@ -524,14 +615,16 @@ xmlValidBuildAContentModel(xmlElementContentPtr content,
 		           xmlValidCtxtPtr ctxt,
 		           const xmlChar *name) {
     if (content == NULL) {
-	VERROR(ctxt->userData,
-	       "Found unexpected type = NULL in %s content model\n", name);
+	xmlErrValidNode(ctxt, NULL, XML_ERR_INTERNAL_ERROR,
+			"Found NULL content in content model of %s\n",
+			name, NULL, NULL);
 	return(0);
     }
     switch (content->type) {
 	case XML_ELEMENT_CONTENT_PCDATA:
-	    VERROR(ctxt->userData, "ContentModel found PCDATA for element %s\n",
-		   name);
+	    xmlErrValidNode(ctxt, NULL, XML_ERR_INTERNAL_ERROR,
+			    "Found PCDATA in content model of %s\n",
+		            name, NULL, NULL);
 	    return(0);
 	    break;
 	case XML_ELEMENT_CONTENT_ELEMENT: {
@@ -541,7 +634,7 @@ xmlValidBuildAContentModel(xmlElementContentPtr content,
 	    
 	    fullname = xmlBuildQName(content->name, content->prefix, fn, 50);
 	    if (fullname == NULL) {
-		VERROR(ctxt->userData, "Out of memory\n");
+	        xmlErrMemory(ctxt, "Building content model");
 		return(0);
 	    }
 
@@ -654,8 +747,9 @@ xmlValidBuildAContentModel(xmlElementContentPtr content,
 	    break;
 	}
 	default:
-	    VERROR(ctxt->userData, "ContentModel broken for element %s\n",
-		   name);
+	    xmlErrValid(ctxt, XML_ERR_INTERNAL_ERROR,
+	                "ContentModel broken for element %s\n",
+			(const char *) name);
 	    return(0);
     }
     return(1);
@@ -690,8 +784,10 @@ xmlValidBuildContentModel(xmlValidCtxtPtr ctxt, xmlElementPtr elem) {
 
     ctxt->am = xmlNewAutomata();
     if (ctxt->am == NULL) {
-	VERROR(ctxt->userData, "Cannot create automata for element %s\n",
-	       elem->name);
+	xmlErrValidNode(ctxt, (xmlNodePtr) elem,
+	                XML_ERR_INTERNAL_ERROR,
+	                "Cannot create automata for element %s\n",
+		        elem->name, NULL, NULL);
 	return(0);
     }
     ctxt->state = xmlAutomataGetInitState(ctxt->am);
@@ -702,8 +798,10 @@ xmlValidBuildContentModel(xmlValidCtxtPtr ctxt, xmlElementPtr elem) {
 	char expr[5000];
 	expr[0] = 0;
 	xmlSnprintfElementContent(expr, 5000, elem->content, 1);
-	VERROR(ctxt->userData, "Content model of %s is not determinist: %s\n",
-	       elem->name, expr);
+	xmlErrValidNode(ctxt, (xmlNodePtr) elem,
+	                XML_DTD_CONTENT_NOT_DETERMINIST,
+	       "Content model of %s is not determinist: %s\n",
+	       elem->name, BAD_CAST expr, NULL);
 #ifdef DEBUG_REGEXP_ALGO
         xmlRegexpPrint(stderr, elem->contModel);
 #endif
@@ -1221,7 +1319,9 @@ xmlAddElementDecl(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
 	    /*
 	     * The element is already defined in this DTD.
 	     */
-	    VERROR(ctxt->userData, "Redefinition of element %s\n", name);
+	    xmlErrValidNode(ctxt, (xmlNodePtr) dtd, XML_DTD_ELEM_REDEFINED,
+	                    "Redefinition of element %s\n",
+			    name, NULL, NULL);
 #endif /* LIBXML_VALID_ENABLED */
 	    if (uqname != NULL)
 		xmlFree(uqname);
@@ -1266,7 +1366,9 @@ xmlAddElementDecl(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
 	    /*
 	     * The element is already defined in this DTD.
 	     */
-	    VERROR(ctxt->userData, "Redefinition of element %s\n", name);
+	    xmlErrValidNode(ctxt, (xmlNodePtr) dtd, XML_DTD_ELEM_REDEFINED,
+	                    "Redefinition of element %s\n",
+			    name, NULL, NULL);
 #endif /* LIBXML_VALID_ENABLED */
 	    xmlFreeElement(ret);
 	    if (uqname != NULL)
@@ -1605,9 +1707,9 @@ xmlScanIDAttributeDecl(xmlValidCtxtPtr ctxt, xmlElementPtr elem) {
         if (cur->atype == XML_ATTRIBUTE_ID) {
 	    ret ++;
 	    if (ret > 1)
-		VERROR(ctxt->userData, 
+		xmlErrValidNode(ctxt, (xmlNodePtr) elem, XML_DTD_MULTIPLE_ID,
 	       "Element %s has too many ID attributes defined : %s\n",
-		       elem->name, cur->name);
+		       elem->name, cur->name, NULL);
 	}
 	cur = cur->nexth;
     }
@@ -1713,8 +1815,9 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
     }
     if ((defaultValue != NULL) && 
         (!xmlValidateAttributeValue(type, defaultValue))) {
-	VERROR(ctxt->userData, "Attribute %s of %s: invalid default value\n",
-	       elem, name, defaultValue);
+	xmlErrValidNode(ctxt, (xmlNodePtr) dtd, XML_DTD_ATTRIBUTE_DEFAULT,
+	                "Attribute %s of %s: invalid default value\n",
+	                elem, name, defaultValue);
 	defaultValue = NULL;
 	ctxt->valid = 0;
     }
@@ -1776,9 +1879,9 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
 	/*
 	 * The attribute is already defined in this DTD.
 	 */
-	VWARNING(ctxt->userData,
+	xmlErrValidWarning(ctxt, (xmlNodePtr) dtd, XML_DTD_ATTRIBUTE_REDEFINED,
 		 "Attribute %s of element %s: already defined\n",
-		 name, elem);
+		 name, elem, NULL);
 #endif /* LIBXML_VALID_ENABLED */
 	xmlFreeAttribute(ret);
 	return(NULL);
@@ -1794,9 +1897,9 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
 #ifdef LIBXML_VALID_ENABLED
         if ((type == XML_ATTRIBUTE_ID) &&
 	    (xmlScanIDAttributeDecl(NULL, elemDef) != 0)) {
-	    VERROR(ctxt->userData, 
+	    xmlErrValidNode(ctxt, (xmlNodePtr) dtd, XML_DTD_MULTIPLE_ID,
 	   "Element %s has too may ID attributes defined : %s\n",
-		   elem, name);
+		   elem, name, NULL);
 	    ctxt->valid = 0;
 	}
 #endif /* LIBXML_VALID_ENABLED */
@@ -2309,8 +2412,9 @@ xmlAddID(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const xmlChar *value,
 	 * The id is already defined in this DTD.
 	 */
 	if (ctxt != NULL) {
-	    VECTXT(ctxt, attr->parent);
-	    VERROR(ctxt->userData, "ID %s already defined\n", value);
+	    xmlErrValidNode(ctxt, attr->parent, XML_DTD_ID_REDEFINED,
+	                    "ID %s already defined\n",
+			    value, NULL, NULL);
 	}
 #endif /* LIBXML_VALID_ENABLED */
 	xmlFreeID(ret);
@@ -2993,8 +3097,9 @@ xmlValidateNotationUse(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 	notaDecl = xmlGetDtdNotationDesc(doc->extSubset, notationName);
 
     if ((notaDecl == NULL) && (ctxt != NULL)) {
-	VERROR(ctxt->userData, "NOTATION %s is not declared\n",
-	       notationName);
+	xmlErrValidNode(ctxt, (xmlNodePtr) doc, XML_DTD_UNKNOWN_NOTATION,
+	                "NOTATION %s is not declared\n",
+		        notationName, NULL, NULL);
 	return(0);
     }
     return(1);
@@ -3377,14 +3482,16 @@ xmlValidateAttributeValue2(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 		ent = xmlGetDocEntity(doc, value);
 	    } 
 	    if (ent == NULL) {
-		VERROR(ctxt->userData, 
+		xmlErrValidNode(ctxt, (xmlNodePtr) doc,
+				XML_DTD_UNKNOWN_ENTITY,
    "ENTITY attribute %s reference an unknown entity \"%s\"\n",
-		       name, value);
+		       name, value, NULL);
 		ret = 0;
 	    } else if (ent->etype != XML_EXTERNAL_GENERAL_UNPARSED_ENTITY) {
-		VERROR(ctxt->userData, 
+		xmlErrValidNode(ctxt, (xmlNodePtr) doc,
+				XML_DTD_ENTITY_TYPE,
    "ENTITY attribute %s reference an entity \"%s\" of wrong type\n",
-		       name, value);
+		       name, value, NULL);
 		ret = 0;
 	    }
 	    break;
@@ -3404,14 +3511,16 @@ xmlValidateAttributeValue2(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 		*cur = 0;
 		ent = xmlGetDocEntity(doc, nam);
 		if (ent == NULL) {
-		    VERROR(ctxt->userData, 
+		    xmlErrValidNode(ctxt, (xmlNodePtr) doc,
+				    XML_DTD_UNKNOWN_ENTITY,
        "ENTITIES attribute %s reference an unknown entity \"%s\"\n",
-			   name, nam);
+			   name, nam, NULL);
 		    ret = 0;
 		} else if (ent->etype != XML_EXTERNAL_GENERAL_UNPARSED_ENTITY) {
-		    VERROR(ctxt->userData, 
+		    xmlErrValidNode(ctxt, (xmlNodePtr) doc,
+				    XML_DTD_ENTITY_TYPE,
        "ENTITIES attribute %s reference an entity \"%s\" of wrong type\n",
-			   name, nam);
+			   name, nam, NULL);
 		    ret = 0;
 		}
 		if (save == 0)
@@ -3430,9 +3539,10 @@ xmlValidateAttributeValue2(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 		nota = xmlGetDtdNotationDesc(doc->extSubset, value);
 
 	    if (nota == NULL) {
-		VERROR(ctxt->userData, 
+		xmlErrValidNode(ctxt, (xmlNodePtr) doc,
+		                XML_DTD_UNKNOWN_NOTATION,
        "NOTATION attribute %s reference an unknown notation \"%s\"\n",
-		       name, value);
+		       name, value, NULL);
 		ret = 0;
 	    }
 	    break;
@@ -3524,9 +3634,9 @@ xmlValidCtxtNormalizeAttributeValue(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
     }
     *dst = 0;
     if ((doc->standalone) && (extsubset == 1) && (!xmlStrEqual(value, ret))) {
-	VERROR(ctxt->userData, 
+	xmlErrValidNode(ctxt, elem, XML_DTD_NOT_STANDALONE,
 "standalone: %s on %s value had to be normalized based on external subset declaration\n",
-	       name, elem->name);
+	       name, elem->name, NULL);
 	ctxt->valid = 0;
     }
     return(ret);
@@ -3641,9 +3751,9 @@ xmlValidateAttributeDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
     if (attr->defaultValue != NULL) {
 	val = xmlValidateAttributeValue(attr->atype, attr->defaultValue);
 	if (val == 0) {
-	    VERROR(ctxt->userData, 
+	    xmlErrValidNode(ctxt, (xmlNodePtr) attr, XML_DTD_ATTRIBUTE_DEFAULT,
 	       "Syntax of default value for attribute %s of %s is not valid\n",
-	           attr->name, attr->elem);
+	           attr->name, attr->elem, NULL);
 	}
         ret &= val;
     }
@@ -3652,9 +3762,9 @@ xmlValidateAttributeDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
     if ((attr->atype == XML_ATTRIBUTE_ID)&&
         (attr->def != XML_ATTRIBUTE_IMPLIED) &&
 	(attr->def != XML_ATTRIBUTE_REQUIRED)) {
-	VERROR(ctxt->userData, 
+	xmlErrValidNode(ctxt, (xmlNodePtr) attr, XML_DTD_ID_FIXED,
           "ID attribute %s of %s is not valid must be #IMPLIED or #REQUIRED\n",
-	       attr->name, attr->elem);
+	       attr->name, attr->elem, NULL);
 	ret = 0;
     }
 
@@ -3680,7 +3790,8 @@ xmlValidateAttributeDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 		         xmlValidateAttributeIdCallback, &nbId);
 	}
 	if (nbId > 1) {
-	    VERROR(ctxt->userData, 
+	    
+	    xmlErrValidNodeNr(ctxt, (xmlNodePtr) attr, XML_DTD_ID_SUBSET,
        "Element %s has %d ID attribute defined in the internal subset : %s\n",
 		   attr->elem, nbId, attr->name);
 	} else if (doc->extSubset != NULL) {
@@ -3690,13 +3801,13 @@ xmlValidateAttributeDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 		extId = xmlScanIDAttributeDecl(NULL, elem);
 	    }
 	    if (extId > 1) {
-		VERROR(ctxt->userData, 
+		xmlErrValidNodeNr(ctxt, (xmlNodePtr) attr, XML_DTD_ID_SUBSET,
        "Element %s has %d ID attribute defined in the external subset : %s\n",
 		       attr->elem, extId, attr->name);
 	    } else if (extId + nbId > 1) {
-		VERROR(ctxt->userData, 
+		xmlErrValidNode(ctxt, (xmlNodePtr) attr, XML_DTD_ID_SUBSET,
 "Element %s has ID attributes defined in the internal and external subset : %s\n",
-		       attr->elem, attr->name);
+		       attr->elem, attr->name, NULL);
 	    }
 	}
     }
@@ -3709,7 +3820,7 @@ xmlValidateAttributeDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 	    tree = tree->next;
 	}
 	if (tree == NULL) {
-	    VERROR(ctxt->userData, 
+	    xmlErrValidNode(ctxt, (xmlNodePtr) attr, XML_DTD_ATTRIBUTE_VALUE,
 "Default value \"%s\" for attribute %s of %s is not among the enumerated set\n",
 		   attr->defaultValue, attr->name, attr->elem);
 	    ret = 0;
@@ -3769,11 +3880,11 @@ xmlValidateElementDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 		        if ((xmlStrEqual(next->name, name)) &&
 			    (xmlStrEqual(next->prefix, cur->prefix))) {
 			    if (cur->prefix == NULL) {
-				VERROR(ctxt->userData, 
+				xmlErrValidNode(ctxt, (xmlNodePtr) elem, XML_DTD_CONTENT_ERROR,
 		   "Definition of %s has duplicate references of %s\n",
-				       elem->name, name);
+				       elem->name, name, NULL);
 			    } else {
-				VERROR(ctxt->userData, 
+				xmlErrValidNode(ctxt, (xmlNodePtr) elem, XML_DTD_CONTENT_ERROR,
 		   "Definition of %s has duplicate references of %s:%s\n",
 				       elem->name, cur->prefix, name);
 			    }
@@ -3786,11 +3897,11 @@ xmlValidateElementDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 		    if ((xmlStrEqual(next->c1->name, name)) &&
 		        (xmlStrEqual(next->c1->prefix, cur->prefix))) {
 			if (cur->prefix == NULL) {
-			    VERROR(ctxt->userData, 
+			    xmlErrValidNode(ctxt, (xmlNodePtr) elem, XML_DTD_CONTENT_ERROR,
 	       "Definition of %s has duplicate references to %s\n",
-				   elem->name, name);
+				   elem->name, name, NULL);
 			} else {
-			    VERROR(ctxt->userData, 
+			    xmlErrValidNode(ctxt, (xmlNodePtr) elem, XML_DTD_CONTENT_ERROR,
 	       "Definition of %s has duplicate references to %s:%s\n",
 				   elem->name, cur->prefix, name);
 			}
@@ -3809,8 +3920,9 @@ xmlValidateElementDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 	((tst->prefix == elem->prefix) ||
 	 (xmlStrEqual(tst->prefix, elem->prefix))) &&
 	(tst->etype != XML_ELEMENT_TYPE_UNDEFINED)) {
-	VERROR(ctxt->userData, "Redefinition of element %s\n",
-	       elem->name);
+	xmlErrValidNode(ctxt, (xmlNodePtr) elem, XML_DTD_ELEM_REDEFINED,
+	                "Redefinition of element %s\n",
+		       elem->name, NULL, NULL);
 	ret = 0;
     }
     tst = xmlGetDtdElementDesc(doc->extSubset, elem->name);
@@ -3818,8 +3930,9 @@ xmlValidateElementDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 	((tst->prefix == elem->prefix) ||
 	 (xmlStrEqual(tst->prefix, elem->prefix))) &&
 	(tst->etype != XML_ELEMENT_TYPE_UNDEFINED)) {
-	VERROR(ctxt->userData, "Redefinition of element %s\n",
-	       elem->name);
+	xmlErrValidNode(ctxt, (xmlNodePtr) elem, XML_DTD_ELEM_REDEFINED,
+	                "Redefinition of element %s\n",
+		       elem->name, NULL, NULL);
 	ret = 0;
     }
     /* One ID per Element Type
@@ -3908,28 +4021,25 @@ xmlValidateOneAttribute(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 
     /* Validity Constraint: Attribute Value Type */
     if (attrDecl == NULL) {
-	VECTXT(ctxt, elem);
-	VERROR(ctxt->userData,
+	xmlErrValidNode(ctxt, elem, XML_DTD_UNKNOWN_ATTRIBUTE,
 	       "No declaration for attribute %s of element %s\n",
-	       attr->name, elem->name);
+	       attr->name, elem->name, NULL);
 	return(0);
     }
     attr->atype = attrDecl->atype;
 
     val = xmlValidateAttributeValue(attrDecl->atype, value);
     if (val == 0) {
-	VECTXT(ctxt, elem);
-	VERROR(ctxt->userData, 
+	    xmlErrValidNode(ctxt, elem, XML_DTD_ATTRIBUTE_VALUE,
 	   "Syntax of value for attribute %s of %s is not valid\n",
-	       attr->name, elem->name);
+	       attr->name, elem->name, NULL);
         ret = 0;
     }
 
     /* Validity constraint: Fixed Attribute Default */
     if (attrDecl->def == XML_ATTRIBUTE_FIXED) {
 	if (!xmlStrEqual(value, attrDecl->defaultValue)) {
-	    VECTXT(ctxt, elem);
-	    VERROR(ctxt->userData, 
+	    xmlErrValidNode(ctxt, elem, XML_DTD_ATTRIBUTE_DEFAULT,
 	   "Value for attribute %s of %s is different from default \"%s\"\n",
 		   attr->name, elem->name, attrDecl->defaultValue);
 	    ret = 0;
@@ -3959,8 +4069,7 @@ xmlValidateOneAttribute(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 	    nota = xmlGetDtdNotationDesc(doc->extSubset, value);
 	
 	if (nota == NULL) {
-	    VECTXT(ctxt, elem);
-	    VERROR(ctxt->userData, 
+	    xmlErrValidNode(ctxt, elem, XML_DTD_UNKNOWN_NOTATION,
        "Value \"%s\" for attribute %s of %s is not a declared Notation\n",
 		   value, attr->name, elem->name);
 	    ret = 0;
@@ -3972,8 +4081,7 @@ xmlValidateOneAttribute(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 	    tree = tree->next;
 	}
 	if (tree == NULL) {
-	    VECTXT(ctxt, elem);
-	    VERROR(ctxt->userData, 
+	    xmlErrValidNode(ctxt, elem, XML_DTD_NOTATION_VALUE,
 "Value \"%s\" for attribute %s of %s is not among the enumerated notations\n",
 		   value, attr->name, elem->name);
 	    ret = 0;
@@ -3988,8 +4096,7 @@ xmlValidateOneAttribute(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 	    tree = tree->next;
 	}
 	if (tree == NULL) {
-	    VECTXT(ctxt, elem);
-	    VERROR(ctxt->userData, 
+	    xmlErrValidNode(ctxt, elem, XML_DTD_ATTRIBUTE_VALUE,
        "Value \"%s\" for attribute %s of %s is not among the enumerated set\n",
 		   value, attr->name, elem->name);
 	    ret = 0;
@@ -3999,8 +4106,7 @@ xmlValidateOneAttribute(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
     /* Fixed Attribute Default */
     if ((attrDecl->def == XML_ATTRIBUTE_FIXED) &&
         (!xmlStrEqual(attrDecl->defaultValue, value))) {
-	VECTXT(ctxt, elem);
-	VERROR(ctxt->userData, 
+	xmlErrValidNode(ctxt, elem, XML_DTD_ATTRIBUTE_VALUE,
 	   "Value for attribute %s of %s must be \"%s\"\n",
 	       attr->name, elem->name, attrDecl->defaultValue);
         ret = 0;
@@ -4057,7 +4163,7 @@ xmlNodePtr elem, const xmlChar *prefix, xmlNsPtr ns, const xmlChar *value) {
 	
 	fullname = xmlBuildQName(elem->name, prefix, fn, 50);
 	if (fullname == NULL) {
-	    VERROR(ctxt->userData, "Out of memory\n");
+	    xmlErrMemory(ctxt, "Validating namespace");
 	    return(0);
 	}
 	if (ns->prefix != NULL) {
@@ -4095,30 +4201,28 @@ xmlNodePtr elem, const xmlChar *prefix, xmlNsPtr ns, const xmlChar *value) {
 
     /* Validity Constraint: Attribute Value Type */
     if (attrDecl == NULL) {
-	VECTXT(ctxt, elem);
 	if (ns->prefix != NULL) {
-	    VERROR(ctxt->userData,
+	    xmlErrValidNode(ctxt, elem, XML_DTD_UNKNOWN_ATTRIBUTE,
 		   "No declaration for attribute xmlns:%s of element %s\n",
-		   ns->prefix, elem->name);
+		   ns->prefix, elem->name, NULL);
 	} else {
-	    VERROR(ctxt->userData,
+	    xmlErrValidNode(ctxt, elem, XML_DTD_UNKNOWN_ATTRIBUTE,
 		   "No declaration for attribute xmlns of element %s\n",
-		   elem->name);
+		   elem->name, NULL, NULL);
 	}
 	return(0);
     }
 
     val = xmlValidateAttributeValue(attrDecl->atype, value);
     if (val == 0) {
-	VECTXT(ctxt, elem);
 	if (ns->prefix != NULL) {
-	    VERROR(ctxt->userData,
+	    xmlErrValidNode(ctxt, elem, XML_DTD_INVALID_DEFAULT,
 	       "Syntax of value for attribute xmlns:%s of %s is not valid\n",
-		   ns->prefix, elem->name);
+		   ns->prefix, elem->name, NULL);
 	} else {
-	    VERROR(ctxt->userData,
+	    xmlErrValidNode(ctxt, elem, XML_DTD_INVALID_DEFAULT,
 	       "Syntax of value for attribute xmlns of %s is not valid\n",
-		   elem->name);
+		   elem->name, NULL, NULL);
 	}
         ret = 0;
     }
@@ -4126,15 +4230,14 @@ xmlNodePtr elem, const xmlChar *prefix, xmlNsPtr ns, const xmlChar *value) {
     /* Validity constraint: Fixed Attribute Default */
     if (attrDecl->def == XML_ATTRIBUTE_FIXED) {
 	if (!xmlStrEqual(value, attrDecl->defaultValue)) {
-	    VECTXT(ctxt, elem);
 	    if (ns->prefix != NULL) {
-		VERROR(ctxt->userData,
+		xmlErrValidNode(ctxt, elem, XML_DTD_ATTRIBUTE_DEFAULT,
        "Value for attribute xmlns:%s of %s is different from default \"%s\"\n",
 		       ns->prefix, elem->name, attrDecl->defaultValue);
 	    } else {
-		VERROR(ctxt->userData,
+		xmlErrValidNode(ctxt, elem, XML_DTD_ATTRIBUTE_DEFAULT,
        "Value for attribute xmlns of %s is different from default \"%s\"\n",
-		       elem->name, attrDecl->defaultValue);
+		       elem->name, attrDecl->defaultValue, NULL);
 	    }
 	    ret = 0;
 	}
@@ -4163,15 +4266,14 @@ xmlNodePtr elem, const xmlChar *prefix, xmlNsPtr ns, const xmlChar *value) {
 	    nota = xmlGetDtdNotationDesc(doc->extSubset, value);
 	
 	if (nota == NULL) {
-	    VECTXT(ctxt, elem);
 	    if (ns->prefix != NULL) {
-		VERROR(ctxt->userData,
+		xmlErrValidNode(ctxt, elem, XML_DTD_UNKNOWN_NOTATION,
        "Value \"%s\" for attribute xmlns:%s of %s is not a declared Notation\n",
 		       value, ns->prefix, elem->name);
 	    } else {
-		VERROR(ctxt->userData,
+		xmlErrValidNode(ctxt, elem, XML_DTD_UNKNOWN_NOTATION,
        "Value \"%s\" for attribute xmlns of %s is not a declared Notation\n",
-		       value, elem->name);
+		       value, elem->name, NULL);
 	    }
 	    ret = 0;
         }
@@ -4182,15 +4284,14 @@ xmlNodePtr elem, const xmlChar *prefix, xmlNsPtr ns, const xmlChar *value) {
 	    tree = tree->next;
 	}
 	if (tree == NULL) {
-	    VECTXT(ctxt, elem);
 	    if (ns->prefix != NULL) {
-		VERROR(ctxt->userData,
+		xmlErrValidNode(ctxt, elem, XML_DTD_NOTATION_VALUE,
 "Value \"%s\" for attribute xmlns:%s of %s is not among the enumerated notations\n",
 		       value, ns->prefix, elem->name);
 	    } else {
-		VERROR(ctxt->userData,
+		xmlErrValidNode(ctxt, elem, XML_DTD_NOTATION_VALUE,
 "Value \"%s\" for attribute xmlns of %s is not among the enumerated notations\n",
-		       value, elem->name);
+		       value, elem->name, NULL);
 	    }
 	    ret = 0;
 	}
@@ -4204,15 +4305,14 @@ xmlNodePtr elem, const xmlChar *prefix, xmlNsPtr ns, const xmlChar *value) {
 	    tree = tree->next;
 	}
 	if (tree == NULL) {
-	    VECTXT(ctxt, elem);
 	    if (ns->prefix != NULL) {
-		VERROR(ctxt->userData,
+		xmlErrValidNode(ctxt, elem, XML_DTD_ATTRIBUTE_VALUE,
 "Value \"%s\" for attribute xmlns:%s of %s is not among the enumerated set\n",
 		       value, ns->prefix, elem->name);
 	    } else {
-		VERROR(ctxt->userData,
+		xmlErrValidNode(ctxt, elem, XML_DTD_ATTRIBUTE_VALUE,
 "Value \"%s\" for attribute xmlns of %s is not among the enumerated set\n",
-		       value, elem->name);
+		       value, elem->name, NULL);
 	    }
 	    ret = 0;
 	}
@@ -4221,15 +4321,14 @@ xmlNodePtr elem, const xmlChar *prefix, xmlNsPtr ns, const xmlChar *value) {
     /* Fixed Attribute Default */
     if ((attrDecl->def == XML_ATTRIBUTE_FIXED) &&
         (!xmlStrEqual(attrDecl->defaultValue, value))) {
-	VECTXT(ctxt, elem);
 	if (ns->prefix != NULL) {
-	    VERROR(ctxt->userData,
+	    xmlErrValidNode(ctxt, elem, XML_DTD_ELEM_NAMESPACE,
 		   "Value for attribute xmlns:%s of %s must be \"%s\"\n",
 		   ns->prefix, elem->name, attrDecl->defaultValue);
 	} else {
-	    VERROR(ctxt->userData,
+	    xmlErrValidNode(ctxt, elem, XML_DTD_ELEM_NAMESPACE,
 		   "Value for attribute xmlns of %s must be \"%s\"\n",
-		   elem->name, attrDecl->defaultValue);
+		   elem->name, attrDecl->defaultValue, NULL);
 	}
         ret = 0;
     }
@@ -4869,8 +4968,9 @@ fail:
     STATE = 0;
     ret = xmlValidateElementType(ctxt);
     if ((ret == -3) && (warn)) {
-	VWARNING(ctxt->userData,
-	   "Content model for Element %s is ambiguous\n", name);
+	xmlErrValidWarning(ctxt, child, XML_DTD_CONTENT_NOT_DETERMINIST,
+	       "Content model for Element %s is ambiguous\n",
+	                   name);
     } else if (ret == -2) {
 	/*
 	 * An entities reference appeared at this level.
@@ -4974,26 +5074,23 @@ fail:
 		xmlSnprintfElements(&list[0], 5000, child, 1);
 
 	    if (name != NULL) {
-		if (parent != NULL) VECTXT(ctxt, parent);
-		VERROR(ctxt->userData,
-	   "Element %s content does not follow the DTD\nExpecting %s, got %s\n",
-		       name, expr, list);
+		xmlErrValidNode(ctxt, parent, XML_DTD_CONTENT_MODEL,
+	   "Element %s content does not follow the DTD, expecting %s, got %s\n",
+		       name, BAD_CAST expr, BAD_CAST list);
 	    } else {
-		if (parent != NULL) VECTXT(ctxt, parent);
-		VERROR(ctxt->userData,
-	   "Element content does not follow the DTD\nExpecting %s, got %s\n",
-		       expr, list);
+		xmlErrValidNode(ctxt, parent, XML_DTD_CONTENT_MODEL,
+	   "Element content does not follow the DTD, expecting %s, got %s\n",
+		       BAD_CAST expr, BAD_CAST list, NULL);
 	    }
 	} else {
 	    if (name != NULL) {
-		if (parent != NULL) VECTXT(ctxt, parent);
-		VERROR(ctxt->userData,
+		xmlErrValidNode(ctxt, parent, XML_DTD_CONTENT_MODEL,
 		       "Element %s content does not follow the DTD\n",
-		       name);
+		       name, NULL, NULL);
 	    } else {
-		if (parent != NULL) VECTXT(ctxt, parent);
-		VERROR(ctxt->userData,
-		       "Element content does not follow the DTD\n");
+		xmlErrValidNode(ctxt, parent, XML_DTD_CONTENT_MODEL,
+		       "Element content does not follow the DTD\n",
+		                NULL, NULL, NULL);
 	    }
 	}
 	ret = 0;
@@ -5212,9 +5309,10 @@ xmlValidGetElemDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 	}
     }
     if (elemDecl == NULL) {
-	VECTXT(ctxt, elem);
-	VERROR(ctxt->userData, "No declaration for element %s\n",
-	       elem->name);
+	xmlErrValidNode(ctxt, elem,
+			XML_DTD_UNKNOWN_ELEM,
+	       "No declaration for element %s\n",
+	       elem->name, NULL, NULL);
     }
     return(elemDecl);
 }
@@ -5254,10 +5352,10 @@ xmlValidatePushElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 		    ret = 0;
 		    break;
 		case XML_ELEMENT_TYPE_EMPTY:
-		    VECTXT(ctxt, state->node);
-		    VERROR(ctxt->userData,
+		    xmlErrValidNode(ctxt, state->node,
+				    XML_DTD_NOT_EMPTY,
 	       "Element %s was declared EMPTY this one has content\n",
-			   state->node->name);
+			   state->node->name, NULL, NULL);
 		    ret = 0;
 		    break;
 		case XML_ELEMENT_TYPE_ANY:
@@ -5268,19 +5366,19 @@ xmlValidatePushElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 		    if ((elemDecl->content != NULL) &&
 			(elemDecl->content->type ==
 			 XML_ELEMENT_CONTENT_PCDATA)) {
-			VECTXT(ctxt, state->node);
-			VERROR(ctxt->userData,
+			xmlErrValidNode(ctxt, state->node,
+					XML_DTD_NOT_PCDATA,
 	       "Element %s was declared #PCDATA but contains non text nodes\n",
-				state->node->name);
+				state->node->name, NULL, NULL);
 			ret = 0;
 		    } else {
 			ret = xmlValidateCheckMixed(ctxt, elemDecl->content,
 				                    qname);
 			if (ret != 1) {
-			    VECTXT(ctxt, state->node);
-			    VERROR(ctxt->userData,
+			    xmlErrValidNode(ctxt, state->node,
+					    XML_DTD_INVALID_CHILD,
 	       "Element %s is not declared in %s list of possible children\n",
-				    qname, state->node->name);
+				    qname, state->node->name, NULL);
 			}
 		    }
 		    break;
@@ -5294,10 +5392,10 @@ xmlValidatePushElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 		    if (state->exec != NULL) {
 			ret = xmlRegExecPushString(state->exec, qname, NULL);
 			if (ret < 0) {
-			    VECTXT(ctxt, state->node);
-			    VERROR(ctxt->userData,
-	       "Element %s content does not follow the DTD\nMisplaced %s\n",
-				   state->node->name, qname);
+			    xmlErrValidNode(ctxt, state->node,
+					    XML_DTD_CONTENT_MODEL,
+	       "Element %s content does not follow the DTD, Misplaced %s\n",
+				   state->node->name, qname, NULL);
 			    ret = 0;
 			} else {
 			    ret = 1;
@@ -5344,10 +5442,10 @@ xmlValidatePushCData(xmlValidCtxtPtr ctxt, const xmlChar *data, int len) {
 		    ret = 0;
 		    break;
 		case XML_ELEMENT_TYPE_EMPTY:
-		    VECTXT(ctxt, state->node);
-		    VERROR(ctxt->userData,
+		    xmlErrValidNode(ctxt, state->node,
+				    XML_DTD_NOT_EMPTY,
 	       "Element %s was declared EMPTY this one has content\n",
-			   state->node->name);
+			   state->node->name, NULL, NULL);
 		    ret = 0;
 		    break;
 		case XML_ELEMENT_TYPE_ANY:
@@ -5360,10 +5458,10 @@ xmlValidatePushCData(xmlValidCtxtPtr ctxt, const xmlChar *data, int len) {
 
 			for (i = 0;i < len;i++) {
 			    if (!IS_BLANK(data[i])) {
-				VECTXT(ctxt, state->node);
-				VERROR(ctxt->userData,
-	   "Element %s content does not follow the DTD\nText not allowed\n",
-				       state->node->name);
+				xmlErrValidNode(ctxt, state->node,
+						XML_DTD_CONTENT_MODEL,
+	   "Element %s content does not follow the DTD, Text not allowed\n",
+				       state->node->name, NULL, NULL);
 				ret = 0;
 				goto done;
 			    }
@@ -5415,10 +5513,10 @@ xmlValidatePopElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc ATTRIBUTE_UNUSED,
 		if (state->exec != NULL) {
 		    ret = xmlRegExecPushString(state->exec, NULL, NULL);
 		    if (ret == 0) {
-			VECTXT(ctxt, state->node);
-			VERROR(ctxt->userData,
-	   "Element %s content does not follow the DTD\nExpecting more child\n",
-			       state->node->name);
+			xmlErrValidNode(ctxt, state->node,
+			                XML_DTD_CONTENT_MODEL,
+	   "Element %s content does not follow the DTD, Expecting more child\n",
+			       state->node->name, NULL,NULL);
 		    } else {
 			/*
 			 * previous validation errors should not generate
@@ -5469,36 +5567,38 @@ xmlValidateOneElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
     if (elem == NULL) return(0);
     switch (elem->type) {
         case XML_ATTRIBUTE_NODE:
-	    VECTXT(ctxt, elem);
-	    VERROR(ctxt->userData, 
-		   "Attribute element not expected here\n");
+	    xmlErrValidNode(ctxt, elem, XML_ERR_INTERNAL_ERROR,
+		   "Attribute element not expected\n", NULL, NULL ,NULL);
 	    return(0);
         case XML_TEXT_NODE:
 	    if (elem->children != NULL) {
-		VECTXT(ctxt, elem);
-		VERROR(ctxt->userData, "Text element has childs !\n");
+		xmlErrValidNode(ctxt, elem, XML_ERR_INTERNAL_ERROR,
+		                "Text element has children !\n",
+				NULL,NULL,NULL);
 		return(0);
 	    }
 	    if (elem->properties != NULL) {
-		VECTXT(ctxt, elem);
-		VERROR(ctxt->userData, "Text element has attributes !\n");
+		xmlErrValidNode(ctxt, elem, XML_ERR_INTERNAL_ERROR,
+		                "Text element has attribute !\n",
+				NULL,NULL,NULL);
 		return(0);
 	    }
 	    if (elem->ns != NULL) {
-		VECTXT(ctxt, elem);
-		VERROR(ctxt->userData, "Text element has namespace !\n");
+		xmlErrValidNode(ctxt, elem, XML_ERR_INTERNAL_ERROR,
+		                "Text element has namespace !\n",
+				NULL,NULL,NULL);
 		return(0);
 	    }
 	    if (elem->nsDef != NULL) {
-		VECTXT(ctxt, elem);
-		VERROR(ctxt->userData, 
-		       "Text element carries namespace definitions !\n");
+		xmlErrValidNode(ctxt, elem, XML_ERR_INTERNAL_ERROR,
+		                "Text element has namespace !\n",
+				NULL,NULL,NULL);
 		return(0);
 	    }
 	    if (elem->content == NULL) {
-		VECTXT(ctxt, elem);
-		VERROR(ctxt->userData, 
-		       "Text element has no content !\n");
+		xmlErrValidNode(ctxt, elem, XML_ERR_INTERNAL_ERROR,
+		                "Text element has no content !\n",
+				NULL,NULL,NULL);
 		return(0);
 	    }
 	    return(1);
@@ -5511,33 +5611,28 @@ xmlValidateOneElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
         case XML_COMMENT_NODE:
 	    return(1);
         case XML_ENTITY_NODE:
-	    VECTXT(ctxt, elem);
-	    VERROR(ctxt->userData, 
-		   "Entity element not expected here\n");
+	    xmlErrValidNode(ctxt, elem, XML_ERR_INTERNAL_ERROR,
+		   "Entity element not expected\n", NULL, NULL ,NULL);
 	    return(0);
         case XML_NOTATION_NODE:
-	    VECTXT(ctxt, elem);
-	    VERROR(ctxt->userData, 
-		   "Notation element not expected here\n");
+	    xmlErrValidNode(ctxt, elem, XML_ERR_INTERNAL_ERROR,
+		   "Notation element not expected\n", NULL, NULL ,NULL);
 	    return(0);
         case XML_DOCUMENT_NODE:
         case XML_DOCUMENT_TYPE_NODE:
         case XML_DOCUMENT_FRAG_NODE:
-	    VECTXT(ctxt, elem);
-	    VERROR(ctxt->userData, 
-		   "Document element not expected here\n");
+	    xmlErrValidNode(ctxt, elem, XML_ERR_INTERNAL_ERROR,
+		   "Document element not expected\n", NULL, NULL ,NULL);
 	    return(0);
         case XML_HTML_DOCUMENT_NODE:
-	    VECTXT(ctxt, elem);
-	    VERROR(ctxt->userData, 
-		   "\n");
+	    xmlErrValidNode(ctxt, elem, XML_ERR_INTERNAL_ERROR,
+		   "HTML Document not expected\n", NULL, NULL ,NULL);
 	    return(0);
         case XML_ELEMENT_NODE:
 	    break;
 	default:
-	    VECTXT(ctxt, elem);
-	    VERROR(ctxt->userData, 
-		   "unknown element type %d\n", elem->type);
+	    xmlErrValidNode(ctxt, elem, XML_ERR_INTERNAL_ERROR,
+		   "unknown element type\n", NULL, NULL ,NULL);
 	    return(0);
     }
 
@@ -5556,16 +5651,15 @@ xmlValidateOneElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
     /* Check that the element content matches the definition */
     switch (elemDecl->etype) {
         case XML_ELEMENT_TYPE_UNDEFINED:
-	    VECTXT(ctxt, elem);
-	    VERROR(ctxt->userData, "No declaration for element %s\n",
-		   elem->name);
+	    xmlErrValidNode(ctxt, elem, XML_DTD_UNKNOWN_ELEM,
+	                    "No declaration for element %s\n",
+		   elem->name, NULL, NULL);
 	    return(0);
         case XML_ELEMENT_TYPE_EMPTY:
 	    if (elem->children != NULL) {
-		VECTXT(ctxt, elem);
-		VERROR(ctxt->userData,
+		xmlErrValidNode(ctxt, elem, XML_DTD_NOT_EMPTY,
 	       "Element %s was declared EMPTY this one has content\n",
-	               elem->name);
+	               elem->name, NULL, NULL);
 		ret = 0;
 	    }
 	    break;
@@ -5579,10 +5673,9 @@ xmlValidateOneElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 		(elemDecl->content->type == XML_ELEMENT_CONTENT_PCDATA)) {
 		ret = xmlValidateOneCdataElement(ctxt, doc, elem);
 		if (!ret) {
-		    VECTXT(ctxt, elem);
-		    VERROR(ctxt->userData,
+		    xmlErrValidNode(ctxt, elem, XML_DTD_NOT_PCDATA,
 	       "Element %s was declared #PCDATA but contains non text nodes\n",
-			   elem->name);
+			   elem->name, NULL, NULL);
 		}
 		break;
 	    }
@@ -5643,10 +5736,9 @@ xmlValidateOneElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 			cont = cont->c2;
 		    }
 		    if (cont == NULL) {
-			VECTXT(ctxt, elem);
-			VERROR(ctxt->userData,
+			xmlErrValidNode(ctxt, elem, XML_DTD_INVALID_CHILD,
 	       "Element %s is not declared in %s list of possible children\n",
-			       name, elem->name);
+			       name, elem->name, NULL);
 			ret = 0;
 		    }
 		}
@@ -5669,10 +5761,10 @@ child_ok:
 			while (IS_BLANK(*content))
 			    content++;
 			if (*content == 0) {
-			    VECTXT(ctxt, elem);
-			    VERROR(ctxt->userData,
+			    xmlErrValidNode(ctxt, elem,
+			                    XML_DTD_STANDALONE_WHITE_SPACE,
 "standalone: %s declared in the external subset contains white spaces nodes\n",
-				   elem->name);
+				   elem->name, NULL, NULL);
 			    ret = 0;
 			    break;
 			}
@@ -5754,26 +5846,24 @@ child_ok:
 	    }
 	    if (qualified == -1) {
 		if (attr->prefix == NULL) {
-		    VECTXT(ctxt, elem);
-		    VERROR(ctxt->userData,
+		    xmlErrValidNode(ctxt, elem, XML_DTD_MISSING_ATTRIBUTE,
 		       "Element %s does not carry attribute %s\n",
-			   elem->name, attr->name);
+			   elem->name, attr->name, NULL);
 		    ret = 0;
 	        } else {
-		    VECTXT(ctxt, elem);
-		    VERROR(ctxt->userData,
+		    xmlErrValidNode(ctxt, elem, XML_DTD_MISSING_ATTRIBUTE,
 		       "Element %s does not carry attribute %s:%s\n",
 			   elem->name, attr->prefix,attr->name);
 		    ret = 0;
 		}
 	    } else if (qualified == 0) {
-		VWARNING(ctxt->userData,
+		xmlErrValidWarning(ctxt, elem, XML_DTD_NO_PREFIX,
 		   "Element %s required attribute %s:%s has no prefix\n",
-		       elem->name, attr->prefix,attr->name);
+		       elem->name, attr->prefix, attr->name);
 	    } else if (qualified == 1) {
-		VWARNING(ctxt->userData,
+		xmlErrValidWarning(ctxt, elem, XML_DTD_DIFFERENT_PREFIX,
 		   "Element %s required attribute %s:%s has different prefix\n",
-		       elem->name, attr->prefix,attr->name);
+		       elem->name, attr->prefix, attr->name);
 	    }
 	} else if (attr->def == XML_ATTRIBUTE_FIXED) {
 	    /*
@@ -5789,10 +5879,10 @@ child_ok:
 		while (ns != NULL) {
 		    if (ns->prefix == NULL) {
 			if (!xmlStrEqual(attr->defaultValue, ns->href)) {
-			    VECTXT(ctxt, elem);
-			    VERROR(ctxt->userData,
+			    xmlErrValidNode(ctxt, elem,
+			           XML_DTD_ELEM_DEFAULT_NAMESPACE,
    "Element %s namespace name for default namespace does not match the DTD\n",
-				   elem->name);
+				   elem->name, NULL, NULL);
 			    ret = 0;
 			}
 			goto found;
@@ -5806,10 +5896,9 @@ child_ok:
 		while (ns != NULL) {
 		    if (xmlStrEqual(attr->name, ns->prefix)) {
 			if (!xmlStrEqual(attr->defaultValue, ns->href)) {
-			    VECTXT(ctxt, elem);
-			    VERROR(ctxt->userData,
+			    xmlErrValidNode(ctxt, elem, XML_DTD_ELEM_NAMESPACE,
 		   "Element %s namespace name for %s does not match the DTD\n",
-				   elem->name, ns->prefix);
+				   elem->name, ns->prefix, NULL);
 			    ret = 0;
 			}
 			goto found;
@@ -5847,7 +5936,8 @@ xmlValidateRoot(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
 
     root = xmlDocGetRootElement(doc);
     if ((root == NULL) || (root->name == NULL)) {
-	VERROR(ctxt->userData, "Not valid: no root element\n");
+	xmlErrValid(ctxt, XML_DTD_NO_ROOT,
+	            "no root element\n", NULL);
         return(0);
     }
 
@@ -5867,7 +5957,7 @@ xmlValidateRoot(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
 		
 		fullname = xmlBuildQName(root->name, root->ns->prefix, fn, 50);
 		if (fullname == NULL) {
-		    VERROR(ctxt->userData, "Out of memory\n");
+		    xmlErrMemory(ctxt, NULL);
 		    return(0);
 		}
 		ret = xmlStrEqual(doc->intSubset->name, fullname);
@@ -5879,12 +5969,10 @@ xmlValidateRoot(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
 	    if ((xmlStrEqual(doc->intSubset->name, BAD_CAST "HTML")) &&
 		(xmlStrEqual(root->name, BAD_CAST "html")))
 		goto name_ok;
-	    VECTXT(ctxt, root);
-	    VERROR(ctxt->userData,
-		   "Not valid: root and DTD name do not match '%s' and '%s'\n",
-		   root->name, doc->intSubset->name);
+	    xmlErrValidNode(ctxt, root, XML_DTD_ROOT_NAME,
+		   "root and DTD name do not match '%s' and '%s'\n",
+		   root->name, doc->intSubset->name, NULL);
 	    return(0);
-	    
 	}
     }
 name_ok:
@@ -5981,7 +6069,7 @@ xmlValidateRef(xmlRefPtr ref, xmlValidCtxtPtr ctxt,
 	    *cur = 0;
 	    id = xmlGetID(ctxt->doc, str);
 	    if (id == NULL) {
-		VERROR(ctxt->userData, 
+		xmlErrValidNodeNr(ctxt, NULL, XML_DTD_UNKNOWN_ID,
 	   "attribute %s line %d references an unknown ID \"%s\"\n",
 		       ref->name, ref->lineno, str);
 		ctxt->valid = 0;
@@ -5995,10 +6083,9 @@ xmlValidateRef(xmlRefPtr ref, xmlValidCtxtPtr ctxt,
     } else if (attr->atype == XML_ATTRIBUTE_IDREF) {
 	id = xmlGetID(ctxt->doc, name);
 	if (id == NULL) {
-	    VECTXT(ctxt, attr->parent);
-	    VERROR(ctxt->userData, 
+	    xmlErrValidNode(ctxt, attr->parent, XML_DTD_UNKNOWN_ID,
 	   "IDREF attribute %s references an unknown ID \"%s\"\n",
-		   attr->name, name);
+		   attr->name, name, NULL);
 	    ctxt->valid = 0;
 	}
     } else if (attr->atype == XML_ATTRIBUTE_IDREFS) {
@@ -6006,6 +6093,7 @@ xmlValidateRef(xmlRefPtr ref, xmlValidCtxtPtr ctxt,
 
 	dup = xmlStrdup(name);
 	if (dup == NULL) {
+	    xmlErrMemory(ctxt, "IDREFS split");
 	    ctxt->valid = 0;
 	    return;
 	}
@@ -6017,10 +6105,9 @@ xmlValidateRef(xmlRefPtr ref, xmlValidCtxtPtr ctxt,
 	    *cur = 0;
 	    id = xmlGetID(ctxt->doc, str);
 	    if (id == NULL) {
-		VECTXT(ctxt, attr->parent);
-		VERROR(ctxt->userData, 
+		xmlErrValidNode(ctxt, attr->parent, XML_DTD_UNKNOWN_ID,
 	   "IDREFS attribute %s references an unknown ID \"%s\"\n",
-		       attr->name, str);
+			     attr->name, str, NULL);
 		ctxt->valid = 0;
 	    }
 	    if (save == 0)
@@ -6213,24 +6300,24 @@ xmlValidateAttributeCallback(xmlAttributePtr cur, xmlValidCtxtPtr ctxt,
     if (cur->atype == XML_ATTRIBUTE_NOTATION) {
 	doc = cur->doc;
 	if ((doc == NULL) || (cur->elem == NULL)) {
-	    VERROR(ctxt->userData, 
+	    xmlErrValid(ctxt, XML_ERR_INTERNAL_ERROR,
 		   "xmlValidateAttributeCallback(%s): internal error\n",
-		   cur->name);
+		   (const char *) cur->name);
 	    return;
 	}
 	elem = xmlGetDtdElementDesc(doc->intSubset, cur->elem);
 	if (elem == NULL)
 	    elem = xmlGetDtdElementDesc(doc->extSubset, cur->elem);
 	if (elem == NULL) {
-	    VERROR(ctxt->userData, 
+	    xmlErrValidNode(ctxt, NULL, XML_DTD_UNKNOWN_ELEM,
 		   "attribute %s: could not find decl for element %s\n",
-		   cur->name, cur->elem);
+		   cur->name, cur->elem, NULL);
 	    return;
 	}
 	if (elem->etype == XML_ELEMENT_TYPE_EMPTY) {
-	    VERROR(ctxt->userData, 
+	    xmlErrValidNode(ctxt, NULL, XML_DTD_EMPTY_NOTATION,
 		   "NOTATION attribute %s declared for EMPTY element %s\n",
-		   cur->name, cur->elem);
+		   cur->name, cur->elem, NULL);
 	    ctxt->valid = 0;
 	}
     }
@@ -6307,7 +6394,8 @@ xmlValidateDocument(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
     xmlNodePtr root;
 
     if ((doc->intSubset == NULL) && (doc->extSubset == NULL)) {
-	VERROR(ctxt->userData, "no DTD found!\n" );
+        xmlErrValid(ctxt, XML_DTD_NO_DTD,
+	            "no DTD found!\n", NULL);
 	return(0);
     }
     if ((doc->intSubset != NULL) && ((doc->intSubset->SystemID != NULL) ||
@@ -6316,13 +6404,13 @@ xmlValidateDocument(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
 		                     doc->intSubset->SystemID);
         if (doc->extSubset == NULL) {
 	    if (doc->intSubset->SystemID != NULL) {
-		VERROR(ctxt->userData, 
+		xmlErrValid(ctxt, XML_DTD_LOAD_ERROR,
 		       "Could not load the external subset \"%s\"\n",
-		       doc->intSubset->SystemID);
+		       (const char *) doc->intSubset->SystemID);
 	    } else {
-		VERROR(ctxt->userData, 
+		xmlErrValid(ctxt, XML_DTD_LOAD_ERROR,
 		       "Could not load the external subset \"%s\"\n",
-		       doc->intSubset->ExternalID);
+		       (const char *) doc->intSubset->ExternalID);
 	    }
 	    return(0);
 	}

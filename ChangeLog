@@ -1,3 +1,9 @@
+Tue May 11 11:55:59 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xmlIO.c: fix to the fix for #141864 from Paul Elseth  
+	* HTMLparser.c result/HTML/doc3.htm: apply fix from David Gatwood for
+	  #141195 about text between comments.
+
 Tue May 11 23:04:47 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* xmlschemas.c, include/libxml/schemasInternals.h,

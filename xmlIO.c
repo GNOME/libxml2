@@ -2230,8 +2230,8 @@ xmlOutputBufferCreateFilename(const char *URI,
 
     puri = xmlParseURI(URI);
     if (puri != NULL) {
-        if ((puri->scheme == NULL) ||
-	    (xmlStrEqual(BAD_CAST puri->scheme, BAD_CAST "file")))
+        if ((puri->scheme != NULL) &&
+	    (!xmlStrEqual(BAD_CAST puri->scheme, BAD_CAST "file")))
 	    is_file_uri = 0;
 	/*
 	 * try to limit the damages of the URI unescaping code.

@@ -2027,6 +2027,8 @@ static int areBlanks(htmlParserCtxtPtr ctxt, const xmlChar *str, int len) {
 	return(1);
     if (ctxt->node == NULL) return(0);
     lastChild = xmlGetLastChild(ctxt->node);
+    while ((lastChild) && (lastChild->type == XML_COMMENT_NODE))
+	lastChild = lastChild->prev;
     if (lastChild == NULL) {
         if ((ctxt->node->type != XML_ELEMENT_NODE) &&
             (ctxt->node->content != NULL)) return(0);

@@ -25,9 +25,9 @@
 #include <libxml/xmlautomata.h>
 #include <libxml/xmlregexp.h>
 
-#define DEBUG 1                 /* very verbose output */
-#define DEBUG_CONTENT 1
-#define DEBUG_TYPE 1
+/* #define DEBUG 1       */         /* very verbose output */
+/* #define DEBUG_CONTENT 1 */
+/* #define DEBUG_TYPE 1 */
 /* #define DEBUG_CONTENT_REGEXP 1 */
 /* #define DEBUG_AUTOMATA 1 */
 
@@ -113,6 +113,7 @@ struct _xmlSchemaValidCtxt {
     int                     err;
 
     xmlNodePtr              node;
+    xmlNodePtr              cur;
     xmlSchemaTypePtr        type;
 
     xmlRegExecCtxtPtr       regexp;
@@ -3526,13 +3527,16 @@ xmlSchemaTypeFixup(xmlSchemaTypePtr typeDecl,
 		   xmlSchemaParserCtxtPtr ctxt,
 		   const xmlChar *name)
 {
+    if (typeDecl == NULL)
+        return;
     if (name == NULL)
 	name = typeDecl->name;
     if (typeDecl->contentType == XML_SCHEMA_CONTENT_UNKNOWN) {
 	switch (typeDecl->type) {
 	    case XML_SCHEMA_TYPE_SIMPLE_CONTENT: {
 		xmlSchemaTypeFixup(typeDecl->subtypes, ctxt, NULL);
-		typeDecl->contentType = typeDecl->subtypes->contentType;
+		if (typeDecl->subtypes != NULL)
+		    typeDecl->contentType = typeDecl->subtypes->contentType;
 		break;
 	    }
 	    case XML_SCHEMA_TYPE_RESTRICTION: {
@@ -3635,7 +3639,9 @@ xmlSchemaTypeFixup(xmlSchemaTypePtr typeDecl,
 			typeDecl->contentType = XML_SCHEMA_CONTENT_MIXED;
 		    else {
 			xmlSchemaTypeFixup(typeDecl->subtypes, ctxt, NULL);
-			typeDecl->contentType = typeDecl->subtypes->contentType;
+			if (typeDecl->subtypes != NULL)
+			    typeDecl->contentType =
+			            typeDecl->subtypes->contentType;
 		    }
 		}
 		break;
@@ -3648,7 +3654,9 @@ xmlSchemaTypeFixup(xmlSchemaTypePtr typeDecl,
 			typeDecl->contentType = XML_SCHEMA_CONTENT_MIXED;
 		    else {
 			xmlSchemaTypeFixup(typeDecl->subtypes, ctxt, NULL);
-			typeDecl->contentType = typeDecl->subtypes->contentType;
+			if (typeDecl->subtypes != NULL)
+			    typeDecl->contentType =
+			            typeDecl->subtypes->contentType;
 		    }
 		}
 		break;
@@ -4301,7 +4309,8 @@ xmlSchemaValidateSimpleValue(xmlSchemaValidCtxtPtr ctxt,
 	    xmlSchemaFreeValue(ctxt->value);
 	    ctxt->value = NULL;
 	}
-	ret = xmlSchemaValidatePredefinedType(type, value, &(ctxt->value));
+	ret = xmlSchemaValPredefTypeNode(type, value, &(ctxt->value),
+	                                 ctxt->cur);
         if (ret != 0) {
             if (ctxt->error != NULL)
 	        ctxt->error(ctxt->userData,
@@ -4713,7 +4722,7 @@ xmlSchemaValidateSimpleType(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr node) {
 	    if (ctxt->error != NULL)
 		ctxt->error(ctxt->userData,
 			"Element %s: attribute %s should not be present\n",
-			    child->name, attr->name);
+			    node->name, attr->name);
 	    return(ctxt->err);
 	}
     }
@@ -4958,6 +4967,7 @@ xmlSchemaValidateComplexType(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr node) {
 
     child = ctxt->node;
     type = ctxt->type;
+    ctxt->cur = node;
 
     switch (type->contentType) {
 	case XML_SCHEMA_CONTENT_EMPTY:
@@ -5046,8 +5056,10 @@ xmlSchemaValidateContent(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr node) {
 
     child = ctxt->node;
     type = ctxt->type;
+    ctxt->cur = node;
 
     xmlSchemaValidateAttributes(ctxt, node, type->attributes);
+    ctxt->cur = node;
 
     switch (type->type) {
 	case XML_SCHEMA_TYPE_ANY:
@@ -5287,14 +5299,27 @@ xmlSchemaValidateAttributes(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr elem,
 	    attr = ctxt->attr[i].attr;
 	    if (attr == NULL)
 		continue;
-	    if (!xmlStrEqual(attr->name, attributes->name))
-		continue;
-	    /*
-	     * TODO: handle the mess about namespaces here.
-	     */
-	    if ((attr->ns != NULL) /* || (attributes->ns != NULL) */) {
-		TODO
+	    if (attributes->ref != NULL) {
+		if (!xmlStrEqual(attr->name, attributes->ref))
+		    continue;
+		if (attr->ns != NULL) {
+		    if ((attributes->refNs == NULL) ||
+		        (!xmlStrEqual(attr->ns->href, attributes->refNs)))
+			continue;
+		} else if (attributes->refNs != NULL) {
+		    continue;
+		}
+	    } else {
+		if (!xmlStrEqual(attr->name, attributes->name))
+		    continue;
+		/*
+		 * TODO: handle the mess about namespaces here.
+		 */
+		if ((attr->ns != NULL) /* || (attributes->ns != NULL) */) {
+		    TODO
+		}
 	    }
+	    ctxt->cur = (xmlNodePtr) attributes;
 	    if (attributes->subtypes == NULL) {
 		ctxt->err = XML_SCHEMAS_ERR_INTERNAL;
 		if (ctxt->error != NULL)

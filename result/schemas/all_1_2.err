@@ -1,8 +1,0 @@
-Type of all2 : ./test/schemas/all_1.xsd:5 :elements
-Type of anontype1 : ./test/schemas/all_1.xsd:4 :elements
-Type of all2 : ./test/schemas/all_1.xsd:5 :elements
-Building content model for doc
-xmlSchemaValidateCallback: b, b, b
-xmlSchemaValidateCallback: a, a, a
-xmlSchemaValidateCallback: c, c, c
-Element doc content check succeeded

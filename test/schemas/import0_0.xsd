@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:my="uri:mywork" targetNamespace="uri:mywork">
+
+  <import namespace="http://www.w3.org/1999/xhtml"/>
+
+  <annotation>
+    <documentation>
+      <html:p>[Some documentation for my schema]</html:p>
+    </documentation>
+  </annotation>
+  <complexType name="myType">
+    <sequence>
+      <element ref="html:p" minOccurs="0"/>
+    </sequence>
+  </complexType>
+  <element name="myElt" type="my:myType"/>
+</schema>

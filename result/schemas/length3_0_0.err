@@ -1,8 +1,1 @@
-Unable to lookup type non-positive-integer:http://www.w3.org/2001/XMLSchemaSchemas: element size type non-positive-integer not found
-Type of sequence 1 : ./test/schemas/length3_0.xsd:4 :elements
-Type of length3 : ./test/schemas/length3_0.xsd:3 :elements
-Type of sequence 1 : ./test/schemas/length3_0.xsd:4 :elements
-Building content model for depth
-xmlSchemaValidateCallback: size, size, size
-xmlSchemaValidateCallback: unit, unit, unit
-Element depth content check succeeded
+Schemas: element size type non-positive-integer not found

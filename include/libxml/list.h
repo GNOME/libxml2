@@ -32,7 +32,7 @@ typedef xmlList *xmlListPtr;
  * xmlListDeallocator:
  * @lk:  the data to deallocate
  *
- * Callback function used to free data from a list
+ * Callback function used to free data from a list.
  */
 typedef void (*xmlListDeallocator) (xmlLinkPtr lk);
 /**
@@ -40,9 +40,9 @@ typedef void (*xmlListDeallocator) (xmlLinkPtr lk);
  * @data0: the first data
  * @data1: the second data
  *
- * Callback function used to compare 2 data
+ * Callback function used to compare 2 data.
  *
- * Returns 0 is equality, -1 or 1 otherwise depending on the ordering
+ * Returns 0 is equality, -1 or 1 otherwise depending on the ordering.
  */
 typedef int  (*xmlListDataCompare) (const void *data0, const void *data1);
 /**
@@ -50,9 +50,9 @@ typedef int  (*xmlListDataCompare) (const void *data0, const void *data1);
  * @data: the data found in the list
  * @user: extra user provided data to the walker
  *
- * Callback function used when walking a list with xmlListWalk()
+ * Callback function used when walking a list with xmlListWalk().
  *
- * Returns 0 to stop walking the list, 1 otherwise
+ * Returns 0 to stop walking the list, 1 otherwise.
  */
 typedef int (*xmlListWalker) (const void *data, const void *user);
 

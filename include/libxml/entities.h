@@ -16,7 +16,7 @@ extern "C" {
 #endif
 
 /*
- * The different valid entity types
+ * The different valid entity types.
  */
 typedef enum {
     XML_INTERNAL_GENERAL_ENTITY = 1,
@@ -55,15 +55,15 @@ struct _xmlEntity {
 };
 
 /*
- * All entities are stored in an hash table
- * there is 2 separate hash tables for global and parameter entities
+ * All entities are stored in an hash table.
+ * There is 2 separate hash tables for global and parameter entities.
  */
 
 typedef struct _xmlHashTable xmlEntitiesTable;
 typedef xmlEntitiesTable *xmlEntitiesTablePtr;
 
 /*
- * External functions :
+ * External functions:
  */
 
 void		xmlInitializePredefinedEntities	(void);

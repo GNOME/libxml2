@@ -53,7 +53,7 @@ typedef xmlEntity *xmlEntityPtr;
 /**
  * BASE_BUFFER_SIZE:
  *
- * default buffer size 4000
+ * default buffer size 4000.
  */
 #define BASE_BUFFER_SIZE 4000
 
@@ -61,13 +61,13 @@ typedef xmlEntity *xmlEntityPtr;
  * XML_XML_NAMESPACE:
  *
  * This is the namespace for the special xml: prefix predefined in the
- * XML Namespace specification
+ * XML Namespace specification.
  */
 #define XML_XML_NAMESPACE \
     (const xmlChar *) "http://www.w3.org/XML/1998/namespace"
 
 /*
- * The different element types carried by an XML tree
+ * The different element types carried by an XML tree.
  *
  * NOTE: This is synchronized with DOM Level1 values
  *       See http://www.w3.org/TR/REC-DOM-Level-1/
@@ -121,7 +121,7 @@ typedef unsigned char xmlChar;
 /**
  * xmlNotation:
  *
- * a DTD Notation definition
+ * A DTD Notation definition.
  */
 
 typedef struct _xmlNotation xmlNotation;
@@ -135,7 +135,7 @@ struct _xmlNotation {
 /**
  * xmlAttributeType:
  *
- * a DTD Attribute type definition
+ * A DTD Attribute type definition.
  */
 
 typedef enum {
@@ -154,7 +154,7 @@ typedef enum {
 /**
  * xmlAttributeDefault:
  *
- * a DTD Attribute default definition
+ * A DTD Attribute default definition.
  */
 
 typedef enum {
@@ -167,7 +167,7 @@ typedef enum {
 /**
  * xmlEnumeration:
  *
- * list structure used when there is an enumeration in DTDs
+ * List structure used when there is an enumeration in DTDs.
  */
 
 typedef struct _xmlEnumeration xmlEnumeration;
@@ -180,7 +180,7 @@ struct _xmlEnumeration {
 /**
  * xmlAttribute:
  *
- * an Attribute declaration in a DTD
+ * An Attribute declaration in a DTD.
  */
 
 typedef struct _xmlAttribute xmlAttribute;
@@ -208,7 +208,7 @@ struct _xmlAttribute {
 /**
  * xmlElementContentType:
  *
- * Possible definitions of element content types
+ * Possible definitions of element content types.
  */
 typedef enum {
     XML_ELEMENT_CONTENT_PCDATA = 1,
@@ -220,7 +220,7 @@ typedef enum {
 /**
  * xmlElementContentOccur:
  *
- * Possible definitions of element content occurrences
+ * Possible definitions of element content occurrences.
  */
 typedef enum {
     XML_ELEMENT_CONTENT_ONCE = 1,
@@ -232,7 +232,7 @@ typedef enum {
 /**
  * xmlElementContent:
  *
- * an XML Element content as stored after parsing an element definition
+ * An XML Element content as stored after parsing an element definition
  * in a DTD.
  */
 
@@ -251,7 +251,7 @@ struct _xmlElementContent {
 /**
  * xmlElementTypeVal:
  *
- * the different possibilities for an element content type
+ * The different possibilities for an element content type.
  */
 
 typedef enum {
@@ -265,7 +265,7 @@ typedef enum {
 /**
  * xmlElement:
  *
- * an XML Element declaration from a DTD
+ * An XML Element declaration from a DTD.
  */
 
 typedef struct _xmlElement xmlElement;
@@ -291,7 +291,7 @@ struct _xmlElement {
 /**
  * XML_LOCAL_NAMESPACE:
  *
- * A namespace declaration node
+ * A namespace declaration node.
  */
 #define XML_LOCAL_NAMESPACE XML_NAMESPACE_DECL
 typedef xmlElementType xmlNsType;
@@ -303,7 +303,7 @@ typedef xmlElementType xmlNsType;
  * Note that prefix == NULL is valid, it defines the default namespace
  * within the subtree (until overridden).
  *
- * xmlNsType is unified with xmlElementType
+ * xmlNsType is unified with xmlElementType.
  */
 
 typedef struct _xmlNs xmlNs;
@@ -319,7 +319,7 @@ struct _xmlNs {
  * xmlDtd:
  *
  * An XML DTD, as defined by <!DOCTYPE ... There is actually one for
- * the internal subset and for the external subset
+ * the internal subset and for the external subset.
  */
 typedef struct _xmlDtd xmlDtd;
 typedef xmlDtd *xmlDtdPtr;
@@ -347,7 +347,7 @@ struct _xmlDtd {
 /**
  * xmlAttr:
  *
- * A attribute on an XML node.
+ * An attribute on an XML node.
  */
 typedef struct _xmlAttr xmlAttr;
 typedef xmlAttr *xmlAttrPtr;
@@ -397,7 +397,7 @@ struct _xmlRef {
  * xmlBufferAllocationScheme:
  *
  * A buffer allocation scheme can be defined to either match exactly the
- * need or double it's allocated size each time it is found too small
+ * need or double it's allocated size each time it is found too small.
  */
 
 typedef enum {
@@ -408,7 +408,7 @@ typedef enum {
 /**
  * xmlBuffer:
  *
- * A buffer structure
+ * A buffer structure.
  */
 typedef struct _xmlBuffer xmlBuffer;
 typedef xmlBuffer *xmlBufferPtr;
@@ -447,7 +447,7 @@ struct _xmlNode {
 /**
  * XML_GET_CONTENT:
  *
- * macro to extract the content pointer of a node
+ * Macro to extract the content pointer of a node.
  */
 #define XML_GET_CONTENT(n)					\
     ((n)->type == XML_ELEMENT_NODE ? NULL : (n)->content)
@@ -455,9 +455,9 @@ struct _xmlNode {
 /**
  * XML_GET_LINE:
  *
- * macro to extract the line number of an element node. 
+ * Macro to extract the line number of an element node. 
  * This will work only if line numbering is activated by
- * calling xmlLineNumbersDefault(1) before parsing
+ * calling xmlLineNumbersDefault(1) before parsing.
  */
 #define XML_GET_LINE(n)						\
     ((n)->type == XML_ELEMENT_NODE ? (int) (n)->content : 0)
@@ -498,7 +498,7 @@ struct _xmlDoc {
 /**
  * xmlChildrenNode:
  *
- * Macro for compatibility naming layer with libxml1
+ * Macro for compatibility naming layer with libxml1.
  */
 #ifndef xmlChildrenNode
 #define xmlChildrenNode children
@@ -507,7 +507,7 @@ struct _xmlDoc {
 /**
  * xmlRootNode:
  *
- * Macro for compatibility naming layer with libxml1
+ * Macro for compatibility naming layer with libxml1.
  */
 #ifndef xmlRootNode
 #define xmlRootNode children
@@ -559,7 +559,7 @@ void		xmlBufferSetAllocationScheme(xmlBufferPtr buf,
 int		xmlBufferLength		(const xmlBufferPtr buf);
 
 /*
- * Creating/freeing new structures
+ * Creating/freeing new structures.
  */
 xmlDtdPtr	xmlCreateIntSubset	(xmlDocPtr doc,
 					 const xmlChar *name,
@@ -602,7 +602,7 @@ xmlDocPtr	xmlCopyDoc		(xmlDocPtr doc,
 					 int recursive);
 
 /*
- * Creating new nodes
+ * Creating new nodes.
  */
 xmlNodePtr	xmlNewDocNode		(xmlDocPtr doc,
 					 xmlNsPtr ns,
@@ -651,7 +651,7 @@ xmlNodePtr	xmlCopyNodeList		(xmlNodePtr node);
 xmlNodePtr	xmlNewDocFragment	(xmlDocPtr doc);
 
 /*
- * Navigating
+ * Navigating.
  */
 long		xmlGetLineNo		(xmlNodePtr node);
 xmlChar *	xmlGetNodePath		(xmlNodePtr node);
@@ -661,7 +661,7 @@ int		xmlNodeIsText		(xmlNodePtr node);
 int		xmlIsBlankNode		(xmlNodePtr node);
 
 /*
- * Changing the structure
+ * Changing the structure.
  */
 xmlNodePtr	xmlDocSetRootElement	(xmlDocPtr doc,
 					 xmlNodePtr root);
@@ -693,7 +693,7 @@ void		xmlSetListDoc		(xmlNodePtr list,
 					 xmlDocPtr doc);
 
 /*
- * Namespaces
+ * Namespaces.
  */
 xmlNsPtr	xmlSearchNs		(xmlDocPtr doc,
 					 xmlNodePtr node,
@@ -772,7 +772,7 @@ int		xmlUnsetNsProp		(xmlNodePtr node,
 					 const xmlChar *name);
 
 /*
- * Internal, don't use
+ * Internal, don't use.
  */
 #ifdef VMS
 void		xmlBufferWriteXmlCHAR	(xmlBufferPtr buf,
@@ -788,13 +788,13 @@ void		xmlBufferWriteQuotedString(xmlBufferPtr buf,
 					 const xmlChar *string);
 
 /*
- * Namespace handling
+ * Namespace handling.
  */
 int		xmlReconciliateNs	(xmlDocPtr doc,
 					 xmlNodePtr tree);
 
 /*
- * Saving
+ * Saving.
  */
 void		xmlDocDumpFormatMemory	(xmlDocPtr cur,
 					 xmlChar **mem,
@@ -852,7 +852,7 @@ int		xmlSaveFileEnc		(const char *filename,
 					 const char *encoding);
 
 /*
- * Compression
+ * Compression.
  */
 int		xmlGetDocCompressMode	(xmlDocPtr doc);
 void		xmlSetDocCompressMode	(xmlDocPtr doc,

@@ -14,13 +14,13 @@ extern "C" {
 #endif
 
 /*
- * xmlMutex are a simple mutual exception locks
+ * xmlMutex are a simple mutual exception locks.
  */
 typedef struct _xmlMutex xmlMutex;
 typedef xmlMutex *xmlMutexPtr;
 
 /*
- * xmlRMutex are reentrant mutual exception locks
+ * xmlRMutex are reentrant mutual exception locks.
  */
 typedef struct _xmlRMutex xmlRMutex;
 typedef xmlRMutex *xmlRMutexPtr;
@@ -44,7 +44,7 @@ void			xmlRMutexUnlock	(xmlRMutexPtr tok);
 void			xmlFreeRMutex	(xmlRMutexPtr tok);
 
 /*
- * Library wide APIs
+ * Library wide APIs.
  */
 void			xmlInitThreads	(void);
 void			xmlLockLibrary	(void);

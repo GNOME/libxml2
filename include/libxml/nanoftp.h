@@ -35,8 +35,8 @@ extern "C" {
  * @hour:  the hour
  * @minute:  the minute
  *
- * A callback for the xmlNanoFTPList command
- * Note that only one of year and day:minute are specified
+ * A callback for the xmlNanoFTPList command.
+ * Note that only one of year and day:minute are specified.
  */
 typedef void (*ftpListCallback) (void *userData,
 	                         const char *filename, const char *attrib,
@@ -50,7 +50,7 @@ typedef void (*ftpListCallback) (void *userData,
  * @data: the data received
  * @len: its size in bytes
  *
- * A callback for the xmlNanoFTPGet command
+ * A callback for the xmlNanoFTPGet command.
  */
 typedef void (*ftpDataCallback) (void *userData,
 				 const char *data,
@@ -63,14 +63,14 @@ void	xmlNanoFTPInit		(void);
 void	xmlNanoFTPCleanup	(void);
 
 /*
- * Creating/freeing contexts
+ * Creating/freeing contexts.
  */
 void *	xmlNanoFTPNewCtxt	(const char *URL);
 void	xmlNanoFTPFreeCtxt	(void * ctx);
 void * 	xmlNanoFTPConnectTo	(const char *server,
 				 int port);
 /*
- * Opening/closing session connections
+ * Opening/closing session connections.
  */
 void * 	xmlNanoFTPOpen		(const char *URL);
 int	xmlNanoFTPConnect	(void *ctx);
@@ -86,13 +86,13 @@ int	xmlNanoFTPUpdateURL	(void *ctx,
 				 const char *URL);
 
 /*
- * Rathern internal commands
+ * Rather internal commands.
  */
 int	xmlNanoFTPGetResponse	(void *ctx);
 int	xmlNanoFTPCheckResponse	(void *ctx);
 
 /*
- * CD/DIR/GET handlers
+ * CD/DIR/GET handlers.
  */
 int	xmlNanoFTPCwd		(void *ctx,
 				 char *directory);

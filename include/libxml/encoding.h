@@ -36,8 +36,8 @@ extern "C" {
 /**
  * xmlCharEncoding:
  *
- * Predefined values for some standard encodings
- * Libxml don't do beforehand translation on UTF8, ISOLatinX
+ * Predefined values for some standard encodings.
+ * Libxml don't do beforehand translation on UTF8, ISOLatinX.
  * It also support UTF16 (LE and BE) by default.
  *
  * Anything else would have to be translated to UTF8 before being
@@ -108,7 +108,7 @@ typedef int (* xmlCharEncodingInputFunc)(unsigned char *out, int *outlen,
  * Take a block of UTF-8 chars in and try to convert it to an other
  * encoding.
  * Note: a first call designed to produce heading info is called with
- * in = NULL. If stateful this should also initialize the encoder state
+ * in = NULL. If stateful this should also initialize the encoder state.
  *
  * Returns the number of byte written, or -1 by lack of space, or -2
  *     if the transcoding failed.
@@ -122,7 +122,7 @@ typedef int (* xmlCharEncodingOutputFunc)(unsigned char *out, int *outlen,
 
 /*
  * Block defining the handlers for non UTF-8 encodings.
- * If iconv is supported, there is two extra fields 
+ * If iconv is supported, there is two extra fields.
  */
 
 typedef struct _xmlCharEncodingHandler xmlCharEncodingHandler;
@@ -146,7 +146,7 @@ extern "C" {
 #endif
 
 /*
- * Interfaces for encoding handlers
+ * Interfaces for encoding handlers.
  */
 void	xmlInitCharEncodingHandlers	(void);
 void	xmlCleanupCharEncodingHandlers	(void);
@@ -158,7 +158,7 @@ xmlCharEncodingHandlerPtr
 
 
 /*
- * Interfaces for encoding names and aliases
+ * Interfaces for encoding names and aliases.
  */
 int	xmlAddEncodingAlias		(const char *name,
 					 const char *alias);
@@ -202,7 +202,7 @@ int	isolat1ToUTF8			(unsigned char *out,
 					 const unsigned char *in,
 					 int *inlen);
 /*
- * exports additional "UTF-8 aware" string routines which are
+ * exports additional "UTF-8 aware" string routines which are.
  */
 
 int	xmlCheckUTF8			(const unsigned char *utf);

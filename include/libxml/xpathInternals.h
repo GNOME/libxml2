@@ -46,7 +46,7 @@ extern "C" {
  * xmlXPathSetArityError:
  * @ctxt:  an XPath parser context
  *
- * Raises an XPATH_INVALID_ARITY error
+ * Raises an XPATH_INVALID_ARITY error.
  */
 #define xmlXPathSetArityError(ctxt)					\
     xmlXPathSetError((ctxt), XPATH_INVALID_ARITY)
@@ -55,7 +55,7 @@ extern "C" {
  * xmlXPathSetTypeError:
  * @ctxt:  an XPath parser context
  *
- * Raises an XPATH_INVALID_TYPE error
+ * Raises an XPATH_INVALID_TYPE error.
  */
 #define xmlXPathSetTypeError(ctxt)					\
     xmlXPathSetError((ctxt), XPATH_INVALID_TYPE)
@@ -64,9 +64,9 @@ extern "C" {
  * xmlXPathGetError:
  * @ctxt:  an XPath parser context
  *
- * Get the error code of an XPath context
+ * Get the error code of an XPath context.
  *
- * Returns the context error
+ * Returns the context error.
  */
 #define xmlXPathGetError(ctxt)	  ((ctxt)->error)
 
@@ -74,7 +74,7 @@ extern "C" {
  * xmlXPathCheckError:
  * @ctxt:  an XPath parser context
  *
- * Check if an XPath error was raised
+ * Check if an XPath error was raised.
  *
  * Returns true if an error has been raised, false otherwise.
  */
@@ -84,9 +84,9 @@ extern "C" {
  * xmlXPathGetDocument:
  * @ctxt:  an XPath parser context
  *
- * Get the document of an XPath context
+ * Get the document of an XPath context.
  *
- * Returns the context document
+ * Returns the context document.
  */
 #define xmlXPathGetDocument(ctxt)	((ctxt)->context->doc)
 
@@ -94,9 +94,9 @@ extern "C" {
  * xmlXPathGetContextNode:
  * @ctxt: an XPath parser context
  *
- * Get the context node of an XPath context
+ * Get the context node of an XPath context.
  *
- * Returns the context node
+ * Returns the context node.
  */
 #define xmlXPathGetContextNode(ctxt)	((ctxt)->context->node)
 
@@ -111,7 +111,7 @@ void *		xmlXPathPopExternal	(xmlXPathParserContextPtr ctxt);
  * @ctxt:  an XPath parser context
  * @val:  a boolean
  *
- * Pushes the boolean @val on the context stack
+ * Pushes the boolean @val on the context stack.
  */
 #define xmlXPathReturnBoolean(ctxt, val)				\
     valuePush((ctxt), xmlXPathNewBoolean(val))
@@ -120,7 +120,7 @@ void *		xmlXPathPopExternal	(xmlXPathParserContextPtr ctxt);
  * xmlXPathReturnTrue:
  * @ctxt:  an XPath parser context
  *
- * Pushes true on the context stack
+ * Pushes true on the context stack.
  */
 #define xmlXPathReturnTrue(ctxt)   xmlXPathReturnBoolean((ctxt), 1)
 
@@ -128,7 +128,7 @@ void *		xmlXPathPopExternal	(xmlXPathParserContextPtr ctxt);
  * xmlXPathReturnFalse:
  * @ctxt:  an XPath parser context
  *
- * Pushes false on the context stack
+ * Pushes false on the context stack.
  */
 #define xmlXPathReturnFalse(ctxt)  xmlXPathReturnBoolean((ctxt), 0)
 
@@ -137,7 +137,7 @@ void *		xmlXPathPopExternal	(xmlXPathParserContextPtr ctxt);
  * @ctxt:  an XPath parser context
  * @val:  a double
  *
- * Pushes the double @val on the context stack
+ * Pushes the double @val on the context stack.
  */
 #define xmlXPathReturnNumber(ctxt, val)					\
     valuePush((ctxt), xmlXPathNewFloat(val))
@@ -147,7 +147,7 @@ void *		xmlXPathPopExternal	(xmlXPathParserContextPtr ctxt);
  * @ctxt:  an XPath parser context
  * @str:  a string
  *
- * Pushes the string @str on the context stack
+ * Pushes the string @str on the context stack.
  */
 #define xmlXPathReturnString(ctxt, str)					\
     valuePush((ctxt), xmlXPathWrapString(str))
@@ -156,7 +156,7 @@ void *		xmlXPathPopExternal	(xmlXPathParserContextPtr ctxt);
  * xmlXPathReturnEmptyString:
  * @ctxt:  an XPath parser context
  *
- * Pushes an empty string on the stack
+ * Pushes an empty string on the stack.
  */
 #define xmlXPathReturnEmptyString(ctxt)					\
     valuePush((ctxt), xmlXPathNewCString(""))
@@ -166,7 +166,7 @@ void *		xmlXPathPopExternal	(xmlXPathParserContextPtr ctxt);
  * @ctxt:  an XPath parser context
  * @ns:  a node-set
  *
- * Pushes the node-set @ns on the context stack
+ * Pushes the node-set @ns on the context stack.
  */
 #define xmlXPathReturnNodeSet(ctxt, ns)					\
     valuePush((ctxt), xmlXPathWrapNodeSet(ns))
@@ -175,7 +175,7 @@ void *		xmlXPathPopExternal	(xmlXPathParserContextPtr ctxt);
  * xmlXPathReturnEmptyNodeSet:
  * @ctxt:  an XPath parser context
  *
- * Pushes an empty node-set on the context stack
+ * Pushes an empty node-set on the context stack.
  */
 #define xmlXPathReturnEmptyNodeSet(ctxt)				\
     valuePush((ctxt), xmlXPathNewNodeSet(NULL))
@@ -185,7 +185,7 @@ void *		xmlXPathPopExternal	(xmlXPathParserContextPtr ctxt);
  * @ctxt:  an XPath parser context
  * @val:  user data
  *
- * Pushes user data on the context stack
+ * Pushes user data on the context stack.
  */
 #define xmlXPathReturnExternal(ctxt, val)				\
     valuePush((ctxt), xmlXPathWrapExternal(val))
@@ -195,9 +195,9 @@ void *		xmlXPathPopExternal	(xmlXPathParserContextPtr ctxt);
  * @ctxt: an XPath parser context
  *
  * Check if the current value on the XPath stack is a node set or
- * an XSLT value tree
+ * an XSLT value tree.
  *
- * Returns true if the current object on the stack is a node-set
+ * Returns true if the current object on the stack is a node-set.
  */
 #define xmlXPathStackIsNodeSet(ctxt)					\
     (((ctxt)->value != NULL)						\
@@ -212,7 +212,7 @@ void *		xmlXPathPopExternal	(xmlXPathParserContextPtr ctxt);
  * object.
  *
  * Returns true if the current object on the stack is an external
- * object
+ * object.
  */
 #define xmlXPathStackIsExternal(ctxt)					\
 	((ctxt->value != NULL) && (ctxt->value->type == XPATH_USERS))
@@ -221,7 +221,7 @@ void *		xmlXPathPopExternal	(xmlXPathParserContextPtr ctxt);
  * xmlXPathEmptyNodeSet:
  * @ns:  a node-set
  *
- * Empties a node-set
+ * Empties a node-set.
  */
 #define xmlXPathEmptyNodeSet(ns)					\
     { while ((ns)->nodeNr > 0) (ns)->nodeTab[(ns)->nodeNr--] = NULL; }
@@ -229,7 +229,7 @@ void *		xmlXPathPopExternal	(xmlXPathParserContextPtr ctxt);
 /**
  * CHECK_ERROR:
  *
- * macro to return from the function if an XPath error was detected
+ * Macro to return from the function if an XPath error was detected.
  */
 #define CHECK_ERROR							\
     if (ctxt->error != XPATH_EXPRESSION_OK) return
@@ -237,7 +237,7 @@ void *		xmlXPathPopExternal	(xmlXPathParserContextPtr ctxt);
 /**
  * CHECK_ERROR0:
  *
- * macro to return 0 from the function if an XPath error was detected
+ * Macro to return 0 from the function if an XPath error was detected.
  */
 #define CHECK_ERROR0							\
     if (ctxt->error != XPATH_EXPRESSION_OK) return(0)
@@ -246,7 +246,7 @@ void *		xmlXPathPopExternal	(xmlXPathParserContextPtr ctxt);
  * XP_ERROR:
  * @X:  the error code
  *
- * Macro to raise an XPath error and return
+ * Macro to raise an XPath error and return.
  */
 #define XP_ERROR(X)							\
     { xmlXPatherror(ctxt, __FILE__, __LINE__, X);			\
@@ -256,7 +256,7 @@ void *		xmlXPathPopExternal	(xmlXPathParserContextPtr ctxt);
  * XP_ERROR0:
  * @X:  the error code
  *
- * Macro to raise an XPath error and return 0
+ * Macro to raise an XPath error and return 0.
  */
 #define XP_ERROR0(X)							\
     { xmlXPatherror(ctxt, __FILE__, __LINE__, X);			\
@@ -278,7 +278,7 @@ void *		xmlXPathPopExternal	(xmlXPathParserContextPtr ctxt);
  * @typeval:  the XPath type
  *
  * Macro to check that the value on top of the XPath stack is of a given
- * type. return(0) in case of failure
+ * type. Return(0) in case of failure
  */
 #define CHECK_TYPE0(typeval)						\
     if ((ctxt->value == NULL) || (ctxt->value->type != typeval))	\
@@ -288,7 +288,7 @@ void *		xmlXPathPopExternal	(xmlXPathParserContextPtr ctxt);
  * CHECK_ARITY:
  * @x:  the number of expected args
  *
- * Macro to check that the number of args passed to an XPath function matches
+ * Macro to check that the number of args passed to an XPath function matches.
  */
 #define CHECK_ARITY(x)							\
     if (nargs != (x))							\
@@ -297,7 +297,7 @@ void *		xmlXPathPopExternal	(xmlXPathParserContextPtr ctxt);
 /**
  * CAST_TO_STRING:
  *
- * Macro to try to cast the value on the top of the XPath stack to a string
+ * Macro to try to cast the value on the top of the XPath stack to a string.
  */
 #define CAST_TO_STRING							\
     if ((ctxt->value != NULL) && (ctxt->value->type != XPATH_STRING))	\
@@ -306,7 +306,7 @@ void *		xmlXPathPopExternal	(xmlXPathParserContextPtr ctxt);
 /**
  * CAST_TO_NUMBER:
  *
- * Macro to try to cast the value on the top of the XPath stack to a number
+ * Macro to try to cast the value on the top of the XPath stack to a number.
  */
 #define CAST_TO_NUMBER							\
     if ((ctxt->value != NULL) && (ctxt->value->type != XPATH_NUMBER))	\
@@ -315,14 +315,14 @@ void *		xmlXPathPopExternal	(xmlXPathParserContextPtr ctxt);
 /**
  * CAST_TO_BOOLEAN:
  *
- * Macro to try to cast the value on the top of the XPath stack to a boolean
+ * Macro to try to cast the value on the top of the XPath stack to a boolean.
  */
 #define CAST_TO_BOOLEAN							\
     if ((ctxt->value != NULL) && (ctxt->value->type != XPATH_BOOLEAN))	\
         xmlXPathBooleanFunction(ctxt, 1);
 
 /*
- * Variable Lookup forwarding
+ * Variable Lookup forwarding.
  */
 /**
  * xmlXPathVariableLookupFunc:
@@ -331,9 +331,9 @@ void *		xmlXPathPopExternal	(xmlXPathParserContextPtr ctxt);
  * @ns_uri:  the namespace name hosting this variable
  *
  * Prototype for callbacks used to plug variable lookup in the XPath
- * engine
+ * engine.
  *
- * Returns the XPath object value or NULL if not found
+ * Returns the XPath object value or NULL if not found.
  */
 typedef xmlXPathObjectPtr (*xmlXPathVariableLookupFunc) (void *ctxt,
 					 const xmlChar *name,
@@ -344,7 +344,7 @@ void	xmlXPathRegisterVariableLookup	(xmlXPathContextPtr ctxt,
 					 void *data);
 
 /*
- * Function Lookup forwarding
+ * Function Lookup forwarding.
  */
 /**
  * xmlXPathFuncLookupFunc:
@@ -353,9 +353,9 @@ void	xmlXPathRegisterVariableLookup	(xmlXPathContextPtr ctxt,
  * @ns_uri:  the namespace name hosting this function
  *
  * Prototype for callbacks used to plug function lookup in the XPath
- * engine
+ * engine.
  *
- * Returns the XPath function or NULL if not found
+ * Returns the XPath function or NULL if not found.
  */
 typedef xmlXPathFunction (*xmlXPathFuncLookupFunc) (void *ctxt,
 					 const xmlChar *name,
@@ -366,7 +366,7 @@ void	xmlXPathRegisterFuncLookup	(xmlXPathContextPtr ctxt,
 					 void *funcCtxt);
 
 /*
- * Error reporting
+ * Error reporting.
  */
 void		xmlXPatherror	(xmlXPathParserContextPtr ctxt,
 				 const char *file,
@@ -381,7 +381,7 @@ void		xmlXPathDebugDumpCompExpr(FILE *output,
 					 int depth);
 
 /**
- * NodeSet handling
+ * NodeSet handling.
  */
 int		xmlXPathNodeSetContains		(xmlNodeSetPtr cur,
 						 xmlNodePtr val);
@@ -416,7 +416,7 @@ xmlNodeSetPtr	xmlXPathTrailing		(xmlNodeSetPtr nodes1,
 
 
 /**
- * Extending a context
+ * Extending a context.
  */
 
 int		   xmlXPathRegisterNs		(xmlXPathContextPtr ctxt,
@@ -454,14 +454,14 @@ xmlXPathObjectPtr  xmlXPathVariableLookupNS	(xmlXPathContextPtr ctxt,
 void		   xmlXPathRegisteredVariablesCleanup(xmlXPathContextPtr ctxt);
 
 /**
- * Utilities to extend XPath
+ * Utilities to extend XPath.
  */
 xmlXPathParserContextPtr
 		  xmlXPathNewParserContext	(const xmlChar *str,
 			  			 xmlXPathContextPtr ctxt);
 void		  xmlXPathFreeParserContext	(xmlXPathParserContextPtr ctxt);
 
-/* TODO: remap to xmlXPathValuePop and Push */
+/* TODO: remap to xmlXPathValuePop and Push. */
 xmlXPathObjectPtr valuePop			(xmlXPathParserContextPtr ctxt);
 int		  valuePush			(xmlXPathParserContextPtr ctxt,
 					 	xmlXPathObjectPtr value);
@@ -486,7 +486,7 @@ xmlChar *	  xmlXPathParseName		(xmlXPathParserContextPtr ctxt);
 xmlChar *	  xmlXPathParseNCName		(xmlXPathParserContextPtr ctxt);
 
 /*
- * Existing functions
+ * Existing functions.
  */
 double xmlXPathStringEvalNumber(const xmlChar *str);
 int xmlXPathEvaluatePredicateResult(xmlXPathParserContextPtr ctxt, 
@@ -511,7 +511,7 @@ void xmlXPathModValues(xmlXPathParserContextPtr ctxt);
 int xmlXPathIsNodeType(const xmlChar *name);
 
 /*
- * Some of the axis navigation routines
+ * Some of the axis navigation routines.
  */
 xmlNodePtr xmlXPathNextSelf(xmlXPathParserContextPtr ctxt,
 			xmlNodePtr cur);
@@ -540,7 +540,7 @@ xmlNodePtr xmlXPathNextAncestor(xmlXPathParserContextPtr ctxt,
 xmlNodePtr xmlXPathNextPrecedingSibling(xmlXPathParserContextPtr ctxt,
 			xmlNodePtr cur);
 /*
- * The official core of XPath functions
+ * The official core of XPath functions.
  */
 void xmlXPathLastFunction(xmlXPathParserContextPtr ctxt, int nargs);
 void xmlXPathPositionFunction(xmlXPathParserContextPtr ctxt, int nargs);

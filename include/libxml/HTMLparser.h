@@ -15,7 +15,7 @@ extern "C" {
 #endif
 
 /*
- * Most of the back-end structures from XML and HTML are shared
+ * Most of the back-end structures from XML and HTML are shared.
  */
 typedef xmlParserCtxt htmlParserCtxt;
 typedef xmlParserCtxtPtr htmlParserCtxtPtr;
@@ -28,7 +28,7 @@ typedef xmlDocPtr htmlDocPtr;
 typedef xmlNodePtr htmlNodePtr;
 
 /*
- * Internal description of an HTML element
+ * Internal description of an HTML element.
  */
 typedef struct _htmlElemDesc htmlElemDesc;
 typedef htmlElemDesc *htmlElemDescPtr;
@@ -45,7 +45,7 @@ struct _htmlElemDesc {
 };
 
 /*
- * Internal description of an HTML entity
+ * Internal description of an HTML entity.
  */
 typedef struct _htmlEntityDesc htmlEntityDesc;
 typedef htmlEntityDesc *htmlEntityDescPtr;
@@ -96,7 +96,7 @@ int			htmlIsScriptAttribute(const xmlChar *name);
 int			htmlHandleOmittedElem(int val);
 
 /**
- * Interfaces for the Push mode
+ * Interfaces for the Push mode.
  */
 void			htmlFreeParserCtxt	(htmlParserCtxtPtr ctxt);
 htmlParserCtxtPtr	htmlCreatePushParserCtxt(htmlSAXHandlerPtr sax,

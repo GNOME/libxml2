@@ -31,8 +31,8 @@ extern "C" {
 /**
  * INPUT_CHUNK:
  *
- * The parser tries to always have that amount of input ready
- * one of the point is providing context when reporting errors
+ * The parser tries to always have that amount of input ready.
+ * One of the point is providing context when reporting errors.
  */
 #define INPUT_CHUNK	250
 
@@ -45,7 +45,7 @@ extern "C" {
  * IS_CHAR:
  * @c:  an UNICODE value (int)
  *
- * Macro to check the following production in the XML spec
+ * Macro to check the following production in the XML spec:
  *
  * [2] Char ::= #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD]
  *                  | [#x10000-#x10FFFF]
@@ -61,7 +61,7 @@ extern "C" {
  * IS_BLANK:
  * @c:  an UNICODE value (int)
  *
- * Macro to check the following production in the XML spec
+ * Macro to check the following production in the XML spec:
  *
  * [3] S ::= (#x20 | #x9 | #xD | #xA)+
  */
@@ -72,7 +72,7 @@ extern "C" {
  * IS_BASECHAR:
  * @c:  an UNICODE value (int)
  *
- * Macro to check the following production in the XML spec
+ * Macro to check the following production in the XML spec:
  *
  * [85] BaseChar ::= ... long list see REC ...
  */
@@ -82,7 +82,7 @@ extern "C" {
  * IS_DIGIT:
  * @c:  an UNICODE value (int)
  *
- * Macro to check the following production in the XML spec
+ * Macro to check the following production in the XML spec:
  *
  * [88] Digit ::= ... long list see REC ...
  */
@@ -92,7 +92,7 @@ extern "C" {
  * IS_COMBINING:
  * @c:  an UNICODE value (int)
  *
- * Macro to check the following production in the XML spec
+ * Macro to check the following production in the XML spec:
  *
  * [87] CombiningChar ::= ... long list see REC ...
  */
@@ -102,7 +102,7 @@ extern "C" {
  * IS_EXTENDER:
  * @c:  an UNICODE value (int)
  *
- * Macro to check the following production in the XML spec
+ * Macro to check the following production in the XML spec:
  *
  *
  * [89] Extender ::= #x00B7 | #x02D0 | #x02D1 | #x0387 | #x0640 |
@@ -115,7 +115,7 @@ extern "C" {
  * IS_IDEOGRAPHIC:
  * @c:  an UNICODE value (int)
  *
- * Macro to check the following production in the XML spec
+ * Macro to check the following production in the XML spec:
  *
  *
  * [86] Ideographic ::= [#x4E00-#x9FA5] | #x3007 | [#x3021-#x3029]
@@ -126,7 +126,7 @@ extern "C" {
  * IS_LETTER:
  * @c:  an UNICODE value (int)
  *
- * Macro to check the following production in the XML spec
+ * Macro to check the following production in the XML spec:
  *
  *
  * [84] Letter ::= BaseChar | Ideographic 
@@ -138,7 +138,7 @@ extern "C" {
  * IS_PUBIDCHAR:
  * @c:  an UNICODE value (int)
  *
- * Macro to check the following production in the XML spec
+ * Macro to check the following production in the XML spec:
  *
  *
  * [13] PubidChar ::= #x20 | #xD | #xA | [a-zA-Z0-9] | [-'()+,./:=?;!*#@$_%]
@@ -149,7 +149,7 @@ extern "C" {
  * SKIP_EOL:
  * @p:  and UTF8 string pointer
  *
- * Skips the end of line chars
+ * Skips the end of line chars.
  */
 #define SKIP_EOL(p) 							\
     if (*(p) == 0x13) { p++ ; if (*(p) == 0x10) p++; }			\
@@ -159,7 +159,7 @@ extern "C" {
  * MOVETO_ENDTAG:
  * @p:  and UTF8 string pointer
  *
- * Skips to the next '>' char
+ * Skips to the next '>' char.
  */
 #define MOVETO_ENDTAG(p)						\
     while ((*p) && (*(p) != '>')) (p)++
@@ -168,20 +168,20 @@ extern "C" {
  * MOVETO_STARTTAG:
  * @p:  and UTF8 string pointer
  *
- * Skips to the next '<' char
+ * Skips to the next '<' char.
  */
 #define MOVETO_STARTTAG(p)						\
     while ((*p) && (*(p) != '<')) (p)++
 
 /**
- * Global variables used for predefined strings
+ * Global variables used for predefined strings.
  */
 LIBXML_DLL_IMPORT extern const xmlChar xmlStringText[];
 LIBXML_DLL_IMPORT extern const xmlChar xmlStringTextNoenc[];
 LIBXML_DLL_IMPORT extern const xmlChar xmlStringComment[];
 
 /*
- * Function to finish the work of the macros where needed
+ * Function to finish the work of the macros where needed.
  */
 int			xmlIsBaseChar	(int c);
 int			xmlIsBlank	(int c);
@@ -194,7 +194,7 @@ int			xmlIsCombining	(int c);
 int			xmlIsChar	(int c);
 
 /**
- * Parser context
+ * Parser context.
  */
 xmlParserCtxtPtr	xmlCreateFileParserCtxt	(const char *filename);
 xmlParserCtxtPtr	xmlCreateMemoryParserCtxt(const char *buffer,
@@ -215,7 +215,7 @@ void			xmlHandleEntity		(xmlParserCtxtPtr ctxt,
 						 xmlEntityPtr entity);
 
 /**
- * Input Streams
+ * Input Streams.
  */
 xmlParserInputPtr	xmlNewStringInputStream	(xmlParserCtxtPtr ctxt,
 						 const xmlChar *buffer);
@@ -243,7 +243,7 @@ xmlChar *		xmlParseQuotedString	(xmlParserCtxtPtr ctxt);
 void			xmlParseNamespace	(xmlParserCtxtPtr ctxt);
 
 /**
- * Generic production rules
+ * Generic production rules.
  */
 xmlChar *		xmlScanName		(xmlParserCtxtPtr ctxt);
 xmlChar *		xmlParseName		(xmlParserCtxtPtr ctxt);
@@ -315,25 +315,25 @@ void			xmlParseExternalSubset	(xmlParserCtxtPtr ctxt,
 /**
  * XML_SUBSTITUTE_NONE:
  *
- * If no entities need to be substituted
+ * If no entities need to be substituted.
  */
 #define XML_SUBSTITUTE_NONE	0
 /**
  * XML_SUBSTITUTE_REF:
  *
- * Whether general entities need to be substituted
+ * Whether general entities need to be substituted.
  */
 #define XML_SUBSTITUTE_REF	1
 /**
  * XML_SUBSTITUTE_PEREF:
  *
- * Whether parameter entities need to be substituted
+ * Whether parameter entities need to be substituted.
  */
 #define XML_SUBSTITUTE_PEREF	2
 /**
  * XML_SUBSTITUTE_BOTH:
  *
- * Both general and parameter entities need to be substituted
+ * Both general and parameter entities need to be substituted.
  */
 #define XML_SUBSTITUTE_BOTH 	3
 
@@ -351,7 +351,7 @@ xmlChar *		xmlStringDecodeEntities	(xmlParserCtxtPtr ctxt,
 						 xmlChar end3);
 
 /*
- * Generated by MACROS on top of parser.c c.f. PUSH_AND_POP
+ * Generated by MACROS on top of parser.c c.f. PUSH_AND_POP.
  */
 int			nodePush		(xmlParserCtxtPtr ctxt,
 						 xmlNodePtr value);
@@ -364,7 +364,7 @@ int			namePush		(xmlParserCtxtPtr ctxt,
 						 xmlChar *value);
 
 /*
- * other commodities shared between parser.c and parserInternals
+ * other commodities shared between parser.c and parserInternals.
  */
 int			xmlSkipBlankChars	(xmlParserCtxtPtr ctxt);
 int			xmlStringCurrentChar	(xmlParserCtxtPtr ctxt,
@@ -375,7 +375,7 @@ void			xmlParserHandleReference(xmlParserCtxtPtr ctxt);
 int			xmlCheckLanguageID	(const xmlChar *lang);
 
 /*
- * Really core function shared with HTML parser
+ * Really core function shared with HTML parser.
  */
 int			xmlCurrentChar		(xmlParserCtxtPtr ctxt,
 						 int *len);
@@ -389,7 +389,7 @@ void			xmlParserInputShrink	(xmlParserInputPtr in);
 
 #ifdef LIBXML_HTML_ENABLED
 /*
- * Actually comes from the HTML parser but launched from the init stuff
+ * Actually comes from the HTML parser but launched from the init stuff.
  */
 void			htmlInitAutoClose	(void);
 htmlParserCtxtPtr	htmlCreateFileParserCtxt(const char *filename,
@@ -398,7 +398,7 @@ htmlParserCtxtPtr	htmlCreateFileParserCtxt(const char *filename,
 
 /*
  * Specific function to keep track of entities references
- * and used by the XSLT debugger
+ * and used by the XSLT debugger.
  */
 /**
  * xmlEntityReferenceFunc:
@@ -406,8 +406,8 @@ htmlParserCtxtPtr	htmlCreateFileParserCtxt(const char *filename,
  * @firstNode:  the fist node in the chunk
  * @lastNode:  the last nod in the chunk
  *
- * Callback function used when one need to be able to track back the
- * provenance of a chunk of nodes inherited from an entity replacement
+ * Callback function used when one needs to be able to track back the
+ * provenance of a chunk of nodes inherited from an entity replacement.
  */
 typedef	void	(*xmlEntityReferenceFunc)	(xmlEntityPtr ent,
 						 xmlNodePtr firstNode,

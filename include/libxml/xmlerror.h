@@ -145,7 +145,7 @@ typedef enum {
  * @...:  the extra arguments of the varags to format the message
  *
  * Signature of the function to use when there is an error and
- * no parsing or validity context available 
+ * no parsing or validity context available .
  */
 typedef void (*xmlGenericErrorFunc) (void *ctx,
 				 const char *msg,
@@ -161,7 +161,7 @@ void	initGenericErrorDefaultFunc(xmlGenericErrorFunc *handler);
 
 /*
  * Default message routines used by SAX and Valid context for error
- * and warning reporting
+ * and warning reporting.
  */
 void	xmlParserError		(void *ctx,
 				 const char *msg,

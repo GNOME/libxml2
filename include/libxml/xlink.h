@@ -22,9 +22,9 @@ extern "C" {
  * Various defines for the various Link properties.
  *
  * NOTE: the link detection layer will try to resolve QName expansion
- *       of namespaces, if "foo" is the prefix for "http://foo.com/"
+ *       of namespaces. If "foo" is the prefix for "http://foo.com/"
  *       then the link detection layer will expand role="foo:myrole"
- *       to "http://foo.com/:myrole"
+ *       to "http://foo.com/:myrole".
  * NOTE: the link detection layer will expand URI-Refences found on
  *       href attributes by using the base mechanism if found.
  */
@@ -57,7 +57,7 @@ typedef enum {
  * @ctx:  user data pointer
  * @node:  the node to check
  * 
- * This is the prototype for the link detection routine
+ * This is the prototype for the link detection routine.
  * It calls the default link detection callbacks upon link detection.
  */
 typedef void (*xlinkNodeDetectFunc) (void *ctx, xmlNodePtr node);
@@ -141,7 +141,7 @@ typedef void
 				 const xmlChar **langs);
 
 /**
- * This is the structure containing a set of Links detection callbacks
+ * This is the structure containing a set of Links detection callbacks.
  *
  * There is no default xlink callbacks, if one want to get link
  * recognition activated, those call backs must be provided before parsing.
@@ -155,7 +155,7 @@ struct _xlinkHandler {
 };
 
 /*
- * the default detection routine, can be overridden, they call the default
+ * The default detection routine, can be overridden, they call the default
  * detection callbacks. 
  */
 

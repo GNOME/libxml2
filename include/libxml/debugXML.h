@@ -19,7 +19,7 @@ extern "C" {
 #endif
 
 /*
- * The standard Dump routines
+ * The standard Dump routines.
  */
 void	xmlDebugDumpString	(FILE *output,
 				 const xmlChar *str);
@@ -62,16 +62,16 @@ LIBXML_DLL_IMPORT const char *xmlBoolToText	(int boolval);
  * xmlShellReadlineFunc:
  * @prompt:  a string prompt
  *
- * This is a generic signature for the XML shell input function
+ * This is a generic signature for the XML shell input function.
  *
- * Returns a string which will be freed by the Shell
+ * Returns a string which will be freed by the Shell.
  */
 typedef char * (* xmlShellReadlineFunc)(char *prompt);
 
 /**
  * xmlShellCtxt:
  *
- * A debugging shell context
+ * A debugging shell context.
  * TODO: add the defined function tables.
  */
 typedef struct _xmlShellCtxt xmlShellCtxt;
@@ -93,9 +93,9 @@ struct _xmlShellCtxt {
  * @node:  a first node
  * @node2:  a second node
  *
- * This is a generic signature for the XML shell functions
+ * This is a generic signature for the XML shell functions.
  *
- * Returns an int, negative returns indicating errors
+ * Returns an int, negative returns indicating errors.
  */
 typedef int (* xmlShellCmd) (xmlShellCtxtPtr ctxt,
                              char *arg,

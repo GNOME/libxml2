@@ -25,7 +25,7 @@ extern "C" {
 #endif
 
 /*
- * The hash table
+ * The hash table.
  */
 typedef struct _xmlHashTable xmlHashTable;
 typedef xmlHashTable *xmlHashTablePtr;
@@ -38,7 +38,7 @@ typedef xmlHashTable *xmlHashTablePtr;
  * @payload:  the data in the hash
  * @name:  the name associated
  *
- * Callback to free data from a hash
+ * Callback to free data from a hash.
  */
 typedef void (*xmlHashDeallocator)(void *payload, xmlChar *name);
 /**
@@ -46,9 +46,9 @@ typedef void (*xmlHashDeallocator)(void *payload, xmlChar *name);
  * @payload:  the data in the hash
  * @name:  the name associated
  *
- * Callback to copy data from a hash
+ * Callback to copy data from a hash.
  *
- * Returns a copy of the data or NULL in case of error
+ * Returns a copy of the data or NULL in case of error.
  */
 typedef void *(*xmlHashCopier)(void *payload, xmlChar *name);
 /**
@@ -57,7 +57,7 @@ typedef void *(*xmlHashCopier)(void *payload, xmlChar *name);
  * @data:  extra scannner data
  * @name:  the name associated
  *
- * Callback when scanning data in a hash with the simple scanner
+ * Callback when scanning data in a hash with the simple scanner.
  */
 typedef void (*xmlHashScanner)(void *payload, void *data, xmlChar *name);
 /**
@@ -68,21 +68,21 @@ typedef void (*xmlHashScanner)(void *payload, void *data, xmlChar *name);
  * @name2:  the second name associated
  * @name3:  the third name associated
  *
- * Callback when scanning data in a hash with the full scanner
+ * Callback when scanning data in a hash with the full scanner.
  */
 typedef void (*xmlHashScannerFull)(void *payload, void *data,
 				   const xmlChar *name, const xmlChar *name2,
 				   const xmlChar *name3);
 
 /*
- * Constructor and destructor
+ * Constructor and destructor.
  */
 xmlHashTablePtr		xmlHashCreate	(int size);
 void			xmlHashFree	(xmlHashTablePtr table,
 					 xmlHashDeallocator f);
 
 /*
- * Add a new entry to the hash table
+ * Add a new entry to the hash table.
  */
 int			xmlHashAddEntry	(xmlHashTablePtr table,
 		                         const xmlChar *name,
@@ -113,7 +113,7 @@ int			xmlHashUpdateEntry3(xmlHashTablePtr table,
 					 xmlHashDeallocator f);
 
 /*
- * Remove an entry from the hash table
+ * Remove an entry from the hash table.
  */
 int     xmlHashRemoveEntry(xmlHashTablePtr table, const xmlChar *name,
                            xmlHashDeallocator f);
@@ -124,7 +124,7 @@ int     xmlHashRemoveEntry3(xmlHashTablePtr table, const xmlChar *name,
                             xmlHashDeallocator f);
 
 /*
- * Retrieve the userdata
+ * Retrieve the userdata.
  */
 void *			xmlHashLookup	(xmlHashTablePtr table,
 					 const xmlChar *name);
@@ -137,7 +137,7 @@ void *			xmlHashLookup3	(xmlHashTablePtr table,
 					 const xmlChar *name3);
 
 /*
- * Helpers
+ * Helpers.
  */
 xmlHashTablePtr		xmlHashCopy	(xmlHashTablePtr table,
 					 xmlHashCopier f);

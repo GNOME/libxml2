@@ -1,3 +1,9 @@
+Sun Jan  6 13:45:49 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: patch from Jack J Franklin to remove a bug in
+	  xmlCreatePushParserCtxt() when the initial buffer passed
+	  is large.
+
 Sat Jan  5 19:24:23 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* win32/*: big cleanup of the Windows/MSVC project files

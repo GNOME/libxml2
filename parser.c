@@ -8783,7 +8783,15 @@ xmlCreatePushParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
 
     if ((size > 0) && (chunk != NULL) && (ctxt->input != NULL) &&
         (ctxt->input->buf != NULL))  {	      
+	int base = ctxt->input->base - ctxt->input->buf->buffer->content;
+	int cur = ctxt->input->cur - ctxt->input->base;
+
 	xmlParserInputBufferPush(ctxt->input->buf, size, chunk);	      
+
+	ctxt->input->base = ctxt->input->buf->buffer->content + base;
+	ctxt->input->cur = ctxt->input->base + cur;
+	ctxt->input->end =
+	    &ctxt->input->buf->buffer->content[ctxt->input->buf->buffer->use];
 #ifdef DEBUG_PUSH
 	xmlGenericError(xmlGenericErrorContext, "PP: pushed %d\n", size);
 #endif

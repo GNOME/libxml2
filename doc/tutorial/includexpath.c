@@ -35,7 +35,7 @@ main(int argc, char **argv) {
 
 	char *docname;
 	xmlDocPtr doc;
-	xmlChar *xpath = ("//keyword");
+	xmlChar *xpath = (xmlChar*) "//keyword";
 	xmlNodeSetPtr nodeset;
 	xmlXPathObjectPtr result;
 	int i;

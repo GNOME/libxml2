@@ -1,3 +1,8 @@
+Thu May 27 19:47:48 MDT 2004 John Fleck <jfleck@inkstain.net>
+
+	* doc/tutorial/xmltutorial.xml fix lack of cast in Xpath example
+	* doc/tutorial/*.html, xmltutorial.pdf rebuild html, pdf
+
 2004-05-25  Aleksey Sanin <aleksey@aleksey.com>
 
 	* c14n.c: fixed c14n bug with serializing attribute namespaces

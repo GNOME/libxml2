@@ -13,6 +13,8 @@ H3 {font-family: Verdana,Arial,Helvetica}
 A:link, A:visited, A:active { text-decoration: underline }-->
 
 
+
+
   </style>
   <title>Libxml2 XmlTextReader Interface tutorial</title>
 </head>
@@ -42,6 +44,9 @@ examples using both C and the Python bindings:</p>
   attributes</a></li>
   <li><a href="#Validating">Validating a document</a></li>
   <li><a href="#Entities">Entities substitution</a></li>
+  <li><a href="#L1142">Relax-NG Validation</a></li>
+  <li><a href="#Mixing">Mixing the reader and tree or XPath
+  operations</a></li>
 </ul>
 
 <p></p>
@@ -147,8 +152,7 @@ def streamFile(filename):
         ret = reader.Read()
 
     if ret != 0:
-        print "%s : failed to parse" % (filename)
-</pre>
+        print "%s : failed to parse" % (filename)</pre>
 
 <p>The only things worth adding are that the <a
 href="http://dotgnu.org/pnetlib-doc/System/Xml/XmlTextReader.html">xmlTextReader
@@ -390,9 +394,79 @@ the validation feature is just:</p>
 
 <h2><a name="Entities">Entities substitution</a></h2>
 
-<p>@@TODO@@</p>
+<p>By default the xmlReader will report entities as such and not replace them
+with their content. This default behaviour can however be overriden using:</p>
 
-<p> </p>
+<p><code>reader.SetParserProp(libxml2.PARSER_SUBST_ENTITIES,1)</code></p>
+
+<h2><a name="L1142">Relax-NG Validation</a></h2>
+
+<p style="font-size: 10pt">Introduced in version 2.5.7</p>
+
+<p>Libxml2 can now validate the document being read using the xmlReader using
+Relax-NG schemas. While the Relax NG validator can't always work in a
+streamable mode, only subsets which cannot be reduced to regular expressions
+need to have their subtree expanded for validation. In practice it means
+that, unless the schemas for the top level element content is not expressable
+as a regexp, only chunk of the document needs to be parsed while
+validating.</p>
+
+<p>The steps to do so are:</p>
+<ul>
+  <li>create a reader working on a document as usual</li>
+  <li>before any call to read associate it to a Relax NG schemas, either the
+    preparsed schemas or the URL to the schemas to use</li>
+  <li>errors will be reported the usual way, and the validity status can be
+    obtained using the IsValid() interface of the reader like for DTDs.</li>
+</ul>
+
+<p>Example, assuming the reader has already being created and that the schema
+string contains the Relax-NG schemas:</p>
+
+<p><code>rngp = libxml2.relaxNGNewMemParserCtxt(schema, len(schema))<br>
+rngs = rngp.relaxNGParse()<br>
+reader.RelaxNGSetSchema(rngs)<br>
+ret = reader.Read()<br>
+while ret == 1:<br>
+    ret = reader.Read()<br>
+if ret != 0:<br>
+    print "Error parsing the document"<br>
+if reader.IsValid() != 1:<br>
+    print "Document failed to validate"</code><br>
+See <code>reader6.py</code> in the sources or documentation for a complete
+example.</p>
+
+<h2><a name="Mixing">Mixing the reader and tree or XPath operations</a></h2>
+
+<p style="font-size: 10pt">Introduced in version 2.5.7</p>
+
+<p>While the reader is a streaming interface, its underlying implementation
+is based on the DOM builder of libxml2. As a result it is relatively simple
+to mix operations based on both models under some constraints. To do so the
+reader has an Expand() operation allowing to grow the subtree under the
+current node. It returns a pointer to a standard node wich can be manipulated
+in the usual ways. The node will get all its ancestors and the full subtree
+available. Usual operations like XPath queries can be used on that reduced
+view of the document. Here is an example extracted from reader5.py in the
+sources which extract and prints the bibliography for the "Dragon" compiler
+book from the XML 1.0 recommendation:</p>
+<pre>f = open('../../test/valid/REC-xml-19980210.xml')
+input = libxml2.inputBuffer(f)
+reader = input.newTextReader("REC")
+res=""
+while reader.Read():
+    while reader.Name() == 'bibl':
+        node = reader.Expand()            # expand the subtree
+        if node.xpathEval("@id = 'Aho'"): # use XPath on it
+            res = res + node.serialize()
+        if reader.Next() != 1:            # skip the subtree
+            break;</pre>
+
+<p>Note however that the node instance returned by the Expand() call is only
+valid until the next Read() operation. The Expand() operation does not
+affects the Read() ones, however usually once processed the full subtree is
+not useful anymore, and the Next() operation allows to skip it completely and
+process to the successor or return 0 if the document end is reached. </p>
 
 <p><a href="mailto:veillard@redhat.com">Daniel Veillard</a></p>
 

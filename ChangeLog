@@ -1,3 +1,12 @@
+Thu Apr 17 14:51:57 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c: some cleanups
+	* doc/xmlreader.html: extended the document to cover RelaxNG and
+	  tree operations
+	* python/tests/Makefile.am python/tests/reader[46].py: added some
+	  xmlReader example/regression tests
+	* result/relaxng/tutor*.err: updated the output of a number of tests
+
 Thu Apr 17 11:35:37 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c: valgrind pointed out an uninitialized variable error.

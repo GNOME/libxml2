@@ -8,11 +8,9 @@
 
 /**
  * TODO:
- * - error reporting
- * - handle namespace declarations as attributes.
  * - add support for DTD compatibility spec
  *   http://www.oasis-open.org/committees/relax-ng/compatibility-20011203.html
- * - report better mem allocations at runtime and abort immediately.
+ * - report better mem allocations pbms at runtime and abort immediately.
  */
 
 #define IN_LIBXML
@@ -836,7 +834,6 @@ xmlRelaxNGFreeDefine(xmlRelaxNGDefinePtr define)
  * @size:  the default size for the container
  *
  * Allocate a new RelaxNG validation state container
- * TODO: keep a pool in the ctxt
  *
  * Returns the newly allocated structure or NULL in case or error
  */
@@ -1989,7 +1986,7 @@ xmlRelaxNGGetErrorString(xmlRelaxNGValidErr err, const xmlChar *arg1,
 	case XML_RELAXNG_ERR_EXTRADATA:
 	    return(xmlCharStrdup("Extra data in the document"));
 	default:
-	    TODO
+	    return(xmlCharStrdup("Unknown error !"));
     }
     if (msg[0] == 0) {
 	snprintf(msg, 1000, "Unknown error code %d", err);
@@ -2279,12 +2276,6 @@ xmlRelaxNGSchemaTypeCheck(void *data ATTRIBUTE_UNUSED,
     xmlSchemaTypePtr typ;
     int ret;
 
-    /*
-     * TODO: the type should be cached ab provided back, interface subject
-     * to changes.
-     * TODO: handle facets, may require an additional interface and keep
-     * the value returned from the validation.
-     */
     if ((type == NULL) || (value == NULL))
 	return(-1);
     typ = xmlSchemaGetPredefinedType(type, 
@@ -2956,9 +2947,9 @@ xmlRelaxNGCompile(xmlRelaxNGParserCtxtPtr ctxt, xmlRelaxNGDefinePtr def) {
         case XML_RELAXNG_LIST:
         case XML_RELAXNG_PARAM:
         case XML_RELAXNG_VALUE:
-	    TODO /* This should not happen and generate an internal error */
-	    printf("trying to compile %s\n", xmlRelaxNGDefName(def));
-
+	    /* This should not happen and generate an internal error */
+	    fprintf(stderr, "RNG internal error trying to compile %s\n",
+	            xmlRelaxNGDefName(def));
 	    break;
     }
     return(ret);
@@ -3302,7 +3293,6 @@ xmlRelaxNGParseValue(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
 	    }
 	}
     }
-    /* TODO check ahead of time that the value is okay per the type */
     return(def);
 }
 
@@ -4878,10 +4868,9 @@ xmlRelaxNGParseAttribute(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
 		    ctxt->nbErrors++;
 		    break;
 		case XML_RELAXNG_NOOP:
-		    TODO
 		    if (ctxt->error != NULL)
 			ctxt->error(ctxt->userData,
-		"Internal error, noop found\n");
+		"RNG Internal error, noop found in attribute\n");
 		    ctxt->nbErrors++;
 		    break;
 	    }
@@ -5199,16 +5188,27 @@ xmlRelaxNGParseElement(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
 		    ret->attrs = cur;
 		    break;
 		case XML_RELAXNG_START:
+		    if (ctxt->error != NULL)
+			ctxt->error(ctxt->userData,
+		"RNG Internal error, start found in element\n");
+		    ctxt->nbErrors++;
+		    break;
 		case XML_RELAXNG_PARAM:
+		    if (ctxt->error != NULL)
+			ctxt->error(ctxt->userData,
+		"RNG Internal error, param found in element\n");
+		    ctxt->nbErrors++;
+		    break;
 		case XML_RELAXNG_EXCEPT:
-		    TODO
+		    if (ctxt->error != NULL)
+			ctxt->error(ctxt->userData,
+		"RNG Internal error, except found in element\n");
 		    ctxt->nbErrors++;
 		    break;
 		case XML_RELAXNG_NOOP:
-		    TODO
 		    if (ctxt->error != NULL)
 			ctxt->error(ctxt->userData,
-		"Internal error, noop found\n");
+		"RNG Internal error, noop found in element\n");
 		    ctxt->nbErrors++;
 		    break;
 	    }
@@ -5438,9 +5438,6 @@ xmlRelaxNGCheckReference(xmlRelaxNGDefinePtr ref,
 			name);
 	ctxt->nbErrors++;
     }
-    /*
-     * TODO: make a closure and verify there is no loop !
-     */
 }
 
 /**

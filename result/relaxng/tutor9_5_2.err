@@ -1,2 +1,4 @@
 RNG validity error: file ./test/relaxng/tutor9_5_2.xml line 2 element card
-Element addressBook has extra content: card
+Invalid sequence in interleave
+RNG validity error: file ./test/relaxng/tutor9_5_2.xml line 2 element card
+Element card failed to validate attributes

@@ -7,6 +7,12 @@
  * Daniel Veillard <veillard@redhat.com>
  */
 
+/*
+ * TODO:
+ *   - when types are redefined in includes, check that all
+ *     types in the redef list are equal
+ *     -> need a type equality operation.
+ */
 #define IN_LIBXML
 #include "libxml.h"
 
@@ -92,6 +98,7 @@ struct _xmlSchemaParserCtxt {
     xmlAutomataStatePtr state;
 
     xmlDictPtr dict;		/* dictionnary for interned string names */
+    int        includes;	/* the inclusion level, 0 for root or imports */
 };
 
 
@@ -588,6 +595,24 @@ xmlSchemaFreeType(xmlSchemaTypePtr type)
 }
 
 /**
+ * xmlSchemaFreeTypeList:
+ * @type:  a schema type structure
+ *
+ * Deallocate a Schema Type structure.
+ */
+static void
+xmlSchemaFreeTypeList(xmlSchemaTypePtr type)
+{
+    xmlSchemaTypePtr next;
+
+    while (type != NULL) {
+        next = type->redef;
+	xmlSchemaFreeType(type);
+	type = next;
+    }
+}
+
+/**
  * xmlSchemaFree:
  * @schema:  a schema structure
  *
@@ -613,7 +638,7 @@ xmlSchemaFree(xmlSchemaPtr schema)
                     (xmlHashDeallocator) xmlSchemaFreeElement);
     if (schema->typeDecl != NULL)
         xmlHashFree(schema->typeDecl,
-                    (xmlHashDeallocator) xmlSchemaFreeType);
+                    (xmlHashDeallocator) xmlSchemaFreeTypeList);
     if (schema->groupDecl != NULL)
         xmlHashFree(schema->groupDecl,
                     (xmlHashDeallocator) xmlSchemaFreeType);
@@ -1362,14 +1387,31 @@ xmlSchemaAddType(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     }
     memset(ret, 0, sizeof(xmlSchemaType));
     ret->name = xmlDictLookup(ctxt->dict, name, -1);
+    ret->redef = NULL;
     val = xmlHashAddEntry2(schema->typeDecl, name, namespace, ret);
     if (val != 0) {
-	xmlSchemaPErr(ctxt, (xmlNodePtr) ctxt->doc,
-		      XML_SCHEMAP_REDEFINED_TYPE,
-                      "Type %s already defined\n",
-                      name, NULL);
-        xmlFree(ret);
-        return (NULL);
+        if (ctxt->includes == 0) {
+	    xmlSchemaPErr(ctxt, (xmlNodePtr) ctxt->doc,
+			  XML_SCHEMAP_REDEFINED_TYPE,
+			  "Type %s already defined\n",
+			  name, NULL);
+	    xmlFree(ret);
+	    return (NULL);
+	} else {
+	    xmlSchemaTypePtr prev;
+
+	    prev = xmlHashLookup2(schema->typeDecl, name, namespace);
+	    if (prev == NULL) {
+		xmlSchemaPErr(ctxt, (xmlNodePtr) ctxt->doc,
+			      XML_ERR_INTERNAL_ERROR,
+			      "Internal error on type %s definition\n",
+			      name, NULL);
+		xmlFree(ret);
+		return (NULL);
+	    }
+	    ret->redef = prev->redef;
+	    prev->redef = ret;
+	}
     }
     ret->minOccurs = 1;
     ret->maxOccurs = 1;
@@ -2580,6 +2622,7 @@ xmlSchemaImportSchema(xmlSchemaParserCtxtPtr ctxt,
     /* Keep the same dictionnary for parsing, really */
     xmlDictReference(ctxt->dict);
     newctxt->dict = ctxt->dict;
+    newctxt->includes = 0;
     newctxt->URL = xmlDictLookup(newctxt->dict, schemaLocation, -1);
 
     xmlSchemaSetParserErrors(newctxt, ctxt->error, ctxt->warning,
@@ -2866,7 +2909,9 @@ xmlSchemaParseSchemaTopLevel(xmlSchemaParserCtxtPtr ctxt,
 	} else if (IS_SCHEMA(child, "import")) {
 	    xmlSchemaParseImport(ctxt, schema, child);
 	} else if (IS_SCHEMA(child, "include")) {
+	    ctxt->includes++;
 	    xmlSchemaParseInclude(ctxt, schema, child);
+	    ctxt->includes--;
 	} else if (IS_SCHEMA(child, "redefine")) {
 	    TODO
 	}
@@ -3729,6 +3774,7 @@ xmlSchemaNewParserCtxt(const char *URL)
     memset(ret, 0, sizeof(xmlSchemaParserCtxt));
     ret->dict = xmlDictCreate();
     ret->URL = xmlDictLookup(ret->dict, (const xmlChar *) URL, -1);
+    ret->includes = 0;
     return (ret);
 }
 

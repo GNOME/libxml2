@@ -1,3 +1,9 @@
+Wed Dec 24 00:29:30 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemas.c include/libxml/schemasInternals.h: types might be
+	  redefined in includes, quick fix to allow this but lacks the 
+	  equality of the redefinition test.
+
 Tue Dec 23 15:14:37 HKT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* valid.c: fixed bug concerning validation using external

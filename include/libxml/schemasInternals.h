@@ -200,6 +200,7 @@ struct _xmlSchemaType {
     const xmlChar *baseNs;
     xmlSchemaTypePtr baseType;
     xmlSchemaFacetPtr facets;
+    struct _xmlSchemaType *redef;/* possible redefinitions for the type */
 };
 
 /*

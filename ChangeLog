@@ -1,3 +1,12 @@
+Sun May 16 23:12:35 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: avoid returning default namespace when searching
+	  from an attribute
+	* entities.c xmlwriter.c: reverse xmlEncodeSpecialChars() behaviour
+	  back to escaping " since the normal serialization routines do not
+	  use it anymore, should close bug #134477 . Tried to make 
+	  the writer avoid it too but it didn't work.
+
 Sun May 16 01:07:16 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* doc/ChangeLog.awk doc/ChangeLog.xsl: fixed escaping

@@ -1326,6 +1326,10 @@ xmlTextWriterWriteString(xmlTextWriterPtr writer, const xmlChar * content)
             switch (p->state) {
                 case XML_TEXTWRITER_NAME:
                 case XML_TEXTWRITER_TEXT:
+#if 0
+                    buf = NULL;
+		    xmlOutputBufferWriteEscape(writer->out, content, NULL);
+#endif
                     buf = xmlEncodeSpecialChars(NULL, content);
                     break;
                 case XML_TEXTWRITER_ATTRIBUTE:

@@ -5481,6 +5481,7 @@ xmlSearchNsByHref(xmlDocPtr doc, xmlNodePtr node, const xmlChar * href)
 {
     xmlNsPtr cur;
     xmlNodePtr orig = node;
+    int is_attr;
 
     if ((node == NULL) || (href == NULL))
         return (NULL);
@@ -5524,6 +5525,7 @@ xmlSearchNsByHref(xmlDocPtr doc, xmlNodePtr node, const xmlChar * href)
         }
         return (doc->oldNs);
     }
+    is_attr = (node->type == XML_ATTRIBUTE_NODE);
     while (node != NULL) {
         if ((node->type == XML_ENTITY_REF_NODE) ||
             (node->type == XML_ENTITY_NODE) ||
@@ -5534,7 +5536,8 @@ xmlSearchNsByHref(xmlDocPtr doc, xmlNodePtr node, const xmlChar * href)
             while (cur != NULL) {
                 if ((cur->href != NULL) && (href != NULL) &&
                     (xmlStrEqual(cur->href, href))) {
-		    if (xmlNsInScope(doc, orig, node, cur->href) == 1)
+		    if (((!is_attr) || (cur->prefix != NULL)) &&
+		        (xmlNsInScope(doc, orig, node, cur->href) == 1))
 			return (cur);
                 }
                 cur = cur->next;
@@ -5544,7 +5547,8 @@ xmlSearchNsByHref(xmlDocPtr doc, xmlNodePtr node, const xmlChar * href)
                 if (cur != NULL) {
                     if ((cur->href != NULL) && (href != NULL) &&
                         (xmlStrEqual(cur->href, href))) {
-		        if (xmlNsInScope(doc, orig, node, cur->href) == 1)
+			if (((!is_attr) || (cur->prefix != NULL)) &&
+		            (xmlNsInScope(doc, orig, node, cur->href) == 1))
 			    return (cur);
                     }
                 }

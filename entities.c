@@ -625,7 +625,6 @@ xmlEncodeSpecialChars(xmlDocPtr doc ATTRIBUTE_UNUSED, const xmlChar *input) {
 	    *out++ = 'm';
 	    *out++ = 'p';
 	    *out++ = ';';
-#if 0
 	} else if (*cur == '"') {
 	    *out++ = '&';
 	    *out++ = 'q';
@@ -633,7 +632,6 @@ xmlEncodeSpecialChars(xmlDocPtr doc ATTRIBUTE_UNUSED, const xmlChar *input) {
 	    *out++ = 'o';
 	    *out++ = 't';
 	    *out++ = ';';
-#endif
 	} else if (*cur == '\r') {
 	    *out++ = '&';
 	    *out++ = '#';

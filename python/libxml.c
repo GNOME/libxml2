@@ -1491,8 +1491,9 @@ libxml_serializeNode(PyObject *self, PyObject *args) {
 	xmlCharEncodingHandlerPtr handler = NULL;
 
 	doc = (xmlDocPtr) node;
-	if (encoding == NULL)
-	    encoding = (xmlChar *) htmlGetMetaEncoding(doc);
+	if (encoding != NULL)
+	    htmlSetMetaEncoding(doc, encoding);
+	encoding = (xmlChar *) htmlGetMetaEncoding(doc);
 
 	if (encoding != NULL) {
 	    handler = xmlFindCharEncodingHandler(encoding);
@@ -1564,6 +1565,9 @@ libxml_serializeNode(PyObject *self, PyObject *args) {
 	    xmlOutputBufferPtr buf;
 	    xmlCharEncodingHandlerPtr handler = NULL;
 
+	    if (encoding != NULL)
+		htmlSetMetaEncoding(doc, encoding);
+	    encoding = (xmlChar *) htmlGetMetaEncoding(doc);
 	    if (encoding != NULL) {
 		handler = xmlFindCharEncodingHandler(encoding);
 		if (handler == NULL) {

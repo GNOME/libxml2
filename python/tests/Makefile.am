@@ -8,6 +8,7 @@ PYTESTS=	\
     push.py	\
     pushSAX.py	\
     error.py	\
+    serialize.py\
     validate.py	\
     tstURI.py	\
     xpathret.py	\

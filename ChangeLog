@@ -1,3 +1,9 @@
+Wed Mar  6 22:38:03 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLtree.c: fixed some htmlSetMetaEncoding() problems
+	* python/libxml.c python/tests/Makefile.am python/tests/serialize.py:
+	  fixup and integrated tests for the serialization stuff
+
 Wed Mar  6 19:40:57 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am libxml.3 libxml.4 libxml.spec.in: Fixed bug #72570

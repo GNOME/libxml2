@@ -242,11 +242,9 @@ found_meta:
 		xmlAttrPtr attr = cur->properties;
 		int http;
 		const xmlChar *value;
-                int same_charset;
 
 		content = NULL;
 		http = 0;
-                same_charset = 0;
 		while (attr != NULL) {
 		    if ((attr->children != NULL) &&
 		        (attr->children->type == XML_TEXT_NODE) &&
@@ -264,17 +262,13 @@ found_meta:
                            if ((value != NULL) && 
 				(!xmlStrcasecmp(attr->name, BAD_CAST"content")))
 			      content = value;
-			   else 
-			     if ((!xmlStrcasecmp(attr->name, BAD_CAST"charset"))
-			 		&& (!xmlStrcasecmp(value, encoding)))
-			    same_charset = 1;
                         }
-		        if ((http != 0) && (content != NULL) && (same_charset != 0))
+		        if ((http != 0) && (content != NULL))
 			    break;
 		    }
 		    attr = attr->next;
 		}
-		if ((http != 0) && (content != NULL) && (same_charset != 0)) {
+		if ((http != 0) && (content != NULL)) {
 		    meta = cur;
 		    cur = cur->next;
 		    xmlUnlinkNode(meta);

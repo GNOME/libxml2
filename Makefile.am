@@ -59,6 +59,8 @@ xmlinc_HEADERS = \
 DEPS = $(top_builddir)/libxml.la
 LDADDS = $(top_builddir)/libxml.la @Z_LIBS@ @M_LIBS@
 
+man_MANS = xmllint.1 libxml.4
+
 xmllint_SOURCES=xmllint.c
 xmllint_LDFLAGS = 
 xmllint_DEPENDENCIES = $(DEPS)
@@ -331,7 +333,8 @@ CLEANFILES=xmlConf.sh
 confexecdir=$(libdir)
 confexec_DATA = xmlConf.sh
 EXTRA_DIST = xmlConf.sh.in libxml.spec.in libxml.spec \
-             example/Makefile.am example/gjobread.c example/gjobs.xml
+             example/Makefile.am example/gjobread.c example/gjobs.xml \
+	     $(man_MANS)
 
 xmlConf.sh: xmlConf.sh.in Makefile
 ## Use sed and then mv to avoid problems if the user interrupts.

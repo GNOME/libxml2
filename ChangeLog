@@ -1,3 +1,8 @@
+Tue Feb  4 16:31:55 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* valid.c: fixing bug #103969 forgot to add an epsilon transition
+	  when building the automata for elem*
+
 Tue Feb  4 16:21:07 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: applied patch from Arne de Bruijn fixing 

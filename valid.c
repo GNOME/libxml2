@@ -544,6 +544,8 @@ xmlValidBuildAContentModel(xmlElementContentPtr content,
 		case XML_ELEMENT_CONTENT_MULT:
 		    xmlAutomataNewTransition(ctxt->am, ctxt->state,
 			                     ctxt->state, fname, NULL);
+		    ctxt->state = xmlAutomataNewEpsilon(ctxt->am, ctxt->state,
+			                     NULL);
 		    break;
 	    }
 	    if (QName != NULL)

@@ -339,7 +339,7 @@ xmlFileMatch (const char *filename ATTRIBUTE_UNUSED) {
 }
 
 /**
- * xmlFileOpen:
+ * xmlFileOpen_real:
  * @filename:  the URI for matching
  *
  * input from FILE *, supports compressed input
@@ -347,8 +347,8 @@ xmlFileMatch (const char *filename ATTRIBUTE_UNUSED) {
  *
  * Returns an I/O context or NULL in case of error
  */
-void *
-xmlFileOpen (const char *filename) {
+static void *
+xmlFileOpen_real (const char *filename) {
     const char *path = NULL;
     FILE *fd;
 
@@ -383,6 +383,27 @@ xmlFileOpen (const char *filename) {
     fd = fopen(path, "r");
 #endif /* WIN32 */
     return((void *) fd);
+}
+
+/**
+ * xmlFileOpen:
+ * @filename:  the URI for matching
+ *
+ * Wrapper around xmlFileOpen_real that try it with an unescaped
+ * version of @filename, if this fails fallback to @filename
+ */
+void *
+xmlFileOpen (const char *filename) {
+    char *unescaped;
+    void *retval;
+    unescaped = xmlURIUnescapeString(filename, 0, NULL);
+    if (unescaped != NULL) {
+	retval = xmlFileOpen_real(unescaped);
+    } else {
+	retval = xmlFileOpen_real(filename);
+    }
+    xmlFree(unescaped);
+    return retval;
 }
 
 /**
@@ -513,7 +534,7 @@ xmlGzfileMatch (const char *filename ATTRIBUTE_UNUSED) {
 }
 
 /**
- * xmlGzfileOpen:
+ * xmlGzfileOpen_real:
  * @filename:  the URI for matching
  *
  * input from compressed file open
@@ -522,7 +543,7 @@ xmlGzfileMatch (const char *filename ATTRIBUTE_UNUSED) {
  * Returns an I/O context or NULL in case of error
  */
 static void *
-xmlGzfileOpen (const char *filename) {
+xmlGzfileOpen_real (const char *filename) {
     const char *path = NULL;
     gzFile fd;
 
@@ -553,6 +574,27 @@ xmlGzfileOpen (const char *filename) {
 
     fd = gzopen(path, "rb");
     return((void *) fd);
+}
+
+/**
+ * xmlGzfileOpen:
+ * @filename:  the URI for matching
+ *
+ * Wrapper around xmlGzfileOpen that try it with an unescaped
+ * version of @filename, if this fails fallback to @filename
+ */
+static void *
+xmlGzfileOpen (const char *filename) {
+    char *unescaped;
+    void *retval;
+    unescaped = xmlURIUnescapeString(filename, 0, NULL);
+    if (unescaped != NULL) {
+	retval = xmlGzfileOpen_real(unescaped);
+    } else {
+	retval = xmlGzfileOpen_real(filename);
+    }
+    xmlFree(unescaped);
+    return retval;
 }
 
 /**
@@ -1724,7 +1766,6 @@ xmlParserInputBufferCreateFilename
     xmlParserInputBufferPtr ret;
     int i = 0;
     void *context = NULL;
-    char *unescaped;
     char *normalized;
 
     if (xmlInputCallbackInitialized == 0)
@@ -1740,24 +1781,6 @@ xmlParserInputBufferCreateFilename
     /*
      * Try to find one of the input accept method accepting that scheme
      * Go in reverse to give precedence to user defined handlers.
-     * try with an unescaped version of the URI
-     */
-    unescaped = xmlURIUnescapeString((char *) normalized, 0, NULL);
-    if (unescaped != NULL) {
-	for (i = xmlInputCallbackNr - 1;i >= 0;i--) {
-	    if ((xmlInputCallbackTable[i].matchcallback != NULL) &&
-		(xmlInputCallbackTable[i].matchcallback(unescaped) != 0)) {
-		context = xmlInputCallbackTable[i].opencallback(unescaped);
-		if (context != NULL)
-		    break;
-	    }
-	}
-	xmlFree(unescaped);
-    }
-
-    /*
-     * If this failed try with a non-escaped URI this may be a strange
-     * filename
      */
     if (context == NULL) {
 	for (i = xmlInputCallbackNr - 1;i >= 0;i--) {

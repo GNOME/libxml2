@@ -1,3 +1,8 @@
+Fri Jan 10 17:07:01 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* nanoftp.c nanohttp.c xmlIO.c: patch from Stefano Zacchiroli
+	  to fix some URI/file escaping problems
+
 Fri Jan 10 16:20:34 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* python/generator.py: fixed a bug raised by Raymond Wiker, 

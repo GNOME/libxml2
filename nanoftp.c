@@ -59,6 +59,7 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 #include <libxml/xmlerror.h>
+#include <libxml/uri.h>
 #include <libxml/nanoftp.h>
 #include <libxml/globals.h>
 
@@ -496,6 +497,7 @@ xmlNanoFTPScanProxy(const char *URL) {
 void*
 xmlNanoFTPNewCtxt(const char *URL) {
     xmlNanoFTPCtxtPtr ret;
+    char *unescaped;
 
     ret = (xmlNanoFTPCtxtPtr) xmlMalloc(sizeof(xmlNanoFTPCtxt));
     if (ret == NULL) return(NULL);
@@ -508,8 +510,12 @@ xmlNanoFTPNewCtxt(const char *URL) {
     ret->controlBufUsed = 0;
     ret->controlFd = -1;
 
-    if (URL != NULL)
+    unescaped = xmlURIUnescapeString(URL, 0, NULL);
+    if (unescaped != NULL)
+	xmlNanoFTPScanURL(ret, unescaped);
+    else if (URL != NULL)
 	xmlNanoFTPScanURL(ret, URL);
+    xmlFree(unescaped);
 
     return(ret);
 }

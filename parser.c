@@ -12022,7 +12022,6 @@ xmlInitParser(void) {
     xmlInitThreads();
     xmlInitMemory();
     xmlInitCharEncodingHandlers();
-    xmlInitializePredefinedEntities();
     xmlDefaultSAXHandlerInit();
     xmlRegisterDefaultInputCallbacks();
 #ifdef LIBXML_OUTPUT_ENABLED
@@ -12055,7 +12054,6 @@ xmlCleanupParser(void) {
 	return;
 
     xmlCleanupCharEncodingHandlers();
-    xmlCleanupPredefinedEntities();
 #ifdef LIBXML_CATALOG_ENABLED
     xmlCatalogCleanup();
 #endif

@@ -10,12 +10,14 @@
 #define IN_LIBXML
 #include "libxml.h"
 
+#ifdef LIBXML_LEGACY_ENABLED
+#include <string.h>
+
 #include <libxml/tree.h>
 #include <libxml/entities.h>
 #include <libxml/SAX.h>
 #include <libxml/parserInternals.h>
 
-#ifdef LIBXML_LEGACY_ENABLED
 void xmlUpgradeOldNs(xmlDocPtr doc);
 
 /************************************************************************
@@ -23,6 +25,24 @@ void xmlUpgradeOldNs(xmlDocPtr doc);
  *		Deprecated functions kept for compatibility		*
  *									*
  ************************************************************************/
+
+/**
+ * xmlInitializePredefinedEntities:
+ *
+ * Set up the predefined entities.
+ * Deprecated call
+ */
+void xmlInitializePredefinedEntities(void) {
+}
+
+/**
+ * xmlCleanupPredefinedEntities:
+ *
+ * Cleanup up the predefined entities table.
+ * Deprecated call
+ */
+void xmlCleanupPredefinedEntities(void) {
+}
 
 static const char *xmlFeaturesList[] = {
     "validate",

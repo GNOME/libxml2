@@ -24,23 +24,41 @@
  * The XML predefined entities.
  */
 
-struct xmlPredefinedEntityValue {
-    const char *name;
-    const char *value;
+static xmlEntity xmlEntityLt = {
+    NULL, XML_ENTITY_DECL, BAD_CAST "lt",
+    NULL, NULL, NULL, NULL, NULL, NULL, 
+    BAD_CAST "<", BAD_CAST "<", 1,
+    XML_INTERNAL_PREDEFINED_ENTITY,
+    NULL, NULL, NULL, NULL, 0
 };
-static struct xmlPredefinedEntityValue xmlPredefinedEntityValues[] = {
-    { "lt", "<" },
-    { "gt", ">" },
-    { "apos", "'" },
-    { "quot", "\"" },
-    { "amp", "&" }
+static xmlEntity xmlEntityGt = {
+    NULL, XML_ENTITY_DECL, BAD_CAST "gt",
+    NULL, NULL, NULL, NULL, NULL, NULL, 
+    BAD_CAST ">", BAD_CAST ">", 1,
+    XML_INTERNAL_PREDEFINED_ENTITY,
+    NULL, NULL, NULL, NULL, 0
 };
-
-/*
- * TODO: This is GROSS, allocation of a 256 entry hash for
- *       a fixed number of 4 elements !
- */
-static xmlHashTablePtr xmlPredefinedEntities = NULL;
+static xmlEntity xmlEntityAmp = {
+    NULL, XML_ENTITY_DECL, BAD_CAST "amp",
+    NULL, NULL, NULL, NULL, NULL, NULL, 
+    BAD_CAST "&", BAD_CAST "&", 1,
+    XML_INTERNAL_PREDEFINED_ENTITY,
+    NULL, NULL, NULL, NULL, 0
+};
+static xmlEntity xmlEntityQuot = {
+    NULL, XML_ENTITY_DECL, BAD_CAST "quot",
+    NULL, NULL, NULL, NULL, NULL, NULL, 
+    BAD_CAST "\"", BAD_CAST "\"", 1,
+    XML_INTERNAL_PREDEFINED_ENTITY,
+    NULL, NULL, NULL, NULL, 0
+};
+static xmlEntity xmlEntityApos = {
+    NULL, XML_ENTITY_DECL, BAD_CAST "apos",
+    NULL, NULL, NULL, NULL, NULL, NULL, 
+    BAD_CAST "'", BAD_CAST "'", 1,
+    XML_INTERNAL_PREDEFINED_ENTITY,
+    NULL, NULL, NULL, NULL, 0
+};
 
 /*
  * xmlFreeEntity : clean-up an entity record.
@@ -93,9 +111,7 @@ xmlAddEntity(xmlDtdPtr dtd, const xmlChar *name, int type,
 	    table = dtd->pentities;
 	    break;
         case XML_INTERNAL_PREDEFINED_ENTITY:
-	    if (xmlPredefinedEntities == NULL)
-		xmlPredefinedEntities = xmlHashCreate(8);
-	    table = xmlPredefinedEntities;
+	    return(NULL);
     }
     if (table == NULL)
 	return(NULL);
@@ -140,48 +156,6 @@ xmlAddEntity(xmlDtdPtr dtd, const xmlChar *name, int type,
 }
 
 /**
- * xmlInitializePredefinedEntities:
- *
- * Set up the predefined entities.
- */
-void xmlInitializePredefinedEntities(void) {
-    unsigned int i;
-    xmlChar name[50];
-    xmlChar value[50];
-    const char *in;
-    xmlChar *out;
-
-    if (xmlPredefinedEntities != NULL) return;
-
-    xmlPredefinedEntities = xmlCreateEntitiesTable();
-    for (i = 0;i < sizeof(xmlPredefinedEntityValues) / 
-                   sizeof(xmlPredefinedEntityValues[0]);i++) {
-        in = xmlPredefinedEntityValues[i].name;
-	out = &name[0];
-	for (;(*out++ = (xmlChar) *in);)in++;
-        in = xmlPredefinedEntityValues[i].value;
-	out = &value[0];
-	for (;(*out++ = (xmlChar) *in);)in++;
-
-        xmlAddEntity(NULL, (const xmlChar *) &name[0],
-	             XML_INTERNAL_PREDEFINED_ENTITY, NULL, NULL,
-		     &value[0]);
-    }
-}
-
-/**
- * xmlCleanupPredefinedEntities:
- *
- * Cleanup up the predefined entities table.
- */
-void xmlCleanupPredefinedEntities(void) {
-    if (xmlPredefinedEntities == NULL) return;
-
-    xmlFreeEntitiesTable(xmlPredefinedEntities);
-    xmlPredefinedEntities = NULL;
-}
-
-/**
  * xmlGetPredefinedEntity:
  * @name:  the entity name
  *
@@ -191,9 +165,30 @@ void xmlCleanupPredefinedEntities(void) {
  */
 xmlEntityPtr
 xmlGetPredefinedEntity(const xmlChar *name) {
-    if (xmlPredefinedEntities == NULL)
-        xmlInitializePredefinedEntities();
-    return((xmlEntityPtr) xmlHashLookup(xmlPredefinedEntities, name));
+    if (name == NULL) return(NULL);
+    switch (name[0]) {
+        case 'l':
+	    if (xmlStrEqual(name, BAD_CAST "lt"))
+	        return(&xmlEntityLt);
+	    break;
+        case 'g':
+	    if (xmlStrEqual(name, BAD_CAST "gt"))
+	        return(&xmlEntityGt);
+	    break;
+        case 'a':
+	    if (xmlStrEqual(name, BAD_CAST "amp"))
+	        return(&xmlEntityAmp);
+	    if (xmlStrEqual(name, BAD_CAST "apos"))
+	        return(&xmlEntityApos);
+	    break;
+        case 'q':
+	    if (xmlStrEqual(name, BAD_CAST "quot"))
+	        return(&xmlEntityQuot);
+	    break;
+	default:
+	    break;
+    }
+    return(NULL);
 }
 
 /**
@@ -397,10 +392,7 @@ xmlGetDocEntity(xmlDocPtr doc, const xmlChar *name) {
 	    }
 	}
     }
-    if (xmlPredefinedEntities == NULL)
-        xmlInitializePredefinedEntities();
-    table = xmlPredefinedEntities;
-    return(xmlGetEntityFromTable(table, name));
+    return(xmlGetPredefinedEntity(name));
 }
 
 /*

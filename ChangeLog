@@ -1,3 +1,9 @@
+Tue Sep 30 15:34:31 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* entities.c legacy.c parser.c: made the predefined entities
+	  static predefined structures to avoid the work, memory and
+	  hazards associated to initialization/cleanup.
+
 Tue Sep 30 14:30:47 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c Makefile.am configure.in legacy.c parser.c

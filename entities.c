@@ -502,7 +502,7 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
 		/*
 		 * We assume we have UTF-8 input.
 		 */
-		char buf[10], *ptr;
+		char buf[11], *ptr;
 		int val = 0, l = 1;
 
 		if (*cur < 0xC0) {
@@ -564,7 +564,7 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
 		continue;
 	    }
 	} else if (IS_CHAR((unsigned int) *cur)) {
-	    char buf[10], *ptr;
+	    char buf[11], *ptr;
 
 	    snprintf(buf, sizeof(buf), "&#%d;", *cur);
 	    buf[sizeof(buf) - 1] = 0;

@@ -14,14 +14,6 @@ import string
 import time
 
 #
-# A little routine to assign a 'meaningful' name to a range
-#
-def rangename( intvl ):
-    (start, end) = intvl
-    rname = "r" + hex(start)[2:] + "x" + hex(end)[2:]
-    return rname
-
-#
 # A routine to take a list of yes/no (1, 0) values and turn it
 # into a list of ranges.  This will later be used to determine whether
 # to generate single-byte lookup tables, or inline comparisons
@@ -50,9 +42,6 @@ sources = "chvalid.def"			# input filename
 # before a 256-byte lookup table is produced.  If there are less than this
 # number, a macro with inline comparisons is generated
 minTableSize = 6
-
-# dictionary of ranges, key=range, element contains list of funcs using it
-Ranges = {}
 
 # dictionary of functions, key=name, element contains char-map and range-list
 Functs = {}
@@ -173,10 +162,6 @@ for line in defines.readlines():
 			    raise ValidationError, msg
 			Functs[name][0][ch] = 1
 		else:			# multi-byte
-		    if Ranges.has_key(currange):
-			Ranges[currange].append(name)
-		    else:
-			Ranges[currange] = [ name ]
 		    if currange in Functs[name][1]:
 			raise ValidationError, "range already defined in" \
 				" function"
@@ -333,32 +318,66 @@ for f in fkeys:
 		rangeTable.insert(0, (0x20, 0x20))
 	    except:
 		pass
-	    pline = "#define %s_ch(c)\t( " % f
 	    firstFlag = 1
+	    # okay, I'm tired of the messy lineup - let's automate it!
+	    pline = "#define %s_ch(c)" % f
+	    # 'ntab' is number of tabs needed to position to col. 33 from name end
+	    ntab = 4 - (len(pline)) / 8
+	    if ntab < 0:
+		ntab = 0
+	    just = ""
+	    for i in range(ntab):
+		just += "\t"
+	    pline = pline + just + "("
 	    for rg in rangeTable:
 		if not firstFlag:
-		    pline += " || \\\n\t\t\t"
+		    pline += " || \\\n\t\t\t\t "
 		else:
 		    firstFlag = 0
 		if rg[0] == rg[1]:		# single value - check equal
-		    pline += "((c) == " + hex(rg[0]) + ")"
-		else:			# value range
-		    pline += "((" + hex(rg[0]) + "<= (c)) &&"
-		    pline += " ((c) <= " + hex(rg[1]) + "))"
+		    pline += "((c) == 0x%x)" % rg[0]
+		else:				# value range
+		    pline += "((0x%x <= (c)) &&" % rg[0]
+		    pline += " ((c) <= 0x%x))" % rg[1]
 	    pline += ")\n"
 	    header.write(pline)
 
-    header.write("#define %s(c)\t(((c) < 0x100) ? \\\n\t\t\t\t" % f)
+    pline = "#define %s(c)" % f
+    ntab = 4 - (len(pline)) / 8
+    if ntab < 0:
+	ntab = 0
+    just = ""
+    for i in range(ntab):
+	just += "\t"
+    header.write(pline + just + "(((c) < 0x100) ? \\\n\t\t\t\t ")
     if max(Functs[f][0]) > 0:
 	header.write("%s_ch((c)) :" % f)
     else:
 	header.write("0 :")
 
     # if no ranges defined, value invalid if >= 0x100
-    if len(Functs[f][1]) == 0:
+    numRanges = len(Functs[f][1])
+    if numRanges == 0:
 	header.write(" 0)\n\n")
     else:
-	header.write(" \\\n\t\t\t\txmlCharInRange((c), &%sGroup))\n\n"  % f)
+	if numRanges >= minTableSize:
+	    header.write(" \\\n\t\t\t\t xmlCharInRange((c), &%sGroup))\n\n"  % f)
+	else:		# if < minTableSize, generate inline code
+	    firstFlag = 1
+	    for rg in Functs[f][1]:
+		if not firstFlag:
+		    pline += " || \\\n\t\t\t\t "
+		else:
+		    firstFlag = 0
+		    pline = "\\\n\t\t\t\t("
+		if rg[0] == rg[1]:		# single value - check equal
+		    pline += "((c) == 0x%x)" % rg[0]
+		else:				# value range
+		    pline += "((0x%x <= (c)) &&" % rg[0]
+		    pline += " ((c) <= 0x%x))" % rg[1]
+	    pline += "))\n\n"
+	    header.write(pline)
+
 
     if len(Functs[f][1]) > 0:
 	header.write("extern xmlChRangeGroup %sGroup;\n" % f)
@@ -399,11 +418,15 @@ for f in fkeys:
 		pline += "{0x%x, 0x%x}" % (rg[0], rg[1])
 	output.write(pline + "};\n")	# finish off last group
 
-	pline = "xmlChRangeGroup %sGroup = {%d, %d, " % (f, numShort, numLong)
+	pline = "xmlChRangeGroup %sGroup =\n\t{%d, %d, " % (f, numShort, numLong)
 	if numShort > 0:
 	    pline += "%s_srng" % f
+	else:
+	    pline += "(xmlChSRangePtr)0"
 	if numLong > 0:
 	    pline += ", %s_lrng" % f
+	else:
+	    pline += ", (xmlChLRangePtr)0"
 	
 	output.write(pline + "};\n\n")
 #
@@ -430,31 +453,38 @@ xmlCharInRange (unsigned int val, xmlChRangeGroupPtr rptr) {
 	if (rptr->nbShortRange == 0)
 	    return 0;
 	low = 0;
-	high = rptr->nbShortRange;
+	high = rptr->nbShortRange - 1;
 	sptr = rptr->shortRange;
 	while (low <= high) {
 	    mid = (low + high) / 2;
-	    if ((unsigned short) val < sptr[mid].low)
+	    if ((unsigned short) val < sptr[mid].low) {
 		high = mid - 1;
-	    else if ((unsigned short) val > sptr[mid].high)
-		low = mid + 1;
-	    else
-		return 1;
+	    } else {
+	        if ((unsigned short) val > sptr[mid].high) {
+		    low = mid + 1;
+		} else {
+		    return 1;
+		}
+	    }
 	}
     } else {
-	if (rptr->nbLongRange == 0)
+	if (rptr->nbLongRange == 0) {
 	    return 0;
+	}
 	low = 0;
-	high = rptr->nbLongRange;
+	high = rptr->nbLongRange - 1;
 	lptr = rptr->longRange;
 	while (low <= high) {
 	    mid = (low + high) / 2;
-	    if (val < lptr[mid].low)
+	    if (val < lptr[mid].low) {
 		high = mid - 1;
-	    else if (val > lptr[mid].high)
-		low = mid + 1;
-	    else
-		return 1;
+	    } else {
+	        if (val > lptr[mid].high) {
+		    low = mid + 1;
+		} else {
+		    return 1;
+		}
+	    }
 	}
     }
     return 0;

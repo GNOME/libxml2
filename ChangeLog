@@ -1,3 +1,9 @@
+Wed Mar 30 09:39:27 CEST 2005 Daniel Veillard <daniel@veillard.com>
+
+	* python/generator.py python/libxml.c: applied patch from Brent
+	  Hendricks to avoid leak in python bindings when using schemas
+	  error handlers.
+
 Tue Mar 29 22:29:28 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLtree.c: fixing bug 168196, <a name=""> must be URI escaped too

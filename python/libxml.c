@@ -1859,7 +1859,7 @@ libxml_xmlSetValidErrors(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
 }
 
 
-PyObject *
+static PyObject *
 libxml_xmlFreeValidCtxt(PyObject *self ATTRIBUTE_UNUSED, PyObject *args) {
     xmlValidCtxtPtr cur;
     xmlValidCtxtPyCtxtPtr pyCtxt;
@@ -3289,8 +3289,7 @@ libxml_xmlSchemaSetValidErrors(ATTRIBUTE_UNUSED PyObject * self, PyObject * args
 	return(py_retval);
 }
 
-#if 0
-PyObject *
+static PyObject *
 libxml_xmlSchemaFreeValidCtxt(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
 {
 	xmlSchemaValidCtxtPtr ctxt;
@@ -3316,7 +3315,6 @@ libxml_xmlSchemaFreeValidCtxt(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
 	Py_INCREF(Py_None);
 	return(Py_None);
 }
-#endif
 
 #endif
 
@@ -3668,6 +3666,7 @@ static PyMethodDef libxmlMethods[] = {
     {(char *)"xmlRelaxNGSetValidErrors", libxml_xmlRelaxNGSetValidErrors, METH_VARARGS, NULL},
     {(char *)"xmlRelaxNGFreeValidCtxt", libxml_xmlRelaxNGFreeValidCtxt, METH_VARARGS, NULL},
     {(char *)"xmlSchemaSetValidErrors", libxml_xmlSchemaSetValidErrors, METH_VARARGS, NULL},
+    {(char *)"xmlSchemaFreeValidCtxt", libxml_xmlSchemaFreeValidCtxt, METH_VARARGS, NULL},
 #endif
 #ifdef LIBXML_C14N_ENABLED
 #ifdef LIBXML_OUTPUT_ENABLED

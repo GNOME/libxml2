@@ -3,7 +3,7 @@
 <html>
 <head>
   <title>The XML library for Gnome</title>
-  <meta name="GENERATOR" content="amaya V2.1">
+  <meta name="GENERATOR" content="amaya V2.4">
   <meta http-equiv="Content-Type" content="text/html">
 </head>
 
@@ -61,7 +61,7 @@ building tag-based structured documents/data.</p>
   <li>This library is released both under the W3C Copyright and the GNU LGPL.
     Basically, everybody should be happy; if not, drop me a mail.</li>
   <li>There is <a href="upgrade.html">a  first set of instruction</a>
-    concerning upgrade from libxml-1.x to libxml-2.x </li>
+    concerning upgrade from libxml-1.x to libxml-2.x</li>
 </ul>
 
 <h2><a name="Documentat">Documentation</a></h2>
@@ -163,25 +163,37 @@ for really accurate description</h3>
 <ul>
   <li>working on HTML and XML links recognition layers, get in touch with me
     if you want to test those.</li>
-  <li>huge work toward libxml-2.0: This work is available only in W3C CVs base
-    for the moment. You get the <a
-    href="ftp://rpmfind.net/pub/libxml/cvs-snapshot.tar.gz">snapshot</a> for
-    the updated version:
+</ul>
+
+<h3>2.0.0beta: Mar 14 2000</h3>
+<ul>
+  <li>This is a first Beta release of libxml version 2</li>
+  <li>It's available only from<a href="ftp://rpmfind.net/pub/libxml/">
+    rpmfind.net FTP</a>, it's packaged as libxml2-2.0.0beta and available as
+    tar and RPMs</li>
+  <li>This version is now the head in the Gnome CVS base, the old one is
+    available under the tag LIB_XML_1_X</li>
+  <li>This includes a very large set of changes. Froma  programmatic point of
+    view applications should not have to be modified too much, check the <a
+    href="upgrade.html">upgrade page</a></li>
+  <li>Some interfaces may changes (especially a bit about encoding).</li>
+  <li>the updates includes:
     <ul>
-      <li>fix I18N support. ISO-Latin-x/UTF-8/UTF-16 seems correctly handled
-        now</li>
+      <li>fix I18N support. ISO-Latin-x/UTF-8/UTF-16 (nearly) seems correctly
+        handled now</li>
       <li>Better handling of entities, especially well formedness checking and
         proper PEref extensions in external subsets</li>
       <li>DTD conditional sections</li>
       <li>Validation now correcly handle entities content</li>
       <li><a href="http://rpmfind.net/tools/gdome/messages/0039.html">change
         structures to accomodate DOM</a></li>
-      <li>Lot of work toward a better compliance. I'm now running and
-        debugging regression tests agains the <a
-        href="http://www.oasis-open.org/committees/xmlconf-pub.html">OASIS
-        testsuite</a></li>
     </ul>
   </li>
+  <li>Serious progress were made toward compliance, <a
+    href="conf/result.html">here are the result of the test</a> against the
+    OASIS testsuite (except the japanese tests since I don't support that
+    encoding yet). This URL is rebuilt every couple of hours using the CVS
+    head version.</li>
 </ul>
 
 <h3>1.8.7: Mar 6 2000</h3>
@@ -1066,6 +1078,6 @@ base under gnome-xml/example</p>
 
 <p><a href="mailto:Daniel.Veillard@w3.org">Daniel Veillard</a></p>
 
-<p>$Id: xml.html,v 1.27 2000/03/02 00:15:55 veillard Exp $</p>
+<p>$Id: xml.html,v 1.28 2000/03/06 07:41:49 veillard Exp $</p>
 </body>
 </html>

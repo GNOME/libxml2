@@ -8,10 +8,10 @@ Version: %ver
 Release: 1
 Copyright: LGPL
 Group: X11/Libraries
-Source: ftp://ftp.gnome.org/pub/GNOME/sources/libxml/libxml-%{ver}.tar.gz
-BuildRoot: /var/tmp/libxml-%{PACKAGE_VERSION}-root
+Source: ftp://ftp.gnome.org/pub/GNOME/sources/libxml/libxml2-%{ver}.tar.gz
+BuildRoot: /var/tmp/libxml2-%{PACKAGE_VERSION}-root
 
-URL: http://rpmfind.net/veillard/XML/
+URL: http://xmlsoft.org/
 Prereq: /sbin/install-info
 Docdir: %{prefix}/doc
 
@@ -21,7 +21,7 @@ This library allows you to manipulate XML files.
 %package devel
 Summary: Libraries, includes, etc to develop libxml applications
 Group: X11/libraries
-Requires: libxml
+Requires: libxml2
 
 %description devel
 Libraries, include files, etc you can use to develop libxml applications.
@@ -79,15 +79,6 @@ fi
 rm -rf $RPM_BUILD_ROOT
 
 make prefix=$RPM_BUILD_ROOT%{prefix} install
-#
-# hack to get libxml.so.0 too !
-# Get rid of it once deps to libxml.so.0 have disapeared.
-#
-if [ -f $RPM_BUILD_ROOT/%{prefix}/lib/libxml.so.@VERSION@ ]
-then
-    (cd $RPM_BUILD_ROOT/%{prefix}/lib/ ; cp libxml.so.@VERSION@ libxml.so.0.99.0 ; ln -sf libxml.so.0.99.0 libxml.so.0)
-fi
-
 
 %clean
 rm -rf $RPM_BUILD_ROOT

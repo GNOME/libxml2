@@ -115,7 +115,7 @@ SIZE="3"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN10228"
+NAME="AEN10666"
 ></A
 ><H2
 >Name</H2
@@ -123,7 +123,7 @@ NAME="AEN10228"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN10231"
+NAME="AEN10669"
 ></A
 ><H2
 >Synopsis</H2
@@ -142,18 +142,6 @@ CLASS="SYNOPSIS"
 HREF="gnome-xml-parserinternals.html#XML-MAX-NAMELEN"
 >XML_MAX_NAMELEN</A
 >
-typedef     <A
-HREF="gnome-xml-parserinternals.html#CHARVAL"
->CHARVAL</A
->;
-#define     <A
-HREF="gnome-xml-parserinternals.html#NEXTCHARVAL"
->NEXTCHARVAL</A
->                     (p)
-#define     <A
-HREF="gnome-xml-parserinternals.html#SKIPCHARVAL"
->SKIPCHARVAL</A
->                     (p)
 #define     <A
 HREF="gnome-xml-parserinternals.html#IS-CHAR"
 >IS_CHAR</A
@@ -227,13 +215,6 @@ HREF="gnome-xml-parserinternals.html#XMLCREATEMEMORYPARSERCTXT"
 >xmlCreateMemoryParserCtxt</A
 >  (char *buffer,
                                              int size);
-void        <A
-HREF="gnome-xml-parser.html#XMLFREEPARSERCTXT"
->xmlFreeParserCtxt</A
->               (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt);
 <A
 HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
@@ -241,6 +222,24 @@ HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
 HREF="gnome-xml-parserinternals.html#XMLNEWPARSERCTXT"
 >xmlNewParserCtxt</A
 >           (void);
+<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> <A
+HREF="gnome-xml-parserinternals.html#XMLCREATEENTITYPARSERCTXT"
+>xmlCreateEntityParserCtxt</A
+>  (const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *URL,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *ID,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *base);
 void        <A
 HREF="gnome-xml-parserinternals.html#XMLSWITCHENCODING"
 >xmlSwitchEncoding</A
@@ -252,6 +251,13 @@ HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
 HREF="gnome-xml-encoding.html#XMLCHARENCODING"
 >xmlCharEncoding</A
 > enc);
+void        <A
+HREF="gnome-xml-parser.html#XMLFREEPARSERCTXT"
+>xmlFreeParserCtxt</A
+>               (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
 void        <A
 HREF="gnome-xml-parserinternals.html#XMLHANDLEENTITY"
 >xmlHandleEntity</A
@@ -322,7 +328,11 @@ HREF="gnome-xml-tree.html#XMLCHAR"
 >*    <A
 HREF="gnome-xml-parserinternals.html#XMLSPLITQNAME"
 >xmlSplitQName</A
->                   (const <A
+>                   (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             const <A
 HREF="gnome-xml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
@@ -772,6 +782,13 @@ HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 void        <A
+HREF="gnome-xml-parserinternals.html#XMLPARSETEXTDECL"
+>xmlParseTextDecl</A
+>                (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+void        <A
 HREF="gnome-xml-parserinternals.html#XMLPARSEMISC"
 >xmlParseMisc</A
 >                    (<A
@@ -820,6 +837,33 @@ HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              int len,
+                                             int what,
+                                             <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> end,
+                                             <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> end2,
+                                             <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> end3);
+<A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    <A
+HREF="gnome-xml-parserinternals.html#XMLSTRINGDECODEENTITIES"
+>xmlStringDecodeEntities</A
+>         (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *str,
                                              int what,
                                              <A
 HREF="gnome-xml-tree.html#XMLCHAR"
@@ -882,7 +926,7 @@ HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN10441"
+NAME="AEN10891"
 ></A
 ><H2
 >Description</H2
@@ -892,14 +936,14 @@ NAME="AEN10441"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN10444"
+NAME="AEN10894"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10446"
+NAME="AEN10896"
 ></A
 ><H3
 ><A
@@ -925,136 +969,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10451"
-></A
-><H3
-><A
-NAME="CHARVAL"
-></A
->CHARVAL</H3
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN10455"
-></A
-><H3
-><A
-NAME="NEXTCHARVAL"
-></A
->NEXTCHARVAL()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define     NEXTCHARVAL(p)</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->p</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN10469"
-></A
-><H3
-><A
-NAME="SKIPCHARVAL"
-></A
->SKIPCHARVAL()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define SKIPCHARVAL(p) (p)++;</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->p</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN10483"
+NAME="AEN10901"
 ></A
 ><H3
 ><A
@@ -1112,7 +1027,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10497"
+NAME="AEN10915"
 ></A
 ><H3
 ><A
@@ -1170,7 +1085,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10511"
+NAME="AEN10929"
 ></A
 ><H3
 ><A
@@ -1228,7 +1143,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10525"
+NAME="AEN10943"
 ></A
 ><H3
 ><A
@@ -1286,7 +1201,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10539"
+NAME="AEN10957"
 ></A
 ><H3
 ><A
@@ -1344,7 +1259,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10553"
+NAME="AEN10971"
 ></A
 ><H3
 ><A
@@ -1402,7 +1317,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10567"
+NAME="AEN10985"
 ></A
 ><H3
 ><A
@@ -1460,7 +1375,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10581"
+NAME="AEN10999"
 ></A
 ><H3
 ><A
@@ -1476,7 +1391,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define     IS_LETTER(c)</PRE
+>#define IS_LETTER(c) (IS_BASECHAR(c) || IS_IDEOGRAPHIC(c))</PRE
 ></TD
 ></TR
 ></TABLE
@@ -1518,7 +1433,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10595"
+NAME="AEN11013"
 ></A
 ><H3
 ><A
@@ -1576,7 +1491,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10609"
+NAME="AEN11027"
 ></A
 ><H3
 ><A
@@ -1634,7 +1549,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10623"
+NAME="AEN11041"
 ></A
 ><H3
 ><A
@@ -1692,7 +1607,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10637"
+NAME="AEN11055"
 ></A
 ><H3
 ><A
@@ -1750,7 +1665,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10651"
+NAME="AEN11069"
 ></A
 ><H3
 ><A
@@ -1831,7 +1746,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10672"
+NAME="AEN11090"
 ></A
 ><H3
 ><A
@@ -1911,7 +1826,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10692"
+NAME="AEN11110"
 ></A
 ><H3
 ><A
@@ -1965,7 +1880,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an pointer to a zero terminated char array</TD
+>  a pointer to a zero terminated char array</TD
 ></TR
 ><TR
 ><TD
@@ -2007,71 +1922,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10716"
-></A
-><H3
-><A
-NAME="XMLFREEPARSERCTXT"
-></A
->xmlFreeParserCtxt ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlFreeParserCtxt               (<A
-HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
->xmlParserCtxtPtr</A
-> ctxt);</PRE
-></TD
-></TR
-></TABLE
-><P
->Free all the memory used by a parser context. However the parsed
-document in ctxt-&gt;myDoc is not freed.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctxt</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN10732"
+NAME="AEN11134"
 ></A
 ><H3
 ><A
@@ -2132,7 +1983,132 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10748"
+NAME="AEN11150"
+></A
+><H3
+><A
+NAME="XMLCREATEENTITYPARSERCTXT"
+></A
+>xmlCreateEntityParserCtxt ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> xmlCreateEntityParserCtxt  (const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *URL,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *ID,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *base);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Create a parser context for an external entity
+Automatic support for ZLIB/Compress compressed document is provided
+by default if found at compile-time.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>URL</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the entity URL</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ID</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the entity PUBLIC ID</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>base</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a posible base for the target URI</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the new parser context or NULL</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11181"
 ></A
 ><H3
 ><A
@@ -2217,7 +2193,71 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10769"
+NAME="AEN11202"
+></A
+><H3
+><A
+NAME="XMLFREEPARSERCTXT"
+></A
+>xmlFreeParserCtxt ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlFreeParserCtxt               (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Free all the memory used by a parser context. However the parsed
+document in ctxt-&gt;myDoc is not freed.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11218"
 ></A
 ><H3
 ><A
@@ -2304,7 +2344,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10791"
+NAME="AEN11240"
 ></A
 ><H3
 ><A
@@ -2406,7 +2446,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10817"
+NAME="AEN11266"
 ></A
 ><H3
 ><A
@@ -2491,7 +2531,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10838"
+NAME="AEN11287"
 ></A
 ><H3
 ><A
@@ -2573,7 +2613,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10859"
+NAME="AEN11308"
 ></A
 ><H3
 ><A
@@ -2636,7 +2676,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10875"
+NAME="AEN11324"
 ></A
 ><H3
 ><A
@@ -2735,7 +2775,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10900"
+NAME="AEN11349"
 ></A
 ><H3
 ><A
@@ -2754,7 +2794,11 @@ CLASS="PROGRAMLISTING"
 ><A
 HREF="gnome-xml-tree.html#XMLCHAR"
 >xmlChar</A
->*    xmlSplitQName                   (const <A
+>*    xmlSplitQName                   (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             const <A
 HREF="gnome-xml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
@@ -2786,6 +2830,23 @@ BGCOLOR="#FFD0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
 ><TR
 ><TD
 WIDTH="20%"
@@ -2844,7 +2905,7 @@ to get the Prefix if any.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10929"
+NAME="AEN11383"
 ></A
 ><H3
 ><A
@@ -2930,7 +2991,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10952"
+NAME="AEN11406"
 ></A
 ><H3
 ><A
@@ -3039,7 +3100,7 @@ to get the Prefix if any.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10981"
+NAME="AEN11435"
 ></A
 ><H3
 ><A
@@ -3124,7 +3185,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11004"
+NAME="AEN11458"
 ></A
 ><H3
 ><A
@@ -3206,7 +3267,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11025"
+NAME="AEN11479"
 ></A
 ><H3
 ><A
@@ -3275,7 +3336,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11043"
+NAME="AEN11497"
 ></A
 ><H3
 ><A
@@ -3364,7 +3425,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11067"
+NAME="AEN11521"
 ></A
 ><H3
 ><A
@@ -3452,7 +3513,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11091"
+NAME="AEN11545"
 ></A
 ><H3
 ><A
@@ -3537,7 +3598,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11114"
+NAME="AEN11568"
 ></A
 ><H3
 ><A
@@ -3642,7 +3703,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11141"
+NAME="AEN11595"
 ></A
 ><H3
 ><A
@@ -3780,7 +3841,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11175"
+NAME="AEN11629"
 ></A
 ><H3
 ><A
@@ -3863,7 +3924,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11197"
+NAME="AEN11651"
 ></A
 ><H3
 ><A
@@ -3946,7 +4007,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11219"
+NAME="AEN11673"
 ></A
 ><H3
 ><A
@@ -3973,6 +4034,11 @@ HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
 ><P
 >parse a CharData section.
 if we are within a CDATA section ']]&gt;' marks an end of section.</P
+><P
+>The right angle bracket (&gt;) may be represented using the string "&amp;gt;",
+and must, for compatibility, be escaped using "&amp;gt;" or a character
+reference when it appears in the string "]]&gt;" in content, when that
+string is not marking the end of a CDATA section. </P
 ><P
 >[14] CharData ::= [^&lt;&amp;]* - ([^&lt;&amp;]* ']]&gt;' [^&lt;&amp;]*)</P
 ><P
@@ -4030,7 +4096,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11240"
+NAME="AEN11695"
 ></A
 ><H3
 ><A
@@ -4161,7 +4227,7 @@ it is possible to return NULL and have publicID set.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11273"
+NAME="AEN11728"
 ></A
 ><H3
 ><A
@@ -4228,7 +4294,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11290"
+NAME="AEN11745"
 ></A
 ><H3
 ><A
@@ -4311,7 +4377,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11312"
+NAME="AEN11767"
 ></A
 ><H3
 ><A
@@ -4378,7 +4444,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11330"
+NAME="AEN11785"
 ></A
 ><H3
 ><A
@@ -4453,7 +4519,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11350"
+NAME="AEN11805"
 ></A
 ><H3
 ><A
@@ -4531,7 +4597,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11373"
+NAME="AEN11828"
 ></A
 ><H3
 ><A
@@ -4670,7 +4736,7 @@ or XML_ATTRIBUTE_FIXED. </TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11410"
+NAME="AEN11865"
 ></A
 ><H3
 ><A
@@ -4759,7 +4825,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11434"
+NAME="AEN11889"
 ></A
 ><H3
 ><A
@@ -4846,7 +4912,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11457"
+NAME="AEN11912"
 ></A
 ><H3
 ><A
@@ -4949,7 +5015,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11484"
+NAME="AEN11939"
 ></A
 ><H3
 ><A
@@ -5093,7 +5159,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11522"
+NAME="AEN11977"
 ></A
 ><H3
 ><A
@@ -5160,7 +5226,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11540"
+NAME="AEN11995"
 ></A
 ><H3
 ><A
@@ -5258,7 +5324,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11566"
+NAME="AEN12021"
 ></A
 ><H3
 ><A
@@ -5361,7 +5427,7 @@ hierarchy.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11592"
+NAME="AEN12047"
 ></A
 ><H3
 ><A
@@ -5484,7 +5550,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11623"
+NAME="AEN12078"
 ></A
 ><H3
 ><A
@@ -5567,7 +5633,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11645"
+NAME="AEN12100"
 ></A
 ><H3
 ><A
@@ -5646,7 +5712,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11664"
+NAME="AEN12119"
 ></A
 ><H3
 ><A
@@ -5734,7 +5800,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11687"
+NAME="AEN12142"
 ></A
 ><H3
 ><A
@@ -5835,7 +5901,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11711"
+NAME="AEN12166"
 ></A
 ><H3
 ><A
@@ -5909,7 +5975,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11730"
+NAME="AEN12185"
 ></A
 ><H3
 ><A
@@ -5995,7 +6061,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11751"
+NAME="AEN12206"
 ></A
 ><H3
 ><A
@@ -6065,7 +6131,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11769"
+NAME="AEN12224"
 ></A
 ><H3
 ><A
@@ -6190,7 +6256,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11803"
+NAME="AEN12258"
 ></A
 ><H3
 ><A
@@ -6292,7 +6358,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11832"
+NAME="AEN12287"
 ></A
 ><H3
 ><A
@@ -6361,7 +6427,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11851"
+NAME="AEN12306"
 ></A
 ><H3
 ><A
@@ -6432,7 +6498,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11871"
+NAME="AEN12326"
 ></A
 ><H3
 ><A
@@ -6497,7 +6563,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11888"
+NAME="AEN12343"
 ></A
 ><H3
 ><A
@@ -6579,7 +6645,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11907"
+NAME="AEN12362"
 ></A
 ><H3
 ><A
@@ -6662,7 +6728,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11929"
+NAME="AEN12384"
 ></A
 ><H3
 ><A
@@ -6747,7 +6813,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11952"
+NAME="AEN12407"
 ></A
 ><H3
 ><A
@@ -6830,7 +6896,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11974"
+NAME="AEN12429"
 ></A
 ><H3
 ><A
@@ -6915,7 +6981,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11997"
+NAME="AEN12452"
 ></A
 ><H3
 ><A
@@ -7010,7 +7076,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12019"
+NAME="AEN12474"
 ></A
 ><H3
 ><A
@@ -7075,7 +7141,74 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12036"
+NAME="AEN12491"
+></A
+><H3
+><A
+NAME="XMLPARSETEXTDECL"
+></A
+>xmlParseTextDecl ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlParseTextDecl                (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse an XML declaration header for external entities</P
+><P
+>[77] TextDecl ::= '&lt;?xml' VersionInfo? EncodingDecl S? '?&gt;'</P
+><P
+>Question: Seems that EncodingDecl is mandatory ? Is that a typo ?</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN12509"
 ></A
 ><H3
 ><A
@@ -7140,7 +7273,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12053"
+NAME="AEN12526"
 ></A
 ><H3
 ><A
@@ -7249,7 +7382,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12081"
+NAME="AEN12554"
 ></A
 ><H3
 ><A
@@ -7275,7 +7408,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12086"
+NAME="AEN12559"
 ></A
 ><H3
 ><A
@@ -7301,7 +7434,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12091"
+NAME="AEN12564"
 ></A
 ><H3
 ><A
@@ -7327,7 +7460,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12096"
+NAME="AEN12569"
 ></A
 ><H3
 ><A
@@ -7353,7 +7486,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12101"
+NAME="AEN12574"
 ></A
 ><H3
 ><A
@@ -7536,7 +7669,193 @@ must deallocate it !</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12146"
+NAME="AEN12619"
+></A
+><H3
+><A
+NAME="XMLSTRINGDECODEENTITIES"
+></A
+>xmlStringDecodeEntities ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    xmlStringDecodeEntities         (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *str,
+                                             int what,
+                                             <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> end,
+                                             <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> end2,
+                                             <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> end3);</PRE
+></TD
+></TR
+></TABLE
+><P
+>[67] Reference ::= EntityRef | CharRef</P
+><P
+>[69] PEReference ::= '%' Name ';'</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>str</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the input string</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>what</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  combination of XML_SUBSTITUTE_REF and XML_SUBSTITUTE_PEREF</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>end</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an end marker xmlChar, 0 if none</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>end2</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an end marker xmlChar, 0 if none</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>end3</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an end marker xmlChar, 0 if none</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>A newly allocated string with the substitution done. The caller
+must deallocate it !</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN12665"
 ></A
 ><H3
 ><A
@@ -7633,7 +7952,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12170"
+NAME="AEN12689"
 ></A
 ><H3
 ><A
@@ -7712,7 +8031,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12190"
+NAME="AEN12709"
 ></A
 ><H3
 ><A
@@ -7809,7 +8128,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12214"
+NAME="AEN12733"
 ></A
 ><H3
 ><A

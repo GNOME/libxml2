@@ -115,7 +115,7 @@ SIZE="3"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN6364"
+NAME="AEN6623"
 ></A
 ><H2
 >Name</H2
@@ -123,7 +123,7 @@ NAME="AEN6364"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN6367"
+NAME="AEN6626"
 ></A
 ><H2
 >Synopsis</H2
@@ -262,6 +262,17 @@ HREF="gnome-xml-valid.html#XMLNOTATIONTABLEPTR"
 >xmlNotationTablePtr</A
 > table);
 void        <A
+HREF="gnome-xml-valid.html#XMLDUMPNOTATIONDECL"
+>xmlDumpNotationDecl</A
+>             (<A
+HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+>xmlBufferPtr</A
+> buf,
+                                             <A
+HREF="gnome-xml-tree.html#XMLNOTATIONPTR"
+>xmlNotationPtr</A
+> nota);
+void        <A
 HREF="gnome-xml-valid.html#XMLDUMPNOTATIONTABLE"
 >xmlDumpNotationTable</A
 >            (<A
@@ -303,6 +314,15 @@ HREF="gnome-xml-valid.html#XMLFREEELEMENTCONTENT"
 HREF="gnome-xml-tree.html#XMLELEMENTCONTENTPTR"
 >xmlElementContentPtr</A
 > cur);
+void        <A
+HREF="gnome-xml-valid.html#XMLSPRINTFELEMENTCONTENT"
+>xmlSprintfElementContent</A
+>        (char *buf,
+                                             <A
+HREF="gnome-xml-tree.html#XMLELEMENTCONTENTPTR"
+>xmlElementContentPtr</A
+> content,
+                                             int glob);
 <A
 HREF="gnome-xml-tree.html#XMLELEMENTPTR"
 >xmlElementPtr</A
@@ -357,6 +377,17 @@ HREF="gnome-xml-tree.html#XMLBUFFERPTR"
 HREF="gnome-xml-valid.html#XMLELEMENTTABLEPTR"
 >xmlElementTablePtr</A
 > table);
+void        <A
+HREF="gnome-xml-valid.html#XMLDUMPELEMENTDECL"
+>xmlDumpElementDecl</A
+>              (<A
+HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+>xmlBufferPtr</A
+> buf,
+                                             <A
+HREF="gnome-xml-tree.html#XMLELEMENTPTR"
+>xmlElementPtr</A
+> elem);
 <A
 HREF="gnome-xml-tree.html#XMLENUMERATIONPTR"
 >xmlEnumerationPtr</A
@@ -406,6 +437,10 @@ HREF="gnome-xml-tree.html#XMLCHAR"
 HREF="gnome-xml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *prefix,
                                              <A
 HREF="gnome-xml-tree.html#XMLATTRIBUTETYPE"
 >xmlAttributeType</A
@@ -450,6 +485,17 @@ HREF="gnome-xml-tree.html#XMLBUFFERPTR"
 HREF="gnome-xml-valid.html#XMLATTRIBUTETABLEPTR"
 >xmlAttributeTablePtr</A
 > table);
+void        <A
+HREF="gnome-xml-valid.html#XMLDUMPATTRIBUTEDECL"
+>xmlDumpAttributeDecl</A
+>            (<A
+HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+>xmlBufferPtr</A
+> buf,
+                                             <A
+HREF="gnome-xml-tree.html#XMLATTRIBUTEPTR"
+>xmlAttributePtr</A
+> attr);
 <A
 HREF="gnome-xml-tree.html#XMLIDPTR"
 >xmlIDPtr</A
@@ -620,6 +666,28 @@ HREF="gnome-xml-tree.html#XMLDOCPTR"
 HREF="gnome-xml-tree.html#XMLELEMENTPTR"
 >xmlElementPtr</A
 > elem);
+<A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    <A
+HREF="gnome-xml-valid.html#XMLVALIDNORMALIZEATTRIBUTEVALUE"
+>xmlValidNormalizeAttributeValue</A
+> (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> elem,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *name,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *value);
 int         <A
 HREF="gnome-xml-valid.html#XMLVALIDATEATTRIBUTEDECL"
 >xmlValidateAttributeDecl</A
@@ -676,6 +744,17 @@ HREF="gnome-xml-tree.html#XMLDOCPTR"
 HREF="gnome-xml-tree.html#XMLDTDPTR"
 >xmlDtdPtr</A
 > dtd);
+int         <A
+HREF="gnome-xml-valid.html#XMLVALIDATEDTDFINAL"
+>xmlValidateDtdFinal</A
+>             (<A
+HREF="gnome-xml-valid.html#XMLVALIDCTXTPTR"
+>xmlValidCtxtPtr</A
+> ctxt,
+                                             <A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc);
 int         <A
 HREF="gnome-xml-valid.html#XMLVALIDATEDOCUMENT"
 >xmlValidateDocument</A
@@ -859,7 +938,7 @@ HREF="gnome-xml-tree.html#XMLCHAR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN6563"
+NAME="AEN6843"
 ></A
 ><H2
 >Description</H2
@@ -869,14 +948,14 @@ NAME="AEN6563"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN6566"
+NAME="AEN6846"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6568"
+NAME="AEN6848"
 ></A
 ><H3
 ><A
@@ -970,7 +1049,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6590"
+NAME="AEN6870"
 ></A
 ><H3
 ><A
@@ -1064,7 +1143,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6612"
+NAME="AEN6892"
 ></A
 ><H3
 ><A
@@ -1084,6 +1163,14 @@ CLASS="PROGRAMLISTING"
     void *userData;			/* user specific data block */
     xmlValidityErrorFunc error;		/* the callback in case of errors */
     xmlValidityWarningFunc warning;	/* the callback in case of warning */
+
+    /* Node analysis stack used when validating within entities */
+    xmlNodePtr         node;          /* Current parsed Node */
+    int                nodeNr;        /* Depth of the parsing stack */
+    int                nodeMax;       /* Max depth of the parsing stack */
+    xmlNodePtr        *nodeTab;       /* array of nodes */
+
+    int              finishDtd;       /* finished validating the Dtd ? */
 };</PRE
 ></TD
 ></TR
@@ -1094,7 +1181,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6617"
+NAME="AEN6897"
 ></A
 ><H3
 ><A
@@ -1120,7 +1207,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6622"
+NAME="AEN6902"
 ></A
 ><H3
 ><A
@@ -1146,7 +1233,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6627"
+NAME="AEN6907"
 ></A
 ><H3
 ><A
@@ -1176,7 +1263,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6632"
+NAME="AEN6912"
 ></A
 ><H3
 ><A
@@ -1202,7 +1289,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6637"
+NAME="AEN6917"
 ></A
 ><H3
 ><A
@@ -1228,7 +1315,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6642"
+NAME="AEN6922"
 ></A
 ><H3
 ><A
@@ -1258,7 +1345,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6647"
+NAME="AEN6927"
 ></A
 ><H3
 ><A
@@ -1284,7 +1371,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6652"
+NAME="AEN6932"
 ></A
 ><H3
 ><A
@@ -1310,7 +1397,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6657"
+NAME="AEN6937"
 ></A
 ><H3
 ><A
@@ -1340,7 +1427,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6662"
+NAME="AEN6942"
 ></A
 ><H3
 ><A
@@ -1366,7 +1453,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6667"
+NAME="AEN6947"
 ></A
 ><H3
 ><A
@@ -1392,7 +1479,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6672"
+NAME="AEN6952"
 ></A
 ><H3
 ><A
@@ -1422,7 +1509,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6677"
+NAME="AEN6957"
 ></A
 ><H3
 ><A
@@ -1448,7 +1535,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6682"
+NAME="AEN6962"
 ></A
 ><H3
 ><A
@@ -1474,7 +1561,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6687"
+NAME="AEN6967"
 ></A
 ><H3
 ><A
@@ -1504,7 +1591,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6692"
+NAME="AEN6972"
 ></A
 ><H3
 ><A
@@ -1530,7 +1617,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6697"
+NAME="AEN6977"
 ></A
 ><H3
 ><A
@@ -1695,7 +1782,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6738"
+NAME="AEN7018"
 ></A
 ><H3
 ><A
@@ -1776,7 +1863,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6759"
+NAME="AEN7039"
 ></A
 ><H3
 ><A
@@ -1839,7 +1926,91 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6775"
+NAME="AEN7055"
+></A
+><H3
+><A
+NAME="XMLDUMPNOTATIONDECL"
+></A
+>xmlDumpNotationDecl ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlDumpNotationDecl             (<A
+HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+>xmlBufferPtr</A
+> buf,
+                                             <A
+HREF="gnome-xml-tree.html#XMLNOTATIONPTR"
+>xmlNotationPtr</A
+> nota);</PRE
+></TD
+></TR
+></TABLE
+><P
+>This will dump the content the notation declaration as an XML DTD definition</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buf</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the XML buffer output</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>nota</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  A notation declaration</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN7076"
 ></A
 ><H3
 ><A
@@ -1923,7 +2094,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6796"
+NAME="AEN7097"
 ></A
 ><H3
 ><A
@@ -2025,7 +2196,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6822"
+NAME="AEN7123"
 ></A
 ><H3
 ><A
@@ -2106,7 +2277,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6843"
+NAME="AEN7144"
 ></A
 ><H3
 ><A
@@ -2169,7 +2340,107 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6859"
+NAME="AEN7160"
+></A
+><H3
+><A
+NAME="XMLSPRINTFELEMENTCONTENT"
+></A
+>xmlSprintfElementContent ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlSprintfElementContent        (char *buf,
+                                             <A
+HREF="gnome-xml-tree.html#XMLELEMENTCONTENTPTR"
+>xmlElementContentPtr</A
+> content,
+                                             int glob);</PRE
+></TD
+></TR
+></TABLE
+><P
+>This will dump the content of the element content definition
+Intended just for the debug routine</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buf</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an output buffer</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>content</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  An element table</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>glob</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> 1 if one must print the englobing parenthesis, 0 otherwise</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN7184"
 ></A
 ><H3
 ><A
@@ -2334,7 +2605,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6900"
+NAME="AEN7225"
 ></A
 ><H3
 ><A
@@ -2415,7 +2686,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6921"
+NAME="AEN7246"
 ></A
 ><H3
 ><A
@@ -2478,7 +2749,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6937"
+NAME="AEN7262"
 ></A
 ><H3
 ><A
@@ -2562,7 +2833,92 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6958"
+NAME="AEN7283"
+></A
+><H3
+><A
+NAME="XMLDUMPELEMENTDECL"
+></A
+>xmlDumpElementDecl ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlDumpElementDecl              (<A
+HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+>xmlBufferPtr</A
+> buf,
+                                             <A
+HREF="gnome-xml-tree.html#XMLELEMENTPTR"
+>xmlElementPtr</A
+> elem);</PRE
+></TD
+></TR
+></TABLE
+><P
+>This will dump the content of the element declaration as an XML
+DTD definition</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buf</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the XML buffer output</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>elem</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  An element table</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN7304"
 ></A
 ><H3
 ><A
@@ -2644,7 +3000,7 @@ of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6979"
+NAME="AEN7325"
 ></A
 ><H3
 ><A
@@ -2707,7 +3063,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6995"
+NAME="AEN7341"
 ></A
 ><H3
 ><A
@@ -2789,7 +3145,7 @@ of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7016"
+NAME="AEN7362"
 ></A
 ><H3
 ><A
@@ -2824,6 +3180,10 @@ HREF="gnome-xml-tree.html#XMLCHAR"
 HREF="gnome-xml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *prefix,
                                              <A
 HREF="gnome-xml-tree.html#XMLATTRIBUTETYPE"
 >xmlAttributeType</A
@@ -2934,6 +3294,23 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
+>prefix</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
 >type</I
 ></TT
 >&nbsp;:</TD
@@ -3017,7 +3394,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7072"
+NAME="AEN7423"
 ></A
 ><H3
 ><A
@@ -3098,7 +3475,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7093"
+NAME="AEN7444"
 ></A
 ><H3
 ><A
@@ -3161,7 +3538,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7109"
+NAME="AEN7460"
 ></A
 ><H3
 ><A
@@ -3245,7 +3622,92 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7130"
+NAME="AEN7481"
+></A
+><H3
+><A
+NAME="XMLDUMPATTRIBUTEDECL"
+></A
+>xmlDumpAttributeDecl ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlDumpAttributeDecl            (<A
+HREF="gnome-xml-tree.html#XMLBUFFERPTR"
+>xmlBufferPtr</A
+> buf,
+                                             <A
+HREF="gnome-xml-tree.html#XMLATTRIBUTEPTR"
+>xmlAttributePtr</A
+> attr);</PRE
+></TD
+></TR
+></TABLE
+><P
+>This will dump the content of the attribute declaration as an XML
+DTD definition</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buf</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the XML buffer output</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>attr</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  An attribute declaration</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN7502"
 ></A
 ><H3
 ><A
@@ -3389,7 +3851,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7166"
+NAME="AEN7538"
 ></A
 ><H3
 ><A
@@ -3468,7 +3930,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7186"
+NAME="AEN7558"
 ></A
 ><H3
 ><A
@@ -3531,7 +3993,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7202"
+NAME="AEN7574"
 ></A
 ><H3
 ><A
@@ -3633,7 +4095,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7228"
+NAME="AEN7600"
 ></A
 ><H3
 ><A
@@ -3755,7 +4217,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7258"
+NAME="AEN7630"
 ></A
 ><H3
 ><A
@@ -3854,7 +4316,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7283"
+NAME="AEN7655"
 ></A
 ><H3
 ><A
@@ -3998,7 +4460,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7319"
+NAME="AEN7691"
 ></A
 ><H3
 ><A
@@ -4077,7 +4539,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7339"
+NAME="AEN7711"
 ></A
 ><H3
 ><A
@@ -4140,7 +4602,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7355"
+NAME="AEN7727"
 ></A
 ><H3
 ><A
@@ -4262,7 +4724,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7385"
+NAME="AEN7757"
 ></A
 ><H3
 ><A
@@ -4361,7 +4823,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7410"
+NAME="AEN7782"
 ></A
 ><H3
 ><A
@@ -4464,7 +4926,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7435"
+NAME="AEN7807"
 ></A
 ><H3
 ><A
@@ -4589,7 +5051,167 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7465"
+NAME="AEN7837"
+></A
+><H3
+><A
+NAME="XMLVALIDNORMALIZEATTRIBUTEVALUE"
+></A
+>xmlValidNormalizeAttributeValue ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    xmlValidNormalizeAttributeValue (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> elem,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *name,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *value);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Does the validation related extra step of the normalization of attribute
+values:</P
+><P
+>If the declared value is not CDATA, then the XML processor must further
+process the normalized attribute value by discarding any leading and
+trailing space (<GTKDOCLINK
+HREF="X20"
+>x20</GTKDOCLINK
+>) characters, and by replacing sequences of space
+(<GTKDOCLINK
+HREF="X20"
+>x20</GTKDOCLINK
+>) characters by single space (<GTKDOCLINK
+HREF="X20"
+>x20</GTKDOCLINK
+>) character.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the document</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>elem</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the parent</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the attribute name</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>value</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the attribute value</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a new normalized string if normalization is needed, NULL otherwise
+the caller must free the returned value.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN7877"
 ></A
 ><H3
 ><A
@@ -4716,7 +5338,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7496"
+NAME="AEN7908"
 ></A
 ><H3
 ><A
@@ -4830,7 +5452,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7525"
+NAME="AEN7937"
 ></A
 ><H3
 ><A
@@ -4954,7 +5576,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7555"
+NAME="AEN7967"
 ></A
 ><H3
 ><A
@@ -5076,7 +5698,113 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7586"
+NAME="AEN7998"
+></A
+><H3
+><A
+NAME="XMLVALIDATEDTDFINAL"
+></A
+>xmlValidateDtdFinal ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlValidateDtdFinal             (<A
+HREF="gnome-xml-valid.html#XMLVALIDCTXTPTR"
+>xmlValidCtxtPtr</A
+> ctxt,
+                                             <A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Does the final step for the dtds validation once all the
+subsets have been parsed</P
+><P
+>basically it does the following checks described by the XML Rec
+- check that ENTITY and ENTITIES type attributes default or 
+possible values matches one of the defined entities.
+- check that NOTATION type attributes default or 
+possible values matches one of the defined notations.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the validation context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a document instance</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>1 if valid or 0 otherwise</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN8024"
 ></A
 ><H3
 ><A
@@ -5179,7 +5907,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7612"
+NAME="AEN8050"
 ></A
 ><H3
 ><A
@@ -5299,7 +6027,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7642"
+NAME="AEN8080"
 ></A
 ><H3
 ><A
@@ -5429,7 +6157,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7674"
+NAME="AEN8112"
 ></A
 ><H3
 ><A
@@ -5470,7 +6198,7 @@ HREF="gnome-xml-tree.html#XMLCHAR"
 ></TABLE
 ><P
 >Try to validate a single attribute for an element
-basically it * does the following checks as described by the
+basically it does the following checks as described by the
 XML-1.0 recommendation:
 - [ VC: Attribute Value Type ]
 - [ VC: Fixed Attribute Default ]
@@ -5603,7 +6331,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7715"
+NAME="AEN8153"
 ></A
 ><H3
 ><A
@@ -5705,7 +6433,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7741"
+NAME="AEN8179"
 ></A
 ><H3
 ><A
@@ -5826,7 +6554,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7771"
+NAME="AEN8209"
 ></A
 ><H3
 ><A
@@ -5926,7 +6654,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7796"
+NAME="AEN8234"
 ></A
 ><H3
 ><A
@@ -6050,7 +6778,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7827"
+NAME="AEN8265"
 ></A
 ><H3
 ><A
@@ -6152,7 +6880,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7853"
+NAME="AEN8291"
 ></A
 ><H3
 ><A
@@ -6254,7 +6982,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7879"
+NAME="AEN8317"
 ></A
 ><H3
 ><A
@@ -6420,7 +7148,7 @@ receiving array and retry.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7917"
+NAME="AEN8355"
 ></A
 ><H3
 ><A

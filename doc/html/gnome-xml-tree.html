@@ -115,7 +115,7 @@ SIZE="3"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN3007"
+NAME="AEN3148"
 ></A
 ><H2
 >Name</H2
@@ -123,7 +123,7 @@ NAME="AEN3007"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN3010"
+NAME="AEN3151"
 ></A
 ><H2
 >Synopsis</H2
@@ -863,6 +863,20 @@ HREF="gnome-xml-tree.html#XMLCHAR"
 HREF="gnome-xml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 >  <A
+HREF="gnome-xml-tree.html#XMLNEWCHARREF"
+>xmlNewCharRef</A
+>                   (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *name);
+<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  <A
 HREF="gnome-xml-tree.html#XMLNEWREFERENCE"
 >xmlNewReference</A
 >                 (<A
@@ -1339,6 +1353,13 @@ HREF="gnome-xml-tree.html#XMLNODEPTR"
 HREF="gnome-xml-tree.html#XMLCHAR"
 >xmlChar</A
 > *lang);
+int         <A
+HREF="gnome-xml-tree.html#XMLNODEGETSPACEPRESERVE"
+>xmlNodeGetSpacePreserve</A
+>         (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur);
 <A
 HREF="gnome-xml-tree.html#XMLCHAR"
 >xmlChar</A
@@ -1390,6 +1411,17 @@ HREF="gnome-xml-tree.html#XMLBUFFERPTR"
 HREF="gnome-xml-tree.html#XMLCHAR"
 >xmlChar</A
 > *string);
+int         <A
+HREF="gnome-xml-tree.html#XMLRECONCILIATENS"
+>xmlReconciliateNs</A
+>               (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> tree);
 void        <A
 HREF="gnome-xml-tree.html#XMLDOCDUMPMEMORY"
 >xmlDocDumpMemory</A
@@ -1466,7 +1498,7 @@ HREF="gnome-xml-tree.html#XMLSETCOMPRESSMODE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN3376"
+NAME="AEN3526"
 ></A
 ><H2
 >Description</H2
@@ -1476,14 +1508,14 @@ NAME="AEN3376"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN3379"
+NAME="AEN3529"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3381"
+NAME="AEN3531"
 ></A
 ><H3
 ><A
@@ -1512,7 +1544,11 @@ CLASS="PROGRAMLISTING"
     XML_DOCUMENT_TYPE_NODE=	10,
     XML_DOCUMENT_FRAG_NODE=	11,
     XML_NOTATION_NODE=		12,
-    XML_HTML_DOCUMENT_NODE=	13
+    XML_HTML_DOCUMENT_NODE=	13,
+    XML_DTD_NODE=		14,
+    XML_ELEMENT_DECL=		15,
+    XML_ATTRIBUTE_DECL=		16,
+    XML_ENTITY_DECL=		17
 } xmlElementType;</PRE
 ></TD
 ></TR
@@ -1523,20 +1559,33 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3386"
+NAME="AEN3536"
 ></A
 ><H3
 ><A
 NAME="XMLCHAR"
 ></A
 >xmlChar</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef unsigned char xmlChar;</PRE
+></TD
+></TR
+></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3390"
+NAME="AEN3541"
 ></A
 ><H3
 ><A
@@ -1562,7 +1611,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3395"
+NAME="AEN3546"
 ></A
 ><H3
 ><A
@@ -1588,7 +1637,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3400"
+NAME="AEN3551"
 ></A
 ><H3
 ><A
@@ -1618,7 +1667,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3405"
+NAME="AEN3556"
 ></A
 ><H3
 ><A
@@ -1644,7 +1693,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3410"
+NAME="AEN3561"
 ></A
 ><H3
 ><A
@@ -1681,7 +1730,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3415"
+NAME="AEN3566"
 ></A
 ><H3
 ><A
@@ -1712,7 +1761,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3420"
+NAME="AEN3571"
 ></A
 ><H3
 ><A
@@ -1741,7 +1790,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3425"
+NAME="AEN3576"
 ></A
 ><H3
 ><A
@@ -1767,7 +1816,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3430"
+NAME="AEN3581"
 ></A
 ><H3
 ><A
@@ -1784,14 +1833,25 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >struct xmlAttribute {
-    const xmlChar         *elem;	/* Element holding the attribute */
-    const xmlChar         *name;	/* Attribute name */
-    struct _xmlAttribute   *next;       /* list of attributes of an element */
-    xmlAttributeType       type;	/* The type */
-    xmlAttributeDefault    def;		/* the default */
-    const xmlChar         *defaultValue;/* or the default value */
-    xmlEnumerationPtr      tree;        /* or the enumeration tree if any */
-    const xmlChar         *prefix;      /* the namespace prefix if any */
+#ifndef XML_WITHOUT_CORBA
+    void           *_private;	        /* for Corba, must be first ! */
+#endif
+    xmlElementType          type;       /* XML_ATTRIBUTE_DECL, must be second ! */
+    const xmlChar          *name;	/* Attribute name */
+    struct _xmlNode    *children;	/* NULL */
+    struct _xmlNode        *last;	/* NULL */
+    struct _xmlDtd       *parent;	/* -&gt; DTD */
+    struct _xmlNode        *next;	/* next sibling link  */
+    struct _xmlNode        *prev;	/* previous sibling link  */
+    struct _xmlDoc          *doc;       /* the containing document */
+
+    struct _xmlAttribute  *nexth;	/* next in hash table */
+    xmlAttributeType       atype;	/* The attribute type */
+    xmlAttributeDefault      def;	/* the default */
+    const xmlChar  *defaultValue;	/* or the default value */
+    xmlEnumerationPtr       tree;       /* or the enumeration tree if any */
+    const xmlChar        *prefix;	/* the namespace prefix if any */
+    const xmlChar          *elem;	/* Element holding the attribute */
 };</PRE
 ></TD
 ></TR
@@ -1802,7 +1862,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3435"
+NAME="AEN3586"
 ></A
 ><H3
 ><A
@@ -1828,7 +1888,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3440"
+NAME="AEN3591"
 ></A
 ><H3
 ><A
@@ -1859,7 +1919,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3445"
+NAME="AEN3596"
 ></A
 ><H3
 ><A
@@ -1890,7 +1950,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3450"
+NAME="AEN3601"
 ></A
 ><H3
 ><A
@@ -1922,7 +1982,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3455"
+NAME="AEN3606"
 ></A
 ><H3
 ><A
@@ -1948,7 +2008,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3460"
+NAME="AEN3611"
 ></A
 ><H3
 ><A
@@ -1979,7 +2039,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3465"
+NAME="AEN3616"
 ></A
 ><H3
 ><A
@@ -1996,8 +2056,19 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >struct xmlElement {
+#ifndef XML_WITHOUT_CORBA
+    void           *_private;	        /* for Corba, must be first ! */
+#endif
+    xmlElementType          type;       /* XML_ELEMENT_DECL, must be second ! */
     const xmlChar          *name;	/* Element name */
-    xmlElementTypeVal       type;	/* The type */
+    struct _xmlNode    *children;	/* NULL */
+    struct _xmlNode        *last;	/* NULL */
+    struct _xmlDtd       *parent;	/* -&gt; DTD */
+    struct _xmlNode        *next;	/* next sibling link  */
+    struct _xmlNode        *prev;	/* previous sibling link  */
+    struct _xmlDoc          *doc;       /* the containing document */
+
+    xmlElementTypeVal      etype;	/* The type */
     xmlElementContentPtr content;	/* the allowed element content */
     xmlAttributePtr   attributes;	/* List of the declared attributes */
 };</PRE
@@ -2010,7 +2081,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3470"
+NAME="AEN3621"
 ></A
 ><H3
 ><A
@@ -2036,7 +2107,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3475"
+NAME="AEN3626"
 ></A
 ><H3
 ><A
@@ -2065,7 +2136,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3480"
+NAME="AEN3631"
 ></A
 ><H3
 ><A
@@ -2096,7 +2167,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3485"
+NAME="AEN3636"
 ></A
 ><H3
 ><A
@@ -2122,7 +2193,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3490"
+NAME="AEN3641"
 ></A
 ><H3
 ><A
@@ -2139,14 +2210,25 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >struct xmlDtd {
+#ifndef XML_WITHOUT_CORBA
+    void           *_private;	/* for Corba, must be first ! */
+#endif
+    xmlElementType  type;       /* XML_DTD_NODE, must be second ! */
     const xmlChar *name;	/* Name of the DTD */
-    const xmlChar *ExternalID;	/* External identifier for PUBLIC DTD */
-    const xmlChar *SystemID;	/* URI for a SYSTEM or PUBLIC DTD */
+    struct _xmlNode *children;	/* the value of the property link */
+    struct _xmlNode *last;	/* last child link */
+    struct _xmlDoc  *parent;	/* child-&gt;parent link */
+    struct _xmlNode *next;	/* next sibling link  */
+    struct _xmlNode *prev;	/* previous sibling link  */
+    struct _xmlDoc  *doc;	/* the containing document */
+
+    /* End of common part */
     void          *notations;   /* Hash table for notations if any */
     void          *elements;    /* Hash table for elements if any */
     void          *attributes;  /* Hash table for attributes if any */
     void          *entities;    /* Hash table for entities if any */
-    /* struct xmlDtd *next;	 * next  link for this document  */
+    const xmlChar *ExternalID;	/* External identifier for PUBLIC DTD */
+    const xmlChar *SystemID;	/* URI for a SYSTEM or PUBLIC DTD */
 };</PRE
 ></TD
 ></TR
@@ -2157,7 +2239,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3495"
+NAME="AEN3646"
 ></A
 ><H3
 ><A
@@ -2183,7 +2265,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3500"
+NAME="AEN3651"
 ></A
 ><H3
 ><A
@@ -2202,14 +2284,17 @@ CLASS="PROGRAMLISTING"
 >struct xmlAttr {
 #ifndef XML_WITHOUT_CORBA
     void           *_private;	/* for Corba, must be first ! */
-    void           *vepv;	/* for Corba, must be next ! */
 #endif
-    xmlElementType  type;       /* XML_ATTRIBUTE_NODE, must be third ! */
-    struct _xmlNode *node;	/* attr-&gt;node link */
-    struct _xmlAttr *next;	/* attribute list link */
+    xmlElementType   type;      /* XML_ATTRIBUTE_NODE, must be second ! */
     const xmlChar   *name;      /* the name of the property */
-    struct _xmlNode *val;       /* the value of the property */
+    struct _xmlNode *children;	/* the value of the property */
+    struct _xmlNode *last;	/* NULL */
+    struct _xmlNode *parent;	/* child-&gt;parent link */
+    struct _xmlAttr *next;	/* next sibling link  */
+    struct _xmlAttr *prev;	/* previous sibling link  */
+    struct _xmlDoc  *doc;	/* the containing document */
     xmlNs           *ns;        /* pointer to the associated namespace */
+    xmlAttributeType atype;     /* the attribute type if validating */
 };</PRE
 ></TD
 ></TR
@@ -2220,7 +2305,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3505"
+NAME="AEN3656"
 ></A
 ><H3
 ><A
@@ -2246,7 +2331,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3510"
+NAME="AEN3661"
 ></A
 ><H3
 ><A
@@ -2276,7 +2361,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3515"
+NAME="AEN3666"
 ></A
 ><H3
 ><A
@@ -2302,7 +2387,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3520"
+NAME="AEN3671"
 ></A
 ><H3
 ><A
@@ -2332,7 +2417,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3525"
+NAME="AEN3676"
 ></A
 ><H3
 ><A
@@ -2358,7 +2443,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3530"
+NAME="AEN3681"
 ></A
 ><H3
 ><A
@@ -2389,7 +2474,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3536"
+NAME="AEN3687"
 ></A
 ><H3
 ><A
@@ -2420,7 +2505,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3541"
+NAME="AEN3692"
 ></A
 ><H3
 ><A
@@ -2446,7 +2531,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3546"
+NAME="AEN3697"
 ></A
 ><H3
 ><A
@@ -2465,24 +2550,25 @@ CLASS="PROGRAMLISTING"
 >struct xmlNode {
 #ifndef XML_WITHOUT_CORBA
     void           *_private;	/* for Corba, must be first ! */
-    void           *vepv;	/* for Corba, must be next ! */
 #endif
-    xmlElementType  type;	/* type number in the DTD, must be third ! */
-    struct _xmlDoc  *doc;	/* the containing document */
+    xmlElementType   type;	/* type number, must be second ! */
+    const xmlChar   *name;      /* the name of the node, or the entity */
+    struct _xmlNode *children;	/* parent-&gt;childs link */
+    struct _xmlNode *last;	/* last child link */
     struct _xmlNode *parent;	/* child-&gt;parent link */
     struct _xmlNode *next;	/* next sibling link  */
     struct _xmlNode *prev;	/* previous sibling link  */
-    struct _xmlNode *childs;	/* parent-&gt;childs link */
-    struct _xmlNode *last;	/* last child link */
-    struct _xmlAttr *properties;/* properties list */
-    const xmlChar  *name;       /* the name of the node, or the entity */
-    xmlNs          *ns;         /* pointer to the associated namespace */
-    xmlNs          *nsDef;      /* namespace definitions on this node */
+    struct _xmlDoc  *doc;	/* the containing document */
+    xmlNs           *ns;        /* pointer to the associated namespace */
 #ifndef XML_USE_BUFFER_CONTENT    
-    xmlChar        *content;    /* the content */
+    xmlChar         *content;   /* the content */
 #else
-    xmlBufferPtr   content;     /* the content in a buffer */
+    xmlBufferPtr     content;   /* the content in a buffer */
 #endif
+
+    /* End of common part */
+    struct _xmlAttr *properties;/* properties list */
+    xmlNs           *nsDef;     /* namespace definitions on this node */
 };</PRE
 ></TD
 ></TR
@@ -2493,7 +2579,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3551"
+NAME="AEN3702"
 ></A
 ><H3
 ><A
@@ -2519,7 +2605,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3556"
+NAME="AEN3707"
 ></A
 ><H3
 ><A
@@ -2538,20 +2624,27 @@ CLASS="PROGRAMLISTING"
 >struct xmlDoc {
 #ifndef XML_WITHOUT_CORBA
     void           *_private;	/* for Corba, must be first ! */
-    void           *vepv;	/* for Corba, must be next ! */
 #endif
     xmlElementType  type;       /* XML_DOCUMENT_NODE, must be second ! */
     char           *name;	/* name/filename/URI of the document */
-    const xmlChar  *version;	/* the XML version string */
-    const xmlChar  *encoding;   /* encoding, if any */
+    struct _xmlNode *children;	/* the document tree */
+    struct _xmlNode *last;	/* last child link */
+    struct _xmlNode *parent;	/* child-&gt;parent link */
+    struct _xmlNode *next;	/* next sibling link  */
+    struct _xmlNode *prev;	/* previous sibling link  */
+    struct _xmlDoc  *doc;	/* autoreference to itself */
+
+    /* End of common part */
     int             compression;/* level of zlib compression */
     int             standalone; /* standalone document (no external refs) */
     struct _xmlDtd  *intSubset;	/* the document internal subset */
     struct _xmlDtd  *extSubset;	/* the document external subset */
     struct _xmlNs   *oldNs;	/* Global namespace, the old way */
-    struct _xmlNode *root;	/* the document tree */
+    const xmlChar  *version;	/* the XML version string */
+    const xmlChar  *encoding;   /* encoding, if any */
     void           *ids;        /* Hash table for ID attributes if any */
     void           *refs;       /* Hash table for IDREFs attributes if any */
+    const xmlChar  *URL;	/* The URI for that document */
 };</PRE
 ></TD
 ></TR
@@ -2562,7 +2655,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3561"
+NAME="AEN3712"
 ></A
 ><H3
 ><A
@@ -2588,7 +2681,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3566"
+NAME="AEN3717"
 ></A
 ><H3
 ><A
@@ -2614,7 +2707,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3571"
+NAME="AEN3722"
 ></A
 ><H3
 ><A
@@ -2640,7 +2733,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3576"
+NAME="AEN3727"
 ></A
 ><H3
 ><A
@@ -2666,7 +2759,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3581"
+NAME="AEN3732"
 ></A
 ><H3
 ><A
@@ -2692,7 +2785,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3586"
+NAME="AEN3737"
 ></A
 ><H3
 ><A
@@ -2718,7 +2811,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3591"
+NAME="AEN3742"
 ></A
 ><H3
 ><A
@@ -2779,7 +2872,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3607"
+NAME="AEN3758"
 ></A
 ><H3
 ><A
@@ -2860,7 +2953,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3628"
+NAME="AEN3779"
 ></A
 ><H3
 ><A
@@ -2923,7 +3016,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3644"
+NAME="AEN3795"
 ></A
 ><H3
 ><A
@@ -3022,7 +3115,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3669"
+NAME="AEN3820"
 ></A
 ><H3
 ><A
@@ -3125,7 +3218,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3694"
+NAME="AEN3845"
 ></A
 ><H3
 ><A
@@ -3209,7 +3302,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3715"
+NAME="AEN3866"
 ></A
 ><H3
 ><A
@@ -3290,7 +3383,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3735"
+NAME="AEN3886"
 ></A
 ><H3
 ><A
@@ -3386,7 +3479,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3759"
+NAME="AEN3910"
 ></A
 ><H3
 ><A
@@ -3449,7 +3542,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3775"
+NAME="AEN3926"
 ></A
 ><H3
 ><A
@@ -3530,7 +3623,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3796"
+NAME="AEN3947"
 ></A
 ><H3
 ><A
@@ -3606,7 +3699,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3815"
+NAME="AEN3966"
 ></A
 ><H3
 ><A
@@ -3688,7 +3781,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3835"
+NAME="AEN3986"
 ></A
 ><H3
 ><A
@@ -3766,7 +3859,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3855"
+NAME="AEN4006"
 ></A
 ><H3
 ><A
@@ -3910,7 +4003,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3891"
+NAME="AEN4042"
 ></A
 ><H3
 ><A
@@ -3949,7 +4042,11 @@ HREF="gnome-xml-tree.html#XMLCHAR"
 ></TR
 ></TABLE
 ><P
->Creation of a new DTD.</P
+>Creation of a new DTD for the external subset. To create an
+internal subset, use <A
+HREF="gnome-xml-tree.html#XMLCREATEINTSUBSET"
+>xmlCreateIntSubset</A
+>().</P
 ><P
 ></P
 ><DIV
@@ -4054,7 +4151,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3927"
+NAME="AEN4079"
 ></A
 ><H3
 ><A
@@ -4117,7 +4214,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3943"
+NAME="AEN4095"
 ></A
 ><H3
 ><A
@@ -4242,7 +4339,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3974"
+NAME="AEN4126"
 ></A
 ><H3
 ><A
@@ -4367,7 +4464,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4005"
+NAME="AEN4157"
 ></A
 ><H3
 ><A
@@ -4430,7 +4527,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4021"
+NAME="AEN4173"
 ></A
 ><H3
 ><A
@@ -4511,7 +4608,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4042"
+NAME="AEN4194"
 ></A
 ><H3
 ><A
@@ -4575,7 +4672,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4058"
+NAME="AEN4210"
 ></A
 ><H3
 ><A
@@ -4698,7 +4795,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4089"
+NAME="AEN4241"
 ></A
 ><H3
 ><A
@@ -4821,7 +4918,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4120"
+NAME="AEN4272"
 ></A
 ><H3
 ><A
@@ -4965,7 +5062,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4156"
+NAME="AEN4308"
 ></A
 ><H3
 ><A
@@ -4989,7 +5086,7 @@ HREF="gnome-xml-tree.html#XMLATTRPTR"
 ></TR
 ></TABLE
 ><P
->Free a property and all its siblings, all the childs are freed too.</P
+>Free a property and all its siblings, all the children are freed too.</P
 ><P
 ></P
 ><DIV
@@ -5028,7 +5125,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4172"
+NAME="AEN4324"
 ></A
 ><H3
 ><A
@@ -5091,7 +5188,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4188"
+NAME="AEN4340"
 ></A
 ><H3
 ><A
@@ -5193,7 +5290,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4214"
+NAME="AEN4366"
 ></A
 ><H3
 ><A
@@ -5295,7 +5392,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4240"
+NAME="AEN4392"
 ></A
 ><H3
 ><A
@@ -5376,7 +5473,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4261"
+NAME="AEN4413"
 ></A
 ><H3
 ><A
@@ -5476,7 +5573,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4286"
+NAME="AEN4438"
 ></A
 ><H3
 ><A
@@ -5646,7 +5743,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4327"
+NAME="AEN4479"
 ></A
 ><H3
 ><A
@@ -5801,7 +5898,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4365"
+NAME="AEN4517"
 ></A
 ><H3
 ><A
@@ -5915,7 +6012,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4393"
+NAME="AEN4545"
 ></A
 ><H3
 ><A
@@ -5959,7 +6056,7 @@ CLASS="PARAMETER"
 ><I
 >parent</I
 ></TT
-> childs list.
+> children list.
 <TT
 CLASS="PARAMETER"
 ><I
@@ -6091,7 +6188,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4435"
+NAME="AEN4587"
 ></A
 ><H3
 ><A
@@ -6135,7 +6232,7 @@ CLASS="PARAMETER"
 ><I
 >parent</I
 ></TT
-> childs list.
+> children list.
 <TT
 CLASS="PARAMETER"
 ><I
@@ -6252,7 +6349,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4474"
+NAME="AEN4626"
 ></A
 ><H3
 ><A
@@ -6354,7 +6451,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4500"
+NAME="AEN4652"
 ></A
 ><H3
 ><A
@@ -6435,7 +6532,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4521"
+NAME="AEN4673"
 ></A
 ><H3
 ><A
@@ -6537,7 +6634,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4547"
+NAME="AEN4699"
 ></A
 ><H3
 ><A
@@ -6658,7 +6755,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4577"
+NAME="AEN4729"
 ></A
 ><H3
 ><A
@@ -6757,7 +6854,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4602"
+NAME="AEN4754"
 ></A
 ><H3
 ><A
@@ -6859,7 +6956,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4628"
+NAME="AEN4780"
 ></A
 ><H3
 ><A
@@ -6940,7 +7037,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4649"
+NAME="AEN4801"
 ></A
 ><H3
 ><A
@@ -7060,7 +7157,109 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4679"
+NAME="AEN4831"
+></A
+><H3
+><A
+NAME="XMLNEWCHARREF"
+></A
+>xmlNewCharRef ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  xmlNewCharRef                   (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *name);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Creation of a new character reference node.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the document</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the char ref string, starting with # or "&amp;# ... ;"</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a pointer to the new node object.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4857"
 ></A
 ><H3
 ><A
@@ -7162,7 +7361,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4705"
+NAME="AEN4883"
 ></A
 ><H3
 ><A
@@ -7261,7 +7460,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4730"
+NAME="AEN4908"
 ></A
 ><H3
 ><A
@@ -7342,7 +7541,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4751"
+NAME="AEN4929"
 ></A
 ><H3
 ><A
@@ -7423,7 +7622,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4772"
+NAME="AEN4950"
 ></A
 ><H3
 ><A
@@ -7450,7 +7649,7 @@ HREF="gnome-xml-tree.html#XMLDOCPTR"
 ></TR
 ></TABLE
 ><P
->Get the root element of the document (doc-&gt;root is a list
+>Get the root element of the document (doc-&gt;children is a list
 containing possibly comments, PIs, etc ...).</P
 ><P
 ></P
@@ -7505,7 +7704,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4793"
+NAME="AEN4971"
 ></A
 ><H3
 ><A
@@ -7586,7 +7785,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4814"
+NAME="AEN4992"
 ></A
 ><H3
 ><A
@@ -7664,7 +7863,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4834"
+NAME="AEN5012"
 ></A
 ><H3
 ><A
@@ -7742,7 +7941,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4854"
+NAME="AEN5032"
 ></A
 ><H3
 ><A
@@ -7773,7 +7972,7 @@ HREF="gnome-xml-tree.html#XMLNODEPTR"
 ></TR
 ></TABLE
 ><P
->Set the root element of the document (doc-&gt;root is a list
+>Set the root element of the document (doc-&gt;children is a list
 containing possibly comments, PIs, etc ...).</P
 ><P
 ></P
@@ -7845,7 +8044,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4880"
+NAME="AEN5058"
 ></A
 ><H3
 ><A
@@ -7930,7 +8129,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4901"
+NAME="AEN5079"
 ></A
 ><H3
 ><A
@@ -8037,7 +8236,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4928"
+NAME="AEN5106"
 ></A
 ><H3
 ><A
@@ -8141,7 +8340,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4954"
+NAME="AEN5132"
 ></A
 ><H3
 ><A
@@ -8255,7 +8454,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4982"
+NAME="AEN5160"
 ></A
 ><H3
 ><A
@@ -8369,7 +8568,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5010"
+NAME="AEN5188"
 ></A
 ><H3
 ><A
@@ -8483,7 +8682,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5038"
+NAME="AEN5216"
 ></A
 ><H3
 ><A
@@ -8546,7 +8745,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5054"
+NAME="AEN5232"
 ></A
 ><H3
 ><A
@@ -8648,7 +8847,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5080"
+NAME="AEN5258"
 ></A
 ><H3
 ><A
@@ -8755,7 +8954,7 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5106"
+NAME="AEN5284"
 ></A
 ><H3
 ><A
@@ -8780,7 +8979,7 @@ HREF="gnome-xml-tree.html#XMLNODEPTR"
 ></TABLE
 ><P
 >Free a node and all its siblings, this is a recursive behaviour, all
-the childs are freed too.</P
+the children are freed too.</P
 ><P
 ></P
 ><DIV
@@ -8819,7 +9018,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5122"
+NAME="AEN5300"
 ></A
 ><H3
 ><A
@@ -8843,7 +9042,11 @@ HREF="gnome-xml-tree.html#XMLNODEPTR"
 ></TR
 ></TABLE
 ><P
->Free a node, this is a recursive behaviour, all the childs are freed too.</P
+>Free a node, this is a recursive behaviour, all the children are freed too.
+This doesn't unlink the child from the list, use <A
+HREF="gnome-xml-tree.html#XMLUNLINKNODE"
+>xmlUnlinkNode</A
+>() first.</P
 ><P
 ></P
 ><DIV
@@ -8882,7 +9085,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5138"
+NAME="AEN5317"
 ></A
 ><H3
 ><A
@@ -8961,7 +9164,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5158"
+NAME="AEN5337"
 ></A
 ><H3
 ><A
@@ -9092,7 +9295,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5190"
+NAME="AEN5369"
 ></A
 ><H3
 ><A
@@ -9216,7 +9419,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5221"
+NAME="AEN5400"
 ></A
 ><H3
 ><A
@@ -9320,7 +9523,7 @@ namespace if defined</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5247"
+NAME="AEN5426"
 ></A
 ><H3
 ><A
@@ -9404,7 +9607,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5268"
+NAME="AEN5447"
 ></A
 ><H3
 ><A
@@ -9485,7 +9688,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5289"
+NAME="AEN5468"
 ></A
 ><H3
 ><A
@@ -9566,7 +9769,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5310"
+NAME="AEN5489"
 ></A
 ><H3
 ><A
@@ -9689,7 +9892,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5341"
+NAME="AEN5520"
 ></A
 ><H3
 ><A
@@ -9798,7 +10001,7 @@ It's up to the caller to free the memory.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5368"
+NAME="AEN5547"
 ></A
 ><H3
 ><A
@@ -9929,7 +10132,7 @@ It's up to the caller to free the memory.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5400"
+NAME="AEN5579"
 ></A
 ><H3
 ><A
@@ -10032,7 +10235,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5426"
+NAME="AEN5605"
 ></A
 ><H3
 ><A
@@ -10153,7 +10356,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5456"
+NAME="AEN5635"
 ></A
 ><H3
 ><A
@@ -10274,7 +10477,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5486"
+NAME="AEN5665"
 ></A
 ><H3
 ><A
@@ -10358,7 +10561,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5507"
+NAME="AEN5686"
 ></A
 ><H3
 ><A
@@ -10465,7 +10668,7 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5533"
+NAME="AEN5712"
 ></A
 ><H3
 ><A
@@ -10549,7 +10752,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5554"
+NAME="AEN5733"
 ></A
 ><H3
 ><A
@@ -10656,7 +10859,7 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5580"
+NAME="AEN5759"
 ></A
 ><H3
 ><A
@@ -10741,7 +10944,7 @@ It's up to the caller to free the memory.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5601"
+NAME="AEN5780"
 ></A
 ><H3
 ><A
@@ -10824,7 +11027,7 @@ It's up to the caller to free the memory.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5622"
+NAME="AEN5801"
 ></A
 ><H3
 ><A
@@ -10909,7 +11112,86 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5643"
+NAME="AEN5822"
+></A
+><H3
+><A
+NAME="XMLNODEGETSPACEPRESERVE"
+></A
+>xmlNodeGetSpacePreserve ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlNodeGetSpacePreserve         (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Searches the language of a node, i.e. the values of the xml:space
+attribute or the one carried by the nearest ancestor.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the node being checked</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>-1 if xml:space is not inheried, 0 if "default", 1 if "preserve"</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN5842"
 ></A
 ><H3
 ><A
@@ -11013,7 +11295,7 @@ It's up to the caller to free the memory.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5669"
+NAME="AEN5868"
 ></A
 ><H3
 ><A
@@ -11089,7 +11371,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5688"
+NAME="AEN5887"
 ></A
 ><H3
 ><A
@@ -11174,7 +11456,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5709"
+NAME="AEN5908"
 ></A
 ><H3
 ><A
@@ -11256,7 +11538,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5729"
+NAME="AEN5928"
 ></A
 ><H3
 ><A
@@ -11342,7 +11624,117 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5750"
+NAME="AEN5949"
+></A
+><H3
+><A
+NAME="XMLRECONCILIATENS"
+></A
+>xmlReconciliateNs ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlReconciliateNs               (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> tree);</PRE
+></TD
+></TR
+></TABLE
+><P
+>This function checks that all the namespaces declared within the given
+tree are properly declared. This is needed for example after Copy or Cut
+and then paste operations. The subtree may still hold pointers to
+namespace declarations outside the subtree or invalid/masked. As much
+as possible the function try tu reuse the existing namespaces found in
+the new environment. If not possible the new namespaces are redeclared
+on <TT
+CLASS="PARAMETER"
+><I
+>tree</I
+></TT
+> at the top of the given subtree.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the document</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>tree</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a node defining the subtree to reconciliate</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the number of namespace declarations created or -1 in case of error.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN5975"
 ></A
 ><H3
 ><A
@@ -11445,7 +11837,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5775"
+NAME="AEN6000"
 ></A
 ><H3
 ><A
@@ -11529,7 +11921,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5796"
+NAME="AEN6021"
 ></A
 ><H3
 ><A
@@ -11634,7 +12026,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5822"
+NAME="AEN6047"
 ></A
 ><H3
 ><A
@@ -11737,7 +12129,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5847"
+NAME="AEN6072"
 ></A
 ><H3
 ><A
@@ -11815,7 +12207,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5867"
+NAME="AEN6092"
 ></A
 ><H3
 ><A
@@ -11897,7 +12289,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5887"
+NAME="AEN6112"
 ></A
 ><H3
 ><A
@@ -11955,7 +12347,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5902"
+NAME="AEN6127"
 ></A
 ><H3
 ><A

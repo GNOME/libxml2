@@ -82,6 +82,8 @@ def runTest(test, basedir):
 	return -1
 
     expected = None
+    outputfile = None
+    diff = None
     if type != 'error':
 	output = test.xpathEval('string(output)')
 	if output == 'No output file.':
@@ -98,6 +100,7 @@ def runTest(test, basedir):
 		try:
 		    f = open(output)
 		    expected = f.read()
+		    outputfile = output
 		except:
 		    print "Result for %s unreadable: %s" % (id, output)
 
@@ -112,6 +115,8 @@ def runTest(test, basedir):
 	    result = doc.serialize()
 	    if result != expected:
 	        print "Result for %s differs" % (id)
+		open("xinclude.res", "w").write(result)
+		diff = os.popen("diff %s xinclude.res" % outputfile).read()
 
 	doc.freeDoc()
     else:
@@ -157,6 +162,9 @@ def runTest(test, basedir):
 	    log.write("   ----\n%s   ----\n" % (error_msg))
 	    error_msg = ''
 	log.write("\n")
+    if diff != None:
+        log.write("diff from test %s:\n" %(id))
+	log.write("   -----------\n%s\n   -----------\n" % (diff));
 
     return 0
 	    

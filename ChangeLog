@@ -1,3 +1,8 @@
+Mon Sep  6 11:52:50 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* check-xinclude-test-suite.py: when output and expected do not match
+	  exactly run diff to put the differences in the log c.f. #148691
+
 Mon Sep  6 11:17:35 CEST 2004 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xstc/xstc-to-python.xslt xstc/ms-test-def.xml xstc/nist-test-def.xml

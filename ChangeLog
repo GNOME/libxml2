@@ -1,3 +1,8 @@
+Mon Jan  7 00:03:58 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: Anthony Jones  pointed out a problem in
+	  xmlStringGetNodeList() and provided a fix for it
+
 Sun Jan  6 13:45:49 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: patch from Jack J Franklin to remove a bug in

@@ -750,6 +750,9 @@ xmlStringGetNodeList(xmlDocPtr doc, const xmlChar *value) {
 			if (last == NULL) {
 			    node = xmlNewDocText(doc, ent->content);
 			    last = ret = node;
+			} else if (last->type != XML_TEXT_NODE) {
+			    node = xmlNewDocText(doc, ent->content);
+			    last = xmlAddNextSibling(last, node);
 			} else
 			    xmlNodeAddContent(last, ent->content);
 			    

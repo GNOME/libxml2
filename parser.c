@@ -392,8 +392,12 @@ static void
 xmlWarningMsg(xmlParserCtxtPtr ctxt, xmlParserErrors error,
               const char *msg, const xmlChar *str1, const xmlChar *str2)
 {
+    xmlStructuredErrorFunc schannel = NULL
+    
     ctxt->errNo = error;
-    __xmlRaiseError((ctxt->sax) ? ctxt->sax->serror : NULL,
+    if ((ctxt->sax != NULL) && (ctxt->sax->initialized == XML_SAX2_MAGIC))
+        schannel = ctxt->sax->serror
+    __xmlRaiseError(schannel
                     (ctxt->sax) ? ctxt->sax->warning : NULL,
                     ctxt->userData,
                     ctxt, NULL, XML_FROM_PARSER, error,
@@ -415,8 +419,11 @@ static void
 xmlValidityError(xmlParserCtxtPtr ctxt, xmlParserErrors error,
               const char *msg, const xmlChar *str1)
 {
+    xmlStructuredErrorFunc schannel = NULL
     ctxt->errNo = error;
-    __xmlRaiseError(ctxt->vctxt.serror,
+    if ((ctxt->sax != NULL) && (ctxt->sax->initialized == XML_SAX2_MAGIC))
+        schannel = ctxt->sax->serror
+    __xmlRaiseError(schannel,
                     ctxt->vctxt.error, ctxt->vctxt.userData,
                     ctxt, NULL, XML_FROM_DTD, error,
                     XML_ERR_ERROR, NULL, 0, (const char *) str1,
@@ -11380,7 +11387,7 @@ xmlSAXParseFileWithData(xmlSAXHandlerPtr sax, const char *filename,
     }
     xmlDetectSAX2(ctxt);
     if (data!=NULL) {
-	ctxt->_private=data;
+	ctxt->_private = data;
     }
 
     if ((ctxt->directory == NULL) && (directory == NULL))

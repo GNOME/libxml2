@@ -541,7 +541,7 @@ xmlInitThreads(void)
 #ifdef DEBUG_THREADS
     xmlGenericError(xmlGenericErrorContext, "xmlInitThreads()\n");
 #endif
-#if defined(HAVE_WIN32_THREADS) && !defined(HAVE_COMPILER_TLS)
+#if defined(HAVE_WIN32_THREADS) && !defined(HAVE_COMPILER_TLS) && (!defined(LIBXML_STATIC) || defined(LIBXML_STATIC_FOR_DLL))
     InitializeCriticalSection(&cleanup_helpers_cs);
 #endif
 }
@@ -558,7 +558,7 @@ xmlCleanupThreads(void)
 #ifdef DEBUG_THREADS
     xmlGenericError(xmlGenericErrorContext, "xmlCleanupThreads()\n");
 #endif
-#if defined(HAVE_WIN32_THREADS) && !defined(HAVE_COMPILER_TLS)
+#if defined(HAVE_WIN32_THREADS) && !defined(HAVE_COMPILER_TLS) && (!defined(LIBXML_STATIC) || defined(LIBXML_STATIC_FOR_DLL))
     if (globalkey != TLS_OUT_OF_INDEXES) {
 	xmlGlobalStateCleanupHelperParams * p;
 	EnterCriticalSection(&cleanup_helpers_cs);

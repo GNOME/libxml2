@@ -74,7 +74,7 @@ if test "$with_zlib" = "no"; then
 else
     AC_CHECK_HEADERS(zlib.h,
 	AC_CHECK_LIB(z, gzread,[
-	    AC_DEFINE(HAVE_LIBZ)
+	    AC_DEFINE([HAVE_LIBZ], [], [Have compression library])
 	    if test "x${Z_DIR}" != "x"; then
 		Z_CFLAGS="-I${Z_DIR}/include"
 		Z_LIBS="-L${Z_DIR}/lib -lz"
@@ -204,7 +204,7 @@ AC_TRY_COMPILE2([
       AC_MSG_RESULT(int *)
       SOCKLEN_T=int],[
       AC_MSG_WARN(could not determine)])])])
-AC_DEFINE_UNQUOTED(SOCKLEN_T, $SOCKLEN_T)
+AC_DEFINE_UNQUOTED(SOCKLEN_T, $SOCKLEN_T, [Determine what socket length (socklen_t) data type is])
 
 dnl ***********************Checking for availability of IPv6*******************
 
@@ -228,7 +228,7 @@ if test $enable_ipv6 = yes; then
   AC_MSG_RESULT($have_ipv6)
 
   if test $have_ipv6 = yes; then
-    AC_DEFINE(SUPPORT_IP6)
+    AC_DEFINE([SUPPORT_IP6], [], [Support for IPv6])
 
     have_getaddrinfo=no
     AC_CHECK_FUNC(getaddrinfo, have_getaddrinfo=yes)
@@ -239,7 +239,7 @@ if test $enable_ipv6 = yes; then
     fi
 
     if test $have_getaddrinfo = yes; then
-      AC_DEFINE(HAVE_GETADDRINFO)
+      AC_DEFINE([HAVE_GETADDRINFO], [], [Define if getaddrinfo is there])
     fi
   fi
 fi 
@@ -248,10 +248,10 @@ dnl ******************************End IPv6 checks******************************
 
 dnl Checks for isnan in libm if not in libc
 AC_CHECK_FUNC(isnan, , AC_CHECK_LIB(m, isnan,
-  [AC_DEFINE(HAVE_ISNAN)]))
+  [AC_DEFINE([HAVE_ISNAN],[], [Define if isnan is there])]))
 
-AC_CHECK_FUNC(isinf, AC_DEFINE(HAVE_ISINF) , AC_CHECK_LIB(m, isinf,
-  [AC_DEFINE(HAVE_ISINF)]))
+AC_CHECK_FUNC(isinf, AC_DEFINE([HAVE_ISINF], [], [Define if isinf is there]) , AC_CHECK_LIB(m, isinf,
+  [AC_DEFINE([HAVE_ISINF], [], [Define if isinf is there])]))
 
 XML_LIBDIR='-L${libdir}'
 XML_INCLUDEDIR='-I${includedir}/libxml2'
@@ -470,8 +470,8 @@ else
     AC_CHECK_HEADER(pthread.h,
 	AC_CHECK_LIB(pthread, pthread_join,[
 	   THREAD_LIBS="-lpthread"
-	   AC_DEFINE(HAVE_LIBPTHREAD)
-	   AC_DEFINE(HAVE_PTHREAD_H)
+	   AC_DEFINE([HAVE_LIBPTHREAD], [], [Define if pthread library is there (-lpthread)])
+	   AC_DEFINE([HAVE_PTHREAD_H], [], [Define if <pthread.h> is there])
 	   WITH_THREADS="1"]))
 
     if test "$WITH_THREADS" = "1" ; then
@@ -513,11 +513,11 @@ if test "$with_history" = "yes" ; then
     AC_CHECK_HEADER(readline/history.h,
 	AC_CHECK_LIB(history, append_history,[
 	   RDL_LIBS="-lhistory"
-	   AC_DEFINE(HAVE_LIBHISTORY)]))
+	   AC_DEFINE([HAVE_LIBHISTORY], [], [Define if history library is there (-lhistory)])]))
     AC_CHECK_HEADER(readline/readline.h,
 	AC_CHECK_LIB(readline, readline,[
 	   RDL_LIBS="-lreadline $RDL_LIBS $tcap"
-	   AC_DEFINE(HAVE_LIBREADLINE)], , $tcap))
+	   AC_DEFINE([HAVE_LIBREADLINE], [], [Define if readline library is there (-lreadline)])], , $tcap))
     if test -n "$RDL_DIR" -a -n "$RDL_LIBS"; then
 	CPPFLAGS="$CPPFLAGS -I${RDL_DIR}/include"
 	RDL_LIBS="-L${RDL_DIR}/lib $RDL_LIBS"

@@ -1,3 +1,11 @@
+Sat Oct 11 12:46:49 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in: patch from Mike Hommey
+	* threads.c: applied Windows patch from Jesse Pelton and Stephane
+	  Bidoul
+	* parser.c: fix the potentially nasty access to ctxt->serror
+	  without checking first that the SAX block is version 2
+
 Fri Oct 10 21:34:01 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* SAX2.c: fixed a nasty bug with interning some text strings

@@ -2,14 +2,15 @@
            TODO for the XML parser and stuff:
 	   ==================================
 
+              $Id$
+
+    this tend to be outdated :-\ ...
 
 TODO:
 =====
 
 - Computation of base when HTTP redirect occurs, might affect HTTP
   interfaces.
-- performances: there is still improvements needed when parsing Docbook DTD
-  a single function to optimize/avoid.
 - DOM needs
   int xmlPruneProp(xmlNodePtr node, xmlAtttrPtr attr);
 - listing all attributes in a node.
@@ -18,6 +19,7 @@ TODO:
 - Better checking of external parsed entities TAG 1234
 - Find way of representing PERefs in the Dtd so that %entity; can
   be saved back.
+  => seems impossible in a structure way
 - Go through erratas and do the cleanup.
   http://www.w3.org/XML/xml-19980210-errata ... started ...
 - Handle undefined namespaces in entity contents better ... at least

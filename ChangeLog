@@ -1,3 +1,9 @@
+Sat Apr 28 16:33:05 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xpath.c: simple and efficient optimization, XPath functions
+	  aways bind to the same code, cache this
+	* TODO: updated (by saying some is obsolete)
+
 Sat Apr 28 14:23:30 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xpath.c: more cleanup work on XPath name parsing routines

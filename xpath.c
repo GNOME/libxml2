@@ -252,6 +252,7 @@ struct _xmlXPathStepOp {
     int value3;
     void *value4;
     void *value5;
+    void *cache;
 };
 
 struct _xmlXPathCompExpr {
@@ -373,6 +374,7 @@ xmlXPathCompExprAdd(xmlXPathCompExprPtr comp, int ch1, int ch2,
     comp->steps[comp->nbStep].value3 = value3;
     comp->steps[comp->nbStep].value4 = value4;
     comp->steps[comp->nbStep].value5 = value5;
+    comp->steps[comp->nbStep].cache = NULL;
     return(comp->nbStep++);
 }
 
@@ -7229,26 +7231,31 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op) {
 
 	    if (op->ch1 != -1)
 		xmlXPathCompOpEval(ctxt, &comp->steps[op->ch1]);
-	    if (op->value5 == NULL)
-		func = xmlXPathFunctionLookup(ctxt->context, op->value4);
+	    if (op->cache != NULL) 
+		func = (xmlXPathFunction) op->cache;
 	    else {
-		const xmlChar *URI;
-		URI = xmlXPathNsLookup(ctxt->context, op->value5);
-		if (URI == NULL) {
+		if (op->value5 == NULL) 
+		    func = xmlXPathFunctionLookup(ctxt->context, op->value4);
+		else {
+		    const xmlChar *URI;
+		    URI = xmlXPathNsLookup(ctxt->context, op->value5);
+		    if (URI == NULL) {
+			xmlGenericError(xmlGenericErrorContext,
+	       "xmlXPathRunEval: function %s bound to undefined prefix %s\n",
+					op->value4, op->value5);
+			return;
+		    }
+		    func = xmlXPathFunctionLookupNS(ctxt->context,
+						    op->value4, URI);
+		}
+		if (func == NULL) {
 		    xmlGenericError(xmlGenericErrorContext,
-	   "xmlXPathRunEval: function %s bound to undefined prefix %s\n",
-				    op->value4, op->value5);
+			   "xmlXPathRunEval: function %s not found\n",
+				    op->value4);
+		    XP_ERROR(XPATH_UNKNOWN_FUNC_ERROR);
 		    return;
 		}
-		func = xmlXPathFunctionLookupNS(ctxt->context,
-						op->value4, URI);
-	    }
-	    if (func == NULL) {
-		xmlGenericError(xmlGenericErrorContext,
-		       "xmlXPathRunEval: function %s not found\n",
-				op->value4);
-		XP_ERROR(XPATH_UNKNOWN_FUNC_ERROR);
-		return;
+		op->cache = (void *) func;
 	    }
 	    func(ctxt, op->value);
 	    return;

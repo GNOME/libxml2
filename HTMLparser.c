@@ -1739,6 +1739,20 @@ htmlNewInputStream(htmlParserCtxtPtr ctxt) {
  *		Commodity functions, cleanup needed ?			*
  *									*
  ************************************************************************/
+/*
+ * all tags allowing pc data from the html 4.01 loose dtd 
+ * NOTE: it might be more apropriate to integrate this information
+ * into the html40ElementTable array but I don't want to risk any
+ * binary incomptibility
+ */
+static const char *allowPCData[] = {
+    "a", "abbr", "acronym", "address", "applet", "b", "bdo", "big",
+    "blockquote", "body", "button", "caption", "center", "cite", "code",
+    "dd", "del", "dfn", "div", "dt", "em", "font", "form", "h1", "h2",
+    "h3", "h4", "h5", "h6", "i", "iframe", "ins", "kbd", "label", "legend",
+    "li", "noframes", "noscript", "object", "p", "pre", "q", "s", "samp",
+    "small", "span", "strike", "strong", "td", "th", "tt", "u", "var"
+};
 
 /**
  * areBlanks:
@@ -1752,11 +1766,12 @@ htmlNewInputStream(htmlParserCtxtPtr ctxt) {
  */
 
 static int areBlanks(htmlParserCtxtPtr ctxt, const xmlChar *str, int len) {
-    int i;
+    unsigned int i;
+    int j;
     xmlNodePtr lastChild;
 
-    for (i = 0;i < len;i++)
-        if (!(IS_BLANK(str[i]))) return(0);
+    for (j = 0;j < len;j++)
+        if (!(IS_BLANK(str[j]))) return(0);
 
     if (CUR == 0) return(1);
     if (CUR != '<') return(0);
@@ -1773,14 +1788,23 @@ static int areBlanks(htmlParserCtxtPtr ctxt, const xmlChar *str, int len) {
     if (lastChild == NULL) {
         if ((ctxt->node->type != XML_ELEMENT_NODE) &&
             (ctxt->node->content != NULL)) return(0);
+	/* keep ws in constructs like ...<b> </b>... 
+	   for all tags "b" allowing PCDATA */
+	for ( i = 0; i < sizeof(allowPCData)/sizeof(allowPCData[0]); i++ ) {
+	    if ( xmlStrEqual(ctxt->name, BAD_CAST allowPCData[i]) ) {
+		return(0);
+	    }
+	}
     } else if (xmlNodeIsText(lastChild)) {
         return(0);
-    } else if (xmlStrEqual(lastChild->name, BAD_CAST"b")) {
-        return(0);
-    } else if (xmlStrEqual(lastChild->name, BAD_CAST"bold")) {
-        return(0);
-    } else if (xmlStrEqual(lastChild->name, BAD_CAST"em")) {
-        return(0);
+    } else {
+	/* keep ws in constructs like <p><b>xy</b> <i>z</i><p> 
+	   for all tags "p" allowing PCDATA */
+	for ( i = 0; i < sizeof(allowPCData)/sizeof(allowPCData[0]); i++ ) {
+	    if ( xmlStrEqual(lastChild->name, BAD_CAST allowPCData[i]) ) {
+		return(0);
+	    }
+	}
     }
     return(1);
 }

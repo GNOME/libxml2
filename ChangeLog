@@ -1,3 +1,10 @@
+Fri Jul  5 20:07:43 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: trying to fix 87235 about discarded white
+	  spaces in the HTML parser.
+	* result/HTML/*: this changes the output of a number of HTML
+	  regression tests
+
 Mon Jul  1 23:23:41 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: applied patch from Richard Jinks for the namespace

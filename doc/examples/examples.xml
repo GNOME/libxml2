@@ -171,6 +171,62 @@
       <function line='852' file='tree' name='xmlNewDoc'/>
     </uses>
   </example>
+  <example filename='reader1.c'>
+    <synopsis>Parse an XML file with an xmlReader</synopsis>
+    <purpose>Demonstrate the use of xmlReaderForFile() to parse an XML file and dump the informations about the nodes found in the process</purpose>
+    <usage>reader1 &lt;filename&gt;</usage>
+    <test>reader1 test2.xml &gt; reader1.tmp ; diff reader1.tmp reader1.out ; rm reader1.tmp</test>
+    <author>Daniel Veillard</author>
+    <copy>see Copyright for the status of this software. </copy>
+    <section>xmlReader</section>
+    <includes>
+      <include>&lt;libxml/xmlreader.h&gt;</include>
+    </includes>
+    <uses>
+      <function line='40' file='parser' name='xmlStrlen'/>
+      <function line='90' file='parser' name='xmlCleanupParser'/>
+      <function line='33' file='xmlreader' name='xmlTextReaderNodeType'/>
+      <typedef line='55' file='xmlreader' name='xmlTextReaderPtr'/>
+      <function line='29' file='xmlreader' name='xmlTextReaderConstValue'/>
+      <function line='32' file='xmlreader' name='xmlTextReaderDepth'/>
+      <function line='65' file='xmlreader' name='xmlFreeTextReader'/>
+      <macro line='85' file='xmlversion' name='LIBXML_TEST_VERSION'/>
+      <function line='25' file='xmlreader' name='xmlTextReaderConstName'/>
+      <function line='36' file='xmlreader' name='xmlTextReaderHasValue'/>
+      <function line='63' file='xmlreader' name='xmlTextReaderRead'/>
+      <function line='35' file='xmlreader' name='xmlTextReaderIsEmptyElement'/>
+      <function line='58' file='xmlreader' name='xmlReaderForFile'/>
+    </uses>
+  </example>
+  <example filename='reader2.c'>
+    <synopsis>Parse and validate an XML file with an xmlReader</synopsis>
+    <purpose>Demonstrate the use of xmlReaderForFile() to parse an XML file validating the content in the process and activating options like entities substitution, and DTD attributes defaulting</purpose>
+    <usage>reader2 &lt;valid_xml_filename&gt;</usage>
+    <test>reader2 test2.xml &gt; reader1.tmp ; diff reader1.tmp reader1.out ; rm reader1.tmp</test>
+    <author>Daniel Veillard</author>
+    <copy>see Copyright for the status of this software. </copy>
+    <section>xmlReader</section>
+    <includes>
+      <include>&lt;libxml/xmlreader.h&gt;</include>
+    </includes>
+    <uses>
+      <function line='41' file='parser' name='xmlStrlen'/>
+      <function line='34' file='xmlreader' name='xmlTextReaderNodeType'/>
+      <typedef line='56' file='xmlreader' name='xmlTextReaderPtr'/>
+      <function line='30' file='xmlreader' name='xmlTextReaderConstValue'/>
+      <enum line='66' file='parser' name='XML_PARSE_NOENT'/>
+      <function line='33' file='xmlreader' name='xmlTextReaderDepth'/>
+      <enum line='67' file='parser' name='XML_PARSE_DTDVALID'/>
+      <enum line='65' file='parser' name='XML_PARSE_DTDATTR'/>
+      <function line='80' file='xmlreader' name='xmlFreeTextReader'/>
+      <function line='26' file='xmlreader' name='xmlTextReaderConstName'/>
+      <function line='37' file='xmlreader' name='xmlTextReaderHasValue'/>
+      <function line='72' file='xmlreader' name='xmlTextReaderRead'/>
+      <function line='36' file='xmlreader' name='xmlTextReaderIsEmptyElement'/>
+      <function line='64' file='xmlreader' name='xmlReaderForFile'/>
+      <function line='77' file='xmlreader' name='xmlTextReaderIsValid'/>
+    </uses>
+  </example>
   <symbols>
     <symbol name='LIBXML_TEST_VERSION'>
       <ref filename='xpath1.c'/>
@@ -178,6 +234,7 @@
       <ref filename='parse2.c'/>
       <ref filename='tree1.c'/>
       <ref filename='tree2.c'/>
+      <ref filename='reader1.c'/>
     </symbol>
     <symbol name='XML_DEFAULT_VERSION'>
       <ref filename='testWriter.c'/>
@@ -189,8 +246,15 @@
     <symbol name='XML_NAMESPACE_DECL'>
       <ref filename='xpath1.c'/>
     </symbol>
+    <symbol name='XML_PARSE_DTDATTR'>
+      <ref filename='reader2.c'/>
+    </symbol>
     <symbol name='XML_PARSE_DTDVALID'>
       <ref filename='parse2.c'/>
+      <ref filename='reader2.c'/>
+    </symbol>
+    <symbol name='XML_PARSE_NOENT'>
+      <ref filename='reader2.c'/>
     </symbol>
     <symbol name='xmlAddChild'>
       <ref filename='tree2.c'/>
@@ -210,6 +274,7 @@
       <ref filename='parse2.c'/>
       <ref filename='tree1.c'/>
       <ref filename='tree2.c'/>
+      <ref filename='reader1.c'/>
     </symbol>
     <symbol name='xmlCreateIntSubset'>
       <ref filename='tree2.c'/>
@@ -246,6 +311,10 @@
     </symbol>
     <symbol name='xmlFreeParserCtxt'>
       <ref filename='parse2.c'/>
+    </symbol>
+    <symbol name='xmlFreeTextReader'>
+      <ref filename='reader1.c'/>
+      <ref filename='reader2.c'/>
     </symbol>
     <symbol name='xmlFreeTextWriter'>
       <ref filename='testWriter.c'/>
@@ -307,6 +376,10 @@
     <symbol name='xmlReadFile'>
       <ref filename='parse1.c'/>
     </symbol>
+    <symbol name='xmlReaderForFile'>
+      <ref filename='reader1.c'/>
+      <ref filename='reader2.c'/>
+    </symbol>
     <symbol name='xmlRealloc'>
       <ref filename='testWriter.c'/>
     </symbol>
@@ -321,6 +394,45 @@
     </symbol>
     <symbol name='xmlStrdup'>
       <ref filename='xpath1.c'/>
+    </symbol>
+    <symbol name='xmlStrlen'>
+      <ref filename='reader1.c'/>
+      <ref filename='reader2.c'/>
+    </symbol>
+    <symbol name='xmlTextReaderConstName'>
+      <ref filename='reader1.c'/>
+      <ref filename='reader2.c'/>
+    </symbol>
+    <symbol name='xmlTextReaderConstValue'>
+      <ref filename='reader1.c'/>
+      <ref filename='reader2.c'/>
+    </symbol>
+    <symbol name='xmlTextReaderDepth'>
+      <ref filename='reader1.c'/>
+      <ref filename='reader2.c'/>
+    </symbol>
+    <symbol name='xmlTextReaderHasValue'>
+      <ref filename='reader1.c'/>
+      <ref filename='reader2.c'/>
+    </symbol>
+    <symbol name='xmlTextReaderIsEmptyElement'>
+      <ref filename='reader1.c'/>
+      <ref filename='reader2.c'/>
+    </symbol>
+    <symbol name='xmlTextReaderIsValid'>
+      <ref filename='reader2.c'/>
+    </symbol>
+    <symbol name='xmlTextReaderNodeType'>
+      <ref filename='reader1.c'/>
+      <ref filename='reader2.c'/>
+    </symbol>
+    <symbol name='xmlTextReaderPtr'>
+      <ref filename='reader1.c'/>
+      <ref filename='reader2.c'/>
+    </symbol>
+    <symbol name='xmlTextReaderRead'>
+      <ref filename='reader1.c'/>
+      <ref filename='reader2.c'/>
     </symbol>
     <symbol name='xmlTextWriterEndDocument'>
       <ref filename='testWriter.c'/>
@@ -385,6 +497,10 @@
     </section>
     <section name='XPath'>
       <example filename='xpath1.c'/>
+    </section>
+    <section name='xmlReader'>
+      <example filename='reader1.c'/>
+      <example filename='reader2.c'/>
     </section>
     <section name='xmlWriter'>
       <example filename='testWriter.c'/>

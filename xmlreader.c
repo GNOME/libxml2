@@ -809,7 +809,7 @@ xmlTextReaderPushData(xmlTextReaderPtr reader) {
 		          (const char *) &inbuf->content[reader->cur],
 			  CHUNK_SIZE, 0);
 	    reader->cur += CHUNK_SIZE;
-	    if (val != 0)
+	    if ((val != 0) && (reader->ctxt->wellFormed == 0))
 		return(-1);
 	} else {
 	    s = inbuf->use - reader->cur;
@@ -817,7 +817,7 @@ xmlTextReaderPushData(xmlTextReaderPtr reader) {
 		          (const char *) &inbuf->content[reader->cur],
 			  s, 0);
 	    reader->cur += s;
-	    if (val != 0)
+	    if ((val != 0) && (reader->ctxt->wellFormed == 0))
 		return(-1);
 	    break;
 	}
@@ -848,7 +848,8 @@ xmlTextReaderPushData(xmlTextReaderPtr reader) {
 		    s, 1);
 	    reader->cur = inbuf->use;
 	    reader->mode = XML_TEXTREADER_DONE;
-	    if (val != 0) return(-1);
+	    if ((val != 0) && (reader->ctxt->wellFormed == 0))
+	        return(-1);
 	}
     }
     reader->state = oldstate;
@@ -3864,8 +3865,7 @@ xmlTextReaderIsValid(xmlTextReaderPtr reader) {
     if (reader->validate == XML_TEXTREADER_VALIDATE_RNG)
         return(reader->rngValidErrors == 0);
 #endif
-    if ((reader->validate == XML_TEXTREADER_VALIDATE_DTD) &&
-        (reader->ctxt != NULL))
+    if ((reader->ctxt != NULL) && (reader->ctxt->validate == 1))
 	return(reader->ctxt->valid);
     return(0);
 }

@@ -1,3 +1,8 @@
+Thu Nov 20 19:20:46 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* doc/examples/*: added two xmlReader examples
+	* xmlreader.c: cleaned up some bugs in the process
+
 Thu Nov 20 12:54:30 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlwriter.c include/libxml/xmlwriter.h: applied patch from

@@ -273,6 +273,9 @@ py_types = {
     'xmlRegexpPtr': ('O', "xmlReg", "xmlRegexpPtr", "xmlRegexpPtr"),
     'xmlTextReaderLocatorPtr': ('O', "xmlTextReaderLocator", "xmlTextReaderLocatorPtr", "xmlTextReaderLocatorPtr"),
     'xmlTextReaderPtr': ('O', "xmlTextReader", "xmlTextReaderPtr", "xmlTextReaderPtr"),
+    'xmlRelaxNGPtr': ('O', "relaxNgSchema", "xmlRelaxNGPtr", "xmlRelaxNGPtr"),
+    'xmlRelaxNGParserCtxtPtr': ('O', "relaxNgParserCtxt", "xmlRelaxNGParserCtxtPtr", "xmlRelaxNGParserCtxtPtr"),
+    'xmlRelaxNGValidCtxtPtr': ('O', "relaxNgValidCtxt", "xmlRelaxNGValidCtxtPtr", "xmlRelaxNGValidCtxtPtr"),
 }
 
 py_return_types = {
@@ -615,6 +618,9 @@ classes_type = {
     "xmlRegexpPtr": ("._o", "xmlReg(_obj=%s)", "xmlReg"),
     "xmlTextReaderLocatorPtr": ("._o", "xmlTextReaderLocator(_obj=%s)", "xmlTextReaderLocator"),
     "xmlTextReaderPtr": ("._o", "xmlTextReader(_obj=%s)", "xmlTextReader"),
+    'xmlRelaxNGPtr': ('._o', "relaxNgSchema(_obj=%s)", "relaxNgSchema"),
+    'xmlRelaxNGParserCtxtPtr': ('._o', "relaxNgParserCtxt(_obj=%s)", "relaxNgParserCtxt"),
+    'xmlRelaxNGValidCtxtPtr': ('._o', "relaxNgValidCtxt(_obj=%s)", "relaxNgValidCtxt"),
 }
 
 converter_type = {
@@ -645,6 +651,9 @@ classes_destructors = {
     "inputBuffer": "xmlFreeParserInputBuffer",
     "xmlReg": "xmlRegFreeRegexp",
     "xmlTextReader": "xmlFreeTextReader",
+    "relaxNgSchema": "xmlRelaxNGFree",
+    "relaxNgParserCtxt": "xmlRelaxNGFreeParserCtxt",
+    "relaxNgValidCtxt": "xmlRelaxNGFreeValidCtxt",
 }
 
 functions_noexcept = {
@@ -655,6 +664,7 @@ functions_noexcept = {
 
 reference_keepers = {
     "xmlTextReader": [('inputBuffer', 'input')],
+    "relaxNgValidCtxt": [('relaxNgSchema', 'schema')],
 }
 
 function_classes = {}

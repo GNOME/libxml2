@@ -1,4 +1,12 @@
-Sun Feb  9 15:18:43 CET 2003 Igor Zlatkovic <igor@zlatkovic.com>
+Mon Feb 10 00:30:01 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c: fixed doc comment problems
+	* python/generator.py python/libxml_wrap.h python/types.c: adding
+	  RelaxNG wrappers
+	* python/tests/Makefile.am python/tests/relaxng.py: added a specific
+	  test of those early Python RelaxNG bindings
+
+Sun Feb  9 15:18:43 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* libxml.spec.in: fixes a libtool problem on AMD 64bits builds
 	* relaxng.c: found the validation problem I had with interleave

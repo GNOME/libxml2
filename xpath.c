@@ -8176,7 +8176,7 @@ xmlXPathCompAndExpr(xmlXPathParserContextPtr ctxt) {
 }
 
 /**
- * xmlXPathCompExpr:
+ * xmlXPathCompileExpr:
  * @ctxt:  the XPath Parser context
  *
  *  [14]   Expr ::=   OrExpr 
@@ -10610,7 +10610,7 @@ xmlXPathEvaluatePredicateResult(xmlXPathParserContextPtr ctxt,
  *
  * Compile an XPath expression
  *
- * Returns the xmlXPathObjectPtr resulting from the evaluation or NULL.
+ * Returns the xmlXPathCompExprPtr resulting from the compilation or NULL.
  *         the caller has to free the object.
  */
 xmlXPathCompExprPtr

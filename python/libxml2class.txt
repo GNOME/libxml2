@@ -128,6 +128,8 @@ setEntityLoader()
 
 # functions from module relaxng
 relaxNGCleanupTypes()
+relaxNGNewMemParserCtxt()
+relaxNGNewParserCtxt()
 
 # functions from module tree
 compressMode()
@@ -464,6 +466,9 @@ Class xmlDoc(xmlNode)
     encodeSpecialChars()
     parameterEntity()
 
+    # functions from module relaxng
+    relaxNGValidateDoc()
+
     # functions from module tree
     copyDoc()
     createIntSubset()
@@ -628,6 +633,16 @@ Class xmlEntity(xmlNode)
 
     # functions from module parserInternals
     handleEntity()
+Class relaxNgSchema()
+
+    # functions from module relaxng
+    relaxNGDump()
+    relaxNGFree()
+    relaxNGNewValidCtxt()
+Class relaxNgValidCtxt()
+
+    # functions from module relaxng
+    relaxNGFreeValidCtxt()
 Class xpathParserContext()
     # accessors
     context()
@@ -797,6 +812,11 @@ Class inputBuffer(ioReadWrapper)
 
     # functions from module xmlreader
     newTextReader()
+Class relaxNgParserCtxt()
+
+    # functions from module relaxng
+    relaxNGFreeParserCtxt()
+    relaxNGParse()
 
 
 Class outputBuffer(ioWriteWrapper)

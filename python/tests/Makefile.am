@@ -24,7 +24,8 @@ PYTESTS=	\
     reader2.py	\
     reader3.py	\
     ctxterror.py\
-    readererr.py
+    readererr.py\
+    relaxng.py
 
 XMLS=		\
     tst.xml	\

@@ -38,8 +38,10 @@ site.xsl           xslt script imported by api.xsl, generates most top-level
                      pages from news.html
 xsa.xsl            xslt script to generate libxml.xsa from news.html
 
-xmlcatalog.1       Man page for xml catalogs
-xmllint.1          Man page for xmllint program
+xmlcatalog.1       Man page for xml catalogs, built from xmlcatalog_man.xml DocBook
+		   source with "make xmlcatalog.1" or "make all"
+xmllint.1          Man page for xmllint program, built from xmllint.xml DocBook
+		   source with "make xmllint.1" or "make all"
 
 libxml-doc.el      Control script for displaying docs under emacs
 

@@ -2195,6 +2195,7 @@ static PyMethodDef libxmlMethods[] = {
     {(char *) "outputBufferCreate", libxml_xmlCreateOutputBuffer, METH_VARARGS, NULL},
     {(char *) "inputBufferCreate", libxml_xmlCreateInputBuffer, METH_VARARGS, NULL},
     {(char *) "setEntityLoader", libxml_xmlSetEntityLoader, METH_VARARGS, NULL},
+    {(char *)"xmlRegisterErrorHandler", libxml_xmlRegisterErrorHandler, METH_VARARGS, NULL },
     {NULL, NULL, 0, NULL}
 };
 

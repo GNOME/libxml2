@@ -462,6 +462,26 @@ PARSER_VALIDATE=3
 PARSER_SUBST_ENTITIES=4
 
 #
-# Everything below this point is automatically generated
+# register the libxml2 error handler
 #
+def registerErrorHandler(f, ctx):
+    """Register a Python written function to for error reporting.
+       The function is called back as f(ctx, error). """
+    import sys
+    if not sys.modules.has_key('libxslt'):
+        # normal behaviour when libxslt is not imported
+        ret = libxml2mod.xmlRegisterErrorHandler(f,ctx)
+    else:
+        # when libxslt is already imported, one must
+        # use libxst's error handler instead
+        import libxslt
+        ret = libxslt.registerErrorHandler(f,ctx)
+    return ret
+
+# WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING
+#
+# Everything before this line comes from libxml.py 
+# Everything after this line is automatically generated
+#
+# WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING
 

@@ -124,7 +124,6 @@ dumpMemory()
 htmlCreatePushParser()
 htmlSAXParseFile()
 newNode()
-registerErrorHandler()
 setEntityLoader()
 
 # functions from module tree

@@ -14,12 +14,6 @@
       <return type='xmlNodePtr' info="A new element node"/>
       <arg name='name' type='xmlChar *' info='the node name'/>
     </function>
-    <function name='xmlRegisterErrorHandler' file='python'>
-      <info>Register a Python written function to for error reporting. The function is called back as f(ctx, error).</info>
-      <return type='int' info="1 in case of success, 0 or -1 in case of error"/>
-      <arg name='f' type='pythonObject' info='the python function'/>
-      <arg name='ctx' type='pythonObject' info='a context for the callback'/>
-    </function>
     <function name='xmlCreatePushParser' file='python'>
       <info>Create a progressive XML parser context to build either an event flow if the SAX object is not None, or a DOM tree otherwise.</info>
       <return type='xmlParserCtxtPtr' info="the parser context or None in case of error"/>

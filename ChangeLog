@@ -1,3 +1,9 @@
+Fri Jan 10 14:13:03 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* python/libxml.py python/libxml.c python/libxml2-python-api.xml:
+	  fixed bug #102181 by applying the suggested change and fixing
+	  the generation/registration problem.
+
 Fri Jan 10 13:47:55 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: fixed bug #102960 by reusing the XML name parsing

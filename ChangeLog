@@ -1,3 +1,7 @@
+Wed Nov  5 23:46:36 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am: apply fix from Karl Eichwalder for script path
+
 Wed Nov  5 10:49:20 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* win32/configure.js: applied patch from Mark Vakoc to simplify

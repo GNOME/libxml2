@@ -1,3 +1,9 @@
+Sat Mar  4 16:14:42 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* doc/* : rebuilt the docs
+	* parser.c: final patch on #6766
+	* valid.c: small patch on validity checks.
+
 Sat Mar  4 12:38:41 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* doc/upgrade.html: instruction on how to upgrade from 1.x to 2.x

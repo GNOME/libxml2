@@ -8320,8 +8320,8 @@ xmlRecoverFile(const char *filename) {
 
 /**
  * xmlCreateMemoryParserCtxt :
- * @buffer:  an pointer to a char array
- * @size:  the size of the array
+ * @buffer:  an pointer to a zero terminated char array
+ * @size:  the size of the array (without the trailing 0)
  *
  * Create a parser context for an XML in-memory document.
  *
@@ -8334,7 +8334,7 @@ xmlCreateMemoryParserCtxt(char *buffer, int size) {
     xmlCharEncoding enc;
 
     if (buffer[size] != '\0')
-	buffer[size] = '\0';
+	return(NULL);
 
     ctxt = xmlNewParserCtxt();
     if (ctxt == NULL) {

@@ -1,3 +1,9 @@
+Mon Mar 31 12:11:47 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemastypes.c: fixed gMonth parsing routine accordingly
+	  to the XML Schemas errata
+	  http://www.w3.org/2001/05/xmlschema-errata#e2-12
+
 Sun Mar 30 23:04:18 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c xmlschemastypes.c: more work on XML Schemas datatypes

@@ -837,7 +837,7 @@ _xmlSchemaParseTimeZone (xmlSchemaValDatePtr dt, const xmlChar **str) {
 
 /**
  * xmlSchemaValidateDates:
- * @type: the predefined type
+ * @type: the expected type or XML_SCHEMAS_UNKNOWN
  * @dateTime:  string to analyze
  * @val:  the return computed value
  *
@@ -848,7 +848,7 @@ _xmlSchemaParseTimeZone (xmlSchemaValDatePtr dt, const xmlChar **str) {
  *         and -1 in case of internal or API error.
  */
 static int
-xmlSchemaValidateDates (xmlSchemaTypePtr type ATTRIBUTE_UNUSED,
+xmlSchemaValidateDates (xmlSchemaValType type,
 	                const xmlChar *dateTime, xmlSchemaValPtr *val) {
     xmlSchemaValPtr dt;
     int ret;
@@ -861,11 +861,7 @@ xmlSchemaValidateDates (xmlSchemaTypePtr type ATTRIBUTE_UNUSED,
 	    if (*cur != 0)					\
 		goto error;					\
 	    dt->type = t;					\
-            if (val != NULL)                                    \
-                *val = dt;                                      \
-            else						\
-		xmlSchemaFreeValue(dt);				\
-	    return 0;						\
+	    goto done;						\
 	}							\
     }
 
@@ -888,6 +884,8 @@ xmlSchemaValidateDates (xmlSchemaTypePtr type ATTRIBUTE_UNUSED,
 
 	/* is it an xs:gDay? */
 	if (*cur == '-') {
+	    if (type == XML_SCHEMAS_GMONTH)
+		goto error;
 	  ++cur;
 	    ret = _xmlSchemaParseGDay(&(dt->value.date), &cur);
 	    if (ret != 0)
@@ -905,18 +903,14 @@ xmlSchemaValidateDates (xmlSchemaTypePtr type ATTRIBUTE_UNUSED,
 	if (ret != 0)
 	    goto error;
 
-	if (*cur != '-')
-	    goto error;
-	cur++;
-
-	/* is it an xs:gMonth? */
-	if (*cur == '-') {
-	    cur++;
+	if (*cur != '-') {
 	    RETURN_TYPE_IF_VALID(XML_SCHEMAS_GMONTH);
 	    goto error;
 	}
-
+	if (type == XML_SCHEMAS_GMONTH)
+	    goto error;
 	/* it should be an xs:gMonthDay */
+	cur++;
 	ret = _xmlSchemaParseGDay(&(dt->value.date), &cur);
 	if (ret != 0)
 	    goto error;
@@ -983,7 +977,14 @@ xmlSchemaValidateDates (xmlSchemaTypePtr type ATTRIBUTE_UNUSED,
     if ((ret != 0) || (*cur != 0) || !VALID_DATETIME((&(dt->value.date))))
 	goto error;
 
+
     dt->type = XML_SCHEMAS_DATETIME;
+
+done:
+#if 0
+    if ((type != XML_SCHEMAS_UNKNOWN) && (type != XML_SCHEMAS_DATETIME))
+	goto error;
+#endif
 
     if (val != NULL)
         *val = dt;
@@ -1404,7 +1405,7 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar *value,
         case XML_SCHEMAS_GYEARMONTH:
         case XML_SCHEMAS_DATE:
         case XML_SCHEMAS_DATETIME:
-	    ret = xmlSchemaValidateDates(type, value, val);
+	    ret = xmlSchemaValidateDates(type->flags, value, val);
 	    break;
         case XML_SCHEMAS_DURATION:
 	    ret = xmlSchemaValidateDuration(type, value, val);

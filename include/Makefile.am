@@ -34,3 +34,10 @@ install-exec-hook:
 	$(mkinstalldirs) $(DESTDIR)$(xmlincdir) $(DESTDIR)$(xmlincdir)/libxml
 
 EXTRA_DIST = win32config.h libxml/xmlversion.h.in
+
+all: $(srcdir)/libxml
+
+$(xmlinc_HEADERS): $(srcdir)/libxml
+
+$(srcdir)/libxml:
+	@(cd $(srcdir); ln -s .. libxml)

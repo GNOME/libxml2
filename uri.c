@@ -1051,17 +1051,102 @@ xmlURIEscapeStr(const xmlChar *str, const xmlChar *list) {
  * It will try to escape the chars needing this, but this is heuristic
  * based it's impossible to be sure.
  *
- * TODO: make the proper implementation of this function by calling
- *       xmlParseURIReference() and escaping each section accordingly
- *       to the rules (c.f. bug 51876)
- *
  * Returns an copy of the string, but escaped
+ *
+ * 25 May 2001
+ * Uses xmlParseURI and xmlURIEscapeStr to try to escape correctly
+ * according to RFC2396.
+ *   - Carl Douglas
  */
 xmlChar *
 xmlURIEscape(const xmlChar *str) {
-    xmlChar *ret;
+    xmlChar *ret, *segment = NULL;
+    xmlURIPtr uri;
 
-    ret = xmlURIEscapeStr(str, BAD_CAST "#");
+#define NULLCHK(p) if(!p) { \
+                   xmlGenericError(xmlGenericErrorContext, \
+                        "xmlURIEscape: out of memory\n"); \
+                   return NULL; }
+
+    uri = xmlParseURI( (const char *) str);
+
+    if(!uri)
+	return NULL;
+
+    ret = NULL;
+
+    if(uri->scheme) {
+	segment = xmlURIEscapeStr( BAD_CAST uri->scheme, BAD_CAST "+-.");
+	NULLCHK(segment)
+	xmlStrcat(ret, segment);
+	xmlStrcat(ret, BAD_CAST ":");
+	xmlFree(segment);
+    }
+
+    if(uri->authority) {
+	segment = xmlURIEscapeStr( BAD_CAST uri->authority, BAD_CAST "/?;:@");
+	NULLCHK(segment)
+	xmlStrcat(ret, BAD_CAST "//");
+	xmlStrcat(ret, segment);
+	xmlFree(segment);
+    }
+
+    if(uri->user) {
+	segment = xmlURIEscapeStr( BAD_CAST uri->user, BAD_CAST ";:&=+$,");
+	NULLCHK(segment)
+	xmlStrcat(ret, segment);
+	xmlStrcat(ret, BAD_CAST "@");
+	xmlFree(segment);
+    }
+
+    if(uri->server) {
+	segment = xmlURIEscapeStr( BAD_CAST uri->server, BAD_CAST "/?;:@");
+	NULLCHK(segment)
+	xmlStrcat(ret, BAD_CAST "//");
+	xmlStrcat(ret, segment);
+	xmlFree(segment);
+    }
+
+    if(uri->port) {
+	xmlChar port[10];
+	snprintf(segment, 10, "%d", uri->port);
+	xmlStrcat(ret, BAD_CAST ":");
+	xmlStrcat(ret, port);
+	xmlFree(segment);
+    }
+
+    if(uri->path) {
+	segment = xmlURIEscapeStr( BAD_CAST uri->path, BAD_CAST ":@&=+$,/?;");
+	NULLCHK(segment)
+	xmlStrcat(ret, segment);
+	xmlFree(segment);
+    }
+
+    if(uri->query) {
+	segment = xmlURIEscapeStr( BAD_CAST uri->query, BAD_CAST ";/?:@&=+,$");
+	NULLCHK(segment)
+	xmlStrcat(ret, BAD_CAST "?");
+	xmlStrcat(ret, segment);
+	xmlFree(segment);
+    }
+
+    if(uri->opaque) {
+	segment = xmlURIEscapeStr( BAD_CAST uri->opaque, BAD_CAST "");
+	NULLCHK(segment)
+	xmlStrcat(ret, segment);
+	xmlStrcat(ret, BAD_CAST ":");
+	xmlFree(segment);
+    }
+
+    if(uri->fragment) {
+	segment = xmlURIEscapeStr( BAD_CAST uri->fragment, BAD_CAST "#");
+	NULLCHK(segment)
+	xmlStrcat(ret, BAD_CAST "#");
+	xmlStrcat(ret, segment);
+	xmlFree(segment);
+    }
+
+#undef NULLCHK
 
     return(ret);
 }

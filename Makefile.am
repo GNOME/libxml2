@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS = . include doc example
+SUBDIRS = include . doc example
 
 INCLUDES = -I@srcdir@/include -I./include @Z_CFLAGS@ @CORBA_CFLAGS@ 
 

@@ -1,3 +1,10 @@
+Fri May 25 09:36:26 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* Makefile.am include/Makefile.am: small change to have
+	  include/libxml rebuilt if working from CVS.
+	* uri.c: applied another patch from Carl Douglas for URI escaping,
+	  this should close bug #51876
+
 Wed May 23 15:40:27 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xinclude.c: fixed XInclude recursive behaviour bug #54678

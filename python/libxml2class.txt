@@ -115,6 +115,9 @@ nodePush()
 
 # functions from module python
 createPushParser()
+debugMemory()
+dumpMemory()
+htmlCreatePushParser()
 registerErrorHandler()
 
 # functions from module tree

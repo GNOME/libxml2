@@ -20,6 +20,17 @@ libxml_intWrap(int val) {
 }
 
 PyObject *
+libxml_longWrap(long val) {
+    PyObject *ret;
+
+#ifdef DEBUG
+    printf("libxml_longWrap: val = %ld\n", val);
+#endif
+    ret = PyInt_FromLong(val);
+    return(ret);
+}
+
+PyObject *
 libxml_doubleWrap(double val) {
     PyObject *ret;
 

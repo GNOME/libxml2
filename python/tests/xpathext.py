@@ -2,6 +2,9 @@
 import sys
 import libxml2
 
+# Memory debug specific
+libxml2.debugMemory(1)
+
 def foo(x):
     return x + 1
 
@@ -35,4 +38,12 @@ while i > 0:
 	sys.exit(1)
     i = i - 1
 doc.freeDoc()
-print "OK"
+del ctxt
+
+# Memory debug specific
+libxml2.cleanupParser()
+if libxml2.debugMemory(1) == 0:
+    print "OK"
+else:
+    print "Memory leak %d bytes" % (libxml2.debugMemory(1))
+    libxml2.dumpMemory()

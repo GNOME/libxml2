@@ -6,6 +6,9 @@
 import sys
 import libxml2
 
+# Memory debug specific
+libxml2.debugMemory(1)
+
 expect='--> warning: --> failed to load external entity "missing.xml"\n'
 err=""
 def callback(ctx, str):
@@ -27,4 +30,10 @@ while i > 0:
     err = ""
     i = i - 1
 
-print "OK"
+# Memory debug specific
+libxml2.cleanupParser()
+if libxml2.debugMemory(1) == 0:
+    print "OK"
+else:
+    print "Memory leak %d bytes" % (libxml2.debugMemory(1))
+    libxml2.dumpMemory()

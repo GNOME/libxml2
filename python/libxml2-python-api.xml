@@ -21,7 +21,15 @@
       <arg name='ctx' type='pythonObject' info='a context for the callback'/>
     </function>
     <function name='xmlCreatePushParser' file='python'>
-      <info>Create a progressive parser context to build either an event flow if the SAX object is not None, or a DOM tree otherwise.</info>
+      <info>Create a progressive XML parser context to build either an event flow if the SAX object is not None, or a DOM tree otherwise.</info>
+      <return type='xmlParserCtxtPtr' info="the parser context or None in case of error"/>
+      <arg name='SAX' type='pythonObject' info='the SAX callback object or None'/>
+      <arg name='chunk' type='xmlChar *' info='the initial data'/>
+      <arg name='size' type='int' info='the size of the initial data'/>
+      <arg name='URI' type='xmlChar *' info='The URI used for base computations'/>
+    </function>
+    <function name='htmlCreatePushParser' file='python'>
+      <info>Create a progressive HTML parser context to build either an event flow if the SAX object is not None, or a DOM tree otherwise.</info>
       <return type='xmlParserCtxtPtr' info="the parser context or None in case of error"/>
       <arg name='SAX' type='pythonObject' info='the SAX callback object or None'/>
       <arg name='chunk' type='xmlChar *' info='the initial data'/>
@@ -72,6 +80,15 @@
       <return type='void'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='the parser context'/>
       <arg name='linenumbers' type='int' info='1 to save line numbers'/>
+    </function>
+    <function name='xmlDebugMemory' file='python'>
+      <info>Switch on the generation of line number for elements nodes. Also returns the number of bytes allocated and not freed by libxml2 since memory debugging was switched on.</info>
+      <return type='int' info="returns the number of bytes allocated and not freed"/>
+      <arg name='activate' type='int' info='1 switch on memory debugging 0 switch it off'/>
+    </function>
+    <function name='xmlDumpMemory' file='python'>
+      <info>dump the memory allocated in the file .memdump</info>
+      <return type='void'/>
     </function>
   </symbols>
 </api>

@@ -2,6 +2,9 @@
 import sys
 import libxml2
 
+# Memory debug specific
+libxml2.debugMemory(1)
+
 ctxt = libxml2.createFileParserCtxt("valid.xml")
 ctxt.validate(1)
 ctxt.parseDocument()
@@ -68,5 +71,12 @@ while i > 0:
 	print "validity check failed"
 	sys.exit(1)
     i = i - 1
+del ctxt
 
-print "OK"
+# Memory debug specific
+libxml2.cleanupParser()
+if libxml2.debugMemory(1) == 0:
+    print "OK"
+else:
+    print "Memory leak %d bytes" % (libxml2.debugMemory(1))
+    libxml2.dumpMemory()

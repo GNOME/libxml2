@@ -35,6 +35,7 @@ typedef struct {
 } PyparserCtxt_Object;
 
 PyObject * libxml_intWrap(int val);
+PyObject * libxml_longWrap(long val);
 PyObject * libxml_xmlCharPtrWrap(xmlChar *str);
 PyObject * libxml_constxmlCharPtrWrap(const xmlChar *str);
 PyObject * libxml_charPtrWrap(char *str);

@@ -2257,16 +2257,14 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
 	sax->ignorableWhitespace = ignorableWhitespace;
 
     ctxt->vctxt.userData = ctxt;
+    ctxt->vctxt.error = xmlParserValidityError;
+    ctxt->vctxt.warning = xmlParserValidityWarning;
     if (ctxt->validate) {
-	ctxt->vctxt.error = xmlParserValidityError;
 	if (xmlGetWarningsDefaultValue == 0)
 	    ctxt->vctxt.warning = NULL;
 	else
 	    ctxt->vctxt.warning = xmlParserValidityWarning;
 	ctxt->vctxt.nodeMax = 0;
-    } else {
-	ctxt->vctxt.error = NULL;
-	ctxt->vctxt.warning = NULL;
     }
     ctxt->replaceEntities = xmlSubstituteEntitiesDefaultValue;
     ctxt->record_info = 0;

@@ -15,12 +15,99 @@
 #include <libxml/xpath.h>
 #include <libxml/xmlerror.h>
 #include <libxml/xpathInternals.h>
+#include <libxml/xmlmemory.h>
 #include "libxml_wrap.h"
 #include "libxml2-py.h"
 
 /* #define DEBUG */
 /* #define DEBUG_XPATH */
 /* #define DEBUG_ERROR */
+/* #define DEBUG_MEMORY */
+
+/************************************************************************
+ *									*
+ *		Memory debug interface					*
+ *									*
+ ************************************************************************/
+
+extern void xmlMemFree(void *ptr);
+extern void *xmlMemMalloc(size_t size);
+extern void *xmlMemRealloc(void *ptr,size_t size);
+extern char *xmlMemoryStrdup(const char *str);
+
+static int libxmlMemoryDebugActivated = 0;
+static long libxmlMemoryAllocatedBase = 0;
+
+static int libxmlMemoryDebug = 0;
+static xmlFreeFunc freeFunc = NULL;
+static xmlMallocFunc mallocFunc = NULL;
+static xmlReallocFunc reallocFunc = NULL;
+static xmlStrdupFunc strdupFunc = NULL;
+
+PyObject *
+libxml_xmlDebugMemory(PyObject *self, PyObject *args) {
+    int activate;
+    PyObject *py_retval;
+    long ret;
+
+    if (!PyArg_ParseTuple(args, "i:xmlDebugMemory", &activate))
+        return(NULL);
+
+#ifdef DEBUG_MEMORY
+    printf("libxml_xmlDebugMemory(%d) called\n", activate);
+#endif
+
+    if (activate != 0) {
+	if (libxmlMemoryDebug == 0) {
+	    /*
+	     * First initialize the library and grab the old memory handlers
+	     * and switch the library to memory debugging
+	     */
+	    xmlMemGet((xmlFreeFunc *) &freeFunc,
+		      (xmlMallocFunc *)&mallocFunc,
+		      (xmlReallocFunc *)&reallocFunc,
+		      (xmlStrdupFunc *) &strdupFunc);
+	    if ((freeFunc == xmlMemFree) && (mallocFunc == xmlMemMalloc) &&
+		(reallocFunc == xmlMemRealloc) &&
+		(strdupFunc == xmlMemoryStrdup)) {
+		libxmlMemoryAllocatedBase = xmlMemUsed();
+	    } else {
+		ret = (long) xmlMemSetup(xmlMemFree, xmlMemMalloc,
+			                 xmlMemRealloc, xmlMemoryStrdup);
+		if (ret < 0)
+		    goto error;
+		libxmlMemoryAllocatedBase = xmlMemUsed();
+	    }
+	    xmlInitParser();
+	    ret = 0;
+	} else if (libxmlMemoryDebugActivated == 0) {
+	    libxmlMemoryAllocatedBase = xmlMemUsed();
+	    ret = 0;
+	} else {
+	    ret = xmlMemUsed() - libxmlMemoryAllocatedBase;
+	}
+	libxmlMemoryDebug = 1;
+	libxmlMemoryDebugActivated = 1;
+    } else {
+	if (libxmlMemoryDebugActivated == 1)
+	    ret = xmlMemUsed() - libxmlMemoryAllocatedBase;
+	else
+	    ret = 0;
+	libxmlMemoryDebugActivated = 0;
+    }
+error:
+    py_retval = libxml_longWrap(ret);
+    return(py_retval);
+}
+
+PyObject *
+libxml_xmlDumpMemory(PyObject *self, PyObject *args) {
+
+    if (libxmlMemoryDebug != 0)
+	xmlMemoryDump();
+    Py_INCREF(Py_None);
+    return(Py_None);
+}
 
 /************************************************************************
  *									*
@@ -64,6 +151,36 @@ libxml_xmlCreatePushParser(PyObject *self, PyObject *args) {
 	return(Py_None);
     }
     ret = xmlCreatePushParserCtxt(SAX, SAXdata, chunk, size, URI);
+    pyret = libxml_xmlParserCtxtPtrWrap(ret);
+    return(pyret);
+}
+
+PyObject *
+libxml_htmlCreatePushParser(PyObject *self, PyObject *args) {
+    xmlChar *chunk;
+    int size;
+    xmlChar *URI;
+    PyObject *pyobj_SAX;
+    xmlSAXHandlerPtr SAX = NULL;
+    pySAXhandlerPtr SAXdata = NULL; 
+    xmlParserCtxtPtr ret;
+    PyObject *pyret;
+
+    if (!PyArg_ParseTuple(args, "Oziz:htmlCreatePushParser", &pyobj_SAX,
+		          &chunk, &size, &URI))
+        return(NULL);
+
+#ifdef DEBUG_ERROR
+    printf("libxml_htmlCreatePushParser(%p, %s, %d, %s) called\n",
+	   pyobj_SAX, chunk, size, URI);
+#endif
+    if (pyobj_SAX != Py_None) {
+	printf("htmlCreatePushParser: event interface not supported yet !\n");
+	Py_INCREF(Py_None);
+	return(Py_None);
+    }
+    ret = htmlCreatePushParserCtxt(SAX, SAXdata, chunk, size, URI,
+	                           XML_CHAR_ENCODING_NONE);
     pyret = libxml_xmlParserCtxtPtrWrap(ret);
     return(pyret);
 }

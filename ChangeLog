@@ -1,3 +1,13 @@
+Sun Feb  3 21:10:39 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* parserInternals.c: change a small bit in the way valididy
+	  error messages get initialized
+	* python/TODO python/libxml.c python/libxml2-python-api.xml
+	  python/libxml2class.txt python/libxml_wrap.h python/types.c:
+	  added some memory debugging to track leaks at the libxml2 level
+	* python/tests/*.py: changed all tests to check for leaks,
+	  there is just one left in XPath extension registrations.
+
 Sun Feb  3 17:50:46 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* python/TODO python/generator.py python/libxml2-python-api.xml

@@ -6,6 +6,9 @@
 import sys
 import libxml2
 
+# Memory debug specific
+libxml2.debugMemory(1)
+
 doc = libxml2.parseFile("tst.xml")
 if doc.name != "tst.xml":
     print "doc.name error"
@@ -27,4 +30,12 @@ while i > 0:
     res = ctxt.xpathEval("//*")
     doc.freeDoc()
     i = i -1
-print "OK"
+del ctxt
+
+# Memory debug specific
+libxml2.cleanupParser()
+if libxml2.debugMemory(1) == 0:
+    print "OK"
+else:
+    print "Memory leak %d bytes" % (libxml2.debugMemory(1))
+    libxml2.dumpMemory()

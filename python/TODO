@@ -6,17 +6,11 @@ Things to do:
 -------------
 
 - SAX interfaces
-- memory debug interfaces
 - enums -> libxml.py
 - access to XPath variables
-- parserCtxt exposure:
-  - entry points
-  - wrappers
-  - decent interface for setting/getting behaviour
 - xmlBuffer exposure
 - xpathContext, being able to set/get info and clean it up
 - add regression tests
-   - check memory
    - build tree
    - saving
    - SAX flow
@@ -33,6 +27,7 @@ Done:
    - tests/Makefile.am: export the Python class path
    - xpath queries
    - xpath extension
+   - check memory
 - extensions based on a python.xml description of the new specific
   interfaces
    file libxml2-python-api.xml , first entry is xmlRegisterXPathFunction
@@ -43,5 +38,9 @@ Done:
 - handling of node.content
 - access to xmlParserCtxt and push mode
    - needed for SAX too
+   - entry points
+   - wrappers
+   - decent interface for setting/getting behaviour
+- memory debug interfaces
 
 Daniel Veillard

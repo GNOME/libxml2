@@ -1545,6 +1545,39 @@ xmlSchemaStrip(const xmlChar *value) {
 }
 
 /**
+ * xmlSchemaWhiteSpaceReplace:
+ * @value: a value
+ *
+ * Replaces 0xd, 0x9 and 0xa with a space.
+ *
+ * Returns the new string or NULL if no change was required.
+ */
+xmlChar *
+xmlSchemaWhiteSpaceReplace(const xmlChar *value) {
+    const xmlChar *cur = value;    
+    xmlChar *ret = NULL, *mcur; 
+
+    if (value == NULL) 
+	return(NULL);
+    
+    while ((*cur != 0) && 
+	(((*cur) != 0xd) && ((*cur) != 0x9) && ((*cur) != 0xa))) {
+	cur++;
+    }
+    if (*cur == 0)
+	return (NULL);
+    ret = xmlStrdup(value);
+    /* TODO FIXME: I guess gcc will bark at this. */
+    mcur = (xmlChar *)  (ret + (cur - value));
+    do {
+	if ( ((*mcur) == 0xd) || ((*mcur) == 0x9) || ((*mcur) == 0xa) )
+	    *mcur = ' ';
+	mcur++;
+    } while (*mcur != 0);	    
+    return(ret);
+}
+
+/**
  * xmlSchemaCollapseString:
  * @value: a value
  *
@@ -1753,9 +1786,14 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
     if (val != NULL)
         *val = NULL;
     if ((flags == 0) && (value != NULL)) {
+
         if ((type->builtInType != XML_SCHEMAS_STRING) &&
-            (type->builtInType != XML_SCHEMAS_NORMSTRING)) {
-            norm = xmlSchemaCollapseString(value);
+	  (type->builtInType != XML_SCHEMAS_ANYTYPE) && 
+	  (type->builtInType != XML_SCHEMAS_ANYSIMPLETYPE)) {
+	    if (type->builtInType == XML_SCHEMAS_NORMSTRING)
+		norm = xmlSchemaWhiteSpaceReplace(value);
+            else
+		norm = xmlSchemaCollapseString(value);
             if (norm != NULL)
                 value = norm;
         }

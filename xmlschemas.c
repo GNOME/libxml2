@@ -3852,12 +3852,21 @@ xmlSchemaPValAttrNodeValue(xmlSchemaParserCtxtPtr ctxt,
     if (type->type != XML_SCHEMA_TYPE_BASIC) {
 	xmlSchemaPErr(ctxt, (xmlNodePtr) attr, 
 	    XML_SCHEMAP_INTERNAL,
-	    "Internal error: xmlSchemaPvalueAttrNode, the given "
+	    "Internal error: xmlSchemaPValAttrNodeValue, the given "
 	    "type '%s' is not a built-in type.\n",
 	    type->name, NULL);
 	return (-1);
     }    
     switch (type->builtInType) {
+	case XML_SCHEMAS_NCNAME:
+	case XML_SCHEMAS_QNAME:
+	case XML_SCHEMAS_ANYURI:
+	case XML_SCHEMAS_TOKEN:
+	case XML_SCHEMAS_LANGUAGE:
+	    ret = xmlSchemaValPredefTypeNode(type, value, NULL, (xmlNodePtr) attr);
+	    break;
+
+	/*
 	case XML_SCHEMAS_NCNAME:
 	    ret = xmlValidateNCName(value, 1);
 	    break;
@@ -3903,10 +3912,11 @@ xmlSchemaPValAttrNodeValue(xmlSchemaParserCtxtPtr ctxt,
 	    if (xmlCheckLanguageID(value) != 1) 
 		ret = 1;
 	    break;
+	*/
 	default: {
 	    xmlSchemaPErr(ctxt, (xmlNodePtr) attr, 
 		    XML_SCHEMAP_INTERNAL,
-		    "Internal error: xmlSchemaPvalueAttrNode, "
+		    "Internal error: xmlSchemaPValAttrNodeValue, "
 		    "valueidation using the type '%s' is not implemented "
 		    "yet.\n",
 		    type->name, NULL);
@@ -3916,7 +3926,14 @@ xmlSchemaPValAttrNodeValue(xmlSchemaParserCtxtPtr ctxt,
     /*
     * TODO: Should we use the S4S error codes instead?
     */
-    if (ret > 0) { 	
+    if (ret < 0) {
+	xmlSchemaPErr(ctxt, (xmlNodePtr) attr, 
+	    XML_SCHEMAP_INTERNAL,
+	    "Internal error: xmlSchemaPValAttrNodeValue, "
+	    "failed to validate a schema attribute value.\n",
+	    NULL, NULL);
+	return (-1);
+    } else if (ret > 0) { 	
 	if (type->flags & XML_SCHEMAS_TYPE_VARIETY_LIST) {	   
 	    xmlSchemaPSimpleTypeErr(ctxt, 
 		XML_SCHEMAV_CVC_DATATYPE_VALID_1_2_2, 
@@ -5295,8 +5312,7 @@ xmlSchemaParseElement(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	    NULL, attr, &refNs, &refPrefix, &ref);			
 	 
         snprintf(buf, 49, "#eRef %d", ctxt->counter++ + 1);
-	name = (const xmlChar *) buf;
-	ret = xmlSchemaAddElement(ctxt, schema, name, NULL, node, 0);
+	ret = xmlSchemaAddElement(ctxt, schema, (const xmlChar *) buf, NULL, node, 0);
 	if (ret == NULL) {
 	    if (repName != NULL)
 		xmlFree(repName);
@@ -5538,7 +5554,7 @@ xmlSchemaParseElement(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     /*
     * And now for the children...
     */
-    ctxt->container = name;
+    ctxt->container = ret->name;
     child = node->children;
     if (IS_SCHEMA(child, "annotation")) {
 	ret->annot = xmlSchemaParseAnnotation(ctxt, schema, child);
@@ -5585,7 +5601,7 @@ xmlSchemaParseElement(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	}	
 	while ((IS_SCHEMA(child, "unique")) ||
 	    (IS_SCHEMA(child, "key")) || (IS_SCHEMA(child, "keyref"))) {
-	    TODO child = child->next;
+	    /*TODO*/ child = child->next;
 	}
 	if (child != NULL) {
 	    xmlSchemaPContentErr(ctxt,
@@ -6060,6 +6076,7 @@ xmlSchemaParseAll(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     xmlSchemaTypePtr type, subtype, last = NULL;
     xmlNodePtr child = NULL;
     xmlChar name[30];
+    const xmlChar *oldcontainer;
 
     if ((ctxt == NULL) || (schema == NULL) || (node == NULL))
         return (NULL);
@@ -6075,7 +6092,9 @@ xmlSchemaParseAll(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 
     type->minOccurs = xmlGetMinOccurs(ctxt, node, 0, 1, 1, "(0 | 1)");
     type->maxOccurs = xmlGetMaxOccurs(ctxt, node, 1, 1, 1, "1");    
-
+    
+    oldcontainer = ctxt->container;
+    ctxt->container = (const xmlChar *) name;
     child = node->children;
     if (IS_SCHEMA(child, "annotation")) {
         type->annot = xmlSchemaParseAnnotation(ctxt, schema, child);
@@ -6109,7 +6128,7 @@ xmlSchemaParseAll(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
                        "<all> has unexpected content.\n", type->name,
                        NULL);
     }
-
+    ctxt->container = oldcontainer;
     return (type);
 }
 
@@ -7085,6 +7104,7 @@ xmlSchemaParseChoice(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     xmlNodePtr child = NULL;
     xmlChar name[30];
     xmlAttrPtr attr;
+    const xmlChar *oldcontainer;
 
     if ((ctxt == NULL) || (schema == NULL) || (node == NULL))
         return (NULL);
@@ -7126,6 +7146,8 @@ xmlSchemaParseChoice(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     /*
     * And now for the children...
     */
+    oldcontainer = ctxt->container;
+    ctxt->container = (const xmlChar *) name;
     child = node->children;
     if (IS_SCHEMA(child, "annotation")) {
         type->annot = xmlSchemaParseAnnotation(ctxt, schema, child);
@@ -7168,7 +7190,7 @@ xmlSchemaParseChoice(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	    NULL, type, node, child, NULL,
 	    "(annotation?, (element | group | choice | sequence | any)*)");
     }
-
+    ctxt->container = oldcontainer;
     return (type);
 }
 
@@ -7991,7 +8013,6 @@ xmlSchemaParseSchema(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node)
     */
     if ((ctxt == NULL) || (node == NULL))
         return (NULL);
-    
     nberrors = ctxt->nberrors;
     ctxt->nberrors = 0;
     if (IS_SCHEMA(node, "schema")) {
@@ -13625,30 +13646,7 @@ xmlSchemaFacetTypeToString(xmlSchemaTypeType type)
     return ("Internal Error");
 }
 
-static xmlChar *
-xmlSchemaWhiteSpaceReplace(const xmlChar *value) {
-    const xmlChar *cur = value;    
-    xmlChar *ret = NULL, *mcur; 
 
-    if (value == NULL) 
-	return(NULL);
-    
-    while ((*cur != 0) && 
-	(((*cur) != 0xd) && ((*cur) != 0x9) && ((*cur) != 0xa))) {
-	cur++;
-    }
-    if (*cur == 0)
-	return (NULL);
-    ret = xmlStrdup(value);
-    /* TODO FIXME: I guess gcc will bark at this. */
-    mcur = (xmlChar *)  (ret + (cur - value));
-    do {
-	if ( ((*mcur) == 0xd) || ((*mcur) == 0x9) || ((*mcur) == 0xa) )
-	    *mcur = ' ';
-	mcur++;
-    } while (*mcur != 0);	    
-    return(ret);
-}
 
 static int
 xmlSchemaGetWhiteSpaceFacetValue(xmlSchemaTypePtr type)
@@ -13660,10 +13658,10 @@ xmlSchemaGetWhiteSpaceFacetValue(xmlSchemaTypePtr type)
     * from xsd:string.
     */
     if (type->type == XML_SCHEMA_TYPE_BASIC) {
-	if ((type->builtInType == XML_SCHEMAS_STRING) &&
-            (type->builtInType == XML_SCHEMAS_NORMSTRING))
-
+	if (type->builtInType == XML_SCHEMAS_STRING)
 	    return(XML_SCHEMAS_VAL_WTSP_PRESERVE);
+	else if (type->builtInType == XML_SCHEMAS_NORMSTRING)
+	    return(XML_SCHEMAS_VAL_WTSP_REPLACE);
 	else {
 	    /*
 	    * For all ·atomic· datatypes other than string (and types ·derived· 

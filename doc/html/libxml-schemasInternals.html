@@ -148,6 +148,7 @@ The content of this structure is not made public by the API.
     <a href="libxml-schemasInternals.html#xmlSchemaWildcardPtr">xmlSchemaWildcardPtr</a>	attributeWildcard
     const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	refPrefix
     <a href="libxml-schemasInternals.html#xmlSchemaAttributeGroupPtr">xmlSchemaAttributeGroupPtr</a>	refItem	: The referenced <a href="libxml-SAX.html#attribute">attribute</a> group
+    const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	targetNamespace
 }</pre><h3><a name="xmlSchemaAttributeLink" id="xmlSchemaAttributeLink">Structure xmlSchemaAttributeLink</a></h3><pre class="programlisting">Structure xmlSchemaAttributeLink<br />struct _xmlSchemaAttributeLink {
     struct _xmlSchemaAttributeLink *	next	: the next <a href="libxml-SAX.html#attribute">attribute</a> link ...
     struct _xmlSchemaAttribute *	attr	: the linked <a href="libxml-SAX.html#attribute">attribute</a>
@@ -206,6 +207,7 @@ The content of this structure is not made public by the API.
     const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	name
     <a href="libxml-schemasInternals.html#xmlSchemaAnnotPtr">xmlSchemaAnnotPtr</a>	annot
     const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	identifier
+    const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	targetNamespace
 }</pre><h3><a name="xmlSchemaType" id="xmlSchemaType">Structure xmlSchemaType</a></h3><pre class="programlisting">Structure xmlSchemaType<br />struct _xmlSchemaType {
     <a href="libxml-schemasInternals.html#xmlSchemaTypeType">xmlSchemaTypeType</a>	type	: The kind of type
     struct _xmlSchemaType *	next	: the next type if in a sequence ...
@@ -235,6 +237,7 @@ The content of this structure is not made public by the API.
     const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	refPrefix
     <a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a>	contentTypeDef
     <a href="libxml-xmlregexp.html#xmlRegexpPtr">xmlRegexpPtr</a>	contModel
+    const <a href="libxml-xmlstring.html#xmlChar">xmlChar</a> *	targetNamespace
 }</pre><h3><a name="xmlSchemaTypeLink" id="xmlSchemaTypeLink">Structure xmlSchemaTypeLink</a></h3><pre class="programlisting">Structure xmlSchemaTypeLink<br />struct _xmlSchemaTypeLink {
     struct _xmlSchemaTypeLink *	next	: the next type link ...
     <a href="libxml-schemasInternals.html#xmlSchemaTypePtr">xmlSchemaTypePtr</a>	type	: the linked typ

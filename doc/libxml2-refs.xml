@@ -736,6 +736,7 @@
     <reference name='XML_RNGP_XMLNS_NAME' href='html/libxml-xmlerror.html#XML_RNGP_XMLNS_NAME'/>
     <reference name='XML_RNGP_XML_NS' href='html/libxml-xmlerror.html#XML_RNGP_XML_NS'/>
     <reference name='XML_SAVE_CHAR_INVALID' href='html/libxml-xmlerror.html#XML_SAVE_CHAR_INVALID'/>
+    <reference name='XML_SAVE_FORMAT' href='html/libxml-xmlsave.html#XML_SAVE_FORMAT'/>
     <reference name='XML_SAVE_NOT_UTF8' href='html/libxml-xmlerror.html#XML_SAVE_NOT_UTF8'/>
     <reference name='XML_SAVE_NO_DOCTYPE' href='html/libxml-xmlerror.html#XML_SAVE_NO_DOCTYPE'/>
     <reference name='XML_SAVE_UNKNOWN_ENCODING' href='html/libxml-xmlerror.html#XML_SAVE_UNKNOWN_ENCODING'/>
@@ -2473,6 +2474,7 @@
     <reference name='xmlSaveFormatFileEnc' href='html/libxml-tree.html#xmlSaveFormatFileEnc'/>
     <reference name='xmlSaveFormatFileTo' href='html/libxml-tree.html#xmlSaveFormatFileTo'/>
     <reference name='xmlSaveNoEmptyTags' href='html/libxml-globals.html#xmlSaveNoEmptyTags'/>
+    <reference name='xmlSaveOption' href='html/libxml-xmlsave.html#xmlSaveOption'/>
     <reference name='xmlSaveSetAttrEscape' href='html/libxml-xmlsave.html#xmlSaveSetAttrEscape'/>
     <reference name='xmlSaveSetEscape' href='html/libxml-xmlsave.html#xmlSaveSetEscape'/>
     <reference name='xmlSaveToFd' href='html/libxml-xmlsave.html#xmlSaveToFd'/>
@@ -4013,6 +4015,7 @@
       <ref name='XML_RNGP_XMLNS_NAME'/>
       <ref name='XML_RNGP_XML_NS'/>
       <ref name='XML_SAVE_CHAR_INVALID'/>
+      <ref name='XML_SAVE_FORMAT'/>
       <ref name='XML_SAVE_NOT_UTF8'/>
       <ref name='XML_SAVE_NO_DOCTYPE'/>
       <ref name='XML_SAVE_UNKNOWN_ENCODING'/>
@@ -5786,6 +5789,7 @@
       <ref name='xmlSaveFormatFileEnc'/>
       <ref name='xmlSaveFormatFileTo'/>
       <ref name='xmlSaveNoEmptyTags'/>
+      <ref name='xmlSaveOption'/>
       <ref name='xmlSaveSetAttrEscape'/>
       <ref name='xmlSaveSetEscape'/>
       <ref name='xmlSaveToFd'/>
@@ -12429,11 +12433,13 @@
       <ref name='xmlRegexpPtr'/>
     </file>
     <file name='xmlsave'>
+      <ref name='XML_SAVE_FORMAT'/>
       <ref name='xmlSaveClose'/>
       <ref name='xmlSaveCtxt'/>
       <ref name='xmlSaveCtxtPtr'/>
       <ref name='xmlSaveDoc'/>
       <ref name='xmlSaveFlush'/>
+      <ref name='xmlSaveOption'/>
       <ref name='xmlSaveSetAttrEscape'/>
       <ref name='xmlSaveSetEscape'/>
       <ref name='xmlSaveToFd'/>

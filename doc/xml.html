@@ -715,6 +715,34 @@ to the <a href="http://cvs.gnome.org/viewcvs/libxml2/">CVS</a> code base.</p>
 
 <p>There is the list of public releases:</p>
 
+<h3>2.6.17: Jan 16 2005</h3>
+<ul>
+  <li>build fixes: Windows, warnings removal (William Brack), 
+      maintainer-clean dependency(William), build in a different directory
+      (William), fixing --with-minimum configure build (William), BeOS
+      build (Marcin Konicki), Python-2.4 detection (William), compilation
+      on AIX (Dan McNichol)</li>
+  <li>bug fixes: xmlTextReaderHasAttributes (Rob Richards), xmlCtxtReadFile()
+      to use the catalog(s), loop on output (William Brack), XPath memory leak,
+      ID deallocation problem (Steve Shepard), debugDumpNode crash (William),
+      warning not using error callback (William), xmlStopParser bug (William),
+      UTF-16 with BOM on DTDs (William), namespace bug on empty elements
+      in push mode (Rob Richards), line and col computations fixups (Aleksey
+      Sanin), xmlURIEscape fix (William), xmlXPathErr on bad range (William),
+      patterns with too many steps, bug in RNG choice optimization, line
+      number sometimes missing.
+      </li>
+  <li>improvements: XSD Schemas (Kasimier Buchcik), python generator (William),
+      xmlUTF8Strpos speedup (William), unicode Python strings (William),
+      XSD error reports (Kasimier Buchcik), Python __str__ call serialize().
+      </li>
+  <li>new APIs: added xmlDictExists(), GetLineNumber and GetColumnNumber
+      for the xmlReader (Aleksey Sanin), Dynamic Shared Libraries APIs
+      (mostly Joel Reed), error extraction API from regexps, new XMLSave
+      option for format (Phil Shafer)</li>
+  <li>documentation: site improvement (John Fleck), FAQ entries (William).</li>
+</ul>
+
 <h3>2.6.16: Nov 10 2004</h3>
 <ul>
   <li>general hardening and bug fixing crossing all the API based on new

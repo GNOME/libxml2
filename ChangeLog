@@ -1,3 +1,8 @@
+Sun Jan 16 21:00:53 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in NEWS doc/*: preparing release of 2.6.17,
+	  updated and rebuilt the docs
+
 Sun Jan 16 19:58:36 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: better fix for #151694 not killing c14n regression tests

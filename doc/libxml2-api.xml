@@ -2758,6 +2758,8 @@
      <summary>the XML document serializer</summary>
      <description>API to save document or subtree of document </description>
      <author>Daniel Veillard </author>
+     <exports symbol='XML_SAVE_FORMAT' type='enum'/>
+     <exports symbol='xmlSaveOption' type='typedef'/>
      <exports symbol='xmlSaveCtxt' type='typedef'/>
      <exports symbol='xmlSaveCtxtPtr' type='typedef'/>
      <exports symbol='xmlSaveToIO' type='function'/>
@@ -4865,6 +4867,7 @@
     <enum name='XML_RNGP_XMLNS_NAME' file='xmlerror' value='1121' type='xmlParserErrors' info='1121'/>
     <enum name='XML_RNGP_XML_NS' file='xmlerror' value='1122' type='xmlParserErrors' info='1122'/>
     <enum name='XML_SAVE_CHAR_INVALID' file='xmlerror' value='1401' type='xmlParserErrors' info='1401'/>
+    <enum name='XML_SAVE_FORMAT' file='xmlsave' value='1' type='xmlSaveOption' info=' format save output'/>
     <enum name='XML_SAVE_NOT_UTF8' file='xmlerror' value='1400' type='xmlParserErrors'/>
     <enum name='XML_SAVE_NO_DOCTYPE' file='xmlerror' value='1402' type='xmlParserErrors' info='1402'/>
     <enum name='XML_SAVE_UNKNOWN_ENCODING' file='xmlerror' value='1403' type='xmlParserErrors' info='1403'/>
@@ -5970,6 +5973,7 @@ actually an xmlCharEncoding'/>
     <typedef name='xmlSAXLocatorPtr' file='tree' type='xmlSAXLocator *'/>
     <struct name='xmlSaveCtxt' file='xmlsave' type='struct _xmlSaveCtxt'/>
     <typedef name='xmlSaveCtxtPtr' file='xmlsave' type='xmlSaveCtxt *'/>
+    <typedef name='xmlSaveOption' file='xmlsave' type='enum'/>
     <struct name='xmlSchema' file='xmlschemas' type='struct _xmlSchema'>
       <field name='name' type='const xmlChar *' info=' schema name'/>
       <field name='targetNamespace' type='const xmlChar *' info=' the target namespace'/>
@@ -6031,6 +6035,7 @@ actually an xmlCharEncoding'/>
       <field name='attributeWildcard' type='xmlSchemaWildcardPtr' info=''/>
       <field name='refPrefix' type='const xmlChar *' info=''/>
       <field name='refItem' type='xmlSchemaAttributeGroupPtr' info=' The referenced attribute group'/>
+      <field name='targetNamespace' type='const xmlChar *' info=''/>
     </struct>
     <typedef name='xmlSchemaAttributeGroupPtr' file='schemasInternals' type='xmlSchemaAttributeGroup *'/>
     <struct name='xmlSchemaAttributeLink' file='schemasInternals' type='struct _xmlSchemaAttributeLink'>
@@ -6091,6 +6096,7 @@ actually an xmlCharEncoding'/>
       <field name='name' type='const xmlChar *' info=''/>
       <field name='annot' type='xmlSchemaAnnotPtr' info=''/>
       <field name='identifier' type='const xmlChar *' info=''/>
+      <field name='targetNamespace' type='const xmlChar *' info=''/>
     </struct>
     <typedef name='xmlSchemaNotationPtr' file='schemasInternals' type='xmlSchemaNotation *'/>
     <struct name='xmlSchemaParserCtxt' file='xmlschemas' type='struct _xmlSchemaParserCtxt'/>
@@ -6125,6 +6131,7 @@ actually an xmlCharEncoding'/>
       <field name='refPrefix' type='const xmlChar *' info=''/>
       <field name='contentTypeDef' type='xmlSchemaTypePtr' info=''/>
       <field name='contModel' type='xmlRegexpPtr' info=''/>
+      <field name='targetNamespace' type='const xmlChar *' info=''/>
     </struct>
     <struct name='xmlSchemaTypeLink' file='schemasInternals' type='struct _xmlSchemaTypeLink'>
       <field name='next' type='struct _xmlSchemaTypeLink *' info=' the next type link ...'/>

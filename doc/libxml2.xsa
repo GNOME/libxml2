@@ -8,24 +8,19 @@
   </vendor>
   <product id="libxml2">
     <name>libxml2</name>
-    <version>2.6.15</version>
-    <last-release> Oct 27 2004</last-release>
+    <version>2.6.16</version>
+    <last-release> Nov 10 2004</last-release>
     <info-url>http://xmlsoft.org/</info-url>
-    <changes>   - security fixes on the nanoftp and nanohttp modules
-   - build fixes: xmllint detection bug in configure, building outside the
-    source tree (Thomas Fitzsimmons)
-   - bug fixes: HTML parser on broken ASCII chars in names (William), Python
-    paths (Malcolm Tredinnick), xmlHasNsProp and default namespace (William),
-    saving to python file objects (Malcolm Tredinnick), DTD lookup fix
-    (Malcolm), save back &lt;group&gt; in catalogs (William), tree build
-    fixes (DV and Rob Richards), Schemas memory bug, structured error handler
-    on Python 64bits, thread local memory deallocation, memory leak reported
-    by Volker Roth, xmlValidateDtd in the presence of an internal subset,
-    entities and _private problem (William), xmlBuildRelativeURI error
-    (William).
-   - improvements: better XInclude error reports (William), tree debugging
-    module and tests, convenience functions at the Reader API (Graham
-    Bennett), add support for PI in the HTML parser.
+    <changes>   - general hardening and bug fixing crossing all the API based on new
+    automated regression testing
+   - build fix: IPv6 build and test on AIX (Dodji Seketeli)
+   - bug fixes: problem with XML::Libxml reported by Petr Pajas,  encoding
+    conversion functions return values, UTF-8 bug affecting XPath reported by
+    Markus Bertheau, catalog problem with NULL entries (William Brack)
+   - documentation: fix to xmllint man page, some API function descritpion
+    were updated.
+   - improvements: DTD validation APIs provided at the Python level (Brent
+    Hendricks) 
 
 </changes>
   </product>

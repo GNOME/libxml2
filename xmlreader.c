@@ -3215,7 +3215,7 @@ xmlTextReaderHasAttributes(xmlTextReaderPtr reader) {
 	node = reader->node;
 
     if ((node->type == XML_ELEMENT_NODE) &&
-	(node->properties != NULL))
+	((node->properties != NULL) || (node->nsDef != NULL)))
 	return(1);
     /* TODO: handle the xmlDecl */
     return(0);

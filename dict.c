@@ -486,7 +486,7 @@ xmlDictFree(xmlDictPtr dict) {
  * @name: the name of the userdata
  * @len: the length of the name, if -1 it is recomputed
  *
- * Add the @name to the hash @dict if not present.
+ * Add the @name to the dictionnary @dict if not present.
  *
  * Returns the internal copy of the name or NULL in case of internal error
  */
@@ -597,6 +597,100 @@ xmlDictLookup(xmlDictPtr dict, const xmlChar *name, int len) {
     /* Note that entry may have been freed at this point by xmlDictGrow */
 
     return(ret);
+}
+
+/**
+ * xmlDictExists:
+ * @dict: the dictionnary
+ * @name: the name of the userdata
+ * @len: the length of the name, if -1 it is recomputed
+ *
+ * Check if the @name exists in the dictionnary @dict.
+ *
+ * Returns the internal copy of the name or NULL if not found.
+ */
+const xmlChar *
+xmlDictExists(xmlDictPtr dict, const xmlChar *name, int len) {
+    unsigned long key, okey, nbi = 0;
+    xmlDictEntryPtr entry;
+    xmlDictEntryPtr insert;
+    const xmlChar *ret;
+
+    if ((dict == NULL) || (name == NULL))
+	return(NULL);
+
+    if (len < 0)
+        len = xmlStrlen(name);
+
+    /*
+     * Check for duplicate and insertion location.
+     */
+    okey = xmlDictComputeKey(name, len);
+    key = okey % dict->size;
+    if (dict->dict[key].valid == 0) {
+	insert = NULL;
+    } else {
+	for (insert = &(dict->dict[key]); insert->next != NULL;
+	     insert = insert->next) {
+#ifdef __GNUC__
+	    if (insert->len == len) {
+		if (!memcmp(insert->name, name, len))
+		    return(insert->name);
+	    }
+#else
+	    if ((insert->len == len) &&
+	        (!xmlStrncmp(insert->name, name, len)))
+		return(insert->name);
+#endif
+	    nbi++;
+	}
+#ifdef __GNUC__
+	if (insert->len == len) {
+	    if (!memcmp(insert->name, name, len))
+		return(insert->name);
+	}
+#else
+	if ((insert->len == len) &&
+	    (!xmlStrncmp(insert->name, name, len)))
+	    return(insert->name);
+#endif
+    }
+
+    if (dict->subdict) {
+	key = okey % dict->subdict->size;
+	if (dict->subdict->dict[key].valid != 0) {
+	    xmlDictEntryPtr tmp;
+
+	    for (tmp = &(dict->subdict->dict[key]); tmp->next != NULL;
+		 tmp = tmp->next) {
+#ifdef __GNUC__
+		if (tmp->len == len) {
+		    if (!memcmp(tmp->name, name, len))
+			return(tmp->name);
+		}
+#else
+		if ((tmp->len == len) &&
+		    (!xmlStrncmp(tmp->name, name, len)))
+		    return(tmp->name);
+#endif
+		nbi++;
+	    }
+#ifdef __GNUC__
+	    if (tmp->len == len) {
+		if (!memcmp(tmp->name, name, len))
+		    return(tmp->name);
+	    }
+#else
+	    if ((tmp->len == len) &&
+		(!xmlStrncmp(tmp->name, name, len)))
+		return(tmp->name);
+#endif
+	}
+	key = okey % dict->size;
+    }
+
+    /* not found */
+    return(NULL);
 }
 
 /**

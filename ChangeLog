@@ -1,3 +1,9 @@
+Wed Aug 22 02:56:31 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: xmlSAXParseDoc() fixing a memleak on ctxt->sax,
+	  fixed the fix, cleaned up a few other occurences, I hope
+	  it's okay now.
+
 Wed Aug 22 02:28:28 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: xmlSAXParseDoc() fixing a memleak on ctxt->sax

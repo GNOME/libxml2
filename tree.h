@@ -420,6 +420,7 @@ xmlNodePtr	xmlCopyNodeList		(xmlNodePtr node);
 /*
  * Navigating
  */
+xmlNodePtr	xmlDocGetRootElement	(xmlDocPtr doc);
 xmlNodePtr	xmlGetLastChild		(xmlNodePtr parent);
 int		xmlNodeIsText		(xmlNodePtr node);
 

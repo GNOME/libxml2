@@ -7929,8 +7929,28 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 	if (ctxt->input ==NULL) break;
 	if (ctxt->input->buf == NULL)
 	    avail = ctxt->input->length - (ctxt->input->cur - ctxt->input->base);
-	else
-	    avail = ctxt->input->buf->buffer->use - (ctxt->input->cur - ctxt->input->base);
+	else {
+	    /*
+	     * If we are operating on converted input, try to flush
+	     * remainng chars to avoid them stalling in the non-converted
+	     * buffer.
+	     */
+	    if ((ctxt->input->buf->raw != NULL) &&
+		(ctxt->input->buf->raw->use > 0)) {
+		int base = ctxt->input->base -
+		           ctxt->input->buf->buffer->content;
+		int current = ctxt->input->cur - ctxt->input->base;
+
+		xmlParserInputBufferPush(ctxt->input->buf, 0, "");
+		ctxt->input->base = ctxt->input->buf->buffer->content + base;
+		ctxt->input->cur = ctxt->input->base + current;
+		ctxt->input->end =
+		    &ctxt->input->buf->buffer->content[
+		                       ctxt->input->buf->buffer->use];
+	    }
+	    avail = ctxt->input->buf->buffer->use -
+		    (ctxt->input->cur - ctxt->input->base);
+	}
         if (avail < 1)
 	    goto done;
         switch (ctxt->instate) {

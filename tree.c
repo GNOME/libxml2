@@ -961,6 +961,11 @@ xmlNewDoc(const xmlChar *version) {
     cur->standalone = -1;
     cur->compression = -1; /* not initialized */
     cur->doc = cur;
+    /*
+     * The in memory encoding is always UTF8
+     * This field will never change and would
+     * be obsolete if not for binary compatibility.
+     */
     cur->charset = XML_CHAR_ENCODING_UTF8;
 
     if ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
@@ -7830,7 +7835,6 @@ xmlDocDumpFormatMemoryEnc(xmlDocPtr out_doc, xmlChar **doc_txt_ptr,
 		int format) {
     int                         dummy = 0;
 
-    xmlCharEncoding             doc_charset;
     xmlOutputBufferPtr          out_buff = NULL;
     xmlCharEncodingHandlerPtr   conv_hdlr = NULL;
 
@@ -7863,16 +7867,6 @@ xmlDocDumpFormatMemoryEnc(xmlDocPtr out_doc, xmlChar **doc_txt_ptr,
     if (txt_encoding == NULL)
 	txt_encoding = (const char *) out_doc->encoding;
     if (txt_encoding != NULL) {
-        doc_charset = xmlParseCharEncoding(txt_encoding);
-
-        if (out_doc->charset != XML_CHAR_ENCODING_UTF8) {
-            xmlGenericError(xmlGenericErrorContext,
-                    "xmlDocDumpFormatMemoryEnc: Source document not in UTF8\n");
-            return;
-
-        } else if (doc_charset != XML_CHAR_ENCODING_UTF8) {
-	    conv_hdlr = xmlGetCharEncodingHandler(doc_charset);
-	    if (conv_hdlr == NULL)
 		conv_hdlr = xmlFindCharEncodingHandler(txt_encoding);
             if ( conv_hdlr == NULL ) {
                 xmlGenericError(xmlGenericErrorContext,
@@ -7884,7 +7878,6 @@ xmlDocDumpFormatMemoryEnc(xmlDocPtr out_doc, xmlChar **doc_txt_ptr,
                 return;
             }
         }
-    }
 
     if ((out_buff = xmlAllocOutputBuffer(conv_hdlr)) == NULL ) {
         xmlGenericError(xmlGenericErrorContext,
@@ -8048,25 +8041,12 @@ xmlDocFormatDump(FILE *f, xmlDocPtr cur, int format) {
     encoding = (const char *) cur->encoding;
 
     if (encoding != NULL) {
-	xmlCharEncoding enc;
-
-	enc = xmlParseCharEncoding(encoding);
-
-	if (cur->charset != XML_CHAR_ENCODING_UTF8) {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "xmlDocDump: document not in UTF8\n");
-	    return(-1);
-	}
-	if (enc != XML_CHAR_ENCODING_UTF8) {
-	    handler = xmlGetCharEncodingHandler(enc);
-	    if (handler == NULL)
 		handler = xmlFindCharEncodingHandler(encoding);
 	    if (handler == NULL) {
 		xmlFree((char *) cur->encoding);
 		cur->encoding = NULL;
 	    }
 	}
-    }
     buf = xmlOutputBufferCreateFile(f, handler);
     if (buf == NULL) return(-1);
     xmlDocContentDumpOutput(buf, cur, NULL, format);
@@ -8150,7 +8130,6 @@ xmlSaveFormatFileEnc( const char * filename, xmlDocPtr cur,
 			const char * encoding, int format ) {
     xmlOutputBufferPtr buf;
     xmlCharEncodingHandlerPtr handler = NULL;
-    xmlCharEncoding enc;
     int ret;
 
     if (cur == NULL)
@@ -8161,17 +8140,9 @@ xmlSaveFormatFileEnc( const char * filename, xmlDocPtr cur,
 
     if (encoding != NULL) {
 
-	enc = xmlParseCharEncoding(encoding);
-	if (cur->charset != XML_CHAR_ENCODING_UTF8) {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "xmlSaveFormatFileEnc: document not in UTF8\n");
-	    return(-1);
-	}
-	if (enc != XML_CHAR_ENCODING_UTF8) {
 	    handler = xmlFindCharEncodingHandler(encoding);
 	    if (handler == NULL)
 		return(-1);
-	}
     }
 
 #ifdef HAVE_ZLIB_H

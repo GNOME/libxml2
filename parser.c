@@ -7575,38 +7575,21 @@ xmlParseEncodingDecl(xmlParserCtxtPtr ctxt) {
 	    if (ctxt->recovery == 0) ctxt->disableSAX = 1;
 	}
 	if (encoding != NULL) {
-	    xmlCharEncoding enc;
 	    xmlCharEncodingHandlerPtr handler;
 
 	    if (ctxt->input->encoding != NULL)
 		xmlFree((xmlChar *) ctxt->input->encoding);
 	    ctxt->input->encoding = encoding;
 
-	    enc = xmlParseCharEncoding((const char *) encoding);
-	    /*
-	     * registered set of known encodings
-	     */
-	    if (enc != XML_CHAR_ENCODING_ERROR) {
-		xmlSwitchEncoding(ctxt, enc);
-		if (ctxt->errNo == XML_ERR_UNSUPPORTED_ENCODING) {
-		    ctxt->input->encoding = NULL;
-		    xmlFree(encoding);
-		    return(NULL);
-		}
+            handler = xmlFindCharEncodingHandler((const char *) encoding);
+	    if (handler != NULL) {
+		xmlSwitchToEncoding(ctxt, handler);
 	    } else {
-	        /*
-		 * fallback for unknown encodings
-		 */
-                handler = xmlFindCharEncodingHandler((const char *) encoding);
-		if (handler != NULL) {
-		    xmlSwitchToEncoding(ctxt, handler);
-		} else {
-		    ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
-		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-			ctxt->sax->error(ctxt->userData,
-			     "Unsupported encoding %s\n", encoding);
-		    return(NULL);
-		}
+		ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
+		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		    ctxt->sax->error(ctxt->userData,
+			"Unsupported encoding %s\n", encoding);
+		return(NULL);
 	    }
 	}
     }

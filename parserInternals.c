@@ -1780,13 +1780,13 @@ xmlSwitchToEncoding(xmlParserCtxtPtr ctxt, xmlCharEncodingHandlerPtr handler)
 
 		    /*
 		     * "UTF-16" can be used for both LE and BE
-		     */
 		    if ((!xmlStrncmp(BAD_CAST ctxt->input->buf->encoder->name,
 				     BAD_CAST "UTF-16", 6)) &&
 		        (!xmlStrncmp(BAD_CAST handler->name,
 				     BAD_CAST "UTF-16", 6))) {
 			return(0);
 		    }
+		     */
 
 		    /*
 		     * Note: this is a bit dangerous, but that's what it

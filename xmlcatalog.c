@@ -29,6 +29,7 @@
 #include <libxml/parser.h>
 #include <libxml/globals.h>
 
+#ifdef LIBXML_CATALOG_ENABLED
 static int shell = 0;
 static int sgml = 0;
 static int noout = 0;
@@ -39,7 +40,6 @@ static int convert = 0;
 static int verbose = 0;
 static char *filename;
 
-#ifdef LIBXML_CATALOG_ENABLED
 
 #ifndef XML_SGML_DEFAULT_CATALOG
 #define XML_SGML_DEFAULT_CATALOG "/etc/sgml/catalog"

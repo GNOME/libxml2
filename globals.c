@@ -484,10 +484,10 @@ xmlInitializeGlobalState(xmlGlobalStatePtr gs)
     gs->xmlBufferAllocScheme = xmlBufferAllocSchemeThrDef;
     gs->xmlDefaultBufferSize = xmlDefaultBufferSizeThrDef;
     initxmlDefaultSAXHandler(&gs->xmlDefaultSAXHandler, 1);
-    gs->xmlDefaultSAXLocator.getPublicId = getPublicId;
-    gs->xmlDefaultSAXLocator.getSystemId = getSystemId;
-    gs->xmlDefaultSAXLocator.getLineNumber = getLineNumber;
-    gs->xmlDefaultSAXLocator.getColumnNumber = getColumnNumber;
+    gs->xmlDefaultSAXLocator.getPublicId = xmlSAX2GetPublicId;
+    gs->xmlDefaultSAXLocator.getSystemId = xmlSAX2GetSystemId;
+    gs->xmlDefaultSAXLocator.getLineNumber = xmlSAX2GetLineNumber;
+    gs->xmlDefaultSAXLocator.getColumnNumber = xmlSAX2GetColumnNumber;
     gs->xmlDoValidityCheckingDefaultValue = 
          xmlDoValidityCheckingDefaultValueThrDef;
 #if defined(DEBUG_MEMORY_LOCATION) | defined(DEBUG_MEMORY)

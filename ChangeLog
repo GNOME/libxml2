@@ -1,3 +1,15 @@
+Sun Sep 28 20:53:17 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am: cleanup, creating a new legacy.c module,
+	  made sure make tests ran in reduced conditions
+	* SAX.c SAX2.c configure.in entities.c globals.c parser.c
+	  parserInternals.c tree.c valid.c xlink.c xmlIO.c xmlcatalog.c
+	  xmlmemory.c xpath.c xmlmemory.c include/libxml/xmlversion.h.in:
+	  increased the modularization, allow to configure out 
+	  validation code and legacy code, added a configuration
+	  option --with-minimum compiling only the mandatory code
+	  which then shrink to 200KB.
+
 Sun Sep 28 02:15:07 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: fix a bug raised by the Mips compiler.

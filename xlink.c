@@ -11,6 +11,7 @@
 #define IN_LIBXML
 #include "libxml.h"
 
+#ifdef LIBXML_XPTR_ENABLED
 #include <string.h> /* for memset() only */
 #ifdef HAVE_CTYPE_H
 #include <ctype.h>
@@ -177,3 +178,4 @@ xlinkIsLink	(xmlDocPtr doc, xmlNodePtr node) {
     if (role != NULL) xmlFree(role);
     return(ret);
 }
+#endif /* LIBXML_XPTR_ENABLED */

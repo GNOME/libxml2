@@ -7062,9 +7062,11 @@ xmlElemDump(FILE * f, xmlDocPtr doc, xmlNodePtr cur)
  *									*
  ************************************************************************/
 
+#ifdef LIBXML_HTML_ENABLED
 static void
 xhtmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
             int level, int format, const char *encoding);
+#endif
 static void
 xmlNodeListDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
                   int level, int format, const char *encoding);

@@ -413,150 +413,6 @@ xmlGetDocEntity(xmlDocPtr doc, const xmlChar *name) {
      (((c) >= 0x20) && ((c) != 0xFFFE) && ((c) != 0xFFFF)))
 
 /*
- * A buffer used for converting entities to their equivalent and back.
- */
-static int static_buffer_size = 0;
-static xmlChar *static_buffer = NULL;
-
-static int growBuffer(void) {
-    static_buffer_size *= 2;
-    static_buffer = (xmlChar *) xmlRealloc(static_buffer,
-	                                static_buffer_size * sizeof(xmlChar));
-    if (static_buffer == NULL) {
-        xmlGenericError(xmlGenericErrorContext, "malloc failed\n");
-	return(-1);
-    }
-    return(0);
-}
-
-
-/**
- * xmlEncodeEntities:
- * @doc:  the document containing the string
- * @input:  A string to convert to XML.
- *
- * Do a global encoding of a string, replacing the predefined entities
- * and non ASCII values with their entities and CharRef counterparts.
- *
- * TODO: remove xmlEncodeEntities, once we are not afraid of breaking binary
- *       compatibility
- *
- * People must migrate their code to xmlEncodeEntitiesReentrant !
- * This routine will issue a warning when encountered.
- * 
- * Returns A newly allocated string with the substitution done.
- */
-const xmlChar *
-xmlEncodeEntities(xmlDocPtr doc, const xmlChar *input) {
-    const xmlChar *cur = input;
-    xmlChar *out = static_buffer;
-    static int warning = 1;
-    int html = 0;
-
-
-    if (warning) {
-    xmlGenericError(xmlGenericErrorContext,
-	    "Deprecated API xmlEncodeEntities() used\n");
-    xmlGenericError(xmlGenericErrorContext,
-	    "   change code to use xmlEncodeEntitiesReentrant()\n");
-    warning = 0;
-    }
-
-    if (input == NULL) return(NULL);
-    if (doc != NULL)
-        html = (doc->type == XML_HTML_DOCUMENT_NODE);
-
-    if (static_buffer == NULL) {
-        static_buffer_size = 1000;
-        static_buffer = (xmlChar *)
-	    xmlMalloc(static_buffer_size * sizeof(xmlChar));
-	if (static_buffer == NULL) {
-	    xmlGenericError(xmlGenericErrorContext, "malloc failed\n");
-            return(NULL);
-	}
-	out = static_buffer;
-    }
-    while (*cur != '\0') {
-        if (out - static_buffer > static_buffer_size - 100) {
-	    int indx = out - static_buffer;
-
-	    growBuffer();
-	    out = &static_buffer[indx];
-	}
-
-	/*
-	 * By default one have to encode at least '<', '>', '"' and '&' !
-	 */
-	if (*cur == '<') {
-	    *out++ = '&';
-	    *out++ = 'l';
-	    *out++ = 't';
-	    *out++ = ';';
-	} else if (*cur == '>') {
-	    *out++ = '&';
-	    *out++ = 'g';
-	    *out++ = 't';
-	    *out++ = ';';
-	} else if (*cur == '&') {
-	    *out++ = '&';
-	    *out++ = 'a';
-	    *out++ = 'm';
-	    *out++ = 'p';
-	    *out++ = ';';
-	} else if (*cur == '"') {
-	    *out++ = '&';
-	    *out++ = 'q';
-	    *out++ = 'u';
-	    *out++ = 'o';
-	    *out++ = 't';
-	    *out++ = ';';
-	} else if ((*cur == '\'') && (!html)) {
-	    *out++ = '&';
-	    *out++ = 'a';
-	    *out++ = 'p';
-	    *out++ = 'o';
-	    *out++ = 's';
-	    *out++ = ';';
-	} else if (((*cur >= 0x20) && (*cur < 0x80)) ||
-	    (*cur == '\n') || (*cur == '\r') || (*cur == '\t')) {
-	    /*
-	     * default case, just copy !
-	     */
-	    *out++ = *cur;
-#ifndef USE_UTF_8
-	} else if ((sizeof(xmlChar) == 1) && (*cur >= 0x80)) {
-	    char buf[10], *ptr;
-
-	    snprintf(buf, sizeof(buf), "&#%d;", *cur);
-            buf[sizeof(buf) - 1] = 0;
-            ptr = buf;
-	    while (*ptr != 0) *out++ = *ptr++;
-#endif
-	} else if (IS_CHAR((unsigned int) *cur)) {
-	    char buf[10], *ptr;
-
-	    snprintf(buf, sizeof(buf), "&#%d;", *cur);
-            buf[sizeof(buf) - 1] = 0;
-            ptr = buf;
-	    while (*ptr != 0) *out++ = *ptr++;
-	}
-#if 0
-	else {
-	    /*
-	     * default case, this is not a valid char !
-	     * Skip it...
-	     */
-	    xmlGenericError(xmlGenericErrorContext,
-		    "xmlEncodeEntities: invalid char %d\n", (int) *cur);
-	}
-#endif
-	cur++;
-    }
-    *out++ = 0;
-    return(static_buffer);
-}
-
-/*
  * Macro used to grow the current buffer.
  */
 #define growBufferReentrant() {						\
@@ -632,22 +488,6 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
 	    *out++ = 'm';
 	    *out++ = 'p';
 	    *out++ = ';';
-#if 0
-	} else if (*cur == '"') {
-	    *out++ = '&';
-	    *out++ = 'q';
-	    *out++ = 'u';
-	    *out++ = 'o';
-	    *out++ = 't';
-	    *out++ = ';';
-	} else if ((*cur == '\'') && (!html)) {
-	    *out++ = '&';
-	    *out++ = 'a';
-	    *out++ = 'p';
-	    *out++ = 'o';
-	    *out++ = 's';
-	    *out++ = ';';
-#endif
 	} else if (((*cur >= 0x20) && (*cur < 0x80)) ||
 	    (*cur == '\n') || (*cur == '\t') || ((html) && (*cur == '\r'))) {
 	    /*
@@ -739,16 +579,6 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
             ptr = buf;
 	    while (*ptr != 0) *out++ = *ptr++;
 	}
-#if 0
-	else {
-	    /*
-	     * default case, this is not a valid char !
-	     * Skip it...
-	     */
-	    xmlGenericError(xmlGenericErrorContext,
-		    "xmlEncodeEntities: invalid char %d\n", (int) *cur);
-	}
-#endif
 	cur++;
     }
     *out++ = 0;
@@ -771,12 +601,6 @@ xmlEncodeSpecialChars(xmlDocPtr doc ATTRIBUTE_UNUSED, const xmlChar *input) {
     xmlChar *buffer = NULL;
     xmlChar *out = NULL;
     int buffer_size = 0;
-#if 0
-    int html = 0;
-
-    if (doc != NULL)
-        html = (doc->type == XML_HTML_DOCUMENT_NODE);
-#endif
     if (input == NULL) return(NULL);
 
     /*

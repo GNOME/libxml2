@@ -229,7 +229,7 @@ res=""
 err=""
 
 input = libxml2.inputBuffer(StringIO.StringIO(s))
-reader = input.newTextReader("test4")
+reader = input.newTextReader("test5")
 reader.SetParserProp(libxml2.PARSER_VALIDATE,1)
 while reader.Read() == 1:
     res = res + "%s %s %d\n" % (reader.NodeType(),reader.Name(),reader.Depth())

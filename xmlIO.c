@@ -1794,7 +1794,9 @@ xmlOutputBufferCreateFilename(const char *URI,
     void *context = NULL;
     char *unescaped;
 
+#ifdef LIBXML_HTTP_ENABLED
     int is_http_uri = 0;	/*   Can't change if HTTP disabled  */
+#endif
 
     if (xmlOutputCallbackInitialized == 0)
 	xmlRegisterDefaultOutputCallbacks();

@@ -52,6 +52,7 @@
 #include <libxml/threads.h>
 #include <libxml/globals.h>
 
+#if defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_XPATH_ENABLED)
 /************************************************************************
  * 									*
  * 			Floating point stuff				*
@@ -119,6 +120,8 @@ xmlXPathIsInf(double val) {
     return(trio_isinf(val));
 }
 
+#endif /* SCHEMAS or XPATH */
+#ifdef LIBXML_XPATH_ENABLED
 /**
  * xmlXPathGetSign:
  * @val:  a double value
@@ -135,7 +138,6 @@ xmlXPathGetSign(double val) {
 }
 
 
-#ifdef LIBXML_XPATH_ENABLED
 /*
  * TODO: when compatibility allows remove all "fake node libxslt" strings
  *       the test should just be name[0] = ' '

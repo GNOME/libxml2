@@ -43,6 +43,15 @@ AM_PROG_LIBTOOL
 
 AM_MAINTAINER_MODE
 
+dnl
+dnl option to build a minimal libxml2 library
+dnl
+AC_ARG_WITH(minimum, [  --with-minimum          build a minimally sized library (off)])
+if test "$with_minimum" = "yes"
+then
+    echo "Configuring for a minimal library"
+fi
+
 dnl Checks for zlib library.
 _cppflags="${CPPFLAGS}"
 _ldflags="${LDFLAGS}"
@@ -56,6 +65,10 @@ AC_ARG_WITH(zlib,
     LDFLAGS="${LDFLAGS} -L$withval/lib"
   fi
 ])
+if test "$with_minimum" = "yes" -a "$with_zlib" = ""
+then
+    with_zlib=no
+fi
 if test "$with_zlib" = "no"; then
     echo "Disabling compression support"
 else
@@ -197,6 +210,10 @@ dnl ***********************Checking for availability of IPv6*******************
 
 AC_MSG_CHECKING([whether to enable IPv6])
 AC_ARG_ENABLE(ipv6, [ --enable-ipv6=[yes/no] enables compilation of IPv6 code],, enable_ipv6=yes)
+if test "$with_minimum" = "yes"
+then
+    enable_ipv6=no
+fi
 if test $enable_ipv6 = yes; then
   have_ipv6=no
   AC_TRY_COMPILE([
@@ -247,6 +264,10 @@ RDL_LIBS=""
 
 AC_ARG_WITH(fexceptions,
 [  --with-fexceptions      add GCC flag -fexceptions for C++ exceptions (off)])
+if test "$with_minimum" = "yes" -a "$with_fexceptions" = ""
+then
+    with_fexceptions=no
+fi
 dnl
 dnl Workaround for native compilers
 dnl  HP  : http://bugs.gnome.org/db/31/3163.html
@@ -305,6 +326,10 @@ PYTHON_SITE_PACKAGES=
 pythondir=
 AC_ARG_WITH(python,
 [  --with-python[[=DIR]]     build Python bindings if found])
+if test "$with_minimum" = "yes" -a "$with_python" = ""
+then
+    with_python=no
+fi
 if test "$with_python" != "no" ; then
     if test -x "$with_python/bin/python"
     then
@@ -382,17 +407,24 @@ AC_ARG_WITH(readline,
     LDFLAGS="${LDFLAGS} -L$withval/lib"
   fi
 ])
+if test "$with_minimum" = "yes" -a "$with_readline" = ""
+then
+    with_readline=no
+fi
 
 dnl
 dnl specific tests to setup DV's devel environment with debug etc ...
 dnl (-Wunreachable-code)
 dnl
 if test "${LOGNAME}" = "veillard" -a "`pwd`" = "/u/veillard/XML" ; then
-    if test "${with_mem_debug}" = "" ; then
-        with_mem_debug="yes"
-    fi
-    if test "${with_docbook}" = "" ; then
-        with_docbook="yes"
+    if test "$with_minimum" != "yes"
+    then
+	if test "${with_mem_debug}" = "" ; then
+	    with_mem_debug="yes"
+	fi
+	if test "${with_docbook}" = "" ; then
+	    with_docbook="yes"
+	fi
     fi
     CFLAGS="-g -O -pedantic -W -Wunused -Wimplicit -Wreturn-type -Wswitch -Wcomment -Wtrigraphs -Wformat -Wchar-subscripts -Wuninitialized -Wparentheses -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline -Wredundant-decls "
     STATIC_BINARIES="-static"
@@ -426,6 +458,10 @@ TEST_THREADS=""
 
 AC_ARG_WITH(threads,
 [  --with-threads          add multithread support(on)])
+if test "$with_minimum" = "yes" -a "$with_threads" = ""
+then
+    with_threads=no
+fi
 if test "$with_threads" = "no" ; then
     echo Disabling multithreaded support
 else
@@ -445,6 +481,10 @@ else
 fi
 AC_ARG_WITH(thread-alloc,
 [  --with-thread-alloc     add per-thread memory(off)])
+if test "$with_minimum" = "yes" -a "$with_thread_alloc" = ""
+then
+    with_thread_alloc=no
+fi
 if test "$with_threads_alloc" = "yes" -a "$WITH_THREADS" = "1" ; then
     THREAD_CFLAGS="$THREAD_CFLAGS -DLIBXML_THREAD_ALLOC_ENABLED"
 fi
@@ -456,6 +496,10 @@ AC_SUBST(TEST_THREADS)
 
 AC_ARG_WITH(history,
 [  --with-history          add history support to xmllint shell(off)])
+if test "$with_minimum" = "yes" -a "$with_history" = ""
+then
+    with_history=no
+fi
 if test "$with_history" = "yes" ; then
     echo Enabling xmllint shell history
     dnl check for terminal library. this is a very cool solution
@@ -487,6 +531,10 @@ AC_SUBST(WITH_FTP)
 AC_SUBST(FTP_OBJ)
 AC_ARG_WITH(ftp,
 [  --with-ftp              add the FTP support (on)])
+if test "$with_minimum" = "yes" -a "$with_ftp" = ""
+then
+    with_ftp=no
+fi
 if test "$with_ftp" = "no" ; then
     echo Disabling FTP support
     WITH_FTP=0
@@ -500,6 +548,10 @@ AC_SUBST(FTP_OBJ)
 
 AC_ARG_WITH(http,
 [  --with-http             add the HTTP support (on)])
+if test "$with_minimum" = "yes" -a "$with_http" = ""
+then
+    with_http=no
+fi
 if test "$with_http" = "no" ; then
     echo Disabling HTTP support
     WITH_HTTP=0
@@ -513,32 +565,84 @@ AC_SUBST(HTTP_OBJ)
 
 AC_ARG_WITH(html,
 [  --with-html             add the HTML support (on)])
+if test "$with_minimum" = "yes" -a "$with_html" = ""
+then
+    with_html=no
+fi
 if test "$with_html" = "no" ; then
     echo Disabling HTML support
     WITH_HTML=0
     HTML_OBJ=
+    TEST_HTML=
 else    
     WITH_HTML=1
     HTML_OBJ="HTMLparser.o HTMLtree.o"
+    TEST_HTML=HTMLtests
 fi
 AC_SUBST(WITH_HTML)
 AC_SUBST(HTML_OBJ)
+AC_SUBST(TEST_HTML)
+
+AC_ARG_WITH(legacy,
+[  --with-legacy             add deprecated APIs for compatibility (on)])
+if test "$with_minimum" = "yes" -a "$with_legacy" = ""
+then
+    with_legacy=no
+fi
+if test "$with_legacy" = "no" ; then
+    echo Disabling deprecated APIs
+    WITH_LEGACY=0
+else    
+    WITH_LEGACY=1
+fi
+AC_SUBST(WITH_LEGACY)
+
+AC_ARG_WITH(valid,
+[  --with-valid            add the DTD validation support (on)])
+if test "$with_minimum" = "yes" -a "$with_valid" = ""
+then
+    with_valid=no
+fi
+if test "$with_html" = "no" ; then
+    echo Disabling DTD validation support
+    WITH_VALID=0
+    TEST_VALID=
+    TEST_VTIME=
+else    
+    WITH_VALID=1
+    TEST_VALID=Validtests
+    TEST_VTIME=VTimingtests
+fi
+AC_SUBST(WITH_VALID)
+AC_SUBST(TEST_VALID)
+AC_SUBST(TEST_VTIME)
 
 AC_ARG_WITH(catalog,
 [  --with-catalog          add the Catalog support (on)])
+if test "$with_minimum" = "yes" -a "$with_catalog" = ""
+then
+    with_catalog=no
+fi
 if test "$with_catalog" = "no" ; then
     echo Disabling Catalog support
     WITH_CATALOG=0
     CATALOG_OBJ=
+    TEST_CATALOG=
 else    
     WITH_CATALOG=1
     CATALOG_OBJ="catalog.o"
+    TEST_CATALOG=Catatests
 fi
 AC_SUBST(WITH_CATALOG)
 AC_SUBST(CATALOG_OBJ)
+AC_SUBST(TEST_CATALOG)
 
 AC_ARG_WITH(docbook,
 [  --with-docbook          add Docbook SGML support (on)])
+if test "$with_minimum" = "yes" -a "$with_docbook" = ""
+then
+    with_docbook=no
+fi
 if test "$with_docbook" = "no" ; then
     echo Disabling Docbook support
     WITH_DOCB=0
@@ -553,6 +657,10 @@ AC_SUBST(DOCB_OBJ)
 
 AC_ARG_WITH(xpath,
 [  --with-xpath            add the XPATH support (on)])
+if test "$with_minimum" = "yes" -a "$with_xpath" = ""
+then
+    with_xpath=no
+fi
 if test "$with_xpath" = "no" ; then
     echo Disabling XPATH support
     with_xptr="no"
@@ -560,56 +668,84 @@ if test "$with_xpath" = "no" ; then
     with_xinclude="no"
     WITH_XPATH=0
     XPATH_OBJ=
+    TEST_XPATH=
 else    
     WITH_XPATH=1
     XPATH_OBJ=xpath.o
+    TEST_XPATH=XPathtests
 fi
 AC_SUBST(WITH_XPATH)
 AC_SUBST(XPATH_OBJ)
+AC_SUBST(TEST_XPATH)
 
 AC_ARG_WITH(xptr,
 [  --with-xptr             add the XPointer support (on)])
+if test "$with_minimum" = "yes" -a "$with_xptr" = ""
+then
+    with_xptr=no
+fi
 if test "$with_xptr" = "no" ; then
     echo Disabling XPointer support
     WITH_XPTR=0
     XPTR_OBJ=
+    TEST_XPTR=
 else    
     WITH_XPTR=1
     XPTR_OBJ=xpointer.o
+    TEST_XPTR=XPtrtests
 fi
 AC_SUBST(WITH_XPTR)
 AC_SUBST(XPTR_OBJ)
+AC_SUBST(TEST_XPTR)
 
 AC_ARG_WITH(c14n,
 [  --with-c14n             add the Canonicalization support (on)])
+if test "$with_minimum" = "yes" -a "$with_c14n" = ""
+then
+    with_c14n=no
+fi
 if test "$with_c14n" = "no" ; then
     echo Disabling C14N support
     WITH_C14N=0
     C14N_OBJ=
+    TEST_C14N=
 else    
     WITH_C14N=1
     C14N_OBJ="c14n.c"
+    TEST_C14N=C14Ntests
 fi
 AC_SUBST(WITH_C14N)
 AC_SUBST(C14N_OBJ)
+AC_SUBST(TEST_C14N)
 
 AC_ARG_WITH(xinclude,
 [  --with-xinclude         add the XInclude support (on)])
+if test "$with_minimum" = "yes" -a "$with_xinclude" = ""
+then
+    with_xinclude=no
+fi
 if test "$with_xinclude" = "no" ; then
     echo Disabling XInclude support
     WITH_XINCLUDE=0
     XINCLUDE_OBJ=
     with_xinclude="no"
+    TEST_XINCLUDE=
 else    
     WITH_XINCLUDE=1
     XINCLUDE_OBJ=xinclude.o
+    TEST_XINCLUDE=XIncludetests
 fi
 AC_SUBST(WITH_XINCLUDE)
 AC_SUBST(XINCLUDE_OBJ)
+AC_SUBST(TEST_XINCLUDE)
 
 WITH_ICONV=0
 AC_ARG_WITH(iconv,
 [  --with-iconv[[=DIR]]      add ICONV support (on)])
+if test "$with_minimum" = "yes" -a "$with_iconv" = ""
+then
+    with_iconv=no
+fi
 if test "$with_iconv" = "no" ; then
     echo Disabling ICONV support
 else
@@ -657,6 +793,10 @@ AC_SUBST(WITH_ICONV)
 WITH_ISO8859X=1
 AC_ARG_WITH(iso8859x,
 [  --with-iso8859x         add ISO8859X support if no iconv (on)])
+if test "$with_minimum" = "yes" -a "$with_iso8859x" = ""
+then
+    with_iso8859x=no
+fi
 if test "$WITH_ICONV" != "1" ; then
 if test "$with_iso8859x" = "no" ; then
     echo Disabling ISO8859X support
@@ -667,6 +807,10 @@ AC_SUBST(WITH_ISO8859X)
 
 AC_ARG_WITH(schemas,
 [  --with-schemas          add experimental Schemas/RelaxNG support (on)])
+if test "$with_minimum" = "yes" -a "$with_schemas" = ""
+then
+    with_schemas=no
+fi
 if test "$with_schemas" = "no" ; then
     echo "Disabled Schemas/Relax-NG support"
     WITH_SCHEMAS=0
@@ -682,6 +826,10 @@ AC_SUBST(TEST_SCHEMAS)
 
 AC_ARG_WITH(regexps,
 [  --with-regexps          add Regular Expressions support (on)])
+if test "$with_minimum" = "yes" -a "$with_regexps" = ""
+then
+    with_regexps=no
+fi
 if test "$with_regexps" = "no" ; then
     echo Disabling Regexps support
     WITH_REGEXPS=0
@@ -695,19 +843,30 @@ AC_SUBST(TEST_REGEXPS)
 
 AC_ARG_WITH(debug,
 [  --with-debug            add the debugging module (on)])
+if test "$with_minimum" = "yes" -a "$with_debug" = ""
+then
+    with_debug=no
+fi
 if test "$with_debug" = "no" ; then
     echo Disabling DEBUG support
     WITH_DEBUG=0
     DEBUG_OBJ=
+    TEST_DEBUG=
 else    
     WITH_DEBUG=1
     DEBUG_OBJ=debugXML.o
+    TEST_DEBUG=Scripttests
 fi
 AC_SUBST(WITH_DEBUG)
 AC_SUBST(DEBUG_OBJ)
+AC_SUBST(TEST_DEBUG)
 
 AC_ARG_WITH(mem_debug,
 [  --with-mem-debug        add the memory debugging module (off)])
+if test "$with_minimum" = "yes" -a "$with_mem_debug" = ""
+then
+    with_mem_debug=no
+fi
 if test "$with_mem_debug" = "yes" ; then
     echo Enabling memory debug support
     WITH_MEM_DEBUG=1

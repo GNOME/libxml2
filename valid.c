@@ -25,6 +25,10 @@
 #include <libxml/list.h>
 #include <libxml/globals.h>
 
+static xmlElementPtr xmlGetDtdElementDesc2(xmlDtdPtr dtd, const xmlChar *name,
+	                           int create);
+#ifdef LIBXML_VALID_ENABLED
+
 /* #define DEBUG_VALID_ALGO */
 /* #define DEBUG_REGEXP_ALGO */
 
@@ -449,8 +453,6 @@ xmlValidStateDebug(xmlValidCtxtPtr ctxt) {
    else if ((doc->intSubset == NULL) &&				\
 	    (doc->extSubset == NULL)) return(0)
 
-static xmlElementPtr xmlGetDtdElementDesc2(xmlDtdPtr dtd, const xmlChar *name,
-	                           int create);
 xmlAttributePtr xmlScanAttributeDecl(xmlDtdPtr dtd, const xmlChar *elem);
 
 #ifdef LIBXML_REGEXP_ENABLED
@@ -708,6 +710,8 @@ void
 xmlFreeValidCtxt(xmlValidCtxtPtr cur) {
     xmlFree(cur);
 }
+
+#endif /* LIBXML_VALID_ENABLED */
 
 /**
  * xmlNewElementContent:
@@ -1160,10 +1164,12 @@ xmlAddElementDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *name,
     ret = xmlHashLookup2(table, name, ns);
     if (ret != NULL) {
 	if (ret->etype != XML_ELEMENT_TYPE_UNDEFINED) {
+#ifdef LIBXML_VALID_ENABLED
 	    /*
 	     * The element is already defined in this DTD.
 	     */
 	    VERROR(ctxt->userData, "Redefinition of element %s\n", name);
+#endif /* LIBXML_VALID_ENABLED */
 	    if (uqname != NULL)
 		xmlFree(uqname);
             if (ns != NULL)
@@ -1205,10 +1211,12 @@ xmlAddElementDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *name,
 	 * Insertion must not fail
 	 */
 	if (xmlHashAddEntry2(table, name, ns, ret)) {
+#ifdef LIBXML_VALID_ENABLED
 	    /*
 	     * The element is already defined in this DTD.
 	     */
 	    VERROR(ctxt->userData, "Redefinition of element %s\n", name);
+#endif /* LIBXML_VALID_ENABLED */
 	    xmlFreeElement(ret);
 	    if (uqname != NULL)
 		xmlFree(uqname);
@@ -1472,6 +1480,7 @@ xmlCreateAttributeTable(void) {
     return(xmlHashCreate(0));
 }
 
+#ifdef LIBXML_VALID_ENABLED
 /**
  * xmlScanAttributeDeclCallback:
  * @attr:  the attribute decl
@@ -1552,6 +1561,7 @@ xmlScanIDAttributeDecl(xmlValidCtxtPtr ctxt, xmlElementPtr elem) {
     }
     return(ret);
 }
+#endif /* LIBXML_VALID_ENABLED */
 
 /**
  * xmlFreeAttribute:
@@ -1622,6 +1632,7 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *elem,
 	return(NULL);
     }
 
+#ifdef LIBXML_VALID_ENABLED
     /*
      * Check the type and possibly the default value.
      */
@@ -1659,6 +1670,7 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *elem,
 	defaultValue = NULL;
 	ctxt->valid = 0;
     }
+#endif /* LIBXML_VALID_ENABLED */
 
     /*
      * Check first that an attribute defined in the external subset wasn't
@@ -1713,12 +1725,14 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *elem,
      * Search the DTD for previous declarations of the ATTLIST
      */
     if (xmlHashAddEntry3(table, name, ns, elem, ret) < 0) {
+#ifdef LIBXML_VALID_ENABLED
 	/*
 	 * The attribute is already defined in this DTD.
 	 */
 	VWARNING(ctxt->userData,
 		 "Attribute %s of element %s: already defined\n",
 		 name, elem);
+#endif /* LIBXML_VALID_ENABLED */
 	xmlFreeAttribute(ret);
 	return(NULL);
     }
@@ -1730,6 +1744,7 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *elem,
     elemDef = xmlGetDtdElementDesc2(dtd, elem, 1);
     if (elemDef != NULL) {
 
+#ifdef LIBXML_VALID_ENABLED
         if ((type == XML_ATTRIBUTE_ID) &&
 	    (xmlScanIDAttributeDecl(NULL, elemDef) != 0)) {
 	    VERROR(ctxt->userData, 
@@ -1737,6 +1752,7 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *elem,
 		   elem, name);
 	    ctxt->valid = 0;
 	}
+#endif /* LIBXML_VALID_ENABLED */
 
 	/*
 	 * Insert namespace default def first they need to be
@@ -2040,8 +2056,10 @@ xmlAddNotationDecl(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED, xmlDtdPtr dtd,
      * Check the DTD for previous declarations of the ATTLIST
      */
     if (xmlHashAddEntry(table, name, ret)) {
+#ifdef LIBXML_VALID_ENABLED
 	xmlGenericError(xmlGenericErrorContext,
 		"xmlAddNotationDecl: %s already defined\n", name);
+#endif /* LIBXML_VALID_ENABLED */
 	xmlFreeNotation(ret);
 	return(NULL);
     }
@@ -2246,6 +2264,7 @@ xmlAddID(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const xmlChar *value,
     ret->lineno = xmlGetLineNo(attr->parent);
 
     if (xmlHashAddEntry(table, value, ret) < 0) {
+#ifdef LIBXML_VALID_ENABLED
 	/*
 	 * The id is already defined in this DTD.
 	 */
@@ -2253,6 +2272,7 @@ xmlAddID(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const xmlChar *value,
 	    VECTXT(ctxt, attr->parent);
 	    VERROR(ctxt->userData, "ID %s already defined\n", value);
 	}
+#endif /* LIBXML_VALID_ENABLED */
 	xmlFreeID(ret);
 	return(NULL);
     }
@@ -2920,6 +2940,7 @@ xmlGetDtdNotationDesc(xmlDtdPtr dtd, const xmlChar *name) {
     return(xmlHashLookup(table, name));
 }
 
+#ifdef LIBXML_VALID_ENABLED
 /**
  * xmlValidateNotationUse:
  * @ctxt:  the validation context
@@ -2949,6 +2970,7 @@ xmlValidateNotationUse(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
     }
     return(1);
 }
+#endif /* LIBXML_VALID_ENABLED */
 
 /**
  * xmlIsMixedElement:
@@ -2988,6 +3010,7 @@ xmlIsMixedElement(xmlDocPtr doc, const xmlChar *name) {
     return(1);
 }
 
+#ifdef LIBXML_VALID_ENABLED
 /**
  * xmlValidateNameValue:
  * @value:  an Name value
@@ -6295,7 +6318,6 @@ xmlValidateDocument(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
     return(ret);
 }
 
-
 /************************************************************************
  *									*
  *		Routines for dynamic validation editing			*
@@ -6473,3 +6495,5 @@ xmlValidGetValidElements(xmlNode *prev, xmlNode *next, const xmlChar **list,
 
     return(nb_valid_elements);
 }
+#endif /* LIBXML_VALID_ENABLED */
+

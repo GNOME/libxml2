@@ -26,7 +26,8 @@ libxml2_la_SOURCES = SAX.c entities.c encoding.c error.c parserInternals.c  \
 		xpointer.c xinclude.c nanohttp.c nanoftp.c DOCBparser.c \
 		catalog.c globals.c threads.c c14n.c \
 		xmlregexp.c xmlschemas.c xmlschemastypes.c xmlunicode.c \
-		triostr.c trio.c xmlreader.c relaxng.c dict.c SAX2.c
+		triostr.c trio.c xmlreader.c relaxng.c dict.c SAX2.c \
+		legacy.c
 else
 libxml2_la_SOURCES = SAX.c entities.c encoding.c error.c parserInternals.c  \
 		parser.c tree.c hash.c list.c xmlIO.c xmlmemory.c uri.c  \
@@ -34,7 +35,8 @@ libxml2_la_SOURCES = SAX.c entities.c encoding.c error.c parserInternals.c  \
 		xpointer.c xinclude.c nanohttp.c nanoftp.c DOCBparser.c \
 		catalog.c globals.c threads.c c14n.c \
 		xmlregexp.c xmlschemas.c xmlschemastypes.c xmlunicode.c \
-		xmlreader.c relaxng.c dict.c SAX2.c
+		xmlreader.c relaxng.c dict.c SAX2.c \
+		legacy.c
 endif
 
 DEPS = $(top_builddir)/libxml2.la
@@ -120,7 +122,7 @@ check-local: tests
 
 testall : tests SVGtests SAXtests
 
-tests: XMLtests XMLenttests NStests Readertests SAXtests HTMLtests Validtests URItests XPathtests XPtrtests XIncludetests C14Ntests Scripttests Catatests @TEST_REGEXPS@ @TEST_SCHEMAS@ @TEST_THREADS@ Timingtests
+tests: XMLtests XMLenttests NStests Readertests SAXtests @TEST_HTML@ @TEST_VALID@ URItests @TEST_XPATH@ @TEST_XPTR@ @TEST_XINCLUDE@ @TEST_C14N@ @TEST_DEBUG@ @TEST_CATALOG@ @TEST_REGEXPS@ @TEST_SCHEMAS@ @TEST_THREADS@ Timingtests @TEST_VTIME@
 	@(if [ "@PYTHON_SUBDIR@" != "" ] ; then cd python ; $(MAKE) tests ; fi)
 
 valgrind:
@@ -720,7 +722,7 @@ $(srcdir)/dba100000.xml: dbgenattr.pl
 	@echo "## generating dba100000.xml"
 	@(dbgenattr.pl 100000 > $(srcdir)/dba100000.xml)
 
-Timingtests: $(srcdir)/dba100000.xml
+Timingtests: xmllint$(EXEEXT) $(srcdir)/dba100000.xml
 	@echo "##"
 	@echo "## Timing tests to try to detect performance"
 	@echo "## as well a memory usage breakage when streaming"
@@ -744,6 +746,8 @@ Timingtests: $(srcdir)/dba100000.xml
 	   if [ "$$MEM" != "" ] ; then echo Using $$MEM bytes ; fi ; \
 	   grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	   exit 0)
+
+VTimingtests: xmllint$(EXEEXT)
 	-@(xmllint --noout --timing --valid --repeat $(srcdir)/test/valid/REC-xml-19980210.xml; \
 	   MEM=`cat .memdump | grep "MEMORY ALLOCATED" | awk '{ print $$7}'`;\
 	   if [ "$$MEM" != "" ] ; then echo Using $$MEM bytes ; fi ; \

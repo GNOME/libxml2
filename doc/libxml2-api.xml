@@ -1380,6 +1380,7 @@
      <exports symbol='xmlTextReaderNodeType'/>
      <exports symbol='xmlTextReaderNormalization'/>
      <exports symbol='xmlTextReaderPrefix'/>
+     <exports symbol='xmlTextReaderPreserve'/>
      <exports symbol='xmlTextReaderPtr'/>
      <exports symbol='xmlTextReaderQuoteChar'/>
      <exports symbol='xmlTextReaderRead'/>
@@ -7012,7 +7013,7 @@ actually an xmlCharEncoding'/>
       <arg name='publicID' type='const xmlChar *' info='the public identifier'/>
     </function>
     <function name='xmlKeepBlanksDefault' file='parser'>
-      <info>Set and return the previous value for default blanks text nodes support. The 1.x version of the parser used an heuristic to try to detect ignorable white spaces. As a result the SAX callback was generating ignorableWhitespace() callbacks instead of characters() one, and when using the DOM output text nodes containing those blanks were not generated. The 2.x and later version will switch to the XML standard way and ignorableWhitespace() are only generated when running the parser in validating mode and when the current element doesn&apos;t allow CDATA or mixed content. This function is provided as a way to force the standard behavior on 1.X libs and to switch back to the old mode for compatibility when running 1.X client code on 2.X . Upgrade of 1.X code should be done by using xmlIsBlankNode() commodity function to detect the &quot;empty&quot; nodes generated. This value also affect autogeneration of indentation when saving code if blanks sections are kept, indentation is not generated.</info>
+      <info>Set and return the previous value for default blanks text nodes support. The 1.x version of the parser used an heuristic to try to detect ignorable white spaces. As a result the SAX callback was generating xmlSAX2IgnorableWhitespace() callbacks instead of characters() one, and when using the DOM output text nodes containing those blanks were not generated. The 2.x and later version will switch to the XML standard way and ignorableWhitespace() are only generated when running the parser in validating mode and when the current element doesn&apos;t allow CDATA or mixed content. This function is provided as a way to force the standard behavior on 1.X libs and to switch back to the old mode for compatibility when running 1.X client code on 2.X . Upgrade of 1.X code should be done by using xmlIsBlankNode() commodity function to detect the &quot;empty&quot; nodes generated. This value also affect autogeneration of indentation when saving code if blanks sections are kept, indentation is not generated.</info>
       <return type='int' info='the last value for 0 for no substitution, 1 for substitution.'/>
       <arg name='val' type='int' info='int 0 or 1'/>
     </function>
@@ -10062,6 +10063,11 @@ actually an xmlCharEncoding'/>
     <function name='xmlTextReaderPrefix' file='xmlreader'>
       <info>A shorthand reference to the namespace associated with the node.</info>
       <return type='xmlChar *' info='the prefix or NULL if not available'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
+    </function>
+    <function name='xmlTextReaderPreserve' file='xmlreader'>
+      <info>current node being accessed by the xmlTextReader. This is dangerous because the underlying node may be destroyed on the next Reads.</info>
+      <return type='xmlNodePtr' info='the xmlNodePtr or NULL in case of error.'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
     </function>
     <function name='xmlTextReaderQuoteChar' file='xmlreader'>

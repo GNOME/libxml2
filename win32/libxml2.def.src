@@ -1597,6 +1597,7 @@ xmlTextReaderNext
 xmlTextReaderNodeType
 xmlTextReaderNormalization
 xmlTextReaderPrefix
+xmlTextReaderPreserve
 xmlTextReaderQuoteChar
 xmlTextReaderRead
 xmlTextReaderReadAttributeValue

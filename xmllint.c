@@ -104,10 +104,12 @@ static int recovery = 0;
 static int noent = 0;
 static int noout = 0;
 static int nowrap = 0;
+#ifdef LIBXML_VALID_ENABLED
 static int valid = 0;
 static int postvalid = 0;
 static char * dtdvalid = NULL;
 static char * dtdvalidfpi = NULL;
+#endif
 #ifdef LIBXML_SCHEMAS_ENABLED
 static char * relaxng = NULL;
 static xmlRelaxNGPtr relaxngschemas = NULL;
@@ -117,7 +119,9 @@ static xmlSchemaPtr wxschemas = NULL;
 static int repeat = 0;
 static int insert = 0;
 static int compress = 0;
+#ifdef  LIBXML_HTML_ENABLED
 static int html = 0;
+#endif
 static int htmlout = 0;
 static int push = 0;
 #ifdef HAVE_SYS_MMAN_H
@@ -633,9 +637,11 @@ static void streamFile(char *filename) {
 	reader = xmlNewTextReaderFilename(filename);
 
     if (reader != NULL) {
+#ifdef LIBXML_VALID_ENABLED
 	if (valid)
 	    xmlTextReaderSetParserProp(reader, XML_PARSER_VALIDATE, 1);
 	else
+#endif /* LIBXML_VALID_ENABLED */
 	    xmlTextReaderSetParserProp(reader, XML_PARSER_LOADDTD, 1);
 #ifdef LIBXML_SCHEMAS_ENABLED
 	if (relaxng != NULL) {
@@ -670,13 +676,16 @@ static void streamFile(char *filename) {
 #ifdef LIBXML_SCHEMAS_ENABLED
 	    if ((valid) || (relaxng != NULL))
 #else
+#ifdef LIBXML_VALID_ENABLED
 	    if (valid)
-#endif
 		endTimer("Parsing and validating");
 	    else
+#endif /* LIBXML_VALID_ENABLED */
+#endif
 		endTimer("Parsing");
 	}
 
+#ifdef LIBXML_VALID_ENABLED
 	if (valid) {
 	    if (xmlTextReaderIsValid(reader) != 1) {
 		xmlGenericError(xmlGenericErrorContext,
@@ -684,6 +693,7 @@ static void streamFile(char *filename) {
 		progresult = 3;
 	    }
 	}
+#endif /* LIBXML_VALID_ENABLED */
 #ifdef LIBXML_SCHEMAS_ENABLED
 	if (relaxng != NULL) {
 	    if (xmlTextReaderIsValid(reader) != 1) {
@@ -866,6 +876,7 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 	        
 	    munmap((char *) base, info.st_size);
 #endif
+#ifdef LIBXML_VALID_ENABLED
 	} else if (valid) {
 	    xmlParserCtxtPtr ctxt = NULL;
 
@@ -883,6 +894,7 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 		if (rectxt == NULL)
 		    xmlFreeParserCtxt(ctxt);
 	    }
+#endif /* LIBXML_VALID_ENABLED */
 	} else {
 	    if (rectxt != NULL)
 	        doc = xmlCtxtReadFile(rectxt, filename, NULL, options);
@@ -945,6 +957,7 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 	xmlFreeDoc(tmp);
     }
 
+#ifdef LIBXML_VALID_ENABLED
     if ((insert) && (!html)) {
         const xmlChar* list[256];
 	int nb, i;
@@ -968,7 +981,9 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 		}
 	    }
 	}    
-    }else if (noout == 0) {
+    }else
+#endif /* LIBXML_VALID_ENABLED */
+    if (noout == 0) {
 	/*
 	 * print it.
 	 */
@@ -1048,6 +1063,7 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 #endif
     }
 
+#ifdef LIBXML_VALID_ENABLED
     /*
      * A posteriori validation test
      */
@@ -1128,8 +1144,10 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 	    endTimer("Validating");
 	}
 	xmlFreeValidCtxt(cvp);
+    }
+#endif /* LIBXML_VALID_ENABLED */
 #ifdef LIBXML_SCHEMAS_ENABLED
-    } else if (relaxngschemas != NULL) {
+    if (relaxngschemas != NULL) {
 	xmlRelaxNGValidCtxtPtr ctxt;
 	int ret;
 
@@ -1181,8 +1199,8 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 	if ((timing) && (!repeat)) {
 	    endTimer("Validating");
 	}
-#endif
     }
+#endif
 
 #ifdef LIBXML_DEBUG_ENABLED
     if ((debugent) && (!html))
@@ -1210,6 +1228,9 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 static void showVersion(const char *name) {
     fprintf(stderr, "%s: using libxml version %s\n", name, xmlParserVersion);
     fprintf(stderr, "   compiled with: ");
+#ifdef LIBXML_VALID_ENABLED
+    fprintf(stderr, "DTDValid ");
+#endif
 #ifdef LIBXML_FTP_ENABLED
     fprintf(stderr, "FTP ");
 #endif
@@ -1273,10 +1294,12 @@ static void usage(const char *name) {
     printf("\t--nonet : refuse to fetch DTDs or entities over network\n");
     printf("\t--htmlout : output results as HTML\n");
     printf("\t--nowrap : do not put HTML doc wrapper\n");
+#ifdef LIBXML_VALID_ENABLED
     printf("\t--valid : validate the document in addition to std well-formed check\n");
     printf("\t--postvalid : do a posteriori validation, i.e after parsing\n");
     printf("\t--dtdvalid URL : do a posteriori validation against a given DTD\n");
     printf("\t--dtdvalidfpi FPI : same but name the DTD with a Public Identifier\n");
+#endif /* LIBXML_VALID_ENABLED */
     printf("\t--timing : print some timings\n");
     printf("\t--output file or -o file: save to a given file\n");
     printf("\t--repeat : repeat 100 times, for timing or profiling\n");
@@ -1415,7 +1438,9 @@ main(int argc, char **argv) {
 	    loaddtd++;
 	    dtdattrs++;
 	    options |= XML_PARSE_DTDATTR;
-	} else if ((!strcmp(argv[i], "-valid")) ||
+	}
+#ifdef LIBXML_VALID_ENABLED
+	else if ((!strcmp(argv[i], "-valid")) ||
 	         (!strcmp(argv[i], "--valid"))) {
 	    valid++;
 	    options |= XML_PARSE_DTDVALID;
@@ -1434,6 +1459,7 @@ main(int argc, char **argv) {
 	    dtdvalidfpi = argv[i];
 	    loaddtd++;
         }
+#endif /* LIBXML_VALID_ENABLED */
 	else if ((!strcmp(argv[i], "-dropdtd")) ||
 	         (!strcmp(argv[i], "--dropdtd")))
 	    dropdtd++;
@@ -1596,7 +1622,9 @@ main(int argc, char **argv) {
     if (dtdattrs)
 	xmlLoadExtDtdDefaultValue |= XML_COMPLETE_ATTRS;
     if (noent != 0) xmlSubstituteEntitiesDefault(1);
+#ifdef LIBXML_VALID_ENABLED
     if (valid != 0) xmlDoValidityCheckingDefaultValue = 1;
+#endif /* LIBXML_VALID_ENABLED */
     if ((htmlout) && (!nowrap)) {
 	xmlGenericError(xmlGenericErrorContext,
          "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\"\n");
@@ -1669,6 +1697,7 @@ main(int argc, char **argv) {
             i++;
 	    continue;
         }
+#ifdef LIBXML_VALID_ENABLED
 	if ((!strcmp(argv[i], "-dtdvalid")) ||
 	         (!strcmp(argv[i], "--dtdvalid"))) {
 	    i++;
@@ -1679,6 +1708,7 @@ main(int argc, char **argv) {
 	    i++;
 	    continue;
         }
+#endif /* LIBXML_VALID_ENABLED */
 	if ((!strcmp(argv[i], "-relaxng")) ||
 	         (!strcmp(argv[i], "--relaxng"))) {
 	    i++;

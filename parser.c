@@ -657,6 +657,78 @@ mem_error:
     return;
 }
 
+/**
+ * xmlCheckLanguageID:
+ * @lang:  pointer to the string value
+ *
+ * Checks that the value conforms to the LanguageID production:
+ *
+ * NOTE: this is somewhat deprecated, those productions were removed from
+ *       the XML Second edition.
+ *
+ * [33] LanguageID ::= Langcode ('-' Subcode)*
+ * [34] Langcode ::= ISO639Code |  IanaCode |  UserCode
+ * [35] ISO639Code ::= ([a-z] | [A-Z]) ([a-z] | [A-Z])
+ * [36] IanaCode ::= ('i' | 'I') '-' ([a-z] | [A-Z])+
+ * [37] UserCode ::= ('x' | 'X') '-' ([a-z] | [A-Z])+
+ * [38] Subcode ::= ([a-z] | [A-Z])+
+ *
+ * Returns 1 if correct 0 otherwise
+ **/
+int
+xmlCheckLanguageID(const xmlChar * lang)
+{
+    const xmlChar *cur = lang;
+
+    if (cur == NULL)
+        return (0);
+    if (((cur[0] == 'i') && (cur[1] == '-')) ||
+        ((cur[0] == 'I') && (cur[1] == '-'))) {
+        /*
+         * IANA code
+         */
+        cur += 2;
+        while (((cur[0] >= 'A') && (cur[0] <= 'Z')) ||  /* non input consuming */
+               ((cur[0] >= 'a') && (cur[0] <= 'z')))
+            cur++;
+    } else if (((cur[0] == 'x') && (cur[1] == '-')) ||
+               ((cur[0] == 'X') && (cur[1] == '-'))) {
+        /*
+         * User code
+         */
+        cur += 2;
+        while (((cur[0] >= 'A') && (cur[0] <= 'Z')) ||  /* non input consuming */
+               ((cur[0] >= 'a') && (cur[0] <= 'z')))
+            cur++;
+    } else if (((cur[0] >= 'A') && (cur[0] <= 'Z')) ||
+               ((cur[0] >= 'a') && (cur[0] <= 'z'))) {
+        /*
+         * ISO639
+         */
+        cur++;
+        if (((cur[0] >= 'A') && (cur[0] <= 'Z')) ||
+            ((cur[0] >= 'a') && (cur[0] <= 'z')))
+            cur++;
+        else
+            return (0);
+    } else
+        return (0);
+    while (cur[0] != 0) {       /* non input consuming */
+        if (cur[0] != '-')
+            return (0);
+        cur++;
+        if (((cur[0] >= 'A') && (cur[0] <= 'Z')) ||
+            ((cur[0] >= 'a') && (cur[0] <= 'z')))
+            cur++;
+        else
+            return (0);
+        while (((cur[0] >= 'A') && (cur[0] <= 'Z')) ||  /* non input consuming */
+               ((cur[0] >= 'a') && (cur[0] <= 'z')))
+            cur++;
+    }
+    return (1);
+}
+
 /************************************************************************
  *									*
  * 		Parser stacks related functions and macros		*
@@ -8185,6 +8257,7 @@ xmlParseElement(xmlParserCtxtPtr ctxt) {
     namePush(ctxt, name);
     ret = ctxt->node;
 
+#ifdef LIBXML_VALID_ENABLED
     /*
      * [ VC: Root Element Type ]
      * The Name in the document type declaration must match the element
@@ -8193,6 +8266,7 @@ xmlParseElement(xmlParserCtxtPtr ctxt) {
     if (ctxt->validate && ctxt->wellFormed && ctxt->myDoc &&
         ctxt->node && (ctxt->node == ctxt->myDoc->children))
         ctxt->valid &= xmlValidateRoot(&ctxt->vctxt, ctxt->myDoc);
+#endif /* LIBXML_VALID_ENABLED */
 
     /*
      * Check for an Empty Element.
@@ -9406,6 +9480,7 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 			ctxt->sax->endDocument(ctxt->userData);
 		    goto done;
 		}
+#ifdef LIBXML_VALID_ENABLED
 		/*
 		 * [ VC: Root Element Type ]
 		 * The Name in the document type declaration must match
@@ -9414,6 +9489,7 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		if (ctxt->validate && ctxt->wellFormed && ctxt->myDoc &&
 		    ctxt->node && (ctxt->node == ctxt->myDoc->children))
 		    ctxt->valid &= xmlValidateRoot(&ctxt->vctxt, ctxt->myDoc);
+#endif /* LIBXML_VALID_ENABLED */
 
 		/*
 		 * Check for an Empty Element.
@@ -10219,6 +10295,7 @@ xmlCreateIOParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
     return(ctxt);
 }
 
+#ifdef LIBXML_VALID_ENABLED
 /************************************************************************
  *									*
  * 		Front ends when parsing a DTD				*
@@ -10437,6 +10514,7 @@ xmlSAXParseDTD(xmlSAXHandlerPtr sax, const xmlChar *ExternalID,
     return(ret);
 }
 
+
 /**
  * xmlParseDTD:
  * @ExternalID:  a NAME* containing the External ID of the DTD
@@ -10451,6 +10529,7 @@ xmlDtdPtr
 xmlParseDTD(const xmlChar *ExternalID, const xmlChar *SystemID) {
     return(xmlSAXParseDTD(NULL, ExternalID, SystemID));
 }
+#endif /* LIBXML_VALID_ENABLED */
 
 /************************************************************************
  *									*
@@ -10985,11 +11064,13 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
 	cur = ctxt->myDoc->children->children;
 	*lst = cur;
 	while (cur != NULL) {
+#ifdef LIBXML_VALID_ENABLED
 	    if (oldctxt->validate && oldctxt->wellFormed &&
 		oldctxt->myDoc && oldctxt->myDoc->intSubset) {
 		oldctxt->valid &= xmlValidateElement(&oldctxt->vctxt,
 			oldctxt->myDoc, cur);
 	    }
+#endif /* LIBXML_VALID_ENABLED */
 	    cur->parent = NULL;
 	    cur = cur->next;
 	}
@@ -12024,8 +12105,10 @@ xmlCtxtReset(xmlParserCtxtPtr ctxt)
         ctxt->attsSpecial = NULL;
     }
 
+#ifdef LIBXML_CATALOG_ENABLED
     if (ctxt->catalogs != NULL)
 	xmlCatalogFreeLocal(ctxt->catalogs);
+#endif
 }
 
 /**

@@ -29,6 +29,7 @@
 #include <ctype.h>
 #endif
 
+
 /**
  * MEM_LIST:
  *
@@ -43,6 +44,9 @@
 #include <libxml/globals.h>
 #include <libxml/xmlerror.h>
 
+static int xmlMemInitialized = 0;
+
+#ifdef DEBUG_MEMORY_LOCATION
 void xmlMallocBreakpoint(void);
 
 /************************************************************************
@@ -108,7 +112,6 @@ static unsigned long  debugMaxMemSize = 0;
 static int block=0;
 static int xmlMemStopAtBlock = 0;
 static void *xmlMemTraceBlockAt = NULL;
-static int xmlMemInitialized = 0;
 #ifdef MEM_LIST
 static MEMHDR *memlist = NULL;
 #endif
@@ -712,6 +715,7 @@ static void debugmem_tag_error(void *p)
 
 static FILE *xmlMemoryDumpFile = NULL;
 
+#endif /* DEBUG_MEMORY_LOCATION */
 
 /**
  * xmlMemoryDump:
@@ -722,6 +726,7 @@ static FILE *xmlMemoryDumpFile = NULL;
 void
 xmlMemoryDump(void)
 {
+#ifdef DEBUG_MEMORY_LOCATION
     FILE *dump;
 
     if (debugMaxMemSize == 0)
@@ -734,6 +739,7 @@ xmlMemoryDump(void)
     xmlMemDisplay(xmlMemoryDumpFile);
 
     if (dump != NULL) fclose(dump);
+#endif /* DEBUG_MEMORY_LOCATION */
 }
 
 
@@ -755,14 +761,15 @@ static int xmlInitMemoryDone = 0;
 int
 xmlInitMemory(void)
 {
-     int ret;
-     
+#ifdef DEBUG_MEMORY_LOCATION
 #ifdef HAVE_STDLIB_H
      char *breakpoint;
 #endif     
+#endif
 
      if (xmlInitMemoryDone) return(-1);
 
+#ifdef DEBUG_MEMORY_LOCATION
 #ifdef HAVE_STDLIB_H
      breakpoint = getenv("XML_MEM_BREAKPOINT");
      if (breakpoint != NULL) {
@@ -775,6 +782,7 @@ xmlInitMemory(void)
          sscanf(breakpoint, "%p", &xmlMemTraceBlockAt);
      }
 #endif     
+#endif /* DEBUG_MEMORY_LOCATION */
     
 #ifdef DEBUG_MEMORY
      xmlGenericError(xmlGenericErrorContext,
@@ -783,8 +791,7 @@ xmlInitMemory(void)
      xmlMemInitialized = 1;
      xmlInitMemoryDone = 1;
 
-     ret = 0;
-     return(ret);
+     return(0);
 }
 
 /**

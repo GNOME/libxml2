@@ -1,3 +1,8 @@
+Wed Jan  8 00:13:01 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* SAX.c: fuck, I introduced a memory leak on external parsed
+	  entities in 2.5.0 :-(
+
 Tue Jan  7 12:12:45 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmllint.c: another fix needed as pointed by Christophe Merlet

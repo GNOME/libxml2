@@ -384,6 +384,7 @@ getEntity(void *ctx, const xmlChar *name)
 
         xmlParseCtxtExternalEntity(ctxt, ret->URI, ret->ExternalID, &children);
 	xmlAddChildList((xmlNodePtr) ret, children);
+	ret->owner = 1;
     }
     return(ret);
 }

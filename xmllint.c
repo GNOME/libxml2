@@ -97,6 +97,7 @@ static char *encoding = NULL;
 #ifdef LIBXML_XINCLUDE_ENABLED
 static int xinclude = 0;
 #endif
+static int dtdattrs = 0;
 static int loaddtd = 0;
 static int progresult = 0;
 static int timing = 0;
@@ -792,8 +793,9 @@ static void usage(const char *name) {
     printf("\t--auto : generate a small doc on the fly\n");
 #ifdef LIBXML_XINCLUDE_ENABLED
     printf("\t--xinclude : do XInclude processing\n");
-    printf("\t--loaddtd : fetch external Dtd\n");
 #endif
+    printf("\t--loaddtd : fetch external Dtd\n");
+    printf("\t--dtdattr : loaddtd + populate the tree with inherited attributes \n");
 }
 int
 main(int argc, char **argv) {
@@ -850,7 +852,11 @@ main(int argc, char **argv) {
 	else if ((!strcmp(argv[i], "-loaddtd")) ||
 	         (!strcmp(argv[i], "--loaddtd")))
 	    loaddtd++;
-	else if ((!strcmp(argv[i], "-valid")) ||
+	else if ((!strcmp(argv[i], "-dtdattr")) ||
+	         (!strcmp(argv[i], "--dtdattr"))) {
+	    loaddtd++;
+	    dtdattrs++;
+	} else if ((!strcmp(argv[i], "-valid")) ||
 	         (!strcmp(argv[i], "--valid")))
 	    valid++;
 	else if ((!strcmp(argv[i], "-postvalid")) ||
@@ -946,7 +952,10 @@ main(int argc, char **argv) {
 	}
     }
     xmlLineNumbersDefault(1);
-    if (loaddtd != 0) xmlLoadExtDtdDefaultValue = 6; /* fetch DTDs by default */
+    if (loaddtd != 0)
+	xmlLoadExtDtdDefaultValue |= XML_DETECT_IDS;
+    if (dtdattrs)
+	xmlLoadExtDtdDefaultValue |= XML_COMPLETE_ATTRS;
     if (noent != 0) xmlSubstituteEntitiesDefault(1);
     if (valid != 0) xmlDoValidityCheckingDefaultValue = 1;
     if ((htmlout) && (!nowrap)) {

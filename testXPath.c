@@ -175,6 +175,8 @@ int main(int argc, char **argv) {
 	    usefile++;
     }
     if (valid != 0) xmlDoValidityCheckingDefaultValue = 1;
+    xmlLoadExtDtdDefaultValue |= XML_DETECT_IDS;
+    xmlLoadExtDtdDefaultValue |= XML_COMPLETE_ATTRS;
     if (nocdata != 0) {
 	xmlDefaultSAXHandlerInit();
 	xmlDefaultSAXHandler.cdataBlock = NULL;

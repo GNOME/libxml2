@@ -1271,13 +1271,40 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *elem,
      */
     elemDef = xmlGetDtdElementDesc2(dtd, elem, 1);
     if (elemDef != NULL) {
+
         if ((type == XML_ATTRIBUTE_ID) &&
 	    (xmlScanIDAttributeDecl(NULL, elemDef) != 0))
 	    VERROR(ctxt->userData, 
 	   "Element %s has too may ID attributes defined : %s\n",
 		   elem, name);
-        ret->nexth = elemDef->attributes;
-        elemDef->attributes = ret;
+	/*
+	 * Insert namespace default def first they need to be
+	 * processed firt.
+	 */
+	if ((xmlStrEqual(ret->name, BAD_CAST "xmlns")) ||
+	    ((ret->prefix != NULL &&
+	     (xmlStrEqual(ret->prefix, BAD_CAST "xmlns"))))) {
+	    ret->nexth = elemDef->attributes;
+	    elemDef->attributes = ret;
+	} else {
+	    xmlAttributePtr tmp = elemDef->attributes;
+
+	    while ((tmp != NULL) &&
+		   ((xmlStrEqual(tmp->name, BAD_CAST "xmlns")) ||
+		    ((ret->prefix != NULL &&
+		     (xmlStrEqual(ret->prefix, BAD_CAST "xmlns")))))) {
+		if (tmp->nexth == NULL)
+		    break;
+		tmp = tmp->nexth;
+	    }
+	    if (tmp != NULL) {
+		ret->nexth = tmp->nexth;
+	        tmp->nexth = ret;
+	    } else {
+		ret->nexth = elemDef->attributes;
+		elemDef->attributes = ret;
+	    }
+	}
     }
 
     /*
@@ -2280,7 +2307,7 @@ xmlGetDtdElementDesc2(xmlDtdPtr dtd, const xmlChar *name, int create) {
  * returns the xmlElementPtr if found or NULL
  */
 
-static xmlElementPtr
+xmlElementPtr
 xmlGetDtdQElementDesc(xmlDtdPtr dtd, const xmlChar *name,
 	              const xmlChar *prefix) {
     xmlElementTablePtr table;
@@ -2341,7 +2368,7 @@ xmlGetDtdAttrDesc(xmlDtdPtr dtd, const xmlChar *elem, const xmlChar *name) {
  * returns the xmlAttributePtr if found or NULL
  */
 
-static xmlAttributePtr
+xmlAttributePtr
 xmlGetDtdQAttrDesc(xmlDtdPtr dtd, const xmlChar *elem, const xmlChar *name,
 	          const xmlChar *prefix) {
     xmlAttributeTablePtr table;

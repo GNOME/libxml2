@@ -21,6 +21,7 @@
 #include <libxml/xmlIO.h>
 #include <libxml/SAX.h>
 #include <libxml/uri.h>
+#include <libxml/valid.h>
 #include <libxml/HTMLtree.h>
 
 /* #define DEBUG_SAX */
@@ -1029,6 +1030,78 @@ startElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
 	    xmlDebugDumpOneNode(stderr, parent, 0);
 #endif
 	    xmlAddSibling(parent, ret);
+	}
+    }
+
+    /*
+     * Insert all the defaulted attributes from the DTD especially namespaces
+     */
+    if ((!ctxt->html) &&
+	((ctxt->myDoc->intSubset != NULL) ||
+	 (ctxt->myDoc->extSubset != NULL))) {
+	xmlElementPtr elemDecl = NULL;
+
+	if (prefix != NULL) {
+	    if (ctxt->myDoc->intSubset != NULL)
+		elemDecl = xmlGetDtdQElementDesc(ctxt->myDoc->intSubset,
+			                         name, prefix);
+	    if ((elemDecl == NULL) && (ctxt->myDoc->extSubset != NULL))
+		elemDecl = xmlGetDtdQElementDesc(ctxt->myDoc->extSubset,
+			                         name, prefix);
+	} else {
+	    if (ctxt->myDoc->intSubset != NULL)
+		elemDecl = xmlGetDtdQElementDesc(ctxt->myDoc->intSubset,
+			                         name, prefix);
+	    if ((elemDecl == NULL) && (ctxt->myDoc->extSubset != NULL))
+		elemDecl = xmlGetDtdQElementDesc(ctxt->myDoc->extSubset,
+			                         name, prefix);
+	}
+	if (elemDecl != NULL) {
+	    xmlAttributePtr  attr = elemDecl->attributes;
+	    while (attr != NULL) {
+		if (attr->defaultValue != NULL) {
+		    /*
+		     * the element should be instanciated in the tree if:
+		     *  - this is a namespace prefix
+		     *  - the user required for completion in the tree
+		     *    like XSLT
+		     */
+		    if (((attr->prefix != NULL) &&
+			 (xmlStrEqual(attr->prefix, BAD_CAST "xmlns"))) ||
+		        ((attr->prefix == NULL) &&
+			 (xmlStrEqual(attr->name, BAD_CAST "xmlns"))) ||
+			(ctxt->loadsubset & XML_COMPLETE_ATTRS)) {
+			xmlChar buffer[100];
+			const xmlChar *fulln = attr->name;
+
+			if (attr->prefix != NULL) {
+			    snprintf((char *) buffer, 99, "%s:%s",
+				     attr->prefix, attr->name);
+			    buffer[99] = 0;
+			    fulln = buffer;
+			}
+
+			/*
+			 * Check that the attribute is not declared in the
+			 * serialization
+			 */
+			att = NULL;
+			if (atts != NULL) {
+			    i = 0;
+			    att = atts[i];
+			    while (att != NULL) {
+				if (xmlStrEqual(att, fulln))
+				    break;
+				i += 2;
+				att = atts[i];
+			    }
+			}
+			if (att == NULL)
+			    attribute(ctxt, fulln, attr->defaultValue);
+		    }
+		}
+		attr = attr->nexth;
+	    }
 	}
     }
 

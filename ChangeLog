@@ -1,3 +1,12 @@
+Tue Aug  7 03:05:58 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* SAX.c testXPath.c valid.c xmllint.c include/libxml/valid.h:
+	  allow to inherit attributes from the DTD directly in the
+	  tree, this is needed for XPath and can be a useful feature.
+	  Inherited namespaces are always provided at the tree level now
+	* test/defattr* result/defattr* result/noent/defattr*: added a couple
+	  of tests for this feature (XSLT being the prime user).
+
 Fri Aug  3 14:02:20 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* DOCBparser.c Makefile.am nanohttp.c parser.c testHTML.c

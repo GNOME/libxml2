@@ -230,8 +230,15 @@ int		xmlIsMixedElement	(xmlDocPtr doc,
 xmlAttributePtr	xmlGetDtdAttrDesc	(xmlDtdPtr dtd,
 					 const xmlChar *elem,
 					 const xmlChar *name);
+xmlAttributePtr	xmlGetDtdQAttrDesc	(xmlDtdPtr dtd,
+					 const xmlChar *elem,
+					 const xmlChar *name,
+					 const xmlChar *prefix);
 xmlNotationPtr	xmlGetDtdNotationDesc	(xmlDtdPtr dtd,
 					 const xmlChar *name);
+xmlElementPtr	xmlGetDtdQElementDesc	(xmlDtdPtr dtd,
+					 const xmlChar *name,
+					 const xmlChar *prefix);
 xmlElementPtr	xmlGetDtdElementDesc	(xmlDtdPtr dtd,
 					 const xmlChar *name);
 

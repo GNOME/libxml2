@@ -1,3 +1,8 @@
+Sun Feb 25 05:48:51 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* configure.in: bumped to 2.3.2
+	* doc/xml.html: updated for release
+
 Sat Feb 24 14:07:52 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xpath.c: found a memleak and fixed a nasty bug

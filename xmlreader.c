@@ -264,7 +264,9 @@ xmlTextReaderPushData(xmlTextReaderPtr reader) {
 		if (val <= 0) {
 		    reader->mode = XML_TEXTREADER_MODE_EOF;
 		    reader->state = oldstate;
-		    return(val);
+		    if ((oldstate != XML_TEXTREADER_START) ||
+			(reader->ctxt->myDoc != NULL))
+			return(val);
 		}
 	    } else 
 		break;

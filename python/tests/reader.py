@@ -301,6 +301,28 @@ if reader.NamespaceUri() != "http://www.w3.org/2000/xmlns/" or \
     print "test7: failed to read the namespace node"
     sys.exit(1)
 
+#
+# Test for a limit case:
+#
+f = StringIO.StringIO("""<a/>""")
+input = libxml2.inputBuffer(f)
+reader = input.newTextReader("test8")
+ret = reader.Read()
+if ret != 1:
+    print "test8: failed to read the node"
+    sys.exit(1)
+if reader.Name() != "a" or reader.IsEmptyElement() != 1:
+    print "test8: failed to analyze the node"
+    sys.exit(1)
+ret = reader.Read()
+if ret != 0:
+    print "test8: failed to detect the EOF"
+    sys.exit(1)
+
+
+#
+# cleanup for memory allocation counting
+#
 del f
 del input
 del reader

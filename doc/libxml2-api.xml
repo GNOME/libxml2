@@ -367,8 +367,9 @@
      <exports symbol='xmlDictPtr' type='typedef'/>
      <exports symbol='xmlDictQLookup' type='function'/>
      <exports symbol='xmlDictReference' type='function'/>
-     <exports symbol='xmlDictSize' type='function'/>
+     <exports symbol='xmlDictCreateSub' type='function'/>
      <exports symbol='xmlDictCreate' type='function'/>
+     <exports symbol='xmlDictSize' type='function'/>
      <exports symbol='xmlDictLookup' type='function'/>
      <exports symbol='xmlDictFree' type='function'/>
      <exports symbol='xmlDictOwns' type='function'/>
@@ -2852,6 +2853,7 @@
      <exports symbol='xmlXPathCmpNodes' type='function'/>
      <exports symbol='xmlXPathCastBooleanToNumber' type='function'/>
      <exports symbol='xmlXPathCastToString' type='function'/>
+     <exports symbol='xmlXPathCtxtCompile' type='function'/>
      <exports symbol='xmlXPathCastStringToNumber' type='function'/>
      <exports symbol='xmlXPathAxisFunc' type='function'/>
      <exports symbol='xmlXPathCastToNumber' type='function'/>
@@ -5308,7 +5310,8 @@ actually an xmlCharEncoding'/>
       <field name='userData' type='void *' info=' user specific data block'/>
       <field name='error' type='xmlStructuredErrorFunc' info=' the callback in case of errors'/>
       <field name='lastError' type='xmlError' info=' the last error'/>
-      <field name='debugNode' type='xmlNodePtr' info=' the source node XSLT'/>
+      <field name='debugNode' type='xmlNodePtr' info=' the source node XSLT dictionnary'/>
+      <field name='dict' type='xmlDictPtr' info=' dictionnary if any'/>
     </struct>
     <typedef name='xmlXPathContextPtr' file='xpath' type='xmlXPathContext *'/>
     <typedef name='xmlXPathError' file='xpath' type='enum'/>
@@ -7503,7 +7506,12 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlDictCreate' file='dict'>
       <info>Create a new dictionary</info>
-      <return type='xmlDictPtr' info='the newly created object, or NULL if an error occured.'/>
+      <return type='xmlDictPtr' info='the newly created dictionnary, or NULL if an error occured.'/>
+    </function>
+    <function name='xmlDictCreateSub' file='dict'>
+      <info>Create a new dictionary, inheriting strings from the read-only dictionnary @sub. On lookup, strings are first searched in the new dictionnary, then in @sub, and if not found are created in the new dictionnary.</info>
+      <return type='xmlDictPtr' info='the newly created dictionnary, or NULL if an error occured.'/>
+      <arg name='sub' type='xmlDictPtr' info='an existing dictionnary'/>
     </function>
     <function name='xmlDictFree' file='dict'>
       <info>Free the hash @dict and its contents. The userdata is deallocated with @f if provided.</info>
@@ -13785,6 +13793,12 @@ actually an xmlCharEncoding'/>
       <return type='void'/>
       <arg name='ctxt' type='xmlXPathParserContextPtr' info='the XPath Parser context'/>
       <arg name='nargs' type='int' info='the number of arguments'/>
+    </function>
+    <function name='xmlXPathCtxtCompile' file='xpath'>
+      <info></info>
+      <return type='xmlXPathCompExprPtr' info=''/>
+      <arg name='ctxt' type='xmlXPathContextPtr' info=''/>
+      <arg name='str' type='const xmlChar *' info=''/>
     </function>
     <function name='xmlXPathDebugDumpCompExpr' file='xpathInternals'>
       <info>Dumps the tree of the compiled XPath expression.</info>

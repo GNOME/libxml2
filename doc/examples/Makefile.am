@@ -19,9 +19,9 @@ install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)
 	-@INSTALL@ -m 0644 $(srcdir)/*.html $(srcdir)/*.c $(srcdir)/*.xml $(srcdir)/*.xsl $(srcdir)/*.res $(DESTDIR)$(TARGET_DIR)
 
-EXTRA_DIST=examples.xsl index.py test1.xml examples.xml test2.xml writer.xml test3.xml reader1.res reader3.res tree1.res tree2.res 
+EXTRA_DIST=examples.xsl index.py test1.xml examples.xml test2.xml writer.xml test3.xml reader1.res reader3.res tree1.res tree2.res io1.res 
 
-noinst_PROGRAMS=xpath1 parse1 parse2 tree1 tree2 testWriter reader1 reader2 reader3 
+noinst_PROGRAMS=xpath1 parse1 parse2 tree1 tree2 testWriter reader1 reader2 reader3 io1 
 
 xpath1_SOURCES=xpath1.c
 xpath1_LDFLAGS=
@@ -68,14 +68,30 @@ reader3_LDFLAGS=
 reader3_DEPENDENCIES= $(DEPS)
 reader3_LDADD= @RDL_LIBS@ $(LDADDS)
 
+io1_SOURCES=io1.c
+io1_LDFLAGS=
+io1_DEPENDENCIES= $(DEPS)
+io1_LDADD= @RDL_LIBS@ $(LDADDS)
+
 tests: $(noinst_PROGRAMS)
+	@(echo > .memdump)
 	@(parse1 test1.xml)
+	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
 	@(parse2 test2.xml)
+	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
 	@(tree1 test2.xml > tree1.tmp ; diff tree1.tmp tree1.res ; rm tree1.tmp)
+	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
 	@(tree2 > tree2.tmp ; diff tree2.tmp tree2.res ; rm tree2.tmp)
+	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
 	@(testWriter ; for i in 1 2 3 4 ; do diff writer.xml writer$$i.res ; done ; rm writer*.res)
+	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
 	@(reader1 test2.xml > reader1.tmp ; diff reader1.tmp reader1.res ; rm reader1.tmp)
+	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
 	@(reader2 test2.xml > reader1.tmp ; diff reader1.tmp reader1.res ; rm reader1.tmp)
+	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
 	@(reader3 > reader3.tmp ; diff reader3.tmp reader3.res ; rm reader3.tmp)
+	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
+	@(io1 > io1.tmp ; diff io1.tmp io1.res ; rm -f io1.tmp)
+	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
 
 

@@ -420,6 +420,7 @@ struct _xmlXPathCompExpr {
     xmlXPathStepOp *steps;	/* ops for computation of this expression */
     int last;			/* index of last step in expression */
     xmlChar *expr;		/* the expression being computed */
+    xmlDictPtr dict;		/* the dictionnary to use if any */
 #ifdef DEBUG_EVAL_COUNTS
     int nb;
     xmlChar *string;
@@ -480,16 +481,27 @@ xmlXPathFreeCompExpr(xmlXPathCompExprPtr comp)
 
     if (comp == NULL)
         return;
-    for (i = 0; i < comp->nbStep; i++) {
-        op = &comp->steps[i];
-        if (op->value4 != NULL) {
-            if (op->op == XPATH_OP_VALUE)
-                xmlXPathFreeObject(op->value4);
-            else
-                xmlFree(op->value4);
-        }
-        if (op->value5 != NULL)
-            xmlFree(op->value5);
+    if (comp->dict == NULL) {
+	for (i = 0; i < comp->nbStep; i++) {
+	    op = &comp->steps[i];
+	    if (op->value4 != NULL) {
+		if (op->op == XPATH_OP_VALUE)
+		    xmlXPathFreeObject(op->value4);
+		else
+		    xmlFree(op->value4);
+	    }
+	    if (op->value5 != NULL)
+		xmlFree(op->value5);
+	}
+    } else {
+	for (i = 0; i < comp->nbStep; i++) {
+	    op = &comp->steps[i];
+	    if (op->value4 != NULL) {
+		if (op->op == XPATH_OP_VALUE)
+		    xmlXPathFreeObject(op->value4);
+	    }
+	}
+        xmlDictFree(comp->dict);
     }
     if (comp->steps != NULL) {
         xmlFree(comp->steps);
@@ -546,8 +558,25 @@ xmlXPathCompExprAdd(xmlXPathCompExprPtr comp, int ch1, int ch2,
     comp->steps[comp->nbStep].value = value;
     comp->steps[comp->nbStep].value2 = value2;
     comp->steps[comp->nbStep].value3 = value3;
-    comp->steps[comp->nbStep].value4 = value4;
-    comp->steps[comp->nbStep].value5 = value5;
+    if ((comp->dict != NULL) &&
+        ((op == XPATH_OP_FUNCTION) || (op == XPATH_OP_VARIABLE) ||
+	 (op == XPATH_OP_COLLECT))) {
+        if (value4 != NULL) {
+	    comp->steps[comp->nbStep].value4 = 
+	        xmlDictLookup(comp->dict, value4, -1);
+	    xmlFree(value4);
+	} else
+	    comp->steps[comp->nbStep].value4 = NULL;
+        if (value5 != NULL) {
+	    comp->steps[comp->nbStep].value5 = 
+	        xmlDictLookup(comp->dict, value5, -1);
+	    xmlFree(value5);
+	} else
+	    comp->steps[comp->nbStep].value5 = NULL;
+    } else {
+	comp->steps[comp->nbStep].value4 = value4;
+	comp->steps[comp->nbStep].value5 = value5;
+    }
     comp->steps[comp->nbStep].cache = NULL;
     return(comp->nbStep++);
 }
@@ -3901,6 +3930,10 @@ xmlXPathNewParserContext(const xmlChar *str, xmlXPathContextPtr ctxt) {
 	xmlFree(ret->valueTab);
 	xmlFree(ret);
 	return(NULL);
+    }
+    if ((ctxt != NULL) && (ctxt->dict != NULL)) {
+        ret->comp->dict = ctxt->dict;
+	xmlDictReference(ret->comp->dict);
     }
 
     return(ret);
@@ -10880,6 +10913,56 @@ xmlXPathEvaluatePredicateResult(xmlXPathParserContextPtr ctxt,
 }
 
 /**
+ * xmlXPathCtxtCompile:
+ * @ctxt: an XPath context
+ * @str:  the XPath expression
+ *
+ * Compile an XPath expression
+ *
+ * Returns the xmlXPathCompExprPtr resulting from the compilation or NULL.
+ *         the caller has to free the object.
+ */
+xmlXPathCompExprPtr
+xmlXPathCtxtCompile(xmlXPathContextPtr ctxt, const xmlChar *str) {
+    xmlXPathParserContextPtr pctxt;
+    xmlXPathCompExprPtr comp;
+
+    xmlXPathInit();
+
+    pctxt = xmlXPathNewParserContext(str, ctxt);
+    xmlXPathCompileExpr(pctxt);
+
+    if( pctxt->error != XPATH_EXPRESSION_OK )
+    {
+        xmlXPathFreeParserContext(pctxt);
+        return (0);
+    }
+
+    if (*pctxt->cur != 0) {
+	/* 
+	 * aleksey: in some cases this line prints *second* error message
+	 * (see bug #78858) and probably this should be fixed.
+	 * However, we are not sure that all error messages are printed
+	 * out in other places. It's not critical so we leave it as-is for now
+	 */
+	xmlXPatherror(pctxt, __FILE__, __LINE__, XPATH_EXPR_ERROR);
+	comp = NULL;
+    } else {
+	comp = pctxt->comp;
+	pctxt->comp = NULL;
+    }
+    xmlXPathFreeParserContext(pctxt);
+    if (comp != NULL) {
+	comp->expr = xmlStrdup(str);
+#ifdef DEBUG_EVAL_COUNTS
+	comp->string = xmlStrdup(str);
+	comp->nb = 0;
+#endif
+    }
+    return(comp);
+}
+
+/**
  * xmlXPathCompile:
  * @str:  the XPath expression
  *
@@ -10890,42 +10973,7 @@ xmlXPathEvaluatePredicateResult(xmlXPathParserContextPtr ctxt,
  */
 xmlXPathCompExprPtr
 xmlXPathCompile(const xmlChar *str) {
-    xmlXPathParserContextPtr ctxt;
-    xmlXPathCompExprPtr comp;
-
-    xmlXPathInit();
-
-    ctxt = xmlXPathNewParserContext(str, NULL);
-    xmlXPathCompileExpr(ctxt);
-
-    if( ctxt->error != XPATH_EXPRESSION_OK )
-    {
-        xmlXPathFreeParserContext(ctxt);
-        return (0);
-    }
-
-    if (*ctxt->cur != 0) {
-	/* 
-	 * aleksey: in some cases this line prints *second* error message
-	 * (see bug #78858) and probably this should be fixed.
-	 * However, we are not sure that all error messages are printed
-	 * out in other places. It's not critical so we leave it as-is for now
-	 */
-	xmlXPatherror(ctxt, __FILE__, __LINE__, XPATH_EXPR_ERROR);
-	comp = NULL;
-    } else {
-	comp = ctxt->comp;
-	ctxt->comp = NULL;
-    }
-    xmlXPathFreeParserContext(ctxt);
-    if (comp != NULL) {
-	comp->expr = xmlStrdup(str);
-#ifdef DEBUG_EVAL_COUNTS
-	comp->string = xmlStrdup(str);
-	comp->nb = 0;
-#endif
-    }
-    return(comp);
+    return(xmlXPathCtxtCompile(NULL, str));
 }
 
 /**

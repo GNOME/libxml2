@@ -29,6 +29,8 @@ typedef xmlDict *xmlDictPtr;
  */
 XMLPUBFUN xmlDictPtr XMLCALL
 			xmlDictCreate	(void);
+XMLPUBFUN xmlDictPtr XMLCALL
+			xmlDictCreateSub(xmlDictPtr sub);
 XMLPUBFUN int XMLCALL
 			xmlDictReference(xmlDictPtr dict);
 XMLPUBFUN void XMLCALL			

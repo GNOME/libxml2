@@ -1,3 +1,26 @@
+Fri Jan 23 14:03:21 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* doc/examples/*: added io1.c an example ox xmlIO usage and io1.res
+	  test result, fixed a awful lot of memory leaks showing up in
+	  testWriter.c, changed the examples and the Makefiles to test
+	  memory leaks.
+	* xmlwriter.c: fixed a memory leak
+	* Makefile.am: run the doc/examples regression tests as part of
+	  make tests
+	* xpath.c include/libxml/xpath.h: added xmlXPathCtxtCompile() to
+	  compile an XPath expression within a context, currently the goal
+	  is to be able to reuse the XSLT stylesheet dictionnary, but this
+	  opens the door to others possible optimizations.
+	* dict.c include/libxml/dict.h: added xmlDictCreateSub() which allows
+	  to build a new dictionnary based on another read-only dictionnary.
+	  This is needed for XSLT to keep the stylesheet dictionnary read-only
+	  while being able to reuse the strings for the transformation
+	  dictionnary.
+	* xinclude.c: fixed a dictionnar reference counting problem occuring
+	  when document parsing failed.
+	* testSAX.c: adding option --repeat for timing 100times the parsing
+	* doc/* : rebuilt all the docs
+
 Thu Jan 22 14:17:05 2004  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* xmlmemory.c: make xmlReallocLoc() accept NULL pointer

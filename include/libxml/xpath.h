@@ -267,6 +267,9 @@ struct _xmlXPathContext {
     xmlStructuredErrorFunc error;       /* the callback in case of errors */
     xmlError lastError;			/* the last error */
     xmlNodePtr debugNode;		/* the source node XSLT */
+
+    /* dictionnary */
+    xmlDictPtr dict;			/* dictionnary if any */
 };
 
 /*
@@ -450,6 +453,9 @@ XMLPUBFUN int XMLCALL
  */
 XMLPUBFUN xmlXPathCompExprPtr XMLCALL 
 		    xmlXPathCompile		(const xmlChar *str);
+XMLPUBFUN xmlXPathCompExprPtr XMLCALL 
+		    xmlXPathCtxtCompile		(xmlXPathContextPtr ctxt,
+		    				 const xmlChar *str);
 XMLPUBFUN xmlXPathObjectPtr XMLCALL   
 		    xmlXPathCompiledEval	(xmlXPathCompExprPtr comp,
 						 xmlXPathContextPtr ctx);

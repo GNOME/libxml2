@@ -1396,6 +1396,7 @@
     <reference name='xmlDetectCharEncoding' href='html/libxml-encoding.html#xmlDetectCharEncoding'/>
     <reference name='xmlDict' href='html/libxml-dict.html#xmlDict'/>
     <reference name='xmlDictCreate' href='html/libxml-dict.html#xmlDictCreate'/>
+    <reference name='xmlDictCreateSub' href='html/libxml-dict.html#xmlDictCreateSub'/>
     <reference name='xmlDictFree' href='html/libxml-dict.html#xmlDictFree'/>
     <reference name='xmlDictLookup' href='html/libxml-dict.html#xmlDictLookup'/>
     <reference name='xmlDictOwns' href='html/libxml-dict.html#xmlDictOwns'/>
@@ -2648,6 +2649,7 @@
     <reference name='xmlXPathConvertNumber' href='html/libxml-xpath.html#xmlXPathConvertNumber'/>
     <reference name='xmlXPathConvertString' href='html/libxml-xpath.html#xmlXPathConvertString'/>
     <reference name='xmlXPathCountFunction' href='html/libxml-xpathInternals.html#xmlXPathCountFunction'/>
+    <reference name='xmlXPathCtxtCompile' href='html/libxml-xpath.html#xmlXPathCtxtCompile'/>
     <reference name='xmlXPathDebugDumpCompExpr' href='html/libxml-xpathInternals.html#xmlXPathDebugDumpCompExpr'/>
     <reference name='xmlXPathDebugDumpObject' href='html/libxml-xpathInternals.html#xmlXPathDebugDumpObject'/>
     <reference name='xmlXPathDifference' href='html/libxml-xpathInternals.html#xmlXPathDifference'/>
@@ -4288,6 +4290,7 @@
       <ref name='xmlDetectCharEncoding'/>
       <ref name='xmlDict'/>
       <ref name='xmlDictCreate'/>
+      <ref name='xmlDictCreateSub'/>
       <ref name='xmlDictFree'/>
       <ref name='xmlDictLookup'/>
       <ref name='xmlDictOwns'/>
@@ -5540,6 +5543,7 @@
       <ref name='xmlXPathConvertNumber'/>
       <ref name='xmlXPathConvertString'/>
       <ref name='xmlXPathCountFunction'/>
+      <ref name='xmlXPathCtxtCompile'/>
       <ref name='xmlXPathDebugDumpCompExpr'/>
       <ref name='xmlXPathDebugDumpObject'/>
       <ref name='xmlXPathDifference'/>
@@ -6026,6 +6030,7 @@
     </type>
     <type name='xmlDictPtr'>
       <ref name='xmlDictCreate'/>
+      <ref name='xmlDictCreateSub'/>
     </type>
     <type name='xmlDocPtr'>
       <ref name='xmlCopyDoc'/>
@@ -6347,6 +6352,7 @@
     </type>
     <type name='xmlXPathCompExprPtr'>
       <ref name='xmlXPathCompile'/>
+      <ref name='xmlXPathCtxtCompile'/>
     </type>
     <type name='xmlXPathContextPtr'>
       <ref name='xmlXPathNewContext'/>
@@ -6869,6 +6875,7 @@
       <ref name='xmlXPathCastStringToBoolean'/>
       <ref name='xmlXPathCastStringToNumber'/>
       <ref name='xmlXPathCompile'/>
+      <ref name='xmlXPathCtxtCompile'/>
       <ref name='xmlXPathEval'/>
       <ref name='xmlXPathEvalExpression'/>
       <ref name='xmlXPathFuncLookupFunc'/>
@@ -7525,6 +7532,7 @@
       <ref name='xmlPatterncompile'/>
     </type>
     <type name='xmlDictPtr'>
+      <ref name='xmlDictCreateSub'/>
       <ref name='xmlDictFree'/>
       <ref name='xmlDictLookup'/>
       <ref name='xmlDictOwns'/>
@@ -8653,6 +8661,7 @@
     </type>
     <type name='xmlXPathContextPtr'>
       <ref name='xmlXPathCompiledEval'/>
+      <ref name='xmlXPathCtxtCompile'/>
       <ref name='xmlXPathEval'/>
       <ref name='xmlXPathEvalExpression'/>
       <ref name='xmlXPathEvalPredicate'/>
@@ -9118,6 +9127,7 @@
     <file name='dict'>
       <ref name='xmlDict'/>
       <ref name='xmlDictCreate'/>
+      <ref name='xmlDictCreateSub'/>
       <ref name='xmlDictFree'/>
       <ref name='xmlDictLookup'/>
       <ref name='xmlDictOwns'/>
@@ -11497,6 +11507,7 @@
       <ref name='xmlXPathConvertFunc'/>
       <ref name='xmlXPathConvertNumber'/>
       <ref name='xmlXPathConvertString'/>
+      <ref name='xmlXPathCtxtCompile'/>
       <ref name='xmlXPathError'/>
       <ref name='xmlXPathEval'/>
       <ref name='xmlXPathEvalExpression'/>
@@ -18245,10 +18256,14 @@
         <word name='dictionary'>
           <ref name='_xmlParserCtxt'/>
           <ref name='xmlDictCreate'/>
+          <ref name='xmlDictCreateSub'/>
           <ref name='xmlDictReference'/>
         </word>
         <word name='dictionnary'>
           <ref name='_xmlParserCtxt'/>
+          <ref name='_xmlXPathContext'/>
+          <ref name='xmlDictCreate'/>
+          <ref name='xmlDictCreateSub'/>
           <ref name='xmlDictFree'/>
           <ref name='xmlDictLookup'/>
           <ref name='xmlDictOwns'/>
@@ -20347,6 +20362,9 @@
           <ref name='xmlNodeGetSpacePreserve'/>
           <ref name='xmlXPathNextAttribute'/>
         </word>
+        <word name='inheriting'>
+          <ref name='xmlDictCreateSub'/>
+        </word>
         <word name='inherits'>
           <ref name='xmlNewChild'/>
           <ref name='xmlNewTextChild'/>
@@ -21916,6 +21934,7 @@
         <word name='occured'>
           <ref name='xmlCtxtGetLastError'/>
           <ref name='xmlDictCreate'/>
+          <ref name='xmlDictCreateSub'/>
           <ref name='xmlGetLastError'/>
           <ref name='xmlHashCreate'/>
           <ref name='xmlListRemoveFirst'/>
@@ -23072,6 +23091,9 @@
           <ref name='xmlRegExecPushString'/>
           <ref name='xmlRegExecPushString2'/>
         </word>
+        <word name='read-only'>
+          <ref name='xmlDictCreateSub'/>
+        </word>
         <word name='readable'>
           <ref name='xmlStrEqual'/>
         </word>
@@ -23910,6 +23932,9 @@
           <ref name='xmlStrchr'/>
           <ref name='xmlStrstr'/>
         </word>
+        <word name='searched'>
+          <ref name='xmlDictCreateSub'/>
+        </word>
         <word name='section'>
           <ref name='HTML_PRESERVE_NODE'/>
           <ref name='xmlBuildURI'/>
@@ -24608,6 +24633,7 @@
         </word>
         <word name='strings'>
           <ref name='_xmlParserCtxt'/>
+          <ref name='xmlDictCreateSub'/>
           <ref name='xmlGetFeaturesList'/>
           <ref name='xmlPatterncompile'/>
           <ref name='xmlRegexpCompile'/>

@@ -379,6 +379,8 @@ xmlFreeTextWriter(xmlTextWriterPtr writer)
     if (writer->ctxt != NULL)
         xmlFreeParserCtxt(writer->ctxt);
 
+    if (writer->ichar != NULL)
+        xmlFree(writer->ichar);
     xmlFree(writer);
 }
 
@@ -4035,6 +4037,8 @@ xmlTextWriterSetIndentString (xmlTextWriterPtr writer, xmlChar *str)
   if (!str)
     return -1;
 
+  if (writer->ichar != NULL)
+      xmlFree(writer->ichar);
   writer->ichar = xmlStrdup (str);
   
   if (!writer->ichar)

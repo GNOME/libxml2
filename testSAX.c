@@ -49,6 +49,7 @@ static int noent = 0;
 static int quiet = 0;
 static int nonull = 0;
 static int sax2 = 0;
+static int repeat = 0;
 static int callbacks = 0;
 
 xmlSAXHandler emptySAXHandlerStruct = {
@@ -913,6 +914,17 @@ parseAndPrintFile(char *filename) {
 	     * Debug callback
 	     */
 	    callbacks = 0;
+	    if (repeat) {
+	        int i;
+		for (i = 0;i < 99;i++) {
+		    if (sax2)
+			res = xmlSAXUserParseFile(debugSAX2Handler, NULL,
+			                          filename);
+		    else
+			res = xmlSAXUserParseFile(debugSAXHandler, NULL,
+			                          filename);
+		}
+	    }
 	    if (sax2)
 	        res = xmlSAXUserParseFile(debugSAX2Handler, NULL, filename);
 	    else
@@ -956,7 +968,11 @@ int main(int argc, char **argv) {
 	else if ((!strcmp(argv[i], "-speed")) ||
 	         (!strcmp(argv[i], "--speed")))
 	    speed++;
-	else if ((!strcmp(argv[i], "-noent")) ||
+	else if ((!strcmp(argv[i], "-repeat")) ||
+	         (!strcmp(argv[i], "--repeat"))) {
+	    repeat++;
+	    quiet++;
+	} else if ((!strcmp(argv[i], "-noent")) ||
 	         (!strcmp(argv[i], "--noent")))
 	    noent++;
 	else if ((!strcmp(argv[i], "-quiet")) ||

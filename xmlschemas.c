@@ -138,6 +138,15 @@ static const xmlChar *xmlSchemaElemModelGrRef = (const xmlChar *)
      (item->contentType == XML_SCHEMA_CONTENT_EMPTY) ||  \
      (item->contentType == XML_SCHEMA_CONTENT_ELEMENTS))
 
+#define HAS_SIMPLE_CONTENT(item)			 \
+    ((item->contentType == XML_SCHEMA_CONTENT_SIMPLE) ||  \
+     (item->contentType == XML_SCHEMA_CONTENT_BASIC))
+
+#define HAS_MIXED_CONTENT(item)	(item->contentType == XML_SCHEMA_CONTENT_MIXED)
+
+#define IS_PARTICLE_EMPTIABLE(item) \
+    (xmlSchemaIsParticleEmptiable((xmlSchemaParticlePtr) item->subtypes))
+
 #define GET_NODE(item) xmlSchemaGetComponentNode((xmlSchemaBasicItemPtr) item)
 
 #define IS_MODEL_GROUP(item)                     \
@@ -894,7 +903,7 @@ xmlSchemaVErrExt(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr node, int error,
     *
     * error += XML_SCHEMAV_NOROOT - XML_SCHEMAS_ERR_NOROOT;
     */
-    __xmlRaiseError(schannel, channel, data, ctxt, node, XML_FROM_SCHEMASP,
+    __xmlRaiseError(schannel, channel, data, ctxt, node, XML_FROM_SCHEMASV,
                     error, XML_ERR_ERROR, NULL, 0, NULL, NULL, NULL, 0, 0, 
 		    msg, str1, str2, str3, str4, str5);
 }
@@ -1695,18 +1704,18 @@ xmlSchemaVFacetErr(xmlSchemaValidCtxtPtr ctxt,
 	    xmlSchemaVErr(ctxt, node, error, (const char *) msg, value,
 		facet->value);
 	} else if (facetType == XML_SCHEMA_FACET_TOTALDIGITS) {
-		msg = xmlStrcat(msg, BAD_CAST "The value '%s' has more "
+	    msg = xmlStrcat(msg, BAD_CAST "The value '%s' has more "
 		"digits than are allowed ('%s').\n");
-		xmlSchemaVErr(ctxt, node, error, (const char*) msg, value,
+	    xmlSchemaVErr(ctxt, node, error, (const char*) msg, value,
 		facet->value);
 	} else if (facetType == XML_SCHEMA_FACET_FRACTIONDIGITS) {
-		msg = xmlStrcat(msg, BAD_CAST "The value '%s' has more fractional "
+	    msg = xmlStrcat(msg, BAD_CAST "The value '%s' has more fractional "
 		"digits than are allowed ('%s').\n");
-		xmlSchemaVErr(ctxt, node, error, (const char*) msg, value,
+	    xmlSchemaVErr(ctxt, node, error, (const char*) msg, value,
 		facet->value);
 	} else if (node->type == XML_ATTRIBUTE_NODE) {		
 	    msg = xmlStrcat(msg, BAD_CAST "The value '%s' is not facet-valid.\n");
-	    xmlSchemaVErr(ctxt, node, error, (const char *) msg, value, NULL);
+	    xmlSchemaVErr(ctxt, node, error, (const char *) msg, value, NULL);	
 	} else {	    
 	    msg = xmlStrcat(msg, BAD_CAST "The value is not facet-valid.\n");
 	    xmlSchemaVErr(ctxt, node, error, (const char *) msg, NULL, NULL);
@@ -2558,12 +2567,14 @@ xmlSchemaStreamVCustomErr(xmlSchemaValidCtxtPtr vctxt,
  * Reports a validation error.
  */
 static void
-xmlSchemaVCustomErr(xmlSchemaValidCtxtPtr ctxt,
-		    xmlParserErrors error,			    
-		    xmlNodePtr node,
-		    xmlSchemaTypePtr type,
-		    const char *message,
-		    const xmlChar *str1)
+xmlSchemaVCustomErrExt(xmlSchemaValidCtxtPtr ctxt,
+		       xmlParserErrors error,			    
+		       xmlNodePtr node,
+		       xmlSchemaTypePtr type,
+		       const char *message,
+		       const xmlChar *str1,
+		       const xmlChar *str2,
+		       const xmlChar *str3)
 {
     xmlChar *msg = NULL, *str = NULL;
     
@@ -2579,7 +2590,8 @@ xmlSchemaVCustomErr(xmlSchemaValidCtxtPtr ctxt,
 	xmlSchemaFormatItemForReport(&msg, NULL, NULL, node, 0);
 	if ((type != NULL) && (xmlSchemaIsGlobalItem(type))) {
 	    msg = xmlStrcat(msg, BAD_CAST " [");
-	    msg = xmlStrcat(msg, xmlSchemaFormatItemForReport(&str, NULL, type, NULL, 0));
+	    msg = xmlStrcat(msg, xmlSchemaFormatItemForReport(&str, NULL,
+		type, NULL, 0));
 	    msg = xmlStrcat(msg, BAD_CAST "]");
 	}
 	msg = xmlStrcat(msg, BAD_CAST ": ");
@@ -2587,9 +2599,32 @@ xmlSchemaVCustomErr(xmlSchemaValidCtxtPtr ctxt,
 	msg = xmlStrdup((const xmlChar *) "");
     msg = xmlStrcat(msg, (const xmlChar *) message);
     msg = xmlStrcat(msg, BAD_CAST ".\n");   
-    xmlSchemaVErr(ctxt, node, error, (const char *) msg, str1, NULL);
+    xmlSchemaVErrExt(ctxt, node, error, (const char *) msg, str1, str2,
+	str3, NULL, NULL);
     FREE_AND_NULL(msg)
     FREE_AND_NULL(str)
+}
+
+/**
+ * xmlSchemaVCustomErr:
+ * @ctxt: the schema validation context
+ * @error: the error code
+ * @node: the validated node
+ * @type: the schema type of the validated node
+ * @message: the error message
+ * @str1: the optional param for the message
+ *
+ * Reports a validation error.
+ */
+static void
+xmlSchemaVCustomErr(xmlSchemaValidCtxtPtr ctxt,
+		    xmlParserErrors error,			    
+		    xmlNodePtr node,
+		    xmlSchemaTypePtr type,
+		    const char *message,
+		    const xmlChar *str1)
+{
+    xmlSchemaVCustomErrExt(ctxt, error, node, type, message, str1, NULL, NULL);
 }
 
 /**
@@ -3736,8 +3771,8 @@ xmlSchemaGetNodeContent(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node)
     const xmlChar *ret;
 
     val = xmlNodeGetContent(node);
-    if (val == NULL)
-        return(NULL);
+    if (val == NULL)	
+	val = xmlStrdup((xmlChar *)"");
     ret = xmlDictLookup(ctxt->dict, val, -1);
     xmlFree(val);
     return(ret);    
@@ -5863,7 +5898,7 @@ xmlSchemaParseWildcardNs(xmlSchemaParserCtxtPtr ctxt,
      */
     attr = xmlSchemaGetPropNode(node, "namespace");
     ns = xmlSchemaGetNodeContent(ctxt, (xmlNodePtr) attr);
-    if ((ns == NULL) || (xmlStrEqual(ns, BAD_CAST "##any")))
+    if ((attr == NULL) || (xmlStrEqual(ns, BAD_CAST "##any")))
 	wildc->any = 1;
     else if (xmlStrEqual(ns, BAD_CAST "##other")) {
 	wildc->negNsSet = xmlSchemaNewWildcardNsConstraint(ctxt);
@@ -6576,7 +6611,9 @@ xmlSchemaParseAttributeGroup(xmlSchemaParserCtxtPtr ctxt,
 		NULL, NULL, node, "name", NULL);	    
 	    return (NULL);
 	}
-	name = xmlSchemaGetNodeContent(ctxt, (xmlNodePtr) nameAttr);
+	/* REDUNDANT: name = xmlSchemaGetNodeContent(ctxt, 
+	* (xmlNodePtr) nameAttr);
+	*/
 	/*
 	* The name is crucial, exit if invalid. 
 	*/
@@ -6729,8 +6766,10 @@ xmlSchemaPValAttrBlockFinal(const xmlChar *value,
     /*
     * TODO: This does not check for dublicate entries.
     */
-    if (value == NULL)
-	return (1);
+    if ((flags == NULL) || (value == NULL))
+	return (-1);
+    if (value[0] == 0)
+	return (0);
     if (xmlStrEqual(value, BAD_CAST "#all")) {
 	if (flagAll != -1)
 	    *flags |= flagAll;
@@ -7563,7 +7602,15 @@ declaration_part:
 	*/
 	attr = xmlSchemaGetPropNode(node, "block");	
 	if (attr == NULL) {
-	    decl->flags |= XML_SCHEMAS_ELEM_BLOCK_ABSENT;
+	    /*
+	    * Apply default "block" values.
+	    */
+	    if (schema->flags & XML_SCHEMAS_BLOCK_DEFAULT_RESTRICTION)
+		decl->flags |= XML_SCHEMAS_ELEM_BLOCK_RESTRICTION;
+	    if (schema->flags & XML_SCHEMAS_BLOCK_DEFAULT_EXTENSION)
+		decl->flags |= XML_SCHEMAS_ELEM_BLOCK_EXTENSION;
+	    if (schema->flags & XML_SCHEMAS_BLOCK_DEFAULT_SUBSTITUTION)
+		decl->flags |= XML_SCHEMAS_ELEM_BLOCK_SUBSTITUTION;
 	} else {
 	    attrValue = xmlSchemaGetNodeContent(ctxt, (xmlNodePtr) attr);	    
 	    if (xmlSchemaPValAttrBlockFinal(attrValue, &(decl->flags), 
@@ -10265,7 +10312,6 @@ xmlSchemaParseComplexType(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	* Set defaults.
 	*/
 	type->flags |= XML_SCHEMAS_TYPE_FINAL_DEFAULT;
-	type->flags |= XML_SCHEMAS_TYPE_BLOCK_DEFAULT;
     }
     type->targetNamespace = schema->targetNamespace;
     /*
@@ -10354,6 +10400,15 @@ xmlSchemaParseComplexType(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 		&des, type, attr);	
 	}
 	attr = attr->next;
+    }
+    if (xmlSchemaGetPropNode(node, "block") == NULL) {
+	/*
+	* Apply default "block" values.
+	*/
+	if (schema->flags & XML_SCHEMAS_BLOCK_DEFAULT_RESTRICTION)
+	    type->flags |= XML_SCHEMAS_TYPE_BLOCK_RESTRICTION;
+	if (schema->flags & XML_SCHEMAS_BLOCK_DEFAULT_EXTENSION)
+	    type->flags |= XML_SCHEMAS_TYPE_BLOCK_EXTENSION;
     }
     /*
     * And now for the children...
@@ -12803,14 +12858,15 @@ xmlSchemaTypeFinalContains(xmlSchemaPtr schema, xmlSchemaTypePtr type, int final
 	    case XML_SCHEMAS_TYPE_FINAL_UNION:
 		tfinal = XML_SCHEMAS_FINAL_DEFAULT_UNION;
 		break;
+	    default:
+		return (-1);
 	}
 	tflags = schema->flags;
     }
     if (tflags & tfinal) 
 	return (1);
     else
-	return (0);
-    
+	return (0);    
 }
 
 /**
@@ -12927,6 +12983,9 @@ xmlSchemaIsParticleEmptiable(xmlSchemaParticlePtr particle)
  * @type:  the derived simple type definition
  * @baseType:  the base type definition
  *
+ * Schema Component Constraint: 
+ * Type Derivation OK (Simple) (cos-st-derived-OK)
+ *
  * Checks wheter @type can be validly 
  * derived from @baseType.
  *
@@ -12937,11 +12996,8 @@ xmlSchemaCheckCOSSTDerivedOK(xmlSchemaPtr schema,
 				     xmlSchemaTypePtr type,
 				     xmlSchemaTypePtr baseType,
 				     int subset)
-{   
+{       
     /*
-    * Schema Component Constraint: Type Derivation OK (Simple)
-    *
-    *
     * 1 They are the same type definition.
     * TODO: The identy check might have to be more complex than this.
     */
@@ -13181,15 +13237,11 @@ xmlSchemaCheckSTPropsCorrect(xmlSchemaParserCtxtPtr ctxt,
  * @ctxt:  the schema parser context
  * @type:  the simple type definition
  *
- * Checks if the given @type (simpleType) is derived 
- * validly by restriction.
+ * Schema Component Constraint:
+ * Derivation Valid (Restriction, Simple) (cos-st-restricts)
+
+ * Checks if the given @type (simpleType) is derived validly by restriction.
  * STATUS:
- *   missing:
- *     (3.3.2.5) facet derivation
- *     (1.3.2)   facet derivation
- *     (2.3.2.5)
- *     (3.3.2.5) facet derivation
- *
  *
  * Returns -1 on internal errors, 0 if the type is validly derived, 
  * a positive error code otherwise.
@@ -13271,7 +13323,13 @@ xmlSchemaCheckCOSSTRestricts(xmlSchemaParserCtxtPtr ctxt,
 		return (XML_SCHEMAP_COS_ST_RESTRICTS_1_3_1);	    
 	}
 	/*
-	* TODO: 1.3.2 (facet derivation)
+	* SPEC (1.3.2) "If there is a facet of the same kind in the {facets}
+	* of the {base type definition} (call this BF),then the DF's {value}
+	* must be a valid restriction of BF's {value} as defined in
+	* [XML Schemas: Datatypes]."
+	*
+	* NOTE (1.3.2) Facet derivation constraints are currently handled in 
+	* xmlSchemaDeriveAndValidateFacets()
 	*/
     } else if (type->flags & XML_SCHEMAS_TYPE_VARIETY_LIST) {
 	xmlSchemaTypePtr itemType = NULL;
@@ -13471,14 +13529,12 @@ xmlSchemaCheckCOSSTRestricts(xmlSchemaParserCtxtPtr ctxt,
 		if (ok == 0)
 		    return (XML_SCHEMAP_COS_ST_RESTRICTS_2_3_2_4);
 		/*
-		* TODO: 2.3.2.5 For each facet in the {facets} (call this DF), if there
-		* is a facet of the same kind in the {facets} of the {base type 
-		* definition} (call this BF),then the DF's {value} must be a valid 
-		* restriction of BF's {value} as defined in [XML Schemas: Datatypes].
+		* SPEC (2.3.2.5) (same as 1.3.2)
+		*
+		* NOTE (2.3.2.5) This is currently done in 
+		* xmlSchemaDeriveAndValidateFacets()
 		*/
 	    }	    
-	    
-
 	}
     } else if (type->flags & XML_SCHEMAS_TYPE_VARIETY_UNION) {
 	/*
@@ -13655,7 +13711,10 @@ xmlSchemaCheckCOSSTRestricts(xmlSchemaParserCtxtPtr ctxt,
 		    
 	    }
 	    /*
-	    * TODO: 3.3.2.5 (facet derivation)
+	    * SPEC (3.3.2.5) (same as 1.3.2)
+	    *
+	    * NOTE (3.3.2.5) This is currently done in 
+	    * xmlSchemaDeriveAndValidateFacets()
 	    */
 	}
     }
@@ -13886,35 +13945,24 @@ xmlSchemaCheckCOSValidDefault(xmlSchemaParserCtxtPtr pctxt,
 	/*
 	* Complex type.
 	*
-	* 2.1 its {content type} must be a simple type definition or mixed.
+	* SPEC (2.1) "its {content type} must be a simple type definition
+	* or mixed."
+	* SPEC (2.2.2) "If the {content type} is mixed, then the {content
+	* type}'s particle must be ·emptiable· as defined by 
+	* Particle Emptiable (§3.9.6)."
 	*/
-	/* 
-	* TODO: Adjust this when the content type will be computed 
-	* correctly. 
-	*/
-	if ((type->contentType != XML_SCHEMA_CONTENT_SIMPLE) &&
-	    (type->contentType != XML_SCHEMA_CONTENT_BASIC) &&
-	    (type->contentType != XML_SCHEMA_CONTENT_MIXED)) {
+	if ((! HAS_SIMPLE_CONTENT(type)) &&
+	    ((! HAS_MIXED_CONTENT(type)) || (! IS_PARTICLE_EMPTIABLE(type)))) {
+	    /* NOTE that this covers (2.2.2) as well. */
 	    xmlSchemaPSimpleTypeErr(pctxt, 
 		XML_SCHEMAP_COS_VALID_DEFAULT_2_1,
 		NULL, NULL, node,
 		type, NULL, NULL,
-		"If the type of a constraint value is complex, its content "
-		"type must be mixed or a simple type",
+		"For a string to be a valid default, the type definition "
+		"must be a simple type or a complex type with mixed content "
+		"and a particle emptiable",
 		NULL, NULL);
 	    return(XML_SCHEMAP_COS_VALID_DEFAULT_2_1);
-	}
-	if (type->contentType == XML_SCHEMA_CONTENT_MIXED) {
-	    /*
-	    * 2.2.2 If the {content type} is mixed, then the {content type}'s 
-	    * particle must be ·emptiable· as defined by Particle Emptiable 
-	    * (§3.9.6).
-	    */
-	    
-	    /*
-	    * URGENT TODO: Implement this.
-	    */
-	    return (0);
 	}
     }	
     /*
@@ -13927,10 +13975,18 @@ xmlSchemaCheckCOSValidDefault(xmlSchemaParserCtxtPtr pctxt,
     * 2.2.1 If the {content type} is a simple type definition, then the 
     * string must be ·valid· with respect to that simple type definition 
     * as defined by String Valid (§3.14.4).
-    */    
+    */  
     vctxt->node = node;
     vctxt->cur = NULL;
-    ret = xmlSchemaValidateSimpleTypeValue(vctxt, type, value, 1, 1, 1, 0);
+    if (IS_SIMPLE_TYPE(type))
+	ret = xmlSchemaValidateSimpleTypeValue(vctxt, type, value,
+	    1, 1, 1, 0);
+    else if (HAS_SIMPLE_CONTENT(type))
+	ret = xmlSchemaValidateSimpleTypeValue(vctxt, type->contentTypeDef,
+	    value, 1, 1, 1, 0);
+    else
+	return (ret);
+
     /* ret = xmlSchemaCheckCVCSimpleType(vctxt, elemDecl->value, typeDef, 0); */   
     if (ret < 0) {
 	xmlSchemaPErr(pctxt, node,
@@ -14000,6 +14056,119 @@ xmlSchemaCheckCTPropsCorrect(xmlSchemaParserCtxtPtr pctxt,
     * NOTE (4) and (5) are done in xmlSchemaBuildAttributeValidation().
     */
     return (0);
+}
+
+static int
+xmlSchemaAreEqualTypes(xmlSchemaTypePtr typeA,
+		       xmlSchemaTypePtr typeB)
+{
+    /*
+    * TODO: This should implement component-identity
+    * in the future.
+    */
+    if ((typeA == NULL) || (typeB == NULL))
+	return (0);
+    return (typeA == typeB);
+}
+
+/**
+ * xmlSchemaCheckCOSCTExtends:
+ * @ctxt:  the schema parser context
+ * @derivedType:  the to-be derived complex type definition
+ * @baseType:  the base complex type definition
+ * @subset: the given subset
+ *
+ * Schema Component Constraint: 
+ * Type Derivation OK (Complex) (cos-ct-derived-ok)
+ *
+ * STATUS: completed
+ *
+ * Returns 0 if the constraints are satisfied, or 1
+ * if not.
+ */
+static int
+xmlSchemaCheckCOSCTDerivedOK(xmlSchemaPtr schema,
+			     xmlSchemaTypePtr type,
+			     xmlSchemaTypePtr baseType,
+			     int set)
+{
+    int equal = xmlSchemaAreEqualTypes(type, baseType);
+    /* TODO: Error codes. */
+    /*
+    * SPEC "For a complex type definition (call it D, for derived)
+    * to be validly derived from a type definition (call this
+    * B, for base) given a subset of {extension, restriction}
+    * all of the following must be true:"
+    */    
+    if (! equal) {
+	/*
+	* SPEC (1) "If B and D are not the same type definition, then the
+	* {derivation method} of D must not be in the subset."
+	*/
+	if (((set & XML_SCHEMAS_TYPE_BLOCK_EXTENSION) &&
+	    (type->flags & XML_SCHEMAS_TYPE_DERIVATION_METHOD_EXTENSION)) ||
+	    ((set & XML_SCHEMAS_TYPE_BLOCK_RESTRICTION) &&
+	    (type->flags & XML_SCHEMAS_TYPE_DERIVATION_METHOD_RESTRICTION)))
+	    return (0);
+    } else {
+	/*
+	* SPEC (2.1) "B and D must be the same type definition."
+	*/
+	return (1);
+    }
+    /*
+    * SPEC (2.2) "B must be D's {base type definition}."
+    */
+    if (type->baseType == baseType)
+	return (1);
+    /*
+    * SPEC (2.3.1) "D's {base type definition} must not be the ·ur-type
+    * definition·."
+    */
+    if (IS_ANYTYPE(type->baseType))
+	return (0);
+    
+    if (IS_COMPLEX_TYPE(type->baseType)) {
+	/*
+	* SPEC (2.3.2.1) "If D's {base type definition} is complex, then it
+	* must be validly derived from B given the subset as defined by this
+	* constraint."
+	*/
+	return (xmlSchemaCheckCOSCTDerivedOK(schema, type->baseType,
+	    baseType, set));
+    } else {
+	/*
+	* SPEC (2.3.2.2) "If D's {base type definition} is simple, then it
+	* must be validly derived from B given the subset as defined in Type
+	* Derivation OK (Simple) (§3.14.6).
+	*/
+	return (xmlSchemaCheckCOSSTDerivedOK(schema, type->baseType, baseType,
+	    set));
+    }    
+}
+
+/**
+ * xmlSchemaCheckCOSDerivedOK:
+ * @type:  the derived simple type definition
+ * @baseType:  the base type definition
+ *
+ * Calls:
+ * Type Derivation OK (Simple) AND Type Derivation OK (Complex)
+ * 
+ * Checks wheter @type can be validly derived from @baseType.
+ *
+ * Returns 0 on success, an positive error code otherwise.
+ */ 
+static int
+xmlSchemaCheckCOSDerivedOK(xmlSchemaPtr schema,
+				     xmlSchemaTypePtr type,
+				     xmlSchemaTypePtr baseType,
+				     int set)
+{
+    if (IS_SIMPLE_TYPE(type))
+	return (xmlSchemaCheckCOSSTDerivedOK(schema, type, baseType, set));
+    else
+	return (xmlSchemaCheckCOSCTDerivedOK(schema, type, baseType, set));
 }
 
 /**
@@ -14307,7 +14476,7 @@ xmlSchemaCheckDerivationOKRestriction(xmlSchemaParserCtxtPtr ctxt,
 	* must be a ·valid restriction· of the particle of the {content
 	* type} of the {base type definition} as defined in Particle Valid
 	* (Restriction) (§3.9.6).
-	* URGENT TODO
+	* URGENT TODO: (5.4.2)
 	*/	
     } else {
 	xmlSchemaPCustomErr(ctxt,
@@ -14320,7 +14489,7 @@ xmlSchemaCheckDerivationOKRestriction(xmlSchemaParserCtxtPtr ctxt,
 }
 
 /**
- * xmlSchemaCheckCTPropertiesCorrect:
+ * xmlSchemaCheckCTComponent:
  * @ctxt:  the schema parser context
  * @type:  the complex type definition
  *
@@ -14371,7 +14540,7 @@ xmlSchemaCheckSRCCT(xmlSchemaParserCtxtPtr ctxt,
     * XML_SCHEMAP_SRC_CT_1 only yet.
     */
     base = type->baseType;
-    if (type->contentType != XML_SCHEMA_CONTENT_SIMPLE) {
+    if (! HAS_SIMPLE_CONTENT(type)) {
 	/*
 	* 1 If the <complexContent> alternative is chosen, the type definition
 	* ·resolved· to by the ·actual value· of the base [attribute] 
@@ -20056,7 +20225,7 @@ xmlSchemaValidateElementByDeclaration(xmlSchemaValidCtxtPtr ctxt,
 {
     xmlNodePtr elem;
     int ret = 0;
-    xmlSchemaTypePtr actualType = NULL;
+    xmlSchemaTypePtr actualType = NULL, localType = NULL, type;
     xmlAttrPtr attr;
     xmlChar *attrValue; 
     int nilled = 0, elemHasContent = -1;
@@ -20179,8 +20348,9 @@ xmlSchemaValidateElementByDeclaration(xmlSchemaValidCtxtPtr ctxt,
 	    xmlFree(attrValue);
     }
     
-
-    actualType = elemDecl->subtypes;
+    type = elemDecl->subtypes;
+    actualType = type;
+    
     /* 
     * cvc-elt (3.3.4) : 4 
     * Handle 'xsi:type'.
@@ -20228,22 +20398,61 @@ xmlSchemaValidateElementByDeclaration(xmlSchemaValidCtxtPtr ctxt,
 	    /*
 	    * cvc-elt (3.3.4) : 4.2 
 	    */
-	    actualType = xmlSchemaGetType(ctxt->schema, local, nsName);
-	    if (actualType == NULL) {	  
+	    localType = xmlSchemaGetType(ctxt->schema, local, nsName);
+	    if (localType == NULL) {	  
 		xmlChar *strA = NULL;
 		
 		xmlSchemaVCustomErr(ctxt,
 		    XML_SCHEMAV_CVC_ELT_4_2,
 		    (xmlNodePtr) attr, 
 		    xmlSchemaGetBuiltInType(XML_SCHEMAS_QNAME),
-		    "The value %s does not resolve to a type "
-		    "definition", 
-		    xmlSchemaFormatNsUriLocal(&strA, nsName, local));
+		    "The value '%s' of the xsi:type attribute does not "
+		    "resolve to a type definition",
+		    xmlSchemaFormatQName(&strA, nsName, local));
 		FREE_AND_NULL(strA);    
-	    } else {		
+	    } else {
+		int set = 0;
 		/*
-		* URGENT TODO: cvc-elt (3.3.4) : 4.3 (Type Derivation OK)
-		*/		
+		* SPEC cvc-elt (3.3.4) : (4.3) (Type Derivation OK)
+		* "The ·local type definition· must be validly
+		* derived from the {type definition} given the union of
+		* the {disallowed substitutions} and the {type definition}'s
+		* {prohibited substitutions}, as defined in 
+		* Type Derivation OK (Complex) (§3.4.6) 
+		* (if it is a complex type definition),
+		* or given {disallowed substitutions} as defined in Type 
+		* Derivation OK (Simple) (§3.14.6) (if it is a simple type 
+		* definition)."
+		*
+		* {disallowed substitutions}: the "block" on the element decl.
+		* {prohibited substitutions}: the "block" on the type def.
+		*/
+		if ((elemDecl->flags & XML_SCHEMAS_ELEM_BLOCK_EXTENSION) ||
+		    (type->flags & XML_SCHEMAS_TYPE_BLOCK_EXTENSION))
+		    set |= XML_SCHEMAS_TYPE_BLOCK_EXTENSION;
+
+		if ((elemDecl->flags & XML_SCHEMAS_ELEM_BLOCK_RESTRICTION) ||
+		    (type->flags & XML_SCHEMAS_TYPE_BLOCK_RESTRICTION))
+		    set |= XML_SCHEMAS_TYPE_BLOCK_RESTRICTION;
+
+		if (! xmlSchemaCheckCOSDerivedOK(ctxt->schema, localType,
+		    type, set)) {
+		    xmlChar *strA = NULL, *strB = NULL;
+
+		    xmlSchemaVCustomErrExt(ctxt, 
+			/* TODO: Error code */
+		    XML_SCHEMAV_CVC_ELT_4_2, elem, localType,
+		    "The xsi:type definition '%s' is not validly derived from "
+		    "the type definition '%s'",
+		    xmlSchemaFormatQName(&strA,
+			localType->targetNamespace,
+			localType->name),
+		    xmlSchemaFormatQName(&strB,
+			elemDecl->subtypes->targetNamespace, 
+			elemDecl->subtypes->name), NULL);
+		    FREE_AND_NULL(strA)
+		    FREE_AND_NULL(strB)
+		}		
 	    }
 	}
 	FREE_AND_NULL(attrValue)
@@ -20253,6 +20462,8 @@ xmlSchemaValidateElementByDeclaration(xmlSchemaValidCtxtPtr ctxt,
     /* TODO: Change the handling of missing types according to
     * the spec.
     */
+    if (localType != NULL)
+	actualType = localType;
     if (actualType == NULL) {
     	xmlSchemaVCustomErr(ctxt, 
     	    XML_SCHEMAV_CVC_TYPE_1,

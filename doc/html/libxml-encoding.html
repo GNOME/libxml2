@@ -122,7 +122,7 @@ NAME="LIBXML-ENCODING"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN20570"
+NAME="AEN20802"
 ></A
 ><H2
 >Name</H2
@@ -130,7 +130,7 @@ NAME="AEN20570"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN20573"
+NAME="AEN20805"
 ></A
 ><H2
 >Synopsis</H2
@@ -315,9 +315,65 @@ HREF="libxml-encoding.html#XMLCHECKUTF8"
 >xmlCheckUTF8</A
 >                    (unsigned char *utf);
 int         <A
+HREF="libxml-encoding.html#XMLUTF8STRSIZE"
+>xmlUTF8Strsize</A
+>                  (const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *utf,
+                                             int len);
+<A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    <A
+HREF="libxml-encoding.html#XMLUTF8STRNDUP"
+>xmlUTF8Strndup</A
+>                  (const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *utf,
+                                             int len);
+<A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    <A
+HREF="libxml-encoding.html#XMLUTF8STRPOS"
+>xmlUTF8Strpos</A
+>                   (const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *utf,
+                                             int pos);
+int         <A
+HREF="libxml-encoding.html#XMLUTF8STRLOC"
+>xmlUTF8Strloc</A
+>                   (const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *utf,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *utfchar);
+<A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    <A
+HREF="libxml-encoding.html#XMLUTF8STRSUB"
+>xmlUTF8Strsub</A
+>                   (const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *utf,
+                                             int start,
+                                             int len);
+int         <A
 HREF="libxml-encoding.html#XMLUTF8STRLEN"
 >xmlUTF8Strlen</A
->                   (unsigned char *utf);</PRE
+>                   (const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *utf);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -325,7 +381,7 @@ HREF="libxml-encoding.html#XMLUTF8STRLEN"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN20618"
+NAME="AEN20865"
 ></A
 ><H2
 >Description</H2
@@ -335,14 +391,14 @@ NAME="AEN20618"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN20621"
+NAME="AEN20868"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20623"
+NAME="AEN20870"
 ></A
 ><H3
 ><A
@@ -408,7 +464,7 @@ support needed.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20630"
+NAME="AEN20877"
 ></A
 ><H3
 ><A
@@ -439,7 +495,7 @@ it to an UTF-8 block of chars out.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20636"
+NAME="AEN20883"
 ></A
 ><P
 ></P
@@ -567,7 +623,7 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20665"
+NAME="AEN20912"
 ></A
 ><H3
 ><A
@@ -600,7 +656,7 @@ in = NULL. If stateful this should also initialize the encoder state</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20671"
+NAME="AEN20918"
 ></A
 ><P
 ></P
@@ -728,7 +784,7 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20700"
+NAME="AEN20947"
 ></A
 ><H3
 ><A
@@ -762,7 +818,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20705"
+NAME="AEN20952"
 ></A
 ><H3
 ><A
@@ -788,7 +844,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20710"
+NAME="AEN20957"
 ></A
 ><H3
 ><A
@@ -819,7 +875,7 @@ in normal processing.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20716"
+NAME="AEN20963"
 ></A
 ><H3
 ><A
@@ -848,7 +904,7 @@ unregisters all the encoding handlers and the aliases.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20722"
+NAME="AEN20969"
 ></A
 ><H3
 ><A
@@ -878,7 +934,7 @@ HREF="libxml-encoding.html#XMLCHARENCODINGHANDLERPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20729"
+NAME="AEN20976"
 ></A
 ><P
 ></P
@@ -916,7 +972,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20738"
+NAME="AEN20985"
 ></A
 ><H3
 ><A
@@ -950,7 +1006,7 @@ HREF="libxml-encoding.html#XMLCHARENCODING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20746"
+NAME="AEN20993"
 ></A
 ><P
 ></P
@@ -1003,7 +1059,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20759"
+NAME="AEN21006"
 ></A
 ><H3
 ><A
@@ -1032,7 +1088,7 @@ HREF="libxml-encoding.html#XMLCHARENCODINGHANDLERPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20765"
+NAME="AEN21012"
 ></A
 ><P
 ></P
@@ -1085,7 +1141,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20778"
+NAME="AEN21025"
 ></A
 ><H3
 ><A
@@ -1124,7 +1180,7 @@ will be overwritten.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20786"
+NAME="AEN21033"
 ></A
 ><P
 ></P
@@ -1194,7 +1250,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20803"
+NAME="AEN21050"
 ></A
 ><H3
 ><A
@@ -1226,7 +1282,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20810"
+NAME="AEN21057"
 ></A
 ><P
 ></P
@@ -1279,7 +1335,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20823"
+NAME="AEN21070"
 ></A
 ><H3
 ><A
@@ -1306,7 +1362,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20829"
+NAME="AEN21076"
 ></A
 ><P
 ></P
@@ -1359,7 +1415,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20842"
+NAME="AEN21089"
 ></A
 ><H3
 ><A
@@ -1387,7 +1443,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20848"
+NAME="AEN21095"
 ></A
 ><H3
 ><A
@@ -1419,7 +1475,7 @@ that the comparison is case insensitive accordingly to the section
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20855"
+NAME="AEN21102"
 ></A
 ><P
 ></P
@@ -1473,7 +1529,7 @@ if not recognized.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20868"
+NAME="AEN21115"
 ></A
 ><H3
 ><A
@@ -1508,7 +1564,7 @@ Section 4.3.3  Character Encoding in Entities</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20876"
+NAME="AEN21123"
 ></A
 ><P
 ></P
@@ -1561,7 +1617,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20889"
+NAME="AEN21136"
 ></A
 ><H3
 ><A
@@ -1593,7 +1649,7 @@ accordingly of the non-normative appendix F of the XML-1.0 recommendation.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20896"
+NAME="AEN21143"
 ></A
 ><P
 ></P
@@ -1664,7 +1720,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20913"
+NAME="AEN21160"
 ></A
 ><H3
 ><A
@@ -1712,7 +1768,7 @@ the content will be automatically remapped to a CharRef sequence.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20923"
+NAME="AEN21170"
 ></A
 ><P
 ></P
@@ -1802,7 +1858,7 @@ the result of transformation can't fit into the encoding we want), or</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20944"
+NAME="AEN21191"
 ></A
 ><H3
 ><A
@@ -1840,7 +1896,7 @@ HREF="libxml-tree.html#XMLBUFFERPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20953"
+NAME="AEN21200"
 ></A
 ><P
 ></P
@@ -1930,7 +1986,7 @@ the result of transformation can't fit into the encoding we want), or</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20974"
+NAME="AEN21221"
 ></A
 ><H3
 ><A
@@ -1969,7 +2025,7 @@ the very first line, i.e. limit itself to 45 chars.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20983"
+NAME="AEN21230"
 ></A
 ><P
 ></P
@@ -2059,7 +2115,7 @@ the result of transformation can't fit into the encoding we want), or</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21004"
+NAME="AEN21251"
 ></A
 ><H3
 ><A
@@ -2089,7 +2145,7 @@ HREF="libxml-encoding.html#XMLCHARENCODINGHANDLER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21011"
+NAME="AEN21258"
 ></A
 ><P
 ></P
@@ -2142,7 +2198,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21024"
+NAME="AEN21271"
 ></A
 ><H3
 ><A
@@ -2173,7 +2229,7 @@ block of chars out.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21030"
+NAME="AEN21277"
 ></A
 ><P
 ></P
@@ -2300,7 +2356,7 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21059"
+NAME="AEN21306"
 ></A
 ><H3
 ><A
@@ -2331,7 +2387,7 @@ block of chars out.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21065"
+NAME="AEN21312"
 ></A
 ><P
 ></P
@@ -2458,7 +2514,7 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21094"
+NAME="AEN21341"
 ></A
 ><H3
 ><A
@@ -2500,7 +2556,7 @@ routine checks for the 4-byte maxiumum size, but does not check for
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21102"
+NAME="AEN21349"
 ></A
 ><P
 ></P
@@ -2558,7 +2614,564 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN21116"
+NAME="AEN21363"
+></A
+><H3
+><A
+NAME="XMLUTF8STRSIZE"
+></A
+>xmlUTF8Strsize ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlUTF8Strsize                  (const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *utf,
+                                             int len);</PRE
+></TD
+></TR
+></TABLE
+><P
+>storage size of an UTF8 string</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN21370"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>utf</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a sequence of UTF-8 encoded bytes</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>len</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the number of characters in the array</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the storage size of
+the first 'len' characters of ARRAY&#13;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN21387"
+></A
+><H3
+><A
+NAME="XMLUTF8STRNDUP"
+></A
+>xmlUTF8Strndup ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    xmlUTF8Strndup                  (const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *utf,
+                                             int len);</PRE
+></TD
+></TR
+></TABLE
+><P
+>a strndup for array of UTF8's</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN21395"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>utf</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the input UTF8 *</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>len</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the len of <TT
+CLASS="PARAMETER"
+><I
+>utf</I
+></TT
+> (in chars)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a new UTF8 * or NULL</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN21413"
+></A
+><H3
+><A
+NAME="XMLUTF8STRPOS"
+></A
+>xmlUTF8Strpos ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    xmlUTF8Strpos                   (const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *utf,
+                                             int pos);</PRE
+></TD
+></TR
+></TABLE
+><P
+>a function to provide the equivalent of fetching a
+character from a string array</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN21421"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>utf</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the input UTF8 *</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>pos</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the position of the desired UTF8 char (in chars)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a pointer to the UTF8 character or NULL</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN21438"
+></A
+><H3
+><A
+NAME="XMLUTF8STRLOC"
+></A
+>xmlUTF8Strloc ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlUTF8Strloc                   (const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *utf,
+                                             const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *utfchar);</PRE
+></TD
+></TR
+></TABLE
+><P
+>a function to provide relative location of a UTF8 char</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN21446"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>utf</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the input UTF8 *</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>utfchar</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the UTF8 character to be found</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the relative character position of the desired char
+or -1 if not found</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN21463"
+></A
+><H3
+><A
+NAME="XMLUTF8STRSUB"
+></A
+>xmlUTF8Strsub ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    xmlUTF8Strsub                   (const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *utf,
+                                             int start,
+                                             int len);</PRE
+></TD
+></TR
+></TABLE
+><P
+><TT
+CLASS="PARAMETER"
+><I
+>start</I
+></TT
+>: relative pos of first char
+<TT
+CLASS="PARAMETER"
+><I
+>len</I
+></TT
+>:   total number to copy</P
+><P
+>Note:  positions are given in units of UTF-8 chars</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN21474"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>utf</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a sequence of UTF-8 encoded bytes</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>start</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>len</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a pointer to a newly created string
+or NULL if any problem</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN21495"
 ></A
 ><H3
 ><A
@@ -2574,7 +3187,10 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->int         xmlUTF8Strlen                   (unsigned char *utf);</PRE
+>int         xmlUTF8Strlen                   (const <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> *utf);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -2586,7 +3202,7 @@ checking of the content of the string.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN21122"
+NAME="AEN21502"
 ></A
 ><P
 ></P

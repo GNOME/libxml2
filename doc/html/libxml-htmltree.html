@@ -122,7 +122,7 @@ NAME="LIBXML-HTMLTREE"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN10814"
+NAME="AEN10892"
 ></A
 ><H2
 >Name</H2
@@ -130,7 +130,7 @@ NAME="AEN10814"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN10817"
+NAME="AEN10895"
 ></A
 ><H2
 >Synopsis</H2
@@ -276,6 +276,23 @@ HREF="libxml-tree.html#XMLNODEPTR"
 >xmlNodePtr</A
 > cur);
 int         <A
+HREF="libxml-htmltree.html#HTMLNODEDUMPFILEFORMAT"
+>htmlNodeDumpFileFormat</A
+>          (<GTKDOCLINK
+HREF="FILE-CAPS"
+>FILE</GTKDOCLINK
+> *out,
+                                             <A
+HREF="libxml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur,
+                                             const char *encoding,
+                                             int format);
+int         <A
 HREF="libxml-htmltree.html#HTMLSAVEFILEENC"
 >htmlSaveFileEnc</A
 >                 (const char *filename,
@@ -283,7 +300,17 @@ HREF="libxml-htmltree.html#HTMLSAVEFILEENC"
 HREF="libxml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > cur,
-                                             const char *encoding);</PRE
+                                             const char *encoding);
+int         <A
+HREF="libxml-htmltree.html#HTMLSAVEFILEFORMAT"
+>htmlSaveFileFormat</A
+>              (const char *filename,
+                                             <A
+HREF="libxml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> cur,
+                                             const char *encoding,
+                                             int format);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -291,7 +318,7 @@ HREF="libxml-tree.html#XMLDOCPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN10857"
+NAME="AEN10941"
 ></A
 ><H2
 >Description</H2
@@ -301,14 +328,14 @@ NAME="AEN10857"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN10860"
+NAME="AEN10944"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10862"
+NAME="AEN10946"
 ></A
 ><H3
 ><A
@@ -337,7 +364,7 @@ the same way as a text node in an XML document.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10868"
+NAME="AEN10952"
 ></A
 ><H3
 ><A
@@ -366,7 +393,7 @@ the same way as an entity reference in an XML document.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10874"
+NAME="AEN10958"
 ></A
 ><H3
 ><A
@@ -395,7 +422,7 @@ the same way as a comment in an XML document.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10880"
+NAME="AEN10964"
 ></A
 ><H3
 ><A
@@ -424,7 +451,7 @@ the same way as a CDATA section in an XML document.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10886"
+NAME="AEN10970"
 ></A
 ><H3
 ><A
@@ -453,7 +480,7 @@ the same way as a processing instruction in an XML document.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10892"
+NAME="AEN10976"
 ></A
 ><H3
 ><A
@@ -490,7 +517,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN10901"
+NAME="AEN10985"
 ></A
 ><P
 ></P
@@ -560,7 +587,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10918"
+NAME="AEN11002"
 ></A
 ><H3
 ><A
@@ -597,7 +624,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN10927"
+NAME="AEN11011"
 ></A
 ><P
 ></P
@@ -667,7 +694,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10944"
+NAME="AEN11028"
 ></A
 ><H3
 ><A
@@ -700,7 +727,7 @@ HREF="libxml-htmlparser.html#HTMLDOCPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN10952"
+NAME="AEN11036"
 ></A
 ><P
 ></P
@@ -753,7 +780,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10965"
+NAME="AEN11049"
 ></A
 ><H3
 ><A
@@ -789,7 +816,7 @@ the META flag associated.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN10973"
+NAME="AEN11057"
 ></A
 ><P
 ></P
@@ -859,7 +886,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10990"
+NAME="AEN11074"
 ></A
 ><H3
 ><A
@@ -895,7 +922,7 @@ It's up to the caller to free the memory.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN10998"
+NAME="AEN11082"
 ></A
 ><P
 ></P
@@ -956,7 +983,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  OUT: the memory lenght</TD
+>  OUT: the memory length</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -967,7 +994,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11015"
+NAME="AEN11099"
 ></A
 ><H3
 ><A
@@ -1001,7 +1028,7 @@ HREF="libxml-tree.html#XMLDOCPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN11023"
+NAME="AEN11107"
 ></A
 ><P
 ></P
@@ -1071,7 +1098,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11040"
+NAME="AEN11124"
 ></A
 ><H3
 ><A
@@ -1108,7 +1135,7 @@ used.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN11048"
+NAME="AEN11132"
 ></A
 ><P
 ></P
@@ -1178,7 +1205,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11065"
+NAME="AEN11149"
 ></A
 ><H3
 ><A
@@ -1210,13 +1237,14 @@ HREF="libxml-tree.html#XMLNODEPTR"
 ></TR
 ></TABLE
 ><P
->Dump an HTML node, recursive behaviour,children are printed too.</P
+>Dump an HTML node, recursive behaviour,children are printed too,
+and formatting returns are added.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN11074"
+NAME="AEN11158"
 ></A
 ><P
 ></P
@@ -1288,7 +1316,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11091"
+NAME="AEN11175"
 ></A
 ><H3
 ><A
@@ -1320,13 +1348,14 @@ HREF="libxml-tree.html#XMLNODEPTR"
 ></TR
 ></TABLE
 ><P
->Dump an HTML node, recursive behaviour,children are printed too.</P
+>Dump an HTML node, recursive behaviour,children are printed too,
+and formatting returns are added.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN11100"
+NAME="AEN11184"
 ></A
 ><P
 ></P
@@ -1398,7 +1427,170 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11117"
+NAME="AEN11201"
+></A
+><H3
+><A
+NAME="HTMLNODEDUMPFILEFORMAT"
+></A
+>htmlNodeDumpFileFormat ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         htmlNodeDumpFileFormat          (<GTKDOCLINK
+HREF="FILE-CAPS"
+>FILE</GTKDOCLINK
+> *out,
+                                             <A
+HREF="libxml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur,
+                                             const char *encoding,
+                                             int format);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Dump an HTML node, recursive behaviour,children are printed too.</P
+><P
+>TODO: if encoding == NULL try to save in the doc encoding</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN11211"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>out</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the FILE pointer</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the document</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the current node</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>encoding</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the document encoding</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>format</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  should formatting spaces been added</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the number of byte written or -1 in case of failure.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11240"
 ></A
 ><H3
 ><A
@@ -1424,13 +1616,14 @@ HREF="libxml-tree.html#XMLDOCPTR"
 ></TR
 ></TABLE
 ><P
->Dump an HTML document to a file using a given encoding.</P
+>Dump an HTML document to a file using a given encoding
+and formatting returns/spaces are added.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN11124"
+NAME="AEN11247"
 ></A
 ><P
 ></P
@@ -1491,7 +1684,144 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the document encoding</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the number of byte written or -1 in case of failure.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11268"
+></A
+><H3
+><A
+NAME="HTMLSAVEFILEFORMAT"
+></A
+>htmlSaveFileFormat ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         htmlSaveFileFormat              (const char *filename,
+                                             <A
+HREF="libxml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> cur,
+                                             const char *encoding,
+                                             int format);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Dump an HTML document to a file using a given encoding.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN11275"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>filename</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the filename</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the document</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>encoding</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the document encoding</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>format</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  should formatting spaces been added</TD
 ></TR
 ><TR
 ><TD

@@ -122,7 +122,7 @@ NAME="LIBXML-NANOHTTP"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN15465"
+NAME="AEN15620"
 ></A
 ><H2
 >Name</H2
@@ -130,7 +130,7 @@ NAME="AEN15465"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN15468"
+NAME="AEN15623"
 ></A
 ><H2
 >Synopsis</H2
@@ -172,10 +172,25 @@ HREF="libxml-nanohttp.html#XMLNANOHTTPMETHOD"
                                              char **contentType,
                                              const char *headers);
 void*       <A
+HREF="libxml-nanohttp.html#XMLNANOHTTPMETHODREDIR"
+>xmlNanoHTTPMethodRedir</A
+>          (const char *URL,
+                                             const char *method,
+                                             const char *input,
+                                             char **contentType,
+                                             char **redir,
+                                             const char *headers);
+void*       <A
 HREF="libxml-nanohttp.html#XMLNANOHTTPOPEN"
 >xmlNanoHTTPOpen</A
 >                 (const char *URL,
                                              char **contentType);
+void*       <A
+HREF="libxml-nanohttp.html#XMLNANOHTTPOPENREDIR"
+>xmlNanoHTTPOpenRedir</A
+>            (const char *URL,
+                                             char **contentType,
+                                             char **redir);
 int         <A
 HREF="libxml-nanohttp.html#XMLNANOHTTPRETURNCODE"
 >xmlNanoHTTPReturnCode</A
@@ -206,7 +221,7 @@ HREF="libxml-nanohttp.html#XMLNANOHTTPCLOSE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN15482"
+NAME="AEN15639"
 ></A
 ><H2
 >Description</H2
@@ -216,14 +231,14 @@ NAME="AEN15482"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN15485"
+NAME="AEN15642"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15487"
+NAME="AEN15644"
 ></A
 ><H3
 ><A
@@ -252,7 +267,7 @@ Currently it just checks for proxy informations</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15493"
+NAME="AEN15650"
 ></A
 ><H3
 ><A
@@ -278,7 +293,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15498"
+NAME="AEN15655"
 ></A
 ><H3
 ><A
@@ -308,7 +323,7 @@ A NULL URL cleans up proxy informations.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN15504"
+NAME="AEN15661"
 ></A
 ><P
 ></P
@@ -346,7 +361,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15513"
+NAME="AEN15670"
 ></A
 ><H3
 ><A
@@ -376,7 +391,7 @@ and save it's content in the file.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN15519"
+NAME="AEN15676"
 ></A
 ><P
 ></P
@@ -465,7 +480,7 @@ if provided must be freed by the caller</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15540"
+NAME="AEN15697"
 ></A
 ><H3
 ><A
@@ -503,7 +518,7 @@ and the input buffer for the request content.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN15547"
+NAME="AEN15704"
 ></A
 ><P
 ></P
@@ -609,7 +624,169 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15572"
+NAME="AEN15729"
+></A
+><H3
+><A
+NAME="XMLNANOHTTPMETHODREDIR"
+></A
+>xmlNanoHTTPMethodRedir ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void*       xmlNanoHTTPMethodRedir          (const char *URL,
+                                             const char *method,
+                                             const char *input,
+                                             char **contentType,
+                                             char **redir,
+                                             const char *headers);</PRE
+></TD
+></TR
+></TABLE
+><P
+>This function try to open a connection to the indicated resource
+via HTTP using the given <TT
+CLASS="PARAMETER"
+><I
+>method</I
+></TT
+>, adding the given extra headers
+and the input buffer for the request content.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN15736"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>URL</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  The URL to load</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>method</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the HTTP method to use</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>input</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the input string if any</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>contentType</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the Content-Type information IN and OUT</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>redir</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the redirected URL OUT</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>headers</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the extra headers</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN15765"
 ></A
 ><H3
 ><A
@@ -638,7 +815,7 @@ via HTTP GET.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN15578"
+NAME="AEN15771"
 ></A
 ><P
 ></P
@@ -694,7 +871,110 @@ returned at that location</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15591"
+NAME="AEN15784"
+></A
+><H3
+><A
+NAME="XMLNANOHTTPOPENREDIR"
+></A
+>xmlNanoHTTPOpenRedir ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void*       xmlNanoHTTPOpenRedir            (const char *URL,
+                                             char **contentType,
+                                             char **redir);</PRE
+></TD
+></TR
+></TABLE
+><P
+>This function try to open a connection to the indicated resource
+via HTTP GET.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN15790"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>URL</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  The URL to load</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>contentType</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  if available the Content-Type information will be
+returned at that location</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>redir</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> if availble the redirected URL will be returned</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN15807"
 ></A
 ><H3
 ><A
@@ -721,7 +1001,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN15597"
+NAME="AEN15813"
 ></A
 ><P
 ></P
@@ -774,7 +1054,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15610"
+NAME="AEN15826"
 ></A
 ><H3
 ><A
@@ -801,7 +1081,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN15616"
+NAME="AEN15832"
 ></A
 ><P
 ></P
@@ -855,7 +1135,7 @@ header.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15629"
+NAME="AEN15845"
 ></A
 ><H3
 ><A
@@ -895,7 +1175,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN15637"
+NAME="AEN15853"
 ></A
 ><P
 ></P
@@ -983,7 +1263,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15658"
+NAME="AEN15874"
 ></A
 ><H3
 ><A
@@ -1012,7 +1292,7 @@ It closes and free the context at the end</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN15664"
+NAME="AEN15880"
 ></A
 ><P
 ></P
@@ -1082,7 +1362,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN15681"
+NAME="AEN15897"
 ></A
 ><H3
 ><A
@@ -1110,7 +1390,7 @@ free all data related to it.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN15687"
+NAME="AEN15903"
 ></A
 ><P
 ></P

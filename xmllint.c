@@ -776,6 +776,10 @@ main(int argc, char **argv) {
 	else if ((!strcmp(argv[i], "-noent")) ||
 	         (!strcmp(argv[i], "--noent")))
 	    noent++;
+	else if ((!strcmp(argv[i], "-version")) ||
+	         (!strcmp(argv[i], "--version")))
+	    fprintf(stderr, "xmllint: using libxml version %s\n",
+		    xmlParserVersion);
 	else if ((!strcmp(argv[i], "-noout")) ||
 	         (!strcmp(argv[i], "--noout")))
 	    noout++;
@@ -934,6 +938,7 @@ main(int argc, char **argv) {
 	printf("Usage : %s [options] XMLfiles ...\n",
 	       argv[0]);
 	printf("\tParse the XML files and output the result of the parsing\n");
+	printf("\t--version : display the version of the XML library used\n");
 #ifdef LIBXML_DEBUG_ENABLED
 	printf("\t--debug : dump a debug tree of the in-memory document\n");
 	printf("\t--shell : run a navigating shell\n");

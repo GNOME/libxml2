@@ -9,6 +9,8 @@
 TODO:
 =====
 
+- fix the C code prototype to bring back doc/libxml-undocumented.txt
+  to a reasonable level
 - Computation of base when HTTP redirect occurs, might affect HTTP
   interfaces.
 - listing all attributes in a node.

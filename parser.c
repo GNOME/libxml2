@@ -9943,8 +9943,8 @@ xmlCreateFileParserCtxt(const char *filename)
  * It use the given SAX function block to handle the parsing callback.
  * If sax is NULL, fallback to the default DOM tree building routines.
  *
- * User data (void *) is stored within the parser context, so it is
- * available nearly everywhere in libxml.
+ * User data (void *) is stored within the parser context in the
+ * context's _private member, so it is available nearly everywhere in libxml
  *
  * Returns the resulting document tree
  */

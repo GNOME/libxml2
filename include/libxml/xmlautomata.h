@@ -87,6 +87,7 @@ int			xmlAutomataNewCounter	(xmlAutomataPtr am,
 						 int max);
 
 xmlRegexpPtr		xmlAutomataCompile	(xmlAutomataPtr am);
+int	    		xmlAutomataIsDeterminist(xmlAutomataPtr am);
 
 #ifdef __cplusplus
 }

@@ -40,6 +40,16 @@
 #define CUR_SCHAR(s, l) xmlStringCurrentChar(NULL, s, &l)
 #define NEXTL(l) ctxt->cur += l;
 
+/**
+ * TODO:
+ *
+ * macro to flag unimplemented blocks
+ */
+#define TODO 								\
+    xmlGenericError(xmlGenericErrorContext,				\
+	    "Unimplemented block at %s:%d\n",				\
+            __FILE__, __LINE__);
+
 
 /************************************************************************
  * 									*
@@ -216,6 +226,8 @@ struct _xmlAutomata {
     int maxCounters;
     int nbCounters;
     xmlRegCounter *counters;
+
+    int determinist;
 };
 
 struct _xmlRegexp {
@@ -226,6 +238,7 @@ struct _xmlRegexp {
     xmlRegAtomPtr *atoms;
     int nbCounters;
     xmlRegCounter *counters;
+    int determinist;
 };
 
 typedef struct _xmlRegExecRollback xmlRegExecRollback;
@@ -322,6 +335,7 @@ xmlRegEpxFromParse(xmlRegParserCtxtPtr ctxt) {
     ctxt->nbCounters = 0;
     ret->counters = ctxt->counters;
     ctxt->counters = NULL;
+    ret->determinist = ctxt->determinist;
     return(ret);
 }
 
@@ -346,6 +360,7 @@ xmlRegNewParserCtxt(const xmlChar *string) {
     ret->cur = ret->string;
     ret->neg = 0;
     ret->error = 0;
+    ret->determinist = -1;
     return(ret);
 }
 
@@ -1282,6 +1297,151 @@ xmlFAEliminateEpsilonTransitions(xmlRegParserCtxtPtr ctxt) {
 	    }
 	}
     }
+}
+
+/**
+ * xmlFACompareAtoms:
+ * @atom1:  an atom
+ * @atom2:  an atom
+ *
+ * Compares two atoms to check whether they are equivatents
+ *
+ * Returns 1 if yes and 0 otherwise
+ */
+static int
+xmlFACompareAtoms(xmlRegAtomPtr atom1, xmlRegAtomPtr atom2) {
+    if (atom1 == atom2)
+	return(1);
+    if ((atom1 == NULL) || (atom2 == NULL))
+	return(0);
+
+    if (atom1->type != atom2->type)
+	return(0);
+    switch (atom1->type) {
+        case XML_REGEXP_STRING:
+	    return(xmlStrEqual((xmlChar *)atom1->valuep,
+			       (xmlChar *)atom2->valuep));
+        case XML_REGEXP_EPSILON:
+	    return(1);
+        case XML_REGEXP_CHARVAL:
+	    return(atom1->codepoint == atom2->codepoint);
+        case XML_REGEXP_RANGES:
+	    TODO;
+	    return(0);
+	default:
+	    break;
+    }
+    return(1);
+}
+
+/**
+ * xmlFARecurseDeterminism:
+ * @ctxt:  a regexp parser context
+ *
+ * Check whether the associated regexp is determinist,
+ * should be called after xmlFAEliminateEpsilonTransitions()
+ *
+ */
+static int
+xmlFARecurseDeterminism(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr state,
+	                 int to, xmlRegAtomPtr atom) {
+    int ret = 1;
+    int transnr;
+    xmlRegTransPtr t1;
+
+    if (state == NULL)
+	return(ret);
+    for (transnr = 0;transnr < state->nbTrans;transnr++) {
+	t1 = &(state->trans[transnr]);
+	/*
+	 * check transitions conflicting with the one looked at
+	 */
+	if (t1->atom == NULL) {
+	    if (t1->to == -1)
+		continue;
+	    ret = xmlFARecurseDeterminism(ctxt, ctxt->states[t1->to],
+		                           to, atom);
+	    if (ret == 0)
+		return(0);
+	    continue;
+	}
+	if (t1->to != to)
+	    continue;
+	if (xmlFACompareAtoms(t1->atom, atom))
+	    return(0);
+    }
+    return(ret);
+}
+
+/**
+ * xmlFAComputesDeterminism:
+ * @ctxt:  a regexp parser context
+ *
+ * Check whether the associated regexp is determinist,
+ * should be called after xmlFAEliminateEpsilonTransitions()
+ *
+ */
+static int
+xmlFAComputesDeterminism(xmlRegParserCtxtPtr ctxt) {
+    int statenr, transnr;
+    xmlRegStatePtr state;
+    xmlRegTransPtr t1, t2;
+    int i;
+    int ret = 1;
+
+    if (ctxt->determinist != -1)
+	return(ctxt->determinist);
+
+    /*
+     * Check for all states that there isn't 2 transitions
+     * with the same atom and a different target.
+     */
+    for (statenr = 0;statenr < ctxt->nbStates;statenr++) {
+	state = ctxt->states[statenr];
+	if (state == NULL)
+	    continue;
+	for (transnr = 0;transnr < state->nbTrans;transnr++) {
+	    t1 = &(state->trans[transnr]);
+	    /*
+	     * Determinism checks in case of counted or all transitions
+	     * will have to be handled separately
+	     */
+	    if (t1->atom == NULL)
+		continue;
+	    if (t1->to == -1) /* eliminated */
+		continue;
+	    for (i = 0;i < transnr;i++) {
+		t2 = &(state->trans[i]);
+		if (t2->to == -1) /* eliminated */
+		    continue;
+		if (t2->atom != NULL) {
+		    if (t1->to == t2->to) {
+			if (xmlFACompareAtoms(t1->atom, t2->atom))
+			    t2->to = -1; /* eliminate */
+		    } else {
+			/* not determinist ! */
+			if (xmlFACompareAtoms(t1->atom, t2->atom))
+			    ret = 0;
+		    }
+		} else if (t1->to != -1) {
+		    /*
+		     * do the closure in case of remaining specific
+		     * epsilon transitions like choices or all
+		     */
+		    ret = xmlFARecurseDeterminism(ctxt, ctxt->states[t1->to],
+						   t2->to, t2->atom);
+		    if (ret == 0)
+			return(0);
+		}
+	    }
+	    if (ret == 0)
+		break;
+	}
+	if (ret == 0)
+	    break;
+    }
+    ctxt->determinist = ret;
+    return(ret);
 }
 
 /************************************************************************
@@ -3747,8 +3907,28 @@ xmlAutomataCompile(xmlAutomataPtr am) {
     xmlRegexpPtr ret;
 
     xmlFAEliminateEpsilonTransitions(am);
+    xmlFAComputesDeterminism(am);
     ret = xmlRegEpxFromParse(am);
 
+    return(ret);
+}
+
+/**
+ * xmlAutomataIsDeterminist:
+ * @am: an automata
+ *
+ * Checks if an automata is determinist.
+ *
+ * Returns 1 if true, 0 if not, and -1 in case of error
+ */
+int          
+xmlAutomataIsDeterminist(xmlAutomataPtr am) {
+    int ret;
+
+    if (am == NULL)
+	return(-1);
+
+    ret = xmlFAComputesDeterminism(am);
     return(ret);
 }
 #endif /* LIBXML_AUTOMATA_ENABLED */

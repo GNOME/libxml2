@@ -27,22 +27,15 @@ TODO:
 - Better checking of external parsed entities TAG 1234
 - Go through erratas and do the cleanup.
   http://www.w3.org/XML/xml-19980210-errata ... started ...
-- reported by Michael, update of doc node when pasting on a new document
-  There can be far more than simply the doc pointer which refers to
-  the old document, for example namespace declarations or entities
-  references can also be a nasty problem, far more than updating the
-  doc values.
 - jamesh suggestion: SAX like functions to save a document ie. call a
   function to open a new element with given attributes, write character
   data, close last element, etc
+  + inversted SAX, initial patch in April 2002 archives.
 - htmlParseDoc has parameter encoding which is not used.
   Function htmlCreateDocParserCtxt ignore it.
 - fix realloc() usage.
 - compliance to XML-Namespace checking, see section 6 of
   http://www.w3.org/TR/REC-xml-names/
-- Fix output of <tst val="x&#xA;y"/>
-- Implement OASIS XML Catalog support
-  http://www.oasis-open.org/committees/entity/
 - Stricten the UTF8 conformance (Martin Duerst):
   http://www.w3.org/2001/06/utf-8-test/.
   The bad files are in http://www.w3.org/2001/06/utf-8-wrong/.
@@ -51,9 +44,10 @@ TODO:
 TODO:
 =====
 
-- Get OASIS testsuite to a more friendly result, check all the results
-  once stable. Current state at:
-  http://xmlsoft.org/conf/result.html
+- move all string manipulation functions (xmlStrdup, xmlStrlen, etc.) to
+  global.c. Bjorn noted that the following files depends on parser.o solely
+  because of these string functions: entities.o, global.o, hash.o, tree.o,
+  xmlIO.o, and xpath.o.
 
 - Optimization of tag strings allocation ?
 
@@ -67,6 +61,8 @@ TODO:
 EXTENSIONS:
 ===========
 
+- Fix output of <tst val="x&#xA;y"/>
+
 - Tools to produce man pages from the SGML docs.
 
 - Add Xpointer recognition/API
@@ -77,6 +73,7 @@ EXTENSIONS:
 
 - Implement XSchemas
   => Really need to be done <grin/>
+  - started
 
 - O2K parsing;
   => this is a somewhat ugly mix of HTML and XML, adding a specific
@@ -105,6 +102,12 @@ EXTENSIONS:
 
 Done:
 =====
+
+- Implement OASIS XML Catalog support
+  http://www.oasis-open.org/committees/entity/
+
+- Get OASIS testsuite to a more friendly result, check all the results
+  once stable. the check-xml-test-suite.py script does this
 
 - Implement XSLT
   => libxslt

@@ -425,7 +425,7 @@ xmlSchemaCompareDecimals(xmlSchemaValPtr x, xmlSchemaValPtr y)
  *
  * Returns -1 if x < y, 0 if x == y, 1 if x > y and -2 in case of error
  */
-int
+static int
 xmlSchemaCompareValues(xmlSchemaValPtr x, xmlSchemaValPtr y) {
     if ((x == NULL) || (y == NULL))
 	return(-2);
@@ -484,6 +484,21 @@ xmlSchemaValidateFacet(xmlSchemaTypePtr base, xmlSchemaFacetPtr facet,
 	case XML_SCHEMA_FACET_WHITESPACE:
 	    TODO /* whitespaces */
 	    return(0);
+	case XML_SCHEMA_FACET_MAXLENGTH:
+	    if ((facet->val != NULL) &&
+		(facet->val->type == XML_SCHEMAS_DECIMAL) &&
+		(facet->val->value.decimal.frac == 0)) {
+		int len;
+
+		if (facet->val->value.decimal.sign == 1)
+		    return(1);
+                len = xmlUTF8Strlen(value);
+		if (len > facet->val->value.decimal.base)
+		    return(1);
+		return(0);
+	    }
+	    TODO /* error code */
+	    return(1);
 	default:
 	    TODO
     }

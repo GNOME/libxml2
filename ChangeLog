@@ -1,3 +1,11 @@
+Mon Apr 22 17:59:14 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* TODO: updated a bit
+	* parser.c: made a comment more specific
+	* xmlregexp.c xmlschemas.c xmlschemastypes.c: more work on the
+	  Schemas conformance.
+	* test/schemas result/schemas: updated the test list
+
 Sat Apr 20 19:36:39 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xmlregexp.c xmlschemas.c include/libxml/xmlautomata.h:

@@ -55,6 +55,7 @@ struct _xmlSchemaParserCtxt {
     void *userData;			/* user specific data block */
     xmlSchemaValidityErrorFunc error;	/* the callback in case of errors */
     xmlSchemaValidityWarningFunc warning;/* the callback in case of warning */
+    xmlSchemaValidError err;
 
     xmlSchemaPtr       schema;        /* The schema in use */
     xmlChar 	      *container;     /* the current element, group, ... */
@@ -3059,7 +3060,6 @@ xmlSchemaBuildAContentModel(xmlSchemaTypePtr type,
 	    lax = type->minOccurs == 0;
 	    ctxt->state = xmlAutomataNewAllTrans(ctxt->am, ctxt->state, NULL,
 		                                 lax);
-	    TODO
 	    break;
 	}
 	case XML_SCHEMA_TYPE_RESTRICTION:
@@ -3128,12 +3128,19 @@ xmlSchemaBuildContentModel(xmlSchemaElementPtr elem,
     start = ctxt->state = xmlAutomataGetInitState(ctxt->am);
     xmlSchemaBuildAContentModel(elem->subtypes, ctxt, name);
     xmlAutomataSetFinalState(ctxt->am, ctxt->state);
-    elem->contModel = xmlAutomataCompile(ctxt->am);
+    if (!xmlAutomataIsDeterminist(ctxt->am)) {
+	xmlGenericError(xmlGenericErrorContext,
+			"Content model of %s is not determinist:\n", name);
+	elem->contModel = xmlAutomataCompile(ctxt->am);
+	ctxt->err = XML_SCHEMAS_ERR_NOTDETERMINIST;
+    } else {
+	elem->contModel = xmlAutomataCompile(ctxt->am);
 #ifdef DEBUG_CONTENT
-    xmlGenericError(xmlGenericErrorContext,
-                    "Content model of %s:\n", name);
-    xmlRegexpPrint(stderr, elem->contModel);
+	xmlGenericError(xmlGenericErrorContext,
+			"Content model of %s:\n", name);
+	xmlRegexpPrint(stderr, elem->contModel);
 #endif
+    }
     ctxt->state = NULL;
     xmlFreeAutomata(ctxt->am);
     ctxt->am = NULL;
@@ -4461,8 +4468,6 @@ xmlSchemaValidateComplexType(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr node) {
     child = ctxt->node;
     type = ctxt->type;
 
-    /* 3.4.4 1 was verified on the caller */
-
     switch (type->contentType) {
 	case XML_SCHEMA_CONTENT_EMPTY:
 	    if (child != NULL) {
@@ -4470,6 +4475,15 @@ xmlSchemaValidateComplexType(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr node) {
 		    ctxt->error(ctxt->userData,
 			    "Element %s is supposed to be empty\n",
 			        node->name);
+	    }
+	    if (type->attributes != NULL) {
+		xmlSchemaValidateAttributes(ctxt, node, type->attributes);
+	    }
+	    subtype = type->subtypes;
+	    while (subtype != NULL) {
+		ctxt->type = subtype;
+		xmlSchemaValidateComplexType(ctxt, node);
+		subtype = subtype->next;
 	    }
 	    break;
 	case XML_SCHEMA_CONTENT_ELEMENTS:
@@ -4479,7 +4493,6 @@ xmlSchemaValidateComplexType(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr node) {
 	     * Skip ignorable nodes in that context
 	     */
 	    child = xmlSchemaSkipIgnored(ctxt, type, child);
-	    subtype = type->subtypes;
 	    while (child != NULL) {
 		if (child->type == XML_ELEMENT_NODE) {
 		    ret = xmlRegExecPushString(ctxt->regexp,
@@ -4542,6 +4555,8 @@ xmlSchemaValidateContent(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr node) {
 
     child = ctxt->node;
     type = ctxt->type;
+
+    xmlSchemaValidateAttributes(ctxt, node, type->attributes);
 
     switch (type->type) {
 	case XML_SCHEMA_TYPE_ANY:

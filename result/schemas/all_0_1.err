@@ -2,7 +2,6 @@ Type of all2 : ./test/schemas/all_0.xsd:5 :elements
 Type of all2 : ./test/schemas/all_0.xsd:5 :elements
 Type of anontype1 : ./test/schemas/all_0.xsd:4 :elements
 Building content model for doc
-Unimplemented block at xmlschemas.c:3062
 Content model of doc:
  regexp: '(null)' 
 3 atoms:

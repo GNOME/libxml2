@@ -1,3 +1,8 @@
+Wed Aug 15 14:57:08 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* config.h.in configure.in include/libxml/xmlwin32version.h:
+	  released 2.4.2
+
 Wed Aug 15 13:56:22 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/valid.h debugXML.c valid.c: deprecate

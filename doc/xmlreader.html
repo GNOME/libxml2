@@ -67,19 +67,19 @@ namespace and base processing relatively hard.</p>
 
 <p>The <a
 href="http://dotgnu.org/pnetlib-doc/System/Xml/XmlTextReader.html">XmlTextReader
-API from C#</a> provides a far simpler programming model, the API act as a
+API from C#</a> provides a far simpler programming model. The API acts as a
 cursor going forward on the document stream and stopping at each node in the
-way. The user code keep the control of the progresses and simply call a
+way. The user's code keeps control of the progress and simply calls a
 Read() function repeatedly to progress to each node in sequence in document
 order. There is direct support for namespaces, xml:base, entity handling and
 adding DTD validation on top of it was relatively simple. This API is really
 close to the <a href="http://www.w3.org/TR/DOM-Level-2-Core/">DOM Core
 specification</a> This provides a far more standard, easy to use and powerful
-API than the existing SAX. Moreover integrating extension feature based on
+API than the existing SAX. Moreover integrating extension features based on
 the tree seems relatively easy.</p>
 
 <p>In a nutshell the XmlTextReader API provides a simpler, more standard and
-more extensible interface to handle large document than the existing SAX
+more extensible interface to handle large documents than the existing SAX
 version.</p>
 
 <h2><a name="Walking">Walking a simple tree</a></h2>
@@ -125,12 +125,12 @@ int streamFile(char *filename) {
   <li>the creation of the reader using a filename</li>
   <li>the repeated call to xmlTextReaderRead() and how any return value
     different from 1 should stop the loop</li>
-  <li>that a negative return mean a parsing error</li>
+  <li>that a negative return means a parsing error</li>
   <li>how xmlFreeTextReader() should be used to free up the resources used by
     the reader.</li>
 </ul>
 
-<p>Here is a similar code in python for exactly the same processing:</p>
+<p>Here is similar code in python for exactly the same processing:</p>
 <pre>import libxml2
 
 def processNode(reader):
@@ -155,13 +155,13 @@ def streamFile(filename):
 href="http://dotgnu.org/pnetlib-doc/System/Xml/XmlTextReader.html">xmlTextReader
 is abstracted as a class like in C#</a> with the same method names (but the
 properties are currently accessed with methods) and that one doesn't need to
-free the reader at the end of the processing, it will get garbage collected
-once all references have disapeared</p>
+free the reader at the end of the processing. It will get garbage collected
+once all references have disapeared.</p>
 
-<h2><a name="Extracting">Extracting informations for the current node</a></h2>
+<h2><a name="Extracting">Extracting information for the current node</a></h2>
 
-<p>So far the example code did not indicate how informations were extracted
-from the reader, it was abstrated as a call to the processNode() routine,
+<p>So far the example code did not indicate how information was extracted
+from the reader. It was abstrated as a call to the processNode() routine,
 with the reader as the argument. At each invocation, the parser is stopped on
 a given node and the reader can be used to query those node properties. Each
 <em>Property</em> is available at the C level as a function taking a single
@@ -223,7 +223,7 @@ content of the XML test file.</p>
 <p>For the minimal document "<code>&lt;doc/&gt;</code>" we get:</p>
 <pre>0 1 doc 1</pre>
 
-<p>Only one node is found, its depth is 0, type 1 indocate an element start,
+<p>Only one node is found, its depth is 0, type 1 indicate an element start,
 of name "doc" and it is empty. Trying now with
 "<code>&lt;doc&gt;&lt;/doc&gt;</code>" instead leads to:</p>
 <pre>0 1 doc 0
@@ -252,7 +252,7 @@ character data are reported:</p>
 1 1 c 1 None
 0 15 doc 0 None</pre>
 
-<p>There is a few things to note:</p>
+<p>There are a few things to note:</p>
 <ul>
   <li>the increase of the depth value (first row) as children nodes are
     explored</li>
@@ -286,16 +286,16 @@ the xmllint.c module in the source distribution:</p>
     }
 }</pre>
 
-<h2><a name="Extracting1">Extracting informations for the attributes</a></h2>
+<h2><a name="Extracting1">Extracting information for the attributes</a></h2>
 
 <p>The previous examples don't indicate how attributes are processed. The
 simple test "<code>&lt;doc a="b"/&gt;</code>" provides the following
 result:</p>
 <pre>0 1 doc 1 None</pre>
 
-<p>This prove that attributes nodes are not traversed by default. The
+<p>This proves that attribute nodes are not traversed by default. The
 <em>HasAttributes</em> property allow to detect their presence. To check
-their content the API has special instructions basically 2 kind of operations
+their content the API has special instructions. Basically two kinds of operations
 are possible:</p>
 <ol>
   <li>to move the reader to the attribute nodes of the current element, in
@@ -339,20 +339,20 @@ by their name (and namespace):</p>
             print "-- %d %d (%s) [%s]" % (reader.Depth(), reader.NodeType(),
                                           reader.Name(),reader.Value())</pre>
 
-<p>the output for the same input document reflects the attribute:</p>
+<p>The output for the same input document reflects the attribute:</p>
 <pre>0 1 doc 1 None
 -- 1 2 (a) [b]</pre>
 
-<p>There is a couple of things to note on the attribute processing:</p>
+<p>There are a couple of things to note on the attribute processing:</p>
 <ul>
-  <li>their depth is the one of the carrying element plus one</li>
-  <li>namespace declarations are seen as attributes like in DOM</li>
+  <li>Their depth is the one of the carrying element plus one.</li>
+  <li>Namespace declarations are seen as attributes, as in DOM.</li>
 </ul>
 
 <h2><a name="Validating">Validating a document</a></h2>
 
-<p>Libxml2 implementation adds some extra feature on top of the XmlTextReader
-API, the main one is the ability to DTD validate the parsed document
+<p>Libxml2 implementation adds some extra features on top of the XmlTextReader
+API. The main one is the ability to DTD validate the parsed document
 progressively. This is simply the activation of the associated feature of the
 parser used by the reader structure. There are a few options available
 defined as the enum xmlParserProperties in the libxml/xmlreader.h header
@@ -381,7 +381,7 @@ and set the values of those parser properties of the reader. For example</p>
     if ret != 0:
         print "Error parsing and validating %s" % (file)</pre>
 
-<p>This routine will parse and validate the file. Errors message can be
+<p>This routine will parse and validate the file. Error messages can be
 captured by registering an error handler. See python/tests/reader2.py for
 more complete Python examples. At the C level the equivalent call to cativate
 the validation feature is just:</p>
@@ -460,7 +460,7 @@ while reader.Read():
         if reader.Next() != 1:            # skip the subtree
             break;</pre>
 
-<p>Note however that the node instance returned by the Expand() call is only
+<p>Note, however that the node instance returned by the Expand() call is only
 valid until the next Read() operation. The Expand() operation does not
 affects the Read() ones, however usually once processed the full subtree is
 not useful anymore, and the Next() operation allows to skip it completely and

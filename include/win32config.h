@@ -48,6 +48,7 @@
 #define isnan(d) (_isnan(d))
 #endif
 #else /* _MSC_VER */
+#ifndef isinf
 static int isinf (double d) {
     int expon = 0;
     double val = frexp (d, &expon);
@@ -63,6 +64,8 @@ static int isinf (double d) {
         return 0;
     }
 }
+#endif
+#ifndef isnan
 static int isnan (double d) {
     int expon = 0;
     double val = frexp (d, &expon);
@@ -78,6 +81,7 @@ static int isnan (double d) {
         return 0;
     }
 }
+#endif
 #endif /* _MSC_VER */
 
 #if defined(_MSC_VER) || defined(__MINGW32__)

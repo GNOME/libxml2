@@ -2,13 +2,13 @@
     "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-  <title>Libxml Frequently asqued Questions</title>
+  <title>Libxml Frequently Asked Questions</title>
   <meta name="GENERATOR" content="amaya V4.1">
   <meta http-equiv="Content-Type" content="text/html">
 </head>
 
 <body bgcolor="#ffffff">
-<h1 align="center">Libxml Frequently Asqued Questions</h1>
+<h1 align="center">Libxml Frequently Asked Questions</h1>
 
 <p>Location: <a
 href="http://xmlsoft.org/FAQ.html">http://xmlsoft.org/FAQ.html</a></p>
@@ -25,7 +25,7 @@ href="http://xmlsoft.org/messages/">http://xmlsoft.org/messages/</a></p>
   <li><a href="#Licence">Licence(s)</a></li>
   <li><a href="#Installati">Installation</a></li>
   <li><a href="#Compilatio">Compilation</a></li>
-  <li><a href="#Developper">Developper corner</a></li>
+  <li><a href="#Developer">Developer corner</a></li>
 </ul>
 
 <h2><a name="Licence">Licence</a>(s)</h2>
@@ -44,7 +44,7 @@ href="http://xmlsoft.org/messages/">http://xmlsoft.org/messages/</a></p>
     <p>Yes. The W3C IPR allows you to also keep proprietary the changes you
     made to libxml, but it would be graceful to provide back bugfixes and
     improvements as patches for possible incorporation in the main
-    developement tree</p>
+    development tree</p>
   </li>
 </ol>
 
@@ -68,7 +68,7 @@ href="http://xmlsoft.org/messages/">http://xmlsoft.org/messages/</a></p>
         href="http://rpmfind.net/linux/RPM/libxml.html">libxml</a> and <a
         href="http://rpmfind.net/linux/RPM/libxml2.html">libxml2</a> are
         compatible (this is not the case for development packages)</li>
-      <li>If you are a developper and your system provides separate packaging
+      <li>If you are a developer and your system provides separate packaging
         for shared libraries and the development components, it is possible to
         install libxml and libxml2, and depending on your development needs
         have either <a
@@ -76,7 +76,7 @@ href="http://xmlsoft.org/messages/">http://xmlsoft.org/messages/</a></p>
         or <a
         href="http://rpmfind.net/linux/RPM/libxml2-devel.html">libxml2-devel</a>
         too</li>
-      <li>If you are developping a new application, please develop against
+      <li>If you are developing a new application, please develop against
         libxml2(-devel)</li>
     </ul>
   </li>
@@ -107,7 +107,7 @@ href="http://xmlsoft.org/messages/">http://xmlsoft.org/messages/</a></p>
     <p>Libxml does not requires any other library, the normal C ANSI API
     should be sufficient (please report any violation to this rule you may
     find).</p>
-    <p>However if found at configuration time libxml will deect and use the
+    <p>However if found at configuration time libxml will detect and use the
     following libs:</p>
     <ul>
       <li><a href="http://www.info-zip.org/pub/infozip/zlib/">libz</a>: a
@@ -138,7 +138,7 @@ href="http://xmlsoft.org/messages/">http://xmlsoft.org/messages/</a></p>
   </li>
 </ol>
 
-<h2><a name="Developper">Developper</a> corner</h2>
+<h2><a name="Developer">Developer</a> corner</h2>
 <ol>
   <li>Extra nodes in the document:
     <p><em>For a XML file as below:</em></p>
@@ -157,7 +157,7 @@ pnode=pxmlDoc-&gt;children-&gt;children;</pre>
     <pre>pnode=pxmlDoc-&gt;children-&gt;children-&gt;next;</pre>
     <p><em>then it works.  Can someone explain it to me.</em></p>
     <p></p>
-    <p>In XML all characters in the content of the document are signifficant
+    <p>In XML all characters in the content of the document are significant
     <strong>including blanks and formatting line breaks</strong>.</p>
     <p>The extra nodes you are wondering about are just that, text nodes with
     the formatting spaces wich are part of the document but that people tend
@@ -169,8 +169,8 @@ pnode=pxmlDoc-&gt;children-&gt;children;</pre>
   </li>
   <li><em>I get compilation errors of existing code like when accessing
     <strong>root</strong> or <strong>childs fields</strong> of nodes</em>
-    <p>You are compiling code developped for libxml version 1 and using a
-    libxml2 developement environment. Either switch back to libxml v1 devel or
+    <p>You are compiling code developed for libxml version 1 and using a
+    libxml2 development environment. Either switch back to libxml v1 devel or
     even better fix the code to compile with libxml2 (or both) by <a
     href="upgrade.html">following the instructions</a>.</p>
   </li>

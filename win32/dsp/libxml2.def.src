@@ -33,6 +33,11 @@ EXPORTS
 	xmlCatalogDump
 	xmlCatalogGetSystem
 	xmlCatalogGetPublic
+	xmlCatalogResolveURI
+	xmlCatalogLocalResolveURI
+	xmlCatalogResolve
+	xmlCatalogLocalResolve
+	xmlCatalogGetDefaults
 #endif
 
 /* 
@@ -858,6 +863,8 @@ EXPORTS
 	xmlXPathNAN DATA
 	xmlXPathPINF DATA
 	xmlXPathNINF DATA
+	xmlXPathIsNaN
+	xmlXPathIsInf
 #endif /* LIBXML_XPATH_ENABLED */
 
 /* 

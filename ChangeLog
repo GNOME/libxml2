@@ -1,3 +1,8 @@
+Wed Sep 12 16:58:16 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* win32/dsp/libxml2.def.src: tried to incorporate comments
+	  from bug #59220
+
 Tue Sep 11 11:25:36 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c result/noent/wml.xml: fixed bug #59981 related

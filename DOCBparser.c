@@ -4135,104 +4135,113 @@ docbParseReference(docbParserCtxtPtr ctxt) {
  * Parse a content: comment, sub-element, reference or text.
  *
  */
-
 static void
-docbParseContent(docbParserCtxtPtr ctxt) {
+docbParseContent(docbParserCtxtPtr ctxt)
+{
     xmlChar *currentNode;
     int depth;
 
     currentNode = xmlStrdup(ctxt->name);
     depth = ctxt->nameNr;
     while (1) {
-       long cons = ctxt->nbChars;
+        long cons = ctxt->nbChars;
 
         GROW;
-       /*
-        * Our tag or one of it's parent or children is ending.
-        */
+        /*
+         * Our tag or one of it's parent or children is ending.
+         */
         if ((CUR == '<') && (NXT(1) == '/')) {
-           docbParseEndTag(ctxt);
-           if (currentNode != NULL) xmlFree(currentNode);
-           return;
+            docbParseEndTag(ctxt);
+            if (currentNode != NULL)
+                xmlFree(currentNode);
+            return;
         }
 
-       /*
-        * Has this node been popped out during parsing of
-        * the next element
-        */
+        /*
+         * Has this node been popped out during parsing of
+         * the next element
+         */
         if ((!xmlStrEqual(currentNode, ctxt->name)) &&
-           (depth >= ctxt->nameNr)) {
-           if (currentNode != NULL) xmlFree(currentNode);
-           return;
-       }
+            (depth >= ctxt->nameNr)) {
+            if (currentNode != NULL)
+                xmlFree(currentNode);
+            return;
+        }
 
-       /*
-        * Sometimes DOCTYPE arrives in the middle of the document
-        */
-       if ((CUR == '<') && (NXT(1) == '!') &&
-           (UPP(2) == 'D') && (UPP(3) == 'O') &&
-           (UPP(4) == 'C') && (UPP(5) == 'T') &&
-           (UPP(6) == 'Y') && (UPP(7) == 'P') &&
-           (UPP(8) == 'E')) {
-           if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-               ctxt->sax->error(ctxt->userData,
-                    "Misplaced DOCTYPE declaration\n");
-           ctxt->wellFormed = 0;
-           docbParseDocTypeDecl(ctxt);
-       }
+        /*
+         * Sometimes DOCTYPE arrives in the middle of the document
+         */
+        if ((CUR == '<') && (NXT(1) == '!') &&
+            (UPP(2) == 'D') && (UPP(3) == 'O') &&
+            (UPP(4) == 'C') && (UPP(5) == 'T') &&
+            (UPP(6) == 'Y') && (UPP(7) == 'P') && (UPP(8) == 'E')) {
+            if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+                ctxt->sax->error(ctxt->userData,
+                                 "Misplaced DOCTYPE declaration\n");
+            ctxt->wellFormed = 0;
+            docbParseDocTypeDecl(ctxt);
+        }
 
-       /*
-        * First case :  a comment
-        */
-       if ((CUR == '<') && (NXT(1) == '!') &&
-                (NXT(2) == '-') && (NXT(3) == '-')) {
-           docbParseComment(ctxt);
-       }
+        /*
+         * First case :  a comment
+         */
+        if ((CUR == '<') && (NXT(1) == '!') &&
+            (NXT(2) == '-') && (NXT(3) == '-')) {
+            docbParseComment(ctxt);
+        }
+	
+        /*
+         * Second case :  a PI
+         */
+	else if ((RAW == '<') && (NXT(1) == '?')) {
+            docbParsePI(ctxt);
+        }
 
-       /*
-        * Second case :  a sub-element.
-        */
-       else if (CUR == '<') {
-           docbParseElement(ctxt);
-       }
+        /*
+         * Third case :  a sub-element.
+         */
+        else if (CUR == '<') {
+            docbParseElement(ctxt);
+        }
 
-       /*
-        * Third case : a reference. If if has not been resolved,
-        *    parsing returns it's Name, create the node 
-        */
-       else if (CUR == '&') {
-           docbParseReference(ctxt);
-       }
+        /*
+         * Fourth case : a reference. If if has not been resolved,
+         *    parsing returns it's Name, create the node 
+         */
+        else if (CUR == '&') {
+            docbParseReference(ctxt);
+        }
 
-       /*
-        * Fourth : end of the resource
-        */
-       else if (CUR == 0) {
-           docbAutoClose(ctxt, NULL);
-	   if (ctxt->nameNr == 0)
-	       break;
-       }
+        /*
+         * Fifth : end of the resource
+         */
+        else if (CUR == 0) {
+            docbAutoClose(ctxt, NULL);
+            if (ctxt->nameNr == 0)
+                break;
+        }
 
-       /*
-        * Last case, text. Note that References are handled directly.
-        */
-       else {
-           docbParseCharData(ctxt);
-       }
+        /*
+         * Last case, text. Note that References are handled directly.
+         */
+        else {
+            docbParseCharData(ctxt);
+        }
 
-       if (cons == ctxt->nbChars) {
-           if (ctxt->node != NULL) {
-               if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-                   ctxt->sax->error(ctxt->userData,
-                        "detected an error in element content\n");
-               ctxt->wellFormed = 0;
-           }
-           break;
-       }
+        if (cons == ctxt->nbChars) {
+            if (ctxt->node != NULL) {
+                if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+                    ctxt->sax->error(ctxt->userData,
+                                     "detected an error in element content\n");
+                ctxt->wellFormed = 0;
+            }
+            break;
+        }
 
         GROW;
     }
-    if (currentNode != NULL) xmlFree(currentNode);
+    if (currentNode != NULL)
+        xmlFree(currentNode);
 }
 
 /**
@@ -4822,11 +4831,11 @@ docbParseMisc(xmlParserCtxtPtr ctxt) {
            (NXT(2) == '-') && (NXT(3) == '-')) ||
            IS_BLANK(CUR)) {
         if ((RAW == '<') && (NXT(1) == '?')) {
-           docbParsePI(ctxt); /* TODO: SGML PIs differs */
-       } else if (IS_BLANK(CUR)) {
-           NEXT;
-       } else
-           xmlParseComment(ctxt);
+            docbParsePI(ctxt);
+        } else if (IS_BLANK(CUR)) {
+            NEXT;
+        } else
+            xmlParseComment(ctxt);
     }
 }
 

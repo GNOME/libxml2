@@ -1,3 +1,7 @@
+Mon Jun 11 19:29:40 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* DOCBparser.c: handling of PIs and <?sgml-declaration in entities.
+
 Tue Jun 12 08:46:28 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* valid.c: fixed bug #56049, forgot one check in the

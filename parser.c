@@ -12112,6 +12112,7 @@ xmlCleanupParser(void) {
     xmlCleanupGlobals();
     xmlResetLastError();
     xmlCleanupThreads(); /* must be last if called not from the main thread */
+    xmlCleanupMemory();
     xmlParserInitialized = 0;
 }
 

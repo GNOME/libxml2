@@ -901,15 +901,6 @@ xmlSchemaDump(FILE * output, xmlSchemaPtr schema)
  * 			Utilities					*
  *									*
  ************************************************************************/
-/**
- * numberedString:
- * @prefix:  the string prefix
- * @number:  the number
- *
- * Build a new numbered string
- *
- * Returns the new string
- */
 
 /**
  * xmlSchemaGetProp:

@@ -129,6 +129,11 @@ XMLPUBFUN int XMLCALL
 XMLPUBFUN int XMLCALL	
 	xmlInitMemory	(void);
 
+/* 
+ * Cleanup of the memory layer.
+ */
+XMLPUBFUN void XMLCALL                
+                xmlCleanupMemory        (void);
 /*
  * These are specific to the XML debug memory wrapper.
  */

@@ -124,7 +124,6 @@ xmlXPtrErr(xmlXPathParserContextPtr ctxt, int error,
  *									*
  ************************************************************************/
 
-xmlNodePtr xmlXPtrAdvanceNode(xmlNodePtr cur);
 /**
  * xmlXPtrGetArity:
  * @cur:  the node
@@ -549,6 +548,7 @@ xmlXPtrNewRangeNodeObject(xmlNodePtr start, xmlXPathObjectPtr end) {
 	return(NULL);
     switch (end->type) {
 	case XPATH_POINT:
+	case XPATH_RANGE:
 	    break;
 	case XPATH_NODESET:
 	    /*
@@ -575,6 +575,11 @@ xmlXPtrNewRangeNodeObject(xmlNodePtr start, xmlXPathObjectPtr end) {
 	case XPATH_POINT:
 	    ret->user2 = end->user;
 	    ret->index2 = end->index;
+	    break;
+	case XPATH_RANGE:
+	    ret->user2 = end->user2;
+	    ret->index2 = end->index2;
+	    break;
 	case XPATH_NODESET: {
 	    ret->user2 = end->nodesetval->nodeTab[end->nodesetval->nodeNr - 1];
 	    ret->index2 = -1;
@@ -1029,6 +1034,15 @@ xmlXPtrEvalXPtrPart(xmlXPathParserContextPtr ctxt, xmlChar *name) {
 	const xmlChar *left = CUR_PTR;
 
 	CUR_PTR = buffer;
+	/*
+	 * To evaluate an xpointer scheme element (4.3) we need:
+	 *   context initialized to the root
+	 *   context position initalized to 1
+	 *   context size initialized to 1
+	 */
+	ctxt->context->node = (xmlNodePtr)ctxt->context->doc;
+	ctxt->context->proximityPosition = 1;
+	ctxt->context->contextSize = 1;
 	xmlXPathEvalExpr(ctxt);
 	CUR_PTR=left;
     } else if (xmlStrEqual(name, (xmlChar *) "element")) {

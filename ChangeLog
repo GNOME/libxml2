@@ -1,3 +1,13 @@
+Tue Dec 30 16:26:13 HKT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* parser.c, xmlmemory.c, include/libxml/xmlmemory.h: Fixed
+	  memory leak reported by Dave Beckett
+	* xmlschemas.c: Removed spurious comment reported on the mailing
+	  list
+	* xinclude.c, xpath.c, xpointer.c, libxml/include/xpointer.h:
+	  Further work on Bug 129967 concerning xpointer range handling
+	  and range-to function; much better, but still not complete
+
 Mon Dec 29 18:08:05 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* valid.c: xmlValidateElement could crash for element holding a 

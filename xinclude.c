@@ -38,7 +38,7 @@
 
 /************************************************************************
  *									*
- *			XInclude contexts handling			*
+ *			XInclude context handling			*
  *									*
  ************************************************************************/
 
@@ -50,7 +50,7 @@ typedef xmlChar *xmlURL;
 typedef struct _xmlXIncludeRef xmlXIncludeRef;
 typedef xmlXIncludeRef *xmlXIncludeRefPtr;
 struct _xmlXIncludeRef {
-    xmlChar              *URI; /* the rully resolved resource URL */
+    xmlChar              *URI; /* the fully resolved resource URL */
     xmlChar         *fragment; /* the fragment in the URI */
     xmlDocPtr		  doc; /* the parsed document */
     xmlNodePtr            ref; /* the node making the reference in the source */
@@ -70,12 +70,12 @@ struct _xmlXIncludeCtxt {
     int                 txtNr; /* number of unparsed documents */
     int                txtMax; /* size of unparsed documents tab */
     xmlNodePtr        *txtTab; /* array of unparsed text nodes */
-    xmlURL         *txturlTab; /* array of unparsed txtuments URLs */
+    xmlURL         *txturlTab; /* array of unparsed text URLs */
 
     xmlChar *             url; /* the current URL processed */
-    int                 urlNr; /* number of url stacked */
-    int                urlMax; /* size of url stack */
-    xmlChar *         *urlTab; /* url stack */
+    int                 urlNr; /* number of URLs stacked */
+    int                urlMax; /* size of URL stack */
+    xmlChar *         *urlTab; /* URL stack */
 
     int              nbErrors; /* the number of errors detected */
     int                legacy; /* using XINCLUDE_OLD_NS */
@@ -94,7 +94,7 @@ xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr tree);
 
 /**
  * xmlXIncludeErrMemory:
- * @extra:  extra informations
+ * @extra:  extra information
  *
  * Handle an out of memory condition
  */
@@ -115,7 +115,7 @@ xmlXIncludeErrMemory(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node,
  * @ctxt: the XInclude context
  * @node: the context node
  * @msg:  the error message
- * @extra:  extra informations
+ * @extra:  extra information
  *
  * Handle an XInclude error
  */
@@ -136,7 +136,7 @@ xmlXIncludeErr(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node, int error,
  * @ctxt: the XInclude context
  * @node: the context node
  * @msg:  the error message
- * @extra:  extra informations
+ * @extra:  extra information
  *
  * Emit an XInclude warning.
  */
@@ -341,7 +341,7 @@ xmlXIncludeURLPush(xmlXIncludeCtxtPtr ctxt,
  * xmlXIncludeURLPop:
  * @ctxt: the parser context
  *
- * Pops the top url from the url stack
+ * Pops the top URL from the URL stack
  */
 static void
 xmlXIncludeURLPop(xmlXIncludeCtxtPtr ctxt)
@@ -402,7 +402,7 @@ xmlXIncludeFreeContext(xmlXIncludeCtxtPtr ctxt) {
  * @ctxt:  the XInclude context
  * @URL:  the URL or file path
  * 
- * parse an document for XInclude
+ * parse a document for XInclude
  */
 static xmlDocPtr
 xmlXIncludeParseFile(xmlXIncludeCtxtPtr ctxt, const char *URL) {
@@ -419,7 +419,7 @@ xmlXIncludeParseFile(xmlXIncludeCtxtPtr ctxt, const char *URL) {
 	return(NULL);
     }
     /*
-     * try to ensure that the new document included are actually
+     * try to ensure that new documents included are actually
      * built with the same dictionary as the including document.
      */
     if ((ctxt->doc != NULL) && (ctxt->doc->dict != NULL) &&
@@ -675,7 +675,7 @@ xmlXIncludeRecurseDoc(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc,
 	newctxt->urlTab = ctxt->urlTab;
 
 	/*
-	 * Inherit the documents already in use by others includes
+	 * Inherit the documents already in use by other includes
 	 */
 	newctxt->incBase = ctxt->incNr;
 	for (i = 0;i < ctxt->incNr;i++) {
@@ -818,11 +818,11 @@ xmlXIncludeCopyNodeList(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 }
 
 /**
- * xmlXInclueGetNthChild:
+ * xmlXIncludeGetNthChild:
  * @cur:  the node
  * @no:  the child number
  *
- * Returns the @no'th element child of @cur or NULL
+ * Returns the @n'th element child of @cur or NULL
  */
 static xmlNodePtr
 xmlXIncludeGetNthChild(xmlNodePtr cur, int no) {
@@ -844,8 +844,6 @@ xmlXIncludeGetNthChild(xmlNodePtr cur, int no) {
     return(cur);
 }
 
-xmlNodePtr xmlXPtrAdvanceNode(xmlNodePtr cur);
-
 /**
  * xmlXIncludeCopyRange:
  * @ctxt:  the XInclude context
@@ -856,7 +854,7 @@ xmlNodePtr xmlXPtrAdvanceNode(xmlNodePtr cur);
  * Build a node list tree copy of the XPointer result.
  *
  * Returns an xmlNodePtr list or NULL.
- *         the caller has to free the node tree.
+ *         The caller has to free the node tree.
  */
 static xmlNodePtr
 xmlXIncludeCopyRange(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
@@ -884,7 +882,7 @@ xmlXIncludeCopyRange(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
     index1 = range->index;
     index2 = range->index2;
     while (cur != NULL) {
-	if (cur == end) {
+	if (cur == end) {	/* Are we at the end of the range? */
 	    if (cur->type == XML_TEXT_NODE) {
 		const xmlChar *content = cur->content;
 		int len;
@@ -911,7 +909,7 @@ xmlXIncludeCopyRange(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 		else 
 		    xmlAddChild(parent, tmp);
 		return(list);
-	    } else {
+	    } else {	/* ending node not a text node */
 		tmp = xmlDocCopyNode(cur, target, 0);
 		if (list == NULL)
 		    list = tmp;
@@ -939,7 +937,7 @@ xmlXIncludeCopyRange(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 		 */
 		continue; /* while */
 	    }
-	} else if ((cur == start) &&
+	} else if ((cur == start) &&	/* Not at the end, are we at start? */
 		   (list == NULL) /* looks superfluous but ... */ ) {
 	    if ((cur->type == XML_TEXT_NODE) ||
 		(cur->type == XML_CDATA_SECTION_NODE)) {
@@ -950,12 +948,13 @@ xmlXIncludeCopyRange(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 		} else {
 		    if (index1 > 1) {
 			content += (index1 - 1);
+			index1 = 0;
 		    }
 		    tmp = xmlNewText(content);
 		}
 		last = list = tmp;
-	    } else {
-		if ((cur == start) && (index1 > 1)) {
+	    } else {		/* Not text node */
+		if (index1 > 1) {	/* Do we need to position? */
 		    tmp = xmlDocCopyNode(cur, target, 0);
 		    list = tmp;
 		    parent = tmp;
@@ -967,7 +966,7 @@ xmlXIncludeCopyRange(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 		     */
 		    continue; /* while */
 		}
-		tmp = xmlDocCopyNode(cur, target, 1);
+		tmp = xmlDocCopyNode(cur, target, 0);
 		list = tmp;
 		parent = NULL;
 		last = tmp;
@@ -992,7 +991,7 @@ xmlXIncludeCopyRange(xmlXIncludeCtxtPtr ctxt, xmlDocPtr target,
 		    /* Humm, should not happen ! */
 		    break;
 		default:
-		    tmp = xmlDocCopyNode(cur, target, 1);
+		    tmp = xmlDocCopyNode(cur, target, 0);
 		    break;
 	    }
 	    if (tmp != NULL) {

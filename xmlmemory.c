@@ -812,6 +812,20 @@ xmlInitMemory(void)
 }
 
 /**
+ * xmlCleanupMemory:
+ *
+ * Free up all the memory associated with memorys
+ */
+void
+xmlCleanupMemory(void) {
+    if (xmlMemInitialized == 0)
+        return;
+
+    xmlFreeMutex(xmlMemMutex);
+    xmlMemInitialized = 0;
+}
+
+/**
  * xmlMemSetup:
  * @freeFunc: the free() function to use
  * @mallocFunc: the malloc() function to use

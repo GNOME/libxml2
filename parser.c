@@ -446,6 +446,33 @@ xmlFatalErrMsgInt(xmlParserCtxtPtr ctxt, xmlParserErrors error,
 }
 
 /**
+ * xmlFatalErrMsgStr:
+ * @ctxt:  an XML parser context
+ * @error:  the error number
+ * @msg:  the error message
+ * @val:  a string value
+ *
+ * Handle a fatal parser error, i.e. violating Well-Formedness constraints
+ */
+static void
+xmlFatalErrMsgStr(xmlParserCtxtPtr ctxt, xmlParserErrors error,
+		  const char *msg, const xmlChar *val)
+{
+    if (ctxt == NULL) {
+	xmlGenericError(xmlGenericErrorContext,
+			"xmlFatalErr: no context !\n");
+	return;
+    }
+    ctxt->errNo = error;
+    if ((ctxt->sax == NULL) || (ctxt->sax->error == NULL))
+        return;
+    ctxt->sax->error(ctxt->userData, msg, val);
+    ctxt->wellFormed = 0;
+    if (ctxt->recovery == 0)
+        ctxt->disableSAX = 1;
+}
+
+/**
  * xmlNsErr:
  * @ctxt:  an XML parser context
  * @error:  the error number
@@ -1564,11 +1591,8 @@ xmlParserHandlePEReference(xmlParserCtxtPtr ctxt) {
 		if ((ctxt->standalone == 1) ||
 		    ((ctxt->hasExternalSubset == 0) &&
 		     (ctxt->hasPErefs == 0))) {
-		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-			ctxt->sax->error(ctxt->userData,
+		    xmlFatalErrMsgStr(ctxt, XML_ERR_UNDECLARED_ENTITY,
 			 "PEReference: %%%s; not found\n", name);
-		    ctxt->wellFormed = 0;
-		    if (ctxt->recovery == 0) ctxt->disableSAX = 1;
 	        } else {
 		    /*
 		     * [ VC: Entity Declared ]
@@ -1628,12 +1652,9 @@ xmlParserHandlePEReference(xmlParserCtxtPtr ctxt) {
 			xmlParseTextDecl(ctxt);
 		    }
 		} else {
-		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-			ctxt->sax->error(ctxt->userData,
-			 "xmlParserHandlePEReference: %s is not a parameter entity\n",
-			                 name);
-		    ctxt->wellFormed = 0;
-		    if (ctxt->recovery == 0) ctxt->disableSAX = 1;
+		    xmlFatalErrMsgStr(ctxt, XML_ERR_ENTITY_IS_PARAMETER,
+			     "PEReference: %s is not a parameter entity\n",
+				      name);
 		}
 	    }
 	} else {
@@ -2474,11 +2495,9 @@ xmlSplitQName(xmlParserCtxtPtr ctxt, const xmlChar *name, xmlChar **prefix) {
 	    int first = CUR_SCHAR(cur, l);
 
 	    if (!IS_LETTER(first) && (first != '_')) {
-		if ((ctxt != NULL) && (ctxt->sax != NULL) &&
-		    (ctxt->sax->error != NULL))
-		    ctxt->sax->error(ctxt->userData,
+		xmlFatalErrMsgStr(ctxt, XML_NS_ERR_QNAME,
 			    "Name %s is not XML Namespace compliant\n",
-			             name);
+				  name);
 	    }
 	}
 	cur++;
@@ -3678,12 +3697,8 @@ xmlParseComment(xmlParserCtxtPtr ctxt) {
     }
     buf[len] = 0;
     if (!IS_CHAR(cur)) {
-	ctxt->errNo = XML_ERR_COMMENT_NOT_FINISHED;
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt->userData,
+	xmlFatalErrMsgStr(ctxt, XML_ERR_COMMENT_NOT_FINISHED,
 	                     "Comment not terminated \n<!--%.50s\n", buf);
-	ctxt->wellFormed = 0;
-	if (ctxt->recovery == 0) ctxt->disableSAX = 1;
 	xmlFree(buf);
     } else {
 	if (input != ctxt->input) {
@@ -3868,12 +3883,8 @@ xmlParsePI(xmlParserCtxtPtr ctxt) {
 	    }
 	    cur = CUR;
 	    if (!IS_BLANK(cur)) {
-		ctxt->errNo = XML_ERR_SPACE_REQUIRED;
-		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		    ctxt->sax->error(ctxt->userData,
-		      "xmlParsePI: PI %s space expected\n", target);
-		ctxt->wellFormed = 0;
-		if (ctxt->recovery == 0) ctxt->disableSAX = 1;
+		xmlFatalErrMsgStr(ctxt, XML_ERR_SPACE_REQUIRED,
+			  "ParsePI: PI %s space expected\n", target);
 	    }
             SKIP_BLANKS;
 	    cur = CUR_CHAR(l);
@@ -3904,12 +3915,8 @@ xmlParsePI(xmlParserCtxtPtr ctxt) {
 	    }
 	    buf[len] = 0;
 	    if (cur != '?') {
-		ctxt->errNo = XML_ERR_PI_NOT_FINISHED;
-		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		    ctxt->sax->error(ctxt->userData,
-		      "xmlParsePI: PI %s never end ...\n", target);
-		ctxt->wellFormed = 0;
-		if (ctxt->recovery == 0) ctxt->disableSAX = 1;
+		xmlFatalErrMsgStr(ctxt, XML_ERR_PI_NOT_FINISHED,
+		      "ParsePI: PI %s never end ...\n", target);
 	    } else {
 		if (input != ctxt->input) {
 		    xmlFatalErrMsg(ctxt, XML_ERR_SPACE_REQUIRED,
@@ -4242,12 +4249,8 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 	}
 	SKIP_BLANKS;
 	if (RAW != '>') {
-	    ctxt->errNo = XML_ERR_ENTITY_NOT_FINISHED;
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	        ctxt->sax->error(ctxt->userData, 
+	    xmlFatalErrMsgStr(ctxt, XML_ERR_ENTITY_NOT_FINISHED,
 	            "xmlParseEntityDecl: entity %s not terminated\n", name);
-	    ctxt->wellFormed = 0;
-	    if (ctxt->recovery == 0) ctxt->disableSAX = 1;
 	} else {
 	    if (input != ctxt->input) {
 		xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_BOUNDARY,
@@ -5145,12 +5148,8 @@ xmlParseElementContentDecl(xmlParserCtxtPtr ctxt, const xmlChar *name,
     *result = NULL;
 
     if (RAW != '(') {
-	ctxt->errNo = XML_ERR_ELEMCONTENT_NOT_STARTED;
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt->userData, 
+	xmlFatalErrMsgStr(ctxt, XML_ERR_ELEMCONTENT_NOT_STARTED,
 		"xmlParseElementContentDecl : %s '(' expected\n", name);
-	ctxt->wellFormed = 0;
-	if (ctxt->recovery == 0) ctxt->disableSAX = 1;
 	return(-1);
     }
     NEXT;
@@ -6030,13 +6029,9 @@ xmlParseEntityRef(xmlParserCtxtPtr ctxt) {
 		    if ((ctxt->standalone == 1) ||
 		        ((ctxt->hasExternalSubset == 0) &&
 			 (ctxt->hasPErefs == 0))) {
-			ctxt->errNo = XML_ERR_UNDECLARED_ENTITY;
-			if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-			    ctxt->sax->error(ctxt->userData, 
+			xmlFatalErrMsgStr(ctxt, XML_ERR_UNDECLARED_ENTITY,
 				 "Entity '%s' not defined\n", name);
-			ctxt->wellFormed = 0;
 			ctxt->valid = 0;
-			if (ctxt->recovery == 0) ctxt->disableSAX = 1;
 		    } else {
 			ctxt->errNo = XML_WAR_UNDECLARED_ENTITY;
 			if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
@@ -6052,12 +6047,8 @@ xmlParseEntityRef(xmlParserCtxtPtr ctxt) {
 		 * unparsed entity
 		 */
 		else if (ent->etype == XML_EXTERNAL_GENERAL_UNPARSED_ENTITY) {
-		    ctxt->errNo = XML_ERR_UNPARSED_ENTITY;
-		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-			ctxt->sax->error(ctxt->userData, 
+		    xmlFatalErrMsgStr(ctxt, XML_ERR_UNPARSED_ENTITY,
 			     "Entity reference to unparsed entity %s\n", name);
-		    ctxt->wellFormed = 0;
-		    if (ctxt->recovery == 0) ctxt->disableSAX = 1;
 		}
 
 		/*
@@ -6067,12 +6058,8 @@ xmlParseEntityRef(xmlParserCtxtPtr ctxt) {
 		 */
 		else if ((ctxt->instate == XML_PARSER_ATTRIBUTE_VALUE) &&
 		         (ent->etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY)) {
-		    ctxt->errNo = XML_ERR_ENTITY_IS_EXTERNAL;
-		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-			ctxt->sax->error(ctxt->userData, 
-		     "Attribute references external entity '%s'\n", name);
-		    ctxt->wellFormed = 0;
-		    if (ctxt->recovery == 0) ctxt->disableSAX = 1;
+		    xmlFatalErrMsgStr(ctxt, XML_ERR_ENTITY_IS_EXTERNAL,
+			 "Attribute references external entity '%s'\n", name);
 		}
 		/*
 		 * [ WFC: No < in Attribute Values ]
@@ -6085,12 +6072,8 @@ xmlParseEntityRef(xmlParserCtxtPtr ctxt) {
 			 (!xmlStrEqual(ent->name, BAD_CAST "lt")) &&
 		         (ent->content != NULL) &&
 			 (xmlStrchr(ent->content, '<'))) {
-		    ctxt->errNo = XML_ERR_LT_IN_ATTRIBUTE;
-		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-			ctxt->sax->error(ctxt->userData, 
+		    xmlFatalErrMsgStr(ctxt, XML_ERR_LT_IN_ATTRIBUTE,
 	 "'<' in entity '%s' is not allowed in attributes values\n", name);
-		    ctxt->wellFormed = 0;
-		    if (ctxt->recovery == 0) ctxt->disableSAX = 1;
 		}
 
 		/*
@@ -6100,12 +6083,9 @@ xmlParseEntityRef(xmlParserCtxtPtr ctxt) {
 		    switch (ent->etype) {
 			case XML_INTERNAL_PARAMETER_ENTITY:
 			case XML_EXTERNAL_PARAMETER_ENTITY:
-			ctxt->errNo = XML_ERR_ENTITY_IS_PARAMETER;
-			if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-			    ctxt->sax->error(ctxt->userData, 
-		     "Attempt to reference the parameter entity '%s'\n", name);
-			ctxt->wellFormed = 0;
-			if (ctxt->recovery == 0) ctxt->disableSAX = 1;
+			xmlFatalErrMsgStr(ctxt, XML_ERR_ENTITY_IS_PARAMETER,
+			 "Attempt to reference the parameter entity '%s'\n",
+		                          name);
 			break;
 			default:
 			break;
@@ -6217,12 +6197,8 @@ xmlParseStringEntityRef(xmlParserCtxtPtr ctxt, const xmlChar ** str) {
 		    if ((ctxt->standalone == 1) ||
 		        ((ctxt->hasExternalSubset == 0) &&
 			 (ctxt->hasPErefs == 0))) {
-			ctxt->errNo = XML_ERR_UNDECLARED_ENTITY;
-			if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-			    ctxt->sax->error(ctxt->userData, 
+			xmlFatalErrMsgStr(ctxt, XML_ERR_UNDECLARED_ENTITY,
 				 "Entity '%s' not defined\n", name);
-			ctxt->wellFormed = 0;
-			if (ctxt->recovery == 0) ctxt->disableSAX = 1;
 		    } else {
 			ctxt->errNo = XML_WAR_UNDECLARED_ENTITY;
 			if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
@@ -6374,13 +6350,8 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt) {
 		    if ((ctxt->standalone == 1) ||
 			((ctxt->hasExternalSubset == 0) &&
 			 (ctxt->hasPErefs == 0))) {
-			ctxt->errNo = XML_ERR_UNDECLARED_ENTITY;
-			if ((!ctxt->disableSAX) &&
-			    (ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-			    ctxt->sax->error(ctxt->userData,
+			xmlFatalErrMsgStr(ctxt, XML_ERR_UNDECLARED_ENTITY,
 			     "PEReference: %%%s; not found\n", name);
-			ctxt->wellFormed = 0;
-			if (ctxt->recovery == 0) ctxt->disableSAX = 1;
 		    } else {
 			/*
 			 * [ VC: Entity Declared ]
@@ -6508,12 +6479,8 @@ xmlParseStringPEReference(xmlParserCtxtPtr ctxt, const xmlChar **str) {
 		    if ((ctxt->standalone == 1) ||
 			((ctxt->hasExternalSubset == 0) &&
 			 (ctxt->hasPErefs == 0))) {
-			ctxt->errNo = XML_ERR_UNDECLARED_ENTITY;
-			if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-			    ctxt->sax->error(ctxt->userData,
+			xmlFatalErrMsgStr(ctxt, XML_ERR_UNDECLARED_ENTITY,
 			     "PEReference: %%%s; not found\n", name);
-			ctxt->wellFormed = 0;
-			if (ctxt->recovery == 0) ctxt->disableSAX = 1;
 		    } else {
 			/*
 			 * [ VC: Entity Declared ]
@@ -6738,12 +6705,8 @@ xmlParseAttribute(xmlParserCtxtPtr ctxt, xmlChar **value) {
 	val = xmlParseAttValue(ctxt);
 	ctxt->instate = XML_PARSER_CONTENT;
     } else {
-	ctxt->errNo = XML_ERR_ATTRIBUTE_WITHOUT_VALUE;
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt->userData,
+	xmlFatalErrMsgStr(ctxt, XML_ERR_ATTRIBUTE_WITHOUT_VALUE,
 	       "Specification mandate value for attribute %s\n", name);
-	ctxt->wellFormed = 0;
-	if (ctxt->recovery == 0) ctxt->disableSAX = 1;
 	return(NULL);
     }
 
@@ -6769,13 +6732,9 @@ xmlParseAttribute(xmlParserCtxtPtr ctxt, xmlChar **value) {
 	else if (xmlStrEqual(val, BAD_CAST "preserve"))
 	    *(ctxt->space) = 1;
 	else {
-	    ctxt->errNo = XML_ERR_ATTRIBUTE_WITHOUT_VALUE;
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		ctxt->sax->error(ctxt->userData,
+	    xmlFatalErrMsgStr(ctxt, XML_ERR_ATTRIBUTE_WITHOUT_VALUE,
 "Invalid value \"%s\" for xml:space : \"default\" or \"preserve\" expected\n",
                                  val);
-	    ctxt->wellFormed = 0;
-	    if (ctxt->recovery == 0) ctxt->disableSAX = 1;
 	}
     }
 
@@ -7481,12 +7440,8 @@ xmlParseAttribute2(xmlParserCtxtPtr ctxt,
 	val = xmlParseAttValueInternal(ctxt, len, alloc, normalize);
 	ctxt->instate = XML_PARSER_CONTENT;
     } else {
-	ctxt->errNo = XML_ERR_ATTRIBUTE_WITHOUT_VALUE;
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt->userData,
+	xmlFatalErrMsgStr(ctxt, XML_ERR_ATTRIBUTE_WITHOUT_VALUE,
 	       "Specification mandate value for attribute %s\n", name);
-	ctxt->wellFormed = 0;
-	if (ctxt->recovery == 0) ctxt->disableSAX = 1;
 	return(NULL);
     }
 
@@ -7512,13 +7467,9 @@ xmlParseAttribute2(xmlParserCtxtPtr ctxt,
 	else if (xmlStrEqual(val, BAD_CAST "preserve"))
 	    *(ctxt->space) = 1;
 	else {
-	    ctxt->errNo = XML_ERR_ATTRIBUTE_WITHOUT_VALUE;
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		ctxt->sax->error(ctxt->userData,
+	    xmlFatalErrMsgStr(ctxt, XML_ERR_ATTRIBUTE_WITHOUT_VALUE,
 "Invalid value \"%s\" for xml:space : \"default\" or \"preserve\" expected\n",
                                  val);
-	    ctxt->wellFormed = 0;
-	    if (ctxt->recovery == 0) ctxt->disableSAX = 1;
 	}
     }
 
@@ -8064,12 +8015,8 @@ xmlParseCDSect(xmlParserCtxtPtr ctxt) {
     buf[len] = 0;
     ctxt->instate = XML_PARSER_CONTENT;
     if (cur != '>') {
-	ctxt->errNo = XML_ERR_CDATA_NOT_FINISHED;
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt->userData,
+	xmlFatalErrMsgStr(ctxt, XML_ERR_CDATA_NOT_FINISHED,
 	                     "CData section not finished\n%.50s\n", buf);
-	ctxt->wellFormed = 0;
-	if (ctxt->recovery == 0) ctxt->disableSAX = 1;
 	xmlFree(buf);
         return;
     }
@@ -9483,14 +9430,9 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		if (RAW == '>') {
 		    NEXT;
 		} else {
-		    ctxt->errNo = XML_ERR_GT_REQUIRED;
-		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-			ctxt->sax->error(ctxt->userData,
+		    xmlFatalErrMsgStr(ctxt, XML_ERR_GT_REQUIRED,
 					 "Couldn't find end of Start Tag %s\n",
 					 name);
-		    ctxt->wellFormed = 0;
-		    if (ctxt->recovery == 0) ctxt->disableSAX = 1;
-
 		    nodePop(ctxt);
 		    spacePop(ctxt);
 		}

@@ -87,6 +87,7 @@ static char *encoding = NULL;
 #ifdef LIBXML_XINCLUDE_ENABLED
 static int xinclude = 0;
 #endif
+static int progresult = 0;
 
 
 #ifdef VMS
@@ -522,6 +523,7 @@ void parseAndPrintFile(char *filename) {
      * If we don't have a document we might as well give up.  Do we
      * want an error message here?  <sven@zen.org> */
     if (doc == NULL) {
+	progresult = 1;
 	return;
     }
 
@@ -615,6 +617,7 @@ void parseAndPrintFile(char *filename) {
 	if (dtd == NULL) {
 	    xmlGenericError(xmlGenericErrorContext,
 		    "Could not parse DTD %s\n", dtdvalid);
+	    progresult = 2;
 	} else {
 	    xmlValidCtxt cvp;
 	    cvp.userData = (void *) stderr;                                                 cvp.error    = (xmlValidityErrorFunc) fprintf;                                  cvp.warning  = (xmlValidityWarningFunc) fprintf;
@@ -622,6 +625,7 @@ void parseAndPrintFile(char *filename) {
 		xmlGenericError(xmlGenericErrorContext,
 			"Document %s does not validate against %s\n",
 			filename, dtdvalid);
+		progresult = 3;
 	    }
 	    xmlFreeDtd(dtd);
 	}
@@ -631,6 +635,7 @@ void parseAndPrintFile(char *filename) {
 	if (!xmlValidateDocument(&cvp, doc)) {
 	    xmlGenericError(xmlGenericErrorContext,
 		    "Document %s does not validate\n", filename);
+	    progresult = 3;
 	}
     }
 
@@ -831,6 +836,6 @@ main(int argc, char **argv) {
     xmlCleanupParser();
     xmlMemoryDump();
 
-    return(0);
+    return(progresult);
 }
 

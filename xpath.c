@@ -211,6 +211,27 @@ void xmlXPathDebugDumpNode(FILE *output, xmlNodePtr cur, int depth) {
     else
 	xmlDebugDumpOneNode(output, cur, depth);
 }
+void xmlXPathDebugDumpNodeList(FILE *output, xmlNodePtr cur, int depth) {
+    xmlNodePtr tmp;
+    int i;
+    char shift[100];
+
+    for (i = 0;((i < depth) && (i < 25));i++)
+        shift[2 * i] = shift[2 * i + 1] = ' ';
+    shift[2 * i] = shift[2 * i + 1] = 0;
+    if (cur == NULL) {
+	fprintf(output, shift);
+	fprintf(output, "Node is NULL !\n");
+	return;
+        
+    }
+
+    while (cur != NULL) {
+	tmp = cur;
+	cur = cur->next;
+	xmlDebugDumpOneNode(output, tmp, depth);
+    }
+}
 
 void xmlXPathDebugDumpNodeSet(FILE *output, xmlNodeSetPtr cur, int depth) {
     int i;
@@ -235,6 +256,25 @@ void xmlXPathDebugDumpNodeSet(FILE *output, xmlNodeSetPtr cur, int depth) {
     }
 }
 
+void xmlXPathDebugDumpValueTree(FILE *output, xmlNodeSetPtr cur, int depth) {
+    int i;
+    char shift[100];
+
+    for (i = 0;((i < depth) && (i < 25));i++)
+        shift[2 * i] = shift[2 * i + 1] = ' ';
+    shift[2 * i] = shift[2 * i + 1] = 0;
+
+    if ((cur == NULL) || (cur->nodeNr == 0) || (cur->nodeTab[0] == NULL)) {
+	fprintf(output, shift);
+	fprintf(output, "Value Tree is NULL !\n");
+	return;
+        
+    }
+
+    fprintf(output, shift);
+    fprintf(output, "%d", i + 1);
+    xmlXPathDebugDumpNodeList(output, cur->nodeTab[0]->children, depth + 1);
+}
 #if defined(LIBXML_XPTR_ENABLED)
 void xmlXPathDebugDumpObject(FILE *output, xmlXPathObjectPtr cur, int depth);
 void xmlXPathDebugDumpLocationSet(FILE *output, xmlLocationSetPtr cur, int depth) {
@@ -284,7 +324,7 @@ void xmlXPathDebugDumpObject(FILE *output, xmlXPathObjectPtr cur, int depth) {
 	    break;
 	case XPATH_XSLT_TREE:
 	    fprintf(output, "Object is an XSLT value tree :\n");
-	    xmlXPathDebugDumpNode(output, cur->user, depth);
+	    xmlXPathDebugDumpValueTree(output, cur->nodesetval, depth);
 	    break;
         case XPATH_BOOLEAN:
 	    fprintf(output, "Object is a Boolean : ");

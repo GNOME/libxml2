@@ -95,6 +95,10 @@ Test user i/o support.
 .TP
 .B \-\-valid
 Validate the document in addition to std well-formed.
+.SH RESULT
+xmllint will return 1 if the XML is not well formed, 2 if the
+Dtd could not be loaded and 3 if the valiadtion fails. If no
+error is detected it will return 0.
 .SH FILES
 .TP 2.2i
 .B /depot/package/libxml_2.0.0/bin/xmllint

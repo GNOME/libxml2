@@ -1098,11 +1098,19 @@
      <exports symbol='xmlTextReaderGetAttribute'/>
      <exports symbol='xmlTextReaderGetAttributeNo'/>
      <exports symbol='xmlTextReaderGetAttributeNs'/>
+     <exports symbol='xmlTextReaderGetRemainder'/>
      <exports symbol='xmlTextReaderHasAttributes'/>
      <exports symbol='xmlTextReaderHasValue'/>
      <exports symbol='xmlTextReaderIsDefault'/>
      <exports symbol='xmlTextReaderIsEmptyElement'/>
      <exports symbol='xmlTextReaderLocalName'/>
+     <exports symbol='xmlTextReaderLookupNamespace'/>
+     <exports symbol='xmlTextReaderMoveToAttribute'/>
+     <exports symbol='xmlTextReaderMoveToAttributeNo'/>
+     <exports symbol='xmlTextReaderMoveToAttributeNs'/>
+     <exports symbol='xmlTextReaderMoveToElement'/>
+     <exports symbol='xmlTextReaderMoveToFirstAttribute'/>
+     <exports symbol='xmlTextReaderMoveToNextAttribute'/>
      <exports symbol='xmlTextReaderName'/>
      <exports symbol='xmlTextReaderNamespaceUri'/>
      <exports symbol='xmlTextReaderNodeType'/>
@@ -7909,6 +7917,11 @@ actually an xmlCharEncoding'/>
       <arg name='localName' type='const xmlChar *' info='the local name of the attribute.'/>
       <arg name='namespaceURI' type='const xmlChar *' info='the namespace URI of the attribute.'/>
     </function>
+    <function name='xmlTextReaderGetRemainder' file='xmlreader'>
+      <info>Method to get the remainder of the buffered XML. this method stops the parser, set its state to End Of File and return the input stream with what is left that the parser did not use.</info>
+      <return type='xmlParserInputBufferPtr' info='the xmlParserInputBufferPtr attached to the XML or NULL in case of error.'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
+    </function>
     <function name='xmlTextReaderHasAttributes' file='xmlreader'>
       <info>Whether the node has attributes.</info>
       <return type='int' info='1 if true, 0 if false, and -1 in case or error'/>
@@ -7932,6 +7945,46 @@ actually an xmlCharEncoding'/>
     <function name='xmlTextReaderLocalName' file='xmlreader'>
       <info>The local name of the node.</info>
       <return type='xmlChar *' info='the local name or NULL if not available'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
+    </function>
+    <function name='xmlTextReaderLookupNamespace' file='xmlreader'>
+      <info>Resolves a namespace prefix in the scope of the current element.</info>
+      <return type='xmlChar *' info='a string containing the namespace URI to which the prefix maps or NULL in case of error. The string must be deallocated by the caller.'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
+      <arg name='prefix' type='const xmlChar *' info='the prefix whose namespace URI is to be resolved. To return the default namespace, specify NULL'/>
+    </function>
+    <function name='xmlTextReaderMoveToAttribute' file='xmlreader'>
+      <info>Moves the position of the current instance to the attribute with the specified qualified name.</info>
+      <return type='int' info='1 in case of success, -1 in case of error, 0 if not found'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
+      <arg name='name' type='const xmlChar *' info='the qualified name of the attribute.'/>
+    </function>
+    <function name='xmlTextReaderMoveToAttributeNo' file='xmlreader'>
+      <info>Moves the position of the current instance to the attribute with the specified index relative to the containing element.</info>
+      <return type='int' info='1 in case of success, -1 in case of error, 0 if not found'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
+      <arg name='no' type='int' info='the zero-based index of the attribute relative to the containing element.'/>
+    </function>
+    <function name='xmlTextReaderMoveToAttributeNs' file='xmlreader'>
+      <info>Moves the position of the current instance to the attribute with the specified local name and namespace URI.</info>
+      <return type='int' info='1 in case of success, -1 in case of error, 0 if not found'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
+      <arg name='localName' type='const xmlChar *' info='the local name of the attribute.'/>
+      <arg name='namespaceURI' type='const xmlChar *' info='the namespace URI of the attribute.'/>
+    </function>
+    <function name='xmlTextReaderMoveToElement' file='xmlreader'>
+      <info>Moves the position of the current instance to the node that contains the current Attribute  node.</info>
+      <return type='int' info='1 in case of success, -1 in case of error, 0 if not moved'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
+    </function>
+    <function name='xmlTextReaderMoveToFirstAttribute' file='xmlreader'>
+      <info>Moves the position of the current instance to the first attribute associated with the current node.</info>
+      <return type='int' info='1 in case of success, -1 in case of error, 0 if not found'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
+    </function>
+    <function name='xmlTextReaderMoveToNextAttribute' file='xmlreader'>
+      <info>Moves the position of the current instance to the next attribute associated with the current node.</info>
+      <return type='int' info='1 in case of success, -1 in case of error, 0 if not found'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
     </function>
     <function name='xmlTextReaderName' file='xmlreader'>

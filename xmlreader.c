@@ -78,6 +78,7 @@ struct _xmlTextReader {
     unsigned int 		base;	/* base of the segment in the input */
     unsigned int 		cur;	/* current position in the input */
     xmlNodePtr			node;	/* current node */
+    xmlNodePtr			curnode;/* current attribute node */
     int				depth;  /* depth of the current node */
 };
 
@@ -407,6 +408,7 @@ xmlNewTextReader(xmlParserInputBufferPtr input) {
 
     ret->mode = XML_TEXTREADER_MODE_NORMAL;
     ret->node = NULL;
+    ret->curnode = NULL;
     val = xmlParserInputBufferRead(input, 4);
     if (val >= 4) {
 	ret->ctxt = xmlCreatePushParserCtxt(ret->sax, NULL,
@@ -493,6 +495,7 @@ xmlTextReaderClose(xmlTextReaderPtr reader) {
     if (reader == NULL)
 	return(-1);
     reader->node = NULL;
+    reader->curnode = NULL;
     reader->mode = XML_TEXTREADER_MODE_CLOSED;
     if (reader->ctxt != NULL) {
 	if (reader->ctxt->myDoc != NULL) {
@@ -536,6 +539,8 @@ xmlTextReaderGetAttributeNo(xmlTextReaderPtr reader, int no) {
     if (reader == NULL)
 	return(NULL);
     if (reader->node == NULL)
+	return(NULL);
+    if (reader->curnode != NULL)
 	return(NULL);
     /* TODO: handle the xmlDecl */
     if (reader->node->type != XML_ELEMENT_NODE) 
@@ -584,6 +589,8 @@ xmlTextReaderGetAttribute(xmlTextReaderPtr reader, const xmlChar *name) {
 	return(NULL);
     if (reader->node == NULL)
 	return(NULL);
+    if (reader->curnode != NULL)
+	return(NULL);
 
     /* TODO: handle the xmlDecl */
     if (reader->node->type != XML_ELEMENT_NODE)
@@ -623,12 +630,385 @@ xmlTextReaderGetAttributeNs(xmlTextReaderPtr reader, const xmlChar *localName,
 	return(NULL);
     if (reader->node == NULL)
 	return(NULL);
+    if (reader->curnode != NULL)
+	return(NULL);
 
     /* TODO: handle the xmlDecl */
     if (reader->node->type != XML_ELEMENT_NODE)
 	return(NULL);
 
     return(xmlGetNsProp(reader->node, localName, namespaceURI));
+}
+
+/**
+ * xmlTextReaderGetRemainder:
+ * @reader:  the xmlTextReaderPtr used
+ *
+ * Method to get the remainder of the buffered XML. this method stops the
+ * parser, set its state to End Of File and return the input stream with
+ * what is left that the parser did not use.
+ *
+ * Returns the xmlParserInputBufferPtr attached to the XML or NULL
+ *    in case of error.
+ */
+xmlParserInputBufferPtr
+xmlTextReaderGetRemainder(xmlTextReaderPtr reader) {
+    xmlParserInputBufferPtr ret = NULL;
+
+    if (reader == NULL)
+	return(NULL);
+    if (reader->node == NULL)
+	return(NULL);
+
+    reader->node = NULL;
+    reader->curnode = NULL;
+    reader->mode = XML_TEXTREADER_MODE_EOF;
+    if (reader->ctxt != NULL) {
+	if (reader->ctxt->myDoc != NULL) {
+	    xmlFreeDoc(reader->ctxt->myDoc);
+	    reader->ctxt->myDoc = NULL;
+	}
+	if (reader->allocs & XML_TEXTREADER_CTXT) {
+	    xmlFreeParserCtxt(reader->ctxt);
+	    reader->allocs -= XML_TEXTREADER_CTXT;
+	}
+    }
+    if (reader->sax != NULL) {
+        xmlFree(reader->sax);
+	reader->sax = NULL;
+    }
+    if (reader->allocs & XML_TEXTREADER_INPUT) {
+	ret = reader->input;
+	reader->allocs -= XML_TEXTREADER_INPUT;
+    } else {
+	/*
+	 * Hum, one may need to duplicate the data structure because
+	 * without reference counting the input may be freed twice:
+	 *   - by the layer which allocated it.
+	 *   - by the layer to which would have been returned to.
+	 */
+	TODO
+	return(NULL);
+    }
+    return(ret);
+}
+
+/**
+ * xmlTextReaderLookupNamespace:
+ * @reader:  the xmlTextReaderPtr used
+ * @prefix: the prefix whose namespace URI is to be resolved. To return
+ *          the default namespace, specify NULL
+ *
+ * Resolves a namespace prefix in the scope of the current element.
+ *
+ * Returns a string containing the namespace URI to which the prefix maps
+ *    or NULL in case of error. The string must be deallocated by the caller.
+ */
+xmlChar *
+xmlTextReaderLookupNamespace(xmlTextReaderPtr reader, const xmlChar *prefix) {
+    xmlNsPtr ns;
+
+    if (reader == NULL)
+	return(NULL);
+    if (reader->node == NULL)
+	return(NULL);
+
+    ns = xmlSearchNs(reader->node->doc, reader->node, prefix);
+    if (ns == NULL)
+	return(NULL);
+    return(xmlStrdup(ns->href));
+}
+
+/**
+ * xmlTextReaderMoveToAttributeNo:
+ * @reader:  the xmlTextReaderPtr used
+ * @no: the zero-based index of the attribute relative to the containing
+ *      element.
+ *
+ * Moves the position of the current instance to the attribute with
+ * the specified index relative to the containing element.
+ *
+ * Returns 1 in case of success, -1 in case of error, 0 if not found
+ */
+int
+xmlTextReaderMoveToAttributeNo(xmlTextReaderPtr reader, int no) {
+    int i;
+    xmlAttrPtr cur;
+    xmlNsPtr ns;
+
+    if (reader == NULL)
+	return(-1);
+    if (reader->node == NULL)
+	return(-1);
+    /* TODO: handle the xmlDecl */
+    if (reader->node->type != XML_ELEMENT_NODE) 
+	return(-1);
+
+    reader->curnode = NULL;
+
+    ns = reader->node->nsDef;
+    for (i = 0;(i < no) && (ns != NULL);i++) {
+	ns = ns->next;
+    }
+    if (ns != NULL) {
+	reader->curnode = (xmlNodePtr) ns;
+	return(1);
+    }
+
+    cur = reader->node->properties;
+    if (cur == NULL)
+	return(0);
+    for (;i < no;i++) {
+	cur = cur->next;
+	if (cur == NULL)
+	    return(0);
+    }
+    /* TODO walk the DTD if present */
+
+    reader->curnode = (xmlNodePtr) cur;
+    return(1);
+}
+
+/**
+ * xmlTextReaderMoveToAttribute:
+ * @reader:  the xmlTextReaderPtr used
+ * @name: the qualified name of the attribute.
+ *
+ * Moves the position of the current instance to the attribute with
+ * the specified qualified name.
+ *
+ * Returns 1 in case of success, -1 in case of error, 0 if not found
+ */
+int
+xmlTextReaderMoveToAttribute(xmlTextReaderPtr reader, const xmlChar *name) {
+    xmlChar *prefix = NULL;
+    xmlChar *localname;
+    xmlNsPtr ns;
+    xmlAttrPtr prop;
+
+    if ((reader == NULL) || (name == NULL))
+	return(-1);
+    if (reader->node == NULL)
+	return(-1);
+
+    /* TODO: handle the xmlDecl */
+    if (reader->node->type != XML_ELEMENT_NODE)
+	return(0);
+
+    localname = xmlSplitQName2(name, &prefix);
+    if (localname == NULL) {
+	/*
+	 * Namespace default decl
+	 */
+	if (xmlStrEqual(name, BAD_CAST "xmlns")) {
+	    ns = reader->node->nsDef;
+	    while (ns != NULL) {
+		if (ns->prefix == NULL) {
+		    reader->curnode = (xmlNodePtr) ns;
+		    return(1);
+		}
+		ns = ns->next;
+	    }
+	    return(0);
+	}
+
+	prop = reader->node->properties;
+	while (prop != NULL) {
+	    /*
+	     * One need to have
+	     *   - same attribute names
+	     *   - and the attribute carrying that namespace
+	     */
+	    if ((xmlStrEqual(prop->name, name)) &&
+		((prop->ns == NULL) || (prop->ns->prefix == NULL))) {
+		reader->curnode = (xmlNodePtr) prop;
+		return(1);
+	    }
+	    prop = prop->next;
+	}
+	return(0);
+    }
+    
+    /*
+     * Namespace default decl
+     */
+    if (xmlStrEqual(prefix, BAD_CAST "xmlns")) {
+	ns = reader->node->nsDef;
+	while (ns != NULL) {
+	    if ((ns->prefix != NULL) && (xmlStrEqual(ns->prefix, localname))) {
+		reader->curnode = (xmlNodePtr) ns;
+		goto found;
+	    }
+	    ns = ns->next;
+	}
+	goto not_found;
+    }
+    prop = reader->node->properties;
+    while (prop != NULL) {
+	/*
+	 * One need to have
+	 *   - same attribute names
+	 *   - and the attribute carrying that namespace
+	 */
+	if ((xmlStrEqual(prop->name, localname)) &&
+	    (prop->ns != NULL) && (xmlStrEqual(prop->ns->prefix, prefix))) {
+	    reader->curnode = (xmlNodePtr) prop;
+	    goto found;
+	}
+	prop = prop->next;
+    }
+not_found:
+    if (localname != NULL)
+        xmlFree(localname);
+    if (prefix != NULL)
+        xmlFree(prefix);
+    return(0);
+
+found:
+    if (localname != NULL)
+        xmlFree(localname);
+    if (prefix != NULL)
+        xmlFree(prefix);
+    return(1);
+}
+
+/**
+ * xmlTextReaderMoveToAttributeNs:
+ * @reader:  the xmlTextReaderPtr used
+ * @localName:  the local name of the attribute.
+ * @namespaceURI:  the namespace URI of the attribute.
+ *
+ * Moves the position of the current instance to the attribute with the
+ * specified local name and namespace URI.
+ *
+ * Returns 1 in case of success, -1 in case of error, 0 if not found
+ */
+int
+xmlTextReaderMoveToAttributeNs(xmlTextReaderPtr reader,
+	const xmlChar *localName, const xmlChar *namespaceURI) {
+    xmlAttrPtr prop;
+    xmlNodePtr node;
+
+    if ((reader == NULL) || (localName == NULL) || (namespaceURI == NULL))
+	return(-1);
+    if (reader->node == NULL)
+	return(-1);
+    if (reader->node->type != XML_ELEMENT_NODE)
+	return(0);
+    node = reader->node;
+
+    /*
+     * A priori reading http://www.w3.org/TR/REC-xml-names/ there is no
+     * namespace name associated to "xmlns"
+     */
+    prop = node->properties;
+    while (prop != NULL) {
+	/*
+	 * One need to have
+	 *   - same attribute names
+	 *   - and the attribute carrying that namespace
+	 */
+        if (xmlStrEqual(prop->name, localName) &&
+	    ((prop->ns != NULL) &&
+	     (xmlStrEqual(prop->ns->href, namespaceURI)))) {
+	    reader->curnode = (xmlNodePtr) prop;
+	    return(1);
+        }
+	prop = prop->next;
+    }
+    return(0);
+}
+
+/**
+ * xmlTextReaderMoveToFirstAttribute:
+ * @reader:  the xmlTextReaderPtr used
+ *
+ * Moves the position of the current instance to the first attribute
+ * associated with the current node.
+ *
+ * Returns 1 in case of success, -1 in case of error, 0 if not found
+ */
+int
+xmlTextReaderMoveToFirstAttribute(xmlTextReaderPtr reader) {
+    if (reader == NULL)
+	return(-1);
+    if (reader->node == NULL)
+	return(-1);
+    if (reader->node->type != XML_ELEMENT_NODE)
+	return(0);
+
+    if (reader->node->nsDef != NULL) {
+	reader->curnode = (xmlNodePtr) reader->node->nsDef;
+	return(1);
+    }
+    if (reader->node->properties != NULL) {
+	reader->curnode = (xmlNodePtr) reader->node->properties;
+	return(1);
+    }
+    return(0);
+}
+
+/**
+ * xmlTextReaderMoveToNextAttribute:
+ * @reader:  the xmlTextReaderPtr used
+ *
+ * Moves the position of the current instance to the next attribute
+ * associated with the current node.
+ *
+ * Returns 1 in case of success, -1 in case of error, 0 if not found
+ */
+int
+xmlTextReaderMoveToNextAttribute(xmlTextReaderPtr reader) {
+    if (reader == NULL)
+	return(-1);
+    if (reader->node == NULL)
+	return(-1);
+    if (reader->node->type != XML_ELEMENT_NODE)
+	return(0);
+    if (reader->curnode == NULL)
+	return(xmlTextReaderMoveToFirstAttribute(reader));
+
+    if (reader->curnode->type == XML_NAMESPACE_DECL) {
+	xmlNsPtr ns = (xmlNsPtr) reader->curnode;
+	if (ns->next != NULL) {
+	    reader->curnode = (xmlNodePtr) ns->next;
+	    return(1);
+	}
+	if (reader->node->properties != NULL) {
+	    reader->curnode = (xmlNodePtr) reader->node->properties;
+	    return(1);
+	}
+	return(0);
+    } else if ((reader->curnode->type == XML_ATTRIBUTE_NODE) &&
+	       (reader->curnode->next != NULL)) {
+	reader->curnode = reader->curnode->next;
+	return(1);
+    }
+    return(0);
+}
+
+/**
+ * xmlTextReaderMoveToElement:
+ * @reader:  the xmlTextReaderPtr used
+ *
+ * Moves the position of the current instance to the node that
+ * contains the current Attribute  node.
+ *
+ * Returns 1 in case of success, -1 in case of error, 0 if not moved
+ */
+int
+xmlTextReaderMoveToElement(xmlTextReaderPtr reader) {
+    if (reader == NULL)
+	return(-1);
+    if (reader->node == NULL)
+	return(-1);
+    if (reader->node->type != XML_ELEMENT_NODE)
+	return(0);
+    if (reader->curnode != NULL) {
+	reader->curnode = NULL;
+	return(1);
+    }
+    return(0);
 }
 
 /************************************************************************
@@ -648,18 +1028,25 @@ int
 xmlTextReaderAttributeCount(xmlTextReaderPtr reader) {
     int ret;
     xmlAttrPtr attr;
+    xmlNodePtr node;
 
     if (reader == NULL)
 	return(-1);
     if (reader->node == NULL)
 	return(0);
-    if (reader->node->type != XML_ELEMENT_NODE)
+    
+    if (reader->curnode != NULL)
+	node = reader->curnode;
+    else
+	node = reader->node;
+
+    if (node->type != XML_ELEMENT_NODE)
 	return(0);
     if ((reader->state == XML_TEXTREADER_END) ||
 	(reader->state == XML_TEXTREADER_BACKTRACK))
 	return(0);
     ret = 0;
-    attr = reader->node->properties;
+    attr = node->properties;
     while (attr != NULL) {
 	ret++;
 	attr = attr->next;
@@ -679,11 +1066,16 @@ xmlTextReaderAttributeCount(xmlTextReaderPtr reader) {
  */
 int
 xmlTextReaderNodeType(xmlTextReaderPtr reader) {
+    xmlNodePtr node;
     if (reader == NULL)
 	return(-1);
     if (reader->node == NULL)
 	return(0);
-    switch (reader->node->type) {
+    if (reader->curnode != NULL)
+	node = reader->curnode;
+    else
+	node = reader->node;
+    switch (node->type) {
         case XML_ELEMENT_NODE:
 	    if ((reader->state == XML_TEXTREADER_END) ||
 		(reader->state == XML_TEXTREADER_BACKTRACK))
@@ -758,12 +1150,24 @@ xmlTextReaderIsEmptyElement(xmlTextReaderPtr reader) {
  */
 xmlChar *
 xmlTextReaderLocalName(xmlTextReaderPtr reader) {
+    xmlNodePtr node;
     if ((reader == NULL) || (reader->node == NULL))
 	return(NULL);
-    if ((reader->node->type != XML_ELEMENT_NODE) &&
-	(reader->node->type != XML_ATTRIBUTE_NODE))
+    if (reader->curnode != NULL)
+	node = reader->curnode;
+    else
+	node = reader->node;
+    if (node->type == XML_NAMESPACE_DECL) {
+	xmlNsPtr ns = (xmlNsPtr) node;
+	if (ns->prefix == NULL)
+	    return(xmlStrdup(BAD_CAST "xmlns"));
+	else
+	    return(xmlStrdup(ns->prefix));
+    }
+    if ((node->type != XML_ELEMENT_NODE) &&
+	(node->type != XML_ATTRIBUTE_NODE))
 	return(xmlTextReaderName(reader));
-    return(xmlStrdup(reader->node->name));
+    return(xmlStrdup(node->name));
 }
 
 /**
@@ -776,20 +1180,25 @@ xmlTextReaderLocalName(xmlTextReaderPtr reader) {
  */
 xmlChar *
 xmlTextReaderName(xmlTextReaderPtr reader) {
+    xmlNodePtr node;
     xmlChar *ret;
 
     if ((reader == NULL) || (reader->node == NULL))
 	return(NULL);
-    switch (reader->node->type) {
+    if (reader->curnode != NULL)
+	node = reader->curnode;
+    else
+	node = reader->node;
+    switch (node->type) {
         case XML_ELEMENT_NODE:
         case XML_ATTRIBUTE_NODE:
-	    if ((reader->node->ns == NULL) ||
-		(reader->node->ns->prefix == NULL))
-		return(xmlStrdup(reader->node->name));
+	    if ((node->ns == NULL) ||
+		(node->ns->prefix == NULL))
+		return(xmlStrdup(node->name));
 	    
-	    ret = xmlStrdup(reader->node->ns->prefix);
+	    ret = xmlStrdup(node->ns->prefix);
 	    ret = xmlStrcat(ret, BAD_CAST ":");
-	    ret = xmlStrcat(ret, reader->node->name);
+	    ret = xmlStrcat(ret, node->name);
 	    return(ret);
         case XML_TEXT_NODE:
 	    return(xmlStrdup(BAD_CAST "#text"));
@@ -797,9 +1206,9 @@ xmlTextReaderName(xmlTextReaderPtr reader) {
 	    return(xmlStrdup(BAD_CAST "#cdata-section"));
         case XML_ENTITY_NODE:
         case XML_ENTITY_REF_NODE:
-	    return(xmlStrdup(reader->node->name));
+	    return(xmlStrdup(node->name));
         case XML_PI_NODE:
-	    return(xmlStrdup(reader->node->name));
+	    return(xmlStrdup(node->name));
         case XML_COMMENT_NODE:
 	    return(xmlStrdup(BAD_CAST "#comment"));
         case XML_DOCUMENT_NODE:
@@ -811,15 +1220,24 @@ xmlTextReaderName(xmlTextReaderPtr reader) {
         case XML_DOCUMENT_FRAG_NODE:
 	    return(xmlStrdup(BAD_CAST "#document-fragment"));
         case XML_NOTATION_NODE:
-	    return(xmlStrdup(reader->node->name));
+	    return(xmlStrdup(node->name));
         case XML_DOCUMENT_TYPE_NODE:
         case XML_DTD_NODE:
-	    return(xmlStrdup(reader->node->name));
+	    return(xmlStrdup(node->name));
+        case XML_NAMESPACE_DECL: {
+	    xmlNsPtr ns = (xmlNsPtr) node;
+
+	    ret = xmlStrdup(BAD_CAST "xmlns");
+	    if (ns->prefix == NULL)
+		return(ret);
+	    ret = xmlStrcat(ret, BAD_CAST ":");
+	    ret = xmlStrcat(ret, ns->prefix);
+	    return(ret);
+	}
 
         case XML_ELEMENT_DECL:
         case XML_ATTRIBUTE_DECL:
         case XML_ENTITY_DECL:
-        case XML_NAMESPACE_DECL:
         case XML_XINCLUDE_START:
         case XML_XINCLUDE_END:
 	    return(NULL);
@@ -837,13 +1255,24 @@ xmlTextReaderName(xmlTextReaderPtr reader) {
  */
 xmlChar *
 xmlTextReaderPrefix(xmlTextReaderPtr reader) {
+    xmlNodePtr node;
     if ((reader == NULL) || (reader->node == NULL))
 	return(NULL);
-    if ((reader->node->type != XML_ELEMENT_NODE) &&
-	(reader->node->type != XML_ATTRIBUTE_NODE))
+    if (reader->curnode != NULL)
+	node = reader->curnode;
+    else
+	node = reader->node;
+    if (node->type == XML_NAMESPACE_DECL) {
+	xmlNsPtr ns = (xmlNsPtr) node;
+	if (ns->prefix == NULL)
+	    return(NULL);
+	return(xmlStrdup(BAD_CAST "xmlns"));
+    }
+    if ((node->type != XML_ELEMENT_NODE) &&
+	(node->type != XML_ATTRIBUTE_NODE))
 	return(NULL);
-    if ((reader->node->ns != NULL) || (reader->node->ns->prefix != NULL))
-	return(xmlStrdup(reader->node->ns->prefix));
+    if ((node->ns != NULL) || (node->ns->prefix != NULL))
+	return(xmlStrdup(node->ns->prefix));
     return(NULL);
 }
 
@@ -857,13 +1286,22 @@ xmlTextReaderPrefix(xmlTextReaderPtr reader) {
  */
 xmlChar *
 xmlTextReaderNamespaceUri(xmlTextReaderPtr reader) {
+    xmlNodePtr node;
     if ((reader == NULL) || (reader->node == NULL))
 	return(NULL);
-    if ((reader->node->type != XML_ELEMENT_NODE) &&
-	(reader->node->type != XML_ATTRIBUTE_NODE))
+    if (reader->curnode != NULL)
+	node = reader->curnode;
+    else
+	node = reader->node;
+    if (node->type == XML_NAMESPACE_DECL) {
+	xmlNsPtr ns = (xmlNsPtr) node;
+	return(xmlStrdup(ns->href));
+    }
+    if ((node->type != XML_ELEMENT_NODE) &&
+	(node->type != XML_ATTRIBUTE_NODE))
 	return(NULL);
-    if (reader->node->ns != NULL)
-	return(xmlStrdup(reader->node->ns->href));
+    if (node->ns != NULL)
+	return(xmlStrdup(node->ns->href));
     return(NULL);
 }
 
@@ -910,13 +1348,18 @@ xmlTextReaderDepth(xmlTextReaderPtr reader) {
  */
 int
 xmlTextReaderHasAttributes(xmlTextReaderPtr reader) {
+    xmlNodePtr node;
     if (reader == NULL)
 	return(-1);
     if (reader->node == NULL)
 	return(0);
+    if (reader->curnode != NULL)
+	node = reader->curnode;
+    else
+	node = reader->node;
 
-    if ((reader->node->type == XML_ELEMENT_NODE) &&
-	(reader->node->properties != NULL))
+    if ((node->type == XML_ELEMENT_NODE) &&
+	(node->properties != NULL))
 	return(1);
     /* TODO: handle the xmlDecl */
     return(0);
@@ -932,12 +1375,17 @@ xmlTextReaderHasAttributes(xmlTextReaderPtr reader) {
  */
 int
 xmlTextReaderHasValue(xmlTextReaderPtr reader) {
+    xmlNodePtr node;
     if (reader == NULL)
 	return(-1);
     if (reader->node == NULL)
 	return(0);
+    if (reader->curnode != NULL)
+	node = reader->curnode;
+    else
+	node = reader->node;
 
-    switch (reader->node->type) {
+    switch (node->type) {
         case XML_ATTRIBUTE_NODE:
         case XML_TEXT_NODE:
         case XML_CDATA_SECTION_NODE:
@@ -961,14 +1409,21 @@ xmlTextReaderHasValue(xmlTextReaderPtr reader) {
  */
 xmlChar *
 xmlTextReaderValue(xmlTextReaderPtr reader) {
+    xmlNodePtr node;
     if (reader == NULL)
 	return(NULL);
     if (reader->node == NULL)
 	return(NULL);
+    if (reader->curnode != NULL)
+	node = reader->curnode;
+    else
+	node = reader->node;
 
-    switch (reader->node->type) {
+    switch (node->type) {
+        case XML_NAMESPACE_DECL:
+	    return(xmlStrdup(((xmlNsPtr) node)->href));
         case XML_ATTRIBUTE_NODE:{
-	    xmlAttrPtr attr = (xmlAttrPtr) reader->node;
+	    xmlAttrPtr attr = (xmlAttrPtr) node;
 
 	    if (attr->parent != NULL)
 		return (xmlNodeListGetString
@@ -981,8 +1436,8 @@ xmlTextReaderValue(xmlTextReaderPtr reader) {
         case XML_CDATA_SECTION_NODE:
         case XML_PI_NODE:
         case XML_COMMENT_NODE:
-            if (reader->node->content != NULL)
-                return (xmlStrdup(reader->node->content));
+            if (node->content != NULL)
+                return (xmlStrdup(node->content));
 	default:
 	    return(NULL);
     }

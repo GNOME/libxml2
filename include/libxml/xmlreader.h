@@ -61,6 +61,20 @@ xmlChar *	xmlTextReaderGetAttribute	(xmlTextReaderPtr reader,
 xmlChar *	xmlTextReaderGetAttributeNs	(xmlTextReaderPtr reader,
 						 const xmlChar *localName,
 						 const xmlChar *namespaceURI);
+xmlParserInputBufferPtr xmlTextReaderGetRemainder(xmlTextReaderPtr reader);
+xmlChar *	xmlTextReaderLookupNamespace	(xmlTextReaderPtr reader,
+						 const xmlChar *prefix);
+int		xmlTextReaderMoveToAttributeNo	(xmlTextReaderPtr reader,
+						 int no);
+int		xmlTextReaderMoveToAttribute	(xmlTextReaderPtr reader,
+						 const xmlChar *name);
+int		xmlTextReaderMoveToAttributeNs	(xmlTextReaderPtr reader,
+						 const xmlChar *localName,
+						 const xmlChar *namespaceURI);
+int		xmlTextReaderMoveToFirstAttribute(xmlTextReaderPtr reader);
+int		xmlTextReaderMoveToNextAttribute(xmlTextReaderPtr reader);
+int		xmlTextReaderMoveToElement	(xmlTextReaderPtr reader);
+
 #ifdef __cplusplus
 }
 #endif

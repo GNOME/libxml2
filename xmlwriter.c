@@ -4068,17 +4068,19 @@ xmlTextWriterWriteIndent (xmlTextWriterPtr writer)
 {
   int lksize;
   int i;
-  int ret = -1;		/* just in case of an empty list */
+  int ret;
   
   lksize = xmlListSize (writer->nodes);
+  if (lksize < 1)
+      return (-1);	/* list is empty */
   for (i = 0; i < (lksize-1); i++) {
     ret = xmlOutputBufferWriteString (writer->out, 
             (const char *)writer->ichar);
     if (ret == -1)
-      break;
+      return (-1);
   }
 
-  return (ret == -1)?ret:i;
+  return (lksize - 1);
 }
 
 #endif

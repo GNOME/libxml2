@@ -1,3 +1,8 @@
+Fri Feb  6 21:03:41 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* xmlwriter.c: fixed problem with return value of
+	  xmlTextWriterWriteIndent() (bug 133297)
+
 Fri Feb  6 19:07:04 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* xinclude.c: changed coding to output good XIncludes when

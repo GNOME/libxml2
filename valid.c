@@ -97,11 +97,11 @@ typedef struct _xmlValidState {
 #define OCCURS ctxt->vstate->occurs
 #define STATE ctxt->vstate->state
 
-#define OCCURENCE (ctxt->vstate->occurs & (1 << DEPTH))
-#define PARENT_OCCURENCE (ctxt->vstate->occurs & ((1 << DEPTH) - 1))
+#define OCCURRENCE (ctxt->vstate->occurs & (1 << DEPTH))
+#define PARENT_OCCURRENCE (ctxt->vstate->occurs & ((1 << DEPTH) - 1))
 
-#define SET_OCCURENCE ctxt->vstate->occurs |= (1 << DEPTH)
-#define RESET_OCCURENCE ctxt->vstate->occurs &= ((1 << DEPTH) - 1)
+#define SET_OCCURRENCE ctxt->vstate->occurs |= (1 << DEPTH)
+#define RESET_OCCURRENCE ctxt->vstate->occurs &= ((1 << DEPTH) - 1)
 
 static int
 vstateVPush(xmlValidCtxtPtr ctxt, xmlElementContentPtr cont,
@@ -3445,7 +3445,7 @@ cont:
 	 (CONT->parent->type != XML_ELEMENT_CONTENT_OR)) &&
 	((CONT->ocur == XML_ELEMENT_CONTENT_MULT) ||
 	 (CONT->ocur == XML_ELEMENT_CONTENT_OPT) ||
-	 ((CONT->ocur == XML_ELEMENT_CONTENT_PLUS) && (OCCURENCE)))) {
+	 ((CONT->ocur == XML_ELEMENT_CONTENT_PLUS) && (OCCURRENCE)))) {
 	DEBUG_VALID_MSG("saving parent branch");
 	vstateVPush(ctxt, CONT, NODE, DEPTH, OCCURS, ROLLBACK_PARENT);
     }
@@ -3616,7 +3616,7 @@ analyze:
 			determinist = -3;
 		    goto cont;
 		case XML_ELEMENT_CONTENT_PLUS:
-		    if (OCCURENCE == 0) {
+		    if (OCCURRENCE == 0) {
 			cur = ctxt->vstate->node;
 			DEBUG_VALID_MSG("Plus branch failed, rollback");
 			if (vstateVPop(ctxt) < 0 ) {
@@ -3632,7 +3632,7 @@ analyze:
 		    break;
 		case XML_ELEMENT_CONTENT_MULT:
 #ifdef DEBUG_VALID_ALGO
-		    if (OCCURENCE == 0) {
+		    if (OCCURRENCE == 0) {
 			DEBUG_VALID_MSG("Mult branch failed");
 		    } else {
 			DEBUG_VALID_MSG("Mult branch found");
@@ -3667,7 +3667,7 @@ analyze:
 			break;
 		    }
 		    DEBUG_VALID_MSG("Plus branch succeeded, continuing");
-		    SET_OCCURENCE;
+		    SET_OCCURRENCE;
 		    goto cont;
 		case XML_ELEMENT_CONTENT_MULT:
 		    if (STATE == ROLLBACK_PARENT) {
@@ -3681,7 +3681,7 @@ analyze:
 			break;
 		    }
 		    DEBUG_VALID_MSG("Mult branch succeeded, continuing");
-		    /* SET_OCCURENCE; */
+		    /* SET_OCCURRENCE; */
 		    goto cont;
 	    }
 	}
@@ -3690,7 +3690,7 @@ analyze:
 	/*
 	 * Then act accordingly at the parent level
 	 */
-	RESET_OCCURENCE;
+	RESET_OCCURRENCE;
 	if (CONT->parent == NULL)
 	    break;
 

@@ -177,7 +177,7 @@ void *		xmlXPathPopExternal	(xmlXPathParserContextPtr ctxt);
  *
  * Pushes an empty node-set on the context stack
  */
-#define xmlXPathReturnEmptyNodeSet(ctxt, ns)				\
+#define xmlXPathReturnEmptyNodeSet(ctxt)				\
     valuePush((ctxt), xmlXPathNewNodeSet(NULL))
 
 /**

@@ -1057,72 +1057,6 @@ docbAutoCloseTag(docbDocPtr doc, const xmlChar *name, docbNodePtr elem) {
     return(0);
 }
 
-#if 0
-/**
- * docbIsAutoClosed:
- * @doc:  the SGML document
- * @elem:  the SGML element
- *
- * The list is kept in docbStartClose array. This function checks
- * if a tag is autoclosed by one of it's child
- *
- * Returns 1 if autoclosed, 0 otherwise
- */
-static int
-docbIsAutoClosed(docbDocPtr doc, docbNodePtr elem) {
-    docbNodePtr child;
-
-    if (elem == NULL) return(1);
-    child = elem->children;
-    while (child != NULL) {
-       if (docbAutoCloseTag(doc, elem->name, child)) return(1);
-       child = child->next;
-    }
-    return(0);
-}
-#endif
-
-/**
- * docbCheckParagraph
- * @ctxt:  an SGML parser context
- *
- * Check whether a p element need to be implied before inserting
- * characters in the current element.
- *
- * Returns 1 if a paragraph has been inserted, 0 if not and -1
- *         in case of error.
- */
-
-static int
-docbCheckParagraph(docbParserCtxtPtr ctxt) {
-    const xmlChar *tag;
-    int i;
-
-    if (ctxt == NULL)
-       return(-1);
-    tag = ctxt->name;
-    if (tag == NULL) {
-       docbAutoClose(ctxt, BAD_CAST"p");
-       docbnamePush(ctxt, xmlStrdup(BAD_CAST"p"));
-       if ((ctxt->sax != NULL) && (ctxt->sax->startElement != NULL))
-           ctxt->sax->startElement(ctxt->userData, BAD_CAST"p", NULL);
-       return(1);
-    }
-    for (i = 0; docbNoContentElements[i] != NULL; i++) {
-       if (xmlStrEqual(tag, BAD_CAST docbNoContentElements[i])) {
-#ifdef DEBUG
-           xmlGenericError(xmlGenericErrorContext,"Implied element paragraph\n");
-#endif    
-           docbAutoClose(ctxt, BAD_CAST"p");
-           docbnamePush(ctxt, xmlStrdup(BAD_CAST"p"));
-           if ((ctxt->sax != NULL) && (ctxt->sax->startElement != NULL))
-               ctxt->sax->startElement(ctxt->userData, BAD_CAST"p", NULL);
-           return(1);
-       }
-    }
-    return(0);
-}
-
 /************************************************************************
  *                                                                     *
  *             The list of SGML predefined entities                    *
@@ -3105,7 +3039,6 @@ docbParseCharData(docbParserCtxtPtr ctxt) {
                        ctxt->sax->ignorableWhitespace(ctxt->userData,
                                                       buf, nbchar);
                } else {
-                   docbCheckParagraph(ctxt);
                    if (ctxt->sax->characters != NULL)
                        ctxt->sax->characters(ctxt->userData, buf, nbchar);
                }
@@ -3124,7 +3057,6 @@ docbParseCharData(docbParserCtxtPtr ctxt) {
                if (ctxt->sax->ignorableWhitespace != NULL)
                    ctxt->sax->ignorableWhitespace(ctxt->userData, buf, nbchar);
            } else {
-               docbCheckParagraph(ctxt);
                if (ctxt->sax->characters != NULL)
                    ctxt->sax->characters(ctxt->userData, buf, nbchar);
            }
@@ -4051,7 +3983,6 @@ docbParseReference(docbParserCtxtPtr ctxt) {
         }
        out[i] = 0;
 
-       docbCheckParagraph(ctxt);
        if ((ctxt->sax != NULL) && (ctxt->sax->characters != NULL))
            ctxt->sax->characters(ctxt->userData, out, i);
     } else {
@@ -4102,7 +4033,6 @@ docbParseReference(docbParserCtxtPtr ctxt) {
        } else if (name != NULL) {
 	   ent = docbEntityLookup(name);
 	   if ((ent == NULL) || (ent->value <= 0)) {
-	       docbCheckParagraph(ctxt);
 	       if ((ctxt->sax != NULL) && (ctxt->sax->characters != NULL)) {
 		   ctxt->sax->characters(ctxt->userData, BAD_CAST "&", 1);
 		   ctxt->sax->characters(ctxt->userData, name, xmlStrlen(name));
@@ -4127,12 +4057,10 @@ docbParseReference(docbParserCtxtPtr ctxt) {
 	       }
 	       out[i] = 0;
 
-	       docbCheckParagraph(ctxt);
 	       if ((ctxt->sax != NULL) && (ctxt->sax->characters != NULL))
 		   ctxt->sax->characters(ctxt->userData, out, i);
 	   }
        } else {
-           docbCheckParagraph(ctxt);
            if ((ctxt->sax != NULL) && (ctxt->sax->characters != NULL))
                ctxt->sax->characters(ctxt->userData, BAD_CAST "&", 1);
            return;
@@ -5607,7 +5535,6 @@ docbParseTryOrFinish(docbParserCtxtPtr ctxt, int terminate) {
                    xmlChar chr[2] = { 0 , 0 } ;
 
                    chr[0] = (xmlChar) ctxt->token;
-                   docbCheckParagraph(ctxt);
                    if ((ctxt->sax != NULL) && (ctxt->sax->characters != NULL))
                        ctxt->sax->characters(ctxt->userData, chr, 1);
                    ctxt->token = 0;
@@ -5622,7 +5549,6 @@ docbParseTryOrFinish(docbParserCtxtPtr ctxt, int terminate) {
                                    ctxt->sax->ignorableWhitespace(
                                            ctxt->userData, &cur, 1);
                            } else {
-                               docbCheckParagraph(ctxt);
                                if (ctxt->sax->characters != NULL)
                                    ctxt->sax->characters(
                                            ctxt->userData, &cur, 1);

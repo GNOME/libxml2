@@ -1,4 +1,4 @@
-./test/VC/ElementValid7:7: validity error: Element doc content doesn't follow the Dtd
+./test/VC/ElementValid7:7: validity error: Element doc content doesn't follow the DTD
 Expecting ((a | b)* , c+ , a , b? , c , a?), got (a b a c c a)
 <doc><a/><b/><a/><c/><c/><a/></doc>
                                   ^

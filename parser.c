@@ -6848,7 +6848,7 @@ xmlParseElement(xmlParserCtxtPtr ctxt) {
      */
     xmlParseContent(ctxt);
     if (!IS_CHAR(RAW)) {
-	ctxt->errNo = XML_ERR_TAG_NOT_FINISED;
+	ctxt->errNo = XML_ERR_TAG_NOT_FINISHED;
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt->userData,
 	         "Premature end of data in tag %.30s\n", openTag);

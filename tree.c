@@ -4161,8 +4161,12 @@ xmlGetNodePath(xmlNodePtr node)
             sep = "/";
             name = (const char *) cur->name;
             if (cur->ns) {
-                snprintf(nametemp, sizeof(nametemp) - 1,
+	        if (cur->ns->prefix != NULL)
+                    snprintf(nametemp, sizeof(nametemp) - 1,
                          "%s:%s", cur->ns->prefix, cur->name);
+		else
+		    snprintf(nametemp, sizeof(nametemp) - 1,
+		         "%s", cur->name);
                 nametemp[sizeof(nametemp) - 1] = 0;
                 name = nametemp;
             }

@@ -1,44 +1,86 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS = libxml doc example
+SUBDIRS = . include doc example
 
-INCLUDES = $(CORBA_CFLAGS)
+INCLUDES = -I@srcdir@/include -I./include @Z_CFLAGS@ @CORBA_CFLAGS@ 
 
 noinst_PROGRAMS=testSAX testHTML testXPath testURI
 
-DEPS = $(top_builddir)/libxml/libxml2.la
-LDADDS = $(top_builddir)/libxml/libxml2.la
-
 bin_PROGRAMS = xmllint
 
-xmllint_SOURCES = xmllint.c
+bin_SCRIPTS=xml2-config
+
+lib_LTLIBRARIES = libxml2.la
+libxml2_la_LIBADD = @Z_LIBS@
+
+libxml2_la_LDFLAGS = -version-info @LIBXML_VERSION_INFO@
+
+libxml2_la_SOURCES = \
+		SAX.c \
+		entities.c \
+		encoding.c \
+		error.c \
+		parserInternals.c \
+		parser.c \
+		tree.c \
+		hash.c \
+		list.c \
+		xmlIO.c \
+		xmlmemory.c \
+		uri.c \
+		valid.c \
+		xlink.c \
+		HTMLparser.c \
+		HTMLtree.c \
+		debugXML.c \
+		xpath.c \
+		xpointer.c \
+		xinclude.c \
+		nanohttp.c \
+		nanoftp.c
+
+DEPS = $(top_builddir)/libxml2.la
+LDADDS = $(top_builddir)/libxml2.la @Z_LIBS@ @M_LIBS@
+
+man_MANS = xmllint.1 xml2-config.1 libxml.4
+
+m4datadir = $(datadir)/aclocal
+m4data_DATA = libxml.m4
+
+xmllint_SOURCES=xmllint.c
 xmllint_LDFLAGS = 
 xmllint_DEPENDENCIES = $(DEPS)
-xmllint_LDADD = $(RDL_LIBS) $(LDADDS)
+xmllint_LDADD=  @RDL_LIBS@ $(LDADDS)
 
-testSAX_SOURCES = testSAX.c
+testSAX_SOURCES=testSAX.c
 testSAX_LDFLAGS = 
 testSAX_DEPENDENCIES = $(DEPS)
-testSAX_LDADD = $(LDADDS)
+testSAX_LDADD= $(LDADDS)
 
-testHTML_SOURCES = testHTML.c
+testHTML_SOURCES=testHTML.c
 testHTML_LDFLAGS = 
 testHTML_DEPENDENCIES = $(DEPS)
-testHTML_LDADD = $(LDADDS)
+testHTML_LDADD= $(LDADDS)
 
-testXPath_SOURCES = testXPath.c
+testXPath_SOURCES=testXPath.c
 testXPath_LDFLAGS = 
 testXPath_DEPENDENCIES = $(DEPS)
-testXPath_LDADD = $(LDADDS)
+testXPath_LDADD= $(LDADDS)
 
-testURI_SOURCES = testURI.c
+testURI_SOURCES=testURI.c
 testURI_LDFLAGS = 
 testURI_DEPENDENCIES = $(DEPS)
-testURI_LDADD = $(LDADDS)
+testURI_LDADD= $(LDADDS)
 
 check-local: tests
 
+$(srcdir)/libxml:
+	-$(RM) $(srcdir)/libxml
+	ln -s $(srcdir)/. $(srcdir)/libxml
+
 install-data: $(srcdir)/libxml
+
+$(libxml2_la_SOURCES): $(srcdir)/libxml
 
 testall : tests SVGtests SAXtests
 
@@ -363,3 +405,34 @@ cleantar:
 
 rpm: cleantar distcheck
 	rpm -ta $(distdir).tar.gz
+
+## We create xml2Conf.sh here and not from configure because we want
+## to get the paths expanded correctly.  Macros like srcdir are given
+## the value NONE in configure if the user doesn't specify them (this
+## is an autoconf feature, not a bug).
+
+confexecdir=$(libdir)
+confexec_DATA = xml2Conf.sh
+
+CLEANFILES=xml2Conf.sh
+
+confexecdir=$(libdir)
+confexec_DATA = xml2Conf.sh
+EXTRA_DIST = xml2Conf.sh.in libxml.spec.in libxml.spec libxml.m4 \
+             example/Makefile.am example/gjobread.c example/gjobs.xml \
+	     $(man_MANS) libxml-2.0.pc.in xmlversion.h.in \
+	     win32/README.MSDev win32/Makefile.mingw \
+	     win32/libxml2/libxml2.dsp win32/libxml2/libxml2_so.dsp \
+	     win32/libxml2/libxml2_a.dsp vms/build_libxml.com vms/config.vms
+
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = libxml-2.0.pc
+
+#xml2Conf.sh: xml2Conf.sh.in Makefile
+### Use sed and then mv to avoid problems if the user interrupts.
+#	sed -e 's?\@XML_LIBDIR\@?$(XML_LIBDIR)?g' \
+#	    -e 's?\@XML_INCLUDEDIR\@?$(XML_INCLUDEDIR)?g' \
+#	    -e 's?\@XML_LIBS\@?$(XML_LIBS)?g' \
+#	    -e 's?\@VERSION\@?$(VERSION)?g' \
+#	      < $(srcdir)/xml2Conf.sh.in > xml2Conf.tmp \
+#	  && mv xml2Conf.tmp xml2Conf.sh

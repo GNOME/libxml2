@@ -36,7 +36,7 @@ if test "$DIE" -eq 1; then
 	exit 1
 fi
 
-test -f libxml/entities.h || {
+test -f entities.h || {
 	echo "You must run this script in the top-level libxml directory"
 	exit 1
 }

@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 AC_PREREQ(2.2)
-AC_INIT(libxml/entities.c)
+AC_INIT(entities.c)
 AM_CONFIG_HEADER(config.h)
 AC_CANONICAL_HOST
 
@@ -42,10 +42,32 @@ AM_PROG_LIBTOOL
 AM_MAINTAINER_MODE
 
 dnl Checks for zlib library.
-AC_CHECK_HEADERS(zlib.h,
-    AC_CHECK_LIB(z, gzread, [AC_DEFINE(HAVE_LIBZ) LIBS="$LIBS -lz"])
-)
+_cppflags="${CPPFLAGS}"
+_ldflags="${LDFLAGS}"
 
+AC_ARG_WITH(zlib,
+[  --with-zlib[=DIR]       use libz in DIR],[
+  if test "$withval" != "no" -a "$withval" != "yes"; then
+    Z_DIR=$withval
+    CPPFLAGS="${CPPFLAGS} -I$withval/include"
+    LDFLAGS="${LDFLAGS} -L$withval/lib"
+  fi
+])
+
+AC_CHECK_HEADERS(zlib.h,
+    AC_CHECK_LIB(z, gzread,[
+	AC_DEFINE(HAVE_LIBZ)
+        if test "x${Z_DIR}" != "x"; then
+            Z_CFLAGS="-I${Z_DIR}/include"
+            Z_LIBS="-L${Z_DIR}/lib -lz"
+        else
+            Z_LIBS="-lz"
+        fi]))
+AC_SUBST(Z_CFLAGS)
+AC_SUBST(Z_LIBS)
+
+CPPFLAGS=${_cppflags}
+LDFLAGS=${_ldflags}
 
 dnl Checks for header files.
 AC_HEADER_DIRENT
@@ -343,15 +365,37 @@ AC_SUBST(HAVE_ISINF)
 AC_SUBST(M_LIBS)
 AC_SUBST(RDL_LIBS)
 
-AC_OUTPUT([
-    Makefile
-    libxml/Makefile
-    libxml/xmlversion.h
-    libxml/xml2-config
-    libxml/libxml-2.0.pc
-    libxml/xml2Conf.sh
-    doc/Makefile
-    example/Makefile
-    libxml.spec
-])
+dnl
+dnl create the libxml and include links needed to get dependencies right
+dnl
+if test ! -d $srcdir/include/libxml
+then
+    if test ! -d $srcdir/include
+    then
+        rm -f $srcdir/include
+        mkdir $srcdir/include
+    fi
+    rm -f $srcdir/libxml
+    (cd $srcdir/include ; ln -s .. libxml)
+fi
+if test ! -r $srcdir/libxml
+then
+    (cd $srcdir ; ln -s include/libxml libxml)
+fi
+if test ! -r include/libxml
+then
+    if test ! -d include
+    then
+        rm -f include
+        mkdir include
+    fi
+    (cd include ; ln -s ../libxml libxml)
+fi
+if test ! -r libxml
+then
+    rm -rf libxml
+    ln -s $srcdir/include/libxml libxml
+fi
+
+AC_OUTPUT(libxml.spec Makefile include/Makefile doc/Makefile example/Makefile libxml/xmlversion.h xml2-config libxml-2.0.pc xml2Conf.sh)
 

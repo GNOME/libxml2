@@ -1,8 +1,8 @@
 noinst_PROGRAMS	= gjobread
 
-DEFS =
-INCLUDES = -I$(top_builddir)
+INCLUDES =					\
+	-I$(top_builddir) -I$(top_srcdir)	\
+	-I@srcdir@
 
-DEPS = $(top_builddir)/libxml/libxml2.la
-LDADD = $(top_builddir)/libxml/libxml2.la
+LDADD = $(top_builddir)/libxml2.la @Z_LIBS@
 

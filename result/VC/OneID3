@@ -1,3 +1,3 @@
-./test/VC/dtds/doc.dtd:2: validity error: Element doc has ID attributes defined in the internal and external subset : val
+test/VC/dtds/doc.dtd:2: validity error: Element doc has ID attributes defined in the internal and external subset : val
 <!ATTLIST doc val ID #IMPLIED>
                              ^

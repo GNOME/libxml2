@@ -237,6 +237,19 @@ URItests : testURI
 	      diff $(srcdir)/result/URI/$$name result.$$name ; \
 	      rm result.$$name ; \
 	  fi ; fi ; done)
+	@(for i in $(srcdir)/test/URI/*.uri ; do \
+	  name=`basename $$i`; \
+	  if [ ! -d $$i ] ; then \
+	  if [ ! -f $(srcdir)/result/URI/$$name ] ; then \
+	      echo New test file $$name ; \
+	      $(top_builddir)/testURI < $$i > $(srcdir)/result/URI/$$name ; \
+	  else \
+	      echo Testing $$name ; \
+	      $(top_builddir)/testURI < $$i > result.$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
+	      diff $(srcdir)/result/URI/$$name result.$$name ; \
+	      rm result.$$name ; \
+	  fi ; fi ; done)
 
 XPathtests : testXPath
 	@echo "##"

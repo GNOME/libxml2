@@ -27,11 +27,8 @@ int main(int argc, char **argv) {
     const char *base = NULL;
     xmlChar *composite;
 
-    if (argv[arg] == NULL) {
-	printf("Usage: %s [-base URI] URI ...\n", argv[0]);
-	exit(0);
-    }
-    if ((!strcmp(argv[arg], "-base")) || (!strcmp(argv[arg], "--base"))) {
+    if ((argv[arg] != NULL) &&
+	((!strcmp(argv[arg], "-base")) || (!strcmp(argv[arg], "--base")))) {
 	arg++;
 	base = argv[arg];
 	if (base != NULL)
@@ -64,6 +61,7 @@ int main(int argc, char **argv) {
 		if (ret != 0)
 		    printf("%s : error %d\n", str, ret);
 		else {
+		    xmlNormalizeURIPath(uri->path);
 		    xmlPrintURI(stdout, uri);
 		    printf("\n");
 		}
@@ -99,5 +97,5 @@ int main(int argc, char **argv) {
     }
     xmlFreeURI(uri);
     xmlMemoryDump();
-    exit(0);
+    return(0);
 }

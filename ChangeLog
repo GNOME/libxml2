@@ -1,3 +1,12 @@
+Fri Feb  2 18:04:35 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* uri.c: rewrite of xmlNormalizeURIPath from Paul D. Smith
+	* test/URI/smith.uri result/URI/smith.uri Makefile.am:
+	  added the new tests for URI normalization
+	* testURI.c: fixed stoopid bugs
+	* result/VC/OneID3 result/VC/UniqueElementTypeDeclaration:
+	  the URI in the error messages are now properly normalized
+
 Fri Feb  2 09:18:53 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* uri.c: applied Marc Sanfacon's patch for xmlNormalizeURIPath

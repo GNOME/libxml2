@@ -377,6 +377,8 @@ if test "$with_iconv" = "no" ; then
 else
     if test "$with_iconv" != "yes" ; then
 	CPPFLAGS="${CPPFLAGS} -I$with_iconv/include"
+	# Export this since our headers include iconv.h
+	XML_INCLUDEDIR="${XML_INCLUDEDIR} -I$with_iconv/include"
 	ICONV_LIBS="-L$with_iconv/lib"
     fi
 

@@ -918,7 +918,7 @@ startElementNsDebug(void *ctx ATTRIBUTE_UNUSED,
     }
     fprintf(stdout, ", %d, %d", nb_attributes, nb_defaulted);
     if (attributes != NULL) {
-        for (i = 0;i < nb_attributes;i += 5) {
+        for (i = 0;i < nb_attributes * 5;i += 5) {
 	    if (attributes[i + 1] != NULL)
 		fprintf(stdout, ", %s:%s='", attributes[i + 1], attributes[i]);
 	    else
@@ -1118,6 +1118,8 @@ int main(int argc, char **argv) {
     int i;
     int files = 0;
 
+    LIBXML_TEST_VERSION	/* be safe, plus calls xmlInitParser */
+    
     for (i = 1; i < argc ; i++) {
 	if ((!strcmp(argv[i], "-debug")) || (!strcmp(argv[i], "--debug")))
 	    debug++;

@@ -1175,7 +1175,7 @@ xmlNextChar(xmlParserCtxtPtr ctxt) {
 				 "Char 0x%X out of allowed range\n", val);
 			    ctxt->errNo = XML_ERR_INVALID_ENCODING;
 			    ctxt->wellFormed = 0;
-			    ctxt->disableSAX = 1;
+			    if (ctxt->recovery == 0) ctxt->disableSAX = 1;
 			}    
 		    } else
 		      /* 2-byte code */
@@ -1317,7 +1317,7 @@ xmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
 				     "Char 0x%X out of allowed range\n", val);
 		ctxt->errNo = XML_ERR_INVALID_ENCODING;
 		ctxt->wellFormed = 0;
-		ctxt->disableSAX = 1;
+		if (ctxt->recovery == 0) ctxt->disableSAX = 1;
 	    }    
 	    return(val);
 	} else {
@@ -1438,7 +1438,7 @@ xmlStringCurrentChar(xmlParserCtxtPtr ctxt, const xmlChar * cur, int *len)
                                      val);
                 ctxt->errNo = XML_ERR_INVALID_ENCODING;
                 ctxt->wellFormed = 0;
-                ctxt->disableSAX = 1;
+                if (ctxt->recovery == 0) ctxt->disableSAX = 1;
             }
             return (val);
         } else {
@@ -1568,7 +1568,7 @@ xmlSwitchEncoding(xmlParserCtxtPtr ctxt, xmlCharEncoding enc)
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		ctxt->sax->error(ctxt->userData, "encoding unknown\n");
 	    ctxt->wellFormed = 0;
-	    ctxt->disableSAX = 1;
+	    if (ctxt->recovery == 0) ctxt->disableSAX = 1;
 	    break;
 	case XML_CHAR_ENCODING_NONE:
 	    /* let's assume it's UTF-8 without the XML decl */
@@ -1604,7 +1604,7 @@ xmlSwitchEncoding(xmlParserCtxtPtr ctxt, xmlCharEncoding enc)
 		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		    ctxt->sax->error(ctxt->userData, "encoding unknown\n");
 		ctxt->wellFormed = 0;
-		ctxt->disableSAX = 1;
+		if (ctxt->recovery == 0) ctxt->disableSAX = 1;
 		ctxt->charset = XML_CHAR_ENCODING_UTF8;
 		break;
 	    case XML_CHAR_ENCODING_NONE:
@@ -2750,7 +2750,7 @@ xmlDecodeEntities(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED, int len ATTRIBUTE_UNUS
 	    ctxt->sax->error(ctxt->userData,
 		"Detected entity reference loop\n");
 	ctxt->wellFormed = 0;
-	ctxt->disableSAX = 1;
+	if (ctxt->recovery == 0) ctxt->disableSAX = 1;
 	ctxt->errNo = XML_ERR_ENTITY_LOOP;
 	return(NULL);
     }
@@ -3051,7 +3051,7 @@ xmlGenericError(xmlGenericErrorContext,
 	        ctxt->sax->error(ctxt->userData, 
 			         "String not closed \"%.50s\"\n", buf);
 	    ctxt->wellFormed = 0;
-	    ctxt->disableSAX = 1;
+	    if (ctxt->recovery == 0) ctxt->disableSAX = 1;
         } else {
 	    NEXT;
 	}
@@ -3078,7 +3078,7 @@ xmlGenericError(xmlGenericErrorContext,
 	        ctxt->sax->error(ctxt->userData,
 			         "String not closed \"%.50s\"\n", buf);
 	    ctxt->wellFormed = 0;
-	    ctxt->disableSAX = 1;
+	    if (ctxt->recovery == 0) ctxt->disableSAX = 1;
         } else {
 	    NEXT;
 	}
@@ -3189,7 +3189,7 @@ xmlGenericError(xmlGenericErrorContext,
 	    }
 	    ctxt->errNo = XML_ERR_NS_DECL_ERROR;
 	    ctxt->wellFormed = 0;
-	    ctxt->disableSAX = 1;
+	    if (ctxt->recovery == 0) ctxt->disableSAX = 1;
             NEXT;
         }
     }
@@ -3344,7 +3344,7 @@ xmlHandleEntity(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED, xmlEntityPtr entity ATTR
 	    ctxt->sax->error(ctxt->userData, "xmlHandleEntity %s: content == NULL\n",
 	               entity->name);
 	ctxt->wellFormed = 0;
-	ctxt->disableSAX = 1;
+	if (ctxt->recovery == 0) ctxt->disableSAX = 1;
         return;
     }
     len = xmlStrlen(entity->content);

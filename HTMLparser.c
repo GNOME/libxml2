@@ -259,7 +259,7 @@ htmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
 		    ctxt->sax->error(ctxt->userData, 
 				     "Char 0x%X out of allowed range\n", val);
 		ctxt->wellFormed = 0;
-		ctxt->disableSAX = 1;
+		if (ctxt->recovery == 0) ctxt->disableSAX = 1;
 	    }    
 	    return(val);
 	} else {

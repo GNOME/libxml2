@@ -1,3 +1,12 @@
+Sun Nov 17 10:25:43 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in: preparing release 2.4.27
+	* doc/* : updated and rebuilt the docs
+	* doc/Makefile.am libxml.spec.in: try to make sure the tutorial
+	  and all the docs are actually packaged and in the final RPMs
+	* parser.c parserInternals.c include/libxml/parser.h: restore
+	  xmllint --recover feature.
+
 Sat Nov 16 16:30:25 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c xpath.c: fixing #96925 wich was also dependant on the

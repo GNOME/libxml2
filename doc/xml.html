@@ -250,8 +250,8 @@ libxml2</p>
         be installed specifically on Linux. It now seems a <a
         href="http://www.opennc.org/onlinepubs/7908799/xsh/iconv.html">part
         of the official UNIX</a> specification. Here is one <a
-        href="http://www.gnu.org/software/libiconv/">implementation
-        of the library</a> which source can be found <a
+        href="http://www.gnu.org/software/libiconv/">implementation of the
+        library</a> which source can be found <a
         href="ftp://ftp.ilog.fr/pub/Users/haible/gnu/">here</a>.</li>
     </ul>
   </li>
@@ -407,13 +407,12 @@ xmlDtdPtr dtd = xmlParseDTD(NULL, filename_of_dtd); /* parse the DTD */
         else xmlAddPrevSibling(doc-&gt;children, (xmlNodePtr)dtd);
           </pre>
   </li>
-      <li>So what is this funky "xmlChar" used all the time?
-    <p>It is a null terminated sequence of utf-8 characters. And only utf-8! You
-    need to convert strings encoded in different ways to utf-8 before passing
-    them to the API.  This can be accomplished with the iconv library for
-    instance.</p>
+  <li>So what is this funky "xmlChar" used all the time?
+    <p>It is a null terminated sequence of utf-8 characters. And only utf-8!
+    You need to convert strings encoded in different ways to utf-8 before
+    passing them to the API.  This can be accomplished with the iconv library
+    for instance.</p>
   </li>
-
   <li>etc ...</li>
 </ol>
 
@@ -434,7 +433,8 @@ xmlDtdPtr dtd = xmlParseDTD(NULL, filename_of_dtd); /* parse the DTD */
     internationalization support</a>.</li>
   <li>This page provides a global overview and <a href="example.html">some
     examples</a> on how to use libxml.</li>
-  <li>John Fleck's libxml tutorial: <a href="tutorial/index.html">html</a> or <a href="tutorial/xmltutorial.pdf">pdf</a>.</li>
+  <li>John Fleck's libxml tutorial: <a href="tutorial/index.html">html</a> or
+    <a href="tutorial/xmltutorial.pdf">pdf</a>.</li>
   <li><a href="mailto:james@daa.com.au">James Henstridge</a> wrote <a
     href="http://www.daa.com.au/~james/gnome/xml-sax/xml-sax.html">some nice
     documentation</a> explaining how to use the libxml SAX interface.</li>
@@ -587,6 +587,22 @@ to test those</p>
 <ul>
   <li>Finishing up <a href="http://www.w3.org/TR/xmlschema-1/">XML
     Schemas</a> and <a href="http://www.w3.org/TR/xinclude">XInclude</a></li>
+</ul>
+
+<h3>2.4.27: Nov 17 2002</h3>
+<ul>
+  <li>fixes for the Python bindings</li>
+  <li>a number of bug fixes: SGML catalogs, xmlParseBalancedChunkMemory(),
+    HTML parser,  Schemas (Charles Bozeman), document fragment support
+    (Christian Glahn), xmlReconciliateNs (Brian Stafford), XPointer,
+    xmlFreeNode(), xmlSAXParseMemory (Peter Jones), xmlGetNodePath (Petr
+    Pajas), entities processing</li>
+  <li>added grep to xmllint --shell</li>
+  <li>VMS update patch from Craig A. Berry</li>
+  <li>cleanup of the Windows build with support for more compilers (Igor),
+    better thread support on Windows</li>
+  <li>cleanup of Unix Makefiles and spec file</li>
+  <li>Improvements to the documentation (John Fleck)</li>
 </ul>
 
 <h3>2.4.26: Oct 18 2002</h3>
@@ -2688,6 +2704,7 @@ xmlOutputBufferCreateOwn(FILE *file, xmlCharEncodingHandlerPtr encoder) {
         ret-&gt;closecallback = NULL;  /* No close callback */
     }
     return(ret); <br>
+
 
 
 

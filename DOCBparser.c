@@ -312,7 +312,7 @@ docbCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
                    ctxt->sax->error(ctxt->userData, 
                                     "Char 0x%X out of allowed range\n", val);
                ctxt->wellFormed = 0;
-               ctxt->disableSAX = 1;
+               if (ctxt->recovery == 0) ctxt->disableSAX = 1;
            }    
            return(val);
        } else {
@@ -2520,14 +2520,14 @@ docbParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
 	    ctxt->sax->error(ctxt->userData,
 		"chunk is not well balanced\n");
 	ctxt->wellFormed = 0;
-	ctxt->disableSAX = 1;
+	if (ctxt->recovery == 0) ctxt->disableSAX = 1;
     } else if (RAW != 0) {
 	ctxt->errNo = XML_ERR_EXTRA_CONTENT;
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt->userData,
 		"extra content at the end of well balanced chunk\n");
 	ctxt->wellFormed = 0;
-	ctxt->disableSAX = 1;
+	if (ctxt->recovery == 0) ctxt->disableSAX = 1;
     }
     if (ctxt->node != newDoc->children) {
 	ctxt->errNo = XML_ERR_NOT_WELL_BALANCED;
@@ -2535,7 +2535,7 @@ docbParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
 	    ctxt->sax->error(ctxt->userData,
 		"chunk is not well balanced\n");
 	ctxt->wellFormed = 0;
-	ctxt->disableSAX = 1;
+	if (ctxt->recovery == 0) ctxt->disableSAX = 1;
     }
 
     if (!ctxt->wellFormed) {
@@ -3161,7 +3161,7 @@ docbParsePI(xmlParserCtxtPtr ctxt) {
 			ctxt->sax->error(ctxt->userData, 
     "PI declaration doesn't start and stop in the same entity\n");
 		    ctxt->wellFormed = 0;
-		    ctxt->disableSAX = 1;
+		    if (ctxt->recovery == 0) ctxt->disableSAX = 1;
 		}
 		SKIP(2);
 
@@ -3210,7 +3210,7 @@ docbParsePI(xmlParserCtxtPtr ctxt) {
 			ctxt->sax->error(ctxt->userData,
 			  "docbParsePI: PI %s space expected\n", target);
 		    ctxt->wellFormed = 0;
-		    ctxt->disableSAX = 1;
+		    if (ctxt->recovery == 0) ctxt->disableSAX = 1;
 		}
 		SKIP_BLANKS;
 	    }
@@ -3248,7 +3248,7 @@ docbParsePI(xmlParserCtxtPtr ctxt) {
 		    ctxt->sax->error(ctxt->userData,
 		      "docbParsePI: PI %s never end ...\n", target);
 		ctxt->wellFormed = 0;
-		ctxt->disableSAX = 1;
+		if (ctxt->recovery == 0) ctxt->disableSAX = 1;
 	    } else {
 		if (input != ctxt->input) {
 		    ctxt->errNo = XML_ERR_ENTITY_BOUNDARY;
@@ -3256,7 +3256,7 @@ docbParsePI(xmlParserCtxtPtr ctxt) {
 			ctxt->sax->error(ctxt->userData, 
     "PI declaration doesn't start and stop in the same entity\n");
 		    ctxt->wellFormed = 0;
-		    ctxt->disableSAX = 1;
+		    if (ctxt->recovery == 0) ctxt->disableSAX = 1;
 		}
 		SKIP(2);
 
@@ -3276,7 +3276,7 @@ docbParsePI(xmlParserCtxtPtr ctxt) {
 	        ctxt->sax->error(ctxt->userData,
 		       "docbParsePI : no target name\n");
 	    ctxt->wellFormed = 0;
-	    ctxt->disableSAX = 1;
+	    if (ctxt->recovery == 0) ctxt->disableSAX = 1;
 	}
 	ctxt->instate = state;
     }
@@ -3616,7 +3616,7 @@ docbCheckEncoding(docbParserCtxtPtr ctxt, const xmlChar *attvalue) {
                     "Unsupported encoding %s\n", encoding);
            /* xmlFree(encoding); */
            ctxt->wellFormed = 0;
-           ctxt->disableSAX = 1;
+           if (ctxt->recovery == 0) ctxt->disableSAX = 1;
            ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
        }
     }
@@ -4392,7 +4392,7 @@ docbParseEntityDecl(xmlParserCtxtPtr ctxt) {
                ctxt->sax->error(ctxt->userData,
                                 "Space required after '<!ENTITY'\n");
            ctxt->wellFormed = 0;
-           ctxt->disableSAX = 1;
+           if (ctxt->recovery == 0) ctxt->disableSAX = 1;
        }
        SKIP_BLANKS;
 
@@ -4404,7 +4404,7 @@ docbParseEntityDecl(xmlParserCtxtPtr ctxt) {
                    ctxt->sax->error(ctxt->userData,
                                     "Space required after '%'\n");
                ctxt->wellFormed = 0;
-               ctxt->disableSAX = 1;
+               if (ctxt->recovery == 0) ctxt->disableSAX = 1;
            }
            SKIP_BLANKS;
            isParameter = 1;
@@ -4416,7 +4416,7 @@ docbParseEntityDecl(xmlParserCtxtPtr ctxt) {
            if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
                ctxt->sax->error(ctxt->userData, "sgmlarseEntityDecl: no name\n");
            ctxt->wellFormed = 0;
-           ctxt->disableSAX = 1;
+           if (ctxt->recovery == 0) ctxt->disableSAX = 1;
             return;
        }
        if (!IS_BLANK(CUR)) {
@@ -4425,7 +4425,7 @@ docbParseEntityDecl(xmlParserCtxtPtr ctxt) {
                ctxt->sax->error(ctxt->userData,
                     "Space required after the entity name\n");
            ctxt->wellFormed = 0;
-           ctxt->disableSAX = 1;
+           if (ctxt->recovery == 0) ctxt->disableSAX = 1;
        }
         SKIP_BLANKS;
 
@@ -4450,7 +4450,7 @@ docbParseEntityDecl(xmlParserCtxtPtr ctxt) {
                        ctxt->sax->error(ctxt->userData,
                            "Entity value required\n");
                    ctxt->wellFormed = 0;
-                   ctxt->disableSAX = 1;
+                   if (ctxt->recovery == 0) ctxt->disableSAX = 1;
                }
                if (URI) {
                    xmlURIPtr uri;
@@ -4501,7 +4501,7 @@ docbParseEntityDecl(xmlParserCtxtPtr ctxt) {
                        ctxt->sax->error(ctxt->userData,
                            "Entity value required\n");
                    ctxt->wellFormed = 0;
-                   ctxt->disableSAX = 1;
+                   if (ctxt->recovery == 0) ctxt->disableSAX = 1;
                }
                if (URI) {
                    xmlURIPtr uri;
@@ -4534,7 +4534,7 @@ docbParseEntityDecl(xmlParserCtxtPtr ctxt) {
                        ctxt->sax->error(ctxt->userData,
                            "Space required before content model\n");
                    ctxt->wellFormed = 0;
-                   ctxt->disableSAX = 1;
+                   if (ctxt->recovery == 0) ctxt->disableSAX = 1;
                }
                SKIP_BLANKS;
 
@@ -4552,7 +4552,7 @@ docbParseEntityDecl(xmlParserCtxtPtr ctxt) {
                            ctxt->sax->error(ctxt->userData,
                                "Could not parse entity content model\n");
                        ctxt->wellFormed = 0;
-                       ctxt->disableSAX = 1;
+                       if (ctxt->recovery == 0) ctxt->disableSAX = 1;
                    } else {
                        if (xmlStrEqual(contmod, BAD_CAST"NDATA")) {
                            if (!IS_BLANK(CUR)) {
@@ -4562,7 +4562,7 @@ docbParseEntityDecl(xmlParserCtxtPtr ctxt) {
                                    ctxt->sax->error(ctxt->userData,
                                        "Space required after 'NDATA'\n");
                                ctxt->wellFormed = 0;
-                               ctxt->disableSAX = 1;
+                               if (ctxt->recovery == 0) ctxt->disableSAX = 1;
                            }
                            SKIP_BLANKS;
                            ndata = xmlParseName(ctxt);
@@ -4614,7 +4614,7 @@ docbParseEntityDecl(xmlParserCtxtPtr ctxt) {
                ctxt->sax->error(ctxt->userData, 
                    "docbParseEntityDecl: entity %s not terminated\n", name);
            ctxt->wellFormed = 0;
-           ctxt->disableSAX = 1;
+           if (ctxt->recovery == 0) ctxt->disableSAX = 1;
        } else {
            if (input != ctxt->input) {
                ctxt->errNo = XML_ERR_ENTITY_BOUNDARY;
@@ -4622,7 +4622,7 @@ docbParseEntityDecl(xmlParserCtxtPtr ctxt) {
                    ctxt->sax->error(ctxt->userData, 
 "Entity declaration doesn't start and stop in the same entity\n");
                ctxt->wellFormed = 0;
-               ctxt->disableSAX = 1;
+               if (ctxt->recovery == 0) ctxt->disableSAX = 1;
            }
            NEXT;
        }
@@ -4726,7 +4726,7 @@ docbParseInternalSubset(xmlParserCtxtPtr ctxt) {
                    ctxt->sax->error(ctxt->userData, 
             "docbParseInternalSubset: error detected in Markup declaration\n");
                ctxt->wellFormed = 0;
-               ctxt->disableSAX = 1;
+               if (ctxt->recovery == 0) ctxt->disableSAX = 1;
                break;
            }
        }
@@ -4744,7 +4744,7 @@ docbParseInternalSubset(xmlParserCtxtPtr ctxt) {
        if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
            ctxt->sax->error(ctxt->userData, "DOCTYPE improperly terminated\n");
        ctxt->wellFormed = 0;
-       ctxt->disableSAX = 1;
+       if (ctxt->recovery == 0) ctxt->disableSAX = 1;
     }
     NEXT;
 }

@@ -18,7 +18,9 @@ PAGES= architecture.html bugs.html contribs.html docs.html DOM.html \
     tree.html xmldtd.html XMLinfo.html XSLT.html
 APIPAGES=APIconstructors.html APIfiles.html APIfunctions.html \
     APIsymbols.html APIchunk0.html
-EXTRA_DIST=xmlcatalog_man.xml
+EXTRA_DIST=xmlcatalog_man.xml tutorial/*.html tutorial/*.c tutorial/*.pdf \
+           tutorial/images/*.png tutorial/images/callouts/*.png \
+	   API*.html
 
 man_MANS = xmllint.1 xmlcatalog.1
 
@@ -48,7 +50,7 @@ xml: sgml
 	-@(for s in sgml/*.sgml ; do name=`basename $$s .sgml` ; \
 	   echo '<!DOCTYPE refentry [ <!ENTITY nbsp   "&#x00A0;"> ]>' > \
 	       xml/"$$name".xml ;\
-	   grep -v "^<colspec" $$s >> xml/"$$name".xml ; done)
+	   grep -v "^<colspec" $$s | sed 's+<anchor(.*>+<anchor\1/>+' >> xml/"$$name".xml ; done)
 	   
 libxml2-api.xml libxml2-refs.xml: xml parsedecl.py libxml-decl.txt libxml-decl-list.txt
 	-(./parsedecl.py)
@@ -78,8 +80,9 @@ install-data-local:
 	-@INSTALL@ -m 0644 $(srcdir)/html/*.html $(DESTDIR)$(TARGET_DIR)
 	-@INSTALL@ -m 0644 $(srcdir)/html/index.sgml $(DESTDIR)$(TARGET_DIR)
 	-(cd $(DESTDIR); gtkdoc-fixxref --module=libxml --html-dir=$(HTML_DIR))
+	-@(tar cf - tutorial | (cd $(DESTDIR)$(TARGET_DIR) && tar xvf -)
 
 dist-hook:
-	(cd $(srcdir) ; tar cvf - *.1 site.xsl *.html *.gif w3c.png html/*.html html/*.sgml libxml2-api.xml parsedecl.py index.py search.php) | (cd $(distdir); tar xf -)
+	(cd $(srcdir) ; tar cvf - *.1 site.xsl *.html *.gif w3c.png html/*.html html/*.sgml libxml2-api.xml parsedecl.py index.py search.php tutorial/*.* tutorial/images/*.* tutorial/images/callouts/*.*) | (cd $(distdir); tar xf -)
 
 .PHONY : html sgml templates scan

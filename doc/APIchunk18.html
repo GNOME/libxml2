@@ -63,13 +63,18 @@ A:link, A:visited, A:active { text-decoration: underline }
 </table>
 <table width="100%" border="0" cellspacing="1" cellpadding="3">
 <tr><td colspan="1" bgcolor="#eecfa1" align="center"><center><b>API Indexes</b></center></td></tr>
-<tr><td bgcolor="#fffacd"><ul>
+<tr><td bgcolor="#fffacd">
+<form action="search.php" enctype="application/x-www-form-urlencoded" method="GET">
+<input name="query" type="TEXT" size="20" value=""><input name="submit" type="submit" value="Search ...">
+</form>
+<ul>
 <li><a href="APIchunk0.html">Alphabetic</a></li>
 <li><a href="APIconstructors.html">Constructors</a></li>
 <li><a href="APIfunctions.html">Functions/Types</a></li>
 <li><a href="APIfiles.html">Modules</a></li>
 <li><a href="APIsymbols.html">Symbols</a></li>
-</ul></td></tr>
+</ul>
+</td></tr>
 </table>
 <table width="100%" border="0" cellspacing="1" cellpadding="3">
 <tr><td colspan="1" bgcolor="#eecfa1" align="center"><center><b>Related links</b></center></td></tr>
@@ -283,6 +288,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-c14n.html#XMLC14NDOCSAVE">xmlC14NDocSave</a>
 <a href="html/libxml-c14n.html#XMLC14NDOCSAVETO">xmlC14NDocSaveTo</a>
 <a href="html/libxml-c14n.html#XMLC14NEXECUTE">xmlC14NExecute</a>
+<a href="html/libxml-xmlio.html#XMLCHECKFILENAME">xmlCheckFilename</a>
 <a href="html/libxml-parserinternals.html#XMLISBASECHAR">xmlIsBaseChar</a>
 <a href="html/libxml-parserinternals.html#XMLISCOMBINING">xmlIsCombining</a>
 <a href="html/libxml-parserinternals.html#XMLISDIGIT">xmlIsDigit</a>
@@ -310,7 +316,6 @@ A:link, A:visited, A:active { text-decoration: underline }
 </dd>
 <dt>separated</dt>
 <dd>
-<a href="html/libxml-catalog.html#XMLLOADCATALOGS">xmlLoadCatalogs</a>
 <a href="html/libxml-uri.html#XMLURI">xmlURI</a>
 </dd>
 <dt>sequence</dt>
@@ -502,7 +507,6 @@ A:link, A:visited, A:active { text-decoration: underline }
 <dd>
 <a href="html/libxml-threads.html#XMLFREEMUTEX">xmlFreeMutex</a>
 <a href="html/libxml-hash.html#XMLHASHSCANNER">xmlHashScanner</a>
-<a href="html/libxml-valid.html#XMLISID">xmlIsID</a>
 <a href="html/libxml-valid.html#XMLISREF">xmlIsRef</a>
 <a href="html/libxml-threads.html#XMLMUTEXLOCK">xmlMutexLock</a>
 <a href="html/libxml-threads.html#XMLMUTEXUNLOCK">xmlMutexUnlock</a>
@@ -525,6 +529,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-valid.html#XMLVALIDATENOTATIONDECL">xmlValidateNotationDecl</a>
 <a href="html/libxml-valid.html#XMLVALIDATEONEATTRIBUTE">xmlValidateOneAttribute</a>
 <a href="html/libxml-valid.html#XMLVALIDATEONEELEMENT">xmlValidateOneElement</a>
+<a href="html/libxml-valid.html#XMLVALIDATEONENAMESPACE">xmlValidateOneNamespace</a>
 <a href="html/libxml-xpathinternals.html#XMLXPATHNEWNODESET">xmlXPathNewNodeSet</a>
 <a href="html/libxml-xpathinternals.html#XMLXPATHNORMALIZEFUNCTION">xmlXPathNormalizeFunction</a>
 <a href="html/libxml-xpointer.html#XMLXPTRNEWCOLLAPSEDRANGE">xmlXPtrNewCollapsedRange</a>
@@ -555,6 +560,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 </dd>
 <dt>socket</dt>
 <dd>
+<a href="html/libxml-xmlio.html#XMLCHECKFILENAME">xmlCheckFilename</a>
 <a href="html/libxml-nanoftp.html#XMLNANOFTPGETSOCKET">xmlNanoFTPGetSocket</a>
 </dd>
 <dt>software</dt>
@@ -590,6 +596,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <dt>source</dt>
 <dd>
 <a href="html/libxml-htmltree.html#HTMLGETMETAENCODING">htmlGetMetaEncoding</a>
+<a href="html/libxml-xmlio.html#XMLCHECKFILENAME">xmlCheckFilename</a>
 </dd>
 <dt>sourceforge</dt>
 <dd>
@@ -606,6 +613,10 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-parserinternals.html#XMLSKIPBLANKCHARS">xmlSkipBlankChars</a>
 <a href="html/libxml-xpathinternals.html#XMLXPATHNORMALIZEFUNCTION">xmlXPathNormalizeFunction</a>
 </dd>
+<dt>space-separated</dt>
+<dd>
+<a href="html/libxml-catalog.html#XMLLOADCATALOGS">xmlLoadCatalogs</a>
+</dd>
 <dt>spaces</dt>
 <dd>
 <a href="html/libxml-htmltree.html#HTMLDOCCONTENTDUMPFORMATOUTPUT">htmlDocContentDumpFormatOutput</a>
@@ -618,7 +629,6 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-tree.html#XMLDOCDUMPFORMATMEMORYENC">xmlDocDumpFormatMemoryEnc</a>
 <a href="html/libxml-tree.html#XMLDOCFORMATDUMP">xmlDocFormatDump</a>
 <a href="html/libxml-parser.html#XMLKEEPBLANKSDEFAULT">xmlKeepBlanksDefault</a>
-<a href="html/libxml-catalog.html#XMLLOADCATALOGS">xmlLoadCatalogs</a>
 <a href="html/libxml-parserinternals.html#XMLPARSEELEMENTCHILDRENCONTENTDECL">xmlParseElementChildrenContentDecl</a>
 <a href="html/libxml-parserinternals.html#XMLPARSEELEMENTMIXEDCONTENTDECL">xmlParseElementMixedContentDecl</a>
 <a href="html/libxml-tree.html#XMLSAVEFORMATFILE">xmlSaveFormatFile</a>
@@ -785,8 +795,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlio.html#XMLOUTPUTBUFFERCREATEFILENAME">xmlOutputBufferCreateFilename</a>
 <a href="html/libxml-tree.html#XMLSAVEFILE">xmlSaveFile</a>
 <a href="html/libxml-tree.html#XMLSAVEFORMATFILE">xmlSaveFormatFile</a>
-<a href="html/libxml-debugxml.html#XMLSHELLPRINTNODE">xmlShellPrintNode</a>
-<a href="html/libxml-debugxml.html#XMLSHELLPRINTXPATHRESULT">xmlShellPrintXPathResult</a>
+<a href="html/libxml-debugxml.html#XMLSHELL">xmlShell</a>
 </dd>
 <dt>steam</dt>
 <dd>
@@ -1195,6 +1204,10 @@ A:link, A:visited, A:active { text-decoration: underline }
 <dt>synchronizing</dt>
 <dd>
 <a href="html/libxml-threads.html#XMLMUTEXPTR">xmlMutexPtr</a>
+</dd>
+<dt>systematically</dt>
+<dd>
+<a href="html/libxml-valid.html#XMLISID">xmlIsID</a>
 </dd>
 </dl>
 <h2 align="center">

@@ -23,8 +23,8 @@
 extern "C" {
 #endif
 
-void xmlInitGlobals(void);
-void xmlCleanupGlobals(void);
+XMLPUBFUN void XMLCALL xmlInitGlobals(void);
+XMLPUBFUN void XMLCALL xmlCleanupGlobals(void);
 
 /*
  * Externally global symbols which need to be protected for backwards

@@ -1,3 +1,8 @@
+Fri Sep  5 10:33:42 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/globals.h: patch from Stéphane Bidoul to export
+	  globals entry points to the python bindings
+
 Wed Sep  3 15:24:41 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: when creating a DOCTYPE use "html" lowercase

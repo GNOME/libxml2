@@ -8818,29 +8818,37 @@ xmlParseGetLasts(xmlParserCtxtPtr ctxt, const xmlChar **lastlt,
     if ((ctxt->progressive != 0) && (ctxt->inputNr == 1)) {
         tmp = ctxt->input->end;
 	tmp--;
-	while ((tmp >= ctxt->input->base) && (*tmp != '<') &&
-	       (*tmp != '>')) tmp--;
+	while ((tmp >= ctxt->input->base) && (*tmp != '<')) tmp--;
 	if (tmp < ctxt->input->base) {
 	    *lastlt = NULL;
 	    *lastgt = NULL;
-	} else if (*tmp == '<') {
-	    *lastlt = tmp;
-	    tmp--;
-	    while ((tmp >= ctxt->input->base) && (*tmp != '>')) tmp--;
-	    if (tmp < ctxt->input->base)
-	        *lastgt = NULL;
-	    else
-	        *lastgt = tmp;
 	} else {
-	    *lastgt = tmp;
-	    tmp--;
-	    while ((tmp >= ctxt->input->base) && (*tmp != '<')) tmp--;
-	    if (tmp < ctxt->input->base)
-	        *lastlt = NULL;
-	    else
-	        *lastlt = tmp;
+	    *lastlt = tmp;
+	    tmp++;
+	    while ((tmp < ctxt->input->end) && (*tmp != '>')) {
+	        if (*tmp == '\'') {
+		    tmp++;
+		    while ((tmp < ctxt->input->end) && (*tmp != '\'')) tmp++;
+		    if (tmp < ctxt->input->end) tmp++;
+		} else if (*tmp == '"') {
+		    tmp++;
+		    while ((tmp < ctxt->input->end) && (*tmp != '"')) tmp++;
+		    if (tmp < ctxt->input->end) tmp++;
+		} else
+		    tmp++;
+	    }
+	    if (tmp < ctxt->input->end)
+	        *lastgt = tmp;
+	    else {
+	        tmp = *lastlt;
+		tmp--;
+		while ((tmp >= ctxt->input->base) && (*tmp != '>')) tmp--;
+		if (tmp >= ctxt->input->base)
+		    *lastgt = tmp;
+		else
+		    *lastgt = NULL;
+	    }
 	}
-        
     } else {
         *lastlt = NULL;
 	*lastgt = NULL;
@@ -9096,7 +9104,7 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		if (!terminate) {
 		    if (ctxt->progressive) {
 		        /* > can be found unescaped in attribute values */
-		        if ((lastlt == NULL) || (ctxt->input->cur >= lastlt))
+		        if ((lastgt == NULL) || (ctxt->input->cur >= lastgt))
 			    goto done;
 		    } else if (xmlParseLookupSequence(ctxt, '>', 0, 0) < 0) {
 			goto done;
@@ -9274,7 +9282,8 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		    goto done;
 		if (!terminate) {
 		    if (ctxt->progressive) {
-		        if ((lastgt == NULL) || (ctxt->input->cur > lastgt))
+		        /* > can be found unescaped in attribute values */
+		        if ((lastgt == NULL) || (ctxt->input->cur >= lastgt))
 			    goto done;
 		    } else if (xmlParseLookupSequence(ctxt, '>', 0, 0) < 0) {
 			goto done;

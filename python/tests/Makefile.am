@@ -33,6 +33,7 @@ PYTESTS=	\
     readererr.py\
     relaxng.py	\
     thread2.py \
+    sync.py \
     tstLastError.py \
     indexes.py
 
@@ -45,8 +46,13 @@ EXTRA_DIST = $(PYTESTS) $(XMLS)
 
 if WITH_PYTHON
 tests: $(PYTESTS)
-	-@(PYTHONPATH="..:../.libs:$(srcdir)/..:$$PYTHONPATH" ; export PYTHONPATH; \
-	   for test in $(PYTESTS) ; do echo "-- $$test" ; $(PYTHON) $(srcdir)/$$test ; done)
+	echo "## running Python regression tests"
+	-@(PYTHONPATH="..:../.libs:$(srcdir)/..:$$PYTHONPATH" ; \
+	   export PYTHONPATH; \
+	   for test in $(PYTESTS) ; \
+	   do log=`$(PYTHON) $(srcdir)/$$test` ; \
+	   if [ "`echo $$log | grep OK`" = "" ] ; then \
+	   echo "-- $$test" ; echo "$$log" ; fi ; done)
 else
 tests:
 endif

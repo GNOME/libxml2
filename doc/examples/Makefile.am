@@ -93,6 +93,7 @@ valgrind:
 	$(MAKE) CHECKER='valgrind -q' tests
 
 tests: $(noinst_PROGRAMS)
+	@(echo '## examples regression tests')
 	@(echo > .memdump)
 	@($(CHECKER) ././xpath1 test3.xml '//child2' > xpath1.tmp ; diff xpath1.tmp xpath1.res ; rm xpath1.tmp)
 	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)

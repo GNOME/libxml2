@@ -1,3 +1,11 @@
+Mon Jul  5 18:43:47 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: make the push interfaces synchronous
+	* python/tests/sync.py: added a specific test
+	* python/tests/Makefile.am doc/examples/Makefile.am
+	  doc/examples/index.py: added the new test, cleaning up 
+	  "make tests" output
+
 Mon Jul  5 15:09:17 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemas.c: applied patch from Kasimier to fix some Relax-NG

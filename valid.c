@@ -3717,20 +3717,34 @@ xmlValidateElementDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 		next = cur->c2;
 		while (next != NULL) {
 		    if (next->type == XML_ELEMENT_CONTENT_ELEMENT) {
-		        if (xmlStrEqual(next->name, name)) {
-			    VERROR(ctxt->userData, 
+		        if ((xmlStrEqual(next->name, name)) &&
+			    (xmlStrEqual(next->prefix, cur->prefix))) {
+			    if (cur->prefix == NULL) {
+				VERROR(ctxt->userData, 
 		   "Definition of %s has duplicate references of %s\n",
-				   elem->name, name);
+				       elem->name, name);
+			    } else {
+				VERROR(ctxt->userData, 
+		   "Definition of %s has duplicate references of %s:%s\n",
+				       elem->name, cur->prefix, name);
+			    }
 			    ret = 0;
 			}
 			break;
 		    }
 		    if (next->c1 == NULL) break;
 		    if (next->c1->type != XML_ELEMENT_CONTENT_ELEMENT) break;
-		    if (xmlStrEqual(next->c1->name, name)) {
-			VERROR(ctxt->userData, 
-	       "Definition of %s has duplicate references of %s\n",
-			       elem->name, name);
+		    if ((xmlStrEqual(next->c1->name, name)) &&
+		        (xmlStrEqual(next->c1->prefix, cur->prefix))) {
+			if (cur->prefix == NULL) {
+			    VERROR(ctxt->userData, 
+	       "Definition of %s has duplicate references to %s\n",
+				   elem->name, name);
+			} else {
+			    VERROR(ctxt->userData, 
+	       "Definition of %s has duplicate references to %s:%s\n",
+				   elem->name, cur->prefix, name);
+			}
 			ret = 0;
 		    }
 		    next = next->c2;

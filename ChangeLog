@@ -1,3 +1,10 @@
+Sun Aug  3 18:56:54 EDT 2003 Daniel Veillard <daniel@veillard.com>
+
+	* valid.c: fixed bug #118712 about mixed content, and namespaced
+	  element names.
+	* test/valid/mixed_ns.xml result/valid/mixed_ns*: added a check
+	  in the regression tests
+
 Fri Aug 1 23:55:23 HKT 2003 William Brack <wbrack@mmm.com.hk>
 
 	Coninuing work on bug 118559

@@ -1,3 +1,42 @@
+-----------------------------------------------------------------------
+[January the 16th, 2001, igor@stud.fh-frankfurt.de] 
+
+The following applies only if you use Microsoft Visual C/C++ compiler, 
+in combination with Visual C++ IDE. Risk a glance further below for
+information on using GNU C compilers, such as Mingw32.
+
+There are two new project files in win32/libxml2:
+
+libxml2_a.dsp:  Use this one to build an object archive, a thing known
+                as a static library in the wonderful world of Windows.
+
+libxml2_so.dsp: Use this one to build a shared object, or a DLL if you
+                prefer calling it using the dialect mentioned above.
+
+There are few things to note about these project files and their 
+differences to the originally supplied project file (libxml2.dsp):
+
+1. C-Runtime is not LIBC anymore. LIBC is fairly old and should be 
+considered obsolete today. Microsoft had considered it apropriate to
+produce a better C-Runtime library, and indeed, their new one is
+called MSVCRT. All decent Win32 systems have this newer library, save
+for the oldest incarnations of Win95, which can be ignored safely.
+Following that, I changed the dependencies and now both project files
+mentioned above use MSVCRT.
+
+2. Both project files cause the resulting binary to depend on a shared 
+version of MSVCRT. Yes, that is what I am saying, the C-Runtime is 
+linked dynamically, not statically. This enables the programmer to do 
+likewise with his libxml2-based software, an action I like to think 
+everyone would perform without hesitation.
+
+3. There was a small flaw in the previous project file. The source file
+xpointer.c was not included in the project file and that caused a
+linkage problem with libxml2-based program, but not with libxml2 
+itself, if XPointer feature was enabled. This is now fixed.
+-----------------------------------------------------------------------
+
+
 If you're creating libxml2 with the "mingw" compiler, just copy the
 Makefile.mingw to the root directory as "Makefile", edit the PREFIX
 value, and run "make".

@@ -1,3 +1,9 @@
+Wed Jan 17 09:15:16 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* win32/README.MSDev win32/libxml2/libxml2_a.dsp
+	  win32/libxml2/libxml2_so.dsp: new makefiles and update
+	  provided by Igor Zlatkovic <igor@stud.fh-frankfurt.de>
+
 Tue Jan 16 18:24:46 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* tree.c : xmlSaveFile, xmlSaveFileEnc, applied patch from 

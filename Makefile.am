@@ -91,7 +91,7 @@ HTMLtests : testHTML
 	@echo "##"
 	@echo "## HTML regression tests"
 	@echo "##"
-	@(for i in $(srcdir)/test/HTML/* ; do \
+	-@(for i in $(srcdir)/test/HTML/* ; do \
 	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/result/HTML/$$name ] ; then \
@@ -110,7 +110,7 @@ HTMLtests : testHTML
 	@echo "##"
 	@echo "## Push HTML regression tests"
 	@echo "##"
-	@(for i in $(srcdir)/test/HTML/* ; do \
+	-@(for i in $(srcdir)/test/HTML/* ; do \
 	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/result/HTML/$$name ] ; then \
@@ -131,7 +131,7 @@ HTMLtests : testHTML
 	@echo "##"
 	@echo "## HTML SAX regression tests"
 	@echo "##"
-	@(for i in $(srcdir)/test/HTML/* ; do \
+	-@(for i in $(srcdir)/test/HTML/* ; do \
 	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/result/HTML/$$name.sax ] ; then \
@@ -147,7 +147,7 @@ HTMLtests : testHTML
 	@echo "##"
 	@echo "## Push HTML SAX regression tests"
 	@echo "##"
-	@(for i in $(srcdir)/test/HTML/* ; do \
+	-@(for i in $(srcdir)/test/HTML/* ; do \
 	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/result/HTML/$$name ] ; then \
@@ -169,7 +169,7 @@ XMLtests : xmllint
 	@echo "##"
 	@echo "## You should see one warning on entity 'title.xml' for ent2"
 	@echo "##"
-	@(for i in $(srcdir)/test/* ; do \
+	-@(for i in $(srcdir)/test/* ; do \
 	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/result/$$name ] ; then \
@@ -189,7 +189,7 @@ XMLtests : xmllint
 	@echo "##"
 	@echo "## You should see one warning on entity 'title.xml' for ent2"
 	@echo "##"
-	@(for i in $(srcdir)/test/* ; do \
+	-@(for i in $(srcdir)/test/* ; do \
 	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/result/$$name ] ; then \
@@ -208,7 +208,7 @@ XMLtests : xmllint
 	@echo "##"
 	@echo "## You should see two warnings on entity 'title.xml' for ent2"
 	@echo "##"
-	@(for i in $(srcdir)/test/* ; do \
+	-@(for i in $(srcdir)/test/* ; do \
 	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/result/$$name ] ; then \
@@ -229,7 +229,7 @@ Docbtests : xmllint
 	@echo "##"
 	@echo "## SGML DocBook regression tests"
 	@echo "##"
-	@(for i in $(srcdir)/test/DocBook/*.sgm ; do \
+	-@(for i in $(srcdir)/test/DocBook/*.sgm ; do \
 	  name=`basename $$i .sgm`; \
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/result/DocBook/$$name.xml ] ; then \
@@ -249,7 +249,7 @@ XMLenttests : xmllint
 	@echo "##"
 	@echo "## XML entity subst regression tests"
 	@echo "##"
-	@(for i in $(srcdir)/test/* ; do \
+	-@(for i in $(srcdir)/test/* ; do \
 	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/result/noent/$$name ] ; then \
@@ -269,7 +269,7 @@ URItests : testURI
 	@echo "##"
 	@echo "## URI module regression tests"
 	@echo "##"
-	@(for i in $(srcdir)/test/URI/*.data ; do \
+	-@(for i in $(srcdir)/test/URI/*.data ; do \
 	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/result/URI/$$name ] ; then \
@@ -282,7 +282,7 @@ URItests : testURI
 	      diff $(srcdir)/result/URI/$$name result.$$name ; \
 	      rm result.$$name ; \
 	  fi ; fi ; done)
-	@(for i in $(srcdir)/test/URI/*.uri ; do \
+	-@(for i in $(srcdir)/test/URI/*.uri ; do \
 	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/result/URI/$$name ] ; then \
@@ -301,7 +301,7 @@ XPathtests : testXPath
 	@echo "##"
 	@echo "## XPath regression tests"
 	@echo "##"
-	@(if [ "`$(top_builddir)/testXPath | grep 'support not compiled in'`" != "" ] ; \
+	-@(if [ "`$(top_builddir)/testXPath | grep 'support not compiled in'`" != "" ] ; \
 	  then echo Skipping debug not compiled in ; exit 0 ; fi ; \
 	  for i in $(srcdir)/test/XPath/expr/* ; do \
 	  name=`basename $$i`; \
@@ -341,7 +341,7 @@ XPtrtests : testXPath
 	@echo "##"
 	@echo "## XPointer regression tests"
 	@echo "##"
-	@(if [ "`$(top_builddir)/testXPath | grep 'support not compiled in'`" != "" ] ; \
+	-@(if [ "`$(top_builddir)/testXPath | grep 'support not compiled in'`" != "" ] ; \
 	  then echo Skipping debug not compiled in ; exit 0 ; fi ; \
 	  for i in $(srcdir)/test/XPath/docs/* ; do \
 	  if [ ! -d $$i ] ; then \
@@ -366,7 +366,7 @@ XIncludetests : xmllint
 	@echo "##"
 	@echo "## XInclude regression tests"
 	@echo "##"
-	@(for i in $(srcdir)/test/XInclude/docs/* ; do \
+	-@(for i in $(srcdir)/test/XInclude/docs/* ; do \
 	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/result/XInclude/$$name ] ; then \
@@ -386,7 +386,7 @@ Scripttests : xmllint
 	@echo "## Scripts regression tests"
 	@echo "## Some of the base computations may be different if srcdir != ."
 	@echo "##"
-	@(for i in $(srcdir)/test/scripts/*.script ; do \
+	-@(for i in $(srcdir)/test/scripts/*.script ; do \
 	  name=`basename $$i .script`; \
 	  xml=$(srcdir)/test/scripts/`basename $$i .script`.xml; \
 	  if [ -f $$xml ] ; then \
@@ -406,7 +406,7 @@ Catatests : xmlcatalog
 	@echo "##"
 	@echo "## Catalog regression tests"
 	@echo "##"
-	@(for i in $(srcdir)/test/catalogs/*.script ; do \
+	-@(for i in $(srcdir)/test/catalogs/*.script ; do \
 	  name=`basename $$i .script`; \
 	  xml=$(srcdir)/test/catalogs/`basename $$i .script`.xml; \
 	  if [ -f $$xml ] ; then \
@@ -420,7 +420,7 @@ Catatests : xmlcatalog
 	      diff $(srcdir)/result/catalogs/$$name result.$$name ; \
 	      rm result.$$name ; \
 	  fi ; fi ; done)
-	@(for i in $(srcdir)/test/catalogs/*.script ; do \
+	-@(for i in $(srcdir)/test/catalogs/*.script ; do \
 	  name=`basename $$i .script`; \
 	  sgml=$(srcdir)/test/catalogs/`basename $$i .script`.sgml; \
 	  if [ -f $$sgml ] ; then \
@@ -435,7 +435,7 @@ Catatests : xmlcatalog
 	      rm result.$$name ; \
 	  fi ; fi ; done)
 	@echo "Add and del operations on XML Catalogs"
-	@($(top_builddir)/xmlcatalog --create --noout result/catalogs/mycatalog; \
+	-@($(top_builddir)/xmlcatalog --create --noout result/catalogs/mycatalog; \
 	grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
 	$(top_builddir)/xmlcatalog --noout --add public Pubid sysid result/catalogs/mycatalog; \
 	grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
@@ -459,7 +459,7 @@ SVGtests : xmllint
 	@echo "##"
 	@echo "## SVG parsing regression tests"
 	@echo "##"
-	@(for i in $(srcdir)/test/SVG/* ; do \
+	-@(for i in $(srcdir)/test/SVG/* ; do \
 	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/result/SVG/$$name ] ; then \
@@ -485,7 +485,7 @@ SAXtests : testSAX
 	@echo "##"
 	@echo "## SAX callbacks regression tests"
 	@echo "##"
-	@(for i in $(srcdir)/test/* ; do \
+	-@(for i in $(srcdir)/test/* ; do \
 	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/SAXresult/$$name ] ; then \
@@ -504,7 +504,7 @@ Validtests : xmllint
 	@echo "##"
 	@echo "## Valid documents regression tests"
 	@echo "##"
-	@(for i in $(srcdir)/test/VCM/* ; do \
+	-@(for i in $(srcdir)/test/VCM/* ; do \
 	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \
 	      echo Testing $$name ; \
@@ -514,7 +514,7 @@ Validtests : xmllint
 	@echo "##"
 	@echo "## Validity checking regression tests"
 	@echo "##"
-	@(for i in $(srcdir)/test/VC/* ; do \
+	-@(for i in $(srcdir)/test/VC/* ; do \
 	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/result/VC/$$name ] ; then \
@@ -530,7 +530,7 @@ Validtests : xmllint
 	@echo "##"
 	@echo "## General documents valid regression tests"
 	@echo "##"
-	@(for i in $(srcdir)/test/valid/* ; do \
+	-@(for i in $(srcdir)/test/valid/* ; do \
 	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/result/valid/$$name ] ; then \
@@ -575,11 +575,16 @@ EXTRA_DIST = xml2-config.in xml2Conf.sh.in libxml.spec.in libxml.spec \
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libxml-2.0.pc
 
-#xml2Conf.sh: xml2Conf.sh.in Makefile
-### Use sed and then mv to avoid problems if the user interrupts.
-#	sed -e 's?\@XML_LIBDIR\@?$(XML_LIBDIR)?g' \
-#	    -e 's?\@XML_INCLUDEDIR\@?$(XML_INCLUDEDIR)?g' \
-#	    -e 's?\@XML_LIBS\@?$(XML_LIBS)?g' \
-#	    -e 's?\@VERSION\@?$(VERSION)?g' \
-#	      < $(srcdir)/xml2Conf.sh.in > xml2Conf.tmp \
-#	  && mv xml2Conf.tmp xml2Conf.sh
+#
+# Instll the tests program sources as examples 
+#
+BASE_DIR=@HTML_DIR@
+DOC_MODULE=libxml2-$(VERSION)
+EXAMPLES_DIR=$(BASE_DIR)/$(DOC_MODULE)/examples
+
+install-data-local: 
+	$(mkinstalldirs) $(DESTDIR)$(EXAMPLES_DIR)
+	-@INSTALL@ -m 0644 $(srcdir)/xmllint.c $(DESTDIR)$(EXAMPLES_DIR)
+	-@INSTALL@ -m 0644 $(srcdir)/testSAX.c $(DESTDIR)$(EXAMPLES_DIR)
+	-@INSTALL@ -m 0644 $(srcdir)/testHTML.c $(DESTDIR)$(EXAMPLES_DIR)
+	-@INSTALL@ -m 0644 $(srcdir)/testXPath.c $(DESTDIR)$(EXAMPLES_DIR)

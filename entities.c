@@ -323,6 +323,8 @@ xmlGetParameterEntity(xmlDocPtr doc, const xmlChar *name) {
     xmlEntitiesTablePtr table;
     xmlEntityPtr ret;
 
+    if (doc == NULL)
+	return(NULL);
     if ((doc->intSubset != NULL) && (doc->intSubset->pentities != NULL)) {
 	table = (xmlEntitiesTablePtr) doc->intSubset->pentities;
 	ret = xmlGetEntityFromTable(table, name);
@@ -343,6 +345,7 @@ xmlGetParameterEntity(xmlDocPtr doc, const xmlChar *name) {
  *
  * Do an entity lookup in the DTD entity hash table and
  * returns the corresponding entity, if found.
+ * Note: the first argument is the document node, not the DTD node.
  * 
  * Returns A pointer to the entity structure or NULL if not found.
  */
@@ -350,6 +353,8 @@ xmlEntityPtr
 xmlGetDtdEntity(xmlDocPtr doc, const xmlChar *name) {
     xmlEntitiesTablePtr table;
 
+    if (doc == NULL)
+	return(NULL);
     if ((doc->extSubset != NULL) && (doc->extSubset->entities != NULL)) {
 	table = (xmlEntitiesTablePtr) doc->extSubset->entities;
 	return(xmlGetEntityFromTable(table, name));

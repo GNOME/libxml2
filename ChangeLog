@@ -1,3 +1,8 @@
+Thu Jan 24 16:00:53 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* valid.c tree.c entities.c: another set of patches from
+	  Anthony Jones for copy operations cleanup and robustness
+
 Wed Jan 23 18:53:55 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* doc/APIchunk*.html doc/parsedecl.py doc/api.xsl: generated

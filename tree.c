@@ -1824,11 +1824,13 @@ xmlSetTreeDoc(xmlNodePtr tree, xmlDocPtr doc) {
     if (tree->type == XML_ENTITY_DECL)
 	return;
     if (tree->doc != doc) {
-	prop = tree->properties;
-	while (prop != NULL) {
-	    prop->doc = doc;
-	    xmlSetListDoc(prop->children, doc);
-	    prop = prop->next;
+	if(tree->type == XML_ELEMENT_NODE) {
+	    prop = tree->properties;
+	    while (prop != NULL) {
+		prop->doc = doc;
+		xmlSetListDoc(prop->children, doc);
+		prop = prop->next;
+	    }
 	}
 	if (tree->children != NULL)
 	    xmlSetListDoc(tree->children, doc);

@@ -37,7 +37,6 @@ SAX.ignorableWhitespace(
 SAX.startElement(meta, content='MSHTML 5.00.3103.1000', name='GENERATOR')
 SAX.endElement(meta)
 SAX.endElement(head)
-SAX.startElement(body)
 SAX.startElement(frameset, border='false', cols='172,*', frameborder='0', framespacing='0')
 SAX.startElement(frame, marginheight='0', marginwidth='0', name='left', noresize, scrolling='no', src='doc2_files/side.htm', target='rtop')
 SAX.endElement(frame)
@@ -64,7 +63,6 @@ SAX.characters(
   , 3)
 SAX.endElement(noframes)
 SAX.endElement(frameset)
-SAX.endElement(body)
 SAX.endElement(html)
 SAX.ignorableWhitespace(
 , 1)

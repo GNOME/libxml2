@@ -855,13 +855,13 @@ htmlCheckImplied(htmlParserCtxtPtr ctxt, const xmlChar *newtag) {
     }
     if ((xmlStrEqual(newtag, BAD_CAST"body")) || (xmlStrEqual(newtag, BAD_CAST"head")))
         return;
-    if (ctxt->nameNr <= 1) {
-	if ((xmlStrEqual(newtag, BAD_CAST"script")) ||
-	    (xmlStrEqual(newtag, BAD_CAST"style")) ||
-	    (xmlStrEqual(newtag, BAD_CAST"meta")) ||
-	    (xmlStrEqual(newtag, BAD_CAST"link")) ||
-	    (xmlStrEqual(newtag, BAD_CAST"title")) ||
-	    (xmlStrEqual(newtag, BAD_CAST"base"))) {
+    if ((ctxt->nameNr <= 1) && 
+        ((xmlStrEqual(newtag, BAD_CAST"script")) ||
+	 (xmlStrEqual(newtag, BAD_CAST"style")) ||
+	 (xmlStrEqual(newtag, BAD_CAST"meta")) ||
+	 (xmlStrEqual(newtag, BAD_CAST"link")) ||
+	 (xmlStrEqual(newtag, BAD_CAST"title")) ||
+	 (xmlStrEqual(newtag, BAD_CAST"base")))) {
 	    /* 
 	     * dropped OBJECT ... i you put it first BODY will be
 	     * assumed !
@@ -872,14 +872,25 @@ htmlCheckImplied(htmlParserCtxtPtr ctxt, const xmlChar *newtag) {
 	    htmlnamePush(ctxt, xmlStrdup(BAD_CAST"head"));
 	    if ((ctxt->sax != NULL) && (ctxt->sax->startElement != NULL))
 		ctxt->sax->startElement(ctxt->userData, BAD_CAST"head", NULL);
-	} else {
-#ifdef DEBUG
-	    xmlGenericError(xmlGenericErrorContext,"Implied element body: pushed body\n");
-#endif    
-	    htmlnamePush(ctxt, xmlStrdup(BAD_CAST"body"));
-	    if ((ctxt->sax != NULL) && (ctxt->sax->startElement != NULL))
-		ctxt->sax->startElement(ctxt->userData, BAD_CAST"body", NULL);
+    } else if ((!xmlStrEqual(newtag, BAD_CAST"noframes")) &&
+	       (!xmlStrEqual(newtag, BAD_CAST"frame")) &&
+	       (!xmlStrEqual(newtag, BAD_CAST"frameset"))) {
+	int i;
+	for (i = 0;i < ctxt->nameNr;i++) {
+	    if (xmlStrEqual(ctxt->nameTab[i], BAD_CAST"body")) {
+		return;
+	    }
+	    if (xmlStrEqual(ctxt->nameTab[i], BAD_CAST"head")) {
+		return;
+	    }
 	}
+	    
+#ifdef DEBUG
+	xmlGenericError(xmlGenericErrorContext,"Implied element body: pushed body\n");
+#endif    
+	htmlnamePush(ctxt, xmlStrdup(BAD_CAST"body"));
+	if ((ctxt->sax != NULL) && (ctxt->sax->startElement != NULL))
+	    ctxt->sax->startElement(ctxt->userData, BAD_CAST"body", NULL);
     }
 }
 
@@ -2931,6 +2942,41 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
      * Check for implied HTML elements.
      */
     htmlCheckImplied(ctxt, name);
+
+    /*
+     * Avoid html at any level > 0, head at any level != 1
+     * or any attempt to recurse body
+     */
+    if ((ctxt->nameNr > 0) && (xmlStrEqual(name, BAD_CAST"html"))) {
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt->userData, 
+	     "htmlParseStartTag: misplaced <html> tag\n");
+	ctxt->wellFormed = 0;
+	xmlFree(name);
+	return;
+    }
+    if ((ctxt->nameNr != 1) && 
+	(xmlStrEqual(name, BAD_CAST"head"))) {
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt->userData, 
+	     "htmlParseStartTag: misplaced <head> tag\n");
+	ctxt->wellFormed = 0;
+	xmlFree(name);
+	return;
+    }
+    if (xmlStrEqual(name, BAD_CAST"body")) {
+	int i;
+	for (i = 0;i < ctxt->nameNr;i++) {
+	    if (xmlStrEqual(ctxt->nameTab[i], BAD_CAST"body")) {
+		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		    ctxt->sax->error(ctxt->userData, 
+		     "htmlParseStartTag: misplaced <body> tag\n");
+		ctxt->wellFormed = 0;
+		xmlFree(name);
+		return;
+	    }
+	}
+    }
 
     /*
      * Now parse the attributes, it ends up with the ending

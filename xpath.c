@@ -4421,12 +4421,16 @@ xmlXPathEvalFilterExpr(xmlXPathParserContextPtr ctxt) {
     CHECK_ERROR;
     SKIP_BLANKS;
     
-    if (CUR != '[') return;
-
-    CHECK_TYPE(XPATH_NODESET);
-
     while (CUR == '[') {
-	xmlXPathEvalPredicate(ctxt);
+	if ((ctxt->value == NULL) || 
+	    ((ctxt->value->type != XPATH_NODESET) &&
+	     (ctxt->value->type != XPATH_LOCATIONSET)))
+	    XP_ERROR(XPATH_INVALID_TYPE)
+
+	if (ctxt->value->type == XPATH_NODESET)
+	    xmlXPathEvalPredicate(ctxt);
+        else
+	    xmlXPtrEvalRangePredicate(ctxt);
 	SKIP_BLANKS;
     }
 

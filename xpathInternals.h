@@ -133,6 +133,8 @@ void xmlXPathDebugDumpObject(FILE *output, xmlXPathObjectPtr cur, int depth);
  * Existing functions
  */
 
+int xmlXPathEvaluatePredicateResult(xmlXPathParserContextPtr ctxt, 
+                                    xmlXPathObjectPtr res);
 void xmlXPathInit(void);
 void xmlXPathStringFunction(xmlXPathParserContextPtr ctxt, int nargs);
 void xmlXPathRegisterAllFunctions(xmlXPathContextPtr ctxt);

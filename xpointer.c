@@ -276,6 +276,36 @@ xmlXPtrRangeCheckOrder(xmlXPathObjectPtr range) {
 }
 
 /**
+ * xmlXPtrRangesEqual:
+ * @range1:  the first range
+ * @range2:  the second range
+ *
+ * Compare two ranges
+ *
+ * Return 1 if equal, 0 otherwise
+ */
+int
+xmlXPtrRangesEqual(xmlXPathObjectPtr range1, xmlXPathObjectPtr range2) {
+    if (range1 == range2)
+	return(1);
+    if ((range1 == NULL) || (range2 == NULL))
+	return(0);
+    if (range1->type != range2->type)
+	return(0);
+    if (range1->type != XPATH_RANGE)
+	return(0);
+    if (range1->user != range2->user)
+	return(0);
+    if (range1->index != range2->index)
+	return(0);
+    if (range1->user2 != range2->user2)
+	return(0);
+    if (range1->index2 != range2->index2)
+	return(0);
+    return(1);
+}
+
+/**
  * xmlXPtrNewRange:
  * @start:  the starting node
  * @startindex:  the start index
@@ -594,6 +624,7 @@ xmlXPtrLocationSetCreate(xmlXPathObjectPtr val) {
  * @val:  a new xmlXPathObjectPtr
  *
  * add a new xmlXPathObjectPtr ot an existing LocationSet
+ * If the location already exist in the set @val is freed.
  */
 void
 xmlXPtrLocationSetAdd(xmlLocationSetPtr cur, xmlXPathObjectPtr val) {
@@ -604,8 +635,12 @@ xmlXPtrLocationSetAdd(xmlLocationSetPtr cur, xmlXPathObjectPtr val) {
     /*
      * check against doublons
      */
-    for (i = 0;i < cur->locNr;i++)
-        if (cur->locTab[i] == val) return;
+    for (i = 0;i < cur->locNr;i++) {
+	if (xmlXPtrRangesEqual(cur->locTab[i], val)) {
+	    xmlXPathFreeObject(val);
+	    return;
+	}
+    }
 
     /*
      * grow the locTab if needed
@@ -1656,6 +1691,10 @@ xmlXPtrStartPointFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     }
 
     newset = xmlXPtrLocationSetCreate(NULL);
+    if (newset == NULL) {
+	xmlXPathFreeObject(obj);
+        XP_ERROR(XPATH_MEMORY_ERROR);
+    }
     oldset = (xmlLocationSetPtr) obj->user;
     if (oldset != NULL) {
 	int i;
@@ -1680,10 +1719,6 @@ xmlXPtrStartPointFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 			}
 			point = xmlXPtrNewPoint(node, tmp->index);
 		    }
-		    if (tmp->user2 == NULL) {
-			point = xmlXPtrNewPoint(node, 0);
-		    } else
-			point = xmlXPtrNewPoint(node, tmp->index);
 		    break;
 	        }
 		default:
@@ -1699,6 +1734,7 @@ xmlXPtrStartPointFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 	}
     }
     xmlXPathFreeObject(obj);
+    valuePush(ctxt, xmlXPtrWrapLocationSet(newset));
 }
 
 /**
@@ -1762,7 +1798,7 @@ xmlXPtrEndPointFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 		    point = xmlXPtrNewPoint(tmp->user, tmp->index);
 		    break;
 		case XPATH_RANGE: {
-		    xmlNodePtr node = tmp->user;
+		    xmlNodePtr node = tmp->user2;
 		    if (node != NULL) {
 			if (node->type == XML_ATTRIBUTE_NODE) {
 			    /* TODO: Namespace Nodes ??? */
@@ -1770,13 +1806,11 @@ xmlXPtrEndPointFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 			    xmlXPtrFreeLocationSet(newset);
 			    XP_ERROR(XPTR_SYNTAX_ERROR);
 			}
-			point = xmlXPtrNewPoint(node, tmp->index);
-		    }
-		    if (tmp->user2 == NULL) {
+			point = xmlXPtrNewPoint(node, tmp->index2);
+		    } else if (tmp->user == NULL) {
 			point = xmlXPtrNewPoint(node,
 				       xmlXPtrNbLocChildren(node));
-		    } else
-			point = xmlXPtrNewPoint(node, tmp->index);
+		    }
 		    break;
 	        }
 		default:
@@ -1792,6 +1826,7 @@ xmlXPtrEndPointFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 	}
     }
     xmlXPathFreeObject(obj);
+    valuePush(ctxt, xmlXPtrWrapLocationSet(newset));
 }
 
 
@@ -2515,6 +2550,8 @@ xmlXPtrGetLastChar(xmlNodePtr *node, int *index) {
 	    len = xmlBufferLength(cur->content);
 #endif
 	    break;
+	} else {
+	    return(-1);
 	}
     }
     if (cur == NULL)
@@ -2754,6 +2791,115 @@ xmlXPtrStringRangeFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     xmlXPathFreeObject(string);
     if (position) xmlXPathFreeObject(position);
     if (number) xmlXPathFreeObject(number);
+}
+
+/**
+ * xmlXPtrEvalRangePredicate:
+ * @ctxt:  the XPointer Parser context
+ *
+ *  [8]   Predicate ::=   '[' PredicateExpr ']'
+ *  [9]   PredicateExpr ::=   Expr 
+ *
+ * Evaluate a predicate as in xmlXPathEvalPredicate() but for
+ * a Location Set instead of a node set
+ */
+void
+xmlXPtrEvalRangePredicate(xmlXPathParserContextPtr ctxt) {
+    const xmlChar *cur;
+    xmlXPathObjectPtr res;
+    xmlXPathObjectPtr obj, tmp;
+    xmlLocationSetPtr newset = NULL;
+    xmlLocationSetPtr oldset;
+    int i;
+
+    SKIP_BLANKS;
+    if (CUR != '[') {
+	XP_ERROR(XPATH_INVALID_PREDICATE_ERROR);
+    }
+    NEXT;
+    SKIP_BLANKS;
+
+    /*
+     * Extract the old set, and then evaluate the result of the
+     * expression for all the element in the set. use it to grow
+     * up a new set.
+     */
+    CHECK_TYPE(XPATH_LOCATIONSET);
+    obj = valuePop(ctxt);
+    oldset = obj->user;
+    ctxt->context->node = NULL;
+
+    if ((oldset == NULL) || (oldset->locNr == 0)) {
+	ctxt->context->contextSize = 0;
+	ctxt->context->proximityPosition = 0;
+	xmlXPathEvalExpr(ctxt);
+	res = valuePop(ctxt);
+	if (res != NULL)
+	    xmlXPathFreeObject(res);
+	valuePush(ctxt, obj);
+	CHECK_ERROR;
+    } else {
+	/*
+	 * Save the expression pointer since we will have to evaluate
+	 * it multiple times. Initialize the new set.
+	 */
+        cur = ctxt->cur;
+	newset = xmlXPtrLocationSetCreate(NULL);
+	
+        for (i = 0; i < oldset->locNr; i++) {
+	    ctxt->cur = cur;
+
+	    /*
+	     * Run the evaluation with a node list made of a single item
+	     * in the nodeset.
+	     */
+	    ctxt->context->node = oldset->locTab[i]->user;
+	    tmp = xmlXPathNewNodeSet(ctxt->context->node);
+	    valuePush(ctxt, tmp);
+	    ctxt->context->contextSize = oldset->locNr;
+	    ctxt->context->proximityPosition = i + 1;
+
+	    xmlXPathEvalExpr(ctxt);
+	    CHECK_ERROR;
+
+	    /*
+	     * The result of the evaluation need to be tested to
+	     * decided whether the filter succeeded or not
+	     */
+	    res = valuePop(ctxt);
+	    if (xmlXPathEvaluatePredicateResult(ctxt, res)) {
+	        xmlXPtrLocationSetAdd(newset,
+			xmlXPathObjectCopy(oldset->locTab[i]));
+	    }
+
+	    /*
+	     * Cleanup
+	     */
+	    if (res != NULL)
+		xmlXPathFreeObject(res);
+	    if (ctxt->value == tmp) {
+		res = valuePop(ctxt);
+		xmlXPathFreeObject(res);
+	    }
+	    
+	    ctxt->context->node = NULL;
+	}
+
+	/*
+	 * The result is used as the new evaluation set.
+	 */
+	xmlXPathFreeObject(obj);
+	ctxt->context->node = NULL;
+	ctxt->context->contextSize = -1;
+	ctxt->context->proximityPosition = -1;
+	valuePush(ctxt, xmlXPtrWrapLocationSet(newset));
+    }
+    if (CUR != ']') {
+	XP_ERROR(XPATH_INVALID_PREDICATE_ERROR);
+    }
+
+    NEXT;
+    SKIP_BLANKS;
 }
 
 #else

@@ -1686,9 +1686,9 @@ xmlIconvWrapper(iconv_t cd,
 #ifdef EINVAL
 		if (errno == EINVAL) {
 			return -3;
-		}
+		} else
 #endif
-		else {
+		{
 			return -3;
 		}
 	}

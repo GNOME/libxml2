@@ -1,3 +1,12 @@
+Sat Nov 25 00:24:49 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* HTMLparser.c: some fixes on auto-open of html/head/body
+	* encoding.c: fixed a compilation error on some gcc env
+	* xpath.c xpointer.[ch] xpathInternals.h: improved the
+	  XPointer implementation
+	* test/XPath/xptr/strpoint test/XPath/xptr/strrange3: added
+	  related XPointer tests and associated results
+
 Fri Nov 24 14:01:44 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* doc/xmldtd.html doc/xml.html: following a short step by step

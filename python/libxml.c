@@ -1644,9 +1644,17 @@ libxml_xmlFreeTextReader(ATTRIBUTE_UNUSED PyObject *self, PyObject *args) {
     xmlTextReaderErrorFunc f;
     void *arg;
 
+    if (self == NULL) {
+	Py_INCREF(Py_None);
+	return(Py_None);
+    }
     if (!PyArg_ParseTuple(args, (char *)"O:xmlFreeTextReader", &pyobj_reader))
         return(NULL);
     reader = (xmlTextReaderPtr) PyxmlTextReader_Get(pyobj_reader);
+    if (reader == NULL) {
+	Py_INCREF(Py_None);
+	return(Py_None);
+    }
 
     xmlTextReaderGetErrorHandler(reader,&f,&arg);
     if (arg != NULL) {

@@ -1,3 +1,8 @@
+Thu Oct 30 14:10:42 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* python/libxml.c: be more defensive in the xmlReader python bindings
+	  fixing bug #124044
+
 Thu Oct 30 11:14:31 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* valid.c: the a-posteriori DTD validation code was not validating

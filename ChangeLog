@@ -1,3 +1,8 @@
+Mon Jan 17 17:04:12 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* tree.c: fixed a hideous bug in xmlGetProp() thanks to
+	  Rune.Djurhuus@fast.no
+
 Sat Jan 15 15:09:06 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* TODO: updated

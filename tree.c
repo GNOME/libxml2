@@ -3398,7 +3398,8 @@ xmlGetProp(xmlNodePtr node, const xmlChar *name) {
 	    attrDecl = xmlGetDtdAttrDesc(doc->intSubset, node->name, name);
 	    if ((attrDecl == NULL) && (doc->extSubset != NULL))
 		attrDecl = xmlGetDtdAttrDesc(doc->extSubset, node->name, name);
-	    return(xmlStrdup(attrDecl->defaultValue));
+	    if (attrDecl != NULL)
+		return(xmlStrdup(attrDecl->defaultValue));
 	}
     }
     return(NULL);

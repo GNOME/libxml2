@@ -4599,17 +4599,17 @@ xmlNewReconciliedNs(xmlDocPtr doc, xmlNodePtr tree, xmlNsPtr ns) {
      * Let's strip namespace prefixes longer than 20 chars !
      */
     if (ns->prefix == NULL)
-	sprintf((char *) prefix, "default");
+	snprintf((char *) prefix, sizeof(prefix), "default");
     else
-	sprintf((char *) prefix, "%.20s", ns->prefix);
+	snprintf((char *) prefix, sizeof(prefix), "%.20s", ns->prefix);
 
     def = xmlSearchNs(doc, tree, prefix);
     while (def != NULL) {
         if (counter > 1000) return(NULL);
 	if (ns->prefix == NULL)
-	    sprintf((char *) prefix, "default%d", counter++);
+	    snprintf((char *) prefix, sizeof(prefix), "default%d", counter++);
 	else
-	    sprintf((char *) prefix, "%.20s%d", ns->prefix, counter++);
+	    snprintf((char *) prefix, sizeof(prefix), "%.20s%d", ns->prefix, counter++);
 	def = xmlSearchNs(doc, tree, prefix);
     }
 

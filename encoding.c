@@ -2270,7 +2270,7 @@ retry:
 		 * and continue the transcoding phase, hoping the error
 		 * did not mangle the encoder state.
 		 */
-		sprintf((char *) charref, "&#%d;", cur);
+		snprintf((char *) charref, sizeof(charref), "&#%d;", cur);
 		xmlBufferShrink(in, len);
 		xmlBufferAddHead(in, charref, -1);
 

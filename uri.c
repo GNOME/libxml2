@@ -372,7 +372,7 @@ xmlSaveUri(xmlURIPtr uri) {
 			return(NULL);
 		    }
 		}
-		len += sprintf((char *) &ret[len], ":%d", uri->port);
+		len += snprintf((char *) &ret[len], max - len, ":%d", uri->port);
 	    }
 	} else if (uri->authority != NULL) {
 	    if (len + 3 >= max) {

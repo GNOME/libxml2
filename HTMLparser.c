@@ -1572,7 +1572,7 @@ htmlEncodeEntities(unsigned char* out, int *outlen,
 	     */
 	    ent = htmlEntityValueLookup(c);
 	    if (ent == NULL) {
-		sprintf(nbuf, "#%u", c);
+		snprintf(nbuf, sizeof(nbuf), "#%u", c);
 		cp = nbuf;
 	    }
 	    else

@@ -1135,18 +1135,18 @@ xmlXPathFormatNumber(double number, char buffer[], int buffersize)
     switch (xmlXPathIsInf(number)) {
     case 1:
 	if (buffersize > (int)sizeof("Infinity"))
-	    sprintf(buffer, "Infinity");
+	    snprintf(buffer, buffersize, "Infinity");
 	break;
     case -1:
 	if (buffersize > (int)sizeof("-Infinity"))
-	    sprintf(buffer, "-Infinity");
+	    snprintf(buffer, buffersize, "-Infinity");
 	break;
     default:
 	if (xmlXPathIsNaN(number)) {
 	    if (buffersize > (int)sizeof("NaN"))
-		sprintf(buffer, "NaN");
+		snprintf(buffer, buffersize, "NaN");
 	} else if (number == 0 && xmlXPathGetSign(number) != 0) {
-	    sprintf(buffer, "0");
+	    snprintf(buffer, buffersize, "0");
 	} else if (number == ((int) number)) {
 	    char work[30];
 	    char *ptr, *cur;

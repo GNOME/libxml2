@@ -285,13 +285,16 @@ xmlHTMLEncodeSend(void) {
 
 static void
 xmlHTMLPrintFileInfo(xmlParserInputPtr input) {
+    int len;
     xmlGenericError(xmlGenericErrorContext, "<p>");
+
+    len = strlen(buffer);
     if (input != NULL) {
 	if (input->filename) {
-	    sprintf(&buffer[strlen(buffer)], "%s:%d: ", input->filename,
+	    snprintf(&buffer[len], sizeof(buffer) - len, "%s:%d: ", input->filename,
 		    input->line);
 	} else {
-	    sprintf(&buffer[strlen(buffer)], "Entity: line %d: ", input->line);
+	    snprintf(&buffer[len], sizeof(buffer) - len, "Entity: line %d: ", input->line);
 	}
     }
     xmlHTMLEncodeSend();
@@ -307,6 +310,7 @@ xmlHTMLPrintFileInfo(xmlParserInputPtr input) {
 static void
 xmlHTMLPrintFileContext(xmlParserInputPtr input) {
     const xmlChar *cur, *base;
+    int len;
     int n;
 
     if (input == NULL) return;
@@ -323,19 +327,24 @@ xmlHTMLPrintFileContext(xmlParserInputPtr input) {
     base = cur;
     n = 0;
     while ((*cur != 0) && (*cur != '\n') && (*cur != '\r') && (n < 79)) {
-        sprintf(&buffer[strlen(buffer)], "%c", (unsigned char) *cur++);
+	len = strlen(buffer);
+        snprintf(&buffer[len], sizeof(buffer) - len, "%c", 
+		    (unsigned char) *cur++);
 	n++;
     }
-    sprintf(&buffer[strlen(buffer)], "\n");
+    len = strlen(buffer);
+    snprintf(&buffer[len], sizeof(buffer) - len, "\n");
     cur = input->cur;
     while ((*cur == '\n') || (*cur == '\r'))
 	cur--;
     n = 0;
     while ((cur != base) && (n++ < 80)) {
-        sprintf(&buffer[strlen(buffer)], " ");
+	len = strlen(buffer);
+        snprintf(&buffer[len], sizeof(buffer) - len, " ");
         base++;
     }
-    sprintf(&buffer[strlen(buffer)],"^\n");
+    len = strlen(buffer);
+    snprintf(&buffer[len], sizeof(buffer) - len, "^\n");
     xmlHTMLEncodeSend();
     xmlGenericError(xmlGenericErrorContext, "</pre>");
 }
@@ -356,6 +365,7 @@ xmlHTMLError(void *ctx, const char *msg, ...)
     xmlParserInputPtr input;
     xmlParserInputPtr cur = NULL;
     va_list args;
+    int len;
 
     buffer[0] = 0;
     input = ctxt->input;
@@ -368,7 +378,8 @@ xmlHTMLError(void *ctx, const char *msg, ...)
 
     xmlGenericError(xmlGenericErrorContext, "<b>error</b>: ");
     va_start(args, msg);
-    vsprintf(&buffer[strlen(buffer)], msg, args);
+    len = strlen(buffer);
+    vsnprintf(&buffer[len],  sizeof(buffer) - len, msg, args);
     va_end(args);
     xmlHTMLEncodeSend();
     xmlGenericError(xmlGenericErrorContext, "</p>\n");
@@ -393,6 +404,7 @@ xmlHTMLWarning(void *ctx, const char *msg, ...)
     xmlParserInputPtr input;
     xmlParserInputPtr cur = NULL;
     va_list args;
+    int len;
 
     buffer[0] = 0;
     input = ctxt->input;
@@ -406,7 +418,8 @@ xmlHTMLWarning(void *ctx, const char *msg, ...)
         
     xmlGenericError(xmlGenericErrorContext, "<b>warning</b>: ");
     va_start(args, msg);
-    vsprintf(&buffer[strlen(buffer)], msg, args);
+    len = strlen(buffer);    
+    vsnprintf(&buffer[len],  sizeof(buffer) - len, msg, args);
     va_end(args);
     xmlHTMLEncodeSend();
     xmlGenericError(xmlGenericErrorContext, "</p>\n");
@@ -430,6 +443,7 @@ xmlHTMLValidityError(void *ctx, const char *msg, ...)
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlParserInputPtr input;
     va_list args;
+    int len;
 
     buffer[0] = 0;
     input = ctxt->input;
@@ -439,8 +453,9 @@ xmlHTMLValidityError(void *ctx, const char *msg, ...)
     xmlHTMLPrintFileInfo(input);
 
     xmlGenericError(xmlGenericErrorContext, "<b>validity error</b>: ");
+    len = strlen(buffer);
     va_start(args, msg);
-    vsprintf(&buffer[strlen(buffer)], msg, args);
+    vsnprintf(&buffer[len],  sizeof(buffer) - len, msg, args);
     va_end(args);
     xmlHTMLEncodeSend();
     xmlGenericError(xmlGenericErrorContext, "</p>\n");
@@ -464,6 +479,7 @@ xmlHTMLValidityWarning(void *ctx, const char *msg, ...)
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlParserInputPtr input;
     va_list args;
+    int len;
 
     buffer[0] = 0;
     input = ctxt->input;
@@ -474,7 +490,8 @@ xmlHTMLValidityWarning(void *ctx, const char *msg, ...)
         
     xmlGenericError(xmlGenericErrorContext, "<b>validity warning</b>: ");
     va_start(args, msg);
-    vsprintf(&buffer[strlen(buffer)], msg, args);
+    len = strlen(buffer); 
+    vsnprintf(&buffer[len],  sizeof(buffer) - len, msg, args);
     va_end(args);
     xmlHTMLEncodeSend();
     xmlGenericError(xmlGenericErrorContext, "</p>\n");

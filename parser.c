@@ -5348,9 +5348,9 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 		    ctxt->sax->characters(ctxt->userData, out, 1);
 	    } else {
 		if ((hex == 'x') || (hex == 'X'))
-		    sprintf((char *)out, "#x%X", value);
+		    snprintf((char *)out, sizeof(out), "#x%X", value);
 		else
-		    sprintf((char *)out, "#%d", value);
+		    snprintf((char *)out, sizeof(out), "#%d", value);
 		if ((ctxt->sax != NULL) && (ctxt->sax->reference != NULL) &&
 		    (!ctxt->disableSAX))
 		    ctxt->sax->reference(ctxt->userData, out);

@@ -1980,11 +1980,11 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
 #endif /* LIBXML_XPATH_ENABLED */
     while (1) {
         if (ctxt->node == (xmlNodePtr) ctxt->doc)
-            sprintf(prompt, "%s > ", "/");
+            snprintf(prompt, sizeof(prompt), "%s > ", "/");
         else if (ctxt->node->name)
             snprintf(prompt, sizeof(prompt), "%s > ", ctxt->node->name);
         else
-            sprintf(prompt, "? > ");
+            snprintf(prompt, sizeof(prompt), "? > ");
         prompt[sizeof(prompt) - 1] = 0;
 
         /*

@@ -1,3 +1,11 @@
+2002-06-14  Aleksey Sanin  <set EMAIL_ADDRESS environment variable>
+
+	* DOCBparser.c HTMLparser.c debugXML.c encoding.c
+	nanoftp.c nanohttp.c parser.c tree.c uri.c xmlIO.c
+	xmllint.c xpath.c: replaced sprintf() with snprintf()
+	to prevent possible buffer overflow (the bug was pointed
+	out by Anju Premachandran) 
+
 Thu Jun 13 17:30:25 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: removed an uninitialized data error popped by valgrind

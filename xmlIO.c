@@ -492,7 +492,7 @@ xmlGzfileOpenW (const char *filename, int compression) {
     char mode[15];
     gzFile fd;
 
-    sprintf(mode, "wb%d", compression);
+    snprintf(mode, sizeof(mode), "wb%d", compression);
     if (!strcmp(filename, "-")) {
         fd = gzdopen(dup(1), mode);
 	return((void *) fd);
@@ -714,9 +714,9 @@ xmlCreateZMemBuff( int compression ) {
     }
 
     /*  Set the header data.  The CRC will be needed for the trailer  */
-
     buff->crc = crc32( 0L, Z_NULL, 0 );
-    hdr_lgth = sprintf( (char *)buff->zbuff, "%c%c%c%c%c%c%c%c%c%c",
+    hdr_lgth = snprintf( (char *)buff->zbuff, buff->size,
+			"%c%c%c%c%c%c%c%c%c%c",
 			GZ_MAGIC1, GZ_MAGIC2, Z_DEFLATED, 
 			0, 0, 0, 0, 0, 0, LXML_ZLIB_OS_CODE );
     buff->zctrl.next_out  = buff->zbuff + hdr_lgth;
@@ -1182,7 +1182,7 @@ xmlIOHTTPCloseWrite( void * context, const char * http_mthd ) {
 
 	    dump_name = tempnam( NULL, "lxml" );
 	    if ( dump_name != NULL ) {
-		(void)sprintf( buffer, "%s.content", dump_name );
+		(void)snprintf( buffer, sizeof(buffer), "%s.content", dump_name );
 
 		tst_file = fopen( buffer, "w" );
 		if ( tst_file != NULL ) {
@@ -1194,7 +1194,7 @@ xmlIOHTTPCloseWrite( void * context, const char * http_mthd ) {
 		    fclose( tst_file );
 		}
 
-		(void)sprintf( buffer, "%s.reply", dump_name );
+		(void)snprintf( buffer, sizeof(buffer), "%s.reply", dump_name );
 		tst_file = fopen( buffer, "w" );
 		if ( tst_file != NULL ) {
 		    xmlGenericError( xmlGenericErrorContext,

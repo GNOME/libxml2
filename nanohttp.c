@@ -1137,28 +1137,30 @@ retry:
 
     if (proxy) {
 	if (ctxt->port != 80) {
-	    p += sprintf( p, "%s http://%s:%d%s", method, ctxt->hostname,
+	    p += snprintf( p, blen - (p - bp), "%s http://%s:%d%s", 
+			method, ctxt->hostname,
 		 	ctxt->port, ctxt->path );
 	}
-	else
-	    p += sprintf( p, "%s http://%s%s", method,
+	else 
+	    p += snprintf( p, blen - (p - bp), "%s http://%s%s", method,
 	    		ctxt->hostname, ctxt->path);
     }
     else
-	p += sprintf( p, "%s %s", method, ctxt->path);
+	p += snprintf( p, blen - (p - bp), "%s %s", method, ctxt->path);
 
-    p += sprintf(p, " HTTP/1.0\r\nHost: %s\r\n", ctxt->hostname);
+    p += snprintf( p, blen - (p - bp), " HTTP/1.0\r\nHost: %s\r\n", 
+		    ctxt->hostname);
 
     if (contentType != NULL && *contentType) 
-	p += sprintf(p, "Content-Type: %s\r\n", *contentType);
+	p += snprintf(p, blen - (p - bp), "Content-Type: %s\r\n", *contentType);
 
     if (headers != NULL)
-	p += sprintf( p, "%s", headers );
+	p += snprintf( p, blen - (p - bp), "%s", headers );
 
     if (input != NULL)
-	sprintf(p, "Content-Length: %d\r\n\r\n", ilen );
+	snprintf(p, blen - (p - bp), "Content-Length: %d\r\n\r\n", ilen );
     else
-	strcpy(p, "\r\n");
+	snprintf(p, blen - (p - bp), "\r\n");
 
 #ifdef DEBUG_HTTP
     xmlGenericError(xmlGenericErrorContext,

@@ -121,7 +121,7 @@ NAME="LIBXML-C14N">c14n</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN20497"
+NAME="AEN20659"
 ></A
 ><H2
 >Name</H2
@@ -129,7 +129,7 @@ NAME="AEN20497"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN20500"><H2
+NAME="AEN20662"><H2
 >Synopsis</H2
 ><TABLE
 BORDER="0"
@@ -202,7 +202,41 @@ HREF="libxml-tree.html#XMLCHAR"
 > **inclusive_ns_prefixes,
                                              int with_comments,
                                              const char *filename,
-                                             int compression);</PRE
+                                             int compression);
+int         (<A
+HREF="libxml-c14n.html#XMLC14NISVISIBLECALLBACK"
+>*xmlC14NIsVisibleCallback</A
+>)     (void *user_data,
+                                             <A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node,
+                                             <A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> parent);
+int         <A
+HREF="libxml-c14n.html#XMLC14NEXECUTE"
+>xmlC14NExecute</A
+>                  (<A
+HREF="libxml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="libxml-c14n.html#XMLC14NISVISIBLECALLBACK"
+>xmlC14NIsVisibleCallback</A
+> is_visible_callback,
+                                             void *user_data,
+                                             int exclusive,
+                                             <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> **inclusive_ns_prefixes,
+                                             int with_comments,
+                                             <A
+HREF="libxml-tree.html#XMLOUTPUTBUFFERPTR"
+>xmlOutputBufferPtr</A
+> buf);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -210,7 +244,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN20517"
+NAME="AEN20687"
 ></A
 ><H2
 >Description</H2
@@ -220,14 +254,14 @@ NAME="AEN20517"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN20520"
+NAME="AEN20690"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20522"
+NAME="AEN20692"
 ></A
 ><H3
 ><A
@@ -273,7 +307,7 @@ For details see "Canonical XML" (http://www.w3.org/TR/xml-c14n) or
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20532"><P
+NAME="AEN20702"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -419,7 +453,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20565"
+NAME="AEN20735"
 ></A
 ><H3
 ><A
@@ -465,7 +499,7 @@ For details see "Canonical XML" (http://www.w3.org/TR/xml-c14n) or
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20575"><P
+NAME="AEN20745"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -614,7 +648,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN20609"
+NAME="AEN20779"
 ></A
 ><H3
 ><A
@@ -658,7 +692,7 @@ For details see "Canonical XML" (http://www.w3.org/TR/xml-c14n) or
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN20618"><P
+NAME="AEN20788"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -812,6 +846,343 @@ WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
 >the number of bytes written success or a negative value on fail  </TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN20825"
+></A
+><H3
+><A
+NAME="XMLC14NISVISIBLECALLBACK"
+></A
+>xmlC14NIsVisibleCallback ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         (*xmlC14NIsVisibleCallback)     (void *user_data,
+                                             <A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node,
+                                             <A
+HREF="libxml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> parent);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN20832"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>user_data</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>node</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>parent</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN20853"
+></A
+><H3
+><A
+NAME="XMLC14NEXECUTE"
+></A
+>xmlC14NExecute ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlC14NExecute                  (<A
+HREF="libxml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="libxml-c14n.html#XMLC14NISVISIBLECALLBACK"
+>xmlC14NIsVisibleCallback</A
+> is_visible_callback,
+                                             void *user_data,
+                                             int exclusive,
+                                             <A
+HREF="libxml-tree.html#XMLCHAR"
+>xmlChar</A
+> **inclusive_ns_prefixes,
+                                             int with_comments,
+                                             <A
+HREF="libxml-tree.html#XMLOUTPUTBUFFERPTR"
+>xmlOutputBufferPtr</A
+> buf);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Dumps the canonized image of given XML document into the provided buffer.
+For details see "Canonical XML" (http://www.w3.org/TR/xml-c14n) or
+"Exclusive XML Canonicalization" (http://www.w3.org/TR/xml-exc-c14n)</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN20863"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> 		the XML document for canonization</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>is_visible_callback</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the function to use to determine is node visible 
+or not</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>user_data</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> 		the first parameter for <TT
+CLASS="PARAMETER"
+><I
+>is_visible_callback</I
+></TT
+> function
+(in most cases, it is nodes set)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>exclusive</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>		the exclusive flag (0 - non-exclusive canonicalization;
+otherwise - exclusive canonicalization)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>inclusive_ns_prefixes</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the list of inclusive namespace prefixes 
+ended with a NULL or NULL if there is no
+inclusive namespaces (only for exclusive 
+canonicalization, ignored otherwise)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>with_comments</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> 	include comments in the result (!=0) or not (==0)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buf</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> 		the output buffer to store canonical XML; this 
+buffer MUST have encoder==NULL because C14N requires
+UTF-8 output</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>non-negative value on success or a negative value on fail  </TD
 ></TR
 ></TBODY
 ></TABLE

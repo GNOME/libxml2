@@ -1,3 +1,8 @@
+Thu Sep 26 14:25:33 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* doc/*: added the 3 new modules xmlregexp xmlautomata and xmlunicode
+	  and regenerated the docs and web site
+
 Thu Sep 26 11:45:42 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xinclude.c xmlschemas.c xmlschemastypes.c xpath.c: make sure

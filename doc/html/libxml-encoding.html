@@ -121,7 +121,7 @@ NAME="LIBXML-ENCODING">encoding</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN24436"
+NAME="AEN24682"
 ></A
 ><H2
 >Name</H2
@@ -129,7 +129,7 @@ NAME="AEN24436"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN24439"><H2
+NAME="AEN24685"><H2
 >Synopsis</H2
 ><TABLE
 BORDER="0"
@@ -202,6 +202,22 @@ HREF="libxml-encoding.html#XMLFINDCHARENCODINGHANDLER"
 >xmlFindCharEncodingHandler</A
 >
                                             (const char *name);
+<A
+HREF="libxml-encoding.html#XMLCHARENCODINGHANDLERPTR"
+>xmlCharEncodingHandlerPtr</A
+> <A
+HREF="libxml-encoding.html#XMLNEWCHARENCODINGHANDLER"
+>xmlNewCharEncodingHandler</A
+>
+                                            (const char *name,
+                                             <A
+HREF="libxml-encoding.html#XMLCHARENCODINGINPUTFUNC"
+>xmlCharEncodingInputFunc</A
+> input,
+                                             <A
+HREF="libxml-encoding.html#XMLCHARENCODINGOUTPUTFUNC"
+>xmlCharEncodingOutputFunc</A
+> output);
 int         <A
 HREF="libxml-encoding.html#XMLADDENCODINGALIAS"
 >xmlAddEncodingAlias</A
@@ -378,7 +394,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN24499"
+NAME="AEN24749"
 ></A
 ><H2
 >Description</H2
@@ -388,14 +404,14 @@ NAME="AEN24499"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN24502"
+NAME="AEN24752"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24504"
+NAME="AEN24754"
 ></A
 ><H3
 ><A
@@ -461,7 +477,7 @@ support needed.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24511"
+NAME="AEN24761"
 ></A
 ><H3
 ><A
@@ -492,7 +508,7 @@ it to an UTF-8 block of chars out.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24517"><P
+NAME="AEN24767"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -621,7 +637,7 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24546"
+NAME="AEN24796"
 ></A
 ><H3
 ><A
@@ -654,7 +670,7 @@ in = NULL. If stateful this should also initialize the encoder state.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24552"><P
+NAME="AEN24802"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -783,7 +799,7 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24581"
+NAME="AEN24831"
 ></A
 ><H3
 ><A
@@ -817,7 +833,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24586"
+NAME="AEN24836"
 ></A
 ><H3
 ><A
@@ -843,7 +859,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24591"
+NAME="AEN24841"
 ></A
 ><H3
 ><A
@@ -874,7 +890,7 @@ in normal processing.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24597"
+NAME="AEN24847"
 ></A
 ><H3
 ><A
@@ -903,7 +919,7 @@ unregisters all the encoding handlers and the aliases.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24603"
+NAME="AEN24853"
 ></A
 ><H3
 ><A
@@ -933,7 +949,7 @@ HREF="libxml-encoding.html#XMLCHARENCODINGHANDLERPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24610"><P
+NAME="AEN24860"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -969,7 +985,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24619"
+NAME="AEN24869"
 ></A
 ><H3
 ><A
@@ -1003,7 +1019,7 @@ HREF="libxml-encoding.html#XMLCHARENCODING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24627"><P
+NAME="AEN24877"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1057,7 +1073,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24640"
+NAME="AEN24890"
 ></A
 ><H3
 ><A
@@ -1088,7 +1104,7 @@ HREF="libxml-encoding.html#XMLCHARENCODINGHANDLERPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24647"><P
+NAME="AEN24897"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1142,7 +1158,134 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24660"
+NAME="AEN24910"
+></A
+><H3
+><A
+NAME="XMLNEWCHARENCODINGHANDLER"
+></A
+>xmlNewCharEncodingHandler ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="libxml-encoding.html#XMLCHARENCODINGHANDLERPTR"
+>xmlCharEncodingHandlerPtr</A
+> xmlNewCharEncodingHandler
+                                            (const char *name,
+                                             <A
+HREF="libxml-encoding.html#XMLCHARENCODINGINPUTFUNC"
+>xmlCharEncodingInputFunc</A
+> input,
+                                             <A
+HREF="libxml-encoding.html#XMLCHARENCODINGOUTPUTFUNC"
+>xmlCharEncodingOutputFunc</A
+> output);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Create and registers an xmlCharEncodingHandler.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN24919"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the encoding name, in UTF-8 format (ASCII actually)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>input</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlCharEncodingInputFunc to read that encoding</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>output</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlCharEncodingOutputFunc to write that encoding</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the xmlCharEncodingHandlerPtr created (or NULL in case of error).</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN24940"
 ></A
 ><H3
 ><A
@@ -1181,7 +1324,7 @@ will be overwritten.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24668"><P
+NAME="AEN24948"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1252,7 +1395,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24685"
+NAME="AEN24965"
 ></A
 ><H3
 ><A
@@ -1284,7 +1427,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24692"><P
+NAME="AEN24972"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1338,7 +1481,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24705"
+NAME="AEN24985"
 ></A
 ><H3
 ><A
@@ -1365,7 +1508,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24711"><P
+NAME="AEN24991"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1419,7 +1562,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24724"
+NAME="AEN25004"
 ></A
 ><H3
 ><A
@@ -1447,7 +1590,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24730"
+NAME="AEN25010"
 ></A
 ><H3
 ><A
@@ -1479,7 +1622,7 @@ that the comparison is case insensitive accordingly to the section
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24737"><P
+NAME="AEN25017"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1534,7 +1677,7 @@ if not recognized.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24750"
+NAME="AEN25030"
 ></A
 ><H3
 ><A
@@ -1569,7 +1712,7 @@ Section 4.3.3  Character Encoding in Entities</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24758"><P
+NAME="AEN25038"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1623,7 +1766,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24771"
+NAME="AEN25051"
 ></A
 ><H3
 ><A
@@ -1655,7 +1798,7 @@ accordingly of the non-normative appendix F of the XML-1.0 recommendation.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24778"><P
+NAME="AEN25058"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1727,7 +1870,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24795"
+NAME="AEN25075"
 ></A
 ><H3
 ><A
@@ -1775,7 +1918,7 @@ the content will be automatically remapped to a CharRef sequence.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24805"><P
+NAME="AEN25085"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1866,7 +2009,7 @@ the result of transformation can't fit into the encoding we want), or</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24826"
+NAME="AEN25106"
 ></A
 ><H3
 ><A
@@ -1904,7 +2047,7 @@ HREF="libxml-tree.html#XMLBUFFERPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24835"><P
+NAME="AEN25115"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1995,7 +2138,7 @@ the result of transformation can't fit into the encoding we want), or</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24856"
+NAME="AEN25136"
 ></A
 ><H3
 ><A
@@ -2034,7 +2177,7 @@ the very first line, i.e. limit itself to 45 chars.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24865"><P
+NAME="AEN25145"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2125,7 +2268,7 @@ the result of transformation can't fit into the encoding we want), or</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24886"
+NAME="AEN25166"
 ></A
 ><H3
 ><A
@@ -2155,7 +2298,7 @@ HREF="libxml-encoding.html#XMLCHARENCODINGHANDLER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24893"><P
+NAME="AEN25173"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2209,7 +2352,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24906"
+NAME="AEN25186"
 ></A
 ><H3
 ><A
@@ -2240,7 +2383,7 @@ block of chars out.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24912"><P
+NAME="AEN25192"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2368,7 +2511,7 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24941"
+NAME="AEN25221"
 ></A
 ><H3
 ><A
@@ -2399,7 +2542,7 @@ block of chars out.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24947"><P
+NAME="AEN25227"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2527,7 +2670,7 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24976"
+NAME="AEN25256"
 ></A
 ><H3
 ><A
@@ -2569,7 +2712,7 @@ routine checks for the 4-byte maximum size, but does not check for
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN24984"><P
+NAME="AEN25264"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2628,7 +2771,7 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN24998"
+NAME="AEN25278"
 ></A
 ><H3
 ><A
@@ -2659,7 +2802,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN25005"><P
+NAME="AEN25285"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2731,7 +2874,7 @@ the first 'len' characters of ARRAY&#13;</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN25022"
+NAME="AEN25302"
 ></A
 ><H3
 ><A
@@ -2765,7 +2908,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN25030"><P
+NAME="AEN25310"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2841,7 +2984,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN25048"
+NAME="AEN25328"
 ></A
 ><H3
 ><A
@@ -2876,7 +3019,7 @@ character from a string array</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN25056"><P
+NAME="AEN25336"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2947,7 +3090,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN25073"
+NAME="AEN25353"
 ></A
 ><H3
 ><A
@@ -2981,7 +3124,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN25081"><P
+NAME="AEN25361"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -3053,7 +3196,7 @@ or -1 if not found</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN25098"
+NAME="AEN25378"
 ></A
 ><H3
 ><A
@@ -3088,7 +3231,7 @@ HREF="libxml-tree.html#XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN25106"><P
+NAME="AEN25386"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -3177,7 +3320,7 @@ or NULL if any problem</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN25127"
+NAME="AEN25407"
 ></A
 ><H3
 ><A
@@ -3208,7 +3351,7 @@ checking of the content of the string.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN25134"><P
+NAME="AEN25414"><P
 ></P
 ><TABLE
 BORDER="0"

@@ -183,6 +183,7 @@
     <reference name='htmlHandleOmittedElem' href='html/libxml-htmlparser.html#HTMLHANDLEOMITTEDELEM'/>
     <reference name='htmlInitAutoClose' href='html/libxml-parserinternals.html#HTMLINITAUTOCLOSE'/>
     <reference name='htmlIsAutoClosed' href='html/libxml-htmlparser.html#HTMLISAUTOCLOSED'/>
+    <reference name='htmlIsBooleanAttr' href='html/libxml-htmltree.html#HTMLISBOOLEANATTR'/>
     <reference name='htmlIsScriptAttribute' href='html/libxml-htmlparser.html#HTMLISSCRIPTATTRIBUTE'/>
     <reference name='htmlNewDoc' href='html/libxml-htmltree.html#HTMLNEWDOC'/>
     <reference name='htmlNewDocNoDtD' href='html/libxml-htmltree.html#HTMLNEWDOCNODTD'/>
@@ -345,6 +346,8 @@
     <reference name='xmlC14NDocDumpMemory' href='html/libxml-c14n.html#XMLC14NDOCDUMPMEMORY'/>
     <reference name='xmlC14NDocSave' href='html/libxml-c14n.html#XMLC14NDOCSAVE'/>
     <reference name='xmlC14NDocSaveTo' href='html/libxml-c14n.html#XMLC14NDOCSAVETO'/>
+    <reference name='xmlC14NExecute' href='html/libxml-c14n.html#XMLC14NEXECUTE'/>
+    <reference name='xmlC14NIsVisibleCallback' href='html/libxml-c14n.html#XMLC14NISVISIBLECALLBACK'/>
     <reference name='xmlCatalog' href='html/libxml-catalog.html#XMLCATALOG'/>
     <reference name='xmlCatalogAdd' href='html/libxml-catalog.html#XMLCATALOGADD'/>
     <reference name='xmlCatalogAddLocal' href='html/libxml-catalog.html#XMLCATALOGADDLOCAL'/>
@@ -721,6 +724,7 @@
     <reference name='xmlNewAutomata' href='html/libxml-xmlautomata.html#XMLNEWAUTOMATA'/>
     <reference name='xmlNewCDataBlock' href='html/libxml-tree.html#XMLNEWCDATABLOCK'/>
     <reference name='xmlNewCatalog' href='html/libxml-catalog.html#XMLNEWCATALOG'/>
+    <reference name='xmlNewCharEncodingHandler' href='html/libxml-encoding.html#XMLNEWCHARENCODINGHANDLER'/>
     <reference name='xmlNewCharRef' href='html/libxml-tree.html#XMLNEWCHARREF'/>
     <reference name='xmlNewChild' href='html/libxml-tree.html#XMLNEWCHILD'/>
     <reference name='xmlNewComment' href='html/libxml-tree.html#XMLNEWCOMMENT'/>
@@ -779,6 +783,7 @@
     <reference name='xmlNodeSetPtr' href='html/libxml-xpath.html#XMLNODESETPTR'/>
     <reference name='xmlNodeSetSpacePreserve' href='html/libxml-tree.html#XMLNODESETSPACEPRESERVE'/>
     <reference name='xmlNormalizeURIPath' href='html/libxml-uri.html#XMLNORMALIZEURIPATH'/>
+    <reference name='xmlNormalizeWindowsPath' href='html/libxml-xmlio.html#XMLNORMALIZEWINDOWSPATH'/>
     <reference name='xmlNotation' href='html/libxml-tree.html#XMLNOTATION'/>
     <reference name='xmlNotationPtr' href='html/libxml-tree.html#XMLNOTATIONPTR'/>
     <reference name='xmlNotationTablePtr' href='html/libxml-valid.html#XMLNOTATIONTABLEPTR'/>
@@ -804,6 +809,7 @@
     <reference name='xmlParseAttributeListDecl' href='html/libxml-parserinternals.html#XMLPARSEATTRIBUTELISTDECL'/>
     <reference name='xmlParseAttributeType' href='html/libxml-parserinternals.html#XMLPARSEATTRIBUTETYPE'/>
     <reference name='xmlParseBalancedChunkMemory' href='html/libxml-parser.html#XMLPARSEBALANCEDCHUNKMEMORY'/>
+    <reference name='xmlParseBalancedChunkMemoryRecover' href='html/libxml-parser.html#XMLPARSEBALANCEDCHUNKMEMORYRECOVER'/>
     <reference name='xmlParseCDSect' href='html/libxml-parserinternals.html#XMLPARSECDSECT'/>
     <reference name='xmlParseCatalogFile' href='html/libxml-catalog.html#XMLPARSECATALOGFILE'/>
     <reference name='xmlParseCharData' href='html/libxml-parserinternals.html#XMLPARSECHARDATA'/>
@@ -929,6 +935,7 @@
     <reference name='xmlRegexp' href='html/libxml-xmlregexp.html#XMLREGEXP'/>
     <reference name='xmlRegexpCompile' href='html/libxml-xmlregexp.html#XMLREGEXPCOMPILE'/>
     <reference name='xmlRegexpExec' href='html/libxml-xmlregexp.html#XMLREGEXPEXEC'/>
+    <reference name='xmlRegexpIsDeterminist' href='html/libxml-xmlregexp.html#XMLREGEXPISDETERMINIST'/>
     <reference name='xmlRegexpPrint' href='html/libxml-xmlregexp.html#XMLREGEXPPRINT'/>
     <reference name='xmlRegexpPtr' href='html/libxml-xmlregexp.html#XMLREGEXPPTR'/>
     <reference name='xmlRegisterCharEncodingHandler' href='html/libxml-encoding.html#XMLREGISTERCHARENCODINGHANDLER'/>
@@ -1222,6 +1229,7 @@
     <reference name='xmlUnlockLibrary' href='html/libxml-threads.html#XMLUNLOCKLIBRARY'/>
     <reference name='xmlUnsetNsProp' href='html/libxml-tree.html#XMLUNSETNSPROP'/>
     <reference name='xmlUnsetProp' href='html/libxml-tree.html#XMLUNSETPROP'/>
+    <reference name='xmlValidBuildContentModel' href='html/libxml-valid.html#XMLVALIDBUILDCONTENTMODEL'/>
     <reference name='xmlValidCtxt' href='html/libxml-valid.html#XMLVALIDCTXT'/>
     <reference name='xmlValidCtxtNormalizeAttributeValue' href='html/libxml-valid.html#XMLVALIDCTXTNORMALIZEATTRIBUTEVALUE'/>
     <reference name='xmlValidCtxtPtr' href='html/libxml-valid.html#XMLVALIDCTXTPTR'/>
@@ -1373,6 +1381,7 @@
     <reference name='xmlXPathNodeTrailing' href='html/libxml-xpathinternals.html#XMLXPATHNODETRAILING'/>
     <reference name='xmlXPathNodeTrailingSorted' href='html/libxml-xpathinternals.html#XMLXPATHNODETRAILINGSORTED'/>
     <reference name='xmlXPathNormalizeFunction' href='html/libxml-xpathinternals.html#XMLXPATHNORMALIZEFUNCTION'/>
+    <reference name='xmlXPathNotEqualValues' href='html/libxml-xpathinternals.html#XMLXPATHNOTEQUALVALUES'/>
     <reference name='xmlXPathNotFunction' href='html/libxml-xpathinternals.html#XMLXPATHNOTFUNCTION'/>
     <reference name='xmlXPathNsLookup' href='html/libxml-xpathinternals.html#XMLXPATHNSLOOKUP'/>
     <reference name='xmlXPathNumberFunction' href='html/libxml-xpathinternals.html#XMLXPATHNUMBERFUNCTION'/>
@@ -1687,6 +1696,7 @@
     <ref name='htmlHandleOmittedElem'/>
     <ref name='htmlInitAutoClose'/>
     <ref name='htmlIsAutoClosed'/>
+    <ref name='htmlIsBooleanAttr'/>
     <ref name='htmlIsScriptAttribute'/>
     <ref name='htmlNewDoc'/>
     <ref name='htmlNewDocNoDtD'/>
@@ -1871,6 +1881,8 @@
     <ref name='xmlC14NDocDumpMemory'/>
     <ref name='xmlC14NDocSave'/>
     <ref name='xmlC14NDocSaveTo'/>
+    <ref name='xmlC14NExecute'/>
+    <ref name='xmlC14NIsVisibleCallback'/>
     <ref name='xmlCatalog'/>
     <ref name='xmlCatalogAdd'/>
     <ref name='xmlCatalogAddLocal'/>
@@ -2247,6 +2259,7 @@
     <ref name='xmlNewAutomata'/>
     <ref name='xmlNewCDataBlock'/>
     <ref name='xmlNewCatalog'/>
+    <ref name='xmlNewCharEncodingHandler'/>
     <ref name='xmlNewCharRef'/>
     <ref name='xmlNewChild'/>
     <ref name='xmlNewComment'/>
@@ -2305,6 +2318,7 @@
     <ref name='xmlNodeSetPtr'/>
     <ref name='xmlNodeSetSpacePreserve'/>
     <ref name='xmlNormalizeURIPath'/>
+    <ref name='xmlNormalizeWindowsPath'/>
     <ref name='xmlNotation'/>
     <ref name='xmlNotationPtr'/>
     <ref name='xmlNotationTablePtr'/>
@@ -2330,6 +2344,7 @@
     <ref name='xmlParseAttributeListDecl'/>
     <ref name='xmlParseAttributeType'/>
     <ref name='xmlParseBalancedChunkMemory'/>
+    <ref name='xmlParseBalancedChunkMemoryRecover'/>
     <ref name='xmlParseCDSect'/>
     <ref name='xmlParseCatalogFile'/>
     <ref name='xmlParseCharData'/>
@@ -2455,6 +2470,7 @@
     <ref name='xmlRegexp'/>
     <ref name='xmlRegexpCompile'/>
     <ref name='xmlRegexpExec'/>
+    <ref name='xmlRegexpIsDeterminist'/>
     <ref name='xmlRegexpPrint'/>
     <ref name='xmlRegexpPtr'/>
     <ref name='xmlRegisterCharEncodingHandler'/>
@@ -2748,6 +2764,7 @@
     <ref name='xmlUnlockLibrary'/>
     <ref name='xmlUnsetNsProp'/>
     <ref name='xmlUnsetProp'/>
+    <ref name='xmlValidBuildContentModel'/>
     <ref name='xmlValidCtxt'/>
     <ref name='xmlValidCtxtNormalizeAttributeValue'/>
     <ref name='xmlValidCtxtPtr'/>
@@ -2899,6 +2916,7 @@
     <ref name='xmlXPathNodeTrailing'/>
     <ref name='xmlXPathNodeTrailingSorted'/>
     <ref name='xmlXPathNormalizeFunction'/>
+    <ref name='xmlXPathNotEqualValues'/>
     <ref name='xmlXPathNotFunction'/>
     <ref name='xmlXPathNsLookup'/>
     <ref name='xmlXPathNumberFunction'/>
@@ -6931,6 +6949,7 @@
           <ref name='xmlEncodeEntities'/>
           <ref name='xmlEncodeEntitiesReentrant'/>
           <ref name='xmlGetEncodingAlias'/>
+          <ref name='xmlNewCharEncodingHandler'/>
           <ref name='xmlParseCharEncoding'/>
         </word>
         <word name='ATTRIBUTE'>
@@ -7063,6 +7082,7 @@
         </word>
         <word name='Balanced'>
           <ref name='xmlParseBalancedChunkMemory'/>
+          <ref name='xmlParseBalancedChunkMemoryRecover'/>
         </word>
         <word name='Base'>
           <ref name='xmlNodeGetBase'/>
@@ -7116,6 +7136,7 @@
           <ref name='xmlCopyEntitiesTable'/>
           <ref name='xmlCopyNotationTable'/>
           <ref name='xmlGetNodePath'/>
+          <ref name='xmlValidBuildContentModel'/>
           <ref name='xmlValidGetPotentialChildren'/>
           <ref name='xmlXPtrBuildNodeList'/>
         </word>
@@ -7129,6 +7150,7 @@
       <letter name='C'>
         <word name='C14N'>
           <ref name='xmlC14NDocSaveTo'/>
+          <ref name='xmlC14NExecute'/>
         </word>
         <word name='CATALOG'>
           <ref name='xmlLoadACatalog'/>
@@ -7222,12 +7244,14 @@
           <ref name='xmlC14NDocDumpMemory'/>
           <ref name='xmlC14NDocSave'/>
           <ref name='xmlC14NDocSaveTo'/>
+          <ref name='xmlC14NExecute'/>
         </word>
         <word name='Canonicalization'>
           <ref name='LIBXML_C14N_ENABLED'/>
           <ref name='xmlC14NDocDumpMemory'/>
           <ref name='xmlC14NDocSave'/>
           <ref name='xmlC14NDocSaveTo'/>
+          <ref name='xmlC14NExecute'/>
         </word>
         <word name='Carl'>
           <ref name='xmlURIEscape'/>
@@ -7294,6 +7318,7 @@
           <ref name='docbParseChunk'/>
           <ref name='htmlParseChunk'/>
           <ref name='xmlParseBalancedChunkMemory'/>
+          <ref name='xmlParseBalancedChunkMemoryRecover'/>
           <ref name='xmlParseChunk'/>
         </word>
         <word name='Cleanup'>
@@ -7556,6 +7581,7 @@
           <ref name='xmlUCSIsDeseret'/>
         </word>
         <word name='Determine'>
+          <ref name='htmlIsBooleanAttr'/>
           <ref name='xmlIsID'/>
           <ref name='xmlIsRef'/>
         </word>
@@ -7669,6 +7695,7 @@
           <ref name='xmlC14NDocDumpMemory'/>
           <ref name='xmlC14NDocSave'/>
           <ref name='xmlC14NDocSaveTo'/>
+          <ref name='xmlC14NExecute'/>
           <ref name='xmlDebugDumpAttr'/>
           <ref name='xmlDebugDumpAttrList'/>
           <ref name='xmlDebugDumpDTD'/>
@@ -7812,6 +7839,7 @@
           <ref name='xmlC14NDocDumpMemory'/>
           <ref name='xmlC14NDocSave'/>
           <ref name='xmlC14NDocSaveTo'/>
+          <ref name='xmlC14NExecute'/>
         </word>
         <word name='Existing'>
           <ref name='xmlAddEncodingAlias'/>
@@ -7926,6 +7954,7 @@
           <ref name='xmlC14NDocDumpMemory'/>
           <ref name='xmlC14NDocSave'/>
           <ref name='xmlC14NDocSaveTo'/>
+          <ref name='xmlC14NExecute'/>
           <ref name='xmlParseComment'/>
           <ref name='xmlXPathSubstringAfterFunction'/>
           <ref name='xmlXPathSubstringBeforeFunction'/>
@@ -8141,6 +8170,7 @@
         </word>
         <word name='ISO-Latin'>
           <ref name='xmlParseBalancedChunkMemory'/>
+          <ref name='xmlParseBalancedChunkMemoryRecover'/>
         </word>
         <word name='ISOLatinX'>
           <ref name='xmlCharEncoding'/>
@@ -8370,6 +8400,7 @@
         </word>
         <word name='MUST'>
           <ref name='xmlC14NDocSaveTo'/>
+          <ref name='xmlC14NExecute'/>
         </word>
         <word name='Makes'>
           <ref name='xmlAutomataSetFinalState'/>
@@ -8525,6 +8556,9 @@
         <word name='Non-static'>
           <ref name='xmlIOHTTPOpenW'/>
         </word>
+        <word name='Normalize'>
+          <ref name='xmlNormalizeWindowsPath'/>
+        </word>
         <word name='NotaNumber'>
           <ref name='xmlXPathIsNaN'/>
         </word>
@@ -8637,6 +8671,7 @@
           <ref name='htmlParseChunk'/>
           <ref name='htmlSAXParseDoc'/>
           <ref name='xmlParseBalancedChunkMemory'/>
+          <ref name='xmlParseBalancedChunkMemoryRecover'/>
           <ref name='xmlParseCDSect'/>
           <ref name='xmlParseChunk'/>
           <ref name='xmlParseContent'/>
@@ -9314,6 +9349,7 @@
           <ref name='xmlCharEncOutFunc'/>
           <ref name='xmlCharEncoding'/>
           <ref name='xmlParseBalancedChunkMemory'/>
+          <ref name='xmlParseBalancedChunkMemoryRecover'/>
           <ref name='xmlSplitQName'/>
           <ref name='xmlUTF8Strlen'/>
           <ref name='xmlUTF8Strloc'/>
@@ -9366,6 +9402,7 @@
           <ref name='xmlCatalogSetDebug'/>
           <ref name='xmlCatalogSetDefaults'/>
           <ref name='xmlParseBalancedChunkMemory'/>
+          <ref name='xmlParseBalancedChunkMemoryRecover'/>
           <ref name='xmlParseExternalEntity'/>
           <ref name='xmlScanName'/>
         </word>
@@ -9426,6 +9463,7 @@
         </word>
         <word name='Well'>
           <ref name='xmlParseBalancedChunkMemory'/>
+          <ref name='xmlParseBalancedChunkMemoryRecover'/>
           <ref name='xmlRecoverDoc'/>
           <ref name='xmlRecoverFile'/>
           <ref name='xmlRecoverMemory'/>
@@ -9477,6 +9515,7 @@
         </word>
         <word name='Windows'>
           <ref name='LIBXML_DLL_IMPORT'/>
+          <ref name='xmlNormalizeWindowsPath'/>
         </word>
         <word name='Wrap'>
           <ref name='xmlXPathWrapNodeSet'/>
@@ -9703,6 +9742,7 @@
           <ref name='xmlDtd'/>
           <ref name='xmlGetEncodingAlias'/>
           <ref name='xmlKeepBlanksDefaultValue'/>
+          <ref name='xmlNewCharEncodingHandler'/>
           <ref name='xmlParseCharEncoding'/>
           <ref name='xmlRegexpPtr'/>
           <ref name='xmlStringCurrentChar'/>
@@ -9888,6 +9928,7 @@
           <ref name='xmlNodeDump'/>
           <ref name='xmlNodeDumpOutput'/>
           <ref name='xmlParseBalancedChunkMemory'/>
+          <ref name='xmlParseBalancedChunkMemoryRecover'/>
           <ref name='xmlValidGetPotentialChildren'/>
           <ref name='xmlXPathNormalizeFunction'/>
         </word>
@@ -10032,11 +10073,13 @@
           <ref name='xmlXPathDivValues'/>
           <ref name='xmlXPathEqualValues'/>
           <ref name='xmlXPathModValues'/>
+          <ref name='xmlXPathNotEqualValues'/>
         </word>
         <word name='arg2'>
           <ref name='xmlXPathCompareValues'/>
           <ref name='xmlXPathEqualValues'/>
           <ref name='xmlXPathModValues'/>
+          <ref name='xmlXPathNotEqualValues'/>
         </word>
         <word name='arg2:'>
           <ref name='xmlXPathDivValues'/>
@@ -10044,6 +10087,7 @@
         <word name='args'>
           <ref name='CHECK_ARITY'/>
           <ref name='xmlParseBalancedChunkMemory'/>
+          <ref name='xmlParseBalancedChunkMemoryRecover'/>
           <ref name='xmlParseCtxtExternalEntity'/>
           <ref name='xmlParseExternalEntity'/>
           <ref name='xmlXPtrRangeToFunction'/>
@@ -10143,8 +10187,10 @@
         </word>
         <word name='balanced'>
           <ref name='xmlParseBalancedChunkMemory'/>
+          <ref name='xmlParseBalancedChunkMemoryRecover'/>
         </word>
         <word name='bar'>
+          <ref name='xmlNormalizeWindowsPath'/>
           <ref name='xmlXPathTranslateFunction'/>
         </word>
         <word name='base'>
@@ -10189,6 +10235,7 @@
         </word>
         <word name='because'>
           <ref name='xmlC14NDocSaveTo'/>
+          <ref name='xmlC14NExecute'/>
           <ref name='xmlXPathTranslateFunction'/>
         </word>
         <word name='becomes'>
@@ -10297,6 +10344,7 @@
         </word>
         <word name='bloc'>
           <ref name='xmlParseBalancedChunkMemory'/>
+          <ref name='xmlParseBalancedChunkMemoryRecover'/>
           <ref name='xmlParseExternalEntity'/>
         </word>
         <word name='blocking'>
@@ -10325,6 +10373,9 @@
         </word>
         <word name='breaks'>
           <ref name='xmlCurrentChar'/>
+        </word>
+        <word name='broken'>
+          <ref name='xmlParseBalancedChunkMemoryRecover'/>
         </word>
         <word name='buf'>
           <ref name='xmlParserInput'/>
@@ -10518,6 +10569,7 @@
           <ref name='xmlNanoFTPGet'/>
           <ref name='xmlNanoFTPList'/>
           <ref name='xmlParseBalancedChunkMemory'/>
+          <ref name='xmlParseBalancedChunkMemoryRecover'/>
           <ref name='xmlParseExternalEntity'/>
           <ref name='xmlRegExecPushString'/>
           <ref name='xmlSAXHandler'/>
@@ -10525,37 +10577,6 @@
           <ref name='xmlSAXUserParseMemory'/>
           <ref name='xmlXPathFuncLookupFunc'/>
           <ref name='xmlXPathVariableLookupFunc'/>
-        </word>
-        <word name='called'>
-          <ref name='cdataBlock'/>
-          <ref name='endDocument'/>
-          <ref name='endElement'/>
-          <ref name='reference'/>
-          <ref name='startDocument'/>
-          <ref name='startElement'/>
-          <ref name='xmlCatalogAdd'/>
-          <ref name='xmlCharEncodingOutputFunc'/>
-          <ref name='xmlDocDumpFormatMemory'/>
-          <ref name='xmlDocDumpFormatMemoryEnc'/>
-          <ref name='xmlGetGlobalState'/>
-          <ref name='xmlIOHTTPOpenW'/>
-          <ref name='xmlInitCharEncodingHandlers'/>
-          <ref name='xmlLoadExternalEntity'/>
-          <ref name='xmlMemSetup'/>
-          <ref name='xmlNoNetExternalEntityLoader'/>
-          <ref name='xmlNodeDump'/>
-          <ref name='xmlNodeDumpOutput'/>
-          <ref name='xmlParseBalancedChunkMemory'/>
-          <ref name='xmlSAXHandler'/>
-          <ref name='xmlSetGenericErrorFunc'/>
-          <ref name='xmlValidateNotationDecl'/>
-          <ref name='xmlValidityErrorFunc'/>
-          <ref name='xmlValidityWarningFunc'/>
-          <ref name='xmlXPathDistinct'/>
-          <ref name='xmlXPathLeading'/>
-          <ref name='xmlXPathNodeLeading'/>
-          <ref name='xmlXPathNodeTrailing'/>
-          <ref name='xmlXPathTrailing'/>
         </word>
         <word name='calling'>
           <ref name='XML_GET_LINE'/>
@@ -10609,22 +10630,26 @@
           <ref name='xmlC14NDocDumpMemory'/>
           <ref name='xmlC14NDocSave'/>
           <ref name='xmlC14NDocSaveTo'/>
+          <ref name='xmlC14NExecute'/>
           <ref name='xmlGetCharEncodingName'/>
         </word>
         <word name='canonicalization'>
           <ref name='xmlC14NDocDumpMemory'/>
           <ref name='xmlC14NDocSave'/>
           <ref name='xmlC14NDocSaveTo'/>
+          <ref name='xmlC14NExecute'/>
         </word>
         <word name='canonization'>
           <ref name='xmlC14NDocDumpMemory'/>
           <ref name='xmlC14NDocSave'/>
           <ref name='xmlC14NDocSaveTo'/>
+          <ref name='xmlC14NExecute'/>
         </word>
         <word name='canonized'>
           <ref name='xmlC14NDocDumpMemory'/>
           <ref name='xmlC14NDocSave'/>
           <ref name='xmlC14NDocSaveTo'/>
+          <ref name='xmlC14NExecute'/>
         </word>
         <word name='capable'>
           <ref name='xmlCheckUTF8'/>
@@ -10656,6 +10681,7 @@
           <ref name='xmlStrcasestr'/>
         </word>
         <word name='cases'>
+          <ref name='xmlC14NExecute'/>
           <ref name='xmlParseElementContentDecl'/>
           <ref name='xmlScanName'/>
         </word>
@@ -10765,6 +10791,7 @@
           <ref name='IS_PUBIDCHAR'/>
           <ref name='LIBXML_TEST_VERSION'/>
           <ref name='checkNamespace'/>
+          <ref name='htmlIsBooleanAttr'/>
           <ref name='xmlCheckUTF8'/>
           <ref name='xmlCheckVersion'/>
           <ref name='xmlIOFTPMatch'/>
@@ -10839,6 +10866,7 @@
           <ref name='htmlParseChunk'/>
           <ref name='xmlEntityReferenceFunc'/>
           <ref name='xmlParseBalancedChunkMemory'/>
+          <ref name='xmlParseBalancedChunkMemoryRecover'/>
           <ref name='xmlParseChunk'/>
           <ref name='xmlParseExternalEntity'/>
         </word>
@@ -10903,6 +10931,7 @@
           <ref name='xmlNodeGetBase'/>
           <ref name='xmlNormalizeURIPath'/>
           <ref name='xmlParseBalancedChunkMemory'/>
+          <ref name='xmlParseBalancedChunkMemoryRecover'/>
           <ref name='xmlParseCtxtExternalEntity'/>
           <ref name='xmlParseExternalEntity'/>
           <ref name='xmlParseURIReference'/>
@@ -10958,6 +10987,7 @@
           <ref name='xmlC14NDocDumpMemory'/>
           <ref name='xmlC14NDocSave'/>
           <ref name='xmlC14NDocSaveTo'/>
+          <ref name='xmlC14NExecute'/>
           <ref name='xmlDocGetRootElement'/>
           <ref name='xmlDocSetRootElement'/>
           <ref name='xmlParseComment'/>
@@ -11024,6 +11054,7 @@
           <ref name='xmlCheckVersion'/>
           <ref name='xmlRegexpCompile'/>
           <ref name='xmlRegexpExec'/>
+          <ref name='xmlRegexpIsDeterminist'/>
           <ref name='xmlRegexpPrint'/>
           <ref name='xmlSaveFile'/>
           <ref name='xmlSaveFormatFile'/>
@@ -11251,6 +11282,7 @@
         <word name='content:'>
           <ref name='xmlParseContent'/>
           <ref name='xmlXPathEqualValues'/>
+          <ref name='xmlXPathNotEqualValues'/>
         </word>
         <word name='contentType'>
           <ref name='xmlNanoHTTPFetch'/>
@@ -11569,6 +11601,7 @@
           <ref name='xmlNewNs'/>
           <ref name='xmlNodeGetBase'/>
           <ref name='xmlParseBalancedChunkMemory'/>
+          <ref name='xmlParseBalancedChunkMemoryRecover'/>
           <ref name='xmlParseElementContentDecl'/>
           <ref name='xmlSearchNs'/>
           <ref name='xmlSearchNsByHref'/>
@@ -11637,6 +11670,7 @@
           <ref name='xmlParseReference'/>
           <ref name='xmlXPathEqualValues'/>
           <ref name='xmlXPathLangFunction'/>
+          <ref name='xmlXPathNotEqualValues'/>
         </word>
         <word name='deprecated'>
           <ref name='xmlDecodeEntities'/>
@@ -11726,6 +11760,7 @@
           <ref name='xmlC14NDocDumpMemory'/>
           <ref name='xmlC14NDocSave'/>
           <ref name='xmlC14NDocSaveTo'/>
+          <ref name='xmlC14NExecute'/>
         </word>
         <word name='detect'>
           <ref name='xmlInputMatchCallback'/>
@@ -11750,13 +11785,18 @@
           <ref name='htmlCreatePushParserCtxt'/>
           <ref name='xmlCreatePushParserCtxt'/>
           <ref name='xmlParseBalancedChunkMemory'/>
+          <ref name='xmlParseBalancedChunkMemoryRecover'/>
           <ref name='xmlParseExternalEntity'/>
+        </word>
+        <word name='determine'>
+          <ref name='xmlC14NExecute'/>
         </word>
         <word name='determined'>
           <ref name='xmlXPathLangFunction'/>
         </word>
         <word name='determinist'>
           <ref name='xmlAutomataIsDeterminist'/>
+          <ref name='xmlRegexpIsDeterminist'/>
         </word>
         <word name='difference'>
           <ref name='xmlXPathDifference'/>
@@ -12056,6 +12096,7 @@
           <ref name='xmlIsBlankNode'/>
           <ref name='xmlKeepBlanksDefault'/>
           <ref name='xmlListEmpty'/>
+          <ref name='xmlParseBalancedChunkMemoryRecover'/>
           <ref name='xmlSaveNoEmptyTags'/>
           <ref name='xmlXPathDifference'/>
           <ref name='xmlXPathDistinct'/>
@@ -12106,6 +12147,7 @@
         </word>
         <word name='encoder==NULL'>
           <ref name='xmlC14NDocSaveTo'/>
+          <ref name='xmlC14NExecute'/>
         </word>
         <word name='encodings'>
           <ref name='xmlCharEncoding'/>
@@ -12122,6 +12164,7 @@
           <ref name='xmlC14NDocDumpMemory'/>
           <ref name='xmlC14NDocSave'/>
           <ref name='xmlC14NDocSaveTo'/>
+          <ref name='xmlC14NExecute'/>
           <ref name='xmlCleanupThreads'/>
         </word>
         <word name='ending'>
@@ -12211,6 +12254,7 @@
           <ref name='xmlXPathEvalPredicate'/>
           <ref name='xmlXPathEvaluatePredicateResult'/>
           <ref name='xmlXPathIdFunction'/>
+          <ref name='xmlXPathNotEqualValues'/>
           <ref name='xmlXPathPositionFunction'/>
           <ref name='xmlXPathSubstringFunction'/>
         </word>
@@ -12296,6 +12340,7 @@
         </word>
         <word name='even'>
           <ref name='xmlNodeGetBase'/>
+          <ref name='xmlParseBalancedChunkMemoryRecover'/>
           <ref name='xmlXPathRoundFunction'/>
         </word>
         <word name='events'>
@@ -12332,6 +12377,7 @@
           <ref name='xmlC14NDocDumpMemory'/>
           <ref name='xmlC14NDocSave'/>
           <ref name='xmlC14NDocSaveTo'/>
+          <ref name='xmlC14NExecute'/>
         </word>
         <word name='executed'>
           <ref name='xmlAutomataCompile'/>
@@ -12365,6 +12411,7 @@
           <ref name='xmlRegFreeExecCtxt'/>
           <ref name='xmlRegexpCompile'/>
           <ref name='xmlRegexpExec'/>
+          <ref name='xmlRegexpIsDeterminist'/>
           <ref name='xmlRegexpPrint'/>
           <ref name='xmlRegexpPtr'/>
           <ref name='xmlXPathCompile'/>
@@ -12419,6 +12466,7 @@
           <ref name='xmlC14NDocDumpMemory'/>
           <ref name='xmlC14NDocSave'/>
           <ref name='xmlC14NDocSaveTo'/>
+          <ref name='xmlC14NExecute'/>
           <ref name='xmlShellPrintXPathError'/>
         </word>
         <word name='failed'>
@@ -12467,6 +12515,7 @@
           <ref name='xmlSAXParseMemory'/>
         </word>
         <word name='false'>
+          <ref name='htmlIsBooleanAttr'/>
           <ref name='xmlXPathContainsFunction'/>
           <ref name='xmlXPathEvalPredicate'/>
           <ref name='xmlXPathEvaluatePredicateResult'/>
@@ -12574,6 +12623,7 @@
           <ref name='xmlC14NDocDumpMemory'/>
           <ref name='xmlC14NDocSave'/>
           <ref name='xmlC14NDocSaveTo'/>
+          <ref name='xmlC14NExecute'/>
         </word>
         <word name='flagged'>
           <ref name='htmlGetMetaEncoding'/>
@@ -12611,6 +12661,9 @@
           <ref name='xmlInputMatchCallback'/>
           <ref name='xmlOutputMatchCallback'/>
         </word>
+        <word name='foo'>
+          <ref name='xmlNormalizeWindowsPath'/>
+        </word>
         <word name='force'>
           <ref name='xmlKeepBlanksDefault'/>
           <ref name='xmlSetGenericErrorFunc'/>
@@ -12642,6 +12695,7 @@
           <ref name='xmlDocDumpFormatMemoryEnc'/>
           <ref name='xmlGenericErrorFunc'/>
           <ref name='xmlGetEncodingAlias'/>
+          <ref name='xmlNewCharEncodingHandler'/>
           <ref name='xmlNodeDump'/>
           <ref name='xmlNodeDumpOutput'/>
           <ref name='xmlParseCharEncoding'/>
@@ -12842,6 +12896,7 @@
         </word>
         <word name='grammar:'>
           <ref name='xmlParseBalancedChunkMemory'/>
+          <ref name='xmlParseBalancedChunkMemoryRecover'/>
         </word>
         <word name='greater'>
           <ref name='xmlXPathCompareValues'/>
@@ -12931,6 +12986,7 @@
           <ref name='htmlParseEntityRef'/>
           <ref name='xmlAutomataNewAllTrans'/>
           <ref name='xmlC14NDocSaveTo'/>
+          <ref name='xmlC14NExecute'/>
           <ref name='xmlIsID'/>
           <ref name='xmlIsRef'/>
           <ref name='xmlKeepBlanksDefaultValue'/>
@@ -13044,6 +13100,7 @@
           <ref name='xmlC14NDocDumpMemory'/>
           <ref name='xmlC14NDocSave'/>
           <ref name='xmlC14NDocSaveTo'/>
+          <ref name='xmlC14NExecute'/>
           <ref name='xmlGetCharEncodingName'/>
           <ref name='xmlNanoHTTPScanProxy'/>
           <ref name='xmlSchemaGetPredefinedType'/>
@@ -13072,6 +13129,7 @@
           <ref name='xmlC14NDocDumpMemory'/>
           <ref name='xmlC14NDocSave'/>
           <ref name='xmlC14NDocSaveTo'/>
+          <ref name='xmlC14NExecute'/>
         </word>
         <word name='ignoring'>
           <ref name='xmlURIEscapeStr'/>
@@ -13080,6 +13138,7 @@
           <ref name='xmlC14NDocDumpMemory'/>
           <ref name='xmlC14NDocSave'/>
           <ref name='xmlC14NDocSaveTo'/>
+          <ref name='xmlC14NExecute'/>
         </word>
         <word name='imbrication'>
           <ref name='xmlNodeDump'/>
@@ -13158,6 +13217,7 @@
           <ref name='xmlC14NDocDumpMemory'/>
           <ref name='xmlC14NDocSave'/>
           <ref name='xmlC14NDocSaveTo'/>
+          <ref name='xmlC14NExecute'/>
           <ref name='xmlCheckVersion'/>
           <ref name='xmlListMerge'/>
         </word>
@@ -13184,6 +13244,7 @@
           <ref name='xmlC14NDocDumpMemory'/>
           <ref name='xmlC14NDocSave'/>
           <ref name='xmlC14NDocSaveTo'/>
+          <ref name='xmlC14NExecute'/>
         </word>
         <word name='incompatible'>
           <ref name='xmlXPathContext'/>
@@ -13524,6 +13585,7 @@
           <ref name='xmlC14NDocDumpMemory'/>
           <ref name='xmlC14NDocSave'/>
           <ref name='xmlC14NDocSaveTo'/>
+          <ref name='xmlC14NExecute'/>
           <ref name='xmlCharEncFirstLine'/>
           <ref name='xmlCharEncInFunc'/>
           <ref name='xmlCharEncOutFunc'/>
@@ -13547,6 +13609,9 @@
         </word>
         <word name='invoking'>
           <ref name='xmlGetLineNo'/>
+        </word>
+        <word name='is_visible_callback'>
+          <ref name='xmlC14NExecute'/>
         </word>
         <word name='isinf'>
           <ref name='xmlXPathIsInf'/>
@@ -13819,6 +13884,7 @@
           <ref name='xmlLoadSGMLSuperCatalog'/>
           <ref name='xmlNanoFTPScanProxy'/>
           <ref name='xmlNanoHTTPScanProxy'/>
+          <ref name='xmlNormalizeWindowsPath'/>
           <ref name='xmlParseCatalogFile'/>
           <ref name='xmlShellList'/>
           <ref name='xmlValidityErrorFunc'/>
@@ -13971,6 +14037,7 @@
         </word>
         <word name='loop'>
           <ref name='xmlParseBalancedChunkMemory'/>
+          <ref name='xmlParseBalancedChunkMemoryRecover'/>
           <ref name='xmlParseExternalEntity'/>
         </word>
         <word name='lossless'>
@@ -14010,6 +14077,9 @@
         <word name='maintained'>
           <ref name='xmlRemoveID'/>
           <ref name='xmlRemoveRef'/>
+        </word>
+        <word name='make'>
+          <ref name='xmlNormalizeWindowsPath'/>
         </word>
         <word name='makes'>
           <ref name='xmlLoadCatalog'/>
@@ -14225,6 +14295,9 @@
           <ref name='xmlSAXParseMemory'/>
           <ref name='xmlSetCompressMode'/>
         </word>
+        <word name='model'>
+          <ref name='xmlValidBuildContentModel'/>
+        </word>
         <word name='modified'>
           <ref name='xmlNodeAddContent'/>
           <ref name='xmlNodeAddContentLen'/>
@@ -14253,6 +14326,7 @@
           <ref name='xmlAutomataNewOnceTrans'/>
         </word>
         <word name='most'>
+          <ref name='xmlC14NExecute'/>
           <ref name='xmlGetFeaturesList'/>
           <ref name='xmlParserCtxt'/>
         </word>
@@ -14334,6 +14408,7 @@
           <ref name='xmlC14NDocDumpMemory'/>
           <ref name='xmlC14NDocSave'/>
           <ref name='xmlC14NDocSaveTo'/>
+          <ref name='xmlC14NExecute'/>
           <ref name='xmlCopyDoc'/>
           <ref name='xmlFreeNsList'/>
           <ref name='xmlReconciliateNs'/>
@@ -14399,11 +14474,13 @@
         </word>
         <word name='negativa'>
           <ref name='xmlRegexpExec'/>
+          <ref name='xmlRegexpIsDeterminist'/>
         </word>
         <word name='negative'>
           <ref name='xmlC14NDocDumpMemory'/>
           <ref name='xmlC14NDocSave'/>
           <ref name='xmlC14NDocSaveTo'/>
+          <ref name='xmlC14NExecute'/>
           <ref name='xmlRegExecPushString'/>
           <ref name='xmlShellCmd'/>
           <ref name='xmlXPathBooleanFunction'/>
@@ -14456,6 +14533,9 @@
           <ref name='xmlXPathLocalNameFunction'/>
           <ref name='xmlXPathNamespaceURIFunction'/>
         </word>
+        <word name='nodelist'>
+          <ref name='xmlParseBalancedChunkMemoryRecover'/>
+        </word>
         <word name='nodes1'>
           <ref name='xmlXPathDifference'/>
           <ref name='xmlXPathLeading'/>
@@ -14493,12 +14573,14 @@
           <ref name='xmlC14NDocDumpMemory'/>
           <ref name='xmlC14NDocSave'/>
           <ref name='xmlC14NDocSaveTo'/>
+          <ref name='xmlC14NExecute'/>
         </word>
         <word name='non-final'>
           <ref name='xmlRegExecPushString'/>
         </word>
         <word name='non-negative'>
           <ref name='xmlC14NDocSaveTo'/>
+          <ref name='xmlC14NExecute'/>
         </word>
         <word name='non-normative'>
           <ref name='xmlDetectCharEncoding'/>
@@ -14637,6 +14719,7 @@
           <ref name='xmlXPathDivValues'/>
           <ref name='xmlXPathEqualValues'/>
           <ref name='xmlXPathFreeNodeSetList'/>
+          <ref name='xmlXPathNotEqualValues'/>
           <ref name='xmlXPathParserContext'/>
         </word>
         <word name='objects:'>
@@ -14781,6 +14864,7 @@
           <ref name='xmlXPathEqualValues'/>
           <ref name='xmlXPathModValues'/>
           <ref name='xmlXPathMultValues'/>
+          <ref name='xmlXPathNotEqualValues'/>
           <ref name='xmlXPathSubValues'/>
           <ref name='xmlXPathValueFlipSign'/>
         </word>
@@ -14836,6 +14920,7 @@
           <ref name='xmlC14NDocDumpMemory'/>
           <ref name='xmlC14NDocSave'/>
           <ref name='xmlC14NDocSaveTo'/>
+          <ref name='xmlC14NExecute'/>
           <ref name='xmlGetCharEncodingName'/>
           <ref name='xmlSchemaGetPredefinedType'/>
         </word>
@@ -15029,6 +15114,7 @@
           <ref name='xmlNanoFTPGetSocket'/>
           <ref name='xmlNanoFTPUpdateURL'/>
           <ref name='xmlNormalizeURIPath'/>
+          <ref name='xmlNormalizeWindowsPath'/>
           <ref name='xmlParserGetDirectory'/>
           <ref name='xmlShellPwd'/>
           <ref name='xmlShellValidate'/>
@@ -15054,6 +15140,7 @@
         <word name='pertains'>
           <ref name='xmlNodeGetBase'/>
           <ref name='xmlParseBalancedChunkMemory'/>
+          <ref name='xmlParseBalancedChunkMemoryRecover'/>
           <ref name='xmlParseExternalEntity'/>
         </word>
         <word name='piece'>
@@ -15156,6 +15243,7 @@
           <ref name='xmlDocSetRootElement'/>
           <ref name='xmlIsBlankNode'/>
           <ref name='xmlParseBalancedChunkMemory'/>
+          <ref name='xmlParseBalancedChunkMemoryRecover'/>
           <ref name='xmlParseExternalEntity'/>
           <ref name='xmlXPathStringFunction'/>
         </word>
@@ -15247,6 +15335,7 @@
           <ref name='xmlC14NDocDumpMemory'/>
           <ref name='xmlC14NDocSave'/>
           <ref name='xmlC14NDocSaveTo'/>
+          <ref name='xmlC14NExecute'/>
         </word>
         <word name='prepend'>
           <ref name='xmlValidGetValidElements'/>
@@ -15318,6 +15407,7 @@
         </word>
         <word name='problem'>
           <ref name='xmlParseBalancedChunkMemory'/>
+          <ref name='xmlParseBalancedChunkMemoryRecover'/>
           <ref name='xmlParseCtxtExternalEntity'/>
           <ref name='xmlParseExternalEntity'/>
           <ref name='xmlUTF8Strsub'/>
@@ -15467,6 +15557,7 @@
           <ref name='htmlSAXParseFile'/>
           <ref name='xmlAutomataNewCountedTrans'/>
           <ref name='xmlC14NDocSaveTo'/>
+          <ref name='xmlC14NExecute'/>
           <ref name='xmlCreateEntityParserCtxt'/>
           <ref name='xmlCreateFileParserCtxt'/>
           <ref name='xmlHashFree'/>
@@ -15639,30 +15730,6 @@
         <word name='reached'>
           <ref name='xmlRegExecPushString'/>
         </word>
-        <word name='read'>
-          <ref name='attribute'/>
-          <ref name='attributeSAXFunc'/>
-          <ref name='checkNamespace'/>
-          <ref name='xmlCreateIOParserCtxt'/>
-          <ref name='xmlCurrentChar'/>
-          <ref name='xmlFindCharEncodingHandler'/>
-          <ref name='xmlGetCharEncodingHandler'/>
-          <ref name='xmlInputReadCallback'/>
-          <ref name='xmlNanoFTPRead'/>
-          <ref name='xmlNanoHTTPRead'/>
-          <ref name='xmlNodeGetContent'/>
-          <ref name='xmlParserInputBufferCreateIO'/>
-          <ref name='xmlParserInputBufferGrow'/>
-          <ref name='xmlParserInputBufferPush'/>
-          <ref name='xmlParserInputBufferRead'/>
-          <ref name='xmlParserInputGrow'/>
-          <ref name='xmlParserInputRead'/>
-          <ref name='xmlSAXParseDoc'/>
-          <ref name='xmlSAXParseFile'/>
-          <ref name='xmlSAXParseFileWithData'/>
-          <ref name='xmlSAXParseMemory'/>
-          <ref name='xmlStringCurrentChar'/>
-        </word>
         <word name='readable'>
           <ref name='xmlStrEqual'/>
         </word>
@@ -15735,6 +15802,9 @@
           <ref name='xmlCatalogAdd'/>
           <ref name='xmlParserAddNodeInfo'/>
           <ref name='xmlParserFindNodeInfoIndex'/>
+        </word>
+        <word name='recover'>
+          <ref name='xmlParseBalancedChunkMemoryRecover'/>
         </word>
         <word name='recovery'>
           <ref name='xmlSAXParseDoc'/>
@@ -15863,6 +15933,7 @@
         </word>
         <word name='registers'>
           <ref name='xmlInitCharEncodingHandlers'/>
+          <ref name='xmlNewCharEncodingHandler'/>
         </word>
         <word name='regular'>
           <ref name='LIBXML_REGEXP_ENABLED'/>
@@ -15870,6 +15941,7 @@
           <ref name='xmlRegFreeExecCtxt'/>
           <ref name='xmlRegexpCompile'/>
           <ref name='xmlRegexpExec'/>
+          <ref name='xmlRegexpIsDeterminist'/>
           <ref name='xmlRegexpPrint'/>
           <ref name='xmlRegexpPtr'/>
         </word>
@@ -16010,6 +16082,7 @@
         </word>
         <word name='requires'>
           <ref name='xmlC14NDocSaveTo'/>
+          <ref name='xmlC14NExecute'/>
           <ref name='xmlGetLineNo'/>
         </word>
         <word name='requred'>
@@ -16133,6 +16206,7 @@
         </word>
         <word name='results'>
           <ref name='xmlXPathEqualValues'/>
+          <ref name='xmlXPathNotEqualValues'/>
         </word>
         <word name='retrieve'>
           <ref name='xmlGetGlobalState'/>
@@ -16164,6 +16238,7 @@
           <ref name='xmlNanoHTTPOpen'/>
           <ref name='xmlNanoHTTPOpenRedir'/>
           <ref name='xmlParseBalancedChunkMemory'/>
+          <ref name='xmlParseBalancedChunkMemoryRecover'/>
           <ref name='xmlParseExternalEntity'/>
           <ref name='xmlSAXUserParseFile'/>
           <ref name='xmlSAXUserParseMemory'/>
@@ -16421,6 +16496,7 @@
           <ref name='xmlC14NDocDumpMemory'/>
           <ref name='xmlC14NDocSave'/>
           <ref name='xmlC14NDocSaveTo'/>
+          <ref name='xmlC14NExecute'/>
           <ref name='xmlIsBaseChar'/>
           <ref name='xmlIsCombining'/>
           <ref name='xmlIsDigit'/>
@@ -16452,6 +16528,7 @@
           <ref name='xmlCurrentChar'/>
           <ref name='xmlInitNodeInfoSeq'/>
           <ref name='xmlParseBalancedChunkMemory'/>
+          <ref name='xmlParseBalancedChunkMemoryRecover'/>
           <ref name='xmlParserAddNodeInfo'/>
           <ref name='xmlParserFindNodeInfoIndex'/>
           <ref name='xmlUTF8Strlen'/>
@@ -16884,6 +16961,7 @@
           <ref name='isolat1ToUTF8'/>
           <ref name='xmlC14NDocSave'/>
           <ref name='xmlC14NDocSaveTo'/>
+          <ref name='xmlC14NExecute'/>
           <ref name='xmlCharEncodingInputFunc'/>
           <ref name='xmlCharEncodingOutputFunc'/>
           <ref name='xmlGetFeature'/>
@@ -17115,37 +17193,6 @@
           <ref name='xmlHashUpdateEntry3'/>
           <ref name='xmlXPathCompareValues'/>
         </word>
-        <word name='success'>
-          <ref name='htmlSetMetaEncoding'/>
-          <ref name='xmlAddEncodingAlias'/>
-          <ref name='xmlC14NDocDumpMemory'/>
-          <ref name='xmlC14NDocSave'/>
-          <ref name='xmlC14NDocSaveTo'/>
-          <ref name='xmlCharEncCloseFunc'/>
-          <ref name='xmlCharEncFirstLine'/>
-          <ref name='xmlCharEncInFunc'/>
-          <ref name='xmlCharEncOutFunc'/>
-          <ref name='xmlDelEncodingAlias'/>
-          <ref name='xmlInitMemory'/>
-          <ref name='xmlListAppend'/>
-          <ref name='xmlListCopy'/>
-          <ref name='xmlListInsert'/>
-          <ref name='xmlLoadCatalog'/>
-          <ref name='xmlMemGet'/>
-          <ref name='xmlMemSetup'/>
-          <ref name='xmlNanoHTTPFetch'/>
-          <ref name='xmlNanoHTTPSave'/>
-          <ref name='xmlRemoveProp'/>
-          <ref name='xmlSAXUserParseFile'/>
-          <ref name='xmlSAXUserParseMemory'/>
-          <ref name='xmlSwitchEncoding'/>
-          <ref name='xmlSwitchToEncoding'/>
-          <ref name='xmlXPathRegisterFunc'/>
-          <ref name='xmlXPathRegisterFuncNS'/>
-          <ref name='xmlXPathRegisterNs'/>
-          <ref name='xmlXPathRegisterVariable'/>
-          <ref name='xmlXPathRegisterVariableNS'/>
-        </word>
         <word name='successful'>
           <ref name='xmlACatalogAdd'/>
           <ref name='xmlACatalogRemove'/>
@@ -17293,6 +17340,7 @@
           <ref name='xmlGetNsList'/>
           <ref name='xmlOutputBufferWriteString'/>
           <ref name='xmlParseBalancedChunkMemory'/>
+          <ref name='xmlParseBalancedChunkMemoryRecover'/>
           <ref name='xmlStrdupFunc'/>
         </word>
         <word name='termination'>
@@ -17302,6 +17350,7 @@
         <word name='test'>
           <ref name='xmlParserHandleReference'/>
           <ref name='xmlXPathEqualValues'/>
+          <ref name='xmlXPathNotEqualValues'/>
         </word>
         <word name='tested'>
           <ref name='xmlParserNodeInfo'/>
@@ -17380,6 +17429,7 @@
           <ref name='xmlC14NDocDumpMemory'/>
           <ref name='xmlC14NDocSave'/>
           <ref name='xmlC14NDocSaveTo'/>
+          <ref name='xmlC14NExecute'/>
           <ref name='xmlEnumeration'/>
           <ref name='xmlGenericErrorFunc'/>
           <ref name='xmlNanoFTPCheckResponse'/>
@@ -17631,6 +17681,7 @@
           <ref name='hasExternalSubsetSAXFunc'/>
           <ref name='hasInternalSubset'/>
           <ref name='hasInternalSubsetSAXFunc'/>
+          <ref name='htmlIsBooleanAttr'/>
           <ref name='isStandalone'/>
           <ref name='isStandaloneSAXFunc'/>
           <ref name='xmlAutomataIsDeterminist'/>
@@ -17668,6 +17719,9 @@
           <ref name='xmlReconciliateNs'/>
           <ref name='xmlURIEscape'/>
           <ref name='xmlValidateRoot'/>
+        </word>
+        <word name='tune'>
+          <ref name='xmlBufferSetAllocationScheme'/>
         </word>
         <word name='tuple'>
           <ref name='xmlHashAddEntry2'/>
@@ -18031,6 +18085,9 @@
         <word name='view'>
           <ref name='xmlShell'/>
         </word>
+        <word name='visible'>
+          <ref name='xmlC14NExecute'/>
+        </word>
       </letter>
     </chunk>
     <chunk name='chunk21'>
@@ -18106,12 +18163,14 @@
           <ref name='htmlSAXParseFile'/>
           <ref name='xmlCopyDoc'/>
           <ref name='xmlParseBalancedChunkMemory'/>
+          <ref name='xmlParseBalancedChunkMemoryRecover'/>
           <ref name='xmlParseCtxtExternalEntity'/>
           <ref name='xmlParseExternalEntity'/>
           <ref name='xmlParserNodeInfo'/>
         </word>
         <word name='well-balanced'>
           <ref name='xmlParseBalancedChunkMemory'/>
+          <ref name='xmlParseBalancedChunkMemoryRecover'/>
         </word>
         <word name='well-formed'>
           <ref name='xmlParseCtxtExternalEntity'/>
@@ -18157,6 +18216,7 @@
           <ref name='xmlLoadExternalEntity'/>
           <ref name='xmlMemShow'/>
           <ref name='xmlNoNetExternalEntityLoader'/>
+          <ref name='xmlNormalizeWindowsPath'/>
           <ref name='xmlParserInput'/>
           <ref name='xmlPushInput'/>
           <ref name='xmlSchemaParse'/>
@@ -18194,6 +18254,9 @@
         <word name='whose'>
           <ref name='xmlAutomataNewCountTrans'/>
           <ref name='xmlAutomataNewOnceTrans'/>
+        </word>
+        <word name='windows'>
+          <ref name='xmlNormalizeWindowsPath'/>
         </word>
         <word name='within'>
           <ref name='xmlAutomataNewCounterTrans'/>
@@ -18259,6 +18322,7 @@
           <ref name='xmlGetCharEncodingHandler'/>
           <ref name='xmlIOFTPRead'/>
           <ref name='xmlIOHTTPRead'/>
+          <ref name='xmlNewCharEncodingHandler'/>
           <ref name='xmlOutputBufferCreateIO'/>
           <ref name='xmlOutputWriteCallback'/>
           <ref name='xmlShellWrite'/>
@@ -18308,6 +18372,7 @@
           <ref name='xmlC14NDocDumpMemory'/>
           <ref name='xmlC14NDocSave'/>
           <ref name='xmlC14NDocSaveTo'/>
+          <ref name='xmlC14NExecute'/>
           <ref name='xmlGetCharEncodingName'/>
           <ref name='xmlSchemaGetPredefinedType'/>
         </word>
@@ -18380,11 +18445,13 @@
           <ref name='xmlC14NDocDumpMemory'/>
           <ref name='xmlC14NDocSave'/>
           <ref name='xmlC14NDocSaveTo'/>
+          <ref name='xmlC14NExecute'/>
         </word>
         <word name='xml-exc-c14n'>
           <ref name='xmlC14NDocDumpMemory'/>
           <ref name='xmlC14NDocSave'/>
           <ref name='xmlC14NDocSaveTo'/>
+          <ref name='xmlC14NExecute'/>
         </word>
         <word name='xml:'>
           <ref name='XML_XML_NAMESPACE'/>
@@ -18437,8 +18504,18 @@
         <word name='xmlCharEncoding'>
           <ref name='xmlGetCharEncodingHandler'/>
         </word>
+        <word name='xmlCharEncodingHandler'>
+          <ref name='xmlNewCharEncodingHandler'/>
+        </word>
         <word name='xmlCharEncodingHandlerPtr'>
+          <ref name='xmlNewCharEncodingHandler'/>
           <ref name='xmlRegisterCharEncodingHandler'/>
+        </word>
+        <word name='xmlCharEncodingInputFunc'>
+          <ref name='xmlNewCharEncodingHandler'/>
+        </word>
+        <word name='xmlCharEncodingOutputFunc'>
+          <ref name='xmlNewCharEncodingHandler'/>
         </word>
         <word name='xmlChars'>
           <ref name='xmlBufferWriteCHAR'/>
@@ -18509,6 +18586,17 @@
         </word>
         <word name='xmlFree'>
           <ref name='xmlC14NDocDumpMemory'/>
+          <ref name='xmlDocDumpFormatMemory'/>
+          <ref name='xmlDocDumpFormatMemoryEnc'/>
+          <ref name='xmlDocDumpMemory'/>
+          <ref name='xmlDocDumpMemoryEnc'/>
+          <ref name='xmlGetNsProp'/>
+          <ref name='xmlGetProp'/>
+          <ref name='xmlNodeGetBase'/>
+          <ref name='xmlNodeGetContent'/>
+          <ref name='xmlNodeGetLang'/>
+          <ref name='xmlNodeListGetRawString'/>
+          <ref name='xmlNodeListGetString'/>
         </word>
         <word name='xmlFreeMutex'>
           <ref name='xmlFreeMutex'/>
@@ -18839,6 +18927,7 @@
           <ref name='xmlIsMixedElement'/>
           <ref name='xmlNodeIsText'/>
           <ref name='xmlOutputMatchCallback'/>
+          <ref name='xmlRegexpIsDeterminist'/>
         </word>
         <word name='you'>
           <ref name='xmlNewDocNode'/>
@@ -18856,6 +18945,7 @@
           <ref name='xmlBufferCat'/>
           <ref name='xmlOutputBufferWriteString'/>
           <ref name='xmlParseBalancedChunkMemory'/>
+          <ref name='xmlParseBalancedChunkMemoryRecover'/>
           <ref name='xmlParseChunk'/>
           <ref name='xmlStrdupFunc'/>
           <ref name='xmlStrsub'/>

@@ -25,6 +25,9 @@
 <!entity hash SYSTEM "sgml/hash.sgml">
 <!entity threads SYSTEM "sgml/threads.sgml">
 <!entity globals SYSTEM "sgml/globals.sgml">
+<!entity xmlregexp SYSTEM "sgml/xmlregexp.sgml">
+<!entity xmlautomata SYSTEM "sgml/xmlautomata.sgml">
+<!entity xmlunicode SYSTEM "sgml/xmlunicode.sgml">
 ]>
 
 <book>
@@ -110,6 +113,9 @@
     &hash;
     &debugXML;
     &xmlmemory;
+    &xmlregexp;
+    &xmlautomata;
+    &xmlunicode;
   </chapter>
 </book>
 

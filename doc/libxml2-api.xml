@@ -2506,8 +2506,9 @@
       <arg name='elem' type='htmlNodePtr' info='the HTML element '/>
     </function>
     <function name='htmlIsBooleanAttr' file='HTMLtree'>
-      <return type='int'/>
-      <arg name='name' type='const xmlChar *'/>
+      <info>Determine if a given attribute is a boolean attribute.</info>
+      <return type='int' info='false if the attribute is not boolean, true otherwise. '/>
+      <arg name='name' type='const xmlChar *' info='the name of the attribute to check '/>
     </function>
     <function name='htmlIsScriptAttribute' file='HTMLparser'>
       <info>Check if an attribute is of content type Script</info>
@@ -3245,7 +3246,7 @@
     <function name='xmlBufferSetAllocationScheme' file='tree'>
       <info>Sets the allocation scheme for this buffer</info>
       <return type='void'/>
-      <arg name='buf' type='xmlBufferPtr' info='the buffer to free '/>
+      <arg name='buf' type='xmlBufferPtr' info='the buffer to tune '/>
       <arg name='scheme' type='xmlBufferAllocationScheme' info='allocation scheme to use '/>
     </function>
     <function name='xmlBufferShrink' file='tree'>
@@ -3316,14 +3317,15 @@
       <arg name='buf' type='xmlOutputBufferPtr' info='		the output buffer to store canonical XML; this buffer MUST have encoder==NULL because C14N requires UTF-8 output '/>
     </function>
     <function name='xmlC14NExecute' file='c14n'>
-      <return type='int'/>
-      <arg name='doc' type='xmlDocPtr'/>
-      <arg name='is_visible_callback' type='xmlC14NIsVisibleCallback'/>
-      <arg name='user_data' type='void*'/>
-      <arg name='exclusive' type='int'/>
-      <arg name='inclusive_ns_prefixes' type='xmlChar **'/>
-      <arg name='with_comments' type='int'/>
-      <arg name='buf' type='xmlOutputBufferPtr'/>
+      <info>Dumps the canonized image of given XML document into the provided buffer. For details see &quot;Canonical XML&quot; (http://www.w3.org/TR/xml-c14n) or &quot;Exclusive XML Canonicalization&quot; (http://www.w3.org/TR/xml-exc-c14n)</info>
+      <return type='int' info='non-negative value on success or a negative value on fail '/>
+      <arg name='doc' type='xmlDocPtr' info='		the XML document for canonization '/>
+      <arg name='is_visible_callback' type='xmlC14NIsVisibleCallback' info='the function to use to determine is node visible or not '/>
+      <arg name='user_data' type='void*' info='is_visible_callback function (in most cases, it is nodes set) '/>
+      <arg name='exclusive' type='int' info='		the exclusive flag (0 - non-exclusive canonicalization; otherwise - exclusive canonicalization) '/>
+      <arg name='inclusive_ns_prefixes' type='xmlChar **' info='the list of inclusive namespace prefixes ended with a NULL or NULL if there is no inclusive namespaces (only for exclusive canonicalization, ignored otherwise) '/>
+      <arg name='with_comments' type='int' info='	include comments in the result (!=0) or not (==0) '/>
+      <arg name='buf' type='xmlOutputBufferPtr' info='		the output buffer to store canonical XML; this buffer MUST have encoder==NULL because C14N requires UTF-8 output '/>
     </function>
     <functype name='xmlC14NIsVisibleCallback' file='c14n'>
       <return type='int'/>
@@ -3830,7 +3832,7 @@
       <arg name='cur' type='xmlDocPtr' info='the document '/>
     </function>
     <function name='xmlDocDumpFormatMemory' file='tree'>
-      <info>Dump an XML document in memory and return the xmlChar * and it&apos;s size. It&apos;s up to the caller to free the memory. Note that format = 1 provide node indenting only if xmlIndentTreeOutput = 1 or xmlKeepBlanksDefault(0) was called</info>
+      <info>Dump an XML document in memory and return the xmlChar * and it&apos;s size. It&apos;s up to the caller to free the memory with xmlFree(). Note that format = 1 provide node indenting only if xmlIndentTreeOutput = 1 or xmlKeepBlanksDefault(0) was called</info>
       <return type='void'/>
       <arg name='cur' type='xmlDocPtr' info='the document '/>
       <arg name='mem' type='xmlChar **' info='OUT: the memory pointer '/>
@@ -3838,7 +3840,7 @@
       <arg name='format' type='int' info='should formatting spaces been added '/>
     </function>
     <function name='xmlDocDumpFormatMemoryEnc' file='tree'>
-      <info>Dump the current DOM tree into memory using the character encoding specified by the caller. Note it is up to the caller of this function to free the allocated memory. Note that format = 1 provide node indenting only if xmlIndentTreeOutput = 1 or xmlKeepBlanksDefault(0) was called</info>
+      <info>Dump the current DOM tree into memory using the character encoding specified by the caller. Note it is up to the caller of this function to free the allocated memory with xmlFree(). Note that format = 1 provide node indenting only if xmlIndentTreeOutput = 1 or xmlKeepBlanksDefault(0) was called</info>
       <return type='void'/>
       <arg name='out_doc' type='xmlDocPtr' info='Document to generate XML text from '/>
       <arg name='doc_txt_ptr' type='xmlChar **' info='Memory pointer for allocated XML text '/>
@@ -3847,14 +3849,14 @@
       <arg name='format' type='int' info='should formatting spaces been added '/>
     </function>
     <function name='xmlDocDumpMemory' file='tree'>
-      <info>Dump an XML document in memory and return the xmlChar * and it&apos;s size. It&apos;s up to the caller to free the memory.</info>
+      <info>Dump an XML document in memory and return the xmlChar * and it&apos;s size. It&apos;s up to the caller to free the memory with xmlFree().</info>
       <return type='void'/>
       <arg name='cur' type='xmlDocPtr' info='the document '/>
       <arg name='mem' type='xmlChar **' info='OUT: the memory pointer '/>
       <arg name='size' type='int *' info='OUT: the memory length '/>
     </function>
     <function name='xmlDocDumpMemoryEnc' file='tree'>
-      <info>Dump the current DOM tree into memory using the character encoding specified by the caller. Note it is up to the caller of this function to free the allocated memory.</info>
+      <info>Dump the current DOM tree into memory using the character encoding specified by the caller. Note it is up to the caller of this function to free the allocated memory with xmlFree().</info>
       <return type='void'/>
       <arg name='out_doc' type='xmlDocPtr' info='Document to generate XML text from '/>
       <arg name='doc_txt_ptr' type='xmlChar **' info='Memory pointer for allocated XML text '/>
@@ -4280,7 +4282,7 @@
     </function>
     <function name='xmlGetNsProp' file='tree'>
       <info>Search and get the value of an attribute associated to a node This attribute has to be anchored in the namespace specified. This does the entity substitution. This function looks in DTD attribute declaration for FIXED or default declaration values unless DTD use has been turned off.</info>
-      <return type='xmlChar *' info='the attribute value or NULL if not found. It&apos;s up to the caller to free the memory. '/>
+      <return type='xmlChar *' info='the attribute value or NULL if not found. It&apos;s up to the caller to free the memory with xmlFree(). '/>
       <arg name='node' type='xmlNodePtr' info='the node '/>
       <arg name='name' type='const xmlChar *' info='the attribute name '/>
       <arg name='nameSpace' type='const xmlChar *' info='the URI of the namespace '/>
@@ -4298,7 +4300,7 @@
     </function>
     <function name='xmlGetProp' file='tree'>
       <info>Search and get the value of an attribute associated to a node This does the entity substitution. This function looks in DTD attribute declaration for FIXED or default declaration values unless DTD use has been turned off.</info>
-      <return type='xmlChar *' info='the attribute value or NULL if not found. It&apos;s up to the caller to free the memory. '/>
+      <return type='xmlChar *' info='the attribute value or NULL if not found. It&apos;s up to the caller to free the memory with xmlFree(). '/>
       <arg name='node' type='xmlNodePtr' info='the node '/>
       <arg name='name' type='const xmlChar *' info='the attribute name '/>
     </function>
@@ -5254,10 +5256,11 @@
       <arg name='sgml' type='int' info='should this create an SGML catalog '/>
     </function>
     <function name='xmlNewCharEncodingHandler' file='encoding'>
-      <return type='xmlCharEncodingHandlerPtr'/>
-      <arg name='name' type='const char *'/>
-      <arg name='input' type='xmlCharEncodingInputFunc'/>
-      <arg name='output' type='xmlCharEncodingOutputFunc'/>
+      <info>Create and registers an xmlCharEncodingHandler.</info>
+      <return type='xmlCharEncodingHandlerPtr' info='the xmlCharEncodingHandlerPtr created (or NULL in case of error). '/>
+      <arg name='name' type='const char *' info='the encoding name, in UTF-8 format (ASCII actually) '/>
+      <arg name='input' type='xmlCharEncodingInputFunc' info='the xmlCharEncodingInputFunc to read that encoding '/>
+      <arg name='output' type='xmlCharEncodingOutputFunc' info='the xmlCharEncodingOutputFunc to write that encoding '/>
     </function>
     <function name='xmlNewCharRef' file='tree'>
       <info>Creation of a new character reference node.</info>
@@ -5519,18 +5522,18 @@
     </function>
     <function name='xmlNodeGetBase' file='tree'>
       <info>Searches for the BASE URL. The code should work on both XML and HTML document even if base mechanisms are completely different. It returns the base as defined in RFC 2396 sections 5.1.1. Base URI within Document Content and 5.1.2. Base URI from the Encapsulating Entity However it does not return the document base (5.1.3), use xmlDocumentGetBase() for this</info>
-      <return type='xmlChar *' info='a pointer to the base URL, or NULL if not found It&apos;s up to the caller to free the memory. '/>
+      <return type='xmlChar *' info='a pointer to the base URL, or NULL if not found It&apos;s up to the caller to free the memory with xmlFree(). '/>
       <arg name='doc' type='xmlDocPtr' info='the document the node pertains to '/>
       <arg name='cur' type='xmlNodePtr' info='the node being checked '/>
     </function>
     <function name='xmlNodeGetContent' file='tree'>
       <info>Read the value of a node, this can be either the text carried directly by this node if it&apos;s a TEXT node or the aggregate string of the values carried by this node child&apos;s (TEXT and ENTITY_REF). Entity references are substituted.</info>
-      <return type='xmlChar *' info='a new xmlChar * or NULL if no content is available. It&apos;s up to the caller to free the memory. '/>
+      <return type='xmlChar *' info='a new xmlChar * or NULL if no content is available. It&apos;s up to the caller to free the memory with xmlFree(). '/>
       <arg name='cur' type='xmlNodePtr' info='the node being read '/>
     </function>
     <function name='xmlNodeGetLang' file='tree'>
       <info>Searches the language of a node, i.e. the values of the xml:lang attribute or the one carried by the nearest ancestor.</info>
-      <return type='xmlChar *' info='a pointer to the lang value, or NULL if not found It&apos;s up to the caller to free the memory. '/>
+      <return type='xmlChar *' info='a pointer to the lang value, or NULL if not found It&apos;s up to the caller to free the memory with xmlFree(). '/>
       <arg name='cur' type='xmlNodePtr' info='the node being checked '/>
     </function>
     <function name='xmlNodeGetSpacePreserve' file='tree'>
@@ -5545,14 +5548,14 @@
     </function>
     <function name='xmlNodeListGetRawString' file='tree'>
       <info>Returns the string equivalent to the text contained in the Node list made of TEXTs and ENTITY_REFs, contrary to xmlNodeListGetString() this function doesn&apos;t do any character encoding handling.</info>
-      <return type='xmlChar *' info='a pointer to the string copy, the caller must free it. '/>
+      <return type='xmlChar *' info='a pointer to the string copy, the caller must free it with xmlFree(). '/>
       <arg name='doc' type='xmlDocPtr' info='the document '/>
       <arg name='list' type='xmlNodePtr' info='a Node list '/>
       <arg name='inLine' type='int' info='should we replace entity contents or show their external form '/>
     </function>
     <function name='xmlNodeListGetString' file='tree'>
       <info>Returns the string equivalent to the text contained in the Node list made of TEXTs and ENTITY_REFs</info>
-      <return type='xmlChar *' info='a pointer to the string copy, the caller must free it. '/>
+      <return type='xmlChar *' info='a pointer to the string copy, the caller must free it with xmlFree(). '/>
       <arg name='doc' type='xmlDocPtr' info='the document '/>
       <arg name='list' type='xmlNodePtr' info='a Node list '/>
       <arg name='inLine' type='int' info='should we replace entity contents or show their external form '/>
@@ -5603,8 +5606,9 @@
       <arg name='path' type='char *' info='pointer to the path string '/>
     </function>
     <function name='xmlNormalizeWindowsPath' file='xmlIO'>
-      <return type='xmlChar *'/>
-      <arg name='path' type='const xmlChar *'/>
+      <info>Normalize a Windows path to make an URL from it</info>
+      <return type='xmlChar *' info='a new URI which must be freed by the caller or NULL in case of error '/>
+      <arg name='path' type='const xmlChar *' info='a windows path like &quot;C:/foo/bar&quot; '/>
     </function>
     <struct name='xmlNotation' file='tree' info='A DTD Notation definition.'/>
     <typedef name='xmlNotationPtr' file='tree'/>
@@ -5719,14 +5723,15 @@
       <arg name='lst' type='xmlNodePtr *' info='the return value for the set of parsed nodes '/>
     </function>
     <function name='xmlParseBalancedChunkMemoryRecover' file='parser'>
-      <return type='int'/>
-      <arg name='doc' type='xmlDocPtr'/>
-      <arg name='sax' type='xmlSAXHandlerPtr'/>
-      <arg name='user_data' type='void *'/>
-      <arg name='depth' type='int'/>
-      <arg name='string' type='const xmlChar *'/>
-      <arg name='lst' type='xmlNodePtr *'/>
-      <arg name='recover' type='int'/>
+      <info>Parse a well-balanced chunk of an XML document called by the parser The allowed sequence for the Well Balanced Chunk is the one defined by the content production in the XML grammar: </info>
+      <return type='int' info='0 if the chunk is well balanced, -1 in case of args problem and the parser error code otherwise In case recover is set to 1, the nodelist will not be empty even if the parsed chunk is not well balanced. '/>
+      <arg name='doc' type='xmlDocPtr' info='the document the chunk pertains to '/>
+      <arg name='sax' type='xmlSAXHandlerPtr' info='the SAX handler bloc (possibly NULL) '/>
+      <arg name='user_data' type='void *' info='The user data returned on SAX callbacks (possibly NULL) '/>
+      <arg name='depth' type='int' info='Used for loop detection, use 0 '/>
+      <arg name='string' type='const xmlChar *' info='the input string in UTF8 or ISO-Latin (zero terminated) '/>
+      <arg name='lst' type='xmlNodePtr *' info='the return value for the set of parsed nodes '/>
+      <arg name='recover' type='int' info='return nodes even if the data is broken (use 0) '/>
     </function>
     <function name='xmlParseCDSect' file='parserInternals'>
       <info>Parse escaped pure raw content. </info>
@@ -6335,8 +6340,9 @@
       <arg name='value' type='const xmlChar *'/>
     </function>
     <function name='xmlRegexpIsDeterminist' file='xmlregexp'>
-      <return type='int'/>
-      <arg name='comp' type='xmlRegexpPtr'/>
+      <info>Check if the regular expression is determinist</info>
+      <return type='int' info='1 if it yes, 0 if not and a negativa value in case of error '/>
+      <arg name='comp' type='xmlRegexpPtr' info='the compiled regular expression '/>
     </function>
     <function name='xmlRegexpPrint' file='xmlregexp'>
       <info>Print the content of the compiled regular expression</info>
@@ -7703,9 +7709,10 @@
       <arg name='name' type='const xmlChar *' info='the attribute name '/>
     </function>
     <function name='xmlValidBuildContentModel' file='valid'>
-      <return type='int'/>
-      <arg name='ctxt' type='xmlValidCtxtPtr'/>
-      <arg name='elem' type='xmlElementPtr'/>
+      <info>(Re)Build the automata associated to the content model of this element</info>
+      <return type='int' info='1 in case of success, 0 in case of error '/>
+      <arg name='ctxt' type='xmlValidCtxtPtr' info='a validation context '/>
+      <arg name='elem' type='xmlElementPtr' info='an element declaration node '/>
     </function>
     <struct name='xmlValidCtxt' file='valid'/>
     <function name='xmlValidCtxtNormalizeAttributeValue' file='valid'>
@@ -8508,8 +8515,9 @@
       <arg name='nargs' type='int' info='the number of arguments '/>
     </function>
     <function name='xmlXPathNotEqualValues' file='xpathInternals'>
-      <return type='int'/>
-      <arg name='ctxt' type='xmlXPathParserContextPtr'/>
+      <info>Implement the equal operation on XPath objects content: arg1 == arg2</info>
+      <return type='int' info='0 or 1 depending on the results of the test. '/>
+      <arg name='ctxt' type='xmlXPathParserContextPtr' info='the XPath Parser context '/>
     </function>
     <function name='xmlXPathNotFunction' file='xpathInternals'>
       <info>Implement the not() XPath function boolean not(boolean) The not function returns true if its argument is false, and false otherwise.</info>

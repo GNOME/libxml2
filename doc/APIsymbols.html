@@ -329,6 +329,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-htmlparser.html#HTMLHANDLEOMITTEDELEM">htmlHandleOmittedElem</a>
 <a href="html/libxml-parserinternals.html#HTMLINITAUTOCLOSE">htmlInitAutoClose</a>
 <a href="html/libxml-htmlparser.html#HTMLISAUTOCLOSED">htmlIsAutoClosed</a>
+<a href="html/libxml-htmltree.html#HTMLISBOOLEANATTR">htmlIsBooleanAttr</a>
 <a href="html/libxml-htmlparser.html#HTMLISSCRIPTATTRIBUTE">htmlIsScriptAttribute</a>
 <a href="html/libxml-htmltree.html#HTMLNEWDOC">htmlNewDoc</a>
 <a href="html/libxml-htmltree.html#HTMLNEWDOCNODTD">htmlNewDocNoDtD</a>
@@ -524,6 +525,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-c14n.html#XMLC14NDOCDUMPMEMORY">xmlC14NDocDumpMemory</a>
 <a href="html/libxml-c14n.html#XMLC14NDOCSAVE">xmlC14NDocSave</a>
 <a href="html/libxml-c14n.html#XMLC14NDOCSAVETO">xmlC14NDocSaveTo</a>
+<a href="html/libxml-c14n.html#XMLC14NEXECUTE">xmlC14NExecute</a>
+<a href="html/libxml-c14n.html#XMLC14NISVISIBLECALLBACK">xmlC14NIsVisibleCallback</a>
 <a href="html/libxml-catalog.html#XMLCATALOG">xmlCatalog</a>
 <a href="html/libxml-catalog.html#XMLCATALOGADD">xmlCatalogAdd</a>
 <a href="html/libxml-catalog.html#XMLCATALOGADDLOCAL">xmlCatalogAddLocal</a>
@@ -900,6 +903,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlautomata.html#XMLNEWAUTOMATA">xmlNewAutomata</a>
 <a href="html/libxml-tree.html#XMLNEWCDATABLOCK">xmlNewCDataBlock</a>
 <a href="html/libxml-catalog.html#XMLNEWCATALOG">xmlNewCatalog</a>
+<a href="html/libxml-encoding.html#XMLNEWCHARENCODINGHANDLER">xmlNewCharEncodingHandler</a>
 <a href="html/libxml-tree.html#XMLNEWCHARREF">xmlNewCharRef</a>
 <a href="html/libxml-tree.html#XMLNEWCHILD">xmlNewChild</a>
 <a href="html/libxml-tree.html#XMLNEWCOMMENT">xmlNewComment</a>
@@ -958,6 +962,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xpath.html#XMLNODESETPTR">xmlNodeSetPtr</a>
 <a href="html/libxml-tree.html#XMLNODESETSPACEPRESERVE">xmlNodeSetSpacePreserve</a>
 <a href="html/libxml-uri.html#XMLNORMALIZEURIPATH">xmlNormalizeURIPath</a>
+<a href="html/libxml-xmlio.html#XMLNORMALIZEWINDOWSPATH">xmlNormalizeWindowsPath</a>
 <a href="html/libxml-tree.html#XMLNOTATION">xmlNotation</a>
 <a href="html/libxml-tree.html#XMLNOTATIONPTR">xmlNotationPtr</a>
 <a href="html/libxml-valid.html#XMLNOTATIONTABLEPTR">xmlNotationTablePtr</a>
@@ -983,6 +988,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-parserinternals.html#XMLPARSEATTRIBUTELISTDECL">xmlParseAttributeListDecl</a>
 <a href="html/libxml-parserinternals.html#XMLPARSEATTRIBUTETYPE">xmlParseAttributeType</a>
 <a href="html/libxml-parser.html#XMLPARSEBALANCEDCHUNKMEMORY">xmlParseBalancedChunkMemory</a>
+<a href="html/libxml-parser.html#XMLPARSEBALANCEDCHUNKMEMORYRECOVER">xmlParseBalancedChunkMemoryRecover</a>
 <a href="html/libxml-parserinternals.html#XMLPARSECDSECT">xmlParseCDSect</a>
 <a href="html/libxml-catalog.html#XMLPARSECATALOGFILE">xmlParseCatalogFile</a>
 <a href="html/libxml-parserinternals.html#XMLPARSECHARDATA">xmlParseCharData</a>
@@ -1108,6 +1114,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xmlregexp.html#XMLREGEXP">xmlRegexp</a>
 <a href="html/libxml-xmlregexp.html#XMLREGEXPCOMPILE">xmlRegexpCompile</a>
 <a href="html/libxml-xmlregexp.html#XMLREGEXPEXEC">xmlRegexpExec</a>
+<a href="html/libxml-xmlregexp.html#XMLREGEXPISDETERMINIST">xmlRegexpIsDeterminist</a>
 <a href="html/libxml-xmlregexp.html#XMLREGEXPPRINT">xmlRegexpPrint</a>
 <a href="html/libxml-xmlregexp.html#XMLREGEXPPTR">xmlRegexpPtr</a>
 <a href="html/libxml-encoding.html#XMLREGISTERCHARENCODINGHANDLER">xmlRegisterCharEncodingHandler</a>
@@ -1401,6 +1408,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-threads.html#XMLUNLOCKLIBRARY">xmlUnlockLibrary</a>
 <a href="html/libxml-tree.html#XMLUNSETNSPROP">xmlUnsetNsProp</a>
 <a href="html/libxml-tree.html#XMLUNSETPROP">xmlUnsetProp</a>
+<a href="html/libxml-valid.html#XMLVALIDBUILDCONTENTMODEL">xmlValidBuildContentModel</a>
 <a href="html/libxml-valid.html#XMLVALIDCTXT">xmlValidCtxt</a>
 <a href="html/libxml-valid.html#XMLVALIDCTXTNORMALIZEATTRIBUTEVALUE">xmlValidCtxtNormalizeAttributeValue</a>
 <a href="html/libxml-valid.html#XMLVALIDCTXTPTR">xmlValidCtxtPtr</a>
@@ -1552,6 +1560,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xpathinternals.html#XMLXPATHNODETRAILING">xmlXPathNodeTrailing</a>
 <a href="html/libxml-xpathinternals.html#XMLXPATHNODETRAILINGSORTED">xmlXPathNodeTrailingSorted</a>
 <a href="html/libxml-xpathinternals.html#XMLXPATHNORMALIZEFUNCTION">xmlXPathNormalizeFunction</a>
+<a href="html/libxml-xpathinternals.html#XMLXPATHNOTEQUALVALUES">xmlXPathNotEqualValues</a>
 <a href="html/libxml-xpathinternals.html#XMLXPATHNOTFUNCTION">xmlXPathNotFunction</a>
 <a href="html/libxml-xpathinternals.html#XMLXPATHNSLOOKUP">xmlXPathNsLookup</a>
 <a href="html/libxml-xpathinternals.html#XMLXPATHNUMBERFUNCTION">xmlXPathNumberFunction</a>

@@ -54,6 +54,8 @@ building tag-based structured documents/data.</p>
 
 <p>Here are some key points about libxml:</p>
 <ul>
+  <li>It is written in plain C, making as few assumptions as possible and
+    sticking closely to ANSI C for easy embedding.</li>
   <li>The internal document repesentation is as close as possible to the <a
     href="http://www.w3.org/DOM/">DOM</a> interfaces.</li>
   <li>Libxml also has a <a href="http://www.megginson.com/SAX/index.html">SAX
@@ -129,7 +131,7 @@ probably be processed faster.</p>
 <p>If you're looking for help, a quick look at <a
 href="http://xmlsoft.org/messages/#407">the list archive</a> may actually
 provide the answer, I usually send source samples when answering libxml usage
-questions. The <a href="http://xmlsoft.org/book1.html">auto-generated
+questions. The <a href="http://xmlsoft.org/html/book1.html">auto-generated
 documentantion</a> is not as polished as I would like (i need to learn more
 about Docbook), but it's a good starting point.</p>
 
@@ -1150,9 +1152,9 @@ either C data structure definitions, a set of XML examples or an XML DTD and
 produce the code needed to import and export the content between C data and
 XML storage. This is left as an exercise to the reader :-)</p>
 
-<p>Feel free to use <a href="gjobread.c">the code for the full C parsing
-example</a> as a template, it is also available with Makefile in the Gnome CVS
-base under gnome-xml/example</p>
+<p>Feel free to use <a href="example/gjobread.c">the code for the full C
+parsing example</a> as a template, it is also available with Makefile in the
+Gnome CVS base under gnome-xml/example</p>
 
 <h2><a name="Contributi">Contributions</a></h2>
 <ul>
@@ -1180,6 +1182,6 @@ base under gnome-xml/example</p>
 
 <p><a href="mailto:Daniel.Veillard@w3.org">Daniel Veillard</a></p>
 
-<p>$Id: xml.html,v 1.35 2000/06/30 17:58:22 veillard Exp $</p>
+<p>$Id: xml.html,v 1.36 2000/07/02 07:56:37 veillard Exp $</p>
 </body>
 </html>

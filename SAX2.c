@@ -1958,7 +1958,7 @@ xmlSAX2AttributeNs(xmlParserCtxtPtr ctxt,
 	     */
 	    if (dup == NULL)
 	        dup = xmlStrndup(value, valueend - value);
-#if LIBXML_VALID_ENABLED
+#ifdef LIBXML_VALID_ENABLED
 	    if (xmlValidateNCName(dup, 1) != 0) {
 	        xmlErrValid(ctxt, XML_DTD_XMLID_VALUE,
 		      "xml:id : attribute value %s is not an NCName\n",

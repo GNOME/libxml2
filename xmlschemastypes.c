@@ -23,6 +23,10 @@
 #include <libxml/schemasInternals.h>
 #include <libxml/xmlschemastypes.h>
 
+#ifdef HAVE_MATH_H
+#include <math.h>
+#endif
+
 #define DEBUG
 
 #define TODO 								\
@@ -38,6 +42,15 @@ typedef enum {
     XML_SCHEMAS_STRING,
     XML_SCHEMAS_NMTOKEN,
     XML_SCHEMAS_DECIMAL,
+    XML_SCHEMAS_TIME,
+    XML_SCHEMAS_GDAY,
+    XML_SCHEMAS_GMONTH,
+    XML_SCHEMAS_GMONTHDAY,
+    XML_SCHEMAS_GYEAR,
+    XML_SCHEMAS_GYEARMONTH,
+    XML_SCHEMAS_DATE,
+    XML_SCHEMAS_DATETIME,
+    XML_SCHEMAS_DURATION,
     XML_SCHEMAS_,
     XML_SCHEMAS_XXX
 } xmlSchemaValType;
@@ -45,6 +58,29 @@ typedef enum {
 unsigned long powten[10] = {
     1, 10, 100, 1000, 10000, 100000, 1000000, 10000000L,
     100000000L, 1000000000L
+};
+
+/* Date value */
+typedef struct _xmlSchemaValDate xmlSchemaValDate;
+typedef xmlSchemaValDate *xmlSchemaValDatePtr;
+struct _xmlSchemaValDate {
+    long		year;
+    unsigned int	mon	:4;	/* 1 <=  mon    <= 12   */
+    unsigned int	day	:5;	/* 1 <=  day    <= 31   */
+    unsigned int	hour	:5;	/* 0 <=  hour   <= 23   */
+    unsigned int	min	:6;	/* 0 <=  min    <= 59	*/
+    double		sec;
+    int			tz_flag	:1;	/* is tzo explicitely set? */
+    int			tzo	:11;	/* -1440 <= tzo <= 1440 */
+};
+
+/* Duration value */
+typedef struct _xmlSchemaValDuration xmlSchemaValDuration;
+typedef xmlSchemaValDuration *xmlSchemaValDurationPtr;
+struct _xmlSchemaValDuration {
+    long	        mon;		/* mon stores years also */
+    long        	day;
+    double		sec;            /* sec stores min and hour also */
 };
 
 typedef struct _xmlSchemaValDecimal xmlSchemaValDecimal;
@@ -62,6 +98,8 @@ struct _xmlSchemaVal {
     xmlSchemaValType type;
     union {
 	xmlSchemaValDecimal decimal;
+        xmlSchemaValDate        date;
+        xmlSchemaValDuration    dur;
     } value;
 };
 
@@ -72,7 +110,15 @@ static xmlSchemaTypePtr xmlSchemaTypeStringDef = NULL;
 static xmlSchemaTypePtr xmlSchemaTypeAnyTypeDef = NULL;
 static xmlSchemaTypePtr xmlSchemaTypeAnySimpleTypeDef = NULL;
 static xmlSchemaTypePtr xmlSchemaTypeDecimalDef = NULL;
+static xmlSchemaTypePtr xmlSchemaTypeDatetimeDef = NULL;
 static xmlSchemaTypePtr xmlSchemaTypeDateDef = NULL;
+static xmlSchemaTypePtr xmlSchemaTypeTimeDef = NULL;
+static xmlSchemaTypePtr xmlSchemaTypeGYearDef = NULL;
+static xmlSchemaTypePtr xmlSchemaTypeGYearMonthDef = NULL;
+static xmlSchemaTypePtr xmlSchemaTypeGDayDef = NULL;
+static xmlSchemaTypePtr xmlSchemaTypeGMonthDayDef = NULL;
+static xmlSchemaTypePtr xmlSchemaTypeGMonthDef = NULL;
+static xmlSchemaTypePtr xmlSchemaTypeDurationDef = NULL;
 static xmlSchemaTypePtr xmlSchemaTypePositiveIntegerDef = NULL;
 static xmlSchemaTypePtr xmlSchemaTypeNonNegativeIntegerDef = NULL;
 static xmlSchemaTypePtr xmlSchemaTypeNmtoken = NULL;
@@ -118,6 +164,14 @@ xmlSchemaInitTypes(void) {
     xmlSchemaTypeAnySimpleTypeDef = xmlSchemaInitBasicType("anySimpleType");
     xmlSchemaTypeDecimalDef = xmlSchemaInitBasicType("decimal");
     xmlSchemaTypeDateDef = xmlSchemaInitBasicType("date");
+    xmlSchemaTypeDatetimeDef = xmlSchemaInitBasicType("dateTime");
+    xmlSchemaTypeTimeDef = xmlSchemaInitBasicType("time");
+    xmlSchemaTypeGYearDef = xmlSchemaInitBasicType("gYear");
+    xmlSchemaTypeGYearMonthDef = xmlSchemaInitBasicType("gYearMonth");
+    xmlSchemaTypeGMonthDef = xmlSchemaInitBasicType("gMonth");
+    xmlSchemaTypeGMonthDayDef = xmlSchemaInitBasicType("gMonthDay");
+    xmlSchemaTypeGDayDef = xmlSchemaInitBasicType("gDay");
+    xmlSchemaTypeDurationDef = xmlSchemaInitBasicType("duration");
     xmlSchemaTypePositiveIntegerDef = xmlSchemaInitBasicType("positiveInteger");
     xmlSchemaTypeNonNegativeIntegerDef =
 	xmlSchemaInitBasicType("nonNegativeInteger");
@@ -190,6 +244,645 @@ xmlSchemaGetPredefinedType(const xmlChar *name, const xmlChar *ns) {
 	return(NULL);
     return((xmlSchemaTypePtr) xmlHashLookup2(xmlSchemaTypesBank, name, ns));
 }
+
+/****************************************************************
+ *								*
+ *		Convenience macros and functions		*
+ *								*
+ ****************************************************************/
+
+#define IS_TZO_CHAR(c)						\
+	((c == 0) || (c == 'Z') || (c == '+') || (c == '-'))
+
+#define VALID_YEAR(yr)          (yr != 0)
+#define VALID_MONTH(mon)        ((mon >= 1) && (mon <= 12))
+/* VALID_DAY should only be used when month is unknown */
+#define VALID_DAY(day)          ((day >= 1) && (day <= 31))
+#define VALID_HOUR(hr)          ((hr >= 0) && (hr <= 23))
+#define VALID_MIN(min)          ((min >= 0) && (min <= 59))
+#define VALID_SEC(sec)          ((sec >= 0) && (sec < 60))
+#define VALID_TZO(tzo)          ((tzo > -1440) && (tzo < 1440))
+#define IS_LEAP(y)						\
+	(((y % 4 == 0) && (y % 100 != 0)) || (y % 400 == 0))
+
+static const long daysInMonth[12] =
+	{ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+static const long daysInMonthLeap[12] =
+	{ 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+
+#define VALID_MDAY(dt)						\
+	(IS_LEAP(dt->year) ?				        \
+	    (dt->day <= daysInMonthLeap[dt->mon - 1]) :	        \
+	    (dt->day <= daysInMonth[dt->mon - 1]))
+
+#define VALID_DATE(dt)						\
+	(VALID_YEAR(dt->year) && VALID_MONTH(dt->mon) && VALID_MDAY(dt))
+
+#define VALID_TIME(dt)						\
+	(VALID_HOUR(dt->hour) && VALID_MIN(dt->min) &&		\
+	 VALID_SEC(dt->sec) && VALID_TZO(dt->tzo))
+
+#define VALID_DATETIME(dt)					\
+	(VALID_DATE(dt) && VALID_TIME(dt))
+
+#define SECS_PER_MIN            (60)
+#define SECS_PER_HOUR           (60 * SECS_PER_MIN)
+#define SECS_PER_DAY            (24 * SECS_PER_HOUR)
+
+/**
+ * _xmlSchemaParseGYear:
+ * @dt:  pointer to a date structure
+ * @str: pointer to the string to analyze
+ *
+ * Parses a xs:gYear without time zone and fills in the appropriate
+ * field of the @dt structure. @str is updated to point just after the
+ * xs:gYear. It is supposed that @dt->year is big enough to contain
+ * the year.
+ *
+ * Returns 0 or the error code
+ */
+static int
+_xmlSchemaParseGYear (xmlSchemaValDatePtr dt, const xmlChar **str) {
+    const xmlChar *cur = *str, *firstChar;
+    int isneg = 0, digcnt = 0;
+
+    if (((*cur < '0') || (*cur > '9')) &&
+	(*cur != '-') && (*cur != '+'))
+	return -1;
+
+    if (*cur == '-') {
+	isneg = 1;
+	cur++;
+    }
+
+    firstChar = cur;
+
+    while ((*cur >= '0') && (*cur <= '9')) {
+	dt->year = dt->year * 10 + (*cur - '0');
+	cur++;
+	digcnt++;
+    }
+
+    /* year must be at least 4 digits (CCYY); over 4
+     * digits cannot have a leading zero. */
+    if ((digcnt < 4) || ((digcnt > 4) && (*firstChar == '0')))
+	return 1;
+
+    if (isneg)
+	dt->year = - dt->year;
+
+    if (!VALID_YEAR(dt->year))
+	return 2;
+
+    *str = cur;
+    return 0;
+}
+
+/**
+ * PARSE_2_DIGITS:
+ * @num:  the integer to fill in
+ * @cur:  an #xmlChar *
+ * @invalid: an integer
+ *
+ * Parses a 2-digits integer and updates @num with the value. @cur is
+ * updated to point just after the integer.
+ * In case of error, @invalid is set to %TRUE, values of @num and
+ * @cur are undefined.
+ */
+#define PARSE_2_DIGITS(num, cur, invalid)			\
+	if ((cur[0] < '0') || (cur[0] > '9') ||			\
+	    (cur[1] < '0') || (cur[1] > '9'))			\
+	    invalid = 1;					\
+	else							\
+	    num = (cur[0] - '0') * 10 + (cur[1] - '0');		\
+	cur += 2;
+
+/**
+ * PARSE_FLOAT:
+ * @num:  the double to fill in
+ * @cur:  an #xmlChar *
+ * @invalid: an integer
+ *
+ * Parses a float and updates @num with the value. @cur is
+ * updated to point just after the float. The float must have a
+ * 2-digits integer part and may or may not have a decimal part.
+ * In case of error, @invalid is set to %TRUE, values of @num and
+ * @cur are undefined.
+ */
+#define PARSE_FLOAT(num, cur, invalid)				\
+	PARSE_2_DIGITS(num, cur, invalid);			\
+	if (!invalid && (*cur == '.')) {			\
+	    double mult = 1;				        \
+	    cur++;						\
+	    if ((*cur < '0') || (*cur > '9'))			\
+		invalid = 1;					\
+	    while ((*cur >= '0') && (*cur <= '9')) {		\
+		mult /= 10;					\
+		num += (*cur - '0') * mult;			\
+		cur++;						\
+	    }							\
+	}
+
+/**
+ * _xmlSchemaParseGMonth:
+ * @dt:  pointer to a date structure
+ * @str: pointer to the string to analyze
+ *
+ * Parses a xs:gMonth without time zone and fills in the appropriate
+ * field of the @dt structure. @str is updated to point just after the
+ * xs:gMonth.
+ *
+ * Returns 0 or the error code
+ */
+static int
+_xmlSchemaParseGMonth (xmlSchemaValDatePtr dt, const xmlChar **str) {
+    const xmlChar *cur = *str;
+    int ret = 0;
+
+    PARSE_2_DIGITS(dt->mon, cur, ret);
+    if (ret != 0)
+	return ret;
+
+    if (!VALID_MONTH(dt->mon))
+	return 2;
+
+    *str = cur;
+    return 0;
+}
+
+/**
+ * _xmlSchemaParseGDay:
+ * @dt:  pointer to a date structure
+ * @str: pointer to the string to analyze
+ *
+ * Parses a xs:gDay without time zone and fills in the appropriate
+ * field of the @dt structure. @str is updated to point just after the
+ * xs:gDay.
+ *
+ * Returns 0 or the error code
+ */
+static int
+_xmlSchemaParseGDay (xmlSchemaValDatePtr dt, const xmlChar **str) {
+    const xmlChar *cur = *str;
+    int ret = 0;
+
+    PARSE_2_DIGITS(dt->day, cur, ret);
+    if (ret != 0)
+	return ret;
+
+    if (!VALID_DAY(dt->day))
+	return 2;
+
+    *str = cur;
+    return 0;
+}
+
+/**
+ * _xmlSchemaParseTime:
+ * @dt:  pointer to a date structure
+ * @str: pointer to the string to analyze
+ *
+ * Parses a xs:time without time zone and fills in the appropriate
+ * fields of the @dt structure. @str is updated to point just after the
+ * xs:time.
+ * In case of error, values of @dt fields are undefined.
+ *
+ * Returns 0 or the error code
+ */
+static int
+_xmlSchemaParseTime (xmlSchemaValDatePtr dt, const xmlChar **str) {
+    const xmlChar *cur = *str;
+    unsigned int hour = 0; /* use temp var in case str is not xs:time */
+    int ret = 0;
+
+    PARSE_2_DIGITS(hour, cur, ret);
+    if (ret != 0)
+	return ret;
+
+    if (*cur != ':')
+	return 1;
+    cur++;
+
+    /* the ':' insures this string is xs:time */
+    dt->hour = hour;
+
+    PARSE_2_DIGITS(dt->min, cur, ret);
+    if (ret != 0)
+	return ret;
+
+    if (*cur != ':')
+	return 1;
+    cur++;
+
+    PARSE_FLOAT(dt->sec, cur, ret);
+    if (ret != 0)
+	return ret;
+
+    if (!VALID_TIME(dt))
+	return 2;
+
+    *str = cur;
+    return 0;
+}
+
+/**
+ * _xmlSchemaParseTimeZone:
+ * @dt:  pointer to a date structure
+ * @str: pointer to the string to analyze
+ *
+ * Parses a time zone without time zone and fills in the appropriate
+ * field of the @dt structure. @str is updated to point just after the
+ * time zone.
+ *
+ * Returns 0 or the error code
+ */
+static int
+_xmlSchemaParseTimeZone (xmlSchemaValDatePtr dt, const xmlChar **str) {
+    const xmlChar *cur = *str;
+    int ret = 0;
+
+    if (str == NULL)
+	return -1;
+
+    switch (*cur) {
+    case 0:
+	dt->tz_flag = 0;
+	dt->tzo = 0;
+	break;
+
+    case 'Z':
+	dt->tz_flag = 1;
+	dt->tzo = 0;
+	cur++;
+	break;
+
+    case '+':
+    case '-': {
+	int isneg = 0, tmp = 0;
+	isneg = (*cur == '-');
+
+	cur++;
+
+	PARSE_2_DIGITS(tmp, cur, ret);
+	if (ret != 0)
+	    return ret;
+	if (!VALID_HOUR(tmp))
+	    return 2;
+
+	if (*cur != ':')
+	    return 1;
+	cur++;
+
+	dt->tzo = tmp * 60;
+
+	PARSE_2_DIGITS(tmp, cur, ret);
+	if (ret != 0)
+	    return ret;
+	if (!VALID_MIN(tmp))
+	    return 2;
+
+	dt->tzo += tmp;
+	if (isneg)
+	    dt->tzo = - dt->tzo;
+
+	if (!VALID_TZO(dt->tzo))
+	    return 2;
+
+	break;
+      }
+    default:
+	return 1;
+    }
+
+    *str = cur;
+    return 0;
+}
+
+/****************************************************************
+ *								*
+ *	XML Schema Dates/Times Datatypes Handling		*
+ *								*
+ ****************************************************************/
+
+/**
+ * PARSE_DIGITS:
+ * @num:  the integer to fill in
+ * @cur:  an #xmlChar *
+ * @num_type: an integer flag
+ *
+ * Parses a digits integer and updates @num with the value. @cur is
+ * updated to point just after the integer.
+ * In case of error, @num_type is set to -1, values of @num and
+ * @cur are undefined.
+ */
+#define PARSE_DIGITS(num, cur, num_type)	                \
+	if ((*cur < '0') || (*cur > '9'))			\
+	    num_type = -1;					\
+        else                                                    \
+	    while ((*cur >= '0') && (*cur <= '9')) {		\
+	        num = num * 10 + (*cur - '0');		        \
+	        cur++;                                          \
+            }
+
+/**
+ * PARSE_NUM:
+ * @num:  the double to fill in
+ * @cur:  an #xmlChar *
+ * @num_type: an integer flag
+ *
+ * Parses a float or integer and updates @num with the value. @cur is
+ * updated to point just after the number. If the number is a float,
+ * then it must have an integer part and a decimal part; @num_type will
+ * be set to 1. If there is no decimal part, @num_type is set to zero.
+ * In case of error, @num_type is set to -1, values of @num and
+ * @cur are undefined.
+ */
+#define PARSE_NUM(num, cur, num_type)				\
+        num = 0;                                                \
+	PARSE_DIGITS(num, cur, num_type);	                \
+	if (!num_type && (*cur == '.')) {			\
+	    double mult = 1;				        \
+	    cur++;						\
+	    if ((*cur < '0') || (*cur > '9'))			\
+		num_type = -1;					\
+            else                                                \
+                num_type = 1;                                   \
+	    while ((*cur >= '0') && (*cur <= '9')) {		\
+		mult /= 10;					\
+		num += (*cur - '0') * mult;			\
+		cur++;						\
+	    }							\
+	}
+
+/**
+ * xmlSchemaParseDates:
+ * @type: the predefined type
+ * @dateTime:  string to analyze
+ * @val:  the return computed value
+ *
+ * Check that @dateTime conforms to the lexical space of one of the date types.
+ * if true a value is computed and returned in @val.
+ *
+ * Returns 0 if this validates, a positive error code number otherwise
+ *         and -1 in case of internal or API error.
+ */
+static int
+xmlSchemaParseDates (xmlSchemaTypePtr type, const xmlChar *dateTime,
+                        xmlSchemaValPtr *val) {
+    xmlSchemaValPtr dt;
+    int ret;
+    const xmlChar *cur = dateTime;
+
+#define RETURN_TYPE_IF_VALID(t)					\
+    if (IS_TZO_CHAR(*cur)) {					\
+	ret = _xmlSchemaParseTimeZone(&(dt->value.date), &cur);	\
+	if (ret == 0) {						\
+	    if (*cur != 0)					\
+		goto error;					\
+	    dt->type = t;					\
+            if (val != NULL)                                    \
+                *val = dt;                                      \
+	    return 0;						\
+	}							\
+    }
+
+    if (dateTime == NULL)
+	return -1;
+
+    if ((*cur != '-') && (*cur < '0') && (*cur > '9'))
+	return 1;
+
+    dt = xmlSchemaNewValue(XML_SCHEMAS_UNKNOWN);
+    if (dt == NULL)
+	return -1;
+
+    if ((cur[0] == '-') && (cur[1] == '-')) {
+	/*
+	 * It's an incomplete date (xs:gMonthDay, xs:gMonth or
+	 * xs:gDay)
+	 */
+	cur += 2;
+
+	/* is it an xs:gDay? */
+	if (*cur == '-') {
+	  ++cur;
+	    ret = _xmlSchemaParseGDay(&(dt->value.date), &cur);
+	    if (ret != 0)
+		goto error;
+
+	    RETURN_TYPE_IF_VALID(XML_SCHEMAS_GDAY);
+
+	    goto error;
+	}
+
+	/*
+	 * it should be an xs:gMonthDay or xs:gMonth
+	 */
+	ret = _xmlSchemaParseGMonth(&(dt->value.date), &cur);
+	if (ret != 0)
+	    goto error;
+
+	if (*cur != '-')
+	    goto error;
+	cur++;
+
+	/* is it an xs:gMonth? */
+	if (*cur == '-') {
+	    cur++;
+	    RETURN_TYPE_IF_VALID(XML_SCHEMAS_GMONTH);
+	    goto error;
+	}
+
+	/* it should be an xs:gMonthDay */
+	ret = _xmlSchemaParseGDay(&(dt->value.date), &cur);
+	if (ret != 0)
+	    goto error;
+
+	RETURN_TYPE_IF_VALID(XML_SCHEMAS_GMONTHDAY);
+
+	goto error;
+    }
+
+    /*
+     * It's a right-truncated date or an xs:time.
+     * Try to parse an xs:time then fallback on right-truncated dates.
+     */
+    if ((*cur >= '0') && (*cur <= '9')) {
+	ret = _xmlSchemaParseTime(&(dt->value.date), &cur);
+	if (ret == 0) {
+	    /* it's an xs:time */
+	    RETURN_TYPE_IF_VALID(XML_SCHEMAS_TIME);
+	}
+    }
+
+    /* fallback on date parsing */
+    cur = dateTime;
+
+    ret = _xmlSchemaParseGYear(&(dt->value.date), &cur);
+    if (ret != 0)
+	goto error;
+
+    /* is it an xs:gYear? */
+    RETURN_TYPE_IF_VALID(XML_SCHEMAS_GYEAR);
+
+    if (*cur != '-')
+	goto error;
+    cur++;
+
+    ret = _xmlSchemaParseGMonth(&(dt->value.date), &cur);
+    if (ret != 0)
+	goto error;
+
+    /* is it an xs:gYearMonth? */
+    RETURN_TYPE_IF_VALID(XML_SCHEMAS_GYEARMONTH);
+
+    if (*cur != '-')
+	goto error;
+    cur++;
+
+    ret = _xmlSchemaParseGDay(&(dt->value.date), &cur);
+    if ((ret != 0) || !VALID_DATE((&(dt->value.date))))
+	goto error;
+
+    /* is it an xs:date? */
+    RETURN_TYPE_IF_VALID(XML_SCHEMAS_DATE);
+
+    if (*cur != 'T')
+	goto error;
+    cur++;
+
+    /* it should be an xs:dateTime */
+    ret = _xmlSchemaParseTime(&(dt->value.date), &cur);
+    if (ret != 0)
+	goto error;
+
+    ret = _xmlSchemaParseTimeZone(&(dt->value.date), &cur);
+    if ((ret != 0) || (*cur != 0) || !VALID_DATETIME((&(dt->value.date))))
+	goto error;
+
+    dt->type = XML_SCHEMAS_DATETIME;
+
+    if (val != NULL)
+        *val = dt;
+
+    return 0;
+
+error:
+    if (dt != NULL)
+	xmlSchemaFreeValue(dt);
+    return 1;
+}
+
+/**
+ * xmlSchemaParseDuration:
+ * @type: the predefined type
+ * @duration:  string to analyze
+ * @val:  the return computed value
+ *
+ * Check that @duration conforms to the lexical space of the duration type.
+ * if true a value is computed and returned in @val.
+ *
+ * Returns 0 if this validates, a positive error code number otherwise
+ *         and -1 in case of internal or API error.
+ */
+static int
+xmlSchemaParseDuration (xmlSchemaTypePtr type, const xmlChar *duration,
+                        xmlSchemaValPtr *val) {
+    const xmlChar  *cur = duration;
+    xmlSchemaValPtr dur;
+    int isneg = 0;
+    unsigned int seq = 0;
+
+    if (duration == NULL)
+	return -1;
+
+    if (*cur == '-') {
+        isneg = 1;
+        cur++;
+    }
+
+    /* duration must start with 'P' (after sign) */
+    if (*cur++ != 'P')
+	return 1;
+
+    dur = xmlSchemaNewValue(XML_SCHEMAS_DURATION);
+    if (dur == NULL)
+	return -1;
+
+    while (*cur != 0) {
+        double         num;
+        int            num_type = 0;  /* -1 = invalid, 0 = int, 1 = floating */
+        const xmlChar  desig[] = {'Y', 'M', 'D', 'H', 'M', 'S'};
+        const double   multi[] = { 0.0, 0.0, 86400.0, 3600.0, 60.0, 1.0, 0.0};
+
+        /* input string should be empty or invalid date/time item */
+        if (seq >= sizeof(desig))
+            goto error;
+
+        /* T designator must be present for time items */
+        if (*cur == 'T') {
+            if (seq <= 3) {
+                seq = 3;
+                cur++;
+            } else
+                return 1;
+        } else if (seq == 3)
+            goto error;
+
+        /* parse the number portion of the item */
+        PARSE_NUM(num, cur, num_type);
+
+        if ((num_type == -1) || (*cur == 0))
+            goto error;
+
+        /* update duration based on item type */
+        while (seq < sizeof(desig)) {
+            if (*cur == desig[seq]) {
+
+                /* verify numeric type; only seconds can be float */
+                if ((num_type != 0) && (seq < (sizeof(desig)-1)))
+                    goto error;
+
+                switch (seq) {
+                    case 0:
+                        dur->value.dur.mon = (long)num * 12;
+                        break;
+                    case 1:
+                        dur->value.dur.mon += (long)num;
+                        break;
+                    default:
+                        /* convert to seconds using multiplier */
+                        dur->value.dur.sec += num * multi[seq];
+                        seq++;
+                        break;
+                }
+
+                break;          /* exit loop */
+            }
+            /* no date designators found? */
+            if (++seq == 3)
+                goto error;
+        }
+        cur++;
+    }
+
+    if (isneg) {
+        dur->value.dur.mon = -dur->value.dur.mon;
+        dur->value.dur.day = -dur->value.dur.day;
+        dur->value.dur.sec = -dur->value.dur.sec;
+    }
+
+    if (val != NULL)
+        *val = dur;
+
+    return 0;
+
+error:
+    if (dur != NULL)
+	xmlSchemaFreeValue(dur);
+    return 1;
+}
+
 /**
  * xmlSchemaValidatePredefinedType:
  * @type: the predefined type
@@ -263,45 +956,17 @@ xmlSchemaValidatePredefinedType(xmlSchemaTypePtr type, const xmlChar *value,
 	    }
 	}
 	return(0);
-    } else if (type == xmlSchemaTypeDateDef) {
-	const xmlChar *cur = value;
-	if (cur == NULL)
-	    return(1);
-	if (*cur == '-')
-	    cur++;
-	if ((*cur < '0') || (*cur > '9'))
-	    return(1);
-	if ((*cur < '0') || (*cur > '9'))
-	    return(1);
-	if ((*cur < '0') || (*cur > '9'))
-	    return(1);
-	if ((*cur < '0') || (*cur > '9'))
-	    return(1);
-	while ((*cur >= '0') && (*cur <= '9'))
-	    cur++;
-	if (*cur != '-')
-	    return(1);
-	cur++;
-	if ((*cur != '0') && (*cur != '1'))
-	    return(1);
-	if ((*cur == '0') && (cur[1] == '0'))
-	    return(1);
-	if ((*cur == '1') && ((cur[1] < '0') || (cur[1] > '2')))
-	    return(1);
-	cur += 2;
-	if (*cur != '-')
-	    return(1);
-	cur++;
-	if ((*cur < '0') || (*cur > '3'))
-	    return(1);
-	if ((*cur == '0') && (cur[1] == '0'))
-	    return(1);
-	if ((*cur == '3') && ((cur[1] < '0') || (cur[1] > '1')))
-	    return(1);
-	cur += 2;
-	if (*cur != 0)
-	    return(1);
-	return(0);
+    } else if (type == xmlSchemaTypeDurationDef) {
+        return xmlSchemaParseDuration(type, value, val);
+    } else if ((type == xmlSchemaTypeDatetimeDef) ||
+               (type == xmlSchemaTypeTimeDef) ||
+               (type == xmlSchemaTypeDateDef) ||
+               (type == xmlSchemaTypeGYearDef) ||
+               (type == xmlSchemaTypeGYearMonthDef) ||
+               (type == xmlSchemaTypeGMonthDef) ||
+               (type == xmlSchemaTypeGMonthDayDef) ||
+               (type == xmlSchemaTypeGDayDef))         {
+        return xmlSchemaParseDates(type, value, val);
     } else if (type == xmlSchemaTypePositiveIntegerDef) {
 	const xmlChar *cur = value;
 	unsigned long base = 0;
@@ -417,6 +1082,87 @@ xmlSchemaCompareDecimals(xmlSchemaValPtr x, xmlSchemaValPtr y)
 }
 
 /**
+ * xmlSchemaCompareDurations:
+ * @x:  a first duration value
+ * @y:  a second duration value
+ *
+ * Compare 2 durations
+ *
+ * Returns -1 if x < y, 0 if x == y, 1 if x > y, 2 if x <> y, and -2 in
+ * case of error
+ */
+static int
+xmlSchemaCompareDurations(xmlSchemaValPtr x, xmlSchemaValPtr y)
+{
+    long carry, mon, day;
+    double sec;
+    long xmon, xday, myear, lyear, minday, maxday;
+    static const long dayRange [2][12] = {
+        { 0, 28, 59, 89, 120, 150, 181, 212, 242, 273, 303, 334, },
+        { 0, 31, 62, 92, 123, 153, 184, 215, 245, 276, 306, 337} };
+
+    if ((x == NULL) || (y == NULL))
+        return NULL;
+
+    /* months */
+    mon = x->value.dur.mon - y->value.dur.mon;
+
+    /* seconds */
+    sec = x->value.dur.sec - y->value.dur.sec;
+    carry = (long)sec / SECS_PER_DAY;
+    sec -= (double)(carry * SECS_PER_DAY);
+
+    /* days */
+    day = x->value.dur.day - y->value.dur.day + carry;
+
+    /* easy test */
+    if (mon == 0) {
+        if (day == 0)
+            if (sec == 0.0)
+                return 0;
+            else if (sec < 0.0)
+                return -1;
+            else
+                return 1;
+        else if (day < 0)
+            return -1;
+        else
+            return 1;
+    }
+
+    if (mon > 0) {
+        if ((day >= 0) && (sec >= 0.0))
+            return 1;
+        else {
+            xmon = mon;
+            xday = -day;
+        }
+    } else if ((day <= 0) && (sec <= 0.0)) {
+        return -1;
+    } else {
+        xmon = -mon;
+        xday = day;
+    }
+
+    myear = xmon / 12;
+    lyear = myear / 4;
+    minday = (myear * 365) + (lyear != 0 ? lyear - 1 : 0);
+    maxday = (myear * 365) + (lyear != 0 ? lyear + 1 : 0);
+        
+    xmon = xmon % 12;
+    minday += dayRange[0][xmon];
+    maxday += dayRange[1][xmon];
+
+    if (maxday < xday)
+        return 1;
+    else if (minday > xday)
+        return -1;
+
+    /* indeterminate */
+    return 0;
+}
+
+/**
  * xmlSchemaCompareValues:
  * @x:  a first value
  * @y:  a second value
@@ -438,6 +1184,11 @@ xmlSchemaCompareValues(xmlSchemaValPtr x, xmlSchemaValPtr y) {
 		return(xmlSchemaCompareDecimals(x, y));
 	    else
 		return(-2);
+        case XML_SCHEMAS_DURATION:
+	    if (y->type == XML_SCHEMAS_DURATION)
+                return(xmlSchemaCompareDurations(x, y));
+            else
+                return(-2);
 	default:
 	    TODO
     }
@@ -478,6 +1229,36 @@ xmlSchemaValidateFacet(xmlSchemaTypePtr base, xmlSchemaFacetPtr facet,
 		return(-1);
 	    }
 	    if (ret == -1)
+		return(0);
+	    TODO /* error code */
+	    return(1);
+	case XML_SCHEMA_FACET_MAXINCLUSIVE:
+	    ret = xmlSchemaCompareValues(val, facet->val);
+	    if (ret == -2) {
+		TODO /* error code */
+		return(-1);
+	    }
+	    if ((ret == -1) || (ret == 0))
+		return(0);
+	    TODO /* error code */
+	    return(1);
+	case XML_SCHEMA_FACET_MINEXCLUSIVE:
+	    ret = xmlSchemaCompareValues(val, facet->val);
+	    if (ret == -2) {
+		TODO /* error code */
+		return(-1);
+	    }
+	    if (ret == 1)
+		return(0);
+	    TODO /* error code */
+	    return(1);
+	case XML_SCHEMA_FACET_MININCLUSIVE:
+	    ret = xmlSchemaCompareValues(val, facet->val);
+	    if (ret == -2) {
+		TODO /* error code */
+		return(-1);
+	    }
+	    if ((ret == 1) || (ret == 0))
 		return(0);
 	    TODO /* error code */
 	    return(1);

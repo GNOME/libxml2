@@ -1,3 +1,11 @@
+Fri May  3 09:20:41 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemastypes.c: patch Charles Bozeman for validation of
+	  all the date, time, and duration types
+	* test/schemas/dur_0* result/schemas/dur_0*: associated tests
+	* configure.in: fixed an error pointed by an user
+	* xml2-config.in: fixed an error pointed by an user
+
 Wed 01 May 2002 11:29:27 AM PDT Aleksey Sanin <aleksey@aleksey.com>
 
 	* include/libxml/xmlIO.h win32/dsp/libxml2.def.src

@@ -425,6 +425,7 @@ if test "$with_xpath" = "no" ; then
     echo Disabling XPATH support
     with_xptr="no"
     with_c14n="no"
+    with_xinclude="no"
     WITH_XPATH=0
     XPATH_OBJ=
 else    

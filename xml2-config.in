@@ -8,7 +8,7 @@ libdir=@libdir@
 usage()
 {
     cat <<EOF
-Usage: xml-config [OPTION]
+Usage: xml2-config [OPTION]
 
 Known values for OPTION are:
 
@@ -38,6 +38,8 @@ while test $# -gt 0; do
     case "$1" in
     --prefix=*)
 	prefix=$optarg
+	includedir=$prefix/include
+	libdir=$prefix/lib
 	;;
 
     --prefix)

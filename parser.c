@@ -469,7 +469,11 @@ xmlParseCharRef(xmlParserCtxtPtr ctxt) {
 	SKIP(3);
 	GROW;
 	while (RAW != ';') { /* loop blocked by count */
-	    if ((RAW >= '0') && (RAW <= '9') && (count < 20)) 
+	    if (count++ > 20) {
+		count = 0;
+		GROW;
+	    }
+	    if ((RAW >= '0') && (RAW <= '9')) 
 	        val = val * 16 + (CUR - '0');
 	    else if ((RAW >= 'a') && (RAW <= 'f') && (count < 20))
 	        val = val * 16 + (CUR - 'a') + 10;
@@ -497,7 +501,11 @@ xmlParseCharRef(xmlParserCtxtPtr ctxt) {
 	SKIP(2);
 	GROW;
 	while (RAW != ';') { /* loop blocked by count */
-	    if ((RAW >= '0') && (RAW <= '9') && (count < 20)) 
+	    if (count++ > 20) {
+		count = 0;
+		GROW;
+	    }
+	    if ((RAW >= '0') && (RAW <= '9')) 
 	        val = val * 10 + (CUR - '0');
 	    else {
 		ctxt->errNo = XML_ERR_INVALID_DEC_CHARREF;
@@ -2555,7 +2563,7 @@ xmlParseCharData(xmlParserCtxtPtr ctxt, int cdata) {
 	in = ctxt->input->cur;
 	do {
 get_more:
-	    while (((*in >= 0x20) && (*in != '<') &&
+	    while (((*in >= 0x20) && (*in != '<') && (*in != ']') &&
 		    (*in != '&') && (*in <= 0x7F)) || (*in == 0x09))
 		in++;
 	    if (*in == 0xA) {
@@ -2565,6 +2573,20 @@ get_more:
 		    ctxt->input->line++;
 		    in++;
 		}
+		goto get_more;
+	    }
+	    if (*in == ']') {
+		if ((in[1] == ']') && (in[2] == '>')) {
+		    ctxt->errNo = XML_ERR_MISPLACED_CDATA_END;
+		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+			ctxt->sax->error(ctxt->userData,
+			   "Sequence ']]>' not allowed in content\n");
+		    ctxt->input->cur = in;
+		    ctxt->wellFormed = 0;
+		    ctxt->disableSAX = 1;
+		    return;
+		}
+		in++;
 		goto get_more;
 	    }
 	    nbchar = in - ctxt->input->cur;
@@ -2848,7 +2870,7 @@ xmlParseComment(xmlParserCtxtPtr ctxt) {
     while (IS_CHAR(cur) && /* checked */
            ((cur != '>') ||
 	    (r != '-') || (q != '-'))) {
-	if ((r == '-') && (q == '-') && (len > 1)) {
+	if ((r == '-') && (q == '-')) {
 	    ctxt->errNo = XML_ERR_HYPHEN_IN_COMMENT;
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	        ctxt->sax->error(ctxt->userData,
@@ -4814,7 +4836,7 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
 	ctxt->disableSAX = 1;
 	ctxt->instate = XML_PARSER_IGNORE;
 
-	while (depth >= 0) {
+	while ((depth >= 0) && (RAW != 0)) {
 	  if ((RAW == '<') && (NXT(1) == '!') && (NXT(2) == '[')) {
 	    depth++;
 	    SKIP(3);
@@ -5149,6 +5171,8 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
     } else {
 	ent = xmlParseEntityRef(ctxt);
 	if (ent == NULL) return;
+	if (!ctxt->wellFormed)
+	    return;
 	if ((ent->name != NULL) && 
 	    (ent->etype != XML_INTERNAL_PREDEFINED_ENTITY)) {
 	    xmlNodePtr list = NULL;
@@ -5237,6 +5261,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 				"Detected entity reference loop\n");
 			ctxt->wellFormed = 0;
 			ctxt->disableSAX = 1;
+			return;
 		    } else if ((ret == 0) && (list != NULL)) {
 			if (((ent->etype == XML_INTERNAL_GENERAL_ENTITY) ||
 			 (ent->etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY))&&

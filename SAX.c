@@ -493,7 +493,7 @@ attributeDecl(void *ctx, const xmlChar *elem, const xmlChar *fullname,
 	     "SAX.attributeDecl(%s) called while not in subset\n", name);
 	return;
     }
-    if (attr == 0) ctxt->valid = 0;
+    /* if (attr == 0) ctxt->valid = 0; */
     if (ctxt->validate && ctxt->wellFormed &&
         ctxt->myDoc && ctxt->myDoc->intSubset)
 	ctxt->valid &= xmlValidateAttributeDecl(&ctxt->vctxt, ctxt->myDoc,

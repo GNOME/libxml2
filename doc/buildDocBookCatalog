@@ -51,7 +51,7 @@ if [ "$found" = "" ] ; then
     found=`find /usr/share/sgml -name docbookx.dtd`
 fi
 if [ "$found" = "" ] ; then
-    echo could not locate docbookx.dtd drom DocBook XML
+    echo could not locate docbookx.dtd for DocBook XML
     exit 1
 fi
 

@@ -38,7 +38,7 @@ libxml2mod_so_LDFLAGS = $(mylibs) $(LIBS) -shared -Wl,-soname,libxml2mod.so
 noinst_LTLIBRARIES = libxmlmodule.la
 libxmlmodule_la_SOURCES = libxml.c types.c libxml2-py.c
 
-libxml2mod.so: $(libxmlmodule_la_OBJECTS)
+libxml2mod.so: $(libxmlmodule_la_OBJECTS) $(mylibs)
 	$(LINK) -o $@ $(libxmlmodule_la_OBJECTS) $(libxml2mod_so_LDFLAGS)
 
 

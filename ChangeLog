@@ -1,3 +1,7 @@
+Wed Feb  9 17:47:40 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: applied patch to xmlSetNsProp from Mike Hommey
+
 Sun Feb  6 00:17:57 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* pattern.c xmllint.c: fixed implementation for |

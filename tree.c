@@ -6446,7 +6446,7 @@ xmlSetNsProp(xmlNodePtr node, xmlNsPtr ns, const xmlChar *name,
 	     const xmlChar *value) {
     xmlAttrPtr prop;
     
-    if ((node == NULL) || (name == NULL))
+    if ((node == NULL) || (name == NULL) || (node->type != XML_ELEMENT_NODE))
 	return(NULL);
 
     if (ns == NULL)

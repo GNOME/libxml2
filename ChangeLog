@@ -1,3 +1,9 @@
+Mon Dec 16 19:31:16 CET 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
+
+	* win32/libxml2.def.src: added more xml reader exports
+	* win32/Makefile.msvc win32/Makefile.mingw: added xml reader interface
+	  to the build
+	
 Mon Dec 16 06:36:54 MST 2002 John Fleck <jfleck@inkstain.net>
 
 	* doc/tutorial/xmltutorial.xml

@@ -32,7 +32,17 @@
       <li><a href="xmlio.html">I/O interfaces</a></li>
       <li><a href="xmlmem.html">Memory interfaces</a></li>
       <li><a href="xmldtd.html">DTD support</a></li>
-      <li><a href="xml.html">flat page</a></li>
+      <li><a href="xml.html">flat page</a>, <a href="site.xsl">stylesheet</a></li>
+    </ul>
+  </xsl:variable>
+  <xsl:variable name="related">
+    <ul style="margin-left: -2pt">
+      <li><a href="http://mail.gnome.org/archives/xml/">Mail archive</a></li>
+      <li><a href="http://xmlsoft.org/XSLT/">XSLT libxslt</a></li>
+      <li><a href="http://www.cs.unibo.it/~casarini/gdome2/">DOM gdome2</a></li>
+      <li><a href="ftp://xmlsoft.org/">FTP</a></li>
+      <li><a href="http://www.fh-frankfurt.de/~igor/projects/libxml/">Windows binaries</a></li>
+      <li><a href="http://pages.eidosnet.co.uk/~garypen/libxml/">Solaris binaries</a></li>
     </ul>
   </xsl:variable>
   <xsl:template name="toc">
@@ -50,6 +60,20 @@
             <tr>
               <td bgcolor="#fffacd">
                 <xsl:copy-of select="$toc"/>
+              </td>
+            </tr>
+          </table>
+          <table width="100%" border="0" cellspacing="1" cellpadding="3">
+            <tr>
+              <td colspan="1" bgcolor="#eecfa1" align="center">
+                <center>
+                  <b>Related links</b>
+                </center>
+              </td>
+            </tr>
+            <tr>
+              <td bgcolor="#fffacd">
+                <xsl:copy-of select="$related"/>
               </td>
             </tr>
           </table>

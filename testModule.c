@@ -22,7 +22,9 @@
 #ifdef _WIN32
 #define MODULE_PATH "."
 #include <stdlib.h> /* for _MAX_PATH */
+#ifndef __MINGW32__
 #define PATH_MAX _MAX_PATH
+#endif
 #else
 #define MODULE_PATH ".libs"
 #endif

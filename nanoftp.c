@@ -62,6 +62,7 @@
 #include <libxml/uri.h>
 #include <libxml/nanoftp.h>
 #include <libxml/globals.h>
+#include <config.h>
 
 /* #define DEBUG_FTP 1  */
 #ifdef STANDALONE
@@ -93,7 +94,11 @@ typedef struct xmlNanoFTPCtxt {
     char *path;		/* the path within the URL */
     char *user;		/* user string */
     char *passwd;	/* passwd string */
+#ifdef SUPPORT_IP6
+    struct sockaddr_storage ftpAddr; /* this is large enough to hold IPv6 address*/
+#else
     struct sockaddr_in ftpAddr; /* the socket address struct */
+#endif
     int passive;	/* currently we support only passive !!! */
     SOCKET controlFd;	/* the file descriptor for the control socket */
     SOCKET dataFd;	/* the file descriptor for the data socket */
@@ -112,6 +117,19 @@ static int proxyPort = 0;	/* the proxy port if any */
 static char *proxyUser = NULL;	/* user for proxy authentication */
 static char *proxyPasswd = NULL;/* passwd for proxy authentication */
 static int proxyType = 0;	/* uses TYPE or a@b ? */
+
+#ifdef SUPPORT_IP6
+static int have_ipv6() {
+    int s;
+
+    s = socket (AF_INET6, SOCK_STREAM, 0);
+    if (s != -1) {
+	close (s);
+	return (1);
+    }
+    return (0);
+}
+#endif
 
 /**
  * xmlNanoFTPInit:
@@ -289,26 +307,64 @@ xmlNanoFTPScanURL(void *ctx, const char *URL) {
     }
 
     while (1) {
-        if (cur[0] == ':') {
+	if ((strchr (cur, '[') && !strchr (cur, ']')) ||
+		(!strchr (cur, '[') && strchr (cur, ']'))) {
+	    xmlGenericError (xmlGenericErrorContext, "\nxmlNanoFTPScanURL: %s",
+		    "Syntax Error\n");
+	    return;
+	}
+
+	if (cur[0] == '[') {
+	    cur++;
+	    while (cur[0] != ']')
+		buf[indx++] = *cur++;
+
+	    if (!strchr (buf, ':')) {
+		xmlGenericError (xmlGenericErrorContext, "\nxmlNanoFTPScanURL: %s",
+			"Use [IPv6]/IPv4 format\n");
+		return;
+	    }
+
 	    buf[indx] = 0;
-	    ctxt->hostname = xmlMemStrdup(buf);
+	    ctxt->hostname = xmlMemStrdup (buf);
 	    indx = 0;
 	    cur += 1;
-	    while ((*cur >= '0') && (*cur <= '9')) {
-	        port *= 10;
-		port += *cur - '0';
+	    if (cur[0] == ':') {
 		cur++;
+		while (*cur >= '0' && *cur <= '9') {
+		    port *= 10;
+		    port += *cur - '0';
+		    cur++;
+		}
+
+		if (port != 0) ctxt->port = port;
+		while ((cur[0] != '/') && (*cur != 0))
+		    cur++;
 	    }
-	    if (port != 0) ctxt->port = port;
-	    while ((cur[0] != '/') && (*cur != 0)) 
-	        cur++;
 	    break;
 	}
-        if ((*cur == '/') || (*cur == 0)) {
-	    buf[indx] = 0;
-	    ctxt->hostname = xmlMemStrdup(buf);
-	    indx = 0;
-	    break;
+	else {     /* address is an IPv4 one*/
+	    if (cur[0] == ':') {
+		buf[indx] = 0;
+		ctxt->hostname = xmlMemStrdup (buf);
+		indx = 0;
+		cur += 1;
+		while ((*cur >= '0') && (*cur <= '9')) {
+		    port *= 10;
+		    port += *cur - '0';
+		    cur++;
+		}
+		if (port != 0) ctxt->port = port;
+		while ((cur[0] != '/') && (*cur != 0)) 
+		    cur++;
+		break;
+	    }
+	    if ((*cur == '/') || (*cur == 0)) {
+		buf[indx] = 0;
+		ctxt->hostname = xmlMemStrdup (buf);
+		indx = 0;
+		break;
+	    }
 	}
 	buf[indx++] = *cur++;
     }
@@ -371,29 +427,69 @@ xmlNanoFTPUpdateURL(void *ctx, const char *URL) {
 
     buf[indx] = 0;
     while (1) {
-        if (cur[0] == ':') {
+	if ((strchr (cur, '[') && !strchr (cur, ']')) ||
+		(!strchr (cur, '[') && strchr (cur, ']'))) {
+	    xmlGenericError (xmlGenericErrorContext, "\nxmlNanoFTPUpdateURL: %s",
+		    "Syntax Error\n");
+	    return (-1);
+	}
+
+	if (cur[0] == '[') {
+	    cur++;
+	    while (cur[0] != ']')
+		buf[indx++] = *cur++;
+
+	    if (!strchr (buf, ':')) {
+		xmlGenericError (xmlGenericErrorContext, "\nxmlNanoFTPUpdateURL: %s",
+			"Use [IPv6]/IPv4 format\n");
+		return (-1);
+	    }
+
 	    buf[indx] = 0;
-	    if (strcmp(ctxt->hostname, buf))
-		return(-1);
+	    if (strcmp (ctxt->hostname, buf))
+		return (-1);
 	    indx = 0;
 	    cur += 1;
-	    while ((*cur >= '0') && (*cur <= '9')) {
-	        port *= 10;
-		port += *cur - '0';
+	    if (cur[0] == ':') {
 		cur++;
+		while (*cur >= '0' && *cur <= '9') {
+		    port *= 10;
+		    port += *cur - '0';
+		    cur++;
+		}
+
+		if (port != ctxt->port)
+		    return (-1);
+		while ((cur[0] != '/') && (*cur != 0))
+		    cur++;
 	    }
-	    if (port != ctxt->port)
-		return(-1);
-	    while ((cur[0] != '/') && (*cur != 0)) 
-	        cur++;
 	    break;
 	}
-        if ((*cur == '/') || (*cur == 0)) {
-	    buf[indx] = 0;
-	    if (strcmp(ctxt->hostname, buf))
-		return(-1);
-	    indx = 0;
-	    break;
+	else {
+	    if (cur[0] == ':') {
+		buf[indx] = 0;
+		if (strcmp (ctxt->hostname, buf))
+		    return (-1);
+		indx = 0;
+		cur += 1;
+		while ((*cur >= '0') && (*cur <= '9')) {
+		    port *= 10;
+		    port += *cur - '0';
+		    cur++;
+		}
+		if (port != ctxt->port)
+		    return (-1);
+		while ((cur[0] != '/') && (*cur != 0)) 
+		    cur++;
+		break;
+	    }
+	    if ((*cur == '/') || (*cur == 0)) {
+		buf[indx] = 0;
+		if (strcmp (ctxt->hostname, buf))
+		    return (-1);
+		indx = 0;
+		break;
+	    }
 	}
 	buf[indx++] = *cur++;
     }
@@ -460,26 +556,63 @@ xmlNanoFTPScanProxy(const char *URL) {
 
     buf[indx] = 0;
     while (1) {
-        if (cur[0] == ':') {
+	if ((strchr (cur, '[') && !strchr (cur, ']')) ||
+		(!strchr (cur, '[') && strchr (cur, ']'))) {
+	    xmlGenericError (xmlGenericErrorContext, "\nxmlNanoFTPScanProxy: %s",
+		    "Syntax error\n");
+	    return;
+	}
+
+	if (cur[0] == '[') {
+	    cur++;
+	    while (cur[0] != ']')
+		buf[indx++] = *cur++;
+	    if (!strchr (buf, ':')) {
+		xmlGenericError (xmlGenericErrorContext, "\nxmlNanoFTPScanProxy: %s",
+			"Use [IPv6]/IPv4 format\n");
+		return;
+	    }
+
 	    buf[indx] = 0;
-	    proxy = xmlMemStrdup(buf);
+	    proxy = xmlMemStrdup (buf);
 	    indx = 0;
 	    cur += 1;
-	    while ((*cur >= '0') && (*cur <= '9')) {
-	        port *= 10;
-		port += *cur - '0';
+	    if (cur[0] == ':') {
 		cur++;
+		while (*cur >= '0' && *cur <= '9') {
+		    port *= 10;
+		    port += *cur - '0';
+		    cur++;
+		}
+
+		if (port != 0) proxyPort = port;
+		while ((cur[0] != '/') && (*cur != 0))
+		    cur++;
 	    }
-	    if (port != 0) proxyPort = port;
-	    while ((cur[0] != '/') && (*cur != 0)) 
-	        cur++;
 	    break;
 	}
-        if ((*cur == '/') || (*cur == 0)) {
-	    buf[indx] = 0;
-	    proxy = xmlMemStrdup(buf);
-	    indx = 0;
-	    break;
+	else {
+	    if (cur[0] == ':') {
+		buf[indx] = 0;
+		proxy = xmlMemStrdup (buf);
+		indx = 0;
+		cur += 1;
+		while ((*cur >= '0') && (*cur <= '9')) {
+		    port *= 10;
+		    port += *cur - '0';
+		    cur++;
+		}
+		if (port != 0) proxyPort = port;
+		while ((cur[0] != '/') && (*cur != 0)) 
+		    cur++;
+		break;
+	    }
+	    if ((*cur == '/') || (*cur == 0)) {
+		buf[indx] = 0;
+		proxy = xmlMemStrdup (buf);
+		indx = 0;
+		break;
+	    }
 	}
 	buf[indx++] = *cur++;
     }
@@ -865,6 +998,7 @@ xmlNanoFTPConnect(void *ctx) {
     struct hostent *hp;
     int port;
     int res;
+    int addrlen;
 
     if (ctxt == NULL)
 	return(-1);
@@ -874,19 +1008,6 @@ xmlNanoFTPConnect(void *ctx) {
     /*
      * do the blocking DNS query.
      */
-    if (proxy)
-	hp = gethostbyname(proxy);
-    else
-	hp = gethostbyname(ctxt->hostname);
-    if (hp == NULL)
-        return(-1);
-
-    /*
-     * Prepare the socket
-     */
-    memset(&ctxt->ftpAddr, 0, sizeof(ctxt->ftpAddr));
-    ctxt->ftpAddr.sin_family = AF_INET;
-    memcpy(&ctxt->ftpAddr.sin_addr, hp->h_addr_list[0], hp->h_length);
     if (proxy) {
         port = proxyPort;
     } else {
@@ -894,8 +1015,65 @@ xmlNanoFTPConnect(void *ctx) {
     }
     if (port == 0)
 	port = 21;
-    ctxt->ftpAddr.sin_port = htons(port);
-    ctxt->controlFd = socket(AF_INET, SOCK_STREAM, 0);
+
+    memset (&ctxt->ftpAddr, 0, sizeof(ctxt->ftpAddr));
+
+#ifdef SUPPORT_IP6
+    if (have_ipv6 ()) {
+	struct addrinfo hints, *res, *result;
+
+	result = NULL;
+	memset (&hints, 0, sizeof(hints));
+	hints.ai_socktype = SOCK_STREAM;
+
+	if (proxy) {
+	    if (getaddrinfo (proxy, NULL, &hints, &result) != 0)
+		return (-1);
+	}
+	else
+	    if (getaddrinfo (ctxt->hostname, NULL, &hints, &result) != 0)
+		return (-1);
+
+	for (res = result; res; res = res->ai_next)
+	    if (res->ai_family == AF_INET || res->ai_family == AF_INET6)
+		break;
+
+	if (res) {
+	    if (res->ai_family == AF_INET6) {
+		memcpy (&ctxt->ftpAddr, res->ai_addr, res->ai_addrlen);
+		((struct sockaddr_in6 *) &ctxt->ftpAddr)->sin6_port = htons (port);
+		ctxt->controlFd = socket (AF_INET6, SOCK_STREAM, 0);
+	    }
+	    else {
+		memcpy (&ctxt->ftpAddr, res->ai_addr, res->ai_addrlen);
+		((struct sockaddr_in *) &ctxt->ftpAddr)->sin_port = htons (port);
+		ctxt->controlFd = socket (AF_INET, SOCK_STREAM, 0);
+	    }
+	    addrlen = res->ai_addrlen;
+	    freeaddrinfo (result);
+	}
+    }
+    else
+#endif
+    {
+	if (proxy)
+	    hp = gethostbyname (proxy);
+	else
+	    hp = gethostbyname (ctxt->hostname);
+	if (hp == NULL)
+	    return (-1);
+
+    /*
+     * Prepare the socket
+     */
+	((struct sockaddr_in *)&ctxt->ftpAddr)->sin_family = AF_INET;
+	memcpy (&((struct sockaddr_in *)&ctxt->ftpAddr)->sin_addr,
+		hp->h_addr_list[0], hp->h_length);
+	((struct sockaddr_in *)&ctxt->ftpAddr)->sin_port = htons (port);
+	ctxt->controlFd = socket (AF_INET, SOCK_STREAM, 0);
+	addrlen = sizeof (struct sockaddr_in);
+    }
+
     if (ctxt->controlFd < 0)
         return(-1);
 
@@ -903,7 +1081,7 @@ xmlNanoFTPConnect(void *ctx) {
      * Do the connect.
      */
     if (connect(ctxt->controlFd, (struct sockaddr *) &ctxt->ftpAddr,
-                sizeof(struct sockaddr_in)) < 0) {
+	    addrlen) < 0) {
         closesocket(ctxt->controlFd); ctxt->controlFd = -1;
         ctxt->controlFd = -1;
 	return(-1);
@@ -1293,22 +1471,41 @@ xmlNanoFTPGetConnection(void *ctx) {
     int res;
     unsigned char ad[6], *adp, *portp;
     unsigned int temp[6];
+#ifdef SUPPORT_IP6
+    struct sockaddr_storage dataAddr;
+#else
     struct sockaddr_in dataAddr;
+#endif
     SOCKLEN_T dataAddrLen;
 
-    ctxt->dataFd = socket (AF_INET, SOCK_STREAM, IPPROTO_TCP);
-    if (ctxt->dataFd < 0) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlNanoFTPGetConnection: failed to create socket\n");
-	return(-1);
+    memset (&dataAddr, 0, sizeof(dataAddr));
+#ifdef SUPPORT_IP6
+    if ((ctxt->ftpAddr).ss_family == AF_INET6) {
+	ctxt->dataFd = socket (AF_INET6, SOCK_STREAM, IPPROTO_TCP);
+	((struct sockaddr_in6 *)&dataAddr)->sin6_family = AF_INET6;
+	dataAddrLen = sizeof(struct sockaddr_in6);
+    } else
+#endif
+    {
+	ctxt->dataFd = socket (AF_INET, SOCK_STREAM, IPPROTO_TCP);
+	((struct sockaddr_in *)&dataAddr)->sin_family = AF_INET;
+	dataAddrLen = sizeof (struct sockaddr_in);
     }
-    dataAddrLen = sizeof(dataAddr);
-    memset(&dataAddr, 0, dataAddrLen);
-    dataAddr.sin_family = AF_INET;
+
+    if (ctxt->dataFd < 0) {
+	xmlGenericError (xmlGenericErrorContext,
+		"xmlNanoFTPGetConnection: failed to create socket\n");
+	return (-1);
+    }
 
     if (ctxt->passive) {
-	snprintf(buf, sizeof(buf), "PASV\r\n");
-        len = strlen(buf);
+#ifdef SUPPORT_IP6
+	if ((ctxt->ftpAddr).ss_family == AF_INET6)
+	    snprintf (buf, sizeof(buf), "EPSV\r\n");
+	else
+#endif
+	    snprintf (buf, sizeof(buf), "PASV\r\n");
+        len = strlen (buf);
 #ifdef DEBUG_FTP
 	xmlGenericError(xmlGenericErrorContext, "%s", buf);
 #endif
@@ -1332,18 +1529,36 @@ xmlNanoFTPGetConnection(void *ctx) {
 	}
 	cur = &ctxt->controlBuf[ctxt->controlBufAnswer]; 
 	while (((*cur < '0') || (*cur > '9')) && *cur != '\0') cur++;
-	if (sscanf(cur, "%u,%u,%u,%u,%u,%u", &temp[0], &temp[1], &temp[2],
-	            &temp[3], &temp[4], &temp[5]) != 6) {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "Invalid answer to PASV\n");
-	    if (ctxt->dataFd != -1) {
-		closesocket(ctxt->dataFd); ctxt->dataFd = -1;
+#ifdef SUPPORT_IP6
+	if ((ctxt->ftpAddr).ss_family == AF_INET6) {
+	    if (sscanf (cur, "%u", &temp[0]) != 1) {
+		xmlGenericError (xmlGenericErrorContext,
+			"Invalid answer to EPSV\n");
+		if (ctxt->dataFd != -1) {
+		    closesocket (ctxt->dataFd); ctxt->dataFd = -1;
+		}
+		return (-1);
 	    }
-	    return(-1);
+	    memcpy (&((struct sockaddr_in6 *)&dataAddr)->sin6_addr, &((struct sockaddr_in6 *)&ctxt->ftpAddr)->sin6_addr, sizeof(struct in6_addr));
+	    ((struct sockaddr_in6 *)&dataAddr)->sin6_port = htons (temp[0]);
 	}
-	for (i=0; i<6; i++) ad[i] = (unsigned char) (temp[i] & 0xff);
-	memcpy(&dataAddr.sin_addr, &ad[0], 4);
-	memcpy(&dataAddr.sin_port, &ad[4], 2);
+	else
+#endif
+	{
+	    if (sscanf (cur, "%u,%u,%u,%u,%u,%u", &temp[0], &temp[1], &temp[2],
+		&temp[3], &temp[4], &temp[5]) != 6) {
+		xmlGenericError (xmlGenericErrorContext,
+			"Invalid answer to PASV\n");
+		if (ctxt->dataFd != -1) {
+		    closesocket (ctxt->dataFd); ctxt->dataFd = -1;
+		}
+		return (-1);
+	    }
+	    for (i=0; i<6; i++) ad[i] = (unsigned char) (temp[i] & 0xff);
+	    memcpy (&((struct sockaddr_in *)&dataAddr)->sin_addr, &ad[0], 4);
+	    memcpy (&((struct sockaddr_in *)&dataAddr)->sin_port, &ad[4], 2);
+	}
+
 	if (connect(ctxt->dataFd, (struct sockaddr *) &dataAddr, dataAddrLen) < 0) {
 	    xmlGenericError(xmlGenericErrorContext,
 		    "Failed to create a data connection\n");
@@ -1352,7 +1567,13 @@ xmlNanoFTPGetConnection(void *ctx) {
 	}
     } else {
         getsockname(ctxt->dataFd, (struct sockaddr *) &dataAddr, &dataAddrLen);
-	dataAddr.sin_port = 0;
+#ifdef SUPPORT_IP6
+	if ((ctxt->ftpAddr).ss_family == AF_INET6)
+	    ((struct sockaddr_in6 *)&dataAddr)->sin6_port = 0;
+	else
+#endif
+	    ((struct sockaddr_in *)&dataAddr)->sin_port = 0;
+
 	if (bind(ctxt->dataFd, (struct sockaddr *) &dataAddr, dataAddrLen) < 0) {
 	    xmlGenericError(xmlGenericErrorContext,
 		    "Failed to bind a port\n");
@@ -1362,17 +1583,37 @@ xmlNanoFTPGetConnection(void *ctx) {
         getsockname(ctxt->dataFd, (struct sockaddr *) &dataAddr, &dataAddrLen);
 
 	if (listen(ctxt->dataFd, 1) < 0) {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "Could not listen on port %d\n",
-	            ntohs(dataAddr.sin_port));
+#ifdef SUPPORT_IP6
+	    if ((ctxt->ftpAddr).ss_family == AF_INET6)
+		xmlGenericError (xmlGenericErrorContext,
+			"Could not listen on port %d\n",
+			ntohs (((struct sockaddr_in6 *)&dataAddr)->sin6_port));
+	    else
+#endif
+		xmlGenericError (xmlGenericErrorContext,
+			"Could not listen on port %d\n",
+			ntohs (((struct sockaddr_in *)&dataAddr)->sin_port));
 	    closesocket(ctxt->dataFd); ctxt->dataFd = -1;
 	    return (-1);
 	}
-	adp = (unsigned char *) &dataAddr.sin_addr;
-	portp = (unsigned char *) &dataAddr.sin_port;
-	snprintf(buf, sizeof(buf), "PORT %d,%d,%d,%d,%d,%d\r\n",
-	       adp[0] & 0xff, adp[1] & 0xff, adp[2] & 0xff, adp[3] & 0xff,
-	       portp[0] & 0xff, portp[1] & 0xff);
+#ifdef SUPPORT_IP6
+	if ((ctxt->ftpAddr).ss_family == AF_INET6) {
+	    char buf6[INET6_ADDRSTRLEN];
+	    inet_ntop (AF_INET6, &((struct sockaddr_in6 *)&dataAddr)->sin6_addr,
+		    buf6, INET6_ADDRSTRLEN);
+	    adp = buf6;
+	    portp = (unsigned char *) &((struct sockaddr_in6 *)&dataAddr)->sin6_port;
+	    snprintf (buf, sizeof(buf), "EPRT |2|%s|%s|\r\n", adp, portp);
+        } else
+#endif
+	{
+	    adp = (unsigned char *) &((struct sockaddr_in *)&dataAddr)->sin_addr;
+	    portp = (unsigned char *) &((struct sockaddr_in *)&dataAddr)->sin_port;
+	    snprintf (buf, sizeof(buf), "PORT %d,%d,%d,%d,%d,%d\r\n",
+	    adp[0] & 0xff, adp[1] & 0xff, adp[2] & 0xff, adp[3] & 0xff,
+	    portp[0] & 0xff, portp[1] & 0xff);
+	}
+
         buf[sizeof(buf) - 1] = 0;
         len = strlen(buf);
 #ifdef DEBUG_FTP

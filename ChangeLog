@@ -1,3 +1,36 @@
+Sat Jun 21 16:10:24 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+        Applying IPv6 patch from Archana Shah <archana.shah@wipro.com>
+	closing bug #114837
+
+	* configure.in: Added checks for IPv6 support and getaddrinfo().
+
+	* acconfig.h: Defined HAVE_GETADDRINFO and SUPPORT_IP6.
+
+	* config.h.in: Defined HAVE_GETADDRINFO and SUPPORT_IP6.
+
+	* nanoftp.c: Structure xmlNanoFTPCtxt contains either sockaddr_storage
+	  field or sockaddr_in field, depending upon the availability of IPv6
+	  support.
+	  have_ipv6(): Added to check for run-time IPv6 support.
+	  (xmlNanoFTPScanURL), (xmlNanoFTPUpdateURL), (xmlNanoFTPScanProxy):
+	  Modified to parse a URI with IPv6 address given in [].
+	  (xmlNanoFTPConnect): Changed to use getaddrinfo for address
+	  resolution, if it is available on the system, as gethostbyname
+	  does not return IPv6 addresses on some platforms.
+	  (xmlNanoFTPGetConnection): Modified type of dataAddr variable to
+	  sockaddr_storage or sockaddr_in depending upon the IPv6 support.
+	  Sending EPSV, EPRT or PASV, PORT depending upon the type of address
+	  we are dealing with.
+
+	* nanohttp.c: (have_ipv6): Added to check for run-time IPv6 support.
+	  (xmlNanoHTTPScanURL), (xmlNanoHTTPScanProxy): Modified to parse
+	  a URI with IPv6 address given in [].
+	  (xmlNanoHTTPConnectHost): Modified to use getaddrinfo if it is
+	  available on the system. Also IPv6 addresses will be resolved by
+	  gethostbyname only if IPv6 run-time support is available.
+	  (xmlNanoHTTPConnectAttempt): Modified to deal with IPv6 address.
+
 Sat Jun 14 18:46:51 CEST 2003 Igor Zlatkovic <igor@zlatkovic.com>
 
 	* win32/configure.js include/win32config.h 

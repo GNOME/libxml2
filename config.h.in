@@ -11,6 +11,12 @@
 #undef HAVE_LIBPTHREAD
 #undef HAVE_PTHREAD_H
 
+/* Define if IPv6 support is there. */
+#undef SUPPORT_IP6
+
+/* Define if you have the getaddrinfo function. */
+#undef HAVE_GETADDRINFO
+
 /* Define to 1 if you have the <ansidecl.h> header file. */
 #undef HAVE_ANSIDECL_H
 

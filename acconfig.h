@@ -9,3 +9,9 @@
 #undef SOCKLEN_T
 #undef HAVE_LIBPTHREAD
 #undef HAVE_PTHREAD_H
+
+/* Define if IPV6 support is there */
+#undef SUPPORT_IP6
+
+/* Define if getaddrinfo is there */
+#undef HAVE_GETADDRINFO

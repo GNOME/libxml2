@@ -192,6 +192,42 @@ AC_TRY_COMPILE2([
       AC_MSG_WARN(could not determine)])])])
 AC_DEFINE_UNQUOTED(SOCKLEN_T, $SOCKLEN_T)
 
+dnl ***********************Checking for availability of IPv6*******************
+
+AC_MSG_CHECKING([whether to enable IPv6])
+AC_ARG_ENABLE(ipv6, [ --enable-ipv6=[yes/no] enables compilation of IPv6 code],, enable_ipv6=yes)
+if test $enable_ipv6 = yes; then
+  have_ipv6=no
+  AC_TRY_COMPILE([
+    #include <sys/socket.h>
+    #include <sys/types.h>], [
+    struct sockaddr_storage ss;
+    socket(AF_INET6, SOCK_STREAM, 0)
+    ],
+    have_ipv6=yes,
+    have_ipv6=no
+  )
+  AC_MSG_RESULT($have_ipv6)
+
+  if test $have_ipv6=yes; then
+    AC_DEFINE(SUPPORT_IP6)
+
+    have_getaddrinfo=no
+    AC_CHECK_FUNC(getaddrinfo, have_getaddrinfo=yes)
+    if test $have_getaddrinfo != yes; then
+      for lib in bsd socket inet; do
+        AC_CHECK_LIB($lib, getaddrinfo, [LIBS="$LIBS -l$lib";have_getaddrinfo=yes;break])
+      done
+    fi
+
+    if test $have_getaddrinfo=yes; then
+      AC_DEFINE(HAVE_GETADDRINFO)
+    fi
+  fi
+fi 
+
+dnl ******************************End IPv6 checks******************************
+
 dnl Checks for isnan in libm if not in libc
 AC_CHECK_FUNC(isnan, , AC_CHECK_LIB(m, isnan,
   [AC_DEFINE(HAVE_ISNAN)]))

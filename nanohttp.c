@@ -77,6 +77,7 @@
 #include <libxml/nanohttp.h>
 #include <libxml/globals.h>
 #include <libxml/uri.h>
+#include <config.h>
 
 /**
  * A couple portability macros
@@ -148,6 +149,19 @@ static int socket_errno(void) {
     return(errno);
 #endif
 }
+
+#ifdef SUPPORT_IP6
+static int have_ipv6() {
+    int s;
+
+    s = socket (AF_INET6, SOCK_STREAM, 0);
+    if (s != -1) {
+	close (s);
+	return (1);
+    }
+    return (0);
+}
+#endif
 
 /**
  * xmlNanoHTTPInit:
@@ -253,26 +267,64 @@ xmlNanoHTTPScanURL(xmlNanoHTTPCtxtPtr ctxt, const char *URL) {
 
     buf[indx] = 0;
     while (1) {
-        if (cur[0] == ':') {
+	if ((strchr (cur, '[') && !strchr (cur, ']')) ||
+		(!strchr (cur, '[') && strchr (cur, ']'))) {
+	    xmlGenericError (xmlGenericErrorContext, "\nxmlNanoHTTPScanURL: %s",
+		    "Syntax Error\n");
+	    return;
+	}
+
+	if (cur[0] == '[') {
+	    cur++;
+	    while (cur[0] != ']')
+		buf[indx++] = *cur++;
+    
+	    if (!strchr (buf, ':')) {
+		xmlGenericError (xmlGenericErrorContext, "\nxmlNanoHTTPScanURL: %s",
+			"Use [IPv6]/IPv4 format\n");
+		return;
+	    }
+
 	    buf[indx] = 0;
-	    ctxt->hostname = xmlMemStrdup(buf);
+	    ctxt->hostname = xmlMemStrdup (buf);
 	    indx = 0;
 	    cur += 1;
-	    while ((*cur >= '0') && (*cur <= '9')) {
-	        port *= 10;
-		port += *cur - '0';
+	    if (cur[0] == ':') {
 		cur++;
+		while (*cur >= '0' && *cur <= '9') {
+		    port *= 10;
+		    port += *cur - '0';
+		    cur++;
+		}
+
+		if (port != 0) ctxt->port = port;
+		while ((cur[0] != '/') && (*cur != 0))
+		    cur++;
 	    }
-	    if (port != 0) ctxt->port = port;
-	    while ((cur[0] != '/') && (*cur != 0)) 
-	        cur++;
 	    break;
-	}
-        if ((*cur == '/') || (*cur == 0)) {
-	    buf[indx] = 0;
-	    ctxt->hostname = xmlMemStrdup(buf);
-	    indx = 0;
-	    break;
+        }
+	else {
+	    if (cur[0] == ':') {
+		buf[indx] = 0;
+		ctxt->hostname = xmlMemStrdup (buf);
+		indx = 0;
+		cur += 1;
+		while ((*cur >= '0') && (*cur <= '9')) {
+		    port *= 10;
+		    port += *cur - '0';
+		    cur++;
+		}
+		if (port != 0) ctxt->port = port;
+		while ((cur[0] != '/') && (*cur != 0)) 
+		    cur++;
+		break;
+	    }
+	    if ((*cur == '/') || (*cur == 0)) {
+		buf[indx] = 0;
+		ctxt->hostname = xmlMemStrdup (buf);
+		indx = 0;
+		break;
+	    }
 	}
 	buf[indx++] = *cur++;
     }
@@ -335,26 +387,64 @@ xmlNanoHTTPScanProxy(const char *URL) {
 
     buf[indx] = 0;
     while (1) {
-        if (cur[0] == ':') {
+	if ((strchr (cur, '[') && !strchr (cur, ']')) ||
+		(!strchr (cur, '[') && strchr (cur, ']'))) {
+	    xmlGenericError (xmlGenericErrorContext, "\nxmlNanoHTTPScanProxy: %s",
+		    "Syntax error\n");
+	    return;
+	}
+
+	if (cur[0] == '[') {
+	    cur++;
+	    while (cur[0] != ']')
+		buf[indx++] = *cur++;
+
+	    if (!strchr (buf, ':')) {
+		xmlGenericError (xmlGenericErrorContext, "\nxmlNanoHTTPScanProxy: %s",
+			"Use [IPv6]/IPv4 format\n");
+		return;
+	    }
+
 	    buf[indx] = 0;
-	    proxy = xmlMemStrdup(buf);
+	    proxy = xmlMemStrdup (buf);
 	    indx = 0;
 	    cur += 1;
-	    while ((*cur >= '0') && (*cur <= '9')) {
-	        port *= 10;
-		port += *cur - '0';
-		cur++;
-	    }
-	    if (port != 0) proxyPort = port;
-	    while ((cur[0] != '/') && (*cur != 0)) 
+	    if (cur[0] == ':') {
 	        cur++;
+		while (*cur >= '0' && *cur <= '9') {
+		    port *= 10;
+		    port += *cur - '0';
+		    cur++;
+		}
+
+		if (port != 0) proxyPort = port;
+		while ((cur[0] != '/') && (*cur != 0))
+		    cur ++;
+	    }
 	    break;
 	}
-        if ((*cur == '/') || (*cur == 0)) {
-	    buf[indx] = 0;
-	    proxy = xmlMemStrdup(buf);
-	    indx = 0;
-	    break;
+	else {
+	    if (cur[0] == ':') {
+		buf[indx] = 0;
+		proxy = xmlMemStrdup (buf);
+		indx = 0;
+		cur += 1;
+		while ((*cur >= '0') && (*cur <= '9')) {
+		    port *= 10;
+		    port += *cur - '0';
+		    cur++;
+		}
+		if (port != 0) proxyPort = port;
+		while ((cur[0] != '/') && (*cur != 0)) 
+		    cur++;
+		break;
+	    }
+	    if ((*cur == '/') || (*cur == 0)) {
+		buf[indx] = 0;
+		proxy = xmlMemStrdup (buf);
+		indx = 0;
+		break;
+	    }
 	}
 	buf[indx++] = *cur++;
     }
@@ -711,11 +801,23 @@ xmlNanoHTTPScanAnswer(xmlNanoHTTPCtxtPtr ctxt, const char *line) {
 static int
 xmlNanoHTTPConnectAttempt(struct sockaddr *addr)
 {
-    SOCKET s = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
     fd_set wfd;
     struct timeval tv;
     int status;
+    int addrlen;
+    SOCKET s;
     
+#ifdef SUPPORT_IP6
+    if (addr->sa_family == AF_INET6) {
+	s = socket (PF_INET6, SOCK_STREAM, IPPROTO_TCP);
+	addrlen = sizeof (struct sockaddr_in6);
+    }
+    else
+#endif
+    {
+	s = socket (PF_INET, SOCK_STREAM, IPPROTO_TCP);
+	addrlen = sizeof (struct sockaddr_in);
+    }
     if (s==-1) {
 #ifdef DEBUG_HTTP
 	perror("socket");
@@ -764,7 +866,7 @@ xmlNanoHTTPConnectAttempt(struct sockaddr *addr)
 #endif /* !VMS */
 #endif /* !_WINSOCKAPI_ */
 
-    if ((connect(s, addr, sizeof(*addr))==-1)) {
+    if (connect (s, addr, addrlen) == -1) {
 	switch (socket_errno()) {
 	    case EINPROGRESS:
 	    case EWOULDBLOCK:
@@ -862,13 +964,64 @@ xmlNanoHTTPConnectHost(const char *host, int port)
     int i;
     int s;
 
-#if defined(SUPPORT_IP6) && defined(RES_USE_INET6)
-    if (!(_res.options & RES_INIT))
-        res_init();
-    _res.options |= RES_USE_INET6;
+    memset (&sockin, 0, sizeof(sockin));
+#ifdef SUPPORT_IP6
+    memset (&sockin6, 0, sizeof(sockin6));
+    if (have_ipv6 ())
+    {
+#if !defined(HAVE_GETADDRINFO) && defined(RES_USE_INET6)
+	if (!(_res.options & RES_INIT))
+	    res_init();
+	_res.options |= RES_USE_INET6;
+    }
+#elif defined(HAVE_GETADDRINFO)
+	int status;
+	struct addrinfo hints, *res, *result;
+
+	result = NULL;
+	memset (&hints, 0,sizeof(hints));
+	hints.ai_socktype = SOCK_STREAM;
+
+	status = getaddrinfo (host, NULL, &hints, &result);
+	if (status) {
+	    xmlGenericError (xmlGenericErrorContext,
+		    "xmlNanoHTTPConnectHost:  %s '%s' - %s",
+		    "Failed to resolve host", host, gai_strerror (status));
+
+	    return (-1);
+	}
+
+	for (res = result; res; res = res->ai_next) {
+	    if (res) {
+		if (res->ai_family == AF_INET6) {
+		    memcpy (&sockin6, res->ai_addr, res->ai_addrlen);
+		    sockin6.sin6_port = htons (port);
+		    addr = (struct sockaddr *)&sockin6;
+		}
+
+		if (res->ai_family == AF_INET) {
+		    memcpy (&sockin, res->ai_addr, res->ai_addrlen);
+		    sockin.sin_port = htons (port);
+		    addr = (struct sockaddr *)&sockin;
+		}
+
+		s = xmlNanoHTTPConnectAttempt (addr);
+		if (s != -1) {
+		    freeaddrinfo (result);
+		    return (s);
+		}
+	    }
+	    else {
+		freeaddrinfo (result);
+		return (-1);
+	    }
+	}
+    } else
 #endif
-    h = gethostbyname(host);
-    if (h == NULL) {
+#endif
+    {   
+	h = gethostbyname (host);
+	if (h == NULL) {
 
 /*
  * Okay, I got fed up by the non-portability of this error message
@@ -876,68 +1029,68 @@ xmlNanoHTTPConnectHost(const char *host, int port)
  * and one want to enable it, send me the defined(foobar) needed
  */
 #if defined(HAVE_NETDB_H) && defined(HOST_NOT_FOUND) && defined(linux)
-        const char *h_err_txt = "";
+	    const char *h_err_txt = "";
 
-        switch (h_errno) {
-            case HOST_NOT_FOUND:
-                h_err_txt = "Authoritive host not found";
-                break;
+	    switch (h_errno) {
+		case HOST_NOT_FOUND:
+		    h_err_txt = "Authoritive host not found";
+		    break;
 
-            case TRY_AGAIN:
-                h_err_txt =
-                    "Non-authoritive host not found or server failure.";
-                break;
+		case TRY_AGAIN:
+		    h_err_txt =
+			"Non-authoritive host not found or server failure.";
+		    break;
 
-            case NO_RECOVERY:
-                h_err_txt =
-                    "Non-recoverable errors:  FORMERR, REFUSED, or NOTIMP.";
-                break;
+		case NO_RECOVERY:
+		    h_err_txt =
+			"Non-recoverable errors:  FORMERR, REFUSED, or NOTIMP.";
+		    break;
 
-            case NO_ADDRESS:
-                h_err_txt =
-                    "Valid name, no data record of requested type.";
-                break;
+		case NO_ADDRESS:
+		    h_err_txt =
+			"Valid name, no data record of requested type.";
+		    break;
 
-            default:
-                h_err_txt = "No error text defined.";
-                break;
-        }
-        xmlGenericError(xmlGenericErrorContext,
-                        "xmlNanoHTTPConnectHost:  %s '%s' - %s",
-                        "Failed to resolve host", host, h_err_txt);
+		default:
+		    h_err_txt = "No error text defined.";
+		    break;
+	    }
+	    xmlGenericError (xmlGenericErrorContext,
+		"xmlNanoHTTPConnectHost:  %s '%s' - %s",
+		"Failed to resolve host", host, h_err_txt);
 #else
-        xmlGenericError(xmlGenericErrorContext,
-                        "xmlNanoHTTPConnectHost:  %s '%s'",
-                        "Failed to resolve host", host);
+	    xmlGenericError (xmlGenericErrorContext,
+		"xmlNanoHTTPConnectHost:  %s '%s'",
+		"Failed to resolve host", host);
 #endif
-        return (-1);
-    }
+	    return (-1);
+	}
 
-    for (i = 0; h->h_addr_list[i]; i++) {
-        if (h->h_addrtype == AF_INET) {
-            /* A records (IPv4) */
-            memcpy(&ia, h->h_addr_list[i], h->h_length);
-            sockin.sin_family = h->h_addrtype;
-            sockin.sin_addr = ia;
-            sockin.sin_port = htons(port);
-            addr = (struct sockaddr *) &sockin;
+	for (i = 0; h->h_addr_list[i]; i++) {
+	    if (h->h_addrtype == AF_INET) {
+		/* A records (IPv4) */
+		memcpy (&ia, h->h_addr_list[i], h->h_length);
+		sockin.sin_family = h->h_addrtype;
+		sockin.sin_addr = ia;
+		sockin.sin_port = htons (port);
+		addr = (struct sockaddr *) &sockin;
 #ifdef SUPPORT_IP6
-        } else if (h->h_addrtype == AF_INET6) {
-            /* AAAA records (IPv6) */
-            memcpy(&ia6, h->h_addr_list[i], h->h_length);
-            sockin6.sin_family = h->h_addrtype;
-            sockin6.sin_addr = ia6;
-            sockin6.sin_port = htons(port);
-            addr = (struct sockaddr *) &sockin6;
+	    } else if (have_ipv6 () && (h->h_addrtype == AF_INET6)) {
+		/* AAAA records (IPv6) */
+		memcpy (&ia6, h->h_addr_list[i], h->h_length);
+		sockin6.sin6_family = h->h_addrtype;
+		sockin6.sin6_addr = ia6;
+		sockin6.sin6_port = htons (port);
+		addr = (struct sockaddr *) &sockin6;
 #endif
-        } else
-            break;              /* for */
+	    } else
+		break;              /* for */
 
-        s = xmlNanoHTTPConnectAttempt(addr);
-        if (s != -1)
-            return (s);
+	    s = xmlNanoHTTPConnectAttempt (addr);
+	    if (s != -1)
+		return (s);
+	}
     }
-
 #ifdef DEBUG_HTTP
     xmlGenericError(xmlGenericErrorContext,
                     "xmlNanoHTTPConnectHost:  unable to connect to '%s'.\n",

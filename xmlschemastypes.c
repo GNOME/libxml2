@@ -134,6 +134,13 @@ struct _xmlSchemaValQName {
     xmlChar *uri;
 };
 
+typedef struct _xmlSchemaValHex xmlSchemaValHex;
+typedef xmlSchemaValHex *xmlSchemaValHexPtr;
+struct _xmlSchemaValHex {
+    xmlChar     *str;
+    unsigned int total;
+};
+
 struct _xmlSchemaVal {
     xmlSchemaValType type;
     union {
@@ -141,6 +148,7 @@ struct _xmlSchemaVal {
         xmlSchemaValDate        date;
         xmlSchemaValDuration    dur;
 	xmlSchemaValQName	qname;
+	xmlSchemaValHex		hex;
 	float			f;
 	double			d;
 	int			b;
@@ -412,6 +420,10 @@ xmlSchemaFreeValue(xmlSchemaValPtr value) {
 		xmlFree(value->value.qname.uri);
 	    if (value->value.qname.name != NULL)
 		xmlFree(value->value.qname.name);
+	    break;
+        case XML_SCHEMAS_HEXBINARY:
+	    if (value->value.hex.str != NULL)
+		xmlFree(value->value.hex.str);
 	    break;
 	default:
 	    break;
@@ -1919,66 +1931,49 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar *value,
 	    goto return0;
 	}
         case XML_SCHEMAS_HEXBINARY: {
-	    const xmlChar *tmp, *cur = value;
+	    const xmlChar *cur = value;
+	    xmlChar *base;
             int total, i = 0;
-            unsigned long lo = 0, mi = 0, hi = 0;
-	    unsigned long *base;
 
-	    if (cur == NULL)
-	        goto return1;
-            tmp = cur;
-            while (((*tmp >= '0') && (*tmp <= '9')) ||
-                   ((*tmp >= 'A') && (*tmp <= 'F')) ||
-                   ((*tmp >= 'a') && (*tmp <= 'f'))) {
-	        i++;tmp++;
+            if (cur == NULL)
+                goto return1;
+
+            while (((*cur >= '0') && (*cur <= '9')) ||
+                   ((*cur >= 'A') && (*cur <= 'F')) ||
+                   ((*cur >= 'a') && (*cur <= 'f'))) {
+	        i++;cur++;
             }
 
-	    if (*tmp != 0)
-		goto return1;
-            if (i > 24)
+	    if (*cur != 0)
 		goto return1;
             if ((i % 2) != 0)
 		goto return1;
 
-            total = i / 2;		/* number of octets */
-
-	    if (i >= 16)
-	        base = &hi;
-	    else if (i >= 8)
-	        base = &mi;
-	    else
-	        base = &lo;
-
-            while (i > 0) {
-                if ((*cur >= '0') && (*cur <= '9')) {
-                    *base = *base * 16 + (*cur - '0');
-                } else if ((*cur >= 'A') && (*cur <= 'F')) {
-                    *base = *base * 16 + (*cur - 'A') + 10;
-                } else if ((*cur >= 'a') && (*cur <= 'f')) {
-                    *base = *base * 16 + (*cur - 'a') + 10;
-                } else
-            	    break;
-
-                cur++;
-                i--;
-		if (i == 16)
-		    base = &mi;
-		else if (i == 8)
-		    base = &lo;
-            }
-
 	    if (val != NULL) {
-		v = xmlSchemaNewValue(XML_SCHEMAS_HEXBINARY);
-		if (v != NULL) {
-		    v->value.decimal.lo = lo;
-		    v->value.decimal.mi = mi;
-		    v->value.decimal.hi = hi;
-		    v->value.decimal.total = total;
-		    *val = v;
-		} else {
+
+	    	v = xmlSchemaNewValue(XML_SCHEMAS_HEXBINARY);
+	    	if (v == NULL)
 		    goto error;
-		}
-	    }
+
+	    	cur = xmlStrdup(value);
+            	    if (cur == NULL) {
+		    xmlFree(v);
+                    goto return1;
+	    	}
+
+            	total = i / 2;		/* number of octets */
+
+            	base = (xmlChar *)cur;
+            	while (i-- > 0) {
+                    if (*base >= 'a')
+			*base = *base - ('a' - 'A');
+		    base++;
+            	}
+
+		v->value.hex.str   = (xmlChar *)cur;
+		v->value.hex.total = total;
+		*val = v;
+            }
 	    goto return0;
         }
         case XML_SCHEMAS_INTEGER:
@@ -3129,8 +3124,19 @@ xmlSchemaCompareValues(xmlSchemaValPtr x, xmlSchemaValPtr y) {
 	    }
 	    return (-2);
         case XML_SCHEMAS_HEXBINARY:
-            if (y->type == XML_SCHEMAS_HEXBINARY)
-                return (xmlSchemaCompareDecimals(x, y));
+            if (y->type == XML_SCHEMAS_HEXBINARY) {
+	        if (x->value.hex.total == y->value.hex.total) {
+		    int ret = xmlStrcmp(x->value.hex.str, y->value.hex.str);
+		    if (ret > 0)
+			return(1);
+		    else if (ret == 0)
+			return(0);
+		}
+		else if (x->value.hex.total > y->value.hex.total)
+		    return(1);
+
+		return(-1);
+            }
             return (-2);
         case XML_SCHEMAS_STRING:
         case XML_SCHEMAS_IDREFS:
@@ -3277,9 +3283,9 @@ xmlSchemaValidateFacet(xmlSchemaTypePtr base ATTRIBUTE_UNUSED,
 		return(-1);
 	    }
 	    if ((val != NULL) && (val->type == XML_SCHEMAS_HEXBINARY))
-	        len = val->value.decimal.total;
+		len = val->value.hex.total;
 	    else { 
-	        switch (base->flags) {
+	    	switch (base->flags) {
 	    	    case XML_SCHEMAS_IDREF:
 		    case XML_SCHEMAS_NORMSTRING:
 		    case XML_SCHEMAS_TOKEN:
@@ -3288,14 +3294,14 @@ xmlSchemaValidateFacet(xmlSchemaTypePtr base ATTRIBUTE_UNUSED,
 		    case XML_SCHEMAS_NAME:
 		    case XML_SCHEMAS_NCNAME:
 		    case XML_SCHEMAS_ID:
-		        len = xmlSchemaNormLen(value);
-		        break;
+		    	len = xmlSchemaNormLen(value);
+		    	break;
 		    case XML_SCHEMAS_STRING:
-		        len = xmlUTF8Strlen(value);
-		        break;
+		    	len = xmlUTF8Strlen(value);
+		    	break;
 		    default:
 		        TODO
-	        }
+	    	}
 	    }
 	    if (facet->type == XML_SCHEMA_FACET_LENGTH) {
 		if (len != facet->val->value.decimal.lo)

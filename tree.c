@@ -6831,6 +6831,8 @@ xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
     int ret;
     xmlOutputBufferPtr outbuf;
 
+    xmlInitParser();
+
     if (cur == NULL) {
 #ifdef DEBUG_TREE
         xmlGenericError(xmlGenericErrorContext,
@@ -6878,6 +6880,8 @@ void
 xmlElemDump(FILE * f, xmlDocPtr doc, xmlNodePtr cur)
 {
     xmlOutputBufferPtr outbuf;
+
+    xmlInitParser();
 
     if (cur == NULL) {
 #ifdef DEBUG_TREE
@@ -7302,7 +7306,11 @@ xmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
 #ifdef LIBXML_HTML_ENABLED
     xmlDtdPtr dtd;
     int is_xhtml = 0;
+#endif
 
+    xmlInitParser();
+
+#ifdef LIBXML_HTML_ENABLED
     dtd = xmlGetIntSubset(doc);
     if (dtd != NULL) {
         is_xhtml = xmlIsXHTML(dtd->SystemID, dtd->ExternalID);
@@ -7344,6 +7352,8 @@ xmlDocContentDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr cur,
     xmlDtdPtr dtd;
     int is_xhtml = 0;
 #endif
+
+    xmlInitParser();
 
     xmlOutputBufferWriteString(buf, "<?xml version=");
     if (cur->version != NULL) 

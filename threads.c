@@ -151,8 +151,10 @@ xmlFreeMutex(xmlMutexPtr tok)
  * xmlMutexLock() is used to lock a libxml2 token.
  */
 void
-xmlMutexLock(xmlMutexPtr tok ATTRIBUTE_UNUSED)
+xmlMutexLock(xmlMutexPtr tok)
 {
+    if (tok == NULL)
+        return;
 #ifdef HAVE_PTHREAD_H
     pthread_mutex_lock(&tok->lock);
 #elif defined HAVE_WIN32_THREADS

@@ -1,3 +1,12 @@
+Fri Aug  8 15:56:32 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLtree.c tree.c threads.c: hum try to avoid some troubles
+	  when the library is not initialized and one try to save, the 
+	  locks in threaded env might not been initialized, playing safe
+	* xmlschemastypes.c: apply patch for hexBinary from Charles Bozeman
+	* test/schemas/hexbinary_* result/schemas/hexbinary_*: also added
+	  his tests to the regression suite.
+
 Fri Aug  8 18:47:38 HKT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* win32/defgen.xsl, win32/libxml2.def.src: Bug 119343

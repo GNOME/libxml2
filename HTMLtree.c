@@ -383,6 +383,8 @@ htmlNodeDumpFormat(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
  */
 int
 htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
+    xmlInitParser();
+
     return(htmlNodeDumpFormat(buf, doc, cur, 1));
 }
 
@@ -406,6 +408,8 @@ htmlNodeDumpFileFormat(FILE *out, xmlDocPtr doc,
     xmlOutputBufferPtr buf;
     xmlCharEncodingHandlerPtr handler = NULL;
     int ret;
+
+    xmlInitParser();
 
     if (encoding != NULL) {
 	xmlCharEncoding enc;
@@ -466,6 +470,8 @@ htmlDocDumpMemory(xmlDocPtr cur, xmlChar**mem, int *size) {
     xmlOutputBufferPtr buf;
     xmlCharEncodingHandlerPtr handler = NULL;
     const char *encoding;
+
+    xmlInitParser();
 
     if (cur == NULL) {
 #ifdef DEBUG_TREE
@@ -695,6 +701,8 @@ htmlNodeDumpFormatOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
 	                 xmlNodePtr cur, const char *encoding, int format) {
     const htmlElemDesc * info;
 
+    xmlInitParser();
+
     if (cur == NULL) {
         xmlGenericError(xmlGenericErrorContext,
 		"htmlNodeDumpFormatOutput : node == NULL\n");
@@ -889,6 +897,8 @@ htmlDocContentDumpFormatOutput(xmlOutputBufferPtr buf, xmlDocPtr cur,
 	                       const char *encoding, int format) {
     int type;
 
+    xmlInitParser();
+
     /*
      * force to output the stuff as HTML, especially for entities
      */
@@ -939,6 +949,8 @@ htmlDocDump(FILE *f, xmlDocPtr cur) {
     xmlCharEncodingHandlerPtr handler = NULL;
     const char *encoding;
     int ret;
+
+    xmlInitParser();
 
     if (cur == NULL) {
 #ifdef DEBUG_TREE
@@ -1000,6 +1012,8 @@ htmlSaveFile(const char *filename, xmlDocPtr cur) {
     const char *encoding;
     int ret;
 
+    xmlInitParser();
+
     encoding = (const char *) htmlGetMetaEncoding(cur);
 
     if (encoding != NULL) {
@@ -1057,6 +1071,8 @@ htmlSaveFileFormat(const char *filename, xmlDocPtr cur,
     xmlOutputBufferPtr buf;
     xmlCharEncodingHandlerPtr handler = NULL;
     int ret;
+
+    xmlInitParser();
 
     if (encoding != NULL) {
 	xmlCharEncoding enc;

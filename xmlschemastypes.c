@@ -1739,7 +1739,13 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar *value,
         case XML_SCHEMAS_ID:
 	    ret = xmlValidateNCName(value, 1);
 	    if ((ret == 0) && (val != NULL)) {
-		TODO;
+		v = xmlSchemaNewValue(XML_SCHEMAS_ID);
+		if (v != NULL) {
+		    v->value.str = xmlStrdup(value);
+		    *val = v;
+		} else {
+		    goto error;
+		}
 	    }
 	    if ((ret == 0) && (node != NULL) &&
 		(node->type == XML_ATTRIBUTE_NODE)) {

@@ -1,3 +1,10 @@
+Mon May 12 11:23:27 EDT 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmllint.c: added --schema option to run WXS schema validation
+	* xmlschemas.c xmlschemastypes.c include/libxml/schemasInternals.h:
+	  tried to improve error reporting in the Schema code, some cleanup
+	  too.
+
 Sun May 11 16:13:20 EDT 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemas.c: fixed some problems in the handling of errors,

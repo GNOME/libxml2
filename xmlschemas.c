@@ -60,6 +60,7 @@ struct _xmlSchemaParserCtxt {
     xmlSchemaValidityErrorFunc error;	/* the callback in case of errors */
     xmlSchemaValidityWarningFunc warning;/* the callback in case of warning */
     xmlSchemaValidError err;
+    int	                nberrors;
 
     xmlSchemaPtr       schema;        /* The schema in use */
     xmlChar 	      *container;     /* the current element, group, ... */
@@ -111,6 +112,7 @@ struct _xmlSchemaValidCtxt {
 
     xmlDocPtr               myDoc;
     int                     err;
+    int                     nberrors;
 
     xmlNodePtr              node;
     xmlNodePtr              cur;
@@ -156,6 +158,7 @@ xmlSchemaNewSchema(xmlSchemaParserCtxtPtr ctxt)
 
     ret = (xmlSchemaPtr) xmlMalloc(sizeof(xmlSchema));
     if (ret == NULL) {
+        ctxt->nberrors++;
         if ((ctxt != NULL) && (ctxt->error != NULL))
             ctxt->error(ctxt->userData, "Out of memory\n");
         return (NULL);
@@ -202,6 +205,7 @@ xmlSchemaNewAnnot(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node)
 
     ret = (xmlSchemaAnnotPtr) xmlMalloc(sizeof(xmlSchemaAnnot));
     if (ret == NULL) {
+        ctxt->nberrors++;
         if ((ctxt != NULL) && (ctxt->error != NULL))
             ctxt->error(ctxt->userData, "Out of memory\n");
         return (NULL);
@@ -819,6 +823,7 @@ xmlSchemaAddNotation(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 
     ret = (xmlSchemaNotationPtr) xmlMalloc(sizeof(xmlSchemaNotation));
     if (ret == NULL) {
+        ctxt->nberrors++;
         if ((ctxt != NULL) && (ctxt->error != NULL))
             ctxt->error(ctxt->userData, "Out of memory\n");
         return (NULL);
@@ -828,6 +833,7 @@ xmlSchemaAddNotation(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     val = xmlHashAddEntry2(schema->notaDecl, name, schema->targetNamespace,
                            ret);
     if (val != 0) {
+        ctxt->nberrors++;
         if ((ctxt != NULL) && (ctxt->error != NULL))
             ctxt->error(ctxt->userData, "Could not add notation %s\n",
                         name);
@@ -868,6 +874,7 @@ xmlSchemaAddAttribute(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 
     ret = (xmlSchemaAttributePtr) xmlMalloc(sizeof(xmlSchemaAttribute));
     if (ret == NULL) {
+        ctxt->nberrors++;
         if ((ctxt != NULL) && (ctxt->error != NULL))
             ctxt->error(ctxt->userData, "Out of memory\n");
         return (NULL);
@@ -877,6 +884,7 @@ xmlSchemaAddAttribute(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     val = xmlHashAddEntry3(schema->attrDecl, name,
 	                   schema->targetNamespace, ctxt->container, ret);
     if (val != 0) {
+        ctxt->nberrors++;
         if ((ctxt != NULL) && (ctxt->error != NULL))
             ctxt->error(ctxt->userData, "Could not add attribute %s\n",
                         name);
@@ -914,6 +922,7 @@ xmlSchemaAddAttributeGroup(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 
     ret = (xmlSchemaAttributeGroupPtr) xmlMalloc(sizeof(xmlSchemaAttributeGroup));
     if (ret == NULL) {
+        ctxt->nberrors++;
         if ((ctxt != NULL) && (ctxt->error != NULL))
             ctxt->error(ctxt->userData, "Out of memory\n");
         return (NULL);
@@ -923,6 +932,7 @@ xmlSchemaAddAttributeGroup(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     val = xmlHashAddEntry3(schema->attrgrpDecl, name,
 	                   schema->targetNamespace, ctxt->container, ret);
     if (val != 0) {
+        ctxt->nberrors++;
         if ((ctxt != NULL) && (ctxt->error != NULL))
             ctxt->error(ctxt->userData, "Could not add attribute group %s\n",
                         name);
@@ -962,6 +972,7 @@ xmlSchemaAddElement(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 
     ret = (xmlSchemaElementPtr) xmlMalloc(sizeof(xmlSchemaElement));
     if (ret == NULL) {
+        ctxt->nberrors++;
         if ((ctxt != NULL) && (ctxt->error != NULL))
             ctxt->error(ctxt->userData, "Out of memory\n");
         return (NULL);
@@ -977,6 +988,7 @@ xmlSchemaAddElement(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	val = xmlHashAddEntry3(schema->elemDecl, name, (xmlChar *) buf,
 			       namespace, ret);
 	if (val != 0) {
+	    ctxt->nberrors++;
 	    if ((ctxt != NULL) && (ctxt->error != NULL))
 		ctxt->error(ctxt->userData, "Could not add element %s\n",
 			    name);
@@ -1016,6 +1028,7 @@ xmlSchemaAddType(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 
     ret = (xmlSchemaTypePtr) xmlMalloc(sizeof(xmlSchemaType));
     if (ret == NULL) {
+        ctxt->nberrors++;
         if ((ctxt != NULL) && (ctxt->error != NULL))
             ctxt->error(ctxt->userData, "Out of memory\n");
         return (NULL);
@@ -1025,6 +1038,7 @@ xmlSchemaAddType(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     val = xmlHashAddEntry2(schema->typeDecl, name, schema->targetNamespace,
                            ret);
     if (val != 0) {
+        ctxt->nberrors++;
         if ((ctxt != NULL) && (ctxt->error != NULL))
             ctxt->error(ctxt->userData, "Could not add type %s\n", name);
         xmlFree((char *) ret->name);
@@ -1076,6 +1090,7 @@ xmlGetQNameProp(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node,
 
     ns = xmlSearchNs(node->doc, node, prefix);
     if (ns == NULL) {
+	ctxt->nberrors++;
 	xmlSchemaErrorContext(ctxt, NULL, node, NULL);
         if ((ctxt != NULL) && (ctxt->error != NULL))
             ctxt->error(ctxt->userData,
@@ -1119,6 +1134,7 @@ xmlGetMaxOccurs(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node) {
     }
     while (IS_BLANK(*cur)) cur++;
     if (*cur != 0) {
+        ctxt->nberrors++;
 	xmlSchemaErrorContext(ctxt, NULL, node, NULL);
         if ((ctxt != NULL) && (ctxt->error != NULL))
             ctxt->error(ctxt->userData, "invalid value for minOccurs: %s\n",
@@ -1156,6 +1172,7 @@ xmlGetMinOccurs(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node) {
     }
     while (IS_BLANK(*cur)) cur++;
     if (*cur != 0) {
+        ctxt->nberrors++;
 	xmlSchemaErrorContext(ctxt, NULL, node, NULL);
         if ((ctxt != NULL) && (ctxt->error != NULL))
             ctxt->error(ctxt->userData, "invalid value for minOccurs: %s\n",
@@ -1193,6 +1210,7 @@ xmlGetBooleanProp(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node,
     else if (xmlStrEqual(val, BAD_CAST"false"))
 	def = 0;
     else {
+        ctxt->nberrors++;
 	xmlSchemaErrorContext(ctxt, NULL, node, NULL);
         if ((ctxt != NULL) && (ctxt->error != NULL))
             ctxt->error(ctxt->userData,
@@ -1350,6 +1368,7 @@ xmlSchemaParseFacet(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     facet->node = node;
     value = xmlGetProp(node, (const xmlChar *) "value");
     if (value == NULL) {
+        ctxt->nberrors++;
 	xmlSchemaErrorContext(ctxt, schema, node, child);
         if ((ctxt != NULL) && (ctxt->error != NULL))
             ctxt->error(ctxt->userData, "Facet %s has no value\n", node->name);
@@ -1381,6 +1400,7 @@ xmlSchemaParseFacet(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     } else if (IS_SCHEMA(node, "minLength")) {
         facet->type = XML_SCHEMA_FACET_MINLENGTH;
     } else {
+        ctxt->nberrors++;
 	xmlSchemaErrorContext(ctxt, schema, node, child);
         if ((ctxt != NULL) && (ctxt->error != NULL))
             ctxt->error(ctxt->userData, "Unknown facet type %s\n", node->name);
@@ -1396,6 +1416,7 @@ xmlSchemaParseFacet(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	child = child->next;
     }
     if (child != NULL) {
+        ctxt->nberrors++;
 	xmlSchemaErrorContext(ctxt, schema, node, child);
 	if ((ctxt != NULL) && (ctxt->error != NULL))
 	    ctxt->error(ctxt->userData,
@@ -1441,6 +1462,7 @@ xmlSchemaParseAny(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	child = child->next;
     }
     if (child != NULL) {
+        ctxt->nberrors++;
 	xmlSchemaErrorContext(ctxt, schema, node, child);
 	if ((ctxt != NULL) && (ctxt->error != NULL))
 	    ctxt->error(ctxt->userData,
@@ -1473,6 +1495,7 @@ xmlSchemaParseNotation(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
         return (NULL);
     name = xmlGetProp(node, (const xmlChar *) "name");
     if (name == NULL) {
+        ctxt->nberrors++;
 	xmlSchemaErrorContext(ctxt, schema, node, child);
         if ((ctxt != NULL) && (ctxt->error != NULL))
             ctxt->error(ctxt->userData, "Notation has no name\n");
@@ -1489,6 +1512,7 @@ xmlSchemaParseNotation(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	child = child->next;
     }
     if (child != NULL) {
+        ctxt->nberrors++;
 	xmlSchemaErrorContext(ctxt, schema, node, child);
 	if ((ctxt != NULL) && (ctxt->error != NULL))
 	    ctxt->error(ctxt->userData,
@@ -1537,6 +1561,7 @@ xmlSchemaParseAnyAttribute(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     } else if (xmlStrEqual(processContents, (const xmlChar *)"lax")) {
 	ret->occurs = XML_SCHEMAS_ANYATTR_LAX;
     } else {
+        ctxt->nberrors++;
 	xmlSchemaErrorContext(ctxt, schema, node, child);
 	if ((ctxt != NULL) && (ctxt->error != NULL))
 	    ctxt->error(ctxt->userData,
@@ -1553,6 +1578,7 @@ xmlSchemaParseAnyAttribute(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	child = child->next;
     }
     if (child != NULL) {
+        ctxt->nberrors++;
 	xmlSchemaErrorContext(ctxt, schema, node, child);
 	if ((ctxt != NULL) && (ctxt->error != NULL))
 	    ctxt->error(ctxt->userData,
@@ -1592,6 +1618,7 @@ xmlSchemaParseAttribute(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 
 	ref = xmlGetQNameProp(ctxt, node, "ref", &refNs);
 	if (ref == NULL) {
+	    ctxt->nberrors++;
 	    xmlSchemaErrorContext(ctxt, schema, node, child);
 	    if ((ctxt != NULL) && (ctxt->error != NULL))
 		ctxt->error(ctxt->userData, "Attribute has no name nor ref\n");
@@ -1611,6 +1638,7 @@ xmlSchemaParseAttribute(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     ret->ref = ref;
     ret->refNs = refNs;
     ret->typeName = xmlGetQNameProp(ctxt, node, "type", &(ret->typeNs));
+    ret->node = node;
     child = node->children;
     if (IS_SCHEMA(child, "annotation")) {
 	ret->annot = xmlSchemaParseAnnotation(ctxt, schema, child);
@@ -1621,6 +1649,7 @@ xmlSchemaParseAttribute(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	child = child->next;
     }
     if (child != NULL) {
+        ctxt->nberrors++;
 	xmlSchemaErrorContext(ctxt, schema, node, child);
 	if ((ctxt != NULL) && (ctxt->error != NULL))
 	    ctxt->error(ctxt->userData,
@@ -1661,6 +1690,7 @@ xmlSchemaParseAttributeGroup(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 
 	ref = xmlGetQNameProp(ctxt, node, "ref", &refNs);
 	if (ref == NULL) {
+	    ctxt->nberrors++;
 	    xmlSchemaErrorContext(ctxt, schema, node, child);
 	    if ((ctxt != NULL) && (ctxt->error != NULL))
 		ctxt->error(ctxt->userData,
@@ -1670,6 +1700,7 @@ xmlSchemaParseAttributeGroup(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	snprintf(buf, 99, "anonattrgroup%d", ctxt->counter++ + 1);
 	name = xmlStrdup((xmlChar *) buf);
 	if (name == NULL) {
+	    ctxt->nberrors++;
 	    if ((ctxt != NULL) && (ctxt->error != NULL))
 		ctxt->error(ctxt->userData,
 			"out of memory\n");
@@ -1686,6 +1717,7 @@ xmlSchemaParseAttributeGroup(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     ret->ref = ref;
     ret->refNs = refNs;
     ret->type = XML_SCHEMA_TYPE_ATTRIBUTEGROUP;
+    ret->node = node;
     child = node->children;
     ctxt->container = name;
     if (IS_SCHEMA(child, "annotation")) {
@@ -1717,6 +1749,7 @@ xmlSchemaParseAttributeGroup(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	child = child->next;
     }
     if (child != NULL) {
+        ctxt->nberrors++;
 	xmlSchemaErrorContext(ctxt, schema, node, child);
 	if ((ctxt != NULL) && (ctxt->error != NULL))
 	    ctxt->error(ctxt->userData,
@@ -1759,6 +1792,7 @@ xmlSchemaParseElement(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 
 	ref = xmlGetQNameProp(ctxt, node, "ref", &refNs);
 	if (ref == NULL) {
+	    ctxt->nberrors++;
 	    xmlSchemaErrorContext(ctxt, schema, node, child);
 	    if ((ctxt != NULL) && (ctxt->error != NULL))
 		ctxt->error(ctxt->userData, "Element has no name nor ref\n");
@@ -1805,6 +1839,7 @@ xmlSchemaParseElement(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     
     ret->value = xmlGetProp(node, BAD_CAST "default");
     if ((ret->value != NULL) && (fixed != NULL)) {
+        ctxt->nberrors++;
 	xmlSchemaErrorContext(ctxt, schema, node, child);
 	ctxt->error(ctxt->userData,
 		    "Element %s has both default and fixed\n",
@@ -1834,6 +1869,7 @@ xmlSchemaParseElement(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	child = child->next;
     }
     if (child != NULL) {
+        ctxt->nberrors++;
 	xmlSchemaErrorContext(ctxt, schema, node, child);
 	if ((ctxt != NULL) && (ctxt->error != NULL))
 	    ctxt->error(ctxt->userData,
@@ -1900,6 +1936,7 @@ xmlSchemaParseUnion(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	child = child->next;
     }
     if (child != NULL) {
+        ctxt->nberrors++;
 	xmlSchemaErrorContext(ctxt, schema, node, child);
 	if ((ctxt != NULL) && (ctxt->error != NULL))
 	    ctxt->error(ctxt->userData,
@@ -1954,6 +1991,7 @@ xmlSchemaParseList(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	type->subtypes = subtype;
     }
     if (child != NULL) {
+        ctxt->nberrors++;
 	xmlSchemaErrorContext(ctxt, schema, node, child);
 	if ((ctxt != NULL) && (ctxt->error != NULL))
 	    ctxt->error(ctxt->userData,
@@ -1994,6 +2032,7 @@ xmlSchemaParseSimpleType(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	name = xmlStrdup((xmlChar *) buf);
     }
     if (name == NULL) {
+        ctxt->nberrors++;
 	xmlSchemaErrorContext(ctxt, schema, node, child);
         if ((ctxt != NULL) && (ctxt->error != NULL))
             ctxt->error(ctxt->userData, "simpleType has no name\n");
@@ -2028,6 +2067,7 @@ xmlSchemaParseSimpleType(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     }
     type->subtypes = subtype;
     if (child != NULL) {
+        ctxt->nberrors++;
 	xmlSchemaErrorContext(ctxt, schema, node, child);
 	if ((ctxt != NULL) && (ctxt->error != NULL))
 	    ctxt->error(ctxt->userData,
@@ -2069,6 +2109,7 @@ xmlSchemaParseGroup(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 
 	ref = xmlGetQNameProp(ctxt, node, "ref", &refNs);
 	if (ref == NULL) {
+	    ctxt->nberrors++;
 	    xmlSchemaErrorContext(ctxt, schema, node, child);
 	    if ((ctxt != NULL) && (ctxt->error != NULL))
 		ctxt->error(ctxt->userData, "Group has no name nor ref\n");
@@ -2109,6 +2150,7 @@ xmlSchemaParseGroup(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     if (subtype != NULL)
 	type->subtypes = subtype;
     if (child != NULL) {
+        ctxt->nberrors++;
 	xmlSchemaErrorContext(ctxt, schema, node, child);
 	if ((ctxt != NULL) && (ctxt->error != NULL))
 	    ctxt->error(ctxt->userData,
@@ -2174,6 +2216,7 @@ xmlSchemaParseAll(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	child = child->next;
     }
     if (child != NULL) {
+        ctxt->nberrors++;
 	xmlSchemaErrorContext(ctxt, schema, node, child);
 	if ((ctxt != NULL) && (ctxt->error != NULL))
 	    ctxt->error(ctxt->userData,
@@ -2213,6 +2256,7 @@ xmlSchemaParseImport(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     if (namespace != NULL) {
 	check = xmlParseURI((const char *) namespace);
 	if (check == NULL) {
+	    ctxt->nberrors++;
 	    xmlSchemaErrorContext(ctxt, schema, node, child);
 	    if ((ctxt != NULL) && (ctxt->error != NULL))
 		ctxt->error(ctxt->userData,
@@ -2228,6 +2272,7 @@ xmlSchemaParseImport(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     if (schemaLocation != NULL) {
 	check = xmlParseURI((const char *) schemaLocation);
 	if (check == NULL) {
+	    ctxt->nberrors++;
 	    xmlSchemaErrorContext(ctxt, schema, node, child);
 	    if ((ctxt != NULL) && (ctxt->error != NULL))
 		ctxt->error(ctxt->userData,
@@ -2244,6 +2289,7 @@ xmlSchemaParseImport(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     if (schema->schemasImports == NULL) {
 	schema->schemasImports = xmlHashCreate(10);
 	if (schema->schemasImports == NULL) {
+	    ctxt->nberrors++;
 	    xmlSchemaErrorContext(ctxt, schema, node, child);
 	    if ((ctxt != NULL) && (ctxt->error != NULL))
 		ctxt->error(ctxt->userData,
@@ -2261,6 +2307,7 @@ xmlSchemaParseImport(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	if (schemaLocation != NULL) {
 	    if (previous != NULL) {
 		if (!xmlStrEqual(schemaLocation, previous)) {
+		    ctxt->nberrors++;
 		    xmlSchemaErrorContext(ctxt, schema, node, child);
 		    if ((ctxt != NULL) && (ctxt->error != NULL))
 			ctxt->error(ctxt->userData,
@@ -2277,6 +2324,7 @@ xmlSchemaParseImport(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	if (schemaLocation != NULL) {
 	    if (previous != NULL) {
 		if (!xmlStrEqual(schemaLocation, previous)) {
+		    ctxt->nberrors++;
 		    xmlSchemaErrorContext(ctxt, schema, node, child);
 		    if ((ctxt != NULL) && (ctxt->error != NULL))
 			ctxt->error(ctxt->userData,
@@ -2298,6 +2346,7 @@ xmlSchemaParseImport(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	child = child->next;
     }
     if (child != NULL) {
+        ctxt->nberrors++;
 	xmlSchemaErrorContext(ctxt, schema, node, child);
 	if ((ctxt != NULL) && (ctxt->error != NULL))
 	    ctxt->error(ctxt->userData,
@@ -2377,6 +2426,7 @@ xmlSchemaParseChoice(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	child = child->next;
     }
     if (child != NULL) {
+        ctxt->nberrors++;
 	xmlSchemaErrorContext(ctxt, schema, node, child);
 	if ((ctxt != NULL) && (ctxt->error != NULL))
 	    ctxt->error(ctxt->userData,
@@ -2457,6 +2507,7 @@ xmlSchemaParseSequence(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	child = child->next;
     }
     if (child != NULL) {
+        ctxt->nberrors++;
 	xmlSchemaErrorContext(ctxt, schema, node, child);
 	if ((ctxt != NULL) && (ctxt->error != NULL))
 	    ctxt->error(ctxt->userData,
@@ -2503,6 +2554,7 @@ xmlSchemaParseRestriction(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     type->id = xmlGetProp(node, BAD_CAST "id");
     type->base = xmlGetQNameProp(ctxt, node, "base", &(type->baseNs));
     if ((!simple) && (type->base == NULL)) {
+        ctxt->nberrors++;
 	xmlSchemaErrorContext(ctxt, schema, node, child);
 	if ((ctxt != NULL) && (ctxt->error != NULL))
 	    ctxt->error(ctxt->userData,
@@ -2575,6 +2627,7 @@ xmlSchemaParseRestriction(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     }
     child = xmlSchemaParseAttrDecls(ctxt, schema, child, type);
     if (child != NULL) {
+        ctxt->nberrors++;
 	xmlSchemaErrorContext(ctxt, schema, node, child);
 	if ((ctxt != NULL) && (ctxt->error != NULL))
 	    ctxt->error(ctxt->userData,
@@ -2621,6 +2674,7 @@ xmlSchemaParseExtension(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 
     type->base = xmlGetQNameProp(ctxt, node, "base", &(type->baseNs));
     if (type->base == NULL) {
+        ctxt->nberrors++;
 	xmlSchemaErrorContext(ctxt, schema, node, child);
 	if ((ctxt != NULL) && (ctxt->error != NULL))
 	    ctxt->error(ctxt->userData,
@@ -2651,6 +2705,7 @@ xmlSchemaParseExtension(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	type->subtypes = subtype;
     child = xmlSchemaParseAttrDecls(ctxt, schema, child, type);
     if (child != NULL) {
+        ctxt->nberrors++;
 	xmlSchemaErrorContext(ctxt, schema, node, child);
 	if ((ctxt != NULL) && (ctxt->error != NULL))
 	    ctxt->error(ctxt->userData,
@@ -2709,6 +2764,7 @@ xmlSchemaParseSimpleContent(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     }
     type->subtypes = subtype;
     if (child != NULL) {
+        ctxt->nberrors++;
 	xmlSchemaErrorContext(ctxt, schema, node, child);
 	if ((ctxt != NULL) && (ctxt->error != NULL))
 	    ctxt->error(ctxt->userData,
@@ -2766,6 +2822,7 @@ xmlSchemaParseComplexContent(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     }
     type->subtypes = subtype;
     if (child != NULL) {
+        ctxt->nberrors++;
 	xmlSchemaErrorContext(ctxt, schema, node, child);
 	if ((ctxt != NULL) && (ctxt->error != NULL))
 	    ctxt->error(ctxt->userData,
@@ -2807,6 +2864,7 @@ xmlSchemaParseComplexType(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	name = xmlStrdup((xmlChar *) buf);
     }
     if (name == NULL) {
+        ctxt->nberrors++;
 	xmlSchemaErrorContext(ctxt, schema, node, child);
         if ((ctxt != NULL) && (ctxt->error != NULL))
             ctxt->error(ctxt->userData, "complexType has no name\n");
@@ -2854,6 +2912,7 @@ xmlSchemaParseComplexType(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	child = xmlSchemaParseAttrDecls(ctxt, schema, child, type);
     }
     if (child != NULL) {
+        ctxt->nberrors++;
 	xmlSchemaErrorContext(ctxt, schema, node, child);
 	if ((ctxt != NULL) && (ctxt->error != NULL))
 	    ctxt->error(ctxt->userData,
@@ -2884,10 +2943,13 @@ xmlSchemaParseSchema(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node)
     xmlSchemaAnnotPtr annot;
     xmlNodePtr child = NULL;
     xmlChar *val;
+    int nberrors;
 
     if ((ctxt == NULL) || (node == NULL))
         return (NULL);
 
+    nberrors = ctxt->nberrors;
+    ctxt->nberrors = 0;
     if (IS_SCHEMA(node, "schema")) {
         schema = xmlSchemaNewSchema(ctxt);
 	if (schema == NULL)
@@ -2900,6 +2962,7 @@ xmlSchemaParseSchema(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node)
 	    if (xmlStrEqual(val, BAD_CAST "qualified"))
 		schema->flags |= XML_SCHEMAS_QUALIF_ELEM;
 	    else if (!xmlStrEqual(val, BAD_CAST "unqualified")) {
+	        ctxt->nberrors++;
 		xmlSchemaErrorContext(ctxt, schema, node, child);
 		if ((ctxt != NULL) && (ctxt->error != NULL)) {
 		    ctxt->error(ctxt->userData,
@@ -2914,6 +2977,7 @@ xmlSchemaParseSchema(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node)
 	    if (xmlStrEqual(val, BAD_CAST "qualified"))
 		schema->flags |= XML_SCHEMAS_QUALIF_ATTR;
 	    else if (!xmlStrEqual(val, BAD_CAST "unqualified")) {
+	        ctxt->nberrors++;
 		xmlSchemaErrorContext(ctxt, schema, node, child);
 		if ((ctxt != NULL) && (ctxt->error != NULL)) {
 		    ctxt->error(ctxt->userData,
@@ -2967,6 +3031,7 @@ xmlSchemaParseSchema(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node)
 		xmlSchemaParseNotation(ctxt, schema, child);
 		child = child->next;
 	    } else {
+	        ctxt->nberrors++;
 		xmlSchemaErrorContext(ctxt, schema, node, child);
 		if ((ctxt != NULL) && (ctxt->error != NULL))
 		    ctxt->error(ctxt->userData,
@@ -2984,6 +3049,13 @@ xmlSchemaParseSchema(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node)
             }
         }
     }
+    if (ctxt->nberrors != 0) {
+        if (schema != NULL) {
+	    xmlSchemaFree(schema);
+	    schema = NULL;
+	}
+    }
+    ctxt->nberrors = nberrors;
 #ifdef DEBUG
     if (schema == NULL)
         xmlGenericError(xmlGenericErrorContext,
@@ -3472,6 +3544,7 @@ xmlSchemaRefFixupCallback(xmlSchemaElementPtr elem,
 	xmlSchemaElementPtr elemDecl;
 
 	if (elem->subtypes != NULL) {
+	    ctxt->nberrors++;
 	    xmlSchemaErrorContext(ctxt, NULL, elem->node, NULL);
 	    if ((ctxt != NULL) && (ctxt->error != NULL))
 		ctxt->error(ctxt->userData,
@@ -3483,6 +3556,8 @@ xmlSchemaRefFixupCallback(xmlSchemaElementPtr elem,
 				  elem->ref, elem->refNs);
 
         if (elemDecl == NULL) {
+	    ctxt->nberrors++;
+	    xmlSchemaErrorContext(ctxt, NULL, elem->node, NULL);
 	    if ((ctxt != NULL) && (ctxt->error != NULL))
 		ctxt->error(ctxt->userData,
 			    "Schemas: element %s ref to %s not found\n",
@@ -3494,6 +3569,7 @@ xmlSchemaRefFixupCallback(xmlSchemaElementPtr elem,
 	xmlSchemaTypePtr typeDecl;
 
 	if (elem->subtypes != NULL) {
+	    ctxt->nberrors++;
 	    xmlSchemaErrorContext(ctxt, NULL, elem->node, NULL);
 	    if ((ctxt != NULL) && (ctxt->error != NULL))
 		ctxt->error(ctxt->userData,
@@ -3505,6 +3581,8 @@ xmlSchemaRefFixupCallback(xmlSchemaElementPtr elem,
 		                    elem->namedTypeNs);
 
         if (typeDecl == NULL) {
+	    ctxt->nberrors++;
+	    xmlSchemaErrorContext(ctxt, NULL, elem->node, NULL);
 	    if ((ctxt != NULL) && (ctxt->error != NULL))
 		ctxt->error(ctxt->userData,
 			    "Schemas: element %s type %s not found\n",
@@ -3549,6 +3627,7 @@ xmlSchemaTypeFixup(xmlSchemaTypePtr typeDecl,
 		    baseType = xmlSchemaGetType(ctxt->schema, typeDecl->base,
 						typeDecl->baseNs);
 		    if (baseType == NULL) {
+		        ctxt->nberrors++;
 			if ((ctxt != NULL) && (ctxt->error != NULL))
 			    ctxt->error(ctxt->userData,
 				"Schemas: type %s base type %s not found\n",
@@ -3584,6 +3663,7 @@ xmlSchemaTypeFixup(xmlSchemaTypePtr typeDecl,
 		    baseType = xmlSchemaGetType(ctxt->schema, typeDecl->base,
 						typeDecl->baseNs);
 		    if (baseType == NULL) {
+		        ctxt->nberrors++;
 			if ((ctxt != NULL) && (ctxt->error != NULL))
 			    ctxt->error(ctxt->userData,
 				"Schemas: type %s base type %s not found\n",
@@ -3611,6 +3691,7 @@ xmlSchemaTypeFixup(xmlSchemaTypePtr typeDecl,
 		base = xmlSchemaGetType(ctxt->schema, typeDecl->base,
 					typeDecl->baseNs);
 		if (base == NULL) {
+		    ctxt->nberrors++;
 		    xmlSchemaErrorContext(ctxt, NULL, typeDecl->node, NULL);
 		    if ((ctxt != NULL) && (ctxt->error != NULL))
 			ctxt->error(ctxt->userData,
@@ -3777,6 +3858,7 @@ xmlSchemaCheckFacet(xmlSchemaFacetPtr facet,
 	    if (facet->val == NULL) {
 		/* error code */
 		if (ctxt != NULL) {
+		    ctxt->nberrors++;
 		    xmlSchemaErrorContext(ctxt, NULL,
 			    facet->node, NULL);
 		    ctxt->error(ctxt->userData,
@@ -3803,6 +3885,7 @@ xmlSchemaCheckFacet(xmlSchemaFacetPtr facet,
 					 facet->value);
 	    if (tmp != 0) {
 		if (ctxt != NULL) {
+		    ctxt->nberrors++;
 		    xmlSchemaErrorContext(ctxt, NULL,
 			    facet->node, NULL);
 		    ctxt->error(ctxt->userData,
@@ -3819,6 +3902,7 @@ xmlSchemaCheckFacet(xmlSchemaFacetPtr facet,
 	    if (facet->regexp == NULL) {
 		/* error code */
 		if (ctxt != NULL) {
+		    ctxt->nberrors++;
 		    ctxt->error(ctxt->userData,
 		"Schemas: type %s facet regexp %s invalid\n",
 				name, facet->value);
@@ -3839,6 +3923,7 @@ xmlSchemaCheckFacet(xmlSchemaFacetPtr facet,
 	    if (tmp != 0) {
 		/* error code */
 		if (ctxt != NULL) {
+		    ctxt->nberrors++;
 		    xmlSchemaErrorContext(ctxt, NULL,
 			    facet->node, NULL);
 		    ctxt->error(ctxt->userData,
@@ -3860,6 +3945,7 @@ xmlSchemaCheckFacet(xmlSchemaFacetPtr facet,
 		facet->whitespace = XML_SCHEMAS_FACET_COLLAPSE;
 	    } else {
 		if (ctxt != NULL) {
+		    ctxt->nberrors++;
 		    xmlSchemaErrorContext(ctxt, NULL,
 			    facet->node, NULL);
 		    ctxt->error(ctxt->userData,
@@ -3923,6 +4009,8 @@ xmlSchemaAttrGrpFixup(xmlSchemaAttributeGroupPtr attrgrpDecl,
 	ref = xmlHashLookup2(ctxt->schema->attrgrpDecl, attrgrpDecl->ref,
 		             attrgrpDecl->refNs);
 	if (ref == NULL) {
+	    ctxt->nberrors++;
+	    xmlSchemaErrorContext(ctxt, NULL, attrgrpDecl->node, NULL);
 	    if ((ctxt != NULL) && (ctxt->error != NULL))
 		ctxt->error(ctxt->userData,
 		    "Schemas: attribute group %s reference %s not found\n",
@@ -3932,6 +4020,8 @@ xmlSchemaAttrGrpFixup(xmlSchemaAttributeGroupPtr attrgrpDecl,
 	xmlSchemaAttrGrpFixup(ref, ctxt, NULL);
 	attrgrpDecl->attributes = ref->attributes;
     } else {
+        ctxt->nberrors++;
+	xmlSchemaErrorContext(ctxt, NULL, attrgrpDecl->node, NULL);
 	if ((ctxt != NULL) && (ctxt->error != NULL))
 	    ctxt->error(ctxt->userData,
 		"Schemas: attribute %s has no attributes nor reference\n",
@@ -3962,6 +4052,8 @@ xmlSchemaAttrFixup(xmlSchemaAttributePtr attrDecl,
 	type = xmlSchemaGetType(ctxt->schema, attrDecl->typeName,
 				    attrDecl->typeNs);
 	if (type == NULL) {
+	    ctxt->nberrors++;
+	    xmlSchemaErrorContext(ctxt, NULL, attrDecl->node, NULL);
 	    if ((ctxt != NULL) && (ctxt->error != NULL))
 		ctxt->error(ctxt->userData,
 		    "Schemas: attribute %s type %s not found\n",
@@ -3974,6 +4066,8 @@ xmlSchemaAttrFixup(xmlSchemaAttributePtr attrDecl,
 	ref = xmlHashLookup2(ctxt->schema->attrDecl, attrDecl->ref,
 		             attrDecl->refNs);
 	if (ref == NULL) {
+	    ctxt->nberrors++;
+	    xmlSchemaErrorContext(ctxt, NULL, attrDecl->node, NULL);
 	    if ((ctxt != NULL) && (ctxt->error != NULL))
 		ctxt->error(ctxt->userData,
 		    "Schemas: attribute %s reference %s not found\n",
@@ -3983,6 +4077,8 @@ xmlSchemaAttrFixup(xmlSchemaAttributePtr attrDecl,
 	xmlSchemaAttrFixup(ref, ctxt, NULL);
 	attrDecl->subtypes = ref->subtypes;
     } else {
+	ctxt->nberrors++;
+	xmlSchemaErrorContext(ctxt, NULL, attrDecl->node, NULL);
 	if ((ctxt != NULL) && (ctxt->error != NULL))
 	    ctxt->error(ctxt->userData,
 		"Schemas: attribute %s has no type nor reference\n",
@@ -4007,12 +4103,15 @@ xmlSchemaParse(xmlSchemaParserCtxtPtr ctxt)
     xmlSchemaPtr ret = NULL;
     xmlDocPtr doc;
     xmlNodePtr root, cur, delete;
+    int nberrors;
 
     xmlSchemaInitTypes();
 
     if (ctxt == NULL)
         return (NULL);
 
+    nberrors = ctxt->nberrors;
+    ctxt->nberrors = 0;
     ctxt->counter = 0;
     ctxt->container = NULL;
 
@@ -4022,6 +4121,7 @@ xmlSchemaParse(xmlSchemaParserCtxtPtr ctxt)
     if (ctxt->URL != NULL) {
 	doc = xmlParseFile((const char *) ctxt->URL);
 	if (doc == NULL) {
+	    ctxt->nberrors++;
 	    if (ctxt->error != NULL)
 		ctxt->error(ctxt->userData,
 			    "xmlSchemaParse: could not load %s\n", ctxt->URL);
@@ -4030,6 +4130,7 @@ xmlSchemaParse(xmlSchemaParserCtxtPtr ctxt)
     } else if (ctxt->buffer != NULL) {
 	doc = xmlParseMemory(ctxt->buffer, ctxt->size);
 	if (doc == NULL) {
+	    ctxt->nberrors++;
 	    if (ctxt->error != NULL)
 		ctxt->error(ctxt->userData,
 			    "xmlSchemaParse: could not parse schemas\n");
@@ -4038,6 +4139,7 @@ xmlSchemaParse(xmlSchemaParserCtxtPtr ctxt)
 	doc->URL = xmlStrdup(BAD_CAST "in_memory_buffer");
 	ctxt->URL = xmlStrdup(BAD_CAST "in_memory_buffer");
     } else {
+        ctxt->nberrors++;
 	if (ctxt->error != NULL)
 	    ctxt->error(ctxt->userData,
 			"xmlSchemaParse: nothing to parse\n");
@@ -4049,6 +4151,7 @@ xmlSchemaParse(xmlSchemaParserCtxtPtr ctxt)
      */
     root = xmlDocGetRootElement(doc);
     if (root == NULL) {
+        ctxt->nberrors++;
         if (ctxt->error != NULL)
             ctxt->error(ctxt->userData, "xmlSchemaParse: %s is empty\n",
                         ctxt->URL);
@@ -4156,6 +4259,10 @@ skip_children:
      */
     xmlHashScan(ret->attrgrpDecl, (xmlHashScanner) xmlSchemaAttrGrpFixup, ctxt);
 
+    if (ctxt->nberrors != 0) {
+        xmlSchemaFree(ret);
+	ret = NULL;
+    }
     return (ret);
 }
  
@@ -4262,6 +4369,7 @@ xmlSchemaValidateFacets(xmlSchemaValidCtxtPtr ctxt,
 
         if (tmp != 0) {
             ret = tmp;
+	    ctxt->nberrors++;
             if (ctxt->error != NULL)
 	        ctxt->error(ctxt->userData,
 	             "Failed to validate type with facet %s\n",
@@ -4312,6 +4420,7 @@ xmlSchemaValidateSimpleValue(xmlSchemaValidCtxtPtr ctxt,
 	ret = xmlSchemaValPredefTypeNode(type, value, &(ctxt->value),
 	                                 ctxt->cur);
         if (ret != 0) {
+	    ctxt->nberrors++;
             if (ctxt->error != NULL)
 	        ctxt->error(ctxt->userData,
 		        "Failed to validate basic type %s\n", type->name);
@@ -4353,6 +4462,7 @@ xmlSchemaValidateSimpleValue(xmlSchemaValidCtxtPtr ctxt,
 	base = type->subtypes;
 	if (base == NULL) {
 	    ctxt->err = XML_SCHEMAS_ERR_INTERNAL;
+	    ctxt->nberrors++;
 	    if (ctxt->error != NULL) {
 		xmlSchemaErrorContext(NULL, ctxt->schema, type->node, NULL);
 		ctxt->error(ctxt->userData,
@@ -4455,6 +4565,7 @@ xmlSchemaCheckAttributes(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr node) {
 	if (ctxt->attr[i].state == XML_SCHEMAS_ATTR_UNKNOWN) {
 	    ret = 1;
 	    ctxt->err = XML_SCHEMAS_ERR_ATTRUNKNOWN;
+	    ctxt->nberrors++;
 	    if (ctxt->error != NULL)
 		ctxt->error(ctxt->userData,
 		"Attribute %s on %s is unknown\n",
@@ -4627,6 +4738,7 @@ xmlSchemaValidateSimpleRestrictionType(xmlSchemaValidCtxtPtr ctxt,
     type = ctxt->type;
 
     if ((ctxt == NULL) || (type == NULL)) {
+        ctxt->nberrors++;
         ctxt->err = XML_SCHEMAS_ERR_INTERNAL;
         if (ctxt->error != NULL)
             ctxt->error(ctxt->userData,
@@ -4639,6 +4751,7 @@ xmlSchemaValidateSimpleRestrictionType(xmlSchemaValidCtxtPtr ctxt,
      */
     ret = xmlSchemaValidateCheckNodeList(child);
     if (ret < 0) {
+        ctxt->nberrors++;
         ctxt->err = XML_SCHEMAS_ERR_INTERNAL;
         if (ctxt->error != NULL)
             ctxt->error(ctxt->userData,
@@ -4646,6 +4759,7 @@ xmlSchemaValidateSimpleRestrictionType(xmlSchemaValidCtxtPtr ctxt,
                         node->name);
         return (-1);
     } else if (ret == 0) {
+        ctxt->nberrors++;
         ctxt->err = XML_SCHEMAS_ERR_NOTSIMPLE;
         if (ctxt->error != NULL)
             ctxt->error(ctxt->userData,
@@ -4681,6 +4795,7 @@ xmlSchemaValidateSimpleType(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr node) {
     type = ctxt->type;
 
     if ((ctxt == NULL) || (type == NULL)) {
+        ctxt->nberrors++;
 	ctxt->err = XML_SCHEMAS_ERR_INTERNAL;
 	if (ctxt->error != NULL)
 	    ctxt->error(ctxt->userData,
@@ -4693,6 +4808,7 @@ xmlSchemaValidateSimpleType(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr node) {
      */
     ret = xmlSchemaValidateCheckNodeList(child);
     if (ret < 0) {
+        ctxt->nberrors++;
 	ctxt->err = XML_SCHEMAS_ERR_INTERNAL;
 	if (ctxt->error != NULL)
 	    ctxt->error(ctxt->userData,
@@ -4700,6 +4816,7 @@ xmlSchemaValidateSimpleType(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr node) {
 			node->name);
 	return(-1);
     } else if (ret == 0) {
+        ctxt->nberrors++;
 	ctxt->err = XML_SCHEMAS_ERR_NOTSIMPLE;
 	if (ctxt->error != NULL)
 	    ctxt->error(ctxt->userData,
@@ -4719,6 +4836,7 @@ xmlSchemaValidateSimpleType(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr node) {
 	     (!xmlStrEqual(attr->name, BAD_CAST"schemasLocation")) &&
 	     (!xmlStrEqual(attr->name, BAD_CAST"noNamespaceSchemaLocation")))) {
 	    ctxt->err = XML_SCHEMAS_ERR_INVALIDATTR;
+	    ctxt->nberrors++;
 	    if (ctxt->error != NULL)
 		ctxt->error(ctxt->userData,
 			"Element %s: attribute %s should not be present\n",
@@ -4758,6 +4876,7 @@ xmlSchemaValidateElementType(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr node) {
     type = ctxt->type;
 
     if ((ctxt == NULL) || (type == NULL)) {
+	ctxt->nberrors++;
 	ctxt->err = XML_SCHEMAS_ERR_INTERNAL;
 	if (ctxt->error != NULL)
 	    ctxt->error(ctxt->userData,
@@ -4767,6 +4886,7 @@ xmlSchemaValidateElementType(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr node) {
     }
     if (child == NULL) {
 	if (type->minOccurs > 0) {
+	    ctxt->nberrors++;
 	    ctxt->err = XML_SCHEMAS_ERR_MISSING;
 	    if (ctxt->error != NULL)
 		ctxt->error(ctxt->userData,
@@ -4780,6 +4900,7 @@ xmlSchemaValidateElementType(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr node) {
      * Verify the element matches
      */
     if (!xmlStrEqual(child->name, type->name)) {
+	ctxt->nberrors++;
 	ctxt->err = XML_SCHEMAS_ERR_WRONGELEM;
 	if (ctxt->error != NULL)
 	    ctxt->error(ctxt->userData,
@@ -4818,11 +4939,13 @@ xmlSchemaValidateElementType(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr node) {
 		"====> %s : %d\n", node->name, ret);
 #endif
 	if (ret == 0) {
+	    ctxt->nberrors++;
 	    ctxt->err = XML_SCHEMAS_ERR_ELEMCONT;
 	    if (ctxt->error != NULL)
 		ctxt->error(ctxt->userData, "Element %s content check failed\n",
 			    node->name);
 	} else if (ret < 0) {
+	    ctxt->nberrors++;
 	    ctxt->err = XML_SCHEMAS_ERR_ELEMCONT;
 	    if (ctxt->error != NULL)
 		ctxt->error(ctxt->userData, "Element %s content check failure\n",
@@ -4871,6 +4994,7 @@ xmlSchemaValidateBasicType(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr node) {
     type = ctxt->type;
 
     if ((ctxt == NULL) || (type == NULL)) {
+	ctxt->nberrors++;
 	ctxt->err = XML_SCHEMAS_ERR_INTERNAL;
 	if (ctxt->error != NULL)
 	    ctxt->error(ctxt->userData,
@@ -4896,6 +5020,7 @@ xmlSchemaValidateBasicType(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr node) {
 	        TODO
 		break;
 	    case XML_ELEMENT_NODE:
+		ctxt->nberrors++;
 		ctxt->err = XML_SCHEMAS_ERR_INVALIDELEM;
 		if (ctxt->error != NULL)
 		    ctxt->error(ctxt->userData,
@@ -4916,6 +5041,7 @@ xmlSchemaValidateBasicType(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr node) {
 #ifdef LIBXML_DOCB_ENABLED
             case XML_DOCB_DOCUMENT_NODE:
 #endif
+		ctxt->nberrors++;
 		ctxt->err = XML_SCHEMAS_ERR_INVALIDELEM;
 		if (ctxt->error != NULL)
 		    ctxt->error(ctxt->userData,
@@ -4938,6 +5064,7 @@ xmlSchemaValidateBasicType(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr node) {
     if (value != NULL)
 	xmlFree(value);
     if (ret != 0) {
+	ctxt->nberrors++;
         if (ctxt->error != NULL)
 	    ctxt->error(ctxt->userData,
 		    "Element %s: failed to validate basic type %s\n",
@@ -4972,6 +5099,7 @@ xmlSchemaValidateComplexType(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr node) {
     switch (type->contentType) {
 	case XML_SCHEMA_CONTENT_EMPTY:
 	    if (child != NULL) {
+		ctxt->nberrors++;
 		if (ctxt->error != NULL)
 		    ctxt->error(ctxt->userData,
 			    "Element %s is supposed to be empty\n",
@@ -5076,6 +5204,7 @@ xmlSchemaValidateContent(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr node) {
 	     */
 	    if (decl->ref != NULL) {
 		if (decl->refDecl == NULL) {
+		    ctxt->nberrors++;
 		    ctxt->err = XML_SCHEMAS_ERR_INTERNAL;
 		    if (ctxt->error != NULL)
 			ctxt->error(ctxt->userData,
@@ -5211,6 +5340,7 @@ xmlSchemaValidateType(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr elem,
      * 3.3.4 : 2
      */
     if (elemDecl->flags & XML_SCHEMAS_ELEM_ABSTRACT) {
+        ctxt->nberrors++;
 	ctxt->err = XML_SCHEMAS_ERR_ISABSTRACT;
         if (ctxt->error != NULL)
             ctxt->error(ctxt->userData, "Element %s is abstract\n", elem->name);
@@ -5224,6 +5354,7 @@ xmlSchemaValidateType(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr elem,
 	/* 3.3.4: 3.2 */
 	if (xmlStrEqual(nil, BAD_CAST "true")) {
 	    if (elem->children != NULL) {
+		ctxt->nberrors++;
 		ctxt->err = XML_SCHEMAS_ERR_NOTEMPTY;
 		if (ctxt->error != NULL)
 		    ctxt->error(ctxt->userData, "Element %s is not empty\n",
@@ -5232,6 +5363,7 @@ xmlSchemaValidateType(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr elem,
 	    }
 	    if ((elemDecl->flags & XML_SCHEMAS_ELEM_FIXED) &&
 		(elemDecl->value != NULL)) {
+		ctxt->nberrors++;
 		ctxt->err = XML_SCHEMAS_ERR_HAVEDEFAULT;
 		if (ctxt->error != NULL)
 		    ctxt->error(ctxt->userData,
@@ -5244,6 +5376,7 @@ xmlSchemaValidateType(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr elem,
 	/* 3.3.4: 3.1 */
 	if (nil != NULL) {
 	    ctxt->err = XML_SCHEMAS_ERR_NOTNILLABLE;
+	    ctxt->nberrors++;
 	    if (ctxt->error != NULL)
 		ctxt->error(ctxt->userData,
 			"Element %s with xs:nil but not nillable\n",
@@ -5321,6 +5454,7 @@ xmlSchemaValidateAttributes(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr elem,
 	    }
 	    ctxt->cur = (xmlNodePtr) attributes;
 	    if (attributes->subtypes == NULL) {
+	        ctxt->nberrors++;
 		ctxt->err = XML_SCHEMAS_ERR_INTERNAL;
 		if (ctxt->error != NULL)
 		    ctxt->error(ctxt->userData,
@@ -5332,6 +5466,7 @@ xmlSchemaValidateAttributes(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr elem,
 	    ret = xmlSchemaValidateSimpleValue(ctxt, attributes->subtypes,
 					       value);
 	    if (ret != 0) {
+	        ctxt->nberrors++;
 		ctxt->err = XML_SCHEMAS_ERR_ATTRINVALID;
 		if (ctxt->error != NULL)
 		    ctxt->error(ctxt->userData,
@@ -5374,6 +5509,7 @@ xmlSchemaValidateElement(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr elem) {
      * 3.3.4 : 1
      */
     if (elemDecl == NULL) {
+        ctxt->nberrors++;
 	ctxt->err = XML_SCHEMAS_ERR_UNDECLAREDELEM;
         if (ctxt->error != NULL)
             ctxt->error(ctxt->userData, "Element %s not declared\n",
@@ -5381,6 +5517,7 @@ xmlSchemaValidateElement(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr elem) {
 	return(ctxt->err);
     }
     if (elemDecl->subtypes == NULL) {
+        ctxt->nberrors++;
 	ctxt->err = XML_SCHEMAS_ERR_NOTYPE;
         if (ctxt->error != NULL)
             ctxt->error(ctxt->userData, "Element %s has no type\n",
@@ -5415,11 +5552,13 @@ xmlSchemaValidateElement(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr elem) {
 #endif
 	if (ret == 0) {
 	    ctxt->err = XML_SCHEMAS_ERR_ELEMCONT;
+	    ctxt->nberrors++;
 	    if (ctxt->error != NULL)
 		ctxt->error(ctxt->userData, "Element %s content check failed\n",
 			    elem->name);
 	} else if (ret < 0) {
 	    ctxt->err = XML_SCHEMAS_ERR_ELEMCONT;
+	    ctxt->nberrors++;
 	    if (ctxt->error != NULL)
 		ctxt->error(ctxt->userData, "Element %s content check failed\n",
 			    elem->name);
@@ -5460,6 +5599,7 @@ xmlSchemaValidateDocument(xmlSchemaValidCtxtPtr ctxt, xmlDocPtr doc) {
     root = xmlDocGetRootElement(doc);
     if (root == NULL) {
 	ctxt->err = XML_SCHEMAS_ERR_NOROOT;
+	ctxt->nberrors++;
         if (ctxt->error != NULL)
             ctxt->error(ctxt->userData, "document has no root\n");
         return(ctxt->err);
@@ -5472,11 +5612,13 @@ xmlSchemaValidateDocument(xmlSchemaValidCtxtPtr ctxt, xmlDocPtr doc) {
 		root->name, NULL, NULL);
     if (elemDecl == NULL) {
 	ctxt->err = XML_SCHEMAS_ERR_UNDECLAREDELEM;
+	ctxt->nberrors++;
         if (ctxt->error != NULL)
             ctxt->error(ctxt->userData, "Element %s not declared\n",
                         root->name);
     } else if ((elemDecl->flags & XML_SCHEMAS_ELEM_TOPLEVEL) == 0) {
 	ctxt->err = XML_SCHEMAS_ERR_NOTTOPLEVEL;
+	ctxt->nberrors++;
         if (ctxt->error != NULL)
             ctxt->error(ctxt->userData, "Root element %s not toplevel\n",
                         root->name);

@@ -116,6 +116,7 @@ struct _xmlSchemaAttribute {
     int occurs;
     xmlChar *defValue;
     xmlSchemaTypePtr subtypes;
+    xmlNodePtr node;
 };
 
 /**
@@ -136,6 +137,7 @@ struct _xmlSchemaAttributeGroup {
     xmlSchemaAnnotPtr annot;
 
     xmlSchemaAttributePtr attributes;
+    xmlNodePtr node;
 };
 
 

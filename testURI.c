@@ -27,6 +27,10 @@ int main(int argc, char **argv) {
     const char *base = NULL;
     xmlChar *composite;
 
+    if (argv[arg] == NULL) {
+	printf("Usage: %s [-base URI] URI ...\n", argv[0]);
+	exit(0);
+    }
     if ((!strcmp(argv[arg], "-base")) || (!strcmp(argv[arg], "--base"))) {
 	arg++;
 	base = argv[arg];
@@ -78,8 +82,7 @@ int main(int argc, char **argv) {
 		}
 	    } else {
 		composite = xmlBuildURI((xmlChar *)argv[arg], (xmlChar *) base);
-		if (base == NULL) {
-		} else {
+		if (composite != NULL) {
 		    printf("%s\n", composite);
 		    xmlFree(composite);
 		}

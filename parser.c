@@ -443,6 +443,7 @@ xmlParserInputRead(xmlParserInputPtr in, int len) {
     if (in->base == NULL) return(-1);
     if (in->cur == NULL) return(-1);
     if (in->buf->buffer == NULL) return(-1);
+    if (in->buf->readcallback == NULL) return(-1);
 
     CHECK_BUFFER(in);
 
@@ -2484,7 +2485,15 @@ xmlStringDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int what,
 	    }
 	} else if ((c == '&') && (what & XML_SUBSTITUTE_REF)) {
 	    ent = xmlParseStringEntityRef(ctxt, &str);
-	    if ((ent != NULL) && (ent->content != NULL)) {
+	    if ((ent != NULL) && (ent->etype == XML_INTERNAL_PREDEFINED_ENTITY)) {
+		if (ent->content != NULL) {
+		    COPY_BUF(0,buffer,nbchars,ent->content[0]);
+		} else {
+		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+			ctxt->sax->error(ctxt->userData,
+			    "internal error entity has no content\n");
+		}
+	    } else if ((ent != NULL) && (ent->content != NULL)) {
 		xmlChar *rep;
 
 		ctxt->depth++;
@@ -2833,15 +2842,24 @@ xmlSwitchToEncoding(xmlParserCtxtPtr ctxt, xmlCharEncodingHandlerPtr handler)
 		    ctxt->input->buf->raw = ctxt->input->buf->buffer;
 		    ctxt->input->buf->buffer = xmlBufferCreate();
 
-		    /*
-		     * convert just enough to get
-		     * '<?xml version="1.0" encoding="xxx"?>'
-		     * parsed with the autodetected encoding
-		     * into the parser reading buffer.
-		     */
-		    nbchars = xmlCharEncFirstLine(ctxt->input->buf->encoder,
-		                                  ctxt->input->buf->buffer,
-					          ctxt->input->buf->raw);
+		    if (ctxt->html) {
+			/*
+			 * converst as much as possbile of the buffer
+			 */
+			nbchars = xmlCharEncInFunc(ctxt->input->buf->encoder,
+				                   ctxt->input->buf->buffer,
+						   ctxt->input->buf->raw);
+		    } else {
+			/*
+			 * convert just enough to get
+			 * '<?xml version="1.0" encoding="xxx"?>'
+			 * parsed with the autodetected encoding
+			 * into the parser reading buffer.
+			 */
+			nbchars = xmlCharEncFirstLine(ctxt->input->buf->encoder,
+						      ctxt->input->buf->buffer,
+						      ctxt->input->buf->raw);
+		    }
 		    if (nbchars < 0) {
 			fprintf(stderr, "xmlSwitchToEncoding: encoder error\n");
 			return(-1);

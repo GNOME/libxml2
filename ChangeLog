@@ -1,3 +1,10 @@
+Wed Aug 23 00:23:41 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* parser.c: Fixed Bug#21552: libxml fails to decode &amp;
+	* uri.c testUri.c patches, by Marc Sanfacon (1 left)
+	* parser.c HTMLparser.c: HTML/encoding push problems reportedi
+	  by Wayne Davison
+
 Sun Aug 20 17:03:38 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* nanoftp.c nanohttp.c: small cleanup

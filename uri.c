@@ -1024,6 +1024,7 @@ xmlParseURIPathSegments(xmlURIPtr uri, const char **str, int slash) {
 	    *str = cur;
 	    return(-1);
 	}
+	path[len] = '\0';
 	if (uri->path != NULL)
 	    memcpy(path, uri->path, len2);
 	if (slash) {
@@ -1614,6 +1615,13 @@ xmlBuildURI(const xmlChar *URI, const xmlChar *base) {
      */
     if (ref->path != NULL) {
 	index = 0;
+	/*
+	 * Ensure the path includes a '/'
+	 */
+	if (res->path[0] != '/' && ref->path[0] != 0 &&
+	    ref->path[index] != '/') {
+	    res->path[out++] = '/';
+	}
 	while (ref->path[index] != 0) {
 	    res->path[out++] = ref->path[index++];
 	}

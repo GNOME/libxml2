@@ -4220,8 +4220,10 @@ htmlParseChunk(htmlParserCtxtPtr ctxt, const char *chunk, int size,
 
 	if ((terminate) || (ctxt->input->buf->buffer->use > 80))
 	    htmlParseTryOrFinish(ctxt, terminate);
-    } else if (ctxt->instate != XML_PARSER_EOF)
+    } else if (ctxt->instate != XML_PARSER_EOF) {
+	xmlParserInputBufferPush(ctxt->input->buf, 0, "");
         htmlParseTryOrFinish(ctxt, terminate);
+    }
     if (terminate) {
 	if ((ctxt->instate != XML_PARSER_EOF) &&
 	    (ctxt->instate != XML_PARSER_EPILOG) &&

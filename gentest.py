@@ -628,7 +628,12 @@ def generate_test(module, node):
 	if is_known_param_type(type, rtype) == 0:
 	    add_missing_type(type, name);
 	    no_gen = 1
-	t_args.append((nam, type, rtype, info))
+        if (type[-3:] == 'Ptr' or type[-4:] == '_ptr') and \
+	    rtype[0:6] == 'const ':
+	    crtype = rtype[6:]
+	else:
+	    crtype = rtype
+	t_args.append((nam, type, rtype, crtype, info))
     
     try:
 	rets = node.xpathEval("return")
@@ -688,12 +693,7 @@ test_%s(void) {
 
     # Declare the arguments
     for arg in t_args:
-        (nam, type, rtype, info) = arg;
-        if (type[-3:] == 'Ptr' or type[-4:] == '_ptr') and \
-	    rtype[0:6] == 'const ':
-	    crtype = rtype[6:]
-	else:
-	    crtype = rtype
+        (nam, type, rtype, crtype, info) = arg;
 	# add declaration
 	test.write("    %s %s; /* %s */\n" % (crtype, nam, info))
 	test.write("    int n_%s;\n" % (nam))
@@ -701,7 +701,7 @@ test_%s(void) {
 
     # Cascade loop on of each argument list of values
     for arg in t_args:
-        (nam, type, rtype, info) = arg;
+        (nam, type, rtype, crtype, info) = arg;
 	#
 	test.write("    for (n_%s = 0;n_%s < gen_nb_%s;n_%s++) {\n" % (
 	           nam, nam, type, nam))
@@ -713,7 +713,7 @@ test_%s(void) {
     # prepare the call
     i = 0;
     for arg in t_args:
-        (nam, type, rtype, info) = arg;
+        (nam, type, rtype, crtype, info) = arg;
 	#
 	test.write("        %s = gen_%s(n_%s, %d);\n" % (nam, type, nam, i))
 	i = i + 1;
@@ -725,11 +725,13 @@ test_%s(void) {
 	test.write("\n        ret_val = %s(" % (name))
 	need = 0
 	for arg in t_args:
-	    (nam, type, rtype, info) = arg
+	    (nam, type, rtype, crtype, info) = arg
 	    if need:
 	        test.write(", ")
 	    else:
 	        need = 1
+	    if rtype != crtype:
+	        test.write("(%s)" % rtype)
 	    test.write("%s" % nam);
 	test.write(");\n")
 	if extra_post_call.has_key(name):
@@ -739,11 +741,13 @@ test_%s(void) {
 	test.write("\n        %s(" % (name));
 	need = 0;
 	for arg in t_args:
-	    (nam, type, rtype, info) = arg;
+	    (nam, type, rtype, crtype, info) = arg;
 	    if need:
 	        test.write(", ")
 	    else:
 	        need = 1
+	    if rtype != crtype:
+	        test.write("(%s)" % rtype)
 	    test.write("%s" % nam)
 	test.write(");\n")
 	if extra_post_call.has_key(name):
@@ -754,9 +758,12 @@ test_%s(void) {
     # Free the arguments
     i = 0;
     for arg in t_args:
-        (nam, type, rtype, info) = arg;
+        (nam, type, rtype, crtype, info) = arg;
 	#
-	test.write("        des_%s(n_%s, %s, %d);\n" % (type, nam, nam, i))
+	test.write("        des_%s(n_%s, " % (type, nam))
+	if rtype != crtype:
+	    test.write("(%s)" % rtype)
+	test.write("%s, %d);\n" % (nam, i))
 	i = i + 1;
 
     test.write("        xmlResetLastError();\n");
@@ -768,7 +775,7 @@ test_%s(void) {
 	    test_ret++;
 """ % (name));
 	for arg in t_args:
-	    (nam, type, rtype, info) = arg;
+	    (nam, type, rtype, crtype, info) = arg;
 	    test.write("""            printf(" %%d", n_%s);\n""" % (nam))
 	test.write("""            printf("\\n");\n""")
 	test.write("        }\n")

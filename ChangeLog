@@ -1,3 +1,9 @@
+Fri Nov 12 23:58:14 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* xpath.c: trivial change (changed CHECK_CONTEXT to CHECK_CTXT
+	  on a couple of lines)
+	* gentest.py, testapi.c: enhanced to reduce compilation warnings
+
 Fri Nov 12 16:12:48 CET 2004 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: Un-commented a TODO in xmlSchemaParseElement.

@@ -3931,9 +3931,13 @@ xmlXPathFreeContext(xmlXPathContextPtr ctxt) {
 
 #define CHECK_CTXT(ctxt)						\
     if (ctxt == NULL) { 						\
-        xmlGenericError(xmlGenericErrorContext,				\
-		"%s:%d Internal error: ctxt == NULL\n",			\
-	        __FILE__, __LINE__);					\
+	__xmlRaiseError(NULL, NULL, NULL,				\
+		NULL, NULL, XML_FROM_XPATH,				\
+		XML_ERR_INTERNAL_ERROR, XML_ERR_FATAL,			\
+		__FILE__, __LINE__,					\
+		NULL, NULL, NULL, 0, 0,					\
+		"NULL context pointer\n");				\
+	return(NULL);							\
     }									\
 
 
@@ -11105,11 +11109,11 @@ xmlXPathCompiledEval(xmlXPathCompExprPtr comp, xmlXPathContextPtr ctx) {
     static int reentance = 0;
 #endif
 
-    if ((comp == NULL) || (ctx == NULL))
+    CHECK_CTXT(ctx)
+
+    if (comp == NULL)
 	return(NULL);
     xmlXPathInit();
-
-    CHECK_CONTEXT(ctx)
 
 #ifndef LIBXML_THREAD_ENABLED
     reentance++;
@@ -11194,9 +11198,9 @@ xmlXPathEval(const xmlChar *str, xmlXPathContextPtr ctx) {
     xmlXPathObjectPtr res, tmp, init = NULL;
     int stack = 0;
 
-    xmlXPathInit();
+    CHECK_CTXT(ctx)
 
-    CHECK_CONTEXT(ctx)
+    xmlXPathInit();
 
     ctxt = xmlXPathNewParserContext(str, ctx);
     xmlXPathEvalExpr(ctxt);
@@ -11250,9 +11254,9 @@ xmlXPathEvalExpression(const xmlChar *str, xmlXPathContextPtr ctxt) {
     xmlXPathObjectPtr res, tmp;
     int stack = 0;
 
-    xmlXPathInit();
+    CHECK_CTXT(ctxt)
 
-    CHECK_CONTEXT(ctxt)
+    xmlXPathInit();
 
     pctxt = xmlXPathNewParserContext(str, ctxt);
     xmlXPathEvalExpr(pctxt);

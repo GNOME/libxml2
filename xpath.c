@@ -5464,7 +5464,6 @@ xmlXPathEvalExpr(xmlXPathParserContextPtr ctxt) {
  * xmlXPathEvaluatePredicateResult:
  * @ctxt:  the XPath Parser context
  * @res:  the Predicate Expression evaluation result
- * @index:  index of the current node in the current list
  *
  * Evaluate a predicate result for the current node.
  * A PredicateExpr is evaluated by evaluating the Expr and converting
@@ -5474,6 +5473,8 @@ xmlXPathEvalExpr(xmlXPathParserContextPtr ctxt) {
  * function) and will be converted to false otherwise; if the result
  * is not a number, then the result will be converted as if by a call
  * to the boolean function. 
+ *
+ * Return 1 if predicate is true, 0 otherwise
  */
 int
 xmlXPathEvaluatePredicateResult(xmlXPathParserContextPtr ctxt, 

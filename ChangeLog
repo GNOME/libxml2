@@ -1,3 +1,9 @@
+Sat Feb  3 09:50:29 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xmliO.c: Harry Blundell pointed out that xmlCheckFilename
+	  xmlCheckFilename should not be called from xmlFileOpenW
+	  and xmlGzfileOpenW
+
 Fri Feb  2 18:04:35 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* uri.c: rewrite of xmlNormalizeURIPath from Paul D. Smith

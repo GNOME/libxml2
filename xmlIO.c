@@ -368,8 +368,6 @@ xmlFileOpenW (const char *filename) {
 
     if (path == NULL)
 	return(NULL);
-    if (!xmlCheckFilename(path))
-        return(NULL);
 
     fd = fopen(path, "w");
     return((void *) fd);
@@ -512,8 +510,6 @@ xmlGzfileOpenW (const char *filename, int compression) {
 
     if (path == NULL)
 	return(NULL);
-    if (!xmlCheckFilename(path))
-        return(NULL);
 
     fd = gzopen(path, mode);
     return((void *) fd);

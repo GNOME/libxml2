@@ -115,7 +115,7 @@ SIZE="3"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN8143"
+NAME="AEN8338"
 ></A
 ><H2
 >Name</H2
@@ -123,7 +123,7 @@ NAME="AEN8143"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN8146"
+NAME="AEN8341"
 ></A
 ><H2
 >Synopsis</H2
@@ -251,7 +251,31 @@ HREF="gnome-xml-tree.html#XMLCHAR"
                                              <GTKDOCLINK
 HREF="XMLXPATHCONTEXTPTR"
 >xmlXPathContextPtr</GTKDOCLINK
-> ctxt);</PRE
+> ctxt);
+<GTKDOCLINK
+HREF="XMLNODESETPTR"
+>xmlNodeSetPtr</GTKDOCLINK
+> <A
+HREF="gnome-xml-xpath.html#XMLXPATHNODESETCREATE"
+>xmlXPathNodeSetCreate</A
+>         (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> val);
+void        <A
+HREF="gnome-xml-xpath.html#XMLXPATHFREENODESETLIST"
+>xmlXPathFreeNodeSetList</A
+>         (<GTKDOCLINK
+HREF="XMLXPATHOBJECTPTR"
+>xmlXPathObjectPtr</GTKDOCLINK
+> obj);
+void        <A
+HREF="gnome-xml-xpath.html#XMLXPATHFREENODESET"
+>xmlXPathFreeNodeSet</A
+>             (<GTKDOCLINK
+HREF="XMLNODESETPTR"
+>xmlNodeSetPtr</GTKDOCLINK
+> obj);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -259,7 +283,7 @@ HREF="XMLXPATHCONTEXTPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN8180"
+NAME="AEN8382"
 ></A
 ><H2
 >Description</H2
@@ -269,14 +293,14 @@ NAME="AEN8180"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN8183"
+NAME="AEN8385"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8185"
+NAME="AEN8387"
 ></A
 ><H3
 ><A
@@ -292,7 +316,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define     XPATH_UNDEFINED</PRE
+>#define XPATH_UNDEFINED	0</PRE
 ></TD
 ></TR
 ></TABLE
@@ -302,7 +326,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8190"
+NAME="AEN8392"
 ></A
 ><H3
 ><A
@@ -318,7 +342,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define     XPATH_NODESET</PRE
+>#define XPATH_NODESET	1</PRE
 ></TD
 ></TR
 ></TABLE
@@ -328,7 +352,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8195"
+NAME="AEN8397"
 ></A
 ><H3
 ><A
@@ -344,7 +368,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define     XPATH_BOOLEAN</PRE
+>#define XPATH_BOOLEAN	2</PRE
 ></TD
 ></TR
 ></TABLE
@@ -354,7 +378,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8200"
+NAME="AEN8402"
 ></A
 ><H3
 ><A
@@ -370,7 +394,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define     XPATH_NUMBER</PRE
+>#define XPATH_NUMBER	3</PRE
 ></TD
 ></TR
 ></TABLE
@@ -380,7 +404,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8205"
+NAME="AEN8407"
 ></A
 ><H3
 ><A
@@ -396,7 +420,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define     XPATH_STRING</PRE
+>#define XPATH_STRING	4</PRE
 ></TD
 ></TR
 ></TABLE
@@ -406,7 +430,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8210"
+NAME="AEN8412"
 ></A
 ><H3
 ><A
@@ -422,7 +446,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define     XPATH_USERS</PRE
+>#define XPATH_USERS	5</PRE
 ></TD
 ></TR
 ></TABLE
@@ -432,7 +456,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8215"
+NAME="AEN8417"
 ></A
 ><H3
 ><A
@@ -526,7 +550,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8238"
+NAME="AEN8440"
 ></A
 ><H3
 ><A
@@ -605,7 +629,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8257"
+NAME="AEN8459"
 ></A
 ><H3
 ><A
@@ -705,7 +729,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8282"
+NAME="AEN8484"
 ></A
 ><H3
 ><A
@@ -784,7 +808,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8301"
+NAME="AEN8503"
 ></A
 ><H3
 ><A
@@ -840,7 +864,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the XML document</TD
 ></TR
 ><TR
 ><TD
@@ -855,7 +879,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the xmlXPathContext just allocated.</TD
 ></TR
 ></TABLE
 ><P
@@ -865,7 +889,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8322"
+NAME="AEN8524"
 ></A
 ><H3
 ><A
@@ -918,7 +942,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the context to free</TD
 ></TR
 ></TABLE
 ><P
@@ -928,7 +952,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8338"
+NAME="AEN8540"
 ></A
 ><H3
 ><A
@@ -988,7 +1012,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the XPath expression</TD
 ></TR
 ><TR
 ><TD
@@ -1005,7 +1029,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the XPath context</TD
 ></TR
 ><TR
 ><TD
@@ -1020,7 +1044,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the xmlXPathObjectPtr resulting from the eveluation or NULL.
+the caller has to free the object.</TD
 ></TR
 ></TABLE
 ><P
@@ -1030,7 +1055,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8364"
+NAME="AEN8566"
 ></A
 ><H3
 ><A
@@ -1083,7 +1108,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the object to free</TD
 ></TR
 ></TABLE
 ><P
@@ -1093,7 +1118,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8380"
+NAME="AEN8582"
 ></A
 ><H3
 ><A
@@ -1153,7 +1178,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the XPath expression</TD
 ></TR
 ><TR
 ><TD
@@ -1170,7 +1195,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the XPath context</TD
 ></TR
 ><TR
 ><TD
@@ -1185,7 +1210,229 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the xmlXPathObjectPtr resulting from the evaluation or NULL.
+the caller has to free the object.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN8608"
+></A
+><H3
+><A
+NAME="XMLXPATHNODESETCREATE"
+></A
+>xmlXPathNodeSetCreate ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLNODESETPTR"
+>xmlNodeSetPtr</GTKDOCLINK
+> xmlXPathNodeSetCreate         (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> val);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Create a new xmlNodeSetPtr of type double and of value <TT
+CLASS="PARAMETER"
+><I
+>val</I
+></TT
+></P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>val</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an initial xmlNodePtr, or NULL</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the newly created object.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN8630"
+></A
+><H3
+><A
+NAME="XMLXPATHFREENODESETLIST"
+></A
+>xmlXPathFreeNodeSetList ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlXPathFreeNodeSetList         (<GTKDOCLINK
+HREF="XMLXPATHOBJECTPTR"
+>xmlXPathObjectPtr</GTKDOCLINK
+> obj);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Free up the xmlXPathObjectPtr <TT
+CLASS="PARAMETER"
+><I
+>obj</I
+></TT
+> but don't deallocate the objects in
+the list contrary to <A
+HREF="gnome-xml-xpath.html#XMLXPATHFREEOBJECT"
+>xmlXPathFreeObject</A
+>().</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>obj</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an existing NodeSetList object</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN8648"
+></A
+><H3
+><A
+NAME="XMLXPATHFREENODESET"
+></A
+>xmlXPathFreeNodeSet ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlXPathFreeNodeSet             (<GTKDOCLINK
+HREF="XMLNODESETPTR"
+>xmlNodeSetPtr</GTKDOCLINK
+> obj);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Free the NodeSet compound (not the actual nodes !).</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>obj</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlNodeSetPtr to free</TD
 ></TR
 ></TABLE
 ><P

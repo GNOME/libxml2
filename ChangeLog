@@ -1,3 +1,7 @@
+Tue Dec 28 17:42:41 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* doc/* : rebuilt the documentation
+
 Tue Dec 28 18:44:22 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* parser.[ch] parserInternals.h: Push parser for XML,

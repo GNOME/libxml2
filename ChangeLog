@@ -1,3 +1,7 @@
+Fri Aug 29 12:25:01 CEST 2003 Igor Zlatkovic <igor@zlatkovic.com>
+
+	* win32/Makefile.bcb: updates by Eric Zurcher
+
 Thu Aug 28 22:58:38 PDT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* doc/apibuild.py, doc/libxml2-api.xml: enhanced code

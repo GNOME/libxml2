@@ -155,6 +155,7 @@ UTF8Toascii(unsigned char* out, int *outlen,
     unsigned int c, d;
     int trailing;
 
+    if ((out == NULL) || (outlen == NULL) || (inlen == NULL)) return(-1);
     if (in == NULL) {
         /*
 	 * initialization nothing to do
@@ -232,10 +233,14 @@ isolat1ToUTF8(unsigned char* out, int *outlen,
               const unsigned char* in, int *inlen) {
     unsigned char* outstart = out;
     const unsigned char* base = in;
-    unsigned char* outend = out + *outlen;
+    unsigned char* outend;
     const unsigned char* inend;
     const unsigned char* instop;
 
+    if ((out == NULL) || (in == NULL) || (outlen == NULL) || (inlen == NULL))
+	return(-1);
+
+    outend = out + *outlen;
     inend = in + (*inlen);
     instop = inend;
     
@@ -322,6 +327,7 @@ UTF8Toisolat1(unsigned char* out, int *outlen,
     unsigned int c, d;
     int trailing;
 
+    if ((out == NULL) || (outlen == NULL) || (inlen == NULL)) return(-1);
     if (in == NULL) {
         /*
 	 * initialization nothing to do
@@ -503,6 +509,7 @@ UTF8ToUTF16LE(unsigned char* outb, int *outlen,
     unsigned short tmp1, tmp2;
 
     /* UTF16LE encoding has no BOM */
+    if ((out == NULL) || (outlen == NULL) || (inlen == NULL)) return(-1);
     if (in == NULL) {
 	*outlen = 0;
 	*inlen = 0;
@@ -743,6 +750,7 @@ UTF8ToUTF16BE(unsigned char* outb, int *outlen,
     unsigned short tmp1, tmp2;
 
     /* UTF-16BE has no BOM */
+    if ((outb == NULL) || (outlen == NULL) || (inlen == NULL)) return(-1);
     if (in == NULL) {
 	*outlen = 0;
 	*inlen = 0;
@@ -839,6 +847,8 @@ UTF8ToUTF16BE(unsigned char* outb, int *outlen,
 xmlCharEncoding
 xmlDetectCharEncoding(const unsigned char* in, int len)
 {
+    if (in == NULL) 
+        return(XML_CHAR_ENCODING_NONE);
     if (len >= 4) {
 	if ((in[0] == 0x00) && (in[1] == 0x00) &&
 	    (in[2] == 0x00) && (in[3] == 0x3C))
@@ -1653,15 +1663,17 @@ xmlFindCharEncodingHandler(const char *name) {
  * The value of @outlen after return is the number of ocetes consumed.
  */
 static int
-xmlIconvWrapper(iconv_t cd,
-    unsigned char *out, int *outlen,
-    const unsigned char *in, int *inlen) {
-
-    size_t icv_inlen = *inlen, icv_outlen = *outlen;
+xmlIconvWrapper(iconv_t cd, unsigned char *out, int *outlen,
+                const unsigned char *in, int *inlen) {
+    size_t icv_inlen, icv_outlen;
     const char *icv_in = (const char *) in;
     char *icv_out = (char *) out;
     int ret;
 
+    if ((out == NULL) || (outlen == NULL) || (inlen == NULL) || (in == NULL))
+        return(-1);
+    icv_inlen = *inlen;
+    icv_outlen = *outlen;
     ret = iconv(cd, (char **) &icv_in, &icv_inlen, &icv_out, &icv_outlen);
     if (in != NULL) {
         *inlen -= icv_inlen;
@@ -2203,6 +2215,9 @@ UTF8ToISO8859x(unsigned char* out, int *outlen,
     const unsigned char* inend;
     const unsigned char* instart = in;
 
+    if ((out == NULL) || (outlen == NULL) || (inlen == NULL) ||
+        (xlattable == NULL))
+	return(-1);
     if (in == NULL) {
         /*
         * initialization nothing to do
@@ -2311,12 +2326,18 @@ ISO8859xToUTF8(unsigned char* out, int *outlen,
               const unsigned char* in, int *inlen,
               unsigned short const *unicodetable) {
     unsigned char* outstart = out;
-    unsigned char* outend = out + *outlen;
+    unsigned char* outend;
     const unsigned char* instart = in;
-    const unsigned char* inend = in + *inlen;
+    const unsigned char* inend;
     const unsigned char* instop = inend;
-    unsigned int c = *in;
+    unsigned int c;
 
+    if ((out == NULL) || (outlen == NULL) || (inlen == NULL) ||
+        (in == NULL) || (xlattable == NULL))
+	return(-1);
+    outend = out + *outlen;
+    inend = in + *inlen;
+    c = *in;
     while (in < inend && out < outend - 1) {
         if (c >= 0x80) {
             c = unicodetable [c - 0x80];

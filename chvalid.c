@@ -166,6 +166,8 @@ xmlCharInRange (unsigned int val, const xmlChRangeGroupPtr rptr) {
     int low, high, mid;
     xmlChSRangePtr sptr;
     xmlChLRangePtr lptr;
+
+    if (rptr == NULL) return(0);
     if (val < 0x10000) {	/* is val in 'short' or 'long'  array? */
 	if (rptr->nbShortRange == 0)
 	    return 0;

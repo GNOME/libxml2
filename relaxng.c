@@ -7671,6 +7671,8 @@ xmlRelaxNGDumpGrammar(FILE * output, xmlRelaxNGGrammarPtr grammar, int top)
 void
 xmlRelaxNGDump(FILE * output, xmlRelaxNGPtr schema)
 {
+    if (output == NULL)
+        return;
     if (schema == NULL) {
         fprintf(output, "RelaxNG empty or failed to compile\n");
         return;
@@ -7700,6 +7702,8 @@ xmlRelaxNGDump(FILE * output, xmlRelaxNGPtr schema)
 void
 xmlRelaxNGDumpTree(FILE * output, xmlRelaxNGPtr schema)
 {
+    if (output == NULL)
+        return;
     if (schema == NULL) {
         fprintf(output, "RelaxNG empty or failed to compile\n");
         return;

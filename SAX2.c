@@ -1423,7 +1423,7 @@ xmlSAX2StartElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
     xmlGenericError(xmlGenericErrorContext,
 	    "SAX.xmlSAX2StartElement(%s)\n", fullname);
 #endif
-    if (ctx == NULL) return;
+    if ((ctx == NULL) || (fullname == NULL)) return;
 
     /*
      * First check on validity:

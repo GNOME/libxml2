@@ -642,7 +642,7 @@ void
 xmlXPtrLocationSetAdd(xmlLocationSetPtr cur, xmlXPathObjectPtr val) {
     int i;
 
-    if (val == NULL) return;
+    if ((cur == NULL) || (val == NULL)) return;
 
     /*
      * check against doublons
@@ -2227,6 +2227,7 @@ xmlXPtrRangeToFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     xmlNodeSetPtr oldset;
     int i;
 
+    if (ctxt == NULL) return;
     CHECK_ARITY(1);
     /*
      * Save the expression pointer since we will have to evaluate
@@ -2903,6 +2904,8 @@ xmlXPtrEvalRangePredicate(xmlXPathParserContextPtr ctxt) {
     xmlLocationSetPtr newset = NULL;
     xmlLocationSetPtr oldset;
     int i;
+
+    if (ctxt == NULL) return;
 
     SKIP_BLANKS;
     if (CUR != '[') {

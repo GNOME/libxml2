@@ -1517,6 +1517,8 @@ xmlCopyElementTable(xmlElementTablePtr table) {
  */
 void
 xmlDumpElementDecl(xmlBufferPtr buf, xmlElementPtr elem) {
+    if ((buf == NULL) || (elem == NULL))
+        return;
     switch (elem->etype) {
 	case XML_ELEMENT_TYPE_EMPTY:
 	    xmlBufferWriteChar(buf, "<!ELEMENT ");
@@ -1587,6 +1589,8 @@ xmlDumpElementDeclScan(xmlElementPtr elem, xmlBufferPtr buf) {
  */
 void
 xmlDumpElementTable(xmlBufferPtr buf, xmlElementTablePtr table) {
+    if ((buf == NULL) || (table == NULL))
+        return;
     xmlHashScan(table, (xmlHashScanner) xmlDumpElementDeclScan, buf);
 }
 #endif /* LIBXML_OUTPUT_ENABLED */
@@ -1666,7 +1670,8 @@ xmlCopyEnumeration(xmlEnumerationPtr cur) {
  */
 static void
 xmlDumpEnumeration(xmlBufferPtr buf, xmlEnumerationPtr cur) {
-    if (cur == NULL)  return;
+    if ((buf == NULL) || (cur == NULL))
+        return;
     
     xmlBufferWriteCHAR(buf, cur->name);
     if (cur->next == NULL)
@@ -2073,6 +2078,8 @@ xmlCopyAttributeTable(xmlAttributeTablePtr table) {
  */
 void
 xmlDumpAttributeDecl(xmlBufferPtr buf, xmlAttributePtr attr) {
+    if ((buf == NULL) || (attr == NULL))
+        return;
     xmlBufferWriteChar(buf, "<!ATTLIST ");
     xmlBufferWriteCHAR(buf, attr->elem);
     xmlBufferWriteChar(buf, " ");
@@ -2164,6 +2171,8 @@ xmlDumpAttributeDeclScan(xmlAttributePtr attr, xmlBufferPtr buf) {
  */
 void
 xmlDumpAttributeTable(xmlBufferPtr buf, xmlAttributeTablePtr table) {
+    if ((buf == NULL) || (table == NULL))
+        return;
     xmlHashScan(table, (xmlHashScanner) xmlDumpAttributeDeclScan, buf);
 }
 #endif /* LIBXML_OUTPUT_ENABLED */
@@ -2347,6 +2356,8 @@ xmlCopyNotationTable(xmlNotationTablePtr table) {
  */
 void
 xmlDumpNotationDecl(xmlBufferPtr buf, xmlNotationPtr nota) {
+    if ((buf == NULL) || (nota == NULL))
+        return;
     xmlBufferWriteChar(buf, "<!NOTATION ");
     xmlBufferWriteCHAR(buf, nota->name);
     if (nota->PublicID != NULL) {
@@ -2384,6 +2395,8 @@ xmlDumpNotationDeclScan(xmlNotationPtr nota, xmlBufferPtr buf) {
  */
 void
 xmlDumpNotationTable(xmlBufferPtr buf, xmlNotationTablePtr table) {
+    if ((buf == NULL) || (table == NULL))
+        return;
     xmlHashScan(table, (xmlHashScanner) xmlDumpNotationDeclScan, buf);
 }
 #endif /* LIBXML_OUTPUT_ENABLED */

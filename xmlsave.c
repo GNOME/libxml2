@@ -1436,6 +1436,7 @@ xmlSaveDoc(xmlSaveCtxtPtr ctxt, xmlDocPtr doc)
 {
     long ret = 0;
 
+    if ((ctxt == NULL) || (doc == NULL)) return(-1);
     xmlDocContentDumpOutput(ctxt, doc);
     return(ret);
 }
@@ -1456,6 +1457,7 @@ xmlSaveTree(xmlSaveCtxtPtr ctxt, xmlNodePtr node)
 {
     long ret = 0;
 
+    if ((ctxt == NULL) || (node == NULL)) return(-1);
     xmlNodeDumpOutputInternal(ctxt, node);
     return(ret);
 }

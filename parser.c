@@ -10384,6 +10384,8 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
     xmlChar start[4];
     xmlCharEncoding enc;
 
+    if (ctx == NULL) return(-1);
+
     if (ctx->depth > 40) {
 	return(XML_ERR_ENTITY_LOOP);
     }

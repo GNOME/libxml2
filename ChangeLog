@@ -1,3 +1,14 @@
+Fri Nov  5 18:19:23 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* gentest.py testapi.c: autogenerate a minimal NULL value sequence
+	  for unknown pointer types
+	* HTMLparser.c SAX2.c chvalid.c encoding.c entities.c parser.c
+	  parserInternals.c relaxng.c valid.c xmlIO.c xmlreader.c 
+	  xmlsave.c xmlschemas.c xmlschemastypes.c xmlstring.c xpath.c
+	  xpointer.c: This uncovered an impressive amount of entry points
+	  not checking for NULL pointers when they ought to, closing all
+	  the open gaps.
+
 Fri Nov  5 16:26:28 UTC 2004 William Brack <wbrack@mmm.com.hk>
 
 	* catalog.c: fixed problem with NULL entry (bug 157407)

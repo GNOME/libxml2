@@ -3932,16 +3932,19 @@ xmlXPathFreeContext(xmlXPathContextPtr ctxt) {
         xmlGenericError(xmlGenericErrorContext,				\
 		"%s:%d Internal error: no context\n",			\
 	        __FILE__, __LINE__);					\
+	return(NULL);							\
     }									\
     else if (ctxt->doc == NULL) { 					\
         xmlGenericError(xmlGenericErrorContext,				\
 		"%s:%d Internal error: no document\n",			\
 	        __FILE__, __LINE__);					\
+	return(NULL);							\
     }									\
     else if (ctxt->doc->children == NULL) { 				\
         xmlGenericError(xmlGenericErrorContext,				\
 	        "%s:%d Internal error: document without root\n",	\
 	        __FILE__, __LINE__);					\
+	return(NULL);							\
     }									\
 
 
@@ -10915,7 +10918,7 @@ xmlXPathRunEval(xmlXPathParserContextPtr ctxt) {
  */
 int
 xmlXPathEvalPredicate(xmlXPathContextPtr ctxt, xmlXPathObjectPtr res) {
-    if (res == NULL) return(0);
+    if ((ctxt == NULL) || (res == NULL)) return(0);
     switch (res->type) {
         case XPATH_BOOLEAN:
 	    return(res->boolval);
@@ -10954,7 +10957,7 @@ xmlXPathEvalPredicate(xmlXPathContextPtr ctxt, xmlXPathObjectPtr res) {
 int
 xmlXPathEvaluatePredicateResult(xmlXPathParserContextPtr ctxt, 
                                 xmlXPathObjectPtr res) {
-    if (res == NULL) return(0);
+    if ((ctxt == NULL) || (res == NULL)) return(0);
     switch (res->type) {
         case XPATH_BOOLEAN:
 	    return(res->boolval);

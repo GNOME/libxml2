@@ -72,6 +72,10 @@ extra_pre_call = {
        "if (sax == (xmlSAXHandlerPtr)&xmlDefaultSAXHandler) user_data = NULL;",
    "xmlSAXUserParseMemory":
        "if (sax == (xmlSAXHandlerPtr)&xmlDefaultSAXHandler) user_data = NULL;",
+   "xmlParseBalancedChunkMemory":
+       "if (sax == (xmlSAXHandlerPtr)&xmlDefaultSAXHandler) user_data = NULL;",
+   "xmlParseBalancedChunkMemoryRecover":
+       "if (sax == (xmlSAXHandlerPtr)&xmlDefaultSAXHandler) user_data = NULL;",
 }
 extra_post_call = {
    "xmlAddChild": 
@@ -145,6 +149,14 @@ def add_missing_type(name, func):
     except:
         missing_types[name] = [func]
 
+generated_param_types = []
+def add_generated_param_type(name):
+    generated_param_types.append(name)
+
+generated_return_types = []
+def add_generated_return_type(name):
+    generated_return_types.append(name)
+
 missing_functions = {}
 missing_functions_nr = 0
 def add_missing_functions(name, module):
@@ -216,10 +228,32 @@ def type_convert(str, name, info, module, function, pos):
 
 known_param_types = []
 
-def is_known_param_type(name):
+def is_known_param_type(name, rtype):
+    global test
     for type in known_param_types:
         if type == name:
 	    return 1
+    for type in generated_param_types:
+        if type == name:
+	    return 1
+
+    if name[-3:] == 'Ptr' or name[-4:] == '_ptr':
+        if rtype[0:6] == 'const ':
+	    crtype = rtype[6:]
+	else:
+	    crtype = rtype
+
+        test.write("""
+#define gen_nb_%s 1
+static %s gen_%s(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+    return(NULL);
+}
+static void des_%s(int no ATTRIBUTE_UNUSED, %s val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+}
+""" % (name, crtype, name, name, rtype))
+        add_generated_param_type(name)
+        return 1
+
     return 0
 
 #
@@ -383,7 +417,7 @@ def generate_test(module, node):
 	info = arg.xpathEval("string(@info)")
 	nam = arg.xpathEval("string(@name)")
         type = type_convert(rtype, nam, info, module, name, n)
-	if is_known_param_type(type) == 0:
+	if is_known_param_type(type, rtype) == 0:
 	    add_missing_type(type, name);
 	    no_gen = 1
 	t_args.append((nam, type, rtype, info))
@@ -442,8 +476,13 @@ test_%s(void) {
     # Declare the arguments
     for arg in t_args:
         (nam, type, rtype, info) = arg;
+        if (type[-3:] == 'Ptr' or type[-4:] == '_ptr') and \
+	    rtype[0:6] == 'const ':
+	    crtype = rtype[6:]
+	else:
+	    crtype = rtype
 	# add declaration
-	test.write("    %s %s; /* %s */\n" % (rtype, nam, info))
+	test.write("    %s %s; /* %s */\n" % (crtype, nam, info))
 	test.write("    int n_%s;\n" % (nam))
     test.write("\n")
 

@@ -281,6 +281,7 @@ xmlParserInputRead(xmlParserInputPtr in, int len) {
     int used;
     int indx;
 
+    if (in == NULL) return(-1);
 #ifdef DEBUG_INPUT
     xmlGenericError(xmlGenericErrorContext, "Read\n");
 #endif
@@ -330,6 +331,7 @@ xmlParserInputGrow(xmlParserInputPtr in, int len) {
     int ret;
     int indx;
 
+    if (in == NULL) return(-1);
 #ifdef DEBUG_INPUT
     xmlGenericError(xmlGenericErrorContext, "Grow\n");
 #endif
@@ -1798,6 +1800,7 @@ xmlClearParserCtxt(xmlParserCtxtPtr ctxt)
   xmlCtxtReset(ctxt);
 }
 
+
 /**
  * xmlParserFindNodeInfo:
  * @ctx:  an XML parser context
@@ -1807,17 +1810,20 @@ xmlClearParserCtxt(xmlParserCtxtPtr ctxt)
  * 
  * Returns an xmlParserNodeInfo block pointer or NULL
  */
-const xmlParserNodeInfo* xmlParserFindNodeInfo(const xmlParserCtxtPtr ctx,
-                                               const xmlNodePtr node)
+const xmlParserNodeInfo *
+xmlParserFindNodeInfo(const xmlParserCtxtPtr ctx, const xmlNodePtr node)
 {
-  unsigned long pos;
+    unsigned long pos;
 
-  /* Find position where node should be at */
-  pos = xmlParserFindNodeInfoIndex(&ctx->node_seq, node);
-  if (pos < ctx->node_seq.length && ctx->node_seq.buffer[pos].node == node)
-    return &ctx->node_seq.buffer[pos];
-  else
-    return NULL;
+    if ((ctx == NULL) || (node == NULL))
+        return (NULL);
+    /* Find position where node should be at */
+    pos = xmlParserFindNodeInfoIndex(&ctx->node_seq, node);
+    if (pos < ctx->node_seq.length
+        && ctx->node_seq.buffer[pos].node == node)
+        return &ctx->node_seq.buffer[pos];
+    else
+        return NULL;
 }
 
 
@@ -1830,9 +1836,11 @@ const xmlParserNodeInfo* xmlParserFindNodeInfo(const xmlParserCtxtPtr ctx,
 void
 xmlInitNodeInfoSeq(xmlParserNodeInfoSeqPtr seq)
 {
-  seq->length = 0;
-  seq->maximum = 0;
-  seq->buffer = NULL;
+    if (seq == NULL)
+        return;
+    seq->length = 0;
+    seq->maximum = 0;
+    seq->buffer = NULL;
 }
 
 /**
@@ -1845,11 +1853,12 @@ xmlInitNodeInfoSeq(xmlParserNodeInfoSeqPtr seq)
 void
 xmlClearNodeInfoSeq(xmlParserNodeInfoSeqPtr seq)
 {
-  if ( seq->buffer != NULL )
-    xmlFree(seq->buffer);
-  xmlInitNodeInfoSeq(seq);
+    if (seq == NULL)
+        return;
+    if (seq->buffer != NULL)
+        xmlFree(seq->buffer);
+    xmlInitNodeInfoSeq(seq);
 }
-
 
 /**
  * xmlParserFindNodeInfoIndex:
@@ -1862,31 +1871,35 @@ xmlClearNodeInfoSeq(xmlParserNodeInfoSeqPtr seq)
  *
  * Returns a long indicating the position of the record
  */
-unsigned long xmlParserFindNodeInfoIndex(const xmlParserNodeInfoSeqPtr seq,
-                                         const xmlNodePtr node)
+unsigned long
+xmlParserFindNodeInfoIndex(const xmlParserNodeInfoSeqPtr seq,
+                           const xmlNodePtr node)
 {
-  unsigned long upper, lower, middle;
-  int found = 0;
+    unsigned long upper, lower, middle;
+    int found = 0;
 
-  /* Do a binary search for the key */
-  lower = 1;
-  upper = seq->length;
-  middle = 0;
-  while ( lower <= upper && !found) {
-    middle = lower + (upper - lower) / 2;
-    if ( node == seq->buffer[middle - 1].node )
-      found = 1;
-    else if ( node < seq->buffer[middle - 1].node )
-      upper = middle - 1;
+    if ((seq == NULL) || (node == NULL))
+        return (-1);
+
+    /* Do a binary search for the key */
+    lower = 1;
+    upper = seq->length;
+    middle = 0;
+    while (lower <= upper && !found) {
+        middle = lower + (upper - lower) / 2;
+        if (node == seq->buffer[middle - 1].node)
+            found = 1;
+        else if (node < seq->buffer[middle - 1].node)
+            upper = middle - 1;
+        else
+            lower = middle + 1;
+    }
+
+    /* Return position */
+    if (middle == 0 || seq->buffer[middle - 1].node < node)
+        return middle;
     else
-      lower = middle + 1;
-  }
-
-  /* Return position */
-  if ( middle == 0 || seq->buffer[middle - 1].node < node )
-    return middle;
-  else 
-    return middle - 1;
+        return middle - 1;
 }
 
 
@@ -1902,6 +1915,8 @@ xmlParserAddNodeInfo(xmlParserCtxtPtr ctxt,
                      const xmlParserNodeInfoPtr info)
 {
     unsigned long pos;
+
+    if ((ctxt == NULL) || (info == NULL)) return;
 
     /* Find pos and check to see if node is already in the sequence */
     pos = xmlParserFindNodeInfoIndex(&ctxt->node_seq, (xmlNodePtr)

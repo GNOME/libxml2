@@ -2434,6 +2434,8 @@ xmlSchemaTypeDump(xmlSchemaTypePtr type, FILE * output)
 void
 xmlSchemaDump(FILE * output, xmlSchemaPtr schema)
 {
+    if (output == NULL)
+        return;
     if (schema == NULL) {
         fprintf(output, "Schemas: NULL\n");
         return;
@@ -12574,6 +12576,8 @@ xmlSchemaCheckFacet(xmlSchemaFacetPtr facet,
     xmlSchemaTypePtr nonNegativeIntegerType = NULL;
     int ret = 0, reuseValCtxt = 0;
 
+    if ((facet == NULL) || (typeDecl == NULL))
+        return(-1);
     /* 
     * TODO: will the parser context be given if used from
     * the relaxNG module?

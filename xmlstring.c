@@ -745,7 +745,8 @@ xmlGetUTF8Char(const unsigned char *utf, int *len) {
     return(c);
 
 error:
-    *len = 0;
+    if (len != NULL)
+	*len = 0;
     return(-1);
 }
 
@@ -768,6 +769,8 @@ xmlCheckUTF8(const unsigned char *utf)
     int ix;
     unsigned char c;
 
+    if (utf == NULL)
+        return(0);
     /*
      * utf is a string of 1, 2, 3 or 4 bytes.  The valid strings
      * are as follows (in "bit format"):

@@ -470,6 +470,8 @@ xmlSchemaCleanupTypes(void) {
 int
 xmlSchemaIsBuiltInTypeFacet(xmlSchemaTypePtr type, int facetType)
 {
+    if (type == NULL)
+	return (-1);
     if (type->type != XML_SCHEMA_TYPE_BASIC)
 	return (-1);
     switch (type->builtInType) {
@@ -3789,6 +3791,8 @@ xmlSchemaValidateListSimpleTypeFacet(xmlSchemaFacetPtr facet,
 				     unsigned long actualLen,
 				     unsigned long *expectedLen)
 {
+    if (facet == NULL)
+        return(-1);
     /*
     * TODO: Check if this will work with large numbers.
     * (compare value.decimal.mi and value.decimal.hi as well?).
@@ -3844,6 +3848,8 @@ xmlSchemaValidateLengthFacet(xmlSchemaTypePtr type,
 {
     unsigned int len = 0;
 
+    if ((length == NULL) || (facet == NULL) || (type == NULL))
+        return (-1);
     *length = 0;
     if ((facet->type != XML_SCHEMA_FACET_LENGTH) &&
 	(facet->type != XML_SCHEMA_FACET_MAXLENGTH) &&
@@ -3918,6 +3924,8 @@ xmlSchemaValidateFacet(xmlSchemaTypePtr base ATTRIBUTE_UNUSED,
 {
     int ret;
 
+    if ((facet == NULL) || (value == NULL))
+        return(-1);
     switch (facet->type) {
 	case XML_SCHEMA_FACET_PATTERN:
 	    ret = xmlRegexpExec(facet->regexp, value);

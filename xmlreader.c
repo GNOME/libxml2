@@ -3724,6 +3724,8 @@ xmlTextReaderCurrentDoc(xmlTextReaderPtr reader) {
  */
 int
 xmlTextReaderRelaxNGSetSchema(xmlTextReaderPtr reader, xmlRelaxNGPtr schema) {
+    if (reader == NULL)
+        return(-1);
     if (schema == NULL) {
         if (reader->rngSchemas != NULL) {
 	    xmlRelaxNGFree(reader->rngSchemas);
@@ -3963,6 +3965,8 @@ xmlTextReaderLocatorLineNumber(xmlTextReaderLocatorPtr locator) {
     xmlParserCtxtPtr ctx = (xmlParserCtxtPtr)locator;
     int ret = -1;
 
+    if (locator == NULL)
+        return(-1);
     if (ctx->node != NULL) {
 	ret = xmlGetLineNo(ctx->node);
     }
@@ -3997,6 +4001,8 @@ xmlTextReaderLocatorBaseURI(xmlTextReaderLocatorPtr locator) {
     xmlParserCtxtPtr ctx = (xmlParserCtxtPtr)locator;
     xmlChar *ret = NULL;
 
+    if (locator == NULL)
+        return(NULL);
     if (ctx->node != NULL) {
 	ret = xmlNodeGetBase(NULL,ctx->node);
     }

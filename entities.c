@@ -815,6 +815,7 @@ xmlDumpEntityContent(xmlBufferPtr buf, const xmlChar *content) {
  */
 void
 xmlDumpEntityDecl(xmlBufferPtr buf, xmlEntityPtr ent) {
+    if ((buf == NULL) || (ent == NULL)) return;
     switch (ent->etype) {
 	case XML_INTERNAL_GENERAL_ENTITY:
 	    xmlBufferWriteChar(buf, "<!ENTITY ");

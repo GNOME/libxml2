@@ -1794,6 +1794,7 @@ UTF8ToHtml(unsigned char* out, int *outlen,
     unsigned int c, d;
     int trailing;
 
+    if ((out == NULL) || (outlen == NULL) || (inlen == NULL)) return(-1);
     if (in == NULL) {
         /*
 	 * initialization nothing to do
@@ -1888,13 +1889,17 @@ int
 htmlEncodeEntities(unsigned char* out, int *outlen,
 		   const unsigned char* in, int *inlen, int quoteChar) {
     const unsigned char* processed = in;
-    const unsigned char* outend = out + (*outlen);
+    const unsigned char* outend;
     const unsigned char* outstart = out;
     const unsigned char* instart = in;
-    const unsigned char* inend = in + (*inlen);
+    const unsigned char* inend;
     unsigned int c, d;
     int trailing;
 
+    if ((out == NULL) || (outlen == NULL) || (inlen == NULL) || (in == NULL))
+        return(-1);
+    outend = out + (*outlen);
+    inend = in + (*inlen);
     while (in < inend) {
 	d = *in++;
 	if      (d < 0x80)  { c= d; trailing= 0; }

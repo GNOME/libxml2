@@ -773,11 +773,13 @@ xmlFileOpenW (const char *filename) {
  *
  * Read @len bytes to @buffer from the I/O channel.
  *
- * Returns the number of bytes written
+ * Returns the number of bytes written or < 0 in case of failure
  */
 int
 xmlFileRead (void * context, char * buffer, int len) {
     int ret;
+    if ((context == NULL) || (buffer == NULL)) 
+        return(-1);
     ret = fread(&buffer[0], 1,  len, (FILE *) context);
     if (ret < 0) xmlIOErr(0, "fread()");
     return(ret);
@@ -798,6 +800,8 @@ static int
 xmlFileWrite (void * context, const char * buffer, int len) {
     int items;
 
+    if ((context == NULL) || (buffer == NULL)) 
+        return(-1);
     items = fwrite(&buffer[0], len, 1, (FILE *) context);
     if ((items == 0) && (ferror((FILE *) context))) {
         xmlIOErr(0, "fwrite()");

@@ -55,10 +55,43 @@ extern "C" {
 /*
  * The XML memory wrapper support 4 basic overloadable functions
  */
-typedef void (*xmlFreeFunc)(void *);
-typedef void *(*xmlMallocFunc)(size_t);
-typedef void *(*xmlReallocFunc)(void *, size_t);
-typedef char *(*xmlStrdupFunc)(const char *);
+/**
+ * xmlFreeFunc:
+ * @mem: an already allocated block of memory
+ *
+ * Signature for a free() implementation
+ */
+typedef void (*xmlFreeFunc)(void *mem);
+/**
+ * xmlMallocFunc:
+ * @size:  the size requested in bytes
+ *
+ * Signature for a malloc() implementation
+ *
+ * Returns a pointer to the newly allocated block or NULL in case of error
+ */
+typedef void *(*xmlMallocFunc)(size_t size);
+
+/**
+ * xmlReallocFunc:
+ * @mem: an already allocated block of memory
+ * @size:  the new size requested in bytes
+ *
+ * Signature for a realloc() implementation
+ *
+ * Returns a pointer to the newly reallocated block or NULL in case of error
+ */
+typedef void *(*xmlReallocFunc)(void *mem, size_t size);
+
+/**
+ * xmlStrdupFunc:
+ * @str: a zero terminated string
+ *
+ * Signature for an strdup() implementation
+ *
+ * Returns the copy of the string or NULL in case of error
+ */
+typedef char *(*xmlStrdupFunc)(const char *str);
 
 /*
  * The 4 interfaces used for all memory handling within libxml

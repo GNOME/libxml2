@@ -74,6 +74,12 @@ xmlGenericErrorDefaultFunc(void *ctx ATTRIBUTE_UNUSED, const char *msg, ...) {
     va_end(args);
 }
 
+/**
+ * initGenericErrorDefaultFunc:
+ * @handler:  the handler
+ * 
+ * Set or reset (if NULL) the default handler for generic errors
+ */
 void
 initGenericErrorDefaultFunc(xmlGenericErrorFunc * handler)
 {

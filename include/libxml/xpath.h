@@ -102,9 +102,15 @@ struct _xmlXPathObject {
     int index2;
 };
 
-/*
+/**
+ * xmlXPathConvertFunc:
+ * @obj:  an XPath object
+ * @type:  the number of the target type
+ *
  * A conversion function is associated to a type and used to cast
  * the new type to primitive values.
+ *
+ * Returns -1 in case of error, 0 otherwise
  */
 typedef int (*xmlXPathConvertFunc) (xmlXPathObjectPtr obj, int type);
 
@@ -152,14 +158,20 @@ struct _xmlXPathFunct {
     xmlXPathEvalFunc func;		/* the evaluation function */
 };
 
-/*
+/**
+ * xmlXPathAxisFunc:
+ * @ctxt:  the XPath interpreter context
+ * @cur:  the previous node being explored on that axis
+ *
  * An axis traversal function. To traverse an axis, the engine calls
  * the first time with cur == NULL and repeat until the function returns
  * NULL indicating the end of the axis traversal.
+ *
+ * Returns the next node in that axis or NULL if at the end of the axis
  */
 
-typedef xmlXPathObjectPtr (*xmlXPathAxisFunc)	(xmlXPathParserContextPtr ctxt,
-						 xmlXPathObjectPtr cur);
+typedef xmlXPathObjectPtr (*xmlXPathAxisFunc) (xmlXPathParserContextPtr ctxt,
+				 xmlXPathObjectPtr cur);
 
 /*
  * Extra axis: a name and an axis function.
@@ -273,9 +285,11 @@ struct _xmlXPathParserContext {
 
 /**
  * xmlXPathFunction:
+ * @ctxt:  the XPath interprestation context
+ * @nargs:  the number of arguments
  *
  * An XPath function
- * The arguments (if any) are popped out of the context stack
+ * The arguments (if any) are popped out from the context stack
  * and the result is pushed on the stack.
  */
 

@@ -2006,7 +2006,7 @@ xmlParserInputBufferCreateIO(xmlInputReadCallback   ioread,
  * @iowrite:  an I/O write function
  * @ioclose:  an I/O close function
  * @ioctx:  an I/O handler
- * @enc:  the charset encoding if known
+ * @encoder:  the charset encoding if known
  *
  * Create a buffered output for the progressive saving
  * to an I/O handler

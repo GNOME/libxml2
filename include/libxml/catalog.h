@@ -35,6 +35,11 @@ extern "C" {
  */
 #define XML_CATALOGS_NAMESPACE					\
     (const xmlChar *) "urn:oasis:names:tc:entity:xmlns:xml:catalog"
+/**
+ * XML_CATALOG_PI:
+ *
+ * the specific XML Catalog Processing Instuction name
+ */
 #define XML_CATALOG_PI						\
     (const xmlChar *) "oasis-xml-catalog"
 

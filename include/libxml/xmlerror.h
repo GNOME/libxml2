@@ -138,11 +138,18 @@ typedef enum {
     XML_ERR_NO_DTD  /* 94 */
 }xmlParserErrors;
 
-/*
+/**
+ * xmlGenericErrorFunc:
+ * @ctx:  a parsing context
+ * @msg:  the message
+ * @...:  the extra arguments of the varags to format the message
+ *
  * Signature of the function to use when there is an error and
  * no parsing or validity context available 
  */
-typedef void (*xmlGenericErrorFunc) (void *ctx, const char *msg, ...);
+typedef void (*xmlGenericErrorFunc) (void *ctx,
+				 const char *msg,
+				 ...);
 
 /*
  * Use the following function to reset the two global variables

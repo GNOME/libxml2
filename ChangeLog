@@ -1,3 +1,17 @@
+Tue Jan 22 19:12:06 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* doc/libxml2-api.xml doc/parsedecl.py: Build a new version
+	  hopefully near complete and fully documented of the API in XML
+	* HTMLtree.c SAX.c debugXML.c error.c globals.c parser.c tree.c
+	 xmlIO.c xmlmemory.c include/libxml/catalog.h include/libxml/hash.h
+	 include/libxml/list.h include/libxml/parser.h include/libxml/tree.h
+	 include/libxml/parserInternals.h include/libxml/valid.hi
+	 include/libxml/xmlIO.h include/libxml/xmlerror.hi
+	 include/libxml/xmlmemory.h include/libxml/xmlversion.h.ini
+	 include/libxml/xpath.h include/libxml/xpathInternals.h:
+	  Cleaned up the doc comments a lot in the process, the interface
+	  coverage is now 100%
+
 Tue Jan 22 00:12:58 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* doc/libxml2-api.xml doc/parsedecl.py: improved the script to

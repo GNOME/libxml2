@@ -58,6 +58,8 @@ def removeComments(raw):
 
 def extractArgs(raw, function):
     raw = removeComments(raw)
+    raw = string.replace(raw, '\n', ' ')
+    raw = string.replace(raw, '\r', ' ')
     list = string.split(raw, ",")
     ret = []
     for arg in list:
@@ -67,7 +69,7 @@ def extractArgs(raw, function):
 	i = i - 1
 	c = arg[i]
 	while string.find(string.letters, c) >= 0 or \
-	      string.find(string.digits, c) >= 0:
+	      string.find(string.digits, c) >= 0 or c == '_':
 	    i = i - 1
 	    if i < 0:
 	        break
@@ -79,8 +81,11 @@ def extractArgs(raw, function):
 	        break
 	    c = arg[i]
 	type = mormalizeTypeSpaces(arg[0:i+1], function)
-#	print "list: %s -> %s, %s" % (list, type, name)
-	ret.append((type, name))
+	if name == 'void' and type == '':
+	    pass
+	else:
+	    ret.append([type, name, ''])
+
     return ret
 
 def extractTypes(raw, function):
@@ -97,6 +102,7 @@ def extractTypes(raw, function):
         ret_types[type].append(function)
     else:
         ret_types[type] = [function]
+
     return type
 
 def parseMacro():
@@ -114,10 +120,10 @@ def parseMacro():
 	line = input.readline()[:-1]
 
     if var == 1:
-	variables[name] = ''
+	variables[name] = ['', ''] # type, info
 	identifiers_type[name] = "variable"
     else:
-	macros[name] = ''
+	macros[name] = [[], ''] # args, info
 	identifiers_type[name] = "macro"
 
 def parseStruct():
@@ -187,18 +193,18 @@ def parseStaticFunction():
 
     line = input.readline()[:-1]
     type = None
-    signature = None
+    signature = ""
     while line != "</USER_FUNCTION>":
         if line[0:6] == "<NAME>" and line[-7:] == "</NAME>":
 	    name = line[6:-7]
         elif line[0:9] == "<RETURNS>" and line[-10:] == "</RETURNS>":
 	    type = extractTypes(line[9:-10], name)
 	else:
-	    signature = line
+	    signature = signature + line
 	line = input.readline()[:-1]
 
     args = extractArgs(signature, name)
-    user_functions[name] = [type , args, '']
+    user_functions[name] = [[type, ''] , args, '']
     identifiers_type[name] = "functype"
 
 def parseFunction():
@@ -207,18 +213,18 @@ def parseFunction():
 
     line = input.readline()[:-1]
     type = None
-    signature = None
+    signature = ""
     while line != "</FUNCTION>":
         if line[0:6] == "<NAME>" and line[-7:] == "</NAME>":
 	    name = line[6:-7]
         elif line[0:9] == "<RETURNS>" and line[-10:] == "</RETURNS>":
 	    type = extractTypes(line[9:-10], name)
 	else:
-	    signature = line
+	    signature = signature + line
 	line = input.readline()[:-1]
 
     args = extractArgs(signature, name)
-    functions[name] = [type , args, '']
+    functions[name] = [[type, ''] , args, '']
     identifiers_type[name] = "function"
 
 print "Parsing: libxml-decl.txt"
@@ -309,26 +315,87 @@ print "Parsed: %d files %d identifiers" % (len(files), len(identifiers_file.keys
 
 nbcomments = 0
 
+def insertParameterComment(id, name, value, is_param):
+    global nbcomments
+
+    if functions.has_key(id):
+        if is_param == 1:
+	    args = functions[id][1]
+	    found = 0
+	    for arg in args:
+		if arg[1] == name:
+		    arg[2] = value
+		    found = 1
+		    break
+	    if found == 0 and name != '...':
+		print "Arg %s not found on function %s description" % (name, id)
+		return
+	else:
+	    ret = functions[id][0]
+	    ret[1] = value
+    elif user_functions.has_key(id):
+        if is_param == 1:
+	    args = user_functions[id][1]
+	    found = 0
+	    for arg in args:
+		if arg[1] == name:
+		    arg[2] = value
+		    found = 1
+		    break
+	    if found == 0 and name != '...':
+		print "Arg %s not found on functype %s description" % (name, id)
+		print args
+		return
+	else:
+	    ret = user_functions[id][0]
+	    ret[1] = value
+    elif macros.has_key(id):
+        if is_param == 1:
+	    args = macros[id][0]
+	    found = 0
+	    for arg in args:
+		if arg[0] == name:
+		    arg[1] = value
+		    found = 1
+		    break
+	    if found == 0:
+	        args.append([name, value])
+	else:
+	    print "Return info for macro %s: %s" % (id, value)
+#	    ret = macros[id][0]
+#	    ret[1] = value
+    else:
+        print "lost specific comment %s: %s: %s" % (id, name, value)
+	return
+    nbcomments = nbcomments + 1
+
 def insertComment(name, title, value):
     global nbcomments
 
     if functions.has_key(name):
         functions[name][2] = value
+	return "function"
     elif typedefs.has_key(name):
         typedefs[name] = value
+	return "typedef"
     elif macros.has_key(name):
-        macros[name] = value
+        macros[name][1] = value
+	return "macro"
     elif variables.has_key(name):
-        variables[name] = value
+        variables[name][1] = value
+	return "variable"
     elif structs.has_key(name):
         structs[name] = value
+	return "struct"
     elif enums.has_key(name):
         enums[name][1] = value
+	return "enum"
     elif user_functions.has_key(name):
-        user_functions[name] = value
+        user_functions[name][2] = value
+	return "user_function"
     else:
         print "lost comment %s: %s" % (name, value)
-	return
+	return "unknown"
     nbcomments = nbcomments + 1
 
 import os
@@ -426,9 +493,24 @@ class docParser:
 	    self.title = None
 	    self.descr = None
 	    self.string = None
+	    self.type = None
+	    self.in_parameter = 0
+	    self.is_parameter = 0
+	    self.parameter = None
+	    self.parameter_info = None
+	    self.entry = 0
 	elif tag == 'para':
 	    self._data = []
 	elif tag == 'title':
+	    self._data = []
+	elif tag == 'tgroup':
+	    self.in_parameter = 1
+	elif tag == 'row':
+	    self._data = []
+	    self.entry = 0
+	elif tag == 'entry':
+	    self.entry = self.entry + 1
+	elif tag == 'parameter' and self.in_parameter == 1:
 	    self._data = []
 	elif tag == 'anchor' and self.id == None:
 	    if attrs.has_key('id'):
@@ -440,20 +522,44 @@ class docParser:
         if debug:
 	    print "end %s" % tag
 	if tag == 'refsect2':
-	    insertComment(self.id, self.title, self.string)
-	elif tag == 'para':
+	    self.type = insertComment(self.id, self.title, self.string)
+	    self.string = None
+	elif tag == 'row':
+	    if self.parameter_info != None and self.parameter_info != '':
+		insertParameterComment(self.id, self.parameter,
+				       self.parameter_info, self.is_parameter)
+	    self.parameter_info = None
+	    self.parameter = 0
+	    self.is_parameter = 0
+	elif tag == 'parameter' and self.in_parameter == 1 and self.entry == 1:
+	    str = ''
+	    for c in self._data:
+		str = str + c
+	    str = string.replace(str, '\n', ' ')
+	    str = string.replace(str, '\r', ' ')
+	    str = string.replace(str, '    ', ' ')
+	    str = string.replace(str, '   ', ' ')
+	    str = string.replace(str, '  ', ' ')
+	    while len(str) >= 1 and str[0] == ' ':
+		str=str[1:]
+	    self.parameter = str
+	    self.is_parameter = 1
+	    self._data = []
+	elif tag == 'para' or tag == 'entry':
+	    str = ''
+	    for c in self._data:
+		str = str + c
+	    str = string.replace(str, '\n', ' ')
+	    str = string.replace(str, '\r', ' ')
+	    str = string.replace(str, '    ', ' ')
+	    str = string.replace(str, '   ', ' ')
+	    str = string.replace(str, '  ', ' ')
+	    while len(str) >= 1 and str[0] == ' ':
+		str=str[1:]
 	    if self.string == None:
-		str = ''
-		for c in self._data:
-		    str = str + c
-		str = string.replace(str, '\n', ' ')
-		str = string.replace(str, '\r', ' ')
-		str = string.replace(str, '    ', ' ')
-		str = string.replace(str, '   ', ' ')
-		str = string.replace(str, '  ', ' ')
-		while len(str) >= 1 and str[0] == ' ':
-		    str=str[1:]
 		self.string = str
+	    elif self.in_parameter == 1:
+		self.parameter_info = str
 	    self._data = []
 	elif tag == 'title':
 	    str = ''
@@ -491,8 +597,11 @@ print "Parsed: %d XML files collexting %d comments" % (xmlfiles, nbcomments)
 ##################################################################
 
 def escape(raw):
+    raw = string.replace(raw, '&', '&amp;')
     raw = string.replace(raw, '<', '&lt;')
     raw = string.replace(raw, '>', '&gt;')
+    raw = string.replace(raw, "'", '&apos;')
+    raw = string.replace(raw, '"', '&quot;')
     return raw
 
 print "Saving XML description libxml2-api.xml"
@@ -541,28 +650,69 @@ for i in symbols:
 	   (ret, args, doc) = functions[i]
 	   if doc != None and doc != '':
 	       output.write("      <info>%s</info>\n" % (escape(doc)))
-	   output.write("      <return type='%s'/>\n" % (ret))
+	   if ret[1] != None and ret[1] != '':
+	       output.write("      <return type='%s' info='%s'/>\n" % (
+	                    ret[0], escape(ret[1])))
+	   else:
+	       if ret[0] != 'void' and\
+	          ret[0][0:4] != 'void': # This one is actually a bug in GTK Doc
+		   print "Description for return on %s is missing" % (i)
+	       output.write("      <return type='%s'/>\n" % (ret[0]))
 	   for arg in args:
-	       output.write("      <arg name='%s' type='%s'/>\n" % (
-	                    arg[1], arg[0]))
+	       if arg[2] != None and arg[2] != '':
+		   output.write("      <arg name='%s' type='%s' info='%s'/>\n" %
+		                (arg[1], arg[0], escape(arg[2])))
+	       else:
+	           if arg[0] != '...':
+		       print "Description for %s on %s is missing" % (arg[1], i)
+		   output.write("      <arg name='%s' type='%s'/>\n" % (
+				arg[1], arg[0]))
+	   output.write("    </%s>\n" % (type));
+	elif type == 'functype':
+	   output.write(">\n");
+	   (ret, args, doc) = user_functions[i]
+	   if doc != None and doc != '':
+	       output.write("      <info>%s</info>\n" % (escape(doc)))
+	   if ret[1] != None and ret[1] != '':
+	       output.write("      <return type='%s' info='%s'/>\n" % (
+	                    ret[0], escape(ret[1])))
+	   else:
+	       if ret[0] != 'void' and\
+	          ret[0][0:4] != 'void': # This one is actually a bug in GTK Doc
+		   print "Description for return on %s is missing" % (i)
+	       output.write("      <return type='%s'/>\n" % (ret[0]))
+	   for arg in args:
+	       if arg[2] != None and arg[2] != '':
+		   output.write("      <arg name='%s' type='%s' info='%s'/>\n" %
+		                (arg[1], arg[0], escape(arg[2])))
+	       else:
+	           if arg[0] != '...':
+		       print "Description for %s on %s is missing" % (arg[1], i)
+		   output.write("      <arg name='%s' type='%s'/>\n" % (
+				arg[1], arg[0]))
 	   output.write("    </%s>\n" % (type));
 	elif type == 'macro':
-	   if macros[i] != None and macros[i] != '':
-	       output.write(" info='%s'/>\n" % (escape(macros[i])))
+	   output.write(">\n");
+	   if macros[i][1] != None and macros[i][1] != '':
+	       output.write("      <info>%s</info>\n" % (escape(macros[i][1])))
 	   else:
-	       output.write("/>\n");
+	       print "Description for %s is missing" % (i)
+	   args = macros[i][0]
+	   for arg in args:
+	       if arg[1] != None and arg[1] != '':
+		   output.write("      <arg name='%s' info='%s'/>\n" %
+		                (arg[0], escape(arg[1])))
+	       else:
+	           print "Description for %s on %s is missing" % (arg[1], i)
+		   output.write("      <arg name='%s'/>\n" % (arg[0]))
+	   output.write("    </%s>\n" % (type));
 	elif type == 'struct':
 	   if structs[i] != None and structs[i] != '':
 	       output.write(" info='%s'/>\n" % (escape(structs[i])))
 	   else:
 	       output.write("/>\n");
-	elif type == 'functype':
-	   if user_functions[i] != None and user_functions[i] != '':
-	       output.write(" info='%s'/>\n" % (escape(user_functions[i])))
-	   else:
-	       output.write("/>\n");
 	elif type == 'variable':
-	   if variables[i] != None and variables[i] != '':
+	   if variables[i][1] != None and variables[i][1] != '':
 	       output.write(" info='%s'/>\n" % (escape(variables[i])))
 	   else:
 	       output.write("/>\n");

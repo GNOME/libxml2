@@ -24,12 +24,35 @@ typedef struct _xmlValidState xmlValidState;
 typedef xmlValidState *xmlValidStatePtr;
 
 /**
+ * xmlValidityErrorFunc:
+ * @ctx:  an xmlValidCtxtPtr validity error context
+ * @msg:  the string to format *printf like vararg
+ * @...:  remaining arguments to the format
+ *
+ * Callback called when a validity error is found, this is a message
+ * oriented function similar to an *printf function.
+ */
+typedef void (*xmlValidityErrorFunc) (void *ctx,
+			     const char *msg,
+			     ...);
+
+/**
+ * xmlValidityWarningFunc:
+ * @ctx:  an xmlValidCtxtPtr validity error context
+ * @msg:  the string to format *printf like vararg
+ * @...:  remaining arguments to the format
+ *
+ * Callback called when a validity warning is found, this is a message
+ * oriented function similar to an *printf function.
+ */
+typedef void (*xmlValidityWarningFunc) (void *ctx,
+			       const char *msg,
+			       ...);
+
+/**
+ * xmlValidCtxt:
  * an xmlValidCtxt is used for error reporting when validating
  */
-
-typedef void (*xmlValidityErrorFunc) (void *ctx, const char *msg, ...);
-typedef void (*xmlValidityWarningFunc) (void *ctx, const char *msg, ...);
-
 typedef struct _xmlValidCtxt xmlValidCtxt;
 typedef xmlValidCtxt *xmlValidCtxtPtr;
 struct _xmlValidCtxt {

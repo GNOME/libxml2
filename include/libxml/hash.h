@@ -33,9 +33,43 @@ typedef xmlHashTable *xmlHashTablePtr;
 /*
  * function types:
  */
+/**
+ * xmlHashDeallocator:
+ * @payload:  the data in the hash
+ * @name:  the name associated
+ *
+ * Callback to free data from a hash
+ */
 typedef void (*xmlHashDeallocator)(void *payload, xmlChar *name);
+/**
+ * xmlHashCopier:
+ * @payload:  the data in the hash
+ * @name:  the name associated
+ *
+ * Callback to copy data from a hash
+ *
+ * Returns a copy of the data or NULL in case of error
+ */
 typedef void *(*xmlHashCopier)(void *payload, xmlChar *name);
-typedef void *(*xmlHashScanner)(void *payload, void *data, xmlChar *name);
+/**
+ * xmlHashScanner:
+ * @payload:  the data in the hash
+ * @data:  extra scannner data
+ * @name:  the name associated
+ *
+ * Callback when scanning data in a hash with the simple scanner
+ */
+typedef void (*xmlHashScanner)(void *payload, void *data, xmlChar *name);
+/**
+ * xmlHashScannerFull:
+ * @payload:  the data in the hash
+ * @data:  extra scannner data
+ * @name:  the name associated
+ * @name2:  the second name associated
+ * @name3:  the third name associated
+ *
+ * Callback when scanning data in a hash with the full scanner
+ */
 typedef void (*xmlHashScannerFull)(void *payload, void *data,
 				   const xmlChar *name, const xmlChar *name2,
 				   const xmlChar *name3);

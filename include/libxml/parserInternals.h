@@ -399,6 +399,15 @@ htmlParserCtxtPtr	htmlCreateFileParserCtxt(const char *filename,
  * Specific function to keep track of entities references
  * and used by the XSLT debugger
  */
+/**
+ * xmlEntityReferenceFunc:
+ * @ent: the entity
+ * @firstNode:  the fist node in the chunk
+ * @lastNode:  the last nod in the chunk
+ *
+ * Callback function used when one need to be able to track back the
+ * provenance of a chunk of nodes inherited from an entity replacement
+ */
 typedef	void	(*xmlEntityReferenceFunc)	(xmlEntityPtr ent,
 						 xmlNodePtr firstNode,
 						 xmlNodePtr lastNode);

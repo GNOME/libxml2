@@ -1662,7 +1662,7 @@ cdataBlock(void *ctx, const xmlChar *value, int len)
 }
 
 /**
- * xmlDefaultSAXHandlerInit:
+ * initxmlDefaultSAXHandler:
  * @hdlr:  the SAX handler
  * @warning:  flag if non-zero sets the handler warning procedure
  *
@@ -1723,9 +1723,8 @@ xmlDefaultSAXHandlerInit(void)
 #ifdef LIBXML_HTML_ENABLED
 
 /**
- * inithtmlDefaultSAXHandlerInit:
+ * inithtmlDefaultSAXHandler:
  * @hdlr:  the SAX handler
- * @warning:  flag if non-zero sets the handler warning procedure
  *
  * Initialize the default HTML SAX handler
  */
@@ -1782,9 +1781,8 @@ htmlDefaultSAXHandlerInit(void)
 #ifdef LIBXML_DOCB_ENABLED
 
 /**
- * initdocbDefaultSAXHandlerInit:
+ * initdocbDefaultSAXHandler:
  * @hdlr:  the SAX handler
- * @warning:  flag if non-zero sets the handler warning procedure
  *
  * Initialize the default DocBook SAX handler
  */

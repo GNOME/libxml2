@@ -156,9 +156,11 @@ scope type name##Pop(xmlParserCtxtPtr ctxt) {				\
 /**
  * inputPush:
  * @ctxt:  an XML parser context
- * @input:  the parser input
+ * @value:  the parser input
  *
  * Pushes a new parser input on top of the input stack
+ *
+ * Returns 0 in case of error, the index in the stack otherwise
  */
 /**
  * namePop:
@@ -171,9 +173,11 @@ scope type name##Pop(xmlParserCtxtPtr ctxt) {				\
 /**
  * namePush:
  * @ctxt:  an XML parser context
- * @name:  the element name
+ * @value:  the element name
  *
  * Pushes a new element name on top of the name stack
+ *
+ * Returns 0 in case of error, the index in the stack otherwise
  */
 /**
  * nodePop:
@@ -186,9 +190,11 @@ scope type name##Pop(xmlParserCtxtPtr ctxt) {				\
 /**
  * nodePush:
  * @ctxt:  an XML parser context
- * @node:  the element node
+ * @value:  the element node
  *
  * Pushes a new element node on top of the node stack
+ *
+ * Returns 0 in case of error, the index in the stack otherwise
  */
 /*
  * Those macros actually generate the functions

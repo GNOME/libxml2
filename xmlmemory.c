@@ -340,7 +340,7 @@ error:
 
 /**
  * xmlMemStrdupLoc:
- * @ptr:  the initial string pointer
+ * @str:  the initial string pointer
  * @file:  the file name or NULL
  * @line:  the line number
  *

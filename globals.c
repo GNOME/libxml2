@@ -52,9 +52,40 @@ xmlMallocFunc xmlMalloc = (xmlMallocFunc) xmlMemMalloc;
 xmlReallocFunc xmlRealloc = (xmlReallocFunc) xmlMemRealloc;
 xmlStrdupFunc xmlMemStrdup = (xmlStrdupFunc) xmlMemoryStrdup;
 #else
+/**
+ * xmlFree:
+ * @mem: an already allocated block of memory
+ *
+ * The variable holding the libxml free() implementation
+ */
 xmlFreeFunc xmlFree = (xmlFreeFunc) free;
+/**
+ * xmlMalloc:
+ * @size:  the size requested in bytes
+ *
+ * The variable holding the libxml malloc() implementation
+ *
+ * Returns a pointer to the newly allocated block or NULL in case of error
+ */
 xmlMallocFunc xmlMalloc = (xmlMallocFunc) malloc;
+/**
+ * xmlRealloc:
+ * @mem: an already allocated block of memory
+ * @size:  the new size requested in bytes
+ *
+ * The variable holding the libxml realloc() implementation
+ *
+ * Returns a pointer to the newly reallocated block or NULL in case of error
+ */
 xmlReallocFunc xmlRealloc = (xmlReallocFunc) realloc;
+/**
+ * xmlMemStrdup:
+ * @str: a zero terminated string
+ *
+ * The variable holding the libxml strdup() implementation
+ *
+ * Returns the copy of the string or NULL in case of error
+ */
 xmlStrdupFunc xmlMemStrdup = (xmlStrdupFunc) xmlStrdup;
 #endif
 
@@ -88,26 +119,102 @@ xmlStrdupFunc xmlMemStrdup = (xmlStrdupFunc) xmlStrdup;
 #undef	xmlMemStrdup
 #undef	xmlRealloc
 
+/**
+ * xmlParserVersion:
+ *
+ * Constant string describing the internal version of the library
+ */
 const char *xmlParserVersion = LIBXML_VERSION_STRING;
 
-/*
- * Buffers stuff
+/**
+ * xmlBufferAllocScheme:
+ *
+ * Global setting, default allocation policy for buffers, default is
+ * XML_BUFFER_ALLOC_EXACT
  */
 xmlBufferAllocationScheme xmlBufferAllocScheme = XML_BUFFER_ALLOC_EXACT;
+/**
+ * xmlDefaultBufferSize:
+ *
+ * Global setting, default buffer size. Default value is BASE_BUFFER_SIZE
+ */
 int xmlDefaultBufferSize = BASE_BUFFER_SIZE;
 
 /*
  * Parser defaults
  */
 
+/**
+ * oldXMLWDcompatibility:
+ *
+ * Global setting, DEPRECATED.
+ */
 int oldXMLWDcompatibility = 0; /* DEPRECATED */
+/**
+ * xmlParserDebugEntities:
+ *
+ * Global setting, asking the parser to print out debugging informations.
+ * while handling entities.
+ * Disabled by default
+ */
 int xmlParserDebugEntities = 0;
+/**
+ * xmlDoValidityCheckingDefaultValue:
+ *
+ * Global setting, indicate that the parser should work in validating mode.
+ * Disabled by default.
+ */
 int xmlDoValidityCheckingDefaultValue = 0;
+/**
+ * xmlGetWarningsDefaultValue:
+ *
+ * Global setting, indicate that the parser should provide warnings.
+ * Activated by default.
+ */
 int xmlGetWarningsDefaultValue = 1;
+/**
+ * xmlLoadExtDtdDefaultValue:
+ *
+ * Global setting, indicate that the parser should load DTD while not
+ * validating.
+ * Disabled by default.
+ */
 int xmlLoadExtDtdDefaultValue = 0;
+/**
+ * xmlPedanticParserDefaultValue:
+ *
+ * Global setting, indicate that the parser be pedantic
+ * Disabled by default.
+ */
 int xmlPedanticParserDefaultValue = 0;
+/**
+ * xmlLineNumbersDefaultValue:
+ *
+ * Global setting, indicate that the parser should store the line number
+ * in the content field of elements in the DOM tree. 
+ * Disabled by default since this may not be safe for old classes of
+ * applicaton.
+ */
 int xmlLineNumbersDefaultValue = 0;
+/**
+ * xmlKeepBlanksDefaultValue:
+ *
+ * Global setting, indicate that the parser should keep all blanks
+ * nodes found in the content
+ * Activated by default, this is actually needed to have the parser
+ * conformant to the XML Recommendation, however the option is kept
+ * for some applications since this was libxml1 default behaviour.
+ */
 int xmlKeepBlanksDefaultValue = 1;
+/**
+ * xmlSubstituteEntitiesDefaultValue:
+ *
+ * Global setting, indicate that the parser should not generate entity
+ * references but replace them with the actual content of the entity
+ * Disabled by default, this should be activated when using XPath since
+ * the XPath data model requires entities replacement and the XPath
+ * engine does not handle entities references transparently.
+ */
 int xmlSubstituteEntitiesDefaultValue = 0;
 
 /*
@@ -119,16 +226,42 @@ int xmlSubstituteEntitiesDefaultValue = 0;
 void xmlGenericErrorDefaultFunc	(void *ctx ATTRIBUTE_UNUSED,
 				 const char *msg,
 				 ...);
+/**
+ * xmlGenericError:
+ *
+ * Global setting: function used for generic error callbacks
+ */
 xmlGenericErrorFunc xmlGenericError = xmlGenericErrorDefaultFunc;
+/**
+ * xmlGenericErrorContext:
+ *
+ * Global setting passed to generic error callbacks
+ */
 void *xmlGenericErrorContext = NULL;
 
 /*
  * output defaults
  */
+/**
+ * xmlIndentTreeOutput:
+ *
+ * Global setting, asking the serializer to indent the output tree by default
+ * Disabled by default
+ */
 int xmlIndentTreeOutput = 0;
+/**
+ * xmlSaveNoEmptyTags:
+ *
+ * Global setting, asking the serializer to not output empty tags
+ * as <empty/> but <empty></empty>. those two forms are undistinguishable
+ * once parsed.
+ * Disabled by default
+ */
 int xmlSaveNoEmptyTags = 0;
 
-/*
+/**
+ * xmlDefaultSAXHandler:
+ *
  * Default handler for XML, builds the DOM tree
  */
 xmlSAXHandler xmlDefaultSAXHandler = {
@@ -162,16 +295,20 @@ xmlSAXHandler xmlDefaultSAXHandler = {
     0
 };
 
-/*
- * The default SAX Locator.
+/**
+ * xmlDefaultSAXLocator:
+ *
+ * The default SAX Locator
+ * { getPublicId, getSystemId, getLineNumber, getColumnNumber}
  */
-
 xmlSAXLocator xmlDefaultSAXLocator = {
     getPublicId, getSystemId, getLineNumber, getColumnNumber
 };
 
 #ifdef LIBXML_HTML_ENABLED
-/*
+/**
+ * htmlDefaultSAXHandler:
+ *
  * Default handler for HTML, builds the DOM tree
  */
 xmlSAXHandler htmlDefaultSAXHandler = {
@@ -207,7 +344,9 @@ xmlSAXHandler htmlDefaultSAXHandler = {
 #endif /* LIBXML_HTML_ENABLED */
 
 #ifdef LIBXML_DOCB_ENABLED
-/*
+/**
+ * docbDefaultSAXHandler:
+ *
  * Default handler for SGML DocBook, builds the DOM tree
  */
 xmlSAXHandler docbDefaultSAXHandler = {

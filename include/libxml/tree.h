@@ -42,6 +42,11 @@ typedef xmlParserInput *xmlParserInputPtr;
 typedef struct _xmlParserCtxt xmlParserCtxt;
 typedef xmlParserCtxt *xmlParserCtxtPtr;
 
+/**
+ * BASE_BUFFER_SIZE:
+ *
+ * default buffer size 4000
+ */
 #define BASE_BUFFER_SIZE 4000
 
 /**

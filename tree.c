@@ -5036,7 +5036,8 @@ xmlBufferSetAllocationScheme(xmlBufferPtr buf,
  * xmlBufferFree:
  * @buf:  the buffer to free
  *
- * Frees an XML buffer.
+ * Frees an XML buffer. It frees both the content and the structure which
+ * encapsulate it.
  */
 void
 xmlBufferFree(xmlBufferPtr buf) {

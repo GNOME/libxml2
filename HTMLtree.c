@@ -1123,6 +1123,7 @@ htmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
  * @buf:  the HTML buffer output
  * @cur:  the document
  * @encoding:  the encoding string
+ * @format:  should formatting spaces been added
  *
  * Dump an HTML document.
  */

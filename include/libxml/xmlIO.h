@@ -30,9 +30,44 @@ extern "C" {
  * I/O structures.
  */
 
+/**
+ * xmlInputMatchCallback:
+ * @filename: the filename or URI
+ *
+ * Callback used in the I/O Input API to detect if the current handler 
+ * can provide input fonctionnalities for this resource.
+ *
+ * Returns 1 if yes and 0 if another Input module should be used
+ */
 typedef int (*xmlInputMatchCallback) (char const *filename);
+/**
+ * xmlInputOpenCallback:
+ * @filename: the filename or URI
+ *
+ * Callback used in the I/O Input API to open the resource
+ *
+ * Returns an Input context or NULL in case or error
+ */
 typedef void * (*xmlInputOpenCallback) (char const *filename);
+/**
+ * xmlInputReadCallback:
+ * @context:  an Input context
+ * @buffer:  the buffer to store data read
+ * @len:  the length of the buffer in bytes
+ *
+ * Callback used in the I/O Input API to read the resource
+ *
+ * Returns the number of bytes read or -1 in case of error
+ */
 typedef int (*xmlInputReadCallback) (void * context, char * buffer, int len);
+/**
+ * xmlInputCloseCallback:
+ * @context:  an Input context
+ *
+ * Callback used in the I/O Input API to close the resource
+ *
+ * Returns 0 or -1 in case of error
+ */
 typedef int (*xmlInputCloseCallback) (void * context);
 
 struct _xmlParserInputBuffer {
@@ -52,10 +87,45 @@ struct _xmlParserInputBuffer {
  * I/O structures.
  */
 
+/**
+ * xmlOutputMatchCallback:
+ * @filename: the filename or URI
+ *
+ * Callback used in the I/O Output API to detect if the current handler 
+ * can provide output fonctionnalities for this resource.
+ *
+ * Returns 1 if yes and 0 if another Output module should be used
+ */
 typedef int (*xmlOutputMatchCallback) (char const *filename);
+/**
+ * xmlOutputOpenCallback:
+ * @filename: the filename or URI
+ *
+ * Callback used in the I/O Output API to open the resource
+ *
+ * Returns an Output context or NULL in case or error
+ */
 typedef void * (*xmlOutputOpenCallback) (char const *filename);
+/**
+ * xmlOutputWriteCallback:
+ * @context:  an Output context
+ * @buffer:  the buffer of data to write
+ * @len:  the length of the buffer in bytes
+ *
+ * Callback used in the I/O Output API to write to the resource
+ *
+ * Returns the number of bytes written or -1 in case of error
+ */
 typedef int (*xmlOutputWriteCallback) (void * context, const char * buffer,
                                        int len);
+/**
+ * xmlOutputCloseCallback:
+ * @context:  an Output context
+ *
+ * Callback used in the I/O Output API to close the resource
+ *
+ * Returns 0 or -1 in case of error
+ */
 typedef int (*xmlOutputCloseCallback) (void * context);
 
 struct _xmlOutputBuffer {

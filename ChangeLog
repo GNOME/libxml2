@@ -1,3 +1,12 @@
+Mon Mar 17 16:34:07 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c: fixed the last core RelaxNG bug known #107083,
+	  shemas datatype ID/IDREF support still missing though.
+	* xmlreader.c: fix a crashing bug with prefix raised by
+	  Merijn Broeren
+	* test/relaxng/testsuite.xml: augmented the testsuite with
+	  complex inheritance tests
+
 Sun Mar 16 18:45:50 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c: switched back to the previous Relax-NG code base,

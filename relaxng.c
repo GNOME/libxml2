@@ -47,7 +47,7 @@ static const xmlChar *xmlRelaxNGNs = (const xmlChar *)
     (xmlStrEqual(node->ns->href, xmlRelaxNGNs)))
 
 
-/* #define DEBUG 1  */
+/* #define DEBUG 1 */
 /* #define DEBUG_GRAMMAR 1 */
 /* #define DEBUG_CONTENT 1 */
 /* #define DEBUG_TYPE 1 */
@@ -1114,8 +1114,12 @@ xmlRelaxNGRemoveRedefine(xmlRelaxNGParserCtxtPtr ctxt,
     xmlChar *name2;
 
 #ifdef DEBUG_INCLUDE
-    xmlGenericError(xmlGenericErrorContext,
-		"Elimination of <include> %s from %s\n", name, URL);
+    if (name == NULL)
+	xmlGenericError(xmlGenericErrorContext,
+		    "Elimination of <include> start from %s\n", URL);
+    else
+	xmlGenericError(xmlGenericErrorContext,
+		"Elimination of <include> define %s from %s\n", name, URL);
 #endif
     tmp = target;
     while (tmp != NULL) {
@@ -1665,6 +1669,9 @@ xmlRelaxNGGetErrorString(xmlRelaxNGValidErr err, const xmlChar *arg1,
 	    return(xmlCharStrdup("Internal error: no state"));
 	case XML_RELAXNG_ERR_NODEFINE:
 	    return(xmlCharStrdup("Internal error: no define"));
+	case XML_RELAXNG_ERR_INTERNAL:
+	    snprintf(msg, 1000, "Internal error: %s", arg1);
+	    break;
 	case XML_RELAXNG_ERR_LISTEXTRA:
 	    snprintf(msg, 1000, "Extra data in list: %s", arg1);
 	    break;
@@ -2299,6 +2306,72 @@ xmlRelaxNGCleanupTypes(void) {
 
 /************************************************************************
  * 									*
+ * 		Compiling element content into regexp			*
+ * 									*
+ * Sometime the element content can be compiled into a pure regexp,	*
+ * This allows a faster execution and streamability at that level	*
+ * 									*
+ ************************************************************************/
+
+/**
+ * xmlRelaxNGIsCompileable:
+ * @define:  the definition to check
+ *
+ * Check if a definition is nullable.
+ *
+ * Returns 1 if yes, 0 if no and -1 in case of error
+ */
+static int
+xmlRelaxNGIsCompileable(xmlRelaxNGDefinePtr def) {
+    if (def == NULL) {
+	return(-1);
+    }
+    switch(def->type) {
+        case XML_RELAXNG_REF:
+        case XML_RELAXNG_EXTERNALREF:
+        case XML_RELAXNG_PARENTREF:
+        case XML_RELAXNG_NOOP:
+        case XML_RELAXNG_START:
+	    return(xmlRelaxNGIsCompileable(def->content));
+        case XML_RELAXNG_TEXT:
+        case XML_RELAXNG_DATATYPE:
+        case XML_RELAXNG_LIST:
+        case XML_RELAXNG_PARAM:
+        case XML_RELAXNG_VALUE:
+
+        case XML_RELAXNG_EMPTY:
+        case XML_RELAXNG_ELEMENT:
+	    return(1);
+        case XML_RELAXNG_OPTIONAL:
+        case XML_RELAXNG_ZEROORMORE:
+        case XML_RELAXNG_ONEORMORE:
+        case XML_RELAXNG_CHOICE:
+        case XML_RELAXNG_GROUP:
+        case XML_RELAXNG_DEF: {
+	    xmlRelaxNGDefinePtr list;
+	    int ret;
+
+	    list = def->content;
+	    while (list != NULL) {
+		ret = xmlRelaxNGIsCompileable(list);
+		if (ret != 1)
+		    return(ret);
+		list = list->next;
+	    }
+	    return(1);
+        }
+        case XML_RELAXNG_EXCEPT:
+        case XML_RELAXNG_ATTRIBUTE:
+        case XML_RELAXNG_INTERLEAVE:
+	    return(0);
+        case XML_RELAXNG_NOT_ALLOWED:
+	    return(-1);
+    }
+    return(-1);
+}
+
+/************************************************************************
+ * 									*
  * 			Parsing functions				*
  * 									*
  ************************************************************************/
@@ -2927,6 +3000,7 @@ xmlRelaxNGGetElements(xmlRelaxNGParserCtxtPtr ctxt,
 		   (cur->type == XML_RELAXNG_ONEORMORE) ||
 		   (cur->type == XML_RELAXNG_ZEROORMORE) ||
 		   (cur->type == XML_RELAXNG_OPTIONAL) ||
+		   (cur->type == XML_RELAXNG_PARENTREF) ||
 		   (cur->type == XML_RELAXNG_REF) ||
 		   (cur->type == XML_RELAXNG_DEF)) {
 	    /*
@@ -4598,8 +4672,8 @@ xmlRelaxNGCheckCombine(xmlRelaxNGDefinePtr define,
 		last->next = tmp2;
 	    }
 	    last = tmp2;
-	    tmp->content = NULL;
 	}
+	tmp->content = cur;
 	tmp = tmp->nextHash;
     }
     define->content = cur;
@@ -5373,6 +5447,7 @@ xmlRelaxNGParseGrammar(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr nodes) {
 	xmlHashScan(ret->refs, (xmlHashScanner) xmlRelaxNGCheckReference,
 		    ctxt);
     }
+
     ctxt->grammar = old;
     return(ret);
 }
@@ -7386,6 +7461,10 @@ xmlRelaxNGValidateDefinitionList(xmlRelaxNGValidCtxtPtr ctxt,
     int ret = 0, res;
 
 
+    if (defines == NULL) {
+	VALID_ERR2(XML_RELAXNG_ERR_INTERNAL, BAD_CAST "NULL definition list");
+	return(-1);
+    }
     while (defines != NULL) {
 	if ((ctxt->state != NULL) || (ctxt->states != NULL)) {
 	    res = xmlRelaxNGValidateDefinition(ctxt, defines);
@@ -7934,8 +8013,10 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
 	    break;
 	case XML_RELAXNG_NOOP:
         case XML_RELAXNG_REF:
-        case XML_RELAXNG_PARENTREF:
 	case XML_RELAXNG_EXTERNALREF:
+	    ret = xmlRelaxNGValidateDefinition(ctxt, define->content);
+	    break;
+        case XML_RELAXNG_PARENTREF:
 	    ret = xmlRelaxNGValidateDefinition(ctxt, define->content);
 	    break;
         case XML_RELAXNG_DATATYPE: {

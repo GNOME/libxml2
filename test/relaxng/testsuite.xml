@@ -776,4 +776,559 @@
 </invalid>
 </testCase>
 </testSuite>
+<testSuite>
+<documentation>Test of grammars merging</documentation>
+<testCase>
+<resource name="dbk.rng">
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+  <start>
+    <ref name="p"/>
+  </start>
+  <define name="p.ext">
+    <notAllowed/>
+  </define>
+  <define name="p">
+    <element name="p">
+      <choice>
+        <ref name="p.ext"/>
+	<empty/>
+        <element name="a">
+          <text/>
+        </element>
+      </choice>
+    </element>
+  </define>
+</grammar>
+</resource>
+<correct>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+  <start>
+    <grammar>
+      <include href="dbk.rng"/>
+      <define name="p.ext" combine="choice">
+        <element name="b">
+          <text/>
+        </element>
+      </define>
+    </grammar>
+  </start>
+</grammar>
+</correct>
+<valid>
+<p/>
+</valid>
+<valid>
+<p>
+  <a/>
+</p>
+</valid>
+<valid>
+<p>
+  <b/>
+</p>
+</valid>
+<invalid>
+<b/>
+</invalid>
+<invalid>
+<p>
+  <b/>
+  <b/>
+</p>
+</invalid>
+</testCase>
+<testCase>
+<resource name="dbk.rng">
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+  <start>
+    <ref name="p"/>
+  </start>
+  <define name="p.ext">
+    <notAllowed/>
+  </define>
+  <define name="p">
+    <element name="p">
+      <choice>
+        <ref name="p.ext"/>
+	<empty/>
+        <element name="a">
+          <text/>
+        </element>
+      </choice>
+    </element>
+  </define>
+  <define name="c">
+    <element name="c">
+      <empty/>
+    </element>
+  </define>
+</grammar>
+</resource>
+<correct>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+  <start>
+    <grammar>
+      <include href="dbk.rng"/>
+      <define name="p.ext" combine="choice">
+        <choice>
+	  <ref name="c"/>
+	  <parentRef name="d"/>
+          <element name="b">
+            <text/>
+          </element>
+        </choice>
+      </define>
+    </grammar>
+  </start>
+  <define name="d">
+    <element name="d">
+      <empty/>
+    </element>
+  </define>
+</grammar>
+</correct>
+<valid>
+<p/>
+</valid>
+<valid>
+<p>
+  <a/>
+</p>
+</valid>
+<valid>
+<p>
+  <b/>
+</p>
+</valid>
+<valid>
+<p>
+  <c/>
+</p>
+</valid>
+<valid>
+<p>
+  <d/>
+</p>
+</valid>
+<invalid>
+<b/>
+</invalid>
+<invalid>
+<c/>
+</invalid>
+<invalid>
+<d/>
+</invalid>
+<invalid>
+<p>
+  <b/>
+  <c/>
+</p>
+</invalid>
+<invalid>
+<p>
+  <d/>
+  <c/>
+</p>
+</invalid>
+</testCase>
+<testCase>
+<resource name="dbk.rng">
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+  <start>
+    <ref name="p"/>
+  </start>
+  <define name="p.ext">
+    <notAllowed/>
+  </define>
+  <define name="p">
+    <element name="p">
+      <choice>
+        <ref name="p.ext"/>
+	<empty/>
+        <element name="a">
+          <text/>
+        </element>
+      </choice>
+    </element>
+  </define>
+  <define name="c">
+    <element name="c">
+      <empty/>
+    </element>
+  </define>
+</grammar>
+</resource>
+<resource name="proof.rng">
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+  <start>
+    <ref name="e"/>
+  </start>
+  <define name="d">
+    <element name="d">
+      <empty/>
+    </element>
+  </define>
+  <define name="e">
+    <element name="e">
+      <empty/>
+    </element>
+  </define>
+  <define name="f">
+    <element name="f">
+      <empty/>
+    </element>
+  </define>
+</grammar>
+</resource>
+<correct>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+  <start>
+    <grammar>
+      <include href="dbk.rng"/>
+      <define name="p.ext" combine="choice">
+        <choice>
+	  <ref name="c"/>
+	  <grammar>
+	    <include href="proof.rng"/>
+	    <start combine="choice">
+	      <ref name="d"/>
+	    </start>
+	  </grammar>
+          <element name="b">
+            <text/>
+          </element>
+        </choice>
+      </define>
+    </grammar>
+  </start>
+  <define name="g">
+    <element name="g">
+      <empty/>
+    </element>
+  </define>
+</grammar>
+</correct>
+<valid>
+<p/>
+</valid>
+<valid>
+<p>
+  <a/>
+</p>
+</valid>
+<valid>
+<p>
+  <b/>
+</p>
+</valid>
+<valid>
+<p>
+  <c/>
+</p>
+</valid>
+<valid>
+<p>
+  <d/>
+</p>
+</valid>
+<valid>
+<p>
+  <e/>
+</p>
+</valid>
+<invalid>
+<p>
+  <f/>
+</p>
+</invalid>
+<invalid>
+<p>
+  <g/>
+</p>
+</invalid>
+<invalid>
+<b/>
+</invalid>
+<invalid>
+<c/>
+</invalid>
+<invalid>
+<d/>
+</invalid>
+<invalid>
+<e/>
+</invalid>
+<invalid>
+<f/>
+</invalid>
+<invalid>
+<g/>
+</invalid>
+<invalid>
+<p>
+  <d/>
+  <c/>
+</p>
+</invalid>
+<invalid>
+<p>
+  <d/>
+  <e/>
+</p>
+</invalid>
+</testCase>
+<testCase>
+<resource name="dbk.rng">
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+  <start>
+    <ref name="p"/>
+  </start>
+  <define name="p.ext">
+    <notAllowed/>
+  </define>
+  <define name="p">
+    <element name="p">
+      <choice>
+        <ref name="p.ext"/>
+	<empty/>
+        <element name="a">
+          <text/>
+        </element>
+      </choice>
+    </element>
+  </define>
+  <define name="c">
+    <element name="c">
+      <empty/>
+    </element>
+  </define>
+</grammar>
+</resource>
+<resource name="proof.rng">
+<grammar xmlns="http://relaxng.org/ns/structure/1.0"
+         ns="http://example.org/ns/proofsystem">
+  <start>
+    <ref name="e"/>
+  </start>
+  <define name="d">
+    <element name="d">
+      <empty/>
+    </element>
+  </define>
+  <define name="e">
+    <element name="e">
+      <empty/>
+    </element>
+  </define>
+  <define name="f">
+    <element name="f">
+      <empty/>
+    </element>
+  </define>
+</grammar>
+</resource>
+<correct>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+  <start>
+    <grammar>
+      <include href="dbk.rng"/>
+      <define name="p.ext" combine="choice">
+        <choice>
+	  <ref name="c"/>
+	  <grammar>
+	    <include href="proof.rng"/>
+	    <start combine="choice">
+	      <ref name="d"/>
+	    </start>
+	  </grammar>
+          <element name="b">
+            <text/>
+          </element>
+        </choice>
+      </define>
+    </grammar>
+  </start>
+  <define name="g">
+    <element name="g">
+      <empty/>
+    </element>
+  </define>
+</grammar>
+</correct>
+<valid>
+<p/>
+</valid>
+<valid>
+<p>
+  <a/>
+</p>
+</valid>
+<valid>
+<p>
+  <b/>
+</p>
+</valid>
+<valid>
+<p>
+  <c/>
+</p>
+</valid>
+<valid>
+<p xmlns:p="http://example.org/ns/proofsystem">
+  <p:d/>
+</p>
+</valid>
+<invalid>
+<p>
+  <d/>
+</p>
+</invalid>
+<valid>
+<p xmlns:p="http://example.org/ns/proofsystem">
+  <p:e/>
+</p>
+</valid>
+<invalid>
+<p>
+  <e/>
+</p>
+</invalid>
+<invalid>
+<p xmlns:p="http://example.org/ns/proofsystem">
+  <p:f/>
+</p>
+</invalid>
+<invalid>
+<p>
+  <f/>
+</p>
+</invalid>
+<invalid>
+<p>
+  <g/>
+</p>
+</invalid>
+<invalid>
+<b/>
+</invalid>
+<invalid>
+<c/>
+</invalid>
+<invalid>
+<d/>
+</invalid>
+<invalid>
+<e/>
+</invalid>
+<invalid>
+<f/>
+</invalid>
+<invalid>
+<g/>
+</invalid>
+<invalid>
+<p xmlns:p="http://example.org/ns/proofsystem">
+  <p:d/>
+  <c/>
+</p>
+</invalid>
+<invalid>
+<p xmlns:p="http://example.org/ns/proofsystem">
+  <p:d/>
+  <p:e/>
+</p>
+</invalid>
+</testCase>
+<testCase>
+<resource name="ext.rng">
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+  <start>
+    <ref name="p"/>
+  </start>
+  <define name="p">
+    <element name="p">
+      <empty/>
+    </element>
+  </define>
+</grammar>
+</resource>
+<correct>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+  <start>
+    <element name="top">
+      <choice>
+        <ref name="include1"/>
+        <ref name="include2"/>
+      </choice>
+    </element>
+  </start>
+  <define name="include1">
+    <grammar>
+      <include href="ext.rng">
+        <start>
+	 <element name="a">
+	   <choice>
+	     <empty/>
+	     <ref name="p"/>
+	   </choice>
+	 </element>
+	</start>
+      </include>
+    </grammar>
+  </define>
+  <define name="include2">
+    <grammar>
+      <include href="ext.rng">
+        <start>
+	 <element name="b">
+	   <choice>
+	     <empty/>
+	     <ref name="p"/>
+	   </choice>
+	 </element>
+	</start>
+      </include>
+    </grammar>
+  </define>
+</grammar>
+</correct>
+<invalid>
+<top/>
+</invalid>
+<invalid>
+<a/>
+</invalid>
+<invalid>
+<b/>
+</invalid>
+<invalid>
+<p/>
+</invalid>
+<valid>
+<top>
+  <a/>
+</top>
+</valid>
+<valid>
+<top>
+  <b/>
+</top>
+</valid>
+<valid>
+<top>
+  <a>
+    <p/>
+  </a>
+</top>
+</valid>
+<valid>
+<top>
+  <b>
+    <p/>
+  </b>
+</top>
+</valid>
+</testCase>
+</testSuite>
 </testSuite>

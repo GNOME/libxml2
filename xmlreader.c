@@ -1865,7 +1865,7 @@ xmlTextReaderPrefix(xmlTextReaderPtr reader) {
     if ((node->type != XML_ELEMENT_NODE) &&
 	(node->type != XML_ATTRIBUTE_NODE))
 	return(NULL);
-    if ((node->ns != NULL) || (node->ns->prefix != NULL))
+    if ((node->ns != NULL) && (node->ns->prefix != NULL))
 	return(xmlStrdup(node->ns->prefix));
     return(NULL);
 }

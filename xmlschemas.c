@@ -278,6 +278,10 @@ xmlSchemaFreeAttributeGroup(xmlSchemaAttributeGroupPtr attr)
         return;
     if (attr->name != NULL)
         xmlFree((xmlChar *) attr->name);
+    if (attr->ref != NULL)
+        xmlFree((xmlChar *) attr->ref);
+    if (attr->refNs != NULL)
+        xmlFree((xmlChar *) attr->refNs);
     xmlFree(attr);
 }
 
@@ -377,6 +381,10 @@ xmlSchemaFree(xmlSchemaPtr schema)
     if (schema == NULL)
         return;
 
+    if (schema->id != NULL)
+        xmlFree((xmlChar *) schema->id);
+    if (schema->targetNamespace != NULL)
+        xmlFree((xmlChar *) schema->targetNamespace);
     if (schema->name != NULL)
         xmlFree((xmlChar *) schema->name);
     if (schema->notaDecl != NULL)
@@ -1661,6 +1669,12 @@ xmlSchemaParseAttributeGroup(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	}
 	snprintf(buf, 99, "anonattrgroup%d", ctxt->counter++ + 1);
 	name = xmlStrdup((xmlChar *) buf);
+	if (name == NULL) {
+	    if ((ctxt != NULL) && (ctxt->error != NULL))
+		ctxt->error(ctxt->userData,
+			"out of memory\n");
+	    return (NULL);
+	}
     }
     ret = xmlSchemaAddAttributeGroup(ctxt, schema, name);
     if (ret == NULL) {
@@ -1711,6 +1725,7 @@ xmlSchemaParseAttributeGroup(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     }
 
     ctxt->container = oldcontainer;
+    xmlFree(name);
     return (ret);
 }
 
@@ -4841,6 +4856,7 @@ xmlSchemaValidateBasicType(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr node) {
 	ctxt->error(ctxt->userData,
 		"Element %s: failed to validate basic type %s\n",
 		    node->name, type->name);
+	ctxt->err = XML_SCHEMAS_ERR_VALUE;
     }
     return(ret);
 }

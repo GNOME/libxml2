@@ -1,3 +1,11 @@
+Fri Mar 28 00:41:55 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemas.c include/libxml/xmlschemas.h: fixed bugs and memory
+	  leaks in the W3C XML Schemas code
+	* xmlschemastypes.c: implemented nonPositiveInteger
+	* test/schemas/length2_0.xsd result/schemas/length2_0_0.err:
+	  fixed the test and result.
+
 Thu Mar 27 22:23:07 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c tree.c: two patches from James Bursa on the HTML

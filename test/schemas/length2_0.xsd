@@ -4,7 +4,7 @@
     <xs:complexContent>
       <xs:restriction base="xs:anyType">
         <xs:sequence>
-          <xs:element name="size" type="xs:nonPositiveInteger"/>
+          <xs:element name="size" type="xs:nonNegativeInteger"/>
           <xs:element name="unit" type="xs:NMTOKEN"/>
         </xs:sequence>
       </xs:restriction>

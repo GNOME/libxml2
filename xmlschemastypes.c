@@ -1286,8 +1286,7 @@ xmlSchemaValPredefTypeNode(xmlSchemaTypePtr type, const xmlChar *value,
 	if (*cur == '-') {
 	    sign = 1;
 	    cur++;
-	} else if (*cur == '+')
-	    cur++;
+	}
 	while ((*cur >= '0') && (*cur <= '9')) {
 	    base = base * 10 + (*cur - '0');
 	    total++;
@@ -1296,6 +1295,37 @@ xmlSchemaValPredefTypeNode(xmlSchemaTypePtr type, const xmlChar *value,
 	if (*cur != 0)
 	    return(1);
 	if ((sign == 1) && (base != 0))
+	    return(1);
+	if (val != NULL) {
+	    v = xmlSchemaNewValue(XML_SCHEMAS_DECIMAL);
+	    if (v != NULL) {
+		v->value.decimal.base = base;
+		v->value.decimal.sign = 0;
+		v->value.decimal.frac = 0;
+		v->value.decimal.total = total;
+		*val = v;
+	    }
+	}
+	return(0);
+    } else if (type == xmlSchemaTypeNonPositiveIntegerDef) {
+	const xmlChar *cur = value;
+	unsigned long base = 0;
+	int total = 0;
+	int sign = 0;
+	if (cur == NULL)
+	    return(1);
+	if (*cur == '-') {
+	    sign = 1;
+	    cur++;
+	}
+	while ((*cur >= '0') && (*cur <= '9')) {
+	    base = base * 10 + (*cur - '0');
+	    total++;
+	    cur++;
+	}
+	if (*cur != 0)
+	    return(1);
+	if ((sign != 1) && (base != 0))
 	    return(1);
 	if (val != NULL) {
 	    v = xmlSchemaNewValue(XML_SCHEMAS_DECIMAL);

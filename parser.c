@@ -10090,6 +10090,7 @@ xmlSAXParseDTD(xmlSAXHandlerPtr sax, const xmlChar *ExternalID,
     xmlParserCtxtPtr ctxt;
     xmlParserInputPtr input = NULL;
     xmlCharEncoding enc;
+    xmlSAXHandlerPtr oldsax = NULL;
 
     if ((ExternalID == NULL) && (SystemID == NULL)) return(NULL);
 
@@ -10103,8 +10104,7 @@ xmlSAXParseDTD(xmlSAXHandlerPtr sax, const xmlChar *ExternalID,
      */
     if (ctxt == NULL) return(NULL);
     if (sax != NULL) { 
-	if (ctxt->sax != NULL)
-	    xmlFree(ctxt->sax);
+	oldsax = ctxt->sax;
         ctxt->sax = sax;
         ctxt->userData = NULL;
     }
@@ -10116,7 +10116,8 @@ xmlSAXParseDTD(xmlSAXHandlerPtr sax, const xmlChar *ExternalID,
     if ((ctxt->sax != NULL) && (ctxt->sax->resolveEntity != NULL))
 	input = ctxt->sax->resolveEntity(ctxt->userData, ExternalID, SystemID);
     if (input == NULL) {
-        if (sax != NULL) ctxt->sax = NULL;
+        if (sax != NULL)
+	    ctxt->sax = oldsax;
 	xmlFreeParserCtxt(ctxt);
 	return(NULL);
     }
@@ -10151,7 +10152,9 @@ xmlSAXParseDTD(xmlSAXHandlerPtr sax, const xmlChar *ExternalID,
         xmlFreeDoc(ctxt->myDoc);
         ctxt->myDoc = NULL;
     }
-    if (sax != NULL) ctxt->sax = NULL;
+    if (sax != NULL) {
+	oldsax = ctxt->sax;
+    }
     xmlFreeParserCtxt(ctxt);
     
     return(ret);
@@ -10710,12 +10713,12 @@ xmlSAXParseFile(xmlSAXHandlerPtr sax, const char *filename,
     xmlDocPtr ret;
     xmlParserCtxtPtr ctxt;
     char *directory = NULL;
+    xmlSAXHandlerPtr oldsax;
 
     ctxt = xmlCreateFileParserCtxt(filename);
     if (ctxt == NULL) return(NULL);
     if (sax != NULL) {
-	if (ctxt->sax != NULL)
-	    xmlFree(ctxt->sax);
+	oldsax = ctxt->sax;
         ctxt->sax = sax;
         ctxt->userData = NULL;
     }
@@ -10734,7 +10737,7 @@ xmlSAXParseFile(xmlSAXHandlerPtr sax, const char *filename,
        ctxt->myDoc = NULL;
     }
     if (sax != NULL)
-        ctxt->sax = NULL;
+        ctxt->sax = oldsax;
     xmlFreeParserCtxt(ctxt);
     
     return(ret);
@@ -10938,12 +10941,14 @@ xmlSAXUserParseFile(xmlSAXHandlerPtr sax, void *user_data,
                     const char *filename) {
     int ret = 0;
     xmlParserCtxtPtr ctxt;
+    xmlSAXHandlerPtr oldsax;
     
     ctxt = xmlCreateFileParserCtxt(filename);
     if (ctxt == NULL) return -1;
-    if (ctxt->sax != &xmlDefaultSAXHandler)
-	xmlFree(ctxt->sax);
-    ctxt->sax = sax;
+    if (sax != NULL) {
+	oldsax = ctxt->sax;
+	ctxt->sax = sax;
+    }
     if (user_data != NULL)
 	ctxt->userData = user_data;
     
@@ -10958,7 +10963,7 @@ xmlSAXUserParseFile(xmlSAXHandlerPtr sax, void *user_data,
 	    ret = -1;
     }
     if (sax != NULL)
-	ctxt->sax = NULL;
+	ctxt->sax = oldsax;
     xmlFreeParserCtxt(ctxt);
     
     return ret;

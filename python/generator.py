@@ -292,6 +292,8 @@ def skip_function(name):
         return 1
     if name == "xmlFreeParserCtxt":
         return 1
+    if name == "xmlFreeTextReader":
+        return 1
 #    if name[0:11] == "xmlXPathNew":
 #        return 1
     return 0
@@ -621,6 +623,7 @@ classes_ancestor = {
     "outputBuffer": "ioWriteWrapper",
     "inputBuffer": "ioReadWrapper",
     "parserCtxt": "parserCtxtCore",
+    "xmlTextReader": "xmlTextReaderCore",
 }
 classes_destructors = {
     "parserCtxt": "xmlFreeParserCtxt",

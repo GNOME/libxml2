@@ -1487,6 +1487,170 @@ libxml_xmlSetParserCtxtWarningHandler(ATTRIBUTE_UNUSED PyObject *self, PyObject 
 
 /************************************************************************
  *									*
+ *                      Per xmlTextReader error handler                 *
+ *									*
+ ************************************************************************/
+
+typedef struct 
+{
+    PyObject *f;
+    PyObject *arg;
+} xmlTextReaderPyCtxt;
+typedef xmlTextReaderPyCtxt *xmlTextReaderPyCtxtPtr;
+
+static void 
+libxml_xmlTextReaderErrorCallback(void *arg, 
+				  const char *msg,
+				  int line,
+				  int col,
+				  const char *URI,
+				  int severity)
+{
+    xmlTextReaderPyCtxt *pyCtxt = (xmlTextReaderPyCtxt *)arg;
+    PyObject *list;
+    PyObject *result;
+    
+    list = PyTuple_New(6);
+    PyTuple_SetItem(list, 0, pyCtxt->arg);
+    Py_XINCREF(pyCtxt->arg);
+    PyTuple_SetItem(list, 1, libxml_charPtrConstWrap(msg));
+    PyTuple_SetItem(list, 2, libxml_intWrap(line));
+    PyTuple_SetItem(list, 3, libxml_intWrap(col));
+    PyTuple_SetItem(list, 4, libxml_charPtrConstWrap(URI));
+    PyTuple_SetItem(list, 5, libxml_intWrap(severity));
+    result = PyEval_CallObject(pyCtxt->f, list);
+    if (result == NULL)
+    {
+	/* TODO: manage for the exception to be go up... */
+	PyErr_Print();
+    }
+    Py_XDECREF(list);
+    Py_XDECREF(result);
+}
+
+PyObject *
+libxml_xmlTextReaderSetErrorHandler(ATTRIBUTE_UNUSED PyObject *self, PyObject *args)
+{
+    xmlTextReaderPtr reader;
+    xmlTextReaderPyCtxtPtr pyCtxt;
+    xmlTextReaderErrorFunc f;
+    void *arg;
+    PyObject *pyobj_reader;
+    PyObject *pyobj_f;
+    PyObject *pyobj_arg;
+    PyObject *py_retval;
+
+    if (!PyArg_ParseTuple(args, (char *)"OOO:xmlTextReaderSetErrorHandler", &pyobj_reader, &pyobj_f, &pyobj_arg))
+        return(NULL);
+    reader = (xmlTextReaderPtr) PyxmlTextReader_Get(pyobj_reader);
+    /* clear previous error handler */
+    xmlTextReaderGetErrorHandler(reader,&f,&arg);
+    if (arg != NULL) {
+	if (f == libxml_xmlTextReaderErrorCallback) {
+	    /* ok, it's our error handler! */
+	    pyCtxt = (xmlTextReaderPyCtxtPtr)arg;
+	    Py_XDECREF(pyCtxt->f);
+	    Py_XDECREF(pyCtxt->arg);
+	    xmlFree(pyCtxt);
+	}
+	else {
+	    /* 
+	     * there already an arg, and it's not ours,
+	     * there is definitely something wrong going on here...
+	     * we don't know how to free it, so we bail out... 
+	     */
+	    py_retval = libxml_intWrap(-1);
+	    return(py_retval);
+	}
+    }
+    xmlTextReaderSetErrorHandler(reader,NULL,NULL);
+    /* set new error handler */
+    if (pyobj_f != Py_None)
+    {
+	pyCtxt = (xmlTextReaderPyCtxtPtr)xmlMalloc(sizeof(xmlTextReaderPyCtxt));
+	if (pyCtxt == NULL) {
+	    py_retval = libxml_intWrap(-1);
+	    return(py_retval);
+	}
+	Py_XINCREF(pyobj_f);
+	pyCtxt->f = pyobj_f;
+	Py_XINCREF(pyobj_arg);
+	pyCtxt->arg = pyobj_arg;
+	xmlTextReaderSetErrorHandler(reader,libxml_xmlTextReaderErrorCallback,pyCtxt);
+    }
+
+    py_retval = libxml_intWrap(1);
+    return(py_retval);
+}
+
+PyObject *
+libxml_xmlTextReaderGetErrorHandler(ATTRIBUTE_UNUSED PyObject *self, PyObject *args)
+{
+    xmlTextReaderPtr reader;
+    xmlTextReaderPyCtxtPtr pyCtxt;
+    xmlTextReaderErrorFunc f;
+    void *arg;
+    PyObject *pyobj_reader;
+    PyObject *py_retval;
+
+    if (!PyArg_ParseTuple(args, (char *)"O:xmlTextReaderSetErrorHandler", &pyobj_reader))
+        return(NULL);
+    reader = (xmlTextReaderPtr) PyxmlTextReader_Get(pyobj_reader);
+    xmlTextReaderGetErrorHandler(reader,&f,&arg);
+    py_retval = PyTuple_New(2);
+    if (f == libxml_xmlTextReaderErrorCallback) {
+	/* ok, it's our error handler! */
+	pyCtxt = (xmlTextReaderPyCtxtPtr)arg;
+	PyTuple_SetItem(py_retval, 0, pyCtxt->f);
+	Py_XINCREF(pyCtxt->f);
+	PyTuple_SetItem(py_retval, 1, pyCtxt->arg);
+	Py_XINCREF(pyCtxt->arg);
+    }
+    else
+    {
+	/* f is null or it's not our error handler */
+	PyTuple_SetItem(py_retval, 0, Py_None);
+	Py_XINCREF(Py_None);
+	PyTuple_SetItem(py_retval, 1, Py_None);
+	Py_XINCREF(Py_None);
+    }
+    return(py_retval);
+}
+
+PyObject *
+libxml_xmlFreeTextReader(ATTRIBUTE_UNUSED PyObject *self, PyObject *args) {
+    xmlTextReaderPtr reader;
+    PyObject *pyobj_reader;
+    xmlTextReaderPyCtxtPtr pyCtxt;
+    xmlTextReaderErrorFunc f;
+    void *arg;
+
+    if (!PyArg_ParseTuple(args, (char *)"O:xmlFreeTextReader", &pyobj_reader))
+        return(NULL);
+    reader = (xmlTextReaderPtr) PyxmlTextReader_Get(pyobj_reader);
+
+    xmlTextReaderGetErrorHandler(reader,&f,&arg);
+    if (arg != NULL) {
+	if (f == libxml_xmlTextReaderErrorCallback) {
+	    /* ok, it's our error handler! */
+	    pyCtxt = (xmlTextReaderPyCtxtPtr)arg;
+	    Py_XDECREF(pyCtxt->f);
+	    Py_XDECREF(pyCtxt->arg);
+	    xmlFree(pyCtxt);
+	}
+	/* 
+	 * else, something wrong happened, because the error handler is
+	 * not owned by the python bindings...
+	 */
+    }
+
+    xmlFreeTextReader(reader);
+    Py_INCREF(Py_None);
+    return(Py_None);
+}
+
+/************************************************************************
+ *									*
  *			XPath extensions				*
  *									*
  ************************************************************************/
@@ -2397,6 +2561,9 @@ static PyMethodDef libxmlMethods[] = {
     {(char *)"xmlSetParserCtxtErrorHandler", libxml_xmlSetParserCtxtErrorHandler, METH_VARARGS, NULL },
     {(char *)"xmlSetParserCtxtWarningHandler", libxml_xmlSetParserCtxtWarningHandler, METH_VARARGS, NULL },
     {(char *)"xmlFreeParserCtxt", libxml_xmlFreeParserCtxt, METH_VARARGS, NULL },
+    {(char *)"xmlTextReaderSetErrorHandler", libxml_xmlTextReaderSetErrorHandler, METH_VARARGS, NULL },
+    {(char *)"xmlTextReaderGetErrorHandler", libxml_xmlTextReaderGetErrorHandler, METH_VARARGS, NULL },
+    {(char *)"xmlFreeTextReader", libxml_xmlFreeTextReader, METH_VARARGS, NULL },
     {NULL, NULL, 0, NULL}
 };
 

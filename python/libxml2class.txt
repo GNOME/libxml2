@@ -558,7 +558,9 @@ Class xmlAttr(xmlNode)
     freeProp()
     freePropList()
     removeProp()
-Class xmlTextReader()
+
+
+Class xmlTextReader(xmlTextReaderCore)
 
     # functions from module xmlreader
     AttributeCount()
@@ -599,7 +601,6 @@ Class xmlTextReader()
     SetParserProp()
     Value()
     XmlLang()
-    freeTextReader()
 Class xmlReg()
 
     # functions from module xmlregexp

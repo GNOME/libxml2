@@ -1216,6 +1216,9 @@ xmlCleanupPredefinedEntities
 	xmlTextReaderGetParserProp
 	xmlTextReaderCurrentNode
 	xmlTextReaderCurrentDoc
+	/* Error handling extensions */
+	xmlTextReaderSetErrorHandler
+	xmlTextReaderGetErrorHandler
 
 
 

@@ -1,3 +1,12 @@
+Fri Jan 17 00:31:30 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmlreader.c include/libxml/xmlreader.h python/generator.py
+	  python/libxml.c python/libxml.py win32/libxml2.def.src: applied
+	  a patch from Stéphane Bidoul to allow per XMLtextReader error
+	  and warning handling
+	* python/tests/Makefile.am python/tests/readererr.py: adding the
+	  specific regression test
+
 Tue Jan 14 17:00:08 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: Alexey Efimov pointed out that concat('a', 'b', )

@@ -23,7 +23,8 @@ PYTESTS=	\
     reader.py	\
     reader2.py	\
     reader3.py	\
-    ctxterror.py
+    ctxterror.py\
+    readererr.py
 
 XMLS=		\
     tst.xml	\

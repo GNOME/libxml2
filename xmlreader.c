@@ -24,6 +24,7 @@
 #include "libxml.h"
 
 #include <string.h> /* for memset() only ! */
+#include <stdarg.h>
 
 #ifdef HAVE_CTYPE_H
 #include <ctype.h>
@@ -107,6 +108,10 @@ struct _xmlTextReader {
     int                entNr;        /* Depth of the entities stack */
     int                entMax;       /* Max depth of the entities stack */
     xmlNodePtr        *entTab;       /* array of entities */
+
+    /* error handling */
+    xmlTextReaderErrorFunc errorFunc;    /* callback function */
+    void                  *errorFuncArg; /* callback function user argument */
 };
 
 static const char *xmlTextReaderIsEmpty = "This element is empty";
@@ -2233,6 +2238,150 @@ xmlTextReaderCurrentDoc(xmlTextReaderPtr reader) {
 	return(NULL);
     
     return(reader->ctxt->myDoc);
+}
+
+/************************************************************************
+ *									*
+ *			Error Handling Extensions                       *
+ *									*
+ ************************************************************************/
+
+/* helper to build a xmlMalloc'ed string from a format and va_list */
+static char *
+xmlTextReaderBuildMessage(const char *msg, va_list ap) {
+    int size;
+    int chars;
+    char *larger;
+    char *str;
+
+    str = (char *) xmlMalloc(150);
+    if (str == NULL) {
+	xmlGenericError(xmlGenericErrorContext, "xmlMalloc failed !\n");
+        return NULL;
+    }
+
+    size = 150;
+
+    while (1) {
+        chars = vsnprintf(str, size, msg, ap);
+        if ((chars > -1) && (chars < size))
+            break;
+        if (chars > -1)
+            size += chars + 1;
+        else
+            size += 100;
+        if ((larger = (char *) xmlRealloc(str, size)) == NULL) {
+	    xmlGenericError(xmlGenericErrorContext, "xmlRealloc failed !\n");
+            xmlFree(str);
+            return NULL;
+        }
+        str = larger;
+    }
+
+    return str;
+}
+
+static void
+xmlTextReaderGenericError(void *ctxt, int severity, char *str) {
+    xmlParserCtxtPtr ctx = (xmlParserCtxtPtr)ctxt;
+    xmlTextReaderPtr reader = (xmlTextReaderPtr)ctx->_private;
+
+    if (str != NULL) {
+	reader->errorFunc(reader->errorFuncArg,
+			  str,
+			  ctx->input->line,
+			  ctx->input->col,
+			  ctx->input->filename,
+			  severity);
+	xmlFree(str);
+    }
+}
+
+static void 
+xmlTextReaderError(void *ctxt, const char *msg, ...) {
+    va_list ap;
+
+    va_start(ap,msg);
+    xmlTextReaderGenericError(ctxt,
+                              XMLREADER_SEVERITY_ERROR,
+	                      xmlTextReaderBuildMessage(msg,ap));
+    va_end(ap);
+
+}
+
+static void 
+xmlTextReaderWarning(void *ctxt, const char *msg, ...) {
+    va_list ap;
+
+    va_start(ap,msg);
+    xmlTextReaderGenericError(ctxt,
+                              XMLREADER_SEVERITY_WARNING,
+	                      xmlTextReaderBuildMessage(msg,ap));
+    va_end(ap);
+}
+
+static void 
+xmlTextReaderValidityError(void *ctxt, const char *msg, ...) {
+    va_list ap;
+
+    va_start(ap,msg);
+    xmlTextReaderGenericError(ctxt,
+                              XMLREADER_SEVERITY_VALIDITY_ERROR,
+	                      xmlTextReaderBuildMessage(msg,ap));
+    va_end(ap);
+
+}
+
+static void 
+xmlTextReaderValidityWarning(void *ctxt, const char *msg, ...) {
+    va_list ap;
+
+    va_start(ap,msg);
+    xmlTextReaderGenericError(ctxt,
+                              XMLREADER_SEVERITY_VALIDITY_WARNING,
+	                      xmlTextReaderBuildMessage(msg,ap));
+    va_end(ap);
+}
+
+/**
+ * xmlTextReaderSetErrorHandler:
+ * @reader:  the xmlTextReaderPtr used
+ * @f:	the callback function to call on error and warnings
+ * @arg:    a user argument to pass to the callback function
+ *
+ * If @f is NULL, the default error and warning handlers are restored.
+ */
+void
+xmlTextReaderSetErrorHandler(xmlTextReaderPtr reader, 
+			     xmlTextReaderErrorFunc f, 
+			     void *arg)
+{
+    if (f != NULL) {
+	reader->ctxt->sax->error = xmlTextReaderError;
+	reader->ctxt->vctxt.error = xmlTextReaderValidityError;
+	reader->ctxt->sax->warning = xmlTextReaderWarning;
+	reader->ctxt->vctxt.warning = xmlTextReaderValidityWarning;
+	reader->errorFunc = f;
+	reader->errorFuncArg = arg;
+    }
+    else {
+	/* restore defaults */
+	reader->ctxt->sax->error = xmlParserError;
+	reader->ctxt->vctxt.error = xmlParserValidityError;
+	reader->ctxt->sax->warning = xmlParserWarning;
+	reader->ctxt->vctxt.warning = xmlParserValidityWarning;
+	reader->errorFunc = NULL;
+	reader->errorFuncArg = NULL;
+    }
+}
+
+void
+xmlTextReaderGetErrorHandler(xmlTextReaderPtr reader, 
+			     xmlTextReaderErrorFunc *f, 
+			     void **arg)
+{
+    *f = reader->errorFunc;
+    *arg = reader->errorFuncArg;
 }
 
 /************************************************************************

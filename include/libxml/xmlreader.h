@@ -23,6 +23,13 @@ typedef enum {
     XML_PARSER_SUBST_ENTITIES = 4
 } xmlParserProperties;
 
+typedef enum {
+    XMLREADER_SEVERITY_VALIDITY_WARNING = 1,
+    XMLREADER_SEVERITY_VALIDITY_ERROR = 2,
+    XMLREADER_SEVERITY_WARNING = 3,
+    XMLREADER_SEVERITY_ERROR = 4
+} xmlReaderSeverities;
+
 typedef struct _xmlTextReader xmlTextReader;
 typedef xmlTextReader *xmlTextReaderPtr;
 
@@ -99,6 +106,23 @@ int		xmlTextReaderGetParserProp	(xmlTextReaderPtr reader,
 						 int prop);
 xmlNodePtr	xmlTextReaderCurrentNode	(xmlTextReaderPtr reader);
 xmlDocPtr	xmlTextReaderCurrentDoc		(xmlTextReaderPtr reader);
+
+/*
+ * Error handling extensions
+ */
+typedef void (*xmlTextReaderErrorFunc)          (void *arg, 
+						 const char *msg,
+						 int line, 
+						 int col, 
+						 const char *URI, 
+						 xmlReaderSeverities severity);
+void            xmlTextReaderSetErrorHandler    (xmlTextReaderPtr reader, 
+						 xmlTextReaderErrorFunc f, 
+						 void *arg);
+void            xmlTextReaderGetErrorHandler    (xmlTextReaderPtr reader, 
+						 xmlTextReaderErrorFunc *f, 
+						 void **arg);
+
 #ifdef __cplusplus
 }
 #endif

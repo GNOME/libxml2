@@ -462,6 +462,14 @@ PARSER_VALIDATE=3
 PARSER_SUBST_ENTITIES=4
 
 #
+# For the xmlTextReader error severities
+#
+XMLREADER_SEVERITY_VALIDITY_WARNING=1
+XMLREADER_SEVERITY_VALIDITY_ERROR=2
+XMLREADER_SEVERITY_WARNING=3
+XMLREADER_SEVERITY_ERROR=4
+
+#
 # register the libxml2 error handler
 #
 def registerErrorHandler(f, ctx):
@@ -496,6 +504,28 @@ class parserCtxtCore:
 
     def registerWarningHandler(self,f,arg):
         libxml2mod.xmlSetParserCtxtWarningHandler(self._o,f,arg)
+
+class xmlTextReaderCore:
+
+    def __init__(self, _obj=None):
+        self.input = None
+        if _obj != None:self._o = _obj;return
+        self._o = None
+
+    def __del__(self):
+        if self._o != None:
+            libxml2mod.xmlFreeTextReader(self._o)
+        self._o = None
+
+    def setErrorHandler(self,f,arg):
+        """Register an error handler that will be called back as
+           f(arg,msg,line,col,URI,severity)."""
+        libxml2mod.xmlTextReaderSetErrorHandler(self._o,f,arg)
+
+    def getErrorHandler(self):
+        """Return (f,arg) as previously registered with setErrorHandler
+           or (None,None)."""
+        return libxml2mod.xmlTextReaderGetErrorHandler(self._o)
 
 # WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING
 #

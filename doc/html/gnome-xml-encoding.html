@@ -115,7 +115,7 @@ SIZE="3"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN14357"
+NAME="AEN15196"
 ></A
 ><H2
 >Name</H2
@@ -123,7 +123,7 @@ NAME="AEN14357"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN14360"
+NAME="AEN15199"
 ></A
 ><H2
 >Synopsis</H2
@@ -180,28 +180,6 @@ HREF="gnome-xml-encoding.html#XMLCHARENCODINGHANDLERPTR"
 >xmlCharEncodingHandlerPtr</A
 > handler);
 <A
-HREF="gnome-xml-encoding.html#XMLCHARENCODING"
->xmlCharEncoding</A
-> <A
-HREF="gnome-xml-encoding.html#XMLDETECTCHARENCODING"
->xmlDetectCharEncoding</A
->       (unsigned char *in,
-                                             int len);
-<A
-HREF="gnome-xml-encoding.html#XMLCHARENCODING"
->xmlCharEncoding</A
-> <A
-HREF="gnome-xml-encoding.html#XMLPARSECHARENCODING"
->xmlParseCharEncoding</A
->        (const char *name);
-const char* <A
-HREF="gnome-xml-encoding.html#XMLGETCHARENCODINGNAME"
->xmlGetCharEncodingName</A
->          (<A
-HREF="gnome-xml-encoding.html#XMLCHARENCODING"
->xmlCharEncoding</A
-> enc);
-<A
 HREF="gnome-xml-encoding.html#XMLCHARENCODINGHANDLERPTR"
 >xmlCharEncodingHandlerPtr</A
 > <A
@@ -220,6 +198,45 @@ HREF="gnome-xml-encoding.html#XMLFINDCHARENCODINGHANDLER"
 >xmlFindCharEncodingHandler</A
 >
                                             (const char *name);
+int         <A
+HREF="gnome-xml-encoding.html#XMLADDENCODINGALIAS"
+>xmlAddEncodingAlias</A
+>             (const char *name,
+                                             const char *alias);
+int         <A
+HREF="gnome-xml-encoding.html#XMLDELENCODINGALIAS"
+>xmlDelEncodingAlias</A
+>             (const char *alias);
+const char* <A
+HREF="gnome-xml-encoding.html#XMLGETENCODINGALIAS"
+>xmlGetEncodingAlias</A
+>             (const char *alias);
+void        <A
+HREF="gnome-xml-encoding.html#XMLCLEANUPENCODINGALIASES"
+>xmlCleanupEncodingAliases</A
+>       (void);
+<A
+HREF="gnome-xml-encoding.html#XMLCHARENCODING"
+>xmlCharEncoding</A
+> <A
+HREF="gnome-xml-encoding.html#XMLPARSECHARENCODING"
+>xmlParseCharEncoding</A
+>        (const char *name);
+const char* <A
+HREF="gnome-xml-encoding.html#XMLGETCHARENCODINGNAME"
+>xmlGetCharEncodingName</A
+>          (<A
+HREF="gnome-xml-encoding.html#XMLCHARENCODING"
+>xmlCharEncoding</A
+> enc);
+<A
+HREF="gnome-xml-encoding.html#XMLCHARENCODING"
+>xmlCharEncoding</A
+> <A
+HREF="gnome-xml-encoding.html#XMLDETECTCHARENCODING"
+>xmlDetectCharEncoding</A
+>       (unsigned char *in,
+                                             int len);
 int         <A
 HREF="gnome-xml-encoding.html#XMLCHECKUTF8"
 >xmlCheckUTF8</A
@@ -283,7 +300,7 @@ HREF="gnome-xml-encoding.html#XMLCHARENCODINGHANDLER"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN14398"
+NAME="AEN15241"
 ></A
 ><H2
 >Description</H2
@@ -293,14 +310,14 @@ NAME="AEN14398"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN14401"
+NAME="AEN15244"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14403"
+NAME="AEN15246"
 ></A
 ><H3
 ><A
@@ -351,7 +368,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14408"
+NAME="AEN15251"
 ></A
 ><H3
 ><A
@@ -478,7 +495,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14438"
+NAME="AEN15281"
 ></A
 ><H3
 ><A
@@ -605,7 +622,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14468"
+NAME="AEN15311"
 ></A
 ><H3
 ><A
@@ -639,7 +656,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14473"
+NAME="AEN15316"
 ></A
 ><H3
 ><A
@@ -665,7 +682,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14478"
+NAME="AEN15321"
 ></A
 ><H3
 ><A
@@ -696,7 +713,7 @@ in normal processing.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14484"
+NAME="AEN15327"
 ></A
 ><H3
 ><A
@@ -718,14 +735,14 @@ CLASS="PROGRAMLISTING"
 ></TABLE
 ><P
 >Cleanup the memory allocated for the char encoding support, it
-unregisters all the encoding handlers.</P
+unregisters all the encoding handlers and the aliases.</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14490"
+NAME="AEN15333"
 ></A
 ><H3
 ><A
@@ -788,7 +805,617 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14506"
+NAME="AEN15349"
+></A
+><H3
+><A
+NAME="XMLGETCHARENCODINGHANDLER"
+></A
+>xmlGetCharEncodingHandler ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-encoding.html#XMLCHARENCODINGHANDLERPTR"
+>xmlCharEncodingHandlerPtr</A
+> xmlGetCharEncodingHandler
+                                            (<A
+HREF="gnome-xml-encoding.html#XMLCHARENCODING"
+>xmlCharEncoding</A
+> enc);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Search in the registrered set the handler able to read/write that encoding.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>enc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a string describing the char encoding.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the handler or NULL if not found</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN15370"
+></A
+><H3
+><A
+NAME="XMLFINDCHARENCODINGHANDLER"
+></A
+>xmlFindCharEncodingHandler ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-encoding.html#XMLCHARENCODINGHANDLERPTR"
+>xmlCharEncodingHandlerPtr</A
+> xmlFindCharEncodingHandler
+                                            (const char *name);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN15389"
+></A
+><H3
+><A
+NAME="XMLADDENCODINGALIAS"
+></A
+>xmlAddEncodingAlias ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlAddEncodingAlias             (const char *name,
+                                             const char *alias);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Registers and alias <TT
+CLASS="PARAMETER"
+><I
+>alias</I
+></TT
+> for an encoding named <TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>. Existing alias
+will be overwritten.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the encoding name as parsed, in UTF-8 format (ASCII actually)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>alias</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the alias name as parsed, in UTF-8 format (ASCII actually)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 in case of success, -1 in case of error</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN15414"
+></A
+><H3
+><A
+NAME="XMLDELENCODINGALIAS"
+></A
+>xmlDelEncodingAlias ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlDelEncodingAlias             (const char *alias);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Unregisters an encoding alias <TT
+CLASS="PARAMETER"
+><I
+>alias</I
+></TT
+></P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>alias</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the alias name as parsed, in UTF-8 format (ASCII actually)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 in case of success, -1 in case of error</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN15434"
+></A
+><H3
+><A
+NAME="XMLGETENCODINGALIAS"
+></A
+>xmlGetEncodingAlias ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>const char* xmlGetEncodingAlias             (const char *alias);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Lookup an encoding name for the given alias.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>alias</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the alias name as parsed, in UTF-8 format (ASCII actually)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>NULL if not found the original name otherwise</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN15453"
+></A
+><H3
+><A
+NAME="XMLCLEANUPENCODINGALIASES"
+></A
+>xmlCleanupEncodingAliases ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlCleanupEncodingAliases       (void);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Unregisters all aliases</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN15459"
+></A
+><H3
+><A
+NAME="XMLPARSECHARENCODING"
+></A
+>xmlParseCharEncoding ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-encoding.html#XMLCHARENCODING"
+>xmlCharEncoding</A
+> xmlParseCharEncoding        (const char *name);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Conpare the string to the known encoding schemes already known. Note
+that the comparison is case insensitive accordingly to the section
+[XML] 4.3.3 Character Encoding in Entities.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the encoding name as parsed, in UTF-8 format (ASCII actually)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>one of the XML_CHAR_ENCODING_... values or XML_CHAR_ENCODING_NONE
+if not recognized.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN15479"
+></A
+><H3
+><A
+NAME="XMLGETCHARENCODINGNAME"
+></A
+>xmlGetCharEncodingName ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>const char* xmlGetCharEncodingName          (<A
+HREF="gnome-xml-encoding.html#XMLCHARENCODING"
+>xmlCharEncoding</A
+> enc);</PRE
+></TD
+></TR
+></TABLE
+><P
+>The "canonical" name for XML encoding.
+C.f. http://www.w3.org/TR/REC-xml<GTKDOCLINK
+HREF="CHARENCODING"
+>charencoding</GTKDOCLINK
+>
+Section 4.3.3  Character Encoding in Entities</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>enc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the encoding</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the canonical name for the given encoding</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN15500"
 ></A
 ><H3
 ><A
@@ -886,330 +1513,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14530"
-></A
-><H3
-><A
-NAME="XMLPARSECHARENCODING"
-></A
->xmlParseCharEncoding ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><A
-HREF="gnome-xml-encoding.html#XMLCHARENCODING"
->xmlCharEncoding</A
-> xmlParseCharEncoding        (const char *name);</PRE
-></TD
-></TR
-></TABLE
-><P
->Conpare the string to the known encoding schemes already known. Note
-that the comparison is case insensitive accordingly to the section
-[XML] 4.3.3 Character Encoding in Entities.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->name</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the encoding name as parsed, in UTF-8 format (ASCII actually)</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><I
-CLASS="EMPHASIS"
->Returns</I
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->one of the XML_CHAR_ENCODING_... values or XML_CHAR_ENCODING_NONE
-if not recognized.</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN14550"
-></A
-><H3
-><A
-NAME="XMLGETCHARENCODINGNAME"
-></A
->xmlGetCharEncodingName ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->const char* xmlGetCharEncodingName          (<A
-HREF="gnome-xml-encoding.html#XMLCHARENCODING"
->xmlCharEncoding</A
-> enc);</PRE
-></TD
-></TR
-></TABLE
-><P
->The "canonical" name for XML encoding.
-C.f. http://www.w3.org/TR/REC-xml<GTKDOCLINK
-HREF="CHARENCODING"
->charencoding</GTKDOCLINK
->
-Section 4.3.3  Character Encoding in Entities</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->enc</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the encoding</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><I
-CLASS="EMPHASIS"
->Returns</I
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the canonical name for the given encoding</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN14571"
-></A
-><H3
-><A
-NAME="XMLGETCHARENCODINGHANDLER"
-></A
->xmlGetCharEncodingHandler ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><A
-HREF="gnome-xml-encoding.html#XMLCHARENCODINGHANDLERPTR"
->xmlCharEncodingHandlerPtr</A
-> xmlGetCharEncodingHandler
-                                            (<A
-HREF="gnome-xml-encoding.html#XMLCHARENCODING"
->xmlCharEncoding</A
-> enc);</PRE
-></TD
-></TR
-></TABLE
-><P
->Search in the registrered set the handler able to read/write that encoding.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->enc</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  a string describing the char encoding.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><I
-CLASS="EMPHASIS"
->Returns</I
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the handler or NULL if not found</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN14592"
-></A
-><H3
-><A
-NAME="XMLFINDCHARENCODINGHANDLER"
-></A
->xmlFindCharEncodingHandler ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><A
-HREF="gnome-xml-encoding.html#XMLCHARENCODINGHANDLERPTR"
->xmlCharEncodingHandlerPtr</A
-> xmlFindCharEncodingHandler
-                                            (const char *name);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->name</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><I
-CLASS="EMPHASIS"
->Returns</I
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN14611"
+NAME="AEN15524"
 ></A
 ><H3
 ><A
@@ -1304,7 +1608,7 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14633"
+NAME="AEN15546"
 ></A
 ><H3
 ><A
@@ -1437,7 +1741,7 @@ the result of transformation can't fit into the encoding we want), or</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14664"
+NAME="AEN15577"
 ></A
 ><H3
 ><A
@@ -1560,7 +1864,7 @@ the result of transformation can't fit into the encoding we want), or</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14694"
+NAME="AEN15607"
 ></A
 ><H3
 ><A
@@ -1684,7 +1988,7 @@ the result of transformation can't fit into the encoding we want), or</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14724"
+NAME="AEN15637"
 ></A
 ><H3
 ><A

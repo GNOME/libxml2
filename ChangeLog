@@ -1,3 +1,7 @@
+Sun Oct  1 22:33:00 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* doc/* rebuilding docs for 2.2.4 release
+
 Sun Oct  1 22:16:33 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* configure.in: releasing 2.2.4

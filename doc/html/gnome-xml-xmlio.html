@@ -115,7 +115,7 @@ SIZE="3"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN11277"
+NAME="AEN11622"
 ></A
 ><H2
 >Name</H2
@@ -123,7 +123,7 @@ NAME="AEN11277"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN11280"
+NAME="AEN11625"
 ></A
 ><H2
 >Synopsis</H2
@@ -457,6 +457,24 @@ HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFER"
 HREF="gnome-xml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
 > cur,
+                                             const char *encoding);
+void        <A
+HREF="gnome-xml-xmlio.html#XMLNODEDUMPOUTPUT"
+>xmlNodeDumpOutput</A
+>               (<A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERPTR"
+>xmlOutputBufferPtr</A
+> buf,
+                                             <A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur,
+                                             int level,
+                                             int format,
                                              const char *encoding);</PRE
 ></TD
 ></TR
@@ -465,7 +483,7 @@ HREF="gnome-xml-tree.html#XMLDOCPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN11364"
+NAME="AEN11713"
 ></A
 ><H2
 >Description</H2
@@ -475,14 +493,14 @@ NAME="AEN11364"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN11367"
+NAME="AEN11716"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11369"
+NAME="AEN11718"
 ></A
 ><H3
 ><A
@@ -555,7 +573,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11387"
+NAME="AEN11736"
 ></A
 ><H3
 ><A
@@ -613,7 +631,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11401"
+NAME="AEN11750"
 ></A
 ><H3
 ><A
@@ -722,7 +740,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11427"
+NAME="AEN11776"
 ></A
 ><H3
 ><A
@@ -780,7 +798,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11441"
+NAME="AEN11790"
 ></A
 ><H3
 ><A
@@ -803,7 +821,7 @@ CLASS="PROGRAMLISTING"
     
     xmlCharEncodingHandlerPtr encoder; /* I18N conversions to UTF-8 */
     
-    xmlBufferPtr buffer;    /* Local buffer encoded in UTF-8 or ISOLatin */
+    xmlBufferPtr buffer;    /* Local buffer encoded in UTF-8 */
     xmlBufferPtr raw;       /* if encoder != NULL buffer for raw input */
 };</PRE
 ></TD
@@ -815,7 +833,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11446"
+NAME="AEN11795"
 ></A
 ><H3
 ><A
@@ -841,7 +859,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11451"
+NAME="AEN11800"
 ></A
 ><H3
 ><A
@@ -914,7 +932,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11469"
+NAME="AEN11818"
 ></A
 ><H3
 ><A
@@ -972,7 +990,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11483"
+NAME="AEN11832"
 ></A
 ><H3
 ><A
@@ -1081,7 +1099,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11509"
+NAME="AEN11858"
 ></A
 ><H3
 ><A
@@ -1139,7 +1157,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11523"
+NAME="AEN11872"
 ></A
 ><H3
 ><A
@@ -1175,7 +1193,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11528"
+NAME="AEN11877"
 ></A
 ><H3
 ><A
@@ -1201,7 +1219,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11533"
+NAME="AEN11882"
 ></A
 ><H3
 ><A
@@ -1283,7 +1301,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11554"
+NAME="AEN11903"
 ></A
 ><H3
 ><A
@@ -1387,7 +1405,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11579"
+NAME="AEN11928"
 ></A
 ><H3
 ><A
@@ -1491,7 +1509,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11605"
+NAME="AEN11954"
 ></A
 ><H3
 ><A
@@ -1592,7 +1610,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11630"
+NAME="AEN11979"
 ></A
 ><H3
 ><A
@@ -1711,7 +1729,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11659"
+NAME="AEN12008"
 ></A
 ><H3
 ><A
@@ -1854,7 +1872,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11694"
+NAME="AEN12043"
 ></A
 ><H3
 ><A
@@ -1953,7 +1971,7 @@ in case of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11718"
+NAME="AEN12067"
 ></A
 ><H3
 ><A
@@ -2055,7 +2073,7 @@ in case of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11743"
+NAME="AEN12092"
 ></A
 ><H3
 ><A
@@ -2172,7 +2190,7 @@ in case of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11771"
+NAME="AEN12120"
 ></A
 ><H3
 ><A
@@ -2235,7 +2253,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11787"
+NAME="AEN12136"
 ></A
 ><H3
 ><A
@@ -2308,7 +2326,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11805"
+NAME="AEN12154"
 ></A
 ><H3
 ><A
@@ -2449,7 +2467,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11840"
+NAME="AEN12189"
 ></A
 ><H3
 ><A
@@ -2530,7 +2548,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11861"
+NAME="AEN12210"
 ></A
 ><H3
 ><A
@@ -2653,7 +2671,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11890"
+NAME="AEN12239"
 ></A
 ><H3
 ><A
@@ -2757,7 +2775,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11916"
+NAME="AEN12265"
 ></A
 ><H3
 ><A
@@ -2857,7 +2875,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11941"
+NAME="AEN12290"
 ></A
 ><H3
 ><A
@@ -2999,7 +3017,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN11976"
+NAME="AEN12325"
 ></A
 ><H3
 ><A
@@ -3117,7 +3135,7 @@ in case of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12004"
+NAME="AEN12353"
 ></A
 ><H3
 ><A
@@ -3217,7 +3235,7 @@ in case of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12028"
+NAME="AEN12377"
 ></A
 ><H3
 ><A
@@ -3295,7 +3313,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12048"
+NAME="AEN12397"
 ></A
 ><H3
 ><A
@@ -3374,7 +3392,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12068"
+NAME="AEN12417"
 ></A
 ><H3
 ><A
@@ -3515,7 +3533,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12103"
+NAME="AEN12452"
 ></A
 ><H3
 ><A
@@ -3623,6 +3641,165 @@ WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
 > the number of byte written or -1 in case of failure.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN12481"
+></A
+><H3
+><A
+NAME="XMLNODEDUMPOUTPUT"
+></A
+>xmlNodeDumpOutput ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlNodeDumpOutput               (<A
+HREF="gnome-xml-xmlio.html#XMLOUTPUTBUFFERPTR"
+>xmlOutputBufferPtr</A
+> buf,
+                                             <A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur,
+                                             int level,
+                                             int format,
+                                             const char *encoding);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Dump an XML node, recursive behaviour,children are printed too.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buf</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the XML buffer output</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the document</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the current node</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>level</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the imbrication level for indenting</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>format</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> is formatting allowed</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>encoding</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an optional encoding string</TD
 ></TR
 ></TABLE
 ><P

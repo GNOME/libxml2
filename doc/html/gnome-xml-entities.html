@@ -115,7 +115,7 @@ SIZE="3"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN6588"
+NAME="AEN6862"
 ></A
 ><H2
 >Name</H2
@@ -123,7 +123,7 @@ NAME="AEN6588"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN6591"
+NAME="AEN6865"
 ></A
 ><H2
 >Synopsis</H2
@@ -162,6 +162,10 @@ typedef     <A
 HREF="gnome-xml-entities.html#XMLENTITIESTABLEPTR"
 >xmlEntitiesTablePtr</A
 >;
+void        <A
+HREF="gnome-xml-entities.html#XMLINITIALIZEPREDEFINEDENTITIES"
+>xmlInitializePredefinedEntities</A
+> (void);
 <A
 HREF="gnome-xml-entities.html#XMLENTITYPTR"
 >xmlEntityPtr</A
@@ -378,7 +382,7 @@ HREF="gnome-xml-tree.html#XMLCHAR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN6658"
+NAME="AEN6933"
 ></A
 ><H2
 >Description</H2
@@ -388,14 +392,14 @@ NAME="AEN6658"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN6661"
+NAME="AEN6936"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6663"
+NAME="AEN6938"
 ></A
 ><H3
 ><A
@@ -428,7 +432,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6668"
+NAME="AEN6943"
 ></A
 ><H3
 ><A
@@ -464,6 +468,9 @@ CLASS="PROGRAMLISTING"
     const xmlChar    *ExternalID;	/* External identifier for PUBLIC */
     const xmlChar      *SystemID;	/* URI for a SYSTEM or PUBLIC Entity */
 
+    struct _xmlEntity     *nexte;	/* next entity in the hash table */
+    const xmlChar           *URI;	/* the full URI as computed */
+
 #ifdef WITH_EXTRA_ENT_DETECT
     /* Referenced entities name stack */
     xmlChar           *ent;             /* Current parsed Node */
@@ -481,7 +488,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6673"
+NAME="AEN6948"
 ></A
 ><H3
 ><A
@@ -507,7 +514,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6678"
+NAME="AEN6953"
 ></A
 ><H3
 ><A
@@ -533,7 +540,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6683"
+NAME="AEN6958"
 ></A
 ><H3
 ><A
@@ -563,7 +570,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6688"
+NAME="AEN6963"
 ></A
 ><H3
 ><A
@@ -589,7 +596,35 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6693"
+NAME="AEN6968"
+></A
+><H3
+><A
+NAME="XMLINITIALIZEPREDEFINEDENTITIES"
+></A
+>xmlInitializePredefinedEntities ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlInitializePredefinedEntities (void);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Set up the predefined entities.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN6974"
 ></A
 ><H3
 ><A
@@ -772,7 +807,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6738"
+NAME="AEN7019"
 ></A
 ><H3
 ><A
@@ -955,7 +990,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6783"
+NAME="AEN7064"
 ></A
 ><H3
 ><A
@@ -1036,7 +1071,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6804"
+NAME="AEN7085"
 ></A
 ><H3
 ><A
@@ -1140,7 +1175,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6830"
+NAME="AEN7111"
 ></A
 ><H3
 ><A
@@ -1243,7 +1278,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6856"
+NAME="AEN7137"
 ></A
 ><H3
 ><A
@@ -1346,7 +1381,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6882"
+NAME="AEN7163"
 ></A
 ><H3
 ><A
@@ -1455,7 +1490,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6910"
+NAME="AEN7191"
 ></A
 ><H3
 ><A
@@ -1560,7 +1595,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6936"
+NAME="AEN7217"
 ></A
 ><H3
 ><A
@@ -1663,7 +1698,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6962"
+NAME="AEN7243"
 ></A
 ><H3
 ><A
@@ -1724,7 +1759,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6978"
+NAME="AEN7259"
 ></A
 ><H3
 ><A
@@ -1805,7 +1840,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6999"
+NAME="AEN7280"
 ></A
 ><H3
 ><A
@@ -1868,7 +1903,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7015"
+NAME="AEN7296"
 ></A
 ><H3
 ><A
@@ -1952,7 +1987,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7036"
+NAME="AEN7317"
 ></A
 ><H3
 ><A
@@ -2036,7 +2071,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7057"
+NAME="AEN7338"
 ></A
 ><H3
 ><A
@@ -2064,7 +2099,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7063"
+NAME="AEN7344"
 ></A
 ><H3
 ><A

@@ -115,7 +115,7 @@ SIZE="3"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN12137"
+NAME="AEN12524"
 ></A
 ><H2
 >Name</H2
@@ -123,7 +123,7 @@ NAME="AEN12137"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN12140"
+NAME="AEN12527"
 ></A
 ><H2
 >Synopsis</H2
@@ -141,6 +141,10 @@ CLASS="SYNOPSIS"
 #define     <A
 HREF="gnome-xml-parserinternals.html#XML-MAX-NAMELEN"
 >XML_MAX_NAMELEN</A
+>
+#define     <A
+HREF="gnome-xml-parserinternals.html#INPUT-CHUNK"
+>INPUT_CHUNK</A
 >
 #define     <A
 HREF="gnome-xml-parserinternals.html#IS-CHAR"
@@ -190,6 +194,66 @@ HREF="gnome-xml-parserinternals.html#MOVETO-ENDTAG"
 HREF="gnome-xml-parserinternals.html#MOVETO-STARTTAG"
 >MOVETO_STARTTAG</A
 >                 (p)
+extern      int <A
+HREF="gnome-xml-parserinternals.html#XMLPARSERDEBUGENTITIES"
+>xmlParserDebugEntities</A
+>;
+extern      int <A
+HREF="gnome-xml-parser.html#XMLGETWARNINGSDEFAULTVALUE"
+>xmlGetWarningsDefaultValue</A
+>;
+extern      int <A
+HREF="gnome-xml-parser.html#XMLSUBSTITUTEENTITIESDEFAULTVALUE"
+>xmlSubstituteEntitiesDefaultValue</A
+>;
+extern      int <A
+HREF="gnome-xml-parserinternals.html#XMLDOVALIDITYCHECKINGDEFAULTVALUE"
+>xmlDoValidityCheckingDefaultValue</A
+>;
+extern      int <A
+HREF="gnome-xml-parserinternals.html#XMLPEDANTICPARSERDEFAULTVALUE"
+>xmlPedanticParserDefaultValue</A
+>;
+extern      int <A
+HREF="gnome-xml-parserinternals.html#XMLKEEPBLANKSDEFAULTVALUE"
+>xmlKeepBlanksDefaultValue</A
+>;
+int         <A
+HREF="gnome-xml-parserinternals.html#XMLISBASECHAR"
+>xmlIsBaseChar</A
+>                   (int c);
+int         <A
+HREF="gnome-xml-parserinternals.html#XMLISBLANK"
+>xmlIsBlank</A
+>                      (int c);
+int         <A
+HREF="gnome-xml-parserinternals.html#XMLISPUBIDCHAR"
+>xmlIsPubidChar</A
+>                  (int c);
+int         <A
+HREF="gnome-xml-parserinternals.html#XMLISLETTER"
+>xmlIsLetter</A
+>                     (int c);
+int         <A
+HREF="gnome-xml-parserinternals.html#XMLISDIGIT"
+>xmlIsDigit</A
+>                      (int c);
+int         <A
+HREF="gnome-xml-parserinternals.html#XMLISIDEOGRAPHIC"
+>xmlIsIdeographic</A
+>                (int c);
+int         <A
+HREF="gnome-xml-parserinternals.html#XMLISCOMBINING"
+>xmlIsCombining</A
+>                  (int c);
+int         <A
+HREF="gnome-xml-parserinternals.html#XMLISEXTENDER"
+>xmlIsExtender</A
+>                   (int c);
+int         <A
+HREF="gnome-xml-parserinternals.html#XMLISCHAR"
+>xmlIsChar</A
+>                       (int c);
 <A
 HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
@@ -333,6 +397,16 @@ HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt,
                                              const char *filename);
+<A
+HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
+>xmlParserInputPtr</A
+> <A
+HREF="gnome-xml-parserinternals.html#XMLNEWINPUTSTREAM"
+>xmlNewInputStream</A
+>         (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
 <A
 HREF="gnome-xml-tree.html#XMLCHAR"
 >xmlChar</A
@@ -931,6 +1005,56 @@ HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
 >xmlParserCtxtPtr</A
 > ctxt);
 int         <A
+HREF="gnome-xml-parserinternals.html#XMLSKIPBLANKCHARS"
+>xmlSkipBlankChars</A
+>               (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+int         <A
+HREF="gnome-xml-parserinternals.html#XMLSTRINGCURRENTCHAR"
+>xmlStringCurrentChar</A
+>            (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *cur,
+                                             int *len);
+void        <A
+HREF="gnome-xml-parserinternals.html#XMLPARSERHANDLEPEREFERENCE"
+>xmlParserHandlePEReference</A
+>      (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+void        <A
+HREF="gnome-xml-parserinternals.html#XMLPARSERHANDLEREFERENCE"
+>xmlParserHandleReference</A
+>        (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+<A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    <A
+HREF="gnome-xml-parserinternals.html#NAMEPOP"
+>namePop</A
+>                         (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+int         <A
+HREF="gnome-xml-parserinternals.html#XMLCHECKLANGUAGEID"
+>xmlCheckLanguageID</A
+>              (const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *lang);
+int         <A
 HREF="gnome-xml-parserinternals.html#XMLCURRENTCHAR"
 >xmlCurrentChar</A
 >                  (<A
@@ -960,7 +1084,11 @@ HREF="gnome-xml-parserinternals.html#XMLPARSERINPUTSHRINK"
 >            (<A
 HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
 >xmlParserInputPtr</A
-> in);</PRE
+> in);
+void        <A
+HREF="gnome-xml-parserinternals.html#HTMLINITAUTOCLOSE"
+>htmlInitAutoClose</A
+>               (void);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -968,7 +1096,7 @@ HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN12373"
+NAME="AEN12794"
 ></A
 ><H2
 >Description</H2
@@ -978,14 +1106,14 @@ NAME="AEN12373"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN12376"
+NAME="AEN12797"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12378"
+NAME="AEN12799"
 ></A
 ><H3
 ><A
@@ -1001,7 +1129,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XML_MAX_NAMELEN 1000</PRE
+>#define XML_MAX_NAMELEN 100</PRE
 ></TD
 ></TR
 ></TABLE
@@ -1011,7 +1139,33 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12383"
+NAME="AEN12804"
+></A
+><H3
+><A
+NAME="INPUT-CHUNK"
+></A
+>INPUT_CHUNK</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define INPUT_CHUNK	250</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN12809"
 ></A
 ><H3
 ><A
@@ -1069,7 +1223,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12397"
+NAME="AEN12823"
 ></A
 ><H3
 ><A
@@ -1127,7 +1281,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12411"
+NAME="AEN12837"
 ></A
 ><H3
 ><A
@@ -1143,7 +1297,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define     IS_BASECHAR(c)</PRE
+>#define IS_BASECHAR(c) xmlIsBaseChar(c)</PRE
 ></TD
 ></TR
 ></TABLE
@@ -1185,7 +1339,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12425"
+NAME="AEN12851"
 ></A
 ><H3
 ><A
@@ -1201,7 +1355,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define     IS_DIGIT(c)</PRE
+>#define IS_DIGIT(c) xmlIsDigit(c)</PRE
 ></TD
 ></TR
 ></TABLE
@@ -1243,7 +1397,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12439"
+NAME="AEN12865"
 ></A
 ><H3
 ><A
@@ -1259,7 +1413,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define     IS_COMBINING(c)</PRE
+>#define IS_COMBINING(c) xmlIsCombining(c)</PRE
 ></TD
 ></TR
 ></TABLE
@@ -1301,7 +1455,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12453"
+NAME="AEN12879"
 ></A
 ><H3
 ><A
@@ -1317,7 +1471,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define     IS_EXTENDER(c)</PRE
+>#define IS_EXTENDER(c) xmlIsExtender(c)</PRE
 ></TD
 ></TR
 ></TABLE
@@ -1359,7 +1513,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12467"
+NAME="AEN12893"
 ></A
 ><H3
 ><A
@@ -1375,7 +1529,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define     IS_IDEOGRAPHIC(c)</PRE
+>#define IS_IDEOGRAPHIC(c) xmlIsIdeographic(c)</PRE
 ></TD
 ></TR
 ></TABLE
@@ -1417,7 +1571,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12481"
+NAME="AEN12907"
 ></A
 ><H3
 ><A
@@ -1475,7 +1629,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12495"
+NAME="AEN12921"
 ></A
 ><H3
 ><A
@@ -1491,7 +1645,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define     IS_PUBIDCHAR(c)</PRE
+>#define IS_PUBIDCHAR(c)	xmlIsPubidChar(c)</PRE
 ></TD
 ></TR
 ></TABLE
@@ -1533,7 +1687,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12509"
+NAME="AEN12935"
 ></A
 ><H3
 ><A
@@ -1591,7 +1745,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12523"
+NAME="AEN12949"
 ></A
 ><H3
 ><A
@@ -1649,7 +1803,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12537"
+NAME="AEN12963"
 ></A
 ><H3
 ><A
@@ -1707,7 +1861,978 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12551"
+NAME="AEN12977"
+></A
+><H3
+><A
+NAME="XMLPARSERDEBUGENTITIES"
+></A
+>xmlParserDebugEntities</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern int xmlParserDebugEntities;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN12982"
+></A
+><H3
+><A
+NAME="XMLGETWARNINGSDEFAULTVALUE"
+></A
+>xmlGetWarningsDefaultValue</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern int xmlGetWarningsDefaultValue;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN12987"
+></A
+><H3
+><A
+NAME="XMLSUBSTITUTEENTITIESDEFAULTVALUE"
+></A
+>xmlSubstituteEntitiesDefaultValue</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern int xmlSubstituteEntitiesDefaultValue;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN12992"
+></A
+><H3
+><A
+NAME="XMLDOVALIDITYCHECKINGDEFAULTVALUE"
+></A
+>xmlDoValidityCheckingDefaultValue</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern int xmlDoValidityCheckingDefaultValue;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN12997"
+></A
+><H3
+><A
+NAME="XMLPEDANTICPARSERDEFAULTVALUE"
+></A
+>xmlPedanticParserDefaultValue</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern int xmlPedanticParserDefaultValue;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13002"
+></A
+><H3
+><A
+NAME="XMLKEEPBLANKSDEFAULTVALUE"
+></A
+>xmlKeepBlanksDefaultValue</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern int xmlKeepBlanksDefaultValue;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13007"
+></A
+><H3
+><A
+NAME="XMLISBASECHAR"
+></A
+>xmlIsBaseChar ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlIsBaseChar                   (int c);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Check whether the character is allowed by the production
+[85] BaseChar ::= ... long list see REC ...</P
+><P
+>VI is your friend !
+:1,$ s/\[<GTKDOCLINK
+HREF="X"
+>x</GTKDOCLINK
+>\([0-9A-Z]*\)-<GTKDOCLINK
+HREF="X"
+>x</GTKDOCLINK
+>\([0-9A-Z]*\)\]/     (((c) &gt;= 0x\1) \&amp;\&amp; ((c) &lt;= 0x\2)) ||/
+and 
+:1,$ s/<GTKDOCLINK
+HREF="X"
+>x</GTKDOCLINK
+>\([0-9A-Z]*\)/     ((c) == 0x\1) ||/</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>c</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an unicode character (int)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 if not, non-zero otherwise</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13030"
+></A
+><H3
+><A
+NAME="XMLISBLANK"
+></A
+>xmlIsBlank ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlIsBlank                      (int c);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Check whether the character is allowed by the production
+[3] S ::= (<GTKDOCLINK
+HREF="X20"
+>x20</GTKDOCLINK
+> | <GTKDOCLINK
+HREF="X9"
+>x9</GTKDOCLINK
+> | <GTKDOCLINK
+HREF="XD"
+>xD</GTKDOCLINK
+> | <GTKDOCLINK
+HREF="XA"
+>xA</GTKDOCLINK
+>)+
+Also available as a macro <A
+HREF="gnome-xml-parserinternals.html#IS-BLANK"
+>IS_BLANK</A
+>()</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>c</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an unicode character (int)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 if not, non-zero otherwise</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13054"
+></A
+><H3
+><A
+NAME="XMLISPUBIDCHAR"
+></A
+>xmlIsPubidChar ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlIsPubidChar                  (int c);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Check whether the character is allowed by the production
+[13] PubidChar ::= <GTKDOCLINK
+HREF="X20"
+>x20</GTKDOCLINK
+> | <GTKDOCLINK
+HREF="XD"
+>xD</GTKDOCLINK
+> | <GTKDOCLINK
+HREF="XA"
+>xA</GTKDOCLINK
+> | [a-zA-Z0-9] | [-'()+,./:=?;!*#@$_%]</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>c</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an unicode character (int)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 if not, non-zero otherwise</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13076"
+></A
+><H3
+><A
+NAME="XMLISLETTER"
+></A
+>xmlIsLetter ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlIsLetter                     (int c);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Check whether the character is allowed by the production
+[84] Letter ::= BaseChar | Ideographic</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>c</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an unicode character (int)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 if not, non-zero otherwise</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13095"
+></A
+><H3
+><A
+NAME="XMLISDIGIT"
+></A
+>xmlIsDigit ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlIsDigit                      (int c);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Check whether the character is allowed by the production
+[88] Digit ::= ... long list see REC ...</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>c</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an unicode character (int)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 if not, non-zero otherwise</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13114"
+></A
+><H3
+><A
+NAME="XMLISIDEOGRAPHIC"
+></A
+>xmlIsIdeographic ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlIsIdeographic                (int c);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Check whether the character is allowed by the production
+[86] Ideographic ::= [<GTKDOCLINK
+HREF="X4E00-"
+>x4E00-</GTKDOCLINK
+><GTKDOCLINK
+HREF="X9FA5"
+>x9FA5</GTKDOCLINK
+>] | <GTKDOCLINK
+HREF="X3007"
+>x3007</GTKDOCLINK
+> | [<GTKDOCLINK
+HREF="X3021-"
+>x3021-</GTKDOCLINK
+><GTKDOCLINK
+HREF="X3029"
+>x3029</GTKDOCLINK
+>]</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>c</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an unicode character (int)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 if not, non-zero otherwise</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13138"
+></A
+><H3
+><A
+NAME="XMLISCOMBINING"
+></A
+>xmlIsCombining ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlIsCombining                  (int c);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Check whether the character is allowed by the production
+[87] CombiningChar ::= ... long list see REC ...</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>c</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an unicode character (int)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 if not, non-zero otherwise</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13157"
+></A
+><H3
+><A
+NAME="XMLISEXTENDER"
+></A
+>xmlIsExtender ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlIsExtender                   (int c);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Check whether the character is allowed by the production
+[89] Extender ::= <GTKDOCLINK
+HREF="X00B7"
+>x00B7</GTKDOCLINK
+> | <GTKDOCLINK
+HREF="X02D0"
+>x02D0</GTKDOCLINK
+> | <GTKDOCLINK
+HREF="X02D1"
+>x02D1</GTKDOCLINK
+> | <GTKDOCLINK
+HREF="X0387"
+>x0387</GTKDOCLINK
+> | <GTKDOCLINK
+HREF="X0640"
+>x0640</GTKDOCLINK
+> |
+<GTKDOCLINK
+HREF="X0E46"
+>x0E46</GTKDOCLINK
+> | <GTKDOCLINK
+HREF="X0EC6"
+>x0EC6</GTKDOCLINK
+> | <GTKDOCLINK
+HREF="X3005"
+>x3005</GTKDOCLINK
+> | [<GTKDOCLINK
+HREF="X3031-"
+>x3031-</GTKDOCLINK
+><GTKDOCLINK
+HREF="X3035"
+>x3035</GTKDOCLINK
+>] |
+[<GTKDOCLINK
+HREF="X309D-"
+>x309D-</GTKDOCLINK
+><GTKDOCLINK
+HREF="X309E"
+>x309E</GTKDOCLINK
+>] | [<GTKDOCLINK
+HREF="X30FC-"
+>x30FC-</GTKDOCLINK
+><GTKDOCLINK
+HREF="X30FE"
+>x30FE</GTKDOCLINK
+>]</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>c</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an unicode character (int)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 if not, non-zero otherwise</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13190"
+></A
+><H3
+><A
+NAME="XMLISCHAR"
+></A
+>xmlIsChar ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlIsChar                       (int c);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Check whether the character is allowed by the production
+[2] Char ::= <GTKDOCLINK
+HREF="X9"
+>x9</GTKDOCLINK
+> | <GTKDOCLINK
+HREF="XA"
+>xA</GTKDOCLINK
+> | <GTKDOCLINK
+HREF="XD"
+>xD</GTKDOCLINK
+> | [<GTKDOCLINK
+HREF="X20-"
+>x20-</GTKDOCLINK
+><GTKDOCLINK
+HREF="XD7FF"
+>xD7FF</GTKDOCLINK
+>] | [<GTKDOCLINK
+HREF="XE000-"
+>xE000-</GTKDOCLINK
+><GTKDOCLINK
+HREF="XFFFD"
+>xFFFD</GTKDOCLINK
+>]
+| [<GTKDOCLINK
+HREF="X10000-"
+>x10000-</GTKDOCLINK
+><GTKDOCLINK
+HREF="X10FFFF"
+>x10FFFF</GTKDOCLINK
+>]
+any Unicode character, excluding the surrogate blocks, FFFE, and FFFF.
+Also available as a macro <A
+HREF="gnome-xml-parserinternals.html#IS-CHAR"
+>IS_CHAR</A
+>()</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>c</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an unicode character (int)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 if not, non-zero otherwise</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13219"
 ></A
 ><H3
 ><A
@@ -1788,7 +2913,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12572"
+NAME="AEN13240"
 ></A
 ><H3
 ><A
@@ -1868,7 +2993,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12592"
+NAME="AEN13260"
 ></A
 ><H3
 ><A
@@ -1922,7 +3047,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a pointer to a zero terminated char array</TD
+>  a pointer to a char array</TD
 ></TR
 ><TR
 ><TD
@@ -1939,7 +3064,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the size of the array (without the trailing 0)</TD
+>  the size of the array</TD
 ></TR
 ><TR
 ><TD
@@ -1964,7 +3089,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12616"
+NAME="AEN13284"
 ></A
 ><H3
 ><A
@@ -2025,7 +3150,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12632"
+NAME="AEN13300"
 ></A
 ><H3
 ><A
@@ -2150,7 +3275,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12663"
+NAME="AEN13331"
 ></A
 ><H3
 ><A
@@ -2250,7 +3375,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12688"
+NAME="AEN13356"
 ></A
 ><H3
 ><A
@@ -2350,7 +3475,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12713"
+NAME="AEN13381"
 ></A
 ><H3
 ><A
@@ -2414,7 +3539,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12729"
+NAME="AEN13397"
 ></A
 ><H3
 ><A
@@ -2501,7 +3626,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12751"
+NAME="AEN13419"
 ></A
 ><H3
 ><A
@@ -2603,7 +3728,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12777"
+NAME="AEN13445"
 ></A
 ><H3
 ><A
@@ -2688,7 +3813,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12798"
+NAME="AEN13466"
 ></A
 ><H3
 ><A
@@ -2770,7 +3895,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12819"
+NAME="AEN13487"
 ></A
 ><H3
 ><A
@@ -2833,7 +3958,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12835"
+NAME="AEN13503"
 ></A
 ><H3
 ><A
@@ -2932,7 +4057,88 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12860"
+NAME="AEN13528"
+></A
+><H3
+><A
+NAME="XMLNEWINPUTSTREAM"
+></A
+>xmlNewInputStream ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
+>xmlParserInputPtr</A
+> xmlNewInputStream         (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Create a new input stream structure</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the new input stream or NULL</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13549"
 ></A
 ><H3
 ><A
@@ -3062,7 +4268,7 @@ to get the Prefix if any.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12894"
+NAME="AEN13583"
 ></A
 ><H3
 ><A
@@ -3090,6 +4296,9 @@ HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
 ></TABLE
 ><P
 >parse an XML namespace name.</P
+><P
+>TODO: this seems not in use anymore, the namespace handling is done on
+top of the SAX interfaces, i.e. not on raw input.</P
 ><P
 >[NS 3] NCName ::= (Letter | '_') (NCNameChar)*</P
 ><P
@@ -3148,7 +4357,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12917"
+NAME="AEN13607"
 ></A
 ><H3
 ><A
@@ -3178,6 +4387,9 @@ HREF="gnome-xml-tree.html#XMLCHAR"
 ></TD
 ></TR
 ></TABLE
+><P
+>TODO: this seems not in use anymore, the namespace handling is done on
+top of the SAX interfaces, i.e. not on raw input.</P
 ><P
 >parse an XML qualified name</P
 ><P
@@ -3257,7 +4469,7 @@ to get the Prefix if any.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12946"
+NAME="AEN13637"
 ></A
 ><H3
 ><A
@@ -3285,6 +4497,9 @@ HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
 ></TABLE
 ><P
 >parse a namespace prefix declaration</P
+><P
+>TODO: this seems not in use anymore, the namespace handling is done on
+top of the SAX interfaces, i.e. not on raw input.</P
 ><P
 >[NS 1] NSDef ::= PrefixDef Eq SystemLiteral</P
 ><P
@@ -3342,7 +4557,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12969"
+NAME="AEN13661"
 ></A
 ><H3
 ><A
@@ -3369,8 +4584,9 @@ HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
 ></TR
 ></TABLE
 ><P
->[OLD] Parse and return a string between quotes or doublequotes
-To be removed at next drop of binary compatibility</P
+>Parse and return a string between quotes or doublequotes</P
+><P
+>TODO: Deprecated, to  be removed at next drop of binary compatibility</P
 ><P
 ></P
 ><DIV
@@ -3424,7 +4640,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN12990"
+NAME="AEN13683"
 ></A
 ><H3
 ><A
@@ -3448,11 +4664,13 @@ HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
 ></TR
 ></TABLE
 ><P
->[OLD] xmlParseNamespace: parse specific PI '&lt;?namespace ...' constructs.</P
+>xmlParseNamespace: parse specific PI '&lt;?namespace ...' constructs.</P
 ><P
 >This is what the older xml-name Working Draft specified, a bunch of
 other stuff may still rely on it, so support is still here as
 if it was declared on the root of the Tree:-(</P
+><P
+>TODO: remove from library</P
 ><P
 >To be removed at next drop of binary compatibility</P
 ><P
@@ -3493,7 +4711,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13008"
+NAME="AEN13702"
 ></A
 ><H3
 ><A
@@ -3521,7 +4739,10 @@ HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
 ></TABLE
 ><P
 >Trickery: parse an XML name but without consuming the input flow
-Needed for rollback cases.</P
+Needed for rollback cases. Used only when parsing entities references.</P
+><P
+>TODO: seems deprecated now, only used in the default part of
+xmlParserHandleReference</P
 ><P
 >[4] NameChar ::= Letter | Digit | '.' | '-' | '_' | ':' |
 CombiningChar | Extender</P
@@ -3582,7 +4803,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13032"
+NAME="AEN13727"
 ></A
 ><H3
 ><A
@@ -3670,7 +4891,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13056"
+NAME="AEN13751"
 ></A
 ><H3
 ><A
@@ -3755,7 +4976,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13079"
+NAME="AEN13774"
 ></A
 ><H3
 ><A
@@ -3786,7 +5007,7 @@ HREF="gnome-xml-tree.html#XMLCHAR"
 ></TR
 ></TABLE
 ><P
->parse a value for ENTITY decl.</P
+>parse a value for ENTITY declarations</P
 ><P
 >[9] EntityValue ::= '"' ([^%&amp;"] | PEReference | Reference)* '"' |
 "'" ([^%&amp;'] | PEReference | Reference)* "'"</P
@@ -3860,7 +5081,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13106"
+NAME="AEN13801"
 ></A
 ><H3
 ><A
@@ -3998,7 +5219,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13140"
+NAME="AEN13835"
 ></A
 ><H3
 ><A
@@ -4081,7 +5302,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13162"
+NAME="AEN13857"
 ></A
 ><H3
 ><A
@@ -4164,7 +5385,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13184"
+NAME="AEN13879"
 ></A
 ><H3
 ><A
@@ -4253,7 +5474,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13206"
+NAME="AEN13901"
 ></A
 ><H3
 ><A
@@ -4384,7 +5605,7 @@ it is possible to return NULL and have publicID set.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13239"
+NAME="AEN13934"
 ></A
 ><H3
 ><A
@@ -4451,7 +5672,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13256"
+NAME="AEN13951"
 ></A
 ><H3
 ><A
@@ -4534,7 +5755,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13278"
+NAME="AEN13973"
 ></A
 ><H3
 ><A
@@ -4601,7 +5822,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13296"
+NAME="AEN13991"
 ></A
 ><H3
 ><A
@@ -4676,7 +5897,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13316"
+NAME="AEN14011"
 ></A
 ><H3
 ><A
@@ -4754,7 +5975,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13339"
+NAME="AEN14034"
 ></A
 ><H3
 ><A
@@ -4893,7 +6114,7 @@ or XML_ATTRIBUTE_FIXED. </TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13376"
+NAME="AEN14071"
 ></A
 ><H3
 ><A
@@ -4982,7 +6203,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13400"
+NAME="AEN14095"
 ></A
 ><H3
 ><A
@@ -5069,7 +6290,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13423"
+NAME="AEN14118"
 ></A
 ><H3
 ><A
@@ -5172,7 +6393,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13450"
+NAME="AEN14145"
 ></A
 ><H3
 ><A
@@ -5316,7 +6537,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13488"
+NAME="AEN14183"
 ></A
 ><H3
 ><A
@@ -5383,7 +6604,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13506"
+NAME="AEN14201"
 ></A
 ><H3
 ><A
@@ -5481,7 +6702,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13532"
+NAME="AEN14227"
 ></A
 ><H3
 ><A
@@ -5584,7 +6805,7 @@ hierarchy.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13558"
+NAME="AEN14253"
 ></A
 ><H3
 ><A
@@ -5707,7 +6928,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13589"
+NAME="AEN14284"
 ></A
 ><H3
 ><A
@@ -5790,7 +7011,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13611"
+NAME="AEN14306"
 ></A
 ><H3
 ><A
@@ -5820,7 +7041,7 @@ HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
 NotationDecl | PI | Comment</P
 ><P
 >[ VC: Proper Declaration/PE Nesting ]
-TODO Parameter-entity replacement text must be properly nested with
+Parameter-entity replacement text must be properly nested with
 markup declarations. That is to say, if either the first character
 or the last character of a markup declaration (markupdecl above) is
 contained in the replacement text for a parameter-entity reference,
@@ -5869,7 +7090,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13630"
+NAME="AEN14325"
 ></A
 ><H3
 ><A
@@ -5957,7 +7178,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13653"
+NAME="AEN14348"
 ></A
 ><H3
 ><A
@@ -6058,7 +7279,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13677"
+NAME="AEN14372"
 ></A
 ><H3
 ><A
@@ -6132,7 +7353,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13696"
+NAME="AEN14391"
 ></A
 ><H3
 ><A
@@ -6163,7 +7384,7 @@ a new input stream.</P
 >[69] PEReference ::= '%' Name ';'</P
 ><P
 >[ WFC: No Recursion ]
-TODO A parsed entity must not contain a recursive
+A parsed entity must not contain a recursive
 reference to itself, either directly or indirectly. </P
 ><P
 >[ WFC: Entity Declared ]
@@ -6218,7 +7439,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13717"
+NAME="AEN14412"
 ></A
 ><H3
 ><A
@@ -6288,7 +7509,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13735"
+NAME="AEN14430"
 ></A
 ><H3
 ><A
@@ -6413,7 +7634,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13769"
+NAME="AEN14464"
 ></A
 ><H3
 ><A
@@ -6513,7 +7734,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13797"
+NAME="AEN14492"
 ></A
 ><H3
 ><A
@@ -6582,7 +7803,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13816"
+NAME="AEN14511"
 ></A
 ><H3
 ><A
@@ -6653,7 +7874,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13836"
+NAME="AEN14531"
 ></A
 ><H3
 ><A
@@ -6718,7 +7939,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13853"
+NAME="AEN14548"
 ></A
 ><H3
 ><A
@@ -6800,7 +8021,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13872"
+NAME="AEN14567"
 ></A
 ><H3
 ><A
@@ -6883,7 +8104,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13894"
+NAME="AEN14589"
 ></A
 ><H3
 ><A
@@ -6968,7 +8189,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13917"
+NAME="AEN14612"
 ></A
 ><H3
 ><A
@@ -7051,7 +8272,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13939"
+NAME="AEN14634"
 ></A
 ><H3
 ><A
@@ -7082,7 +8303,7 @@ HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
 ><P
 >[80] EncodingDecl ::= S 'encoding' Eq ('"' EncName '"' |  "'" EncName "'")</P
 ><P
->TODO: this should setup the conversion filters.</P
+>this setups the conversion filters.</P
 ><P
 ></P
 ><DIV
@@ -7136,7 +8357,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13962"
+NAME="AEN14657"
 ></A
 ><H3
 ><A
@@ -7231,7 +8452,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13984"
+NAME="AEN14679"
 ></A
 ><H3
 ><A
@@ -7296,7 +8517,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14001"
+NAME="AEN14696"
 ></A
 ><H3
 ><A
@@ -7363,7 +8584,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14019"
+NAME="AEN14714"
 ></A
 ><H3
 ><A
@@ -7428,7 +8649,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14036"
+NAME="AEN14731"
 ></A
 ><H3
 ><A
@@ -7537,7 +8758,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14064"
+NAME="AEN14759"
 ></A
 ><H3
 ><A
@@ -7563,7 +8784,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14069"
+NAME="AEN14764"
 ></A
 ><H3
 ><A
@@ -7589,7 +8810,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14074"
+NAME="AEN14769"
 ></A
 ><H3
 ><A
@@ -7615,7 +8836,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14079"
+NAME="AEN14774"
 ></A
 ><H3
 ><A
@@ -7641,7 +8862,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14084"
+NAME="AEN14779"
 ></A
 ><H3
 ><A
@@ -7681,6 +8902,11 @@ HREF="gnome-xml-tree.html#XMLCHAR"
 ></TD
 ></TR
 ></TABLE
+><P
+>This function is deprecated, we now always process entities content
+through xmlStringDecodeEntities</P
+><P
+>TODO: remove it in next major release.</P
 ><P
 >[67] Reference ::= EntityRef | CharRef</P
 ><P
@@ -7824,7 +9050,7 @@ must deallocate it !</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14129"
+NAME="AEN14826"
 ></A
 ><H3
 ><A
@@ -7867,6 +9093,8 @@ HREF="gnome-xml-tree.html#XMLCHAR"
 ></TD
 ></TR
 ></TABLE
+><P
+>Takes a entity string content and process to do the adequate subtitutions.</P
 ><P
 >[67] Reference ::= EntityRef | CharRef</P
 ><P
@@ -8010,7 +9238,7 @@ must deallocate it !</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14175"
+NAME="AEN14873"
 ></A
 ><H3
 ><A
@@ -8107,7 +9335,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14199"
+NAME="AEN14897"
 ></A
 ><H3
 ><A
@@ -8186,7 +9414,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14219"
+NAME="AEN14917"
 ></A
 ><H3
 ><A
@@ -8283,7 +9511,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14243"
+NAME="AEN14941"
 ></A
 ><H3
 ><A
@@ -8362,7 +9590,541 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14263"
+NAME="AEN14961"
+></A
+><H3
+><A
+NAME="XMLSKIPBLANKCHARS"
+></A
+>xmlSkipBlankChars ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSkipBlankChars               (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>skip all blanks character found at that point in the input streams.
+It pops up finished entities in the process if allowable at that point.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the number of space chars skipped</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN14981"
+></A
+><H3
+><A
+NAME="XMLSTRINGCURRENTCHAR"
+></A
+>xmlStringCurrentChar ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlStringCurrentChar            (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *cur,
+                                             int *len);</PRE
+></TD
+></TR
+></TABLE
+><P
+>The current char value, if using UTF-8 this may actaully span multiple
+bytes in the input buffer.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  pointer to the beginning of the char</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>len</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  pointer to the length of the char read</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the current char value and its lenght</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN15010"
+></A
+><H3
+><A
+NAME="XMLPARSERHANDLEPEREFERENCE"
+></A
+>xmlParserHandlePEReference ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlParserHandlePEReference      (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>[69] PEReference ::= '%' Name ';'</P
+><P
+>[ WFC: No Recursion ]
+A parsed entity must not contain a recursive
+reference to itself, either directly or indirectly. </P
+><P
+>[ WFC: Entity Declared ]
+In a document without any DTD, a document with only an internal DTD
+subset which contains no parameter entity references, or a document
+with "standalone='yes'", ...  ... The declaration of a parameter
+entity must precede any reference to it...</P
+><P
+>[ VC: Entity Declared ]
+In a document with an external subset or external parameter entities
+with "standalone='no'", ...  ... The declaration of a parameter entity
+must precede any reference to it...</P
+><P
+>[ WFC: In DTD ]
+Parameter-entity references may only appear in the DTD.
+NOTE: misleading but this is handled.</P
+><P
+>A PEReference may have been detected in the current input stream
+the handling is done accordingly to 
+http://www.w3.org/TR/REC-xml<GTKDOCLINK
+HREF="ENTPROC"
+>entproc</GTKDOCLINK
+>
+i.e. 
+- Included in literal in entity values
+- Included as Paraemeter Entity reference within DTDs</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the parser context</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN15032"
+></A
+><H3
+><A
+NAME="XMLPARSERHANDLEREFERENCE"
+></A
+>xmlParserHandleReference ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlParserHandleReference        (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>TODO: Remove, now deprecated ... the test is done directly in the
+content parsing
+routines.</P
+><P
+>[67] Reference ::= EntityRef | CharRef</P
+><P
+>[68] EntityRef ::= '&amp;' Name ';'</P
+><P
+>[ WFC: Entity Declared ]
+the Name given in the entity reference must match that in an entity
+declaration, except that well-formed documents need not declare any
+of the following entities: amp, lt, gt, apos, quot. </P
+><P
+>[ WFC: Parsed Entity ]
+An entity reference must not contain the name of an unparsed entity</P
+><P
+>[66] CharRef ::= '&amp;#' [0-9]+ ';' |
+'&amp;<GTKDOCLINK
+HREF="X"
+>x</GTKDOCLINK
+>' [0-9a-fA-F]+ ';'</P
+><P
+>A PEReference may have been detectect in the current input stream
+the handling is done accordingly to 
+http://www.w3.org/TR/REC-xml<GTKDOCLINK
+HREF="ENTPROC"
+>entproc</GTKDOCLINK
+></P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the parser context</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN15056"
+></A
+><H3
+><A
+NAME="NAMEPOP"
+></A
+>namePop ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+>*    namePop                         (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN15076"
+></A
+><H3
+><A
+NAME="XMLCHECKLANGUAGEID"
+></A
+>xmlCheckLanguageID ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlCheckLanguageID              (const <A
+HREF="gnome-xml-tree.html#XMLCHAR"
+>xmlChar</A
+> *lang);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>lang</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN15095"
 ></A
 ><H3
 ><A
@@ -8481,7 +10243,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14292"
+NAME="AEN15124"
 ></A
 ><H3
 ><A
@@ -8595,7 +10357,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14320"
+NAME="AEN15152"
 ></A
 ><H3
 ><A
@@ -8658,7 +10420,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN14336"
+NAME="AEN15168"
 ></A
 ><H3
 ><A
@@ -8717,6 +10479,39 @@ VALIGN="TOP"
 ><P
 ></P
 ></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN15184"
+></A
+><H3
+><A
+NAME="HTMLINITAUTOCLOSE"
+></A
+>htmlInitAutoClose ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        htmlInitAutoClose               (void);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Initialize the htmlStartCloseIndex for fast lookup of closing tags names.
+This is not reentrant. Call <A
+HREF="gnome-xml-parser.html#XMLINITPARSER"
+>xmlInitParser</A
+>() once before processing in
+case of use in multithreaded programs.</P
+><P
+></P
 ></DIV
 ></DIV
 ><DIV

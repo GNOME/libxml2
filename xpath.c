@@ -1475,6 +1475,7 @@ int
 xmlXPathCmpNodes(xmlNodePtr node1, xmlNodePtr node2) {
     int depth1, depth2;
     int attr1 = 0, attr2 = 0;
+    xmlNodePtr attrNode1 = NULL, attrNode2 = NULL;
     xmlNodePtr cur, root;
 
     if ((node1 == NULL) || (node2 == NULL))
@@ -1484,15 +1485,28 @@ xmlXPathCmpNodes(xmlNodePtr node1, xmlNodePtr node2) {
      */
     if (node1->type == XML_ATTRIBUTE_NODE) {
 	attr1 = 1;
+	attrNode1 = node1;
 	node1 = node1->parent;
     }
     if (node2->type == XML_ATTRIBUTE_NODE) {
 	attr2 = 1;
+	attrNode2 = node2;
 	node2 = node2->parent;
     }
     if (node1 == node2) {
-	if (attr1 == attr2)
+	if (attr1 == attr2) {
+	    /* not required, but we keep attributes in order */
+	    if (attr1 != 0) {
+	        cur = attrNode2->prev;
+		while (cur != NULL) {
+		    if (cur == attrNode1)
+		        return (1);
+		    cur = cur->prev;
+		}
+		return (-1);
+	    }
 	    return(0);
+	}
 	if (attr2 == 1)
 	    return(1);
 	return(-1);

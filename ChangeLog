@@ -1,3 +1,8 @@
+Tue Dec 23 09:29:14 HKT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* xpath.c: small enhancement to xmlXPathCmpNodes to assure
+	  document order for attributes is retained (Bug 129331)
+
 Mon Dec 22 19:06:16 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c xmlreader.c: change xmlReadFd() xmlCtxtReadFd()

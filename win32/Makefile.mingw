@@ -34,6 +34,7 @@ LIBSRCS=HTMLparser.c	\
 	xmlmemory.c	\
 	xpath.c		\
 	xpointer.c	\
+	hash.c		\
 	uri.c
 
 LIBOBJS=$(LIBSRCS:.c=.o)

@@ -1,3 +1,8 @@
+Sun Oct 29 18:51:46 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* uri.c: Wayne Davison's patch fixing xmlBuildURI()
+	* Makefile.mingw: Wayne Davison's update adding hash.c
+
 Sun Oct 29 18:38:12 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* xpath.c: fixed the root evaluation problems

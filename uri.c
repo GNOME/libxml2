@@ -1433,7 +1433,7 @@ xmlNormalizeURIPath(char *path) {
 xmlChar *
 xmlBuildURI(const xmlChar *URI, const xmlChar *base) {
     xmlChar *val = NULL;
-    int ret, ret2, len, index, cur, out;
+    int ret, len, index, cur, out;
     xmlURIPtr ref = NULL;
     xmlURIPtr bas = NULL;
     xmlURIPtr res = NULL;
@@ -1449,25 +1449,31 @@ xmlBuildURI(const xmlChar *URI, const xmlChar *base) {
     if (URI == NULL) 
 	ret = -1;
     else {
-	ref = xmlCreateURI();
-	if (ref == NULL)
-	    goto done;
-	if (*URI)
+	if (*URI) {
+	    ref = xmlCreateURI();
+	    if (ref == NULL)
+		goto done;
 	    ret = xmlParseURIReference(ref, (const char *) URI);
+	}
 	else
-	    ret = -1;
+	    ret = 0;
     }
+    if (ret != 0)
+	goto done;
     if (base == NULL)
-	ret2 = -1;
+	ret = -1;
     else {
 	bas = xmlCreateURI();
 	if (bas == NULL)
 	    goto done;
-	ret2 = xmlParseURIReference(bas, (const char *) base);
+	ret = xmlParseURIReference(bas, (const char *) base);
     }
-    if ((ret != 0) && (ret2 != 0))
-	goto done;
     if (ret != 0) {
+	if (ref)
+	    val = xmlSaveUri(ref);
+	goto done;
+    }
+    if (ref == NULL) {
 	/*
 	 * the base fragment must be ignored
 	 */
@@ -1478,11 +1484,6 @@ xmlBuildURI(const xmlChar *URI, const xmlChar *base) {
 	val = xmlSaveUri(bas);
 	goto done;
     }
-    if (ret2 != 0) {
-	val = xmlSaveUri(ref);
-	goto done;
-    }
-
 
     /*
      * 2) If the path component is empty and the scheme, authority, and

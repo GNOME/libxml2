@@ -26,6 +26,7 @@ xmlinc_HEADERS = \
 		entities.h \
 		encoding.h \
 		parser.h \
+		parserInternals.h \
 		debugXML.h \
 		tree.h \
 		valid.h

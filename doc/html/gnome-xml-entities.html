@@ -1,0 +1,1687 @@
+<HTML
+><HEAD
+><TITLE
+>entities</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.33"><LINK
+REL="HOME"
+TITLE="Gnome XML Library Reference Manual"
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="Gnome XML Library"
+HREF="libxml.html"><LINK
+REL="PREVIOUS"
+TITLE="tree"
+HREF="gnome-xml-tree.html"><LINK
+REL="NEXT"
+TITLE="valid"
+HREF="gnome-xml-valid.html"></HEAD
+><BODY
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>Gnome XML Library Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="gnome-xml-tree.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="gnome-xml-valid.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+>entities</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN2955"
+></A
+><H2
+>Name</H2
+>entities &#8212; one line description goes here.</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN2958"
+></A
+><H2
+>Synopsis</H2
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="SYNOPSIS"
+>&#13;
+
+#define     <A
+HREF="gnome-xml-entities.html#XML-INTERNAL-GENERAL-ENTITY"
+>XML_INTERNAL_GENERAL_ENTITY</A
+>
+#define     <A
+HREF="gnome-xml-entities.html#XML-EXTERNAL-GENERAL-PARSED-ENTITY"
+>XML_EXTERNAL_GENERAL_PARSED_ENTITY</A
+>
+#define     <A
+HREF="gnome-xml-entities.html#XML-EXTERNAL-GENERAL-UNPARSED-ENTITY"
+>XML_EXTERNAL_GENERAL_UNPARSED_ENTITY</A
+>
+#define     <A
+HREF="gnome-xml-entities.html#XML-INTERNAL-PARAMETER-ENTITY"
+>XML_INTERNAL_PARAMETER_ENTITY</A
+>
+#define     <A
+HREF="gnome-xml-entities.html#XML-EXTERNAL-PARAMETER-ENTITY"
+>XML_EXTERNAL_PARAMETER_ENTITY</A
+>
+#define     <A
+HREF="gnome-xml-entities.html#XML-INTERNAL-PREDEFINED-ENTITY"
+>XML_INTERNAL_PREDEFINED_ENTITY</A
+>
+typedef     <A
+HREF="gnome-xml-entities.html#XMLENTITYPTR"
+>xmlEntityPtr</A
+>
+#define     <A
+HREF="gnome-xml-entities.html#XML-MIN-ENTITIES-TABLE"
+>XML_MIN_ENTITIES_TABLE</A
+>
+typedef     <A
+HREF="gnome-xml-entities.html#XMLENTITIESTABLEPTR"
+>xmlEntitiesTablePtr</A
+>
+void        <A
+HREF="gnome-xml-entities.html#XMLADDDOCENTITY"
+>xmlAddDocEntity</A
+>                 (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name,
+                                             int type,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *ExternalID,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *SystemID,
+                                             <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *content);
+void        <A
+HREF="gnome-xml-entities.html#XMLADDDTDENTITY"
+>xmlAddDtdEntity</A
+>                 (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name,
+                                             int type,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *ExternalID,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *SystemID,
+                                             <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *content);
+<A
+HREF="gnome-xml-entities.html#XMLENTITYPTR"
+>xmlEntityPtr</A
+> <A
+HREF="gnome-xml-entities.html#XMLGETPREDEFINEDENTITY"
+>xmlGetPredefinedEntity</A
+>         (const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name);
+<A
+HREF="gnome-xml-entities.html#XMLENTITYPTR"
+>xmlEntityPtr</A
+> <A
+HREF="gnome-xml-entities.html#XMLGETDOCENTITY"
+>xmlGetDocEntity</A
+>                (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name);
+<A
+HREF="gnome-xml-entities.html#XMLENTITYPTR"
+>xmlEntityPtr</A
+> <A
+HREF="gnome-xml-entities.html#XMLGETDTDENTITY"
+>xmlGetDtdEntity</A
+>                (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name);
+<A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       <A
+HREF="gnome-xml-entities.html#XMLENCODEENTITIES"
+>xmlEncodeEntities</A
+>               (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *input);
+<A
+HREF="gnome-xml-entities.html#XMLENTITIESTABLEPTR"
+>xmlEntitiesTablePtr</A
+> <A
+HREF="gnome-xml-entities.html#XMLCREATEENTITIESTABLE"
+>xmlCreateEntitiesTable</A
+>  (void);
+<A
+HREF="gnome-xml-entities.html#XMLENTITIESTABLEPTR"
+>xmlEntitiesTablePtr</A
+> <A
+HREF="gnome-xml-entities.html#XMLCOPYENTITIESTABLE"
+>xmlCopyEntitiesTable</A
+>    (<A
+HREF="gnome-xml-entities.html#XMLENTITIESTABLEPTR"
+>xmlEntitiesTablePtr</A
+> table);
+void        <A
+HREF="gnome-xml-entities.html#XMLFREEENTITIESTABLE"
+>xmlFreeEntitiesTable</A
+>            (<A
+HREF="gnome-xml-entities.html#XMLENTITIESTABLEPTR"
+>xmlEntitiesTablePtr</A
+> table);
+void        <A
+HREF="gnome-xml-entities.html#XMLDUMPENTITIESTABLE"
+>xmlDumpEntitiesTable</A
+>            (<A
+HREF="gnome-xml-entities.html#XMLENTITIESTABLEPTR"
+>xmlEntitiesTablePtr</A
+> table);
+<A
+HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
+>xmlParserInputPtr</A
+> <A
+HREF="gnome-xml-entities.html#XMLNEWENTITYINPUTSTREAM"
+>xmlNewEntityInputStream</A
+>   (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             <A
+HREF="gnome-xml-entities.html#XMLENTITYPTR"
+>xmlEntityPtr</A
+> entity);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN3010"
+></A
+><H2
+>Description</H2
+><P
+></P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN3013"
+></A
+><H2
+>Details</H2
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3015"
+></A
+><H3
+><A
+NAME="XML-INTERNAL-GENERAL-ENTITY"
+></A
+>XML_INTERNAL_GENERAL_ENTITY</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define XML_INTERNAL_GENERAL_ENTITY		1</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3020"
+></A
+><H3
+><A
+NAME="XML-EXTERNAL-GENERAL-PARSED-ENTITY"
+></A
+>XML_EXTERNAL_GENERAL_PARSED_ENTITY</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define XML_EXTERNAL_GENERAL_PARSED_ENTITY	2</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3025"
+></A
+><H3
+><A
+NAME="XML-EXTERNAL-GENERAL-UNPARSED-ENTITY"
+></A
+>XML_EXTERNAL_GENERAL_UNPARSED_ENTITY</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define XML_EXTERNAL_GENERAL_UNPARSED_ENTITY	3</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3030"
+></A
+><H3
+><A
+NAME="XML-INTERNAL-PARAMETER-ENTITY"
+></A
+>XML_INTERNAL_PARAMETER_ENTITY</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define XML_INTERNAL_PARAMETER_ENTITY		4</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3035"
+></A
+><H3
+><A
+NAME="XML-EXTERNAL-PARAMETER-ENTITY"
+></A
+>XML_EXTERNAL_PARAMETER_ENTITY</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define XML_EXTERNAL_PARAMETER_ENTITY		5</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3040"
+></A
+><H3
+><A
+NAME="XML-INTERNAL-PREDEFINED-ENTITY"
+></A
+>XML_INTERNAL_PREDEFINED_ENTITY</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define XML_INTERNAL_PREDEFINED_ENTITY		6</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3045"
+></A
+><H3
+><A
+NAME="XMLENTITYPTR"
+></A
+>xmlEntityPtr</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef xmlEntity *xmlEntityPtr;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3050"
+></A
+><H3
+><A
+NAME="XML-MIN-ENTITIES-TABLE"
+></A
+>XML_MIN_ENTITIES_TABLE</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define XML_MIN_ENTITIES_TABLE	32</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3055"
+></A
+><H3
+><A
+NAME="XMLENTITIESTABLEPTR"
+></A
+>xmlEntitiesTablePtr</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef xmlEntitiesTable *xmlEntitiesTablePtr;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3060"
+></A
+><H3
+><A
+NAME="XMLADDDOCENTITY"
+></A
+>xmlAddDocEntity()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlAddDocEntity                 (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name,
+                                             int type,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *ExternalID,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *SystemID,
+                                             <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *content);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Register a new entity for this document.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the document</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the entity name</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>type</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the entity type XML_xxx_yyy_ENTITY</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ExternalID</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the entity external ID if available</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>SystemID</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the entity system ID if available</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>content</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the entity content</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3100"
+></A
+><H3
+><A
+NAME="XMLADDDTDENTITY"
+></A
+>xmlAddDtdEntity()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlAddDtdEntity                 (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name,
+                                             int type,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *ExternalID,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *SystemID,
+                                             <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *content);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Register a new entity for this document DTD.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the document</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the entity name</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>type</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the entity type XML_xxx_yyy_ENTITY</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ExternalID</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the entity external ID if available</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>SystemID</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the entity system ID if available</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>content</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the entity content</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3140"
+></A
+><H3
+><A
+NAME="XMLGETPREDEFINEDENTITY"
+></A
+>xmlGetPredefinedEntity()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-entities.html#XMLENTITYPTR"
+>xmlEntityPtr</A
+> xmlGetPredefinedEntity         (const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Check whether this name is an predefined entity.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the entity name</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>NULL if not, othervise the entity</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3161"
+></A
+><H3
+><A
+NAME="XMLGETDOCENTITY"
+></A
+>xmlGetDocEntity()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-entities.html#XMLENTITYPTR"
+>xmlEntityPtr</A
+> xmlGetDocEntity                (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Do an entity lookup in the document entity hash table and
+returns the corrsponding entity, otherwise a lookup is done
+in the predefined entities too.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the document referencing the entity</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the entity name</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>A pointer to the entity structure or NULL if not found.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3187"
+></A
+><H3
+><A
+NAME="XMLGETDTDENTITY"
+></A
+>xmlGetDtdEntity()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-entities.html#XMLENTITYPTR"
+>xmlEntityPtr</A
+> xmlGetDtdEntity                (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Do an entity lookup in the Dtd entity hash table and
+returns the corresponding entity, if found.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the document referencing the entity</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the entity name</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>A pointer to the entity structure or NULL if not found.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3213"
+></A
+><H3
+><A
+NAME="XMLENCODEENTITIES"
+></A
+>xmlEncodeEntities()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       xmlEncodeEntities               (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *input);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Do a global encoding of a string, replacing the predefined entities
+and non ASCII values with their entities and CharRef counterparts.</P
+><P
+>TODO !!!! Once moved to UTF-8 internal encoding, the encoding of non-ascii
+get erroneous.</P
+><P
+>TODO This routine is not reentrant and this will be changed, the interface
+should not be modified though.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the document containing the string</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>input</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  A string to convert to XML.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>A newly allocated string with the substitution done.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3241"
+></A
+><H3
+><A
+NAME="XMLCREATEENTITIESTABLE"
+></A
+>xmlCreateEntitiesTable()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-entities.html#XMLENTITIESTABLEPTR"
+>xmlEntitiesTablePtr</A
+> xmlCreateEntitiesTable  (void);</PRE
+></TD
+></TR
+></TABLE
+><P
+>create and initialize an empty entities hash table.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the xmlEntitiesTablePtr just created or NULL in case of error.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3257"
+></A
+><H3
+><A
+NAME="XMLCOPYENTITIESTABLE"
+></A
+>xmlCopyEntitiesTable()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-entities.html#XMLENTITIESTABLEPTR"
+>xmlEntitiesTablePtr</A
+> xmlCopyEntitiesTable    (<A
+HREF="gnome-xml-entities.html#XMLENTITIESTABLEPTR"
+>xmlEntitiesTablePtr</A
+> table);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Build a copy of an entity table.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>table</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  An entity table</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the new xmlEntitiesTablePtr or NULL in case of error.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3278"
+></A
+><H3
+><A
+NAME="XMLFREEENTITIESTABLE"
+></A
+>xmlFreeEntitiesTable()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlFreeEntitiesTable            (<A
+HREF="gnome-xml-entities.html#XMLENTITIESTABLEPTR"
+>xmlEntitiesTablePtr</A
+> table);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Deallocate the memory used by an entities hash table.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>table</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  An entity table</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3294"
+></A
+><H3
+><A
+NAME="XMLDUMPENTITIESTABLE"
+></A
+>xmlDumpEntitiesTable()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlDumpEntitiesTable            (<A
+HREF="gnome-xml-entities.html#XMLENTITIESTABLEPTR"
+>xmlEntitiesTablePtr</A
+> table);</PRE
+></TD
+></TR
+></TABLE
+><P
+>This will dump the content of the entity table as an XML DTD definition</P
+><P
+>NOTE: TODO an extra parameter allowing a reentant implementation will
+be added.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>table</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  An entity table</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3311"
+></A
+><H3
+><A
+NAME="XMLNEWENTITYINPUTSTREAM"
+></A
+>xmlNewEntityInputStream()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
+>xmlParserInputPtr</A
+> xmlNewEntityInputStream   (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             <A
+HREF="gnome-xml-entities.html#XMLENTITYPTR"
+>xmlEntityPtr</A
+> entity);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Create a new input stream based on a memory buffer.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>entity</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an Entity pointer</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the new input stream</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="gnome-xml-tree.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="gnome-xml-valid.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>tree</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="libxml.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>valid</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

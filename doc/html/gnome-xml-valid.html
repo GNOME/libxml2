@@ -1,0 +1,2134 @@
+<HTML
+><HEAD
+><TITLE
+>valid</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.33"><LINK
+REL="HOME"
+TITLE="Gnome XML Library Reference Manual"
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="Gnome XML Library"
+HREF="libxml.html"><LINK
+REL="PREVIOUS"
+TITLE="entities"
+HREF="gnome-xml-entities.html"><LINK
+REL="NEXT"
+TITLE="error"
+HREF="gnome-xml-error.html"></HEAD
+><BODY
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>Gnome XML Library Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="gnome-xml-entities.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="gnome-xml-error.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+>valid</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN3342"
+></A
+><H2
+>Name</H2
+>valid &#8212; one line description goes here.</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN3345"
+></A
+><H2
+>Synopsis</H2
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="SYNOPSIS"
+>&#13;
+
+#define     <A
+HREF="gnome-xml-valid.html#XML-MIN-NOTATION-TABLE"
+>XML_MIN_NOTATION_TABLE</A
+>
+typedef     <A
+HREF="gnome-xml-valid.html#XMLNOTATIONTABLEPTR"
+>xmlNotationTablePtr</A
+>
+#define     <A
+HREF="gnome-xml-valid.html#XML-MIN-ELEMENT-TABLE"
+>XML_MIN_ELEMENT_TABLE</A
+>
+typedef     <A
+HREF="gnome-xml-valid.html#XMLELEMENTTABLEPTR"
+>xmlElementTablePtr</A
+>
+#define     <A
+HREF="gnome-xml-valid.html#XML-MIN-ATTRIBUTE-TABLE"
+>XML_MIN_ATTRIBUTE_TABLE</A
+>
+typedef     <A
+HREF="gnome-xml-valid.html#XMLATTRIBUTETABLEPTR"
+>xmlAttributeTablePtr</A
+>
+<A
+HREF="gnome-xml-tree.html#XMLNOTATIONPTR"
+>xmlNotationPtr</A
+> <A
+HREF="gnome-xml-valid.html#XMLADDNOTATIONDECL"
+>xmlAddNotationDecl</A
+>           (<A
+HREF="gnome-xml-tree.html#XMLDTDPTR"
+>xmlDtdPtr</A
+> dtd,
+                                             <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name,
+                                             <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *PublicID,
+                                             <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *SystemID);
+<A
+HREF="gnome-xml-valid.html#XMLNOTATIONTABLEPTR"
+>xmlNotationTablePtr</A
+> <A
+HREF="gnome-xml-valid.html#XMLCOPYNOTATIONTABLE"
+>xmlCopyNotationTable</A
+>    (<A
+HREF="gnome-xml-valid.html#XMLNOTATIONTABLEPTR"
+>xmlNotationTablePtr</A
+> table);
+void        <A
+HREF="gnome-xml-valid.html#XMLFREENOTATIONTABLE"
+>xmlFreeNotationTable</A
+>            (<A
+HREF="gnome-xml-valid.html#XMLNOTATIONTABLEPTR"
+>xmlNotationTablePtr</A
+> table);
+void        <A
+HREF="gnome-xml-valid.html#XMLDUMPNOTATIONTABLE"
+>xmlDumpNotationTable</A
+>            (<A
+HREF="gnome-xml-valid.html#XMLNOTATIONTABLEPTR"
+>xmlNotationTablePtr</A
+> table);
+<A
+HREF="gnome-xml-tree.html#XMLELEMENTCONTENTPTR"
+>xmlElementContentPtr</A
+> <A
+HREF="gnome-xml-valid.html#XMLNEWELEMENTCONTENT"
+>xmlNewElementContent</A
+>   (<A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name,
+                                             int type);
+<A
+HREF="gnome-xml-tree.html#XMLELEMENTCONTENTPTR"
+>xmlElementContentPtr</A
+> <A
+HREF="gnome-xml-valid.html#XMLCOPYELEMENTCONTENT"
+>xmlCopyElementContent</A
+>  (<A
+HREF="gnome-xml-tree.html#XMLELEMENTCONTENTPTR"
+>xmlElementContentPtr</A
+> content);
+void        <A
+HREF="gnome-xml-valid.html#XMLFREEELEMENTCONTENT"
+>xmlFreeElementContent</A
+>           (<A
+HREF="gnome-xml-tree.html#XMLELEMENTCONTENTPTR"
+>xmlElementContentPtr</A
+> cur);
+<A
+HREF="gnome-xml-tree.html#XMLELEMENTPTR"
+>xmlElementPtr</A
+> <A
+HREF="gnome-xml-valid.html#XMLADDELEMENTDECL"
+>xmlAddElementDecl</A
+>             (<A
+HREF="gnome-xml-tree.html#XMLDTDPTR"
+>xmlDtdPtr</A
+> dtd,
+                                             <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name,
+                                             int type,
+                                             <A
+HREF="gnome-xml-tree.html#XMLELEMENTCONTENTPTR"
+>xmlElementContentPtr</A
+> content);
+<A
+HREF="gnome-xml-valid.html#XMLELEMENTTABLEPTR"
+>xmlElementTablePtr</A
+> <A
+HREF="gnome-xml-valid.html#XMLCOPYELEMENTTABLE"
+>xmlCopyElementTable</A
+>      (<A
+HREF="gnome-xml-valid.html#XMLELEMENTTABLEPTR"
+>xmlElementTablePtr</A
+> table);
+void        <A
+HREF="gnome-xml-valid.html#XMLFREEELEMENTTABLE"
+>xmlFreeElementTable</A
+>             (<A
+HREF="gnome-xml-valid.html#XMLELEMENTTABLEPTR"
+>xmlElementTablePtr</A
+> table);
+void        <A
+HREF="gnome-xml-valid.html#XMLDUMPELEMENTTABLE"
+>xmlDumpElementTable</A
+>             (<A
+HREF="gnome-xml-valid.html#XMLELEMENTTABLEPTR"
+>xmlElementTablePtr</A
+> table);
+<A
+HREF="gnome-xml-tree.html#XMLENUMERATIONPTR"
+>xmlEnumerationPtr</A
+> <A
+HREF="gnome-xml-valid.html#XMLCREATEENUMERATION"
+>xmlCreateEnumeration</A
+>      (<A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name);
+void        <A
+HREF="gnome-xml-valid.html#XMLFREEENUMERATION"
+>xmlFreeEnumeration</A
+>              (<A
+HREF="gnome-xml-tree.html#XMLENUMERATIONPTR"
+>xmlEnumerationPtr</A
+> cur);
+<A
+HREF="gnome-xml-tree.html#XMLENUMERATIONPTR"
+>xmlEnumerationPtr</A
+> <A
+HREF="gnome-xml-valid.html#XMLCOPYENUMERATION"
+>xmlCopyEnumeration</A
+>        (<A
+HREF="gnome-xml-tree.html#XMLENUMERATIONPTR"
+>xmlEnumerationPtr</A
+> cur);
+<A
+HREF="gnome-xml-tree.html#XMLATTRIBUTEPTR"
+>xmlAttributePtr</A
+> <A
+HREF="gnome-xml-valid.html#XMLADDATTRIBUTEDECL"
+>xmlAddAttributeDecl</A
+>         (<A
+HREF="gnome-xml-tree.html#XMLDTDPTR"
+>xmlDtdPtr</A
+> dtd,
+                                             <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *elem,
+                                             <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name,
+                                             int type,
+                                             int def,
+                                             <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *defaultValue,
+                                             <A
+HREF="gnome-xml-tree.html#XMLENUMERATIONPTR"
+>xmlEnumerationPtr</A
+> tree);
+<A
+HREF="gnome-xml-valid.html#XMLATTRIBUTETABLEPTR"
+>xmlAttributeTablePtr</A
+> <A
+HREF="gnome-xml-valid.html#XMLCOPYATTRIBUTETABLE"
+>xmlCopyAttributeTable</A
+>  (<A
+HREF="gnome-xml-valid.html#XMLATTRIBUTETABLEPTR"
+>xmlAttributeTablePtr</A
+> table);
+void        <A
+HREF="gnome-xml-valid.html#XMLFREEATTRIBUTETABLE"
+>xmlFreeAttributeTable</A
+>           (<A
+HREF="gnome-xml-valid.html#XMLATTRIBUTETABLEPTR"
+>xmlAttributeTablePtr</A
+> table);
+void        <A
+HREF="gnome-xml-valid.html#XMLDUMPATTRIBUTETABLE"
+>xmlDumpAttributeTable</A
+>           (<A
+HREF="gnome-xml-valid.html#XMLATTRIBUTETABLEPTR"
+>xmlAttributeTablePtr</A
+> table);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN3409"
+></A
+><H2
+>Description</H2
+><P
+></P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN3412"
+></A
+><H2
+>Details</H2
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3414"
+></A
+><H3
+><A
+NAME="XML-MIN-NOTATION-TABLE"
+></A
+>XML_MIN_NOTATION_TABLE</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define XML_MIN_NOTATION_TABLE	32</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3419"
+></A
+><H3
+><A
+NAME="XMLNOTATIONTABLEPTR"
+></A
+>xmlNotationTablePtr</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef xmlNotationTable *xmlNotationTablePtr;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3424"
+></A
+><H3
+><A
+NAME="XML-MIN-ELEMENT-TABLE"
+></A
+>XML_MIN_ELEMENT_TABLE</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define XML_MIN_ELEMENT_TABLE	32</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3429"
+></A
+><H3
+><A
+NAME="XMLELEMENTTABLEPTR"
+></A
+>xmlElementTablePtr</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef xmlElementTable *xmlElementTablePtr;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3434"
+></A
+><H3
+><A
+NAME="XML-MIN-ATTRIBUTE-TABLE"
+></A
+>XML_MIN_ATTRIBUTE_TABLE</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define XML_MIN_ATTRIBUTE_TABLE	32</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3439"
+></A
+><H3
+><A
+NAME="XMLATTRIBUTETABLEPTR"
+></A
+>xmlAttributeTablePtr</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef xmlAttributeTable *xmlAttributeTablePtr;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3444"
+></A
+><H3
+><A
+NAME="XMLADDNOTATIONDECL"
+></A
+>xmlAddNotationDecl()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLNOTATIONPTR"
+>xmlNotationPtr</A
+> xmlAddNotationDecl           (<A
+HREF="gnome-xml-tree.html#XMLDTDPTR"
+>xmlDtdPtr</A
+> dtd,
+                                             <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name,
+                                             <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *PublicID,
+                                             <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *SystemID);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Register a new notation declaration</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>dtd</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  pointer to the DTD</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the entity name</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>PublicID</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the public identifier or NULL</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>SystemID</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the system identifier or NULL</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>NULL if not, othervise the entity</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3480"
+></A
+><H3
+><A
+NAME="XMLCOPYNOTATIONTABLE"
+></A
+>xmlCopyNotationTable()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-valid.html#XMLNOTATIONTABLEPTR"
+>xmlNotationTablePtr</A
+> xmlCopyNotationTable    (<A
+HREF="gnome-xml-valid.html#XMLNOTATIONTABLEPTR"
+>xmlNotationTablePtr</A
+> table);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Build a copy of a notation table.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>table</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  A notation table</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the new xmlNotationTablePtr or NULL in case of error.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3501"
+></A
+><H3
+><A
+NAME="XMLFREENOTATIONTABLE"
+></A
+>xmlFreeNotationTable()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlFreeNotationTable            (<A
+HREF="gnome-xml-valid.html#XMLNOTATIONTABLEPTR"
+>xmlNotationTablePtr</A
+> table);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Deallocate the memory used by an entities hash table.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>table</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  An notation table</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3517"
+></A
+><H3
+><A
+NAME="XMLDUMPNOTATIONTABLE"
+></A
+>xmlDumpNotationTable()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlDumpNotationTable            (<A
+HREF="gnome-xml-valid.html#XMLNOTATIONTABLEPTR"
+>xmlNotationTablePtr</A
+> table);</PRE
+></TD
+></TR
+></TABLE
+><P
+>This will dump the content of the notation table as an XML DTD definition</P
+><P
+>NOTE: TODO an extra parameter allowing a reentant implementation will
+be added.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>table</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  A notation table</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3534"
+></A
+><H3
+><A
+NAME="XMLNEWELEMENTCONTENT"
+></A
+>xmlNewElementContent()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLELEMENTCONTENTPTR"
+>xmlElementContentPtr</A
+> xmlNewElementContent   (<A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name,
+                                             int type);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Allocate an element content structure.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the subelement name or NULL</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>type</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the type of element content decl</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>NULL if not, othervise the new element content structure</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3559"
+></A
+><H3
+><A
+NAME="XMLCOPYELEMENTCONTENT"
+></A
+>xmlCopyElementContent()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLELEMENTCONTENTPTR"
+>xmlElementContentPtr</A
+> xmlCopyElementContent  (<A
+HREF="gnome-xml-tree.html#XMLELEMENTCONTENTPTR"
+>xmlElementContentPtr</A
+> content);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Build a copy of an element content description.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>content</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  An element content pointer.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the new xmlElementContentPtr or NULL in case of error.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3580"
+></A
+><H3
+><A
+NAME="XMLFREEELEMENTCONTENT"
+></A
+>xmlFreeElementContent()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlFreeElementContent           (<A
+HREF="gnome-xml-tree.html#XMLELEMENTCONTENTPTR"
+>xmlElementContentPtr</A
+> cur);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Free an element content structure. This is a recursive call !</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the element content tree to free</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3596"
+></A
+><H3
+><A
+NAME="XMLADDELEMENTDECL"
+></A
+>xmlAddElementDecl()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLELEMENTPTR"
+>xmlElementPtr</A
+> xmlAddElementDecl             (<A
+HREF="gnome-xml-tree.html#XMLDTDPTR"
+>xmlDtdPtr</A
+> dtd,
+                                             <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name,
+                                             int type,
+                                             <A
+HREF="gnome-xml-tree.html#XMLELEMENTCONTENTPTR"
+>xmlElementContentPtr</A
+> content);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Register a new element declaration</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>dtd</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  pointer to the DTD</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the entity name</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>type</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the element type</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>content</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the element content tree or NULL</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>NULL if not, othervise the entity</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3631"
+></A
+><H3
+><A
+NAME="XMLCOPYELEMENTTABLE"
+></A
+>xmlCopyElementTable()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-valid.html#XMLELEMENTTABLEPTR"
+>xmlElementTablePtr</A
+> xmlCopyElementTable      (<A
+HREF="gnome-xml-valid.html#XMLELEMENTTABLEPTR"
+>xmlElementTablePtr</A
+> table);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Build a copy of an element table.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>table</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  An element table</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the new xmlElementTablePtr or NULL in case of error.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3652"
+></A
+><H3
+><A
+NAME="XMLFREEELEMENTTABLE"
+></A
+>xmlFreeElementTable()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlFreeElementTable             (<A
+HREF="gnome-xml-valid.html#XMLELEMENTTABLEPTR"
+>xmlElementTablePtr</A
+> table);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Deallocate the memory used by an element hash table.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>table</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  An element table</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3668"
+></A
+><H3
+><A
+NAME="XMLDUMPELEMENTTABLE"
+></A
+>xmlDumpElementTable()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlDumpElementTable             (<A
+HREF="gnome-xml-valid.html#XMLELEMENTTABLEPTR"
+>xmlElementTablePtr</A
+> table);</PRE
+></TD
+></TR
+></TABLE
+><P
+>This will dump the content of the element table as an XML DTD definition</P
+><P
+>NOTE: TODO an extra parameter allowing a reentant implementation will
+be added.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>table</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  An element table</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3685"
+></A
+><H3
+><A
+NAME="XMLCREATEENUMERATION"
+></A
+>xmlCreateEnumeration()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLENUMERATIONPTR"
+>xmlEnumerationPtr</A
+> xmlCreateEnumeration      (<A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name);</PRE
+></TD
+></TR
+></TABLE
+><P
+>create and initialize an enumeration attribute node.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the enumeration name or NULL</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the xmlEnumerationPtr just created or NULL in case
+of error.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3706"
+></A
+><H3
+><A
+NAME="XMLFREEENUMERATION"
+></A
+>xmlFreeEnumeration()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlFreeEnumeration              (<A
+HREF="gnome-xml-tree.html#XMLENUMERATIONPTR"
+>xmlEnumerationPtr</A
+> cur);</PRE
+></TD
+></TR
+></TABLE
+><P
+>free an enumeration attribute node (recursive).</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the tree to free.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3722"
+></A
+><H3
+><A
+NAME="XMLCOPYENUMERATION"
+></A
+>xmlCopyEnumeration()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLENUMERATIONPTR"
+>xmlEnumerationPtr</A
+> xmlCopyEnumeration        (<A
+HREF="gnome-xml-tree.html#XMLENUMERATIONPTR"
+>xmlEnumerationPtr</A
+> cur);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Copy an enumeration attribute node (recursive).</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the tree to copy.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the xmlEnumerationPtr just created or NULL in case
+of error.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3743"
+></A
+><H3
+><A
+NAME="XMLADDATTRIBUTEDECL"
+></A
+>xmlAddAttributeDecl()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLATTRIBUTEPTR"
+>xmlAttributePtr</A
+> xmlAddAttributeDecl         (<A
+HREF="gnome-xml-tree.html#XMLDTDPTR"
+>xmlDtdPtr</A
+> dtd,
+                                             <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *elem,
+                                             <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name,
+                                             int type,
+                                             int def,
+                                             <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *defaultValue,
+                                             <A
+HREF="gnome-xml-tree.html#XMLENUMERATIONPTR"
+>xmlEnumerationPtr</A
+> tree);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Register a new attribute declaration</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>dtd</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  pointer to the DTD</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>elem</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the element name</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the attribute name</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>type</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the attribute type</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>def</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the attribute default type</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>defaultValue</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the attribute default value</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>tree</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  if it's an enumeration, the associated list</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>NULL if not, othervise the entity</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3792"
+></A
+><H3
+><A
+NAME="XMLCOPYATTRIBUTETABLE"
+></A
+>xmlCopyAttributeTable()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-valid.html#XMLATTRIBUTETABLEPTR"
+>xmlAttributeTablePtr</A
+> xmlCopyAttributeTable  (<A
+HREF="gnome-xml-valid.html#XMLATTRIBUTETABLEPTR"
+>xmlAttributeTablePtr</A
+> table);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Build a copy of an attribute table.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>table</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  An attribute table</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the new xmlAttributeTablePtr or NULL in case of error.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3813"
+></A
+><H3
+><A
+NAME="XMLFREEATTRIBUTETABLE"
+></A
+>xmlFreeAttributeTable()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlFreeAttributeTable           (<A
+HREF="gnome-xml-valid.html#XMLATTRIBUTETABLEPTR"
+>xmlAttributeTablePtr</A
+> table);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Deallocate the memory used by an entities hash table.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>table</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  An attribute table</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3829"
+></A
+><H3
+><A
+NAME="XMLDUMPATTRIBUTETABLE"
+></A
+>xmlDumpAttributeTable()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlDumpAttributeTable           (<A
+HREF="gnome-xml-valid.html#XMLATTRIBUTETABLEPTR"
+>xmlAttributeTablePtr</A
+> table);</PRE
+></TD
+></TR
+></TABLE
+><P
+>This will dump the content of the attribute table as an XML DTD definition</P
+><P
+>NOTE: TODO an extra parameter allowing a reentant implementation will
+be added.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>table</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  An attribute table</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="gnome-xml-entities.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="gnome-xml-error.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>entities</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="libxml.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>error</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,4776 @@
+<HTML
+><HEAD
+><TITLE
+>parserInternals</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.33"><LINK
+REL="HOME"
+TITLE="Gnome XML Library Reference Manual"
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="Gnome XML Library"
+HREF="libxml.html"><LINK
+REL="PREVIOUS"
+TITLE="error"
+HREF="gnome-xml-error.html"></HEAD
+><BODY
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>Gnome XML Library Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="gnome-xml-error.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+>&nbsp;</TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+>parserInternals</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN3919"
+></A
+><H2
+>Name</H2
+>parserInternals &#8212; one line description goes here.</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN3922"
+></A
+><H2
+>Synopsis</H2
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="SYNOPSIS"
+>&#13;
+
+void        <A
+HREF="gnome-xml-parserinternals.html#XMLHANDLEENTITY"
+>xmlHandleEntity</A
+>                 (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             <A
+HREF="gnome-xml-entities.html#XMLENTITYPTR"
+>xmlEntityPtr</A
+> entity);
+<A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       <A
+HREF="gnome-xml-parserinternals.html#XMLNAMESPACEPARSENCNAME"
+>xmlNamespaceParseNCName</A
+>         (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+<A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       <A
+HREF="gnome-xml-parserinternals.html#XMLNAMESPACEPARSEQNAME"
+>xmlNamespaceParseQName</A
+>          (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> **prefix);
+<A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       <A
+HREF="gnome-xml-parserinternals.html#XMLNAMESPACEPARSENSDEF"
+>xmlNamespaceParseNSDef</A
+>          (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+<A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       <A
+HREF="gnome-xml-parserinternals.html#XMLPARSEQUOTEDSTRING"
+>xmlParseQuotedString</A
+>            (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+void        <A
+HREF="gnome-xml-parserinternals.html#XMLPARSENAMESPACE"
+>xmlParseNamespace</A
+>               (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+<A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       <A
+HREF="gnome-xml-parserinternals.html#XMLPARSENAME"
+>xmlParseName</A
+>                    (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+<A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       <A
+HREF="gnome-xml-parserinternals.html#XMLPARSENMTOKEN"
+>xmlParseNmtoken</A
+>                 (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+<A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       <A
+HREF="gnome-xml-parserinternals.html#XMLPARSEENTITYVALUE"
+>xmlParseEntityValue</A
+>             (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+<A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       <A
+HREF="gnome-xml-parserinternals.html#XMLPARSEATTVALUE"
+>xmlParseAttValue</A
+>                (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+<A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       <A
+HREF="gnome-xml-parserinternals.html#XMLPARSESYSTEMLITERAL"
+>xmlParseSystemLiteral</A
+>           (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+<A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       <A
+HREF="gnome-xml-parserinternals.html#XMLPARSEPUBIDLITERAL"
+>xmlParsePubidLiteral</A
+>            (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+void        <A
+HREF="gnome-xml-parserinternals.html#XMLPARSECHARDATA"
+>xmlParseCharData</A
+>                (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             int cdata);
+<A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       <A
+HREF="gnome-xml-parserinternals.html#XMLPARSEEXTERNALID"
+>xmlParseExternalID</A
+>              (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> **publicID,
+                                             int strict);
+<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  <A
+HREF="gnome-xml-parserinternals.html#XMLPARSECOMMENT"
+>xmlParseComment</A
+>                 (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             int create);
+<A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       <A
+HREF="gnome-xml-parserinternals.html#XMLPARSEPITARGET"
+>xmlParsePITarget</A
+>                (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+void        <A
+HREF="gnome-xml-parserinternals.html#XMLPARSEPI"
+>xmlParsePI</A
+>                      (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+void        <A
+HREF="gnome-xml-parserinternals.html#XMLPARSENOTATIONDECL"
+>xmlParseNotationDecl</A
+>            (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+void        <A
+HREF="gnome-xml-parserinternals.html#XMLPARSEENTITYDECL"
+>xmlParseEntityDecl</A
+>              (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+int         <A
+HREF="gnome-xml-parserinternals.html#XMLPARSEDEFAULTDECL"
+>xmlParseDefaultDecl</A
+>             (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> **value);
+<A
+HREF="gnome-xml-tree.html#XMLENUMERATIONPTR"
+>xmlEnumerationPtr</A
+> <A
+HREF="gnome-xml-parserinternals.html#XMLPARSENOTATIONTYPE"
+>xmlParseNotationType</A
+>      (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+<A
+HREF="gnome-xml-tree.html#XMLENUMERATIONPTR"
+>xmlEnumerationPtr</A
+> <A
+HREF="gnome-xml-parserinternals.html#XMLPARSEENUMERATIONTYPE"
+>xmlParseEnumerationType</A
+>   (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+int         <A
+HREF="gnome-xml-parserinternals.html#XMLPARSEENUMERATEDTYPE"
+>xmlParseEnumeratedType</A
+>          (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             <A
+HREF="gnome-xml-tree.html#XMLENUMERATIONPTR"
+>xmlEnumerationPtr</A
+> *tree);
+int         <A
+HREF="gnome-xml-parserinternals.html#XMLPARSEATTRIBUTETYPE"
+>xmlParseAttributeType</A
+>           (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             <A
+HREF="gnome-xml-tree.html#XMLENUMERATIONPTR"
+>xmlEnumerationPtr</A
+> *tree);
+void        <A
+HREF="gnome-xml-parserinternals.html#XMLPARSEATTRIBUTELISTDECL"
+>xmlParseAttributeListDecl</A
+>       (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+<A
+HREF="gnome-xml-tree.html#XMLELEMENTCONTENTPTR"
+>xmlElementContentPtr</A
+> <A
+HREF="gnome-xml-parserinternals.html#XMLPARSEELEMENTMIXEDCONTENTDECL"
+>xmlParseElementMixedContentDecl</A
+>
+                                            (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+<A
+HREF="gnome-xml-tree.html#XMLELEMENTCONTENTPTR"
+>xmlElementContentPtr</A
+> <A
+HREF="gnome-xml-parserinternals.html#XMLPARSEELEMENTCHILDRENCONTENTDECL"
+>xmlParseElementChildrenContentDecl</A
+>
+                                            (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+int         <A
+HREF="gnome-xml-parserinternals.html#XMLPARSEELEMENTCONTENTDECL"
+>xmlParseElementContentDecl</A
+>      (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name,
+                                             <A
+HREF="gnome-xml-tree.html#XMLELEMENTCONTENTPTR"
+>xmlElementContentPtr</A
+> *result);
+int         <A
+HREF="gnome-xml-parserinternals.html#XMLPARSEELEMENTDECL"
+>xmlParseElementDecl</A
+>             (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+void        <A
+HREF="gnome-xml-parserinternals.html#XMLPARSEMARKUPDECL"
+>xmlParseMarkupDecl</A
+>              (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+<A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       <A
+HREF="gnome-xml-parserinternals.html#XMLPARSECHARREF"
+>xmlParseCharRef</A
+>                 (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+<A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       <A
+HREF="gnome-xml-parserinternals.html#XMLPARSEENTITYREF"
+>xmlParseEntityRef</A
+>               (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+<A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       <A
+HREF="gnome-xml-parserinternals.html#XMLPARSEREFERENCE"
+>xmlParseReference</A
+>               (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+<A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       <A
+HREF="gnome-xml-parserinternals.html#XMLPARSEPEREFERENCE"
+>xmlParsePEReference</A
+>             (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+void        <A
+HREF="gnome-xml-parserinternals.html#XMLPARSEDOCTYPEDECL"
+>xmlParseDocTypeDecl</A
+>             (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+<A
+HREF="gnome-xml-tree.html#XMLATTRPTR"
+>xmlAttrPtr</A
+>  <A
+HREF="gnome-xml-parserinternals.html#XMLPARSEATTRIBUTE"
+>xmlParseAttribute</A
+>               (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             <A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node);
+<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  <A
+HREF="gnome-xml-parserinternals.html#XMLPARSESTARTTAG"
+>xmlParseStartTag</A
+>                (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+void        <A
+HREF="gnome-xml-parserinternals.html#XMLPARSEENDTAG"
+>xmlParseEndTag</A
+>                  (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             <A
+HREF="gnome-xml-tree.html#XMLNSPTR"
+>xmlNsPtr</A
+> *nsPtr,
+                                             <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> **tagPtr);
+void        <A
+HREF="gnome-xml-parserinternals.html#XMLPARSECDSECT"
+>xmlParseCDSect</A
+>                  (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+void        <A
+HREF="gnome-xml-parserinternals.html#XMLPARSECONTENT"
+>xmlParseContent</A
+>                 (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  <A
+HREF="gnome-xml-parserinternals.html#XMLPARSEELEMENT"
+>xmlParseElement</A
+>                 (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+<A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       <A
+HREF="gnome-xml-parserinternals.html#XMLPARSEVERSIONNUM"
+>xmlParseVersionNum</A
+>              (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+<A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       <A
+HREF="gnome-xml-parserinternals.html#XMLPARSEVERSIONINFO"
+>xmlParseVersionInfo</A
+>             (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+<A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       <A
+HREF="gnome-xml-parserinternals.html#XMLPARSEENCNAME"
+>xmlParseEncName</A
+>                 (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+<A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       <A
+HREF="gnome-xml-parserinternals.html#XMLPARSEENCODINGDECL"
+>xmlParseEncodingDecl</A
+>            (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+int         <A
+HREF="gnome-xml-parserinternals.html#XMLPARSESDDECL"
+>xmlParseSDDecl</A
+>                  (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+void        <A
+HREF="gnome-xml-parserinternals.html#XMLPARSEXMLDECL"
+>xmlParseXMLDecl</A
+>                 (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+void        <A
+HREF="gnome-xml-parserinternals.html#XMLPARSEMISC"
+>xmlParseMisc</A
+>                    (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN4060"
+></A
+><H2
+>Description</H2
+><P
+></P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN4063"
+></A
+><H2
+>Details</H2
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4065"
+></A
+><H3
+><A
+NAME="XMLHANDLEENTITY"
+></A
+>xmlHandleEntity()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlHandleEntity                 (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             <A
+HREF="gnome-xml-entities.html#XMLENTITYPTR"
+>xmlEntityPtr</A
+> entity);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Default handling of defined entities, when should we define a new input
+stream ? When do we just handle that as a set of chars ?
+TODO: we should call the SAX handler here and have it resolve the issue</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>entity</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML entity pointer.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4086"
+></A
+><H3
+><A
+NAME="XMLNAMESPACEPARSENCNAME"
+></A
+>xmlNamespaceParseNCName()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       xmlNamespaceParseNCName         (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse an XML namespace name.</P
+><P
+>[NS 3] NCName ::= (Letter | '_') (NCNameChar)*</P
+><P
+>[NS 4] NCNameChar ::= Letter | Digit | '.' | '-' | '_' |
+CombiningChar | Extender</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the namespace name or NULL</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4109"
+></A
+><H3
+><A
+NAME="XMLNAMESPACEPARSEQNAME"
+></A
+>xmlNamespaceParseQName()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       xmlNamespaceParseQName          (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> **prefix);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse an XML qualified name</P
+><P
+>[NS 5] QName ::= (Prefix ':')? LocalPart</P
+><P
+>[NS 6] Prefix ::= NCName</P
+><P
+>[NS 7] LocalPart ::= NCName</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>prefix</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a CHAR ** </TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the function returns the local part, and prefix is updated
+to get the Prefix if any.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4138"
+></A
+><H3
+><A
+NAME="XMLNAMESPACEPARSENSDEF"
+></A
+>xmlNamespaceParseNSDef()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       xmlNamespaceParseNSDef          (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse a namespace prefix declaration</P
+><P
+>[NS 1] NSDef ::= PrefixDef Eq SystemLiteral</P
+><P
+>[NS 2] PrefixDef ::= 'xmlns' (':' NCName)?</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the namespace name</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4161"
+></A
+><H3
+><A
+NAME="XMLPARSEQUOTEDSTRING"
+></A
+>xmlParseQuotedString()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       xmlParseQuotedString            (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>[OLD] Parse and return a string between quotes or doublequotes</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the string parser or NULL.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4182"
+></A
+><H3
+><A
+NAME="XMLPARSENAMESPACE"
+></A
+>xmlParseNamespace()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlParseNamespace               (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>[OLD] xmlParseNamespace: parse specific PI '&lt;?namespace ...' constructs.</P
+><P
+>This is what the older xml-name Working Draft specified, a bunch of
+other stuff may still rely on it, so support is still here as
+if ot was declared on the root of the Tree:-(</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4199"
+></A
+><H3
+><A
+NAME="XMLPARSENAME"
+></A
+>xmlParseName()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       xmlParseName                    (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse an XML name.</P
+><P
+>[4] NameChar ::= Letter | Digit | '.' | '-' | '_' | ':' |
+CombiningChar | Extender</P
+><P
+>[5] Name ::= (Letter | '_' | ':') (NameChar)*</P
+><P
+>[6] Names ::= Name (S Name)*</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the Name parsed or NULL</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4223"
+></A
+><H3
+><A
+NAME="XMLPARSENMTOKEN"
+></A
+>xmlParseNmtoken()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       xmlParseNmtoken                 (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse an XML Nmtoken.</P
+><P
+>[7] Nmtoken ::= (NameChar)+</P
+><P
+>[8] Nmtokens ::= Nmtoken (S Nmtoken)*</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the Nmtoken parsed or NULL</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4246"
+></A
+><H3
+><A
+NAME="XMLPARSEENTITYVALUE"
+></A
+>xmlParseEntityValue()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       xmlParseEntityValue             (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse a value for ENTITY decl.</P
+><P
+>[9] EntityValue ::= '"' ([^%&amp;"] | PEReference | Reference)* '"' |
+"'" ([^%&amp;'] | PEReference | Reference)* "'"</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the EntityValue parsed or NULL</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4268"
+></A
+><H3
+><A
+NAME="XMLPARSEATTVALUE"
+></A
+>xmlParseAttValue()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       xmlParseAttValue                (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse a value for an attribute</P
+><P
+>[10] AttValue ::= '"' ([^&lt;&amp;"] | Reference)* '"' |
+"'" ([^&lt;&amp;'] | Reference)* "'"</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the AttValue parsed or NULL.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4290"
+></A
+><H3
+><A
+NAME="XMLPARSESYSTEMLITERAL"
+></A
+>xmlParseSystemLiteral()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       xmlParseSystemLiteral           (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse an XML Literal</P
+><P
+>[11] SystemLiteral ::= ('"' [^"]* '"') | ("'" [^']* "'")</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the SystemLiteral parsed or NULL</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4312"
+></A
+><H3
+><A
+NAME="XMLPARSEPUBIDLITERAL"
+></A
+>xmlParsePubidLiteral()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       xmlParsePubidLiteral            (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse an XML public literal</P
+><P
+>[12] PubidLiteral ::= '"' PubidChar* '"' | "'" (PubidChar - "'")* "'"</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the PubidLiteral parsed or NULL.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4334"
+></A
+><H3
+><A
+NAME="XMLPARSECHARDATA"
+></A
+>xmlParseCharData()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlParseCharData                (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             int cdata);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse a CharData section.
+if we are within a CDATA section ']]&gt;' marks an end of section.</P
+><P
+>[14] CharData ::= [^&lt;&amp;]* - ([^&lt;&amp;]* ']]&gt;' [^&lt;&amp;]*)</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cdata</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  int indicating whether we are within a CDATA section</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4355"
+></A
+><H3
+><A
+NAME="XMLPARSEEXTERNALID"
+></A
+>xmlParseExternalID()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       xmlParseExternalID              (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> **publicID,
+                                             int strict);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Parse an External ID or a Public ID</P
+><P
+>NOTE: Productions [75] and [83] interract badly since [75] can generate
+'PUBLIC' S PubidLiteral S SystemLiteral</P
+><P
+>[75] ExternalID ::= 'SYSTEM' S SystemLiteral
+| 'PUBLIC' S PubidLiteral S SystemLiteral</P
+><P
+>[83] PublicID ::= 'PUBLIC' S PubidLiteral</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>publicID</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a CHAR** receiving PubidLiteral</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>strict</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> indicate whether we should restrict parsing to only
+production [75], see NOTE below</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the function returns SystemLiteral and in the second
+case publicID receives PubidLiteral, is strict is off
+it is possible to return NULL and have publicID set.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4388"
+></A
+><H3
+><A
+NAME="XMLPARSECOMMENT"
+></A
+>xmlParseComment()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  xmlParseComment                 (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             int create);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Skip an XML (SGML) comment &lt;!-- .... --&gt;
+This may or may not create a node (depending on the context)
+The spec says that "For compatibility, the string "--" (double-hyphen)
+must not occur within comments. "</P
+><P
+>[15] Comment ::= '&lt;!--' ((Char - '-') | ('-' (Char - '-')))* '--&gt;'</P
+><P
+>TODO: this should call a SAX function which will handle (or not) the
+creation of the comment !</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>create</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> should we create a node, or just skip the content</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the comment node, or NULL</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4415"
+></A
+><H3
+><A
+NAME="XMLPARSEPITARGET"
+></A
+>xmlParsePITarget()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       xmlParsePITarget                (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse the name of a PI</P
+><P
+>[17] PITarget ::= Name - (('X' | 'x') ('M' | 'm') ('L' | 'l'))</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the PITarget name or NULL</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4437"
+></A
+><H3
+><A
+NAME="XMLPARSEPI"
+></A
+>xmlParsePI()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlParsePI                      (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse an XML Processing Instruction.</P
+><P
+>[16] PI ::= '&lt;?' PITarget (S (Char* - (Char* '?&gt;' Char*)))? '?&gt;'</P
+><P
+>The processing is transfered to SAX once parsed.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4455"
+></A
+><H3
+><A
+NAME="XMLPARSENOTATIONDECL"
+></A
+>xmlParseNotationDecl()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlParseNotationDecl            (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse a notation declaration</P
+><P
+>[82] NotationDecl ::= '&lt;!NOTATION' S Name S (ExternalID |  PublicID) S? '&gt;'</P
+><P
+>Hence there is actually 3 choices:
+'PUBLIC' S PubidLiteral
+'PUBLIC' S PubidLiteral S SystemLiteral
+and 'SYSTEM' S SystemLiteral</P
+><P
+>See the NOTE on <A
+HREF="gnome-xml-parserinternals.html#XMLPARSEEXTERNALID"
+>xmlParseExternalID</A
+>().</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4475"
+></A
+><H3
+><A
+NAME="XMLPARSEENTITYDECL"
+></A
+>xmlParseEntityDecl()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlParseEntityDecl              (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse &lt;!ENTITY declarations</P
+><P
+>[70] EntityDecl ::= GEDecl | PEDecl</P
+><P
+>[71] GEDecl ::= '&lt;!ENTITY' S Name S EntityDef S? '&gt;'</P
+><P
+>[72] PEDecl ::= '&lt;!ENTITY' S '%' S Name S PEDef S? '&gt;'</P
+><P
+>[73] EntityDef ::= EntityValue | (ExternalID NDataDecl?)</P
+><P
+>[74] PEDef ::= EntityValue | ExternalID</P
+><P
+>[76] NDataDecl ::= S 'NDATA' S Name</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4497"
+></A
+><H3
+><A
+NAME="XMLPARSEDEFAULTDECL"
+></A
+>xmlParseDefaultDecl()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlParseDefaultDecl             (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> **value);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Parse an attribute default declaration</P
+><P
+>[60] DefaultDecl ::= '<GTKDOCLINK
+HREF="REQUIRED"
+>REQUIRED</GTKDOCLINK
+>' | '<GTKDOCLINK
+HREF="IMPLIED"
+>IMPLIED</GTKDOCLINK
+>' | (('<GTKDOCLINK
+HREF="FIXED"
+>FIXED</GTKDOCLINK
+>' S)? AttValue)</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>value</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  Receive a possible fixed default value for the attribute</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> XML_ATTRIBUTE_NONE, XML_ATTRIBUTE_REQUIRED, XML_ATTRIBUTE_IMPLIED
+or XML_ATTRIBUTE_FIXED. </TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4526"
+></A
+><H3
+><A
+NAME="XMLPARSENOTATIONTYPE"
+></A
+>xmlParseNotationType()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLENUMERATIONPTR"
+>xmlEnumerationPtr</A
+> xmlParseNotationType      (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse an Notation attribute type.</P
+><P
+>[58] NotationType ::= 'NOTATION' S '(' S? Name (S? '|' S? Name)* S? ')'</P
+><P
+>Note: the leading 'NOTATION' S part has already being parsed...</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the notation attribute tree built while parsing</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4549"
+></A
+><H3
+><A
+NAME="XMLPARSEENUMERATIONTYPE"
+></A
+>xmlParseEnumerationType()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLENUMERATIONPTR"
+>xmlEnumerationPtr</A
+> xmlParseEnumerationType   (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse an Enumeration attribute type.</P
+><P
+>[59] Enumeration ::= '(' S? Nmtoken (S? '|' S? Nmtoken)* S? ')'</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the enumeration attribute tree built while parsing</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4571"
+></A
+><H3
+><A
+NAME="XMLPARSEENUMERATEDTYPE"
+></A
+>xmlParseEnumeratedType()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlParseEnumeratedType          (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             <A
+HREF="gnome-xml-tree.html#XMLENUMERATIONPTR"
+>xmlEnumerationPtr</A
+> *tree);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse an Enumerated attribute type.</P
+><P
+>[57] EnumeratedType ::= NotationType | Enumeration</P
+><P
+>[58] NotationType ::= 'NOTATION' S '(' S? Name (S? '|' S? Name)* S? ')'</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>tree</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the enumeration tree built while parsing</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> XML_ATTRIBUTE_ENUMERATION or XML_ATTRIBUTE_NOTATION</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4598"
+></A
+><H3
+><A
+NAME="XMLPARSEATTRIBUTETYPE"
+></A
+>xmlParseAttributeType()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlParseAttributeType           (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             <A
+HREF="gnome-xml-tree.html#XMLENUMERATIONPTR"
+>xmlEnumerationPtr</A
+> *tree);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse the Attribute list def for an element</P
+><P
+>[54] AttType ::= StringType | TokenizedType | EnumeratedType</P
+><P
+>[55] StringType ::= 'CDATA'</P
+><P
+>[56] TokenizedType ::= 'ID' | 'IDREF' | 'IDREFS' | 'ENTITY' |
+'ENTITIES' | 'NMTOKEN' | 'NMTOKENS'</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>tree</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the enumeration tree built while parsing</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the attribute type</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4626"
+></A
+><H3
+><A
+NAME="XMLPARSEATTRIBUTELISTDECL"
+></A
+>xmlParseAttributeListDecl()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlParseAttributeListDecl       (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>: parse the Attribute list def for an element</P
+><P
+>[52] AttlistDecl ::= '&lt;!ATTLIST' S Name AttDef* S? '&gt;'</P
+><P
+>[53] AttDef ::= S Name S AttType S DefaultDecl</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4644"
+></A
+><H3
+><A
+NAME="XMLPARSEELEMENTMIXEDCONTENTDECL"
+></A
+>xmlParseElementMixedContentDecl()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLELEMENTCONTENTPTR"
+>xmlElementContentPtr</A
+> xmlParseElementMixedContentDecl
+                                            (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse the declaration for a Mixed Element content
+The leading '(' and spaces have been skipped in xmlParseElementContentDecl</P
+><P
+>[51] Mixed ::= '(' S? '<GTKDOCLINK
+HREF="PCDATA"
+>PCDATA</GTKDOCLINK
+>' (S? '|' S? Name)* S? ')*' |
+'(' S? '<GTKDOCLINK
+HREF="PCDATA"
+>PCDATA</GTKDOCLINK
+>' S? ')'</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the list of the xmlElementContentPtr describing the element choices</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4668"
+></A
+><H3
+><A
+NAME="XMLPARSEELEMENTCHILDRENCONTENTDECL"
+></A
+>xmlParseElementChildrenContentDecl()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLELEMENTCONTENTPTR"
+>xmlElementContentPtr</A
+> xmlParseElementChildrenContentDecl
+                                            (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse the declaration for a Mixed Element content
+The leading '(' and spaces have been skipped in xmlParseElementContentDecl</P
+><P
+>[47] children ::= (choice | seq) ('?' | '*' | '+')?</P
+><P
+>[48] cp ::= (Name | choice | seq) ('?' | '*' | '+')?</P
+><P
+>[49] choice ::= '(' S? cp ( S? '|' S? cp )* S? ')'</P
+><P
+>[50] seq ::= '(' S? cp ( S? ',' S? cp )* S? ')'</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the tree of xmlElementContentPtr describing the element 
+hierarchy.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4693"
+></A
+><H3
+><A
+NAME="XMLPARSEELEMENTCONTENTDECL"
+></A
+>xmlParseElementContentDecl()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlParseElementContentDecl      (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name,
+                                             <A
+HREF="gnome-xml-tree.html#XMLELEMENTCONTENTPTR"
+>xmlElementContentPtr</A
+> *result);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse the declaration for an Element content either Mixed or Children,
+the cases EMPTY and ANY are handled directly in xmlParseElementDecl</P
+><P
+>[46] contentspec ::= 'EMPTY' | 'ANY' | Mixed | children</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the name of the element being defined.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>result</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the Element Content pointer will be stored here if any</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the type of element content XML_ELEMENT_TYPE_xxx</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4724"
+></A
+><H3
+><A
+NAME="XMLPARSEELEMENTDECL"
+></A
+>xmlParseElementDecl()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlParseElementDecl             (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse an Element declaration.</P
+><P
+>[45] elementdecl ::= '&lt;!ELEMENT' S Name S contentspec S? '&gt;'</P
+><P
+>TODO There is a check [ VC: Unique Element Type Declaration ]</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the type of the element, or -1 in case of error</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4746"
+></A
+><H3
+><A
+NAME="XMLPARSEMARKUPDECL"
+></A
+>xmlParseMarkupDecl()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlParseMarkupDecl              (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse Markup declarations</P
+><P
+>[29] markupdecl ::= elementdecl | AttlistDecl | EntityDecl |
+NotationDecl | PI | Comment</P
+><P
+>TODO There is a check [ VC: Proper Declaration/PE Nesting ]</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4764"
+></A
+><H3
+><A
+NAME="XMLPARSECHARREF"
+></A
+>xmlParseCharRef()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       xmlParseCharRef                 (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse Reference declarations</P
+><P
+>[66] CharRef ::= '&amp;#' [0-9]+ ';' |
+'&amp;<GTKDOCLINK
+HREF="X"
+>x</GTKDOCLINK
+>' [0-9a-fA-F]+ ';'</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the value parsed</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4787"
+></A
+><H3
+><A
+NAME="XMLPARSEENTITYREF"
+></A
+>xmlParseEntityRef()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       xmlParseEntityRef               (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse ENTITY references declarations</P
+><P
+>[68] EntityRef ::= '&amp;' Name ';'</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the entity ref string or NULL if directly as input stream.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4809"
+></A
+><H3
+><A
+NAME="XMLPARSEREFERENCE"
+></A
+>xmlParseReference()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       xmlParseReference               (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse Reference declarations</P
+><P
+>[67] Reference ::= EntityRef | CharRef</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the entity string or NULL if handled directly by pushing
+the entity value as the input.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4831"
+></A
+><H3
+><A
+NAME="XMLPARSEPEREFERENCE"
+></A
+>xmlParsePEReference()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       xmlParsePEReference             (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse PEReference declarations</P
+><P
+>[69] PEReference ::= '%' Name ';'</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the entity content or NULL if handled directly.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4853"
+></A
+><H3
+><A
+NAME="XMLPARSEDOCTYPEDECL"
+></A
+>xmlParseDocTypeDecl()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlParseDocTypeDecl             (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse a DOCTYPE declaration</P
+><P
+>[28] doctypedecl ::= '&lt;!DOCTYPE' S Name (S ExternalID)? S? 
+('[' (markupdecl | PEReference | S)* ']' S?)? '&gt;'</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4870"
+></A
+><H3
+><A
+NAME="XMLPARSEATTRIBUTE"
+></A
+>xmlParseAttribute()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLATTRPTR"
+>xmlAttrPtr</A
+>  xmlParseAttribute               (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             <A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse an attribute</P
+><P
+>[41] Attribute ::= Name Eq AttValue</P
+><P
+>[25] Eq ::= S? '=' S?</P
+><P
+>With namespace:</P
+><P
+>[NS 11] Attribute ::= QName Eq AttValue</P
+><P
+>Also the case QName == xmlns:??? is handled independently as a namespace
+definition.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>node</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the node carrying the attribute</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the attribute just parsed of NULL in case of error.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4901"
+></A
+><H3
+><A
+NAME="XMLPARSESTARTTAG"
+></A
+>xmlParseStartTag()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  xmlParseStartTag                (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse a start of tag either for rule element or
+EmptyElement. In both case we don't parse the tag closing chars.</P
+><P
+>[40] STag ::= '&lt;' Name (S Attribute)* S? '&gt;'</P
+><P
+>[44] EmptyElemTag ::= '&lt;' Name (S Attribute)* S? '/&gt;'</P
+><P
+>With namespace:</P
+><P
+>[NS 8] STag ::= '&lt;' QName (S Attribute)* S? '&gt;'</P
+><P
+>[NS 10] EmptyElement ::= '&lt;' QName (S Attribute)* S? '/&gt;'</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the XML new node or NULL.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4927"
+></A
+><H3
+><A
+NAME="XMLPARSEENDTAG"
+></A
+>xmlParseEndTag()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlParseEndTag                  (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             <A
+HREF="gnome-xml-tree.html#XMLNSPTR"
+>xmlNsPtr</A
+> *nsPtr,
+                                             <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> **tagPtr);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse an end of tag</P
+><P
+>[42] ETag ::= '&lt;/' Name S? '&gt;'</P
+><P
+>With namespace</P
+><P
+>[9] ETag ::= '&lt;/' QName S? '&gt;'</P
+><P
+>tagPtr receive the tag name just read</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>nsPtr</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the current node namespace definition</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>tagPtr</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  CHAR** receive the tag value</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4957"
+></A
+><H3
+><A
+NAME="XMLPARSECDSECT"
+></A
+>xmlParseCDSect()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlParseCDSect                  (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Parse escaped pure raw content.</P
+><P
+>[18] CDSect ::= CDStart CData CDEnd</P
+><P
+>[19] CDStart ::= '&lt;![CDATA['</P
+><P
+>[20] Data ::= (Char* - (Char* ']]&gt;' Char*))</P
+><P
+>[21] CDEnd ::= ']]&gt;'</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4977"
+></A
+><H3
+><A
+NAME="XMLPARSECONTENT"
+></A
+>xmlParseContent()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlParseContent                 (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Parse a content:</P
+><P
+>[43] content ::= (element | CharData | Reference | CDSect | PI | Comment)*</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4994"
+></A
+><H3
+><A
+NAME="XMLPARSEELEMENT"
+></A
+>xmlParseElement()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  xmlParseElement                 (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse an XML element, this is highly recursive</P
+><P
+>[39] element ::= EmptyElemTag | STag content ETag</P
+><P
+>[41] Attribute ::= Name Eq AttValue</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the XML new node or NULL</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN5017"
+></A
+><H3
+><A
+NAME="XMLPARSEVERSIONNUM"
+></A
+>xmlParseVersionNum()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       xmlParseVersionNum              (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse the XML version value.</P
+><P
+>[26] VersionNum ::= ([a-zA-Z0-9_.:] | '-')+</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the string giving the XML version number, or NULL</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN5039"
+></A
+><H3
+><A
+NAME="XMLPARSEVERSIONINFO"
+></A
+>xmlParseVersionInfo()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       xmlParseVersionInfo             (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse the XML version.</P
+><P
+>[24] VersionInfo ::= S 'version' Eq (' VersionNum ' | " VersionNum ")</P
+><P
+>[25] Eq ::= S? '=' S?</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the version string, e.g. "1.0"</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN5062"
+></A
+><H3
+><A
+NAME="XMLPARSEENCNAME"
+></A
+>xmlParseEncName()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       xmlParseEncName                 (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse the XML encoding name</P
+><P
+>[81] EncName ::= [A-Za-z] ([A-Za-z0-9._] | '-')*</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the encoding name value or NULL</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN5084"
+></A
+><H3
+><A
+NAME="XMLPARSEENCODINGDECL"
+></A
+>xmlParseEncodingDecl()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       xmlParseEncodingDecl            (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse the XML encoding declaration</P
+><P
+>[80] EncodingDecl ::= S 'encoding' Eq ('"' EncName '"' |  "'" EncName "'")</P
+><P
+>TODO: this should setup the conversion filters.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the encoding value or NULL</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN5107"
+></A
+><H3
+><A
+NAME="XMLPARSESDDECL"
+></A
+>xmlParseSDDecl()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlParseSDDecl                  (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse the XML standalone declaration</P
+><P
+>[32] SDDecl ::= S 'standalone' Eq
+(("'" ('yes' | 'no') "'") | ('"' ('yes' | 'no')'"'))</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>1 if standalone, 0 otherwise</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN5128"
+></A
+><H3
+><A
+NAME="XMLPARSEXMLDECL"
+></A
+>xmlParseXMLDecl()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlParseXMLDecl                 (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse an XML declaration header</P
+><P
+>[23] XMLDecl ::= '&lt;?xml' VersionInfo EncodingDecl? SDDecl? S? '?&gt;'</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN5145"
+></A
+><H3
+><A
+NAME="XMLPARSEMISC"
+></A
+>xmlParseMisc()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlParseMisc                    (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse an XML Misc* optionnal field.</P
+><P
+>[27] Misc ::= Comment | PI |  S</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="gnome-xml-error.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>error</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="libxml.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>&nbsp;</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

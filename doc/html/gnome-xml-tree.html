@@ -1,0 +1,7226 @@
+<HTML
+><HEAD
+><TITLE
+>tree</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.33"><LINK
+REL="HOME"
+TITLE="Gnome XML Library Reference Manual"
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="Gnome XML Library"
+HREF="libxml.html"><LINK
+REL="PREVIOUS"
+TITLE="parser"
+HREF="gnome-xml-parser.html"><LINK
+REL="NEXT"
+TITLE="entities"
+HREF="gnome-xml-entities.html"></HEAD
+><BODY
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>Gnome XML Library Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="gnome-xml-parser.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="gnome-xml-entities.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+>tree</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN1188"
+></A
+><H2
+>Name</H2
+>tree &#8212; one line description goes here.</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN1191"
+></A
+><H2
+>Synopsis</H2
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="SYNOPSIS"
+>&#13;
+
+enum        <A
+HREF="gnome-xml-tree.html#XMLELEMENTTYPE"
+>xmlElementType</A
+>
+typedef     <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>
+typedef     <A
+HREF="gnome-xml-tree.html#XMLNOTATIONPTR"
+>xmlNotationPtr</A
+>
+enum        <A
+HREF="gnome-xml-tree.html#XMLATTRIBUTETYPE"
+>xmlAttributeType</A
+>
+enum        <A
+HREF="gnome-xml-tree.html#XMLATTRIBUTEDEFAULT"
+>xmlAttributeDefault</A
+>
+typedef     <A
+HREF="gnome-xml-tree.html#XMLENUMERATIONPTR"
+>xmlEnumerationPtr</A
+>
+typedef     <A
+HREF="gnome-xml-tree.html#XMLATTRIBUTEPTR"
+>xmlAttributePtr</A
+>
+enum        <A
+HREF="gnome-xml-tree.html#XMLELEMENTCONTENTTYPE"
+>xmlElementContentType</A
+>
+enum        <A
+HREF="gnome-xml-tree.html#XMLELEMENTCONTENTOCCUR"
+>xmlElementContentOccur</A
+>
+typedef     <A
+HREF="gnome-xml-tree.html#XMLELEMENTCONTENTPTR"
+>xmlElementContentPtr</A
+>
+enum        <A
+HREF="gnome-xml-tree.html#XMLELEMENTTYPEVAL"
+>xmlElementTypeVal</A
+>
+typedef     <A
+HREF="gnome-xml-tree.html#XMLELEMENTPTR"
+>xmlElementPtr</A
+>
+enum        <A
+HREF="gnome-xml-tree.html#XMLNSTYPE"
+>xmlNsType</A
+>
+typedef     <A
+HREF="gnome-xml-tree.html#XMLNSPTR"
+>xmlNsPtr</A
+>
+typedef     <A
+HREF="gnome-xml-tree.html#XMLDTDPTR"
+>xmlDtdPtr</A
+>
+typedef     <A
+HREF="gnome-xml-tree.html#XMLATTRPTR"
+>xmlAttrPtr</A
+>
+typedef     <A
+HREF="gnome-xml-tree.html#XMLNODE"
+>xmlNode</A
+>
+typedef     <A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>
+typedef     <A
+HREF="gnome-xml-tree.html#XMLDOC"
+>xmlDoc</A
+>
+typedef     <A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+>
+<A
+HREF="gnome-xml-tree.html#XMLDTDPTR"
+>xmlDtdPtr</A
+>   <A
+HREF="gnome-xml-tree.html#XMLCREATEINTSUBSET"
+>xmlCreateIntSubset</A
+>              (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *ExternalID,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *SystemID);
+<A
+HREF="gnome-xml-tree.html#XMLDTDPTR"
+>xmlDtdPtr</A
+>   <A
+HREF="gnome-xml-tree.html#XMLNEWDTD"
+>xmlNewDtd</A
+>                       (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *ExternalID,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *SystemID);
+void        <A
+HREF="gnome-xml-tree.html#XMLFREEDTD"
+>xmlFreeDtd</A
+>                      (<A
+HREF="gnome-xml-tree.html#XMLDTDPTR"
+>xmlDtdPtr</A
+> cur);
+<A
+HREF="gnome-xml-tree.html#XMLNSPTR"
+>xmlNsPtr</A
+>    <A
+HREF="gnome-xml-tree.html#XMLNEWGLOBALNS"
+>xmlNewGlobalNs</A
+>                  (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *href,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *prefix);
+<A
+HREF="gnome-xml-tree.html#XMLNSPTR"
+>xmlNsPtr</A
+>    <A
+HREF="gnome-xml-tree.html#XMLNEWNS"
+>xmlNewNs</A
+>                        (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *href,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *prefix);
+void        <A
+HREF="gnome-xml-tree.html#XMLFREENS"
+>xmlFreeNs</A
+>                       (<A
+HREF="gnome-xml-tree.html#XMLNSPTR"
+>xmlNsPtr</A
+> cur);
+<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+>   <A
+HREF="gnome-xml-tree.html#XMLNEWDOC"
+>xmlNewDoc</A
+>                       (const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *version);
+void        <A
+HREF="gnome-xml-tree.html#XMLFREEDOC"
+>xmlFreeDoc</A
+>                      (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> cur);
+<A
+HREF="gnome-xml-tree.html#XMLATTRPTR"
+>xmlAttrPtr</A
+>  <A
+HREF="gnome-xml-tree.html#XMLNEWDOCPROP"
+>xmlNewDocProp</A
+>                   (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *value);
+<A
+HREF="gnome-xml-tree.html#XMLATTRPTR"
+>xmlAttrPtr</A
+>  <A
+HREF="gnome-xml-tree.html#XMLNEWPROP"
+>xmlNewProp</A
+>                      (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *value);
+void        <A
+HREF="gnome-xml-tree.html#XMLFREEPROPLIST"
+>xmlFreePropList</A
+>                 (<A
+HREF="gnome-xml-tree.html#XMLATTRPTR"
+>xmlAttrPtr</A
+> cur);
+void        <A
+HREF="gnome-xml-tree.html#XMLFREEPROP"
+>xmlFreeProp</A
+>                     (<A
+HREF="gnome-xml-tree.html#XMLATTRPTR"
+>xmlAttrPtr</A
+> cur);
+<A
+HREF="gnome-xml-tree.html#XMLATTRPTR"
+>xmlAttrPtr</A
+>  <A
+HREF="gnome-xml-tree.html#XMLCOPYPROP"
+>xmlCopyProp</A
+>                     (<A
+HREF="gnome-xml-tree.html#XMLATTRPTR"
+>xmlAttrPtr</A
+> cur);
+<A
+HREF="gnome-xml-tree.html#XMLATTRPTR"
+>xmlAttrPtr</A
+>  <A
+HREF="gnome-xml-tree.html#XMLCOPYPROPLIST"
+>xmlCopyPropList</A
+>                 (<A
+HREF="gnome-xml-tree.html#XMLATTRPTR"
+>xmlAttrPtr</A
+> cur);
+<A
+HREF="gnome-xml-tree.html#XMLDTDPTR"
+>xmlDtdPtr</A
+>   <A
+HREF="gnome-xml-tree.html#XMLCOPYDTD"
+>xmlCopyDtd</A
+>                      (<A
+HREF="gnome-xml-tree.html#XMLDTDPTR"
+>xmlDtdPtr</A
+> dtd);
+<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+>   <A
+HREF="gnome-xml-tree.html#XMLCOPYDOC"
+>xmlCopyDoc</A
+>                      (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             int recursive);
+<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  <A
+HREF="gnome-xml-tree.html#XMLNEWDOCNODE"
+>xmlNewDocNode</A
+>                   (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="gnome-xml-tree.html#XMLNSPTR"
+>xmlNsPtr</A
+> ns,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name,
+                                             <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *content);
+<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  <A
+HREF="gnome-xml-tree.html#XMLNEWNODE"
+>xmlNewNode</A
+>                      (<A
+HREF="gnome-xml-tree.html#XMLNSPTR"
+>xmlNsPtr</A
+> ns,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name);
+<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  <A
+HREF="gnome-xml-tree.html#XMLNEWCHILD"
+>xmlNewChild</A
+>                     (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> parent,
+                                             <A
+HREF="gnome-xml-tree.html#XMLNSPTR"
+>xmlNsPtr</A
+> ns,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name,
+                                             <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *content);
+<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  <A
+HREF="gnome-xml-tree.html#XMLNEWDOCTEXT"
+>xmlNewDocText</A
+>                   (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *content);
+<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  <A
+HREF="gnome-xml-tree.html#XMLNEWTEXT"
+>xmlNewText</A
+>                      (const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *content);
+<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  <A
+HREF="gnome-xml-tree.html#XMLNEWDOCTEXTLEN"
+>xmlNewDocTextLen</A
+>                (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *content,
+                                             int len);
+<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  <A
+HREF="gnome-xml-tree.html#XMLNEWTEXTLEN"
+>xmlNewTextLen</A
+>                   (const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *content,
+                                             int len);
+<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  <A
+HREF="gnome-xml-tree.html#XMLNEWDOCCOMMENT"
+>xmlNewDocComment</A
+>                (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *content);
+<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  <A
+HREF="gnome-xml-tree.html#XMLNEWCOMMENT"
+>xmlNewComment</A
+>                   (<A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *content);
+<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  <A
+HREF="gnome-xml-tree.html#XMLNEWREFERENCE"
+>xmlNewReference</A
+>                 (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name);
+<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  <A
+HREF="gnome-xml-tree.html#XMLCOPYNODE"
+>xmlCopyNode</A
+>                     (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node,
+                                             int recursive);
+<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  <A
+HREF="gnome-xml-tree.html#XMLCOPYNODELIST"
+>xmlCopyNodeList</A
+>                 (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node);
+<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  <A
+HREF="gnome-xml-tree.html#XMLGETLASTCHILD"
+>xmlGetLastChild</A
+>                 (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> parent);
+int         <A
+HREF="gnome-xml-tree.html#XMLNODEISTEXT"
+>xmlNodeIsText</A
+>                   (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node);
+<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  <A
+HREF="gnome-xml-tree.html#XMLADDCHILD"
+>xmlAddChild</A
+>                     (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> parent,
+                                             <A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur);
+void        <A
+HREF="gnome-xml-tree.html#XMLUNLINKNODE"
+>xmlUnlinkNode</A
+>                   (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur);
+<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  <A
+HREF="gnome-xml-tree.html#XMLTEXTMERGE"
+>xmlTextMerge</A
+>                    (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> first,
+                                             <A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> second);
+void        <A
+HREF="gnome-xml-tree.html#XMLTEXTCONCAT"
+>xmlTextConcat</A
+>                   (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *content,
+                                             int len);
+void        <A
+HREF="gnome-xml-tree.html#XMLFREENODELIST"
+>xmlFreeNodeList</A
+>                 (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur);
+void        <A
+HREF="gnome-xml-tree.html#XMLFREENODE"
+>xmlFreeNode</A
+>                     (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur);
+<A
+HREF="gnome-xml-tree.html#XMLNSPTR"
+>xmlNsPtr</A
+>    <A
+HREF="gnome-xml-tree.html#XMLSEARCHNS"
+>xmlSearchNs</A
+>                     (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *nameSpace);
+<A
+HREF="gnome-xml-tree.html#XMLNSPTR"
+>xmlNsPtr</A
+>    <A
+HREF="gnome-xml-tree.html#XMLSEARCHNSBYHREF"
+>xmlSearchNsByHref</A
+>               (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *href);
+void        <A
+HREF="gnome-xml-tree.html#XMLSETNS"
+>xmlSetNs</A
+>                        (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node,
+                                             <A
+HREF="gnome-xml-tree.html#XMLNSPTR"
+>xmlNsPtr</A
+> ns);
+<A
+HREF="gnome-xml-tree.html#XMLNSPTR"
+>xmlNsPtr</A
+>    <A
+HREF="gnome-xml-tree.html#XMLCOPYNAMESPACE"
+>xmlCopyNamespace</A
+>                (<A
+HREF="gnome-xml-tree.html#XMLNSPTR"
+>xmlNsPtr</A
+> cur);
+<A
+HREF="gnome-xml-tree.html#XMLNSPTR"
+>xmlNsPtr</A
+>    <A
+HREF="gnome-xml-tree.html#XMLCOPYNAMESPACELIST"
+>xmlCopyNamespaceList</A
+>            (<A
+HREF="gnome-xml-tree.html#XMLNSPTR"
+>xmlNsPtr</A
+> cur);
+<A
+HREF="gnome-xml-tree.html#XMLATTRPTR"
+>xmlAttrPtr</A
+>  <A
+HREF="gnome-xml-tree.html#XMLSETPROP"
+>xmlSetProp</A
+>                      (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *value);
+<A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       <A
+HREF="gnome-xml-tree.html#XMLGETPROP"
+>xmlGetProp</A
+>                      (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name);
+<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  <A
+HREF="gnome-xml-tree.html#XMLSTRINGGETNODELIST"
+>xmlStringGetNodeList</A
+>            (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *value);
+<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  <A
+HREF="gnome-xml-tree.html#XMLSTRINGLENGETNODELIST"
+>xmlStringLenGetNodeList</A
+>         (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *value,
+                                             int len);
+<A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       <A
+HREF="gnome-xml-tree.html#XMLNODELISTGETSTRING"
+>xmlNodeListGetString</A
+>            (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> list,
+                                             int inLine);
+void        <A
+HREF="gnome-xml-tree.html#XMLNODESETCONTENT"
+>xmlNodeSetContent</A
+>               (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *content);
+void        <A
+HREF="gnome-xml-tree.html#XMLNODESETCONTENTLEN"
+>xmlNodeSetContentLen</A
+>            (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *content,
+                                             int len);
+void        <A
+HREF="gnome-xml-tree.html#XMLNODEADDCONTENT"
+>xmlNodeAddContent</A
+>               (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *content);
+void        <A
+HREF="gnome-xml-tree.html#XMLNODEADDCONTENTLEN"
+>xmlNodeAddContentLen</A
+>            (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *content,
+                                             int len);
+<A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       <A
+HREF="gnome-xml-tree.html#XMLNODEGETCONTENT"
+>xmlNodeGetContent</A
+>               (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur);
+void        <A
+HREF="gnome-xml-tree.html#XMLBUFFERWRITECHAR"
+>xmlBufferWriteCHAR</A
+>              (const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *string);
+void        <A
+HREF="gnome-xml-tree.html#XMLBUFFERWRITECHAR"
+>xmlBufferWriteChar</A
+>              (const char *string);
+void        <A
+HREF="gnome-xml-tree.html#XMLDOCDUMPMEMORY"
+>xmlDocDumpMemory</A
+>                (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> cur,
+                                             <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> **mem,
+                                             int *size);
+void        <A
+HREF="gnome-xml-tree.html#XMLDOCDUMP"
+>xmlDocDump</A
+>                      (<GTKDOCLINK
+HREF="FILE"
+>FILE</GTKDOCLINK
+> *f,
+                                             <A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> cur);
+int         <A
+HREF="gnome-xml-tree.html#XMLSAVEFILE"
+>xmlSaveFile</A
+>                     (const char *filename,
+                                             <A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> cur);
+int         <A
+HREF="gnome-xml-tree.html#XMLGETDOCCOMPRESSMODE"
+>xmlGetDocCompressMode</A
+>           (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc);
+void        <A
+HREF="gnome-xml-tree.html#XMLSETDOCCOMPRESSMODE"
+>xmlSetDocCompressMode</A
+>           (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             int mode);
+int         <A
+HREF="gnome-xml-tree.html#XMLGETCOMPRESSMODE"
+>xmlGetCompressMode</A
+>              (void);
+void        <A
+HREF="gnome-xml-tree.html#XMLSETCOMPRESSMODE"
+>xmlSetCompressMode</A
+>              (int mode);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN1412"
+></A
+><H2
+>Description</H2
+><P
+></P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN1415"
+></A
+><H2
+>Details</H2
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1417"
+></A
+><H3
+><A
+NAME="XMLELEMENTTYPE"
+></A
+>xmlElementType</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef enum {
+    XML_ELEMENT_NODE=		1,
+    XML_ATTRIBUTE_NODE=		2,
+    XML_TEXT_NODE=		3,
+    XML_CDATA_SECTION_NODE=	4,
+    XML_ENTITY_REF_NODE=	5,
+    XML_ENTITY_NODE=		6,
+    XML_PI_NODE=		7,
+    XML_COMMENT_NODE=		8,
+    XML_DOCUMENT_NODE=		9,
+    XML_DOCUMENT_TYPE_NODE=	10,
+    XML_DOCUMENT_FRAG_NODE=	11,
+    XML_NOTATION_NODE=		12
+} xmlElementType;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1422"
+></A
+><H3
+><A
+NAME="CHAR"
+></A
+>CHAR</H3
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1426"
+></A
+><H3
+><A
+NAME="XMLNOTATIONPTR"
+></A
+>xmlNotationPtr</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef xmlNotation *xmlNotationPtr;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1431"
+></A
+><H3
+><A
+NAME="XMLATTRIBUTETYPE"
+></A
+>xmlAttributeType</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef enum {
+    XML_ATTRIBUTE_CDATA = 1,
+    XML_ATTRIBUTE_ID,
+    XML_ATTRIBUTE_IDREF	,
+    XML_ATTRIBUTE_IDREFS,
+    XML_ATTRIBUTE_ENTITY,
+    XML_ATTRIBUTE_ENTITIES,
+    XML_ATTRIBUTE_NMTOKEN,
+    XML_ATTRIBUTE_NMTOKENS,
+    XML_ATTRIBUTE_ENUMERATION,
+    XML_ATTRIBUTE_NOTATION
+} xmlAttributeType;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1436"
+></A
+><H3
+><A
+NAME="XMLATTRIBUTEDEFAULT"
+></A
+>xmlAttributeDefault</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef enum {
+    XML_ATTRIBUTE_NONE = 1,
+    XML_ATTRIBUTE_REQUIRED,
+    XML_ATTRIBUTE_IMPLIED,
+    XML_ATTRIBUTE_FIXED
+} xmlAttributeDefault;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1441"
+></A
+><H3
+><A
+NAME="XMLENUMERATIONPTR"
+></A
+>xmlEnumerationPtr</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef xmlEnumeration *xmlEnumerationPtr;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1446"
+></A
+><H3
+><A
+NAME="XMLATTRIBUTEPTR"
+></A
+>xmlAttributePtr</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef xmlAttribute *xmlAttributePtr;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1451"
+></A
+><H3
+><A
+NAME="XMLELEMENTCONTENTTYPE"
+></A
+>xmlElementContentType</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef enum {
+    XML_ELEMENT_CONTENT_PCDATA = 1,
+    XML_ELEMENT_CONTENT_ELEMENT,
+    XML_ELEMENT_CONTENT_SEQ,
+    XML_ELEMENT_CONTENT_OR
+} xmlElementContentType;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1456"
+></A
+><H3
+><A
+NAME="XMLELEMENTCONTENTOCCUR"
+></A
+>xmlElementContentOccur</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef enum {
+    XML_ELEMENT_CONTENT_ONCE = 1,
+    XML_ELEMENT_CONTENT_OPT,
+    XML_ELEMENT_CONTENT_MULT,
+    XML_ELEMENT_CONTENT_PLUS
+} xmlElementContentOccur;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1461"
+></A
+><H3
+><A
+NAME="XMLELEMENTCONTENTPTR"
+></A
+>xmlElementContentPtr</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef xmlElementContent *xmlElementContentPtr;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1466"
+></A
+><H3
+><A
+NAME="XMLELEMENTTYPEVAL"
+></A
+>xmlElementTypeVal</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef enum {
+    XML_ELEMENT_TYPE_EMPTY = 1,
+    XML_ELEMENT_TYPE_ANY,
+    XML_ELEMENT_TYPE_MIXED,
+    XML_ELEMENT_TYPE_ELEMENT
+} xmlElementTypeVal;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1471"
+></A
+><H3
+><A
+NAME="XMLELEMENTPTR"
+></A
+>xmlElementPtr</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef xmlElement *xmlElementPtr;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1476"
+></A
+><H3
+><A
+NAME="XMLNSTYPE"
+></A
+>xmlNsType</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef enum {
+    XML_GLOBAL_NAMESPACE = 1,	/* old style global namespace */
+    XML_LOCAL_NAMESPACE		/* new style local scoping */
+} xmlNsType;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1481"
+></A
+><H3
+><A
+NAME="XMLNSPTR"
+></A
+>xmlNsPtr</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef xmlNs *xmlNsPtr;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1486"
+></A
+><H3
+><A
+NAME="XMLDTDPTR"
+></A
+>xmlDtdPtr</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef xmlDtd *xmlDtdPtr;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1491"
+></A
+><H3
+><A
+NAME="XMLATTRPTR"
+></A
+>xmlAttrPtr</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef xmlAttr *xmlAttrPtr;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1496"
+></A
+><H3
+><A
+NAME="XMLNODE"
+></A
+>xmlNode</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef _xmlNode xmlNode;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1501"
+></A
+><H3
+><A
+NAME="XMLNODEPTR"
+></A
+>xmlNodePtr</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef _xmlNode *xmlNodePtr;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1506"
+></A
+><H3
+><A
+NAME="XMLDOC"
+></A
+>xmlDoc</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef _xmlDoc xmlDoc;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1511"
+></A
+><H3
+><A
+NAME="XMLDOCPTR"
+></A
+>xmlDocPtr</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef xmlDoc *xmlDocPtr;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1516"
+></A
+><H3
+><A
+NAME="XMLCREATEINTSUBSET"
+></A
+>xmlCreateIntSubset()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLDTDPTR"
+>xmlDtdPtr</A
+>   xmlCreateIntSubset              (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *ExternalID,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *SystemID);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Create the internal subset of a document</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the document pointer</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the DTD name</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ExternalID</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the external ID</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>SystemID</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the system ID</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a pointer to the new DTD structure</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1552"
+></A
+><H3
+><A
+NAME="XMLNEWDTD"
+></A
+>xmlNewDtd()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLDTDPTR"
+>xmlDtdPtr</A
+>   xmlNewDtd                       (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *ExternalID,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *SystemID);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Creation of a new DTD.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the document pointer</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the DTD name</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ExternalID</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the external ID</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>SystemID</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the system ID</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a pointer to the new DTD structure</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1588"
+></A
+><H3
+><A
+NAME="XMLFREEDTD"
+></A
+>xmlFreeDtd()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlFreeDtd                      (<A
+HREF="gnome-xml-tree.html#XMLDTDPTR"
+>xmlDtdPtr</A
+> cur);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Free a DTD structure.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the DTD structure to free up</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1604"
+></A
+><H3
+><A
+NAME="XMLNEWGLOBALNS"
+></A
+>xmlNewGlobalNs()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLNSPTR"
+>xmlNsPtr</A
+>    xmlNewGlobalNs                  (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *href,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *prefix);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Creation of a Namespace, the old way using PI and without scoping, to AVOID.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the document carrying the namespace</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>href</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the URI associated</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>prefix</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the prefix for the namespace</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>returns a new namespace pointer</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1635"
+></A
+><H3
+><A
+NAME="XMLNEWNS"
+></A
+>xmlNewNs()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLNSPTR"
+>xmlNsPtr</A
+>    xmlNewNs                        (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *href,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *prefix);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Creation of a new Namespace.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>node</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the element carrying the namespace</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>href</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the URI associated</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>prefix</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the prefix for the namespace</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>returns a new namespace pointer</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1666"
+></A
+><H3
+><A
+NAME="XMLFREENS"
+></A
+>xmlFreeNs()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlFreeNs                       (<A
+HREF="gnome-xml-tree.html#XMLNSPTR"
+>xmlNsPtr</A
+> cur);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Free up the structures associated to a namespace</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the namespace pointer</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1682"
+></A
+><H3
+><A
+NAME="XMLNEWDOC"
+></A
+>xmlNewDoc()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+>   xmlNewDoc                       (const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *version);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>version</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  CHAR string giving the version of XML "1.0"</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a new document</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1703"
+></A
+><H3
+><A
+NAME="XMLFREEDOC"
+></A
+>xmlFreeDoc()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlFreeDoc                      (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> cur);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Free up all the structures used by a document, tree included.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  pointer to the document
+@:  </TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1719"
+></A
+><H3
+><A
+NAME="XMLNEWDOCPROP"
+></A
+>xmlNewDocProp()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLATTRPTR"
+>xmlAttrPtr</A
+>  xmlNewDocProp                   (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *value);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Create a new property carried by a document.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the document</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the name of the attribute</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>value</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the value of the attribute</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a pointer to the attribute</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1750"
+></A
+><H3
+><A
+NAME="XMLNEWPROP"
+></A
+>xmlNewProp()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLATTRPTR"
+>xmlAttrPtr</A
+>  xmlNewProp                      (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *value);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Create a new property carried by a node.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>node</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the holding node</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the name of the attribute</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>value</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the value of the attribute</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a pointer to the attribute</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1781"
+></A
+><H3
+><A
+NAME="XMLFREEPROPLIST"
+></A
+>xmlFreePropList()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlFreePropList                 (<A
+HREF="gnome-xml-tree.html#XMLATTRPTR"
+>xmlAttrPtr</A
+> cur);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Free a property and all its siblings, all the childs are freed too.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the first property in the list</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1797"
+></A
+><H3
+><A
+NAME="XMLFREEPROP"
+></A
+>xmlFreeProp()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlFreeProp                     (<A
+HREF="gnome-xml-tree.html#XMLATTRPTR"
+>xmlAttrPtr</A
+> cur);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Free one property, all the childs are freed too.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the first property in the list</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1813"
+></A
+><H3
+><A
+NAME="XMLCOPYPROP"
+></A
+>xmlCopyProp()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLATTRPTR"
+>xmlAttrPtr</A
+>  xmlCopyProp                     (<A
+HREF="gnome-xml-tree.html#XMLATTRPTR"
+>xmlAttrPtr</A
+> cur);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Do a copy of the attribute.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the attribute</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> a new xmlAttrPtr, or NULL in case of error.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1834"
+></A
+><H3
+><A
+NAME="XMLCOPYPROPLIST"
+></A
+>xmlCopyPropList()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLATTRPTR"
+>xmlAttrPtr</A
+>  xmlCopyPropList                 (<A
+HREF="gnome-xml-tree.html#XMLATTRPTR"
+>xmlAttrPtr</A
+> cur);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Do a copy of an attribute list.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the first attribute</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> a new xmlAttrPtr, or NULL in case of error.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1855"
+></A
+><H3
+><A
+NAME="XMLCOPYDTD"
+></A
+>xmlCopyDtd()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLDTDPTR"
+>xmlDtdPtr</A
+>   xmlCopyDtd                      (<A
+HREF="gnome-xml-tree.html#XMLDTDPTR"
+>xmlDtdPtr</A
+> dtd);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Do a copy of the dtd.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>dtd</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the dtd</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> a new xmlDtdPtr, or NULL in case of error.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1876"
+></A
+><H3
+><A
+NAME="XMLCOPYDOC"
+></A
+>xmlCopyDoc()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+>   xmlCopyDoc                      (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             int recursive);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Do a copy of the document info. If recursive, the content tree will
+be copied too as well as Dtd, namespaces and entities.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the document</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>recursive</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  if 1 do a recursive copy.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> a new xmlDocPtr, or NULL in case of error.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1901"
+></A
+><H3
+><A
+NAME="XMLNEWDOCNODE"
+></A
+>xmlNewDocNode()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  xmlNewDocNode                   (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="gnome-xml-tree.html#XMLNSPTR"
+>xmlNsPtr</A
+> ns,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name,
+                                             <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *content);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Creation of a new node element within a document. <TT
+CLASS="PARAMETER"
+><I
+>ns</I
+></TT
+> and <TT
+CLASS="PARAMETER"
+><I
+>content</I
+></TT
+>
+are optionnal (NULL).</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the document</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ns</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  namespace if any</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the node name</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>content</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the text content if any</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a pointer to the new node object.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1939"
+></A
+><H3
+><A
+NAME="XMLNEWNODE"
+></A
+>xmlNewNode()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  xmlNewNode                      (<A
+HREF="gnome-xml-tree.html#XMLNSPTR"
+>xmlNsPtr</A
+> ns,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Creation of a new node element. <TT
+CLASS="PARAMETER"
+><I
+>ns</I
+></TT
+> and <TT
+CLASS="PARAMETER"
+><I
+>content</I
+></TT
+> are optionnal (NULL).
+If content is non NULL, a child list containing the TEXTs and
+ENTITY_REFs node will be created.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ns</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  namespace if any</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the node name</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a pointer to the new node object.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1967"
+></A
+><H3
+><A
+NAME="XMLNEWCHILD"
+></A
+>xmlNewChild()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  xmlNewChild                     (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> parent,
+                                             <A
+HREF="gnome-xml-tree.html#XMLNSPTR"
+>xmlNsPtr</A
+> ns,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name,
+                                             <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *content);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Creation of a new child element, added at the end of <TT
+CLASS="PARAMETER"
+><I
+>parent</I
+></TT
+> childs list.
+<TT
+CLASS="PARAMETER"
+><I
+>ns</I
+></TT
+> and <TT
+CLASS="PARAMETER"
+><I
+>content</I
+></TT
+> parameters are optionnal (NULL). If content is non NULL,
+a child list containing the TEXTs and ENTITY_REFs node will be created.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>parent</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the parent node</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ns</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a namespace if any</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the name of the child</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>content</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the content of the child if any.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a pointer to the new node object.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2006"
+></A
+><H3
+><A
+NAME="XMLNEWDOCTEXT"
+></A
+>xmlNewDocText()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  xmlNewDocText                   (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *content);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Creation of a new text node within a document.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the document</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>content</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the text content</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a pointer to the new node object.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2032"
+></A
+><H3
+><A
+NAME="XMLNEWTEXT"
+></A
+>xmlNewText()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  xmlNewText                      (const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *content);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Creation of a new text node.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>content</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the text content</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a pointer to the new node object.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2053"
+></A
+><H3
+><A
+NAME="XMLNEWDOCTEXTLEN"
+></A
+>xmlNewDocTextLen()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  xmlNewDocTextLen                (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *content,
+                                             int len);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Creation of a new text node with an extra content lenght parameter. The
+text node pertain to a given document.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the document</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>content</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the text content</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>len</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the text len.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a pointer to the new node object.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2083"
+></A
+><H3
+><A
+NAME="XMLNEWTEXTLEN"
+></A
+>xmlNewTextLen()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  xmlNewTextLen                   (const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *content,
+                                             int len);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Creation of a new text node with an extra parameter for the content's lenght</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>content</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the text content</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>len</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the text len.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a pointer to the new node object.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2108"
+></A
+><H3
+><A
+NAME="XMLNEWDOCCOMMENT"
+></A
+>xmlNewDocComment()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  xmlNewDocComment                (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *content);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Creation of a new node containing a commentwithin a document.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the document</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>content</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the comment content</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a pointer to the new node object.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2134"
+></A
+><H3
+><A
+NAME="XMLNEWCOMMENT"
+></A
+>xmlNewComment()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  xmlNewComment                   (<A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *content);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Creation of a new node containing a comment.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>content</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the comment content</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a pointer to the new node object.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2155"
+></A
+><H3
+><A
+NAME="XMLNEWREFERENCE"
+></A
+>xmlNewReference()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  xmlNewReference                 (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Creation of a new reference node.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the document</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the reference name, or the reference string with &amp; and ;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a pointer to the new node object.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2181"
+></A
+><H3
+><A
+NAME="XMLCOPYNODE"
+></A
+>xmlCopyNode()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  xmlCopyNode                     (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node,
+                                             int recursive);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Do a copy of the node.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>node</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the node</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>recursive</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  if 1 do a recursive copy.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> a new xmlNodePtr, or NULL in case of error.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2206"
+></A
+><H3
+><A
+NAME="XMLCOPYNODELIST"
+></A
+>xmlCopyNodeList()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  xmlCopyNodeList                 (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Do a recursive copy of the node list.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>node</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the first node in the list.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> a new xmlNodePtr, or NULL in case of error.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2227"
+></A
+><H3
+><A
+NAME="XMLGETLASTCHILD"
+></A
+>xmlGetLastChild()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  xmlGetLastChild                 (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> parent);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Search the last child of a node.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>parent</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the parent node</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the last child or NULL if none.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2248"
+></A
+><H3
+><A
+NAME="XMLNODEISTEXT"
+></A
+>xmlNodeIsText()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlNodeIsText                   (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Is this node a Text node ?</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>node</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the node</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>1 yes, 0 no</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2268"
+></A
+><H3
+><A
+NAME="XMLADDCHILD"
+></A
+>xmlAddChild()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  xmlAddChild                     (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> parent,
+                                             <A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Add a new child element, to <TT
+CLASS="PARAMETER"
+><I
+>parent</I
+></TT
+>, at the end of the child list.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>parent</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the parent node</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the child node</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the child or NULL in case of error.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2295"
+></A
+><H3
+><A
+NAME="XMLUNLINKNODE"
+></A
+>xmlUnlinkNode()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlUnlinkNode                   (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Unlink a node from it's current context, the node is not freed</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the node</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2311"
+></A
+><H3
+><A
+NAME="XMLTEXTMERGE"
+></A
+>xmlTextMerge()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  xmlTextMerge                    (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> first,
+                                             <A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> second);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Merge two text nodes into one</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>first</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the first text node</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>second</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the second text node being merged</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the first text node augmented</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2337"
+></A
+><H3
+><A
+NAME="XMLTEXTCONCAT"
+></A
+>xmlTextConcat()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlTextConcat                   (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *content,
+                                             int len);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Concat the given string at the end of the existing node content</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>node</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the node</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>content</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the content</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>len</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  <TT
+CLASS="PARAMETER"
+><I
+>content</I
+></TT
+> lenght</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2363"
+></A
+><H3
+><A
+NAME="XMLFREENODELIST"
+></A
+>xmlFreeNodeList()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlFreeNodeList                 (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Free a node and all its siblings, this is a recursive behaviour, all
+the childs are freed too.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the first node in the list</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2379"
+></A
+><H3
+><A
+NAME="XMLFREENODE"
+></A
+>xmlFreeNode()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlFreeNode                     (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Free a node, this is a recursive behaviour, all the childs are freed too.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the node</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2395"
+></A
+><H3
+><A
+NAME="XMLSEARCHNS"
+></A
+>xmlSearchNs()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLNSPTR"
+>xmlNsPtr</A
+>    xmlSearchNs                     (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *nameSpace);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Search a Ns registered under a given name space for a document.
+recurse on the parents until it finds the defined namespace
+or return NULL otherwise.
+<TT
+CLASS="PARAMETER"
+><I
+>nameSpace</I
+></TT
+> can be NULL, this is a search for the default namespace.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the document</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>node</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the current node</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>nameSpace</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the namespace string</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the namespace pointer or NULL.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2427"
+></A
+><H3
+><A
+NAME="XMLSEARCHNSBYHREF"
+></A
+>xmlSearchNsByHref()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLNSPTR"
+>xmlNsPtr</A
+>    xmlSearchNsByHref               (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *href);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Search a Ns aliasing a given URI. Recurse on the parents until it finds
+the defined namespace or return NULL otherwise.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the document</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>node</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the current node</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>href</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the namespace value</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the namespace pointer or NULL.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2458"
+></A
+><H3
+><A
+NAME="XMLSETNS"
+></A
+>xmlSetNs()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlSetNs                        (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node,
+                                             <A
+HREF="gnome-xml-tree.html#XMLNSPTR"
+>xmlNsPtr</A
+> ns);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Associate a namespace to a node, a posteriori.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>node</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a node in the document</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ns</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a namespace pointer</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2479"
+></A
+><H3
+><A
+NAME="XMLCOPYNAMESPACE"
+></A
+>xmlCopyNamespace()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLNSPTR"
+>xmlNsPtr</A
+>    xmlCopyNamespace                (<A
+HREF="gnome-xml-tree.html#XMLNSPTR"
+>xmlNsPtr</A
+> cur);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Do a copy of the namespace.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the namespace</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> a new xmlNsPtr, or NULL in case of error.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2500"
+></A
+><H3
+><A
+NAME="XMLCOPYNAMESPACELIST"
+></A
+>xmlCopyNamespaceList()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLNSPTR"
+>xmlNsPtr</A
+>    xmlCopyNamespaceList            (<A
+HREF="gnome-xml-tree.html#XMLNSPTR"
+>xmlNsPtr</A
+> cur);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Do a copy of an namespace list.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the first namespace</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> a new xmlNsPtr, or NULL in case of error.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2521"
+></A
+><H3
+><A
+NAME="XMLSETPROP"
+></A
+>xmlSetProp()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLATTRPTR"
+>xmlAttrPtr</A
+>  xmlSetProp                      (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *value);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Set (or reset) an attribute carried by a node.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>node</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the node</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the attribute name</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>value</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the attribute value</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the attribute pointer.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2552"
+></A
+><H3
+><A
+NAME="XMLGETPROP"
+></A
+>xmlGetProp()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       xmlGetProp                      (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> node,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Search and get the value of an attribute associated to a node
+This does the entity substitution.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>node</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the node</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the attribute name</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the attribute value or NULL if not found.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2578"
+></A
+><H3
+><A
+NAME="XMLSTRINGGETNODELIST"
+></A
+>xmlStringGetNodeList()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  xmlStringGetNodeList            (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *value);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Parse the value string and build the node list associated. Should
+produce a flat tree with only TEXTs and ENTITY_REFs.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the document</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>value</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the value of the attribute</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a pointer to the first child</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2604"
+></A
+><H3
+><A
+NAME="XMLSTRINGLENGETNODELIST"
+></A
+>xmlStringLenGetNodeList()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+>  xmlStringLenGetNodeList         (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *value,
+                                             int len);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Parse the value string and build the node list associated. Should
+produce a flat tree with only TEXTs and ENTITY_REFs.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the document</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>value</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the value of the text</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>len</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the length of the string value</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a pointer to the first child</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2634"
+></A
+><H3
+><A
+NAME="XMLNODELISTGETSTRING"
+></A
+>xmlNodeListGetString()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       xmlNodeListGetString            (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> list,
+                                             int inLine);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Returns the string equivalent to the text contained in the Node list
+made of TEXTs and ENTITY_REFs</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the document</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>list</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a Node list</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>inLine</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  should we replace entity contents or show their external form</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a pointer to the string copy, the calller must free it.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2664"
+></A
+><H3
+><A
+NAME="XMLNODESETCONTENT"
+></A
+>xmlNodeSetContent()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlNodeSetContent               (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *content);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Replace the content of a node.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the node being modified</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>content</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the new value of the content</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2685"
+></A
+><H3
+><A
+NAME="XMLNODESETCONTENTLEN"
+></A
+>xmlNodeSetContentLen()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlNodeSetContentLen            (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *content,
+                                             int len);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Replace the content of a node.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the node being modified</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>content</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the new value of the content</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>len</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the size of <TT
+CLASS="PARAMETER"
+><I
+>content</I
+></TT
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2711"
+></A
+><H3
+><A
+NAME="XMLNODEADDCONTENT"
+></A
+>xmlNodeAddContent()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlNodeAddContent               (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *content);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Append the extra substring to the node content.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the node being modified</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>content</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  extra content</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2732"
+></A
+><H3
+><A
+NAME="XMLNODEADDCONTENTLEN"
+></A
+>xmlNodeAddContentLen()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlNodeAddContentLen            (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *content,
+                                             int len);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Append the extra substring to the node content.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the node being modified</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>content</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  extra content</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>len</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the size of <TT
+CLASS="PARAMETER"
+><I
+>content</I
+></TT
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2758"
+></A
+><H3
+><A
+NAME="XMLNODEGETCONTENT"
+></A
+>xmlNodeGetContent()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       xmlNodeGetContent               (<A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> cur);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Read the value of a node, this can be either the text carried
+directly by this node if it's a TEXT node or the aggregate string
+of the values carried by this node child's (TEXT and ENTITY_REF).
+Entity references are substitued.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the node being read</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a new CHAR * or NULL if no content is available.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2779"
+></A
+><H3
+><A
+NAME="XMLBUFFERWRITECHAR"
+></A
+>xmlBufferWriteCHAR()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlBufferWriteCHAR              (const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *string);</PRE
+></TD
+></TR
+></TABLE
+><P
+>routine which manage and grows an output buffer. This one add
+CHARs at the end of the array.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>string</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the string to add</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2795"
+></A
+><H3
+><A
+NAME="XMLBUFFERWRITECHAR"
+></A
+>xmlBufferWriteChar()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlBufferWriteChar              (const char *string);</PRE
+></TD
+></TR
+></TABLE
+><P
+>routine which manage and grows an output buffer. This one add
+C chars at the end of the array.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>string</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the string to add</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2810"
+></A
+><H3
+><A
+NAME="XMLDOCDUMPMEMORY"
+></A
+>xmlDocDumpMemory()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlDocDumpMemory                (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> cur,
+                                             <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> **mem,
+                                             int *size);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Dump an XML document in memory and return the CHAR * and it's size.
+It's up to the caller to free the memory.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the document</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>mem</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  OUT: the memory pointer</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>size</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  OUT: the memory lenght</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2835"
+></A
+><H3
+><A
+NAME="XMLDOCDUMP"
+></A
+>xmlDocDump()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlDocDump                      (<GTKDOCLINK
+HREF="FILE"
+>FILE</GTKDOCLINK
+> *f,
+                                             <A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> cur);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Dump an XML document to an open FILE.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>f</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the FILE*</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the document</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2856"
+></A
+><H3
+><A
+NAME="XMLSAVEFILE"
+></A
+>xmlSaveFile()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSaveFile                     (const char *filename,
+                                             <A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> cur);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Dump an XML document to a file. Will use compression if
+compiled in and enabled.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>filename</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the filename</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the document</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the number of file written or -1 in case of failure.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2880"
+></A
+><H3
+><A
+NAME="XMLGETDOCCOMPRESSMODE"
+></A
+>xmlGetDocCompressMode()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlGetDocCompressMode           (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc);</PRE
+></TD
+></TR
+></TABLE
+><P
+>get the compression ratio for a document, ZLIB based</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the document</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 (uncompressed) to 9 (max compression)</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2900"
+></A
+><H3
+><A
+NAME="XMLSETDOCCOMPRESSMODE"
+></A
+>xmlSetDocCompressMode()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlSetDocCompressMode           (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             int mode);</PRE
+></TD
+></TR
+></TABLE
+><P
+>set the compression ratio for a document, ZLIB based
+Correct values: 0 (uncompressed) to 9 (max compression)</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the document</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>mode</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the compression ratio</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2920"
+></A
+><H3
+><A
+NAME="XMLGETCOMPRESSMODE"
+></A
+>xmlGetCompressMode()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlGetCompressMode              (void);</PRE
+></TD
+></TR
+></TABLE
+><P
+>get the default compression mode used, ZLIB based.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 (uncompressed) to 9 (max compression)</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2935"
+></A
+><H3
+><A
+NAME="XMLSETCOMPRESSMODE"
+></A
+>xmlSetCompressMode()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlSetCompressMode              (int mode);</PRE
+></TD
+></TR
+></TABLE
+><P
+>set the default compression mode used, ZLIB based
+Correct values: 0 (uncompressed) to 9 (max compression)</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>mode</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the compression ratio</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="gnome-xml-parser.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="gnome-xml-entities.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>parser</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="libxml.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>entities</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,3 +1,7 @@
+Thu Feb 25 09:44:52 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* makefile.am : added parserInternals.h, oops.
+
 Mon Feb 22 11:24:56 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* parserInternals.h: added this header giving access to the parser

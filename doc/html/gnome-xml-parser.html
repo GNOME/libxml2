@@ -1,0 +1,4894 @@
+<HTML
+><HEAD
+><TITLE
+>parser</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.33"><LINK
+REL="HOME"
+TITLE="Gnome XML Library Reference Manual"
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="Gnome XML Library"
+HREF="libxml.html"><LINK
+REL="PREVIOUS"
+TITLE="Gnome XML Library"
+HREF="libxml.html"><LINK
+REL="NEXT"
+TITLE="tree"
+HREF="gnome-xml-tree.html"></HEAD
+><BODY
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>Gnome XML Library Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="libxml.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="gnome-xml-tree.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+>parser</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN11"
+></A
+><H2
+>Name</H2
+>parser &#8212; one line description goes here.</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN14"
+></A
+><H2
+>Synopsis</H2
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="SYNOPSIS"
+>&#13;
+
+#define     <A
+HREF="gnome-xml-parser.html#XML-DEFAULT-VERSION"
+>XML_DEFAULT_VERSION</A
+>
+typedef     <A
+HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
+>xmlParserInputPtr</A
+>
+typedef     <A
+HREF="gnome-xml-parser.html#XMLPARSERNODEINFO"
+>xmlParserNodeInfo</A
+>
+typedef     <A
+HREF="gnome-xml-parser.html#XMLPARSERNODEINFOSEQ"
+>xmlParserNodeInfoSeq</A
+>
+typedef     <A
+HREF="gnome-xml-parser.html#XMLPARSERNODEINFOSEQPTR"
+>xmlParserNodeInfoSeqPtr</A
+>
+typedef     <A
+HREF="gnome-xml-parser.html#XMLPARSERCTXT"
+>xmlParserCtxt</A
+>
+typedef     <A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+>
+typedef     <A
+HREF="gnome-xml-parser.html#XMLSAXLOCATOR"
+>xmlSAXLocator</A
+>
+typedef     <A
+HREF="gnome-xml-parser.html#XMLSAXLOCATORPTR"
+>xmlSAXLocatorPtr</A
+>
+<A
+HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
+>xmlParserInputPtr</A
+> (<A
+HREF="gnome-xml-parser.html#RESOLVEENTITYSAXFUNC"
+>*resolveEntitySAXFunc</A
+>)   (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *publicId,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *systemId);
+void        (<A
+HREF="gnome-xml-parser.html#NOTATIONDECLSAXFUNC"
+>*notationDeclSAXFunc</A
+>)          (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *publicId,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *systemId);
+void        (<A
+HREF="gnome-xml-parser.html#UNPARSEDENTITYDECLSAXFUNC"
+>*unparsedEntityDeclSAXFunc</A
+>)    (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *publicId,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *systemId,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *notationName);
+void        (<A
+HREF="gnome-xml-parser.html#SETDOCUMENTLOCATORSAXFUNC"
+>*setDocumentLocatorSAXFunc</A
+>)    (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             <A
+HREF="gnome-xml-parser.html#XMLSAXLOCATORPTR"
+>xmlSAXLocatorPtr</A
+> loc);
+void        (<A
+HREF="gnome-xml-parser.html#STARTDOCUMENTSAXFUNC"
+>*startDocumentSAXFunc</A
+>)         (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+void        (<A
+HREF="gnome-xml-parser.html#ENDDOCUMENTSAXFUNC"
+>*endDocumentSAXFunc</A
+>)           (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+void        (<A
+HREF="gnome-xml-parser.html#STARTELEMENTSAXFUNC"
+>*startElementSAXFunc</A
+>)          (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name);
+void        (<A
+HREF="gnome-xml-parser.html#ENDELEMENTSAXFUNC"
+>*endElementSAXFunc</A
+>)            (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name);
+void        (<A
+HREF="gnome-xml-parser.html#ATTRIBUTESAXFUNC"
+>*attributeSAXFunc</A
+>)             (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *value);
+void        (<A
+HREF="gnome-xml-parser.html#CHARACTERSSAXFUNC"
+>*charactersSAXFunc</A
+>)            (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *ch,
+                                             int start,
+                                             int len);
+void        (<A
+HREF="gnome-xml-parser.html#IGNORABLEWHITESPACESAXFUNC"
+>*ignorableWhitespaceSAXFunc</A
+>)   (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *ch,
+                                             int start,
+                                             int len);
+void        (<A
+HREF="gnome-xml-parser.html#PROCESSINGINSTRUCTIONSAXFUNC"
+>*processingInstructionSAXFunc</A
+>) (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *target,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *data);
+void        (<A
+HREF="gnome-xml-parser.html#WARNINGSAXFUNC"
+>*warningSAXFunc</A
+>)               (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             const char *msg,
+                                             ...);
+void        (<A
+HREF="gnome-xml-parser.html#ERRORSAXFUNC"
+>*errorSAXFunc</A
+>)                 (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             const char *msg,
+                                             ...);
+void        (<A
+HREF="gnome-xml-parser.html#FATALERRORSAXFUNC"
+>*fatalErrorSAXFunc</A
+>)            (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             const char *msg,
+                                             ...);
+typedef     <A
+HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
+>xmlSAXHandlerPtr</A
+>
+<A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       <A
+HREF="gnome-xml-parser.html#XMLSTRDUP"
+>xmlStrdup</A
+>                       (const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *cur);
+<A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       <A
+HREF="gnome-xml-parser.html#XMLSTRNDUP"
+>xmlStrndup</A
+>                      (const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *cur,
+                                             int len);
+<A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       <A
+HREF="gnome-xml-parser.html#XMLSTRCHR"
+>xmlStrchr</A
+>                       (const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *str,
+                                             <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> val);
+int         <A
+HREF="gnome-xml-parser.html#XMLSTRCMP"
+>xmlStrcmp</A
+>                       (const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *str1,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *str2);
+int         <A
+HREF="gnome-xml-parser.html#XMLSTRNCMP"
+>xmlStrncmp</A
+>                      (const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *str1,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *str2,
+                                             int len);
+int         <A
+HREF="gnome-xml-parser.html#XMLSTRLEN"
+>xmlStrlen</A
+>                       (const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *str);
+<A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       <A
+HREF="gnome-xml-parser.html#XMLSTRCAT"
+>xmlStrcat</A
+>                       (<A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *cur,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *add);
+<A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       <A
+HREF="gnome-xml-parser.html#XMLSTRNCAT"
+>xmlStrncat</A
+>                      (<A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *cur,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *add,
+                                             int len);
+<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+>   <A
+HREF="gnome-xml-parser.html#XMLPARSEDOC"
+>xmlParseDoc</A
+>                     (<A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *cur);
+<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+>   <A
+HREF="gnome-xml-parser.html#XMLPARSEMEMORY"
+>xmlParseMemory</A
+>                  (char *buffer,
+                                             int size);
+<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+>   <A
+HREF="gnome-xml-parser.html#XMLPARSEFILE"
+>xmlParseFile</A
+>                    (const char *filename);
+<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+>   <A
+HREF="gnome-xml-parser.html#XMLRECOVERDOC"
+>xmlRecoverDoc</A
+>                   (<A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *cur);
+<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+>   <A
+HREF="gnome-xml-parser.html#XMLRECOVERMEMORY"
+>xmlRecoverMemory</A
+>                (char *buffer,
+                                             int size);
+<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+>   <A
+HREF="gnome-xml-parser.html#XMLRECOVERFILE"
+>xmlRecoverFile</A
+>                  (const char *filename);
+int         <A
+HREF="gnome-xml-parser.html#XMLPARSEDOCUMENT"
+>xmlParseDocument</A
+>                (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+>   <A
+HREF="gnome-xml-parser.html#XMLSAXPARSEDOC"
+>xmlSAXParseDoc</A
+>                  (<A
+HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
+>xmlSAXHandlerPtr</A
+> sax,
+                                             <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *cur,
+                                             int recovery);
+<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+>   <A
+HREF="gnome-xml-parser.html#XMLSAXPARSEMEMORY"
+>xmlSAXParseMemory</A
+>               (<A
+HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
+>xmlSAXHandlerPtr</A
+> sax,
+                                             char *buffer,
+                                             int size,
+                                             int recovery);
+<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+>   <A
+HREF="gnome-xml-parser.html#XMLSAXPARSEFILE"
+>xmlSAXParseFile</A
+>                 (<A
+HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
+>xmlSAXHandlerPtr</A
+> sax,
+                                             const char *filename,
+                                             int recovery);
+void        <A
+HREF="gnome-xml-parser.html#XMLINITPARSERCTXT"
+>xmlInitParserCtxt</A
+>               (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+void        <A
+HREF="gnome-xml-parser.html#XMLCLEARPARSERCTXT"
+>xmlClearParserCtxt</A
+>              (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);
+void        <A
+HREF="gnome-xml-parser.html#XMLSETUPPARSERFORBUFFER"
+>xmlSetupParserForBuffer</A
+>         (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *buffer,
+                                             const char *filename);
+const <A
+HREF="gnome-xml-parser.html#XMLPARSERNODEINFO"
+>xmlParserNodeInfo</A
+>* <A
+HREF="gnome-xml-parser.html#XMLPARSERFINDNODEINFO"
+>xmlParserFindNodeInfo</A
+>
+                                            (const <A
+HREF="gnome-xml-parser.html#XMLPARSERCTXT"
+>xmlParserCtxt</A
+> *ctxt,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLNODE"
+>xmlNode</A
+> *node);
+void        <A
+HREF="gnome-xml-parser.html#XMLINITNODEINFOSEQ"
+>xmlInitNodeInfoSeq</A
+>              (<A
+HREF="gnome-xml-parser.html#XMLPARSERNODEINFOSEQPTR"
+>xmlParserNodeInfoSeqPtr</A
+> seq);
+void        <A
+HREF="gnome-xml-parser.html#XMLCLEARNODEINFOSEQ"
+>xmlClearNodeInfoSeq</A
+>             (<A
+HREF="gnome-xml-parser.html#XMLPARSERNODEINFOSEQPTR"
+>xmlParserNodeInfoSeqPtr</A
+> seq);
+unsigned <GTKDOCLINK
+HREF="LONG"
+>long</GTKDOCLINK
+> <A
+HREF="gnome-xml-parser.html#XMLPARSERFINDNODEINFOINDEX"
+>xmlParserFindNodeInfoIndex</A
+>    (const <A
+HREF="gnome-xml-parser.html#XMLPARSERNODEINFOSEQ"
+>xmlParserNodeInfoSeq</A
+> *seq,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLNODE"
+>xmlNode</A
+> *node);
+void        <A
+HREF="gnome-xml-parser.html#XMLPARSERADDNODEINFO"
+>xmlParserAddNodeInfo</A
+>            (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             const <A
+HREF="gnome-xml-parser.html#XMLPARSERNODEINFO"
+>xmlParserNodeInfo</A
+> *info);
+void        <A
+HREF="gnome-xml-parser.html#XMLDEFAULTSAXHANDLERINIT"
+>xmlDefaultSAXHandlerInit</A
+>        (void);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN151"
+></A
+><H2
+>Description</H2
+><P
+></P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN154"
+></A
+><H2
+>Details</H2
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN156"
+></A
+><H3
+><A
+NAME="XML-DEFAULT-VERSION"
+></A
+>XML_DEFAULT_VERSION</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define XML_DEFAULT_VERSION	"1.0"</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN161"
+></A
+><H3
+><A
+NAME="XMLPARSERINPUTPTR"
+></A
+>xmlParserInputPtr</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef xmlParserInput *xmlParserInputPtr;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN166"
+></A
+><H3
+><A
+NAME="XMLPARSERNODEINFO"
+></A
+>xmlParserNodeInfo</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef _xmlParserNodeInfo xmlParserNodeInfo;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN171"
+></A
+><H3
+><A
+NAME="XMLPARSERNODEINFOSEQ"
+></A
+>xmlParserNodeInfoSeq</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef _xmlParserNodeInfoSeq xmlParserNodeInfoSeq;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN176"
+></A
+><H3
+><A
+NAME="XMLPARSERNODEINFOSEQPTR"
+></A
+>xmlParserNodeInfoSeqPtr</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef xmlParserNodeInfoSeq *xmlParserNodeInfoSeqPtr;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN181"
+></A
+><H3
+><A
+NAME="XMLPARSERCTXT"
+></A
+>xmlParserCtxt</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef _xmlParserCtxt xmlParserCtxt;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN186"
+></A
+><H3
+><A
+NAME="XMLPARSERCTXTPTR"
+></A
+>xmlParserCtxtPtr</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef xmlParserCtxt *xmlParserCtxtPtr;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN191"
+></A
+><H3
+><A
+NAME="XMLSAXLOCATOR"
+></A
+>xmlSAXLocator</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef _xmlSAXLocator xmlSAXLocator;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN196"
+></A
+><H3
+><A
+NAME="XMLSAXLOCATORPTR"
+></A
+>xmlSAXLocatorPtr</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef xmlSAXLocator *xmlSAXLocatorPtr;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN201"
+></A
+><H3
+><A
+NAME="RESOLVEENTITYSAXFUNC"
+></A
+>resolveEntitySAXFunc()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
+>xmlParserInputPtr</A
+> (*resolveEntitySAXFunc)   (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *publicId,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *systemId);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>publicId</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>systemId</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN231"
+></A
+><H3
+><A
+NAME="NOTATIONDECLSAXFUNC"
+></A
+>notationDeclSAXFunc()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        (*notationDeclSAXFunc)          (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *publicId,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *systemId);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>publicId</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>systemId</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN261"
+></A
+><H3
+><A
+NAME="UNPARSEDENTITYDECLSAXFUNC"
+></A
+>unparsedEntityDeclSAXFunc()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        (*unparsedEntityDeclSAXFunc)    (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *publicId,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *systemId,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *notationName);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>publicId</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>systemId</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>notationName</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN296"
+></A
+><H3
+><A
+NAME="SETDOCUMENTLOCATORSAXFUNC"
+></A
+>setDocumentLocatorSAXFunc()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        (*setDocumentLocatorSAXFunc)    (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             <A
+HREF="gnome-xml-parser.html#XMLSAXLOCATORPTR"
+>xmlSAXLocatorPtr</A
+> loc);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>loc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN316"
+></A
+><H3
+><A
+NAME="STARTDOCUMENTSAXFUNC"
+></A
+>startDocumentSAXFunc()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        (*startDocumentSAXFunc)         (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN331"
+></A
+><H3
+><A
+NAME="ENDDOCUMENTSAXFUNC"
+></A
+>endDocumentSAXFunc()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        (*endDocumentSAXFunc)           (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN346"
+></A
+><H3
+><A
+NAME="STARTELEMENTSAXFUNC"
+></A
+>startElementSAXFunc()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        (*startElementSAXFunc)          (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN366"
+></A
+><H3
+><A
+NAME="ENDELEMENTSAXFUNC"
+></A
+>endElementSAXFunc()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        (*endElementSAXFunc)            (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN386"
+></A
+><H3
+><A
+NAME="ATTRIBUTESAXFUNC"
+></A
+>attributeSAXFunc()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        (*attributeSAXFunc)             (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *name,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *value);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>value</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN411"
+></A
+><H3
+><A
+NAME="CHARACTERSSAXFUNC"
+></A
+>charactersSAXFunc()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        (*charactersSAXFunc)            (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *ch,
+                                             int start,
+                                             int len);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ch</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>start</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>len</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN439"
+></A
+><H3
+><A
+NAME="IGNORABLEWHITESPACESAXFUNC"
+></A
+>ignorableWhitespaceSAXFunc()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        (*ignorableWhitespaceSAXFunc)   (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *ch,
+                                             int start,
+                                             int len);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ch</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>start</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>len</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN467"
+></A
+><H3
+><A
+NAME="PROCESSINGINSTRUCTIONSAXFUNC"
+></A
+>processingInstructionSAXFunc()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        (*processingInstructionSAXFunc) (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *target,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *data);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>target</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>data</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN492"
+></A
+><H3
+><A
+NAME="WARNINGSAXFUNC"
+></A
+>warningSAXFunc()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        (*warningSAXFunc)               (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             const char *msg,
+                                             ...);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>msg</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>...</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN515"
+></A
+><H3
+><A
+NAME="ERRORSAXFUNC"
+></A
+>errorSAXFunc()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        (*errorSAXFunc)                 (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             const char *msg,
+                                             ...);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>msg</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>...</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN538"
+></A
+><H3
+><A
+NAME="FATALERRORSAXFUNC"
+></A
+>fatalErrorSAXFunc()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        (*fatalErrorSAXFunc)            (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             const char *msg,
+                                             ...);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>msg</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>...</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN561"
+></A
+><H3
+><A
+NAME="XMLSAXHANDLERPTR"
+></A
+>xmlSAXHandlerPtr</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef xmlSAXHandler *xmlSAXHandlerPtr;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN566"
+></A
+><H3
+><A
+NAME="XMLSTRDUP"
+></A
+>xmlStrdup()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       xmlStrdup                       (const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *cur);</PRE
+></TD
+></TR
+></TABLE
+><P
+>a strdup for array of CHAR's</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the input CHAR *</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a new CHAR * or NULL</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN587"
+></A
+><H3
+><A
+NAME="XMLSTRNDUP"
+></A
+>xmlStrndup()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       xmlStrndup                      (const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *cur,
+                                             int len);</PRE
+></TD
+></TR
+></TABLE
+><P
+>a strndup for array of CHAR's</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the input CHAR *</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>len</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the len of <TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+></TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a new CHAR * or NULL</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN613"
+></A
+><H3
+><A
+NAME="XMLSTRCHR"
+></A
+>xmlStrchr()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       xmlStrchr                       (const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *str,
+                                             <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> val);</PRE
+></TD
+></TR
+></TABLE
+><P
+>a strchr for CHAR's</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>str</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the CHAR * array</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>val</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the CHAR to search</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the CHAR * for the first occurence or NULL.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN639"
+></A
+><H3
+><A
+NAME="XMLSTRCMP"
+></A
+>xmlStrcmp()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlStrcmp                       (const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *str1,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *str2);</PRE
+></TD
+></TR
+></TABLE
+><P
+>a strcmp for CHAR's</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>str1</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the first CHAR *</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>str2</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the second CHAR *</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the integer result of the comparison</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN664"
+></A
+><H3
+><A
+NAME="XMLSTRNCMP"
+></A
+>xmlStrncmp()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlStrncmp                      (const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *str1,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *str2,
+                                             int len);</PRE
+></TD
+></TR
+></TABLE
+><P
+>a strncmp for CHAR's</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>str1</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the first CHAR *</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>str2</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the second CHAR *</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>len</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the max comparison length</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the integer result of the comparison</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN693"
+></A
+><H3
+><A
+NAME="XMLSTRLEN"
+></A
+>xmlStrlen()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlStrlen                       (const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *str);</PRE
+></TD
+></TR
+></TABLE
+><P
+>lenght of a CHAR's string</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>str</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the CHAR * array</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the number of CHAR contained in the ARRAY.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN713"
+></A
+><H3
+><A
+NAME="XMLSTRCAT"
+></A
+>xmlStrcat()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       xmlStrcat                       (<A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *cur,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *add);</PRE
+></TD
+></TR
+></TABLE
+><P
+>a strcat for array of CHAR's</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the original CHAR * array</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>add</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the CHAR * array added</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a new CHAR * containing the concatenated string.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN739"
+></A
+><H3
+><A
+NAME="XMLSTRNCAT"
+></A
+>xmlStrncat()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+>*       xmlStrncat                      (<A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *cur,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *add,
+                                             int len);</PRE
+></TD
+></TR
+></TABLE
+><P
+>a strncat for array of CHAR's</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the original CHAR * array</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>add</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the CHAR * array added</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>len</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the length of <TT
+CLASS="PARAMETER"
+><I
+>add</I
+></TT
+></TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a new CHAR * containing the concatenated string.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN770"
+></A
+><H3
+><A
+NAME="XMLPARSEDOC"
+></A
+>xmlParseDoc()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+>   xmlParseDoc                     (<A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *cur);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse an XML in-memory document and build a tree.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a pointer to an array of CHAR</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the resulting document tree</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN791"
+></A
+><H3
+><A
+NAME="XMLPARSEMEMORY"
+></A
+>xmlParseMemory()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+>   xmlParseMemory                  (char *buffer,
+                                             int size);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse an XML in-memory block and build a tree.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buffer</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an pointer to a char array</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>size</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the size of the array</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the resulting document tree</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN815"
+></A
+><H3
+><A
+NAME="XMLPARSEFILE"
+></A
+>xmlParseFile()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+>   xmlParseFile                    (const char *filename);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse an XML file and build a tree. Automatic support for ZLIB/Compress
+compressed document is provided by default if found at compile-time.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>filename</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the filename</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the resulting document tree</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN835"
+></A
+><H3
+><A
+NAME="XMLRECOVERDOC"
+></A
+>xmlRecoverDoc()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+>   xmlRecoverDoc                   (<A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *cur);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse an XML in-memory document and build a tree.
+In the case the document is not Well Formed, a tree is built anyway</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a pointer to an array of CHAR</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the resulting document tree</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN856"
+></A
+><H3
+><A
+NAME="XMLRECOVERMEMORY"
+></A
+>xmlRecoverMemory()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+>   xmlRecoverMemory                (char *buffer,
+                                             int size);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse an XML in-memory block and build a tree.
+In the case the document is not Well Formed, a tree is built anyway</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buffer</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an pointer to a char array</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>size</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the size of the array</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the resulting document tree</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN880"
+></A
+><H3
+><A
+NAME="XMLRECOVERFILE"
+></A
+>xmlRecoverFile()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+>   xmlRecoverFile                  (const char *filename);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse an XML file and build a tree. Automatic support for ZLIB/Compress
+compressed document is provided by default if found at compile-time.
+In the case the document is not Well Formed, a tree is built anyway</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>filename</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the filename</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the resulting document tree</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN900"
+></A
+><H3
+><A
+NAME="XMLPARSEDOCUMENT"
+></A
+>xmlParseDocument()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlParseDocument                (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse an XML document (and build a tree if using the standard SAX
+interface).</P
+><P
+>[1] document ::= prolog element Misc*</P
+><P
+>[22] prolog ::= XMLDecl? Misc* (doctypedecl Misc*)?</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0, -1 in case of error. the parser context is augmented
+as a result of the parsing.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN922"
+></A
+><H3
+><A
+NAME="XMLSAXPARSEDOC"
+></A
+>xmlSAXParseDoc()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+>   xmlSAXParseDoc                  (<A
+HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
+>xmlSAXHandlerPtr</A
+> sax,
+                                             <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *cur,
+                                             int recovery);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse an XML in-memory document and build a tree.
+It use the given SAX function block to handle the parsing callback.
+If sax is NULL, fallback to the default DOM tree building routines.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>sax</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the SAX handler block</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a pointer to an array of CHAR</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>recovery</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  work in recovery mode, i.e. tries to read no Well Formed
+documents</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the resulting document tree</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN952"
+></A
+><H3
+><A
+NAME="XMLSAXPARSEMEMORY"
+></A
+>xmlSAXParseMemory()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+>   xmlSAXParseMemory               (<A
+HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
+>xmlSAXHandlerPtr</A
+> sax,
+                                             char *buffer,
+                                             int size,
+                                             int recovery);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse an XML in-memory block and use the given SAX function block
+to handle the parsing callback. If sax is NULL, fallback to the default
+DOM tree building routines.</P
+><P
+>TODO : plug some encoding conversion routines here. !!!</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>sax</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the SAX handler block</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buffer</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an pointer to a char array</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>size</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the siwe of the array</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>recovery</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  work in recovery mode, i.e. tries to read no Well Formed
+documents</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the resulting document tree</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN986"
+></A
+><H3
+><A
+NAME="XMLSAXPARSEFILE"
+></A
+>xmlSAXParseFile()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+>   xmlSAXParseFile                 (<A
+HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
+>xmlSAXHandlerPtr</A
+> sax,
+                                             const char *filename,
+                                             int recovery);</PRE
+></TD
+></TR
+></TABLE
+><P
+>parse an XML file and build a tree. Automatic support for ZLIB/Compress
+compressed document is provided by default if found at compile-time.
+It use the given SAX function block to handle the parsing callback.
+If sax is NULL, fallback to the default DOM tree building routines.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>sax</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the SAX handler block</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>filename</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the filename</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>recovery</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  work in recovery mode, i.e. tries to read no Well Formed
+documents</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the resulting document tree</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1015"
+></A
+><H3
+><A
+NAME="XMLINITPARSERCTXT"
+></A
+>xmlInitParserCtxt()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlInitParserCtxt               (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Initialize a parser context</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1031"
+></A
+><H3
+><A
+NAME="XMLCLEARPARSERCTXT"
+></A
+>xmlClearParserCtxt()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlClearParserCtxt              (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Clear (release owned resources) and reinitialize a parser context</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1047"
+></A
+><H3
+><A
+NAME="XMLSETUPPARSERFORBUFFER"
+></A
+>xmlSetupParserForBuffer()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlSetupParserForBuffer         (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *buffer,
+                                             const char *filename);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Setup the parser context to parse a new buffer; Clears any prior
+contents from the parser context. The buffer parameter must not be
+NULL, but the filename parameter can be</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buffer</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a CHAR * buffer</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>filename</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a file name</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1072"
+></A
+><H3
+><A
+NAME="XMLPARSERFINDNODEINFO"
+></A
+>xmlParserFindNodeInfo()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>const <A
+HREF="gnome-xml-parser.html#XMLPARSERNODEINFO"
+>xmlParserNodeInfo</A
+>* xmlParserFindNodeInfo
+                                            (const <A
+HREF="gnome-xml-parser.html#XMLPARSERCTXT"
+>xmlParserCtxt</A
+> *ctxt,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLNODE"
+>xmlNode</A
+> *node);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Find the parser node info struct for a given node</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>node</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML node within the tree</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>an xmlParserNodeInfo block pointer or NULL</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1098"
+></A
+><H3
+><A
+NAME="XMLINITNODEINFOSEQ"
+></A
+>xmlInitNodeInfoSeq()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlInitNodeInfoSeq              (<A
+HREF="gnome-xml-parser.html#XMLPARSERNODEINFOSEQPTR"
+>xmlParserNodeInfoSeqPtr</A
+> seq);</PRE
+></TD
+></TR
+></TABLE
+><P
+>-- Initialize (set to initial state) node info sequence</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>seq</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a node info sequence pointer</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1114"
+></A
+><H3
+><A
+NAME="XMLCLEARNODEINFOSEQ"
+></A
+>xmlClearNodeInfoSeq()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlClearNodeInfoSeq             (<A
+HREF="gnome-xml-parser.html#XMLPARSERNODEINFOSEQPTR"
+>xmlParserNodeInfoSeqPtr</A
+> seq);</PRE
+></TD
+></TR
+></TABLE
+><P
+>-- Clear (release memory and reinitialize) node
+info sequence</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>seq</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a node info sequence pointer</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1130"
+></A
+><H3
+><A
+NAME="XMLPARSERFINDNODEINFOINDEX"
+></A
+>xmlParserFindNodeInfoIndex()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>unsigned <GTKDOCLINK
+HREF="LONG"
+>long</GTKDOCLINK
+> xmlParserFindNodeInfoIndex    (const <A
+HREF="gnome-xml-parser.html#XMLPARSERNODEINFOSEQ"
+>xmlParserNodeInfoSeq</A
+> *seq,
+                                             const <A
+HREF="gnome-xml-tree.html#XMLNODE"
+>xmlNode</A
+> *node);</PRE
+></TD
+></TR
+></TABLE
+><P
+>xmlParserFindNodeInfoIndex : Find the index that the info record for
+the given node is or should be at in a sorted sequence</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>seq</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a node info sequence pointer</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>node</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML node pointer</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a long indicating the position of the record</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1156"
+></A
+><H3
+><A
+NAME="XMLPARSERADDNODEINFO"
+></A
+>xmlParserAddNodeInfo()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlParserAddNodeInfo            (<A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> ctxt,
+                                             const <A
+HREF="gnome-xml-parser.html#XMLPARSERNODEINFO"
+>xmlParserNodeInfo</A
+> *info);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Insert node info record into the sorted sequence</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFE0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  an XML parser context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>info</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  a node info sequence pointer</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1177"
+></A
+><H3
+><A
+NAME="XMLDEFAULTSAXHANDLERINIT"
+></A
+>xmlDefaultSAXHandlerInit()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E8E8F8"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlDefaultSAXHandlerInit        (void);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Initialize the default SAX handler</P
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="libxml.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="gnome-xml-tree.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Gnome XML Library</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="libxml.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>tree</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

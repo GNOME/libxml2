@@ -1,3 +1,7 @@
+Tue Oct 28 14:57:03 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: fixed #123263, the encoding is mandatory in a textdecl.
+
 Tue Oct 28 13:48:52 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: fix bug #125047 about serializing when finding a 

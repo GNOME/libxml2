@@ -5592,6 +5592,7 @@ xmlParseMarkupDecl(xmlParserCtxtPtr ctxt) {
 void
 xmlParseTextDecl(xmlParserCtxtPtr ctxt) {
     xmlChar *version;
+    const xmlChar *encoding;
 
     /*
      * We know that '<?xml' is here.
@@ -5626,12 +5627,16 @@ xmlParseTextDecl(xmlParserCtxtPtr ctxt) {
     /*
      * We must have the encoding declaration
      */
-    xmlParseEncodingDecl(ctxt);
+    encoding = xmlParseEncodingDecl(ctxt);
     if (ctxt->errNo == XML_ERR_UNSUPPORTED_ENCODING) {
 	/*
 	 * The XML REC instructs us to stop parsing right here
 	 */
         return;
+    }
+    if ((encoding == NULL) && (ctxt->errNo == XML_ERR_OK)) {
+	xmlFatalErrMsg(ctxt, XML_ERR_MISSING_ENCODING,
+		       "Missing encoding in text declaration\n");
     }
 
     SKIP_BLANKS;

@@ -1,3 +1,7 @@
+Mon Nov  8 10:24:28 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* gentest.py: fixed test file corruption problem
+
 Sun Nov  7 13:18:05 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* gentest.py testapi.c: fixed typos and avoid Catalogs verbosity

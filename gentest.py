@@ -200,7 +200,9 @@ def type_convert(str, name, info, module, function, pos):
            string.find(info, "filename") != -1 or \
            string.find(info, "URI") != -1 or \
            string.find(info, "URL") != -1:
-	    if string.find(function, "Save") != -1:
+	    if string.find(function, "Save") != -1 or \
+	       string.find(function, "Create") != -1 or \
+	       string.find(function, "Write") != -1:
 	        return('fileoutput')
 	    return('filepath')
     if res == 'void_ptr':

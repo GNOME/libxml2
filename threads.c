@@ -68,22 +68,15 @@ struct _xmlRMutex {
  * This module still has some internal static data.
  *   - xmlLibraryLock a global lock
  *   - globalkey used for per-thread data
- *   - keylock protecting globalkey
- *   - keyonce to mark initialization of globalkey
  */
 
-static int initialized = 0;
 #ifdef HAVE_PTHREAD_H
-static pthread_mutex_t	keylock = PTHREAD_MUTEX_INITIALIZER;
 static pthread_key_t	globalkey;
-static int		keyonce = 0;
 static pthread_t	mainthread;
+static pthread_once_t once_control = PTHREAD_ONCE_INIT;
 #endif
 static xmlRMutexPtr	xmlLibraryLock = NULL;
-
-#if defined(SOLARIS)
-NOTE(DATA_READABLE_WITHOUT_LOCK(keyonce))
-#endif
+static void xmlOnceInit(void);
 
 /**
  * xmlMutexPtr:
@@ -291,11 +284,6 @@ xmlNewGlobalState(void)
  * xmlGetGlobalState:
  *
  * xmlGetGlobalState() is called to retrieve the global state for a thread.
- * keyonce will only be set once during a library invocation and is used
- * to create globalkey, the key used to store each thread's TSD.
- *
- * Note: it should not be called for the "main" thread as this thread uses
- *       the existing global variables defined in the library.
  *
  * Returns the thread global state or NULL in case of error
  */
@@ -305,14 +293,8 @@ xmlGetGlobalState(void)
 #ifdef HAVE_PTHREAD_H
     xmlGlobalState *globalval;
 
-    if (keyonce == 0) {
-        (void) pthread_mutex_lock(&keylock);
-        if (keyonce == 0) {
-            keyonce++;
-            (void) pthread_key_create(&globalkey, xmlFreeGlobalState);
-        }
-        (void) pthread_mutex_unlock(&keylock);
-    }
+    pthread_once(&once_control, xmlOnceInit);
+
     if ((globalval = (xmlGlobalState *)
          pthread_getspecific(globalkey)) == NULL) {
         xmlGlobalState *tsd = xmlNewGlobalState();
@@ -360,8 +342,9 @@ xmlGetThreadId(void)
 int
 xmlIsMainThread(void)
 {
-    if (!initialized)
-        xmlInitThreads();
+#ifdef HAVE_PTHREAD_H
+    pthread_once(&once_control, xmlOnceInit);
+#endif
         
 #ifdef DEBUG_THREADS
     xmlGenericError(xmlGenericErrorContext, "xmlIsMainThread()\n");
@@ -412,18 +395,9 @@ xmlUnlockLibrary(void)
 void
 xmlInitThreads(void)
 {
-    if (initialized != 0)
-        return;
-
 #ifdef DEBUG_THREADS
     xmlGenericError(xmlGenericErrorContext, "xmlInitThreads()\n");
 #endif
-
-#ifdef HAVE_PTHREAD_H
-    mainthread = pthread_self();
-#endif
-
-    initialized = 1;
 }
 
 /**
@@ -435,12 +409,24 @@ xmlInitThreads(void)
 void
 xmlCleanupThreads(void)
 {
-    if (initialized == 0)
-        return;
-
 #ifdef DEBUG_THREADS
     xmlGenericError(xmlGenericErrorContext, "xmlCleanupThreads()\n");
 #endif
+}
 
-    initialized = 0;
+/**
+ * xmlOnceInit
+ *
+ * xmlOnceInit() is used to initialize the value of mainthread for use
+ * in other routines. This function should only be called using
+ * pthread_once() in association with the once_control variable to ensure
+ * that the function is only called once. See man pthread_once for more
+ * details.
+ */
+static void
+xmlOnceInit(void) {
+#ifdef HAVE_PTHREAD_H
+   (void) pthread_key_create(&globalkey, xmlFreeGlobalState);
+    mainthread = pthread_self();
+#endif
 }

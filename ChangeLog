@@ -1,7 +1,12 @@
+Thu Dec  6 09:06:08 EST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* threads.c: patch from Gary Pennington fixing a possible
+	  problem at initialization time.
+
 Wed Dec  5 13:01:37 CET 2001 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in libxml.h parser.c testThreads.c macos/: integrated
-	  Eric Lavigne (sp???) contribution to build libxml2 on MacOS using
+	  Eric Lavigne contribution to build libxml2 on MacOS using
 	  CodeWarrior.
 
 Tue Dec  4 14:13:44 CET 2001 Daniel Veillard <daniel@veillard.com>

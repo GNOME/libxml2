@@ -1,3 +1,8 @@
+Fri Jun 22 12:42:16 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* include/win32config.h: Yon Derek provided a first fix
+	  to be able to compile libxslt/xsltproc on Windows
+
 Fri Jun 22 00:04:36 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xpath.c: attempt to work around what seemed a gcc optimizer

@@ -1,3 +1,6 @@
+#ifndef __LIBXML_WIN32_CONFIG__
+#define __LIBXML_WIN32_CONFIG__
+
 #define HAVE_CTYPE_H
 #define HAVE_STDLIB_H
 #define HAVE_MALLOC_H
@@ -6,7 +9,9 @@
 
 #include <io.h>
 
+#ifndef LIBXML_DLL_IMPORT
 #define LIBXML_DLL_IMPORT
+#endif
 #define SOCKLEN_T int
 
 #ifdef NEED_SOCKETS
@@ -100,4 +105,6 @@ static int isnan (double d) {
 #define vsnprintf _vsnprintf
 #endif /* WITH_TRIO */
 #endif /* _MSC_VER */
+
+#endif /* __LIBXML_WIN32_CONFIG__ */
 

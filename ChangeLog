@@ -1,3 +1,7 @@
+2001-01-19  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* configure.in: Actually bump the version.
+	
 Thu Jan 11 11:12:16 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* configure.in: releasing 1.8.11

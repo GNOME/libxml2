@@ -1,3 +1,8 @@
+Tue Aug  3 08:14:44 PDT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* HTMLparser.c: fixed initialisation problem for htmlReadMemory
+	  (bug 149041)
+
 Sat Jul 31 11:01:33 PDT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* doc/buildDocBookCatalog: enhanced per bug 119876.  Further

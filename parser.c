@@ -12385,6 +12385,7 @@ xmlCtxtUseOptions(xmlParserCtxtPtr ctxt, int options)
 	ctxt->options |= XML_PARSE_NSCLEAN;
         options -= XML_PARSE_NSCLEAN;
     }
+    ctxt->linenumbers = 1;
     return (options);
 }
 

@@ -2,6 +2,7 @@ Sat May 17 12:53:11 CEST 2003 Igor Zlatkovic <igor@zlatkovic.com>
 
 	* threads.c: applied the patch from Stéphane Bidoul for getting
 	  rid of extra threads in a dynamic library.
+	* win32/configure.js: threads default to 'native' now.
 	  
 Fri May 16 13:17:52 EDT 2003 Daniel Veillard <daniel@veillard.com>
 

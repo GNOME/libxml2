@@ -541,6 +541,7 @@
      <exports symbol='xmlNewDocProp'/>
      <exports symbol='xmlNewProp'/>
      <exports symbol='xmlNewNsProp'/>
+     <exports symbol='xmlNewNsPropEatName'/>
      <exports symbol='xmlFreePropList'/>
      <exports symbol='xmlFreeProp'/>
      <exports symbol='xmlCopyProp'/>
@@ -548,8 +549,10 @@
      <exports symbol='xmlCopyDtd'/>
      <exports symbol='xmlCopyDoc'/>
      <exports symbol='xmlNewDocNode'/>
+     <exports symbol='xmlNewDocNodeEatName'/>
      <exports symbol='xmlNewDocRawNode'/>
      <exports symbol='xmlNewNode'/>
+     <exports symbol='xmlNewNodeEatName'/>
      <exports symbol='xmlNewChild'/>
      <exports symbol='xmlNewTextChild'/>
      <exports symbol='xmlNewDocText'/>
@@ -626,6 +629,7 @@
      <exports symbol='xmlDocDumpMemory'/>
      <exports symbol='xmlDocDumpMemoryEnc'/>
      <exports symbol='xmlDocDumpFormatMemoryEnc'/>
+     <exports symbol='xmlDocFormatDump'/>
      <exports symbol='xmlDocDump'/>
      <exports symbol='xmlElemDump'/>
      <exports symbol='xmlSaveFile'/>
@@ -846,6 +850,7 @@
      <exports symbol='xmlXPathCeilingFunction'/>
      <exports symbol='xmlXPathRoundFunction'/>
      <exports symbol='xmlXPathBooleanFunction'/>
+     <exports symbol='xmlXPathNodeSetFreeNs'/>
     </file>
     <file name='xinclude'>
      <exports symbol='xmlXIncludeProcess'/>
@@ -2390,8 +2395,9 @@
       <arg name='encoding' type='const char *' info='a free form C string describing the HTML document encoding, or NULL '/>
     </function>
     <function name='htmlParseDocument' file='HTMLparser'>
-      <return type='int'/>
-      <arg name='ctxt' type='htmlParserCtxtPtr'/>
+      <info>parse an HTML document (and build a tree if using the standard SAX interface).</info>
+      <return type='int' info='0, -1 in case of error. the parser context is augmented as a result of the parsing. '/>
+      <arg name='ctxt' type='htmlParserCtxtPtr' info='an HTML parser context '/>
     </function>
     <function name='htmlParseElement' file='HTMLparser'>
       <info>parse an HTML element, this is highly recursive </info>
@@ -3558,6 +3564,13 @@
       <arg name='doc_txt_len' type='int *' info='Length of the generated XML text '/>
       <arg name='txt_encoding' type='const char *' info='Character encoding to use when generating XML text '/>
     </function>
+    <function name='xmlDocFormatDump' file='tree'>
+      <info>Dump an XML document to an open FILE.</info>
+      <return type='int' info='the number of bytes written or -1 in case of failure. '/>
+      <arg name='f' type='FILE *' info='the FILE* '/>
+      <arg name='cur' type='xmlDocPtr' info='the document '/>
+      <arg name='format' type='int' info='should formatting spaces been added '/>
+    </function>
     <function name='xmlDocGetRootElement' file='tree'>
       <info>Get the root element of the document (doc-&gt;children is a list containing possibly comments, PIs, etc ...).</info>
       <return type='xmlNodePtr' info='the xmlNodePtr for the root or NULL '/>
@@ -3675,22 +3688,26 @@
       <arg name='context' type='xmlParserCtxtPtr' info='the XML parser context '/>
     </functype>
     <function name='xmlFileClose' file='xmlIO'>
+      <info>Close an I/O channel</info>
       <return type='int'/>
-      <arg name='context' type='void *'/>
+      <arg name='context' type='void *' info='the I/O context '/>
     </function>
     <function name='xmlFileMatch' file='xmlIO'>
-      <return type='int'/>
-      <arg name='filename' type='const char *'/>
+      <info>input from FILE *</info>
+      <return type='int' info='1 if matches, 0 otherwise '/>
+      <arg name='filename' type='const char *' info='the URI for matching '/>
     </function>
     <function name='xmlFileOpen' file='xmlIO'>
+      <info>input from FILE *, supports compressed input if filename is &quot; &quot; then the standard input is used</info>
       <return type='void *'/>
-      <arg name='filename' type='const char *'/>
+      <arg name='filename' type='const char *' info='the URI for matching '/>
     </function>
     <function name='xmlFileRead' file='xmlIO'>
-      <return type='int'/>
-      <arg name='context' type='void *'/>
-      <arg name='buffer' type='char *'/>
-      <arg name='len' type='int'/>
+      <info>Read len bytes to buffer from the I/O channel.</info>
+      <return type='int' info='the number of bytes written '/>
+      <arg name='context' type='void *' info='the I/O context '/>
+      <arg name='buffer' type='char *' info='where to drop data '/>
+      <arg name='len' type='int' info='number of bytes to write '/>
     </function>
     <function name='xmlFindCharEncodingHandler' file='encoding'>
       <info>Search in the registered set the handler able to read/write that encoding.</info>
@@ -4203,34 +4220,41 @@
     <typedef name='xmlIDPtr' file='tree'/>
     <typedef name='xmlIDTablePtr' file='valid'/>
     <function name='xmlIOFTPClose' file='xmlIO'>
+      <info>Close an FTP I/O channel</info>
       <return type='int'/>
-      <arg name='context' type='void *'/>
+      <arg name='context' type='void *' info='the I/O context '/>
     </function>
     <function name='xmlIOFTPMatch' file='xmlIO'>
-      <return type='int'/>
-      <arg name='filename' type='const char *'/>
+      <info>check if the URI matches an FTP one</info>
+      <return type='int' info='1 if matches, 0 otherwise '/>
+      <arg name='filename' type='const char *' info='the URI for matching '/>
     </function>
     <function name='xmlIOFTPOpen' file='xmlIO'>
+      <info>open an FTP I/O channel</info>
       <return type='void *'/>
-      <arg name='filename' type='const char *'/>
+      <arg name='filename' type='const char *' info='the URI for matching '/>
     </function>
     <function name='xmlIOFTPRead' file='xmlIO'>
-      <return type='int'/>
-      <arg name='context' type='void *'/>
-      <arg name='buffer' type='char *'/>
-      <arg name='len' type='int'/>
+      <info>Read len bytes to buffer from the I/O channel.</info>
+      <return type='int' info='the number of bytes written '/>
+      <arg name='context' type='void *' info='the I/O context '/>
+      <arg name='buffer' type='char *' info='where to drop data '/>
+      <arg name='len' type='int' info='number of bytes to write '/>
     </function>
     <function name='xmlIOHTTPClose' file='xmlIO'>
+      <info>Close an HTTP I/O channel</info>
       <return type='int'/>
-      <arg name='context' type='void *'/>
+      <arg name='context' type='void *' info='the I/O context '/>
     </function>
     <function name='xmlIOHTTPMatch' file='xmlIO'>
-      <return type='int'/>
-      <arg name='filename' type='const char *'/>
+      <info>check if the URI matches an HTTP one</info>
+      <return type='int' info='1 if matches, 0 otherwise '/>
+      <arg name='filename' type='const char *' info='the URI for matching '/>
     </function>
     <function name='xmlIOHTTPOpen' file='xmlIO'>
+      <info>open an HTTP I/O channel</info>
       <return type='void *'/>
-      <arg name='filename' type='const char *'/>
+      <arg name='filename' type='const char *' info='the URI for matching '/>
     </function>
     <function name='xmlIOHTTPOpenW' file='xmlIO'>
       <info>Open a temporary buffer to collect the document for a subsequent HTTP POST request. Non-static as is called from the output buffer creation routine.</info>
@@ -4239,10 +4263,11 @@
       <arg name='compression' type='int' info='The compression desired for the document. '/>
     </function>
     <function name='xmlIOHTTPRead' file='xmlIO'>
-      <return type='int'/>
-      <arg name='context' type='void *'/>
-      <arg name='buffer' type='char *'/>
-      <arg name='len' type='int'/>
+      <info>Read len bytes to buffer from the I/O channel.</info>
+      <return type='int' info='the number of bytes written '/>
+      <arg name='context' type='void *' info='the I/O context '/>
+      <arg name='buffer' type='char *' info='where to drop data '/>
+      <arg name='len' type='int' info='number of bytes to write '/>
     </function>
     <function name='xmlIOParseDTD' file='parser'>
       <info>Load and parse a DTD</info>
@@ -4965,6 +4990,14 @@
       <arg name='name' type='const xmlChar *' info='the node name '/>
       <arg name='content' type='const xmlChar *' info='the XML text content if any '/>
     </function>
+    <function name='xmlNewDocNodeEatName' file='tree'>
+      <info>Creation of a new node element within a document. ns and content are optional (NULL). NOTE: content is supposed to be a piece of XML CDATA, so it allow entities references, but XML special chars need to be escaped first by using xmlEncodeEntitiesReentrant(). Use xmlNewDocRawNode() if you don&apos;t need entities support.</info>
+      <return type='xmlNodePtr' info='a pointer to the new node object. '/>
+      <arg name='doc' type='xmlDocPtr' info='the document '/>
+      <arg name='ns' type='xmlNsPtr' info='namespace if any '/>
+      <arg name='name' type='xmlChar *' info='the node name '/>
+      <arg name='content' type='const xmlChar *' info='the XML text content if any '/>
+    </function>
     <function name='xmlNewDocProp' file='tree'>
       <info>Create a new property carried by a document.</info>
       <return type='xmlAttrPtr' info='a pointer to the attribute '/>
@@ -5047,6 +5080,12 @@
       <arg name='ns' type='xmlNsPtr' info='namespace if any '/>
       <arg name='name' type='const xmlChar *' info='the node name '/>
     </function>
+    <function name='xmlNewNodeEatName' file='tree'>
+      <info>Creation of a new node element. ns is optional (NULL).</info>
+      <return type='xmlNodePtr' info='a pointer to the new node object. '/>
+      <arg name='ns' type='xmlNsPtr' info='namespace if any '/>
+      <arg name='name' type='xmlChar *' info='the node name '/>
+    </function>
     <function name='xmlNewNs' file='tree'>
       <info>Creation of a new Namespace. This function will refuse to create a namespace with a similar prefix than an existing one present on this node. We use href==NULL in the case of an element creation where the namespace was not defined.</info>
       <return type='xmlNsPtr' info='a new namespace pointer or NULL '/>
@@ -5060,6 +5099,14 @@
       <arg name='node' type='xmlNodePtr' info='the holding node '/>
       <arg name='ns' type='xmlNsPtr' info='the namespace '/>
       <arg name='name' type='const xmlChar *' info='the name of the attribute '/>
+      <arg name='value' type='const xmlChar *' info='the value of the attribute '/>
+    </function>
+    <function name='xmlNewNsPropEatName' file='tree'>
+      <info>Create a new property tagged with a namespace and carried by a node.</info>
+      <return type='xmlAttrPtr' info='a pointer to the attribute '/>
+      <arg name='node' type='xmlNodePtr' info='the holding node '/>
+      <arg name='ns' type='xmlNsPtr' info='the namespace '/>
+      <arg name='name' type='xmlChar *' info='the name of the attribute '/>
       <arg name='value' type='const xmlChar *' info='the value of the attribute '/>
     </function>
     <function name='xmlNewPI' file='tree'>
@@ -6522,6 +6569,7 @@
       <arg name='second' type='xmlNodePtr' info='the second text node being merged '/>
     </function>
     <macro name='xmlTreeIndentString' file='globals'>
+      <info>The string used to do one-level indent. By default is equal to &quot; &quot; (two spaces)</info>
     </macro>
     <struct name='xmlURI' file='uri' info='A parsed URI reference. This is a struct containing the various fields as described in RFC 2396 but separated for further processing.'/>
     <function name='xmlURIEscape' file='uri'>
@@ -7319,10 +7367,11 @@
       <arg name='val' type='xmlNodePtr' info='a new xmlNodePtr '/>
     </function>
     <function name='xmlXPathNodeSetAddNs' file='xpathInternals'>
+      <info>add a new namespace node to an existing NodeSet</info>
       <return type='void'/>
-      <arg name='cur' type='xmlNodeSetPtr'/>
-      <arg name='node' type='xmlNodePtr'/>
-      <arg name='ns' type='xmlNsPtr'/>
+      <arg name='cur' type='xmlNodeSetPtr' info='the initial node set '/>
+      <arg name='node' type='xmlNodePtr' info='the hosting node '/>
+      <arg name='ns' type='xmlNsPtr' info='a the namespace node '/>
     </function>
     <function name='xmlXPathNodeSetAddUnique' file='xpathInternals'>
       <info>add a new xmlNodePtr to an existing NodeSet, optimized version when we are sure the node is not already in the set.</info>
@@ -7346,6 +7395,11 @@
       <return type='void'/>
       <arg name='cur' type='xmlNodeSetPtr' info='the initial node set '/>
       <arg name='val' type='xmlNodePtr' info='an xmlNodePtr '/>
+    </function>
+    <function name='xmlXPathNodeSetFreeNs' file='xpathInternals'>
+      <info>Namespace node in libxml don&apos;t match the XPath semantic. In a node set the namespace nodes are duplicated and the next pointer is set to the parent node in the XPath semantic. Check if such a node need to be freed</info>
+      <return type='void'/>
+      <arg name='ns' type='xmlNsPtr' info='the XPath namespace node found in a nodeset. '/>
     </function>
     <macro name='xmlXPathNodeSetGetLength' file='xpath'>
       <info>Implement a functionality similar to the DOM NodeList.length.</info>

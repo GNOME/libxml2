@@ -95,14 +95,14 @@ HTMLtests : testHTML
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/result/HTML/$$name ] ; then \
 	      echo New test file $$name ; \
-	      testHTML $$i > $(srcdir)/result/HTML/$$name 2>$(srcdir)/result/HTML/$$name.err ; \
+	      $(top_builddir)/testHTML $$i > $(srcdir)/result/HTML/$$name 2>$(srcdir)/result/HTML/$$name.err ; \
 	  else \
 	      echo Testing $$name ; \
-	      testHTML $$i > result.$$name 2> error.$$name ; \
+	      $(top_builddir)/testHTML $$i > result.$$name 2> error.$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	      diff $(srcdir)/result/HTML/$$name result.$$name ; \
 	      diff -b $(srcdir)/result/HTML/$$name.err error.$$name ; \
-	      testHTML result.$$name > result2.$$name 2>error.$$name ; \
+	      $(top_builddir)/testHTML result.$$name > result2.$$name 2>error.$$name ; \
 	      diff result.$$name result2.$$name ; \
 	      rm result.$$name result2.$$name error.$$name ; \
 	  fi ; fi ; done)
@@ -114,16 +114,16 @@ HTMLtests : testHTML
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/result/HTML/$$name ] ; then \
 	      echo New test file $$name ; \
-	      testHTML $$i > $(srcdir)/result/HTML/$$name 2>$(srcdir)/result/HTML/$$name.err ; \
+	      $(top_builddir)/testHTML $$i > $(srcdir)/result/HTML/$$name 2>$(srcdir)/result/HTML/$$name.err ; \
 	  else \
 	      echo Testing $$name ; \
-	      testHTML --push $$i > result.$$name 2> error.$$name ; \
+	      $(top_builddir)/testHTML --push $$i > result.$$name 2> error.$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	      diff $(srcdir)/result/HTML/$$name result.$$name ; \
 	      cut -b 1-15 $(srcdir)/result/HTML/$$name.err > errorcut.$$name; \
 	      cut -b 1-15 error.$$name > errorcut2.$$name; \
 	      diff -b errorcut.$$name errorcut2.$$name ; \
-	      testHTML --push result.$$name > result2.$$name 2>error.$$name ; \
+	      $(top_builddir)/testHTML --push result.$$name > result2.$$name 2>error.$$name ; \
 	      diff result.$$name result2.$$name ; \
 	      rm result.$$name result2.$$name error.$$name errorcut.$$name errorcut2.$$name ; \
 	  fi ; fi ; done)
@@ -135,10 +135,10 @@ HTMLtests : testHTML
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/result/HTML/$$name.sax ] ; then \
 	      echo New test file $$name ; \
-	      testHTML --sax $$i > $(srcdir)/result/HTML/$$name.sax ; \
+	      $(top_builddir)/testHTML --sax $$i > $(srcdir)/result/HTML/$$name.sax ; \
 	  else \
 	      echo Testing $$name ; \
-	      testHTML --sax $$i > result.$$name.sax ; \
+	      $(top_builddir)/testHTML --sax $$i > result.$$name.sax ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	      diff $(srcdir)/result/HTML/$$name.sax result.$$name.sax ; \
 	      rm result.$$name.sax ; \
@@ -151,10 +151,10 @@ HTMLtests : testHTML
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/result/HTML/$$name ] ; then \
 	      echo New test file $$name ; \
-	      testHTML --sax $$i > $(srcdir)/result/HTML/$$name.sax ; \
+	      $(top_builddir)/testHTML --sax $$i > $(srcdir)/result/HTML/$$name.sax ; \
 	  else \
 	      echo Testing $$name ; \
-	      testHTML --push --sax $$i > result.$$name.sax ; \
+	      $(top_builddir)/testHTML --push --sax $$i > result.$$name.sax ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	      diff $(srcdir)/result/HTML/$$name.sax result.$$name.sax ; \
 	      rm result.$$name.sax ; \
@@ -162,6 +162,7 @@ HTMLtests : testHTML
 
 
 XMLtests : xmllint
+	@(rm -f .memdump ; touch .memdump)
 	@echo "##"
 	@echo "## XML regression tests"
 	@echo "##"
@@ -199,6 +200,7 @@ XMLtests : xmllint
 	  fi ; fi ; done)
 
 XMLenttests : xmllint
+	@(rm -f .memdump ; touch .memdump)
 	@echo "##"
 	@echo "## XML entity subst regression tests"
 	@echo "##"

@@ -1,3 +1,12 @@
+Sat Jan  6 22:05:09 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* parser.c parserInternals.c: applied Bjorn Reese optimization
+	  patch
+
+Sat Jan  6 19:13:27 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* Makefile.am: applied patch fro make check from Martin Vidner
+
 Thu Jan  4 19:07:49 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* configure.in: preparing 2.2.11

@@ -2092,75 +2092,77 @@ xmlParseAttValue(xmlParserCtxtPtr ctxt) {
 		buf[len++] = *current++;
 	    }
 	    ctxt->token = 0;
-	} else if ((c == '&') && (NXT(1) == '#')) {
-	    int val = xmlParseCharRef(ctxt);
-	    if (val == '&') {
-		/*
-		 * The reparsing will be done in xmlStringGetNodeList()
-		 * called by the attribute() function in SAX.c
-		 */
-		static xmlChar buffer[6] = "&#38;";
-
-		if (len > buf_size - 10) {
-		    growBuffer(buf);
-		}
-		current = &buffer[0];
-		while (*current != 0) { /* non input consuming */
-		    buf[len++] = *current++;
-		}
-	    } else {
-		len += xmlCopyChar(0, &buf[len], val);
-	    }
 	} else if (c == '&') {
-	    ent = xmlParseEntityRef(ctxt);
-	    if ((ent != NULL) && 
-		(ctxt->replaceEntities != 0)) {
-		xmlChar *rep;
+	    if (NXT(1) == '#') {
+		int val = xmlParseCharRef(ctxt);
+		if (val == '&') {
+		    /*
+		     * The reparsing will be done in xmlStringGetNodeList()
+		     * called by the attribute() function in SAX.c
+		     */
+		    static xmlChar buffer[6] = "&#38;";
 
-		if (ent->etype != XML_INTERNAL_PREDEFINED_ENTITY) {
-		    rep = xmlStringDecodeEntities(ctxt, ent->content,
-					      XML_SUBSTITUTE_REF, 0, 0, 0);
-		    if (rep != NULL) {
-			current = rep;
-			while (*current != 0) { /* non input consuming */
-			    buf[len++] = *current++;
-			    if (len > buf_size - 10) {
-				growBuffer(buf);
-			    }
-			}
-			xmlFree(rep);
+		    if (len > buf_size - 10) {
+			growBuffer(buf);
+		    }
+		    current = &buffer[0];
+		    while (*current != 0) { /* non input consuming */
+			buf[len++] = *current++;
 		    }
 		} else {
-		    if (ent->content != NULL)
-			buf[len++] = ent->content[0];
+		    len += xmlCopyChar(0, &buf[len], val);
 		}
-	    } else if (ent != NULL) {
-		int i = xmlStrlen(ent->name);
-		const xmlChar *cur = ent->name;
-
-		/*
-		 * This may look absurd but is needed to detect
-		 * entities problems
-		 */
-		if ((ent->etype != XML_INTERNAL_PREDEFINED_ENTITY) &&
-		    (ent->content != NULL)) {
+	    } else {
+		ent = xmlParseEntityRef(ctxt);
+		if ((ent != NULL) && 
+		    (ctxt->replaceEntities != 0)) {
 		    xmlChar *rep;
-		    rep = xmlStringDecodeEntities(ctxt, ent->content,
-					      XML_SUBSTITUTE_REF, 0, 0, 0);
-		    if (rep != NULL)
-			xmlFree(rep);
-		}
 
-		/*
-		 * Just output the reference
-		 */
-		buf[len++] = '&';
-		if (len > buf_size - i - 10) {
-		    growBuffer(buf);
+		    if (ent->etype != XML_INTERNAL_PREDEFINED_ENTITY) {
+			rep = xmlStringDecodeEntities(ctxt, ent->content,
+						      XML_SUBSTITUTE_REF, 0, 0, 0);
+			if (rep != NULL) {
+			    current = rep;
+			    while (*current != 0) { /* non input consuming */
+				buf[len++] = *current++;
+				if (len > buf_size - 10) {
+				    growBuffer(buf);
+				}
+			    }
+			    xmlFree(rep);
+			}
+		    } else {
+			if (ent->content != NULL)
+			    buf[len++] = ent->content[0];
+		    }
+		} else if (ent != NULL) {
+		    int i = xmlStrlen(ent->name);
+		    const xmlChar *cur = ent->name;
+
+		    /*
+		     * This may look absurd but is needed to detect
+		     * entities problems
+		     */
+		    if ((ent->etype != XML_INTERNAL_PREDEFINED_ENTITY) &&
+			(ent->content != NULL)) {
+			xmlChar *rep;
+			rep = xmlStringDecodeEntities(ctxt, ent->content,
+						      XML_SUBSTITUTE_REF, 0, 0, 0);
+			if (rep != NULL)
+			    xmlFree(rep);
+		    }
+
+		    /*
+		     * Just output the reference
+		     */
+		    buf[len++] = '&';
+		    if (len > buf_size - i - 10) {
+			growBuffer(buf);
+		    }
+		    for (;i > 0;i--)
+			buf[len++] = *cur++;
+		    buf[len++] = ';';
 		}
-		for (;i > 0;i--)
-		    buf[len++] = *cur++;
-		buf[len++] = ';';
 	    }
 	} else {
 	    if ((c == 0x20) || (c == 0xD) || (c == 0xA) || (c == 0x9)) {

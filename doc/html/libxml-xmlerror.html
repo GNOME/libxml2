@@ -1,255 +1,62 @@
-<HTML
-><HEAD
-><TITLE
->xmlerror</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.76b+
-"><LINK
-REL="HOME"
-TITLE="Gnome XML Library Reference Manual"
-HREF="book1.html"><LINK
-REL="UP"
-TITLE="Libxml Library Reference"
-HREF="libxml-lib.html"><LINK
-REL="PREVIOUS"
-TITLE="uri"
-HREF="libxml-uri.html"><LINK
-REL="NEXT"
-TITLE="HTMLparser"
-HREF="libxml-htmlparser.html"></HEAD
-><BODY
-CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-WIDTH="100%"
-BORDER="0"
-BGCOLOR="#000000"
-CELLPADDING="1"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="4"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="5"
->Gnome XML Library Reference Manual</FONT
-></TH
-></TR
-><TR
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="left"
-><A
-HREF="libxml-uri.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->&#60;&#60;&#60; Previous Page</B
-></FONT
-></A
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#0000C0"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="book1.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Home</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#00C000"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="libxml-lib.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Up</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="right"
-><A
-HREF="libxml-htmlparser.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Next Page &#62;&#62;&#62;</B
-></FONT
-></A
-></TD
-></TR
-></TABLE
-></DIV
-><H1
-><A
-NAME="LIBXML-XMLERROR"
-></A
->xmlerror</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN12811"
-></A
-><H2
->Name</H2
->xmlerror&nbsp;--&nbsp;</DIV
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN12814"
-></A
-><H2
->Synopsis</H2
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="SYNOPSIS"
->&#13;
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>xmlerror</title><meta name="generator" content="DocBook XSL Stylesheets V1.58.1"><style xmlns="http://www.w3.org/TR/xhtml1/transitional" type="text/css">
+        .synopsis, .classsynopsis {
+            background: #eeeeee;
+            border: solid 1px #aaaaaa;
+            padding: 0.5em;
+        }
+        .programlisting {
+            background: #eeeeff;
+            border: solid 1px #aaaaff;
+            padding: 0.5em;
+        }
+        .variablelist {
+            padding: 4px;
+            margin-left: 3em;
+        }
+        .navigation {
+            background: #ffeeee;
+            border: solid 1px #ffaaaa;
+            margin-top: 0.5em;
+            margin-bottom: 0.5em;
+        }
+        .navigation a {
+            color: #770000;
+        }
+        .navigation a:visited {
+            color: #550000;
+        }
+        .navigation .title {
+            font-size: 200%;
+        }
+      </style><link rel="home" href="index.html" title="Gnome XML Library Reference Manual"><link rel="up" href="libxml-lib.html" title="Libxml Library Reference"><link rel="previous" href="libxml-uri.html" title="uri"><link rel="next" href="libxml-HTMLparser.html" title="HTMLparser"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-uri.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></img></a></td><td><a accesskey="u" href="libxml-lib.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></img></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></img></a></td><th width="100%" align="center">Gnome XML Library Reference Manual</th><td><a accesskey="n" href="libxml-HTMLparser.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></img></a></td></tr></table><div class="refentry" lang="en"><a name="libxml-xmlerror"></a><div class="titlepage"></div><div class="refnamediv"><h2>xmlerror</h2><p>xmlerror &#8212; </p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
 
-enum        <A
-HREF="libxml-xmlerror.html#XMLPARSERERRORS"
->xmlParserErrors</A
->;
-void        (<A
-HREF="libxml-xmlerror.html#XMLGENERICERRORFUNC"
->*xmlGenericErrorFunc</A
->)          (void *ctx,
+
+
+enum        <a href="libxml-xmlerror.html#xmlParserErrors">xmlParserErrors</a>;
+void        (<a href="libxml-xmlerror.html#xmlGenericErrorFunc">*xmlGenericErrorFunc</a>)          (void *ctx,
                                              const char *msg,
                                              ...);
-void        <A
-HREF="libxml-xmlerror.html#XMLSETGENERICERRORFUNC"
->xmlSetGenericErrorFunc</A
->          (void *ctx,
-                                             <A
-HREF="libxml-xmlerror.html#XMLGENERICERRORFUNC"
->xmlGenericErrorFunc</A
-> handler);
-void        <A
-HREF="libxml-xmlerror.html#INITGENERICERRORDEFAULTFUNC"
->initGenericErrorDefaultFunc</A
->     (<A
-HREF="libxml-xmlerror.html#XMLGENERICERRORFUNC"
->xmlGenericErrorFunc</A
-> *handler);
-void        <A
-HREF="libxml-xmlerror.html#XMLPARSERERROR"
->xmlParserError</A
->                  (void *ctx,
+void        <a href="libxml-xmlerror.html#xmlSetGenericErrorFunc">xmlSetGenericErrorFunc</a>          (void *ctx,
+                                             <a href="libxml-xmlerror.html#xmlGenericErrorFunc">xmlGenericErrorFunc</a> handler);
+void        <a href="libxml-xmlerror.html#initGenericErrorDefaultFunc">initGenericErrorDefaultFunc</a>     (<a href="libxml-xmlerror.html#xmlGenericErrorFunc">xmlGenericErrorFunc</a> *handler);
+void        <a href="libxml-xmlerror.html#xmlParserError">xmlParserError</a>                  (void *ctx,
                                              const char *msg,
                                              ...);
-void        <A
-HREF="libxml-xmlerror.html#XMLPARSERWARNING"
->xmlParserWarning</A
->                (void *ctx,
+void        <a href="libxml-xmlerror.html#xmlParserWarning">xmlParserWarning</a>                (void *ctx,
                                              const char *msg,
                                              ...);
-void        <A
-HREF="libxml-xmlerror.html#XMLPARSERVALIDITYERROR"
->xmlParserValidityError</A
->          (void *ctx,
+void        <a href="libxml-xmlerror.html#xmlParserValidityError">xmlParserValidityError</a>          (void *ctx,
                                              const char *msg,
                                              ...);
-void        <A
-HREF="libxml-xmlerror.html#XMLPARSERVALIDITYWARNING"
->xmlParserValidityWarning</A
->        (void *ctx,
+void        <a href="libxml-xmlerror.html#xmlParserValidityWarning">xmlParserValidityWarning</a>        (void *ctx,
                                              const char *msg,
                                              ...);
-void        <A
-HREF="libxml-xmlerror.html#XMLPARSERPRINTFILEINFO"
->xmlParserPrintFileInfo</A
->          (<A
-HREF="libxml-tree.html#XMLPARSERINPUTPTR"
->xmlParserInputPtr</A
-> input);
-void        <A
-HREF="libxml-xmlerror.html#XMLPARSERPRINTFILECONTEXT"
->xmlParserPrintFileContext</A
->       (<A
-HREF="libxml-tree.html#XMLPARSERINPUTPTR"
->xmlParserInputPtr</A
-> input);</PRE
-></TD
-></TR
-></TABLE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN12831"
-></A
-><H2
->Description</H2
-><P
-></P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN12834"
-></A
-><H2
->Details</H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN12836"
-></A
-><H3
-><A
-NAME="XMLPARSERERRORS"
-></A
->enum xmlParserErrors</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef enum {
+void        <a href="libxml-xmlerror.html#xmlParserPrintFileInfo">xmlParserPrintFileInfo</a>          (<a href="libxml-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> input);
+void        <a href="libxml-xmlerror.html#xmlParserPrintFileContext">xmlParserPrintFileContext</a>       (<a href="libxml-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> input);
+</pre></div><div class="refsect1" lang="en"><h2>Description</h2><p>
+
+</p></div><div class="refsect1" lang="en"><h2>Details</h2><div class="refsect2" lang="en"><h3><a name="xmlParserErrors"></a>enum xmlParserErrors</h3><pre class="programlisting">typedef enum {
     XML_ERR_OK = 0,
     XML_ERR_INTERNAL_ERROR,
     XML_ERR_NO_MEMORY,
@@ -378,949 +185,77 @@ CLASS="PROGRAMLISTING"
     XML_ERR_URI_FRAGMENT, /* 92 */
     XML_WAR_CATALOG_PI, /* 93 */
     XML_ERR_NO_DTD  /* 94 */
-}xmlParserErrors;</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN12841"
-></A
-><H3
-><A
-NAME="XMLGENERICERRORFUNC"
-></A
->xmlGenericErrorFunc ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        (*xmlGenericErrorFunc)          (void *ctx,
+}xmlParserErrors;
+</pre><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlGenericErrorFunc"></a>xmlGenericErrorFunc ()</h3><pre class="programlisting">void        (*xmlGenericErrorFunc)          (void *ctx,
                                              const char *msg,
-                                             ...);</PRE
-></TD
-></TR
-></TABLE
-><P
->Signature of the function to use when there is an error and
-no parsing or validity context available .</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN12847"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctx</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->msg</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->...</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN12864"
-></A
-><H3
-><A
-NAME="XMLSETGENERICERRORFUNC"
-></A
->xmlSetGenericErrorFunc ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlSetGenericErrorFunc          (void *ctx,
-                                             <A
-HREF="libxml-xmlerror.html#XMLGENERICERRORFUNC"
->xmlGenericErrorFunc</A
-> handler);</PRE
-></TD
-></TR
-></TABLE
-><P
->Function to reset the handler and the error context for out of
+                                             ...);</pre><p>
+Signature of the function to use when there is an error and
+no parsing or validity context available .</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  a parsing context
+</td></tr><tr><td><span class="term"><i><tt>msg</tt></i> :</span></td><td>  the message
+</td></tr><tr><td><span class="term"><i><tt>...</tt></i> :</span></td><td>  the extra arguments of the varags to format the message
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSetGenericErrorFunc"></a>xmlSetGenericErrorFunc ()</h3><pre class="programlisting">void        xmlSetGenericErrorFunc          (void *ctx,
+                                             <a href="libxml-xmlerror.html#xmlGenericErrorFunc">xmlGenericErrorFunc</a> handler);</pre><p>
+Function to reset the handler and the error context for out of
 context error messages.
-This simply means that <TT
-CLASS="PARAMETER"
-><I
->handler</I
-></TT
-> will be called for subsequent
-error messages while not parsing nor validating. And <TT
-CLASS="PARAMETER"
-><I
->ctx</I
-></TT
-> will
-be passed as first argument to <TT
-CLASS="PARAMETER"
-><I
->handler</I
-></TT
->
+This simply means that <i><tt>handler</tt></i> will be called for subsequent
+error messages while not parsing nor validating. And <i><tt>ctx</tt></i> will
+be passed as first argument to <i><tt>handler</tt></i>
 One can simply force messages to be emitted to another FILE * than
-stderr by setting <TT
-CLASS="PARAMETER"
-><I
->ctx</I
-></TT
-> to this file handle and <TT
-CLASS="PARAMETER"
-><I
->handler</I
-></TT
-> to NULL.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN12876"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctx</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->handler</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN12889"
-></A
-><H3
-><A
-NAME="INITGENERICERRORDEFAULTFUNC"
-></A
->initGenericErrorDefaultFunc ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        initGenericErrorDefaultFunc     (<A
-HREF="libxml-xmlerror.html#XMLGENERICERRORFUNC"
->xmlGenericErrorFunc</A
-> *handler);</PRE
-></TD
-></TR
-></TABLE
-><P
->Set or reset (if NULL) the default handler for generic errors
-to the builtin error function.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN12896"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->handler</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN12905"
-></A
-><H3
-><A
-NAME="XMLPARSERERROR"
-></A
->xmlParserError ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlParserError                  (void *ctx,
+stderr by setting <i><tt>ctx</tt></i> to this file handle and <i><tt>handler</tt></i> to NULL.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  the new error handling context
+</td></tr><tr><td><span class="term"><i><tt>handler</tt></i> :</span></td><td>  the new handler function
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="initGenericErrorDefaultFunc"></a>initGenericErrorDefaultFunc ()</h3><pre class="programlisting">void        initGenericErrorDefaultFunc     (<a href="libxml-xmlerror.html#xmlGenericErrorFunc">xmlGenericErrorFunc</a> *handler);</pre><p>
+Set or reset (if NULL) the default handler for generic errors
+to the builtin error function.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>handler</tt></i> :</span></td><td>  the handler
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParserError"></a>xmlParserError ()</h3><pre class="programlisting">void        xmlParserError                  (void *ctx,
                                              const char *msg,
-                                             ...);</PRE
-></TD
-></TR
-></TABLE
-><P
->Display and format an error messages, gives file, line, position and
-extra parameters.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN12911"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctx</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->msg</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->...</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN12928"
-></A
-><H3
-><A
-NAME="XMLPARSERWARNING"
-></A
->xmlParserWarning ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlParserWarning                (void *ctx,
+                                             ...);</pre><p>
+Display and format an error messages, gives file, line, position and
+extra parameters.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><i><tt>msg</tt></i> :</span></td><td>  the message to display/transmit
+</td></tr><tr><td><span class="term"><i><tt>...</tt></i> :</span></td><td>  extra parameters for the message display
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParserWarning"></a>xmlParserWarning ()</h3><pre class="programlisting">void        xmlParserWarning                (void *ctx,
                                              const char *msg,
-                                             ...);</PRE
-></TD
-></TR
-></TABLE
-><P
->Display and format a warning messages, gives file, line, position and
-extra parameters.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN12934"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctx</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->msg</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->...</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN12951"
-></A
-><H3
-><A
-NAME="XMLPARSERVALIDITYERROR"
-></A
->xmlParserValidityError ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlParserValidityError          (void *ctx,
+                                             ...);</pre><p>
+Display and format a warning messages, gives file, line, position and
+extra parameters.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><i><tt>msg</tt></i> :</span></td><td>  the message to display/transmit
+</td></tr><tr><td><span class="term"><i><tt>...</tt></i> :</span></td><td>  extra parameters for the message display
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParserValidityError"></a>xmlParserValidityError ()</h3><pre class="programlisting">void        xmlParserValidityError          (void *ctx,
                                              const char *msg,
-                                             ...);</PRE
-></TD
-></TR
-></TABLE
-><P
->Display and format an validity error messages, gives file,
-line, position and extra parameters.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN12957"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctx</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->msg</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->...</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN12974"
-></A
-><H3
-><A
-NAME="XMLPARSERVALIDITYWARNING"
-></A
->xmlParserValidityWarning ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlParserValidityWarning        (void *ctx,
+                                             ...);</pre><p>
+Display and format an validity error messages, gives file,
+line, position and extra parameters.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><i><tt>msg</tt></i> :</span></td><td>  the message to display/transmit
+</td></tr><tr><td><span class="term"><i><tt>...</tt></i> :</span></td><td>  extra parameters for the message display
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParserValidityWarning"></a>xmlParserValidityWarning ()</h3><pre class="programlisting">void        xmlParserValidityWarning        (void *ctx,
                                              const char *msg,
-                                             ...);</PRE
-></TD
-></TR
-></TABLE
-><P
->Display and format a validity warning messages, gives file, line,
-position and extra parameters.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN12980"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctx</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->msg</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->...</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN12997"
-></A
-><H3
-><A
-NAME="XMLPARSERPRINTFILEINFO"
-></A
->xmlParserPrintFileInfo ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlParserPrintFileInfo          (<A
-HREF="libxml-tree.html#XMLPARSERINPUTPTR"
->xmlParserInputPtr</A
-> input);</PRE
-></TD
-></TR
-></TABLE
-><P
->Displays the associated file and line informations for the current input</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN13004"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->input</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN13013"
-></A
-><H3
-><A
-NAME="XMLPARSERPRINTFILECONTEXT"
-></A
->xmlParserPrintFileContext ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlParserPrintFileContext       (<A
-HREF="libxml-tree.html#XMLPARSERINPUTPTR"
->xmlParserInputPtr</A
-> input);</PRE
-></TD
-></TR
-></TABLE
-><P
->Displays current context within the input content for error tracking</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN13020"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->input</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><BR
-CLEAR="all"><BR><TABLE
-WIDTH="100%"
-BORDER="0"
-BGCOLOR="#000000"
-CELLPADDING="1"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="left"
-><A
-HREF="libxml-uri.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->&#60;&#60;&#60; Previous Page</B
-></FONT
-></A
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#0000C0"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="book1.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Home</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#00C000"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="libxml-lib.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Up</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="right"
-><A
-HREF="libxml-htmlparser.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Next Page &#62;&#62;&#62;</B
-></FONT
-></A
-></TD
-></TR
-><TR
-><TD
-COLSPAN="2"
-ALIGN="left"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->uri</B
-></FONT
-></TD
-><TD
-COLSPAN="2"
-ALIGN="right"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->HTMLparser</B
-></FONT
-></TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+                                             ...);</pre><p>
+Display and format a validity warning messages, gives file, line,
+position and extra parameters.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><i><tt>msg</tt></i> :</span></td><td>  the message to display/transmit
+</td></tr><tr><td><span class="term"><i><tt>...</tt></i> :</span></td><td>  extra parameters for the message display
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParserPrintFileInfo"></a>xmlParserPrintFileInfo ()</h3><pre class="programlisting">void        xmlParserPrintFileInfo          (<a href="libxml-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> input);</pre><p>
+Displays the associated file and line informations for the current input</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>input</tt></i> :</span></td><td>  an xmlParserInputPtr input
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParserPrintFileContext"></a>xmlParserPrintFileContext ()</h3><pre class="programlisting">void        xmlParserPrintFileContext       (<a href="libxml-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> input);</pre><p>
+Displays current context within the input content for error tracking</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>input</tt></i> :</span></td><td>  an xmlParserInputPtr input
+</td></tr></tbody></table></div></div></div></div><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-uri.html"><b>&lt;&lt; uri</b></a></td><td align="right"><a accesskey="n" href="libxml-HTMLparser.html"><b>HTMLparser &gt;&gt;</b></a></td></tr></table></body></html>

@@ -1,364 +1,81 @@
-<HTML
-><HEAD
-><TITLE
->xmlschemas</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.76b+
-"><LINK
-REL="HOME"
-TITLE="Gnome XML Library Reference Manual"
-HREF="book1.html"><LINK
-REL="UP"
-TITLE="Libxml Library Reference"
-HREF="libxml-lib.html"><LINK
-REL="PREVIOUS"
-TITLE="xmlunicode"
-HREF="libxml-xmlunicode.html"><LINK
-REL="NEXT"
-TITLE="xmlschemastypes"
-HREF="libxml-xmlschemastypes.html"></HEAD
-><BODY
-CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-WIDTH="100%"
-BORDER="0"
-BGCOLOR="#000000"
-CELLPADDING="1"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="4"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="5"
->Gnome XML Library Reference Manual</FONT
-></TH
-></TR
-><TR
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="left"
-><A
-HREF="libxml-xmlunicode.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->&#60;&#60;&#60; Previous Page</B
-></FONT
-></A
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#0000C0"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="book1.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Home</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#00C000"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="libxml-lib.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Up</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="right"
-><A
-HREF="libxml-xmlschemastypes.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Next Page &#62;&#62;&#62;</B
-></FONT
-></A
-></TD
-></TR
-></TABLE
-></DIV
-><H1
-><A
-NAME="LIBXML-XMLSCHEMAS"
-></A
->xmlschemas</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN33172"
-></A
-><H2
->Name</H2
->xmlschemas&nbsp;--&nbsp;</DIV
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN33175"
-></A
-><H2
->Synopsis</H2
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="SYNOPSIS"
->&#13;
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>xmlschemas</title><meta name="generator" content="DocBook XSL Stylesheets V1.58.1"><style xmlns="http://www.w3.org/TR/xhtml1/transitional" type="text/css">
+        .synopsis, .classsynopsis {
+            background: #eeeeee;
+            border: solid 1px #aaaaaa;
+            padding: 0.5em;
+        }
+        .programlisting {
+            background: #eeeeff;
+            border: solid 1px #aaaaff;
+            padding: 0.5em;
+        }
+        .variablelist {
+            padding: 4px;
+            margin-left: 3em;
+        }
+        .navigation {
+            background: #ffeeee;
+            border: solid 1px #ffaaaa;
+            margin-top: 0.5em;
+            margin-bottom: 0.5em;
+        }
+        .navigation a {
+            color: #770000;
+        }
+        .navigation a:visited {
+            color: #550000;
+        }
+        .navigation .title {
+            font-size: 200%;
+        }
+      </style><link rel="home" href="index.html" title="Gnome XML Library Reference Manual"><link rel="up" href="libxml-lib.html" title="Libxml Library Reference"><link rel="previous" href="libxml-xmlunicode.html" title="xmlunicode"><link rel="next" href="libxml-xmlschemastypes.html" title="xmlschemastypes"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-xmlunicode.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></img></a></td><td><a accesskey="u" href="libxml-lib.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></img></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></img></a></td><th width="100%" align="center">Gnome XML Library Reference Manual</th><td><a accesskey="n" href="libxml-xmlschemastypes.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></img></a></td></tr></table><div class="refentry" lang="en"><a name="libxml-xmlschemas"></a><div class="titlepage"></div><div class="refnamediv"><h2>xmlschemas</h2><p>xmlschemas &#8212; </p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
 
-enum        <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDERROR"
->xmlSchemaValidError</A
->;
-struct      <A
-HREF="libxml-xmlschemas.html#XMLSCHEMA"
->xmlSchema</A
->;
-typedef     <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAPTR"
->xmlSchemaPtr</A
->;
-void        (<A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDITYERRORFUNC"
->*xmlSchemaValidityErrorFunc</A
->)   (void *ctx,
+
+
+enum        <a href="libxml-xmlschemas.html#xmlSchemaValidError">xmlSchemaValidError</a>;
+struct      <a href="libxml-xmlschemas.html#xmlSchema">xmlSchema</a>;
+typedef     <a href="libxml-xmlschemas.html#xmlSchemaPtr">xmlSchemaPtr</a>;
+void        (<a href="libxml-xmlschemas.html#xmlSchemaValidityErrorFunc">*xmlSchemaValidityErrorFunc</a>)   (void *ctx,
                                              const char *msg,
                                              ...);
-void        (<A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDITYWARNINGFUNC"
->*xmlSchemaValidityWarningFunc</A
->) (void *ctx,
+void        (<a href="libxml-xmlschemas.html#xmlSchemaValidityWarningFunc">*xmlSchemaValidityWarningFunc</a>) (void *ctx,
                                              const char *msg,
                                              ...);
-struct      <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAPARSERCTXT"
->xmlSchemaParserCtxt</A
->;
-typedef     <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAPARSERCTXTPTR"
->xmlSchemaParserCtxtPtr</A
->;
-struct      <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDCTXT"
->xmlSchemaValidCtxt</A
->;
-typedef     <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDCTXTPTR"
->xmlSchemaValidCtxtPtr</A
->;
-<A
-HREF="libxml-xmlschemas.html#XMLSCHEMAPARSERCTXTPTR"
->xmlSchemaParserCtxtPtr</A
-> <A
-HREF="libxml-xmlschemas.html#XMLSCHEMANEWPARSERCTXT"
->xmlSchemaNewParserCtxt</A
->
+struct      <a href="libxml-xmlschemas.html#xmlSchemaParserCtxt">xmlSchemaParserCtxt</a>;
+typedef     <a href="libxml-xmlschemas.html#xmlSchemaParserCtxtPtr">xmlSchemaParserCtxtPtr</a>;
+struct      <a href="libxml-xmlschemas.html#xmlSchemaValidCtxt">xmlSchemaValidCtxt</a>;
+typedef     <a href="libxml-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a>;
+<a href="libxml-xmlschemas.html#xmlSchemaParserCtxtPtr">xmlSchemaParserCtxtPtr</a> <a href="libxml-xmlschemas.html#xmlSchemaNewParserCtxt">xmlSchemaNewParserCtxt</a>
                                             (const char *URL);
-<A
-HREF="libxml-xmlschemas.html#XMLSCHEMAPARSERCTXTPTR"
->xmlSchemaParserCtxtPtr</A
-> <A
-HREF="libxml-xmlschemas.html#XMLSCHEMANEWMEMPARSERCTXT"
->xmlSchemaNewMemParserCtxt</A
->
+<a href="libxml-xmlschemas.html#xmlSchemaParserCtxtPtr">xmlSchemaParserCtxtPtr</a> <a href="libxml-xmlschemas.html#xmlSchemaNewMemParserCtxt">xmlSchemaNewMemParserCtxt</a>
                                             (const char *buffer,
                                              int size);
-void        <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAFREEPARSERCTXT"
->xmlSchemaFreeParserCtxt</A
->         (<A
-HREF="libxml-xmlschemas.html#XMLSCHEMAPARSERCTXTPTR"
->xmlSchemaParserCtxtPtr</A
-> ctxt);
-void        <A
-HREF="libxml-xmlschemas.html#XMLSCHEMASETPARSERERRORS"
->xmlSchemaSetParserErrors</A
->        (<A
-HREF="libxml-xmlschemas.html#XMLSCHEMAPARSERCTXTPTR"
->xmlSchemaParserCtxtPtr</A
-> ctxt,
-                                             <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDITYERRORFUNC"
->xmlSchemaValidityErrorFunc</A
-> err,
-                                             <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDITYWARNINGFUNC"
->xmlSchemaValidityWarningFunc</A
-> warn,
+void        <a href="libxml-xmlschemas.html#xmlSchemaFreeParserCtxt">xmlSchemaFreeParserCtxt</a>         (<a href="libxml-xmlschemas.html#xmlSchemaParserCtxtPtr">xmlSchemaParserCtxtPtr</a> ctxt);
+void        <a href="libxml-xmlschemas.html#xmlSchemaSetParserErrors">xmlSchemaSetParserErrors</a>        (<a href="libxml-xmlschemas.html#xmlSchemaParserCtxtPtr">xmlSchemaParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-xmlschemas.html#xmlSchemaValidityErrorFunc">xmlSchemaValidityErrorFunc</a> err,
+                                             <a href="libxml-xmlschemas.html#xmlSchemaValidityWarningFunc">xmlSchemaValidityWarningFunc</a> warn,
                                              void *ctx);
-<A
-HREF="libxml-xmlschemas.html#XMLSCHEMAPTR"
->xmlSchemaPtr</A
-> <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAPARSE"
->xmlSchemaParse</A
->                 (<A
-HREF="libxml-xmlschemas.html#XMLSCHEMAPARSERCTXTPTR"
->xmlSchemaParserCtxtPtr</A
-> ctxt);
-void        <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAFREE"
->xmlSchemaFree</A
->                   (<A
-HREF="libxml-xmlschemas.html#XMLSCHEMAPTR"
->xmlSchemaPtr</A
-> schema);
-void        <A
-HREF="libxml-xmlschemas.html#XMLSCHEMADUMP"
->xmlSchemaDump</A
->                   (<GTKDOCLINK
-HREF="FILE-CAPS"
->FILE</GTKDOCLINK
-> *output,
-                                             <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAPTR"
->xmlSchemaPtr</A
-> schema);
-void        <A
-HREF="libxml-xmlschemas.html#XMLSCHEMASETVALIDERRORS"
->xmlSchemaSetValidErrors</A
->         (<A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDCTXTPTR"
->xmlSchemaValidCtxtPtr</A
-> ctxt,
-                                             <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDITYERRORFUNC"
->xmlSchemaValidityErrorFunc</A
-> err,
-                                             <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDITYWARNINGFUNC"
->xmlSchemaValidityWarningFunc</A
-> warn,
+<a href="libxml-xmlschemas.html#xmlSchemaPtr">xmlSchemaPtr</a> <a href="libxml-xmlschemas.html#xmlSchemaParse">xmlSchemaParse</a>                 (<a href="libxml-xmlschemas.html#xmlSchemaParserCtxtPtr">xmlSchemaParserCtxtPtr</a> ctxt);
+void        <a href="libxml-xmlschemas.html#xmlSchemaFree">xmlSchemaFree</a>                   (<a href="libxml-xmlschemas.html#xmlSchemaPtr">xmlSchemaPtr</a> schema);
+void        <a href="libxml-xmlschemas.html#xmlSchemaDump">xmlSchemaDump</a>                   (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="FILE-CAPS">FILE</GTKDOCLINK> *output,
+                                             <a href="libxml-xmlschemas.html#xmlSchemaPtr">xmlSchemaPtr</a> schema);
+void        <a href="libxml-xmlschemas.html#xmlSchemaSetValidErrors">xmlSchemaSetValidErrors</a>         (<a href="libxml-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a> ctxt,
+                                             <a href="libxml-xmlschemas.html#xmlSchemaValidityErrorFunc">xmlSchemaValidityErrorFunc</a> err,
+                                             <a href="libxml-xmlschemas.html#xmlSchemaValidityWarningFunc">xmlSchemaValidityWarningFunc</a> warn,
                                              void *ctx);
-<A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDCTXTPTR"
->xmlSchemaValidCtxtPtr</A
-> <A
-HREF="libxml-xmlschemas.html#XMLSCHEMANEWVALIDCTXT"
->xmlSchemaNewValidCtxt</A
-> (<A
-HREF="libxml-xmlschemas.html#XMLSCHEMAPTR"
->xmlSchemaPtr</A
-> schema);
-void        <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAFREEVALIDCTXT"
->xmlSchemaFreeValidCtxt</A
->          (<A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDCTXTPTR"
->xmlSchemaValidCtxtPtr</A
-> ctxt);
-int         <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDATEDOC"
->xmlSchemaValidateDoc</A
->            (<A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDCTXTPTR"
->xmlSchemaValidCtxtPtr</A
-> ctxt,
-                                             <A
-HREF="libxml-tree.html#XMLDOCPTR"
->xmlDocPtr</A
-> instance);
-int         <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDATESTREAM"
->xmlSchemaValidateStream</A
->         (<A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDCTXTPTR"
->xmlSchemaValidCtxtPtr</A
-> ctxt,
-                                             <A
-HREF="libxml-tree.html#XMLPARSERINPUTBUFFERPTR"
->xmlParserInputBufferPtr</A
-> input,
-                                             <A
-HREF="libxml-encoding.html#XMLCHARENCODING"
->xmlCharEncoding</A
-> enc,
-                                             <A
-HREF="libxml-tree.html#XMLSAXHANDLERPTR"
->xmlSAXHandlerPtr</A
-> sax,
-                                             void *user_data);</PRE
-></TD
-></TR
-></TABLE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN33222"
-></A
-><H2
->Description</H2
-><P
-></P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN33225"
-></A
-><H2
->Details</H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN33227"
-></A
-><H3
-><A
-NAME="XMLSCHEMAVALIDERROR"
-></A
->enum xmlSchemaValidError</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef enum {
+<a href="libxml-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a> <a href="libxml-xmlschemas.html#xmlSchemaNewValidCtxt">xmlSchemaNewValidCtxt</a> (<a href="libxml-xmlschemas.html#xmlSchemaPtr">xmlSchemaPtr</a> schema);
+void        <a href="libxml-xmlschemas.html#xmlSchemaFreeValidCtxt">xmlSchemaFreeValidCtxt</a>          (<a href="libxml-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a> ctxt);
+int         <a href="libxml-xmlschemas.html#xmlSchemaValidateDoc">xmlSchemaValidateDoc</a>            (<a href="libxml-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> instance);
+int         <a href="libxml-xmlschemas.html#xmlSchemaValidateStream">xmlSchemaValidateStream</a>         (<a href="libxml-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a> input,
+                                             <a href="libxml-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc,
+                                             <a href="libxml-tree.html#xmlSAXHandlerPtr">xmlSAXHandlerPtr</a> sax,
+                                             void *user_data);
+</pre></div><div class="refsect1" lang="en"><h2>Description</h2><p>
+
+</p></div><div class="refsect1" lang="en"><h2>Details</h2><div class="refsect2" lang="en"><h3><a name="xmlSchemaValidError"></a>enum xmlSchemaValidError</h3><pre class="programlisting">typedef enum {
     XML_SCHEMAS_ERR_OK		= 0,
     XML_SCHEMAS_ERR_NOROOT	= 1,
     XML_SCHEMAS_ERR_UNDECLAREDELEM,
@@ -382,35 +99,13 @@ CLASS="PROGRAMLISTING"
     XML_SCHEMAS_ERR_ATTRUNKNOWN,
     XML_SCHEMAS_ERR_ATTRINVALID,
     XML_SCHEMAS_ERR_VALUE,
+    XML_SCHEMAS_ERR_FACET,
     XML_SCHEMAS_ERR_,
     XML_SCHEMAS_ERR_XXX
-} xmlSchemaValidError;</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN33232"
-></A
-><H3
-><A
-NAME="XMLSCHEMA"
-></A
->struct xmlSchema</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->struct xmlSchema {
+} xmlSchemaValidError;
+</pre><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchema"></a>struct xmlSchema</h3><pre class="programlisting">struct xmlSchema {
     xmlChar *name;        /* schema name */
     xmlChar *targetNamespace;     /* the target namespace */
     xmlChar *version;
@@ -428,1605 +123,128 @@ CLASS="PROGRAMLISTING"
     xmlHashTablePtr schemasImports;
 
     void *_private;	/* unused by the library for users or bindings */
-};</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN33237"
-></A
-><H3
-><A
-NAME="XMLSCHEMAPTR"
-></A
->xmlSchemaPtr</H3
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN33241"
-></A
-><H3
-><A
-NAME="XMLSCHEMAVALIDITYERRORFUNC"
-></A
->xmlSchemaValidityErrorFunc ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        (*xmlSchemaValidityErrorFunc)   (void *ctx,
+};
+</pre><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaPtr"></a>xmlSchemaPtr</h3><pre class="programlisting">typedef xmlSchema *xmlSchemaPtr;
+</pre><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaValidityErrorFunc"></a>xmlSchemaValidityErrorFunc ()</h3><pre class="programlisting">void        (*xmlSchemaValidityErrorFunc)   (void *ctx,
                                              const char *msg,
-                                             ...);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN33246"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctx</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->msg</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->...</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN33263"
-></A
-><H3
-><A
-NAME="XMLSCHEMAVALIDITYWARNINGFUNC"
-></A
->xmlSchemaValidityWarningFunc ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        (*xmlSchemaValidityWarningFunc) (void *ctx,
+                                             ...);</pre><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>msg</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>...</tt></i> :</span></td><td>
+
+
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaValidityWarningFunc"></a>xmlSchemaValidityWarningFunc ()</h3><pre class="programlisting">void        (*xmlSchemaValidityWarningFunc) (void *ctx,
                                              const char *msg,
-                                             ...);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN33268"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctx</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->msg</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->...</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN33285"
-></A
-><H3
-><A
-NAME="XMLSCHEMAPARSERCTXT"
-></A
->struct xmlSchemaParserCtxt</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->struct xmlSchemaParserCtxt;</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN33290"
-></A
-><H3
-><A
-NAME="XMLSCHEMAPARSERCTXTPTR"
-></A
->xmlSchemaParserCtxtPtr</H3
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN33294"
-></A
-><H3
-><A
-NAME="XMLSCHEMAVALIDCTXT"
-></A
->struct xmlSchemaValidCtxt</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->struct xmlSchemaValidCtxt;</PRE
-></TD
-></TR
-></TABLE
-><P
->A Schemas validation context</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN33300"
-></A
-><H3
-><A
-NAME="XMLSCHEMAVALIDCTXTPTR"
-></A
->xmlSchemaValidCtxtPtr</H3
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN33304"
-></A
-><H3
-><A
-NAME="XMLSCHEMANEWPARSERCTXT"
-></A
->xmlSchemaNewParserCtxt ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><A
-HREF="libxml-xmlschemas.html#XMLSCHEMAPARSERCTXTPTR"
->xmlSchemaParserCtxtPtr</A
-> xmlSchemaNewParserCtxt
-                                            (const char *URL);</PRE
-></TD
-></TR
-></TABLE
-><P
->Create an XML Schemas parse context for that file/resource expected
-to contain an XML Schemas file.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN33311"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->URL</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN33324"
-></A
-><H3
-><A
-NAME="XMLSCHEMANEWMEMPARSERCTXT"
-></A
->xmlSchemaNewMemParserCtxt ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><A
-HREF="libxml-xmlschemas.html#XMLSCHEMAPARSERCTXTPTR"
->xmlSchemaParserCtxtPtr</A
-> xmlSchemaNewMemParserCtxt
+                                             ...);</pre><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>msg</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>...</tt></i> :</span></td><td>
+
+
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaParserCtxt"></a>struct xmlSchemaParserCtxt</h3><pre class="programlisting">struct xmlSchemaParserCtxt;</pre><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaParserCtxtPtr"></a>xmlSchemaParserCtxtPtr</h3><pre class="programlisting">typedef xmlSchemaParserCtxt *xmlSchemaParserCtxtPtr;
+</pre><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaValidCtxt"></a>struct xmlSchemaValidCtxt</h3><pre class="programlisting">struct xmlSchemaValidCtxt;</pre><p>
+A Schemas validation context</p><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaValidCtxtPtr"></a>xmlSchemaValidCtxtPtr</h3><pre class="programlisting">typedef xmlSchemaValidCtxt *xmlSchemaValidCtxtPtr;
+</pre><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaNewParserCtxt"></a>xmlSchemaNewParserCtxt ()</h3><pre class="programlisting"><a href="libxml-xmlschemas.html#xmlSchemaParserCtxtPtr">xmlSchemaParserCtxtPtr</a> xmlSchemaNewParserCtxt
+                                            (const char *URL);</pre><p>
+Create an XML Schemas parse context for that file/resource expected
+to contain an XML Schemas file.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>URL</tt></i> :</span></td><td>  the location of the schema
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the parser context or NULL in case of error
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaNewMemParserCtxt"></a>xmlSchemaNewMemParserCtxt ()</h3><pre class="programlisting"><a href="libxml-xmlschemas.html#xmlSchemaParserCtxtPtr">xmlSchemaParserCtxtPtr</a> xmlSchemaNewMemParserCtxt
                                             (const char *buffer,
-                                             int size);</PRE
-></TD
-></TR
-></TABLE
-><P
->Create an XML Schemas parse context for that memory buffer expected
-to contain an XML Schemas file.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN33331"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->buffer</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->size</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN33348"
-></A
-><H3
-><A
-NAME="XMLSCHEMAFREEPARSERCTXT"
-></A
->xmlSchemaFreeParserCtxt ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlSchemaFreeParserCtxt         (<A
-HREF="libxml-xmlschemas.html#XMLSCHEMAPARSERCTXTPTR"
->xmlSchemaParserCtxtPtr</A
-> ctxt);</PRE
-></TD
-></TR
-></TABLE
-><P
->Free the resources associated to the schema parser context</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN33355"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctxt</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN33364"
-></A
-><H3
-><A
-NAME="XMLSCHEMASETPARSERERRORS"
-></A
->xmlSchemaSetParserErrors ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlSchemaSetParserErrors        (<A
-HREF="libxml-xmlschemas.html#XMLSCHEMAPARSERCTXTPTR"
->xmlSchemaParserCtxtPtr</A
-> ctxt,
-                                             <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDITYERRORFUNC"
->xmlSchemaValidityErrorFunc</A
-> err,
-                                             <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDITYWARNINGFUNC"
->xmlSchemaValidityWarningFunc</A
-> warn,
-                                             void *ctx);</PRE
-></TD
-></TR
-></TABLE
-><P
->Set the callback functions used to handle errors for a validation context</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN33373"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctxt</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->err</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->warn</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctx</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN33394"
-></A
-><H3
-><A
-NAME="XMLSCHEMAPARSE"
-></A
->xmlSchemaParse ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><A
-HREF="libxml-xmlschemas.html#XMLSCHEMAPTR"
->xmlSchemaPtr</A
-> xmlSchemaParse                 (<A
-HREF="libxml-xmlschemas.html#XMLSCHEMAPARSERCTXTPTR"
->xmlSchemaParserCtxtPtr</A
-> ctxt);</PRE
-></TD
-></TR
-></TABLE
-><P
->parse a schema definition resource and build an internal
+                                             int size);</pre><p>
+Create an XML Schemas parse context for that memory buffer expected
+to contain an XML Schemas file.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>buffer</tt></i> :</span></td><td>  a pointer to a char array containing the schemas
+</td></tr><tr><td><span class="term"><i><tt>size</tt></i> :</span></td><td>  the size of the array
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the parser context or NULL in case of error
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaFreeParserCtxt"></a>xmlSchemaFreeParserCtxt ()</h3><pre class="programlisting">void        xmlSchemaFreeParserCtxt         (<a href="libxml-xmlschemas.html#xmlSchemaParserCtxtPtr">xmlSchemaParserCtxtPtr</a> ctxt);</pre><p>
+Free the resources associated to the schema parser context</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the schema parser context
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaSetParserErrors"></a>xmlSchemaSetParserErrors ()</h3><pre class="programlisting">void        xmlSchemaSetParserErrors        (<a href="libxml-xmlschemas.html#xmlSchemaParserCtxtPtr">xmlSchemaParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-xmlschemas.html#xmlSchemaValidityErrorFunc">xmlSchemaValidityErrorFunc</a> err,
+                                             <a href="libxml-xmlschemas.html#xmlSchemaValidityWarningFunc">xmlSchemaValidityWarningFunc</a> warn,
+                                             void *ctx);</pre><p>
+Set the callback functions used to handle errors for a validation context</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  a schema validation context
+</td></tr><tr><td><span class="term"><i><tt>err</tt></i> :</span></td><td>  the error callback
+</td></tr><tr><td><span class="term"><i><tt>warn</tt></i> :</span></td><td>  the warning callback
+</td></tr><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  contextual data for the callbacks
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaParse"></a>xmlSchemaParse ()</h3><pre class="programlisting"><a href="libxml-xmlschemas.html#xmlSchemaPtr">xmlSchemaPtr</a> xmlSchemaParse                 (<a href="libxml-xmlschemas.html#xmlSchemaParserCtxtPtr">xmlSchemaParserCtxtPtr</a> ctxt);</pre><p>
+parse a schema definition resource and build an internal
 XML Shema struture which can be used to validate instances.
-*WARNING* this interface is highly subject to change</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN33402"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctxt</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN33415"
-></A
-><H3
-><A
-NAME="XMLSCHEMAFREE"
-></A
->xmlSchemaFree ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlSchemaFree                   (<A
-HREF="libxml-xmlschemas.html#XMLSCHEMAPTR"
->xmlSchemaPtr</A
-> schema);</PRE
-></TD
-></TR
-></TABLE
-><P
->Deallocate a Schema structure.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN33422"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->schema</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN33431"
-></A
-><H3
-><A
-NAME="XMLSCHEMADUMP"
-></A
->xmlSchemaDump ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlSchemaDump                   (<GTKDOCLINK
-HREF="FILE-CAPS"
->FILE</GTKDOCLINK
-> *output,
-                                             <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAPTR"
->xmlSchemaPtr</A
-> schema);</PRE
-></TD
-></TR
-></TABLE
-><P
->Dump a Schema structure.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN33439"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->output</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->schema</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN33452"
-></A
-><H3
-><A
-NAME="XMLSCHEMASETVALIDERRORS"
-></A
->xmlSchemaSetValidErrors ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlSchemaSetValidErrors         (<A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDCTXTPTR"
->xmlSchemaValidCtxtPtr</A
-> ctxt,
-                                             <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDITYERRORFUNC"
->xmlSchemaValidityErrorFunc</A
-> err,
-                                             <A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDITYWARNINGFUNC"
->xmlSchemaValidityWarningFunc</A
-> warn,
-                                             void *ctx);</PRE
-></TD
-></TR
-></TABLE
-><P
->Set the error and warning callback informations</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN33461"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctxt</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->err</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->warn</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctx</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN33482"
-></A
-><H3
-><A
-NAME="XMLSCHEMANEWVALIDCTXT"
-></A
->xmlSchemaNewValidCtxt ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDCTXTPTR"
->xmlSchemaValidCtxtPtr</A
-> xmlSchemaNewValidCtxt (<A
-HREF="libxml-xmlschemas.html#XMLSCHEMAPTR"
->xmlSchemaPtr</A
-> schema);</PRE
-></TD
-></TR
-></TABLE
-><P
->Create an XML Schemas validation context based on the given schema</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN33490"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->schema</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN33503"
-></A
-><H3
-><A
-NAME="XMLSCHEMAFREEVALIDCTXT"
-></A
->xmlSchemaFreeValidCtxt ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlSchemaFreeValidCtxt          (<A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDCTXTPTR"
->xmlSchemaValidCtxtPtr</A
-> ctxt);</PRE
-></TD
-></TR
-></TABLE
-><P
->Free the resources associated to the schema validation context</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN33510"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctxt</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN33519"
-></A
-><H3
-><A
-NAME="XMLSCHEMAVALIDATEDOC"
-></A
->xmlSchemaValidateDoc ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSchemaValidateDoc            (<A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDCTXTPTR"
->xmlSchemaValidCtxtPtr</A
-> ctxt,
-                                             <A
-HREF="libxml-tree.html#XMLDOCPTR"
->xmlDocPtr</A
-> instance);</PRE
-></TD
-></TR
-></TABLE
-><P
->Validate a document tree in memory.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN33527"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctxt</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->instance</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN33544"
-></A
-><H3
-><A
-NAME="XMLSCHEMAVALIDATESTREAM"
-></A
->xmlSchemaValidateStream ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSchemaValidateStream         (<A
-HREF="libxml-xmlschemas.html#XMLSCHEMAVALIDCTXTPTR"
->xmlSchemaValidCtxtPtr</A
-> ctxt,
-                                             <A
-HREF="libxml-tree.html#XMLPARSERINPUTBUFFERPTR"
->xmlParserInputBufferPtr</A
-> input,
-                                             <A
-HREF="libxml-encoding.html#XMLCHARENCODING"
->xmlCharEncoding</A
-> enc,
-                                             <A
-HREF="libxml-tree.html#XMLSAXHANDLERPTR"
->xmlSAXHandlerPtr</A
-> sax,
-                                             void *user_data);</PRE
-></TD
-></TR
-></TABLE
-><P
->Validate a document tree in memory.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN33554"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctxt</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->input</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->enc</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->sax</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->user_data</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><BR
-CLEAR="all"><BR><TABLE
-WIDTH="100%"
-BORDER="0"
-BGCOLOR="#000000"
-CELLPADDING="1"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="left"
-><A
-HREF="libxml-xmlunicode.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->&#60;&#60;&#60; Previous Page</B
-></FONT
-></A
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#0000C0"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="book1.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Home</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#00C000"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="libxml-lib.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Up</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="right"
-><A
-HREF="libxml-xmlschemastypes.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Next Page &#62;&#62;&#62;</B
-></FONT
-></A
-></TD
-></TR
-><TR
-><TD
-COLSPAN="2"
-ALIGN="left"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->xmlunicode</B
-></FONT
-></TD
-><TD
-COLSPAN="2"
-ALIGN="right"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->xmlschemastypes</B
-></FONT
-></TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+*WARNING* this interface is highly subject to change</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  a schema validation context
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the internal XML Schema structure built from the resource or
+        NULL in case of error
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaFree"></a>xmlSchemaFree ()</h3><pre class="programlisting">void        xmlSchemaFree                   (<a href="libxml-xmlschemas.html#xmlSchemaPtr">xmlSchemaPtr</a> schema);</pre><p>
+Deallocate a Schema structure.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>schema</tt></i> :</span></td><td>  a schema structure
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaDump"></a>xmlSchemaDump ()</h3><pre class="programlisting">void        xmlSchemaDump                   (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="FILE-CAPS">FILE</GTKDOCLINK> *output,
+                                             <a href="libxml-xmlschemas.html#xmlSchemaPtr">xmlSchemaPtr</a> schema);</pre><p>
+Dump a Schema structure.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>output</tt></i> :</span></td><td>  the file output
+</td></tr><tr><td><span class="term"><i><tt>schema</tt></i> :</span></td><td>  a schema structure
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaSetValidErrors"></a>xmlSchemaSetValidErrors ()</h3><pre class="programlisting">void        xmlSchemaSetValidErrors         (<a href="libxml-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a> ctxt,
+                                             <a href="libxml-xmlschemas.html#xmlSchemaValidityErrorFunc">xmlSchemaValidityErrorFunc</a> err,
+                                             <a href="libxml-xmlschemas.html#xmlSchemaValidityWarningFunc">xmlSchemaValidityWarningFunc</a> warn,
+                                             void *ctx);</pre><p>
+Set the error and warning callback informations</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  a schema validation context
+</td></tr><tr><td><span class="term"><i><tt>err</tt></i> :</span></td><td>  the error function
+</td></tr><tr><td><span class="term"><i><tt>warn</tt></i> :</span></td><td> the warning function
+</td></tr><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td> the functions context
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaNewValidCtxt"></a>xmlSchemaNewValidCtxt ()</h3><pre class="programlisting"><a href="libxml-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a> xmlSchemaNewValidCtxt (<a href="libxml-xmlschemas.html#xmlSchemaPtr">xmlSchemaPtr</a> schema);</pre><p>
+Create an XML Schemas validation context based on the given schema</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>schema</tt></i> :</span></td><td>  a precompiled XML Schemas
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the validation context or NULL in case of error
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaFreeValidCtxt"></a>xmlSchemaFreeValidCtxt ()</h3><pre class="programlisting">void        xmlSchemaFreeValidCtxt          (<a href="libxml-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a> ctxt);</pre><p>
+Free the resources associated to the schema validation context</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the schema validation context
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaValidateDoc"></a>xmlSchemaValidateDoc ()</h3><pre class="programlisting">int         xmlSchemaValidateDoc            (<a href="libxml-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> instance);</pre><p>
+Validate a document tree in memory.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  a schema validation context
+</td></tr><tr><td><span class="term"><i><tt>instance</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 if the document is schemas valid, a positive error code
+    number otherwise and -1 in case of internal or API error.
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSchemaValidateStream"></a>xmlSchemaValidateStream ()</h3><pre class="programlisting">int         xmlSchemaValidateStream         (<a href="libxml-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a> input,
+                                             <a href="libxml-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc,
+                                             <a href="libxml-tree.html#xmlSAXHandlerPtr">xmlSAXHandlerPtr</a> sax,
+                                             void *user_data);</pre><p>
+Validate a document tree in memory.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  a schema validation context
+</td></tr><tr><td><span class="term"><i><tt>input</tt></i> :</span></td><td>  the input to use for reading the data
+</td></tr><tr><td><span class="term"><i><tt>enc</tt></i> :</span></td><td>  an optional encoding information
+</td></tr><tr><td><span class="term"><i><tt>sax</tt></i> :</span></td><td>  a SAX handler for the resulting events
+</td></tr><tr><td><span class="term"><i><tt>user_data</tt></i> :</span></td><td>  the context to provide to the SAX handler.
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 if the document is schemas valid, a positive error code
+    number otherwise and -1 in case of internal or API error.
+</td></tr></tbody></table></div></div></div></div><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-xmlunicode.html"><b>&lt;&lt; xmlunicode</b></a></td><td align="right"><a accesskey="n" href="libxml-xmlschemastypes.html"><b>xmlschemastypes &gt;&gt;</b></a></td></tr></table></body></html>

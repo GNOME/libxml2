@@ -1,482 +1,87 @@
-<HTML
-><HEAD
-><TITLE
->globals</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.76b+
-"><LINK
-REL="HOME"
-TITLE="Gnome XML Library Reference Manual"
-HREF="book1.html"><LINK
-REL="UP"
-TITLE="Libxml Library Reference"
-HREF="libxml-lib.html"><LINK
-REL="PREVIOUS"
-TITLE="threads"
-HREF="libxml-threads.html"><LINK
-REL="NEXT"
-TITLE="DOCBparser"
-HREF="libxml-docbparser.html"></HEAD
-><BODY
-CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-WIDTH="100%"
-BORDER="0"
-BGCOLOR="#000000"
-CELLPADDING="1"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="4"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="5"
->Gnome XML Library Reference Manual</FONT
-></TH
-></TR
-><TR
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="left"
-><A
-HREF="libxml-threads.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->&#60;&#60;&#60; Previous Page</B
-></FONT
-></A
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#0000C0"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="book1.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Home</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#00C000"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="libxml-lib.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Up</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="right"
-><A
-HREF="libxml-docbparser.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Next Page &#62;&#62;&#62;</B
-></FONT
-></A
-></TD
-></TR
-></TABLE
-></DIV
-><H1
-><A
-NAME="LIBXML-GLOBALS"
-></A
->globals</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN23066"
-></A
-><H2
->Name</H2
->globals&nbsp;--&nbsp;</DIV
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN23069"
-></A
-><H2
->Synopsis</H2
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="SYNOPSIS"
->&#13;
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>globals</title><meta name="generator" content="DocBook XSL Stylesheets V1.58.1"><style xmlns="http://www.w3.org/TR/xhtml1/transitional" type="text/css">
+        .synopsis, .classsynopsis {
+            background: #eeeeee;
+            border: solid 1px #aaaaaa;
+            padding: 0.5em;
+        }
+        .programlisting {
+            background: #eeeeff;
+            border: solid 1px #aaaaff;
+            padding: 0.5em;
+        }
+        .variablelist {
+            padding: 4px;
+            margin-left: 3em;
+        }
+        .navigation {
+            background: #ffeeee;
+            border: solid 1px #ffaaaa;
+            margin-top: 0.5em;
+            margin-bottom: 0.5em;
+        }
+        .navigation a {
+            color: #770000;
+        }
+        .navigation a:visited {
+            color: #550000;
+        }
+        .navigation .title {
+            font-size: 200%;
+        }
+      </style><link rel="home" href="index.html" title="Gnome XML Library Reference Manual"><link rel="up" href="libxml-lib.html" title="Libxml Library Reference"><link rel="previous" href="libxml-threads.html" title="threads"><link rel="next" href="libxml-DOCBparser.html" title="DOCBparser"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-threads.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></img></a></td><td><a accesskey="u" href="libxml-lib.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></img></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></img></a></td><th width="100%" align="center">Gnome XML Library Reference Manual</th><td><a accesskey="n" href="libxml-DOCBparser.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></img></a></td></tr></table><div class="refentry" lang="en"><a name="libxml-globals"></a><div class="titlepage"></div><div class="refnamediv"><h2>globals</h2><p>globals &#8212; </p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
 
-void        (<A
-HREF="libxml-globals.html#XMLREGISTERNODEFUNC"
->*xmlRegisterNodeFunc</A
->)          (<A
-HREF="libxml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
-> node);
-void        (<A
-HREF="libxml-globals.html#XMLDEREGISTERNODEFUNC"
->*xmlDeregisterNodeFunc</A
->)        (<A
-HREF="libxml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
-> node);
-struct      <A
-HREF="libxml-globals.html#XMLGLOBALSTATE"
->xmlGlobalState</A
->;
-typedef     <A
-HREF="libxml-globals.html#XMLGLOBALSTATEPTR"
->xmlGlobalStatePtr</A
->;
-void        <A
-HREF="libxml-globals.html#XMLINITIALIZEGLOBALSTATE"
->xmlInitializeGlobalState</A
->        (<A
-HREF="libxml-globals.html#XMLGLOBALSTATEPTR"
->xmlGlobalStatePtr</A
-> gs);
-<A
-HREF="libxml-globals.html#XMLREGISTERNODEFUNC"
->xmlRegisterNodeFunc</A
-> <A
-HREF="libxml-globals.html#XMLREGISTERNODEDEFAULT"
->xmlRegisterNodeDefault</A
->  (<A
-HREF="libxml-globals.html#XMLREGISTERNODEFUNC"
->xmlRegisterNodeFunc</A
-> func);
-<A
-HREF="libxml-globals.html#XMLDEREGISTERNODEFUNC"
->xmlDeregisterNodeFunc</A
-> <A
-HREF="libxml-globals.html#XMLDEREGISTERNODEDEFAULT"
->xmlDeregisterNodeDefault</A
->
-                                            (<A
-HREF="libxml-globals.html#XMLDEREGISTERNODEFUNC"
->xmlDeregisterNodeFunc</A
-> func);
-#define     <A
-HREF="libxml-globals.html#XMLMALLOC"
->xmlMalloc</A
->                       (size)
-#define     <A
-HREF="libxml-globals.html#XMLREALLOC"
->xmlRealloc</A
->                      (ptr, size)
-#define     <A
-HREF="libxml-globals.html#XMLFREE"
->xmlFree</A
->
-#define     <A
-HREF="libxml-globals.html#XMLMEMSTRDUP"
->xmlMemStrdup</A
->                    (str)
-#define     <A
-HREF="libxml-globals.html#DOCBDEFAULTSAXHANDLER"
->docbDefaultSAXHandler</A
->
-#define     <A
-HREF="libxml-globals.html#HTMLDEFAULTSAXHANDLER"
->htmlDefaultSAXHandler</A
->
-#define     <A
-HREF="libxml-globals.html#OLDXMLWDCOMPATIBILITY"
->oldXMLWDcompatibility</A
->
-#define     <A
-HREF="libxml-globals.html#XMLBUFFERALLOCSCHEME"
->xmlBufferAllocScheme</A
->
-#define     <A
-HREF="libxml-globals.html#XMLDEFAULTBUFFERSIZE"
->xmlDefaultBufferSize</A
->
-#define     <A
-HREF="libxml-globals.html#XMLDEFAULTSAXHANDLER"
->xmlDefaultSAXHandler</A
->
-#define     <A
-HREF="libxml-globals.html#XMLDEFAULTSAXLOCATOR"
->xmlDefaultSAXLocator</A
->
-#define     <A
-HREF="libxml-globals.html#XMLDOVALIDITYCHECKINGDEFAULTVALUE"
->xmlDoValidityCheckingDefaultValue</A
->
-#define     <A
-HREF="libxml-globals.html#XMLGENERICERROR"
->xmlGenericError</A
->
-#define     <A
-HREF="libxml-globals.html#XMLGENERICERRORCONTEXT"
->xmlGenericErrorContext</A
->
-#define     <A
-HREF="libxml-globals.html#XMLGETWARNINGSDEFAULTVALUE"
->xmlGetWarningsDefaultValue</A
->
-#define     <A
-HREF="libxml-globals.html#XMLINDENTTREEOUTPUT"
->xmlIndentTreeOutput</A
->
-#define     <A
-HREF="libxml-globals.html#XMLTREEINDENTSTRING"
->xmlTreeIndentString</A
->
-#define     <A
-HREF="libxml-globals.html#XMLKEEPBLANKSDEFAULTVALUE"
->xmlKeepBlanksDefaultValue</A
->
-#define     <A
-HREF="libxml-globals.html#XMLLINENUMBERSDEFAULTVALUE"
->xmlLineNumbersDefaultValue</A
->
-#define     <A
-HREF="libxml-globals.html#XMLLOADEXTDTDDEFAULTVALUE"
->xmlLoadExtDtdDefaultValue</A
->
-#define     <A
-HREF="libxml-globals.html#XMLPARSERDEBUGENTITIES"
->xmlParserDebugEntities</A
->
-#define     <A
-HREF="libxml-globals.html#XMLPARSERVERSION"
->xmlParserVersion</A
->
-#define     <A
-HREF="libxml-globals.html#XMLPEDANTICPARSERDEFAULTVALUE"
->xmlPedanticParserDefaultValue</A
->
-#define     <A
-HREF="libxml-globals.html#XMLSAVENOEMPTYTAGS"
->xmlSaveNoEmptyTags</A
->
-#define     <A
-HREF="libxml-globals.html#XMLSUBSTITUTEENTITIESDEFAULTVALUE"
->xmlSubstituteEntitiesDefaultValue</A
->
-#define     <A
-HREF="libxml-globals.html#XMLREGISTERNODEDEFAULTVALUE"
->xmlRegisterNodeDefaultValue</A
->
-#define     <A
-HREF="libxml-globals.html#XMLDEREGISTERNODEDEFAULTVALUE"
->xmlDeregisterNodeDefaultValue</A
-></PRE
-></TD
-></TR
-></TABLE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN23113"
-></A
-><H2
->Description</H2
-><P
-></P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN23116"
-></A
-><H2
->Details</H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN23118"
-></A
-><H3
-><A
-NAME="XMLREGISTERNODEFUNC"
-></A
->xmlRegisterNodeFunc ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        (*xmlRegisterNodeFunc)          (<A
-HREF="libxml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
-> node);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN23124"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->node</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN23133"
-></A
-><H3
-><A
-NAME="XMLDEREGISTERNODEFUNC"
-></A
->xmlDeregisterNodeFunc ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        (*xmlDeregisterNodeFunc)        (<A
-HREF="libxml-tree.html#XMLNODEPTR"
->xmlNodePtr</A
-> node);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN23139"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->node</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN23148"
-></A
-><H3
-><A
-NAME="XMLGLOBALSTATE"
-></A
->struct xmlGlobalState</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->struct xmlGlobalState 
+
+
+void        (<a href="libxml-globals.html#xmlRegisterNodeFunc">*xmlRegisterNodeFunc</a>)          (<a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node);
+void        (<a href="libxml-globals.html#xmlDeregisterNodeFunc">*xmlDeregisterNodeFunc</a>)        (<a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node);
+struct      <a href="libxml-globals.html#xmlGlobalState">xmlGlobalState</a>;
+typedef     <a href="libxml-globals.html#xmlGlobalStatePtr">xmlGlobalStatePtr</a>;
+void        <a href="libxml-globals.html#xmlInitializeGlobalState">xmlInitializeGlobalState</a>        (<a href="libxml-globals.html#xmlGlobalStatePtr">xmlGlobalStatePtr</a> gs);
+<a href="libxml-globals.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a> <a href="libxml-globals.html#xmlRegisterNodeDefault">xmlRegisterNodeDefault</a>  (<a href="libxml-globals.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a> func);
+<a href="libxml-globals.html#xmlDeregisterNodeFunc">xmlDeregisterNodeFunc</a> <a href="libxml-globals.html#xmlDeregisterNodeDefault">xmlDeregisterNodeDefault</a>
+                                            (<a href="libxml-globals.html#xmlDeregisterNodeFunc">xmlDeregisterNodeFunc</a> func);
+#define     <a href="libxml-globals.html#xmlMalloc">xmlMalloc</a>                       (size)
+#define     <a href="libxml-globals.html#xmlMallocAtomic">xmlMallocAtomic</a>                 (size)
+#define     <a href="libxml-globals.html#xmlRealloc">xmlRealloc</a>                      (ptr, size)
+#define     <a href="libxml-globals.html#xmlFree">xmlFree</a>
+#define     <a href="libxml-globals.html#xmlMemStrdup">xmlMemStrdup</a>                    (str)
+#define     <a href="libxml-globals.html#docbDefaultSAXHandler">docbDefaultSAXHandler</a>
+#define     <a href="libxml-globals.html#htmlDefaultSAXHandler">htmlDefaultSAXHandler</a>
+#define     <a href="libxml-globals.html#oldXMLWDcompatibility">oldXMLWDcompatibility</a>
+#define     <a href="libxml-globals.html#xmlBufferAllocScheme">xmlBufferAllocScheme</a>
+#define     <a href="libxml-globals.html#xmlDefaultBufferSize">xmlDefaultBufferSize</a>
+#define     <a href="libxml-globals.html#xmlDefaultSAXHandler">xmlDefaultSAXHandler</a>
+#define     <a href="libxml-globals.html#xmlDefaultSAXLocator">xmlDefaultSAXLocator</a>
+#define     <a href="libxml-globals.html#xmlDoValidityCheckingDefaultValue">xmlDoValidityCheckingDefaultValue</a>
+#define     <a href="libxml-globals.html#xmlGenericError">xmlGenericError</a>
+#define     <a href="libxml-globals.html#xmlGenericErrorContext">xmlGenericErrorContext</a>
+#define     <a href="libxml-globals.html#xmlGetWarningsDefaultValue">xmlGetWarningsDefaultValue</a>
+#define     <a href="libxml-globals.html#xmlIndentTreeOutput">xmlIndentTreeOutput</a>
+#define     <a href="libxml-globals.html#xmlTreeIndentString">xmlTreeIndentString</a>
+#define     <a href="libxml-globals.html#xmlKeepBlanksDefaultValue">xmlKeepBlanksDefaultValue</a>
+#define     <a href="libxml-globals.html#xmlLineNumbersDefaultValue">xmlLineNumbersDefaultValue</a>
+#define     <a href="libxml-globals.html#xmlLoadExtDtdDefaultValue">xmlLoadExtDtdDefaultValue</a>
+#define     <a href="libxml-globals.html#xmlParserDebugEntities">xmlParserDebugEntities</a>
+#define     <a href="libxml-globals.html#xmlParserVersion">xmlParserVersion</a>
+#define     <a href="libxml-globals.html#xmlPedanticParserDefaultValue">xmlPedanticParserDefaultValue</a>
+#define     <a href="libxml-globals.html#xmlSaveNoEmptyTags">xmlSaveNoEmptyTags</a>
+#define     <a href="libxml-globals.html#xmlSubstituteEntitiesDefaultValue">xmlSubstituteEntitiesDefaultValue</a>
+#define     <a href="libxml-globals.html#xmlRegisterNodeDefaultValue">xmlRegisterNodeDefaultValue</a>
+#define     <a href="libxml-globals.html#xmlDeregisterNodeDefaultValue">xmlDeregisterNodeDefaultValue</a>
+</pre></div><div class="refsect1" lang="en"><h2>Description</h2><p>
+
+</p></div><div class="refsect1" lang="en"><h2>Details</h2><div class="refsect2" lang="en"><h3><a name="xmlRegisterNodeFunc"></a>xmlRegisterNodeFunc ()</h3><pre class="programlisting">void        (*xmlRegisterNodeFunc)          (<a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node);</pre><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>node</tt></i> :</span></td><td>
+
+
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlDeregisterNodeFunc"></a>xmlDeregisterNodeFunc ()</h3><pre class="programlisting">void        (*xmlDeregisterNodeFunc)        (<a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node);</pre><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>node</tt></i> :</span></td><td>
+
+
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlGlobalState"></a>struct xmlGlobalState</h3><pre class="programlisting">struct xmlGlobalState 
 {
 	const char *xmlParserVersion;
 
@@ -513,1300 +118,148 @@ CLASS="PROGRAMLISTING"
 
   	xmlRegisterNodeFunc xmlRegisterNodeDefaultValue;
   	xmlDeregisterNodeFunc xmlDeregisterNodeDefaultValue;
-};</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN23153"
-></A
-><H3
-><A
-NAME="XMLGLOBALSTATEPTR"
-></A
->xmlGlobalStatePtr</H3
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN23157"
-></A
-><H3
-><A
-NAME="XMLINITIALIZEGLOBALSTATE"
-></A
->xmlInitializeGlobalState ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlInitializeGlobalState        (<A
-HREF="libxml-globals.html#XMLGLOBALSTATEPTR"
->xmlGlobalStatePtr</A
-> gs);</PRE
-></TD
-></TR
-></TABLE
-><P
-><A
-HREF="libxml-globals.html#XMLINITIALIZEGLOBALSTATE"
->xmlInitializeGlobalState</A
->() initialize a global state with all the
-default values of the library.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN23165"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->gs</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN23174"
-></A
-><H3
-><A
-NAME="XMLREGISTERNODEDEFAULT"
-></A
->xmlRegisterNodeDefault ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><A
-HREF="libxml-globals.html#XMLREGISTERNODEFUNC"
->xmlRegisterNodeFunc</A
-> xmlRegisterNodeDefault  (<A
-HREF="libxml-globals.html#XMLREGISTERNODEFUNC"
->xmlRegisterNodeFunc</A
-> func);</PRE
-></TD
-></TR
-></TABLE
-><P
->Registers a callback for node creation</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN23182"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->func</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN23195"
-></A
-><H3
-><A
-NAME="XMLDEREGISTERNODEDEFAULT"
-></A
->xmlDeregisterNodeDefault ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><A
-HREF="libxml-globals.html#XMLDEREGISTERNODEFUNC"
->xmlDeregisterNodeFunc</A
-> xmlDeregisterNodeDefault
-                                            (<A
-HREF="libxml-globals.html#XMLDEREGISTERNODEFUNC"
->xmlDeregisterNodeFunc</A
-> func);</PRE
-></TD
-></TR
-></TABLE
-><P
->Registers a callback for node destruction</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN23203"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->func</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN23216"
-></A
-><H3
-><A
-NAME="XMLMALLOC"
-></A
->xmlMalloc()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define     xmlMalloc(size)</PRE
-></TD
-></TR
-></TABLE
-><P
->Wrapper for the <GTKDOCLINK
-HREF="MALLOC"
->malloc</GTKDOCLINK
->() function used in the XML library.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN23223"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->size</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN23232"
-></A
-><H3
-><A
-NAME="XMLREALLOC"
-></A
->xmlRealloc()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define     xmlRealloc(ptr, size)</PRE
-></TD
-></TR
-></TABLE
-><P
->Wrapper for the <GTKDOCLINK
-HREF="REALLOC"
->realloc</GTKDOCLINK
->() function used in the XML library.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN23239"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ptr</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->size</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN23252"
-></A
-><H3
-><A
-NAME="XMLFREE"
-></A
->xmlFree</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define     xmlFree</PRE
-></TD
-></TR
-></TABLE
-><P
->The variable holding the libxml <GTKDOCLINK
-HREF="FREE"
->free</GTKDOCLINK
->() implementation</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN23259"
-></A
-><H3
-><A
-NAME="XMLMEMSTRDUP"
-></A
->xmlMemStrdup()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define     xmlMemStrdup(str)</PRE
-></TD
-></TR
-></TABLE
-><P
->Wrapper for the <GTKDOCLINK
-HREF="STRDUP"
->strdup</GTKDOCLINK
->() function, <A
-HREF="libxml-parser.html#XMLSTRDUP"
->xmlStrdup</A
->() is usually preferred.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN23267"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->str</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN23276"
-></A
-><H3
-><A
-NAME="DOCBDEFAULTSAXHANDLER"
-></A
->docbDefaultSAXHandler</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define     docbDefaultSAXHandler</PRE
-></TD
-></TR
-></TABLE
-><P
->Default handler for SGML DocBook, builds the DOM tree</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN23282"
-></A
-><H3
-><A
-NAME="HTMLDEFAULTSAXHANDLER"
-></A
->htmlDefaultSAXHandler</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define     htmlDefaultSAXHandler</PRE
-></TD
-></TR
-></TABLE
-><P
->Default handler for HTML, builds the DOM tree</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN23288"
-></A
-><H3
-><A
-NAME="OLDXMLWDCOMPATIBILITY"
-></A
->oldXMLWDcompatibility</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define     oldXMLWDcompatibility</PRE
-></TD
-></TR
-></TABLE
-><P
->Global setting, DEPRECATED.</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN23294"
-></A
-><H3
-><A
-NAME="XMLBUFFERALLOCSCHEME"
-></A
->xmlBufferAllocScheme</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define     xmlBufferAllocScheme</PRE
-></TD
-></TR
-></TABLE
-><P
->Global setting, default allocation policy for buffers, default is
-XML_BUFFER_ALLOC_EXACT</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN23300"
-></A
-><H3
-><A
-NAME="XMLDEFAULTBUFFERSIZE"
-></A
->xmlDefaultBufferSize</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define     xmlDefaultBufferSize</PRE
-></TD
-></TR
-></TABLE
-><P
->Global setting, default buffer size. Default value is BASE_BUFFER_SIZE</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN23306"
-></A
-><H3
-><A
-NAME="XMLDEFAULTSAXHANDLER"
-></A
->xmlDefaultSAXHandler</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define     xmlDefaultSAXHandler</PRE
-></TD
-></TR
-></TABLE
-><P
->Default handler for XML, builds the DOM tree</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN23312"
-></A
-><H3
-><A
-NAME="XMLDEFAULTSAXLOCATOR"
-></A
->xmlDefaultSAXLocator</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define     xmlDefaultSAXLocator</PRE
-></TD
-></TR
-></TABLE
-><P
->The default SAX Locator
-{ getPublicId, getSystemId, getLineNumber, getColumnNumber}</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN23318"
-></A
-><H3
-><A
-NAME="XMLDOVALIDITYCHECKINGDEFAULTVALUE"
-></A
->xmlDoValidityCheckingDefaultValue</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define     xmlDoValidityCheckingDefaultValue</PRE
-></TD
-></TR
-></TABLE
-><P
->Global setting, indicate that the parser should work in validating mode.
-Disabled by default.</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN23324"
-></A
-><H3
-><A
-NAME="XMLGENERICERROR"
-></A
->xmlGenericError</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define     xmlGenericError</PRE
-></TD
-></TR
-></TABLE
-><P
->Global setting: function used for generic error callbacks</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN23330"
-></A
-><H3
-><A
-NAME="XMLGENERICERRORCONTEXT"
-></A
->xmlGenericErrorContext</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define     xmlGenericErrorContext</PRE
-></TD
-></TR
-></TABLE
-><P
->Global setting passed to generic error callbacks</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN23336"
-></A
-><H3
-><A
-NAME="XMLGETWARNINGSDEFAULTVALUE"
-></A
->xmlGetWarningsDefaultValue</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define     xmlGetWarningsDefaultValue</PRE
-></TD
-></TR
-></TABLE
-><P
->Global setting, indicate that the parser should provide warnings.
-Activated by default.</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN23342"
-></A
-><H3
-><A
-NAME="XMLINDENTTREEOUTPUT"
-></A
->xmlIndentTreeOutput</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define     xmlIndentTreeOutput</PRE
-></TD
-></TR
-></TABLE
-><P
->Global setting, asking the serializer to indent the output tree by default
-Enabled by default</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN23348"
-></A
-><H3
-><A
-NAME="XMLTREEINDENTSTRING"
-></A
->xmlTreeIndentString</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define     xmlTreeIndentString</PRE
-></TD
-></TR
-></TABLE
-><P
->The string used to do one-level indent. By default is equal to "  " (two spaces)</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN23354"
-></A
-><H3
-><A
-NAME="XMLKEEPBLANKSDEFAULTVALUE"
-></A
->xmlKeepBlanksDefaultValue</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define     xmlKeepBlanksDefaultValue</PRE
-></TD
-></TR
-></TABLE
-><P
->Global setting, indicate that the parser should keep all blanks
+
+	xmlMallocFunc xmlMallocAtomic;
+};
+</pre><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlGlobalStatePtr"></a>xmlGlobalStatePtr</h3><pre class="programlisting">typedef xmlGlobalState *xmlGlobalStatePtr;
+</pre><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlInitializeGlobalState"></a>xmlInitializeGlobalState ()</h3><pre class="programlisting">void        xmlInitializeGlobalState        (<a href="libxml-globals.html#xmlGlobalStatePtr">xmlGlobalStatePtr</a> gs);</pre><p>
+<a href="libxml-globals.html#xmlInitializeGlobalState">xmlInitializeGlobalState</a>() initialize a global state with all the
+default values of the library.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>gs</tt></i> :</span></td><td> a pointer to a newly allocated global state
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRegisterNodeDefault"></a>xmlRegisterNodeDefault ()</h3><pre class="programlisting"><a href="libxml-globals.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a> xmlRegisterNodeDefault  (<a href="libxml-globals.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a> func);</pre><p>
+Registers a callback for node creation</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>func</tt></i> :</span></td><td> function pointer to the new RegisterNodeFunc
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the old value of the registration function
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlDeregisterNodeDefault"></a>xmlDeregisterNodeDefault ()</h3><pre class="programlisting"><a href="libxml-globals.html#xmlDeregisterNodeFunc">xmlDeregisterNodeFunc</a> xmlDeregisterNodeDefault
+                                            (<a href="libxml-globals.html#xmlDeregisterNodeFunc">xmlDeregisterNodeFunc</a> func);</pre><p>
+Registers a callback for node destruction</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>func</tt></i> :</span></td><td> function pointer to the new DeregisterNodeFunc
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the previous value of the deregistration function
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlMalloc"></a>xmlMalloc()</h3><pre class="programlisting">#define     xmlMalloc(size)</pre><p>
+Wrapper for the <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="malloc">malloc</GTKDOCLINK>() function used in the XML library.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>size</tt></i> :</span></td><td>
+
+
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlMallocAtomic"></a>xmlMallocAtomic()</h3><pre class="programlisting">#define     xmlMallocAtomic(size)</pre><p>
+Wrapper for the <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="malloc">malloc</GTKDOCLINK>() function used in the XML library for allocation
+of block not containing pointers to other areas.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>size</tt></i> :</span></td><td>
+
+
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRealloc"></a>xmlRealloc()</h3><pre class="programlisting">#define     xmlRealloc(ptr, size)</pre><p>
+Wrapper for the <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="realloc">realloc</GTKDOCLINK>() function used in the XML library.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ptr</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>size</tt></i> :</span></td><td>
+
+
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlFree"></a>xmlFree</h3><pre class="programlisting">#define     xmlFree</pre><p>
+The variable holding the libxml <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="free">free</GTKDOCLINK>() implementation</p><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlMemStrdup"></a>xmlMemStrdup()</h3><pre class="programlisting">#define     xmlMemStrdup(str)</pre><p>
+Wrapper for the <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="strdup">strdup</GTKDOCLINK>() function, <a href="libxml-parser.html#xmlStrdup">xmlStrdup</a>() is usually preferred.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>str</tt></i> :</span></td><td>
+
+
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="docbDefaultSAXHandler"></a>docbDefaultSAXHandler</h3><pre class="programlisting">#define     docbDefaultSAXHandler</pre><p>
+Default handler for SGML DocBook, builds the DOM tree</p><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="htmlDefaultSAXHandler"></a>htmlDefaultSAXHandler</h3><pre class="programlisting">#define     htmlDefaultSAXHandler</pre><p>
+Default handler for HTML, builds the DOM tree</p><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="oldXMLWDcompatibility"></a>oldXMLWDcompatibility</h3><pre class="programlisting">#define     oldXMLWDcompatibility</pre><p>
+Global setting, DEPRECATED.</p><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlBufferAllocScheme"></a>xmlBufferAllocScheme</h3><pre class="programlisting">#define     xmlBufferAllocScheme</pre><p>
+Global setting, default allocation policy for buffers, default is
+XML_BUFFER_ALLOC_EXACT</p><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlDefaultBufferSize"></a>xmlDefaultBufferSize</h3><pre class="programlisting">#define     xmlDefaultBufferSize</pre><p>
+Global setting, default buffer size. Default value is BASE_BUFFER_SIZE</p><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlDefaultSAXHandler"></a>xmlDefaultSAXHandler</h3><pre class="programlisting">#define     xmlDefaultSAXHandler</pre><p>
+Default handler for XML, builds the DOM tree</p><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlDefaultSAXLocator"></a>xmlDefaultSAXLocator</h3><pre class="programlisting">#define     xmlDefaultSAXLocator</pre><p>
+The default SAX Locator
+{ getPublicId, getSystemId, getLineNumber, getColumnNumber}</p><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlDoValidityCheckingDefaultValue"></a>xmlDoValidityCheckingDefaultValue</h3><pre class="programlisting">#define     xmlDoValidityCheckingDefaultValue</pre><p>
+Global setting, indicate that the parser should work in validating mode.
+Disabled by default.</p><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlGenericError"></a>xmlGenericError</h3><pre class="programlisting">#define     xmlGenericError</pre><p>
+Global setting: function used for generic error callbacks</p><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlGenericErrorContext"></a>xmlGenericErrorContext</h3><pre class="programlisting">#define     xmlGenericErrorContext</pre><p>
+Global setting passed to generic error callbacks</p><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlGetWarningsDefaultValue"></a>xmlGetWarningsDefaultValue</h3><pre class="programlisting">#define     xmlGetWarningsDefaultValue</pre><p>
+Global setting, indicate that the parser should provide warnings.
+Activated by default.</p><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlIndentTreeOutput"></a>xmlIndentTreeOutput</h3><pre class="programlisting">#define     xmlIndentTreeOutput</pre><p>
+Global setting, asking the serializer to indent the output tree by default
+Enabled by default</p><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlTreeIndentString"></a>xmlTreeIndentString</h3><pre class="programlisting">#define     xmlTreeIndentString</pre><p>
+The string used to do one-level indent. By default is equal to &quot;  &quot; (two spaces)</p><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlKeepBlanksDefaultValue"></a>xmlKeepBlanksDefaultValue</h3><pre class="programlisting">#define     xmlKeepBlanksDefaultValue</pre><p>
+Global setting, indicate that the parser should keep all blanks
 nodes found in the content
 Activated by default, this is actually needed to have the parser
 conformant to the XML Recommendation, however the option is kept
-for some applications since this was libxml1 default behaviour.</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN23360"
-></A
-><H3
-><A
-NAME="XMLLINENUMBERSDEFAULTVALUE"
-></A
->xmlLineNumbersDefaultValue</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define     xmlLineNumbersDefaultValue</PRE
-></TD
-></TR
-></TABLE
-><P
->Global setting, indicate that the parser should store the line number
+for some applications since this was libxml1 default behaviour.</p><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlLineNumbersDefaultValue"></a>xmlLineNumbersDefaultValue</h3><pre class="programlisting">#define     xmlLineNumbersDefaultValue</pre><p>
+Global setting, indicate that the parser should store the line number
 in the content field of elements in the DOM tree. 
 Disabled by default since this may not be safe for old classes of
-applicaton.</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN23366"
-></A
-><H3
-><A
-NAME="XMLLOADEXTDTDDEFAULTVALUE"
-></A
->xmlLoadExtDtdDefaultValue</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define     xmlLoadExtDtdDefaultValue</PRE
-></TD
-></TR
-></TABLE
-><P
->Global setting, indicate that the parser should load DTD while not
+applicaton.</p><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlLoadExtDtdDefaultValue"></a>xmlLoadExtDtdDefaultValue</h3><pre class="programlisting">#define     xmlLoadExtDtdDefaultValue</pre><p>
+Global setting, indicate that the parser should load DTD while not
 validating.
-Disabled by default.</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN23372"
-></A
-><H3
-><A
-NAME="XMLPARSERDEBUGENTITIES"
-></A
->xmlParserDebugEntities</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define     xmlParserDebugEntities</PRE
-></TD
-></TR
-></TABLE
-><P
->Global setting, asking the parser to print out debugging informations.
+Disabled by default.</p><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParserDebugEntities"></a>xmlParserDebugEntities</h3><pre class="programlisting">#define     xmlParserDebugEntities</pre><p>
+Global setting, asking the parser to print out debugging informations.
 while handling entities.
-Disabled by default</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN23378"
-></A
-><H3
-><A
-NAME="XMLPARSERVERSION"
-></A
->xmlParserVersion</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define     xmlParserVersion</PRE
-></TD
-></TR
-></TABLE
-><P
->Constant string describing the internal version of the library</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN23384"
-></A
-><H3
-><A
-NAME="XMLPEDANTICPARSERDEFAULTVALUE"
-></A
->xmlPedanticParserDefaultValue</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define     xmlPedanticParserDefaultValue</PRE
-></TD
-></TR
-></TABLE
-><P
->Global setting, indicate that the parser be pedantic
-Disabled by default.</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN23390"
-></A
-><H3
-><A
-NAME="XMLSAVENOEMPTYTAGS"
-></A
->xmlSaveNoEmptyTags</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define     xmlSaveNoEmptyTags</PRE
-></TD
-></TR
-></TABLE
-><P
->Global setting, asking the serializer to not output empty tags
+Disabled by default</p><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParserVersion"></a>xmlParserVersion</h3><pre class="programlisting">#define     xmlParserVersion</pre><p>
+Constant string describing the internal version of the library</p><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlPedanticParserDefaultValue"></a>xmlPedanticParserDefaultValue</h3><pre class="programlisting">#define     xmlPedanticParserDefaultValue</pre><p>
+Global setting, indicate that the parser be pedantic
+Disabled by default.</p><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSaveNoEmptyTags"></a>xmlSaveNoEmptyTags</h3><pre class="programlisting">#define     xmlSaveNoEmptyTags</pre><p>
+Global setting, asking the serializer to not output empty tags
 as &lt;empty/&gt; but &lt;empty&gt;&lt;/empty&gt;. those two forms are undistinguishable
 once parsed.
-Disabled by default</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN23396"
-></A
-><H3
-><A
-NAME="XMLSUBSTITUTEENTITIESDEFAULTVALUE"
-></A
->xmlSubstituteEntitiesDefaultValue</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define     xmlSubstituteEntitiesDefaultValue</PRE
-></TD
-></TR
-></TABLE
-><P
->Global setting, indicate that the parser should not generate entity
+Disabled by default</p><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSubstituteEntitiesDefaultValue"></a>xmlSubstituteEntitiesDefaultValue</h3><pre class="programlisting">#define     xmlSubstituteEntitiesDefaultValue</pre><p>
+Global setting, indicate that the parser should not generate entity
 references but replace them with the actual content of the entity
 Disabled by default, this should be activated when using XPath since
 the XPath data model requires entities replacement and the XPath
-engine does not handle entities references transparently.</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN23402"
-></A
-><H3
-><A
-NAME="XMLREGISTERNODEDEFAULTVALUE"
-></A
->xmlRegisterNodeDefaultValue</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define     xmlRegisterNodeDefaultValue</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN23407"
-></A
-><H3
-><A
-NAME="XMLDEREGISTERNODEDEFAULTVALUE"
-></A
->xmlDeregisterNodeDefaultValue</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define     xmlDeregisterNodeDefaultValue</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><BR
-CLEAR="all"><BR><TABLE
-WIDTH="100%"
-BORDER="0"
-BGCOLOR="#000000"
-CELLPADDING="1"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="left"
-><A
-HREF="libxml-threads.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->&#60;&#60;&#60; Previous Page</B
-></FONT
-></A
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#0000C0"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="book1.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Home</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#00C000"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="libxml-lib.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Up</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="right"
-><A
-HREF="libxml-docbparser.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Next Page &#62;&#62;&#62;</B
-></FONT
-></A
-></TD
-></TR
-><TR
-><TD
-COLSPAN="2"
-ALIGN="left"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->threads</B
-></FONT
-></TD
-><TD
-COLSPAN="2"
-ALIGN="right"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->DOCBparser</B
-></FONT
-></TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+engine does not handle entities references transparently.</p><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRegisterNodeDefaultValue"></a>xmlRegisterNodeDefaultValue</h3><pre class="programlisting">#define     xmlRegisterNodeDefaultValue</pre><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlDeregisterNodeDefaultValue"></a>xmlDeregisterNodeDefaultValue</h3><pre class="programlisting">#define     xmlDeregisterNodeDefaultValue</pre><p>
+
+</p></div></div></div><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-threads.html"><b>&lt;&lt; threads</b></a></td><td align="right"><a accesskey="n" href="libxml-DOCBparser.html"><b>DOCBparser &gt;&gt;</b></a></td></tr></table></body></html>

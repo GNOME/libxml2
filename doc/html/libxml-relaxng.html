@@ -1,679 +1,130 @@
-<HTML
-><HEAD
-><TITLE
->relaxng</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.76b+
-"><LINK
-REL="HOME"
-TITLE="Gnome XML Library Reference Manual"
-HREF="book1.html"><LINK
-REL="UP"
-TITLE="Libxml Library Reference"
-HREF="libxml-lib.html"><LINK
-REL="PREVIOUS"
-TITLE="valid"
-HREF="libxml-valid.html"><LINK
-REL="NEXT"
-TITLE="uri"
-HREF="libxml-uri.html"></HEAD
-><BODY
-CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-WIDTH="100%"
-BORDER="0"
-BGCOLOR="#000000"
-CELLPADDING="1"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="4"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="5"
->Gnome XML Library Reference Manual</FONT
-></TH
-></TR
-><TR
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="left"
-><A
-HREF="libxml-valid.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->&#60;&#60;&#60; Previous Page</B
-></FONT
-></A
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#0000C0"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="book1.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Home</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#00C000"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="libxml-lib.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Up</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="right"
-><A
-HREF="libxml-uri.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Next Page &#62;&#62;&#62;</B
-></FONT
-></A
-></TD
-></TR
-></TABLE
-></DIV
-><H1
-><A
-NAME="LIBXML-RELAXNG"
-></A
->relaxng</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN12085"
-></A
-><H2
->Name</H2
->relaxng&nbsp;--&nbsp;</DIV
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN12088"
-></A
-><H2
->Synopsis</H2
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="SYNOPSIS"
->&#13;
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>relaxng</title><meta name="generator" content="DocBook XSL Stylesheets V1.58.1"><style xmlns="http://www.w3.org/TR/xhtml1/transitional" type="text/css">
+        .synopsis, .classsynopsis {
+            background: #eeeeee;
+            border: solid 1px #aaaaaa;
+            padding: 0.5em;
+        }
+        .programlisting {
+            background: #eeeeff;
+            border: solid 1px #aaaaff;
+            padding: 0.5em;
+        }
+        .variablelist {
+            padding: 4px;
+            margin-left: 3em;
+        }
+        .navigation {
+            background: #ffeeee;
+            border: solid 1px #ffaaaa;
+            margin-top: 0.5em;
+            margin-bottom: 0.5em;
+        }
+        .navigation a {
+            color: #770000;
+        }
+        .navigation a:visited {
+            color: #550000;
+        }
+        .navigation .title {
+            font-size: 200%;
+        }
+      </style><link rel="home" href="index.html" title="Gnome XML Library Reference Manual"><link rel="up" href="libxml-lib.html" title="Libxml Library Reference"><link rel="previous" href="libxml-valid.html" title="valid"><link rel="next" href="libxml-uri.html" title="uri"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-valid.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></img></a></td><td><a accesskey="u" href="libxml-lib.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></img></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></img></a></td><th width="100%" align="center">Gnome XML Library Reference Manual</th><td><a accesskey="n" href="libxml-uri.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></img></a></td></tr></table><div class="refentry" lang="en"><a name="libxml-relaxng"></a><div class="titlepage"></div><div class="refnamediv"><h2>relaxng</h2><p>relaxng &#8212; </p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
 
-struct      <A
-HREF="libxml-relaxng.html#XMLRELAXNG"
->xmlRelaxNG</A
->;
-typedef     <A
-HREF="libxml-relaxng.html#XMLRELAXNGPTR"
->xmlRelaxNGPtr</A
->;
-void        (<A
-HREF="libxml-relaxng.html#XMLRELAXNGVALIDITYERRORFUNC"
->*xmlRelaxNGValidityErrorFunc</A
->)  (void *ctx,
+
+
+struct      <a href="libxml-relaxng.html#xmlRelaxNG">xmlRelaxNG</a>;
+typedef     <a href="libxml-relaxng.html#xmlRelaxNGPtr">xmlRelaxNGPtr</a>;
+void        (<a href="libxml-relaxng.html#xmlRelaxNGValidityErrorFunc">*xmlRelaxNGValidityErrorFunc</a>)  (void *ctx,
                                              const char *msg,
                                              ...);
-void        (<A
-HREF="libxml-relaxng.html#XMLRELAXNGVALIDITYWARNINGFUNC"
->*xmlRelaxNGValidityWarningFunc</A
->)
+void        (<a href="libxml-relaxng.html#xmlRelaxNGValidityWarningFunc">*xmlRelaxNGValidityWarningFunc</a>)
                                             (void *ctx,
                                              const char *msg,
                                              ...);
-struct      <A
-HREF="libxml-relaxng.html#XMLRELAXNGPARSERCTXT"
->xmlRelaxNGParserCtxt</A
->;
-typedef     <A
-HREF="libxml-relaxng.html#XMLRELAXNGPARSERCTXTPTR"
->xmlRelaxNGParserCtxtPtr</A
->;
-struct      <A
-HREF="libxml-relaxng.html#XMLRELAXNGVALIDCTXT"
->xmlRelaxNGValidCtxt</A
->;
-typedef     <A
-HREF="libxml-relaxng.html#XMLRELAXNGVALIDCTXTPTR"
->xmlRelaxNGValidCtxtPtr</A
->;
-enum        <A
-HREF="libxml-relaxng.html#XMLRELAXNGVALIDERR"
->xmlRelaxNGValidErr</A
->;
-<A
-HREF="libxml-relaxng.html#XMLRELAXNGPARSERCTXTPTR"
->xmlRelaxNGParserCtxtPtr</A
-> <A
-HREF="libxml-relaxng.html#XMLRELAXNGNEWPARSERCTXT"
->xmlRelaxNGNewParserCtxt</A
->
+struct      <a href="libxml-relaxng.html#xmlRelaxNGParserCtxt">xmlRelaxNGParserCtxt</a>;
+typedef     <a href="libxml-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a>;
+struct      <a href="libxml-relaxng.html#xmlRelaxNGValidCtxt">xmlRelaxNGValidCtxt</a>;
+typedef     <a href="libxml-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a>;
+enum        <a href="libxml-relaxng.html#xmlRelaxNGValidErr">xmlRelaxNGValidErr</a>;
+<a href="libxml-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a> <a href="libxml-relaxng.html#xmlRelaxNGNewParserCtxt">xmlRelaxNGNewParserCtxt</a>
                                             (const char *URL);
-<A
-HREF="libxml-relaxng.html#XMLRELAXNGPARSERCTXTPTR"
->xmlRelaxNGParserCtxtPtr</A
-> <A
-HREF="libxml-relaxng.html#XMLRELAXNGNEWMEMPARSERCTXT"
->xmlRelaxNGNewMemParserCtxt</A
->
+<a href="libxml-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a> <a href="libxml-relaxng.html#xmlRelaxNGNewMemParserCtxt">xmlRelaxNGNewMemParserCtxt</a>
                                             (const char *buffer,
                                              int size);
-void        <A
-HREF="libxml-relaxng.html#XMLRELAXNGFREEPARSERCTXT"
->xmlRelaxNGFreeParserCtxt</A
->        (<A
-HREF="libxml-relaxng.html#XMLRELAXNGPARSERCTXTPTR"
->xmlRelaxNGParserCtxtPtr</A
-> ctxt);
-void        <A
-HREF="libxml-relaxng.html#XMLRELAXNGSETPARSERERRORS"
->xmlRelaxNGSetParserErrors</A
->       (<A
-HREF="libxml-relaxng.html#XMLRELAXNGPARSERCTXTPTR"
->xmlRelaxNGParserCtxtPtr</A
-> ctxt,
-                                             <A
-HREF="libxml-relaxng.html#XMLRELAXNGVALIDITYERRORFUNC"
->xmlRelaxNGValidityErrorFunc</A
-> err,
-                                             <A
-HREF="libxml-relaxng.html#XMLRELAXNGVALIDITYWARNINGFUNC"
->xmlRelaxNGValidityWarningFunc</A
-> warn,
+<a href="libxml-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a> <a href="libxml-relaxng.html#xmlRelaxNGNewDocParserCtxt">xmlRelaxNGNewDocParserCtxt</a>
+                                            (<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc);
+void        <a href="libxml-relaxng.html#xmlRelaxNGFreeParserCtxt">xmlRelaxNGFreeParserCtxt</a>        (<a href="libxml-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a> ctxt);
+void        <a href="libxml-relaxng.html#xmlRelaxNGSetParserErrors">xmlRelaxNGSetParserErrors</a>       (<a href="libxml-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-relaxng.html#xmlRelaxNGValidityErrorFunc">xmlRelaxNGValidityErrorFunc</a> err,
+                                             <a href="libxml-relaxng.html#xmlRelaxNGValidityWarningFunc">xmlRelaxNGValidityWarningFunc</a> warn,
                                              void *ctx);
-<A
-HREF="libxml-relaxng.html#XMLRELAXNGPTR"
->xmlRelaxNGPtr</A
-> <A
-HREF="libxml-relaxng.html#XMLRELAXNGPARSE"
->xmlRelaxNGParse</A
->               (<A
-HREF="libxml-relaxng.html#XMLRELAXNGPARSERCTXTPTR"
->xmlRelaxNGParserCtxtPtr</A
-> ctxt);
-void        <A
-HREF="libxml-relaxng.html#XMLRELAXNGFREE"
->xmlRelaxNGFree</A
->                  (<A
-HREF="libxml-relaxng.html#XMLRELAXNGPTR"
->xmlRelaxNGPtr</A
-> schema);
-void        <A
-HREF="libxml-relaxng.html#XMLRELAXNGDUMP"
->xmlRelaxNGDump</A
->                  (<GTKDOCLINK
-HREF="FILE-CAPS"
->FILE</GTKDOCLINK
-> *output,
-                                             <A
-HREF="libxml-relaxng.html#XMLRELAXNGPTR"
->xmlRelaxNGPtr</A
-> schema);
-void        <A
-HREF="libxml-relaxng.html#XMLRELAXNGDUMPTREE"
->xmlRelaxNGDumpTree</A
->              (<GTKDOCLINK
-HREF="FILE-CAPS"
->FILE</GTKDOCLINK
-> *output,
-                                             <A
-HREF="libxml-relaxng.html#XMLRELAXNGPTR"
->xmlRelaxNGPtr</A
-> schema);
-void        <A
-HREF="libxml-relaxng.html#XMLRELAXNGSETVALIDERRORS"
->xmlRelaxNGSetValidErrors</A
->        (<A
-HREF="libxml-relaxng.html#XMLRELAXNGVALIDCTXTPTR"
->xmlRelaxNGValidCtxtPtr</A
-> ctxt,
-                                             <A
-HREF="libxml-relaxng.html#XMLRELAXNGVALIDITYERRORFUNC"
->xmlRelaxNGValidityErrorFunc</A
-> err,
-                                             <A
-HREF="libxml-relaxng.html#XMLRELAXNGVALIDITYWARNINGFUNC"
->xmlRelaxNGValidityWarningFunc</A
-> warn,
+<a href="libxml-relaxng.html#xmlRelaxNGPtr">xmlRelaxNGPtr</a> <a href="libxml-relaxng.html#xmlRelaxNGParse">xmlRelaxNGParse</a>               (<a href="libxml-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a> ctxt);
+void        <a href="libxml-relaxng.html#xmlRelaxNGFree">xmlRelaxNGFree</a>                  (<a href="libxml-relaxng.html#xmlRelaxNGPtr">xmlRelaxNGPtr</a> schema);
+void        <a href="libxml-relaxng.html#xmlRelaxNGDump">xmlRelaxNGDump</a>                  (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="FILE-CAPS">FILE</GTKDOCLINK> *output,
+                                             <a href="libxml-relaxng.html#xmlRelaxNGPtr">xmlRelaxNGPtr</a> schema);
+void        <a href="libxml-relaxng.html#xmlRelaxNGDumpTree">xmlRelaxNGDumpTree</a>              (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="FILE-CAPS">FILE</GTKDOCLINK> *output,
+                                             <a href="libxml-relaxng.html#xmlRelaxNGPtr">xmlRelaxNGPtr</a> schema);
+void        <a href="libxml-relaxng.html#xmlRelaxNGSetValidErrors">xmlRelaxNGSetValidErrors</a>        (<a href="libxml-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt,
+                                             <a href="libxml-relaxng.html#xmlRelaxNGValidityErrorFunc">xmlRelaxNGValidityErrorFunc</a> err,
+                                             <a href="libxml-relaxng.html#xmlRelaxNGValidityWarningFunc">xmlRelaxNGValidityWarningFunc</a> warn,
                                              void *ctx);
-<A
-HREF="libxml-relaxng.html#XMLRELAXNGVALIDCTXTPTR"
->xmlRelaxNGValidCtxtPtr</A
-> <A
-HREF="libxml-relaxng.html#XMLRELAXNGNEWVALIDCTXT"
->xmlRelaxNGNewValidCtxt</A
->
-                                            (<A
-HREF="libxml-relaxng.html#XMLRELAXNGPTR"
->xmlRelaxNGPtr</A
-> schema);
-void        <A
-HREF="libxml-relaxng.html#XMLRELAXNGFREEVALIDCTXT"
->xmlRelaxNGFreeValidCtxt</A
->         (<A
-HREF="libxml-relaxng.html#XMLRELAXNGVALIDCTXTPTR"
->xmlRelaxNGValidCtxtPtr</A
-> ctxt);
-int         <A
-HREF="libxml-relaxng.html#XMLRELAXNGVALIDATEDOC"
->xmlRelaxNGValidateDoc</A
->           (<A
-HREF="libxml-relaxng.html#XMLRELAXNGVALIDCTXTPTR"
->xmlRelaxNGValidCtxtPtr</A
-> ctxt,
-                                             <A
-HREF="libxml-tree.html#XMLDOCPTR"
->xmlDocPtr</A
-> doc);
-void        <A
-HREF="libxml-relaxng.html#XMLRELAXNGCLEANUPTYPES"
->xmlRelaxNGCleanupTypes</A
->          (void);</PRE
-></TD
-></TR
-></TABLE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN12134"
-></A
-><H2
->Description</H2
-><P
-></P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN12137"
-></A
-><H2
->Details</H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN12139"
-></A
-><H3
-><A
-NAME="XMLRELAXNG"
-></A
->struct xmlRelaxNG</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->struct xmlRelaxNG;</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN12144"
-></A
-><H3
-><A
-NAME="XMLRELAXNGPTR"
-></A
->xmlRelaxNGPtr</H3
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN12148"
-></A
-><H3
-><A
-NAME="XMLRELAXNGVALIDITYERRORFUNC"
-></A
->xmlRelaxNGValidityErrorFunc ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        (*xmlRelaxNGValidityErrorFunc)  (void *ctx,
+<a href="libxml-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> <a href="libxml-relaxng.html#xmlRelaxNGNewValidCtxt">xmlRelaxNGNewValidCtxt</a>
+                                            (<a href="libxml-relaxng.html#xmlRelaxNGPtr">xmlRelaxNGPtr</a> schema);
+void        <a href="libxml-relaxng.html#xmlRelaxNGFreeValidCtxt">xmlRelaxNGFreeValidCtxt</a>         (<a href="libxml-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt);
+int         <a href="libxml-relaxng.html#xmlRelaxNGValidateDoc">xmlRelaxNGValidateDoc</a>           (<a href="libxml-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc);
+void        <a href="libxml-relaxng.html#xmlRelaxNGCleanupTypes">xmlRelaxNGCleanupTypes</a>          (void);
+int         <a href="libxml-relaxng.html#xmlRelaxNGValidatePushElement">xmlRelaxNGValidatePushElement</a>   (<a href="libxml-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
+                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> elem);
+int         <a href="libxml-relaxng.html#xmlRelaxNGValidatePushCData">xmlRelaxNGValidatePushCData</a>     (<a href="libxml-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *data,
+                                             int len);
+int         <a href="libxml-relaxng.html#xmlRelaxNGValidatePopElement">xmlRelaxNGValidatePopElement</a>    (<a href="libxml-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
+                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> elem);
+int         <a href="libxml-relaxng.html#xmlRelaxNGValidateFullElement">xmlRelaxNGValidateFullElement</a>   (<a href="libxml-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
+                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> elem);
+</pre></div><div class="refsect1" lang="en"><h2>Description</h2><p>
+
+</p></div><div class="refsect1" lang="en"><h2>Details</h2><div class="refsect2" lang="en"><h3><a name="xmlRelaxNG"></a>struct xmlRelaxNG</h3><pre class="programlisting">struct xmlRelaxNG;</pre><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRelaxNGPtr"></a>xmlRelaxNGPtr</h3><pre class="programlisting">typedef xmlRelaxNG *xmlRelaxNGPtr;
+</pre><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRelaxNGValidityErrorFunc"></a>xmlRelaxNGValidityErrorFunc ()</h3><pre class="programlisting">void        (*xmlRelaxNGValidityErrorFunc)  (void *ctx,
                                              const char *msg,
-                                             ...);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN12153"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctx</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->msg</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->...</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN12170"
-></A
-><H3
-><A
-NAME="XMLRELAXNGVALIDITYWARNINGFUNC"
-></A
->xmlRelaxNGValidityWarningFunc ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        (*xmlRelaxNGValidityWarningFunc)
+                                             ...);</pre><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>msg</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>...</tt></i> :</span></td><td>
+
+
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRelaxNGValidityWarningFunc"></a>xmlRelaxNGValidityWarningFunc ()</h3><pre class="programlisting">void        (*xmlRelaxNGValidityWarningFunc)
                                             (void *ctx,
                                              const char *msg,
-                                             ...);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN12175"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctx</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->msg</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->...</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN12192"
-></A
-><H3
-><A
-NAME="XMLRELAXNGPARSERCTXT"
-></A
->struct xmlRelaxNGParserCtxt</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->struct xmlRelaxNGParserCtxt;</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN12197"
-></A
-><H3
-><A
-NAME="XMLRELAXNGPARSERCTXTPTR"
-></A
->xmlRelaxNGParserCtxtPtr</H3
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN12201"
-></A
-><H3
-><A
-NAME="XMLRELAXNGVALIDCTXT"
-></A
->struct xmlRelaxNGValidCtxt</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->struct xmlRelaxNGValidCtxt;</PRE
-></TD
-></TR
-></TABLE
-><P
->A RelaxNGs validation context</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN12207"
-></A
-><H3
-><A
-NAME="XMLRELAXNGVALIDCTXTPTR"
-></A
->xmlRelaxNGValidCtxtPtr</H3
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN12211"
-></A
-><H3
-><A
-NAME="XMLRELAXNGVALIDERR"
-></A
->enum xmlRelaxNGValidErr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef enum {
+                                             ...);</pre><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>msg</tt></i> :</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>...</tt></i> :</span></td><td>
+
+
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRelaxNGParserCtxt"></a>struct xmlRelaxNGParserCtxt</h3><pre class="programlisting">struct xmlRelaxNGParserCtxt;</pre><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRelaxNGParserCtxtPtr"></a>xmlRelaxNGParserCtxtPtr</h3><pre class="programlisting">typedef xmlRelaxNGParserCtxt *xmlRelaxNGParserCtxtPtr;
+</pre><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRelaxNGValidCtxt"></a>struct xmlRelaxNGValidCtxt</h3><pre class="programlisting">struct xmlRelaxNGValidCtxt;</pre><p>
+A RelaxNGs validation context</p><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRelaxNGValidCtxtPtr"></a>xmlRelaxNGValidCtxtPtr</h3><pre class="programlisting">typedef xmlRelaxNGValidCtxt *xmlRelaxNGValidCtxtPtr;
+</pre><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRelaxNGValidErr"></a>enum xmlRelaxNGValidErr</h3><pre class="programlisting">typedef enum {
     XML_RELAXNG_OK = 0,
     XML_RELAXNG_ERR_MEMORY,
     XML_RELAXNG_ERR_TYPE,
@@ -711,1266 +162,141 @@ CLASS="PROGRAMLISTING"
     XML_RELAXNG_ERR_NOGRAMMAR,
     XML_RELAXNG_ERR_EXTRADATA,
     XML_RELAXNG_ERR_LACKDATA,
-    XML_RELAXNG_ERR_INTERNAL
-} xmlRelaxNGValidErr;</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN12216"
-></A
-><H3
-><A
-NAME="XMLRELAXNGNEWPARSERCTXT"
-></A
->xmlRelaxNGNewParserCtxt ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><A
-HREF="libxml-relaxng.html#XMLRELAXNGPARSERCTXTPTR"
->xmlRelaxNGParserCtxtPtr</A
-> xmlRelaxNGNewParserCtxt
-                                            (const char *URL);</PRE
-></TD
-></TR
-></TABLE
-><P
->Create an XML RelaxNGs parse context for that file/resource expected
-to contain an XML RelaxNGs file.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN12223"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->URL</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN12236"
-></A
-><H3
-><A
-NAME="XMLRELAXNGNEWMEMPARSERCTXT"
-></A
->xmlRelaxNGNewMemParserCtxt ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><A
-HREF="libxml-relaxng.html#XMLRELAXNGPARSERCTXTPTR"
->xmlRelaxNGParserCtxtPtr</A
-> xmlRelaxNGNewMemParserCtxt
+    XML_RELAXNG_ERR_INTERNAL,
+    XML_RELAXNG_ERR_ELEMWRONG,
+    XML_RELAXNG_ERR_TEXTWRONG
+} xmlRelaxNGValidErr;
+</pre><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRelaxNGNewParserCtxt"></a>xmlRelaxNGNewParserCtxt ()</h3><pre class="programlisting"><a href="libxml-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a> xmlRelaxNGNewParserCtxt
+                                            (const char *URL);</pre><p>
+Create an XML RelaxNGs parse context for that file/resource expected
+to contain an XML RelaxNGs file.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>URL</tt></i> :</span></td><td>  the location of the schema
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the parser context or NULL in case of error
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRelaxNGNewMemParserCtxt"></a>xmlRelaxNGNewMemParserCtxt ()</h3><pre class="programlisting"><a href="libxml-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a> xmlRelaxNGNewMemParserCtxt
                                             (const char *buffer,
-                                             int size);</PRE
-></TD
-></TR
-></TABLE
-><P
->Create an XML RelaxNGs parse context for that memory buffer expected
-to contain an XML RelaxNGs file.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN12243"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->buffer</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->size</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN12260"
-></A
-><H3
-><A
-NAME="XMLRELAXNGFREEPARSERCTXT"
-></A
->xmlRelaxNGFreeParserCtxt ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlRelaxNGFreeParserCtxt        (<A
-HREF="libxml-relaxng.html#XMLRELAXNGPARSERCTXTPTR"
->xmlRelaxNGParserCtxtPtr</A
-> ctxt);</PRE
-></TD
-></TR
-></TABLE
-><P
->Free the resources associated to the schema parser context</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN12267"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctxt</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN12276"
-></A
-><H3
-><A
-NAME="XMLRELAXNGSETPARSERERRORS"
-></A
->xmlRelaxNGSetParserErrors ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlRelaxNGSetParserErrors       (<A
-HREF="libxml-relaxng.html#XMLRELAXNGPARSERCTXTPTR"
->xmlRelaxNGParserCtxtPtr</A
-> ctxt,
-                                             <A
-HREF="libxml-relaxng.html#XMLRELAXNGVALIDITYERRORFUNC"
->xmlRelaxNGValidityErrorFunc</A
-> err,
-                                             <A
-HREF="libxml-relaxng.html#XMLRELAXNGVALIDITYWARNINGFUNC"
->xmlRelaxNGValidityWarningFunc</A
-> warn,
-                                             void *ctx);</PRE
-></TD
-></TR
-></TABLE
-><P
->Set the callback functions used to handle errors for a validation context</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN12285"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctxt</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->err</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->warn</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctx</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN12306"
-></A
-><H3
-><A
-NAME="XMLRELAXNGPARSE"
-></A
->xmlRelaxNGParse ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><A
-HREF="libxml-relaxng.html#XMLRELAXNGPTR"
->xmlRelaxNGPtr</A
-> xmlRelaxNGParse               (<A
-HREF="libxml-relaxng.html#XMLRELAXNGPARSERCTXTPTR"
->xmlRelaxNGParserCtxtPtr</A
-> ctxt);</PRE
-></TD
-></TR
-></TABLE
-><P
->parse a schema definition resource and build an internal
+                                             int size);</pre><p>
+Create an XML RelaxNGs parse context for that memory buffer expected
+to contain an XML RelaxNGs file.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>buffer</tt></i> :</span></td><td>  a pointer to a char array containing the schemas
+</td></tr><tr><td><span class="term"><i><tt>size</tt></i> :</span></td><td>  the size of the array
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the parser context or NULL in case of error
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRelaxNGNewDocParserCtxt"></a>xmlRelaxNGNewDocParserCtxt ()</h3><pre class="programlisting"><a href="libxml-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a> xmlRelaxNGNewDocParserCtxt
+                                            (<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc);</pre><p>
+Create an XML RelaxNGs parser context for that document.
+Note: since the process of compiling a RelaxNG schemas modifies the
+      document, the <i><tt>doc</tt></i> parameter is duplicated internally.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  a preparsed document tree
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the parser context or NULL in case of error
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRelaxNGFreeParserCtxt"></a>xmlRelaxNGFreeParserCtxt ()</h3><pre class="programlisting">void        xmlRelaxNGFreeParserCtxt        (<a href="libxml-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a> ctxt);</pre><p>
+Free the resources associated to the schema parser context</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the schema parser context
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRelaxNGSetParserErrors"></a>xmlRelaxNGSetParserErrors ()</h3><pre class="programlisting">void        xmlRelaxNGSetParserErrors       (<a href="libxml-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-relaxng.html#xmlRelaxNGValidityErrorFunc">xmlRelaxNGValidityErrorFunc</a> err,
+                                             <a href="libxml-relaxng.html#xmlRelaxNGValidityWarningFunc">xmlRelaxNGValidityWarningFunc</a> warn,
+                                             void *ctx);</pre><p>
+Set the callback functions used to handle errors for a validation context</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  a Relax-NG validation context
+</td></tr><tr><td><span class="term"><i><tt>err</tt></i> :</span></td><td>  the error callback
+</td></tr><tr><td><span class="term"><i><tt>warn</tt></i> :</span></td><td>  the warning callback
+</td></tr><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td>  contextual data for the callbacks
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRelaxNGParse"></a>xmlRelaxNGParse ()</h3><pre class="programlisting"><a href="libxml-relaxng.html#xmlRelaxNGPtr">xmlRelaxNGPtr</a> xmlRelaxNGParse               (<a href="libxml-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a> ctxt);</pre><p>
+parse a schema definition resource and build an internal
 XML Shema struture which can be used to validate instances.
-*WARNING* this interface is highly subject to change</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN12314"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctxt</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN12327"
-></A
-><H3
-><A
-NAME="XMLRELAXNGFREE"
-></A
->xmlRelaxNGFree ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlRelaxNGFree                  (<A
-HREF="libxml-relaxng.html#XMLRELAXNGPTR"
->xmlRelaxNGPtr</A
-> schema);</PRE
-></TD
-></TR
-></TABLE
-><P
->Deallocate a RelaxNG structure.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN12334"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->schema</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN12343"
-></A
-><H3
-><A
-NAME="XMLRELAXNGDUMP"
-></A
->xmlRelaxNGDump ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlRelaxNGDump                  (<GTKDOCLINK
-HREF="FILE-CAPS"
->FILE</GTKDOCLINK
-> *output,
-                                             <A
-HREF="libxml-relaxng.html#XMLRELAXNGPTR"
->xmlRelaxNGPtr</A
-> schema);</PRE
-></TD
-></TR
-></TABLE
-><P
->Dump a RelaxNG structure back</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN12351"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->output</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->schema</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN12364"
-></A
-><H3
-><A
-NAME="XMLRELAXNGDUMPTREE"
-></A
->xmlRelaxNGDumpTree ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlRelaxNGDumpTree              (<GTKDOCLINK
-HREF="FILE-CAPS"
->FILE</GTKDOCLINK
-> *output,
-                                             <A
-HREF="libxml-relaxng.html#XMLRELAXNGPTR"
->xmlRelaxNGPtr</A
-> schema);</PRE
-></TD
-></TR
-></TABLE
-><P
->Dump the transformed RelaxNG tree.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN12372"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->output</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->schema</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN12385"
-></A
-><H3
-><A
-NAME="XMLRELAXNGSETVALIDERRORS"
-></A
->xmlRelaxNGSetValidErrors ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlRelaxNGSetValidErrors        (<A
-HREF="libxml-relaxng.html#XMLRELAXNGVALIDCTXTPTR"
->xmlRelaxNGValidCtxtPtr</A
-> ctxt,
-                                             <A
-HREF="libxml-relaxng.html#XMLRELAXNGVALIDITYERRORFUNC"
->xmlRelaxNGValidityErrorFunc</A
-> err,
-                                             <A
-HREF="libxml-relaxng.html#XMLRELAXNGVALIDITYWARNINGFUNC"
->xmlRelaxNGValidityWarningFunc</A
-> warn,
-                                             void *ctx);</PRE
-></TD
-></TR
-></TABLE
-><P
->Set the error and warning callback informations</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN12394"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctxt</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->err</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->warn</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctx</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN12415"
-></A
-><H3
-><A
-NAME="XMLRELAXNGNEWVALIDCTXT"
-></A
->xmlRelaxNGNewValidCtxt ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><A
-HREF="libxml-relaxng.html#XMLRELAXNGVALIDCTXTPTR"
->xmlRelaxNGValidCtxtPtr</A
-> xmlRelaxNGNewValidCtxt
-                                            (<A
-HREF="libxml-relaxng.html#XMLRELAXNGPTR"
->xmlRelaxNGPtr</A
-> schema);</PRE
-></TD
-></TR
-></TABLE
-><P
->Create an XML RelaxNGs validation context based on the given schema</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN12423"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->schema</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN12436"
-></A
-><H3
-><A
-NAME="XMLRELAXNGFREEVALIDCTXT"
-></A
->xmlRelaxNGFreeValidCtxt ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlRelaxNGFreeValidCtxt         (<A
-HREF="libxml-relaxng.html#XMLRELAXNGVALIDCTXTPTR"
->xmlRelaxNGValidCtxtPtr</A
-> ctxt);</PRE
-></TD
-></TR
-></TABLE
-><P
->Free the resources associated to the schema validation context</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN12443"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctxt</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN12452"
-></A
-><H3
-><A
-NAME="XMLRELAXNGVALIDATEDOC"
-></A
->xmlRelaxNGValidateDoc ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlRelaxNGValidateDoc           (<A
-HREF="libxml-relaxng.html#XMLRELAXNGVALIDCTXTPTR"
->xmlRelaxNGValidCtxtPtr</A
-> ctxt,
-                                             <A
-HREF="libxml-tree.html#XMLDOCPTR"
->xmlDocPtr</A
-> doc);</PRE
-></TD
-></TR
-></TABLE
-><P
->Validate a document tree in memory.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN12460"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctxt</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->doc</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN12477"
-></A
-><H3
-><A
-NAME="XMLRELAXNGCLEANUPTYPES"
-></A
->xmlRelaxNGCleanupTypes ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlRelaxNGCleanupTypes          (void);</PRE
-></TD
-></TR
-></TABLE
-><P
->Cleanup the default Schemas type library associated to RelaxNG</P
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><BR
-CLEAR="all"><BR><TABLE
-WIDTH="100%"
-BORDER="0"
-BGCOLOR="#000000"
-CELLPADDING="1"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="left"
-><A
-HREF="libxml-valid.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->&#60;&#60;&#60; Previous Page</B
-></FONT
-></A
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#0000C0"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="book1.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Home</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#00C000"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="libxml-lib.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Up</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="right"
-><A
-HREF="libxml-uri.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Next Page &#62;&#62;&#62;</B
-></FONT
-></A
-></TD
-></TR
-><TR
-><TD
-COLSPAN="2"
-ALIGN="left"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->valid</B
-></FONT
-></TD
-><TD
-COLSPAN="2"
-ALIGN="right"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->uri</B
-></FONT
-></TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+*WARNING* this interface is highly subject to change</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  a Relax-NG parser context
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the internal XML RelaxNG structure built from the resource or
+        NULL in case of error
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRelaxNGFree"></a>xmlRelaxNGFree ()</h3><pre class="programlisting">void        xmlRelaxNGFree                  (<a href="libxml-relaxng.html#xmlRelaxNGPtr">xmlRelaxNGPtr</a> schema);</pre><p>
+Deallocate a RelaxNG structure.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>schema</tt></i> :</span></td><td>  a schema structure
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRelaxNGDump"></a>xmlRelaxNGDump ()</h3><pre class="programlisting">void        xmlRelaxNGDump                  (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="FILE-CAPS">FILE</GTKDOCLINK> *output,
+                                             <a href="libxml-relaxng.html#xmlRelaxNGPtr">xmlRelaxNGPtr</a> schema);</pre><p>
+Dump a RelaxNG structure back</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>output</tt></i> :</span></td><td>  the file output
+</td></tr><tr><td><span class="term"><i><tt>schema</tt></i> :</span></td><td>  a schema structure
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRelaxNGDumpTree"></a>xmlRelaxNGDumpTree ()</h3><pre class="programlisting">void        xmlRelaxNGDumpTree              (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="FILE-CAPS">FILE</GTKDOCLINK> *output,
+                                             <a href="libxml-relaxng.html#xmlRelaxNGPtr">xmlRelaxNGPtr</a> schema);</pre><p>
+Dump the transformed RelaxNG tree.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>output</tt></i> :</span></td><td>  the file output
+</td></tr><tr><td><span class="term"><i><tt>schema</tt></i> :</span></td><td>  a schema structure
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRelaxNGSetValidErrors"></a>xmlRelaxNGSetValidErrors ()</h3><pre class="programlisting">void        xmlRelaxNGSetValidErrors        (<a href="libxml-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt,
+                                             <a href="libxml-relaxng.html#xmlRelaxNGValidityErrorFunc">xmlRelaxNGValidityErrorFunc</a> err,
+                                             <a href="libxml-relaxng.html#xmlRelaxNGValidityWarningFunc">xmlRelaxNGValidityWarningFunc</a> warn,
+                                             void *ctx);</pre><p>
+Set the error and warning callback informations</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  a Relax-NG validation context
+</td></tr><tr><td><span class="term"><i><tt>err</tt></i> :</span></td><td>  the error function
+</td></tr><tr><td><span class="term"><i><tt>warn</tt></i> :</span></td><td> the warning function
+</td></tr><tr><td><span class="term"><i><tt>ctx</tt></i> :</span></td><td> the functions context
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRelaxNGNewValidCtxt"></a>xmlRelaxNGNewValidCtxt ()</h3><pre class="programlisting"><a href="libxml-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> xmlRelaxNGNewValidCtxt
+                                            (<a href="libxml-relaxng.html#xmlRelaxNGPtr">xmlRelaxNGPtr</a> schema);</pre><p>
+Create an XML RelaxNGs validation context based on the given schema</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>schema</tt></i> :</span></td><td>  a precompiled XML RelaxNGs
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the validation context or NULL in case of error
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRelaxNGFreeValidCtxt"></a>xmlRelaxNGFreeValidCtxt ()</h3><pre class="programlisting">void        xmlRelaxNGFreeValidCtxt         (<a href="libxml-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt);</pre><p>
+Free the resources associated to the schema validation context</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the schema validation context
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRelaxNGValidateDoc"></a>xmlRelaxNGValidateDoc ()</h3><pre class="programlisting">int         xmlRelaxNGValidateDoc           (<a href="libxml-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc);</pre><p>
+Validate a document tree in memory.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  a Relax-NG validation context
+</td></tr><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  a parsed document tree
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 if the document is valid, a positive error code
+    number otherwise and -1 in case of internal or API error.
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRelaxNGCleanupTypes"></a>xmlRelaxNGCleanupTypes ()</h3><pre class="programlisting">void        xmlRelaxNGCleanupTypes          (void);</pre><p>
+Cleanup the default Schemas type library associated to RelaxNG</p><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRelaxNGValidatePushElement"></a>xmlRelaxNGValidatePushElement ()</h3><pre class="programlisting">int         xmlRelaxNGValidatePushElement   (<a href="libxml-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
+                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> elem);</pre><p>
+Push a new element start on the RelaxNG validation stack.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the validation context
+</td></tr><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  a document instance
+</td></tr><tr><td><span class="term"><i><tt>elem</tt></i> :</span></td><td>  an element instance
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 if no validation problem was found or 0 if validating the
+        element requires a full node, and -1 in case of error.
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRelaxNGValidatePushCData"></a>xmlRelaxNGValidatePushCData ()</h3><pre class="programlisting">int         xmlRelaxNGValidatePushCData     (<a href="libxml-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *data,
+                                             int len);</pre><p>
+check the CData parsed for validation in the current stack</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the RelaxNG validation context
+</td></tr><tr><td><span class="term"><i><tt>data</tt></i> :</span></td><td>  some character data read
+</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>  the lenght of the data
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 if no validation problem was found or -1 otherwise
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRelaxNGValidatePopElement"></a>xmlRelaxNGValidatePopElement ()</h3><pre class="programlisting">int         xmlRelaxNGValidatePopElement    (<a href="libxml-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
+                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> elem);</pre><p>
+Pop the element end from the RelaxNG validation stack.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the RelaxNG validation context
+</td></tr><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  a document instance
+</td></tr><tr><td><span class="term"><i><tt>elem</tt></i> :</span></td><td>  an element instance
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 if no validation problem was found or 0 otherwise
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRelaxNGValidateFullElement"></a>xmlRelaxNGValidateFullElement ()</h3><pre class="programlisting">int         xmlRelaxNGValidateFullElement   (<a href="libxml-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
+                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> elem);</pre><p>
+Validate a full subtree when <a href="libxml-relaxng.html#xmlRelaxNGValidatePushElement">xmlRelaxNGValidatePushElement</a>() returned
+0 and the content of the node has been expanded.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the validation context
+</td></tr><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td>  a document instance
+</td></tr><tr><td><span class="term"><i><tt>elem</tt></i> :</span></td><td>  an element instance
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 if no validation problem was found or -1 in case of error.
+</td></tr></tbody></table></div></div></div></div><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-valid.html"><b>&lt;&lt; valid</b></a></td><td align="right"><a accesskey="n" href="libxml-uri.html"><b>uri &gt;&gt;</b></a></td></tr></table></body></html>

@@ -4,7 +4,7 @@
 DOC_MODULE=libxml2-$(VERSION)
 
 # The top-level SGML file.
-DOC_MAIN_SGML_FILE=gnome-xml.sgml
+DOC_MAIN_XML_FILE=gnome-xml.xml
 
 # The directory containing the source code (if it contains documentation).
 DOC_SOURCE_DIR=..
@@ -62,12 +62,10 @@ templates: scan
 	-gtkdoc-mktmpl --module=libxml
 
 sgml: templates
-	-gtkdoc-mkdb --module=libxml --source-dir=$(DOC_SOURCE_DIR)
+	-gtkdoc-mkdb --module=libxml --source-dir=$(DOC_SOURCE_DIR) --output-format=xml --main-sgml-file=$(DOC_MAIN_XML_FILE)
 
 xml: sgml 
 	if test -d xml ; then rm xml/* ; else mkdir xml ; fi
-	-@(for s in sgml/*.sgml ; do name=`basename $$s .sgml` ; \
-	   xmllint --sgml $$s > xml/"$$name".xml ; done)
 
 libxml2-api.xml: apibuild.py ../include/libxml/*.h
 	-(./apibuild.py)
@@ -76,7 +74,7 @@ api: libxml2-api.xml libxml2-refs.xml
 
 html:
 	if test -n -d html ; then mkdir html ; fi
-	-cd html && gtkdoc-mkhtml libxml ../$(DOC_MAIN_SGML_FILE)
+	-cd html && gtkdoc-mkhtml libxml ../$(DOC_MAIN_XML_FILE)
 
 clean-local:
 	rm -f *~ *.bak *.hierarchy *.signals *-unused.txt

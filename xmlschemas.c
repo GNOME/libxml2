@@ -166,7 +166,6 @@ xmlSchemaNewSchema(xmlSchemaParserCtxtPtr ctxt)
 
 /**
  * xmlSchemaNewFacet:
- * @ctxt:  a schema validation context (optional)
  *
  * Allocate a new Facet structure.
  *

@@ -1,0 +1,1431 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>parserInternals</title><meta name="generator" content="DocBook XSL Stylesheets V1.58.1"><style xmlns="http://www.w3.org/TR/xhtml1/transitional" type="text/css">
+        .synopsis, .classsynopsis {
+            background: #eeeeee;
+            border: solid 1px #aaaaaa;
+            padding: 0.5em;
+        }
+        .programlisting {
+            background: #eeeeff;
+            border: solid 1px #aaaaff;
+            padding: 0.5em;
+        }
+        .variablelist {
+            padding: 4px;
+            margin-left: 3em;
+        }
+        .navigation {
+            background: #ffeeee;
+            border: solid 1px #ffaaaa;
+            margin-top: 0.5em;
+            margin-bottom: 0.5em;
+        }
+        .navigation a {
+            color: #770000;
+        }
+        .navigation a:visited {
+            color: #550000;
+        }
+        .navigation .title {
+            font-size: 200%;
+        }
+      </style><link rel="home" href="index.html" title="Gnome XML Library Reference Manual"><link rel="up" href="libxml-lib.html" title="Libxml Library Reference"><link rel="previous" href="libxml-DOCBparser.html" title="DOCBparser"><link rel="next" href="libxml-encoding.html" title="encoding"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-DOCBparser.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></img></a></td><td><a accesskey="u" href="libxml-lib.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></img></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></img></a></td><th width="100%" align="center">Gnome XML Library Reference Manual</th><td><a accesskey="n" href="libxml-encoding.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></img></a></td></tr></table><div class="refentry" lang="en"><a name="libxml-parserInternals"></a><div class="titlepage"></div><div class="refnamediv"><h2>parserInternals</h2><p>parserInternals &#8212; </p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+
+
+
+#define     <a href="libxml-parserInternals.html#XML-MAX-NAMELEN-CAPS">XML_MAX_NAMELEN</a>
+#define     <a href="libxml-parserInternals.html#INPUT-CHUNK-CAPS">INPUT_CHUNK</a>
+#define     <a href="libxml-parserInternals.html#IS-CHAR-CAPS">IS_CHAR</a>                         (c)
+#define     <a href="libxml-parserInternals.html#IS-BLANK-CAPS">IS_BLANK</a>                        (c)
+#define     <a href="libxml-parserInternals.html#IS-BASECHAR-CAPS">IS_BASECHAR</a>                     (c)
+#define     <a href="libxml-parserInternals.html#IS-DIGIT-CAPS">IS_DIGIT</a>                        (c)
+#define     <a href="libxml-parserInternals.html#IS-COMBINING-CAPS">IS_COMBINING</a>                    (c)
+#define     <a href="libxml-parserInternals.html#IS-EXTENDER-CAPS">IS_EXTENDER</a>                     (c)
+#define     <a href="libxml-parserInternals.html#IS-IDEOGRAPHIC-CAPS">IS_IDEOGRAPHIC</a>                  (c)
+#define     <a href="libxml-parserInternals.html#IS-LETTER-CAPS">IS_LETTER</a>                       (c)
+#define     <a href="libxml-parserInternals.html#IS-PUBIDCHAR-CAPS">IS_PUBIDCHAR</a>                    (c)
+#define     <a href="libxml-parserInternals.html#SKIP-EOL-CAPS">SKIP_EOL</a>                        (p)
+#define     <a href="libxml-parserInternals.html#MOVETO-ENDTAG-CAPS">MOVETO_ENDTAG</a>                   (p)
+#define     <a href="libxml-parserInternals.html#MOVETO-STARTTAG-CAPS">MOVETO_STARTTAG</a>                 (p)
+int         <a href="libxml-parserInternals.html#xmlIsBaseChar">xmlIsBaseChar</a>                   (int c);
+int         <a href="libxml-parserInternals.html#xmlIsBlank">xmlIsBlank</a>                      (int c);
+int         <a href="libxml-parserInternals.html#xmlIsPubidChar">xmlIsPubidChar</a>                  (int c);
+int         <a href="libxml-parserInternals.html#xmlIsLetter">xmlIsLetter</a>                     (int c);
+int         <a href="libxml-parserInternals.html#xmlIsDigit">xmlIsDigit</a>                      (int c);
+int         <a href="libxml-parserInternals.html#xmlIsIdeographic">xmlIsIdeographic</a>                (int c);
+int         <a href="libxml-parserInternals.html#xmlIsExtender">xmlIsExtender</a>                   (int c);
+int         <a href="libxml-parserInternals.html#xmlIsCombining">xmlIsCombining</a>                  (int c);
+int         <a href="libxml-parserInternals.html#xmlIsChar">xmlIsChar</a>                       (int c);
+<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> <a href="libxml-parserInternals.html#xmlCreateFileParserCtxt">xmlCreateFileParserCtxt</a>    (const char *filename);
+<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> <a href="libxml-parserInternals.html#xmlCreateMemoryParserCtxt">xmlCreateMemoryParserCtxt</a>  (const char *buffer,
+                                             int size);
+<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> <a href="libxml-parserInternals.html#xmlNewParserCtxt">xmlNewParserCtxt</a>           (void);
+<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> <a href="libxml-parserInternals.html#xmlCreateEntityParserCtxt">xmlCreateEntityParserCtxt</a>  (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *URL,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *ID,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *base);
+int         <a href="libxml-parserInternals.html#xmlSwitchEncoding">xmlSwitchEncoding</a>               (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc);
+int         <a href="libxml-parserInternals.html#xmlSwitchToEncoding">xmlSwitchToEncoding</a>             (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a> handler);
+void        <a href="libxml-parserInternals.html#xmlHandleEntity">xmlHandleEntity</a>                 (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlEntityPtr">xmlEntityPtr</a> entity);
+<a href="libxml-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> <a href="libxml-parserInternals.html#xmlNewStringInputStream">xmlNewStringInputStream</a>   (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *buffer);
+<a href="libxml-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> <a href="libxml-parserInternals.html#xmlNewEntityInputStream">xmlNewEntityInputStream</a>   (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlEntityPtr">xmlEntityPtr</a> entity);
+void        <a href="libxml-parserInternals.html#xmlPushInput">xmlPushInput</a>                    (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> input);
+<a href="libxml-tree.html#xmlChar">xmlChar</a>     <a href="libxml-parserInternals.html#xmlPopInput">xmlPopInput</a>                     (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+void        <a href="libxml-parserInternals.html#xmlFreeInputStream">xmlFreeInputStream</a>              (<a href="libxml-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> input);
+<a href="libxml-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> <a href="libxml-parserInternals.html#xmlNewInputFromFile">xmlNewInputFromFile</a>       (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             const char *filename);
+<a href="libxml-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> <a href="libxml-parserInternals.html#xmlNewInputStream">xmlNewInputStream</a>         (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+<a href="libxml-tree.html#xmlChar">xmlChar</a>*    <a href="libxml-parserInternals.html#xmlSplitQName">xmlSplitQName</a>                   (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             <a href="libxml-tree.html#xmlChar">xmlChar</a> **prefix);
+<a href="libxml-tree.html#xmlChar">xmlChar</a>*    <a href="libxml-parserInternals.html#xmlNamespaceParseNCName">xmlNamespaceParseNCName</a>         (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+<a href="libxml-tree.html#xmlChar">xmlChar</a>*    <a href="libxml-parserInternals.html#xmlNamespaceParseQName">xmlNamespaceParseQName</a>          (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlChar">xmlChar</a> **prefix);
+<a href="libxml-tree.html#xmlChar">xmlChar</a>*    <a href="libxml-parserInternals.html#xmlNamespaceParseNSDef">xmlNamespaceParseNSDef</a>          (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+<a href="libxml-tree.html#xmlChar">xmlChar</a>*    <a href="libxml-parserInternals.html#xmlParseQuotedString">xmlParseQuotedString</a>            (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+void        <a href="libxml-parserInternals.html#xmlParseNamespace">xmlParseNamespace</a>               (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+<a href="libxml-tree.html#xmlChar">xmlChar</a>*    <a href="libxml-parserInternals.html#xmlScanName">xmlScanName</a>                     (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+<a href="libxml-tree.html#xmlChar">xmlChar</a>*    <a href="libxml-parserInternals.html#xmlParseName">xmlParseName</a>                    (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+<a href="libxml-tree.html#xmlChar">xmlChar</a>*    <a href="libxml-parserInternals.html#xmlParseNmtoken">xmlParseNmtoken</a>                 (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+<a href="libxml-tree.html#xmlChar">xmlChar</a>*    <a href="libxml-parserInternals.html#xmlParseEntityValue">xmlParseEntityValue</a>             (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlChar">xmlChar</a> **orig);
+<a href="libxml-tree.html#xmlChar">xmlChar</a>*    <a href="libxml-parserInternals.html#xmlParseAttValue">xmlParseAttValue</a>                (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+<a href="libxml-tree.html#xmlChar">xmlChar</a>*    <a href="libxml-parserInternals.html#xmlParseSystemLiteral">xmlParseSystemLiteral</a>           (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+<a href="libxml-tree.html#xmlChar">xmlChar</a>*    <a href="libxml-parserInternals.html#xmlParsePubidLiteral">xmlParsePubidLiteral</a>            (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+void        <a href="libxml-parserInternals.html#xmlParseCharData">xmlParseCharData</a>                (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             int cdata);
+<a href="libxml-tree.html#xmlChar">xmlChar</a>*    <a href="libxml-parserInternals.html#xmlParseExternalID">xmlParseExternalID</a>              (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlChar">xmlChar</a> **publicID,
+                                             int strict);
+void        <a href="libxml-parserInternals.html#xmlParseComment">xmlParseComment</a>                 (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+<a href="libxml-tree.html#xmlChar">xmlChar</a>*    <a href="libxml-parserInternals.html#xmlParsePITarget">xmlParsePITarget</a>                (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+void        <a href="libxml-parserInternals.html#xmlParsePI">xmlParsePI</a>                      (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+void        <a href="libxml-parserInternals.html#xmlParseNotationDecl">xmlParseNotationDecl</a>            (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+void        <a href="libxml-parserInternals.html#xmlParseEntityDecl">xmlParseEntityDecl</a>              (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+int         <a href="libxml-parserInternals.html#xmlParseDefaultDecl">xmlParseDefaultDecl</a>             (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlChar">xmlChar</a> **value);
+<a href="libxml-tree.html#xmlEnumerationPtr">xmlEnumerationPtr</a> <a href="libxml-parserInternals.html#xmlParseNotationType">xmlParseNotationType</a>      (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+<a href="libxml-tree.html#xmlEnumerationPtr">xmlEnumerationPtr</a> <a href="libxml-parserInternals.html#xmlParseEnumerationType">xmlParseEnumerationType</a>   (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+int         <a href="libxml-parserInternals.html#xmlParseEnumeratedType">xmlParseEnumeratedType</a>          (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlEnumerationPtr">xmlEnumerationPtr</a> *tree);
+int         <a href="libxml-parserInternals.html#xmlParseAttributeType">xmlParseAttributeType</a>           (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlEnumerationPtr">xmlEnumerationPtr</a> *tree);
+void        <a href="libxml-parserInternals.html#xmlParseAttributeListDecl">xmlParseAttributeListDecl</a>       (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+<a href="libxml-tree.html#xmlElementContentPtr">xmlElementContentPtr</a> <a href="libxml-parserInternals.html#xmlParseElementMixedContentDecl">xmlParseElementMixedContentDecl</a>
+                                            (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> inputchk);
+<a href="libxml-tree.html#xmlElementContentPtr">xmlElementContentPtr</a> <a href="libxml-parserInternals.html#xmlParseElementChildrenContentDecl">xmlParseElementChildrenContentDecl</a>
+                                            (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> inputchk);
+int         <a href="libxml-parserInternals.html#xmlParseElementContentDecl">xmlParseElementContentDecl</a>      (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             <a href="libxml-tree.html#xmlElementContentPtr">xmlElementContentPtr</a> *result);
+int         <a href="libxml-parserInternals.html#xmlParseElementDecl">xmlParseElementDecl</a>             (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+void        <a href="libxml-parserInternals.html#xmlParseMarkupDecl">xmlParseMarkupDecl</a>              (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+int         <a href="libxml-parserInternals.html#xmlParseCharRef">xmlParseCharRef</a>                 (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+<a href="libxml-tree.html#xmlEntityPtr">xmlEntityPtr</a> <a href="libxml-parserInternals.html#xmlParseEntityRef">xmlParseEntityRef</a>              (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+void        <a href="libxml-parserInternals.html#xmlParseReference">xmlParseReference</a>               (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+void        <a href="libxml-parserInternals.html#xmlParsePEReference">xmlParsePEReference</a>             (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+void        <a href="libxml-parserInternals.html#xmlParseDocTypeDecl">xmlParseDocTypeDecl</a>             (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+<a href="libxml-tree.html#xmlChar">xmlChar</a>*    <a href="libxml-parserInternals.html#xmlParseAttribute">xmlParseAttribute</a>               (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlChar">xmlChar</a> **value);
+<a href="libxml-tree.html#xmlChar">xmlChar</a>*    <a href="libxml-parserInternals.html#xmlParseStartTag">xmlParseStartTag</a>                (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+void        <a href="libxml-parserInternals.html#xmlParseEndTag">xmlParseEndTag</a>                  (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+void        <a href="libxml-parserInternals.html#xmlParseCDSect">xmlParseCDSect</a>                  (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+void        <a href="libxml-parserInternals.html#xmlParseContent">xmlParseContent</a>                 (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+void        <a href="libxml-parserInternals.html#xmlParseElement">xmlParseElement</a>                 (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+<a href="libxml-tree.html#xmlChar">xmlChar</a>*    <a href="libxml-parserInternals.html#xmlParseVersionNum">xmlParseVersionNum</a>              (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+<a href="libxml-tree.html#xmlChar">xmlChar</a>*    <a href="libxml-parserInternals.html#xmlParseVersionInfo">xmlParseVersionInfo</a>             (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+<a href="libxml-tree.html#xmlChar">xmlChar</a>*    <a href="libxml-parserInternals.html#xmlParseEncName">xmlParseEncName</a>                 (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+<a href="libxml-tree.html#xmlChar">xmlChar</a>*    <a href="libxml-parserInternals.html#xmlParseEncodingDecl">xmlParseEncodingDecl</a>            (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+int         <a href="libxml-parserInternals.html#xmlParseSDDecl">xmlParseSDDecl</a>                  (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+void        <a href="libxml-parserInternals.html#xmlParseXMLDecl">xmlParseXMLDecl</a>                 (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+void        <a href="libxml-parserInternals.html#xmlParseTextDecl">xmlParseTextDecl</a>                (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+void        <a href="libxml-parserInternals.html#xmlParseMisc">xmlParseMisc</a>                    (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+void        <a href="libxml-parserInternals.html#xmlParseExternalSubset">xmlParseExternalSubset</a>          (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *ExternalID,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *SystemID);
+#define     <a href="libxml-parserInternals.html#XML-SUBSTITUTE-NONE-CAPS">XML_SUBSTITUTE_NONE</a>
+#define     <a href="libxml-parserInternals.html#XML-SUBSTITUTE-REF-CAPS">XML_SUBSTITUTE_REF</a>
+#define     <a href="libxml-parserInternals.html#XML-SUBSTITUTE-PEREF-CAPS">XML_SUBSTITUTE_PEREF</a>
+#define     <a href="libxml-parserInternals.html#XML-SUBSTITUTE-BOTH-CAPS">XML_SUBSTITUTE_BOTH</a>
+<a href="libxml-tree.html#xmlChar">xmlChar</a>*    <a href="libxml-parserInternals.html#xmlDecodeEntities">xmlDecodeEntities</a>               (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             int len,
+                                             int what,
+                                             <a href="libxml-tree.html#xmlChar">xmlChar</a> end,
+                                             <a href="libxml-tree.html#xmlChar">xmlChar</a> end2,
+                                             <a href="libxml-tree.html#xmlChar">xmlChar</a> end3);
+<a href="libxml-tree.html#xmlChar">xmlChar</a>*    <a href="libxml-parserInternals.html#xmlStringDecodeEntities">xmlStringDecodeEntities</a>         (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *str,
+                                             int what,
+                                             <a href="libxml-tree.html#xmlChar">xmlChar</a> end,
+                                             <a href="libxml-tree.html#xmlChar">xmlChar</a> end2,
+                                             <a href="libxml-tree.html#xmlChar">xmlChar</a> end3);
+int         <a href="libxml-parserInternals.html#nodePush">nodePush</a>                        (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> value);
+<a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a>  <a href="libxml-parserInternals.html#nodePop">nodePop</a>                         (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+int         <a href="libxml-parserInternals.html#inputPush">inputPush</a>                       (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> value);
+<a href="libxml-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> <a href="libxml-parserInternals.html#inputPop">inputPop</a>                  (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+<a href="libxml-tree.html#xmlChar">xmlChar</a>*    <a href="libxml-parserInternals.html#namePop">namePop</a>                         (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+int         <a href="libxml-parserInternals.html#namePush">namePush</a>                        (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlChar">xmlChar</a> *value);
+int         <a href="libxml-parserInternals.html#xmlSkipBlankChars">xmlSkipBlankChars</a>               (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+int         <a href="libxml-parserInternals.html#xmlStringCurrentChar">xmlStringCurrentChar</a>            (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *cur,
+                                             int *len);
+void        <a href="libxml-parserInternals.html#xmlParserHandlePEReference">xmlParserHandlePEReference</a>      (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+void        <a href="libxml-parserInternals.html#xmlParserHandleReference">xmlParserHandleReference</a>        (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+int         <a href="libxml-parserInternals.html#xmlCheckLanguageID">xmlCheckLanguageID</a>              (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *lang);
+int         <a href="libxml-parserInternals.html#xmlCurrentChar">xmlCurrentChar</a>                  (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             int *len);
+int         <a href="libxml-parserInternals.html#xmlCopyCharMultiByte">xmlCopyCharMultiByte</a>            (<a href="libxml-tree.html#xmlChar">xmlChar</a> *out,
+                                             int val);
+int         <a href="libxml-parserInternals.html#xmlCopyChar">xmlCopyChar</a>                     (int len,
+                                             <a href="libxml-tree.html#xmlChar">xmlChar</a> *out,
+                                             int val);
+void        <a href="libxml-parserInternals.html#xmlNextChar">xmlNextChar</a>                     (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+void        <a href="libxml-parserInternals.html#xmlParserInputShrink">xmlParserInputShrink</a>            (<a href="libxml-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> in);
+void        <a href="libxml-parserInternals.html#htmlInitAutoClose">htmlInitAutoClose</a>               (void);
+<a href="libxml-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a> <a href="libxml-parserInternals.html#htmlCreateFileParserCtxt">htmlCreateFileParserCtxt</a>  (const char *filename,
+                                             const char *encoding);
+void        (<a href="libxml-parserInternals.html#xmlEntityReferenceFunc">*xmlEntityReferenceFunc</a>)       (<a href="libxml-tree.html#xmlEntityPtr">xmlEntityPtr</a> ent,
+                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> firstNode,
+                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> lastNode);
+void        <a href="libxml-parserInternals.html#xmlSetEntityReferenceFunc">xmlSetEntityReferenceFunc</a>       (<a href="libxml-parserInternals.html#xmlEntityReferenceFunc">xmlEntityReferenceFunc</a> func);
+</pre></div><div class="refsect1" lang="en"><h2>Description</h2><p>
+
+</p></div><div class="refsect1" lang="en"><h2>Details</h2><div class="refsect2" lang="en"><h3><a name="XML-MAX-NAMELEN-CAPS"></a>XML_MAX_NAMELEN</h3><pre class="programlisting">#define XML_MAX_NAMELEN 100
+</pre><p>
+Identifiers can be longer, but this will be more costly
+at runtime.</p><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="INPUT-CHUNK-CAPS"></a>INPUT_CHUNK</h3><pre class="programlisting">#define INPUT_CHUNK	250
+</pre><p>
+The parser tries to always have that amount of input ready.
+One of the point is providing context when reporting errors.</p><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="IS-CHAR-CAPS"></a>IS_CHAR()</h3><pre class="programlisting">#define     IS_CHAR(c)</pre><p>
+Macro to check the following production in the XML spec:
+</p><p>
+[2] Char ::= <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x9">x9</GTKDOCLINK> | <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xA">xA</GTKDOCLINK> | <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xD">xD</GTKDOCLINK> | [<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x20-">x20-</GTKDOCLINK><GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xD7FF">xD7FF</GTKDOCLINK>] | [<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xE000-">xE000-</GTKDOCLINK><GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xFFFD">xFFFD</GTKDOCLINK>]
+                 | [<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x10000-">x10000-</GTKDOCLINK><GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x10FFFF">x10FFFF</GTKDOCLINK>]
+any Unicode character, excluding the surrogate blocks, FFFE, and FFFF.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>c</tt></i> :</span></td><td>  an UNICODE value (int)
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="IS-BLANK-CAPS"></a>IS_BLANK()</h3><pre class="programlisting">#define     IS_BLANK(c)</pre><p>
+Macro to check the following production in the XML spec:
+</p><p>
+[3] S ::= (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x20">x20</GTKDOCLINK> | <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x9">x9</GTKDOCLINK> | <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xD">xD</GTKDOCLINK> | <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xA">xA</GTKDOCLINK>)+</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>c</tt></i> :</span></td><td>  an UNICODE value (int)
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="IS-BASECHAR-CAPS"></a>IS_BASECHAR()</h3><pre class="programlisting">#define IS_BASECHAR(c) xmlIsBaseChar(c)
+</pre><p>
+Macro to check the following production in the XML spec:
+</p><p>
+[85] BaseChar ::= ... long list see REC ...</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>c</tt></i> :</span></td><td>  an UNICODE value (int)
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="IS-DIGIT-CAPS"></a>IS_DIGIT()</h3><pre class="programlisting">#define IS_DIGIT(c) xmlIsDigit(c)
+</pre><p>
+Macro to check the following production in the XML spec:
+</p><p>
+[88] Digit ::= ... long list see REC ...</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>c</tt></i> :</span></td><td>  an UNICODE value (int)
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="IS-COMBINING-CAPS"></a>IS_COMBINING()</h3><pre class="programlisting">#define IS_COMBINING(c) xmlIsCombining(c)
+</pre><p>
+Macro to check the following production in the XML spec:
+</p><p>
+[87] CombiningChar ::= ... long list see REC ...</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>c</tt></i> :</span></td><td>  an UNICODE value (int)
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="IS-EXTENDER-CAPS"></a>IS_EXTENDER()</h3><pre class="programlisting">#define IS_EXTENDER(c) xmlIsExtender(c)
+</pre><p>
+Macro to check the following production in the XML spec:
+</p><p>
+[89] Extender ::= <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x00B7">x00B7</GTKDOCLINK> | <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x02D0">x02D0</GTKDOCLINK> | <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x02D1">x02D1</GTKDOCLINK> | <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x0387">x0387</GTKDOCLINK> | <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x0640">x0640</GTKDOCLINK> |
+                  <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x0E46">x0E46</GTKDOCLINK> | <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x0EC6">x0EC6</GTKDOCLINK> | <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x3005">x3005</GTKDOCLINK> | [<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x3031-">x3031-</GTKDOCLINK><GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x3035">x3035</GTKDOCLINK>] |
+                  [<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x309D-">x309D-</GTKDOCLINK><GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x309E">x309E</GTKDOCLINK>] | [<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x30FC-">x30FC-</GTKDOCLINK><GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x30FE">x30FE</GTKDOCLINK>]</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>c</tt></i> :</span></td><td>  an UNICODE value (int)
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="IS-IDEOGRAPHIC-CAPS"></a>IS_IDEOGRAPHIC()</h3><pre class="programlisting">#define IS_IDEOGRAPHIC(c) xmlIsIdeographic(c)
+</pre><p>
+Macro to check the following production in the XML spec:
+</p><p>
+[86] Ideographic ::= [<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x4E00-">x4E00-</GTKDOCLINK><GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x9FA5">x9FA5</GTKDOCLINK>] | <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x3007">x3007</GTKDOCLINK> | [<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x3021-">x3021-</GTKDOCLINK><GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x3029">x3029</GTKDOCLINK>]</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>c</tt></i> :</span></td><td>  an UNICODE value (int)
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="IS-LETTER-CAPS"></a>IS_LETTER()</h3><pre class="programlisting">#define IS_LETTER(c) (IS_BASECHAR(c) || IS_IDEOGRAPHIC(c))
+</pre><p>
+Macro to check the following production in the XML spec:
+</p><p>
+[84] Letter ::= BaseChar | Ideographic</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>c</tt></i> :</span></td><td>  an UNICODE value (int)
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="IS-PUBIDCHAR-CAPS"></a>IS_PUBIDCHAR()</h3><pre class="programlisting">#define IS_PUBIDCHAR(c)	xmlIsPubidChar(c)
+</pre><p>
+Macro to check the following production in the XML spec:
+</p><p>
+[13] PubidChar ::= <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x20">x20</GTKDOCLINK> | <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xD">xD</GTKDOCLINK> | <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xA">xA</GTKDOCLINK> | [a-zA-Z0-9] | [-'()+,./:=?;!*#@$_%]</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>c</tt></i> :</span></td><td>  an UNICODE value (int)
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="SKIP-EOL-CAPS"></a>SKIP_EOL()</h3><pre class="programlisting">#define     SKIP_EOL(p)</pre><p>
+Skips the end of line chars.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>p</tt></i> :</span></td><td>  and UTF8 string pointer
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="MOVETO-ENDTAG-CAPS"></a>MOVETO_ENDTAG()</h3><pre class="programlisting">#define     MOVETO_ENDTAG(p)</pre><p>
+Skips to the next '&gt;' char.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>p</tt></i> :</span></td><td>  and UTF8 string pointer
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="MOVETO-STARTTAG-CAPS"></a>MOVETO_STARTTAG()</h3><pre class="programlisting">#define     MOVETO_STARTTAG(p)</pre><p>
+Skips to the next '&lt;' char.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>p</tt></i> :</span></td><td>  and UTF8 string pointer
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlIsBaseChar"></a>xmlIsBaseChar ()</h3><pre class="programlisting">int         xmlIsBaseChar                   (int c);</pre><p>
+Check whether the character is allowed by the production
+[85] BaseChar ::= ... long list see REC ...
+</p><p>
+VI is your friend !
+:1,$ s/\[<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x">x</GTKDOCLINK>\([0-9A-Z]*\)-<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x">x</GTKDOCLINK>\([0-9A-Z]*\)\]/     (((c) &gt;= 0x\1) \&amp;\&amp; ((c) &lt;= 0x\2)) ||/
+and 
+:1,$ s/<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x">x</GTKDOCLINK>\([0-9A-Z]*\)/     ((c) == 0x\1) ||/</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>c</tt></i> :</span></td><td>  an unicode character (int)
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 if not, non-zero otherwise
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlIsBlank"></a>xmlIsBlank ()</h3><pre class="programlisting">int         xmlIsBlank                      (int c);</pre><p>
+Check whether the character is allowed by the production
+[3] S ::= (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x20">x20</GTKDOCLINK> | <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x9">x9</GTKDOCLINK> | <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xD">xD</GTKDOCLINK> | <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xA">xA</GTKDOCLINK>)+
+Also available as a macro <a href="libxml-parserInternals.html#IS-BLANK-CAPS">IS_BLANK</a>()</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>c</tt></i> :</span></td><td>  an unicode character (int)
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 if not, non-zero otherwise
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlIsPubidChar"></a>xmlIsPubidChar ()</h3><pre class="programlisting">int         xmlIsPubidChar                  (int c);</pre><p>
+Check whether the character is allowed by the production
+[13] PubidChar ::= <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x20">x20</GTKDOCLINK> | <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xD">xD</GTKDOCLINK> | <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xA">xA</GTKDOCLINK> | [a-zA-Z0-9] | [-'()+,./:=?;!*#@$_%]</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>c</tt></i> :</span></td><td>  an unicode character (int)
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 if not, non-zero otherwise
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlIsLetter"></a>xmlIsLetter ()</h3><pre class="programlisting">int         xmlIsLetter                     (int c);</pre><p>
+Check whether the character is allowed by the production
+[84] Letter ::= BaseChar | Ideographic</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>c</tt></i> :</span></td><td>  an unicode character (int)
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 if not, non-zero otherwise
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlIsDigit"></a>xmlIsDigit ()</h3><pre class="programlisting">int         xmlIsDigit                      (int c);</pre><p>
+Check whether the character is allowed by the production
+[88] Digit ::= ... long list see REC ...</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>c</tt></i> :</span></td><td>  an unicode character (int)
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 if not, non-zero otherwise
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlIsIdeographic"></a>xmlIsIdeographic ()</h3><pre class="programlisting">int         xmlIsIdeographic                (int c);</pre><p>
+Check whether the character is allowed by the production
+[86] Ideographic ::= [<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x4E00-">x4E00-</GTKDOCLINK><GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x9FA5">x9FA5</GTKDOCLINK>] | <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x3007">x3007</GTKDOCLINK> | [<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x3021-">x3021-</GTKDOCLINK><GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x3029">x3029</GTKDOCLINK>]</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>c</tt></i> :</span></td><td>  an unicode character (int)
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 if not, non-zero otherwise
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlIsExtender"></a>xmlIsExtender ()</h3><pre class="programlisting">int         xmlIsExtender                   (int c);</pre><p>
+Check whether the character is allowed by the production
+[89] Extender ::= <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x00B7">x00B7</GTKDOCLINK> | <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x02D0">x02D0</GTKDOCLINK> | <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x02D1">x02D1</GTKDOCLINK> | <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x0387">x0387</GTKDOCLINK> | <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x0640">x0640</GTKDOCLINK> |
+                  <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x0E46">x0E46</GTKDOCLINK> | <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x0EC6">x0EC6</GTKDOCLINK> | <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x3005">x3005</GTKDOCLINK> | [<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x3031-">x3031-</GTKDOCLINK><GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x3035">x3035</GTKDOCLINK>] |
+                  [<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x309D-">x309D-</GTKDOCLINK><GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x309E">x309E</GTKDOCLINK>] | [<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x30FC-">x30FC-</GTKDOCLINK><GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x30FE">x30FE</GTKDOCLINK>]</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>c</tt></i> :</span></td><td>  an unicode character (int)
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 if not, non-zero otherwise
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlIsCombining"></a>xmlIsCombining ()</h3><pre class="programlisting">int         xmlIsCombining                  (int c);</pre><p>
+Check whether the character is allowed by the production
+[87] CombiningChar ::= ... long list see REC ...</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>c</tt></i> :</span></td><td>  an unicode character (int)
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 if not, non-zero otherwise
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlIsChar"></a>xmlIsChar ()</h3><pre class="programlisting">int         xmlIsChar                       (int c);</pre><p>
+Check whether the character is allowed by the production
+[2] Char ::= <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x9">x9</GTKDOCLINK> | <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xA">xA</GTKDOCLINK> | <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xD">xD</GTKDOCLINK> | [<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x20-">x20-</GTKDOCLINK><GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xD7FF">xD7FF</GTKDOCLINK>] | [<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xE000-">xE000-</GTKDOCLINK><GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xFFFD">xFFFD</GTKDOCLINK>]
+                 | [<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x10000-">x10000-</GTKDOCLINK><GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x10FFFF">x10FFFF</GTKDOCLINK>]
+any Unicode character, excluding the surrogate blocks, FFFE, and FFFF.
+Also available as a macro <a href="libxml-parserInternals.html#IS-CHAR-CAPS">IS_CHAR</a>()</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>c</tt></i> :</span></td><td>  an unicode character (int)
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 if not, non-zero otherwise
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCreateFileParserCtxt"></a>xmlCreateFileParserCtxt ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> xmlCreateFileParserCtxt    (const char *filename);</pre><p>
+Create a parser context for a file content. 
+Automatic support for ZLIB/Compress compressed document is provided
+by default if found at compile-time.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>  the filename
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the new parser context or NULL
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCreateMemoryParserCtxt"></a>xmlCreateMemoryParserCtxt ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> xmlCreateMemoryParserCtxt  (const char *buffer,
+                                             int size);</pre><p>
+Create a parser context for an XML in-memory document.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>buffer</tt></i> :</span></td><td>  a pointer to a char array
+</td></tr><tr><td><span class="term"><i><tt>size</tt></i> :</span></td><td>  the size of the array
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the new parser context or NULL
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlNewParserCtxt"></a>xmlNewParserCtxt ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> xmlNewParserCtxt           (void);</pre><p>
+Allocate and initialize a new parser context.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the xmlParserCtxtPtr or NULL
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCreateEntityParserCtxt"></a>xmlCreateEntityParserCtxt ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> xmlCreateEntityParserCtxt  (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *URL,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *ID,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *base);</pre><p>
+Create a parser context for an external entity
+Automatic support for ZLIB/Compress compressed document is provided
+by default if found at compile-time.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>URL</tt></i> :</span></td><td>  the entity URL
+</td></tr><tr><td><span class="term"><i><tt>ID</tt></i> :</span></td><td>  the entity PUBLIC ID
+</td></tr><tr><td><span class="term"><i><tt>base</tt></i> :</span></td><td>  a possible base for the target URI
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the new parser context or NULL
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSwitchEncoding"></a>xmlSwitchEncoding ()</h3><pre class="programlisting">int         xmlSwitchEncoding               (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc);</pre><p>
+change the input functions when discovering the character encoding
+of a given entity.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the parser context
+</td></tr><tr><td><span class="term"><i><tt>enc</tt></i> :</span></td><td>  the encoding value (number)
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 in case of success, -1 otherwise
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSwitchToEncoding"></a>xmlSwitchToEncoding ()</h3><pre class="programlisting">int         xmlSwitchToEncoding             (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a> handler);</pre><p>
+change the input functions when discovering the character encoding
+of a given entity.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the parser context
+</td></tr><tr><td><span class="term"><i><tt>handler</tt></i> :</span></td><td>  the encoding handler
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 in case of success, -1 otherwise
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlHandleEntity"></a>xmlHandleEntity ()</h3><pre class="programlisting">void        xmlHandleEntity                 (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlEntityPtr">xmlEntityPtr</a> entity);</pre><p>
+Default handling of defined entities, when should we define a new input
+stream ? When do we just handle that as a set of chars ?
+</p><p>
+OBSOLETE: to be removed at some point.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><i><tt>entity</tt></i> :</span></td><td>  an XML entity pointer.
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlNewStringInputStream"></a>xmlNewStringInputStream ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> xmlNewStringInputStream   (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *buffer);</pre><p>
+Create a new input stream based on a memory buffer.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><i><tt>buffer</tt></i> :</span></td><td>  an memory buffer
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the new input stream
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlNewEntityInputStream"></a>xmlNewEntityInputStream ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> xmlNewEntityInputStream   (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlEntityPtr">xmlEntityPtr</a> entity);</pre><p>
+Create a new input stream based on an xmlEntityPtr</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><i><tt>entity</tt></i> :</span></td><td>  an Entity pointer
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the new input stream or NULL
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlPushInput"></a>xmlPushInput ()</h3><pre class="programlisting">void        xmlPushInput                    (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> input);</pre><p>
+xmlPushInput: switch to a new input stream which is stacked on top
+              of the previous one(s).</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><i><tt>input</tt></i> :</span></td><td>  an XML parser input fragment (entity, XML fragment ...).
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlPopInput"></a>xmlPopInput ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>     xmlPopInput                     (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+xmlPopInput: the current input pointed by ctxt-&gt;input came to an end
+         pop it and return the next char.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the current xmlChar in the parser context
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlFreeInputStream"></a>xmlFreeInputStream ()</h3><pre class="programlisting">void        xmlFreeInputStream              (<a href="libxml-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> input);</pre><p>
+Free up an input stream.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>input</tt></i> :</span></td><td>  an xmlParserInputPtr
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlNewInputFromFile"></a>xmlNewInputFromFile ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> xmlNewInputFromFile       (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             const char *filename);</pre><p>
+Create a new input stream based on a file.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>  the filename to use as entity
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the new input stream or NULL in case of error
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlNewInputStream"></a>xmlNewInputStream ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> xmlNewInputStream         (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+Create a new input stream structure</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the new input stream or NULL
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSplitQName"></a>xmlSplitQName ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlSplitQName                   (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             <a href="libxml-tree.html#xmlChar">xmlChar</a> **prefix);</pre><p>
+parse an UTF8 encoded XML qualified name string
+</p><p>
+[NS 5] QName ::= (Prefix ':')? LocalPart
+</p><p>
+[NS 6] Prefix ::= NCName
+</p><p>
+[NS 7] LocalPart ::= NCName</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><i><tt>prefix</tt></i> :</span></td><td>  a xmlChar ** 
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the local part, and prefix is updated
+  to get the Prefix if any.
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlNamespaceParseNCName"></a>xmlNamespaceParseNCName ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlNamespaceParseNCName         (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+parse an XML namespace name.
+</p><p>
+TODO: this seems not in use anymore, the namespace handling is done on
+      top of the SAX interfaces, i.e. not on raw input.
+</p><p>
+[NS 3] NCName ::= (Letter | '_') (NCNameChar)*
+</p><p>
+[NS 4] NCNameChar ::= Letter | Digit | '.' | '-' | '_' |
+                      CombiningChar | Extender</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the namespace name or NULL
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlNamespaceParseQName"></a>xmlNamespaceParseQName ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlNamespaceParseQName          (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlChar">xmlChar</a> **prefix);</pre><p>
+TODO: this seems not in use anymore, the namespace handling is done on
+      top of the SAX interfaces, i.e. not on raw input.
+</p><p>
+parse an XML qualified name
+</p><p>
+[NS 5] QName ::= (Prefix ':')? LocalPart
+</p><p>
+[NS 6] Prefix ::= NCName
+</p><p>
+[NS 7] LocalPart ::= NCName</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><i><tt>prefix</tt></i> :</span></td><td>  a xmlChar ** 
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the local part, and prefix is updated
+  to get the Prefix if any.
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlNamespaceParseNSDef"></a>xmlNamespaceParseNSDef ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlNamespaceParseNSDef          (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+parse a namespace prefix declaration
+</p><p>
+TODO: this seems not in use anymore, the namespace handling is done on
+      top of the SAX interfaces, i.e. not on raw input.
+</p><p>
+[NS 1] NSDef ::= PrefixDef Eq SystemLiteral
+</p><p>
+[NS 2] PrefixDef ::= 'xmlns' (':' NCName)?</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the namespace name
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseQuotedString"></a>xmlParseQuotedString ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlParseQuotedString            (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+Parse and return a string between quotes or doublequotes
+</p><p>
+TODO: Deprecated, to  be removed at next drop of binary compatibility</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the string parser or NULL.
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseNamespace"></a>xmlParseNamespace ()</h3><pre class="programlisting">void        xmlParseNamespace               (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+xmlParseNamespace: parse specific PI '&lt;?namespace ...' constructs.
+</p><p>
+This is what the older xml-name Working Draft specified, a bunch of
+other stuff may still rely on it, so support is still here as
+if it was declared on the root of the Tree:-(
+</p><p>
+TODO: remove from library
+</p><p>
+To be removed at next drop of binary compatibility</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlScanName"></a>xmlScanName ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlScanName                     (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+Trickery: parse an XML name but without consuming the input flow
+Needed for rollback cases. Used only when parsing entities references.
+</p><p>
+TODO: seems deprecated now, only used in the default part of
+      xmlParserHandleReference
+</p><p>
+[4] NameChar ::= Letter | Digit | '.' | '-' | '_' | ':' |
+                 CombiningChar | Extender
+</p><p>
+[5] Name ::= (Letter | '_' | ':') (NameChar)*
+</p><p>
+[6] Names ::= Name (S Name)*</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the Name parsed or NULL
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseName"></a>xmlParseName ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlParseName                    (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+parse an XML name.
+</p><p>
+[4] NameChar ::= Letter | Digit | '.' | '-' | '_' | ':' |
+                 CombiningChar | Extender
+</p><p>
+[5] Name ::= (Letter | '_' | ':') (NameChar)*
+</p><p>
+[6] Names ::= Name (S Name)*</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the Name parsed or NULL
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseNmtoken"></a>xmlParseNmtoken ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlParseNmtoken                 (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+parse an XML Nmtoken.
+</p><p>
+[7] Nmtoken ::= (NameChar)+
+</p><p>
+[8] Nmtokens ::= Nmtoken (S Nmtoken)*</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the Nmtoken parsed or NULL
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseEntityValue"></a>xmlParseEntityValue ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlParseEntityValue             (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlChar">xmlChar</a> **orig);</pre><p>
+parse a value for ENTITY declarations
+</p><p>
+[9] EntityValue ::= '&quot;' ([^%&amp;&quot;] | PEReference | Reference)* '&quot;' |
+               &quot;'&quot; ([^%&amp;'] | PEReference | Reference)* &quot;'&quot;</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><i><tt>orig</tt></i> :</span></td><td>  if non-NULL store a copy of the original entity value
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the EntityValue parsed with reference substituted or NULL
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseAttValue"></a>xmlParseAttValue ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlParseAttValue                (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+parse a value for an attribute
+Note: the parser won't do substitution of entities here, this
+will be handled later in xmlStringGetNodeList
+</p><p>
+[10] AttValue ::= '&quot;' ([^&lt;&amp;&quot;] | Reference)* '&quot;' |
+                  &quot;'&quot; ([^&lt;&amp;'] | Reference)* &quot;'&quot;
+</p><p>
+3.3.3 Attribute-Value Normalization:
+Before the value of an attribute is passed to the application or
+checked for validity, the XML processor must normalize it as follows: 
+- a character reference is processed by appending the referenced
+  character to the attribute value
+- an entity reference is processed by recursively processing the
+  replacement text of the entity 
+- a whitespace character (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x20">x20</GTKDOCLINK>, <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xD">xD</GTKDOCLINK>, <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xA">xA</GTKDOCLINK>, <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x9">x9</GTKDOCLINK>) is processed by
+  appending <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x20">x20</GTKDOCLINK> to the normalized value, except that only a single
+  <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x20">x20</GTKDOCLINK> is appended for a &quot;<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xD">xD</GTKDOCLINK><GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xA">xA</GTKDOCLINK>&quot; sequence that is part of an external
+  parsed entity or the literal entity value of an internal parsed entity 
+- other characters are processed by appending them to the normalized value 
+If the declared value is not CDATA, then the XML processor must further
+process the normalized attribute value by discarding any leading and
+trailing space (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x20">x20</GTKDOCLINK>) characters, and by replacing sequences of space
+(<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x20">x20</GTKDOCLINK>) characters by a single space (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x20">x20</GTKDOCLINK>) character.  
+All attributes for which no declaration has been read should be treated
+by a non-validating parser as if declared CDATA.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the AttValue parsed or NULL. The value has to be freed by the caller.
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseSystemLiteral"></a>xmlParseSystemLiteral ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlParseSystemLiteral           (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+parse an XML Literal
+</p><p>
+[11] SystemLiteral ::= ('&quot;' [^&quot;]* '&quot;') | (&quot;'&quot; [^']* &quot;'&quot;)</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the SystemLiteral parsed or NULL
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParsePubidLiteral"></a>xmlParsePubidLiteral ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlParsePubidLiteral            (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+parse an XML public literal
+</p><p>
+[12] PubidLiteral ::= '&quot;' PubidChar* '&quot;' | &quot;'&quot; (PubidChar - &quot;'&quot;)* &quot;'&quot;</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the PubidLiteral parsed or NULL.
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseCharData"></a>xmlParseCharData ()</h3><pre class="programlisting">void        xmlParseCharData                (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             int cdata);</pre><p>
+parse a CharData section.
+if we are within a CDATA section ']]&gt;' marks an end of section.
+</p><p>
+The right angle bracket (&gt;) may be represented using the string &quot;&amp;gt;&quot;,
+and must, for compatibility, be escaped using &quot;&amp;gt;&quot; or a character
+reference when it appears in the string &quot;]]&gt;&quot; in content, when that
+string is not marking the end of a CDATA section. 
+</p><p>
+[14] CharData ::= [^&lt;&amp;]* - ([^&lt;&amp;]* ']]&gt;' [^&lt;&amp;]*)</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><i><tt>cdata</tt></i> :</span></td><td>  int indicating whether we are within a CDATA section
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseExternalID"></a>xmlParseExternalID ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlParseExternalID              (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlChar">xmlChar</a> **publicID,
+                                             int strict);</pre><p>
+Parse an External ID or a Public ID
+</p><p>
+NOTE: Productions [75] and [83] interact badly since [75] can generate
+      'PUBLIC' S PubidLiteral S SystemLiteral
+</p><p>
+[75] ExternalID ::= 'SYSTEM' S SystemLiteral
+                  | 'PUBLIC' S PubidLiteral S SystemLiteral
+</p><p>
+[83] PublicID ::= 'PUBLIC' S PubidLiteral</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><i><tt>publicID</tt></i> :</span></td><td>  a xmlChar** receiving PubidLiteral
+</td></tr><tr><td><span class="term"><i><tt>strict</tt></i> :</span></td><td> indicate whether we should restrict parsing to only
+         production [75], see NOTE below
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the function returns SystemLiteral and in the second
+               case publicID receives PubidLiteral, is strict is off
+               it is possible to return NULL and have publicID set.
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseComment"></a>xmlParseComment ()</h3><pre class="programlisting">void        xmlParseComment                 (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+Skip an XML (SGML) comment &lt;!-- .... --&gt;
+ The spec says that &quot;For compatibility, the string &quot;--&quot; (double-hyphen)
+ must not occur within comments. &quot;
+</p><p>
+[15] Comment ::= '&lt;!--' ((Char - '-') | ('-' (Char - '-')))* '--&gt;'</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParsePITarget"></a>xmlParsePITarget ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlParsePITarget                (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+parse the name of a PI
+</p><p>
+[17] PITarget ::= Name - (('X' | 'x') ('M' | 'm') ('L' | 'l'))</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the PITarget name or NULL
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParsePI"></a>xmlParsePI ()</h3><pre class="programlisting">void        xmlParsePI                      (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+parse an XML Processing Instruction.
+</p><p>
+[16] PI ::= '&lt;?' PITarget (S (Char* - (Char* '?&gt;' Char*)))? '?&gt;'
+</p><p>
+The processing is transfered to SAX once parsed.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseNotationDecl"></a>xmlParseNotationDecl ()</h3><pre class="programlisting">void        xmlParseNotationDecl            (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+parse a notation declaration
+</p><p>
+[82] NotationDecl ::= '&lt;!NOTATION' S Name S (ExternalID |  PublicID) S? '&gt;'
+</p><p>
+Hence there is actually 3 choices:
+    'PUBLIC' S PubidLiteral
+    'PUBLIC' S PubidLiteral S SystemLiteral
+and 'SYSTEM' S SystemLiteral
+</p><p>
+See the NOTE on <a href="libxml-parserInternals.html#xmlParseExternalID">xmlParseExternalID</a>().</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseEntityDecl"></a>xmlParseEntityDecl ()</h3><pre class="programlisting">void        xmlParseEntityDecl              (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+parse &lt;!ENTITY declarations
+</p><p>
+[70] EntityDecl ::= GEDecl | PEDecl
+</p><p>
+[71] GEDecl ::= '&lt;!ENTITY' S Name S EntityDef S? '&gt;'
+</p><p>
+[72] PEDecl ::= '&lt;!ENTITY' S '%' S Name S PEDef S? '&gt;'
+</p><p>
+[73] EntityDef ::= EntityValue | (ExternalID NDataDecl?)
+</p><p>
+[74] PEDef ::= EntityValue | ExternalID
+</p><p>
+[76] NDataDecl ::= S 'NDATA' S Name
+</p><p>
+[ VC: Notation Declared ]
+The Name must match the declared name of a notation.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseDefaultDecl"></a>xmlParseDefaultDecl ()</h3><pre class="programlisting">int         xmlParseDefaultDecl             (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlChar">xmlChar</a> **value);</pre><p>
+Parse an attribute default declaration
+</p><p>
+[60] DefaultDecl ::= '<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="REQUIRED-CAPS">REQUIRED</GTKDOCLINK>' | '<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="IMPLIED-CAPS">IMPLIED</GTKDOCLINK>' | (('<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="FIXED-CAPS">FIXED</GTKDOCLINK>' S)? AttValue)
+</p><p>
+[ VC: Required Attribute ]
+if the default declaration is the keyword <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="REQUIRED-CAPS">REQUIRED</GTKDOCLINK>, then the
+attribute must be specified for all elements of the type in the
+attribute-list declaration.
+</p><p>
+[ VC: Attribute Default Legal ]
+The declared default value must meet the lexical constraints of
+the declared attribute type c.f. <a href="libxml-valid.html#xmlValidateAttributeDecl">xmlValidateAttributeDecl</a>()
+</p><p>
+[ VC: Fixed Attribute Default ]
+if an attribute has a default value declared with the <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="FIXED-CAPS">FIXED</GTKDOCLINK>
+keyword, instances of that attribute must match the default value. 
+</p><p>
+[ WFC: No &lt; in Attribute Values ]
+handled in <a href="libxml-parserInternals.html#xmlParseAttValue">xmlParseAttValue</a>()</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><i><tt>value</tt></i> :</span></td><td>  Receive a possible fixed default value for the attribute
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> XML_ATTRIBUTE_NONE, XML_ATTRIBUTE_REQUIRED, XML_ATTRIBUTE_IMPLIED
+         or XML_ATTRIBUTE_FIXED. 
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseNotationType"></a>xmlParseNotationType ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlEnumerationPtr">xmlEnumerationPtr</a> xmlParseNotationType      (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+parse an Notation attribute type.
+</p><p>
+Note: the leading 'NOTATION' S part has already being parsed...
+</p><p>
+[58] NotationType ::= 'NOTATION' S '(' S? Name (S? '|' S? Name)* S? ')'
+</p><p>
+[ VC: Notation Attributes ]
+Values of this type must match one of the notation names included
+in the declaration; all notation names in the declaration must be declared.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> the notation attribute tree built while parsing
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseEnumerationType"></a>xmlParseEnumerationType ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlEnumerationPtr">xmlEnumerationPtr</a> xmlParseEnumerationType   (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+parse an Enumeration attribute type.
+</p><p>
+[59] Enumeration ::= '(' S? Nmtoken (S? '|' S? Nmtoken)* S? ')'
+</p><p>
+[ VC: Enumeration ]
+Values of this type must match one of the Nmtoken tokens in
+the declaration</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> the enumeration attribute tree built while parsing
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseEnumeratedType"></a>xmlParseEnumeratedType ()</h3><pre class="programlisting">int         xmlParseEnumeratedType          (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlEnumerationPtr">xmlEnumerationPtr</a> *tree);</pre><p>
+parse an Enumerated attribute type.
+</p><p>
+[57] EnumeratedType ::= NotationType | Enumeration
+</p><p>
+[58] NotationType ::= 'NOTATION' S '(' S? Name (S? '|' S? Name)* S? ')'</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><i><tt>tree</tt></i> :</span></td><td>  the enumeration tree built while parsing
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> XML_ATTRIBUTE_ENUMERATION or XML_ATTRIBUTE_NOTATION
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseAttributeType"></a>xmlParseAttributeType ()</h3><pre class="programlisting">int         xmlParseAttributeType           (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlEnumerationPtr">xmlEnumerationPtr</a> *tree);</pre><p>
+parse the Attribute list def for an element
+</p><p>
+[54] AttType ::= StringType | TokenizedType | EnumeratedType
+</p><p>
+[55] StringType ::= 'CDATA'
+</p><p>
+[56] TokenizedType ::= 'ID' | 'IDREF' | 'IDREFS' | 'ENTITY' |
+                       'ENTITIES' | 'NMTOKEN' | 'NMTOKENS'
+</p><p>
+Validity constraints for attribute values syntax are checked in
+<a href="libxml-valid.html#xmlValidateAttributeValue">xmlValidateAttributeValue</a>()
+</p><p>
+[ VC: ID ]
+Values of type ID must match the Name production. A name must not
+appear more than once in an XML document as a value of this type;
+i.e., ID values must uniquely identify the elements which bear them.
+</p><p>
+[ VC: One ID per Element Type ]
+No element type may have more than one ID attribute specified.
+</p><p>
+[ VC: ID Attribute Default ]
+An ID attribute must have a declared default of <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="IMPLIED-CAPS">IMPLIED</GTKDOCLINK> or <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="REQUIRED-CAPS">REQUIRED</GTKDOCLINK>.
+</p><p>
+[ VC: IDREF ]
+Values of type IDREF must match the Name production, and values
+of type IDREFS must match Names; each IDREF Name must match the value
+of an ID attribute on some element in the XML document; i.e. IDREF
+values must match the value of some ID attribute.
+</p><p>
+[ VC: Entity Name ]
+Values of type ENTITY must match the Name production, values
+of type ENTITIES must match Names; each Entity Name must match the
+name of an unparsed entity declared in the DTD.  
+</p><p>
+[ VC: Name Token ]
+Values of type NMTOKEN must match the Nmtoken production; values
+of type NMTOKENS must match Nmtokens.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><i><tt>tree</tt></i> :</span></td><td>  the enumeration tree built while parsing
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the attribute type
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseAttributeListDecl"></a>xmlParseAttributeListDecl ()</h3><pre class="programlisting">void        xmlParseAttributeListDecl       (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+: parse the Attribute list def for an element
+</p><p>
+[52] AttlistDecl ::= '&lt;!ATTLIST' S Name AttDef* S? '&gt;'
+</p><p>
+[53] AttDef ::= S Name S AttType S DefaultDecl</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseElementMixedContentDecl"></a>xmlParseElementMixedContentDecl ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlElementContentPtr">xmlElementContentPtr</a> xmlParseElementMixedContentDecl
+                                            (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> inputchk);</pre><p>
+parse the declaration for a Mixed Element content
+The leading '(' and spaces have been skipped in xmlParseElementContentDecl
+</p><p>
+[51] Mixed ::= '(' S? '<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="PCDATA-CAPS">PCDATA</GTKDOCLINK>' (S? '|' S? Name)* S? ')*' |
+               '(' S? '<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="PCDATA-CAPS">PCDATA</GTKDOCLINK>' S? ')'
+</p><p>
+[ VC: Proper Group/PE Nesting ] applies to [51] too (see [49])
+</p><p>
+[ VC: No Duplicate Types ]
+The same name must not appear more than once in a single
+mixed-content declaration.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><i><tt>inputchk</tt></i> :</span></td><td>  the input used for the current entity, needed for boundary checks
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> the list of the xmlElementContentPtr describing the element choices
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseElementChildrenContentDecl"></a>xmlParseElementChildrenContentDecl ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlElementContentPtr">xmlElementContentPtr</a> xmlParseElementChildrenContentDecl
+                                            (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> inputchk);</pre><p>
+parse the declaration for a Mixed Element content
+The leading '(' and spaces have been skipped in xmlParseElementContentDecl
+</p><p>
+[47] children ::= (choice | seq) ('?' | '*' | '+')?
+</p><p>
+[48] cp ::= (Name | choice | seq) ('?' | '*' | '+')?
+</p><p>
+[49] choice ::= '(' S? cp ( S? '|' S? cp )* S? ')'
+</p><p>
+[50] seq ::= '(' S? cp ( S? ',' S? cp )* S? ')'
+</p><p>
+[ VC: Proper Group/PE Nesting ] applies to [49] and [50]
+TODO Parameter-entity replacement text must be properly nested
+with parenthesized groups. That is to say, if either of the
+opening or closing parentheses in a choice, seq, or Mixed
+construct is contained in the replacement text for a parameter
+entity, both must be contained in the same replacement text. For
+interoperability, if a parameter-entity reference appears in a
+choice, seq, or Mixed construct, its replacement text should not
+be empty, and neither the first nor last non-blank character of
+the replacement text should be a connector (| or ,).</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><i><tt>inputchk</tt></i> :</span></td><td>  the input used for the current entity, needed for boundary checks
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the tree of xmlElementContentPtr describing the element 
+         hierarchy.
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseElementContentDecl"></a>xmlParseElementContentDecl ()</h3><pre class="programlisting">int         xmlParseElementContentDecl      (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlChar">xmlChar</a> *name,
+                                             <a href="libxml-tree.html#xmlElementContentPtr">xmlElementContentPtr</a> *result);</pre><p>
+parse the declaration for an Element content either Mixed or Children,
+the cases EMPTY and ANY are handled directly in xmlParseElementDecl
+</p><p>
+[46] contentspec ::= 'EMPTY' | 'ANY' | Mixed | children</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>  the name of the element being defined.
+</td></tr><tr><td><span class="term"><i><tt>result</tt></i> :</span></td><td>  the Element Content pointer will be stored here if any
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> the type of element content XML_ELEMENT_TYPE_xxx
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseElementDecl"></a>xmlParseElementDecl ()</h3><pre class="programlisting">int         xmlParseElementDecl             (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+parse an Element declaration.
+</p><p>
+[45] elementdecl ::= '&lt;!ELEMENT' S Name S contentspec S? '&gt;'
+</p><p>
+[ VC: Unique Element Type Declaration ]
+No element type may be declared more than once</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the type of the element, or -1 in case of error
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseMarkupDecl"></a>xmlParseMarkupDecl ()</h3><pre class="programlisting">void        xmlParseMarkupDecl              (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+parse Markup declarations
+</p><p>
+[29] markupdecl ::= elementdecl | AttlistDecl | EntityDecl |
+                    NotationDecl | PI | Comment
+</p><p>
+[ VC: Proper Declaration/PE Nesting ]
+Parameter-entity replacement text must be properly nested with
+markup declarations. That is to say, if either the first character
+or the last character of a markup declaration (markupdecl above) is
+contained in the replacement text for a parameter-entity reference,
+both must be contained in the same replacement text.
+</p><p>
+[ WFC: PEs in Internal Subset ]
+In the internal DTD subset, parameter-entity references can occur
+only where markup declarations can occur, not within markup declarations.
+(This does not apply to references that occur in external parameter
+entities or to the external subset.)</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseCharRef"></a>xmlParseCharRef ()</h3><pre class="programlisting">int         xmlParseCharRef                 (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+parse Reference declarations
+</p><p>
+[66] CharRef ::= '&amp;#' [0-9]+ ';' |
+                 '&amp;<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x">x</GTKDOCLINK>' [0-9a-fA-F]+ ';'
+</p><p>
+[ WFC: Legal Character ]
+Characters referred to using character references must match the
+production for Char.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the value parsed (as an int), 0 in case of error
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseEntityRef"></a>xmlParseEntityRef ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlEntityPtr">xmlEntityPtr</a> xmlParseEntityRef              (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+parse ENTITY references declarations
+</p><p>
+[68] EntityRef ::= '&amp;' Name ';'
+</p><p>
+[ WFC: Entity Declared ]
+In a document without any DTD, a document with only an internal DTD
+subset which contains no parameter entity references, or a document
+with &quot;standalone='yes'&quot;, the Name given in the entity reference
+must match that in an entity declaration, except that well-formed
+documents need not declare any of the following entities: amp, lt,
+gt, apos, quot.  The declaration of a parameter entity must precede
+any reference to it.  Similarly, the declaration of a general entity
+must precede any reference to it which appears in a default value in an
+attribute-list declaration. Note that if entities are declared in the
+external subset or in external parameter entities, a non-validating
+processor is not obligated to read and process their declarations;
+for such documents, the rule that an entity must be declared is a
+well-formedness constraint only if standalone='yes'.
+</p><p>
+[ WFC: Parsed Entity ]
+An entity reference must not contain the name of an unparsed entity</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the xmlEntityPtr if found, or NULL otherwise.
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseReference"></a>xmlParseReference ()</h3><pre class="programlisting">void        xmlParseReference               (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+parse and handle entity references in content, depending on the SAX
+interface, this may end-up in a call to <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="character">character</GTKDOCLINK>() if this is a
+CharRef, a predefined entity, if there is no <a href="libxml-SAX.html#reference">reference</a>() callback.
+or if the parser was asked to switch to that mode.
+</p><p>
+[67] Reference ::= EntityRef | CharRef</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParsePEReference"></a>xmlParsePEReference ()</h3><pre class="programlisting">void        xmlParsePEReference             (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+parse PEReference declarations
+The entity content is handled directly by pushing it's content as
+a new input stream.
+</p><p>
+[69] PEReference ::= '%' Name ';'
+</p><p>
+[ WFC: No Recursion ]
+A parsed entity must not contain a recursive
+reference to itself, either directly or indirectly. 
+</p><p>
+[ WFC: Entity Declared ]
+In a document without any DTD, a document with only an internal DTD
+subset which contains no parameter entity references, or a document
+with &quot;standalone='yes'&quot;, ...  ... The declaration of a parameter
+entity must precede any reference to it...
+</p><p>
+[ VC: Entity Declared ]
+In a document with an external subset or external parameter entities
+with &quot;standalone='no'&quot;, ...  ... The declaration of a parameter entity
+must precede any reference to it...
+</p><p>
+[ WFC: In DTD ]
+Parameter-entity references may only appear in the DTD.
+NOTE: misleading but this is handled.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseDocTypeDecl"></a>xmlParseDocTypeDecl ()</h3><pre class="programlisting">void        xmlParseDocTypeDecl             (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+parse a DOCTYPE declaration
+</p><p>
+[28] doctypedecl ::= '&lt;!DOCTYPE' S Name (S ExternalID)? S? 
+                     ('[' (markupdecl | PEReference | S)* ']' S?)? '&gt;'
+</p><p>
+[ VC: Root Element Type ]
+The Name in the document type declaration must match the element
+type of the root element.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseAttribute"></a>xmlParseAttribute ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlParseAttribute               (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlChar">xmlChar</a> **value);</pre><p>
+parse an attribute
+</p><p>
+[41] Attribute ::= Name Eq AttValue
+</p><p>
+[ WFC: No External Entity References ]
+Attribute values cannot contain direct or indirect entity references
+to external entities.
+</p><p>
+[ WFC: No &lt; in Attribute Values ]
+The replacement text of any entity referred to directly or indirectly in
+an attribute value (other than &quot;&amp;lt;&quot;) must not contain a &lt;. 
+</p><p>
+[ VC: Attribute Value Type ]
+The attribute must have been declared; the value must be of the type
+declared for it.
+</p><p>
+[25] Eq ::= S? '=' S?
+</p><p>
+With namespace:
+</p><p>
+[NS 11] Attribute ::= QName Eq AttValue
+</p><p>
+Also the case QName == xmlns:??? is handled independently as a namespace
+definition.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><i><tt>value</tt></i> :</span></td><td>  a xmlChar ** used to store the value of the attribute
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the attribute name, and the value in *value.
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseStartTag"></a>xmlParseStartTag ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlParseStartTag                (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+parse a start of tag either for rule element or
+EmptyElement. In both case we don't parse the tag closing chars.
+</p><p>
+[40] STag ::= '&lt;' Name (S Attribute)* S? '&gt;'
+</p><p>
+[ WFC: Unique Att Spec ]
+No attribute name may appear more than once in the same start-tag or
+empty-element tag. 
+</p><p>
+[44] EmptyElemTag ::= '&lt;' Name (S Attribute)* S? '/&gt;'
+</p><p>
+[ WFC: Unique Att Spec ]
+No attribute name may appear more than once in the same start-tag or
+empty-element tag. 
+</p><p>
+With namespace:
+</p><p>
+[NS 8] STag ::= '&lt;' QName (S Attribute)* S? '&gt;'
+</p><p>
+[NS 10] EmptyElement ::= '&lt;' QName (S Attribute)* S? '/&gt;'</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the element name parsed
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseEndTag"></a>xmlParseEndTag ()</h3><pre class="programlisting">void        xmlParseEndTag                  (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+parse an end of tag
+</p><p>
+[42] ETag ::= '&lt;/' Name S? '&gt;'
+</p><p>
+With namespace
+</p><p>
+[NS 9] ETag ::= '&lt;/' QName S? '&gt;'</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseCDSect"></a>xmlParseCDSect ()</h3><pre class="programlisting">void        xmlParseCDSect                  (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+Parse escaped pure raw content.
+</p><p>
+[18] CDSect ::= CDStart CData CDEnd
+</p><p>
+[19] CDStart ::= '&lt;![CDATA['
+</p><p>
+[20] Data ::= (Char* - (Char* ']]&gt;' Char*))
+</p><p>
+[21] CDEnd ::= ']]&gt;'</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseContent"></a>xmlParseContent ()</h3><pre class="programlisting">void        xmlParseContent                 (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+Parse a content:
+</p><p>
+[43] content ::= (element | CharData | Reference | CDSect | PI | Comment)*</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseElement"></a>xmlParseElement ()</h3><pre class="programlisting">void        xmlParseElement                 (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+parse an XML element, this is highly recursive
+</p><p>
+[39] element ::= EmptyElemTag | STag content ETag
+</p><p>
+[ WFC: Element Type Match ]
+The Name in an element's end-tag must match the element type in the
+start-tag. 
+</p><p>
+[ VC: Element Valid ]
+An element is valid if there is a declaration matching elementdecl
+where the Name matches the element type and one of the following holds:
+ - The declaration matches EMPTY and the element has no content.
+ - The declaration matches children and the sequence of child elements
+   belongs to the language generated by the regular expression in the
+   content model, with optional white space (characters matching the
+   nonterminal S) between each pair of child elements. 
+ - The declaration matches Mixed and the content consists of character
+   data and child elements whose types match names in the content model. 
+ - The declaration matches ANY, and the types of any child elements have
+   been declared.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseVersionNum"></a>xmlParseVersionNum ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlParseVersionNum              (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+parse the XML version value.
+</p><p>
+[26] VersionNum ::= ([a-zA-Z0-9_.:] | '-')+</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the string giving the XML version number, or NULL
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseVersionInfo"></a>xmlParseVersionInfo ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlParseVersionInfo             (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+parse the XML version.
+</p><p>
+[24] VersionInfo ::= S 'version' Eq (' VersionNum ' | &quot; VersionNum &quot;)
+</p><p>
+[25] Eq ::= S? '=' S?</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the version string, e.g. &quot;1.0&quot;
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseEncName"></a>xmlParseEncName ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlParseEncName                 (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+parse the XML encoding name
+</p><p>
+[81] EncName ::= [A-Za-z] ([A-Za-z0-9._] | '-')*</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the encoding name value or NULL
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseEncodingDecl"></a>xmlParseEncodingDecl ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlParseEncodingDecl            (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+parse the XML encoding declaration
+</p><p>
+[80] EncodingDecl ::= S 'encoding' Eq ('&quot;' EncName '&quot;' |  &quot;'&quot; EncName &quot;'&quot;)
+</p><p>
+this setups the conversion filters.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the encoding value or NULL
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseSDDecl"></a>xmlParseSDDecl ()</h3><pre class="programlisting">int         xmlParseSDDecl                  (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+parse the XML standalone declaration
+</p><p>
+[32] SDDecl ::= S 'standalone' Eq
+                ((&quot;'&quot; ('yes' | 'no') &quot;'&quot;) | ('&quot;' ('yes' | 'no')'&quot;')) 
+</p><p>
+[ VC: Standalone Document Declaration ]
+TODO The standalone document declaration must have the value &quot;no&quot;
+if any external markup declarations contain declarations of:
+ - attributes with default values, if elements to which these
+   attributes apply appear in the document without specifications
+   of values for these attributes, or
+ - entities (other than amp, lt, gt, apos, quot), if references
+   to those entities appear in the document, or
+ - attributes with values subject to normalization, where the
+   attribute appears in the document with a value which will change
+   as a result of normalization, or
+ - element types with element content, if white space occurs directly
+   within any instance of those types.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 if standalone, 0 otherwise
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseXMLDecl"></a>xmlParseXMLDecl ()</h3><pre class="programlisting">void        xmlParseXMLDecl                 (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+parse an XML declaration header
+</p><p>
+[23] XMLDecl ::= '&lt;?xml' VersionInfo EncodingDecl? SDDecl? S? '?&gt;'</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseTextDecl"></a>xmlParseTextDecl ()</h3><pre class="programlisting">void        xmlParseTextDecl                (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+parse an XML declaration header for external entities
+</p><p>
+[77] TextDecl ::= '&lt;?xml' VersionInfo? EncodingDecl S? '?&gt;'
+</p><p>
+Question: Seems that EncodingDecl is mandatory ? Is that a typo ?</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseMisc"></a>xmlParseMisc ()</h3><pre class="programlisting">void        xmlParseMisc                    (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+parse an XML Misc* optional field.
+</p><p>
+[27] Misc ::= Comment | PI |  S</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseExternalSubset"></a>xmlParseExternalSubset ()</h3><pre class="programlisting">void        xmlParseExternalSubset          (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *ExternalID,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *SystemID);</pre><p>
+parse Markup declarations from an external subset
+</p><p>
+[30] extSubset ::= textDecl? extSubsetDecl
+</p><p>
+[31] extSubsetDecl ::= (markupdecl | conditionalSect | PEReference | S) *</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><i><tt>ExternalID</tt></i> :</span></td><td> the external identifier
+</td></tr><tr><td><span class="term"><i><tt>SystemID</tt></i> :</span></td><td> the system identifier (or URL)
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="XML-SUBSTITUTE-NONE-CAPS"></a>XML_SUBSTITUTE_NONE</h3><pre class="programlisting">#define XML_SUBSTITUTE_NONE	0
+</pre><p>
+If no entities need to be substituted.</p><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="XML-SUBSTITUTE-REF-CAPS"></a>XML_SUBSTITUTE_REF</h3><pre class="programlisting">#define XML_SUBSTITUTE_REF	1
+</pre><p>
+Whether general entities need to be substituted.</p><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="XML-SUBSTITUTE-PEREF-CAPS"></a>XML_SUBSTITUTE_PEREF</h3><pre class="programlisting">#define XML_SUBSTITUTE_PEREF	2
+</pre><p>
+Whether parameter entities need to be substituted.</p><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="XML-SUBSTITUTE-BOTH-CAPS"></a>XML_SUBSTITUTE_BOTH</h3><pre class="programlisting">#define XML_SUBSTITUTE_BOTH 	3
+</pre><p>
+Both general and parameter entities need to be substituted.</p><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlDecodeEntities"></a>xmlDecodeEntities ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlDecodeEntities               (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             int len,
+                                             int what,
+                                             <a href="libxml-tree.html#xmlChar">xmlChar</a> end,
+                                             <a href="libxml-tree.html#xmlChar">xmlChar</a> end2,
+                                             <a href="libxml-tree.html#xmlChar">xmlChar</a> end3);</pre><p>
+This function is deprecated, we now always process entities content
+through xmlStringDecodeEntities
+</p><p>
+TODO: remove it in next major release.
+</p><p>
+[67] Reference ::= EntityRef | CharRef
+</p><p>
+[69] PEReference ::= '%' Name ';'</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the parser context
+</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>  the len to decode (in bytes !), -1 for no size limit
+</td></tr><tr><td><span class="term"><i><tt>what</tt></i> :</span></td><td>  combination of XML_SUBSTITUTE_REF and XML_SUBSTITUTE_PEREF
+</td></tr><tr><td><span class="term"><i><tt>end</tt></i> :</span></td><td>  an end marker xmlChar, 0 if none
+</td></tr><tr><td><span class="term"><i><tt>end2</tt></i> :</span></td><td>  an end marker xmlChar, 0 if none
+</td></tr><tr><td><span class="term"><i><tt>end3</tt></i> :</span></td><td>  an end marker xmlChar, 0 if none
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>A newly allocated string with the substitution done. The caller
+     must deallocate it !
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlStringDecodeEntities"></a>xmlStringDecodeEntities ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlStringDecodeEntities         (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *str,
+                                             int what,
+                                             <a href="libxml-tree.html#xmlChar">xmlChar</a> end,
+                                             <a href="libxml-tree.html#xmlChar">xmlChar</a> end2,
+                                             <a href="libxml-tree.html#xmlChar">xmlChar</a> end3);</pre><p>
+Takes a entity string content and process to do the adequate substitutions.
+</p><p>
+[67] Reference ::= EntityRef | CharRef
+</p><p>
+[69] PEReference ::= '%' Name ';'</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the parser context
+</td></tr><tr><td><span class="term"><i><tt>str</tt></i> :</span></td><td>  the input string
+</td></tr><tr><td><span class="term"><i><tt>what</tt></i> :</span></td><td>  combination of XML_SUBSTITUTE_REF and XML_SUBSTITUTE_PEREF
+</td></tr><tr><td><span class="term"><i><tt>end</tt></i> :</span></td><td>  an end marker xmlChar, 0 if none
+</td></tr><tr><td><span class="term"><i><tt>end2</tt></i> :</span></td><td>  an end marker xmlChar, 0 if none
+</td></tr><tr><td><span class="term"><i><tt>end3</tt></i> :</span></td><td>  an end marker xmlChar, 0 if none
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>A newly allocated string with the substitution done. The caller
+     must deallocate it !
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="nodePush"></a>nodePush ()</h3><pre class="programlisting">int         nodePush                        (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> value);</pre><p>
+Pushes a new element node on top of the node stack</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><i><tt>value</tt></i> :</span></td><td>  the element node
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 in case of error, the index in the stack otherwise
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="nodePop"></a>nodePop ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a>  nodePop                         (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+Pops the top element node from the node stack</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td> an XML parser context
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the node just removed
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="inputPush"></a>inputPush ()</h3><pre class="programlisting">int         inputPush                       (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> value);</pre><p>
+Pushes a new parser input on top of the input stack</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><i><tt>value</tt></i> :</span></td><td>  the parser input
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 in case of error, the index in the stack otherwise
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="inputPop"></a>inputPop ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> inputPop                  (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+Pops the top parser input from the input stack</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td> an XML parser context
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the input just removed
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="namePop"></a>namePop ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    namePop                         (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+Pops the top element name from the name stack</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td> an XML parser context
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the name just removed
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="namePush"></a>namePush ()</h3><pre class="programlisting">int         namePush                        (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             <a href="libxml-tree.html#xmlChar">xmlChar</a> *value);</pre><p>
+Pushes a new element name on top of the name stack</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
+</td></tr><tr><td><span class="term"><i><tt>value</tt></i> :</span></td><td>  the element name
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>0 in case of error, the index in the stack otherwise
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSkipBlankChars"></a>xmlSkipBlankChars ()</h3><pre class="programlisting">int         xmlSkipBlankChars               (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+skip all blanks character found at that point in the input streams.
+It pops up finished entities in the process if allowable at that point.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the XML parser context
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the number of space chars skipped
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlStringCurrentChar"></a>xmlStringCurrentChar ()</h3><pre class="programlisting">int         xmlStringCurrentChar            (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             const <a href="libxml-tree.html#xmlChar">xmlChar</a> *cur,
+                                             int *len);</pre><p>
+The current char value, if using UTF-8 this may actually span multiple
+bytes in the input buffer.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the XML parser context
+</td></tr><tr><td><span class="term"><i><tt>cur</tt></i> :</span></td><td>  pointer to the beginning of the char
+</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>  pointer to the length of the char read
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the current char value and its length
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParserHandlePEReference"></a>xmlParserHandlePEReference ()</h3><pre class="programlisting">void        xmlParserHandlePEReference      (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+[69] PEReference ::= '%' Name ';'
+</p><p>
+[ WFC: No Recursion ]
+A parsed entity must not contain a recursive
+reference to itself, either directly or indirectly. 
+</p><p>
+[ WFC: Entity Declared ]
+In a document without any DTD, a document with only an internal DTD
+subset which contains no parameter entity references, or a document
+with &quot;standalone='yes'&quot;, ...  ... The declaration of a parameter
+entity must precede any reference to it...
+</p><p>
+[ VC: Entity Declared ]
+In a document with an external subset or external parameter entities
+with &quot;standalone='no'&quot;, ...  ... The declaration of a parameter entity
+must precede any reference to it...
+</p><p>
+[ WFC: In DTD ]
+Parameter-entity references may only appear in the DTD.
+NOTE: misleading but this is handled.
+</p><p>
+A PEReference may have been detected in the current input stream
+the handling is done accordingly to 
+     http://www.w3.org/TR/REC-xml<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="entproc">entproc</GTKDOCLINK>
+i.e. 
+  - Included in literal in entity values
+  - Included as Parameter Entity reference within DTDs</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the parser context
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParserHandleReference"></a>xmlParserHandleReference ()</h3><pre class="programlisting">void        xmlParserHandleReference        (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+TODO: Remove, now deprecated ... the test is done directly in the
+      content parsing
+routines.
+</p><p>
+[67] Reference ::= EntityRef | CharRef
+</p><p>
+[68] EntityRef ::= '&amp;' Name ';'
+</p><p>
+[ WFC: Entity Declared ]
+the Name given in the entity reference must match that in an entity
+declaration, except that well-formed documents need not declare any
+of the following entities: amp, lt, gt, apos, quot. 
+</p><p>
+[ WFC: Parsed Entity ]
+An entity reference must not contain the name of an unparsed entity
+</p><p>
+[66] CharRef ::= '&amp;#' [0-9]+ ';' |
+                 '&amp;<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x">x</GTKDOCLINK>' [0-9a-fA-F]+ ';'
+</p><p>
+A PEReference may have been detected in the current input stream
+the handling is done accordingly to 
+     http://www.w3.org/TR/REC-xml<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="entproc">entproc</GTKDOCLINK></p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the parser context
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCheckLanguageID"></a>xmlCheckLanguageID ()</h3><pre class="programlisting">int         xmlCheckLanguageID              (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *lang);</pre><p>
+Checks that the value conforms to the LanguageID production:
+</p><p>
+NOTE: this is somewhat deprecated, those productions were removed from
+      the XML Second edition.
+</p><p>
+[33] LanguageID ::= Langcode ('-' Subcode)*
+[34] Langcode ::= ISO639Code |  IanaCode |  UserCode
+[35] ISO639Code ::= ([a-z] | [A-Z]) ([a-z] | [A-Z])
+[36] IanaCode ::= ('i' | 'I') '-' ([a-z] | [A-Z])+
+[37] UserCode ::= ('x' | 'X') '-' ([a-z] | [A-Z])+
+[38] Subcode ::= ([a-z] | [A-Z])+</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>lang</tt></i> :</span></td><td>  pointer to the string value
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 if correct 0 otherwise
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCurrentChar"></a>xmlCurrentChar ()</h3><pre class="programlisting">int         xmlCurrentChar                  (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt,
+                                             int *len);</pre><p>
+The current char value, if using UTF-8 this may actually span multiple
+bytes in the input buffer. Implement the end of line normalization:
+2.11 End-of-Line Handling
+Wherever an external parsed entity or the literal entity value
+of an internal parsed entity contains either the literal two-character
+sequence &quot;<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xD">xD</GTKDOCLINK><GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xA">xA</GTKDOCLINK>&quot; or a standalone literal <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xD">xD</GTKDOCLINK>, an XML processor
+must pass to the application the single character <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xA">xA</GTKDOCLINK>.
+This behavior can conveniently be produced by normalizing all
+line breaks to <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xA">xA</GTKDOCLINK> on input, before parsing.)</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the XML parser context
+</td></tr><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>  pointer to the length of the char read
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the current char value and its length
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCopyCharMultiByte"></a>xmlCopyCharMultiByte ()</h3><pre class="programlisting">int         xmlCopyCharMultiByte            (<a href="libxml-tree.html#xmlChar">xmlChar</a> *out,
+                                             int val);</pre><p>
+append the char value in the array</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>out</tt></i> :</span></td><td>  pointer to an array of xmlChar
+</td></tr><tr><td><span class="term"><i><tt>val</tt></i> :</span></td><td>  the char value
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the number of xmlChar written
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlCopyChar"></a>xmlCopyChar ()</h3><pre class="programlisting">int         xmlCopyChar                     (int len,
+                                             <a href="libxml-tree.html#xmlChar">xmlChar</a> *out,
+                                             int val);</pre><p>
+append the char value in the array</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>len</tt></i> :</span></td><td>  Ignored, compatibility
+</td></tr><tr><td><span class="term"><i><tt>out</tt></i> :</span></td><td>  pointer to an array of xmlChar
+</td></tr><tr><td><span class="term"><i><tt>val</tt></i> :</span></td><td>  the char value
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the number of xmlChar written
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlNextChar"></a>xmlNextChar ()</h3><pre class="programlisting">void        xmlNextChar                     (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+Skip to the next char input char.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the XML parser context
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParserInputShrink"></a>xmlParserInputShrink ()</h3><pre class="programlisting">void        xmlParserInputShrink            (<a href="libxml-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> in);</pre><p>
+This function removes used input for the parser.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>in</tt></i> :</span></td><td>  an XML parser input
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="htmlInitAutoClose"></a>htmlInitAutoClose ()</h3><pre class="programlisting">void        htmlInitAutoClose               (void);</pre><p>
+Initialize the htmlStartCloseIndex for fast lookup of closing tags names.
+This is not reentrant. Call <a href="libxml-parser.html#xmlInitParser">xmlInitParser</a>() once before processing in
+case of use in multithreaded programs.</p><p>
+
+</p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="htmlCreateFileParserCtxt"></a>htmlCreateFileParserCtxt ()</h3><pre class="programlisting"><a href="libxml-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a> htmlCreateFileParserCtxt  (const char *filename,
+                                             const char *encoding);</pre><p>
+Create a parser context for a file content. 
+Automatic support for ZLIB/Compress compressed document is provided
+by default if found at compile-time.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>  the filename
+</td></tr><tr><td><span class="term"><i><tt>encoding</tt></i> :</span></td><td>  a free form C string describing the HTML document encoding, or NULL
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the new parser context or NULL
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlEntityReferenceFunc"></a>xmlEntityReferenceFunc ()</h3><pre class="programlisting">void        (*xmlEntityReferenceFunc)       (<a href="libxml-tree.html#xmlEntityPtr">xmlEntityPtr</a> ent,
+                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> firstNode,
+                                             <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> lastNode);</pre><p>
+Callback function used when one needs to be able to track back the
+provenance of a chunk of nodes inherited from an entity replacement.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ent</tt></i> :</span></td><td> the entity
+</td></tr><tr><td><span class="term"><i><tt>firstNode</tt></i> :</span></td><td>  the fist node in the chunk
+</td></tr><tr><td><span class="term"><i><tt>lastNode</tt></i> :</span></td><td>  the last nod in the chunk
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSetEntityReferenceFunc"></a>xmlSetEntityReferenceFunc ()</h3><pre class="programlisting">void        xmlSetEntityReferenceFunc       (<a href="libxml-parserInternals.html#xmlEntityReferenceFunc">xmlEntityReferenceFunc</a> func);</pre><p>
+Set the function to call call back when a xml reference has been made</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>func</tt></i> :</span></td><td> A valid function
+</td></tr></tbody></table></div></div></div></div><table xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-DOCBparser.html"><b>&lt;&lt; DOCBparser</b></a></td><td align="right"><a accesskey="n" href="libxml-encoding.html"><b>encoding &gt;&gt;</b></a></td></tr></table></body></html>

@@ -501,6 +501,19 @@
      <exports symbol='xmlNanoFTPScanProxy'/>
      <exports symbol='xmlNanoFTPUpdateURL'/>
     </file>
+    <file name='xmlschemastypes'>
+     <exports symbol='xmlSchemaCheckFacet'/>
+     <exports symbol='xmlSchemaCleanupTypes'/>
+     <exports symbol='xmlSchemaCompareValues'/>
+     <exports symbol='xmlSchemaFreeFacet'/>
+     <exports symbol='xmlSchemaFreeValue'/>
+     <exports symbol='xmlSchemaGetPredefinedType'/>
+     <exports symbol='xmlSchemaInitTypes'/>
+     <exports symbol='xmlSchemaNewFacet'/>
+     <exports symbol='xmlSchemaValPredefTypeNode'/>
+     <exports symbol='xmlSchemaValidateFacet'/>
+     <exports symbol='xmlSchemaValidatePredefinedType'/>
+    </file>
     <file name='DOCBparser'>
      <exports symbol='docbCreateFileParserCtxt'/>
      <exports symbol='docbCreatePushParserCtxt'/>
@@ -1109,6 +1122,92 @@
      <exports symbol='xmlSubstituteEntitiesDefault'/>
      <exports symbol='xmlSubstituteEntitiesDefaultValue'/>
     </file>
+    <file name='schemasInternals'>
+     <exports symbol='XML_SCHEMAS_ANYATTR_LAX'/>
+     <exports symbol='XML_SCHEMAS_ANYATTR_SKIP'/>
+     <exports symbol='XML_SCHEMAS_ANYATTR_STRICT'/>
+     <exports symbol='XML_SCHEMAS_ELEM_ABSTRACT'/>
+     <exports symbol='XML_SCHEMAS_ELEM_DEFAULT'/>
+     <exports symbol='XML_SCHEMAS_ELEM_FIXED'/>
+     <exports symbol='XML_SCHEMAS_ELEM_GLOBAL'/>
+     <exports symbol='XML_SCHEMAS_ELEM_NILLABLE'/>
+     <exports symbol='XML_SCHEMAS_ELEM_REF'/>
+     <exports symbol='XML_SCHEMAS_ELEM_TOPLEVEL'/>
+     <exports symbol='XML_SCHEMAS_FACET_COLLAPSE'/>
+     <exports symbol='XML_SCHEMAS_FACET_PRESERVE'/>
+     <exports symbol='XML_SCHEMAS_FACET_REPLACE'/>
+     <exports symbol='XML_SCHEMAS_FACET_UNKNOWN'/>
+     <exports symbol='XML_SCHEMAS_QUALIF_ATTR'/>
+     <exports symbol='XML_SCHEMAS_QUALIF_ELEM'/>
+     <exports symbol='XML_SCHEMAS_TYPE_MIXED'/>
+     <exports symbol='XML_SCHEMA_CONTENT_ANY'/>
+     <exports symbol='XML_SCHEMA_CONTENT_BASIC'/>
+     <exports symbol='XML_SCHEMA_CONTENT_ELEMENTS'/>
+     <exports symbol='XML_SCHEMA_CONTENT_EMPTY'/>
+     <exports symbol='XML_SCHEMA_CONTENT_MIXED'/>
+     <exports symbol='XML_SCHEMA_CONTENT_MIXED_OR_ELEMENTS'/>
+     <exports symbol='XML_SCHEMA_CONTENT_SIMPLE'/>
+     <exports symbol='XML_SCHEMA_CONTENT_UNKNOWN'/>
+     <exports symbol='XML_SCHEMA_FACET_ENUMERATION'/>
+     <exports symbol='XML_SCHEMA_FACET_FRACTIONDIGITS'/>
+     <exports symbol='XML_SCHEMA_FACET_LENGTH'/>
+     <exports symbol='XML_SCHEMA_FACET_MAXEXCLUSIVE'/>
+     <exports symbol='XML_SCHEMA_FACET_MAXINCLUSIVE'/>
+     <exports symbol='XML_SCHEMA_FACET_MAXLENGTH'/>
+     <exports symbol='XML_SCHEMA_FACET_MINEXCLUSIVE'/>
+     <exports symbol='XML_SCHEMA_FACET_MININCLUSIVE'/>
+     <exports symbol='XML_SCHEMA_FACET_MINLENGTH'/>
+     <exports symbol='XML_SCHEMA_FACET_PATTERN'/>
+     <exports symbol='XML_SCHEMA_FACET_TOTALDIGITS'/>
+     <exports symbol='XML_SCHEMA_FACET_WHITESPACE'/>
+     <exports symbol='XML_SCHEMA_TYPE_ALL'/>
+     <exports symbol='XML_SCHEMA_TYPE_ANY'/>
+     <exports symbol='XML_SCHEMA_TYPE_ATTRIBUTE'/>
+     <exports symbol='XML_SCHEMA_TYPE_ATTRIBUTEGROUP'/>
+     <exports symbol='XML_SCHEMA_TYPE_BASIC'/>
+     <exports symbol='XML_SCHEMA_TYPE_CHOICE'/>
+     <exports symbol='XML_SCHEMA_TYPE_COMPLEX'/>
+     <exports symbol='XML_SCHEMA_TYPE_COMPLEX_CONTENT'/>
+     <exports symbol='XML_SCHEMA_TYPE_ELEMENT'/>
+     <exports symbol='XML_SCHEMA_TYPE_EXTENSION'/>
+     <exports symbol='XML_SCHEMA_TYPE_FACET'/>
+     <exports symbol='XML_SCHEMA_TYPE_GROUP'/>
+     <exports symbol='XML_SCHEMA_TYPE_LIST'/>
+     <exports symbol='XML_SCHEMA_TYPE_NOTATION'/>
+     <exports symbol='XML_SCHEMA_TYPE_RESTRICTION'/>
+     <exports symbol='XML_SCHEMA_TYPE_SEQUENCE'/>
+     <exports symbol='XML_SCHEMA_TYPE_SIMPLE'/>
+     <exports symbol='XML_SCHEMA_TYPE_SIMPLE_CONTENT'/>
+     <exports symbol='XML_SCHEMA_TYPE_UNION'/>
+     <exports symbol='XML_SCHEMA_TYPE_UR'/>
+     <exports symbol='_xmlSchema'/>
+     <exports symbol='_xmlSchemaAnnot'/>
+     <exports symbol='_xmlSchemaAttribute'/>
+     <exports symbol='_xmlSchemaAttributeGroup'/>
+     <exports symbol='_xmlSchemaElement'/>
+     <exports symbol='_xmlSchemaFacet'/>
+     <exports symbol='_xmlSchemaNotation'/>
+     <exports symbol='_xmlSchemaType'/>
+     <exports symbol='xmlSchemaAnnot'/>
+     <exports symbol='xmlSchemaAnnotPtr'/>
+     <exports symbol='xmlSchemaAttribute'/>
+     <exports symbol='xmlSchemaAttributeGroup'/>
+     <exports symbol='xmlSchemaAttributeGroupPtr'/>
+     <exports symbol='xmlSchemaAttributePtr'/>
+     <exports symbol='xmlSchemaContentType'/>
+     <exports symbol='xmlSchemaElement'/>
+     <exports symbol='xmlSchemaElementPtr'/>
+     <exports symbol='xmlSchemaFacet'/>
+     <exports symbol='xmlSchemaFacetPtr'/>
+     <exports symbol='xmlSchemaFreeType'/>
+     <exports symbol='xmlSchemaNotation'/>
+     <exports symbol='xmlSchemaNotationPtr'/>
+     <exports symbol='xmlSchemaType'/>
+     <exports symbol='xmlSchemaTypePtr'/>
+     <exports symbol='xmlSchemaTypeType'/>
+     <exports symbol='xmlSchemaVal'/>
+     <exports symbol='xmlSchemaValPtr'/>
+    </file>
     <file name='xmlreader'>
      <exports symbol='XML_PARSER_DEFAULTATTRS'/>
      <exports symbol='XML_PARSER_LOADDTD'/>
@@ -1174,6 +1273,55 @@
      <exports symbol='xmlTextReaderSetParserProp'/>
      <exports symbol='xmlTextReaderValue'/>
      <exports symbol='xmlTextReaderXmlLang'/>
+    </file>
+    <file name='xmlschemas'>
+     <exports symbol='XML_SCHEMAS_ERR_'/>
+     <exports symbol='XML_SCHEMAS_ERR_ATTRINVALID'/>
+     <exports symbol='XML_SCHEMAS_ERR_ATTRUNKNOWN'/>
+     <exports symbol='XML_SCHEMAS_ERR_CONSTRUCT'/>
+     <exports symbol='XML_SCHEMAS_ERR_ELEMCONT'/>
+     <exports symbol='XML_SCHEMAS_ERR_EXTRACONTENT'/>
+     <exports symbol='XML_SCHEMAS_ERR_FACET'/>
+     <exports symbol='XML_SCHEMAS_ERR_HAVEDEFAULT'/>
+     <exports symbol='XML_SCHEMAS_ERR_INTERNAL'/>
+     <exports symbol='XML_SCHEMAS_ERR_INVALIDATTR'/>
+     <exports symbol='XML_SCHEMAS_ERR_INVALIDELEM'/>
+     <exports symbol='XML_SCHEMAS_ERR_ISABSTRACT'/>
+     <exports symbol='XML_SCHEMAS_ERR_MISSING'/>
+     <exports symbol='XML_SCHEMAS_ERR_NOROLLBACK'/>
+     <exports symbol='XML_SCHEMAS_ERR_NOROOT'/>
+     <exports symbol='XML_SCHEMAS_ERR_NOTDETERMINIST'/>
+     <exports symbol='XML_SCHEMAS_ERR_NOTEMPTY'/>
+     <exports symbol='XML_SCHEMAS_ERR_NOTNILLABLE'/>
+     <exports symbol='XML_SCHEMAS_ERR_NOTSIMPLE'/>
+     <exports symbol='XML_SCHEMAS_ERR_NOTTOPLEVEL'/>
+     <exports symbol='XML_SCHEMAS_ERR_NOTYPE'/>
+     <exports symbol='XML_SCHEMAS_ERR_OK'/>
+     <exports symbol='XML_SCHEMAS_ERR_UNDECLAREDELEM'/>
+     <exports symbol='XML_SCHEMAS_ERR_VALUE'/>
+     <exports symbol='XML_SCHEMAS_ERR_WRONGELEM'/>
+     <exports symbol='XML_SCHEMAS_ERR_XXX'/>
+     <exports symbol='xmlSchema'/>
+     <exports symbol='xmlSchemaDump'/>
+     <exports symbol='xmlSchemaFree'/>
+     <exports symbol='xmlSchemaFreeParserCtxt'/>
+     <exports symbol='xmlSchemaFreeValidCtxt'/>
+     <exports symbol='xmlSchemaNewMemParserCtxt'/>
+     <exports symbol='xmlSchemaNewParserCtxt'/>
+     <exports symbol='xmlSchemaNewValidCtxt'/>
+     <exports symbol='xmlSchemaParse'/>
+     <exports symbol='xmlSchemaParserCtxt'/>
+     <exports symbol='xmlSchemaParserCtxtPtr'/>
+     <exports symbol='xmlSchemaPtr'/>
+     <exports symbol='xmlSchemaSetParserErrors'/>
+     <exports symbol='xmlSchemaSetValidErrors'/>
+     <exports symbol='xmlSchemaValidCtxt'/>
+     <exports symbol='xmlSchemaValidCtxtPtr'/>
+     <exports symbol='xmlSchemaValidError'/>
+     <exports symbol='xmlSchemaValidateDoc'/>
+     <exports symbol='xmlSchemaValidateStream'/>
+     <exports symbol='xmlSchemaValidityErrorFunc'/>
+     <exports symbol='xmlSchemaValidityWarningFunc'/>
     </file>
     <file name='relaxng'>
      <exports symbol='XML_RELAXNG_ERR_ATTREXTRANS'/>
@@ -2177,6 +2325,54 @@
     <macro name='XML_MAX_NAMELEN' file='parserInternals'>
       <info>Identifiers can be longer, but this will be more costly at runtime.</info>
     </macro>
+    <macro name='XML_SCHEMAS_ANYATTR_LAX' file='schemasInternals'>
+    </macro>
+    <macro name='XML_SCHEMAS_ANYATTR_SKIP' file='schemasInternals'>
+    </macro>
+    <macro name='XML_SCHEMAS_ANYATTR_STRICT' file='schemasInternals'>
+    </macro>
+    <macro name='XML_SCHEMAS_ELEM_ABSTRACT' file='schemasInternals'>
+      <info>the element is abstract</info>
+    </macro>
+    <macro name='XML_SCHEMAS_ELEM_DEFAULT' file='schemasInternals'>
+      <info>the element has a default value</info>
+    </macro>
+    <macro name='XML_SCHEMAS_ELEM_FIXED' file='schemasInternals'>
+      <info>the element has a fixed value</info>
+    </macro>
+    <macro name='XML_SCHEMAS_ELEM_GLOBAL' file='schemasInternals'>
+      <info>the element is global</info>
+    </macro>
+    <macro name='XML_SCHEMAS_ELEM_NILLABLE' file='schemasInternals'>
+      <info>the element is nillable</info>
+    </macro>
+    <macro name='XML_SCHEMAS_ELEM_REF' file='schemasInternals'>
+      <info>the element is a reference to a type</info>
+    </macro>
+    <macro name='XML_SCHEMAS_ELEM_TOPLEVEL' file='schemasInternals'>
+      <info>the element is top level</info>
+    </macro>
+    <macro name='XML_SCHEMAS_FACET_COLLAPSE' file='schemasInternals'>
+      <info>collapse the types of the facet</info>
+    </macro>
+    <macro name='XML_SCHEMAS_FACET_PRESERVE' file='schemasInternals'>
+      <info>preserve the type of the facet</info>
+    </macro>
+    <macro name='XML_SCHEMAS_FACET_REPLACE' file='schemasInternals'>
+      <info>replace the type of the facet</info>
+    </macro>
+    <macro name='XML_SCHEMAS_FACET_UNKNOWN' file='schemasInternals'>
+      <info>unknown facet handling</info>
+    </macro>
+    <macro name='XML_SCHEMAS_QUALIF_ATTR' file='schemasInternals'>
+      <info>the shemas requires qualified attributes</info>
+    </macro>
+    <macro name='XML_SCHEMAS_QUALIF_ELEM' file='schemasInternals'>
+      <info>the shemas requires qualified elements</info>
+    </macro>
+    <macro name='XML_SCHEMAS_TYPE_MIXED' file='schemasInternals'>
+      <info>the element content type is mixed</info>
+    </macro>
     <macro name='XML_SKIP_IDS' file='parser'>
       <info>Bit in the loadsubset context field to tell to not do ID/REFs registration. Used to initialize xmlLoadExtDtdDefaultValue in some special cases.</info>
     </macro>
@@ -2571,6 +2767,72 @@
     <enum name='XML_RELAXNG_ERR_VALELEM' file='relaxng' value='29' type='xmlRelaxNGValidErr'/>
     <enum name='XML_RELAXNG_ERR_VALUE' file='relaxng' value='32' type='xmlRelaxNGValidErr'/>
     <enum name='XML_RELAXNG_OK' file='relaxng' value='0' type='xmlRelaxNGValidErr'/>
+    <enum name='XML_SCHEMAS_ERR_' file='xmlschemas' value='24' type='xmlSchemaValidError'/>
+    <enum name='XML_SCHEMAS_ERR_ATTRINVALID' file='xmlschemas' value='21' type='xmlSchemaValidError'/>
+    <enum name='XML_SCHEMAS_ERR_ATTRUNKNOWN' file='xmlschemas' value='20' type='xmlSchemaValidError'/>
+    <enum name='XML_SCHEMAS_ERR_CONSTRUCT' file='xmlschemas' value='17' type='xmlSchemaValidError'/>
+    <enum name='XML_SCHEMAS_ERR_ELEMCONT' file='xmlschemas' value='10' type='xmlSchemaValidError'/>
+    <enum name='XML_SCHEMAS_ERR_EXTRACONTENT' file='xmlschemas' value='13' type='xmlSchemaValidError'/>
+    <enum name='XML_SCHEMAS_ERR_FACET' file='xmlschemas' value='23' type='xmlSchemaValidError'/>
+    <enum name='XML_SCHEMAS_ERR_HAVEDEFAULT' file='xmlschemas' value='11' type='xmlSchemaValidError'/>
+    <enum name='XML_SCHEMAS_ERR_INTERNAL' file='xmlschemas' value='18' type='xmlSchemaValidError'/>
+    <enum name='XML_SCHEMAS_ERR_INVALIDATTR' file='xmlschemas' value='14' type='xmlSchemaValidError'/>
+    <enum name='XML_SCHEMAS_ERR_INVALIDELEM' file='xmlschemas' value='15' type='xmlSchemaValidError'/>
+    <enum name='XML_SCHEMAS_ERR_ISABSTRACT' file='xmlschemas' value='8' type='xmlSchemaValidError'/>
+    <enum name='XML_SCHEMAS_ERR_MISSING' file='xmlschemas' value='4' type='xmlSchemaValidError'/>
+    <enum name='XML_SCHEMAS_ERR_NOROLLBACK' file='xmlschemas' value='7' type='xmlSchemaValidError'/>
+    <enum name='XML_SCHEMAS_ERR_NOROOT' file='xmlschemas' value='1' type='xmlSchemaValidError'/>
+    <enum name='XML_SCHEMAS_ERR_NOTDETERMINIST' file='xmlschemas' value='16' type='xmlSchemaValidError'/>
+    <enum name='XML_SCHEMAS_ERR_NOTEMPTY' file='xmlschemas' value='9' type='xmlSchemaValidError'/>
+    <enum name='XML_SCHEMAS_ERR_NOTNILLABLE' file='xmlschemas' value='12' type='xmlSchemaValidError'/>
+    <enum name='XML_SCHEMAS_ERR_NOTSIMPLE' file='xmlschemas' value='19' type='xmlSchemaValidError'/>
+    <enum name='XML_SCHEMAS_ERR_NOTTOPLEVEL' file='xmlschemas' value='3' type='xmlSchemaValidError'/>
+    <enum name='XML_SCHEMAS_ERR_NOTYPE' file='xmlschemas' value='6' type='xmlSchemaValidError'/>
+    <enum name='XML_SCHEMAS_ERR_OK' file='xmlschemas' value='0' type='xmlSchemaValidError'/>
+    <enum name='XML_SCHEMAS_ERR_UNDECLAREDELEM' file='xmlschemas' value='2' type='xmlSchemaValidError'/>
+    <enum name='XML_SCHEMAS_ERR_VALUE' file='xmlschemas' value='22' type='xmlSchemaValidError'/>
+    <enum name='XML_SCHEMAS_ERR_WRONGELEM' file='xmlschemas' value='5' type='xmlSchemaValidError'/>
+    <enum name='XML_SCHEMAS_ERR_XXX' file='xmlschemas' value='25' type='xmlSchemaValidError'/>
+    <enum name='XML_SCHEMA_CONTENT_ANY' file='schemasInternals' value='7' type='xmlSchemaContentType'/>
+    <enum name='XML_SCHEMA_CONTENT_BASIC' file='schemasInternals' value='6' type='xmlSchemaContentType'/>
+    <enum name='XML_SCHEMA_CONTENT_ELEMENTS' file='schemasInternals' value='2' type='xmlSchemaContentType'/>
+    <enum name='XML_SCHEMA_CONTENT_EMPTY' file='schemasInternals' value='1' type='xmlSchemaContentType'/>
+    <enum name='XML_SCHEMA_CONTENT_MIXED' file='schemasInternals' value='3' type='xmlSchemaContentType'/>
+    <enum name='XML_SCHEMA_CONTENT_MIXED_OR_ELEMENTS' file='schemasInternals' value='5' type='xmlSchemaContentType'/>
+    <enum name='XML_SCHEMA_CONTENT_SIMPLE' file='schemasInternals' value='4' type='xmlSchemaContentType'/>
+    <enum name='XML_SCHEMA_CONTENT_UNKNOWN' file='schemasInternals' value='0' type='xmlSchemaContentType'/>
+    <enum name='XML_SCHEMA_FACET_ENUMERATION' file='schemasInternals' value='1007' type='xmlSchemaTypeType'/>
+    <enum name='XML_SCHEMA_FACET_FRACTIONDIGITS' file='schemasInternals' value='1005' type='xmlSchemaTypeType'/>
+    <enum name='XML_SCHEMA_FACET_LENGTH' file='schemasInternals' value='1009' type='xmlSchemaTypeType'/>
+    <enum name='XML_SCHEMA_FACET_MAXEXCLUSIVE' file='schemasInternals' value='1003' type='xmlSchemaTypeType'/>
+    <enum name='XML_SCHEMA_FACET_MAXINCLUSIVE' file='schemasInternals' value='1002' type='xmlSchemaTypeType'/>
+    <enum name='XML_SCHEMA_FACET_MAXLENGTH' file='schemasInternals' value='1010' type='xmlSchemaTypeType'/>
+    <enum name='XML_SCHEMA_FACET_MINEXCLUSIVE' file='schemasInternals' value='1001' type='xmlSchemaTypeType'/>
+    <enum name='XML_SCHEMA_FACET_MININCLUSIVE' file='schemasInternals' value='1000' type='xmlSchemaTypeType'/>
+    <enum name='XML_SCHEMA_FACET_MINLENGTH' file='schemasInternals' value='1011' type='xmlSchemaTypeType'/>
+    <enum name='XML_SCHEMA_FACET_PATTERN' file='schemasInternals' value='1006' type='xmlSchemaTypeType'/>
+    <enum name='XML_SCHEMA_FACET_TOTALDIGITS' file='schemasInternals' value='1004' type='xmlSchemaTypeType'/>
+    <enum name='XML_SCHEMA_FACET_WHITESPACE' file='schemasInternals' value='1008' type='xmlSchemaTypeType'/>
+    <enum name='XML_SCHEMA_TYPE_ALL' file='schemasInternals' value='8' type='xmlSchemaTypeType'/>
+    <enum name='XML_SCHEMA_TYPE_ANY' file='schemasInternals' value='2' type='xmlSchemaTypeType'/>
+    <enum name='XML_SCHEMA_TYPE_ATTRIBUTE' file='schemasInternals' value='15' type='xmlSchemaTypeType'/>
+    <enum name='XML_SCHEMA_TYPE_ATTRIBUTEGROUP' file='schemasInternals' value='16' type='xmlSchemaTypeType'/>
+    <enum name='XML_SCHEMA_TYPE_BASIC' file='schemasInternals' value='1' type='xmlSchemaTypeType'/>
+    <enum name='XML_SCHEMA_TYPE_CHOICE' file='schemasInternals' value='7' type='xmlSchemaTypeType'/>
+    <enum name='XML_SCHEMA_TYPE_COMPLEX' file='schemasInternals' value='5' type='xmlSchemaTypeType'/>
+    <enum name='XML_SCHEMA_TYPE_COMPLEX_CONTENT' file='schemasInternals' value='10' type='xmlSchemaTypeType'/>
+    <enum name='XML_SCHEMA_TYPE_ELEMENT' file='schemasInternals' value='14' type='xmlSchemaTypeType'/>
+    <enum name='XML_SCHEMA_TYPE_EXTENSION' file='schemasInternals' value='13' type='xmlSchemaTypeType'/>
+    <enum name='XML_SCHEMA_TYPE_FACET' file='schemasInternals' value='3' type='xmlSchemaTypeType'/>
+    <enum name='XML_SCHEMA_TYPE_GROUP' file='schemasInternals' value='17' type='xmlSchemaTypeType'/>
+    <enum name='XML_SCHEMA_TYPE_LIST' file='schemasInternals' value='19' type='xmlSchemaTypeType'/>
+    <enum name='XML_SCHEMA_TYPE_NOTATION' file='schemasInternals' value='18' type='xmlSchemaTypeType'/>
+    <enum name='XML_SCHEMA_TYPE_RESTRICTION' file='schemasInternals' value='12' type='xmlSchemaTypeType'/>
+    <enum name='XML_SCHEMA_TYPE_SEQUENCE' file='schemasInternals' value='6' type='xmlSchemaTypeType'/>
+    <enum name='XML_SCHEMA_TYPE_SIMPLE' file='schemasInternals' value='4' type='xmlSchemaTypeType'/>
+    <enum name='XML_SCHEMA_TYPE_SIMPLE_CONTENT' file='schemasInternals' value='9' type='xmlSchemaTypeType'/>
+    <enum name='XML_SCHEMA_TYPE_UNION' file='schemasInternals' value='20' type='xmlSchemaTypeType'/>
+    <enum name='XML_SCHEMA_TYPE_UR' file='schemasInternals' value='11' type='xmlSchemaTypeType'/>
     <enum name='XML_TEXT_NODE' file='tree' value='3' type='xmlElementType'/>
     <enum name='XML_WAR_CATALOG_PI' file='xmlerror' value='93' type='xmlParserErrors' info='93'/>
     <enum name='XML_WAR_UNDECLARED_ENTITY' file='xmlerror' value='27' type='xmlParserErrors'/>
@@ -3114,6 +3376,131 @@ actually an xmlCharEncoding'/>
       <field name='getColumnNumber' type='int(*getColumnNumber)' info=''/>
     </struct>
     <typedef name='xmlSAXLocatorPtr' file='tree' type='xmlSAXLocator *'/>
+    <struct name='xmlSchema' file='xmlschemas' type='struct _xmlSchema'>
+      <field name='name' type='xmlChar *' info=' schema name'/>
+      <field name='targetNamespace' type='xmlChar *' info=' the target namespace'/>
+      <field name='version' type='xmlChar *' info=''/>
+      <field name='id' type='xmlChar *' info=''/>
+      <field name='doc' type='xmlDocPtr' info=''/>
+      <field name='annot' type='xmlSchemaAnnotPtr' info=''/>
+      <field name='flags' type='int' info=''/>
+      <field name='typeDecl' type='xmlHashTablePtr' info=''/>
+      <field name='attrDecl' type='xmlHashTablePtr' info=''/>
+      <field name='attrgrpDecl' type='xmlHashTablePtr' info=''/>
+      <field name='elemDecl' type='xmlHashTablePtr' info=''/>
+      <field name='notaDecl' type='xmlHashTablePtr' info=''/>
+      <field name='schemasImports' type='xmlHashTablePtr' info=''/>
+      <field name='_private' type='void *' info=' unused by the library for users or bindings'/>
+    </struct>
+    <struct name='xmlSchemaAnnot' file='schemasInternals' type='struct _xmlSchemaAnnot'>
+      <field name='next' type='struct _xmlSchemaAnnot *' info=''/>
+      <field name='content' type='xmlNodePtr' info=' the annotation'/>
+    </struct>
+    <typedef name='xmlSchemaAnnotPtr' file='schemasInternals' type='xmlSchemaAnnot *'/>
+    <struct name='xmlSchemaAttribute' file='schemasInternals' type='struct _xmlSchemaAttribute'>
+      <field name='type' type='xmlSchemaTypeType' info=' The kind of type'/>
+      <field name='next' type='struct _xmlSchemaAttribute *' info=' the next attribute if in a group ...'/>
+      <field name='name' type='xmlChar *' info=''/>
+      <field name='id' type='xmlChar *' info=''/>
+      <field name='ref' type='xmlChar *' info=''/>
+      <field name='refNs' type='xmlChar *' info=''/>
+      <field name='typeName' type='xmlChar *' info=''/>
+      <field name='typeNs' type='xmlChar *' info=''/>
+      <field name='annot' type='xmlSchemaAnnotPtr' info=''/>
+      <field name='base' type='xmlSchemaTypePtr' info=''/>
+      <field name='occurs' type='int' info=''/>
+      <field name='defValue' type='xmlChar *' info=''/>
+      <field name='subtypes' type='xmlSchemaTypePtr' info=''/>
+    </struct>
+    <struct name='xmlSchemaAttributeGroup' file='schemasInternals' type='struct _xmlSchemaAttributeGroup'>
+      <field name='type' type='xmlSchemaTypeType' info=' The kind of type'/>
+      <field name='next' type='struct _xmlSchemaAttribute *' info=' the next attribute if in a group ...'/>
+      <field name='name' type='xmlChar *' info=''/>
+      <field name='id' type='xmlChar *' info=''/>
+      <field name='ref' type='xmlChar *' info=''/>
+      <field name='refNs' type='xmlChar *' info=''/>
+      <field name='annot' type='xmlSchemaAnnotPtr' info=''/>
+      <field name='attributes' type='xmlSchemaAttributePtr' info=''/>
+    </struct>
+    <typedef name='xmlSchemaAttributeGroupPtr' file='schemasInternals' type='xmlSchemaAttributeGroup *'/>
+    <typedef name='xmlSchemaAttributePtr' file='schemasInternals' type='xmlSchemaAttribute *'/>
+    <typedef name='xmlSchemaContentType' file='schemasInternals' type='enum'/>
+    <struct name='xmlSchemaElement' file='schemasInternals' type='struct _xmlSchemaElement'>
+      <field name='type' type='xmlSchemaTypeType' info=' The kind of type'/>
+      <field name='next' type='struct _xmlSchemaType *' info=' the next type if in a sequence ...'/>
+      <field name='name' type='xmlChar *' info=''/>
+      <field name='id' type='xmlChar *' info=''/>
+      <field name='ref' type='xmlChar *' info=''/>
+      <field name='refNs' type='xmlChar *' info=''/>
+      <field name='annot' type='xmlSchemaAnnotPtr' info=''/>
+      <field name='subtypes' type='xmlSchemaTypePtr' info=''/>
+      <field name='attributes' type='xmlSchemaAttributePtr' info=''/>
+      <field name='node' type='xmlNodePtr' info=''/>
+      <field name='minOccurs' type='int' info=''/>
+      <field name='maxOccurs' type='int' info=''/>
+      <field name='flags' type='int' info=''/>
+      <field name='targetNamespace' type='xmlChar *' info=''/>
+      <field name='namedType' type='xmlChar *' info=''/>
+      <field name='namedTypeNs' type='xmlChar *' info=''/>
+      <field name='substGroup' type='xmlChar *' info=''/>
+      <field name='substGroupNs' type='xmlChar *' info=''/>
+      <field name='scope' type='xmlChar *' info=''/>
+      <field name='value' type='xmlChar *' info=''/>
+      <field name='refDecl' type='struct _xmlSchemaElement *' info=''/>
+      <field name='contModel' type='xmlRegexpPtr' info=''/>
+      <field name='contentType' type='xmlSchemaContentType' info=''/>
+    </struct>
+    <typedef name='xmlSchemaElementPtr' file='schemasInternals' type='xmlSchemaElement *'/>
+    <struct name='xmlSchemaFacet' file='schemasInternals' type='struct _xmlSchemaFacet'>
+      <field name='type' type='xmlSchemaTypeType' info=' The kind of type'/>
+      <field name='next' type='struct _xmlSchemaFacet *' info=' the next type if in a sequence ...'/>
+      <field name='value' type='xmlChar *' info=''/>
+      <field name='id' type='xmlChar *' info=''/>
+      <field name='annot' type='xmlSchemaAnnotPtr' info=''/>
+      <field name='node' type='xmlNodePtr' info=''/>
+      <field name='fixed' type='int' info=''/>
+      <field name='whitespace' type='int' info=''/>
+      <field name='val' type='xmlSchemaValPtr' info=''/>
+      <field name='regexp' type='xmlRegexpPtr' info=''/>
+    </struct>
+    <typedef name='xmlSchemaFacetPtr' file='schemasInternals' type='xmlSchemaFacet *'/>
+    <struct name='xmlSchemaNotation' file='schemasInternals' type='struct _xmlSchemaNotation'>
+      <field name='type' type='xmlSchemaTypeType' info=' The kind of type'/>
+      <field name='name' type='xmlChar *' info=''/>
+      <field name='annot' type='xmlSchemaAnnotPtr' info=''/>
+      <field name='identifier' type='xmlChar *' info=''/>
+    </struct>
+    <typedef name='xmlSchemaNotationPtr' file='schemasInternals' type='xmlSchemaNotation *'/>
+    <struct name='xmlSchemaParserCtxt' file='xmlschemas' type='struct _xmlSchemaParserCtxt'/>
+    <typedef name='xmlSchemaParserCtxtPtr' file='xmlschemas' type='xmlSchemaParserCtxt *'/>
+    <typedef name='xmlSchemaPtr' file='xmlschemas' type='xmlSchema *'/>
+    <struct name='xmlSchemaType' file='schemasInternals' type='struct _xmlSchemaType'>
+      <field name='type' type='xmlSchemaTypeType' info=' The kind of type'/>
+      <field name='next' type='struct _xmlSchemaType *' info=' the next type if in a sequence ...'/>
+      <field name='name' type='xmlChar *' info=''/>
+      <field name='id' type='xmlChar *' info=''/>
+      <field name='ref' type='xmlChar *' info=''/>
+      <field name='refNs' type='xmlChar *' info=''/>
+      <field name='annot' type='xmlSchemaAnnotPtr' info=''/>
+      <field name='subtypes' type='xmlSchemaTypePtr' info=''/>
+      <field name='attributes' type='xmlSchemaAttributePtr' info=''/>
+      <field name='node' type='xmlNodePtr' info=''/>
+      <field name='minOccurs' type='int' info=''/>
+      <field name='maxOccurs' type='int' info=''/>
+      <field name='flags' type='int' info=''/>
+      <field name='contentType' type='xmlSchemaContentType' info=''/>
+      <field name='base' type='xmlChar *' info=''/>
+      <field name='baseNs' type='xmlChar *' info=''/>
+      <field name='baseType' type='xmlSchemaTypePtr' info=''/>
+      <field name='facets' type='xmlSchemaFacetPtr' info=''/>
+    </struct>
+    <typedef name='xmlSchemaTypePtr' file='schemasInternals' type='xmlSchemaType *'/>
+    <typedef name='xmlSchemaTypeType' file='schemasInternals' type='enum'/>
+    <struct name='xmlSchemaVal' file='schemasInternals' type='struct _xmlSchemaVal'/>
+    <typedef name='xmlSchemaValPtr' file='schemasInternals' type='xmlSchemaVal *'/>
+    <struct name='xmlSchemaValidCtxt' file='xmlschemas' type='struct _xmlSchemaValidCtxt'/>
+    <typedef name='xmlSchemaValidCtxtPtr' file='xmlschemas' type='xmlSchemaValidCtxt *'/>
+    <typedef name='xmlSchemaValidError' file='xmlschemas' type='enum'/>
     <struct name='xmlShellCtxt' file='debugXML' type='struct _xmlShellCtxt'>
       <field name='filename' type='char *' info=''/>
       <field name='doc' type='xmlDocPtr' info=''/>
@@ -7958,6 +8345,163 @@ actually an xmlCharEncoding'/>
       <return type='xmlChar *' info='the Name parsed or NULL'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
+    <function name='xmlSchemaCheckFacet' file='xmlschemastypes'>
+      <info>Checks the default values types, especially for facets</info>
+      <return type='int' info='0 if okay or -1 in cae of error'/>
+      <arg name='facet' type='xmlSchemaFacetPtr' info='the facet'/>
+      <arg name='typeDecl' type='xmlSchemaTypePtr' info='the schema type definition'/>
+      <arg name='ctxt' type='xmlSchemaParserCtxtPtr' info='the schema parser context or NULL'/>
+      <arg name='name' type='const xmlChar *' info='name of the type'/>
+    </function>
+    <function name='xmlSchemaCleanupTypes' file='xmlschemastypes'>
+      <info>Cleanup the default XML Schemas type library</info>
+      <return type='void'/>
+    </function>
+    <function name='xmlSchemaCompareValues' file='xmlschemastypes'>
+      <info>Compare 2 values</info>
+      <return type='int' info='-1 if x &lt; y, 0 if x == y, 1 if x &gt; y, 2 if x &lt;&gt; y, and -2 in case of error'/>
+      <arg name='x' type='xmlSchemaValPtr' info='a first value'/>
+      <arg name='y' type='xmlSchemaValPtr' info='a second value'/>
+    </function>
+    <function name='xmlSchemaDump' file='xmlschemas'>
+      <info>Dump a Schema structure.</info>
+      <return type='void'/>
+      <arg name='output' type='FILE *' info='the file output'/>
+      <arg name='schema' type='xmlSchemaPtr' info='a schema structure'/>
+    </function>
+    <function name='xmlSchemaFree' file='xmlschemas'>
+      <info>Deallocate a Schema structure.</info>
+      <return type='void'/>
+      <arg name='schema' type='xmlSchemaPtr' info='a schema structure'/>
+    </function>
+    <function name='xmlSchemaFreeFacet' file='xmlschemastypes'>
+      <info>Deallocate a Schema Facet structure.</info>
+      <return type='void'/>
+      <arg name='facet' type='xmlSchemaFacetPtr' info='a schema facet structure'/>
+    </function>
+    <function name='xmlSchemaFreeParserCtxt' file='xmlschemas'>
+      <info>Free the resources associated to the schema parser context</info>
+      <return type='void'/>
+      <arg name='ctxt' type='xmlSchemaParserCtxtPtr' info='the schema parser context'/>
+    </function>
+    <function name='xmlSchemaFreeType' file='schemasInternals'>
+      <info>Deallocate a Schema Type structure.</info>
+      <return type='void'/>
+      <arg name='type' type='xmlSchemaTypePtr' info='a schema type structure'/>
+    </function>
+    <function name='xmlSchemaFreeValidCtxt' file='xmlschemas'>
+      <info>Free the resources associated to the schema validation context</info>
+      <return type='void'/>
+      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info='the schema validation context'/>
+    </function>
+    <function name='xmlSchemaFreeValue' file='xmlschemastypes'>
+      <info>Cleanup the default XML Schemas type library</info>
+      <return type='void'/>
+      <arg name='value' type='xmlSchemaValPtr' info='the value to free'/>
+    </function>
+    <function name='xmlSchemaGetPredefinedType' file='xmlschemastypes'>
+      <info>Lookup a type in the default XML Schemas type library</info>
+      <return type='xmlSchemaTypePtr' info='the type if found, NULL otherwise'/>
+      <arg name='name' type='const xmlChar *' info='the type name'/>
+      <arg name='ns' type='const xmlChar *' info='the URI of the namespace usually &quot;http://www.w3.org/2001/XMLSchema&quot;'/>
+    </function>
+    <function name='xmlSchemaInitTypes' file='xmlschemastypes'>
+      <info>Initialize the default XML Schemas type library</info>
+      <return type='void'/>
+    </function>
+    <function name='xmlSchemaNewFacet' file='xmlschemastypes'>
+      <info>Allocate a new Facet structure.</info>
+      <return type='xmlSchemaFacetPtr' info='the newly allocated structure or NULL in case or error'/>
+    </function>
+    <function name='xmlSchemaNewMemParserCtxt' file='xmlschemas'>
+      <info>Create an XML Schemas parse context for that memory buffer expected to contain an XML Schemas file.</info>
+      <return type='xmlSchemaParserCtxtPtr' info='the parser context or NULL in case of error'/>
+      <arg name='buffer' type='const char *' info='a pointer to a char array containing the schemas'/>
+      <arg name='size' type='int' info='the size of the array'/>
+    </function>
+    <function name='xmlSchemaNewParserCtxt' file='xmlschemas'>
+      <info>Create an XML Schemas parse context for that file/resource expected to contain an XML Schemas file.</info>
+      <return type='xmlSchemaParserCtxtPtr' info='the parser context or NULL in case of error'/>
+      <arg name='URL' type='const char *' info='the location of the schema'/>
+    </function>
+    <function name='xmlSchemaNewValidCtxt' file='xmlschemas'>
+      <info>Create an XML Schemas validation context based on the given schema</info>
+      <return type='xmlSchemaValidCtxtPtr' info='the validation context or NULL in case of error'/>
+      <arg name='schema' type='xmlSchemaPtr' info='a precompiled XML Schemas'/>
+    </function>
+    <function name='xmlSchemaParse' file='xmlschemas'>
+      <info>parse a schema definition resource and build an internal XML Shema struture which can be used to validate instances. *WARNING* this interface is highly subject to change</info>
+      <return type='xmlSchemaPtr' info='the internal XML Schema structure built from the resource or NULL in case of error'/>
+      <arg name='ctxt' type='xmlSchemaParserCtxtPtr' info='a schema validation context'/>
+    </function>
+    <function name='xmlSchemaSetParserErrors' file='xmlschemas'>
+      <info>Set the callback functions used to handle errors for a validation context</info>
+      <return type='void'/>
+      <arg name='ctxt' type='xmlSchemaParserCtxtPtr' info='a schema validation context'/>
+      <arg name='err' type='xmlSchemaValidityErrorFunc' info='the error callback'/>
+      <arg name='warn' type='xmlSchemaValidityWarningFunc' info='the warning callback'/>
+      <arg name='ctx' type='void *' info='contextual data for the callbacks'/>
+    </function>
+    <function name='xmlSchemaSetValidErrors' file='xmlschemas'>
+      <info>Set the error and warning callback informations</info>
+      <return type='void'/>
+      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info='a schema validation context'/>
+      <arg name='err' type='xmlSchemaValidityErrorFunc' info='the error function'/>
+      <arg name='warn' type='xmlSchemaValidityWarningFunc' info='the warning function'/>
+      <arg name='ctx' type='void *' info='the functions context'/>
+    </function>
+    <function name='xmlSchemaValPredefTypeNode' file='xmlschemastypes'>
+      <info>Check that a value conforms to the lexical space of the predefined type. if true a value is computed and returned in @val.</info>
+      <return type='int' info='0 if this validates, a positive error code number otherwise and -1 in case of internal or API error.'/>
+      <arg name='type' type='xmlSchemaTypePtr' info='the predefined type'/>
+      <arg name='value' type='const xmlChar *' info='the value to check'/>
+      <arg name='val' type='xmlSchemaValPtr *' info='the return computed value'/>
+      <arg name='node' type='xmlNodePtr' info='the node containing the value'/>
+    </function>
+    <function name='xmlSchemaValidateDoc' file='xmlschemas'>
+      <info>Validate a document tree in memory.</info>
+      <return type='int' info='0 if the document is schemas valid, a positive error code number otherwise and -1 in case of internal or API error.'/>
+      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info='a schema validation context'/>
+      <arg name='doc' type='xmlDocPtr' info='a parsed document tree'/>
+    </function>
+    <function name='xmlSchemaValidateFacet' file='xmlschemastypes'>
+      <info>Check a value against a facet condition</info>
+      <return type='int' info='0 if the element is schemas valid, a positive error code number otherwise and -1 in case of internal or API error.'/>
+      <arg name='base' type='xmlSchemaTypePtr' info='the base type'/>
+      <arg name='facet' type='xmlSchemaFacetPtr' info='the facet to check'/>
+      <arg name='value' type='const xmlChar *' info='the lexical repr of the value to validate'/>
+      <arg name='val' type='xmlSchemaValPtr' info='the precomputed value'/>
+    </function>
+    <function name='xmlSchemaValidatePredefinedType' file='xmlschemastypes'>
+      <info>Check that a value conforms to the lexical space of the predefined type. if true a value is computed and returned in @val.</info>
+      <return type='int' info='0 if this validates, a positive error code number otherwise and -1 in case of internal or API error.'/>
+      <arg name='type' type='xmlSchemaTypePtr' info='the predefined type'/>
+      <arg name='value' type='const xmlChar *' info='the value to check'/>
+      <arg name='val' type='xmlSchemaValPtr *' info='the return computed value'/>
+    </function>
+    <function name='xmlSchemaValidateStream' file='xmlschemas'>
+      <info>Validate a document tree in memory.</info>
+      <return type='int' info='0 if the document is schemas valid, a positive error code number otherwise and -1 in case of internal or API error.'/>
+      <arg name='ctxt' type='xmlSchemaValidCtxtPtr' info='a schema validation context'/>
+      <arg name='input' type='xmlParserInputBufferPtr' info='the input to use for reading the data'/>
+      <arg name='enc' type='xmlCharEncoding' info='an optional encoding information'/>
+      <arg name='sax' type='xmlSAXHandlerPtr' info='a SAX handler for the resulting events'/>
+      <arg name='user_data' type='void *' info='the context to provide to the SAX handler.'/>
+    </function>
+    <functype name='xmlSchemaValidityErrorFunc' file='xmlschemas'>
+      <info></info>
+      <return type='void'/>
+      <arg name='ctx' type='void *' info=''/>
+      <arg name='msg' type='const char *' info=''/>
+      <arg name='...' type='...' info=''/>
+    </functype>
+    <functype name='xmlSchemaValidityWarningFunc' file='xmlschemas'>
+      <info></info>
+      <return type='void'/>
+      <arg name='ctx' type='void *' info=''/>
+      <arg name='msg' type='const char *' info=''/>
+      <arg name='...' type='...' info=''/>
+    </functype>
     <function name='xmlSearchNs' file='tree'>
       <info>Search a Ns registered under a given name space for a document. recurse on the parents until it finds the defined namespace or return NULL otherwise. @nameSpace can be NULL, this is a search for the default namespace. We don&apos;t allow to cross entities boundaries. If you don&apos;t declare the namespace within those you will be in troubles !!! A warning is generated to cover this case.</info>
       <return type='xmlNsPtr' info='the namespace pointer or NULL.'/>

@@ -1,3 +1,9 @@
+Tue Jun 26 18:05:26 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* configure.in doc/xml.html include/libxml/xmlwin32version.h:
+	  release of 2.3.12
+	* parser.c: make an error message if unknow entities in all cases
+
 Tue Jun 26 09:46:29 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* uri.c: fixed 2 uri normalization bugs on '//' reduction

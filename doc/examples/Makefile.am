@@ -17,7 +17,7 @@ install-data-local:
 
 EXTRA_DIST=examples.xsl index.py test1.xml examples.xml test2.xml writer.xml test3.xml reader1.res reader3.res tree1.res tree2.res io1.res 
 
-noinst_PROGRAMS=xpath1 parse1 parse2 tree1 tree2 testWriter reader1 reader2 reader3 io1 
+noinst_PROGRAMS=xpath1 parse1 parse2 tree1 tree2 testWriter reader1 reader2 reader3 io1 parse3 parse4 
 
 xpath1_SOURCES=xpath1.c
 xpath1_LDFLAGS=
@@ -69,6 +69,16 @@ io1_LDFLAGS=
 io1_DEPENDENCIES= $(DEPS)
 io1_LDADD= @RDL_LIBS@ $(LDADDS)
 
+parse3_SOURCES=parse3.c
+parse3_LDFLAGS=
+parse3_DEPENDENCIES= $(DEPS)
+parse3_LDADD= @RDL_LIBS@ $(LDADDS)
+
+parse4_SOURCES=parse4.c
+parse4_LDFLAGS=
+parse4_DEPENDENCIES= $(DEPS)
+parse4_LDADD= @RDL_LIBS@ $(LDADDS)
+
 tests: $(noinst_PROGRAMS)
 	@(echo > .memdump)
 	@(./parse1 test1.xml)
@@ -88,6 +98,10 @@ tests: $(noinst_PROGRAMS)
 	@(./reader3 > reader3.tmp ; diff reader3.tmp reader3.res ; rm reader3.tmp)
 	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
 	@(./io1 > io1.tmp ; diff io1.tmp io1.res ; rm -f io1.tmp)
+	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
+	@(./parse3)
+	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
+	@(./parse4 test3.xml)
 	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
 
 

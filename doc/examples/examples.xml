@@ -279,6 +279,41 @@
       <typedef line='105' file='tree' name='xmlDocPtr'/>
     </uses>
   </example>
+  <example filename='parse3.c'>
+    <synopsis>Parse an XML document in memory to a tree and free it</synopsis>
+    <purpose>Demonstrate the use of xmlReadMemory() to read an XML file into a tree and and xmlFreeDoc() to free the resulting tree</purpose>
+    <usage>parse3</usage>
+    <test>parse3</test>
+    <author>Daniel Veillard</author>
+    <copy>see Copyright for the status of this software. </copy>
+    <section>Parsing</section>
+    <includes>
+      <include>&lt;libxml/tree.h&gt;</include>
+      <include>&lt;libxml/parser.h&gt;</include>
+    </includes>
+    <uses>
+      <function line='33' file='parser' name='xmlReadMemory'/>
+    </uses>
+  </example>
+  <example filename='parse4.c'>
+    <synopsis>Parse an XML document chunk by chunk to a tree and free it</synopsis>
+    <purpose>Demonstrate the use of xmlCreatePushParserCtxt() and xmlParseChunk() to read an XML file progressively into a tree and and xmlFreeDoc() to free the resulting tree</purpose>
+    <usage>parse4 test3.xml</usage>
+    <test>parse4 test3.xml</test>
+    <author>Daniel Veillard</author>
+    <copy>see Copyright for the status of this software. </copy>
+    <section>Parsing</section>
+    <includes>
+      <include>&lt;libxml/tree.h&gt;</include>
+      <include>&lt;libxml/parser.h&gt;</include>
+    </includes>
+    <uses>
+      <function line='94' file='parser' name='xmlFreeParserCtxt'/>
+      <function line='86' file='parser' name='xmlParseChunk'/>
+      <function line='67' file='parser' name='xmlCreatePushParserCtxt'/>
+      <typedef line='44' file='tree' name='xmlParserCtxtPtr'/>
+    </uses>
+  </example>
   <symbols>
     <symbol name='LIBXML_TEST_VERSION'>
       <ref filename='xpath1.c'/>
@@ -334,6 +369,9 @@
     <symbol name='xmlCreateIntSubset'>
       <ref filename='tree2.c'/>
     </symbol>
+    <symbol name='xmlCreatePushParserCtxt'>
+      <ref filename='parse4.c'/>
+    </symbol>
     <symbol name='xmlCtxtReadFile'>
       <ref filename='parse2.c'/>
     </symbol>
@@ -373,6 +411,7 @@
     </symbol>
     <symbol name='xmlFreeParserCtxt'>
       <ref filename='parse2.c'/>
+      <ref filename='parse4.c'/>
     </symbol>
     <symbol name='xmlFreeTextReader'>
       <ref filename='reader1.c'/>
@@ -437,18 +476,23 @@
     <symbol name='xmlNsPtr'>
       <ref filename='xpath1.c'/>
     </symbol>
+    <symbol name='xmlParseChunk'>
+      <ref filename='parse4.c'/>
+    </symbol>
     <symbol name='xmlParseFile'>
       <ref filename='xpath1.c'/>
       <ref filename='tree1.c'/>
     </symbol>
     <symbol name='xmlParserCtxtPtr'>
       <ref filename='parse2.c'/>
+      <ref filename='parse4.c'/>
     </symbol>
     <symbol name='xmlReadFile'>
       <ref filename='parse1.c'/>
     </symbol>
     <symbol name='xmlReadMemory'>
       <ref filename='io1.c'/>
+      <ref filename='parse3.c'/>
     </symbol>
     <symbol name='xmlReaderForFile'>
       <ref filename='reader1.c'/>
@@ -582,6 +626,8 @@
     <section name='Parsing'>
       <example filename='parse1.c'/>
       <example filename='parse2.c'/>
+      <example filename='parse3.c'/>
+      <example filename='parse4.c'/>
     </section>
     <section name='Tree'>
       <example filename='tree1.c'/>

@@ -792,9 +792,6 @@ xmlTextReaderPushData(xmlTextReaderPtr reader) {
 		    if (inbuf->use == reader->cur) {
 			reader->mode = XML_TEXTREADER_MODE_EOF;
 			reader->state = oldstate;
-			if ((oldstate != XML_TEXTREADER_START) ||
-			    (reader->ctxt->myDoc != NULL))
-			    return(val);
 		    }
 		} else if (val < 0) {
 		    reader->mode = XML_TEXTREADER_MODE_EOF;
@@ -838,11 +835,13 @@ xmlTextReaderPushData(xmlTextReaderPtr reader) {
      * Discard the consumed input when needed and possible
      */
     if (reader->mode == XML_TEXTREADER_MODE_INTERACTIVE) {
-	if ((reader->cur >= 4096) &&
-	    (inbuf->use - reader->cur <= CHUNK_SIZE)) {
-	    val = xmlBufferShrink(inbuf, reader->cur);
-	    if (val >= 0) {
-		reader->cur -= val;
+        if (inbuf->alloc != XML_BUFFER_ALLOC_IMMUTABLE) {
+	    if ((reader->cur >= 4096) &&
+		(inbuf->use - reader->cur <= CHUNK_SIZE)) {
+		val = xmlBufferShrink(inbuf, reader->cur);
+		if (val >= 0) {
+		    reader->cur -= val;
+		}
 	    }
 	}
     }
@@ -4377,8 +4376,7 @@ xmlReaderForMemory(const char *buffer, int size, const char *URL,
     xmlTextReaderPtr reader;
     xmlParserInputBufferPtr buf;
 
-    buf =
-        xmlParserInputBufferCreateMem(buffer, size,
+    buf = xmlParserInputBufferCreateStatic(buffer, size,
                                       XML_CHAR_ENCODING_NONE);
     if (buf == NULL) {
         return (NULL);
@@ -4599,7 +4597,7 @@ xmlReaderNewMemory(xmlTextReaderPtr reader, const char *buffer, int size,
     if (buffer == NULL)
         return (-1);
 
-    input = xmlParserInputBufferCreateMem(buffer, size,
+    input = xmlParserInputBufferCreateStatic(buffer, size,
                                       XML_CHAR_ENCODING_NONE);
     if (input == NULL) {
         return (-1);

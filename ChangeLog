@@ -1,3 +1,9 @@
+Thu Feb 19 17:33:36 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xmlreader.c: fixed xmllint --memory --stream memory consumption
+	  on large file by using xmlParserInputBufferCreateStatic() with
+	  the mmap'ed file 
+
 Thu Feb 19 13:56:53 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: some clarification in xmlDocDumpMemory() documentation

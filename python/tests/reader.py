@@ -305,15 +305,15 @@ def tst_reader(s):
 				      reader.Depth())
 	if reader.NodeType() == 1: # Element
 	    while reader.MoveToNextAttribute():
-		res = res + "-- %s (%s) [%s] %d\n" % (reader.NodeType(),
-						   reader.Name(),reader.Value(),
-						   reader.Depth())
+		res = res + "-- %s (%s) [%s] %d %d\n" % (reader.NodeType(),
+				       reader.Name(),reader.Value(),
+				       reader.IsEmptyElement(), reader.Depth())
     return res
     
 doc="""<a><b b1="b1"/><c>content of c</c></a>"""
 expect="""1 (a) [None] 0 0
 1 (b) [None] 1 1
--- 2 (b1) [b1] 2
+-- 2 (b1) [b1] 0 2
 1 (c) [None] 0 1
 3 (#text) [content of c] 0 2
 15 (c) [None] 0 1
@@ -350,6 +350,30 @@ expect="""1 (a) [None] 0 0
 res = tst_reader(doc)
 if res != expect:
     print "test10 failed"
+    print res
+    sys.exit(1)
+
+doc="""<test a="a"/>"""
+expect="""1 (test) [None] 1 0
+-- 2 (a) [a] 0 1
+"""
+res = tst_reader(doc)
+if res != expect:
+    print "test11 failed"
+    print res
+    sys.exit(1)
+
+doc="""<test><a>aaa</a><b/></test>"""
+expect="""1 (test) [None] 0 0
+1 (a) [None] 0 1
+3 (#text) [aaa] 0 2
+15 (a) [None] 0 1
+1 (b) [None] 1 1
+15 (test) [None] 0 0
+"""
+res = tst_reader(doc)
+if res != expect:
+    print "test12 failed"
     print res
     sys.exit(1)
 

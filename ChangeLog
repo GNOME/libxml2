@@ -1,3 +1,8 @@
+Wed Jan  1 16:09:57 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmlreader.c python/tests/reader.py: fixed another couple of
+	  xmlreader bugs reported by Stéphane Bidoul and added tests.
+
 Wed Jan  1 15:42:54 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c python/tests/reader2.py: fixed another validity

@@ -395,8 +395,9 @@ xmlTextReaderRead(xmlTextReaderPtr reader) {
     oldstate = reader->state;
     olddepth = reader->ctxt->nodeNr;
     oldnode = reader->node;
-    wasempty = ((reader->wasempty == 1) && (reader->ctxt->node != NULL) &&
-	        (reader->ctxt->node->last == reader->node));
+    wasempty = (((reader->wasempty == 1) && (reader->ctxt->node != NULL) &&
+	         (reader->ctxt->node->last == reader->node)) ||
+	        (reader->node != reader->ctxt->node));
 
     /*
      * If we are not backtracking on ancestors or examined nodes,
@@ -1442,6 +1443,8 @@ xmlTextReaderIsEmptyElement(xmlTextReaderPtr reader) {
     if ((reader == NULL) || (reader->node == NULL))
 	return(-1);
     if (reader->node->type != XML_ELEMENT_NODE)
+	return(0);
+    if (reader->curnode != NULL)
 	return(0);
     if (reader->node->children != NULL)
 	return(0);

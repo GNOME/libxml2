@@ -62,6 +62,14 @@ void xmlXPathStringFunction(xmlXPathParserContextPtr ctxt, int nargs);
 double xmlXPathStringEvalNumber(const xmlChar *str);
 double xmlXPathDivideBy(double f, double fzero);
 
+static xmlNs xmlXPathXMLNamespaceStruct = {
+    NULL,
+    XML_NAMESPACE_DECL,
+    XML_XML_NAMESPACE,
+    BAD_CAST "xml"
+};
+static xmlNsPtr xmlXPathXMLNamespace = &xmlXPathXMLNamespaceStruct;
+
 /************************************************************************
  * 									*
  * 			Floating point stuff				*
@@ -79,6 +87,7 @@ double xmlXPathDivideBy(double f, double fzero);
 double xmlXPathNAN = 0;
 double xmlXPathPINF = 1;
 double xmlXPathNINF = -1;
+static int xmlXPathInitialized = 0;
 
 /**
  * xmlXPathInit:
@@ -87,15 +96,13 @@ double xmlXPathNINF = -1;
  */
 void
 xmlXPathInit(void) {
-    static int initialized = 0;
-
-    if (initialized) return;
+    if (xmlXPathInitialized) return;
 
     xmlXPathPINF = trio_pinf();
     xmlXPathNINF = trio_ninf();
     xmlXPathNAN = trio_nan();
 
-    initialized = 1;
+    xmlXPathInitialized = 1;
 }
 
 /**
@@ -4970,6 +4977,8 @@ xmlXPathNextPrecedingInternal(xmlXPathParserContextPtr ctxt,
  * the order of nodes on this axis is implementation-defined; the axis will
  * be empty unless the context node is an element
  *
+ * We keep the XML namespace node at the end of the list.
+ *
  * Returns the next element following that axis
  */
 xmlNodePtr
@@ -4977,6 +4986,8 @@ xmlXPathNextNamespace(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
     xmlNodePtr ret;
 
     if (ctxt->context->node->type != XML_ELEMENT_NODE) return(NULL);
+    if (cur == (xmlNodePtr) xmlXPathXMLNamespace)
+	return(NULL);
     if ((cur == NULL) || (ctxt->context->tmpNsList == NULL)) {
         if (ctxt->context->tmpNsList != NULL)
 	    xmlFree(ctxt->context->tmpNsList);
@@ -4989,6 +5000,7 @@ xmlXPathNextNamespace(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
     if (ret == NULL) {
 	xmlFree(ctxt->context->tmpNsList);
 	ctxt->context->tmpNsList = NULL;
+	return((xmlNodePtr) xmlXPathXMLNamespace);
     }
     return(ret);
 }

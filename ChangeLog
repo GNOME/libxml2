@@ -1,3 +1,11 @@
+Fri Oct  5 11:16:21 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* uri.c: applied fix from Mathias Hasselmann about a bug in URI
+	  parsing.
+	* xpath.c: fix bug #61291 the default XML namespace node is
+	  missing from the namespace axis.
+	* tree.c: refuse to create namespaces nodes with prefix "xml"
+
 Thu Oct  4 16:47:44 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* SAX.c: ouch a non-defined namespace could lead to a crash,

@@ -132,6 +132,9 @@ xmlNewNs(xmlNodePtr node, const xmlChar *href, const xmlChar *prefix) {
     if ((node != NULL) && (node->type != XML_ELEMENT_NODE))
 	return(NULL);
 
+    if ((prefix != NULL) && (xmlStrEqual(prefix, BAD_CAST "xml")))
+	return(NULL);
+
     /*
      * Allocate a new Namespace and fill the fields.
      */

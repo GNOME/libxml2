@@ -1649,14 +1649,19 @@ xmlParseURIHierPart(xmlURIPtr uri, const char **str) {
 static int
 xmlParseAbsoluteURI(xmlURIPtr uri, const char **str) {
     int ret;
+    const char *cur;
 
     if (str == NULL)
 	return(-1);
     
+    cur = *str;
+
     ret = xmlParseURIScheme(uri, str);
     if (ret != 0) return(ret);
-    if (**str != ':')
+    if (**str != ':') {
+	*str = cur;
 	return(1);
+    }
     (*str)++;
     if (**str == '/')
 	return(xmlParseURIHierPart(uri, str));

@@ -1,3 +1,8 @@
+Tue Feb  4 17:12:56 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in valid.c xmlreader.c python/libxml_wrap.h 
+	  python/types.c: fixing #104096 to compile without regexps
+
 Tue Feb  4 16:31:55 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* valid.c: fixing bug #103969 forgot to add an epsilon transition

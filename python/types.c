@@ -531,6 +531,7 @@ libxml_xmlParserInputBufferPtrWrap(xmlParserInputBufferPtr buffer)
     return (ret);
 }
 
+#ifdef LIBXML_REGEXP_ENABLED
 PyObject *
 libxml_xmlRegexpPtrWrap(xmlRegexpPtr regexp)
 {
@@ -548,6 +549,7 @@ libxml_xmlRegexpPtrWrap(xmlRegexpPtr regexp)
                                      (char *) "xmlRegexpPtr", NULL);
     return (ret);
 }
+#endif /* LIBXML_REGEXP_ENABLED */
 
 PyObject *
 libxml_xmlTextReaderPtrWrap(xmlTextReaderPtr reader)

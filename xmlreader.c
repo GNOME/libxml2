@@ -422,6 +422,7 @@ xmlTextReaderPushData(xmlTextReaderPtr reader) {
  */
 static void
 xmlTextReaderValidatePush(xmlTextReaderPtr reader) {
+#ifdef LIBXML_REGEXP_ENABLED
     xmlNodePtr node = reader->node;
 
     if ((node->ns == NULL) || (node->ns->prefix == NULL)) {
@@ -438,6 +439,7 @@ xmlTextReaderValidatePush(xmlTextReaderPtr reader) {
 	if (qname != NULL)
 	    xmlFree(qname);
     }
+#endif /* LIBXML_REGEXP_ENABLED */
 }
 /**
  * xmlTextReaderValidatePop:
@@ -447,6 +449,7 @@ xmlTextReaderValidatePush(xmlTextReaderPtr reader) {
  */
 static void
 xmlTextReaderValidatePop(xmlTextReaderPtr reader) {
+#ifdef LIBXML_REGEXP_ENABLED
     xmlNodePtr node = reader->node;
 
     if ((node->ns == NULL) || (node->ns->prefix == NULL)) {
@@ -463,6 +466,7 @@ xmlTextReaderValidatePop(xmlTextReaderPtr reader) {
 	if (qname != NULL)
 	    xmlFree(qname);
     }
+#endif /* LIBXML_REGEXP_ENABLED */
 }
 /**
  * xmlTextReaderValidateEntity:
@@ -474,6 +478,7 @@ xmlTextReaderValidatePop(xmlTextReaderPtr reader) {
  */
 static void
 xmlTextReaderValidateEntity(xmlTextReaderPtr reader) {
+#ifdef LIBXML_REGEXP_ENABLED
     xmlNodePtr oldnode = reader->node;
     xmlNodePtr node = reader->node;
     xmlParserCtxtPtr ctxt = reader->ctxt;
@@ -543,6 +548,7 @@ xmlTextReaderValidateEntity(xmlTextReaderPtr reader) {
 	} while ((node != NULL) && (node != oldnode));
     } while ((node != NULL) && (node != oldnode));
     reader->node = oldnode;
+#endif /* LIBXML_REGEXP_ENABLED */
 }
 
 
@@ -735,6 +741,7 @@ node_found:
 	reader->depth++;
         goto get_next_node;
     }
+#ifdef LIBXML_REGEXP_ENABLED
     if ((reader->ctxt->validate) && (reader->node != NULL)) {
 	xmlNodePtr node = reader->node;
 	xmlParserCtxtPtr ctxt = reader->ctxt;
@@ -749,6 +756,7 @@ node_found:
 			      node->content, xmlStrlen(node->content));
 	}
     }
+#endif /* LIBXML_REGEXP_ENABLED */
     return(1);
 node_end:
     return(0);

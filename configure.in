@@ -586,6 +586,7 @@ if test "$with_schemas" = "yes" ; then
     TEST_SCHEMAS="Schemastests Relaxtests"
     with_regexps=yes
 else    
+    echo "Disabled Schemas/Relax-NG support"
     WITH_SCHEMAS=0
     TEST_SCHEMAS=
 fi

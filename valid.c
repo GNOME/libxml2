@@ -5133,6 +5133,7 @@ xmlValidGetElemDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
     return(elemDecl);
 }
 
+#ifdef LIBXML_REGEXP_ENABLED
 /**
  * xmlValidatePushElement:
  * @ctxt:  the validation context
@@ -5342,6 +5343,7 @@ xmlValidatePopElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc ATTRIBUTE_UNUSED,
     }
     return(ret);
 }
+#endif /* LIBXML_REGEXP_ENABLED */
 
 /**
  * xmlValidateOneElement:

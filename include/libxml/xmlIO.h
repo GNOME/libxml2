@@ -50,6 +50,9 @@ int	xmlParserInputBufferRead		(xmlParserInputBufferPtr in,
 						 int len);
 int	xmlParserInputBufferGrow		(xmlParserInputBufferPtr in,
 						 int len);
+int	xmlParserInputBufferPush		(xmlParserInputBufferPtr in,
+						 int len,
+						 char *buf);
 void	xmlFreeParserInputBuffer		(xmlParserInputBufferPtr in);
 char *	xmlParserGetDirectory			(const char *filename);
 

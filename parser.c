@@ -2497,58 +2497,146 @@ xmlParseEntityValue(xmlParserCtxtPtr ctxt, xmlChar **orig) {
  * [10] AttValue ::= '"' ([^<&"] | Reference)* '"' |
  *                   "'" ([^<&'] | Reference)* "'"
  *
- * Returns the AttValue parsed or NULL.
+ * 3.3.3 Attribute-Value Normalization:
+ * Before the value of an attribute is passed to the application or
+ * checked for validity, the XML processor must normalize it as follows: 
+ * - a character reference is processed by appending the referenced
+ *   character to the attribute value
+ * - an entity reference is processed by recursively processing the
+ *   replacement text of the entity 
+ * - a whitespace character (#x20, #xD, #xA, #x9) is processed by
+ *   appending #x20 to the normalized value, except that only a single
+ *   #x20 is appended for a "#xD#xA" sequence that is part of an external
+ *   parsed entity or the literal entity value of an internal parsed entity 
+ * - other characters are processed by appending them to the normalized value 
+ *
+ * Returns the AttValue parsed or NULL. The value has to be freed by the caller.
  */
 
 xmlChar *
 xmlParseAttValue(xmlParserCtxtPtr ctxt) {
-    xmlChar *ret = NULL;
+    xmlChar limit = 0;
+    xmlChar *buffer = NULL;
+    int buffer_size = 0;
+    xmlChar *out = NULL;
+
+    xmlChar *current = NULL;
+    xmlEntityPtr ent;
+    xmlChar cur;
+    int blank = 0;
+
 
     SHRINK;
     if (CUR == '"') {
 	ctxt->instate = XML_PARSER_ATTRIBUTE_VALUE;
+	limit = '"';
         NEXT;
-	ret = xmlDecodeEntities(ctxt, -1, XML_SUBSTITUTE_REF, '"', '<', 0);
-	if (CUR == '<') {
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		ctxt->sax->error(ctxt->userData,
-		   "Unescaped '<' not allowed in attributes values\n");
-	    ctxt->errNo = XML_ERR_LT_IN_ATTRIBUTE;
-	    ctxt->wellFormed = 0;
-	}
-        if (CUR != '"') {
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		ctxt->sax->error(ctxt->userData, "AttValue: ' expected\n");
-	    ctxt->errNo = XML_ERR_ATTRIBUTE_NOT_FINISHED;
-	    ctxt->wellFormed = 0;
-	} else
-	    NEXT;
     } else if (CUR == '\'') {
+	limit = '\'';
 	ctxt->instate = XML_PARSER_ATTRIBUTE_VALUE;
         NEXT;
-	ret = xmlDecodeEntities(ctxt, -1, XML_SUBSTITUTE_REF, '\'', '<', 0);
-	if (CUR == '<') {
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		ctxt->sax->error(ctxt->userData,
-		   "Unescaped '<' not allowed in attributes values\n");
-	    ctxt->errNo = XML_ERR_LT_IN_ATTRIBUTE;
-	    ctxt->wellFormed = 0;
-	}
-        if (CUR != '\'') {
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		ctxt->sax->error(ctxt->userData, "AttValue: ' expected\n");
-	    ctxt->errNo = XML_ERR_ATTRIBUTE_NOT_FINISHED;
-	    ctxt->wellFormed = 0;
-	} else
-	    NEXT;
     } else {
 	ctxt->errNo = XML_ERR_ATTRIBUTE_NOT_STARTED;
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt->userData, "AttValue: \" or ' expected\n");
 	ctxt->wellFormed = 0;
+	return(NULL);
     }
     
-    return(ret);
+    /*
+     * allocate a translation buffer.
+     */
+    buffer_size = 100;
+    buffer = (xmlChar *) xmlMalloc(buffer_size * sizeof(xmlChar));
+    if (buffer == NULL) {
+	perror("xmlParseAttValue: malloc failed");
+	return(NULL);
+    }
+    out = buffer;
+
+    /*
+     * Ok loop until we reach one of the ending char or a size limit.
+     */
+    cur = CUR;
+    while ((cur != limit) && (cur != '<')) {
+
+	if (cur == 0) break;
+        if ((cur == '&') && (NXT(1) == '#')) {
+	    int val = xmlParseCharRef(ctxt);
+	    *out++ = val;
+	    blank = 0;
+	} else if (cur == '&') {
+	    ent = xmlParseEntityRef(ctxt);
+	    if ((ent != NULL) && 
+		(ctxt->replaceEntities != 0)) {
+		current = ent->content;
+		while (*current != 0) {
+		    *out++ = *current++;
+		    if (out - buffer > buffer_size - 10) {
+			int index = out - buffer;
+
+			growBuffer(buffer);
+			out = &buffer[index];
+		    }
+		}
+	    } else if (ent != NULL) {
+		int i = xmlStrlen(ent->name);
+		const xmlChar *cur = ent->name;
+
+		*out++ = '&';
+		if (out - buffer > buffer_size - i - 10) {
+		    int index = out - buffer;
+
+		    growBuffer(buffer);
+		    out = &buffer[index];
+		}
+		for (;i > 0;i--)
+		    *out++ = *cur++;
+		*out++ = ';';
+	    }
+	    blank = 0;
+	} else {
+	    /*  invalid for UTF-8 , use COPY(out); !!!!!! */
+	    if ((cur == 0x20) || (cur == 0xD) || (cur == 0xA) || (cur == 0x9)) {
+	        if (!blank) {
+		    *out++ = 0x20;
+		    if (out - buffer > buffer_size - 10) {
+		      int index = out - buffer;
+		      
+		      growBuffer(buffer);
+		      out = &buffer[index];
+		    }
+		}
+		blank = 1;
+	    } else {
+		*out++ = cur;
+		if (out - buffer > buffer_size - 10) {
+		  int index = out - buffer;
+		  
+		  growBuffer(buffer);
+		  out = &buffer[index];
+		}
+		blank = 0;
+	    }
+	    NEXT;
+	}
+	cur = CUR;
+    }
+    *out++ = 0;
+    if (CUR == '<') {
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt->userData,
+	       "Unescaped '<' not allowed in attributes values\n");
+	ctxt->errNo = XML_ERR_LT_IN_ATTRIBUTE;
+	ctxt->wellFormed = 0;
+    } else if (CUR != limit) {
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt->userData, "AttValue: ' expected\n");
+	ctxt->errNo = XML_ERR_ATTRIBUTE_NOT_FINISHED;
+	ctxt->wellFormed = 0;
+    } else
+	NEXT;
+    return(buffer);
 }
 
 /**
@@ -4962,7 +5050,7 @@ xmlParseAttribute(xmlParserCtxtPtr ctxt, xmlChar **value) {
  *
  * [NS 10] EmptyElement ::= '<' QName (S Attribute)* S? '/>'
  *
- * Returns the element name parsed
+ * Returne the element name parsed
  */
 
 xmlChar *
@@ -5984,6 +6072,80 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
         ctxt->sax->endDocument(ctxt->userData);
     if (! ctxt->wellFormed) return(-1);
     return(0);
+}
+
+/************************************************************************
+ *									*
+ * 		Progressive parsing interfaces				*
+ *									*
+ ************************************************************************/
+
+/**
+ * xmlParseLookupSequence:
+ * @ctxt:  an XML parser context
+ * @first:  the first char to lookup
+ * @next:  the next char to lookup
+ *
+ * Try to find if a sequence (first, next) or  just (first) if next
+ * is zero is available in the input stream.
+ * Since XML-1.0 is an LALR(2) grammar a sequence of 2 char should be
+ * enought. If this doesn't prove true this function call may change.
+ *
+ * Returns 1 if the full sequence is available, 0 otherwise.
+ */
+int
+xmlParseLookupSequence(xmlParserCtxtPtr ctxt, xmlChar first, xmlChar next) {
+    return(0);
+}
+
+/**
+ * xmlParseTry:
+ * @ctxt:  an XML parser context
+ *
+ * Try to progress on parsing
+ *
+ * Returns zero if no parsing was possible
+ */
+int
+xmlParseTry(xmlParserCtxtPtr ctxt) {
+    int ret = 0;
+
+    while (1) {
+        switch (ctxt->instate) {
+            case XML_PARSER_EOF:
+	        return(0);
+            case XML_PARSER_PROLOG:
+            case XML_PARSER_CONTENT:
+            case XML_PARSER_ENTITY_DECL:
+            case XML_PARSER_ENTITY_VALUE:
+            case XML_PARSER_ATTRIBUTE_VALUE:
+            case XML_PARSER_DTD:
+            case XML_PARSER_EPILOG:
+            case XML_PARSER_COMMENT:
+            case XML_PARSER_CDATA_SECTION:
+	}
+    }
+    return(ret);
+}
+
+/**
+ * xmlParseChunk:
+ * @ctxt:  an XML parser context
+ * @chunk:  an char array
+ * @size:  the size in byte of the chunk
+ * @terminate:  last chunk indicator
+ *
+ * Parse a Chunk of memory
+ *
+ * Returns zero if no error, the xmlParserErrors otherwise.
+ */
+xmlParserErrors
+xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
+              int terminate) {
+    if ((size > 0) && (chunk != NULL)) {	      
+	xmlParserInputBufferPush(ctxt->input, size, chunk);	      
+    }
+    return((xmlParserErrors) ctxt->errNo);	      
 }
 
 /************************************************************************

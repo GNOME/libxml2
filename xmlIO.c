@@ -250,12 +250,62 @@ xmlParserInputBufferCreateFd(int fd, xmlCharEncoding enc) {
 }
 
 /**
+ * xmlParserInputBufferPush:
+ * @in:  a buffered parser input
+ * @buf:  an char array
+ * @len:  the size in bytes of the array.
+ *
+ * Push the content of the arry in the input buffer
+ * This routine handle the I18N transcoding to internal UTF-8
+ * This is used when operating the parser in progressive (push) mode.
+ *
+ * Returns the number of chars read and stored in the buffer, or -1
+ *         in case of error.
+ */
+int
+xmlParserInputBufferPush(xmlParserInputBufferPtr in, int len, char *buf) {
+    char *buffer = NULL;
+    int nbchars = 0;
+
+    if (len < 0) return(0);
+    if (in->encoder != NULL) {
+        xmlChar *buf;
+
+	buf = (xmlChar *) xmlMalloc((len + 1) * 2 * sizeof(xmlChar));
+	if (buf == NULL) {
+	    fprintf(stderr, "xmlParserInputBufferGrow : out of memory !\n");
+	    xmlFree(buffer);
+	    return(-1);
+	}
+	nbchars = in->encoder->input(buf, (len + 1) * 2 * sizeof(xmlChar),
+	                             BAD_CAST buffer, len);
+	/*
+	 * TODO : we really need to have something atomic or the 
+	 *        encoder must report the number of bytes read
+	 */
+        buf[nbchars] = 0;
+        xmlBufferAdd(in->buffer, (xmlChar *) buf, nbchars);
+	xmlFree(buf);
+    } else {
+	nbchars = len;
+        buffer[nbchars] = 0;
+        xmlBufferAdd(in->buffer, (xmlChar *) buffer, nbchars);
+    }
+#ifdef DEBUG_INPUT
+    fprintf(stderr, "I/O: pushed %d chars, buffer %d/%d\n",
+            nbchars, in->buffer->use, in->buffer->size);
+#endif
+    return(nbchars);
+}
+
+/**
  * xmlParserInputBufferGrow:
  * @in:  a buffered parser input
  * @len:  indicative value of the amount of chars to read
  *
  * Grow up the content of the input buffer, the old data are preserved
  * This routine handle the I18N transcoding to internal UTF-8
+ * This routine is used when operating the parser in normal (pull) mode
  * TODO: one should be able to remove one extra copy
  *
  * Returns the number of chars read and stored in the buffer, or -1

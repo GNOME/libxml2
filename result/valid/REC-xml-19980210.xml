@@ -1674,8 +1674,7 @@ match <termref def="NT-Nmtokens">Nmtokens</termref>.
 <p>The XML processor must normalize attribute values before
 passing them to the application, as described in 
 <specref ref="AVNormalize"/>.</p>-->
-          <p><termdef id="dt-enumerated" term="Enumerated Attribute
-Values"><term>Enumerated attributes</term> can take one 
+          <p><termdef id="dt-enumerated" term="Enumerated Attribute Values"><term>Enumerated attributes</term> can take one 
 of a list of values provided in the declaration</termdef>. There are two
 kinds of enumerated types:
 <scrap lang="ebnf"><head>Enumerated Attribute Types</head><prod id="NT-EnumeratedType"><lhs>EnumeratedType</lhs><rhs><nt def="NT-NotationType">NotationType</nt> 

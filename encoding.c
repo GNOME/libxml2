@@ -51,10 +51,10 @@
 
 /**
  * isolat1ToUTF8:
- * @out:  a pointer ot an array of bytes to store the result
- * @outlen:  the lenght of @out
- * @in:  a pointer ot an array of ISO Latin 1 chars
- * @inlen:  the lenght of @in
+ * @out:  a pointer to an array of bytes to store the result
+ * @outlen:  the length of @out
+ * @in:  a pointer to an array of ISO Latin 1 chars
+ * @inlen:  the length of @in
  *
  * Take a block of ISO Latin 1 chars in and try to convert it to an UTF-8
  * block of chars out.
@@ -86,10 +86,10 @@ isolat1ToUTF8(unsigned char* out, int outlen, unsigned char* in, int inlen)
 
 /**
  * UTF8Toisolat1:
- * @out:  a pointer ot an array of bytes to store the result
- * @outlen:  the lenght of @out
- * @in:  a pointer ot an array of UTF-8 chars
- * @inlen:  the lenght of @in
+ * @out:  a pointer to an array of bytes to store the result
+ * @outlen:  the length of @out
+ * @in:  a pointer to an array of UTF-8 chars
+ * @inlen:  the length of @in
  *
  * Take a block of UTF-8 chars in and try to convert it to an ISO Latin 1
  * block of chars out.
@@ -123,10 +123,10 @@ UTF8Toisolat1(unsigned char* out, int outlen, unsigned char* in, int inlen)
 
 /**
  * UTF16ToUTF8:
- * @out:  a pointer ot an array of bytes to store the result
- * @outlen:  the lenght of @out
- * @in:  a pointer ot an array of UTF-16 chars (array of unsigned shorts)
- * @inlen:  the lenght of @in
+ * @out:  a pointer to an array of bytes to store the result
+ * @outlen:  the length of @out
+ * @in:  a pointer to an array of UTF-16 chars (array of unsigned shorts)
+ * @inlen:  the length of @in
  *
  * Take a block of UTF-16 ushorts in and try to convert it to an UTF-8
  * block of chars out.
@@ -161,7 +161,7 @@ UTF16ToUTF8(unsigned char* out, int outlen, unsigned short* in, int inlen)
         else if (c < 0x10000) {  *out++= (c >> 12) | 0xE0;  bits=  6; }
         else                  {  *out++= (c >> 18) | 0xF0;  bits= 12; }
  
-        for ( ; bits < 0; bits-= 6) {
+        for ( ; bits > 0; bits-= 6) {
             if (out >= outend)  return -1;
             *out++= (c >> bits) & 0x3F;
         }
@@ -171,10 +171,10 @@ UTF16ToUTF8(unsigned char* out, int outlen, unsigned short* in, int inlen)
 
 /**
  * UTF8ToUTF16:
- * @out:  a pointer ot an array of shorts to store the result
- * @outlen:  the lenght of @out (number of shorts)
- * @in:  a pointer ot an array of UTF-8 chars
- * @inlen:  the lenght of @in
+ * @out:  a pointer to an array of shorts to store the result
+ * @outlen:  the length of @out (number of shorts)
+ * @in:  a pointer to an array of UTF-8 chars
+ * @inlen:  the length of @in
  *
  * Take a block of UTF-8 chars in and try to convert it to an UTF-16
  * block of chars out.
@@ -264,7 +264,7 @@ xmlDetectCharEncoding(const unsigned char* in)
 
 /**
  * xmlParseCharEncoding:
- * @name:  the encoding name as parsed, in UTF-8 format (ASCCI actually)
+ * @name:  the encoding name as parsed, in UTF-8 format (ASCII actually)
  *
  * Conpare the string to the known encoding schemes already known. Note
  * that the comparison is case insensitive accordingly to the section
@@ -351,7 +351,7 @@ static xmlCharEncodingHandlerPtr xmlDefaultCharEncodingHandler = NULL;
 
 /**
  * xmlNewCharEncodingHandler:
- * @name:  the encoding name, in UTF-8 format (ASCCI actually)
+ * @name:  the encoding name, in UTF-8 format (ASCII actually)
  * @input:  the xmlCharEncodingInputFunc to read that encoding
  * @output:  the xmlCharEncodingOutputFunc to write that encoding
  *
@@ -409,7 +409,7 @@ xmlNewCharEncodingHandler(const char *name, xmlCharEncodingInputFunc input,
  *
  * Initialize the char encoding support, it registers the default
  * encoding supported.
- * NOTE: while public theis function usually don't need to be called
+ * NOTE: while public, this function usually doesn't need to be called
  *       in normal processing.
  */
 void

@@ -1,3 +1,11 @@
+Wed Nov 17 18:28:06 CET 1999
+
+	* encoding.c: bug fix and typos
+	* xmlIO.[ch] parser.c: first bits toward real progressive parsing
+	* parser.c: added attribute normalization closing bug #3597
+	* test/att* result/att* SAXresult/att*: testcase for attribute
+	    normalization
+
 Mon Nov 15 18:50:56 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* configure.in: closing bug #3163 by adding extra flags for the

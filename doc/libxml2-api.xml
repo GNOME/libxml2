@@ -9064,7 +9064,7 @@ actually an xmlCharEncoding'/>
       <arg name='name' type='const xmlChar *' info='the char ref string, starting with # or &quot;&amp;# ... ;&quot;'/>
     </function>
     <function name='xmlNewChild' file='tree'>
-      <info>Creation of a new child element, added at the end of @parent children list. @ns and @content parameters are optional (NULL). If @content is non NULL, a child list containing the TEXTs and ENTITY_REFs node will be created. NOTE: @content is supposed to be a piece of XML CDATA, so it allow entities references, but XML special chars need to be escaped first by using xmlEncodeEntitiesReentrant(). Use xmlNewTextChild() if entities support is not needed.</info>
+      <info>Creation of a new child element, added at the end of @parent children list. @ns and @content parameters are optional (NULL). If @content is non NULL, a child list containing the TEXTs and ENTITY_REFs node will be created. NOTE: @content is supposed to be a piece of XML CDATA, so it allows entity references. XML special chars must be escaped first by using xmlEncodeEntitiesReentrant(), or xmlNewTextChild() should be used.</info>
       <return type='xmlNodePtr' info='a pointer to the new node object.'/>
       <arg name='parent' type='xmlNodePtr' info='the parent node'/>
       <arg name='ns' type='xmlNsPtr' info='a namespace if any'/>
@@ -9259,7 +9259,7 @@ actually an xmlCharEncoding'/>
       <arg name='content' type='const xmlChar *' info='the text content'/>
     </function>
     <function name='xmlNewTextChild' file='tree'>
-      <info>Creation of a new child element, added at the end of @parent children list. @ns and @content parameters are optional (NULL). If @content is non NULL, a child TEXT node will be created containing the string @content. NOTE: Use xmlNewChild() if entity support for @content is needed.</info>
+      <info>Creation of a new child element, added at the end of @parent children list. @ns and @content parameters are optional (NULL). If @content is non NULL, a child TEXT node will be created containing the string @content. NOTE: Use xmlNewChild() if @content will contain entities that need to be preserved. Use this function, xmlNewTextChild(), if you need to ensure that reserved XML chars that might appear in @content, such as the ampersand, greater-than or less-than signs, are automatically replaced by their XML escaped entity representations.</info>
       <return type='xmlNodePtr' info='a pointer to the new node object.'/>
       <arg name='parent' type='xmlNodePtr' info='the parent node'/>
       <arg name='ns' type='xmlNsPtr' info='a namespace if any'/>

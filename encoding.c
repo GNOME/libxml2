@@ -92,6 +92,8 @@ static int xmlLittleEndian = 1;
  * xmlUTF8Size:
  * @utf: pointer to the UTF8 character
  *
+ * calulates the internal size of a UTF8 character
+ *
  * returns the numbers of bytes in the character, -1 on format error
  */
 int
@@ -117,12 +119,13 @@ xmlUTF8Size(const xmlChar *utf) {
 }
 
 /**
- * xmlUTF8Charcmp
+ * xmlUTF8Charcmp:
  * @utf1: pointer to first UTF8 char
  * @utf2: pointer to second UTF8 char
  *
- * returns result of comparing the two UCS4 values
- * as with xmlStrncmp
+ * compares the two UCS4 values
+ *
+ * returns result of the compare as with xmlStrncmp
  */
 int
 xmlUTF8Charcmp(const xmlChar *utf1, const xmlChar *utf2) {

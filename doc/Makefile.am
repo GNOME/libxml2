@@ -69,10 +69,10 @@ xml: templates
 	-gtkdoc-mkdb --module=libxml --source-dir=$(DOC_SOURCE_DIR) --output-format=xml --main-sgml-file=$(DOC_MAIN_XML_FILE)
 
 
-libxml2-api.xml: apibuild.py ../include/libxml/*.h
+libxml2-api.xml: apibuild.py ../include/libxml/*.h ../*.c
 	-(./apibuild.py)
 
-$(WIN32_DIR)/libxml2.def.src:
+$(WIN32_DIR)/libxml2.def.src: libxml2-api.xml
 	-@(if [ -x $(bindir)/xsltproc ] ; then \
 	  $(bindir)/xsltproc -o $(WIN32_DIR)/libxml2.def.src \
 	  --nonet $(WIN32_DIR)/defgen.xsl libxml2-api.xml ; fi )

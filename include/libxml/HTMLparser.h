@@ -149,9 +149,31 @@ htmlStatus htmlAttrAllowed(const htmlElemDesc*, const xmlChar*, int) ;
 int htmlElementAllowedHere(const htmlElemDesc*, const xmlChar*) ;
 htmlStatus htmlElementStatusHere(const htmlElemDesc*, const htmlElemDesc*) ;
 htmlStatus htmlNodeStatus(const htmlNodePtr, int) ;
+/**
+ * htmlDefaultSubelement:
+ * @elt: HTML element
+ *
+ * Returns the default subelement for this element
+ */
 #define htmlDefaultSubelement(elt) elt->defaultsubelt
+/**
+ * htmlElementAllowedHereDesc:
+ * @parent: HTML parent element
+ * @elt: HTML element
+ *
+ * Checks whether an HTML element description may be a
+ * direct child of the specified element.
+ *
+ * Returns 1 if allowed; 0 otherwise.
+ */
 #define htmlElementAllowedHereDesc(parent,elt) \
 	htmlElementAllowedHere((parent), (elt)->name)
+/**
+ * htmlRequiredAttrs:
+ * @elt: HTML element
+ *
+ * Returns the attributes required for the specified element.
+ */
 #define htmlRequiredAttrs(elt) (elt)->attrs_req
 
 

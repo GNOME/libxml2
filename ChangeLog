@@ -1,3 +1,11 @@
+Fri Aug 15 14:58:37 HKT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* encoding.c, threads.c, include/libxml/HTMLparser.h,
+	  doc/libxml2-api.xml: Minor changes to comments, etc. for
+	  improving documentation generation
+	* doc/Makefile.am: further adjustment to auto-generation of
+	  win32/libxml2.def.src
+	  
 Fri Aug 15 02:24:20 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* News configure.in: preparing libxml2-2.5.10 release

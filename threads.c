@@ -546,10 +546,15 @@ xmlOnceInit(void) {
 }
 
 /**
- * DllMain
+ * DllMain:
+ * @hinstDLL: handle to DLL instance
+ * @fdwReason: Reason code for entry
+ * @lpvReserved: generic pointer (depends upon reason code)
  *
  * Entry point for Windows library. It is being used to free thread-specific
  * storage.
+ *
+ * Returns TRUE always
  */
 #if defined(HAVE_WIN32_THREADS) && !defined(LIBXML_STATIC)
 BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved) 

@@ -1167,7 +1167,7 @@ xmlFindCharEncodingHandler(const char *name) {
 	        iconv_close(icv_out);
 		return(NULL);
 	    }
-	    enc->name = NULL;
+	    enc->name = xmlMemStrdup(name);
 	    enc->input = NULL;
 	    enc->output = NULL;
 	    enc->iconv_in = icv_in;

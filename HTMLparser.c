@@ -479,17 +479,19 @@ htmlCheckAutoClose(const xmlChar *new, const xmlChar *old) {
 /**
  * htmlAutoClose:
  * @ctxt:  an HTML parser context
- * @new:  The new tag name
+ * @new:  The new tag name or NULL
  *
  * The HTmL DtD allows a tag to implicitely close other tags.
  * The list is kept in htmlStartClose array. This function is
  * called when a new tag has been detected and generates the
  * appropriates closes if possible/needed.
+ * If new is NULL this mean we are at the end of the resource
+ * and we should check 
  */
 void
 htmlAutoClose(htmlParserCtxtPtr ctxt, const xmlChar *new) {
     xmlChar *oldname;
-    while ((ctxt->name != NULL) && 
+    while ((new != NULL) && (ctxt->name != NULL) && 
            (htmlCheckAutoClose(new, ctxt->name))) {
 #ifdef DEBUG
 	fprintf(stderr,"htmlAutoClose: %s closes %s\n", new, ctxt->name);
@@ -504,6 +506,24 @@ htmlAutoClose(htmlParserCtxtPtr ctxt, const xmlChar *new) {
 	    xmlFree(oldname);
         }
     }
+    while ((new == NULL) && (ctxt->name != NULL) &&
+	   ((!xmlStrcmp(ctxt->name, BAD_CAST"head")) ||
+	    (!xmlStrcmp(ctxt->name, BAD_CAST"body")) ||
+	    (!xmlStrcmp(ctxt->name, BAD_CAST"html")))) {
+#ifdef DEBUG
+	fprintf(stderr,"htmlAutoClose: EOF closes %s\n", ctxt->name);
+#endif
+	if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
+	    ctxt->sax->endElement(ctxt->userData, ctxt->name);
+	oldname = htmlnamePop(ctxt);
+	if (oldname != NULL) {
+#ifdef DEBUG
+	    fprintf(stderr,"htmlAutoClose: popped %s\n", oldname);
+#endif
+	    xmlFree(oldname);
+        }
+   }
+
 }
 
 /**
@@ -1084,140 +1104,6 @@ htmlDecodeEntities(htmlParserCtxtPtr ctxt, int len,
     }
     *out++ = 0;
     return(buffer);
-}
-
-
-/************************************************************************
- *									*
- *		Commodity functions to handle encodings			*
- *									*
- ************************************************************************/
-
-/**
- * htmlSwitchEncoding:
- * @ctxt:  the parser context
- * @len:  the len of @cur
- *
- * change the input functions when discovering the character encoding
- * of a given entity.
- *
- */
-void
-htmlSwitchEncoding(htmlParserCtxtPtr ctxt, xmlCharEncoding enc)
-{
-    switch (enc) {
-        case XML_CHAR_ENCODING_ERROR:
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	        ctxt->sax->error(ctxt->userData, "encoding unknown\n");
-	    ctxt->wellFormed = 0;
-            break;
-        case XML_CHAR_ENCODING_NONE:
-	    /* let's assume it's UTF-8 without the XML decl */
-            return;
-        case XML_CHAR_ENCODING_UTF8:
-	    /* default encoding, no conversion should be needed */
-            return;
-        case XML_CHAR_ENCODING_UTF16LE:
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-                ctxt->sax->error(ctxt->userData,
-		  "char encoding UTF16 little endian not supported\n");
-            break;
-        case XML_CHAR_ENCODING_UTF16BE:
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-                ctxt->sax->error(ctxt->userData,
-		  "char encoding UTF16 big endian not supported\n");
-            break;
-        case XML_CHAR_ENCODING_UCS4LE:
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-                ctxt->sax->error(ctxt->userData,
-		  "char encoding USC4 little endian not supported\n");
-            break;
-        case XML_CHAR_ENCODING_UCS4BE:
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-                ctxt->sax->error(ctxt->userData,
-		  "char encoding USC4 big endian not supported\n");
-            break;
-        case XML_CHAR_ENCODING_EBCDIC:
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-                ctxt->sax->error(ctxt->userData,
-		  "char encoding EBCDIC not supported\n");
-            break;
-        case XML_CHAR_ENCODING_UCS4_2143:
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-                ctxt->sax->error(ctxt->userData,
-		  "char encoding UCS4 2143 not supported\n");
-            break;
-        case XML_CHAR_ENCODING_UCS4_3412:
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-                ctxt->sax->error(ctxt->userData,
-		  "char encoding UCS4 3412 not supported\n");
-            break;
-        case XML_CHAR_ENCODING_UCS2:
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-                ctxt->sax->error(ctxt->userData,
-		  "char encoding UCS2 not supported\n");
-            break;
-        case XML_CHAR_ENCODING_8859_1:
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-                ctxt->sax->error(ctxt->userData,
-		  "char encoding ISO_8859_1 ISO Latin 1 not supported\n");
-            break;
-        case XML_CHAR_ENCODING_8859_2:
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-                ctxt->sax->error(ctxt->userData,
-		  "char encoding ISO_8859_2 ISO Latin 2 not supported\n");
-            break;
-        case XML_CHAR_ENCODING_8859_3:
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-                ctxt->sax->error(ctxt->userData,
-		  "char encoding ISO_8859_3 not supported\n");
-            break;
-        case XML_CHAR_ENCODING_8859_4:
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-                ctxt->sax->error(ctxt->userData,
-		  "char encoding ISO_8859_4 not supported\n");
-            break;
-        case XML_CHAR_ENCODING_8859_5:
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-                ctxt->sax->error(ctxt->userData,
-		  "char encoding ISO_8859_5 not supported\n");
-            break;
-        case XML_CHAR_ENCODING_8859_6:
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-                ctxt->sax->error(ctxt->userData,
-		  "char encoding ISO_8859_6 not supported\n");
-            break;
-        case XML_CHAR_ENCODING_8859_7:
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-                ctxt->sax->error(ctxt->userData,
-		  "char encoding ISO_8859_7 not supported\n");
-            break;
-        case XML_CHAR_ENCODING_8859_8:
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-                ctxt->sax->error(ctxt->userData,
-		  "char encoding ISO_8859_8 not supported\n");
-            break;
-        case XML_CHAR_ENCODING_8859_9:
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-                ctxt->sax->error(ctxt->userData,
-		  "char encoding ISO_8859_9 not supported\n");
-            break;
-        case XML_CHAR_ENCODING_2022_JP:
-            if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-                ctxt->sax->error(ctxt->userData,
-                  "char encoding ISO-2022-JPnot supported\n");
-            break;
-        case XML_CHAR_ENCODING_SHIFT_JIS:
-            if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-                ctxt->sax->error(ctxt->userData,
-                  "char encoding Shift_JISnot supported\n");
-            break;
-        case XML_CHAR_ENCODING_EUC_JP:
-            if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-                ctxt->sax->error(ctxt->userData,
-                  "char encoding EUC-JPnot supported\n");
-            break;
-    }
 }
 
 /************************************************************************
@@ -2228,6 +2114,112 @@ htmlParseAttribute(htmlParserCtxtPtr ctxt, xmlChar **value) {
 }
 
 /**
+ * htmlCheckEncoding:
+ * @ctxt:  an HTML parser context
+ * @attvalue: the attribute value
+ *
+ * Checks an http-equiv attribute from a Meta tag to detect
+ * the encoding
+ * If a new encoding is detected the parser is switched to decode
+ * it and pass UTF8
+ */
+void
+htmlCheckEncoding(htmlParserCtxtPtr ctxt, const xmlChar *attvalue) {
+    const xmlChar *encoding;
+
+    if ((ctxt == NULL) || (attvalue == NULL))
+	return;
+
+fprintf(stderr, "htmlCheckEncoding: \"%s\"\n", attvalue);
+
+    encoding = xmlStrstr(attvalue, BAD_CAST"charset=");
+    if (encoding == NULL) 
+	encoding = xmlStrstr(attvalue, BAD_CAST"Charset=");
+    if (encoding == NULL) 
+	encoding = xmlStrstr(attvalue, BAD_CAST"CHARSET=");
+    if (encoding != NULL) {
+	encoding += 8;
+    } else {
+	encoding = xmlStrstr(attvalue, BAD_CAST"charset =");
+	if (encoding == NULL) 
+	    encoding = xmlStrstr(attvalue, BAD_CAST"Charset =");
+	if (encoding == NULL) 
+	    encoding = xmlStrstr(attvalue, BAD_CAST"CHARSET =");
+	if (encoding != NULL)
+	    encoding += 9;
+    }
+    if (encoding != NULL) {
+	xmlCharEncoding enc;
+	xmlCharEncodingHandlerPtr handler;
+
+	while ((*encoding == ' ') || (*encoding == '\t')) encoding++;
+
+	if (ctxt->input->encoding != NULL)
+	    xmlFree((xmlChar *) ctxt->input->encoding);
+	ctxt->input->encoding = xmlStrdup(encoding);
+
+	enc = xmlParseCharEncoding((const char *) encoding);
+	/*
+	 * registered set of known encodings
+	 */
+	if (enc != XML_CHAR_ENCODING_ERROR) {
+	    xmlSwitchEncoding(ctxt, enc);
+	} else {
+	    /*
+	     * fallback for unknown encodings
+	     */
+	    handler = xmlFindCharEncodingHandler((const char *) encoding);
+	    if (handler != NULL) {
+		xmlSwitchToEncoding(ctxt, handler);
+	    } else {
+		ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
+	    }
+	}
+    }
+}
+
+/**
+ * htmlCheckMeta:
+ * @ctxt:  an HTML parser context
+ * @atts:  the attributes values
+ *
+ * Checks an attributes from a Meta tag
+ */
+void
+htmlCheckMeta(htmlParserCtxtPtr ctxt, const xmlChar **atts) {
+    int i;
+    const xmlChar *att, *value;
+    int http = 0;
+    const xmlChar *content = NULL;
+
+    if ((ctxt == NULL) || (atts == NULL))
+	return;
+
+    i = 0;
+    att = atts[i++];
+    while (att != NULL) {
+	value = atts[i++];
+	if ((value != NULL) &&
+	    ((!xmlStrcmp(att, BAD_CAST"http-equiv")) ||
+	     (!xmlStrcmp(att, BAD_CAST"Http-Equiv")) ||
+	     (!xmlStrcmp(att, BAD_CAST"HTTP-EQUIV"))) &&
+	    ((!xmlStrcmp(value, BAD_CAST"Content-Type")) ||
+	     (!xmlStrcmp(value, BAD_CAST"content-type")) ||
+	     (!xmlStrcmp(value, BAD_CAST"CONTENT-TYPE"))))
+	    http = 1;
+	else if ((value != NULL) &&
+		 ((!xmlStrcmp(att, BAD_CAST"content")) ||
+		  (!xmlStrcmp(att, BAD_CAST"Content")) ||
+		  (!xmlStrcmp(att, BAD_CAST"CONTENT"))))
+	    content = value;
+	att = atts[i++];
+    }
+    if ((http) && (content != NULL))
+	htmlCheckEncoding(ctxt, content);
+
+}
+
+/**
  * htmlParseStartTag:
  * @ctxt:  an HTML parser context
  * 
@@ -2254,6 +2246,7 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
     const xmlChar **atts = NULL;
     int nbatts = 0;
     int maxatts = 0;
+    int meta = 0;
     int i;
 
     if (CUR != '<') return;
@@ -2268,6 +2261,8 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
 	ctxt->wellFormed = 0;
         return;
     }
+    if (!xmlStrcmp(name, BAD_CAST"meta"))
+	meta = 1;
 
     /*
      * Check for auto-closure of HTML elements.
@@ -2293,6 +2288,7 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
 	GROW;
 	attname = htmlParseAttribute(ctxt, &attvalue);
         if (attname != NULL) {
+
 	    /*
 	     * Well formedness requires at most one declaration of an attribute
 	     */
@@ -2348,6 +2344,12 @@ failed:
 	    break;
 	}
     }
+
+    /*
+     * Handle specific association to the META tag
+     */
+    if (meta)
+	htmlCheckMeta(ctxt, atts);
 
     /*
      * SAX: Start of Element !
@@ -2585,6 +2587,13 @@ htmlParseContent(htmlParserCtxtPtr ctxt) {
 	 */
 	else if (CUR == '&') {
 	    htmlParseReference(ctxt);
+	}
+
+	/*
+	 * Fourth : end of the resource
+	 */
+	else if (CUR == 0) {
+	    htmlAutoClose(ctxt, NULL);
 	}
 
 	/*
@@ -2852,6 +2861,13 @@ htmlParseDocument(htmlParserCtxtPtr ctxt) {
     htmlParseContent(ctxt);
 
     /*
+     * autoclose
+     */
+    if (CUR == 0)
+	htmlAutoClose(ctxt, NULL);
+
+
+    /*
      * SAX: end of the document processing.
      */
     if ((ctxt->sax) && (ctxt->sax->endDocument != NULL))
@@ -2942,26 +2958,7 @@ htmlInitParserCtxt(htmlParserCtxtPtr ctxt)
 void
 htmlFreeParserCtxt(htmlParserCtxtPtr ctxt)
 {
-    htmlParserInputPtr input;
-    xmlChar *oldname;
-
-    if (ctxt == NULL) return;
-
-    while ((input = inputPop(ctxt)) != NULL) {
-        xmlFreeInputStream(input);
-    }
-
-    if (ctxt->nodeTab != NULL) xmlFree(ctxt->nodeTab);
-    while ((oldname = htmlnamePop(ctxt)) != NULL) {
-	xmlFree(oldname);
-    }
-    if (ctxt->nameTab != NULL) xmlFree(ctxt->nameTab);
-    if (ctxt->directory != NULL) xmlFree(ctxt->directory);
-    if (ctxt->inputTab != NULL) xmlFree(ctxt->inputTab);
-    if (ctxt->version != NULL) xmlFree((char *) ctxt->version);
-    if ((ctxt->sax != NULL) && (ctxt->sax != &htmlDefaultSAXHandler))
-        xmlFree(ctxt->sax);
-    xmlFree(ctxt);
+    xmlFreeParserCtxt(ctxt);
 }
 
 /**
@@ -3096,7 +3093,7 @@ int
 htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
     int ret = 0;
     htmlParserInputPtr in;
-    int avail;
+    int avail = 0;
     xmlChar cur, next;
 
 #ifdef DEBUG_PUSH
@@ -3142,6 +3139,11 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 	    avail = in->length - (in->cur - in->base);
 	else
 	    avail = in->buf->buffer->use - (in->cur - in->base);
+	if ((avail == 0) && (terminate)) {
+	    htmlAutoClose(ctxt, NULL);
+	    if (ctxt->nameNr == 0)
+		ctxt->instate = XML_PARSER_EOF;
+	}
         if (avail < 1)
 	    goto done;
         switch (ctxt->instate) {
@@ -3445,13 +3447,25 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		 * Handle preparsed entities and charRef
 		 */
 		if (ctxt->token != 0) {
-		    xmlChar cur[2] = { 0 , 0 } ;
+		    xmlChar chr[2] = { 0 , 0 } ;
 
-		    cur[0] = (xmlChar) ctxt->token;
+		    chr[0] = (xmlChar) ctxt->token;
 		    if ((ctxt->sax != NULL) && (ctxt->sax->characters != NULL))
-			ctxt->sax->characters(ctxt->userData, cur, 1);
+			ctxt->sax->characters(ctxt->userData, chr, 1);
 		    ctxt->token = 0;
 		    ctxt->checkIndex = 0;
+		}
+		if ((avail == 1) && (terminate)) {
+		    cur = in->cur[0];
+		    if ((cur != '<') && (cur != '&')) {
+			if ((ctxt->sax != NULL) &&
+			    (ctxt->sax->characters != NULL))
+			ctxt->sax->characters(ctxt->userData, &cur, 1);
+			ctxt->token = 0;
+			ctxt->checkIndex = 0;
+			NEXT;
+		    }
+		    break;
 		}
 		if (avail < 2)
 		    goto done;
@@ -3588,6 +3602,11 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 	}
     }
 done:    
+    if ((avail == 0) && (terminate)) {
+	htmlAutoClose(ctxt, NULL);
+	if (ctxt->nameNr == 0)
+	    ctxt->instate = XML_PARSER_EOF;
+    }
 #ifdef DEBUG_PUSH
     fprintf(stderr, "HPP: done %d\n", ret);
 #endif

@@ -1,3 +1,9 @@
+Sun Jul  2 09:52:45 MEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* HTMLparser.c: Work on character encoding support for the HTML parser
+	* HTMLparser.c: Fixed some autoopen/autoclose probs for the HTML parser
+	* encoding.c: Fixed a potential memleak in the encoding stuff
+
 Sat Jul  1 13:44:22 MEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* doc/FAQ.html doc/Makefile.am : added a FAQ

@@ -202,6 +202,8 @@ xmlCleanupPredefinedEntities
 /* globals.h 
    --------------------------------------------------------------------- */
 	xmlInitializeGlobalState
+	xmlRegisterNodeDefault
+	xmlDeregisterNodeDefault
 
 	/* Memory */
 #ifdef LIBXML_THREAD_ALLOC_ENABLED
@@ -250,6 +252,8 @@ xmlCleanupPredefinedEntities
 	__xmlPedanticParserDefaultValue
 	__xmlSaveNoEmptyTags
 	__xmlSubstituteEntitiesDefaultValue
+	__xmlRegisterNodeDefaultValue
+	__xmlDeregisterNodeDefaultValue
 #else /* LIBXML_THREAD_ENABLED */
 	#ifdef LIBXML_DOCB_ENABLED
 		docbDefaultSAXHandler DATA
@@ -276,6 +280,8 @@ xmlCleanupPredefinedEntities
 	xmlPedanticParserDefaultValue DATA
 	xmlSaveNoEmptyTags DATA
 	xmlSubstituteEntitiesDefaultValue DATA
+	xmlRegisterNodeDefaultValue DATA
+	xmlDeregisterNodeDefaultValue DATA
 #endif /* LIBXML_THREAD_ENABLED */
 
 

@@ -1349,6 +1349,16 @@ xmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
     return((int) *ctxt->input->cur);
 encoding_error:
     /*
+     * An encoding problem may arise from a truncated input buffer
+     * splitting a character in the middle. In that case do not raise
+     * an error but return 0 to endicate an end of stream problem
+     */
+    if (ctxt->input->end - ctxt->input->cur < 4) {
+	*len = 0;
+	return(0);
+    }
+
+    /*
      * If we detect an UTF8 error that probably mean that the
      * input encoding didn't get properly advertised in the
      * declaration header. Report the error and switch the encoding

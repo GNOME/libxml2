@@ -1,3 +1,9 @@
+Fri Nov 22 13:26:19 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* parserInternals.c: fixing bug #99190 when UTF8 document are
+	  parsed using the progressive parser and the end of the chunk
+	  is in the middle of an UTF8 multibyte character.
+
 Fri Nov 22 13:13:00 HKT 2002 William Brack <wbrack@mmm.com.hk>
 
 	* threads.c: fixed initialization problem in xmlNewGlobalState

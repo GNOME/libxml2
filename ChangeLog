@@ -1,3 +1,7 @@
+1998-07-30  Christopher Blizzard  <blizzard@appliedtheory.com>
+
+	* .cvsignore: Add .deps dir
+
 Sun Jul 26 17:29:52 EDT 1998  Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* xml_tree: changed the memory allocation scheme for name in xmlNewNode

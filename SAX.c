@@ -31,6 +31,14 @@
 /* #define DEBUG_SAX */
 /* #define DEBUG_SAX_TREE */
 
+static int deprecated_msg = 0;
+
+#define DEPRECATED(n)						\
+    if (deprecated_msg == 0)					\
+	xmlGenericError(xmlGenericErrorContext,			\
+	  "Use of deprecated SAXv1 function %s\n", n);		\
+    deprecated_msg++;
+
 /**
  * getPublicId:
  * @ctx: the user data (XML parser context)
@@ -43,6 +51,7 @@
 const xmlChar *
 getPublicId(void *ctx)
 {
+    DEPRECATED("getPublicId")
     return(xmlSAX2GetPublicId(ctx));
 }
 
@@ -59,6 +68,7 @@ getPublicId(void *ctx)
 const xmlChar *
 getSystemId(void *ctx)
 {
+    DEPRECATED("getSystemId")
     return(xmlSAX2GetSystemId(ctx)); 
 }
 
@@ -74,6 +84,7 @@ getSystemId(void *ctx)
 int
 getLineNumber(void *ctx)
 {
+    DEPRECATED("getLineNumber")
     return(xmlSAX2GetLineNumber(ctx));
 }
 
@@ -89,6 +100,7 @@ getLineNumber(void *ctx)
 int
 getColumnNumber(void *ctx)
 {
+    DEPRECATED("getColumnNumber")
     return(xmlSAX2GetColumnNumber(ctx));
 }
 
@@ -104,6 +116,7 @@ getColumnNumber(void *ctx)
 int
 isStandalone(void *ctx)
 {
+    DEPRECATED("isStandalone")
     return(xmlSAX2IsStandalone(ctx));
 }
 
@@ -119,6 +132,7 @@ isStandalone(void *ctx)
 int
 hasInternalSubset(void *ctx)
 {
+    DEPRECATED("hasInternalSubset")
     return(xmlSAX2HasInternalSubset(ctx));
 }
 
@@ -134,6 +148,7 @@ hasInternalSubset(void *ctx)
 int
 hasExternalSubset(void *ctx)
 {
+    DEPRECATED("hasExternalSubset")
     return(xmlSAX2HasExternalSubset(ctx));
 }
 
@@ -151,6 +166,7 @@ void
 internalSubset(void *ctx, const xmlChar *name,
 	       const xmlChar *ExternalID, const xmlChar *SystemID)
 {
+    DEPRECATED("internalSubset")
     xmlSAX2InternalSubset(ctx, name, ExternalID, SystemID);
 }
 
@@ -168,6 +184,7 @@ void
 externalSubset(void *ctx, const xmlChar *name,
 	       const xmlChar *ExternalID, const xmlChar *SystemID)
 {
+    DEPRECATED("externalSubset")
     xmlSAX2ExternalSubset(ctx, name, ExternalID, SystemID);
 }
 
@@ -189,6 +206,7 @@ externalSubset(void *ctx, const xmlChar *name,
 xmlParserInputPtr
 resolveEntity(void *ctx, const xmlChar *publicId, const xmlChar *systemId)
 {
+    DEPRECATED("resolveEntity")
     return(xmlSAX2ResolveEntity(ctx, publicId, systemId));
 }
 
@@ -205,6 +223,7 @@ resolveEntity(void *ctx, const xmlChar *publicId, const xmlChar *systemId)
 xmlEntityPtr
 getEntity(void *ctx, const xmlChar *name)
 {
+    DEPRECATED("getEntity")
     return(xmlSAX2GetEntity(ctx, name));
 }
 
@@ -221,6 +240,7 @@ getEntity(void *ctx, const xmlChar *name)
 xmlEntityPtr
 getParameterEntity(void *ctx, const xmlChar *name)
 {
+    DEPRECATED("getParameterEntity")
     return(xmlSAX2GetParameterEntity(ctx, name));
 }
 
@@ -241,6 +261,7 @@ void
 entityDecl(void *ctx, const xmlChar *name, int type,
           const xmlChar *publicId, const xmlChar *systemId, xmlChar *content)
 {
+    DEPRECATED("entityDecl")
     xmlSAX2EntityDecl(ctx, name, type, publicId, systemId, content);
 }
 
@@ -262,6 +283,7 @@ attributeDecl(void *ctx, const xmlChar *elem, const xmlChar *fullname,
               int type, int def, const xmlChar *defaultValue,
 	      xmlEnumerationPtr tree)
 {
+    DEPRECATED("attributeDecl")
     xmlSAX2AttributeDecl(ctx, elem, fullname, type, def, defaultValue, tree);
 }
 
@@ -279,6 +301,7 @@ void
 elementDecl(void *ctx, const xmlChar * name, int type,
             xmlElementContentPtr content)
 {
+    DEPRECATED("elementDecl")
     xmlSAX2ElementDecl(ctx, name, type, content);
 }
 
@@ -296,6 +319,7 @@ void
 notationDecl(void *ctx, const xmlChar *name,
 	     const xmlChar *publicId, const xmlChar *systemId)
 {
+    DEPRECATED("notationDecl")
     xmlSAX2NotationDecl(ctx, name, publicId, systemId);
 }
 
@@ -315,6 +339,7 @@ unparsedEntityDecl(void *ctx, const xmlChar *name,
 		   const xmlChar *publicId, const xmlChar *systemId,
 		   const xmlChar *notationName)
 {
+    DEPRECATED("unparsedEntityDecl")
     xmlSAX2UnparsedEntityDecl(ctx, name, publicId, systemId, notationName);
 }
 
@@ -330,6 +355,7 @@ unparsedEntityDecl(void *ctx, const xmlChar *name,
 void
 setDocumentLocator(void *ctx ATTRIBUTE_UNUSED, xmlSAXLocatorPtr loc ATTRIBUTE_UNUSED)
 {
+    DEPRECATED("setDocumentLocator")
 }
 
 /**
@@ -342,6 +368,7 @@ setDocumentLocator(void *ctx ATTRIBUTE_UNUSED, xmlSAXLocatorPtr loc ATTRIBUTE_UN
 void
 startDocument(void *ctx)
 {
+    DEPRECATED("startDocument")
     xmlSAX2StartDocument(ctx);
 }
 
@@ -355,6 +382,7 @@ startDocument(void *ctx)
 void
 endDocument(void *ctx)
 {
+    DEPRECATED("endDocument")
     xmlSAX2EndDocument(ctx);
 }
 
@@ -373,6 +401,7 @@ endDocument(void *ctx)
 void
 attribute(void *ctx ATTRIBUTE_UNUSED, const xmlChar *fullname ATTRIBUTE_UNUSED, const xmlChar *value ATTRIBUTE_UNUSED)
 {
+    DEPRECATED("attribute")
 }
 
 /**
@@ -387,6 +416,7 @@ attribute(void *ctx ATTRIBUTE_UNUSED, const xmlChar *fullname ATTRIBUTE_UNUSED, 
 void
 startElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
 {
+    DEPRECATED("startElement")
     xmlSAX2StartElement(ctx, fullname, atts);
 }
 
@@ -401,6 +431,7 @@ startElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
 void
 endElement(void *ctx, const xmlChar *name ATTRIBUTE_UNUSED)
 {
+    DEPRECATED("endElement")
     xmlSAX2EndElement(ctx, name);
 }
 
@@ -415,6 +446,7 @@ endElement(void *ctx, const xmlChar *name ATTRIBUTE_UNUSED)
 void
 reference(void *ctx, const xmlChar *name)
 {
+    DEPRECATED("reference")
     xmlSAX2Reference(ctx, name);
 }
 
@@ -430,6 +462,7 @@ reference(void *ctx, const xmlChar *name)
 void
 characters(void *ctx, const xmlChar *ch, int len)
 {
+    DEPRECATED("characters")
     xmlSAX2Characters(ctx, ch, len);
 }
 
@@ -446,6 +479,7 @@ characters(void *ctx, const xmlChar *ch, int len)
 void
 ignorableWhitespace(void *ctx ATTRIBUTE_UNUSED, const xmlChar *ch ATTRIBUTE_UNUSED, int len ATTRIBUTE_UNUSED)
 {
+    DEPRECATED("ignorableWhitespace")
 }
 
 /**
@@ -461,6 +495,7 @@ void
 processingInstruction(void *ctx, const xmlChar *target,
                       const xmlChar *data)
 {
+    DEPRECATED("processingInstruction")
     xmlSAX2ProcessingInstruction(ctx, target, data);
 }
 
@@ -476,6 +511,7 @@ processingInstruction(void *ctx, const xmlChar *target,
 void
 globalNamespace(void *ctx ATTRIBUTE_UNUSED, const xmlChar *href ATTRIBUTE_UNUSED, const xmlChar *prefix ATTRIBUTE_UNUSED)
 {
+    DEPRECATED("globalNamespace")
 }
 
 /**
@@ -490,6 +526,7 @@ globalNamespace(void *ctx ATTRIBUTE_UNUSED, const xmlChar *href ATTRIBUTE_UNUSED
 void
 setNamespace(void *ctx ATTRIBUTE_UNUSED, const xmlChar *name ATTRIBUTE_UNUSED)
 {
+    DEPRECATED("setNamespace")
 }
 
 /**
@@ -505,6 +542,7 @@ setNamespace(void *ctx ATTRIBUTE_UNUSED, const xmlChar *name ATTRIBUTE_UNUSED)
 xmlNsPtr
 getNamespace(void *ctx ATTRIBUTE_UNUSED)
 {
+    DEPRECATED("getNamespace")
     return(NULL);
 }
 
@@ -523,6 +561,7 @@ getNamespace(void *ctx ATTRIBUTE_UNUSED)
 int
 checkNamespace(void *ctx ATTRIBUTE_UNUSED, xmlChar *namespace ATTRIBUTE_UNUSED)
 {
+    DEPRECATED("checkNamespace")
     return(0);
 }
 
@@ -538,6 +577,7 @@ checkNamespace(void *ctx ATTRIBUTE_UNUSED, xmlChar *namespace ATTRIBUTE_UNUSED)
 void
 namespaceDecl(void *ctx ATTRIBUTE_UNUSED, const xmlChar *href ATTRIBUTE_UNUSED, const xmlChar *prefix ATTRIBUTE_UNUSED)
 {
+    DEPRECATED("namespaceDecl")
 }
 
 /**
@@ -551,6 +591,7 @@ namespaceDecl(void *ctx ATTRIBUTE_UNUSED, const xmlChar *href ATTRIBUTE_UNUSED, 
 void
 comment(void *ctx, const xmlChar *value)
 {
+    DEPRECATED("comment")
     xmlSAX2Comment(ctx, value);
 }
 
@@ -566,6 +607,7 @@ comment(void *ctx, const xmlChar *value)
 void
 cdataBlock(void *ctx, const xmlChar *value, int len)
 {
+    DEPRECATED("cdataBlock")
     xmlSAX2CDataBlock(ctx, value, len);
 }
 

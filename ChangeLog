@@ -1,3 +1,8 @@
+Thu Aug 21 12:37:46 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* SAX.c: make the deprecated interfaces log an error message
+	  to be sure it won't get used.
+
 Thu Aug 21 00:50:32 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am SAX2.c include/libxml/Makefile.am include/libxml/SAX2.h:

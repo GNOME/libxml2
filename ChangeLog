@@ -1,3 +1,9 @@
+Mon Mar 18 12:44:23 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: Wilfried Teiken provided a hackish but working
+	  way to get context reported back on entities when parsing
+	  with SAX and without breaking the DOM build.
+
 Sun Mar 17 11:31:55 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* c14n.c: applied a new patch from Aleksey Sanin

@@ -5251,17 +5251,29 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 		     * if its replacement text matches the production labeled
 		     * content.
 		     */
+
+		    void *user_data;
+		    /*
+		     * This is a bit hackish but this seems the best
+		     * way to make sure both SAX and DOM entity support
+		     * behaves okay.
+		     */
+		    if (ctxt->userData == ctxt)
+			user_data = NULL;
+		    else
+			user_data = ctxt->userData;
+
 		    if (ent->etype == XML_INTERNAL_GENERAL_ENTITY) {
 			ctxt->depth++;
 			ret = xmlParseBalancedChunkMemory(ctxt->myDoc,
-				           ctxt->sax, NULL, ctxt->depth,
+				           ctxt->sax, user_data, ctxt->depth,
 					   value, &list);
 			ctxt->depth--;
 		    } else if (ent->etype ==
 			       XML_EXTERNAL_GENERAL_PARSED_ENTITY) {
 			ctxt->depth++;
 			ret = xmlParseExternalEntityPrivate(ctxt->myDoc, ctxt,
-				   ctxt->sax, NULL, ctxt->depth,
+				   ctxt->sax, user_data, ctxt->depth,
 				   ent->URI, ent->ExternalID, &list);
 			ctxt->depth--;
 		    } else {

@@ -19,9 +19,9 @@ install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)
 	-@INSTALL@ -m 0644 $(srcdir)/*.html $(srcdir)/*.c $(srcdir)/*.xml $(srcdir)/*.xsl $(srcdir)/*.out $(DESTDIR)$(TARGET_DIR)
 
-EXTRA_DIST=examples.xsl index.py test1.xml examples.xml test2.xml writer.xml tree1.out tree2.out reader1.out 
+EXTRA_DIST=examples.xsl index.py test1.xml examples.xml test2.xml writer.xml test3.xml tree1.out tree2.out reader1.out reader3.out 
 
-noinst_PROGRAMS=xpath1 parse1 parse2 tree1 tree2 testWriter reader1 reader2 
+noinst_PROGRAMS=xpath1 parse1 parse2 tree1 tree2 testWriter reader1 reader2 reader3 
 
 xpath1_SOURCES=xpath1.c
 xpath1_LDFLAGS=
@@ -63,6 +63,11 @@ reader2_LDFLAGS=
 reader2_DEPENDENCIES= $(DEPS)
 reader2_LDADD= @RDL_LIBS@ $(LDADDS)
 
+reader3_SOURCES=reader3.c
+reader3_LDFLAGS=
+reader3_DEPENDENCIES= $(DEPS)
+reader3_LDADD= @RDL_LIBS@ $(LDADDS)
+
 tests: $(noinst_PROGRAMS)
 	@(parse1 test1.xml)
 	@(parse2 test2.xml)
@@ -71,5 +76,6 @@ tests: $(noinst_PROGRAMS)
 	@(testWriter ; for i in 1 2 3 4 ; do diff writer.xml writer$$i.out ; done ; rm writer*.out)
 	@(reader1 test2.xml > reader1.tmp ; diff reader1.tmp reader1.out ; rm reader1.tmp)
 	@(reader2 test2.xml > reader1.tmp ; diff reader1.tmp reader1.out ; rm reader1.tmp)
+	@(reader3 > reader3.tmp ; diff reader3.tmp reader3.out ; rm reader3.tmp)
 
 

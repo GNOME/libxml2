@@ -877,11 +877,11 @@ error:
  * Returns the compiled for of the pattern or NULL in case of error
  */
 xmlPatternPtr
-xmlPatterncompile(const xmlChar *pattern, xmlDict *dictionnary, int flags) {
+xmlPatterncompile(const xmlChar *pattern, xmlDict *dict, int flags) {
     xmlPatternPtr ret = NULL;
     xmlPatParserContextPtr ctxt = NULL;
 
-    ctxt = xmlNewPatParserContext(pattern, dictionnary);
+    ctxt = xmlNewPatParserContext(pattern, dict);
     if (ctxt == NULL) goto error;
     ret = xmlNewPattern();
     if (ret == NULL) goto error;

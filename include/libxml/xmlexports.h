@@ -41,6 +41,8 @@
  */
 #define XMLCALL
 
+/** DOC_DISABLE */
+
 /* Windows platform with MS compiler */
 #if defined(_WIN32) && defined(_MSC_VER)
   #undef XMLPUBFUN

@@ -984,7 +984,7 @@ xmlTextWriterWriteVFormatRaw(xmlTextWriterPtr writer, const char *format,
 }
 
 /**
- * xmlTextWriterWriteStringLen:
+ * xmlTextWriterWriteRawLen:
  * @writer:  the xmlTextWriterPtr
  * @content:  text string
  * @len:  length of the text string

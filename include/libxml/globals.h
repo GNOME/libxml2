@@ -131,6 +131,7 @@ XMLPUBFUN xmlRegisterNodeFunc XMLCALL xmlThrDefRegisterNodeDefault(xmlRegisterNo
 XMLPUBFUN xmlDeregisterNodeFunc XMLCALL xmlDeregisterNodeDefault(xmlDeregisterNodeFunc func);
 XMLPUBFUN xmlDeregisterNodeFunc XMLCALL xmlThrDefDeregisterNodeDefault(xmlDeregisterNodeFunc func);
 
+/** DOC_DISABLE */
 /*
  * In general the memory allocation entry points are not kept
  * thread specific but this can be overridden by LIBXML_THREAD_ALLOC_ENABLED

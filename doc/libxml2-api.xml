@@ -953,6 +953,17 @@
      <exports symbol='xmlParseSystemLiteral' type='function'/>
      <exports symbol='xmlParseEntityDecl' type='function'/>
     </file>
+    <file name='pattern'>
+     <summary>pattern expression handling</summary>
+     <description>allows to compile and test pattern expressions for nodes either in a tree or based on a parser state. </description>
+     <author>Daniel Veillard </author>
+     <exports symbol='xmlPattern' type='typedef'/>
+     <exports symbol='xmlPatternPtr' type='typedef'/>
+     <exports symbol='xmlPatterncompile' type='function'/>
+     <exports symbol='xmlFreePattern' type='function'/>
+     <exports symbol='xmlPatternMatch' type='function'/>
+     <exports symbol='xmlFreePatternList' type='function'/>
+    </file>
     <file name='relaxng'>
      <summary>implementation of the Relax-NG validation</summary>
      <description>implementation of the Relax-NG validation </description>
@@ -2337,6 +2348,7 @@
      <exports symbol='xmlReaderForFd' type='function'/>
      <exports symbol='xmlTextReaderMoveToFirstAttribute' type='function'/>
      <exports symbol='xmlTextReaderPrefix' type='function'/>
+     <exports symbol='xmlTextReaderPreservePattern' type='function'/>
      <exports symbol='xmlTextReaderLocatorBaseURI' type='function'/>
      <exports symbol='xmlTextReaderGetAttribute' type='function'/>
      <exports symbol='xmlReaderNewMemory' type='function'/>
@@ -3293,7 +3305,6 @@
       <info>Macro defining &quot;xml&quot;</info>
     </macro>
     <macro name='XMLCALL' file='xmlexports'>
-      <info>Macros which declare the called convention for exported functions Windows platform with MS compiler Windows platform with Borland compiler Windows platform with GNU compiler (Mingw) Cygwin platform, GNU compiler</info>
     </macro>
     <macro name='XMLPUBFUN' file='xmlexports'>
     </macro>
@@ -3330,10 +3341,13 @@
       <info>Special constant found in SAX2 blocks initialized fields</info>
     </macro>
     <macro name='XML_SCHEMAS_ANYATTR_LAX' file='schemasInternals'>
+      <info>Ignore validation non definition on attributes</info>
     </macro>
     <macro name='XML_SCHEMAS_ANYATTR_SKIP' file='schemasInternals'>
+      <info>Skip unknown attribute from validation</info>
     </macro>
     <macro name='XML_SCHEMAS_ANYATTR_STRICT' file='schemasInternals'>
+      <info>Apply strict validation rules on attributes</info>
     </macro>
     <macro name='XML_SCHEMAS_ATTR_NSDEFAULT' file='schemasInternals'>
       <info>allow elements in no namespace</info>
@@ -3487,14 +3501,19 @@
       <info>Macro for compatibility naming layer with libxml1.</info>
     </macro>
     <macro name='xmlTextWriterEndDTDAttlist' file='xmlwriter'>
+      <info>This macro maps to xmlTextWriterEndDTD</info>
     </macro>
     <macro name='xmlTextWriterEndDTDElement' file='xmlwriter'>
+      <info>This macro maps to xmlTextWriterEndDTD</info>
     </macro>
     <macro name='xmlTextWriterEndDTDEntity' file='xmlwriter'>
+      <info>This macro maps to xmlTextWriterEndDTD</info>
     </macro>
     <macro name='xmlTextWriterWriteDocType' file='xmlwriter'>
+      <info>this macro maps to xmlTextWriterWriteDTD</info>
     </macro>
     <macro name='xmlTextWriterWriteProcessingInstruction' file='xmlwriter'>
+      <info>This macro maps to xmlTextWriterWritePI</info>
     </macro>
     <macro name='xmlXPathCheckError' file='xpathInternals'>
       <info>Check if an XPath error was raised.  Returns true if an error has been raised, false otherwise.</info>
@@ -4935,6 +4954,8 @@ actually an xmlCharEncoding'/>
     <typedef name='xmlParserOption' file='parser' type='enum'/>
     <typedef name='xmlParserProperties' file='xmlreader' type='enum'/>
     <typedef name='xmlParserSeverities' file='xmlreader' type='enum'/>
+    <struct name='xmlPattern' file='pattern' type='struct _xmlPattern'/>
+    <typedef name='xmlPatternPtr' file='pattern' type='xmlPattern *'/>
     <struct name='xmlRMutex' file='threads' type='struct _xmlRMutex'/>
     <typedef name='xmlRMutexPtr' file='threads' type='xmlRMutex *'/>
     <typedef name='xmlReaderTypes' file='xmlreader' type='enum'/>
@@ -7771,6 +7792,16 @@ actually an xmlCharEncoding'/>
       <return type='void'/>
       <arg name='in' type='xmlParserInputBufferPtr' info='a buffered parser input'/>
     </function>
+    <function name='xmlFreePattern' file='pattern'>
+      <info>Free up the memory allocated by @comp</info>
+      <return type='void'/>
+      <arg name='comp' type='xmlPatternPtr' info='an XSLT comp'/>
+    </function>
+    <function name='xmlFreePatternList' file='pattern'>
+      <info>Free up the memory allocated by all the elements of @comp</info>
+      <return type='void'/>
+      <arg name='comp' type='xmlPatternPtr' info='an XSLT comp list'/>
+    </function>
     <function name='xmlFreeProp' file='tree'>
       <info>Free one attribute, all the content is freed too</info>
       <return type='void'/>
@@ -9986,6 +10017,19 @@ actually an xmlCharEncoding'/>
       <arg name='msg' type='const char *' info='the message to display/transmit'/>
       <arg name='...' type='...' info='extra parameters for the message display'/>
     </function>
+    <function name='xmlPatternMatch' file='pattern'>
+      <info>Test wether the node matches the pattern</info>
+      <return type='int' info='1 if it matches, 0 if it doesn&apos;t and -1 in case of failure'/>
+      <arg name='comp' type='xmlPatternPtr' info='the precompiled pattern'/>
+      <arg name='node' type='xmlNodePtr' info='a node'/>
+    </function>
+    <function name='xmlPatterncompile' file='pattern'>
+      <info>Compile a pattern</info>
+      <return type='xmlPatternPtr' info='the compiled for of the pattern or NULL in case of error'/>
+      <arg name='pattern' type='const xmlChar *' info='the pattern to compile'/>
+      <arg name='dict' type='xmlDict *' info='an optional dictionnary for interned strings'/>
+      <arg name='flags' type='int' info='compilation flags, undefined yet'/>
+    </function>
     <function name='xmlPedanticParserDefault' file='parser'>
       <info>Set and return the previous value for enabling pedantic warnings.</info>
       <return type='int' info='the last value for 0 for no substitution, 1 for substitution.'/>
@@ -11715,6 +11759,12 @@ actually an xmlCharEncoding'/>
       <return type='xmlNodePtr' info='the xmlNodePtr or NULL in case of error.'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
     </function>
+    <function name='xmlTextReaderPreservePattern' file='xmlreader'>
+      <info>This tells the XML Reader to preserve all nodes matched by the pattern. The caller must also use xmlTextReaderCurrentDoc() to keep an handle on the resulting document once parsing has finished</info>
+      <return type='int' info='a positive number in case of success and -1 in case of error'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
+      <arg name='pattern' type='const xmlChar *' info='an XPath subset pattern'/>
+    </function>
     <function name='xmlTextReaderQuoteChar' file='xmlreader'>
       <info>The quotation mark character used to enclose the value of an attribute.</info>
       <return type='int' info='&quot; or &apos; and -1 in case of error'/>
@@ -12141,11 +12191,11 @@ actually an xmlCharEncoding'/>
       <arg name='content' type='const xmlChar *' info='text string'/>
     </function>
     <function name='xmlTextWriterWriteRawLen' file='xmlwriter'>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='writer' type='xmlTextWriterPtr' info=''/>
-      <arg name='content' type='const xmlChar *' info=''/>
-      <arg name='len' type='int' info=''/>
+      <info>Write an xml text. TODO: what about entities and special chars??</info>
+      <return type='int' info='the bytes written (may be 0 because of buffering) or -1 in case of error'/>
+      <arg name='writer' type='xmlTextWriterPtr' info='the xmlTextWriterPtr'/>
+      <arg name='content' type='const xmlChar *' info='text string'/>
+      <arg name='len' type='int' info='length of the text string'/>
     </function>
     <function name='xmlTextWriterWriteString' file='xmlwriter'>
       <info>Write an xml text.</info>

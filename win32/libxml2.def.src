@@ -778,6 +778,8 @@ xmlFreeNs
 xmlFreeNsList
 xmlFreeParserCtxt
 xmlFreeParserInputBuffer
+xmlFreePattern
+xmlFreePatternList
 xmlFreeProp
 xmlFreePropList
 xmlFreeRMutex
@@ -1258,6 +1260,8 @@ xmlParserPrintFileInfo
 xmlParserValidityError
 xmlParserValidityWarning
 xmlParserWarning
+xmlPatternMatch
+xmlPatterncompile
 xmlPedanticParserDefault
 xmlPopInput
 xmlPrintURI
@@ -1657,6 +1661,7 @@ xmlTextReaderNodeType
 xmlTextReaderNormalization
 xmlTextReaderPrefix
 xmlTextReaderPreserve
+xmlTextReaderPreservePattern
 xmlTextReaderQuoteChar
 xmlTextReaderRead
 xmlTextReaderReadAttributeValue

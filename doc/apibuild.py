@@ -27,8 +27,6 @@ ignored_files = {
   "testOOM.c": "out of memory tester",
   "testOOMlib.h": "out of memory tester",
   "testOOMlib.c": "out of memory tester",
-  "pattern.c": "not integrated yet",
-  "pattern.h": "not integrated yet",
 }
 
 ignored_words = {
@@ -513,9 +511,16 @@ class CParser:
 	self.last_comment = ""
 	self.comment = None
 	self.collect_ref = 0
+	self.no_error = 0
 
     def collect_references(self):
         self.collect_ref = 1
+
+    def stop_error(self):
+        self.no_error = 1
+
+    def start_error(self):
+        self.no_error = 0
 
     def lineno(self):
         return self.lexer.getlineno()
@@ -529,7 +534,15 @@ class CParser:
         self.index.add_ref(name, module, static, type, self.lineno(),
 	               info, extra)
 
+    def warning(self, msg):
+        if self.no_error:
+	    return
+	print msg
+
     def error(self, msg, token=-1):
+        if self.no_error:
+	    return
+
         print "Parse Error: " + msg
 	if token != -1:
 	    print "Got token ", token
@@ -578,6 +591,13 @@ class CParser:
 	else:
 	    self.comment = self.comment + token[1]
 	token = self.lexer.token()
+
+        if string.find(self.comment, "DOC_DISABLE") != -1:
+	    self.stop_error()
+
+        if string.find(self.comment, "DOC_ENABLE") != -1:
+	    self.start_error()
+
 	return token
 
      #
@@ -592,19 +612,19 @@ class CParser:
 
         if self.comment == None:
 	    if not quiet:
-		print "Missing comment for macro %s" % (name)
+		self.warning("Missing comment for macro %s" % (name))
 	    return((args, desc))
         if self.comment[0] != '*':
 	    if not quiet:
-		print "Missing * in macro comment for %s" % (name)
+		self.warning("Missing * in macro comment for %s" % (name))
 	    return((args, desc))
 	lines = string.split(self.comment, '\n')
 	if lines[0] == '*':
 	    del lines[0]
 	if lines[0] != "* %s:" % (name):
 	    if not quiet:
-		print "Misformatted macro comment for %s" % (name)
-		print "  Expecting '* %s:' got '%s'" % (name, lines[0])
+		self.warning("Misformatted macro comment for %s" % (name))
+		self.warning("  Expecting '* %s:' got '%s'" % (name, lines[0]))
 	    return((args, desc))
 	del lines[0]
 	while lines[0] == '*':
@@ -617,8 +637,8 @@ class CParser:
 		arg=string.strip(arg)
             except:
 		if not quiet:
-		    print "Misformatted macro comment for %s" % (name)
-		    print "  problem with '%s'" % (lines[0])
+		    self.warning("Misformatted macro comment for %s" % (name))
+		    self.warning("  problem with '%s'" % (lines[0]))
 		del lines[0]
 		continue
 	    del lines[0]
@@ -647,7 +667,7 @@ class CParser:
 
 	if quiet == 0:
 	    if desc == "":
-	        print "Macro comment for %s lack description of the macro" % (name)
+	        self.warning("Macro comment for %s lack description of the macro" % (name))
 
 	return((args, desc))
 
@@ -668,19 +688,19 @@ class CParser:
 
         if self.comment == None:
 	    if not quiet:
-		print "Missing comment for function %s" % (name)
+		self.warning("Missing comment for function %s" % (name))
 	    return(((ret[0], retdesc), args, desc))
         if self.comment[0] != '*':
 	    if not quiet:
-		print "Missing * in function comment for %s" % (name)
+		self.warning("Missing * in function comment for %s" % (name))
 	    return(((ret[0], retdesc), args, desc))
 	lines = string.split(self.comment, '\n')
 	if lines[0] == '*':
 	    del lines[0]
 	if lines[0] != "* %s:" % (name):
 	    if not quiet:
-		print "Misformatted function comment for %s" % (name)
-		print "  Expecting '* %s:' got '%s'" % (name, lines[0])
+		self.warning("Misformatted function comment for %s" % (name))
+		self.warning("  Expecting '* %s:' got '%s'" % (name, lines[0]))
 	    return(((ret[0], retdesc), args, desc))
 	del lines[0]
 	while lines[0] == '*':
@@ -694,8 +714,8 @@ class CParser:
 		arg=string.strip(arg)
             except:
 		if not quiet:
-		    print "Misformatted function comment for %s" % (name)
-		    print "  problem with '%s'" % (lines[0])
+		    self.warning("Misformatted function comment for %s" % (name))
+		    self.warning("  problem with '%s'" % (lines[0]))
 		del lines[0]
 		continue
 	    del lines[0]
@@ -716,8 +736,8 @@ class CParser:
 		i = i + 1
 	    if i >= nbargs:
 		if not quiet:
-		    print "Unable to find arg %s from function comment for %s" % (
-		       arg, name)
+		    self.warning("Unable to find arg %s from function comment for %s" % (
+		       arg, name))
 	while len(lines) > 0 and lines[0] == '*':
 	    del lines[0]
 	desc = ""
@@ -754,12 +774,12 @@ class CParser:
 	    i = 0
 	    while i < nbargs:
 	        if args[i][2] == None and args[i][0] != "void" and args[i][1] != None:
-		    print "Function comment for %s lack description of arg %s" % (name, args[i][1])
+		    self.warning("Function comment for %s lack description of arg %s" % (name, args[i][1]))
 		i = i + 1
 	    if retdesc == "" and ret[0] != "void":
-		print "Function comment for %s lack description of return value" % (name)
+		self.warning("Function comment for %s lack description of return value" % (name))
 	    if desc == "":
-	        print "Function comment for %s lack description of the function" % (name)
+	        self.warning("Function comment for %s lack description of the function" % (name))
 
 
 	return(((ret[0], retdesc), args, desc))
@@ -1016,7 +1036,7 @@ class CParser:
 		        try:
 			    value = "%d" % (int(value) + 1)
 			except:
-			    print "Failed to compute value of enum %s" % (name)
+			    self.warning("Failed to compute value of enum %s" % (name))
 			    value=""
 		    if token[0] == "sep" and token[1] == ",":
 			token = self.token()
@@ -1364,7 +1384,7 @@ class CParser:
 	return token
 
     def parse(self):
-        print "Parsing %s" % (self.filename)
+        self.warning("Parsing %s" % (self.filename))
         token = self.token()
 	while token != None:
             if token[0] == 'name':

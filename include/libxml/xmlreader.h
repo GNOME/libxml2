@@ -196,6 +196,9 @@ XMLPUBFUN xmlNodePtr XMLCALL
 		    xmlTextReaderCurrentNode	(xmlTextReaderPtr reader);
 XMLPUBFUN xmlNodePtr XMLCALL	
 		    xmlTextReaderPreserve	(xmlTextReaderPtr reader);
+XMLPUBFUN int XMLCALL	
+		    xmlTextReaderPreservePattern(xmlTextReaderPtr reader,
+		    				 const xmlChar *pattern);
 XMLPUBFUN xmlDocPtr XMLCALL	
 		    xmlTextReaderCurrentDoc	(xmlTextReaderPtr reader);
 XMLPUBFUN xmlNodePtr XMLCALL	

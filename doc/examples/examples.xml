@@ -227,6 +227,28 @@
       <function line='77' file='xmlreader' name='xmlTextReaderIsValid'/>
     </uses>
   </example>
+  <example filename='reader3.c'>
+    <synopsis>Show how to extract subdocuments with xmlReader</synopsis>
+    <purpose>Demonstrate the use of xmlTextReaderPreservePattern() to parse an XML file with the xmlReader while collecting only some subparts of the document</purpose>
+    <usage>reader3</usage>
+    <test>reader3 &gt; reader3.tmp ; diff reader3.tmp reader3.out ; rm reader3.tmp</test>
+    <author>Daniel Veillard</author>
+    <copy>see Copyright for the status of this software. </copy>
+    <section>xmlReader</section>
+    <includes>
+      <include>&lt;libxml/xmlreader.h&gt;</include>
+    </includes>
+    <uses>
+      <typedef line='27' file='xmlreader' name='xmlTextReaderPtr'/>
+      <function line='33' file='xmlreader' name='xmlReaderForFile'/>
+      <function line='61' file='xmlreader' name='xmlFreeTextReader'/>
+      <function line='91' file='tree' name='xmlDocDump'/>
+      <function line='47' file='xmlreader' name='xmlTextReaderRead'/>
+      <function line='57' file='xmlreader' name='xmlTextReaderCurrentDoc'/>
+      <function line='38' file='xmlreader' name='xmlTextReaderPreservePattern'/>
+      <typedef line='72' file='tree' name='xmlDocPtr'/>
+    </uses>
+  </example>
   <symbols>
     <symbol name='LIBXML_TEST_VERSION'>
       <ref filename='xpath1.c'/>
@@ -282,6 +304,9 @@
     <symbol name='xmlCtxtReadFile'>
       <ref filename='parse2.c'/>
     </symbol>
+    <symbol name='xmlDocDump'>
+      <ref filename='reader3.c'/>
+    </symbol>
     <symbol name='xmlDocGetRootElement'>
       <ref filename='tree1.c'/>
     </symbol>
@@ -290,6 +315,7 @@
       <ref filename='parse1.c'/>
       <ref filename='parse2.c'/>
       <ref filename='testWriter.c'/>
+      <ref filename='reader3.c'/>
     </symbol>
     <symbol name='xmlDocSetRootElement'>
       <ref filename='tree2.c'/>
@@ -315,6 +341,7 @@
     <symbol name='xmlFreeTextReader'>
       <ref filename='reader1.c'/>
       <ref filename='reader2.c'/>
+      <ref filename='reader3.c'/>
     </symbol>
     <symbol name='xmlFreeTextWriter'>
       <ref filename='testWriter.c'/>
@@ -379,6 +406,7 @@
     <symbol name='xmlReaderForFile'>
       <ref filename='reader1.c'/>
       <ref filename='reader2.c'/>
+      <ref filename='reader3.c'/>
     </symbol>
     <symbol name='xmlRealloc'>
       <ref filename='testWriter.c'/>
@@ -407,6 +435,9 @@
       <ref filename='reader1.c'/>
       <ref filename='reader2.c'/>
     </symbol>
+    <symbol name='xmlTextReaderCurrentDoc'>
+      <ref filename='reader3.c'/>
+    </symbol>
     <symbol name='xmlTextReaderDepth'>
       <ref filename='reader1.c'/>
       <ref filename='reader2.c'/>
@@ -426,13 +457,18 @@
       <ref filename='reader1.c'/>
       <ref filename='reader2.c'/>
     </symbol>
+    <symbol name='xmlTextReaderPreservePattern'>
+      <ref filename='reader3.c'/>
+    </symbol>
     <symbol name='xmlTextReaderPtr'>
       <ref filename='reader1.c'/>
       <ref filename='reader2.c'/>
+      <ref filename='reader3.c'/>
     </symbol>
     <symbol name='xmlTextReaderRead'>
       <ref filename='reader1.c'/>
       <ref filename='reader2.c'/>
+      <ref filename='reader3.c'/>
     </symbol>
     <symbol name='xmlTextWriterEndDocument'>
       <ref filename='testWriter.c'/>
@@ -501,6 +537,7 @@
     <section name='xmlReader'>
       <example filename='reader1.c'/>
       <example filename='reader2.c'/>
+      <example filename='reader3.c'/>
     </section>
     <section name='xmlWriter'>
       <example filename='testWriter.c'/>

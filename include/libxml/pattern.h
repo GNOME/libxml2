@@ -35,7 +35,7 @@ XMLPUBFUN void XMLCALL
 
 XMLPUBFUN xmlPatternPtr XMLCALL
 			xmlPatterncompile	(const xmlChar *pattern,
-						 xmlDict *dictionnary,
+						 xmlDict *dict,
 						 int flags);
 XMLPUBFUN int XMLCALL
 			xmlPatternMatch		(xmlPatternPtr comp,

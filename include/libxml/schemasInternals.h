@@ -94,11 +94,22 @@ struct _xmlSchemaAnnot {
 };
 
 /**
- * An attribute definition.
+ * XML_SCHEMAS_ANYATTR_SKIP:
+ *
+ * Skip unknown attribute from validation
  */
-
 #define XML_SCHEMAS_ANYATTR_SKIP	1
+/**
+ * XML_SCHEMAS_ANYATTR_LAX:
+ *
+ * Ignore validation non definition on attributes
+ */
 #define XML_SCHEMAS_ANYATTR_LAX		2
+/**
+ * XML_SCHEMAS_ANYATTR_STRICT:
+ *
+ * Apply strict validation rules on attributes
+ */
 #define XML_SCHEMAS_ANYATTR_STRICT	3
 
 /**
@@ -107,6 +118,11 @@ struct _xmlSchemaAnnot {
  * allow elements in no namespace
  */
 #define XML_SCHEMAS_ATTR_NSDEFAULT	1 << 7
+
+/**
+ * xmlSchemaAttribute:
+ * An attribute definition.
+ */
 
 typedef struct _xmlSchemaAttribute xmlSchemaAttribute;
 typedef xmlSchemaAttribute *xmlSchemaAttributePtr;

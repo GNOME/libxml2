@@ -225,6 +225,11 @@ XMLPUBFUN int XMLCALL
 	xmlTextWriterWritePI		(xmlTextWriterPtr writer,
 					 const xmlChar * target,
 					 const xmlChar * content);
+/**
+ * xmlTextWriterWriteProcessingInstruction:
+ *
+ * This macro maps to xmlTextWriterWritePI
+ */
 #define xmlTextWriterWriteProcessingInstruction xmlTextWriterWritePI
 
 /*
@@ -277,6 +282,11 @@ XMLPUBFUN int XMLCALL
 					 const xmlChar * pubid,
 					 const xmlChar * sysid,
 					 const xmlChar * subset);
+/**
+ * xmlTextWriterWriteDocType:
+ *
+ * this macro maps to xmlTextWriterWriteDTD
+ */
 #define xmlTextWriterWriteDocType xmlTextWriterWriteDTD
 
 /*
@@ -285,6 +295,11 @@ XMLPUBFUN int XMLCALL
 XMLPUBFUN int XMLCALL
 	xmlTextWriterStartDTDElement	(xmlTextWriterPtr writer,
 					 const xmlChar * name);
+/**
+ * xmlTextWriterEndDTDElement:
+ *
+ * This macro maps to xmlTextWriterEndDTD
+ */
 #define xmlTextWriterEndDTDElement xmlTextWriterEndDTD
 
 /*
@@ -310,6 +325,11 @@ XMLPUBFUN int XMLCALL
 XMLPUBFUN int XMLCALL
 	xmlTextWriterStartDTDAttlist	(xmlTextWriterPtr writer,
 					 const xmlChar * name);
+/**
+ * xmlTextWriterEndDTDAttlist:
+ *
+ * This macro maps to xmlTextWriterEndDTD
+ */
 #define xmlTextWriterEndDTDAttlist xmlTextWriterEndDTD
 
 /*
@@ -335,6 +355,11 @@ XMLPUBFUN int XMLCALL
 XMLPUBFUN int XMLCALL
 	xmlTextWriterStartDTDEntity	(xmlTextWriterPtr writer,
                                     int pe, const xmlChar * name);
+/**
+ * xmlTextWriterEndDTDEntity:
+ *
+ * This macro maps to xmlTextWriterEndDTD
+ */
 #define xmlTextWriterEndDTDEntity xmlTextWriterEndDTD
 
 /*

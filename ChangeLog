@@ -1,3 +1,19 @@
+Fri Dec  5 15:49:44 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* globals.c xmlwriter.c doc/apibuild.py include/libxml/globals.h 
+	  include/libxml/pattern.h include/libxml/schemasInternals.h
+	  include/libxml/xmlexports.h include/libxml/xmlwriter.h: cleanup
+	  the make rebuild in doc, this include new directive to stop
+	  documentation warnings
+	* doc/* doc/html/*: rebuilt the docs
+	* pattern.c xmlreader.c include/libxml/pattern.h
+	  include/libxml/xmlreader.h: adding xmlTextReaderPreservePattern()
+	  to save nodes while scanning the tree with the reader, cleanup
+	  the way element were freed, and xmlTextReaderPreserve()
+	  implementation, the API might change for namespace binding support
+	  when compiling patterns.
+	* doc/examples/*: added reader3.c exposing the xmlTextReaderPreserve()
+
 Thu Dec  4 15:10:57 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* python/libxml.py: oops forgot to modify/commit the new code.

@@ -154,7 +154,6 @@ AC_CHECK_FUNC(isinf, AC_DEFINE(HAVE_ISINF) , AC_CHECK_LIB(m, isinf,
 
 XML_LIBDIR='-L${libdir}'
 XML_INCLUDEDIR='-I${includedir}/libxml -I${includedir}'
-XML_LIBS="-lxml2 $Z_LIBS -lm $LIBS"
 
 dnl
 dnl Extra flags
@@ -238,6 +237,7 @@ LDFLAGS=${_ldflags}
 
 dnl
 dnl specific tests to setup DV's devel environment with debug etc ...
+dnl (-Wunreachable-code)
 dnl
 if test "${LOGNAME}" = "veillard" -a "`pwd`" = "/u/veillard/XML" ; then
     if test "${with_mem_debug}" = "" ; then
@@ -376,7 +376,7 @@ if test "$with_iconv" = "no" ; then
 else
     AC_CHECK_HEADER(iconv.h, 
 	AC_CHECK_FUNC(iconv, ,
-	    AC_CHECK_LIB(iconv, iconv, XML_LIBS="$XML_LIBS -liconv")))
+	    AC_CHECK_LIB(iconv, iconv, ICONV_LIBS="-liconv")))
     if test "$have_iconv" != "" ; then
         echo Iconv support not found
         WITH_ICONV=0
@@ -384,6 +384,7 @@ else
         WITH_ICONV=1
     fi
 fi  
+XML_LIBS="-lxml2 $Z_LIBS $ICONV_LIBS -lm $LIBS"
 AC_SUBST(WITH_ICONV)
 
 AC_ARG_WITH(debug, [  --with-debug            Add the debugging module (on)])
@@ -412,6 +413,7 @@ AC_SUBST(XML_CFLAGS)
 
 AC_SUBST(XML_LIBDIR)
 AC_SUBST(XML_LIBS)
+AC_SUBST(ICONV_LIBS)
 AC_SUBST(XML_INCLUDEDIR)
 AC_SUBST(HTML_DIR)
 AC_SUBST(HAVE_ISNAN)

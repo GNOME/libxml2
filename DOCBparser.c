@@ -3392,18 +3392,6 @@ docbParseDocTypeDecl(docbParserCtxtPtr ctxt) {
      */
     if (RAW != '[') {
        return;
-
-	/*
-	 * We should be at the end of the DOCTYPE declaration.
-	 */
-	if (CUR != '>') {
-	   if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	       ctxt->sax->error(ctxt->userData,
-		                "DOCTYPE unproperly terminated\n");
-	   ctxt->wellFormed = 0;
-	    /* We shouldn't try to resynchronize ... */
-	}
-	NEXT;
     }
 
     /*

@@ -22,6 +22,7 @@ extern "C" {
 #endif
 
 int		xmlLoadCatalog		(const char *URL);
+void		xmlLoadCatalogs		(const char *paths);
 void		xmlCatalogCleanup	(void);
 void		xmlCatalogDump		(FILE *out);
 const xmlChar *	xmlCatalogGetSystem	(const xmlChar *sysID);

@@ -6271,10 +6271,10 @@ int
 xmlSaveFileEnc(const char *filename, xmlDocPtr cur, const char *encoding) {
     xmlOutputBufferPtr buf;
     xmlCharEncodingHandlerPtr handler = NULL;
+    xmlCharEncoding enc;
     int ret;
 
     if (encoding != NULL) {
-	xmlCharEncoding enc;
 
 	enc = xmlParseCharEncoding(encoding);
 	if (cur->charset != XML_CHAR_ENCODING_UTF8) {
@@ -6284,9 +6284,8 @@ xmlSaveFileEnc(const char *filename, xmlDocPtr cur, const char *encoding) {
 	}
 	if (enc != XML_CHAR_ENCODING_UTF8) {
 	    handler = xmlFindCharEncodingHandler(encoding);
-	    if (handler == NULL) {
+	    if (handler == NULL)
 		return(-1);
-	    }
 	}
     }
 

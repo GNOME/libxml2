@@ -161,7 +161,7 @@ int isinf(double x)
  */
 double
 xmlXPathDivideBy(double f, double fzero) {
-    float ret;
+    double ret;
 #ifdef HAVE_SIGNAL
 #ifdef SIGFPE
 #ifdef SIG_IGN
@@ -3079,7 +3079,6 @@ xmlXPathCompareNodeSets(int inf, int strict,
     xmlXPathFreeObject(arg1);
     xmlXPathFreeObject(arg2);
     return(ret);
-    return(0);
 }
 
 /**

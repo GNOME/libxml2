@@ -1,3 +1,12 @@
+Tue May 22 17:00:36 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* catalog.[ch]: fixes and add xmlLoadCatalogs()
+	* DOCBparser.c: small cleanup
+	* xmllint.c: added a --catalogs option to load catalogs from
+	  $SGML_CATALOG_FILES
+	* tree.c: cleanup
+	* configure.in: iconv library fixup, ICONV_LIBS 
+
 Mon May 21 16:05:22 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* catalog.c: handling of CATALOG entries. detection of recursion,

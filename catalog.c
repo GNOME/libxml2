@@ -65,10 +65,9 @@ struct _xmlCatalogEntry {
 static xmlHashTablePtr xmlDefaultCatalog;
 
 /* Catalog stack */
-const char * catalTab[10];  /* stack of catals */
-const char * catal;         /* Current catal stream */
-int          catalNr = 0;   /* Number of current catal streams */
-int          catalMax = 10; /* Max number of catal streams */
+static const char * catalTab[10];  /* stack of catals */
+static int          catalNr = 0;   /* Number of current catal streams */
+static int          catalMax = 10; /* Max number of catal streams */
 
 /************************************************************************
  *									*
@@ -478,8 +477,8 @@ xmlParseCatalog(const xmlChar *value, const char *file) {
  * xmlLoadCatalog:
  * @filename:  a file path
  *
- * Load the catalog and makes its definition effective for the default
- * external entity loader.
+ * Load the catalog and makes its definitions effective for the default
+ * external entity loader. It will recuse in CATALOG entries.
  * TODO: this function is not thread safe, catalog initialization should
  *       be done once at startup
  *
@@ -506,7 +505,8 @@ xmlLoadCatalog(const char *filename) {
      * Prevent loops
      */
     for (i = 0;i < catalNr;i++) {
-	if (xmlStrEqual(catalTab[i], filename)) {
+	if (xmlStrEqual((const xmlChar *)catalTab[i],
+		        (const xmlChar *)filename)) {
 	    xmlGenericError(xmlGenericErrorContext,
 		"xmlLoadCatalog: %s seems to induce a loop\n",
 		            filename);
@@ -546,6 +546,39 @@ xmlLoadCatalog(const char *filename) {
     xmlFree(content);
     catalNr--;
     return(ret);
+}
+
+/*
+ * xmlLoadCatalogs:
+ * @paths:  a list of file path separated by ':' or spaces
+ *
+ * Load the catalogs and makes their definitions effective for the default
+ * external entity loader.
+ * TODO: this function is not thread safe, catalog initialization should
+ *       be done once at startup
+ */
+void
+xmlLoadCatalogs(const char *pathss) {
+    const char *cur;
+    const char *paths;
+    xmlChar *path;
+
+    cur = pathss;
+    while ((cur != NULL) && (*cur != 0)) {
+	while (IS_BLANK(*cur)) cur++;
+	if (*cur != 0) {
+	    paths = cur;
+	    while ((*cur != 0) && (*cur != ':') && (!IS_BLANK(*cur)))
+		cur++;
+	    path = xmlStrndup((const xmlChar *)paths, cur - paths);
+	    if (path != NULL) {
+		xmlLoadCatalog((const char *) path);
+		xmlFree(path);
+	    }
+	}
+	while (*cur == ':')
+	    cur++;
+    }
 }
 
 /**

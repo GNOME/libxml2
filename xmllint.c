@@ -62,6 +62,9 @@
 #ifdef LIBXML_XINCLUDE_ENABLED
 #include <libxml/xinclude.h>
 #endif
+#ifdef LIBXML_CATALOG_ENABLED
+#include <libxml/catalog.h>
+#endif
 
 #ifdef LIBXML_DEBUG_ENABLED
 static int debug = 0;
@@ -849,6 +852,19 @@ main(int argc, char **argv) {
 	    xmlParserDebugEntities = 1;
 	} 
 #endif
+#ifdef LIBXML_CATALOG_ENABLED
+	else if ((!strcmp(argv[i], "-catalogs")) ||
+		 (!strcmp(argv[i], "--catalogs"))) {
+	    const char *catalogs;
+
+	    catalogs = getenv("SGML_CATALOG_FILES");
+	    if (catalogs == NULL) {
+		fprintf(stderr, "Variable $SGML_CATALOG_FILES not set\n");
+	    } else {
+		xmlLoadCatalogs(catalogs);
+	    }
+	} 
+#endif
 	else if ((!strcmp(argv[i], "-encode")) ||
 	         (!strcmp(argv[i], "--encode"))) {
 	    i++;
@@ -947,6 +963,9 @@ main(int argc, char **argv) {
 	printf("\t--noblanks : drop (ignorable?) blanks spaces\n");
 	printf("\t--testIO : test user I/O support\n");
 	printf("\t--encode encoding : output in the given encoding\n");
+#ifdef LIBXML_CATALOG_ENABLED
+	printf("\t--catalogs : use the catalogs from $SGML_CATALOG_FILES\n");
+#endif
 	printf("\t--auto : generate a small doc on the fly\n");
 #ifdef LIBXML_XINCLUDE_ENABLED
 	printf("\t--xinclude : do XInclude processing\n");

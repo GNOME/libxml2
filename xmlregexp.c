@@ -19,6 +19,8 @@
 
 #ifdef LIBXML_REGEXP_ENABLED
 
+#define DEBUG_ERR
+
 #include <stdio.h>
 #include <string.h>
 #ifdef HAVE_LIMITS_H
@@ -3107,37 +3109,26 @@ xmlRegExecPushString2(xmlRegExecCtxtPtr exec, const xmlChar *value,
 }
 
 /**
- * xmlRegExecErrInfo:
- * @exec: a regexp execution context generating an error
- * @string: return value for the error string
+ * xmlRegExecGetalues:
+ * @exec: a regexp execution context
+ * @err: error extraction or normal one
  * @nbval: pointer to the number of accepted values IN/OUT
  * @values: pointer to the array of acceptable values
+ * @terminal: return value if this was a terminal state
  *
- * Extract error informations from the regexp execution, the parameter
- * @string will be updated with the value pushed and not accepted,
- * the parameter @values must point to an array of @nbval string pointers
- * on return nbval will contain the number of possible strings in that
- * state and the @values array will be updated with them. The string values
- * returned will be freed with the @exec context and don't need to be
- * deallocated.
+ * Extract informations from the regexp execution, internal routine to
+ * implement xmlRegExecNextValues() and xmlRegExecErrInfo()
  *
  * Returns: 0 in case of success or -1 in case of error.
  */
-int
-xmlRegExecErrInfo(xmlRegExecCtxtPtr exec, const xmlChar **string,
-                  int *nbval, xmlChar **values) {
+static int
+xmlRegExecGetValues(xmlRegExecCtxtPtr exec, int err,
+                    int *nbval, xmlChar **values, int *terminal) {
     int maxval;
 
-    if (exec == NULL)
+    if ((exec == NULL) || (nbval == NULL) || (values == NULL) || (*nbval <= 0))
         return(-1);
-    if (string != NULL) {
-        if (exec->status != 0)
-	    *string = exec->errString;
-	else
-	    *string = NULL;
-    }
-    if ((nbval == NULL) || (values == NULL) || (*nbval <= 0))
-        return(-1);
+
     maxval = *nbval;
     *nbval = 0;
     if ((exec->comp != NULL) && (exec->comp->compact != NULL)) {
@@ -3145,8 +3136,20 @@ xmlRegExecErrInfo(xmlRegExecCtxtPtr exec, const xmlChar **string,
 	int target, i, state;
 
         comp = exec->comp;
-        if (exec->errStateNo == -1) return(-1);
-	state = exec->errStateNo;
+
+	if (err) {
+	    if (exec->errStateNo == -1) return(-1);
+	    state = exec->errStateNo;
+	} else {
+	    state = exec->index;
+	}
+	if (terminal != NULL) {
+	    if (comp->compact[state * (comp->nbstrings + 1)] ==
+	        XML_REGEXP_FINAL_STATE)
+		*terminal = 1;
+	    else
+		*terminal = 0;
+	}
 	for (i = 0;(i < comp->nbstrings) && (*nbval < maxval);i++) {
 	    target = comp->compact[state * (comp->nbstrings + 1) + i + 1];
 	    if ((target > 0) && (target <= comp->nbstates)) {
@@ -3158,12 +3161,26 @@ xmlRegExecErrInfo(xmlRegExecCtxtPtr exec, const xmlChar **string,
         int transno;
 	xmlRegTransPtr trans;
 	xmlRegAtomPtr atom;
+	xmlRegStatePtr state;
 
-        if (exec->errState == NULL) return(-1);
+	if (terminal != NULL) {
+	    if (exec->state->type == XML_REGEXP_FINAL_STATE)
+		*terminal = 1;
+	    else
+		*terminal = 0;
+	}
+
+	if (err) {
+	    if (exec->errState == NULL) return(-1);
+	    state = exec->errState;
+	} else {
+	    if (exec->state == NULL) return(-1);
+	    state = exec->state;
+	}
 	for (transno = 0;
-	     (transno < exec->errState->nbTrans) && (*nbval < maxval);
+	     (transno < state->nbTrans) && (*nbval < maxval);
 	     transno++) {
-	    trans = &exec->errState->trans[transno];
+	    trans = &state->trans[transno];
 	    if (trans->to < 0)
 		continue;
 	    atom = trans->atom;
@@ -3177,14 +3194,17 @@ xmlRegExecErrInfo(xmlRegExecCtxtPtr exec, const xmlChar **string,
 		xmlRegCounterPtr counter;
 		int count;
 
-		count = exec->errCounts[trans->counter];
+		if (err)
+		    count = exec->errCounts[trans->counter];
+		else
+		    count = exec->counts[trans->counter];
 		counter = &exec->comp->counters[trans->counter];
 		if (count < counter->max) {
-		    values[*nbval] = (const xmlChar *) atom->valuep;
+		    values[*nbval] = (xmlChar *) atom->valuep;
 		    (*nbval)++;
 		}
 	    } else {
-		values[*nbval] = (const xmlChar *) atom->valuep;
+		values[*nbval] = (xmlChar *) atom->valuep;
 		(*nbval)++;
 	    } 
 	}
@@ -3192,12 +3212,67 @@ xmlRegExecErrInfo(xmlRegExecCtxtPtr exec, const xmlChar **string,
     return(0);
 }
 
+/**
+ * xmlRegExecNextValues:
+ * @exec: a regexp execution context
+ * @nbval: pointer to the number of accepted values IN/OUT
+ * @values: pointer to the array of acceptable values
+ * @terminal: return value if this was a terminal state
+ *
+ * Extract informations from the regexp execution,
+ * the parameter @values must point to an array of @nbval string pointers
+ * on return nbval will contain the number of possible strings in that
+ * state and the @values array will be updated with them. The string values
+ * returned will be freed with the @exec context and don't need to be
+ * deallocated.
+ *
+ * Returns: 0 in case of success or -1 in case of error.
+ */
+int
+xmlRegExecNextValues(xmlRegExecCtxtPtr exec, int *nbval, xmlChar **values,
+                     int *terminal) {
+    return(xmlRegExecGetValues(exec, 0, nbval, values, terminal));
+}
+
+/**
+ * xmlRegExecErrInfo:
+ * @exec: a regexp execution context generating an error
+ * @string: return value for the error string
+ * @nbval: pointer to the number of accepted values IN/OUT
+ * @values: pointer to the array of acceptable values
+ * @terminal: return value if this was a terminal state
+ *
+ * Extract error informations from the regexp execution, the parameter
+ * @string will be updated with the value pushed and not accepted,
+ * the parameter @values must point to an array of @nbval string pointers
+ * on return nbval will contain the number of possible strings in that
+ * state and the @values array will be updated with them. The string values
+ * returned will be freed with the @exec context and don't need to be
+ * deallocated.
+ *
+ * Returns: 0 in case of success or -1 in case of error.
+ */
+int
+xmlRegExecErrInfo(xmlRegExecCtxtPtr exec, const xmlChar **string,
+                  int *nbval, xmlChar **values, int *terminal) {
+    if (exec == NULL)
+        return(-1);
+    if (string != NULL) {
+        if (exec->status != 0)
+	    *string = exec->errString;
+	else
+	    *string = NULL;
+    }
+    return(xmlRegExecGetValues(exec, 1, nbval, values, terminal));
+}
+
 #ifdef DEBUG_ERR
 static void testerr(xmlRegExecCtxtPtr exec) {
     const xmlChar *string;
     const xmlChar *values[5];
     int nb = 5;
-    xmlRegExecErrInfo(exec, &string, &nb, &values[0]);
+    int terminal;
+    xmlRegExecErrInfo(exec, &string, &nb, &values[0], &terminal);
 }
 #endif
 

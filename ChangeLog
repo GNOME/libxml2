@@ -1,3 +1,11 @@
+Sun Jan  9 18:46:32 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* gentest.py testapi.c: William noticed I forgot to add special
+	  support for xmlmodules.c define
+	* xmlregexp.c include/libxml/xmlregexp.h: added terminal to
+	  xmlRegExecErrInfo() API, adding new xmlRegExecNextValues()
+	  entry point and refactored to use both code.
+
 Mon Jan 10 01:02:41 HKT 2006 William Brack <wbrack@mmm.com.hk>
 
 	* doc/xml.html, doc/FAQ.html: added an FAQ under Developer for

@@ -28217,6 +28217,7 @@ test_xmlerror(void) {
 	printf("Module xmlerror: %d errors\n", test_ret);
     return(test_ret);
 }
+#ifdef LIBXML_MODULES_ENABLED
 
 #define gen_nb_xmlModulePtr 1
 static xmlModulePtr gen_xmlModulePtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
@@ -28224,6 +28225,8 @@ static xmlModulePtr gen_xmlModulePtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_U
 }
 static void des_xmlModulePtr(int no ATTRIBUTE_UNUSED, xmlModulePtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
 }
+#endif
+
 
 static int
 test_xmlModuleClose(void) {

@@ -86,6 +86,17 @@ XMLPUBFUN int XMLCALL
 					 const xmlChar *value2,
 					 void *data);
 
+XMLPUBFUN int XMLCALL
+		    xmlRegExecNextValues(xmlRegExecCtxtPtr exec,
+		    			 int *nbval,
+					 xmlChar **values,
+					 int *terminal);
+XMLPUBFUN int XMLCALL
+		    xmlRegExecErrInfo	(xmlRegExecCtxtPtr exec,
+		    			 const xmlChar **string,
+					 int *nbval,
+					 xmlChar **values,
+					 int *terminal);
 #ifdef __cplusplus
 }
 #endif 

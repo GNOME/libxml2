@@ -1,3 +1,7 @@
+Mon 13 May 2002 11:37:39 PM PDT Aleksey Sanin <aleksey@aleksey.com>
+	* xpath.c include/libxml/xpathInternals.h: maked xmlXPathNodeSetAddNs() 
+	  function public for XMLSec performance optimizations
+
 Mon May 13 12:32:22 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* python/generator.py python/libxml2class.txt : fixed a problem

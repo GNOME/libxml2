@@ -1588,7 +1588,7 @@ xmlXPathNodeSetContains (xmlNodeSetPtr cur, xmlNodePtr val) {
  *
  * add a new namespace node to an existing NodeSet
  */
-static void
+void
 xmlXPathNodeSetAddNs(xmlNodeSetPtr cur, xmlNodePtr node, xmlNsPtr ns) {
     int i;
 

@@ -478,6 +478,9 @@ void		  xmlXPathNodeSetAdd		(xmlNodeSetPtr cur,
 						 xmlNodePtr val);
 void              xmlXPathNodeSetAddUnique	(xmlNodeSetPtr cur,
 						 xmlNodePtr val);
+void		  xmlXPathNodeSetAddNs		(xmlNodeSetPtr cur, 
+						 xmlNodePtr node, 
+						 xmlNsPtr ns);
 void              xmlXPathNodeSetSort		(xmlNodeSetPtr set);
 
 void		  xmlXPathRoot			(xmlXPathParserContextPtr ctxt);

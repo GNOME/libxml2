@@ -1,3 +1,7 @@
+Tue Sep 17 19:58:26 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xmlIO.c: small portability glitch fixed.
+
 Mon Sep 17 12:38:08 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemastypes.c: incomplete steps for real/double support

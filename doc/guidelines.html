@@ -3,14 +3,16 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html">
-<style type="text/css"><!--
+  <style type="text/css">
+<!--
 TD {font-family: Verdana,Arial,Helvetica}
 BODY {font-family: Verdana,Arial,Helvetica; margin-top: 2em; margin-left: 0em; margin-right: 0em}
 H1 {font-family: Verdana,Arial,Helvetica}
 H2 {font-family: Verdana,Arial,Helvetica}
 H3 {font-family: Verdana,Arial,Helvetica}
-A:link, A:visited, A:active { text-decoration: underline }
---></style>
+A:link, A:visited, A:active { text-decoration: underline }-->
+
+  </style>
   <title>XML resources publication guidelines</title>
 </head>
 
@@ -33,7 +35,7 @@ of new XML format defined, but not all steps have been taken, possibly by
 lack of documentation, to truely gain all the benefits of the use of XML.
 Those guidelines hopes to improve the matter and provide a better overview of
 the overall XML processing and associated steps needed deploy it
-successfully: </p>
+successfully:</p>
 
 <p>Table of content:</p>
 <ol>
@@ -65,7 +67,7 @@ design phase try to be synthetic and be sure to express the real content of
 your data and use the XML structure to express the semantic and context of
 those data.</p>
 
-<h3>DTD rules: </h3>
+<h3>DTD rules:</h3>
 
 <p>Building a DTD (Document Type Definition) or a Schema describing the
 structure allowed by instances is the core of the design process of the
@@ -106,7 +108,7 @@ is 2 parts for this:</p>
     attribute was not in the recognized set.</li>
 </ul>
 
-<h3>Other design parts:  </h3>
+<h3>Other design parts:</h3>
 
 <p>While defining you vocabulary, try to think in term of other usage to your
 data, for example how using XSLT stylesheets could be used to make an HTML
@@ -164,10 +166,14 @@ and the fact that the processing will still work if there is no local copy
 resource to reference it but always use the canonical URL. For example in a
 DocBook instance the following should not be used:</p>
 <pre>&lt;!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"<br>
+
+
                          "/usr/share/xml/docbook/4.2/docbookx.dtd"&gt;</pre>
 
 <p>But always reference the canonical URL for the DTD:</p>
 <pre>&lt;!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"<br>
+
+
                          "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd"&gt;   </pre>
 
 <p>Similary, the document instance may reference the <a
@@ -177,7 +183,7 @@ generate HTML, and the canonical URL should be used:</p>
   href="http://docbook.sourceforge.net/release/xsl/current/html/docbook.xsl"
   type="text/xsl"?&gt;</pre>
 
-<p>Defining the canonical URL for the resources needed should obbey a few
+<p>Defining the canonical URL for the resources needed should obey a few
 simple rules similar to those used to design namespace names:</p>
 <ul>
   <li>use a DNS name you know is associated to the project and will be
@@ -210,7 +216,9 @@ case to recover from a catalog miss. The key point is that the document
 instances are totally independant of the availability of a catalog or from
 the actual place where the loacl resource they reference may be installed.
 This greatly improve the management of the document in the long run, making
-them independant of the platform or toolchain used to process them.</p>
+them independant of the platform or toolchain used to process them. The
+figure below tries to express that  mechanism:<img src="catalog.gif"
+alt="Picture describing the catalog "></p>
 
 <h3>Usual catalog setup:</h3>
 
@@ -236,7 +244,7 @@ decision is left to the sysadmin or the packager for that system and may
 obbey different rules, but the actual place on the filesystem (or on a
 resource cache on the local network) will not influence the processing as
 long as it is available. The first rule indicate that if the reference uses a
-PUBLIC identifier beginning with the </p>
+PUBLIC identifier beginning with the</p>
 
 <p><code>"-//W3C//DTD XHTML 1.0"</code></p>
 
@@ -266,8 +274,7 @@ resources and direct the processing tools to the right subcatalog.</p>
           rewritePrefix="xhtml1-20020801/DTD"/&gt;
   &lt;rewriteURI uriStartString="http://www.w3.org/TR/xhtml1/DTD"
           rewritePrefix="xhtml1-20020801/DTD"/&gt;
-&lt;/catalog&gt;
-</pre>
+&lt;/catalog&gt;</pre>
 
 <p>There is a few things to notice:</p>
 <ul>
@@ -297,7 +304,9 @@ at the Canonical URL for the XHTML1 DTDs.</p>
 resources should be processed with XML based tools to avoid problems with the
 generated files, the xmlcatalog command coming with libxml2 allows to create
 catalogs, and add or remove rules at that time. Here is a complete example
-coming from RPM for the XHTML1 DTDs post install script:</p>
+coming from RPM for the XHTML1 DTDs post install script. While this example
+is platform and packaging specific, this can be useful as a an example in
+other contexts:</p>
 <pre>%post
 CATALOG=/usr/share/sgml/xhtml1/xmlcatalog
 #
@@ -359,6 +368,6 @@ ensure a smooth evolution of the resource and instances.</p>
 
 <p>$Id$</p>
 
-<p> </p>
+<p></p>
 </body>
 </html>

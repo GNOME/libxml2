@@ -41,7 +41,9 @@ static char *filename;
 
 #ifdef LIBXML_CATALOG_ENABLED
 
+#ifndef XML_SGML_DEFAULT_CATALOG
 #define XML_SGML_DEFAULT_CATALOG "/etc/sgml/catalog"
+#endif
 
 /************************************************************************
  * 									*

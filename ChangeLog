@@ -1,3 +1,8 @@
+Sun Jan 26 20:47:26 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmlcatalog.c xmllint.c: applied patch for FreeBSD by
+	  Julio Merino, closing #104475
+
 Sun Jan 26 20:38:43 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c: more work on Relax-NG

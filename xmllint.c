@@ -85,6 +85,10 @@
 #include <libxml/globals.h>
 #include <libxml/xmlreader.h>
 
+#ifndef XML_XML_DEFAULT_CATALOG
+#define XML_XML_DEFAULT_CATALOG "file:///etc/xml/catalog"
+#endif
+
 #ifdef LIBXML_DEBUG_ENABLED
 static int shell = 0;
 static int debugent = 0;
@@ -1171,7 +1175,7 @@ static void usage(const char *name) {
 #ifdef LIBXML_CATALOG_ENABLED
     printf("\t--catalogs : use SGML catalogs from $SGML_CATALOG_FILES\n");
     printf("\t             otherwise XML Catalogs starting from \n");
-    printf("\t         file:///etc/xml/catalog are activated by default\n");
+    printf("\t         " XML_XML_DEFAULT_CATALOG " are activated by default\n");
     printf("\t--nocatalogs: deactivate all catalogs\n");
 #endif
     printf("\t--auto : generate a small doc on the fly\n");

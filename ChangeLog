@@ -1,3 +1,9 @@
+Fri Nov 15 12:16:07 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am python/Makefile.am python/tests/Makefile.am:
+	  trying to fix bug #98517 about building outside the source tree
+	* doc/xml.html doc/FAQ.html: fixed the link to libiconv #94585
+
 Thu Nov 14 18:41:55 CEST 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
 
 	* include/win32config.h: cleanup

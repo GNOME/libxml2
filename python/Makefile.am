@@ -36,8 +36,8 @@ python_LTLIBRARIES = libxml2mod.la
 libxml2mod_la_SOURCES = libxml.c types.c libxml2-py.c
 libxml2mod_la_LIBADD = $(mylibs)
 
-libxml2.py: $(srcdir)/libxml.py libxml2class.py
-	cat $(srcdir)/libxml.py libxml2class.py > libxml2.py
+libxml2.py: $(srcdir)/libxml.py $(srcdir)/libxml2class.py
+	cat $(srcdir)/libxml.py $(srcdir)/libxml2class.py > libxml2.py
 
 install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(libdir)/python${PYTHON_VERSION}/site-packages

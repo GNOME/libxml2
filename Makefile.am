@@ -465,25 +465,25 @@ Catatests : xmlcatalog$(EXEEXT)
 	      rm result.$$name ; \
 	  fi ; fi ; done)
 	@echo "Add and del operations on XML Catalogs"
-	-@($(CHECKER) $(top_builddir)/xmlcatalog --create --noout result/catalogs/mycatalog; \
+	-@($(CHECKER) $(top_builddir)/xmlcatalog --create --noout $(srcdir)/result/catalogs/mycatalog; \
 	grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
-	$(CHECKER) $(top_builddir)/xmlcatalog --noout --add public Pubid sysid result/catalogs/mycatalog; \
+	$(CHECKER) $(top_builddir)/xmlcatalog --noout --add public Pubid sysid $(srcdir)/result/catalogs/mycatalog; \
 	grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
-	$(CHECKER) $(top_builddir)/xmlcatalog --noout --add public Pubid2 sysid2 result/catalogs/mycatalog; \
+	$(CHECKER) $(top_builddir)/xmlcatalog --noout --add public Pubid2 sysid2 $(srcdir)/result/catalogs/mycatalog; \
 	grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
-	$(CHECKER) $(top_builddir)/xmlcatalog --noout --add public Pubid3 sysid3 result/catalogs/mycatalog; \
+	$(CHECKER) $(top_builddir)/xmlcatalog --noout --add public Pubid3 sysid3 $(srcdir)/result/catalogs/mycatalog; \
 	grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
-	diff result/catalogs/mycatalog.full result/catalogs/mycatalog; \
+	diff result/catalogs/mycatalog.full $(srcdir)/result/catalogs/mycatalog; \
 	grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
-	$(CHECKER) $(top_builddir)/xmlcatalog --noout --del sysid result/catalogs/mycatalog; \
+	$(CHECKER) $(top_builddir)/xmlcatalog --noout --del sysid $(srcdir)/result/catalogs/mycatalog; \
 	grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
-	$(CHECKER) $(top_builddir)/xmlcatalog --noout --del sysid3 result/catalogs/mycatalog; \
+	$(CHECKER) $(top_builddir)/xmlcatalog --noout --del sysid3 $(srcdir)/result/catalogs/mycatalog; \
 	grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
-	$(CHECKER) $(top_builddir)/xmlcatalog --noout --del sysid2 result/catalogs/mycatalog; \
+	$(CHECKER) $(top_builddir)/xmlcatalog --noout --del sysid2 $(srcdir)/result/catalogs/mycatalog; \
 	grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
-	diff result/catalogs/mycatalog.empty result/catalogs/mycatalog; \
+	diff result/catalogs/mycatalog.empty $(srcdir)/result/catalogs/mycatalog; \
 	grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
-	rm -f result/catalogs/mycatalog)
+	rm -f $(srcdir)/result/catalogs/mycatalog)
 
 SVGtests : xmllint$(EXEEXT)
 	@echo "##"

@@ -1094,7 +1094,11 @@ xmlSchemaValidatePredefinedType(xmlSchemaTypePtr type, const xmlChar *value,
 	    }
 	    frac = cur - tmp;
 	}
+	TODO
+	return(0);
     } else if (type == xmlSchemaTypeDoubleDef) {
+	TODO
+	return(0);
     } else {
 	TODO
 	return(0);

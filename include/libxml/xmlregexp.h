@@ -16,7 +16,6 @@
 #endif
 #ifdef LIBXML_REGEXP_ENABLED
 
-#include <libxml/tree.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -38,6 +37,14 @@ typedef xmlRegexp *xmlRegexpPtr;
  */
 typedef struct _xmlRegExecCtxt xmlRegExecCtxt;
 typedef xmlRegExecCtxt *xmlRegExecCtxtPtr;
+
+#ifdef __cplusplus
+}
+#endif 
+#include <libxml/tree.h>
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*
  * The POSIX like API

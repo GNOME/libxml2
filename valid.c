@@ -366,7 +366,7 @@ xmlAttributePtr xmlScanAttributeDecl(xmlDtdPtr dtd, const xmlChar *elem);
  *
  * Generate the automata sequence needed for that type
  *
- * Returns 0 if successful or -1 in case of error.
+ * Returns 1 if successful or 0 in case of error.
  */
 static int
 xmlValidBuildAContentModel(xmlElementContentPtr content,
@@ -375,13 +375,13 @@ xmlValidBuildAContentModel(xmlElementContentPtr content,
     if (content == NULL) {
 	VERROR(ctxt->userData,
 	       "Found unexpected type = NULL in %s content model\n", name);
-	return(-1);
+	return(0);
     }
     switch (content->type) {
 	case XML_ELEMENT_CONTENT_PCDATA:
 	    VERROR(ctxt->userData, "ContentModel found PCDATA for element %s\n",
 		   name);
-	    return(-1);
+	    return(0);
 	    break;
 	case XML_ELEMENT_CONTENT_ELEMENT: {
 	    xmlAutomataStatePtr oldstate = ctxt->state;
@@ -479,9 +479,9 @@ xmlValidBuildAContentModel(xmlElementContentPtr content,
 	default:
 	    VERROR(ctxt->userData, "ContentModel broken for element %s\n",
 		   name);
-	    return(-1);
+	    return(0);
     }
-    return(0);
+    return(1);
 }
 /**
  * xmlValidBuildContentModel:
@@ -491,31 +491,32 @@ xmlValidBuildAContentModel(xmlElementContentPtr content,
  * (Re)Build the automata associated to the content model of this
  * element
  *
- * Returns 0 in case of success, -1 in case of error
+ * Returns 1 in case of success, 0 in case of error
  */
 int
 xmlValidBuildContentModel(xmlValidCtxtPtr ctxt, xmlElementPtr elem) {
     xmlAutomataStatePtr start;
 
     if ((ctxt == NULL) || (elem == NULL))
-	return(-1);
-    if (elem->type != XML_ELEMENT_DECL)
-	return(-1);
-    if (elem->etype != XML_ELEMENT_TYPE_ELEMENT)
 	return(0);
+    if (elem->type != XML_ELEMENT_DECL)
+	return(0);
+    if (elem->etype != XML_ELEMENT_TYPE_ELEMENT)
+	return(1);
     /* TODO: should we rebuild in this case ? */
     if (elem->contModel != NULL)
-	return(0);
+	return(1);
 
     ctxt->am = xmlNewAutomata();
     if (ctxt->am == NULL) {
 	VERROR(ctxt->userData, "Cannot create automata for element %s\n",
 	       elem->name);
-	return(-1);
+	return(0);
     }
     start = ctxt->state = xmlAutomataGetInitState(ctxt->am);
     xmlValidBuildAContentModel(elem->content, ctxt, elem->name);
     xmlAutomataSetFinalState(ctxt->am, ctxt->state);
+    elem->contModel = xmlAutomataCompile(ctxt->am);
     if (!xmlAutomataIsDeterminist(ctxt->am)) {
 	VERROR(ctxt->userData, "Content model of %s is not determinist:\n",
 	       elem->name);
@@ -524,7 +525,7 @@ xmlValidBuildContentModel(xmlValidCtxtPtr ctxt, xmlElementPtr elem) {
     ctxt->state = NULL;
     xmlFreeAutomata(ctxt->am);
     ctxt->am = NULL;
-    return(0);
+    return(1);
 }
 
 #endif /* LIBXML_REGEXP_ENABLED */
@@ -918,6 +919,10 @@ xmlFreeElement(xmlElementPtr elem) {
 	xmlFree((xmlChar *) elem->name);
     if (elem->prefix != NULL)
 	xmlFree((xmlChar *) elem->prefix);
+#ifdef LIBXML_REGEXP_ENABLED
+    if (elem->contModel != NULL)
+	xmlRegFreeRegexp(elem->contModel);
+#endif
     xmlFree(elem);
 }
 
@@ -3512,6 +3517,11 @@ xmlValidateElementDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
     CHECK_DTD;
     
     if (elem == NULL) return(1);
+
+#ifdef LIBXML_REGEXP_ENABLED
+    /* Build the regexp associated to the content model */
+    ret = xmlValidBuildContentModel(ctxt, elem);
+#endif
 
     /* No Duplicate Types */
     if (elem->etype == XML_ELEMENT_TYPE_MIXED) {

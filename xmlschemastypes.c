@@ -51,6 +51,8 @@ typedef enum {
     XML_SCHEMAS_DATE,
     XML_SCHEMAS_DATETIME,
     XML_SCHEMAS_DURATION,
+    XML_SCHEMAS_FLOAT,
+    XML_SCHEMAS_DOUBLE,
     XML_SCHEMAS_,
     XML_SCHEMAS_XXX
 } xmlSchemaValType;
@@ -100,6 +102,8 @@ struct _xmlSchemaVal {
 	xmlSchemaValDecimal     decimal;
         xmlSchemaValDate        date;
         xmlSchemaValDuration    dur;
+	float			f;
+	double			d;
     } value;
 };
 
@@ -122,6 +126,8 @@ static xmlSchemaTypePtr xmlSchemaTypeDurationDef = NULL;
 static xmlSchemaTypePtr xmlSchemaTypePositiveIntegerDef = NULL;
 static xmlSchemaTypePtr xmlSchemaTypeNonNegativeIntegerDef = NULL;
 static xmlSchemaTypePtr xmlSchemaTypeNmtoken = NULL;
+static xmlSchemaTypePtr xmlSchemaTypeFloatDef = NULL;
+static xmlSchemaTypePtr xmlSchemaTypeDoubleDef = NULL;
 
 /*
  * xmlSchemaInitBasicType:
@@ -176,6 +182,8 @@ xmlSchemaInitTypes(void) {
     xmlSchemaTypeNonNegativeIntegerDef =
 	xmlSchemaInitBasicType("nonNegativeInteger");
     xmlSchemaTypeNmtoken = xmlSchemaInitBasicType("NMTOKEN");
+    xmlSchemaTypeFloatDef = xmlSchemaInitBasicType("float");
+    xmlSchemaTypeDoubleDef = xmlSchemaInitBasicType("double");
 
     xmlSchemaTypesInitialized = 1;
 }
@@ -1059,6 +1067,34 @@ xmlSchemaValidatePredefinedType(xmlSchemaTypePtr type, const xmlChar *value,
 	    }
 	}
 	return(0);
+    } else if (type == xmlSchemaTypeFloatDef) {
+	const xmlChar *cur = value, *tmp;
+	int frac = 0, len, neg = 0;
+	unsigned long base = 0;
+	if (cur == NULL)
+	    return(1);
+	if (*cur == '+')
+	    cur++;
+	else if (*cur == '-') {
+	    neg = 1;
+	    cur++;
+	}
+	tmp = cur;
+	while ((*cur >= '0') && (*cur <= '9')) {
+	    base = base * 10 + (*cur - '0');
+	    cur++;
+	}
+	len = cur - tmp;
+	if (*cur == '.') {
+	    cur++;
+	    tmp = cur;
+	    while ((*cur >= '0') && (*cur <= '9')) {
+		base = base * 10 + (*cur - '0');
+		cur++;
+	    }
+	    frac = cur - tmp;
+	}
+    } else if (type == xmlSchemaTypeDoubleDef) {
     } else {
 	TODO
 	return(0);

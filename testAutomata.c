@@ -10,6 +10,7 @@
 #include "libxml.h"
 #ifdef LIBXML_AUTOMATA_ENABLED
 
+#include <libxml/tree.h>
 #include <libxml/xmlautomata.h>
 
 static int scanNumber(char **ptr) {

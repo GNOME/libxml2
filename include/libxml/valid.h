@@ -298,6 +298,15 @@ int		xmlValidateNameValue	(const xmlChar *value);
 int		xmlValidateNamesValue	(const xmlChar *value);
 int		xmlValidateNmtokenValue	(const xmlChar *value);
 int		xmlValidateNmtokensValue(const xmlChar *value);
+
+#ifdef LIBXML_REGEXP_ENABLED
+/*
+ * Validation based on the regexp support
+ */
+int		xmlValidBuildContentModel(xmlValidCtxtPtr ctxt,
+					 xmlElementPtr elem);
+
+#endif /* LIBXML_REGEXP_ENABLED */
 #ifdef __cplusplus
 }
 #endif

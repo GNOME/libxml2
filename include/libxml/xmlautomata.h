@@ -14,8 +14,9 @@
 #else
 #include <libxml/xmlversion.h>
 #endif
-#ifdef LIBXML_AUTOMATA_ENABLED
+#include <libxml/tree.h>
 
+#ifdef LIBXML_AUTOMATA_ENABLED
 #include <libxml/xmlregexp.h>
 
 #ifdef __cplusplus

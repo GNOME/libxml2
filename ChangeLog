@@ -1,3 +1,11 @@
+Mon Sep 17 12:38:08 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemastypes.c: incomplete steps for real/double support
+	* testAutomata.c include/libxml/xmlautomata.h
+	  include/libxml/xmlregexp.h: avoiding a compilation problem
+	* valid.c include/libxml/valid.h: starting the work toward using
+	  the regexps for actual DTD validation
+
 Fri Sep 13 16:46:14 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* hash.c: cosmetic cleanup

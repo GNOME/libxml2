@@ -1,3 +1,7 @@
+Sat Feb 21 16:22:35 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* encoding.c: small patch removing a warning with MS compiler.
+
 Sat Feb 21 13:52:30 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* debugXML.c: added "relaxng" option to the debugging shell

@@ -2131,7 +2131,7 @@ xmlByteConsumed(xmlParserCtxtPtr ctxt) {
 	 */
         if (in->end - in->cur > 0) {
 	    static unsigned char convbuf[32000];
-	    unsigned char *cur = in->cur;
+	    unsigned const char *cur = in->cur;
 	    int toconv = in->end - in->cur, written = 32000;
 
 	    int ret;

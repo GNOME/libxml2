@@ -1,3 +1,8 @@
+Thu Oct  9 15:13:53 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLtree.c include/libxml/xmlerror.h: converted too
+	* tree.c: small cleanup
+
 Thu Oct  9 13:44:57 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xinclude.c: comment fix

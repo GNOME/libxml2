@@ -6837,7 +6837,7 @@ xmlBufferWriteQuotedString(xmlBufferPtr buf, const xmlChar *string) {
 #ifdef LIBXML_OUTPUT_ENABLED
 /************************************************************************
  *									*
- * 		Output memory error handler				*
+ * 			Output error handlers				*
  *									*
  ************************************************************************/
 /**
@@ -6875,10 +6875,13 @@ xmlSaveErr(int code, xmlNodePtr node, const char *extra)
 	case XML_SAVE_UNKNOWN_ENCODING:
 	    msg = "unknown encoding %s";
 	    break;
+	case XML_SAVE_NO_DOCTYPE:
+	    msg = "document has no DOCTYPE";
+	    break;
 	default:
 	    msg = "unexpected error number";
     }
-    __xmlSimpleError(XML_FROM_TREE, code, node, msg, extra);
+    __xmlSimpleError(XML_FROM_OUTPUT, code, node, msg, extra);
 }
 /************************************************************************
  *									*

@@ -318,6 +318,55 @@ htmlIsBooleanAttr(const xmlChar *name)
 #ifdef LIBXML_OUTPUT_ENABLED
 /************************************************************************
  *									*
+ * 			Output error handlers				*
+ *									*
+ ************************************************************************/
+/**
+ * htmlSaveErrMemory:
+ * @extra:  extra informations
+ *
+ * Handle an out of memory condition
+ */
+static void
+htmlSaveErrMemory(const char *extra)
+{
+    __xmlSimpleError(XML_FROM_OUTPUT, XML_ERR_NO_MEMORY, NULL, NULL, extra);
+}
+
+/**
+ * htmlSaveErr:
+ * @code:  the error number
+ * @node:  the location of the error.
+ * @extra:  extra informations
+ *
+ * Handle an out of memory condition
+ */
+static void
+htmlSaveErr(int code, xmlNodePtr node, const char *extra)
+{
+    const char *msg = NULL;
+
+    switch(code) {
+        case XML_SAVE_NOT_UTF8:
+	    msg = "string is not in UTF-8";
+	    break;
+	case XML_SAVE_CHAR_INVALID:
+	    msg = "invalid character value";
+	    break;
+	case XML_SAVE_UNKNOWN_ENCODING:
+	    msg = "unknown encoding %s";
+	    break;
+	case XML_SAVE_NO_DOCTYPE:
+	    msg = "HTML has no DOCTYPE";
+	    break;
+	default:
+	    msg = "unexpected error number";
+    }
+    __xmlSimpleError(XML_FROM_OUTPUT, code, node, msg, extra);
+}
+
+/************************************************************************
+ *									*
  *   		Dumping HTML tree content to a simple buffer		*
  *									*
  ************************************************************************/
@@ -352,8 +401,7 @@ htmlNodeDumpFormat(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
     }
     outbuf = (xmlOutputBufferPtr) xmlMalloc(sizeof(xmlOutputBuffer));
     if (outbuf == NULL) {
-	xmlGenericError(xmlGenericErrorContext,
-		        "htmlNodeDumpFormat: out of memory!\n");
+        htmlSaveErrMemory("allocating HTML output buffer");
 	return (-1);
     }
     memset(outbuf, 0, (size_t) sizeof(xmlOutputBuffer));
@@ -475,10 +523,6 @@ htmlDocDumpMemory(xmlDocPtr cur, xmlChar**mem, int *size) {
     xmlInitParser();
 
     if (cur == NULL) {
-#ifdef DEBUG_TREE
-        xmlGenericError(xmlGenericErrorContext,
-		"htmlDocDumpMemory : document == NULL\n");
-#endif
 	*mem = NULL;
 	*size = 0;
 	return;
@@ -561,8 +605,7 @@ htmlDtdDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
     xmlDtdPtr cur = doc->intSubset;
 
     if (cur == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"htmlDtdDumpOutput : no internal subset\n");
+	htmlSaveErr(XML_SAVE_NO_DOCTYPE, (xmlNodePtr) doc, NULL);
 	return;
     }
     xmlOutputBufferWriteString(buf, "<!DOCTYPE ");
@@ -602,8 +645,6 @@ htmlAttrDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur,
      */
 
     if (cur == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"htmlAttrDumpOutput : property == NULL\n");
 	return;
     }
     xmlOutputBufferWriteString(buf, " ");
@@ -655,8 +696,6 @@ htmlAttrDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur,
 static void
 htmlAttrListDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur, const char *encoding) {
     if (cur == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"htmlAttrListDumpOutput : property == NULL\n");
 	return;
     }
     while (cur != NULL) {
@@ -681,8 +720,6 @@ static void
 htmlNodeListDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
 	               xmlNodePtr cur, const char *encoding, int format) {
     if (cur == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"htmlNodeListDumpOutput : node == NULL\n");
 	return;
     }
     while (cur != NULL) {
@@ -709,8 +746,6 @@ htmlNodeDumpFormatOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
     xmlInitParser();
 
     if (cur == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"htmlNodeDumpFormatOutput : node == NULL\n");
 	return;
     }
     /*
@@ -958,10 +993,6 @@ htmlDocDump(FILE *f, xmlDocPtr cur) {
     xmlInitParser();
 
     if (cur == NULL) {
-#ifdef DEBUG_TREE
-        xmlGenericError(xmlGenericErrorContext,
-		"htmlDocDump : document == NULL\n");
-#endif
 	return(-1);
     }
 

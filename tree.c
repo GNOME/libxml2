@@ -3438,7 +3438,7 @@ xmlGetNodePath(xmlNodePtr node)
     xmlChar *buffer = NULL, *temp;
     size_t buf_len;
     xmlChar *buf;
-    char *sep;
+    const char *sep;
     const char *name;
     char nametemp[100];
     int occur = 0;
@@ -4091,8 +4091,12 @@ xmlNodeGetContent(xmlNodePtr cur)
         case XML_DOCB_DOCUMENT_NODE:
 #endif
             return (NULL);
-        case XML_NAMESPACE_DECL:
-            return (xmlStrdup(((xmlNsPtr) cur)->href));
+        case XML_NAMESPACE_DECL: {
+	    xmlChar *tmp;
+
+	    tmp = xmlStrdup(((xmlNsPtr) cur)->href);
+            return (tmp);
+	}
         case XML_ELEMENT_DECL:
             /* TODO !!! */
             return (NULL);

@@ -1,3 +1,11 @@
+Tue Oct 28 22:28:50 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c include/libxml/parser.h: included a new function
+	  to reuse a Push parser context, based on Graham Bennett original
+	  code
+	* valid.c: in HTML, a name in an input is not an ID
+	* TODO: bug list update
+
 Tue Oct 28 19:54:37 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: applied patch from nico@xtradyne.com for #125030

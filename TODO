@@ -1,8 +1,5 @@
-125030 xmlXPathCompile() allows invalid xpath expressions to pass
 124907 HTML parse buffer problem when parsing larse in-memory docs
-124866 Python error catch for Relax-NG
 124110 DTD validation && wrong namespace
-124044 Segfault python bindings for reader
 123564 xmllint --html --format
 
            TODO for the XML parser and stuff:

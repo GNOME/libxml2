@@ -1108,6 +1108,12 @@ typedef enum {
 XMLPUBFUN void XMLCALL
 		xmlCtxtReset		(xmlParserCtxtPtr ctxt);
 XMLPUBFUN int XMLCALL
+		xmlCtxtResetPush	(xmlParserCtxtPtr ctxt,
+					 const char *chunk,
+					 int size,
+					 const char *filename,
+					 const char *encoding);
+XMLPUBFUN int XMLCALL
 		xmlCtxtUseOptions	(xmlParserCtxtPtr ctxt,
 					 int options);
 XMLPUBFUN xmlDocPtr XMLCALL

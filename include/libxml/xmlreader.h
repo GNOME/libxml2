@@ -291,7 +291,7 @@ XMLPUBFUN int XMLCALL
  * Error handling extensions
  */
 typedef void *  xmlTextReaderLocatorPtr;
-typedef void   (*xmlTextReaderErrorFunc)        (void *arg, 
+typedef void   (XMLCALL *xmlTextReaderErrorFunc)        (void *arg, 
 						 const char *msg,
 						 xmlParserSeverities severity,
 						 xmlTextReaderLocatorPtr locator);

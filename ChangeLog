@@ -1,5 +1,10 @@
 2001-07-27  Darin Adler  <darin@bentspoon.com>
 
+	* encoding.c: (xmlIconvWrapper): Add cast to fix warning.
+	* testCatalog.c: Add include of <libxml/parser.h>.
+
+2001-07-27  Darin Adler  <darin@bentspoon.com>
+
 	* include/libxml/.cvsignore:
 	* include/libxml/xmlwin32version.h:
 	Remove this file from CVS because it's generated.

@@ -1899,7 +1899,7 @@ xmlIconvWrapper(iconv_t cd,
     char *icv_out = (char *) out;
     int ret;
 
-    ret = iconv(cd, &icv_in, &icv_inlen, &icv_out, &icv_outlen);
+    ret = iconv(cd, (char **) &icv_in, &icv_inlen, &icv_out, &icv_outlen);
     if (in != NULL) {
         *inlen -= icv_inlen;
         *outlen -= icv_outlen;

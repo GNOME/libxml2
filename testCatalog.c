@@ -15,6 +15,7 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/uri.h>
 #include <libxml/catalog.h>
+#include <libxml/parser.h>
 
 int main(int argc, char **argv) {
 #ifdef LIBXML_CATALOG_ENABLED

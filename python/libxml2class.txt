@@ -572,41 +572,53 @@ Class xmlDoc(xmlNode)
 
     # functions from module xpointer
     xpointerNewContext()
-Class xpathContext()
-    # accessors
-    contextDoc()
-    contextNode()
-    contextPosition()
-    contextSize()
-    function()
-    functionURI()
-    setContextDoc()
-    setContextNode()
-
-    # functions from module python
-    registerXPathFunction()
-
-    # functions from module xpath
-    xpathEval()
-    xpathEvalExpression()
-    xpathFreeContext()
-
-    # functions from module xpathInternals
-    xpathNewParserContext()
-    xpathNsLookup()
-    xpathRegisterAllFunctions()
-    xpathRegisterNs()
-    xpathRegisteredFuncsCleanup()
-    xpathRegisteredNsCleanup()
-    xpathRegisteredVariablesCleanup()
-    xpathVariableLookup()
-    xpathVariableLookupNS()
-
-    # functions from module xpointer
-    xpointerEval()
 
 
 Class xmlAttribute(xmlNode)
+Class xmlTextReaderLocator()
+
+    # functions from module xmlreader
+    BaseURI()
+    LineNumber()
+
+
+Class xmlNs(xmlNode)
+
+    # functions from module tree
+    copyNamespace()
+    copyNamespaceList()
+    freeNs()
+    freeNsList()
+    newChild()
+    newDocNode()
+    newDocNodeEatName()
+    newDocRawNode()
+    newNodeEatName()
+    newNsProp()
+    newNsPropEatName()
+    newTextChild()
+    setNs()
+    setNsProp()
+    unsetNsProp()
+
+    # functions from module xpathInternals
+    xpathNodeSetFreeNs()
+
+
+Class xmlDtd(xmlNode)
+
+    # functions from module debugXML
+    debugDumpDTD()
+
+    # functions from module tree
+    copyDtd()
+    freeDtd()
+
+    # functions from module valid
+    dtdAttrDesc()
+    dtdElementDesc()
+    dtdQAttrDesc()
+    dtdQElementDesc()
 Class catalog()
 
     # functions from module catalog
@@ -620,106 +632,6 @@ Class catalog()
     resolvePublic()
     resolveSystem()
     resolveURI()
-
-
-Class xmlElement(xmlNode)
-
-
-Class xmlAttr(xmlNode)
-
-    # functions from module debugXML
-    debugDumpAttr()
-    debugDumpAttrList()
-
-    # functions from module tree
-    copyProp()
-    copyPropList()
-    freeProp()
-    freePropList()
-    removeProp()
-
-    # functions from module valid
-    removeID()
-    removeRef()
-
-
-Class xmlTextReader(xmlTextReaderCore)
-
-    # functions from module xmlreader
-    AttributeCount()
-    BaseUri()
-    Close()
-    CurrentDoc()
-    CurrentNode()
-    Depth()
-    Expand()
-    GetAttribute()
-    GetAttributeNo()
-    GetAttributeNs()
-    GetParserProp()
-    GetRemainder()
-    HasAttributes()
-    HasValue()
-    IsDefault()
-    IsEmptyElement()
-    IsValid()
-    LocalName()
-    LookupNamespace()
-    MoveToAttribute()
-    MoveToAttributeNo()
-    MoveToAttributeNs()
-    MoveToElement()
-    MoveToFirstAttribute()
-    MoveToNextAttribute()
-    Name()
-    NamespaceUri()
-    Next()
-    NodeType()
-    Normalization()
-    Prefix()
-    QuoteChar()
-    Read()
-    ReadAttributeValue()
-    ReadInnerXml()
-    ReadOuterXml()
-    ReadState()
-    ReadString()
-    RelaxNGSetSchema()
-    RelaxNGValidate()
-    SetParserProp()
-    Value()
-    XmlLang()
-Class xmlReg()
-
-    # functions from module xmlregexp
-    regexpExec()
-    regexpFreeRegexp()
-    regexpIsDeterminist()
-    regexpPrint()
-
-
-Class xmlEntity(xmlNode)
-
-    # functions from module parserInternals
-    handleEntity()
-Class relaxNgSchema()
-
-    # functions from module relaxng
-    relaxNGDump()
-    relaxNGDumpTree()
-    relaxNGFree()
-    relaxNGNewValidCtxt()
-
-    # functions from module xmlreader
-    RelaxNGSetSchema()
-Class relaxNgValidCtxt()
-
-    # functions from module relaxng
-    relaxNGValidateDoc()
-    relaxNGValidateFullElement()
-    relaxNGValidatePopElement()
-    relaxNGValidatePushCData()
-    relaxNGValidatePushElement()
 Class xpathParserContext()
     # accessors
     context()
@@ -864,62 +776,6 @@ Class parserCtxt(parserCtxtCore)
     stringDecodeEntities()
 
 
-Class xmlDtd(xmlNode)
-
-    # functions from module debugXML
-    debugDumpDTD()
-
-    # functions from module tree
-    copyDtd()
-    freeDtd()
-
-    # functions from module valid
-    dtdAttrDesc()
-    dtdElementDesc()
-    dtdQAttrDesc()
-    dtdQElementDesc()
-
-
-Class xmlNs(xmlNode)
-
-    # functions from module tree
-    copyNamespace()
-    copyNamespaceList()
-    freeNs()
-    freeNsList()
-    newChild()
-    newDocNode()
-    newDocNodeEatName()
-    newDocRawNode()
-    newNodeEatName()
-    newNsProp()
-    newNsPropEatName()
-    newTextChild()
-    setNs()
-    setNsProp()
-    unsetNsProp()
-
-    # functions from module xpathInternals
-    xpathNodeSetFreeNs()
-
-
-Class inputBuffer(ioReadWrapper)
-
-    # functions from module xmlIO
-    freeParserInputBuffer()
-    grow()
-    push()
-    read()
-
-    # functions from module xmlreader
-    newTextReader()
-Class relaxNgParserCtxt()
-
-    # functions from module relaxng
-    relaxNGFreeParserCtxt()
-    relaxNGParse()
-
-
 Class outputBuffer(ioWriteWrapper)
 
     # functions from module HTMLtree
@@ -938,11 +794,98 @@ Class outputBuffer(ioWriteWrapper)
     flush()
     write()
     writeString()
-Class xmlTextReaderLocator()
+
+
+Class xmlElement(xmlNode)
+Class relaxNgSchema()
+
+    # functions from module relaxng
+    relaxNGDump()
+    relaxNGDumpTree()
+    relaxNGFree()
+    relaxNGNewValidCtxt()
 
     # functions from module xmlreader
-    BaseURI()
-    LineNumber()
+    RelaxNGSetSchema()
+
+
+Class xmlEntity(xmlNode)
+
+    # functions from module parserInternals
+    handleEntity()
+
+
+Class xmlTextReader(xmlTextReaderCore)
+
+    # functions from module xmlreader
+    AttributeCount()
+    BaseUri()
+    Close()
+    CurrentDoc()
+    CurrentNode()
+    Depth()
+    Expand()
+    GetAttribute()
+    GetAttributeNo()
+    GetAttributeNs()
+    GetParserProp()
+    GetRemainder()
+    HasAttributes()
+    HasValue()
+    IsDefault()
+    IsEmptyElement()
+    IsValid()
+    LocalName()
+    LookupNamespace()
+    MoveToAttribute()
+    MoveToAttributeNo()
+    MoveToAttributeNs()
+    MoveToElement()
+    MoveToFirstAttribute()
+    MoveToNextAttribute()
+    Name()
+    NamespaceUri()
+    Next()
+    NodeType()
+    Normalization()
+    Prefix()
+    QuoteChar()
+    Read()
+    ReadAttributeValue()
+    ReadInnerXml()
+    ReadOuterXml()
+    ReadState()
+    ReadString()
+    RelaxNGSetSchema()
+    RelaxNGValidate()
+    SetParserProp()
+    Value()
+    XmlLang()
+
+
+Class xmlAttr(xmlNode)
+
+    # functions from module debugXML
+    debugDumpAttr()
+    debugDumpAttrList()
+
+    # functions from module tree
+    copyProp()
+    copyPropList()
+    freeProp()
+    freePropList()
+    removeProp()
+
+    # functions from module valid
+    removeID()
+    removeRef()
+Class xmlReg()
+
+    # functions from module xmlregexp
+    regexpExec()
+    regexpFreeRegexp()
+    regexpIsDeterminist()
+    regexpPrint()
 Class URI()
     # accessors
     authority()
@@ -969,3 +912,60 @@ Class URI()
     parseURIReference()
     printURI()
     saveUri()
+Class relaxNgParserCtxt()
+
+    # functions from module relaxng
+    relaxNGFreeParserCtxt()
+    relaxNGParse()
+Class xpathContext()
+    # accessors
+    contextDoc()
+    contextNode()
+    contextPosition()
+    contextSize()
+    function()
+    functionURI()
+    setContextDoc()
+    setContextNode()
+
+    # functions from module python
+    registerXPathFunction()
+
+    # functions from module xpath
+    xpathEval()
+    xpathEvalExpression()
+    xpathFreeContext()
+
+    # functions from module xpathInternals
+    xpathNewParserContext()
+    xpathNsLookup()
+    xpathRegisterAllFunctions()
+    xpathRegisterNs()
+    xpathRegisteredFuncsCleanup()
+    xpathRegisteredNsCleanup()
+    xpathRegisteredVariablesCleanup()
+    xpathVariableLookup()
+    xpathVariableLookupNS()
+
+    # functions from module xpointer
+    xpointerEval()
+
+
+Class inputBuffer(ioReadWrapper)
+
+    # functions from module xmlIO
+    freeParserInputBuffer()
+    grow()
+    push()
+    read()
+
+    # functions from module xmlreader
+    newTextReader()
+Class relaxNgValidCtxt()
+
+    # functions from module relaxng
+    relaxNGValidateDoc()
+    relaxNGValidateFullElement()
+    relaxNGValidatePopElement()
+    relaxNGValidatePushCData()
+    relaxNGValidatePushElement()

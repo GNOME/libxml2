@@ -1,3 +1,8 @@
+Sun Sep  7 22:53:06 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: try to cope with the fact that apps may still
+          have allocated smaller SAX callbak block
+
 Sun Sep  7 11:11:45 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* dict.c: allow to give -1 for undefined length in lookups

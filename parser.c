@@ -8574,7 +8574,7 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
     /*
      * SAX: detecting the level.
      */
-    if ((ctxt->sax) &&
+    if ((ctxt->sax) &&  (ctxt->sax->initialized == XML_SAX2_MAGIC) &&
         ((ctxt->sax->startElementNs != NULL) ||
          (ctxt->sax->endElementNs != NULL) ||
          (ctxt->sax->attributeNs != NULL))) ctxt->sax2 = 1;

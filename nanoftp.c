@@ -978,14 +978,13 @@ xmlNanoFTPQuit(void *ctx) {
     xmlNanoFTPCtxtPtr ctxt = (xmlNanoFTPCtxtPtr) ctx;
     char buf[200];
     int len;
-    int res;
 
     snprintf(buf, sizeof(buf), "QUIT\r\n");
     len = strlen(buf);
 #ifdef DEBUG_FTP
     xmlGenericError(xmlGenericErrorContext, "%s", buf); /* Just to be consistent, even though we know it can't have a % in it */
 #endif
-    res = send(ctxt->controlFd, buf, len, 0);
+    send(ctxt->controlFd, buf, len, 0);
     return(0);
 }
 

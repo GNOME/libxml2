@@ -738,9 +738,9 @@ xmlXPathDebugDumpStepOp(FILE *output, xmlXPathCompExprPtr comp,
         case XPATH_OP_SORT:
 	     fprintf(output, "SORT"); break;
         case XPATH_OP_COLLECT: {
-	    xmlXPathAxisVal axis = op->value;
-	    xmlXPathTestVal test = op->value2;
-	    xmlXPathTypeVal type = op->value3;
+	    xmlXPathAxisVal axis = (xmlXPathAxisVal)op->value;
+	    xmlXPathTestVal test = (xmlXPathTestVal)op->value2;
+	    xmlXPathTypeVal type = (xmlXPathTypeVal)op->value3;
 	    const xmlChar *prefix = op->value4;
 	    const xmlChar *name = op->value5;
 
@@ -1945,7 +1945,7 @@ xmlXPathNodeSetMerge(xmlNodeSetPtr val1, xmlNodeSetPtr val2) {
  */
 static xmlNodeSetPtr
 xmlXPathNodeSetMergeUnique(xmlNodeSetPtr val1, xmlNodeSetPtr val2) {
-    int i, initNr;
+    int i;
 
     if (val2 == NULL) return(val1);
     if (val1 == NULL) {
@@ -1953,7 +1953,6 @@ xmlXPathNodeSetMergeUnique(xmlNodeSetPtr val1, xmlNodeSetPtr val2) {
     }
 
     /* @@ with_ns to check wether namespace nodes should be looked at @@ */
-    initNr = val1->nodeNr;
 
     for (i = 0;i < val2->nodeNr;i++) {
 	/*
@@ -7937,7 +7936,6 @@ xmlXPathCompPathExpr(xmlXPathParserContextPtr ctxt) {
 	    xmlFree(name);
 	} else if (name != NULL) {
 	    int len =xmlStrlen(name);
-	    int blank = 0;
 
 	    
 	    while (NXT(len) != 0) {
@@ -7950,8 +7948,8 @@ xmlXPathCompPathExpr(xmlXPathParserContextPtr ctxt) {
 		    lc = 1;
 		    break;
 		} else if (IS_BLANK(NXT(len))) {
-		    /* skip to next */
-		    blank = 1;
+		    /* ignore blanks */
+		    ;
 		} else if (NXT(len) == ':') {
 #ifdef DEBUG_STEP
 		    xmlGenericError(xmlGenericErrorContext,
@@ -8377,8 +8375,8 @@ xmlXPathCompNodeTest(xmlXPathParserContextPtr ctxt, xmlXPathTestVal *test,
 	STRANGE;
 	return(NULL);
     }
-    *type = 0;
-    *test = 0;
+    *type = (xmlXPathTypeVal) 0;
+    *test = (xmlXPathTestVal) 0;
     *prefix = NULL;
     SKIP_BLANKS;
 
@@ -8504,7 +8502,7 @@ xmlXPathCompNodeTest(xmlXPathParserContextPtr ctxt, xmlXPathTestVal *test,
  */
 static xmlXPathAxisVal
 xmlXPathIsAxisName(const xmlChar *name) {
-    xmlXPathAxisVal ret = 0;
+    xmlXPathAxisVal ret = (xmlXPathAxisVal) 0;
     switch (name[0]) {
 	case 'a':
 	    if (xmlStrEqual(name, BAD_CAST "ancestor"))
@@ -8602,7 +8600,7 @@ xmlXPathCompStep(xmlXPathParserContextPtr ctxt) {
 	xmlChar *name = NULL;
 	const xmlChar *prefix = NULL;
 	xmlXPathTestVal test;
-	xmlXPathAxisVal axis = 0;
+	xmlXPathAxisVal axis = (xmlXPathAxisVal) 0;
 	xmlXPathTypeVal type;
 	int op1;
 
@@ -8832,9 +8830,9 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
                            xmlXPathStepOpPtr op,
 			   xmlNodePtr * first, xmlNodePtr * last)
 {
-    xmlXPathAxisVal axis = op->value;
-    xmlXPathTestVal test = op->value2;
-    xmlXPathTypeVal type = op->value3;
+    xmlXPathAxisVal axis = (xmlXPathAxisVal) op->value;
+    xmlXPathTestVal test = (xmlXPathTestVal) op->value2;
+    xmlXPathTypeVal type = (xmlXPathTypeVal) op->value3;
     const xmlChar *prefix = op->value4;
     const xmlChar *name = op->value5;
     const xmlChar *URI = NULL;
@@ -9253,9 +9251,9 @@ xmlXPathNodeCollectAndTestNth(xmlXPathParserContextPtr ctxt,
                               xmlXPathStepOpPtr op, int indx,
                               xmlNodePtr * first, xmlNodePtr * last)
 {
-    xmlXPathAxisVal axis = op->value;
-    xmlXPathTestVal test = op->value2;
-    xmlXPathTypeVal type = op->value3;
+    xmlXPathAxisVal axis = (xmlXPathAxisVal) op->value;
+    xmlXPathTestVal test = (xmlXPathTestVal) op->value2;
+    xmlXPathTypeVal type = (xmlXPathTypeVal) op->value3;
     const xmlChar *prefix = op->value4;
     const xmlChar *name = op->value5;
     const xmlChar *URI = NULL;

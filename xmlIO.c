@@ -720,20 +720,24 @@ append_reverse_ulong( xmlZMemBuff * buff, unsigned long data ) {
  */
 static void
 xmlFreeZMemBuff( xmlZMemBuffPtr buff ) {
-    
+
+#ifdef DEBUG_HTTP
     int z_err;
+#endif
 
     if ( buff == NULL )
 	return;
 
     xmlFree( buff->zbuff );
-    z_err = deflateEnd( &buff->zctrl );
 #ifdef DEBUG_HTTP
+    z_err = deflateEnd( &buff->zctrl );
     if ( z_err != Z_OK )
 	xmlGenericError( xmlGenericErrorContext,
 			"xmlFreeZMemBuff:  Error releasing zlib context:  %d\n",
 			z_err );
-#endif
+#else
+    deflateEnd( &buff->zctrl );
+#endif;
 
     xmlFree( buff );
     return;

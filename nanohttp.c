@@ -1214,9 +1214,11 @@ xmlNanoHTTPMethodRedir(const char *URL, const char *method, const char *input,
     char *bp, *p;
     int blen, ret;
     int head;
-    int xmt_bytes;
     int nbRedirects = 0;
     char *redirURL = NULL;
+#ifdef DEBUG_HTTP
+    int xmt_bytes;
+#endif
     
     if (URL == NULL) return(NULL);
     if (method == NULL) method = "GET";
@@ -1328,26 +1330,30 @@ retry:
     ctxt->outptr = ctxt->out = bp;
     ctxt->state = XML_NANO_HTTP_WRITE;
     blen = strlen( ctxt->out );
-    xmt_bytes = xmlNanoHTTPSend(ctxt, ctxt->out, blen );
 #ifdef DEBUG_HTTP
+    xmt_bytes = xmlNanoHTTPSend(ctxt, ctxt->out, blen );
     if ( xmt_bytes != blen )
         xmlGenericError( xmlGenericErrorContext,
 			"xmlNanoHTTPMethodRedir:  Only %d of %d %s %s\n",
 			xmt_bytes, blen,
 			"bytes of HTTP headers sent to host",
 			ctxt->hostname );
+#else
+    xmlNanoHTTPSend(ctxt, ctxt->out, blen );
 #endif
 
     if ( input != NULL ) {
+#ifdef DEBUG_HTTP
         xmt_bytes = xmlNanoHTTPSend( ctxt, input, ilen );
 
-#ifdef DEBUG_HTTP
 	if ( xmt_bytes != ilen )
 	    xmlGenericError( xmlGenericErrorContext,
 	    		"xmlNanoHTTPMethodRedir:  Only %d of %d %s %s\n",
 			xmt_bytes, ilen,
 			"bytes of HTTP content sent to host",
 			ctxt->hostname );
+#else
+	xmlNanoHTTPSend( ctxt, input, ilen );
 #endif
     }
 

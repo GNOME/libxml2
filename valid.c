@@ -624,7 +624,6 @@ xmlValidBuildAContentModel(xmlElementContentPtr content,
  */
 int
 xmlValidBuildContentModel(xmlValidCtxtPtr ctxt, xmlElementPtr elem) {
-    xmlAutomataStatePtr start;
 
     if ((ctxt == NULL) || (elem == NULL))
 	return(0);
@@ -647,7 +646,7 @@ xmlValidBuildContentModel(xmlValidCtxtPtr ctxt, xmlElementPtr elem) {
 	       elem->name);
 	return(0);
     }
-    start = ctxt->state = xmlAutomataGetInitState(ctxt->am);
+    ctxt->state = xmlAutomataGetInitState(ctxt->am);
     xmlValidBuildAContentModel(elem->content, ctxt, elem->name);
     xmlAutomataSetFinalState(ctxt->am, ctxt->state);
     elem->contModel = xmlAutomataCompile(ctxt->am);

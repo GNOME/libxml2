@@ -962,7 +962,7 @@ htmlTagLookup(const xmlChar *tag) {
     for (i = 0; i < (sizeof(html40ElementTable) /
                      sizeof(html40ElementTable[0]));i++) {
         if (!xmlStrcasecmp(tag, BAD_CAST html40ElementTable[i].name))
-	    return((const htmlElemDescPtr) (const htmlElemDescPtr) (const htmlElemDescPtr) (const htmlElemDescPtr) (const htmlElemDescPtr) (const htmlElemDescPtr) (const htmlElemDescPtr) (const htmlElemDescPtr) (const htmlElemDescPtr) &html40ElementTable[i]);
+	    return((htmlElemDescPtr) &html40ElementTable[i]);
     }
     return(NULL);
 }
@@ -1688,7 +1688,7 @@ htmlEntityLookup(const xmlChar *name) {
 #ifdef DEBUG
             xmlGenericError(xmlGenericErrorContext,"Found entity %s\n", name);
 #endif
-            return((const htmlEntityDescPtr) &html40EntitiesTable[i]);
+            return((htmlEntityDescPtr) &html40EntitiesTable[i]);
 	}
     }
     return(NULL);
@@ -1719,7 +1719,7 @@ htmlEntityValueLookup(unsigned int value) {
 #ifdef DEBUG
 	    xmlGenericError(xmlGenericErrorContext,"Found entity %s\n", html40EntitiesTable[i].name);
 #endif
-            return((const htmlEntityDescPtr) &html40EntitiesTable[i]);
+            return((htmlEntityDescPtr) &html40EntitiesTable[i]);
 	}
 #ifdef DEBUG
 	if (lv > html40EntitiesTable[i].value) {
@@ -4317,7 +4317,7 @@ htmlCreateDocParserCtxt(xmlChar *cur, const char *encoding ATTRIBUTE_UNUSED) {
  * @first:  the first char to lookup
  * @next:  the next char to lookup or zero
  * @third:  the next char to lookup or zero
- * @iscomment: flag to force checking inside comments
+ * @comment: flag to force checking inside comments
  *
  * Try to find if a sequence (first, next, third) or  just (first next) or
  * (first) is available in the input stream.
@@ -4331,7 +4331,7 @@ htmlCreateDocParserCtxt(xmlChar *cur, const char *encoding ATTRIBUTE_UNUSED) {
  */
 static int
 htmlParseLookupSequence(htmlParserCtxtPtr ctxt, xmlChar first,
-                       xmlChar next, xmlChar third, int iscomment) {
+                       xmlChar next, xmlChar third, int comment) {
     int base, len;
     htmlParserInputPtr in;
     const xmlChar *buf;
@@ -4354,7 +4354,7 @@ htmlParseLookupSequence(htmlParserCtxtPtr ctxt, xmlChar first,
     if (third) len -= 2;
     else if (next) len --;
     for (;base < len;base++) {
-	if (!incomment && (base + 4 < len) && !iscomment) {
+	if (!incomment && (base + 4 < len) && !comment) {
 	    if ((buf[base] == '<') && (buf[base + 1] == '!') &&
 		(buf[base + 2] == '-') && (buf[base + 3] == '-')) {
 		incomment = 1;

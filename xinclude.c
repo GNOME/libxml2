@@ -1436,7 +1436,7 @@ xmlXIncludeLoadTxt(xmlXIncludeCtxtPtr ctxt, const xmlChar *url, int nr) {
     xmlChar *URL;
     int i;
     xmlChar *encoding = NULL;
-    xmlCharEncoding enc = 0;
+    xmlCharEncoding enc = (xmlCharEncoding) 0;
 
     /*
      * Check the URL and remove any fragment identifier

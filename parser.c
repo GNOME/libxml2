@@ -5111,7 +5111,7 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
     } else if ((RAW == 'I') && (NXT(1) == 'G') && (NXT(2) == 'N') &&
             (NXT(3) == 'O') && (NXT(4) == 'R') && (NXT(5) == 'E')) {
 	int state;
-	int instate;
+	xmlParserInputState instate;
 	int depth = 0;
 
 	SKIP(6);

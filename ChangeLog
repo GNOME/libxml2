@@ -1,3 +1,17 @@
+Thu Jul 31 22:44:33 HKT 2003 William Brack <wbrack@mmm.com.hk>
+
+	Working on bug 118559
+	* error.c: deleted unused variable
+	* parserInternals.c: deleted unneeded 'const' qualifier
+	* parser.c: changed variable type for enum temp storage
+	* xmlIO.c: changed debugging var to be inside #ifdef
+	* valid.c: removed unused variable
+	* HTMLparser.c: removed some unneeded 'const' qualifiers
+	* xpath.c: added some type casts, removed some unused vars
+	* xinclude.c: added one type cast
+	* nanohttp.c: repositioned some #ifdef to avoid unused var
+	* nanoftp.c: removed unused var
+
 Wed Jul 30 14:57:55 EDT 2003 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: applied a patch from William Brack about

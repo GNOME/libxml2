@@ -2530,7 +2530,7 @@ xmlParserAddNodeInfo(xmlParserCtxtPtr ctxt,
     unsigned long pos;
 
     /* Find pos and check to see if node is already in the sequence */
-    pos = xmlParserFindNodeInfoIndex(&ctxt->node_seq, (const xmlNodePtr)
+    pos = xmlParserFindNodeInfoIndex(&ctxt->node_seq, (xmlNodePtr)
                                      info->node);
     if (pos < ctxt->node_seq.length
         && ctxt->node_seq.buffer[pos].node == info->node) {

@@ -350,7 +350,6 @@ xmlParserValidityError(void *ctx, const char *msg, ...)
     char * str;
     int len = xmlStrlen((const xmlChar *) msg);
     static int had_info = 0;
-    int need_context = 0;
 
     if ((len > 1) && (msg[len - 2] != ':')) {
 	if (ctxt != NULL) {
@@ -363,7 +362,6 @@ xmlParserValidityError(void *ctx, const char *msg, ...)
 	    }
 	}
 	xmlGenericError(xmlGenericErrorContext, "validity error: ");
-	need_context = 1;
 	had_info = 0;
     } else {
 	had_info = 1;

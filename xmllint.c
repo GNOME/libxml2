@@ -145,7 +145,6 @@ static int stream = 0;
 static int chkregister = 0;
 static const char *output = NULL;
 
-
 /*
  * Internal timing routines to remove the necessity to have unix-specific
  * function calls
@@ -755,6 +754,31 @@ static void parseAndPrintFile(char *filename) {
     }
 #endif
 #ifdef LIBXML_HTML_ENABLED
+    else if ((html) && (push)) {
+        FILE *f;
+
+        f = fopen(filename, "r");
+        if (f != NULL) {
+            int res, size = 3;
+            char chars[4096];
+            htmlParserCtxtPtr ctxt;
+
+            /* if (repeat) */
+                size = 4096;
+            res = fread(chars, 1, 4, f);
+            if (res > 0) {
+                ctxt = htmlCreatePushParserCtxt(NULL, NULL,
+                            chars, res, filename, 0);
+                while ((res = fread(chars, 1, size, f)) > 0) {
+                    htmlParseChunk(ctxt, chars, res, 0);
+                }
+                htmlParseChunk(ctxt, chars, 0, 1);
+                doc = ctxt->myDoc;
+                htmlFreeParserCtxt(ctxt);
+            }
+            fclose(f);
+        }
+    }
     else if (html) {
 	doc = htmlParseFile(filename, NULL);
     }

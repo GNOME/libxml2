@@ -1,3 +1,8 @@
+Fri Jan  2 22:58:29 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* xinclude.c: fixed problem with "recursive" include (fallback
+	  contains another include - Bug 129969)
+
 Fri Jan  2 11:40:06 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* SAX2.c: found and fixed a bug misallocating some non

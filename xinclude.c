@@ -1760,11 +1760,26 @@ loaded:
  */
 static int
 xmlXIncludeLoadFallback(xmlXIncludeCtxtPtr ctxt, xmlNodePtr fallback, int nr) {
+    xmlXIncludeCtxtPtr newctxt;
+    int ret = 0;
+    
     if ((fallback == NULL) || (ctxt == NULL))
 	return(-1);
+    /*
+     * It's possible that the fallback also has 'includes'
+     * (Bug 129969), so we re-process the fallback just in case
+     */
+    newctxt = xmlXIncludeNewContext(ctxt->doc);
+    if (newctxt == NULL)
+        return (-1);
+    xmlXIncludeSetFlags(newctxt, ctxt->parseFlags);
+    ret = xmlXIncludeDoProcess(newctxt, ctxt->doc, fallback->children);
+    if ((ret >=0) && (ctxt->nbErrors > 0))
+        ret = -1;
+    xmlXIncludeFreeContext(newctxt);
 
     ctxt->incTab[nr]->inc = xmlCopyNodeList(fallback->children);
-    return(0);
+    return(ret);
 }
 
 /************************************************************************

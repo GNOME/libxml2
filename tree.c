@@ -266,7 +266,7 @@ xmlSetNs(xmlNodePtr node, xmlNsPtr ns) {
     if (node == NULL) {
 #ifdef DEBUG_TREE
         fprintf(stderr, "xmlSetNs: node == NULL\n");
-#else
+#endif
 	return;
     }
     node->ns = ns;
@@ -1064,6 +1064,7 @@ xmlRemoveProp(xmlAttrPtr cur) {
 	return(-1);
     }
     if (cur->node == NULL) {
+#ifdef DEBUG_TREE
         fprintf(stderr, "xmlRemoveProp : cur->node == NULL\n");
 #endif
 	return(-1);

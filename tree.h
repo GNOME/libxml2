@@ -479,7 +479,6 @@ void		xmlTextConcat		(xmlNodePtr node,
 					 int len);
 void		xmlFreeNodeList		(xmlNodePtr cur);
 void		xmlFreeNode		(xmlNodePtr cur);
-int		xmlRemoveProp		(xmlAttrPtr cur);
 
 /*
  * Namespaces
@@ -536,7 +535,7 @@ xmlChar *	xmlNodeGetBase		(xmlDocPtr doc,
 /*
  * Removing content.
  */
-int		xmlRemoveProp		(xmlAttrPtr attr); /* TODO */
+int		xmlRemoveProp		(xmlAttrPtr cur);
 int		xmlRemoveNode		(xmlNodePtr node); /* TODO */
 
 /*

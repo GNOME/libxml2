@@ -28,3 +28,4 @@ testHTML
 testSAX
 testXPath
 libxml.pc
+win32config.h

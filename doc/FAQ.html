@@ -43,8 +43,8 @@ href="http://xmlsoft.org/messages/">http://xmlsoft.org/messages/</a></p>
   <li><em>Can I embed libxml in a proprietary application ?</em>
     <p>Yes. The W3C IPR allows you to also keep proprietary the changes you
     made to libxml, but it would be graceful to provide back bugfixes and
-    improvements as patches for possible incorporation in the main
-    development tree</p>
+    improvements as patches for possible incorporation in the main development
+    tree</p>
   </li>
 </ol>
 
@@ -70,12 +70,11 @@ href="http://xmlsoft.org/messages/">http://xmlsoft.org/messages/</a></p>
         compatible (this is not the case for development packages)</li>
       <li>If you are a developer and your system provides separate packaging
         for shared libraries and the development components, it is possible to
-        install libxml and libxml2, and depending on your development needs
-        have either <a
+        install libxml and libxml2, and also <a
         href="http://rpmfind.net/linux/RPM/libxml-devel.html">libxml-devel</a>
-        or <a
+        and <a
         href="http://rpmfind.net/linux/RPM/libxml2-devel.html">libxml2-devel</a>
-        too</li>
+        too for libxml2 &gt;= 2.3.0</li>
       <li>If you are developing a new application, please develop against
         libxml2(-devel)</li>
     </ul>
@@ -147,7 +146,8 @@ href="http://xmlsoft.org/messages/">http://xmlsoft.org/messages/</a></p>
 &lt;NODE CommFlag="0"/&gt;
 &lt;NODE CommFlag="1"/&gt;
 &lt;/PLAN&gt;</pre>
-    <p><em>after parsing it with the function pxmlDoc=xmlParseFile(...);</em></p>
+    <p><em>after parsing it with the function
+    pxmlDoc=xmlParseFile(...);</em></p>
     <p><em>I want to the get the content of the first node (node with the
     CommFlag="0")</em></p>
     <p><em>so I did it as following;</em></p>
@@ -185,7 +185,7 @@ pnode=pxmlDoc-&gt;children-&gt;children;</pre>
   <li><em>XPath implementation looks seriously broken</em>
     <p>XPath implementation prior to 2.3.0 was really incomplete, upgrade to a
     recent version, the implementation and debug of libxslt generated fixes
-    for most obvious problems. </p>
+    for most obvious problems.</p>
   </li>
   <li><em>The example provided in the web page does not compile</em>
     <p>It's hard to maintain the documentation in sync with the code

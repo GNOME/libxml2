@@ -115,7 +115,7 @@ SIZE="3"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN6408"
+NAME="AEN6574"
 ></A
 ><H2
 >Name</H2
@@ -123,7 +123,7 @@ NAME="AEN6408"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN6411"
+NAME="AEN6577"
 ></A
 ><H2
 >Synopsis</H2
@@ -158,6 +158,40 @@ HREF="gnome-xml-xpath.html#XPATH-NUMBER"
 HREF="gnome-xml-xpath.html#XPATH-STRING"
 >XPATH_STRING</A
 >
+#define     <A
+HREF="gnome-xml-xpath.html#XPATH-USERS"
+>XPATH_USERS</A
+>
+int         (<A
+HREF="gnome-xml-xpath.html#XMLXPATHCONVERTFUNC"
+>*xmlXPathConvertFunc</A
+>)          (<GTKDOCLINK
+HREF="XMLXPATHOBJECTPTR"
+>xmlXPathObjectPtr</GTKDOCLINK
+> obj,
+                                             int type);
+void        (<A
+HREF="gnome-xml-xpath.html#XMLXPATHEVALFUNC"
+>*xmlXPathEvalFunc</A
+>)             (<GTKDOCLINK
+HREF="XMLXPATHPARSERCONTEXTPTR"
+>xmlXPathParserContextPtr</GTKDOCLINK
+> ctxt,
+                                             int nargs);
+<GTKDOCLINK
+HREF="XMLXPATHOBJECTPTR"
+>xmlXPathObjectPtr</GTKDOCLINK
+> (<A
+HREF="gnome-xml-xpath.html#XMLXPATHAXISFUNC"
+>*xmlXPathAxisFunc</A
+>)       (<GTKDOCLINK
+HREF="XMLXPATHPARSERCONTEXTPTR"
+>xmlXPathParserContextPtr</GTKDOCLINK
+> ctxt,
+                                             <GTKDOCLINK
+HREF="XMLXPATHOBJECTPTR"
+>xmlXPathObjectPtr</GTKDOCLINK
+> cur);
 void        (<A
 HREF="gnome-xml-xpath.html#XMLXPATHFUNCTION"
 >*xmlXPathFunction</A
@@ -175,9 +209,7 @@ HREF="gnome-xml-xpath.html#XMLXPATHNEWCONTEXT"
 >       (<A
 HREF="gnome-xml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
-> doc,
-                                             void *variables,
-                                             void *functions);
+> doc);
 void        <A
 HREF="gnome-xml-xpath.html#XMLXPATHFREECONTEXT"
 >xmlXPathFreeContext</A
@@ -227,7 +259,7 @@ HREF="XMLXPATHCONTEXTPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN6436"
+NAME="AEN6611"
 ></A
 ><H2
 >Description</H2
@@ -237,14 +269,14 @@ NAME="AEN6436"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN6439"
+NAME="AEN6614"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6441"
+NAME="AEN6616"
 ></A
 ><H3
 ><A
@@ -260,7 +292,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XPATH_UNDEFINED	0</PRE
+>#define     XPATH_UNDEFINED</PRE
 ></TD
 ></TR
 ></TABLE
@@ -270,7 +302,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6446"
+NAME="AEN6621"
 ></A
 ><H3
 ><A
@@ -286,7 +318,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XPATH_NODESET	1</PRE
+>#define     XPATH_NODESET</PRE
 ></TD
 ></TR
 ></TABLE
@@ -296,7 +328,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6451"
+NAME="AEN6626"
 ></A
 ><H3
 ><A
@@ -312,7 +344,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XPATH_BOOLEAN	2</PRE
+>#define     XPATH_BOOLEAN</PRE
 ></TD
 ></TR
 ></TABLE
@@ -322,7 +354,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6456"
+NAME="AEN6631"
 ></A
 ><H3
 ><A
@@ -338,7 +370,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XPATH_NUMBER	3</PRE
+>#define     XPATH_NUMBER</PRE
 ></TD
 ></TR
 ></TABLE
@@ -348,7 +380,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6461"
+NAME="AEN6636"
 ></A
 ><H3
 ><A
@@ -364,7 +396,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XPATH_STRING	4</PRE
+>#define     XPATH_STRING</PRE
 ></TD
 ></TR
 ></TABLE
@@ -374,7 +406,306 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6466"
+NAME="AEN6641"
+></A
+><H3
+><A
+NAME="XPATH-USERS"
+></A
+>XPATH_USERS</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define     XPATH_USERS</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN6646"
+></A
+><H3
+><A
+NAME="XMLXPATHCONVERTFUNC"
+></A
+>xmlXPathConvertFunc ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         (*xmlXPathConvertFunc)          (<GTKDOCLINK
+HREF="XMLXPATHOBJECTPTR"
+>xmlXPathObjectPtr</GTKDOCLINK
+> obj,
+                                             int type);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>obj</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>type</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN6669"
+></A
+><H3
+><A
+NAME="XMLXPATHEVALFUNC"
+></A
+>xmlXPathEvalFunc ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        (*xmlXPathEvalFunc)             (<GTKDOCLINK
+HREF="XMLXPATHPARSERCONTEXTPTR"
+>xmlXPathParserContextPtr</GTKDOCLINK
+> ctxt,
+                                             int nargs);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>nargs</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN6688"
+></A
+><H3
+><A
+NAME="XMLXPATHAXISFUNC"
+></A
+>xmlXPathAxisFunc ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLXPATHOBJECTPTR"
+>xmlXPathObjectPtr</GTKDOCLINK
+> (*xmlXPathAxisFunc)       (<GTKDOCLINK
+HREF="XMLXPATHPARSERCONTEXTPTR"
+>xmlXPathParserContextPtr</GTKDOCLINK
+> ctxt,
+                                             <GTKDOCLINK
+HREF="XMLXPATHOBJECTPTR"
+>xmlXPathObjectPtr</GTKDOCLINK
+> cur);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN6713"
 ></A
 ><H3
 ><A
@@ -453,7 +784,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6485"
+NAME="AEN6732"
 ></A
 ><H3
 ><A
@@ -475,9 +806,7 @@ HREF="XMLXPATHCONTEXTPTR"
 > xmlXPathNewContext       (<A
 HREF="gnome-xml-tree.html#XMLDOCPTR"
 >xmlDocPtr</A
-> doc,
-                                             void *variables,
-                                             void *functions);</PRE
+> doc);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -511,41 +840,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the XML document</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->variables</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the variable list</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->functions</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->  the function list</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -560,7 +855,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the xmlXPathContext just allocated.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -570,7 +865,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6514"
+NAME="AEN6753"
 ></A
 ><H3
 ><A
@@ -623,7 +918,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the context to free</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -633,7 +928,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6530"
+NAME="AEN6769"
 ></A
 ><H3
 ><A
@@ -693,7 +988,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the XPath expression</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -710,7 +1005,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the XPath context</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -725,8 +1020,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the xmlXPathObjectPtr resulting from the eveluation or NULL.
-the caller has to free the object.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -736,7 +1030,7 @@ the caller has to free the object.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6556"
+NAME="AEN6795"
 ></A
 ><H3
 ><A
@@ -789,7 +1083,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the object to free</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -799,7 +1093,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6572"
+NAME="AEN6811"
 ></A
 ><H3
 ><A
@@ -859,7 +1153,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the XPath expression</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -876,7 +1170,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the XPath context</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -891,8 +1185,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the xmlXPathObjectPtr resulting from the evaluation or NULL.
-the caller has to free the object.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P

@@ -23,6 +23,7 @@ typedef struct xmlParserInputBuffer {
     FILE          *file;    /* Input on file handler */
     void*        gzfile;    /* Input on a compressed stream */
     int              fd;    /* Input on a file descriptor */
+    void         *netIO;    /* Input from a network stream */
     
     xmlCharEncodingHandlerPtr encoder; /* I18N conversions to UTF-8 */
     

@@ -13,7 +13,19 @@
  * Author: Daniel.Veillard@w3.org
  */
 
-#include <config.h>
+#ifdef WIN32
+#define HAVE_FCNTL_H
+#include <io.h>
+#else
+#include "config.h"
+#endif
+
+#include <stdio.h>
+#include <string.h>
+
+#ifdef HAVE_SYS_TYPES_H
+#include <sys/types.h>
+#endif
 #ifdef HAVE_MATH_H
 #include <math.h>
 #endif
@@ -26,8 +38,10 @@
 #ifdef HAVE_NAN_H
 #include <nan.h>
 #endif
-#include <stdio.h>
+#ifdef HAVE_CTYPE_H
 #include <ctype.h>
+#endif
+
 #include "xmlmemory.h"
 #include "tree.h"
 #include "valid.h"

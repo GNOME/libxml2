@@ -10,6 +10,7 @@
 <!entity HTMLtree SYSTEM "sgml/HTMLtree.sgml">
 <!entity parserInternals SYSTEM "sgml/parserInternals.sgml">
 <!entity xmlmemory SYSTEM "sgml/xmlmemory.sgml">
+<!entity nanohttp SYSTEM "sgml/nanohttp.sgml">
 ]>
 
 <book>
@@ -30,6 +31,7 @@
     &xpath;
     &parserInternals;
     &xmlmemory;
+    &nanohttp;
   </chapter>
 </book>
 

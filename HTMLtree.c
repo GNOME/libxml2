@@ -6,11 +6,19 @@
  * Daniel.Veillard@w3.org
  */
 
+
+#ifndef WIN32
 #include "config.h"
+#endif
 #include <stdio.h>
-#include <ctype.h>
-#include <stdlib.h>
 #include <string.h> /* for memset() only ! */
+
+#ifdef HAVE_CTYPE_H
+#include <ctype.h>
+#endif
+#ifdef HAVE_STDLIB_H
+#include <stdlib.h>
+#endif
 
 #include "xmlmemory.h"
 #include "HTMLparser.h"

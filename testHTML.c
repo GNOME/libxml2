@@ -10,9 +10,15 @@
 #define HAVE_FCNTL_H
 #include <io.h>
 #else
-#include <config.h>
+#include "config.h"
 #endif
+
+#include <stdio.h>
+#include <string.h>
+
+#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
+#endif
 #ifdef HAVE_SYS_STAT_H
 #include <sys/stat.h>
 #endif
@@ -22,9 +28,9 @@
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
-#include <stdio.h>
-#include <string.h>
+#ifdef HAVE_STDLIB_H
 #include <stdlib.h>
+#endif
 
 #include "HTMLparser.h"
 #include "HTMLtree.h"

@@ -4,10 +4,26 @@
  * Daniel.Veillard@w3.org
  */
 
-#include <sys/types.h>
-#include <string.h>
+#ifdef WIN32
+#define HAVE_FCNTL_H
+#include <io.h>
+#else
+#include "config.h"
+#endif
+
 #include <stdio.h>
+#include <string.h>
+
+#ifdef HAVE_SYS_TYPES_H
+#include <sys/types.h>
+#endif
+#ifdef HAVE_TIME_H
+#include <time.h>
+#endif
+#ifdef HAVE_MALLOC_H
 #include <malloc.h>
+#endif
+
 #include "xmlmemory.h"
 
 #ifndef NO_DEBUG_MEMORY
@@ -103,8 +119,8 @@ xmlMallocLoc(int size, const char * file, int line)
     p = (MEMHDR *) malloc(RESERVE_SIZE+size);
 
     if (!p) {
-       fprintf(stderr, "xmlMalloc : Out of free space\n");
-       xmlMemoryDump();
+     fprintf(stderr, "xmlMalloc : Out of free space\n");
+     xmlMemoryDump();
     }   
     p->mh_tag = MEMTAG;
     p->mh_number = ++block;
@@ -165,7 +181,7 @@ xmlReallocLoc(void *ptr,int size, const char * file, int line)
     p = CLIENT_2_HDR(ptr);
     number = p->mh_number;
     if (p->mh_tag != MEMTAG) {
-         Mem_Tag_Err(p);
+       Mem_Tag_Err(p);
 	 goto error;
     }
     p->mh_tag = ~MEMTAG;
@@ -231,8 +247,8 @@ xmlFree(void *ptr)
 
     p = CLIENT_2_HDR(ptr);
     if (p->mh_tag != MEMTAG) {
-         Mem_Tag_Err(p);
-         goto error;
+       Mem_Tag_Err(p);
+       goto error;
     }
     p->mh_tag = ~MEMTAG;
     debugMemSize -= p->mh_size;
@@ -273,7 +289,7 @@ xmlMemStrdupLoc(const char *str, const char *file, int line)
 
     p = (MEMHDR *) malloc(RESERVE_SIZE+size);
     if (!p) {
-        goto error;
+      goto error;
     }
     p->mh_tag = MEMTAG;
     p->mh_number = ++block;
@@ -288,9 +304,9 @@ xmlMemStrdupLoc(const char *str, const char *file, int line)
     s = HDR_2_CLIENT(p);
     
     if (s != NULL)
-        strcpy(s,str);
+      strcpy(s,str);
     else
-        goto error;
+      goto error;
     
     TEST_POINT
 
@@ -339,29 +355,40 @@ void
 xmlMemDisplay(FILE *fp)
 {
 #ifdef MEM_LIST
-      MEMHDR *p;
-      int     idx;
+    MEMHDR *p;
+    int     idx;
+#if defined(HAVE_LOCALTIME) && defined(HAVE_STRFTIME)
+    time_t currentTime;
+    char buf[500];
+    struct tm * tstruct;
+
+    currentTime = time(NULL);
+    tstruct = localtime(&currentTime);
+    strftime(buf, sizeof(buf) - 1, "%c", tstruct);
+    fprintf(fp,"      %s\n\n", buf);
+#endif
+
     
-      fprintf(fp,"      MEMORY ALLOCATED : %lu\n",debugMemSize);
-      fprintf(fp,"BLOCK  NUMBER   SIZE  TYPE\n");
-      idx = 0;
-      p = memlist;
-      while (p) {
+    fprintf(fp,"      MEMORY ALLOCATED : %lu\n",debugMemSize);
+    fprintf(fp,"BLOCK  NUMBER   SIZE  TYPE\n");
+    idx = 0;
+    p = memlist;
+    while (p) {
 	  fprintf(fp,"%-5u  %6lu %6u ",idx++,p->mh_number,p->mh_size);
-          switch (p->mh_type) {
-             case STRDUP_TYPE:fprintf(fp,"strdup()  in ");break;
-             case MALLOC_TYPE:fprintf(fp,"malloc()  in ");break;
-            case REALLOC_TYPE:fprintf(fp,"realloc() in ");break;
-                      default:fprintf(fp,"   ???    in ");break;
-          }
+        switch (p->mh_type) {
+           case STRDUP_TYPE:fprintf(fp,"strdup()  in ");break;
+           case MALLOC_TYPE:fprintf(fp,"malloc()  in ");break;
+          case REALLOC_TYPE:fprintf(fp,"realloc() in ");break;
+                    default:fprintf(fp,"   ???    in ");break;
+        }
 	  if (p->mh_file != NULL) fprintf(fp,"%s(%d)", p->mh_file, p->mh_line);
-          if (p->mh_tag != MEMTAG)
+        if (p->mh_tag != MEMTAG)
 	      fprintf(fp,"  INVALID");
-          fprintf(fp,"\n");
-          p = p->mh_next;
-      }
+        fprintf(fp,"\n");
+        p = p->mh_next;
+    }
 #else
-      fprintf(fp,"Memory list not compiled (MEM_LIST not defined !)\n");
+    fprintf(fp,"Memory list not compiled (MEM_LIST not defined !)\n");
 #endif
 }
 
@@ -369,26 +396,26 @@ xmlMemDisplay(FILE *fp)
 
 void debugmem_list_add(MEMHDR *p)
 {
-       p->mh_next = memlist;
-       p->mh_prev = NULL;
-       if (memlist) memlist->mh_prev = p;
-       memlist = p;
+     p->mh_next = memlist;
+     p->mh_prev = NULL;
+     if (memlist) memlist->mh_prev = p;
+     memlist = p;
 #ifdef MEM_LIST_DEBUG
-       if (stderr)
-       Mem_Display(stderr);
+     if (stderr)
+     Mem_Display(stderr);
 #endif
 }
 
 void debugmem_list_delete(MEMHDR *p)
 {
-       if (p->mh_next)
-       p->mh_next->mh_prev = p->mh_prev;
-       if (p->mh_prev)
-       p->mh_prev->mh_next = p->mh_next;
-       else memlist = p->mh_next;
+     if (p->mh_next)
+     p->mh_next->mh_prev = p->mh_prev;
+     if (p->mh_prev)
+     p->mh_prev->mh_next = p->mh_next;
+     else memlist = p->mh_next;
 #ifdef MEM_LIST_DEBUG
-       if (stderr)
-       Mem_Display(stderr);
+     if (stderr)
+     Mem_Display(stderr);
 #endif
 }
 
@@ -400,10 +427,10 @@ void debugmem_list_delete(MEMHDR *p)
  
 void debugmem_tag_error(void *p)
 {
-       fprintf(stderr, "Memory tag error occurs :%p \n\t bye\n", p);
+     fprintf(stderr, "Memory tag error occurs :%p \n\t bye\n", p);
 #ifdef MEM_LIST
-       if (stderr)
-       xmlMemDisplay(stderr);
+     if (stderr)
+     xmlMemDisplay(stderr);
 #endif
 }
 

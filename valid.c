@@ -7,9 +7,20 @@
  * Daniel.Veillard@w3.org
  */
 
+#ifdef WIN32
+#define HAVE_FCNTL_H
+#include <io.h>
+#else
+#include "config.h"
+#endif
+
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
+
+#ifdef HAVE_STDLIB_H
+#include <stdlib.h>
+#endif
+
 #include "xmlmemory.h"
 #include "valid.h"
 #include "parser.h"

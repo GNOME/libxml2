@@ -105,25 +105,13 @@ typedef struct _xmlParserCtxt {
     struct xmlSAXHandler *sax;        /* The SAX handler */
     void            *userData;        /* the document being built */
     xmlDocPtr           myDoc;        /* the document being built */
+    int            wellFormed;        /* is the document well formed */
     int       replaceEntities;        /* shall we replace entities ? */
     const CHAR       *version;        /* the XML version string */
     const CHAR      *encoding;        /* encoding, if any */
     int            standalone;        /* standalone document */
-    int     hasExternalSubset;        /* reference and external subset */
-    int             hasPErefs;        /* the internal subset has PE refs */
     int                  html;        /* are we parsing an HTML document */
-    int              external;        /* are we parsing an external entity */
 
-    int            wellFormed;        /* is the document well formed */
-    int                 valid;        /* is the document valid */
-    int              validate;        /* shall we try to validate ? */
-    xmlValidCtxt        vctxt;        /* The validity context */
-
-    xmlParserInputState instate;      /* current type of input */
-    int                 token;        /* next char look-ahead */    
-
-    char           *directory;        /* the data directory */
-    
     /* Input stream stack */
     xmlParserInputPtr  input;         /* Current input stream */
     int                inputNr;       /* Number of current input streams */
@@ -138,6 +126,21 @@ typedef struct _xmlParserCtxt {
 
     int record_info;                  /* Whether node info should be kept */
     xmlParserNodeInfoSeq node_seq;    /* info about each node parsed */
+
+    int errno;                        /* error code */
+
+    int     hasExternalSubset;        /* reference and external subset */
+    int             hasPErefs;        /* the internal subset has PE refs */
+    int              external;        /* are we parsing an external entity */
+
+    int                 valid;        /* is the document valid */
+    int              validate;        /* shall we try to validate ? */
+    xmlValidCtxt        vctxt;        /* The validity context */
+
+    xmlParserInputState instate;      /* current type of input */
+    int                 token;        /* next char look-ahead */    
+
+    char           *directory;        /* the data directory */
 } _xmlParserCtxt;
 typedef _xmlParserCtxt xmlParserCtxt;
 typedef xmlParserCtxt *xmlParserCtxtPtr;

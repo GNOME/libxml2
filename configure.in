@@ -4,8 +4,8 @@ AC_INIT(entities.h)
 AM_CONFIG_HEADER(config.h)
 
 LIBXML_MAJOR_VERSION=1
-LIBXML_MINOR_VERSION=6
-LIBXML_MICRO_VERSION=2
+LIBXML_MINOR_VERSION=7
+LIBXML_MICRO_VERSION=0
 LIBXML_VERSION=$LIBXML_MAJOR_VERSION.$LIBXML_MINOR_VERSION.$LIBXML_MICRO_VERSION
 LIBXML_VERSION_INFO=`expr $LIBXML_MAJOR_VERSION + $LIBXML_MINOR_VERSION`:$LIBXML_MICRO_VERSION:$LIBXML_MINOR_VERSION
 
@@ -46,6 +46,8 @@ AC_HEADER_STDC
 AC_CHECK_HEADERS(fcntl.h unistd.h ctype.h dirent.h errno.h malloc.h)
 AC_CHECK_HEADERS(stdarg.h sys/stat.h sys/types.h time.h zlib.h)
 AC_CHECK_HEADERS(ieeefp.h nan.h math.h fp_class.h float.h)
+AC_CHECK_HEADERS(stdlib.h sys/socket.h netinet/in.h arpa/inet.h)
+AC_CHECK_HEADERS(netdb.h sys/time.h sys/select.h)
 
 dnl Specific dir for HTML output ?
 if test "x$with_html_dir" = "x" ; then
@@ -70,6 +72,12 @@ dnl Checks for library functions.
 AC_FUNC_STRFTIME
 AC_CHECK_FUNCS(strdup strndup strerror snprintf)
 AC_CHECK_FUNCS(finite isinf isnan isnand fp_class class fpclass finite)
+AC_CHECK_FUNCS(strftime localtime)
+
+dnl Checks for inet libraries:
+AC_CHECK_LIB(socket, socket)
+AC_CHECK_LIB(inet, connect)
+AC_CHECK_LIB(nsl, t_accept)
 
 dnl Checks for isnan in libm if not in libc
 M_LIBS= 
@@ -93,7 +101,7 @@ fi
 
 XML_LIBDIR='-L${libdir}'
 XML_INCLUDEDIR='-I${includedir}/gnome-xml'
-XML_LIBS="-lxml $Z_LIBS $M_LIBS"
+XML_LIBS="-lxml $Z_LIBS $M_LIBS $LIBS"
 
 AC_SUBST(XML_LIBDIR)
 AC_SUBST(XML_LIBS)

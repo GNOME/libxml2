@@ -115,7 +115,7 @@ SIZE="3"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN4521"
+NAME="AEN4537"
 ></A
 ><H2
 >Name</H2
@@ -123,7 +123,7 @@ NAME="AEN4521"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN4524"
+NAME="AEN4540"
 ></A
 ><H2
 >Synopsis</H2
@@ -193,6 +193,14 @@ HREF="gnome-xml-valid.html#XML-MIN-ID-TABLE"
 typedef     <A
 HREF="gnome-xml-valid.html#XMLIDTABLEPTR"
 >xmlIDTablePtr</A
+>;
+#define     <A
+HREF="gnome-xml-valid.html#XML-MIN-REF-TABLE"
+>XML_MIN_REF_TABLE</A
+>
+typedef     <A
+HREF="gnome-xml-valid.html#XMLREFTABLEPTR"
+>xmlRefTablePtr</A
 >;
 <A
 HREF="gnome-xml-tree.html#XMLNOTATIONPTR"
@@ -494,6 +502,60 @@ HREF="gnome-xml-tree.html#XMLNODEPTR"
 HREF="gnome-xml-tree.html#XMLATTRPTR"
 >xmlAttrPtr</A
 > attr);
+<A
+HREF="gnome-xml-tree.html#XMLREFPTR"
+>xmlRefPtr</A
+>   <A
+HREF="gnome-xml-valid.html#XMLADDREF"
+>xmlAddRef</A
+>                       (<GTKDOCLINK
+HREF="XMLVALIDCTXTPTR"
+>xmlValidCtxtPtr</GTKDOCLINK
+> ctxt,
+                                             <A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *value,
+                                             <A
+HREF="gnome-xml-tree.html#XMLATTRPTR"
+>xmlAttrPtr</A
+> attr);
+<A
+HREF="gnome-xml-valid.html#XMLREFTABLEPTR"
+>xmlRefTablePtr</A
+> <A
+HREF="gnome-xml-valid.html#XMLCOPYREFTABLE"
+>xmlCopyRefTable</A
+>              (<A
+HREF="gnome-xml-valid.html#XMLREFTABLEPTR"
+>xmlRefTablePtr</A
+> table);
+void        <A
+HREF="gnome-xml-valid.html#XMLFREEREFTABLE"
+>xmlFreeRefTable</A
+>                 (<A
+HREF="gnome-xml-valid.html#XMLREFTABLEPTR"
+>xmlRefTablePtr</A
+> table);
+int         <A
+HREF="gnome-xml-valid.html#XMLISREF"
+>xmlIsRef</A
+>                        (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> elem,
+                                             <A
+HREF="gnome-xml-tree.html#XMLATTRPTR"
+>xmlAttrPtr</A
+> attr);
 int         <A
 HREF="gnome-xml-valid.html#XMLVALIDATEROOT"
 >xmlValidateRoot</A
@@ -641,6 +703,17 @@ HREF="gnome-xml-tree.html#CHAR"
 >CHAR</A
 > *value);
 int         <A
+HREF="gnome-xml-valid.html#XMLVALIDATEDOCUMENTFINAL"
+>xmlValidateDocumentFinal</A
+>        (<GTKDOCLINK
+HREF="XMLVALIDCTXTPTR"
+>xmlValidCtxtPtr</GTKDOCLINK
+> ctxt,
+                                             <A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc);
+int         <A
 HREF="gnome-xml-valid.html#XMLVALIDATENOTATIONUSE"
 >xmlValidateNotationUse</A
 >          (<GTKDOCLINK
@@ -719,7 +792,7 @@ HREF="gnome-xml-tree.html#CHAR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN4682"
+NAME="AEN4718"
 ></A
 ><H2
 >Description</H2
@@ -729,14 +802,14 @@ NAME="AEN4682"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN4685"
+NAME="AEN4721"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4687"
+NAME="AEN4723"
 ></A
 ><H3
 ><A
@@ -830,7 +903,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4709"
+NAME="AEN4745"
 ></A
 ><H3
 ><A
@@ -924,7 +997,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4731"
+NAME="AEN4767"
 ></A
 ><H3
 ><A
@@ -977,7 +1050,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an XML parser context</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -994,7 +1067,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the message to display/transmit</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1011,7 +1084,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  extra parameters for the message display</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -1021,7 +1094,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4754"
+NAME="AEN4790"
 ></A
 ><H3
 ><A
@@ -1074,7 +1147,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an XML parser context</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1091,7 +1164,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the message to display/transmit</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1108,7 +1181,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  extra parameters for the message display</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -1118,7 +1191,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4777"
+NAME="AEN4813"
 ></A
 ><H3
 ><A
@@ -1134,7 +1207,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XML_MIN_NOTATION_TABLE	32</PRE
+>#define     XML_MIN_NOTATION_TABLE</PRE
 ></TD
 ></TR
 ></TABLE
@@ -1144,33 +1217,20 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4782"
+NAME="AEN4818"
 ></A
 ><H3
 ><A
 NAME="XMLNOTATIONTABLEPTR"
 ></A
 >xmlNotationTablePtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlNotationTable *xmlNotationTablePtr;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4787"
+NAME="AEN4822"
 ></A
 ><H3
 ><A
@@ -1186,7 +1246,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XML_MIN_ELEMENT_TABLE	32</PRE
+>#define     XML_MIN_ELEMENT_TABLE</PRE
 ></TD
 ></TR
 ></TABLE
@@ -1196,33 +1256,20 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4792"
+NAME="AEN4827"
 ></A
 ><H3
 ><A
 NAME="XMLELEMENTTABLEPTR"
 ></A
 >xmlElementTablePtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlElementTable *xmlElementTablePtr;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4797"
+NAME="AEN4831"
 ></A
 ><H3
 ><A
@@ -1238,7 +1285,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XML_MIN_ATTRIBUTE_TABLE	32</PRE
+>#define     XML_MIN_ATTRIBUTE_TABLE</PRE
 ></TD
 ></TR
 ></TABLE
@@ -1248,33 +1295,20 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4802"
+NAME="AEN4836"
 ></A
 ><H3
 ><A
 NAME="XMLATTRIBUTETABLEPTR"
 ></A
 >xmlAttributeTablePtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef xmlAttributeTable *xmlAttributeTablePtr;</PRE
-></TD
-></TR
-></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4807"
+NAME="AEN4840"
 ></A
 ><H3
 ><A
@@ -1290,7 +1324,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XML_MIN_ID_TABLE	32</PRE
+>#define     XML_MIN_ID_TABLE</PRE
 ></TD
 ></TR
 ></TABLE
@@ -1300,13 +1334,26 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4812"
+NAME="AEN4845"
 ></A
 ><H3
 ><A
 NAME="XMLIDTABLEPTR"
 ></A
 >xmlIDTablePtr</H3
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4849"
+></A
+><H3
+><A
+NAME="XML-MIN-REF-TABLE"
+></A
+>XML_MIN_REF_TABLE</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1316,7 +1363,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->typedef xmlIDTable *xmlIDTablePtr;</PRE
+>#define     XML_MIN_REF_TABLE</PRE
 ></TD
 ></TR
 ></TABLE
@@ -1326,7 +1373,20 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4817"
+NAME="AEN4854"
+></A
+><H3
+><A
+NAME="XMLREFTABLEPTR"
+></A
+>xmlRefTablePtr</H3
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4858"
 ></A
 ><H3
 ><A
@@ -1398,7 +1458,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the validation context</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1415,7 +1475,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  pointer to the DTD</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1432,7 +1492,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the entity name</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1449,7 +1509,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the public identifier or NULL</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1466,7 +1526,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the system identifier or NULL</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1481,7 +1541,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->NULL if not, othervise the entity</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -1491,7 +1551,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4858"
+NAME="AEN4899"
 ></A
 ><H3
 ><A
@@ -1547,7 +1607,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  A notation table</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1562,7 +1622,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the new xmlNotationTablePtr or NULL in case of error.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -1572,7 +1632,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4879"
+NAME="AEN4920"
 ></A
 ><H3
 ><A
@@ -1625,7 +1685,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  An notation table</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -1635,7 +1695,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4895"
+NAME="AEN4936"
 ></A
 ><H3
 ><A
@@ -1692,7 +1752,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the XML buffer output</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1709,7 +1769,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  A notation table</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -1719,7 +1779,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4916"
+NAME="AEN4957"
 ></A
 ><H3
 ><A
@@ -1779,7 +1839,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the subelement name or NULL</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1796,7 +1856,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the type of element content decl</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1811,7 +1871,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->NULL if not, othervise the new element content structure</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -1821,7 +1881,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4942"
+NAME="AEN4983"
 ></A
 ><H3
 ><A
@@ -1877,7 +1937,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  An element content pointer.</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1892,7 +1952,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the new xmlElementContentPtr or NULL in case of error.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -1902,7 +1962,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4963"
+NAME="AEN5004"
 ></A
 ><H3
 ><A
@@ -1955,7 +2015,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the element content tree to free</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -1965,7 +2025,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4979"
+NAME="AEN5020"
 ></A
 ><H3
 ><A
@@ -2054,7 +2114,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  pointer to the DTD</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2071,7 +2131,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the entity name</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2088,7 +2148,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the element type</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2105,7 +2165,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the element content tree or NULL</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2120,7 +2180,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->NULL if not, othervise the entity</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -2130,7 +2190,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5020"
+NAME="AEN5061"
 ></A
 ><H3
 ><A
@@ -2186,7 +2246,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  An element table</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2201,7 +2261,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the new xmlElementTablePtr or NULL in case of error.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -2211,7 +2271,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5041"
+NAME="AEN5082"
 ></A
 ><H3
 ><A
@@ -2264,7 +2324,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  An element table</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -2274,7 +2334,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5057"
+NAME="AEN5098"
 ></A
 ><H3
 ><A
@@ -2331,7 +2391,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the XML buffer output</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2348,7 +2408,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  An element table</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -2358,7 +2418,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5078"
+NAME="AEN5119"
 ></A
 ><H3
 ><A
@@ -2414,7 +2474,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the enumeration name or NULL</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2429,8 +2489,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the xmlEnumerationPtr just created or NULL in case
-of error.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -2440,7 +2499,7 @@ of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5099"
+NAME="AEN5140"
 ></A
 ><H3
 ><A
@@ -2493,7 +2552,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the tree to free.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -2503,7 +2562,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5115"
+NAME="AEN5156"
 ></A
 ><H3
 ><A
@@ -2559,7 +2618,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the tree to copy.</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2574,8 +2633,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the xmlEnumerationPtr just created or NULL in case
-of error.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -2585,7 +2643,7 @@ of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5136"
+NAME="AEN5177"
 ></A
 ><H3
 ><A
@@ -2669,7 +2727,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the validation context</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2686,7 +2744,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  pointer to the DTD</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2703,7 +2761,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the element name</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2720,7 +2778,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the attribute name</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2737,7 +2795,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the attribute type</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2754,7 +2812,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the attribute default type</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2771,7 +2829,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the attribute default value</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2788,7 +2846,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  if it's an enumeration, the associated list</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2803,7 +2861,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->NULL if not, othervise the entity</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -2813,7 +2871,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5192"
+NAME="AEN5233"
 ></A
 ><H3
 ><A
@@ -2869,7 +2927,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  An attribute table</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2884,7 +2942,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the new xmlAttributeTablePtr or NULL in case of error.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -2894,7 +2952,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5213"
+NAME="AEN5254"
 ></A
 ><H3
 ><A
@@ -2947,7 +3005,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  An attribute table</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -2957,7 +3015,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5229"
+NAME="AEN5270"
 ></A
 ><H3
 ><A
@@ -3014,7 +3072,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the XML buffer output</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3031,7 +3089,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  An attribute table</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -3041,7 +3099,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5250"
+NAME="AEN5291"
 ></A
 ><H3
 ><A
@@ -3109,7 +3167,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the validation context</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3126,7 +3184,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  pointer to the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3143,7 +3201,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the value name</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3160,7 +3218,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the attribute holding the ID</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3175,7 +3233,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->NULL if not, othervise the new xmlIDPtr</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -3185,7 +3243,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5286"
+NAME="AEN5327"
 ></A
 ><H3
 ><A
@@ -3264,7 +3322,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5306"
+NAME="AEN5347"
 ></A
 ><H3
 ><A
@@ -3317,7 +3375,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  An id table</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -3327,7 +3385,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5322"
+NAME="AEN5363"
 ></A
 ><H3
 ><A
@@ -3387,7 +3445,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  pointer to the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3404,7 +3462,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the ID value</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3419,7 +3477,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->NULL if not found, otherwise the xmlAttrPtr defining the ID</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -3429,7 +3487,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5348"
+NAME="AEN5389"
 ></A
 ><H3
 ><A
@@ -3492,7 +3550,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3509,7 +3567,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the element carrying the attribute</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3526,7 +3584,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the attribute</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3541,7 +3599,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->0 or 1 depending on the lookup result</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -3551,7 +3609,415 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5378"
+NAME="AEN5419"
+></A
+><H3
+><A
+NAME="XMLADDREF"
+></A
+>xmlAddRef ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-tree.html#XMLREFPTR"
+>xmlRefPtr</A
+>   xmlAddRef                       (<GTKDOCLINK
+HREF="XMLVALIDCTXTPTR"
+>xmlValidCtxtPtr</GTKDOCLINK
+> ctxt,
+                                             <A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             const <A
+HREF="gnome-xml-tree.html#CHAR"
+>CHAR</A
+> *value,
+                                             <A
+HREF="gnome-xml-tree.html#XMLATTRPTR"
+>xmlAttrPtr</A
+> attr);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Register a new ref declaration</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>value</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>attr</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN5455"
+></A
+><H3
+><A
+NAME="XMLCOPYREFTABLE"
+></A
+>xmlCopyRefTable ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-valid.html#XMLREFTABLEPTR"
+>xmlRefTablePtr</A
+> xmlCopyRefTable              (<A
+HREF="gnome-xml-valid.html#XMLREFTABLEPTR"
+>xmlRefTablePtr</A
+> table);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>table</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN5475"
+></A
+><H3
+><A
+NAME="XMLFREEREFTABLE"
+></A
+>xmlFreeRefTable ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlFreeRefTable                 (<A
+HREF="gnome-xml-valid.html#XMLREFTABLEPTR"
+>xmlRefTablePtr</A
+> table);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Deallocate the memory used by an Ref hash table.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>table</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN5491"
+></A
+><H3
+><A
+NAME="XMLISREF"
+></A
+>xmlIsRef ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlIsRef                        (<A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc,
+                                             <A
+HREF="gnome-xml-tree.html#XMLNODEPTR"
+>xmlNodePtr</A
+> elem,
+                                             <A
+HREF="gnome-xml-tree.html#XMLATTRPTR"
+>xmlAttrPtr</A
+> attr);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Determine whether an attribute is of type Ref. In case we have Dtd(s)
+then this is simple, otherwise we use an heuristic: name Ref (upper
+or lowercase).</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>elem</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>attr</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN5521"
 ></A
 ><H3
 ><A
@@ -3612,7 +4078,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the validation context</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3629,7 +4095,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a document instance</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3644,7 +4110,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->1 if valid or 0 otherwise</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -3654,7 +4120,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5403"
+NAME="AEN5546"
 ></A
 ><H3
 ><A
@@ -3720,7 +4186,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the validation context</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3737,7 +4203,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a document instance</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3754,7 +4220,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an element definition</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3769,7 +4235,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->1 if valid or 0 otherwise</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -3779,7 +4245,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5433"
+NAME="AEN5576"
 ></A
 ><H3
 ><A
@@ -3847,7 +4313,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the validation context</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3864,7 +4330,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a document instance</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3881,7 +4347,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an attribute definition</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3896,7 +4362,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->1 if valid or 0 otherwise</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -3906,7 +4372,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5464"
+NAME="AEN5607"
 ></A
 ><H3
 ><A
@@ -3978,7 +4444,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an attribute type</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -3995,7 +4461,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an attribute value</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4010,7 +4476,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->1 if valid or 0 otherwise</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -4020,7 +4486,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5493"
+NAME="AEN5636"
 ></A
 ><H3
 ><A
@@ -4085,7 +4551,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the validation context</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4102,7 +4568,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a document instance</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4119,7 +4585,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a notation definition</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4134,7 +4600,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->1 if valid or 0 otherwise</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -4144,7 +4610,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5523"
+NAME="AEN5666"
 ></A
 ><H3
 ><A
@@ -4207,7 +4673,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the validation context</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4224,7 +4690,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a document instance</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4241,7 +4707,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a dtd instance</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4256,7 +4722,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->1 if valid or 0 otherwise</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -4266,7 +4732,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5554"
+NAME="AEN5697"
 ></A
 ><H3
 ><A
@@ -4296,7 +4762,7 @@ HREF="gnome-xml-tree.html#XMLDOCPTR"
 ><P
 >Try to validate the document instance</P
 ><P
->basically it does the all the checks described by the
+>basically it does the all the checks described by the XML Rec
 i.e. validates the internal and external subset (if present)
 and validate the document tree.</P
 ><P
@@ -4327,7 +4793,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the validation context</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4344,7 +4810,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a document instance</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4359,7 +4825,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->1 if valid or 0 otherwise</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -4369,7 +4835,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5580"
+NAME="AEN5723"
 ></A
 ><H3
 ><A
@@ -4430,7 +4896,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the validation context</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4447,7 +4913,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a document instance</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4464,7 +4930,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an element instance</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4479,7 +4945,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->1 if valid or 0 otherwise</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -4489,7 +4955,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5610"
+NAME="AEN5753"
 ></A
 ><H3
 ><A
@@ -4560,7 +5026,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the validation context</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4577,7 +5043,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a document instance</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4594,7 +5060,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an element instance</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4609,7 +5075,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->1 if valid or 0 otherwise</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -4619,7 +5085,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5642"
+NAME="AEN5785"
 ></A
 ><H3
 ><A
@@ -4700,7 +5166,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the validation context</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4717,7 +5183,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a document instance</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4734,7 +5200,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an element instance</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4751,7 +5217,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an attribute instance</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4783,7 +5249,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->1 if valid or 0 otherwise</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -4793,7 +5259,109 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5683"
+NAME="AEN5826"
+></A
+><H3
+><A
+NAME="XMLVALIDATEDOCUMENTFINAL"
+></A
+>xmlValidateDocumentFinal ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlValidateDocumentFinal        (<GTKDOCLINK
+HREF="XMLVALIDCTXTPTR"
+>xmlValidCtxtPtr</GTKDOCLINK
+> ctxt,
+                                             <A
+HREF="gnome-xml-tree.html#XMLDOCPTR"
+>xmlDocPtr</A
+> doc);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Does the final step for the document validation once all the
+incremental validation steps have been completed</P
+><P
+>basically it does the following checks described by the XML Rec</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctxt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN5852"
 ></A
 ><H3
 ><A
@@ -4855,7 +5423,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the validation context</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4872,7 +5440,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4889,7 +5457,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the notation name to check</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4904,7 +5472,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->1 if valid or 0 otherwise</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -4914,7 +5482,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5713"
+NAME="AEN5882"
 ></A
 ><H3
 ><A
@@ -4972,7 +5540,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the document</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -4989,7 +5557,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the element name</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5004,7 +5572,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->0 if no, 1 if yes, and -1 if no element description is available</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -5014,7 +5582,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5738"
+NAME="AEN5907"
 ></A
 ><H3
 ><A
@@ -5079,7 +5647,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a pointer to the DtD to search</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5096,7 +5664,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the element name</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5113,7 +5681,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the attribute name</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5128,7 +5696,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the xmlAttributePtr if found or NULL</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -5138,7 +5706,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5769"
+NAME="AEN5938"
 ></A
 ><H3
 ><A
@@ -5198,7 +5766,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a pointer to the DtD to search</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5215,7 +5783,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the notation name</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5230,7 +5798,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the xmlNotationPtr if found or NULL</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -5240,7 +5808,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5795"
+NAME="AEN5964"
 ></A
 ><H3
 ><A
@@ -5300,7 +5868,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  a pointer to the DtD to search</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5317,7 +5885,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the element name</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -5332,7 +5900,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the xmlElementPtr if found or NULL</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P

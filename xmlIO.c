@@ -6,22 +6,39 @@
  * Daniel.Veillard@w3.org
  */
 
+#ifdef WIN32
+#define HAVE_FCNTL_H
+#include <io.h>
+#else
 #include "config.h"
+#endif
 
+#include <stdio.h>
+#include <string.h>
+
+#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
+#endif
+#ifdef HAVE_SYS_STAT_H
 #include <sys/stat.h>
+#endif
+#ifdef HAVE_FCNTL_H
 #include <fcntl.h>
+#endif
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#endif
+#ifdef HAVE_STDLIB_H
+#include <stdlib.h>
 #endif
 #ifdef HAVE_ZLIB_H
 #include <zlib.h>
 #endif
-#include <string.h>
 
 #include "xmlmemory.h"
 #include "parser.h"
 #include "xmlIO.h"
+#include "nanohttp.h"
 
 /* #define DEBUG_INPUT */
 /* #define VERBOSE_FAILURE */
@@ -54,6 +71,7 @@ xmlAllocParserInputBuffer(xmlCharEncoding enc) {
     ret->buffer = xmlBufferCreate();
     ret->encoder = xmlGetCharEncodingHandler(enc);
     ret->fd = -1;
+    ret->netIO = NULL;
 
     return(ret);
 }
@@ -74,6 +92,8 @@ xmlFreeParserInputBuffer(xmlParserInputBufferPtr in) {
     if (in->gzfile != NULL)
         gzclose(in->gzfile);
 #endif
+    if (in->netIO != NULL)
+        xmlNanoHTTPClose(in->netIO);
     if (in->fd >= 0)
         close(in->fd);
     memset(in, 0xbe, (size_t) sizeof(xmlParserInputBuffer));
@@ -96,14 +116,24 @@ xmlParserInputBufferPtr
 xmlParserInputBufferCreateFilename(const char *filename, xmlCharEncoding enc) {
     xmlParserInputBufferPtr ret;
 #ifdef HAVE_ZLIB_H
-    gzFile input;
+    gzFile input = 0;
 #else
     int input = -1;
 #endif
+    void *netIO = NULL;
 
     if (filename == NULL) return(NULL);
 
-    if (!strcmp(filename, "-")) {
+    if (!strncmp(filename, "http://", 7)) {
+        netIO = xmlNanoHTTPOpen(filename, NULL);
+        if (netIO == NULL) {
+#ifdef VERBOSE_FAILURE
+            fprintf (stderr, "Cannot read URL %s\n", filename);
+            perror ("xmlNanoHTTPOpen failed");
+#endif
+            return(NULL);
+	}
+    } else if (!strcmp(filename, "-")) {
 #ifdef HAVE_ZLIB_H
         input = gzdopen (fileno(stdin), "r");
         if (input == NULL) {
@@ -166,6 +196,7 @@ xmlParserInputBufferCreateFilename(const char *filename, xmlCharEncoding enc) {
 #else
         ret->fd = input;
 #endif
+        ret->netIO = netIO;
     }
     xmlParserInputBufferRead(ret, 4);
 
@@ -255,7 +286,9 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
         fprintf(stderr, "xmlParserInputBufferGrow : out of memory !\n");
 	return(-1);
     }
-    if (in->file != NULL) {
+    if (in->netIO != NULL) {
+        res = xmlNanoHTTPRead(in->netIO, &buffer[0], len);
+    } else if (in->file != NULL) {
 	res = fread(&buffer[0], 1, len, in->file);
 #ifdef HAVE_ZLIB_H
     } else if (in->gzfile != NULL) {

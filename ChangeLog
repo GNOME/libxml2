@@ -1,3 +1,17 @@
+Wed Sep 22 11:40:31 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* parser.h: modified the parser context struct to regain 1.4.0
+	            binary compatibility
+	* parser.c, xml-error.h: added errno ot teh context and defined
+	            a set of errors values with update of errno
+	* nanohttp.[ch]: minimalist HTTP front-end for fetching remote
+	            DTDs and entities
+	* *.h, *.c: complete cleanup of the use of config.h and include
+	            protection depending on the current setup.
+	* overalll debugging, maintenance and bug-fixing on all modules
+	* updated the documentation
+	* ready for 1.7.0
+
 Wed Sep  8 22:46:14 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* HTMLparser.c : cleanup

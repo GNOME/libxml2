@@ -6,9 +6,15 @@
  * Daniel.Veillard@w3.org
  */
 
+#ifndef WIN32
+#include "config.h"
+#endif
+
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
+#ifdef HAVE_STDLIB_H
+#include <stdlib.h>
+#endif
 #include "xmlmemory.h"
 #include "entities.h"
 

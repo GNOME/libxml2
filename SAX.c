@@ -6,6 +6,7 @@
  * Daniel Veillard <Daniel.Veillard@w3.org>
  */
 
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "xmlmemory.h"
@@ -236,15 +237,8 @@ resolveEntity(void *ctx, const CHAR *publicId, const CHAR *systemId)
     fprintf(stderr, "SAX.resolveEntity(%s, %s)\n", publicId, systemId);
 #endif
 
-    /*
-     * TODO : resolveEntity, handling of http://.. or ftp://..
-     */
     if (systemId != NULL) {
-        if (!xmlStrncmp(systemId, BAD_CAST "http://", 7)) {
-	} else if (!xmlStrncmp(systemId, BAD_CAST "ftp://", 6)) {
-	} else {
-	    return(xmlNewInputFromFile(ctxt, (char *) systemId));
-	}
+	return(xmlNewInputFromFile(ctxt, (char *) systemId));
     }
     return(NULL);
 }
@@ -604,12 +598,29 @@ startElement(void *ctx, const CHAR *fullname, const CHAR **atts)
     CHAR *prefix;
     const CHAR *att;
     const CHAR *value;
-
     int i;
 
 #ifdef DEBUG_SAX
     fprintf(stderr, "SAX.startElement(%s)\n", fullname);
 #endif
+
+    /*
+     * First check on validity:
+     */
+    if (ctxt->validate && (ctxt->myDoc->extSubset == NULL) && 
+        ((ctxt->myDoc->intSubset == NULL) ||
+	 ((ctxt->myDoc->intSubset->notations == NULL) && 
+	  (ctxt->myDoc->intSubset->elements == NULL) &&
+	  (ctxt->myDoc->intSubset->attributes == NULL) && 
+	  (ctxt->myDoc->intSubset->entities == NULL)))) {
+	if (ctxt->vctxt.error != NULL) {
+            ctxt->vctxt.error(ctxt->vctxt.userData,
+	      "Validation failed: no DTD found !\n");
+	}
+	ctxt->validate = 0;
+    }
+       
+
     /*
      * Split the full name into a namespace prefix and the tag name
      */

@@ -10,13 +10,20 @@
 #define HAVE_FCNTL_H
 #include <io.h>
 #else
-#include <config.h>
+#include "config.h"
 #endif
+
 #include <stdio.h>
-#include <ctype.h>
 #include <string.h> /* for memset() only */
+#ifdef HAVE_CTYPE_H
+#include <ctype.h>
+#endif
+#ifdef HAVE_STDLIB_H
 #include <stdlib.h>
+#endif
+#ifdef HAVE_SYS_STAT_H
 #include <sys/stat.h>
+#endif
 #ifdef HAVE_FCNTL_H
 #include <fcntl.h>
 #endif

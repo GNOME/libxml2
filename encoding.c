@@ -19,10 +19,16 @@
  * Daniel.Veillard@w3.org
  */
 
+#ifndef WIN32
 #include "config.h"
-#include <ctype.h>
-#include <string.h>
+#endif
+
 #include <stdio.h>
+#include <string.h>
+
+#ifdef HAVE_CTYPE_H
+#include <ctype.h>
+#endif
 #include "encoding.h"
 #ifdef HAVE_UNICODE_H
 #include <unicode.h>

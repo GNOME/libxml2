@@ -456,7 +456,8 @@ htmlNodeDumpFormat(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
 	    if (((cur->name == (const xmlChar *)xmlStringText) ||
 		 (cur->name != (const xmlChar *)xmlStringTextNoenc)) &&
 		((cur->parent == NULL) ||
-		 (!xmlStrEqual(cur->parent->name, BAD_CAST "script")))) {
+		 ((!xmlStrEqual(cur->parent->name, BAD_CAST "script")) &&
+		  (!xmlStrEqual(cur->parent->name, BAD_CAST "style"))))) {
 		xmlChar *buffer;
 
 		buffer = xmlEncodeEntitiesReentrant(doc, cur->content);
@@ -945,7 +946,8 @@ htmlNodeDumpFormatOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
 	    if (((cur->name == (const xmlChar *)xmlStringText) ||
 		 (cur->name != (const xmlChar *)xmlStringTextNoenc)) &&
 		((cur->parent == NULL) ||
-		 (!xmlStrEqual(cur->parent->name, BAD_CAST "script")))) {
+		 ((!xmlStrEqual(cur->parent->name, BAD_CAST "script")) &&
+		  (!xmlStrEqual(cur->parent->name, BAD_CAST "style"))))) {
 		xmlChar *buffer;
 
 		buffer = xmlEncodeEntitiesReentrant(doc, cur->content);

@@ -1,3 +1,8 @@
+Mon Jul 29 18:22:00 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLtree.c: trying to fix the <style> escaping problem in
+	  HTML serialization bug #89342
+
 Thu Jul 25 01:33:47 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* doc/xml.html doc/*.html: applied syntax patch from Rick Jones

@@ -1,3 +1,7 @@
+1999-02-13  Nuno Ferreira  <nmrf@rnl.ist.utl.pt>
+
+	* doc/.cvsignore: Added this file.
+
 Mon Feb  8 19:27:56 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* tree.c: fixed xmlGetProp to return "" when the attribute

@@ -1,3 +1,9 @@
+Wed Aug  1 01:33:35 CEST 2001 Thomas Broyer <tbroyer@ltgt.net>
+
+	* xpath.c: fixed a bug in xmlXPathNodeTrailingSorted (for now it
+	  worked like the set:leading() function)
+	* include/libxml/xpathInternals.h: added xmlXPathNodeSetContains
+
 Tue Jul 31 18:24:34 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* nanohttp.c: protected an use of EAGAIN, Brian Stafford

@@ -2186,7 +2186,7 @@ xmlXPathNodeTrailingSorted (xmlNodeSetPtr nodes, xmlNodePtr node) {
 	return(ret);
 
     l = xmlXPathNodeSetGetLength(nodes);
-    for (i = 0; i < l; i++) {
+    for (i = l; i > 0; i--) {
 	cur = xmlXPathNodeSetItem(nodes, i);
 	if (cur == node)
 	    break;

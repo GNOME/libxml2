@@ -349,6 +349,8 @@ void		xmlXPathDebugDumpCompExpr(FILE *output,
 /**
  * NodeSet handling
  */
+int		xmlXPathNodeSetContains		(xmlNodeSetPtr cur,
+						 xmlNodePtr val);
 xmlNodeSetPtr	xmlXPathDifference		(xmlNodeSetPtr nodes1,
 						 xmlNodeSetPtr nodes2);
 xmlNodeSetPtr	xmlXPathIntersection		(xmlNodeSetPtr nodes1,

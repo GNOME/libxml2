@@ -1,3 +1,7 @@
+Sat Mar  8 14:27:43 CET 2003 Igor Zlatkovic <igor@zlatkovic.com>
+
+	* encoding.c: applied Gennady's patch against buffer overrun
+
 Fri Mar  7 19:29:40 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* test/xsdtest/xsdtest.xml uri.c: after and exchange with James

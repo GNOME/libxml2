@@ -1,3 +1,8 @@
+Mon Jan 31 18:58:21 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* nanoftp.c nanohttp.c: Fixed '#' and '?' stripping when
+	  processing URLs
+
 Mon Jan 31 14:25:57 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* nanoftp.[ch]: cleanup, bug fixes, integration in rpmfind, added

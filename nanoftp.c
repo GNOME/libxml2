@@ -263,12 +263,10 @@ xmlNanoFTPScanURL(void *ctx, const char *URL) {
     if (*cur == 0) 
         ctxt->path = xmlMemStrdup("/");
     else {
+        index = 0;
         buf[index] = 0;
-	while (*cur != 0) {
-	    if ((cur[0] == '#') || (cur[0] == '?'))
-	        break;
+	while (*cur != 0)
 	    buf[index++] = *cur++;
-	}
 	buf[index] = 0;
 	ctxt->path = xmlMemStrdup(buf);
     }	
@@ -355,12 +353,10 @@ xmlNanoFTPUpdateURL(void *ctx, const char *URL) {
     if (*cur == 0) 
         ctxt->path = xmlMemStrdup("/");
     else {
+        index = 0;
         buf[index] = 0;
-	while (*cur != 0) {
-	    if ((cur[0] == '#') || (cur[0] == '?'))
-	        break;
+	while (*cur != 0)
 	    buf[index++] = *cur++;
-	}
 	buf[index] = 0;
 	ctxt->path = xmlMemStrdup(buf);
     }	

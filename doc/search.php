@@ -390,6 +390,60 @@ A:link, A:visited, A:active { text-decoration: underline }
 		    }
 		}
 	    }
+	    if ((count($results) == 0) && (count($list) == 1)) {
+		$word = $list[0];
+		if (($scope == 'any') || ($scope == 'XML') ||
+		    ($scope == 'API') || ($scope == 'XMLAPI')) {
+		    list($result, $j) = queryWord("xml" + $word);
+		    if ($j > 0) {
+			for ($i = 0; $i < $j; $i++) {
+			    $relevance = mysql_result($result, $i, 0);
+			    $name = mysql_result($result, $i, 1);
+			    $type = mysql_result($result, $i, 2);
+			    $module = mysql_result($result, $i, 3);
+			    $desc = mysql_result($result, $i, 4);
+			    if (array_key_exists($name, $results)) {
+				list($r,$t,$m,$d,$w,$u) = $results[$name];
+				$results[$name] = array(($r + $relevance) * 2,
+							$t,$m,$d,$w,$u);
+			    } else {
+				$id = $name;
+				$m = strtolower($module);
+				$url = "html/libxml-$module.html#$id";
+				$results[$name] = array($relevance,$type,
+						$module, $desc, $name, $url);
+			    }
+			}
+			mysql_free_result($result);
+		    }
+		}
+		if (($scope == 'any') || ($scope == 'XSLT') ||
+		    ($scope == 'API') || ($scope == 'XSLTAPI')) {
+		    list($result, $j) = queryWord("xslt" + $word);
+		    list($result, $j) = XSLTqueryWord($word);
+		    if ($j > 0) {
+			for ($i = 0; $i < $j; $i++) {
+			    $relevance = mysql_result($result, $i, 0);
+			    $name = mysql_result($result, $i, 1);
+			    $type = mysql_result($result, $i, 2);
+			    $module = mysql_result($result, $i, 3);
+			    $desc = mysql_result($result, $i, 4);
+			    if (array_key_exists($name, $results)) {
+				list($r,$t,$m,$d,$w,$u) = $results[$name];
+				$results[$name] = array(($r + $relevance) * 2,
+							$t,$m,$d,$w,$u);
+			    } else {
+				$id = $name;
+				$m = strtolower($module);
+				$url = "XSLT/html/libxslt-$module.html#$id";
+				$results[$name] = array($relevance,$type,
+						$module, $desc, $name, $url);
+			    }
+			}
+			mysql_free_result($result);
+		    }
+		}
+	    }
 	    mysql_close($link);
 	    $nb = count($results);
 	    echo "<h3 align='center'>Found $nb results for query $query</h3>\n";

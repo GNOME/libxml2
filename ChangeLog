@@ -1,3 +1,10 @@
+Thu Mar  2 02:26:13 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* parser.c: tried to remove the <a>   </a> generating <a/>
+	  this is hard. Left a flag for that purpose. Fixed bug #6766
+	* configure.in: prepared 1.8.7 not released, due to previous
+	  problem
+
 Thu Mar  2 03:03:50 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* doc/xml.html : applied second patch from Paul DuBois

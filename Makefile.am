@@ -256,8 +256,6 @@ confexec_DATA = xmlConf.sh
 
 CLEANFILES=xmlConf.sh
 
-EXTRA_DIST = xmlConf.sh.in
-
 confexecdir=$(libdir)
 confexec_DATA = xmlConf.sh
 EXTRA_DIST = xmlConf.sh.in libxml.spec.in libxml.spec \

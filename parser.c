@@ -263,6 +263,7 @@ xmlParserInputShrink(xmlParserInputPtr in) {
 
 int xmlSubstituteEntitiesDefaultValue = 0;
 int xmlDoValidityCheckingDefaultValue = 0;
+int xmlKeepBlanksDefaultValue = 0;
 xmlEntityPtr xmlParseStringEntityRef(xmlParserCtxtPtr ctxt,
                                      const xmlChar ** str);
 
@@ -684,6 +685,7 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
     ctxt->wellFormed = 1;
     ctxt->valid = 1;
     ctxt->validate = xmlDoValidityCheckingDefaultValue;
+    ctxt->keepBlanks = xmlKeepBlanksDefaultValue;
     ctxt->vctxt.userData = ctxt;
     if (ctxt->validate) {
 	ctxt->vctxt.error = xmlParserValidityError;
@@ -2077,27 +2079,37 @@ static int areBlanks(xmlParserCtxtPtr ctxt, const xmlChar *str, int len) {
     int i, ret;
     xmlNodePtr lastChild;
 
+    /*
+     * Check that the string is made of blanks
+     */
     for (i = 0;i < len;i++)
         if (!(IS_BLANK(str[i]))) return(0);
 
-    if (CUR != '<') return(0);
-    if (ctxt->node == NULL) return(0);
+    /*
+     * Look if the element is mixed content in the Dtd if available
+     */
     if (ctxt->myDoc != NULL) {
 	ret = xmlIsMixedElement(ctxt->myDoc, ctxt->node->name);
         if (ret == 0) return(1);
         if (ret == 1) return(0);
     }
+
     /*
-     * heuristic
+     * Do we allow an heuristic on white space
      */
+    if (ctxt->keepBlanks)
+	return(0);
+    if (CUR != '<') return(0);
+    if (ctxt->node == NULL) return(0);
+
     lastChild = xmlGetLastChild(ctxt->node);
     if (lastChild == NULL) {
-        if (ctxt->node->content != NULL) return(0);
+	if (ctxt->node->content != NULL) return(0);
     } else if (xmlNodeIsText(lastChild))
-        return(0);
+	return(0);
     else if ((ctxt->node->childs != NULL) &&
-             (xmlNodeIsText(ctxt->node->childs)))
-        return(0);
+	     (xmlNodeIsText(ctxt->node->childs)))
+	return(0);
     return(1);
 }
 
@@ -8319,7 +8331,8 @@ xmlCreateMemoryParserCtxt(char *buffer, int size) {
     xmlParserInputPtr input;
     xmlCharEncoding enc;
 
-    buffer[size - 1] = '\0';
+    if (buffer[size] != '\0')
+	buffer[size] = '\0';
 
     ctxt = xmlNewParserCtxt();
     if (ctxt == NULL) {

@@ -159,6 +159,7 @@ struct _xmlParserCtxt {
 
     long               nbChars;       /* number of xmlChar processed */
     long            checkIndex;       /* used by progressive parsing lookup */
+    int             keepBlanks;       /* ugly but ... */
 };
 
 /**

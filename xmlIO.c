@@ -174,7 +174,7 @@ xmlNop(void) {
  */
 static int
 xmlFdRead (void * context, char * buffer, int len) {
-    return(read((int) context, &buffer[0], len));
+    return(read((int) (long) context, &buffer[0], len));
 }
 
 /**
@@ -189,7 +189,7 @@ xmlFdRead (void * context, char * buffer, int len) {
  */
 static int
 xmlFdWrite (void * context, const char * buffer, int len) {
-    return(write((int) context, &buffer[0], len));
+    return(write((int) (long) context, &buffer[0], len));
 }
 
 /**
@@ -200,7 +200,7 @@ xmlFdWrite (void * context, const char * buffer, int len) {
  */
 static void
 xmlFdClose (void * context) {
-    close((int) context);
+    close((int) (long) context);
 }
 
 /**
@@ -1088,7 +1088,7 @@ xmlParserInputBufferCreateFd(int fd, xmlCharEncoding enc) {
 
     ret = xmlAllocParserInputBuffer(enc);
     if (ret != NULL) {
-        ret->context = (void *) fd;
+        ret->context = (void *) (long) fd;
 	ret->readcallback = xmlFdRead;
 	ret->closecallback = xmlFdClose;
     }
@@ -1143,7 +1143,7 @@ xmlOutputBufferCreateFd(int fd, xmlCharEncodingHandlerPtr encoder) {
 
     ret = xmlAllocOutputBuffer(encoder);
     if (ret != NULL) {
-        ret->context = (void *) fd;
+        ret->context = (void *) (long) fd;
 	ret->writecallback = xmlFdWrite;
 	ret->closecallback = xmlFdClose;
     }

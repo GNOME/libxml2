@@ -1,3 +1,7 @@
+Tue Jul 17 16:04:36 EDT 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* SAX.c xmlIO.c: cleaned up some warning on the Alpha
+
 Mon Jul 16 06:32:44 CEST 2001 Thomas Broyer <tbroyer@ltgt.net>
 
 	* include/libxml/xpath{,Internals}.h xpath.c: added a more

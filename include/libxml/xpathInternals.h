@@ -27,10 +27,10 @@ extern "C" {
  *									*
  ************************************************************************/
 
-    /**
-     * Many of these macros may later turn into functions. They
-     * shouldn't be used in #ifdef's preprocessor instructions.
-     */
+/**
+ * Many of these macros may later turn into functions. They
+ * shouldn't be used in #ifdef's preprocessor instructions.
+ */
 /**
  * xmlXPathSetError:
  * @ctxt:  an XPath parser context
@@ -41,6 +41,7 @@ extern "C" {
 #define xmlXPathSetError(ctxt, err)					\
     { xmlXPatherror((ctxt), __FILE__, __LINE__, (err));			\
       (ctxt)->error = (err); }
+
 /**
  * xmlXPathSetArityError:
  * @ctxt:  an XPath parser context
@@ -49,6 +50,7 @@ extern "C" {
  */
 #define xmlXPathSetArityError(ctxt)					\
     xmlXPathSetError((ctxt), XPATH_INVALID_ARITY)
+
 /**
  * xmlXPathSetTypeError:
  * @ctxt:  an XPath parser context
@@ -57,6 +59,7 @@ extern "C" {
  */
 #define xmlXPathSetTypeError(ctxt)					\
     xmlXPathSetError((ctxt), XPATH_INVALID_TYPE)
+
 /**
  * xmlXPathGetError:
  * @ctxt:  an XPath parser context
@@ -64,6 +67,7 @@ extern "C" {
  * Returns the context error
  */
 #define xmlXPathGetError(ctxt)	  ((ctxt)->error)
+
 /**
  * xmlXPathCheckError:
  * @ctxt:  an XPath parser context
@@ -79,6 +83,7 @@ extern "C" {
  * Returns the context document
  */
 #define xmlXPathGetDocument(ctxt)	((ctxt)->context->doc)
+
 /**
  * xmlXPathGetContextNode:
  * @ctxt: an XPath parser context
@@ -102,6 +107,7 @@ void *		xmlXPathPopExternal	(xmlXPathParserContextPtr ctxt);
  */
 #define xmlXPathReturnBoolean(ctxt, val)				\
     valuePush((ctxt), xmlXPathNewBoolean(val))
+
 /**
  * xmlXPathReturnTrue:
  * @ctxt:  an XPath parser context
@@ -109,6 +115,7 @@ void *		xmlXPathPopExternal	(xmlXPathParserContextPtr ctxt);
  * Pushes true on the context stack
  */
 #define xmlXPathReturnTrue(ctxt)   xmlXPathReturnBoolean((ctxt), 1)
+
 /**
  * xmlXPathReturnFalse:
  * @ctxt:  an XPath parser context
@@ -116,6 +123,7 @@ void *		xmlXPathPopExternal	(xmlXPathParserContextPtr ctxt);
  * Pushes false on the context stack
  */
 #define xmlXPathReturnFalse(ctxt)  xmlXPathReturnBoolean((ctxt), 0)
+
 /**
  * xmlXPathReturnNumber:
  * @ctxt:  an XPath parser context
@@ -125,6 +133,7 @@ void *		xmlXPathPopExternal	(xmlXPathParserContextPtr ctxt);
  */
 #define xmlXPathReturnNumber(ctxt, val)					\
     valuePush((ctxt), xmlXPathNewFloat(val))
+
 /**
  * xmlXPathReturnString:
  * @ctxt:  an XPath parser context
@@ -134,6 +143,7 @@ void *		xmlXPathPopExternal	(xmlXPathParserContextPtr ctxt);
  */
 #define xmlXPathReturnString(ctxt, str)					\
     valuePush((ctxt), xmlXPathWrapString(str))
+
 /**
  * xmlXPathReturnEmptyString:
  * @ctxt:  an XPath parser context
@@ -142,6 +152,7 @@ void *		xmlXPathPopExternal	(xmlXPathParserContextPtr ctxt);
  */
 #define xmlXPathReturnEmptyString(ctxt)					\
     valuePush((ctxt), xmlXPathNewCString(""))
+
 /**
  * xmlXPathReturnNodeSet:
  * @ctxt:  an XPath parser context
@@ -151,6 +162,7 @@ void *		xmlXPathPopExternal	(xmlXPathParserContextPtr ctxt);
  */
 #define xmlXPathReturnNodeSet(ctxt, ns)					\
     valuePush((ctxt), xmlXPathWrapNodeSet(ns))
+
 /**
  * xmlXPathReturnEmptyNodeSet:
  * @ctxt:  an XPath parser context
@@ -159,6 +171,7 @@ void *		xmlXPathPopExternal	(xmlXPathParserContextPtr ctxt);
  */
 #define xmlXPathReturnEmptyNodeSet(ctxt, ns)				\
     valuePush((ctxt), xmlXPathNewNodeSet(NULL))
+
 /**
  * xmlXPathReturnExternal:
  * @ctxt:  an XPath parser context
@@ -188,11 +201,6 @@ void *		xmlXPathPopExternal	(xmlXPathParserContextPtr ctxt);
  */
 #define xmlXPathEmptyNodeSet(ns)					\
     { while ((ns)->nodeNr > 0) (ns)->nodeTab[(ns)->nodeNr--] = NULL; }
-
-    /**
-     * These macros shouldn't be used anymore. Prefer above functions
-     * and macros.
-     */
 
 /**
  * CHECK_ERROR:

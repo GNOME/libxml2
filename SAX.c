@@ -967,7 +967,7 @@ startElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
     }
     ctxt->nodemem = -1;
     if (ctxt->input != NULL)
-	ret->content = (void *) ctxt->input->line;
+	ret->content = (void *) (long) ctxt->input->line;
 
     /*
      * We are parsing a new node.

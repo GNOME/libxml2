@@ -1,5 +1,5 @@
 /*
- * memory.c:  libxml memory allocator wrapper.
+ * xmlmemory.c:  libxml memory allocator wrapper.
  *
  * daniel@veillard.com
  */
@@ -156,7 +156,7 @@ xmlMallocLoc(size_t size, const char * file, int line)
 
     if (!p) {
 	xmlGenericError(xmlGenericErrorContext,
-		"xmlMalloc : Out of free space\n");
+		"xmlMallocLoc : Out of free space\n");
 	xmlMemoryDump();
 	return(NULL);
     }   
@@ -333,7 +333,7 @@ xmlMemFree(void *ptr)
     
 error:    
     xmlGenericError(xmlGenericErrorContext,
-	    "xmlFree(%lX) error\n", (unsigned long) ptr);
+	    "xmlMemFree(%lX) error\n", (unsigned long) ptr);
     xmlMallocBreakpoint();
     return;
 }
@@ -346,7 +346,7 @@ error:
  *
  * a strdup() equivalent, with logging of the allocation info.
  *
- * Returns a pointer to the new string or NULL if allocation error occured.
+ * Returns a pointer to the new string or NULL if allocation error occurred.
  */
 
 char *
@@ -403,7 +403,7 @@ error:
  *
  * a strdup() equivalent, with logging of the allocation info.
  *
- * Returns a pointer to the new string or NULL if allocation error occured.
+ * Returns a pointer to the new string or NULL if allocation error occurred.
  */
 
 char *
@@ -414,7 +414,7 @@ xmlMemoryStrdup(const char *str) {
 /**
  * xmlMemUsed:
  *
- * returns the amount of memory currenly allocated
+ * returns the amount of memory currently allocated
  *
  * Returns an int representing the amount of memory allocated.
  */

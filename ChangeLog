@@ -1,3 +1,8 @@
+Sat Dec 28 15:55:32 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* doc/guidelines.html: added a document on guildeline for
+	  publishing and deploying XML
+
 Fri Dec 27 20:35:15 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* valid.c xmlreader.c: final touch running DTD validation

@@ -1,12 +1,12 @@
 dnl Like AC_TRY_EVAL but also errors out if the compiler generates
 dnl _any_ output. Some compilers might issue warnings which we want
 dnl to catch.
-AC_DEFUN(AC_TRY_EVAL2,
+AC_DEFUN([AC_TRY_EVAL2],
 [{ (eval echo configure:__oline__: \"[$]$1\") 1>&AC_FD_CC; dnl
 (eval [$]$1) 2>&AC_FD_CC; _out=`eval [$]$1 2>&1` && test "x$_out" = x; }])
 
 dnl Like AC_TRY_COMPILE but calls AC_TRY_EVAL2 instead of AC_TRY_EVAL
-AC_DEFUN(AC_TRY_COMPILE2,
+AC_DEFUN([AC_TRY_COMPILE2],
 [cat > conftest.$ac_ext <<EOF
 [#]line __oline__ "configure"
 #include "confdefs.h"

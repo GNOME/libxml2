@@ -1,3 +1,8 @@
+Mon Jan 26 18:01:00 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* acinclude.m4: applied fix from Alexander Winston for a problem
+	  related to automake-1.8 , c.f. #132513 and #129861
+
 Mon Jan 26 12:53:11 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* doc/examples/index.py: don't rely on . being on the path for

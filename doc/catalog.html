@@ -18,7 +18,7 @@ href="http://xmlsoft.org/catalog.html">http://xmlsoft.org/catalog.html</a></p>
 <p>Mailing-list archive:  <a
 href="http://mail.gnome.org/archives/xml/">http://mail.gnome.org/archives/xml/</a></p>
 
-<p>Version: $Revision:$</p>
+<p>Version: $Revision: 1.1 $</p>
 
 <p>Table of Content:</p>
 <ol>
@@ -41,24 +41,23 @@ an entity (a file or a remote resource) reference another entity. The catalog
 lookup is inserted between the moment the reference is recognized by the
 software (XML parser, stylesheet processing, or even images referenced for
 inclusion in a rendering) and the time where loading that resource is
-actually started. </p>
+actually started.</p>
 
 <p>It is basically used for 3 things:</p>
 <ul>
   <li>mapping from "logical" names, the public identifiers and a more
     concrete name usable for download (and URI). For example it can associate
-    the logical name 
-    <p>"-//OASIS//DTD DocBook XML V4.1.2//EN"  </p>
+    the logical name
+    <p>"-//OASIS//DTD DocBook XML V4.1.2//EN"</p>
     <p>of the DocBook 4.1.2 XML DTD with the actual URL where it can be
     downloaded</p>
-    <p>http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd  </p>
+    <p>http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd</p>
   </li>
   <li>remapping from a given URL to another one, like an HTTP indirection
     saying that
     <p>"http://www.oasis-open.org/committes/tr.xsl"</p>
     <p>should really be looked at</p>
-    <p>"http://www.oasis-open.org/committes/entity/stylesheets/base/tr.xsl" 
-    </p>
+    <p>"http://www.oasis-open.org/committes/entity/stylesheets/base/tr.xsl"</p>
   </li>
   <li>providing a local cache mechanism allowing to load the entities
     associated to public identifiers or remote resources, this is a really
@@ -77,8 +76,9 @@ actually started. </p>
     James Clark. This is relatively old and not the preferred mode of
     operation of libxml.</li>
   <li><a href="http://www.oasis-open.org/committees/entity/spec.html">XML
-    Catalogs</a> is far more flexible, more recent, uses an XML syntax and
-    should scale quite better. This is the default option of libxml.</li>
+    Catalogs</a>
+     is far more flexible, more recent, uses an XML syntax and should scale
+    quite better. This is the default option of libxml.</li>
 </ul>
 
 <p></p>
@@ -93,7 +93,6 @@ starts with the following DOCTYPE definition:</p>
 <pre>&lt;?xml version='1.0'?&gt;
 &lt;!DOCTYPE book PUBLIC "-//Norman Walsh//DTD DocBk XML V3.1.4//EN"
                          "http://nwalsh.com/docbook/xml/3.1.4/db3xml.dtd"&gt;
-
 </pre>
 
 <p>When validating the document with libxml, the catalog will be
@@ -128,7 +127,7 @@ regression tests in <code>test/catalogs</code> :</p>
 written in XML,  there is a specific namespace for catalog elements
 "urn:oasis:names:tc:entity:xmlns:xml:catalog". The first entry in this
 catalog is a <code>public</code> mapping it allows to associate a Public
-Identifier with an URI. </p>
+Identifier with an URI.</p>
 <pre>...
     &lt;rewriteSystem systemIdStartString="http://www.oasis-open.org/docbook/"
                    rewritePrefix="file:///usr/share/xml/docbook/"/&gt;
@@ -139,7 +138,7 @@ any URI starting with a given prefix should be looked at another  URI
 constructed by replacing the prefix with an new one. In effect this acts like
 a cache system for a full area of the Web. In practice it is extremely useful
 with a file prefix if you have installed a copy of those resources on your
-local system. </p>
+local system.</p>
 <pre>...
 &lt;delegatePublic publicIdStartString="-//OASIS//DTD XML Catalog //"
                 catalog="file:///usr/share/xml/docbook.xml"/&gt;
@@ -192,7 +191,7 @@ orchis:~/XML -&gt; </pre>
 the base URI unavailable and the the "title.xml" entity cannot be loaded.
 Setting up the debug environment variable allows to detect that an attempt is
 made to load the <code>/etc/xml/catalog</code> but since it's not present the
-resolution fails.  </p>
+resolution fails.</p>
 
 <p>But the most advanced way to debug XML catalog processing is to use the
 <strong>xmlcatalog</strong> command shipped with libxml2, it allows to load
@@ -276,13 +275,89 @@ orchis:~/XML -&gt; </pre>
 exact and would have worked in a similar fashion with the Public ID
 string.</p>
 
-<p> This is rudimentary but should be sufficient to manage a not too complex
-catalog tree of resources. </p>
+<p>This is rudimentary but should be sufficient to manage a not too complex
+catalog tree of resources.</p>
 
 <h2><a name="implemento">The implementor corner quick review of the
 API:</a></h2>
 
-<p>@@TODO@@</p>
+<p>First an like for every other module of libxml, there is an automatically
+generated <a href="html/libxml-catalog.html">API page  for catalog
+support</a>.</p>
+
+<p>The header for the catalog interfaces should be included as:</p>
+<pre>#include &lt;libxml/catalog.h&gt;</pre>
+
+<p>The API is voluntarily kept very simple. First it is not obvious that
+applications really need access to it since it is the default behaviour of
+libxml (Note: it is possible to completely override libxml default catalog by
+using <a href="html/libxml-parser.html">xmlSetExternalEntityLoader</a> to
+plug an application specific resolver).</p>
+
+<p>Basically libxml support 2 catalog lists:</p>
+<ul>
+  <li>the default one, global shared by all the application</li>
+  <li>a per-document catalog, this one is built if the document uses the
+    <code>oasis-xml-catalog</code> PIs to specify its own catalog list, it is
+    associated to the parser context and destroyed when the parsing context
+    is destroyed.</li>
+</ul>
+
+<p>the document one will be used first if it exists.</p>
+
+<h3>Initialization routines:</h3>
+
+<p>xmlInitializeCatalog(), xmlLoadCatalog() and xmlLoadCatalogs() should be
+used at startup to initialize the catalog, if the catalog should be
+initialized with specific values xmlLoadCatalog()  or xmlLoadCatalogs()
+should be called before xmlInitializeCatalog() which would otherwise do a
+default initialization first.</p>
+
+<p>The xmlCatalogAddLocal() call is used by the parser to grow the document
+own catalog list if needed.</p>
+
+<h3>Preferences setup:</h3>
+
+<p>The XML Catalog spec requires the possibility to select default
+preferences between  public and system delegation,
+xmlCatalogSetDefaultPrefer() allows this, xmlCatalogSetDefaults() and
+xmlCatalogGetDefaults() allow to control  if XML Catalogs resolution should
+be forbidden, allowed for global catalog, for document catalog or both, the
+default is to allow both.</p>
+
+<p>And of course xmlCatalogSetDebug() allows to generate debug messages
+(through the xmlGenericError() mechanism).</p>
+
+<h3>Querying routines:</h3>
+
+<p>xmlCatalogResolve(), xmlCatalogResolveSystem(), xmlCatalogResolvePublic()
+and xmlCatalogResolveURI() are relatively explicit if you read the XML
+Catalog specification they correspond to section 7 algorithms, they should
+also work if you have loaded an SGML catalog with a simplified semantic.</p>
+
+<p>xmlCatalogLocalResolve() and xmlCatalogLocalResolveURI() are the same but
+operate on the document catalog list</p>
+
+<h3>Cleanup and Miscellaneous:</h3>
+
+<p>xmlCatalogCleanup() free-up the global catalog, xmlCatalogFreeLocal() is
+the per-document equivalent.</p>
+
+<p>xmlCatalogAdd() and xmlCatalogRemove() are used to dynamically modify the
+first catalog in the global list, and xmlCatalogDump() allows to dump a
+catalog state, those routines are primarily designed for xmlcatalog, I'm not
+sure that exposing more complex interfaces (like navigation ones) would be
+really useful.</p>
+
+<h3>threaded environments:</h3>
+
+<p>Since the catalog tree is built progressively, some care has been taken to
+try to avoid troubles in multithreaded environments but without a
+test-and-set routine accessible from C this can't be fully garanteed, so the
+best is to use xmlGetExternalEntityLoader and set the entity loader routines
+to one of your code doing the synchronization.</p>
+
+<p></p>
 
 <h2><a name="Other">Other resources</a></h2>
 
@@ -310,6 +385,6 @@ me:</p>
 
 <p><a href="mailto:daniel@veillard.com">Daniel Veillard</a></p>
 
-<p>$Id:$</p>
+<p>$Id: catalog.html,v 1.1 2001/08/22 23:44:08 veillard Exp $</p>
 </body>
 </html>

@@ -1,3 +1,8 @@
+Mon Feb 21 14:48:27 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* xmlwriter.c: applied patch from Rob Richards to fix a problem with
+	  xmlTextWriterStartAttributeNS
+
 Mon Feb 21 11:41:41 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* pattern.c xpath.c: fixed remaining known bugs in the XPath streaming,

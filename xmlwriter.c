@@ -1832,12 +1832,26 @@ xmlTextWriterEndAttribute(xmlTextWriterPtr writer)
             sum += count;
 
             while (!xmlListEmpty(writer->nsstack)) {
+	        xmlChar *namespaceURI = NULL;
+		xmlChar *prefix = NULL;
+
                 lk = xmlListFront(writer->nsstack);
                 np = (xmlTextWriterNsStackEntry *) xmlLinkGetData(lk);
+
+		if (np != 0) {
+		    namespaceURI = xmlStrdup(np->prefix);
+		    prefix = xmlStrdup(np->uri);
+		}
+
+		xmlListPopFront(writer->nsstack);
+
                 if (np != 0) {
                     count =
-                        xmlTextWriterWriteAttribute(writer, np->prefix,
-                                                    np->uri);
+                        xmlTextWriterWriteAttribute(writer, prefix,
+                                                    namespaceURI);
+		    xmlFree(namespaceURI);
+		    xmlFree(prefix);
+
                     if (count < 0) {
                         xmlListDelete(writer->nsstack);
 			writer->nsstack = NULL;
@@ -1845,8 +1859,6 @@ xmlTextWriterEndAttribute(xmlTextWriterPtr writer)
                     }
                     sum += count;
                 }
-
-                xmlListPopFront(writer->nsstack);
             }
             break;
 

@@ -1204,6 +1204,83 @@ xmlNewNsProp(xmlNodePtr node, xmlNsPtr ns, const xmlChar *name,
 }
 
 /**
+ * xmlNewNsPropEatName:
+ * @node:  the holding node
+ * @ns:  the namespace
+ * @name:  the name of the attribute
+ * @value:  the value of the attribute
+ *
+ * Create a new property tagged with a namespace and carried by a node.
+ * Returns a pointer to the attribute
+ */
+xmlAttrPtr
+xmlNewNsPropEatName(xmlNodePtr node, xmlNsPtr ns, xmlChar *name,
+           const xmlChar *value) {
+    xmlAttrPtr cur;
+    xmlDocPtr doc = NULL;
+
+    if (name == NULL) {
+#ifdef DEBUG_TREE
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlNewNsPropEatName : name == NULL\n");
+#endif
+	return(NULL);
+    }
+
+    /*
+     * Allocate a new property and fill the fields.
+     */
+    cur = (xmlAttrPtr) xmlMalloc(sizeof(xmlAttr));
+    if (cur == NULL) {
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlNewNsPropEatName : malloc failed\n");
+	return(NULL);
+    }
+    memset(cur, 0, sizeof(xmlAttr));
+    cur->type = XML_ATTRIBUTE_NODE;
+
+    cur->parent = node; 
+    if (node != NULL) {
+	doc = node->doc;
+	cur->doc = doc;
+    }
+    cur->ns = ns;
+    cur->name = name;
+    if (value != NULL) {
+	xmlChar *buffer;
+	xmlNodePtr tmp;
+
+	buffer = xmlEncodeEntitiesReentrant(doc, value);
+	cur->children = xmlStringGetNodeList(doc, buffer);
+	cur->last = NULL;
+	tmp = cur->children;
+	while (tmp != NULL) {
+	    tmp->parent = (xmlNodePtr) cur;
+	    if (tmp->next == NULL)
+		cur->last = tmp;
+	    tmp = tmp->next;
+	}
+	xmlFree(buffer);
+    }
+
+    /*
+     * Add it at the end to preserve parsing order ...
+     */
+    if (node != NULL) {
+	if (node->properties == NULL) {
+	    node->properties = cur;
+	} else {
+	    xmlAttrPtr prev = node->properties;
+
+	    while (prev->next != NULL) prev = prev->next;
+	    prev->next = cur;
+	    cur->prev = prev;
+	}
+    }
+    return(cur);
+}
+
+/**
  * xmlNewDocProp:
  * @doc:  the document
  * @name:  the name of the attribute
@@ -1432,6 +1509,44 @@ xmlNewNode(xmlNsPtr ns, const xmlChar *name) {
 }
 
 /**
+ * xmlNewNodeEatName:
+ * @ns:  namespace if any
+ * @name:  the node name
+ *
+ * Creation of a new node element. @ns is optional (NULL).
+ *
+ * Returns a pointer to the new node object.
+ */
+xmlNodePtr
+xmlNewNodeEatName(xmlNsPtr ns, xmlChar *name) {
+    xmlNodePtr cur;
+
+    if (name == NULL) {
+#ifdef DEBUG_TREE
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlNewNode : name == NULL\n");
+#endif
+	return(NULL);
+    }
+
+    /*
+     * Allocate a new node and fill the fields.
+     */
+    cur = (xmlNodePtr) xmlMalloc(sizeof(xmlNode));
+    if (cur == NULL) {
+        xmlGenericError(xmlGenericErrorContext,
+		"xmlNewNode : malloc failed\n");
+	return(NULL);
+    }
+    memset(cur, 0, sizeof(xmlNode));
+    cur->type = XML_ELEMENT_NODE;
+    
+    cur->name = name;
+    cur->ns = ns;
+    return(cur);
+}
+
+/**
  * xmlNewDocNode:
  * @doc:  the document
  * @ns:  namespace if any
@@ -1453,6 +1568,38 @@ xmlNewDocNode(xmlDocPtr doc, xmlNsPtr ns,
     xmlNodePtr cur;
 
     cur = xmlNewNode(ns, name);
+    if (cur != NULL) {
+        cur->doc = doc;
+	if (content != NULL) {
+	    cur->children = xmlStringGetNodeList(doc, content);
+	    UPDATE_LAST_CHILD_AND_PARENT(cur)
+	}
+    }
+    return(cur);
+}
+
+/**
+ * xmlNewDocNodeEatName:
+ * @doc:  the document
+ * @ns:  namespace if any
+ * @name:  the node name
+ * @content:  the XML text content if any
+ *
+ * Creation of a new node element within a document. @ns and @content
+ * are optional (NULL).
+ * NOTE: @content is supposed to be a piece of XML CDATA, so it allow entities
+ *       references, but XML special chars need to be escaped first by using
+ *       xmlEncodeEntitiesReentrant(). Use xmlNewDocRawNode() if you don't
+ *       need entities support.
+ *
+ * Returns a pointer to the new node object.
+ */
+xmlNodePtr
+xmlNewDocNodeEatName(xmlDocPtr doc, xmlNsPtr ns,
+              xmlChar *name, const xmlChar *content) {
+    xmlNodePtr cur;
+
+    cur = xmlNewNodeEatName(ns, name);
     if (cur != NULL) {
         cur->doc = doc;
 	if (content != NULL) {

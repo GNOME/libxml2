@@ -591,6 +591,10 @@ xmlAttrPtr	xmlNewNsProp		(xmlNodePtr node,
 					 xmlNsPtr ns,
 					 const xmlChar *name,
 					 const xmlChar *value);
+xmlAttrPtr	xmlNewNsPropEatName	(xmlNodePtr node,
+					 xmlNsPtr ns,
+					 xmlChar *name,
+					 const xmlChar *value);
 void		xmlFreePropList		(xmlAttrPtr cur);
 void		xmlFreeProp		(xmlAttrPtr cur);
 xmlAttrPtr	xmlCopyProp		(xmlNodePtr target,
@@ -608,12 +612,18 @@ xmlNodePtr	xmlNewDocNode		(xmlDocPtr doc,
 					 xmlNsPtr ns,
 					 const xmlChar *name,
 					 const xmlChar *content);
+xmlNodePtr	xmlNewDocNodeEatName	(xmlDocPtr doc,
+					 xmlNsPtr ns,
+					 xmlChar *name,
+					 const xmlChar *content);
 xmlNodePtr	xmlNewDocRawNode	(xmlDocPtr doc,
 					 xmlNsPtr ns,
 					 const xmlChar *name,
 					 const xmlChar *content);
 xmlNodePtr	xmlNewNode		(xmlNsPtr ns,
 					 const xmlChar *name);
+xmlNodePtr	xmlNewNodeEatName	(xmlNsPtr ns,
+					 xmlChar *name);
 xmlNodePtr	xmlNewChild		(xmlNodePtr parent,
 					 xmlNsPtr ns,
 					 const xmlChar *name,

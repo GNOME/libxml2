@@ -281,18 +281,24 @@ static int spacePop(xmlParserCtxtPtr ctxt) {
 	    xmlPopInput(ctxt);						\
   } while (0)
 
-#define SHRINK if (ctxt->input->cur - ctxt->input->base > INPUT_CHUNK) {\
-    xmlParserInputShrink(ctxt->input);					\
-    if ((*ctxt->input->cur == 0) &&					\
-        (xmlParserInputGrow(ctxt->input, INPUT_CHUNK) <= 0))		\
-	    xmlPopInput(ctxt);						\
+#define SHRINK if (ctxt->input->cur - ctxt->input->base > INPUT_CHUNK) \
+	xmlSHRINK (ctxt);
+
+static void xmlSHRINK (xmlParserCtxtPtr ctxt) {
+    xmlParserInputShrink(ctxt->input);
+    if ((*ctxt->input->cur == 0) &&
+        (xmlParserInputGrow(ctxt->input, INPUT_CHUNK) <= 0))
+	    xmlPopInput(ctxt);
   }
 
-#define GROW if (ctxt->input->end - ctxt->input->cur < INPUT_CHUNK) {	\
-    xmlParserInputGrow(ctxt->input, INPUT_CHUNK);			\
-    if ((*ctxt->input->cur == 0) &&					\
-        (xmlParserInputGrow(ctxt->input, INPUT_CHUNK) <= 0))		\
-	    xmlPopInput(ctxt);						\
+#define GROW if (ctxt->input->end - ctxt->input->cur < INPUT_CHUNK) \
+	xmlGROW (ctxt);
+
+static void xmlGROW (xmlParserCtxtPtr ctxt) {
+    xmlParserInputGrow(ctxt->input, INPUT_CHUNK);
+    if ((*ctxt->input->cur == 0) &&
+        (xmlParserInputGrow(ctxt->input, INPUT_CHUNK) <= 0))
+	    xmlPopInput(ctxt);
   }
 
 #define SKIP_BLANKS xmlSkipBlankChars(ctxt)
@@ -1744,6 +1750,46 @@ xmlParseName(xmlParserCtxtPtr ctxt) {
 	}
     }
     return(xmlParseNameComplex(ctxt));
+}
+
+/**
+ * xmlParseNameAndCompare:
+ * @ctxt:  an XML parser context
+ *
+ * parse an XML name and compares for match
+ * (specialized for endtag parsing)
+ *
+ *
+ * Returns NULL for an illegal name, (xmlChar*) 1 for success
+ * and the name for mismatch
+ */
+
+xmlChar *
+xmlParseNameAndCompare(xmlParserCtxtPtr ctxt, xmlChar const *other) {
+    const xmlChar *cmp = other;
+    const xmlChar *in;
+    xmlChar *ret;
+    int count = 0;
+
+    GROW;
+    
+    in = ctxt->input->cur;
+    while (*in != 0 && *in == *cmp) {
+    	++in;
+	++cmp;
+    }
+    if (*cmp == 0 && (*in == '>' || IS_BLANK (*in))) {
+    	/* success */
+	ctxt->input->cur = in;
+	return (xmlChar*) 1;
+    }
+    /* failure (or end of input buffer), check with full function */
+    ret = xmlParseName (ctxt);
+    if (ret != 0 && xmlStrEqual (ret, other)) {
+    	xmlFree (ret);
+	return (xmlChar*) 1;
+    }
+    return ret;
 }
 
 static xmlChar *
@@ -6556,7 +6602,7 @@ xmlParseEndTag(xmlParserCtxtPtr ctxt) {
     }
     SKIP(2);
 
-    name = xmlParseName(ctxt);
+    name = xmlParseNameAndCompare(ctxt,ctxt->name);
 
     /*
      * We should definitely be at the ending "S? '>'" part
@@ -6578,20 +6624,17 @@ xmlParseEndTag(xmlParserCtxtPtr ctxt) {
      * start-tag. 
      *
      */
-    if ((name == NULL) || (ctxt->name == NULL) ||
-        (!xmlStrEqual(name, ctxt->name))) {
+    if (name != (xmlChar*)1) {
 	ctxt->errNo = XML_ERR_TAG_NAME_MISMATCH;
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL)) {
-	    if ((name != NULL) && (ctxt->name != NULL)) {
+	    if (name != NULL) {
 		ctxt->sax->error(ctxt->userData,
 		     "Opening and ending tag mismatch: %s and %s\n",
 		                 ctxt->name, name);
-            } else if (ctxt->name != NULL) {
+		xmlFree(name);		 
+            } else {
 		ctxt->sax->error(ctxt->userData,
 		     "Ending tag error for: %s\n", ctxt->name);
-	    } else {
-		ctxt->sax->error(ctxt->userData,
-		     "Ending tag error: internal error ???\n");
 	    }
 
 	}     
@@ -6604,10 +6647,8 @@ xmlParseEndTag(xmlParserCtxtPtr ctxt) {
      */
     if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL) &&
 	(!ctxt->disableSAX))
-        ctxt->sax->endElement(ctxt->userData, name);
+        ctxt->sax->endElement(ctxt->userData, ctxt->name);
 
-    if (name != NULL)
-	xmlFree(name);
     oldname = namePop(ctxt);
     spacePop(ctxt);
     if (oldname != NULL) {

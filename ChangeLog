@@ -1,3 +1,8 @@
+Wed May 29 10:21:39 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* SAX.c parser.c tree.c include/libxml/tree.h: performance patch from
+	  Peter Jacobi
+
 Mon May 27 23:18:33 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in: preparing 2.4.22

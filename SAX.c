@@ -907,7 +907,7 @@ attribute(void *ctx, const xmlChar *fullname, const xmlChar *value)
     }
 
     /* !!!!!! <a toto:arg="" xmlns:toto="http://toto.com"> */
-    ret = xmlNewNsProp(ctxt->node, namespace, name, NULL);
+    ret = xmlNewNsPropEatName(ctxt->node, namespace, name, NULL);
 
     if (ret != NULL) {
         if ((ctxt->replaceEntities == 0) && (!ctxt->html)) {
@@ -984,8 +984,6 @@ attribute(void *ctx, const xmlChar *fullname, const xmlChar *value)
 
     if (nval != NULL)
 	xmlFree(nval);
-    if (name != NULL) 
-	xmlFree(name);
     if (ns != NULL) 
 	xmlFree(ns);
 }
@@ -1194,7 +1192,7 @@ startElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
      *        attributes parsing, since local namespace can be defined as
      *        an attribute at this level.
      */
-    ret = xmlNewDocNode(ctxt->myDoc, NULL, name, NULL);
+    ret = xmlNewDocNodeEatName(ctxt->myDoc, NULL, name, NULL);
     if (ret == NULL) return;
     if (ctxt->myDoc->children == NULL) {
 #ifdef DEBUG_SAX_TREE
@@ -1334,8 +1332,6 @@ startElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
 
     if (prefix != NULL)
 	xmlFree(prefix);
-    if (name != NULL)
-	xmlFree(name);
 
 }
 

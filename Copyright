@@ -1,27 +1,26 @@
-Copyright © 1998 World Wide Web Consortium, (Massachusetts Institute of
-Technology, Institut National de Recherche en Informatique et en
-Automatique, Keio University). All Rights Reserved.
+Except where otherwise noted in the source code (trio files, hash.c and list.c)
+covered by a similar licence but with different Copyright notices:
 
-This software is available under the GNU Library Public License as described
-in the COPYING.LIB file.
+ Copyright (C) 1998-2002 Daniel Veillard.  All Rights Reserved.
 
-Note that the original distribution from W3C is also available under the
-W3C IPR SOFTWARE NOTICE, described at http://www.w3.org/COPYRIGHT.html
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is fur-
+nished to do so, subject to the following conditions:
 
-This library is free software; you can redistribute it and/or
-modify it under the terms of the GNU Library General Public
-License as published by the Free Software Foundation; either
-version 2 of the License, or any later version.
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
 
-This library is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Library General Public License for more details.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FIT-
+NESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+DANIEL VEILLARD BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CON-
+NECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-You should have received a copy of the GNU Library General Public
-License along with this library; if not, write to the Free
-Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
-Daniel Veillard <daniel@veillard.com>
-Fri Jul 24 1998
+Except as contained in this notice, the name of Daniel Veillard shall not
+be used in advertising or otherwise to promote the sale, use or other deal-
+ings in this Software without prior written authorization from him.
 

@@ -5,11 +5,20 @@ import libxml2
 #memory debug specific
 libxml2.debugMemory(1)
 
+called = ""
 
-def foo(x):
+def foo(ctx, x):
+    global called
+
+    #
+    # test that access to the XPath evaluation contexts
+    #
+    pctxt = libxml2.xpathParserContext(_obj=ctx)
+    ctxt = pctxt.context()
+    called = ctxt.function()
     return x + 1
 
-def bar(x):
+def bar(ctxt, x):
     return "%d" % (x + 2)
 
 doc = libxml2.parseFile("tst.xml")
@@ -21,7 +30,6 @@ if len(res) != 2:
 if res[0].name != "doc" or res[1].name != "foo":
     print "xpath query: wrong node set value"
     sys.exit(1)
-
 libxml2.registerXPathFunction(ctxt._o, "foo", None, foo)
 libxml2.registerXPathFunction(ctxt._o, "bar", None, bar)
 i = 10000
@@ -39,7 +47,12 @@ while i > 0:
 	sys.exit(1)
     i = i - 1
 doc.freeDoc()
-del ctxt
+ctxt.xpathFreeContext()
+
+if called != "foo":
+    print "xpath function: failed to access the context"
+    print "xpath function: %s" % (called)
+    sys.exit(1)
 
 #memory debug specific
 libxml2.cleanupParser()

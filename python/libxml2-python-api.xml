@@ -36,6 +36,7 @@
       <arg name='size' type='int' info='the size of the initial data'/>
       <arg name='URI' type='xmlChar *' info='The URI used for base computations'/>
     </function>
+    <!-- xmlParserCtxtPtr accessors -->
     <function name='xmlParserGetDoc' file='python_accessor'>
       <info>Get the document tree from a parser context.</info>
       <return type='xmlDocPtr' info="the document tree" field="myDoc"/>
@@ -90,6 +91,7 @@
       <info>dump the memory allocated in the file .memdump</info>
       <return type='void'/>
     </function>
+    <!-- xmlNsPtr accessors -->
     <function name='xmlNodeGetNs' file='python_accessor'>
       <info>Get the namespace of a node</info>
       <return type='xmlNsPtr' info="The namespace or None"/>
@@ -99,6 +101,42 @@
       <info>Get the namespace of a node</info>
       <return type='xmlNsPtr' info="The namespace or None"/>
       <arg name='node' type='xmlNodePtr' info='the node'/>
+    </function>
+    <!-- xmlXPathParserContextPtr accessors -->
+    <function name='xmlXPathParserGetContext' file='python_accessor'>
+      <info>Get the xpathContext from an xpathParserContext</info>
+      <return type='xmlXPathContextPtr' info="The XPath context" field="context"/>
+      <arg name='ctxt' type='xmlXPathParserContextPtr' info='the XPath parser context'/>
+    </function>
+    <function name='xmlXPathGetContextDoc' file='python_accessor'>
+      <info>Get the doc from an xpathContext</info>
+      <return type='xmlDocPtr' info="The doc context" field="doc"/>
+      <arg name='ctxt' type='xmlXPathContextPtr' info='the XPath context'/>
+    </function>
+    <function name='xmlXPathGetContextNode' file='python_accessor'>
+      <info>Get the current node from an xpathContext</info>
+      <return type='xmlNodePtr' info="The node context" field="node"/>
+      <arg name='ctxt' type='xmlXPathContextPtr' info='the XPath context'/>
+    </function>
+    <function name='xmlXPathGetContextPosition' file='python_accessor'>
+      <info>Get the current node from an xpathContext</info>
+      <return type='int' info="The node context" field="proximityPosition"/>
+      <arg name='ctxt' type='xmlXPathContextPtr' info='the XPath context'/>
+    </function>
+    <function name='xmlXPathGetContextSize' file='python_accessor'>
+      <info>Get the current node from an xpathContext</info>
+      <return type='int' info="The node context" field="contextSize"/>
+      <arg name='ctxt' type='xmlXPathContextPtr' info='the XPath context'/>
+    </function>
+    <function name='xmlXPathGetFunction' file='python_accessor'>
+      <info>Get the current function name xpathContext</info>
+      <return type='const xmlChar *' info="The function name" field="function"/>
+      <arg name='ctxt' type='xmlXPathContextPtr' info='the XPath context'/>
+    </function>
+    <function name='xmlXPathGetFunctionURI' file='python_accessor'>
+      <info>Get the current function name URI xpathContext</info>
+      <return type='const xmlChar *' info="The function name URI" field="functionURI"/>
+      <arg name='ctxt' type='xmlXPathContextPtr' info='the XPath context'/>
     </function>
   </symbols>
 </api>

@@ -2,7 +2,7 @@ Summary: Library providing XML and HTML support
 Name: libxml2
 Version: @VERSION@
 Release: 1
-License: LGPL
+License: MIT
 Group: Development/Libraries
 Source: ftp://xmlsoft.org/libxml2-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
@@ -115,7 +115,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-, root, root)
 
-%doc AUTHORS ChangeLog NEWS README COPYING COPYING.LIB TODO
+%doc AUTHORS ChangeLog NEWS README Copyright TODO
 %doc %{_mandir}/man1/xmllint.1*
 %doc %{_mandir}/man1/xmlcatalog.1*
 %doc %{_mandir}/man4/libxml.4*
@@ -128,6 +128,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-, root, root)
 
 %doc %{_mandir}/man1/xml2-config.1*
+%doc AUTHORS ChangeLog NEWS README Copyright TODO
 %doc doc/*.html doc/html
 
 %{prefix}/lib/lib*.so
@@ -140,6 +141,7 @@ rm -rf $RPM_BUILD_ROOT
 %files python
 %defattr(-, root, root)
 
+%doc AUTHORS ChangeLog NEWS README Copyright
 %{prefix}/lib/python*/site-packages/libxml2.py
 %{prefix}/lib/python*/site-packages/_libxml.so
 %doc python/TODO

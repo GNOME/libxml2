@@ -214,9 +214,9 @@ py_types = {
     'xmlChar':  ('c', None, "int", "int"),
     'unsigned char *':  ('z', None, "charPtr", "char *"),
     'char *':  ('z', None, "charPtr", "char *"),
-    'const char *':  ('z', None, "charPtr", "char *"),
+    'const char *':  ('z', None, "charPtrConst", "const char *"),
     'xmlChar *':  ('z', None, "xmlCharPtr", "xmlChar *"),
-    'const xmlChar *':  ('z', None, "xmlCharPtr", "xmlChar *"),
+    'const xmlChar *':  ('z', None, "xmlCharPtrConst", "const xmlChar *"),
     'xmlNodePtr':  ('O', "xmlNode", "xmlNodePtr", "xmlNodePtr"),
     'const xmlNodePtr':  ('O', "xmlNode", "xmlNodePtr", "xmlNodePtr"),
     'xmlNode *':  ('O', "xmlNode", "xmlNodePtr", "xmlNodePtr"),
@@ -523,7 +523,6 @@ classes_ancestor = {
     "xmlAttribute" : "xmlNode",
 }
 classes_destructors = {
-    "xpathContext": "xmlXPathFreeContext",
     "parserCtxt": "xmlFreeParserCtxt",
     "catalog": "xmlFreeCatalog",
 }
@@ -575,6 +574,12 @@ def nameFixup(function, classe, type, file):
         func = string.lower(func[0:1]) + func[1:]
     elif name[0:10] == "xmlNodeGet" and file == "python_accessor":
         func = name[10:]
+        func = string.lower(func[0:1]) + func[1:]
+    elif name[0:17] == "xmlXPathParserGet" and file == "python_accessor":
+        func = name[17:]
+        func = string.lower(func[0:1]) + func[1:]
+    elif name[0:11] == "xmlXPathGet" and file == "python_accessor":
+        func = name[11:]
         func = string.lower(func[0:1]) + func[1:]
     elif name[0:11] == "xmlACatalog":
         func = name[11:]

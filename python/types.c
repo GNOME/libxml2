@@ -59,6 +59,22 @@ libxml_charPtrWrap(char *str) {
 }
 
 PyObject *
+libxml_charPtrConstWrap(const char *str) {
+    PyObject *ret;
+
+#ifdef DEBUG
+    printf("libxml_xmlcharPtrWrap: str = %s\n", str);
+#endif
+    if (str == NULL) {
+	Py_INCREF(Py_None);
+	return(Py_None);
+    }
+    /* TODO: look at deallocation */
+    ret = PyString_FromString(str);
+    return(ret);
+}
+
+PyObject *
 libxml_xmlCharPtrWrap(xmlChar *str) {
     PyObject *ret;
 
@@ -72,6 +88,22 @@ libxml_xmlCharPtrWrap(xmlChar *str) {
     /* TODO: look at deallocation */
     ret = PyString_FromString(str);
     xmlFree(str);
+    return(ret);
+}
+
+PyObject *
+libxml_xmlCharPtrConstWrap(const xmlChar *str) {
+    PyObject *ret;
+
+#ifdef DEBUG
+    printf("libxml_xmlCharPtrWrap: str = %s\n", str);
+#endif
+    if (str == NULL) {
+	Py_INCREF(Py_None);
+	return(Py_None);
+    }
+    /* TODO: look at deallocation */
+    ret = PyString_FromString(str);
     return(ret);
 }
 

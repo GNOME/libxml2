@@ -3446,6 +3446,11 @@ xmlDocSetRootElement(xmlDocPtr doc, xmlNodePtr root) {
     xmlNodePtr old = NULL;
 
     if (doc == NULL) return(NULL);
+    if (root == NULL)
+	return(NULL);
+    xmlUnlinkNode(root);
+    root->doc = doc;
+    root->parent = (xmlNodePtr) doc;
     old = doc->children;
     while (old != NULL) {
 	if (old->type == XML_ELEMENT_NODE)

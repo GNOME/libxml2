@@ -374,6 +374,8 @@ Class catalog()
     resolveSystem()
     resolveURI()
 Class xpathParserContext()
+    # accessors
+    context()
 
     # functions from module xpathInternals
     xpathAddValues()
@@ -507,6 +509,13 @@ Class xmlAttr(xmlNode)
     freePropList()
     removeProp()
 Class xpathContext()
+    # accessors
+    contextDoc()
+    contextNode()
+    contextPosition()
+    contextSize()
+    function()
+    functionURI()
 
     # functions from module python
     registerXPathFunction()

@@ -550,7 +550,7 @@ dist-hook: libxml.spec
 	(cd $(srcdir) ; tar -cf - --exclude CVS win32 macos vms test result SAXresult ) | (cd $(distdir); tar xf -)
 
 cleantar:
-	@(rm -f libxslt*.tar.gz)
+	@(rm -f libxslt*.tar.gz COPYING.LIB)
 
 rpm: cleantar
 	@(unset CDPATH ; $(MAKE) dist && rpm -ta $(distdir).tar.gz)
@@ -565,7 +565,7 @@ CLEANFILES=xml2Conf.sh
 confexecdir=$(libdir)
 confexec_DATA = xml2Conf.sh
 EXTRA_DIST = xml2-config.in xml2Conf.sh.in libxml.spec.in libxml.spec \
-             libxml.m4 \
+             libxml.m4 Copyright \
              example/Makefile.am example/gjobread.c example/gjobs.xml \
 	     $(man_MANS) libxml-2.0.pc.in \
 	     trionan.c trionan.h triostr.c triostr.h trio.c trio.h \
@@ -583,6 +583,8 @@ DOC_MODULE=libxml2-$(VERSION)
 EXAMPLES_DIR=$(BASE_DIR)/$(DOC_MODULE)/examples
 
 install-data-local: 
+	$(mkinstalldirs) $(DESTDIR)$(BASE_DIR)/$(DOC_MODULE)
+	-@INSTALL@ -m 0644 $(srcdir)/Copyright $(DESTDIR)$(BASE_DIR)/$(DOC_MODULE)
 	$(mkinstalldirs) $(DESTDIR)$(EXAMPLES_DIR)
 	-@INSTALL@ -m 0644 $(srcdir)/xmllint.c $(DESTDIR)$(EXAMPLES_DIR)
 	-@INSTALL@ -m 0644 $(srcdir)/testSAX.c $(DESTDIR)$(EXAMPLES_DIR)

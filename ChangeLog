@@ -1,3 +1,19 @@
+Fri Feb  8 14:24:02 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* Copyright Makefile.am README configure.in libxml.spec.in:
+	  Changed to the MIT Licence
+	* doc/FAQ.html doc/catalog.html doc/intro.html doc/xml.html
+	  doc/xmlio.html: updated the doc accordingly
+	* include/libxml/xmlwin32version.h configure.in: preparing
+	  2.4.14 release
+	* python/generator.py python/libxml.c python/libxml2-python-api.xml
+	  python/libxml2class.txt python/libxml_wrap.h python/types.c:
+	  fixed the const xmlChar * wrapper and generator, XPath extension
+	  functions now use the context as first argument
+	* python/tests/tstxpath.py python/tests/xpath.py
+	  python/tests/xpathext.py: Updated the tests accordingly
+	* tree.c: fixed bug #70067
+
 Thu Feb  7 17:33:58 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am: cleanup

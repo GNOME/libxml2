@@ -5,10 +5,10 @@ import libxml2
 # Memory debug specific
 libxml2.debugMemory(1)
 
-def foo(x):
+def foo(ctx, x):
     return x + 1
 
-def bar(x):
+def bar(ctx, x):
     return "%d" % (x + 2)
 
 doc = libxml2.parseFile("tst.xml")
@@ -38,7 +38,7 @@ while i > 0:
 	sys.exit(1)
     i = i - 1
 doc.freeDoc()
-del ctxt
+ctxt.xpathFreeContext()
 
 # Memory debug specific
 libxml2.cleanupParser()

@@ -6,7 +6,7 @@ AC_CANONICAL_HOST
 
 LIBXML_MAJOR_VERSION=2
 LIBXML_MINOR_VERSION=4
-LIBXML_MICRO_VERSION=13
+LIBXML_MICRO_VERSION=14
 LIBXML_VERSION=$LIBXML_MAJOR_VERSION.$LIBXML_MINOR_VERSION.$LIBXML_MICRO_VERSION
 LIBXML_VERSION_INFO=`expr $LIBXML_MAJOR_VERSION + $LIBXML_MINOR_VERSION`:$LIBXML_MICRO_VERSION:$LIBXML_MINOR_VERSION
 
@@ -537,6 +537,9 @@ AC_SUBST(PYTHON_SITE_PACKAGES)
 
 AC_SUBST(M_LIBS)
 AC_SUBST(RDL_LIBS)
+
+rm -f rm COPYING.LIB COPYING
+ln -s Copyright COPYING
 
 AC_OUTPUT(libxml.spec Makefile include/Makefile include/libxml/Makefile doc/Makefile example/Makefile python/Makefile python/tests/Makefile include/libxml/xmlversion.h include/libxml/xmlwin32version.h xml2-config libxml-2.0.pc xml2Conf.sh)
 

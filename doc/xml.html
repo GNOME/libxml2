@@ -112,11 +112,10 @@ structured documents/data.</p>
   <li>Libxml also has a <a href="http://www.megginson.com/SAX/index.html">SAX
     like interface</a>; the interface is designed to be compatible with <a
     href="http://www.jclark.com/xml/expat.html">Expat</a>.</li>
-  <li>This library is released both under the <a
-    href="http://www.w3.org/Consortium/Legal/copyright-software-19980720.html">W3C
-    IPR</a> and the <a href="http://www.gnu.org/copyleft/lesser.html">GNU
-    LGPL</a>. Use either at your convenience, basically this should make
-    everybody happy, if not, drop me a mail.</li>
+  <li>This library is released under the <a
+    href="http://www.opensource.org/licenses/mit-license.html">MIT
+    Licence</a> see the Copyright file in the distribution for the precise
+    wording.</li>
 </ul>
 
 <p>Warning: unless you are forced to because your application links with a
@@ -137,18 +136,14 @@ libxml2</p>
 <h3><a name="Licence">Licence</a>(s)</h3>
 <ol>
   <li><em>Licensing Terms for libxml</em>
-    <p>libxml is released under 2 (compatible) licences:</p>
-    <ul>
-      <li>the <a href="http://www.gnu.org/copyleft/lgpl.html">LGPL</a>: GNU
-        Library General Public License</li>
-      <li>the <a
-        href="http://www.w3.org/Consortium/Legal/copyright-software-19980720.html">W3C
-        IPR</a>: very similar to the XWindow licence</li>
-    </ul>
+    <p>libxml is released under the <a
+    href="http://www.opensource.org/licenses/mit-license.html">MIT
+    Licence</a>, see the file Copyright in the distribution for the precise
+    wording</p>
   </li>
   <li><em>Can I embed libxml in a proprietary application ?</em>
-    <p>Yes. The W3C IPR allows you to also keep proprietary the changes you
-    made to libxml, but it would be graceful to provide back bugfixes and
+    <p>Yes. The MIT Licence allows you to also keep proprietary the changes
+    you made to libxml, but it would be graceful to provide back bugfixes and
     improvements as patches for possible incorporation in the main
     development tree</p>
   </li>
@@ -2196,6 +2191,7 @@ xmlOutputBufferCreateOwn(FILE *file, xmlCharEncodingHandlerPtr encoder) {
 
 
 
+
 } </pre>
   </li>
   <li>And then use it to save the document:
@@ -2587,7 +2583,7 @@ literature to point at:</p>
     directory, it will set-up /etc/xml/catalog and /etc/xml/docbook based on
     the resources found on the system. Otherwise it will just create
     ~/xmlcatalog and ~/dbkxmlcatalog and doing:
-    <p><code>   export XMLCATALOG=$HOME/xmlcatalog</code></p>
+    <p><code>export XMLCATALOG=$HOME/xmlcatalog</code></p>
     <p>should allow to process DocBook documentations without requiring
     network accesses for the DTd or stylesheets</p>
   </li>

@@ -64,6 +64,8 @@ PyObject * libxml_xmlCharPtrWrap(xmlChar *str);
 PyObject * libxml_constxmlCharPtrWrap(const xmlChar *str);
 PyObject * libxml_charPtrWrap(char *str);
 PyObject * libxml_constcharPtrWrap(const char *str);
+PyObject * libxml_charPtrConstWrap(const char *str);
+PyObject * libxml_xmlCharPtrConstWrap(const xmlChar *str);
 PyObject * libxml_xmlDocPtrWrap(xmlDocPtr doc);
 PyObject * libxml_xmlNodePtrWrap(xmlNodePtr node);
 PyObject * libxml_xmlAttrPtrWrap(xmlAttrPtr attr);

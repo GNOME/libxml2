@@ -15,7 +15,12 @@ except:
 #
 skipped_modules = [ "SAX", "SAX2", "xlink", "threads", "globals",
   "xpathInternals", "xmlunicode", "parserInternals", "xmlmemory",
-  "xmlversion", "debugXML", "xmlexports" ]
+  "xmlversion", "debugXML", "xmlexports",
+
+  # temporary
+  "xmlautomata", "xmlregexp",
+  
+]
 
 #
 # Some function really need to be skipped for the tests.
@@ -32,7 +37,11 @@ skipped_functions = [
 "xmlStrcat", "xmlStrncat",
 # unimplemented
 "xmlTextReaderReadInnerXml", "xmlTextReaderReadOuterXml",
-"xmlTextReaderReadString"
+"xmlTextReaderReadString",
+# destructor
+"xmlListDelete",
+# deprecated
+"xmlCatalogGetPublic", "xmlCatalogGetSystem", "xmlEncodeEntities",
 ]
 
 #
@@ -232,6 +241,8 @@ def type_convert(str, name, info, module, function, pos):
 	    return('xmlNanoHTTPCtxtPtr')
 	if string.find(name, "data") != -1:
 	    return('userdata');
+	if string.find(name, "user") != -1:
+	    return('userdata');
     if res == 'xmlNodePtr' and pos != 0:
         if (function == 'xmlAddChild' and pos == 2) or \
 	   (function == 'xmlAddChildList' and pos == 2) or \
@@ -248,7 +259,9 @@ def type_convert(str, name, info, module, function, pos):
 known_param_types = [ "int", "const_char_ptr", "const_xmlChar_ptr",
    "xmlParserCtxtPtr", "xmlDocPtr", "filepath", "fileoutput",
    "xmlNodePtr", "xmlNodePtr_in", "userdata", "xmlChar_ptr",
-   "xmlTextWriterPtr", "xmlTextReaderPtr" ];
+   "xmlTextWriterPtr", "xmlTextReaderPtr", "xmlBufferPtr",
+   "xmlListPtr", "xmlXPathObjectPtr", "xmlHashTablePtr",
+]
 
 def is_known_param_type(name):
     for type in known_param_types:
@@ -294,7 +307,7 @@ static void des_const_char_ptr(int no ATTRIBUTE_UNUSED, const char *val ATTRIBUT
 #define gen_nb_xmlChar_ptr 2
 
 static xmlChar *gen_xmlChar_ptr(int no) {
-    if (no == 0) return(&chartab);
+    if (no == 0) return(&chartab[0]);
     return(NULL);
 }
 static void des_xmlChar_ptr(int no ATTRIBUTE_UNUSED, xmlChar *val ATTRIBUTE_UNUSED) {
@@ -402,6 +415,55 @@ static void des_xmlTextReaderPtr(int no ATTRIBUTE_UNUSED, xmlTextReaderPtr val) 
     if (val != NULL) xmlFreeTextReader(val);
 }
 
+#define gen_nb_xmlBufferPtr 2
+static xmlBufferPtr gen_xmlBufferPtr(int no) {
+    if (no == 0) return(xmlBufferCreate());
+    return(NULL);
+}
+static void des_xmlBufferPtr(int no ATTRIBUTE_UNUSED, xmlBufferPtr val) {
+    if (val != NULL) {
+        xmlBufferFree(val);
+    }
+}
+
+#define gen_nb_xmlListPtr 2
+static xmlListPtr gen_xmlListPtr(int no) {
+    if (no == 0) return(xmlListCreate(NULL, NULL));
+    return(NULL);
+}
+static void des_xmlListPtr(int no ATTRIBUTE_UNUSED, xmlListPtr val) {
+    if (val != NULL) {
+        xmlListDelete(val);
+    }
+}
+
+#define gen_nb_xmlHashTablePtr 2
+static xmlHashTablePtr gen_xmlHashTablePtr(int no) {
+    if (no == 0) return(xmlHashCreate(10));
+    return(NULL);
+}
+static void des_xmlHashTablePtr(int no ATTRIBUTE_UNUSED, xmlHashTablePtr val) {
+    if (val != NULL) {
+        xmlHashFree(val, NULL);
+    }
+}
+
+#include <libxml/xpathInternals.h>
+
+#define gen_nb_xmlXPathObjectPtr 5
+static xmlXPathObjectPtr gen_xmlXPathObjectPtr(int no) {
+    if (no == 0) return(xmlXPathNewString(BAD_CAST "string object"));
+    if (no == 1) return(xmlXPathNewFloat(1.1));
+    if (no == 2) return(xmlXPathNewBoolean(1));
+    if (no == 3) return(xmlXPathNewNodeSet(NULL));
+    return(NULL);
+}
+static void des_xmlXPathObjectPtr(int no ATTRIBUTE_UNUSED, xmlXPathObjectPtr val) {
+    if (val != NULL) {
+        xmlXPathFreeObject(val);
+    }
+}
+
 """);
 
 #
@@ -409,7 +471,7 @@ static void des_xmlTextReaderPtr(int no ATTRIBUTE_UNUSED, xmlTextReaderPtr val) 
 #
 
 known_return_types = [ "int", "const_char_ptr", "xmlDocPtr", "xmlNodePtr",
-                       "xmlChar_ptr" ];
+                       "xmlChar_ptr", "const_xmlChar_ptr" ];
 
 def is_known_return_type(name):
     for type in known_return_types:
@@ -421,6 +483,8 @@ test.write("""
 static void desret_int(int val ATTRIBUTE_UNUSED) {
 }
 static void desret_const_char_ptr(const char *val ATTRIBUTE_UNUSED) {
+}
+static void desret_const_xmlChar_ptr(const xmlChar *val ATTRIBUTE_UNUSED) {
 }
 static void desret_xmlChar_ptr(xmlChar *val) {
     if (val != NULL)
@@ -686,15 +750,32 @@ test_%s(void) {
 """ % (module))
 
 print "Generated test for %d modules and %d functions" %(len(modules), nb_tests)
-nr = 0
-miss = 'none'
+nr1 = 0
+miss1 = 'none'
+nr2 = 0
+miss2 = 'none'
+nr3 = 0
+miss3 = 'none'
 for missing in missing_types.keys():
     n = len(missing_types[missing])
-    if n > nr:
-        miss = missing
-	nr = n
+    if n > nr1:
+        miss3 = miss2
+	nr3 = nr2
+        miss2 = miss1
+	nr2 = nr1
+        miss1 = missing
+	nr1 = n
+    elif n > nr2:
+        miss3 = miss2
+	nr3 = nr2
+        miss2 = missing
+	nr2 = n
+    elif n > nr3:
+        miss3 = missing
+	nr3 = n
 
-if nr > 0:
-    print "most needed type support: %s %d times" % (miss, nr)
+if nr1 > 0:
+    print "most needed type support: %s %d times, %s %d and %s %d" % (
+          miss1, nr1, miss2, nr2, miss3, nr3)
 
 

@@ -1,3 +1,8 @@
+Wed Nov  3 18:06:44 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* gentest.py testapi.c: more fixes and extending the tests coverage
+	* list.c tree.c: more fixes and hardening
+
 Wed Nov  3 15:19:22 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* gentest.py testapi.c: more fixes and extending the tests coverage

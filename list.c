@@ -99,6 +99,8 @@ xmlListLowerSearch(xmlListPtr l, void *data)
 {
     xmlLinkPtr lk;
 
+    if (l == NULL)
+        return(NULL);
     for(lk = l->sentinel->next;lk != l->sentinel && l->linkCompare(lk->data, data) <0 ;lk = lk->next);
     return lk;    
 }
@@ -117,6 +119,8 @@ xmlListHigherSearch(xmlListPtr l, void *data)
 {
     xmlLinkPtr lk;
 
+    if (l == NULL)
+        return(NULL);
     for(lk = l->sentinel->prev;lk != l->sentinel && l->linkCompare(lk->data, data) >0 ;lk = lk->prev);
     return lk;    
 }
@@ -134,6 +138,8 @@ static xmlLinkPtr
 xmlListLinkSearch(xmlListPtr l, void *data) 
 {
     xmlLinkPtr lk;
+    if (l == NULL)
+        return(NULL);
     lk = xmlListLowerSearch(l, data);
     if (lk == l->sentinel)
         return NULL;
@@ -157,6 +163,8 @@ static xmlLinkPtr
 xmlListLinkReverseSearch(xmlListPtr l, void *data) 
 {
     xmlLinkPtr lk;
+    if (l == NULL)
+        return(NULL);
     lk = xmlListHigherSearch(l, data);
     if (lk == l->sentinel)
         return NULL;
@@ -223,6 +231,8 @@ void *
 xmlListSearch(xmlListPtr l, void *data) 
 {
     xmlLinkPtr lk;
+    if (l == NULL)
+        return(NULL);
     lk = xmlListLinkSearch(l, data);
     if (lk)
         return (lk->data);
@@ -242,6 +252,8 @@ void *
 xmlListReverseSearch(xmlListPtr l, void *data) 
 {
     xmlLinkPtr lk;
+    if (l == NULL)
+        return(NULL);
     lk = xmlListLinkReverseSearch(l, data);
     if (lk)
         return (lk->data);
@@ -262,6 +274,8 @@ xmlListInsert(xmlListPtr l, void *data)
 {
     xmlLinkPtr lkPlace, lkNew;
 
+    if (l == NULL)
+        return(1);
     lkPlace = xmlListLowerSearch(l, data);
     /* Add the new link */
     lkNew = (xmlLinkPtr) xmlMalloc(sizeof(xmlLink));
@@ -292,6 +306,8 @@ int xmlListAppend(xmlListPtr l, void *data)
 {
     xmlLinkPtr lkPlace, lkNew;
 
+    if (l == NULL)
+        return(1);
     lkPlace = xmlListHigherSearch(l, data);
     /* Add the new link */
     lkNew = (xmlLinkPtr) xmlMalloc(sizeof(xmlLink));
@@ -338,6 +354,8 @@ xmlListRemoveFirst(xmlListPtr l, void *data)
 {
     xmlLinkPtr lk;
     
+    if (l == NULL)
+        return(0);
     /*Find the first instance of this data */
     lk = xmlListLinkSearch(l, data);
     if (lk != NULL) {
@@ -361,6 +379,8 @@ xmlListRemoveLast(xmlListPtr l, void *data)
 {
     xmlLinkPtr lk;
     
+    if (l == NULL)
+        return(0);
     /*Find the last instance of this data */
     lk = xmlListLinkReverseSearch(l, data);
     if (lk != NULL) {
@@ -384,6 +404,8 @@ xmlListRemoveAll(xmlListPtr l, void *data)
 {
     int count=0;
     
+    if (l == NULL)
+        return(0);
 
     while(xmlListRemoveFirst(l, data))
         count++;
@@ -399,8 +421,11 @@ xmlListRemoveAll(xmlListPtr l, void *data)
 void
 xmlListClear(xmlListPtr l)
 {
-    xmlLinkPtr  lk = l->sentinel->next;
+    xmlLinkPtr  lk;
     
+    if (l == NULL)
+        return;
+    lk = l->sentinel->next;
     while(lk != l->sentinel) {
         xmlLinkPtr next = lk->next;
 
@@ -415,11 +440,13 @@ xmlListClear(xmlListPtr l)
  *
  * Is the list empty ?
  *
- * Returns 1 if the list is empty, 0 otherwise
+ * Returns 1 if the list is empty, 0 if not empty and -1 in case of error
  */
 int
 xmlListEmpty(xmlListPtr l)
 {
+    if (l == NULL)
+        return(-1);
     return (l->sentinel->next == l->sentinel);
 }
 
@@ -434,6 +461,8 @@ xmlListEmpty(xmlListPtr l)
 xmlLinkPtr 
 xmlListFront(xmlListPtr l)
 {
+    if (l == NULL)
+        return(NULL);
     return (l->sentinel->next);
 }
     
@@ -448,6 +477,8 @@ xmlListFront(xmlListPtr l)
 xmlLinkPtr 
 xmlListEnd(xmlListPtr l)
 {
+    if (l == NULL)
+        return(NULL);
     return (l->sentinel->prev);
 }
     
@@ -457,7 +488,7 @@ xmlListEnd(xmlListPtr l)
  *
  * Get the number of elements in the list
  *
- * Returns the number of elements in the list
+ * Returns the number of elements in the list or -1 in case of error
  */
 int
 xmlListSize(xmlListPtr l)
@@ -465,6 +496,8 @@ xmlListSize(xmlListPtr l)
     xmlLinkPtr lk;
     int count=0;
 
+    if (l == NULL)
+        return(-1);
     /* TODO: keep a counter in xmlList instead */
     for(lk = l->sentinel->next; lk != l->sentinel; lk = lk->next, count++);
     return count;
@@ -510,6 +543,8 @@ xmlListPushFront(xmlListPtr l, void *data)
 {
     xmlLinkPtr lkPlace, lkNew;
 
+    if (l == NULL)
+        return(0);
     lkPlace = l->sentinel;
     /* Add the new link */
     lkNew = (xmlLinkPtr) xmlMalloc(sizeof(xmlLink));
@@ -540,6 +575,8 @@ xmlListPushBack(xmlListPtr l, void *data)
 {
     xmlLinkPtr lkPlace, lkNew;
 
+    if (l == NULL)
+        return(0);
     lkPlace = l->sentinel->prev;
     /* Add the new link */
     if (NULL ==(lkNew = (xmlLinkPtr )xmlMalloc(sizeof(xmlLink)))) {
@@ -566,6 +603,8 @@ xmlListPushBack(xmlListPtr l, void *data)
 void *
 xmlLinkGetData(xmlLinkPtr lk)
 {
+    if (lk == NULL)
+        return(NULL);
     return lk->data;
 }
 
@@ -576,18 +615,22 @@ xmlLinkGetData(xmlLinkPtr lk)
  * Reverse the order of the elements in the list
  */
 void
-xmlListReverse(xmlListPtr l) {
-  xmlLinkPtr lk;
-  xmlLinkPtr lkPrev = l->sentinel;
-  
-  for(lk = l->sentinel->next; lk != l->sentinel; lk = lk->next) {
+xmlListReverse(xmlListPtr l)
+{
+    xmlLinkPtr lk;
+    xmlLinkPtr lkPrev;
+
+    if (l == NULL)
+        return;
+    lkPrev = l->sentinel;
+    for (lk = l->sentinel->next; lk != l->sentinel; lk = lk->next) {
+        lkPrev->next = lkPrev->prev;
+        lkPrev->prev = lk;
+        lkPrev = lk;
+    }
+    /* Fix up the last node */
     lkPrev->next = lkPrev->prev;
     lkPrev->prev = lk;
-    lkPrev = lk;
-  }
-  /* Fix up the last node */
-  lkPrev->next = lkPrev->prev;
-  lkPrev->prev = lk;
 }
 
 /**
@@ -601,6 +644,8 @@ xmlListSort(xmlListPtr l)
 {
     xmlListPtr lTemp;
     
+    if (l == NULL)
+        return;
     if(xmlListEmpty(l))
         return;
 
@@ -631,6 +676,8 @@ void
 xmlListWalk(xmlListPtr l, xmlListWalker walker, const void *user) {
     xmlLinkPtr lk;
 
+    if ((l == NULL) || (walker == NULL))
+        return;
     for(lk = l->sentinel->next; lk != l->sentinel; lk = lk->next) {
         if((walker(lk->data, user)) == 0)
                 break;
@@ -650,6 +697,8 @@ void
 xmlListReverseWalk(xmlListPtr l, xmlListWalker walker, const void *user) {
     xmlLinkPtr lk;
 
+    if ((l == NULL) || (walker == NULL))
+        return;
     for(lk = l->sentinel->prev; lk != l->sentinel; lk = lk->prev) {
         if((walker(lk->data, user)) == 0)
                 break;
@@ -683,6 +732,9 @@ xmlListPtr
 xmlListDup(const xmlListPtr old)
 {
     xmlListPtr cur;
+
+    if (old == NULL)
+        return(NULL);
     /* Hmmm, how to best deal with allocation issues when copying
      * lists. If there is a de-allocator, should responsibility lie with
      * the new list or the old list. Surely not both. I'll arbitrarily
@@ -711,6 +763,8 @@ xmlListCopy(xmlListPtr cur, const xmlListPtr old)
     /* Walk the old tree and insert the data into the new one */
     xmlLinkPtr lk;
 
+    if ((old == NULL) || (cur == NULL))
+        return(1);
     for(lk = old->sentinel->next; lk != old->sentinel; lk = lk->next) {
         if (0 !=xmlListInsert(cur, lk->data)) {
             xmlListDelete(cur);

@@ -61,6 +61,7 @@
     <reference name='LIBXML_ISO8859X_ENABLED' href='html/libxml-xmlversion.html#LIBXML_ISO8859X_ENABLED'/>
     <reference name='LIBXML_LEGACY_ENABLED' href='html/libxml-xmlversion.html#LIBXML_LEGACY_ENABLED'/>
     <reference name='LIBXML_OUTPUT_ENABLED' href='html/libxml-xmlversion.html#LIBXML_OUTPUT_ENABLED'/>
+    <reference name='LIBXML_PATTERN_ENABLED' href='html/libxml-xmlversion.html#LIBXML_PATTERN_ENABLED'/>
     <reference name='LIBXML_PUSH_ENABLED' href='html/libxml-xmlversion.html#LIBXML_PUSH_ENABLED'/>
     <reference name='LIBXML_READER_ENABLED' href='html/libxml-xmlversion.html#LIBXML_READER_ENABLED'/>
     <reference name='LIBXML_REGEXP_ENABLED' href='html/libxml-xmlversion.html#LIBXML_REGEXP_ENABLED'/>
@@ -2887,6 +2888,7 @@
       <ref name='LIBXML_ISO8859X_ENABLED'/>
       <ref name='LIBXML_LEGACY_ENABLED'/>
       <ref name='LIBXML_OUTPUT_ENABLED'/>
+      <ref name='LIBXML_PATTERN_ENABLED'/>
       <ref name='LIBXML_PUSH_ENABLED'/>
       <ref name='LIBXML_READER_ENABLED'/>
       <ref name='LIBXML_REGEXP_ENABLED'/>
@@ -11530,6 +11532,7 @@
       <ref name='LIBXML_FTP_ENABLED'/>
       <ref name='LIBXML_AUTOMATA_ENABLED'/>
       <ref name='ATTRIBUTE_UNUSED'/>
+      <ref name='LIBXML_WRITER_ENABLED'/>
       <ref name='LIBXML_PUSH_ENABLED'/>
       <ref name='WITHOUT_TRIO'/>
       <ref name='LIBXML_C14N_ENABLED'/>
@@ -11545,7 +11548,7 @@
       <ref name='LIBXML_VERSION'/>
       <ref name='LIBXML_VALID_ENABLED'/>
       <ref name='LIBXML_TREE_ENABLED'/>
-      <ref name='LIBXML_WRITER_ENABLED'/>
+      <ref name='LIBXML_PATTERN_ENABLED'/>
     </file>
     <file name='xmlwriter'>
       <ref name='xmlTextWriterStartDocument'/>
@@ -17614,6 +17617,7 @@
           <ref name='LIBXML_HTML_ENABLED'/>
           <ref name='LIBXML_HTTP_ENABLED'/>
           <ref name='LIBXML_OUTPUT_ENABLED'/>
+          <ref name='LIBXML_PATTERN_ENABLED'/>
           <ref name='LIBXML_PUSH_ENABLED'/>
           <ref name='LIBXML_READER_ENABLED'/>
           <ref name='LIBXML_SAX1_ENABLED'/>
@@ -17625,6 +17629,7 @@
           <ref name='LIBXML_XPATH_ENABLED'/>
           <ref name='LIBXML_XPTR_ENABLED'/>
           <ref name='WITHOUT_TRIO'/>
+          <ref name='WITH_TRIO'/>
         </word>
         <word name='conforming'>
           <ref name='xmlRegexpCompile'/>
@@ -18159,6 +18164,7 @@
         </word>
         <word name='defined'>
           <ref name='WITHOUT_TRIO'/>
+          <ref name='WITH_TRIO'/>
           <ref name='_xmlXPathContext'/>
           <ref name='xmlGetNsList'/>
           <ref name='xmlHandleEntity'/>
@@ -20613,6 +20619,7 @@
           <ref name='xmlParseExternalID'/>
         </word>
         <word name='interface'>
+          <ref name='LIBXML_PATTERN_ENABLED'/>
           <ref name='LIBXML_READER_ENABLED'/>
           <ref name='LIBXML_SAX1_ENABLED'/>
           <ref name='LIBXML_WRITER_ENABLED'/>
@@ -21677,6 +21684,7 @@
           <ref name='xmlDebugDumpString'/>
         </word>
         <word name='need'>
+          <ref name='WITH_TRIO'/>
           <ref name='XML_SUBSTITUTE_BOTH'/>
           <ref name='XML_SUBSTITUTE_NONE'/>
           <ref name='XML_SUBSTITUTE_PEREF'/>
@@ -24017,6 +24025,9 @@
           <ref name='xmlScanName'/>
           <ref name='xmlValidateNotationDecl'/>
         </word>
+        <word name='selection'>
+          <ref name='LIBXML_PATTERN_ENABLED'/>
+        </word>
         <word name='selects'>
           <ref name='xmlXPathIdFunction'/>
         </word>
@@ -25360,6 +25371,7 @@
         </word>
         <word name='trio'>
           <ref name='WITHOUT_TRIO'/>
+          <ref name='WITH_TRIO'/>
           <ref name='xmlXPathIsInf'/>
           <ref name='xmlXPathIsNaN'/>
         </word>
@@ -26613,6 +26625,9 @@
         <word name='xmlParserProperties'>
           <ref name='xmlTextReaderGetParserProp'/>
           <ref name='xmlTextReaderSetParserProp'/>
+        </word>
+        <word name='xmlPattern'>
+          <ref name='LIBXML_PATTERN_ENABLED'/>
         </word>
         <word name='xmlPopInput:'>
           <ref name='xmlPopInput'/>

@@ -2634,6 +2634,7 @@
      <exports symbol='LIBXML_FTP_ENABLED' type='macro'/>
      <exports symbol='LIBXML_AUTOMATA_ENABLED' type='macro'/>
      <exports symbol='ATTRIBUTE_UNUSED' type='macro'/>
+     <exports symbol='LIBXML_WRITER_ENABLED' type='macro'/>
      <exports symbol='LIBXML_PUSH_ENABLED' type='macro'/>
      <exports symbol='WITHOUT_TRIO' type='macro'/>
      <exports symbol='LIBXML_C14N_ENABLED' type='macro'/>
@@ -2649,7 +2650,7 @@
      <exports symbol='LIBXML_VERSION' type='macro'/>
      <exports symbol='LIBXML_VALID_ENABLED' type='macro'/>
      <exports symbol='LIBXML_TREE_ENABLED' type='macro'/>
-     <exports symbol='LIBXML_WRITER_ENABLED' type='macro'/>
+     <exports symbol='LIBXML_PATTERN_ENABLED' type='macro'/>
      <exports symbol='xmlCheckVersion' type='function'/>
     </file>
     <file name='xmlwriter'>
@@ -3198,6 +3199,9 @@
     <macro name='LIBXML_OUTPUT_ENABLED' file='xmlversion'>
       <info>Whether the serialization/saving support is configured in</info>
     </macro>
+    <macro name='LIBXML_PATTERN_ENABLED' file='xmlversion'>
+      <info>Whether the xmlPattern node selection interface is configured in</info>
+    </macro>
     <macro name='LIBXML_PUSH_ENABLED' file='xmlversion'>
       <info>Whether the push parsing interfaces are configured in</info>
     </macro>
@@ -3262,6 +3266,7 @@
       <info>defined if the trio support should not be configured in</info>
     </macro>
     <macro name='WITH_TRIO' file='xmlversion'>
+      <info>defined if the trio support need to be configured in</info>
     </macro>
     <macro name='XINCLUDE_FALLBACK' file='xinclude'>
       <info>Macro defining &quot;fallback&quot;</info>

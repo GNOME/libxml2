@@ -2631,9 +2631,9 @@ htmlParsePubidLiteral(htmlParserCtxtPtr ctxt) {
     } else if (CUR == '\'') {
         NEXT;
 	q = CUR_PTR;
-	while ((IS_LETTER(CUR)) && (CUR != '\''))
+	while ((IS_PUBIDCHAR(CUR)) && (CUR != '\''))
 	    NEXT;
-	if (!IS_LETTER(CUR)) {
+	if (CUR != '\'') {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	        ctxt->sax->error(ctxt->userData, "Unfinished PubidLiteral\n");
 	    ctxt->wellFormed = 0;

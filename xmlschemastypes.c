@@ -223,105 +223,106 @@ xmlSchemaInitBasicType(const char *name, xmlSchemaValType type) {
  * Initialize the default XML Schemas type library
  */
 void
-xmlSchemaInitTypes(void) {
+xmlSchemaInitTypes(void)
+{
     if (xmlSchemaTypesInitialized != 0)
-	return;
+        return;
     xmlSchemaTypesBank = xmlHashCreate(40);
-    
+
     /*
      * primitive datatypes
      */
     xmlSchemaTypeStringDef = xmlSchemaInitBasicType("string",
-	    XML_SCHEMAS_STRING);
+                                                    XML_SCHEMAS_STRING);
     xmlSchemaTypeAnyTypeDef = xmlSchemaInitBasicType("anyType",
-	    XML_SCHEMAS_UNKNOWN);
+                                                     XML_SCHEMAS_UNKNOWN);
     xmlSchemaTypeAnySimpleTypeDef = xmlSchemaInitBasicType("anySimpleType",
-	    XML_SCHEMAS_UNKNOWN);
+                                                           XML_SCHEMAS_UNKNOWN);
     xmlSchemaTypeDecimalDef = xmlSchemaInitBasicType("decimal",
-	    XML_SCHEMAS_DECIMAL);
+                                                     XML_SCHEMAS_DECIMAL);
     xmlSchemaTypeDateDef = xmlSchemaInitBasicType("date",
-	    XML_SCHEMAS_DATE);
+                                                  XML_SCHEMAS_DATE);
     xmlSchemaTypeDatetimeDef = xmlSchemaInitBasicType("dateTime",
-	    XML_SCHEMAS_DATETIME);
+                                                      XML_SCHEMAS_DATETIME);
     xmlSchemaTypeTimeDef = xmlSchemaInitBasicType("time",
-	    XML_SCHEMAS_TIME);
+                                                  XML_SCHEMAS_TIME);
     xmlSchemaTypeGYearDef = xmlSchemaInitBasicType("gYear",
-	    XML_SCHEMAS_GYEAR);
+                                                   XML_SCHEMAS_GYEAR);
     xmlSchemaTypeGYearMonthDef = xmlSchemaInitBasicType("gYearMonth",
-	    XML_SCHEMAS_GYEARMONTH);
+                                                        XML_SCHEMAS_GYEARMONTH);
     xmlSchemaTypeGMonthDef = xmlSchemaInitBasicType("gMonth",
-	    XML_SCHEMAS_GMONTH);
+                                                    XML_SCHEMAS_GMONTH);
     xmlSchemaTypeGMonthDayDef = xmlSchemaInitBasicType("gMonthDay",
-	    XML_SCHEMAS_GMONTHDAY);
+                                                       XML_SCHEMAS_GMONTHDAY);
     xmlSchemaTypeGDayDef = xmlSchemaInitBasicType("gDay",
-	    XML_SCHEMAS_GDAY);
+                                                  XML_SCHEMAS_GDAY);
     xmlSchemaTypeDurationDef = xmlSchemaInitBasicType("duration",
-	    XML_SCHEMAS_DURATION);
+                                                      XML_SCHEMAS_DURATION);
     xmlSchemaTypeFloatDef = xmlSchemaInitBasicType("float",
-	    XML_SCHEMAS_FLOAT);
+                                                   XML_SCHEMAS_FLOAT);
     xmlSchemaTypeDoubleDef = xmlSchemaInitBasicType("double",
-	    XML_SCHEMAS_DOUBLE);
+                                                    XML_SCHEMAS_DOUBLE);
     xmlSchemaTypeBooleanDef = xmlSchemaInitBasicType("boolean",
-	    XML_SCHEMAS_BOOLEAN);
+                                                     XML_SCHEMAS_BOOLEAN);
     xmlSchemaTypeAnyURIDef = xmlSchemaInitBasicType("anyURI",
-	    XML_SCHEMAS_ANYURI);
+                                                    XML_SCHEMAS_ANYURI);
 
     /*
      * derived datatypes
      */
     xmlSchemaTypeIntegerDef = xmlSchemaInitBasicType("integer",
-	    XML_SCHEMAS_INTEGER);;
-    xmlSchemaTypeNonPositiveIntegerDef = xmlSchemaInitBasicType("nonPositiveInteger",
-	    XML_SCHEMAS_NPINTEGER);;
-    xmlSchemaTypeNegativeIntegerDef = xmlSchemaInitBasicType("negativeInteger",
-	    XML_SCHEMAS_NINTEGER);;
-    xmlSchemaTypeLongDef = xmlSchemaInitBasicType("long",
-	    XML_SCHEMAS_LONG);;
-    xmlSchemaTypeIntDef = xmlSchemaInitBasicType("int",
-	    XML_SCHEMAS_INT);;
+                                                     XML_SCHEMAS_INTEGER);;
+    xmlSchemaTypeNonPositiveIntegerDef =
+        xmlSchemaInitBasicType("nonPositiveInteger",
+                               XML_SCHEMAS_NPINTEGER);;
+    xmlSchemaTypeNegativeIntegerDef =
+        xmlSchemaInitBasicType("negativeInteger", XML_SCHEMAS_NINTEGER);;
+    xmlSchemaTypeLongDef =
+        xmlSchemaInitBasicType("long", XML_SCHEMAS_LONG);;
+    xmlSchemaTypeIntDef = xmlSchemaInitBasicType("int", XML_SCHEMAS_INT);;
     xmlSchemaTypeShortDef = xmlSchemaInitBasicType("short",
-	    XML_SCHEMAS_SHORT);;
+                                                   XML_SCHEMAS_SHORT);;
     xmlSchemaTypeByteDef = xmlSchemaInitBasicType("byte",
-	    XML_SCHEMAS_BYTE);;
-    xmlSchemaTypeNonNegativeIntegerDef = xmlSchemaInitBasicType("nonNegativeInteger",
-	    XML_SCHEMAS_NNINTEGER);
-    xmlSchemaTypeUnsignedLongDef = xmlSchemaInitBasicType("unsignedLong",
-	    XML_SCHEMAS_ULONG);;
-    xmlSchemaTypeUnsignedIntDef = xmlSchemaInitBasicType("unsignedInt",
-	    XML_SCHEMAS_UINT);;
-    xmlSchemaTypeUnsignedShortDef = xmlSchemaInitBasicType("insignedShort",
-	    XML_SCHEMAS_USHORT);;
-    xmlSchemaTypeUnsignedByteDef = xmlSchemaInitBasicType("unsignedByte",
-	    XML_SCHEMAS_UBYTE);;
-    xmlSchemaTypePositiveIntegerDef = xmlSchemaInitBasicType("positiveInteger",
-	    XML_SCHEMAS_PINTEGER);
+                                                  XML_SCHEMAS_BYTE);;
+    xmlSchemaTypeNonNegativeIntegerDef =
+        xmlSchemaInitBasicType("nonNegativeInteger",
+                               XML_SCHEMAS_NNINTEGER);
+    xmlSchemaTypeUnsignedLongDef =
+        xmlSchemaInitBasicType("unsignedLong", XML_SCHEMAS_ULONG);;
+    xmlSchemaTypeUnsignedIntDef =
+        xmlSchemaInitBasicType("unsignedInt", XML_SCHEMAS_UINT);;
+    xmlSchemaTypeUnsignedShortDef =
+        xmlSchemaInitBasicType("insignedShort", XML_SCHEMAS_USHORT);;
+    xmlSchemaTypeUnsignedByteDef =
+        xmlSchemaInitBasicType("unsignedByte", XML_SCHEMAS_UBYTE);;
+    xmlSchemaTypePositiveIntegerDef =
+        xmlSchemaInitBasicType("positiveInteger", XML_SCHEMAS_PINTEGER);
 
     xmlSchemaTypeNormStringDef = xmlSchemaInitBasicType("normalizedString",
-            XML_SCHEMAS_NORMSTRING);
+                                                        XML_SCHEMAS_NORMSTRING);
     xmlSchemaTypeTokenDef = xmlSchemaInitBasicType("token",
-            XML_SCHEMAS_TOKEN);
+                                                   XML_SCHEMAS_TOKEN);
     xmlSchemaTypeLanguageDef = xmlSchemaInitBasicType("language",
-            XML_SCHEMAS_LANGUAGE);
-    xmlSchemaTypeIdDef = xmlSchemaInitBasicType("ID",
-            XML_SCHEMAS_ID);
+                                                      XML_SCHEMAS_LANGUAGE);
+    xmlSchemaTypeIdDef = xmlSchemaInitBasicType("ID", XML_SCHEMAS_ID);
     xmlSchemaTypeIdrefDef = xmlSchemaInitBasicType("IDREF",
-            XML_SCHEMAS_IDREF);
+                                                   XML_SCHEMAS_IDREF);
     xmlSchemaTypeIdrefsDef = xmlSchemaInitBasicType("IDREFS",
-            XML_SCHEMAS_IDREFS);
+                                                    XML_SCHEMAS_IDREFS);
     xmlSchemaTypeEntityDef = xmlSchemaInitBasicType("ENTITY",
-            XML_SCHEMAS_ENTITY);
+                                                    XML_SCHEMAS_ENTITY);
     xmlSchemaTypeEntitiesDef = xmlSchemaInitBasicType("ENTITIES",
-            XML_SCHEMAS_ENTITIES);
+                                                      XML_SCHEMAS_ENTITIES);
     xmlSchemaTypeNameDef = xmlSchemaInitBasicType("Name",
-	    XML_SCHEMAS_NAME);
+                                                  XML_SCHEMAS_NAME);
     xmlSchemaTypeQNameDef = xmlSchemaInitBasicType("QName",
-	    XML_SCHEMAS_QNAME);
+                                                   XML_SCHEMAS_QNAME);
     xmlSchemaTypeNCNameDef = xmlSchemaInitBasicType("NCName",
-	    XML_SCHEMAS_NCNAME);
+                                                    XML_SCHEMAS_NCNAME);
     xmlSchemaTypeNmtokenDef = xmlSchemaInitBasicType("NMTOKEN",
-	    XML_SCHEMAS_NMTOKEN);
+                                                     XML_SCHEMAS_NMTOKEN);
     xmlSchemaTypeNmtokensDef = xmlSchemaInitBasicType("NMTOKENS",
-            XML_SCHEMAS_NMTOKENS);
+                                                      XML_SCHEMAS_NMTOKENS);
     xmlSchemaTypesInitialized = 1;
 }
 
@@ -2141,18 +2142,24 @@ xmlSchemaCompareDates (xmlSchemaValPtr x, xmlSchemaValPtr y)
                 p2 = xmlSchemaDateNormalize(x, (14 * SECS_PER_HOUR));
                 p2d = _xmlSchemaDateCastYMToDays(p2) + p2->value.date.day;
 
-		xmlSchemaFreeValue(p1);
-		xmlSchemaFreeValue(q1);
-		xmlSchemaFreeValue(p2);
-                if (p2d > q1d)
+                if (p2d > q1d) {
+		    xmlSchemaFreeValue(p1);
+		    xmlSchemaFreeValue(q1);
+		    xmlSchemaFreeValue(p2);
                     return 1;
-                else if (p2d == q1d) {
+		} else if (p2d == q1d) {
                     sec = TIME_TO_NUMBER(p2) - TIME_TO_NUMBER(q1);
+		    xmlSchemaFreeValue(p1);
+		    xmlSchemaFreeValue(q1);
+		    xmlSchemaFreeValue(p2);
                     if (sec > 0.0)
                         return 1;
                     else
                         return 2; /* indeterminate */
                 }
+		xmlSchemaFreeValue(p1);
+		xmlSchemaFreeValue(q1);
+		xmlSchemaFreeValue(p2);
             }
 	} else {
 	    xmlSchemaFreeValue(p1);

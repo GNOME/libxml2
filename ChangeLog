@@ -1,3 +1,10 @@
+Thu Mar 27 22:23:07 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c tree.c: two patches from James Bursa on the HTML
+	  parser and a typo
+	* xmlschemastypes.c: reindenting, fixing a memory access
+	  problem with dates.
+
 Thu Mar 27 15:53:35 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: fixing #109227 providing more context in case of 

@@ -1,3 +1,8 @@
+Mon Oct 27 09:43:48 EST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: applied patch from #123105 about defaulted attributes
+	  from element coming from an entity
+
 Mon Oct 27 21:12:27 HKT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* xmllint.c: fixed warning message from IRIX (bug 125182)

@@ -11017,6 +11017,8 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
 	ctxt->loadsubset |= XML_SKIP_IDS;
     }
     ctxt->dictNames = oldctxt->dictNames;
+    ctxt->attsDefault = oldctxt->attsDefault;
+    ctxt->attsSpecial = oldctxt->attsSpecial;
 
     xmlParseContent(ctxt);
     if ((RAW == '<') && (NXT(1) == '/')) {
@@ -11066,6 +11068,8 @@ xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
 	
     ctxt->sax = oldsax;
     ctxt->dict = NULL;
+    ctxt->attsDefault = NULL;
+    ctxt->attsSpecial = NULL;
     xmlFreeParserCtxt(ctxt);
     if (newDoc != NULL)
 	xmlFreeDoc(newDoc);

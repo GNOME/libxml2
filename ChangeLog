@@ -1,3 +1,8 @@
+Mon Jul 26 11:03:18 PDT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* tree.c: put in patch for Windows buffer re-allocation
+	  submitted by Steve Hay (bug 146697)
+
 Sun Jul 25 17:18:39 PDT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* xinclude.c: added some code to check, when an include is

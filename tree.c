@@ -6607,7 +6607,18 @@ xmlBufferGrow(xmlBufferPtr buf, unsigned int len) {
     if (buf->alloc == XML_BUFFER_ALLOC_IMMUTABLE) return(0);
     if (len + buf->use < buf->size) return(0);
 
+/*
+ * Windows has a BIG problem on realloc timing, so we try to double
+ * the buffer size (if that's enough) (bug 146697)
+ */
+#ifdef WIN32
+    if (buf->size > len)
+        size = buf->size * 2;
+    else
+        size = buf->use + len + 100;
+#else
     size = buf->use + len + 100;
+#endif
 
     newbuf = (xmlChar *) xmlRealloc(buf->content, size);
     if (newbuf == NULL) {

@@ -103,7 +103,7 @@ ALIGN="right"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN13370"
+NAME="AEN13450"
 ></A
 ><H2
 >Name</H2
@@ -111,7 +111,7 @@ NAME="AEN13370"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN13373"
+NAME="AEN13453"
 ></A
 ><H2
 >Synopsis</H2
@@ -127,26 +127,84 @@ CLASS="SYNOPSIS"
 >&#13;
 
 #define     <A
-HREF="gnome-xml-xmlmemory.html#NO-DEBUG-MEMORY"
->NO_DEBUG_MEMORY</A
+HREF="gnome-xml-xmlmemory.html#DEBUG-MEMORY"
+>DEBUG_MEMORY</A
 >
-void        <A
+#define     <A
+HREF="gnome-xml-xmlmemory.html#MEM-LIST"
+>MEM_LIST</A
+>
+void        (<A
+HREF="gnome-xml-xmlmemory.html#XMLFREEFUNC"
+>*xmlFreeFunc</A
+>)                  (void*);
+void*       (<A
+HREF="gnome-xml-xmlmemory.html#XMLMALLOCFUNC"
+>*xmlMallocFunc</A
+>)                (...);
+void*       (<A
+HREF="gnome-xml-xmlmemory.html#XMLREALLOCFUNC"
+>*xmlReallocFunc</A
+>)               (void*,
+                                             ...);
+char*       (<A
+HREF="gnome-xml-xmlmemory.html#XMLSTRDUPFUNC"
+>*xmlStrdupFunc</A
+>)                (const char*);
+extern      xmlFreeFunc <A
 HREF="gnome-xml-xmlmemory.html#XMLFREE"
 >xmlFree</A
->                         (void *ptr);
-void*       <A
+>;
+extern      xmlMallocFunc <A
 HREF="gnome-xml-xmlmemory.html#XMLMALLOC"
 >xmlMalloc</A
->                       (int size);
-void*       <A
+>;
+extern      xmlReallocFunc <A
 HREF="gnome-xml-xmlmemory.html#XMLREALLOC"
 >xmlRealloc</A
->                      (void *ptr,
-                                             int size);
-char*       <A
+>;
+extern      xmlStrdupFunc <A
 HREF="gnome-xml-xmlmemory.html#XMLMEMSTRDUP"
 >xmlMemStrdup</A
->                    (const char *str);
+>;
+int         <A
+HREF="gnome-xml-xmlmemory.html#XMLMEMSETUP"
+>xmlMemSetup</A
+>                     (<A
+HREF="gnome-xml-xmlmemory.html#XMLFREEFUNC"
+>xmlFreeFunc</A
+> freeFunc,
+                                             <A
+HREF="gnome-xml-xmlmemory.html#XMLMALLOCFUNC"
+>xmlMallocFunc</A
+> mallocFunc,
+                                             <A
+HREF="gnome-xml-xmlmemory.html#XMLREALLOCFUNC"
+>xmlReallocFunc</A
+> reallocFunc,
+                                             <A
+HREF="gnome-xml-xmlmemory.html#XMLSTRDUPFUNC"
+>xmlStrdupFunc</A
+> strdupFunc);
+int         <A
+HREF="gnome-xml-xmlmemory.html#XMLMEMGET"
+>xmlMemGet</A
+>                       (<A
+HREF="gnome-xml-xmlmemory.html#XMLFREEFUNC"
+>xmlFreeFunc</A
+> *freeFunc,
+                                             <A
+HREF="gnome-xml-xmlmemory.html#XMLMALLOCFUNC"
+>xmlMallocFunc</A
+> *mallocFunc,
+                                             <A
+HREF="gnome-xml-xmlmemory.html#XMLREALLOCFUNC"
+>xmlReallocFunc</A
+> *reallocFunc,
+                                             <A
+HREF="gnome-xml-xmlmemory.html#XMLSTRDUPFUNC"
+>xmlStrdupFunc</A
+> *strdupFunc);
 int         <A
 HREF="gnome-xml-xmlmemory.html#XMLINITMEMORY"
 >xmlInitMemory</A
@@ -155,10 +213,6 @@ int         <A
 HREF="gnome-xml-xmlmemory.html#XMLMEMUSED"
 >xmlMemUsed</A
 >                      (void);
-void        <A
-HREF="gnome-xml-xmlmemory.html#XMLMEMORYDUMP"
->xmlMemoryDump</A
->                   (void);
 void        <A
 HREF="gnome-xml-xmlmemory.html#XMLMEMDISPLAY"
 >xmlMemDisplay</A
@@ -174,18 +228,10 @@ HREF="FILE"
 >FILE</GTKDOCLINK
 > *fp,
                                              int nr);
-#define     <A
-HREF="gnome-xml-xmlmemory.html#DEBUG-MEMORY-LOCATION"
->DEBUG_MEMORY_LOCATION</A
->
-#define     <A
-HREF="gnome-xml-xmlmemory.html#DEBUG-MEMORY"
->DEBUG_MEMORY</A
->
-#define     <A
-HREF="gnome-xml-xmlmemory.html#MEM-LIST"
->MEM_LIST</A
->
+void        <A
+HREF="gnome-xml-xmlmemory.html#XMLMEMORYDUMP"
+>xmlMemoryDump</A
+>                   (void);
 void*       <A
 HREF="gnome-xml-xmlmemory.html#XMLMALLOCLOC"
 >xmlMallocLoc</A
@@ -212,7 +258,7 @@ HREF="gnome-xml-xmlmemory.html#XMLMEMSTRDUPLOC"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN13394"
+NAME="AEN13486"
 ></A
 ><H2
 >Description</H2
@@ -222,20 +268,20 @@ NAME="AEN13394"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN13397"
+NAME="AEN13489"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13399"
+NAME="AEN13491"
 ></A
 ><H3
 ><A
-NAME="NO-DEBUG-MEMORY"
+NAME="DEBUG-MEMORY"
 ></A
->NO_DEBUG_MEMORY</H3
+>DEBUG_MEMORY</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -245,7 +291,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define NO_DEBUG_MEMORY</PRE
+>#define DEBUG_MEMORY</PRE
 ></TD
 ></TR
 ></TABLE
@@ -255,13 +301,13 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13404"
+NAME="AEN13496"
 ></A
 ><H3
 ><A
-NAME="XMLFREE"
+NAME="MEM-LIST"
 ></A
->xmlFree ()</H3
+>MEM_LIST</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -271,15 +317,36 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void        xmlFree                         (void *ptr);</PRE
+>#define MEM_LIST /* keep a list of all the allocated memory blocks */</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
->a <GTKDOCLINK
-HREF="FREE"
->free</GTKDOCLINK
->() equivalent, with error checking.</P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13501"
+></A
+><H3
+><A
+NAME="XMLFREEFUNC"
+></A
+>xmlFreeFunc ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        (*xmlFreeFunc)                  (void*);</PRE
+></TD
+></TR
+></TABLE
 ><P
 ></P
 ><DIV
@@ -301,14 +368,14 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->ptr</I
+>Param1</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the memory block pointer</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -318,13 +385,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13420"
+NAME="AEN13515"
 ></A
 ><H3
 ><A
-NAME="XMLMALLOC"
+NAME="XMLMALLOCFUNC"
 ></A
->xmlMalloc ()</H3
+>xmlMallocFunc ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -334,15 +401,10 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void*       xmlMalloc                       (int size);</PRE
+>void*       (*xmlMallocFunc)                (...);</PRE
 ></TD
 ></TR
 ></TABLE
-><P
->a <GTKDOCLINK
-HREF="MALLOC"
->malloc</GTKDOCLINK
->() equivalent, with logging of the allocation info.</P
 ><P
 ></P
 ><DIV
@@ -364,14 +426,14 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->size</I
+>...</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an int specifying the size in byte to allocate.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -381,13 +443,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13436"
+NAME="AEN13529"
 ></A
 ><H3
 ><A
-NAME="XMLREALLOC"
+NAME="XMLREALLOCFUNC"
 ></A
->xmlRealloc ()</H3
+>xmlReallocFunc ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -397,16 +459,11 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void*       xmlRealloc                      (void *ptr,
-                                             int size);</PRE
+>void*       (*xmlReallocFunc)               (void*,
+                                             ...);</PRE
 ></TD
 ></TR
 ></TABLE
-><P
->a <GTKDOCLINK
-HREF="REALLOC"
->realloc</GTKDOCLINK
->() equivalent, with logging of the allocation info.</P
 ><P
 ></P
 ><DIV
@@ -428,14 +485,14 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->ptr</I
+>Param1</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the initial memory block pointer</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -445,14 +502,14 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->size</I
+>...</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  an int specifying the size in byte to allocate.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -462,13 +519,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13456"
+NAME="AEN13547"
 ></A
 ><H3
 ><A
-NAME="XMLMEMSTRDUP"
+NAME="XMLSTRDUPFUNC"
 ></A
->xmlMemStrdup ()</H3
+>xmlStrdupFunc ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -478,15 +535,10 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->char*       xmlMemStrdup                    (const char *str);</PRE
+>char*       (*xmlStrdupFunc)                (const char*);</PRE
 ></TD
 ></TR
 ></TABLE
-><P
->a <GTKDOCLINK
-HREF="STRDUP"
->strdup</GTKDOCLINK
->() equivalent, with logging of the allocation info.</P
 ><P
 ></P
 ><DIV
@@ -508,7 +560,7 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->str</I
+>Param1</I
 ></TT
 >&nbsp;:</TD
 ><TD
@@ -530,7 +582,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to the new string or NULL if allocation error occured.</TD
+>&nbsp;</TD
 ></TR
 ></TABLE
 ><P
@@ -540,7 +592,421 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13476"
+NAME="AEN13565"
+></A
+><H3
+><A
+NAME="XMLFREE"
+></A
+>xmlFree</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlFreeFunc xmlFree;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13570"
+></A
+><H3
+><A
+NAME="XMLMALLOC"
+></A
+>xmlMalloc</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlMallocFunc xmlMalloc;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13575"
+></A
+><H3
+><A
+NAME="XMLREALLOC"
+></A
+>xmlRealloc</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlReallocFunc xmlRealloc;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13580"
+></A
+><H3
+><A
+NAME="XMLMEMSTRDUP"
+></A
+>xmlMemStrdup</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlStrdupFunc xmlMemStrdup;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13585"
+></A
+><H3
+><A
+NAME="XMLMEMSETUP"
+></A
+>xmlMemSetup ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlMemSetup                     (<A
+HREF="gnome-xml-xmlmemory.html#XMLFREEFUNC"
+>xmlFreeFunc</A
+> freeFunc,
+                                             <A
+HREF="gnome-xml-xmlmemory.html#XMLMALLOCFUNC"
+>xmlMallocFunc</A
+> mallocFunc,
+                                             <A
+HREF="gnome-xml-xmlmemory.html#XMLREALLOCFUNC"
+>xmlReallocFunc</A
+> reallocFunc,
+                                             <A
+HREF="gnome-xml-xmlmemory.html#XMLSTRDUPFUNC"
+>xmlStrdupFunc</A
+> strdupFunc);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Override the default memory access functions with a new set
+This has to be called before any other libxml routines !</P
+><P
+>Should this be blocked if there was already some allocations
+done ?</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>freeFunc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the <GTKDOCLINK
+HREF="FREE"
+>free</GTKDOCLINK
+>() function to use</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>mallocFunc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the <GTKDOCLINK
+HREF="MALLOC"
+>malloc</GTKDOCLINK
+>() function to use</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>reallocFunc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the <GTKDOCLINK
+HREF="REALLOC"
+>realloc</GTKDOCLINK
+>() function to use</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>strdupFunc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the <GTKDOCLINK
+HREF="STRDUP"
+>strdup</GTKDOCLINK
+>() function to use</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 on success</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13625"
+></A
+><H3
+><A
+NAME="XMLMEMGET"
+></A
+>xmlMemGet ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlMemGet                       (<A
+HREF="gnome-xml-xmlmemory.html#XMLFREEFUNC"
+>xmlFreeFunc</A
+> *freeFunc,
+                                             <A
+HREF="gnome-xml-xmlmemory.html#XMLMALLOCFUNC"
+>xmlMallocFunc</A
+> *mallocFunc,
+                                             <A
+HREF="gnome-xml-xmlmemory.html#XMLREALLOCFUNC"
+>xmlReallocFunc</A
+> *reallocFunc,
+                                             <A
+HREF="gnome-xml-xmlmemory.html#XMLSTRDUPFUNC"
+>xmlStrdupFunc</A
+> *strdupFunc);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Return the memory access functions set currently in use</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>freeFunc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the <GTKDOCLINK
+HREF="FREE"
+>free</GTKDOCLINK
+>() function in use</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>mallocFunc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the <GTKDOCLINK
+HREF="MALLOC"
+>malloc</GTKDOCLINK
+>() function in use</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>reallocFunc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the <GTKDOCLINK
+HREF="REALLOC"
+>realloc</GTKDOCLINK
+>() function in use</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>strdupFunc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the <GTKDOCLINK
+HREF="STRDUP"
+>strdup</GTKDOCLINK
+>() function in use</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 on success</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13664"
 ></A
 ><H3
 ><A
@@ -598,7 +1064,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13491"
+NAME="AEN13679"
 ></A
 ><H3
 ><A
@@ -656,35 +1122,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13506"
-></A
-><H3
-><A
-NAME="XMLMEMORYDUMP"
-></A
->xmlMemoryDump ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlMemoryDump                   (void);</PRE
-></TD
-></TR
-></TABLE
-><P
->Dump in-extenso the memory blocks allocated to the file .memorylist</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN13512"
+NAME="AEN13694"
 ></A
 ><H3
 ><A
@@ -748,7 +1186,7 @@ written to the file .memorylist</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13528"
+NAME="AEN13710"
 ></A
 ><H3
 ><A
@@ -835,13 +1273,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13549"
+NAME="AEN13731"
 ></A
 ><H3
 ><A
-NAME="DEBUG-MEMORY-LOCATION"
+NAME="XMLMEMORYDUMP"
 ></A
->DEBUG_MEMORY_LOCATION</H3
+>xmlMemoryDump ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -851,69 +1289,19 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define DEBUG_MEMORY_LOCATION</PRE
+>void        xmlMemoryDump                   (void);</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>Dump in-extenso the memory blocks allocated to the file .memorylist</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13554"
-></A
-><H3
-><A
-NAME="DEBUG-MEMORY"
-></A
->DEBUG_MEMORY</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define DEBUG_MEMORY</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN13559"
-></A
-><H3
-><A
-NAME="MEM-LIST"
-></A
->MEM_LIST</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define MEM_LIST /* keep a list of all the allocated memory blocks */</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN13564"
+NAME="AEN13737"
 ></A
 ><H3
 ><A
@@ -1018,7 +1406,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13589"
+NAME="AEN13762"
 ></A
 ><H3
 ><A
@@ -1135,7 +1523,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN13617"
+NAME="AEN13790"
 ></A
 ><H3
 ><A

@@ -32,7 +32,6 @@
 
 #include "xmlmemory.h"
 
-#ifndef NO_DEBUG_MEMORY
 #ifdef xmlMalloc
 #undef xmlMalloc
 #endif
@@ -43,7 +42,6 @@
 #undef xmlMemStrdup
 #endif
 
-extern void xmlMemoryDump(void);
 
 /*
  * Each of the blocks allocated begin with a header containing informations
@@ -170,7 +168,7 @@ xmlMallocLoc(int size, const char * file, int line)
 }
 
 /**
- * xmlMalloc:
+ * xmlMemMalloc:
  * @size:  an int specifying the size in byte to allocate.
  *
  * a malloc() equivalent, with logging of the allocation info.
@@ -179,7 +177,7 @@ xmlMallocLoc(int size, const char * file, int line)
  */
 
 void *
-xmlMalloc(int size)
+xmlMemMalloc(int size)
 {
     return(xmlMallocLoc(size, "none", 0));
 }
@@ -242,7 +240,7 @@ error:
 }
 
 /**
- * xmlRealloc:
+ * xmlMemRealloc:
  * @ptr:  the initial memory block pointer
  * @size:  an int specifying the size in byte to allocate.
  *
@@ -252,18 +250,18 @@ error:
  */
 
 void *
-xmlRealloc(void *ptr,int size) {
+xmlMemRealloc(void *ptr,int size) {
     return(xmlReallocLoc(ptr, size, "none", 0));
 }
 
 /**
- * xmlFree:
+ * xmlMemFree:
  * @ptr:  the memory block pointer
  *
  * a free() equivalent, with error checking.
  */
 void
-xmlFree(void *ptr)
+xmlMemFree(void *ptr)
 {
     MEMHDR *p;
 
@@ -345,7 +343,7 @@ error:
 }
 
 /**
- * xmlMemStrdup:
+ * xmlMemoryStrdup:
  * @ptr:  the initial string pointer
  *
  * a strdup() equivalent, with logging of the allocation info.
@@ -354,7 +352,7 @@ error:
  */
 
 char *
-xmlMemStrdup(const char *str) {
+xmlMemoryStrdup(const char *str) {
     return(xmlMemStrdupLoc(str, "none", 0));
 }
 
@@ -573,6 +571,7 @@ FILE *xmlMemoryDumpFile = NULL;
 void
 xmlMemoryDump(void)
 {
+#if defined(DEBUG_MEMORY_LOCATION) | defined(DEBUG_MEMORY)
     FILE *dump;
 
     dump = fopen(".memdump", "w");
@@ -582,6 +581,7 @@ xmlMemoryDump(void)
     xmlMemDisplay(xmlMemoryDumpFile);
 
     if (dump != NULL) fclose(dump);
+#endif
 }
 
 
@@ -591,6 +591,18 @@ xmlMemoryDump(void)
  *								*
  ****************************************************************/
 
+#if defined(DEBUG_MEMORY_LOCATION) | defined(DEBUG_MEMORY)
+xmlFreeFunc xmlFree = (xmlFreeFunc) xmlMemFree;
+xmlMallocFunc xmlMalloc = (xmlMallocFunc) xmlMemMalloc;
+xmlReallocFunc xmlRealloc = (xmlReallocFunc) xmlMemRealloc;
+xmlStrdupFunc xmlMemStrdup = (xmlStrdupFunc) xmlMemoryStrdup;
+#else
+xmlFreeFunc xmlFree = (xmlFreeFunc) free;
+xmlMallocFunc xmlMalloc = (xmlMallocFunc) malloc;
+xmlReallocFunc xmlRealloc = (xmlReallocFunc) realloc;
+xmlStrdupFunc xmlMemStrdup = (xmlStrdupFunc) strdup;
+#endif
+
 /**
  * xmlInitMemory:
  *
@@ -599,6 +611,7 @@ xmlMemoryDump(void)
  * Returns 0 on success
  */
 
+static int xmlInitMemoryDone = 0;
 
 int
 xmlInitMemory(void)
@@ -607,7 +620,11 @@ xmlInitMemory(void)
      
 #ifdef HAVE_STDLIB_H
      char *breakpoint;
+#endif     
 
+     if (xmlInitMemoryDone) return(-1);
+
+#ifdef HAVE_STDLIB_H
      breakpoint = getenv("XML_MEM_BREAKPOINT");
      if (breakpoint != NULL) {
          sscanf(breakpoint, "%d", &xmlMemStopAtBlock);
@@ -621,4 +638,57 @@ xmlInitMemory(void)
      return(ret);
 }
 
-#endif /* ! NO_DEBUG_MEMORY */
+/**
+ * xmlMemSetup:
+ * @freeFunc: the free() function to use
+ * @mallocFunc: the malloc() function to use
+ * @reallocFunc: the realloc() function to use
+ * @strdupFunc: the strdup() function to use
+ *
+ * Override the default memory access functions with a new set
+ * This has to be called before any other libxml routines !
+ *
+ * Should this be blocked if there was already some allocations
+ * done ?
+ *
+ * Returns 0 on success
+ */
+int
+xmlMemSetup(xmlFreeFunc freeFunc, xmlMallocFunc mallocFunc,
+            xmlReallocFunc reallocFunc, xmlStrdupFunc strdupFunc) {
+    if (freeFunc != NULL)
+	return(-1);
+    if (mallocFunc != NULL)
+	return(-1);
+    if (reallocFunc != NULL)
+	return(-1);
+    if (strdupFunc != NULL)
+	return(-1);
+    xmlFree = freeFunc;
+    xmlMalloc = mallocFunc;
+    xmlRealloc = reallocFunc;
+    xmlMemStrdup = strdupFunc;
+    return(0);
+}
+
+/**
+ * xmlMemGet:
+ * @freeFunc: the free() function in use
+ * @mallocFunc: the malloc() function in use
+ * @reallocFunc: the realloc() function in use
+ * @strdupFunc: the strdup() function in use
+ *
+ * Return the memory access functions set currently in use
+ *
+ * Returns 0 on success
+ */
+int
+xmlMemGet(xmlFreeFunc *freeFunc, xmlMallocFunc *mallocFunc,
+	  xmlReallocFunc *reallocFunc, xmlStrdupFunc *strdupFunc) {
+    if (freeFunc != NULL) *freeFunc = xmlFree;
+    if (mallocFunc != NULL) *mallocFunc = xmlMalloc;
+    if (reallocFunc != NULL) *reallocFunc = xmlRealloc;
+    if (strdupFunc != NULL) *strdupFunc = xmlMemStrdup;
+    return(0);
+}
+

@@ -9,6 +9,7 @@
 <!entity HTMLtree SYSTEM "sgml/HTMLtree.sgml">
 <!entity debugXML SYSTEM "sgml/debugXML.sgml">
 <!entity tree SYSTEM "sgml/tree.sgml">
+<!entity uri SYSTEM "sgml/uri.sgml">
 <!entity xpath SYSTEM "sgml/xpath.sgml">
 <!entity xmlIO SYSTEM "sgml/xmlIO.sgml">
 <!entity xmlmemory SYSTEM "sgml/xmlmemory.sgml">
@@ -78,6 +79,7 @@
     &tree;
     &entities;
     &valid;
+    &uri;
     &error;
     &HTMLparser;
     &HTMLtree;

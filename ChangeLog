@@ -1,9 +1,15 @@
+Mon Mar 20 14:05:26 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* xmlmemory.[ch] : seems I forgot to actually update the files in
+	  the last commit :-)
+	* doc/xml.html doc/html/* : updated and uploaded the docs
+
 Mon Mar 20 12:33:51 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* test/valid/dtds/xhtml*: removed RCS infos (pain with CVS)
 	* TODO: updated
 	* xmlmemory.[ch] : added xmlMemSetup() and xmlMemGet() to override
-	  libxml defaul allocation function with another set (like gmalloc/
+	  libxml default allocation function with another set (like gmalloc/
 	  gfree).
 	* Makefile.am, uri.c, uri.h: added a set of functions to do
 	  exact (litteraly copied from the RFC 2396 productions) parsing

@@ -8,30 +8,13 @@
 #ifndef _DEBUG_MEMORY_ALLOC_
 #define _DEBUG_MEMORY_ALLOC_
 
-#define NO_DEBUG_MEMORY
-
-#ifdef NO_DEBUG_MEMORY
-#ifdef HAVE_MALLOC_H
-#include <malloc.h>
-#endif
-
-#define xmlFree(x) free((x))
-#define xmlMalloc(x) malloc(x)
-#define xmlRealloc(p, x) realloc((p), (x))
-#define xmlMemStrdup(x) strdup((x))
-#define xmlInitMemory()
-#define xmlMemUsed()
-#define xmlInitMemory()
-#define xmlMemoryDump()
-#define xmlMemDisplay(x)
-#define xmlMemShow(x, d)
-
-#else /* ! NO_DEBUG_MEMORY */
 #include <stdio.h>
 
-/* #define DEBUG_MEMORY */ /* */
-
-#define DEBUG_MEMORY_LOCATION
+/*
+ * DEBUG_MEMORY_LOCATION should be activated only done when debugging 
+ * libxml.
+ */
+/* #define DEBUG_MEMORY_LOCATION */
 
 #ifdef DEBUG
 #ifndef DEBUG_MEMORY
@@ -39,17 +22,50 @@
 #endif
 #endif
 
+#ifdef DEBUG_MEMORY_LOCATION
 #define MEM_LIST /* keep a list of all the allocated memory blocks */
+#endif
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+/*
+ * The XML memory wrapper support 4 basic overloadable functions
+ */
+typedef void (*xmlFreeFunc)(void *);
+typedef void *(*xmlMallocFunc)(int);
+typedef void *(*xmlReallocFunc)(void *, int);
+typedef char *(*xmlStrdupFunc)(const char *);
+
+/*
+ * The 4 interfaces used for all memory handling within libxml
+ */
+extern xmlFreeFunc xmlFree;
+extern xmlMallocFunc xmlMalloc;
+extern xmlReallocFunc xmlRealloc;
+extern xmlStrdupFunc xmlMemStrdup;
+
+/*
+ * The way to overload the existing functions
+ */
+int     xmlMemSetup	(xmlFreeFunc freeFunc,
+			 xmlMallocFunc mallocFunc,
+			 xmlReallocFunc reallocFunc,
+			 xmlStrdupFunc strdupFunc);
+int     xmlMemGet	(xmlFreeFunc *freeFunc,
+			 xmlMallocFunc *mallocFunc,
+			 xmlReallocFunc *reallocFunc,
+			 xmlStrdupFunc *strdupFunc);
+
+/*
+ * Initialization of the memory layer
+ */
 int	xmlInitMemory	(void);
-void *	xmlMalloc	(int size);
-void *	xmlRealloc	(void *ptr,
-			 int size);
-void	xmlFree		(void *ptr);
-char *	xmlMemStrdup	(const char *str);
+
+/*
+ * Those are specific to the XML debug memory wrapper
+ */
 int	xmlMemUsed	(void);
 void	xmlMemDisplay	(FILE *fp);
 void	xmlMemShow	(FILE *fp, int nr);
@@ -64,11 +80,11 @@ int	xmlInitMemory	(void);
 extern void *	xmlMallocLoc(int size, const char *file, int line);
 extern void *	xmlReallocLoc(void *ptr,int size, const char *file, int line);
 extern char *	xmlMemStrdupLoc(const char *str, const char *file, int line);
+#endif /* DEBUG_MEMORY_LOCATION */
+
 #ifdef __cplusplus
 }
-#endif
-#endif /* DEBUG_MEMORY_LOCATION */
-#endif /* ! NO_DEBUG_MEMORY */
+#endif /* __cplusplus */
 
 #endif  /* _DEBUG_MEMORY_ALLOC_ */
 

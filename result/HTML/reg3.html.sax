@@ -1,11 +1,8 @@
 SAX.setDocumentLocator()
 SAX.startDocument()
 SAX.startElement(html)
-SAX.startElement(body)
-SAX.startElement(p)
-SAX.characters(
+SAX.ignorableWhitespace(
 , 1)
-SAX.endElement(p)
 SAX.startElement(head)
 SAX.ignorableWhitespace(
 , 1)
@@ -42,7 +39,6 @@ SAX.endElement(p)
 SAX.endElement(body)
 SAX.ignorableWhitespace(
 , 1)
-SAX.endElement(body)
 SAX.endElement(html)
 SAX.ignorableWhitespace(
 , 1)

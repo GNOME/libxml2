@@ -8,11 +8,8 @@ SAX.startElement(title)
 SAX.characters(Linux Today, 11)
 SAX.endElement(title)
 SAX.endElement(head)
-SAX.startElement(body)
-SAX.startElement(p)
-SAX.characters(
+SAX.ignorableWhitespace(
 , 1)
-SAX.endElement(p)
 SAX.startElement(body, bgcolor='White', link='Blue', text='Black', VLINK='Black', ALINK='Red')
 SAX.ignorableWhitespace(
 
@@ -142,7 +139,6 @@ SAX.endElement(p)
 SAX.endElement(body)
 SAX.ignorableWhitespace(
 , 1)
-SAX.endElement(body)
 SAX.endElement(html)
 SAX.ignorableWhitespace(
 , 1)

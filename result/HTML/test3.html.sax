@@ -1,11 +1,8 @@
 SAX.setDocumentLocator()
 SAX.startDocument()
 SAX.startElement(html)
-SAX.startElement(body)
-SAX.startElement(p)
-SAX.characters(
+SAX.ignorableWhitespace(
 , 2)
-SAX.endElement(p)
 SAX.startElement(head)
 SAX.ignorableWhitespace(
 , 2)
@@ -16,9 +13,10 @@ SAX.ignorableWhitespace(
 SAX.endElement(head)
 SAX.ignorableWhitespace(
 , 2)
+SAX.startElement(body)
 SAX.startElement(a, name='ProblemDomain.Package')
 SAX.startElement(h2)
-SAX.characters(Component Package diagram Prob, 30)
+SAX.characters(Component Package diagram Prob, 39)
 SAX.endElement(h2)
 SAX.characters(
 , 2)
@@ -55,9 +53,9 @@ SAX.characters(Note , 5)
 SAX.endElement(b)
 SAX.endElement(dt)
 SAX.startElement(dd)
-SAX.characters(The Problem Domain package is , 30)
+SAX.characters(The Problem Domain package is , 59)
 SAX.startElement(dd)
-SAX.characters(Interface, thats stores and ma, 30)
+SAX.characters(Interface, thats stores and ma, 58)
 SAX.endElement(dd)
 SAX.endElement(dd)
 SAX.endElement(dl)

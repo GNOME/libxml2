@@ -1650,6 +1650,8 @@ static int areBlanks(htmlParserCtxtPtr ctxt, const xmlChar *str, int len) {
     if (CUR != '<') return(0);
     if (ctxt->name == NULL)
 	return(1);
+    if (!xmlStrcmp(ctxt->name, BAD_CAST"html"))
+	return(1);
     if (!xmlStrcmp(ctxt->name, BAD_CAST"head"))
 	return(1);
     if (!xmlStrcmp(ctxt->name, BAD_CAST"body"))

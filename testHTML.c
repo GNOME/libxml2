@@ -412,9 +412,9 @@ void
 charactersDebug(void *ctx, const xmlChar *ch, int len)
 {
     unsigned char output[40];
-    int outlen = 30;
+    int inlen = len, outlen = 30;
 
-    htmlEncodeEntities(output, &outlen, ch, &len, 0);
+    htmlEncodeEntities(output, &outlen, ch, &inlen, 0);
     output[outlen] = 0;
 
     fprintf(stdout, "SAX.characters(%s, %d)\n", output, len);

@@ -4292,7 +4292,7 @@ xmlParseEntityValue(xmlParserCtxtPtr ctxt, xmlChar **orig) {
      * xmlStringDecodeEntities()
      */
     cur = buf;
-    while (*cur != 0) {
+    while (*cur != 0) { /* non input consuming */
 	if ((*cur == '%') || ((*cur == '&') && (cur[1] != '#'))) {
 	    xmlChar *name;
 	    xmlChar tmp = *cur;
@@ -4428,7 +4428,8 @@ xmlParseAttValue(xmlParserCtxtPtr ctxt) {
      * Ok loop until we reach one of the ending char or a size limit.
      */
     c = CUR_CHAR(l);
-    while (((NXT(0) != limit) && (c != '<')) || (ctxt->token != 0)) {
+    while (((NXT(0) != limit) && /* checked */
+	   (c != '<')) || (ctxt->token != 0)) {
 	if (c == 0) break;
 	if (ctxt->token == '&') {
 	    static xmlChar buffer[6] = "&#38;";
@@ -4437,7 +4438,7 @@ xmlParseAttValue(xmlParserCtxtPtr ctxt) {
 		growBuffer(buf);
 	    }
 	    current = &buffer[0];
-	    while (*current != 0) {
+	    while (*current != 0) { /* non input consuming */
 		buf[len++] = *current++;
 	    }
 	    ctxt->token = 0;
@@ -4456,7 +4457,7 @@ xmlParseAttValue(xmlParserCtxtPtr ctxt) {
 					      XML_SUBSTITUTE_REF, 0, 0, 0);
 		    if (rep != NULL) {
 			current = rep;
-			while (*current != 0) {
+			while (*current != 0) { /* non input consuming */
 			    buf[len++] = *current++;
 			    if (len > buf_size - 10) {
 				growBuffer(buf);
@@ -4551,6 +4552,7 @@ xmlParseSystemLiteral(xmlParserCtxtPtr ctxt) {
     int cur, l;
     xmlChar stop;
     int state = ctxt->instate;
+    int count = 0;
 
     SHRINK;
     if (RAW == '"') {
@@ -4576,7 +4578,7 @@ xmlParseSystemLiteral(xmlParserCtxtPtr ctxt) {
     }
     ctxt->instate = XML_PARSER_SYSTEM_LITERAL;
     cur = CUR_CHAR(l);
-    while ((IS_CHAR(cur)) && (cur != stop)) {
+    while ((IS_CHAR(cur)) && (cur != stop)) { /* checked */
 	if (len + 5 >= size) {
 	    size *= 2;
 	    buf = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
@@ -4585,6 +4587,11 @@ xmlParseSystemLiteral(xmlParserCtxtPtr ctxt) {
 		ctxt->instate = (xmlParserInputState) state;
 		return(NULL);
 	    }
+	}
+	count++;
+	if (count > 50) {
+	    GROW;
+	    count = 0;
 	}
 	COPY_BUF(l,buf,len,cur);
 	NEXTL(l);
@@ -4627,6 +4634,7 @@ xmlParsePubidLiteral(xmlParserCtxtPtr ctxt) {
     int size = XML_PARSER_BUFFER_SIZE;
     xmlChar cur;
     xmlChar stop;
+    int count = 0;
 
     SHRINK;
     if (RAW == '"') {
@@ -4650,7 +4658,7 @@ xmlParsePubidLiteral(xmlParserCtxtPtr ctxt) {
 	return(NULL);
     }
     cur = CUR;
-    while ((IS_PUBIDCHAR(cur)) && (cur != stop)) {
+    while ((IS_PUBIDCHAR(cur)) && (cur != stop)) { /* checked */
 	if (len + 1 >= size) {
 	    size *= 2;
 	    buf = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
@@ -4660,6 +4668,11 @@ xmlParsePubidLiteral(xmlParserCtxtPtr ctxt) {
 	    }
 	}
 	buf[len++] = cur;
+	count++;
+	if (count > 50) {
+	    GROW;
+	    count = 0;
+	}
 	NEXT;
 	cur = CUR;
 	if (cur == 0) {
@@ -4702,10 +4715,12 @@ xmlParseCharData(xmlParserCtxtPtr ctxt, int cdata) {
     xmlChar buf[XML_PARSER_BIG_BUFFER_SIZE + 5];
     int nbchar = 0;
     int cur, l;
+    int count = 0;
 
     SHRINK;
+    GROW;
     cur = CUR_CHAR(l);
-    while (((cur != '<') || (ctxt->token == '<')) &&
+    while (((cur != '<') || (ctxt->token == '<')) && /* checked */
            ((cur != '&') || (ctxt->token == '&')) && 
 	   (IS_CHAR(cur))) {
 	if ((cur == ']') && (NXT(1) == ']') &&
@@ -4737,6 +4752,11 @@ xmlParseCharData(xmlParserCtxtPtr ctxt, int cdata) {
 		}
 	    }
 	    nbchar = 0;
+	}
+	count++;
+	if (count > 50) {
+	    GROW;
+	    count = 0;
 	}
 	NEXTL(l);
 	cur = CUR_CHAR(l);
@@ -4852,7 +4872,7 @@ xmlParseExternalID(xmlParserCtxtPtr ctxt, xmlChar **publicID, int strict) {
 	    ptr = CUR_PTR;
 	    if (!IS_BLANK(*ptr)) return(NULL);
 	    
-	    while (IS_BLANK(*ptr)) ptr++;
+	    while (IS_BLANK(*ptr)) ptr++; /* TODO: dangerous, fix ! */
 	    if ((*ptr != '\'') && (*ptr != '"')) return(NULL);
 	}
         SKIP_BLANKS;
@@ -4889,6 +4909,7 @@ xmlParseComment(xmlParserCtxtPtr ctxt) {
     int cur, l;
     xmlParserInputState state;
     xmlParserInputPtr input = ctxt->input;
+    int count = 0;
 
     /*
      * Check that there is a comment right here.
@@ -4912,7 +4933,7 @@ xmlParseComment(xmlParserCtxtPtr ctxt) {
     NEXTL(rl);
     cur = CUR_CHAR(l);
     len = 0;
-    while (IS_CHAR(cur) &&
+    while (IS_CHAR(cur) && /* checked */
            ((cur != '>') ||
 	    (r != '-') || (q != '-'))) {
 	if ((r == '-') && (q == '-') && (len > 1)) {
@@ -4937,6 +4958,12 @@ xmlParseComment(xmlParserCtxtPtr ctxt) {
 	ql = rl;
 	r = cur;
 	rl = l;
+
+	count++;
+	if (count > 50) {
+	    GROW;
+	    count = 0;
+	}
 	NEXTL(l);
 	cur = CUR_CHAR(l);
 	if (cur == 0) {
@@ -5043,6 +5070,7 @@ xmlParsePI(xmlParserCtxtPtr ctxt) {
     int cur, l;
     xmlChar *target;
     xmlParserInputState state;
+    int count = 0;
 
     if ((RAW == '<') && (NXT(1) == '?')) {
 	xmlParserInputPtr input = ctxt->input;
@@ -5099,7 +5127,7 @@ xmlParsePI(xmlParserCtxtPtr ctxt) {
 	    }
             SKIP_BLANKS;
 	    cur = CUR_CHAR(l);
-	    while (IS_CHAR(cur) &&
+	    while (IS_CHAR(cur) && /* checked */
 		   ((cur != '?') || (NXT(1) != '>'))) {
 		if (len + 5 >= size) {
 		    size *= 2;
@@ -5109,6 +5137,11 @@ xmlParsePI(xmlParserCtxtPtr ctxt) {
 			ctxt->instate = state;
 			return;
 		    }
+		}
+		count++;
+		if (count > 50) {
+		    GROW;
+		    count = 0;
 		}
 		COPY_BUF(l,buf,len,cur);
 		NEXTL(l);

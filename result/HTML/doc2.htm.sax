@@ -12,7 +12,7 @@ SAX.ignorableWhitespace(
 , 1)
 SAX.startElement(script, language='javascript')
 SAX.characters(
-          NS_ActualOpen=windo, 30)
+          NS_ActualOpen=windo, 194)
 SAX.endElement(script)
 SAX.ignorableWhitespace(
 , 1)
@@ -55,7 +55,7 @@ SAX.startElement(body, bgcolor='#FFFFFF', text='#000000', link='#000080', vlink=
 SAX.ignorableWhitespace(
   , 3)
 SAX.startElement(p)
-SAX.characters(This page uses frames, but you, 30)
+SAX.characters(This page uses frames, but you, 61)
 SAX.endElement(p)
 SAX.ignorableWhitespace(
   , 3)

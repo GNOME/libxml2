@@ -1,3 +1,10 @@
+Tue Aug 29 11:24:48 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* HTMLparser.c testHTML.c: applied two new patches from
+	  Wayne Davison <wayned@blorf.net>
+	* result/HTML/*.sax: regenerated HTML SAX output
+	* parser.c: more cleanup.
+
 Mon Aug 28 11:58:12 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* HTMLparser.[ch] testHTML.c: applied the second set of

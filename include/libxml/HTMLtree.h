@@ -10,13 +10,13 @@
 #ifndef __HTML_TREE_H__
 #define __HTML_TREE_H__
 
+#include <stdio.h>
+#include "tree.h"
+
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#include <stdio.h>
-#include "tree.h"
 
 #define HTML_TEXT_NODE		XML_TEXT_NODE
 #define HTML_ENTITY_REF_NODE	XML_ENTITY_REF_NODE

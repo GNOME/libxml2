@@ -35,12 +35,22 @@ int main(int argc ATTRIBUTE_UNUSED, char **argv ATTRIBUTE_UNUSED) {
     hello_world_t hello_world = NULL;
 
     /* build the module filename, and confirm the module exists */
-    xmlStrPrintf(filename, sizeof(filename), "%s/testdso%s", (const xmlChar*)MODULE_PATH, (const xmlChar*)LIBXML_MODULE_EXTENSION);
+    xmlStrPrintf(filename, sizeof(filename), "%s/testdso%s",
+                 (const xmlChar*)MODULE_PATH,
+		 (const xmlChar*)LIBXML_MODULE_EXTENSION);
 
     module = xmlModuleOpen((const char*)filename);
     if (module)
       {
-        hello_world = (hello_world_t)xmlModuleSymbol(module, "hello_world");
+        if (xmlModuleSymbol(module, "hello_world", (void **) &hello_world)) {
+	    fprintf(stderr, "Failure to lookup\n");
+	    return(1);
+	}
+	if (hello_world == NULL) {
+	    fprintf(stderr, "Lookup returned NULL\n");
+	    return(1);
+	}
+	
         (*hello_world)();
 
         xmlModuleClose(module);

@@ -6686,7 +6686,6 @@
       <ref name='xmlMallocLoc'/>
       <ref name='xmlMemMalloc'/>
       <ref name='xmlMemRealloc'/>
-      <ref name='xmlModuleSymbol'/>
       <ref name='xmlNanoFTPConnectTo'/>
       <ref name='xmlNanoFTPNewCtxt'/>
       <ref name='xmlNanoFTPOpen'/>
@@ -8179,6 +8178,7 @@
       <ref name='xmlXPathWrapExternal'/>
     </type>
     <type name='void **'>
+      <ref name='xmlModuleSymbol'/>
       <ref name='xmlRelaxNGGetParserErrors'/>
       <ref name='xmlRelaxNGGetValidErrors'/>
       <ref name='xmlSchemaGetParserErrors'/>

@@ -28275,23 +28275,28 @@ test_xmlModuleSymbol(void) {
 
 #if defined(LIBXML_MODULES_ENABLED)
     int mem_base;
-    void * ret_val;
+    int ret_val;
     xmlModulePtr module; /* the module */
     int n_module;
     char * name; /* the name of the symbol */
     int n_name;
+    void ** symbol; /* the resulting symbol address */
+    int n_symbol;
 
     for (n_module = 0;n_module < gen_nb_xmlModulePtr;n_module++) {
     for (n_name = 0;n_name < gen_nb_const_char_ptr;n_name++) {
+    for (n_symbol = 0;n_symbol < gen_nb_void_ptr_ptr;n_symbol++) {
         mem_base = xmlMemBlocks();
         module = gen_xmlModulePtr(n_module, 0);
         name = gen_const_char_ptr(n_name, 1);
+        symbol = gen_void_ptr_ptr(n_symbol, 2);
 
-        ret_val = xmlModuleSymbol(module, (const char *)name);
-        desret_void_ptr(ret_val);
+        ret_val = xmlModuleSymbol(module, (const char *)name, symbol);
+        desret_int(ret_val);
         call_tests++;
         des_xmlModulePtr(n_module, module, 0);
         des_const_char_ptr(n_name, (const char *)name, 1);
+        des_void_ptr_ptr(n_symbol, symbol, 2);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
             printf("Leak of %d blocks found in xmlModuleSymbol",
@@ -28299,8 +28304,10 @@ test_xmlModuleSymbol(void) {
 	    test_ret++;
             printf(" %d", n_module);
             printf(" %d", n_name);
+            printf(" %d", n_symbol);
             printf("\n");
         }
+    }
     }
     }
     function_tests++;

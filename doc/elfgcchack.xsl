@@ -60,6 +60,7 @@
 #include "libxml/xpath.h"
 #include "libxml/xpathInternals.h"
 #include "libxml/xpointer.h"
+#include "libxml/xmlmodule.h"
 
 /* special hot spot not exported ones */
 

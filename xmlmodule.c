@@ -4,6 +4,8 @@
  * See Copyright for the status of this software.
  *
  * joelwreed@comcast.net
+ *
+ * http://www.fortran-2000.com/ArnaudRecipes/sharedlib.html
  */
 
 #define IN_LIBXML
@@ -24,7 +26,7 @@ struct _xmlModule {
 
 static void *xmlModulePlatformOpen(const char *name);
 static int xmlModulePlatformClose(void *handle);
-static void *xmlModulePlatformSymbol(void *handle, const char *name);
+static int xmlModulePlatformSymbol(void *handle, const char *name, void **result);
 
 /************************************************************************
  *									*
@@ -92,34 +94,36 @@ xmlModuleOpen(const char *name)
  * xmlModuleSymbol:
  * @module: the module
  * @name: the name of the symbol
+ * @symbol: the resulting symbol address
  *
  * Lookup for a symbol address in the given module
  *
- * Returns the pointer to the symbol object or NULL in case of error
+ * Returns 0 if the symbol was found, or -1 in case of error
  */
-void *
-xmlModuleSymbol(xmlModulePtr module, const char *name)
+int
+xmlModuleSymbol(xmlModulePtr module, const char *name, void **symbol)
 {
-    void *symbol;
-
-    if (NULL == module) {
+    int rc = -1;
+	
+    if ((NULL == module) || (symbol == NULL)) {
         __xmlRaiseError(NULL, NULL, NULL, NULL, NULL, XML_FROM_MODULE,
                         XML_MODULE_OPEN, XML_ERR_FATAL, NULL, 0, 0,
-                        NULL, NULL, 0, 0, "null module pointer\n", 0);
-        return 0;
+                        NULL, NULL, 0, 0, "null parameter\n");
+        return rc;
     }
 
-    symbol = xmlModulePlatformSymbol(module->handle, name);
+    rc = xmlModulePlatformSymbol(module->handle, name, symbol);
 
-    if (symbol == 0) {
+    if (rc == -1) {
         __xmlRaiseError(NULL, NULL, NULL, NULL, NULL, XML_FROM_MODULE,
                         XML_MODULE_OPEN, XML_ERR_FATAL, NULL, 0, 0,
-                        symbol, NULL, 0, 0,
-                        "failed to find symbol: %s\n", 0);
-        return 0;
+                        name, NULL, 0, 0,
+                        "failed to find symbol: %s\n",
+			(name == NULL ? "NULL" : name));
+        return rc;
     }
 
-    return (symbol);
+    return rc;
 }
 
 /**
@@ -139,8 +143,8 @@ xmlModuleClose(xmlModulePtr module)
 
     if (NULL == module) {
         __xmlRaiseError(NULL, NULL, NULL, NULL, NULL, XML_FROM_MODULE,
-                        XML_MODULE_OPEN, XML_ERR_FATAL, NULL, 0, 0,
-                        NULL, NULL, 0, 0, "null module pointer\n", 0);
+                        XML_MODULE_CLOSE, XML_ERR_FATAL, NULL, 0, 0,
+                        NULL, NULL, 0, 0, "null module pointer\n");
         return -1;
     }
 
@@ -148,9 +152,9 @@ xmlModuleClose(xmlModulePtr module)
 
     if (rc != 0) {
         __xmlRaiseError(NULL, NULL, NULL, NULL, NULL, XML_FROM_MODULE,
-                        XML_MODULE_OPEN, XML_ERR_FATAL, NULL, 0, 0,
+                        XML_MODULE_CLOSE, XML_ERR_FATAL, NULL, 0, 0,
                         (const char *) module->name, NULL, 0, 0,
-                        "failed to close: %s\n", 0);
+                        "failed to close: %s\n", module->name);
         return -2;
     }
 
@@ -173,8 +177,8 @@ xmlModuleFree(xmlModulePtr module)
 {
     if (NULL == module) {
         __xmlRaiseError(NULL, NULL, NULL, NULL, NULL, XML_FROM_MODULE,
-                        XML_MODULE_OPEN, XML_ERR_FATAL, NULL, 0, 0,
-                        NULL, NULL, 0, 0, "null module pointer\n", 0);
+                        XML_MODULE_CLOSE, XML_ERR_FATAL, NULL, 0, 0,
+                        NULL, NULL, 0, 0, "null module pointer\n");
         return -1;
     }
 
@@ -198,10 +202,7 @@ xmlModuleFree(xmlModulePtr module)
 static void *
 xmlModulePlatformOpen(const char *name)
 {
-    void *handle;
-
-    handle = dlopen(name, RTLD_GLOBAL | RTLD_NOW);
-    return (handle);
+    return dlopen(name, RTLD_GLOBAL | RTLD_NOW);
 }
 
 /*
@@ -214,24 +215,23 @@ xmlModulePlatformOpen(const char *name)
 static int
 xmlModulePlatformClose(void *handle)
 {
-    int rc;
-
-    rc = dlclose(handle);
-    return (rc);
+    return dlclose(handle);
 }
 
 /*
  * xmlModulePlatformSymbol:
- * returns loaded symbol on success, and zero on error.
+ * http://www.opengroup.org/onlinepubs/009695399/functions/dlsym.html
+ * returns 0 on success and the loaded symbol in result, and -1 on error.
  */
 
-static void *
-xmlModulePlatformSymbol(void *handle, const char *name)
+static int
+xmlModulePlatformSymbol(void *handle, const char *name, void **symbol)
 {
-    void *sym;
-
-    sym = dlsym(handle, name);
-    return (sym);
+    *symbol = dlsym(handle, name);
+    if (dlerror() != NULL) {
+	return -1;
+    }
+    return 0;
 }
 
 #endif /* HAVE_DLOPEN */
@@ -246,10 +246,7 @@ xmlModulePlatformSymbol(void *handle, const char *name)
 static void *
 xmlModulePlatformOpen(const char *name)
 {
-    void *handle;
-
-    handle = shl_load(name, BIND_IMMEDIATE, 0L);
-    return (handle);
+    return shl_load(name, BIND_IMMEDIATE, 0L);
 }
 
 /*
@@ -260,29 +257,26 @@ xmlModulePlatformOpen(const char *name)
 static int
 xmlModulePlatformClose(void *handle)
 {
-    int rc;
-
-    rc = shl_unload(handle);
-    return (rc);
+    return shl_unload(handle);
 }
 
 /*
  * xmlModulePlatformSymbol:
- * returns loaded symbol on success, and zero on error.
+ * http://docs.hp.com/en/B2355-90683/shl_load.3X.html
+ * returns 0 on success and the loaded symbol in result, and -1 on error.
  */
 
-static void *
-xmlModulePlatformSymbol(void *handle, const char *name)
+static int
+xmlModulePlatformSymbol(void *handle, const char *name, void **symbol)
 {
-    void *sym;
     int rc;
 
     errno = 0;
-    rc = shl_findsym(handle, name, TYPE_PROCEDURE, &sym);
-    if (-1 == rc && 0 == errno) {
-        rc = shl_findsym(handle, sym, TYPE_DATA, &sym);
+    rc = shl_findsym(handle, name, TYPE_PROCEDURE, symbol);
+    if ((-1 == rc) && (0 == errno)) {
+        rc = shl_findsym(handle, name, TYPE_DATA, symbol);
     }
-    return (sym);
+    return rc;
 }
 
 #endif /* HAVE_SHLLOAD */
@@ -299,10 +293,7 @@ xmlModulePlatformSymbol(void *handle, const char *name)
 static void *
 xmlModulePlatformOpen(const char *name)
 {
-    void *handle;
-
-    handle = LoadLibrary(name);
-    return (handle);
+    return LoadLibrary(name);
 }
 
 /*
@@ -321,16 +312,15 @@ xmlModulePlatformClose(void *handle)
 
 /*
  * xmlModulePlatformSymbol:
- * returns loaded symbol on success, and zero on error.
+ * http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dllproc/base/getprocaddress.asp
+ * returns 0 on success and the loaded symbol in result, and -1 on error.
  */
 
-static void *
-xmlModulePlatformSymbol(void *handle, const char *name)
+static int
+xmlModulePlatformSymbol(void *handle, const char *name, void **symbol)
 {
-    void *sym;
-
-    sym = GetProcAddress(handle, name);
-    return (sym);
+    *symbol = GetProcAddress(handle, name);
+    return (NULL == *symbol) ? -1 : 0;
 }
 
 #endif /* _WIN32 */
@@ -348,10 +338,7 @@ xmlModulePlatformSymbol(void *handle, const char *name)
 static void *
 xmlModulePlatformOpen(const char *name)
 {
-    void *handle;
-
-    handle = (void *) load_add_on(name);
-    return (handle);
+    return (void *) load_add_on(name);
 }
 
 /*
@@ -376,22 +363,17 @@ xmlModulePlatformClose(void *handle)
 /*
  * xmlModulePlatformSymbol:
  * beos api info: http://www.beunited.org/bebook/The%20Kernel%20Kit/Images.html
- * returns loaded symbol on success, and zero on error.
+ * returns 0 on success and the loaded symbol in result, and -1 on error.
  */
 
-static void *
-xmlModulePlatformSymbol(void *handle, const char *name)
+static int
+xmlModulePlatformSymbol(void *handle, const char *name, void **symbol)
 {
-    void *sym;
     status_t rc;
 
-    rc = get_image_symbol((image_id) handle, name, B_SYMBOL_TYPE_ANY,
-                          &sym);
+    rc = get_image_symbol((image_id) handle, name, B_SYMBOL_TYPE_ANY, symbol);
 
-    if (rc == B_OK)
-        return sym;
-    else
-        return 0;
+    return (rc == B_OK) ? 0 : -1;
 }
 
 #endif /* HAVE_BEOS */
@@ -409,11 +391,11 @@ xmlModulePlatformSymbol(void *handle, const char *name)
 static void *
 xmlModulePlatformOpen(const char *name)
 {
-    char errbuf[255];
+    char errbuf[256];
     void *handle;
     int rc;
 
-    rc = DosLoadModule(errbuf, sizeof(errbuf), name, &handle);
+    rc = DosLoadModule(errbuf, sizeof(errbuf) - 1, name, &handle);
 
     if (rc)
         return 0;
@@ -430,30 +412,23 @@ xmlModulePlatformOpen(const char *name)
 static int
 xmlModulePlatformClose(void *handle)
 {
-    int rc;
-
-    rc = DosFreeModule(handle);
-    return (rc);
+    return DosFreeModule(handle);
 }
 
 /*
  * xmlModulePlatformSymbol:
  * os2 api info: http://www.edm2.com/os2api/Dos/DosQueryProcAddr.html
- * returns loaded symbol on success, and zero on error.
+ * returns 0 on success and the loaded symbol in result, and -1 on error.
  */
 
-static void *
-xmlModulePlatformSymbol(void *handle, const char *name)
+static int
+xmlModulePlatformSymbol(void *handle, const char *name, void **symbol)
 {
-    void *sym;
     int rc;
 
-    rc = DosQueryProcAddr(handle, 0, name, &sym);
+    rc = DosQueryProcAddr(handle, 0, name, symbol);
 
-    if (rc)
-        return 0;
-    else
-        return (sym);
+    return (rc == NO_ERROR) ? 0 : -1;
 }
 
 #endif /* HAVE_OS2 */

@@ -37,7 +37,7 @@ extern "C" {
 
 XMLPUBFUN xmlModulePtr XMLCALL xmlModuleOpen	(const char *filename);
 
-XMLPUBFUN void* XMLCALL xmlModuleSymbol	(xmlModulePtr module, const char* name);
+XMLPUBFUN int XMLCALL xmlModuleSymbol	(xmlModulePtr module, const char* name, void **result);
 
 XMLPUBFUN int XMLCALL xmlModuleClose	(xmlModulePtr module);
 

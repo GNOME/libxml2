@@ -10077,9 +10077,10 @@ actually an xmlCharEncoding'/>
     <function name='xmlModuleSymbol' file='xmlmodule'>
       <cond>defined(LIBXML_MODULES_ENABLED)</cond>
       <info>Lookup for a symbol address in the given module</info>
-      <return type='void *' info='the pointer to the symbol object or NULL in case of error'/>
+      <return type='int' info='0 if the symbol was found, or -1 in case of error'/>
       <arg name='module' type='xmlModulePtr' info='the module'/>
       <arg name='name' type='const char *' info='the name of the symbol'/>
+      <arg name='symbol' type='void **' info='the resulting symbol address'/>
     </function>
     <function name='xmlMutexLock' file='threads'>
       <info>xmlMutexLock() is used to lock a libxml2 token.</info>

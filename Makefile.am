@@ -11,6 +11,7 @@ noinst_PROGRAMS=tester testSAX testHTML testXPath
 bin_SCRIPTS=xml-config
 
 lib_LTLIBRARIES = libxml.la
+libxml_la_LIBADD = @Z_LIBS@
 
 libxml_la_LDFLAGS = -version-info @LIBXML_VERSION_INFO@
 

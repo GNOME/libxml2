@@ -1,3 +1,5 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
   <title>The XML C library for Gnome</title>
@@ -146,10 +148,21 @@ href="http://mail.gnome.org/archives/xml/">on-line archive</a> (<a
 href="http://xmlsoft.org/messages">old</a>). To subscribe to this list, please
 visit the <a href="http://mail.gnome.org/mailman/listinfo/xml">associated
 Web</a> page and follow the instructions. <strong>Do not send code, I won't
-debug it</strong> (but patches are really appreciated!), make sure you can
-reproduce the bug with xmllint or one of the test programs found in source in
-the distribution and send the command showing the error as well as the input
-(as an attachement), thanks.</p>
+debug it</strong> (but patches are really appreciated!).</p>
+
+<p>Check the following too before posting:</p>
+<ul>
+  <li>make sure you are <a href="ftp://xmlsoft.org/">using a recent
+    version</a>, and that the problem still shows up in those</li>
+  <li>check the <a href="http://mail.gnome.org/archives/xml/">list
+    archives</a> to see if the problem was reported already, in this case
+    there is probably a fix available, similary check the <a
+    href="http://bugzilla.gnome.org/buglist.cgi?product=libxml&product=libxslt&bug_status=UNCONFIRMED&bug_status=NEW&bug_status=ASSIGNED&bug_status=NEEDINFO&bug_status=REOPENED&bug_status=RESOLVED&bug_status=VERIFIED&email1=&emailtype1=substring&emailassigned_to1=1&emailreporter1=1&emailcc1=1&emaillongdesc1=1&email2=&emailtype2=substring&emailassigned_to2=1&emailreporter2=1&emailcc2=1&emaillongdesc2=1&changedin=&chfieldfrom=&chfieldto=Now&chfieldvalue=&short_desc=&short_desc_type=substring&long_desc=&long_desc_type=substring&bug_file_loc=&bug_file_loc_type=substring&status_whiteboard=&status_whiteboard_type=substring&keywords=&keywords_type=anywords&op_sys_details=&op_sys_details_type=substring&version_details=&version_details_type=substring&cmdtype=doit&newqueryname=&order=Reuse+same+sort+as+last+time&form_name=query">registered open bugs</a></li>
+  <li>make sure you can reproduce the bug with xmllint or one of the test
+    programs found in source in the distribution</li>
+  <li>Please send the command showing the error as well as the input (as an
+    attachement)</li>
+</ul>
 
 <p>Alternatively, you can just send the bug to the <a
 href="mailto:xml@gnome.org">xml@gnome.org</a> list; if it's really libxml
@@ -1605,6 +1618,6 @@ Gnome CVS base under gnome-xml/example</p>
 
 <p><a href="mailto:Daniel.Veillard@imag.fr">Daniel Veillard</a></p>
 
-<p>$Id: xml.html,v 1.96 2001/06/26 23:07:32 veillard Exp $</p>
+<p>$Id: xml.html,v 1.97 2001/06/28 16:20:36 veillard Exp $</p>
 </body>
 </html>

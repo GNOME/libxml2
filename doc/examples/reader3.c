@@ -35,7 +35,7 @@ extractFile(const char *filename, const xmlChar *pattern) {
         /*
 	 * add the pattern to preserve
 	 */
-        if (xmlTextReaderPreservePattern(reader, pattern) < 0) {
+        if (xmlTextReaderPreservePattern(reader, pattern, NULL) < 0) {
             fprintf(stderr, "%s : failed add preserve pattern %s\n",
 	            filename, (const char *) pattern);
 	}

@@ -73,6 +73,8 @@ struct _xmlPatParserContext {
     xmlDictPtr     dict;		/* the dictionnary if any */
     xmlPatternPtr  comp;		/* the result */
     xmlNodePtr     elem;		/* the current node if any */    
+    const xmlChar **namespaces;		/* the namespaces definitions */
+    int   nb_namespaces;		/* the number of namespaces */
 };
 
 /************************************************************************
@@ -149,14 +151,16 @@ xmlFreePatternList(xmlPatternPtr comp) {
 /**
  * xmlNewPatParserContext:
  * @pattern:  the pattern context
- * @ctxt:  the transformation context, if done at run-time
+ * @dict:  the inherited dictionnary or NULL
+ * @namespaces: the prefix definitions, array of [URI, prefix] or NULL
  *
  * Create a new XML pattern parser context
  *
  * Returns the newly allocated xmlPatParserContextPtr or NULL in case of error
  */
 static xmlPatParserContextPtr
-xmlNewPatParserContext(const xmlChar *pattern, xmlDictPtr dict) {
+xmlNewPatParserContext(const xmlChar *pattern, xmlDictPtr dict,
+                       const xmlChar **namespaces) {
     xmlPatParserContextPtr cur;
 
     if (pattern == NULL)
@@ -172,6 +176,14 @@ xmlNewPatParserContext(const xmlChar *pattern, xmlDictPtr dict) {
     cur->dict = dict;
     cur->cur = pattern;
     cur->base = pattern;
+    if (namespaces != NULL) {
+        int i;
+	for (i = 0;namespaces[2 * i] != NULL;i++);
+        cur->nb_namespaces = i;
+    } else {
+        cur->nb_namespaces = 0;
+    }
+    cur->namespaces = namespaces;
     return(cur);
 }
 
@@ -871,17 +883,19 @@ error:
  * @pattern: the pattern to compile
  * @dict: an optional dictionnary for interned strings
  * @flags: compilation flags, undefined yet
+ * @namespaces: the prefix definitions, array of [URI, prefix] or NULL
  *
- * Compile a pattern
+ * Compile a pattern.
  *
  * Returns the compiled for of the pattern or NULL in case of error
  */
 xmlPatternPtr
-xmlPatterncompile(const xmlChar *pattern, xmlDict *dict, int flags) {
+xmlPatterncompile(const xmlChar *pattern, xmlDict *dict, int flags,
+                  const xmlChar **namespaces) {
     xmlPatternPtr ret = NULL;
     xmlPatParserContextPtr ctxt = NULL;
 
-    ctxt = xmlNewPatParserContext(pattern, dict);
+    ctxt = xmlNewPatParserContext(pattern, dict, namespaces);
     if (ctxt == NULL) goto error;
     ret = xmlNewPattern();
     if (ret == NULL) goto error;

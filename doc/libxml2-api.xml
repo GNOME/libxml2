@@ -10024,11 +10024,12 @@ actually an xmlCharEncoding'/>
       <arg name='node' type='xmlNodePtr' info='a node'/>
     </function>
     <function name='xmlPatterncompile' file='pattern'>
-      <info>Compile a pattern</info>
+      <info>Compile a pattern.</info>
       <return type='xmlPatternPtr' info='the compiled for of the pattern or NULL in case of error'/>
       <arg name='pattern' type='const xmlChar *' info='the pattern to compile'/>
       <arg name='dict' type='xmlDict *' info='an optional dictionnary for interned strings'/>
       <arg name='flags' type='int' info='compilation flags, undefined yet'/>
+      <arg name='namespaces' type='const xmlChar **' info='the prefix definitions, array of [URI, prefix] or NULL'/>
     </function>
     <function name='xmlPedanticParserDefault' file='parser'>
       <info>Set and return the previous value for enabling pedantic warnings.</info>
@@ -11764,6 +11765,7 @@ actually an xmlCharEncoding'/>
       <return type='int' info='a positive number in case of success and -1 in case of error'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
       <arg name='pattern' type='const xmlChar *' info='an XPath subset pattern'/>
+      <arg name='namespaces' type='const xmlChar **' info='the prefix definitions, array of [URI, prefix] or NULL'/>
     </function>
     <function name='xmlTextReaderQuoteChar' file='xmlreader'>
       <info>The quotation mark character used to enclose the value of an attribute.</info>

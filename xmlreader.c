@@ -3554,6 +3554,7 @@ xmlTextReaderPreserve(xmlTextReaderPtr reader) {
  * xmlTextReaderPreservePattern:
  * @reader:  the xmlTextReaderPtr used
  * @pattern:  an XPath subset pattern
+ * @namespaces: the prefix definitions, array of [URI, prefix] or NULL
  * 
  * This tells the XML Reader to preserve all nodes matched by the
  * pattern. The caller must also use xmlTextReaderCurrentDoc() to
@@ -3562,13 +3563,15 @@ xmlTextReaderPreserve(xmlTextReaderPtr reader) {
  * Returns a positive number in case of success and -1 in case of error
  */
 int
-xmlTextReaderPreservePattern(xmlTextReaderPtr reader, const xmlChar *pattern) {
+xmlTextReaderPreservePattern(xmlTextReaderPtr reader, const xmlChar *pattern,
+                             const xmlChar **namespaces)
+{
     xmlPatternPtr comp;
 
     if ((reader == NULL) || (pattern == NULL))
 	return(-1);
     
-    comp = xmlPatterncompile(pattern, reader->dict, 0);
+    comp = xmlPatterncompile(pattern, reader->dict, 0, namespaces);
     if (comp == NULL)
         return(-1);
 

@@ -7085,9 +7085,11 @@
       <ref name='startElementSAXFunc'/>
       <ref name='xlinkExtendedLinkFunk'/>
       <ref name='xlinkExtendedLinkSetFunk'/>
+      <ref name='xmlPatterncompile'/>
       <ref name='xmlSAX2StartElement'/>
       <ref name='xmlSAX2StartElementNs'/>
       <ref name='xmlSAX2StartElementNs'/>
+      <ref name='xmlTextReaderPreservePattern'/>
       <ref name='xmlValidGetPotentialChildren'/>
       <ref name='xmlValidGetValidElements'/>
     </type>
@@ -18242,7 +18244,9 @@
           <ref name='startElementNsSAX2Func'/>
           <ref name='xmlLoadCatalog'/>
           <ref name='xmlLoadCatalogs'/>
+          <ref name='xmlPatterncompile'/>
           <ref name='xmlSAX2StartElementNs'/>
+          <ref name='xmlTextReaderPreservePattern'/>
           <ref name='xmlValidateDtd'/>
         </word>
         <word name='delayed'>

@@ -1881,7 +1881,7 @@ main(int argc, char **argv) {
 #endif /* LIBXML_SCHEMAS_ENABLED */
 #ifdef LIBXML_PATTERN_ENABLED
     if (pattern != NULL) {
-        patternc = xmlPatterncompile((const xmlChar *) pattern, NULL, 0);
+        patternc = xmlPatterncompile((const xmlChar *) pattern, NULL, 0, NULL);
 	if (patternc == NULL) {
 	    xmlGenericError(xmlGenericErrorContext,
 		    "Pattern %s failed to compile\n", pattern);

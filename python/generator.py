@@ -300,6 +300,13 @@ unknown_types = {}
 #
 #######################################################################
 
+# Class methods which are written by hand in libxml.c but the Python-level
+# code is still automatically generated (so they are not in skip_function()).
+skip_impl = (
+    'xmlSaveFileTo',
+    'xmlSaveFormatFileTo',
+)
+
 def skip_function(name):
     if name[0:12] == "xmlXPathWrap":
         return 1
@@ -356,6 +363,9 @@ def print_function_wrapper(name, output, export, include):
         return 0
     if skip_function(name) == 1:
         return 0
+    if name in skip_impl:
+	# Don't delete the function entry in the caller.
+	return 1
 
     c_call = "";
     format=""

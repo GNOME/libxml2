@@ -512,6 +512,11 @@ libxml_xmlOutputBufferClose(PyObject *self ATTRIBUTE_UNUSED, PyObject *args) {
     if (!PyArg_ParseTuple(args, (char *)"O:xmlOutputBufferClose", &pyobj_out))
         return(NULL);
     out = (xmlOutputBufferPtr) PyoutputBuffer_Get(pyobj_out);
+    /* Buffer may already have been destroyed elsewhere. This is harmless. */
+    if (out == NULL) {
+	Py_INCREF(Py_None);
+	return(Py_None);
+    }
 
     c_retval = xmlOutputBufferClose(out);
     py_retval = libxml_intWrap((int) c_retval);
@@ -530,6 +535,53 @@ libxml_xmlOutputBufferFlush(PyObject *self ATTRIBUTE_UNUSED, PyObject *args) {
     out = (xmlOutputBufferPtr) PyoutputBuffer_Get(pyobj_out);
 
     c_retval = xmlOutputBufferFlush(out);
+    py_retval = libxml_intWrap((int) c_retval);
+    return(py_retval);
+}
+
+static PyObject *
+libxml_xmlSaveFileTo(PyObject *self ATTRIBUTE_UNUSED, PyObject *args) {
+    PyObject *py_retval;
+    int c_retval;
+    xmlOutputBufferPtr buf;
+    PyObject *pyobj_buf;
+    xmlDocPtr cur;
+    PyObject *pyobj_cur;
+    char * encoding;
+
+    if (!PyArg_ParseTuple(args, (char *)"OOz:xmlSaveFileTo", &pyobj_buf, &pyobj_cur, &encoding))
+        return(NULL);
+    buf = (xmlOutputBufferPtr) PyoutputBuffer_Get(pyobj_buf);
+    cur = (xmlDocPtr) PyxmlNode_Get(pyobj_cur);
+
+    c_retval = xmlSaveFileTo(buf, cur, encoding);
+	/* xmlSaveTo() freed the memory pointed to by buf, so record that in the
+	 * Python object. */
+    ((PyoutputBuffer_Object *)(pyobj_buf))->obj = NULL;
+    py_retval = libxml_intWrap((int) c_retval);
+    return(py_retval);
+}
+
+static PyObject *
+libxml_xmlSaveFormatFileTo(PyObject *self ATTRIBUTE_UNUSED, PyObject *args) {
+    PyObject *py_retval;
+    int c_retval;
+    xmlOutputBufferPtr buf;
+    PyObject *pyobj_buf;
+    xmlDocPtr cur;
+    PyObject *pyobj_cur;
+    char * encoding;
+    int format;
+
+    if (!PyArg_ParseTuple(args, (char *)"OOzi:xmlSaveFormatFileTo", &pyobj_buf, &pyobj_cur, &encoding, &format))
+        return(NULL);
+    buf = (xmlOutputBufferPtr) PyoutputBuffer_Get(pyobj_buf);
+    cur = (xmlDocPtr) PyxmlNode_Get(pyobj_cur);
+
+    c_retval = xmlSaveFormatFileTo(buf, cur, encoding, format);
+	/* xmlSaveFormatFileTo() freed the memory pointed to by buf, so record that
+	 * in the Python object */
+	((PyoutputBuffer_Object *)(pyobj_buf))->obj = NULL;
     py_retval = libxml_intWrap((int) c_retval);
     return(py_retval);
 }
@@ -3446,6 +3498,8 @@ static PyMethodDef libxmlMethods[] = {
     {(char *) "outputBufferGetPythonFile", libxml_outputBufferGetPythonFile, METH_VARARGS, NULL},
     {(char *) "xmlOutputBufferClose", libxml_xmlOutputBufferClose, METH_VARARGS, NULL},
     { (char *)"xmlOutputBufferFlush", libxml_xmlOutputBufferFlush, METH_VARARGS, NULL },
+    { (char *)"xmlSaveFileTo", libxml_xmlSaveFileTo, METH_VARARGS, NULL },
+    { (char *)"xmlSaveFormatFileTo", libxml_xmlSaveFormatFileTo, METH_VARARGS, NULL },
 #endif /* LIBXML_OUTPUT_ENABLED */
     {(char *) "inputBufferCreate", libxml_xmlCreateInputBuffer, METH_VARARGS, NULL},
     {(char *) "setEntityLoader", libxml_xmlSetEntityLoader, METH_VARARGS, NULL},

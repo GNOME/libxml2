@@ -1,3 +1,9 @@
+Mon Oct  4 12:26:28 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* python/generator.py python/libxml.c python/tests/outbuf.py: 
+	  applied patch from Malcolm Tredinnick fixing bug #154294
+	  related to saving to python file objects.
+
 Sat Oct  2 21:08:51 PDT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* tree.c: changed xmlHasNsProp to properly handle a request for

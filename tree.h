@@ -211,6 +211,17 @@ typedef struct xmlID {
 typedef xmlID *xmlIDPtr;
 
 /*
+ * An XML IDREF instance.
+ */
+
+typedef struct xmlRef {
+    struct xmlRef     *next;	/* next Ref */
+    const CHAR       *value;	/* The Ref name */
+    xmlAttrPtr        attr;	/* The attribut holding it */
+} xmlRef;
+typedef xmlRef *xmlRefPtr;
+
+/*
  * A node in an XML tree.
  */
 typedef struct xmlNode {
@@ -253,6 +264,7 @@ typedef struct xmlDoc {
     struct xmlNs   *oldNs;	/* Global namespace, the old way */
     struct xmlNode *root;	/* the document tree */
     void           *ids;        /* Hash table for ID attributes if any */
+    void           *refs;       /* Hash table for IDREFs attributes if any */
 } _xmlDoc;
 typedef _xmlDoc xmlDoc;
 typedef xmlDoc *xmlDocPtr;
@@ -439,6 +451,12 @@ CHAR *		xmlNodeGetContent	(xmlNodePtr cur);
 const CHAR *	xmlNodeGetLang		(xmlNodePtr cur);
 void		xmlNodeSetLang		(xmlNodePtr cur,
 					 const CHAR *lang);
+
+/*
+ * Removing content.
+ */
+int		xmlRemoveProp		(xmlAttrPtr attr); /* TODO */
+int		xmlRemoveNode		(xmlNodePtr node); /* TODO */
 
 /*
  * Internal, don't use

@@ -88,6 +88,20 @@ typedef struct xmlIDTable {
 } xmlIDTable;
 typedef xmlIDTable *xmlIDTablePtr;
 
+/*
+ * ALl Refs attributes are stored in a table
+ * there is one table per document
+ */
+
+#define XML_MIN_REF_TABLE	32
+
+typedef struct xmlRefTable {
+    int nb_refs;			/* number of refs stored */
+    int max_refs;		/* maximum number of refs */
+    xmlRefPtr *table;		/* the table of refs */
+} xmlRefTable;
+typedef xmlRefTable *xmlRefTablePtr;
+
 /* Notation */
 xmlNotationPtr	    xmlAddNotationDecl	(xmlValidCtxtPtr ctxt,
 					 xmlDtdPtr dtd,
@@ -148,6 +162,17 @@ int		xmlIsID		(xmlDocPtr doc,
 				 xmlNodePtr elem,
 				 xmlAttrPtr attr);
 
+/* IDREFs */
+xmlRefPtr	xmlAddRef	(xmlValidCtxtPtr ctxt,
+				 xmlDocPtr doc,
+				 const CHAR *value,
+				 xmlAttrPtr attr);
+xmlRefTablePtr	xmlCopyRefTable	(xmlRefTablePtr table);
+void		xmlFreeRefTable	(xmlRefTablePtr table);
+int		xmlIsRef	(xmlDocPtr doc,
+				 xmlNodePtr elem,
+				 xmlAttrPtr attr);
+
 /**
  * The public function calls related to validity checking
  */
@@ -181,6 +206,8 @@ int		xmlValidateOneAttribute	(xmlValidCtxtPtr ctxt,
 					 xmlNodePtr	elem,
 					 xmlAttrPtr attr,
 					 const CHAR *value);
+int		xmlValidateDocumentFinal(xmlValidCtxtPtr ctxt,
+					 xmlDocPtr doc);
 int		xmlValidateNotationUse	(xmlValidCtxtPtr ctxt,
 					 xmlDocPtr doc,
 					 const CHAR *notationName);

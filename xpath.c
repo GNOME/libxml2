@@ -769,7 +769,7 @@ xmlXPathFreeObject(xmlXPathObjectPtr obj) {
  * Returns the xmlXPathContext just allocated.
  */
 xmlXPathContextPtr
-xmlXPathNewContext(xmlDocPtr doc, void *variables, void *functions) {
+xmlXPathNewContext(xmlDocPtr doc) {
     xmlXPathContextPtr ret;
 
     ret = (xmlXPathContextPtr) xmlMalloc(sizeof(xmlXPathContext));
@@ -779,9 +779,25 @@ xmlXPathNewContext(xmlDocPtr doc, void *variables, void *functions) {
     }
     memset(ret, 0 , (size_t) sizeof(xmlXPathContext));
     ret->doc = doc;
-    ret->variables = variables;
-    ret->functions = functions;
+
+    ret->nb_variables = 0;
+    ret->max_variables = 0;
+    ret->variables = NULL;
+
+    ret->nb_types = 0;
+    ret->max_types = 0;
+    ret->types = NULL;
+
+    ret->nb_funcs = 0;
+    ret->max_funcs = 0;
+    ret->funcs = NULL;
+
+    ret->nb_axis = 0;
+    ret->max_axis = 0;
+    ret->axis = NULL;
+
     ret->namespaces = NULL;
+    ret->user = NULL;
     ret->nsNr = 0;
     return(ret);
 }

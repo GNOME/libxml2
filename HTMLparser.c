@@ -1133,6 +1133,8 @@ htmlNewDoc(const CHAR *URI, const CHAR *ExternalID) {
     cur->encoding = NULL;
     cur->standalone = 1;
     cur->compression = 0;
+    cur->ids = NULL;
+    cur->refs = NULL;
 #ifndef XML_WITHOUT_CORBA
     cur->_private = NULL;
     cur->vepv = NULL;

@@ -1,3 +1,15 @@
+Wed Sep  8 22:46:14 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* HTMLparser.c : cleanup
+	* SAX.c valid.c valid.h: added ID/IDREF checking
+	* tree.c tree.h: extended doc structure for refs
+	* configure.in: 1.6.2
+	* parser.c: patched bug in SAX user arg call
+	* parserInternals.h: patched missing close in C++ wrapping
+	* testXPath.c xpath.c xpath.h: prepared for extensibility,
+	  especially upcoming XPointer implementation.
+	* doc/xml.html: augmented, typo
+
 Sat Sep  4 22:48:05 CEST 1999 Timur Bakeyev <mc@bat.ru>
 
 	* doc/Makefile.am: replaced "install -d " with "mkinstalldirs" -

@@ -125,7 +125,7 @@ void testXPath(const char *str) {
     xmlXPathObjectPtr res;
     xmlXPathContextPtr ctxt;
     
-    ctxt = xmlXPathNewContext(document, NULL, NULL);
+    ctxt = xmlXPathNewContext(document);
     if (expr)
 	res = xmlXPathEvalExpression(BAD_CAST str, ctxt);
     else

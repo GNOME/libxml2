@@ -395,6 +395,7 @@ xmlNewDoc(const CHAR *version) {
     cur->standalone = -1;
     cur->compression = xmlCompressMode;
     cur->ids = NULL;
+    cur->refs = NULL;
 #ifndef XML_WITHOUT_CORBA
     cur->_private = NULL;
     cur->vepv = NULL;
@@ -425,6 +426,7 @@ xmlFreeDoc(xmlDocPtr cur) {
     if (cur->extSubset != NULL) xmlFreeDtd(cur->extSubset);
     if (cur->oldNs != NULL) xmlFreeNsList(cur->oldNs);
     if (cur->ids != NULL) xmlFreeIDTable((xmlIDTablePtr) cur->ids);
+    if (cur->refs != NULL) xmlFreeRefTable((xmlRefTablePtr) cur->refs);
     memset(cur, -1, sizeof(xmlDoc));
     xmlFree(cur);
 }

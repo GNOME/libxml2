@@ -637,4 +637,7 @@ int			inputPush		(xmlParserCtxtPtr ctxt,
 						 xmlParserInputPtr value);
 xmlParserInputPtr	inputPop		(xmlParserCtxtPtr ctxt);
 
+#ifdef __cplusplus
+}
+#endif
 #endif /* __XML_PARSER_INTERNALS_H__ */

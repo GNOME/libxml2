@@ -15,7 +15,7 @@ mean that I'm on holliday or on the road.
 The reasons I'm asking for an ask before commit policy is that I'm
 using a separate CVS base for unstable developments and if you commit
 a patch I didn't get, I may loose your change by mistake (it happened
-already once) and seriously complicatye my job of merging both bases.
+already once) and seriously complicates my job of merging both bases.
 (The second base is at http://dev.w3.org/ under the XML module).
 
   thanks in advance for following the rule,

@@ -492,10 +492,13 @@ startDocument(void *ctx)
 void
 endDocument(void *ctx)
 {
-    /* xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx; */
+    xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
 #ifdef DEBUG_SAX
     fprintf(stderr, "SAX.endDocument()\n");
 #endif
+    if (ctxt->validate && ctxt->wellFormed &&
+        ctxt->myDoc && ctxt->myDoc->intSubset)
+	ctxt->valid &= xmlValidateDocumentFinal(&ctxt->vctxt, ctxt->myDoc);
 }
 
 /**
@@ -572,6 +575,8 @@ attribute(void *ctx, const CHAR *fullname, const CHAR *value)
 	 */
 	if (xmlIsID(ctxt->myDoc, ctxt->node, ret))
 	    xmlAddID(&ctxt->vctxt, ctxt->myDoc, value, ret);
+	else if (xmlIsRef(ctxt->myDoc, ctxt->node, ret))
+	    xmlAddRef(&ctxt->vctxt, ctxt->myDoc, value, ret);
     }
 
     if (name != NULL) 

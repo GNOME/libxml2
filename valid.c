@@ -1316,7 +1316,7 @@ xmlDumpNotationTable(xmlBufferPtr buf, xmlNotationTablePtr table) {
 
 /************************************************************************
  *									*
- *				NOTATIONs				*
+ *				IDs					*
  *									*
  ************************************************************************/
 /**
@@ -1543,6 +1543,228 @@ xmlGetID(xmlDocPtr doc, const CHAR *ID) {
     for (i = 0;i < table->nb_ids;i++) {
         cur = table->table[i];
 	if (!xmlStrcmp(cur->value, ID)) {
+	    return(cur->attr);
+	}
+    }
+    return(NULL);
+}
+
+/************************************************************************
+ *									*
+ *				Refs					*
+ *									*
+ ************************************************************************/
+/**
+ * xmlCreateRefTable:
+ *
+ * create and initialize an empty ref hash table.
+ *
+ * Returns the xmlRefTablePtr just created or NULL in case
+ *                of error.
+ */
+xmlRefTablePtr
+xmlCreateRefTable(void) {
+    xmlRefTablePtr ret;
+
+    ret = (xmlRefTablePtr) 
+         xmlMalloc(sizeof(xmlRefTable));
+    if (ret == NULL) {
+        fprintf(stderr, "xmlCreateRefTable : xmlMalloc(%ld) failed\n",
+	        (long)sizeof(xmlRefTable));
+        return(NULL);
+    }
+    ret->max_refs = XML_MIN_NOTATION_TABLE;
+    ret->nb_refs = 0;
+    ret->table = (xmlRefPtr *) 
+         xmlMalloc(ret->max_refs * sizeof(xmlRefPtr));
+    if (ret == NULL) {
+        fprintf(stderr, "xmlCreateRefTable : xmlMalloc(%ld) failed\n",
+	        ret->max_refs * (long)sizeof(xmlRef));
+	xmlFree(ret);
+        return(NULL);
+    }
+    return(ret);
+}
+
+
+/**
+ * xmlAddRef:
+ * @ctxt:  the validation context
+ * @doc:  pointer to the document
+ * @value:  the value name
+ * @attr:  the attribute holding the Ref
+ *
+ * Register a new ref declaration
+ *
+ * Returns NULL if not, othervise the new xmlRefPtr
+ */
+xmlRefPtr 
+xmlAddRef(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const CHAR *value,
+         xmlAttrPtr attr) {
+    xmlRefPtr ret;
+    xmlRefTablePtr table;
+
+    if (doc == NULL) {
+        fprintf(stderr, "xmlAddRefDecl: doc == NULL\n");
+	return(NULL);
+    }
+    if (value == NULL) {
+        fprintf(stderr, "xmlAddRefDecl: value == NULL\n");
+	return(NULL);
+    }
+    if (attr == NULL) {
+        fprintf(stderr, "xmlAddRefDecl: attr == NULL\n");
+	return(NULL);
+    }
+
+    /*
+     * Create the Ref table if needed.
+     */
+    table = doc->refs;
+    if (table == NULL) 
+        table = doc->refs = xmlCreateRefTable();
+    if (table == NULL) {
+	fprintf(stderr, "xmlAddRef: Table creation failed!\n");
+        return(NULL);
+    }
+
+    /*
+     * Grow the table, if needed.
+     */
+    if (table->nb_refs >= table->max_refs) {
+        /*
+	 * need more refs.
+	 */
+	table->max_refs *= 2;
+	table->table = (xmlRefPtr *) 
+	    xmlRealloc(table->table, table->max_refs *
+	            sizeof(xmlRefPtr));
+	if (table->table == NULL) {
+	    fprintf(stderr, "xmlAddRef: out of memory\n");
+	    return(NULL);
+	}
+    }
+    ret = (xmlRefPtr) xmlMalloc(sizeof(xmlRef));
+    if (ret == NULL) {
+	fprintf(stderr, "xmlAddRef: out of memory\n");
+	return(NULL);
+    }
+    table->table[table->nb_refs] = ret;
+
+    /*
+     * fill the structure.
+     */
+    ret->value = xmlStrdup(value);
+    ret->attr = attr;
+    table->nb_refs++;
+
+    return(ret);
+}
+
+/**
+ * xmlFreeRef:
+ * @not:  A ref
+ *
+ * Deallocate the memory used by an ref definition
+ */
+void
+xmlFreeRef(xmlRefPtr ref) {
+    if (ref == NULL) return;
+    if (ref->value != NULL)
+	xmlFree((CHAR *) ref->value);
+    memset(ref, -1, sizeof(xmlRef));
+    xmlFree(ref);
+}
+
+/**
+ * xmlFreeRefTable:
+ * @table:  An ref table
+ *
+ * Deallocate the memory used by an Ref hash table.
+ */
+void
+xmlFreeRefTable(xmlRefTablePtr table) {
+    int i;
+
+    if (table == NULL) return;
+
+    for (i = 0;i < table->nb_refs;i++) {
+        xmlFreeRef(table->table[i]);
+    }
+    xmlFree(table->table);
+    xmlFree(table);
+}
+
+/**
+ * xmlIsRef
+ * @doc:  the document
+ * @elem:  the element carrying the attribute
+ * @attr:  the attribute
+ *
+ * Determine whether an attribute is of type Ref. In case we have Dtd(s)
+ * then this is simple, otherwise we use an heuristic: name Ref (upper
+ * or lowercase).
+ *
+ * Returns 0 or 1 depending on the lookup result
+ */
+int
+xmlIsRef(xmlDocPtr doc, xmlNodePtr elem, xmlAttrPtr attr) {
+    if ((doc->intSubset == NULL) && (doc->extSubset == NULL)) {
+        return(0);
+	/*******************
+        if (((attr->name[0] == 'I') || (attr->name[0] == 'i')) &&
+            ((attr->name[1] == 'D') || (attr->name[1] == 'd')) &&
+	    (attr->name[2] == 0)) return(1);
+	 *******************/
+    } else {
+	xmlAttributePtr attrDecl;
+
+	attrDecl = xmlGetDtdAttrDesc(doc->intSubset, elem->name, attr->name);
+	if ((attrDecl == NULL) && (doc->extSubset != NULL))
+	    attrDecl = xmlGetDtdAttrDesc(doc->extSubset, elem->name,
+	                                 attr->name);
+
+        if ((attrDecl != NULL) && (attrDecl->type == XML_ATTRIBUTE_IDREF))
+	    return(1);
+    }
+    return(0);
+}
+
+/**
+ * xmlGetRef:
+ * @doc:  pointer to the document
+ * @Ref:  the Ref value
+ *
+ * Search the attribute declaring the given Ref
+ *
+ * Returns NULL if not found, otherwise the xmlAttrPtr defining the Ref
+ */
+xmlAttrPtr 
+xmlGetRef(xmlDocPtr doc, const CHAR *Ref) {
+    xmlRefPtr cur;
+    xmlRefTablePtr table;
+    int i;
+
+    if (doc == NULL) {
+        fprintf(stderr, "xmlGetRef: doc == NULL\n");
+	return(NULL);
+    }
+
+    if (Ref == NULL) {
+        fprintf(stderr, "xmlGetRef: Ref == NULL\n");
+	return(NULL);
+    }
+
+    table = doc->refs;
+    if (table == NULL) 
+        return(NULL);
+
+    /*
+     * Search the Ref list.
+     */
+    for (i = 0;i < table->nb_refs;i++) {
+        cur = table->table[i];
+	if (!xmlStrcmp(cur->value, Ref)) {
 	    return(cur->attr);
 	}
     }
@@ -2165,6 +2387,10 @@ xmlValidateOneAttribute(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
         xmlAddID(ctxt, doc, value, attr);
     }
 
+    if (attrDecl->type == XML_ATTRIBUTE_IDREF) {
+        xmlAddRef(ctxt, doc, value, attr);
+    }
+
     /* Validity Constraint: Notation Attributes */
     if (attrDecl->type == XML_ATTRIBUTE_NOTATION) {
         xmlEnumerationPtr tree = attrDecl->tree;
@@ -2610,9 +2836,75 @@ xmlValidateRoot(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
 
 int
 xmlValidateElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr elem) {
+    xmlNodePtr child;
+    xmlAttrPtr attr;
+    CHAR *value;
+    int ret = 1;
+
+    /* TODO xmlValidateElement */
+
+    if (elem == NULL) return(0);
     CHECK_DTD;
 
-    return(1);
+    ret &= xmlValidateOneElement(ctxt, doc, elem);
+    attr = elem->properties;
+    while(attr != NULL) {
+        value = xmlNodeListGetString(doc, attr->val, 0);
+	ret &= xmlValidateOneAttribute(ctxt, doc, elem, attr, value);
+	if (value != NULL)
+	    free(value);
+	attr= attr->next;
+    }
+    child = elem->childs;
+    while (child != NULL) {
+        ret &= xmlValidateElement(ctxt, doc, child);
+        child = child->next;
+    }
+
+    return(ret);
+}
+
+/**
+ * xmlValidateDocumentFinal:
+ * @ctxt:  the validation context
+ * @doc:  a document instance
+ *
+ * Does the final step for the document validation once all the
+ * incremental validation steps have been completed
+ *
+ * basically it does the following checks described by the XML Rec
+ * 
+ *
+ * returns 1 if valid or 0 otherwise
+ */
+
+int
+xmlValidateDocumentFinal(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
+    int ret = 1, i;
+    xmlRefTablePtr table;
+    xmlAttrPtr id;
+
+    if (doc == NULL) {
+        fprintf(stderr, "xmlValidateDocumentFinal: doc == NULL\n");
+	return(0);
+    }
+
+    /*
+     * Get the refs table
+     */
+    table = doc->refs;
+    if (table != NULL) {
+        for (i = 0; i < table->nb_refs; i++) {
+	    id = xmlGetID(doc, table->table[i]->value);
+	    if (id == NULL) {
+		VERROR(ctxt->userData, 
+		       "IDREF attribute %s reference an unknown ID '%s'\n",
+		       table->table[i]->attr->name, table->table[i]->value);
+	        ret = 0;
+	    }
+	}
+    }
+    return(ret);
 }
 
 /**
@@ -2630,6 +2922,7 @@ xmlValidateElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr elem) {
 
 int
 xmlValidateDtd(xmlValidCtxtPtr ctxt, xmlDocPtr doc, xmlDtdPtr dtd) {
+    /* TODO xmlValidateDtd */
     return(1);
 }
 
@@ -2640,7 +2933,7 @@ xmlValidateDtd(xmlValidCtxtPtr ctxt, xmlDocPtr doc, xmlDtdPtr dtd) {
  *
  * Try to validate the document instance
  *
- * basically it does the all the checks described by the
+ * basically it does the all the checks described by the XML Rec
  * i.e. validates the internal and external subset (if present)
  * and validate the document tree.
  *
@@ -2649,8 +2942,12 @@ xmlValidateDtd(xmlValidCtxtPtr ctxt, xmlDocPtr doc, xmlDtdPtr dtd) {
 
 int
 xmlValidateDocument(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
+    int ret;
+
     if (!xmlValidateRoot(ctxt, doc)) return(0);
 
-    return(1);
+    ret = xmlValidateElement(ctxt, doc, doc->root);
+    ret &= xmlValidateDocumentFinal(ctxt, doc);
+    return(ret);
 }
 

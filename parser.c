@@ -3122,11 +3122,11 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 	    if (isParameter) {
 	        if ((ctxt->sax != NULL) &&
 		    (ctxt->sax->getParameterEntity != NULL))
-		    cur = ctxt->sax->getParameterEntity(ctxt, name);
+		    cur = ctxt->sax->getParameterEntity(ctxt->userData, name);
 	    } else {
 	        if ((ctxt->sax != NULL) &&
 		    (ctxt->sax->getEntity != NULL))
-		    cur = ctxt->sax->getEntity(ctxt, name);
+		    cur = ctxt->sax->getEntity(ctxt->userData, name);
 	    }
             if (cur != NULL) {
 	        if (cur->orig != NULL)

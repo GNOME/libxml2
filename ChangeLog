@@ -1,3 +1,10 @@
+Sat Oct  9 11:02:57 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* Makefile.am: Arturo patch for xmlConf.sh version info
+	* parser.c: Tim Josling patch for single quoted items
+	* tester.c: Tim Josling patch for tester options usage
+	* tree.h: indent cleanup
+
 Fri Oct  8 16:35:37 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* HTMLparser.c parser.h : Fixed problems with HTML parsing

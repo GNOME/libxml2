@@ -2615,9 +2615,7 @@ xmlChar *
 xmlParsePubidLiteral(xmlParserCtxtPtr ctxt) {
     const xmlChar *q;
     xmlChar *ret = NULL;
-    /*
-     * Name ::= (Letter | '_') (NameChar)*
-     */
+
     SHRINK;
     if (CUR == '"') {
         NEXT;
@@ -2635,10 +2633,9 @@ xmlParsePubidLiteral(xmlParserCtxtPtr ctxt) {
     } else if (CUR == '\'') {
         NEXT;
 	q = CUR_PTR;
-	while ((IS_LETTER(CUR)) && (CUR != '\''))
-	    NEXT;
-	if (!IS_LETTER(CUR)) {
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	while (IS_PUBIDCHAR(CUR)) NEXT;
+	if (CUR != '\'') {
+          if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	        ctxt->sax->error(ctxt->userData, "Unfinished PubidLiteral\n");
 	    ctxt->errNo = XML_ERR_LITERAL_NOT_FINISHED;
 	    ctxt->wellFormed = 0;

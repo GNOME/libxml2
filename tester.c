@@ -228,7 +228,7 @@ int main(int argc, char **argv) {
 	}
     }
     if (files == 0) {
-	printf("Usage : %s [--debug] [--copy] [--recover] [--noent] [--noout] XMLfiles ...\n",
+	printf("Usage : %s [--debug] [--copy] [--recover] [--noent] [--noout] [--valid] [--repeat] XMLfiles ...\n",
 	       argv[0]);
 	printf("\tParse the XML files and output the result of the parsing\n");
 	printf("\t--debug : dump a debug tree of the in-memory document\n");
@@ -236,6 +236,7 @@ int main(int argc, char **argv) {
 	printf("\t--recover : output what is parsable on broken XmL documents\n");
 	printf("\t--noent : substitute entity references by their value\n");
 	printf("\t--noout : don't output the result\n");
+	printf("\t--valid : validate the document in addition to std well-formed check\n");
 	printf("\t--repeat : parse the file 100 times, for timing or profiling\n");
     }
     xmlMemoryDump();

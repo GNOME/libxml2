@@ -259,5 +259,6 @@ xmlConf.sh: xmlConf.sh.in Makefile
 	sed -e 's?\@XML_LIBDIR\@?$(XML_LIBDIR)?g' \
 	    -e 's?\@XML_INCLUDEDIR\@?$(XML_INCLUDEDIR)?g' \
 	    -e 's?\@XML_LIBS\@?$(XML_LIBS)?g' \
+	    -e 's?\@VERSION\@?$(VERSION)?g' \
 	      < $(srcdir)/xmlConf.sh.in > xmlConf.tmp \
 	  && mv xmlConf.tmp xmlConf.sh

@@ -259,7 +259,11 @@ CLEANFILES=xmlConf.sh
 confexecdir=$(libdir)
 confexec_DATA = xmlConf.sh
 EXTRA_DIST = xmlConf.sh.in libxml.spec.in libxml.spec \
-             example/Makefile.am example/gjobread.c example/gjobs.xml
+             example/Makefile.am example/gjobread.c example/gjobs.xml \
+	     libxml.pc.in
+
+pkgconfigdir = $(libexecdir)/pkgconfig
+pkgconfig_DATA = libxml.pc
 
 xmlConf.sh: xmlConf.sh.in Makefile
 ## Use sed and then mv to avoid problems if the user interrupts.

@@ -36,8 +36,10 @@
  * keep track of all allocated blocks for error reporting 
  * Always build the memory list !
  */
+#ifdef DEBUG_MEMORY_LOCATION
 #ifndef MEM_LIST
 #define MEM_LIST /* keep a list of all the allocated memory blocks */
+#endif
 #endif
 
 #include <libxml/xmlmemory.h>
@@ -48,7 +50,6 @@ static int xmlMemInitialized = 0;
 static unsigned long  debugMemSize = 0;
 static unsigned long  debugMaxMemSize = 0;
 
-#ifdef DEBUG_MEMORY_LOCATION
 void xmlMallocBreakpoint(void);
 
 /************************************************************************
@@ -669,8 +670,6 @@ static void debugmem_tag_error(void *p)
 
 static FILE *xmlMemoryDumpFile = NULL;
 
-#endif /* DEBUG_MEMORY_LOCATION */
-
 /**
  * xmlMemShow:
  * @fp:  a FILE descriptor used as the output file
@@ -681,18 +680,15 @@ static FILE *xmlMemoryDumpFile = NULL;
  */
 
 void
-xmlMemShow(FILE *fp, int nr)
+xmlMemShow(FILE *fp, int nr ATTRIBUTE_UNUSED)
 {
-#ifdef DEBUG_MEMORY_LOCATION
 #ifdef MEM_LIST
     MEMHDR *p;
 #endif
-#endif /* DEBUG_MEMORY_LOCATION */
 
     if (fp != NULL)
 	fprintf(fp,"      MEMORY ALLOCATED : %lu, MAX was %lu\n",
 		debugMemSize, debugMaxMemSize);
-#ifdef DEBUG_MEMORY_LOCATION
 #ifdef MEM_LIST
     if (nr > 0) {
 	fprintf(fp,"NUMBER   SIZE  TYPE   WHERE\n");
@@ -718,7 +714,6 @@ xmlMemShow(FILE *fp, int nr)
 	}
     }
 #endif /* MEM_LIST */    
-#endif /* DEBUG_MEMORY_LOCATION */
 }
 
 /**
@@ -730,7 +725,7 @@ xmlMemShow(FILE *fp, int nr)
 void
 xmlMemoryDump(void)
 {
-#ifdef DEBUG_MEMORY_LOCATION
+#ifdef MEM_LIST
     FILE *dump;
 
     if (debugMaxMemSize == 0)
@@ -743,7 +738,7 @@ xmlMemoryDump(void)
     xmlMemDisplay(xmlMemoryDumpFile);
 
     if (dump != NULL) fclose(dump);
-#endif /* DEBUG_MEMORY_LOCATION */
+#endif /* MEM_LIST */
 }
 
 
@@ -765,15 +760,12 @@ static int xmlInitMemoryDone = 0;
 int
 xmlInitMemory(void)
 {
-#ifdef DEBUG_MEMORY_LOCATION
 #ifdef HAVE_STDLIB_H
      char *breakpoint;
 #endif     
-#endif
 
      if (xmlInitMemoryDone) return(-1);
 
-#ifdef DEBUG_MEMORY_LOCATION
 #ifdef HAVE_STDLIB_H
      breakpoint = getenv("XML_MEM_BREAKPOINT");
      if (breakpoint != NULL) {
@@ -786,7 +778,6 @@ xmlInitMemory(void)
          sscanf(breakpoint, "%p", &xmlMemTraceBlockAt);
      }
 #endif     
-#endif /* DEBUG_MEMORY_LOCATION */
     
 #ifdef DEBUG_MEMORY
      xmlGenericError(xmlGenericErrorContext,

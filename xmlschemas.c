@@ -3805,6 +3805,7 @@ xmlSchemaNewMemParserCtxt(const char *buffer, int size)
     memset(ret, 0, sizeof(xmlSchemaParserCtxt));
     ret->buffer = buffer;
     ret->size = size;
+    ret->dict = xmlDictCreate();
     return (ret);
 }
 
@@ -3833,6 +3834,7 @@ xmlSchemaNewDocParserCtxt(xmlDocPtr doc)
     }
     memset(ret, 0, sizeof(xmlSchemaParserCtxt));
     ret->doc = doc;
+    ret->dict = xmlDictCreate();
 
     return (ret);
 }

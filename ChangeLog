@@ -1,3 +1,11 @@
+Thu Dec 25 21:16:22 HKT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* xmlschemas.c: fixed missing dictionaries for Memory and Doc
+	  parser contexts (problem reported on mailing list)
+	* doc/apibuild.py: small change to prevent duplicate lines
+	  on API functions list.  It will take effect the next time
+	  the docs are rebuilt.
+
 Wed Dec 24 12:54:25 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in NEWS doc/*: updated the docs and prepared a new

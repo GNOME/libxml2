@@ -1699,8 +1699,11 @@ class docBuilder:
 	    output.write("    <type name='%s'>\n" % (type))
 	    ids = funcs[type]
 	    ids.sort()
+	    pid = ''	# not sure why we have dups, but get rid of them!
 	    for id in ids:
-	        output.write("      <ref name='%s'/>\n" % (id))
+	        if id != pid:
+	            output.write("      <ref name='%s'/>\n" % (id))
+		    pid = id
 	    output.write("    </type>\n")
 
     def serialize_xrefs_constructors(self, output):

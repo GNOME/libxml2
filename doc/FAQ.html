@@ -1,3 +1,5 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
   <title>Libxml Frequently Asked Questions</title>
@@ -86,6 +88,16 @@ href="http://xmlsoft.org/messages/">http://xmlsoft.org/messages/</a></p>
     libxml packages provided on <a
     href="ftp://rpmfind.net/pub/libxml/">rpmfind.net</a> provides
     libxml.so.0</p>
+  </li>
+  <li><em>I can't install the libxml(2) RPM package due to failed
+    dependancies</em>
+    <p>The most generic solution is to refetch the latest src.rpm , and
+    rebuild it locally with</p>
+    <p><code>rpm --rebuild libxml(2)-xxx.src.rpm</code></p>
+    <p>if everything goes well it will generate two binary rpm (one providing
+    the shared libs and xmllint, and the other one, the -devel package
+    providing includes, static libraries and scripts needed to build
+    applications with libxml(2)) that you can install locally.</p>
   </li>
 </ol>
 

@@ -130,11 +130,16 @@ struct _xmlXPathVariable {
     xmlXPathObjectPtr value;		/* the value */
 };
 
-/*
- * an evaluation function, the parameters are on the context stack
+/**
+ * xmlXPathEvalFunc:
+ * @ctxt: an XPath parser context
+ * @nargs: the number of arguments passed to the function
+ *
+ * an XPath evaluation function, the parameters are on thei XPath context stack
  */
 
-typedef void (*xmlXPathEvalFunc)(xmlXPathParserContextPtr ctxt, int nargs);
+typedef void (*xmlXPathEvalFunc)(xmlXPathParserContextPtr ctxt,
+	                         int nargs);
 
 /*
  * Extra function: a name and a evaluation function.

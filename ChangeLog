@@ -1,3 +1,8 @@
+Sat Jul  7 02:16:00 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* include/libxml/xpath.h: small cleanup
+	* doc/xml.html: update
+
 Fri Jul  6 01:40:23 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* Makefile.am configure.in include/libxml/xmlwin32version.h:

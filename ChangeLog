@@ -1,3 +1,10 @@
+Mon Nov 15 13:04:28 CET 2004 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c: Moved execution of xmlSchemaCheckDefaults to
+	  xmlSchemaTypeFixup; this ensures facets of inherited types to be checked
+	  prior to facets of derived types - which caused a seg fault otherwise
+	  (bug #158216, reported by Frans Englich).
+
 Sun Nov 14 22:23:18 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* gentest.py, testapi.c: further enhancement, now all

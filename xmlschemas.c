@@ -343,6 +343,9 @@ xmlSchemaHasElemOrCharContent(xmlNodePtr node);
 static int
 xmlSchemaParseImport(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
                      xmlNodePtr node);
+static void
+xmlSchemaCheckDefaults(xmlSchemaTypePtr typeDecl,
+                       xmlSchemaParserCtxtPtr ctxt, const xmlChar * name);
 
 /************************************************************************
  *									*
@@ -12336,6 +12339,7 @@ xmlSchemaTypeFixup(xmlSchemaTypePtr item,
 			    item->subtypes->contentType;
 		    }
 		    xmlSchemaBuildAttributeValidation(ctxt, item);
+		    xmlSchemaCheckDefaults(item, ctxt, item->name);
 		    ctxt->ctxtType = ctxtType;
                     break;
                 }
@@ -12489,6 +12493,7 @@ xmlSchemaTypeFixup(xmlSchemaTypePtr item,
 		* Check constraints.
 		*/
 		xmlSchemaCheckSRCSimpleType(ctxt, item);
+		xmlSchemaCheckDefaults(item, ctxt, item->name);
 		ctxt->ctxtType = ctxtType;
 		break;
             case XML_SCHEMA_TYPE_SEQUENCE:            
@@ -13534,8 +13539,7 @@ xmlSchemaParse(xmlSchemaParserCtxtPtr ctxt)
     /*
      * Then check the defaults part of the type like facets values
      */
-    xmlHashScan(ret->typeDecl, (xmlHashScanner) xmlSchemaCheckDefaults,
-                ctxt);
+    /* OLD: xmlHashScan(ret->typeDecl, (xmlHashScanner) xmlSchemaCheckDefaults, ctxt); */
 
     /*
     * Validate the value constraint of attribute declarations/uses.
@@ -14066,8 +14070,10 @@ xmlSchemaPostSchemaAssembleFixup(xmlSchemaParserCtxtPtr ctxt)
     }
     /*
     * Check facet values. Note that facets are
-    * hold by complex and simple type components only.
+    * hold by simple type components only (and
+    * by complex types in the current implementation).
     */
+    /* OLD: 
     for (i = 0; i < nbItems; i++) {
 	item = items[i];
 	switch (item->type) {	 
@@ -14079,6 +14085,7 @@ xmlSchemaPostSchemaAssembleFixup(xmlSchemaParserCtxtPtr ctxt)
 		break;
 	}
     }
+    */
     /*
     * Build the content model for complex types.
     */

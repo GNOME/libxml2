@@ -102,6 +102,7 @@ typedef enum {
     XML_RELAXNG_TEXT,		/* textual content */
     XML_RELAXNG_ELEMENT,	/* an element */
     XML_RELAXNG_DATATYPE,	/* extenal data type definition */
+    XML_RELAXNG_PARAM,		/* extenal data type parameter */
     XML_RELAXNG_VALUE,		/* value from an extenal data type definition */
     XML_RELAXNG_LIST,		/* a list of patterns */
     XML_RELAXNG_ATTRIBUTE,	/* an attrbute following a pattern */
@@ -1834,6 +1835,7 @@ xmlRelaxNGParseValue(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
 static xmlRelaxNGDefinePtr
 xmlRelaxNGParseData(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
     xmlRelaxNGDefinePtr def = NULL, except, last = NULL;
+    xmlRelaxNGDefinePtr param, lastparam = NULL;
     xmlRelaxNGTypeLibraryPtr lib;
     xmlChar *type;
     xmlChar *library;
@@ -1905,8 +1907,24 @@ xmlRelaxNGParseData(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
     while (content != NULL) {
 	if (!xmlStrEqual(content->name, BAD_CAST "param"))
 	    break;
-	TODO
-	ctxt->nbErrors++;
+	param = xmlRelaxNGNewDefine(ctxt, node);
+	if (param != NULL) {
+	    param->type = XML_RELAXNG_PARAM;
+	    param->name = xmlGetProp(content, BAD_CAST "name");
+	    if (param->name == NULL) {
+		if (ctxt->error != NULL)
+		    ctxt->error(ctxt->userData,
+			"param has no name\n");
+		ctxt->nbErrors++;
+	    }
+	    param->value = xmlNodeGetContent(content);
+	    if (lastparam == NULL) {
+		def->attrs = lastparam = param;
+	    } else {
+		lastparam->next = param;
+		lastparam = param;
+	    }
+	}
 	content = content->next;
     }
     /*
@@ -2882,6 +2900,7 @@ xmlRelaxNGParseAttribute(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
 		    ctxt->nbErrors++;
 		    break;
 		case XML_RELAXNG_START:
+		case XML_RELAXNG_PARAM:
 		case XML_RELAXNG_EXCEPT:
 		    if (ctxt->error != NULL)
 			ctxt->error(ctxt->userData,
@@ -3175,6 +3194,7 @@ xmlRelaxNGParseElement(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
 		    ret->attrs = cur;
 		    break;
 		case XML_RELAXNG_START:
+		case XML_RELAXNG_PARAM:
 		case XML_RELAXNG_EXCEPT:
 		    TODO
 		    ctxt->nbErrors++;
@@ -4687,6 +4707,7 @@ xmlRelaxNGDumpDefine(FILE * output, xmlRelaxNGDefinePtr define) {
 	    break;
 	case XML_RELAXNG_START:
 	case XML_RELAXNG_EXCEPT:
+	case XML_RELAXNG_PARAM:
 	    TODO
 	    break;
     }
@@ -5796,13 +5817,17 @@ xmlRelaxNGElementMatch(xmlRelaxNGValidCtxtPtr ctxt,
 			elem->name, define->ns);
 	    return(0);
 	}
-    } else if (define->name != NULL) {
-	if (elem->ns != NULL) {
-	    VALID_CTXT();
-	    VALID_ERROR2("Expecting no namespace for element %s\n",
-			define->name);
-	    return(0);
-	}
+    } else if ((elem->ns != NULL) && (define->ns != NULL) &&
+	       (define->name == NULL)) {
+	VALID_CTXT();
+	VALID_ERROR2("Expecting no namespace for element %s\n",
+		    define->name);
+	return(0);
+    } else if ((elem->ns != NULL) && (define->name != NULL)) {
+	VALID_CTXT();
+	VALID_ERROR2("Expecting no namespace for element %s\n",
+		    define->name);
+	return(0);
     }
 
     if (define->nameClass == NULL)
@@ -6269,6 +6294,7 @@ xmlRelaxNGValidateDefinition(xmlRelaxNGValidCtxtPtr ctxt,
         }
 	case XML_RELAXNG_START:
 	case XML_RELAXNG_EXCEPT:
+	case XML_RELAXNG_PARAM:
 	    TODO
 	    ret = -1;
 	    break;

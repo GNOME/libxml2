@@ -1684,18 +1684,26 @@ xmlSchemaVFacetErr(xmlSchemaValidCtxtPtr ctxt,
 		"maximum value allowed ('%s').\n");
 	    xmlSchemaVErr(ctxt, node, error, (const char *) msg, value,
 		facet->value);
-#if 0
 	} else if (facetType == XML_SCHEMA_FACET_MINEXCLUSIVE) {
-	    msg = xmlStrcat(msg, BAD_CAST "The value '%s' is less than the "
-		"minimum exclusive value allowed ('%s').\n");
+	    msg = xmlStrcat(msg, BAD_CAST "The value '%s' must be less than "
+		"'%s'.\n");
 	    xmlSchemaVErr(ctxt, node, error, (const char *) msg, value,
 		facet->value);
 	} else if (facetType == XML_SCHEMA_FACET_MAXEXCLUSIVE) {
-	    msg = xmlStrcat(msg, BAD_CAST "The value '%s' is greater than the "
-		"maximum exclusive value allowed ('%s').\n");
+	    msg = xmlStrcat(msg, BAD_CAST "The value '%s' must be more than "
+		"'%s'.\n");
 	    xmlSchemaVErr(ctxt, node, error, (const char *) msg, value,
 		facet->value);
-#endif
+	} else if (facetType == XML_SCHEMA_FACET_TOTALDIGITS) {
+		msg = xmlStrcat(msg, BAD_CAST "The value '%s' has more "
+		"digits than are allowed ('%s').\n");
+		xmlSchemaVErr(ctxt, node, error, (const char*) msg, value,
+		facet->value);
+	} else if (facetType == XML_SCHEMA_FACET_FRACTIONDIGITS) {
+		msg = xmlStrcat(msg, BAD_CAST "The value '%s' has more fractional "
+		"digits than are allowed ('%s').\n");
+		xmlSchemaVErr(ctxt, node, error, (const char*) msg, value,
+		facet->value);
 	} else if (node->type == XML_ATTRIBUTE_NODE) {		
 	    msg = xmlStrcat(msg, BAD_CAST "The value '%s' is not facet-valid.\n");
 	    xmlSchemaVErr(ctxt, node, error, (const char *) msg, value, NULL);

@@ -2992,6 +2992,24 @@ xmlTextReaderConstXmlLang(xmlTextReaderPtr reader) {
 }
 
 /**
+ * xmlTextReaderConstString:
+ * @reader:  the xmlTextReaderPtr used
+ * @str:  the string to intern.
+ *
+ * Get an interned string from the reader, allows for example to
+ * speedup string name comparisons
+ *
+ * Returns an interned copy of the string or NULL in case of error. The
+ *         string will be deallocated with the reader.
+ */
+const xmlChar *
+xmlTextReaderConstString(xmlTextReaderPtr reader, const xmlChar *str) {
+    if (reader == NULL)
+	return(NULL);
+    return(CONSTSTR(str));
+}
+
+/**
  * xmlTextReaderNormalization:
  * @reader:  the xmlTextReaderPtr used
  *

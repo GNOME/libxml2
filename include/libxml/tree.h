@@ -926,7 +926,7 @@ XMLPUBFUN xmlChar * XMLCALL
 					 xmlNodePtr cur);
 XMLPUBFUN void XMLCALL		
 		xmlNodeSetBase		(xmlNodePtr cur,
-					 xmlChar *uri);
+					 const xmlChar *uri);
 
 /*
  * Removing content.

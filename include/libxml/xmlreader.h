@@ -131,6 +131,10 @@ XMLPUBFUN const xmlChar * XMLCALL
 		    xmlTextReaderConstPrefix	(xmlTextReaderPtr reader);
 XMLPUBFUN const xmlChar * XMLCALL	
 		    xmlTextReaderConstXmlLang	(xmlTextReaderPtr reader);
+XMLPUBFUN const xmlChar * XMLCALL	
+		    xmlTextReaderConstString	(xmlTextReaderPtr reader,
+		    				 const xmlChar *str);
+
 /*
  * Methods of the XmlTextReader
  */

@@ -1,3 +1,11 @@
+Mon Sep 22 12:21:11 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c include/libxml/tree.h: the uri arg to xmlNodeSetBase is
+	  really a const xmlChar*
+	* xmlreader.c include/libxml/xmlreader.h: addin the
+	  xmlTextReaderConstString() to get an interned string from
+	  the reader
+
 Sun Sep 20 17:22:20 PDT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* error.c: fixed a warning message (trivial)

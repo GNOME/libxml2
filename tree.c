@@ -4550,7 +4550,7 @@ xmlNodeSetName(xmlNodePtr cur, const xmlChar *name) {
  * xml:base attribute.
  */
 void
-xmlNodeSetBase(xmlNodePtr cur, xmlChar* uri) {
+xmlNodeSetBase(xmlNodePtr cur, const xmlChar* uri) {
     xmlNsPtr ns;
 
     if (cur == NULL) return;

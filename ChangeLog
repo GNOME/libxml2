@@ -1,3 +1,8 @@
+Wed Sep  5 17:47:43 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: warn if version is not 1.0 but it's not
+	  strictly speaking an error after analyzing the spec
+
 Mon Sep  3 10:07:03 MDT 2001 John Fleck <jfleck@inkstain.net>
 
 	*doc/catalog.html - add link to the html version of the

@@ -7263,6 +7263,14 @@ xmlParseXMLDecl(xmlParserCtxtPtr ctxt) {
     version = xmlParseVersionInfo(ctxt);
     if (version == NULL)
 	version = xmlCharStrdup(XML_DEFAULT_VERSION);
+    else if (!xmlStrEqual(version, (const xmlChar *) XML_DEFAULT_VERSION)) {
+	/*
+	 * TODO: Blueberry should be detected here
+	 */
+	if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
+	    ctxt->sax->warning(ctxt->userData, "Unsupported version '%s'\n",
+		               version);
+    }
     ctxt->version = xmlStrdup(version);
     xmlFree(version);
 

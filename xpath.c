@@ -64,7 +64,7 @@
  * any use of the macros IS_ASCII_CHARACTER and IS_ASCII_DIGIT)
  */
  
-#if defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_XPATH_ENABLED)
+#if defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
 /************************************************************************
  * 									*
  * 			Floating point stuff				*

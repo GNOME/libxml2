@@ -1,7 +1,7 @@
 /*
- * Summary: chained hash tables
- * description: this module implement the hash table support used in 
- * various place in the library.
+ * Summary: Chained hash tables
+ * Description: This module implements the hash table support used in 
+ * 		various places in the library.
  *
  * Copy: See Copyright for the status of this software.
  *

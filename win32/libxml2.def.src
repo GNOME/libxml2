@@ -738,6 +738,7 @@ xmlDeregisterNodeDefault
 xmlDetectCharEncoding
 xmlDictCreate
 xmlDictCreateSub
+xmlDictExists
 xmlDictFree
 xmlDictLookup
 xmlDictOwns
@@ -1600,6 +1601,9 @@ xmlSchemaValidatePredefinedType
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
 xmlSchemaValidateStream
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+xmlSchemaWhiteSpaceReplace
 #endif
 xmlSearchNs
 xmlSearchNsByHref

@@ -13,9 +13,12 @@
 #include <libxml/xmlversion.h>
 #include <libxml/tree.h>
 
+#ifdef LIBXML_XPTR_ENABLED
+
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 /**
  * Various defines for the various Link properties.
  *
@@ -180,4 +183,7 @@ XMLPUBFUN xlinkType XMLCALL
 #ifdef __cplusplus
 }
 #endif
+
+#endif /* LIBXML_XPTR_ENABLED */
+
 #endif /* __XML_XLINK_H__ */

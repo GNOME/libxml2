@@ -297,11 +297,18 @@ class index:
     def merge_public(self, idx):
         for id in idx.functions.keys():
 	     if self.functions.has_key(id):
+	         # check that function condition agrees with header
+	         if idx.functions[id].conditionals != \
+		    self.functions[id].conditionals:
+		     print "Header condition differs from Function for %s:" \
+		        % id
+		     print "  H: %s" % self.functions[id].conditionals
+		     print "  C: %s" % idx.functions[id].conditionals
 	         up = idx.functions[id]
 	         self.functions[id].update(None, up.type, up.info, up.extra)
 	 #     else:
 	 #         print "Function %s from %s is not declared in headers" % (
-	#	        id, idx.functions[id].module)
+	 #	        id, idx.functions[id].module)
 	 # TODO: do the same for variables.
 
     def analyze_dict(self, type, dict):
@@ -814,12 +821,12 @@ class CParser:
 	    i = 0
 	    while i < nbargs:
 	        if args[i][2] == None and args[i][0] != "void" and args[i][1] != None:
-		    self.warning("Function comment for %s lack description of arg %s" % (name, args[i][1]))
+		    self.warning("Function comment for %s lacks description of arg %s" % (name, args[i][1]))
 		i = i + 1
 	    if retdesc == "" and ret[0] != "void":
-		self.warning("Function comment for %s lack description of return value" % (name))
+		self.warning("Function comment for %s lacks description of return value" % (name))
 	    if desc == "":
-	        self.warning("Function comment for %s lack description of the function" % (name))
+	        self.warning("Function comment for %s lacks description of the function" % (name))
 
 
 	return(((ret[0], retdesc), args, desc))
@@ -858,22 +865,61 @@ class CParser:
 		self.index_add(name, self.filename, not self.is_header,
 		                "macro", info)
 		return token
-	if (name == "#ifdef" or name == "#ifndef") and self.is_header:
+
+	#
+	# Processing of conditionals modified by Bill 1/1/05
+	#
+	# We process conditionals (i.e. tokens from #ifdef, #ifndef,
+	# #if, #else and #endif) for headers and mainline code,
+	# store the ones from the header in libxml2-api.xml, and later
+	# (in the routine merge_public) verify that the two (header and
+	# mainline code) agree.
+	#
+	# There is a small problem with processing the headers. Some of
+	# the variables are not concerned with enabling / disabling of
+	# library functions (e.g. '__XML_PARSER_H__'), and we don't want
+	# them to be included in libxml2-api.xml, or involved in
+	# the check between the header and the mainline code.  To
+	# accomplish this, we ignore any conditional which doesn't include
+	# the string 'ENABLED'
+	#
+	if name == "#ifdef":
+	    apstr = self.lexer.tokens[0][1]
 	    try:
-	        self.defines.append(self.lexer.tokens[0][1])
-	        if string.find(self.lexer.tokens[0][1], 'ENABLED') != -1:
-		    self.conditionals.append(self.lexer.tokens[0][1])
-#		print self.conditionals
-#		print self.defines
+	        self.defines.append(apstr)
+		if string.find(apstr, 'ENABLED') != -1:
+		    self.conditionals.append("defined(%s)" % apstr)    
 	    except:
 	        pass
-	if name == "#endif" and self.is_header:
-	    if self.conditionals != [] and self.defines != [] and \
-	       self.defines[-1] == self.conditionals[-1]:
+	elif name == "#ifndef":
+	    apstr = self.lexer.tokens[0][1]
+	    try:
+	        self.defines.append(apstr)
+		if string.find(apstr, 'ENABLED') != -1:
+		    self.conditionals.append("!defined(%s)" % apstr)    
+	    except:
+	        pass
+	elif name == "#if":
+	    apstr = ""
+	    for tok in self.lexer.tokens:
+	        if apstr != "":
+		    apstr = apstr + " "
+	        apstr = apstr + tok[1]
+	    try:
+	        self.defines.append(apstr)
+		if string.find(apstr, 'ENABLED') != -1:
+		    self.conditionals.append(apstr)
+	    except:
+	        pass
+	elif name == "#else":
+	    if self.conditionals != [] and \
+	       string.find(self.defines[-1], 'ENABLED') != -1:
+	        self.conditionals[-1] = "!(%s)" % self.conditionals[-1]
+	elif name == "#endif":
+	    if self.conditionals != [] and \
+	       string.find(self.defines[-1], 'ENABLED') != -1:
 	        self.conditionals = self.conditionals[:-1]
 	    self.defines = self.defines[:-1]
-#	    print self.defines
-#	    print self.conditionals
 	token = self.lexer.token()
 	while token != None and token[0] == 'preproc' and \
 	    token[1][0] != '#':
@@ -1642,9 +1688,16 @@ class docBuilder:
 
         output.write("    <%s name='%s' file='%s'>\n" % (id.type, name,
 	             self.modulename_file(id.module)))
+	#
+	# Processing of conditionals modified by Bill 1/1/05
+	#
 	if id.conditionals != None:
+	    apstr = ""
 	    for cond in id.conditionals:
-	        output.write("      <cond>%s</cond>\n"% (cond));
+	        if apstr != "":
+		    apstr = apstr + " &amp;&amp; "
+		apstr = apstr + cond
+	    output.write("      <cond>%s</cond>\n"% (apstr));
 	try:
 	    (ret, params, desc) = id.info
 	    output.write("      <info>%s</info>\n" % (escape(desc)))

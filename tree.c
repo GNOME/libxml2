@@ -1721,7 +1721,8 @@ xmlNodeListGetRawString(xmlDocPtr doc, xmlNodePtr list, int inLine)
 }
 #endif /* LIBXML_TREE_ENABLED */
 
-#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_HTML_ENABLED)
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_HTML_ENABLED) || \
+    defined(LIBXML_SCHEMAS_ENABLED)
 /**
  * xmlNewProp:
  * @node:  the holding node
@@ -2963,7 +2964,8 @@ xmlAddNextSibling(xmlNodePtr cur, xmlNodePtr elem) {
     return(elem);
 }
 
-#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_HTML_ENABLED)
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_HTML_ENABLED) || \
+    defined(LIBXML_SCHEMAS_ENABLED)
 /**
  * xmlAddPrevSibling:
  * @cur:  the child node

@@ -14605,38 +14605,6 @@
         <word name='Georgian'>
           <ref name='xmlUCSIsGeorgian'/>
         </word>
-        <word name='Get'>
-          <ref name='getEntity'/>
-          <ref name='getEntitySAXFunc'/>
-          <ref name='getNamespace'/>
-          <ref name='getParameterEntity'/>
-          <ref name='getParameterEntitySAXFunc'/>
-          <ref name='xlinkGetDefaultDetect'/>
-          <ref name='xlinkGetDefaultHandler'/>
-          <ref name='xmlCtxtGetLastError'/>
-          <ref name='xmlDocGetRootElement'/>
-          <ref name='xmlGetExternalEntityLoader'/>
-          <ref name='xmlGetIntSubset'/>
-          <ref name='xmlGetLastError'/>
-          <ref name='xmlGetLineNo'/>
-          <ref name='xmlListEnd'/>
-          <ref name='xmlListFront'/>
-          <ref name='xmlListSize'/>
-          <ref name='xmlNanoFTPGetResponse'/>
-          <ref name='xmlNanoHTTPAuthHeader'/>
-          <ref name='xmlNanoHTTPReturnCode'/>
-          <ref name='xmlRelaxNGGetParserErrors'/>
-          <ref name='xmlRelaxNGGetValidErrors'/>
-          <ref name='xmlSAX2GetEntity'/>
-          <ref name='xmlSAX2GetParameterEntity'/>
-          <ref name='xmlSchemaGetParserErrors'/>
-          <ref name='xmlSchemaGetValidErrors'/>
-          <ref name='xmlTextReaderConstString'/>
-          <ref name='xmlTextReaderNodeType'/>
-          <ref name='xmlXPathGetContextNode'/>
-          <ref name='xmlXPathGetDocument'/>
-          <ref name='xmlXPathGetError'/>
-        </word>
         <word name='Gets'>
           <ref name='xmlTextReaderReadState'/>
         </word>
@@ -15148,6 +15116,8 @@
         </word>
         <word name='Marks'>
           <ref name='XML_SCHEMAS_ATTRGROUP_MARKED'/>
+          <ref name='XML_SCHEMAS_TYPE_BUILTIN_PRIMITIVE'/>
+          <ref name='XML_SCHEMAS_TYPE_MARKED'/>
         </word>
         <word name='Markup'>
           <ref name='xmlParseExternalSubset'/>
@@ -17224,6 +17194,9 @@
           <ref name='xmlCheckLanguageID'/>
           <ref name='xmlURIEscapeStr'/>
         </word>
+        <word name='a-zA-Z'>
+          <ref name='IS_ASCII_LETTER'/>
+        </word>
         <word name='a-zA-Z0-9'>
           <ref name='IS_PUBIDCHAR'/>
         </word>
@@ -17509,8 +17482,6 @@
           <ref name='xmlBuildQName'/>
           <ref name='xmlMallocAtomicLoc'/>
           <ref name='xmlMallocLoc'/>
-          <ref name='xmlMemMalloc'/>
-          <ref name='xmlMemRealloc'/>
           <ref name='xmlNewMutex'/>
           <ref name='xmlNewRMutex'/>
           <ref name='xmlReallocLoc'/>
@@ -17521,10 +17492,7 @@
           <ref name='xmlGetBufferAllocationScheme'/>
           <ref name='xmlMallocAtomicLoc'/>
           <ref name='xmlMallocLoc'/>
-          <ref name='xmlMemMalloc'/>
-          <ref name='xmlMemRealloc'/>
           <ref name='xmlMemStrdupLoc'/>
-          <ref name='xmlMemoryStrdup'/>
           <ref name='xmlNormalizeURIPath'/>
           <ref name='xmlReallocLoc'/>
           <ref name='xmlSetBufferAllocationScheme'/>
@@ -17544,6 +17512,7 @@
           <ref name='xmlGcMemSetup'/>
         </word>
         <word name='allow'>
+          <ref name='XML_SCHEMAS_ATTR_GLOBAL'/>
           <ref name='XML_SCHEMAS_ATTR_NSDEFAULT'/>
           <ref name='XML_SCHEMAS_ELEM_NSDEFAULT'/>
           <ref name='docbCreatePushParserCtxt'/>
@@ -17818,8 +17787,6 @@
           <ref name='xmlBufferCreateStatic'/>
           <ref name='xmlMallocAtomicLoc'/>
           <ref name='xmlMallocLoc'/>
-          <ref name='xmlMemMalloc'/>
-          <ref name='xmlMemRealloc'/>
           <ref name='xmlParserInputBufferCreateMem'/>
           <ref name='xmlParserInputBufferCreateStatic'/>
           <ref name='xmlReallocLoc'/>
@@ -18245,6 +18212,7 @@
           <ref name='xmlSchemaValidateLengthFacet'/>
         </word>
         <word name='builtin'>
+          <ref name='XML_SCHEMAS_TYPE_BUILTIN_PRIMITIVE'/>
           <ref name='initGenericErrorDefaultFunc'/>
         </word>
         <word name='bunch'>
@@ -18520,7 +18488,6 @@
           <ref name='xlinkIsLink'/>
           <ref name='xmlBufferWriteQuotedString'/>
           <ref name='xmlBuildURI'/>
-          <ref name='xmlMemFree'/>
           <ref name='xmlUTF8Strlen'/>
         </word>
         <word name='checkings'>
@@ -18528,6 +18495,7 @@
         </word>
         <word name='checks'>
           <ref name='XML_SCHEMAS_ATTRGROUP_MARKED'/>
+          <ref name='XML_SCHEMAS_TYPE_MARKED'/>
           <ref name='htmlAutoCloseTag'/>
           <ref name='htmlIsAutoClosed'/>
           <ref name='htmlNodeStatus'/>
@@ -18589,6 +18557,8 @@
         </word>
         <word name='circular'>
           <ref name='XML_SCHEMAS_ATTRGROUP_MARKED'/>
+          <ref name='XML_SCHEMAS_ELEM_CIRCULAR'/>
+          <ref name='XML_SCHEMAS_TYPE_MARKED'/>
         </word>
         <word name='cleanly'>
           <ref name='xmlCheckHTTPInput'/>
@@ -18875,6 +18845,7 @@
           <ref name='XML_SCHEMAS_TYPE_ABSTRACT'/>
           <ref name='XML_SCHEMAS_TYPE_BLOCK_DEFAULT'/>
           <ref name='XML_SCHEMAS_TYPE_BLOCK_EXTENSION'/>
+          <ref name='XML_SCHEMAS_TYPE_BLOCK_RESTRICTION'/>
           <ref name='XML_SCHEMAS_TYPE_FINAL_EXTENSION'/>
           <ref name='XML_SCHEMAS_TYPE_FINAL_RESTRICTION'/>
           <ref name='XML_SCHEMAS_TYPE_OWNED_ATTR_WILDCARD'/>
@@ -20213,6 +20184,7 @@
         <word name='elements'>
           <ref name='XML_CATALOGS_NAMESPACE'/>
           <ref name='XML_COMPLETE_ATTRS'/>
+          <ref name='XML_SCHEMAS_ATTR_GLOBAL'/>
           <ref name='XML_SCHEMAS_ATTR_NSDEFAULT'/>
           <ref name='XML_SCHEMAS_ELEM_NSDEFAULT'/>
           <ref name='XML_SCHEMAS_QUALIF_ELEM'/>
@@ -20452,11 +20424,7 @@
         <word name='equivalent'>
           <ref name='xmlMallocAtomicLoc'/>
           <ref name='xmlMallocLoc'/>
-          <ref name='xmlMemFree'/>
-          <ref name='xmlMemMalloc'/>
-          <ref name='xmlMemRealloc'/>
           <ref name='xmlMemStrdupLoc'/>
-          <ref name='xmlMemoryStrdup'/>
           <ref name='xmlNodeListGetRawString'/>
           <ref name='xmlNodeListGetString'/>
           <ref name='xmlReallocLoc'/>
@@ -20603,6 +20571,10 @@
         <word name='exclusions'>
           <ref name='XML_SCHEMAS_ELEM_FINAL_ABSENT'/>
         </word>
+        <word name='exclusions:'>
+          <ref name='XML_SCHEMAS_ELEM_FINAL_EXTENSION'/>
+          <ref name='XML_SCHEMAS_ELEM_FINAL_RESTRICTION'/>
+        </word>
         <word name='exclusive'>
           <ref name='xmlC14NDocDumpMemory'/>
           <ref name='xmlC14NDocSave'/>
@@ -20692,6 +20664,7 @@
         </word>
         <word name='extension'>
           <ref name='XML_SCHEMAS_BLOCK_DEFAULT_EXTENSION'/>
+          <ref name='XML_SCHEMAS_ELEM_FINAL_EXTENSION'/>
           <ref name='XML_SCHEMAS_FINAL_DEFAULT_EXTENSION'/>
           <ref name='XML_SCHEMAS_TYPE_BLOCK_EXTENSION'/>
           <ref name='XML_SCHEMAS_TYPE_DERIVATION_METHOD_EXTENSION'/>
@@ -20891,6 +20864,7 @@
           <ref name='xmlParseEncodingDecl'/>
         </word>
         <word name='final'>
+          <ref name='XML_SCHEMAS_TYPE_FINAL_DEFAULT'/>
           <ref name='XML_SCHEMAS_TYPE_FINAL_EXTENSION'/>
           <ref name='XML_SCHEMAS_TYPE_FINAL_LIST'/>
           <ref name='XML_SCHEMAS_TYPE_FINAL_RESTRICTION'/>
@@ -20953,6 +20927,7 @@
           <ref name='xmlParseDefaultDecl'/>
         </word>
         <word name='flag'>
+          <ref name='XML_SCHEMAS_ELEM_CIRCULAR'/>
           <ref name='htmlSetMetaEncoding'/>
           <ref name='initxmlDefaultSAXHandler'/>
           <ref name='xmlC14NDocDumpMemory'/>
@@ -21379,6 +21354,8 @@
         <word name='group'>
           <ref name='XML_SCHEMAS_ATTRGROUP_MARKED'/>
           <ref name='XML_SCHEMAS_ELEM_FINAL_ABSENT'/>
+          <ref name='XML_SCHEMAS_ELEM_FINAL_EXTENSION'/>
+          <ref name='XML_SCHEMAS_ELEM_FINAL_RESTRICTION'/>
           <ref name='_xmlSchemaAttribute'/>
           <ref name='_xmlSchemaAttributeGroup'/>
           <ref name='ftpListCallback'/>
@@ -21487,6 +21464,7 @@
         <word name='have'>
           <ref name='INPUT_CHUNK'/>
           <ref name='XML_SCHEMAS_ATTR_INTERNAL_RESOLVED'/>
+          <ref name='XML_SCHEMAS_ELEM_INTERNAL_RESOLVED'/>
           <ref name='_htmlElemDesc'/>
           <ref name='htmlParseEntityRef'/>
           <ref name='xmlAutomataNewAllTrans'/>
@@ -21533,6 +21511,9 @@
         </word>
         <word name='heading'>
           <ref name='xmlCharEncodingOutputFunc'/>
+        </word>
+        <word name='helper'>
+          <ref name='XML_SCHEMAS_ELEM_CIRCULAR'/>
         </word>
         <word name='here'>
           <ref name='_xmlXPathContext'/>
@@ -21988,10 +21969,7 @@
           <ref name='xmlInitNodeInfoSeq'/>
           <ref name='xmlMallocAtomicLoc'/>
           <ref name='xmlMallocLoc'/>
-          <ref name='xmlMemMalloc'/>
-          <ref name='xmlMemRealloc'/>
           <ref name='xmlMemStrdupLoc'/>
-          <ref name='xmlMemoryStrdup'/>
           <ref name='xmlNanoFTPList'/>
           <ref name='xmlParserAddNodeInfo'/>
           <ref name='xmlParserFindNodeInfo'/>
@@ -22072,9 +22050,7 @@
           <ref name='xmlAutomataGetInitState'/>
           <ref name='xmlBufferCreateSize'/>
           <ref name='xmlInitNodeInfoSeq'/>
-          <ref name='xmlMemRealloc'/>
           <ref name='xmlMemStrdupLoc'/>
-          <ref name='xmlMemoryStrdup'/>
           <ref name='xmlReallocLoc'/>
           <ref name='xmlShell'/>
           <ref name='xmlXPathNodeSetAdd'/>
@@ -22323,6 +22299,8 @@
         </word>
         <word name='item'>
           <ref name='XML_SCHEMAS_TYPE_BLOCK_DEFAULT'/>
+          <ref name='XML_SCHEMAS_TYPE_BUILTIN_PRIMITIVE'/>
+          <ref name='XML_SCHEMAS_TYPE_MARKED'/>
           <ref name='_xmlXPathContext'/>
           <ref name='xmlHashRemoveEntry'/>
           <ref name='xmlHashRemoveEntry2'/>
@@ -22443,8 +22421,6 @@
           <ref name='xmlCharEncodingOutputFunc'/>
           <ref name='xmlMallocAtomicLoc'/>
           <ref name='xmlMallocLoc'/>
-          <ref name='xmlMemMalloc'/>
-          <ref name='xmlMemRealloc'/>
           <ref name='xmlReallocLoc'/>
         </word>
         <word name='lang'>
@@ -22779,10 +22755,7 @@
         <word name='logging'>
           <ref name='xmlMallocAtomicLoc'/>
           <ref name='xmlMallocLoc'/>
-          <ref name='xmlMemMalloc'/>
-          <ref name='xmlMemRealloc'/>
           <ref name='xmlMemStrdupLoc'/>
-          <ref name='xmlMemoryStrdup'/>
           <ref name='xmlReallocLoc'/>
         </word>
         <word name='long'>
@@ -22882,7 +22855,6 @@
           <ref name='xmlMallocFunc'/>
           <ref name='xmlMallocLoc'/>
           <ref name='xmlMemGet'/>
-          <ref name='xmlMemMalloc'/>
           <ref name='xmlMemSetup'/>
         </word>
         <word name='mallocAtomicFunc'>
@@ -22924,6 +22896,7 @@
         </word>
         <word name='marked'>
           <ref name='XML_SCHEMAS_ATTRGROUP_MARKED'/>
+          <ref name='XML_SCHEMAS_TYPE_MARKED'/>
           <ref name='_xmlParserInput'/>
         </word>
         <word name='marker'>
@@ -23681,7 +23654,6 @@
         </word>
         <word name='occurred'>
           <ref name='xmlMemStrdupLoc'/>
-          <ref name='xmlMemoryStrdup'/>
         </word>
         <word name='occurrence'>
           <ref name='xmlStrcasestr'/>
@@ -23905,6 +23877,7 @@
           <ref name='xmlSaveToFilename'/>
           <ref name='xmlSaveToIO'/>
           <ref name='xmlSchemaSetValidOptions'/>
+          <ref name='xmlSchemaValidCtxtGetOptions'/>
         </word>
         <word name='ordered'>
           <ref name='xmlListAppend'/>
@@ -24499,6 +24472,7 @@
           <ref name='xmlXPathAxisFunc'/>
         </word>
         <word name='primitive'>
+          <ref name='XML_SCHEMAS_TYPE_BUILTIN_PRIMITIVE'/>
           <ref name='xmlXPathConvertFunc'/>
         </word>
         <word name='print'>
@@ -24910,7 +24884,6 @@
           <ref name='xmlGcMemGet'/>
           <ref name='xmlGcMemSetup'/>
           <ref name='xmlMemGet'/>
-          <ref name='xmlMemRealloc'/>
           <ref name='xmlMemSetup'/>
           <ref name='xmlReallocFunc'/>
           <ref name='xmlReallocLoc'/>
@@ -25066,6 +25039,7 @@
         </word>
         <word name='ref'>
           <ref name='XML_SCHEMAS_ATTR_INTERNAL_RESOLVED'/>
+          <ref name='XML_SCHEMAS_ELEM_INTERNAL_RESOLVED'/>
           <ref name='_xmlEntity'/>
           <ref name='xmlAddRef'/>
           <ref name='xmlFreeRefTable'/>
@@ -25078,6 +25052,8 @@
         </word>
         <word name='references'>
           <ref name='XML_SCHEMAS_ATTR_INTERNAL_RESOLVED'/>
+          <ref name='XML_SCHEMAS_ELEM_CIRCULAR'/>
+          <ref name='XML_SCHEMAS_ELEM_INTERNAL_RESOLVED'/>
           <ref name='htmlParseEntityRef'/>
           <ref name='xmlGetRefs'/>
           <ref name='xmlLoadSGMLSuperCatalog'/>
@@ -25418,6 +25394,7 @@
         </word>
         <word name='resolved'>
           <ref name='XML_SCHEMAS_ATTR_INTERNAL_RESOLVED'/>
+          <ref name='XML_SCHEMAS_ELEM_INTERNAL_RESOLVED'/>
           <ref name='xmlTextReaderLookupNamespace'/>
         </word>
         <word name='resolver'>
@@ -25460,7 +25437,9 @@
         <word name='restriction'>
           <ref name='XML_SCHEMAS_BLOCK_DEFAULT_RESTRICTION'/>
           <ref name='XML_SCHEMAS_ELEM_BLOCK_RESTRICTION'/>
+          <ref name='XML_SCHEMAS_ELEM_FINAL_RESTRICTION'/>
           <ref name='XML_SCHEMAS_FINAL_DEFAULT_RESTRICTION'/>
+          <ref name='XML_SCHEMAS_TYPE_BLOCK_RESTRICTION'/>
           <ref name='XML_SCHEMAS_TYPE_DERIVATION_METHOD_RESTRICTION'/>
           <ref name='XML_SCHEMAS_TYPE_FINAL_RESTRICTION'/>
         </word>
@@ -25740,6 +25719,7 @@
           <ref name='htmlIsScriptAttribute'/>
         </word>
         <word name='search'>
+          <ref name='XML_SCHEMAS_ELEM_CIRCULAR'/>
           <ref name='_xmlXPathAxis'/>
           <ref name='xmlCharInRange'/>
           <ref name='xmlGetDtdAttrDesc'/>
@@ -26005,6 +25985,7 @@
           <ref name='xmlSchemaValidateListSimpleTypeFacet'/>
         </word>
         <word name='simpleType'>
+          <ref name='XML_SCHEMAS_TYPE_FINAL_DEFAULT'/>
           <ref name='XML_SCHEMAS_TYPE_FINAL_LIST'/>
           <ref name='XML_SCHEMAS_TYPE_FINAL_RESTRICTION'/>
           <ref name='XML_SCHEMAS_TYPE_FINAL_UNION'/>
@@ -26214,8 +26195,6 @@
         <word name='specifying'>
           <ref name='xmlMallocAtomicLoc'/>
           <ref name='xmlMallocLoc'/>
-          <ref name='xmlMemMalloc'/>
-          <ref name='xmlMemRealloc'/>
           <ref name='xmlReallocLoc'/>
         </word>
         <word name='speed'>
@@ -26430,7 +26409,6 @@
           <ref name='xmlMemGet'/>
           <ref name='xmlMemSetup'/>
           <ref name='xmlMemStrdupLoc'/>
-          <ref name='xmlMemoryStrdup'/>
           <ref name='xmlStrdup'/>
           <ref name='xmlStrdupFunc'/>
         </word>
@@ -26583,6 +26561,9 @@
         </word>
         <word name='substituting'>
           <ref name='xmlSubstituteEntitiesDefault'/>
+        </word>
+        <word name='substitutionGroup'>
+          <ref name='XML_SCHEMAS_ELEM_INTERNAL_RESOLVED'/>
         </word>
         <word name='substitutions'>
           <ref name='XML_SCHEMAS_ELEM_BLOCK_EXTENSION'/>

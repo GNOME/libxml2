@@ -717,7 +717,7 @@ test_%s(void) {
     try:
 	conds = node.xpathEval("cond")
 	for cond in conds:
-	    test.write("#ifdef %s\n" % (cond.get_content()))
+	    test.write("#if %s\n" % (cond.get_content()))
 	    nb_cond = nb_cond + 1
     except:
         pass

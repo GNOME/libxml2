@@ -26,11 +26,15 @@
 #include <libxml/xmlerror.h>
 #include <libxml/tree.h>
 #include <libxml/hash.h>
+#endif /* LIBXML_XPATH_ENABLED */
 
+#if defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
 #ifdef __cplusplus
 extern "C" {
 #endif
-
+#endif /* LIBXML_XPATH_ENABLED or LIBXML_SCHEMAS_ENABLED */
+	
+#ifdef LIBXML_XPATH_ENABLED
 typedef struct _xmlXPathContext xmlXPathContext;
 typedef xmlXPathContext *xmlXPathContextPtr;
 typedef struct _xmlXPathParserContext xmlXPathParserContext;
@@ -366,11 +370,6 @@ XMLPUBVAR double xmlXPathNAN;
 XMLPUBVAR double xmlXPathPINF;
 XMLPUBVAR double xmlXPathNINF;
 
-XMLPUBFUN int XMLCALL
-		xmlXPathIsNaN	(double val);
-XMLPUBFUN int XMLCALL
-		xmlXPathIsInf	(double val);
-
 /* These macros may later turn into functions */
 /**
  * xmlXPathNodeSetGetLength:
@@ -465,8 +464,6 @@ XMLPUBFUN xmlXPathObjectPtr XMLCALL
 /**
  * Context handling.
  */
-XMLPUBFUN void XMLCALL		   
-		    xmlXPathInit		(void);
 XMLPUBFUN xmlXPathContextPtr XMLCALL 
 		    xmlXPathNewContext		(xmlDocPtr doc);
 XMLPUBFUN void XMLCALL		   
@@ -499,9 +496,18 @@ XMLPUBFUN xmlXPathObjectPtr XMLCALL
 						 xmlXPathContextPtr ctx);
 XMLPUBFUN void XMLCALL                
 		    xmlXPathFreeCompExpr	(xmlXPathCompExprPtr comp);
+#endif /* LIBXML_XPATH_ENABLED */
+#if defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
+XMLPUBFUN void XMLCALL		   
+		    xmlXPathInit		(void);
+XMLPUBFUN int XMLCALL
+		xmlXPathIsNaN	(double val);
+XMLPUBFUN int XMLCALL
+		xmlXPathIsInf	(double val);
+
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* LIBXML_XPATH_ENABLED */
+#endif /* LIBXML_XPATH_ENABLED or LIBXML_SCHEMAS_ENABLED*/
 #endif /* ! __XML_XPATH_H__ */

@@ -1,3 +1,31 @@
+Sun Jan  2 17:51:18 HKT 2005 William Brack <wbrack@mmm.com.hk>
+
+	Re-examined the problems of configuring a "minimal" library.
+	Synchronized the header files with the library code in order
+	to assure that all the various conditionals (LIBXML_xxxx_ENABLED)
+	were the same in both.  Modified the API database content to more
+	accurately reflect the conditionals.  Enhanced the generation
+	of that database.  Although there was no substantial change to
+	any of the library code's logic, a large number of files were
+	modified to achieve the above, and the configuration script
+	was enhanced to do some automatic enabling of features (e.g.
+	--with-xinclude forces --with-xpath).  Additionally, all the format
+	errors discovered by apibuild.py were corrected.
+	* configure.in: enhanced cross-checking of options
+	* doc/apibuild.py, doc/elfgcchack.xsl, doc/libxml2-refs.xml,
+	  doc/libxml2-api.xml, gentest.py: changed the usage of the
+	  <cond> element in module descriptions
+	* elfgcchack.h, testapi.c: regenerated with proper conditionals
+	* HTMLparser.c, SAX.c, globals.c, tree.c, xmlschemas.c, xpath.c,
+	  testSAX.c: cleaned up conditionals
+	* include/libxml/[SAX.h, SAX2.h, debugXML.h, encoding.h, entities.h,
+	  hash.h, parser.h, parserInternals.h, schemasInternals.h, tree.h,
+	  valid.h, xlink.h, xmlIO.h, xmlautomata.h, xmlreader.h, xpath.h]:
+	  synchronized the conditionals with the corresponding module code
+	* doc/examples/tree2.c, doc/examples/xpath1.c, doc/examples/xpath2.c:
+	  added additional conditions required for compilation
+	* doc/*.html, doc/html/*.html: rebuilt the docs
+	
 Sat Dec 25 18:10:02 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* parserInternals.c: fixed to skip (if necessary) the BOM for

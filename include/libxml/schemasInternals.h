@@ -204,7 +204,7 @@ struct _xmlSchemaAnnot {
  */
 #define XML_SCHEMAS_ATTR_USE_OPTIONAL 2
 /**
- * XML_SCHEMAS_ATTR_GLOABAL:
+ * XML_SCHEMAS_ATTR_GLOBAL:
  *
  * allow elements in no namespace
  */
@@ -455,19 +455,19 @@ struct _xmlSchemaFacetLink {
  */
 #define XML_SCHEMAS_TYPE_FINAL_UNION    1 << 12
 /**
- * XML_SCHEMAS_TYPE_FINAL_UNION:
+ * XML_SCHEMAS_TYPE_FINAL_DEFAULT:
  *
- * the simpleType has a final of "union".
+ * the simpleType has a final of "default".
  */
 #define XML_SCHEMAS_TYPE_FINAL_DEFAULT    1 << 13
 /**
- * XML_SCHEMAS_TYPE_FINAL_UNION:
+ * XML_SCHEMAS_TYPE_BUILTIN_PRIMITIVE:
  *
- * the simpleType has a final of "union".
+ * Marks the item as a builtin primitive.
  */
 #define XML_SCHEMAS_TYPE_BUILTIN_PRIMITIVE    1 << 14
 /**
- * XML_SCHEMAS_TYPE_MARKED
+ * XML_SCHEMAS_TYPE_MARKED:
  *
  * Marks the item as marked; used for circular checks.
  */
@@ -486,7 +486,7 @@ struct _xmlSchemaFacetLink {
  */
 #define XML_SCHEMAS_TYPE_BLOCK_EXTENSION    1 << 18
 /**
- * XML_SCHEMAS_TYPE_FINAL_RESTRICTION:
+ * XML_SCHEMAS_TYPE_BLOCK_RESTRICTION:
  *
  * the complexType has a 'block' of "restriction".
  */
@@ -593,14 +593,14 @@ struct _xmlSchemaType {
  */
 #define XML_SCHEMAS_ELEM_NSDEFAULT        1 << 7
 /**
- * XML_SCHEMAS_ELEM_INTERNAL_RESOLVED
+ * XML_SCHEMAS_ELEM_INTERNAL_RESOLVED:
  *
  * this is set when "type", "ref", "substitutionGroup"
  * references have been resolved.
  */
 #define XML_SCHEMAS_ELEM_INTERNAL_RESOLVED        1 << 8
  /**
- * XML_SCHEMAS_ELEM_CIRCULAR
+ * XML_SCHEMAS_ELEM_CIRCULAR:
  *
  * a helper flag for the search of circular references.
  */
@@ -636,13 +636,13 @@ struct _xmlSchemaType {
  */
 #define XML_SCHEMAS_ELEM_FINAL_ABSENT        1 << 14
 /**
- * XML_SCHEMAS_ELEM_BLOCK_EXTENSION:
+ * XML_SCHEMAS_ELEM_FINAL_EXTENSION:
  *
  * substitution group exclusions: "extension"
  */
 #define XML_SCHEMAS_ELEM_FINAL_EXTENSION        1 << 15
 /**
- * XML_SCHEMAS_ELEM_BLOCK_RESTRICTION:
+ * XML_SCHEMAS_ELEM_FINAL_RESTRICTION:
  *
  * substitution group exclusions: "restriction"
  */

@@ -5222,7 +5222,6 @@ htmlParseChunk(htmlParserCtxtPtr ctxt, const char *chunk, int size,
     }
     return((xmlParserErrors) ctxt->errNo);	      
 }
-#endif /* LIBXML_PUSH_ENABLED */
 
 /************************************************************************
  *									*
@@ -5322,6 +5321,7 @@ htmlCreatePushParserCtxt(htmlSAXHandlerPtr sax, void *user_data,
 
     return(ctxt);
 }
+#endif /* LIBXML_PUSH_ENABLED */
 
 /**
  * htmlSAXParseDoc:

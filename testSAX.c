@@ -1004,6 +1004,7 @@ static void
 parseAndPrintFile(char *filename) {
     int res;
 
+#ifdef LIBXML_PUSH_ENABLED
     if (push) {
 	FILE *f;
 
@@ -1071,6 +1072,7 @@ parseAndPrintFile(char *filename) {
 	    fclose(f);
 	}
     } else {
+#endif /* LIBXML_PUSH_ENABLED */
 	if (!speed) {
 	    /*
 	     * Empty callbacks for checking
@@ -1118,7 +1120,9 @@ parseAndPrintFile(char *filename) {
 		fprintf(stdout, "xmlSAXUserParseFile returned error %d\n", res);
 	    }
 	}
+#ifdef LIBXML_PUSH_ENABLED
     }
+#endif
 }
 
 
@@ -1138,7 +1142,11 @@ int main(int argc, char **argv) {
 	    recovery++;
 	else if ((!strcmp(argv[i], "-push")) ||
 	         (!strcmp(argv[i], "--push")))
+#ifdef LIBXML_PUSH_ENABLED
 	    push++;
+#else
+	    fprintf(stderr,"'push' not enabled in library - ignoring\n");
+#endif /* LIBXML_PUSH_ENABLED */
 	else if ((!strcmp(argv[i], "-speed")) ||
 	         (!strcmp(argv[i], "--speed")))
 	    speed++;

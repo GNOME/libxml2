@@ -18,7 +18,8 @@
 #include <libxml/xpath.h>
 #include <libxml/xpathInternals.h>
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED) && defined(LIBXML_SAX1_ENABLED) && \
+    defined(LIBXML_OUTPUT_ENABLED)
 
 
 static void usage(const char *name);

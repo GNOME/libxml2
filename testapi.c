@@ -1181,7 +1181,7 @@ static int
 test_UTF8ToHtml(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
+#if defined(LIBXML_HTML_ENABLED)
     int mem_base;
     int ret_val;
     unsigned char * out; /* a pointer to an array of bytes to store the result */
@@ -1246,7 +1246,7 @@ static int
 test_htmlAttrAllowed(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
+#if defined(LIBXML_HTML_ENABLED)
     int mem_base;
     htmlStatus ret_val;
     htmlElemDesc * elt; /* HTML element */
@@ -1304,7 +1304,7 @@ static int
 test_htmlAutoCloseTag(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
+#if defined(LIBXML_HTML_ENABLED)
     int mem_base;
     int ret_val;
     htmlDocPtr doc; /* the HTML document */
@@ -1352,7 +1352,7 @@ static int
 test_htmlCreateMemoryParserCtxt(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
+#if defined(LIBXML_HTML_ENABLED)
     int mem_base;
     htmlParserCtxtPtr ret_val;
     char * buffer; /* a pointer to a char array */
@@ -1403,8 +1403,7 @@ static int
 test_htmlCreatePushParserCtxt(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
-#ifdef LIBXML_PUSH_ENABLED
+#if defined(LIBXML_HTML_ENABLED) && defined(LIBXML_PUSH_ENABLED)
     int mem_base;
     htmlParserCtxtPtr ret_val;
     htmlSAXHandlerPtr sax; /* a SAX handler */
@@ -1464,7 +1463,6 @@ test_htmlCreatePushParserCtxt(void) {
     }
     function_tests++;
 #endif
-#endif
 
     return(test_ret);
 }
@@ -1474,7 +1472,7 @@ static int
 test_htmlCtxtReadDoc(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
+#if defined(LIBXML_HTML_ENABLED)
     int mem_base;
     htmlDocPtr ret_val;
     htmlParserCtxtPtr ctxt; /* an HTML parser context */
@@ -1536,7 +1534,7 @@ static int
 test_htmlCtxtReadFile(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
+#if defined(LIBXML_HTML_ENABLED)
     htmlDocPtr ret_val;
     htmlParserCtxtPtr ctxt; /* an HTML parser context */
     int n_ctxt;
@@ -1579,7 +1577,7 @@ static int
 test_htmlCtxtReadMemory(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
+#if defined(LIBXML_HTML_ENABLED)
     int mem_base;
     htmlDocPtr ret_val;
     htmlParserCtxtPtr ctxt; /* an HTML parser context */
@@ -1648,7 +1646,7 @@ static int
 test_htmlCtxtReset(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
+#if defined(LIBXML_HTML_ENABLED)
     int mem_base;
     htmlParserCtxtPtr ctxt; /* an HTML parser context */
     int n_ctxt;
@@ -1680,7 +1678,7 @@ static int
 test_htmlCtxtUseOptions(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
+#if defined(LIBXML_HTML_ENABLED)
     int mem_base;
     int ret_val;
     htmlParserCtxtPtr ctxt; /* an HTML parser context */
@@ -1721,7 +1719,7 @@ static int
 test_htmlElementAllowedHere(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
+#if defined(LIBXML_HTML_ENABLED)
     int mem_base;
     int ret_val;
     htmlElemDesc * parent; /* HTML parent element */
@@ -1762,7 +1760,7 @@ static int
 test_htmlElementStatusHere(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
+#if defined(LIBXML_HTML_ENABLED)
     int mem_base;
     htmlStatus ret_val;
     htmlElemDesc * parent; /* HTML parent element */
@@ -1803,7 +1801,7 @@ static int
 test_htmlEncodeEntities(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
+#if defined(LIBXML_HTML_ENABLED)
     int mem_base;
     int ret_val;
     unsigned char * out; /* a pointer to an array of bytes to store the result */
@@ -1865,7 +1863,7 @@ static int
 test_htmlEntityLookup(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
+#if defined(LIBXML_HTML_ENABLED)
     int mem_base;
     const htmlEntityDesc * ret_val;
     xmlChar * name; /* the entity name */
@@ -1899,7 +1897,7 @@ static int
 test_htmlEntityValueLookup(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
+#if defined(LIBXML_HTML_ENABLED)
     int mem_base;
     const htmlEntityDesc * ret_val;
     unsigned int value; /* the entity's unicode value */
@@ -1933,7 +1931,7 @@ static int
 test_htmlHandleOmittedElem(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
+#if defined(LIBXML_HTML_ENABLED)
     int mem_base;
     int ret_val;
     int val; /* int 0 or 1 */
@@ -1967,7 +1965,7 @@ static int
 test_htmlIsAutoClosed(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
+#if defined(LIBXML_HTML_ENABLED)
     int mem_base;
     int ret_val;
     htmlDocPtr doc; /* the HTML document */
@@ -2008,7 +2006,7 @@ static int
 test_htmlIsScriptAttribute(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
+#if defined(LIBXML_HTML_ENABLED)
     int mem_base;
     int ret_val;
     xmlChar * name; /* an attribute name */
@@ -2042,7 +2040,7 @@ static int
 test_htmlNodeStatus(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
+#if defined(LIBXML_HTML_ENABLED)
     int mem_base;
     htmlStatus ret_val;
     htmlNodePtr node; /* an htmlNodePtr in a tree */
@@ -2083,7 +2081,7 @@ static int
 test_htmlParseCharRef(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
+#if defined(LIBXML_HTML_ENABLED)
     int mem_base;
     int ret_val;
     htmlParserCtxtPtr ctxt; /* an HTML parser context */
@@ -2117,8 +2115,7 @@ static int
 test_htmlParseChunk(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
-#ifdef LIBXML_PUSH_ENABLED
+#if defined(LIBXML_HTML_ENABLED) && defined(LIBXML_PUSH_ENABLED)
     int mem_base;
     int ret_val;
     htmlParserCtxtPtr ctxt; /* an HTML parser context */
@@ -2165,7 +2162,6 @@ test_htmlParseChunk(void) {
     }
     function_tests++;
 #endif
-#endif
 
     return(test_ret);
 }
@@ -2175,7 +2171,7 @@ static int
 test_htmlParseDoc(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
+#if defined(LIBXML_HTML_ENABLED)
     int mem_base;
     htmlDocPtr ret_val;
     xmlChar * cur; /* a pointer to an array of xmlChar */
@@ -2216,7 +2212,7 @@ static int
 test_htmlParseDocument(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
+#if defined(LIBXML_HTML_ENABLED)
     int mem_base;
     int ret_val;
     htmlParserCtxtPtr ctxt; /* an HTML parser context */
@@ -2251,7 +2247,7 @@ static int
 test_htmlParseElement(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
+#if defined(LIBXML_HTML_ENABLED)
     int mem_base;
     htmlParserCtxtPtr ctxt; /* an HTML parser context */
     int n_ctxt;
@@ -2283,7 +2279,7 @@ static int
 test_htmlParseEntityRef(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
+#if defined(LIBXML_HTML_ENABLED)
     int mem_base;
     const htmlEntityDesc * ret_val;
     htmlParserCtxtPtr ctxt; /* an HTML parser context */
@@ -2324,7 +2320,7 @@ static int
 test_htmlParseFile(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
+#if defined(LIBXML_HTML_ENABLED)
     htmlDocPtr ret_val;
     const char * filename; /* the filename */
     int n_filename;
@@ -2355,7 +2351,7 @@ static int
 test_htmlReadDoc(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
+#if defined(LIBXML_HTML_ENABLED)
     int mem_base;
     htmlDocPtr ret_val;
     xmlChar * cur; /* a pointer to a zero terminated string */
@@ -2410,7 +2406,7 @@ static int
 test_htmlReadFile(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
+#if defined(LIBXML_HTML_ENABLED)
     int mem_base;
     htmlDocPtr ret_val;
     const char * filename; /* a file or URL */
@@ -2458,7 +2454,7 @@ static int
 test_htmlReadMemory(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
+#if defined(LIBXML_HTML_ENABLED)
     int mem_base;
     htmlDocPtr ret_val;
     char * buffer; /* a pointer to a char array */
@@ -2520,7 +2516,7 @@ static int
 test_htmlSAXParseDoc(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
+#if defined(LIBXML_HTML_ENABLED)
     int mem_base;
     htmlDocPtr ret_val;
     xmlChar * cur; /* a pointer to an array of xmlChar */
@@ -2575,7 +2571,7 @@ static int
 test_htmlSAXParseFile(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
+#if defined(LIBXML_HTML_ENABLED)
     int mem_base;
     htmlDocPtr ret_val;
     const char * filename; /* the filename */
@@ -2682,8 +2678,7 @@ static int
 test_htmlDocContentDumpFormatOutput(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_HTML_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     xmlOutputBufferPtr buf; /* the HTML buffer output */
     int n_buf;
@@ -2727,7 +2722,6 @@ test_htmlDocContentDumpFormatOutput(void) {
     }
     function_tests++;
 #endif
-#endif
 
     return(test_ret);
 }
@@ -2737,8 +2731,7 @@ static int
 test_htmlDocContentDumpOutput(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_HTML_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     xmlOutputBufferPtr buf; /* the HTML buffer output */
     int n_buf;
@@ -2775,7 +2768,6 @@ test_htmlDocContentDumpOutput(void) {
     }
     function_tests++;
 #endif
-#endif
 
     return(test_ret);
 }
@@ -2785,8 +2777,7 @@ static int
 test_htmlDocDump(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_HTML_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     int ret_val;
     FILE * f; /* the FILE* */
@@ -2818,7 +2809,6 @@ test_htmlDocDump(void) {
     }
     function_tests++;
 #endif
-#endif
 
     return(test_ret);
 }
@@ -2835,8 +2825,7 @@ static int
 test_htmlDocDumpMemory(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_HTML_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     xmlDocPtr cur; /* the document */
     int n_cur;
@@ -2873,7 +2862,6 @@ test_htmlDocDumpMemory(void) {
     }
     function_tests++;
 #endif
-#endif
 
     return(test_ret);
 }
@@ -2883,7 +2871,7 @@ static int
 test_htmlGetMetaEncoding(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
+#if defined(LIBXML_HTML_ENABLED)
     int mem_base;
     const xmlChar * ret_val;
     htmlDocPtr doc; /* the document */
@@ -2917,7 +2905,7 @@ static int
 test_htmlIsBooleanAttr(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
+#if defined(LIBXML_HTML_ENABLED)
     int mem_base;
     int ret_val;
     xmlChar * name; /* the name of the attribute to check */
@@ -2951,7 +2939,7 @@ static int
 test_htmlNewDoc(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
+#if defined(LIBXML_HTML_ENABLED)
     int mem_base;
     htmlDocPtr ret_val;
     xmlChar * URI; /* URI for the dtd, or NULL */
@@ -2992,7 +2980,7 @@ static int
 test_htmlNewDocNoDtD(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
+#if defined(LIBXML_HTML_ENABLED)
     int mem_base;
     htmlDocPtr ret_val;
     xmlChar * URI; /* URI for the dtd, or NULL */
@@ -3033,8 +3021,7 @@ static int
 test_htmlNodeDump(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_HTML_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     int ret_val;
     xmlBufferPtr buf; /* the HTML buffer output */
@@ -3073,7 +3060,6 @@ test_htmlNodeDump(void) {
     }
     function_tests++;
 #endif
-#endif
 
     return(test_ret);
 }
@@ -3083,8 +3069,7 @@ static int
 test_htmlNodeDumpFile(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_HTML_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     FILE * out; /* the FILE pointer */
     int n_out;
@@ -3121,7 +3106,6 @@ test_htmlNodeDumpFile(void) {
     }
     function_tests++;
 #endif
-#endif
 
     return(test_ret);
 }
@@ -3131,8 +3115,7 @@ static int
 test_htmlNodeDumpFileFormat(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_HTML_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     int ret_val;
     FILE * out; /* the FILE pointer */
@@ -3185,7 +3168,6 @@ test_htmlNodeDumpFileFormat(void) {
     }
     function_tests++;
 #endif
-#endif
 
     return(test_ret);
 }
@@ -3195,8 +3177,7 @@ static int
 test_htmlNodeDumpFormatOutput(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_HTML_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     xmlOutputBufferPtr buf; /* the HTML buffer output */
     int n_buf;
@@ -3247,7 +3228,6 @@ test_htmlNodeDumpFormatOutput(void) {
     }
     function_tests++;
 #endif
-#endif
 
     return(test_ret);
 }
@@ -3257,8 +3237,7 @@ static int
 test_htmlNodeDumpOutput(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_HTML_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     xmlOutputBufferPtr buf; /* the HTML buffer output */
     int n_buf;
@@ -3302,7 +3281,6 @@ test_htmlNodeDumpOutput(void) {
     }
     function_tests++;
 #endif
-#endif
 
     return(test_ret);
 }
@@ -3312,8 +3290,7 @@ static int
 test_htmlSaveFile(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_HTML_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     int ret_val;
     const char * filename; /* the filename (or URL) */
@@ -3345,7 +3322,6 @@ test_htmlSaveFile(void) {
     }
     function_tests++;
 #endif
-#endif
 
     return(test_ret);
 }
@@ -3355,8 +3331,7 @@ static int
 test_htmlSaveFileEnc(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_HTML_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     int ret_val;
     const char * filename; /* the filename */
@@ -3395,7 +3370,6 @@ test_htmlSaveFileEnc(void) {
     }
     function_tests++;
 #endif
-#endif
 
     return(test_ret);
 }
@@ -3405,8 +3379,7 @@ static int
 test_htmlSaveFileFormat(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_HTML_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     int ret_val;
     const char * filename; /* the filename */
@@ -3452,7 +3425,6 @@ test_htmlSaveFileFormat(void) {
     }
     function_tests++;
 #endif
-#endif
 
     return(test_ret);
 }
@@ -3462,7 +3434,7 @@ static int
 test_htmlSetMetaEncoding(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
+#if defined(LIBXML_HTML_ENABLED)
     int mem_base;
     int ret_val;
     htmlDocPtr doc; /* the document */
@@ -3530,6 +3502,7 @@ static int
 test_docbDefaultSAXHandlerInit(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_DOCB_ENABLED)
 #ifdef LIBXML_DOCB_ENABLED
     int mem_base;
 
@@ -3546,6 +3519,7 @@ test_docbDefaultSAXHandlerInit(void) {
         }
     function_tests++;
 #endif
+#endif
 
     return(test_ret);
 }
@@ -3555,6 +3529,7 @@ static int
 test_htmlDefaultSAXHandlerInit(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_HTML_ENABLED)
 #ifdef LIBXML_HTML_ENABLED
     int mem_base;
 
@@ -3570,6 +3545,7 @@ test_htmlDefaultSAXHandlerInit(void) {
             printf("\n");
         }
     function_tests++;
+#endif
 #endif
 
     return(test_ret);
@@ -3888,6 +3864,7 @@ static int
 test_xmlSAX2EndElement(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_SAX1_ENABLED) || defined(LIBXML_HTML_ENABLED)
 #ifdef LIBXML_SAX1_ENABLED
     int mem_base;
     void * ctx; /* the user data (XML parser context) */
@@ -3917,6 +3894,7 @@ test_xmlSAX2EndElement(void) {
     }
     }
     function_tests++;
+#endif
 #endif
 
     return(test_ret);
@@ -4452,7 +4430,7 @@ static int
 test_xmlSAX2InitDocbDefaultSAXHandler(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_DOCB_ENABLED
+#if defined(LIBXML_DOCB_ENABLED)
     int mem_base;
     xmlSAXHandler * hdlr; /* the SAX handler */
     int n_hdlr;
@@ -4484,7 +4462,7 @@ static int
 test_xmlSAX2InitHtmlDefaultSAXHandler(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
+#if defined(LIBXML_HTML_ENABLED)
     int mem_base;
     xmlSAXHandler * hdlr; /* the SAX handler */
     int n_hdlr;
@@ -4851,6 +4829,7 @@ static int
 test_xmlSAX2StartElement(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_SAX1_ENABLED) || defined(LIBXML_HTML_ENABLED)
 #ifdef LIBXML_SAX1_ENABLED
     int mem_base;
     void * ctx; /* the user data (XML parser context) */
@@ -4887,6 +4866,7 @@ test_xmlSAX2StartElement(void) {
     }
     }
     function_tests++;
+#endif
 #endif
 
     return(test_ret);
@@ -5041,6 +5021,7 @@ static int
 test_xmlSAXDefaultVersion(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_SAX1_ENABLED)
 #ifdef LIBXML_SAX1_ENABLED
     int mem_base;
     int ret_val;
@@ -5065,6 +5046,7 @@ test_xmlSAXDefaultVersion(void) {
         }
     }
     function_tests++;
+#endif
 #endif
 
     return(test_ret);
@@ -5162,8 +5144,7 @@ static int
 test_xmlC14NDocDumpMemory(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_C14N_ENABLED
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_C14N_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     int ret_val;
     xmlDocPtr doc; /* the XML document for canonization */
@@ -5223,7 +5204,6 @@ test_xmlC14NDocDumpMemory(void) {
     }
     function_tests++;
 #endif
-#endif
 
     return(test_ret);
 }
@@ -5233,8 +5213,7 @@ static int
 test_xmlC14NDocSave(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_C14N_ENABLED
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_C14N_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     int ret_val;
     xmlDocPtr doc; /* the XML document for canonization */
@@ -5301,7 +5280,6 @@ test_xmlC14NDocSave(void) {
     }
     function_tests++;
 #endif
-#endif
 
     return(test_ret);
 }
@@ -5311,8 +5289,7 @@ static int
 test_xmlC14NDocSaveTo(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_C14N_ENABLED
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_C14N_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     int ret_val;
     xmlDocPtr doc; /* the XML document for canonization */
@@ -5372,7 +5349,6 @@ test_xmlC14NDocSaveTo(void) {
     }
     function_tests++;
 #endif
-#endif
 
     return(test_ret);
 }
@@ -5416,7 +5392,7 @@ static int
 test_xmlACatalogAdd(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_CATALOG_ENABLED
+#if defined(LIBXML_CATALOG_ENABLED)
     int mem_base;
     int ret_val;
     xmlCatalogPtr catal; /* a Catalog */
@@ -5471,8 +5447,7 @@ static int
 test_xmlACatalogDump(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_CATALOG_ENABLED
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_CATALOG_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     xmlCatalogPtr catal; /* a Catalog */
     int n_catal;
@@ -5502,7 +5477,6 @@ test_xmlACatalogDump(void) {
     }
     function_tests++;
 #endif
-#endif
 
     return(test_ret);
 }
@@ -5512,7 +5486,7 @@ static int
 test_xmlACatalogRemove(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_CATALOG_ENABLED
+#if defined(LIBXML_CATALOG_ENABLED)
     int mem_base;
     int ret_val;
     xmlCatalogPtr catal; /* a Catalog */
@@ -5553,7 +5527,7 @@ static int
 test_xmlACatalogResolve(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_CATALOG_ENABLED
+#if defined(LIBXML_CATALOG_ENABLED)
     int mem_base;
     xmlChar * ret_val;
     xmlCatalogPtr catal; /* a Catalog */
@@ -5601,7 +5575,7 @@ static int
 test_xmlACatalogResolvePublic(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_CATALOG_ENABLED
+#if defined(LIBXML_CATALOG_ENABLED)
     int mem_base;
     xmlChar * ret_val;
     xmlCatalogPtr catal; /* a Catalog */
@@ -5642,7 +5616,7 @@ static int
 test_xmlACatalogResolveSystem(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_CATALOG_ENABLED
+#if defined(LIBXML_CATALOG_ENABLED)
     int mem_base;
     xmlChar * ret_val;
     xmlCatalogPtr catal; /* a Catalog */
@@ -5683,7 +5657,7 @@ static int
 test_xmlACatalogResolveURI(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_CATALOG_ENABLED
+#if defined(LIBXML_CATALOG_ENABLED)
     int mem_base;
     xmlChar * ret_val;
     xmlCatalogPtr catal; /* a Catalog */
@@ -5724,7 +5698,7 @@ static int
 test_xmlCatalogAdd(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_CATALOG_ENABLED
+#if defined(LIBXML_CATALOG_ENABLED)
     int mem_base;
     int ret_val;
     xmlChar * type; /* the type of record to add to the catalog */
@@ -5772,7 +5746,7 @@ static int
 test_xmlCatalogCleanup(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_CATALOG_ENABLED
+#if defined(LIBXML_CATALOG_ENABLED)
 
 
         xmlCatalogCleanup();
@@ -5789,7 +5763,7 @@ static int
 test_xmlCatalogConvert(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_CATALOG_ENABLED
+#if defined(LIBXML_CATALOG_ENABLED)
     int ret_val;
 
 
@@ -5808,8 +5782,7 @@ static int
 test_xmlCatalogDump(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_CATALOG_ENABLED
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_CATALOG_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     FILE * out; /* the file. */
     int n_out;
@@ -5832,7 +5805,6 @@ test_xmlCatalogDump(void) {
     }
     function_tests++;
 #endif
-#endif
 
     return(test_ret);
 }
@@ -5842,7 +5814,7 @@ static int
 test_xmlCatalogGetDefaults(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_CATALOG_ENABLED
+#if defined(LIBXML_CATALOG_ENABLED)
     int mem_base;
     xmlCatalogAllow ret_val;
 
@@ -5869,7 +5841,7 @@ static int
 test_xmlCatalogIsEmpty(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_CATALOG_ENABLED
+#if defined(LIBXML_CATALOG_ENABLED)
     int mem_base;
     int ret_val;
     xmlCatalogPtr catal; /* should this create an SGML catalog */
@@ -5903,7 +5875,7 @@ static int
 test_xmlCatalogLocalResolve(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_CATALOG_ENABLED
+#if defined(LIBXML_CATALOG_ENABLED)
     int mem_base;
     xmlChar * ret_val;
     void * catalogs; /* a document's list of catalogs */
@@ -5951,7 +5923,7 @@ static int
 test_xmlCatalogLocalResolveURI(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_CATALOG_ENABLED
+#if defined(LIBXML_CATALOG_ENABLED)
     int mem_base;
     xmlChar * ret_val;
     void * catalogs; /* a document's list of catalogs */
@@ -5992,7 +5964,7 @@ static int
 test_xmlCatalogRemove(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_CATALOG_ENABLED
+#if defined(LIBXML_CATALOG_ENABLED)
     int ret_val;
     xmlChar * value; /* the value to remove */
     int n_value;
@@ -6017,7 +5989,7 @@ static int
 test_xmlCatalogResolve(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_CATALOG_ENABLED
+#if defined(LIBXML_CATALOG_ENABLED)
     int mem_base;
     xmlChar * ret_val;
     xmlChar * pubID; /* the public ID string */
@@ -6058,7 +6030,7 @@ static int
 test_xmlCatalogResolvePublic(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_CATALOG_ENABLED
+#if defined(LIBXML_CATALOG_ENABLED)
     int mem_base;
     xmlChar * ret_val;
     xmlChar * pubID; /* the public ID string */
@@ -6092,7 +6064,7 @@ static int
 test_xmlCatalogResolveSystem(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_CATALOG_ENABLED
+#if defined(LIBXML_CATALOG_ENABLED)
     int mem_base;
     xmlChar * ret_val;
     xmlChar * sysID; /* the system ID string */
@@ -6126,7 +6098,7 @@ static int
 test_xmlCatalogResolveURI(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_CATALOG_ENABLED
+#if defined(LIBXML_CATALOG_ENABLED)
     int mem_base;
     xmlChar * ret_val;
     xmlChar * URI; /* the URI */
@@ -6160,7 +6132,7 @@ static int
 test_xmlCatalogSetDefaultPrefer(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_CATALOG_ENABLED
+#if defined(LIBXML_CATALOG_ENABLED)
     int mem_base;
     xmlCatalogPrefer ret_val;
     xmlCatalogPrefer prefer; /* the default preference for delegation */
@@ -6194,7 +6166,7 @@ static int
 test_xmlCatalogSetDefaults(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_CATALOG_ENABLED
+#if defined(LIBXML_CATALOG_ENABLED)
     int mem_base;
     xmlCatalogAllow allow; /* what catalogs should be accepted */
     int n_allow;
@@ -6226,7 +6198,7 @@ static int
 test_xmlConvertSGMLCatalog(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_CATALOG_ENABLED
+#if defined(LIBXML_CATALOG_ENABLED)
     int mem_base;
     int ret_val;
     xmlCatalogPtr catal; /* the catalog */
@@ -6260,7 +6232,7 @@ static int
 test_xmlInitializeCatalog(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_CATALOG_ENABLED
+#if defined(LIBXML_CATALOG_ENABLED)
     int mem_base;
 
         mem_base = xmlMemBlocks();
@@ -6295,7 +6267,7 @@ static int
 test_xmlLoadCatalog(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_CATALOG_ENABLED
+#if defined(LIBXML_CATALOG_ENABLED)
     int ret_val;
     const char * filename; /* a file path */
     int n_filename;
@@ -6320,7 +6292,7 @@ static int
 test_xmlLoadCatalogs(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_CATALOG_ENABLED
+#if defined(LIBXML_CATALOG_ENABLED)
     char * pathss; /* a list of directories separated by a colon or a space. */
     int n_pathss;
 
@@ -6363,7 +6335,7 @@ static int
 test_xmlParseCatalogFile(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_CATALOG_ENABLED
+#if defined(LIBXML_CATALOG_ENABLED)
     int mem_base;
     xmlDocPtr ret_val;
     const char * filename; /* the filename */
@@ -6758,7 +6730,7 @@ static int
 test_xmlBoolToText(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_DEBUG_ENABLED
+#if defined(LIBXML_DEBUG_ENABLED)
     int mem_base;
     const char * ret_val;
     int boolval; /* a bool to turn into text */
@@ -6792,7 +6764,7 @@ static int
 test_xmlDebugCheckDocument(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_DEBUG_ENABLED
+#if defined(LIBXML_DEBUG_ENABLED)
     int mem_base;
     int ret_val;
     FILE * output; /* the FILE * for the output */
@@ -6833,7 +6805,7 @@ static int
 test_xmlDebugDumpAttr(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_DEBUG_ENABLED
+#if defined(LIBXML_DEBUG_ENABLED)
     int mem_base;
     FILE * output; /* the FILE * for the output */
     int n_output;
@@ -6879,7 +6851,7 @@ static int
 test_xmlDebugDumpAttrList(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_DEBUG_ENABLED
+#if defined(LIBXML_DEBUG_ENABLED)
     int mem_base;
     FILE * output; /* the FILE * for the output */
     int n_output;
@@ -6925,7 +6897,7 @@ static int
 test_xmlDebugDumpDTD(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_DEBUG_ENABLED
+#if defined(LIBXML_DEBUG_ENABLED)
     int mem_base;
     FILE * output; /* the FILE * for the output */
     int n_output;
@@ -6964,7 +6936,7 @@ static int
 test_xmlDebugDumpDocument(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_DEBUG_ENABLED
+#if defined(LIBXML_DEBUG_ENABLED)
     int mem_base;
     FILE * output; /* the FILE * for the output */
     int n_output;
@@ -7003,7 +6975,7 @@ static int
 test_xmlDebugDumpDocumentHead(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_DEBUG_ENABLED
+#if defined(LIBXML_DEBUG_ENABLED)
     int mem_base;
     FILE * output; /* the FILE * for the output */
     int n_output;
@@ -7042,7 +7014,7 @@ static int
 test_xmlDebugDumpEntities(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_DEBUG_ENABLED
+#if defined(LIBXML_DEBUG_ENABLED)
     int mem_base;
     FILE * output; /* the FILE * for the output */
     int n_output;
@@ -7081,7 +7053,7 @@ static int
 test_xmlDebugDumpNode(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_DEBUG_ENABLED
+#if defined(LIBXML_DEBUG_ENABLED)
     int mem_base;
     FILE * output; /* the FILE * for the output */
     int n_output;
@@ -7127,7 +7099,7 @@ static int
 test_xmlDebugDumpNodeList(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_DEBUG_ENABLED
+#if defined(LIBXML_DEBUG_ENABLED)
     int mem_base;
     FILE * output; /* the FILE * for the output */
     int n_output;
@@ -7173,7 +7145,7 @@ static int
 test_xmlDebugDumpOneNode(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_DEBUG_ENABLED
+#if defined(LIBXML_DEBUG_ENABLED)
     int mem_base;
     FILE * output; /* the FILE * for the output */
     int n_output;
@@ -7219,7 +7191,7 @@ static int
 test_xmlDebugDumpString(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_DEBUG_ENABLED
+#if defined(LIBXML_DEBUG_ENABLED)
     int mem_base;
     FILE * output; /* the FILE * for the output */
     int n_output;
@@ -7258,7 +7230,7 @@ static int
 test_xmlLsCountNode(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_DEBUG_ENABLED
+#if defined(LIBXML_DEBUG_ENABLED)
     int mem_base;
     int ret_val;
     xmlNodePtr node; /* the node to count */
@@ -7292,7 +7264,7 @@ static int
 test_xmlLsOneNode(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_DEBUG_ENABLED
+#if defined(LIBXML_DEBUG_ENABLED)
     int mem_base;
     FILE * output; /* the FILE * for the output */
     int n_output;
@@ -7348,8 +7320,7 @@ static int
 test_xmlShellBase(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_DEBUG_ENABLED
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_DEBUG_ENABLED) && defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     int ret_val;
     xmlShellCtxtPtr ctxt; /* the shell context */
@@ -7395,7 +7366,6 @@ test_xmlShellBase(void) {
     }
     function_tests++;
 #endif
-#endif
 
     return(test_ret);
 }
@@ -7405,8 +7375,7 @@ static int
 test_xmlShellCat(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_DEBUG_ENABLED
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_DEBUG_ENABLED) && defined(LIBXML_XPATH_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     int ret_val;
     xmlShellCtxtPtr ctxt; /* the shell context */
@@ -7452,7 +7421,6 @@ test_xmlShellCat(void) {
     }
     function_tests++;
 #endif
-#endif
 
     return(test_ret);
 }
@@ -7462,8 +7430,7 @@ static int
 test_xmlShellDir(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_DEBUG_ENABLED
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_DEBUG_ENABLED) && defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     int ret_val;
     xmlShellCtxtPtr ctxt; /* the shell context */
@@ -7509,7 +7476,6 @@ test_xmlShellDir(void) {
     }
     function_tests++;
 #endif
-#endif
 
     return(test_ret);
 }
@@ -7519,8 +7485,7 @@ static int
 test_xmlShellDu(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_DEBUG_ENABLED
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_DEBUG_ENABLED) && defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     int ret_val;
     xmlShellCtxtPtr ctxt; /* the shell context */
@@ -7566,7 +7531,6 @@ test_xmlShellDu(void) {
     }
     function_tests++;
 #endif
-#endif
 
     return(test_ret);
 }
@@ -7576,8 +7540,7 @@ static int
 test_xmlShellList(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_DEBUG_ENABLED
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_DEBUG_ENABLED) && defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     int ret_val;
     xmlShellCtxtPtr ctxt; /* the shell context */
@@ -7623,7 +7586,6 @@ test_xmlShellList(void) {
     }
     function_tests++;
 #endif
-#endif
 
     return(test_ret);
 }
@@ -7633,8 +7595,7 @@ static int
 test_xmlShellLoad(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_DEBUG_ENABLED
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_DEBUG_ENABLED) && defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     int ret_val;
     xmlShellCtxtPtr ctxt; /* the shell context */
@@ -7680,7 +7641,6 @@ test_xmlShellLoad(void) {
     }
     function_tests++;
 #endif
-#endif
 
     return(test_ret);
 }
@@ -7690,8 +7650,7 @@ static int
 test_xmlShellPrintXPathResult(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_DEBUG_ENABLED
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_DEBUG_ENABLED) && defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathObjectPtr list; /* a valid result generated by an xpath evaluation */
     int n_list;
@@ -7714,7 +7673,6 @@ test_xmlShellPrintXPathResult(void) {
     }
     function_tests++;
 #endif
-#endif
 
     return(test_ret);
 }
@@ -7724,8 +7682,7 @@ static int
 test_xmlShellPwd(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_DEBUG_ENABLED
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_DEBUG_ENABLED) && defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     int ret_val;
     xmlShellCtxtPtr ctxt; /* the shell context */
@@ -7771,7 +7728,6 @@ test_xmlShellPwd(void) {
     }
     function_tests++;
 #endif
-#endif
 
     return(test_ret);
 }
@@ -7781,9 +7737,7 @@ static int
 test_xmlShellSave(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_DEBUG_ENABLED
-#ifdef LIBXML_XPATH_ENABLED
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_DEBUG_ENABLED) && defined(LIBXML_XPATH_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     int ret_val;
     xmlShellCtxtPtr ctxt; /* the shell context */
@@ -7829,8 +7783,6 @@ test_xmlShellSave(void) {
     }
     function_tests++;
 #endif
-#endif
-#endif
 
     return(test_ret);
 }
@@ -7840,8 +7792,7 @@ static int
 test_xmlShellValidate(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_DEBUG_ENABLED
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_DEBUG_ENABLED) && defined(LIBXML_XPATH_ENABLED) && defined(LIBXML_VALID_ENABLED)
     int mem_base;
     int ret_val;
     xmlShellCtxtPtr ctxt; /* the shell context */
@@ -7887,7 +7838,6 @@ test_xmlShellValidate(void) {
     }
     function_tests++;
 #endif
-#endif
 
     return(test_ret);
 }
@@ -7897,9 +7847,7 @@ static int
 test_xmlShellWrite(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_DEBUG_ENABLED
-#ifdef LIBXML_XPATH_ENABLED
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_DEBUG_ENABLED) && defined(LIBXML_XPATH_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     int ret_val;
     xmlShellCtxtPtr ctxt; /* the shell context */
@@ -7944,8 +7892,6 @@ test_xmlShellWrite(void) {
     }
     }
     function_tests++;
-#endif
-#endif
 #endif
 
     return(test_ret);
@@ -8309,6 +8255,7 @@ static int
 test_UTF8Toisolat1(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_OUTPUT_ENABLED)
 #ifdef LIBXML_OUTPUT_ENABLED
     int mem_base;
     int ret_val;
@@ -8354,6 +8301,7 @@ test_UTF8Toisolat1(void) {
     }
     }
     function_tests++;
+#endif
 #endif
 
     return(test_ret);
@@ -9073,6 +9021,7 @@ static int
 test_xmlCleanupPredefinedEntities(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_LEGACY_ENABLED)
 #ifdef LIBXML_LEGACY_ENABLED
     int mem_base;
 
@@ -9088,6 +9037,7 @@ test_xmlCleanupPredefinedEntities(void) {
             printf("\n");
         }
     function_tests++;
+#endif
 #endif
 
     return(test_ret);
@@ -9125,7 +9075,7 @@ static int
 test_xmlDumpEntitiesTable(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     xmlBufferPtr buf; /* An XML buffer. */
     int n_buf;
@@ -9171,7 +9121,7 @@ static int
 test_xmlDumpEntityDecl(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     xmlBufferPtr buf; /* An XML buffer. */
     int n_buf;
@@ -9437,6 +9387,7 @@ static int
 test_xmlInitializePredefinedEntities(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_LEGACY_ENABLED)
 #ifdef LIBXML_LEGACY_ENABLED
     int mem_base;
 
@@ -9452,6 +9403,7 @@ test_xmlInitializePredefinedEntities(void) {
             printf("\n");
         }
     function_tests++;
+#endif
 #endif
 
     return(test_ret);
@@ -11208,7 +11160,7 @@ static int
 test_xmlNanoFTPCheckResponse(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_FTP_ENABLED
+#if defined(LIBXML_FTP_ENABLED)
     int mem_base;
     int ret_val;
     void * ctx; /* an FTP context */
@@ -11242,7 +11194,7 @@ static int
 test_xmlNanoFTPCleanup(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_FTP_ENABLED
+#if defined(LIBXML_FTP_ENABLED)
     int mem_base;
 
         mem_base = xmlMemBlocks();
@@ -11267,7 +11219,7 @@ static int
 test_xmlNanoFTPCloseConnection(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_FTP_ENABLED
+#if defined(LIBXML_FTP_ENABLED)
     int mem_base;
     int ret_val;
     void * ctx; /* an FTP context */
@@ -11301,7 +11253,7 @@ static int
 test_xmlNanoFTPCwd(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_FTP_ENABLED
+#if defined(LIBXML_FTP_ENABLED)
     int mem_base;
     int ret_val;
     void * ctx; /* an FTP context */
@@ -11342,7 +11294,7 @@ static int
 test_xmlNanoFTPDele(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_FTP_ENABLED
+#if defined(LIBXML_FTP_ENABLED)
     int mem_base;
     int ret_val;
     void * ctx; /* an FTP context */
@@ -11393,7 +11345,7 @@ static int
 test_xmlNanoFTPGetConnection(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_FTP_ENABLED
+#if defined(LIBXML_FTP_ENABLED)
     int mem_base;
     int ret_val;
     void * ctx; /* an FTP context */
@@ -11427,7 +11379,7 @@ static int
 test_xmlNanoFTPGetResponse(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_FTP_ENABLED
+#if defined(LIBXML_FTP_ENABLED)
     int mem_base;
     int ret_val;
     void * ctx; /* an FTP context */
@@ -11461,7 +11413,7 @@ static int
 test_xmlNanoFTPGetSocket(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_FTP_ENABLED
+#if defined(LIBXML_FTP_ENABLED)
     int mem_base;
     int ret_val;
     void * ctx; /* an FTP context */
@@ -11502,7 +11454,7 @@ static int
 test_xmlNanoFTPInit(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_FTP_ENABLED
+#if defined(LIBXML_FTP_ENABLED)
     int mem_base;
 
         mem_base = xmlMemBlocks();
@@ -11547,7 +11499,7 @@ static int
 test_xmlNanoFTPOpen(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_FTP_ENABLED
+#if defined(LIBXML_FTP_ENABLED)
     int mem_base;
     void * ret_val;
     const char * URL; /* the URL to the resource */
@@ -11581,7 +11533,7 @@ static int
 test_xmlNanoFTPProxy(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_FTP_ENABLED
+#if defined(LIBXML_FTP_ENABLED)
     char * host; /* the proxy host name */
     int n_host;
     int port; /* the proxy port */
@@ -11628,7 +11580,7 @@ static int
 test_xmlNanoFTPQuit(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_FTP_ENABLED
+#if defined(LIBXML_FTP_ENABLED)
     int mem_base;
     int ret_val;
     void * ctx; /* an FTP context */
@@ -11662,7 +11614,7 @@ static int
 test_xmlNanoFTPRead(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_FTP_ENABLED
+#if defined(LIBXML_FTP_ENABLED)
     int mem_base;
     int ret_val;
     void * ctx; /* the FTP context */
@@ -11710,7 +11662,7 @@ static int
 test_xmlNanoFTPScanProxy(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_FTP_ENABLED
+#if defined(LIBXML_FTP_ENABLED)
     const char * URL; /* The proxy URL used to initialize the proxy context */
     int n_URL;
 
@@ -11733,7 +11685,7 @@ static int
 test_xmlNanoFTPUpdateURL(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_FTP_ENABLED
+#if defined(LIBXML_FTP_ENABLED)
     int mem_base;
     int ret_val;
     void * ctx; /* an FTP context */
@@ -11802,7 +11754,7 @@ static int
 test_xmlNanoHTTPAuthHeader(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTTP_ENABLED
+#if defined(LIBXML_HTTP_ENABLED)
     int mem_base;
     const char * ret_val;
     void * ctx; /* the HTTP context */
@@ -11836,7 +11788,7 @@ static int
 test_xmlNanoHTTPCleanup(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTTP_ENABLED
+#if defined(LIBXML_HTTP_ENABLED)
     int mem_base;
 
         mem_base = xmlMemBlocks();
@@ -11861,7 +11813,7 @@ static int
 test_xmlNanoHTTPClose(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTTP_ENABLED
+#if defined(LIBXML_HTTP_ENABLED)
     int mem_base;
     void * ctx; /* the HTTP context */
     int n_ctx;
@@ -11893,7 +11845,7 @@ static int
 test_xmlNanoHTTPContentLength(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTTP_ENABLED
+#if defined(LIBXML_HTTP_ENABLED)
     int mem_base;
     int ret_val;
     void * ctx; /* the HTTP context */
@@ -11927,7 +11879,7 @@ static int
 test_xmlNanoHTTPEncoding(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTTP_ENABLED
+#if defined(LIBXML_HTTP_ENABLED)
     int mem_base;
     const char * ret_val;
     void * ctx; /* the HTTP context */
@@ -11968,7 +11920,7 @@ static int
 test_xmlNanoHTTPFetch(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTTP_ENABLED
+#if defined(LIBXML_HTTP_ENABLED)
     int mem_base;
     int ret_val;
     const char * URL; /* The URL to load */
@@ -12016,7 +11968,7 @@ static int
 test_xmlNanoHTTPInit(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTTP_ENABLED
+#if defined(LIBXML_HTTP_ENABLED)
     int mem_base;
 
         mem_base = xmlMemBlocks();
@@ -12041,7 +11993,7 @@ static int
 test_xmlNanoHTTPMethod(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTTP_ENABLED
+#if defined(LIBXML_HTTP_ENABLED)
     int mem_base;
     void * ret_val;
     const char * URL; /* The URL to load */
@@ -12110,7 +12062,7 @@ static int
 test_xmlNanoHTTPMethodRedir(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTTP_ENABLED
+#if defined(LIBXML_HTTP_ENABLED)
     int mem_base;
     void * ret_val;
     const char * URL; /* The URL to load */
@@ -12186,7 +12138,7 @@ static int
 test_xmlNanoHTTPMimeType(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTTP_ENABLED
+#if defined(LIBXML_HTTP_ENABLED)
     int mem_base;
     const char * ret_val;
     void * ctx; /* the HTTP context */
@@ -12220,7 +12172,7 @@ static int
 test_xmlNanoHTTPOpen(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTTP_ENABLED
+#if defined(LIBXML_HTTP_ENABLED)
     int mem_base;
     void * ret_val;
     const char * URL; /* The URL to load */
@@ -12261,7 +12213,7 @@ static int
 test_xmlNanoHTTPOpenRedir(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTTP_ENABLED
+#if defined(LIBXML_HTTP_ENABLED)
     int mem_base;
     void * ret_val;
     const char * URL; /* The URL to load */
@@ -12309,7 +12261,7 @@ static int
 test_xmlNanoHTTPRead(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTTP_ENABLED
+#if defined(LIBXML_HTTP_ENABLED)
     int mem_base;
     int ret_val;
     void * ctx; /* the HTTP context */
@@ -12367,7 +12319,7 @@ static int
 test_xmlNanoHTTPReturnCode(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTTP_ENABLED
+#if defined(LIBXML_HTTP_ENABLED)
     int mem_base;
     int ret_val;
     void * ctx; /* the HTTP context */
@@ -12401,8 +12353,7 @@ static int
 test_xmlNanoHTTPSave(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTTP_ENABLED
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_HTTP_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     int ret_val;
     void * ctxt; /* the HTTP context */
@@ -12434,7 +12385,6 @@ test_xmlNanoHTTPSave(void) {
     }
     function_tests++;
 #endif
-#endif
 
     return(test_ret);
 }
@@ -12444,7 +12394,7 @@ static int
 test_xmlNanoHTTPScanProxy(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTTP_ENABLED
+#if defined(LIBXML_HTTP_ENABLED)
     const char * URL; /* The proxy URL used to initialize the proxy context */
     int n_URL;
 
@@ -12618,7 +12568,7 @@ static int
 test_xmlCreatePushParserCtxt(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_PUSH_ENABLED
+#if defined(LIBXML_PUSH_ENABLED)
     int mem_base;
     xmlParserCtxtPtr ret_val;
     xmlSAXHandlerPtr sax; /* a SAX handler */
@@ -12999,6 +12949,7 @@ static int
 test_xmlGetFeature(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_LEGACY_ENABLED)
 #ifdef LIBXML_LEGACY_ENABLED
     int mem_base;
     int ret_val;
@@ -13038,6 +12989,7 @@ test_xmlGetFeature(void) {
     }
     function_tests++;
 #endif
+#endif
 
     return(test_ret);
 }
@@ -13054,6 +13006,7 @@ static int
 test_xmlGetFeaturesList(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_LEGACY_ENABLED)
 #ifdef LIBXML_LEGACY_ENABLED
     int mem_base;
     int ret_val;
@@ -13086,6 +13039,7 @@ test_xmlGetFeaturesList(void) {
     }
     function_tests++;
 #endif
+#endif
 
     return(test_ret);
 }
@@ -13095,6 +13049,7 @@ static int
 test_xmlIOParseDTD(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_VALID_ENABLED)
 #ifdef LIBXML_VALID_ENABLED
     int mem_base;
     xmlDtdPtr ret_val;
@@ -13134,6 +13089,7 @@ test_xmlIOParseDTD(void) {
     }
     }
     function_tests++;
+#endif
 #endif
 
     return(test_ret);
@@ -13418,6 +13374,7 @@ static int
 test_xmlParseBalancedChunkMemory(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_SAX1_ENABLED)
 #ifdef LIBXML_SAX1_ENABLED
     int mem_base;
     int ret_val;
@@ -13483,6 +13440,7 @@ test_xmlParseBalancedChunkMemory(void) {
     }
     function_tests++;
 #endif
+#endif
 
     return(test_ret);
 }
@@ -13492,6 +13450,7 @@ static int
 test_xmlParseBalancedChunkMemoryRecover(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_SAX1_ENABLED)
 #ifdef LIBXML_SAX1_ENABLED
     int mem_base;
     int ret_val;
@@ -13564,6 +13523,7 @@ test_xmlParseBalancedChunkMemoryRecover(void) {
     }
     function_tests++;
 #endif
+#endif
 
     return(test_ret);
 }
@@ -13573,7 +13533,7 @@ static int
 test_xmlParseChunk(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_PUSH_ENABLED
+#if defined(LIBXML_PUSH_ENABLED)
     int mem_base;
     int ret_val;
     xmlParserCtxtPtr ctxt; /* an XML parser context */
@@ -13682,6 +13642,7 @@ static int
 test_xmlParseDTD(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_VALID_ENABLED)
 #ifdef LIBXML_VALID_ENABLED
     int mem_base;
     xmlDtdPtr ret_val;
@@ -13714,6 +13675,7 @@ test_xmlParseDTD(void) {
     }
     function_tests++;
 #endif
+#endif
 
     return(test_ret);
 }
@@ -13723,6 +13685,7 @@ static int
 test_xmlParseDoc(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_SAX1_ENABLED)
 #ifdef LIBXML_SAX1_ENABLED
     int mem_base;
     xmlDocPtr ret_val;
@@ -13747,6 +13710,7 @@ test_xmlParseDoc(void) {
         }
     }
     function_tests++;
+#endif
 #endif
 
     return(test_ret);
@@ -13790,6 +13754,7 @@ static int
 test_xmlParseEntity(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_SAX1_ENABLED)
 #ifdef LIBXML_SAX1_ENABLED
     int mem_base;
     xmlDocPtr ret_val;
@@ -13814,6 +13779,7 @@ test_xmlParseEntity(void) {
         }
     }
     function_tests++;
+#endif
 #endif
 
     return(test_ret);
@@ -13857,6 +13823,7 @@ static int
 test_xmlParseExternalEntity(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_SAX1_ENABLED)
 #ifdef LIBXML_SAX1_ENABLED
     int mem_base;
     int ret_val;
@@ -13924,6 +13891,7 @@ test_xmlParseExternalEntity(void) {
     }
     function_tests++;
 #endif
+#endif
 
     return(test_ret);
 }
@@ -13933,6 +13901,7 @@ static int
 test_xmlParseFile(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_SAX1_ENABLED)
 #ifdef LIBXML_SAX1_ENABLED
     int mem_base;
     xmlDocPtr ret_val;
@@ -13957,6 +13926,7 @@ test_xmlParseFile(void) {
         }
     }
     function_tests++;
+#endif
 #endif
 
     return(test_ret);
@@ -14027,6 +13997,7 @@ static int
 test_xmlParseMemory(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_SAX1_ENABLED)
 #ifdef LIBXML_SAX1_ENABLED
     int mem_base;
     xmlDocPtr ret_val;
@@ -14058,6 +14029,7 @@ test_xmlParseMemory(void) {
     }
     }
     function_tests++;
+#endif
 #endif
 
     return(test_ret);
@@ -14487,6 +14459,7 @@ static int
 test_xmlRecoverDoc(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_SAX1_ENABLED)
 #ifdef LIBXML_SAX1_ENABLED
     int mem_base;
     xmlDocPtr ret_val;
@@ -14512,6 +14485,7 @@ test_xmlRecoverDoc(void) {
     }
     function_tests++;
 #endif
+#endif
 
     return(test_ret);
 }
@@ -14521,6 +14495,7 @@ static int
 test_xmlRecoverFile(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_SAX1_ENABLED)
 #ifdef LIBXML_SAX1_ENABLED
     int mem_base;
     xmlDocPtr ret_val;
@@ -14546,6 +14521,7 @@ test_xmlRecoverFile(void) {
     }
     function_tests++;
 #endif
+#endif
 
     return(test_ret);
 }
@@ -14555,6 +14531,7 @@ static int
 test_xmlRecoverMemory(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_SAX1_ENABLED)
 #ifdef LIBXML_SAX1_ENABLED
     int mem_base;
     xmlDocPtr ret_val;
@@ -14587,6 +14564,7 @@ test_xmlRecoverMemory(void) {
     }
     function_tests++;
 #endif
+#endif
 
     return(test_ret);
 }
@@ -14596,6 +14574,7 @@ static int
 test_xmlSAXParseDTD(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_VALID_ENABLED)
 #ifdef LIBXML_SAX1_ENABLED
     int mem_base;
     xmlDtdPtr ret_val;
@@ -14635,6 +14614,7 @@ test_xmlSAXParseDTD(void) {
     }
     function_tests++;
 #endif
+#endif
 
     return(test_ret);
 }
@@ -14644,6 +14624,7 @@ static int
 test_xmlSAXParseDoc(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_SAX1_ENABLED)
 #ifdef LIBXML_SAX1_ENABLED
     int mem_base;
     xmlDocPtr ret_val;
@@ -14683,6 +14664,7 @@ test_xmlSAXParseDoc(void) {
     }
     function_tests++;
 #endif
+#endif
 
     return(test_ret);
 }
@@ -14692,6 +14674,7 @@ static int
 test_xmlSAXParseEntity(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_SAX1_ENABLED)
 #ifdef LIBXML_SAX1_ENABLED
     int mem_base;
     xmlDocPtr ret_val;
@@ -14724,6 +14707,7 @@ test_xmlSAXParseEntity(void) {
     }
     function_tests++;
 #endif
+#endif
 
     return(test_ret);
 }
@@ -14733,6 +14717,7 @@ static int
 test_xmlSAXParseFile(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_SAX1_ENABLED)
 #ifdef LIBXML_SAX1_ENABLED
     int mem_base;
     xmlDocPtr ret_val;
@@ -14772,6 +14757,7 @@ test_xmlSAXParseFile(void) {
     }
     function_tests++;
 #endif
+#endif
 
     return(test_ret);
 }
@@ -14781,6 +14767,7 @@ static int
 test_xmlSAXParseFileWithData(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_SAX1_ENABLED)
 #ifdef LIBXML_SAX1_ENABLED
     int mem_base;
     xmlDocPtr ret_val;
@@ -14827,6 +14814,7 @@ test_xmlSAXParseFileWithData(void) {
     }
     function_tests++;
 #endif
+#endif
 
     return(test_ret);
 }
@@ -14836,6 +14824,7 @@ static int
 test_xmlSAXParseMemory(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_SAX1_ENABLED)
 #ifdef LIBXML_SAX1_ENABLED
     int mem_base;
     xmlDocPtr ret_val;
@@ -14882,6 +14871,7 @@ test_xmlSAXParseMemory(void) {
     }
     function_tests++;
 #endif
+#endif
 
     return(test_ret);
 }
@@ -14891,6 +14881,7 @@ static int
 test_xmlSAXParseMemoryWithData(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_SAX1_ENABLED)
 #ifdef LIBXML_SAX1_ENABLED
     int mem_base;
     xmlDocPtr ret_val;
@@ -14944,6 +14935,7 @@ test_xmlSAXParseMemoryWithData(void) {
     }
     function_tests++;
 #endif
+#endif
 
     return(test_ret);
 }
@@ -14953,6 +14945,7 @@ static int
 test_xmlSAXUserParseFile(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_SAX1_ENABLED)
 #ifdef LIBXML_SAX1_ENABLED
     int mem_base;
     int ret_val;
@@ -14997,6 +14990,7 @@ test_xmlSAXUserParseFile(void) {
     }
     function_tests++;
 #endif
+#endif
 
     return(test_ret);
 }
@@ -15006,6 +15000,7 @@ static int
 test_xmlSAXUserParseMemory(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_SAX1_ENABLED)
 #ifdef LIBXML_SAX1_ENABLED
     int mem_base;
     int ret_val;
@@ -15057,6 +15052,7 @@ test_xmlSAXUserParseMemory(void) {
     }
     function_tests++;
 #endif
+#endif
 
     return(test_ret);
 }
@@ -15076,6 +15072,7 @@ static int
 test_xmlSetFeature(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_LEGACY_ENABLED)
 #ifdef LIBXML_LEGACY_ENABLED
     int mem_base;
     int ret_val;
@@ -15115,6 +15112,7 @@ test_xmlSetFeature(void) {
     }
     function_tests++;
 #endif
+#endif
 
     return(test_ret);
 }
@@ -15124,6 +15122,7 @@ static int
 test_xmlSetupParserForBuffer(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_SAX1_ENABLED)
 #ifdef LIBXML_SAX1_ENABLED
     int mem_base;
     xmlParserCtxtPtr ctxt; /* an XML parser context */
@@ -15161,6 +15160,7 @@ test_xmlSetupParserForBuffer(void) {
     }
     function_tests++;
 #endif
+#endif
 
     return(test_ret);
 }
@@ -15170,6 +15170,7 @@ static int
 test_xmlStopParser(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_PUSH_ENABLED)
 #ifdef LIBXML_PUSH_ENABLED
     int mem_base;
     xmlParserCtxtPtr ctxt; /* an XML parser context */
@@ -15192,6 +15193,7 @@ test_xmlStopParser(void) {
         }
     }
     function_tests++;
+#endif
 #endif
 
     return(test_ret);
@@ -15306,7 +15308,7 @@ static int
 test_htmlCreateFileParserCtxt(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
+#if defined(LIBXML_HTML_ENABLED)
     int mem_base;
     htmlParserCtxtPtr ret_val;
     const char * filename; /* the filename */
@@ -15347,7 +15349,7 @@ static int
 test_htmlInitAutoClose(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTML_ENABLED
+#if defined(LIBXML_HTML_ENABLED)
     int mem_base;
 
         mem_base = xmlMemBlocks();
@@ -16655,7 +16657,7 @@ static int
 test_xmlPatternMatch(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_PATTERN_ENABLED
+#if defined(LIBXML_PATTERN_ENABLED)
     int mem_base;
     int ret_val;
     xmlPatternPtr comp; /* the precompiled pattern */
@@ -16728,8 +16730,7 @@ static int
 test_xmlRelaxNGDump(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_SCHEMAS_ENABLED
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_SCHEMAS_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     FILE * output; /* the file output */
     int n_output;
@@ -16759,7 +16760,6 @@ test_xmlRelaxNGDump(void) {
     }
     function_tests++;
 #endif
-#endif
 
     return(test_ret);
 }
@@ -16769,8 +16769,7 @@ static int
 test_xmlRelaxNGDumpTree(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_SCHEMAS_ENABLED
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_SCHEMAS_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     FILE * output; /* the file output */
     int n_output;
@@ -16799,7 +16798,6 @@ test_xmlRelaxNGDumpTree(void) {
     }
     }
     function_tests++;
-#endif
 #endif
 
     return(test_ret);
@@ -16850,7 +16848,7 @@ static int
 test_xmlRelaxNGGetParserErrors(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     int ret_val;
     xmlRelaxNGParserCtxtPtr ctxt; /* a Relax-NG validation context */
@@ -16915,7 +16913,7 @@ static int
 test_xmlRelaxNGGetValidErrors(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     int ret_val;
     xmlRelaxNGValidCtxtPtr ctxt; /* a Relax-NG validation context */
@@ -16970,7 +16968,7 @@ static int
 test_xmlRelaxNGInitTypes(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     int ret_val;
 
@@ -16997,7 +16995,7 @@ static int
 test_xmlRelaxNGNewDocParserCtxt(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     xmlRelaxNGParserCtxtPtr ret_val;
     xmlDocPtr doc; /* a preparsed document tree */
@@ -17031,7 +17029,7 @@ static int
 test_xmlRelaxNGNewMemParserCtxt(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     xmlRelaxNGParserCtxtPtr ret_val;
     char * buffer; /* a pointer to a char array containing the schemas */
@@ -17072,7 +17070,7 @@ static int
 test_xmlRelaxNGNewParserCtxt(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     xmlRelaxNGParserCtxtPtr ret_val;
     char * URL; /* the location of the schema */
@@ -17146,7 +17144,7 @@ static int
 test_xmlRelaxNGValidateDoc(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     int ret_val;
     xmlRelaxNGValidCtxtPtr ctxt; /* a Relax-NG validation context */
@@ -17187,7 +17185,7 @@ static int
 test_xmlRelaxNGValidateFullElement(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     int ret_val;
     xmlRelaxNGValidCtxtPtr ctxt; /* the validation context */
@@ -17235,7 +17233,7 @@ static int
 test_xmlRelaxNGValidatePopElement(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     int ret_val;
     xmlRelaxNGValidCtxtPtr ctxt; /* the RelaxNG validation context */
@@ -17283,7 +17281,7 @@ static int
 test_xmlRelaxNGValidatePushCData(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     int ret_val;
     xmlRelaxNGValidCtxtPtr ctxt; /* the RelaxNG validation context */
@@ -17331,7 +17329,7 @@ static int
 test_xmlRelaxNGValidatePushElement(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     int ret_val;
     xmlRelaxNGValidCtxtPtr ctxt; /* the validation context */
@@ -17379,7 +17377,7 @@ static int
 test_xmlRelaxParserSetFlag(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     int ret_val;
     xmlRelaxNGParserCtxtPtr ctxt; /* a RelaxNG parser context */
@@ -17578,7 +17576,7 @@ static int
 test_xmlAddPrevSibling(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_TREE_ENABLED
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_HTML_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     xmlNodePtr ret_val;
     xmlNodePtr cur; /* the child node */
@@ -17660,6 +17658,7 @@ static int
 test_xmlAttrSerializeTxtContent(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_OUTPUT_ENABLED)
 #ifdef LIBXML_OUTPUT_ENABLED
     int mem_base;
     xmlBufferPtr buf; /* the XML buffer output */
@@ -17703,6 +17702,7 @@ test_xmlAttrSerializeTxtContent(void) {
     }
     }
     function_tests++;
+#endif
 #endif
 
     return(test_ret);
@@ -18351,7 +18351,7 @@ static int
 test_xmlCopyDoc(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_TREE_ENABLED
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     xmlDocPtr ret_val;
     xmlDocPtr doc; /* the document */
@@ -18392,7 +18392,7 @@ static int
 test_xmlCopyDtd(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_TREE_ENABLED
+#if defined(LIBXML_TREE_ENABLED)
     int mem_base;
     xmlDtdPtr ret_val;
     xmlDtdPtr dtd; /* the dtd */
@@ -18779,7 +18779,7 @@ static int
 test_xmlDocDump(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     int ret_val;
     FILE * f; /* the FILE* */
@@ -18820,7 +18820,7 @@ static int
 test_xmlDocDumpFormatMemory(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     xmlDocPtr cur; /* the document */
     int n_cur;
@@ -18873,7 +18873,7 @@ static int
 test_xmlDocDumpFormatMemoryEnc(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     xmlDocPtr out_doc; /* Document to generate XML text from */
     int n_out_doc;
@@ -18933,7 +18933,7 @@ static int
 test_xmlDocDumpMemory(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     xmlDocPtr cur; /* the document */
     int n_cur;
@@ -18979,7 +18979,7 @@ static int
 test_xmlDocDumpMemoryEnc(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     xmlDocPtr out_doc; /* Document to generate XML text from */
     int n_out_doc;
@@ -19032,7 +19032,7 @@ static int
 test_xmlDocFormatDump(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     int ret_val;
     FILE * f; /* the FILE* */
@@ -19112,7 +19112,7 @@ static int
 test_xmlDocSetRootElement(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_TREE_ENABLED
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     xmlNodePtr ret_val;
     xmlDocPtr doc; /* the document */
@@ -19154,7 +19154,7 @@ static int
 test_xmlElemDump(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     FILE * f; /* the FILE * for the output */
     int n_f;
@@ -19417,7 +19417,7 @@ static int
 test_xmlGetNodePath(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_TREE_ENABLED
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_DEBUG_ENABLED)
     int mem_base;
     xmlChar * ret_val;
     xmlNodePtr node; /* a node */
@@ -19787,6 +19787,7 @@ static int
 test_xmlNewChild(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
 #ifdef LIBXML_TREE_ENABLED
     int mem_base;
     xmlNodePtr ret_val;
@@ -19832,6 +19833,7 @@ test_xmlNewChild(void) {
     }
     }
     function_tests++;
+#endif
 #endif
 
     return(test_ret);
@@ -19945,7 +19947,7 @@ static int
 test_xmlNewDocFragment(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_TREE_ENABLED
+#if defined(LIBXML_TREE_ENABLED)
     int mem_base;
     xmlNodePtr ret_val;
     xmlDocPtr doc; /* the document owning the fragment */
@@ -20177,6 +20179,7 @@ static int
 test_xmlNewDocRawNode(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_TREE_ENABLED)
 #ifdef LIBXML_TREE_ENABLED
     int mem_base;
     xmlNodePtr ret_val;
@@ -20222,6 +20225,7 @@ test_xmlNewDocRawNode(void) {
     }
     }
     function_tests++;
+#endif
 #endif
 
     return(test_ret);
@@ -20640,6 +20644,7 @@ static int
 test_xmlNewProp(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_HTML_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
 #ifdef LIBXML_TREE_ENABLED
     int mem_base;
     xmlAttrPtr ret_val;
@@ -20678,6 +20683,7 @@ test_xmlNewProp(void) {
     }
     }
     function_tests++;
+#endif
 #endif
 
     return(test_ret);
@@ -20759,6 +20765,7 @@ static int
 test_xmlNewTextChild(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_TREE_ENABLED)
 #ifdef LIBXML_TREE_ENABLED
     int mem_base;
     xmlNodePtr ret_val;
@@ -20804,6 +20811,7 @@ test_xmlNewTextChild(void) {
     }
     }
     function_tests++;
+#endif
 #endif
 
     return(test_ret);
@@ -20973,7 +20981,7 @@ static int
 test_xmlNodeDump(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     int ret_val;
     xmlBufferPtr buf; /* the XML buffer output */
@@ -21035,7 +21043,7 @@ static int
 test_xmlNodeDumpOutput(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     xmlOutputBufferPtr buf; /* the XML buffer output */
     int n_buf;
@@ -21269,7 +21277,7 @@ static int
 test_xmlNodeListGetRawString(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_TREE_ENABLED
+#if defined(LIBXML_TREE_ENABLED)
     int mem_base;
     xmlChar * ret_val;
     xmlDocPtr doc; /* the document */
@@ -21363,7 +21371,7 @@ static int
 test_xmlNodeSetBase(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_TREE_ENABLED
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XINCLUDE_ENABLED)
     int mem_base;
     xmlNodePtr cur; /* the node being changed */
     int n_cur;
@@ -21439,7 +21447,7 @@ static int
 test_xmlNodeSetContentLen(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_TREE_ENABLED
+#if defined(LIBXML_TREE_ENABLED)
     int mem_base;
     xmlNodePtr cur; /* the node being modified */
     int n_cur;
@@ -21485,7 +21493,7 @@ static int
 test_xmlNodeSetLang(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_TREE_ENABLED
+#if defined(LIBXML_TREE_ENABLED)
     int mem_base;
     xmlNodePtr cur; /* the node being changed */
     int n_cur;
@@ -21524,7 +21532,7 @@ static int
 test_xmlNodeSetName(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_TREE_ENABLED
+#if defined(LIBXML_TREE_ENABLED)
     int mem_base;
     xmlNodePtr cur; /* the node being changed */
     int n_cur;
@@ -21563,7 +21571,7 @@ static int
 test_xmlNodeSetSpacePreserve(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_TREE_ENABLED
+#if defined(LIBXML_TREE_ENABLED)
     int mem_base;
     xmlNodePtr cur; /* the node being changed */
     int n_cur;
@@ -21602,6 +21610,7 @@ static int
 test_xmlReconciliateNs(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_TREE_ENABLED)
 #ifdef LIBXML_TREE_ENABLED
     int mem_base;
     int ret_val;
@@ -21634,6 +21643,7 @@ test_xmlReconciliateNs(void) {
     }
     function_tests++;
 #endif
+#endif
 
     return(test_ret);
 }
@@ -21643,7 +21653,7 @@ static int
 test_xmlRemoveProp(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_TREE_ENABLED
+#if defined(LIBXML_TREE_ENABLED)
     int mem_base;
     int ret_val;
     xmlAttrPtr cur; /* an attribute */
@@ -21678,7 +21688,7 @@ static int
 test_xmlReplaceNode(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_TREE_ENABLED
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     xmlNodePtr ret_val;
     xmlNodePtr old; /* the old node */
@@ -21726,7 +21736,7 @@ static int
 test_xmlSaveFile(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     int ret_val;
     const char * filename; /* the filename (or URL) */
@@ -21767,7 +21777,7 @@ static int
 test_xmlSaveFileEnc(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     int ret_val;
     const char * filename; /* the filename (or URL) */
@@ -21815,7 +21825,7 @@ static int
 test_xmlSaveFileTo(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     int ret_val;
     xmlOutputBufferPtr buf; /* an output I/O buffer */
@@ -21864,7 +21874,7 @@ static int
 test_xmlSaveFormatFile(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     int ret_val;
     const char * filename; /* the filename (or URL) */
@@ -21912,7 +21922,7 @@ static int
 test_xmlSaveFormatFileEnc(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     int ret_val;
     const char * filename; /* the filename or URL to output */
@@ -21967,7 +21977,7 @@ static int
 test_xmlSaveFormatFileTo(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     int ret_val;
     xmlOutputBufferPtr buf; /* an output I/O buffer */
@@ -22249,7 +22259,7 @@ static int
 test_xmlSetNsProp(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_TREE_ENABLED
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XINCLUDE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_HTML_ENABLED)
     int mem_base;
     xmlAttrPtr ret_val;
     xmlNodePtr node; /* the node */
@@ -22304,7 +22314,7 @@ static int
 test_xmlSetProp(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_TREE_ENABLED
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XINCLUDE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_HTML_ENABLED)
     int mem_base;
     xmlAttrPtr ret_val;
     xmlNodePtr node; /* the node */
@@ -22603,7 +22613,7 @@ static int
 test_xmlUnsetNsProp(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_TREE_ENABLED
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     int ret_val;
     xmlNodePtr node; /* the node */
@@ -22651,7 +22661,7 @@ static int
 test_xmlUnsetProp(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_TREE_ENABLED
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     int ret_val;
     xmlNodePtr node; /* the node */
@@ -22692,6 +22702,7 @@ static int
 test_xmlValidateNCName(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_DEBUG_ENABLED)
 #ifdef LIBXML_TREE_ENABLED
     int mem_base;
     int ret_val;
@@ -22724,6 +22735,7 @@ test_xmlValidateNCName(void) {
     }
     function_tests++;
 #endif
+#endif
 
     return(test_ret);
 }
@@ -22733,6 +22745,7 @@ static int
 test_xmlValidateNMToken(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
 #ifdef LIBXML_TREE_ENABLED
     int mem_base;
     int ret_val;
@@ -22765,6 +22778,7 @@ test_xmlValidateNMToken(void) {
     }
     function_tests++;
 #endif
+#endif
 
     return(test_ret);
 }
@@ -22774,6 +22788,7 @@ static int
 test_xmlValidateName(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
 #ifdef LIBXML_TREE_ENABLED
     int mem_base;
     int ret_val;
@@ -22806,6 +22821,7 @@ test_xmlValidateName(void) {
     }
     function_tests++;
 #endif
+#endif
 
     return(test_ret);
 }
@@ -22815,6 +22831,7 @@ static int
 test_xmlValidateQName(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
 #ifdef LIBXML_TREE_ENABLED
     int mem_base;
     int ret_val;
@@ -22846,6 +22863,7 @@ test_xmlValidateQName(void) {
     }
     }
     function_tests++;
+#endif
 #endif
 
     return(test_ret);
@@ -23666,7 +23684,7 @@ static int
 test_xmlDumpAttributeDecl(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     xmlBufferPtr buf; /* the XML buffer output */
     int n_buf;
@@ -23705,7 +23723,7 @@ static int
 test_xmlDumpAttributeTable(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     xmlBufferPtr buf; /* the XML buffer output */
     int n_buf;
@@ -23751,7 +23769,7 @@ static int
 test_xmlDumpElementDecl(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     xmlBufferPtr buf; /* the XML buffer output */
     int n_buf;
@@ -23790,7 +23808,7 @@ static int
 test_xmlDumpElementTable(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     xmlBufferPtr buf; /* the XML buffer output */
     int n_buf;
@@ -23836,7 +23854,7 @@ static int
 test_xmlDumpNotationDecl(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     xmlBufferPtr buf; /* the XML buffer output */
     int n_buf;
@@ -23875,7 +23893,7 @@ static int
 test_xmlDumpNotationTable(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     xmlBufferPtr buf; /* the XML buffer output */
     int n_buf;
@@ -24466,6 +24484,7 @@ static int
 test_xmlSprintfElementContent(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_OUTPUT_ENABLED)
 #ifdef LIBXML_OUTPUT_ENABLED
     int mem_base;
     char * buf; /* an output buffer */
@@ -24503,6 +24522,7 @@ test_xmlSprintfElementContent(void) {
     }
     function_tests++;
 #endif
+#endif
 
     return(test_ret);
 }
@@ -24512,7 +24532,7 @@ static int
 test_xmlValidBuildContentModel(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_REGEXP_ENABLED
+#if defined(LIBXML_VALID_ENABLED) && defined(LIBXML_REGEXP_ENABLED)
     int mem_base;
     int ret_val;
     xmlValidCtxtPtr ctxt; /* a validation context */
@@ -24553,7 +24573,7 @@ static int
 test_xmlValidCtxtNormalizeAttributeValue(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_VALID_ENABLED
+#if defined(LIBXML_VALID_ENABLED)
     int mem_base;
     xmlChar * ret_val;
     xmlValidCtxtPtr ctxt; /* the validation context or NULL */
@@ -24622,6 +24642,7 @@ static int
 test_xmlValidGetPotentialChildren(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_VALID_ENABLED)
 #ifdef LIBXML_VALID_ENABLED
     int mem_base;
     int ret_val;
@@ -24668,6 +24689,7 @@ test_xmlValidGetPotentialChildren(void) {
     }
     function_tests++;
 #endif
+#endif
 
     return(test_ret);
 }
@@ -24677,6 +24699,7 @@ static int
 test_xmlValidGetValidElements(void) {
     int test_ret = 0;
 
+#if defined(LIBXML_VALID_ENABLED)
 #ifdef LIBXML_VALID_ENABLED
     int mem_base;
     int ret_val;
@@ -24723,6 +24746,7 @@ test_xmlValidGetValidElements(void) {
     }
     function_tests++;
 #endif
+#endif
 
     return(test_ret);
 }
@@ -24732,7 +24756,7 @@ static int
 test_xmlValidNormalizeAttributeValue(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_VALID_ENABLED
+#if defined(LIBXML_VALID_ENABLED)
     int mem_base;
     xmlChar * ret_val;
     xmlDocPtr doc; /* the document */
@@ -24787,7 +24811,7 @@ static int
 test_xmlValidateAttributeDecl(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_VALID_ENABLED
+#if defined(LIBXML_VALID_ENABLED)
     int mem_base;
     int ret_val;
     xmlValidCtxtPtr ctxt; /* the validation context */
@@ -24835,7 +24859,7 @@ static int
 test_xmlValidateAttributeValue(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_VALID_ENABLED
+#if defined(LIBXML_VALID_ENABLED)
     int mem_base;
     int ret_val;
     xmlAttributeType type; /* an attribute type */
@@ -24876,7 +24900,7 @@ static int
 test_xmlValidateDocument(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_VALID_ENABLED
+#if defined(LIBXML_VALID_ENABLED)
     int mem_base;
     int ret_val;
     xmlValidCtxtPtr ctxt; /* the validation context */
@@ -24917,7 +24941,7 @@ static int
 test_xmlValidateDocumentFinal(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_VALID_ENABLED
+#if defined(LIBXML_VALID_ENABLED)
     int mem_base;
     int ret_val;
     xmlValidCtxtPtr ctxt; /* the validation context */
@@ -24958,7 +24982,7 @@ static int
 test_xmlValidateDtd(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_VALID_ENABLED
+#if defined(LIBXML_VALID_ENABLED)
     int mem_base;
     int ret_val;
     xmlValidCtxtPtr ctxt; /* the validation context */
@@ -25006,7 +25030,7 @@ static int
 test_xmlValidateDtdFinal(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_VALID_ENABLED
+#if defined(LIBXML_VALID_ENABLED)
     int mem_base;
     int ret_val;
     xmlValidCtxtPtr ctxt; /* the validation context */
@@ -25047,7 +25071,7 @@ static int
 test_xmlValidateElement(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_VALID_ENABLED
+#if defined(LIBXML_VALID_ENABLED)
     int mem_base;
     int ret_val;
     xmlValidCtxtPtr ctxt; /* the validation context */
@@ -25095,7 +25119,7 @@ static int
 test_xmlValidateElementDecl(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_VALID_ENABLED
+#if defined(LIBXML_VALID_ENABLED)
     int mem_base;
     int ret_val;
     xmlValidCtxtPtr ctxt; /* the validation context */
@@ -25143,7 +25167,7 @@ static int
 test_xmlValidateNameValue(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_VALID_ENABLED
+#if defined(LIBXML_VALID_ENABLED)
     int mem_base;
     int ret_val;
     xmlChar * value; /* an Name value */
@@ -25177,7 +25201,7 @@ static int
 test_xmlValidateNamesValue(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_VALID_ENABLED
+#if defined(LIBXML_VALID_ENABLED)
     int mem_base;
     int ret_val;
     xmlChar * value; /* an Names value */
@@ -25211,7 +25235,7 @@ static int
 test_xmlValidateNmtokenValue(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_VALID_ENABLED
+#if defined(LIBXML_VALID_ENABLED)
     int mem_base;
     int ret_val;
     xmlChar * value; /* an Nmtoken value */
@@ -25245,7 +25269,7 @@ static int
 test_xmlValidateNmtokensValue(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_VALID_ENABLED
+#if defined(LIBXML_VALID_ENABLED)
     int mem_base;
     int ret_val;
     xmlChar * value; /* an Nmtokens value */
@@ -25279,7 +25303,7 @@ static int
 test_xmlValidateNotationDecl(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_VALID_ENABLED
+#if defined(LIBXML_VALID_ENABLED)
     int mem_base;
     int ret_val;
     xmlValidCtxtPtr ctxt; /* the validation context */
@@ -25327,7 +25351,7 @@ static int
 test_xmlValidateNotationUse(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_VALID_ENABLED
+#if defined(LIBXML_VALID_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     int ret_val;
     xmlValidCtxtPtr ctxt; /* the validation context */
@@ -25375,7 +25399,7 @@ static int
 test_xmlValidateOneAttribute(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_VALID_ENABLED
+#if defined(LIBXML_VALID_ENABLED)
     int mem_base;
     int ret_val;
     xmlValidCtxtPtr ctxt; /* the validation context */
@@ -25437,7 +25461,7 @@ static int
 test_xmlValidateOneElement(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_VALID_ENABLED
+#if defined(LIBXML_VALID_ENABLED)
     int mem_base;
     int ret_val;
     xmlValidCtxtPtr ctxt; /* the validation context */
@@ -25485,7 +25509,7 @@ static int
 test_xmlValidateOneNamespace(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_VALID_ENABLED
+#if defined(LIBXML_VALID_ENABLED)
     int mem_base;
     int ret_val;
     xmlValidCtxtPtr ctxt; /* the validation context */
@@ -25554,7 +25578,7 @@ static int
 test_xmlValidatePopElement(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_REGEXP_ENABLED
+#if defined(LIBXML_VALID_ENABLED) && defined(LIBXML_REGEXP_ENABLED)
     int mem_base;
     int ret_val;
     xmlValidCtxtPtr ctxt; /* the validation context */
@@ -25609,7 +25633,7 @@ static int
 test_xmlValidatePushCData(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_REGEXP_ENABLED
+#if defined(LIBXML_VALID_ENABLED) && defined(LIBXML_REGEXP_ENABLED)
     int mem_base;
     int ret_val;
     xmlValidCtxtPtr ctxt; /* the validation context */
@@ -25657,7 +25681,7 @@ static int
 test_xmlValidatePushElement(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_REGEXP_ENABLED
+#if defined(LIBXML_VALID_ENABLED) && defined(LIBXML_REGEXP_ENABLED)
     int mem_base;
     int ret_val;
     xmlValidCtxtPtr ctxt; /* the validation context */
@@ -25712,7 +25736,7 @@ static int
 test_xmlValidateRoot(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_VALID_ENABLED
+#if defined(LIBXML_VALID_ENABLED)
     int mem_base;
     int ret_val;
     xmlValidCtxtPtr ctxt; /* the validation context */
@@ -25832,7 +25856,7 @@ static int
 test_xmlXIncludeProcess(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XINCLUDE_ENABLED
+#if defined(LIBXML_XINCLUDE_ENABLED)
     int mem_base;
     int ret_val;
     xmlDocPtr doc; /* an XML document */
@@ -25866,7 +25890,7 @@ static int
 test_xmlXIncludeProcessFlags(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XINCLUDE_ENABLED
+#if defined(LIBXML_XINCLUDE_ENABLED)
     int mem_base;
     int ret_val;
     xmlDocPtr doc; /* an XML document */
@@ -25917,7 +25941,7 @@ static int
 test_xmlXIncludeProcessNode(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XINCLUDE_ENABLED
+#if defined(LIBXML_XINCLUDE_ENABLED)
     int mem_base;
     int ret_val;
     xmlXIncludeCtxtPtr ctxt; /* an existing XInclude context */
@@ -25958,7 +25982,7 @@ static int
 test_xmlXIncludeProcessTree(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XINCLUDE_ENABLED
+#if defined(LIBXML_XINCLUDE_ENABLED)
     int mem_base;
     int ret_val;
     xmlNodePtr tree; /* a node in an XML document */
@@ -25992,7 +26016,7 @@ static int
 test_xmlXIncludeProcessTreeFlags(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XINCLUDE_ENABLED
+#if defined(LIBXML_XINCLUDE_ENABLED)
     int mem_base;
     int ret_val;
     xmlNodePtr tree; /* a node in an XML document */
@@ -26033,7 +26057,7 @@ static int
 test_xmlXIncludeSetFlags(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XINCLUDE_ENABLED
+#if defined(LIBXML_XINCLUDE_ENABLED)
     int mem_base;
     int ret_val;
     xmlXIncludeCtxtPtr ctxt; /* an XInclude processing context */
@@ -26091,7 +26115,7 @@ static int
 test_xmlAllocOutputBuffer(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     xmlOutputBufferPtr ret_val;
     xmlCharEncodingHandlerPtr encoder; /* the encoding converter or NULL */
@@ -26251,7 +26275,7 @@ static int
 test_xmlCleanupOutputCallbacks(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
 
         mem_base = xmlMemBlocks();
@@ -26418,7 +26442,7 @@ static int
 test_xmlIOFTPClose(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_FTP_ENABLED
+#if defined(LIBXML_FTP_ENABLED)
     int mem_base;
     int ret_val;
     void * context; /* the I/O context */
@@ -26452,7 +26476,7 @@ static int
 test_xmlIOFTPMatch(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_FTP_ENABLED
+#if defined(LIBXML_FTP_ENABLED)
     int mem_base;
     int ret_val;
     const char * filename; /* the URI for matching */
@@ -26486,7 +26510,7 @@ static int
 test_xmlIOFTPOpen(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_FTP_ENABLED
+#if defined(LIBXML_FTP_ENABLED)
     int mem_base;
     void * ret_val;
     const char * filename; /* the URI for matching */
@@ -26520,7 +26544,7 @@ static int
 test_xmlIOFTPRead(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_FTP_ENABLED
+#if defined(LIBXML_FTP_ENABLED)
     int mem_base;
     int ret_val;
     void * context; /* the I/O context */
@@ -26568,7 +26592,7 @@ static int
 test_xmlIOHTTPClose(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTTP_ENABLED
+#if defined(LIBXML_HTTP_ENABLED)
     int mem_base;
     int ret_val;
     void * context; /* the I/O context */
@@ -26602,7 +26626,7 @@ static int
 test_xmlIOHTTPMatch(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTTP_ENABLED
+#if defined(LIBXML_HTTP_ENABLED)
     int mem_base;
     int ret_val;
     const char * filename; /* the URI for matching */
@@ -26636,7 +26660,7 @@ static int
 test_xmlIOHTTPOpen(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTTP_ENABLED
+#if defined(LIBXML_HTTP_ENABLED)
     int mem_base;
     void * ret_val;
     const char * filename; /* the URI for matching */
@@ -26680,7 +26704,7 @@ static int
 test_xmlIOHTTPRead(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTTP_ENABLED
+#if defined(LIBXML_HTTP_ENABLED)
     int mem_base;
     int ret_val;
     void * context; /* the I/O context */
@@ -26806,7 +26830,7 @@ static int
 test_xmlOutputBufferCreateFd(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     xmlOutputBufferPtr ret_val;
     int fd; /* a file descriptor number */
@@ -26847,7 +26871,7 @@ static int
 test_xmlOutputBufferCreateFile(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     xmlOutputBufferPtr ret_val;
     FILE * file; /* a FILE* */
@@ -26888,7 +26912,7 @@ static int
 test_xmlOutputBufferCreateFilename(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     xmlOutputBufferPtr ret_val;
     const char * URI; /* a C string containing the URI or filename */
@@ -26936,7 +26960,7 @@ static int
 test_xmlOutputBufferFlush(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     int ret_val;
     xmlOutputBufferPtr out; /* a buffered output */
@@ -26970,7 +26994,7 @@ static int
 test_xmlOutputBufferWrite(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     int ret_val;
     xmlOutputBufferPtr out; /* a buffered parser output */
@@ -27028,7 +27052,7 @@ static int
 test_xmlOutputBufferWriteString(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     int ret_val;
     xmlOutputBufferPtr out; /* a buffered parser output */
@@ -27461,7 +27485,7 @@ static int
 test_xmlRegisterDefaultOutputCallbacks(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
 
         mem_base = xmlMemBlocks();
@@ -27486,7 +27510,7 @@ static int
 test_xmlRegisterHTTPPostCallbacks(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_HTTP_ENABLED
+#if defined(LIBXML_OUTPUT_ENABLED) && defined(LIBXML_HTTP_ENABLED)
     int mem_base;
 
         mem_base = xmlMemBlocks();
@@ -27592,7 +27616,7 @@ static int
 test_xmlAutomataIsDeterminist(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_AUTOMATA_ENABLED
+#if defined(LIBXML_REGEXP_ENABLED) && defined(LIBXML_AUTOMATA_ENABLED)
     int mem_base;
     int ret_val;
     xmlAutomataPtr am; /* an automata */
@@ -27676,7 +27700,7 @@ static int
 test_xmlAutomataNewCounter(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_AUTOMATA_ENABLED
+#if defined(LIBXML_REGEXP_ENABLED) && defined(LIBXML_AUTOMATA_ENABLED)
     int mem_base;
     int ret_val;
     xmlAutomataPtr am; /* an automata */
@@ -27794,7 +27818,7 @@ static int
 test_xmlAutomataSetFinalState(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_AUTOMATA_ENABLED
+#if defined(LIBXML_REGEXP_ENABLED) && defined(LIBXML_AUTOMATA_ENABLED)
     int mem_base;
     int ret_val;
     xmlAutomataPtr am; /* an automata */
@@ -28195,7 +28219,7 @@ static int
 test_xmlNewTextReader(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     xmlTextReaderPtr ret_val;
     xmlParserInputBufferPtr input; /* the xmlParserInputBufferPtr used to read data */
@@ -28236,7 +28260,7 @@ static int
 test_xmlNewTextReaderFilename(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     xmlTextReaderPtr ret_val;
     const char * URI; /* the URI of the resource to process */
@@ -28270,7 +28294,7 @@ static int
 test_xmlReaderForDoc(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     xmlTextReaderPtr ret_val;
     xmlChar * cur; /* a pointer to a zero terminated string */
@@ -28325,7 +28349,7 @@ static int
 test_xmlReaderForFile(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     xmlTextReaderPtr ret_val;
     const char * filename; /* a file or URL */
@@ -28373,7 +28397,7 @@ static int
 test_xmlReaderForMemory(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     xmlTextReaderPtr ret_val;
     char * buffer; /* a pointer to a char array */
@@ -28435,7 +28459,7 @@ static int
 test_xmlReaderNewDoc(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextReaderPtr reader; /* an XML reader */
@@ -28497,7 +28521,7 @@ static int
 test_xmlReaderNewFile(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextReaderPtr reader; /* an XML reader */
@@ -28552,7 +28576,7 @@ static int
 test_xmlReaderNewMemory(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextReaderPtr reader; /* an XML reader */
@@ -28621,7 +28645,7 @@ static int
 test_xmlReaderNewWalker(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextReaderPtr reader; /* an XML reader */
@@ -28662,7 +28686,7 @@ static int
 test_xmlReaderWalker(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     xmlTextReaderPtr ret_val;
     xmlDocPtr doc; /* a preparsed document */
@@ -28696,7 +28720,7 @@ static int
 test_xmlTextReaderAttributeCount(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -28730,7 +28754,7 @@ static int
 test_xmlTextReaderBaseUri(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     xmlChar * ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -28764,7 +28788,7 @@ static int
 test_xmlTextReaderClose(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -28798,7 +28822,7 @@ static int
 test_xmlTextReaderConstBaseUri(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     const xmlChar * ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -28832,7 +28856,7 @@ static int
 test_xmlTextReaderConstEncoding(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     const xmlChar * ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -28866,7 +28890,7 @@ static int
 test_xmlTextReaderConstLocalName(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     const xmlChar * ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -28900,7 +28924,7 @@ static int
 test_xmlTextReaderConstName(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     const xmlChar * ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -28934,7 +28958,7 @@ static int
 test_xmlTextReaderConstNamespaceUri(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     const xmlChar * ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -28968,7 +28992,7 @@ static int
 test_xmlTextReaderConstPrefix(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     const xmlChar * ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -29002,7 +29026,7 @@ static int
 test_xmlTextReaderConstString(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     const xmlChar * ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -29043,7 +29067,7 @@ static int
 test_xmlTextReaderConstValue(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     const xmlChar * ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -29077,7 +29101,7 @@ static int
 test_xmlTextReaderConstXmlLang(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     const xmlChar * ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -29111,7 +29135,7 @@ static int
 test_xmlTextReaderConstXmlVersion(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     const xmlChar * ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -29145,7 +29169,7 @@ static int
 test_xmlTextReaderCurrentDoc(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     xmlDocPtr ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -29179,7 +29203,7 @@ static int
 test_xmlTextReaderCurrentNode(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     xmlNodePtr ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -29213,7 +29237,7 @@ static int
 test_xmlTextReaderDepth(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -29247,7 +29271,7 @@ static int
 test_xmlTextReaderExpand(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     xmlNodePtr ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -29281,7 +29305,7 @@ static int
 test_xmlTextReaderGetAttribute(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     xmlChar * ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -29322,7 +29346,7 @@ static int
 test_xmlTextReaderGetAttributeNo(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     xmlChar * ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -29363,7 +29387,7 @@ static int
 test_xmlTextReaderGetAttributeNs(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     xmlChar * ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -29421,7 +29445,7 @@ static int
 test_xmlTextReaderGetErrorHandler(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
     int n_reader;
@@ -29467,7 +29491,7 @@ static int
 test_xmlTextReaderGetParserProp(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -29508,7 +29532,7 @@ static int
 test_xmlTextReaderGetRemainder(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     xmlParserInputBufferPtr ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -29542,7 +29566,7 @@ static int
 test_xmlTextReaderHasAttributes(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -29576,7 +29600,7 @@ static int
 test_xmlTextReaderHasValue(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -29610,7 +29634,7 @@ static int
 test_xmlTextReaderIsDefault(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -29644,7 +29668,7 @@ static int
 test_xmlTextReaderIsEmptyElement(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -29678,7 +29702,7 @@ static int
 test_xmlTextReaderIsNamespaceDecl(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -29712,7 +29736,7 @@ static int
 test_xmlTextReaderIsValid(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -29746,7 +29770,7 @@ static int
 test_xmlTextReaderLocalName(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     xmlChar * ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -29790,7 +29814,7 @@ static int
 test_xmlTextReaderLocatorBaseURI(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     xmlChar * ret_val;
     xmlTextReaderLocatorPtr locator; /* the xmlTextReaderLocatorPtr used */
@@ -29824,7 +29848,7 @@ static int
 test_xmlTextReaderLocatorLineNumber(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextReaderLocatorPtr locator; /* the xmlTextReaderLocatorPtr used */
@@ -29858,7 +29882,7 @@ static int
 test_xmlTextReaderLookupNamespace(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     xmlChar * ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -29899,7 +29923,7 @@ static int
 test_xmlTextReaderMoveToAttribute(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -29940,7 +29964,7 @@ static int
 test_xmlTextReaderMoveToAttributeNo(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -29981,7 +30005,7 @@ static int
 test_xmlTextReaderMoveToAttributeNs(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -30029,7 +30053,7 @@ static int
 test_xmlTextReaderMoveToElement(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -30063,7 +30087,7 @@ static int
 test_xmlTextReaderMoveToFirstAttribute(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -30097,7 +30121,7 @@ static int
 test_xmlTextReaderMoveToNextAttribute(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -30131,7 +30155,7 @@ static int
 test_xmlTextReaderName(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     xmlChar * ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -30165,7 +30189,7 @@ static int
 test_xmlTextReaderNamespaceUri(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     xmlChar * ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -30199,7 +30223,7 @@ static int
 test_xmlTextReaderNext(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -30233,7 +30257,7 @@ static int
 test_xmlTextReaderNextSibling(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -30267,7 +30291,7 @@ static int
 test_xmlTextReaderNodeType(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -30301,7 +30325,7 @@ static int
 test_xmlTextReaderNormalization(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -30335,7 +30359,7 @@ static int
 test_xmlTextReaderPrefix(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     xmlChar * ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -30369,7 +30393,7 @@ static int
 test_xmlTextReaderPreserve(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     xmlNodePtr ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -30403,7 +30427,7 @@ static int
 test_xmlTextReaderPreservePattern(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED) && defined(LIBXML_PATTERN_ENABLED)
 #ifdef LIBXML_PATTERN_ENABLED
     int mem_base;
     int ret_val;
@@ -30453,7 +30477,7 @@ static int
 test_xmlTextReaderQuoteChar(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -30487,7 +30511,7 @@ static int
 test_xmlTextReaderRead(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -30521,7 +30545,7 @@ static int
 test_xmlTextReaderReadAttributeValue(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -30555,7 +30579,7 @@ static int
 test_xmlTextReaderReadState(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -30589,8 +30613,7 @@ static int
 test_xmlTextReaderRelaxNGSetSchema(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
-#ifdef LIBXML_SCHEMAS_ENABLED
+#if defined(LIBXML_READER_ENABLED) && defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -30622,7 +30645,6 @@ test_xmlTextReaderRelaxNGSetSchema(void) {
     }
     function_tests++;
 #endif
-#endif
 
     return(test_ret);
 }
@@ -30632,8 +30654,7 @@ static int
 test_xmlTextReaderRelaxNGValidate(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
-#ifdef LIBXML_SCHEMAS_ENABLED
+#if defined(LIBXML_READER_ENABLED) && defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -30665,7 +30686,6 @@ test_xmlTextReaderRelaxNGValidate(void) {
     }
     function_tests++;
 #endif
-#endif
 
     return(test_ret);
 }
@@ -30685,7 +30705,7 @@ static int
 test_xmlTextReaderSetParserProp(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -30743,7 +30763,7 @@ static int
 test_xmlTextReaderStandalone(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -30777,7 +30797,7 @@ static int
 test_xmlTextReaderValue(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     xmlChar * ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -30811,7 +30831,7 @@ static int
 test_xmlTextReaderXmlLang(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_READER_ENABLED
+#if defined(LIBXML_READER_ENABLED)
     int mem_base;
     xmlChar * ret_val;
     xmlTextReaderPtr reader; /* the xmlTextReaderPtr used */
@@ -30935,7 +30955,7 @@ static int
 test_xmlRegExecPushString(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_REGEXP_ENABLED
+#if defined(LIBXML_REGEXP_ENABLED)
     int mem_base;
     int ret_val;
     xmlRegExecCtxtPtr exec; /* a regexp execution context or NULL to indicate the end */
@@ -30983,7 +31003,7 @@ static int
 test_xmlRegExecPushString2(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_REGEXP_ENABLED
+#if defined(LIBXML_REGEXP_ENABLED)
     int mem_base;
     int ret_val;
     xmlRegExecCtxtPtr exec; /* a regexp execution context or NULL to indicate the end */
@@ -31068,7 +31088,7 @@ static int
 test_xmlRegexpExec(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_REGEXP_ENABLED
+#if defined(LIBXML_REGEXP_ENABLED)
     int mem_base;
     int ret_val;
     xmlRegexpPtr comp; /* the compiled regular expression */
@@ -31109,7 +31129,7 @@ static int
 test_xmlRegexpIsDeterminist(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_REGEXP_ENABLED
+#if defined(LIBXML_REGEXP_ENABLED)
     int mem_base;
     int ret_val;
     xmlRegexpPtr comp; /* the compiled regular expression */
@@ -31143,7 +31163,7 @@ static int
 test_xmlRegexpPrint(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_REGEXP_ENABLED
+#if defined(LIBXML_REGEXP_ENABLED)
     int mem_base;
     FILE * output; /* the file for the output debug */
     int n_output;
@@ -31209,7 +31229,7 @@ static int
 test_xmlSaveClose(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     int ret_val;
     xmlSaveCtxtPtr ctxt; /* a document saving context */
@@ -31243,7 +31263,7 @@ static int
 test_xmlSaveDoc(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     long ret_val;
     xmlSaveCtxtPtr ctxt; /* a document saving context */
@@ -31284,7 +31304,7 @@ static int
 test_xmlSaveFlush(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     int ret_val;
     xmlSaveCtxtPtr ctxt; /* a document saving context */
@@ -31358,7 +31378,7 @@ static int
 test_xmlSaveTree(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     long ret_val;
     xmlSaveCtxtPtr ctxt; /* a document saving context */
@@ -31427,8 +31447,7 @@ static int
 test_xmlSchemaDump(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_SCHEMAS_ENABLED
-#ifdef LIBXML_OUTPUT_ENABLED
+#if defined(LIBXML_SCHEMAS_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     FILE * output; /* the file output */
     int n_output;
@@ -31457,7 +31476,6 @@ test_xmlSchemaDump(void) {
     }
     }
     function_tests++;
-#endif
 #endif
 
     return(test_ret);
@@ -31498,7 +31516,7 @@ static int
 test_xmlSchemaGetParserErrors(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     int ret_val;
     xmlSchemaParserCtxtPtr ctxt; /* a XMl-Schema parser context */
@@ -31563,7 +31581,7 @@ static int
 test_xmlSchemaGetValidErrors(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     int ret_val;
     xmlSchemaValidCtxtPtr ctxt; /* a XML-Schema validation context */
@@ -31618,7 +31636,7 @@ static int
 test_xmlSchemaNewDocParserCtxt(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     xmlSchemaParserCtxtPtr ret_val;
     xmlDocPtr doc; /* a preparsed document tree */
@@ -31652,7 +31670,7 @@ static int
 test_xmlSchemaNewMemParserCtxt(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     xmlSchemaParserCtxtPtr ret_val;
     char * buffer; /* a pointer to a char array containing the schemas */
@@ -31693,7 +31711,7 @@ static int
 test_xmlSchemaNewParserCtxt(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     xmlSchemaParserCtxtPtr ret_val;
     char * URL; /* the location of the schema */
@@ -31767,7 +31785,7 @@ static int
 test_xmlSchemaSetValidOptions(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     int ret_val;
     xmlSchemaValidCtxtPtr ctxt; /* a schema validation context */
@@ -31808,7 +31826,7 @@ static int
 test_xmlSchemaValidCtxtGetOptions(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     int ret_val;
     xmlSchemaValidCtxtPtr ctxt; /* a schema validation context */
@@ -31842,7 +31860,7 @@ static int
 test_xmlSchemaValidateDoc(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     int ret_val;
     xmlSchemaValidCtxtPtr ctxt; /* a schema validation context */
@@ -31883,7 +31901,7 @@ static int
 test_xmlSchemaValidateOneElement(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     int ret_val;
     xmlSchemaValidCtxtPtr ctxt; /* a schema validation context */
@@ -31924,7 +31942,7 @@ static int
 test_xmlSchemaValidateStream(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     int ret_val;
     xmlSchemaValidCtxtPtr ctxt; /* a schema validation context */
@@ -32031,7 +32049,7 @@ static int
 test_xmlSchemaCheckFacet(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     int ret_val;
     xmlSchemaFacetPtr facet; /* the facet */
@@ -32086,7 +32104,7 @@ static int
 test_xmlSchemaCleanupTypes(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
 
         mem_base = xmlMemBlocks();
@@ -32111,7 +32129,7 @@ static int
 test_xmlSchemaCollapseString(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     xmlChar * ret_val;
     xmlChar * value; /* a value */
@@ -32155,7 +32173,7 @@ static int
 test_xmlSchemaCompareValues(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     int ret_val;
     xmlSchemaValPtr x; /* a first value */
@@ -32196,7 +32214,7 @@ static int
 test_xmlSchemaGetBuiltInListSimpleTypeItemType(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     xmlSchemaTypePtr ret_val;
     xmlSchemaTypePtr type; /* the built-in simple type. */
@@ -32230,7 +32248,7 @@ static int
 test_xmlSchemaGetBuiltInType(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#if defined(LIBXML_SCHEMAS_ENABLED)
     xmlSchemaTypePtr ret_val;
     xmlSchemaValType type; /* the type of the built in type */
     int n_type;
@@ -32255,7 +32273,7 @@ static int
 test_xmlSchemaGetFacetValueAsULong(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     unsigned long ret_val;
     xmlSchemaFacetPtr facet; /* an schemas type facet */
@@ -32289,7 +32307,7 @@ static int
 test_xmlSchemaGetPredefinedType(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     xmlSchemaTypePtr ret_val;
     xmlChar * name; /* the type name */
@@ -32330,7 +32348,7 @@ static int
 test_xmlSchemaInitTypes(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#if defined(LIBXML_SCHEMAS_ENABLED)
 
 
         xmlSchemaInitTypes();
@@ -32347,7 +32365,7 @@ static int
 test_xmlSchemaIsBuiltInTypeFacet(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     int ret_val;
     xmlSchemaTypePtr type; /* the built-in type */
@@ -32408,7 +32426,7 @@ static int
 test_xmlSchemaValPredefTypeNode(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     int ret_val;
     xmlSchemaTypePtr type; /* the predefined type */
@@ -32463,7 +32481,7 @@ static int
 test_xmlSchemaValPredefTypeNodeNoNorm(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     int ret_val;
     xmlSchemaTypePtr type; /* the predefined type */
@@ -32518,7 +32536,7 @@ static int
 test_xmlSchemaValidateFacet(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     int ret_val;
     xmlSchemaTypePtr base; /* the base type */
@@ -32573,7 +32591,7 @@ static int
 test_xmlSchemaValidateLengthFacet(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     int ret_val;
     xmlSchemaTypePtr type; /* the built-in type */
@@ -32635,7 +32653,7 @@ static int
 test_xmlSchemaValidateListSimpleTypeFacet(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     int ret_val;
     xmlSchemaFacetPtr facet; /* the facet to check */
@@ -32690,7 +32708,7 @@ static int
 test_xmlSchemaValidatePredefinedType(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     int ret_val;
     xmlSchemaTypePtr type; /* the predefined type */
@@ -32738,7 +32756,7 @@ static int
 test_xmlSchemaWhiteSpaceReplace(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#if defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     xmlChar * ret_val;
     xmlChar * value; /* a value */
@@ -33872,7 +33890,7 @@ static int
 test_xmlUCSIsAegeanNumbers(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -33906,7 +33924,7 @@ static int
 test_xmlUCSIsAlphabeticPresentationForms(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -33940,7 +33958,7 @@ static int
 test_xmlUCSIsArabic(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -33974,7 +33992,7 @@ static int
 test_xmlUCSIsArabicPresentationFormsA(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -34008,7 +34026,7 @@ static int
 test_xmlUCSIsArabicPresentationFormsB(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -34042,7 +34060,7 @@ static int
 test_xmlUCSIsArmenian(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -34076,7 +34094,7 @@ static int
 test_xmlUCSIsArrows(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -34110,7 +34128,7 @@ static int
 test_xmlUCSIsBasicLatin(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -34144,7 +34162,7 @@ static int
 test_xmlUCSIsBengali(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -34178,7 +34196,7 @@ static int
 test_xmlUCSIsBlock(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -34219,7 +34237,7 @@ static int
 test_xmlUCSIsBlockElements(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -34253,7 +34271,7 @@ static int
 test_xmlUCSIsBopomofo(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -34287,7 +34305,7 @@ static int
 test_xmlUCSIsBopomofoExtended(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -34321,7 +34339,7 @@ static int
 test_xmlUCSIsBoxDrawing(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -34355,7 +34373,7 @@ static int
 test_xmlUCSIsBraillePatterns(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -34389,7 +34407,7 @@ static int
 test_xmlUCSIsBuhid(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -34423,7 +34441,7 @@ static int
 test_xmlUCSIsByzantineMusicalSymbols(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -34457,7 +34475,7 @@ static int
 test_xmlUCSIsCJKCompatibility(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -34491,7 +34509,7 @@ static int
 test_xmlUCSIsCJKCompatibilityForms(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -34525,7 +34543,7 @@ static int
 test_xmlUCSIsCJKCompatibilityIdeographs(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -34559,7 +34577,7 @@ static int
 test_xmlUCSIsCJKCompatibilityIdeographsSupplement(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -34593,7 +34611,7 @@ static int
 test_xmlUCSIsCJKRadicalsSupplement(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -34627,7 +34645,7 @@ static int
 test_xmlUCSIsCJKSymbolsandPunctuation(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -34661,7 +34679,7 @@ static int
 test_xmlUCSIsCJKUnifiedIdeographs(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -34695,7 +34713,7 @@ static int
 test_xmlUCSIsCJKUnifiedIdeographsExtensionA(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -34729,7 +34747,7 @@ static int
 test_xmlUCSIsCJKUnifiedIdeographsExtensionB(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -34763,7 +34781,7 @@ static int
 test_xmlUCSIsCat(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -34804,7 +34822,7 @@ static int
 test_xmlUCSIsCatC(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -34838,7 +34856,7 @@ static int
 test_xmlUCSIsCatCc(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -34872,7 +34890,7 @@ static int
 test_xmlUCSIsCatCf(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -34906,7 +34924,7 @@ static int
 test_xmlUCSIsCatCo(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -34940,7 +34958,7 @@ static int
 test_xmlUCSIsCatCs(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -34974,7 +34992,7 @@ static int
 test_xmlUCSIsCatL(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -35008,7 +35026,7 @@ static int
 test_xmlUCSIsCatLl(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -35042,7 +35060,7 @@ static int
 test_xmlUCSIsCatLm(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -35076,7 +35094,7 @@ static int
 test_xmlUCSIsCatLo(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -35110,7 +35128,7 @@ static int
 test_xmlUCSIsCatLt(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -35144,7 +35162,7 @@ static int
 test_xmlUCSIsCatLu(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -35178,7 +35196,7 @@ static int
 test_xmlUCSIsCatM(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -35212,7 +35230,7 @@ static int
 test_xmlUCSIsCatMc(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -35246,7 +35264,7 @@ static int
 test_xmlUCSIsCatMe(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -35280,7 +35298,7 @@ static int
 test_xmlUCSIsCatMn(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -35314,7 +35332,7 @@ static int
 test_xmlUCSIsCatN(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -35348,7 +35366,7 @@ static int
 test_xmlUCSIsCatNd(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -35382,7 +35400,7 @@ static int
 test_xmlUCSIsCatNl(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -35416,7 +35434,7 @@ static int
 test_xmlUCSIsCatNo(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -35450,7 +35468,7 @@ static int
 test_xmlUCSIsCatP(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -35484,7 +35502,7 @@ static int
 test_xmlUCSIsCatPc(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -35518,7 +35536,7 @@ static int
 test_xmlUCSIsCatPd(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -35552,7 +35570,7 @@ static int
 test_xmlUCSIsCatPe(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -35586,7 +35604,7 @@ static int
 test_xmlUCSIsCatPf(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -35620,7 +35638,7 @@ static int
 test_xmlUCSIsCatPi(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -35654,7 +35672,7 @@ static int
 test_xmlUCSIsCatPo(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -35688,7 +35706,7 @@ static int
 test_xmlUCSIsCatPs(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -35722,7 +35740,7 @@ static int
 test_xmlUCSIsCatS(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -35756,7 +35774,7 @@ static int
 test_xmlUCSIsCatSc(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -35790,7 +35808,7 @@ static int
 test_xmlUCSIsCatSk(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -35824,7 +35842,7 @@ static int
 test_xmlUCSIsCatSm(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -35858,7 +35876,7 @@ static int
 test_xmlUCSIsCatSo(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -35892,7 +35910,7 @@ static int
 test_xmlUCSIsCatZ(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -35926,7 +35944,7 @@ static int
 test_xmlUCSIsCatZl(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -35960,7 +35978,7 @@ static int
 test_xmlUCSIsCatZp(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -35994,7 +36012,7 @@ static int
 test_xmlUCSIsCatZs(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -36028,7 +36046,7 @@ static int
 test_xmlUCSIsCherokee(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -36062,7 +36080,7 @@ static int
 test_xmlUCSIsCombiningDiacriticalMarks(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -36096,7 +36114,7 @@ static int
 test_xmlUCSIsCombiningDiacriticalMarksforSymbols(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -36130,7 +36148,7 @@ static int
 test_xmlUCSIsCombiningHalfMarks(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -36164,7 +36182,7 @@ static int
 test_xmlUCSIsCombiningMarksforSymbols(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -36198,7 +36216,7 @@ static int
 test_xmlUCSIsControlPictures(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -36232,7 +36250,7 @@ static int
 test_xmlUCSIsCurrencySymbols(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -36266,7 +36284,7 @@ static int
 test_xmlUCSIsCypriotSyllabary(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -36300,7 +36318,7 @@ static int
 test_xmlUCSIsCyrillic(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -36334,7 +36352,7 @@ static int
 test_xmlUCSIsCyrillicSupplement(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -36368,7 +36386,7 @@ static int
 test_xmlUCSIsDeseret(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -36402,7 +36420,7 @@ static int
 test_xmlUCSIsDevanagari(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -36436,7 +36454,7 @@ static int
 test_xmlUCSIsDingbats(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -36470,7 +36488,7 @@ static int
 test_xmlUCSIsEnclosedAlphanumerics(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -36504,7 +36522,7 @@ static int
 test_xmlUCSIsEnclosedCJKLettersandMonths(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -36538,7 +36556,7 @@ static int
 test_xmlUCSIsEthiopic(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -36572,7 +36590,7 @@ static int
 test_xmlUCSIsGeneralPunctuation(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -36606,7 +36624,7 @@ static int
 test_xmlUCSIsGeometricShapes(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -36640,7 +36658,7 @@ static int
 test_xmlUCSIsGeorgian(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -36674,7 +36692,7 @@ static int
 test_xmlUCSIsGothic(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -36708,7 +36726,7 @@ static int
 test_xmlUCSIsGreek(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -36742,7 +36760,7 @@ static int
 test_xmlUCSIsGreekExtended(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -36776,7 +36794,7 @@ static int
 test_xmlUCSIsGreekandCoptic(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -36810,7 +36828,7 @@ static int
 test_xmlUCSIsGujarati(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -36844,7 +36862,7 @@ static int
 test_xmlUCSIsGurmukhi(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -36878,7 +36896,7 @@ static int
 test_xmlUCSIsHalfwidthandFullwidthForms(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -36912,7 +36930,7 @@ static int
 test_xmlUCSIsHangulCompatibilityJamo(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -36946,7 +36964,7 @@ static int
 test_xmlUCSIsHangulJamo(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -36980,7 +36998,7 @@ static int
 test_xmlUCSIsHangulSyllables(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -37014,7 +37032,7 @@ static int
 test_xmlUCSIsHanunoo(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -37048,7 +37066,7 @@ static int
 test_xmlUCSIsHebrew(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -37082,7 +37100,7 @@ static int
 test_xmlUCSIsHighPrivateUseSurrogates(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -37116,7 +37134,7 @@ static int
 test_xmlUCSIsHighSurrogates(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -37150,7 +37168,7 @@ static int
 test_xmlUCSIsHiragana(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -37184,7 +37202,7 @@ static int
 test_xmlUCSIsIPAExtensions(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -37218,7 +37236,7 @@ static int
 test_xmlUCSIsIdeographicDescriptionCharacters(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -37252,7 +37270,7 @@ static int
 test_xmlUCSIsKanbun(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -37286,7 +37304,7 @@ static int
 test_xmlUCSIsKangxiRadicals(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -37320,7 +37338,7 @@ static int
 test_xmlUCSIsKannada(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -37354,7 +37372,7 @@ static int
 test_xmlUCSIsKatakana(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -37388,7 +37406,7 @@ static int
 test_xmlUCSIsKatakanaPhoneticExtensions(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -37422,7 +37440,7 @@ static int
 test_xmlUCSIsKhmer(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -37456,7 +37474,7 @@ static int
 test_xmlUCSIsKhmerSymbols(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -37490,7 +37508,7 @@ static int
 test_xmlUCSIsLao(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -37524,7 +37542,7 @@ static int
 test_xmlUCSIsLatin1Supplement(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -37558,7 +37576,7 @@ static int
 test_xmlUCSIsLatinExtendedA(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -37592,7 +37610,7 @@ static int
 test_xmlUCSIsLatinExtendedAdditional(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -37626,7 +37644,7 @@ static int
 test_xmlUCSIsLatinExtendedB(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -37660,7 +37678,7 @@ static int
 test_xmlUCSIsLetterlikeSymbols(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -37694,7 +37712,7 @@ static int
 test_xmlUCSIsLimbu(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -37728,7 +37746,7 @@ static int
 test_xmlUCSIsLinearBIdeograms(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -37762,7 +37780,7 @@ static int
 test_xmlUCSIsLinearBSyllabary(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -37796,7 +37814,7 @@ static int
 test_xmlUCSIsLowSurrogates(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -37830,7 +37848,7 @@ static int
 test_xmlUCSIsMalayalam(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -37864,7 +37882,7 @@ static int
 test_xmlUCSIsMathematicalAlphanumericSymbols(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -37898,7 +37916,7 @@ static int
 test_xmlUCSIsMathematicalOperators(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -37932,7 +37950,7 @@ static int
 test_xmlUCSIsMiscellaneousMathematicalSymbolsA(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -37966,7 +37984,7 @@ static int
 test_xmlUCSIsMiscellaneousMathematicalSymbolsB(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -38000,7 +38018,7 @@ static int
 test_xmlUCSIsMiscellaneousSymbols(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -38034,7 +38052,7 @@ static int
 test_xmlUCSIsMiscellaneousSymbolsandArrows(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -38068,7 +38086,7 @@ static int
 test_xmlUCSIsMiscellaneousTechnical(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -38102,7 +38120,7 @@ static int
 test_xmlUCSIsMongolian(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -38136,7 +38154,7 @@ static int
 test_xmlUCSIsMusicalSymbols(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -38170,7 +38188,7 @@ static int
 test_xmlUCSIsMyanmar(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -38204,7 +38222,7 @@ static int
 test_xmlUCSIsNumberForms(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -38238,7 +38256,7 @@ static int
 test_xmlUCSIsOgham(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -38272,7 +38290,7 @@ static int
 test_xmlUCSIsOldItalic(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -38306,7 +38324,7 @@ static int
 test_xmlUCSIsOpticalCharacterRecognition(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -38340,7 +38358,7 @@ static int
 test_xmlUCSIsOriya(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -38374,7 +38392,7 @@ static int
 test_xmlUCSIsOsmanya(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -38408,7 +38426,7 @@ static int
 test_xmlUCSIsPhoneticExtensions(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -38442,7 +38460,7 @@ static int
 test_xmlUCSIsPrivateUse(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -38476,7 +38494,7 @@ static int
 test_xmlUCSIsPrivateUseArea(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -38510,7 +38528,7 @@ static int
 test_xmlUCSIsRunic(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -38544,7 +38562,7 @@ static int
 test_xmlUCSIsShavian(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -38578,7 +38596,7 @@ static int
 test_xmlUCSIsSinhala(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -38612,7 +38630,7 @@ static int
 test_xmlUCSIsSmallFormVariants(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -38646,7 +38664,7 @@ static int
 test_xmlUCSIsSpacingModifierLetters(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -38680,7 +38698,7 @@ static int
 test_xmlUCSIsSpecials(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -38714,7 +38732,7 @@ static int
 test_xmlUCSIsSuperscriptsandSubscripts(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -38748,7 +38766,7 @@ static int
 test_xmlUCSIsSupplementalArrowsA(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -38782,7 +38800,7 @@ static int
 test_xmlUCSIsSupplementalArrowsB(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -38816,7 +38834,7 @@ static int
 test_xmlUCSIsSupplementalMathematicalOperators(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -38850,7 +38868,7 @@ static int
 test_xmlUCSIsSupplementaryPrivateUseAreaA(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -38884,7 +38902,7 @@ static int
 test_xmlUCSIsSupplementaryPrivateUseAreaB(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -38918,7 +38936,7 @@ static int
 test_xmlUCSIsSyriac(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -38952,7 +38970,7 @@ static int
 test_xmlUCSIsTagalog(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -38986,7 +39004,7 @@ static int
 test_xmlUCSIsTagbanwa(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -39020,7 +39038,7 @@ static int
 test_xmlUCSIsTags(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -39054,7 +39072,7 @@ static int
 test_xmlUCSIsTaiLe(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -39088,7 +39106,7 @@ static int
 test_xmlUCSIsTaiXuanJingSymbols(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -39122,7 +39140,7 @@ static int
 test_xmlUCSIsTamil(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -39156,7 +39174,7 @@ static int
 test_xmlUCSIsTelugu(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -39190,7 +39208,7 @@ static int
 test_xmlUCSIsThaana(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -39224,7 +39242,7 @@ static int
 test_xmlUCSIsThai(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -39258,7 +39276,7 @@ static int
 test_xmlUCSIsTibetan(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -39292,7 +39310,7 @@ static int
 test_xmlUCSIsUgaritic(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -39326,7 +39344,7 @@ static int
 test_xmlUCSIsUnifiedCanadianAboriginalSyllabics(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -39360,7 +39378,7 @@ static int
 test_xmlUCSIsVariationSelectors(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -39394,7 +39412,7 @@ static int
 test_xmlUCSIsVariationSelectorsSupplement(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -39428,7 +39446,7 @@ static int
 test_xmlUCSIsYiRadicals(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -39462,7 +39480,7 @@ static int
 test_xmlUCSIsYiSyllables(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -39496,7 +39514,7 @@ static int
 test_xmlUCSIsYijingHexagramSymbols(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_UNICODE_ENABLED
+#if defined(LIBXML_UNICODE_ENABLED)
     int mem_base;
     int ret_val;
     int code; /* UCS code point */
@@ -39706,7 +39724,7 @@ static int
 test_xmlNewTextWriter(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     xmlTextWriterPtr ret_val;
     xmlOutputBufferPtr out; /* an xmlOutputBufferPtr */
@@ -39741,7 +39759,7 @@ static int
 test_xmlNewTextWriterFilename(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     xmlTextWriterPtr ret_val;
     const char * uri; /* the URI of the resource for the output */
@@ -39782,7 +39800,7 @@ static int
 test_xmlNewTextWriterMemory(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     xmlTextWriterPtr ret_val;
     xmlBufferPtr buf; /* xmlBufferPtr */
@@ -39823,7 +39841,7 @@ static int
 test_xmlNewTextWriterPushParser(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     xmlTextWriterPtr ret_val;
     xmlParserCtxtPtr ctxt; /* xmlParserCtxtPtr to hold the new XML document tree */
@@ -39865,7 +39883,7 @@ static int
 test_xmlNewTextWriterTree(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     xmlTextWriterPtr ret_val;
     xmlDocPtr doc; /* xmlDocPtr */
@@ -39913,7 +39931,7 @@ static int
 test_xmlTextWriterEndAttribute(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -39947,7 +39965,7 @@ static int
 test_xmlTextWriterEndCDATA(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -39981,7 +39999,7 @@ static int
 test_xmlTextWriterEndComment(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -40015,7 +40033,7 @@ static int
 test_xmlTextWriterEndDTD(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -40049,7 +40067,7 @@ static int
 test_xmlTextWriterEndDTDAttlist(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -40083,7 +40101,7 @@ static int
 test_xmlTextWriterEndDTDElement(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -40117,7 +40135,7 @@ static int
 test_xmlTextWriterEndDTDEntity(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -40151,7 +40169,7 @@ static int
 test_xmlTextWriterEndDocument(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -40185,7 +40203,7 @@ static int
 test_xmlTextWriterEndElement(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -40219,7 +40237,7 @@ static int
 test_xmlTextWriterEndPI(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -40253,7 +40271,7 @@ static int
 test_xmlTextWriterFlush(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -40287,7 +40305,7 @@ static int
 test_xmlTextWriterFullEndElement(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -40321,7 +40339,7 @@ static int
 test_xmlTextWriterSetIndent(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -40362,7 +40380,7 @@ static int
 test_xmlTextWriterSetIndentString(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -40403,7 +40421,7 @@ static int
 test_xmlTextWriterStartAttribute(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -40444,7 +40462,7 @@ static int
 test_xmlTextWriterStartAttributeNS(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -40499,7 +40517,7 @@ static int
 test_xmlTextWriterStartCDATA(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -40533,7 +40551,7 @@ static int
 test_xmlTextWriterStartComment(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -40567,7 +40585,7 @@ static int
 test_xmlTextWriterStartDTD(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -40622,7 +40640,7 @@ static int
 test_xmlTextWriterStartDTDAttlist(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -40663,7 +40681,7 @@ static int
 test_xmlTextWriterStartDTDElement(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -40704,7 +40722,7 @@ static int
 test_xmlTextWriterStartDTDEntity(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -40752,7 +40770,7 @@ static int
 test_xmlTextWriterStartDocument(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -40807,7 +40825,7 @@ static int
 test_xmlTextWriterStartElement(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -40848,7 +40866,7 @@ static int
 test_xmlTextWriterStartElementNS(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -40903,7 +40921,7 @@ static int
 test_xmlTextWriterStartPI(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -40944,7 +40962,7 @@ static int
 test_xmlTextWriterWriteAttribute(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -40992,7 +41010,7 @@ static int
 test_xmlTextWriterWriteAttributeNS(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -41054,7 +41072,7 @@ static int
 test_xmlTextWriterWriteBase64(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -41109,7 +41127,7 @@ static int
 test_xmlTextWriterWriteBinHex(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -41164,7 +41182,7 @@ static int
 test_xmlTextWriterWriteCDATA(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -41205,7 +41223,7 @@ static int
 test_xmlTextWriterWriteComment(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -41246,7 +41264,7 @@ static int
 test_xmlTextWriterWriteDTD(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -41308,7 +41326,7 @@ static int
 test_xmlTextWriterWriteDTDAttlist(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -41356,7 +41374,7 @@ static int
 test_xmlTextWriterWriteDTDElement(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -41404,7 +41422,7 @@ static int
 test_xmlTextWriterWriteDTDEntity(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -41480,7 +41498,7 @@ static int
 test_xmlTextWriterWriteDTDExternalEntity(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -41549,7 +41567,7 @@ static int
 test_xmlTextWriterWriteDTDExternalEntityContents(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -41604,7 +41622,7 @@ static int
 test_xmlTextWriterWriteDTDInternalEntity(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -41659,7 +41677,7 @@ static int
 test_xmlTextWriterWriteDTDNotation(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -41714,7 +41732,7 @@ static int
 test_xmlTextWriterWriteElement(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -41762,7 +41780,7 @@ static int
 test_xmlTextWriterWriteElementNS(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -41954,7 +41972,7 @@ static int
 test_xmlTextWriterWritePI(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -42002,7 +42020,7 @@ static int
 test_xmlTextWriterWriteRaw(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -42043,7 +42061,7 @@ static int
 test_xmlTextWriterWriteRawLen(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -42091,7 +42109,7 @@ static int
 test_xmlTextWriterWriteString(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_WRITER_ENABLED
+#if defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     int ret_val;
     xmlTextWriterPtr writer; /* the xmlTextWriterPtr */
@@ -42349,7 +42367,7 @@ static int
 test_xmlXPathCastBooleanToNumber(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     double ret_val;
     int val; /* a boolean */
@@ -42383,7 +42401,7 @@ static int
 test_xmlXPathCastBooleanToString(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlChar * ret_val;
     int val; /* a boolean */
@@ -42417,7 +42435,7 @@ static int
 test_xmlXPathCastNodeSetToBoolean(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     int ret_val;
     xmlNodeSetPtr ns; /* a node-set */
@@ -42451,7 +42469,7 @@ static int
 test_xmlXPathCastNodeSetToNumber(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     double ret_val;
     xmlNodeSetPtr ns; /* a node-set */
@@ -42485,7 +42503,7 @@ static int
 test_xmlXPathCastNodeSetToString(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlChar * ret_val;
     xmlNodeSetPtr ns; /* a node-set */
@@ -42519,7 +42537,7 @@ static int
 test_xmlXPathCastNodeToNumber(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     double ret_val;
     xmlNodePtr node; /* a node */
@@ -42553,7 +42571,7 @@ static int
 test_xmlXPathCastNodeToString(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlChar * ret_val;
     xmlNodePtr node; /* a node */
@@ -42587,7 +42605,7 @@ static int
 test_xmlXPathCastNumberToBoolean(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     int ret_val;
     double val; /* a number */
@@ -42621,7 +42639,7 @@ static int
 test_xmlXPathCastNumberToString(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlChar * ret_val;
     double val; /* a number */
@@ -42655,7 +42673,7 @@ static int
 test_xmlXPathCastStringToBoolean(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     int ret_val;
     xmlChar * val; /* a string */
@@ -42689,7 +42707,7 @@ static int
 test_xmlXPathCastStringToNumber(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     double ret_val;
     xmlChar * val; /* a string */
@@ -42723,7 +42741,7 @@ static int
 test_xmlXPathCastToBoolean(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     int ret_val;
     xmlXPathObjectPtr val; /* an XPath object */
@@ -42757,7 +42775,7 @@ static int
 test_xmlXPathCastToNumber(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     double ret_val;
     xmlXPathObjectPtr val; /* an XPath object */
@@ -42791,7 +42809,7 @@ static int
 test_xmlXPathCastToString(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlChar * ret_val;
     xmlXPathObjectPtr val; /* an XPath object */
@@ -42825,7 +42843,7 @@ static int
 test_xmlXPathCmpNodes(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     int ret_val;
     xmlNodePtr node1; /* the first node */
@@ -42896,7 +42914,7 @@ static int
 test_xmlXPathCompiledEval(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathObjectPtr ret_val;
     xmlXPathCompExprPtr comp; /* the compiled XPath expression */
@@ -42937,7 +42955,7 @@ static int
 test_xmlXPathConvertBoolean(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathObjectPtr ret_val;
     xmlXPathObjectPtr val; /* an XPath object */
@@ -42972,7 +42990,7 @@ static int
 test_xmlXPathConvertNumber(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathObjectPtr ret_val;
     xmlXPathObjectPtr val; /* an XPath object */
@@ -43007,7 +43025,7 @@ static int
 test_xmlXPathConvertString(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathObjectPtr ret_val;
     xmlXPathObjectPtr val; /* an XPath object */
@@ -43052,7 +43070,7 @@ static int
 test_xmlXPathEval(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathObjectPtr ret_val;
     xmlChar * str; /* the XPath expression */
@@ -43093,7 +43111,7 @@ static int
 test_xmlXPathEvalExpression(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathObjectPtr ret_val;
     xmlChar * str; /* the XPath expression */
@@ -43134,7 +43152,7 @@ static int
 test_xmlXPathEvalPredicate(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     int ret_val;
     xmlXPathContextPtr ctxt; /* the XPath context */
@@ -43175,7 +43193,7 @@ static int
 test_xmlXPathInit(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
 
         mem_base = xmlMemBlocks();
@@ -43200,7 +43218,7 @@ static int
 test_xmlXPathIsInf(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     int ret_val;
     double val; /* a double value */
@@ -43234,7 +43252,7 @@ static int
 test_xmlXPathIsNaN(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     int ret_val;
     double val; /* a double value */
@@ -43278,7 +43296,7 @@ static int
 test_xmlXPathNodeSetCreate(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlNodeSetPtr ret_val;
     xmlNodePtr val; /* an initial xmlNodePtr, or NULL */
@@ -43312,7 +43330,7 @@ static int
 test_xmlXPathObjectCopy(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathObjectPtr ret_val;
     xmlXPathObjectPtr val; /* the original object */
@@ -43346,7 +43364,7 @@ static int
 test_xmlXPathOrderDocElems(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     long ret_val;
     xmlDocPtr doc; /* an input document */
@@ -43431,7 +43449,7 @@ static int
 test_valuePop(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathObjectPtr ret_val;
     xmlXPathParserContextPtr ctxt; /* an XPath evaluation context */
@@ -43465,7 +43483,7 @@ static int
 test_valuePush(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     int ret_val;
     xmlXPathParserContextPtr ctxt; /* an XPath evaluation context */
@@ -43506,7 +43524,7 @@ static int
 test_xmlXPathAddValues(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
     int n_ctxt;
@@ -43538,7 +43556,7 @@ static int
 test_xmlXPathBooleanFunction(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
     int n_ctxt;
@@ -43577,7 +43595,7 @@ static int
 test_xmlXPathCeilingFunction(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
     int n_ctxt;
@@ -43616,7 +43634,7 @@ static int
 test_xmlXPathCompareValues(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     int ret_val;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
@@ -43664,7 +43682,7 @@ static int
 test_xmlXPathConcatFunction(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
     int n_ctxt;
@@ -43703,7 +43721,7 @@ static int
 test_xmlXPathContainsFunction(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
     int n_ctxt;
@@ -43742,7 +43760,7 @@ static int
 test_xmlXPathCountFunction(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
     int n_ctxt;
@@ -43781,8 +43799,7 @@ static int
 test_xmlXPathDebugDumpCompExpr(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
-#ifdef LIBXML_DEBUG_ENABLED
+#if defined(LIBXML_XPATH_ENABLED) && defined(LIBXML_DEBUG_ENABLED)
     int mem_base;
     FILE * output; /* the FILE * for the output */
     int n_output;
@@ -43819,7 +43836,6 @@ test_xmlXPathDebugDumpCompExpr(void) {
     }
     function_tests++;
 #endif
-#endif
 
     return(test_ret);
 }
@@ -43829,8 +43845,7 @@ static int
 test_xmlXPathDebugDumpObject(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
-#ifdef LIBXML_DEBUG_ENABLED
+#if defined(LIBXML_XPATH_ENABLED) && defined(LIBXML_DEBUG_ENABLED)
     int mem_base;
     FILE * output; /* the FILE * to dump the output */
     int n_output;
@@ -43867,7 +43882,6 @@ test_xmlXPathDebugDumpObject(void) {
     }
     function_tests++;
 #endif
-#endif
 
     return(test_ret);
 }
@@ -43877,7 +43891,7 @@ static int
 test_xmlXPathDifference(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlNodeSetPtr ret_val;
     xmlNodeSetPtr nodes1; /* a node-set */
@@ -43918,7 +43932,7 @@ static int
 test_xmlXPathDistinct(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlNodeSetPtr ret_val;
     xmlNodeSetPtr nodes; /* a node-set */
@@ -43952,7 +43966,7 @@ static int
 test_xmlXPathDistinctSorted(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlNodeSetPtr ret_val;
     xmlNodeSetPtr nodes; /* a node-set, sorted by document order */
@@ -43986,7 +44000,7 @@ static int
 test_xmlXPathDivValues(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
     int n_ctxt;
@@ -44018,7 +44032,7 @@ static int
 test_xmlXPathEqualValues(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     int ret_val;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
@@ -44052,7 +44066,7 @@ static int
 test_xmlXPathErr(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathParserContextPtr ctxt; /* a XPath parser context */
     int n_ctxt;
@@ -44091,7 +44105,7 @@ static int
 test_xmlXPathEvalExpr(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
     int n_ctxt;
@@ -44123,7 +44137,7 @@ static int
 test_xmlXPathEvaluatePredicateResult(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     int ret_val;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
@@ -44164,7 +44178,7 @@ static int
 test_xmlXPathFalseFunction(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
     int n_ctxt;
@@ -44203,7 +44217,7 @@ static int
 test_xmlXPathFloorFunction(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
     int n_ctxt;
@@ -44262,7 +44276,7 @@ static int
 test_xmlXPathHasSameNodes(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     int ret_val;
     xmlNodeSetPtr nodes1; /* a node-set */
@@ -44303,7 +44317,7 @@ static int
 test_xmlXPathIdFunction(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
     int n_ctxt;
@@ -44342,7 +44356,7 @@ static int
 test_xmlXPathIntersection(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlNodeSetPtr ret_val;
     xmlNodeSetPtr nodes1; /* a node-set */
@@ -44383,7 +44397,7 @@ static int
 test_xmlXPathIsNodeType(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     int ret_val;
     xmlChar * name; /* a name string */
@@ -44417,7 +44431,7 @@ static int
 test_xmlXPathLangFunction(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
     int n_ctxt;
@@ -44456,7 +44470,7 @@ static int
 test_xmlXPathLastFunction(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
     int n_ctxt;
@@ -44495,7 +44509,7 @@ static int
 test_xmlXPathLeading(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlNodeSetPtr ret_val;
     xmlNodeSetPtr nodes1; /* a node-set */
@@ -44536,7 +44550,7 @@ static int
 test_xmlXPathLeadingSorted(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlNodeSetPtr ret_val;
     xmlNodeSetPtr nodes1; /* a node-set, sorted by document order */
@@ -44577,7 +44591,7 @@ static int
 test_xmlXPathLocalNameFunction(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
     int n_ctxt;
@@ -44616,7 +44630,7 @@ static int
 test_xmlXPathModValues(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
     int n_ctxt;
@@ -44648,7 +44662,7 @@ static int
 test_xmlXPathMultValues(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
     int n_ctxt;
@@ -44680,7 +44694,7 @@ static int
 test_xmlXPathNamespaceURIFunction(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
     int n_ctxt;
@@ -44719,7 +44733,7 @@ static int
 test_xmlXPathNewBoolean(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathObjectPtr ret_val;
     int val; /* the boolean value */
@@ -44753,7 +44767,7 @@ static int
 test_xmlXPathNewCString(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathObjectPtr ret_val;
     char * val; /* the char * value */
@@ -44787,7 +44801,7 @@ static int
 test_xmlXPathNewFloat(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathObjectPtr ret_val;
     double val; /* the double value */
@@ -44821,7 +44835,7 @@ static int
 test_xmlXPathNewNodeSet(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathObjectPtr ret_val;
     xmlNodePtr val; /* the NodePtr value */
@@ -44855,7 +44869,7 @@ static int
 test_xmlXPathNewNodeSetList(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathObjectPtr ret_val;
     xmlNodeSetPtr val; /* an existing NodeSet */
@@ -44899,7 +44913,7 @@ static int
 test_xmlXPathNewString(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathObjectPtr ret_val;
     xmlChar * val; /* the xmlChar * value */
@@ -44933,7 +44947,7 @@ static int
 test_xmlXPathNextAncestor(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlNodePtr ret_val;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
@@ -44974,7 +44988,7 @@ static int
 test_xmlXPathNextAncestorOrSelf(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlNodePtr ret_val;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
@@ -45015,7 +45029,7 @@ static int
 test_xmlXPathNextAttribute(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlNodePtr ret_val;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
@@ -45056,7 +45070,7 @@ static int
 test_xmlXPathNextChild(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlNodePtr ret_val;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
@@ -45097,7 +45111,7 @@ static int
 test_xmlXPathNextDescendant(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlNodePtr ret_val;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
@@ -45138,7 +45152,7 @@ static int
 test_xmlXPathNextDescendantOrSelf(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlNodePtr ret_val;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
@@ -45179,7 +45193,7 @@ static int
 test_xmlXPathNextFollowing(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlNodePtr ret_val;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
@@ -45220,7 +45234,7 @@ static int
 test_xmlXPathNextFollowingSibling(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlNodePtr ret_val;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
@@ -45261,7 +45275,7 @@ static int
 test_xmlXPathNextNamespace(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlNodePtr ret_val;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
@@ -45302,7 +45316,7 @@ static int
 test_xmlXPathNextParent(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlNodePtr ret_val;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
@@ -45343,7 +45357,7 @@ static int
 test_xmlXPathNextPreceding(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlNodePtr ret_val;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
@@ -45384,7 +45398,7 @@ static int
 test_xmlXPathNextPrecedingSibling(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlNodePtr ret_val;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
@@ -45425,7 +45439,7 @@ static int
 test_xmlXPathNextSelf(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlNodePtr ret_val;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
@@ -45466,7 +45480,7 @@ static int
 test_xmlXPathNodeLeading(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlNodeSetPtr ret_val;
     xmlNodeSetPtr nodes; /* a node-set */
@@ -45507,7 +45521,7 @@ static int
 test_xmlXPathNodeLeadingSorted(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlNodeSetPtr ret_val;
     xmlNodeSetPtr nodes; /* a node-set, sorted by document order */
@@ -45548,7 +45562,7 @@ static int
 test_xmlXPathNodeSetAdd(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlNodeSetPtr cur; /* the initial node set */
     int n_cur;
@@ -45587,7 +45601,7 @@ static int
 test_xmlXPathNodeSetAddNs(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlNodeSetPtr cur; /* the initial node set */
     int n_cur;
@@ -45633,7 +45647,7 @@ static int
 test_xmlXPathNodeSetAddUnique(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlNodeSetPtr cur; /* the initial node set */
     int n_cur;
@@ -45672,7 +45686,7 @@ static int
 test_xmlXPathNodeSetContains(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     int ret_val;
     xmlNodeSetPtr cur; /* the node-set */
@@ -45713,7 +45727,7 @@ static int
 test_xmlXPathNodeSetDel(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlNodeSetPtr cur; /* the initial node set */
     int n_cur;
@@ -45752,7 +45766,7 @@ static int
 test_xmlXPathNodeSetMerge(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlNodeSetPtr ret_val;
     xmlNodeSetPtr val1; /* the first NodeSet or NULL */
@@ -45793,7 +45807,7 @@ static int
 test_xmlXPathNodeSetRemove(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlNodeSetPtr cur; /* the initial node set */
     int n_cur;
@@ -45832,7 +45846,7 @@ static int
 test_xmlXPathNodeSetSort(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlNodeSetPtr set; /* the node set */
     int n_set;
@@ -45864,7 +45878,7 @@ static int
 test_xmlXPathNodeTrailing(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlNodeSetPtr ret_val;
     xmlNodeSetPtr nodes; /* a node-set */
@@ -45905,7 +45919,7 @@ static int
 test_xmlXPathNodeTrailingSorted(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlNodeSetPtr ret_val;
     xmlNodeSetPtr nodes; /* a node-set, sorted by document order */
@@ -45946,7 +45960,7 @@ static int
 test_xmlXPathNormalizeFunction(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
     int n_ctxt;
@@ -45985,7 +45999,7 @@ static int
 test_xmlXPathNotEqualValues(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     int ret_val;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
@@ -46019,7 +46033,7 @@ static int
 test_xmlXPathNotFunction(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
     int n_ctxt;
@@ -46058,7 +46072,7 @@ static int
 test_xmlXPathNsLookup(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     const xmlChar * ret_val;
     xmlXPathContextPtr ctxt; /* the XPath context */
@@ -46099,7 +46113,7 @@ static int
 test_xmlXPathNumberFunction(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
     int n_ctxt;
@@ -46138,7 +46152,7 @@ static int
 test_xmlXPathParseNCName(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlChar * ret_val;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
@@ -46172,7 +46186,7 @@ static int
 test_xmlXPathParseName(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlChar * ret_val;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
@@ -46206,7 +46220,7 @@ static int
 test_xmlXPathPopBoolean(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     int ret_val;
     xmlXPathParserContextPtr ctxt; /* an XPath parser context */
@@ -46240,7 +46254,7 @@ static int
 test_xmlXPathPopExternal(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     void * ret_val;
     xmlXPathParserContextPtr ctxt; /* an XPath parser context */
@@ -46274,7 +46288,7 @@ static int
 test_xmlXPathPopNodeSet(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlNodeSetPtr ret_val;
     xmlXPathParserContextPtr ctxt; /* an XPath parser context */
@@ -46308,7 +46322,7 @@ static int
 test_xmlXPathPopNumber(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     double ret_val;
     xmlXPathParserContextPtr ctxt; /* an XPath parser context */
@@ -46342,7 +46356,7 @@ static int
 test_xmlXPathPopString(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlChar * ret_val;
     xmlXPathParserContextPtr ctxt; /* an XPath parser context */
@@ -46376,7 +46390,7 @@ static int
 test_xmlXPathPositionFunction(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
     int n_ctxt;
@@ -46415,7 +46429,7 @@ static int
 test_xmlXPathRegisterAllFunctions(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathContextPtr ctxt; /* the XPath context */
     int n_ctxt;
@@ -46477,7 +46491,7 @@ static int
 test_xmlXPathRegisterNs(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     int ret_val;
     xmlXPathContextPtr ctxt; /* the XPath context */
@@ -46525,7 +46539,7 @@ static int
 test_xmlXPathRegisterVariable(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     int ret_val;
     xmlXPathContextPtr ctxt; /* the XPath context */
@@ -46583,7 +46597,7 @@ static int
 test_xmlXPathRegisterVariableNS(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     int ret_val;
     xmlXPathContextPtr ctxt; /* the XPath context */
@@ -46638,7 +46652,7 @@ static int
 test_xmlXPathRegisteredFuncsCleanup(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathContextPtr ctxt; /* the XPath context */
     int n_ctxt;
@@ -46670,7 +46684,7 @@ static int
 test_xmlXPathRegisteredNsCleanup(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathContextPtr ctxt; /* the XPath context */
     int n_ctxt;
@@ -46702,7 +46716,7 @@ static int
 test_xmlXPathRegisteredVariablesCleanup(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathContextPtr ctxt; /* the XPath context */
     int n_ctxt;
@@ -46734,7 +46748,7 @@ static int
 test_xmlXPathRoot(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
     int n_ctxt;
@@ -46766,7 +46780,7 @@ static int
 test_xmlXPathRoundFunction(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
     int n_ctxt;
@@ -46805,7 +46819,7 @@ static int
 test_xmlXPathStartsWithFunction(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
     int n_ctxt;
@@ -46844,7 +46858,7 @@ static int
 test_xmlXPathStringEvalNumber(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     double ret_val;
     xmlChar * str; /* A string to scan */
@@ -46878,7 +46892,7 @@ static int
 test_xmlXPathStringFunction(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
     int n_ctxt;
@@ -46917,7 +46931,7 @@ static int
 test_xmlXPathStringLengthFunction(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
     int n_ctxt;
@@ -46956,7 +46970,7 @@ static int
 test_xmlXPathSubValues(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
     int n_ctxt;
@@ -46988,7 +47002,7 @@ static int
 test_xmlXPathSubstringAfterFunction(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
     int n_ctxt;
@@ -47027,7 +47041,7 @@ static int
 test_xmlXPathSubstringBeforeFunction(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
     int n_ctxt;
@@ -47066,7 +47080,7 @@ static int
 test_xmlXPathSubstringFunction(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
     int n_ctxt;
@@ -47105,7 +47119,7 @@ static int
 test_xmlXPathSumFunction(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
     int n_ctxt;
@@ -47144,7 +47158,7 @@ static int
 test_xmlXPathTrailing(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlNodeSetPtr ret_val;
     xmlNodeSetPtr nodes1; /* a node-set */
@@ -47185,7 +47199,7 @@ static int
 test_xmlXPathTrailingSorted(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlNodeSetPtr ret_val;
     xmlNodeSetPtr nodes1; /* a node-set, sorted by document order */
@@ -47226,7 +47240,7 @@ static int
 test_xmlXPathTranslateFunction(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
     int n_ctxt;
@@ -47265,7 +47279,7 @@ static int
 test_xmlXPathTrueFunction(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
     int n_ctxt;
@@ -47304,7 +47318,7 @@ static int
 test_xmlXPathValueFlipSign(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
     int n_ctxt;
@@ -47336,7 +47350,7 @@ static int
 test_xmlXPathVariableLookup(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathObjectPtr ret_val;
     xmlXPathContextPtr ctxt; /* the XPath context */
@@ -47377,7 +47391,7 @@ static int
 test_xmlXPathVariableLookupNS(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathObjectPtr ret_val;
     xmlXPathContextPtr ctxt; /* the XPath context */
@@ -47425,7 +47439,7 @@ static int
 test_xmlXPathWrapCString(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathObjectPtr ret_val;
     char * val; /* the char * value */
@@ -47459,7 +47473,7 @@ static int
 test_xmlXPathWrapExternal(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathObjectPtr ret_val;
     void * val; /* the user data */
@@ -47493,7 +47507,7 @@ static int
 test_xmlXPathWrapNodeSet(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathObjectPtr ret_val;
     xmlNodeSetPtr val; /* the NodePtr value */
@@ -47527,7 +47541,7 @@ static int
 test_xmlXPatherror(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPATH_ENABLED
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     xmlXPathParserContextPtr ctxt; /* the XPath Parser context */
     int n_ctxt;
@@ -47703,7 +47717,7 @@ static int
 test_xmlXPtrBuildNodeList(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPTR_ENABLED
+#if defined(LIBXML_XPTR_ENABLED)
     int mem_base;
     xmlNodePtr ret_val;
     xmlXPathObjectPtr obj; /* the XPointer result from the evaluation. */
@@ -47737,7 +47751,7 @@ static int
 test_xmlXPtrEval(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPTR_ENABLED
+#if defined(LIBXML_XPTR_ENABLED)
     int mem_base;
     xmlXPathObjectPtr ret_val;
     xmlChar * str; /* the XPointer expression */
@@ -47778,7 +47792,7 @@ static int
 test_xmlXPtrEvalRangePredicate(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPTR_ENABLED
+#if defined(LIBXML_XPTR_ENABLED)
     int mem_base;
     xmlXPathParserContextPtr ctxt; /* the XPointer Parser context */
     int n_ctxt;
@@ -47820,7 +47834,7 @@ static int
 test_xmlXPtrLocationSetAdd(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPTR_ENABLED
+#if defined(LIBXML_XPTR_ENABLED)
     int mem_base;
     xmlLocationSetPtr cur; /* the initial range set */
     int n_cur;
@@ -47869,7 +47883,7 @@ static int
 test_xmlXPtrLocationSetDel(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPTR_ENABLED
+#if defined(LIBXML_XPTR_ENABLED)
     int mem_base;
     xmlLocationSetPtr cur; /* the initial range set */
     int n_cur;
@@ -47918,7 +47932,7 @@ static int
 test_xmlXPtrLocationSetRemove(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPTR_ENABLED
+#if defined(LIBXML_XPTR_ENABLED)
     int mem_base;
     xmlLocationSetPtr cur; /* the initial range set */
     int n_cur;
@@ -47957,7 +47971,7 @@ static int
 test_xmlXPtrNewCollapsedRange(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPTR_ENABLED
+#if defined(LIBXML_XPTR_ENABLED)
     int mem_base;
     xmlXPathObjectPtr ret_val;
     xmlNodePtr start; /* the starting and ending node */
@@ -48001,7 +48015,7 @@ static int
 test_xmlXPtrNewLocationSetNodeSet(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPTR_ENABLED
+#if defined(LIBXML_XPTR_ENABLED)
     int mem_base;
     xmlXPathObjectPtr ret_val;
     xmlNodeSetPtr set; /* a node set */
@@ -48035,7 +48049,7 @@ static int
 test_xmlXPtrNewLocationSetNodes(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPTR_ENABLED
+#if defined(LIBXML_XPTR_ENABLED)
     int mem_base;
     xmlXPathObjectPtr ret_val;
     xmlNodePtr start; /* the start NodePtr value */
@@ -48076,7 +48090,7 @@ static int
 test_xmlXPtrNewRange(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPTR_ENABLED
+#if defined(LIBXML_XPTR_ENABLED)
     int mem_base;
     xmlXPathObjectPtr ret_val;
     xmlNodePtr start; /* the starting node */
@@ -48131,7 +48145,7 @@ static int
 test_xmlXPtrNewRangeNodeObject(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPTR_ENABLED
+#if defined(LIBXML_XPTR_ENABLED)
     int mem_base;
     xmlXPathObjectPtr ret_val;
     xmlNodePtr start; /* the starting node */
@@ -48172,7 +48186,7 @@ static int
 test_xmlXPtrNewRangeNodePoint(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPTR_ENABLED
+#if defined(LIBXML_XPTR_ENABLED)
     int mem_base;
     xmlXPathObjectPtr ret_val;
     xmlNodePtr start; /* the starting node */
@@ -48213,7 +48227,7 @@ static int
 test_xmlXPtrNewRangeNodes(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPTR_ENABLED
+#if defined(LIBXML_XPTR_ENABLED)
     int mem_base;
     xmlXPathObjectPtr ret_val;
     xmlNodePtr start; /* the starting node */
@@ -48254,7 +48268,7 @@ static int
 test_xmlXPtrNewRangePointNode(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPTR_ENABLED
+#if defined(LIBXML_XPTR_ENABLED)
     int mem_base;
     xmlXPathObjectPtr ret_val;
     xmlXPathObjectPtr start; /* the starting point */
@@ -48295,7 +48309,7 @@ static int
 test_xmlXPtrNewRangePoints(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPTR_ENABLED
+#if defined(LIBXML_XPTR_ENABLED)
     int mem_base;
     xmlXPathObjectPtr ret_val;
     xmlXPathObjectPtr start; /* the starting point */
@@ -48336,7 +48350,7 @@ static int
 test_xmlXPtrRangeToFunction(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPTR_ENABLED
+#if defined(LIBXML_XPTR_ENABLED)
     int mem_base;
     xmlXPathParserContextPtr ctxt; /* the XPointer Parser context */
     int n_ctxt;
@@ -48375,7 +48389,7 @@ static int
 test_xmlXPtrWrapLocationSet(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_XPTR_ENABLED
+#if defined(LIBXML_XPTR_ENABLED)
     int mem_base;
     xmlXPathObjectPtr ret_val;
     xmlLocationSetPtr val; /* the LocationSet value */

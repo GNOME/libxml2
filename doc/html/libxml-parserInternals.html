@@ -105,8 +105,8 @@ void	<a href="#xmlEntityReferenceFunc">xmlEntityReferenceFunc</a>		(<a href="lib
 <pre class="programlisting">int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br />					 <a href="libxml-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a> handler)</pre>
 <h2>Description</h2>
 <h3><a name="INPUT_CHUNK" id="INPUT_CHUNK"></a>Macro: INPUT_CHUNK</h3><pre>#define INPUT_CHUNK</pre><p>The parser tries to always have that amount of input ready. One of the point is providing context when reporting errors.</p>
-<h3><a name="IS_ASCII_DIGIT" id="IS_ASCII_DIGIT"></a>Macro: IS_ASCII_DIGIT</h3><pre>#define IS_ASCII_DIGIT</pre><p></p>
-<h3><a name="IS_ASCII_LETTER" id="IS_ASCII_LETTER"></a>Macro: IS_ASCII_LETTER</h3><pre>#define IS_ASCII_LETTER</pre><p></p>
+<h3><a name="IS_ASCII_DIGIT" id="IS_ASCII_DIGIT"></a>Macro: IS_ASCII_DIGIT</h3><pre>#define IS_ASCII_DIGIT</pre><p>Macro to check [0-9]</p>
+<h3><a name="IS_ASCII_LETTER" id="IS_ASCII_LETTER"></a>Macro: IS_ASCII_LETTER</h3><pre>#define IS_ASCII_LETTER</pre><p>Macro to check [a-zA-Z]</p>
 <h3><a name="IS_BASECHAR" id="IS_BASECHAR"></a>Macro: IS_BASECHAR</h3><pre>#define IS_BASECHAR</pre><p>Macro to check the following production in the XML spec: [85] BaseChar ::= ... long list see REC ...</p>
 <h3><a name="IS_BLANK" id="IS_BLANK"></a>Macro: IS_BLANK</h3><pre>#define IS_BLANK</pre><p>Macro to check the following production in the XML spec: [3] S ::= (#x20 | #x9 | #xD | #xA)+</p>
 <h3><a name="IS_BLANK_CH" id="IS_BLANK_CH"></a>Macro: IS_BLANK_CH</h3><pre>#define IS_BLANK_CH</pre><p>Behaviour same as <a href="libxml-parserInternals.html#IS_BLANK">IS_BLANK</a></p>

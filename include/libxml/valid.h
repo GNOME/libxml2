@@ -149,12 +149,6 @@ typedef xmlIDTable *xmlIDTablePtr;
 typedef struct _xmlHashTable xmlRefTable;
 typedef xmlRefTable *xmlRefTablePtr;
 
-/* Allocate/Release Validation Contexts */
-XMLPUBFUN xmlValidCtxtPtr XMLCALL	    
-		xmlNewValidCtxt(void);
-XMLPUBFUN void XMLCALL		    
-		xmlFreeValidCtxt(xmlValidCtxtPtr);
-
 /* Notation */
 XMLPUBFUN xmlNotationPtr XMLCALL	    
 		xmlAddNotationDecl	(xmlValidCtxtPtr ctxt,
@@ -162,8 +156,10 @@ XMLPUBFUN xmlNotationPtr XMLCALL
 					 const xmlChar *name,
 					 const xmlChar *PublicID,
 					 const xmlChar *SystemID);
+#ifdef LIBXML_TREE_ENABLED
 XMLPUBFUN xmlNotationTablePtr XMLCALL 
 		xmlCopyNotationTable	(xmlNotationTablePtr table);
+#endif /* LIBXML_TREE_ENABLED */
 XMLPUBFUN void XMLCALL		    
 		xmlFreeNotationTable	(xmlNotationTablePtr table);
 #ifdef LIBXML_OUTPUT_ENABLED
@@ -188,11 +184,13 @@ XMLPUBFUN void XMLCALL
 					 int size,
 	                                 xmlElementContentPtr content,
 					 int glob);
+#ifdef LIBXML_OUTPUT_ENABLED
 /* DEPRECATED */
 XMLPUBFUN void XMLCALL		     
 		xmlSprintfElementContent(char *buf,
 	                                 xmlElementContentPtr content,
 					 int glob);
+#endif /* LIBXML_OUTPUT_ENABLED */
 /* DEPRECATED */
 
 /* Element */
@@ -202,8 +200,10 @@ XMLPUBFUN xmlElementPtr XMLCALL
 					 const xmlChar *name,
 					 xmlElementTypeVal type,
 					 xmlElementContentPtr content);
+#ifdef LIBXML_TREE_ENABLED
 XMLPUBFUN xmlElementTablePtr XMLCALL 
 		xmlCopyElementTable	(xmlElementTablePtr table);
+#endif /* LIBXML_TREE_ENABLED */
 XMLPUBFUN void XMLCALL		   
 		xmlFreeElementTable	(xmlElementTablePtr table);
 #ifdef LIBXML_OUTPUT_ENABLED
@@ -220,8 +220,10 @@ XMLPUBFUN xmlEnumerationPtr XMLCALL
 		xmlCreateEnumeration	(const xmlChar *name);
 XMLPUBFUN void XMLCALL		   
 		xmlFreeEnumeration	(xmlEnumerationPtr cur);
+#ifdef LIBXML_TREE_ENABLED
 XMLPUBFUN xmlEnumerationPtr XMLCALL  
 		xmlCopyEnumeration	(xmlEnumerationPtr cur);
+#endif /* LIBXML_TREE_ENABLED */
 
 /* Attribute */
 XMLPUBFUN xmlAttributePtr XMLCALL	    
@@ -234,8 +236,10 @@ XMLPUBFUN xmlAttributePtr XMLCALL
 					 xmlAttributeDefault def,
 					 const xmlChar *defaultValue,
 					 xmlEnumerationPtr tree);
+#ifdef LIBXML_TREE_ENABLED
 XMLPUBFUN xmlAttributeTablePtr XMLCALL 
 		xmlCopyAttributeTable  (xmlAttributeTablePtr table);
+#endif /* LIBXML_TREE_ENABLED */
 XMLPUBFUN void XMLCALL		     
 		xmlFreeAttributeTable  (xmlAttributeTablePtr table);
 #ifdef LIBXML_OUTPUT_ENABLED
@@ -289,6 +293,12 @@ XMLPUBFUN xmlListPtr XMLCALL
  * The public function calls related to validity checking.
  */
 #ifdef LIBXML_VALID_ENABLED
+/* Allocate/Release Validation Contexts */
+XMLPUBFUN xmlValidCtxtPtr XMLCALL	    
+		xmlNewValidCtxt(void);
+XMLPUBFUN void XMLCALL		    
+		xmlFreeValidCtxt(xmlValidCtxtPtr);
+
 XMLPUBFUN int XMLCALL		
 		xmlValidateRoot		(xmlValidCtxtPtr ctxt,
 					 xmlDocPtr doc);
@@ -352,11 +362,14 @@ XMLPUBFUN int XMLCALL
 XMLPUBFUN int XMLCALL		
 		xmlValidateDocumentFinal(xmlValidCtxtPtr ctxt,
 					 xmlDocPtr doc);
+#endif /* LIBXML_VALID_ENABLED */
+
+#if defined(LIBXML_VALID_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
 XMLPUBFUN int XMLCALL		
 		xmlValidateNotationUse	(xmlValidCtxtPtr ctxt,
 					 xmlDocPtr doc,
 					 const xmlChar *notationName);
-#endif /* LIBXML_VALID_ENABLED */
+#endif /* LIBXML_VALID_ENABLED or LIBXML_SCHEMAS_ENABLED */
 
 XMLPUBFUN int XMLCALL		
 		xmlIsMixedElement	(xmlDocPtr doc,
@@ -381,19 +394,19 @@ XMLPUBFUN xmlElementPtr XMLCALL
 		xmlGetDtdElementDesc	(xmlDtdPtr dtd,
 					 const xmlChar *name);
 
-XMLPUBFUN int XMLCALL		
-		xmlValidGetValidElements(xmlNode *prev,
-					 xmlNode *next,
-					 const xmlChar **names,
-					 int max);
+#ifdef LIBXML_VALID_ENABLED
+
 XMLPUBFUN int XMLCALL		
 		xmlValidGetPotentialChildren(xmlElementContent *ctree,
 					 const xmlChar **list,
 					 int *len,
 					 int max);
 
-#ifdef LIBXML_VALID_ENABLED
-
+XMLPUBFUN int XMLCALL		
+		xmlValidGetValidElements(xmlNode *prev,
+					 xmlNode *next,
+					 const xmlChar **names,
+					 int max);
 XMLPUBFUN int XMLCALL		
 		xmlValidateNameValue	(const xmlChar *value);
 XMLPUBFUN int XMLCALL		
@@ -403,7 +416,6 @@ XMLPUBFUN int XMLCALL
 XMLPUBFUN int XMLCALL		
 		xmlValidateNmtokensValue(const xmlChar *value);
 
-#endif /* LIBXML_VALID_ENABLED */
 #ifdef LIBXML_REGEXP_ENABLED
 /*
  * Validation based on the regexp support
@@ -427,6 +439,7 @@ XMLPUBFUN int XMLCALL
 					 xmlNodePtr elem,
 					 const xmlChar *qname);
 #endif /* LIBXML_REGEXP_ENABLED */
+#endif /* LIBXML_VALID_ENABLED */
 #ifdef __cplusplus
 }
 #endif

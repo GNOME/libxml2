@@ -98,6 +98,7 @@ XMLPUBFUN void XMLCALL
 		xmlSAX2StartDocument		(void *ctx);
 XMLPUBFUN void XMLCALL		
 		xmlSAX2EndDocument		(void *ctx);
+#if defined(LIBXML_SAX1_ENABLED) || defined(LIBXML_HTML_ENABLED)
 XMLPUBFUN void XMLCALL		
 		xmlSAX2StartElement		(void *ctx,
 						 const xmlChar *fullname,
@@ -105,6 +106,7 @@ XMLPUBFUN void XMLCALL
 XMLPUBFUN void XMLCALL		
 		xmlSAX2EndElement		(void *ctx,
 						 const xmlChar *name);
+#endif /* LIBXML_SAX1_ENABLED or LIBXML_HTML_ENABLED */
 XMLPUBFUN void XMLCALL
 		xmlSAX2StartElementNs		(void *ctx,
 						 const xmlChar *localname,
@@ -143,8 +145,10 @@ XMLPUBFUN void XMLCALL
 						 const xmlChar *value,
 						 int len);
 
+#ifdef LIBXML_SAX1_ENABLED
 XMLPUBFUN int XMLCALL
 		xmlSAXDefaultVersion		(int version);
+#endif /* LIBXML_SAX1_ENABLED */
 
 XMLPUBFUN int XMLCALL
 		xmlSAXVersion			(xmlSAXHandler *hdlr,
@@ -155,17 +159,17 @@ XMLPUBFUN void XMLCALL
 #ifdef LIBXML_HTML_ENABLED
 XMLPUBFUN void XMLCALL		
 		xmlSAX2InitHtmlDefaultSAXHandler(xmlSAXHandler *hdlr);
+XMLPUBFUN void XMLCALL		
+		htmlDefaultSAXHandlerInit	(void);
 #endif
 #ifdef LIBXML_DOCB_ENABLED
 XMLPUBFUN void XMLCALL		
 		xmlSAX2InitDocbDefaultSAXHandler(xmlSAXHandler *hdlr);
+XMLPUBFUN void XMLCALL		
+		docbDefaultSAXHandlerInit	(void);
 #endif
 XMLPUBFUN void XMLCALL		
 		xmlDefaultSAXHandlerInit	(void);
-XMLPUBFUN void XMLCALL		
-		htmlDefaultSAXHandlerInit	(void);
-XMLPUBFUN void XMLCALL		
-		docbDefaultSAXHandlerInit	(void);
 #ifdef __cplusplus
 }
 #endif

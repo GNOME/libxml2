@@ -268,16 +268,15 @@ xmlOutputBufferPtr
 	__xmlOutputBufferCreateFilename(const char *URI,
                               xmlCharEncodingHandlerPtr encoder,
                               int compression);
-#endif /* LIBXML_OUTPUT_ENABLED */
 
-/*  This function only exists if HTTP support built into the library  */
 #ifdef LIBXML_HTTP_ENABLED
-XMLPUBFUN void * XMLCALL	
-	xmlIOHTTPOpenW			(const char * post_uri,
-					 int   compression );
+/*  This function only exists if HTTP support built into the library  */
 XMLPUBFUN void XMLCALL	
 	xmlRegisterHTTPPostCallbacks	(void );
-#endif
+#endif /* LIBXML_HTTP_ENABLED */
+	
+#endif /* LIBXML_OUTPUT_ENABLED */
+
 XMLPUBFUN xmlParserInputPtr XMLCALL
 	xmlCheckHTTPInput		(xmlParserCtxtPtr ctxt,
 					 xmlParserInputPtr ret);
@@ -321,6 +320,11 @@ XMLPUBFUN int XMLCALL
 	xmlIOHTTPMatch 			(const char *filename);
 XMLPUBFUN void * XMLCALL	
 	xmlIOHTTPOpen 			(const char *filename);
+#ifdef LIBXML_OUTPUT_ENABLED
+XMLPUBFUN void * XMLCALL	
+	xmlIOHTTPOpenW			(const char * post_uri,
+					 int   compression );
+#endif /* LIBXML_OUTPUT_ENABLED */
 XMLPUBFUN int XMLCALL 	
 	xmlIOHTTPRead			(void * context, 
 					 char * buffer, 

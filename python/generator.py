@@ -1037,17 +1037,25 @@ def buildWrappers():
 		        classes.write("        self.%s = None\n" % ref[1])
 		classes.write("        if _obj != None:self._o = _obj;return\n")
 		classes.write("        self._o = None\n\n");
+	    destruct=None
 	    if classes_destructors.has_key(classname):
 		classes.write("    def __del__(self):\n")
 		classes.write("        if self._o != None:\n")
 		classes.write("            libxml2mod.%s(self._o)\n" %
 			      classes_destructors[classname]);
 		classes.write("        self._o = None\n\n");
+		destruct=classes_destructors[classname]
 	    flist = function_classes[classname]
 	    flist.sort(functionCompare)
 	    oldfile = ""
 	    for info in flist:
 		(index, func, name, ret, args, file) = info
+		#
+		# Do not provide as method the destructors for the class
+		# to avoid double free
+		#
+		if name == destruct:
+		    continue;
 		if file != oldfile:
 		    if file == "python_accessor":
 			classes.write("    # accessors for %s\n" % (classname))

@@ -256,7 +256,7 @@
 /* Define to the version of this package. */
 #undef PACKAGE_VERSION
 
-/* Define if compiler has function prototypes */
+/* Define to 1 if the C compiler supports function prototypes. */
 #undef PROTOTYPES
 
 /* Determine what socket length (socklen_t) data type is */
@@ -273,6 +273,9 @@
 
 /* Using the Win32 Socket implementation */
 #undef _WINSOCKAPI_
+
+/* Define like PROTOTYPES; this can be used by system headers. */
+#undef __PROTOTYPES
 
 /* Win32 Std C name mangling work-around */
 #undef snprintf

@@ -638,6 +638,7 @@ xmlCleanupCharEncodingHandlers
 xmlCleanupEncodingAliases
 xmlCleanupGlobals
 xmlCleanupInputCallbacks
+xmlCleanupMemory
 xmlCleanupOutputCallbacks
 xmlCleanupParser
 xmlCleanupPredefinedEntities
@@ -1607,6 +1608,7 @@ xmlStringLenGetNodeList
 xmlStrlen
 xmlStrncasecmp
 xmlStrncat
+xmlStrncatNew
 xmlStrncmp
 xmlStrndup
 xmlStrstr
@@ -1687,6 +1689,8 @@ xmlTextWriterEndElement
 xmlTextWriterEndPI
 xmlTextWriterFlush
 xmlTextWriterFullEndElement
+xmlTextWriterSetIndent
+xmlTextWriterSetIndentString
 xmlTextWriterStartAttribute
 xmlTextWriterStartAttributeNS
 xmlTextWriterStartCDATA

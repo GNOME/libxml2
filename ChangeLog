@@ -1,3 +1,9 @@
+Fri Nov 22 18:50:34 CET 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
+
+	* win32/Makefile.mingw: fixed unresolved symbols when linking with
+	  pthreads
+	* win32/wince/*: applied updates to Windows CE port from Javier
+
 Fri Nov 22 15:51:22 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in: preparing 2.4.28

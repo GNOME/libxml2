@@ -495,7 +495,7 @@ xmlPatMatch(xmlPatternPtr comp, xmlNodePtr node) {
 #define CUR_PTR ctxt->cur
 
 #define SKIP_BLANKS 							\
-    while (IS_BLANK(CUR)) NEXT
+    while (IS_BLANK_CH(CUR)) NEXT
 
 #define CURRENT (*ctxt->cur)
 #define NEXT ((*ctxt->cur) ?  ctxt->cur++: ctxt->cur)
@@ -890,7 +890,8 @@ error:
  * Returns the compiled for of the pattern or NULL in case of error
  */
 xmlPatternPtr
-xmlPatterncompile(const xmlChar *pattern, xmlDict *dict, int flags,
+xmlPatterncompile(const xmlChar *pattern, xmlDict *dict,
+                  int flags ATTRIBUTE_UNUSED,
                   const xmlChar **namespaces) {
     xmlPatternPtr ret = NULL;
     xmlPatParserContextPtr ctxt = NULL;

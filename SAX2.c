@@ -1277,7 +1277,8 @@ process_external_subset:
 		    if (att == NULL) {
 		        xmlErrValid(ctxt, XML_DTD_STANDALONE_DEFAULTED,
       "standalone: attribute %s on %s defaulted from external subset\n",
-				    fulln, attr->elem);
+				    (const char *)fulln,
+				    (const char *)attr->elem);
 		    }
 		}
 		attr = attr->nexth;

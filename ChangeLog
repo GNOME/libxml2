@@ -1,3 +1,7 @@
+Wed Dec 10 11:43:33 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* SAX2.c pattern.c: removed some compilation warnings
+
 Wed Dec 10 11:16:29 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmllint.c: fixing bug #119264 xmllint failing to report

@@ -1,3 +1,10 @@
+Sat Feb 22 00:19:48 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: fixing some nodeinfo in entities problem raised
+	  by Glenn W. Bach
+	* relaxng.c: implemented the first section 7.3 check
+	* result/relaxng/*: updated the results
+
 Fri Feb 21 18:12:19 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c: fixed some problems in the previous commit

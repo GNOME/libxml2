@@ -9685,6 +9685,10 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
 	ctxt->loadsubset = oldctxt->loadsubset;
 	ctxt->validate = oldctxt->validate;
 	ctxt->external = oldctxt->external;
+	ctxt->record_info = oldctxt->record_info;
+	ctxt->node_seq.maximum = oldctxt->node_seq.maximum;
+	ctxt->node_seq.length = oldctxt->node_seq.length;
+	ctxt->node_seq.buffer = oldctxt->node_seq.buffer;
     } else {
 	/*
 	 * Doing validity checking on chunk without context
@@ -9703,6 +9707,9 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
     }
     newDoc = xmlNewDoc(BAD_CAST "1.0");
     if (newDoc == NULL) {
+	ctxt->node_seq.maximum = 0;
+	ctxt->node_seq.length = 0;
+	ctxt->node_seq.buffer = NULL;
 	xmlFreeParserCtxt(ctxt);
 	return(-1);
     }
@@ -9717,6 +9724,9 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
     if (newDoc->children == NULL) {
 	if (sax != NULL)
 	    ctxt->sax = oldsax;
+	ctxt->node_seq.maximum = 0;
+	ctxt->node_seq.length = 0;
+	ctxt->node_seq.buffer = NULL;
 	xmlFreeParserCtxt(ctxt);
 	newDoc->intSubset = NULL;
 	newDoc->extSubset = NULL;
@@ -9809,6 +9819,9 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
     }
     if (sax != NULL) 
 	ctxt->sax = oldsax;
+    ctxt->node_seq.maximum = 0;
+    ctxt->node_seq.length = 0;
+    ctxt->node_seq.buffer = NULL;
     xmlFreeParserCtxt(ctxt);
     newDoc->intSubset = NULL;
     newDoc->extSubset = NULL;

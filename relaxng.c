@@ -234,6 +234,7 @@ typedef xmlRelaxNGInterleaveGroup *xmlRelaxNGInterleaveGroupPtr;
 struct _xmlRelaxNGInterleaveGroup {
     xmlRelaxNGDefinePtr  rule;	/* the rule to satisfy */
     xmlRelaxNGDefinePtr *defs;	/* the array of element definitions */
+    xmlRelaxNGDefinePtr *attrs;	/* the array of attributes definitions */
 };
 
 /**
@@ -592,6 +593,8 @@ xmlRelaxNGFreePartition(xmlRelaxNGPartitionPtr partitions) {
 		if (group != NULL) {
 		    if (group->defs != NULL)
 			xmlFree(group->defs);
+		    if (group->attrs != NULL)
+			xmlFree(group->attrs);
 		    xmlFree(group);
 		}
 	    }
@@ -2094,7 +2097,8 @@ xmlRelaxNGCompareElemDefLists(xmlRelaxNGParserCtxtPtr ctxt ATTRIBUTE_UNUSED,
 /**
  * xmlRelaxNGGetElements:
  * @ctxt:  a Relax-NG parser context
- * @def:  the interleave definition
+ * @def:  the definition definition
+ * @eora:  gather elements (0) or attributes (1)
  *
  * Compute the list of top elements a definition can generate
  *
@@ -2102,16 +2106,25 @@ xmlRelaxNGCompareElemDefLists(xmlRelaxNGParserCtxtPtr ctxt ATTRIBUTE_UNUSED,
  */
 static xmlRelaxNGDefinePtr *
 xmlRelaxNGGetElements(xmlRelaxNGParserCtxtPtr ctxt,
-	              xmlRelaxNGDefinePtr def) {
+	              xmlRelaxNGDefinePtr def,
+		      int eora) {
     xmlRelaxNGDefinePtr *ret = NULL, parent, cur, tmp;
     int len = 0;
     int max = 0;
 
+    /*
+     * Don't run that check in case of error. Infinite recursion
+     * becomes possible.
+     */
+    if (ctxt->nbErrors != 0)
+	return(NULL);
+
     parent = NULL;
     cur = def;
     while (cur != NULL) {
-	if ((cur->type == XML_RELAXNG_ELEMENT) ||
-	    (cur->type == XML_RELAXNG_TEXT)) {
+	if (((eora == 0) && ((cur->type == XML_RELAXNG_ELEMENT) ||
+	     (cur->type == XML_RELAXNG_TEXT))) ||
+	    ((eora == 1) && (cur->type == XML_RELAXNG_ATTRIBUTE))) {
 	    if (ret == NULL) {
 		max = 10;
 		ret = (xmlRelaxNGDefinePtr *)
@@ -2160,7 +2173,7 @@ xmlRelaxNGGetElements(xmlRelaxNGParserCtxtPtr ctxt,
 	    }
 	}
 	if (cur == def)
-	    return(ret);
+	    break;
 	if (cur->next != NULL) {
 	    cur = cur->next;
 	    continue;
@@ -2179,10 +2192,92 @@ xmlRelaxNGGetElements(xmlRelaxNGParserCtxtPtr ctxt,
 }
 	                     
 /**
+ * xmlRelaxNGCheckGroupAttrs:
+ * @ctxt:  a Relax-NG parser context
+ * @def:  the group definition
+ *
+ * Detects violations of rule 7.3
+ */
+static void
+xmlRelaxNGCheckGroupAttrs(xmlRelaxNGParserCtxtPtr ctxt,
+	                  xmlRelaxNGDefinePtr def) {
+    xmlRelaxNGDefinePtr **list;
+    xmlRelaxNGDefinePtr cur;
+    int nbchild = 0, i, j, ret;
+
+    if ((def == NULL) ||
+	((def->type != XML_RELAXNG_GROUP) &&
+	 (def->type != XML_RELAXNG_ELEMENT)))
+	return;
+
+    /*
+     * Don't run that check in case of error. Infinite recursion
+     * becomes possible.
+     */
+    if (ctxt->nbErrors != 0)
+	return;
+
+    cur = def->attrs;
+    while (cur != NULL) {
+	nbchild++;
+	cur = cur->next;
+    }
+    cur = def->content;
+    while (cur != NULL) {
+	nbchild++;
+	cur = cur->next;
+    }
+
+    list = (xmlRelaxNGDefinePtr **) xmlMalloc(nbchild *
+	                                      sizeof(xmlRelaxNGDefinePtr *));
+    if (list == NULL) {
+	if (ctxt->error != NULL)
+	    ctxt->error(ctxt->userData,
+		"Out of memory in group computation\n");
+	ctxt->nbErrors++;
+	return;
+    }
+    i = 0;
+    cur = def->attrs;
+    while (cur != NULL) {
+	list[i] = xmlRelaxNGGetElements(ctxt, cur, 1);
+	i++;
+	cur = cur->next;
+    }
+    cur = def->content;
+    while (cur != NULL) {
+	list[i] = xmlRelaxNGGetElements(ctxt, cur, 1);
+	i++;
+	cur = cur->next;
+    }
+
+    for (i = 0;i < nbchild;i++) {
+	if (list[i] == NULL)
+	    continue;
+	for (j = 0;j < i;j++) {
+	    if (list[j] == NULL)
+		continue;
+	    ret = xmlRelaxNGCompareElemDefLists(ctxt, list[i], list[j]);
+	    if (ret == 0) {
+		if (ctxt->error != NULL)
+		    ctxt->error(ctxt->userData,
+			"Attributes conflicts in group\n");
+		ctxt->nbErrors++;
+	    }
+	}
+    }
+    for (i = 0;i < nbchild;i++) {
+	if (list[i] != NULL)
+	    xmlFree(list[i]);
+    }
+    xmlFree(list);
+}
+
+/**
  * xmlRelaxNGComputeInterleaves:
  * @def:  the interleave definition
  * @ctxt:  a Relax-NG parser context
- * @node:  the data node.
+ * @name:  the definition name
  *
  * A lot of work for preprocessing interleave definitions
  * is potentially needed to get a decent execution speed at runtime
@@ -2199,13 +2294,19 @@ xmlRelaxNGComputeInterleaves(xmlRelaxNGDefinePtr def,
 			     xmlChar *name ATTRIBUTE_UNUSED) {
     xmlRelaxNGDefinePtr cur;
 
-    xmlRelaxNGDefinePtr *list = NULL;
     xmlRelaxNGPartitionPtr partitions = NULL;
     xmlRelaxNGInterleaveGroupPtr *groups = NULL;
     xmlRelaxNGInterleaveGroupPtr group;
     int i,j,ret;
     int nbgroups = 0;
     int nbchild = 0;
+
+    /*
+     * Don't run that check in case of error. Infinite recursion
+     * becomes possible.
+     */
+    if (ctxt->nbErrors != 0)
+	return;
 
 #ifdef DEBUG_INTERLEAVE
     xmlGenericError(xmlGenericErrorContext,
@@ -2232,11 +2333,11 @@ xmlRelaxNGComputeInterleaves(xmlRelaxNGDefinePtr def,
 	if (groups[nbgroups] == NULL)
 	    goto error;
 	groups[nbgroups]->rule = cur;
-	groups[nbgroups]->defs = xmlRelaxNGGetElements(ctxt, cur);
+	groups[nbgroups]->defs = xmlRelaxNGGetElements(ctxt, cur, 0);
+	groups[nbgroups]->attrs = xmlRelaxNGGetElements(ctxt, cur, 1);
 	nbgroups++;
 	cur = cur->next;
     }
-    list = NULL;
 #ifdef DEBUG_INTERLEAVE
     xmlGenericError(xmlGenericErrorContext, "  %d groups\n", nbgroups);
 #endif
@@ -2262,12 +2363,20 @@ xmlRelaxNGComputeInterleaves(xmlRelaxNGDefinePtr def,
 			"Element or text conflicts in interleave\n");
 		ctxt->nbErrors++;
 	    }
+	    ret = xmlRelaxNGCompareElemDefLists(ctxt, group->attrs,
+						groups[j]->attrs);
+	    if (ret == 0) {
+		if (ctxt->error != NULL)
+		    ctxt->error(ctxt->userData,
+			"Attributes conflicts in interleave\n");
+		ctxt->nbErrors++;
+	    }
 	}
     }
     partitions->groups = groups;
 
     /*
-     * Free Up the child list, and save the partition list back in the def
+     * and save the partition list back in the def
      */
     def->data = partitions;
     return;
@@ -2277,8 +2386,6 @@ error:
 	ctxt->error(ctxt->userData,
 	    "Out of memory in interleave computation\n");
     ctxt->nbErrors++;
-    if (list == NULL)
-	xmlFree(list);
     if (groups != NULL) {
 	for (i = 0;i < nbgroups;i++)
 	    if (groups[i] != NULL) {
@@ -4077,6 +4184,10 @@ xmlRelaxNGCheckRules(xmlRelaxNGParserCtxtPtr ctxt,
 		ret = (xmlRelaxNGContentType) cur->depth + 15;
 	    }
 	} else if (cur->type == XML_RELAXNG_ELEMENT) {
+	    /*
+	     * The 7.3 Attribute derivation rule for groups is plugged there
+	     */
+	    xmlRelaxNGCheckGroupAttrs(ctxt, cur);
 	    if (flags & XML_RELAXNG_IN_DATAEXCEPT) {
 		if (ctxt->error != NULL)
 		    ctxt->error(ctxt->userData,
@@ -4214,6 +4325,10 @@ xmlRelaxNGCheckRules(xmlRelaxNGParserCtxtPtr ctxt,
 	    else
 		nflags = flags;
 	    ret = xmlRelaxNGCheckRules(ctxt, cur->content, nflags, cur->type);
+	    /*
+	     * The 7.3 Attribute derivation rule for groups is plugged there
+	     */
+	    xmlRelaxNGCheckGroupAttrs(ctxt, cur);
 	} else if (cur->type == XML_RELAXNG_INTERLEAVE) {
 	    if (flags & XML_RELAXNG_IN_LIST) {
 		if (ctxt->error != NULL)
@@ -4955,6 +5070,9 @@ xmlRelaxNGCleanupTree(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr root) {
 			    xmlFree(name);
 			} 
 		    }
+		    /*
+		     * 4.16
+		     */
 		    if (xmlStrEqual(cur->name, BAD_CAST "nsName")) {
 			if (ctxt->flags & XML_RELAXNG_IN_NSEXCEPT) {
 			    if (ctxt->error != NULL)
@@ -4967,6 +5085,9 @@ xmlRelaxNGCleanupTree(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr root) {
 			   (cur != root)) {
 		    int oldflags = ctxt->flags;
 
+		    /*
+		     * 4.16
+		     */
 		    if ((cur->parent != NULL) &&
 			(xmlStrEqual(cur->parent->name, BAD_CAST "anyName"))) {
 			ctxt->flags |= XML_RELAXNG_IN_ANYEXCEPT;
@@ -4981,6 +5102,9 @@ xmlRelaxNGCleanupTree(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr root) {
 			goto skip_children;
 		    }
 		} else if (xmlStrEqual(cur->name, BAD_CAST "anyName")) {
+		    /*
+		     * 4.16
+		     */
 		    if (ctxt->flags & XML_RELAXNG_IN_ANYEXCEPT) {
 			if (ctxt->error != NULL)
 			    ctxt->error(ctxt->userData,

@@ -1,3 +1,9 @@
+Mon Aug 25 12:37:23 CEST 2003 Igor Zlatkovic <igor@zlatkovic.com>
+
+	* include/libxml/parserInternals.h include/libxml/relaxng.h
+	  include/libxml/SAX.h include/libxml/SAX2.h: realigned the
+	  parameters after taint.
+	
 Mon Aug 25 11:16:01 CEST 2003 Igor Zlatkovic <igor@zlatkovic.com>
 
 	* include/libxml/xmlversion.h.in: moved export defs to a separate

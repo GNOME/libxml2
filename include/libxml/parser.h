@@ -381,7 +381,7 @@ xmlChar *	xmlStrsub		(const xmlChar *str,
 const xmlChar *	xmlStrchr		(const xmlChar *str,
 					 xmlChar val);
 const xmlChar *	xmlStrstr		(const xmlChar *str,
-					 xmlChar *val);
+					 const xmlChar *val);
 const xmlChar *	xmlStrcasestr		(const xmlChar *str,
 					 xmlChar *val);
 int		xmlStrcmp		(const xmlChar *str1,

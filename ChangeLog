@@ -1,3 +1,9 @@
+Fri Jun 29 23:26:54 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* include/libxml/parser.h parser.c: xmlStrstr args are both const
+	* xpath.c: small cleanup
+	* xmlGetNsList: reformated, fixed problems if used on Entities
+
 Thu Jun 28 18:19:44 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* doc/xml.html: added 1.8.14 and 2.3.13 releases

@@ -1271,7 +1271,7 @@ xmlStrchr(const xmlChar *str, xmlChar val) {
  */
 
 const xmlChar *
-xmlStrstr(const xmlChar *str, xmlChar *val) {
+xmlStrstr(const xmlChar *str, const xmlChar *val) {
     int n;
     
     if (str == NULL) return(NULL);

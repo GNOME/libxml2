@@ -7449,6 +7449,7 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
 			    break;
 		    }
 	            break;
+		break;
 	    }
 	} while (cur != NULL);
 

@@ -3823,7 +3823,8 @@ xmlTextMerge(xmlNodePtr first, xmlNodePtr second) {
  *         namespace if defined
  */
 xmlNsPtr *
-xmlGetNsList(xmlDocPtr doc ATTRIBUTE_UNUSED, xmlNodePtr node) {
+xmlGetNsList(xmlDocPtr doc ATTRIBUTE_UNUSED, xmlNodePtr node)
+{
     xmlNsPtr cur;
     xmlNsPtr *ret = NULL;
     int nbns = 0;
@@ -3831,41 +3832,48 @@ xmlGetNsList(xmlDocPtr doc ATTRIBUTE_UNUSED, xmlNodePtr node) {
     int i;
 
     while (node != NULL) {
-	cur = node->nsDef;
-	while (cur != NULL) {
-	    if (ret == NULL) {
-	        ret = (xmlNsPtr *) xmlMalloc((maxns + 1) * sizeof(xmlNsPtr));
-		if (ret == NULL) {
-		    xmlGenericError(xmlGenericErrorContext,
-			    "xmlGetNsList : out of memory!\n");
-		    return(NULL);
-		}
-		ret[nbns] = NULL;
-	    }
-	    for (i = 0;i < nbns;i++) {
-	        if ((cur->prefix == ret[i]->prefix) ||
-		    (xmlStrEqual(cur->prefix, ret[i]->prefix))) break;
-	    }
-	    if (i >= nbns) {
-	        if (nbns >= maxns) {
-		    maxns *= 2;
-		    ret = (xmlNsPtr *) xmlRealloc(ret,
-		                         (maxns + 1) * sizeof(xmlNsPtr));
-		    if (ret == NULL) {
-			xmlGenericError(xmlGenericErrorContext,
-				"xmlGetNsList : realloc failed!\n");
-			return(NULL);
-		    }
-		}
-		ret[nbns++] = cur;
-		ret[nbns] = NULL;
-	    }
+        if (node->type == XML_ELEMENT_NODE) {
+            cur = node->nsDef;
+            while (cur != NULL) {
+                if (ret == NULL) {
+                    ret =
+                        (xmlNsPtr *) xmlMalloc((maxns + 1) *
+                                               sizeof(xmlNsPtr));
+                    if (ret == NULL) {
+                        xmlGenericError(xmlGenericErrorContext,
+                                        "xmlGetNsList : out of memory!\n");
+                        return (NULL);
+                    }
+                    ret[nbns] = NULL;
+                }
+                for (i = 0; i < nbns; i++) {
+                    if ((cur->prefix == ret[i]->prefix) ||
+                        (xmlStrEqual(cur->prefix, ret[i]->prefix)))
+                        break;
+                }
+                if (i >= nbns) {
+                    if (nbns >= maxns) {
+                        maxns *= 2;
+                        ret = (xmlNsPtr *) xmlRealloc(ret,
+                                                      (maxns +
+                                                       1) *
+                                                      sizeof(xmlNsPtr));
+                        if (ret == NULL) {
+                            xmlGenericError(xmlGenericErrorContext,
+                                            "xmlGetNsList : realloc failed!\n");
+                            return (NULL);
+                        }
+                    }
+                    ret[nbns++] = cur;
+                    ret[nbns] = NULL;
+                }
 
-	    cur = cur->next;
-	}
-	node = node->parent;
+                cur = cur->next;
+            }
+        }
+        node = node->parent;
     }
-    return(ret);
+    return (ret);
 }
 
 /**

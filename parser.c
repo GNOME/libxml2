@@ -4992,7 +4992,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
     xmlEntityPtr ent;
     xmlChar *val;
     if (CUR != '&') return;
-
+#if 0
     if (ctxt->inputNr > 1) {
         xmlChar cur[2] = { '&' , 0 } ;
 
@@ -5005,6 +5005,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 	}
 	return;
     }
+#endif
     if (NXT(1) == '#') {
 	xmlChar out[2];
 	int val = xmlParseCharRef(ctxt);

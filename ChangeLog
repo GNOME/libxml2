@@ -1,3 +1,11 @@
+Sun Dec 24 20:10:11 2000  Ali Abdin <aliabdin@aucegypt.edu>
+
+	* parser.c: in xmlParseReference, do not split up an entity into the
+	  '&' and the rest of it (e.g. 'gt;'). This throws off the SAX parser
+	  in a certain case and makes it do SAX.characters ('&') and then
+	  SAX.characters ('gt;'). The code is only #if 0'd out. I ran 'make
+	  tests' and no errors were generated.
+
 Sun Nov 12 12:12:22 2000  George Lebl <jirka@5z.com>
 
 	* tree.c: xmlAddPrevSibling and xmlAddNextSibling had reverse

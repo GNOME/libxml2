@@ -1,3 +1,7 @@
+Mon Jan 31 01:27:22 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* pattern.c xmllint.c: bugfixes around the streaming patterns
+
 Sun Jan 30 23:35:19 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am configure.in result/pattern/simple 

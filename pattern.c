@@ -1289,7 +1289,7 @@ xmlStreamCtxtAddState(xmlStreamCtxtPtr comp, int idx, int level) {
 int
 xmlStreamPush(xmlStreamCtxtPtr stream,
               const xmlChar *name, const xmlChar *ns) {
-    int ret = 0, tmp, i, m, match, step;
+    int ret = 0, tmp, i, m, match, step, desc, final;
     xmlStreamCompPtr comp;
 
     if ((stream == NULL) || (stream->nbState < 0))
@@ -1318,6 +1318,9 @@ xmlStreamPush(xmlStreamCtxtPtr stream,
 	if (step < 0) continue;
 	/* skip new states just added */
 	if (stream->states[(2 * i) + 1] > stream->level) continue;
+	/* skip continuations */
+	desc = comp->steps[step].flags & XML_STREAM_STEP_DESC;
+	if ((stream->states[(2 * i) + 1] < stream->level) && (!desc))continue;
 
 	/* discard old states */
 	/* something needed about old level discarded */
@@ -1344,23 +1347,29 @@ xmlStreamPush(xmlStreamCtxtPtr stream,
 	    }
 	}
 	if (match) {
-	    if (comp->steps[step].flags & XML_STREAM_STEP_DESC) {
-		if (comp->steps[step].flags & XML_STREAM_STEP_FINAL) {
+	    final = comp->steps[step].flags & XML_STREAM_STEP_FINAL;
+	    if (desc) {
+		if (final) {
 		    ret = 1;
 		} else {
 		    /* descending match create a new state */
 		    xmlStreamCtxtAddState(stream, step + 1, stream->level + 1);
 		}
 	    } else {
-		if (comp->steps[step].flags & XML_STREAM_STEP_FINAL) {
+		if (final) {
 		    ret = 1;
+#if 0
 		    stream->states[2 * i] = -1;
+#endif
 		} else {
+#if 0
 		    stream->states[2 * i] = step + 1;
 		    stream->states[2 * i + 1] = stream->level + 1;
+#endif
+		    xmlStreamCtxtAddState(stream, step + 1, stream->level + 1);
 		}
 	    }
-	} else if (!(comp->steps[step].flags & XML_STREAM_STEP_DESC)) {
+	} else if (!desc) {
 	    /* didn't match, discard */
 	    stream->states[2 * i] = -1;
 	}

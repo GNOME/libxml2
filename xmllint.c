@@ -806,9 +806,10 @@ static void myClose(FILE *f) {
  ************************************************************************/
 static void processNode(xmlTextReaderPtr reader) {
     const xmlChar *name, *value;
-    int type;
+    int type, empty;
 
     type = xmlTextReaderNodeType(reader);
+    empty = xmlTextReaderIsEmptyElement(reader);
 
     if (debug) {
 	name = xmlTextReaderConstName(reader);
@@ -822,7 +823,7 @@ static void processNode(xmlTextReaderPtr reader) {
 		xmlTextReaderDepth(reader),
 		type,
 		name,
-		xmlTextReaderIsEmptyElement(reader),
+		empty,
 		xmlTextReaderHasValue(reader));
 	if (value == NULL)
 	    printf("\n");
@@ -868,7 +869,9 @@ static void processNode(xmlTextReaderPtr reader) {
 		}
 		
 
-	    } else if (type == XML_READER_TYPE_END_ELEMENT) {
+	    } 
+	    if ((type == XML_READER_TYPE_END_ELEMENT) ||
+	        ((type == XML_READER_TYPE_ELEMENT) && (empty))) {
 	        ret = xmlStreamPop(patstream);
 		if (ret < 0) {
 		    fprintf(stderr, "xmlStreamPop() failure\n");

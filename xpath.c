@@ -5268,6 +5268,10 @@ xmlXPathNextParent(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
 	    case XML_ENTITY_DECL:
 		if (ctxt->context->node->parent == NULL)
 		    return((xmlNodePtr) ctxt->context->doc);
+		if ((ctxt->context->node->parent->type == XML_ELEMENT_NODE) &&
+		    (xmlStrEqual(ctxt->context->node->parent->name,
+				 BAD_CAST "fake node libxslt")))
+		    return(NULL);
 		return(ctxt->context->node->parent);
             case XML_ATTRIBUTE_NODE: {
 		xmlAttrPtr att = (xmlAttrPtr) ctxt->context->node;
@@ -5335,6 +5339,10 @@ xmlXPathNextAncestor(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
 	    case XML_XINCLUDE_END:
 		if (ctxt->context->node->parent == NULL)
 		    return((xmlNodePtr) ctxt->context->doc);
+		if ((ctxt->context->node->parent->type == XML_ELEMENT_NODE) &&
+		    (xmlStrEqual(ctxt->context->node->parent->name,
+				 BAD_CAST "fake node libxslt")))
+		    return(NULL);
 		return(ctxt->context->node->parent);
             case XML_ATTRIBUTE_NODE: {
 		xmlAttrPtr tmp = (xmlAttrPtr) ctxt->context->node;
@@ -5380,6 +5388,11 @@ xmlXPathNextAncestor(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
         case XML_ENTITY_DECL:
 	case XML_XINCLUDE_START:
 	case XML_XINCLUDE_END:
+	    if (cur->parent == NULL)
+		return(NULL);
+	    if ((cur->parent->type == XML_ELEMENT_NODE) &&
+		(xmlStrEqual(cur->parent->name, BAD_CAST "fake node libxslt")))
+		return(NULL);
 	    return(cur->parent);
 	case XML_ATTRIBUTE_NODE: {
 	    xmlAttrPtr att = (xmlAttrPtr) ctxt->context->node;

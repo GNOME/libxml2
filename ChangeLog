@@ -1,3 +1,9 @@
+Fri Jan 10 18:04:32 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c: fix to the XPath implementation for parent and
+	  ancestors axis when operating on a Result Value Tree.
+	  Fixes bug #100271
+
 Fri Jan 10 17:07:01 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* nanoftp.c nanohttp.c xmlIO.c: patch from Stefano Zacchiroli

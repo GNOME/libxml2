@@ -187,7 +187,7 @@ xmlParserPrintFileContext(xmlParserInputPtr input) {
     while ((n<col) && (n++ < sizeof(content)-2) && (*ctnt != 0)) {
 	if (*(ctnt) != '\t')
 	    *(ctnt) = ' ';
-	*ctnt++;
+	ctnt++;
     }
     *ctnt++ = '^';
     *ctnt = 0;

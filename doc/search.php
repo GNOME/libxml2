@@ -386,9 +386,6 @@ A:link, A:visited, A:active { text-decoration: underline }
 			mysql_free_result($result);
 		    }
 		}
-		if (($j <= 0) && ($k <= 0)) {
-		    echo "<p> No result found for $word\n";
-		}
 	    }
 	    mysql_close($link);
 	    $nb = count($results);

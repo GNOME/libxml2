@@ -1,3 +1,9 @@
+Sun Sep 20 17:22:20 PDT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* error.c: fixed a warning message (trivial)
+	* doc/search.php: removed incorrect warning message when word
+	  search not found in last of multiple tables (bug 119535)
+
 Fri Sep 19 14:26:28 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in: preparing a 2.6.0-beta2 release

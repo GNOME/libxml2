@@ -3143,11 +3143,6 @@ get_more_space:
 		return;
 	    }
 get_more:
-#if 0
-	    while (((*in >= 0x20) && (*in != '<') && (*in != ']') &&
-		    (*in != '&') && (*in <= 0x7F)) || (*in == 0x09))
-		in++;
-#endif
 	    while (((*in > ']') && (*in <= 0x7F)) ||
 	           ((*in > '&') && (*in < '<')) ||
 	           ((*in > '<') && (*in < ']')) ||

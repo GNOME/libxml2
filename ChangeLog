@@ -1,3 +1,9 @@
+Wed Feb 25 11:36:06 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* catalog.c: fixed the main issues reported by Peter Breitenlohner
+	* parser.c: cleanup
+	* valid.c: speedup patch from Petr Pajas
+
 Wed Feb 25 16:07:14 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* xpath.c: fixed a memory leak (xmlXPathLangFunction) reported

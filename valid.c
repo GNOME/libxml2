@@ -2715,6 +2715,19 @@ xmlWalkRemoveRef(const void *data, const void *user)
 }
 
 /**
+ * xmlDummyCompare
+ * @data0:  Value supplied by the user
+ * @data1:  Value supplied by the user
+ *
+ * Do nothing, return 0. Used to create unordered lists.
+ */
+static int
+xmlDummyCompare(const void *data0, const void *data1)
+{
+    return (0);
+}
+
+/**
  * xmlAddRef:
  * @ctxt:  the validation context
  * @doc:  pointer to the document
@@ -2784,7 +2797,7 @@ xmlAddRef(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const xmlChar *value,
      */
 
     if (NULL == (ref_list = xmlHashLookup(table, value))) {
-        if (NULL == (ref_list = xmlListCreate(xmlFreeRef, NULL))) {
+        if (NULL == (ref_list = xmlListCreate(xmlFreeRef, xmlDummyCompare))) {
 	    xmlErrValid(NULL, XML_ERR_INTERNAL_ERROR,
 		    "xmlAddRef: Reference list creation failed!\n",
 		    NULL);

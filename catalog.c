@@ -749,7 +749,7 @@ xmlCatalogUnWrapURN(const xmlChar *urn) {
     urn += sizeof(XML_URN_PUBID) - 1;
     
     while (*urn != 0) {
-	if (i > sizeof(result) - 3)
+	if (i > sizeof(result) - 4)
 	    break;
 	if (*urn == '+') {
 	    result[i++] = ' ';
@@ -763,21 +763,21 @@ xmlCatalogUnWrapURN(const xmlChar *urn) {
 	    result[i++] = ':';
 	    urn++;
 	} else if (*urn == '%') {
-	    if ((urn[1] == '2') && (urn[1] == 'B'))
+	    if ((urn[1] == '2') && (urn[2] == 'B'))
 		result[i++] = '+';
-	    else if ((urn[1] == '3') && (urn[1] == 'A'))
+	    else if ((urn[1] == '3') && (urn[2] == 'A'))
 		result[i++] = ':';
-	    else if ((urn[1] == '2') && (urn[1] == 'F'))
+	    else if ((urn[1] == '2') && (urn[2] == 'F'))
 		result[i++] = '/';
-	    else if ((urn[1] == '3') && (urn[1] == 'B'))
+	    else if ((urn[1] == '3') && (urn[2] == 'B'))
 		result[i++] = ';';
-	    else if ((urn[1] == '2') && (urn[1] == '7'))
+	    else if ((urn[1] == '2') && (urn[2] == '7'))
 		result[i++] = '\'';
-	    else if ((urn[1] == '3') && (urn[1] == 'F'))
+	    else if ((urn[1] == '3') && (urn[2] == 'F'))
 		result[i++] = '?';
-	    else if ((urn[1] == '2') && (urn[1] == '3'))
+	    else if ((urn[1] == '2') && (urn[2] == '3'))
 		result[i++] = '#';
-	    else if ((urn[1] == '2') && (urn[1] == '5'))
+	    else if ((urn[1] == '2') && (urn[2] == '5'))
 		result[i++] = '%';
 	    else {
 		result[i++] = *urn;
@@ -1887,7 +1887,7 @@ xmlCatalogListXMLResolve(xmlCatalogEntryPtr catal, const xmlChar *pubID,
 	else if (xmlStrEqual(pubID, urnID))
 	    ret = xmlCatalogListXMLResolve(catal, pubID, NULL);
 	else {
-	    ret = xmlCatalogListXMLResolve(catal, pubID, NULL);
+	    ret = xmlCatalogListXMLResolve(catal, pubID, urnID);
 	}
 	if (urnID != NULL)
 	    xmlFree(urnID);
@@ -2383,7 +2383,7 @@ xmlCatalogGetSGMLPublic(xmlHashTablePtr catal, const xmlChar *pubID) {
  *
  * Try to lookup the catalog local reference for a system ID
  *
- * Returns the system ID if found or NULL otherwise.
+ * Returns the local resource if found or NULL otherwise.
  */
 static const xmlChar *
 xmlCatalogGetSGMLSystem(xmlHashTablePtr catal, const xmlChar *sysID) {
@@ -2664,13 +2664,16 @@ xmlACatalogResolve(xmlCatalogPtr catal, const xmlChar * pubID,
         return (NULL);
 
     if (xmlDebugCatalogs) {
-        if (pubID != NULL) {
-            xmlGenericError(xmlGenericErrorContext,
-                            "Resolve: pubID %s\n", pubID);
-        } else {
-            xmlGenericError(xmlGenericErrorContext,
-                            "Resolve: sysID %s\n", sysID);
-        }
+         if ((pubID != NULL) && (sysID != NULL)) {
+             xmlGenericError(xmlGenericErrorContext,
+                             "Resolve: pubID %s sysID %s\n", pubID, sysID);
+         } else if (pubID != NULL) {
+             xmlGenericError(xmlGenericErrorContext,
+                             "Resolve: pubID %s\n", pubID);
+         } else {
+             xmlGenericError(xmlGenericErrorContext,
+                             "Resolve: sysID %s\n", sysID);
+         }
     }
 
     if (catal->type == XML_XML_CATALOG_TYPE) {
@@ -3434,13 +3437,16 @@ xmlCatalogLocalResolve(void *catalogs, const xmlChar *pubID,
 	return(NULL);
 
     if (xmlDebugCatalogs) {
-	if (pubID != NULL) {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "Local resolve: pubID %s\n", pubID);
-	} else {
-	    xmlGenericError(xmlGenericErrorContext,
-		    "Local resolve: sysID %s\n", sysID);
-	}
+        if ((pubID != NULL) && (sysID != NULL)) {
+            xmlGenericError(xmlGenericErrorContext,
+                            "Local Resolve: pubID %s sysID %s\n", pubID, sysID);
+        } else if (pubID != NULL) {
+            xmlGenericError(xmlGenericErrorContext,
+                            "Local Resolve: pubID %s\n", pubID);
+        } else {
+            xmlGenericError(xmlGenericErrorContext,
+                            "Local Resolve: sysID %s\n", sysID);
+        }
     }
 
     catal = (xmlCatalogEntryPtr) catalogs;

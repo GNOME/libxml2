@@ -103,6 +103,11 @@ far too early to make any conformance statement about it at the moment.</p>
     projects.</li>
 </ul>
 
+<p>Results of the <a
+href="http://xmlbench.sourceforge.net/results/benchmark/index.html">xmlbench
+benchmark</a> on sourceforge 19 March 2003 (smaller is better):</p>
+<p align="center"><img src="benchmark.gif" alt="benchmark results for Expat Xerces libxml2 Oracle and Sun toolkits"></p>
+
 <p>Logo designed by <a href="mailto:liyanage@access.ch">Marc Liyanage</a>.</p>
 
 <h2><a name="Introducti">Introduction</a></h2>
@@ -1648,8 +1653,8 @@ or libxslt wrappers or bindings:</p>
     Tcl</a>.</li>
   <li>There is support for libxml2 in the DOM module of PHP.</li>
   <li><a href="http://savannah.gnu.org/projects/classpathx/">LibxmlJ</a> is
-      an effort to create a 100% JAXP-compatible Java wrapper for 
-      libxml2 and libxslt as part of GNU ClasspathX project.
+    an effort to create a 100% JAXP-compatible Java wrapper for libxml2 and
+    libxslt as part of GNU ClasspathX project.</li>
 </ul>
 
 <p>The distribution includes a set of Python bindings, which are guaranteed
@@ -2840,6 +2845,8 @@ xmlOutputBufferCreateOwn(FILE *file, xmlCharEncodingHandlerPtr encoder) {
         ret-&gt;closecallback = NULL;  /* No close callback */
     }
     return(ret); <br>
+
+
 
 
 

@@ -79,7 +79,7 @@ ifeq ($(WITH_ICONV),1)
 LIBS += -liconv
 endif 
 ifeq ($(WITH_ZLIB),1)
-LIBS += -lzlib
+LIBS += -lzdll
 endif
 ifeq ($(WITH_THREADS),posix)
 LIBS += -lpthreadGC

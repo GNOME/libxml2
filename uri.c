@@ -980,6 +980,7 @@ xmlURIEscape(const xmlChar * str)
     if (uri->user) {
         segment = xmlURIEscapeStr(BAD_CAST uri->user, BAD_CAST ";:&=+$,");
         NULLCHK(segment)
+		ret = xmlStrcat(ret,BAD_CAST "//");	
         ret = xmlStrcat(ret, segment);
         ret = xmlStrcat(ret, BAD_CAST "@");
         xmlFree(segment);
@@ -988,7 +989,8 @@ xmlURIEscape(const xmlChar * str)
     if (uri->server) {
         segment = xmlURIEscapeStr(BAD_CAST uri->server, BAD_CAST "/?;:@");
         NULLCHK(segment)
-        ret = xmlStrcat(ret, BAD_CAST "//");
+		if (uri->user == NULL)
+       		ret = xmlStrcat(ret, BAD_CAST "//");
         ret = xmlStrcat(ret, segment);
         xmlFree(segment);
     }

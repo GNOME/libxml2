@@ -1,3 +1,8 @@
+Thu Apr  1 22:07:52 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* uri.c: fix for xmlUriEscape on "http://user@somewhere.com"
+	  from Mark Vadok.
+
 2004-04-01  Johan Dahlin  <johan@gnome.org>
 
 	* python/.cvsignore: Add generated files, to make cvs silent.

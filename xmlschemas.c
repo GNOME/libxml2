@@ -379,18 +379,20 @@ struct _xmlSchemaIDCMatcher {
 /*
 * Element info flags.
 */
-#define XML_SCHEMA_ELEM_INFO_VALUE_NEEDED 1<<0
+#define XML_SCHEMA_ELEM_INFO_VALUE_NEEDED 1
+/* #define XML_SCHEMA_ELEM_INFO_ATTR 2 */
+/* #define XML_SCHEMA_ELEM_INFO_ELEM 4 */
 
 /**
- * xmlSchemaElemInfo:
+ * xmlSchemaNodeInfo:
  *
  * Holds information of an element node.
  */
-typedef struct _xmlSchemaElemInfo xmlSchemaElemInfo;
-typedef xmlSchemaElemInfo *xmlSchemaElemInfoPtr;
-struct _xmlSchemaElemInfo {
+typedef struct _xmlSchemaNodeInfo xmlSchemaNodeInfo;
+typedef xmlSchemaNodeInfo *xmlSchemaNodeInfoPtr;
+struct _xmlSchemaNodeInfo {
     int depth;
-    int flags; /* combination of element info flags */
+    int flags; /* combination of node info flags */
     xmlNodePtr node;
     const xmlChar *localName;
     const xmlChar *namespaceName;
@@ -443,10 +445,10 @@ struct _xmlSchemaValidCtxt {
     int xsiAssemble;
 #ifdef ELEM_INFO_ENABLED
     int depth;
-    xmlSchemaElemInfoPtr *elemInfos; /* array of element informations */
+    xmlSchemaNodeInfoPtr *elemInfos; /* array of element informations */
     int sizeElemInfos;
-    xmlSchemaElemInfoPtr nodeInfo; /* the current element information */
-    xmlSchemaElemInfoPtr attrInfo; /* node infor for the current attribute */
+    xmlSchemaNodeInfoPtr nodeInfo; /* the current element information */
+    xmlSchemaNodeInfoPtr attrInfo; /* node infor for the current attribute */
 #endif
 #ifdef IDC_ENABLED
     xmlSchemaIDCAugPtr aidcs; /* a list of augmented IDC informations */
@@ -904,6 +906,35 @@ xmlSchemaFormatNsPrefixLocal(xmlChar **buf,
 	*buf = xmlStrcat(*buf, BAD_CAST ":");
 	*buf = xmlStrcat(*buf, local);
     }
+    return ((const xmlChar *) *buf);
+}
+
+/**
+ * xmlSchemaFormatQName:
+ * @buf: the string buffer
+ * @namespaceName:  the namespace name
+ * @localName: the local name
+ *
+ * Returns the given QName in the format "{namespaceName}localName" or
+ * just "localName" if @namespaceName is NULL.
+ *
+ * Returns the localName if @namespaceName is NULL, a formatted
+ * string otherwise.
+ */  
+static const xmlChar*   
+xmlSchemaFormatQName(xmlChar **buf,
+		     const xmlChar *namespaceName,
+		     const xmlChar *localName)
+{
+    FREE_AND_NULL(*buf)
+    if (namespaceName == NULL)
+	return(localName);
+    
+    *buf = xmlStrdup(BAD_CAST "{");
+    *buf = xmlStrcat(*buf, namespaceName);
+    *buf = xmlStrcat(*buf, BAD_CAST "}");
+    *buf = xmlStrcat(*buf, localName);
+    
     return ((const xmlChar *) *buf);
 }
 
@@ -2069,6 +2100,51 @@ xmlSchemaIsGlobalItem(xmlSchemaTypePtr item)
 	    return(1);
     }
     return (0);
+}
+
+
+static void
+xmlSchemaStreamVCustomErr(xmlSchemaValidCtxtPtr vctxt,
+			  xmlParserErrors error,
+			  xmlSchemaNodeInfoPtr nodeInfo,
+			  xmlSchemaTypePtr type,
+			  const char *message,
+			  const xmlChar *str1,
+			  const xmlChar *str2)
+{
+    xmlChar *msg = NULL, *str = NULL; 
+
+    msg = xmlStrdup(BAD_CAST "Element '");
+
+    if (vctxt->elemInfos[vctxt->depth] != nodeInfo) {
+	xmlSchemaNodeInfoPtr elemInfo;
+	/*
+	* The node info is an attribute info.
+	*/
+	elemInfo = vctxt->elemInfos[vctxt->depth];
+	msg = xmlStrcat(msg, xmlSchemaFormatQName(&str,
+	    elemInfo->namespaceName, elemInfo->localName));
+	msg = xmlStrcat(msg, BAD_CAST "', ");
+	msg = xmlStrcat(msg, BAD_CAST "attribute '");
+    }
+    msg = xmlStrcat(msg, xmlSchemaFormatQName(&str,
+	nodeInfo->namespaceName, nodeInfo->localName));
+    msg = xmlStrcat(msg, BAD_CAST "'");
+    
+    if ((type != NULL) && (xmlSchemaIsGlobalItem(type))) {
+	msg = xmlStrcat(msg, BAD_CAST " [");
+	msg = xmlStrcat(msg, xmlSchemaFormatItemForReport(&str,
+	    NULL, type, NULL, 0));
+	msg = xmlStrcat(msg, BAD_CAST "]");
+    }
+    msg = xmlStrcat(msg, BAD_CAST ": ");
+    
+    msg = xmlStrcat(msg, (const xmlChar *) message);
+    msg = xmlStrcat(msg, BAD_CAST ".\n");   
+    xmlSchemaVErr(vctxt, nodeInfo->node, error, (const char *) msg,
+	str1, str2);
+    FREE_AND_NULL(msg)
+    FREE_AND_NULL(str)    
 }
 
 /**
@@ -10403,8 +10479,14 @@ xmlSchemaIsDerivedFromBuiltInType(xmlSchemaParserCtxtPtr ctxt,
 static xmlSchemaTypePtr
 xmlSchemaGetPrimitiveType(xmlSchemaTypePtr type)
 {
+
     while (type != NULL) {
-	if (type->flags & XML_SCHEMAS_TYPE_BUILTIN_PRIMITIVE)
+	/*
+	* Note that anySimpleType is actually not a primitive type
+	* but we need that here.
+	*/
+	if ((type->builtInType == XML_SCHEMAS_ANYSIMPLETYPE) ||
+	   (type->flags & XML_SCHEMAS_TYPE_BUILTIN_PRIMITIVE))
 	    return (type);
 	type = type->baseType;
     }
@@ -10412,6 +10494,7 @@ xmlSchemaGetPrimitiveType(xmlSchemaTypePtr type)
     return (NULL);
 }
 
+#if 0
 /**
  * xmlSchemaGetBuiltInTypeAncestor:
  * @type:  the simpleType definition
@@ -10430,6 +10513,7 @@ xmlSchemaGetBuiltInTypeAncestor(xmlSchemaTypePtr type)
 
     return (NULL);
 }
+#endif
 
 
 /**
@@ -14934,6 +15018,11 @@ xmlSchemaGetWhiteSpaceFacetValue(xmlSchemaTypePtr type)
 	    return(XML_SCHEMAS_FACET_PRESERVE);
 	else if (type->builtInType == XML_SCHEMAS_NORMSTRING)
 	    return(XML_SCHEMAS_FACET_REPLACE);
+	else if (type->builtInType == XML_SCHEMAS_ANYSIMPLETYPE)
+	    /*
+	    * Note that we assume a whitespace of preserve for anySimpleType.
+	    */
+	    return(XML_SCHEMAS_FACET_PRESERVE);
 	else {
 	    /*
 	    * For all ·atomic· datatypes other than string (and types ·derived· 
@@ -15186,11 +15275,11 @@ static int xmlSchemaEndElement(xmlSchemaValidCtxtPtr vctxt);
  *
  * Returns the element info item or NULL on API or internal errors.
  */
-static xmlSchemaElemInfoPtr
+static xmlSchemaNodeInfoPtr
 xmlSchemaGetFreshElemInfo(xmlSchemaValidCtxtPtr vctxt,
 			  int depth)
 {
-    xmlSchemaElemInfoPtr info = NULL;
+    xmlSchemaNodeInfoPtr info = NULL;
     
     if (depth > vctxt->sizeElemInfos) {
 	xmlSchemaVErr(vctxt, NULL, XML_SCHEMAV_INTERNAL,
@@ -15200,22 +15289,22 @@ xmlSchemaGetFreshElemInfo(xmlSchemaValidCtxtPtr vctxt,
 	return (NULL);
     }
     if (vctxt->elemInfos == NULL) {	
-	vctxt->elemInfos = (xmlSchemaElemInfoPtr *) 
-	    xmlMalloc(10 * sizeof(xmlSchemaElemInfoPtr));
+	vctxt->elemInfos = (xmlSchemaNodeInfoPtr *) 
+	    xmlMalloc(10 * sizeof(xmlSchemaNodeInfoPtr));
 	if (vctxt->elemInfos == NULL) {
 	    xmlSchemaVErrMemory(vctxt, 
 		"allocating the element info array", NULL);
 	    return (NULL);
 	}
-	memset(vctxt->elemInfos, 0, 10 * sizeof(xmlSchemaElemInfoPtr));
+	memset(vctxt->elemInfos, 0, 10 * sizeof(xmlSchemaNodeInfoPtr));
 	vctxt->sizeElemInfos = 10;
     } else if (vctxt->sizeElemInfos == vctxt->depth) {
 	int i = vctxt->sizeElemInfos;
 
 	vctxt->sizeElemInfos *= 2;
-	vctxt->elemInfos = (xmlSchemaElemInfoPtr *) 
+	vctxt->elemInfos = (xmlSchemaNodeInfoPtr *) 
 	    xmlRealloc(vctxt->elemInfos, vctxt->sizeElemInfos * 
-	    sizeof(xmlSchemaElemInfoPtr));
+	    sizeof(xmlSchemaNodeInfoPtr));
 	if (vctxt->elemInfos == NULL) {
 	    xmlSchemaVErrMemory(vctxt, 
 		"re-allocating the element info array", NULL);
@@ -15231,8 +15320,8 @@ xmlSchemaGetFreshElemInfo(xmlSchemaValidCtxtPtr vctxt,
 	info = vctxt->elemInfos[depth];
 
     if (info == NULL) {
-	info = (xmlSchemaElemInfoPtr) 
-	    xmlMalloc(sizeof(xmlSchemaElemInfo));
+	info = (xmlSchemaNodeInfoPtr) 
+	    xmlMalloc(sizeof(xmlSchemaNodeInfo));
 	if (info == NULL) {
 	    xmlSchemaVErrMemory(vctxt, 
 		"allocating an element info", NULL);
@@ -15240,7 +15329,7 @@ xmlSchemaGetFreshElemInfo(xmlSchemaValidCtxtPtr vctxt,
 	}	
 	vctxt->elemInfos[depth] = info;
     }
-    memset(info, 0, sizeof(xmlSchemaElemInfo));
+    memset(info, 0, sizeof(xmlSchemaNodeInfo));
     info->depth = depth;
   
     return (info);
@@ -16668,7 +16757,7 @@ static xmlSchemaPSVIIDCBindingPtr
 xmlSchemaIDCAquireBinding(xmlSchemaValidCtxtPtr vctxt,
 			  xmlSchemaIDCMatcherPtr matcher)
 {
-    xmlSchemaElemInfoPtr info;
+    xmlSchemaNodeInfoPtr info;
 
     info = vctxt->elemInfos[matcher->depth];
 
@@ -16803,11 +16892,14 @@ xmlSchemaAreValuesEqual(xmlSchemaValidCtxtPtr vctxt,
 	goto compareValue;
     
     /*
-    * Comparison with anySimpleTypes is not supported by this implemention.
+    * Note that comparison with anySimpleTypes with be supported for
+    * string based types as well.
     */
+#if 0    
     if ((ta->builtInType == XML_SCHEMAS_ANYSIMPLETYPE) ||
 	(tb->builtInType == XML_SCHEMAS_ANYSIMPLETYPE))
 	return(0);
+#endif
     
     /*
     * 4.2.1 equal (data-types)
@@ -17164,20 +17256,19 @@ xmlSchemaXPathProcessHistory(xmlSchemaValidCtxtPtr vctxt,
 	if (matchDepth != depth) {
 	    sto = sto->next;
 	    continue;
-	}
-	
+	}	
 	if (sto->type == XPATH_STATE_OBJ_TYPE_IDC_FIELD) {
 	    if (! IS_SIMPLE_TYPE(type)) {
 		/*
 		* Not qualified if the field resolves to a node of non
 		* simple type.
 		*/	
-		xmlSchemaVCustomErr(vctxt,
+		xmlSchemaStreamVCustomErr(vctxt,
 		    XML_SCHEMAV_CVC_IDC,
-		    vctxt->node, 
+		    vctxt->nodeInfo, 
 		    (xmlSchemaTypePtr) sto->matcher->aidc->def,
 		    "The field '%s' does evaluate to a node of "
-		    "non-simple type", sto->sel->xpath);
+		    "non-simple type", sto->sel->xpath, NULL);
 		
 		sto->nbHistory--;
 		goto deregister_check;
@@ -17186,13 +17277,14 @@ xmlSchemaXPathProcessHistory(xmlSchemaValidCtxtPtr vctxt,
 		/*
 		* Failed to provide the normalized value; maby
 		* the value was invalid.
-		*/ 
-		xmlSchemaVCustomErr(vctxt,
+		*/
+		xmlSchemaStreamVCustomErr(vctxt, 
 		    XML_SCHEMAV_CVC_IDC,
-		    vctxt->nodeInfo->node,
+		    vctxt->nodeInfo,
 		    (xmlSchemaTypePtr) sto->matcher->aidc->def,
 		    "Warning: No precomputed value available, the value "
-		    "was either invalid or something strange happend", NULL);
+		    "was either invalid or something strange happend",
+		    NULL, NULL);
 		/*
 		xmlSchemaVErr(vctxt, vctxt->nodeInfo->node, 
 		    XML_SCHEMAV_INTERNAL,
@@ -17276,11 +17368,13 @@ xmlSchemaXPathProcessHistory(xmlSchemaValidCtxtPtr vctxt,
 			* 
 			* The key was already set; report an error.
 			*/
-			xmlSchemaVCustomErr(vctxt, 
+			xmlSchemaStreamVCustomErr(vctxt, 
 			    XML_SCHEMAV_CVC_IDC,
-			    vctxt->node, (xmlSchemaTypePtr) matcher->aidc->def,
+			    vctxt->nodeInfo,
+			    (xmlSchemaTypePtr) matcher->aidc->def,
 			    "The field '%s' evaluates to a node-set "
-			    "with more than one member", sto->sel->xpath);
+			    "with more than one member",
+			    sto->sel->xpath, NULL);
 			sto->nbHistory--;
 			goto deregister_check;
 		    } else {
@@ -17437,11 +17531,11 @@ create_key:
 		    /*   
 		    * TODO: Try to report the key-sequence.
 		    */
-		    xmlSchemaVCustomErr(vctxt, 
+		    xmlSchemaStreamVCustomErr(vctxt, 
 			XML_SCHEMAV_CVC_IDC,
-			vctxt->node,
+			vctxt->nodeInfo,
 			(xmlSchemaTypePtr) idc,
-			"Duplicate key-sequence found", NULL);
+			"Duplicate key-sequence found", NULL, NULL);
 		    
 		    goto selector_leave;
 		}
@@ -17497,12 +17591,12 @@ selector_key_error:
 	    * member of the ·target node set· is also a member
 	    * of the ·qualified node set· and vice versa.
 	    */
-	    xmlSchemaVCustomErr(vctxt, 
+	    xmlSchemaStreamVCustomErr(vctxt, 
 		XML_SCHEMAV_CVC_IDC,
-		vctxt->node, 
+		vctxt->nodeInfo, 
 		(xmlSchemaTypePtr) idc,
 		"All 'key' fields must evaluate to a node",
-		NULL);
+		NULL, NULL);
 selector_leave:
 	    /*
 	    * Free the key-sequence if not added to the IDC table.
@@ -19317,7 +19411,53 @@ xmlSchemaValidateElementByType(xmlSchemaValidCtxtPtr ctxt,
 }
 
 static int
-xmlSchemaCheckAttrLocallyValid(xmlSchemaValidCtxtPtr ctxt,
+xmlSchemaPostCreateVal(xmlSchemaValidCtxtPtr vctxt,
+		       const xmlChar *value,
+		       xmlSchemaValPtr *val)
+{
+    xmlSchemaTypePtr prim;
+
+    if (val == NULL) {
+	xmlSchemaVErr(vctxt, vctxt->nodeInfo->node, 
+	    XML_SCHEMAV_INTERNAL,
+	    "Internal error: xmlSchemaPostCreateVal, "
+	    "bad arguments", NULL, NULL);
+	return (-1);
+    }
+    /*
+    * Only string or anySimpleType values are expected to be post-created.
+    */
+    prim = xmlSchemaGetPrimitiveType(vctxt->nodeInfo->typeDef);
+    if ((prim->builtInType == XML_SCHEMAS_STRING) || 
+	(prim->builtInType == XML_SCHEMAS_ANYSIMPLETYPE))
+    {
+#if 0
+	builtIn = xmlSchemaGetBuiltInTypeAncestor(vctxt->nodeInfo->typeDef);
+#endif
+	if (value == NULL)
+	    /* TODO: Can this happen at all? */
+	    *val = xmlSchemaNewStringValue(XML_SCHEMAS_STRING,
+		xmlStrdup(BAD_CAST ""));
+	else
+	    *val = xmlSchemaNewStringValue(XML_SCHEMAS_STRING, value);
+	if ((*val) == NULL) {
+	    xmlSchemaVErr(vctxt, vctxt->nodeInfo->node, 
+		XML_SCHEMAV_INTERNAL,
+		"Internal error: xmlSchemaPostCreateVal, "
+		"failed to create the value", NULL, NULL);
+	    return (-1); 
+	}
+	return (0);
+    }
+    xmlSchemaVErr(vctxt, vctxt->nodeInfo->node, 
+	XML_SCHEMAV_INTERNAL,
+	"Internal error: xmlSchemaPostCreateVal, "
+	"the given type is not supported", NULL, NULL);
+    return (-1);
+}    
+
+static int
+xmlSchemaCheckAttrLocallyValid(xmlSchemaValidCtxtPtr vctxt,
 			       xmlSchemaAttrStatePtr state)
 {
     xmlChar *value;
@@ -19326,18 +19466,19 @@ xmlSchemaCheckAttrLocallyValid(xmlSchemaValidCtxtPtr ctxt,
     int fixed;
     int ret;
 
-    if (ctxt->attrInfo->typeDef == NULL) {
+    if (vctxt->attrInfo->typeDef == NULL) {
 	state->state = XML_SCHEMAS_ATTR_TYPE_NOT_RESOLVED;
 	return (XML_SCHEMAS_ATTR_TYPE_NOT_RESOLVED);
     }
-    ctxt->node = ctxt->attrInfo->node;
-    ctxt->cur = ctxt->node->children;
-    value = xmlNodeListGetString(ctxt->node->doc, ctxt->cur, 1);
+    vctxt->node = vctxt->attrInfo->node;
+    vctxt->cur = vctxt->node->children;
+    /* STREAM */
+    value = xmlNodeListGetString(vctxt->node->doc, vctxt->cur, 1);
     
     /*
     * NOTE: This call also checks the content nodes for correct type.
     */
-    ret = xmlSchemaValidateSimpleTypeValue(ctxt, ctxt->attrInfo->typeDef,
+    ret = xmlSchemaValidateSimpleTypeValue(vctxt, vctxt->attrInfo->typeDef,
 	value, 1, 1, 1, 1);
     	    
     /*
@@ -19356,70 +19497,65 @@ xmlSchemaCheckAttrLocallyValid(xmlSchemaValidCtxtPtr ctxt,
     } else if (ret == 0) {
 	state->state = XML_SCHEMAS_ATTR_CHECKED;
 	if (xmlSchemaGetEffectiveValueConstraint(
-	    (xmlSchemaAttributePtr) ctxt->attrInfo->decl, 
+	    (xmlSchemaAttributePtr) vctxt->attrInfo->decl, 
 	    &fixed, &defValue, &defVal) && (fixed == 1)) {
 
 	    int ws = xmlSchemaGetWhiteSpaceFacetValue(
-		ctxt->attrInfo->typeDef);	   
-
+		vctxt->nodeInfo->typeDef);	    
 	    /*
 	    * cvc-au : Attribute Locally Valid (Use)
 	    * For an attribute information item to be·valid· 
 	    * with respect to an attribute use its ·normalized 
 	    * value· must match the canonical lexical representation
-	    * of the attribute use's {value constraint} value, if it 
+	    * of the attribute use's {value constraint} value, if it
 	    * is present and fixed.
+	    *
+	    * TODO: Use somehow the *normalized* value and the *canonical*
+	    * fixed value. This here compares the canonical values of both.
+	    * The normalized value of, for example, a float type can differ
+	    * from its canonical representation. This all means that a fixed
+	    * value can only be OK, if it's present in the canonical form in
+	    * the instance.
+	    * NOTE: Since the value for string and anySimpleType is not always
+	    * precomputed during validation, we need to do it now.
 	    */
-	    /* 
-	    * NOTE: the validation context holds in ctxt->value the
-	    * precomputed value of the attribute; well for some types,
-	    * fallback to string comparison if no computed value 
-	    * exists.
-	    * TODO: Use the *normalized* value and the *canonical* fixed
-	    * value.
-	    */
-	    if (ctxt->value != NULL) {
-		if (defVal == NULL) {
-		    xmlSchemaTypePtr prim;
-		    /*
-		    * Oops, the value was not computed.
-		    */
-		    prim = xmlSchemaGetPrimitiveType(ctxt->attrInfo->typeDef);
-		    if (prim->builtInType == XML_SCHEMAS_STRING) {
-			xmlSchemaTypePtr builtIn;
-			
-			builtIn = xmlSchemaGetBuiltInTypeAncestor(
-			    ctxt->attrInfo->typeDef);
-			defVal = xmlSchemaNewStringValue(
-			    builtIn->builtInType, value);			
-			((xmlSchemaAttributePtr) ctxt->attrInfo->decl)->defVal =
-			    defVal;
-			value = NULL;
-		    } else {
-			 xmlSchemaVErr(ctxt, ctxt->attrInfo->node, 
-			     XML_SCHEMAV_INTERNAL,
-			     "Internal error: xmlSchemaCheckAttrLocallyValid, "
-			     "could not aquire a precomputed vale",
-			     NULL, NULL);
-		    }
-		}
-		if (defVal != NULL) {
-		    if (xmlSchemaCompareValuesWhtsp(ctxt->value,
-			(xmlSchemaWhitespaceValueType) ws,
-			defVal, (xmlSchemaWhitespaceValueType) ws) != 0)
-		    state->state = 
-			XML_SCHEMAS_ATTR_INVALID_FIXED_VALUE;
-		}
-	    } else if (! xmlStrEqual(defValue, BAD_CAST value)) {
+	    if (vctxt->value == NULL) {
 		/*
-		* TODO: Remove this and ensure computed values to be
-		* existent.
+		* Post-create the value.
 		*/
-		state->state = 
-		    XML_SCHEMAS_ATTR_INVALID_FIXED_VALUE;
+		if (xmlSchemaPostCreateVal(vctxt, value, &(vctxt->value)) == -1) {
+		    ret = -1;
+		    goto exit;
+		}
+		value = NULL;
+	    }
+	    if (defVal == NULL) {
+		xmlChar *str;
+				
+		/*
+		* Post-create the default/fixed value.
+		*/
+		if (defValue == NULL)
+		    str = xmlStrdup(BAD_CAST "");
+		else
+		    str = xmlStrdup(defValue);
+		if (xmlSchemaPostCreateVal(vctxt, str, &defVal) == -1) {
+		    ret = -1;
+		    FREE_AND_NULL(str)
+		    goto exit;
+		}
+		((xmlSchemaAttributePtr) vctxt->attrInfo->decl)->defVal = defVal;
+	    }	    
+	    if (xmlSchemaCompareValuesWhtsp(vctxt->value,
+		(xmlSchemaWhitespaceValueType) ws,
+		defVal,
+		(xmlSchemaWhitespaceValueType) ws) != 0)
+	    {
+		state->state = 	XML_SCHEMAS_ATTR_INVALID_FIXED_VALUE;
 	    }
 	}
-    }  
+    }
+exit:  
     if (value != NULL) {
 	xmlFree(value);
     }
@@ -19717,8 +19853,8 @@ xmlSchemaValidateAttributes(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr elem, xmlSche
 		    * Create an attribute info if needed.
 		    */
 		    if (ctxt->attrInfo == NULL) {
-			ctxt->attrInfo = (xmlSchemaElemInfoPtr) 
-			    xmlMalloc(sizeof(xmlSchemaElemInfo));
+			ctxt->attrInfo = (xmlSchemaNodeInfoPtr) 
+			    xmlMalloc(sizeof(xmlSchemaNodeInfo));
 			if (ctxt->attrInfo == NULL) {
 			    xmlSchemaVErrMemory(ctxt, 
 				"allocating an attribute info", NULL);
@@ -19866,13 +20002,14 @@ xmlSchemaValidateAttributes(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr elem, xmlSche
 		* Create an attribute info if needed.
 		*/
 		if (ctxt->attrInfo == NULL) {
-		    ctxt->attrInfo = (xmlSchemaElemInfoPtr) 
-			xmlMalloc(sizeof(xmlSchemaElemInfo));
+		    ctxt->attrInfo = (xmlSchemaNodeInfoPtr) 
+			xmlMalloc(sizeof(xmlSchemaNodeInfo));
 		    if (ctxt->attrInfo == NULL) {
 			xmlSchemaVErrMemory(ctxt, 
 			    "allocating an attribute info", NULL);
 			goto fatal_exit;
 		    }
+		    ctxt->attrInfo->value = NULL;
 		}
 		/*
 		* Init the attribute info.
@@ -19900,6 +20037,23 @@ xmlSchemaValidateAttributes(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr elem, xmlSche
 		    * IDCs will consume the precomputed default value,
 		    * so we need to clone it somehow.
 		    */
+		    /*
+		    * string or anySimpleType does not create a precomputed value
+		    * by default, so it will be created here on demand.
+		    * TODO: default/fixed attributes are a bit unoptimized:
+		    * the string value will be hold by ->defValue and inside
+		    * the precomputed value.
+		    */
+		    if (attrDecl->defVal == NULL) {
+			xmlChar *str = xmlStrdup(attrDecl->defValue);
+
+			if (xmlSchemaPostCreateVal(ctxt,
+			    str,
+			    &(attrDecl->defVal)) == -1) {
+			    FREE_AND_NULL(str)
+			    goto fatal_exit;
+			}			
+		    }
 		    ctxt->attrInfo->value = xmlSchemaCopyValue(attrDecl->defVal);
 		    /* TODO: error on NULL return. */
 		}
@@ -20261,7 +20415,7 @@ xmlSchemaFreeValidCtxt(xmlSchemaValidCtxtPtr ctxt)
     }
     if (ctxt->elemInfos != NULL) {
 	int i;
-	xmlSchemaElemInfoPtr info;
+	xmlSchemaNodeInfoPtr info;
 	
 	for (i = 0; i < ctxt->sizeElemInfos; i++) {
 	    info = ctxt->elemInfos[i];

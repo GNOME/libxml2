@@ -1,3 +1,17 @@
+Fri Mar  4 22:51:42 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c: Added IDC validation of anySimpleType attribute
+	  values; anyway the IDC key comparison is restricted to
+	  anySimpleType <--> string based types. For other types we
+	  would possibly need the canonical lexical representation of
+	  them; this sounds not performant, since we would need to
+	  build such a representation each time we want to compare against
+	  anySimpleType. TODO: think about buffering the canonical values
+	  somewhere. Fixed error reports for default attributes to work
+	  without a node being specified. This all and the enabling of IDC
+	  validation fixes bug #165346 (reported by Benoit Gr?goire - could
+	  not read his last name correctly from bugzilla).
+
 Fri Mar  4 18:57:44 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c: Enabled IDC parsing and validation.

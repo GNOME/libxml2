@@ -23,6 +23,16 @@ extern void xmlCheckVersion(int version);
 #define LIBXML_TEST_VERSION xmlCheckVersion(@LIBXML_VERSION_NUMBER@);
 
 /*
+ * a few extra config stuff which may not be handled easily in configure
+ */
+
+#ifndef HAVE_SOCKLEN_T
+#if defined(__osf__) || defined(__Linux__)
+#define HAVE_SOCKLEN_T
+#endif
+#endif
+
+/*
  * Whether the FTP support is configured in
  */
 #if @WITH_FTP@

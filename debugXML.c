@@ -1596,7 +1596,7 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
 #ifdef HAVE_SNPRINTF
 	    snprintf(prompt, sizeof(prompt), "%s > ", ctxt->node->name);
 #else
-	    sprintf(buf, "%s > ", ctxt->node->name);
+	    sprintf(prompt, "%s > ", ctxt->node->name);
 #endif
         else
 	    sprintf(prompt, "? > ");

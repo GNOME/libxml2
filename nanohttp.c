@@ -644,7 +644,11 @@ xmlNanoHTTPConnectAttempt(struct in_addr ia, int port)
     }
 
     if ( FD_ISSET(s, &wfd) ) {
-	unsigned int len; /* was socklen_t barfed on some systems :-( */
+#ifdef HAVE_SOCKLEN_T
+	socklen_t len;
+#else
+	unsigned int len;
+#endif
 	len = sizeof(status);
 	if (getsockopt(s, SOL_SOCKET, SO_ERROR, &status, &len) < 0 ) {
 	    /* Solaris error code */

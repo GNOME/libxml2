@@ -1244,7 +1244,11 @@ xmlNanoFTPGetConnection(void *ctx) {
     unsigned char ad[6], *adp, *portp;
     unsigned int temp[6];
     struct sockaddr_in dataAddr;
-    size_t dataAddrLen;
+#ifdef HAVE_SOCKLEN_T
+    socklen_t dataAddrLen;
+#else
+    unsigned int dataAddrLen;
+#endif
 
     ctxt->dataFd = socket (AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (ctxt->dataFd < 0) {

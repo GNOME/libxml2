@@ -1,3 +1,9 @@
+Sun Sep 24 10:00:49 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* xmlversion.h.in nanoftp.c nanohttp.c: traying to work out the
+	  problem of socklen_t being undefined on a number of platforms
+	* debugXML.c: fixed a compilation problem when without snprintf
+
 Sat Sep 23 12:19:45 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* HTMLparser.c uri.c: Another patch from Wayne Davison, correcting

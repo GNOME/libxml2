@@ -209,7 +209,11 @@ if missing("MANIFEST"):
 
 if WITHDLLS:
     ext_package = "libxmlmods"
-    data_files = [("lib/site-packages/libxmlmods",dlls)]
+    if sys.version >= "2.2":
+        base = "lib/site-packages/"
+    else:
+        base = ""
+    data_files = [(base+"libxmlmods",dlls)]
 else:
     ext_package = None
     data_files = []

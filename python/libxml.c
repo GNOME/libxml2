@@ -25,6 +25,10 @@
 #include "libxml_wrap.h"
 #include "libxml2-py.h"
 
+#if (defined(_MSC_VER) || defined(__MINGW32__)) && !defined(vsnprintf)
+#define vsnprintf(b,c,f,a) _vsnprintf(b,c,f,a)
+#endif
+
 /* #define DEBUG */
 /* #define DEBUG_SAX */
 /* #define DEBUG_XPATH */

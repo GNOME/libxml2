@@ -1,3 +1,8 @@
+Mon Dec 23 15:42:24 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* python/libxml.c python/setup.py.in: patch from Stéphane Bidoul
+	  for Python 2.1
+
 Sun Dec 22 11:24:06 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* testC14N.c vms/config.vms: applied Craig A. Berry patches for VMS

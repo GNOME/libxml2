@@ -1,3 +1,9 @@
+Tue Dec 16 20:53:54 MST 2003 John Fleck <jfleck@inkstain.net>
+
+	* doc/html/libxml-pattern.html - cvs add API docs for new
+	pattern stuff
+
+
 Tue Dec 16 20:40:40 MST 2003 John Fleck <jfleck@inkstain.net>
 
 	* tree.c

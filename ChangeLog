@@ -1,6 +1,6 @@
 Sun Jan 12 22:18:02 CET 2003 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
 
-	* win32/libxml2.def.src: added more xmlreader exports
+	* win32/libxml2.def.src: added more xmlreader and other exports
 	
 Fri Jan 10 18:04:32 CET 2003 Daniel Veillard <daniel@veillard.com>
 

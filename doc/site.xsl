@@ -41,7 +41,7 @@
         <xsl:text>XSLT.html</xsl:text>
       </xsl:when>
       <xsl:when test="$name = '#XML'">
-        <xsl:text>XML.html</xsl:text>
+        <xsl:text>XMLinfo.html</xsl:text>
       </xsl:when>
       <xsl:when test="$name = '#Validation'">
         <xsl:text>xmldtd.html</xsl:text>

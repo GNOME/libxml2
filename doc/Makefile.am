@@ -15,7 +15,7 @@ TARGET_DIR=$(HTML_DIR)/$(DOC_MODULE)/html
 PAGES= architecture.html bugs.html contribs.html docs.html DOM.html \
     downloads.html entities.html example.html help.html index.html \
     interface.html intro.html library.html namespaces.html news.html \
-    tree.html xmldtd.html XML.html XSLT.html
+    tree.html xmldtd.html XMLinfo.html XSLT.html
 
 man_MANS = xmllint.1 xmlcatalog.1
 

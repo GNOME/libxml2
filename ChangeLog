@@ -1,3 +1,9 @@
+Tue Jan  8 14:23:22 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* doc/*.html doc/site.xsl doc/Makefile: renamed XML.html
+	  output page into XMLinfo.html. Close bug #66951 and
+	  raised by Robert Collins too.
+
 Tue Jan  8 14:13:18 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* encoding.c: Paul Keogh pointed out a possibility of segfault

@@ -21,11 +21,19 @@
 
 #include <stdio.h>
 #include <string.h>
+#ifdef HAVE_LIMITS_H
+#include <limits.h>
+#endif
+
 #include <libxml/tree.h>
 #include <libxml/parserInternals.h>
 #include <libxml/xmlregexp.h>
 #include <libxml/xmlautomata.h>
 #include <libxml/xmlunicode.h>
+
+#ifndef INT_MAX
+#define INT_MAX 123456789 /* easy to flag and big enough for our needs */
+#endif
 
 /* #define DEBUG_REGEXP_GRAPH  */
 /* #define DEBUG_REGEXP_EXEC */
@@ -3749,9 +3757,16 @@ xmlFAParseQuantifier(xmlRegParserCtxtPtr ctxt) {
 	    min = cur;
 	if (CUR == ',') {
 	    NEXT;
-	    cur = xmlFAParseQuantExact(ctxt);
-	    if (cur >= 0)
-		max = cur;
+	    if (CUR == '}')
+	        max = INT_MAX;
+	    else {
+	        cur = xmlFAParseQuantExact(ctxt);
+	        if (cur >= 0)
+		    max = cur;
+		else {
+		    ERROR("Improper quantifier");
+		}
+	    }
 	}
 	if (CUR == '}') {
 	    NEXT;

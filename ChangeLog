@@ -1,3 +1,7 @@
+Wed Jun  6 18:07:36 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* configure.in: add -mieee to CFLAGS when compiling on Linux/alpha
+
 Thu Jun  7 06:44:01 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* DOCBparser.c: implemented the <?sgml-declaration encoding="xxx"?>

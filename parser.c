@@ -8790,7 +8790,12 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 		    if (avail >= XML_PARSER_BIG_BUFFER_SIZE + 2) {
 			if ((ctxt->sax != NULL) && (!ctxt->disableSAX)) {
 			    if (ctxt->sax->cdataBlock != NULL)
-				ctxt->sax->cdataBlock(ctxt->userData, ctxt->input->cur,
+				ctxt->sax->cdataBlock(ctxt->userData,
+				                      ctxt->input->cur,
+					  XML_PARSER_BIG_BUFFER_SIZE);
+			    else if (ctxt->sax->characters != NULL)
+				ctxt->sax->characters(ctxt->userData,
+				                      ctxt->input->cur,
 					  XML_PARSER_BIG_BUFFER_SIZE);
 			}
 			SKIP(XML_PARSER_BIG_BUFFER_SIZE);
@@ -8802,6 +8807,9 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 			(!ctxt->disableSAX)) {
 			if (ctxt->sax->cdataBlock != NULL)
 			    ctxt->sax->cdataBlock(ctxt->userData,
+						  ctxt->input->cur, base);
+			else if (ctxt->sax->characters != NULL)
+			    ctxt->sax->characters(ctxt->userData,
 						  ctxt->input->cur, base);
 		    }
 		    SKIP(base + 3);

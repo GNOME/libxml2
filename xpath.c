@@ -16,7 +16,6 @@
 
 #define IN_LIBXML
 #include "libxml.h"
-#ifdef LIBXML_XPATH_ENABLED
 
 #include <string.h>
 
@@ -52,32 +51,6 @@
 #include <libxml/xmlerror.h>
 #include <libxml/threads.h>
 #include <libxml/globals.h>
-
-/*
- * TODO: when compatibility allows remove all "fake node libxslt" strings
- *       the test should just be name[0] = ' '
- */
-/* #define DEBUG */
-/* #define DEBUG_STEP */
-/* #define DEBUG_STEP_NTH */
-/* #define DEBUG_EXPR */
-/* #define DEBUG_EVAL_COUNTS */
-
-static xmlNs xmlXPathXMLNamespaceStruct = {
-    NULL,
-    XML_NAMESPACE_DECL,
-    XML_XML_NAMESPACE,
-    BAD_CAST "xml",
-    NULL
-};
-static xmlNsPtr xmlXPathXMLNamespace = &xmlXPathXMLNamespaceStruct;
-#ifndef LIBXML_THREAD_ENABLED
-/* 
- * Optimizer is disabled only when threaded apps are detected while
- * the library ain't compiled for thread safety.
- */
-static int xmlXPathDisableOptimizer = 0;
-#endif
 
 /************************************************************************
  * 									*
@@ -161,6 +134,33 @@ xmlXPathGetSign(double val) {
     return(trio_signbit(val));
 }
 
+
+#ifdef LIBXML_XPATH_ENABLED
+/*
+ * TODO: when compatibility allows remove all "fake node libxslt" strings
+ *       the test should just be name[0] = ' '
+ */
+/* #define DEBUG */
+/* #define DEBUG_STEP */
+/* #define DEBUG_STEP_NTH */
+/* #define DEBUG_EXPR */
+/* #define DEBUG_EVAL_COUNTS */
+
+static xmlNs xmlXPathXMLNamespaceStruct = {
+    NULL,
+    XML_NAMESPACE_DECL,
+    XML_XML_NAMESPACE,
+    BAD_CAST "xml",
+    NULL
+};
+static xmlNsPtr xmlXPathXMLNamespace = &xmlXPathXMLNamespaceStruct;
+#ifndef LIBXML_THREAD_ENABLED
+/* 
+ * Optimizer is disabled only when threaded apps are detected while
+ * the library ain't compiled for thread safety.
+ */
+static int xmlXPathDisableOptimizer = 0;
+#endif
 
 /************************************************************************
  * 									*

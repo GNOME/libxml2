@@ -1,3 +1,10 @@
+Sat Jul  5 22:30:25 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c HTMLparser.c: use the character() SAX callback
+	  if the cdataBlock ain't defined.
+	* xpath.c: fix bug #115349 allowing compilation when configured
+	  with --without-xpath since the Schemas code needs NAN and co.
+
 Sat Jul 5 00:51:30 HKT 2003 William Brack <wbrack@mmm.com.hk>
 
 	Fixed problem with multi-threading, shown by the test program

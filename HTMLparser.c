@@ -2688,6 +2688,8 @@ htmlParseScript(htmlParserCtxtPtr ctxt) {
 		     * Insert as CDATA, which is the same as HTML_PRESERVE_NODE
 		     */
 		    ctxt->sax->cdataBlock(ctxt->userData, buf, nbchar);
+		} else if (ctxt->sax->characters != NULL) {
+		    ctxt->sax->characters(ctxt->userData, buf, nbchar);
 		}
 	    }
 	    nbchar = 0;
@@ -2712,6 +2714,8 @@ htmlParseScript(htmlParserCtxtPtr ctxt) {
 		 * Insert as CDATA, which is the same as HTML_PRESERVE_NODE
 		 */
 		ctxt->sax->cdataBlock(ctxt->userData, buf, nbchar);
+	    } else if (ctxt->sax->characters != NULL) {
+		ctxt->sax->characters(ctxt->userData, buf, nbchar);
 	    }
 	    nbchar = 0;
 	}
@@ -2732,6 +2736,8 @@ htmlParseScript(htmlParserCtxtPtr ctxt) {
 	     * Insert as CDATA, which is the same as HTML_PRESERVE_NODE
 	     */
 	    ctxt->sax->cdataBlock(ctxt->userData, buf, nbchar);
+	} else if (ctxt->sax->characters != NULL) {
+	    ctxt->sax->characters(ctxt->userData, buf, nbchar);
 	}
     }
 }

@@ -643,6 +643,10 @@ AC_SUBST(PYTHON_SITE_PACKAGES)
 AC_SUBST(M_LIBS)
 AC_SUBST(RDL_LIBS)
 
+dnl for the spec file
+RELDATE=`date +'%a %b %e %Y'`
+AC_SUBST(RELDATE)
+
 rm -f rm COPYING.LIB COPYING
 ln -s Copyright COPYING
 

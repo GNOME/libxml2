@@ -137,6 +137,9 @@ rm -fr %{buildroot}
 %doc doc/python.html
 
 %changelog
+* @RELDATE@ Daniel Veillard <veillard@redhat.com>
+- upstream release @VERSION@ see http://xmlsoft.org/news.html
+
 * Wed Oct 23 2002 Daniel Veillard <veillard@redhat.com>
 - revamped the spec file, cleaned up some rpm building problems
 

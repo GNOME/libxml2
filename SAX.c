@@ -1139,7 +1139,7 @@ startElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
      * set the namespace node, making sure that if the default namspace
      * is unbound on a parent we simply kee it NULL
      */
-    if ((ns != NULL) && (ns->href[0] != 0))
+    if ((ns != NULL) && (ns->href != NULL) && (ns->href[0] != 0))
 	xmlSetNs(ret, ns);
 
     /*

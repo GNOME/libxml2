@@ -1,3 +1,8 @@
+Thu Oct  4 16:47:44 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* SAX.c: ouch a non-defined namespace could lead to a crash,
+	  fixed #61215
+
 Thu Oct  4 16:24:26 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* parserInternals.c: closed bug #61054

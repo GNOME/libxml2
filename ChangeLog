@@ -1,3 +1,8 @@
+Mon Jan 22 16:30:37 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* doc/xml.html: updated with an XSLT section, removed pointer to
+	  W3C CVS base.
+
 Mon Jan 22 11:43:21 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xpath.c: when copying a XSLT tree object teh tree need to be copied

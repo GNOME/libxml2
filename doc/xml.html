@@ -111,7 +111,7 @@ href="mailto:xml@rufus.w3.org">xml@rufus.w3.org</a> list.</p>
 <h2><a name="Downloads">Downloads</a></h2>
 
 <p>Latest versions can be found on <a
-href="ftp://rpmfind.net/pub/veillard/">rpmfind.net</a> or on the <a
+href="ftp://rpmfind.net/pub/libxml/">rpmfind.net</a> or on the <a
 href="ftp://ftp.gnome.org/pub/GNOME/MIRRORS.html">Gnome FTP server</a> either
 as a <a href="ftp://ftp.gnome.org/pub/GNOME/stable/sources/libxml/">source
 archive</a> or <a href="ftp://ftp.gnome.org/pub/GNOME/contrib/rpms/">RPMs
@@ -120,7 +120,21 @@ href="http://rpmfind.net/linux/RPM/libxml.html">libxml</a> and <a
 href="http://rpmfind.net/linux/RPM/libxml-devel.html">libxml-devel</a>
 packages installed to compile applications using libxml).</p>
 
-<p>Libxml is also available from 2 CVS bases:</p>
+<p><a name="Snapshot">Snapshot:</a></p>
+<ul>
+  <li>Code from the W3C cvs base libxml <a
+    href="ftp://rpmfind.net/pub/libxml/cvs-snapshot.tar.gz">cvs-snapshot.tar.gz</a></li>
+  <li>Docs, content of the web site, the list archive included <a
+    href="ftp://rpmfind.net/pub/libxml/libxml-docs.tar.gz">libxml-docs.tar.gz</a></li>
+</ul>
+
+<p><a name="Contribs">Contribs:</a></p>
+
+<p>I do accept external contributions, especially if compiling on another
+platform, get in touch with me to upload the package. I will keep them in the
+<a href="ftp://rpmfind.net/pub/libxml/contribs/">contrib directory</a></p>
+
+<p>Libxml is also available from 2 CVs bases:</p>
 <ul>
   <li><p>The <a href="http://dev.w3.org/cvsweb/XML/">W3C CVS base</a>,
     available read-only using the CVS pserver authentification (I tend to use
@@ -146,9 +160,23 @@ for really accurate description</h3>
 <ul>
   <li>working on HTML and XML links recognition layers, get in touch with me
     if you want to test those.</li>
-  <li>there is some kind of roadmap to libxml-2.0: fix I18N, and <a
-    href="http://rpmfind.net/tools/gdome/messages/0039.html">change structures
-    to accommodate DOM</a></li>
+  <li>huge work toward libxml-2.0: This work is available only in W3C CVs base
+    for the moment. You get the <a
+    href="ftp://rpmfind.net/pub/libxml/cvs-snapshot.tar.gz">snapshot</a> for
+    the updated version: 
+    <ul>
+      <li>fix I18N support. ISO-Latin-x/UTF-8/UTF-16 seems correctly handled
+        now</li>
+      <li>Better handling of entities</li>
+      <li>DTD conditional sections</li>
+      <li><a href="http://rpmfind.net/tools/gdome/messages/0039.html">change
+        structures to accomodate DOM</a></li>
+      <li>Lot of work toward a better compliance. I'm now running and
+        debugging regression tests agains the <a
+        href="http://www.oasis-open.org/committees/xmlconf-pub.html">OASIS
+        testsuite</a></li>
+    </ul>
+  </li>
 </ul>
 
 <h3>1.8.6: Jan 31 2000</h3>
@@ -1015,6 +1043,6 @@ base under gnome-xml/example</p>
 
 <p><a href="mailto:Daniel.Veillard@w3.org">Daniel Veillard</a></p>
 
-<p>$Id: xml.html,v 1.24 2000/01/30 20:00:06 veillard Exp $</p>
+<p>$Id: xml.html,v 1.25 2000/02/29 22:57:47 veillard Exp $</p>
 </body>
 </html>

@@ -290,5 +290,9 @@ int main(int argc, char **argv) {
 	  fprintf( stderr, "Error parsing file '%s'\n", argv[i]);
 
     }
+
+    /* Clean up everything else before quitting. */
+    xmlCleanupParser();
+
     return(0);
 }

@@ -1,3 +1,7 @@
+Wed Aug 15 22:46:01 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* example/gjobread.c: add xmlCleanupParser() before leaving
+
 Wed Aug 15 14:57:08 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* config.h.in configure.in include/libxml/xmlwin32version.h:

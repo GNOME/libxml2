@@ -1,3 +1,8 @@
+Sun Dec 29 12:13:18 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xmlreader.c python/tests/reader.py: fixed a bug pointed out
+	  by Stéphane Bidoul and integrated it into the tests
+
 Sat Dec 28 23:49:12 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c include/libxml/xmlreader.h doc/libxml2-api.xml:

@@ -349,6 +349,7 @@ xmlTextReaderRead(xmlTextReaderPtr reader) {
     fprintf(stderr, "\nREAD ");
     DUMP_READER
 #endif
+    reader->curnode = NULL;
     if (reader->mode == XML_TEXTREADER_MODE_INITIAL) {
 	reader->mode = XML_TEXTREADER_MODE_INTERACTIVE;
 	/*

@@ -235,6 +235,36 @@ if reader.MoveToNextAttribute() != 0:
     print "Failed to detect last attribute"
     sys.exit(1)
 
+#
+# Another test provided by Stéphane Bidoul and checked with C#
+#
+expect="""1 (a) [None]
+1 (b) [None]
+-- 2 (b1) [b1]
+1 (c) [None]
+3 (#text) [content of c]
+15 (c) [None]
+15 (a) [None]
+"""
+res=""
+f = StringIO.StringIO("""<a><b b1="b1"/><c>content of c</c></a>""")
+input = libxml2.inputBuffer(f)
+reader = input.newTextReader("test5")
+
+while reader.Read():
+    res=res + "%s (%s) [%s]\n" % (reader.NodeType(),reader.Name(),
+                                  reader.Value())
+    if reader.NodeType() == 1: # Element
+	while reader.MoveToNextAttribute():
+	    res = res + "-- %s (%s) [%s]\n" % (reader.NodeType(),
+	                                       reader.Name(),reader.Value())
+
+if res != expect:
+    print "test5 failed"
+    print res
+    sys.exit(1)
+    
+
 del f
 del input
 del reader

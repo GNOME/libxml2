@@ -1569,6 +1569,17 @@ xmlSwitchEncoding(xmlParserCtxtPtr ctxt, xmlCharEncoding enc)
 	case XML_CHAR_ENCODING_UTF8:
 	    /* default encoding, no conversion should be needed */
 	    ctxt->charset = XML_CHAR_ENCODING_UTF8;
+
+	    /*
+	     * Errata on XML-1.0 June 20 2001
+	     * Specific handling of the Byte Order Mark for
+	     * UTF-8
+	     */
+	    if ((ctxt->input->cur[0] == 0xEF) &&
+		(ctxt->input->cur[1] == 0xBB) &&
+		(ctxt->input->cur[2] == 0xBF)) {
+		ctxt->input->cur += 3;
+	    }
 	    return(0);
 	default:
 	    break;
@@ -1738,6 +1749,18 @@ xmlSwitchToEncoding(xmlParserCtxtPtr ctxt, xmlCharEncodingHandlerPtr handler)
 		        (ctxt->input->cur[0] == 0xFE) &&
 		        (ctxt->input->cur[1] == 0xFF)) {
 			ctxt->input->cur += 2;
+		    }
+		    /*
+		     * Errata on XML-1.0 June 20 2001
+		     * Specific handling of the Byte Order Mark for
+		     * UTF-8
+		     */
+		    if ((handler->name != NULL) &&
+			(!strcmp(handler->name, "UTF-8")) &&
+			(ctxt->input->cur[0] == 0xEF) &&
+			(ctxt->input->cur[1] == 0xBB) &&
+			(ctxt->input->cur[1] == 0xBF)) {
+			ctxt->input->cur += 3;
 		    }
 
 		    /*

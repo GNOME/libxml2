@@ -768,6 +768,9 @@ xmlParserHandlePEReference(xmlParserCtxtPtr ctxt) {
 	    } else {
 	        if ((entity->etype == XML_INTERNAL_PARAMETER_ENTITY) ||
 		    (entity->etype == XML_EXTERNAL_PARAMETER_ENTITY)) {
+		    xmlChar start[4];
+		    xmlCharEncoding enc;
+
 		    /*
 		     * handle the extra spaces added before and after
 		     * c.f. http://www.w3.org/TR/REC-xml#as-PE
@@ -775,6 +778,22 @@ xmlParserHandlePEReference(xmlParserCtxtPtr ctxt) {
 		     */
 		    input = xmlNewEntityInputStream(ctxt, entity);
 		    xmlPushInput(ctxt, input);
+
+		    /* 
+		     * Get the 4 first bytes and decode the charset
+		     * if enc != XML_CHAR_ENCODING_NONE
+		     * plug some encoding conversion routines.
+		     */
+		    GROW
+		    start[0] = RAW;
+		    start[1] = NXT(1);
+		    start[2] = NXT(2);
+		    start[3] = NXT(3);
+		    enc = xmlDetectCharEncoding(start, 4);
+		    if (enc != XML_CHAR_ENCODING_NONE) {
+			xmlSwitchEncoding(ctxt, enc);
+		    }
+
 		    if ((entity->etype == XML_EXTERNAL_PARAMETER_ENTITY) &&
 			(RAW == '<') && (NXT(1) == '?') &&
 			(NXT(2) == 'x') && (NXT(3) == 'm') &&
@@ -8585,6 +8604,7 @@ xmlIOParseDTD(xmlSAXHandlerPtr sax, xmlParserInputBufferPtr input,
     xmlDtdPtr ret = NULL;
     xmlParserCtxtPtr ctxt;
     xmlParserInputPtr pinput = NULL;
+    xmlChar start[4];
 
     if (input == NULL)
 	return(NULL);
@@ -8634,6 +8654,23 @@ xmlIOParseDTD(xmlSAXHandlerPtr sax, xmlParserInputBufferPtr input,
     ctxt->myDoc = xmlNewDoc(BAD_CAST "1.0");
     ctxt->myDoc->extSubset = xmlNewDtd(ctxt->myDoc, BAD_CAST "none",
 	                               BAD_CAST "none", BAD_CAST "none");
+
+    if (enc == XML_CHAR_ENCODING_NONE) {
+	/* 
+	 * Get the 4 first bytes and decode the charset
+	 * if enc != XML_CHAR_ENCODING_NONE
+	 * plug some encoding conversion routines.
+	 */
+	start[0] = RAW;
+	start[1] = NXT(1);
+	start[2] = NXT(2);
+	start[3] = NXT(3);
+	enc = xmlDetectCharEncoding(start, 4);
+	if (enc != XML_CHAR_ENCODING_NONE) {
+	    xmlSwitchEncoding(ctxt, enc);
+	}
+    }
+
     xmlParseExternalSubset(ctxt, BAD_CAST "none", BAD_CAST "none");
 
     if (ctxt->myDoc != NULL) {
@@ -8785,6 +8822,8 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
     xmlDocPtr newDoc;
     xmlSAXHandlerPtr oldsax = NULL;
     int ret = 0;
+    xmlChar start[4];
+    xmlCharEncoding enc;
 
     if (ctx->depth > 40) {
 	return(XML_ERR_ENTITY_LOOP);
@@ -8832,10 +8871,24 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
 	newDoc->children->doc = ctx->myDoc;
     }
 
+    /* 
+     * Get the 4 first bytes and decode the charset
+     * if enc != XML_CHAR_ENCODING_NONE
+     * plug some encoding conversion routines.
+     */
+    GROW
+    start[0] = RAW;
+    start[1] = NXT(1);
+    start[2] = NXT(2);
+    start[3] = NXT(3);
+    enc = xmlDetectCharEncoding(start, 4);
+    if (enc != XML_CHAR_ENCODING_NONE) {
+        xmlSwitchEncoding(ctxt, enc);
+    }
+
     /*
      * Parse a possible text declaration first
      */
-    GROW;
     if ((RAW == '<') && (NXT(1) == '?') &&
 	(NXT(2) == 'x') && (NXT(3) == 'm') &&
 	(NXT(4) == 'l') && (IS_BLANK(NXT(5)))) {
@@ -8946,6 +8999,8 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
     xmlDocPtr newDoc;
     xmlSAXHandlerPtr oldsax = NULL;
     int ret = 0;
+    xmlChar start[4];
+    xmlCharEncoding enc;
 
     if (depth > 40) {
 	return(XML_ERR_ENTITY_LOOP);
@@ -9015,10 +9070,24 @@ xmlParseExternalEntityPrivate(xmlDocPtr doc, xmlParserCtxtPtr oldctxt,
 	newDoc->children->doc = doc;
     }
 
+    /* 
+     * Get the 4 first bytes and decode the charset
+     * if enc != XML_CHAR_ENCODING_NONE
+     * plug some encoding conversion routines.
+     */
+    GROW;
+    start[0] = RAW;
+    start[1] = NXT(1);
+    start[2] = NXT(2);
+    start[3] = NXT(3);
+    enc = xmlDetectCharEncoding(start, 4);
+    if (enc != XML_CHAR_ENCODING_NONE) {
+        xmlSwitchEncoding(ctxt, enc);
+    }
+
     /*
      * Parse a possible text declaration first
      */
-    GROW;
     if ((RAW == '<') && (NXT(1) == '?') &&
 	(NXT(2) == 'x') && (NXT(3) == 'm') &&
 	(NXT(4) == 'l') && (IS_BLANK(NXT(5)))) {

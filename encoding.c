@@ -1131,6 +1131,15 @@ xmlDetectCharEncoding(const unsigned char* in, int len)
 	    (in[2] == 0x78) && (in[3] == 0x6D))
 	    return(XML_CHAR_ENCODING_UTF8);
     }
+    if (len >= 3) {
+	/*
+	 * Errata on XML-1.0 June 20 2001
+	 * We now allow an UTF8 encoded BOM
+	 */
+	if ((in[0] == 0xEF) && (in[1] == 0xBB) &&
+	    (in[2] == 0xBF))
+	    return(XML_CHAR_ENCODING_UTF8);
+    }
     if (len >= 2) {
 	if ((in[0] == 0xFE) && (in[1] == 0xFF))
 	    return(XML_CHAR_ENCODING_UTF16BE);

@@ -1,3 +1,10 @@
+Wed Jun 20 19:37:25 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* parser.c parserInternals.c encoding.c: Since Notepad on Win2k
+	  outputs a BOM in UTF8, an errata has been issued to avoid the
+	  problem, that was the most reasonable solution... Add support
+	  for a leading UTF8 BOM in entities.
+
 Wed Jun 20 15:38:59 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* valid.c: fixed a bug found when post validating an entity ref

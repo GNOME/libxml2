@@ -183,6 +183,9 @@ int main(int argc, char **argv) {
 	printf("\tParse the XPath strings and output the result of the parsing\n");
 	printf("\t--debug : dump a debug version of the result\n");
 	printf("\t--valid : switch on DTD support in the parser\n");
+#if defined(LIBXML_XPTR_ENABLED)
+	printf("\t--xptr : expressions are XPointer expressions\n");
+#endif
 	printf("\t--expr : debug XPath expressions only\n");
 	printf("\t--input filename : or\n");
 	printf("\t-i filename      : read the document from filename\n");

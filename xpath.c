@@ -72,7 +72,7 @@ double xmlXPathStringEvalNumber(const xmlChar *str);
  */
 double xmlXPathNAN = 0;
 double xmlXPathPINF = 1;
-double xmlXPathMINF = -1;
+double xmlXPathNINF = -1;
 
 #ifndef isinf
 #ifndef HAVE_ISINF
@@ -162,8 +162,8 @@ xmlXPathInit(void) {
     xmlXPathPINF = 1;
     xmlXPathPINF /= 0;
 
-    xmlXPathMINF = -1;
-    xmlXPathMINF /= 0;
+    xmlXPathNINF = -1;
+    xmlXPathNINF /= 0;
 
     initialized = 1;
 }
@@ -2721,7 +2721,25 @@ xmlXPathIdFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     obj = valuePop(ctxt);
     if (obj == NULL) XP_ERROR(XPATH_INVALID_OPERAND);
     if (obj->type == XPATH_NODESET) {
-        TODO /* ID function in case of NodeSet */
+	xmlXPathObjectPtr newobj;
+	int i;
+
+	ret = xmlXPathNewNodeSet(NULL);
+
+	for (i = 0; i < obj->nodesetval->nodeNr; i++) {
+	    valuePush(ctxt,
+		      xmlXPathNewNodeSet(obj->nodesetval->nodeTab[i]));
+	    xmlXPathStringFunction(ctxt, 1);
+	    xmlXPathIdFunction(ctxt, 1);
+	    newobj = valuePop(ctxt);
+	    ret->nodesetval = xmlXPathNodeSetMerge(ret->nodesetval,
+						   newobj->nodesetval);
+	    xmlXPathFreeObject(newobj);
+	}
+
+	xmlXPathFreeObject(obj);
+	valuePush(ctxt, ret);
+	return;
     }
     if (obj->type != XPATH_STRING) {
         valuePush(ctxt, obj);
@@ -2771,19 +2789,24 @@ xmlXPathIdFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 }
 
 /**
- * xmlXPathLocalPartFunction:
+ * xmlXPathLocalNameFunction:
  * @ctxt:  the XPath Parser context
  *
- * Implement the local-part() XPath function
- * The local-part function returns a string containing the local part
+ * Implement the local-name() XPath function
+ * The local-name function returns a string containing the local part
  * of the name of the node in the argument node-set that is first in
  * document order. If the node-set is empty or the first node has no
  * name, an empty string is returned. If the argument is omitted it
  * defaults to the context node.
  */
 void
-xmlXPathLocalPartFunction(xmlXPathParserContextPtr ctxt, int nargs) {
+xmlXPathLocalNameFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     xmlXPathObjectPtr cur;
+
+    if (nargs == 0) {
+	valuePush(ctxt, xmlXPathNewNodeSet(ctxt->context->node));
+	nargs = 1;
+    }
 
     CHECK_ARITY(1);
     CHECK_TYPE(XPATH_NODESET);
@@ -2799,18 +2822,19 @@ xmlXPathLocalPartFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 }
 
 /**
- * xmlXPathNamespaceFunction:
+ * xmlXPathNamespaceURIFunction:
  * @ctxt:  the XPath Parser context
  *
- * Implement the namespace() XPath function
- * The namespace function returns a string containing the namespace URI
- * of the expanded name of the node in the argument node-set that is
- * first in document order. If the node-set is empty, the first node has
- * no name, or the expanded name has no namespace URI, an empty string
- * is returned. If the argument is omitted it defaults to the context node.
+ * Implement the namespace-uri() XPath function
+ * The namespace-uri function returns a string containing the
+ * namespace URI of the expanded name of the node in the argument
+ * node-set that is first in document order. If the node-set is empty,
+ * the first node has no name, or the expanded name has no namespace
+ * URI, an empty string is returned. If the argument is omitted it
+ * defaults to the context node.
  */
 void
-xmlXPathNamespaceFunction(xmlXPathParserContextPtr ctxt, int nargs) {
+xmlXPathNamespaceURIFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     xmlXPathObjectPtr cur;
 
     if (nargs == 0) {
@@ -2858,6 +2882,11 @@ xmlXPathNamespaceFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 void
 xmlXPathNameFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     xmlXPathObjectPtr cur;
+
+    if (nargs == 0) {
+	valuePush(ctxt, xmlXPathNewNodeSet(ctxt->context->node));
+	nargs = 1;
+    }
 
     CHECK_ARITY(1);
     CHECK_TYPE(XPATH_NODESET);
@@ -2920,10 +2949,18 @@ xmlXPathNameFunction(xmlXPathParserContextPtr ctxt, int nargs) {
  *        number from all other IEEE 754 numeric values.
  *    - The boolean false value is converted to the string false.
  *      The boolean true value is converted to the string true.
+ *
+ * If the argument is omitted, it defaults to a node-set with the
+ * context node as its only member.
  */
 void
 xmlXPathStringFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     xmlXPathObjectPtr cur;
+
+    if (nargs == 0) {
+	valuePush(ctxt, xmlXPathNewNodeSet(ctxt->context->node));
+	nargs = 1;
+    }
 
     CHECK_ARITY(1);
     cur = valuePop(ctxt);
@@ -3302,17 +3339,18 @@ xmlXPathNormalizeFunction(xmlXPathParserContextPtr ctxt, int nargs) {
   xmlBufferPtr target;
   xmlChar blank;
   
-  if (nargs < 1) {
+  if (nargs == 0) {
     /* Use current context node */
-    CHECK_ARITY(0);
-    TODO /* source = xmlNodeGetContent(ctxt->context->node); */
-  } else if (nargs >= 1) {
-    /* Use argument */
-    CHECK_ARITY(1);
-    obj = valuePop(ctxt);
-    if (obj == NULL) XP_ERROR(XPATH_INVALID_OPERAND);
-    source = obj->stringval;
+    valuePush(ctxt, xmlXPathNewNodeSet(ctxt->context->node));
+    xmlXPathStringFunction(ctxt, 1);
+    nargs = 1;
   }
+
+  CHECK_ARITY(1);
+  CHECK_TYPE(XPATH_STRING);
+  obj = valuePop(ctxt);
+  source = obj->stringval;
+
   target = xmlBufferCreate();
   if (target && source) {
     
@@ -3338,8 +3376,7 @@ xmlXPathNormalizeFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     valuePush(ctxt, xmlXPathNewString(xmlBufferContent(target)));
     xmlBufferFree(target);
   }
-  if (obj)
-    xmlXPathFreeObject(obj);
+  xmlXPathFreeObject(obj);
 }
 
 /**
@@ -3530,11 +3567,27 @@ not_equal:
  * @ctxt:  the XPath Parser context
  *
  * Implement the number() XPath function
+ *
+ * BUG: since we directly call xmlXPathStringEvalNumber(),
+ *      number("-1") isn't evaluated in -1.0 but in NaN.
  */
 void
 xmlXPathNumberFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     xmlXPathObjectPtr cur;
     double res;
+
+    if (nargs == 0) {
+	if (ctxt->context->node == NULL) {
+	    valuePush(ctxt, xmlXPathNewFloat(0.0));
+	} else {
+	    xmlChar* content = xmlNodeGetContent(ctxt->context->node);
+
+	    res = xmlXPathStringEvalNumber(content);
+	    valuePush(ctxt, xmlXPathNewFloat(res));
+	    xmlFree(content);
+	}
+	return;
+    }
 
     CHECK_ARITY(1);
     cur = valuePop(ctxt);
@@ -3583,8 +3636,25 @@ xmlXPathNumberFunction(xmlXPathParserContextPtr ctxt, int nargs) {
  */
 void
 xmlXPathSumFunction(xmlXPathParserContextPtr ctxt, int nargs) {
+    xmlXPathObjectPtr cur;
+    int i;
+
     CHECK_ARITY(1);
-    TODO /* BUG Sum : don't understand the definition */
+    CHECK_TYPE(XPATH_NODESET);
+    cur = valuePop(ctxt);
+
+    if (cur->nodesetval->nodeNr == 0) {
+	valuePush(ctxt, xmlXPathNewFloat(0.0));
+    } else {
+	valuePush(ctxt,
+		  xmlXPathNewNodeSet(cur->nodesetval->nodeTab[0]));
+	for (i = 1; i < cur->nodesetval->nodeNr; i++) {
+	    valuePush(ctxt,
+		      xmlXPathNewNodeSet(cur->nodesetval->nodeTab[i]));
+	    xmlXPathAddValues(ctxt);
+	}
+    }
+    xmlXPathFreeObject(cur);
 }
 
 /**
@@ -3599,8 +3669,12 @@ void
 xmlXPathFloorFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     CHECK_ARITY(1);
     CHECK_TYPE(XPATH_NUMBER);
+#if 0
+    ctxt->value->floatval = floor(ctxt->value->floatval);
+#else
     /* floor(0.999999999999) => 1.0 !!!!!!!!!!! */
     ctxt->value->floatval = (double)((int) ctxt->value->floatval);
+#endif
 }
 
 /**
@@ -3617,9 +3691,14 @@ xmlXPathCeilingFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 
     CHECK_ARITY(1);
     CHECK_TYPE(XPATH_NUMBER);
+
+#if 0
+    ctxt->value->floatval = ceil(ctxt->value->floatval);
+#else
     f = (double)((int) ctxt->value->floatval);
     if (f != ctxt->value->floatval)
 	ctxt->value->floatval = f + 1;
+#endif
 }
 
 /**
@@ -3637,12 +3716,20 @@ xmlXPathRoundFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 
     CHECK_ARITY(1);
     CHECK_TYPE(XPATH_NUMBER);
-    /* round(0.50000001) => 0  !!!!! */
+
+    if ((ctxt->value->floatval == xmlXPathNAN) ||
+	(ctxt->value->floatval == xmlXPathPINF) ||
+	(ctxt->value->floatval == xmlXPathNINF) ||
+	(ctxt->value->floatval == 0.0))
+	return;
+
+#if 0
+    f = floor(ctxt->value->floatval);
+#else
     f = (double)((int) ctxt->value->floatval);
+#endif
     if (ctxt->value->floatval < f + 0.5)
         ctxt->value->floatval = f;
-    else if (ctxt->value->floatval == f + 0.5)
-        ctxt->value->floatval = f; /* !!!! Not following the spec here */
     else 
         ctxt->value->floatval = f + 1;
 }
@@ -3766,14 +3853,11 @@ xmlXPathParseName(xmlXPathParserContextPtr ctxt) {
  * xmlXPathStringEvalNumber:
  * @str:  A string to scan
  *
- *  [30]   Number ::=   Digits ('.' Digits)?
+ *  [30]   Number ::=   Digits ('.' Digits?)?
  *                    | '.' Digits 
  *  [31]   Digits ::=   [0-9]+
  *
  * Parse and evaluate a Number in the string
- *
- * BUG: "1.' is not valid ... James promised correction
- *       as Digits ('.' Digits?)?
  *
  * Returns the double value.
  */
@@ -3813,14 +3897,12 @@ xmlXPathStringEvalNumber(const xmlChar *str) {
  * xmlXPathEvalNumber:
  * @ctxt:  the XPath Parser context
  *
- *  [30]   Number ::=   Digits ('.' Digits)?
+ *  [30]   Number ::=   Digits ('.' Digits?)?
  *                    | '.' Digits 
  *  [31]   Digits ::=   [0-9]+
  *
  * Parse and evaluate a Number, then push it on the stack
  *
- * BUG: "1.' is not valid ... James promised correction
- *       as Digits ('.' Digits?)?
  */
 void
 xmlXPathEvalNumber(xmlXPathParserContextPtr ctxt) {
@@ -5302,14 +5384,14 @@ xmlXPathRegisterAllFunctions(xmlXPathContextPtr ctxt)
                          xmlXPathLastFunction);
     xmlXPathRegisterFunc(ctxt, (const xmlChar *)"lang",
                          xmlXPathLangFunction);
-    xmlXPathRegisterFunc(ctxt, (const xmlChar *)"local-part",
-                         xmlXPathLocalPartFunction);
+    xmlXPathRegisterFunc(ctxt, (const xmlChar *)"local-name",
+                         xmlXPathLocalNameFunction);
     xmlXPathRegisterFunc(ctxt, (const xmlChar *)"not",
                          xmlXPathNotFunction);
     xmlXPathRegisterFunc(ctxt, (const xmlChar *)"name",
                          xmlXPathNameFunction);
-    xmlXPathRegisterFunc(ctxt, (const xmlChar *)"namespace",
-                         xmlXPathNamespaceFunction);
+    xmlXPathRegisterFunc(ctxt, (const xmlChar *)"namespace-uri",
+                         xmlXPathNamespaceURIFunction);
     xmlXPathRegisterFunc(ctxt, (const xmlChar *)"normalize-space",
                          xmlXPathNormalizeFunction);
     xmlXPathRegisterFunc(ctxt, (const xmlChar *)"normalize",

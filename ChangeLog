@@ -1,3 +1,8 @@
+Thu Oct 26 16:05:25 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* xpath.c textXPath.c xpathInternals.h: applied TOM <ptittom@free.fr>
+	  cleanup patch for XPath
+
 Wed Oct 25 21:31:10 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* patched to redirrect all "out of context" error messages to

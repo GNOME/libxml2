@@ -76,6 +76,9 @@
 /* Define if you have the vsprintf function.  */
 #undef HAVE_VSPRINTF
 
+/* Define if you have the <ansidecl.h> header file.  */
+#undef HAVE_ANSIDECL_H
+
 /* Define if you have the <arpa/inet.h> header file.  */
 #undef HAVE_ARPA_INET_H
 

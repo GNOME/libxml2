@@ -2557,7 +2557,13 @@ xmlStaticCopyNode(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
 
     ret->doc = doc;
     ret->parent = parent; 
-    if (node->name != NULL)
+    if (node->name == xmlStringText)
+	ret->name = xmlStringText;
+    else if (node->name == xmlStringTextNoenc)
+	ret->name = xmlStringTextNoenc;
+    else if (node->name == xmlStringComment)
+	ret->name = xmlStringComment;
+    else if (node->name != NULL)
 	ret->name = xmlStrdup(node->name);
     if ((node->content != NULL) && (node->type != XML_ENTITY_REF_NODE)) {
 #ifndef XML_USE_BUFFER_CONTENT

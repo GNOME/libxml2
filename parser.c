@@ -92,6 +92,7 @@ int xmlDoValidityCheckingDefaultVal = 0;
 int xmlSubstituteEntitiesDefaultValue = 0;
 int xmlDoValidityCheckingDefaultValue = 0;
 #endif
+int xmlLoadExtDtdDefaultValue = 0;
 int xmlPedanticParserDefaultValue = 0;
 int xmlKeepBlanksDefaultValue = 1;
 
@@ -7211,6 +7212,7 @@ xmlParseExtParsedEnt(xmlParserCtxtPtr ctxt) {
      */
     ctxt->instate = XML_PARSER_CONTENT;
     ctxt->validate = 0;
+    ctxt->loadsubset = 0;
     ctxt->depth = 0;
 
     xmlParseContent(ctxt);
@@ -8750,6 +8752,7 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
      */
     ctxt->instate = XML_PARSER_CONTENT;
     ctxt->validate = ctx->validate;
+    ctxt->loadsubset = ctx->loadsubset;
     ctxt->depth = ctx->depth + 1;
     ctxt->replaceEntities = ctx->replaceEntities;
     if (ctxt->validate) {
@@ -8927,6 +8930,7 @@ xmlParseExternalEntity(xmlDocPtr doc, xmlSAXHandlerPtr sax, void *user_data,
      */
     ctxt->instate = XML_PARSER_CONTENT;
     ctxt->validate = 0;
+    ctxt->loadsubset = 0;
     ctxt->depth = depth;
 
     xmlParseContent(ctxt);
@@ -9071,6 +9075,7 @@ xmlParseBalancedChunkMemory(xmlDocPtr doc, xmlSAXHandlerPtr sax,
      * Doing validity checking on chunk doesn't make sense
      */
     ctxt->validate = 0;
+    ctxt->loadsubset = 0;
 
     xmlParseContent(ctxt);
    

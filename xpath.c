@@ -4190,6 +4190,7 @@ xmlXPathBooleanFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     if (cur == NULL) XP_ERROR(XPATH_INVALID_OPERAND);
     switch (cur->type) {
         case XPATH_NODESET:
+        case XPATH_XSLT_TREE:
 	    if ((cur->nodesetval == NULL) ||
 	        (cur->nodesetval->nodeNr == 0)) res = 0;
 	    else 
@@ -5419,7 +5420,9 @@ xmlXPathEvalAndExpr(xmlXPathParserContextPtr ctxt) {
 	SKIP_BLANKS;
         xmlXPathEvalEqualityExpr(ctxt);
 	CHECK_ERROR;
+	xmlXPathBooleanFunction(ctxt, 1);
 	arg2 = valuePop(ctxt);
+	xmlXPathBooleanFunction(ctxt, 1);
 	arg1 = valuePop(ctxt);
 	arg1->boolval &= arg2->boolval;
 	valuePush(ctxt, arg1);
@@ -5451,7 +5454,9 @@ xmlXPathEvalExpr(xmlXPathParserContextPtr ctxt) {
 	SKIP_BLANKS;
         xmlXPathEvalAndExpr(ctxt);
 	CHECK_ERROR;
+	xmlXPathBooleanFunction(ctxt, 1);
 	arg2 = valuePop(ctxt);
+	xmlXPathBooleanFunction(ctxt, 1);
 	arg1 = valuePop(ctxt);
 	arg1->boolval |= arg2->boolval;
 	valuePush(ctxt, arg1);

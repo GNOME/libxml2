@@ -32,6 +32,7 @@
 #include <libxml/entities.h>
 #include <libxml/valid.h>
 #include <libxml/xmlerror.h>
+#include <libxml/parserInternals.h>
 
 /************************************************************************
  *									*
@@ -460,17 +461,22 @@ htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
     }
     if (cur->type == HTML_TEXT_NODE) {
 	if (cur->content != NULL) {
-            xmlChar *buffer;
+	    if ((cur->name == xmlStringText) ||
+		(cur->name != xmlStringTextNoenc)) {
+		xmlChar *buffer;
 
 #ifndef XML_USE_BUFFER_CONTENT
-            buffer = xmlEncodeEntitiesReentrant(doc, cur->content);
+		buffer = xmlEncodeEntitiesReentrant(doc, cur->content);
 #else
-            buffer = xmlEncodeEntitiesReentrant(doc, 
-                                                xmlBufferContent(cur->content));
+		buffer = xmlEncodeEntitiesReentrant(doc, 
+					    xmlBufferContent(cur->content));
 #endif 
-	    if (buffer != NULL) {
-		xmlBufferWriteCHAR(buf, buffer);
-		xmlFree(buffer);
+		if (buffer != NULL) {
+		    xmlBufferWriteCHAR(buf, buffer);
+		    xmlFree(buffer);
+		}
+	    } else {
+		xmlBufferWriteCHAR(buf, cur->content);
 	    }
 	}
 	return;
@@ -794,17 +800,22 @@ htmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, const 
     }
     if (cur->type == HTML_TEXT_NODE) {
 	if (cur->content != NULL) {
-            xmlChar *buffer;
+	    if ((cur->name == xmlStringText) ||
+		(cur->name != xmlStringTextNoenc)) {
+		xmlChar *buffer;
 
 #ifndef XML_USE_BUFFER_CONTENT
-            buffer = xmlEncodeEntitiesReentrant(doc, cur->content);
+		buffer = xmlEncodeEntitiesReentrant(doc, cur->content);
 #else
-            buffer = xmlEncodeEntitiesReentrant(doc, 
-                                                xmlBufferContent(cur->content));
+		buffer = xmlEncodeEntitiesReentrant(doc, 
+					    xmlBufferContent(cur->content));
 #endif 
-	    if (buffer != NULL) {
-		xmlOutputBufferWriteString(buf, (const char *)buffer);
-		xmlFree(buffer);
+		if (buffer != NULL) {
+		    xmlOutputBufferWriteString(buf, (const char *)buffer);
+		    xmlFree(buffer);
+		}
+	    } else {
+		xmlOutputBufferWriteString(buf, (const char *)cur->content);
 	    }
 	}
 	return;

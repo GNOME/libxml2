@@ -1,3 +1,13 @@
+Mon Feb  5 18:51:36 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xpath.c: bug fixes found from XSLT
+	* tree.c: preserve node->name special values when copying nodes.
+	* parserInternals.[ch] parser.[ch] SAX.c : added a mode where
+	  external subset are fetched when available but without full
+	  validation. Added xmlLoadExtDtdDefaultValue, need a function.
+	* HTMLtree.c: add support for xmlStringTextNoenc for XSLt HTML
+	  output with encoding disabled.
+
 Sat Feb  3 09:50:29 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xmliO.c: Harry Blundell pointed out that xmlCheckFilename

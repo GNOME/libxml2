@@ -185,6 +185,8 @@ struct _xmlParserCtxt {
     int                nodemem;       /* Speed up large node parsing */
     int                pedantic;      /* signal pedantic warnings */
     void              *_private;      /* For user data, libxml won't touch it */
+
+    int                loadsubset;    /* should the external subset be loaded */
 };
 
 /**

@@ -110,6 +110,7 @@ LIBXML_DLL_IMPORT extern int xmlGetWarningsDefaultValue;
 LIBXML_DLL_IMPORT extern int xmlParserDebugEntities;
 LIBXML_DLL_IMPORT extern int xmlSubstituteEntitiesDefaultValue;
 LIBXML_DLL_IMPORT extern int xmlDoValidityCheckingDefaultValue;
+LIBXML_DLL_IMPORT extern int xmlLoadExtDtdDefaultValue;
 LIBXML_DLL_IMPORT extern int xmlPedanticParserDefaultValue;
 LIBXML_DLL_IMPORT extern int xmlKeepBlanksDefaultValue;
 LIBXML_DLL_IMPORT extern xmlChar xmlStringText[];

@@ -83,6 +83,7 @@ xmlCheckVersion(int version) {
 
 const char *xmlFeaturesList[] = {
     "validate",
+    "load subset",
     "keep blanks",
     "disable SAX",
     "fetch external entities",
@@ -174,7 +175,7 @@ xmlGetFeature(xmlParserCtxtPtr ctxt, const char *name, void *result) {
     } else if (!strcmp(name, "disable SAX")) {
 	*((int *) result) = ctxt->disableSAX;
     } else if (!strcmp(name, "fetch external entities")) {
-	*((int *) result) = ctxt->validate;
+	*((int *) result) = ctxt->loadsubset;
     } else if (!strcmp(name, "substitute entities")) {
 	*((int *) result) = ctxt->replaceEntities;
     } else if (!strcmp(name, "gather line info")) {
@@ -269,14 +270,8 @@ xmlSetFeature(xmlParserCtxtPtr ctxt, const char *name, void *value) {
 	return(-1);
 
     if (!strcmp(name, "validate")) {
-        ctxt->validate = *((int *) value);
-    } else if (!strcmp(name, "keep blanks")) {
-        ctxt->keepBlanks = *((int *) value);
-    } else if (!strcmp(name, "disable SAX")) {
-        ctxt->disableSAX = *((int *) value);
-    } else if (!strcmp(name, "fetch external entities")) {
-	int newvalid = *((int *) value);
-	if ((!ctxt->validate) && (newvalid != 0)) {
+	int newvalidate = *((int *) value);
+	if ((!ctxt->validate) && (newvalidate != 0)) {
 	    if (ctxt->vctxt.warning == NULL)
 		ctxt->vctxt.warning = xmlParserValidityWarning;
 	    if (ctxt->vctxt.error == NULL)
@@ -293,7 +288,13 @@ xmlSetFeature(xmlParserCtxtPtr ctxt, const char *name, void *value) {
 	    ctxt->vctxt.nodeMax = 4;
 	    ctxt->vctxt.node = NULL;
 	}
-	ctxt->validate = newvalid;
+        ctxt->validate = newvalidate;
+    } else if (!strcmp(name, "keep blanks")) {
+        ctxt->keepBlanks = *((int *) value);
+    } else if (!strcmp(name, "disable SAX")) {
+        ctxt->disableSAX = *((int *) value);
+    } else if (!strcmp(name, "fetch external entities")) {
+	ctxt->loadsubset = *((int *) value);
     } else if (!strcmp(name, "substitute entities")) {
         ctxt->replaceEntities = *((int *) value);
     } else if (!strcmp(name, "gather line info")) {
@@ -2189,6 +2190,7 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
     ctxt->myDoc = NULL;
     ctxt->wellFormed = 1;
     ctxt->valid = 1;
+    ctxt->loadsubset = xmlLoadExtDtdDefaultValue;
     ctxt->validate = xmlDoValidityCheckingDefaultValue;
     ctxt->pedantic = xmlPedanticParserDefaultValue;
     ctxt->keepBlanks = xmlKeepBlanksDefaultValue;

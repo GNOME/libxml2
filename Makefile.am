@@ -234,7 +234,7 @@ Validtests : tester
 	      rm result.$$name ; \
 	  fi ; fi ; done)
 
-dist-hook:
+dist-hook: libxml.spec
 	cp libxml.spec $(distdir)
 
 ## We create xmlConf.sh here and not from configure because we want

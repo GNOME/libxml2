@@ -7302,15 +7302,13 @@ xmlParseNCNameComplex(xmlParserCtxtPtr ctxt) {
     GROW;
     c = CUR_CHAR(l);
     if ((c == ' ') || (c == '>') || (c == '/') || /* accelerators */
-	(!IS_LETTER(c) && (c != '_') &&
-         (c != ':'))) {
+	(!IS_LETTER(c) && (c != '_'))) {
 	return(NULL);
     }
 
     while ((c != ' ') && (c != '>') && (c != '/') && /* test bigname.xml */
 	   ((IS_LETTER(c)) || (IS_DIGIT(c)) ||
-            (c == '.') || (c == '-') ||
-	    (c == '_') || (c == ':') || 
+            (c == '.') || (c == '-') || (c == '_') ||
 	    (IS_COMBINING(c)) ||
 	    (IS_EXTENDER(c)))) {
 	if (count++ > 100) {
@@ -7423,24 +7421,64 @@ xmlParseQName(xmlParserCtxtPtr ctxt, const xmlChar **prefix) {
     GROW;
 
     l = xmlParseNCName(ctxt);
-    if (l == NULL) return(NULL);
+    if (l == NULL) {
+        if (CUR == ':') {
+	    l = xmlParseName(ctxt);
+	    if (l != NULL) {
+		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL)) {
+		    ctxt->sax->error(ctxt->userData, 
+			 "Failed to parse QName '%s'\n", l);
+		}
+		ctxt->nsWellFormed = 0;
+		ctxt->errNo = XML_NS_ERR_QNAME;
+		*prefix = NULL;
+		return(l);
+	    }
+	}
+        return(NULL);
+    }
     if (CUR == ':') {
         NEXT;
 	p = l;
 	l = xmlParseNCName(ctxt);
 	if (l == NULL) {
+	    xmlChar *tmp;
+
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL)) {
 		ctxt->sax->error(ctxt->userData, 
 		     "Failed to parse QName '%s:'\n", p);
 	    }
-	    return(NULL);
+	    ctxt->nsWellFormed = 0;
+	    ctxt->errNo = XML_NS_ERR_QNAME;
+	    tmp = xmlBuildQName(BAD_CAST "", p, NULL, 0);
+	    p = xmlDictLookup(ctxt->dict, tmp, -1);
+	    if (tmp != NULL) xmlFree(tmp);
+	    *prefix = NULL;
+	    return(p);
 	}
 	if (CUR == ':') {
+	    xmlChar *tmp;
+
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL)) {
 		ctxt->sax->error(ctxt->userData, 
 		     "Failed to parse QName '%s:%s:'\n", p, l);
 	    }
-	    return(NULL);
+	    ctxt->nsWellFormed = 0;
+	    ctxt->errNo = XML_NS_ERR_QNAME;
+	    NEXT;
+	    tmp = (xmlChar *) xmlParseName(ctxt);
+	    if (tmp != NULL) {
+	        tmp = xmlBuildQName(tmp, l, NULL, 0);
+		l = xmlDictLookup(ctxt->dict, tmp, -1);
+		if (tmp != NULL) xmlFree(tmp);
+		*prefix = p;
+		return(l);
+	    }
+	    tmp = xmlBuildQName(BAD_CAST "", l, NULL, 0);
+	    l = xmlDictLookup(ctxt->dict, tmp, -1);
+	    if (tmp != NULL) xmlFree(tmp);
+	    *prefix = p;
+	    return(l);
 	}
 	*prefix = p;
     } else
@@ -7895,13 +7933,29 @@ reparse:
 	        const xmlChar *URL = xmlDictLookup(ctxt->dict, attvalue, len);
 		xmlURIPtr uri;
 
+                if (attname == ctxt->str_xml) {
+		    if (URL != ctxt->str_xml_ns) {
+			if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+			    ctxt->sax->error(ctxt->userData, 
+				 "xml namespace prefix mapped to wrong URI\n");
+			ctxt->nsWellFormed = 0;
+		    }
+		    ctxt->errNo = XML_NS_ERR_XML_NAMESPACE;
+		    /*
+		     * Do not keep a namespace definition node
+		     */
+		    if (alloc != 0) xmlFree(attvalue);
+		    SKIP_BLANKS;
+		    continue;
+		}
 		uri = xmlParseURI((const char *) URL);
 		if (uri == NULL) {
 		    if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
 			ctxt->sax->warning(ctxt->userData, 
-			     "xmlns:%s: %s not a valid URI\n", attname, URL);
+			     "xmlns:%s: '%s' is not a valid URI\n",
+			                   attname, URL);
 		} else {
-		    if (uri->scheme == NULL) {
+		    if ((ctxt->pedantic) && (uri->scheme == NULL)) {
 			if ((ctxt->sax != NULL) &&
 			    (ctxt->sax->warning != NULL))
 			    ctxt->sax->warning(ctxt->userData, 
@@ -7985,8 +8039,10 @@ failed:
 	if ((atts[i + 1] != NULL) && (nsname == NULL)) {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 		ctxt->sax->error(ctxt->userData, 
-		 "Namespace prefix %s for %s on %d is not defined\n",
+		 "Namespace prefix %s for %s on %s is not defined\n",
 		                 atts[i + 1], atts[i], localname);
+	    ctxt->nsWellFormed = 0;
+	    ctxt->errNo = XML_NS_ERR_UNDEFINED_NAMESPACE;
 	}
 	atts[i + 2] = nsname;
 	/*
@@ -8015,8 +8071,10 @@ failed:
 		}
 		if ((nsname != NULL) && (atts[j + 2] == nsname)) {
 		    ctxt->sax->error(ctxt->userData,
-				     "Attribute %s in %s redefined\n",
+			     "Namespaced Attribute %s in '%s' redefined\n",
 				     atts[i], nsname);
+		    ctxt->nsWellFormed = 0;
+		    ctxt->errNo = XML_NS_ERR_ATTRIBUTE_REDEFINED;
 		    break;
 		}
 	    }
@@ -8103,7 +8161,9 @@ failed:
     if ((prefix != NULL) && (nsname == NULL)) {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt->userData, 
-	     "Namespace prefix %s on %d is not defined\n", prefix, localname);
+	     "Namespace prefix %s on %s is not defined\n", prefix, localname);
+	ctxt->nsWellFormed = 0;
+	ctxt->errNo = XML_NS_ERR_UNDEFINED_NAMESPACE;
     }
     *pref = prefix;
     *URI = nsname;

@@ -125,7 +125,7 @@ check-local: tests
 
 testall : tests SVGtests SAXtests
 
-tests: XMLtests XMLenttests SAXtests HTMLtests Validtests URItests XPathtests XPtrtests XIncludetests C14Ntests Scripttests Catatests @TEST_REGEXPS@ @TEST_SCHEMAS@ @TEST_THREADS@
+tests: XMLtests XMLenttests NStests SAXtests HTMLtests Validtests URItests XPathtests XPtrtests XIncludetests C14Ntests Scripttests Catatests @TEST_REGEXPS@ @TEST_SCHEMAS@ @TEST_THREADS@
 	@(if [ "@PYTHON_SUBDIR@" != "" ] ; then cd python ; $(MAKE) tests ; fi)
 
 valgrind:
@@ -277,6 +277,29 @@ XMLtests : xmllint$(EXEEXT)
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
 	      diff result.$$name result2.$$name ; \
 	      rm result.$$name result2.$$name ; \
+	  fi ; fi ; done)
+
+NStests : xmllint$(EXEEXT)
+	@(echo > .memdump)
+	@echo "##"
+	@echo "## XML Namespaces regression tests"
+	@echo "##"
+	-@(for i in $(srcdir)/test/namespaces/* ; do \
+	  name=`basename $$i`; \
+	  if [ ! -d $$i ] ; then \
+	  if [ ! -f $(srcdir)/result/namespaces/$$name ] ; then \
+	      echo New test file $$name ; \
+	      $(CHECKER) $(top_builddir)/xmllint $$i \
+	         2> $(srcdir)/result/namespaces/$$name.err \
+		 > $(srcdir)/result/namespaces/$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
+	  else \
+	      echo Testing $$name ; \
+	      $(CHECKER) $(top_builddir)/xmllint $$i 2> error.$$name > result.$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
+	      diff $(srcdir)/result/namespaces/$$name result.$$name ; \
+	      diff $(srcdir)/result/namespaces/$$name.err error.$$name ; \
+	      rm result.$$name error.$$name ; \
 	  fi ; fi ; done)
 
 Docbtests : xmllint$(EXEEXT)

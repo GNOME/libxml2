@@ -2309,6 +2309,7 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
     ctxt->userData = ctxt;
     ctxt->myDoc = NULL;
     ctxt->wellFormed = 1;
+    ctxt->nsWellFormed = 1;
     ctxt->valid = 1;
     ctxt->loadsubset = xmlLoadExtDtdDefaultValue;
     ctxt->validate = xmlDoValidityCheckingDefaultValue;

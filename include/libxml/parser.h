@@ -260,6 +260,7 @@ struct _xmlParserCtxt {
     void *            *pushTab;       /* array of data for push */
     xmlHashTablePtr    attsDefault;   /* defaulted attributes if any */
     xmlHashTablePtr    attsSpecial;   /* non-CDATA attributes if any */
+    int                nsWellFormed;  /* is the document XML Nanespace okay */
 };
 
 /**

@@ -135,8 +135,12 @@ typedef enum {
     XML_ERR_INVALID_URI, /* 91 */
     XML_ERR_URI_FRAGMENT, /* 92 */
     XML_WAR_CATALOG_PI, /* 93 */
-    XML_ERR_NO_DTD  /* 94 */
-}xmlParserErrors;
+    XML_ERR_NO_DTD,  /* 94 */
+    XML_NS_ERR_XML_NAMESPACE,
+    XML_NS_ERR_UNDEFINED_NAMESPACE,
+    XML_NS_ERR_QNAME,
+    XML_NS_ERR_ATTRIBUTE_REDEFINED
+} xmlParserErrors;
 
 /**
  * xmlGenericErrorFunc:

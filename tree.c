@@ -151,8 +151,8 @@ xmlBuildQName(const xmlChar *ncname, const xmlChar *prefix,
     int lenn, lenp;
     xmlChar *ret;
 
-    if ((ncname == NULL) || (*ncname == 0)) return(NULL);
-    if ((prefix == NULL) || (*prefix == 0)) return((xmlChar *) ncname);
+    if (ncname == NULL) return(NULL);
+    if (prefix == NULL) return((xmlChar *) ncname);
 
     lenn = strlen((char *) ncname);
     lenp = strlen((char *) prefix);

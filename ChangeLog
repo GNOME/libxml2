@@ -1,3 +1,16 @@
+Fri Sep 12 01:36:20 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c parserInternals.c tree.c include/libxml/parser.h
+	  include/libxml/xmlerror.h: adding namespace checkings
+	  while making sure they still parse as wellformed documents.
+	  Add an nsWellFormed status report to the context, and 
+	  provide new appropriate error codes.
+	* Makefile.am result/namespaces/* test/namespaces/*: add 
+	  specific regression testing for the new namespace support
+	* test/att5 result/noent/att5 result/att5 result/att5.sax:
+	  add more coverage for the attribute parsing and normalization
+	  code.
+
 Fri Sep 12 01:34:19 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* threads.c: backport of a thread bugfix from 2_5_X branch

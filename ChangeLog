@@ -1,3 +1,8 @@
+Mon Apr 15 14:55:53 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* python/Makefile.am: patch from Cristian Gafton to build on
+	  Red Hat 6.2, should also fix #75779
+
 Mon Apr 15 12:14:49 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* valid.c: first part of fixing #78729

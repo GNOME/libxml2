@@ -22,13 +22,13 @@ EXTRA_DIST = 			\
 	libxml2-python-api.xml	\
 	$(DOCS)
 
-libxml2mod_la_LDFLAGS = -module -avoid-version
+libxml2mod_la_LDFLAGS = -module -avoid-version -L$(top_builddir)/.libs
 
 if WITH_PYTHON
 mylibs = \
 	$(top_builddir)/libxml2.la
 
-all: libxml2.py # libxml2mod.so 
+all: libxml2.py libxml2mod.la
 
 pythondir = $(prefix)/lib/python${PYTHON_VERSION}/site-packages
 python_LTLIBRARIES = libxml2mod.la

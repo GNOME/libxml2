@@ -847,18 +847,6 @@ static const char *docbStartClose[] = {
 NULL
 };
 
-/*
- * The list of SGML elements which are supposed not to have
- * CDATA content and where a p element will be implied
- *
- * TODO: extend that list by reading the SGML SGML DTD on
- *       implied paragraph
- */
-static char *docbNoContentElements[] = {
-    NULL
-};
-
-
 static const char** docbStartCloseIndex[100];
 static int docbStartCloseIndexinitialized = 0;
 

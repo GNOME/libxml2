@@ -30,9 +30,9 @@ typedef xmlNodePtr docbNodePtr;
 /*
  * There is only few public functions.
  */
-int                    docbEncodeEntities(unsigned char* out,
+int                    docbEncodeEntities(unsigned char *out,
                                         int *outlen,
-                                        const unsigned char* in,
+                                        const unsigned char *in,
                                         int *inlen, int quoteChar);
 
 docbDocPtr             docbSAXParseDoc (xmlChar *cur,

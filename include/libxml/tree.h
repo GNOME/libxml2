@@ -787,11 +787,11 @@ int		xmlReconciliateNs	(xmlDocPtr doc,
  * Saving
  */
 void		xmlDocDumpFormatMemory	(xmlDocPtr cur,
-					 xmlChar**mem,
+					 xmlChar **mem,
 					 int *size,
 					 int format);
 void		xmlDocDumpMemory	(xmlDocPtr cur,
-					 xmlChar**mem,
+					 xmlChar **mem,
 					 int *size);
 void		xmlDocDumpMemoryEnc	(xmlDocPtr out_doc,
 					 xmlChar **doc_txt_ptr,

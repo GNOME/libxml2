@@ -96,8 +96,8 @@ typedef enum {
  *     as the return value is positive, else unpredictiable.
  * The value of @outlen after return is the number of octets consumed.
  */
-typedef int (* xmlCharEncodingInputFunc)(unsigned char* out, int *outlen,
-                                         const unsigned char* in, int *inlen);
+typedef int (* xmlCharEncodingInputFunc)(unsigned char *out, int *outlen,
+                                         const unsigned char *in, int *inlen);
 
 
 /**
@@ -118,8 +118,8 @@ typedef int (* xmlCharEncodingInputFunc)(unsigned char* out, int *outlen,
  *     as the return value is positive, else unpredictiable.
  * The value of @outlen after return is the number of ocetes consumed.
  */
-typedef int (* xmlCharEncodingOutputFunc)(unsigned char* out, int *outlen,
-                                          const unsigned char* in, int *inlen);
+typedef int (* xmlCharEncodingOutputFunc)(unsigned char *out, int *outlen,
+                                          const unsigned char *in, int *inlen);
 
 
 /*
@@ -161,15 +161,15 @@ const char *
 	xmlGetEncodingAlias		(const char *alias);
 void	xmlCleanupEncodingAliases	(void);
 xmlCharEncoding
-	xmlParseCharEncoding		(const char* name);
-const char*
+	xmlParseCharEncoding		(const char *name);
+const char *
 	xmlGetCharEncodingName		(xmlCharEncoding enc);
 
 /*
  * Interfaces directly used by the parsers.
  */
 xmlCharEncoding
-	xmlDetectCharEncoding		(const unsigned char* in,
+	xmlDetectCharEncoding		(const unsigned char *in,
 					 int len);
 
 int	xmlCharEncOutFunc		(xmlCharEncodingHandler *handler,
@@ -187,13 +187,13 @@ int	xmlCharEncCloseFunc		(xmlCharEncodingHandler *handler);
 /*
  * Export a few useful functions
  */
-int	UTF8Toisolat1			(unsigned char* out,
+int	UTF8Toisolat1			(unsigned char *out,
 					 int *outlen,
-					 const unsigned char* in,
+					 const unsigned char *in,
 					 int *inlen);
-int	isolat1ToUTF8			(unsigned char* out,
+int	isolat1ToUTF8			(unsigned char *out,
 					 int *outlen,
-					 const unsigned char* in,
+					 const unsigned char *in,
 					 int *inlen);
 /*
  * exports additional "UTF-8 aware" string routines which are

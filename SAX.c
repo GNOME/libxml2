@@ -1062,14 +1062,14 @@ startElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
 		        ((attr->prefix == NULL) &&
 			 (xmlStrEqual(attr->name, BAD_CAST "xmlns"))) ||
 			(ctxt->loadsubset & XML_COMPLETE_ATTRS)) {
-			xmlChar buffer[100];
-			const xmlChar *fulln = attr->name;
+			xmlChar *fulln;
 
 			if (attr->prefix != NULL) {
-			    snprintf((char *) buffer, 99, "%s:%s",
-				     attr->prefix, attr->name);
-			    buffer[99] = 0;
-			    fulln = buffer;
+			    fulln = xmlStrdup(attr->prefix);
+			    fulln = xmlStrcat(fulln, BAD_CAST ":");
+			    fulln = xmlStrcat(fulln, attr->name);
+			} else {
+			    fulln = xmlStrdup(attr->name);
 			}
 
 			/*
@@ -1089,6 +1089,7 @@ startElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
 			}
 			if (att == NULL)
 			    attribute(ctxt, fulln, attr->defaultValue);
+			xmlFree(fulln);
 		    }
 		}
 		attr = attr->nexth;

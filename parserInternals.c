@@ -2378,8 +2378,8 @@ xmlClearParserCtxt(xmlParserCtxtPtr ctxt)
  * 
  * Returns an xmlParserNodeInfo block pointer or NULL
  */
-const xmlParserNodeInfo* xmlParserFindNodeInfo(const xmlParserCtxt* ctx,
-                                               const xmlNode* node)
+const xmlParserNodeInfo* xmlParserFindNodeInfo(const xmlParserCtxtPtr ctx,
+                                               const xmlNodePtr node)
 {
   unsigned long pos;
 
@@ -2433,8 +2433,8 @@ xmlClearNodeInfoSeq(xmlParserNodeInfoSeqPtr seq)
  *
  * Returns a long indicating the position of the record
  */
-unsigned long xmlParserFindNodeInfoIndex(const xmlParserNodeInfoSeq* seq,
-                                         const xmlNode* node)
+unsigned long xmlParserFindNodeInfoIndex(const xmlParserNodeInfoSeqPtr seq,
+                                         const xmlNodePtr node)
 {
   unsigned long upper, lower, middle;
   int found = 0;
@@ -2470,13 +2470,14 @@ unsigned long xmlParserFindNodeInfoIndex(const xmlParserNodeInfoSeq* seq,
  */
 void
 xmlParserAddNodeInfo(xmlParserCtxtPtr ctxt, 
-                     const xmlParserNodeInfo* info)
+                     const xmlParserNodeInfoPtr info)
 {
   unsigned long pos;
   static unsigned int block_size = 5;
 
   /* Find pos and check to see if node is already in the sequence */
-  pos = xmlParserFindNodeInfoIndex(&ctxt->node_seq, info->node);
+  pos = xmlParserFindNodeInfoIndex(&ctxt->node_seq, (const xmlNodePtr)
+	                           info->node);
   if ( pos < ctxt->node_seq.length
        && ctxt->node_seq.buffer[pos].node == info->node ) {
     ctxt->node_seq.buffer[pos] = *info;

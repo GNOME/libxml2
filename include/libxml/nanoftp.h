@@ -39,7 +39,7 @@ extern "C" {
  * Note that only one of year and day:minute are specified
  */
 typedef void (*ftpListCallback) (void *userData,
-	                         const char *filename, const char* attrib,
+	                         const char *filename, const char *attrib,
 	                         const char *owner, const char *group,
 				 unsigned long size, int links, int year,
 				 const char *month, int day, int hour,
@@ -52,7 +52,9 @@ typedef void (*ftpListCallback) (void *userData,
  *
  * A callback for the xmlNanoFTPGet command
  */
-typedef void (*ftpDataCallback) (void *userData, const char *data, int len);
+typedef void (*ftpDataCallback) (void *userData,
+				 const char *data,
+				 int len);
 
 /*
  * Init

@@ -63,7 +63,7 @@ const xmlChar *	htmlGetMetaEncoding	(htmlDocPtr doc);
 int		htmlSetMetaEncoding	(htmlDocPtr doc,
 					 const xmlChar *encoding);
 void		htmlDocDumpMemory	(xmlDocPtr cur,
-					 xmlChar**mem,
+					 xmlChar **mem,
 					 int *size);
 int		htmlDocDump		(FILE *f,
 					 xmlDocPtr cur);

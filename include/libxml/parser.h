@@ -502,7 +502,7 @@ void		xmlClearParserCtxt	(xmlParserCtxtPtr ctxt);
 void		xmlFreeParserCtxt	(xmlParserCtxtPtr ctxt);
 void		xmlSetupParserForBuffer	(xmlParserCtxtPtr ctxt,
 					 const xmlChar* buffer,
-					 const char* filename);
+					 const char *filename);
 xmlParserCtxtPtr xmlCreateDocParserCtxt	(xmlChar *cur);
 
 /*
@@ -550,14 +550,14 @@ xmlParserInputPtr xmlNewIOInputStream	(xmlParserCtxtPtr ctxt,
  * Node infos
  */
 const xmlParserNodeInfo*
-		xmlParserFindNodeInfo	(const xmlParserCtxt* ctxt,
-                                               const xmlNode* node);
+		xmlParserFindNodeInfo	(const xmlParserCtxtPtr ctxt,
+				         const xmlNodePtr node);
 void		xmlInitNodeInfoSeq	(xmlParserNodeInfoSeqPtr seq);
 void		xmlClearNodeInfoSeq	(xmlParserNodeInfoSeqPtr seq);
-unsigned long xmlParserFindNodeInfoIndex(const xmlParserNodeInfoSeq* seq,
-                                         const xmlNode* node);
+unsigned long xmlParserFindNodeInfoIndex(const xmlParserNodeInfoSeqPtr seq,
+                                         const xmlNodePtr node);
 void		xmlParserAddNodeInfo	(xmlParserCtxtPtr ctxt,
-					 const xmlParserNodeInfo* info);
+					 const xmlParserNodeInfoPtr info);
 
 /*
  * External entities handling actually implemented in xmlIO

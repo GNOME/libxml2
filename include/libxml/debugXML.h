@@ -102,7 +102,8 @@ typedef int (* xmlShellCmd) (xmlShellCtxtPtr ctxt,
 			     xmlNodePtr node,
 			     xmlNodePtr node2);
 
-void	xmlShellPrintXPathError	(int errorType, const char* arg);
+void	xmlShellPrintXPathError	(int errorType,
+				 const char *arg);
 void	xmlShellPrintNode	(xmlNodePtr node);
 void	xmlShellPrintXPathResult(xmlXPathObjectPtr list);
 int	xmlShellList		(xmlShellCtxtPtr ctxt,

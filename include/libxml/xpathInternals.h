@@ -335,8 +335,7 @@ void	xmlXPathRegisterVariableLookup	(xmlXPathContextPtr ctxt,
 /*
  * Function Lookup forwarding
  */
-typedef xmlXPathFunction
-	(*xmlXPathFuncLookupFunc)	(void *ctxt,
+typedef xmlXPathFunction xmlXPathFuncLookupFunc	(void *ctxt,
 					 const xmlChar *name,
 					 const xmlChar *ns_uri);
 
@@ -448,7 +447,7 @@ int		  valuePush			(xmlXPathParserContextPtr ctxt,
 xmlXPathObjectPtr xmlXPathNewString		(const xmlChar *val);
 xmlXPathObjectPtr xmlXPathNewCString		(const char *val);
 xmlXPathObjectPtr xmlXPathWrapString		(xmlChar *val);
-xmlXPathObjectPtr xmlXPathWrapCString		(char *val);
+xmlXPathObjectPtr xmlXPathWrapCString		(char * val);
 xmlXPathObjectPtr xmlXPathNewFloat		(double val);
 xmlXPathObjectPtr xmlXPathNewBoolean		(int val);
 xmlXPathObjectPtr xmlXPathNewNodeSet		(xmlNodePtr val);

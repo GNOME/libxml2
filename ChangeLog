@@ -1,3 +1,13 @@
+Sun Jan 20 23:03:41 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* SAX.c: cleanup patch from Anthony Jones
+	* doc/Makefile.am: fix the headers to avoid in make scan
+	* parserInternals.c xpath.c include/libxml/*.h: cleanup of the
+	  includes, * vs Ptr and general cleanup
+	* parsedecl.py: first version of a script to extract the
+	  module interfaces, the goal will be to provide .decl or XML
+	  specification of the interfaces to build wrappers.
+
 Sun Jan 20 13:38:22 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* doc/xmlcatalog_man.xml xmlcatalog.c: Fixed bug #68830, xmlcatalog

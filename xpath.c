@@ -2291,9 +2291,10 @@ xmlXPathFunctionLookup(xmlXPathContextPtr ctxt, const xmlChar *name) {
 
     if (ctxt->funcLookupFunc != NULL) {
 	xmlXPathFunction ret;
+	xmlXPathFuncLookupFunc *f;
 
-	ret = ((xmlXPathFuncLookupFunc) ctxt->funcLookupFunc)
-	    (ctxt->funcLookupData, name, NULL);
+	f = (xmlXPathFuncLookupFunc *) ctxt->funcLookupFunc;
+	ret = f(ctxt->funcLookupData, name, NULL);
 	if (ret != NULL)
 	    return(ret);
     }
@@ -2321,9 +2322,10 @@ xmlXPathFunctionLookupNS(xmlXPathContextPtr ctxt, const xmlChar *name,
 
     if (ctxt->funcLookupFunc != NULL) {
 	xmlXPathFunction ret;
+	xmlXPathFuncLookupFunc *f;
 
-	ret = ((xmlXPathFuncLookupFunc) ctxt->funcLookupFunc)
-	    (ctxt->funcLookupData, name, ns_uri);
+	f = (xmlXPathFuncLookupFunc *) ctxt->funcLookupFunc;
+	ret = f(ctxt->funcLookupData, name, ns_uri);
 	if (ret != NULL)
 	    return(ret);
     }

@@ -37,7 +37,7 @@ main(void)
     testXmlwriterDoc("writer3.out");
 
     /* next, the tree version */
-    testXmlwriterDoc("writer4.out");
+    testXmlwriterTree("writer4.out");
 
     return 0;
 }

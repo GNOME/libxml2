@@ -16,12 +16,12 @@ XMLS=		\
     valid.xml	\
     invalid.xml
 
-EXTRA_DIST = $(TESTSPY) $(XMLS)
+EXTRA_DIST = $(PYTESTS) $(XMLS)
 
 if WITH_PYTHON
-tests: $(TESTSPY)
+tests: $(PYTESTS)
 	-@(PYTHONPATH=".." ; export PYTHONPATH; \
-	   for test in $(TESTSPY) ; do echo "-- $$test" ; $(PYTHON) $$test ; done)
+	   for test in $(PYTESTS) ; do echo "-- $$test" ; $(PYTHON) $$test ; done)
 else
 tests:
 endif
@@ -31,6 +31,6 @@ clean:
 
 install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(EXAMPLE_DIR)
-	-(for test in $(TESTSPY) $(XMLS); \
+	-(for test in $(PYTESTS) $(XMLS); \
 	  do @INSTALL@ -m 0644 $$test $(DESTDIR)$(EXAMPLE_DIR) ; done)
 

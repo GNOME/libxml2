@@ -7842,39 +7842,6 @@ failed:
     }
 
     /*
-     * The attributes checkings
-     */
-    for (i = 0; i < nbatts;i += 5) {
-        nsname = xmlGetNamespace(ctxt, atts[i + 1]);
-	if ((atts[i + 1] != NULL) && (nsname == NULL)) {
-	    xmlNsErr(ctxt, XML_NS_ERR_UNDEFINED_NAMESPACE,
-		 "Namespace prefix %s for %s on %s is not defined\n",
-		     atts[i + 1], atts[i], localname);
-	}
-	atts[i + 2] = nsname;
-	/*
-	 * [ WFC: Unique Att Spec ]
-	 * No attribute name may appear more than once in the same
-	 * start-tag or empty-element tag. 
-	 * As extended by the Namespace in XML REC.
-	 */
-        for (j = 0; j < i;j += 5) {
-	    if (atts[i] == atts[j]) {
-	        if (atts[i+1] == atts[j+1]) {
-		    xmlErrAttributeDup(ctxt, atts[i+1], atts[i]);
-		    break;
-		}
-		if ((nsname != NULL) && (atts[j + 2] == nsname)) {
-		    xmlNsErr(ctxt, XML_NS_ERR_ATTRIBUTE_REDEFINED,
-			     "Namespaced Attribute %s in '%s' redefined\n",
-			     atts[i], nsname, NULL);
-		    break;
-		}
-	    }
-	}
-    }
-
-    /*
      * The attributes defaulting
      */
     if (ctxt->attsDefault != NULL) {
@@ -7945,6 +7912,39 @@ failed:
 		    atts[nbatts++] = defaults->values[4 * i + 2];
 		    atts[nbatts++] = defaults->values[4 * i + 3];
 		    nbdef++;
+		}
+	    }
+	}
+    }
+
+    /*
+     * The attributes checkings
+     */
+    for (i = 0; i < nbatts;i += 5) {
+        nsname = xmlGetNamespace(ctxt, atts[i + 1]);
+	if ((atts[i + 1] != NULL) && (nsname == NULL)) {
+	    xmlNsErr(ctxt, XML_NS_ERR_UNDEFINED_NAMESPACE,
+		 "Namespace prefix %s for %s on %s is not defined\n",
+		     atts[i + 1], atts[i], localname);
+	}
+	atts[i + 2] = nsname;
+	/*
+	 * [ WFC: Unique Att Spec ]
+	 * No attribute name may appear more than once in the same
+	 * start-tag or empty-element tag. 
+	 * As extended by the Namespace in XML REC.
+	 */
+        for (j = 0; j < i;j += 5) {
+	    if (atts[i] == atts[j]) {
+	        if (atts[i+1] == atts[j+1]) {
+		    xmlErrAttributeDup(ctxt, atts[i+1], atts[i]);
+		    break;
+		}
+		if ((nsname != NULL) && (atts[j + 2] == nsname)) {
+		    xmlNsErr(ctxt, XML_NS_ERR_ATTRIBUTE_REDEFINED,
+			     "Namespaced Attribute %s in '%s' redefined\n",
+			     atts[i], nsname, NULL);
+		    break;
 		}
 	    }
 	}

@@ -1,3 +1,10 @@
+Tue Nov 25 08:18:12 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: swapped the attribute defaulting and attribute checking
+	  parts of parsing a new element start, fixes bug #127772
+	* result/valid/127772.* test/valid/127772.xml
+	  test/valid/dtds/127772.dtd: added the example in the regression tests
+
 Tue Nov 25 08:00:15 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: moved xmlCleanupThreads() to the end of xmlCleanupParser()

@@ -1,3 +1,18 @@
+Mon Sep  6 11:17:35 CEST 2004 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xstc/xstc-to-python.xslt xstc/ms-test-def.xml xstc/nist-test-def.xml
+	  xstc/sun-test-def.xml: Initial release of generation files to 
+	  create python test scripts, which will run the W3C XML Schema Test
+	  Collection. The ms-test-def.xml and sun-test-def.xml files
+	  were extracted from the online HTML XSTC results [1], since they did
+	  not exist for the SUN tests, and only partially did exist for the 
+	  MS tests. The NIST definition file was created by concatenation
+	  of the existing definition files for each single datatype.
+	  The stylesheet "xstc-to-python.xslt" should be run against the
+	  definition files to produce the python scripts.
+	  [1] "http://www.w3.org/XML/2001/05/xmlschema-test-collection/
+	  results-master.html"
+
 Fri Sep  3 20:29:59 CEST 2004 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c include/libxml/schemasInternals.h

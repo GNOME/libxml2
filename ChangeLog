@@ -1,3 +1,8 @@
+Mon Sep  6 16:04:01 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xstc/Makefile.am Makefile.am: integrated to "make valgrind",
+	  heavy ... weight 250MB of VM !
+
 Mon Sep  6 14:54:39 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xstc/Makefile.am xstc/xstc-to-python.xsl xstc/xstc.py Makefile.am:

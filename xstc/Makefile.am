@@ -43,21 +43,26 @@ pytests: $(PYSCRIPTS) $(TESTDIRS)
 	   echo "## Running NIST Schemas tests";			\
 	   PYTHONPATH="$$PYTHONPATH:../python:../python/.libs:..:../libs" ;\
 	   export PYTHONPATH;						\
-	   ./nist-test.py -s -b $(srcdir) ; fi)
+	   $(CHECKER) $(PYTHON) nist-test.py -s -b $(srcdir) ; fi)
 	-@(if [ -x sun-test.py -a -d suntest ] ; then 			\
 	   echo "## Running Sun Schemas tests";				\
 	   PYTHONPATH="$$PYTHONPATH:../python:../python/.libs:..:../libs" ;\
 	   export PYTHONPATH;						\
-	   ./sun-test.py -s -b $(srcdir) ; fi)
+	   $(CHECKER) $(PYTHON) sun-test.py -s -b $(srcdir) ; fi)
 	-@(if [ -x ms-test.py -a -d msxsdtest ] ; then 			\
 	   echo "## Running Microsoft Schemas tests";			\
 	   PYTHONPATH="$$PYTHONPATH:../python:../python/.libs:..:../libs" ;\
 	   export PYTHONPATH;						\
-	   ./ms-test.py -s -b $(srcdir) ; fi)
+	   $(CHECKER) $(PYTHON) ms-test.py -s -b $(srcdir) ; fi)
 
 tests:
 	-@(if [ -x $(PYTHON) ] ; then 					\
 	   $(MAKE) MAKEFLAGS+=--silent pytests ; fi);
+
+valgrind:
+	-@(if [ -x $(PYTHON) ] ; then 					\
+	   echo '## Running the regression tests under Valgrind' ;	\
+	   $(MAKE) CHECKER='valgrind -q' MAKEFLAGS+=--silent pytests ; fi);
 
 clean:
 	rm -f $(PYSCRIPTS) test.log

@@ -1,3 +1,7 @@
+Tue Aug 31 15:41:52 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* NEWS configure.in doc/*: release of libxml2-2.6.13
+
 Tue Aug 31 14:14:30 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xmlIO.c: fixing #151456, an encoding error could generate

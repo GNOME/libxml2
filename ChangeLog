@@ -1,3 +1,7 @@
+Tue Nov 13 16:23:04 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* vms/*: updated instructions and diffs from John A Fotheringham
+
 Mon Nov 12 23:43:22 CET 2001 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/xmlerror.h: avoid an include problem if

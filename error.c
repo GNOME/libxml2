@@ -6,13 +6,8 @@
  * Daniel Veillard <Daniel.Veillard@w3.org>
  */
 
-#ifdef WIN32
-#include "win32config.h"
-#else
-#include "config.h"
-#endif
+#include "libxml.h"
 
-#include <stdio.h>
 #include <stdarg.h>
 #include <libxml/parser.h>
 #include <libxml/xmlerror.h>

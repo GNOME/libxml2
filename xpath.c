@@ -16,16 +16,9 @@
  * for VMS
  */
 
-#ifdef WIN32
-#include "win32config.h"
-#else
-#include "config.h"
-#endif
-
-#include <libxml/xmlversion.h>
+#include "libxml.h"
 #ifdef LIBXML_XPATH_ENABLED
 
-#include <stdio.h>
 #include <string.h>
 
 #ifdef HAVE_SYS_TYPES_H
@@ -935,112 +928,57 @@ xmlXPathFormatNumber(double number, char buffer[], int buffersize)
 	    if (buffersize > (int)sizeof("NaN"))
 		sprintf(buffer, "NaN");
 	} else {
-	    char work[INTEGER_DIGITS + FRACTION_DIGITS + EXPONENT_DIGITS + 1];
-	    char *pointer;
-	    char *start;
-	    int i;
-	    int digits;
-	    int is_negative;
-	    int use_scientific;
-	    int exponent;
-	    int indx;
-	    int count;
-	    double n;
+	    /* 3 is sign, decimal point, and terminating zero */
+	    char work[DBL_DIG + EXPONENT_DIGITS + 3];
+	    int integer_place, fraction_place;
+	    char *ptr;
+	    char *after_fraction;
+	    double absolute_value;
+	    int size;
 
-	    i = digits = 0;
-	    is_negative = (number < 0.0);
-	    if (is_negative)
-		number = -number;
+	    absolute_value = fabs(number);
 
-	    /* Scale number */
-	    n = log10(number);
-	    exponent = (isinf(n) == -1) ? 0 : (int)n;
-	    use_scientific = (((number <= LOWER_DOUBLE) ||
-			       (number > UPPER_DOUBLE)) &&
-			      (number != 0));
-	    if (use_scientific) {
-		number /= pow(10.0, (double)exponent);
-		while (number < 1.0) {
-		    number *= 10.0;
-		    exponent--;
-		}
+	    /*
+	     * First choose format - scientific or regular floating point.
+	     * In either case, result is in work, and after_fraction points
+	     * just past the fractional part.
+	    */
+	    if ( ((absolute_value > UPPER_DOUBLE) ||
+		  (absolute_value < LOWER_DOUBLE)) &&
+		 (absolute_value != 0.0) ) {
+		/* Use scientific notation */
+		integer_place = DBL_DIG + EXPONENT_DIGITS + 1;
+		fraction_place = DBL_DIG - 1;
+		snprintf(work, sizeof(work),"%*.*e",
+			 integer_place, fraction_place, number);
+		after_fraction = strchr(work + DBL_DIG, 'e');
 	    }
-	    
-	    /* Integer part is build from back */
-	    pointer = &work[INTEGER_DIGITS + 1];
-	    if (number < 1.0) {
-		*(--pointer) = '0';
-		digits++;
-	    } else {
-		n = number;
-		for (i = 1; i < INTEGER_DIGITS - 1; i++) {
-		    indx = (int)n % 10;
-		    *(--pointer) = "0123456789"[indx];
-		    n /= 10.0;
-		    if (n < 1.0)
-			break;
-		}
-		digits += i;
-	    }
-	    if (is_negative) {
-		*(--pointer) = '-';
-		digits++;
-	    }
-	    start = pointer;
-
-	    /* Fraction part is build from front */
-	    i = 0;
-	    pointer = &work[INTEGER_DIGITS + 1];
-	    if (number - floor(number) > DBL_EPSILON) {
-		*(pointer++) = '.';
-		i++;
-		n = number;
-		count = 0;
-		while (i < FRACTION_DIGITS) {
-		    n -= floor(n);
-		    n *= 10.0;
-		    indx = (int)n % 10;
-		    *(pointer++) = "0123456789"[indx];
-		    i++;
-		    if ((indx != 0) || (count > 0))
-			count++;
-		    if ((n > 10.0) || (count > FRACTION_DIGITS / 2))
-			break;
-		}
-	    }
-	    /* Remove trailing zeroes */
-	    while ((pointer[-1] == '0') && (i > 0)) {
-		pointer--;
-		i--;
-	    }
-	    digits += i;
-	    
-	    if (use_scientific) {
-		*(pointer++) = 'e';
-		digits++;
-		if (exponent < 0) {
-		    *(pointer++) = '-';
-		    exponent = -exponent;
-		} else {
-		    *(pointer++) = '+';
-		}
-		digits++;
-		if (exponent >= 100)
-		    pointer += 2;
-		else if (exponent >= 10)
-		    pointer += 1;
-		while (exponent >= 1) {
-		    *(pointer--) = "0123456789"[exponent % 10];
-		    exponent /= 10;
-		    digits++;
-		}
+	    else {
+		/* Use regular notation */
+		integer_place = 1 + (int)log10(absolute_value);
+		fraction_place = (integer_place > 0)
+		    ? DBL_DIG - integer_place
+		    : DBL_DIG;
+		size = snprintf(work, sizeof(work), "%0.*f",
+				fraction_place, number);
+		after_fraction = work + size;
 	    }
 
-	    if (digits >= buffersize)
-		digits = buffersize - 1;
-	    
-	    memcpy(buffer, start, digits);
-	    buffer[digits] = 0;
+	    /* Remove fractional trailing zeroes */
+	    ptr = after_fraction;
+	    while (*(--ptr) == '0')
+		;
+	    if (*ptr != '.')
+	        ptr++;
+	    strcpy(ptr, after_fraction);
+
+	    /* Finally copy result back to caller */
+	    size = strlen(work) + 1;
+	    if (size > buffersize) {
+		work[buffersize - 1] = 0;
+		size = buffersize;
+	    }
+	    memcpy(buffer, work, size);
 	}
 	break;
     }
@@ -5200,6 +5138,8 @@ xmlXPathParseName(xmlXPathParserContextPtr ctxt) {
  * xmlXPathStringEvalNumber:
  * @str:  A string to scan
  *
+ *  [30a]  Float  ::= Number ('e' Digits?)?
+ *
  *  [30]   Number ::=   Digits ('.' Digits?)?
  *                    | '.' Digits 
  *  [31]   Digits ::=   [0-9]+
@@ -5217,7 +5157,9 @@ xmlXPathStringEvalNumber(const xmlChar *str) {
     double mult = 1;
     int ok = 0;
     int isneg = 0;
-
+    int exponent = 0;
+    int is_exponent_negative = 0;
+    
     while (IS_BLANK(*cur)) cur++;
     if ((*cur != '.') && ((*cur < '0') || (*cur > '9')) && (*cur != '-')) {
         return(xmlXPathNAN);
@@ -5242,9 +5184,22 @@ xmlXPathStringEvalNumber(const xmlChar *str) {
 	    cur++;
 	}
     }
+    if ((*cur == 'e') || (*cur == 'E')) {
+      cur++;
+      if (*cur == '-') {
+	is_exponent_negative = 1;
+	cur++;
+      }
+      while ((*cur >= '0') && (*cur <= '9')) {
+	exponent = exponent * 10 + (*cur - '0');
+	cur++;
+      }
+    }
     while (IS_BLANK(*cur)) cur++;
     if (*cur != 0) return(xmlXPathNAN);
     if (isneg) ret = -ret;
+    if (is_exponent_negative) exponent = -exponent;
+    ret *= pow(10.0, (double)exponent);
     return(ret);
 }
 
@@ -5264,6 +5219,8 @@ xmlXPathCompNumber(xmlXPathParserContextPtr ctxt) {
     double ret = 0.0;
     double mult = 1;
     int ok = 0;
+    int exponent = 0;
+    int is_exponent_negative = 0;
 
     CHECK_ERROR;
     if ((CUR != '.') && ((CUR < '0') || (CUR > '9'))) {
@@ -5285,6 +5242,20 @@ xmlXPathCompNumber(xmlXPathParserContextPtr ctxt) {
 	    NEXT;
 	}
     }
+    if ((CUR == 'e') || (CUR == 'E')) {
+      NEXT;
+      if (CUR == '-') {
+	is_exponent_negative = 1;
+	NEXT;
+      }
+      while ((CUR >= '0') && (CUR <= '9')) {
+	exponent = exponent * 10 + (CUR - '0');
+	NEXT;
+      }
+    }
+    if (is_exponent_negative)
+      exponent = -exponent;
+    ret *= pow(10.0, (double)exponent);
     PUSH_LONG_EXPR(XPATH_OP_VALUE, XPATH_NUMBER, 0, 0,
 	           xmlXPathNewFloat(ret), NULL);
 }

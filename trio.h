@@ -15,12 +15,22 @@
  *
  ************************************************************************/
 
-#ifndef H_TRIO
-#define H_TRIO
+#ifndef TRIO_TRIO_H
+#define TRIO_TRIO_H
 
 #include <stdio.h>
 #include <stdarg.h>
 #include <stdlib.h>
+
+/*
+ * Use autoconf defines if present. Packages using trio must define
+ * HAVE_CONFIG_H as a compiler option themselves.
+ */
+#if defined(HAVE_CONFIG_H)
+# include <config.h>
+#endif
+
+#if !defined(WITHOUT_TRIO)
 
 /*
  * Error codes.
@@ -34,7 +44,7 @@ enum {
   TRIO_EDBLREF  = 4,
   TRIO_EGAP     = 5,
   TRIO_ENOMEM   = 6,
-  TRIO_ERANGE   = 7
+  TRIO_ERANGE   = 7,
 };
 
 /* Error macros */
@@ -42,61 +52,117 @@ enum {
 #define TRIO_ERROR_POSITION(x) ((-(x)) >> 8)
 #define TRIO_ERROR_NAME(x) trio_strerror(x)
 
-/*
- * trio_sprintf(target, format, ...)
+const char *trio_strerror(int);
+
+/*************************************************************************
+ * Print Functions
+ */
+
+int trio_printf(const char *format, ...);
+int trio_vprintf(const char *format, va_list args);
+int trio_printfv(const char *format, void **args);
+
+int trio_fprintf(FILE *file, const char *format, ...);
+int trio_vfprintf(FILE *file, const char *format, va_list args);
+int trio_fprintfv(FILE *file, const char *format, void **args);
+
+int trio_dprintf(int fd, const char *format, ...);
+int trio_vdprintf(int fd, const char *format, va_list args);
+int trio_dprintfv(int fd, const char *format, void **args);
+
+/* trio_sprintf(target, format, ...)
  * trio_snprintf(target, maxsize, format, ...)
  *
  *   Build 'target' according to 'format' and succesive
  *   arguments. This is equal to the sprintf() and
  *   snprintf() functions.
  */
-
-int trio_printf(const char *format, ...);
-int trio_vprintf(const char *format, va_list args);
-int trio_fprintf(FILE *file, const char *format, ...);
-int trio_vfprintf(FILE *file, const char *format, va_list args);
-int trio_dprintf(int fd, const char *format, ...);
-int trio_vdprintf(int fd, const char *format, va_list args);
 int trio_sprintf(char *buffer, const char *format, ...);
-int trio_snprintf(char *buffer, size_t max, const char *format, ...);
-int trio_snprintfcat(char *buffer, size_t max, const char *format, ...);
 int trio_vsprintf(char *buffer, const char *format, va_list args);
+int trio_sprintfv(char *buffer, const char *format, void **args);
+
+int trio_snprintf(char *buffer, size_t max, const char *format, ...);
 int trio_vsnprintf(char *buffer, size_t bufferSize, const char *format,
 		   va_list args);
+int trio_snprintfv(char *buffer, size_t bufferSize, const char *format,
+		   void **args);
+
+int trio_snprintfcat(char *buffer, size_t max, const char *format, ...);
 int trio_vsnprintfcat(char *buffer, size_t bufferSize, const char *format,
                       va_list args);
+
 char *trio_aprintf(const char *format, ...);
 char *trio_vaprintf(const char *format, va_list args);
+
 int trio_asprintf(char **ret, const char *format, ...);
 int trio_vasprintf(char **ret, const char *format, va_list args);
 
+/*************************************************************************
+ * Scan Functions
+ */
 int trio_scanf(const char *format, ...);
 int trio_vscanf(const char *format, va_list args);
+int trio_scanfv(const char *format, void **args);
+
 int trio_fscanf(FILE *file, const char *format, ...);
 int trio_vfscanf(FILE *file, const char *format, va_list args);
+int trio_fscanfv(FILE *file, const char *format, void **args);
+
 int trio_dscanf(int fd, const char *format, ...);
 int trio_vdscanf(int fd, const char *format, va_list args);
+int trio_dscanfv(int fd, const char *format, void **args);
+
 int trio_sscanf(const char *buffer, const char *format, ...);
 int trio_vsscanf(const char *buffer, const char *format, va_list args);
+int trio_sscanfv(const char *buffer, const char *format, void **args);
 
-const char *trio_strerror(int);
-
+/*************************************************************************
+ * Renaming
+ */
 #ifdef TRIO_REPLACE_STDIO
 /* Replace the <stdio.h> functions */
-#define printf trio_printf
-#define vprintf trio_vprintf
-#define fprintf trio_fprintf
-#define vfprintf trio_vfprintf
-#define sprintf trio_sprintf
-#define vsprintf trio_vsprintf
-#define snprintf trio_snprintf
-#define vsnprintf trio_vsnprintf
-#define scanf trio_scanf
-#define vscanf trio_vscanf
-#define fscanf trio_fscanf
-#define vfscanf trio_vfscanf
-#define sscanf trio_sscanf
-#define vsscanf trio_vsscanf
+#ifndef HAVE_PRINTF
+# define printf trio_printf
+#endif
+#ifndef HAVE_VPRINTF
+# define vprintf trio_vprintf
+#endif
+#ifndef HAVE_FPRINTF
+# define fprintf trio_fprintf
+#endif
+#ifndef HAVE_VFPRINTF
+# define vfprintf trio_vfprintf
+#endif
+#ifndef HAVE_SPRINTF
+# define sprintf trio_sprintf
+#endif
+#ifndef HAVE_VSPRINTF
+# define vsprintf trio_vsprintf
+#endif
+#ifndef HAVE_SNPRINTF
+# define snprintf trio_snprintf
+#endif
+#ifndef HAVE_VSNPRINTF
+# define vsnprintf trio_vsnprintf
+#endif
+#ifndef HAVE_SCANF
+# define scanf trio_scanf
+#endif
+#ifndef HAVE_VSCANF
+# define vscanf trio_vscanf
+#endif
+#ifndef HAVE_FSCANF
+# define fscanf trio_fscanf
+#endif
+#ifndef HAVE_VFSCANF
+# define vfscanf trio_vfscanf
+#endif
+#ifndef HAVE_SSCANF
+# define sscanf trio_sscanf
+#endif
+#ifndef HAVE_VSSCANF
+# define vsscanf trio_vsscanf
+#endif
 /* These aren't stdio functions, but we make them look similar */
 #define dprintf trio_dprintf
 #define vdprintf trio_vdprintf
@@ -109,10 +175,12 @@ const char *trio_strerror(int);
 #endif
 
 /* strio compatible names */
-#define StrScan sscanf /* FIXME: must be trio_sscanf */
+#define StrScan trio_sscanf
 #define StrFormat trio_sprintf
 #define StrFormatMax trio_snprintf
 #define StrFormatAlloc trio_aprintf
 #define StrFormatAppendMax trio_snprintfcat
 
-#endif /* H_TRIO */
+#endif /* TRIO_IGNORE */
+
+#endif /* TRIO_TRIO_H */

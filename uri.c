@@ -8,14 +8,12 @@
  * Daniel.Veillard@w3.org
  */
 
+#include "libxml.h"
+
 #ifdef WIN32
 #define INCLUDE_WINSOCK
-#include "win32config.h"
-#else
-#include "config.h"
 #endif
 
-#include <stdio.h>
 #include <string.h>
 
 #include <libxml/xmlmemory.h>

@@ -16,6 +16,14 @@ Expression: 0.123
 Object is a number : 0.123
 
 ========================
+Expression: 1.23e3
+Object is a number : 1230
+
+========================
+Expression: 1.23e-3
+Object is a number : 0.00123
+
+========================
 Expression: 1 div 0
 Object is a number : inf
 

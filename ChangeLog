@@ -1,3 +1,18 @@
+Sat Apr 21 18:27:51 CEST 2001 Bjorn Reese <breese@users.sourceforge.net>
+
+	* libxml.h: new header used only for the compilation of libxml
+	* HTMLparser.c HTMLtree.c SAX.c debugXML.c encoding.c entities.c
+	  error.c hash.c list.c nanoftp.c nanohttp.c parser.c
+	  parserInternals.c testHTML.c testSAX.c testURI.c testXPath.c
+	  tree.c uri.c valid.c xinclude.c xlink.c xmlIO.c xmllint.c
+	  xmlmemory.c xpath.c xpointer.c: libxml.h integration
+	* trio.[ch] triop.h strio.[ch]: upgraded to the latest trio
+	  baseline (version 1.2 plus a single patch).
+	* xpath.c result/XPath/expr/floats test/XPath/expr/floats: parses
+	  scientific notation for numbers. Tests added.
+	* xpath.c: formatting of numbers changed to use sprintf
+	  (contribution from William Brack)
+
 Sat Apr 21 16:12:59 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* valid.c: cleanup, more useful debugging

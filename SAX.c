@@ -7,12 +7,7 @@
  */
 
 
-#ifdef WIN32
-#include "win32config.h"
-#else
-#include "config.h"
-#endif
-#include <stdio.h>
+#include "libxml.h"
 #include <stdlib.h>
 #include <string.h>
 #include <libxml/xmlmemory.h>

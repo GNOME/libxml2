@@ -8,13 +8,8 @@
  * 14 Nov 2000 ht - for VMS, truncated name of long functions to under 32 char
  */
 
-#ifdef WIN32
-#include "win32config.h"
-#else
-#include "config.h"
-#endif
+#include "libxml.h"
 
-#include <stdio.h>
 #include <string.h>
 #include <errno.h>
 

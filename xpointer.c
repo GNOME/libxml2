@@ -9,11 +9,7 @@
  * Daniel.Veillard@w3.org
  */
 
-#ifdef WIN32
-#include "win32config.h"
-#else
-#include "config.h"
-#endif
+#include "libxml.h"
 
 /**
  * TODO: better handling of error cases, the full expression should
@@ -23,7 +19,6 @@
  *       parent is the endity declaration, not the ref.
  */
 
-#include <stdio.h>
 #include <string.h>
 #include <libxml/xpointer.h>
 #include <libxml/xmlmemory.h>

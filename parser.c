@@ -33,15 +33,14 @@
  * and xmlDoValidityCheckingDefaultValue for VMS
  */
 
+#include "libxml.h"
+
 #ifdef WIN32
-#include "win32config.h"
 #define XML_DIR_SEP '\\'
 #else
-#include "config.h"
 #define XML_DIR_SEP '/'
 #endif
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <libxml/xmlmemory.h>

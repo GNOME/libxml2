@@ -15,13 +15,16 @@
  *
  ************************************************************************/
 
-#ifndef H_STRIO
-#define H_STRIO
+#ifndef TRIO_STRIO_H
+#define TRIO_STRIO_H
 
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include "assert.h"
+#ifndef DEBUG
+# define NDEBUG
+#endif
+#include <assert.h>
 
 /*
  * StrAppend(target, source)
@@ -122,7 +125,7 @@
 enum {
   STRIO_HASH_NONE = 0,
   STRIO_HASH_PLAIN,
-  STRIO_HASH_TWOSIGNED
+  STRIO_HASH_TWOSIGNED,
 };
 
 #if !defined(DEBUG) || defined(__DECC)
@@ -213,4 +216,4 @@ float StrToFloat(const char *source, const char **target);
 double StrToDouble(const char *source, const char **target);
 int StrToUpper(char *target);
 
-#endif /* H_STRIO */
+#endif /* TRIO_STRIO_H */

@@ -7,15 +7,14 @@
  * Daniel.Veillard@w3.org
  */
 
+#include "libxml.h"
+
 #ifdef WIN32
-#include "win32config.h"
 #define XML_DIR_SEP '\\'
 #else
-#include "config.h"
 #define XML_DIR_SEP '/'
 #endif
 
-#include <stdio.h>
 #include <string.h>
 #ifdef HAVE_CTYPE_H
 #include <ctype.h>

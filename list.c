@@ -15,11 +15,7 @@
  * Author: Gary.Pennington@uk.sun.com
  */
 
-#ifdef WIN32
-#include "win32config.h"
-#else
-#include "config.h"
-#endif
+#include "libxml.h"
 
 #include <stdlib.h>
 #include <string.h>

@@ -20,13 +20,8 @@
  * Daniel.Veillard@w3.org
  */
 
-#ifdef WIN32
-#include "win32config.h"
-#else
-#include "config.h"
-#endif
+#include "libxml.h"
 
-#include <stdio.h>
 #include <string.h>
 
 #ifdef HAVE_CTYPE_H
@@ -35,7 +30,6 @@
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
 #endif
-#include <libxml/xmlversion.h>
 #ifdef LIBXML_ICONV_ENABLED
 #ifdef HAVE_ERRNO_H
 #include <errno.h>

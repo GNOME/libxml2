@@ -13,13 +13,8 @@
  * TODO: compute XPointers nodesets
  */
 
-#ifdef WIN32
-#include "win32config.h"
-#else
-#include "config.h"
-#endif
+#include "libxml.h"
 
-#include <stdio.h>
 #include <string.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/tree.h>

@@ -14,14 +14,10 @@
  * MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE AUTHORS AND
  * CONTRIBUTORS ACCEPT NO RESPONSIBILITY IN ANY CONCEIVABLE MANNER.
  *
- * Author: bjorn.reese@systematic.dk
+ * Author: breese@users.sourceforge.net
  */
 
-#ifdef WIN32
-#include "win32config.h"
-#else
-#include "config.h"
-#endif
+#include "libxml.h"
 
 #include <string.h>
 #include <libxml/hash.h>

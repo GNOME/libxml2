@@ -7,16 +7,9 @@
  */
 
 
-#ifdef WIN32
-#include "win32config.h"
-#else
-#include "config.h"
-#endif
-
-#include <libxml/xmlversion.h>
+#include "libxml.h"
 #ifdef LIBXML_HTML_ENABLED
 
-#include <stdio.h>
 #include <string.h> /* for memset() only ! */
 
 #ifdef HAVE_CTYPE_H

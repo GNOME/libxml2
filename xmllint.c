@@ -6,15 +6,9 @@
  * Daniel.Veillard@w3.org
  */
 
-#ifdef WIN32
-#include "win32config.h"
-#else
-#include "config.h"
-#endif
+#include "libxml.h"
 
-#include <stdio.h>
 #include <string.h>
-#include <stdio.h>
 #include <stdarg.h>
 #ifdef _WIN32
 #ifdef _MSC_VER

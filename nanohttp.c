@@ -14,17 +14,9 @@
 /* TODO add compression support, Send the Accept- , and decompress on the
         fly with ZLIB if found at compile-time */
 
-#ifdef WIN32
-#define INCLUDE_WINSOCK
-#include "win32config.h"
-#else
-#include "config.h"
-#endif
-
-#include <libxml/xmlversion.h>
+#include "libxml.h"
 
 #ifdef LIBXML_HTTP_ENABLED
-#include <stdio.h>
 #include <string.h>
 
 #ifdef HAVE_STDLIB_H

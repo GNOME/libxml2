@@ -6,17 +6,14 @@
  * Daniel.Veillard@w3.org
  */
 
-#ifdef WIN32
-#include "win32config.h"
-#undef LIBXML_DLL_IMPORT
-#else
-#include "config.h"
-#endif
+#include "libxml.h"
 
-#include <libxml/xmlversion.h>
 #ifdef LIBXML_HTML_ENABLED
 
-#include <stdio.h>
+#ifdef WIN32
+#undef LIBXML_DLL_IMPORT
+#endif
+
 #include <string.h>
 #include <stdarg.h>
 

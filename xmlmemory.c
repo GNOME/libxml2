@@ -4,13 +4,8 @@
  * Daniel.Veillard@w3.org
  */
 
-#ifdef WIN32
-#include "win32config.h"
-#else
-#include "config.h"
-#endif
+#include "libxml.h"
 
-#include <stdio.h>
 #include <string.h>
 
 #ifdef HAVE_SYS_TYPES_H

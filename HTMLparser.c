@@ -6,15 +6,9 @@
  * Daniel.Veillard@w3.org
  */
 
-#ifdef WIN32
-#include "win32config.h"
-#else
-#include "config.h"
-#endif
-
-#include <libxml/xmlversion.h>
+#include "libxml.h"
 #ifdef LIBXML_HTML_ENABLED
-#include <stdio.h>
+
 #include <string.h>
 #ifdef HAVE_CTYPE_H
 #include <ctype.h>

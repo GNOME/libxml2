@@ -11,13 +11,8 @@
  *  
  */
 
-#ifdef WIN32
-#include "win32config.h"
-#else
-#include "config.h"
-#endif
+#include "libxml.h"
 
-#include <stdio.h>
 #include <string.h> /* for memset() only ! */
 
 #ifdef HAVE_CTYPE_H

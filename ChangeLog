@@ -1,3 +1,8 @@
+Tue Oct 28 15:26:18 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: applied patch from Kasimier Buchcik which fixes a 
+	  problem in xmlSearchNs introduced in 2.6.0
+
 Tue Oct 28 14:57:03 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: fixed #123263, the encoding is mandatory in a textdecl.

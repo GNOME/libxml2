@@ -5292,7 +5292,9 @@ xmlGetNsList(xmlDocPtr doc ATTRIBUTE_UNUSED, xmlNodePtr node)
  */
 xmlNsPtr
 xmlSearchNs(xmlDocPtr doc, xmlNodePtr node, const xmlChar *nameSpace) {
+	
     xmlNsPtr cur;
+    xmlNodePtr orig = node;
 
     if (node == NULL) return(NULL);
     if ((nameSpace != NULL) &&
@@ -5350,16 +5352,18 @@ xmlSearchNs(xmlDocPtr doc, xmlNodePtr node, const xmlChar *nameSpace) {
 		    return(cur);
 		cur = cur->next;
 	    }
-	    cur = node->ns;
-	    if (cur != NULL) {
-		if ((cur->prefix == NULL) && (nameSpace == NULL) &&
-		    (cur->href != NULL))
-		    return(cur);
-		if ((cur->prefix != NULL) && (nameSpace != NULL) &&
-		    (cur->href != NULL) &&
-		    (xmlStrEqual(cur->prefix, nameSpace)))
-		    return(cur);
-	    }
+	    if (orig != node) { 
+	        cur = node->ns;
+	        if (cur != NULL) {
+		    if ((cur->prefix == NULL) && (nameSpace == NULL) &&
+		        (cur->href != NULL))
+		        return(cur);
+		    if ((cur->prefix != NULL) && (nameSpace != NULL) &&
+		        (cur->href != NULL) &&
+		        (xmlStrEqual(cur->prefix, nameSpace)))
+		        return(cur);
+	        }
+	    }    
 	}
 	node = node->parent;
     }
@@ -5482,14 +5486,16 @@ xmlSearchNsByHref(xmlDocPtr doc, xmlNodePtr node, const xmlChar * href)
                 }
                 cur = cur->next;
             }
-            cur = node->ns;
-            if (cur != NULL) {
-                if ((cur->href != NULL) && (href != NULL) &&
-                    (xmlStrEqual(cur->href, href))) {
-		    if (xmlNsInScope(doc, orig, node, cur->href) == 1)
-			return (cur);
+            if (orig != node) {
+                cur = node->ns;
+                if (cur != NULL) {
+                    if ((cur->href != NULL) && (href != NULL) &&
+                        (xmlStrEqual(cur->href, href))) {
+		        if (xmlNsInScope(doc, orig, node, cur->href) == 1)
+			    return (cur);
+                    }
                 }
-            }
+            }    
         }
         node = node->parent;
     }

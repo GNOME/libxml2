@@ -194,7 +194,7 @@ xmlXPathInit(void) {
 
     xmlXPathNAN = xmlXPathDivideBy(0.0, 0.0);
     xmlXPathPINF = xmlXPathDivideBy(1.0, 0.0);
-    xmlXPathPINF = xmlXPathDivideBy(-1.0, 0.0);
+    xmlXPathNINF = xmlXPathDivideBy(-1.0, 0.0);
 
     initialized = 1;
 }

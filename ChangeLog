@@ -1,3 +1,7 @@
+Fri Jun  8 10:17:15 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xpath.c: robert pointed out xmlXPathNINF was not initialized
+
 Fri Jun  8 10:01:45 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* doc/libxml-doc.el: Felix Natter provided a new version for

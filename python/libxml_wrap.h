@@ -81,7 +81,7 @@ typedef struct {
 
 /* FILE * have their own internal representation */
 #define PyFile_Get(v) (((v) == Py_None) ? NULL : \
-	(PyFile_Check(v) ? NULL : (PyFile_AsFile(v))))
+	(PyFile_Check(v) ? (PyFile_AsFile(v)) : NULL))
 
 
 PyObject * libxml_intWrap(int val);

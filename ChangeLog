@@ -1,3 +1,7 @@
+Tue Sep 17 21:22:25 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* python/libxml_wrap.h: stupid bug found by mattam@netcourrier.com
+
 Tue Sep 17 19:58:26 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xmlIO.c: small portability glitch fixed.

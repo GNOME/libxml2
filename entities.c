@@ -249,12 +249,22 @@ xmlEntityPtr xmlGetDocEntity(xmlDocPtr doc, const CHAR *name) {
 }
 
 /*
+ * [2] Char ::= #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD]
+ *                  | [#x10000-#x10FFFF]
+ * any Unicode character, excluding the surrogate blocks, FFFE, and FFFF.
+ */
+#define IS_CHAR(c)							\
+    (((c) == 0x09) || ((c) == 0x0a) || ((c) == 0x0d) ||			\
+     (((c) >= 0x20) && ((c) != 0xFFFE) && ((c) != 0xFFFF)))
+
+/*
  * xmlEncodeEntities : do a global encoding of a string, replacing the
  *                     predefined entities and non ASCII values with their
  *                     entities and CharRef counterparts.
  * TODO !!!! Once moved to UTF-8 internal encoding, the encoding of non-ascii
  *           get erroneous.
  */
+
 CHAR *xmlEncodeEntities(xmlDocPtr doc, const CHAR *input) {
     const CHAR *cur = input;
     CHAR *out = buffer;
@@ -310,6 +320,12 @@ CHAR *xmlEncodeEntities(xmlDocPtr doc, const CHAR *input) {
 	    *out++ = 'o';
 	    *out++ = 's';
 	    *out++ = ';';
+	} else if (((*cur >= 0x20) && (*cur < 0x80)) ||
+	    (*cur == '\n') || (*cur == '\r') || (*cur == '\t')) {
+	    /*
+	     * default case, just copy !
+	     */
+	    *out++ = *cur;
 #ifndef USE_UTF_8
 	} else if ((sizeof(CHAR) == 1) && (*cur >= 0x80)) {
 	    char buf[10], *ptr;
@@ -321,12 +337,26 @@ CHAR *xmlEncodeEntities(xmlDocPtr doc, const CHAR *input) {
             ptr = buf;
 	    while (*ptr != 0) *out++ = *ptr++;
 #endif
-	} else {
-	    /*
-	     * default case, just copy !
-	     */
-	    *out++ = *cur;
+	} else if (IS_CHAR(*cur)) {
+	    char buf[10], *ptr;
+
+#ifdef HAVE_SNPRINTF
+	    snprintf(buf, 9, "&#%d;", *cur);
+#else
+	    sprintf(buf, "&#%d;", *cur);
+#endif
+            ptr = buf;
+	    while (*ptr != 0) *out++ = *ptr++;
 	}
+#if 0
+	else {
+	    /*
+	     * default case, this is not a valid char !
+	     * Skip it...
+	     */
+	    fprintf(stderr, "xmlEncodeEntities: invalid char %d\n", (int) *cur);
+	}
+#endif
 	cur++;
     }
     *out++ = 0;

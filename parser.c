@@ -1080,7 +1080,7 @@ xmlParseQuotedString(xmlParserCtxtPtr ctxt) {
 	while (IS_CHAR(CUR) && (CUR != '"')) NEXT;
 	if (CUR != '"') {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	        ctxt->sax->error(ctxt, "String not closed\"%.50s\n", q);
+	        ctxt->sax->error(ctxt, "String not closed \"%.50s\"\n", q);
         } else {
             ret = xmlStrndup(q, CUR_PTR - q);
 	    NEXT;
@@ -1091,7 +1091,7 @@ xmlParseQuotedString(xmlParserCtxtPtr ctxt) {
 	while (IS_CHAR(CUR) && (CUR != '\'')) NEXT;
 	if (CUR != '\'') {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	        ctxt->sax->error(ctxt, "String not closed\"%.50s\n", q);
+	        ctxt->sax->error(ctxt, "String not closed \"%.50s\"\n", q);
         } else {
             ret = xmlStrndup(q, CUR_PTR - q);
 	    NEXT;
@@ -2253,7 +2253,8 @@ xmlParseCharRef(xmlParserCtxtPtr ctxt) {
 	        val = val * 16 + (CUR - 'A') + 10;
 	    else {
 	        if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		    ctxt->sax->error(ctxt, "xmlParseCharRef: invalid value\n");
+		    ctxt->sax->error(ctxt, 
+		         "xmlParseCharRef: invalid hexa value\n");
 		val = 0;
 		break;
 	    }
@@ -2268,7 +2269,8 @@ xmlParseCharRef(xmlParserCtxtPtr ctxt) {
 	        val = val * 10 + (CUR - '0');
 	    else {
 	        if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		    ctxt->sax->error(ctxt, "xmlParseCharRef: invalid value\n");
+		    ctxt->sax->error(ctxt, 
+		         "xmlParseCharRef: invalid decimal value\n");
 		val = 0;
 		break;
 	    }
@@ -2289,7 +2291,8 @@ xmlParseCharRef(xmlParserCtxtPtr ctxt) {
 	return(xmlStrndup(buf, 1));
     } else {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt, "xmlParseCharRef: invalid value");
+	    ctxt->sax->error(ctxt, "xmlParseCharRef: invalid CHAR value %d\n",
+	                     val);
     }
     return(NULL);
 }
@@ -3932,7 +3935,7 @@ xmlParserAddNodeInfo(xmlParserCtxtPtr ctxt,
 
       if ( tmp_buffer == NULL ) {
         if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt, "Out of memory");
+	    ctxt->sax->error(ctxt, "Out of memory\n");
         return;
       }
       ctxt->node_seq.buffer = tmp_buffer;

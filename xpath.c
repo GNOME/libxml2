@@ -1098,6 +1098,9 @@ xmlXPathCmpNodes(xmlNodePtr node1, xmlNodePtr node2) {
      */
     if (node1 == node2)
 	return(0);
+    if ((node1->type == XML_NAMESPACE_DECL) ||
+        (node2->type == XML_NAMESPACE_DECL))
+	return(1);
     if (node1 == node2->prev)
 	return(1);
     if (node1 == node2->next)

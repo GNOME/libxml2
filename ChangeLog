@@ -1,3 +1,10 @@
+Wed Apr 25 14:56:26 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* tree.c: trying to fix #53574, not completely complete,
+	  I would like xmllint --copy --debug test/ent1 and
+	  xmllint --debug test/ent1 to show the same result.
+	* xpath.c: fix a bug when trying to sort namespace nodes
+
 Wed Apr 25 12:28:57 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* HTMLtree.c: real fix for  #53402

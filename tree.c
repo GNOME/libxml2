@@ -2617,6 +2617,7 @@ xmlStaticCopyNode(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
     xmlNodePtr ret;
 
     if (node == NULL) return(NULL);
+
     /*
      * Allocate a new node and fill the fields.
      */
@@ -2684,7 +2685,19 @@ xmlStaticCopyNode(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
     }
     if (node->properties != NULL)
         ret->properties = xmlCopyPropList(ret, node->properties);
-    if (node->children != NULL)
+    if (node->type == XML_ENTITY_REF_NODE) {
+	if ((doc == NULL) || (node->doc != doc)) {
+	    /*
+	     * The copied node will go into a separate document, so
+	     * to havoid dandling references to the ENTITY_DECL node
+	     * we cannot keep the reference. Try to find it in the
+	     * target document.
+	     */
+	    ret->children = (xmlNodePtr) xmlGetDocEntity(doc, ret->name);
+	} else {
+            ret->children = node->children;
+	}
+    } else if (node->children != NULL)
         ret->children = xmlStaticCopyNodeList(node->children, doc, ret);
     UPDATE_LAST_CHILD_AND_PARENT(ret)
     return(ret);
@@ -2696,10 +2709,17 @@ xmlStaticCopyNodeList(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent) {
     xmlNodePtr p = NULL,q;
 
     while (node != NULL) {
-       if( node->type == XML_DTD_NODE )
-	 q = (xmlNodePtr) xmlCopyDtd( (xmlDtdPtr) node );
-       else
-	 q = xmlStaticCopyNode(node, doc, parent, 1);
+	if( node->type == XML_DTD_NODE ) {
+	    if (doc->intSubset == NULL) {
+		q = (xmlNodePtr) xmlCopyDtd( (xmlDtdPtr) node );
+		q->doc = doc;
+		q->parent = parent;
+		doc->intSubset = (xmlDtdPtr) q;
+	    } else {
+		q = (xmlNodePtr) doc->intSubset;
+	    }
+	} else
+	    q = xmlStaticCopyNode(node, doc, parent, 1);
 	if (ret == NULL) {
 	    q->prev = NULL;
 	    ret = p = q;
@@ -2842,14 +2862,20 @@ xmlCopyDoc(xmlDocPtr doc, int recursive) {
     ret->standalone = doc->standalone;
     if (!recursive) return(ret);
 
-    if (doc->intSubset != NULL)
+    ret->last = NULL;
+    ret->children = NULL;
+    if (doc->intSubset != NULL) {
         ret->intSubset = xmlCopyDtd(doc->intSubset);
+	ret->intSubset->doc = ret;
+	ret->intSubset->parent = ret;
+    }
     if (doc->oldNs != NULL)
         ret->oldNs = xmlCopyNamespaceList(doc->oldNs);
     if (doc->children != NULL) {
 	xmlNodePtr tmp;
-        ret->children = xmlStaticCopyNodeList(doc->children, ret,
-		                              (xmlNodePtr)ret);
+	
+	ret->children = xmlStaticCopyNodeList(doc->children, ret,
+		                               (xmlNodePtr)ret);
 	ret->last = NULL;
 	tmp = ret->children;
 	while (tmp != NULL) {

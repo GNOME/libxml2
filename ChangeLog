@@ -1,3 +1,11 @@
+Fri Mar  5 01:13:22 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemas.c: QName handling fixes for the XML Schemas
+	  support from Adam Dickmeiss
+	* test/schemas/po1_0.xsd: also fix the schemas
+	* test/schemas/ns[12]* result/schemas/ns[12]*: added the specific
+	  regression tests
+
 Thu Mar  4 23:03:02 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in doc/Makefile.am include/libxml/Makefile.am:

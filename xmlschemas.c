@@ -1492,6 +1492,13 @@ xmlGetQNameProp(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node,
     if (val == NULL)
         return (NULL);
 
+    if (!strchr(val, ':')) {
+	ns = xmlSearchNs(node->doc, node, 0);
+	if (ns) {
+	    *namespace = xmlDictLookup(ctxt->dict, ns->href, -1);
+	    return (val);
+	}
+    }
     ret = xmlSplitQName3(val, &len);
     if (ret == NULL) {
         return (val);
@@ -2006,8 +2013,6 @@ xmlSchemaParseAttribute(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
                            "Attribute has no name nor ref\n", NULL, NULL);
             return (NULL);
         }
-	if (refNs == NULL)
-	    refNs = schema->targetNamespace;
         snprintf(buf, 99, "anonattr %d", ctxt->counter++ + 1);
         name = (const xmlChar *) buf;
 	ret = xmlSchemaAddAttribute(ctxt, schema, name, NULL);
@@ -2027,8 +2032,6 @@ xmlSchemaParseAttribute(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	(xmlStrEqual(ret->targetNamespace, schema->targetNamespace)))
 	ret->flags |= XML_SCHEMAS_ATTR_NSDEFAULT;
     ret->typeName = xmlGetQNameProp(ctxt, node, "type", &(ret->typeNs));
-    if ((ret->typeName != NULL) && (ret->typeNs == NULL))
-        ret->typeNs = schema->targetNamespace;
     ret->node = node;
     child = node->children;
     if (IS_SCHEMA(child, "annotation")) {
@@ -2084,8 +2087,6 @@ xmlSchemaParseAttributeGroup(xmlSchemaParserCtxtPtr ctxt,
                            NULL);
             return (NULL);
         }
-	if (refNs == NULL)
-	    refNs = schema->targetNamespace;
         snprintf(buf, 99, "anonattrgroup %d", ctxt->counter++ + 1);
         name = (const xmlChar *) buf;
         if (name == NULL) {
@@ -2177,8 +2178,6 @@ xmlSchemaParseElement(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
                            "Element has no name nor ref\n", NULL, NULL);
             return (NULL);
         }
-	if (refNs == NULL)
-	    refNs = schema->targetNamespace;
         snprintf(buf, 99, "anonelem %d", ctxt->counter++ + 1);
         name = (const xmlChar *) buf;
 	ret = xmlSchemaAddElement(ctxt, schema, name, NULL);
@@ -2209,8 +2208,6 @@ xmlSchemaParseElement(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     ret->id = xmlSchemaGetProp(ctxt, node, "id");
     ret->namedType =
         xmlGetQNameProp(ctxt, node, "type", &(ret->namedTypeNs));
-    if ((ret->namedType != NULL) && (ret->namedTypeNs == NULL))
-        ret->namedTypeNs = schema->targetNamespace;
     ret->substGroup =
         xmlGetQNameProp(ctxt, node, "substitutionGroup",
                         &(ret->substGroupNs));
@@ -2345,8 +2342,6 @@ xmlSchemaParseList(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     type->type = XML_SCHEMA_TYPE_LIST;
     type->id = xmlSchemaGetProp(ctxt, node, "id");
     type->ref = xmlGetQNameProp(ctxt, node, "ref", &(type->refNs));
-    if ((type->ref != NULL) && (type->refNs == NULL))
-	type->refNs = schema->targetNamespace;
 
     child = node->children;
     if (IS_SCHEMA(child, "annotation")) {

@@ -177,54 +177,63 @@ static int options = 0;
  * 									*
  ************************************************************************/
 
-static void OOM(void) {
+static void
+OOM(void)
+{
     fprintf(stderr, "Ran out of memory needs > %d bytes\n", maxmem);
     progresult = 9;
 }
 
-static void myFreeFunc(void *mem) {
+static void
+myFreeFunc(void *mem)
+{
     xmlMemFree(mem);
 }
-static void *myMallocFunc(size_t size) {
+static void *
+myMallocFunc(size_t size)
+{
     void *ret;
 
     ret = xmlMemMalloc(size);
     if (ret != NULL) {
         if (xmlMemUsed() > maxmem) {
-	    OOM();
-	    xmlMemFree(ret);
-	    return(NULL);
-	}
+            OOM();
+            xmlMemFree(ret);
+            return (NULL);
+        }
     }
-    return(ret);
+    return (ret);
 }
-static void *myReallocFunc(void *mem, size_t size) {
+static void *
+myReallocFunc(void *mem, size_t size)
+{
     void *ret;
 
     ret = xmlMemRealloc(mem, size);
     if (ret != NULL) {
         if (xmlMemUsed() > maxmem) {
-	    OOM();
-	    xmlMemFree(ret);
-	    return(NULL);
-	}
+            OOM();
+            xmlMemFree(ret);
+            return (NULL);
+        }
     }
-    return(ret);
+    return (ret);
 }
-static char *myStrdupFunc(const char *str) {
+static char *
+myStrdupFunc(const char *str)
+{
     char *ret;
 
     ret = xmlMemoryStrdup(str);
     if (ret != NULL) {
         if (xmlMemUsed() > maxmem) {
-	    OOM();
-	    xmlFree(ret);
-	    return(NULL);
-	}
+            OOM();
+            xmlFree(ret);
+            return (NULL);
+        }
     }
-    return(ret);
+    return (ret);
 }
-
 /************************************************************************
  * 									*
  * Internal timing routines to remove the necessity to have		*

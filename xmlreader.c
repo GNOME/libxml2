@@ -1888,10 +1888,11 @@ xmlTextReaderAttributeCount(xmlTextReaderPtr reader) {
 int
 xmlTextReaderNodeType(xmlTextReaderPtr reader) {
     xmlNodePtr node;
+    
     if (reader == NULL)
 	return(-1);
     if (reader->node == NULL)
-	return(0);
+	return(XML_READER_TYPE_NONE);
     if (reader->curnode != NULL)
 	node = reader->curnode;
     else
@@ -1900,43 +1901,50 @@ xmlTextReaderNodeType(xmlTextReaderPtr reader) {
         case XML_ELEMENT_NODE:
 	    if ((reader->state == XML_TEXTREADER_END) ||
 		(reader->state == XML_TEXTREADER_BACKTRACK))
-		return(15);
-	    return(1);
+		return(XML_READER_TYPE_END_ELEMENT);
+	    return(XML_READER_TYPE_ELEMENT);
         case XML_NAMESPACE_DECL:
         case XML_ATTRIBUTE_NODE:
-	    return(2);
+	    return(XML_READER_TYPE_ATTRIBUTE);
         case XML_TEXT_NODE:
-	    return(3); /* TODO: SignificantWhitespace == 14 Whitespace == 13 */
+	    if (xmlIsBlankNode(reader->node)) {
+		if (xmlNodeGetSpacePreserve(reader->node))
+		    return(XML_READER_TYPE_SIGNIFICANT_WHITESPACE);
+		else
+		    return(XML_READER_TYPE_WHITESPACE);
+	    } else {
+		return(XML_READER_TYPE_TEXT);
+	    }
         case XML_CDATA_SECTION_NODE:
-	    return(4);
+	    return(XML_READER_TYPE_CDATA);
         case XML_ENTITY_REF_NODE:
-	    return(5);
+	    return(XML_READER_TYPE_ENTITY_REFERENCE);
         case XML_ENTITY_NODE:
-	    return(6);
+	    return(XML_READER_TYPE_ENTITY);
         case XML_PI_NODE:
-	    return(7);
+	    return(XML_READER_TYPE_PROCESSING_INSTRUCTION);
         case XML_COMMENT_NODE:
-	    return(8);
+	    return(XML_READER_TYPE_COMMENT);
         case XML_DOCUMENT_NODE:
         case XML_HTML_DOCUMENT_NODE:
 #ifdef LIBXML_DOCB_ENABLED
         case XML_DOCB_DOCUMENT_NODE:
 #endif
-	    return(9);
+	    return(XML_READER_TYPE_DOCUMENT);
         case XML_DOCUMENT_FRAG_NODE:
-	    return(11);
+	    return(XML_READER_TYPE_DOCUMENT_FRAGMENT);
         case XML_NOTATION_NODE:
-	    return(12);
+	    return(XML_READER_TYPE_NOTATION);
         case XML_DOCUMENT_TYPE_NODE:
         case XML_DTD_NODE:
-	    return(10);
+	    return(XML_READER_TYPE_DOCUMENT_TYPE);
 
         case XML_ELEMENT_DECL:
         case XML_ATTRIBUTE_DECL:
         case XML_ENTITY_DECL:
         case XML_XINCLUDE_START:
         case XML_XINCLUDE_END:
-	    return(0);
+	    return(XML_READER_TYPE_NONE);
     }
     return(-1);
 }

@@ -1,3 +1,10 @@
+Wed Jul 30 12:29:38 EDT 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmlreader.c include/libxml/xmlreader.h: applying cleanup
+	  patch from Bjorn Reese for xmlTextReaderNodeType() and 
+	  significant whitespace. There is an enum for node type
+	  values now.
+
 Wed Jul 30 11:08:21 EDT 2003 Daniel Veillard <daniel@veillard.com>
 
 	* encoding.c: applying patch from Peter Jacobi to added 

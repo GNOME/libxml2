@@ -1,3 +1,11 @@
+Wed May 12 08:21:33 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* xmlschemas.c: added code in xmlSchemaBuildContentModel to
+	  allow ref in group definition (bug 134411).  Also fixed
+	  misc compilation warning messages.
+	* result/schema/group0_0_0, result/schema/group0_0_0.err:
+	  regenerated (now no error reported).
+	  
 Tue May 11 11:55:59 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xmlIO.c: fix to the fix for #141864 from Paul Elseth  

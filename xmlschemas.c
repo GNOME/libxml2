@@ -934,6 +934,7 @@ xmlSchemaGetProp(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node,
     return(ret);
 }
 
+#if 0
 /**
  * xmlSchemaGetNamespace:
  * @ctxt: the parser context
@@ -1010,6 +1011,7 @@ xmlSchemaGetNamespace(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     *namespace = xmlDictLookup(ctxt->dict, ns->href, -1);
     return(name);
 }
+#endif
 
 /************************************************************************
  * 									*
@@ -2033,7 +2035,6 @@ xmlSchemaParseAttribute(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     xmlNodePtr child = NULL;
     char buf[100];
     int hasRefType = 0;
-    int hasForm = 0;
 
     /*
      * Note that the w3c spec assumes the schema to be validated with schema
@@ -4521,6 +4522,20 @@ xmlSchemaBuildAContentModel(xmlSchemaTypePtr type,
             break;
         case XML_SCHEMA_TYPE_GROUP:
             if (type->subtypes == NULL) {
+	        xmlSchemaTypePtr rgroup;
+		if (type->ref != NULL) {
+		    rgroup = xmlHashLookup2(ctxt->schema->groupDecl, type->ref,
+		    			   type->refNs);
+		    if (rgroup == NULL) {
+		        xmlSchemaPErr(ctxt, type->node,
+				      XML_SCHEMAP_UNKNOWN_REF,
+				"Schemas: group %s reference %s is not found",
+				name, type->ref);
+			return;
+		    }
+		    xmlSchemaBuildAContentModel(rgroup, ctxt, name);
+		    break;
+		}
             }
         case XML_SCHEMA_TYPE_COMPLEX:
         case XML_SCHEMA_TYPE_COMPLEX_CONTENT:
@@ -4667,7 +4682,7 @@ xmlSchemaParseListRefFixup(xmlSchemaTypePtr type, xmlSchemaParserCtxtPtr ctxt)
     xmlSchemaTypePtr subtype;
     
     /* Handle the "itemType" attribute. */
-    itemType = xmlGetQNameProp(ctxt, type->node, BAD_CAST "itemType", &namespace);
+    itemType = xmlGetQNameProp(ctxt, type->node, "itemType", &namespace);
     if (itemType != NULL) {
         /* Do not allow more that one item type. */
         if (type->subtypes != NULL) {
@@ -4681,7 +4696,7 @@ xmlSchemaParseListRefFixup(xmlSchemaTypePtr type, xmlSchemaParserCtxtPtr ctxt)
             xmlSchemaPErr(ctxt, type->node, XML_SCHEMAP_UNKNOWN_TYPE,
                           "List %s references an unknown item type: %s\n",
                           type->name, xmlSchemaGetProp(ctxt, type->node,
-			  BAD_CAST "itemType"));
+			  "itemType"));
         } else
             type->subtypes = subtype;
     }
@@ -4954,6 +4969,7 @@ xmlSchemaTypeFixup(xmlSchemaTypePtr typeDecl,
             case XML_SCHEMA_TYPE_ELEMENT:
             case XML_SCHEMA_TYPE_ATTRIBUTE:
             case XML_SCHEMA_TYPE_ATTRIBUTEGROUP:
+            case XML_SCHEMA_TYPE_ANY_ATTRIBUTE:
             case XML_SCHEMA_TYPE_NOTATION:
             case XML_SCHEMA_TYPE_LIST:
 		xmlSchemaParseListRefFixup(typeDecl, ctxt);
@@ -5837,6 +5853,7 @@ xmlSchemaCheckAttributes(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr node)
     return (ret);
 }
 
+#if 0		/* Not currently used - remove if ever needed */
 /**
  * xmlSchemaValidateSimpleContent:
  * @ctxt:  a schema validation context
@@ -5897,6 +5914,7 @@ xmlSchemaValidateSimpleContent(xmlSchemaValidCtxtPtr ctxt,
 
     return (ret);
 }
+#endif
 
 /**
  * xmlSchemaValidateCheckNodeList
@@ -6605,6 +6623,8 @@ xmlSchemaValidateContent(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr node)
             TODO break;
         case XML_SCHEMA_TYPE_ATTRIBUTEGROUP:
             TODO break;
+        case XML_SCHEMA_TYPE_ANY_ATTRIBUTE:
+            TODO break;
     }
     xmlSchemaValidateAttributes(ctxt, node, type->attributes);
 
@@ -6933,7 +6953,6 @@ xmlSchemaValidateDocument(xmlSchemaValidCtxtPtr ctxt, xmlDocPtr doc)
 {
     xmlNodePtr root;
     xmlSchemaElementPtr elemDecl;
-    xmlNodePtr node;    
 
     root = xmlDocGetRootElement(doc);
     if (root == NULL) {

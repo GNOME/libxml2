@@ -1,3 +1,10 @@
+Sat Mar  4 12:38:41 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* doc/upgrade.html: instruction on how to upgrade from 1.x to 2.x
+	  added
+	* parser.c: adding xmlKeepBlanksDefault() as a way to manage
+	  compatibility w.r.t. XML spec and existing code.
+
 Thu Mar  2 04:45:15 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* parser.c: seems a better solution to <a>   </a> exists,

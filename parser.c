@@ -8745,3 +8745,36 @@ xmlSubstituteEntitiesDefault(int val) {
     return(old);
 }
 
+/**
+ * xmlKeepBlanksDefault:
+ * @val:  int 0 or 1 
+ *
+ * Set and return the previous value for default blanks text nodes support.
+ * The 1.x version of the parser used an heuristic to try to detect
+ * ignorable white spaces. As a result the SAX callback was generating
+ * ignorableWhitespace() callbacks instead of characters() one, and when
+ * using the DOM output text nodes containing those blanks were not generated.
+ * The 2.x and later version will switch to the XML standard way and
+ * ignorableWhitespace() are only generated when running the parser in
+ * validating mode and when the current element doesn't allow CDATA or
+ * mixed content.
+ * This function is provided as a way to force the standard behaviour 
+ * on 1.X libs and to switch back to the old mode for compatibility when
+ * running 1.X client code on 2.X . Upgrade of 1.X code should be done
+ * by using xmlIsBlankNode() commodity function to detect the "empty"
+ * nodes generated.
+ * This value also affect autogeneration of indentation when saving code
+ * if blanks sections are kept, indentation is not generated.
+ *
+ * Returns the last value for 0 for no substitution, 1 for substitution.
+ */
+
+int
+xmlKeepBlanksDefault(int val) {
+    int old = xmlKeepBlanksDefaultValue;
+
+    xmlKeepBlanksDefaultValue = val;
+    xmlIndentTreeOutput = !val;
+    return(old);
+}
+

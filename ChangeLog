@@ -1,3 +1,7 @@
+Thu Sep 30 11:19:17 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in: stupid cut'n paste bug in xmllint detection
+
 Wed Sep 29 17:47:56 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in doc/*: releasing 2.6.14, rebuilding the docs

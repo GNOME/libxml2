@@ -4410,6 +4410,8 @@ xmlSchemaCompareValuesWhtsp(xmlSchemaValPtr x,
 			    xmlSchemaValPtr y,
 			    xmlSchemaWhitespaceValueType yws)
 {
+    if ((x == NULL) || (y == NULL))
+	return(-2);
     return(xmlSchemaCompareValuesInternal(x->type, x, NULL, xws, y->type,
 	y, NULL, yws));
 }
@@ -4944,7 +4946,7 @@ xmlSchemaValidateFacetInternal(xmlSchemaFacetPtr facet,
  *     number otherwise and -1 in case of internal or API error.
  */
 int
-xmlSchemaValidateFacet(xmlSchemaTypePtr base ATTRIBUTE_UNUSED,
+xmlSchemaValidateFacet(xmlSchemaTypePtr base,
 	               xmlSchemaFacetPtr facet,
 	               const xmlChar *value,
 		       xmlSchemaValPtr val)
@@ -4954,14 +4956,15 @@ xmlSchemaValidateFacet(xmlSchemaTypePtr base ATTRIBUTE_UNUSED,
     * xmlSchemaValidateFacet() and the new xmlSchemaValidateFacetInternal() and
     * xmlSchemaValidateFacetWhtsp().
     */
-    if (base != NULL)
+    if (val != NULL)
 	return(xmlSchemaValidateFacetInternal(facet,
-	    XML_SCHEMA_WHITESPACE_UNKNOWN, base->builtInType, value, val, 
+	    XML_SCHEMA_WHITESPACE_UNKNOWN, val->type, value, val,
 	    XML_SCHEMA_WHITESPACE_UNKNOWN));
-    else
+    else if (base != NULL)
 	return(xmlSchemaValidateFacetInternal(facet,
-	    XML_SCHEMA_WHITESPACE_UNKNOWN, XML_SCHEMAS_UNKNOWN, value, val, 
+	    XML_SCHEMA_WHITESPACE_UNKNOWN, base->builtInType, value, val,
 	    XML_SCHEMA_WHITESPACE_UNKNOWN));
+    return(-1);
 }
 
 /**

@@ -1,3 +1,8 @@
+Wed Mar 16 17:37:04 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemastypes.c: Aaaannnd putting back the previous changes done
+	  by Daniel, which I overwrote with the previous commit.
+
 Wed Mar 16 17:20:25 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* xmlschemas.c xmlschemastypes.c include/libxml/xmlschemastypes.h:

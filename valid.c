@@ -293,6 +293,16 @@ xmlCopyElementContent(xmlElementContentPtr cur) {
 void
 xmlFreeElementContent(xmlElementContentPtr cur) {
     if (cur == NULL) return;
+    switch (cur->type) {
+	case XML_ELEMENT_CONTENT_PCDATA:
+	case XML_ELEMENT_CONTENT_ELEMENT:
+	case XML_ELEMENT_CONTENT_SEQ:
+	case XML_ELEMENT_CONTENT_OR:
+	    break;
+	default:
+	    fprintf(stderr, "xmlFreeElementContent : type %d\n", cur->type);
+	    return;
+    }
     if (cur->c1 != NULL) xmlFreeElementContent(cur->c1);
     if (cur->c2 != NULL) xmlFreeElementContent(cur->c2);
     if (cur->name != NULL) xmlFree((xmlChar *) cur->name);
@@ -455,7 +465,7 @@ xmlCreateElementTable(void) {
     ret->nb_elements = 0;
     ret->table = (xmlElementPtr *) 
          xmlMalloc(ret->max_elements * sizeof(xmlElementPtr));
-    if (ret == NULL) {
+    if (ret->table == NULL) {
         fprintf(stderr, "xmlCreateElementTable : xmlMalloc(%ld) failed\n",
 	        ret->max_elements * (long)sizeof(xmlElement));
 	xmlFree(ret);
@@ -877,7 +887,7 @@ xmlCreateAttributeTable(void) {
     ret->nb_attributes = 0;
     ret->table = (xmlAttributePtr *) 
          xmlMalloc(ret->max_attributes * sizeof(xmlAttributePtr));
-    if (ret == NULL) {
+    if (ret->table == NULL) {
         fprintf(stderr, "xmlCreateAttributeTable : xmlMalloc(%ld) failed\n",
 	        ret->max_attributes * (long)sizeof(xmlAttributePtr));
 	xmlFree(ret);
@@ -1348,7 +1358,7 @@ xmlCreateNotationTable(void) {
     ret->nb_notations = 0;
     ret->table = (xmlNotationPtr *) 
          xmlMalloc(ret->max_notations * sizeof(xmlNotationPtr));
-    if (ret == NULL) {
+    if (ret->table == NULL) {
         fprintf(stderr, "xmlCreateNotationTable : xmlMalloc(%ld) failed\n",
 	        ret->max_notations * (long)sizeof(xmlNotation));
 	xmlFree(ret);
@@ -1617,7 +1627,7 @@ xmlCreateIDTable(void) {
     ret->nb_ids = 0;
     ret->table = (xmlIDPtr *) 
          xmlMalloc(ret->max_ids * sizeof(xmlIDPtr));
-    if (ret == NULL) {
+    if (ret->table == NULL) {
         fprintf(stderr, "xmlCreateIDTable : xmlMalloc(%ld) failed\n",
 	        ret->max_ids * (long)sizeof(xmlID));
 	xmlFree(ret);
@@ -1896,7 +1906,7 @@ xmlCreateRefTable(void) {
     ret->nb_refs = 0;
     ret->table = (xmlRefPtr *) 
          xmlMalloc(ret->max_refs * sizeof(xmlRefPtr));
-    if (ret == NULL) {
+    if (ret->table == NULL) {
         fprintf(stderr, "xmlCreateRefTable : xmlMalloc(%ld) failed\n",
 	        ret->max_refs * (long)sizeof(xmlRef));
 	xmlFree(ret);
@@ -3544,7 +3554,7 @@ xmlValidateOneElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 		VERROR(ctxt->userData, "Text element has namespace !\n");
 		return(0);
 	    }
-	    if (elem->ns != NULL) {
+	    if (elem->nsDef != NULL) {
 		VERROR(ctxt->userData, 
 		       "Text element carries namespace definitions !\n");
 		return(0);

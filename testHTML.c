@@ -403,12 +403,14 @@ endElementDebug(void *ctx, const xmlChar *name)
 void
 charactersDebug(void *ctx, const xmlChar *ch, int len)
 {
+    char output[40];
     int i;
 
-    fprintf(stdout, "SAX.characters(");
-    for (i = 0;(i < len) && (i < 30);i++)
-	fprintf(stdout, "%c", ch[i]);
-    fprintf(stdout, ", %d)\n", len);
+    for (i = 0;(i<len) && (i < 30);i++)
+	output[i] = ch[i];
+    output[i] = 0;
+
+    fprintf(stdout, "SAX.characters(%s, %d)\n", output, len);
 }
 
 /**
@@ -437,8 +439,14 @@ referenceDebug(void *ctx, const xmlChar *name)
 void
 ignorableWhitespaceDebug(void *ctx, const xmlChar *ch, int len)
 {
-    fprintf(stdout, "SAX.ignorableWhitespace(%.30s, %d)\n",
-            (char *) ch, len);
+    char output[40];
+    int i;
+
+    for (i = 0;(i<len) && (i < 30);i++)
+	output[i] = ch[i];
+    output[i] = 0;
+
+    fprintf(stdout, "SAX.ignorableWhitespace(%s, %d)\n", output, len);
 }
 
 /**
@@ -571,20 +579,77 @@ void parseSAXFile(char *filename) {
     /*
      * Empty callbacks for checking
      */
-    doc = htmlSAXParseFile(filename, NULL, emptySAXHandler, NULL);
-    if (doc != NULL) {
-        fprintf(stdout, "htmlSAXParseFile returned non-NULL\n");
-	xmlFreeDoc(doc);
-    }
+    if (push) {
+	FILE *f;
 
-    if (!noout) {
-	/*
-	 * Debug callback
-	 */
-	doc = htmlSAXParseFile(filename, NULL, debugSAXHandler, NULL);
+	f = fopen(filename, "r");
+	if (f != NULL) {
+	    int res, size = 3;
+	    char chars[4096];
+	    htmlParserCtxtPtr ctxt;
+
+	    /* if (repeat) */
+		size = 4096;
+	    res = fread(chars, 1, 4, f);
+	    if (res > 0) {
+		ctxt = htmlCreatePushParserCtxt(emptySAXHandler, NULL,
+			    chars, res, filename, 0);
+		while ((res = fread(chars, 1, size, f)) > 0) {
+		    htmlParseChunk(ctxt, chars, res, 0);
+		}
+		htmlParseChunk(ctxt, chars, 0, 1);
+		doc = ctxt->myDoc;
+		htmlFreeParserCtxt(ctxt);
+	    }
+	    if (doc != NULL) {
+		fprintf(stdout, "htmlSAXParseFile returned non-NULL\n");
+		xmlFreeDoc(doc);
+	    }
+	    fclose(f);
+	}
+	if (!noout) {
+	    f = fopen(filename, "r");
+	    if (f != NULL) {
+		int res, size = 3;
+		char chars[4096];
+		htmlParserCtxtPtr ctxt;
+
+		/* if (repeat) */
+		    size = 4096;
+		res = fread(chars, 1, 4, f);
+		if (res > 0) {
+		    ctxt = htmlCreatePushParserCtxt(debugSAXHandler, NULL,
+				chars, res, filename, 0);
+		    while ((res = fread(chars, 1, size, f)) > 0) {
+			htmlParseChunk(ctxt, chars, res, 0);
+		    }
+		    htmlParseChunk(ctxt, chars, 0, 1);
+		    doc = ctxt->myDoc;
+		    htmlFreeParserCtxt(ctxt);
+		}
+		if (doc != NULL) {
+		    fprintf(stdout, "htmlSAXParseFile returned non-NULL\n");
+		    xmlFreeDoc(doc);
+		}
+		fclose(f);
+	    }
+	}
+    } else {	
+	doc = htmlSAXParseFile(filename, NULL, emptySAXHandler, NULL);
 	if (doc != NULL) {
 	    fprintf(stdout, "htmlSAXParseFile returned non-NULL\n");
 	    xmlFreeDoc(doc);
+	}
+
+	if (!noout) {
+	    /*
+	     * Debug callback
+	     */
+	    doc = htmlSAXParseFile(filename, NULL, debugSAXHandler, NULL);
+	    if (doc != NULL) {
+		fprintf(stdout, "htmlSAXParseFile returned non-NULL\n");
+		xmlFreeDoc(doc);
+	    }
 	}
     }
 }
@@ -601,11 +666,11 @@ void parseAndPrintFile(char *filename) {
 	f = fopen(filename, "r");
 	if (f != NULL) {
 	    int res, size = 3;
-	    char chars[1024];
+	    char chars[4096];
 	    htmlParserCtxtPtr ctxt;
 
-	    if (repeat)
-		size = 1024;
+	    /* if (repeat) */
+		size = 4096;
 	    res = fread(chars, 1, 4, f);
 	    if (res > 0) {
 		ctxt = htmlCreatePushParserCtxt(NULL, NULL,
@@ -617,6 +682,7 @@ void parseAndPrintFile(char *filename) {
 		doc = ctxt->myDoc;
 		htmlFreeParserCtxt(ctxt);
 	    }
+	    fclose(f);
 	}
     } else {	
 	doc = htmlParseFile(filename, NULL);

@@ -1,3 +1,22 @@
+Sat Aug 12 16:42:37 EDT 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* parser.[ch]: added xmlGetFeaturesList() xmlGetFeature()
+	  and xmlAddFeature()
+	* tree.[ch]: added xmlAddChildList()
+	* xmllint.c: MAP_FAILED macro test
+	* parser.h: added xmlParseCtxtExternalEntity()
+	* valid.c: applied bug fixes removed warning
+	* tree.c: added CDATA block to elements content
+	* testSAX.c: cleanup of output
+	* testHTML.c: added SAX testing
+	* encoding.c: better error recovery
+	* SAX.c, parser.c: fixed one of the external entity processing
+	  of the OASis testsuite
+	* Makefile.am: added HTML SAX regression tests
+	* configure.in: bumped to 2.2.2
+	* test/HTML/ result/HTML: added a few of HTML tests, and added the
+	  SAX results
+
 Fri Aug  4 11:21:50 PDT 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* configure.in: patch for HP compiler

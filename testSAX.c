@@ -402,12 +402,14 @@ endElementDebug(void *ctx, const xmlChar *name)
 void
 charactersDebug(void *ctx, const xmlChar *ch, int len)
 {
+    char output[40];
     int i;
 
-    fprintf(stdout, "SAX.characters(");
-    for (i = 0;(i < len) && (i < 30);i++)
-	fprintf(stdout, "%c", ch[i]);
-    fprintf(stdout, ", %d)\n", len);
+    for (i = 0;(i<len) && (i < 30);i++)
+	output[i] = ch[i];
+    output[i] = 0;
+
+    fprintf(stdout, "SAX.characters(%s, %d)\n", output, len);
 }
 
 /**
@@ -436,8 +438,13 @@ referenceDebug(void *ctx, const xmlChar *name)
 void
 ignorableWhitespaceDebug(void *ctx, const xmlChar *ch, int len)
 {
-    fprintf(stdout, "SAX.ignorableWhitespace(%.30s, %d)\n",
-            (char *) ch, len);
+    char output[40];
+    int i;
+
+    for (i = 0;(i<len) && (i < 30);i++)
+	output[i] = ch[i];
+    output[i] = 0;
+    fprintf(stdout, "SAX.ignorableWhitespace(%s, %d)\n", output, len);
 }
 
 /**

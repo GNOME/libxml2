@@ -420,8 +420,13 @@ UTF8Toisolat1(unsigned char* out, int *outlen,
 	} 
 
 	for ( ; trailing; trailing--) {
-	    if ((in >= inend) || (((d= *in++) & 0xC0) != 0x80))
+	    if (in >= inend)
 		break;
+	    if (((d= *in++) & 0xC0) != 0x80) {
+		*outlen = out - outstart;
+		*inlen = processed - instart;
+		return(-2);
+	    }
 	    c <<= 6;
 	    c |= d & 0x3F;
 	}
@@ -1033,6 +1038,8 @@ xmlGetCharEncodingName(xmlCharEncoding enc) {
             return("Shift-JIS");
         case XML_CHAR_ENCODING_EUC_JP:
             return("EUC-JP");
+	case XML_CHAR_ENCODING_ASCII:
+	    return(NULL);
     }
     return(NULL);
 }
@@ -1103,6 +1110,11 @@ xmlNewCharEncodingHandler(const char *name,
     handler->input = input;
     handler->output = output;
     handler->name = up;
+
+#ifdef LIBXML_ICONV_ENABLED
+    handler->iconv_in = NULL;
+    handler->iconv_out = NULL;
+#endif /* LIBXML_ICONV_ENABLED */
 
     /*
      * registers and returns the handler.
@@ -1584,8 +1596,10 @@ xmlCharEncInFunc(xmlCharEncodingHandler *handler, xmlBufferPtr out,
     if (out == NULL) return(-1);
     if (in == NULL) return(-1);
 
-    written = out->size - out->use;
     toconv = in->use;
+    if (toconv == 0)
+	return(0);
+    written = out->size - out->use;
     if (toconv * 2 >= written) {
         xmlBufferGrow(out, toconv * 2);
 	written = out->size - out->use - 1;
@@ -1697,6 +1711,8 @@ retry:
      * Convertion itself.
      */
     toconv = in->use;
+    if (toconv == 0)
+	return(0);
     if (toconv * 2 >= written) {
         xmlBufferGrow(out, toconv * 2);
 	written = out->size - out->use - 1;
@@ -1772,6 +1788,7 @@ retry:
 		fprintf(stderr, "Bytes: 0x%02X 0x%02X 0x%02X 0x%02X\n",
 			in->content[0], in->content[1],
 			in->content[2], in->content[3]);
+		in->content[0] = ' ';
 	    }
 	    break;
 	}

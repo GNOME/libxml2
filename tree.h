@@ -508,6 +508,8 @@ void		xmlNodeSetName		(xmlNodePtr cur,
 					 const xmlChar *name);
 xmlNodePtr	xmlAddChild		(xmlNodePtr parent,
 					 xmlNodePtr cur);
+xmlNodePtr	xmlAddChildList		(xmlNodePtr parent,
+					 xmlNodePtr cur);
 xmlNodePtr	xmlReplaceNode		(xmlNodePtr old,
 					 xmlNodePtr cur);
 xmlNodePtr	xmlAddSibling		(xmlNodePtr cur,

@@ -31,6 +31,10 @@
 #endif
 #ifdef HAVE_SYS_MMAN_H
 #include <sys/mman.h>
+/* seems needed for Solaris */
+#ifndef MAP_FAILED
+#define MAP_FAILED ((void *) -1)
+#endif
 #endif
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>

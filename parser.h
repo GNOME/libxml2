@@ -402,6 +402,10 @@ int		xmlParseExternalEntity	(xmlDocPtr doc,
 					 const xmlChar *URL,
 					 const xmlChar *ID,
 					 xmlNodePtr *list);
+int		xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx,
+					 const xmlChar *URL,
+					 const xmlChar *ID,
+					 xmlNodePtr *list);
 
 /**
  * SAX initialization routines
@@ -419,6 +423,19 @@ void		xmlSetupParserForBuffer	(xmlParserCtxtPtr ctxt,
 					 const xmlChar* buffer,
 					 const char* filename);
 xmlParserCtxtPtr xmlCreateDocParserCtxt	(xmlChar *cur);
+
+/**
+ * Reading/setting optional parsing features.
+ */
+
+int		xmlGetFeaturesList	(int *len,
+					 const char **result);
+int		xmlGetFeature		(xmlParserCtxtPtr ctxt,
+					 const char *name,
+					 void *result);
+int		xmlSetFeature		(xmlParserCtxtPtr ctxt,
+					 const char *name,
+					 void *value);
 
 /**
  * Interfaces for the Push mode

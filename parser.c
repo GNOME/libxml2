@@ -62,10 +62,11 @@ void xmlParserHandleReference(xmlParserCtxtPtr ctxt);
 void xmlParserHandlePEReference(xmlParserCtxtPtr ctxt);
 xmlEntityPtr xmlParseStringPEReference(xmlParserCtxtPtr ctxt,
                                        const xmlChar **str);
-
-/*
- * Version handling
- */
+/************************************************************************
+ *									*
+ * 		Version and Features handling				*
+ *									*
+ ************************************************************************/
 const char *xmlParserVersion = LIBXML_VERSION_STRING;
 
 /*
@@ -90,6 +91,293 @@ xmlCheckVersion(int version) {
 		"Warning: program compiled against libxml %d using older %d\n",
 		(version / 100), (myversion / 100));
     }
+}
+
+
+const char *xmlFeaturesList[] = {
+    "validate",
+    "keep blanks",
+    "disable SAX",
+    "fetch external entities",
+    "substitute entities",
+    "gather line info",
+    "user data",
+    "is html",
+    "is standalone",
+    "stop parser",
+    "document",
+    "is well formed",
+    "is valid",
+    "SAX block",
+    "SAX function internalSubset",
+    "SAX function isStandalone",
+    "SAX function hasInternalSubset",
+    "SAX function hasExternalSubset",
+    "SAX function resolveEntity",
+    "SAX function getEntity",
+    "SAX function entityDecl",
+    "SAX function notationDecl",
+    "SAX function attributeDecl",
+    "SAX function elementDecl",
+    "SAX function unparsedEntityDecl",
+    "SAX function setDocumentLocator",
+    "SAX function startDocument",
+    "SAX function endDocument",
+    "SAX function startElement",
+    "SAX function endElement",
+    "SAX function reference",
+    "SAX function characters",
+    "SAX function ignorableWhitespace",
+    "SAX function processingInstruction",
+    "SAX function comment",
+    "SAX function warning",
+    "SAX function error",
+    "SAX function fatalError",
+    "SAX function getParameterEntity",
+    "SAX function cdataBlock",
+    "SAX function externalSubset",
+};
+
+/*
+ * xmlGetFeaturesList:
+ * @len:  the length of the features name array (input/output)
+ * @result:  an array of string to be filled with the features name.
+ *
+ * Copy at most *@len feature names into the @result array
+ *
+ * Returns -1 in case or error, or the total number of features,
+ *            len is updated with the number of strings copied,
+ *            strings must not be deallocated
+ */
+int
+xmlGetFeaturesList(int *len, const char **result) {
+    int ret, i;
+
+    ret = sizeof(xmlFeaturesList)/sizeof(xmlFeaturesList[0]);
+    if ((len == NULL) || (result == NULL))
+	return(ret);
+    if ((*len < 0) || (*len >= 1000))
+	return(-1);
+    if (*len > ret)
+	*len = ret;
+    for (i = 0;i < *len;i++)
+	result[i] = xmlFeaturesList[i];
+    return(ret);
+}
+
+/*
+ * xmlGetFeature:
+ * @ctxt:  an XML/HTML parser context
+ * @name:  the feature name
+ * @result:  location to store the result
+ *
+ * Read the current value of one feature of this parser instance
+ *
+ * Returns -1 in case or error, 0 otherwise
+ */
+int
+xmlGetFeature(xmlParserCtxtPtr ctxt, const char *name, void *result) {
+    if ((ctxt == NULL) || (name == NULL) || (result == NULL))
+	return(-1);
+
+    if (!strcmp(name, "validate")) {
+	*((int *) result) = ctxt->validate;
+    } else if (!strcmp(name, "keep blanks")) {
+	*((int *) result) = ctxt->keepBlanks;
+    } else if (!strcmp(name, "disable SAX")) {
+	*((int *) result) = ctxt->disableSAX;
+    } else if (!strcmp(name, "fetch external entities")) {
+	*((int *) result) = ctxt->validate;
+    } else if (!strcmp(name, "substitute entities")) {
+	*((int *) result) = ctxt->replaceEntities;
+    } else if (!strcmp(name, "gather line info")) {
+	*((int *) result) = ctxt->record_info;
+    } else if (!strcmp(name, "user data")) {
+	*((void **)result) = ctxt->userData;
+    } else if (!strcmp(name, "is html")) {
+	*((int *) result) = ctxt->html;
+    } else if (!strcmp(name, "is standalone")) {
+	*((int *) result) = ctxt->standalone;
+    } else if (!strcmp(name, "document")) {
+	*((xmlDocPtr *) result) = ctxt->myDoc;
+    } else if (!strcmp(name, "is well formed")) {
+	*((int *) result) = ctxt->wellFormed;
+    } else if (!strcmp(name, "is valid")) {
+	*((int *) result) = ctxt->valid;
+    } else if (!strcmp(name, "SAX block")) {
+	*((xmlSAXHandlerPtr *) result) = ctxt->sax;
+    } else if (!strcmp(name, "SAX function internalSubset")) {
+        *((internalSubsetSAXFunc *) result) = ctxt->sax->internalSubset;
+    } else if (!strcmp(name, "SAX function isStandalone")) {
+        *((isStandaloneSAXFunc *) result) = ctxt->sax->isStandalone;
+    } else if (!strcmp(name, "SAX function hasInternalSubset")) {
+        *((hasInternalSubsetSAXFunc *) result) = ctxt->sax->hasInternalSubset;
+    } else if (!strcmp(name, "SAX function hasExternalSubset")) {
+        *((hasExternalSubsetSAXFunc *) result) = ctxt->sax->hasExternalSubset;
+    } else if (!strcmp(name, "SAX function resolveEntity")) {
+        *((resolveEntitySAXFunc *) result) = ctxt->sax->resolveEntity;
+    } else if (!strcmp(name, "SAX function getEntity")) {
+        *((getEntitySAXFunc *) result) = ctxt->sax->getEntity;
+    } else if (!strcmp(name, "SAX function entityDecl")) {
+        *((entityDeclSAXFunc *) result) = ctxt->sax->entityDecl;
+    } else if (!strcmp(name, "SAX function notationDecl")) {
+        *((notationDeclSAXFunc *) result) = ctxt->sax->notationDecl;
+    } else if (!strcmp(name, "SAX function attributeDecl")) {
+        *((attributeDeclSAXFunc *) result) = ctxt->sax->attributeDecl;
+    } else if (!strcmp(name, "SAX function elementDecl")) {
+        *((elementDeclSAXFunc *) result) = ctxt->sax->elementDecl;
+    } else if (!strcmp(name, "SAX function unparsedEntityDecl")) {
+        *((unparsedEntityDeclSAXFunc *) result) = ctxt->sax->unparsedEntityDecl;
+    } else if (!strcmp(name, "SAX function setDocumentLocator")) {
+        *((setDocumentLocatorSAXFunc *) result) = ctxt->sax->setDocumentLocator;
+    } else if (!strcmp(name, "SAX function startDocument")) {
+        *((startDocumentSAXFunc *) result) = ctxt->sax->startDocument;
+    } else if (!strcmp(name, "SAX function endDocument")) {
+        *((endDocumentSAXFunc *) result) = ctxt->sax->endDocument;
+    } else if (!strcmp(name, "SAX function startElement")) {
+        *((startElementSAXFunc *) result) = ctxt->sax->startElement;
+    } else if (!strcmp(name, "SAX function endElement")) {
+        *((endElementSAXFunc *) result) = ctxt->sax->endElement;
+    } else if (!strcmp(name, "SAX function reference")) {
+        *((referenceSAXFunc *) result) = ctxt->sax->reference;
+    } else if (!strcmp(name, "SAX function characters")) {
+        *((charactersSAXFunc *) result) = ctxt->sax->characters;
+    } else if (!strcmp(name, "SAX function ignorableWhitespace")) {
+        *((ignorableWhitespaceSAXFunc *) result) = ctxt->sax->ignorableWhitespace;
+    } else if (!strcmp(name, "SAX function processingInstruction")) {
+        *((processingInstructionSAXFunc *) result) = ctxt->sax->processingInstruction;
+    } else if (!strcmp(name, "SAX function comment")) {
+        *((commentSAXFunc *) result) = ctxt->sax->comment;
+    } else if (!strcmp(name, "SAX function warning")) {
+        *((warningSAXFunc *) result) = ctxt->sax->warning;
+    } else if (!strcmp(name, "SAX function error")) {
+        *((errorSAXFunc *) result) = ctxt->sax->error;
+    } else if (!strcmp(name, "SAX function fatalError")) {
+        *((fatalErrorSAXFunc *) result) = ctxt->sax->fatalError;
+    } else if (!strcmp(name, "SAX function getParameterEntity")) {
+        *((getParameterEntitySAXFunc *) result) = ctxt->sax->getParameterEntity;
+    } else if (!strcmp(name, "SAX function cdataBlock")) {
+        *((cdataBlockSAXFunc *) result) = ctxt->sax->cdataBlock;
+    } else if (!strcmp(name, "SAX function externalSubset")) {
+        *((externalSubsetSAXFunc *) result) = ctxt->sax->externalSubset;
+    } else {
+	return(-1);
+    }
+    return(0);
+}
+
+/*
+ * xmlSetFeature:
+ * @ctxt:  an XML/HTML parser context
+ * @name:  the feature name
+ * @value:  pointer to the location of the new value
+ *
+ * Change the current value of one feature of this parser instance
+ *
+ * Returns -1 in case or error, 0 otherwise
+ */
+int	
+xmlSetFeature(xmlParserCtxtPtr ctxt, const char *name, void *value) {
+    if ((ctxt == NULL) || (name == NULL) || (value == NULL))
+	return(-1);
+
+    if (!strcmp(name, "validate")) {
+        ctxt->validate = *((int *) value);
+    } else if (!strcmp(name, "keep blanks")) {
+        ctxt->keepBlanks = *((int *) value);
+    } else if (!strcmp(name, "disable SAX")) {
+        ctxt->disableSAX = *((int *) value);
+    } else if (!strcmp(name, "fetch external entities")) {
+	int newvalid = *((int *) value);
+	if ((!ctxt->validate) && (newvalid != 0)) {
+	    if (ctxt->vctxt.warning == NULL)
+		ctxt->vctxt.warning = xmlParserValidityWarning;
+	    if (ctxt->vctxt.error == NULL)
+		ctxt->vctxt.error = xmlParserValidityError;
+	    /* Allocate the Node stack */
+	    ctxt->vctxt.nodeTab = (xmlNodePtr *)
+		       xmlMalloc(4 * sizeof(xmlNodePtr));
+	    ctxt->vctxt.nodeNr = 0;
+	    ctxt->vctxt.nodeMax = 4;
+	    ctxt->vctxt.node = NULL;
+	}
+	ctxt->validate = newvalid;
+    } else if (!strcmp(name, "substitute entities")) {
+        ctxt->replaceEntities = *((int *) value);
+    } else if (!strcmp(name, "gather line info")) {
+        ctxt->record_info = *((int *) value);
+    } else if (!strcmp(name, "user data")) {
+        ctxt->userData = *((void **)value);
+    } else if (!strcmp(name, "is html")) {
+        ctxt->html = *((int *) value);
+    } else if (!strcmp(name, "is standalone")) {
+        ctxt->standalone = *((int *) value);
+    } else if (!strcmp(name, "document")) {
+        ctxt->myDoc = *((xmlDocPtr *) value);
+    } else if (!strcmp(name, "is well formed")) {
+        ctxt->wellFormed = *((int *) value);
+    } else if (!strcmp(name, "is valid")) {
+        ctxt->valid = *((int *) value);
+    } else if (!strcmp(name, "SAX block")) {
+        ctxt->sax = *((xmlSAXHandlerPtr *) value);
+    } else if (!strcmp(name, "SAX function internalSubset")) {
+        ctxt->sax->internalSubset = *((internalSubsetSAXFunc *) value);
+    } else if (!strcmp(name, "SAX function isStandalone")) {
+        ctxt->sax->isStandalone = *((isStandaloneSAXFunc *) value);
+    } else if (!strcmp(name, "SAX function hasInternalSubset")) {
+        ctxt->sax->hasInternalSubset = *((hasInternalSubsetSAXFunc *) value);
+    } else if (!strcmp(name, "SAX function hasExternalSubset")) {
+        ctxt->sax->hasExternalSubset = *((hasExternalSubsetSAXFunc *) value);
+    } else if (!strcmp(name, "SAX function resolveEntity")) {
+        ctxt->sax->resolveEntity = *((resolveEntitySAXFunc *) value);
+    } else if (!strcmp(name, "SAX function getEntity")) {
+        ctxt->sax->getEntity = *((getEntitySAXFunc *) value);
+    } else if (!strcmp(name, "SAX function entityDecl")) {
+        ctxt->sax->entityDecl = *((entityDeclSAXFunc *) value);
+    } else if (!strcmp(name, "SAX function notationDecl")) {
+        ctxt->sax->notationDecl = *((notationDeclSAXFunc *) value);
+    } else if (!strcmp(name, "SAX function attributeDecl")) {
+        ctxt->sax->attributeDecl = *((attributeDeclSAXFunc *) value);
+    } else if (!strcmp(name, "SAX function elementDecl")) {
+        ctxt->sax->elementDecl = *((elementDeclSAXFunc *) value);
+    } else if (!strcmp(name, "SAX function unparsedEntityDecl")) {
+        ctxt->sax->unparsedEntityDecl = *((unparsedEntityDeclSAXFunc *) value);
+    } else if (!strcmp(name, "SAX function setDocumentLocator")) {
+        ctxt->sax->setDocumentLocator = *((setDocumentLocatorSAXFunc *) value);
+    } else if (!strcmp(name, "SAX function startDocument")) {
+        ctxt->sax->startDocument = *((startDocumentSAXFunc *) value);
+    } else if (!strcmp(name, "SAX function endDocument")) {
+        ctxt->sax->endDocument = *((endDocumentSAXFunc *) value);
+    } else if (!strcmp(name, "SAX function startElement")) {
+        ctxt->sax->startElement = *((startElementSAXFunc *) value);
+    } else if (!strcmp(name, "SAX function endElement")) {
+        ctxt->sax->endElement = *((endElementSAXFunc *) value);
+    } else if (!strcmp(name, "SAX function reference")) {
+        ctxt->sax->reference = *((referenceSAXFunc *) value);
+    } else if (!strcmp(name, "SAX function characters")) {
+        ctxt->sax->characters = *((charactersSAXFunc *) value);
+    } else if (!strcmp(name, "SAX function ignorableWhitespace")) {
+        ctxt->sax->ignorableWhitespace = *((ignorableWhitespaceSAXFunc *) value);
+    } else if (!strcmp(name, "SAX function processingInstruction")) {
+        ctxt->sax->processingInstruction = *((processingInstructionSAXFunc *) value);
+    } else if (!strcmp(name, "SAX function comment")) {
+        ctxt->sax->comment = *((commentSAXFunc *) value);
+    } else if (!strcmp(name, "SAX function warning")) {
+        ctxt->sax->warning = *((warningSAXFunc *) value);
+    } else if (!strcmp(name, "SAX function error")) {
+        ctxt->sax->error = *((errorSAXFunc *) value);
+    } else if (!strcmp(name, "SAX function fatalError")) {
+        ctxt->sax->fatalError = *((fatalErrorSAXFunc *) value);
+    } else if (!strcmp(name, "SAX function getParameterEntity")) {
+        ctxt->sax->getParameterEntity = *((getParameterEntitySAXFunc *) value);
+    } else if (!strcmp(name, "SAX function cdataBlock")) {
+        ctxt->sax->cdataBlock = *((cdataBlockSAXFunc *) value);
+    } else if (!strcmp(name, "SAX function externalSubset")) {
+        ctxt->sax->externalSubset = *((externalSubsetSAXFunc *) value);
+    } else {
+	return(-1);
+    }
+    return(0);
 }
 
 
@@ -1958,6 +2246,10 @@ xmlParserHandlePEReference(xmlParserCtxtPtr ctxt) {
 		     * ... The declaration of a parameter entity must precede
 		     * any reference to it...
 		     */
+		    if ((ctxt->validate) && (ctxt->vctxt.error != NULL)) {
+			ctxt->vctxt.error(ctxt->vctxt.userData,
+			     "PEReference: %%%s; not found\n", name);
+		    } else
 		    if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
 			ctxt->sax->warning(ctxt->userData,
 			 "PEReference: %%%s; not found\n", name);
@@ -2154,6 +2446,9 @@ xmlStringDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int what,
     xmlEntityPtr ent;
     int c,l;
     int nbchars = 0;
+
+    if (str == NULL)
+	return(NULL);
 
     if (ctxt->depth > 40) {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
@@ -2381,6 +2676,7 @@ xmlSwitchEncoding(xmlParserCtxtPtr ctxt, xmlCharEncoding enc)
 		ctxt->charset = XML_CHAR_ENCODING_UTF8;
 		return(0);
 	    case XML_CHAR_ENCODING_UTF8:
+	    case XML_CHAR_ENCODING_ASCII:
 		/* default encoding, no conversion should be needed */
 		ctxt->charset = XML_CHAR_ENCODING_UTF8;
 		return(0);
@@ -2552,6 +2848,7 @@ xmlSwitchToEncoding(xmlParserCtxtPtr ctxt, xmlCharEncodingHandlerPtr handler)
 		    }
 		    ctxt->input->base =
 		    ctxt->input->cur = ctxt->input->buf->buffer->content;
+
 		}
 		return(0);
 	    } else {
@@ -3886,7 +4183,8 @@ xmlParseAttValue(xmlParserCtxtPtr ctxt) {
 		 * This may look absurd but is needed to detect
 		 * entities problems
 		 */
-		if (ent->etype != XML_INTERNAL_PREDEFINED_ENTITY) {
+		if ((ent->etype != XML_INTERNAL_PREDEFINED_ENTITY) &&
+		    (ent->content != NULL)) {
 		    xmlChar *rep;
 		    rep = xmlStringDecodeEntities(ctxt, ent->content,
 					      XML_SUBSTITUTE_REF, 0, 0, 0);
@@ -5657,7 +5955,8 @@ xmlParseElementChildrenContentDecl(xmlParserCtxtPtr ctxt) {
 		ctxt->disableSAX = 1;
 		if ((op != NULL) && (op != ret))
 		    xmlFreeElementContent(op);
-		if ((last != NULL) && (last != ret))
+		if ((last != NULL) && (last != ret) &&
+		    (last != ret->c1) && (last != ret->c2))
 		    xmlFreeElementContent(last);
 		if (ret != NULL)
 		    xmlFreeElementContent(ret);
@@ -5693,9 +5992,10 @@ xmlParseElementChildrenContentDecl(xmlParserCtxtPtr ctxt) {
 		ctxt->errNo = XML_ERR_SEPARATOR_REQUIRED;
 		ctxt->wellFormed = 0;
 		ctxt->disableSAX = 1;
-		if ((op != NULL) && (op != ret))
+		if ((op != NULL) && (op != ret) && (op != last))
 		    xmlFreeElementContent(op);
-		if ((last != NULL) && (last != ret))
+		if ((last != NULL) && (last != ret) &&
+		    (last != ret->c1) && (last != ret->c2))
 		    xmlFreeElementContent(last);
 		if (ret != NULL)
 		    xmlFreeElementContent(ret);
@@ -5707,7 +6007,8 @@ xmlParseElementChildrenContentDecl(xmlParserCtxtPtr ctxt) {
 	    if (op == NULL) {
 		if ((op != NULL) && (op != ret))
 		    xmlFreeElementContent(op);
-		if ((last != NULL) && (last != ret))
+		if ((last != NULL) && (last != ret) &&
+		    (last != ret->c1) && (last != ret->c2))
 		    xmlFreeElementContent(last);
 		if (ret != NULL)
 		    xmlFreeElementContent(ret);
@@ -5731,7 +6032,8 @@ xmlParseElementChildrenContentDecl(xmlParserCtxtPtr ctxt) {
 	    ctxt->errNo = XML_ERR_ELEMCONTENT_NOT_FINISHED;
 	    if ((op != NULL) && (op != ret))
 		xmlFreeElementContent(op);
-	    if ((last != NULL) && (last != ret))
+	    if ((last != NULL) && (last != ret) &&
+		(last != ret->c1) && (last != ret->c2))
 		xmlFreeElementContent(last);
 	    if (ret != NULL)
 		xmlFreeElementContent(ret);
@@ -5757,7 +6059,8 @@ xmlParseElementChildrenContentDecl(xmlParserCtxtPtr ctxt) {
 		ctxt->disableSAX = 1;
 		if ((op != NULL) && (op != ret))
 		    xmlFreeElementContent(op);
-		if ((last != NULL) && (last != ret))
+		if ((last != NULL) && (last != ret) &&
+		    (last != ret->c1) && (last != ret->c2))
 		    xmlFreeElementContent(last);
 		if (ret != NULL)
 		    xmlFreeElementContent(ret);
@@ -7999,6 +8302,13 @@ xmlParseElement(xmlParserCtxtPtr ctxt) {
 #endif
 	    xmlFree(oldname);
 	}
+	if ( ret != NULL && ctxt->record_info ) {
+	   node_info.end_pos = ctxt->input->consumed +
+			      (CUR_PTR - ctxt->input->base);
+	   node_info.end_line = ctxt->input->line;
+	   node_info.node = ret;
+	   xmlParserAddNodeInfo(ctxt, &node_info);
+	}
 	return;
     }
     if (RAW == '>') {
@@ -9919,7 +10229,6 @@ xmlSAXParseDTD(xmlSAXHandlerPtr sax, const xmlChar *ExternalID,
     /*
      * Set-up the SAX context
      */
-    if (ctxt == NULL) return(NULL);
     if (sax != NULL) { 
 	if (ctxt->sax != NULL)
 	    xmlFree(ctxt->sax);
@@ -10067,6 +10376,165 @@ xmlSAXParseBalancedChunk(xmlParserCtxtPtr ctx, xmlSAXHandlerPtr sax,
 }
 
 /**
+ * xmlParseCtxtExternalEntity:
+ * @ctx:  the existing parsing context
+ * @URL:  the URL for the entity to load
+ * @ID:  the System ID for the entity to load
+ * @list:  the return value for the set of parsed nodes
+ *
+ * Parse an external general entity within an existing parsing context
+ * An external general parsed entity is well-formed if it matches the
+ * production labeled extParsedEnt.
+ *
+ * [78] extParsedEnt ::= TextDecl? content
+ *
+ * Returns 0 if the entity is well formed, -1 in case of args problem and
+ *    the parser error code otherwise
+ */
+
+int
+xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctx, const xmlChar *URL,
+	               const xmlChar *ID, xmlNodePtr *list) {
+    xmlParserCtxtPtr ctxt;
+    xmlDocPtr newDoc;
+    xmlSAXHandlerPtr oldsax = NULL;
+    int ret = 0;
+
+    if (ctx->depth > 40) {
+	return(XML_ERR_ENTITY_LOOP);
+    }
+
+    if (list != NULL)
+        *list = NULL;
+    if ((URL == NULL) && (ID == NULL))
+	return(-1);
+    if (ctx->myDoc == NULL) /* @@ relax but check for dereferences */
+	return(-1);
+
+
+    ctxt = xmlCreateEntityParserCtxt(URL, ID, ctx->myDoc->URL);
+    if (ctxt == NULL) return(-1);
+    ctxt->userData = ctxt;
+    oldsax = ctxt->sax;
+    ctxt->sax = ctx->sax;
+    newDoc = xmlNewDoc(BAD_CAST "1.0");
+    if (newDoc == NULL) {
+	xmlFreeParserCtxt(ctxt);
+	return(-1);
+    }
+    if (ctx->myDoc != NULL) {
+	newDoc->intSubset = ctx->myDoc->intSubset;
+	newDoc->extSubset = ctx->myDoc->extSubset;
+    }
+    if (ctx->myDoc->URL != NULL) {
+	newDoc->URL = xmlStrdup(ctx->myDoc->URL);
+    }
+    newDoc->children = xmlNewDocNode(newDoc, NULL, BAD_CAST "pseudoroot", NULL);
+    if (newDoc->children == NULL) {
+	ctxt->sax = oldsax;
+	xmlFreeParserCtxt(ctxt);
+	newDoc->intSubset = NULL;
+	newDoc->extSubset = NULL;
+        xmlFreeDoc(newDoc);
+	return(-1);
+    }
+    nodePush(ctxt, newDoc->children);
+    if (ctx->myDoc == NULL) {
+	ctxt->myDoc = newDoc;
+    } else {
+	ctxt->myDoc = ctx->myDoc;
+	newDoc->children->doc = ctx->myDoc;
+    }
+
+    /*
+     * Parse a possible text declaration first
+     */
+    GROW;
+    if ((RAW == '<') && (NXT(1) == '?') &&
+	(NXT(2) == 'x') && (NXT(3) == 'm') &&
+	(NXT(4) == 'l') && (IS_BLANK(NXT(5)))) {
+	xmlParseTextDecl(ctxt);
+    }
+
+    /*
+     * Doing validity checking on chunk doesn't make sense
+     */
+    ctxt->instate = XML_PARSER_CONTENT;
+    ctxt->validate = ctx->validate;
+    ctxt->depth = ctx->depth + 1;
+    ctxt->replaceEntities = ctx->replaceEntities;
+    if (ctxt->validate) {
+	ctxt->vctxt.error = ctx->vctxt.error;
+	ctxt->vctxt.warning = ctx->vctxt.warning;
+	/* Allocate the Node stack */
+	ctxt->vctxt.nodeTab = (xmlNodePtr *) xmlMalloc(4 * sizeof(xmlNodePtr));
+	ctxt->vctxt.nodeNr = 0;
+	ctxt->vctxt.nodeMax = 4;
+	ctxt->vctxt.node = NULL;
+    } else {
+	ctxt->vctxt.error = NULL;
+	ctxt->vctxt.warning = NULL;
+    }
+
+    xmlParseContent(ctxt);
+   
+    if ((RAW == '<') && (NXT(1) == '/')) {
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt->userData,
+		"chunk is not well balanced\n");
+	ctxt->wellFormed = 0;
+	ctxt->disableSAX = 1;
+	ctxt->errNo = XML_ERR_NOT_WELL_BALANCED;
+    } else if (RAW != 0) {
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt->userData,
+		"extra content at the end of well balanced chunk\n");
+	ctxt->wellFormed = 0;
+	ctxt->disableSAX = 1;
+	ctxt->errNo = XML_ERR_EXTRA_CONTENT;
+    }
+    if (ctxt->node != newDoc->children) {
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt->userData,
+		"chunk is not well balanced\n");
+	ctxt->wellFormed = 0;
+	ctxt->disableSAX = 1;
+	ctxt->errNo = XML_ERR_NOT_WELL_BALANCED;
+    }
+
+    if (!ctxt->wellFormed) {
+        if (ctxt->errNo == 0)
+	    ret = 1;
+	else
+	    ret = ctxt->errNo;
+    } else {
+	if (list != NULL) {
+	    xmlNodePtr cur;
+
+	    /*
+	     * Return the newly created nodeset after unlinking it from
+	     * they pseudo parent.
+	     */
+	    cur = newDoc->children->children;
+	    *list = cur;
+	    while (cur != NULL) {
+		cur->parent = NULL;
+		cur = cur->next;
+	    }
+            newDoc->children->children = NULL;
+	}
+	ret = 0;
+    }
+    ctxt->sax = oldsax;
+    xmlFreeParserCtxt(ctxt);
+    newDoc->intSubset = NULL;
+    newDoc->extSubset = NULL;
+    xmlFreeDoc(newDoc);
+    
+    return(ret);
+}
+
+/**
  * xmlParseExternalEntity:
  * @doc:  the document the chunk pertains to
  * @sax:  the SAX handler bloc (possibly NULL)
@@ -10103,6 +10571,8 @@ xmlParseExternalEntity(xmlDocPtr doc, xmlSAXHandlerPtr sax, void *user_data,
     if (list != NULL)
         *list = NULL;
     if ((URL == NULL) && (ID == NULL))
+	return(-1);
+    if (doc == NULL) /* @@ relax but check for dereferences */
 	return(-1);
 
 
@@ -10413,24 +10883,43 @@ xmlCreateEntityParserCtxt(const xmlChar *URL, const xmlChar *ID,
     xmlParserCtxtPtr ctxt;
     xmlParserInputPtr inputStream;
     char *directory = NULL;
-
+    xmlChar *uri;
+    
     ctxt = xmlNewParserCtxt();
     if (ctxt == NULL) {
 	return(NULL);
     }
 
-    inputStream = xmlLoadExternalEntity((char *)URL, (char *)ID, ctxt);
-    if (inputStream == NULL) {
-	xmlFreeParserCtxt(ctxt);
-	return(NULL);
+    uri = xmlBuildURI(URL, base);
+
+    if (uri == NULL) {
+	inputStream = xmlLoadExternalEntity((char *)URL, (char *)ID, ctxt);
+	if (inputStream == NULL) {
+	    xmlFreeParserCtxt(ctxt);
+	    return(NULL);
+	}
+
+	inputPush(ctxt, inputStream);
+
+	if ((ctxt->directory == NULL) && (directory == NULL))
+	    directory = xmlParserGetDirectory((char *)URL);
+	if ((ctxt->directory == NULL) && (directory != NULL))
+	    ctxt->directory = directory;
+    } else {
+	inputStream = xmlLoadExternalEntity((char *)uri, (char *)ID, ctxt);
+	if (inputStream == NULL) {
+	    xmlFreeParserCtxt(ctxt);
+	    return(NULL);
+	}
+
+	inputPush(ctxt, inputStream);
+
+	if ((ctxt->directory == NULL) && (directory == NULL))
+	    directory = xmlParserGetDirectory((char *)uri);
+	if ((ctxt->directory == NULL) && (directory != NULL))
+	    ctxt->directory = directory;
+	xmlFree(uri);
     }
-
-    inputPush(ctxt, inputStream);
-
-    if ((ctxt->directory == NULL) && (directory == NULL))
-        directory = xmlParserGetDirectory((char *)URL);
-    if ((ctxt->directory == NULL) && (directory != NULL))
-        ctxt->directory = directory;
 
     return(ctxt);
 }
@@ -10763,10 +11252,14 @@ int xmlSAXUserParseMemory(xmlSAXHandlerPtr sax, void *user_data,
 			  char *buffer, int size) {
     int ret = 0;
     xmlParserCtxtPtr ctxt;
+    xmlSAXHandlerPtr oldsax = NULL;
     
     ctxt = xmlCreateMemoryParserCtxt(buffer, size);
     if (ctxt == NULL) return -1;
-    ctxt->sax = sax;
+    if (sax != NULL) {
+	oldsax = ctxt->sax;
+	ctxt->sax = sax;
+    }
     ctxt->userData = user_data;
     
     xmlParseDocument(ctxt);
@@ -10779,8 +11272,9 @@ int xmlSAXUserParseMemory(xmlSAXHandlerPtr sax, void *user_data,
 	else
 	    ret = -1;
     }
-    if (sax != NULL)
-	ctxt->sax = NULL;
+    if (sax != NULL) {
+	ctxt->sax = oldsax;
+    }
     xmlFreeParserCtxt(ctxt);
     
     return ret;

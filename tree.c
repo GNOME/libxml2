@@ -793,7 +793,8 @@ xmlNodeListGetString(xmlDocPtr doc, xmlNodePtr list, int inLine) {
     if (list == NULL) return(NULL);
 
     while (node != NULL) {
-        if (node->type == XML_TEXT_NODE) {
+        if ((node->type == XML_TEXT_NODE) ||
+	    (node->type == XML_CDATA_SECTION_NODE)) {
 	    if (inLine) {
 #ifndef XML_USE_BUFFER_CONTENT
 		ret = xmlStrcat(ret, node->content);
@@ -1906,6 +1907,62 @@ xmlAddSibling(xmlNodePtr cur, xmlNodePtr elem) {
 	parent->last = elem;
 
     return(elem);
+}
+
+/**
+ * xmlAddChildList:
+ * @parent:  the parent node
+ * @cur:  the first node in the list
+ *
+ * Add a list of node at the end of the child list of the parent
+ *
+ * Returns the last child or NULL in case of error.
+ */
+xmlNodePtr
+xmlAddChildList(xmlNodePtr parent, xmlNodePtr cur) {
+    xmlNodePtr prev;
+
+    if (parent == NULL) {
+#ifdef DEBUG_TREE
+        fprintf(stderr, "xmlAddChild : parent == NULL\n");
+#endif
+	return(NULL);
+    }
+
+    if (cur == NULL) {
+#ifdef DEBUG_TREE
+        fprintf(stderr, "xmlAddChild : child == NULL\n");
+#endif
+	return(NULL);
+    }
+
+    if ((cur->doc != NULL) && (parent->doc != NULL) &&
+        (cur->doc != parent->doc)) {
+#ifdef DEBUG_TREE
+	fprintf(stderr, "Elements moved to a different document\n");
+#endif
+    }
+
+    /*
+     * add the first element at the end of the children list.
+     */
+    if (parent->children == NULL) {
+        parent->children = cur;
+    } else {
+        prev = parent->last;
+	prev->next = cur;
+	cur->prev = prev;
+    }
+    while (cur->next != NULL) {
+	cur->parent = parent;
+	cur->doc = parent->doc; /* the parent may not be linked to a doc ! */
+        cur = cur->next;
+    }
+    cur->parent = parent;
+    cur->doc = parent->doc; /* the parent may not be linked to a doc ! */
+    parent->last = cur;
+
+    return(cur);
 }
 
 /**

@@ -99,6 +99,7 @@ testall : tests SVGtests SAXtests XPathtests XMLenttests
 tests: XMLtests HTMLtests Validtests
 
 HTMLtests : testHTML
+	@(rm -f .memdump ; touch .memdump)
 	@echo "##"
 	@echo "## HTML regression tests"
 	@echo "##"
@@ -107,16 +108,71 @@ HTMLtests : testHTML
 	  if [ ! -d $$i ] ; then \
 	  if [ ! -f $(srcdir)/result/HTML/$$name ] ; then \
 	      echo New test file $$name ; \
-	      $(top_builddir)/testHTML $$i > $(srcdir)/result/HTML/$$name 2>$(srcdir)/result/HTML/$$name.err ; \
+	      testHTML $$i > $(srcdir)/result/HTML/$$name 2>$(srcdir)/result/HTML/$$name.err ; \
 	  else \
 	      echo Testing $$name ; \
-	      $(top_builddir)/testHTML $$i > result.$$name 2> error.$$name ; \
+	      testHTML $$i > result.$$name 2> error.$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	      diff $(srcdir)/result/HTML/$$name result.$$name ; \
-	      diff $(srcdir)/result/HTML/$$name.err error.$$name ; \
-	      $(top_builddir)/testHTML result.$$name > result2.$$name 2>error.$$name ; \
+	      diff -b $(srcdir)/result/HTML/$$name.err error.$$name ; \
+	      testHTML result.$$name > result2.$$name 2>error.$$name ; \
 	      diff result.$$name result2.$$name ; \
 	      rm result.$$name result2.$$name error.$$name ; \
 	  fi ; fi ; done)
+	@echo "##"
+	@echo "## Push HTML regression tests"
+	@echo "##"
+	@(for i in $(srcdir)/test/HTML/* ; do \
+	  name=`basename $$i`; \
+	  if [ ! -d $$i ] ; then \
+	  if [ ! -f $(srcdir)/result/HTML/$$name ] ; then \
+	      echo New test file $$name ; \
+	      testHTML $$i > $(srcdir)/result/HTML/$$name 2>$(srcdir)/result/HTML/$$name.err ; \
+	  else \
+	      echo Testing $$name ; \
+	      testHTML --push $$i > result.$$name 2> error.$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
+	      diff $(srcdir)/result/HTML/$$name result.$$name ; \
+	      cut -b 1-15 $(srcdir)/result/HTML/$$name.err > errorcut.$$name; \
+	      cut -b 1-15 error.$$name > errorcut2.$$name; \
+	      diff -b errorcut.$$name errorcut2.$$name ; \
+	      testHTML --push result.$$name > result2.$$name 2>error.$$name ; \
+	      diff result.$$name result2.$$name ; \
+	      rm result.$$name result2.$$name error.$$name errorcut.$$name errorcut2.$$name ; \
+	  fi ; fi ; done)
+	@echo "##"
+	@echo "## HTML SAX regression tests"
+	@echo "##"
+	@(for i in $(srcdir)/test/HTML/* ; do \
+	  name=`basename $$i`; \
+	  if [ ! -d $$i ] ; then \
+	  if [ ! -f $(srcdir)/result/HTML/$$name.sax ] ; then \
+	      echo New test file $$name ; \
+	      testHTML --sax $$i > $(srcdir)/result/HTML/$$name.sax ; \
+	  else \
+	      echo Testing $$name ; \
+	      testHTML --sax $$i > result.$$name.sax ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
+	      diff $(srcdir)/result/HTML/$$name.sax result.$$name.sax ; \
+	      rm result.$$name.sax ; \
+	  fi ; fi ; done)
+	@echo "##"
+	@echo "## Push HTML SAX regression tests"
+	@echo "##"
+	@(for i in $(srcdir)/test/HTML/* ; do \
+	  name=`basename $$i`; \
+	  if [ ! -d $$i ] ; then \
+	  if [ ! -f $(srcdir)/result/HTML/$$name ] ; then \
+	      echo New test file $$name ; \
+	      testHTML --sax $$i > $(srcdir)/result/HTML/$$name.sax ; \
+	  else \
+	      echo Testing $$name ; \
+	      testHTML --push --sax $$i > result.$$name.sax ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
+	      diff $(srcdir)/result/HTML/$$name.sax result.$$name.sax ; \
+	      rm result.$$name.sax ; \
+	  fi ; fi ; done)
+
 
 XMLtests : xmllint
 	@echo "##"

@@ -2168,53 +2168,76 @@ htmlParseExternalID(htmlParserCtxtPtr ctxt, xmlChar **publicID, int strict) {
 void
 htmlParseComment(htmlParserCtxtPtr ctxt) {
     xmlChar *buf = NULL;
-    int len = 0;
+    int len;
     int size = HTML_PARSER_BUFFER_SIZE;
-    register xmlChar s, r, q;
+    int q, ql;
+    int r, rl;
+    int cur, l;
+    xmlParserInputState state;
 
     /*
      * Check that there is a comment right here.
      */
-    if ((CUR != '<') || (NXT(1) != '!') ||
+    if ((RAW != '<') || (NXT(1) != '!') ||
         (NXT(2) != '-') || (NXT(3) != '-')) return;
 
+    state = ctxt->instate;
+    ctxt->instate = XML_PARSER_COMMENT;
+    SHRINK;
+    SKIP(4);
     buf = (xmlChar *) xmlMalloc(size * sizeof(xmlChar));
     if (buf == NULL) {
 	fprintf(stderr, "malloc of %d byte failed\n", size);
+	ctxt->instate = state;
 	return;
     }
-    q = r = '-'; /* 0 or '-' to cover our ass against <!--> and <!---> ? !!! */
-    SKIP(4);
-    s = CUR;
-    
-    while (IS_CHAR(s) &&
-           ((s != '>') || (r != '-') || (q != '-'))) {
-	if (len + 1 >= size) {
+    q = CUR_CHAR(ql);
+    NEXTL(ql);
+    r = CUR_CHAR(rl);
+    NEXTL(rl);
+    cur = CUR_CHAR(l);
+    len = 0;
+    while (IS_CHAR(cur) &&
+           ((cur != '>') ||
+	    (r != '-') || (q != '-'))) {
+	if (len + 5 >= size) {
 	    size *= 2;
 	    buf = (xmlChar *) xmlRealloc(buf, size * sizeof(xmlChar));
 	    if (buf == NULL) {
 		fprintf(stderr, "realloc of %d byte failed\n", size);
+		ctxt->instate = state;
 		return;
 	    }
 	}
-	buf[len++] = s;
-        NEXT;
+	COPY_BUF(ql,buf,len,q);
 	q = r;
-	r = s;
-	s = CUR;
-    }
-    buf[len - 2] = 0;
-    if (!IS_CHAR(s)) {
-	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt->userData, "Comment not terminated \n<!--%.50s\n", buf);
-	ctxt->wellFormed = 0;
-    } else {
-        NEXT;
-	if ((ctxt->sax != NULL) && (ctxt->sax->comment != NULL)) {
-	    ctxt->sax->comment(ctxt->userData, buf);
+	ql = rl;
+	r = cur;
+	rl = l;
+	NEXTL(l);
+	cur = CUR_CHAR(l);
+	if (cur == 0) {
+	    SHRINK;
+	    GROW;
+	    cur = CUR_CHAR(l);
 	}
     }
-    xmlFree(buf);
+    buf[len] = 0;
+    if (!IS_CHAR(cur)) {
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt->userData,
+	                     "Comment not terminated \n<!--%.50s\n", buf);
+	ctxt->errNo = XML_ERR_COMMENT_NOT_FINISHED;
+	ctxt->wellFormed = 0;
+	xmlFree(buf);
+    } else {
+        NEXT;
+	if ((ctxt->sax != NULL) && (ctxt->sax->comment != NULL) &&
+	    (!ctxt->disableSAX))
+	    ctxt->sax->comment(ctxt->userData, buf);
+	xmlFree(buf);
+    }
+    ctxt->instate = state;
 }
 
 /**
@@ -2472,9 +2495,35 @@ htmlCheckEncoding(htmlParserCtxtPtr ctxt, const xmlChar *attvalue) {
 	    handler = xmlFindCharEncodingHandler((const char *) encoding);
 	    if (handler != NULL) {
 		xmlSwitchToEncoding(ctxt, handler);
+		ctxt->charset = XML_CHAR_ENCODING_UTF8;
 	    } else {
 		ctxt->errNo = XML_ERR_UNSUPPORTED_ENCODING;
 	    }
+	}
+
+	if ((ctxt->input->buf != NULL) &&
+	    (ctxt->input->buf->encoder != NULL) &&
+	    (ctxt->input->buf->raw != NULL) &&
+	    (ctxt->input->buf->buffer != NULL)) {
+	    int nbchars;
+	    int processed;
+
+	    /*
+	     * convert as much as possible to the parser reading buffer.
+	     */
+	    processed = ctxt->input->cur - ctxt->input->base;
+	    xmlBufferShrink(ctxt->input->buf->buffer, processed);
+	    nbchars = xmlCharEncInFunc(ctxt->input->buf->encoder,
+		                       ctxt->input->buf->buffer,
+				       ctxt->input->buf->raw);
+	    if (nbchars < 0) {
+		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		    ctxt->sax->error(ctxt->userData, 
+		     "htmlCheckEncoding: encoder error\n");
+		ctxt->errNo = XML_ERR_INVALID_ENCODING;
+	    }
+	    ctxt->input->base =
+	    ctxt->input->cur = ctxt->input->buf->buffer->content;
 	}
     }
 }
@@ -2956,7 +3005,6 @@ htmlParseContent(htmlParserCtxtPtr ctxt) {
 
 void
 htmlParseElement(htmlParserCtxtPtr ctxt) {
-    const xmlChar *openTag = CUR_PTR;
     xmlChar *name;
     xmlChar *currentNode = NULL;
     htmlElemDescPtr info;
@@ -3030,8 +3078,9 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
         NEXT;
     } else {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	    ctxt->sax->error(ctxt->userData, "Couldn't find end of Start Tag\n%.30s\n",
-	                     openTag);
+	    ctxt->sax->error(ctxt->userData,
+		             "Couldn't find end of Start Tag %s\n",
+	                     name);
 	ctxt->wellFormed = 0;
 
 	/*
@@ -3181,6 +3230,15 @@ htmlParseDocument(htmlParserCtxtPtr ctxt) {
 	htmlParseDocTypeDecl(ctxt);
     }
     SKIP_BLANKS;
+
+    /*
+     * Parse possible comments before any content
+     */
+    while ((CUR == '<') && (NXT(1) == '!') &&
+           (NXT(2) == '-') && (NXT(3) == '-')) {
+        htmlParseComment(ctxt);	   
+	SKIP_BLANKS;
+    }	   
 
     /*
      * Time to start parsing the tree itself
@@ -3468,8 +3526,14 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 	    avail = in->buf->buffer->use - (in->cur - in->base);
 	if ((avail == 0) && (terminate)) {
 	    htmlAutoClose(ctxt, NULL);
-	    if (ctxt->nameNr == 0)
+	    if ((ctxt->nameNr == 0) && (ctxt->instate != XML_PARSER_EOF)) { 
+		/*
+		 * SAX: end of the document processing.
+		 */
 		ctxt->instate = XML_PARSER_EOF;
+		if ((ctxt->sax) && (ctxt->sax->endDocument != NULL))
+		    ctxt->sax->endDocument(ctxt->userData);
+	    }
 	}
         if (avail < 1)
 	    goto done;
@@ -3600,14 +3664,19 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		}
 		break;
             case XML_PARSER_EPILOG:
-		SKIP_BLANKS;
 		if (in->buf == NULL)
 		    avail = in->length - (in->cur - in->base);
 		else
 		    avail = in->buf->buffer->use - (in->cur - in->base);
-		if (avail < 2)
+		if (avail < 1)
 		    goto done;
 		cur = in->cur[0];
+		if (IS_BLANK(cur)) {
+		    htmlParseCharData(ctxt, 0);
+		    goto done;
+		}
+		if (avail < 2)
+		    goto done;
 		next = in->cur[1];
 	        if ((cur == '<') && (next == '!') &&
 		    (in->cur[2] == '-') && (in->cur[3] == '-')) {
@@ -3769,7 +3838,8 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 #endif
                 break;
 	    }
-            case XML_PARSER_CONTENT:
+            case XML_PARSER_CONTENT: {
+		long cons;
                 /*
 		 * Handle preparsed entities and charRef
 		 */
@@ -3806,6 +3876,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    goto done;
 		cur = in->cur[0];
 		next = in->cur[1];
+		cons = ctxt->nbChars;
 	        if ((cur == '<') && (next == '!') &&
 		    (in->cur[2] == '-') && (in->cur[3] == '-')) {
 		    if ((!terminate) &&
@@ -3860,7 +3931,19 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 #endif
 		    htmlParseCharData(ctxt, 0);
 		}
+		if (cons == ctxt->nbChars) {
+		    if (ctxt->node != NULL) {
+			if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+			    ctxt->sax->error(ctxt->userData,
+				 "detected an error in element content\n");
+			ctxt->wellFormed = 0;
+			NEXT;
+		    }
+		    break;
+		}
+
 		break;
+	    }
             case XML_PARSER_END_TAG:
 		if (avail < 2)
 		    goto done;
@@ -3947,8 +4030,14 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 done:    
     if ((avail == 0) && (terminate)) {
 	htmlAutoClose(ctxt, NULL);
-	if (ctxt->nameNr == 0)
+	if ((ctxt->nameNr == 0) && (ctxt->instate != XML_PARSER_EOF)) { 
+	    /*
+	     * SAX: end of the document processing.
+	     */
 	    ctxt->instate = XML_PARSER_EOF;
+	    if ((ctxt->sax) && (ctxt->sax->endDocument != NULL))
+		ctxt->sax->endDocument(ctxt->userData);
+	}
     }
 #ifdef DEBUG_PUSH
     fprintf(stderr, "HPP: done %d\n", ret);
@@ -4231,10 +4320,12 @@ htmlSAXParseFile(const char *filename, const char *encoding, htmlSAXHandlerPtr s
                  void *userData) {
     htmlDocPtr ret;
     htmlParserCtxtPtr ctxt;
+    htmlSAXHandlerPtr oldsax = NULL;
 
     ctxt = htmlCreateFileParserCtxt(filename, encoding);
     if (ctxt == NULL) return(NULL);
     if (sax != NULL) {
+	oldsax = ctxt->sax;
         ctxt->sax = sax;
         ctxt->userData = userData;
     }
@@ -4243,7 +4334,7 @@ htmlSAXParseFile(const char *filename, const char *encoding, htmlSAXHandlerPtr s
 
     ret = ctxt->myDoc;
     if (sax != NULL) {
-        ctxt->sax = NULL;
+        ctxt->sax = oldsax;
         ctxt->userData = NULL;
     }
     htmlFreeParserCtxt(ctxt);

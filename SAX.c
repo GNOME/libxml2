@@ -338,6 +338,19 @@ getEntity(void *ctx, const xmlChar *name)
 #endif
 
     ret = xmlGetDocEntity(ctxt->myDoc, name);
+    if ((ret != NULL) && (ctxt->validate) && (ret->children == NULL) &&
+	(ret->etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY)) {
+	/*
+	 * for validation purposes we really need to fetch and
+	 * parse the external entity
+	 */
+	int parse;
+	xmlNodePtr children;
+
+        parse = xmlParseCtxtExternalEntity(ctxt,
+		  ret->SystemID, ret->ExternalID, &children);
+	xmlAddChildList((xmlNodePtr) ret, children);
+    }
     return(ret);
 }
 
@@ -591,7 +604,11 @@ startDocument(void *ctx)
 #endif
     if (ctxt->html) {
 	if (ctxt->myDoc == NULL)
+#ifdef LIBXML_HTML_ENABLED
 	    ctxt->myDoc = htmlNewDoc(NULL, NULL);
+#else
+        fprintf(stderr, "libxml2 built without HTML support\n");
+#endif
     } else {
 	doc = ctxt->myDoc = xmlNewDoc(ctxt->version);
 	if (doc != NULL) {
@@ -601,6 +618,10 @@ startDocument(void *ctx)
 		doc->encoding = NULL;
 	    doc->standalone = ctxt->standalone;
 	}
+    }
+    if ((ctxt->myDoc != NULL) && (ctxt->myDoc->URL == NULL) &&
+	(ctxt->input != NULL) && (ctxt->input->filename != NULL)) {
+        ctxt->myDoc->URL = xmlStrdup((xmlChar *) ctxt->input->filename);
     }
 }
 

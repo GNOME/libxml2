@@ -4,6 +4,8 @@
 ;; Created: Jun 21 2000
 ;; Keywords: libxml documentation
 
+;; 2001-05-31: Adapted by Geert Kloosterman <geertk@ai.rug.nl> 
+        
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License
 ;; as published by the Free Software Foundation; either version 2
@@ -28,14 +30,14 @@
 ;; you can also load this conditionally in a c-mode-hook (preferred)
 ;;
 ;;(add-hook 'c-mode-hook (lambda()
-;; 						   (load-file "~/elisp/libxml-doc.el")))
+;;                         (load-file "~/elisp/libxml-doc.el")))
 ;;
 ;; or you can use this if you are using libxml2
 ;;(add-hook 'c-mode-hook (lambda()
-;;						 (save-excursion
-;;						   (if (search-forward "#include <libxml/" nil t nil)
-;;							   (load-file "~/elisp/libxml-doc.el"))
-;;						   )))
+;;                         (save-excursion
+;;                           (if (search-forward "#include <libxml/" nil t nil)
+;;                               (load-file "~/elisp/libxml-doc.el"))
+;;                           )))
 ;;
 ;; 2. adapt libxmldoc-root:
 ;; i.e. (setq libxmldoc-root "~/libxml2-2.0.0/doc/html/")
@@ -55,6 +57,22 @@
 ;; (thing-at-point 'word) if it matches a symbol
 ;; Thu Jun 22 02:37:46 2000: filtering is only done for completion
 ;; Thu Jun 22 21:03:41 2000: libxmldoc-browse-url can be customized
+
+;; Thu May 31 2001 (Geert): 
+;;       - Changed the `gnome-xml-' html file prefix into `libxml-'.
+;;       - Changed the 'word match from thing-at-point into 'symbol.
+;;         With 'word, identifiers with an underscore (e.g. BAD_CAST)
+;;         don't get matched.
+
+;; Sat Jun 02 2001 (Geert): 
+;;       - Cleaned up URI construction: no extraneous '/' in the URI when 
+;;         `libxmldoc-root' ends with a '/'.
+;;       - Now keeps the list of symbols between calls to speed things up.
+;;         Every filter gets it's own list of symbols.  This way it's 
+;;         possible to use different values of `libxmldoc-filter-regexp' in
+;;         different buffers.
+;;       - Fixed symbols for function pointers: now skips '*' when
+;;         fetching identifiers from the html files.
 
 ;;; TODO:
 ;; use command-execute for libxml-browse-url
@@ -82,26 +100,43 @@ the html, so lynx-emacs is used by default.")
 (defvar libxmldoc-symbol-history nil
   "History for looking up libxml-symbols.")
 
+;; GJK: Keep the results from libxmldoc-get-list-of-symbols between
+;; calls to speed things up.
+(defvar libxmldoc-symbols-alist nil 
+  "Alist which stores a symbol list for each `libxmldoc-filter-regexp'. The
+never matching regex \"$^\" is used as key when no filtering is needed.") 
+
  ;;;; public functions
 
 (defun libxmldoc-lookup-symbol(&optional symbol)
   "Look up xml-symbol." (interactive)
   (let ((symbols)
-		(real-symbol symbol)
-		(url))
-	(if symbol
-		(setq symbols (libxmldoc-get-list-of-symbols t))
-	  (setq symbols (libxmldoc-get-list-of-symbols nil)))
-	(if (null real-symbol)
-		(if (assoc (thing-at-point 'word) symbols)
-			(setq real-symbol (thing-at-point 'word))
-		  (setq real-symbol (completing-read "Libxml: " symbols nil t ""
-											 'libxmldoc-symbol-history "" t))))
-	(if (null (assoc real-symbol symbols))
-		(error (concat "libxmldoc: '" real-symbol "' not found !")))
-	(setq url (cdr (assoc real-symbol symbols)))
-;;	(minibuffer-message uri)
-	(apply libxmldoc-browse-url (list url))))
+        (real-symbol symbol)
+        (url)
+        ;; We don't want filtering when there's a symbol specified.
+        ;; Use the never matching regex "$^" as a key when using no filter.
+        (filter (if symbol "$^" libxmldoc-filter-regexp))
+        (no-filter (if symbol t nil)))
+  
+    ;; Build up a symbol list if neccesary.
+    (if (not (assoc filter libxmldoc-symbols-alist))
+        (add-to-list 'libxmldoc-symbols-alist
+                     (cons filter 
+                           (libxmldoc-get-list-of-symbols no-filter))))
+
+    ;; Use the appropriate symbol list.
+    (setq symbols (cdr (assoc filter libxmldoc-symbols-alist)))
+
+    (if (null real-symbol)
+        (if (assoc (thing-at-point 'symbol) symbols)
+            (setq real-symbol (thing-at-point 'symbol))
+          (setq real-symbol (completing-read "Libxml: " symbols nil t ""
+                                             'libxmldoc-symbol-history "" t))))
+    (if (null (assoc real-symbol symbols))
+        (error (concat "libxmldoc: '" real-symbol "' not found !")))
+    (setq url (cdr (assoc real-symbol symbols)))
+;;  (minibuffer-message uri)
+    (apply libxmldoc-browse-url (list url))))
 
 ;;(defun libxmldoc-lookup-symbol-at-point()
 ;;  "Look up libxml-symbol at point." (interactive)
@@ -112,29 +147,34 @@ the html, so lynx-emacs is used by default.")
 (defun libxmldoc-get-list-of-symbols(&optional nofilter)
   "Get the list of html-links in the libxml-documentation."
   (let ((files (directory-files libxmldoc-root t
-								"^gnome-xml-.*\\.html$" t))
-		(symbols ())
-		(case-fold-search t)
-		(symbol)
-		(uri))
-;;	(minibuffer-message "collecting libxml-symbols...")
-	(while (car files)
-	  (find-file (car files))
-	  (while (re-search-forward
-			  "<a[^>]*href[ \t\n]*=[ \t\n]*\"\\([^=>]*\\)\"[^>]*>" nil t nil)
-		(setq uri (concat "file://" (expand-file-name libxmldoc-root) "/"
-						  (match-string 1)))
-		(if (not (re-search-forward "\\([^<]*\\)<" nil t nil))
-			(error "regexp error while finding libxml-symbols.."))
-		(setq symbol (match-string 1))
-		(setq case-fold-search nil)
-		(if (or nofilter
-				(null (string-match libxmldoc-filter-regexp symbol)))
-			(add-to-list 'symbols (cons symbol uri)))
-		(setq case-fold-search t)
-		)
-	  (kill-buffer (current-buffer))
-	  (setq files (cdr files)))
-	symbols))
+                                "^libxml-.*\\.html$" t))
+        (symbols ())
+        (case-fold-search t)
+        (symbol)
+        (uri))
+;;  (minibuffer-message "collecting libxml-symbols...")
+    (while (car files)
+      (find-file (car files))
+      (while (re-search-forward
+              "<a[^>]*href[ \t\n]*=[ \t\n]*\"\\([^=>]*\\)\"[^>]*>" nil t nil)
+        (setq uri (concat "file://" 
+                          (expand-file-name (match-string 1) 
+                                            libxmldoc-root)))
+        (if (not (re-search-forward "\\([^<]*\\)<" nil t nil)) ; GJK: no '*'
+            (error "regexp error while finding libxml-symbols.."))
+        (setq symbol (match-string 1))
+        (setq case-fold-search nil)
+        (if (or nofilter
+                (null (string-match libxmldoc-filter-regexp symbol)))
+            (add-to-list 'symbols (cons symbol uri)))
+        (setq case-fold-search t)
+        )
+      (kill-buffer (current-buffer))
+      (setq files (cdr files)))
+    symbols))
 
 ;;; libxml-doc.el ends here
+
+;;; Local Variables:
+;;; indent-tabs-mode: nil
+;;; End:

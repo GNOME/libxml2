@@ -13,6 +13,7 @@ xmlinc_HEADERS = \
 		libxml/HTMLtree.h \
 		libxml/debugXML.h \
 		libxml/tree.h \
+		libxml/list.h \
 		libxml/hash.h \
 		libxml/xpath.h \
 		libxml/xpathInternals.h \

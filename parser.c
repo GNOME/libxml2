@@ -4221,6 +4221,8 @@ xmlParseElementDecl(xmlParserCtxtPtr ctxt) {
 	    ctxt->disableSAX = 1;
 	    return(-1);
 	}
+	while ((RAW == 0) && (ctxt->inputNr > 1))
+	    xmlPopInput(ctxt);
 	if (!IS_BLANK(CUR)) {
 	    ctxt->errNo = XML_ERR_SPACE_REQUIRED;
 	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))

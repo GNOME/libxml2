@@ -3374,7 +3374,7 @@ xmlXPathRoot(xmlXPathParserContextPtr ctxt) {
 void
 xmlXPathLastFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     CHECK_ARITY(0);
-    if (ctxt->context->contextSize > 0) {
+    if (ctxt->context->contextSize >= 0) {
 	valuePush(ctxt, xmlXPathNewFloat((double) ctxt->context->contextSize));
 #ifdef DEBUG_EXPR
 	xmlGenericError(xmlGenericErrorContext,

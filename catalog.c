@@ -2156,7 +2156,6 @@ xmlCatalogCleanup(void) {
     if (xmlDefaultXMLCatalogList != NULL)
 	xmlFreeCatalogEntryList(xmlDefaultXMLCatalogList);
     xmlDefaultXMLCatalogList = NULL;
-    xmlDefaultXMLCatalogList = NULL;
     if (xmlDefaultCatalog != NULL)
 	xmlHashFree(xmlDefaultCatalog,
 		    (xmlHashDeallocator) xmlFreeCatalogEntry);

@@ -3978,7 +3978,8 @@ xmlRelaxNGGetElements(xmlRelaxNGParserCtxtPtr ctxt,
                    (cur->type == XML_RELAXNG_OPTIONAL) ||
                    (cur->type == XML_RELAXNG_PARENTREF) ||
                    (cur->type == XML_RELAXNG_REF) ||
-                   (cur->type == XML_RELAXNG_DEF)) {
+                   (cur->type == XML_RELAXNG_DEF) ||
+		   (cur->type == XML_RELAXNG_EXTERNALREF)) {
             /*
              * Don't go within elements or attributes or string values.
              * Just gather the element top list

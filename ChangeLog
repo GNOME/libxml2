@@ -1,3 +1,10 @@
+Sat Mar 20 19:26:03 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* relaxng.c: added check for external reference in 
+	  xmlRelaxNGGetElements (bug 137718)
+	* test/relaxng/rngbug-001.*, result/relaxng/rngbug-001*: added
+	  regression test for above
+
 Wed Mar 17 16:37:22 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* nanohttp.c: added a close for the local file descriptor

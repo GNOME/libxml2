@@ -1,3 +1,9 @@
+Fri Mar 26 14:53:58 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* doc/examples/xpath1.c: added a test template
+	* doc/examples/xpath2.c doc/examples/xpath2.res doc/examples/*:
+	  added a new example, and make valgrind target 
+
 Fri Mar 26 11:47:29 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: apply fix for #136693

@@ -4,17 +4,12 @@
   Note that this is automatically generated from the news webpage at:
        http://xmlsoft.org/news.html
 
-
-CVS only : check the Changelog at 
-http://cvs.gnome.org/lxr/source/gnome-xml/ChangeLog
- file
-for a really accurate description:
 Items not finished and worked on, get in touch with the list if you want
-to test those   - More testing on RelaxNG
+to help those   - More testing on RelaxNG
    - Finishing up XML
   Schemas
 
-
+ There is the list of public releases:
 2.6.8: Mar 23 2004:
    - First step of the cleanup of the serialization code and APIs
    - XML Schemas: mixed content (Adam Dickmeiss), QName handling fixes (Adam

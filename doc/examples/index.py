@@ -249,10 +249,11 @@ install-data-local:
     for example in examples:
         Makefile = Makefile + "%s_SOURCES=%s.c\n%s_LDFLAGS=\n%s_DEPENDENCIES= $(DEPS)\n%s_LDADD= @RDL_LIBS@ $(LDADDS)\n\n" % (example, example, example,
 	       example, example)
+    Makefile = Makefile + "valgrind: \n\t$(MAKE) CHECKER='valgrind -q' tests\n\n"
     Makefile = Makefile + "tests: $(noinst_PROGRAMS)\n"
     Makefile = Makefile + "\t@(echo > .memdump)\n"
     for test in tests:
-        Makefile = Makefile + "\t@(%s)\n" % (test)
+        Makefile = Makefile + "\t@($(CHECKER) %s)\n" % (test)
         Makefile = Makefile + '\t@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)\n'
     Makefile = Makefile + "\n\n"
     try:

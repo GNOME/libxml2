@@ -4,6 +4,7 @@
  * purpose: 	Shows how to evaluate XPath expression and register 
  *          	known namespaces in XPath context.
  * usage:	xpath1 <xml-file> <xpath-expr> [<known-ns-list>]
+ * test: ./xpath1 test3.xml '//child2' > xpath1.tmp ; diff xpath1.tmp xpath1.res ; rm xpath1.tmp
  * author: 	Aleksey Sanin
  * copy: 	see Copyright for the status of this software.
  */

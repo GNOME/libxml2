@@ -15,9 +15,9 @@ install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(HTML_DIR)
 	-@INSTALL@ -m 0644 $(srcdir)/*.html $(srcdir)/*.c $(srcdir)/*.xml $(srcdir)/*.xsl $(srcdir)/*.res $(DESTDIR)$(HTML_DIR)
 
-EXTRA_DIST=examples.xsl index.py test1.xml examples.xml test2.xml writer.xml test3.xml reader1.res reader3.res tree1.res tree2.res io1.res 
+EXTRA_DIST=examples.xsl index.py test1.xml examples.xml test2.xml writer.xml test3.xml reader1.res reader3.res tree1.res tree2.res io1.res io2.res xpath1.res xpath2.res 
 
-noinst_PROGRAMS=xpath1 parse1 parse2 tree1 tree2 testWriter reader1 reader2 reader3 io1 parse3 parse4 
+noinst_PROGRAMS=xpath1 parse1 parse2 tree1 tree2 testWriter reader1 reader2 reader3 io1 parse3 parse4 io2 xpath2 
 
 xpath1_SOURCES=xpath1.c
 xpath1_LDFLAGS=
@@ -79,29 +79,48 @@ parse4_LDFLAGS=
 parse4_DEPENDENCIES= $(DEPS)
 parse4_LDADD= @RDL_LIBS@ $(LDADDS)
 
+io2_SOURCES=io2.c
+io2_LDFLAGS=
+io2_DEPENDENCIES= $(DEPS)
+io2_LDADD= @RDL_LIBS@ $(LDADDS)
+
+xpath2_SOURCES=xpath2.c
+xpath2_LDFLAGS=
+xpath2_DEPENDENCIES= $(DEPS)
+xpath2_LDADD= @RDL_LIBS@ $(LDADDS)
+
+valgrind: 
+	$(MAKE) CHECKER='valgrind -q' tests
+
 tests: $(noinst_PROGRAMS)
 	@(echo > .memdump)
-	@(./parse1 test1.xml)
+	@($(CHECKER) ././xpath1 test3.xml '//child2' > xpath1.tmp ; diff xpath1.tmp xpath1.res ; rm xpath1.tmp)
 	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
-	@(./parse2 test2.xml)
+	@($(CHECKER) ./parse1 test1.xml)
 	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
-	@(./tree1 test2.xml > tree1.tmp ; diff tree1.tmp tree1.res ; rm tree1.tmp)
+	@($(CHECKER) ./parse2 test2.xml)
 	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
-	@(./tree2 > tree2.tmp ; diff tree2.tmp tree2.res ; rm tree2.tmp)
+	@($(CHECKER) ./tree1 test2.xml > tree1.tmp ; diff tree1.tmp tree1.res ; rm tree1.tmp)
 	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
-	@(./testWriter ; for i in 1 2 3 4 ; do diff writer.xml writer$$i.res ; done ; rm writer*.res)
+	@($(CHECKER) ./tree2 > tree2.tmp ; diff tree2.tmp tree2.res ; rm tree2.tmp)
 	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
-	@(./reader1 test2.xml > reader1.tmp ; diff reader1.tmp reader1.res ; rm reader1.tmp)
+	@($(CHECKER) ./testWriter ; for i in 1 2 3 4 ; do diff writer.xml writer$$i.res ; done ; rm writer*.res)
 	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
-	@(./reader2 test2.xml > reader1.tmp ; diff reader1.tmp reader1.res ; rm reader1.tmp)
+	@($(CHECKER) ./reader1 test2.xml > reader1.tmp ; diff reader1.tmp reader1.res ; rm reader1.tmp)
 	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
-	@(./reader3 > reader3.tmp ; diff reader3.tmp reader3.res ; rm reader3.tmp)
+	@($(CHECKER) ./reader2 test2.xml > reader1.tmp ; diff reader1.tmp reader1.res ; rm reader1.tmp)
 	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
-	@(./io1 > io1.tmp ; diff io1.tmp io1.res ; rm -f io1.tmp)
+	@($(CHECKER) ./reader3 > reader3.tmp ; diff reader3.tmp reader3.res ; rm reader3.tmp)
 	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
-	@(./parse3)
+	@($(CHECKER) ./io1 > io1.tmp ; diff io1.tmp io1.res ; rm -f io1.tmp)
 	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
-	@(./parse4 test3.xml)
+	@($(CHECKER) ./parse3)
+	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
+	@($(CHECKER) ./parse4 test3.xml)
+	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
+	@($(CHECKER) ./io2 > io2.tmp ; diff io2.tmp io2.res ; rm -f io2.tmp)
+	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
+	@($(CHECKER) ./xpath2 test3.xml '//child2' child2 > xpath2.tmp ; diff xpath2.tmp xpath2.res ; rm xpath2.tmp)
 	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
 
 

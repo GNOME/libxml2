@@ -1686,11 +1686,21 @@ xmlGetID(xmlDocPtr doc, const xmlChar *ID) {
  *				Refs					*
  *									*
  ************************************************************************/
-typedef struct xmlRemove_t 
+typedef struct xmlRemoveMemo_t 
 {
 	xmlListPtr l;
 	xmlAttrPtr ap;
-} xmlRemove;
+} xmlRemoveMemo;
+
+typedef xmlRemoveMemo *xmlRemoveMemoPtr;
+
+typedef struct xmlValidateMemo_t 
+{
+    xmlValidCtxtPtr ctxt;
+    const xmlChar *name;
+} xmlValidateMemo;
+
+typedef xmlValidateMemo *xmlValidateMemoPtr;
 
 /**
  * xmlCreateRefTable:
@@ -1744,8 +1754,8 @@ static int
 xmlWalkRemoveRef(const void *data, const void *user)
 {
 	xmlAttrPtr attr0 = ((xmlRefPtr)data)->attr;
-	xmlAttrPtr attr1 = ((xmlRemove *)user)->ap;
-	xmlListPtr ref_list = ((xmlRemove *)user)->l;
+	xmlAttrPtr attr1 = ((xmlRemoveMemoPtr)user)->ap;
+	xmlListPtr ref_list = ((xmlRemoveMemoPtr)user)->l;
 
 	if (attr0 == attr1) { /* Matched: remove and terminate walk */
 		xmlListRemoveFirst(ref_list, (void *)data);
@@ -1895,7 +1905,7 @@ xmlRemoveRef(xmlDocPtr doc, xmlAttrPtr attr) {
 	xmlListPtr ref_list;
 	xmlRefTablePtr table;
 	xmlChar *ID;
-	xmlRemove target;
+	xmlRemoveMemo target;
 
 	if (doc == NULL) return(-1);
 	if (attr == NULL) return(-1);
@@ -3667,9 +3677,15 @@ xmlValidateElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr elem) {
     return(ret);
 }
 
-
+/**
+ * xmlValidateRef:
+ * @ref:   A reference to be validated
+ * @ctxt:  Validation context
+ * @name:  Name of ID we are searching for
+ *
+ */
 void
-xmlValidateCheckRefCallback(xmlRefPtr ref, xmlValidCtxtPtr ctxt,
+xmlValidateRef(xmlRefPtr ref, xmlValidCtxtPtr ctxt,
 	                   const xmlChar *name) {
     xmlAttrPtr id;
     xmlAttrPtr attr;
@@ -3715,6 +3731,42 @@ xmlValidateCheckRefCallback(xmlRefPtr ref, xmlValidCtxtPtr ctxt,
 	}
 	xmlFree(dup);
     }
+}
+
+/**
+ * xmlWalkValidateList:
+ * @data:  Contents of current link
+ * @user:  Value supplied by the user
+ *
+ * Return 0 to abort the walk or 1 to continue
+ */
+static int
+xmlWalkValidateList(const void *data, const void *user)
+{
+	xmlValidateMemoPtr memo = (xmlValidateMemoPtr)user;
+	xmlValidateRef((xmlRefPtr)data, memo->ctxt, memo->name);
+	return 1;
+}
+
+/**
+ * xmlValidateCheckRefCallback:
+ * @ref_list:  List of references
+ * @ctxt:  Validation context
+ * @name:  Name of ID we are searching for
+ *
+ */
+static void
+xmlValidateCheckRefCallback(xmlListPtr ref_list, xmlValidCtxtPtr ctxt,
+	                   const xmlChar *name) {
+    xmlValidateMemo memo;
+
+    if (ref_list == NULL)
+	return;
+    memo.ctxt = ctxt;
+    memo.name = name;
+
+    xmlListWalk(ref_list, xmlWalkValidateList, &memo);
+    
 }
 
 /**

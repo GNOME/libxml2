@@ -1,3 +1,11 @@
+Fri Feb 21 18:12:19 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c: fixed some problems in the previous commit
+	  and finished implementing 4.16 rules checking
+	  found 373 test schemas: 353 success 20 failures
+	  found 529 test instances: 519 success 6 failures
+	* result/relaxng/*: updated the results
+
 Fri Feb 21 16:37:39 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c: implemented checks from section 7.2

@@ -1,6 +1,1 @@
-error detected at relaxng.c:6433
-Element bad has child elements
-error detected at relaxng.c:6216
-Expecting an element got 3 type
-error detected at relaxng.c:6269
-Extra content for element bad: text
+Element bad has a content type error

@@ -175,6 +175,8 @@ typedef enum {
 #define XML_RELAXNG_IN_OOMGROUP		(1 << 5)
 #define XML_RELAXNG_IN_OOMINTERLEAVE	(1 << 6)
 #define XML_RELAXNG_IN_EXTERNALREF	(1 << 7)
+#define XML_RELAXNG_IN_ANYEXCEPT	(1 << 8)
+#define XML_RELAXNG_IN_NSEXCEPT		(1 << 9)
 
 struct _xmlRelaxNGParserCtxt {
     void *userData;			/* user specific data block */
@@ -4046,8 +4048,6 @@ xmlRelaxNGCheckRules(xmlRelaxNGParserCtxtPtr ctxt,
 	ret = XML_RELAXNG_CONTENT_EMPTY;
 	if ((cur->type == XML_RELAXNG_REF) ||
 	    (cur->type == XML_RELAXNG_PARENTREF)) {
-	    ret = XML_RELAXNG_CONTENT_COMPLEX;
-
 	    if (flags & XML_RELAXNG_IN_LIST) {
 		if (ctxt->error != NULL)
 		    ctxt->error(ctxt->userData,
@@ -4066,12 +4066,16 @@ xmlRelaxNGCheckRules(xmlRelaxNGParserCtxtPtr ctxt,
 			"Found forbidden pattern data/except//ref\n");
 		ctxt->nbErrors++;
 	    }
-	    if (cur->depth != -4) {
+	    if (cur->depth > -4) {
 		cur->depth = -4;
-		xmlRelaxNGCheckRules(ctxt, cur->content, flags, cur->type);
-	    }
-	    if (ret != XML_RELAXNG_CONTENT_ERROR)
+		ret = xmlRelaxNGCheckRules(ctxt, cur->content,
+			                   flags, cur->type);
+		cur->depth = ret - 15 ;
+	    } else if (cur->depth == -4) {
 		ret = XML_RELAXNG_CONTENT_COMPLEX;
+	    } else {
+		ret = (xmlRelaxNGContentType) cur->depth + 15;
+	    }
 	} else if (cur->type == XML_RELAXNG_ELEMENT) {
 	    if (flags & XML_RELAXNG_IN_DATAEXCEPT) {
 		if (ctxt->error != NULL)
@@ -4700,34 +4704,17 @@ xmlRelaxNGCleanupAttributes(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
 }
 
 /**
- * xmlRelaxNGCleanupDoc:
+ * xmlRelaxNGCleanupTree:
  * @ctxt:  a Relax-NG parser context
- * @doc:  an xmldocPtr document pointer
+ * @root:  an xmlNodePtr subtree
  *
- * Cleanup the document from unwanted nodes for parsing, resolve
+ * Cleanup the subtree from unwanted nodes for parsing, resolve
  * Include and externalRef lookups.
- *
- * Returns the cleaned up document or NULL in case of error
  */
-static xmlDocPtr
-xmlRelaxNGCleanupDoc(xmlRelaxNGParserCtxtPtr ctxt, xmlDocPtr doc) {
-    xmlNodePtr root, cur, delete;
+static void
+xmlRelaxNGCleanupTree(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr root) {
+    xmlNodePtr cur, delete;
 
-    /*
-     * Extract the root
-     */
-    root = xmlDocGetRootElement(doc);
-    if (root == NULL) {
-        if (ctxt->error != NULL)
-            ctxt->error(ctxt->userData, "xmlRelaxNGParse: %s is empty\n",
-                        ctxt->URL);
-	ctxt->nbErrors++;
-        return (NULL);
-    }
-
-    /*
-     * Remove all the blank text nodes
-     */
     delete = NULL;
     cur = root;
     while (cur != NULL) {
@@ -4968,6 +4955,43 @@ xmlRelaxNGCleanupDoc(xmlRelaxNGParserCtxtPtr ctxt, xmlDocPtr doc) {
 			    xmlFree(name);
 			} 
 		    }
+		    if (xmlStrEqual(cur->name, BAD_CAST "nsName")) {
+			if (ctxt->flags & XML_RELAXNG_IN_NSEXCEPT) {
+			    if (ctxt->error != NULL)
+				ctxt->error(ctxt->userData,
+		    "Found nsName/except//nsName forbidden construct\n");
+			    ctxt->nbErrors++;
+			}
+		    }
+		} else if ((xmlStrEqual(cur->name, BAD_CAST "except")) &&
+			   (cur != root)) {
+		    int oldflags = ctxt->flags;
+
+		    if ((cur->parent != NULL) &&
+			(xmlStrEqual(cur->parent->name, BAD_CAST "anyName"))) {
+			ctxt->flags |= XML_RELAXNG_IN_ANYEXCEPT;
+			xmlRelaxNGCleanupTree(ctxt, cur);
+			ctxt->flags = oldflags;
+			goto skip_children;
+		    } else if ((cur->parent != NULL) &&
+			(xmlStrEqual(cur->parent->name, BAD_CAST "nsName"))) {
+			ctxt->flags |= XML_RELAXNG_IN_NSEXCEPT;
+			xmlRelaxNGCleanupTree(ctxt, cur);
+			ctxt->flags = oldflags;
+			goto skip_children;
+		    }
+		} else if (xmlStrEqual(cur->name, BAD_CAST "anyName")) {
+		    if (ctxt->flags & XML_RELAXNG_IN_ANYEXCEPT) {
+			if (ctxt->error != NULL)
+			    ctxt->error(ctxt->userData,
+		"Found anyName/except//anyName forbidden construct\n");
+			ctxt->nbErrors++;
+		    } else if (ctxt->flags & XML_RELAXNG_IN_NSEXCEPT) {
+			if (ctxt->error != NULL)
+			    ctxt->error(ctxt->userData,
+		"Found nsName/except//anyName forbidden construct\n");
+			ctxt->nbErrors++;
+		    }
 		}
 		/*
 		 * Thisd is not an else since "include" is transformed
@@ -5058,7 +5082,34 @@ skip_children:
 	xmlFreeNode(delete);
 	delete = NULL;
     }
+}
 
+/**
+ * xmlRelaxNGCleanupDoc:
+ * @ctxt:  a Relax-NG parser context
+ * @doc:  an xmldocPtr document pointer
+ *
+ * Cleanup the document from unwanted nodes for parsing, resolve
+ * Include and externalRef lookups.
+ *
+ * Returns the cleaned up document or NULL in case of error
+ */
+static xmlDocPtr
+xmlRelaxNGCleanupDoc(xmlRelaxNGParserCtxtPtr ctxt, xmlDocPtr doc) {
+    xmlNodePtr root;
+
+    /*
+     * Extract the root
+     */
+    root = xmlDocGetRootElement(doc);
+    if (root == NULL) {
+        if (ctxt->error != NULL)
+            ctxt->error(ctxt->userData, "xmlRelaxNGParse: %s is empty\n",
+                        ctxt->URL);
+	ctxt->nbErrors++;
+        return (NULL);
+    }
+    xmlRelaxNGCleanupTree(ctxt, root);
     return(doc);
 }
 

@@ -1,3 +1,12 @@
+Sat Nov 15 19:08:22 HKT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* doc/html/libxml-chvalid.html, doc/html/libxml-dict.html,
+	  doc/html/libxml-list.html, doc/html/libxml-testOOMlib.html,
+	  doc/html/libxml-wincecompat, doc/html/winsockcompat.html,
+	  doc/html/libxml-xmlexports.html, doc/html/libxml-xmlversion.html,
+	  doc/html/libxml-xmlwin32version.html, doc/html/libxml-xmlwriter.html:
+	  added missing pages for the website.
+
 Sat Nov 15 18:23:48 HKT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* doc/Makefile.am doc/*.html doc/html/*.html: rebuilt the

@@ -1,0 +1,154 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>wincecompat</title><meta name="generator" content="DocBook XSL Stylesheets V1.48"><meta name="generator" content="GTK-Doc V1.1 (XML mode)"><style type="text/css">
+        .synopsis, .classsynopsis {
+            background: #eeeeee;
+            border: solid 1px #aaaaaa;
+            padding: 0.5em;
+        }
+        .programlisting {
+            background: #eeeeff;
+            border: solid 1px #aaaaff;
+            padding: 0.5em;
+        }
+        .variablelist {
+            padding: 4px;
+            margin-left: 3em;
+        }
+        .navigation {
+            background: #ffeeee;
+            border: solid 1px #ffaaaa;
+            margin-top: 0.5em;
+            margin-bottom: 0.5em;
+        }
+        .navigation a {
+            color: #770000;
+        }
+        .navigation a:visited {
+            color: #550000;
+        }
+        .navigation .title {
+            font-size: 200%;
+        }
+      </style><link rel="home" href="index.html" title="Gnome XML Library Reference Manual "><link rel="up" href="ch01.html" title="Libxml Programming Notes"><link rel="previous" href="libxml-testOOMlib.html" title="testOOMlib"><link rel="next" href="libxml-wsockcompat.html" title="wsockcompat"></head><body text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-testOOMlib.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">Gnome XML Library Reference Manual </th><td><a accesskey="n" href="libxml-wsockcompat.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry"><a name="libxml-wincecompat"></a><div class="titlepage"></div><div class="refnamediv"><h2>wincecompat</h2><p>wincecompat &#8212; </p></div><div class="refsynopsisdiv"><h2><h1 class="title"><a name="id2649847"></a>Synopsis</h1></h2><pre class="synopsis">
+
+
+
+#define     <a href="libxml-wincecompat.html#MAX-STRERROR-CAPS">MAX_STRERROR</a>
+#define     <a href="libxml-wincecompat.html#O-RDONLY-CAPS">O_RDONLY</a>
+#define     <a href="libxml-wincecompat.html#O-WRONLY-CAPS">O_WRONLY</a>
+#define     <a href="libxml-wincecompat.html#O-RDWR-CAPS">O_RDWR</a>
+#define     <a href="libxml-wincecompat.html#O-APPEND-CAPS">O_APPEND</a>
+#define     <a href="libxml-wincecompat.html#O-CREAT-CAPS">O_CREAT</a>
+#define     <a href="libxml-wincecompat.html#O-TRUNC-CAPS">O_TRUNC</a>
+#define     <a href="libxml-wincecompat.html#O-EXCL-CAPS">O_EXCL</a>
+extern      int <a href="libxml-wincecompat.html#errno">errno</a>;
+int         <a href="libxml-wincecompat.html#read">read</a>                            (int handle,
+                                             char *buffer,
+                                             unsigned int len);
+int         <a href="libxml-wincecompat.html#write">write</a>                           (int handle,
+                                             const char *buffer,
+                                             unsigned int len);
+int         <a href="libxml-wincecompat.html#open">open</a>                            (const char *filename,
+                                             int oflag,
+                                             ...);
+int         <a href="libxml-wincecompat.html#close">close</a>                           (int handle);
+char*       <a href="libxml-wincecompat.html#getenv">getenv</a>                          (const char *varname);
+char*       <a href="libxml-wincecompat.html#strerror">strerror</a>                        (int errnum);
+#define     <a href="libxml-wincecompat.html#snprintf">snprintf</a>
+#define     <a href="libxml-wincecompat.html#vsnprintf">vsnprintf</a>                       (b,c,f,a)
+#define     <a href="libxml-wincecompat.html#perror">perror</a>                          (_t)
+</pre></div><div class="refsect1"><h2>Description</h2><p>
+
+</p></div><div class="refsect1"><h2>Details</h2><div class="refsect2"><h3><a name="MAX-STRERROR-CAPS"></a>MAX_STRERROR</h3><pre class="programlisting">#define MAX_STRERROR 31
+</pre><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="O-RDONLY-CAPS"></a>O_RDONLY</h3><pre class="programlisting">#define O_RDONLY       0x0000  /* open for reading only */
+</pre><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="O-WRONLY-CAPS"></a>O_WRONLY</h3><pre class="programlisting">#define O_WRONLY       0x0001  /* open for writing only */
+</pre><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="O-RDWR-CAPS"></a>O_RDWR</h3><pre class="programlisting">#define O_RDWR         0x0002  /* open for reading and writing */
+</pre><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="O-APPEND-CAPS"></a>O_APPEND</h3><pre class="programlisting">#define O_APPEND       0x0008  /* writes done at eof */
+</pre><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="O-CREAT-CAPS"></a>O_CREAT</h3><pre class="programlisting">#define O_CREAT        0x0100  /* create and open file */
+</pre><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="O-TRUNC-CAPS"></a>O_TRUNC</h3><pre class="programlisting">#define O_TRUNC        0x0200  /* open and truncate */
+</pre><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="O-EXCL-CAPS"></a>O_EXCL</h3><pre class="programlisting">#define O_EXCL         0x0400  /* open only if file doesn't already exist */
+</pre><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="errno"></a>errno</h3><pre class="programlisting">extern int errno;
+</pre><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="read"></a>read ()</h3><pre class="programlisting">int         read                            (int handle,
+                                             char *buffer,
+                                             unsigned int len);</pre><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>handle</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>buffer</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>len</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>
+
+
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="write"></a>write ()</h3><pre class="programlisting">int         write                           (int handle,
+                                             const char *buffer,
+                                             unsigned int len);</pre><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>handle</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>buffer</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>len</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>
+
+
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="open"></a>open ()</h3><pre class="programlisting">int         open                            (const char *filename,
+                                             int oflag,
+                                             ...);</pre><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>filename</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>oflag</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>...</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>
+
+
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="close"></a>close ()</h3><pre class="programlisting">int         close                           (int handle);</pre><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>handle</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>
+
+
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="getenv"></a>getenv ()</h3><pre class="programlisting">char*       getenv                          (const char *varname);</pre><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>varname</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>
+
+
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="strerror"></a>strerror ()</h3><pre class="programlisting">char*       strerror                        (int errnum);</pre><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>errnum</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>
+
+
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="snprintf"></a>snprintf</h3><pre class="programlisting">#define snprintf _snprintf
+</pre><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="vsnprintf"></a>vsnprintf()</h3><pre class="programlisting">#define vsnprintf(b,c,f,a) _vsnprintf(b,c,f,a)
+</pre><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>b</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>c</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>f</tt></i>:</span></td><td>
+</td></tr><tr><td><span class="term"><i><tt>a</tt></i>:</span></td><td>
+
+
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="perror"></a>perror()</h3><pre class="programlisting">#define perror(_t) MessageBox(NULL, _T("_t"), _T("Error/Warning"), MB_OK)
+</pre><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>_t</tt></i>:</span></td><td>
+
+
+</td></tr></tbody></table></div></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-testOOMlib.html"><b>&lt;&lt; testOOMlib</b></a></td><td align="right"><a accesskey="n" href="libxml-wsockcompat.html"><b>wsockcompat &gt;&gt;</b></a></td></tr></table></body></html>

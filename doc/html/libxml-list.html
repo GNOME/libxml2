@@ -1,0 +1,74 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>list</title><meta name="generator" content="DocBook XSL Stylesheets V1.48"><meta name="generator" content="GTK-Doc V1.1 (XML mode)"><style type="text/css">
+        .synopsis, .classsynopsis {
+            background: #eeeeee;
+            border: solid 1px #aaaaaa;
+            padding: 0.5em;
+        }
+        .programlisting {
+            background: #eeeeff;
+            border: solid 1px #aaaaff;
+            padding: 0.5em;
+        }
+        .variablelist {
+            padding: 4px;
+            margin-left: 3em;
+        }
+        .navigation {
+            background: #ffeeee;
+            border: solid 1px #ffaaaa;
+            margin-top: 0.5em;
+            margin-bottom: 0.5em;
+        }
+        .navigation a {
+            color: #770000;
+        }
+        .navigation a:visited {
+            color: #550000;
+        }
+        .navigation .title {
+            font-size: 200%;
+        }
+      </style><link rel="home" href="index.html" title="Gnome XML Library Reference Manual "><link rel="up" href="ch01.html" title="Libxml Programming Notes"><link rel="previous" href="libxml-xmlversion.html" title="xmlversion"><link rel="next" href="libxml-HTMLtree.html" title="HTMLtree"></head><body text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-xmlversion.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">Gnome XML Library Reference Manual </th><td><a accesskey="n" href="libxml-HTMLtree.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry"><a name="libxml-list"></a><div class="titlepage"></div><div class="refnamediv"><h2>list</h2><p>list &#8212; </p></div><div class="refsynopsisdiv"><h2><h1 class="title"><a name="id2701070"></a>Synopsis</h1></h2><pre class="synopsis">
+
+
+
+struct      <a href="libxml-list.html#xmlLink">xmlLink</a>;
+typedef     <a href="libxml-list.html#xmlLinkPtr">xmlLinkPtr</a>;
+struct      <a href="libxml-list.html#xmlList">xmlList</a>;
+typedef     <a href="libxml-list.html#xmlListPtr">xmlListPtr</a>;
+void        (<a href="libxml-list.html#xmlListDeallocator">*xmlListDeallocator</a>)           (<a href="libxml-list.html#xmlLinkPtr">xmlLinkPtr</a> lk);
+int         (<a href="libxml-list.html#xmlListDataCompare">*xmlListDataCompare</a>)           (const void *data0,
+                                             const void *data1);
+int         (<a href="libxml-list.html#xmlListWalker">*xmlListWalker</a>)                (const void *data,
+                                             const void *user);
+</pre></div><div class="refsect1"><h2>Description</h2><p>
+
+</p></div><div class="refsect1"><h2>Details</h2><div class="refsect2"><h3><a name="xmlLink"></a>struct xmlLink</h3><pre class="programlisting">struct xmlLink;</pre><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="xmlLinkPtr"></a>xmlLinkPtr</h3><pre class="programlisting">typedef xmlLink *xmlLinkPtr;
+</pre><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="xmlList"></a>struct xmlList</h3><pre class="programlisting">struct xmlList;</pre><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="xmlListPtr"></a>xmlListPtr</h3><pre class="programlisting">typedef xmlList *xmlListPtr;
+</pre><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="xmlListDeallocator"></a>xmlListDeallocator ()</h3><pre class="programlisting">void        (*xmlListDeallocator)           (<a href="libxml-list.html#xmlLinkPtr">xmlLinkPtr</a> lk);</pre><p>
+Callback function used to free data from a list.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>lk</tt></i>:</span></td><td>  the data to deallocate
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlListDataCompare"></a>xmlListDataCompare ()</h3><pre class="programlisting">int         (*xmlListDataCompare)           (const void *data0,
+                                             const void *data1);</pre><p>
+Callback function used to compare 2 data.</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>data0</tt></i>:</span></td><td> the first data
+</td></tr><tr><td><span class="term"><i><tt>data1</tt></i>:</span></td><td> the second data
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>0 is equality, -1 or 1 otherwise depending on the ordering.
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlListWalker"></a>xmlListWalker ()</h3><pre class="programlisting">int         (*xmlListWalker)                (const void *data,
+                                             const void *user);</pre><p>
+Callback function used when walking a list with <GTKDOCLINK HREF="xmlListWalk">xmlListWalk</GTKDOCLINK>().</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>data</tt></i>:</span></td><td> the data found in the list
+</td></tr><tr><td><span class="term"><i><tt>user</tt></i>:</span></td><td> extra user provided data to the walker
+</td></tr><tr><td><span class="term"><span class="emphasis"><i>Returns</i></span> :</span></td><td>0 to stop walking the list, 1 otherwise.
+</td></tr></tbody></table></div></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-xmlversion.html"><b>&lt;&lt; xmlversion</b></a></td><td align="right"><a accesskey="n" href="libxml-HTMLtree.html"><b>HTMLtree &gt;&gt;</b></a></td></tr></table></body></html>

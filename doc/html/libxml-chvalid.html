@@ -1,0 +1,172 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>chvalid</title><meta name="generator" content="DocBook XSL Stylesheets V1.48"><meta name="generator" content="GTK-Doc V1.1 (XML mode)"><style type="text/css">
+        .synopsis, .classsynopsis {
+            background: #eeeeee;
+            border: solid 1px #aaaaaa;
+            padding: 0.5em;
+        }
+        .programlisting {
+            background: #eeeeff;
+            border: solid 1px #aaaaff;
+            padding: 0.5em;
+        }
+        .variablelist {
+            padding: 4px;
+            margin-left: 3em;
+        }
+        .navigation {
+            background: #ffeeee;
+            border: solid 1px #ffaaaa;
+            margin-top: 0.5em;
+            margin-bottom: 0.5em;
+        }
+        .navigation a {
+            color: #770000;
+        }
+        .navigation a:visited {
+            color: #550000;
+        }
+        .navigation .title {
+            font-size: 200%;
+        }
+      </style><link rel="home" href="index.html" title="Gnome XML Library Reference Manual "><link rel="up" href="ch01.html" title="Libxml Programming Notes"><link rel="previous" href="libxml-xpath.html" title="xpath"><link rel="next" href="libxml-uri.html" title="uri"></head><body text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-xpath.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">Gnome XML Library Reference Manual </th><td><a accesskey="n" href="libxml-uri.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry"><a name="libxml-chvalid"></a><div class="titlepage"></div><div class="refnamediv"><h2>chvalid</h2><p>chvalid &#8212; </p></div><div class="refsynopsisdiv"><h2><h1 class="title"><a name="id2587244"></a>Synopsis</h1></h2><pre class="synopsis">
+
+
+
+struct      <a href="libxml-chvalid.html#xmlChSRange">xmlChSRange</a>;
+typedef     <a href="libxml-chvalid.html#xmlChSRangePtr">xmlChSRangePtr</a>;
+struct      <a href="libxml-chvalid.html#xmlChLRange">xmlChLRange</a>;
+typedef     <a href="libxml-chvalid.html#xmlChLRangePtr">xmlChLRangePtr</a>;
+struct      <a href="libxml-chvalid.html#xmlChRangeGroup">xmlChRangeGroup</a>;
+typedef     <a href="libxml-chvalid.html#xmlChRangeGroupPtr">xmlChRangeGroupPtr</a>;
+#define     <a href="libxml-chvalid.html#xmlIsBaseChar-ch">xmlIsBaseChar_ch</a>                (c)
+#define     <a href="libxml-chvalid.html#xmlIsBaseCharQ">xmlIsBaseCharQ</a>                  (c)
+extern      xmlChRangeGroup <a href="libxml-chvalid.html#xmlIsBaseCharGroup">xmlIsBaseCharGroup</a>;
+#define     <a href="libxml-chvalid.html#xmlIsBlank-ch">xmlIsBlank_ch</a>                   (c)
+#define     <a href="libxml-chvalid.html#xmlIsBlankQ">xmlIsBlankQ</a>                     (c)
+#define     <a href="libxml-chvalid.html#xmlIsChar-ch">xmlIsChar_ch</a>                    (c)
+#define     <a href="libxml-chvalid.html#xmlIsCharQ">xmlIsCharQ</a>                      (c)
+extern      xmlChRangeGroup <a href="libxml-chvalid.html#xmlIsCharGroup">xmlIsCharGroup</a>;
+#define     <a href="libxml-chvalid.html#xmlIsCombiningQ">xmlIsCombiningQ</a>                 (c)
+extern      xmlChRangeGroup <a href="libxml-chvalid.html#xmlIsCombiningGroup">xmlIsCombiningGroup</a>;
+#define     <a href="libxml-chvalid.html#xmlIsDigit-ch">xmlIsDigit_ch</a>                   (c)
+#define     <a href="libxml-chvalid.html#xmlIsDigitQ">xmlIsDigitQ</a>                     (c)
+extern      xmlChRangeGroup <a href="libxml-chvalid.html#xmlIsDigitGroup">xmlIsDigitGroup</a>;
+#define     <a href="libxml-chvalid.html#xmlIsExtender-ch">xmlIsExtender_ch</a>                (c)
+#define     <a href="libxml-chvalid.html#xmlIsExtenderQ">xmlIsExtenderQ</a>                  (c)
+extern      xmlChRangeGroup <a href="libxml-chvalid.html#xmlIsExtenderGroup">xmlIsExtenderGroup</a>;
+#define     <a href="libxml-chvalid.html#xmlIsIdeographicQ">xmlIsIdeographicQ</a>               (c)
+extern      xmlChRangeGroup <a href="libxml-chvalid.html#xmlIsIdeographicGroup">xmlIsIdeographicGroup</a>;
+#define     <a href="libxml-chvalid.html#xmlIsPubidChar-ch">xmlIsPubidChar_ch</a>               (c)
+#define     <a href="libxml-chvalid.html#xmlIsPubidCharQ">xmlIsPubidCharQ</a>                 (c)
+</pre></div><div class="refsect1"><h2>Description</h2><p>
+
+</p></div><div class="refsect1"><h2>Details</h2><div class="refsect2"><h3><a name="xmlChSRange"></a>struct xmlChSRange</h3><pre class="programlisting">struct xmlChSRange {
+
+    unsigned short	low;
+    unsigned short	high;
+};
+</pre><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="xmlChSRangePtr"></a>xmlChSRangePtr</h3><pre class="programlisting">typedef xmlChSRange *xmlChSRangePtr;
+</pre><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="xmlChLRange"></a>struct xmlChLRange</h3><pre class="programlisting">struct xmlChLRange {
+
+    unsigned int	low;
+    unsigned int	high;
+};
+</pre><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="xmlChLRangePtr"></a>xmlChLRangePtr</h3><pre class="programlisting">typedef xmlChLRange *xmlChLRangePtr;
+</pre><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="xmlChRangeGroup"></a>struct xmlChRangeGroup</h3><pre class="programlisting">struct xmlChRangeGroup {
+
+    int			nbShortRange;
+    int			nbLongRange;
+    xmlChSRangePtr	shortRange;	/* points to an array of ranges */
+    xmlChLRangePtr	longRange;
+};
+</pre><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="xmlChRangeGroupPtr"></a>xmlChRangeGroupPtr</h3><pre class="programlisting">typedef xmlChRangeGroup *xmlChRangeGroupPtr;
+</pre><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="xmlIsBaseChar-ch"></a>xmlIsBaseChar_ch()</h3><pre class="programlisting">#define     xmlIsBaseChar_ch(c)</pre><p>
+Automatically generated by genChRanges.py</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>c</tt></i>:</span></td><td> char to validate
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlIsBaseCharQ"></a>xmlIsBaseCharQ()</h3><pre class="programlisting">#define     xmlIsBaseCharQ(c)</pre><p>
+Automatically generated by genChRanges.py</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>c</tt></i>:</span></td><td> char to validate
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlIsBaseCharGroup"></a>xmlIsBaseCharGroup</h3><pre class="programlisting">extern xmlChRangeGroup xmlIsBaseCharGroup;
+</pre><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="xmlIsBlank-ch"></a>xmlIsBlank_ch()</h3><pre class="programlisting">#define     xmlIsBlank_ch(c)</pre><p>
+Automatically generated by genChRanges.py</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>c</tt></i>:</span></td><td> char to validate
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlIsBlankQ"></a>xmlIsBlankQ()</h3><pre class="programlisting">#define     xmlIsBlankQ(c)</pre><p>
+Automatically generated by genChRanges.py</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>c</tt></i>:</span></td><td> char to validate
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlIsChar-ch"></a>xmlIsChar_ch()</h3><pre class="programlisting">#define     xmlIsChar_ch(c)</pre><p>
+Automatically generated by genChRanges.py</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>c</tt></i>:</span></td><td> char to validate
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlIsCharQ"></a>xmlIsCharQ()</h3><pre class="programlisting">#define     xmlIsCharQ(c)</pre><p>
+Automatically generated by genChRanges.py</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>c</tt></i>:</span></td><td> char to validate
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlIsCharGroup"></a>xmlIsCharGroup</h3><pre class="programlisting">extern xmlChRangeGroup xmlIsCharGroup;
+</pre><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="xmlIsCombiningQ"></a>xmlIsCombiningQ()</h3><pre class="programlisting">#define     xmlIsCombiningQ(c)</pre><p>
+Automatically generated by genChRanges.py</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>c</tt></i>:</span></td><td> char to validate
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlIsCombiningGroup"></a>xmlIsCombiningGroup</h3><pre class="programlisting">extern xmlChRangeGroup xmlIsCombiningGroup;
+</pre><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="xmlIsDigit-ch"></a>xmlIsDigit_ch()</h3><pre class="programlisting">#define xmlIsDigit_ch(c)	(((0x30 &lt;= (c)) &amp;&amp; ((c) &lt;= 0x39)))
+</pre><p>
+Automatically generated by genChRanges.py</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>c</tt></i>:</span></td><td> char to validate
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlIsDigitQ"></a>xmlIsDigitQ()</h3><pre class="programlisting">#define     xmlIsDigitQ(c)</pre><p>
+Automatically generated by genChRanges.py</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>c</tt></i>:</span></td><td> char to validate
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlIsDigitGroup"></a>xmlIsDigitGroup</h3><pre class="programlisting">extern xmlChRangeGroup xmlIsDigitGroup;
+</pre><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="xmlIsExtender-ch"></a>xmlIsExtender_ch()</h3><pre class="programlisting">#define xmlIsExtender_ch(c)	(((c) == 0xb7))
+</pre><p>
+Automatically generated by genChRanges.py</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>c</tt></i>:</span></td><td> char to validate
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlIsExtenderQ"></a>xmlIsExtenderQ()</h3><pre class="programlisting">#define     xmlIsExtenderQ(c)</pre><p>
+Automatically generated by genChRanges.py</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>c</tt></i>:</span></td><td> char to validate
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlIsExtenderGroup"></a>xmlIsExtenderGroup</h3><pre class="programlisting">extern xmlChRangeGroup xmlIsExtenderGroup;
+</pre><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="xmlIsIdeographicQ"></a>xmlIsIdeographicQ()</h3><pre class="programlisting">#define     xmlIsIdeographicQ(c)</pre><p>
+Automatically generated by genChRanges.py</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>c</tt></i>:</span></td><td> char to validate
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlIsIdeographicGroup"></a>xmlIsIdeographicGroup</h3><pre class="programlisting">extern xmlChRangeGroup xmlIsIdeographicGroup;
+</pre><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="xmlIsPubidChar-ch"></a>xmlIsPubidChar_ch()</h3><pre class="programlisting">#define xmlIsPubidChar_ch(c)	(xmlIsPubidChar_tab[(c)])
+</pre><p>
+Automatically generated by genChRanges.py</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>c</tt></i>:</span></td><td> char to validate
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="xmlIsPubidCharQ"></a>xmlIsPubidCharQ()</h3><pre class="programlisting">#define     xmlIsPubidCharQ(c)</pre><p>
+Automatically generated by genChRanges.py</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>c</tt></i>:</span></td><td> char to validate
+</td></tr></tbody></table></div></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-xpath.html"><b>&lt;&lt; xpath</b></a></td><td align="right"><a accesskey="n" href="libxml-uri.html"><b>uri &gt;&gt;</b></a></td></tr></table></body></html>

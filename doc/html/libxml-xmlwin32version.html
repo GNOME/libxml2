@@ -1,0 +1,138 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>xmlwin32version</title><meta name="generator" content="DocBook XSL Stylesheets V1.48"><meta name="generator" content="GTK-Doc V1.1 (XML mode)"><style type="text/css">
+        .synopsis, .classsynopsis {
+            background: #eeeeee;
+            border: solid 1px #aaaaaa;
+            padding: 0.5em;
+        }
+        .programlisting {
+            background: #eeeeff;
+            border: solid 1px #aaaaff;
+            padding: 0.5em;
+        }
+        .variablelist {
+            padding: 4px;
+            margin-left: 3em;
+        }
+        .navigation {
+            background: #ffeeee;
+            border: solid 1px #ffaaaa;
+            margin-top: 0.5em;
+            margin-bottom: 0.5em;
+        }
+        .navigation a {
+            color: #770000;
+        }
+        .navigation a:visited {
+            color: #550000;
+        }
+        .navigation .title {
+            font-size: 200%;
+        }
+      </style><link rel="home" href="index.html" title="Gnome XML Library Reference Manual "><link rel="up" href="ch01.html" title="Libxml Programming Notes"><link rel="previous" href="libxml-xmlerror.html" title="xmlerror"><link rel="next" href="libxml-DOCBparser.html" title="DOCBparser"></head><body text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libxml-xmlerror.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">Gnome XML Library Reference Manual </th><td><a accesskey="n" href="libxml-DOCBparser.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry"><a name="libxml-xmlwin32version"></a><div class="titlepage"></div><div class="refnamediv"><h2>xmlwin32version</h2><p>xmlwin32version &#8212; </p></div><div class="refsynopsisdiv"><h2><h1 class="title"><a name="id2631331"></a>Synopsis</h1></h2><pre class="synopsis">
+
+
+
+void        <a href="libxml-xmlwin32version.html#xmlCheckVersion">xmlCheckVersion</a>                 (int version);
+#define     <a href="libxml-xmlwin32version.html#LIBXML-DOTTED-VERSION-CAPS">LIBXML_DOTTED_VERSION</a>
+#define     <a href="libxml-xmlwin32version.html#LIBXML-VERSION-CAPS">LIBXML_VERSION</a>
+#define     <a href="libxml-xmlwin32version.html#LIBXML-VERSION-STRING-CAPS">LIBXML_VERSION_STRING</a>
+#define     <a href="libxml-xmlwin32version.html#LIBXML-TEST-VERSION-CAPS">LIBXML_TEST_VERSION</a>
+#define     <a href="libxml-xmlwin32version.html#WITH-TRIO-CAPS">WITH_TRIO</a>
+#define     <a href="libxml-xmlwin32version.html#WITHOUT-TRIO-CAPS">WITHOUT_TRIO</a>
+#define     <a href="libxml-xmlwin32version.html#LIBXML-THREAD-ENABLED-CAPS">LIBXML_THREAD_ENABLED</a>
+#define     <a href="libxml-xmlwin32version.html#LIBXML-FTP-ENABLED-CAPS">LIBXML_FTP_ENABLED</a>
+#define     <a href="libxml-xmlwin32version.html#LIBXML-HTTP-ENABLED-CAPS">LIBXML_HTTP_ENABLED</a>
+#define     <a href="libxml-xmlwin32version.html#LIBXML-HTML-ENABLED-CAPS">LIBXML_HTML_ENABLED</a>
+#define     <a href="libxml-xmlwin32version.html#LIBXML-CATALOG-ENABLED-CAPS">LIBXML_CATALOG_ENABLED</a>
+#define     <a href="libxml-xmlwin32version.html#LIBXML-DOCB-ENABLED-CAPS">LIBXML_DOCB_ENABLED</a>
+#define     <a href="libxml-xmlwin32version.html#LIBXML-XPATH-ENABLED-CAPS">LIBXML_XPATH_ENABLED</a>
+#define     <a href="libxml-xmlwin32version.html#LIBXML-XPTR-ENABLED-CAPS">LIBXML_XPTR_ENABLED</a>
+#define     <a href="libxml-xmlwin32version.html#LIBXML-C14N-ENABLED-CAPS">LIBXML_C14N_ENABLED</a>
+#define     <a href="libxml-xmlwin32version.html#LIBXML-XINCLUDE-ENABLED-CAPS">LIBXML_XINCLUDE_ENABLED</a>
+#define     <a href="libxml-xmlwin32version.html#LIBXML-ICONV-ENABLED-CAPS">LIBXML_ICONV_ENABLED</a>
+#define     <a href="libxml-xmlwin32version.html#LIBXML-DEBUG-ENABLED-CAPS">LIBXML_DEBUG_ENABLED</a>
+#define     <a href="libxml-xmlwin32version.html#DEBUG-MEMORY-LOCATION-CAPS">DEBUG_MEMORY_LOCATION</a>
+#define     <a href="libxml-xmlwin32version.html#LIBXML-DLL-IMPORT-CAPS">LIBXML_DLL_IMPORT</a>
+#define     <a href="libxml-xmlwin32version.html#ATTRIBUTE-UNUSED-CAPS">ATTRIBUTE_UNUSED</a>
+</pre></div><div class="refsect1"><h2>Description</h2><p>
+
+</p></div><div class="refsect1"><h2>Details</h2><div class="refsect2"><h3><a name="xmlCheckVersion"></a>xmlCheckVersion ()</h3><pre class="programlisting">void        xmlCheckVersion                 (int version);</pre><p>
+check the compiled lib version against the include one.
+This can warn or immediately kill the application</p><p>
+
+</p><div class="variablelist"><table border="0"><col align="left"><tbody><tr><td><span class="term"><i><tt>version</tt></i>:</span></td><td> the include version number
+</td></tr></tbody></table></div></div><hr><div class="refsect2"><h3><a name="LIBXML-DOTTED-VERSION-CAPS"></a>LIBXML_DOTTED_VERSION</h3><pre class="programlisting">#define     LIBXML_DOTTED_VERSION</pre><p>
+the version string like "1.2.3"</p><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="LIBXML-VERSION-CAPS"></a>LIBXML_VERSION</h3><pre class="programlisting">#define     LIBXML_VERSION</pre><p>
+the version number: 1.2.3 value is 1002003</p><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="LIBXML-VERSION-STRING-CAPS"></a>LIBXML_VERSION_STRING</h3><pre class="programlisting">#define     LIBXML_VERSION_STRING</pre><p>
+the version number string, 1.2.3 value is "1002003"</p><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="LIBXML-TEST-VERSION-CAPS"></a>LIBXML_TEST_VERSION</h3><pre class="programlisting">#define     LIBXML_TEST_VERSION</pre><p>
+Macro to check that the libxml version in use is compatible with
+the version the software has been compiled against</p><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="WITH-TRIO-CAPS"></a>WITH_TRIO</h3><pre class="programlisting">#define     WITH_TRIO</pre><p>
+defined if the trio support need to be configured in</p><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="WITHOUT-TRIO-CAPS"></a>WITHOUT_TRIO</h3><pre class="programlisting">#define     WITHOUT_TRIO</pre><p>
+defined if the trio support should not be configured in</p><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="LIBXML-THREAD-ENABLED-CAPS"></a>LIBXML_THREAD_ENABLED</h3><pre class="programlisting">#define     LIBXML_THREAD_ENABLED</pre><p>
+Whether the thread support is configured in</p><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="LIBXML-FTP-ENABLED-CAPS"></a>LIBXML_FTP_ENABLED</h3><pre class="programlisting">#define     LIBXML_FTP_ENABLED</pre><p>
+Whether the FTP support is configured in</p><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="LIBXML-HTTP-ENABLED-CAPS"></a>LIBXML_HTTP_ENABLED</h3><pre class="programlisting">#define     LIBXML_HTTP_ENABLED</pre><p>
+Whether the HTTP support is configured in</p><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="LIBXML-HTML-ENABLED-CAPS"></a>LIBXML_HTML_ENABLED</h3><pre class="programlisting">#define     LIBXML_HTML_ENABLED</pre><p>
+Whether the HTML support is configured in</p><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="LIBXML-CATALOG-ENABLED-CAPS"></a>LIBXML_CATALOG_ENABLED</h3><pre class="programlisting">#define     LIBXML_CATALOG_ENABLED</pre><p>
+Whether the Catalog support is configured in</p><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="LIBXML-DOCB-ENABLED-CAPS"></a>LIBXML_DOCB_ENABLED</h3><pre class="programlisting">#define     LIBXML_DOCB_ENABLED</pre><p>
+Whether the SGML Docbook support is configured in</p><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="LIBXML-XPATH-ENABLED-CAPS"></a>LIBXML_XPATH_ENABLED</h3><pre class="programlisting">#define     LIBXML_XPATH_ENABLED</pre><p>
+Whether XPath is configured in</p><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="LIBXML-XPTR-ENABLED-CAPS"></a>LIBXML_XPTR_ENABLED</h3><pre class="programlisting">#define     LIBXML_XPTR_ENABLED</pre><p>
+Whether XPointer is configured in</p><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="LIBXML-C14N-ENABLED-CAPS"></a>LIBXML_C14N_ENABLED</h3><pre class="programlisting">#define     LIBXML_C14N_ENABLED</pre><p>
+Whether the Canonicalization support is configured in</p><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="LIBXML-XINCLUDE-ENABLED-CAPS"></a>LIBXML_XINCLUDE_ENABLED</h3><pre class="programlisting">#define     LIBXML_XINCLUDE_ENABLED</pre><p>
+Whether XInclude is configured in</p><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="LIBXML-ICONV-ENABLED-CAPS"></a>LIBXML_ICONV_ENABLED</h3><pre class="programlisting">#define     LIBXML_ICONV_ENABLED</pre><p>
+Whether iconv support is available</p><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="LIBXML-DEBUG-ENABLED-CAPS"></a>LIBXML_DEBUG_ENABLED</h3><pre class="programlisting">#define     LIBXML_DEBUG_ENABLED</pre><p>
+Whether Debugging module is configured in</p><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="DEBUG-MEMORY-LOCATION-CAPS"></a>DEBUG_MEMORY_LOCATION</h3><pre class="programlisting">#define     DEBUG_MEMORY_LOCATION</pre><p>
+Whether the memory debugging is configured in</p><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="LIBXML-DLL-IMPORT-CAPS"></a>LIBXML_DLL_IMPORT</h3><pre class="programlisting">#define     LIBXML_DLL_IMPORT</pre><p>
+Used on Windows (MS C compiler only) to declare a variable as 
+imported from the library. This macro should be empty when compiling
+libxml itself. It should expand to __declspec(dllimport)
+when the client code includes this header, and that only if the client
+links dynamically against libxml.
+For this to work, we need three macros. One tells us which compiler is
+being used and luckily the compiler defines such a thing: _MSC_VER. The
+second macro tells us if we are compiling libxml or the client code and
+we define the macro IN_LIBXML on the compiler's command line for this 
+purpose. The third macro, LIBXML_STATIC, must be defined by any client 
+code which links against libxml statically.</p><p>
+
+</p></div><hr><div class="refsect2"><h3><a name="ATTRIBUTE-UNUSED-CAPS"></a>ATTRIBUTE_UNUSED</h3><pre class="programlisting">#define     ATTRIBUTE_UNUSED</pre><p>
+Macro used to signal to GCC unused function parameters</p><p>
+
+</p></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libxml-xmlerror.html"><b>&lt;&lt; xmlerror</b></a></td><td align="right"><a accesskey="n" href="libxml-DOCBparser.html"><b>DOCBparser &gt;&gt;</b></a></td></tr></table></body></html>

@@ -1,3 +1,8 @@
+Wed Aug 14 18:54:19 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in python/Makefile.am: more AMD 64 induced changes from
+	  Frederic Crozat
+
 Wed Aug 14 16:43:53 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xinclude.c: oops I was missing the xml:base fixup too

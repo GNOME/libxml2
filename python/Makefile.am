@@ -30,7 +30,7 @@ mylibs = \
 
 all_local:	libxml2.py
 
-pythondir = $(prefix)/lib/python${PYTHON_VERSION}/site-packages
+pythondir = $(libdir)/python${PYTHON_VERSION}/site-packages
 python_LTLIBRARIES = libxml2mod.la
 
 libxml2mod_la_SOURCES = libxml.c types.c libxml2-py.c

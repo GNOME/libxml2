@@ -240,10 +240,10 @@ if test "$with_python" != "no" ; then
 		    echo could not find python$PYTHON_VERSION/Python.h
 		fi
 	    fi
-		if ! test -d "$PYTHON_SITE_PACKAGES"
-		then
-			PYTHON_SITE_PACKAGES=`$PYTHON -c "from distutils import sysconfig; print sysconfig.get_python_lib()"`
-		fi
+	    if ! test -d "$PYTHON_SITE_PACKAGES"
+	    then
+		    PYTHON_SITE_PACKAGES=`$PYTHON -c "from distutils import sysconfig; print sysconfig.get_python_lib()"`
+	    fi
 	fi
     fi
 fi

@@ -1782,7 +1782,7 @@ xmlSwitchToEncoding(xmlParserCtxtPtr ctxt, xmlCharEncodingHandlerPtr handler)
 			(!strcmp(handler->name, "UTF-8")) &&
 			(ctxt->input->cur[0] == 0xEF) &&
 			(ctxt->input->cur[1] == 0xBB) &&
-			(ctxt->input->cur[1] == 0xBF)) {
+			(ctxt->input->cur[2] == 0xBF)) {
 			ctxt->input->cur += 3;
 		    }
 

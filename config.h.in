@@ -65,6 +65,9 @@
 /* Define to 1 if you have the `ftime' function. */
 #undef HAVE_FTIME
 
+/* Define if getaddrinfo is there */
+#undef HAVE_GETADDRINFO
+
 /* Define to 1 if you have the `gettimeofday' function. */
 #undef HAVE_GETTIMEOFDAY
 
@@ -74,8 +77,17 @@
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
 
+/* Define if isinf is there */
+#undef HAVE_ISINF
+
+/* Define if isnan is there */
+#undef HAVE_ISNAN
+
 /* Define to 1 if you have the `isnand' function. */
 #undef HAVE_ISNAND
+
+/* Define if history library is there (-lhistory) */
+#undef HAVE_LIBHISTORY
 
 /* Define to 1 if you have the `inet' library (-linet). */
 #undef HAVE_LIBINET
@@ -83,8 +95,17 @@
 /* Define to 1 if you have the `nsl' library (-lnsl). */
 #undef HAVE_LIBNSL
 
+/* Define if pthread library is there (-lpthread) */
+#undef HAVE_LIBPTHREAD
+
+/* Define if readline library is there (-lreadline) */
+#undef HAVE_LIBREADLINE
+
 /* Define to 1 if you have the `socket' library (-lsocket). */
 #undef HAVE_LIBSOCKET
+
+/* Have compression library */
+#undef HAVE_LIBZ
 
 /* Define to 1 if you have the `localtime' function. */
 #undef HAVE_LOCALTIME
@@ -112,6 +133,9 @@
 
 /* Define to 1 if you have the `printf' function. */
 #undef HAVE_PRINTF
+
+/* Define if <pthread.h> is there */
+#undef HAVE_PTHREAD_H
 
 /* Define to 1 if you have the <resolv.h> header file. */
 #undef HAVE_RESOLV_H
@@ -232,8 +256,23 @@
 /* Define if compiler has function prototypes */
 #undef PROTOTYPES
 
+/* Determine what socket length (socklen_t) data type is */
+#undef SOCKLEN_T
+
 /* Define to 1 if you have the ANSI C header files. */
 #undef STDC_HEADERS
 
+/* Support for IPv6 */
+#undef SUPPORT_IP6
+
 /* Version number of package */
 #undef VERSION
+
+/* Using the Win32 Socket implementation */
+#undef _WINSOCKAPI_
+
+/* Win32 Std C name mangling work-around */
+#undef snprintf
+
+/* Win32 Std C name mangling work-around */
+#undef vsnprintf

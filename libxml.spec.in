@@ -61,12 +61,7 @@ at parse time or later once the document has been modified.
 
 %build
 %configure
-#
-# Note: it seems that this may break on older version of Red Hat,
-#       and that replacing the following line with just "make" can
-#       fix the problem
-#
-make LIBTOOL=/usr/bin/libtool
+make
 
 %install
 rm -fr %{buildroot}

@@ -1,0 +1,34 @@
+<examples>
+  <example filename='example1.c'>
+    <purpose>Demonstrate the use of xmlReadFile() to read an XML file into a tree and and xmlFreeDoc() to free the resulting tree</purpose>
+    <usage>example1 test1.xml</usage>
+    <author>daniel@veillard.com</author>
+    <copy>see Copyright for the status of this software. </copy>
+    <uses>
+      <include>&lt;libxml/tree.h&gt;</include>
+      <include>&lt;libxml/parser.h&gt;</include>
+      <function line='47' file='parser'>xmlCleanupParser</function>
+      <macro line='42' file='xmlversion'>LIBXML_TEST_VERSION</macro>
+      <function line='28' file='tree'>xmlFreeDoc</function>
+      <function line='23' file='parser'>xmlReadFile</function>
+      <typedef line='21' file='tree'>xmlDocPtr</typedef>
+    </uses>
+  </example>
+  <symbols>
+    <symbol name='LIBXML_TEST_VERSION'>
+      <ref filename='example1.c'/>
+    </symbol>
+    <symbol name='xmlCleanupParser'>
+      <ref filename='example1.c'/>
+    </symbol>
+    <symbol name='xmlDocPtr'>
+      <ref filename='example1.c'/>
+    </symbol>
+    <symbol name='xmlFreeDoc'>
+      <ref filename='example1.c'/>
+    </symbol>
+    <symbol name='xmlReadFile'>
+      <ref filename='example1.c'/>
+    </symbol>
+  </symbols>
+</examples>

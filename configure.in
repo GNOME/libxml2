@@ -41,7 +41,7 @@ test "x$U" != "x" && AC_MSG_ERROR(Compiler not ANSI compliant)
 
 AM_PROG_LIBTOOL
 
-AM_MAINTAINER_MODE
+# AM_MAINTAINER_MODE
 
 dnl
 dnl option to build a minimal libxml2 library
@@ -1020,8 +1020,9 @@ rm -f COPYING.LIB COPYING
 ln -s Copyright COPYING
 
 AC_OUTPUT(libxml2.spec:libxml.spec.in Makefile include/Makefile
-include/libxml/Makefile doc/Makefile example/Makefile python/Makefile
-python/tests/Makefile include/libxml/xmlversion.h xml2-config libxml-2.0.pc
+include/libxml/Makefile doc/Makefile doc/examples/Makefile
+example/Makefile python/Makefile python/tests/Makefile
+include/libxml/xmlversion.h xml2-config libxml-2.0.pc
 libxml-2.0-uninstalled.pc xml2Conf.sh python/setup.py)
 
 chmod +x xml2-config xml2Conf.sh python/setup.py

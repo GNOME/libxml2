@@ -112,11 +112,6 @@ def runTest(test, basedir):
 	    result = doc.serialize()
 	    if result != expected:
 	        print "Result for %s differs" % (id)
-		print '----'
-		print result
-		print '----'
-		print expected
-		print '----'
 
 	doc.freeDoc()
     else:

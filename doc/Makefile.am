@@ -1,5 +1,5 @@
 ## Process this file with automake to produce Makefile.in
-
+SUBDIRS=examples
 # The name of the module.
 DOC_MODULE=libxml2-$(VERSION)
 

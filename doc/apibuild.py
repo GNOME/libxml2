@@ -50,12 +50,14 @@ def escape(raw):
     return raw
 
 class identifier:
-     def __init__(self, name, module=None, type=None, info=None, extra=None):
+     def __init__(self, name, module=None, type=None, lineno = 0,
+                  info=None, extra=None):
          self.name = name
 	 self.module = module
 	 self.type = type
 	 self.info = info
 	 self.extra = extra
+	 self.lineno = lineno
 	 self.static = 0
 
      def __repr__(self):
@@ -79,8 +81,25 @@ class identifier:
          self.info = info
      def set_extra(self, extra):
          self.extra = extra
+     def set_lineno(self, lineno):
+         self.lineno = lineno
      def set_static(self, static):
          self.static = static
+
+     def get_name(self):
+         return self.name
+     def get_module(self):
+         return self.module
+     def get_type(self):
+         return self.type
+     def get_info(self):
+         return self.info
+     def get_lineno(self):
+         return self.lineno
+     def get_extra(self):
+         return self.extra
+     def get_static(self):
+         return self.static
 
      def update(self, module, type = None, info = None, extra=None):
          if module != None and self.module == None:
@@ -95,7 +114,7 @@ class identifier:
 
 class index:
      def __init__(self, name = "noname"):
-         self.name = name;
+         self.name = name
          self.identifiers = {}
          self.functions = {}
 	 self.variables = {}
@@ -106,15 +125,32 @@ class index:
 	 self.macros = {}
 	 self.references = {}
 
-     def add(self, name, module, static, type, info=None, extra=None):
+     def add_ref(self, name, module, static, type, lineno, info=None, extra=None):
          if name[0:2] == '__':
 	     return None
          d = None
          try:
 	    d = self.identifiers[name]
-	    d.update(module, type, info, extra)
+	    d.update(module, type, lineno, info, extra)
 	 except:
-	    d = identifier(name, module, type, info, extra)
+	    d = identifier(name, module, type, lineno, info, extra)
+	    self.identifiers[name] = d
+
+	 if d != None and static == 1:
+	     d.set_static(1)
+
+	 if d != None and name != None and type != None:
+	     self.references[name] = d
+
+     def add(self, name, module, static, type, lineno, info=None, extra=None):
+         if name[0:2] == '__':
+	     return None
+         d = None
+         try:
+	    d = self.identifiers[name]
+	    d.update(module, type, lineno, info, extra)
+	 except:
+	    d = identifier(name, module, type, lineno, info, extra)
 	    self.identifiers[name] = d
 
 	 if d != None and static == 1:
@@ -461,9 +497,22 @@ class CParser:
 	 self.top_comment = ""
 	 self.last_comment = ""
 	 self.comment = None
+	 self.collect_ref = 0
+
+     def collect_references(self):
+         self.collect_ref = 1
 
      def lineno(self):
          return self.lexer.getlineno()
+
+     def index_add(self, name, module, static, type, info=None, extra = None):
+         self.index.add(name, module, static, type, self.lineno(),
+	                info, extra)
+
+     def index_add_ref(self, name, module, static, type, info=None,
+                       extra = None):
+         self.index.add_ref(name, module, static, type, self.lineno(),
+	                info, extra)
 
      def error(self, msg, token=-1):
          print "Parse Error: " + msg
@@ -679,7 +728,7 @@ class CParser:
 	     if token == None:
 	         return None
 	     if token[0] == 'preproc':
-		 self.index.add(token[1], self.filename, not self.is_header,
+		 self.index_add(token[1], self.filename, not self.is_header,
 		                "include")
 		 return self.lexer.token()
 	     return token
@@ -701,7 +750,7 @@ class CParser:
                  except:
                      pass
                  info = self.parseMacroComment(name, not self.is_header)
-		 self.index.add(name, self.filename, not self.is_header,
+		 self.index_add(name, self.filename, not self.is_header,
 		                "macro", info)
 		 return token
 	 token = self.lexer.token()
@@ -760,15 +809,15 @@ class CParser:
 		     type = string.split(type, '(')[0]
 		     d = self.mergeFunctionComment(name,
 			     ((type, None), signature), 1)
-		     self.index.add(name, self.filename, not self.is_header,
+		     self.index_add(name, self.filename, not self.is_header,
 				    "functype", d)
 		 else:
 		     if base_type == "struct":
-			 self.index.add(name, self.filename, not self.is_header,
+			 self.index_add(name, self.filename, not self.is_header,
 					"struct", type)
 			 base_type = "struct " + name
 	             else:
-			 self.index.add(name, self.filename, not self.is_header,
+			 self.index_add(name, self.filename, not self.is_header,
 		                    "typedef", type)
 		 token = self.token()
 	     else:
@@ -806,7 +855,29 @@ class CParser:
 	         token = self.token()
 		 return token
 	     else:
-	         token = self.token()
+	         if self.collect_ref == 1:
+		     oldtok = token
+		     token = self.token()
+		     if oldtok[0] == "name" and oldtok[1][0:3] == "xml":
+		         if token[0] == "sep" and token[1] == "(":
+			     self.index_add_ref(oldtok[1], self.filename,
+			                        0, "function")
+			     token = self.token()
+			 elif token[0] == "name":
+			     token = self.token()
+			     if token[0] == "sep" and (token[1] == ";" or
+			        token[1] == "," or token[1] == "="):
+				 self.index_add_ref(oldtok[1], self.filename,
+						    0, "type")
+		     elif oldtok[0] == "name" and oldtok[1][0:4] == "XML_":
+			 self.index_add_ref(oldtok[1], self.filename,
+					    0, "typedef")
+		     elif oldtok[0] == "name" and oldtok[1][0:7] == "LIBXML_":
+			 self.index_add_ref(oldtok[1], self.filename,
+					    0, "typedef")
+			 
+		 else:
+		     token = self.token()
 	 return token
 
      #
@@ -1009,7 +1080,7 @@ class CParser:
 	     else:
 	         enum_type = token[1]
 	     for enum in self.enums:
-		 self.index.add(enum[0], self.filename,
+		 self.index_add(enum[0], self.filename,
 			        not self.is_header, "enum",
 			        (enum[1], enum[2], enum_type))
 	     return token
@@ -1207,10 +1278,10 @@ class CParser:
 		     self.comment = None
 		     token = self.token()
 		     if type == "struct":
-		         self.index.add(self.name, self.filename,
+		         self.index_add(self.name, self.filename,
 			      not self.is_header, "struct", self.struct_fields)
 		     else:
-			 self.index.add(self.name, self.filename,
+			 self.index_add(self.name, self.filename,
 			      not self.is_header, "variable", type)
 		     break
 		 elif token[1] == "(":
@@ -1221,19 +1292,19 @@ class CParser:
 		     if token[0] == "sep" and token[1] == ";":
 		         d = self.mergeFunctionComment(self.name,
 				 ((type, None), self.signature), 1)
-			 self.index.add(self.name, self.filename, static,
+			 self.index_add(self.name, self.filename, static,
 			                "function", d)
 			 token = self.token()
 		     elif token[0] == "sep" and token[1] == "{":
 		         d = self.mergeFunctionComment(self.name,
 				 ((type, None), self.signature), static)
-			 self.index.add(self.name, self.filename, static,
+			 self.index_add(self.name, self.filename, static,
 			                "function", d)
 			 token = self.token()
 			 token = self.parseBlock(token);
 		 elif token[1] == ',':
 		     self.comment = None
-		     self.index.add(self.name, self.filename, static,
+		     self.index_add(self.name, self.filename, static,
 		                    "variable", type)
 		     type = type_orig
 		     token = self.token()

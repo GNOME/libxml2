@@ -1,3 +1,8 @@
+Fri Dec 26 14:03:41 HKT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* xmlregexp.c: fixed problem causing segfault on validation error
+	  condition (reported on mailing list)
+
 Thu Dec 25 21:16:22 HKT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* xmlschemas.c: fixed missing dictionaries for Memory and Doc

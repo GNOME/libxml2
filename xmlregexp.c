@@ -2816,7 +2816,8 @@ xmlRegExecPushString(xmlRegExecCtxtPtr exec, const xmlChar *value,
 		}
 	    }
 	    if (ret == 1) {
-		if ((exec->callback != NULL) && (atom != NULL)) {
+		if ((exec->callback != NULL) && (atom != NULL) &&
+			(data != NULL)) {
 		    exec->callback(exec->data, atom->valuep,
 			           atom->data, data);
 		}

@@ -1,3 +1,16 @@
+Fri Sep  3 20:29:59 CEST 2004 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c include/libxml/schemasInternals.h
+	  include/libxml/xmlerror.h: Fixed a seg fault in xmlGetQNameProp:
+	  a format argument was missing.
+	  Fixed wrong assignment of the owner of a wildcard in
+	  xmlSchemaBuildAttributeValidation (in the shorthandform of
+	  <complexType>; this caused a seg fault, due to a double-free
+	  of the wildcard.
+	  Added a check for circular attribute group references.
+	  Added a check for circular model group definition references.
+	  Fixed a dublicate xmlParserErrors enum value - see bug #151738.
+
 Fri Sep  3 10:08:13 PDT 2004 William Brack <wbrack@mmmm.com.hk>
 
 	* xmlstring.c: modified comments on xmlGetUTF8Char in

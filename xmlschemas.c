@@ -3243,9 +3243,16 @@ xmlGetQNameProp(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node,
     xmlNsPtr ns;
     const xmlChar *ret, *prefix;
     int len;
+    xmlAttrPtr attr;
 
     *namespace = NULL;
-    val = xmlSchemaGetProp(ctxt, node, name);
+    attr = xmlSchemaGetPropNode(node, name);
+    if (attr == NULL)
+	return (NULL);
+    val = xmlSchemaGetNodeContent(ctxt, (xmlNodePtr) attr);
+    /*
+    * TODO: Is the empty value valid for QNames?
+    */
     if (val == NULL)
         return (NULL);
 
@@ -3265,10 +3272,12 @@ xmlGetQNameProp(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node,
 
     ns = xmlSearchNs(node->doc, node, prefix);
     if (ns == NULL) {
-        xmlSchemaPErr(ctxt, node, XML_SCHEMAP_PREFIX_UNDEFINED,
-	    "Attribute '%s': The prefix '%s' of the QName "
-	    "'%s' has no corresponding namespace declaration is scope.\n",
-	    (const xmlChar *) name, prefix);
+        xmlSchemaPSimpleTypeErr(ctxt, XML_SCHEMAP_PREFIX_UNDEFINED, 
+	    NULL, NULL, (xmlNodePtr) attr, 
+	    xmlSchemaGetBuiltInType(XML_SCHEMAS_QNAME), NULL, val,
+	    "The prefix '%s' of the QName value "
+	    "'%s' has no corresponding namespace declaration in scope",
+	    prefix, val);
     } else {
         *namespace = xmlDictLookup(ctxt->dict, ns->href, -1);
     }
@@ -5708,11 +5717,19 @@ xmlSchemaParseGroup(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     const xmlChar *name;
     const xmlChar *ref = NULL, *refNs = NULL;
     char buf[100];
+    int minOccurs, maxOccurs;
 
     if ((ctxt == NULL) || (schema == NULL) || (node == NULL))
         return (NULL);
-
-
+    /*
+    * TODO: Validate the element even if no item is created 
+    * (i.e. min/maxOccurs == 0).
+    */
+    minOccurs = xmlGetMinOccurs(ctxt, node, 0, -1, 1, "nonNegativeInteger");
+    maxOccurs = xmlGetMaxOccurs(ctxt, node, 0, UNBOUNDED, 1, "(nonNegativeInteger | unbounded)");
+    if ((minOccurs == 0) && (maxOccurs == 0)) {
+	return (NULL);
+    }
     name = xmlSchemaGetProp(ctxt, node, "name");
     if (name == NULL) {
         ref = xmlGetQNameProp(ctxt, node, "ref", &refNs);
@@ -5738,10 +5755,9 @@ xmlSchemaParseGroup(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     type->id = xmlSchemaGetProp(ctxt, node, "id");
     type->ref = ref;
     type->refNs = refNs;
-
-    type->minOccurs = xmlGetMinOccurs(ctxt, node, 0, -1, 1, "nonNegativeInteger");
-    type->maxOccurs = xmlGetMaxOccurs(ctxt, node, 0, UNBOUNDED, 1, "(nonNegativeInteger | unbounded)");
-    xmlSchemaPCheckParticleCorrect_2(ctxt, type, 
+    type->minOccurs = minOccurs;
+    type->maxOccurs = maxOccurs;
+    xmlSchemaPCheckParticleCorrect_2(ctxt, type,
 	node, type->minOccurs, type->maxOccurs);    
 
     child = node->children;
@@ -8137,23 +8153,50 @@ xmlSchemaBuildAContentModel(xmlSchemaTypePtr type,
                 xmlSchemaBuildAContentModel(type->subtypes, ctxt, name);
             break;
         case XML_SCHEMA_TYPE_GROUP:
-            if (type->subtypes == NULL) {
-	        xmlSchemaTypePtr rgroup;
-		if (type->ref != NULL) {
-		    rgroup = xmlSchemaGetGroup(ctxt->schema, type->ref,
-		    			   type->refNs);
-		    if (rgroup == NULL) {
-			xmlSchemaPResCompAttrErr(ctxt, 
-			    XML_SCHEMAP_SRC_RESOLVE, 
-			    NULL, type, NULL,
-			    "ref", type->ref, type->refNs, 
-			    XML_SCHEMA_TYPE_GROUP, NULL);		        
-			return;
-		    }
-		    xmlSchemaBuildAContentModel(rgroup, ctxt, name);
-		    break;
-		}
-            }
+	    /*
+	    * Handle model group definition references. 
+	    * NOTE: type->subtypes is the referenced model grop definition;
+	    * and type->subtypes->subtypes is the model group (i.e. <all> or 
+	    * <choice> or <sequence>).
+	    */
+	    if ((type->ref != NULL) && (type->subtypes != NULL) &&
+		(type->subtypes->subtypes != NULL)) {
+		xmlSchemaTypePtr modelGr;
+                xmlAutomataStatePtr start, end;
+
+		modelGr = type->subtypes->subtypes;
+                start = ctxt->state;
+                end = xmlAutomataNewState(ctxt->am);		
+                if (type->maxOccurs == 1) {
+		    ctxt->state = start;
+		    xmlSchemaBuildAContentModel(modelGr, ctxt, name);
+		    xmlAutomataNewEpsilon(ctxt->am, ctxt->state, end);
+                } else {
+                    int counter;
+                    xmlAutomataStatePtr hop;
+                    int maxOccurs = type->maxOccurs == UNBOUNDED ?
+				    UNBOUNDED : type->maxOccurs - 1;
+                    int minOccurs =
+                        type->minOccurs < 1 ? 0 : type->minOccurs - 1;
+		    
+                    counter =
+                        xmlAutomataNewCounter(ctxt->am, minOccurs, maxOccurs);
+                    hop = xmlAutomataNewState(ctxt->am);		                        
+                    ctxt->state = start;
+                    xmlSchemaBuildAContentModel(modelGr, ctxt, name);
+                    xmlAutomataNewEpsilon(ctxt->am, ctxt->state, hop);
+                    xmlAutomataNewCountedTrans(ctxt->am, hop, start,
+			counter);
+                    xmlAutomataNewCounterTrans(ctxt->am, hop, end,
+			counter);
+                }
+                if (type->minOccurs == 0) {
+                    xmlAutomataNewEpsilon(ctxt->am, start, end);
+                }
+                ctxt->state = end;
+                break;
+	    }
+	    break;
         case XML_SCHEMA_TYPE_COMPLEX:
         case XML_SCHEMA_TYPE_COMPLEX_CONTENT:
             if (type->subtypes != NULL)
@@ -9295,6 +9338,7 @@ xmlSchemaBuildAttributeValidation(xmlSchemaParserCtxtPtr ctxt, xmlSchemaTypePtr 
     xmlSchemaTypePtr anyType;
     int baseIsAnyType = 0;
     xmlChar *str = NULL;
+    int err = 0;
 
     anyType = xmlSchemaGetBuiltInType(XML_SCHEMAS_ANYTYPE);
     /* 
@@ -9357,27 +9401,32 @@ xmlSchemaBuildAttributeValidation(xmlSchemaParserCtxtPtr ctxt, xmlSchemaTypePtr 
     /*
     * Handle attribute wildcards.
     */	
-    if (xmlSchemaBuildCompleteAttributeWildcard(ctxt, 
-	attrs, &type->attributeWildcard) == -1) {	    
-	if ((type->attributeWildcard != NULL) &&
-	    /* Either we used the short hand form... */
-	    ((type->subtypes == NULL) ||
-	    /* Or complexType -> restriction/extension */
-	    (type->attributeWildcard != type->subtypes->subtypes->attributeWildcard)))
-	    type->flags |= XML_SCHEMAS_TYPE_OWNED_ATTR_WILDCARD;
-	return (-1);
-    }
+    err = xmlSchemaBuildCompleteAttributeWildcard(ctxt, 
+	attrs, &type->attributeWildcard);    
     /*
     * TODO: This "onwed_attr_wildcard" is quite sensless: we should
     * create the wildcard right from the start on the complexType,
     * rather than on the <restriction>/<extension>.
+    *
+    * This here simply checks if <complexType>-><restriction>|<extension>
+    * does exist and its wildcard is used or not.
     */
-    if ((type->attributeWildcard != NULL) &&
-	/* Either we used the short hand form... */
-	((type->subtypes == NULL) ||
-	/* Or complexType -> restriction/extension */
-	(type->attributeWildcard != type->subtypes->subtypes->attributeWildcard)))
-	type->flags |= XML_SCHEMAS_TYPE_OWNED_ATTR_WILDCARD;
+    if (type->attributeWildcard != NULL) {
+	if ((type->subtypes == NULL) ||
+	    ((type->subtypes->type != XML_SCHEMA_TYPE_COMPLEX_CONTENT) &&
+	     (type->subtypes->type != XML_SCHEMA_TYPE_SIMPLE_CONTENT)) ||
+	    (type->subtypes->subtypes == NULL) ||
+	    (type->attributeWildcard != type->subtypes->subtypes->attributeWildcard)) {
+	    type->flags |= XML_SCHEMAS_TYPE_OWNED_ATTR_WILDCARD;
+	}
+    }
+    /*
+    * Note that an error for the above call to 
+    * xmlSchemaBuildCompleteAttributeWildcard is processed here, since we
+    * needed to set XML_SCHEMAS_TYPE_OWNED_ATTR_WILDCARD beforehand.
+    */
+    if (err == -1)
+	return (-1);
 
     if ((type->flags & XML_SCHEMAS_TYPE_DERIVATION_METHOD_EXTENSION) && 
 	((baseIsAnyType) ||
@@ -10957,6 +11006,38 @@ xmlSchemaCheckCOSCTExtends(xmlSchemaParserCtxtPtr ctxt,
 #endif
 
 /**
+ * xmlSchemaGroupDefFixup:
+ * @typeDecl:  the schema model group definition
+ * @ctxt:  the schema parser context
+ *
+ * Fixes model group definitions.
+ */
+static void
+xmlSchemaGroupDefFixup(xmlSchemaTypePtr group,
+		       xmlSchemaParserCtxtPtr ctxt, 
+		       const xmlChar * name ATTRIBUTE_UNUSED)
+{    
+    group->contentType = XML_SCHEMA_CONTENT_ELEMENTS;
+    if ((group->ref != NULL) && (group->subtypes == NULL)) {
+	xmlSchemaTypePtr groupDef;
+	/*
+	* Resolve the reference.
+	*/
+	groupDef = xmlSchemaGetGroup(ctxt->schema, group->ref,
+	    group->refNs);
+	if (groupDef == NULL) {
+	    xmlSchemaPResCompAttrErr(ctxt, 
+		XML_SCHEMAP_SRC_RESOLVE, 
+		NULL, group, NULL,
+		"ref", group->ref, group->refNs, 
+		XML_SCHEMA_TYPE_GROUP, NULL);
+	    return;
+	}
+	group->subtypes = groupDef;
+    }		
+}
+
+/**
  * xmlSchemaTypeFixup:
  * @typeDecl:  the schema type definition
  * @ctxt:  the schema parser context
@@ -11341,12 +11422,16 @@ xmlSchemaTypeFixup(xmlSchemaTypePtr typeDecl,
 		xmlSchemaCheckSRCSimpleType(ctxt, typeDecl);
 		ctxt->ctxtType = ctxtType;
 		break;
-            case XML_SCHEMA_TYPE_SEQUENCE:
-            case XML_SCHEMA_TYPE_GROUP:
+            case XML_SCHEMA_TYPE_SEQUENCE:            
             case XML_SCHEMA_TYPE_ALL:
             case XML_SCHEMA_TYPE_CHOICE:
                 typeDecl->contentType = XML_SCHEMA_CONTENT_ELEMENTS;
                 break;
+	    case XML_SCHEMA_TYPE_GROUP:
+		/*
+		* TODO: Handling was moved to xmlSchemaGroupDefFixup.
+		*/
+		break;
             case XML_SCHEMA_TYPE_LIST: 
 		xmlSchemaParseListRefFixup(typeDecl, ctxt);
 		typeDecl->contentType = XML_SCHEMA_CONTENT_SIMPLE;
@@ -11623,6 +11708,234 @@ xmlSchemaCheckDefaults(xmlSchemaTypePtr typeDecl,
 }
 
 /**
+ * xmlSchemaGetCircModelGrDefRef:
+ * @ctxtGr: the searched model group
+ * @list: the list of model groups to be processed
+ *
+ * This one is intended to be used by
+ * xmlSchemaCheckGroupDefCircular only.
+ *
+ * Returns the circular model group definition reference, otherwise NULL.
+ */
+static xmlSchemaTypePtr
+xmlSchemaGetCircModelGrDefRef(xmlSchemaTypePtr ctxtGrDef,
+			  xmlSchemaTypePtr gr)
+{    
+    xmlSchemaTypePtr circ = NULL;
+    int marked;
+    /*
+    * We will search for an model group reference which
+    * references the context model group definition.
+    */        
+    while (gr != NULL) {
+	if (((gr->type == XML_SCHEMA_TYPE_GROUP) ||
+	     (gr->type == XML_SCHEMA_TYPE_ALL) ||
+	     (gr->type == XML_SCHEMA_TYPE_SEQUENCE) ||
+	     (gr->type == XML_SCHEMA_TYPE_CHOICE)) &&
+	    (gr->subtypes != NULL)) {		 
+	    marked = 0;
+	    if ((gr->type == XML_SCHEMA_TYPE_GROUP) &&
+		(gr->ref != NULL)) {
+		if (gr->subtypes == ctxtGrDef)
+		    return (gr);
+		else if (gr->subtypes->flags & 
+		    XML_SCHEMAS_TYPE_MARKED) {
+		    gr = gr->next;
+		    continue;
+		} else {
+		    /*
+		    * Mark to avoid infinite recursion on
+		    * circular references not yet examined.
+		    */
+		    gr->subtypes->flags |= XML_SCHEMAS_TYPE_MARKED;
+		    marked = 1;
+		} 
+		if (gr->subtypes->subtypes != NULL)
+		    circ = xmlSchemaGetCircModelGrDefRef(ctxtGrDef, 
+			gr->subtypes->subtypes);
+		    /*
+		    * Unmark the visited model group definition.
+		*/
+		if (marked)
+		    gr->subtypes->flags ^= XML_SCHEMAS_TYPE_MARKED;
+		if (circ != NULL)
+		    return (circ);
+	    } else {
+		circ = xmlSchemaGetCircModelGrDefRef(ctxtGrDef, 
+		    (xmlSchemaTypePtr) gr->subtypes);
+		if (circ != NULL)
+		    return (circ);
+	    }
+
+	}
+	gr = gr->next;
+    }
+    return (NULL);
+}
+
+/**
+ * xmlSchemaCheckGroupDefCircular:
+ * attrGr:  the model group definition
+ * @ctxt:  the parser context
+ * @name:  the name
+ *
+ * Checks for circular references to model group definitions.
+ */
+static void
+xmlSchemaCheckGroupDefCircular(xmlSchemaTypePtr modelGrDef,
+			    xmlSchemaParserCtxtPtr ctxt, 
+			    const xmlChar * name ATTRIBUTE_UNUSED)
+{    
+    /*
+    * Schema Component Constraint: Model Group Correct
+    * 2 Circular groups are disallowed. That is, within the {particles} 
+    * of a group there must not be at any depth a particle whose {term} 
+    * is the group itself.
+    */
+    /*
+    * NOTE: "gr->subtypes" holds the referenced group.
+    */
+    if ((modelGrDef->type != XML_SCHEMA_TYPE_GROUP) || 
+	((modelGrDef->flags & XML_SCHEMAS_TYPE_GLOBAL) == 0) ||
+	(modelGrDef->subtypes == NULL))
+	return;
+    else {
+	xmlSchemaTypePtr circ;
+
+	circ = xmlSchemaGetCircModelGrDefRef(modelGrDef, modelGrDef->subtypes);
+	if (circ != NULL) {
+	    /*
+	    * TODO: Report the referenced attr group as QName.
+	    */
+	    xmlSchemaPCustomErr(ctxt,
+		XML_SCHEMAP_MG_PROPS_CORRECT_2,
+		NULL, NULL, circ->node,
+		"Circular reference to the model group definition '%s' "
+		"defined", modelGrDef->name);
+	    /*
+	    * NOTE: We will cut the reference to avoid further
+	    * confusion of the processor.
+	    * TODO: SPEC: Does the spec define how to process here?
+	    */
+	    circ->subtypes = NULL;
+	}
+    }
+}
+
+
+/**
+ * xmlSchemaGetCircAttrGrRef:
+ * @ctxtGr: the searched attribute group
+ * @attr: the current attribute list to be processed
+ *
+ * This one is intended to be used by
+ * xmlSchemaCheckSRCAttributeGroupCircular only.
+ *
+ * Returns the circular attribute grou reference, otherwise NULL.
+ */
+static xmlSchemaAttributeGroupPtr
+xmlSchemaGetCircAttrGrRef(xmlSchemaAttributeGroupPtr ctxtGr,
+			  xmlSchemaAttributePtr attr)
+{    
+    xmlSchemaAttributeGroupPtr circ = NULL, gr;
+    int marked;
+    /*
+    * We will search for an attribute group reference which
+    * references the context attribute group.
+    */    	
+    while (attr != NULL) {
+	marked = 0;
+	if (attr->type == XML_SCHEMA_TYPE_ATTRIBUTEGROUP) {
+	    gr = (xmlSchemaAttributeGroupPtr) attr;
+	    if (gr->refItem != NULL)  {
+		if (gr->refItem == ctxtGr)
+		    return (gr);
+		else if (gr->refItem->flags & 
+		    XML_SCHEMAS_ATTRGROUP_MARKED) {
+		    attr = attr->next;
+		    continue;
+		} else {
+		    /*
+		    * Mark as visited to avoid infinite recursion on
+		    * circular references not yet examined.
+		    */
+		    gr->refItem->flags |= XML_SCHEMAS_ATTRGROUP_MARKED;
+		    marked = 1;
+		}
+	    }
+	    if (gr->attributes != NULL)
+		circ = xmlSchemaGetCircAttrGrRef(ctxtGr, gr->attributes);
+	    /*
+	    * Unmark the visited group's attributes.
+	    */
+	    if (marked)
+		gr->refItem->flags ^= XML_SCHEMAS_ATTRGROUP_MARKED;
+	    if (circ != NULL)
+		return (circ);
+	}
+	attr = attr->next;
+    }
+    return (NULL);
+}
+				
+/**
+ * xmlSchemaCheckSRCAttributeGroupCircular:
+ * attrGr:  the attribute group definition
+ * @ctxt:  the parser context
+ * @name:  the name
+ *
+ * Checks for circular references of attribute groups.
+ */
+static void
+xmlSchemaCheckAttributeGroupCircular(xmlSchemaAttributeGroupPtr attrGr,
+					xmlSchemaParserCtxtPtr ctxt, 
+					const xmlChar * name ATTRIBUTE_UNUSED)
+{    
+    /*
+    * Schema Representation Constraint: 
+    * Attribute Group Definition Representation OK
+    * 3 Circular group reference is disallowed outside <redefine>. 
+    * That is, unless this element information item's parent is 
+    * <redefine>, then among the [children], if any, there must 
+    * not be an <attributeGroup> with ref [attribute] which resolves 
+    * to the component corresponding to this <attributeGroup>. Indirect 
+    * circularity is also ruled out. That is, when QName resolution 
+    * (Schema Document) (§3.15.3) is applied to a ·QName· arising from 
+    * any <attributeGroup>s with a ref [attribute] among the [children], 
+    * it must not be the case that a ·QName· is encountered at any depth 
+    * which resolves to the component corresponding to this <attributeGroup>.
+    */
+    /*
+    * Only global components can be referenced.
+    */
+    if (((attrGr->flags & XML_SCHEMAS_ATTRGROUP_GLOBAL) == 0) || 
+	(attrGr->attributes == NULL))
+	return;
+    else {
+	xmlSchemaAttributeGroupPtr circ;
+
+	circ = xmlSchemaGetCircAttrGrRef(attrGr, attrGr->attributes);
+	if (circ != NULL) {
+	    /*
+	    * TODO: Report the referenced attr group as QName.
+	    */
+	    xmlSchemaPCustomErr(ctxt,
+		XML_SCHEMAP_SRC_ATTRIBUTE_GROUP_3,
+		NULL, NULL, circ->node,
+		"Circular reference to the attribute group '%s' "
+		"defined", attrGr->name);
+	    /*
+	    * NOTE: We will cut the reference to avoid further
+	    * confusion of the processor.
+	    * BADSPEC: The spec should define how to process in this case.
+	    */
+	    circ->attributes = NULL;
+	    circ->refItem = NULL;
+	}
+    }
+}
+
+/**
  * xmlSchemaAttrGrpFixup:
  * @attrgrpDecl:  the schema attribute definition
  * @ctxt:  the schema parser context
@@ -11651,6 +11964,10 @@ xmlSchemaAttrGrpFixup(xmlSchemaAttributeGroupPtr attrgrp,
 		XML_SCHEMA_TYPE_ATTRIBUTEGROUP, NULL);
             return;
         }
+	attrgrp->refItem = ref;
+	/*
+	* Check for self reference!
+	*/
         xmlSchemaAttrGrpFixup(ref, ctxt, NULL);
         attrgrp->attributes = ref->attributes;
 	attrgrp->attributeWildcard = ref->attributeWildcard;
@@ -11834,15 +12151,33 @@ xmlSchemaParse(xmlSchemaParserCtxtPtr ctxt)
                 ctxt);
 
     /*
+    * Check attribute groups for circular references.
+    */
+    xmlHashScan(ret->attrgrpDecl, (xmlHashScanner) 
+	xmlSchemaCheckAttributeGroupCircular, ctxt);
+
+    /*
+    * Then fixup all model group definitions.
+    */    
+    xmlHashScan(ret->groupDecl, (xmlHashScanner) xmlSchemaGroupDefFixup, ctxt);
+
+    /*
      * Then fixup all types properties
      */    
-    xmlHashScan(ret->typeDecl, (xmlHashScanner) xmlSchemaTypeFixup, ctxt);    
+    xmlHashScan(ret->typeDecl, (xmlHashScanner) xmlSchemaTypeFixup, ctxt);
 
     /*
      * Then fix references of element declaration; apply constraints.
      */    
     xmlHashScanFull(ret->elemDecl,
                     (xmlHashScannerFull) xmlSchemaRefFixupCallback, ctxt);
+
+     /*
+    * Check model groups defnitions for circular references.
+    */
+    xmlHashScan(ret->groupDecl, (xmlHashScanner) 
+	xmlSchemaCheckGroupDefCircular, ctxt);
+
 
     /*
      * Then build the content model for all elements

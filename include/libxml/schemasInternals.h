@@ -318,6 +318,12 @@ struct _xmlSchemaWildcard {
  * The attribute wildcard has been already builded.
  */
 #define XML_SCHEMAS_ATTRGROUP_GLOBAL 1 << 1
+/**
+ * XML_SCHEMAS_ATTRGROUP_MARKED:
+ *
+ * Marks the attr group as marked; used for circular checks.
+ */
+#define XML_SCHEMAS_ATTRGROUP_MARKED 1 << 2
 
 /**
  * An attribute group definition.
@@ -341,6 +347,7 @@ struct _xmlSchemaAttributeGroup {
     int flags;
     xmlSchemaWildcardPtr attributeWildcard;
     const xmlChar *refPrefix;
+    xmlSchemaAttributeGroupPtr refItem; /* The referenced attribute group */
 };
 
 /**
@@ -457,6 +464,12 @@ struct _xmlSchemaFacetLink {
  * the simpleType has a final of "union".
  */
 #define XML_SCHEMAS_TYPE_BUILTIN_PRIMITIVE    1 << 14
+/**
+ * XML_SCHEMAS_TYPE_MARKED
+ *
+ * Marks the item as marked; used for circular checks.
+ */
+#define XML_SCHEMAS_TYPE_MARKED	1 << 16
 
 /**
  * _xmlSchemaType:

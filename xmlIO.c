@@ -394,15 +394,16 @@ xmlIOErr(int code, const char *extra)
 }
 
 /**
- * xmlLoaderErr:
- * @ctxt: the parser context
+ * __xmlLoaderErr:
+ * @ctx: the parser context
  * @extra:  extra informations
  *
  * Handle a resource access error
  */
-static void
-xmlLoaderErr(xmlParserCtxtPtr ctxt, const char *msg, const char *filename)
+void
+__xmlLoaderErr(void *ctx, const char *msg, const char *filename)
 {
+    xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlStructuredErrorFunc schannel = NULL;
     xmlGenericErrorFunc channel = NULL;
     void *data = NULL;
@@ -2985,10 +2986,10 @@ xmlCheckHTTPInput(xmlParserCtxtPtr ctxt, xmlParserInputPtr ret) {
         if (code >= 400) {
             /* fatal error */
 	    if (ret->filename != NULL)
-		xmlLoaderErr(ctxt, "failed to load HTTP resource \"%s\"\n",
+		__xmlLoaderErr(ctxt, "failed to load HTTP resource \"%s\"\n",
                          (const char *) ret->filename);
 	    else
-		xmlLoaderErr(ctxt, "failed to load HTTP resource\n", NULL);
+		__xmlLoaderErr(ctxt, "failed to load HTTP resource\n", NULL);
             xmlFreeInputStream(ret);
             ret = NULL;
         } else {
@@ -3149,14 +3150,10 @@ xmlDefaultExternalEntityLoader(const char *URL, const char *ID,
     if (resource == NULL) {
         if (ID == NULL)
             ID = "NULL";
-        xmlLoaderErr(ctxt, "failed to load external entity \"%s\"\n", ID);
+        __xmlLoaderErr(ctxt, "failed to load external entity \"%s\"\n", ID);
         return (NULL);
     }
     ret = xmlNewInputFromFile(ctxt, (const char *) resource);
-    if (ret == NULL) {
-        xmlLoaderErr(ctxt, "failed to load external entity \"%s\"\n",
-                     (const char *) resource);
-    }
     if ((resource != NULL) && (resource != (xmlChar *) URL))
         xmlFree(resource);
     return (ret);

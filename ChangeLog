@@ -1,3 +1,10 @@
+Mon Oct 27 06:17:30 EST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* libxml.h parserInternals.c xmlIO.c: make sure we report errors
+	  if xmlNewInputFromFile() fails.
+	* xmlreader.c: avoid using _private for the node or document
+	  elements.
+
 Sat Oct 25 17:33:59 CEST 2003 Igor Zlatkovic <igor@zlatkovic.com>
 
 	* win32/configure.js: added declaration for verMicroSuffix

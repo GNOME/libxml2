@@ -139,9 +139,8 @@ struct _xmlTextReader {
 #endif
 };
 
-static const char *xmlTextReaderIsEmpty = "This element is empty";
-static const char *xmlTextReaderIsEmptyPreserved = "Preserve this element";
-static const char *xmlTextReaderIsPreserved = "Preserve this element";
+#define NODE_IS_EMPTY		0x1
+#define NODE_IS_PRESERVED	0x2
 
 /**
  * CONSTSTR:
@@ -529,7 +528,7 @@ xmlTextReaderStartElement(void *ctx, const xmlChar *fullname,
 	if ((ctxt->node != NULL) && (ctxt->input != NULL) &&
 	    (ctxt->input->cur != NULL) && (ctxt->input->cur[0] == '/') &&
 	    (ctxt->input->cur[1] == '>'))
-	    ctxt->node->_private = (void *) xmlTextReaderIsEmpty;
+	    ctxt->node->extra = NODE_IS_EMPTY;
     }
     if (reader != NULL)
 	reader->state = XML_TEXTREADER_ELEMENT;
@@ -594,7 +593,7 @@ xmlTextReaderStartElementNs(void *ctx,
 	if ((ctxt->node != NULL) && (ctxt->input != NULL) &&
 	    (ctxt->input->cur != NULL) && (ctxt->input->cur[0] == '/') &&
 	    (ctxt->input->cur[1] == '>'))
-	    ctxt->node->_private = (void *) xmlTextReaderIsEmpty;
+	    ctxt->node->extra = NODE_IS_EMPTY;
     }
     if (reader != NULL)
 	reader->state = XML_TEXTREADER_ELEMENT;
@@ -981,8 +980,7 @@ xmlTextReaderValidateEntity(xmlTextReaderPtr reader) {
 	        xmlNodePtr tmp;
 		if (reader->entNr == 0) {
 		    while ((tmp = node->last) != NULL) {
-			if ((tmp->_private != xmlTextReaderIsEmptyPreserved) &&
-			    (tmp->_private != xmlTextReaderIsPreserved)) {
+			if ((tmp->extra & NODE_IS_PRESERVED) == 0) {
 			    xmlUnlinkNode(tmp);
 			    xmlTextReaderFreeNode(reader, tmp);
 			} else
@@ -1105,8 +1103,6 @@ xmlTextReaderRead(xmlTextReaderPtr reader) {
 	} while ((reader->ctxt->node == NULL) &&
 		 ((reader->mode != XML_TEXTREADER_MODE_EOF) &&
 		  (reader->mode != XML_TEXTREADER_DONE)));
-	if (reader->ctxt->myDoc != NULL)
-	    reader->ctxt->myDoc->_private = reader;
 	if (reader->ctxt->node == NULL) {
 	    if (reader->ctxt->myDoc != NULL) {
 		reader->node = reader->ctxt->myDoc->children;
@@ -1170,8 +1166,7 @@ get_next_node:
 	if ((oldstate == XML_TEXTREADER_ELEMENT) &&
             (reader->node->type == XML_ELEMENT_NODE) &&
 	    (reader->node->children == NULL) &&
-	    (reader->node->_private != (void *)xmlTextReaderIsEmpty) &&
-	    (reader->node->_private != (void *)xmlTextReaderIsEmptyPreserved)) {
+	    ((reader->node->extra & NODE_IS_EMPTY) == 0)) {
 	    reader->state = XML_TEXTREADER_END;
 	    goto node_found;
 	}
@@ -1190,8 +1185,7 @@ get_next_node:
             (reader->node->prev->type != XML_DTD_NODE) &&
 	    (reader->entNr == 0)) {
 	    xmlNodePtr tmp = reader->node->prev;
-	    if ((tmp->_private != xmlTextReaderIsEmptyPreserved) &&
-	        (tmp->_private != xmlTextReaderIsPreserved)) {
+	    if ((tmp->extra & NODE_IS_PRESERVED) == 0) {
 		xmlUnlinkNode(tmp);
 		xmlTextReaderFreeNode(reader, tmp);
 	    }
@@ -1202,7 +1196,7 @@ get_next_node:
     if ((oldstate == XML_TEXTREADER_ELEMENT) &&
 	(reader->node->type == XML_ELEMENT_NODE) &&
 	(reader->node->children == NULL) &&
-	(reader->node->_private != (void *)xmlTextReaderIsEmpty)) {
+	((reader->node->extra & NODE_IS_EMPTY) == 0)) {;
 	reader->state = XML_TEXTREADER_END;
 	goto node_found;
     }
@@ -1228,8 +1222,7 @@ get_next_node:
 	 * Cleanup of the old node
 	 */
 	if ((oldnode->type != XML_DTD_NODE) &&
-	    (oldnode->_private != xmlTextReaderIsEmptyPreserved) &&
-	    (oldnode->_private != xmlTextReaderIsPreserved) &&
+	    ((oldnode->extra & NODE_IS_PRESERVED) == 0) &&
 	    (reader->entNr == 0)) {
 	    xmlUnlinkNode(oldnode);
 	    xmlTextReaderFreeNode(reader, oldnode);
@@ -1370,9 +1363,7 @@ xmlTextReaderNext(xmlTextReaderPtr reader) {
         return(xmlTextReaderRead(reader));
     if (reader->state == XML_TEXTREADER_END)
         return(xmlTextReaderRead(reader));
-    if (cur->_private == (void *)xmlTextReaderIsEmpty)
-        return(xmlTextReaderRead(reader));
-    if (cur->_private == (void *)xmlTextReaderIsEmptyPreserved)
+    if (cur->extra & NODE_IS_EMPTY)
         return(xmlTextReaderRead(reader));
     do {
         ret = xmlTextReaderRead(reader);
@@ -2561,8 +2552,7 @@ xmlTextReaderIsEmptyElement(xmlTextReaderPtr reader) {
 	return(0);
     if (reader->state == XML_TEXTREADER_END)
 	return(0);
-    return((reader->node->_private == (void *)xmlTextReaderIsEmpty) ||
-           (reader->node->_private == (void *)xmlTextReaderIsEmptyPreserved));
+    return((reader->node->extra & NODE_IS_EMPTY) != 0);
 }
 
 /**
@@ -3361,14 +3351,11 @@ xmlTextReaderPreserve(xmlTextReaderPtr reader) {
         cur = reader->node;
     if (cur == NULL)
         return(NULL);
-    if (cur->_private == (void *)xmlTextReaderIsEmpty)
-        cur->_private = (void *)xmlTextReaderIsEmptyPreserved;
-    else
-        cur->_private = (void *)xmlTextReaderIsPreserved;
+    cur->extra |= NODE_IS_PRESERVED;
         
     parent = cur->parent;;
     while (parent != NULL) {
-        parent->_private = (void *)xmlTextReaderIsPreserved;
+        parent->extra |= NODE_IS_PRESERVED;
 	parent = parent->parent;
     }
     return(cur);

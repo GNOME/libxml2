@@ -44,5 +44,9 @@
  * function while checking if the callback exists.
  */
 extern int __xmlRegisterCallbacks;
+/*
+ * internal error reporting routines, shared but not partof the API.
+ */
 void __xmlIOErr(int domain, int code, const char *extra);
+void __xmlLoaderErr(void *ctx, const char *msg, const char *filename);
 #endif /* ! __XML_LIBXML_H__ */

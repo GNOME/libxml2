@@ -1175,6 +1175,7 @@ xmlOutputBufferCreateFilename
 xmlOutputBufferCreateIO
 xmlOutputBufferFlush
 xmlOutputBufferWrite
+xmlOutputBufferWriteEscape
 xmlOutputBufferWriteString
 xmlParseAttValue
 xmlParseAttribute
@@ -1268,6 +1269,7 @@ xmlPatternMatch
 xmlPatterncompile
 xmlPedanticParserDefault
 xmlPopInput
+xmlPopInputCallbacks
 xmlPrintURI
 xmlPushInput
 xmlRMutexLock
@@ -1404,7 +1406,6 @@ xmlResetLastError
 xmlSAX2AttributeDecl
 xmlSAX2CDataBlock
 xmlSAX2Characters
-xmlSAX2CheckNamespace
 xmlSAX2Comment
 xmlSAX2ElementDecl
 xmlSAX2EndDocument
@@ -1415,11 +1416,9 @@ xmlSAX2ExternalSubset
 xmlSAX2GetColumnNumber
 xmlSAX2GetEntity
 xmlSAX2GetLineNumber
-xmlSAX2GetNamespace
 xmlSAX2GetParameterEntity
 xmlSAX2GetPublicId
 xmlSAX2GetSystemId
-xmlSAX2GlobalNamespace
 xmlSAX2HasExternalSubset
 xmlSAX2HasInternalSubset
 xmlSAX2IgnorableWhitespace
@@ -1428,13 +1427,11 @@ xmlSAX2InitDocbDefaultSAXHandler
 xmlSAX2InitHtmlDefaultSAXHandler
 xmlSAX2InternalSubset
 xmlSAX2IsStandalone
-xmlSAX2NamespaceDecl
 xmlSAX2NotationDecl
 xmlSAX2ProcessingInstruction
 xmlSAX2Reference
 xmlSAX2ResolveEntity
 xmlSAX2SetDocumentLocator
-xmlSAX2SetNamespace
 xmlSAX2StartDocument
 xmlSAX2StartElement
 xmlSAX2StartElementNs
@@ -1459,6 +1456,8 @@ xmlSaveFlush
 xmlSaveFormatFile
 xmlSaveFormatFileEnc
 xmlSaveFormatFileTo
+xmlSaveSetAttrEscape
+xmlSaveSetEscape
 xmlSaveToBuffer
 xmlSaveToFd
 xmlSaveToFilename

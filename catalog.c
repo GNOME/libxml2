@@ -3510,7 +3510,7 @@ xmlCatalogLocalResolveURI(void *catalogs, const xmlChar *URI) {
 const xmlChar *
 xmlCatalogGetSystem(const xmlChar *sysID) {
     xmlChar *ret;
-    static xmlChar result[1000];
+    xmlChar result[1000];
     static int msg = 0;
 
     if (!xmlCatalogInitialized)
@@ -3554,7 +3554,7 @@ xmlCatalogGetSystem(const xmlChar *sysID) {
 const xmlChar *
 xmlCatalogGetPublic(const xmlChar *pubID) {
     xmlChar *ret;
-    static xmlChar result[1000];
+    xmlChar result[1000];
     static int msg = 0;
 
     if (!xmlCatalogInitialized)

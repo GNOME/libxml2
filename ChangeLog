@@ -1,3 +1,8 @@
+Sun May 16 03:18:52 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* catalog.c: a couple of large static variable which should really
+	  not be declared as such cluttered the .bss section.
+
 Sun May 16 03:06:31 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* doc/ChangeLog.awk: fixed a couple of problems when parsing

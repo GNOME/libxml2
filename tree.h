@@ -10,12 +10,12 @@
 #ifndef __XML_TREE_H__
 #define __XML_TREE_H__
 
+#include <stdio.h>
+
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#include <stdio.h>
 
 /*
  * The different element types carried by an XML tree

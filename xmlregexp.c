@@ -32,8 +32,9 @@
 /* #define DEBUG_PUSH */
 /* #define DEBUG_COMPACTION */
 
-#define ERROR(str) ctxt->error = 1;					\
-    xmlGenericError(xmlGenericErrorContext, "Regexp: %s: %s\n", str, ctxt->cur)
+#define ERROR(str)							\
+    ctxt->error = XML_REGEXP_COMPILE_ERROR;				\
+    xmlRegexpErrCompile(ctxt, str);
 #define NEXT ctxt->cur++
 #define CUR (*(ctxt->cur))
 #define NXT(index) (ctxt->cur[index])
@@ -50,7 +51,6 @@
     xmlGenericError(xmlGenericErrorContext,				\
 	    "Unimplemented block at %s:%d\n",				\
             __FILE__, __LINE__);
-
 
 /************************************************************************
  * 									*
@@ -313,6 +313,54 @@ static void xmlRegFreeState(xmlRegStatePtr state);
 static void xmlRegFreeAtom(xmlRegAtomPtr atom);
 
 /************************************************************************
+ *									*
+ * 		Regexp memory error handler				*
+ *									*
+ ************************************************************************/
+/**
+ * xmlRegexpErrMemory:
+ * @extra:  extra informations
+ *
+ * Handle an out of memory condition
+ */
+static void
+xmlRegexpErrMemory(xmlRegParserCtxtPtr ctxt, const char *extra)
+{
+    const char *regexp = NULL;
+    if (ctxt != NULL) {
+        regexp = (const char *) ctxt->string;
+	ctxt->error = XML_ERR_NO_MEMORY;
+    }
+    __xmlRaiseError(NULL, NULL, NULL, NULL, XML_FROM_REGEXP,
+		    XML_ERR_NO_MEMORY, XML_ERR_FATAL, NULL, 0, extra,
+		    regexp, NULL, 0, 0,
+		    "Memory allocation failed : %s\n", extra);
+}
+
+/**
+ * xmlRegexpErrCompile:
+ * @extra:  extra informations
+ *
+ * Handle an compilation failure
+ */
+static void
+xmlRegexpErrCompile(xmlRegParserCtxtPtr ctxt, const char *extra)
+{
+    const char *regexp = NULL;
+    int idx = 0;
+
+    if (ctxt != NULL) {
+        regexp = (const char *) ctxt->string;
+	idx = ctxt->cur - ctxt->string;
+	ctxt->error = XML_REGEXP_COMPILE_ERROR;
+    }
+    __xmlRaiseError(NULL, NULL, NULL, NULL, XML_FROM_REGEXP,
+		    XML_REGEXP_COMPILE_ERROR, XML_ERR_FATAL, NULL, 0, extra,
+		    regexp, NULL, idx, 0,
+		    "failed to compile: %s\n", extra);
+}
+
+/************************************************************************
  * 									*
  * 			Allocation/Deallocation				*
  * 									*
@@ -333,8 +381,7 @@ xmlRegEpxFromParse(xmlRegParserCtxtPtr ctxt) {
 
     ret = (xmlRegexpPtr) xmlMalloc(sizeof(xmlRegexp));
     if (ret == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-	     "out of memory compiling regexp\n");
+	xmlRegexpErrMemory(ctxt, "compiling regexp");
 	return(NULL);
     }
     memset(ret, 0, sizeof(xmlRegexp));
@@ -370,8 +417,7 @@ xmlRegEpxFromParse(xmlRegParserCtxtPtr ctxt) {
 
 	stateRemap = xmlMalloc(ret->nbStates * sizeof(int));
 	if (stateRemap == NULL) {
-	    xmlGenericError(xmlGenericErrorContext,
-		 "out of memory compiling regexp\n");
+	    xmlRegexpErrMemory(ctxt, "compiling regexp");
 	    xmlFree(ret);
 	    return(NULL);
 	}
@@ -388,16 +434,14 @@ xmlRegEpxFromParse(xmlRegParserCtxtPtr ctxt) {
 #endif
 	stringMap = xmlMalloc(ret->nbAtoms * sizeof(char *));
 	if (stringMap == NULL) {
-	    xmlGenericError(xmlGenericErrorContext,
-		 "out of memory compiling regexp\n");
+	    xmlRegexpErrMemory(ctxt, "compiling regexp");
 	    xmlFree(stateRemap);
 	    xmlFree(ret);
 	    return(NULL);
 	}
 	stringRemap = xmlMalloc(ret->nbAtoms * sizeof(int));
 	if (stringRemap == NULL) {
-	    xmlGenericError(xmlGenericErrorContext,
-		 "out of memory compiling regexp\n");
+	    xmlRegexpErrMemory(ctxt, "compiling regexp");
 	    xmlFree(stringMap);
 	    xmlFree(stateRemap);
 	    xmlFree(ret);
@@ -481,8 +525,7 @@ xmlRegEpxFromParse(xmlRegParserCtxtPtr ctxt) {
 			memset(transdata, 0,
 			       nbstates * nbatoms * sizeof(void *));
 		    else {
-			xmlGenericError(xmlGenericErrorContext,
-			     "out of memory compiling regexp\n");
+			xmlRegexpErrMemory(ctxt, "compiling regexp");
 			break;
 		    }
 		}
@@ -619,7 +662,7 @@ xmlRegNewRange(xmlRegParserCtxtPtr ctxt,
 
     ret = (xmlRegRangePtr) xmlMalloc(sizeof(xmlRegRange));
     if (ret == NULL) {
-	ERROR("failed to allocate regexp range");
+	xmlRegexpErrMemory(ctxt, "allocating range");
 	return(NULL);
     }
     ret->neg = neg;
@@ -660,7 +703,7 @@ xmlRegNewAtom(xmlRegParserCtxtPtr ctxt, xmlRegAtomType type) {
 
     ret = (xmlRegAtomPtr) xmlMalloc(sizeof(xmlRegAtom));
     if (ret == NULL) {
-	ERROR("failed to allocate regexp atom");
+	xmlRegexpErrMemory(ctxt, "allocating atom");
 	return(NULL);
     }
     memset(ret, 0, sizeof(xmlRegAtom));
@@ -699,7 +742,7 @@ xmlRegNewState(xmlRegParserCtxtPtr ctxt) {
 
     ret = (xmlRegStatePtr) xmlMalloc(sizeof(xmlRegState));
     if (ret == NULL) {
-	ERROR("failed to allocate regexp state");
+	xmlRegexpErrMemory(ctxt, "allocating state");
 	return(NULL);
     }
     memset(ret, 0, sizeof(xmlRegState));
@@ -1043,7 +1086,7 @@ xmlRegAtomAddRange(xmlRegParserCtxtPtr ctxt, xmlRegAtomPtr atom,
 	atom->ranges = (xmlRegRangePtr *) xmlMalloc(atom->maxRanges *
 		                             sizeof(xmlRegRangePtr));
 	if (atom->ranges == NULL) {
-	    ERROR("add range: allocation failed");
+	    xmlRegexpErrMemory(ctxt, "adding ranges");
 	    atom->maxRanges = 0;
 	    return;
 	}
@@ -1053,7 +1096,7 @@ xmlRegAtomAddRange(xmlRegParserCtxtPtr ctxt, xmlRegAtomPtr atom,
 	tmp = (xmlRegRangePtr *) xmlRealloc(atom->ranges, atom->maxRanges *
 		                             sizeof(xmlRegRangePtr));
 	if (tmp == NULL) {
-	    ERROR("add range: allocation failed");
+	    xmlRegexpErrMemory(ctxt, "adding ranges");
 	    atom->maxRanges /= 2;
 	    return;
 	}
@@ -1074,7 +1117,7 @@ xmlRegGetCounter(xmlRegParserCtxtPtr ctxt) {
 	ctxt->counters = (xmlRegCounter *) xmlMalloc(ctxt->maxCounters *
 		                             sizeof(xmlRegCounter));
 	if (ctxt->counters == NULL) {
-	    ERROR("reg counter: allocation failed");
+	    xmlRegexpErrMemory(ctxt, "allocating counter");
 	    ctxt->maxCounters = 0;
 	    return(-1);
 	}
@@ -1084,7 +1127,7 @@ xmlRegGetCounter(xmlRegParserCtxtPtr ctxt) {
 	tmp = (xmlRegCounter *) xmlRealloc(ctxt->counters, ctxt->maxCounters *
 		                           sizeof(xmlRegCounter));
 	if (tmp == NULL) {
-	    ERROR("reg counter: allocation failed");
+	    xmlRegexpErrMemory(ctxt, "allocating counter");
 	    ctxt->maxCounters /= 2;
 	    return(-1);
 	}
@@ -1106,7 +1149,7 @@ xmlRegAtomPush(xmlRegParserCtxtPtr ctxt, xmlRegAtomPtr atom) {
 	ctxt->atoms = (xmlRegAtomPtr *) xmlMalloc(ctxt->maxAtoms *
 		                             sizeof(xmlRegAtomPtr));
 	if (ctxt->atoms == NULL) {
-	    ERROR("atom push: allocation failed");
+	    xmlRegexpErrMemory(ctxt, "pushing atom");
 	    ctxt->maxAtoms = 0;
 	    return(-1);
 	}
@@ -1116,7 +1159,7 @@ xmlRegAtomPush(xmlRegParserCtxtPtr ctxt, xmlRegAtomPtr atom) {
 	tmp = (xmlRegAtomPtr *) xmlRealloc(ctxt->atoms, ctxt->maxAtoms *
 		                             sizeof(xmlRegAtomPtr));
 	if (tmp == NULL) {
-	    ERROR("atom push: allocation failed");
+	    xmlRegexpErrMemory(ctxt, "allocating counter");
 	    ctxt->maxAtoms /= 2;
 	    return(-1);
 	}
@@ -1144,7 +1187,7 @@ xmlRegStateAddTrans(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr state,
 	state->trans = (xmlRegTrans *) xmlMalloc(state->maxTrans *
 		                             sizeof(xmlRegTrans));
 	if (state->trans == NULL) {
-	    ERROR("add range: allocation failed");
+	    xmlRegexpErrMemory(ctxt, "adding transition");
 	    state->maxTrans = 0;
 	    return;
 	}
@@ -1154,7 +1197,7 @@ xmlRegStateAddTrans(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr state,
 	tmp = (xmlRegTrans *) xmlRealloc(state->trans, state->maxTrans *
 		                             sizeof(xmlRegTrans));
 	if (tmp == NULL) {
-	    ERROR("add range: allocation failed");
+	    xmlRegexpErrMemory(ctxt, "adding transition");
 	    state->maxTrans /= 2;
 	    return;
 	}
@@ -1188,7 +1231,7 @@ xmlRegStatePush(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr state) {
 	ctxt->states = (xmlRegStatePtr *) xmlMalloc(ctxt->maxStates *
 		                             sizeof(xmlRegStatePtr));
 	if (ctxt->states == NULL) {
-	    ERROR("add range: allocation failed");
+	    xmlRegexpErrMemory(ctxt, "adding state");
 	    ctxt->maxStates = 0;
 	    return(-1);
 	}
@@ -1198,7 +1241,7 @@ xmlRegStatePush(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr state) {
 	tmp = (xmlRegStatePtr *) xmlRealloc(ctxt->states, ctxt->maxStates *
 		                             sizeof(xmlRegStatePtr));
 	if (tmp == NULL) {
-	    ERROR("add range: allocation failed");
+	    xmlRegexpErrMemory(ctxt, "adding state");
 	    ctxt->maxStates /= 2;
 	    return(-1);
 	}
@@ -2063,7 +2106,7 @@ xmlFARegExecSave(xmlRegExecCtxtPtr exec) {
 	exec->rollbacks = (xmlRegExecRollback *) xmlMalloc(exec->maxRollbacks *
 		                             sizeof(xmlRegExecRollback));
 	if (exec->rollbacks == NULL) {
-	    fprintf(stderr, "exec save: allocation failed");
+	    xmlRegexpErrMemory(NULL, "saving regexp");
 	    exec->maxRollbacks = 0;
 	    return;
 	}
@@ -2077,7 +2120,7 @@ xmlFARegExecSave(xmlRegExecCtxtPtr exec) {
 	tmp = (xmlRegExecRollback *) xmlRealloc(exec->rollbacks,
 			exec->maxRollbacks * sizeof(xmlRegExecRollback));
 	if (tmp == NULL) {
-	    fprintf(stderr, "exec save: allocation failed");
+	    xmlRegexpErrMemory(NULL, "saving regexp");
 	    exec->maxRollbacks /= 2;
 	    return;
 	}
@@ -2093,7 +2136,7 @@ xmlFARegExecSave(xmlRegExecCtxtPtr exec) {
 	    exec->rollbacks[exec->nbRollbacks].counts = (int *)
 		xmlMalloc(exec->comp->nbCounters * sizeof(int));
 	    if (exec->rollbacks[exec->nbRollbacks].counts == NULL) {
-		fprintf(stderr, "exec save: allocation failed");
+		xmlRegexpErrMemory(NULL, "saving regexp");
 		exec->status = -5;
 		return;
 	    }
@@ -2158,8 +2201,10 @@ xmlFARegExec(xmlRegexpPtr comp, const xmlChar *content) {
     exec->transcount = 0;
     if (comp->nbCounters > 0) {
 	exec->counts = (int *) xmlMalloc(comp->nbCounters * sizeof(int));
-	if (exec->counts == NULL)
+	if (exec->counts == NULL) {
+	    xmlRegexpErrMemory(NULL, "running regexp");
 	    return(-1);
+	}
         memset(exec->counts, 0, comp->nbCounters * sizeof(int));
     } else
 	exec->counts = NULL;
@@ -2344,6 +2389,7 @@ xmlRegNewExecCtxt(xmlRegexpPtr comp, xmlRegExecCallbacks callback, void *data) {
         return(NULL);
     exec = (xmlRegExecCtxtPtr) xmlMalloc(sizeof(xmlRegExecCtxt));
     if (exec == NULL) {
+	xmlRegexpErrMemory(NULL, "creating execution context");
 	return(NULL);
     }
     memset(exec, 0, sizeof(xmlRegExecCtxt));
@@ -2364,6 +2410,7 @@ xmlRegNewExecCtxt(xmlRegexpPtr comp, xmlRegExecCallbacks callback, void *data) {
     if (comp->nbCounters > 0) {
 	exec->counts = (int *) xmlMalloc(comp->nbCounters * sizeof(int));
 	if (exec->counts == NULL) {
+	    xmlRegexpErrMemory(NULL, "creating execution context");
 	    xmlFree(exec);
 	    return(NULL);
 	}
@@ -2422,7 +2469,7 @@ xmlFARegExecSaveInputString(xmlRegExecCtxtPtr exec, const xmlChar *value,
 	exec->inputStack = (xmlRegInputTokenPtr) 
 	    xmlMalloc(exec->inputStackMax * sizeof(xmlRegInputToken));
 	if (exec->inputStack == NULL) {
-	    fprintf(stderr, "push input: allocation failed");
+	    xmlRegexpErrMemory(NULL, "pushing input string");
 	    exec->inputStackMax = 0;
 	    return;
 	}
@@ -2433,7 +2480,7 @@ xmlFARegExecSaveInputString(xmlRegExecCtxtPtr exec, const xmlChar *value,
 	tmp = (xmlRegInputTokenPtr) xmlRealloc(exec->inputStack,
 			exec->inputStackMax * sizeof(xmlRegInputToken));
 	if (tmp == NULL) {
-	    fprintf(stderr, "push input: allocation failed");
+	    xmlRegexpErrMemory(NULL, "pushing input string");
 	    exec->inputStackMax /= 2;
 	    return;
 	}

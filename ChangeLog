@@ -1,3 +1,8 @@
+Wed Oct  8 10:52:05 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmlregexp.c include/libxml/xmlerror.h: error handling
+	  cleanup of the Regexp module.
+
 Wed Oct  8 01:09:05 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: converting the tree module too

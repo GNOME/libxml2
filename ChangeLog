@@ -1,3 +1,8 @@
+Mon Sep  1 22:31:38 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in xml2-config.in: Applied a patch from Kevin P. Fleming
+	  to add --libtool-libs option to xml2-config script.
+
 Sun Aug 31 21:52:12 PDT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* doc/README.docs, doc/Makefile.am: new file added,

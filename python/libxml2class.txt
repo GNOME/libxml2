@@ -17,6 +17,11 @@ htmlIsBooleanAttr()
 htmlNewDoc()
 htmlNewDocNoDtD()
 
+# functions from module SAX2
+defaultSAXHandlerInit()
+docbDefaultSAXHandlerInit()
+htmlDefaultSAXHandlerInit()
+
 # functions from module catalog
 catalogAdd()
 catalogCleanup()

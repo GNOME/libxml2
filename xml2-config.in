@@ -14,6 +14,7 @@ Known values for OPTION are:
 
   --prefix=DIR		change libxml prefix [default $prefix]
   --libs		print library linking information
+  --libtool-libs        print linking information for use with libtool
   --cflags		print pre-processor and compiler flags
   --help		display this help and exit
   --version		output version information
@@ -58,6 +59,10 @@ while test $# -gt 0; do
     --cflags)
        	echo @XML_INCLUDEDIR@ @XML_CFLAGS@
        	;;
+
+    --libtool-libs)
+	echo ${libdir}/@XML_LIBTOOLLIBS@
+        ;;
 
     --libs)
         if [ "`uname`" = "Linux" ]

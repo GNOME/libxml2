@@ -1119,6 +1119,7 @@ htmlNewDoc(const CHAR *URI, const CHAR *ExternalID) {
         fprintf(stderr, "xmlNewDoc : malloc failed\n");
 	return(NULL);
     }
+    memset(cur, 0, sizeof(xmlDoc));
 
     cur->type = XML_DOCUMENT_NODE;
     cur->version = NULL;

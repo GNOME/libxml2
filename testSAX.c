@@ -8,6 +8,13 @@
 
 #include "libxml.h"
 
+#ifdef HAVE_SYS_TIME_H
+#include <sys/time.h>
+#endif
+#ifdef HAVE_TIME_H
+#include <time.h>
+#endif
+
 #ifdef LIBXML_SAX1_ENABLED
 #include <string.h>
 #include <stdarg.h>
@@ -51,7 +58,145 @@ static int nonull = 0;
 static int sax2 = 0;
 static int repeat = 0;
 static int callbacks = 0;
+static int timing = 0;
 
+/*
+ * Timing routines.
+ */
+/*
+ * Internal timing routines to remove the necessity to have unix-specific
+ * function calls
+ */
+
+#ifndef HAVE_GETTIMEOFDAY 
+#ifdef HAVE_SYS_TIMEB_H
+#ifdef HAVE_SYS_TIME_H
+#ifdef HAVE_FTIME
+
+static int
+my_gettimeofday(struct timeval *tvp, void *tzp)
+{
+	struct timeb timebuffer;
+
+	ftime(&timebuffer);
+	if (tvp) {
+		tvp->tv_sec = timebuffer.time;
+		tvp->tv_usec = timebuffer.millitm * 1000L;
+	}
+	return (0);
+}
+#define HAVE_GETTIMEOFDAY 1
+#define gettimeofday my_gettimeofday
+
+#endif /* HAVE_FTIME */
+#endif /* HAVE_SYS_TIME_H */
+#endif /* HAVE_SYS_TIMEB_H */
+#endif /* !HAVE_GETTIMEOFDAY */
+
+#if defined(HAVE_GETTIMEOFDAY)
+static struct timeval begin, end;
+
+/*
+ * startTimer: call where you want to start timing
+ */
+static void
+startTimer(void)
+{
+    gettimeofday(&begin, NULL);
+}
+
+/*
+ * endTimer: call where you want to stop timing and to print out a
+ *           message about the timing performed; format is a printf
+ *           type argument
+ */
+static void
+endTimer(const char *fmt, ...)
+{
+    long msec;
+    va_list ap;
+
+    gettimeofday(&end, NULL);
+    msec = end.tv_sec - begin.tv_sec;
+    msec *= 1000;
+    msec += (end.tv_usec - begin.tv_usec) / 1000;
+
+#ifndef HAVE_STDARG_H
+#error "endTimer required stdarg functions"
+#endif
+    va_start(ap, fmt);
+    vfprintf(stderr, fmt, ap);
+    va_end(ap);
+
+    fprintf(stderr, " took %ld ms\n", msec);
+}
+#elif defined(HAVE_TIME_H)
+/*
+ * No gettimeofday function, so we have to make do with calling clock.
+ * This is obviously less accurate, but there's little we can do about
+ * that.
+ */
+#ifndef CLOCKS_PER_SEC
+#define CLOCKS_PER_SEC 100
+#endif
+
+static clock_t begin, end;
+static void
+startTimer(void)
+{
+    begin = clock();
+}
+static void
+endTimer(const char *fmt, ...)
+{
+    long msec;
+    va_list ap;
+
+    end = clock();
+    msec = ((end - begin) * 1000) / CLOCKS_PER_SEC;
+
+#ifndef HAVE_STDARG_H
+#error "endTimer required stdarg functions"
+#endif
+    va_start(ap, fmt);
+    vfprintf(stderr, fmt, ap);
+    va_end(ap);
+    fprintf(stderr, " took %ld ms\n", msec);
+}
+#else
+
+/*
+ * We don't have a gettimeofday or time.h, so we just don't do timing
+ */
+static void
+startTimer(void)
+{
+    /*
+     * Do nothing
+     */
+}
+static void
+endTimer(char *format, ...)
+{
+    /*
+     * We cannot do anything because we don't have a timing function
+     */
+#ifdef HAVE_STDARG_H
+    va_start(ap, format);
+    vfprintf(stderr, format, ap);
+    va_end(ap);
+    fprintf(stderr, " was not timed\n", msec);
+#else
+    /* We don't have gettimeofday, time or stdarg.h, what crazy world is
+     * this ?!
+     */
+#endif
+}
+#endif
+
+/*
+ * empty SAX block
+ */
 xmlSAXHandler emptySAXHandlerStruct = {
     NULL, /* internalSubset */
     NULL, /* isStandalone */
@@ -968,7 +1113,12 @@ int main(int argc, char **argv) {
 	else if ((!strcmp(argv[i], "-speed")) ||
 	         (!strcmp(argv[i], "--speed")))
 	    speed++;
-	else if ((!strcmp(argv[i], "-repeat")) ||
+	else if ((!strcmp(argv[i], "-timing")) ||
+	         (!strcmp(argv[i], "--timing"))) {
+	    nonull++;
+	    timing++;
+	    quiet++;
+	} else if ((!strcmp(argv[i], "-repeat")) ||
 	         (!strcmp(argv[i], "--repeat"))) {
 	    repeat++;
 	    quiet++;
@@ -988,7 +1138,13 @@ int main(int argc, char **argv) {
     if (noent != 0) xmlSubstituteEntitiesDefault(1);
     for (i = 1; i < argc ; i++) {
 	if (argv[i][0] != '-') {
+	    if (timing) {
+		startTimer();
+	    }
 	    parseAndPrintFile(argv[i]);
+	    if (timing) {
+		endTimer("Parsing");
+	    }
 	    files ++;
 	}
     }

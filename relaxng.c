@@ -1536,7 +1536,7 @@ xmlRelaxNGRemoveRedefine(xmlRelaxNGParserCtxtPtr ctxt,
             }
         } else if (IS_RELAXNG(tmp, "include")) {
             xmlChar *href = NULL;
-            xmlRelaxNGDocumentPtr inc = tmp->_private;
+            xmlRelaxNGDocumentPtr inc = tmp->psvi;
 
             if ((inc != NULL) && (inc->doc != NULL) &&
                 (inc->doc->children != NULL)) {
@@ -4488,7 +4488,7 @@ xmlRelaxNGParseInclude(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node)
     xmlNodePtr root;
     int ret = 0, tmp;
 
-    incl = node->_private;
+    incl = node->psvi;
     if (incl == NULL) {
         xmlRngPErr(ctxt, node, XML_RNGP_INCLUDE_EMPTY,
                    "Include node has no data\n", NULL, NULL);
@@ -4612,7 +4612,7 @@ xmlRelaxNGProcessExternalRef(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node)
     int newNs = 0, oldflags;
     xmlRelaxNGDefinePtr def;
 
-    docu = node->_private;
+    docu = node->psvi;
     if (docu != NULL) {
         def = xmlRelaxNGNewDefine(ctxt, node);
         if (def == NULL)
@@ -6919,7 +6919,7 @@ xmlRelaxNGCleanupTree(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr root)
                     if (ns != NULL)
                         xmlFree(ns);
                     xmlFree(URL);
-                    cur->_private = docu;
+                    cur->psvi = docu;
                 } else if (xmlStrEqual(cur->name, BAD_CAST "include")) {
                     xmlChar *href, *ns, *base, *URL;
                     xmlRelaxNGIncludePtr incl;
@@ -6973,7 +6973,7 @@ xmlRelaxNGCleanupTree(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr root)
                         goto skip_children;
                     }
                     xmlFree(URL);
-                    cur->_private = incl;
+                    cur->psvi = incl;
                 } else if ((xmlStrEqual(cur->name, BAD_CAST "element")) ||
                            (xmlStrEqual(cur->name, BAD_CAST "attribute")))
                 {
@@ -9572,7 +9572,7 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
              * This node was already validated successfully against
              * this definition.
              */
-            if (node->_private == define) {
+            if (node->psvi == define) {
                 ctxt->state->seq = xmlRelaxNGSkipIgnored(ctxt, node->next);
                 if (ctxt->errNr > errNr)
                     xmlRelaxNGPopErrors(ctxt, errNr);
@@ -9753,7 +9753,7 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
                 }
             }
             if (ret == 0) {
-                node->_private = define;
+                node->psvi = define;
             }
             ctxt->flags = oldflags;
             ctxt->state = oldstate;

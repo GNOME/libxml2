@@ -98,7 +98,7 @@
                                     <tr>
                                       <td bgcolor="#fffacd">
 				        <xsl:apply-templates mode="reflist" select="type"/>
-					<p><a href="mailto:daniel@veillard.com">Daniel Veillard</a></p>
+					<p><a href="bugs.html">Daniel Veillard</a></p>
                                       </td>
                                     </tr>
                                   </table>
@@ -152,7 +152,7 @@
                                     <tr>
                                       <td bgcolor="#fffacd">
 				        <xsl:apply-templates mode="reflist" select="file"/>
-					<p><a href="mailto:daniel@veillard.com">Daniel Veillard</a></p>
+					<p><a href="bugs.html">Daniel Veillard</a></p>
                                       </td>
                                     </tr>
                                   </table>
@@ -206,7 +206,7 @@
                                     <tr>
                                       <td bgcolor="#fffacd">
 				        <xsl:apply-templates mode="reflist" select="type"/>
-					<p><a href="mailto:daniel@veillard.com">Daniel Veillard</a></p>
+					<p><a href="bugs.html">Daniel Veillard</a></p>
                                       </td>
                                     </tr>
                                   </table>
@@ -260,7 +260,7 @@
                                     <tr>
                                       <td bgcolor="#fffacd">
 				        <xsl:apply-templates mode="reflist" select="letter"/>
-					<p><a href="mailto:daniel@veillard.com">Daniel Veillard</a></p>
+					<p><a href="bugs.html">Daniel Veillard</a></p>
                                       </td>
                                     </tr>
                                   </table>
@@ -334,7 +334,7 @@
 				        <xsl:apply-templates mode="wordlist"
 					           select="$target/letter"/>
 				        <xsl:call-template name="apichunks"/>
-					<p><a href="mailto:daniel@veillard.com">Daniel Veillard</a></p>
+					<p><a href="bugs.html">Daniel Veillard</a></p>
                                       </td>
                                     </tr>
                                   </table>

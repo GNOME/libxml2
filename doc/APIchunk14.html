@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta content="text/html; charset=ISO-8859-1" http-equiv="Content-Type">
+<link rel="SHORTCUT ICON" href="/favicon.ico">
 <style type="text/css"><!--
 TD {font-family: Verdana,Arial,Helvetica}
 BODY {font-family: Verdana,Arial,Helvetica; margin-top: 2em; margin-left: 0em; margin-right: 0em}
@@ -75,10 +76,11 @@ A:link, A:visited, A:active { text-decoration: underline }
 <li><a href="http://mail.gnome.org/archives/xml/">Mail archive</a></li>
 <li><a href="http://xmlsoft.org/XSLT/">XSLT libxslt</a></li>
 <li><a href="http://phd.cs.unibo.it/gdome2/">DOM gdome2</a></li>
+<li><a href="http://www.aleksey.com/xmlsec/">XML-DSig xmlsec</a></li>
 <li><a href="ftp://xmlsoft.org/">FTP</a></li>
 <li><a href="http://www.fh-frankfurt.de/~igor/projects/libxml/">Windows binaries</a></li>
 <li><a href="http://garypennington.net/libxml2/">Solaris binaries</a></li>
-<li><a href="http://bugzilla.gnome.org/buglist.cgi?product=libxml">Bug Tracker</a></li>
+<li><a href="http://bugzilla.gnome.org/buglist.cgi?product=libxml&amp;product=libxml2">Bug Tracker</a></li>
 </ul></td></tr>
 </table>
 </td></tr></table></td>
@@ -112,11 +114,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <dl>
 <dt>macro</dt>
 <dd>
-<a href="html/libxml-xpathinternals.html#CHECK-ERROR-CAPS">CHECK_ERROR</a>
-<a href="html/libxml-xpathinternals.html#CHECK-ERROR0-CAPS">CHECK_ERROR0</a>
 <a href="html/libxml-xmlversion.html#LIBXML-DLL-IMPORT-CAPS">LIBXML_DLL_IMPORT</a>
-<a href="html/libxml-tree.html#XML-GET-CONTENT-CAPS">XML_GET_CONTENT</a>
-<a href="html/libxml-tree.html#XML-GET-LINE-CAPS">XML_GET_LINE</a>
 <a href="html/libxml-parserinternals.html#XMLISBLANK">xmlIsBlank</a>
 <a href="html/libxml-parserinternals.html#XMLISCHAR">xmlIsChar</a>
 </dd>
@@ -206,6 +204,10 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-hash.html#XMLHASHSCAN3">xmlHashScan3</a>
 <a href="html/libxml-hash.html#XMLHASHSCANFULL3">xmlHashScanFull3</a>
 <a href="html/libxml-valid.html#XMLVALIDATEATTRIBUTEVALUE">xmlValidateAttributeValue</a>
+<a href="html/libxml-valid.html#XMLVALIDATENAMEVALUE">xmlValidateNameValue</a>
+<a href="html/libxml-valid.html#XMLVALIDATENAMESVALUE">xmlValidateNamesValue</a>
+<a href="html/libxml-valid.html#XMLVALIDATENMTOKENVALUE">xmlValidateNmtokenValue</a>
+<a href="html/libxml-valid.html#XMLVALIDATENMTOKENSVALUE">xmlValidateNmtokensValue</a>
 <a href="html/libxml-valid.html#XMLVALIDATENOTATIONUSE">xmlValidateNotationUse</a>
 </dd>
 <dt>matches</dt>
@@ -517,7 +519,6 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-parserinternals.html#XML-SUBSTITUTE-PEREF-CAPS">XML_SUBSTITUTE_PEREF</a>
 <a href="html/libxml-parserinternals.html#XML-SUBSTITUTE-REF-CAPS">XML_SUBSTITUTE_REF</a>
 <a href="html/libxml-tree.html#XMLBUFFERALLOCATIONSCHEME">xmlBufferAllocationScheme</a>
-<a href="html/libxml-parserinternals.html#XMLENTITYREFERENCEFUNC">xmlEntityReferenceFunc</a>
 <a href="html/libxml-tree.html#XMLGETNSLIST">xmlGetNsList</a>
 <a href="html/libxml-encoding.html#XMLINITCHARENCODINGHANDLERS">xmlInitCharEncodingHandlers</a>
 <a href="html/libxml-tree.html#XMLNEWCHILD">xmlNewChild</a>
@@ -553,6 +554,10 @@ A:link, A:visited, A:active { text-decoration: underline }
 <dd>
 <a href="html/libxml-parser.html#XMLSTRCASESTR">xmlStrcasestr</a>
 <a href="html/libxml-parser.html#XMLSTRSTR">xmlStrstr</a>
+</dd>
+<dt>needs</dt>
+<dd>
+<a href="html/libxml-parserinternals.html#XMLENTITYREFERENCEFUNC">xmlEntityReferenceFunc</a>
 </dd>
 <dt>negative</dt>
 <dd>
@@ -833,7 +838,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="APIchunk21.html">w-w</a>
 <a href="APIchunk22.html">x-x</a>
 </h2>
-<p><a href="mailto:daniel@veillard.com">Daniel Veillard</a></p>
+<p><a href="bugs.html">Daniel Veillard</a></p>
 </td></tr></table></td></tr></table></td></tr></table></td>
 </tr></table></td></tr></table>
 </body>

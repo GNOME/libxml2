@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta content="text/html; charset=ISO-8859-1" http-equiv="Content-Type">
+<link rel="SHORTCUT ICON" href="/favicon.ico">
 <style type="text/css"><!--
 TD {font-family: Verdana,Arial,Helvetica}
 BODY {font-family: Verdana,Arial,Helvetica; margin-top: 2em; margin-left: 0em; margin-right: 0em}
@@ -75,10 +76,11 @@ A:link, A:visited, A:active { text-decoration: underline }
 <li><a href="http://mail.gnome.org/archives/xml/">Mail archive</a></li>
 <li><a href="http://xmlsoft.org/XSLT/">XSLT libxslt</a></li>
 <li><a href="http://phd.cs.unibo.it/gdome2/">DOM gdome2</a></li>
+<li><a href="http://www.aleksey.com/xmlsec/">XML-DSig xmlsec</a></li>
 <li><a href="ftp://xmlsoft.org/">FTP</a></li>
 <li><a href="http://www.fh-frankfurt.de/~igor/projects/libxml/">Windows binaries</a></li>
 <li><a href="http://garypennington.net/libxml2/">Solaris binaries</a></li>
-<li><a href="http://bugzilla.gnome.org/buglist.cgi?product=libxml">Bug Tracker</a></li>
+<li><a href="http://bugzilla.gnome.org/buglist.cgi?product=libxml&amp;product=libxml2">Bug Tracker</a></li>
 </ul></td></tr>
 </table>
 </td></tr></table></td>
@@ -147,6 +149,10 @@ A:link, A:visited, A:active { text-decoration: underline }
 <dd>
 <a href="html/libxml-encoding.html#XMLCHARENCODING">xmlCharEncoding</a>
 </dd>
+<dt>List</dt>
+<dd>
+<a href="html/libxml-tree.html#XMLENUMERATION">xmlEnumeration</a>
+</dd>
 <dt>Literal</dt>
 <dd>
 <a href="html/libxml-parserinternals.html#XMLPARSESYSTEMLITERAL">xmlParseSystemLiteral</a>
@@ -202,36 +208,6 @@ A:link, A:visited, A:active { text-decoration: underline }
 <dt>MUST</dt>
 <dd>
 <a href="html/libxml-c14n.html#XMLC14NDOCSAVETO">xmlC14NDocSaveTo</a>
-</dd>
-<dt>Macro</dt>
-<dd>
-<a href="html/libxml-xmlversion.html#ATTRIBUTE-UNUSED-CAPS">ATTRIBUTE_UNUSED</a>
-<a href="html/libxml-tree.html#BAD-CAST-CAPS">BAD_CAST</a>
-<a href="html/libxml-xpathinternals.html#CAST-TO-BOOLEAN-CAPS">CAST_TO_BOOLEAN</a>
-<a href="html/libxml-xpathinternals.html#CAST-TO-NUMBER-CAPS">CAST_TO_NUMBER</a>
-<a href="html/libxml-xpathinternals.html#CAST-TO-STRING-CAPS">CAST_TO_STRING</a>
-<a href="html/libxml-xpathinternals.html#CHECK-ARITY-CAPS">CHECK_ARITY</a>
-<a href="html/libxml-xpathinternals.html#CHECK-TYPE-CAPS">CHECK_TYPE</a>
-<a href="html/libxml-xpathinternals.html#CHECK-TYPE0-CAPS">CHECK_TYPE0</a>
-<a href="html/libxml-htmltree.html#HTML-COMMENT-NODE-CAPS">HTML_COMMENT_NODE</a>
-<a href="html/libxml-htmltree.html#HTML-ENTITY-REF-NODE-CAPS">HTML_ENTITY_REF_NODE</a>
-<a href="html/libxml-htmltree.html#HTML-PI-NODE-CAPS">HTML_PI_NODE</a>
-<a href="html/libxml-htmltree.html#HTML-PRESERVE-NODE-CAPS">HTML_PRESERVE_NODE</a>
-<a href="html/libxml-htmltree.html#HTML-TEXT-NODE-CAPS">HTML_TEXT_NODE</a>
-<a href="html/libxml-parserinternals.html#IS-BASECHAR-CAPS">IS_BASECHAR</a>
-<a href="html/libxml-parserinternals.html#IS-BLANK-CAPS">IS_BLANK</a>
-<a href="html/libxml-parserinternals.html#IS-CHAR-CAPS">IS_CHAR</a>
-<a href="html/libxml-parserinternals.html#IS-COMBINING-CAPS">IS_COMBINING</a>
-<a href="html/libxml-parserinternals.html#IS-DIGIT-CAPS">IS_DIGIT</a>
-<a href="html/libxml-parserinternals.html#IS-EXTENDER-CAPS">IS_EXTENDER</a>
-<a href="html/libxml-parserinternals.html#IS-IDEOGRAPHIC-CAPS">IS_IDEOGRAPHIC</a>
-<a href="html/libxml-parserinternals.html#IS-LETTER-CAPS">IS_LETTER</a>
-<a href="html/libxml-parserinternals.html#IS-PUBIDCHAR-CAPS">IS_PUBIDCHAR</a>
-<a href="html/libxml-xmlversion.html#LIBXML-TEST-VERSION-CAPS">LIBXML_TEST_VERSION</a>
-<a href="html/libxml-xpathinternals.html#XP-ERROR-CAPS">XP_ERROR</a>
-<a href="html/libxml-xpathinternals.html#XP-ERROR0-CAPS">XP_ERROR0</a>
-<a href="html/libxml-tree.html#XMLCHILDRENNODE">xmlChildrenNode</a>
-<a href="html/libxml-tree.html#XMLROOTNODE">xmlRootNode</a>
 </dd>
 <dt>Markup</dt>
 <dd>
@@ -312,7 +288,12 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-parserinternals.html#XMLPARSENAME">xmlParseName</a>
 <a href="html/libxml-parserinternals.html#XMLPARSERHANDLEPEREFERENCE">xmlParserHandlePEReference</a>
 <a href="html/libxml-parserinternals.html#XMLSCANNAME">xmlScanName</a>
+<a href="html/libxml-valid.html#XMLVALIDATENAMEVALUE">xmlValidateNameValue</a>
 <a href="html/libxml-valid.html#XMLVALIDATEONEATTRIBUTE">xmlValidateOneAttribute</a>
+</dd>
+<dt>Names</dt>
+<dd>
+<a href="html/libxml-valid.html#XMLVALIDATENAMESVALUE">xmlValidateNamesValue</a>
 </dd>
 <dt>Namespace</dt>
 <dd>
@@ -328,6 +309,11 @@ A:link, A:visited, A:active { text-decoration: underline }
 <dt>Nmtoken</dt>
 <dd>
 <a href="html/libxml-parserinternals.html#XMLPARSENMTOKEN">xmlParseNmtoken</a>
+<a href="html/libxml-valid.html#XMLVALIDATENMTOKENVALUE">xmlValidateNmtokenValue</a>
+</dd>
+<dt>Nmtokens</dt>
+<dd>
+<a href="html/libxml-valid.html#XMLVALIDATENMTOKENSVALUE">xmlValidateNmtokensValue</a>
 </dd>
 <dt>Node</dt>
 <dd>
@@ -392,8 +378,11 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-nanoftp.html#FTPLISTCALLBACK">ftpListCallback</a>
 <a href="html/libxml-valid.html#XMLADDATTRIBUTEDECL">xmlAddAttributeDecl</a>
 <a href="html/libxml-encoding.html#XMLCHECKUTF8">xmlCheckUTF8</a>
+<a href="html/libxml-tree.html#XMLDOCDUMPFORMATMEMORY">xmlDocDumpFormatMemory</a>
 <a href="html/libxml-tree.html#XMLDOCDUMPFORMATMEMORYENC">xmlDocDumpFormatMemoryEnc</a>
 <a href="html/libxml-tree.html#XMLDOCDUMPMEMORYENC">xmlDocDumpMemoryEnc</a>
+<a href="html/libxml-tree.html#XMLNODEDUMP">xmlNodeDump</a>
+<a href="html/libxml-tree.html#XMLNODEDUMPOUTPUT">xmlNodeDumpOutput</a>
 <a href="html/libxml-tree.html#XMLNS">xmlNs</a>
 <a href="html/libxml-encoding.html#XMLPARSECHARENCODING">xmlParseCharEncoding</a>
 <a href="html/libxml-tree.html#XMLREMOVEPROP">xmlRemoveProp</a>
@@ -426,6 +415,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 </dd>
 <dt>One</dt>
 <dd>
+<a href="html/libxml-parserinternals.html#INPUT-CHUNK-CAPS">INPUT_CHUNK</a>
 <a href="html/libxml-xmlversion.html#LIBXML-DLL-IMPORT-CAPS">LIBXML_DLL_IMPORT</a>
 <a href="html/libxml-xmlerror.html#XMLSETGENERICERRORFUNC">xmlSetGenericErrorFunc</a>
 <a href="html/libxml-valid.html#XMLVALIDATEELEMENTDECL">xmlValidateElementDecl</a>
@@ -653,7 +643,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="APIchunk21.html">w-w</a>
 <a href="APIchunk22.html">x-x</a>
 </h2>
-<p><a href="mailto:daniel@veillard.com">Daniel Veillard</a></p>
+<p><a href="bugs.html">Daniel Veillard</a></p>
 </td></tr></table></td></tr></table></td></tr></table></td>
 </tr></table></td></tr></table>
 </body>

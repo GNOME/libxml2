@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta content="text/html; charset=ISO-8859-1" http-equiv="Content-Type">
+<link rel="SHORTCUT ICON" href="/favicon.ico">
 <style type="text/css"><!--
 TD {font-family: Verdana,Arial,Helvetica}
 BODY {font-family: Verdana,Arial,Helvetica; margin-top: 2em; margin-left: 0em; margin-right: 0em}
@@ -75,10 +76,11 @@ A:link, A:visited, A:active { text-decoration: underline }
 <li><a href="http://mail.gnome.org/archives/xml/">Mail archive</a></li>
 <li><a href="http://xmlsoft.org/XSLT/">XSLT libxslt</a></li>
 <li><a href="http://phd.cs.unibo.it/gdome2/">DOM gdome2</a></li>
+<li><a href="http://www.aleksey.com/xmlsec/">XML-DSig xmlsec</a></li>
 <li><a href="ftp://xmlsoft.org/">FTP</a></li>
 <li><a href="http://www.fh-frankfurt.de/~igor/projects/libxml/">Windows binaries</a></li>
 <li><a href="http://garypennington.net/libxml2/">Solaris binaries</a></li>
-<li><a href="http://bugzilla.gnome.org/buglist.cgi?product=libxml">Bug Tracker</a></li>
+<li><a href="http://bugzilla.gnome.org/buglist.cgi?product=libxml&amp;product=libxml2">Bug Tracker</a></li>
 </ul></td></tr>
 </table>
 </td></tr></table></td>
@@ -646,36 +648,6 @@ A:link, A:visited, A:active { text-decoration: underline }
 <dd>
 <a href="html/libxml-encoding.html#XMLCHECKUTF8">xmlCheckUTF8</a>
 </dd>
-<dt>production</dt>
-<dd>
-<a href="html/libxml-parserinternals.html#IS-BASECHAR-CAPS">IS_BASECHAR</a>
-<a href="html/libxml-parserinternals.html#IS-BLANK-CAPS">IS_BLANK</a>
-<a href="html/libxml-parserinternals.html#IS-CHAR-CAPS">IS_CHAR</a>
-<a href="html/libxml-parserinternals.html#IS-COMBINING-CAPS">IS_COMBINING</a>
-<a href="html/libxml-parserinternals.html#IS-DIGIT-CAPS">IS_DIGIT</a>
-<a href="html/libxml-parserinternals.html#IS-EXTENDER-CAPS">IS_EXTENDER</a>
-<a href="html/libxml-parserinternals.html#IS-IDEOGRAPHIC-CAPS">IS_IDEOGRAPHIC</a>
-<a href="html/libxml-parserinternals.html#IS-LETTER-CAPS">IS_LETTER</a>
-<a href="html/libxml-parserinternals.html#IS-PUBIDCHAR-CAPS">IS_PUBIDCHAR</a>
-<a href="html/libxml-parserinternals.html#XMLISBASECHAR">xmlIsBaseChar</a>
-<a href="html/libxml-parserinternals.html#XMLISBLANK">xmlIsBlank</a>
-<a href="html/libxml-parserinternals.html#XMLISCHAR">xmlIsChar</a>
-<a href="html/libxml-parserinternals.html#XMLISCOMBINING">xmlIsCombining</a>
-<a href="html/libxml-parserinternals.html#XMLISDIGIT">xmlIsDigit</a>
-<a href="html/libxml-parserinternals.html#XMLISEXTENDER">xmlIsExtender</a>
-<a href="html/libxml-parserinternals.html#XMLISIDEOGRAPHIC">xmlIsIdeographic</a>
-<a href="html/libxml-parserinternals.html#XMLISLETTER">xmlIsLetter</a>
-<a href="html/libxml-parserinternals.html#XMLISPUBIDCHAR">xmlIsPubidChar</a>
-<a href="html/libxml-parser.html#XMLPARSEBALANCEDCHUNKMEMORY">xmlParseBalancedChunkMemory</a>
-<a href="html/libxml-parser.html#XMLPARSECTXTEXTERNALENTITY">xmlParseCtxtExternalEntity</a>
-<a href="html/libxml-parser.html#XMLPARSEEXTPARSEDENT">xmlParseExtParsedEnt</a>
-<a href="html/libxml-parser.html#XMLPARSEEXTERNALENTITY">xmlParseExternalEntity</a>
-<a href="html/libxml-parserinternals.html#XMLPARSEEXTERNALID">xmlParseExternalID</a>
-<a href="html/libxml-parser.html#XMLPARSERCTXT">xmlParserCtxt</a>
-<a href="html/libxml-valid.html#XMLVALIDATEATTRIBUTEVALUE">xmlValidateAttributeValue</a>
-<a href="html/libxml-xpathinternals.html#XMLXPATHIDFUNCTION">xmlXPathIdFunction</a>
-<a href="html/libxml-xpathinternals.html#XMLXPATHNORMALIZEFUNCTION">xmlXPathNormalizeFunction</a>
-</dd>
 <dt>production:</dt>
 <dd>
 <a href="html/libxml-parserinternals.html#XMLCHECKLANGUAGEID">xmlCheckLanguageID</a>
@@ -752,8 +724,12 @@ A:link, A:visited, A:active { text-decoration: underline }
 </dd>
 <dt>provide</dt>
 <dd>
+<a href="html/libxml-tree.html#XMLDOCDUMPFORMATMEMORY">xmlDocDumpFormatMemory</a>
+<a href="html/libxml-tree.html#XMLDOCDUMPFORMATMEMORYENC">xmlDocDumpFormatMemoryEnc</a>
 <a href="html/libxml-globals.html#XMLGETWARNINGSDEFAULTVALUE">xmlGetWarningsDefaultValue</a>
 <a href="html/libxml-xmlio.html#XMLINPUTMATCHCALLBACK">xmlInputMatchCallback</a>
+<a href="html/libxml-tree.html#XMLNODEDUMP">xmlNodeDump</a>
+<a href="html/libxml-tree.html#XMLNODEDUMPOUTPUT">xmlNodeDumpOutput</a>
 <a href="html/libxml-xmlio.html#XMLOUTPUTMATCHCALLBACK">xmlOutputMatchCallback</a>
 <a href="html/libxml-encoding.html#XMLUTF8STRLOC">xmlUTF8Strloc</a>
 <a href="html/libxml-encoding.html#XMLUTF8STRPOS">xmlUTF8Strpos</a>
@@ -910,7 +886,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="APIchunk21.html">w-w</a>
 <a href="APIchunk22.html">x-x</a>
 </h2>
-<p><a href="mailto:daniel@veillard.com">Daniel Veillard</a></p>
+<p><a href="bugs.html">Daniel Veillard</a></p>
 </td></tr></table></td></tr></table></td></tr></table></td>
 </tr></table></td></tr></table>
 </body>

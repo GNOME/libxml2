@@ -63,6 +63,22 @@ cleanupPredefinedEntities()
 initializePredefinedEntities()
 predefinedEntity()
 
+# functions from module globals
+cleanupGlobals()
+initGlobals()
+thrDefDefaultBufferSize()
+thrDefDoValidityCheckingDefaultValue()
+thrDefGetWarningsDefaultValue()
+thrDefIndentTreeOutput()
+thrDefKeepBlanksDefaultValue()
+thrDefLineNumbersDefaultValue()
+thrDefLoadExtDtdDefaultValue()
+thrDefParserDebugEntities()
+thrDefPedanticParserDefaultValue()
+thrDefSaveNoEmptyTags()
+thrDefSubstituteEntitiesDefaultValue()
+thrDefTreeIndentString()
+
 # functions from module nanoftp
 nanoFTPCleanup()
 nanoFTPInit()

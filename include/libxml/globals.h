@@ -22,6 +22,9 @@
 extern "C" {
 #endif
 
+void xmlInitGlobals(void);
+void xmlCleanupGlobals(void);
+
 /*
  * Externally global symbols which need to be protected for backwards
  * compatibility support.
@@ -112,8 +115,12 @@ extern "C" {
 
 void	xmlInitializeGlobalState(xmlGlobalStatePtr gs);
 
+void xmlThrDefSetGenericErrorFunc(void *ctx, xmlGenericErrorFunc handler);
+
 xmlRegisterNodeFunc xmlRegisterNodeDefault(xmlRegisterNodeFunc func);
+xmlRegisterNodeFunc xmlThrDefRegisterNodeDefault(xmlRegisterNodeFunc func);
 xmlDeregisterNodeFunc xmlDeregisterNodeDefault(xmlDeregisterNodeFunc func);
+xmlDeregisterNodeFunc xmlThrDefDeregisterNodeDefault(xmlDeregisterNodeFunc func);
 
 /*
  * In general the memory allocation entry points are not kept
@@ -217,6 +224,7 @@ extern xmlBufferAllocationScheme *__xmlBufferAllocScheme(void);
 #else
 LIBXML_DLL_IMPORT extern xmlBufferAllocationScheme xmlBufferAllocScheme;
 #endif
+xmlBufferAllocationScheme xmlThrDefBufferAllocScheme(xmlBufferAllocationScheme v);
 
 extern int *__xmlDefaultBufferSize(void);
 #ifdef LIBXML_THREAD_ENABLED
@@ -225,6 +233,7 @@ extern int *__xmlDefaultBufferSize(void);
 #else
 LIBXML_DLL_IMPORT extern int xmlDefaultBufferSize;
 #endif
+int xmlThrDefDefaultBufferSize(int v);
 
 extern xmlSAXHandler *__xmlDefaultSAXHandler(void);
 #ifdef LIBXML_THREAD_ENABLED
@@ -249,6 +258,7 @@ extern int *__xmlDoValidityCheckingDefaultValue(void);
 #else
 LIBXML_DLL_IMPORT extern int xmlDoValidityCheckingDefaultValue;
 #endif
+int xmlThrDefDoValidityCheckingDefaultValue(int v);
 
 extern xmlGenericErrorFunc *__xmlGenericError(void);
 #ifdef LIBXML_THREAD_ENABLED
@@ -273,6 +283,7 @@ extern int *__xmlGetWarningsDefaultValue(void);
 #else
 LIBXML_DLL_IMPORT extern int xmlGetWarningsDefaultValue;
 #endif
+int xmlThrDefGetWarningsDefaultValue(int v);
 
 extern int *__xmlIndentTreeOutput(void);
 #ifdef LIBXML_THREAD_ENABLED
@@ -281,6 +292,7 @@ extern int *__xmlIndentTreeOutput(void);
 #else
 LIBXML_DLL_IMPORT extern int xmlIndentTreeOutput;
 #endif
+int xmlThrDefIndentTreeOutput(int v);
 
 extern const char * *__xmlTreeIndentString(void);
 #ifdef LIBXML_THREAD_ENABLED
@@ -289,6 +301,7 @@ extern const char * *__xmlTreeIndentString(void);
 #else
 LIBXML_DLL_IMPORT extern const char * xmlTreeIndentString;
 #endif
+const char * xmlThrDefTreeIndentString(const char * v);
 
 extern int *__xmlKeepBlanksDefaultValue(void);
 #ifdef LIBXML_THREAD_ENABLED
@@ -297,6 +310,7 @@ extern int *__xmlKeepBlanksDefaultValue(void);
 #else
 LIBXML_DLL_IMPORT extern int xmlKeepBlanksDefaultValue;
 #endif
+int xmlThrDefKeepBlanksDefaultValue(int v);
 
 extern int *__xmlLineNumbersDefaultValue(void);
 #ifdef LIBXML_THREAD_ENABLED
@@ -305,6 +319,7 @@ extern int *__xmlLineNumbersDefaultValue(void);
 #else
 LIBXML_DLL_IMPORT extern int xmlLineNumbersDefaultValue;
 #endif
+int xmlThrDefLineNumbersDefaultValue(int v);
 
 extern int *__xmlLoadExtDtdDefaultValue(void);
 #ifdef LIBXML_THREAD_ENABLED
@@ -313,6 +328,7 @@ extern int *__xmlLoadExtDtdDefaultValue(void);
 #else
 LIBXML_DLL_IMPORT extern int xmlLoadExtDtdDefaultValue;
 #endif
+int xmlThrDefLoadExtDtdDefaultValue(int v);
 
 extern int *__xmlParserDebugEntities(void);
 #ifdef LIBXML_THREAD_ENABLED
@@ -321,6 +337,7 @@ extern int *__xmlParserDebugEntities(void);
 #else
 LIBXML_DLL_IMPORT extern int xmlParserDebugEntities;
 #endif
+int xmlThrDefParserDebugEntities(int v);
 
 extern const char * *__xmlParserVersion(void);
 #ifdef LIBXML_THREAD_ENABLED
@@ -337,6 +354,7 @@ extern int *__xmlPedanticParserDefaultValue(void);
 #else
 LIBXML_DLL_IMPORT extern int xmlPedanticParserDefaultValue;
 #endif
+int xmlThrDefPedanticParserDefaultValue(int v);
 
 extern int *__xmlSaveNoEmptyTags(void);
 #ifdef LIBXML_THREAD_ENABLED
@@ -345,6 +363,7 @@ extern int *__xmlSaveNoEmptyTags(void);
 #else
 LIBXML_DLL_IMPORT extern int xmlSaveNoEmptyTags;
 #endif
+int xmlThrDefSaveNoEmptyTags(int v);
 
 extern int *__xmlSubstituteEntitiesDefaultValue(void);
 #ifdef LIBXML_THREAD_ENABLED
@@ -353,6 +372,7 @@ extern int *__xmlSubstituteEntitiesDefaultValue(void);
 #else
 LIBXML_DLL_IMPORT extern int xmlSubstituteEntitiesDefaultValue;
 #endif
+int xmlThrDefSubstituteEntitiesDefaultValue(int v);
 
 extern xmlRegisterNodeFunc *__xmlRegisterNodeDefaultValue(void);
 #ifdef LIBXML_THREAD_ENABLED

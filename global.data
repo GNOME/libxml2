@@ -1,24 +1,25 @@
-int,oldXMLWDcompatibility
-xmlBufferAllocationScheme,xmlBufferAllocScheme
-int,xmlDefaultBufferSize
-xmlSAXHandler,xmlDefaultSAXHandler
-xmlSAXLocator,xmlDefaultSAXLocator
-int,xmlDoValidityCheckingDefaultValue
-xmlGenericErrorFunc,xmlGenericError
-void *,xmlGenericErrorContext
-int,xmlGetWarningsDefaultValue
-int,xmlIndentTreeOutput
-const char *,xmlTreeIndentString
-int,xmlKeepBlanksDefaultValue
-int,xmlLineNumbersDefaultValue
-int,xmlLoadExtDtdDefaultValue
-int,xmlParserDebugEntities
-const char *,xmlParserVersion
-int,xmlPedanticParserDefaultValue
-int,xmlSaveNoEmptyTags
-#const xmlChar,xmlStringComment,[]
-#const xmlChar,xmlStringText,[]
-#const xmlChar,xmlStringTextNoenc,[]
-int,xmlSubstituteEntitiesDefaultValue
-xmlRegisterNodeFunc,xmlRegisterNodeDefaultValue
-xmlDeregisterNodeFunc,xmlDeregisterNodeDefaultValue
+#type,name,array?,threadGlobalDefault accessor?
+int,oldXMLWDcompatibility,,
+xmlBufferAllocationScheme,xmlBufferAllocScheme,,1
+int,xmlDefaultBufferSize,,1
+xmlSAXHandler,xmlDefaultSAXHandler,,
+xmlSAXLocator,xmlDefaultSAXLocator,,
+int,xmlDoValidityCheckingDefaultValue,,1
+xmlGenericErrorFunc,xmlGenericError,,
+void *,xmlGenericErrorContext,,
+int,xmlGetWarningsDefaultValue,,1
+int,xmlIndentTreeOutput,,1
+const char *,xmlTreeIndentString,,1
+int,xmlKeepBlanksDefaultValue,,1
+int,xmlLineNumbersDefaultValue,,1
+int,xmlLoadExtDtdDefaultValue,,1
+int,xmlParserDebugEntities,,1
+const char *,xmlParserVersion,,
+int,xmlPedanticParserDefaultValue,,1
+int,xmlSaveNoEmptyTags,,1
+#const xmlChar,xmlStringComment,[],1
+#const xmlChar,xmlStringText,[],1
+#const xmlChar,xmlStringTextNoenc,[],1
+int,xmlSubstituteEntitiesDefaultValue,,1
+xmlRegisterNodeFunc,xmlRegisterNodeDefaultValue,,
+xmlDeregisterNodeFunc,xmlDeregisterNodeDefaultValue,,

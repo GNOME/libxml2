@@ -11140,6 +11140,7 @@ xmlInitParser(void) {
     if ((xmlGenericError == xmlGenericErrorDefaultFunc) ||
 	(xmlGenericError == NULL))
 	initGenericErrorDefaultFunc(NULL);
+    xmlInitGlobals();
     xmlInitThreads();
     xmlInitMemory();
     xmlInitCharEncodingHandlers();
@@ -11176,5 +11177,6 @@ xmlCleanupParser(void) {
     xmlCatalogCleanup();
 #endif
     xmlCleanupThreads();
+    xmlCleanupGlobals();
     xmlParserInitialized = 0;
 }

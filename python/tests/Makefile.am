@@ -28,7 +28,8 @@ PYTESTS=	\
     reader6.py	\
     ctxterror.py\
     readererr.py\
-    relaxng.py
+    relaxng.py	\
+    thread2.py
 
 XMLS=		\
     tst.xml	\

@@ -1514,6 +1514,7 @@
      <exports symbol='oldXMLWDcompatibility'/>
      <exports symbol='xmlBufferAllocScheme'/>
      <exports symbol='xmlBufferAllocScheme'/>
+     <exports symbol='xmlCleanupGlobals'/>
      <exports symbol='xmlDefaultBufferSize'/>
      <exports symbol='xmlDefaultBufferSize'/>
      <exports symbol='xmlDefaultSAXHandler'/>
@@ -1538,6 +1539,7 @@
      <exports symbol='xmlGlobalStatePtr'/>
      <exports symbol='xmlIndentTreeOutput'/>
      <exports symbol='xmlIndentTreeOutput'/>
+     <exports symbol='xmlInitGlobals'/>
      <exports symbol='xmlInitializeGlobalState'/>
      <exports symbol='xmlKeepBlanksDefaultValue'/>
      <exports symbol='xmlKeepBlanksDefaultValue'/>
@@ -1567,6 +1569,22 @@
      <exports symbol='xmlSaveNoEmptyTags'/>
      <exports symbol='xmlSubstituteEntitiesDefaultValue'/>
      <exports symbol='xmlSubstituteEntitiesDefaultValue'/>
+     <exports symbol='xmlThrDefBufferAllocScheme'/>
+     <exports symbol='xmlThrDefDefaultBufferSize'/>
+     <exports symbol='xmlThrDefDeregisterNodeDefault'/>
+     <exports symbol='xmlThrDefDoValidityCheckingDefaultValue'/>
+     <exports symbol='xmlThrDefGetWarningsDefaultValue'/>
+     <exports symbol='xmlThrDefIndentTreeOutput'/>
+     <exports symbol='xmlThrDefKeepBlanksDefaultValue'/>
+     <exports symbol='xmlThrDefLineNumbersDefaultValue'/>
+     <exports symbol='xmlThrDefLoadExtDtdDefaultValue'/>
+     <exports symbol='xmlThrDefParserDebugEntities'/>
+     <exports symbol='xmlThrDefPedanticParserDefaultValue'/>
+     <exports symbol='xmlThrDefRegisterNodeDefault'/>
+     <exports symbol='xmlThrDefSaveNoEmptyTags'/>
+     <exports symbol='xmlThrDefSetGenericErrorFunc'/>
+     <exports symbol='xmlThrDefSubstituteEntitiesDefaultValue'/>
+     <exports symbol='xmlThrDefTreeIndentString'/>
      <exports symbol='xmlTreeIndentString'/>
      <exports symbol='xmlTreeIndentString'/>
     </file>
@@ -5383,6 +5401,10 @@ actually an xmlCharEncoding'/>
       <info>Unregisters all aliases</info>
       <return type='void'/>
     </function>
+    <function name='xmlCleanupGlobals' file='globals'>
+      <info></info>
+      <return type='void'/>
+    </function>
     <function name='xmlCleanupInputCallbacks' file='xmlIO'>
       <info>clears the entire input callback table. this includes the compiled-in I/O.</info>
       <return type='void'/>
@@ -6437,6 +6459,10 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlInitCharEncodingHandlers' file='encoding'>
       <info>Initialize the char encoding support, it registers the default encoding supported. NOTE: while public, this function usually doesn&apos;t need to be called in normal processing.</info>
+      <return type='void'/>
+    </function>
+    <function name='xmlInitGlobals' file='globals'>
+      <info></info>
       <return type='void'/>
     </function>
     <function name='xmlInitMemory' file='xmlmemory'>
@@ -9299,6 +9325,87 @@ actually an xmlCharEncoding'/>
       <info>The xml:lang scope within which the node resides.</info>
       <return type='xmlChar *' info='the xml:lang value or NULL if none exists.'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
+    </function>
+    <function name='xmlThrDefBufferAllocScheme' file='globals'>
+      <info></info>
+      <return type='xmlBufferAllocationScheme' info=''/>
+      <arg name='v' type='xmlBufferAllocationScheme' info=''/>
+    </function>
+    <function name='xmlThrDefDefaultBufferSize' file='globals'>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='v' type='int' info=''/>
+    </function>
+    <function name='xmlThrDefDeregisterNodeDefault' file='globals'>
+      <info></info>
+      <return type='xmlDeregisterNodeFunc' info=''/>
+      <arg name='func' type='xmlDeregisterNodeFunc' info=''/>
+    </function>
+    <function name='xmlThrDefDoValidityCheckingDefaultValue' file='globals'>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='v' type='int' info=''/>
+    </function>
+    <function name='xmlThrDefGetWarningsDefaultValue' file='globals'>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='v' type='int' info=''/>
+    </function>
+    <function name='xmlThrDefIndentTreeOutput' file='globals'>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='v' type='int' info=''/>
+    </function>
+    <function name='xmlThrDefKeepBlanksDefaultValue' file='globals'>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='v' type='int' info=''/>
+    </function>
+    <function name='xmlThrDefLineNumbersDefaultValue' file='globals'>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='v' type='int' info=''/>
+    </function>
+    <function name='xmlThrDefLoadExtDtdDefaultValue' file='globals'>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='v' type='int' info=''/>
+    </function>
+    <function name='xmlThrDefParserDebugEntities' file='globals'>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='v' type='int' info=''/>
+    </function>
+    <function name='xmlThrDefPedanticParserDefaultValue' file='globals'>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='v' type='int' info=''/>
+    </function>
+    <function name='xmlThrDefRegisterNodeDefault' file='globals'>
+      <info></info>
+      <return type='xmlRegisterNodeFunc' info=''/>
+      <arg name='func' type='xmlRegisterNodeFunc' info=''/>
+    </function>
+    <function name='xmlThrDefSaveNoEmptyTags' file='globals'>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='v' type='int' info=''/>
+    </function>
+    <function name='xmlThrDefSetGenericErrorFunc' file='globals'>
+      <info></info>
+      <return type='void'/>
+      <arg name='ctx' type='void *' info=''/>
+      <arg name='handler' type='xmlGenericErrorFunc' info=''/>
+    </function>
+    <function name='xmlThrDefSubstituteEntitiesDefaultValue' file='globals'>
+      <info></info>
+      <return type='int' info=''/>
+      <arg name='v' type='int' info=''/>
+    </function>
+    <function name='xmlThrDefTreeIndentString' file='globals'>
+      <info></info>
+      <return type='const char *' info=''/>
+      <arg name='v' type='const char *' info=''/>
     </function>
     <function name='xmlUCSIsAlphabeticPresentationForms' file='xmlunicode'>
       <info>Check whether the character is part of AlphabeticPresentationForms UCS Block</info>

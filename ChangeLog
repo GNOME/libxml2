@@ -1,3 +1,13 @@
+Thu May 15 18:06:18 EDT 2003 Daniel Veillard <daniel@veillard.com>
+
+	* build_glob.py global.data globals.c parser.c
+	  include/libxml/globals.h: patch from Stéphane Bidoul for setting
+	  up threads global defaults.
+	* doc/libxml2-api.xml: this extends the API with new functions
+	* python/tests/Makefile.am python/tests/reader2.py
+	  python/tests/thread2.py: integrated the associated testcase and
+	  fixed the error string used in reader2
+
 Wed May 14 14:56:46 EDT 2003 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in libxml.spec.in python/Makefile.am: trying

@@ -1267,6 +1267,7 @@ libxml_xmlErrorInitialize(void)
     printf("libxml_xmlErrorInitialize() called\n");
 #endif
     xmlSetGenericErrorFunc(NULL, libxml_xmlErrorFuncHandler);
+    xmlThrDefSetGenericErrorFunc(NULL, libxml_xmlErrorFuncHandler);
 }
 
 PyObject *
@@ -1767,7 +1768,7 @@ libxml_xpathCallbacksInitialize(void)
     printf("libxml_xpathCallbacksInitialized called\n");
 #endif
 
-    for (i = 0; i < 10; i++) {
+    for (i = 0; i < libxml_xpathCallbacksMax; i++) {
         libxml_xpathCallbacks[i].ctx = NULL;
         libxml_xpathCallbacks[i].name = NULL;
         libxml_xpathCallbacks[i].ns_uri = NULL;
@@ -2620,6 +2621,8 @@ initlibxml2mod(void)
 
     if (initialized != 0)
         return;
+    /* XXX xmlInitParser does much more than this */
+    xmlInitGlobals();
     xmlRegisterDefaultOutputCallbacks();
     xmlRegisterDefaultInputCallbacks();
     m = Py_InitModule((char *) "libxml2mod", libxmlMethods);

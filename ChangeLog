@@ -1,3 +1,8 @@
+Sat Oct 11 23:32:47 HKT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* fixed small error on previous commit (chvalid.h in
+	  base dir instead of include directory)
+
 Sat Oct 11 23:11:22 HKT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* genChRange.py, chvalid.def, chvalid.c, include/libxml/chvalid.h:

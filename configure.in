@@ -259,6 +259,7 @@ if test "${NEED_TRIO}" = "1" ; then
 else    
     WITH_TRIO=0
 fi
+AM_CONDITIONAL(WITH_TRIO_SOURCES, "${NEED_TRIO}" = "1")
 AC_SUBST(WITH_TRIO)
 
 dnl

@@ -1,3 +1,8 @@
+Wed May  2 18:39:39 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* configure.in Makefile.am: make the inclusion of the trio
+	  modules in the library conditional
+
 Wed May  2 14:39:57 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* DOCBparser.c: patche from  László Kovács, fixed entities refs

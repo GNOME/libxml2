@@ -15,11 +15,20 @@ libxml2_la_LIBADD = @Z_LIBS@ -lm
 
 libxml2_la_LDFLAGS = -version-info @LIBXML_VERSION_INFO@
 
+if WITH_TRIO_SOURCES
 libxml2_la_SOURCES = SAX.c entities.c encoding.c error.c parserInternals.c  \
 		parser.c tree.c hash.c list.c xmlIO.c xmlmemory.c uri.c  \
 		valid.c xlink.c HTMLparser.c HTMLtree.c debugXML.c xpath.c  \
 		xpointer.c xinclude.c nanohttp.c nanoftp.c DOCBparser.c \
-		strio.c strio.h trio.c trio.h triop.h libxml.h
+		strio.c trio.c
+
+else
+libxml2_la_SOURCES = SAX.c entities.c encoding.c error.c parserInternals.c  \
+		parser.c tree.c hash.c list.c xmlIO.c xmlmemory.c uri.c  \
+		valid.c xlink.c HTMLparser.c HTMLtree.c debugXML.c xpath.c  \
+		xpointer.c xinclude.c nanohttp.c nanoftp.c DOCBparser.c
+
+endif
 
 DEPS = $(top_builddir)/libxml2.la
 LDADDS = $(top_builddir)/libxml2.la @Z_LIBS@ -lm
@@ -435,8 +444,8 @@ EXTRA_DIST = xml2Conf.sh.in libxml.spec.in libxml.spec libxml.m4 \
 	     win32/libxml2/libxml2.dsp win32/libxml2/libxml2_so.dsp \
 	     win32/libxml2/libxml2_a.dsp win32/libxml2/xmllint.dsp \
 	     win32/libxml2/libxml2.def.src \
-	     vms/build_libxml.com vms/config.vms \
-             trio.h strio.h
+	     vms/build_libxml.com vms/config.vms
+	     strio.c strio.h trio.c trio.h triop.h libxml.h
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libxml-2.0.pc

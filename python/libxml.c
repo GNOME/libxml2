@@ -3,6 +3,7 @@
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 #include "libxml_wrap.h"
+#include "libxml2-py.h"
 
 /* #define DEBUG */
 
@@ -19,6 +20,17 @@ libxml_intWrap(int val) {
     printf("libxml_intWrap: val = %d\n", val);
 #endif
     ret = PyInt_FromLong((long) val);
+    return(ret);
+}
+
+PyObject *
+libxml_doubleWrap(double val) {
+    PyObject *ret;
+
+#ifdef DEBUG
+    printf("libxml_doubleWrap: val = %f\n", val);
+#endif
+    ret = PyFloat_FromDouble((double) val);
     return(ret);
 }
 
@@ -99,13 +111,6 @@ libxml_xmlAttrPtrWrap(xmlAttrPtr attr) {
     ret = PyCObject_FromVoidPtrAndDesc((void *) attr, "xmlAttrPtr", NULL);
     return(ret);
 }
-
-#define PyxmlNode_Get(v) (((PyxmlNode_Object *)(v))->obj)
-
-typedef struct {
-    PyObject_HEAD
-    xmlNodePtr obj;
-} PyxmlNode_Object;
 
 static void
 PyxmlNode_dealloc(PyxmlNode_Object * self)
@@ -597,6 +602,7 @@ libxml_freeDoc(PyObject *self, PyObject *args)
  *									*
  ************************************************************************/
 static PyMethodDef libxmlMethods[] = {
+#include "libxml2-export.c"
     { "parseFile", libxml_parseFile, METH_VARARGS },
     { "freeDoc", libxml_freeDoc, METH_VARARGS },
     { "name", libxml_name, METH_VARARGS },

@@ -160,20 +160,82 @@ def function(name, desc, ret, args, file):
 
 skipped_modules = {
     'xmlmemory': None,
+    'DOCBparser': None,
+    'SAX': None,
+    'hash': None,
+    'list': None,
+    'threads': None,
+}
+skipped_types = {
+    'int *': "usually a return type",
+    'xmlSAXHandlerPtr': "not the proper interface for SAX",
+    'htmlSAXHandlerPtr': "not the proper interface for SAX",
+    'xmlParserCtxtPtr': "not the proper interface for the parser",
+    'htmlParserCtxtPtr': "not the proper interface for the parser",
+    'xmlRMutexPtr': "thread specific, skipped",
+    'xmlMutexPtr': "thread specific, skipped",
+    'xmlGlobalStatePtr': "thread specific, skipped",
+    'xmlListPtr': "internal representation not suitable for python",
+    'xmlBufferPtr': "internal representation not suitable for python",
+    'FILE *': None,
 }
 py_types = {
-    'void': (None, None, None),
-    'int':  ('i', None, "int"),
-    'xmlChar':  ('c', None, "int"),
-    'char *':  ('s', None, "charPtr"),
-    'const char *':  ('s', None, "charPtr"),
-    'xmlChar *':  ('s', None, "xmlCharPtr"),
-    'const xmlChar *':  ('s', None, "xmlCharPtr"),
+    'void': (None, None, None, None),
+    'int':  ('i', None, "int", "int"),
+    'long':  ('i', None, "int", "int"),
+    'double':  ('d', None, "double", "double"),
+    'unsigned int':  ('i', None, "int", "int"),
+    'xmlChar':  ('c', None, "int", "int"),
+    'unsigned char *':  ('s', None, "charPtr", "char *"),
+    'char *':  ('s', None, "charPtr", "char *"),
+    'const char *':  ('s', None, "charPtr", "char *"),
+    'xmlChar *':  ('s', None, "xmlCharPtr", "xmlChar *"),
+    'const xmlChar *':  ('s', None, "xmlCharPtr", "xmlChar *"),
+    'xmlNodePtr':  ('O', "xmlNode", "xmlNodePtr", "xmlNodePtr"),
+    'const xmlNodePtr':  ('O', "xmlNode", "xmlNodePtr", "xmlNodePtr"),
+    'xmlNode *':  ('O', "xmlNode", "xmlNodePtr", "xmlNodePtr"),
+    'const xmlNode *':  ('O', "xmlNode", "xmlNodePtr", "xmlNodePtr"),
+    'xmlDtdPtr':  ('O', "xmlNode", "xmlNodePtr", "xmlNodePtr"),
+    'const xmlDtdPtr':  ('O', "xmlNode", "xmlNodePtr", "xmlNodePtr"),
+    'xmlDtd *':  ('O', "xmlNode", "xmlNodePtr", "xmlNodePtr"),
+    'const xmlDtd *':  ('O', "xmlNode", "xmlNodePtr", "xmlNodePtr"),
+    'xmlAttrPtr':  ('O', "xmlNode", "xmlNodePtr", "xmlNodePtr"),
+    'const xmlAttrPtr':  ('O', "xmlNode", "xmlNodePtr", "xmlNodePtr"),
+    'xmlAttr *':  ('O', "xmlNode", "xmlNodePtr", "xmlNodePtr"),
+    'const xmlAttr *':  ('O', "xmlNode", "xmlNodePtr", "xmlNodePtr"),
+    'xmlEntityPtr':  ('O', "xmlNode", "xmlNodePtr", "xmlNodePtr"),
+    'const xmlEntityPtr':  ('O', "xmlNode", "xmlNodePtr", "xmlNodePtr"),
+    'xmlEntity *':  ('O', "xmlNode", "xmlNodePtr", "xmlNodePtr"),
+    'const xmlEntity *':  ('O', "xmlNode", "xmlNodePtr", "xmlNodePtr"),
+    'xmlElementPtr':  ('O', "xmlNode", "xmlNodePtr", "xmlNodePtr"),
+    'const xmlElementPtr':  ('O', "xmlNode", "xmlNodePtr", "xmlNodePtr"),
+    'xmlElement *':  ('O', "xmlNode", "xmlNodePtr", "xmlNodePtr"),
+    'const xmlElement *':  ('O', "xmlNode", "xmlNodePtr", "xmlNodePtr"),
+    'xmlAttributePtr':  ('O', "xmlNode", "xmlNodePtr", "xmlNodePtr"),
+    'const xmlAttributePtr':  ('O', "xmlNode", "xmlNodePtr", "xmlNodePtr"),
+    'xmlAttribute *':  ('O', "xmlNode", "xmlNodePtr", "xmlNodePtr"),
+    'const xmlAttribute *':  ('O', "xmlNode", "xmlNodePtr", "xmlNodePtr"),
+    'xmlNsPtr':  ('O', "xmlNode", "xmlNodePtr", "xmlNodePtr"),
+    'const xmlNsPtr':  ('O', "xmlNode", "xmlNodePtr", "xmlNodePtr"),
+    'xmlNs *':  ('O', "xmlNode", "xmlNodePtr", "xmlNodePtr"),
+    'const xmlNs *':  ('O', "xmlNode", "xmlNodePtr", "xmlNodePtr"),
+    'xmlDocPtr':  ('O', "xmlNode", "xmlDocPtr", "xmlDocPtr"),
+    'const xmlDocPtr':  ('O', "xmlNode", "xmlDocPtr", "xmlDocPtr"),
+    'xmlDoc *':  ('O', "xmlNode", "xmlDocPtr", "xmlDocPtr"),
+    'const xmlDoc *':  ('O', "xmlNode", "xmlDocPtr", "xmlDocPtr"),
+    'htmlDocPtr':  ('O', "xmlNode", "xmlDocPtr", "xmlDocPtr"),
+    'const htmlDocPtr':  ('O', "xmlNode", "xmlDocPtr", "xmlDocPtr"),
+    'htmlDoc *':  ('O', "xmlNode", "xmlDocPtr", "xmlDocPtr"),
+    'const htmlDoc *':  ('O', "xmlNode", "xmlDocPtr", "xmlDocPtr"),
+    'htmlNodePtr':  ('O', "xmlNode", "xmlNodePtr", "xmlNodePtr"),
+    'const htmlNodePtr':  ('O', "xmlNode", "xmlNodePtr", "xmlNodePtr"),
+    'htmlNode *':  ('O', "xmlNode", "xmlNodePtr", "xmlNodePtr"),
+    'const htmlNode *':  ('O', "xmlNode", "xmlNodePtr", "xmlNodePtr"),
 }
 
 unknown_types = {}
 
-def print_function_wrapper(name, output):
+def print_function_wrapper(name, output, export, include):
     global py_types
     global unknown_types
     global functions
@@ -193,19 +255,30 @@ def print_function_wrapper(name, output):
     format_args=""
     c_args=""
     c_return=""
+    c_convert=""
     for arg in args:
+	# This should be correct
+	if arg[1][0:6] == "const ":
+	    arg[1] = arg[1][6:]
         c_args = c_args + "    %s %s;\n" % (arg[1], arg[0])
 	if py_types.has_key(arg[1]):
-	    (f, t, n) = py_types[arg[1]]
+	    (f, t, n, c) = py_types[arg[1]]
 	    if f != None:
 		format = format + f
 	    if t != None:
-	        format_args = format_args + ", &%s" % (t)
-	    format_args = format_args + ", &%s" % (arg[0])
+	        format_args = format_args + ", &pyobj_%s" % (arg[0])
+		c_args = c_args + "    PyObject *pyobj_%s;\n" % (arg[0])
+		c_convert = c_convert + \
+		   "    %s = (%s) Py%s_Get(pyobj_%s);\n" % (arg[0],
+		   arg[1], t, arg[0]);
+	    else:
+		format_args = format_args + ", &%s" % (arg[0])
 	    if c_call != "":
 	        c_call = c_call + ", ";
 	    c_call = c_call + "%s" % (arg[0])
 	else:
+	    if skipped_types.has_key(arg[1]):
+	        return 0
 	    if unknown_types.has_key(arg[1]):
 	        lst = unknown_types[arg[1]]
 		lst.append(name)
@@ -219,11 +292,14 @@ def print_function_wrapper(name, output):
         c_call = "\n    %s(%s);\n" % (name, c_call);
 	ret_convert = "    Py_INCREF(Py_None);\n    return(Py_None);\n"
     elif py_types.has_key(ret[0]):
-	(f, t, n) = py_types[ret[0]]
+	(f, t, n, c) = py_types[ret[0]]
 	c_return = "    %s c_retval;\n" % (ret[0])
         c_call = "\n    c_retval = %s(%s);\n" % (name, c_call);
-	ret_convert = "    py_retval = libxml_%sWrap(c_retval);\n    return(py_retval);\n" % (n)
+	ret_convert = "    py_retval = libxml_%sWrap((%s) c_retval);\n" % (n,c)
+	ret_convert = ret_convert + "    return(py_retval);\n"
     else:
+	if skipped_types.has_key(ret[0]):
+	    return 0
 	if unknown_types.has_key(ret[0]):
 	    lst = unknown_types[ret[0]]
 	    lst.append(name)
@@ -231,6 +307,9 @@ def print_function_wrapper(name, output):
 	    unknown_types[ret[0]] = [name]
 	return -1
 
+    include.write("PyObject * ")
+    include.write("libxml_%s(PyObject *self, PyObject *args);\n" % (name))
+    export.write("    { \"%s\", libxml_%s, METH_VARARGS },\n" % (name, name))
     output.write("PyObject *\n")
     output.write("libxml_%s(PyObject *self, PyObject *args) {\n" % (name))
     if ret[0] != 'void':
@@ -243,6 +322,8 @@ def print_function_wrapper(name, output):
 	output.write("\n    if (!PyArg_ParseTuple(args, \"%s\"%s))\n" %
 	             (format, format_args))
 	output.write("        return(NULL);\n")
+    if c_convert != "":
+	output.write(c_convert)
                                                               
     output.write(c_call)
     output.write(ret_convert)
@@ -263,6 +344,10 @@ nb_wrap = 0
 failed = 0
 skipped = 0
 
+include = open("libxml2-py.h", "w")
+include.write("/* Generated */\n\n")
+export = open("libxml2-export.c", "w")
+export.write("/* Generated */\n\n")
 wrapper = open("libxml2-py.c", "w")
 wrapper.write("/* Generated */\n\n")
 wrapper.write("#include <Python.h>\n")
@@ -270,13 +355,15 @@ wrapper.write("#include <libxml/tree.h>\n")
 wrapper.write("#include \"libxml_wrap.h\"\n")
 wrapper.write("#include \"libxml2-py.h\"\n\n")
 for function in functions.keys():
-    ret = print_function_wrapper(function, wrapper)
+    ret = print_function_wrapper(function, wrapper, export, include)
     if ret < 0:
         failed = failed + 1
     if ret == 1:
         nb_wrap = nb_wrap + 1
     if ret == 0:
         skipped = skipped + 1
+include.close()
+export.close()
 wrapper.close()
 
 print "Generated %d wrapper functions, %d failed, %d skipped\n" % (nb_wrap,

@@ -37,7 +37,7 @@ maintainer-clean-local: clean
 	rm -rf sgml html $(DOC_MODULE)-decl-list.txt $(DOC_MODULE)-decl.txt 
 
 # docdatadir = $(datadir)/aclocal
-# docdata_DATA = xml.html structure.gif DOM.gif
+# docdata_DATA = xml.html FAQ.html structure.gif DOM.gif
 
 gnome-xml-decl-list.txt : templates
 
@@ -48,12 +48,12 @@ rebuild: gnome-xml-sections.txt templates sgml html
 
 install-data-local: 
 	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)
-	-@INSTALL@ -m 0644 $(srcdir)/xml.html $(srcdir)/structure.gif $(srcdir)/DOM.gif $(DESTDIR)$(TARGET_DIR)
+	-@INSTALL@ -m 0644 $(srcdir)/xml.html $(srcdir)/FAQ.html $(srcdir)/structure.gif $(srcdir)/DOM.gif $(DESTDIR)$(TARGET_DIR)
 	-@INSTALL@ -m 0644 $(srcdir)/html/*.html $(DESTDIR)$(TARGET_DIR)
 	-@INSTALL@ -m 0644 $(srcdir)/html/index.sgml $(DESTDIR)$(TARGET_DIR)
 	-(cd $(DESTDIR); gtkdoc-fixxref --module=$(DOC_MODULE) --html-dir=$(HTML_DIR))
 
 dist-hook:
-	(cd $(srcdir) ; tar cvf - xml.html structure.gif DOM.gif html/*.html html/*.sgml) | (cd $(distdir); tar xf -)
+	(cd $(srcdir) ; tar cvf - xml.html FAQ.html structure.gif DOM.gif html/*.html html/*.sgml) | (cd $(distdir); tar xf -)
 
 .PHONY : html sgml templates scan

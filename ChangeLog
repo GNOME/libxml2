@@ -1,4 +1,8 @@
-Fri Jun 30 20:29:08 MEST 2000
+Sat Jul  1 13:44:22 MEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* doc/FAQ.html doc/Makefile.am : added a FAQ
+
+Fri Jun 30 20:29:08 MEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* HTMLparser.c HTMLtree.c SAX.c valid.c tree.h : more cleanup
 	  of the HTML parser to force it to not bypass SAX

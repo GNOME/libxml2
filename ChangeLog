@@ -1,3 +1,9 @@
+Wed Mar 10 17:22:48 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: fix bug reported by Holger Rauch
+	* test/att8 result/noent/att8 result/att8 result/att8.rdr
+	  result/att8.sax: added the test to th regression suite
+
 Wed Mar 10 19:42:22 HKT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* doc/search.php: Minor change for later verson of php requiring

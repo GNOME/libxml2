@@ -1844,10 +1844,12 @@ xmlParserHandlePEReference(xmlParserCtxtPtr ctxt) {
  * Macro used to grow the current buffer.
  */
 #define growBuffer(buffer) {						\
+    xmlChar *tmp;							\
     buffer##_size *= 2;							\
-    buffer = (xmlChar *)						\
+    tmp = (xmlChar *)							\
     		xmlRealloc(buffer, buffer##_size * sizeof(xmlChar));	\
-    if (buffer == NULL) goto mem_error;					\
+    if (tmp == NULL) goto mem_error;					\
+    buffer = tmp;							\
 }
 
 /**
@@ -7320,6 +7322,7 @@ reparse:
 		    if (nsPush(ctxt, attname, URL) > 0) nbNs++;
 		if (alloc != 0) xmlFree(attvalue);
 		SKIP_BLANKS;
+		if (ctxt->input->base != base) goto base_changed;
 		continue;
 	    }
 

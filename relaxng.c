@@ -6,6 +6,7 @@
  * Daniel Veillard <veillard@redhat.com>
  */
 
+#define FS
 /**
  * TODO:
  * - error reporting
@@ -265,10 +266,11 @@ struct _xmlRelaxNGValidState {
     xmlNodePtr   node;		/* the current node */
     xmlNodePtr    seq;		/* the sequence of children left to validate */
     int       nbAttrs;		/* the number of attributes */
+    int      maxAttrs;		/* the size of attrs */
     int    nbAttrLeft;		/* the number of attributes left to validate */
     xmlChar    *value;		/* the value when operating on string */
     xmlChar *endvalue;		/* the end value when operating on string */
-    xmlAttrPtr attrs[1];	/* the array of attributes */
+    xmlAttrPtr *attrs;		/* the array of attributes */
 };
 
 /**
@@ -329,6 +331,11 @@ struct _xmlRelaxNGValidCtxt {
 
     xmlRelaxNGValidStatePtr state;	/* the current validation state */
     xmlRelaxNGStatesPtr     states;	/* the accumulated state list */
+
+    xmlRelaxNGStatesPtr     freeState;  /* the pool of free valid states */
+    int                     freeStatesNr;
+    int                     freeStatesMax;
+    xmlRelaxNGStatesPtr    *freeStates; /* the pool of free state groups */
 };
 
 /**
@@ -456,7 +463,8 @@ static int xmlRelaxNGEqualValidState(
 	                 xmlRelaxNGValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
 	                 xmlRelaxNGValidStatePtr state1,
 			 xmlRelaxNGValidStatePtr state2);
-static void xmlRelaxNGFreeValidState(xmlRelaxNGValidStatePtr state);
+static void xmlRelaxNGFreeValidState(xmlRelaxNGValidCtxtPtr ctxt,
+	                             xmlRelaxNGValidStatePtr state);
 
 /**
  * xmlRelaxNGFreeDocument:
@@ -787,6 +795,16 @@ xmlRelaxNGNewStates(xmlRelaxNGValidCtxtPtr ctxt, int size)
 {
     xmlRelaxNGStatesPtr ret;
 
+#ifdef FS
+    if ((ctxt != NULL) &&
+	(ctxt->freeState != NULL) && 
+	(ctxt->freeStatesNr > 0)) {
+	ctxt->freeStatesNr--;
+	ret = ctxt->freeStates[ctxt->freeStatesNr];
+	ret->nbState = 0;
+	return(ret);
+    }
+#endif
     if (size < 16) size = 16;
 
     ret = (xmlRelaxNGStatesPtr) xmlMalloc(sizeof(xmlRelaxNGStates) +
@@ -807,6 +825,44 @@ xmlRelaxNGNewStates(xmlRelaxNGValidCtxtPtr ctxt, int size)
         return (NULL);
     }
     return(ret);
+}
+
+/**
+ * xmlRelaxNGAddStateUniq:
+ * @ctxt:  a Relax-NG validation context
+ * @states:  the states container
+ * @state:  the validation state
+ *
+ * Add a RelaxNG validation state to the container without checking
+ * for unicity.
+ *
+ * Return 1 in case of success and 0 if this is a duplicate and -1 on error
+ */
+static int
+xmlRelaxNGAddStatesUniq(xmlRelaxNGValidCtxtPtr ctxt,
+	            xmlRelaxNGStatesPtr states,
+	            xmlRelaxNGValidStatePtr state)
+{
+    if (state == NULL) {
+	return(-1);
+    }
+    if (states->nbState >= states->maxState) {
+	xmlRelaxNGValidStatePtr *tmp;
+	int size;
+
+	size = states->maxState * 2;
+	tmp = (xmlRelaxNGValidStatePtr *) xmlRealloc(states->tabState,
+			      (size) * sizeof(xmlRelaxNGValidStatePtr));
+        if (tmp == NULL) {
+	    if ((ctxt != NULL) && (ctxt->error != NULL))
+		ctxt->error(ctxt->userData, "Out of memory\n");
+	    return(-1);
+	}
+	states->tabState = tmp;
+	states->maxState = size;
+    }
+    states->tabState[states->nbState++] = state;
+    return(1);
 }
 
 /**
@@ -845,7 +901,7 @@ xmlRelaxNGAddStates(xmlRelaxNGValidCtxtPtr ctxt, xmlRelaxNGStatesPtr states,
     }
     for (i = 0;i < states->nbState;i++) {
 	if (xmlRelaxNGEqualValidState(ctxt, state, states->tabState[i])) {
-	    xmlRelaxNGFreeValidState(state);
+	    xmlRelaxNGFreeValidState(ctxt, state);
 	    return(0);
 	}
     }
@@ -859,16 +915,48 @@ xmlRelaxNGAddStates(xmlRelaxNGValidCtxtPtr ctxt, xmlRelaxNGStatesPtr states,
  * @states:  teh container
  *
  * Free a RelaxNG validation state container
- * TODO: keep a pool in the ctxt
  */
 static void
-xmlRelaxNGFreeStates(xmlRelaxNGValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
+xmlRelaxNGFreeStates(xmlRelaxNGValidCtxtPtr ctxt,
 	             xmlRelaxNGStatesPtr states)
 {
-    if (states != NULL) {
+    if (states == NULL)
+	return;
+#ifdef FS
+    if ((ctxt != NULL) && (ctxt->freeStates == NULL)) {
+	ctxt->freeStatesMax = 40;
+	ctxt->freeStatesNr = 0;
+	ctxt->freeStates = (xmlRelaxNGStatesPtr *)
+	     xmlMalloc(ctxt->freeStatesMax * sizeof(xmlRelaxNGStatesPtr));
+	if (ctxt->freeStates == NULL) {
+	    if ((ctxt != NULL) && (ctxt->error != NULL))
+		ctxt->error(ctxt->userData, "Out of memory\n");
+	}
+    } else if ((ctxt != NULL) && (ctxt->freeStatesNr >= ctxt->freeStatesMax)) {
+	xmlRelaxNGStatesPtr *tmp;
+
+	tmp = (xmlRelaxNGStatesPtr *) xmlRealloc(ctxt->freeStates,
+		2 * ctxt->freeStatesMax * sizeof(xmlRelaxNGStatesPtr));
+	if (tmp == NULL) {
+	    if ((ctxt != NULL) && (ctxt->error != NULL))
+		ctxt->error(ctxt->userData, "Out of memory\n");
+	    xmlFree(states->tabState);
+	    xmlFree(states);
+	    return;
+	}
+	ctxt->freeStates = tmp;
+	ctxt->freeStatesMax *= 2;
+    }
+    if ((ctxt == NULL) || (ctxt->freeState == NULL)) {
 	xmlFree(states->tabState);
 	xmlFree(states);
+    } else {
+	ctxt->freeStates[ctxt->freeStatesNr++] = states;
     }
+#else
+	xmlFree(states->tabState);
+	xmlFree(states);
+#endif
 }
 
 /**
@@ -877,7 +965,6 @@ xmlRelaxNGFreeStates(xmlRelaxNGValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
  * @node:  the current node or NULL for the document
  *
  * Allocate a new RelaxNG validation state
- * TODO: keep a pool in the ctxt
  *
  * Returns the newly allocated structure or NULL in case or error
  */
@@ -904,42 +991,68 @@ xmlRelaxNGNewValidState(xmlRelaxNGValidCtxtPtr ctxt, xmlNodePtr node)
 	    attr = attr->next;
 	}
     }
-    
-    if (nbAttrs < MAX_ATTR)
-	attrs[nbAttrs] = NULL;
-    ret = (xmlRelaxNGValidStatePtr) xmlMalloc(sizeof(xmlRelaxNGValidState) +
-	                                      nbAttrs * sizeof(xmlAttrPtr));
-    if (ret == NULL) {
-        if ((ctxt != NULL) && (ctxt->error != NULL))
-            ctxt->error(ctxt->userData, "Out of memory\n");
-        return (NULL);
+    if ((ctxt->freeState != NULL) && 
+	(ctxt->freeState->nbState > 0)) {
+	ctxt->freeState->nbState--;
+	ret = ctxt->freeState->tabState[ctxt->freeState->nbState];
+    } else {
+	ret = (xmlRelaxNGValidStatePtr) xmlMalloc(sizeof(xmlRelaxNGValidState));
+	if (ret == NULL) {
+	    if ((ctxt != NULL) && (ctxt->error != NULL))
+		ctxt->error(ctxt->userData, "Out of memory\n");
+	    return (NULL);
+	}
+	memset(ret, 0, sizeof(xmlRelaxNGValidState));
     }
     ret->value = NULL;
     ret->endvalue = NULL;
     if (node == NULL) {
 	ret->node = (xmlNodePtr) ctxt->doc;
 	ret->seq = root;
-	ret->nbAttrs = 0;
     } else {
 	ret->node = node;
 	ret->seq = node->children;
+    }
+    ret->nbAttrs = 0;
+    if (nbAttrs > 0) {
+	if (ret->attrs == NULL) {
+	    if (nbAttrs < 4) ret->maxAttrs = 4;
+	    else ret->maxAttrs = nbAttrs;
+	    ret->attrs = (xmlAttrPtr *) xmlMalloc(ret->maxAttrs *
+		                                sizeof(xmlAttrPtr));
+	    if (ret->attrs == NULL) {
+		if ((ctxt != NULL) && (ctxt->error != NULL))
+		    ctxt->error(ctxt->userData, "Out of memory\n");
+		return (ret);
+	    }
+	} else if (ret->maxAttrs < nbAttrs) {
+	    xmlAttrPtr *tmp;
+
+	    tmp = (xmlAttrPtr *) xmlRealloc(ret->attrs, nbAttrs *
+		                          sizeof(xmlAttrPtr));
+	    if (tmp == NULL) {
+		if ((ctxt != NULL) && (ctxt->error != NULL))
+		    ctxt->error(ctxt->userData, "Out of memory\n");
+		return (ret);
+	    }
+	    ret->attrs = tmp;
+	}
 	ret->nbAttrs = nbAttrs;
-	if (nbAttrs > 0) {
-	    if (nbAttrs < MAX_ATTR) {
-		memcpy(&(ret->attrs[0]), attrs,
-			sizeof(xmlAttrPtr) * (nbAttrs + 1));
-	    } else {
-		attr = node->properties;
-		nbAttrs = 0;
-		while (attr != NULL) {
-		    ret->attrs[nbAttrs++] = attr;
-		    attr = attr->next;
-		}
-		ret->attrs[nbAttrs] = NULL;
+	if (nbAttrs < MAX_ATTR) {
+	    memcpy(ret->attrs, attrs, sizeof(xmlAttrPtr) * nbAttrs);
+	} else {
+	    attr = node->properties;
+	    nbAttrs = 0;
+	    while (attr != NULL) {
+		ret->attrs[nbAttrs++] = attr;
+		attr = attr->next;
 	    }
 	}
     }
     ret->nbAttrLeft = ret->nbAttrs;
+    if (ret->node == NULL) {
+	printf("pbm!\n");
+    }
     return (ret);
 }
 
@@ -957,20 +1070,58 @@ xmlRelaxNGCopyValidState(xmlRelaxNGValidCtxtPtr ctxt,
 	                 xmlRelaxNGValidStatePtr state)
 {
     xmlRelaxNGValidStatePtr ret;
-    unsigned int size;
+    unsigned int maxAttrs;
+    xmlAttrPtr *attrs;
 
     if (state == NULL)
 	return(NULL);
-    
-    size = sizeof(xmlRelaxNGValidState) +
-	   state->nbAttrs * sizeof(xmlAttrPtr);
-    ret = (xmlRelaxNGValidStatePtr) xmlMalloc(size);
-    if (ret == NULL) {
-        if ((ctxt != NULL) && (ctxt->error != NULL))
-            ctxt->error(ctxt->userData, "Out of memory\n");
-        return (NULL);
+    if ((ctxt->freeState != NULL) && 
+	(ctxt->freeState->nbState > 0)) {
+	ctxt->freeState->nbState--;
+	ret = ctxt->freeState->tabState[ctxt->freeState->nbState];
+    } else {
+	ret = (xmlRelaxNGValidStatePtr) xmlMalloc(sizeof(xmlRelaxNGValidState));
+	if (ret == NULL) {
+	    if ((ctxt != NULL) && (ctxt->error != NULL))
+		ctxt->error(ctxt->userData, "Out of memory\n");
+	    return (NULL);
+	}
+	memset(ret, 0, sizeof(xmlRelaxNGValidState));
     }
-    memcpy(ret, state, size);
+    attrs = ret->attrs;
+    maxAttrs = ret->maxAttrs;
+    memcpy(ret, state, sizeof(xmlRelaxNGValidState));
+    ret->attrs = attrs;
+    ret->maxAttrs = maxAttrs;
+    if (state->nbAttrs > 0) {
+	if (ret->attrs == NULL) {
+	    ret->maxAttrs = state->maxAttrs;
+	    ret->attrs = (xmlAttrPtr *) xmlMalloc(ret->maxAttrs *
+		                                sizeof(xmlAttrPtr));
+	    if (ret->attrs == NULL) {
+		if ((ctxt != NULL) && (ctxt->error != NULL))
+		    ctxt->error(ctxt->userData, "Out of memory\n");
+		ret->nbAttrs = 0;
+		return (ret);
+	    }
+	} else if (ret->maxAttrs < state->nbAttrs) {
+	    xmlAttrPtr *tmp;
+
+	    tmp = (xmlAttrPtr *) xmlRealloc(ret->attrs, state->maxAttrs *
+		                          sizeof(xmlAttrPtr));
+	    if (tmp == NULL) {
+		if ((ctxt != NULL) && (ctxt->error != NULL))
+		    ctxt->error(ctxt->userData, "Out of memory\n");
+		ret->nbAttrs = 0;
+		return (ret);
+	    }
+	    ret->maxAttrs = state->maxAttrs;
+	}
+	memcpy(ret->attrs, state->attrs, state->nbAttrs * sizeof(xmlAttrPtr));
+    }
+    if (ret->node == NULL) {
+	printf("pbm!\n");
+    }
     return(ret);
 }
 
@@ -1020,15 +1171,24 @@ xmlRelaxNGEqualValidState(xmlRelaxNGValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
  * @state:  a validation state structure
  *
  * Deallocate a RelaxNG validation state structure.
- * TODO: keep a pool in the ctxt
  */
 static void
-xmlRelaxNGFreeValidState(xmlRelaxNGValidStatePtr state)
+xmlRelaxNGFreeValidState(xmlRelaxNGValidCtxtPtr ctxt,
+	                 xmlRelaxNGValidStatePtr state)
 {
     if (state == NULL)
         return;
 
-    xmlFree(state);
+    if ((ctxt != NULL) && (ctxt->freeState == NULL)) {
+	ctxt->freeState = xmlRelaxNGNewStates(ctxt, 40);
+    }
+    if ((ctxt == NULL) || (ctxt->freeState == NULL)) {
+	if (state->attrs != NULL)
+	    xmlFree(state->attrs);
+	xmlFree(state);
+    } else {
+	xmlRelaxNGAddStatesUniq(ctxt, ctxt->freeState, state);
+    }
 }
 
 /************************************************************************
@@ -7458,7 +7618,7 @@ xmlRelaxNGValidateInterleave(xmlRelaxNGValidCtxtPtr ctxt,
 	if (ctxt->state != NULL) {
 	    cur = ctxt->state->seq;
 	    cur = xmlRelaxNGSkipIgnored(ctxt, cur);
-	    xmlRelaxNGFreeValidState(oldstate);
+	    xmlRelaxNGFreeValidState(ctxt,oldstate);
 	    oldstate = ctxt->state;
 	    ctxt->state = NULL;
 	    if (cur != NULL) {
@@ -7480,11 +7640,11 @@ xmlRelaxNGValidateInterleave(xmlRelaxNGValidCtxtPtr ctxt,
 		}
 	    }
 	    if (ctxt->states->nbState > 0) {
-		xmlRelaxNGFreeValidState(oldstate);
+		xmlRelaxNGFreeValidState(ctxt,oldstate);
 		oldstate = ctxt->states->tabState[ctxt->states->nbState - 1];
 	    }
 	    for (j = 0;j < ctxt->states->nbState - 1;j++) {
-		xmlRelaxNGFreeValidState(ctxt->states->tabState[j]);
+		xmlRelaxNGFreeValidState(ctxt,ctxt->states->tabState[j]);
 	    }
 	    xmlRelaxNGFreeStates(ctxt, ctxt->states);
 	    ctxt->states = NULL;
@@ -7503,7 +7663,7 @@ xmlRelaxNGValidateInterleave(xmlRelaxNGValidCtxtPtr ctxt,
 	}
     }
     if (ctxt->state != NULL)
-	xmlRelaxNGFreeValidState(ctxt->state);
+	xmlRelaxNGFreeValidState(ctxt,ctxt->state);
     ctxt->state = oldstate;
     ctxt->state->seq = lastelem;
     if (ret != 0) {
@@ -7839,7 +7999,7 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
 		    
 		    if (xmlRelaxNGValidateElementEnd(ctxt) == 0)
 			tmp = 0;
-		    xmlRelaxNGFreeValidState(state);
+		    xmlRelaxNGFreeValidState(ctxt,state);
 		}
 		xmlRelaxNGFreeStates(ctxt, ctxt->states);
 		ctxt->flags = oldflags;
@@ -7850,7 +8010,7 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
 		state = ctxt->state;
 		if (ret == 0)
 		    ret = xmlRelaxNGValidateElementEnd(ctxt);
-		xmlRelaxNGFreeValidState(state);
+		xmlRelaxNGFreeValidState(ctxt,state);
 	    }
 	    ctxt->state = oldstate;
 	    if (oldstate != NULL)
@@ -7888,7 +8048,7 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
 	    ret = xmlRelaxNGValidateDefinitionList(ctxt, define->content);
 	    if (ret != 0) {
 		if (ctxt->state != NULL)
-		    xmlRelaxNGFreeValidState(ctxt->state);
+		    xmlRelaxNGFreeValidState(ctxt,ctxt->state);
 		ctxt->state = oldstate;
 		ctxt->flags = oldflags;
 		ret = 0;
@@ -7899,7 +8059,7 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
 	    } else {
 		ctxt->states = xmlRelaxNGNewStates(ctxt, 1);
 		if (ctxt->states == NULL) {
-		    xmlRelaxNGFreeValidState(oldstate);
+		    xmlRelaxNGFreeValidState(ctxt,oldstate);
 		    ctxt->flags = oldflags;
 		    ret = -1;
 		    break;
@@ -7973,7 +8133,7 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
 			    }
 			} else {
 			    if (ctxt->state != NULL) {
-				xmlRelaxNGFreeValidState(ctxt->state);
+				xmlRelaxNGFreeValidState(ctxt,ctxt->state);
 				ctxt->state = NULL;
 			    }
 			}
@@ -7982,7 +8142,7 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
 		    ret = xmlRelaxNGValidateDefinitionList(ctxt,
 			                                   define->content);
 		    if (ret != 0) {
-			xmlRelaxNGFreeValidState(ctxt->state);
+			xmlRelaxNGFreeValidState(ctxt,ctxt->state);
 			ctxt->state = NULL;
 		    } else {
 			base = res->nbState;
@@ -8065,13 +8225,13 @@ xmlRelaxNGValidateState(xmlRelaxNGValidCtxtPtr ctxt,
 			ctxt->states = NULL;
 		    }
 		} else {
-		    xmlRelaxNGFreeValidState(ctxt->state);
+		    xmlRelaxNGFreeValidState(ctxt,ctxt->state);
 		}
 		ctxt->state = oldstate;
 		list = list->next;
 	    }
 	    if (states != NULL) {
-		xmlRelaxNGFreeValidState(oldstate);
+		xmlRelaxNGFreeValidState(ctxt,oldstate);
 		ctxt->states = states;
 		ctxt->state = NULL;
 		ret = 0;
@@ -8290,7 +8450,7 @@ xmlRelaxNGValidateDefinition(xmlRelaxNGValidCtxtPtr ctxt,
      */
     if ((ctxt->state != NULL) && (ctxt->states != NULL)) {
 	TODO
-	xmlRelaxNGFreeValidState(ctxt->state);
+	xmlRelaxNGFreeValidState(ctxt,ctxt->state);
 	ctxt->state = NULL;
     }
 
@@ -8303,7 +8463,7 @@ xmlRelaxNGValidateDefinition(xmlRelaxNGValidCtxtPtr ctxt,
 	ret = xmlRelaxNGValidateState(ctxt, define);
 	if ((ctxt->state != NULL) && (ctxt->states != NULL)) {
 	    TODO
-	    xmlRelaxNGFreeValidState(ctxt->state);
+	    xmlRelaxNGFreeValidState(ctxt,ctxt->state);
 	    ctxt->state = NULL;
 	}
 	if ((ctxt->states != NULL) && (ctxt->states->nbState == 1)) {
@@ -8329,7 +8489,7 @@ xmlRelaxNGValidateDefinition(xmlRelaxNGValidCtxtPtr ctxt,
 	 */
 	if ((ctxt->state != NULL) && (ctxt->states != NULL)) {
 	    TODO
-	    xmlRelaxNGFreeValidState(ctxt->state);
+	    xmlRelaxNGFreeValidState(ctxt,ctxt->state);
 	    ctxt->state = NULL;
 	}
 	if (ret == 0) {
@@ -8361,11 +8521,11 @@ xmlRelaxNGValidateDefinition(xmlRelaxNGValidCtxtPtr ctxt,
 	    }
 	} else {
 	    if (ctxt->state != NULL) {
-		xmlRelaxNGFreeValidState(ctxt->state);
+		xmlRelaxNGFreeValidState(ctxt,ctxt->state);
 		ctxt->state = NULL;
 	    } else if (ctxt->states != NULL) {
 		for (k = 0;k < ctxt->states->nbState;k++)
-		    xmlRelaxNGFreeValidState(ctxt->states->tabState[k]);
+		    xmlRelaxNGFreeValidState(ctxt,ctxt->states->tabState[k]);
 		xmlRelaxNGFreeStates(ctxt, ctxt->states);
 		ctxt->states = NULL;
 	    }
@@ -8394,7 +8554,7 @@ xmlRelaxNGValidateDefinition(xmlRelaxNGValidCtxtPtr ctxt,
     }
     if ((ctxt->state != NULL) && (ctxt->states != NULL)) {
 	TODO
-	xmlRelaxNGFreeValidState(ctxt->state);
+	xmlRelaxNGFreeValidState(ctxt,ctxt->state);
 	ctxt->state = NULL;
     }
     return(ret);
@@ -8449,7 +8609,7 @@ xmlRelaxNGValidateDocument(xmlRelaxNGValidCtxtPtr ctxt, xmlDocPtr doc) {
 	    node = xmlRelaxNGSkipIgnored(ctxt, node);
 	    if (node == NULL)
 		tmp = 0;
-	    xmlRelaxNGFreeValidState(state);
+	    xmlRelaxNGFreeValidState(ctxt,state);
 	}
 	if (tmp == -1) {
 	    if (ret != -1) {
@@ -8458,7 +8618,7 @@ xmlRelaxNGValidateDocument(xmlRelaxNGValidCtxtPtr ctxt, xmlDocPtr doc) {
 	    }
 	}
     }
-    xmlRelaxNGFreeValidState(state);
+    xmlRelaxNGFreeValidState(ctxt,state);
     if (ret != 0)
 	xmlRelaxNGDumpValidError(ctxt);
     if (ctxt->idref == 1) {
@@ -8509,6 +8669,9 @@ xmlRelaxNGNewValidCtxt(xmlRelaxNGPtr schema) {
     ret->err = NULL;
     ret->errTab = NULL;
     ret->idref = schema->idref;
+    ret->states = NULL;
+    ret->freeState = NULL;
+    ret->freeStates = NULL;
     return (ret);
 }
 
@@ -8520,10 +8683,26 @@ xmlRelaxNGNewValidCtxt(xmlRelaxNGPtr schema) {
  */
 void
 xmlRelaxNGFreeValidCtxt(xmlRelaxNGValidCtxtPtr ctxt) {
+    int k;
+
     if (ctxt == NULL)
 	return;
     if (ctxt->states != NULL)
-	xmlRelaxNGFreeStates(ctxt, ctxt->states);
+	xmlRelaxNGFreeStates(NULL, ctxt->states);
+    if (ctxt->freeState != NULL) {
+	for (k = 0;k < ctxt->freeState->nbState;k++) {
+	    xmlRelaxNGFreeValidState(NULL, ctxt->freeState->tabState[k]);
+	}
+	xmlRelaxNGFreeStates(NULL, ctxt->freeState);
+    }
+#ifdef FS
+    if (ctxt->freeStates != NULL) {
+	for (k = 0;k < ctxt->freeStatesNr;k++) {
+	    xmlRelaxNGFreeStates(NULL, ctxt->freeStates[k]);
+	}
+	xmlFree(ctxt->freeStates);
+    }
+#endif
     if (ctxt->errTab != NULL)
 	xmlFree(ctxt->errTab);
     xmlFree(ctxt);

@@ -340,7 +340,7 @@ def handle_testSuite(node, level = 0):
 	        msg = msg + author.content + " "
 	print msg
     sections = node.xpathEval('section')
-    if sections != [] and level <= 0:
+    if verbose and sections != [] and level <= 0:
         msg = ""
         for section in sections:
 	    msg = msg + section.content + " "
@@ -351,11 +351,18 @@ def handle_testSuite(node, level = 0):
         handle_testSuite(test, level + 1)
 	        
 
-    if verbose and level >= 0 and sections != []:
-        msg = ""
-        for section in sections:
-	    msg = msg + section.content + " "
-        print "Result of tests for section %s" % (msg)
+    if verbose and level >= 0 :
+        if sections != []:
+	    msg = ""
+	    for section in sections:
+		msg = msg + section.content + " "
+	    print "Result of tests for section %s" % (msg)
+	elif docs != []:
+	    msg = ""
+	    for doc in docs:
+	        msg = msg + doc.content + " "
+	    print "Result of tests for %s" % (msg)
+
         if nb_schemas_tests != old_schemas_tests:
 	    print "found %d test schemas: %d success %d failures" % (
 		  nb_schemas_tests - old_schemas_tests,

@@ -1,3 +1,8 @@
+Wed Mar 19 11:34:10 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* check-xsddata-test-suite.py: cosmetic change for output
+	* relaxng.c: try to minimize calls to malloc/free for states.
+
 Tue Mar 18 17:50:31 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: removed a warning

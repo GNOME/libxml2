@@ -642,6 +642,9 @@ xmlSchemaTypeDump(xmlSchemaTypePtr type, FILE * output)
 	case XML_SCHEMA_CONTENT_SIMPLE:
 	    fprintf(output, "simple ");
 	    break;
+	case XML_SCHEMA_CONTENT_ANY:
+	    fprintf(output, "any ");
+	    break;
     }
     fprintf(output, "\n");
     if ((type->minOccurs != 1) || (type->maxOccurs != 1)) {
@@ -1597,7 +1600,7 @@ xmlSchemaParseAttribute(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 	child = child->next;
     }
     if (IS_SCHEMA(child, "simpleType")) {
-	ret->base = xmlSchemaParseSimpleType(ctxt, schema, child);
+	ret->subtypes = xmlSchemaParseSimpleType(ctxt, schema, child);
 	child = child->next;
     }
     if (child != NULL) {
@@ -3107,8 +3110,10 @@ xmlSchemaBuildContentModel(xmlSchemaElementPtr elem,
 
     if (elem->contModel != NULL)
 	return;
-    if (elem->subtypes == NULL)
+    if (elem->subtypes == NULL) {
+	elem->contentType = XML_SCHEMA_CONTENT_ANY;
 	return;
+    }
     if (elem->subtypes->type != XML_SCHEMA_TYPE_COMPLEX)
 	return;
     if (elem->subtypes->contentType == XML_SCHEMA_CONTENT_BASIC)
@@ -3823,12 +3828,28 @@ xmlSchemaValidateSimpleValue(xmlSchemaValidCtxtPtr ctxt,
 	if (ctxt->schema != NULL) {
 	    if (ret == 0) {
 		facet = type->facets;
-		while (facet != NULL) {
-		    tmp = xmlSchemaValidateFacet(base, facet, value,
-						 ctxt->value);
-		    if (tmp != 0)
-			ret = tmp;
-		    facet = facet->next;
+		if ((type->type == XML_SCHEMA_TYPE_RESTRICTION) &&
+		    (facet != NULL) &&
+		    (facet->type == XML_SCHEMA_FACET_ENUMERATION)) {
+		    while (facet != NULL) {
+			ret = 1;
+
+			tmp = xmlSchemaValidateFacet(base, facet, value,
+						     ctxt->value);
+			if (tmp == 0) {
+			    ret = 0;
+			    break;
+			}
+			facet = facet->next;
+		    }
+		} else {
+		    while (facet != NULL) {
+			tmp = xmlSchemaValidateFacet(base, facet, value,
+						     ctxt->value);
+			if (tmp != 0)
+			    ret = tmp;
+			facet = facet->next;
+		    }
 		}
 	    }
 	}
@@ -5016,6 +5037,8 @@ xmlSchemaFreeValidCtxt(xmlSchemaValidCtxtPtr ctxt) {
 	return;
     if (ctxt->attr != NULL)
 	xmlFree(ctxt->attr);
+    if (ctxt->value != NULL)
+	xmlSchemaFreeValue(ctxt->value);
     xmlFree(ctxt);
 }
 

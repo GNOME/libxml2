@@ -499,6 +499,11 @@ xmlSchemaValidateFacet(xmlSchemaTypePtr base, xmlSchemaFacetPtr facet,
 	    }
 	    TODO /* error code */
 	    return(1);
+	case  XML_SCHEMA_FACET_ENUMERATION:
+	    if ((facet->value != NULL) &&
+		(xmlStrEqual(facet->value, value)))
+		return(0);
+	    return(1);
 	default:
 	    TODO
     }

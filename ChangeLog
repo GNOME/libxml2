@@ -1,3 +1,8 @@
+Tue Apr 23 09:11:37 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am xmlschemas.c xmlschemastypes.c: more work on Schemas
+	* test/schemas result/schemas: updated the test list
+
 Mon Apr 22 17:59:14 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* TODO: updated a bit

@@ -69,7 +69,8 @@ typedef enum {
     XML_SCHEMA_CONTENT_MIXED,
     XML_SCHEMA_CONTENT_SIMPLE,
     XML_SCHEMA_CONTENT_MIXED_OR_ELEMENTS,
-    XML_SCHEMA_CONTENT_BASIC
+    XML_SCHEMA_CONTENT_BASIC,
+    XML_SCHEMA_CONTENT_ANY
 } xmlSchemaContentType;
 
 typedef struct _xmlSchemaVal xmlSchemaVal;
@@ -206,6 +207,7 @@ struct _xmlSchemaElement {
     xmlChar *value;
     struct _xmlSchemaElement *refDecl;
     xmlRegexpPtr contModel;
+    xmlSchemaContentType contentType;
 };
 
 /**

@@ -637,6 +637,7 @@ Schemastests: testSchemas$(EXEEXT)
 		       res.$$name;\
 	          diff $(srcdir)/result/schemas/"$$name"_"$$sno"_"$$xno".err \
 		       err.$$name;\
+		  grep Unimplemented err.$$name; \
 	          rm res.$$name err.$$name ; \
 	       fi ; \
 	  done; done)

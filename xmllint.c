@@ -91,6 +91,7 @@ static int xinclude = 0;
 #endif
 static int progresult = 0;
 static int timing = 0;
+static int generate = 0;
 static struct timeval begin, end;
 
 
@@ -394,11 +395,22 @@ static void parseAndPrintFile(char *filename) {
 	gettimeofday(&begin, NULL);
     
 
+    if (filename == NULL) {
+	if (generate) {
+	    xmlNodePtr n;
+
+	    doc = xmlNewDoc(BAD_CAST "1.0");
+	    n = xmlNewNode(NULL, BAD_CAST "info");
+	    xmlNodeSetContent(n, BAD_CAST "abc");
+	    xmlDocSetRootElement(doc, n);
+	}
+    }
 #ifdef LIBXML_HTML_ENABLED
-    if (html) {
+    else if (html) {
 	doc = htmlParseFile(filename, NULL);
-    } else {
+    }
 #endif /* LIBXML_HTML_ENABLED */
+    else {
 	/*
 	 * build an XML tree from a string;
 	 */
@@ -523,9 +535,7 @@ static void parseAndPrintFile(char *filename) {
 #endif
 	} else
 	    doc = xmlParseFile(filename);
-#ifdef LIBXML_HTML_ENABLED
     }
-#endif
 
     /*
      * If we don't have a document we might as well give up.  Do we
@@ -793,6 +803,9 @@ main(int argc, char **argv) {
 	else if ((!strcmp(argv[i], "-timing")) ||
 	         (!strcmp(argv[i], "--timing")))
 	    timing++;
+	else if ((!strcmp(argv[i], "-auto")) ||
+	         (!strcmp(argv[i], "--auto")))
+	    generate++;
 	else if ((!strcmp(argv[i], "-repeat")) ||
 	         (!strcmp(argv[i], "--repeat")))
 	    repeat++;
@@ -894,10 +907,12 @@ main(int argc, char **argv) {
 	    fprintf(stderr, "100 iteration took %ld ms\n", msec);
 	}
     }
+    if (generate) 
+	parseAndPrintFile(NULL);
     if ((htmlout) && (!nowrap)) {
 	xmlGenericError(xmlGenericErrorContext, "</body></html>\n");
     }
-    if (files == 0) {
+    if ((files == 0) && (!generate)) {
 	printf("Usage : %s [options] XMLfiles ...\n",
 	       argv[0]);
 	printf("\tParse the XML files and output the result of the parsing\n");
@@ -930,6 +945,7 @@ main(int argc, char **argv) {
 	printf("\t--noblanks : drop (ignorable?) blanks spaces\n");
 	printf("\t--testIO : test user I/O support\n");
 	printf("\t--encode encoding : output in the given encoding\n");
+	printf("\t--auto : generate a small doc on the fly\n");
 #ifdef LIBXML_XINCLUDE_ENABLED
 	printf("\t--xinclude : do XInclude processing\n");
 #endif

@@ -477,6 +477,7 @@ xmlNewDoc(const xmlChar *version) {
     cur->standalone = -1;
     cur->compression = -1; /* not initialized */
     cur->doc = cur;
+    cur->charset = XML_CHAR_ENCODING_UTF8;
     return(cur);
 }
 

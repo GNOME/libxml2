@@ -272,6 +272,7 @@ xmlNanoHTTPScanURL(xmlNanoHTTPCtxtPtr ctxt, const char *URL) {
     const char *cur = URL;
     char buf[4096];
     int indx = 0;
+    const int indxMax = 4096 - 1;
     int port = 0;
 
     if (ctxt->protocol != NULL) { 
@@ -288,7 +289,7 @@ xmlNanoHTTPScanURL(xmlNanoHTTPCtxtPtr ctxt, const char *URL) {
     }
     if (URL == NULL) return;
     buf[indx] = 0;
-    while ((*cur != 0) && (indx < 4096)) {
+    while ((*cur != 0) && (indx < indxMax)) {
         if ((cur[0] == ':') && (cur[1] == '/') && (cur[2] == '/')) {
 	    buf[indx] = 0;
 	    ctxt->protocol = xmlMemStrdup(buf);
@@ -301,7 +302,7 @@ xmlNanoHTTPScanURL(xmlNanoHTTPCtxtPtr ctxt, const char *URL) {
     if (*cur == 0) return;
 
     buf[indx] = 0;
-    while (indx < 4096) {
+    while (indx < indxMax) {
 	if ((strchr (cur, '[') && !strchr (cur, ']')) ||
 		(!strchr (cur, '[') && strchr (cur, ']'))) {
 	    __xmlIOErr(XML_FROM_HTTP, XML_HTTP_URL_SYNTAX, 
@@ -311,7 +312,7 @@ xmlNanoHTTPScanURL(xmlNanoHTTPCtxtPtr ctxt, const char *URL) {
 
 	if (cur[0] == '[') {
 	    cur++;
-	    while ((cur[0] != ']') && (indx < 4096))
+	    while ((cur[0] != ']') && (indx < indxMax))
 		buf[indx++] = *cur++;
     
 	    if (!strchr (buf, ':')) {
@@ -368,7 +369,7 @@ xmlNanoHTTPScanURL(xmlNanoHTTPCtxtPtr ctxt, const char *URL) {
     else {
         indx = 0;
         buf[indx] = 0;
-	while ((*cur != 0) && (indx < 4096))
+	while ((*cur != 0) && (indx < indxMax))
 	    buf[indx++] = *cur++;
 	buf[indx] = 0;
 	ctxt->path = xmlMemStrdup(buf);
@@ -390,6 +391,7 @@ xmlNanoHTTPScanProxy(const char *URL) {
     const char *cur = URL;
     char buf[4096];
     int indx = 0;
+    const int indxMax = 4096 - 1;
     int port = 0;
 
     if (proxy != NULL) { 
@@ -409,7 +411,7 @@ xmlNanoHTTPScanProxy(const char *URL) {
 #endif
     if (URL == NULL) return;
     buf[indx] = 0;
-    while (*cur != 0) {
+    while ((*cur != 0) && (indx < indxMax)) {
         if ((cur[0] == ':') && (cur[1] == '/') && (cur[2] == '/')) {
 	    buf[indx] = 0;
 	    indx = 0;
@@ -421,7 +423,7 @@ xmlNanoHTTPScanProxy(const char *URL) {
     if (*cur == 0) return;
 
     buf[indx] = 0;
-    while (1) {
+    while (indx < indxMax) {
 	if ((strchr (cur, '[') && !strchr (cur, ']')) ||
 		(!strchr (cur, '[') && strchr (cur, ']'))) {
 	    __xmlIOErr(XML_FROM_HTTP, XML_HTTP_URL_SYNTAX, "Syntax Error\n");
@@ -430,7 +432,7 @@ xmlNanoHTTPScanProxy(const char *URL) {
 
 	if (cur[0] == '[') {
 	    cur++;
-	    while (cur[0] != ']')
+	    while ((cur[0] != ']') && (indx < indxMax))
 		buf[indx++] = *cur++;
 
 	    if (!strchr (buf, ':')) {

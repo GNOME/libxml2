@@ -81,7 +81,7 @@ xmlVErrMemory(xmlValidCtxtPtr ctxt, const char *extra)
  * Handle a validation error
  */
 static void
-xmlErrValid(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED, xmlParserErrors error,
+xmlErrValid(xmlValidCtxtPtr ctxt, xmlParserErrors error,
             const char *msg, const char *extra)
 {
     xmlGenericErrorFunc channel = NULL;

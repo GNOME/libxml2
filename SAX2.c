@@ -45,6 +45,37 @@
             __FILE__, __LINE__);
 
 /**
+ * xmlValidError:
+ * @ctxt:  an XML validation parser context
+ * @error:  the error number
+ * @msg:  the error message
+ * @str1:  extra data
+ * @str2:  extra data
+ *
+ * Handle a validation error
+ */
+static void
+xmlErrValid(xmlParserCtxtPtr ctxt, xmlParserErrors error,
+            const char *msg, const char *str1, const char *str2)
+{
+    xmlStructuredErrorFunc schannel = NULL;
+
+    if ((ctxt != NULL) && (ctxt->disableSAX != 0) &&
+        (ctxt->instate == XML_PARSER_EOF))
+	return;
+    ctxt->errNo = error;
+    if ((ctxt->sax != NULL) && (ctxt->sax->initialized == XML_SAX2_MAGIC))
+        schannel = ctxt->sax->serror;
+    __xmlRaiseError(schannel,
+                    ctxt->vctxt.error, ctxt->vctxt.userData,
+                    ctxt, NULL, XML_FROM_DTD, error,
+                    XML_ERR_ERROR, NULL, 0, (const char *) str1,
+		    (const char *) str2, NULL, 0, 0,
+		    msg, (const char *) str1, (const char *) str2);
+    ctxt->valid = 0;
+}
+
+/**
  * xmlSAX2GetPublicId:
  * @ctx: the user data (XML parser context)
  *
@@ -1244,11 +1275,9 @@ process_external_subset:
 			}
 		    }
 		    if (att == NULL) {
-			if (ctxt->vctxt.error != NULL)
-			    ctxt->vctxt.error(ctxt->vctxt.userData,
+		        xmlErrValid(ctxt, XML_DTD_STANDALONE_DEFAULTED,
       "standalone: attribute %s on %s defaulted from external subset\n",
-					      fulln, attr->elem);
-			ctxt->valid = 0;
+				    fulln, attr->elem);
 		    }
 		}
 		attr = attr->nexth;
@@ -1370,13 +1399,9 @@ xmlSAX2StartElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
 	  (ctxt->myDoc->intSubset->elements == NULL) &&
 	  (ctxt->myDoc->intSubset->attributes == NULL) && 
 	  (ctxt->myDoc->intSubset->entities == NULL)))) {
-	if (ctxt->vctxt.error != NULL) {
-            ctxt->vctxt.error(ctxt->vctxt.userData,
-	      "Validation failed: no DTD found !\n");
-	}
+	xmlErrValid(ctxt, XML_ERR_NO_DTD,
+	  "Validation failed: no DTD found !", NULL, NULL);
 	ctxt->validate = 0;
-	ctxt->valid = 0;
-	ctxt->errNo = XML_ERR_NO_DTD;
     }
        
 
@@ -1947,13 +1972,9 @@ xmlSAX2StartElementNs(void *ctx,
 	  (ctxt->myDoc->intSubset->elements == NULL) &&
 	  (ctxt->myDoc->intSubset->attributes == NULL) && 
 	  (ctxt->myDoc->intSubset->entities == NULL)))) {
-	if (ctxt->vctxt.error != NULL) {
-            ctxt->vctxt.error(ctxt->vctxt.userData,
-	      "Validation failed: no DTD found !\n");
-	}
+	xmlErrValid(ctxt, XML_ERR_NO_DTD,
+	  "Validation failed: no DTD found !", NULL, NULL);
 	ctxt->validate = 0;
-	ctxt->valid = 0;
-	ctxt->errNo = XML_ERR_NO_DTD;
     }
 
     /*

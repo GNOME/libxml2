@@ -426,7 +426,7 @@ xmlWarningMsg(xmlParserCtxtPtr ctxt, xmlParserErrors error,
  * @msg:  the error message
  * @str1:  extra data
  *
- * Handle a warning.
+ * Handle a validity error.
  */
 static void
 xmlValidityError(xmlParserCtxtPtr ctxt, xmlParserErrors error,

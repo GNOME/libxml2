@@ -362,21 +362,25 @@ class xmlCore:
         ctxt.xpathFreeContext()
         return res
 
-    #
-    # Selecting nodes using XPath, faster because the context
-    # is allocated just once per xmlDoc.
-    #
+#    #
+#    # Selecting nodes using XPath, faster because the context
+#    # is allocated just once per xmlDoc.
+#    #
+#    # Removed: DV memleaks c.f. #126735
+#    #
+#    def xpathEval2(self, expr):
+#        doc = self.doc
+#        if doc == None:
+#            return None
+#        try:
+#            doc._ctxt.setContextNode(self)
+#        except:
+#            doc._ctxt = doc.xpathNewContext()
+#            doc._ctxt.setContextNode(self)
+#        res = doc._ctxt.xpathEval(expr)
+#        return res
     def xpathEval2(self, expr):
-        doc = self.doc
-        if doc == None:
-            return None
-        try:
-            doc._ctxt.setContextNode(self)
-        except:
-            doc._ctxt = doc.xpathNewContext()
-            doc._ctxt.setContextNode(self)
-        res = doc._ctxt.xpathEval(expr)
-        return res
+        return self.xpathEval(expr)
 
     # support for python2 iterators
     def walk_depth_first(self):
@@ -390,7 +394,7 @@ class xmlCore:
             self.doc._ctxt.xpathFreeContext()
         except:
             pass
-        libxml2mod.freeDoc(self._o)
+        libxml2mod.xmlFreeDoc(self._o)
 
 
 #

@@ -454,9 +454,9 @@ __xmlRaiseError(xmlStructuredErrorFunc schannel,
 	if ((schannel == NULL) && (ctxt != NULL) && (ctxt->sax != NULL) &&
 	    (ctxt->sax->initialized == XML_SAX2_MAGIC))
 	    schannel = ctxt->sax->serror;
-	if (schannel == NULL)
-	    schannel = xmlStructuredError;
     }
+    if (schannel == NULL)
+	schannel = xmlStructuredError;
     if ((domain == XML_FROM_VALID) &&
         ((channel == xmlParserValidityError) ||
 	 (channel == xmlParserValidityWarning))) {

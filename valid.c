@@ -1628,6 +1628,7 @@ xmlAddNotationDecl(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED, xmlDtdPtr dtd,
     if ((PublicID == NULL) && (SystemID == NULL)) {
         xmlGenericError(xmlGenericErrorContext,
 		"xmlAddNotationDecl: no PUBLIC ID nor SYSTEM ID\n");
+	return(NULL);
     }
 
     /*

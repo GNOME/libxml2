@@ -569,7 +569,14 @@ notationDecl(void *ctx, const xmlChar *name,
 	    "SAX.notationDecl(%s, %s, %s)\n", name, publicId, systemId);
 #endif
 
-    if (ctxt->inSubset == 1)
+    if ((publicId == NULL) && (systemId == NULL)) {
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt, 
+	     "SAX.notationDecl(%s) externalID or PublicID missing\n", name);
+	ctxt->valid = 0;
+	ctxt->wellFormed = 0;
+	return;
+    } else if (ctxt->inSubset == 1)
 	nota = xmlAddNotationDecl(&ctxt->vctxt, ctxt->myDoc->intSubset, name,
                               publicId, systemId);
     else if (ctxt->inSubset == 2)

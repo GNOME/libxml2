@@ -527,7 +527,8 @@ htmlNodeDumpFormat(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
 
     if ((info != NULL) && (info->empty)) {
         xmlBufferWriteChar(buf, ">");
-	if (cur->next != NULL) {
+	if ((format) && (info != NULL) && (!info->isinline) &&
+	    (cur->next != NULL)) {
 	    if ((cur->next->type != HTML_TEXT_NODE) &&
 		(cur->next->type != HTML_ENTITY_REF_NODE))
 		xmlBufferWriteChar(buf, "\n");
@@ -544,7 +545,8 @@ htmlNodeDumpFormat(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
 	    xmlBufferWriteCHAR(buf, cur->name);
 	    xmlBufferWriteChar(buf, ">");
 	}
-	if (cur->next != NULL) {
+	if ((format) && (info != NULL) && (!info->isinline) &&
+	    (cur->next != NULL)) {
 	    if ((cur->next->type != HTML_TEXT_NODE) &&
 		(cur->next->type != HTML_ENTITY_REF_NODE))
 		xmlBufferWriteChar(buf, "\n");
@@ -567,12 +569,14 @@ htmlNodeDumpFormat(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
 	}
     }
     if (cur->children != NULL) {
-        if ((cur->children->type != HTML_TEXT_NODE) &&
+        if ((format) && (info != NULL) && (!info->isinline) &&
+	    (cur->children->type != HTML_TEXT_NODE) &&
 	    (cur->children->type != HTML_ENTITY_REF_NODE) &&
 	    (cur->children != cur->last))
 	    xmlBufferWriteChar(buf, "\n");
 	htmlNodeListDump(buf, doc, cur->children, format);
-        if ((cur->last->type != HTML_TEXT_NODE) &&
+        if ((format) && (info != NULL) && (!info->isinline) &&
+	    (cur->last->type != HTML_TEXT_NODE) &&
 	    (cur->last->type != HTML_ENTITY_REF_NODE) &&
 	    (cur->children != cur->last))
 	    xmlBufferWriteChar(buf, "\n");
@@ -580,7 +584,8 @@ htmlNodeDumpFormat(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
     xmlBufferWriteChar(buf, "</");
     xmlBufferWriteCHAR(buf, cur->name);
     xmlBufferWriteChar(buf, ">");
-    if (cur->next != NULL) {
+    if ((format) && (info != NULL) && (!info->isinline) &&
+	(cur->next != NULL)) {
         if ((cur->next->type != HTML_TEXT_NODE) &&
 	    (cur->next->type != HTML_ENTITY_REF_NODE))
 	    xmlBufferWriteChar(buf, "\n");
@@ -997,7 +1002,7 @@ htmlNodeDumpFormatOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
 
     if ((info != NULL) && (info->empty)) {
         xmlOutputBufferWriteString(buf, ">");
-	if (cur->next != NULL) {
+	if ((format) && (!info->isinline) && (cur->next != NULL)) {
 	    if ((cur->next->type != HTML_TEXT_NODE) &&
 		(cur->next->type != HTML_ENTITY_REF_NODE) &&
 		(cur->parent != NULL) &&
@@ -1016,7 +1021,8 @@ htmlNodeDumpFormatOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
 	    xmlOutputBufferWriteString(buf, (const char *)cur->name);
 	    xmlOutputBufferWriteString(buf, ">");
 	}
-	if (cur->next != NULL) {
+	if ((format) && (cur->next != NULL) &&
+            (info != NULL) && (!info->isinline)) {
 	    if ((cur->next->type != HTML_TEXT_NODE) &&
 		(cur->next->type != HTML_ENTITY_REF_NODE) &&
 		(cur->parent != NULL) &&
@@ -1040,13 +1046,15 @@ htmlNodeDumpFormatOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
 #endif 
     }
     if (cur->children != NULL) {
-        if ((cur->children->type != HTML_TEXT_NODE) &&
+        if ((format) && (info != NULL) && (!info->isinline) &&
+	    (cur->children->type != HTML_TEXT_NODE) &&
 	    (cur->children->type != HTML_ENTITY_REF_NODE) &&
 	    (cur->children != cur->last) &&
 	    (!xmlStrEqual(cur->name, BAD_CAST "pre")))
 	    xmlOutputBufferWriteString(buf, "\n");
 	htmlNodeListDumpOutput(buf, doc, cur->children, encoding, format);
-        if ((cur->last->type != HTML_TEXT_NODE) &&
+        if ((format) && (info != NULL) && (!info->isinline) &&
+	    (cur->last->type != HTML_TEXT_NODE) &&
 	    (cur->last->type != HTML_ENTITY_REF_NODE) &&
 	    (cur->children != cur->last) &&
 	    (!xmlStrEqual(cur->name, BAD_CAST "pre")))
@@ -1055,7 +1063,8 @@ htmlNodeDumpFormatOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
     xmlOutputBufferWriteString(buf, "</");
     xmlOutputBufferWriteString(buf, (const char *)cur->name);
     xmlOutputBufferWriteString(buf, ">");
-    if (cur->next != NULL) {
+    if ((format) && (info != NULL) && (!info->isinline) &&
+	(cur->next != NULL)) {
         if ((cur->next->type != HTML_TEXT_NODE) &&
 	    (cur->next->type != HTML_ENTITY_REF_NODE) &&
 	    (cur->parent != NULL) &&

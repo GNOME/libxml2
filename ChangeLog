@@ -1,3 +1,13 @@
+Wed Jun 13 23:08:46 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* HTMLparser.[ch] HTMLtree.c: stored the inline/block property
+	  of element and use it to avoid outputting formatting spaces at
+	  the wrong place. Implemented the format parameter for HTML save.
+	* result/HTML/doc2.htm result/HTML/doc3.htm result/HTML/fp40.htm
+	  result/HTML/script.html result/HTML/test2.html result/HTML/test3.html
+	  result/HTML/wired.html: of course this impact the result of a
+	  number of HTML tests
+
 Thu Jun 14 09:49:09 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* HTMLtree.[ch]: started augmenting the HTML save API with

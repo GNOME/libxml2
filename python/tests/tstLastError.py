@@ -21,7 +21,16 @@ class TestCase(unittest.TestCase):
         # disable the default error handler
         libxml2.registerErrorHandler(None,None)
         try:
-            f(*args)
+            # Emulate f(*args) for older Pythons.
+            l = len(args)
+            if l == 0: f
+            elif l == 1: f(args[0])
+            elif l == 2: f(args[0], args[1])
+            elif l == 3: f(args[0], args[1], args[2])
+            elif l == 4: f(args[0], args[1], args[2], args[3])
+            elif l == 5: f(args[0], args[1], args[2], args[3], args[4])
+            else:
+                self.fail("Too many arguments for function")
         except exc:
             e = libxml2.lastError()
             if e is None:

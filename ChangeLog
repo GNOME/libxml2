@@ -1,3 +1,9 @@
+Sun May  9 20:40:59 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am python/tests/Makefile.am python/tests/tstLastError.py:
+	  applied patch from Ed Davis to allow "make tests" to work
+	  with Python 1.5
+
 Sun May  9 19:46:13 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xmlsave.c: apply fix for XHTML1 formating from Nick Wellnhofer

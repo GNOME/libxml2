@@ -906,7 +906,7 @@ Relaxtests: xmllint$(EXEEXT)
 
 RelaxNGPythonTests:
 	@(if [ -x $(PYTHON) ] ; then \
-	    PYTHONPATH=$(top_builddir)/python:$(top_builddir)/python/.libs ; \
+	    PYTHONPATH=$(top_builddir)/python:$(top_builddir)/python/.libs:$$PYTHONPATH ; \
 	    export PYTHONPATH; \
 	    echo "## Relax-NG Python based test suite 1" ; \
 	    $(CHECKER) $(PYTHON) $(srcdir)/check-relaxng-test-suite.py ; \
@@ -916,7 +916,7 @@ RelaxNGPythonTests:
 
 SchemasPythonTests:
 	@(if [ -x $(PYTHON) ] ; then \
-	    PYTHONPATH=$(top_builddir)/python:$(top_builddir)/python/.libs; \
+	    PYTHONPATH=$(top_builddir)/python:$(top_builddir)/python/.libs:$$PYTHONPATH; \
 	    export PYTHONPATH; \
 	    echo "## XML Schemas datatypes Python based test suite" ; \
 	    $(CHECKER) $(PYTHON) $(srcdir)/check-xsddata-test-suite.py ; \

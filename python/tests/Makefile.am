@@ -45,7 +45,7 @@ EXTRA_DIST = $(PYTESTS) $(XMLS)
 
 if WITH_PYTHON
 tests: $(PYTESTS)
-	-@(PYTHONPATH="..:../.libs:$(srcdir)/.." ; export PYTHONPATH; \
+	-@(PYTHONPATH="..:../.libs:$(srcdir)/..:$$PYTHONPATH" ; export PYTHONPATH; \
 	   for test in $(PYTESTS) ; do echo "-- $$test" ; $(PYTHON) $(srcdir)/$$test ; done)
 else
 tests:

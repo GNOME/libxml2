@@ -1241,7 +1241,7 @@ xmlXIncludeLoadFallback(xmlXIncludeCtxtPtr ctxt, xmlNodePtr fallback, int nr) {
     if ((fallback == NULL) || (ctxt == NULL))
 	return(-1);
 
-    ctxt->incTab[nr]->inc = xmlCopyNode(fallback->children, 1);
+    ctxt->incTab[nr]->inc = xmlCopyNodeList(fallback->children);
     return(0);
 }
 

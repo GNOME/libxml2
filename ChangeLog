@@ -1,3 +1,8 @@
+Tue Nov 25 08:00:15 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: moved xmlCleanupThreads() to the end of xmlCleanupParser()
+	  to avoid bug #127851
+
 Mon Nov 24 15:26:21 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlregexp.c: fixing some Negative Character Group and

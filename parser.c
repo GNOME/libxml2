@@ -12104,9 +12104,9 @@ xmlCleanupParser(void) {
 #ifdef LIBXML_OUTPUT_ENABLED
     xmlCleanupOutputCallbacks();
 #endif
-    xmlCleanupThreads();
     xmlCleanupGlobals();
     xmlResetLastError();
+    xmlCleanupThreads(); /* must be last if called not from the main thread */
     xmlParserInitialized = 0;
 }
 

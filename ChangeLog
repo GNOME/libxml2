@@ -1,3 +1,12 @@
+Fri May 11 16:07:13 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* HTMLparser.c: Patch from Jonas Borgström
+	(htmlGetEndPriority): New function, returns 
+	the priority of a certain element.
+	(htmlAutoCloseOnClose): Only close inline elements if they 
+	all have lower or equal priority.
+	* result/HTML: this of course changed a number of tests results.
+
 Thu May 10 17:30:22 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xmlIO.c catalog.c: plugged in the default catalog resolution

@@ -778,7 +778,8 @@ SAX.endElement(input)
 SAX.characters(&nbsp;, 2)
 SAX.characters(
 , 1)
-SAX.error: Opening and ending tag mismatch: td and form
+SAX.endElement(form)
+SAX.endElement(td)
 SAX.characters( 
 		, 4)
 SAX.startElement(td, valign='top', bgcolor='#99FF99')
@@ -792,12 +793,12 @@ SAX.characters(
 SAX.endElement(td)
 SAX.characters(
 	, 2)
-SAX.error: Opening and ending tag mismatch: tr and form
+SAX.endElement(tr)
 SAX.characters(    , 4)
-SAX.endElement(form)
+SAX.error: Unexpected end tag : form
 SAX.characters(
 , 1)
-SAX.error: Opening and ending tag mismatch: table and td
+SAX.endElement(table)
 SAX.endElement(td)
 SAX.characters(
   , 3)
@@ -1074,8 +1075,9 @@ SAX.characters(Other
 SAX.endElement(option)
 SAX.endElement(select)
 SAX.endElement(font)
-SAX.error: Opening and ending tag mismatch: td and form
-SAX.error: Opening and ending tag mismatch: tr and form
+SAX.endElement(form)
+SAX.endElement(td)
+SAX.endElement(tr)
 SAX.characters(
  , 2)
 SAX.startElement(tr, align='left', valign='top')
@@ -1137,10 +1139,10 @@ SAX.characters(
         , 9)
 SAX.endElement(tr)
 SAX.characters(  , 2)
-SAX.endElement(form)
+SAX.error: Unexpected end tag : form
 SAX.characters(
         , 9)
-SAX.error: Opening and ending tag mismatch: table and td
+SAX.endElement(table)
 SAX.characters(
 
 , 2)
@@ -1461,14 +1463,14 @@ SAX.characters(
 
 , 2)
 SAX.endElement(table)
-SAX.characters(
+SAX.ignorableWhitespace(
 
 , 2)
 SAX.comment( end lower left side Navigation )
-SAX.characters(
+SAX.ignorableWhitespace(
 , 1)
 SAX.comment( CONTENT TABLE )
-SAX.characters(
+SAX.ignorableWhitespace(
 
 , 2)
 SAX.startElement(table, border='0', width='447', cellspacing='0', cellpadding='0', bordercolor='#66FF00')
@@ -2828,20 +2830,14 @@ SAX.endElement(tr)
 SAX.characters(
 , 1)
 SAX.endElement(table)
-SAX.characters(
+SAX.ignorableWhitespace(
 
 
 , 3)
 SAX.startElement(br)
 SAX.endElement(br)
-SAX.characters(
+SAX.ignorableWhitespace(
 , 1)
-SAX.endElement(td)
-SAX.endElement(tr)
-SAX.endElement(table)
-SAX.endElement(td)
-SAX.endElement(tr)
-SAX.endElement(table)
 SAX.endElement(body)
 SAX.ignorableWhitespace(
 , 1)

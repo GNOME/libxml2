@@ -2657,11 +2657,10 @@ SAX.startElement(a, href='http://bp6.gamesquad.net/cgi-bin/news/viewnews.cgi?new
 SAX.characters(News 
             archive, 26)
 SAX.endElement(a)
-SAX.error: Opening and ending tag mismatch: font and form
-SAX.characters( , 1)
 SAX.endElement(form)
-SAX.error: Opening and ending tag mismatch: center and font
 SAX.endElement(font)
+SAX.characters( , 1)
+SAX.error: Unexpected end tag : form
 SAX.endElement(center)
 SAX.endElement(td)
 SAX.endElement(tr)
@@ -2711,7 +2710,8 @@ SAX.characters(
             , 14)
 SAX.startElement(b)
 SAX.startElement(noscript)
-SAX.error: Opening and ending tag mismatch: b and noscript
+SAX.endElement(noscript)
+SAX.endElement(b)
 SAX.startElement(a, href='http://www.goto.com/d/search/ssn/?fromGIF=true', target='_blank')
 SAX.startElement(img, align='bottom', border='0', height='90', ismap, src='doc3_files/100x90.gif', width='100')
 SAX.endElement(img)
@@ -2724,9 +2724,7 @@ SAX.endElement(a)
 SAX.error: Unexpected end tag : a
 SAX.endElement(b)
 SAX.startElement(b)
-SAX.error: Opening and ending tag mismatch: noscript and b
-SAX.endElement(b)
-SAX.endElement(noscript)
+SAX.error: Unexpected end tag : noscript
 SAX.endElement(b)
 SAX.startElement(b)
 SAX.comment( END GoTo.com Search Box )
@@ -2813,23 +2811,24 @@ SAX.endElement(tbody)
 SAX.endElement(table)
 SAX.error: Unexpected end tag : p
 SAX.endElement(center)
-SAX.error: Opening and ending tag mismatch: tr and td
-SAX.error: Opening and ending tag mismatch: tbody and td
-SAX.error: Opening and ending tag mismatch: table and td
+SAX.endElement(td)
+SAX.endElement(tr)
+SAX.endElement(tbody)
+SAX.endElement(table)
 SAX.comment(	</TABLE>)
 SAX.characters(
 , 2)
 SAX.startElement(center)
 SAX.endElement(center)
-SAX.endElement(td)
-SAX.endElement(tr)
+SAX.error: Unexpected end tag : td
+SAX.error: Unexpected end tag : tr
 SAX.startElement(tr)
 SAX.startElement(td, colspan='3', valign='TOP', height='70')
 SAX.characters(&nbsp;, 2)
 SAX.endElement(td)
 SAX.characters( , 1)
 SAX.endElement(tr)
-SAX.error: Opening and ending tag mismatch: table and tbody
+SAX.error: Unexpected end tag : table
 SAX.characters(
 , 2)
 SAX.startElement(table, border='0', width='780')
@@ -2864,17 +2863,14 @@ SAX.endElement(tr)
 SAX.comment(	<TR>		<TD WIDTH="780">			<P ALIGN="CENTER"><FONT SIZE="1" COLOR="#999999" FACE="Verdana,arial">Site design by Tim Brinkley</FONT>		</TD>	</TR> )
 SAX.endElement(tbody)
 SAX.endElement(table)
-SAX.error: Opening and ending tag mismatch: div and tbody
-SAX.characters(
+SAX.endElement(div)
+SAX.ignorableWhitespace(
 , 2)
 SAX.startElement(script)
 SAX.cdata( window.open=NS_ActualOpen; , 28)
 SAX.endElement(script)
-SAX.characters(
+SAX.ignorableWhitespace(
 , 2)
-SAX.endElement(tbody)
-SAX.endElement(table)
-SAX.endElement(div)
 SAX.endElement(body)
 SAX.endElement(html)
 SAX.ignorableWhitespace(

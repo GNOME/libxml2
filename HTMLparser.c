@@ -565,15 +565,32 @@ static const char *htmlScriptAttributes[] = {
 };
 
 /*
- * end tags that imply the end of the inside elements
- */
-const char *htmlEndClose[] = {
-"head",
-"body",
-"html",
-NULL
-};
+ * This table is used by the htmlparser to know what to do with
+ * broken html pages. By assigning different priorities to different
+ * elements the parser can decide how to handle extra endtags.
+ * Endtags are only allowed to close elements with lower or equal
+ * priority.
+ */ 
 
+typedef struct {
+    const char *name;
+    int priority;
+} elementPriority;
+
+const elementPriority htmlEndPriority[] = {
+    {"div",   150},
+    {"td",    160},
+    {"th",    160},
+    {"tr",    170},
+    {"thead", 180},
+    {"tbody", 180},
+    {"tfoot", 180},
+    {"table", 190},
+    {"head",  200},
+    {"body",  200},
+    {"html",  220},
+    {NULL,    100} /* Default priority */
+};
 
 static const char** htmlStartCloseIndex[100];
 static int htmlStartCloseIndexinitialized = 0;
@@ -628,6 +645,23 @@ htmlTagLookup(const xmlChar *tag) {
 }
 
 /**
+ * htmlGetEndPriority:
+ * @name: The name of the element to look up the priority for.
+ * 
+ * Return value: The "endtag" priority.
+ **/
+static int
+htmlGetEndPriority (const xmlChar *name) {
+	int i = 0;
+
+	while ((htmlEndPriority[i].name != NULL) &&
+	       (!xmlStrEqual((const xmlChar *)htmlEndPriority[i].name, name)))
+	    i++;
+
+	return(htmlEndPriority[i].priority);
+}
+
+/**
  * htmlCheckAutoClose:
  * @newtag:  The new tag name
  * @oldtag:  The old tag name
@@ -674,7 +708,7 @@ static void
 htmlAutoCloseOnClose(htmlParserCtxtPtr ctxt, const xmlChar *newtag) {
     htmlElemDescPtr info;
     xmlChar *oldname;
-    int i, endCloses = 0;
+    int i, priority;
 
 #ifdef DEBUG
     xmlGenericError(xmlGenericErrorContext,"Close of %s stack: %d elements\n", newtag, ctxt->nameNr);
@@ -682,15 +716,20 @@ htmlAutoCloseOnClose(htmlParserCtxtPtr ctxt, const xmlChar *newtag) {
         xmlGenericError(xmlGenericErrorContext,"%d : %s\n", i, ctxt->nameTab[i]);
 #endif
 
+    priority = htmlGetEndPriority (newtag);
+
     for (i = (ctxt->nameNr - 1);i >= 0;i--) {
+
         if (xmlStrEqual(newtag, ctxt->nameTab[i])) break;
+	/*
+	 * A missplaced endtagad can only close elements with lower
+	 * or equal priority, so if we find an element with higher
+	 * priority before we find an element with
+	 * matching name, we just ignore this endtag 
+	 */
+	if (htmlGetEndPriority (ctxt->nameTab[i]) > priority) return;
     }
     if (i < 0) return;
-    for (i = 0; (htmlEndClose[i] != NULL);i++)
-	if (xmlStrEqual(newtag, (const xmlChar *) htmlEndClose[i])) {
-	    endCloses = 1;
-	    break;
-	}
 
     while (!xmlStrEqual(newtag, ctxt->name)) {
 	info = htmlTagLookup(ctxt->name);
@@ -707,8 +746,6 @@ htmlAutoCloseOnClose(htmlParserCtxtPtr ctxt, const xmlChar *newtag) {
 		 "Opening and ending tag mismatch: %s and %s\n",
 				 newtag, ctxt->name);
 	    ctxt->wellFormed = 0;
-	} else if (endCloses == 0) {
-	    return;
 	}
 	if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
 	    ctxt->sax->endElement(ctxt->userData, ctxt->name);

@@ -181,27 +181,15 @@ option value="http://www.hotbot.com/?SM=MC&DV=0&LG=any&RD=RG&DC=10&DE=2&_v=2&OP
 ./test/HTML/wired.html:97: error: htmlParseEntityRef: expecting ';'
 lue="http://www.hotbot.com/?SM=MC&DV=0&LG=any&RD=RG&DC=10&DE=2&_v=2&OPs=MDRTP&M
                                                                               ^
-./test/HTML/wired.html:165: error: Opening and ending tag mismatch: td and form
-</td> 
-     ^
-./test/HTML/wired.html:170: error: Opening and ending tag mismatch: tr and form
+./test/HTML/wired.html:170: error: Unexpected end tag : form
 	</tr>    </form>
-      ^
-./test/HTML/wired.html:171: error: Opening and ending tag mismatch: table and td
-</table></td>
-        ^
-./test/HTML/wired.html:244: error: Opening and ending tag mismatch: td and form
- </select></font></td></tr>
-                      ^
-./test/HTML/wired.html:244: error: Opening and ending tag mismatch: tr and form
- </select></font></td></tr>
-                          ^
+                ^
 ./test/HTML/wired.html:248: error: htmlParseEntityRef: expecting ';'
 MG SRC="http://barnesandnoble.bfast.com/booklink/serve?sourceid=383471&is_searc
                                                                               ^
-./test/HTML/wired.html:266: error: Opening and ending tag mismatch: table and td
-        </table>
-               ^
+./test/HTML/wired.html:265: error: Unexpected end tag : form
+        </tr>  </form>
+                     ^
 ./test/HTML/wired.html:346: error: Opening and ending tag mismatch: td and font
 </td>
     ^

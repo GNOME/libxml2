@@ -37,12 +37,9 @@ om/ad_static.asp?pid=2097&sid=1881&asid=7708"></a></IFRAME></CENTER></LI></FONT
 ./test/HTML/doc3.htm:742: error: Unexpected end tag : p
 =7708"></a></IFRAME></CENTER></LI></FONT></TD></TR></TBODY></TABLE></CENTER></P
                                                                               ^
-./test/HTML/doc3.htm:767: error: Opening and ending tag mismatch: font and form
+./test/HTML/doc3.htm:767: error: Unexpected end tag : form
             archive</A></FONT> </FORM></CENTER></TD></TR></TBODY></TABLE><!--		
-                              ^
-./test/HTML/doc3.htm:767: error: Opening and ending tag mismatch: center and font
-            archive</A></FONT> </FORM></CENTER></TD></TR></TBODY></TABLE><!--		
-                                               ^
+                                      ^
 ./test/HTML/doc3.htm:790: error: Unexpected end tag : iframe
 							document.write("42DF8478957377></IFRAME>");
                                                ^
@@ -55,13 +52,10 @@ om/ad_static.asp?pid=2097&sid=1881&asid=7708"></a></IFRAME></CENTER></LI></FONT
 ./test/HTML/doc3.htm:806: error: Unexpected end tag : a
 							document.write("ype=gif&size=100x90></A>");
                                                ^
-./test/HTML/doc3.htm:810: error: Opening and ending tag mismatch: b and noscript
-            <B><NOSCRIPT></B><A 
-                             ^
 ./test/HTML/doc3.htm:815: error: Unexpected end tag : a
             </A></A></B><B></NOSCRIPT></B><B><!-- END GoTo.com Search Box --></
                     ^
-./test/HTML/doc3.htm:815: error: Opening and ending tag mismatch: noscript and b
+./test/HTML/doc3.htm:815: error: Unexpected end tag : noscript
             </A></A></B><B></NOSCRIPT></B><B><!-- END GoTo.com Search Box --></
                                       ^
 ./test/HTML/doc3.htm:821: error: Opening and ending tag mismatch: form and center
@@ -76,18 +70,12 @@ om/ad_static.asp?pid=2097&sid=1881&asid=7708"></a></IFRAME></CENTER></LI></FONT
 ./test/HTML/doc3.htm:834: error: Unexpected end tag : p
 width="100%">&nbsp;</TD></TR></TBODY></TABLE></P></CENTER></TR></TBODY></TABLE>
                                                  ^
-./test/HTML/doc3.htm:834: error: Opening and ending tag mismatch: tr and td
-width="100%">&nbsp;</TD></TR></TBODY></TABLE></P></CENTER></TR></TBODY></TABLE>
-                                                               ^
-./test/HTML/doc3.htm:834: error: Opening and ending tag mismatch: tbody and td
-width="100%">&nbsp;</TD></TR></TBODY></TABLE></P></CENTER></TR></TBODY></TABLE>
-                                                                       ^
-./test/HTML/doc3.htm:834: error: Opening and ending tag mismatch: table and td
-width="100%">&nbsp;</TD></TR></TBODY></TABLE></P></CENTER></TR></TBODY></TABLE>
-                                                                              ^
-./test/HTML/doc3.htm:836: error: Opening and ending tag mismatch: table and tbody
+./test/HTML/doc3.htm:835: error: Unexpected end tag : td
+<CENTER></CENTER></TD></TR><TR><TD COLSPAN="3" VALIGN="TOP" 
+                      ^
+./test/HTML/doc3.htm:835: error: Unexpected end tag : tr
+<CENTER></CENTER></TD></TR><TR><TD COLSPAN="3" VALIGN="TOP" 
+                           ^
+./test/HTML/doc3.htm:836: error: Unexpected end tag : table
 HEIGHT="70">&nbsp;</TD> </TR></TABLE>
                                     ^
-./test/HTML/doc3.htm:844: error: Opening and ending tag mismatch: div and tbody
-,arial">Site design by Tim Brinkley</FONT>		</TD>	</TR> --></TBODY></TABLE></DI
-                                                                              ^

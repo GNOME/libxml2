@@ -55,6 +55,89 @@ extern FILE *xmlXPathDebug;
  ************************************************************************/
 
 /**
+ * xmlXPtrCmpPoints:
+ * @node1:  the first node
+ * @index1:  the first index
+ * @node2:  the second node
+ * @index2:  the second index
+ *
+ * Compare two points w.r.t document order
+ *
+ * Returns -2 in case of error 1 if first point < second point, 0 if
+ *         that's the same point, -1 otherwise
+ */
+int
+xmlXPtrCmpPoints(xmlNodePtr node1, int index1, xmlNodePtr node2, int index2) {
+    int depth1, depth2;
+    xmlNodePtr cur, root;
+
+    if ((node1 == NULL) || (node2 == NULL))
+	return(-2);
+    /*
+     * a couple of optimizations which will avoid computations in most cases
+     */
+    if (node1 == node2) {
+	if (index1 < index2)
+	    return(1);
+	if (index1 > index2)
+	    return(-1);
+	return(0);
+    }
+    if (node1 == node2->prev)
+	    return(1);
+    if (node1 == node2->next)
+	    return(-1);
+
+    /*
+     * compute depth to root
+     */
+    for (depth2 = 0, cur = node2;cur->parent != NULL;cur = cur->parent) {
+	if (cur == node1)
+	    return(1);
+	depth2++;
+    }
+    root = cur;
+    for (depth1 = 0, cur = node1;cur->parent != NULL;cur = cur->parent) {
+	if (cur == node2)
+	    return(-1);
+	depth1++;
+    }
+    /*
+     * Distinct document (or distinct entities :-( ) case.
+     */
+    if (root != cur) {
+	return(-2);
+    }
+    /*
+     * get the nearest common ancestor.
+     */
+    while (depth1 > depth2) {
+	depth1--;
+	node1 = node1->parent;
+    }
+    while (depth2 > depth1) {
+	depth2--;
+	node2 = node2->parent;
+    }
+    while (node1->parent != node2->parent) {
+	node1 = node1->parent;
+	node2 = node2->parent;
+	/* should not happen but just in case ... */
+	if ((node1 == NULL) || (node2 == NULL))
+	    return(-2);
+    }
+    /*
+     * Find who's first.
+     */
+    if (node1 == node2->next)
+	return(-1);
+    for (cur = node1->next;cur != NULL;cur = cur->next)
+	if (cur == node2)
+	    return(1);
+    return(-1); /* assume there is no sibling list corruption */
+}
+
+/**
  * xmlXPtrNewPoint:
  * @node:  the xmlNodePtr
  * @index:  the index within the node
@@ -82,6 +165,34 @@ xmlXPtrNewPoint(xmlNodePtr node, int index) {
     ret->user = (void *) node;
     ret->index = index;
     return(ret);
+}
+
+/**
+ * xmlXPtrRangeCheckOrder:
+ * @range:  an object range
+ *
+ * Make sure the points in the range are in the right order
+ */
+void
+xmlXPtrRangeCheckOrder(xmlXPathObjectPtr range) {
+    int tmp;
+    xmlNodePtr tmp2;
+    if (range == NULL)
+	return;
+    if (range->type != XPATH_RANGE)
+	return;
+    if (range->user2 == NULL)
+	return;
+    tmp = xmlXPtrCmpPoints(range->user, range->index,
+	                     range->user2, range->index2);
+    if (tmp == -1) {
+	tmp2 = range->user;
+	range->user = range->user2;
+	range->user2 = tmp2;
+	tmp = range->index;
+	range->index = range->index2;
+	range->index2 = tmp;
+    }
 }
 
 /**
@@ -120,6 +231,7 @@ xmlXPtrNewRange(xmlNodePtr start, int startindex,
     ret->index = startindex;
     ret->user2 = end;
     ret->index2 = endindex;
+    xmlXPtrRangeCheckOrder(ret);
     return(ret);
 }
 
@@ -156,6 +268,7 @@ xmlXPtrNewRangePoints(xmlXPathObjectPtr start, xmlXPathObjectPtr end) {
     ret->index = start->index;
     ret->user2 = end->user;
     ret->index2 = end->index;
+    xmlXPtrRangeCheckOrder(ret);
     return(ret);
 }
 
@@ -190,6 +303,7 @@ xmlXPtrNewRangePointNode(xmlXPathObjectPtr start, xmlNodePtr end) {
     ret->index = start->index;
     ret->user2 = end;
     ret->index2 = -1;
+    xmlXPtrRangeCheckOrder(ret);
     return(ret);
 }
 
@@ -226,6 +340,7 @@ xmlXPtrNewRangeNodePoint(xmlNodePtr start, xmlXPathObjectPtr end) {
     ret->index = -1;
     ret->user2 = end->user;
     ret->index2 = end->index;
+    xmlXPtrRangeCheckOrder(ret);
     return(ret);
 }
 
@@ -258,6 +373,7 @@ xmlXPtrNewRangeNodes(xmlNodePtr start, xmlNodePtr end) {
     ret->index = -1;
     ret->user2 = end;
     ret->index2 = -1;
+    xmlXPtrRangeCheckOrder(ret);
     return(ret);
 }
 
@@ -344,6 +460,7 @@ xmlXPtrNewRangeNodeObject(xmlNodePtr start, xmlXPathObjectPtr end) {
 	    STRANGE
 	    return(NULL);
     }
+    xmlXPtrRangeCheckOrder(ret);
     return(ret);
 }
 
@@ -533,50 +650,6 @@ xmlXPtrFreeLocationSet(xmlLocationSetPtr obj) {
 #endif
     xmlFree(obj);
 }
-
-#if defined(DEBUG) || defined(DEBUG_STEP)
-/**
- * xmlXPtrDebugLocationSet:
- * @output:  a FILE * for the output
- * @obj:  the xmlLocationSetPtr to free
- *
- * Quick display of a LocationSet
- */
-void
-xmlXPtrDebugLocationSet(FILE *output, xmlLocationSetPtr obj) {
-    int i;
-
-    if (output == NULL) output = xmlXPathDebug;
-    if (obj == NULL)  {
-        fprintf(output, "LocationSet == NULL !\n");
-	return;
-    }
-    if (obj->locNr == 0) {
-        fprintf(output, "LocationSet is empty\n");
-	return;
-    }
-    if (obj->locTab == NULL) {
-	fprintf(output, " locTab == NULL !\n");
-	return;
-    }
-    for (i = 0; i < obj->locNr; i++) {
-        if (obj->locTab[i] == NULL) {
-	    fprintf(output, " NULL !\n");
-	    return;
-        }
-	if ((obj->locTab[i]->type == XML_DOCUMENT_NODE) ||
-	    (obj->locTab[i]->type == XML_HTML_DOCUMENT_NODE))
-	    fprintf(output, " /");
-	/******* TODO 
-	else if (obj->locTab[i]->name == NULL)
-	    fprintf(output, " noname!");
-	else fprintf(output, " %s", obj->locTab[i]->name);
-	 ********/
-    }
-    fprintf(output, "\n");
-}
-#endif
-
 
 /**
  * xmlXPtrNewLocationSetNodes:
@@ -1749,29 +1822,47 @@ xmlXPtrSearchString(const xmlChar *string, xmlNodePtr *start, int *startindex,
     first = string[0];
     stringlen = xmlStrlen(string);
 
-    /* TODO: first = 0 */
     while (cur != NULL) {
 	if (cur->content != NULL) {
 	    len = xmlStrlen(cur->content);
 	    while (pos <= len) {
-		str = xmlStrchr(&cur->content[pos], first);
-		if (str != NULL) {
-		    pos = (str - cur->content);
+		if (first != 0) {
+		    str = xmlStrchr(&cur->content[pos], first);
+		    if (str != NULL) {
+			pos = (str - cur->content);
 #ifdef DEBUG_RANGES
-		    fprintf(stdout, "found '%c' at index %d of ->",
-			    first, pos + 1);
+			fprintf(stdout, "found '%c' at index %d of ->",
+				first, pos + 1);
+			xmlDebugDumpString(stdout, cur->content);
+			fprintf(stdout, "\n");
+#endif
+			if (xmlXPtrMatchString(string, cur, pos + 1,
+					       end, endindex)) {
+			    *start = cur;
+			    *startindex = pos + 1;
+			    return(1);
+			}
+			pos++;
+		    } else {
+			pos = len + 1;
+		    }
+		} else {
+		    /*
+		     * An empty string is considered to match before each
+		     * character of the string-value and after the final
+		     * character. 
+		     */
+#ifdef DEBUG_RANGES
+		    fprintf(stdout, "found '' at index %d of ->",
+			    pos + 1);
 		    xmlDebugDumpString(stdout, cur->content);
 		    fprintf(stdout, "\n");
 #endif
-		    if (xmlXPtrMatchString(string, cur, pos + 1,
-				           end, endindex)) {
-			*start = cur;
-			*startindex = pos + 1;
-			return(1);
-		    }
-		    pos++;
-		} else {
-		    pos = len + 1;
+		    *start = cur;
+		    *startindex = pos + 1;
+		    *end = cur;
+		    *endindex = pos + 1;
+		    return(1);
 		}
 	    }
 	}
@@ -2016,6 +2107,8 @@ xmlXPtrStringRangeFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 			 xmlXPtrNewRange(start, startindex, fend, fendindex));
 		start = fend;
 		startindex = fendindex;
+		if (string->stringval[0] == 0)
+		    startindex++;
 	    }
 	} while (found == 1);
     }

@@ -2692,9 +2692,9 @@ xmlXPathLastFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 void
 xmlXPathPositionFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     CHECK_ARITY(0);
-    if (ctxt->context->proximityPosition > 0) {
+    if (ctxt->context->proximityPosition >= 0) {
 	valuePush(ctxt,
-		  xmlXPathNewFloat((double) ctxt->context->proximityPosition));
+	      xmlXPathNewFloat((double) ctxt->context->proximityPosition));
 #ifdef DEBUG_EXPR
 	fprintf(xmlXPathDebug, "position() : %d\n",
 		ctxt->context->proximityPosition);
@@ -4772,14 +4772,14 @@ xmlXPathEvalPredicate(xmlXPathParserContextPtr ctxt) {
     ctxt->context->node = NULL;
 
     if ((oldset == NULL) || (oldset->nodeNr == 0)) {
-	xmlXPathEvalExpr(ctxt);
-	CHECK_ERROR;
 	ctxt->context->contextSize = 0;
 	ctxt->context->proximityPosition = 0;
+	xmlXPathEvalExpr(ctxt);
 	res = valuePop(ctxt);
 	if (res != NULL)
 	    xmlXPathFreeObject(res);
 	valuePush(ctxt, obj);
+	CHECK_ERROR;
     } else {
 	/*
 	 * Save the expression pointer since we will have to evaluate

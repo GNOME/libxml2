@@ -74,3 +74,23 @@ Object is a Location Set:
     TEXT
       content=anced test
 
+
+========================
+Expression: xpointer(string-range(//seq, ''))
+Object is a Location Set:
+1 :   Object is a collapsed range :
+  index 1 in node
+    TEXT
+      content=123
+2 :   Object is a collapsed range :
+  index 2 in node
+    TEXT
+      content=123
+3 :   Object is a collapsed range :
+  index 3 in node
+    TEXT
+      content=123
+4 :   Object is a collapsed range :
+  index 4 in node
+    TEXT
+      content=123

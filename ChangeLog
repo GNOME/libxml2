@@ -1,3 +1,10 @@
+Fri Oct 13 18:24:31 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* xpath.c xpointer.c: XPointer reorder of ranges start/end and
+	  string-range for empty strings
+	* test/XPath/docs/str test/XPath/xptr/chaptersrange
+	  test/XPath/xptr/strrange: augmented the XPointer testsuite
+
 Fri Oct 13 12:21:48 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* doc/xml.html doc/xmlmem.html: added a module describing memory

@@ -1,3 +1,8 @@
+Thu Aug 28 18:25:07 CEST 2003 Igor Zlatkovic <igor@zlatkovic.com>
+
+	* include/libxml/globals.h include/libxml/xmlexports.h: fixed
+	  typos reported by Mark Vakoc
+
 Thu Aug 28 08:59:51 MDT 2003 John Fleck <jfleck@inkstain.net>
 
 	add:

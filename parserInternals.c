@@ -67,6 +67,8 @@ void
 xmlCheckVersion(int version) {
     int myversion = (int) LIBXML_VERSION;
 
+    xmlInitMemory();
+
     if ((myversion / 10000) != (version / 10000)) {
 	xmlGenericError(xmlGenericErrorContext, 
 		"Fatal: program compiled against libxml %d using libxml %d\n",

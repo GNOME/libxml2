@@ -379,7 +379,7 @@ Validtests : xmllint
 	  name=`basename $$i`; \
 	  if [ ! -d $$i ] ; then \
 	      echo Testing $$name ; \
-	      $(top_builddir)/xmllint --valid --noout $$i ; \
+	      $(top_builddir)/xmllint --valid --noout --nowarning $$i ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
 	  fi ; done ; exit 0)
 	@echo "##"

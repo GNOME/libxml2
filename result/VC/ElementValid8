@@ -1,0 +1,3 @@
+./test/VC/ElementValid8:7: validity warning: Element doc content model is ambiguous
+<doc><a/><c> doc is non-deterministic </c></doc>
+                                               ^

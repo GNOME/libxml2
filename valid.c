@@ -3270,14 +3270,16 @@ xmlValidateSkipIgnorable(xmlNodePtr child) {
  *
  * Try to validate the content model of an element internal function
  *
- * returns 1 if valid or 0 ,-1 in case of error, and -2 if an entity
- *           reference is found.
+ * returns 1 if valid or 0 ,-1 in case of error, -2 if an entity
+ *           reference is found and -3 if the validation succeeded but
+ *           the content model is not determinist.
  */
 
 static int
 xmlValidateElementType(xmlValidCtxtPtr ctxt) {
     int ret = -1;
     int consumed = 1;
+    int determinist = 1;
 
     NODE = xmlValidateSkipIgnorable(NODE);
     if ((NODE == NULL) && (CONT == NULL))
@@ -3429,21 +3431,29 @@ analyze:
 	 */
 	if (ret == 0) {
 	    switch (CONT->ocur) {
+		xmlNodePtr cur;
+
 		case XML_ELEMENT_CONTENT_ONCE:
+		    cur = ctxt->vstate->node;
 		    DEBUG_VALID_MSG("Once branch failed, rollback");
 		    if (vstateVPop(ctxt) < 0 ) {
 			DEBUG_VALID_MSG("exhaustion, failed");
 			return(0);
 		    }
+		    if (cur != ctxt->vstate->node)
+			determinist = -3;
 		    consumed = 0;
 		    goto cont;
 		case XML_ELEMENT_CONTENT_PLUS:
 		    if (OCCURENCE == 0) {
+			cur = ctxt->vstate->node;
 			DEBUG_VALID_MSG("Plus branch failed, rollback");
 			if (vstateVPop(ctxt) < 0 ) {
 			    DEBUG_VALID_MSG("exhaustion, failed");
 			    return(0);
 			}
+			if (cur != ctxt->vstate->node)
+			    determinist = -3;
 			consumed = 0;
 			goto cont;
 		    }
@@ -3549,24 +3559,34 @@ analyze:
 	}
     }
     if (NODE != NULL) {
+	xmlNodePtr cur;
+
+	cur = ctxt->vstate->node;
 	DEBUG_VALID_MSG("Failed, remaining input, rollback");
 	if (vstateVPop(ctxt) < 0 ) {
 	    DEBUG_VALID_MSG("exhaustion, failed");
 	    return(0);
 	}
+	if (cur != ctxt->vstate->node)
+	    determinist = -3;
 	consumed = 0;
 	goto cont;
     }
     if (ret == 0) {
+	xmlNodePtr cur;
+
+	cur = ctxt->vstate->node;
 	DEBUG_VALID_MSG("Failure, rollback");
 	if (vstateVPop(ctxt) < 0 ) {
 	    DEBUG_VALID_MSG("exhaustion, failed");
 	    return(0);
 	}
 	consumed = 0;
+	if (cur != ctxt->vstate->node)
+	    determinist = -3;
 	goto cont;
     }
-    return(1);
+    return(determinist);
 }
 
 /**
@@ -3672,7 +3692,10 @@ xmlValidateElementContent(xmlValidCtxtPtr ctxt, xmlNodePtr child,
     OCCURS = 0;
     STATE = 0;
     ret = xmlValidateElementType(ctxt);
-    if (ret == -2) {
+    if ((ret == -3) && (warn)) {
+	VWARNING(ctxt->userData,
+	   "Element %s content model is ambiguous\n", name);
+    } else if (ret == -2) {
 	/*
 	 * An entities reference appeared at this level.
 	 * Buid a minimal representation of this node content
@@ -3747,7 +3770,7 @@ xmlValidateElementContent(xmlValidCtxtPtr ctxt, xmlNodePtr child,
 	STATE = 0;
 	ret = xmlValidateElementType(ctxt);
     }
-    if ((warn) && (ret != 1)) {
+    if ((warn) && ((ret != 1) && (ret != -3))) {
 	char expr[5000];
 	char list[5000];
 
@@ -3770,6 +3793,8 @@ xmlValidateElementContent(xmlValidCtxtPtr ctxt, xmlNodePtr child,
 	}
 	ret = 0;
     }
+    if (ret == -3)
+	ret = 1;
 
 
 done:

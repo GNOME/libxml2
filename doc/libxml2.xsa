@@ -8,24 +8,24 @@
   </vendor>
   <product id="libxml2">
     <name>libxml2</name>
-    <version>2.6.14</version>
-    <last-release> Sep 29 2004</last-release>
+    <version>2.6.15</version>
+    <last-release> Oct 27 2004</last-release>
     <info-url>http://xmlsoft.org/</info-url>
-    <changes>   - build fixes: configure paths for xmllint and xsltproc, compilation
-    without HTML parser, compilation warning cleanups (William Brack &amp;
-    Malcolm Tredinnick), VMS makefile update (Craig Berry),
-   - bug fixes: xmlGetUTF8Char (William Brack), QName properties (Kasimier
-    Buchcik), XInclude testing, Notation serialization, UTF8ToISO8859x
-    transcoding (Mark Itzcovitz), lots of XML Schemas cleanup and fixes
-    (Kasimier), ChangeLog cleanup (Stepan Kasal), memory fixes (Mark Vakoc),
-    handling of failed realloc(), out of bound array adressing in Schemas
-    date handling, Python space/tabs cleanups (Malcolm Tredinnick), NMTOKENS
-    E20 validation fix (Malcolm),
-   - improvements: added W3C XML Schemas testsuite (Kasimier Buchcik), add
-    xmlSchemaValidateOneElement (Kasimier), Python exception hierearchy
-    (Malcolm Tredinnick), Python libxml2 driver improvement (Malcolm
-    Tredinnick), Schemas support for xsi:schemaLocation,
-    xsi:noNamespaceSchemaLocation, xsi:type (Kasimier Buchcik)
+    <changes>   - security fixes on the nanoftp and nanohttp modules
+   - build fixes: xmllint detection bug in configure, building outside the
+    source tree (Thomas Fitzsimmons)
+   - bug fixes: HTML parser on broken ASCII chars in names (William), Python
+    paths (Malcolm Tredinnick), xmlHasNsProp and default namespace (William),
+    saving to python file objects (Malcolm Tredinnick), DTD lookup fix
+    (Malcolm), save back &lt;group&gt; in catalogs (William), tree build
+    fixes (DV and Rob Richards), Schemas memory bug, structured error handler
+    on Python 64bits, thread local memory deallocation, memory leak reported
+    by Volker Roth, xmlValidateDtd in the presence of an internal subset,
+    entities and _private problem (William), xmlBuildRelativeURI error
+    (William).
+   - improvements: better XInclude error reports (William), tree debugging
+    module and tests, convenience functions at the Reader API (Graham
+    Bennett), add support for PI in the HTML parser.
 
 </changes>
   </product>

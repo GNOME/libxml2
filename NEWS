@@ -15,6 +15,19 @@ ChangeLog.html
 to the CVS at 
 http://cvs.gnome.org/viewcvs/libxml2/
  code base.There is the list of public releases:
+2.6.16: Nov 10 2004:
+   - general hardening and bug fixing crossing all the API based on new
+    automated regression testing
+   - build fix: IPv6 build and test on AIX (Dodji Seketeli)
+   - bug fixes: problem with XML::Libxml reported by Petr Pajas,  encoding
+    conversion functions return values, UTF-8 bug affecting XPath reported by
+    Markus Bertheau, catalog problem with NULL entries (William Brack)
+   - documentation: fix to xmllint man page, some API function descritpion
+    were updated.
+   - improvements: DTD validation APIs provided at the Python level (Brent
+    Hendricks) 
+
+
 2.6.15: Oct 27 2004:
    - security fixes on the nanoftp and nanohttp modules
    - build fixes: xmllint detection bug in configure, building outside the

@@ -1,3 +1,7 @@
+Wed Nov 10 15:35:25 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* NEWS configure.in doc/*: preparing release of libxml2-2.6.16
+
 Wed Nov 10 12:55:18 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* python/generator.py python/libxml.c python/libxml2class.txt

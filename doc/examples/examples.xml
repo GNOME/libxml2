@@ -100,7 +100,7 @@
       <macro line='67' file='xmlversion' name='LIBXML_TEST_VERSION'/>
       <enum line='36' file='tree' name='XML_ELEMENT_NODE'/>
       <function line='79' file='tree' name='xmlFreeDoc'/>
-      <function line='67' file='parser' name='xmlParseFile'/>
+      <function line='67' file='parser' name='xmlReadFile'/>
       <function line='74' file='tree' name='xmlDocGetRootElement'/>
     </uses>
   </example>
@@ -567,7 +567,6 @@
     </symbol>
     <symbol name='xmlParseFile'>
       <ref filename='xpath1.c'/>
-      <ref filename='tree1.c'/>
       <ref filename='xpath2.c'/>
     </symbol>
     <symbol name='xmlParserCtxtPtr'>
@@ -576,6 +575,7 @@
     </symbol>
     <symbol name='xmlReadFile'>
       <ref filename='parse1.c'/>
+      <ref filename='tree1.c'/>
     </symbol>
     <symbol name='xmlReadMemory'>
       <ref filename='io1.c'/>

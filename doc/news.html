@@ -12,7 +12,17 @@ to help those</p><ul><li>More testing on RelaxNG</li>
   <li>Finishing up <a href="http://www.w3.org/TR/xmlschema-1/">XML
   Schemas</a></li>
 </ul><p>The <a href="ChangeLog.html">change log</a> describes the recents commits
-to the <a href="http://cvs.gnome.org/viewcvs/libxml2/">CVS</a> code base.</p><p>There is the list of public releases:</p><h3>2.6.15: Oct 27 2004</h3><ul><li>security fixes on the nanoftp and nanohttp modules</li>
+to the <a href="http://cvs.gnome.org/viewcvs/libxml2/">CVS</a> code base.</p><p>There is the list of public releases:</p><h3>2.6.16: Nov 10 2004</h3><ul><li>general hardening and bug fixing crossing all the API based on new
+    automated regression testing</li>
+  <li>build fix: IPv6 build and test on AIX (Dodji Seketeli)</li>
+  <li>bug fixes: problem with XML::Libxml reported by Petr Pajas,  encoding
+    conversion functions return values, UTF-8 bug affecting XPath reported by
+    Markus Bertheau, catalog problem with NULL entries (William Brack)</li>
+  <li>documentation: fix to xmllint man page, some API function descritpion
+    were updated.</li>
+  <li>improvements: DTD validation APIs provided at the Python level (Brent
+    Hendricks) </li>
+</ul><h3>2.6.15: Oct 27 2004</h3><ul><li>security fixes on the nanoftp and nanohttp modules</li>
   <li>build fixes: xmllint detection bug in configure, building outside the
     source tree (Thomas Fitzsimmons)</li>
   <li>bug fixes: HTML parser on broken ASCII chars in names (William), Python

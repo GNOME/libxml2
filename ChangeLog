@@ -1,3 +1,7 @@
+Thu Jul 26 10:24:34 EDT 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* nanohttp.c: John Kroll provided a small fix to xmlNanoHTTPSave
+
 Thu Jul 26 07:16:04 EDT 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* parser.c parserInternals.c: fixed the xmlLineNumbersDefault()

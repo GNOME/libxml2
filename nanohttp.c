@@ -1312,7 +1312,7 @@ xmlNanoHTTPFetch(const char *URL, const char *filename, char **contentType) {
  */
 int
 xmlNanoHTTPSave(void *ctxt, const char *filename) {
-    char buf[4096];
+    char *buf = NULL;
     int fd;
     int len;
     

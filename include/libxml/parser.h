@@ -532,6 +532,8 @@ typedef void (*errorSAXFunc) (void *ctx,
  * @...:  extra parameters for the message display
  * 
  * Display and format fatal error messages, callback.
+ * Note: so far fatalError() SAX callbacks are not used, error()
+ *       get all the callbacks for errors.
  */
 typedef void (*fatalErrorSAXFunc) (void *ctx,
 				const char *msg, ...);
@@ -587,7 +589,7 @@ struct _xmlSAXHandler {
     commentSAXFunc comment;
     warningSAXFunc warning;
     errorSAXFunc error;
-    fatalErrorSAXFunc fatalError;
+    fatalErrorSAXFunc fatalError; /* unused error() get all the errors */
     getParameterEntitySAXFunc getParameterEntity;
     cdataBlockSAXFunc cdataBlock;
     externalSubsetSAXFunc externalSubset;

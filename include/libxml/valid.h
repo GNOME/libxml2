@@ -87,8 +87,6 @@ struct _xmlValidCtxt {
     void                     *am;
     void                  *state;
 #endif
-
-    xmlStructuredErrorFunc serror;   /* structured error reporting capability */
 };
 
 /*

@@ -1,3 +1,9 @@
+Sat Oct 11 13:24:57 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* valid.c include/libxml/valid.h: adding an serror field to
+	  the validation context breaks the ABI for the xmlParserCtxt
+	  structure since it's embedded by content and not by reference
+
 Sat Oct 11 12:46:49 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in: patch from Mike Hommey

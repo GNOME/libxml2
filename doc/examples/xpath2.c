@@ -4,7 +4,7 @@
  *              said elements and save the resulting document.
  * purpose: 	Shows how to make a full round-trip from a load/edit/save
  * usage:	xpath2 <xml-file> <xpath-expr> <new-value>
- * test:	xpath2 test3.xml '//child2' child2 > xpath2.tmp ; diff xpath2.tmp xpath2.res ; rm xpath2.tmp
+ * test:	xpath2 test3.xml '//discarded' discarded > xpath2.tmp ; diff xpath2.tmp xpath2.res ; rm xpath2.tmp
  * author: 	Aleksey Sanin and Daniel Veillard
  * copy: 	see Copyright for the status of this software.
  */
@@ -159,6 +159,25 @@ update_xpath_nodes(xmlNodeSetPtr nodes, const xmlChar* value) {
 	assert(nodes->nodeTab[i]);
 	
 	xmlNodeSetContent(nodes->nodeTab[i], value);
+	/*
+	 * All the elements returned by an XPath query are pointers to
+	 * elements from the tree *except* namespace nodes where the XPath
+	 * semantic is different from the implementation in libxml2 tree.
+	 * As a result when a returned node set is freed when
+	 * xmlXPathFreeObject() is called, that routine must check the
+	 * element type. But node from the returned set may have been removed
+	 * by xmlNodeSetContent() resulting in access to freed data.
+	 * This can be exercised by running
+	 *       valgrind xpath2 test3.xml '//discarded' discarded
+	 * There is 2 ways around it:
+	 *   - make a copy of the pointers to the nodes from the result set 
+	 *     then call xmlXPathFreeObject() and then modify the nodes
+	 * or
+	 *   - remove the reference to the modified nodes from the node set
+	 *     as they are processed, if they are not namespace nodes.
+	 */
+	if (nodes->nodeTab[i]->type != XML_NAMESPACE_DECL)
+	    nodes->nodeTab[i] = NULL;
     }
 }
 

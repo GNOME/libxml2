@@ -120,7 +120,7 @@ tests: $(noinst_PROGRAMS)
 	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
 	@($(CHECKER) ./io2 > io2.tmp ; diff io2.tmp io2.res ; rm -f io2.tmp)
 	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
-	@($(CHECKER) ./xpath2 test3.xml '//child2' child2 > xpath2.tmp ; diff xpath2.tmp xpath2.res ; rm xpath2.tmp)
+	@($(CHECKER) ./xpath2 test3.xml '//discarded' discarded > xpath2.tmp ; diff xpath2.tmp xpath2.res ; rm xpath2.tmp)
 	@(grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0" ; exit 0)
 
 

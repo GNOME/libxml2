@@ -340,7 +340,7 @@
     <synopsis>Load a document, locate subelements with XPath, modify said elements and save the resulting document.</synopsis>
     <purpose>Shows how to make a full round-trip from a load/edit/save</purpose>
     <usage>xpath2 &lt;xml-file&gt; &lt;xpath-expr&gt; &lt;new-value&gt;</usage>
-    <test>xpath2 test3.xml &apos;//child2&apos; child2 &gt; xpath2.tmp ; diff xpath2.tmp xpath2.res ; rm xpath2.tmp</test>
+    <test>xpath2 test3.xml &apos;//discarded&apos; discarded &gt; xpath2.tmp ; diff xpath2.tmp xpath2.res ; rm xpath2.tmp</test>
     <author>Aleksey Sanin and Daniel Veillard</author>
     <copy>see Copyright for the status of this software. </copy>
     <section>XPath</section>
@@ -360,6 +360,7 @@
       <typedef line='86' file='xpath' name='xmlXPathContextPtr'/>
       <function line='123' file='xpath' name='xmlXPathFreeContext'/>
       <function line='40' file='parser' name='xmlInitParser'/>
+      <enum line='179' file='tree' name='XML_NAMESPACE_DECL'/>
       <function line='94' file='parser' name='xmlParseFile'/>
     </uses>
   </example>
@@ -381,6 +382,7 @@
     </symbol>
     <symbol name='XML_NAMESPACE_DECL'>
       <ref filename='xpath1.c'/>
+      <ref filename='xpath2.c'/>
     </symbol>
     <symbol name='XML_PARSE_DTDATTR'>
       <ref filename='reader2.c'/>

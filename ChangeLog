@@ -1,3 +1,9 @@
+Sun Mar 28 14:17:10 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* doc/examples/xpath2.c doc/examples/xpath2.res: handle and explain
+	  a very tricky problem when modifying the tree based on an XPath
+	  result query.
+
 Sat Mar 27 09:56:14 PST 2004 William Brack <wbrack@mmm.com.hk>
 
 	* relaxng.c: fixed problem with IS_COMPILABLE flag

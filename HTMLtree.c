@@ -26,6 +26,7 @@
 #include <libxml/xmlerror.h>
 #include <libxml/parserInternals.h>
 #include <libxml/globals.h>
+#include <libxml/uri.h>
 
 /************************************************************************
  *									*
@@ -349,7 +350,23 @@ htmlAttrDump(xmlBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur) {
 	value = xmlNodeListGetString(doc, cur->children, 0);
 	if (value) {
 	    xmlBufferWriteChar(buf, "=");
-	    xmlBufferWriteQuotedString(buf, value);
+	    if ((xmlStrEqual(cur->name, BAD_CAST "href")) ||
+		(xmlStrEqual(cur->name, BAD_CAST "src"))) {
+		xmlChar *escaped;
+		xmlChar *tmp = value;
+
+		while (IS_BLANK(*tmp)) tmp++;
+
+		escaped = xmlURIEscapeStr(tmp, BAD_CAST"@/:=?;#%");
+		if (escaped != NULL) {
+		    xmlBufferWriteQuotedString(buf, escaped);
+		    xmlFree(escaped);
+		} else {
+		    xmlBufferWriteQuotedString(buf, value);
+		}
+	    } else {
+		xmlBufferWriteQuotedString(buf, value);
+	    }
 	    xmlFree(value);
 	} else  {
 	    xmlBufferWriteChar(buf, "=\"\"");
@@ -820,7 +837,23 @@ htmlAttrDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur,
 	value = xmlNodeListGetString(doc, cur->children, 0);
 	if (value) {
 	    xmlOutputBufferWriteString(buf, "=");
-	    xmlBufferWriteQuotedString(buf->buffer, value);
+	    if ((xmlStrEqual(cur->name, BAD_CAST "href")) ||
+		(xmlStrEqual(cur->name, BAD_CAST "src"))) {
+		xmlChar *escaped;
+		xmlChar *tmp = value;
+
+		while (IS_BLANK(*tmp)) tmp++;
+
+		escaped = xmlURIEscapeStr(tmp, BAD_CAST"@/:=?;#%");
+		if (escaped != NULL) {
+		    xmlBufferWriteQuotedString(buf->buffer, escaped);
+		    xmlFree(escaped);
+		} else {
+		    xmlBufferWriteQuotedString(buf->buffer, value);
+		}
+	    } else {
+		xmlBufferWriteQuotedString(buf->buffer, value);
+	    }
 	    xmlFree(value);
 	} else  {
 	    xmlOutputBufferWriteString(buf, "=\"\"");

@@ -898,7 +898,7 @@ xmlURIEscapeStr(const xmlChar *str, const xmlChar *list) {
 
 	ch = *in;
 
-	if ( (!IS_UNRESERVED(ch)) && (!xmlStrchr(list, ch)) ) {
+	if ((ch != '@') && (!IS_UNRESERVED(ch)) && (!xmlStrchr(list, ch))) {
 	    unsigned char val;
 	    ret[out++] = '%';
 	    val = ch >> 4;

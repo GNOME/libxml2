@@ -1,3 +1,9 @@
+Sun Apr 14 23:44:58 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLtree.c uri.c: fixing bug #78662 i.e. add proper
+	  escaping of URI when saving HTML files.
+	* result/HTML/*: this impacted some tests
+
 Sun Apr 14 14:55:15 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in: trying to fix #77441

@@ -958,7 +958,7 @@ my_attribute(void *ctx, const xmlChar *fullname, const xmlChar *value,
         if (nsret != NULL && ctxt->validate && ctxt->wellFormed &&
 	    ctxt->myDoc && ctxt->myDoc->intSubset)
 	    ctxt->valid &= xmlValidateOneNamespace(&ctxt->vctxt, ctxt->myDoc,
-					   ctxt->node, name, nsret, value);
+					   ctxt->node, prefix, nsret, value);
 	if (name != NULL) 
 	    xmlFree(name);
 	if (nval != NULL)
@@ -1226,7 +1226,8 @@ process_external_subset:
 			    }
 			}
 			if (att == NULL) {
-			    attribute(ctxt, fulln, attr->defaultValue);
+			    my_attribute(ctxt, fulln, attr->defaultValue,
+			                 prefix);
 			}
 			xmlFree(fulln);
 		    }

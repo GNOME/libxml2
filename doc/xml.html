@@ -3,7 +3,7 @@
 <html>
 <head>
   <title>The XML library for Gnome</title>
-  <meta name="GENERATOR" content="amaya V3.2">
+  <meta name="GENERATOR" content="amaya V3.2.1">
   <meta http-equiv="Content-Type" content="text/html">
 </head>
 
@@ -477,6 +477,31 @@ data encoding mechanisms like configuration file formatting (glade),
 spreadsheets (gnumeric), or even shorter lived documents such as WebDAV where
 it is used to encode remote calls between a client and a server.</p>
 
+<h2>An overview of libxml architecture</h2>
+
+<p>Libxml is made of multiple components, some of them optionals, and most of
+the block interfaces are public. The main components are:</p>
+<ul>
+  <li>an Input/Output layer</li>
+  <li>FTP and HTTP client layers (optionnal)</li>
+  <li>an Internationalization layer managing the encodings support</li>
+  <li>an URI module</li>
+  <li>the XML parser and its basic SAX interface</li>
+  <li>an HTML parser using the same SAX interface (optionnal)</li>
+  <li>a SAX tree module to build an in-memory DOM representation</li>
+  <li>a tree module to manipulate the DOM representation</li>
+  <li>a validation module using the DOM representation (optionnal)</li>
+  <li>an XPath module for global lookup in a DOM representation
+  (optionnal)</li>
+  <li>a debug module (optionnal)</li>
+</ul>
+
+<p>Graphically this gives the following:</p>
+
+<p><img src="libxml.gif" alt="a graphical view of the various"></p>
+
+<p></p>
+
 <h2><a name="tree">The tree output</a></h2>
 
 <p>The parser returns a tree built during the document analysis. The value
@@ -543,9 +568,9 @@ application layer registers a customized set of callbacks which are called by
 the library as it progresses through the XML input.</p>
 
 <p>To get more detailed step-by-step guidance on using the SAX interface of
-libxml, see the
-href="http://www.daa.com.au/~james/gnome/xml-sax/xml-sax.html"&gt;nice
-documentation.written by <a href="mailto:james@daa.com.au">James
+libxml, see the <a
+href="http://www.daa.com.au/~james/gnome/xml-sax/xml-sax.html">nice
+documentation</a>.written by <a href="mailto:james@daa.com.au">James
 Henstridge</a>.</p>
 
 <p>You can debug the SAX behaviour by using the <strong>testSAX</strong>
@@ -1228,6 +1253,6 @@ Gnome CVS base under gnome-xml/example</p>
 
 <p><a href="mailto:Daniel.Veillard@w3.org">Daniel Veillard</a></p>
 
-<p>$Id: xml.html,v 1.44 2000/07/22 02:38:15 veillard Exp $</p>
+<p>$Id: xml.html,v 1.45 2000/08/12 23:38:57 veillard Exp $</p>
 </body>
 </html>

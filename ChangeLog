@@ -1,3 +1,10 @@
+Wed Jun 30 19:45:23 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* xmlschemas.c, xmlschemastypes.c: warning message cleanup.
+	  Now compiles warning-free, all tests passed.
+	* SAX2.c: small change to comments for documentation.
+	  No change to logic.
+
 Tue Jun 29 15:00:13 PDT 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemas.c: more fixes with Kasimier, looks far cleaner :-)

@@ -250,6 +250,8 @@ xmlSchemaInitBasicType(const char *name, xmlSchemaValType type,
 	case XML_SCHEMAS_QNAME:	
 	case XML_SCHEMAS_NOTATION:	
 	    ret->flags |= XML_SCHEMAS_TYPE_BUILTIN_PRIMITIVE;
+	default:
+	break;
     }
 
     xmlHashAddEntry2(xmlSchemaTypesBank, ret->name,
@@ -3664,6 +3666,9 @@ xmlSchemaCompareValues(xmlSchemaValPtr x, xmlSchemaValPtr y) {
         case XML_SCHEMAS_ENTITIES:
         case XML_SCHEMAS_NMTOKENS:
 	    TODO
+	    break;
+	case XML_SCHEMAS_ANYTYPE:
+	case XML_SCHEMAS_ANYSIMPLETYPE:
 	    break;
     }
     return -2;

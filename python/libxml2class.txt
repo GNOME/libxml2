@@ -635,57 +635,6 @@ Class xmlDoc(xmlNode)
 
     # functions from module xpointer
     xpointerNewContext()
-Class xpathContext()
-    # accessors
-    contextDoc()
-    contextNode()
-    contextPosition()
-    contextSize()
-    function()
-    functionURI()
-    setContextDoc()
-    setContextNode()
-
-    # functions from module python
-    registerXPathFunction()
-
-    # functions from module xpath
-    xpathEval()
-    xpathEvalExpression()
-    xpathFreeContext()
-
-    # functions from module xpathInternals
-    xpathNewParserContext()
-    xpathNsLookup()
-    xpathRegisterAllFunctions()
-    xpathRegisterNs()
-    xpathRegisteredFuncsCleanup()
-    xpathRegisteredNsCleanup()
-    xpathRegisteredVariablesCleanup()
-    xpathVariableLookup()
-    xpathVariableLookupNS()
-
-    # functions from module xpointer
-    xpointerEval()
-
-
-Class xmlAttribute(xmlNode)
-Class catalog()
-
-    # functions from module catalog
-    add()
-    catalogIsEmpty()
-    convertSGMLCatalog()
-    dump()
-    freeCatalog()
-    remove()
-    resolve()
-    resolvePublic()
-    resolveSystem()
-    resolveURI()
-
-
-Class xmlElement(xmlNode)
 
 
 Class xmlAttr(xmlNode)
@@ -704,62 +653,6 @@ Class xmlAttr(xmlNode)
     # functions from module valid
     removeID()
     removeRef()
-
-
-Class xmlTextReader(xmlTextReaderCore)
-
-    # functions from module xmlreader
-    AttributeCount()
-    BaseUri()
-    Close()
-    CurrentDoc()
-    CurrentNode()
-    Depth()
-    Expand()
-    GetAttribute()
-    GetAttributeNo()
-    GetAttributeNs()
-    GetParserProp()
-    GetRemainder()
-    HasAttributes()
-    HasValue()
-    IsDefault()
-    IsEmptyElement()
-    IsValid()
-    LocalName()
-    LookupNamespace()
-    MoveToAttribute()
-    MoveToAttributeNo()
-    MoveToAttributeNs()
-    MoveToElement()
-    MoveToFirstAttribute()
-    MoveToNextAttribute()
-    Name()
-    NamespaceUri()
-    NewDoc()
-    NewFd()
-    NewFile()
-    NewMemory()
-    NewWalker()
-    Next()
-    NextSibling()
-    NodeType()
-    Normalization()
-    Prefix()
-    Preserve()
-    QuoteChar()
-    Read()
-    ReadAttributeValue()
-    ReadInnerXml()
-    ReadOuterXml()
-    ReadState()
-    ReadString()
-    RelaxNGSetSchema()
-    RelaxNGValidate()
-    SetParserProp()
-    String()
-    Value()
-    XmlLang()
 Class xmlReg()
 
     # functions from module xmlregexp
@@ -767,34 +660,6 @@ Class xmlReg()
     regexpFreeRegexp()
     regexpIsDeterminist()
     regexpPrint()
-
-
-Class xmlEntity(xmlNode)
-
-    # functions from module parserInternals
-    handleEntity()
-Class relaxNgSchema()
-
-    # functions from module relaxng
-    relaxNGDump()
-    relaxNGDumpTree()
-    relaxNGFree()
-    relaxNGNewValidCtxt()
-
-    # functions from module xmlreader
-    RelaxNGSetSchema()
-Class Error()
-    # accessors
-    code()
-    domain()
-    file()
-    level()
-    line()
-    message()
-
-    # functions from module xmlerror
-    copyError()
-    resetError()
 Class relaxNgValidCtxt()
 
     # functions from module relaxng
@@ -803,73 +668,6 @@ Class relaxNgValidCtxt()
     relaxNGValidatePopElement()
     relaxNGValidatePushCData()
     relaxNGValidatePushElement()
-Class xpathParserContext()
-    # accessors
-    context()
-
-    # functions from module xpathInternals
-    xpathAddValues()
-    xpathBooleanFunction()
-    xpathCeilingFunction()
-    xpathCompareValues()
-    xpathConcatFunction()
-    xpathContainsFunction()
-    xpathCountFunction()
-    xpathDivValues()
-    xpathEqualValues()
-    xpathErr()
-    xpathEvalExpr()
-    xpathFalseFunction()
-    xpathFloorFunction()
-    xpathFreeParserContext()
-    xpathIdFunction()
-    xpathLangFunction()
-    xpathLastFunction()
-    xpathLocalNameFunction()
-    xpathModValues()
-    xpathMultValues()
-    xpathNamespaceURIFunction()
-    xpathNextAncestor()
-    xpathNextAncestorOrSelf()
-    xpathNextAttribute()
-    xpathNextChild()
-    xpathNextDescendant()
-    xpathNextDescendantOrSelf()
-    xpathNextFollowing()
-    xpathNextFollowingSibling()
-    xpathNextNamespace()
-    xpathNextParent()
-    xpathNextPreceding()
-    xpathNextPrecedingSibling()
-    xpathNextSelf()
-    xpathNormalizeFunction()
-    xpathNotEqualValues()
-    xpathNotFunction()
-    xpathNumberFunction()
-    xpathParseNCName()
-    xpathParseName()
-    xpathPopBoolean()
-    xpathPopNumber()
-    xpathPopString()
-    xpathPositionFunction()
-    xpathRoot()
-    xpathRoundFunction()
-    xpathStartsWithFunction()
-    xpathStringFunction()
-    xpathStringLengthFunction()
-    xpathSubValues()
-    xpathSubstringAfterFunction()
-    xpathSubstringBeforeFunction()
-    xpathSubstringFunction()
-    xpathSumFunction()
-    xpathTranslateFunction()
-    xpathTrueFunction()
-    xpathValueFlipSign()
-    xpatherror()
-
-    # functions from module xpointer
-    xpointerEvalRangePredicate()
-    xpointerRangeToFunction()
 
 
 Class parserCtxt(parserCtxtCore)
@@ -977,6 +775,92 @@ Class xmlDtd(xmlNode)
     dtdElementDesc()
     dtdQAttrDesc()
     dtdQElementDesc()
+Class relaxNgParserCtxt()
+
+    # functions from module relaxng
+    relaxNGFreeParserCtxt()
+    relaxNGParse()
+    relaxParserSetFlag()
+Class xpathParserContext()
+    # accessors
+    context()
+
+    # functions from module xpathInternals
+    xpathAddValues()
+    xpathBooleanFunction()
+    xpathCeilingFunction()
+    xpathCompareValues()
+    xpathConcatFunction()
+    xpathContainsFunction()
+    xpathCountFunction()
+    xpathDivValues()
+    xpathEqualValues()
+    xpathErr()
+    xpathEvalExpr()
+    xpathFalseFunction()
+    xpathFloorFunction()
+    xpathFreeParserContext()
+    xpathIdFunction()
+    xpathLangFunction()
+    xpathLastFunction()
+    xpathLocalNameFunction()
+    xpathModValues()
+    xpathMultValues()
+    xpathNamespaceURIFunction()
+    xpathNextAncestor()
+    xpathNextAncestorOrSelf()
+    xpathNextAttribute()
+    xpathNextChild()
+    xpathNextDescendant()
+    xpathNextDescendantOrSelf()
+    xpathNextFollowing()
+    xpathNextFollowingSibling()
+    xpathNextNamespace()
+    xpathNextParent()
+    xpathNextPreceding()
+    xpathNextPrecedingSibling()
+    xpathNextSelf()
+    xpathNormalizeFunction()
+    xpathNotEqualValues()
+    xpathNotFunction()
+    xpathNumberFunction()
+    xpathParseNCName()
+    xpathParseName()
+    xpathPopBoolean()
+    xpathPopNumber()
+    xpathPopString()
+    xpathPositionFunction()
+    xpathRoot()
+    xpathRoundFunction()
+    xpathStartsWithFunction()
+    xpathStringFunction()
+    xpathStringLengthFunction()
+    xpathSubValues()
+    xpathSubstringAfterFunction()
+    xpathSubstringBeforeFunction()
+    xpathSubstringFunction()
+    xpathSumFunction()
+    xpathTranslateFunction()
+    xpathTrueFunction()
+    xpathValueFlipSign()
+    xpatherror()
+
+    # functions from module xpointer
+    xpointerEvalRangePredicate()
+    xpointerRangeToFunction()
+Class catalog()
+
+    # functions from module catalog
+    add()
+    catalogIsEmpty()
+    convertSGMLCatalog()
+    dump()
+    freeCatalog()
+    remove()
+    resolve()
+    resolvePublic()
+    resolveSystem()
+    resolveURI()
 
 
 Class xmlNs(xmlNode)
@@ -1000,42 +884,6 @@ Class xmlNs(xmlNode)
 
     # functions from module xpathInternals
     xpathNodeSetFreeNs()
-
-
-Class inputBuffer(ioReadWrapper)
-
-    # functions from module xmlIO
-    freeParserInputBuffer()
-    grow()
-    push()
-    read()
-
-    # functions from module xmlreader
-    newTextReader()
-Class relaxNgParserCtxt()
-
-    # functions from module relaxng
-    relaxNGFreeParserCtxt()
-    relaxNGParse()
-    relaxParserSetFlag()
-
-
-Class outputBuffer(ioWriteWrapper)
-
-    # functions from module HTMLtree
-    htmlDocContentDumpFormatOutput()
-    htmlDocContentDumpOutput()
-    htmlNodeDumpFormatOutput()
-    htmlNodeDumpOutput()
-
-    # functions from module tree
-    nodeDumpOutput()
-    saveFileTo()
-    saveFormatFileTo()
-
-    # functions from module xmlIO
-    write()
-    writeString()
 Class xmlTextReaderLocator()
 
     # functions from module xmlreader
@@ -1067,3 +915,155 @@ Class URI()
     parseURIReference()
     printURI()
     saveUri()
+
+
+Class xmlAttribute(xmlNode)
+Class xpathContext()
+    # accessors
+    contextDoc()
+    contextNode()
+    contextPosition()
+    contextSize()
+    function()
+    functionURI()
+    setContextDoc()
+    setContextNode()
+
+    # functions from module python
+    registerXPathFunction()
+
+    # functions from module xpath
+    xpathEval()
+    xpathEvalExpression()
+    xpathFreeContext()
+
+    # functions from module xpathInternals
+    xpathNewParserContext()
+    xpathNsLookup()
+    xpathRegisterAllFunctions()
+    xpathRegisterNs()
+    xpathRegisteredFuncsCleanup()
+    xpathRegisteredNsCleanup()
+    xpathRegisteredVariablesCleanup()
+    xpathVariableLookup()
+    xpathVariableLookupNS()
+
+    # functions from module xpointer
+    xpointerEval()
+
+
+Class xmlElement(xmlNode)
+
+
+Class xmlTextReader(xmlTextReaderCore)
+
+    # functions from module xmlreader
+    AttributeCount()
+    BaseUri()
+    Close()
+    CurrentDoc()
+    CurrentNode()
+    Depth()
+    Expand()
+    GetAttribute()
+    GetAttributeNo()
+    GetAttributeNs()
+    GetParserProp()
+    GetRemainder()
+    HasAttributes()
+    HasValue()
+    IsDefault()
+    IsEmptyElement()
+    IsValid()
+    LocalName()
+    LookupNamespace()
+    MoveToAttribute()
+    MoveToAttributeNo()
+    MoveToAttributeNs()
+    MoveToElement()
+    MoveToFirstAttribute()
+    MoveToNextAttribute()
+    Name()
+    NamespaceUri()
+    NewDoc()
+    NewFd()
+    NewFile()
+    NewMemory()
+    NewWalker()
+    Next()
+    NextSibling()
+    NodeType()
+    Normalization()
+    Prefix()
+    Preserve()
+    QuoteChar()
+    Read()
+    ReadAttributeValue()
+    ReadInnerXml()
+    ReadOuterXml()
+    ReadState()
+    ReadString()
+    RelaxNGSetSchema()
+    RelaxNGValidate()
+    SetParserProp()
+    String()
+    Value()
+    XmlLang()
+
+
+Class xmlEntity(xmlNode)
+
+    # functions from module parserInternals
+    handleEntity()
+Class Error()
+    # accessors
+    code()
+    domain()
+    file()
+    level()
+    line()
+    message()
+
+    # functions from module xmlerror
+    copyError()
+    resetError()
+Class relaxNgSchema()
+
+    # functions from module relaxng
+    relaxNGDump()
+    relaxNGDumpTree()
+    relaxNGFree()
+    relaxNGNewValidCtxt()
+
+    # functions from module xmlreader
+    RelaxNGSetSchema()
+
+
+Class inputBuffer(ioReadWrapper)
+
+    # functions from module xmlIO
+    freeParserInputBuffer()
+    grow()
+    push()
+    read()
+
+    # functions from module xmlreader
+    newTextReader()
+
+
+Class outputBuffer(ioWriteWrapper)
+
+    # functions from module HTMLtree
+    htmlDocContentDumpFormatOutput()
+    htmlDocContentDumpOutput()
+    htmlNodeDumpFormatOutput()
+    htmlNodeDumpOutput()
+
+    # functions from module tree
+    nodeDumpOutput()
+    saveFileTo()
+    saveFormatFileTo()
+
+    # functions from module xmlIO
+    write()
+    writeString()

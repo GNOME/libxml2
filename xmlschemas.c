@@ -7304,6 +7304,7 @@ xmlSchemaCheckCOSSTRestricts(xmlSchemaParserCtxtPtr ctxt,
 			"Atomic simple type \"%s\": the facet \"%s\" "
 			"is not allowed on primitive type \"%s\".\n",
 			type->name, 
+			(const xmlChar *)
 			xmlSchemaFacetTypeToString(facet->type),
 			BAD_CAST primitive->name, NULL, NULL);
 		    
@@ -9804,21 +9805,22 @@ xmlSchemaValidateSimpleTypeValue(xmlSchemaValidCtxtPtr ctxt,
 			    xmlSchemaVErr(ctxt, ctxt->cur, ret,
 				"The value with length \"%s\" is not "
 				"facet-valid with respect to length = \"%s\".\n",
-				l, fl);
+				(const xmlChar *)l, (const xmlChar *)fl);
 			} else if (ret == XML_SCHEMAV_CVC_MINLENGTH_VALID) {
 			    xmlSchemaVErr(ctxt, ctxt->cur, ret,
 				"The value with length \"%s\" is not "
 				"facet-valid with respect to minLength = \"%s\".\n",
-				l, fl);
+				(const xmlChar *)l, (const xmlChar *)fl);
 			} else if (ret == XML_SCHEMAV_CVC_MAXLENGTH_VALID) {
 			    xmlSchemaVErr(ctxt, ctxt->cur, ret,
 				"The value with length \"%s\" is not "
 				"facet-valid with respect to maxLength = \"%s\".\n",
-				l, fl);
+				(const xmlChar *)l, (const xmlChar *)fl);
 			} else {
 			    xmlSchemaVErr(ctxt, ctxt->cur, ret,
 				"The value is not valid with respect "
 				"to the facet \"%s\".\n",
+				(const xmlChar *)
 				xmlSchemaFacetTypeToString(facet->type), 
 				NULL);
 			}			

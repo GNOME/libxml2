@@ -9578,7 +9578,7 @@ xmlSAXParseDTD(xmlSAXHandlerPtr sax, const xmlChar *ExternalID,
      */
 
     if ((ctxt->sax != NULL) && (ctxt->sax->resolveEntity != NULL))
-	input = ctxt->sax->resolveEntity(ctxt->userData, ExternalID, SystemID);
+	input = ctxt->sax->resolveEntity(ctxt, ExternalID, SystemID);
     if (input == NULL) {
         if (sax != NULL) ctxt->sax = NULL;
 	xmlFreeParserCtxt(ctxt);

@@ -46,6 +46,10 @@ URI library.
 
 %changelog
 
+* Sun Nov  4 2001 Daniel Veillard <veillard@redhat.com>
+
+- 2.4.7 broke SGML catalogs badly. this fixes it.
+
 * Thu Apr 26 2001 Toshio Kuratomi <badger@prtr-13.ucsc.edu>
 
 [2.3.7]

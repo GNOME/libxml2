@@ -60,6 +60,7 @@ typedef xmlCatalog *xmlCatalogPtr;
 /*
  * Operations on a given catalog
  */
+xmlCatalogPtr	xmlNewCatalog		(int sgml);
 xmlCatalogPtr	xmlLoadACatalog		(const char *filename);
 xmlCatalogPtr	xmlLoadSGMLSuperCatalog	(const char *filename);
 int		xmlConvertSGMLCatalog	(xmlCatalogPtr catal);
@@ -81,6 +82,7 @@ xmlChar *	xmlACatalogResolveURI	(xmlCatalogPtr catal,
 void		xmlACatalogDump		(xmlCatalogPtr catal,
 					 FILE *out);
 void		xmlFreeCatalog		(xmlCatalogPtr catal);
+int		xmlCatalogIsEmpty	(xmlCatalogPtr catal);
 
 /*
  * Global operations

@@ -15,6 +15,9 @@
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
 #endif
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 
 #ifdef HAVE_LIBREADLINE
 #include <readline/readline.h>
@@ -40,6 +43,9 @@ static int verbose = 0;
 static char *filename;
 
 #ifdef LIBXML_CATALOG_ENABLED
+
+#define XML_SGML_DEFAULT_CATALOG "/etc/sgml/catalog"
+
 /************************************************************************
  * 									*
  * 			Shell Interface					*
@@ -291,13 +297,14 @@ static void usershell(void) {
 static void usage(const char *name) {
     printf("Usage : %s [options] catalogfile entities...\n", name);
     printf("\tParse the catalog file and query it for the entities\n");
-    printf("\t--sgml : handle an SGML Super catalog\n");
+    printf("\t--sgml : handle SGML Super catalogs for --add and --del\n");
     printf("\t--shell : run a shell allowing interactive queries\n");
     printf("\t--create : create a new catalog\n");
     printf("\t--add 'type' 'orig' 'replace' : add an entry\n");
     printf("\t--del 'values' : remove values\n");
     printf("\t--noout: avoid dumping the result on stdout\n");
     printf("\t         used with add or del, it saves the catalog changes\n");
+    printf("\t         and with --sgml it also updates the super catalog\n");
     printf("\t-v --verbose : provide debug informations\n");
 }
 int main(int argc, char **argv) {
@@ -341,7 +348,7 @@ int main(int argc, char **argv) {
 	} else if ((!strcmp(argv[i], "-add")) ||
 	    (!strcmp(argv[i], "--add"))) {
 	    if (sgml)
-		i += 1;
+		i += 2;
 	    else
 		i += 3;
 	    add++;
@@ -360,7 +367,7 @@ int main(int argc, char **argv) {
 	if ((!strcmp(argv[i], "-add")) ||
 	    (!strcmp(argv[i], "--add"))) {
 	    if (sgml)
-		i += 1;
+		i += 2;
 	    else
 		i += 3;
 	    continue;
@@ -371,14 +378,11 @@ int main(int argc, char **argv) {
 	} else if (argv[i][0] == '-')
 	    continue;
 	filename = argv[i];
-	/* !!!!!!!!!!!!!!!!!!  TODO !!!!
-	if (sgml)
-	    ret = xmlLoadSGMLSuperCatalog(argv[i]);
-	else
-	   !!!!!!!!! */
+	if (!sgml) {
 	    ret = xmlLoadCatalog(argv[i]);
-	if ((!sgml) && (ret < 0) && (create)) {
-	    xmlCatalogAdd(BAD_CAST "catalog", BAD_CAST argv[i], NULL);
+	    if ((ret < 0) && (create)) {
+		xmlCatalogAdd(BAD_CAST "catalog", BAD_CAST argv[i], NULL);
+	    }
 	}
 	break;
     }
@@ -393,28 +397,108 @@ int main(int argc, char **argv) {
 
 	    if (argv[i][0] != '-')
 		continue;
-	    if ((!strcmp(argv[i], "-add")) ||
-		(!strcmp(argv[i], "--add"))) {
-		if (sgml) {
-		    ret = xmlCatalogAdd(BAD_CAST "sgmlcatalog", NULL,
-			                BAD_CAST argv[i + 1]);
-		    i += 1;
+	    if (strcmp(argv[i], "-add") && strcmp(argv[i], "--add") &&
+		strcmp(argv[i], "-del") && strcmp(argv[i], "--del"))
+		continue;
+
+	    if (sgml) {
+		/*
+		 * Maintainance of SGML catalogs.
+		 */
+		xmlCatalogPtr catal = NULL;
+		xmlCatalogPtr super = NULL;
+
+		catal = xmlLoadSGMLSuperCatalog(argv[i + 1]);
+
+		if ((!strcmp(argv[i], "-add")) ||
+		    (!strcmp(argv[i], "--add"))) {
+		    if (catal == NULL)
+			catal = xmlNewCatalog(1);
+		    super = xmlLoadSGMLSuperCatalog(XML_SGML_DEFAULT_CATALOG);
+		    if (super == NULL)
+			super = xmlNewCatalog(1);
+
+		    xmlACatalogAdd(catal, BAD_CAST "CATALOG",
+					 BAD_CAST argv[i + 2], NULL);
+		    xmlACatalogAdd(super, BAD_CAST "CATALOG",
+					 BAD_CAST argv[i + 1], NULL);
 		} else {
-		    if ((argv[i + 3] == NULL) || (argv[i + 3][0] == 0))
-			ret = xmlCatalogAdd(BAD_CAST argv[i + 1], NULL,
-					    BAD_CAST argv[i + 2]);
+		    if (catal != NULL)
+			ret = xmlACatalogRemove(catal, BAD_CAST argv[i + 2]);
 		    else
-			ret = xmlCatalogAdd(BAD_CAST argv[i + 1],
-					    BAD_CAST argv[i + 2],
-					    BAD_CAST argv[i + 3]);
-		    if (ret != 0)
-			printf("add command failed\n");
-		    i += 3;
+			ret = -1;
+		    if (ret < 0)
+			fprintf(stderr, "Failed to removed entry from %s\n",
+				argv[i + 1]);
+		    if ((noout) && (catal != NULL) &&
+			(xmlCatalogIsEmpty(catal))) {
+			super = xmlLoadSGMLSuperCatalog(
+				   XML_SGML_DEFAULT_CATALOG);
+			if (super != NULL) {
+			    ret = xmlACatalogRemove(super,
+				    BAD_CAST argv[i + 1]);
+			    if (ret < 0)
+				fprintf(stderr,
+					"Failed to removed entry from %s\n",
+					XML_SGML_DEFAULT_CATALOG);
+			}
+		    }
 		}
-	    } else if ((!strcmp(argv[i], "-del")) ||
-		(!strcmp(argv[i], "--del"))) {
-		ret = xmlCatalogRemove(BAD_CAST argv[i + 1]);
-		i += 1;
+		if (noout) {
+		    FILE *out;
+
+		    if (xmlCatalogIsEmpty(catal)) {
+			unlink(argv[i + 1]);
+		    } else {
+			out = fopen(argv[i + 1], "w");
+			if (out == NULL) {
+			    fprintf(stderr, "could not open %s for saving\n",
+				    argv[i + 1]);
+			    noout = 0;
+			} else {
+			    xmlACatalogDump(catal, out);
+			    fclose(out);
+			}
+		    }
+		    if (super != NULL) {
+			if (xmlCatalogIsEmpty(super)) {
+			    unlink(XML_SGML_DEFAULT_CATALOG);
+			} else {
+			    out = fopen(XML_SGML_DEFAULT_CATALOG, "w");
+			    if (out == NULL) {
+				fprintf(stderr,
+					"could not open %s for saving\n",
+					XML_SGML_DEFAULT_CATALOG);
+				noout = 0;
+			    } else {
+				
+				xmlACatalogDump(super, out);
+				fclose(out);
+			    }
+			}
+		    }
+		} else {
+		    xmlACatalogDump(catal, stdout);
+		}
+		i += 2;
+	    } else {
+		if ((!strcmp(argv[i], "-add")) ||
+		    (!strcmp(argv[i], "--add"))) {
+			if ((argv[i + 3] == NULL) || (argv[i + 3][0] == 0))
+			    ret = xmlCatalogAdd(BAD_CAST argv[i + 1], NULL,
+						BAD_CAST argv[i + 2]);
+			else
+			    ret = xmlCatalogAdd(BAD_CAST argv[i + 1],
+						BAD_CAST argv[i + 2],
+						BAD_CAST argv[i + 3]);
+			if (ret != 0)
+			    printf("add command failed\n");
+			i += 3;
+		} else if ((!strcmp(argv[i], "-del")) ||
+		    (!strcmp(argv[i], "--del"))) {
+		    ret = xmlCatalogRemove(BAD_CAST argv[i + 1]);
+		    i += 1;
+		}
 	    }
 	}
 	
@@ -446,7 +530,7 @@ int main(int argc, char **argv) {
 	    }
 	}
     }
-    if ((add) || (del) || (create) || (convert)) {
+    if ((!sgml) && ((add) || (del) || (create) || (convert))) {
 	if (noout) {
 	    FILE *out;
 

@@ -302,7 +302,7 @@ xmlFreeCatalogHashEntryList(xmlCatalogEntryPtr catal) {
 }
 
 /**
- * xmlNewCatalog:
+ * xmlCreateNewCatalog:
  * @type:  type of catalog
  * @prefer:  the PUBLIC vs. SYSTEM current preference value
  *
@@ -312,7 +312,7 @@ xmlFreeCatalogHashEntryList(xmlCatalogEntryPtr catal) {
  * Returns the xmlCatalogPtr or NULL in case of error
  */
 static xmlCatalogPtr
-xmlNewCatalog(xmlCatalogType type, xmlCatalogPrefer prefer) {
+xmlCreateNewCatalog(xmlCatalogType type, xmlCatalogPrefer prefer) {
     xmlCatalogPtr ret;
 
     ret = (xmlCatalogPtr) xmlMalloc(sizeof(xmlCatalog));
@@ -326,6 +326,8 @@ xmlNewCatalog(xmlCatalogType type, xmlCatalogPrefer prefer) {
     ret->catalNr = 0;
     ret->catalMax = XML_MAX_SGML_CATA_DEPTH;
     ret->prefer = prefer;
+    if (ret->type == XML_SGML_CATALOG_TYPE)
+	ret->sgml = xmlHashCreate(10);
     return(ret);
 }
 
@@ -2353,7 +2355,7 @@ xmlLoadSGMLSuperCatalog(const char *filename)
     if (content == NULL)
         return(NULL);
 
-    catal = xmlNewCatalog(XML_SGML_CATALOG_TYPE, xmlCatalogDefaultPrefer);
+    catal = xmlCreateNewCatalog(XML_SGML_CATALOG_TYPE, xmlCatalogDefaultPrefer);
     if (catal == NULL) {
 	xmlFree(content);
 	return(NULL);
@@ -2400,7 +2402,7 @@ xmlLoadACatalog(const char *filename)
 	first++;
 
     if (*first != '<') {
-	catal = xmlNewCatalog(XML_SGML_CATALOG_TYPE, xmlCatalogDefaultPrefer);
+	catal = xmlCreateNewCatalog(XML_SGML_CATALOG_TYPE, xmlCatalogDefaultPrefer);
 	if (catal == NULL) {
 	    xmlFree(content);
 	    return(NULL);
@@ -2412,7 +2414,7 @@ xmlLoadACatalog(const char *filename)
 	    return(NULL);
 	}
     } else {
-	catal = xmlNewCatalog(XML_XML_CATALOG_TYPE, xmlCatalogDefaultPrefer);
+	catal = xmlCreateNewCatalog(XML_XML_CATALOG_TYPE, xmlCatalogDefaultPrefer);
 	if (catal == NULL) {
 	    xmlFree(content);
 	    return(NULL);
@@ -2630,7 +2632,7 @@ xmlACatalogResolveURI(xmlCatalogPtr catal, const xmlChar *URI) {
  */
 void
 xmlACatalogDump(xmlCatalogPtr catal, FILE *out) {
-    if (out == NULL)
+    if ((out == NULL) || (catal == NULL))
 	return;
 
     if (catal->type == XML_XML_CATALOG_TYPE) {
@@ -2673,6 +2675,8 @@ xmlACatalogAdd(xmlCatalogPtr catal, const xmlChar * type,
 
             entry = xmlNewCatalogEntry(cattype, orig, replace,
                                        XML_CATA_PREFER_NONE);
+	    if (catal->sgml == NULL)
+		catal->sgml = xmlHashCreate(10);
             res = xmlHashAddEntry(catal->sgml, orig, entry);
         }
     }
@@ -2704,6 +2708,65 @@ xmlACatalogRemove(xmlCatalogPtr catal, const xmlChar *value) {
 	    res = 1;
     } 
     return(res);
+}
+
+/**
+ * xmlNewCatalog:
+ * @sgml:  should this create an SGML catalog
+ *
+ * create a new Catalog.
+ *
+ * Returns the xmlCatalogPtr or NULL in case of error
+ */
+xmlCatalogPtr
+xmlNewCatalog(int sgml) {
+    xmlCatalogPtr catal = NULL;
+
+    if (sgml) {
+	catal = xmlCreateNewCatalog(XML_SGML_CATALOG_TYPE,
+		                    xmlCatalogDefaultPrefer);
+        if ((catal != NULL) && (catal->sgml == NULL))
+	    catal->sgml = xmlHashCreate(10);
+    } else
+	catal = xmlCreateNewCatalog(XML_XML_CATALOG_TYPE,
+		                    xmlCatalogDefaultPrefer);
+    return(catal);
+}
+
+/**
+ * xmlCatalogIsEmpty:
+ * @catal:  should this create an SGML catalog
+ *
+ * Check is a catalog is empty
+ *
+ * Returns 1 if the catalog is empty, 0 if not, amd -1 in case of error.
+ */
+int
+xmlCatalogIsEmpty(xmlCatalogPtr catal) {
+    if (catal == NULL)
+	return(-1);
+
+    if (catal->type == XML_XML_CATALOG_TYPE) {
+	if (catal->xml == NULL)
+	    return(1);
+	if ((catal->xml->type != XML_CATA_CATALOG) &&
+	    (catal->xml->type != XML_CATA_BROKEN_CATALOG))
+	    return(-1);
+	if (catal->xml->children == NULL)
+	    return(1);
+        return(0);
+    } else {
+	int res;
+
+	if (catal->sgml == NULL)
+	    return(1);
+	res = xmlHashSize(catal->sgml);
+	if (res == 0)
+	    return(1);
+	if (res < 0)
+	    return(-1);
+    } 
+    return(0);
 }
 
 /************************************************************************
@@ -2757,7 +2820,7 @@ xmlInitializeCatalog(void) {
 	if (catalogs == NULL)
 	    catalogs = XML_XML_DEFAULT_CATALOG;
 
-	catal = xmlNewCatalog(XML_XML_CATALOG_TYPE, xmlCatalogDefaultPrefer);
+	catal = xmlCreateNewCatalog(XML_XML_CATALOG_TYPE, xmlCatalogDefaultPrefer);
 	if (catal != NULL) {
 
 	    catal->xml = xmlNewCatalogEntry(XML_CATA_CATALOG,
@@ -2996,7 +3059,7 @@ xmlCatalogAdd(const xmlChar *type, const xmlChar *orig, const xmlChar *replace) 
      */
     if ((xmlDefaultCatalog == NULL) &&
 	(xmlStrEqual(type, BAD_CAST "catalog"))) {
-	xmlDefaultCatalog = xmlNewCatalog(XML_XML_CATALOG_TYPE,
+	xmlDefaultCatalog = xmlCreateNewCatalog(XML_XML_CATALOG_TYPE,
 		                          xmlCatalogDefaultPrefer);
 	xmlDefaultCatalog->xml = xmlNewCatalogEntry(XML_CATA_CATALOG, NULL,
 				    orig, xmlCatalogDefaultPrefer);

@@ -1,3 +1,12 @@
+Sun Nov  4 20:56:53 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/catalog.h catalog.c: Fixed SGML catalogs
+	  breakage of 2.4.7, added a couple of really needed APIs
+	  like xmlCatalogIsEmpty() and xmlNewCatalog()
+	* xmlcatalog.c: updated --sgml --noout to be a suitable replacement
+	  for install-catalog
+	* configure.in: preparing 2.4.8
+
 Thu Nov  1 15:29:31 CET 2001 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLtree.c tree.c include/libxml/HTMLtree.h

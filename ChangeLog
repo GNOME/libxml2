@@ -1,3 +1,11 @@
+Tue Dec 31 12:15:37 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* python/generator.py: modified the generator to allow keeping
+	  class references when creating new classes, needed to fix a bug
+	  pointed by Stéphane Bidoul where the input buffer of the
+	  xmlTextReader instance gets destroyed if the python wrapper for
+	  the input is not referenced anymore.
+
 Mon Dec 30 19:39:36 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c python/tests/reader.py: fixed another pair of problem

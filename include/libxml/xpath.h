@@ -235,6 +235,10 @@ struct _xmlXPathContext {
     /* function lookup function and data */
     void *funcLookupFunc;		/* function lookup func */
     void *funcLookupData;		/* function lookup data */
+
+    /* temporary namespace lists kept for walking the namespace axis */
+    xmlNsPtr *tmpNsList;		/* Array of namespaces */
+    int tmpNsNr;			/* number of namespace in scope */
 };
 
 /*

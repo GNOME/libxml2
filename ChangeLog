@@ -1,3 +1,11 @@
+Mon Jul 30 12:58:39 EDT 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xpath.c include/libxml/xpath.h: fixed a serious memory problen
+	  when walking the namespace axis showing up in
+	  libxst/tests/general/bug-12
+	* xmlmemory.c: added the possibility to trace a given block
+	  defined by its address
+
 Sun Jul 29 07:18:53 EDT 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* parser.c: don't override existing encoding specified before

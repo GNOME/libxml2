@@ -5043,16 +5043,23 @@ xmlXPathNextPrecedingInternal(xmlXPathParserContextPtr ctxt,
  */
 xmlNodePtr
 xmlXPathNextNamespace(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
+    xmlNodePtr ret;
+
     if (ctxt->context->node->type != XML_ELEMENT_NODE) return(NULL);
-    if ((cur == NULL) || (ctxt->context->namespaces == NULL)) {
-        if (ctxt->context->namespaces != NULL)
-	    xmlFree(ctxt->context->namespaces);
-	ctxt->context->namespaces = 
+    if ((cur == NULL) || (ctxt->context->tmpNsList == NULL)) {
+        if (ctxt->context->tmpNsList != NULL)
+	    xmlFree(ctxt->context->tmpNsList);
+	ctxt->context->tmpNsList = 
 	    xmlGetNsList(ctxt->context->doc, ctxt->context->node);
-	if (ctxt->context->namespaces == NULL) return(NULL);
-	ctxt->context->nsNr = 0;
+	if (ctxt->context->tmpNsList == NULL) return(NULL);
+	ctxt->context->tmpNsNr = 0;
     }
-    return((xmlNodePtr)ctxt->context->namespaces[ctxt->context->nsNr++]);
+    ret = (xmlNodePtr)ctxt->context->tmpNsList[ctxt->context->tmpNsNr++];
+    if (ret == NULL) {
+	xmlFree(ctxt->context->tmpNsList);
+	ctxt->context->tmpNsList = NULL;
+    }
+    return(ret);
 }
 
 /**

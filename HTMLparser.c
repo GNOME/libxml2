@@ -5322,6 +5322,7 @@ htmlSAXParseDoc(xmlChar *cur, const char *encoding, htmlSAXHandlerPtr sax, void 
     ctxt = htmlCreateDocParserCtxt(cur, encoding);
     if (ctxt == NULL) return(NULL);
     if (sax != NULL) { 
+        if (ctxt->sax != NULL) xmlFree (ctxt->sax);
         ctxt->sax = sax;
         ctxt->userData = userData;
     }

@@ -369,7 +369,8 @@ static int spacePop(xmlParserCtxtPtr ctxt) {
   } while (0)
 
 #define SHRINK if ((ctxt->progressive == 0) &&				\
-		   (ctxt->input->cur - ctxt->input->base > INPUT_CHUNK))\
+		   (ctxt->input->cur - ctxt->input->base > INPUT_CHUNK) && \
+		   (ctxt->input->end - ctxt->input->cur < INPUT_CHUNK)) \
 	xmlSHRINK (ctxt);
 
 static void xmlSHRINK (xmlParserCtxtPtr ctxt) {
@@ -7581,8 +7582,21 @@ xmlParseEncodingDecl(xmlParserCtxtPtr ctxt) {
         if ((encoding != NULL) &&
 	    ((!xmlStrcasecmp(encoding, BAD_CAST "UTF-16")) ||
 	     (!xmlStrcasecmp(encoding, BAD_CAST "UTF16")))) {
-	     xmlFree(encoding);
-	     encoding = NULL;
+	    if (ctxt->input->encoding != NULL)
+		xmlFree((xmlChar *) ctxt->input->encoding);
+	    ctxt->input->encoding = encoding;
+	    encoding = NULL;
+	}
+	/*
+	 * UTF-8 encoding is handled natively
+	 */
+        if ((encoding != NULL) &&
+	    ((!xmlStrcasecmp(encoding, BAD_CAST "UTF-8")) ||
+	     (!xmlStrcasecmp(encoding, BAD_CAST "UTF8")))) {
+	    if (ctxt->input->encoding != NULL)
+		xmlFree((xmlChar *) ctxt->input->encoding);
+	    ctxt->input->encoding = encoding;
+	    encoding = NULL;
 	}
 	if (encoding != NULL) {
 	    xmlCharEncodingHandlerPtr handler;

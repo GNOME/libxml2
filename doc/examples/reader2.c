@@ -15,6 +15,8 @@
 #include <stdio.h>
 #include <libxml/xmlreader.h>
 
+#ifdef LIBXML_READER_ENABLED
+
 /**
  * processNode:
  * @reader: the xmlReader
@@ -111,3 +113,10 @@ int main(int argc, char **argv) {
     xmlMemoryDump();
     return(0);
 }
+
+#else
+int main(void) {
+    fprintf(stderr, "XInclude support not compiled in\n");
+    exit(1);
+}
+#endif

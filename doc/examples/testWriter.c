@@ -16,6 +16,8 @@
 #include <libxml/encoding.h>
 #include <libxml/xmlwriter.h>
 
+#if defined(LIBXML_WRITER_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)
+
 #define MY_ENCODING "ISO-8859-1"
 
 void testXmlwriterFilename(const char *uri);
@@ -1187,3 +1189,10 @@ ConvertInput(const char *in, const char *encoding)
 
     return out;
 }
+
+#else
+int main(void) {
+    fprintf(stderr, "Writer or output support not compiled in\n");
+    exit(1);
+}
+#endif

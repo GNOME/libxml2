@@ -704,7 +704,7 @@ parseSAXFile(char *filename) {
 
 static void
 parseAndPrintFile(char *filename) {
-    htmlDocPtr doc = NULL, tmp;
+    htmlDocPtr doc = NULL;
 
     /*
      * build an HTML tree from a string;
@@ -745,14 +745,18 @@ parseAndPrintFile(char *filename) {
 		"Could not parse %s\n", filename);
     }
 
+#ifdef LIBXML_TREE_ENABLED
     /*
      * test intermediate copy if needed.
      */
     if (copy) {
+        htmlDocPtr tmp;
+
         tmp = doc;
 	doc = xmlCopyDoc(doc, 1);
 	xmlFreeDoc(tmp);
     }
+#endif
 
 #ifdef LIBXML_OUTPUT_ENABLED
     /*

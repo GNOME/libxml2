@@ -1,3 +1,9 @@
+Thu Mar  4 16:57:50 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* debugXML.c testHTML.c tree.c doc/examples/*.c
+	  include/libxml/xmlsave.h: fixing compilation bug with some options
+	  disabled as well as --with-minimum should fix #134695
+
 Thu Mar  4 15:00:45 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xmlcatalog.c: allow fallback to URI lookup when SYSTEM fails,

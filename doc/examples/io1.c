@@ -18,6 +18,7 @@
 #include <libxml/xinclude.h>
 #include <libxml/xmlIO.h>
 
+#ifdef LIBXML_XINCLUDE_ENABLED
 static const char *result = "<list><people>a</people><people>b</people></list>";
 static const char *cur = NULL;
 static int rlen;
@@ -125,6 +126,7 @@ int main(void) {
         fprintf(stderr, "failed to parse the including file\n");
 	exit(1);
     }
+
     /*
      * apply the XInclude process, this should trigger the I/O just
      * registered.
@@ -133,10 +135,14 @@ int main(void) {
         fprintf(stderr, "XInclude processing failed\n");
 	exit(1);
     }
+
+#ifdef LIBXML_OUTPUT_ENABLED
     /*
      * save the output for checking to stdout
      */
     xmlDocDump(stdout, doc);
+#endif
+
     /*
      * Free the document
      */
@@ -152,3 +158,9 @@ int main(void) {
     xmlMemoryDump();
     return(0);
 }
+#else
+int main(void) {
+    fprintf(stderr, "XInclude support not compiled in\n");
+    exit(1);
+}
+#endif

@@ -14,6 +14,7 @@
 #include <libxml/tree.h>
 #include <libxml/xmlIO.h>
 
+#ifdef LIBXML_OUTPUT_ENABLED
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -54,6 +55,7 @@ XMLPUBFUN int XMLCALL
 #ifdef __cplusplus
 }
 #endif
+#endif /* LIBXML_OUTPUT_ENABLED */
 #endif /* __XML_XMLSAVE_H__ */
 
 

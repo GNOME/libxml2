@@ -1538,6 +1538,7 @@ xmlShellBase(xmlShellCtxtPtr ctxt,
     return (0);
 }
 
+#ifdef XML_TREE_ENABLED
 /**
  * xmlShellSetBase:
  * @ctxt:  the shell context
@@ -1558,6 +1559,7 @@ xmlShellSetBase(xmlShellCtxtPtr ctxt ATTRIBUTE_UNUSED,
     xmlNodeSetBase(node, (xmlChar*) arg);
     return (0);
 }
+#endif
 
 /**
  * xmlShellGrep:
@@ -2306,8 +2308,10 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
 		xmlXPathFreeObject(list);
 	    }
 #endif /* LIBXML_XPATH_ENABLED */
+#ifdef LIBXML_TREE_ENABLED
         } else if (!strcmp(command, "setbase")) {
             xmlShellSetBase(ctxt, arg, ctxt->node, NULL);
+#endif
         } else if ((!strcmp(command, "ls")) || (!strcmp(command, "dir"))) {
             int dir = (!strcmp(command, "dir"));
 

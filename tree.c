@@ -321,7 +321,6 @@ xmlSplitQName3(const xmlChar *name, int *len) {
     return(&name[l+1]);
 }
 
-#ifdef LIBXML_TREE_ENABLED
 /************************************************************************
  *									*
  *		Check Name, NCName and QName strings			*
@@ -330,6 +329,7 @@ xmlSplitQName3(const xmlChar *name, int *len) {
  
 #define CUR_SCHAR(s, l) xmlStringCurrentChar(NULL, s, &l)
 
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
 /**
  * xmlValidateNCName:
  * @value: the value to check
@@ -398,7 +398,9 @@ try_complex:
 
     return(0);
 }
+#endif
 
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
 /**
  * xmlValidateQName:
  * @value: the value to check
@@ -1669,7 +1671,7 @@ xmlNodeListGetRawString(xmlDocPtr doc, xmlNodePtr list, int inLine)
 }
 #endif /* LIBXML_TREE_ENABLED */
 
-#ifdef LIBXML_TREE_ENABLED
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_HTML_ENABLED)
 /**
  * xmlNewProp:
  * @node:  the holding node
@@ -2716,7 +2718,7 @@ xmlSetListDoc(xmlNodePtr list, xmlDocPtr doc) {
     }
 }
 
-#ifdef LIBXML_TREE_ENABLED
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
 /**
  * xmlNewChild:
  * @parent:  the parent node
@@ -2874,7 +2876,7 @@ xmlAddNextSibling(xmlNodePtr cur, xmlNodePtr elem) {
     return(elem);
 }
 
-#ifdef LIBXML_TREE_ENABLED
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_HTML_ENABLED)
 /**
  * xmlAddPrevSibling:
  * @cur:  the child node
@@ -3427,7 +3429,7 @@ xmlUnlinkNode(xmlNodePtr cur) {
     cur->next = cur->prev = NULL;
 }
 
-#ifdef LIBXML_TREE_ENABLED
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_WRITER_ENABLED)
 /**
  * xmlReplaceNode:
  * @old:  the old node
@@ -3933,7 +3935,7 @@ xmlNodePtr xmlCopyNodeList(const xmlNodePtr node) {
     return(ret);
 }
 
-#ifdef LIBXML_TREE_ENABLED
+#if defined(LIBXML_TREE_ENABLED)
 /**
  * xmlCopyDtd:
  * @dtd:  the dtd
@@ -4018,7 +4020,9 @@ xmlCopyDtd(xmlDtdPtr dtd) {
 
     return(ret);
 }
+#endif
 
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
 /**
  * xmlCopyDoc:
  * @doc:  the document
@@ -4047,11 +4051,13 @@ xmlCopyDoc(xmlDocPtr doc, int recursive) {
 
     ret->last = NULL;
     ret->children = NULL;
+#ifdef LIBXML_TREE_ENABLED
     if (doc->intSubset != NULL) {
         ret->intSubset = xmlCopyDtd(doc->intSubset);
 	xmlSetTreeDoc((xmlNodePtr)ret->intSubset, ret);
 	ret->intSubset->parent = ret;
     }
+#endif
     if (doc->oldNs != NULL)
         ret->oldNs = xmlCopyNamespaceList(doc->oldNs);
     if (doc->children != NULL) {
@@ -4107,7 +4113,7 @@ xmlGetLineNo(xmlNodePtr node)
     return result;
 }
 
-#ifdef LIBXML_TREE_ENABLED
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_DEBUG_ENABLED)
 /**
  * xmlGetNodePath:
  * @node: a node
@@ -4348,7 +4354,7 @@ xmlDocGetRootElement(xmlDocPtr doc) {
     return(ret);
 }
  
-#ifdef LIBXML_TREE_ENABLED
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_WRITER_ENABLED)
 /**
  * xmlDocSetRootElement:
  * @doc:  the document
@@ -4387,7 +4393,9 @@ xmlDocSetRootElement(xmlDocPtr doc, xmlNodePtr root) {
     }
     return(old);
 }
+#endif
  
+#if defined(LIBXML_TREE_ENABLED)
 /**
  * xmlNodeSetLang:
  * @cur:  the node being changed
@@ -4588,7 +4596,9 @@ xmlNodeSetName(xmlNodePtr cur, const xmlChar *name) {
     if (cur->name != NULL) xmlFree((xmlChar *) cur->name);
     cur->name = xmlStrdup(name);
 }
+#endif
  
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XINCLUDE_ENABLED)
 /**
  * xmlNodeSetBase:
  * @cur:  the node being changed
@@ -5245,7 +5255,7 @@ xmlTextMerge(xmlNodePtr first, xmlNodePtr second) {
     return(first);
 }
 
-#ifdef LIBXML_TREE_ENABLED
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XPATH_ENABLED)
 /**
  * xmlGetNsList:
  * @doc:  the document
@@ -6121,7 +6131,75 @@ xmlGetNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *nameSpace) {
     return(NULL);
 }
 
-#ifdef LIBXML_TREE_ENABLED
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
+/**
+ * xmlUnsetProp:
+ * @node:  the node
+ * @name:  the attribute name
+ *
+ * Remove an attribute carried by a node.
+ * Returns 0 if successful, -1 if not found
+ */
+int
+xmlUnsetProp(xmlNodePtr node, const xmlChar *name) {
+    xmlAttrPtr prop, prev = NULL;;
+
+    if ((node == NULL) || (name == NULL))
+	return(-1);
+    prop = node->properties;
+    while (prop != NULL) {
+        if ((xmlStrEqual(prop->name, name)) &&
+	    (prop->ns == NULL)) {
+	    if (prev == NULL)
+		node->properties = prop->next;
+	    else
+		prev->next = prop->next;
+	    xmlFreeProp(prop);
+	    return(0);
+	}
+	prev = prop;
+	prop = prop->next;
+    }
+    return(-1);
+}
+
+/**
+ * xmlUnsetNsProp:
+ * @node:  the node
+ * @ns:  the namespace definition
+ * @name:  the attribute name
+ *
+ * Remove an attribute carried by a node.
+ * Returns 0 if successful, -1 if not found
+ */
+int
+xmlUnsetNsProp(xmlNodePtr node, xmlNsPtr ns, const xmlChar *name) {
+    xmlAttrPtr prop = node->properties, prev = NULL;;
+
+    if ((node == NULL) || (name == NULL))
+	return(-1);
+    if (ns == NULL)
+	return(xmlUnsetProp(node, name));
+    if (ns->href == NULL)
+	return(-1);
+    while (prop != NULL) {
+        if ((xmlStrEqual(prop->name, name)) &&
+	    (prop->ns != NULL) && (xmlStrEqual(prop->ns->href, ns->href))) {
+	    if (prev == NULL)
+		node->properties = prop->next;
+	    else
+		prev->next = prop->next;
+	    xmlFreeProp(prop);
+	    return(0);
+	}
+	prev = prop;
+	prop = prop->next;
+    }
+    return(-1);
+}
+#endif
+
+#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XINCLUDE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_HTML_ENABLED)
 /**
  * xmlSetProp:
  * @node:  the node
@@ -6173,37 +6251,6 @@ xmlSetProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
     }
     prop = xmlNewProp(node, name, value);
     return(prop);
-}
-
-/**
- * xmlUnsetProp:
- * @node:  the node
- * @name:  the attribute name
- *
- * Remove an attribute carried by a node.
- * Returns 0 if successful, -1 if not found
- */
-int
-xmlUnsetProp(xmlNodePtr node, const xmlChar *name) {
-    xmlAttrPtr prop, prev = NULL;;
-
-    if ((node == NULL) || (name == NULL))
-	return(-1);
-    prop = node->properties;
-    while (prop != NULL) {
-        if ((xmlStrEqual(prop->name, name)) &&
-	    (prop->ns == NULL)) {
-	    if (prev == NULL)
-		node->properties = prop->next;
-	    else
-		prev->next = prop->next;
-	    xmlFreeProp(prop);
-	    return(0);
-	}
-	prev = prop;
-	prop = prop->next;
-    }
-    return(-1);
 }
 
 /**
@@ -6269,40 +6316,6 @@ xmlSetNsProp(xmlNodePtr node, xmlNsPtr ns, const xmlChar *name,
     return(prop);
 }
 
-/**
- * xmlUnsetNsProp:
- * @node:  the node
- * @ns:  the namespace definition
- * @name:  the attribute name
- *
- * Remove an attribute carried by a node.
- * Returns 0 if successful, -1 if not found
- */
-int
-xmlUnsetNsProp(xmlNodePtr node, xmlNsPtr ns, const xmlChar *name) {
-    xmlAttrPtr prop = node->properties, prev = NULL;;
-
-    if ((node == NULL) || (name == NULL))
-	return(-1);
-    if (ns == NULL)
-	return(xmlUnsetProp(node, name));
-    if (ns->href == NULL)
-	return(-1);
-    while (prop != NULL) {
-        if ((xmlStrEqual(prop->name, name)) &&
-	    (prop->ns != NULL) && (xmlStrEqual(prop->ns->href, ns->href))) {
-	    if (prev == NULL)
-		node->properties = prop->next;
-	    else
-		prev->next = prop->next;
-	    xmlFreeProp(prop);
-	    return(0);
-	}
-	prev = prop;
-	prop = prop->next;
-    }
-    return(-1);
-}
 #endif /* LIBXML_TREE_ENABLED */
 
 /**

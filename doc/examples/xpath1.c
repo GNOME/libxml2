@@ -17,6 +17,9 @@
 #include <libxml/xpath.h>
 #include <libxml/xpathInternals.h>
 
+#ifdef LIBXML_XPATH_ENABLED
+
+
 void usage(const char *name);
 int  execute_xpath_expression(const char* filename, const xmlChar* xpathExpr, const xmlChar* nsList);
 int  register_namespaces(xmlXPathContextPtr xpathCtx, const xmlChar* nsList);
@@ -238,3 +241,9 @@ print_xpath_nodes(xmlNodeSetPtr nodes, FILE* output) {
     }
 }
 
+#else
+int main(void) {
+    fprintf(stderr, "XPath support not compiled in\n");
+    exit(1);
+}
+#endif

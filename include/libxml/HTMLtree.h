@@ -70,7 +70,7 @@ int		htmlDocDump		(FILE *f,
 					 xmlDocPtr cur);
 int		htmlSaveFile		(const char *filename,
 					 xmlDocPtr cur);
-void		htmlNodeDump		(xmlBufferPtr buf,
+int		htmlNodeDump		(xmlBufferPtr buf,
 					 xmlDocPtr doc,
 					 xmlNodePtr cur);
 void		htmlNodeDumpFile	(FILE *out,

@@ -1,3 +1,10 @@
+Wed Nov 27 20:36:08 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLtree.c include/libxml/HTMLtree.h: applied the same kind
+	  of refactoring to the HTML saving code.
+	* doc/libxml2-*.xml doc/API*.html: slight API changes got reflected
+	  in the doc.
+
 Wed Nov 27 12:40:16 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c include/libxml/tree.h: refactored the XML dump of a node

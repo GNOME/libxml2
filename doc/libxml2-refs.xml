@@ -8402,6 +8402,8 @@
       <ref name='close'/>
       <ref name='getenv'/>
       <ref name='strerror'/>
+      <ref name='snprintf'/>
+      <ref name='vsnprintf'/>
       <ref name='perror'/>
     </file>
     <file name='wsockcompat'>
@@ -18798,6 +18800,36 @@
           <ref name='xmlSchemaValidateStream'/>
           <ref name='xmlUTF8Strloc'/>
           <ref name='xmlUTF8Strpos'/>
+        </word>
+        <word name='provided'>
+          <ref name='docbCreateFileParserCtxt'/>
+          <ref name='docbParseFile'/>
+          <ref name='docbSAXParseDoc'/>
+          <ref name='docbSAXParseFile'/>
+          <ref name='ftpDataCallback'/>
+          <ref name='ftpListCallback'/>
+          <ref name='htmlCreateFileParserCtxt'/>
+          <ref name='htmlNewDocNoDtD'/>
+          <ref name='htmlParseFile'/>
+          <ref name='htmlSAXParseDoc'/>
+          <ref name='htmlSAXParseFile'/>
+          <ref name='xmlAutomataNewCountedTrans'/>
+          <ref name='xmlC14NDocSaveTo'/>
+          <ref name='xmlC14NExecute'/>
+          <ref name='xmlCreateEntityParserCtxt'/>
+          <ref name='xmlCreateFileParserCtxt'/>
+          <ref name='xmlHashFree'/>
+          <ref name='xmlKeepBlanksDefault'/>
+          <ref name='xmlListWalker'/>
+          <ref name='xmlNanoHTTPFetch'/>
+          <ref name='xmlOutputBufferCreateFilename'/>
+          <ref name='xmlParseFile'/>
+          <ref name='xmlParserInputBufferCreateFilename'/>
+          <ref name='xmlRecoverFile'/>
+          <ref name='xmlSAXParseFile'/>
+          <ref name='xmlSAXParseFileWithData'/>
+          <ref name='xmlSAXUserParseFile'/>
+          <ref name='xmlShellValidate'/>
         </word>
         <word name='providing'>
           <ref name='INPUT_CHUNK'/>

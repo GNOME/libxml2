@@ -330,6 +330,8 @@
      <exports symbol='close'/>
      <exports symbol='getenv'/>
      <exports symbol='strerror'/>
+     <exports symbol='snprintf'/>
+     <exports symbol='vsnprintf'/>
      <exports symbol='perror'/>
     </file>
     <file name='parser'>
@@ -3040,6 +3042,8 @@
       <arg name='ctx' type='void *' info='the user data (XML parser context) '/>
       <arg name='name' type='const xmlChar *' info='the namespace prefix '/>
     </function>
+    <macro name='snprintf' file='wincecompat'>
+    </macro>
     <function name='startDocument' file='SAX'>
       <info>called when the document start being processed.</info>
       <return type='void'/>
@@ -3097,6 +3101,8 @@
       <arg name='ctxt' type='xmlXPathParserContextPtr' info='an XPath evaluation context '/>
       <arg name='value' type='xmlXPathObjectPtr' info='the XPath object '/>
     </function>
+    <macro name='vsnprintf' file='wincecompat'>
+    </macro>
     <functype name='warningSAXFunc' file='parser'>
       <info>Display and format a warning messages, callback.</info>
       <return type='void'/>
@@ -5742,7 +5748,7 @@
     </function>
     <function name='xmlNodeDump' file='tree'>
       <info>Dump an XML node, recursive behaviour,children are printed too. Note that format = 1 provide node indenting only if xmlIndentTreeOutput = 1 or xmlKeepBlanksDefault(0) was called</info>
-      <return type='void'/>
+      <return type='int' info='the number of bytes written to the buffer or -1 in case of error '/>
       <arg name='buf' type='xmlBufferPtr' info='the XML buffer output '/>
       <arg name='doc' type='xmlDocPtr' info='the document '/>
       <arg name='cur' type='xmlNodePtr' info='the current node '/>

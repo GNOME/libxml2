@@ -474,7 +474,7 @@ void parseAndPrintFile(char *filename) {
 	    if ((fd = open(filename, O_RDONLY)) < 0)
 		return;
 	    base = mmap(NULL, info.st_size, PROT_READ, MAP_SHARED, fd, 0) ;
-	    if (base == MAP_FAILED)
+	    if (base == (void *) MAP_FAILED)
 	        return;
 
 	    doc = xmlParseMemory((char *) base, info.st_size);

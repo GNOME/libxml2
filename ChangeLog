@@ -1,3 +1,8 @@
+Mon Aug 14 13:56:33 EDT 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* Patch from Albert Chin-A-Young <china@thewrittenword.com>:
+	* xmllint.c: workaround a MAP_FAILEd definition bug in DU-4.0
+
 Mon Aug 14 11:10:20 EDT 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* Patch from Dave Yearke <yearke@eng.buffalo.edu>:

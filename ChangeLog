@@ -1,3 +1,9 @@
+Tue Jan  8 14:13:18 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* encoding.c: Paul Keogh pointed out a possibility of segfault
+	  on repeted xmlAddEncodingAlias() / xmlCleanupEncodingAlias().
+	  Closes bug # 68238
+
 Tue Jan  8 12:48:27 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* doc/*.html: updated the Gdome2 links

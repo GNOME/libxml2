@@ -1170,6 +1170,7 @@ xmlCleanupEncodingAliases(void) {
     xmlCharEncodingAliasesNb = 0;
     xmlCharEncodingAliasesMax = 0;
     xmlFree(xmlCharEncodingAliases);
+    xmlCharEncodingAliases = NULL;
 }
 
 /**

@@ -1179,8 +1179,6 @@ xmlTextReaderRead(xmlTextReaderPtr reader) {
     fprintf(stderr, "\nREAD ");
     DUMP_READER
 #endif
-    if (reader->mode == XML_TEXTREADER_DONE)
-        return(0);
     reader->curnode = NULL;
     if (reader->mode == XML_TEXTREADER_MODE_INITIAL) {
 	reader->mode = XML_TEXTREADER_MODE_INTERACTIVE;
@@ -1217,8 +1215,12 @@ xmlTextReaderRead(xmlTextReaderPtr reader) {
     oldnode = reader->node;
 
 get_next_node:
-    if (reader->node == NULL)
-        return(-1);
+    if (reader->node == NULL) {
+	if (reader->mode == XML_TEXTREADER_DONE)
+	    return(0);
+	else
+	    return(-1);
+    }
 
     /*
      * If we are not backtracking on ancestors or examined nodes,

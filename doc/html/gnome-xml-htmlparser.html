@@ -4,7 +4,7 @@
 >HTMLparser</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.33"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.44"><LINK
 REL="HOME"
 TITLE="Gnome XML Library Reference Manual"
 HREF="book1.html"><LINK
@@ -12,14 +12,17 @@ REL="UP"
 TITLE="Libxml Library Reference"
 HREF="libxml-lib.html"><LINK
 REL="PREVIOUS"
-TITLE="xml-error"
-HREF="gnome-xml-xml-error.html"><LINK
+TITLE="uri"
+HREF="gnome-xml-uri.html"><LINK
 REL="NEXT"
 TITLE="HTMLtree"
 HREF="gnome-xml-htmltree.html"></HEAD
 ><BODY
 BGCOLOR="#FFFFFF"
 TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -44,7 +47,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="left"
 ><A
-HREF="gnome-xml-xml-error.html"
+HREF="gnome-xml-uri.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -111,19 +114,22 @@ SIZE="3"
 ></TABLE
 ></DIV
 ><H1
->HTMLparser</H1
+><A
+NAME="GNOME-XML-HTMLPARSER"
+>HTMLparser</A
+></H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN9635"
+NAME="AEN9548"
 ></A
 ><H2
 >Name</H2
->HTMLparser &#8212; </DIV
+>HTMLparser&nbsp;--&nbsp;</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN9638"
+NAME="AEN9551"
 ></A
 ><H2
 >Synopsis</H2
@@ -341,6 +347,10 @@ HREF="gnome-xml-htmlparser.html#HTMLISSCRIPTATTRIBUTE"
 HREF="gnome-xml-tree.html#XMLCHAR"
 >xmlChar</A
 > *name);
+int         <A
+HREF="gnome-xml-htmlparser.html#HTMLHANDLEOMITTEDELEM"
+>htmlHandleOmittedElem</A
+>           (int val);
 void        <A
 HREF="gnome-xml-htmlparser.html#HTMLFREEPARSERCTXT"
 >htmlFreeParserCtxt</A
@@ -383,7 +393,7 @@ HREF="gnome-xml-htmlparser.html#HTMLPARSERCTXTPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN9701"
+NAME="AEN9615"
 ></A
 ><H2
 >Description</H2
@@ -393,14 +403,14 @@ NAME="AEN9701"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN9704"
+NAME="AEN9618"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9706"
+NAME="AEN9620"
 ></A
 ><H3
 ><A
@@ -426,7 +436,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9711"
+NAME="AEN9625"
 ></A
 ><H3
 ><A
@@ -452,7 +462,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9716"
+NAME="AEN9630"
 ></A
 ><H3
 ><A
@@ -478,7 +488,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9721"
+NAME="AEN9635"
 ></A
 ><H3
 ><A
@@ -504,7 +514,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9726"
+NAME="AEN9640"
 ></A
 ><H3
 ><A
@@ -530,7 +540,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9731"
+NAME="AEN9645"
 ></A
 ><H3
 ><A
@@ -556,7 +566,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9736"
+NAME="AEN9650"
 ></A
 ><H3
 ><A
@@ -582,7 +592,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9741"
+NAME="AEN9655"
 ></A
 ><H3
 ><A
@@ -608,7 +618,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9746"
+NAME="AEN9660"
 ></A
 ><H3
 ><A
@@ -634,7 +644,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9751"
+NAME="AEN9665"
 ></A
 ><H3
 ><A
@@ -668,7 +678,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9756"
+NAME="AEN9670"
 ></A
 ><H3
 ><A
@@ -694,7 +704,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9761"
+NAME="AEN9675"
 ></A
 ><H3
 ><A
@@ -724,7 +734,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9766"
+NAME="AEN9680"
 ></A
 ><H3
 ><A
@@ -750,7 +760,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9771"
+NAME="AEN9685"
 ></A
 ><H3
 ><A
@@ -831,7 +841,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9792"
+NAME="AEN9706"
 ></A
 ><H3
 ><A
@@ -914,7 +924,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9814"
+NAME="AEN9728"
 ></A
 ><H3
 ><A
@@ -994,7 +1004,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9835"
+NAME="AEN9749"
 ></A
 ><H3
 ><A
@@ -1095,7 +1105,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9860"
+NAME="AEN9774"
 ></A
 ><H3
 ><A
@@ -1218,7 +1228,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9890"
+NAME="AEN9804"
 ></A
 ><H3
 ><A
@@ -1323,7 +1333,7 @@ if non-NULL *str will have to be freed by the caller.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9917"
+NAME="AEN9831"
 ></A
 ><H3
 ><A
@@ -1407,7 +1417,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9939"
+NAME="AEN9853"
 ></A
 ><H3
 ><A
@@ -1474,7 +1484,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9957"
+NAME="AEN9871"
 ></A
 ><H3
 ><A
@@ -1614,7 +1624,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9991"
+NAME="AEN9905"
 ></A
 ><H3
 ><A
@@ -1713,7 +1723,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10016"
+NAME="AEN9930"
 ></A
 ><H3
 ><A
@@ -1851,7 +1861,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10049"
+NAME="AEN9963"
 ></A
 ><H3
 ><A
@@ -1948,7 +1958,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10073"
+NAME="AEN9987"
 ></A
 ><H3
 ><A
@@ -2101,7 +2111,7 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10108"
+NAME="AEN10022"
 ></A
 ><H3
 ><A
@@ -2272,7 +2282,7 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10147"
+NAME="AEN10061"
 ></A
 ><H3
 ><A
@@ -2350,7 +2360,82 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10167"
+NAME="AEN10081"
+></A
+><H3
+><A
+NAME="HTMLHANDLEOMITTEDELEM"
+></A
+>htmlHandleOmittedElem ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         htmlHandleOmittedElem           (int val);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Set and return the previous value for handling HTML omitted tags.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>val</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  int 0 or 1 </TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the last value for 0 for no handling, 1 for auto insertion.</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN10100"
 ></A
 ><H3
 ><A
@@ -2414,7 +2499,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10183"
+NAME="AEN10116"
 ></A
 ><H3
 ><A
@@ -2601,7 +2686,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN10227"
+NAME="AEN10160"
 ></A
 ><H3
 ><A
@@ -2746,7 +2831,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="left"
 ><A
-HREF="gnome-xml-xml-error.html"
+HREF="gnome-xml-uri.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -2818,7 +2903,7 @@ ALIGN="left"
 COLOR="#FFFFFF"
 SIZE="3"
 ><B
->xml-error</B
+>uri</B
 ></FONT
 ></TD
 ><TD

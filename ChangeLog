@@ -1,3 +1,9 @@
+Thu Jan  4 19:07:49 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* configure.in: preparing 2.2.11
+	* doc/html/*: rebuild the HTML files
+	* doc/xml.html : updated
+
 Thu Jan  4 14:09:58 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* tree.c: fixed a stupid bug

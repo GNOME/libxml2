@@ -1,3 +1,8 @@
+Wed Mar 21 14:50:55 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* parser.c: make sure the full structure is NULL initialized
+	  when allocated
+
 Wed Mar 21 13:17:24 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
   It's hard to estimate how much I hated to do this, but it's done ...

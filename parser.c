@@ -1481,6 +1481,7 @@ xmlNewParserCtxt()
         perror("malloc");
 	return(NULL);
     }
+    memset(ctxt, 0, sizeof(xmlParserCtxt));
     xmlInitParserCtxt(ctxt);
     return(ctxt);
 }

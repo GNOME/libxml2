@@ -1,3 +1,9 @@
+Wed Apr 10 21:24:16 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* xpath.c include/libxml/xmlwin32version.h.in: Silvan Minghetti
+	  pointed erroneous use of LIBXML_THREADS_ENABLED instead of
+	   LIBXML_THREAD_ENABLED
+
 Wed Apr 10 18:12:52 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: another patch from Richard Jinks for substring conformance

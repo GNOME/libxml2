@@ -68,7 +68,7 @@ extern void xmlCheckVersion(int version);
 #endif
 
 /**
- * LIBXML_THREADS_ENABLED:
+ * LIBXML_THREAD_ENABLED:
  *
  * Whether the thread support is configured in
  */

@@ -70,7 +70,7 @@ static xmlNs xmlXPathXMLNamespaceStruct = {
     BAD_CAST "xml"
 };
 static xmlNsPtr xmlXPathXMLNamespace = &xmlXPathXMLNamespaceStruct;
-#ifndef LIBXML_THREADS_ENABLED
+#ifndef LIBXML_THREAD_ENABLED
 /* 
  * Optimizer is disabled only when threaded apps are detected while
  * the library ain't compiled for thread safety.
@@ -392,7 +392,7 @@ static void
 xmlXPathCompSwap(xmlXPathStepOpPtr op) {
     int tmp;
 
-#ifdef LIBXML_THREADS_ENABLED
+#ifdef LIBXML_THREAD_ENABLED
     /*
      * Since this manipulates possibly shared variables, this is
      * disable if one detects that the library is used in a multithreaded

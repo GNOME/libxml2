@@ -392,6 +392,13 @@ xmlFileWrite (void * context, const char * buffer, int len) {
  */
 static int
 xmlFileClose (void * context) {
+    FILE *fil;
+
+    fil = (FILE *) context;
+    if (fil == stdin)
+	return(0);
+    if (fil == stdout)
+	return(0);
     return ( ( fclose((FILE *) context) == EOF ) ? -1 : 0 );
 }
 
@@ -440,7 +447,7 @@ xmlGzfileOpen (const char *filename) {
     gzFile fd;
 
     if (!strcmp(filename, "-")) {
-        fd = gzdopen(fileno(stdin), "rb");
+        fd = gzdopen(dup(0), "rb");
 	return((void *) fd);
     }
 
@@ -482,7 +489,7 @@ xmlGzfileOpenW (const char *filename, int compression) {
 
     sprintf(mode, "wb%d", compression);
     if (!strcmp(filename, "-")) {
-        fd = gzdopen(1, mode);
+        fd = gzdopen(dup(1), mode);
 	return((void *) fd);
     }
 

@@ -1,3 +1,8 @@
+Tue Oct 30 11:31:19 CET 2001 Daniel Veillard <daniel@veillard.com>
+
+	* xmlIO.c: closing bug #62711, the library should never
+	  close stdin or stdout.
+
 Tue Oct 30 10:46:12 CET 2001 Daniel Veillard <daniel@veillard.com>
 
 	* uri.c: second pass at fixing #63336, using Joel Young

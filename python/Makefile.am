@@ -5,7 +5,8 @@ SUBDIRS= . tests
 
 INCLUDES = \
 	-I$(PYTHON_INCLUDES) \
-	-I$(top_srcdir)/include
+	-I$(top_srcdir)/include	\
+	-I$(top_builddir)/include
 
 DOCS_DIR = $(datadir)/doc/libxml2-python-$(LIBXML_VERSION)
 # libxml2class.txt is generated

@@ -1,3 +1,8 @@
+Wed Oct 13 02:17:36 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* python/Makefile.am: applied patch from Thomas Fitzsimmons fixing
+	  #155240 building outside the source tree. but make tests fails.
+
 Mon Oct 11 16:26:51 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* debugXML.c include/libxml/xmlerror.h: added namespace checking

@@ -1,3 +1,7 @@
+Wed May  9 12:50:15 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* tree.c: zb@bisp.com reported an error in xmlNodeGetLang()
+
 Tue May  8 12:31:40 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* parser.c: added xmlParseExternalEntityPrivate() to allow

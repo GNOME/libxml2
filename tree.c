@@ -3025,7 +3025,7 @@ xmlNodeGetLang(xmlNodePtr cur) {
     xmlChar *lang;
 
     while (cur != NULL) {
-        lang = xmlGetProp(cur, BAD_CAST "xml:lang");
+        lang = xmlGetNsProp(cur, BAD_CAST "lang", XML_XML_NAMESPACE);
 	if (lang != NULL)
 	    return(lang);
 	cur = cur->parent;

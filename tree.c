@@ -6607,16 +6607,36 @@ xmlBufferWriteChar(xmlBufferPtr buf, const char *string) {
  */
 void
 xmlBufferWriteQuotedString(xmlBufferPtr buf, const xmlChar *string) {
-    if (xmlStrchr(string, '"')) {
-        if (xmlStrchr(string, '\'')) {
+    const xmlChar *cur, *base;
+    if (xmlStrchr(string, '\"')) {
+        if (xmlStrchr(string, '"')) {
 #ifdef DEBUG_BUFFER
 	    xmlGenericError(xmlGenericErrorContext,
  "xmlBufferWriteQuotedString: string contains quote and double-quotes !\n");
 #endif
+	    xmlBufferCCat(buf, "\"");
+            base = cur = string;
+            while(*cur != 0){
+                if(*cur == '"'){
+                    if (base != cur)
+                        xmlBufferAdd(buf, base, cur - base);
+                    xmlBufferAdd(buf, BAD_CAST "&quot;", 6);
+                    cur++;
+                    base = cur;
+                }
+                else {
+                    cur++;
+                }
+            }
+            if (base != cur)
+                xmlBufferAdd(buf, base, cur - base);
+	    xmlBufferCCat(buf, "\"");
 	}
-        xmlBufferCCat(buf, "'");
-        xmlBufferCat(buf, string);
-        xmlBufferCCat(buf, "'");
+        else{
+	    xmlBufferCCat(buf, "\'");
+            xmlBufferCat(buf, string);
+	    xmlBufferCCat(buf, "\'");
+        }
     } else {
         xmlBufferCCat(buf, "\"");
         xmlBufferCat(buf, string);

@@ -1,3 +1,9 @@
+Sun Aug  3 21:30:31 EDT 2003 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: fixing HTML attribute serialization bug #118763
+	  applying a modified version of the patch from Bacek
+	* result/HTML/doc3.htm*: this modifies the output from one test
+
 Sun Aug  3 21:02:30 EDT 2003 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c include/libxml/tree.h: added a new API to split a

@@ -6,6 +6,10 @@
 /* Define if you have the ANSI C header files.  */
 #undef STDC_HEADERS
 
+#undef PACKAGE
+#undef VERSION
+#undef HAVE_LIBZ
+
 /* Define if you have the snprintf function.  */
 #undef HAVE_SNPRINTF
 

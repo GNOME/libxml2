@@ -1,3 +1,9 @@
+Thu Mar  4 12:38:53 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemas.c: applied patch from Adam Dickmeiss for mixed content
+	* test/schemas/mixed* result/schemas/mixed*: added his regression
+	  tests too.
+
 Mon Mar  1 15:22:06 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* testSAX.c: fix a compilation problem about a missing timb include

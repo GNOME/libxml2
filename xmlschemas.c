@@ -3581,6 +3581,7 @@ xmlSchemaParseComplexType(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     xmlNodePtr child = NULL;
     const xmlChar *name;
     const xmlChar *oldcontainer;
+    const xmlChar *mixed;
     char buf[100];
 
     if ((ctxt == NULL) || (schema == NULL) || (node == NULL))
@@ -3602,6 +3603,11 @@ xmlSchemaParseComplexType(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     if (type == NULL) {
         return (NULL);
     }
+
+    mixed = xmlSchemaGetProp(ctxt, node, "mixed");
+    if (mixed != NULL)
+	type->flags |= XML_SCHEMAS_TYPE_MIXED;
+
     type->node = node;
     type->type = XML_SCHEMA_TYPE_COMPLEX;
     type->id = xmlSchemaGetProp(ctxt, node, "id");
@@ -4491,6 +4497,10 @@ xmlSchemaTypeFixup(xmlSchemaTypePtr typeDecl,
             case XML_SCHEMA_TYPE_COMPLEX:{
                     if (typeDecl->subtypes == NULL) {
                         typeDecl->contentType = XML_SCHEMA_CONTENT_EMPTY;
+
+                        if (typeDecl->flags & XML_SCHEMAS_TYPE_MIXED)
+                            typeDecl->contentType =
+                                XML_SCHEMA_CONTENT_MIXED;
                     } else {
                         if (typeDecl->flags & XML_SCHEMAS_TYPE_MIXED)
                             typeDecl->contentType =
@@ -4511,6 +4521,9 @@ xmlSchemaTypeFixup(xmlSchemaTypePtr typeDecl,
             case XML_SCHEMA_TYPE_COMPLEX_CONTENT:{
                     if (typeDecl->subtypes == NULL) {
                         typeDecl->contentType = XML_SCHEMA_CONTENT_EMPTY;
+                        if (typeDecl->flags & XML_SCHEMAS_TYPE_MIXED)
+                            typeDecl->contentType =
+                                XML_SCHEMA_CONTENT_MIXED;
                     } else {
                         if (typeDecl->flags & XML_SCHEMAS_TYPE_MIXED)
                             typeDecl->contentType =

@@ -205,6 +205,19 @@ void *		xmlXPathPopExternal	(xmlXPathParserContextPtr ctxt);
          || ((ctxt)->value->type == XPATH_XSLT_TREE)))
 
 /**
+ * xmlXPathStackIsExternal:
+ * @ctxt: an XPath parser context
+ *
+ * Checks if the current value on the XPath stack is an external
+ * object.
+ *
+ * Returns true if the current object on the stack is an external
+ * object
+ */
+#define xmlXPathStackIsExternal(ctxt)					\
+	((ctxt->value != NULL) && (ctxt->value->type == XPATH_USERS))
+
+/**
  * xmlXPathEmptyNodeSet:
  * @ns:  a node-set
  *

@@ -2776,8 +2776,10 @@ xmlXPathObjectCopy(xmlXPathObjectPtr val) {
 	    break;
 	}
 #endif
-	case XPATH_UNDEFINED:
-	case XPATH_USERS:
+        case XPATH_USERS:
+	    ret->user = val->user;
+	    break; 
+        case XPATH_UNDEFINED:
 	    xmlGenericError(xmlGenericErrorContext,
 		    "xmlXPathObjectCopy: unsupported type %d\n",
 		    val->type);

@@ -1,3 +1,8 @@
+Mon Nov 24 14:13:21 CET 2002 ERDI Gergo <cactus@cactus.rulez.org>
+
+	* python/libxml.c (libxml_prev): Return the previous as opposed to
+	the next node (I guess this is the result of some cut & paste programming:)
+
 Sat Nov 23 17:22:22 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* doc/Makefile.am: Jan Rafaj pointed a bug in the Makefile.

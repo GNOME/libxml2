@@ -1640,13 +1640,13 @@ libxml_prev(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
         case XML_ATTRIBUTE_NODE:{
                 xmlAttrPtr attr = (xmlAttrPtr) cur;
 
-                res = (xmlNodePtr) attr->next;
+                res = (xmlNodePtr) attr->prev;
             }
         case XML_NAMESPACE_DECL:
             res = NULL;
             break;
         default:
-            res = cur->next;
+            res = cur->prev;
             break;
     }
     resultobj = libxml_xmlNodePtrWrap(res);

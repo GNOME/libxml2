@@ -1,3 +1,9 @@
+Tue Feb  6 14:02:56 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xpath.c: started profiling XSLT, added xmlXPathNodeSetAddUnique()
+	  which removes a time consuming check of xmlXPathNodeSetAdd()
+	  and use it in places where we are sure to not break unicity
+
 Mon Feb  5 18:51:36 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* xpath.c: bug fixes found from XSLT

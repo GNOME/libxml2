@@ -670,6 +670,48 @@ xmlXPathNodeSetAdd(xmlNodeSetPtr cur, xmlNodePtr val) {
 }
 
 /**
+ * xmlXPathNodeSetAddUnique:
+ * @cur:  the initial node set
+ * @val:  a new xmlNodePtr
+ *
+ * add a new xmlNodePtr ot an existing NodeSet, optimized version
+ * when we are sure the node is not already in the set.
+ */
+void
+xmlXPathNodeSetAddUnique(xmlNodeSetPtr cur, xmlNodePtr val) {
+    if (val == NULL) return;
+
+    /*
+     * grow the nodeTab if needed
+     */
+    if (cur->nodeMax == 0) {
+        cur->nodeTab = (xmlNodePtr *) xmlMalloc(XML_NODESET_DEFAULT *
+					     sizeof(xmlNodePtr));
+	if (cur->nodeTab == NULL) {
+	    xmlGenericError(xmlGenericErrorContext,
+		    "xmlXPathNodeSetAddUnique: out of memory\n");
+	    return;
+	}
+	memset(cur->nodeTab, 0 ,
+	       XML_NODESET_DEFAULT * (size_t) sizeof(xmlNodePtr));
+        cur->nodeMax = XML_NODESET_DEFAULT;
+    } else if (cur->nodeNr == cur->nodeMax) {
+        xmlNodePtr *temp;
+
+        cur->nodeMax *= 2;
+	temp = (xmlNodePtr *) xmlRealloc(cur->nodeTab, cur->nodeMax *
+				      sizeof(xmlNodePtr));
+	if (temp == NULL) {
+	    xmlGenericError(xmlGenericErrorContext,
+		    "xmlXPathNodeSetAddUnique: out of memory\n");
+	    return;
+	}
+	cur->nodeTab = temp;
+    }
+    cur->nodeTab[cur->nodeNr++] = val;
+}
+
+/**
  * xmlXPathNodeSetMerge:
  * @val1:  the first NodeSet or NULL
  * @val2:  the second NodeSet
@@ -943,7 +985,7 @@ xmlXPathNewNodeSetList(xmlNodeSetPtr val) {
     	{
 	    ret = xmlXPathNewNodeSet(val->nodeTab[0]);
 	    for (i = 1; i < val->nodeNr; ++i)
-	    	xmlXPathNodeSetAdd(ret->nodesetval, val->nodeTab[i]);
+	    	xmlXPathNodeSetAddUnique(ret->nodesetval, val->nodeTab[i]);
 	    }
 
     return(ret);
@@ -2957,12 +2999,14 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt, xmlXPathAxisVal axis,
     int i;
     xmlNodeSetPtr ret;
     xmlXPathTraversalFunction next = NULL;
+    void (*addNode)(xmlNodeSetPtr, xmlNodePtr);
     xmlNodePtr cur = NULL;
     xmlXPathObjectPtr obj;
     xmlNodeSetPtr nodelist;
 
     CHECK_TYPE(XPATH_NODESET);
     obj = valuePop(ctxt);
+    addNode = xmlXPathNodeSetAdd;
 
 #ifdef DEBUG_STEP
     xmlGenericError(xmlGenericErrorContext,
@@ -3054,6 +3098,11 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt, xmlXPathAxisVal axis,
 	return;
 
     nodelist = obj->nodesetval;
+    if ((nodelist != NULL) &&
+	(nodelist->nodeNr <= 1))
+	addNode = xmlXPathNodeSetAddUnique;
+    else
+	addNode = xmlXPathNodeSetAdd;
     ret = xmlXPathNodeSetCreate(NULL);
 #ifdef DEBUG_STEP
     xmlGenericError(xmlGenericErrorContext,
@@ -3134,7 +3183,7 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt, xmlXPathAxisVal axis,
 #ifdef DEBUG_STEP
                         n++;
 #endif
-		        xmlXPathNodeSetAdd(ret, cur);
+		        addNode(ret, cur);
 		    }
 		    break;
                 case NODE_TEST_PI:
@@ -3145,7 +3194,7 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt, xmlXPathAxisVal axis,
 #ifdef DEBUG_STEP
 			n++;
 #endif
-			xmlXPathNodeSetAdd(ret, cur);
+			addNode(ret, cur);
 		    }
 		    break;
                 case NODE_TEST_ALL:
@@ -3154,14 +3203,14 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt, xmlXPathAxisVal axis,
 #ifdef DEBUG_STEP
 			    n++;
 #endif
-			    xmlXPathNodeSetAdd(ret, cur);
+			    addNode(ret, cur);
 			}
 		    } else if (axis == AXIS_NAMESPACE) {
 			if (cur->type == XML_NAMESPACE_DECL) {
 #ifdef DEBUG_STEP
 			    n++;
 #endif
-			    xmlXPathNodeSetAdd(ret, cur);
+			    addNode(ret, cur);
 			}
 		    } else {
 			if ((cur->type == XML_ELEMENT_NODE) ||
@@ -3171,14 +3220,14 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt, xmlXPathAxisVal axis,
 #ifdef DEBUG_STEP
 				n++;
 #endif
-				xmlXPathNodeSetAdd(ret, cur);
+				addNode(ret, cur);
 			    } else if ((cur->ns != NULL) && 
 				(xmlStrEqual(prefix,
 					     cur->ns->href))) {
 #ifdef DEBUG_STEP
 				n++;
 #endif
-				xmlXPathNodeSetAdd(ret, cur);
+				addNode(ret, cur);
 			    }
 			}
 		    }
@@ -3197,7 +3246,7 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt, xmlXPathAxisVal axis,
 #ifdef DEBUG_STEP
 					n++;
 #endif
-					xmlXPathNodeSetAdd(ret, cur);
+					addNode(ret, cur);
 				    }
 				} else {
 				    if ((cur->ns != NULL) && 
@@ -3206,7 +3255,7 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt, xmlXPathAxisVal axis,
 #ifdef DEBUG_STEP
 					n++;
 #endif
-					xmlXPathNodeSetAdd(ret, cur);
+					addNode(ret, cur);
 				    }
 				}
 			    }
@@ -3217,7 +3266,7 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt, xmlXPathAxisVal axis,
 #ifdef DEBUG_STEP
 				n++;
 #endif
-				xmlXPathNodeSetAdd(ret, cur);
+				addNode(ret, cur);
 			    }
 			    break;
 			}

@@ -1,3 +1,11 @@
+Tue Oct 22 21:13:06 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: Mikhail Sogrine pointed out a bug in HTML
+	  parsing, applied his patch
+	* result/HTML/attrents.html result/HTML/attrents.html.err
+	  result/HTML/attrents.html.sax test/HTML/attrents.html:
+	  added the test and result case provided by Mikhail Sogrine
+
 Tue Oct 22 19:33:20 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* vms/build_libxml.com vms/config.vms vms/readme.vms

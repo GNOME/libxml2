@@ -1946,6 +1946,13 @@ htmlParseHTMLAttribute(htmlParserCtxtPtr ctxt, const xmlChar stop) {
 		for ( ; bits >= 0; bits-= 6) {
 		    *out++  = ((c >> bits) & 0x3F) | 0x80;
 		}
+		
+		if (out - buffer > buffer_size - 100) {
+			int indx = out - buffer;
+
+			growBuffer(buffer);
+			out = &buffer[indx];
+		}
 	    } else {
 		ent = htmlParseEntityRef(ctxt, &name);
 		if (name == NULL) {

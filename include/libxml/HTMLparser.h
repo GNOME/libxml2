@@ -90,6 +90,9 @@ const htmlEntityDesc * 	htmlParseEntityRef(htmlParserCtxtPtr ctxt,
 int			htmlParseCharRef(htmlParserCtxtPtr ctxt);
 void			htmlParseElement(htmlParserCtxtPtr ctxt);
 
+htmlParserCtxtPtr	htmlCreateMemoryParserCtxt(const char *buffer,
+						   int size);
+
 int			htmlParseDocument(htmlParserCtxtPtr ctxt);
 htmlDocPtr		htmlSAXParseDoc	(xmlChar *cur,
 					 const char *encoding,

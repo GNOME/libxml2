@@ -4205,7 +4205,7 @@ htmlNewParserCtxt(void)
  *
  * Returns the new parser context or NULL
  */
-static htmlParserCtxtPtr
+htmlParserCtxtPtr
 htmlCreateMemoryParserCtxt(const char *buffer, int size) {
     xmlParserCtxtPtr ctxt;
     xmlParserInputPtr input;

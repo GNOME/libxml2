@@ -2195,6 +2195,7 @@ xmlOutputBufferCreateOwn(FILE *file, xmlCharEncodingHandlerPtr encoder) {
 
 
 
+
 } </pre>
   </li>
   <li>And then use it to save the document:
@@ -2581,9 +2582,18 @@ literature to point at:</p>
     Resolution</a> who maintains XML Catalog, you will find pointers to the
     specification update, some background and pointers to others tools
     providing XML Catalog support</li>
+  <li>Here is a <a href="buildDocBookCatalog">shell script</a> to generate
+    XML Catalogs for DocBook 4.1.2 . If it can write to the /etc/xml/
+    directory, it will set-up /etc/xml/catalog and /etc/xml/docbook based on
+    the resources found on the system. Otherwise it will just create
+    ~/xmlcatalog and ~/dbkxmlcatalog and doing:
+    <p><code>   export XMLCATALOG=$HOME/xmlcatalog</code></p>
+    <p>should allow to process DocBook documentations without requiring
+    network accesses for the DTd or stylesheets</p>
+  </li>
   <li>I have uploaded <a href="ftp://xmlsoft.org/test/dbk412catalog.tar.gz">a
-    mall tarball</a> containing XML Catalogs for DocBook 4.1.2 which seems to
-    work fine for me</li>
+    small tarball</a> containing XML Catalogs for DocBook 4.1.2 which seems
+    to work fine for me too</li>
   <li>The <a href="http://www.xmlsoft.org/xmlcatalog_man.html">xmlcatalog
     manual page</a></li>
 </ul>

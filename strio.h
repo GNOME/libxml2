@@ -18,13 +18,20 @@
 #ifndef TRIO_STRIO_H
 #define TRIO_STRIO_H
 
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
-#ifndef DEBUG
+#if !(defined(DEBUG) || defined(NDEBUG))
 # define NDEBUG
 #endif
 #include <assert.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+
+#ifndef STRIO_MALLOC
+# define STRIO_MALLOC(n) malloc(n)
+#endif
+#ifndef STRIO_FREE
+# define STRIO_FREE(x) free(x)
+#endif
 
 /*
  * StrAppend(target, source)
@@ -129,13 +136,13 @@ enum {
 };
 
 #if !defined(DEBUG) || defined(__DECC)
+#define StrAlloc(n) (char *)STRIO_MALLOC(n)
 #define StrAppend(x,y) strcat((x), (y))
-#define StrAlloc(n) ((char *)calloc(1, (n)))
 #define StrContains(x,y) (0 != strstr((x), (y)))
 #define StrCopy(x,y) strcpy((x), (y))
-#define StrFree(x) free((x))
 #define StrIndex(x,y) strchr((x), (y))
 #define StrIndexLast(x,y) strrchr((x), (y))
+#define StrFree(x) STRIO_FREE(x)
 #define StrLength(x) strlen((x))
 #define StrSubstring(x,y) strstr((x), (y))
 #define StrTokenize(x,y) strtok((x), (y))
@@ -151,13 +158,13 @@ enum {
   * so it will use the un-asserted functions above for the
   * debugging case too.
   */
+#define StrAlloc(n) \
+     (assert((n) > 0),\
+      (char *)STRIO_MALLOC(n))
 #define StrAppend(x,y) \
      (assert((x) != NULL),\
       assert((y) != NULL),\
       strcat((x), (y)))
-#define StrAlloc(n) \
-     (assert((n) > 0),\
-      ((char *)calloc(1, (n))))
 #define StrContains(x,y) \
      (assert((x) != NULL),\
       assert((y) != NULL),\
@@ -174,7 +181,7 @@ enum {
       strrchr((x), (c)))
 #define StrFree(x) \
      (assert((x) != NULL),\
-      free((x)))
+      STRIO_FREE(x))
 #define StrLength(x) \
      (assert((x) != NULL),\
       strlen((x)))
@@ -204,6 +211,7 @@ char *StrDuplicateMax(const char *source, size_t max);
 int StrEqual(const char *first, const char *second);
 int StrEqualCase(const char *first, const char *second);
 int StrEqualCaseMax(const char *first, size_t max, const char *second);
+int StrEqualLocale(const char *first, const char *second);
 int StrEqualMax(const char *first, size_t max, const char *second);
 const char *StrError(int);
 size_t StrFormatDateMax(char *target, size_t max, const char *format, const struct tm *datetime);

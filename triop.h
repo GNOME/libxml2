@@ -26,16 +26,49 @@
 #ifndef TRIO_TRIOP_H
 #define TRIO_TRIOP_H
 
-#if defined(__STDC__) && (__STDC_VERSION__ >= 199901L)
-# define TRIO_C99
-#endif
-#define TRIO_BSD
-#define TRIO_GNU
-#define TRIO_MISC
-#define TRIO_UNIX98
-#define TRIO_EXTENSION
-#define TRIO_ERRORS
+#include <stdlib.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#ifndef TRIO_C99
+# define TRIO_C99 1
+#endif
+#ifndef TRIO_BSD
+# define TRIO_BSD 1
+#endif
+#ifndef TRIO_GNU
+# define TRIO_GNU 1
+#endif
+#ifndef TRIO_MISC
+# define TRIO_MISC 1
+#endif
+#ifndef TRIO_UNIX98
+# define TRIO_UNIX98 1
+#endif
+#ifndef TRIO_MICROSOFT
+# define TRIO_MICROSOFT 1
+#endif
+#ifndef TRIO_EXTENSION
+# define TRIO_EXTENSION 1
+#endif
+#ifndef TRIO_WIDECHAR
+# define TRIO_WIDECHAR 0
+#endif
+#ifndef TRIO_ERRORS
+# define TRIO_ERRORS 1
+#endif
+
+#ifndef TRIO_MALLOC
+# define TRIO_MALLOC(n) malloc(n)
+#endif
+#ifndef TRIO_REALLOC
+# define TRIO_REALLOC(x,n) realloc((x),(n))
+#endif
+#ifndef TRIO_FREE
+# define TRIO_FREE(x) free(x)
+#endif
 
 typedef int (*trio_callback_t)(void *ref);
 
@@ -76,7 +109,7 @@ int  trio_get_quote(void *ref); /* ' */
 void trio_set_quote(void *ref, int is_quote);
 int  trio_get_upper(void *ref);
 void trio_set_upper(void *ref, int is_upper);
-#if defined(TRIO_C99)
+#if TRIO_C99
 int  trio_get_largest(void *ref); /* j */
 void trio_set_largest(void *ref, int is_largest);
 int  trio_get_ptrdiff(void *ref); /* t */
@@ -97,5 +130,9 @@ void trio_print_uint(void *ref, unsigned int number);
 void trio_print_double(void *ref, double number);
 void trio_print_string(void *ref, char *string);
 void trio_print_pointer(void *ref, void *pointer);
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* TRIO_TRIOP_H */

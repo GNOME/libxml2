@@ -1488,6 +1488,7 @@ xmlCleanupPredefinedEntities
 	xmlXPathFreeContext
 	
 	/* Evaluation functions. */
+	xmlXPathOrderDocElems
 	xmlXPathEval
 	xmlXPathEvalExpression
 	xmlXPathEvalPredicate

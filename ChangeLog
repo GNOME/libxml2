@@ -1,3 +1,8 @@
+Tue Jul 10 17:47:09 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* configure.in include/libxml/xmlwin32version.h: release of 2.4.0
+	* doc/xml.html doc/html/*:  updated the docs
+
 Mon Jul  9 22:06:53 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* valid.c: fixed "Internal: MIXED struct bad" when #CDATA elements

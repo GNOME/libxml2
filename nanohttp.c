@@ -61,6 +61,12 @@
 #include <strings.h>
 #endif
 
+#ifdef VMS
+#include <stropts>
+#define SOCKLEN_T unsigned int
+#define SOCKET int
+#endif
+
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h> /* for xmlStr(n)casecmp() */
 #include <libxml/nanohttp.h>
@@ -662,7 +668,7 @@ xmlNanoHTTPConnectAttempt(struct in_addr ia, int port)
 #if defined(VMS)
     {
 	int enable = 1;
-	status = IOCTL(s, FIONBIO, &enable);
+	status = ioctl(s, FIONBIO, &enable);
     }
 #else /* VMS */
     if ((status = fcntl(s, F_GETFL, 0)) != -1) {

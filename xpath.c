@@ -11,6 +11,9 @@
  * See COPYRIGHT for the status of this software
  *
  * Author: Daniel.Veillard@w3.org
+ *
+ * 14 Nov 2000 ht - truncated declaration of xmlXPathEvalRelativeLocationPath
+ * for VMS
  */
 
 #ifdef WIN32
@@ -3983,7 +3986,12 @@ xmlXPathRoundFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 void xmlXPathEvalExpr(xmlXPathParserContextPtr ctxt);
 void xmlXPathEvalPredicate(xmlXPathParserContextPtr ctxt);
 void xmlXPathEvalLocationPath(xmlXPathParserContextPtr ctxt);
+#ifdef VMS
+void xmlXPathEvalRelLocationPath(xmlXPathParserContextPtr ctxt);
+#define xmlXPathEvalRelativeLocationPath xmlXPathEvalRelLocationPath 
+#else 
 void xmlXPathEvalRelativeLocationPath(xmlXPathParserContextPtr ctxt);
+#endif
 
 /**
  * xmlXPathParseNCName:
@@ -5439,7 +5447,12 @@ eval_predicates:
  *
  */
 void
-xmlXPathEvalRelativeLocationPath(xmlXPathParserContextPtr ctxt) {
+#ifdef VMS
+xmlXPathEvalRelLocationPath
+#else
+xmlXPathEvalRelativeLocationPath
+#endif
+(xmlXPathParserContextPtr ctxt) {
     SKIP_BLANKS;
     if ((CUR == '/') && (NXT(1) == '/')) {
 	SKIP(2);

@@ -4,6 +4,11 @@
  * See Copyright for the status of this software.
  *
  * Daniel.Veillard@w3.org
+ *
+ * 14 Nov 2000 ht - Changed the name of function xmlBufferWriteChar under VMS
+ * as it was similar to xmlBufferWriteCHAR when compiling without case
+ * sensitivity.
+ *  
  */
 
 #ifdef WIN32
@@ -4623,11 +4628,16 @@ xmlBufferCCat(xmlBufferPtr buf, const char *str) {
  * @buf:  the XML buffer
  * @string:  the string to add
  *
- * routine which manage and grows an output buffer. This one add
+ * routine which manages and grows an output buffer. This one adds
  * xmlChars at the end of the buffer.
  */
 void
-xmlBufferWriteCHAR(xmlBufferPtr buf, const xmlChar *string) {
+#ifdef VMS
+xmlBufferWriteXmlCHAR
+#else
+xmlBufferWriteCHAR
+#endif
+(xmlBufferPtr buf, const xmlChar *string) {
     xmlBufferCat(buf, string);
 }
 

@@ -306,7 +306,12 @@ LIBXML_DLL_IMPORT extern xmlSAXHandler sgmlDefaultSAXHandler;
  * entity substitution default behaviour.
  */
 
+#ifdef VMS
+LIBXML_DLL_IMPORT extern int xmlSubstituteEntitiesDefaultVal;
+#define xmlSubstituteEntitiesDefaultValue xmlSubstituteEntitiesDefaultVal
+#else
 LIBXML_DLL_IMPORT extern int xmlSubstituteEntitiesDefaultValue;
+#endif
 LIBXML_DLL_IMPORT extern int xmlGetWarningsDefaultValue;
 
 

@@ -4,6 +4,8 @@
  * See Copyright for the status of this software.
  *
  * Daniel.Veillard@w3.org
+ *
+ * 15 Nov 2000 ht - modified for VMS
  */
 
 #ifndef __XML_IO_H__
@@ -75,9 +77,17 @@ void	xmlRegisterDefaultInputCallbacks	(void);
 xmlParserInputBufferPtr
 	xmlAllocParserInputBuffer		(xmlCharEncoding enc);
 
+#ifdef VMS
+xmlParserInputBufferPtr
+	xmlParserInputBufferCreateFname		(const char *URI,
+                                                 xmlCharEncoding enc);
+#define xmlParserInputBufferCreateFilename xmlParserInputBufferCreateFname
+#else
 xmlParserInputBufferPtr
 	xmlParserInputBufferCreateFilename	(const char *URI,
                                                  xmlCharEncoding enc);
+#endif
+
 xmlParserInputBufferPtr
 	xmlParserInputBufferCreateFile		(FILE *file,
                                                  xmlCharEncoding enc);

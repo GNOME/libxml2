@@ -28,6 +28,9 @@
  * See Copyright for the status of this software.
  *
  * Daniel.Veillard@w3.org
+ *
+ * 14 Nov 2000 ht - truncated definitions of xmlSubstituteEntitiesDefaultValue
+ * and xmlDoValidityCheckingDefaultValue for VMS
  */
 
 #ifdef WIN32
@@ -80,8 +83,15 @@
  */
 int xmlGetWarningsDefaultValue = 1;
 int xmlParserDebugEntities = 0;
+#ifdef VMS
+int xmlSubstituteEntitiesDefaultVal = 0;
+#define xmlSubstituteEntitiesDefaultValue xmlSubstituteEntitiesDefaultVal 
+int xmlDoValidityCheckingDefaultVal = 0;
+#define xmlDoValidityCheckingDefaultValue xmlDoValidityCheckingDefaultVal
+#else
 int xmlSubstituteEntitiesDefaultValue = 0;
 int xmlDoValidityCheckingDefaultValue = 0;
+#endif
 int xmlPedanticParserDefaultValue = 0;
 int xmlKeepBlanksDefaultValue = 1;
 
@@ -3882,7 +3892,12 @@ xmlParseElementMixedContentDecl(xmlParserCtxtPtr ctxt) {
  *          hierarchy.
  */
 xmlElementContentPtr
-xmlParseElementChildrenContentDecl(xmlParserCtxtPtr ctxt) {
+#ifdef VMS
+xmlParseElementChildrenContentD
+#else
+xmlParseElementChildrenContentDecl
+#endif
+(xmlParserCtxtPtr ctxt) {
     xmlElementContentPtr ret = NULL, cur = NULL, last = NULL, op = NULL;
     xmlChar *elem;
     xmlChar type = 0;

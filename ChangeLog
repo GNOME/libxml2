@@ -1,3 +1,10 @@
+Sat Nov 25 10:41:37 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* nanohttp.c parser.[ch] tree.[ch] xmlIO.[ch] xmllint.c xpath.c
+	  parserInternals.h vms/build_libxml.com vms/config.vms Makefile.am:
+	  integrated a set of OpenVMS changes from Howard Taylor
+	  <Howard.Taylor@pacoast.com>
+
 Sat Nov 25 01:21:01 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* tree.[ch] xmlIO.c: added xmlDocDumpMemoryEnc() from John Kroll

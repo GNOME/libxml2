@@ -5,6 +5,9 @@
  * See Copyright for the status of this software.
  *
  * Daniel.Veillard@w3.org
+ *
+ * 14 Nov 2000 ht - added redefinition of xmlBufferWriteChar for VMS
+ *
  */
 
 #ifndef __XML_TREE_H__
@@ -609,8 +612,14 @@ int		xmlRemoveNode		(xmlNodePtr node); /* TODO */
 /*
  * Internal, don't use
  */
+#ifdef VMS
+void		xmlBufferWriteXmlCHAR	(xmlBufferPtr buf,
+					 const xmlChar *string);
+#define 	xmlBufferWriteCHAR 	xmlBufferWriteXmlCHAR
+#else
 void		xmlBufferWriteCHAR	(xmlBufferPtr buf,
 					 const xmlChar *string);
+#endif
 void		xmlBufferWriteChar	(xmlBufferPtr buf,
 					 const char *string);
 void		xmlBufferWriteQuotedString(xmlBufferPtr buf,

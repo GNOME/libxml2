@@ -4,6 +4,10 @@
  * See Copyright for the status of this software.
  *
  * Daniel.Veillard@w3.org
+ *
+ * 14 Nov 2000 ht - truncated declaration of xmlParseElementChildrenContentDecl 
+ * for VMS
+ *
  */
 
 #ifndef __XML_PARSER_INTERNALS_H__
@@ -204,8 +208,14 @@ int			xmlParseAttributeType	(xmlParserCtxtPtr ctxt,
 void			xmlParseAttributeListDecl(xmlParserCtxtPtr ctxt);
 xmlElementContentPtr	xmlParseElementMixedContentDecl
 						(xmlParserCtxtPtr ctxt);
+#ifdef VMS
+xmlElementContentPtr	xmlParseElementChildrenContentD
+						(xmlParserCtxtPtr ctxt);
+#define xmlParseElementChildrenContentDecl	xmlParseElementChildrenContentD
+#else
 xmlElementContentPtr	xmlParseElementChildrenContentDecl
 						(xmlParserCtxtPtr ctxt);
+#endif
 int			xmlParseElementContentDecl(xmlParserCtxtPtr ctxt,
 						 xmlChar *name,
 						 xmlElementContentPtr *result);

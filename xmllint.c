@@ -88,7 +88,13 @@ static char *encoding = NULL;
 static int xinclude = 0;
 #endif
 
+
+#ifdef VMS
+extern int xmlDoValidityCheckingDefaultVal;
+#define xmlDoValidityCheckingDefaultValue xmlDoValidityCheckingDefaultVal
+#else
 extern int xmlDoValidityCheckingDefaultValue;
+#endif
 extern int xmlGetWarningsDefaultValue;
 
 /************************************************************************

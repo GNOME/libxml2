@@ -4,6 +4,8 @@
  * See Copyright for the status of this software.
  *
  * Daniel.Veillard@w3.org
+ *
+ * 14 Nov 2000 ht - for VMS, truncated name of long functions to under 32 char
  */
 
 #ifdef WIN32
@@ -41,6 +43,11 @@
 #include <libxml/nanohttp.h>
 #include <libxml/nanoftp.h>
 #include <libxml/xmlerror.h>
+
+#ifdef VMS
+#define xmlRegisterDefaultInputCallbacks xmlRegisterDefInputCallbacks
+#define xmlRegisterDefaultOutputCallbacks xmlRegisterDefOutputCallbacks
+#endif
 
 /* #define VERBOSE_FAILURE */
 /* #define DEBUG_EXTERNAL_ENTITIES */
@@ -655,7 +662,12 @@ xmlRegisterOutputCallbacks(xmlOutputMatchCallback match,
  * Registers the default compiled-in I/O handlers.
  */
 void
-xmlRegisterDefaultInputCallbacks(void) {
+#ifdef VMS
+xmlRegisterDefInputCallbacks
+#else
+xmlRegisterDefaultInputCallbacks
+#endif
+(void) {
     if (xmlInputCallbackInitialized)
 	return;
 
@@ -684,7 +696,12 @@ xmlRegisterDefaultInputCallbacks(void) {
  * Registers the default compiled-in I/O handlers.
  */
 void
-xmlRegisterDefaultOutputCallbacks(void) {
+#ifdef VMS
+xmlRegisterDefOutputCallbacks
+#else
+xmlRegisterDefaultOutputCallbacks
+#endif
+(void) {
     if (xmlOutputCallbackInitialized)
 	return;
 
@@ -873,7 +890,12 @@ xmlOutputBufferClose(xmlOutputBufferPtr out) {
  * Returns the new parser input or NULL
  */
 xmlParserInputBufferPtr
-xmlParserInputBufferCreateFilename(const char *URI, xmlCharEncoding enc) {
+#ifdef VMS
+xmlParserInputBufferCreateFname
+#else
+xmlParserInputBufferCreateFilename
+#endif
+(const char *URI, xmlCharEncoding enc) {
     xmlParserInputBufferPtr ret;
     int i;
     void *context = NULL;

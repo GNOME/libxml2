@@ -9,6 +9,10 @@
 #ifndef __XML_VERSION_H__
 #define __XML_VERSION_H__
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*
  * use those to be sure nothing nasty will happen if
  * your library and includes mismatch
@@ -79,6 +83,9 @@ extern void xmlCheckVersion(int version);
 #define DEBUG_MEMORY_LOCATION
 #endif
 
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 #endif
 
 

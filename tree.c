@@ -36,6 +36,7 @@
 #include <libxml/entities.h>
 #include <libxml/valid.h>
 #include <libxml/xmlerror.h>
+#include <libxml/parserInternals.h>
 
 xmlNsPtr xmlNewReconciliedNs(xmlDocPtr doc, xmlNodePtr tree, xmlNsPtr ns);
 
@@ -56,9 +57,6 @@ xmlBufferAllocationScheme xmlBufferAllocScheme = XML_BUFFER_ALLOC_EXACT;
 static int xmlCompressMode = 0;
 static int xmlCheckDTD = 1;
 int xmlSaveNoEmptyTags = 0;
-
-#define IS_BLANK(c)							\
-  (((c) == '\n') || ((c) == '\r') || ((c) == '\t') || ((c) == ' '))
 
 #define UPDATE_LAST_CHILD_AND_PARENT(n) if ((n) != NULL) {		\
     xmlNodePtr ulccur = (n)->children;					\
@@ -646,11 +644,10 @@ xmlStringGetNodeList(xmlDocPtr doc, const xmlChar *value) {
 
     q = cur;
     while (*cur != 0) {
-	/* TODO: attributes can inherits &#38; ...  
-	if ((*cur == '&') && (cur[1] == '#')) {
-	    int val = 
-	} else */
-	if (*cur == '&') {
+	if (cur[0] == '&') {
+	    int charval = 0;
+	    xmlChar tmp;
+
 	    /*
 	     * Save the current text.
 	     */
@@ -669,55 +666,113 @@ xmlStringGetNodeList(xmlDocPtr doc, const xmlChar *value) {
 		    }
 		}
 	    }
-	    /*
-	     * Read the entity string
-	     */
-	    cur++;
 	    q = cur;
-	    while ((*cur != 0) && (*cur != ';')) cur++;
-	    if (*cur == 0) {
-#ifdef DEBUG_TREE
-	        xmlGenericError(xmlGenericErrorContext,
-		        "xmlStringGetNodeList: unterminated entity %30s\n", q);
-#endif
-	        return(ret);
-	    }
-            if (cur != q) {
-		/*
-		 * Predefined entities don't generate nodes
-		 */
-		val = xmlStrndup(q, cur - q);
-		ent = xmlGetDocEntity(doc, val);
-		if ((ent != NULL) &&
-		    (ent->etype == XML_INTERNAL_PREDEFINED_ENTITY)) {
-		    if (last == NULL) {
-		        node = xmlNewDocText(doc, ent->content);
-			last = ret = node;
-		    } else
-		        xmlNodeAddContent(last, ent->content);
-		        
-		} else {
-		    /*
-		     * Create a new REFERENCE_REF node
-		     */
-		    node = xmlNewReference(doc, val);
-		    if (node == NULL) {
-			if (val != NULL) xmlFree(val);
-		        return(ret);
-		    }
-		    if (last == NULL)
-			last = ret = node;
+	    if ((cur[1] == '#') && (cur[2] == 'x')) {
+		cur += 3;
+		tmp = *cur;
+		while (tmp != ';') { /* Non input consuming loop */
+		    if ((tmp >= '0') && (tmp <= '9')) 
+			charval = charval * 16 + (tmp - '0');
+		    else if ((tmp >= 'a') && (tmp <= 'f'))
+			charval = charval * 16 + (tmp - 'a') + 10;
+		    else if ((tmp >= 'A') && (tmp <= 'F'))
+			charval = charval * 16 + (tmp - 'A') + 10;
 		    else {
-			last->next = node;
-			node->prev = last;
-			last = node;
+			xmlGenericError(xmlGenericErrorContext,
+		    "xmlStringGetNodeList: incharvalid hexadecimal charvalue\n");
+			charval = 0;
+			break;
+		    }
+		    cur++;
+		    tmp = *cur;
+		}
+		if (tmp == ';')
+		    cur++;
+		q = cur;
+	    } else if  (cur[1] == '#') {
+		cur += 2;
+		tmp = *cur;
+		while (tmp != ';') { /* Non input consuming loops */
+		    if ((tmp >= '0') && (tmp <= '9')) 
+			charval = charval * 10 + (tmp - '0');
+		    else {
+			xmlGenericError(xmlGenericErrorContext,
+		    "xmlStringGetNodeList: incharvalid decimal charvalue\n");
+			charval = 0;
+			break;
+		    }
+		    cur++;
+		    tmp = *cur;
+		}
+		if (tmp == ';')
+		    cur++;
+		q = cur;
+	    } else {
+		/*
+		 * Read the entity string
+		 */
+		cur++;
+		q = cur;
+		while ((*cur != 0) && (*cur != ';')) cur++;
+		if (*cur == 0) {
+#ifdef DEBUG_TREE
+		    xmlGenericError(xmlGenericErrorContext,
+			    "xmlStringGetNodeList: unterminated entity %30s\n", q);
+#endif
+		    return(ret);
+		}
+		if (cur != q) {
+		    /*
+		     * Predefined entities don't generate nodes
+		     */
+		    val = xmlStrndup(q, cur - q);
+		    ent = xmlGetDocEntity(doc, val);
+		    if ((ent != NULL) &&
+			(ent->etype == XML_INTERNAL_PREDEFINED_ENTITY)) {
+			if (last == NULL) {
+			    node = xmlNewDocText(doc, ent->content);
+			    last = ret = node;
+			} else
+			    xmlNodeAddContent(last, ent->content);
+			    
+		    } else {
+			/*
+			 * Create a new REFERENCE_REF node
+			 */
+			node = xmlNewReference(doc, val);
+			if (node == NULL) {
+			    if (val != NULL) xmlFree(val);
+			    return(ret);
+			}
+			if (last == NULL) {
+			    last = ret = node;
+			} else {
+			    last = xmlAddNextSibling(last, node);
+			}
+		    }
+		    xmlFree(val);
+		}
+		cur++;
+		q = cur;
+	    }
+	    if (charval != 0) {
+		xmlChar buf[10];
+		int len;
+
+		len = xmlCopyCharMultiByte(buf, charval);
+		buf[len] = 0;
+		node = xmlNewDocText(doc, buf);
+		if (node != NULL) {
+		    if (last == NULL) {
+			last = ret = node;
+		    } else {
+			last = xmlAddNextSibling(last, node);
 		    }
 		}
-		xmlFree(val);
+
+		charval = 0;
 	    }
-	    cur++;
-	    q = cur;
-	} else 
+	} else
 	    cur++;
     }
     if (cur != q) {
@@ -729,12 +784,10 @@ xmlStringGetNodeList(xmlDocPtr doc, const xmlChar *value) {
 	} else {
 	    node = xmlNewDocTextLen(doc, q, cur - q);
 	    if (node == NULL) return(ret);
-	    if (last == NULL)
+	    if (last == NULL) {
 		last = ret = node;
-	    else {
-		last->next = node;
-		node->prev = last;
-		last = node;
+	    } else {
+		last = xmlAddNextSibling(last, node);
 	    }
 	}
     }

@@ -130,6 +130,15 @@ if test "$with_buffers" = "yes" ; then
     XML_CFLAGS="${XML_CFLAGS}  -DXML_USE_BUFFER_CONTENT"
 fi
 
+dnl
+dnl Tester makes use of readline if present
+dnl
+RDL_LIBS=""
+AC_CHECK_LIB(history, append_history,
+             RDL_LIBS="-lhistory"; AC_DEFINE(HAVE_LIBHISTORY))
+AC_CHECK_LIB(readline, readline,
+             RDL_LIBS="-lreadline ${RDL_LIBS}"; AC_DEFINE(HAVE_LIBREADLINE))
+
 AC_SUBST(CFLAGS)
 AC_SUBST(XML_CFLAGS)
 
@@ -142,5 +151,6 @@ AC_SUBST(HAVE_ISINF)
 
 AC_SUBST(Z_LIBS)
 AC_SUBST(M_LIBS)
+AC_SUBST(RDL_LIBS)
 AC_OUTPUT(libxml.spec Makefile doc/Makefile example/Makefile xml-config win32config.h)
 

@@ -56,7 +56,7 @@ LDADDS = $(top_builddir)/libxml.la @Z_LIBS@ @M_LIBS@
 tester_SOURCES=tester.c
 tester_LDFLAGS = 
 tester_DEPENDENCIES = $(DEPS)
-tester_LDADD= $(LDADDS)
+tester_LDADD=  @RDL_LIBS@ $(LDADDS)
 
 testSAX_SOURCES=testSAX.c
 testSAX_LDFLAGS = 

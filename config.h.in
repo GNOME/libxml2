@@ -130,11 +130,17 @@
 /* Define if you have the <zlib.h> header file.  */
 #undef HAVE_ZLIB_H
 
+/* Define if you have the history library (-lhistory).  */
+#undef HAVE_LIBHISTORY
+
 /* Define if you have the inet library (-linet).  */
 #undef HAVE_LIBINET
 
 /* Define if you have the nsl library (-lnsl).  */
 #undef HAVE_LIBNSL
+
+/* Define if you have the readline library (-lreadline).  */
+#undef HAVE_LIBREADLINE
 
 /* Define if you have the socket library (-lsocket).  */
 #undef HAVE_LIBSOCKET

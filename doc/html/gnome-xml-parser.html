@@ -153,19 +153,6 @@ typedef     <A
 HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
 >xmlParserInputPtr</A
 >;
-<A
-HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
->xmlParserInputPtr</A
-> (<A
-HREF="gnome-xml-parser.html#XMLEXTERNALENTITYLOADER"
->*xmlExternalEntityLoader</A
->)
-                                            (const char *URL,
-                                             const char *ID,
-                                             <A
-HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
->xmlParserInputPtr</A
-> context);
 typedef     <A
 HREF="gnome-xml-parser.html#XMLPARSERNODEINFO"
 >xmlParserNodeInfo</A
@@ -480,6 +467,19 @@ typedef     <A
 HREF="gnome-xml-parser.html#XMLSAXHANDLERPTR"
 >xmlSAXHandlerPtr</A
 >;
+<A
+HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
+>xmlParserInputPtr</A
+> (<A
+HREF="gnome-xml-parser.html#XMLEXTERNALENTITYLOADER"
+>*xmlExternalEntityLoader</A
+>)
+                                            (const char *URL,
+                                             const char *ID,
+                                             <A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> context);
 extern      const char *<A
 HREF="gnome-xml-parser.html#XMLPARSERVERSION"
 >xmlParserVersion</A
@@ -945,8 +945,8 @@ HREF="gnome-xml-parser.html#XMLLOADEXTERNALENTITY"
 >     (const char *URL,
                                              const char *ID,
                                              <A
-HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
->xmlParserInputPtr</A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
 > context);</PRE
 ></TD
 ></TR
@@ -1089,122 +1089,6 @@ NAME="AEN274"
 ></A
 ><H3
 ><A
-NAME="XMLEXTERNALENTITYLOADER"
-></A
->xmlExternalEntityLoader ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><A
-HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
->xmlParserInputPtr</A
-> (*xmlExternalEntityLoader)
-                                            (const char *URL,
-                                             const char *ID,
-                                             <A
-HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
->xmlParserInputPtr</A
-> context);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->URL</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ID</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->context</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><I
-CLASS="EMPHASIS"
->Returns</I
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN302"
-></A
-><H3
-><A
 NAME="XMLPARSERNODEINFO"
 ></A
 >xmlParserNodeInfo</H3
@@ -1227,7 +1111,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN307"
+NAME="AEN279"
 ></A
 ><H3
 ><A
@@ -1253,7 +1137,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN312"
+NAME="AEN284"
 ></A
 ><H3
 ><A
@@ -1279,7 +1163,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN317"
+NAME="AEN289"
 ></A
 ><H3
 ><A
@@ -1321,7 +1205,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN322"
+NAME="AEN294"
 ></A
 ><H3
 ><A
@@ -1347,7 +1231,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN327"
+NAME="AEN299"
 ></A
 ><H3
 ><A
@@ -1373,7 +1257,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN332"
+NAME="AEN304"
 ></A
 ><H3
 ><A
@@ -1399,7 +1283,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN337"
+NAME="AEN309"
 ></A
 ><H3
 ><A
@@ -1425,7 +1309,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN342"
+NAME="AEN314"
 ></A
 ><H3
 ><A
@@ -1543,7 +1427,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN371"
+NAME="AEN343"
 ></A
 ><H3
 ><A
@@ -1664,7 +1548,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN400"
+NAME="AEN372"
 ></A
 ><H3
 ><A
@@ -1761,7 +1645,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN424"
+NAME="AEN396"
 ></A
 ><H3
 ><A
@@ -1858,7 +1742,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN448"
+NAME="AEN420"
 ></A
 ><H3
 ><A
@@ -2018,7 +1902,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN486"
+NAME="AEN458"
 ></A
 ><H3
 ><A
@@ -2139,7 +2023,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN515"
+NAME="AEN487"
 ></A
 ><H3
 ><A
@@ -2317,7 +2201,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN557"
+NAME="AEN529"
 ></A
 ><H3
 ><A
@@ -2435,7 +2319,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN585"
+NAME="AEN557"
 ></A
 ><H3
 ><A
@@ -2577,7 +2461,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN619"
+NAME="AEN591"
 ></A
 ><H3
 ><A
@@ -2656,7 +2540,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN638"
+NAME="AEN610"
 ></A
 ><H3
 ><A
@@ -2714,7 +2598,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN652"
+NAME="AEN624"
 ></A
 ><H3
 ><A
@@ -2772,7 +2656,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN666"
+NAME="AEN638"
 ></A
 ><H3
 ><A
@@ -2872,7 +2756,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN690"
+NAME="AEN662"
 ></A
 ><H3
 ><A
@@ -2951,7 +2835,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN709"
+NAME="AEN681"
 ></A
 ><H3
 ><A
@@ -3051,7 +2935,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN733"
+NAME="AEN705"
 ></A
 ><H3
 ><A
@@ -3130,7 +3014,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN752"
+NAME="AEN724"
 ></A
 ><H3
 ><A
@@ -3227,7 +3111,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN775"
+NAME="AEN747"
 ></A
 ><H3
 ><A
@@ -3324,7 +3208,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN798"
+NAME="AEN770"
 ></A
 ><H3
 ><A
@@ -3424,7 +3308,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN822"
+NAME="AEN794"
 ></A
 ><H3
 ><A
@@ -3503,7 +3387,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN841"
+NAME="AEN813"
 ></A
 ><H3
 ><A
@@ -3600,7 +3484,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN864"
+NAME="AEN836"
 ></A
 ><H3
 ><A
@@ -3694,7 +3578,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN886"
+NAME="AEN858"
 ></A
 ><H3
 ><A
@@ -3788,7 +3672,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN908"
+NAME="AEN880"
 ></A
 ><H3
 ><A
@@ -3882,7 +3766,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN930"
+NAME="AEN902"
 ></A
 ><H3
 ><A
@@ -3955,7 +3839,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN948"
+NAME="AEN920"
 ></A
 ><H3
 ><A
@@ -4028,7 +3912,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN966"
+NAME="AEN938"
 ></A
 ><H3
 ><A
@@ -4101,7 +3985,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN984"
+NAME="AEN956"
 ></A
 ><H3
 ><A
@@ -4123,6 +4007,122 @@ CLASS="PROGRAMLISTING"
 ></TABLE
 ><P
 ></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN961"
+></A
+><H3
+><A
+NAME="XMLEXTERNALENTITYLOADER"
+></A
+>xmlExternalEntityLoader ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
+>xmlParserInputPtr</A
+> (*xmlExternalEntityLoader)
+                                            (const char *URL,
+                                             const char *ID,
+                                             <A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
+> context);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>URL</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ID</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>context</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
@@ -8337,8 +8337,8 @@ HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
 > xmlLoadExternalEntity     (const char *URL,
                                              const char *ID,
                                              <A
-HREF="gnome-xml-parser.html#XMLPARSERINPUTPTR"
->xmlParserInputPtr</A
+HREF="gnome-xml-parser.html#XMLPARSERCTXTPTR"
+>xmlParserCtxtPtr</A
 > context);</PRE
 ></TD
 ></TR

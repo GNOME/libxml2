@@ -1,3 +1,8 @@
+Mon Jan  3 18:29:43 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* configure.in, Makefile.am: link tester against readline
+	* doc/xml.html doc/*/*: updated and rebuilt the documentation pages
+
 Mon Jan  3 11:58:05 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* tree.[ch]: added xmlRemoveProp

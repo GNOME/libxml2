@@ -15,7 +15,6 @@ libxml_la_SOURCES = \
 		error.c \
 		error.h \
 		parser.c \
-		tester.c \
 		debugXML.c \
 		tree.c
 

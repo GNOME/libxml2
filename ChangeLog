@@ -1,3 +1,13 @@
+Tue Sep 30 14:30:47 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c Makefile.am configure.in legacy.c parser.c
+	  parserInternals.c testHTML.c xmllint.c include/libxml/HTMLparser.h
+	  include/libxml/parser.h include/libxml/parserInternals.h
+	  include/libxml/xmlversion.h.in: added a new configure
+	  option --with-push, some cleanups, chased code size anomalies.
+	  Now a library configured --with-minimum is around 150KB,
+	  sounds good enough.
+
 Tue Sep 30 12:31:00 AEST 2003 Malcolm Tredinnick <malcolm@commsecure.com.au>
 
 	* libxml-2.0-uninstalled.pc.in: New file for building against

@@ -1000,6 +1000,7 @@ XMLPUBFUN int XMLCALL
 					 const char *name,
 					 void *value);
 
+#ifdef LIBXML_PUSH_ENABLED
 /*
  * Interfaces for the Push mode.
  */
@@ -1014,6 +1015,7 @@ XMLPUBFUN int XMLCALL
 					 const char *chunk,
 					 int size,
 					 int terminate);
+#endif /* LIBXML_PUSH_ENABLED */
 
 /*
  * Special I/O mode.

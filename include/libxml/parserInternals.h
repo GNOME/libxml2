@@ -40,6 +40,18 @@ extern "C" {
  *									*
  ************************************************************************/
 /**
+ * IS_BYTE_CHAR:
+ * @c:  an byte value (int)
+ *
+ * Macro to check the following production in the XML spec:
+ *
+ * [2] Char ::= #x9 | #xA | #xD | [#x20...]
+ * any byte character in the accepted range
+ */
+#define IS_BYTE_CHAR(c)							\
+    (((c) >= 0x20) || ((c) == 0x09) || ((c) == 0x0A) || ((c) == 0x0D))
+
+/**
  * IS_CHAR:
  * @c:  an UNICODE value (int)
  *

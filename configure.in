@@ -589,26 +589,6 @@ fi
 AC_SUBST(WITH_HTTP)
 AC_SUBST(HTTP_OBJ)
 
-AC_ARG_WITH(html,
-[  --with-html             add the HTML support (on)])
-if test "$with_minimum" = "yes" -a "$with_html" = ""
-then
-    with_html=no
-fi
-if test "$with_html" = "no" ; then
-    echo Disabling HTML support
-    WITH_HTML=0
-    HTML_OBJ=
-    TEST_HTML=
-else    
-    WITH_HTML=1
-    HTML_OBJ="HTMLparser.o HTMLtree.o"
-    TEST_HTML=HTMLtests
-fi
-AC_SUBST(WITH_HTML)
-AC_SUBST(HTML_OBJ)
-AC_SUBST(TEST_HTML)
-
 AC_ARG_WITH(legacy,
 [  --with-legacy           add deprecated APIs for compatibility (on)])
 if test "$with_minimum" = "yes" -a "$with_legacy" = ""
@@ -632,10 +612,13 @@ fi
 if test "$with_reader" = "no" ; then
     echo Disabling the xmlReader parsing interface
     WITH_READER=0
+    READER_TEST=
 else    
     WITH_READER=1
+    READER_TEST=Readertests
 fi
 AC_SUBST(WITH_READER)
+AC_SUBST(READER_TEST)
 
 AC_ARG_WITH(sax1,
 [  --with-sax1             add the older SAX1 interface (on)])
@@ -654,13 +637,56 @@ fi
 AC_SUBST(WITH_SAX1)
 AC_SUBST(TEST_SAX)
 
+AC_ARG_WITH(push,
+[  --with-push             add the PUSH parser interfaces (on)])
+if test "$with_minimum" = "yes" -a "$with_push" = ""
+then
+    with_push=no
+fi
+if test "$with_push" = "no" ; then
+    echo Disabling the PUSH parser interfaces
+    WITH_PUSH=0
+    TEST_PUSH=
+else    
+    WITH_PUSH=1
+    TEST_PUSH="XMLPushtests"
+fi
+AC_SUBST(WITH_PUSH)
+AC_SUBST(TEST_PUSH)
+
+AC_ARG_WITH(html,
+[  --with-html             add the HTML support (on)])
+if test "$with_minimum" = "yes" -a "$with_html" = ""
+then
+    with_html=no
+fi
+if test "$with_html" = "no" ; then
+    echo Disabling HTML support
+    WITH_HTML=0
+    HTML_OBJ=
+    TEST_HTML=
+else    
+    WITH_HTML=1
+    HTML_OBJ="HTMLparser.o HTMLtree.o"
+    TEST_HTML=HTMLtests
+    if "$with_push" != "no" ; then
+        TEST_PHTML=HTMLPushtests
+    else
+        TEST_PHTML=
+    fi
+fi
+AC_SUBST(WITH_HTML)
+AC_SUBST(HTML_OBJ)
+AC_SUBST(TEST_HTML)
+AC_SUBST(TEST_PHTML)
+
 AC_ARG_WITH(valid,
 [  --with-valid            add the DTD validation support (on)])
 if test "$with_minimum" = "yes" -a "$with_valid" = ""
 then
     with_valid=no
 fi
-if test "$with_html" = "no" ; then
+if test "$with_valid" = "no" ; then
     echo Disabling DTD validation support
     WITH_VALID=0
     TEST_VALID=
@@ -863,7 +889,7 @@ fi
 AC_SUBST(WITH_ISO8859X)
 
 AC_ARG_WITH(schemas,
-[  --with-schemas          add experimental Schemas/RelaxNG support (on)])
+[  --with-schemas          add Relax-NG and experimental Schemas support (on)])
 if test "$with_minimum" = "yes" -a "$with_schemas" = ""
 then
     with_schemas=no

@@ -122,7 +122,7 @@ check-local: tests
 
 testall : tests SVGtests SAXtests
 
-tests: XMLtests XMLenttests NStests Readertests @TEST_SAX@ @TEST_HTML@ @TEST_VALID@ URItests @TEST_XPATH@ @TEST_XPTR@ @TEST_XINCLUDE@ @TEST_C14N@ @TEST_DEBUG@ @TEST_CATALOG@ @TEST_REGEXPS@ @TEST_SCHEMAS@ @TEST_THREADS@ Timingtests @TEST_VTIME@
+tests: XMLtests XMLenttests NStests @READER_TEST@ @TEST_SAX@ @TEST_PUSH@ @TEST_HTML@ @TEST_PHTML@  @TEST_VALID@ URItests @TEST_XPATH@ @TEST_XPTR@ @TEST_XINCLUDE@ @TEST_C14N@ @TEST_DEBUG@ @TEST_CATALOG@ @TEST_REGEXPS@ @TEST_SCHEMAS@ @TEST_THREADS@ Timingtests @TEST_VTIME@
 	@(if [ "@PYTHON_SUBDIR@" != "" ] ; then cd python ; $(MAKE) tests ; fi)
 
 valgrind:
@@ -151,6 +151,8 @@ HTMLtests : testHTML$(EXEEXT)
 	      diff result.$$name result2.$$name ; \
 	      rm result.$$name result2.$$name error.$$name ; \
 	  fi ; fi ; done)
+
+HTMLPushtests : testHTML$(EXEEXT)
 	@echo "##"
 	@echo "## Push HTML regression tests"
 	@echo "##"
@@ -230,6 +232,30 @@ XMLtests : xmllint$(EXEEXT)
 	      diff result.$$name result2.$$name ; \
 	      rm result.$$name result2.$$name ; \
 	  fi ; fi ; done)
+	@echo "##"
+	@echo "## XML regression tests on memory"
+	@echo "##"
+	@echo "## You should see two warnings on entity 'title.xml' for ent2"
+	@echo "##"
+	-@(for i in $(srcdir)/test/* ; do \
+	  name=`basename $$i`; \
+	  if [ ! -d $$i ] ; then \
+	  if [ ! -f $(srcdir)/result/$$name ] ; then \
+	      echo New test file $$name ; \
+	      $(CHECKER) $(top_builddir)/xmllint --memory $$i > $(srcdir)/result/$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
+	  else \
+	      echo Testing $$name ; \
+	      $(CHECKER) $(top_builddir)/xmllint --memory $$i > result.$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
+	      diff $(srcdir)/result/$$name result.$$name ; \
+	      $(CHECKER) $(top_builddir)/xmllint --memory result.$$name > result2.$$name ; \
+	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
+	      diff result.$$name result2.$$name ; \
+	      rm result.$$name result2.$$name ; \
+	  fi ; fi ; done)
+
+XMLPushtests: xmllint$(EXEEXT)
 	@(echo > .memdump)
 	@echo "##"
 	@echo "## XML push regression tests"
@@ -249,28 +275,6 @@ XMLtests : xmllint$(EXEEXT)
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
 	      diff $(srcdir)/result/$$name result.$$name ; \
 	      $(CHECKER) $(top_builddir)/xmllint --push result.$$name > result2.$$name ; \
-	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
-	      diff result.$$name result2.$$name ; \
-	      rm result.$$name result2.$$name ; \
-	  fi ; fi ; done)
-	@echo "##"
-	@echo "## XML regression tests on memory"
-	@echo "##"
-	@echo "## You should see two warnings on entity 'title.xml' for ent2"
-	@echo "##"
-	-@(for i in $(srcdir)/test/* ; do \
-	  name=`basename $$i`; \
-	  if [ ! -d $$i ] ; then \
-	  if [ ! -f $(srcdir)/result/$$name ] ; then \
-	      echo New test file $$name ; \
-	      $(CHECKER) $(top_builddir)/xmllint --memory $$i > $(srcdir)/result/$$name ; \
-	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
-	  else \
-	      echo Testing $$name ; \
-	      $(CHECKER) $(top_builddir)/xmllint --memory $$i > result.$$name ; \
-	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
-	      diff $(srcdir)/result/$$name result.$$name ; \
-	      $(CHECKER) $(top_builddir)/xmllint --memory result.$$name > result2.$$name ; \
 	      grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0"; \
 	      diff result.$$name result2.$$name ; \
 	      rm result.$$name result2.$$name ; \

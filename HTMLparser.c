@@ -4271,6 +4271,7 @@ htmlCreateDocParserCtxt(xmlChar *cur, const char *encoding ATTRIBUTE_UNUSED) {
     return(ctxt);
 }
 
+#ifdef LIBXML_PUSH_ENABLED
 /************************************************************************
  *									*
  * 		Progressive parsing interfaces				*
@@ -5141,6 +5142,7 @@ htmlParseChunk(htmlParserCtxtPtr ctxt, const char *chunk, int size,
     }
     return((xmlParserErrors) ctxt->errNo);	      
 }
+#endif /* LIBXML_PUSH_ENABLED */
 
 /************************************************************************
  *									*

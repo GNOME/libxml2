@@ -102,6 +102,15 @@ XMLPUBFUN void XMLCALL xmlCheckVersion(int version);
 #endif
 
 /**
+ * LIBXML_PUSH_ENABLED:
+ *
+ * Whether the push parsing interfaces are configured in
+ */
+#if @WITH_PUSH@
+#define LIBXML_PUSH_ENABLED
+#endif
+
+/**
  * LIBXML_READER_ENABLED:
  *
  * Whether the xmlReader parsing interface is configured in

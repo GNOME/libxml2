@@ -130,7 +130,9 @@ static int insert = 0;
 static int html = 0;
 #endif
 static int htmlout = 0;
+#ifdef LIBXML_PUSH_ENABLED
 static int push = 0;
+#endif /* LIBXML_PUSH_ENABLED */
 #ifdef HAVE_SYS_MMAN_H
 static int memory = 0;
 #endif
@@ -763,6 +765,7 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
     }
 #endif /* LIBXML_TREE_ENABLED */
 #ifdef LIBXML_HTML_ENABLED
+#ifdef LIBXML_PUSH_ENABLED
     else if ((html) && (push)) {
         FILE *f;
 
@@ -788,11 +791,13 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
             fclose(f);
         }
     }
+#endif /* LIBXML_PUSH_ENABLED */
     else if (html) {
 	doc = htmlReadFile(filename, NULL, options);
     }
 #endif /* LIBXML_HTML_ENABLED */
     else {
+#ifdef LIBXML_PUSH_ENABLED
 	/*
 	 * build an XML tree from a string;
 	 */
@@ -829,7 +834,9 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 		    }
 	        }
 	    }
-	} else if (testIO) {
+	} else
+#endif /* LIBXML_PUSH_ENABLED */
+        if (testIO) {
 	    if ((filename[0] == '-') && (filename[1] == 0)) {
 	        doc = xmlReadFd(0, NULL, NULL, options);
 	    } else {
@@ -1339,7 +1346,9 @@ static void usage(const char *name) {
 #ifdef LIBXML_HTML_ENABLED
     printf("\t--html : use the HTML parser\n");
 #endif
+#ifdef LIBXML_PUSH_ENABLED
     printf("\t--push : use the push mode of the parser\n");
+#endif /* LIBXML_PUSH_ENABLED */
 #ifdef HAVE_SYS_MMAN_H
     printf("\t--memory : parse from memory\n");
 #endif
@@ -1516,9 +1525,12 @@ main(int argc, char **argv) {
 	        repeat *= 10;
 	    else
 	        repeat = 100;
-	} else if ((!strcmp(argv[i], "-push")) ||
+	}
+#ifdef LIBXML_PUSH_ENABLED
+	else if ((!strcmp(argv[i], "-push")) ||
 	         (!strcmp(argv[i], "--push")))
 	    push++;
+#endif /* LIBXML_PUSH_ENABLED */
 #ifdef HAVE_SYS_MMAN_H
 	else if ((!strcmp(argv[i], "-memory")) ||
 	         (!strcmp(argv[i], "--memory")))

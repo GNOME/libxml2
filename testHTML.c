@@ -44,7 +44,9 @@ static int copy = 0;
 static int sax = 0;
 static int repeat = 0;
 static int noout = 0;
+#ifdef LIBXML_PUSH_ENABLED
 static int push = 0;
+#endif /* LIBXML_PUSH_ENABLED */
 static char *encoding = NULL;
 static int options = 0;
 
@@ -619,6 +621,7 @@ parseSAXFile(char *filename) {
     /*
      * Empty callbacks for checking
      */
+#ifdef LIBXML_PUSH_ENABLED
     if (push) {
 	FILE *f;
 
@@ -675,6 +678,7 @@ parseSAXFile(char *filename) {
 	    }
 	}
     } else {	
+#endif /* LIBXML_PUSH_ENABLED */
 	doc = htmlSAXParseFile(filename, NULL, emptySAXHandler, NULL);
 	if (doc != NULL) {
 	    fprintf(stdout, "htmlSAXParseFile returned non-NULL\n");
@@ -691,7 +695,9 @@ parseSAXFile(char *filename) {
 		xmlFreeDoc(doc);
 	    }
 	}
+#ifdef LIBXML_PUSH_ENABLED
     }
+#endif /* LIBXML_PUSH_ENABLED */
 }
 
 static void
@@ -782,8 +788,10 @@ int main(int argc, char **argv) {
 #endif
 	    if ((!strcmp(argv[i], "-copy")) || (!strcmp(argv[i], "--copy")))
 	    copy++;
+#ifdef LIBXML_PUSH_ENABLED
 	else if ((!strcmp(argv[i], "-push")) || (!strcmp(argv[i], "--push")))
 	    push++;
+#endif /* LIBXML_PUSH_ENABLED */
 	else if ((!strcmp(argv[i], "-sax")) || (!strcmp(argv[i], "--sax")))
 	    sax++;
 	else if ((!strcmp(argv[i], "-noout")) || (!strcmp(argv[i], "--noout")))
@@ -831,7 +839,9 @@ int main(int argc, char **argv) {
 	printf("\t--sax : debug the sequence of SAX callbacks\n");
 	printf("\t--repeat : parse the file 100 times, for timing\n");
 	printf("\t--noout : do not print the result\n");
+#ifdef LIBXML_PUSH_ENABLED
 	printf("\t--push : use the push mode parser\n");
+#endif /* LIBXML_PUSH_ENABLED */
 	printf("\t--encode encoding : output in the given encoding\n");
     }
     xmlCleanupParser();

@@ -136,11 +136,10 @@ XMLPUBFUN int XMLCALL
 XMLPUBFUN int XMLCALL			
 			htmlHandleOmittedElem(int val);
 
+#ifdef LIBXML_PUSH_ENABLED
 /**
  * Interfaces for the Push mode.
  */
-XMLPUBFUN void XMLCALL			
-			htmlFreeParserCtxt	(htmlParserCtxtPtr ctxt);
 XMLPUBFUN htmlParserCtxtPtr XMLCALL	
 			htmlCreatePushParserCtxt(htmlSAXHandlerPtr sax,
 						 void *user_data,
@@ -153,6 +152,10 @@ XMLPUBFUN int XMLCALL
 						 const char *chunk,
 						 int size,
 						 int terminate);
+#endif /* LIBXML_PUSH_ENABLED */
+
+XMLPUBFUN void XMLCALL			
+			htmlFreeParserCtxt	(htmlParserCtxtPtr ctxt);
 
 /*
  * New set of simpler/more flexible APIs

@@ -1,3 +1,11 @@
+Tue Jul 24 15:39:11 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* result/scripts/base*: removing history/readline changed
+	  this slightly
+	* include/libxml/parser.h SAX.c parser.c parserInternals.c
+	  xmllint.c: make element content line number generation
+	  optionnal to avoid breaking old apps added interface to switch
+
 Tue Jul 24 15:06:58 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* configure.in: get rid of the readline and libhistory

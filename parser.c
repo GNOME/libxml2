@@ -93,6 +93,7 @@ int xmlDoValidityCheckingDefaultValue = 0;
 #endif
 int xmlLoadExtDtdDefaultValue = 0;
 int xmlPedanticParserDefaultValue = 0;
+int xmlLineNumbersDefaultValue = 0;
 int xmlKeepBlanksDefaultValue = 1;
 
 /*
@@ -10118,6 +10119,24 @@ xmlPedanticParserDefault(int val) {
     int old = xmlPedanticParserDefaultValue;
 
     xmlPedanticParserDefaultValue = val;
+    return(old);
+}
+
+/**
+ * xmlLineNumbersDefault:
+ * @val:  int 0 or 1 
+ *
+ * Set and return the previous value for enabling line numbers in elements
+ * contents. This may break on old application and is turned off by default.
+ *
+ * Returns the last value for 0 for no substitution, 1 for substitution.
+ */
+
+int
+xmlLineNumbersDefault(int val) {
+    int old = xmlLineNumbersDefaultValue;
+
+    xmlLineNumbersDefaultValue = val;
     return(old);
 }
 

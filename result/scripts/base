@@ -1,9 +1,4 @@
-/ > base
-./test/scripts/base.xml
-/ > cd //e
-e > base
-http://example.com/base/
-e > cd .//img
-img > base
-http://example.com/base/images/
-img > exit
+/ > ./test/scripts/base.xml
+/ > e > http://example.com/base/
+e > img > http://example.com/base/images/
+img > 

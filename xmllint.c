@@ -954,6 +954,7 @@ main(int argc, char **argv) {
 	    return(1);
 	}
     }
+    xmlLineNumbersDefault(1);
     if (loaddtd != 0) xmlLoadExtDtdDefaultValue = 6; /* fetch DTDs by default */
     if (noent != 0) xmlSubstituteEntitiesDefault(1);
     if (valid != 0) xmlDoValidityCheckingDefaultValue = 1;

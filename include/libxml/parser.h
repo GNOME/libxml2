@@ -216,6 +216,7 @@ struct _xmlParserCtxt {
     void              *_private;      /* For user data, libxml won't touch it */
 
     int                loadsubset;    /* should the external subset be loaded */
+    int                linenumbers;   /* set line number in element content */
 };
 
 /**
@@ -422,6 +423,7 @@ int		xmlSubstituteEntitiesDefault(int val);
 int		xmlKeepBlanksDefault	(int val);
 void		xmlStopParser		(xmlParserCtxtPtr ctxt);
 int		xmlPedanticParserDefault(int val);
+int		xmlLineNumbersDefault	(int val);
 
 /*
  * Recovery mode 

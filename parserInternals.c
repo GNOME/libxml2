@@ -2230,6 +2230,7 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
     ctxt->loadsubset = xmlLoadExtDtdDefaultValue;
     ctxt->validate = xmlDoValidityCheckingDefaultValue;
     ctxt->pedantic = xmlPedanticParserDefaultValue;
+    ctxt->linenumbers = xmlPedanticParserDefaultValue;
     ctxt->keepBlanks = xmlKeepBlanksDefaultValue;
     ctxt->vctxt.userData = ctxt;
     if (ctxt->validate) {

@@ -6700,9 +6700,6 @@ xmlBufferResize(xmlBufferPtr buf, unsigned int size)
 
     if (buf->alloc == XML_BUFFER_ALLOC_IMMUTABLE) return(0);
 
-    /*take care of empty case*/
-    newSize = (buf->size ? buf->size*2 : size);
-
     /* Don't resize if we don't have to */
     if (size < buf->size)
         return 1;
@@ -6710,6 +6707,8 @@ xmlBufferResize(xmlBufferPtr buf, unsigned int size)
     /* figure out new size */
     switch (buf->alloc){
     case XML_BUFFER_ALLOC_DOUBLEIT:
+	/*take care of empty case*/
+        newSize = (buf->size ? buf->size*2 : size + 10);
         while (size > newSize) newSize *= 2;
         break;
     case XML_BUFFER_ALLOC_EXACT:

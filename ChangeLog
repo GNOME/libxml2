@@ -1,3 +1,8 @@
+Wed Apr 21 00:19:29 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: small buffer resizing improvement from Morten Welinder
+	  closes #140629
+
 Tue Apr 20 23:40:14 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: last version of the fix for MSC version 1200

@@ -17,7 +17,7 @@ var baseName = "libxml2";
 /* Configure file which contains the version and the output file where
    we can store our build configuration. */
 var configFile = srcDirXml + "\\configure.in";
-var versionFile = ".\\configure.txt";
+var versionFile = ".\\config.msvc";
 /* Input and output files regarding the libxml features. The second
    output file is there for the compatibility reasons, otherwise it
    is identical to the first. */
@@ -47,6 +47,7 @@ var withMemDebug = false;
 var withSchemas = true;
 var withRegExps = true;
 /* Win32 build options. */
+var compiler = "msvc";
 var buildDebug = 0;
 var buildStatic = 0;
 var buildPrefix = ".";
@@ -92,7 +93,7 @@ function usage()
 	txt += "  cscript " + WScript.ScriptName + " help\n\n";
 	txt += "Options can be specified in the form <option>=<value>, where the value is\n";
 	txt += "either 'yes' or 'no', if not stated otherwise.\n\n";
-	txt += "XML processor options, default value given in parentheses:\n\n";
+	txt += "\nXML processor options, default value given in parentheses:\n\n";
 	txt += "  trio:       Enable TRIO string manipulator (" + (withTrio? "yes" : "no")  + ")\n";
 	txt += "  threads:    Enable thread safety [no|ctls|native|posix] (" + (withThreads)  + ") \n";
 	txt += "  ftp:        Enable FTP client (" + (withFtp? "yes" : "no")  + ")\n";
@@ -111,6 +112,7 @@ function usage()
 	txt += "  regexps:    Enable regular expressions (" + (withRegExps? "yes" : "no") + ")\n";
 	txt += "  schemas:    Enable XML Schema support (" + (withSchemas? "yes" : "no")  + ")\n";
 	txt += "\nWin32 build options, default value given in parentheses:\n\n";
+	txt += "  compiler:   Compiler to be used [msvc|mingw] (" + compiler + ")\n";
 	txt += "  debug:      Build unoptimised debug executables (" + (buildDebug? "yes" : "no")  + ")\n";
 	txt += "  static:     Link xmllint statically to libxml2 (" + (buildStatic? "yes" : "no")  + ")\n";
 	txt += "  prefix:     Base directory for the installation (" + buildPrefix + ")\n";
@@ -137,6 +139,10 @@ function discoverVersion()
 	var fso, cf, vf, ln, s;
 	fso = new ActiveXObject("Scripting.FileSystemObject");
 	cf = fso.OpenTextFile(configFile, 1);
+	if (compiler == "msvc")
+		versionFile = ".\\config.msvc";
+	else if (compiler == "mingw")
+		versionFile = ".\\config.mingw";
 	vf = fso.CreateTextFile(versionFile, true);
 	vf.WriteLine("# " + versionFile);
 	vf.WriteLine("# This file is generated automatically by " + WScript.ScriptName + ".");
@@ -183,8 +189,13 @@ function discoverVersion()
 	vf.WriteLine("INCPREFIX=" + buildIncPrefix);
 	vf.WriteLine("LIBPREFIX=" + buildLibPrefix);
 	vf.WriteLine("SOPREFIX=" + buildSoPrefix);
-	vf.WriteLine("INCLUDE=$(INCLUDE);" + buildInclude);
-	vf.WriteLine("LIB=$(LIB);" + buildLib);
+	if (compiler == "msvc") {
+		vf.WriteLine("INCLUDE=$(INCLUDE);" + buildInclude);
+		vf.WriteLine("LIB=$(LIB);" + buildLib);
+	} else if (compiler == "mingw") {
+		vf.WriteLine("INCLUDE+=;" + buildInclude);
+		vf.WriteLine("LIB+=;" + buildLib);
+	}
 	vf.Close();
 }
 
@@ -346,6 +357,8 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 			withSchemas = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "regexps")
 			withRegExps = strToBool(arg.substring(opt.length + 1, arg.length));
+		else if (opt == "compiler")
+			compiler = arg.substring(opt.length + 1, arg.length);
 		else if (opt == "debug")
 			buildDebug = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "static")
@@ -405,7 +418,10 @@ if (error != 0) {
 
 // Create the makefile.
 var fso = new ActiveXObject("Scripting.FileSystemObject");
-fso.CopyFile(".\\Makefile.msvc", ".\\Makefile", true);
+var makefile = ".\\Makefile.msvc";
+if (compiler == "mingw")
+	makefile = ".\\Makefile.mingw";
+fso.CopyFile(makefile, ".\\Makefile", true);
 WScript.Echo("Created Makefile.");
 
 // Display the final configuration. 
@@ -431,6 +447,7 @@ txtOut += "XML Schema support: " + boolToStr(withSchemas) + "\n";
 txtOut += "\n";
 txtOut += "Win32 build configuration\n";
 txtOut += "-------------------------\n";
+txtOut += "          Compiler: " + compiler + "\n";
 txtOut += "     Debug symbols: " + boolToStr(buildDebug) + "\n";
 txtOut += "    Static xmllint: " + boolToStr(buildStatic) + "\n";
 txtOut += "    Install prefix: " + buildPrefix + "\n";

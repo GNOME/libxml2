@@ -12,7 +12,7 @@
 #
 # March 2002, Igor Zlatkovic <igor@stud.fh-frankfurt.de>
 
-AUTOCONF = .\configure.txt
+AUTOCONF = .\config.msvc
 
 # If you cannot run the configuration script, which would take the burden of
 # editing this file from your back, then remove the following line...
@@ -221,6 +221,10 @@ clean :
 	if exist $(XML_INTDIR_A) rmdir /S /Q $(XML_INTDIR_A)
 	if exist $(UTILS_INTDIR) rmdir /S /Q $(UTILS_INTDIR)
 	if exist $(BINDIR) rmdir /S /Q $(BINDIR)
+
+distclean : clean
+	if exist config.* del config.*
+	if exist Makefile del Makefile
 
 rebuild : clean all
 

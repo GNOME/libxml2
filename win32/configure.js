@@ -28,7 +28,7 @@ var verMinor;
 var verMicro;
 /* Libxml features. */
 var withTrio = false;
-var withThreads = "no";
+var withThreads = "ctls";
 var withFtp = true;
 var withHttp = true;
 var withHtml = true;

@@ -1,0 +1,3453 @@
+xmlRelaxNGValidateDefinition(): validated title : 0
+xmlRelaxNGValidateDefinition(): validated version : 0
+xmlRelaxNGValidateDefinition(): validated w3c-designation : 0
+xmlRelaxNGValidateDefinition(): validated w3c-doctype : 0
+xmlRelaxNGValidateDefinition(): validated day : 0
+xmlRelaxNGValidateDefinition(): validated month : 0
+xmlRelaxNGValidateDefinition(): validated year : 0
+xmlRelaxNGValidateDefinition(): validated pubdate : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated loc : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated loc : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated loc : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated loc : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated loc : 0
+xmlRelaxNGValidateDefinition(): validated publoc : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated loc : 0
+xmlRelaxNGValidateDefinition(): validated latestloc : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated loc : 0
+xmlRelaxNGValidateDefinition(): validated prevlocs : 0
+xmlRelaxNGValidateDefinition(): validated name : 0
+xmlRelaxNGValidateDefinition(): validated affiliation : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated email : 0
+xmlRelaxNGValidateDefinition(): validated author : 0
+xmlRelaxNGValidateDefinition(): validated name : 0
+xmlRelaxNGValidateDefinition(): validated affiliation : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated email : 0
+xmlRelaxNGValidateDefinition(): validated author : 0
+xmlRelaxNGValidateDefinition(): validated name : 0
+xmlRelaxNGValidateDefinition(): validated affiliation : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated email : 0
+xmlRelaxNGValidateDefinition(): validated author : 0
+xmlRelaxNGValidateDefinition(): validated authlist : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated abstract : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated loc : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated loc : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated bibref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated bibref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated bibref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated loc : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated loc : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated status : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated pubstmt : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated sourcedesc : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated language : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated language : 0
+xmlRelaxNGValidateDefinition(): validated langusage : 0
+xmlRelaxNGValidateDefinition(): validated sitem : 0
+xmlRelaxNGValidateDefinition(): validated sitem : 0
+xmlRelaxNGValidateDefinition(): validated sitem : 0
+xmlRelaxNGValidateDefinition(): validated sitem : 0
+xmlRelaxNGValidateDefinition(): validated sitem : 0
+xmlRelaxNGValidateDefinition(): validated sitem : 0
+xmlRelaxNGValidateDefinition(): validated sitem : 0
+xmlRelaxNGValidateDefinition(): validated sitem : 0
+xmlRelaxNGValidateDefinition(): validated sitem : 0
+xmlRelaxNGValidateDefinition(): validated sitem : 0
+xmlRelaxNGValidateDefinition(): validated sitem : 0
+xmlRelaxNGValidateDefinition(): validated sitem : 0
+xmlRelaxNGValidateDefinition(): validated sitem : 0
+xmlRelaxNGValidateDefinition(): validated sitem : 0
+xmlRelaxNGValidateDefinition(): validated sitem : 0
+xmlRelaxNGValidateDefinition(): validated sitem : 0
+xmlRelaxNGValidateDefinition(): validated sitem : 0
+xmlRelaxNGValidateDefinition(): validated sitem : 0
+xmlRelaxNGValidateDefinition(): validated sitem : 0
+xmlRelaxNGValidateDefinition(): validated emph : 0
+xmlRelaxNGValidateDefinition(): validated sitem : 0
+xmlRelaxNGValidateDefinition(): validated sitem : 0
+xmlRelaxNGValidateDefinition(): validated sitem : 0
+xmlRelaxNGValidateDefinition(): validated sitem : 0
+xmlRelaxNGValidateDefinition(): validated sitem : 0
+xmlRelaxNGValidateDefinition(): validated sitem : 0
+xmlRelaxNGValidateDefinition(): validated sitem : 0
+xmlRelaxNGValidateDefinition(): validated sitem : 0
+xmlRelaxNGValidateDefinition(): validated sitem : 0
+xmlRelaxNGValidateDefinition(): validated sitem : 0
+xmlRelaxNGValidateDefinition(): validated sitem : 0
+xmlRelaxNGValidateDefinition(): validated sitem : 0
+xmlRelaxNGValidateDefinition(): validated emph : 0
+xmlRelaxNGValidateDefinition(): validated sitem : 0
+xmlRelaxNGValidateDefinition(): validated sitem : 0
+xmlRelaxNGValidateDefinition(): validated sitem : 0
+xmlRelaxNGValidateDefinition(): validated sitem : 0
+xmlRelaxNGValidateDefinition(): validated sitem : 0
+xmlRelaxNGValidateDefinition(): validated sitem : 0
+xmlRelaxNGValidateDefinition(): validated sitem : 0
+xmlRelaxNGValidateDefinition(): validated sitem : 0
+xmlRelaxNGValidateDefinition(): validated sitem : 0
+xmlRelaxNGValidateDefinition(): validated sitem : 0
+xmlRelaxNGValidateDefinition(): validated sitem : 0
+xmlRelaxNGValidateDefinition(): validated sitem : 0
+xmlRelaxNGValidateDefinition(): validated sitem : 0
+xmlRelaxNGValidateDefinition(): validated sitem : 0
+xmlRelaxNGValidateDefinition(): validated slist : 0
+xmlRelaxNGValidateDefinition(): validated revisiondesc : 0
+xmlRelaxNGValidateDefinition(): validated header : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated bibref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated olist : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated div2 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateDefinition(): validated label : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated def : 0
+xmlRelaxNGValidateDefinition(): validated gitem : 0
+xmlRelaxNGValidateDefinition(): validated label : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated def : 0
+xmlRelaxNGValidateDefinition(): validated gitem : 0
+xmlRelaxNGValidateDefinition(): validated label : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated def : 0
+xmlRelaxNGValidateDefinition(): validated gitem : 0
+xmlRelaxNGValidateDefinition(): validated label : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated def : 0
+xmlRelaxNGValidateDefinition(): validated gitem : 0
+xmlRelaxNGValidateDefinition(): validated label : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated def : 0
+xmlRelaxNGValidateDefinition(): validated gitem : 0
+xmlRelaxNGValidateDefinition(): validated label : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated def : 0
+xmlRelaxNGValidateDefinition(): validated gitem : 0
+xmlRelaxNGValidateDefinition(): validated label : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated def : 0
+xmlRelaxNGValidateDefinition(): validated gitem : 0
+xmlRelaxNGValidateDefinition(): validated label : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated specref : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated def : 0
+xmlRelaxNGValidateDefinition(): validated gitem : 0
+xmlRelaxNGValidateDefinition(): validated label : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated def : 0
+xmlRelaxNGValidateDefinition(): validated gitem : 0
+xmlRelaxNGValidateDefinition(): validated label : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated def : 0
+xmlRelaxNGValidateDefinition(): validated gitem : 0
+xmlRelaxNGValidateDefinition(): validated glist : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated div2 : 0
+xmlRelaxNGValidateDefinition(): validated div1 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated specref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated titleref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated olist : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateDefinition(): validated scrap : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated olist : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated div2 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated bibref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated bibref : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated com : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateDefinition(): validated prodgroup : 0
+xmlRelaxNGValidateDefinition(): validated scrap : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated specref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated div2 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateDefinition(): validated prodgroup : 0
+xmlRelaxNGValidateDefinition(): validated scrap : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated specref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated note : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateDefinition(): validated scrap : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateDefinition(): validated scrap : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated div2 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated emph : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated specref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateDefinition(): validated scrap : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated div2 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateDefinition(): validated scrap : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated eg : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated div2 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateDefinition(): validated scrap : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated div2 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateDefinition(): validated scrap : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated eg : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated div2 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated eg : 0
+xmlRelaxNGValidateDefinition(): validated eg : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateDefinition(): validated prodgroup : 0
+xmlRelaxNGValidateDefinition(): validated scrap : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated specref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated vc : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated vc : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated wfc : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateDefinition(): validated prodgroup : 0
+xmlRelaxNGValidateDefinition(): validated scrap : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated emph : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated vcnote : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated vcnote : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated wfcnote : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateDefinition(): validated prodgroup : 0
+xmlRelaxNGValidateDefinition(): validated scrap : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated emph : 0
+xmlRelaxNGValidateDefinition(): validated emph : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated eg : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated eg : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated div2 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated vc : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateDefinition(): validated prodgroup : 0
+xmlRelaxNGValidateDefinition(): validated scrap : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated emph : 0
+xmlRelaxNGValidateDefinition(): validated emph : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated titleref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated ulist : 0
+xmlRelaxNGValidateDefinition(): validated vcnote : 0
+xmlRelaxNGValidateDefinition(): validated eg : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated div2 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated kw : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated eg : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated kw : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated div2 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated div2 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated kw : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated bibref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateDefinition(): validated scrap : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated bibref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated bibref : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated ulist : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated bibref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated eg : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated kw : 0
+xmlRelaxNGValidateDefinition(): validated kw : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated kw : 0
+xmlRelaxNGValidateDefinition(): validated eg : 0
+xmlRelaxNGValidateDefinition(): validated eg : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated div2 : 0
+xmlRelaxNGValidateDefinition(): validated div1 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated wfc : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated vc : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateDefinition(): validated scrap : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated wfcnote : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated kw : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated kw : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated olist : 0
+xmlRelaxNGValidateDefinition(): validated vcnote : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated wfc : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated vc : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated wfc : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated wfc : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateDefinition(): validated prodgroup : 0
+xmlRelaxNGValidateDefinition(): validated scrap : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated wfcnote : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated specref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated vcnote : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated wfcnote : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated wfcnote : 0
+xmlRelaxNGValidateDefinition(): validated eg : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateDefinition(): validated prodgroup : 0
+xmlRelaxNGValidateDefinition(): validated scrap : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated eg : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateDefinition(): validated prodgroup : 0
+xmlRelaxNGValidateDefinition(): validated scrap : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated wfc : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateDefinition(): validated prodgroup : 0
+xmlRelaxNGValidateDefinition(): validated scrap : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated kw : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated kw : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated eg : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated div2 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated vc : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateDefinition(): validated prodgroup : 0
+xmlRelaxNGValidateDefinition(): validated scrap : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated vcnote : 0
+xmlRelaxNGValidateDefinition(): validated eg : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated vc : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated vc : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateDefinition(): validated prodgroup : 0
+xmlRelaxNGValidateDefinition(): validated scrap : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated specref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated vcnote : 0
+xmlRelaxNGValidateDefinition(): validated eg : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated div3 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated vc : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated vc : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateDefinition(): validated prodgroup : 0
+xmlRelaxNGValidateDefinition(): validated scrap : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated vcnote : 0
+xmlRelaxNGValidateDefinition(): validated eg : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated div3 : 0
+xmlRelaxNGValidateDefinition(): validated div2 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated specref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated ulist : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateDefinition(): validated scrap : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated vc : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated vc : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated vc : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated vc : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated vc : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated vc : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated vc : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated vc : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated vc : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateDefinition(): validated prodgroup : 0
+xmlRelaxNGValidateDefinition(): validated scrap : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateDefinition(): validated kw : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated vcnote : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated vcnote : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateDefinition(): validated kw : 0
+xmlRelaxNGValidateDefinition(): validated kw : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated vcnote : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateDefinition(): validated kw : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated kw : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated kw : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated vcnote : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateDefinition(): validated kw : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated kw : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated vcnote : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateDefinition(): validated kw : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated kw : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated vcnote : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated vc : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated vc : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateDefinition(): validated scrap : 0
+xmlRelaxNGValidateDefinition(): validated kw : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated titleref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated vcnote : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated vcnote : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated div3 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated vc : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated vc : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated wfc : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated vc : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateDefinition(): validated prodgroup : 0
+xmlRelaxNGValidateDefinition(): validated scrap : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated kw : 0
+xmlRelaxNGValidateDefinition(): validated kw : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated kw : 0
+xmlRelaxNGValidateDefinition(): validated kw : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateDefinition(): validated kw : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateDefinition(): validated kw : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated vcnote : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated vcnote : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateDefinition(): validated kw : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated vcnote : 0
+xmlRelaxNGValidateDefinition(): validated eg : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated div3 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated ulist : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated kw : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated div3 : 0
+xmlRelaxNGValidateDefinition(): validated div2 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateDefinition(): validated prodgroup : 0
+xmlRelaxNGValidateDefinition(): validated scrap : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated kw : 0
+xmlRelaxNGValidateDefinition(): validated kw : 0
+xmlRelaxNGValidateDefinition(): validated kw : 0
+xmlRelaxNGValidateDefinition(): validated kw : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated eg : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated div2 : 0
+xmlRelaxNGValidateDefinition(): validated div1 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated kw : 0
+xmlRelaxNGValidateDefinition(): validated kw : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateDefinition(): validated emph : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated wfc : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateDefinition(): validated scrap : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated wfcnote : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated wfc : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated vc : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated wfc : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated wfc : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated vc : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated wfc : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated wfc : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateDefinition(): validated scrap : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated titleref : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated titleref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated titleref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated wfcnote : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated titleref : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated specref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated vcnote : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated kw : 0
+xmlRelaxNGValidateDefinition(): validated kw : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated wfcnote : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated wfcnote : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated wfcnote : 0
+xmlRelaxNGValidateDefinition(): validated eg : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated eg : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated div2 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateDefinition(): validated prodgroup : 0
+xmlRelaxNGValidateDefinition(): validated scrap : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated kw : 0
+xmlRelaxNGValidateDefinition(): validated kw : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated specref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated eg : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated div3 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated vc : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateDefinition(): validated scrap : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated vcnote : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated eg : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated div3 : 0
+xmlRelaxNGValidateDefinition(): validated div2 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateDefinition(): validated prodgroup : 0
+xmlRelaxNGValidateDefinition(): validated scrap : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated div3 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateDefinition(): validated scrap : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated div3 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated titleref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated com : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateDefinition(): validated scrap : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated emph : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated bibref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated eg : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated div3 : 0
+xmlRelaxNGValidateDefinition(): validated div2 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated label : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated def : 0
+xmlRelaxNGValidateDefinition(): validated gitem : 0
+xmlRelaxNGValidateDefinition(): validated label : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated def : 0
+xmlRelaxNGValidateDefinition(): validated gitem : 0
+xmlRelaxNGValidateDefinition(): validated label : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated kw : 0
+xmlRelaxNGValidateDefinition(): validated kw : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated def : 0
+xmlRelaxNGValidateDefinition(): validated gitem : 0
+xmlRelaxNGValidateDefinition(): validated label : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated def : 0
+xmlRelaxNGValidateDefinition(): validated gitem : 0
+xmlRelaxNGValidateDefinition(): validated label : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated def : 0
+xmlRelaxNGValidateDefinition(): validated gitem : 0
+xmlRelaxNGValidateDefinition(): validated glist : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated td : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated td : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated td : 0
+xmlRelaxNGValidateDefinition(): validated tr : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated td : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated td : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated td : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated td : 0
+xmlRelaxNGValidateDefinition(): validated tr : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated td : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated titleref : 0
+xmlRelaxNGValidateDefinition(): validated td : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated titleref : 0
+xmlRelaxNGValidateDefinition(): validated td : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated titleref : 0
+xmlRelaxNGValidateDefinition(): validated td : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated titleref : 0
+xmlRelaxNGValidateDefinition(): validated td : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated titleref : 0
+xmlRelaxNGValidateDefinition(): validated td : 0
+xmlRelaxNGValidateDefinition(): validated tr : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated td : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated titleref : 0
+xmlRelaxNGValidateDefinition(): validated td : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated titleref : 0
+xmlRelaxNGValidateDefinition(): validated td : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated titleref : 0
+xmlRelaxNGValidateDefinition(): validated td : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated titleref : 0
+xmlRelaxNGValidateDefinition(): validated td : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated titleref : 0
+xmlRelaxNGValidateDefinition(): validated td : 0
+xmlRelaxNGValidateDefinition(): validated tr : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated td : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated titleref : 0
+xmlRelaxNGValidateDefinition(): validated td : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated titleref : 0
+xmlRelaxNGValidateDefinition(): validated td : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated titleref : 0
+xmlRelaxNGValidateDefinition(): validated td : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated titleref : 0
+xmlRelaxNGValidateDefinition(): validated td : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated titleref : 0
+xmlRelaxNGValidateDefinition(): validated td : 0
+xmlRelaxNGValidateDefinition(): validated tr : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated td : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated titleref : 0
+xmlRelaxNGValidateDefinition(): validated td : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated titleref : 0
+xmlRelaxNGValidateDefinition(): validated td : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated titleref : 0
+xmlRelaxNGValidateDefinition(): validated td : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated titleref : 0
+xmlRelaxNGValidateDefinition(): validated td : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated titleref : 0
+xmlRelaxNGValidateDefinition(): validated td : 0
+xmlRelaxNGValidateDefinition(): validated tr : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated td : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated titleref : 0
+xmlRelaxNGValidateDefinition(): validated td : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated titleref : 0
+xmlRelaxNGValidateDefinition(): validated td : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated titleref : 0
+xmlRelaxNGValidateDefinition(): validated td : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated titleref : 0
+xmlRelaxNGValidateDefinition(): validated td : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated titleref : 0
+xmlRelaxNGValidateDefinition(): validated td : 0
+xmlRelaxNGValidateDefinition(): validated tr : 0
+xmlRelaxNGValidateDefinition(): validated htbody : 0
+xmlRelaxNGValidateDefinition(): validated htable : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated div3 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated div3 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated div3 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated ulist : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated div3 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated eg : 0
+xmlRelaxNGValidateDefinition(): validated eg : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated div3 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated kw : 0
+xmlRelaxNGValidateDefinition(): validated kw : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated div3 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated div3 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated titleref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated div3 : 0
+xmlRelaxNGValidateDefinition(): validated div2 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated emph : 0
+xmlRelaxNGValidateDefinition(): validated eg : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated eg : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated specref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated div2 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated eg : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated div2 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateDefinition(): validated scrap : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated div2 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated div2 : 0
+xmlRelaxNGValidateDefinition(): validated div1 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated term : 0
+xmlRelaxNGValidateDefinition(): validated emph : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated titleref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated titleref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated titleref : 0
+xmlRelaxNGValidateDefinition(): validated termdef : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated div2 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated titleref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated titleref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated titleref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated titleref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated specref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated titleref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated titleref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated titleref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated ulist : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated div2 : 0
+xmlRelaxNGValidateDefinition(): validated div1 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateDefinition(): validated eg : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated label : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated def : 0
+xmlRelaxNGValidateDefinition(): validated gitem : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated label : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated def : 0
+xmlRelaxNGValidateDefinition(): validated gitem : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated label : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated emph : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated def : 0
+xmlRelaxNGValidateDefinition(): validated gitem : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated label : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated def : 0
+xmlRelaxNGValidateDefinition(): validated gitem : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated label : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated def : 0
+xmlRelaxNGValidateDefinition(): validated gitem : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated label : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated def : 0
+xmlRelaxNGValidateDefinition(): validated gitem : 0
+xmlRelaxNGValidateDefinition(): validated glist : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated label : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated def : 0
+xmlRelaxNGValidateDefinition(): validated gitem : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated label : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated def : 0
+xmlRelaxNGValidateDefinition(): validated gitem : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated label : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated def : 0
+xmlRelaxNGValidateDefinition(): validated gitem : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated label : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated def : 0
+xmlRelaxNGValidateDefinition(): validated gitem : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated label : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated def : 0
+xmlRelaxNGValidateDefinition(): validated gitem : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated label : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated def : 0
+xmlRelaxNGValidateDefinition(): validated gitem : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated label : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated def : 0
+xmlRelaxNGValidateDefinition(): validated gitem : 0
+xmlRelaxNGValidateDefinition(): validated glist : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated label : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated def : 0
+xmlRelaxNGValidateDefinition(): validated gitem : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated label : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated def : 0
+xmlRelaxNGValidateDefinition(): validated gitem : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated label : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated def : 0
+xmlRelaxNGValidateDefinition(): validated gitem : 0
+xmlRelaxNGValidateDefinition(): validated glist : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated div1 : 0
+xmlRelaxNGValidateDefinition(): validated body : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated emph : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated loc : 0
+xmlRelaxNGValidateDefinition(): validated bibl : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated emph : 0
+xmlRelaxNGValidateDefinition(): validated bibl : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated emph : 0
+xmlRelaxNGValidateDefinition(): validated bibl : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated emph : 0
+xmlRelaxNGValidateDefinition(): validated bibl : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated emph : 0
+xmlRelaxNGValidateDefinition(): validated bibl : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated emph : 0
+xmlRelaxNGValidateDefinition(): validated bibl : 0
+xmlRelaxNGValidateDefinition(): validated blist : 0
+xmlRelaxNGValidateDefinition(): validated div2 : 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated emph : 0
+xmlRelaxNGValidateDefinition(): validated bibl : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated emph : 0
+xmlRelaxNGValidateDefinition(): validated bibl : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated emph : 0
+xmlRelaxNGValidateDefinition(): validated bibl : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated emph : 0
+xmlRelaxNGValidateDefinition(): validated bibl : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated loc : 0
+xmlRelaxNGValidateDefinition(): validated bibl : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated emph : 0
+xmlRelaxNGValidateDefinition(): validated bibl : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated emph : 0
+xmlRelaxNGValidateDefinition(): validated bibl : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated emph : 0
+xmlRelaxNGValidateDefinition(): validated bibl : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated emph : 0
+xmlRelaxNGValidateDefinition(): validated bibl : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated emph : 0
+xmlRelaxNGValidateDefinition(): validated emph : 0
+xmlRelaxNGValidateDefinition(): validated bibl : 0
+xmlRelaxNGValidateDefinition(): validated blist : 0
+xmlRelaxNGValidateDefinition(): validated div2 : 0
+xmlRelaxNGValidateDefinition(): validated div1 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated nt : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated lhs : 0
+xmlRelaxNGValidateDefinition(): validated rhs : 0
+xmlRelaxNGValidateDefinition(): validated prod : 0
+xmlRelaxNGValidateDefinition(): validated prodgroup : 0
+xmlRelaxNGValidateDefinition(): validated scrap : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated ulist : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated div1 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated bibref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated inform-div1 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated specref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated eg : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated eg : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated eg : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated eg : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated emph : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated ulist : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated inform-div1 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated termref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated bibref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated bibref : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated inform-div1 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated emph : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated ulist : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated code : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated item : 0
+xmlRelaxNGValidateDefinition(): validated ulist : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated inform-div1 : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated head : 0
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated name : 0
+xmlRelaxNGValidateDefinition(): validated role : 0
+xmlRelaxNGValidateDefinition(): validated member : 0
+xmlRelaxNGValidateDefinition(): validated name : 0
+xmlRelaxNGValidateDefinition(): validated role : 0
+xmlRelaxNGValidateDefinition(): validated member : 0
+xmlRelaxNGValidateDefinition(): validated name : 0
+xmlRelaxNGValidateDefinition(): validated role : 0
+xmlRelaxNGValidateDefinition(): validated member : 0
+xmlRelaxNGValidateDefinition(): validated name : 0
+xmlRelaxNGValidateDefinition(): validated role : 0
+xmlRelaxNGValidateDefinition(): validated member : 0
+xmlRelaxNGValidateDefinition(): validated name : 0
+xmlRelaxNGValidateDefinition(): validated role : 0
+xmlRelaxNGValidateDefinition(): validated member : 0
+xmlRelaxNGValidateDefinition(): validated name : 0
+xmlRelaxNGValidateDefinition(): validated role : 0
+xmlRelaxNGValidateDefinition(): validated member : 0
+xmlRelaxNGValidateDefinition(): validated name : 0
+xmlRelaxNGValidateDefinition(): validated member : 0
+xmlRelaxNGValidateDefinition(): validated name : 0
+xmlRelaxNGValidateDefinition(): validated member : 0
+xmlRelaxNGValidateDefinition(): validated name : 0
+xmlRelaxNGValidateDefinition(): validated member : 0
+xmlRelaxNGValidateDefinition(): validated name : 0
+xmlRelaxNGValidateDefinition(): validated member : 0
+xmlRelaxNGValidateDefinition(): validated name : 0
+xmlRelaxNGValidateDefinition(): validated member : 0
+xmlRelaxNGValidateDefinition(): validated name : 0
+xmlRelaxNGValidateDefinition(): validated member : 0
+xmlRelaxNGValidateDefinition(): validated name : 0
+xmlRelaxNGValidateDefinition(): validated member : 0
+xmlRelaxNGValidateDefinition(): validated name : 0
+xmlRelaxNGValidateDefinition(): validated member : 0
+xmlRelaxNGValidateDefinition(): validated name : 0
+xmlRelaxNGValidateDefinition(): validated member : 0
+xmlRelaxNGValidateDefinition(): validated name : 0
+xmlRelaxNGValidateDefinition(): validated member : 0
+xmlRelaxNGValidateDefinition(): validated name : 0
+xmlRelaxNGValidateDefinition(): validated member : 0
+xmlRelaxNGValidateDefinition(): validated name : 0
+xmlRelaxNGValidateDefinition(): validated member : 0
+xmlRelaxNGValidateDefinition(): validated orglist : 0
+xmlRelaxNGValidateDefinition(): validated inform-div1 : 0
+xmlRelaxNGValidateDefinition(): validated back : 0
+xmlRelaxNGValidateDefinition(): validated spec : 0

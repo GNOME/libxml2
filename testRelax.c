@@ -74,6 +74,7 @@ int main(int argc, char **argv) {
         }
     }
     xmlLineNumbersDefault(1);
+    xmlSubstituteEntitiesDefault(1);
     for (i = 1; i < argc ; i++) {
 	if (argv[i][0] != '-') {
 	    if (schema == NULL) {

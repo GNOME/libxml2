@@ -1,5 +1,4 @@
 xmlRelaxNGValidateAttribute(name): 0
-xmlRelaxNGValidateAttribute(email): -1
 xmlRelaxNGValidateDefinition(): validated card : -1
-error detected at relaxng.c:4781
+error detected at relaxng.c:4887
 xmlRelaxNGValidateDefinition(): validated addressBook : -1

@@ -1,3 +1,10 @@
+Mon Feb  3 11:56:05 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng: more work on name classes, the "validate all" schemas
+	  seems to work now.
+	* test/relaxng/* result/relaxng/*: augmented/updated the
+	  regression tests
+
 Mon Feb  3 09:50:26 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* python/libxml.c: removed an unprotedted debug message Aleksi Suhonen

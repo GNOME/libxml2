@@ -12,6 +12,7 @@
  * - simplification of the resulting compiled trees:
  *    - NOT_ALLOWED
  *    - EMPTY
+ * - handle namespace declarations as attributes.
  */
 
 #define IN_LIBXML
@@ -228,6 +229,7 @@ struct _xmlRelaxNGValidState {
     xmlNodePtr   node;		/* the current node */
     xmlNodePtr    seq;		/* the sequence of children left to validate */
     int       nbAttrs;		/* the number of attributes */
+    int    nbAttrLeft;		/* the number of attributes left to validate */
     xmlChar    *value;		/* the value when operating on string */
     xmlChar *endvalue;		/* the end value when operating on string */
     xmlAttrPtr attrs[1];	/* the array of attributes */
@@ -665,6 +667,7 @@ xmlRelaxNGNewValidState(xmlRelaxNGValidCtxtPtr ctxt, xmlNodePtr node)
 	    }
 	}
     }
+    ret->nbAttrLeft = ret->nbAttrs;
     return (ret);
 }
 
@@ -3942,6 +3945,7 @@ xmlRelaxNGSkipIgnored(xmlRelaxNGValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
      */
     while ((node != NULL) &&
 	   ((node->type == XML_COMMENT_NODE) ||
+	    (node->type == XML_PI_NODE) ||
 	    ((node->type == XML_TEXT_NODE) &&
 	     (IS_BLANK_NODE(node))))) {
 	node = node->next;
@@ -4292,6 +4296,8 @@ xmlRelaxNGValidateAttribute(xmlRelaxNGValidCtxtPtr ctxt,
     xmlChar *value, *oldvalue;
     xmlAttrPtr prop = NULL, tmp;
 
+    if (ctxt->state->nbAttrLeft <= 0)
+	return(-1);
     if (define->name != NULL) {
         for (i = 0;i < ctxt->state->nbAttrs;i++) {
 	    tmp = ctxt->state->attrs[i];
@@ -4319,6 +4325,7 @@ xmlRelaxNGValidateAttribute(xmlRelaxNGValidCtxtPtr ctxt,
 		 * flag the attribute as processed
 		 */
 		ctxt->state->attrs[i] = NULL;
+		ctxt->state->nbAttrLeft--;
 	    }
 	} else {
 	    ret = -1;
@@ -4350,6 +4357,7 @@ xmlRelaxNGValidateAttribute(xmlRelaxNGValidCtxtPtr ctxt,
 		 * flag the attribute as processed
 		 */
 		ctxt->state->attrs[i] = NULL;
+		ctxt->state->nbAttrLeft--;
 	    }
 	} else {
 	    ret = -1;
@@ -4381,6 +4389,7 @@ xmlRelaxNGValidateAttribute(xmlRelaxNGValidCtxtPtr ctxt,
 		 * flag the attribute as processed
 		 */
 		ctxt->state->attrs[i] = NULL;
+		ctxt->state->nbAttrLeft--;
 	    }
 	} else {
 	    ret = -1;
@@ -4807,6 +4816,8 @@ xmlRelaxNGValidateDefinition(xmlRelaxNGValidCtxtPtr ctxt,
 		return(0);
 	    while ((node != NULL) &&
 		   ((node->type == XML_TEXT_NODE) ||
+		    (node->type == XML_COMMENT_NODE) ||
+		    (node->type == XML_PI_NODE) ||
 		    (node->type == XML_CDATA_SECTION_NODE)))
 		node = node->next;
 	    if (node == ctxt->state->seq) {
@@ -4874,8 +4885,8 @@ xmlRelaxNGValidateDefinition(xmlRelaxNGValidCtxtPtr ctxt,
 		state->seq = xmlRelaxNGSkipIgnored(ctxt, state->seq);
 		if (state->seq != NULL) {
 		    VALID_CTXT();
-		    VALID_ERROR("Extra content for element %s\n",
-				node->name);
+		    VALID_ERROR("Extra content for element %s: %s\n",
+				node->name, state->seq->name);
 		    ret = -1;
 		}
 	    }
@@ -4921,26 +4932,42 @@ xmlRelaxNGValidateDefinition(xmlRelaxNGValidCtxtPtr ctxt,
 	    }
 	    /* no break on purpose */
         case XML_RELAXNG_ZEROORMORE: {
-            xmlNodePtr cur, temp;
-
 	    oldflags = ctxt->flags;
 	    ctxt->flags |= FLAGS_IGNORABLE;
-	    cur = ctxt->state->seq;
-	    temp = NULL;
-	    while ((cur != NULL) && (temp != cur)) {
-		temp = cur;
+	    while (ctxt->state->nbAttrLeft != 0) {
 		oldstate = xmlRelaxNGCopyValidState(ctxt, ctxt->state);
 		ret = xmlRelaxNGValidateDefinition(ctxt, define->content);
 		if (ret != 0) {
 		    xmlRelaxNGFreeValidState(ctxt->state);
 		    ctxt->state = oldstate;
-		    ret = 0;
 		    break;
 		}
 		xmlRelaxNGFreeValidState(oldstate);
+	    }
+	    if (ret == 0) {
+		/*
+		 * There is no attribute left to be consumed,
+		 * we can check the closure by looking at ctxt->state->seq
+		 */
+		xmlNodePtr cur, temp;
+
 		cur = ctxt->state->seq;
+		temp = NULL;
+		while ((cur != NULL) && (temp != cur)) {
+		    temp = cur;
+		    oldstate = xmlRelaxNGCopyValidState(ctxt, ctxt->state);
+		    ret = xmlRelaxNGValidateDefinition(ctxt, define->content);
+		    if (ret != 0) {
+			xmlRelaxNGFreeValidState(ctxt->state);
+			ctxt->state = oldstate;
+			break;
+		    }
+		    xmlRelaxNGFreeValidState(oldstate);
+		    cur = ctxt->state->seq;
+		}
 	    }
 	    ctxt->flags = oldflags;
+	    ret = 0;
 	    break;
 	}
         case XML_RELAXNG_CHOICE: {

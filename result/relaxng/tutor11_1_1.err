@@ -1,0 +1,15 @@
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated ref : 0
+xmlRelaxNGValidateDefinition(): validated start : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated anyName : 0
+xmlRelaxNGValidateDefinition(): validated anyName : 0
+xmlRelaxNGValidateDefinition(): validated attribute : 0
+xmlRelaxNGValidateDefinition(): validated text : 0
+xmlRelaxNGValidateAttribute(anyName): 0
+xmlRelaxNGValidateDefinition(): validated ref : 0
+xmlRelaxNGValidateDefinition(): validated choice : 0
+xmlRelaxNGValidateDefinition(): validated zeroOrMore : 0
+xmlRelaxNGValidateDefinition(): validated element : 0
+xmlRelaxNGValidateDefinition(): validated define : 0
+xmlRelaxNGValidateDefinition(): validated grammar : 0

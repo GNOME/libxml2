@@ -1,3 +1,7 @@
+Tue Apr 20 19:40:37 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: killing the strncmp vs. memcmp controversy and #140593
+
 Tue Apr 20 13:27:06 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/SAX2.h: Kasimier Buchcik pointed out some 

@@ -5,6 +5,7 @@ includedir=@includedir@
 
 
 Name: libXML
+Version: @VERSION@
 Description: libXML library.
 Requires:
 Libs: -L${libdir} -lxml @Z_LIBS@ @M_LIBS@ @LIBS@

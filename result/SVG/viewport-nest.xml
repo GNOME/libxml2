@@ -5,6 +5,8 @@
     thus establishing a new viewport
   </desc>
 <!-- The following statement establishing a new viewport
-       and renders SVG drawing B into that viewport -->  <svg style="left: 25%; top: 25%" width="50%" height="50%">
-<!-- drawing B goes here -->  </svg>
+       and renders SVG drawing B into that viewport -->
+  <svg style="left: 25%; top: 25%" width="50%" height="50%">
+<!-- drawing B goes here -->
+  </svg>
 </svg>

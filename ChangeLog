@@ -1,3 +1,9 @@
+Mon Oct 11 14:31:58 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* HTMLparser.c: fixed problems with some autoclose tags
+	* tree.c: fixed XML output problems. 
+	* result/* SAXresult/*: update of the tests output
+
 Sat Oct  9 11:02:57 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* Makefile.am: Arturo patch for xmlConf.sh version info

@@ -1,10 +1,12 @@
 SAX.setDocumentLocator()
 SAX.startDocument()
 SAX.internalSubset(EXAMPLE, (null), example.dtd)
-SAX.resolveEntity( , example.dtd)
 SAX.entityDecl(xml, 1, (null), (null), Extensible Markup Language)
 SAX.getEntity(xml)
-SAX.startElement(EXAMPLE, prop1='a&amp;b', prop2='&xml;')
+SAX.getEntity(amp)
+SAX.getEntity(xml)
+SAX.warning: Entity 'xml' not defined
+SAX.startElement(EXAMPLE, prop1='a&amp;b', prop2='')
 SAX.characters(
   Test of entities in attribu, 35)
 SAX.endElement(EXAMPLE)

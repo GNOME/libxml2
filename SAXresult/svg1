@@ -1,7 +1,6 @@
 SAX.setDocumentLocator()
 SAX.startDocument()
 SAX.internalSubset(svg, -//W3C//DTD SVG April 1999//EN, http://www.w3.org/Graphics/SVG/svg-19990412.dtd)
-SAX.resolveEntity(-//W3C//DTD SVG April 1999//EN, http://www.w3.org/Graphics/SVG/svg-19990412.dtd)
 SAX.startElement(svg, width='242px', height='383px')
 SAX.characters(
 , 1)

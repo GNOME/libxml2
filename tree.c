@@ -2663,6 +2663,20 @@ xmlBufferCCat(xmlBufferPtr buf, const char *str) {
 }
 
 /**
+ * xmlBufferLastChar:
+ * @buf:  the buffer to dump
+ *
+ * Get the last char of the buffer
+ *
+ * Returns the last char from the buffer or 0 if empty
+ */
+xmlChar
+xmlBufferLastChar(xmlBufferPtr buf) {
+    if ((buf == NULL) || (buf->use <= 0)) return(0);
+    return(buf->content[buf->use - 1]);
+}
+
+/**
  * xmlBufferWriteCHAR:
  * @buf:  the XML buffer
  * @string:  the string to add
@@ -2899,38 +2913,38 @@ xmlAttrListDump(xmlBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur) {
 
 
 static void
-xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level);
+xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
+            int format);
 /**
  * xmlNodeListDump:
  * @buf:  the XML buffer output
  * @doc:  the document
  * @cur:  the first node
  * @level: the imbrication level for indenting
+ * @format: is formatting allowed
  *
  * Dump an XML node list, recursive behaviour,children are printed too.
  */
 static void
-xmlNodeListDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level) {
-    int needIndent = 0, i;
+xmlNodeListDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
+                int format) {
+    int i;
 
     if (cur == NULL) {
         fprintf(stderr, "xmlNodeListDump : node == NULL\n");
 	return;
     }
     while (cur != NULL) {
-        if ((cur->type != XML_TEXT_NODE) &&
-	    (cur->type != XML_ENTITY_REF_NODE)) {
-	    if (!needIndent) {
-	        needIndent = 1;
-		xmlBufferWriteChar(buf, "\n");
-	    }
+	if ((format) && (xmlIndentTreeOutput) &&
+	    (cur->type == XML_ELEMENT_NODE))
+	    for (i = 0;i < level;i++)
+		xmlBufferWriteChar(buf, "  ");
+        xmlNodeDump(buf, doc, cur, level, format);
+	if (format) {
+	    xmlBufferWriteChar(buf, "\n");
 	}
-        xmlNodeDump(buf, doc, cur, level);
 	cur = cur->next;
     }
-    if ((xmlIndentTreeOutput) && (needIndent))
-	for (i = 1;i < level;i++)
-	    xmlBufferWriteChar(buf, "  ");
 }
 
 /**
@@ -2939,12 +2953,15 @@ xmlNodeListDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level) {
  * @doc:  the document
  * @cur:  the current node
  * @level: the imbrication level for indenting
+ * @format: is formatting allowed
  *
  * Dump an XML node, recursive behaviour,children are printed too.
  */
 static void
-xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level) {
+xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
+            int format) {
     int i;
+    xmlNodePtr tmp;
 
     if (cur == NULL) {
         fprintf(stderr, "xmlNodeDump : node == NULL\n");
@@ -2970,7 +2987,7 @@ xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level) {
 		xmlBufferWriteChar(buf, " ");
 		xmlBufferWriteCHAR(buf, cur->content);
 	    }
-	    xmlBufferWriteChar(buf, "?>\n");
+	    xmlBufferWriteChar(buf, "?>");
 	}
 	return;
     }
@@ -2978,7 +2995,7 @@ xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level) {
 	if (cur->content != NULL) {
 	    xmlBufferWriteChar(buf, "<!--");
 	    xmlBufferWriteCHAR(buf, cur->content);
-	    xmlBufferWriteChar(buf, "-->\n");
+	    xmlBufferWriteChar(buf, "-->");
 	}
 	return;
     }
@@ -2995,10 +3012,18 @@ xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level) {
         xmlBufferWriteChar(buf, "]]>");
 	return;
     }
-    if (xmlIndentTreeOutput)
-	for (i = 0;i < level;i++)
-	    xmlBufferWriteChar(buf, "  ");
 
+    if (format == 1) {
+    tmp = cur->childs;
+	while (tmp != NULL) {
+	    if ((tmp->type == XML_TEXT_NODE) || 
+		(tmp->type == XML_ENTITY_REF_NODE)) {
+		format = 0;
+		break;
+	    }
+	    tmp = tmp->next;
+	}
+    }
     xmlBufferWriteChar(buf, "<");
     if ((cur->ns != NULL) && (cur->ns->prefix != NULL)) {
         xmlBufferWriteCHAR(buf, cur->ns->prefix);
@@ -3012,7 +3037,7 @@ xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level) {
         xmlAttrListDump(buf, doc, cur->properties);
 
     if ((cur->content == NULL) && (cur->childs == NULL)) {
-        xmlBufferWriteChar(buf, "/>\n");
+        xmlBufferWriteChar(buf, "/>");
 	return;
     }
     xmlBufferWriteChar(buf, ">");
@@ -3026,7 +3051,11 @@ xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level) {
 	}
     }
     if (cur->childs != NULL) {
-	xmlNodeListDump(buf, doc, cur->childs, level + 1);
+	if (format) xmlBufferWriteChar(buf, "\n");
+	xmlNodeListDump(buf, doc, cur->childs, level + 1, format);
+	if ((xmlIndentTreeOutput) && (format))
+	    for (i = 0;i < level;i++)
+		xmlBufferWriteChar(buf, "  ");
     }
     xmlBufferWriteChar(buf, "</");
     if ((cur->ns != NULL) && (cur->ns->prefix != NULL)) {
@@ -3035,7 +3064,7 @@ xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level) {
     }
 
     xmlBufferWriteCHAR(buf, cur->name);
-    xmlBufferWriteChar(buf, ">\n");
+    xmlBufferWriteChar(buf, ">");
 }
 
 /**
@@ -3077,7 +3106,8 @@ xmlDocContentDump(xmlBufferPtr buf, xmlDocPtr cur) {
 	    xmlUpgradeOldNs(cur);
 	
 	while (child != NULL) {
-	    xmlNodeDump(buf, cur, child, 0);
+	    xmlNodeDump(buf, cur, child, 0, 1);
+	    xmlBufferWriteChar(buf, "\n");
 	    child = child->next;
 	}
     }

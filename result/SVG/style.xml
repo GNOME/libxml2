@@ -3,7 +3,8 @@
 <svg width="4in" height="3in">
   <defs>
     <style>
-      .TitleText { font-size: 16; font-family: Helvetica } &gt;
+<![CDATA[
+      .TitleText { font-size: 16; font-family: Helvetica } ]]>
     </style>
   </defs>
   <text class="TitleText">Here is my title</text>

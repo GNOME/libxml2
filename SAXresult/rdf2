@@ -68,21 +68,13 @@ SAX.endElement(RPM:Summary)
 SAX.characters(
     , 5)
 SAX.startElement(RPM:Description)
-SAX.characters(Diese Library stellt dem Progr, 57)
-SAX.characters(ä, 1)
-SAX.characters(ngige
-Routinen zur Ansteuerung, 57)
-SAX.characters(ü, 1)
-SAX.characters(gung, die
-speziell optimiert s, 57)
+SAX.characters(Diese Library stellt dem Progr, 173)
 SAX.getEntity(apos)
 SAX.characters(', 1)
 SAX.characters(new curses, 10)
 SAX.getEntity(apos)
 SAX.characters(', 1)
-SAX.characters( (ncurses) Variante und ist de, 51)
-SAX.characters(ü, 1)
-SAX.characters(r die klassische Curses-Librar, 70)
+SAX.characters( (ncurses) Variante und ist de, 122)
 SAX.endElement(RPM:Description)
 SAX.characters(
     , 5)

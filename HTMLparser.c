@@ -334,13 +334,13 @@ char *htmlStartClose[] = {
 "TABLE",	"P", "HEAD", "H1", "H2", "H3", "H4", "H5", "H6", "PRE",
 		"LISTING", "XMP", "A", NULL,
 "TH",		"TH", "TD", NULL,
-"TD",		"TH", "TD", NULL,
-"TR",		"TH", "TD", "TR", "CAPTION", "COL", "COLGROUP", NULL,
+"TD",		"TH", "TD", "P", NULL,
+"TR",		"TH", "TD", "TR", "CAPTION", "COL", "COLGROUP", "P", NULL,
 "THEAD",	"CAPTION", "COL", "COLGROUP", NULL,
 "TFOOT",	"TH", "TD", "TR", "CAPTION", "COL", "COLGROUP", "THEAD",
-		"TBODY", NULL,
+		"TBODY", "P", NULL,
 "TBODY",	"TH", "TD", "TR", "CAPTION", "COL", "COLGROUP", "THEAD",
-		"TFOOT", "TBODY", NULL,
+		"TFOOT", "TBODY", "P", NULL,
 "OPTGROUP",	"OPTION", NULL,
 "FIELDSET",	"LEGEND", "P", "HEAD", "H1", "H2", "H3", "H4", "H5", "H6",
 		"PRE", "LISTING", "XMP", "A", NULL,
@@ -2245,7 +2245,7 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
     const xmlChar *openTag = CUR_PTR;
     xmlChar *name;
     xmlChar *oldname;
-    xmlChar *currentNode;
+    xmlChar *currentNode = NULL;
     htmlElemDescPtr info;
     htmlParserNodeInfo node_info;
 

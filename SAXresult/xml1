@@ -1,16 +1,14 @@
+xmlSAXUserParseFile returned error 26
 SAX.setDocumentLocator()
 SAX.startDocument()
 SAX.internalSubset(test, (null), (null))
-SAX.getEntity(amp)
 SAX.entityDecl(example, 1, (null), (null), <p>An ampersand (&#38;) may be escaped
  numerically (&#38;#38;) or with a general entity
-  (&amp;).</p>)
+  (&amp;amp;).</p>)
 SAX.getEntity(example)
 SAX.startElement(test)
 SAX.getEntity(example)
-SAX.isStandalone()
-SAX.hasInternalSubset()
-SAX.hasExternalSubset()
 SAX.error: Entity 'example' not defined
 SAX.endElement(test)
 SAX.endDocument()
+xmlSAXUserParseFile returned error 26

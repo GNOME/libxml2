@@ -1,7 +1,6 @@
 SAX.setDocumentLocator()
 SAX.startDocument()
 SAX.internalSubset(MEMO, -//SGMLSOURCE//DTD MEMO//EN, http://www.sgmlsource.com/dtds/memo.dtd)
-SAX.resolveEntity(-//SGMLSOURCE//DTD MEMO//EN, http://www.sgmlsource.com/dtds/memo.dtd)
 SAX.startElement(MEMO)
 SAX.characters(
 , 1)

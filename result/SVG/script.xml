@@ -3,9 +3,10 @@
 <svg width="4in" height="3in">
   <defs>
     <script>
+<![CDATA[
       /* Beep on mouseclick */
       MouseClickHandler() { beep(); }
-     &gt;
+     ]]>
     </script>
   </defs>
   <circle onclick="MouseClickHandler()" r="85"/>

@@ -6,7 +6,5 @@
 ]>
 <EXAMPLE>
   
-  This text is about XML, the Extensible Markup Language and this is an embedded 
-  <IMG src="image"/>
-
+  This text is about XML, the Extensible Markup Language and this is an embedded <IMG src="image"/>
 </EXAMPLE>

@@ -4,7 +4,4 @@
 <!ELEMENT a (#PCDATA)>
 <!ELEMENT b (#PCDATA)>
 ]>
-<doc>
-  <a>This</a>
- is a   <b>valid</b>
- document</doc>
+<doc><a>This</a> is a <b>valid</b> document</doc>

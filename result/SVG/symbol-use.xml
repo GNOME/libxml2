@@ -3,14 +3,20 @@
 <svg width="4in" height="3in">
   <defs>
     <symbol id="TemplateObject01">
-<!-- symbol definition here -->    </symbol>
+<!-- symbol definition here -->
+    </symbol>
   </defs>
   <desc>Examples of inline and referenced content
   </desc>
-<!-- <g> with inline content -->  <g>
-<!-- Inline content goes here -->  </g>
-<!-- referenced content -->  <use href="#TemplateObject01"/>
-<!-- <g> with both referenced and inline content -->  <g>
+<!-- <g> with inline content -->
+  <g>
+<!-- Inline content goes here -->
+  </g>
+<!-- referenced content -->
+  <use href="#TemplateObject01"/>
+<!-- <g> with both referenced and inline content -->
+  <g>
     <use href="#TemplateObject01"/>
-<!-- Inline content goes here -->  </g>
+<!-- Inline content goes here -->
+  </g>
 </svg>

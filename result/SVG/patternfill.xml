@@ -4,7 +4,8 @@
   <defs>
     <symbol id="fourstar">
 <!-- Define the pattern using standard graphics elements
-           such as paths, images, text and shapes -->    </symbol>
+           such as paths, images, text and shapes -->
+    </symbol>
   </defs>
   <ellipse style="fill: url(#fourstar)" major="40" minor="27"/>
 </svg>

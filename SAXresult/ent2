@@ -1,26 +1,19 @@
 SAX.setDocumentLocator()
 SAX.startDocument()
 SAX.internalSubset(EXAMPLE, (null), example.dtd)
-SAX.resolveEntity( , example.dtd)
 SAX.entityDecl(xml, 1, (null), (null), Extensible Markup Language)
 SAX.getEntity(xml)
 SAX.entityDecl(title, 2, -//MY-TITLE//FR, title.xml, (null))
-SAX.entityDecl(image, 3, (null), img.gif, GIF)
+SAX.unparsedEntityDecl(image, (null), img.gif, GIF)
 SAX.startElement(EXAMPLE)
 SAX.characters(
   , 3)
 SAX.getEntity(title)
-SAX.isStandalone()
-SAX.hasInternalSubset()
-SAX.hasExternalSubset()
-SAX.error: Entity 'title' not defined
+SAX.warning: Entity 'title' not defined
 SAX.characters(
   This text is about XML, the, 31)
 SAX.getEntity(xml)
-SAX.isStandalone()
-SAX.hasInternalSubset()
-SAX.hasExternalSubset()
-SAX.error: Entity 'xml' not defined
+SAX.warning: Entity 'xml' not defined
 SAX.characters( and this is an embedded , 25)
 SAX.startElement(IMG, src='image')
 SAX.endElement(IMG)

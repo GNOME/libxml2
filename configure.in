@@ -60,11 +60,11 @@ AC_CHECK_HEADERS(zlib.h,
         if test "x${Z_DIR}" != "x"; then
             Z_CFLAGS="-I${Z_DIR}/include"
             Z_LIBS="-L${Z_DIR}/lib -lz"
-	    case ${host} in
+	    [case ${host} in
 		*-*-solaris*)
-		    Z_LIBS="-L${Z_DIR}/lib -R${Z_DIR}/lib -lz}"
+		    Z_LIBS="-L${Z_DIR}/lib -R${Z_DIR}/lib -lz"
 		    ;;
-	    esac
+	    esac]
         else
             Z_LIBS="-lz"
         fi]))

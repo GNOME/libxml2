@@ -1,3 +1,8 @@
+Sun Oct 19 19:20:48 HKT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* doc/Makefile.am: enhanced the installation of tutorial files
+	  to avoid installing CVS subdirectories (bug 122943)
+
 Sun Oct 19 17:33:27 HKT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* xmlIO.c: fixed segfault when input file not present

@@ -927,6 +927,9 @@ XMLPUBFUN void XMLCALL
 					 int len);
 XMLPUBFUN xmlChar * XMLCALL	
 		xmlNodeGetContent	(xmlNodePtr cur);
+XMLPUBFUN int XMLCALL
+		xmlNodeBufGetContent	(xmlBufferPtr buffer,
+					 xmlNodePtr cur);
 XMLPUBFUN xmlChar * XMLCALL	
 		xmlNodeGetLang		(xmlNodePtr cur);
 XMLPUBFUN int XMLCALL		

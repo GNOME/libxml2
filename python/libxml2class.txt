@@ -48,6 +48,16 @@ loadSGMLSuperCatalog()
 newCatalog()
 parseCatalogFile()
 
+# functions from module chvalid
+isBaseChar()
+isBlank()
+isChar()
+isCombining()
+isDigit()
+isExtender()
+isIdeographic()
+isPubidChar()
+
 # functions from module debugXML
 boolToText()
 debugDumpString()

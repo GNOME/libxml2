@@ -621,7 +621,7 @@ xmlDocWalkerNamespaceUri(xmlDocWalkerPtr iter)
 }
 
 /**
- * xmlTextReaderBaseUri:
+ * xmlDocWalkerBaseUri:
  * @iter:  the xmlDocWalkerPtr
  *
  * The base URI of the node.

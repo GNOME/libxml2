@@ -104,14 +104,21 @@
      <exports symbol='INPUT_CHUNK'/>
      <exports symbol='IS_BASECHAR'/>
      <exports symbol='IS_BLANK'/>
+     <exports symbol='IS_BLANK_CH'/>
      <exports symbol='IS_BYTE_CHAR'/>
      <exports symbol='IS_CHAR'/>
+     <exports symbol='IS_CHAR_CH'/>
      <exports symbol='IS_COMBINING'/>
+     <exports symbol='IS_COMBINING_CH'/>
      <exports symbol='IS_DIGIT'/>
+     <exports symbol='IS_DIGIT_CH'/>
      <exports symbol='IS_EXTENDER'/>
+     <exports symbol='IS_EXTENDER_CH'/>
      <exports symbol='IS_IDEOGRAPHIC'/>
      <exports symbol='IS_LETTER'/>
+     <exports symbol='IS_LETTER_CH'/>
      <exports symbol='IS_PUBIDCHAR'/>
+     <exports symbol='IS_PUBIDCHAR_CH'/>
      <exports symbol='MOVETO_ENDTAG'/>
      <exports symbol='MOVETO_STARTTAG'/>
      <exports symbol='SKIP_EOL'/>
@@ -212,6 +219,7 @@
      <exports symbol='xmlStringText'/>
      <exports symbol='xmlStringTextNoenc'/>
      <exports symbol='xmlSwitchEncoding'/>
+     <exports symbol='xmlSwitchInputEncoding'/>
      <exports symbol='xmlSwitchToEncoding'/>
     </file>
     <file name='c14n'>
@@ -421,6 +429,47 @@
      <exports symbol='xmlXPathWrapNodeSet'/>
      <exports symbol='xmlXPathWrapString'/>
      <exports symbol='xmlXPatherror'/>
+    </file>
+    <file name='chvalid'>
+     <exports symbol='_xmlChLRange'/>
+     <exports symbol='_xmlChRangeGroup'/>
+     <exports symbol='_xmlChSRange'/>
+     <exports symbol='xmlChLRange'/>
+     <exports symbol='xmlChLRangePtr'/>
+     <exports symbol='xmlChRangeGroup'/>
+     <exports symbol='xmlChRangeGroupPtr'/>
+     <exports symbol='xmlChSRange'/>
+     <exports symbol='xmlChSRangePtr'/>
+     <exports symbol='xmlCharInRange'/>
+     <exports symbol='xmlIsBaseChar'/>
+     <exports symbol='xmlIsBaseCharGroup'/>
+     <exports symbol='xmlIsBaseCharQ'/>
+     <exports symbol='xmlIsBaseChar_ch'/>
+     <exports symbol='xmlIsBlank'/>
+     <exports symbol='xmlIsBlankQ'/>
+     <exports symbol='xmlIsBlank_ch'/>
+     <exports symbol='xmlIsChar'/>
+     <exports symbol='xmlIsCharGroup'/>
+     <exports symbol='xmlIsCharQ'/>
+     <exports symbol='xmlIsChar_ch'/>
+     <exports symbol='xmlIsCombining'/>
+     <exports symbol='xmlIsCombiningGroup'/>
+     <exports symbol='xmlIsCombiningQ'/>
+     <exports symbol='xmlIsDigit'/>
+     <exports symbol='xmlIsDigitGroup'/>
+     <exports symbol='xmlIsDigitQ'/>
+     <exports symbol='xmlIsDigit_ch'/>
+     <exports symbol='xmlIsExtender'/>
+     <exports symbol='xmlIsExtenderGroup'/>
+     <exports symbol='xmlIsExtenderQ'/>
+     <exports symbol='xmlIsExtender_ch'/>
+     <exports symbol='xmlIsIdeographic'/>
+     <exports symbol='xmlIsIdeographicGroup'/>
+     <exports symbol='xmlIsIdeographicQ'/>
+     <exports symbol='xmlIsPubidChar'/>
+     <exports symbol='xmlIsPubidCharQ'/>
+     <exports symbol='xmlIsPubidChar_ch'/>
+     <exports symbol='xmlIsPubidChar_tab'/>
     </file>
     <file name='xmlautomata'>
      <exports symbol='xmlAutomata'/>
@@ -848,6 +897,7 @@
      <exports symbol='xmlAllocOutputBuffer'/>
      <exports symbol='xmlAllocParserInputBuffer'/>
      <exports symbol='xmlCheckFilename'/>
+     <exports symbol='xmlCheckHTTPInput'/>
      <exports symbol='xmlCleanupInputCallbacks'/>
      <exports symbol='xmlCleanupOutputCallbacks'/>
      <exports symbol='xmlFileClose'/>
@@ -2457,6 +2507,7 @@
      <exports symbol='xmlNode'/>
      <exports symbol='xmlNodeAddContent'/>
      <exports symbol='xmlNodeAddContentLen'/>
+     <exports symbol='xmlNodeBufGetContent'/>
      <exports symbol='xmlNodeDump'/>
      <exports symbol='xmlNodeDumpOutput'/>
      <exports symbol='xmlNodeGetBase'/>
@@ -2546,13 +2597,16 @@
      <exports symbol='xmlNanoHTTPAuthHeader'/>
      <exports symbol='xmlNanoHTTPCleanup'/>
      <exports symbol='xmlNanoHTTPClose'/>
+     <exports symbol='xmlNanoHTTPEncoding'/>
      <exports symbol='xmlNanoHTTPFetch'/>
      <exports symbol='xmlNanoHTTPInit'/>
      <exports symbol='xmlNanoHTTPMethod'/>
      <exports symbol='xmlNanoHTTPMethodRedir'/>
+     <exports symbol='xmlNanoHTTPMimeType'/>
      <exports symbol='xmlNanoHTTPOpen'/>
      <exports symbol='xmlNanoHTTPOpenRedir'/>
      <exports symbol='xmlNanoHTTPRead'/>
+     <exports symbol='xmlNanoHTTPRedir'/>
      <exports symbol='xmlNanoHTTPReturnCode'/>
      <exports symbol='xmlNanoHTTPSave'/>
      <exports symbol='xmlNanoHTTPScanProxy'/>
@@ -2841,6 +2895,10 @@
       <info>Macro to check the following production in the XML spec:  [3] S ::= (#x20 | #x9 | #xD | #xA)+</info>
       <arg name='c' info='an UNICODE value (int)'/>
     </macro>
+    <macro name='IS_BLANK_CH' file='parserInternals'>
+      <info>Behaviour same as IS_BLANK</info>
+      <arg name='c' info='an xmlChar value (normally unsigned char)'/>
+    </macro>
     <macro name='IS_BYTE_CHAR' file='parserInternals'>
       <info>Macro to check the following production in the XML spec:  [2] Char ::= #x9 | #xA | #xD | [#x20...] any byte character in the accepted range</info>
       <arg name='c' info='an byte value (int)'/>
@@ -2849,17 +2907,33 @@
       <info>Macro to check the following production in the XML spec:  [2] Char ::= #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] | [#x10000-#x10FFFF] any Unicode character, excluding the surrogate blocks, FFFE, and FFFF.</info>
       <arg name='c' info='an UNICODE value (int)'/>
     </macro>
+    <macro name='IS_CHAR_CH' file='parserInternals'>
+      <info>Behaves like IS_CHAR on single-byte value</info>
+      <arg name='c' info='an xmlChar (usually an unsigned char)'/>
+    </macro>
     <macro name='IS_COMBINING' file='parserInternals'>
       <info>Macro to check the following production in the XML spec:  [87] CombiningChar ::= ... long list see REC ...</info>
       <arg name='c' info='an UNICODE value (int)'/>
+    </macro>
+    <macro name='IS_COMBINING_CH' file='parserInternals'>
+      <info>Always false (all combining chars &gt; 0xff)</info>
+      <arg name='c' info='an xmlChar (usually an unsigned char)'/>
     </macro>
     <macro name='IS_DIGIT' file='parserInternals'>
       <info>Macro to check the following production in the XML spec:  [88] Digit ::= ... long list see REC ...</info>
       <arg name='c' info='an UNICODE value (int)'/>
     </macro>
+    <macro name='IS_DIGIT_CH' file='parserInternals'>
+      <info>Behaves like IS_DIGIT but with a single byte argument</info>
+      <arg name='c' info='an xmlChar value (usually an unsigned char)'/>
+    </macro>
     <macro name='IS_EXTENDER' file='parserInternals'>
       <info>Macro to check the following production in the XML spec:   [89] Extender ::= #x00B7 | #x02D0 | #x02D1 | #x0387 | #x0640 | #x0E46 | #x0EC6 | #x3005 | [#x3031-#x3035] | [#x309D-#x309E] | [#x30FC-#x30FE]</info>
       <arg name='c' info='an UNICODE value (int)'/>
+    </macro>
+    <macro name='IS_EXTENDER_CH' file='parserInternals'>
+      <info>Behaves like IS_EXTENDER but with a single-byte argument</info>
+      <arg name='c' info='an xmlChar value (usually an unsigned char)'/>
     </macro>
     <macro name='IS_IDEOGRAPHIC' file='parserInternals'>
       <info>Macro to check the following production in the XML spec:   [86] Ideographic ::= [#x4E00-#x9FA5] | #x3007 | [#x3021-#x3029]</info>
@@ -2869,9 +2943,17 @@
       <info>Macro to check the following production in the XML spec:   [84] Letter ::= BaseChar | Ideographic</info>
       <arg name='c' info='an UNICODE value (int)'/>
     </macro>
+    <macro name='IS_LETTER_CH' file='parserInternals'>
+      <info>Macro behaves like IS_LETTER, but only check base chars</info>
+      <arg name='c' info='an xmlChar value (normally unsigned char)'/>
+    </macro>
     <macro name='IS_PUBIDCHAR' file='parserInternals'>
       <info>Macro to check the following production in the XML spec:   [13] PubidChar ::= #x20 | #xD | #xA | [a-zA-Z0-9] | [-&apos;()+,./:=?;!*#@$_%]</info>
       <arg name='c' info='an UNICODE value (int)'/>
+    </macro>
+    <macro name='IS_PUBIDCHAR_CH' file='parserInternals'>
+      <info>Same as IS_PUBIDCHAR but for single-byte value</info>
+      <arg name='c' info='an xmlChar value (normally unsigned char)'/>
     </macro>
     <macro name='LIBXML_AUTOMATA_ENABLED' file='xmlversion'>
       <info>Whether the automata interfaces are compiled in</info>
@@ -3107,6 +3189,62 @@
     </macro>
     <macro name='xmlChildrenNode' file='tree'>
       <info>Macro for compatibility naming layer with libxml1.</info>
+    </macro>
+    <macro name='xmlIsBaseCharQ' file='chvalid'>
+      <info>Automatically generated by genChRanges.py</info>
+      <arg name='c' info='char to validate'/>
+    </macro>
+    <macro name='xmlIsBaseChar_ch' file='chvalid'>
+      <info>Automatically generated by genChRanges.py</info>
+      <arg name='c' info='char to validate'/>
+    </macro>
+    <macro name='xmlIsBlankQ' file='chvalid'>
+      <info>Automatically generated by genChRanges.py</info>
+      <arg name='c' info='char to validate'/>
+    </macro>
+    <macro name='xmlIsBlank_ch' file='chvalid'>
+      <info>Automatically generated by genChRanges.py</info>
+      <arg name='c' info='char to validate'/>
+    </macro>
+    <macro name='xmlIsCharQ' file='chvalid'>
+      <info>Automatically generated by genChRanges.py</info>
+      <arg name='c' info='char to validate'/>
+    </macro>
+    <macro name='xmlIsChar_ch' file='chvalid'>
+      <info>Automatically generated by genChRanges.py</info>
+      <arg name='c' info='char to validate'/>
+    </macro>
+    <macro name='xmlIsCombiningQ' file='chvalid'>
+      <info>Automatically generated by genChRanges.py</info>
+      <arg name='c' info='char to validate'/>
+    </macro>
+    <macro name='xmlIsDigitQ' file='chvalid'>
+      <info>Automatically generated by genChRanges.py</info>
+      <arg name='c' info='char to validate'/>
+    </macro>
+    <macro name='xmlIsDigit_ch' file='chvalid'>
+      <info>Automatically generated by genChRanges.py</info>
+      <arg name='c' info='char to validate'/>
+    </macro>
+    <macro name='xmlIsExtenderQ' file='chvalid'>
+      <info>Automatically generated by genChRanges.py</info>
+      <arg name='c' info='char to validate'/>
+    </macro>
+    <macro name='xmlIsExtender_ch' file='chvalid'>
+      <info>Automatically generated by genChRanges.py</info>
+      <arg name='c' info='char to validate'/>
+    </macro>
+    <macro name='xmlIsIdeographicQ' file='chvalid'>
+      <info>Automatically generated by genChRanges.py</info>
+      <arg name='c' info='char to validate'/>
+    </macro>
+    <macro name='xmlIsPubidCharQ' file='chvalid'>
+      <info>Automatically generated by genChRanges.py</info>
+      <arg name='c' info='char to validate'/>
+    </macro>
+    <macro name='xmlIsPubidChar_ch' file='chvalid'>
+      <info>Automatically generated by genChRanges.py</info>
+      <arg name='c' info='char to validate'/>
     </macro>
     <macro name='xmlRootNode' file='tree'>
       <info>Macro for compatibility naming layer with libxml1.</info>
@@ -4141,6 +4279,23 @@ if necessary or NULL'/>
     <typedef name='xmlCatalogAllow' file='catalog' type='enum'/>
     <typedef name='xmlCatalogPrefer' file='catalog' type='enum'/>
     <typedef name='xmlCatalogPtr' file='catalog' type='xmlCatalog *'/>
+    <struct name='xmlChLRange' file='chvalid' type='struct _xmlChLRange'>
+      <field name='low' type='unsigned int' info=''/>
+      <field name='high' type='unsigned int' info=''/>
+    </struct>
+    <typedef name='xmlChLRangePtr' file='chvalid' type='xmlChLRange *'/>
+    <struct name='xmlChRangeGroup' file='chvalid' type='struct _xmlChRangeGroup'>
+      <field name='nbShortRange' type='int' info=''/>
+      <field name='nbLongRange' type='int' info=''/>
+      <field name='shortRange' type='xmlChSRangePtr' info=' points to an array of ranges'/>
+      <field name='longRange' type='xmlChLRangePtr' info=''/>
+    </struct>
+    <typedef name='xmlChRangeGroupPtr' file='chvalid' type='xmlChRangeGroup *'/>
+    <struct name='xmlChSRange' file='chvalid' type='struct _xmlChSRange'>
+      <field name='low' type='unsigned short' info=''/>
+      <field name='high' type='unsigned short' info=''/>
+    </struct>
+    <typedef name='xmlChSRangePtr' file='chvalid' type='xmlChSRange *'/>
     <typedef name='xmlChar' file='tree' type='unsigned char'/>
     <typedef name='xmlCharEncoding' file='encoding' type='enum'/>
     <struct name='xmlCharEncodingHandler' file='encoding' type='struct _xmlCharEncodingHandler'>
@@ -4906,6 +5061,13 @@ actually an xmlCharEncoding'/>
     <variable name='xmlGenericErrorContext' file='globals' type='void *'/>
     <variable name='xmlGetWarningsDefaultValue' file='globals' type='int'/>
     <variable name='xmlIndentTreeOutput' file='globals' type='int'/>
+    <variable name='xmlIsBaseCharGroup' file='chvalid' type='xmlChRangeGroup'/>
+    <variable name='xmlIsCharGroup' file='chvalid' type='xmlChRangeGroup'/>
+    <variable name='xmlIsCombiningGroup' file='chvalid' type='xmlChRangeGroup'/>
+    <variable name='xmlIsDigitGroup' file='chvalid' type='xmlChRangeGroup'/>
+    <variable name='xmlIsExtenderGroup' file='chvalid' type='xmlChRangeGroup'/>
+    <variable name='xmlIsIdeographicGroup' file='chvalid' type='xmlChRangeGroup'/>
+    <variable name='xmlIsPubidChar_tab' file='chvalid' type='unsigned charxmlIsPubidChar_tab[256]'/>
     <variable name='xmlKeepBlanksDefaultValue' file='globals' type='int'/>
     <variable name='xmlLastError' file='globals' type='xmlError'/>
     <variable name='xmlLineNumbersDefaultValue' file='globals' type='int'/>
@@ -6593,6 +6755,12 @@ actually an xmlCharEncoding'/>
       <arg name='in' type='const unsigned char *' info='a pointer to an array of UTF-8 chars'/>
       <arg name='inlen' type='int *' info='the length of @in'/>
     </functype>
+    <function name='xmlCharInRange' file='chvalid'>
+      <info>Does a binary search of the range table to determine if char is valid</info>
+      <return type='int' info='true if character valid, false otherwise'/>
+      <arg name='val' type='unsigned int' info='character to be validated'/>
+      <arg name='rptr' type='xmlChRangeGroupPtr' info='pointer to range to be used to validate'/>
+    </function>
     <function name='xmlCharStrdup' file='parser'>
       <info>a strdup for char&apos;s to xmlChar&apos;s</info>
       <return type='xmlChar *' info='a new xmlChar * or NULL'/>
@@ -6608,6 +6776,12 @@ actually an xmlCharEncoding'/>
       <info>function checks to see if @path is a valid source (file, socket...) for XML.  if stat is not available on the target machine,</info>
       <return type='int' info='1.  if stat fails, returns 0 (if calling stat on the filename fails, it can&apos;t be right). if stat succeeds and the file is a directory, returns 2.  otherwise returns 1.'/>
       <arg name='path' type='const char *' info='the path to check'/>
+    </function>
+    <function name='xmlCheckHTTPInput' file='xmlIO'>
+      <info>Check an input in case it was created from an HTTP stream, in that case it will handle encoding and update of the base URL in case of redirection. It also checks for HTTP errors in which case the input is cleanly freed up and an appropriate error is raised in context</info>
+      <return type='xmlParserInputPtr' info='the input or NULL in case of HTTP error.'/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
+      <arg name='ret' type='xmlParserInputPtr' info='an XML parser input'/>
     </function>
     <function name='xmlCheckLanguageID' file='parserInternals'>
       <info>Checks that the value conforms to the LanguageID production:  NOTE: this is somewhat deprecated, those productions were removed from the XML Second edition.  [33] LanguageID ::= Langcode (&apos;-&apos; Subcode)* [34] Langcode ::= ISO639Code |  IanaCode |  UserCode [35] ISO639Code ::= ([a-z] | [A-Z]) ([a-z] | [A-Z]) [36] IanaCode ::= (&apos;i&apos; | &apos;I&apos;) &apos;-&apos; ([a-z] | [A-Z])+ [37] UserCode ::= (&apos;x&apos; | &apos;X&apos;) &apos;-&apos; ([a-z] | [A-Z])+ [38] Subcode ::= ([a-z] | [A-Z])+</info>
@@ -8057,10 +8231,40 @@ actually an xmlCharEncoding'/>
       <arg name='buffer' type='char *' info='the buffer to store data read'/>
       <arg name='len' type='int' info='the length of the buffer in bytes'/>
     </functype>
+    <function name='xmlIsBaseChar' file='chvalid'>
+      <info>This function is DEPRECATED.  Use xmlIsBaseChar_ch or xmlIsBaseCharQ instead</info>
+      <return type='int' info='true if argument valid, false otherwise'/>
+      <arg name='ch' type='unsigned int' info='character to validate'/>
+    </function>
+    <function name='xmlIsBlank' file='chvalid'>
+      <info>This function is DEPRECATED.  Use xmlIsBlank_ch or xmlIsBlankQ instead</info>
+      <return type='int' info='true if argument valid, false otherwise'/>
+      <arg name='ch' type='unsigned int' info='character to validate'/>
+    </function>
     <function name='xmlIsBlankNode' file='tree'>
       <info>Checks whether this node is an empty or whitespace only (and possibly ignorable) text-node.</info>
       <return type='int' info='1 yes, 0 no'/>
       <arg name='node' type='xmlNodePtr' info='the node'/>
+    </function>
+    <function name='xmlIsChar' file='chvalid'>
+      <info>This function is DEPRECATED.  Use xmlIsChar_ch or xmlIsCharQ instead</info>
+      <return type='int' info='true if argument valid, false otherwise'/>
+      <arg name='ch' type='unsigned int' info='character to validate'/>
+    </function>
+    <function name='xmlIsCombining' file='chvalid'>
+      <info>This function is DEPRECATED.  Use xmlIsCombining_ch or xmlIsCombiningQ instead</info>
+      <return type='int' info='true if argument valid, false otherwise'/>
+      <arg name='ch' type='unsigned int' info='character to validate'/>
+    </function>
+    <function name='xmlIsDigit' file='chvalid'>
+      <info>This function is DEPRECATED.  Use xmlIsDigit_ch or xmlIsDigitQ instead</info>
+      <return type='int' info='true if argument valid, false otherwise'/>
+      <arg name='ch' type='unsigned int' info='character to validate'/>
+    </function>
+    <function name='xmlIsExtender' file='chvalid'>
+      <info>This function is DEPRECATED.  Use xmlIsExtender_ch or xmlIsExtenderQ instead</info>
+      <return type='int' info='true if argument valid, false otherwise'/>
+      <arg name='ch' type='unsigned int' info='character to validate'/>
     </function>
     <function name='xmlIsID' file='valid'>
       <info>Determine whether an attribute is of type ID. In case we have DTD(s) then this is done if DTD loading has been requested. In the case of HTML documents parsed with the HTML parser, then ID detection is done systematically.</info>
@@ -8068,6 +8272,11 @@ actually an xmlCharEncoding'/>
       <arg name='doc' type='xmlDocPtr' info='the document'/>
       <arg name='elem' type='xmlNodePtr' info='the element carrying the attribute'/>
       <arg name='attr' type='xmlAttrPtr' info='the attribute'/>
+    </function>
+    <function name='xmlIsIdeographic' file='chvalid'>
+      <info>This function is DEPRECATED.  Use xmlIsIdeographic_ch or xmlIsIdeographicQ instead</info>
+      <return type='int' info='true if argument valid, false otherwise'/>
+      <arg name='ch' type='unsigned int' info='character to validate'/>
     </function>
     <function name='xmlIsLetter' file='parserInternals'>
       <info>Check whether the character is allowed by the production [84] Letter ::= BaseChar | Ideographic</info>
@@ -8083,6 +8292,11 @@ actually an xmlCharEncoding'/>
       <return type='int' info='0 if no, 1 if yes, and -1 if no element description is available'/>
       <arg name='doc' type='xmlDocPtr' info='the document'/>
       <arg name='name' type='const xmlChar *' info='the element name'/>
+    </function>
+    <function name='xmlIsPubidChar' file='chvalid'>
+      <info>This function is DEPRECATED.  Use xmlIsPubidChar_ch or xmlIsPubidCharQ instead</info>
+      <return type='int' info='true if argument valid, false otherwise'/>
+      <arg name='ch' type='unsigned int' info='character to validate'/>
     </function>
     <function name='xmlIsRef' file='valid'>
       <info>Determine whether an attribute is of type Ref. In case we have DTD(s) then this is simple, otherwise we use an heuristic: name Ref (upper or lowercase).</info>
@@ -8559,6 +8773,11 @@ actually an xmlCharEncoding'/>
       <return type='void'/>
       <arg name='ctx' type='void *' info='the HTTP context'/>
     </function>
+    <function name='xmlNanoHTTPEncoding' file='nanohttp'>
+      <info>Provides the specified encoding if specified in the HTTP headers.</info>
+      <return type='const char *' info='the specified encoding or NULL if not available'/>
+      <arg name='ctx' type='void *' info='the HTTP context'/>
+    </function>
     <function name='xmlNanoHTTPFetch' file='nanohttp'>
       <info>This function try to fetch the indicated resource via HTTP GET and save it&apos;s content in the file.</info>
       <return type='int' info='-1 in case of failure, 0 incase of success. The contentType, if provided must be freed by the caller'/>
@@ -8591,6 +8810,11 @@ actually an xmlCharEncoding'/>
       <arg name='headers' type='const char *' info='the extra headers'/>
       <arg name='ilen' type='int' info='input length'/>
     </function>
+    <function name='xmlNanoHTTPMimeType' file='nanohttp'>
+      <info>Provides the specified Mime-Type if specified in the HTTP headers.</info>
+      <return type='const char *' info='the specified Mime-Type or NULL if not available'/>
+      <arg name='ctx' type='void *' info='the HTTP context'/>
+    </function>
     <function name='xmlNanoHTTPOpen' file='nanohttp'>
       <info>This function try to open a connection to the indicated resource via HTTP GET.</info>
       <return type='void *' info='NULL in case of failure, otherwise a request handler. The contentType, if provided must be freed by the caller'/>
@@ -8610,6 +8834,11 @@ actually an xmlCharEncoding'/>
       <arg name='ctx' type='void *' info='the HTTP context'/>
       <arg name='dest' type='void *' info='a buffer'/>
       <arg name='len' type='int' info='the buffer length'/>
+    </function>
+    <function name='xmlNanoHTTPRedir' file='nanohttp'>
+      <info>Provides the specified redirection URL if available from the HTTP header.</info>
+      <return type='const char *' info='the specified redirection URL or NULL if not redirected.'/>
+      <arg name='ctx' type='void *' info='the HTTP context'/>
     </function>
     <function name='xmlNanoHTTPReturnCode' file='nanohttp'>
       <info>Get the latest HTTP return code received</info>
@@ -8769,7 +8998,7 @@ actually an xmlCharEncoding'/>
       <arg name='enc' type='xmlCharEncoding' info='the charset encoding if known'/>
     </function>
     <function name='xmlNewInputFromFile' file='parserInternals'>
-      <info>Create a new input stream based on a file.</info>
+      <info>Create a new input stream based on a file or an URL.</info>
       <return type='xmlParserInputPtr' info='the new input stream or NULL in case of error'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='filename' type='const char *' info='the filename to use as entity'/>
@@ -8909,6 +9138,12 @@ actually an xmlCharEncoding'/>
       <arg name='cur' type='xmlNodePtr' info='the node being modified'/>
       <arg name='content' type='const xmlChar *' info='extra content'/>
       <arg name='len' type='int' info='the size of @content'/>
+    </function>
+    <function name='xmlNodeBufGetContent' file='tree'>
+      <info>Read the value of a node @cur, this can be either the text carried directly by this node if it&apos;s a TEXT node or the aggregate string of the values carried by this node child&apos;s (TEXT and ENTITY_REF). Entity references are substituted. Fills up the buffer @buffer with this value</info>
+      <return type='int' info='0 in case of success and -1 in case of error.'/>
+      <arg name='buffer' type='xmlBufferPtr' info='a buffer'/>
+      <arg name='cur' type='xmlNodePtr' info='the node being read'/>
     </function>
     <function name='xmlNodeDump' file='tree'>
       <info>Dump an XML node, recursive behaviour,children are printed too. Note that @format = 1 provide node indenting only if xmlIndentTreeOutput = 1 or xmlKeepBlanksDefault(0) was called</info>
@@ -11027,6 +11262,13 @@ actually an xmlCharEncoding'/>
       <return type='int' info='0 in case of success, -1 otherwise'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='the parser context'/>
       <arg name='enc' type='xmlCharEncoding' info='the encoding value (number)'/>
+    </function>
+    <function name='xmlSwitchInputEncoding' file='parserInternals'>
+      <info>change the input functions when discovering the character encoding of a given entity.</info>
+      <return type='int' info='0 in case of success, -1 otherwise'/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info='the parser context'/>
+      <arg name='input' type='xmlParserInputPtr' info='the input stream'/>
+      <arg name='handler' type='xmlCharEncodingHandlerPtr' info='the encoding handler'/>
     </function>
     <function name='xmlSwitchToEncoding' file='parserInternals'>
       <info>change the input functions when discovering the character encoding of a given entity.</info>

@@ -264,11 +264,7 @@ xmlXPathPErrMemory(xmlXPathParserContextPtr ctxt, const char *extra)
 /**
  * xmlXPathErr:
  * @ctxt:  a XPath parser context
- * @node:  the node raising the error
  * @error:  the error code
- * @msg:  message
- * @str1:  extra info
- * @str2:  extra info
  *
  * Handle a Relax NG Parsing error
  */

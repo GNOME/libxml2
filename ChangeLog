@@ -1,3 +1,10 @@
+Sun Oct 19 22:42:16 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c include/libxml/tree.h: adding xmlNodeBufGetContent()
+	  allowing to grab the content without forcing allocations.
+	* python/libxml2class.txt doc/libxml2-api.xml: rebuilt the API
+	* xpath.c xmldwalk.c: removed a couple of comment errors.
+
 Sun Oct 19 16:39:36 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: applied patch from Chris Anderson to change back

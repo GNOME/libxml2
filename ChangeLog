@@ -1,3 +1,8 @@
+Sun Nov 16 16:03:24 HKT 2003 William Brack <wbrack@mmm.com.hk>
+
+	* xpath.c: fixed bug 126976 (string != empty nodeset
+	  should be false)
+
 Sun Nov 16 14:00:08 HKT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* doc/html/*.html: Finally - found the problem with the

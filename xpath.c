@@ -4359,14 +4359,13 @@ xmlXPathEqualNodeSetString(xmlXPathObjectPtr arg, const xmlChar * str, int neq)
         ((arg->type != XPATH_NODESET) && (arg->type != XPATH_XSLT_TREE)))
         return (0);
     ns = arg->nodesetval;
-    hash = xmlXPathStringHash(str);
-    if (ns == NULL)
+    /*
+     * A NULL nodeset compared with a string is always false
+     * (since there is no node equal, and no node not equal)
+     */
+    if ((ns == NULL) || (ns->nodeNr <= 0) )
         return (0);
-    if (ns->nodeNr <= 0) {
-	if (hash == 0)
-	    return(neq ^ 1);
-        return(neq);
-    }
+    hash = xmlXPathStringHash(str);
     for (i = 0; i < ns->nodeNr; i++) {
         if (xmlXPathNodeValHash(ns->nodeTab[i]) == hash) {
             str2 = xmlNodeGetContent(ns->nodeTab[i]);

@@ -464,10 +464,11 @@ def print_function_wrapper(name, output, export, include):
         return 1
 
     output.write("PyObject *\n")
-    output.write("libxml_%s(ATTRIBUTE_UNUSED PyObject *self," % (name))
+    output.write("libxml_%s(PyObject *self ATTRIBUTE_UNUSED," % (name))
+    output.write(" PyObject *args")
     if format == "":
-	output.write("ATTRIBUTE_UNUSED ")
-    output.write(" PyObject *args) {\n")
+	output.write(" ATTRIBUTE_UNUSED")
+    output.write(") {\n")
     if ret[0] != 'void':
         output.write("    PyObject *py_retval;\n")
     if c_return != "":

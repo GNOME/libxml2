@@ -8,11 +8,14 @@
 void
 parseStory (xmlDocPtr doc, xmlNodePtr cur) {
 
+	xmlChar *key;
 	cur = cur->xmlChildrenNode;
 	while (cur != NULL) {
 	    if ((!xmlStrcmp(cur->name, (const xmlChar *)"keyword"))) {
-		    printf("keyword: %s\n", xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
-	    }
+		    key = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+		    printf("keyword: %s\n", key);
+		    xmlFree(key);
+ 	    }
 	cur = cur->next;
 	}
     return;
@@ -28,7 +31,6 @@ parseDoc(char *docname) {
 	
 	if (doc == NULL ) {
 		fprintf(stderr,"Document not parsed successfully. \n");
-		xmlFreeDoc(doc);
 		return;
 	}
 	

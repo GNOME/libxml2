@@ -32,14 +32,14 @@
 	  interact with individual nodes).</p></td></tr><tr><td width="5%" valign="top" align="left"><a href="#checkparseerror"><img src="images/callouts/4.png" alt="4" border="0"></a> </td><td valign="top" align="left"><p>Check to see that the document was successfully parsed. If it
 	    was not, libxml will at this point
 	    register an error and stop. 
-	    </p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>One common example of an error at this point is improper
+	    </p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>One common example of an error at this point is improper
 	    handling of encoding. The XML standard requires
 	    documents stored with an encoding other than UTF-8 or UTF-16 to
 	    contain an explicit declaration of their encoding. If the
 	    declaration is there, libxml will
 	    automatically perform the necessary conversion to UTF-8 for
 		you. More information on XML's encoding
-		requirements is contained in the <a href="http://www.w3.org/TR/REC-xml#charencoding" target="_top">standard</a>.</p></td></tr></table></div><p>
+		requirements is contained in the <a href="http://www.w3.org/TR/REC-xml#charencoding" target="_top">standard</a>.</p></div><p>
 	  </p></td></tr><tr><td width="5%" valign="top" align="left"><a href="#getrootelement"><img src="images/callouts/5.png" alt="5" border="0"></a> </td><td valign="top" align="left"><p>Retrieve the document's root element.</p></td></tr><tr><td width="5%" valign="top" align="left"><a href="#checkemptyerror"><img src="images/callouts/6.png" alt="6" border="0"></a> </td><td valign="top" align="left"><p>Check to make sure the document actually contains something.</p></td></tr><tr><td width="5%" valign="top" align="left"><a href="#checkroottype"><img src="images/callouts/7.png" alt="7" border="0"></a> </td><td valign="top" align="left"><p>In our case, we need to make sure the document is the right
 	  type. &quot;story&quot; is the root type of the documents used in this
 	  tutorial.</p></td></tr></table></div><p>

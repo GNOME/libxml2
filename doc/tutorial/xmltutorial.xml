@@ -37,6 +37,10 @@
 	<revnumber>4</revnumber>
 	<date>Nov. 10, 2002</date>
       </revision>
+      <revision>
+	<revnumber>5</revnumber>
+	<date>Dec. 15, 2002</date>
+      </revision>
     </revhistory>
   </articleinfo>
   <abstract>
@@ -381,14 +385,17 @@ parseStory (xmlDocPtr doc, xmlNodePtr cur, char *keyword) {
 void
 getReference (xmlDocPtr doc, xmlNodePtr cur) {
 
+	xmlChar *uri;
 	cur = cur->xmlChildrenNode;
 	while (cur != NULL) {
 	    if ((!xmlStrcmp(cur->name, (const xmlChar *)"reference"))) {
-	<co id="getattributevalue" /> printf("uri: %s\n", xmlGetProp(cur, "uri"));
-		    }
+		   <co id="getattributevalue" /> uri = xmlGetProp(cur, "uri");
+		    printf("uri: %s\n", uri);
+		    xmlFree(uri);
+	    }
 	    cur = cur->next;
 	}
-    return;
+	return;
 }
       </programlisting>
     
@@ -555,6 +562,7 @@ getReference (xmlDocPtr doc, xmlNodePtr cur) {
 	<member>Marcus Labib Iskander</member>
 	<member>Christopher R. Harris</member>
 	<member>Igor Zlatkovic</member>
+	<member>Niraj Tolia</member>
       </simplelist>
     </para>
   </appendix>

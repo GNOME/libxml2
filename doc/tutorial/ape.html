@@ -10,14 +10,17 @@
 void
 getReference (xmlDocPtr doc, xmlNodePtr cur) {
 
+	xmlChar *uri;
 	cur = cur-&gt;xmlChildrenNode;
 	while (cur != NULL) {
 	    if ((!xmlStrcmp(cur-&gt;name, (const xmlChar *)&quot;reference&quot;))) {
-		    printf(&quot;uri: %s\n&quot;, xmlGetProp(cur, &quot;uri&quot;));
-		    }
+		    uri = xmlGetProp(cur, &quot;uri&quot;);
+		    printf(&quot;uri: %s\n&quot;, uri);
+		    xmlFree(uri);
+	    }
 	    cur = cur-&gt;next;
 	}
-    return;
+	return;
 }
 
 

@@ -18,14 +18,14 @@
     different character formats with ability to convert from any to any. While
     the actual number of supported formats varies between implementations, every
     iconv implementation is almost guaranteed to
-    support every format anyone has ever heard of.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"></td><th>Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>A common mistake is to use different formats for the internal data
+    support every format anyone has ever heard of.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p>A common mistake is to use different formats for the internal data
 	in different parts of one's code. The most common case is an application
 	that assumes ISO-8859-1 to be the internal data format, combined with
 	libxml, which assumes UTF-8 to be the
 	internal data format. The result is an application that treats internal
 	data differently, depending on which code section is executing. The one or
 	the other part of code will then, naturally, misinterpret the data.
-      </p></td></tr></table></div><p>This example constructs a simple document, then adds content provided
+      </p></div><p>This example constructs a simple document, then adds content provided
     at the command line to the document's root element and outputs the results
     to <tt>stdout</tt> in the proper encoding. For this example, we
     use ISO-8859-1 encoding. The encoding of the string input at the command

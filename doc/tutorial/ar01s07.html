@@ -11,14 +11,17 @@
 void
 getReference (xmlDocPtr doc, xmlNodePtr cur) {
 
+	xmlChar *uri;
 	cur = cur-&gt;xmlChildrenNode;
 	while (cur != NULL) {
 	    if ((!xmlStrcmp(cur-&gt;name, (const xmlChar *)&quot;reference&quot;))) {
-	<a name="getattributevalue"></a><img src="images/callouts/1.png" alt="1" border="0"> printf(&quot;uri: %s\n&quot;, xmlGetProp(cur, &quot;uri&quot;));
-		    }
+		   <a name="getattributevalue"></a><img src="images/callouts/1.png" alt="1" border="0"> uri = xmlGetProp(cur, &quot;uri&quot;);
+		    printf(&quot;uri: %s\n&quot;, uri);
+		    xmlFree(uri);
+	    }
 	    cur = cur-&gt;next;
 	}
-    return;
+	return;
 }
       </pre><p>
     
@@ -26,10 +29,10 @@ getReference (xmlDocPtr doc, xmlNodePtr cur) {
 	    The key function is <tt><a href="http://xmlsoft.org/html/libxml-tree.html#XMLGETPROP" target="_top">xmlGetProp</a></tt>, which returns an
       <tt>xmlChar</tt> containing the attribute's value. In this case,
 					   we just print it out.
-      </p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>
+      </p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
 	  If you are using a DTD that declares a fixed or
 	  default value for the attribute, this function will retrieve it.
-	</p></td></tr></table></div><p>
+	</p></div><p>
 	  </p></td></tr></table></div><p>
      
     </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ar01s06.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="index.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ar01s08.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Writing Attribute </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Encoding Conversion</td></tr></table></div></body></html>

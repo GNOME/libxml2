@@ -3852,6 +3852,13 @@ xmlRegexpIsDeterminist(xmlRegexpPtr comp) {
 	return(comp->determinist);
 
     am = xmlNewAutomata();
+    if (am->states != NULL) {
+	int i;
+
+	for (i = 0;i < am->nbStates;i++)
+	    xmlRegFreeState(am->states[i]);
+	xmlFree(am->states);
+    }
     am->nbAtoms = comp->nbAtoms;
     am->atoms = comp->atoms;
     am->nbStates = comp->nbStates;

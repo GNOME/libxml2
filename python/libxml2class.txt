@@ -12,6 +12,7 @@ htmlParseDoc()
 htmlParseFile()
 
 # functions from module HTMLtree
+htmlIsBooleanAttr()
 htmlNewDoc()
 htmlNewDocNoDtD()
 
@@ -122,7 +123,7 @@ dumpMemory()
 htmlCreatePushParser()
 htmlSAXParseFile()
 newNode()
-registerErrorHandler()
+regexpisterErrorHandler()
 setEntityLoader()
 
 # functions from module tree
@@ -155,10 +156,150 @@ cleanupOutputCallbacks()
 fileMatch()
 iOFTPMatch()
 iOHTTPMatch()
+normalizeWindowsPath()
 parserGetDirectory()
-registerDefaultInputCallbacks()
-registerDefaultOutputCallbacks()
-registerHTTPPostCallbacks()
+regexpisterDefaultInputCallbacks()
+regexpisterDefaultOutputCallbacks()
+regexpisterHTTPPostCallbacks()
+
+# functions from module xmlregexp
+regexpCompile()
+
+# functions from module xmlunicode
+uCSIsAlphabeticPresentationForms()
+uCSIsArabic()
+uCSIsArabicPresentationFormsA()
+uCSIsArabicPresentationFormsB()
+uCSIsArmenian()
+uCSIsArrows()
+uCSIsBasicLatin()
+uCSIsBengali()
+uCSIsBlock()
+uCSIsBlockElements()
+uCSIsBopomofo()
+uCSIsBopomofoExtended()
+uCSIsBoxDrawing()
+uCSIsBraillePatterns()
+uCSIsByzantineMusicalSymbols()
+uCSIsCJKCompatibility()
+uCSIsCJKCompatibilityForms()
+uCSIsCJKCompatibilityIdeographs()
+uCSIsCJKCompatibilityIdeographsSupplement()
+uCSIsCJKRadicalsSupplement()
+uCSIsCJKSymbolsandPunctuation()
+uCSIsCJKUnifiedIdeographs()
+uCSIsCJKUnifiedIdeographsExtensionA()
+uCSIsCJKUnifiedIdeographsExtensionB()
+uCSIsCat()
+uCSIsCatC()
+uCSIsCatCc()
+uCSIsCatCf()
+uCSIsCatCo()
+uCSIsCatCs()
+uCSIsCatL()
+uCSIsCatLl()
+uCSIsCatLm()
+uCSIsCatLo()
+uCSIsCatLt()
+uCSIsCatLu()
+uCSIsCatM()
+uCSIsCatMc()
+uCSIsCatMe()
+uCSIsCatMn()
+uCSIsCatN()
+uCSIsCatNd()
+uCSIsCatNl()
+uCSIsCatNo()
+uCSIsCatP()
+uCSIsCatPc()
+uCSIsCatPd()
+uCSIsCatPe()
+uCSIsCatPf()
+uCSIsCatPi()
+uCSIsCatPo()
+uCSIsCatPs()
+uCSIsCatS()
+uCSIsCatSc()
+uCSIsCatSk()
+uCSIsCatSm()
+uCSIsCatSo()
+uCSIsCatZ()
+uCSIsCatZl()
+uCSIsCatZp()
+uCSIsCatZs()
+uCSIsCherokee()
+uCSIsCombiningDiacriticalMarks()
+uCSIsCombiningHalfMarks()
+uCSIsCombiningMarksforSymbols()
+uCSIsControlPictures()
+uCSIsCurrencySymbols()
+uCSIsCyrillic()
+uCSIsDeseret()
+uCSIsDevanagari()
+uCSIsDingbats()
+uCSIsEnclosedAlphanumerics()
+uCSIsEnclosedCJKLettersandMonths()
+uCSIsEthiopic()
+uCSIsGeneralPunctuation()
+uCSIsGeometricShapes()
+uCSIsGeorgian()
+uCSIsGothic()
+uCSIsGreek()
+uCSIsGreekExtended()
+uCSIsGujarati()
+uCSIsGurmukhi()
+uCSIsHalfwidthandFullwidthForms()
+uCSIsHangulCompatibilityJamo()
+uCSIsHangulJamo()
+uCSIsHangulSyllables()
+uCSIsHebrew()
+uCSIsHighPrivateUseSurrogates()
+uCSIsHighSurrogates()
+uCSIsHiragana()
+uCSIsIPAExtensions()
+uCSIsIdeographicDescriptionCharacters()
+uCSIsKanbun()
+uCSIsKangxiRadicals()
+uCSIsKannada()
+uCSIsKatakana()
+uCSIsKhmer()
+uCSIsLao()
+uCSIsLatin1Supplement()
+uCSIsLatinExtendedA()
+uCSIsLatinExtendedAdditional()
+uCSIsLatinExtendedB()
+uCSIsLetterlikeSymbols()
+uCSIsLowSurrogates()
+uCSIsMalayalam()
+uCSIsMathematicalAlphanumericSymbols()
+uCSIsMathematicalOperators()
+uCSIsMiscellaneousSymbols()
+uCSIsMiscellaneousTechnical()
+uCSIsMongolian()
+uCSIsMusicalSymbols()
+uCSIsMyanmar()
+uCSIsNumberForms()
+uCSIsOgham()
+uCSIsOldItalic()
+uCSIsOpticalCharacterRecognition()
+uCSIsOriya()
+uCSIsPrivateUse()
+uCSIsRunic()
+uCSIsSinhala()
+uCSIsSmallFormVariants()
+uCSIsSpacingModifierLetters()
+uCSIsSpecials()
+uCSIsSuperscriptsandSubscripts()
+uCSIsSyriac()
+uCSIsTags()
+uCSIsTamil()
+uCSIsTelugu()
+uCSIsThaana()
+uCSIsThai()
+uCSIsTibetan()
+uCSIsUnifiedCanadianAboriginalSyllabics()
+uCSIsYiRadicals()
+uCSIsYiSyllables()
 
 # functions from module xmlversion
 checkVersion()
@@ -351,38 +492,38 @@ Class xmlDoc(xmlNode)
 
     # functions from module xpath
     xpathNewContext()
-Class xpathContext()
-    # accessors
-    contextDoc()
-    contextNode()
-    contextPosition()
-    contextSize()
-    function()
-    functionURI()
-    setContextDoc()
-    setContextNode()
-
-    # functions from module python
-    registerXPathFunction()
-
-    # functions from module xpath
-    xpathEval()
-    xpathEvalExpression()
-    xpathFreeContext()
-
-    # functions from module xpathInternals
-    xpathNewParserContext()
-    xpathNsLookup()
-    xpathRegisterAllFunctions()
-    xpathRegisterNs()
-    xpathRegisteredFuncsCleanup()
-    xpathRegisteredNsCleanup()
-    xpathRegisteredVariablesCleanup()
-    xpathVariableLookup()
-    xpathVariableLookupNS()
 
 
 Class xmlAttribute(xmlNode)
+
+
+Class xmlNs(xmlNode)
+
+    # functions from module tree
+    copyNamespace()
+    copyNamespaceList()
+    freeNs()
+    freeNsList()
+    newNodeEatName()
+
+    # functions from module xpathInternals
+    xpathNodeSetFreeNs()
+
+
+Class xmlDtd(xmlNode)
+
+    # functions from module debugXML
+    debugDumpDTD()
+
+    # functions from module tree
+    copyDtd()
+    freeDtd()
+
+    # functions from module valid
+    dtdAttrDesc()
+    dtdElementDesc()
+    dtdQAttrDesc()
+    dtdQElementDesc()
 Class catalog()
 
     # functions from module catalog
@@ -396,27 +537,6 @@ Class catalog()
     resolvePublic()
     resolveSystem()
     resolveURI()
-
-
-Class xmlElement(xmlNode)
-
-
-Class xmlAttr(xmlNode)
-
-    # functions from module debugXML
-    debugDumpAttr()
-    debugDumpAttrList()
-
-    # functions from module tree
-    freeProp()
-    freePropList()
-    removeProp()
-
-
-Class xmlEntity(xmlNode)
-
-    # functions from module parserInternals
-    handleEntity()
 Class xpathParserContext()
     # accessors
     context()
@@ -443,6 +563,7 @@ Class xpathParserContext()
     xpathMultValues()
     xpathNamespaceURIFunction()
     xpathNormalizeFunction()
+    xpathNotEqualValues()
     xpathNotFunction()
     xpathNumberFunction()
     xpathParseNCName()
@@ -540,44 +661,6 @@ Class parserCtxt()
     stringDecodeEntities()
 
 
-Class xmlDtd(xmlNode)
-
-    # functions from module debugXML
-    debugDumpDTD()
-
-    # functions from module tree
-    copyDtd()
-    freeDtd()
-
-    # functions from module valid
-    dtdAttrDesc()
-    dtdElementDesc()
-    dtdQAttrDesc()
-    dtdQElementDesc()
-
-
-Class xmlNs(xmlNode)
-
-    # functions from module tree
-    copyNamespace()
-    copyNamespaceList()
-    freeNs()
-    freeNsList()
-    newNodeEatName()
-
-    # functions from module xpathInternals
-    xpathNodeSetFreeNs()
-
-
-Class inputBuffer(ioReadWrapper)
-
-    # functions from module xmlIO
-    freeParserInputBuffer()
-    grow()
-    push()
-    read()
-
-
 Class outputBuffer(ioWriteWrapper)
 
     # functions from module xmlIO
@@ -585,6 +668,34 @@ Class outputBuffer(ioWriteWrapper)
     flush()
     write()
     writeString()
+
+
+Class xmlElement(xmlNode)
+
+
+Class xmlEntity(xmlNode)
+
+    # functions from module parserInternals
+    handleEntity()
+
+
+Class xmlAttr(xmlNode)
+
+    # functions from module debugXML
+    debugDumpAttr()
+    debugDumpAttrList()
+
+    # functions from module tree
+    freeProp()
+    freePropList()
+    removeProp()
+Class xmlReg()
+
+    # functions from module xmlregexp
+    regexpExec()
+    regexpFreeRegexp()
+    regexpIsDeterminist()
+    regexpPrint()
 Class URI()
     # accessors
     authority()
@@ -611,3 +722,41 @@ Class URI()
     parseURIReference()
     printURI()
     saveUri()
+Class xpathContext()
+    # accessors
+    contextDoc()
+    contextNode()
+    contextPosition()
+    contextSize()
+    function()
+    functionURI()
+    setContextDoc()
+    setContextNode()
+
+    # functions from module python
+    regexpisterXPathFunction()
+
+    # functions from module xpath
+    xpathEval()
+    xpathEvalExpression()
+    xpathFreeContext()
+
+    # functions from module xpathInternals
+    xpathNewParserContext()
+    xpathNsLookup()
+    xpathRegisterAllFunctions()
+    xpathRegisterNs()
+    xpathRegisteredFuncsCleanup()
+    xpathRegisteredNsCleanup()
+    xpathRegisteredVariablesCleanup()
+    xpathVariableLookup()
+    xpathVariableLookupNS()
+
+
+Class inputBuffer(ioReadWrapper)
+
+    # functions from module xmlIO
+    freeParserInputBuffer()
+    grow()
+    push()
+    read()

@@ -505,3 +505,21 @@ libxml_xmlParserInputBufferPtrWrap(xmlParserInputBufferPtr buffer)
                                      (char *) "xmlParserInputBufferPtr", NULL);
     return (ret);
 }
+
+PyObject *
+libxml_xmlRegexpPtrWrap(xmlRegexpPtr regexp)
+{
+    PyObject *ret;
+
+#ifdef DEBUG
+    printf("libxml_xmlRegexpPtrWrap: regexp = %p\n", regexp);
+#endif
+    if (regexp == NULL) {
+        Py_INCREF(Py_None);
+        return (Py_None);
+    }
+    ret =
+        PyCObject_FromVoidPtrAndDesc((void *) regexp,
+                                     (char *) "xmlRegexpPtr", NULL);
+    return (ret);
+}

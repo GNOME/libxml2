@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd">
 <html>
 <head>
-<meta content="text/html; charset=ISO-8859-1" http-equiv="Content-Type">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link rel="SHORTCUT ICON" href="/favicon.ico">
 <style type="text/css"><!--
 TD {font-family: Verdana,Arial,Helvetica}
@@ -16,7 +16,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <body bgcolor="#8b7765" text="#000000" link="#000000" vlink="#000000">
 <table border="0" width="100%" cellpadding="5" cellspacing="0" align="center"><tr>
 <td width="180">
-<a href="http://www.gnome.org/"><img src="smallfootonly.gif" alt="Gnome Logo"></a><a href="http://www.w3.org/Status"><img src="w3c.png" alt="W3C Logo"></a><a href="http://www.redhat.com/"><img src="redhat.gif" alt="Red Hat Logo"></a>
+<a href="http://www.gnome.org/"><img src="gnome2.png" alt="Gnome2 Logo"></a><a href="http://www.w3.org/Status"><img src="w3c.png" alt="W3C Logo"></a><a href="http://www.redhat.com/"><img src="redhat.gif" alt="Red Hat Logo"></a><div align="left"><a href="http://xmlsoft.org/"><img src="Libxml2-Logo-180x168.gif" alt="Made with Libxml2 Logo"></a></div>
 </td>
 <td><table border="0" width="90%" cellpadding="2" cellspacing="0" align="center" bgcolor="#000000"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="3" bgcolor="#fffacd"><tr><td align="center">
 <h1>The XML C library for Gnome</h1>
@@ -55,6 +55,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <li><a href="DOM.html">DOM Principles</a></li>
 <li><a href="example.html">A real example</a></li>
 <li><a href="contribs.html">Contributions</a></li>
+<li><a href="tutorial/index.html">Tutorial</a></li>
 <li>
 <a href="xml.html">flat page</a>, <a href="site.xsl">stylesheet</a>
 </li>
@@ -80,6 +81,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <li><a href="ftp://xmlsoft.org/">FTP</a></li>
 <li><a href="http://www.fh-frankfurt.de/~igor/projects/libxml/">Windows binaries</a></li>
 <li><a href="http://garypennington.net/libxml2/">Solaris binaries</a></li>
+<li><a href="http://www.zveno.com/open_source/libxml2xslt.html">MacOsX binaries</a></li>
 <li><a href="http://sourceforge.net/projects/libxml2-pas/">Pascal bindings</a></li>
 <li><a href="http://bugzilla.gnome.org/buglist.cgi?product=libxml&amp;product=libxml2">Bug Tracker</a></li>
 </ul></td></tr>
@@ -102,12 +104,14 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="APIchunk12.html">g-i</a>
 <a href="APIchunk13.html">j-l</a>
 <a href="APIchunk14.html">m-n</a>
-<a href="APIchunk15.html">o-p</a>
-<a href="APIchunk16.html">q-r</a>
-<a href="APIchunk17.html">s-s</a>
-<a href="APIchunk18.html">t-t</a>
-<a href="APIchunk19.html">u-v</a>
-<a href="APIchunk20.html">w-x</a>
+<a href="APIchunk15.html">o-o</a>
+<a href="APIchunk16.html">p-p</a>
+<a href="APIchunk17.html">q-r</a>
+<a href="APIchunk18.html">s-s</a>
+<a href="APIchunk19.html">t-t</a>
+<a href="APIchunk20.html">u-v</a>
+<a href="APIchunk21.html">w-w</a>
+<a href="APIchunk22.html">x-x</a>
 </h2>
 <h2>Letter m:</h2>
 <dl>
@@ -208,25 +212,35 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-valid.html#XMLVALIDATENMTOKENVALUE">xmlValidateNmtokenValue</a>
 <a href="html/libxml-valid.html#XMLVALIDATENMTOKENSVALUE">xmlValidateNmtokensValue</a>
 <a href="html/libxml-valid.html#XMLVALIDATENOTATIONUSE">xmlValidateNotationUse</a>
+<a href="html/libxml-xpathinternals.html#XMLXPATHNODESETFREENS">xmlXPathNodeSetFreeNs</a>
 </dd>
 <dt>matches</dt>
 <dd>
 <a href="html/libxml-xpathinternals.html#CHECK-ARITY-CAPS">CHECK_ARITY</a>
+<a href="html/libxml-xmlio.html#XMLFILEMATCH">xmlFileMatch</a>
+<a href="html/libxml-xmlio.html#XMLIOFTPMATCH">xmlIOFTPMatch</a>
+<a href="html/libxml-xmlio.html#XMLIOHTTPMATCH">xmlIOHTTPMatch</a>
 <a href="html/libxml-parser.html#XMLPARSECTXTEXTERNALENTITY">xmlParseCtxtExternalEntity</a>
 <a href="html/libxml-parser.html#XMLPARSEEXTPARSEDENT">xmlParseExtParsedEnt</a>
 <a href="html/libxml-parser.html#XMLPARSEEXTERNALENTITY">xmlParseExternalEntity</a>
-<a href="html/libxml-index.html#XMLREGEXPEXEC">xmlRegexpExec</a>
+<a href="html/libxml-xmlregexp.html#XMLREGEXPEXEC">xmlRegexpExec</a>
 </dd>
 <dt>matching</dt>
 <dd>
+<a href="html/libxml-xmlio.html#XMLFILEMATCH">xmlFileMatch</a>
+<a href="html/libxml-xmlio.html#XMLFILEOPEN">xmlFileOpen</a>
 <a href="html/libxml-hash.html#XMLHASHSCAN3">xmlHashScan3</a>
 <a href="html/libxml-hash.html#XMLHASHSCANFULL3">xmlHashScanFull3</a>
+<a href="html/libxml-xmlio.html#XMLIOFTPMATCH">xmlIOFTPMatch</a>
+<a href="html/libxml-xmlio.html#XMLIOFTPOPEN">xmlIOFTPOpen</a>
+<a href="html/libxml-xmlio.html#XMLIOHTTPMATCH">xmlIOHTTPMatch</a>
+<a href="html/libxml-xmlio.html#XMLIOHTTPOPEN">xmlIOHTTPOpen</a>
 <a href="html/libxml-xpathinternals.html#XMLXPATHIDFUNCTION">xmlXPathIdFunction</a>
 </dd>
 <dt>max</dt>
 <dd>
-<a href="html/libxml-index.html#XMLAUTOMATANEWCOUNTTRANS">xmlAutomataNewCountTrans</a>
-<a href="html/libxml-index.html#XMLAUTOMATANEWONCETRANS">xmlAutomataNewOnceTrans</a>
+<a href="html/libxml-xmlautomata.html#XMLAUTOMATANEWCOUNTTRANS">xmlAutomataNewCountTrans</a>
+<a href="html/libxml-xmlautomata.html#XMLAUTOMATANEWONCETRANS">xmlAutomataNewOnceTrans</a>
 <a href="html/libxml-tree.html#XMLGETCOMPRESSMODE">xmlGetCompressMode</a>
 <a href="html/libxml-tree.html#XMLGETDOCCOMPRESSMODE">xmlGetDocCompressMode</a>
 <a href="html/libxml-xmlio.html#XMLOUTPUTBUFFERCREATEFILENAME">xmlOutputBufferCreateFilename</a>
@@ -238,7 +252,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 </dd>
 <dt>maximal</dt>
 <dd>
-<a href="html/libxml-index.html#XMLAUTOMATANEWCOUNTER">xmlAutomataNewCounter</a>
+<a href="html/libxml-xmlautomata.html#XMLAUTOMATANEWCOUNTER">xmlAutomataNewCounter</a>
 </dd>
 <dt>maximum</dt>
 <dd>
@@ -332,17 +346,17 @@ A:link, A:visited, A:active { text-decoration: underline }
 </dd>
 <dt>min</dt>
 <dd>
-<a href="html/libxml-index.html#XMLAUTOMATANEWCOUNTTRANS">xmlAutomataNewCountTrans</a>
-<a href="html/libxml-index.html#XMLAUTOMATANEWONCETRANS">xmlAutomataNewOnceTrans</a>
+<a href="html/libxml-xmlautomata.html#XMLAUTOMATANEWCOUNTTRANS">xmlAutomataNewCountTrans</a>
+<a href="html/libxml-xmlautomata.html#XMLAUTOMATANEWONCETRANS">xmlAutomataNewOnceTrans</a>
 </dd>
 <dt>minimal</dt>
 <dd>
-<a href="html/libxml-index.html#XMLAUTOMATANEWCOUNTER">xmlAutomataNewCounter</a>
+<a href="html/libxml-xmlautomata.html#XMLAUTOMATANEWCOUNTER">xmlAutomataNewCounter</a>
 </dd>
 <dt>minimum</dt>
 <dd>
-<a href="html/libxml-index.html#XMLAUTOMATANEWCOUNTTRANS">xmlAutomataNewCountTrans</a>
-<a href="html/libxml-index.html#XMLAUTOMATANEWONCETRANS">xmlAutomataNewOnceTrans</a>
+<a href="html/libxml-xmlautomata.html#XMLAUTOMATANEWCOUNTTRANS">xmlAutomataNewCountTrans</a>
+<a href="html/libxml-xmlautomata.html#XMLAUTOMATANEWONCETRANS">xmlAutomataNewOnceTrans</a>
 <a href="html/libxml-tree.html#XMLBUFFERGROW">xmlBufferGrow</a>
 <a href="html/libxml-tree.html#XMLBUFFERRESIZE">xmlBufferResize</a>
 </dd>
@@ -405,13 +419,13 @@ A:link, A:visited, A:active { text-decoration: underline }
 <dd>
 <a href="html/libxml-parserinternals.html#XML-MAX-NAMELEN-CAPS">XML_MAX_NAMELEN</a>
 <a href="html/libxml-parser.html#XMLLOADEXTERNALENTITY">xmlLoadExternalEntity</a>
-<a href="html/libxml-index.html#XMLREGEXPPTR">xmlRegexpPtr</a>
+<a href="html/libxml-xmlregexp.html#XMLREGEXPPTR">xmlRegexpPtr</a>
 <a href="html/libxml-parser.html#XMLSTREQUAL">xmlStrEqual</a>
 <a href="html/libxml-xpathinternals.html#XMLXPATHSTRINGFUNCTION">xmlXPathStringFunction</a>
 </dd>
 <dt>moreover</dt>
 <dd>
-<a href="html/libxml-index.html#XMLAUTOMATANEWONCETRANS">xmlAutomataNewOnceTrans</a>
+<a href="html/libxml-xmlautomata.html#XMLAUTOMATANEWONCETRANS">xmlAutomataNewOnceTrans</a>
 </dd>
 <dt>most</dt>
 <dd>
@@ -545,8 +559,10 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-encoding.html#XMLINITCHARENCODINGHANDLERS">xmlInitCharEncodingHandlers</a>
 <a href="html/libxml-tree.html#XMLNEWCHILD">xmlNewChild</a>
 <a href="html/libxml-tree.html#XMLNEWDOCNODE">xmlNewDocNode</a>
+<a href="html/libxml-tree.html#XMLNEWDOCNODEEATNAME">xmlNewDocNodeEatName</a>
 <a href="html/libxml-xpath.html#XMLXPATHCONTEXT">xmlXPathContext</a>
 <a href="html/libxml-xpath.html#XMLXPATHNEWCONTEXT">xmlXPathNewContext</a>
+<a href="html/libxml-xpathinternals.html#XMLXPATHNODESETFREENS">xmlXPathNodeSetFreeNs</a>
 </dd>
 <dt>needed</dt>
 <dd>
@@ -583,14 +599,14 @@ A:link, A:visited, A:active { text-decoration: underline }
 </dd>
 <dt>negativa</dt>
 <dd>
-<a href="html/libxml-index.html#XMLREGEXPEXEC">xmlRegexpExec</a>
+<a href="html/libxml-xmlregexp.html#XMLREGEXPEXEC">xmlRegexpExec</a>
 </dd>
 <dt>negative</dt>
 <dd>
 <a href="html/libxml-c14n.html#XMLC14NDOCDUMPMEMORY">xmlC14NDocDumpMemory</a>
 <a href="html/libxml-c14n.html#XMLC14NDOCSAVE">xmlC14NDocSave</a>
 <a href="html/libxml-c14n.html#XMLC14NDOCSAVETO">xmlC14NDocSaveTo</a>
-<a href="html/libxml-index.html#XMLREGEXECPUSHSTRING">xmlRegExecPushString</a>
+<a href="html/libxml-xmlregexp.html#XMLREGEXECPUSHSTRING">xmlRegExecPushString</a>
 <a href="html/libxml-debugxml.html#XMLSHELLCMD">xmlShellCmd</a>
 <a href="html/libxml-xpathinternals.html#XMLXPATHBOOLEANFUNCTION">xmlXPathBooleanFunction</a>
 <a href="html/libxml-xpathinternals.html#XMLXPATHCEILINGFUNCTION">xmlXPathCeilingFunction</a>
@@ -634,6 +650,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xpathinternals.html#XMLXPATHNEXTPRECEDING">xmlXPathNextPreceding</a>
 <a href="html/libxml-xpathinternals.html#XMLXPATHNEXTPRECEDINGSIBLING">xmlXPathNextPrecedingSibling</a>
 <a href="html/libxml-xpathinternals.html#XMLXPATHNEXTSELF">xmlXPathNextSelf</a>
+<a href="html/libxml-xpathinternals.html#XMLXPATHNODESETFREENS">xmlXPathNodeSetFreeNs</a>
 </dd>
 <dt>nod</dt>
 <dd>
@@ -662,6 +679,10 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-xpathinternals.html#XMLXPATHLEADINGSORTED">xmlXPathLeadingSorted</a>
 <a href="html/libxml-xpathinternals.html#XMLXPATHTRAILING">xmlXPathTrailing</a>
 <a href="html/libxml-xpathinternals.html#XMLXPATHTRAILINGSORTED">xmlXPathTrailingSorted</a>
+</dd>
+<dt>nodeset</dt>
+<dd>
+<a href="html/libxml-xpathinternals.html#XMLXPATHNODESETFREENS">xmlXPathNodeSetFreeNs</a>
 </dd>
 <dt>nodesets</dt>
 <dd>
@@ -692,7 +713,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 </dd>
 <dt>non-final</dt>
 <dd>
-<a href="html/libxml-index.html#XMLREGEXECPUSHSTRING">xmlRegExecPushString</a>
+<a href="html/libxml-xmlregexp.html#XMLREGEXECPUSHSTRING">xmlRegExecPushString</a>
 </dd>
 <dt>non-negative</dt>
 <dd>
@@ -860,12 +881,14 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="APIchunk12.html">g-i</a>
 <a href="APIchunk13.html">j-l</a>
 <a href="APIchunk14.html">m-n</a>
-<a href="APIchunk15.html">o-p</a>
-<a href="APIchunk16.html">q-r</a>
-<a href="APIchunk17.html">s-s</a>
-<a href="APIchunk18.html">t-t</a>
-<a href="APIchunk19.html">u-v</a>
-<a href="APIchunk20.html">w-x</a>
+<a href="APIchunk15.html">o-o</a>
+<a href="APIchunk16.html">p-p</a>
+<a href="APIchunk17.html">q-r</a>
+<a href="APIchunk18.html">s-s</a>
+<a href="APIchunk19.html">t-t</a>
+<a href="APIchunk20.html">u-v</a>
+<a href="APIchunk21.html">w-w</a>
+<a href="APIchunk22.html">x-x</a>
 </h2>
 <p><a href="bugs.html">Daniel Veillard</a></p>
 </td></tr></table></td></tr></table></td></tr></table></td>

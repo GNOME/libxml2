@@ -18,7 +18,8 @@ PYTESTS=	\
     xpath.py	\
     outbuf.py	\
     inbuf.py	\
-    resolver.py
+    resolver.py \
+    regexp.py
 
 XMLS=		\
     tst.xml	\

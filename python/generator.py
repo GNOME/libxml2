@@ -270,6 +270,7 @@ py_types = {
     'xmlURIPtr': ('O', "URI", "xmlURIPtr", "xmlURIPtr"),
     'xmlOutputBufferPtr': ('O', "outputBuffer", "xmlOutputBufferPtr", "xmlOutputBufferPtr"),
     'xmlParserInputBufferPtr': ('O', "inputBuffer", "xmlParserInputBufferPtr", "xmlParserInputBufferPtr"),
+    'xmlRegexpPtr': ('O', "xmlReg", "xmlRegexpPtr", "xmlRegexpPtr"),
 }
 
 py_return_types = {
@@ -409,6 +410,10 @@ def print_function_wrapper(name, output, export, include):
         include.write("#ifdef LIBXML_XINCLUDE_ENABLED\n");
         export.write("#ifdef LIBXML_XINCLUDE_ENABLED\n");
         output.write("#ifdef LIBXML_XINCLUDE_ENABLED\n");
+    elif file == "xmlregexp":
+        include.write("#ifdef LIBXML_REGEXP_ENABLED\n");
+        export.write("#ifdef LIBXML_REGEXP_ENABLED\n");
+        output.write("#ifdef LIBXML_REGEXP_ENABLED\n");
 
     include.write("PyObject * ")
     include.write("libxml_%s(PyObject *self, PyObject *args);\n" % (name));
@@ -468,6 +473,10 @@ def print_function_wrapper(name, output, export, include):
         include.write("#endif /* LIBXML_XINCLUDE_ENABLED */\n");
         export.write("#endif /* LIBXML_XINCLUDE_ENABLED */\n");
         output.write("#endif /* LIBXML_XINCLUDE_ENABLED */\n");
+    elif file == "xmlregexp":
+        include.write("#endif /* LIBXML_REGEXP_ENABLED */\n");
+        export.write("#endif /* LIBXML_REGEXP_ENABLED */\n");
+        output.write("#endif /* LIBXML_REGEXP_ENABLED */\n");
     return 1
 
 def buildStubs():
@@ -587,6 +596,7 @@ classes_type = {
     "xmlURIPtr": ("._o", "URI(_obj=%s)", "URI"),
     "xmlOutputBufferPtr": ("._o", "outputBuffer(_obj=%s)", "outputBuffer"),
     "xmlParserInputBufferPtr": ("._o", "inputBuffer(_obj=%s)", "inputBuffer"),
+    "xmlRegexpPtr": ("._o", "xmlReg(_obj=%s)", "xmlReg"),
 }
 
 converter_type = {
@@ -613,6 +623,7 @@ classes_destructors = {
     "URI": "xmlFreeURI",
 #    "outputBuffer": "xmlOutputBufferClose",
     "inputBuffer": "xmlFreeParserInputBuffer",
+    "xmlReg": "xmlRegFreeRegexp",
 }
 
 functions_noexcept = {
@@ -661,6 +672,10 @@ def nameFixup(name, classe, type, file):
     elif name[0:20] == "xmlParserInputBuffer" and file != "python":
         func = name[20:]
         func = string.lower(func[0:1]) + func[1:]
+    elif name[0:9] == "xmlRegexp":
+        func = "regexp" + name[9:]
+    elif name[0:6] == "xmlReg":
+        func = "regexp" + name[6:]
     elif name[0:11] == "xmlACatalog":
         func = name[11:]
         func = string.lower(func[0:1]) + func[1:]

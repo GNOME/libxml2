@@ -301,23 +301,23 @@
     <reference name='xmlAttributePtr' href='html/libxml-tree.html#XMLATTRIBUTEPTR'/>
     <reference name='xmlAttributeTablePtr' href='html/libxml-valid.html#XMLATTRIBUTETABLEPTR'/>
     <reference name='xmlAttributeType' href='html/libxml-tree.html#XMLATTRIBUTETYPE'/>
-    <reference name='xmlAutomata' href='html/libxml-index.html#XMLAUTOMATA'/>
-    <reference name='xmlAutomataCompile' href='html/libxml-index.html#XMLAUTOMATACOMPILE'/>
-    <reference name='xmlAutomataGetInitState' href='html/libxml-index.html#XMLAUTOMATAGETINITSTATE'/>
-    <reference name='xmlAutomataIsDeterminist' href='html/libxml-index.html#XMLAUTOMATAISDETERMINIST'/>
-    <reference name='xmlAutomataNewAllTrans' href='html/libxml-index.html#XMLAUTOMATANEWALLTRANS'/>
-    <reference name='xmlAutomataNewCountTrans' href='html/libxml-index.html#XMLAUTOMATANEWCOUNTTRANS'/>
-    <reference name='xmlAutomataNewCountedTrans' href='html/libxml-index.html#XMLAUTOMATANEWCOUNTEDTRANS'/>
-    <reference name='xmlAutomataNewCounter' href='html/libxml-index.html#XMLAUTOMATANEWCOUNTER'/>
-    <reference name='xmlAutomataNewCounterTrans' href='html/libxml-index.html#XMLAUTOMATANEWCOUNTERTRANS'/>
-    <reference name='xmlAutomataNewEpsilon' href='html/libxml-index.html#XMLAUTOMATANEWEPSILON'/>
-    <reference name='xmlAutomataNewOnceTrans' href='html/libxml-index.html#XMLAUTOMATANEWONCETRANS'/>
-    <reference name='xmlAutomataNewState' href='html/libxml-index.html#XMLAUTOMATANEWSTATE'/>
-    <reference name='xmlAutomataNewTransition' href='html/libxml-index.html#XMLAUTOMATANEWTRANSITION'/>
-    <reference name='xmlAutomataPtr' href='html/libxml-index.html#XMLAUTOMATAPTR'/>
-    <reference name='xmlAutomataSetFinalState' href='html/libxml-index.html#XMLAUTOMATASETFINALSTATE'/>
-    <reference name='xmlAutomataState' href='html/libxml-index.html#XMLAUTOMATASTATE'/>
-    <reference name='xmlAutomataStatePtr' href='html/libxml-index.html#XMLAUTOMATASTATEPTR'/>
+    <reference name='xmlAutomata' href='html/libxml-xmlautomata.html#XMLAUTOMATA'/>
+    <reference name='xmlAutomataCompile' href='html/libxml-xmlautomata.html#XMLAUTOMATACOMPILE'/>
+    <reference name='xmlAutomataGetInitState' href='html/libxml-xmlautomata.html#XMLAUTOMATAGETINITSTATE'/>
+    <reference name='xmlAutomataIsDeterminist' href='html/libxml-xmlautomata.html#XMLAUTOMATAISDETERMINIST'/>
+    <reference name='xmlAutomataNewAllTrans' href='html/libxml-xmlautomata.html#XMLAUTOMATANEWALLTRANS'/>
+    <reference name='xmlAutomataNewCountTrans' href='html/libxml-xmlautomata.html#XMLAUTOMATANEWCOUNTTRANS'/>
+    <reference name='xmlAutomataNewCountedTrans' href='html/libxml-xmlautomata.html#XMLAUTOMATANEWCOUNTEDTRANS'/>
+    <reference name='xmlAutomataNewCounter' href='html/libxml-xmlautomata.html#XMLAUTOMATANEWCOUNTER'/>
+    <reference name='xmlAutomataNewCounterTrans' href='html/libxml-xmlautomata.html#XMLAUTOMATANEWCOUNTERTRANS'/>
+    <reference name='xmlAutomataNewEpsilon' href='html/libxml-xmlautomata.html#XMLAUTOMATANEWEPSILON'/>
+    <reference name='xmlAutomataNewOnceTrans' href='html/libxml-xmlautomata.html#XMLAUTOMATANEWONCETRANS'/>
+    <reference name='xmlAutomataNewState' href='html/libxml-xmlautomata.html#XMLAUTOMATANEWSTATE'/>
+    <reference name='xmlAutomataNewTransition' href='html/libxml-xmlautomata.html#XMLAUTOMATANEWTRANSITION'/>
+    <reference name='xmlAutomataPtr' href='html/libxml-xmlautomata.html#XMLAUTOMATAPTR'/>
+    <reference name='xmlAutomataSetFinalState' href='html/libxml-xmlautomata.html#XMLAUTOMATASETFINALSTATE'/>
+    <reference name='xmlAutomataState' href='html/libxml-xmlautomata.html#XMLAUTOMATASTATE'/>
+    <reference name='xmlAutomataStatePtr' href='html/libxml-xmlautomata.html#XMLAUTOMATASTATEPTR'/>
     <reference name='xmlBuffer' href='html/libxml-tree.html#XMLBUFFER'/>
     <reference name='xmlBufferAdd' href='html/libxml-tree.html#XMLBUFFERADD'/>
     <reference name='xmlBufferAddHead' href='html/libxml-tree.html#XMLBUFFERADDHEAD'/>
@@ -489,7 +489,7 @@
     <reference name='xmlFindCharEncodingHandler' href='html/libxml-encoding.html#XMLFINDCHARENCODINGHANDLER'/>
     <reference name='xmlFree' href='html/libxml-globals.html#XMLFREE'/>
     <reference name='xmlFreeAttributeTable' href='html/libxml-valid.html#XMLFREEATTRIBUTETABLE'/>
-    <reference name='xmlFreeAutomata' href='html/libxml-index.html#XMLFREEAUTOMATA'/>
+    <reference name='xmlFreeAutomata' href='html/libxml-xmlautomata.html#XMLFREEAUTOMATA'/>
     <reference name='xmlFreeCatalog' href='html/libxml-catalog.html#XMLFREECATALOG'/>
     <reference name='xmlFreeDoc' href='html/libxml-tree.html#XMLFREEDOC'/>
     <reference name='xmlFreeDtd' href='html/libxml-tree.html#XMLFREEDTD'/>
@@ -718,7 +718,7 @@
     <reference name='xmlNanoHTTPReturnCode' href='html/libxml-nanohttp.html#XMLNANOHTTPRETURNCODE'/>
     <reference name='xmlNanoHTTPSave' href='html/libxml-nanohttp.html#XMLNANOHTTPSAVE'/>
     <reference name='xmlNanoHTTPScanProxy' href='html/libxml-nanohttp.html#XMLNANOHTTPSCANPROXY'/>
-    <reference name='xmlNewAutomata' href='html/libxml-index.html#XMLNEWAUTOMATA'/>
+    <reference name='xmlNewAutomata' href='html/libxml-xmlautomata.html#XMLNEWAUTOMATA'/>
     <reference name='xmlNewCDataBlock' href='html/libxml-tree.html#XMLNEWCDATABLOCK'/>
     <reference name='xmlNewCatalog' href='html/libxml-catalog.html#XMLNEWCATALOG'/>
     <reference name='xmlNewCharRef' href='html/libxml-tree.html#XMLNEWCHARREF'/>
@@ -919,18 +919,18 @@
     <reference name='xmlRef' href='html/libxml-tree.html#XMLREF'/>
     <reference name='xmlRefPtr' href='html/libxml-tree.html#XMLREFPTR'/>
     <reference name='xmlRefTablePtr' href='html/libxml-valid.html#XMLREFTABLEPTR'/>
-    <reference name='xmlRegExecCallbacks' href='html/libxml-index.html#XMLREGEXECCALLBACKS'/>
-    <reference name='xmlRegExecCtxt' href='html/libxml-index.html#XMLREGEXECCTXT'/>
-    <reference name='xmlRegExecCtxtPtr' href='html/libxml-index.html#XMLREGEXECCTXTPTR'/>
-    <reference name='xmlRegExecPushString' href='html/libxml-index.html#XMLREGEXECPUSHSTRING'/>
-    <reference name='xmlRegFreeExecCtxt' href='html/libxml-index.html#XMLREGFREEEXECCTXT'/>
-    <reference name='xmlRegFreeRegexp' href='html/libxml-index.html#XMLREGFREEREGEXP'/>
-    <reference name='xmlRegNewExecCtxt' href='html/libxml-index.html#XMLREGNEWEXECCTXT'/>
-    <reference name='xmlRegexp' href='html/libxml-index.html#XMLREGEXP'/>
-    <reference name='xmlRegexpCompile' href='html/libxml-index.html#XMLREGEXPCOMPILE'/>
-    <reference name='xmlRegexpExec' href='html/libxml-index.html#XMLREGEXPEXEC'/>
-    <reference name='xmlRegexpPrint' href='html/libxml-index.html#XMLREGEXPPRINT'/>
-    <reference name='xmlRegexpPtr' href='html/libxml-index.html#XMLREGEXPPTR'/>
+    <reference name='xmlRegExecCallbacks' href='html/libxml-xmlregexp.html#XMLREGEXECCALLBACKS'/>
+    <reference name='xmlRegExecCtxt' href='html/libxml-xmlregexp.html#XMLREGEXECCTXT'/>
+    <reference name='xmlRegExecCtxtPtr' href='html/libxml-xmlregexp.html#XMLREGEXECCTXTPTR'/>
+    <reference name='xmlRegExecPushString' href='html/libxml-xmlregexp.html#XMLREGEXECPUSHSTRING'/>
+    <reference name='xmlRegFreeExecCtxt' href='html/libxml-xmlregexp.html#XMLREGFREEEXECCTXT'/>
+    <reference name='xmlRegFreeRegexp' href='html/libxml-xmlregexp.html#XMLREGFREEREGEXP'/>
+    <reference name='xmlRegNewExecCtxt' href='html/libxml-xmlregexp.html#XMLREGNEWEXECCTXT'/>
+    <reference name='xmlRegexp' href='html/libxml-xmlregexp.html#XMLREGEXP'/>
+    <reference name='xmlRegexpCompile' href='html/libxml-xmlregexp.html#XMLREGEXPCOMPILE'/>
+    <reference name='xmlRegexpExec' href='html/libxml-xmlregexp.html#XMLREGEXPEXEC'/>
+    <reference name='xmlRegexpPrint' href='html/libxml-xmlregexp.html#XMLREGEXPPRINT'/>
+    <reference name='xmlRegexpPtr' href='html/libxml-xmlregexp.html#XMLREGEXPPTR'/>
     <reference name='xmlRegisterCharEncodingHandler' href='html/libxml-encoding.html#XMLREGISTERCHARENCODINGHANDLER'/>
     <reference name='xmlRegisterDefaultInputCallbacks' href='html/libxml-xmlio.html#XMLREGISTERDEFAULTINPUTCALLBACKS'/>
     <reference name='xmlRegisterDefaultOutputCallbacks' href='html/libxml-xmlio.html#XMLREGISTERDEFAULTOUTPUTCALLBACKS'/>
@@ -1073,140 +1073,140 @@
     <reference name='xmlTextConcat' href='html/libxml-tree.html#XMLTEXTCONCAT'/>
     <reference name='xmlTextMerge' href='html/libxml-tree.html#XMLTEXTMERGE'/>
     <reference name='xmlTreeIndentString' href='html/libxml-globals.html#XMLTREEINDENTSTRING'/>
-    <reference name='xmlUCSIsAlphabeticPresentationForms' href='html/libxml-index.html#XMLUCSISALPHABETICPRESENTATIONFORMS'/>
-    <reference name='xmlUCSIsArabic' href='html/libxml-index.html#XMLUCSISARABIC'/>
-    <reference name='xmlUCSIsArabicPresentationFormsA' href='html/libxml-index.html#XMLUCSISARABICPRESENTATIONFORMSA'/>
-    <reference name='xmlUCSIsArabicPresentationFormsB' href='html/libxml-index.html#XMLUCSISARABICPRESENTATIONFORMSB'/>
-    <reference name='xmlUCSIsArmenian' href='html/libxml-index.html#XMLUCSISARMENIAN'/>
-    <reference name='xmlUCSIsArrows' href='html/libxml-index.html#XMLUCSISARROWS'/>
-    <reference name='xmlUCSIsBasicLatin' href='html/libxml-index.html#XMLUCSISBASICLATIN'/>
-    <reference name='xmlUCSIsBengali' href='html/libxml-index.html#XMLUCSISBENGALI'/>
-    <reference name='xmlUCSIsBlock' href='html/libxml-index.html#XMLUCSISBLOCK'/>
-    <reference name='xmlUCSIsBlockElements' href='html/libxml-index.html#XMLUCSISBLOCKELEMENTS'/>
-    <reference name='xmlUCSIsBopomofo' href='html/libxml-index.html#XMLUCSISBOPOMOFO'/>
-    <reference name='xmlUCSIsBopomofoExtended' href='html/libxml-index.html#XMLUCSISBOPOMOFOEXTENDED'/>
-    <reference name='xmlUCSIsBoxDrawing' href='html/libxml-index.html#XMLUCSISBOXDRAWING'/>
-    <reference name='xmlUCSIsBraillePatterns' href='html/libxml-index.html#XMLUCSISBRAILLEPATTERNS'/>
-    <reference name='xmlUCSIsByzantineMusicalSymbols' href='html/libxml-index.html#XMLUCSISBYZANTINEMUSICALSYMBOLS'/>
-    <reference name='xmlUCSIsCJKCompatibility' href='html/libxml-index.html#XMLUCSISCJKCOMPATIBILITY'/>
-    <reference name='xmlUCSIsCJKCompatibilityForms' href='html/libxml-index.html#XMLUCSISCJKCOMPATIBILITYFORMS'/>
-    <reference name='xmlUCSIsCJKCompatibilityIdeographs' href='html/libxml-index.html#XMLUCSISCJKCOMPATIBILITYIDEOGRAPHS'/>
-    <reference name='xmlUCSIsCJKCompatibilityIdeographsSupplement' href='html/libxml-index.html#XMLUCSISCJKCOMPATIBILITYIDEOGRAPHSSUPPLEMENT'/>
-    <reference name='xmlUCSIsCJKRadicalsSupplement' href='html/libxml-index.html#XMLUCSISCJKRADICALSSUPPLEMENT'/>
-    <reference name='xmlUCSIsCJKSymbolsandPunctuation' href='html/libxml-index.html#XMLUCSISCJKSYMBOLSANDPUNCTUATION'/>
-    <reference name='xmlUCSIsCJKUnifiedIdeographs' href='html/libxml-index.html#XMLUCSISCJKUNIFIEDIDEOGRAPHS'/>
-    <reference name='xmlUCSIsCJKUnifiedIdeographsExtensionA' href='html/libxml-index.html#XMLUCSISCJKUNIFIEDIDEOGRAPHSEXTENSIONA'/>
-    <reference name='xmlUCSIsCJKUnifiedIdeographsExtensionB' href='html/libxml-index.html#XMLUCSISCJKUNIFIEDIDEOGRAPHSEXTENSIONB'/>
-    <reference name='xmlUCSIsCat' href='html/libxml-index.html#XMLUCSISCAT'/>
-    <reference name='xmlUCSIsCatC' href='html/libxml-index.html#XMLUCSISCATC'/>
-    <reference name='xmlUCSIsCatCc' href='html/libxml-index.html#XMLUCSISCATCC'/>
-    <reference name='xmlUCSIsCatCf' href='html/libxml-index.html#XMLUCSISCATCF'/>
-    <reference name='xmlUCSIsCatCo' href='html/libxml-index.html#XMLUCSISCATCO'/>
-    <reference name='xmlUCSIsCatCs' href='html/libxml-index.html#XMLUCSISCATCS'/>
-    <reference name='xmlUCSIsCatL' href='html/libxml-index.html#XMLUCSISCATL'/>
-    <reference name='xmlUCSIsCatLl' href='html/libxml-index.html#XMLUCSISCATLL'/>
-    <reference name='xmlUCSIsCatLm' href='html/libxml-index.html#XMLUCSISCATLM'/>
-    <reference name='xmlUCSIsCatLo' href='html/libxml-index.html#XMLUCSISCATLO'/>
-    <reference name='xmlUCSIsCatLt' href='html/libxml-index.html#XMLUCSISCATLT'/>
-    <reference name='xmlUCSIsCatLu' href='html/libxml-index.html#XMLUCSISCATLU'/>
-    <reference name='xmlUCSIsCatM' href='html/libxml-index.html#XMLUCSISCATM'/>
-    <reference name='xmlUCSIsCatMc' href='html/libxml-index.html#XMLUCSISCATMC'/>
-    <reference name='xmlUCSIsCatMe' href='html/libxml-index.html#XMLUCSISCATME'/>
-    <reference name='xmlUCSIsCatMn' href='html/libxml-index.html#XMLUCSISCATMN'/>
-    <reference name='xmlUCSIsCatN' href='html/libxml-index.html#XMLUCSISCATN'/>
-    <reference name='xmlUCSIsCatNd' href='html/libxml-index.html#XMLUCSISCATND'/>
-    <reference name='xmlUCSIsCatNl' href='html/libxml-index.html#XMLUCSISCATNL'/>
-    <reference name='xmlUCSIsCatNo' href='html/libxml-index.html#XMLUCSISCATNO'/>
-    <reference name='xmlUCSIsCatP' href='html/libxml-index.html#XMLUCSISCATP'/>
-    <reference name='xmlUCSIsCatPc' href='html/libxml-index.html#XMLUCSISCATPC'/>
-    <reference name='xmlUCSIsCatPd' href='html/libxml-index.html#XMLUCSISCATPD'/>
-    <reference name='xmlUCSIsCatPe' href='html/libxml-index.html#XMLUCSISCATPE'/>
-    <reference name='xmlUCSIsCatPf' href='html/libxml-index.html#XMLUCSISCATPF'/>
-    <reference name='xmlUCSIsCatPi' href='html/libxml-index.html#XMLUCSISCATPI'/>
-    <reference name='xmlUCSIsCatPo' href='html/libxml-index.html#XMLUCSISCATPO'/>
-    <reference name='xmlUCSIsCatPs' href='html/libxml-index.html#XMLUCSISCATPS'/>
-    <reference name='xmlUCSIsCatS' href='html/libxml-index.html#XMLUCSISCATS'/>
-    <reference name='xmlUCSIsCatSc' href='html/libxml-index.html#XMLUCSISCATSC'/>
-    <reference name='xmlUCSIsCatSk' href='html/libxml-index.html#XMLUCSISCATSK'/>
-    <reference name='xmlUCSIsCatSm' href='html/libxml-index.html#XMLUCSISCATSM'/>
-    <reference name='xmlUCSIsCatSo' href='html/libxml-index.html#XMLUCSISCATSO'/>
-    <reference name='xmlUCSIsCatZ' href='html/libxml-index.html#XMLUCSISCATZ'/>
-    <reference name='xmlUCSIsCatZl' href='html/libxml-index.html#XMLUCSISCATZL'/>
-    <reference name='xmlUCSIsCatZp' href='html/libxml-index.html#XMLUCSISCATZP'/>
-    <reference name='xmlUCSIsCatZs' href='html/libxml-index.html#XMLUCSISCATZS'/>
-    <reference name='xmlUCSIsCherokee' href='html/libxml-index.html#XMLUCSISCHEROKEE'/>
-    <reference name='xmlUCSIsCombiningDiacriticalMarks' href='html/libxml-index.html#XMLUCSISCOMBININGDIACRITICALMARKS'/>
-    <reference name='xmlUCSIsCombiningHalfMarks' href='html/libxml-index.html#XMLUCSISCOMBININGHALFMARKS'/>
-    <reference name='xmlUCSIsCombiningMarksforSymbols' href='html/libxml-index.html#XMLUCSISCOMBININGMARKSFORSYMBOLS'/>
-    <reference name='xmlUCSIsControlPictures' href='html/libxml-index.html#XMLUCSISCONTROLPICTURES'/>
-    <reference name='xmlUCSIsCurrencySymbols' href='html/libxml-index.html#XMLUCSISCURRENCYSYMBOLS'/>
-    <reference name='xmlUCSIsCyrillic' href='html/libxml-index.html#XMLUCSISCYRILLIC'/>
-    <reference name='xmlUCSIsDeseret' href='html/libxml-index.html#XMLUCSISDESERET'/>
-    <reference name='xmlUCSIsDevanagari' href='html/libxml-index.html#XMLUCSISDEVANAGARI'/>
-    <reference name='xmlUCSIsDingbats' href='html/libxml-index.html#XMLUCSISDINGBATS'/>
-    <reference name='xmlUCSIsEnclosedAlphanumerics' href='html/libxml-index.html#XMLUCSISENCLOSEDALPHANUMERICS'/>
-    <reference name='xmlUCSIsEnclosedCJKLettersandMonths' href='html/libxml-index.html#XMLUCSISENCLOSEDCJKLETTERSANDMONTHS'/>
-    <reference name='xmlUCSIsEthiopic' href='html/libxml-index.html#XMLUCSISETHIOPIC'/>
-    <reference name='xmlUCSIsGeneralPunctuation' href='html/libxml-index.html#XMLUCSISGENERALPUNCTUATION'/>
-    <reference name='xmlUCSIsGeometricShapes' href='html/libxml-index.html#XMLUCSISGEOMETRICSHAPES'/>
-    <reference name='xmlUCSIsGeorgian' href='html/libxml-index.html#XMLUCSISGEORGIAN'/>
-    <reference name='xmlUCSIsGothic' href='html/libxml-index.html#XMLUCSISGOTHIC'/>
-    <reference name='xmlUCSIsGreek' href='html/libxml-index.html#XMLUCSISGREEK'/>
-    <reference name='xmlUCSIsGreekExtended' href='html/libxml-index.html#XMLUCSISGREEKEXTENDED'/>
-    <reference name='xmlUCSIsGujarati' href='html/libxml-index.html#XMLUCSISGUJARATI'/>
-    <reference name='xmlUCSIsGurmukhi' href='html/libxml-index.html#XMLUCSISGURMUKHI'/>
-    <reference name='xmlUCSIsHalfwidthandFullwidthForms' href='html/libxml-index.html#XMLUCSISHALFWIDTHANDFULLWIDTHFORMS'/>
-    <reference name='xmlUCSIsHangulCompatibilityJamo' href='html/libxml-index.html#XMLUCSISHANGULCOMPATIBILITYJAMO'/>
-    <reference name='xmlUCSIsHangulJamo' href='html/libxml-index.html#XMLUCSISHANGULJAMO'/>
-    <reference name='xmlUCSIsHangulSyllables' href='html/libxml-index.html#XMLUCSISHANGULSYLLABLES'/>
-    <reference name='xmlUCSIsHebrew' href='html/libxml-index.html#XMLUCSISHEBREW'/>
-    <reference name='xmlUCSIsHighPrivateUseSurrogates' href='html/libxml-index.html#XMLUCSISHIGHPRIVATEUSESURROGATES'/>
-    <reference name='xmlUCSIsHighSurrogates' href='html/libxml-index.html#XMLUCSISHIGHSURROGATES'/>
-    <reference name='xmlUCSIsHiragana' href='html/libxml-index.html#XMLUCSISHIRAGANA'/>
-    <reference name='xmlUCSIsIPAExtensions' href='html/libxml-index.html#XMLUCSISIPAEXTENSIONS'/>
-    <reference name='xmlUCSIsIdeographicDescriptionCharacters' href='html/libxml-index.html#XMLUCSISIDEOGRAPHICDESCRIPTIONCHARACTERS'/>
-    <reference name='xmlUCSIsKanbun' href='html/libxml-index.html#XMLUCSISKANBUN'/>
-    <reference name='xmlUCSIsKangxiRadicals' href='html/libxml-index.html#XMLUCSISKANGXIRADICALS'/>
-    <reference name='xmlUCSIsKannada' href='html/libxml-index.html#XMLUCSISKANNADA'/>
-    <reference name='xmlUCSIsKatakana' href='html/libxml-index.html#XMLUCSISKATAKANA'/>
-    <reference name='xmlUCSIsKhmer' href='html/libxml-index.html#XMLUCSISKHMER'/>
-    <reference name='xmlUCSIsLao' href='html/libxml-index.html#XMLUCSISLAO'/>
-    <reference name='xmlUCSIsLatin1Supplement' href='html/libxml-index.html#XMLUCSISLATIN1SUPPLEMENT'/>
-    <reference name='xmlUCSIsLatinExtendedA' href='html/libxml-index.html#XMLUCSISLATINEXTENDEDA'/>
-    <reference name='xmlUCSIsLatinExtendedAdditional' href='html/libxml-index.html#XMLUCSISLATINEXTENDEDADDITIONAL'/>
-    <reference name='xmlUCSIsLatinExtendedB' href='html/libxml-index.html#XMLUCSISLATINEXTENDEDB'/>
-    <reference name='xmlUCSIsLetterlikeSymbols' href='html/libxml-index.html#XMLUCSISLETTERLIKESYMBOLS'/>
-    <reference name='xmlUCSIsLowSurrogates' href='html/libxml-index.html#XMLUCSISLOWSURROGATES'/>
-    <reference name='xmlUCSIsMalayalam' href='html/libxml-index.html#XMLUCSISMALAYALAM'/>
-    <reference name='xmlUCSIsMathematicalAlphanumericSymbols' href='html/libxml-index.html#XMLUCSISMATHEMATICALALPHANUMERICSYMBOLS'/>
-    <reference name='xmlUCSIsMathematicalOperators' href='html/libxml-index.html#XMLUCSISMATHEMATICALOPERATORS'/>
-    <reference name='xmlUCSIsMiscellaneousSymbols' href='html/libxml-index.html#XMLUCSISMISCELLANEOUSSYMBOLS'/>
-    <reference name='xmlUCSIsMiscellaneousTechnical' href='html/libxml-index.html#XMLUCSISMISCELLANEOUSTECHNICAL'/>
-    <reference name='xmlUCSIsMongolian' href='html/libxml-index.html#XMLUCSISMONGOLIAN'/>
-    <reference name='xmlUCSIsMusicalSymbols' href='html/libxml-index.html#XMLUCSISMUSICALSYMBOLS'/>
-    <reference name='xmlUCSIsMyanmar' href='html/libxml-index.html#XMLUCSISMYANMAR'/>
-    <reference name='xmlUCSIsNumberForms' href='html/libxml-index.html#XMLUCSISNUMBERFORMS'/>
-    <reference name='xmlUCSIsOgham' href='html/libxml-index.html#XMLUCSISOGHAM'/>
-    <reference name='xmlUCSIsOldItalic' href='html/libxml-index.html#XMLUCSISOLDITALIC'/>
-    <reference name='xmlUCSIsOpticalCharacterRecognition' href='html/libxml-index.html#XMLUCSISOPTICALCHARACTERRECOGNITION'/>
-    <reference name='xmlUCSIsOriya' href='html/libxml-index.html#XMLUCSISORIYA'/>
-    <reference name='xmlUCSIsPrivateUse' href='html/libxml-index.html#XMLUCSISPRIVATEUSE'/>
-    <reference name='xmlUCSIsRunic' href='html/libxml-index.html#XMLUCSISRUNIC'/>
-    <reference name='xmlUCSIsSinhala' href='html/libxml-index.html#XMLUCSISSINHALA'/>
-    <reference name='xmlUCSIsSmallFormVariants' href='html/libxml-index.html#XMLUCSISSMALLFORMVARIANTS'/>
-    <reference name='xmlUCSIsSpacingModifierLetters' href='html/libxml-index.html#XMLUCSISSPACINGMODIFIERLETTERS'/>
-    <reference name='xmlUCSIsSpecials' href='html/libxml-index.html#XMLUCSISSPECIALS'/>
-    <reference name='xmlUCSIsSuperscriptsandSubscripts' href='html/libxml-index.html#XMLUCSISSUPERSCRIPTSANDSUBSCRIPTS'/>
-    <reference name='xmlUCSIsSyriac' href='html/libxml-index.html#XMLUCSISSYRIAC'/>
-    <reference name='xmlUCSIsTags' href='html/libxml-index.html#XMLUCSISTAGS'/>
-    <reference name='xmlUCSIsTamil' href='html/libxml-index.html#XMLUCSISTAMIL'/>
-    <reference name='xmlUCSIsTelugu' href='html/libxml-index.html#XMLUCSISTELUGU'/>
-    <reference name='xmlUCSIsThaana' href='html/libxml-index.html#XMLUCSISTHAANA'/>
-    <reference name='xmlUCSIsThai' href='html/libxml-index.html#XMLUCSISTHAI'/>
-    <reference name='xmlUCSIsTibetan' href='html/libxml-index.html#XMLUCSISTIBETAN'/>
-    <reference name='xmlUCSIsUnifiedCanadianAboriginalSyllabics' href='html/libxml-index.html#XMLUCSISUNIFIEDCANADIANABORIGINALSYLLABICS'/>
-    <reference name='xmlUCSIsYiRadicals' href='html/libxml-index.html#XMLUCSISYIRADICALS'/>
-    <reference name='xmlUCSIsYiSyllables' href='html/libxml-index.html#XMLUCSISYISYLLABLES'/>
+    <reference name='xmlUCSIsAlphabeticPresentationForms' href='html/libxml-xmlunicode.html#XMLUCSISALPHABETICPRESENTATIONFORMS'/>
+    <reference name='xmlUCSIsArabic' href='html/libxml-xmlunicode.html#XMLUCSISARABIC'/>
+    <reference name='xmlUCSIsArabicPresentationFormsA' href='html/libxml-xmlunicode.html#XMLUCSISARABICPRESENTATIONFORMSA'/>
+    <reference name='xmlUCSIsArabicPresentationFormsB' href='html/libxml-xmlunicode.html#XMLUCSISARABICPRESENTATIONFORMSB'/>
+    <reference name='xmlUCSIsArmenian' href='html/libxml-xmlunicode.html#XMLUCSISARMENIAN'/>
+    <reference name='xmlUCSIsArrows' href='html/libxml-xmlunicode.html#XMLUCSISARROWS'/>
+    <reference name='xmlUCSIsBasicLatin' href='html/libxml-xmlunicode.html#XMLUCSISBASICLATIN'/>
+    <reference name='xmlUCSIsBengali' href='html/libxml-xmlunicode.html#XMLUCSISBENGALI'/>
+    <reference name='xmlUCSIsBlock' href='html/libxml-xmlunicode.html#XMLUCSISBLOCK'/>
+    <reference name='xmlUCSIsBlockElements' href='html/libxml-xmlunicode.html#XMLUCSISBLOCKELEMENTS'/>
+    <reference name='xmlUCSIsBopomofo' href='html/libxml-xmlunicode.html#XMLUCSISBOPOMOFO'/>
+    <reference name='xmlUCSIsBopomofoExtended' href='html/libxml-xmlunicode.html#XMLUCSISBOPOMOFOEXTENDED'/>
+    <reference name='xmlUCSIsBoxDrawing' href='html/libxml-xmlunicode.html#XMLUCSISBOXDRAWING'/>
+    <reference name='xmlUCSIsBraillePatterns' href='html/libxml-xmlunicode.html#XMLUCSISBRAILLEPATTERNS'/>
+    <reference name='xmlUCSIsByzantineMusicalSymbols' href='html/libxml-xmlunicode.html#XMLUCSISBYZANTINEMUSICALSYMBOLS'/>
+    <reference name='xmlUCSIsCJKCompatibility' href='html/libxml-xmlunicode.html#XMLUCSISCJKCOMPATIBILITY'/>
+    <reference name='xmlUCSIsCJKCompatibilityForms' href='html/libxml-xmlunicode.html#XMLUCSISCJKCOMPATIBILITYFORMS'/>
+    <reference name='xmlUCSIsCJKCompatibilityIdeographs' href='html/libxml-xmlunicode.html#XMLUCSISCJKCOMPATIBILITYIDEOGRAPHS'/>
+    <reference name='xmlUCSIsCJKCompatibilityIdeographsSupplement' href='html/libxml-xmlunicode.html#XMLUCSISCJKCOMPATIBILITYIDEOGRAPHSSUPPLEMENT'/>
+    <reference name='xmlUCSIsCJKRadicalsSupplement' href='html/libxml-xmlunicode.html#XMLUCSISCJKRADICALSSUPPLEMENT'/>
+    <reference name='xmlUCSIsCJKSymbolsandPunctuation' href='html/libxml-xmlunicode.html#XMLUCSISCJKSYMBOLSANDPUNCTUATION'/>
+    <reference name='xmlUCSIsCJKUnifiedIdeographs' href='html/libxml-xmlunicode.html#XMLUCSISCJKUNIFIEDIDEOGRAPHS'/>
+    <reference name='xmlUCSIsCJKUnifiedIdeographsExtensionA' href='html/libxml-xmlunicode.html#XMLUCSISCJKUNIFIEDIDEOGRAPHSEXTENSIONA'/>
+    <reference name='xmlUCSIsCJKUnifiedIdeographsExtensionB' href='html/libxml-xmlunicode.html#XMLUCSISCJKUNIFIEDIDEOGRAPHSEXTENSIONB'/>
+    <reference name='xmlUCSIsCat' href='html/libxml-xmlunicode.html#XMLUCSISCAT'/>
+    <reference name='xmlUCSIsCatC' href='html/libxml-xmlunicode.html#XMLUCSISCATC'/>
+    <reference name='xmlUCSIsCatCc' href='html/libxml-xmlunicode.html#XMLUCSISCATCC'/>
+    <reference name='xmlUCSIsCatCf' href='html/libxml-xmlunicode.html#XMLUCSISCATCF'/>
+    <reference name='xmlUCSIsCatCo' href='html/libxml-xmlunicode.html#XMLUCSISCATCO'/>
+    <reference name='xmlUCSIsCatCs' href='html/libxml-xmlunicode.html#XMLUCSISCATCS'/>
+    <reference name='xmlUCSIsCatL' href='html/libxml-xmlunicode.html#XMLUCSISCATL'/>
+    <reference name='xmlUCSIsCatLl' href='html/libxml-xmlunicode.html#XMLUCSISCATLL'/>
+    <reference name='xmlUCSIsCatLm' href='html/libxml-xmlunicode.html#XMLUCSISCATLM'/>
+    <reference name='xmlUCSIsCatLo' href='html/libxml-xmlunicode.html#XMLUCSISCATLO'/>
+    <reference name='xmlUCSIsCatLt' href='html/libxml-xmlunicode.html#XMLUCSISCATLT'/>
+    <reference name='xmlUCSIsCatLu' href='html/libxml-xmlunicode.html#XMLUCSISCATLU'/>
+    <reference name='xmlUCSIsCatM' href='html/libxml-xmlunicode.html#XMLUCSISCATM'/>
+    <reference name='xmlUCSIsCatMc' href='html/libxml-xmlunicode.html#XMLUCSISCATMC'/>
+    <reference name='xmlUCSIsCatMe' href='html/libxml-xmlunicode.html#XMLUCSISCATME'/>
+    <reference name='xmlUCSIsCatMn' href='html/libxml-xmlunicode.html#XMLUCSISCATMN'/>
+    <reference name='xmlUCSIsCatN' href='html/libxml-xmlunicode.html#XMLUCSISCATN'/>
+    <reference name='xmlUCSIsCatNd' href='html/libxml-xmlunicode.html#XMLUCSISCATND'/>
+    <reference name='xmlUCSIsCatNl' href='html/libxml-xmlunicode.html#XMLUCSISCATNL'/>
+    <reference name='xmlUCSIsCatNo' href='html/libxml-xmlunicode.html#XMLUCSISCATNO'/>
+    <reference name='xmlUCSIsCatP' href='html/libxml-xmlunicode.html#XMLUCSISCATP'/>
+    <reference name='xmlUCSIsCatPc' href='html/libxml-xmlunicode.html#XMLUCSISCATPC'/>
+    <reference name='xmlUCSIsCatPd' href='html/libxml-xmlunicode.html#XMLUCSISCATPD'/>
+    <reference name='xmlUCSIsCatPe' href='html/libxml-xmlunicode.html#XMLUCSISCATPE'/>
+    <reference name='xmlUCSIsCatPf' href='html/libxml-xmlunicode.html#XMLUCSISCATPF'/>
+    <reference name='xmlUCSIsCatPi' href='html/libxml-xmlunicode.html#XMLUCSISCATPI'/>
+    <reference name='xmlUCSIsCatPo' href='html/libxml-xmlunicode.html#XMLUCSISCATPO'/>
+    <reference name='xmlUCSIsCatPs' href='html/libxml-xmlunicode.html#XMLUCSISCATPS'/>
+    <reference name='xmlUCSIsCatS' href='html/libxml-xmlunicode.html#XMLUCSISCATS'/>
+    <reference name='xmlUCSIsCatSc' href='html/libxml-xmlunicode.html#XMLUCSISCATSC'/>
+    <reference name='xmlUCSIsCatSk' href='html/libxml-xmlunicode.html#XMLUCSISCATSK'/>
+    <reference name='xmlUCSIsCatSm' href='html/libxml-xmlunicode.html#XMLUCSISCATSM'/>
+    <reference name='xmlUCSIsCatSo' href='html/libxml-xmlunicode.html#XMLUCSISCATSO'/>
+    <reference name='xmlUCSIsCatZ' href='html/libxml-xmlunicode.html#XMLUCSISCATZ'/>
+    <reference name='xmlUCSIsCatZl' href='html/libxml-xmlunicode.html#XMLUCSISCATZL'/>
+    <reference name='xmlUCSIsCatZp' href='html/libxml-xmlunicode.html#XMLUCSISCATZP'/>
+    <reference name='xmlUCSIsCatZs' href='html/libxml-xmlunicode.html#XMLUCSISCATZS'/>
+    <reference name='xmlUCSIsCherokee' href='html/libxml-xmlunicode.html#XMLUCSISCHEROKEE'/>
+    <reference name='xmlUCSIsCombiningDiacriticalMarks' href='html/libxml-xmlunicode.html#XMLUCSISCOMBININGDIACRITICALMARKS'/>
+    <reference name='xmlUCSIsCombiningHalfMarks' href='html/libxml-xmlunicode.html#XMLUCSISCOMBININGHALFMARKS'/>
+    <reference name='xmlUCSIsCombiningMarksforSymbols' href='html/libxml-xmlunicode.html#XMLUCSISCOMBININGMARKSFORSYMBOLS'/>
+    <reference name='xmlUCSIsControlPictures' href='html/libxml-xmlunicode.html#XMLUCSISCONTROLPICTURES'/>
+    <reference name='xmlUCSIsCurrencySymbols' href='html/libxml-xmlunicode.html#XMLUCSISCURRENCYSYMBOLS'/>
+    <reference name='xmlUCSIsCyrillic' href='html/libxml-xmlunicode.html#XMLUCSISCYRILLIC'/>
+    <reference name='xmlUCSIsDeseret' href='html/libxml-xmlunicode.html#XMLUCSISDESERET'/>
+    <reference name='xmlUCSIsDevanagari' href='html/libxml-xmlunicode.html#XMLUCSISDEVANAGARI'/>
+    <reference name='xmlUCSIsDingbats' href='html/libxml-xmlunicode.html#XMLUCSISDINGBATS'/>
+    <reference name='xmlUCSIsEnclosedAlphanumerics' href='html/libxml-xmlunicode.html#XMLUCSISENCLOSEDALPHANUMERICS'/>
+    <reference name='xmlUCSIsEnclosedCJKLettersandMonths' href='html/libxml-xmlunicode.html#XMLUCSISENCLOSEDCJKLETTERSANDMONTHS'/>
+    <reference name='xmlUCSIsEthiopic' href='html/libxml-xmlunicode.html#XMLUCSISETHIOPIC'/>
+    <reference name='xmlUCSIsGeneralPunctuation' href='html/libxml-xmlunicode.html#XMLUCSISGENERALPUNCTUATION'/>
+    <reference name='xmlUCSIsGeometricShapes' href='html/libxml-xmlunicode.html#XMLUCSISGEOMETRICSHAPES'/>
+    <reference name='xmlUCSIsGeorgian' href='html/libxml-xmlunicode.html#XMLUCSISGEORGIAN'/>
+    <reference name='xmlUCSIsGothic' href='html/libxml-xmlunicode.html#XMLUCSISGOTHIC'/>
+    <reference name='xmlUCSIsGreek' href='html/libxml-xmlunicode.html#XMLUCSISGREEK'/>
+    <reference name='xmlUCSIsGreekExtended' href='html/libxml-xmlunicode.html#XMLUCSISGREEKEXTENDED'/>
+    <reference name='xmlUCSIsGujarati' href='html/libxml-xmlunicode.html#XMLUCSISGUJARATI'/>
+    <reference name='xmlUCSIsGurmukhi' href='html/libxml-xmlunicode.html#XMLUCSISGURMUKHI'/>
+    <reference name='xmlUCSIsHalfwidthandFullwidthForms' href='html/libxml-xmlunicode.html#XMLUCSISHALFWIDTHANDFULLWIDTHFORMS'/>
+    <reference name='xmlUCSIsHangulCompatibilityJamo' href='html/libxml-xmlunicode.html#XMLUCSISHANGULCOMPATIBILITYJAMO'/>
+    <reference name='xmlUCSIsHangulJamo' href='html/libxml-xmlunicode.html#XMLUCSISHANGULJAMO'/>
+    <reference name='xmlUCSIsHangulSyllables' href='html/libxml-xmlunicode.html#XMLUCSISHANGULSYLLABLES'/>
+    <reference name='xmlUCSIsHebrew' href='html/libxml-xmlunicode.html#XMLUCSISHEBREW'/>
+    <reference name='xmlUCSIsHighPrivateUseSurrogates' href='html/libxml-xmlunicode.html#XMLUCSISHIGHPRIVATEUSESURROGATES'/>
+    <reference name='xmlUCSIsHighSurrogates' href='html/libxml-xmlunicode.html#XMLUCSISHIGHSURROGATES'/>
+    <reference name='xmlUCSIsHiragana' href='html/libxml-xmlunicode.html#XMLUCSISHIRAGANA'/>
+    <reference name='xmlUCSIsIPAExtensions' href='html/libxml-xmlunicode.html#XMLUCSISIPAEXTENSIONS'/>
+    <reference name='xmlUCSIsIdeographicDescriptionCharacters' href='html/libxml-xmlunicode.html#XMLUCSISIDEOGRAPHICDESCRIPTIONCHARACTERS'/>
+    <reference name='xmlUCSIsKanbun' href='html/libxml-xmlunicode.html#XMLUCSISKANBUN'/>
+    <reference name='xmlUCSIsKangxiRadicals' href='html/libxml-xmlunicode.html#XMLUCSISKANGXIRADICALS'/>
+    <reference name='xmlUCSIsKannada' href='html/libxml-xmlunicode.html#XMLUCSISKANNADA'/>
+    <reference name='xmlUCSIsKatakana' href='html/libxml-xmlunicode.html#XMLUCSISKATAKANA'/>
+    <reference name='xmlUCSIsKhmer' href='html/libxml-xmlunicode.html#XMLUCSISKHMER'/>
+    <reference name='xmlUCSIsLao' href='html/libxml-xmlunicode.html#XMLUCSISLAO'/>
+    <reference name='xmlUCSIsLatin1Supplement' href='html/libxml-xmlunicode.html#XMLUCSISLATIN1SUPPLEMENT'/>
+    <reference name='xmlUCSIsLatinExtendedA' href='html/libxml-xmlunicode.html#XMLUCSISLATINEXTENDEDA'/>
+    <reference name='xmlUCSIsLatinExtendedAdditional' href='html/libxml-xmlunicode.html#XMLUCSISLATINEXTENDEDADDITIONAL'/>
+    <reference name='xmlUCSIsLatinExtendedB' href='html/libxml-xmlunicode.html#XMLUCSISLATINEXTENDEDB'/>
+    <reference name='xmlUCSIsLetterlikeSymbols' href='html/libxml-xmlunicode.html#XMLUCSISLETTERLIKESYMBOLS'/>
+    <reference name='xmlUCSIsLowSurrogates' href='html/libxml-xmlunicode.html#XMLUCSISLOWSURROGATES'/>
+    <reference name='xmlUCSIsMalayalam' href='html/libxml-xmlunicode.html#XMLUCSISMALAYALAM'/>
+    <reference name='xmlUCSIsMathematicalAlphanumericSymbols' href='html/libxml-xmlunicode.html#XMLUCSISMATHEMATICALALPHANUMERICSYMBOLS'/>
+    <reference name='xmlUCSIsMathematicalOperators' href='html/libxml-xmlunicode.html#XMLUCSISMATHEMATICALOPERATORS'/>
+    <reference name='xmlUCSIsMiscellaneousSymbols' href='html/libxml-xmlunicode.html#XMLUCSISMISCELLANEOUSSYMBOLS'/>
+    <reference name='xmlUCSIsMiscellaneousTechnical' href='html/libxml-xmlunicode.html#XMLUCSISMISCELLANEOUSTECHNICAL'/>
+    <reference name='xmlUCSIsMongolian' href='html/libxml-xmlunicode.html#XMLUCSISMONGOLIAN'/>
+    <reference name='xmlUCSIsMusicalSymbols' href='html/libxml-xmlunicode.html#XMLUCSISMUSICALSYMBOLS'/>
+    <reference name='xmlUCSIsMyanmar' href='html/libxml-xmlunicode.html#XMLUCSISMYANMAR'/>
+    <reference name='xmlUCSIsNumberForms' href='html/libxml-xmlunicode.html#XMLUCSISNUMBERFORMS'/>
+    <reference name='xmlUCSIsOgham' href='html/libxml-xmlunicode.html#XMLUCSISOGHAM'/>
+    <reference name='xmlUCSIsOldItalic' href='html/libxml-xmlunicode.html#XMLUCSISOLDITALIC'/>
+    <reference name='xmlUCSIsOpticalCharacterRecognition' href='html/libxml-xmlunicode.html#XMLUCSISOPTICALCHARACTERRECOGNITION'/>
+    <reference name='xmlUCSIsOriya' href='html/libxml-xmlunicode.html#XMLUCSISORIYA'/>
+    <reference name='xmlUCSIsPrivateUse' href='html/libxml-xmlunicode.html#XMLUCSISPRIVATEUSE'/>
+    <reference name='xmlUCSIsRunic' href='html/libxml-xmlunicode.html#XMLUCSISRUNIC'/>
+    <reference name='xmlUCSIsSinhala' href='html/libxml-xmlunicode.html#XMLUCSISSINHALA'/>
+    <reference name='xmlUCSIsSmallFormVariants' href='html/libxml-xmlunicode.html#XMLUCSISSMALLFORMVARIANTS'/>
+    <reference name='xmlUCSIsSpacingModifierLetters' href='html/libxml-xmlunicode.html#XMLUCSISSPACINGMODIFIERLETTERS'/>
+    <reference name='xmlUCSIsSpecials' href='html/libxml-xmlunicode.html#XMLUCSISSPECIALS'/>
+    <reference name='xmlUCSIsSuperscriptsandSubscripts' href='html/libxml-xmlunicode.html#XMLUCSISSUPERSCRIPTSANDSUBSCRIPTS'/>
+    <reference name='xmlUCSIsSyriac' href='html/libxml-xmlunicode.html#XMLUCSISSYRIAC'/>
+    <reference name='xmlUCSIsTags' href='html/libxml-xmlunicode.html#XMLUCSISTAGS'/>
+    <reference name='xmlUCSIsTamil' href='html/libxml-xmlunicode.html#XMLUCSISTAMIL'/>
+    <reference name='xmlUCSIsTelugu' href='html/libxml-xmlunicode.html#XMLUCSISTELUGU'/>
+    <reference name='xmlUCSIsThaana' href='html/libxml-xmlunicode.html#XMLUCSISTHAANA'/>
+    <reference name='xmlUCSIsThai' href='html/libxml-xmlunicode.html#XMLUCSISTHAI'/>
+    <reference name='xmlUCSIsTibetan' href='html/libxml-xmlunicode.html#XMLUCSISTIBETAN'/>
+    <reference name='xmlUCSIsUnifiedCanadianAboriginalSyllabics' href='html/libxml-xmlunicode.html#XMLUCSISUNIFIEDCANADIANABORIGINALSYLLABICS'/>
+    <reference name='xmlUCSIsYiRadicals' href='html/libxml-xmlunicode.html#XMLUCSISYIRADICALS'/>
+    <reference name='xmlUCSIsYiSyllables' href='html/libxml-xmlunicode.html#XMLUCSISYISYLLABLES'/>
     <reference name='xmlURI' href='html/libxml-uri.html#XMLURI'/>
     <reference name='xmlURIEscape' href='html/libxml-uri.html#XMLURIESCAPE'/>
     <reference name='xmlURIEscapeStr' href='html/libxml-uri.html#XMLURIESCAPESTR'/>
@@ -3103,6 +3103,20 @@
     <type name='xmlAttributeTablePtr'>
       <ref name='xmlCopyAttributeTable'/>
     </type>
+    <type name='xmlAutomataPtr'>
+      <ref name='xmlNewAutomata'/>
+    </type>
+    <type name='xmlAutomataStatePtr'>
+      <ref name='xmlAutomataGetInitState'/>
+      <ref name='xmlAutomataNewState'/>
+      <ref name='xmlAutomataNewTransition'/>
+      <ref name='xmlAutomataNewCountTrans'/>
+      <ref name='xmlAutomataNewOnceTrans'/>
+      <ref name='xmlAutomataNewAllTrans'/>
+      <ref name='xmlAutomataNewEpsilon'/>
+      <ref name='xmlAutomataNewCountedTrans'/>
+      <ref name='xmlAutomataNewCounterTrans'/>
+    </type>
     <type name='xmlBufferAllocationScheme'>
       <ref name='xmlGetBufferAllocationScheme'/>
     </type>
@@ -3185,6 +3199,7 @@
       <ref name='xmlSplitQName2'/>
       <ref name='xmlValidNormalizeAttributeValue'/>
       <ref name='xmlValidCtxtNormalizeAttributeValue'/>
+      <ref name='xmlNormalizeWindowsPath'/>
       <ref name='xmlXPathCastBooleanToString'/>
       <ref name='xmlXPathCastNumberToString'/>
       <ref name='xmlXPathCastNodeToString'/>
@@ -3201,6 +3216,7 @@
     <type name='xmlCharEncodingHandlerPtr'>
       <ref name='xmlGetCharEncodingHandler'/>
       <ref name='xmlFindCharEncodingHandler'/>
+      <ref name='xmlNewCharEncodingHandler'/>
     </type>
     <type name='xmlDocPtr'>
       <ref name='xmlParseCatalogFile'/>
@@ -3425,6 +3441,13 @@
     <type name='xmlRefPtr'>
       <ref name='xmlAddRef'/>
     </type>
+    <type name='xmlRegExecCtxtPtr'>
+      <ref name='xmlRegNewExecCtxt'/>
+    </type>
+    <type name='xmlRegexpPtr'>
+      <ref name='xmlRegexpCompile'/>
+      <ref name='xmlAutomataCompile'/>
+    </type>
     <type name='xmlURIPtr'>
       <ref name='xmlCreateURI'/>
       <ref name='xmlParseURI'/>
@@ -3523,6 +3546,7 @@
       <ref name='xmlMemShow'/>
       <ref name='xmlXPathDebugDumpObject'/>
       <ref name='xmlXPathDebugDumpCompExpr'/>
+      <ref name='xmlRegexpPrint'/>
     </type>
     <type name='char **'>
       <ref name='xmlNanoHTTPFetch'/>
@@ -3578,6 +3602,7 @@
       <ref name='htmlNewDocNoDtD'/>
       <ref name='htmlNewDocNoDtD'/>
       <ref name='htmlSetMetaEncoding'/>
+      <ref name='htmlIsBooleanAttr'/>
       <ref name='xmlACatalogAdd'/>
       <ref name='xmlACatalogAdd'/>
       <ref name='xmlACatalogAdd'/>
@@ -3718,6 +3743,7 @@
       <ref name='xmlSAXParseDTD'/>
       <ref name='xmlSAXParseDTD'/>
       <ref name='xmlParseBalancedChunkMemory'/>
+      <ref name='xmlParseBalancedChunkMemoryRecover'/>
       <ref name='xmlParseExternalEntity'/>
       <ref name='xmlParseExternalEntity'/>
       <ref name='xmlParseCtxtExternalEntity'/>
@@ -3839,6 +3865,7 @@
       <ref name='xmlValidateNamesValue'/>
       <ref name='xmlValidateNmtokenValue'/>
       <ref name='xmlValidateNmtokensValue'/>
+      <ref name='xmlNormalizeWindowsPath'/>
       <ref name='xmlXPathCastStringToBoolean'/>
       <ref name='xmlXPathCastStringToNumber'/>
       <ref name='xmlXPathEval'/>
@@ -3908,6 +3935,13 @@
       <ref name='namespaceDecl'/>
       <ref name='comment'/>
       <ref name='cdataBlock'/>
+      <ref name='xmlRegexpCompile'/>
+      <ref name='xmlRegexpExec'/>
+      <ref name='xmlRegExecCallbacks'/>
+      <ref name='xmlRegExecPushString'/>
+      <ref name='xmlAutomataNewTransition'/>
+      <ref name='xmlAutomataNewCountTrans'/>
+      <ref name='xmlAutomataNewOnceTrans'/>
     </type>
     <type name='const xmlChar **'>
       <ref name='startElementSAXFunc'/>
@@ -4127,6 +4161,7 @@
       <ref name='xmlSAXUserParseMemory'/>
       <ref name='xmlSAXParseFileWithData'/>
       <ref name='xmlParseBalancedChunkMemory'/>
+      <ref name='xmlParseBalancedChunkMemoryRecover'/>
       <ref name='xmlParseExternalEntity'/>
       <ref name='xmlGetFeature'/>
       <ref name='xmlSetFeature'/>
@@ -4195,6 +4230,17 @@
       <ref name='namespaceDecl'/>
       <ref name='comment'/>
       <ref name='cdataBlock'/>
+      <ref name='xmlRegExecCallbacks'/>
+      <ref name='xmlRegExecCallbacks'/>
+      <ref name='xmlRegNewExecCtxt'/>
+      <ref name='xmlRegExecPushString'/>
+      <ref name='xmlAutomataNewTransition'/>
+      <ref name='xmlAutomataNewCountTrans'/>
+      <ref name='xmlAutomataNewOnceTrans'/>
+    </type>
+    <type name='void*'>
+      <ref name='xmlC14NIsVisibleCallback'/>
+      <ref name='xmlC14NExecute'/>
     </type>
     <type name='xmlAttrPtr'>
       <ref name='xmlDebugDumpAttr'/>
@@ -4227,6 +4273,39 @@
     <type name='xmlAttributeType'>
       <ref name='xmlAddAttributeDecl'/>
       <ref name='xmlValidateAttributeValue'/>
+    </type>
+    <type name='xmlAutomataPtr'>
+      <ref name='xmlFreeAutomata'/>
+      <ref name='xmlAutomataGetInitState'/>
+      <ref name='xmlAutomataSetFinalState'/>
+      <ref name='xmlAutomataNewState'/>
+      <ref name='xmlAutomataNewTransition'/>
+      <ref name='xmlAutomataNewCountTrans'/>
+      <ref name='xmlAutomataNewOnceTrans'/>
+      <ref name='xmlAutomataNewAllTrans'/>
+      <ref name='xmlAutomataNewEpsilon'/>
+      <ref name='xmlAutomataNewCountedTrans'/>
+      <ref name='xmlAutomataNewCounterTrans'/>
+      <ref name='xmlAutomataNewCounter'/>
+      <ref name='xmlAutomataCompile'/>
+      <ref name='xmlAutomataIsDeterminist'/>
+    </type>
+    <type name='xmlAutomataStatePtr'>
+      <ref name='xmlAutomataSetFinalState'/>
+      <ref name='xmlAutomataNewTransition'/>
+      <ref name='xmlAutomataNewTransition'/>
+      <ref name='xmlAutomataNewCountTrans'/>
+      <ref name='xmlAutomataNewCountTrans'/>
+      <ref name='xmlAutomataNewOnceTrans'/>
+      <ref name='xmlAutomataNewOnceTrans'/>
+      <ref name='xmlAutomataNewAllTrans'/>
+      <ref name='xmlAutomataNewAllTrans'/>
+      <ref name='xmlAutomataNewEpsilon'/>
+      <ref name='xmlAutomataNewEpsilon'/>
+      <ref name='xmlAutomataNewCountedTrans'/>
+      <ref name='xmlAutomataNewCountedTrans'/>
+      <ref name='xmlAutomataNewCounterTrans'/>
+      <ref name='xmlAutomataNewCounterTrans'/>
     </type>
     <type name='xmlBufferAllocationScheme'>
       <ref name='xmlSetBufferAllocationScheme'/>
@@ -4264,6 +4343,9 @@
       <ref name='xmlDumpElementDecl'/>
       <ref name='xmlDumpAttributeTable'/>
       <ref name='xmlDumpAttributeDecl'/>
+    </type>
+    <type name='xmlC14NIsVisibleCallback'>
+      <ref name='xmlC14NExecute'/>
     </type>
     <type name='xmlCatalogAllow'>
       <ref name='xmlCatalogSetDefaults'/>
@@ -4341,6 +4423,7 @@
       <ref name='xmlC14NDocDumpMemory'/>
       <ref name='xmlC14NDocDumpMemory'/>
       <ref name='xmlC14NDocSave'/>
+      <ref name='xmlC14NExecute'/>
     </type>
     <type name='xmlCharEncoding'>
       <ref name='docbCreatePushParserCtxt'/>
@@ -4374,6 +4457,12 @@
       <ref name='xmlOutputBufferCreateFd'/>
       <ref name='xmlOutputBufferCreateIO'/>
     </type>
+    <type name='xmlCharEncodingInputFunc'>
+      <ref name='xmlNewCharEncodingHandler'/>
+    </type>
+    <type name='xmlCharEncodingOutputFunc'>
+      <ref name='xmlNewCharEncodingHandler'/>
+    </type>
     <type name='xmlDocPtr'>
       <ref name='htmlDocDumpMemory'/>
       <ref name='htmlDocDump'/>
@@ -4399,6 +4488,7 @@
       <ref name='xmlEncodeEntitiesReentrant'/>
       <ref name='xmlEncodeSpecialChars'/>
       <ref name='xmlParseBalancedChunkMemory'/>
+      <ref name='xmlParseBalancedChunkMemoryRecover'/>
       <ref name='xmlParseExternalEntity'/>
       <ref name='xmlCreateIntSubset'/>
       <ref name='xmlNewDtd'/>
@@ -4477,6 +4567,7 @@
       <ref name='xmlC14NDocSaveTo'/>
       <ref name='xmlC14NDocDumpMemory'/>
       <ref name='xmlC14NDocSave'/>
+      <ref name='xmlC14NExecute'/>
     </type>
     <type name='xmlDtdPtr'>
       <ref name='xmlDebugDumpDTD'/>
@@ -4513,6 +4604,7 @@
     <type name='xmlElementPtr'>
       <ref name='xmlDumpElementDecl'/>
       <ref name='xmlValidateElementDecl'/>
+      <ref name='xmlValidBuildContentModel'/>
     </type>
     <type name='xmlElementTablePtr'>
       <ref name='xmlCopyElementTable'/>
@@ -4837,9 +4929,12 @@
       <ref name='xmlXPtrNewCollapsedRange'/>
       <ref name='xmlXPtrNewContext'/>
       <ref name='xmlXPtrNewContext'/>
+      <ref name='xmlC14NIsVisibleCallback'/>
+      <ref name='xmlC14NIsVisibleCallback'/>
     </type>
     <type name='xmlNodePtr *'>
       <ref name='xmlParseBalancedChunkMemory'/>
+      <ref name='xmlParseBalancedChunkMemoryRecover'/>
       <ref name='xmlParseExternalEntity'/>
       <ref name='xmlParseCtxtExternalEntity'/>
     </type>
@@ -4925,6 +5020,7 @@
       <ref name='xmlOutputBufferFlush'/>
       <ref name='xmlOutputBufferClose'/>
       <ref name='xmlC14NDocSaveTo'/>
+      <ref name='xmlC14NExecute'/>
     </type>
     <type name='xmlOutputCloseCallback'>
       <ref name='xmlOutputBufferCreateIO'/>
@@ -5071,6 +5167,21 @@
     <type name='xmlRefTablePtr'>
       <ref name='xmlFreeRefTable'/>
     </type>
+    <type name='xmlRegExecCallbacks'>
+      <ref name='xmlRegNewExecCtxt'/>
+    </type>
+    <type name='xmlRegExecCtxtPtr'>
+      <ref name='xmlRegExecCallbacks'/>
+      <ref name='xmlRegFreeExecCtxt'/>
+      <ref name='xmlRegExecPushString'/>
+    </type>
+    <type name='xmlRegexpPtr'>
+      <ref name='xmlRegFreeRegexp'/>
+      <ref name='xmlRegexpExec'/>
+      <ref name='xmlRegexpPrint'/>
+      <ref name='xmlRegexpIsDeterminist'/>
+      <ref name='xmlRegNewExecCtxt'/>
+    </type>
     <type name='xmlSAXHandler *'>
       <ref name='initxmlDefaultSAXHandler'/>
       <ref name='inithtmlDefaultSAXHandler'/>
@@ -5087,6 +5198,7 @@
       <ref name='xmlSAXParseDTD'/>
       <ref name='xmlIOParseDTD'/>
       <ref name='xmlParseBalancedChunkMemory'/>
+      <ref name='xmlParseBalancedChunkMemoryRecover'/>
       <ref name='xmlParseExternalEntity'/>
       <ref name='xmlCreatePushParserCtxt'/>
       <ref name='xmlCreateIOParserCtxt'/>
@@ -5145,6 +5257,7 @@
       <ref name='xmlValidateOneAttribute'/>
       <ref name='xmlValidateDocumentFinal'/>
       <ref name='xmlValidateNotationUse'/>
+      <ref name='xmlValidBuildContentModel'/>
     </type>
     <type name='xmlXPathCompExprPtr'>
       <ref name='xmlXPathCompiledEval'/>
@@ -5231,6 +5344,7 @@
       <ref name='xmlXPathParseNCName'/>
       <ref name='xmlXPathEvaluatePredicateResult'/>
       <ref name='xmlXPathEqualValues'/>
+      <ref name='xmlXPathNotEqualValues'/>
       <ref name='xmlXPathCompareValues'/>
       <ref name='xmlXPathValueFlipSign'/>
       <ref name='xmlXPathAddValues'/>
@@ -5362,6 +5476,7 @@
       <ref name='htmlNodeDumpFormatOutput'/>
       <ref name='htmlDocContentDumpOutput'/>
       <ref name='htmlDocContentDumpFormatOutput'/>
+      <ref name='htmlIsBooleanAttr'/>
     </file>
     <file name='SAX'>
       <ref name='getPublicId'/>
@@ -5409,6 +5524,8 @@
       <ref name='xmlC14NDocSaveTo'/>
       <ref name='xmlC14NDocDumpMemory'/>
       <ref name='xmlC14NDocSave'/>
+      <ref name='xmlC14NIsVisibleCallback'/>
+      <ref name='xmlC14NExecute'/>
     </file>
     <file name='catalog'>
       <ref name='XML_CATALOGS_NAMESPACE'/>
@@ -5497,6 +5614,7 @@
       <ref name='xmlRegisterCharEncodingHandler'/>
       <ref name='xmlGetCharEncodingHandler'/>
       <ref name='xmlFindCharEncodingHandler'/>
+      <ref name='xmlNewCharEncodingHandler'/>
       <ref name='xmlAddEncodingAlias'/>
       <ref name='xmlDelEncodingAlias'/>
       <ref name='xmlGetEncodingAlias'/>
@@ -5761,6 +5879,7 @@
       <ref name='xmlSAXParseDTD'/>
       <ref name='xmlIOParseDTD'/>
       <ref name='xmlParseBalancedChunkMemory'/>
+      <ref name='xmlParseBalancedChunkMemoryRecover'/>
       <ref name='xmlParseExternalEntity'/>
       <ref name='xmlParseCtxtExternalEntity'/>
       <ref name='xmlInitParserCtxt'/>
@@ -6241,6 +6360,7 @@
       <ref name='xmlValidateNamesValue'/>
       <ref name='xmlValidateNmtokenValue'/>
       <ref name='xmlValidateNmtokensValue'/>
+      <ref name='xmlValidBuildContentModel'/>
     </file>
     <file name='xinclude'>
       <ref name='xmlXIncludeProcess'/>
@@ -6286,6 +6406,7 @@
       <ref name='xmlIOHTTPOpenW'/>
       <ref name='xmlRegisterHTTPPostCallbacks'/>
       <ref name='xmlNoNetExternalEntityLoader'/>
+      <ref name='xmlNormalizeWindowsPath'/>
       <ref name='xmlFileMatch'/>
       <ref name='xmlFileOpen'/>
       <ref name='xmlFileRead'/>
@@ -6298,6 +6419,27 @@
       <ref name='xmlIOFTPOpen'/>
       <ref name='xmlIOFTPRead'/>
       <ref name='xmlIOFTPClose'/>
+    </file>
+    <file name='xmlautomata'>
+      <ref name='xmlAutomata'/>
+      <ref name='xmlAutomataPtr'/>
+      <ref name='xmlAutomataState'/>
+      <ref name='xmlAutomataStatePtr'/>
+      <ref name='xmlNewAutomata'/>
+      <ref name='xmlFreeAutomata'/>
+      <ref name='xmlAutomataGetInitState'/>
+      <ref name='xmlAutomataSetFinalState'/>
+      <ref name='xmlAutomataNewState'/>
+      <ref name='xmlAutomataNewTransition'/>
+      <ref name='xmlAutomataNewCountTrans'/>
+      <ref name='xmlAutomataNewOnceTrans'/>
+      <ref name='xmlAutomataNewAllTrans'/>
+      <ref name='xmlAutomataNewEpsilon'/>
+      <ref name='xmlAutomataNewCountedTrans'/>
+      <ref name='xmlAutomataNewCounterTrans'/>
+      <ref name='xmlAutomataNewCounter'/>
+      <ref name='xmlAutomataCompile'/>
+      <ref name='xmlAutomataIsDeterminist'/>
     </file>
     <file name='xmlerror'>
       <ref name='xmlParserErrors'/>
@@ -6330,6 +6472,157 @@
       <ref name='xmlMallocLoc'/>
       <ref name='xmlReallocLoc'/>
       <ref name='xmlMemStrdupLoc'/>
+    </file>
+    <file name='xmlregexp'>
+      <ref name='xmlRegexp'/>
+      <ref name='xmlRegexpPtr'/>
+      <ref name='xmlRegExecCtxt'/>
+      <ref name='xmlRegExecCtxtPtr'/>
+      <ref name='xmlRegexpCompile'/>
+      <ref name='xmlRegFreeRegexp'/>
+      <ref name='xmlRegexpExec'/>
+      <ref name='xmlRegexpPrint'/>
+      <ref name='xmlRegexpIsDeterminist'/>
+      <ref name='xmlRegExecCallbacks'/>
+      <ref name='xmlRegNewExecCtxt'/>
+      <ref name='xmlRegFreeExecCtxt'/>
+      <ref name='xmlRegExecPushString'/>
+    </file>
+    <file name='xmlunicode'>
+      <ref name='xmlUCSIsAlphabeticPresentationForms'/>
+      <ref name='xmlUCSIsArabic'/>
+      <ref name='xmlUCSIsArabicPresentationFormsA'/>
+      <ref name='xmlUCSIsArabicPresentationFormsB'/>
+      <ref name='xmlUCSIsArmenian'/>
+      <ref name='xmlUCSIsArrows'/>
+      <ref name='xmlUCSIsBasicLatin'/>
+      <ref name='xmlUCSIsBengali'/>
+      <ref name='xmlUCSIsBlockElements'/>
+      <ref name='xmlUCSIsBopomofo'/>
+      <ref name='xmlUCSIsBopomofoExtended'/>
+      <ref name='xmlUCSIsBoxDrawing'/>
+      <ref name='xmlUCSIsBraillePatterns'/>
+      <ref name='xmlUCSIsByzantineMusicalSymbols'/>
+      <ref name='xmlUCSIsCJKCompatibility'/>
+      <ref name='xmlUCSIsCJKCompatibilityForms'/>
+      <ref name='xmlUCSIsCJKCompatibilityIdeographs'/>
+      <ref name='xmlUCSIsCJKCompatibilityIdeographsSupplement'/>
+      <ref name='xmlUCSIsCJKRadicalsSupplement'/>
+      <ref name='xmlUCSIsCJKSymbolsandPunctuation'/>
+      <ref name='xmlUCSIsCJKUnifiedIdeographs'/>
+      <ref name='xmlUCSIsCJKUnifiedIdeographsExtensionA'/>
+      <ref name='xmlUCSIsCJKUnifiedIdeographsExtensionB'/>
+      <ref name='xmlUCSIsCherokee'/>
+      <ref name='xmlUCSIsCombiningDiacriticalMarks'/>
+      <ref name='xmlUCSIsCombiningHalfMarks'/>
+      <ref name='xmlUCSIsCombiningMarksforSymbols'/>
+      <ref name='xmlUCSIsControlPictures'/>
+      <ref name='xmlUCSIsCurrencySymbols'/>
+      <ref name='xmlUCSIsCyrillic'/>
+      <ref name='xmlUCSIsDeseret'/>
+      <ref name='xmlUCSIsDevanagari'/>
+      <ref name='xmlUCSIsDingbats'/>
+      <ref name='xmlUCSIsEnclosedAlphanumerics'/>
+      <ref name='xmlUCSIsEnclosedCJKLettersandMonths'/>
+      <ref name='xmlUCSIsEthiopic'/>
+      <ref name='xmlUCSIsGeneralPunctuation'/>
+      <ref name='xmlUCSIsGeometricShapes'/>
+      <ref name='xmlUCSIsGeorgian'/>
+      <ref name='xmlUCSIsGothic'/>
+      <ref name='xmlUCSIsGreek'/>
+      <ref name='xmlUCSIsGreekExtended'/>
+      <ref name='xmlUCSIsGujarati'/>
+      <ref name='xmlUCSIsGurmukhi'/>
+      <ref name='xmlUCSIsHalfwidthandFullwidthForms'/>
+      <ref name='xmlUCSIsHangulCompatibilityJamo'/>
+      <ref name='xmlUCSIsHangulJamo'/>
+      <ref name='xmlUCSIsHangulSyllables'/>
+      <ref name='xmlUCSIsHebrew'/>
+      <ref name='xmlUCSIsHighPrivateUseSurrogates'/>
+      <ref name='xmlUCSIsHighSurrogates'/>
+      <ref name='xmlUCSIsHiragana'/>
+      <ref name='xmlUCSIsIPAExtensions'/>
+      <ref name='xmlUCSIsIdeographicDescriptionCharacters'/>
+      <ref name='xmlUCSIsKanbun'/>
+      <ref name='xmlUCSIsKangxiRadicals'/>
+      <ref name='xmlUCSIsKannada'/>
+      <ref name='xmlUCSIsKatakana'/>
+      <ref name='xmlUCSIsKhmer'/>
+      <ref name='xmlUCSIsLao'/>
+      <ref name='xmlUCSIsLatin1Supplement'/>
+      <ref name='xmlUCSIsLatinExtendedA'/>
+      <ref name='xmlUCSIsLatinExtendedB'/>
+      <ref name='xmlUCSIsLatinExtendedAdditional'/>
+      <ref name='xmlUCSIsLetterlikeSymbols'/>
+      <ref name='xmlUCSIsLowSurrogates'/>
+      <ref name='xmlUCSIsMalayalam'/>
+      <ref name='xmlUCSIsMathematicalAlphanumericSymbols'/>
+      <ref name='xmlUCSIsMathematicalOperators'/>
+      <ref name='xmlUCSIsMiscellaneousSymbols'/>
+      <ref name='xmlUCSIsMiscellaneousTechnical'/>
+      <ref name='xmlUCSIsMongolian'/>
+      <ref name='xmlUCSIsMusicalSymbols'/>
+      <ref name='xmlUCSIsMyanmar'/>
+      <ref name='xmlUCSIsNumberForms'/>
+      <ref name='xmlUCSIsOgham'/>
+      <ref name='xmlUCSIsOldItalic'/>
+      <ref name='xmlUCSIsOpticalCharacterRecognition'/>
+      <ref name='xmlUCSIsOriya'/>
+      <ref name='xmlUCSIsPrivateUse'/>
+      <ref name='xmlUCSIsRunic'/>
+      <ref name='xmlUCSIsSinhala'/>
+      <ref name='xmlUCSIsSmallFormVariants'/>
+      <ref name='xmlUCSIsSpacingModifierLetters'/>
+      <ref name='xmlUCSIsSpecials'/>
+      <ref name='xmlUCSIsSuperscriptsandSubscripts'/>
+      <ref name='xmlUCSIsSyriac'/>
+      <ref name='xmlUCSIsTags'/>
+      <ref name='xmlUCSIsTamil'/>
+      <ref name='xmlUCSIsTelugu'/>
+      <ref name='xmlUCSIsThaana'/>
+      <ref name='xmlUCSIsThai'/>
+      <ref name='xmlUCSIsTibetan'/>
+      <ref name='xmlUCSIsUnifiedCanadianAboriginalSyllabics'/>
+      <ref name='xmlUCSIsYiRadicals'/>
+      <ref name='xmlUCSIsYiSyllables'/>
+      <ref name='xmlUCSIsBlock'/>
+      <ref name='xmlUCSIsCatC'/>
+      <ref name='xmlUCSIsCatCc'/>
+      <ref name='xmlUCSIsCatCf'/>
+      <ref name='xmlUCSIsCatCo'/>
+      <ref name='xmlUCSIsCatCs'/>
+      <ref name='xmlUCSIsCatL'/>
+      <ref name='xmlUCSIsCatLl'/>
+      <ref name='xmlUCSIsCatLm'/>
+      <ref name='xmlUCSIsCatLo'/>
+      <ref name='xmlUCSIsCatLt'/>
+      <ref name='xmlUCSIsCatLu'/>
+      <ref name='xmlUCSIsCatM'/>
+      <ref name='xmlUCSIsCatMc'/>
+      <ref name='xmlUCSIsCatMe'/>
+      <ref name='xmlUCSIsCatMn'/>
+      <ref name='xmlUCSIsCatN'/>
+      <ref name='xmlUCSIsCatNd'/>
+      <ref name='xmlUCSIsCatNl'/>
+      <ref name='xmlUCSIsCatNo'/>
+      <ref name='xmlUCSIsCatP'/>
+      <ref name='xmlUCSIsCatPc'/>
+      <ref name='xmlUCSIsCatPd'/>
+      <ref name='xmlUCSIsCatPe'/>
+      <ref name='xmlUCSIsCatPf'/>
+      <ref name='xmlUCSIsCatPi'/>
+      <ref name='xmlUCSIsCatPo'/>
+      <ref name='xmlUCSIsCatPs'/>
+      <ref name='xmlUCSIsCatS'/>
+      <ref name='xmlUCSIsCatSc'/>
+      <ref name='xmlUCSIsCatSk'/>
+      <ref name='xmlUCSIsCatSm'/>
+      <ref name='xmlUCSIsCatSo'/>
+      <ref name='xmlUCSIsCatZ'/>
+      <ref name='xmlUCSIsCatZl'/>
+      <ref name='xmlUCSIsCatZp'/>
+      <ref name='xmlUCSIsCatZs'/>
+      <ref name='xmlUCSIsCat'/>
     </file>
     <file name='xmlversion'>
       <ref name='xmlCheckVersion'/>
@@ -6521,6 +6814,7 @@
       <ref name='xmlXPathWrapNodeSet'/>
       <ref name='xmlXPathWrapExternal'/>
       <ref name='xmlXPathEqualValues'/>
+      <ref name='xmlXPathNotEqualValues'/>
       <ref name='xmlXPathCompareValues'/>
       <ref name='xmlXPathValueFlipSign'/>
       <ref name='xmlXPathAddValues'/>

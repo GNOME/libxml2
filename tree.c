@@ -899,7 +899,7 @@ xmlStringGetNodeList(xmlDocPtr doc, const xmlChar *value) {
  *
  * Returns the string equivalent to the text contained in the Node list
  * made of TEXTs and ENTITY_REFs
- * Returns a pointer to the string copy, the caller must free it.
+ * Returns a pointer to the string copy, the caller must free it with xmlFree().
  */
 xmlChar *
 xmlNodeListGetString(xmlDocPtr doc, xmlNodePtr list, int inLine)
@@ -979,7 +979,7 @@ xmlNodeListGetString(xmlDocPtr doc, xmlNodePtr list, int inLine)
  * made of TEXTs and ENTITY_REFs, contrary to xmlNodeListGetString()
  * this function doesn't do any character encoding handling.
  *
- * Returns a pointer to the string copy, the caller must free it.
+ * Returns a pointer to the string copy, the caller must free it with xmlFree().
  */
 xmlChar *
 xmlNodeListGetRawString(xmlDocPtr doc, xmlNodePtr list, int inLine)
@@ -3658,7 +3658,7 @@ xmlNodeSetLang(xmlNodePtr cur, const xmlChar *lang) {
  * attribute or the one carried by the nearest ancestor.
  *
  * Returns a pointer to the lang value, or NULL if not found
- *     It's up to the caller to free the memory.
+ *     It's up to the caller to free the memory with xmlFree().
  */
 xmlChar *
 xmlNodeGetLang(xmlNodePtr cur) {
@@ -3873,7 +3873,7 @@ xmlNodeSetBase(xmlNodePtr cur, xmlChar* uri) {
  * xmlDocumentGetBase() for this
  *
  * Returns a pointer to the base URL, or NULL if not found
- *     It's up to the caller to free the memory.
+ *     It's up to the caller to free the memory with xmlFree().
  */
 xmlChar *
 xmlNodeGetBase(xmlDocPtr doc, xmlNodePtr cur) {
@@ -3954,7 +3954,7 @@ xmlNodeGetBase(xmlDocPtr doc, xmlNodePtr cur) {
  * of the values carried by this node child's (TEXT and ENTITY_REF).
  * Entity references are substituted.
  * Returns a new #xmlChar * or NULL if no content is available.
- *     It's up to the caller to free the memory.
+ *     It's up to the caller to free the memory with xmlFree().
  */
 xmlChar *
 xmlNodeGetContent(xmlNodePtr cur)
@@ -4999,7 +4999,7 @@ xmlHasNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *nameSpace) {
  * default declaration values unless DTD use has been turned off.
  *
  * Returns the attribute value or NULL if not found.
- *     It's up to the caller to free the memory.
+ *     It's up to the caller to free the memory with xmlFree().
  */
 xmlChar *
 xmlGetProp(xmlNodePtr node, const xmlChar *name) {
@@ -5054,7 +5054,7 @@ xmlGetProp(xmlNodePtr node, const xmlChar *name) {
  * default declaration values unless DTD use has been turned off.
  *
  * Returns the attribute value or NULL if not found.
- *     It's up to the caller to free the memory.
+ *     It's up to the caller to free the memory with xmlFree().
  */
 xmlChar *
 xmlGetNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *nameSpace) {
@@ -5432,7 +5432,7 @@ xmlBufferCreateSize(size_t size) {
 
 /**
  * xmlBufferSetAllocationScheme:
- * @buf:  the buffer to free
+ * @buf:  the buffer to tune
  * @scheme:  allocation scheme to use
  *
  * Sets the allocation scheme for this buffer
@@ -6822,7 +6822,7 @@ xmlDocContentDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr cur,
  *
  * Dump the current DOM tree into memory using the character encoding specified
  * by the caller.  Note it is up to the caller of this function to free the
- * allocated memory.
+ * allocated memory with xmlFree().
  * Note that format = 1 provide node indenting only if xmlIndentTreeOutput = 1
  * or xmlKeepBlanksDefault(0) was called
  */
@@ -6921,7 +6921,7 @@ xmlDocDumpFormatMemoryEnc(xmlDocPtr out_doc, xmlChar **doc_txt_ptr,
  * @size:  OUT: the memory length
  *
  * Dump an XML document in memory and return the #xmlChar * and it's size.
- * It's up to the caller to free the memory.
+ * It's up to the caller to free the memory with xmlFree().
  */
 void
 xmlDocDumpMemory(xmlDocPtr cur, xmlChar**mem, int *size) {
@@ -6937,7 +6937,7 @@ xmlDocDumpMemory(xmlDocPtr cur, xmlChar**mem, int *size) {
  *
  *
  * Dump an XML document in memory and return the #xmlChar * and it's size.
- * It's up to the caller to free the memory.
+ * It's up to the caller to free the memory with xmlFree().
  * Note that format = 1 provide node indenting only if xmlIndentTreeOutput = 1
  * or xmlKeepBlanksDefault(0) was called
  */
@@ -6955,7 +6955,7 @@ xmlDocDumpFormatMemory(xmlDocPtr cur, xmlChar**mem, int *size, int format) {
  *
  * Dump the current DOM tree into memory using the character encoding specified
  * by the caller.  Note it is up to the caller of this function to free the
- * allocated memory.
+ * allocated memory with xmlFree().
  */
 
 void

@@ -1,7 +1,19 @@
+Thu Sep 26 00:21:18 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: improving some documentation comments
+	* xmlregexp.c: found and fixed a mem leak with python regression tests
+	* doc/*: rebuilt the doc and the API XML file including the 
+	  xmlregexp.h xmlautomata.h and xmlunicode.h headers
+	* python/generator.py python/libxml2class.txt python/libxml_wrap.h
+	  python/types.c: added access to the XML Schemas regexps from
+	  python
+	* python/tests/Makefile.am python/tests/regexp.py: added a 
+	  simple regexp bindings test
+
 Tue Sep 24 08:10:48 MDT 2002 John Fleck <jfleck@inkstain.net>
 
-	* doc/xml.html
-	fixing ftp links - thanks to Vitaly Ostanin
+	* doc/xml.html:
+	  fixing ftp links - thanks to Vitaly Ostanin
 
 Tue Sep 24 16:08:17 CEST 2002 Daniel Veillard <daniel@veillard.com>
 

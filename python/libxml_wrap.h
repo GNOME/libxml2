@@ -14,6 +14,9 @@
 #include <libxml/HTMLtree.h>
 #include <libxml/xinclude.h>
 #include <libxml/xpointer.h>
+#include <libxml/xmlunicode.h>
+#include <libxml/xmlregexp.h>
+#include <libxml/xmlautomata.h>
 
 #define PyxmlNode_Get(v) (((v) == Py_None) ? NULL : \
 	(((PyxmlNode_Object *)(v))->obj))
@@ -55,6 +58,14 @@ typedef struct {
     xmlCatalogPtr obj;
 } Pycatalog_Object;
 
+#define PyxmlReg_Get(v) (((v) == Py_None) ? NULL : \
+        (((PyxmlReg_Object *)(v))->obj))
+
+typedef struct {
+    PyObject_HEAD
+    xmlRegexpPtr obj;
+} PyxmlReg_Object;
+
 #define PyURI_Get(v) (((v) == Py_None) ? NULL : \
 	(((PyURI_Object *)(v))->obj))
 
@@ -81,7 +92,7 @@ typedef struct {
 
 /* FILE * have their own internal representation */
 #define PyFile_Get(v) (((v) == Py_None) ? NULL : \
-	(PyFile_Check(v) ? (PyFile_AsFile(v)) : NULL))
+	(PyFile_Check(v) ? (PyFile_AsFile(v)) : stdout))
 
 
 PyObject * libxml_intWrap(int val);
@@ -107,5 +118,6 @@ PyObject * libxml_xmlCatalogPtrWrap(xmlCatalogPtr obj);
 PyObject * libxml_xmlURIPtrWrap(xmlURIPtr uri);
 PyObject * libxml_xmlOutputBufferPtrWrap(xmlOutputBufferPtr buffer);
 PyObject * libxml_xmlParserInputBufferPtrWrap(xmlParserInputBufferPtr buffer);
+PyObject * libxml_xmlRegexpPtrWrap(xmlRegexpPtr regexp);
 
 xmlXPathObjectPtr libxml_xmlXPathObjectPtrConvert(PyObject * obj);

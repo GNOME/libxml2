@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd">
 <html>
 <head>
-<meta content="text/html; charset=ISO-8859-1" http-equiv="Content-Type">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link rel="SHORTCUT ICON" href="/favicon.ico">
 <style type="text/css"><!--
 TD {font-family: Verdana,Arial,Helvetica}
@@ -16,7 +16,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <body bgcolor="#8b7765" text="#000000" link="#000000" vlink="#000000">
 <table border="0" width="100%" cellpadding="5" cellspacing="0" align="center"><tr>
 <td width="180">
-<a href="http://www.gnome.org/"><img src="smallfootonly.gif" alt="Gnome Logo"></a><a href="http://www.w3.org/Status"><img src="w3c.png" alt="W3C Logo"></a><a href="http://www.redhat.com/"><img src="redhat.gif" alt="Red Hat Logo"></a>
+<a href="http://www.gnome.org/"><img src="gnome2.png" alt="Gnome2 Logo"></a><a href="http://www.w3.org/Status"><img src="w3c.png" alt="W3C Logo"></a><a href="http://www.redhat.com/"><img src="redhat.gif" alt="Red Hat Logo"></a><div align="left"><a href="http://xmlsoft.org/"><img src="Libxml2-Logo-180x168.gif" alt="Made with Libxml2 Logo"></a></div>
 </td>
 <td><table border="0" width="90%" cellpadding="2" cellspacing="0" align="center" bgcolor="#000000"><tr><td><table width="100%" border="0" cellspacing="1" cellpadding="3" bgcolor="#fffacd"><tr><td align="center">
 <h1>The XML C library for Gnome</h1>
@@ -55,6 +55,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <li><a href="DOM.html">DOM Principles</a></li>
 <li><a href="example.html">A real example</a></li>
 <li><a href="contribs.html">Contributions</a></li>
+<li><a href="tutorial/index.html">Tutorial</a></li>
 <li>
 <a href="xml.html">flat page</a>, <a href="site.xsl">stylesheet</a>
 </li>
@@ -80,6 +81,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <li><a href="ftp://xmlsoft.org/">FTP</a></li>
 <li><a href="http://www.fh-frankfurt.de/~igor/projects/libxml/">Windows binaries</a></li>
 <li><a href="http://garypennington.net/libxml2/">Solaris binaries</a></li>
+<li><a href="http://www.zveno.com/open_source/libxml2xslt.html">MacOsX binaries</a></li>
 <li><a href="http://sourceforge.net/projects/libxml2-pas/">Pascal bindings</a></li>
 <li><a href="http://bugzilla.gnome.org/buglist.cgi?product=libxml&amp;product=libxml2">Bug Tracker</a></li>
 </ul></td></tr>
@@ -102,12 +104,14 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="APIchunk12.html">g-i</a>
 <a href="APIchunk13.html">j-l</a>
 <a href="APIchunk14.html">m-n</a>
-<a href="APIchunk15.html">o-p</a>
-<a href="APIchunk16.html">q-r</a>
-<a href="APIchunk17.html">s-s</a>
-<a href="APIchunk18.html">t-t</a>
-<a href="APIchunk19.html">u-v</a>
-<a href="APIchunk20.html">w-x</a>
+<a href="APIchunk15.html">o-o</a>
+<a href="APIchunk16.html">p-p</a>
+<a href="APIchunk17.html">q-r</a>
+<a href="APIchunk18.html">s-s</a>
+<a href="APIchunk19.html">t-t</a>
+<a href="APIchunk20.html">u-v</a>
+<a href="APIchunk21.html">w-w</a>
+<a href="APIchunk22.html">x-x</a>
 </h2>
 <h2>Letter d:</h2>
 <dl>
@@ -166,7 +170,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-debugxml.html#XMLDEBUGDUMPNODE">xmlDebugDumpNode</a>
 <a href="html/libxml-debugxml.html#XMLDEBUGDUMPNODELIST">xmlDebugDumpNodeList</a>
 <a href="html/libxml-debugxml.html#XMLDEBUGDUMPONENODE">xmlDebugDumpOneNode</a>
-<a href="html/libxml-index.html#XMLREGEXPPRINT">xmlRegexpPrint</a>
+<a href="html/libxml-xmlregexp.html#XMLREGEXPPRINT">xmlRegexpPrint</a>
 <a href="html/libxml-valid.html#XMLSNPRINTFELEMENTCONTENT">xmlSnprintfElementContent</a>
 </dd>
 <dt>debugging</dt>
@@ -382,8 +386,8 @@ A:link, A:visited, A:active { text-decoration: underline }
 </dd>
 <dt>description</dt>
 <dd>
-<a href="html/libxml-index.html#XMLAUTOMATAPTR">xmlAutomataPtr</a>
-<a href="html/libxml-index.html#XMLAUTOMATASTATEPTR">xmlAutomataStatePtr</a>
+<a href="html/libxml-xmlautomata.html#XMLAUTOMATAPTR">xmlAutomataPtr</a>
+<a href="html/libxml-xmlautomata.html#XMLAUTOMATASTATEPTR">xmlAutomataStatePtr</a>
 <a href="html/libxml-valid.html#XMLCOPYELEMENTCONTENT">xmlCopyElementContent</a>
 <a href="html/libxml-valid.html#XMLGETDTDATTRDESC">xmlGetDtdAttrDesc</a>
 <a href="html/libxml-valid.html#XMLGETDTDELEMENTDESC">xmlGetDtdElementDesc</a>
@@ -472,7 +476,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 </dd>
 <dt>determinist</dt>
 <dd>
-<a href="html/libxml-index.html#XMLAUTOMATAISDETERMINIST">xmlAutomataIsDeterminist</a>
+<a href="html/libxml-xmlautomata.html#XMLAUTOMATAISDETERMINIST">xmlAutomataIsDeterminist</a>
 </dd>
 <dt>difference</dt>
 <dd>
@@ -546,7 +550,7 @@ A:link, A:visited, A:active { text-decoration: underline }
 </dd>
 <dt>disconnected</dt>
 <dd>
-<a href="html/libxml-index.html#XMLAUTOMATANEWSTATE">xmlAutomataNewState</a>
+<a href="html/libxml-xmlautomata.html#XMLAUTOMATANEWSTATE">xmlAutomataNewState</a>
 </dd>
 <dt>discovering</dt>
 <dd>
@@ -633,9 +637,11 @@ A:link, A:visited, A:active { text-decoration: underline }
 <dd>
 <a href="html/libxml-encoding.html#XMLCHARENCODING">xmlCharEncoding</a>
 <a href="html/libxml-tree.html#XMLNEWDOCNODE">xmlNewDocNode</a>
+<a href="html/libxml-tree.html#XMLNEWDOCNODEEATNAME">xmlNewDocNodeEatName</a>
 <a href="html/libxml-parserinternals.html#XMLPARSESTARTTAG">xmlParseStartTag</a>
 <a href="html/libxml-tree.html#XMLSEARCHNS">xmlSearchNs</a>
 <a href="html/libxml-xpath.html#XMLXPATHFREENODESETLIST">xmlXPathFreeNodeSetList</a>
+<a href="html/libxml-xpathinternals.html#XMLXPATHNODESETFREENS">xmlXPathNodeSetFreeNs</a>
 </dd>
 <dt>done</dt>
 <dd>
@@ -693,6 +699,9 @@ A:link, A:visited, A:active { text-decoration: underline }
 </dd>
 <dt>drop</dt>
 <dd>
+<a href="html/libxml-xmlio.html#XMLFILEREAD">xmlFileRead</a>
+<a href="html/libxml-xmlio.html#XMLIOFTPREAD">xmlIOFTPRead</a>
+<a href="html/libxml-xmlio.html#XMLIOHTTPREAD">xmlIOHTTPRead</a>
 <a href="html/libxml-xpointer.html#XMLXPTRBUILDNODELIST">xmlXPtrBuildNodeList</a>
 </dd>
 <dt>dtd</dt>
@@ -734,6 +743,10 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="html/libxml-debugxml.html#XMLSHELLCAT">xmlShellCat</a>
 <a href="html/libxml-debugxml.html#XMLSHELLDIR">xmlShellDir</a>
 </dd>
+<dt>duplicated</dt>
+<dd>
+<a href="html/libxml-xpathinternals.html#XMLXPATHNODESETFREENS">xmlXPathNodeSetFreeNs</a>
+</dd>
 <dt>dynamically</dt>
 <dd>
 <a href="html/libxml-xmlversion.html#LIBXML-DLL-IMPORT-CAPS">LIBXML_DLL_IMPORT</a>
@@ -755,12 +768,14 @@ A:link, A:visited, A:active { text-decoration: underline }
 <a href="APIchunk12.html">g-i</a>
 <a href="APIchunk13.html">j-l</a>
 <a href="APIchunk14.html">m-n</a>
-<a href="APIchunk15.html">o-p</a>
-<a href="APIchunk16.html">q-r</a>
-<a href="APIchunk17.html">s-s</a>
-<a href="APIchunk18.html">t-t</a>
-<a href="APIchunk19.html">u-v</a>
-<a href="APIchunk20.html">w-x</a>
+<a href="APIchunk15.html">o-o</a>
+<a href="APIchunk16.html">p-p</a>
+<a href="APIchunk17.html">q-r</a>
+<a href="APIchunk18.html">s-s</a>
+<a href="APIchunk19.html">t-t</a>
+<a href="APIchunk20.html">u-v</a>
+<a href="APIchunk21.html">w-w</a>
+<a href="APIchunk22.html">x-x</a>
 </h2>
 <p><a href="bugs.html">Daniel Veillard</a></p>
 </td></tr></table></td></tr></table></td></tr></table></td>

@@ -160,38 +160,6 @@
      <exports symbol='htmlDefaultSAXHandlerInit'/>
      <exports symbol='docbDefaultSAXHandlerInit'/>
     </file>
-    <file name='debugXML'>
-     <exports symbol='xmlDebugDumpString'/>
-     <exports symbol='xmlDebugDumpAttr'/>
-     <exports symbol='xmlDebugDumpAttrList'/>
-     <exports symbol='xmlDebugDumpOneNode'/>
-     <exports symbol='xmlDebugDumpNode'/>
-     <exports symbol='xmlDebugDumpNodeList'/>
-     <exports symbol='xmlDebugDumpDocumentHead'/>
-     <exports symbol='xmlDebugDumpDocument'/>
-     <exports symbol='xmlDebugDumpDTD'/>
-     <exports symbol='xmlDebugDumpEntities'/>
-     <exports symbol='xmlLsOneNode'/>
-     <exports symbol='xmlLsCountNode'/>
-     <exports symbol='xmlShellReadlineFunc'/>
-     <exports symbol='xmlShellCtxt'/>
-     <exports symbol='xmlShellCtxtPtr'/>
-     <exports symbol='xmlShellCmd'/>
-     <exports symbol='xmlShellPrintXPathError'/>
-     <exports symbol='xmlShellPrintNode'/>
-     <exports symbol='xmlShellPrintXPathResult'/>
-     <exports symbol='xmlShellList'/>
-     <exports symbol='xmlShellBase'/>
-     <exports symbol='xmlShellDir'/>
-     <exports symbol='xmlShellCat'/>
-     <exports symbol='xmlShellLoad'/>
-     <exports symbol='xmlShellWrite'/>
-     <exports symbol='xmlShellSave'/>
-     <exports symbol='xmlShellValidate'/>
-     <exports symbol='xmlShellDu'/>
-     <exports symbol='xmlShellPwd'/>
-     <exports symbol='xmlShell'/>
-    </file>
     <file name='DOCBparser'>
      <exports symbol='docbParserCtxt'/>
      <exports symbol='docbParserCtxtPtr'/>
@@ -212,6 +180,21 @@
      <exports symbol='docbParseChunk'/>
      <exports symbol='docbCreateFileParserCtxt'/>
      <exports symbol='docbParseDocument'/>
+    </file>
+    <file name='xmlregexp'>
+     <exports symbol='xmlRegexp'/>
+     <exports symbol='xmlRegexpPtr'/>
+     <exports symbol='xmlRegExecCtxt'/>
+     <exports symbol='xmlRegExecCtxtPtr'/>
+     <exports symbol='xmlRegexpCompile'/>
+     <exports symbol='xmlRegFreeRegexp'/>
+     <exports symbol='xmlRegexpExec'/>
+     <exports symbol='xmlRegexpPrint'/>
+     <exports symbol='xmlRegexpIsDeterminist'/>
+     <exports symbol='xmlRegExecCallbacks'/>
+     <exports symbol='xmlRegNewExecCtxt'/>
+     <exports symbol='xmlRegFreeExecCtxt'/>
+     <exports symbol='xmlRegExecPushString'/>
     </file>
     <file name='HTMLparser'>
      <exports symbol='htmlParserCtxt'/>
@@ -321,6 +304,7 @@
      <exports symbol='xmlValidateNamesValue'/>
      <exports symbol='xmlValidateNmtokenValue'/>
      <exports symbol='xmlValidateNmtokensValue'/>
+     <exports symbol='xmlValidBuildContentModel'/>
     </file>
     <file name='nanohttp'>
      <exports symbol='xmlNanoHTTPInit'/>
@@ -645,6 +629,142 @@
      <exports symbol='xmlGetCompressMode'/>
      <exports symbol='xmlSetCompressMode'/>
     </file>
+    <file name='xmlunicode'>
+     <exports symbol='xmlUCSIsAlphabeticPresentationForms'/>
+     <exports symbol='xmlUCSIsArabic'/>
+     <exports symbol='xmlUCSIsArabicPresentationFormsA'/>
+     <exports symbol='xmlUCSIsArabicPresentationFormsB'/>
+     <exports symbol='xmlUCSIsArmenian'/>
+     <exports symbol='xmlUCSIsArrows'/>
+     <exports symbol='xmlUCSIsBasicLatin'/>
+     <exports symbol='xmlUCSIsBengali'/>
+     <exports symbol='xmlUCSIsBlockElements'/>
+     <exports symbol='xmlUCSIsBopomofo'/>
+     <exports symbol='xmlUCSIsBopomofoExtended'/>
+     <exports symbol='xmlUCSIsBoxDrawing'/>
+     <exports symbol='xmlUCSIsBraillePatterns'/>
+     <exports symbol='xmlUCSIsByzantineMusicalSymbols'/>
+     <exports symbol='xmlUCSIsCJKCompatibility'/>
+     <exports symbol='xmlUCSIsCJKCompatibilityForms'/>
+     <exports symbol='xmlUCSIsCJKCompatibilityIdeographs'/>
+     <exports symbol='xmlUCSIsCJKCompatibilityIdeographsSupplement'/>
+     <exports symbol='xmlUCSIsCJKRadicalsSupplement'/>
+     <exports symbol='xmlUCSIsCJKSymbolsandPunctuation'/>
+     <exports symbol='xmlUCSIsCJKUnifiedIdeographs'/>
+     <exports symbol='xmlUCSIsCJKUnifiedIdeographsExtensionA'/>
+     <exports symbol='xmlUCSIsCJKUnifiedIdeographsExtensionB'/>
+     <exports symbol='xmlUCSIsCherokee'/>
+     <exports symbol='xmlUCSIsCombiningDiacriticalMarks'/>
+     <exports symbol='xmlUCSIsCombiningHalfMarks'/>
+     <exports symbol='xmlUCSIsCombiningMarksforSymbols'/>
+     <exports symbol='xmlUCSIsControlPictures'/>
+     <exports symbol='xmlUCSIsCurrencySymbols'/>
+     <exports symbol='xmlUCSIsCyrillic'/>
+     <exports symbol='xmlUCSIsDeseret'/>
+     <exports symbol='xmlUCSIsDevanagari'/>
+     <exports symbol='xmlUCSIsDingbats'/>
+     <exports symbol='xmlUCSIsEnclosedAlphanumerics'/>
+     <exports symbol='xmlUCSIsEnclosedCJKLettersandMonths'/>
+     <exports symbol='xmlUCSIsEthiopic'/>
+     <exports symbol='xmlUCSIsGeneralPunctuation'/>
+     <exports symbol='xmlUCSIsGeometricShapes'/>
+     <exports symbol='xmlUCSIsGeorgian'/>
+     <exports symbol='xmlUCSIsGothic'/>
+     <exports symbol='xmlUCSIsGreek'/>
+     <exports symbol='xmlUCSIsGreekExtended'/>
+     <exports symbol='xmlUCSIsGujarati'/>
+     <exports symbol='xmlUCSIsGurmukhi'/>
+     <exports symbol='xmlUCSIsHalfwidthandFullwidthForms'/>
+     <exports symbol='xmlUCSIsHangulCompatibilityJamo'/>
+     <exports symbol='xmlUCSIsHangulJamo'/>
+     <exports symbol='xmlUCSIsHangulSyllables'/>
+     <exports symbol='xmlUCSIsHebrew'/>
+     <exports symbol='xmlUCSIsHighPrivateUseSurrogates'/>
+     <exports symbol='xmlUCSIsHighSurrogates'/>
+     <exports symbol='xmlUCSIsHiragana'/>
+     <exports symbol='xmlUCSIsIPAExtensions'/>
+     <exports symbol='xmlUCSIsIdeographicDescriptionCharacters'/>
+     <exports symbol='xmlUCSIsKanbun'/>
+     <exports symbol='xmlUCSIsKangxiRadicals'/>
+     <exports symbol='xmlUCSIsKannada'/>
+     <exports symbol='xmlUCSIsKatakana'/>
+     <exports symbol='xmlUCSIsKhmer'/>
+     <exports symbol='xmlUCSIsLao'/>
+     <exports symbol='xmlUCSIsLatin1Supplement'/>
+     <exports symbol='xmlUCSIsLatinExtendedA'/>
+     <exports symbol='xmlUCSIsLatinExtendedB'/>
+     <exports symbol='xmlUCSIsLatinExtendedAdditional'/>
+     <exports symbol='xmlUCSIsLetterlikeSymbols'/>
+     <exports symbol='xmlUCSIsLowSurrogates'/>
+     <exports symbol='xmlUCSIsMalayalam'/>
+     <exports symbol='xmlUCSIsMathematicalAlphanumericSymbols'/>
+     <exports symbol='xmlUCSIsMathematicalOperators'/>
+     <exports symbol='xmlUCSIsMiscellaneousSymbols'/>
+     <exports symbol='xmlUCSIsMiscellaneousTechnical'/>
+     <exports symbol='xmlUCSIsMongolian'/>
+     <exports symbol='xmlUCSIsMusicalSymbols'/>
+     <exports symbol='xmlUCSIsMyanmar'/>
+     <exports symbol='xmlUCSIsNumberForms'/>
+     <exports symbol='xmlUCSIsOgham'/>
+     <exports symbol='xmlUCSIsOldItalic'/>
+     <exports symbol='xmlUCSIsOpticalCharacterRecognition'/>
+     <exports symbol='xmlUCSIsOriya'/>
+     <exports symbol='xmlUCSIsPrivateUse'/>
+     <exports symbol='xmlUCSIsRunic'/>
+     <exports symbol='xmlUCSIsSinhala'/>
+     <exports symbol='xmlUCSIsSmallFormVariants'/>
+     <exports symbol='xmlUCSIsSpacingModifierLetters'/>
+     <exports symbol='xmlUCSIsSpecials'/>
+     <exports symbol='xmlUCSIsSuperscriptsandSubscripts'/>
+     <exports symbol='xmlUCSIsSyriac'/>
+     <exports symbol='xmlUCSIsTags'/>
+     <exports symbol='xmlUCSIsTamil'/>
+     <exports symbol='xmlUCSIsTelugu'/>
+     <exports symbol='xmlUCSIsThaana'/>
+     <exports symbol='xmlUCSIsThai'/>
+     <exports symbol='xmlUCSIsTibetan'/>
+     <exports symbol='xmlUCSIsUnifiedCanadianAboriginalSyllabics'/>
+     <exports symbol='xmlUCSIsYiRadicals'/>
+     <exports symbol='xmlUCSIsYiSyllables'/>
+     <exports symbol='xmlUCSIsBlock'/>
+     <exports symbol='xmlUCSIsCatC'/>
+     <exports symbol='xmlUCSIsCatCc'/>
+     <exports symbol='xmlUCSIsCatCf'/>
+     <exports symbol='xmlUCSIsCatCo'/>
+     <exports symbol='xmlUCSIsCatCs'/>
+     <exports symbol='xmlUCSIsCatL'/>
+     <exports symbol='xmlUCSIsCatLl'/>
+     <exports symbol='xmlUCSIsCatLm'/>
+     <exports symbol='xmlUCSIsCatLo'/>
+     <exports symbol='xmlUCSIsCatLt'/>
+     <exports symbol='xmlUCSIsCatLu'/>
+     <exports symbol='xmlUCSIsCatM'/>
+     <exports symbol='xmlUCSIsCatMc'/>
+     <exports symbol='xmlUCSIsCatMe'/>
+     <exports symbol='xmlUCSIsCatMn'/>
+     <exports symbol='xmlUCSIsCatN'/>
+     <exports symbol='xmlUCSIsCatNd'/>
+     <exports symbol='xmlUCSIsCatNl'/>
+     <exports symbol='xmlUCSIsCatNo'/>
+     <exports symbol='xmlUCSIsCatP'/>
+     <exports symbol='xmlUCSIsCatPc'/>
+     <exports symbol='xmlUCSIsCatPd'/>
+     <exports symbol='xmlUCSIsCatPe'/>
+     <exports symbol='xmlUCSIsCatPf'/>
+     <exports symbol='xmlUCSIsCatPi'/>
+     <exports symbol='xmlUCSIsCatPo'/>
+     <exports symbol='xmlUCSIsCatPs'/>
+     <exports symbol='xmlUCSIsCatS'/>
+     <exports symbol='xmlUCSIsCatSc'/>
+     <exports symbol='xmlUCSIsCatSk'/>
+     <exports symbol='xmlUCSIsCatSm'/>
+     <exports symbol='xmlUCSIsCatSo'/>
+     <exports symbol='xmlUCSIsCatZ'/>
+     <exports symbol='xmlUCSIsCatZl'/>
+     <exports symbol='xmlUCSIsCatZp'/>
+     <exports symbol='xmlUCSIsCatZs'/>
+     <exports symbol='xmlUCSIsCat'/>
+    </file>
     <file name='encoding'>
      <exports symbol='xmlCharEncoding'/>
      <exports symbol='xmlCharEncodingInputFunc'/>
@@ -656,6 +776,7 @@
      <exports symbol='xmlRegisterCharEncodingHandler'/>
      <exports symbol='xmlGetCharEncodingHandler'/>
      <exports symbol='xmlFindCharEncodingHandler'/>
+     <exports symbol='xmlNewCharEncodingHandler'/>
      <exports symbol='xmlAddEncodingAlias'/>
      <exports symbol='xmlDelEncodingAlias'/>
      <exports symbol='xmlGetEncodingAlias'/>
@@ -698,11 +819,14 @@
      <exports symbol='htmlNodeDumpFormatOutput'/>
      <exports symbol='htmlDocContentDumpOutput'/>
      <exports symbol='htmlDocContentDumpFormatOutput'/>
+     <exports symbol='htmlIsBooleanAttr'/>
     </file>
     <file name='c14n'>
      <exports symbol='xmlC14NDocSaveTo'/>
      <exports symbol='xmlC14NDocDumpMemory'/>
      <exports symbol='xmlC14NDocSave'/>
+     <exports symbol='xmlC14NIsVisibleCallback'/>
+     <exports symbol='xmlC14NExecute'/>
     </file>
     <file name='xpathInternals'>
      <exports symbol='xmlXPathSetError'/>
@@ -803,6 +927,7 @@
      <exports symbol='xmlXPathWrapNodeSet'/>
      <exports symbol='xmlXPathWrapExternal'/>
      <exports symbol='xmlXPathEqualValues'/>
+     <exports symbol='xmlXPathNotEqualValues'/>
      <exports symbol='xmlXPathCompareValues'/>
      <exports symbol='xmlXPathValueFlipSign'/>
      <exports symbol='xmlXPathAddValues'/>
@@ -893,6 +1018,69 @@
      <exports symbol='XML_SCHEMAS_QUALIF_ATTR'/>
      <exports symbol='xmlSchema'/>
      <exports symbol='xmlSchemaFreeType'/>
+    </file>
+    <file name='xpath'>
+     <exports symbol='xmlXPathContext'/>
+     <exports symbol='xmlXPathContextPtr'/>
+     <exports symbol='xmlXPathParserContext'/>
+     <exports symbol='xmlXPathParserContextPtr'/>
+     <exports symbol='xmlXPathError'/>
+     <exports symbol='xmlNodeSet'/>
+     <exports symbol='xmlNodeSetPtr'/>
+     <exports symbol='xmlXPathObjectType'/>
+     <exports symbol='xmlXPathObject'/>
+     <exports symbol='xmlXPathObjectPtr'/>
+     <exports symbol='xmlXPathConvertFunc'/>
+     <exports symbol='xmlXPathType'/>
+     <exports symbol='xmlXPathTypePtr'/>
+     <exports symbol='xmlXPathVariable'/>
+     <exports symbol='xmlXPathVariablePtr'/>
+     <exports symbol='xmlXPathEvalFunc'/>
+     <exports symbol='xmlXPathFunct'/>
+     <exports symbol='xmlXPathFuncPtr'/>
+     <exports symbol='xmlXPathAxisFunc'/>
+     <exports symbol='xmlXPathAxis'/>
+     <exports symbol='xmlXPathAxisPtr'/>
+     <exports symbol='xmlXPathCompExpr'/>
+     <exports symbol='xmlXPathCompExprPtr'/>
+     <exports symbol='xmlXPathFunction'/>
+     <exports symbol='xmlXPathIsNaN'/>
+     <exports symbol='xmlXPathIsInf'/>
+     <exports symbol='xmlXPathNodeSetGetLength'/>
+     <exports symbol='xmlXPathNodeSetItem'/>
+     <exports symbol='xmlXPathNodeSetIsEmpty'/>
+     <exports symbol='xmlXPathFreeObject'/>
+     <exports symbol='xmlXPathNodeSetCreate'/>
+     <exports symbol='xmlXPathFreeNodeSetList'/>
+     <exports symbol='xmlXPathFreeNodeSet'/>
+     <exports symbol='xmlXPathObjectCopy'/>
+     <exports symbol='xmlXPathCmpNodes'/>
+     <exports symbol='xmlXPathCastNumberToBoolean'/>
+     <exports symbol='xmlXPathCastStringToBoolean'/>
+     <exports symbol='xmlXPathCastNodeSetToBoolean'/>
+     <exports symbol='xmlXPathCastToBoolean'/>
+     <exports symbol='xmlXPathCastBooleanToNumber'/>
+     <exports symbol='xmlXPathCastStringToNumber'/>
+     <exports symbol='xmlXPathCastNodeToNumber'/>
+     <exports symbol='xmlXPathCastNodeSetToNumber'/>
+     <exports symbol='xmlXPathCastToNumber'/>
+     <exports symbol='xmlXPathCastBooleanToString'/>
+     <exports symbol='xmlXPathCastNumberToString'/>
+     <exports symbol='xmlXPathCastNodeToString'/>
+     <exports symbol='xmlXPathCastNodeSetToString'/>
+     <exports symbol='xmlXPathCastToString'/>
+     <exports symbol='xmlXPathConvertBoolean'/>
+     <exports symbol='xmlXPathConvertNumber'/>
+     <exports symbol='xmlXPathConvertString'/>
+     <exports symbol='xmlXPathInit'/>
+     <exports symbol='xmlXPathNewContext'/>
+     <exports symbol='xmlXPathFreeContext'/>
+     <exports symbol='xmlXPathEval'/>
+     <exports symbol='xmlXPathEvalExpression'/>
+     <exports symbol='xmlXPathEvalPredicate'/>
+     <exports symbol='xmlXPathCompile'/>
+     <exports symbol='xmlXPathCompiledEval'/>
+     <exports symbol='xmlXPathFreeCompExpr'/>
     </file>
     <file name='xpointer'>
      <exports symbol='xmlLocationSet'/>
@@ -1103,6 +1291,7 @@
      <exports symbol='xmlSAXParseDTD'/>
      <exports symbol='xmlIOParseDTD'/>
      <exports symbol='xmlParseBalancedChunkMemory'/>
+     <exports symbol='xmlParseBalancedChunkMemoryRecover'/>
      <exports symbol='xmlParseExternalEntity'/>
      <exports symbol='xmlParseCtxtExternalEntity'/>
      <exports symbol='xmlInitParserCtxt'/>
@@ -1125,6 +1314,27 @@
      <exports symbol='xmlSetExternalEntityLoader'/>
      <exports symbol='xmlGetExternalEntityLoader'/>
      <exports symbol='xmlLoadExternalEntity'/>
+    </file>
+    <file name='xmlautomata'>
+     <exports symbol='xmlAutomata'/>
+     <exports symbol='xmlAutomataPtr'/>
+     <exports symbol='xmlAutomataState'/>
+     <exports symbol='xmlAutomataStatePtr'/>
+     <exports symbol='xmlNewAutomata'/>
+     <exports symbol='xmlFreeAutomata'/>
+     <exports symbol='xmlAutomataGetInitState'/>
+     <exports symbol='xmlAutomataSetFinalState'/>
+     <exports symbol='xmlAutomataNewState'/>
+     <exports symbol='xmlAutomataNewTransition'/>
+     <exports symbol='xmlAutomataNewCountTrans'/>
+     <exports symbol='xmlAutomataNewOnceTrans'/>
+     <exports symbol='xmlAutomataNewAllTrans'/>
+     <exports symbol='xmlAutomataNewEpsilon'/>
+     <exports symbol='xmlAutomataNewCountedTrans'/>
+     <exports symbol='xmlAutomataNewCounterTrans'/>
+     <exports symbol='xmlAutomataNewCounter'/>
+     <exports symbol='xmlAutomataCompile'/>
+     <exports symbol='xmlAutomataIsDeterminist'/>
     </file>
     <file name='xmlerror'>
      <exports symbol='xmlParserErrors'/>
@@ -1235,6 +1445,7 @@
      <exports symbol='xmlIOHTTPOpenW'/>
      <exports symbol='xmlRegisterHTTPPostCallbacks'/>
      <exports symbol='xmlNoNetExternalEntityLoader'/>
+     <exports symbol='xmlNormalizeWindowsPath'/>
      <exports symbol='xmlFileMatch'/>
      <exports symbol='xmlFileOpen'/>
      <exports symbol='xmlFileRead'/>
@@ -1248,68 +1459,37 @@
      <exports symbol='xmlIOFTPRead'/>
      <exports symbol='xmlIOFTPClose'/>
     </file>
-    <file name='xpath'>
-     <exports symbol='xmlXPathContext'/>
-     <exports symbol='xmlXPathContextPtr'/>
-     <exports symbol='xmlXPathParserContext'/>
-     <exports symbol='xmlXPathParserContextPtr'/>
-     <exports symbol='xmlXPathError'/>
-     <exports symbol='xmlNodeSet'/>
-     <exports symbol='xmlNodeSetPtr'/>
-     <exports symbol='xmlXPathObjectType'/>
-     <exports symbol='xmlXPathObject'/>
-     <exports symbol='xmlXPathObjectPtr'/>
-     <exports symbol='xmlXPathConvertFunc'/>
-     <exports symbol='xmlXPathType'/>
-     <exports symbol='xmlXPathTypePtr'/>
-     <exports symbol='xmlXPathVariable'/>
-     <exports symbol='xmlXPathVariablePtr'/>
-     <exports symbol='xmlXPathEvalFunc'/>
-     <exports symbol='xmlXPathFunct'/>
-     <exports symbol='xmlXPathFuncPtr'/>
-     <exports symbol='xmlXPathAxisFunc'/>
-     <exports symbol='xmlXPathAxis'/>
-     <exports symbol='xmlXPathAxisPtr'/>
-     <exports symbol='xmlXPathCompExpr'/>
-     <exports symbol='xmlXPathCompExprPtr'/>
-     <exports symbol='xmlXPathFunction'/>
-     <exports symbol='xmlXPathIsNaN'/>
-     <exports symbol='xmlXPathIsInf'/>
-     <exports symbol='xmlXPathNodeSetGetLength'/>
-     <exports symbol='xmlXPathNodeSetItem'/>
-     <exports symbol='xmlXPathNodeSetIsEmpty'/>
-     <exports symbol='xmlXPathFreeObject'/>
-     <exports symbol='xmlXPathNodeSetCreate'/>
-     <exports symbol='xmlXPathFreeNodeSetList'/>
-     <exports symbol='xmlXPathFreeNodeSet'/>
-     <exports symbol='xmlXPathObjectCopy'/>
-     <exports symbol='xmlXPathCmpNodes'/>
-     <exports symbol='xmlXPathCastNumberToBoolean'/>
-     <exports symbol='xmlXPathCastStringToBoolean'/>
-     <exports symbol='xmlXPathCastNodeSetToBoolean'/>
-     <exports symbol='xmlXPathCastToBoolean'/>
-     <exports symbol='xmlXPathCastBooleanToNumber'/>
-     <exports symbol='xmlXPathCastStringToNumber'/>
-     <exports symbol='xmlXPathCastNodeToNumber'/>
-     <exports symbol='xmlXPathCastNodeSetToNumber'/>
-     <exports symbol='xmlXPathCastToNumber'/>
-     <exports symbol='xmlXPathCastBooleanToString'/>
-     <exports symbol='xmlXPathCastNumberToString'/>
-     <exports symbol='xmlXPathCastNodeToString'/>
-     <exports symbol='xmlXPathCastNodeSetToString'/>
-     <exports symbol='xmlXPathCastToString'/>
-     <exports symbol='xmlXPathConvertBoolean'/>
-     <exports symbol='xmlXPathConvertNumber'/>
-     <exports symbol='xmlXPathConvertString'/>
-     <exports symbol='xmlXPathInit'/>
-     <exports symbol='xmlXPathNewContext'/>
-     <exports symbol='xmlXPathFreeContext'/>
-     <exports symbol='xmlXPathEval'/>
-     <exports symbol='xmlXPathEvalExpression'/>
-     <exports symbol='xmlXPathEvalPredicate'/>
-     <exports symbol='xmlXPathCompile'/>
-     <exports symbol='xmlXPathCompiledEval'/>
-     <exports symbol='xmlXPathFreeCompExpr'/>
+    <file name='debugXML'>
+     <exports symbol='xmlDebugDumpString'/>
+     <exports symbol='xmlDebugDumpAttr'/>
+     <exports symbol='xmlDebugDumpAttrList'/>
+     <exports symbol='xmlDebugDumpOneNode'/>
+     <exports symbol='xmlDebugDumpNode'/>
+     <exports symbol='xmlDebugDumpNodeList'/>
+     <exports symbol='xmlDebugDumpDocumentHead'/>
+     <exports symbol='xmlDebugDumpDocument'/>
+     <exports symbol='xmlDebugDumpDTD'/>
+     <exports symbol='xmlDebugDumpEntities'/>
+     <exports symbol='xmlLsOneNode'/>
+     <exports symbol='xmlLsCountNode'/>
+     <exports symbol='xmlShellReadlineFunc'/>
+     <exports symbol='xmlShellCtxt'/>
+     <exports symbol='xmlShellCtxtPtr'/>
+     <exports symbol='xmlShellCmd'/>
+     <exports symbol='xmlShellPrintXPathError'/>
+     <exports symbol='xmlShellPrintNode'/>
+     <exports symbol='xmlShellPrintXPathResult'/>
+     <exports symbol='xmlShellList'/>
+     <exports symbol='xmlShellBase'/>
+     <exports symbol='xmlShellDir'/>
+     <exports symbol='xmlShellCat'/>
+     <exports symbol='xmlShellLoad'/>
+     <exports symbol='xmlShellWrite'/>
+     <exports symbol='xmlShellSave'/>
+     <exports symbol='xmlShellValidate'/>
+     <exports symbol='xmlShellDu'/>
+     <exports symbol='xmlShellPwd'/>
+     <exports symbol='xmlShell'/>
     </file>
   </files>
   <symbols>
@@ -2325,6 +2505,10 @@
       <arg name='doc' type='htmlDocPtr' info='the HTML document '/>
       <arg name='elem' type='htmlNodePtr' info='the HTML element '/>
     </function>
+    <function name='htmlIsBooleanAttr' file='HTMLtree'>
+      <return type='int'/>
+      <arg name='name' type='const xmlChar *'/>
+    </function>
     <function name='htmlIsScriptAttribute' file='HTMLparser'>
       <info>Check if an attribute is of content type Script</info>
       <return type='int' info='1 is the attribute is a script 0 otherwise '/>
@@ -2882,6 +3066,103 @@
     <typedef name='xmlAttributePtr' file='tree'/>
     <typedef name='xmlAttributeTablePtr' file='valid'/>
     <enum name='xmlAttributeType' file='tree'/>
+    <struct name='xmlAutomata' file='xmlautomata'/>
+    <function name='xmlAutomataCompile' file='xmlautomata'>
+      <info>Compile the automata into a Reg Exp ready for being executed. The automata should be free after this point.</info>
+      <return type='xmlRegexpPtr' info='the compiled regexp or NULL in case of error '/>
+      <arg name='am' type='xmlAutomataPtr' info='an automata '/>
+    </function>
+    <function name='xmlAutomataGetInitState' file='xmlautomata'>
+      <return type='xmlAutomataStatePtr' info='the initial state of the automata '/>
+      <arg name='am' type='xmlAutomataPtr' info='an automata '/>
+    </function>
+    <function name='xmlAutomataIsDeterminist' file='xmlautomata'>
+      <info>Checks if an automata is determinist.</info>
+      <return type='int' info='1 if true, 0 if not, and -1 in case of error '/>
+      <arg name='am' type='xmlAutomataPtr' info='an automata '/>
+    </function>
+    <function name='xmlAutomataNewAllTrans' file='xmlautomata'>
+      <info>If to is NULL, this create first a new target state in the automata and then adds a an ALL transition from the from state to the target state. That transition is an epsilon transition allowed only when all transitions from the from node have been activated.</info>
+      <return type='xmlAutomataStatePtr' info='the target state or NULL in case of error '/>
+      <arg name='am' type='xmlAutomataPtr' info='an automata '/>
+      <arg name='from' type='xmlAutomataStatePtr' info='the starting point of the transition '/>
+      <arg name='to' type='xmlAutomataStatePtr' info='the target point of the transition or NULL '/>
+      <arg name='lax' type='int'/>
+    </function>
+    <function name='xmlAutomataNewCountTrans' file='xmlautomata'>
+      <info>If to is NULL, this create first a new target state in the automata and then adds a transition from the from state to the target state activated by a succession of input of value token and whose number is between min and max</info>
+      <return type='xmlAutomataStatePtr' info='the target state or NULL in case of error '/>
+      <arg name='am' type='xmlAutomataPtr' info='an automata '/>
+      <arg name='from' type='xmlAutomataStatePtr' info='the starting point of the transition '/>
+      <arg name='to' type='xmlAutomataStatePtr' info='the target point of the transition or NULL '/>
+      <arg name='token' type='const xmlChar *' info='the input string associated to that transition '/>
+      <arg name='min' type='int' info='the minimum successive occurences of token '/>
+      <arg name='max' type='int'/>
+      <arg name='data' type='void *'/>
+    </function>
+    <function name='xmlAutomataNewCountedTrans' file='xmlautomata'>
+      <info>If to is NULL, this create first a new target state in the automata and then adds an epsilon transition from the from state to the target state which will increment the counter provided</info>
+      <return type='xmlAutomataStatePtr' info='the target state or NULL in case of error '/>
+      <arg name='am' type='xmlAutomataPtr' info='an automata '/>
+      <arg name='from' type='xmlAutomataStatePtr' info='the starting point of the transition '/>
+      <arg name='to' type='xmlAutomataStatePtr' info='the target point of the transition or NULL '/>
+      <arg name='counter' type='int' info='the counter associated to that transition '/>
+    </function>
+    <function name='xmlAutomataNewCounter' file='xmlautomata'>
+      <info>Create a new counter</info>
+      <return type='int' info='the counter number or -1 in case of error '/>
+      <arg name='am' type='xmlAutomataPtr' info='an automata '/>
+      <arg name='min' type='int' info='the minimal value on the counter '/>
+      <arg name='max' type='int' info='the maximal value on the counter '/>
+    </function>
+    <function name='xmlAutomataNewCounterTrans' file='xmlautomata'>
+      <info>If to is NULL, this create first a new target state in the automata and then adds an epsilon transition from the from state to the target state which will be allowed only if the counter is within the right range.</info>
+      <return type='xmlAutomataStatePtr' info='the target state or NULL in case of error '/>
+      <arg name='am' type='xmlAutomataPtr' info='an automata '/>
+      <arg name='from' type='xmlAutomataStatePtr' info='the starting point of the transition '/>
+      <arg name='to' type='xmlAutomataStatePtr' info='the target point of the transition or NULL '/>
+      <arg name='counter' type='int' info='the counter associated to that transition '/>
+    </function>
+    <function name='xmlAutomataNewEpsilon' file='xmlautomata'>
+      <return type='xmlAutomataStatePtr'/>
+      <arg name='am' type='xmlAutomataPtr'/>
+      <arg name='from' type='xmlAutomataStatePtr'/>
+      <arg name='to' type='xmlAutomataStatePtr'/>
+    </function>
+    <function name='xmlAutomataNewOnceTrans' file='xmlautomata'>
+      <info>If to is NULL, this create first a new target state in the automata and then adds a transition from the from state to the target state activated by a succession of input of value token and whose number is between min and max, moreover that transistion can only be crossed once.</info>
+      <return type='xmlAutomataStatePtr' info='the target state or NULL in case of error '/>
+      <arg name='am' type='xmlAutomataPtr' info='an automata '/>
+      <arg name='from' type='xmlAutomataStatePtr' info='the starting point of the transition '/>
+      <arg name='to' type='xmlAutomataStatePtr' info='the target point of the transition or NULL '/>
+      <arg name='token' type='const xmlChar *' info='the input string associated to that transition '/>
+      <arg name='min' type='int' info='the minimum successive occurences of token '/>
+      <arg name='max' type='int'/>
+      <arg name='data' type='void *'/>
+    </function>
+    <function name='xmlAutomataNewState' file='xmlautomata'>
+      <info>Create a new disconnected state in the automata</info>
+      <return type='xmlAutomataStatePtr' info='the new state or NULL in case of error '/>
+      <arg name='am' type='xmlAutomataPtr' info='an automata '/>
+    </function>
+    <function name='xmlAutomataNewTransition' file='xmlautomata'>
+      <info>If to is NULL, this create first a new target state in the automata and then adds a an epsilon transition from the from state to the target state</info>
+      <return type='xmlAutomataStatePtr' info='the target state or NULL in case of error '/>
+      <arg name='am' type='xmlAutomataPtr' info='an automata '/>
+      <arg name='from' type='xmlAutomataStatePtr' info='the starting point of the transition '/>
+      <arg name='to' type='xmlAutomataStatePtr' info='the target point of the transition or NULL '/>
+      <arg name='token' type='const xmlChar *'/>
+      <arg name='data' type='void *'/>
+    </function>
+    <typedef name='xmlAutomataPtr' file='xmlautomata' info='A libxml automata description, It can be compiled into a regexp'/>
+    <function name='xmlAutomataSetFinalState' file='xmlautomata'>
+      <info>Makes that state a final state</info>
+      <return type='int' info='0 or -1 in case of error '/>
+      <arg name='am' type='xmlAutomataPtr' info='an automata '/>
+      <arg name='state' type='xmlAutomataStatePtr' info='a state in this automata '/>
+    </function>
+    <struct name='xmlAutomataState' file='xmlautomata'/>
+    <typedef name='xmlAutomataStatePtr' file='xmlautomata' info='A state int the automata description,'/>
     <struct name='xmlBuffer' file='tree' info='A buffer structure.'/>
     <function name='xmlBufferAdd' file='tree'>
       <info>Add a string range to an XML buffer. if len == -1, the length of str is recomputed.</info>
@@ -3034,6 +3315,22 @@
       <arg name='with_comments' type='int' info='	include comments in the result (!=0) or not (==0) '/>
       <arg name='buf' type='xmlOutputBufferPtr' info='		the output buffer to store canonical XML; this buffer MUST have encoder==NULL because C14N requires UTF-8 output '/>
     </function>
+    <function name='xmlC14NExecute' file='c14n'>
+      <return type='int'/>
+      <arg name='doc' type='xmlDocPtr'/>
+      <arg name='is_visible_callback' type='xmlC14NIsVisibleCallback'/>
+      <arg name='user_data' type='void*'/>
+      <arg name='exclusive' type='int'/>
+      <arg name='inclusive_ns_prefixes' type='xmlChar **'/>
+      <arg name='with_comments' type='int'/>
+      <arg name='buf' type='xmlOutputBufferPtr'/>
+    </function>
+    <functype name='xmlC14NIsVisibleCallback' file='c14n'>
+      <return type='int'/>
+      <arg name='user_data' type='void*'/>
+      <arg name='node' type='xmlNodePtr'/>
+      <arg name='parent' type='xmlNodePtr'/>
+    </functype>
     <struct name='xmlCatalog' file='catalog'/>
     <function name='xmlCatalogAdd' file='catalog'>
       <info>Add an entry in the catalog, it may overwrite existing but different entries. If called before any other catalog routine, allows to override the default shared catalog put in place by xmlInitializeCatalog();</info>
@@ -3721,6 +4018,11 @@
       <info>Deallocate the memory used by an entities hash table.</info>
       <return type='void'/>
       <arg name='table' type='xmlAttributeTablePtr' info='An attribute table '/>
+    </function>
+    <function name='xmlFreeAutomata' file='xmlautomata'>
+      <info>Free an automata</info>
+      <return type='void'/>
+      <arg name='am' type='xmlAutomataPtr' info='an automata '/>
     </function>
     <function name='xmlFreeCatalog' file='catalog'>
       <info>Free the memory allocated to a Catalog</info>
@@ -4935,6 +5237,10 @@
       <return type='void'/>
       <arg name='URL' type='const char *' info='The proxy URL used to initialize the proxy context '/>
     </function>
+    <function name='xmlNewAutomata' file='xmlautomata'>
+      <info>Create a new automata</info>
+      <return type='xmlAutomataPtr' info='the new object or NULL in case of failure '/>
+    </function>
     <function name='xmlNewCDataBlock' file='tree'>
       <info>Creation of a new node containing a CDATA block.</info>
       <return type='xmlNodePtr' info='a pointer to the new node object. '/>
@@ -4946,6 +5252,12 @@
       <info>create a new Catalog.</info>
       <return type='xmlCatalogPtr' info='the xmlCatalogPtr or NULL in case of error '/>
       <arg name='sgml' type='int' info='should this create an SGML catalog '/>
+    </function>
+    <function name='xmlNewCharEncodingHandler' file='encoding'>
+      <return type='xmlCharEncodingHandlerPtr'/>
+      <arg name='name' type='const char *'/>
+      <arg name='input' type='xmlCharEncodingInputFunc'/>
+      <arg name='output' type='xmlCharEncodingOutputFunc'/>
     </function>
     <function name='xmlNewCharRef' file='tree'>
       <info>Creation of a new character reference node.</info>
@@ -5290,6 +5602,10 @@
       <return type='int' info='0 or an error code '/>
       <arg name='path' type='char *' info='pointer to the path string '/>
     </function>
+    <function name='xmlNormalizeWindowsPath' file='xmlIO'>
+      <return type='xmlChar *'/>
+      <arg name='path' type='const xmlChar *'/>
+    </function>
     <struct name='xmlNotation' file='tree' info='A DTD Notation definition.'/>
     <typedef name='xmlNotationPtr' file='tree'/>
     <typedef name='xmlNotationTablePtr' file='valid'/>
@@ -5401,6 +5717,16 @@
       <arg name='depth' type='int' info='Used for loop detection, use 0 '/>
       <arg name='string' type='const xmlChar *' info='the input string in UTF8 or ISO-Latin (zero terminated) '/>
       <arg name='lst' type='xmlNodePtr *' info='the return value for the set of parsed nodes '/>
+    </function>
+    <function name='xmlParseBalancedChunkMemoryRecover' file='parser'>
+      <return type='int'/>
+      <arg name='doc' type='xmlDocPtr'/>
+      <arg name='sax' type='xmlSAXHandlerPtr'/>
+      <arg name='user_data' type='void *'/>
+      <arg name='depth' type='int'/>
+      <arg name='string' type='const xmlChar *'/>
+      <arg name='lst' type='xmlNodePtr *'/>
+      <arg name='recover' type='int'/>
     </function>
     <function name='xmlParseCDSect' file='parserInternals'>
       <info>Parse escaped pure raw content. </info>
@@ -5964,6 +6290,61 @@
     <struct name='xmlRef' file='tree' info='An XML IDREF instance.'/>
     <typedef name='xmlRefPtr' file='tree'/>
     <typedef name='xmlRefTablePtr' file='valid'/>
+    <functype name='xmlRegExecCallbacks' file='xmlregexp'>
+      <return type='void'/>
+      <arg name='exec' type='xmlRegExecCtxtPtr'/>
+      <arg name='token' type='const xmlChar *'/>
+      <arg name='transdata' type='void *'/>
+      <arg name='inputdata' type='void *'/>
+    </functype>
+    <struct name='xmlRegExecCtxt' file='xmlregexp'/>
+    <typedef name='xmlRegExecCtxtPtr' file='xmlregexp' info='A libxml progressive regular expression evaluation context'/>
+    <function name='xmlRegExecPushString' file='xmlregexp'>
+      <info>Push one input token in the execution context</info>
+      <return type='int' info='1 if the regexp reached a final state, 0 if non-final, and a negative value in case of error. '/>
+      <arg name='exec' type='xmlRegExecCtxtPtr' info='a regexp execution context '/>
+      <arg name='value' type='const xmlChar *' info='a string token input '/>
+      <arg name='data' type='void *' info='data associated to the token to reuse in callbacks '/>
+    </function>
+    <function name='xmlRegFreeExecCtxt' file='xmlregexp'>
+      <info>Free the structures associated to a regular expression evaulation context.</info>
+      <return type='void'/>
+      <arg name='exec' type='xmlRegExecCtxtPtr' info='a regular expression evaulation context '/>
+    </function>
+    <function name='xmlRegFreeRegexp' file='xmlregexp'>
+      <info>Free a regexp</info>
+      <return type='void'/>
+      <arg name='regexp' type='xmlRegexpPtr' info='the regexp '/>
+    </function>
+    <function name='xmlRegNewExecCtxt' file='xmlregexp'>
+      <return type='xmlRegExecCtxtPtr'/>
+      <arg name='comp' type='xmlRegexpPtr'/>
+      <arg name='callback' type='xmlRegExecCallbacks'/>
+      <arg name='data' type='void *'/>
+    </function>
+    <struct name='xmlRegexp' file='xmlregexp'/>
+    <function name='xmlRegexpCompile' file='xmlregexp'>
+      <info>Parses a regular expression conforming to XML Schemas Part 2 Datatype Appendix F and build an automata suitable for testing strings against that regular expression</info>
+      <return type='xmlRegexpPtr' info='the compiled expression or NULL in case of error '/>
+      <arg name='regexp' type='const xmlChar *' info='a regular expression string '/>
+    </function>
+    <function name='xmlRegexpExec' file='xmlregexp'>
+      <info>Check if the regular expression generate the value</info>
+      <return type='int' info='1 if it matches, 0 if not and a negativa value in case of error '/>
+      <arg name='comp' type='xmlRegexpPtr' info='the compiled regular expression '/>
+      <arg name='value' type='const xmlChar *'/>
+    </function>
+    <function name='xmlRegexpIsDeterminist' file='xmlregexp'>
+      <return type='int'/>
+      <arg name='comp' type='xmlRegexpPtr'/>
+    </function>
+    <function name='xmlRegexpPrint' file='xmlregexp'>
+      <info>Print the content of the compiled regular expression</info>
+      <return type='void'/>
+      <arg name='output' type='FILE *' info='the file for the output debug '/>
+      <arg name='regexp' type='xmlRegexpPtr' info='the compiled regexp '/>
+    </function>
+    <typedef name='xmlRegexpPtr' file='xmlregexp' info='A libxml regular expression, they can actually be far more complex thank the POSIX regex expressions.'/>
     <function name='xmlRegisterCharEncodingHandler' file='encoding'>
       <info>Register the char encoding handler, surprising, isn&apos;t it ?</info>
       <return type='void'/>
@@ -6571,6 +6952,678 @@
     <macro name='xmlTreeIndentString' file='globals'>
       <info>The string used to do one-level indent. By default is equal to &quot; &quot; (two spaces)</info>
     </macro>
+    <function name='xmlUCSIsAlphabeticPresentationForms' file='xmlunicode'>
+      <info>Check whether the character is part of AlphabeticPresentationForms UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsArabic' file='xmlunicode'>
+      <info>Check whether the character is part of Arabic UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsArabicPresentationFormsA' file='xmlunicode'>
+      <info>Check whether the character is part of ArabicPresentationForms-A UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsArabicPresentationFormsB' file='xmlunicode'>
+      <info>Check whether the character is part of ArabicPresentationForms-B UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsArmenian' file='xmlunicode'>
+      <info>Check whether the character is part of Armenian UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsArrows' file='xmlunicode'>
+      <info>Check whether the character is part of Arrows UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsBasicLatin' file='xmlunicode'>
+      <info>Check whether the character is part of BasicLatin UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsBengali' file='xmlunicode'>
+      <info>Check whether the character is part of Bengali UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsBlock' file='xmlunicode'>
+      <info>Check whether the caracter is part of the UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+      <arg name='block' type='const char *'/>
+    </function>
+    <function name='xmlUCSIsBlockElements' file='xmlunicode'>
+      <info>Check whether the character is part of BlockElements UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsBopomofo' file='xmlunicode'>
+      <info>Check whether the character is part of Bopomofo UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsBopomofoExtended' file='xmlunicode'>
+      <info>Check whether the character is part of BopomofoExtended UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsBoxDrawing' file='xmlunicode'>
+      <info>Check whether the character is part of BoxDrawing UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsBraillePatterns' file='xmlunicode'>
+      <info>Check whether the character is part of BraillePatterns UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsByzantineMusicalSymbols' file='xmlunicode'>
+      <info>Check whether the character is part of ByzantineMusicalSymbols UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCJKCompatibility' file='xmlunicode'>
+      <info>Check whether the character is part of CJKCompatibility UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCJKCompatibilityForms' file='xmlunicode'>
+      <info>Check whether the character is part of CJKCompatibilityForms UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCJKCompatibilityIdeographs' file='xmlunicode'>
+      <info>Check whether the character is part of CJKCompatibilityIdeographs UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCJKCompatibilityIdeographsSupplement' file='xmlunicode'>
+      <info>Check whether the character is part of CJKCompatibilityIdeographsSupplement UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCJKRadicalsSupplement' file='xmlunicode'>
+      <info>Check whether the character is part of CJKRadicalsSupplement UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCJKSymbolsandPunctuation' file='xmlunicode'>
+      <info>Check whether the character is part of CJKSymbolsandPunctuation UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCJKUnifiedIdeographs' file='xmlunicode'>
+      <info>Check whether the character is part of CJKUnifiedIdeographs UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCJKUnifiedIdeographsExtensionA' file='xmlunicode'>
+      <info>Check whether the character is part of CJKUnifiedIdeographsExtensionA UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCJKUnifiedIdeographsExtensionB' file='xmlunicode'>
+      <info>Check whether the character is part of CJKUnifiedIdeographsExtensionB UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCat' file='xmlunicode'>
+      <info>Check whether the caracter is part of the UCS Category</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+      <arg name='cat' type='const char *'/>
+    </function>
+    <function name='xmlUCSIsCatC' file='xmlunicode'>
+      <info>Check whether the character is part of C UCS Category</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCatCc' file='xmlunicode'>
+      <info>Check whether the character is part of Cc UCS Category</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCatCf' file='xmlunicode'>
+      <info>Check whether the character is part of Cf UCS Category</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCatCo' file='xmlunicode'>
+      <info>Check whether the character is part of Co UCS Category</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCatCs' file='xmlunicode'>
+      <info>Check whether the character is part of Cs UCS Category</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCatL' file='xmlunicode'>
+      <info>Check whether the character is part of L UCS Category</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCatLl' file='xmlunicode'>
+      <info>Check whether the character is part of Ll UCS Category</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCatLm' file='xmlunicode'>
+      <info>Check whether the character is part of Lm UCS Category</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCatLo' file='xmlunicode'>
+      <info>Check whether the character is part of Lo UCS Category</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCatLt' file='xmlunicode'>
+      <info>Check whether the character is part of Lt UCS Category</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCatLu' file='xmlunicode'>
+      <info>Check whether the character is part of Lu UCS Category</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCatM' file='xmlunicode'>
+      <info>Check whether the character is part of M UCS Category</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCatMc' file='xmlunicode'>
+      <info>Check whether the character is part of Mc UCS Category</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCatMe' file='xmlunicode'>
+      <info>Check whether the character is part of Me UCS Category</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCatMn' file='xmlunicode'>
+      <info>Check whether the character is part of Mn UCS Category</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCatN' file='xmlunicode'>
+      <info>Check whether the character is part of N UCS Category</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCatNd' file='xmlunicode'>
+      <info>Check whether the character is part of Nd UCS Category</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCatNl' file='xmlunicode'>
+      <info>Check whether the character is part of Nl UCS Category</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCatNo' file='xmlunicode'>
+      <info>Check whether the character is part of No UCS Category</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCatP' file='xmlunicode'>
+      <info>Check whether the character is part of P UCS Category</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCatPc' file='xmlunicode'>
+      <info>Check whether the character is part of Pc UCS Category</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCatPd' file='xmlunicode'>
+      <info>Check whether the character is part of Pd UCS Category</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCatPe' file='xmlunicode'>
+      <info>Check whether the character is part of Pe UCS Category</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCatPf' file='xmlunicode'>
+      <info>Check whether the character is part of Pf UCS Category</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCatPi' file='xmlunicode'>
+      <info>Check whether the character is part of Pi UCS Category</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCatPo' file='xmlunicode'>
+      <info>Check whether the character is part of Po UCS Category</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCatPs' file='xmlunicode'>
+      <info>Check whether the character is part of Ps UCS Category</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCatS' file='xmlunicode'>
+      <info>Check whether the character is part of S UCS Category</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCatSc' file='xmlunicode'>
+      <info>Check whether the character is part of Sc UCS Category</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCatSk' file='xmlunicode'>
+      <info>Check whether the character is part of Sk UCS Category</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCatSm' file='xmlunicode'>
+      <info>Check whether the character is part of Sm UCS Category</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCatSo' file='xmlunicode'>
+      <info>Check whether the character is part of So UCS Category</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCatZ' file='xmlunicode'>
+      <info>Check whether the character is part of Z UCS Category</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCatZl' file='xmlunicode'>
+      <info>Check whether the character is part of Zl UCS Category</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCatZp' file='xmlunicode'>
+      <info>Check whether the character is part of Zp UCS Category</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCatZs' file='xmlunicode'>
+      <info>Check whether the character is part of Zs UCS Category</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCherokee' file='xmlunicode'>
+      <info>Check whether the character is part of Cherokee UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCombiningDiacriticalMarks' file='xmlunicode'>
+      <info>Check whether the character is part of CombiningDiacriticalMarks UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCombiningHalfMarks' file='xmlunicode'>
+      <info>Check whether the character is part of CombiningHalfMarks UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCombiningMarksforSymbols' file='xmlunicode'>
+      <info>Check whether the character is part of CombiningMarksforSymbols UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsControlPictures' file='xmlunicode'>
+      <info>Check whether the character is part of ControlPictures UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCurrencySymbols' file='xmlunicode'>
+      <info>Check whether the character is part of CurrencySymbols UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsCyrillic' file='xmlunicode'>
+      <info>Check whether the character is part of Cyrillic UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsDeseret' file='xmlunicode'>
+      <info>Check whether the character is part of Deseret UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsDevanagari' file='xmlunicode'>
+      <info>Check whether the character is part of Devanagari UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsDingbats' file='xmlunicode'>
+      <info>Check whether the character is part of Dingbats UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsEnclosedAlphanumerics' file='xmlunicode'>
+      <info>Check whether the character is part of EnclosedAlphanumerics UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsEnclosedCJKLettersandMonths' file='xmlunicode'>
+      <info>Check whether the character is part of EnclosedCJKLettersandMonths UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsEthiopic' file='xmlunicode'>
+      <info>Check whether the character is part of Ethiopic UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsGeneralPunctuation' file='xmlunicode'>
+      <info>Check whether the character is part of GeneralPunctuation UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsGeometricShapes' file='xmlunicode'>
+      <info>Check whether the character is part of GeometricShapes UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsGeorgian' file='xmlunicode'>
+      <info>Check whether the character is part of Georgian UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsGothic' file='xmlunicode'>
+      <info>Check whether the character is part of Gothic UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsGreek' file='xmlunicode'>
+      <info>Check whether the character is part of Greek UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsGreekExtended' file='xmlunicode'>
+      <info>Check whether the character is part of GreekExtended UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsGujarati' file='xmlunicode'>
+      <info>Check whether the character is part of Gujarati UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsGurmukhi' file='xmlunicode'>
+      <info>Check whether the character is part of Gurmukhi UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsHalfwidthandFullwidthForms' file='xmlunicode'>
+      <info>Check whether the character is part of HalfwidthandFullwidthForms UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsHangulCompatibilityJamo' file='xmlunicode'>
+      <info>Check whether the character is part of HangulCompatibilityJamo UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsHangulJamo' file='xmlunicode'>
+      <info>Check whether the character is part of HangulJamo UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsHangulSyllables' file='xmlunicode'>
+      <info>Check whether the character is part of HangulSyllables UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsHebrew' file='xmlunicode'>
+      <info>Check whether the character is part of Hebrew UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsHighPrivateUseSurrogates' file='xmlunicode'>
+      <info>Check whether the character is part of HighPrivateUseSurrogates UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsHighSurrogates' file='xmlunicode'>
+      <info>Check whether the character is part of HighSurrogates UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsHiragana' file='xmlunicode'>
+      <info>Check whether the character is part of Hiragana UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsIPAExtensions' file='xmlunicode'>
+      <info>Check whether the character is part of IPAExtensions UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsIdeographicDescriptionCharacters' file='xmlunicode'>
+      <info>Check whether the character is part of IdeographicDescriptionCharacters UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsKanbun' file='xmlunicode'>
+      <info>Check whether the character is part of Kanbun UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsKangxiRadicals' file='xmlunicode'>
+      <info>Check whether the character is part of KangxiRadicals UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsKannada' file='xmlunicode'>
+      <info>Check whether the character is part of Kannada UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsKatakana' file='xmlunicode'>
+      <info>Check whether the character is part of Katakana UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsKhmer' file='xmlunicode'>
+      <info>Check whether the character is part of Khmer UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsLao' file='xmlunicode'>
+      <info>Check whether the character is part of Lao UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsLatin1Supplement' file='xmlunicode'>
+      <info>Check whether the character is part of Latin-1Supplement UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsLatinExtendedA' file='xmlunicode'>
+      <info>Check whether the character is part of LatinExtended-A UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsLatinExtendedAdditional' file='xmlunicode'>
+      <info>Check whether the character is part of LatinExtendedAdditional UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsLatinExtendedB' file='xmlunicode'>
+      <info>Check whether the character is part of LatinExtended-B UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsLetterlikeSymbols' file='xmlunicode'>
+      <info>Check whether the character is part of LetterlikeSymbols UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsLowSurrogates' file='xmlunicode'>
+      <info>Check whether the character is part of LowSurrogates UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsMalayalam' file='xmlunicode'>
+      <info>Check whether the character is part of Malayalam UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsMathematicalAlphanumericSymbols' file='xmlunicode'>
+      <info>Check whether the character is part of MathematicalAlphanumericSymbols UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsMathematicalOperators' file='xmlunicode'>
+      <info>Check whether the character is part of MathematicalOperators UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsMiscellaneousSymbols' file='xmlunicode'>
+      <info>Check whether the character is part of MiscellaneousSymbols UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsMiscellaneousTechnical' file='xmlunicode'>
+      <info>Check whether the character is part of MiscellaneousTechnical UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsMongolian' file='xmlunicode'>
+      <info>Check whether the character is part of Mongolian UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsMusicalSymbols' file='xmlunicode'>
+      <info>Check whether the character is part of MusicalSymbols UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsMyanmar' file='xmlunicode'>
+      <info>Check whether the character is part of Myanmar UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsNumberForms' file='xmlunicode'>
+      <info>Check whether the character is part of NumberForms UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsOgham' file='xmlunicode'>
+      <info>Check whether the character is part of Ogham UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsOldItalic' file='xmlunicode'>
+      <info>Check whether the character is part of OldItalic UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsOpticalCharacterRecognition' file='xmlunicode'>
+      <info>Check whether the character is part of OpticalCharacterRecognition UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsOriya' file='xmlunicode'>
+      <info>Check whether the character is part of Oriya UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsPrivateUse' file='xmlunicode'>
+      <info>Check whether the character is part of PrivateUse UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsRunic' file='xmlunicode'>
+      <info>Check whether the character is part of Runic UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsSinhala' file='xmlunicode'>
+      <info>Check whether the character is part of Sinhala UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsSmallFormVariants' file='xmlunicode'>
+      <info>Check whether the character is part of SmallFormVariants UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsSpacingModifierLetters' file='xmlunicode'>
+      <info>Check whether the character is part of SpacingModifierLetters UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsSpecials' file='xmlunicode'>
+      <info>Check whether the character is part of Specials UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsSuperscriptsandSubscripts' file='xmlunicode'>
+      <info>Check whether the character is part of SuperscriptsandSubscripts UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsSyriac' file='xmlunicode'>
+      <info>Check whether the character is part of Syriac UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsTags' file='xmlunicode'>
+      <info>Check whether the character is part of Tags UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsTamil' file='xmlunicode'>
+      <info>Check whether the character is part of Tamil UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsTelugu' file='xmlunicode'>
+      <info>Check whether the character is part of Telugu UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsThaana' file='xmlunicode'>
+      <info>Check whether the character is part of Thaana UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsThai' file='xmlunicode'>
+      <info>Check whether the character is part of Thai UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsTibetan' file='xmlunicode'>
+      <info>Check whether the character is part of Tibetan UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsUnifiedCanadianAboriginalSyllabics' file='xmlunicode'>
+      <info>Check whether the character is part of UnifiedCanadianAboriginalSyllabics UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsYiRadicals' file='xmlunicode'>
+      <info>Check whether the character is part of YiRadicals UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
+    <function name='xmlUCSIsYiSyllables' file='xmlunicode'>
+      <info>Check whether the character is part of YiSyllables UCS Block</info>
+      <return type='int'/>
+      <arg name='code' type='int'/>
+    </function>
     <struct name='xmlURI' file='uri' info='A parsed URI reference. This is a struct containing the various fields as described in RFC 2396 but separated for further processing.'/>
     <function name='xmlURIEscape' file='uri'>
       <info>Escaping routine, does not do validity checks ! It will try to escape the chars needing this, but this is heuristic based it&apos;s impossible to be sure.</info>
@@ -6648,6 +7701,11 @@
       <return type='int' info='0 if successful, -1 if not found '/>
       <arg name='node' type='xmlNodePtr' info='the node '/>
       <arg name='name' type='const xmlChar *' info='the attribute name '/>
+    </function>
+    <function name='xmlValidBuildContentModel' file='valid'>
+      <return type='int'/>
+      <arg name='ctxt' type='xmlValidCtxtPtr'/>
+      <arg name='elem' type='xmlElementPtr'/>
     </function>
     <struct name='xmlValidCtxt' file='valid'/>
     <function name='xmlValidCtxtNormalizeAttributeValue' file='valid'>
@@ -7448,6 +8506,10 @@
       <return type='void'/>
       <arg name='ctxt' type='xmlXPathParserContextPtr' info='the XPath Parser context '/>
       <arg name='nargs' type='int' info='the number of arguments '/>
+    </function>
+    <function name='xmlXPathNotEqualValues' file='xpathInternals'>
+      <return type='int'/>
+      <arg name='ctxt' type='xmlXPathParserContextPtr'/>
     </function>
     <function name='xmlXPathNotFunction' file='xpathInternals'>
       <info>Implement the not() XPath function boolean not(boolean) The not function returns true if its argument is false, and false otherwise.</info>

@@ -1,4 +1,4 @@
-#!/bin/sh
+#! /bin/bash
 if [ ! -d /etc/xml -a -w /etc ]
 then
     echo Directory /etc/xml missing creating it
@@ -22,7 +22,7 @@ fi
 #
 if [ ! -r $ROOTCATALOG ] ; then
    echo creating XML Catalog root $ROOTCATALOG
-   /usr/bin/xmlcatalog --noout --create $ROOTCATALOG
+   xmlcatalog --noout --create $ROOTCATALOG
 fi
 if [ ! -r $ROOTCATALOG ] ; then
    echo Failed creating XML Catalog root $ROOTCATALOG
@@ -30,7 +30,7 @@ if [ ! -r $ROOTCATALOG ] ; then
 fi
 if [ ! -r $CATALOG ] ; then
    echo creating DocBook XML Catalog $CATALOG
-   /usr/bin/xmlcatalog --noout --create $CATALOG
+   xmlcatalog --noout --create $CATALOG
 fi
 if [ ! -r $CATALOG ] ; then
    echo Failed creating DocBook XML Catalog $CATALOG

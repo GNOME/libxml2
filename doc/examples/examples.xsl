@@ -99,6 +99,11 @@
       <xsl:apply-templates select='.'/>
     </xsl:for-each>
     </ul>
+    <p> Getting the compilation options and libraries dependancies needed
+to generate binaries from the examples is best done on Linux/Unix by using
+the xml2-config script which should have been installed as part of <i>make
+install</i> step or when installing the libxml2 development package:</p>
+<pre>gcc -o example `xml2-config --cflags` example.c `xml2-config --libs`</pre>
   </xsl:template>
 
   <xsl:template name="sections-list">

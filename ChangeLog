@@ -1,3 +1,8 @@
+Mon Mar 29 16:56:49 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* doc/examples/examples.xsl doc/examples/index.html: added
+	  information about compiling on Unix
+
 Mon Mar 29 14:18:12 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* catalog.c: fixes the comments for xmlCatalogDump and xmlDumpACatalog

@@ -112,6 +112,7 @@ typedef struct xmlDoc {
     char           *name;	/* name/filename/URI of the document */
     const CHAR     *version;	/* the XML version string */
     const CHAR     *encoding;   /* encoding, if any */
+    int             compression;/* level of zlib compression */
     int             standalone; /* standalone document (no external refs) */
     struct xmlDtd  *dtd;	/* the document DTD if available */
     struct xmlNs   *oldNs;	/* Global namespace, the old way */
@@ -173,6 +174,8 @@ extern void xmlDocDumpMemory(xmlDocPtr cur, CHAR**mem, int *size);
 extern void xmlDocDump(FILE *f, xmlDocPtr doc);
 int xmlSaveFile(const char *filename, xmlDocPtr cur);
 
+extern int  xmlGetDocCompressMode (xmlDocPtr doc);
+extern void xmlSetDocCompressMode (xmlDocPtr doc, int mode);
 extern int  xmlGetCompressMode(void);
 extern void xmlSetCompressMode(int mode);
 

@@ -25,6 +25,8 @@ static CHAR xmlStringText[] = { 't', 'e', 'x', 't', 0 };
 int oldXMLWDcompatibility = 0;
 int xmlIndentTreeOutput = 1;
 
+static int xmlCompressMode = 0;
+
 /************************************************************************
  *									*
  *		Allocation and deallocation of basic structures		*
@@ -274,6 +276,7 @@ xmlDocPtr xmlNewDoc(const CHAR *version) {
     cur->encoding = NULL;
     cur->entities = NULL;
     cur->standalone = -1;
+    cur->compression = xmlCompressMode;
     return(cur);
 }
 
@@ -1155,17 +1158,31 @@ void xmlDocDumpMemory(xmlDocPtr cur, CHAR**mem, int *size) {
 }
 
 /*
- * Get the compression mode
+ * Get/Set a document compression mode.
  */
 
-static int xmlCompressMode = 0;
+int  xmlGetDocCompressMode (xmlDocPtr doc) {
+    if (doc == NULL) return(-1);
+    return(doc->compression);
+}
+
+void xmlSetDocCompressMode (xmlDocPtr doc, int mode) {
+    if (doc == NULL) return;
+    if (mode < 0) doc->compression = 0;
+    else if (mode > 9) doc->compression = 9;
+    else doc->compression = mode;
+}
+
+/*
+ * Get/Set the global compression mode
+ */
 
 int  xmlGetCompressMode(void) {
     return(xmlCompressMode);
 }
 void xmlSetCompressMode(int mode) {
     if (mode < 0) xmlCompressMode = 0;
-    if (mode > 9) xmlCompressMode = 9;
+    else if (mode > 9) xmlCompressMode = 9;
     else xmlCompressMode = mode;
 }
 

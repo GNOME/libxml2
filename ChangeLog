@@ -1,3 +1,7 @@
+Thu Sep 24 15:13:29 EDT 1998 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* tree.c, tree.h: added a per-document compression interface.
+
 Tue Sep 22 20:47:38 EDT 1998
 
 	* tree.c, tree.h: added saving with compression and added interfaces

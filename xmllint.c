@@ -780,7 +780,7 @@ static void usage(const char *name) {
     printf("\t--noent : substitute entity references by their value\n");
     printf("\t--noout : don't output the result tree\n");
     printf("\t--htmlout : output results as HTML\n");
-    printf("\t--nowarp : do not put HTML doc wrapper\n");
+    printf("\t--nowrap : do not put HTML doc wrapper\n");
     printf("\t--valid : validate the document in addition to std well-formed check\n");
     printf("\t--postvalid : do a posteriori validation, i.e after parsing\n");
     printf("\t--dtdvalid URL : do a posteriori validation against a given DTD\n");
@@ -803,7 +803,7 @@ static void usage(const char *name) {
 #ifdef LIBXML_CATALOG_ENABLED
     printf("\t--catalogs : use the catalogs from $SGML_CATALOG_FILES\n");
     printf("\t         otherwise /etc/xml/catalog is activated by default\n");
-    printf("\t--nocatalogs: desactivate all catalogs\n");
+    printf("\t--nocatalogs: deactivate all catalogs\n");
 #endif
     printf("\t--auto : generate a small doc on the fly\n");
 #ifdef LIBXML_XINCLUDE_ENABLED

@@ -669,6 +669,7 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
 		    buf[sizeof(buf) - 1] = 0;
 		    ptr = buf;
 		    while (*ptr != 0) *out++ = *ptr++;
+		    cur++;
 		    continue;
 		} else if (*cur < 0xE0) {
                     val = (cur[0]) & 0x1F;

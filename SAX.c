@@ -1258,7 +1258,6 @@ reference(void *ctx, const xmlChar *name)
  * @len: the number of xmlChar
  *
  * receiving some chars from the parser.
- * Question: how much at a time ???
  */
 void
 characters(void *ctx, const xmlChar *ch, int len)
@@ -1364,7 +1363,7 @@ characters(void *ctx, const xmlChar *ch, int len)
  * @len: the number of xmlChar
  *
  * receiving some ignorable whitespaces from the parser.
- * Question: how much at a time ???
+ * UNUSED: by default the DOM building will use characters
  */
 void
 ignorableWhitespace(void *ctx ATTRIBUTE_UNUSED, const xmlChar *ch ATTRIBUTE_UNUSED, int len ATTRIBUTE_UNUSED)
@@ -1682,7 +1681,7 @@ xmlSAXHandler xmlDefaultSAXHandler = {
     endElement,
     reference,
     characters,
-    ignorableWhitespace,
+    characters,
     processingInstruction,
     comment,
     xmlParserWarning,
@@ -1726,7 +1725,7 @@ xmlDefaultSAXHandlerInit(void)
     xmlDefaultSAXHandler.reference = reference;
     xmlDefaultSAXHandler.characters = characters;
     xmlDefaultSAXHandler.cdataBlock = cdataBlock;
-    xmlDefaultSAXHandler.ignorableWhitespace = ignorableWhitespace;
+    xmlDefaultSAXHandler.ignorableWhitespace = characters;
     xmlDefaultSAXHandler.processingInstruction = processingInstruction;
     xmlDefaultSAXHandler.comment = comment;
     if (xmlGetWarningsDefaultValue == 0)
@@ -1762,7 +1761,7 @@ xmlSAXHandler htmlDefaultSAXHandler = {
     endElement,
     NULL,
     characters,
-    ignorableWhitespace,
+    characters,
     NULL,
     comment,
     xmlParserWarning,

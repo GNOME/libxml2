@@ -1475,7 +1475,11 @@ static int areBlanks(xmlParserCtxtPtr ctxt, const xmlChar *str, int len) {
     int i, ret;
     xmlNodePtr lastChild;
 
-    if (ctxt->keepBlanks)
+    /*
+     * Don't spend time trying to differentiate them, the same callback is
+     * used !
+     */
+    if (ctxt->sax->ignorableWhitespace == ctxt->sax->characters)
 	return(0);
 
     /*

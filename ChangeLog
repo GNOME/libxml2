@@ -1,3 +1,13 @@
+Sun Sep  9 10:33:15 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* xmllint.c: John Fleck fixed typos in the options output
+	* parser.c SAX.c: fix ignorable white space SAX selection
+
+Sat Sep  8 11:43:53 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* entities.c: Steve Underwood found the possibility of an
+	  ininite loop in case of error.
+
 Fri Sep  7 11:35:00 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am: Need $(ICONV_LIBS) in libxml2_la_LIBADD

@@ -825,7 +825,7 @@ xmlTextReaderPushData(xmlTextReaderPtr reader) {
 		          (const char *) &inbuf->content[reader->cur],
 			  CHUNK_SIZE, 0);
 	    reader->cur += CHUNK_SIZE;
-	    if ((val != 0) && (reader->ctxt->wellFormed == 0))
+	    if ((val != 0) || (reader->ctxt->wellFormed == 0))
 		return(-1);
 	} else {
 	    s = inbuf->use - reader->cur;
@@ -833,7 +833,7 @@ xmlTextReaderPushData(xmlTextReaderPtr reader) {
 		          (const char *) &inbuf->content[reader->cur],
 			  s, 0);
 	    reader->cur += s;
-	    if ((val != 0) && (reader->ctxt->wellFormed == 0))
+	    if ((val != 0) || (reader->ctxt->wellFormed == 0))
 		return(-1);
 	    break;
 	}
@@ -866,7 +866,7 @@ xmlTextReaderPushData(xmlTextReaderPtr reader) {
 		    s, 1);
 	    reader->cur = inbuf->use;
 	    reader->mode = XML_TEXTREADER_DONE;
-	    if ((val != 0) && (reader->ctxt->wellFormed == 0))
+	    if ((val != 0) || (reader->ctxt->wellFormed == 0))
 	        return(-1);
 	}
     }
@@ -1343,6 +1343,8 @@ get_next_node:
 	if (reader->mode != XML_TEXTREADER_DONE) {
 	    val = xmlParseChunk(reader->ctxt, "", 0, 1);
 	    reader->mode = XML_TEXTREADER_DONE;
+	    if (val != 0)
+	        return(-1);
 	}
 	reader->node = NULL;
 	reader->depth = -1;
@@ -3902,7 +3904,7 @@ xmlTextReaderGenericError(void *ctxt, xmlParserSeverities severity, char *str) {
     xmlParserCtxtPtr ctx = (xmlParserCtxtPtr)ctxt;
     xmlTextReaderPtr reader = (xmlTextReaderPtr)ctx->_private;
 
-    if (str != NULL) {
+    if (str != NULL && reader->errorFunc) {
 	reader->errorFunc(reader->errorFuncArg,
 			  str,
 			  severity,
@@ -4002,6 +4004,7 @@ xmlTextReaderSetErrorHandler(xmlTextReaderPtr reader,
 	reader->ctxt->sax->warning = xmlTextReaderWarning;
 	reader->ctxt->vctxt.warning = xmlTextReaderValidityWarning;
 	reader->errorFunc = f;
+	reader->sErrorFunc = NULL;
 	reader->errorFuncArg = arg;
     }
     else {
@@ -4031,6 +4034,7 @@ xmlTextReaderSetStructuredErrorHandler(xmlTextReaderPtr reader,
 					 xmlStructuredErrorFunc f, 
 					 void *arg) {
   if (f != NULL) {
+	reader->ctxt->sax->error = NULL;
 	reader->ctxt->sax->serror = xmlTextReaderStructuredError;
 	reader->ctxt->vctxt.error = xmlTextReaderValidityError;
 	reader->ctxt->sax->warning = xmlTextReaderWarning;

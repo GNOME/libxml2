@@ -552,7 +552,7 @@ __xmlRaiseError(xmlStructuredErrorFunc schannel,
     /*
      * Find the callback channel if channel param is NULL
      */
-    if ((ctxt != NULL) && (channel == NULL) && (xmlStructuredError == NULL)) {
+    if ((ctxt != NULL) && (channel == NULL) && (xmlStructuredError == NULL) && (ctxt->sax != NULL)) {
         if (level == XML_ERR_WARNING)
 	    channel = ctxt->sax->warning;
         else

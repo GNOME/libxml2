@@ -1,3 +1,11 @@
+Tue Jul 27 00:34:07 PDT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* SAX2.c, error.c, parser.c, tree.c, xmlreader.c:
+	  implemented patches supplied by Olivier Andrieu 
+	  (bug 148588), plus made some further enhancements, to
+	  correct some problems with out of memory conditions.
+	* testOOM.c: improved with patches from Olivier Andrieu
+
 Mon Jul 26 11:03:18 PDT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* tree.c: put in patch for Windows buffer re-allocation

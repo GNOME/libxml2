@@ -54,7 +54,7 @@ static void usage(const char *progname) {
     printf("\t --valid: validate the document\n");
     exit(1);
 }
-static int elem, attrs;
+static unsigned int elem, attrs, chars;
 
 static int processNode(xmlTextReaderPtr reader) {
     int type;
@@ -64,11 +64,24 @@ static int processNode(xmlTextReaderPtr reader) {
 	if (type == 1) {
 	    elem++;
 	    attrs += xmlTextReaderAttributeCount(reader);
+	} else if (type == 3) {
+	  const xmlChar *txt;
+	  txt = xmlTextReaderConstValue(reader);
+	  if (txt != NULL)
+	    chars += xmlStrlen (txt);
+	  else
+	    return FALSE;
 	}
     }
 
     return TRUE;
 }
+
+
+struct file_params {
+  const char *filename;
+  unsigned int elem, attrs, chars;
+};
 
 /* This always returns TRUE since we don't validate the results of
  * parsing a particular document vs. the expected results of parsing
@@ -77,54 +90,57 @@ static int processNode(xmlTextReaderPtr reader) {
 static int
 check_load_file_memory_func (void *data)
 {
-     const char *filename = data;
+     struct file_params *p = data;
      xmlTextReaderPtr reader;
-     int ret;
+     int ret, status;
 
      if (count) {
           elem = 0;
           attrs = 0;
+          chars = 0;
      }
 
-     reader = xmlNewTextReaderFilename(filename);
-     
+     status = TRUE;
+     reader = xmlNewTextReaderFilename(p->filename);
+
      if (reader != NULL) {
           if (valid) {
-               if (xmlTextReaderSetParserProp(reader, XML_PARSER_VALIDATE, 1) == -1) {
-                    xmlFreeTextReader (reader);
-                    return TRUE;
-               }
+               if (xmlTextReaderSetParserProp(reader, XML_PARSER_VALIDATE, 1) == -1)
+		    goto out;
           }
           
           /*
            * Process all nodes in sequence
            */
-          ret = xmlTextReaderRead (reader);
-          
-          while (TRUE) {
-               if (ret == -1) {
-                    xmlFreeTextReader (reader);
-                    return TRUE;
-               } else if (ret != 1)
-                    break;
-               
-               if (!processNode(reader)) {
-                    xmlFreeTextReader (reader);
-                    return FALSE;
-               }
-               
-               ret = xmlTextReaderRead(reader);
+          while ((ret = xmlTextReaderRead(reader)) == 1) {
+	    if (!processNode(reader))
+	      goto out;
           }
+	  if (ret == -1)
+	    goto out;
 
           /*
            * Done, cleanup and status
            */
-          xmlFreeTextReader (reader);
-
-          return TRUE;
-     } else {
-          return TRUE;
+	  if (count)
+	    {
+	      if (p->elem == (unsigned int)-1) {
+		p->elem = elem;
+		p->attrs = attrs;
+		p->chars = chars;
+	      }
+	      else {
+		status = (elem == p->elem && attrs == p->attrs && chars == p->chars);
+		fprintf (stderr, "# %s: %u elems, %u attrs, %u chars %s\n",
+			 p->filename, elem, attrs, chars,
+			 status ? "ok" : "wrong");
+	      }
+	    }
      }
+ out:
+     if (reader)
+       xmlFreeTextReader (reader);
+     return status;
 }
 
 int main(int argc, char **argv) {
@@ -159,8 +175,18 @@ int main(int argc, char **argv) {
       xmlSubstituteEntitiesDefault(1);
     for (i = 1; i < argc ; i++) {
 	if (argv[i][0] != '-') {
+             struct file_params p;
+	     p.filename = argv[i];
+	     p.elem = -1;
+
+	     /* Run once to count */
+	     check_load_file_memory_func (&p);
+	     if (count) {
+	       fprintf (stderr, "# %s: %u elems, %u attrs, %u chars\n",
+			p.filename, p.elem, p.attrs, p.chars);
+	     }
              if (!test_oom_handling (check_load_file_memory_func,
-                                     argv[i])) {
+                                     &p)) {
                   fprintf (stderr, "Failed!\n");
                   return (1);
              }

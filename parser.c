@@ -605,6 +605,10 @@ xmlDetectSAX2(xmlParserCtxtPtr ctxt) {
     ctxt->str_xml = xmlDictLookup(ctxt->dict, BAD_CAST "xml", 3);
     ctxt->str_xmlns = xmlDictLookup(ctxt->dict, BAD_CAST "xmlns", 5);
     ctxt->str_xml_ns = xmlDictLookup(ctxt->dict, XML_XML_NAMESPACE, 36);
+    if ((ctxt->str_xml==NULL) || (ctxt->str_xmlns==NULL) || 
+    		(ctxt->str_xml_ns == NULL)) {
+        xmlErrMemory(ctxt, NULL);
+    }
 }
 
 typedef struct _xmlDefAttrs xmlDefAttrs;

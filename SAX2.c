@@ -1705,9 +1705,15 @@ skip:
     ret->type = XML_TEXT_NODE;
 
     ret->name = xmlStringText;
-    if (intern == NULL)
+    if (intern == NULL) {
 	ret->content = xmlStrndup(str, len);
-    else
+	if (ret->content == NULL) {
+	    ctxt->errNo = XML_ERR_NO_MEMORY;
+	    ctxt->instate = XML_PARSER_EOF;
+	    ctxt->disableSAX = 1;
+	    return(NULL);
+	}
+    } else
 	ret->content = (xmlChar *) intern;
 
     if ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
@@ -2033,9 +2039,15 @@ xmlSAX2StartElementNs(void *ctx,
 
 	if (ctxt->dictNames)
 	    ret->name = localname;
-	else
+	else {
 	    ret->name = xmlStrdup(localname);
-
+	    if (ret->name == NULL) {
+		ctxt->errNo = XML_ERR_NO_MEMORY;
+		ctxt->instate = XML_PARSER_EOF;
+		ctxt->disableSAX = 1;
+		return;
+	    }
+	}
 	if ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
 	    xmlRegisterNodeDefaultValue(ret);
     } else {
@@ -2124,9 +2136,18 @@ xmlSAX2StartElementNs(void *ctx,
      * Search the namespace if it wasn't already found
      */
     if ((URI != NULL) && (ret->ns == NULL)) {
-	ret->ns = xmlSearchNs(ctxt->myDoc, parent, prefix);
+        if (prefix != NULL)
+	    ret->ns = xmlSearchNs(ctxt->myDoc, parent, prefix);
+	else
+	    ret->ns = xmlSearchNsByHref(ctxt->myDoc, parent, URI);
 	if (ret->ns == NULL) {
 	    ns = xmlNewNs(ret, NULL, prefix);
+	    if (ns == NULL) {
+	        ctxt->errNo = XML_ERR_NO_MEMORY;
+		ctxt->instate = XML_PARSER_EOF;
+		ctxt->disableSAX = 1;
+		return;
+	    }
 	    if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
 		ctxt->sax->warning(ctxt->userData, 
 		     "Namespace prefix %s was not found\n", prefix);

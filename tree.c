@@ -1861,7 +1861,6 @@ xmlNewNsPropEatName(xmlNodePtr node, xmlNsPtr ns, xmlChar *name,
     cur = (xmlAttrPtr) xmlMalloc(sizeof(xmlAttr));
     if (cur == NULL) {
 	xmlTreeErrMemory("building attribute");
-        xmlFree(name);
 	return(NULL);
     }
     memset(cur, 0, sizeof(xmlAttr));
@@ -2172,7 +2171,6 @@ xmlNewNodeEatName(xmlNsPtr ns, xmlChar *name) {
     cur = (xmlNodePtr) xmlMalloc(sizeof(xmlNode));
     if (cur == NULL) {
 	xmlTreeErrMemory("building node");
-        xmlFree(name);
 	return(NULL);
     }
     memset(cur, 0, sizeof(xmlNode));

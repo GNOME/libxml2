@@ -52,6 +52,11 @@ extern "C" {
 #undef	xmlRealloc
 #undef	xmlSaveNoEmptyTags
 #undef	xmlSubstituteEntitiesDefaultValue
+#undef xmlRegisterNodeDefaultValue
+#undef xmlDeregisterNodeDefaultValue
+
+typedef void (*xmlRegisterNodeFunc)(xmlNodePtr node);
+typedef void (*xmlDeregisterNodeFunc)(xmlNodePtr node);
 
 typedef struct _xmlGlobalState xmlGlobalState;
 typedef xmlGlobalState *xmlGlobalStatePtr;
@@ -89,6 +94,9 @@ struct _xmlGlobalState
 	int xmlSaveNoEmptyTags;
 	int xmlIndentTreeOutput;
 	const char *xmlTreeIndentString;
+
+  	xmlRegisterNodeFunc xmlRegisterNodeDefaultValue;
+  	xmlDeregisterNodeFunc xmlDeregisterNodeDefaultValue;
 };
 
 #ifdef __cplusplus
@@ -100,6 +108,9 @@ extern "C" {
 #endif
 
 void	xmlInitializeGlobalState(xmlGlobalStatePtr gs);
+
+xmlRegisterNodeFunc xmlRegisterNodeDefault(xmlRegisterNodeFunc func);
+xmlDeregisterNodeFunc xmlDeregisterNodeDefault(xmlDeregisterNodeFunc func);
 
 /*
  * In general the memory allocation entry points are not kept
@@ -327,6 +338,22 @@ extern int *__xmlSubstituteEntitiesDefaultValue(void);
 (*(__xmlSubstituteEntitiesDefaultValue()))
 #else
 LIBXML_DLL_IMPORT extern int xmlSubstituteEntitiesDefaultValue;
+#endif
+
+extern xmlRegisterNodeFunc *__xmlRegisterNodeDefaultValue(void);
+#ifdef LIBXML_THREAD_ENABLED
+#define xmlRegisterNodeDefaultValue \
+(*(__xmlRegisterNodeDefaultValue()))
+#else
+LIBXML_DLL_IMPORT extern xmlRegisterNodeFunc xmlRegisterNodeDefaultValue;
+#endif
+
+extern xmlDeregisterNodeFunc *__xmlDeregisterNodeDefaultValue(void);
+#ifdef LIBXML_THREAD_ENABLED
+#define xmlDeregisterNodeDefaultValue \
+(*(__xmlDeregisterNodeDefaultValue()))
+#else
+LIBXML_DLL_IMPORT extern xmlDeregisterNodeFunc xmlDeregisterNodeDefaultValue;
 #endif
 
 #ifdef __cplusplus

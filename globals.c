@@ -219,6 +219,9 @@ int xmlKeepBlanksDefaultValue = 1;
  */
 int xmlSubstituteEntitiesDefaultValue = 0;
 
+xmlRegisterNodeFunc xmlRegisterNodeDefaultValue = NULL;
+xmlDeregisterNodeFunc xmlDeregisterNodeDefaultValue = NULL;
+
 /*
  * Error handling
  */
@@ -450,7 +453,39 @@ xmlInitializeGlobalState(xmlGlobalStatePtr gs)
     gs->xmlPedanticParserDefaultValue = 0;
     gs->xmlSaveNoEmptyTags = 0;
     gs->xmlSubstituteEntitiesDefaultValue = 0;
+
+    gs->xmlRegisterNodeDefaultValue = NULL;
+    gs->xmlDeregisterNodeDefaultValue = NULL;
 }
+
+/**
+ * xmlRegisterNodeDefault
+ * @func: function pointer to the new RegisterNodeFunc
+ *
+ */
+xmlRegisterNodeFunc
+xmlRegisterNodeDefault(xmlRegisterNodeFunc func)
+{
+    xmlRegisterNodeFunc old = xmlRegisterNodeDefaultValue;
+    
+    xmlRegisterNodeDefaultValue = func;
+    return(old);
+}
+
+/**
+ * xmlDeegisterNodeDefault
+ * @func: function pointer to the new DeregisterNodeFunc
+ *
+ */
+xmlDeregisterNodeFunc
+xmlDeregisterNodeDefault(xmlDeregisterNodeFunc func)
+{
+    xmlDeregisterNodeFunc old = xmlDeregisterNodeDefaultValue;
+    
+    xmlDeregisterNodeDefaultValue = func;
+    return(old);
+}
+
 
 #ifdef LIBXML_DOCB_ENABLED
 #undef	docbDefaultSAXHandler
@@ -650,4 +685,22 @@ __xmlSubstituteEntitiesDefaultValue(void) {
 	return (&xmlSubstituteEntitiesDefaultValue);
     else
 	return (&xmlGetGlobalState()->xmlSubstituteEntitiesDefaultValue);
+}
+
+#undef	xmlRegisterNodeDefaultValue
+xmlRegisterNodeFunc *
+__xmlRegisterNodeDefaultValue(void) {
+    if (IS_MAIN_THREAD)
+	return (&xmlRegisterNodeDefaultValue);
+    else
+	return (&xmlGetGlobalState()->xmlRegisterNodeDefaultValue);
+}
+
+#undef	xmlDeregisterNodeDefaultValue
+xmlDeregisterNodeFunc *
+__xmlDeregisterNodeDefaultValue(void) {
+    if (IS_MAIN_THREAD)
+	return (&xmlDeregisterNodeDefaultValue);
+    else
+	return (&xmlGetGlobalState()->xmlDeregisterNodeDefaultValue);
 }

@@ -20,3 +20,5 @@ int,xmlSaveNoEmptyTags
 #const xmlChar,xmlStringText,[]
 #const xmlChar,xmlStringTextNoenc,[]
 int,xmlSubstituteEntitiesDefaultValue
+xmlRegisterNodeFunc,xmlRegisterNodeDefaultValue
+xmlDeregisterNodeFunc,xmlDeregisterNodeDefaultValue

@@ -37,13 +37,12 @@ typedef struct xmlNodeSet {
 #define XPATH_BOOLEAN	2
 #define XPATH_NUMBER	3
 #define XPATH_STRING	4
-#define XPATH_MARKER	5  /* used for func call checks */
 
 typedef struct xmlXPathObject {
     int type;
     xmlNodeSetPtr nodesetval;
     int boolval;
-    float floatval;
+    double floatval;
     CHAR *stringval;
 } xmlXPathObject, *xmlXPathObjectPtr;
 

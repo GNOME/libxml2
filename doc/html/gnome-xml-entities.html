@@ -115,7 +115,7 @@ SIZE="3"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN3575"
+NAME="AEN3699"
 ></A
 ><H2
 >Name</H2
@@ -123,7 +123,7 @@ NAME="AEN3575"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN3578"
+NAME="AEN3702"
 ></A
 ><H2
 >Synopsis</H2
@@ -330,7 +330,7 @@ HREF="gnome-xml-entities.html#XMLENTITIESTABLEPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN3631"
+NAME="AEN3755"
 ></A
 ><H2
 >Description</H2
@@ -340,14 +340,14 @@ NAME="AEN3631"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN3634"
+NAME="AEN3758"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3636"
+NAME="AEN3760"
 ></A
 ><H3
 ><A
@@ -363,7 +363,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define     XML_INTERNAL_GENERAL_ENTITY</PRE
+>#define XML_INTERNAL_GENERAL_ENTITY		1</PRE
 ></TD
 ></TR
 ></TABLE
@@ -373,7 +373,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3641"
+NAME="AEN3765"
 ></A
 ><H3
 ><A
@@ -389,7 +389,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define     XML_EXTERNAL_GENERAL_PARSED_ENTITY</PRE
+>#define XML_EXTERNAL_GENERAL_PARSED_ENTITY	2</PRE
 ></TD
 ></TR
 ></TABLE
@@ -399,7 +399,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3646"
+NAME="AEN3770"
 ></A
 ><H3
 ><A
@@ -415,7 +415,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define     XML_EXTERNAL_GENERAL_UNPARSED_ENTITY</PRE
+>#define XML_EXTERNAL_GENERAL_UNPARSED_ENTITY	3</PRE
 ></TD
 ></TR
 ></TABLE
@@ -425,7 +425,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3651"
+NAME="AEN3775"
 ></A
 ><H3
 ><A
@@ -441,7 +441,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define     XML_INTERNAL_PARAMETER_ENTITY</PRE
+>#define XML_INTERNAL_PARAMETER_ENTITY		4</PRE
 ></TD
 ></TR
 ></TABLE
@@ -451,7 +451,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3656"
+NAME="AEN3780"
 ></A
 ><H3
 ><A
@@ -467,7 +467,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define     XML_EXTERNAL_PARAMETER_ENTITY</PRE
+>#define XML_EXTERNAL_PARAMETER_ENTITY		5</PRE
 ></TD
 ></TR
 ></TABLE
@@ -477,7 +477,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3661"
+NAME="AEN3785"
 ></A
 ><H3
 ><A
@@ -493,7 +493,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define     XML_INTERNAL_PREDEFINED_ENTITY</PRE
+>#define XML_INTERNAL_PREDEFINED_ENTITY		6</PRE
 ></TD
 ></TR
 ></TABLE
@@ -503,20 +503,33 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3666"
+NAME="AEN3790"
 ></A
 ><H3
 ><A
 NAME="XMLENTITYPTR"
 ></A
 >xmlEntityPtr</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef xmlEntity *xmlEntityPtr;</PRE
+></TD
+></TR
+></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3670"
+NAME="AEN3795"
 ></A
 ><H3
 ><A
@@ -532,7 +545,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define     XML_MIN_ENTITIES_TABLE</PRE
+>#define XML_MIN_ENTITIES_TABLE	32</PRE
 ></TD
 ></TR
 ></TABLE
@@ -542,20 +555,33 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3675"
+NAME="AEN3800"
 ></A
 ><H3
 ><A
 NAME="XMLENTITIESTABLEPTR"
 ></A
 >xmlEntitiesTablePtr</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef xmlEntitiesTable *xmlEntitiesTablePtr;</PRE
+></TD
+></TR
+></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3679"
+NAME="AEN3805"
 ></A
 ><H3
 ><A
@@ -625,7 +651,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the document</TD
 ></TR
 ><TR
 ><TD
@@ -642,7 +668,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the entity name</TD
 ></TR
 ><TR
 ><TD
@@ -659,7 +685,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the entity type XML_xxx_yyy_ENTITY</TD
 ></TR
 ><TR
 ><TD
@@ -676,7 +702,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the entity external ID if available</TD
 ></TR
 ><TR
 ><TD
@@ -693,7 +719,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the entity system ID if available</TD
 ></TR
 ><TR
 ><TD
@@ -710,7 +736,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the entity content</TD
 ></TR
 ></TABLE
 ><P
@@ -720,7 +746,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3719"
+NAME="AEN3845"
 ></A
 ><H3
 ><A
@@ -790,7 +816,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the document</TD
 ></TR
 ><TR
 ><TD
@@ -807,7 +833,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the entity name</TD
 ></TR
 ><TR
 ><TD
@@ -824,7 +850,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the entity type XML_xxx_yyy_ENTITY</TD
 ></TR
 ><TR
 ><TD
@@ -841,7 +867,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the entity external ID if available</TD
 ></TR
 ><TR
 ><TD
@@ -858,7 +884,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the entity system ID if available</TD
 ></TR
 ><TR
 ><TD
@@ -875,7 +901,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the entity content</TD
 ></TR
 ></TABLE
 ><P
@@ -885,7 +911,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3759"
+NAME="AEN3885"
 ></A
 ><H3
 ><A
@@ -941,7 +967,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the entity name</TD
 ></TR
 ><TR
 ><TD
@@ -956,7 +982,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>NULL if not, othervise the entity</TD
 ></TR
 ></TABLE
 ><P
@@ -966,7 +992,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3780"
+NAME="AEN3906"
 ></A
 ><H3
 ><A
@@ -1028,7 +1054,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the document referencing the entity</TD
 ></TR
 ><TR
 ><TD
@@ -1045,7 +1071,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the entity name</TD
 ></TR
 ><TR
 ><TD
@@ -1060,7 +1086,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>A pointer to the entity structure or NULL if not found.</TD
 ></TR
 ></TABLE
 ><P
@@ -1070,7 +1096,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3806"
+NAME="AEN3932"
 ></A
 ><H3
 ><A
@@ -1131,7 +1157,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the document referencing the entity</TD
 ></TR
 ><TR
 ><TD
@@ -1148,7 +1174,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the entity name</TD
 ></TR
 ><TR
 ><TD
@@ -1163,7 +1189,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>A pointer to the entity structure or NULL if not found.</TD
 ></TR
 ></TABLE
 ><P
@@ -1173,7 +1199,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3832"
+NAME="AEN3958"
 ></A
 ><H3
 ><A
@@ -1242,7 +1268,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the document containing the string</TD
 ></TR
 ><TR
 ><TD
@@ -1259,7 +1285,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  A string to convert to XML.</TD
 ></TR
 ><TR
 ><TD
@@ -1274,7 +1300,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>A newly allocated string with the substitution done.</TD
 ></TR
 ></TABLE
 ><P
@@ -1284,7 +1310,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3861"
+NAME="AEN3987"
 ></A
 ><H3
 ><A
@@ -1350,7 +1376,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the document containing the string</TD
 ></TR
 ><TR
 ><TD
@@ -1367,7 +1393,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  A string to convert to XML.</TD
 ></TR
 ><TR
 ><TD
@@ -1382,7 +1408,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>A newly allocated string with the substitution done.</TD
 ></TR
 ></TABLE
 ><P
@@ -1392,7 +1418,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3888"
+NAME="AEN4014"
 ></A
 ><H3
 ><A
@@ -1443,7 +1469,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the xmlEntitiesTablePtr just created or NULL in case of error.</TD
 ></TR
 ></TABLE
 ><P
@@ -1453,7 +1479,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3904"
+NAME="AEN4030"
 ></A
 ><H3
 ><A
@@ -1509,7 +1535,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  An entity table</TD
 ></TR
 ><TR
 ><TD
@@ -1524,7 +1550,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the new xmlEntitiesTablePtr or NULL in case of error.</TD
 ></TR
 ></TABLE
 ><P
@@ -1534,7 +1560,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3925"
+NAME="AEN4051"
 ></A
 ><H3
 ><A
@@ -1587,7 +1613,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  An entity table</TD
 ></TR
 ></TABLE
 ><P
@@ -1597,7 +1623,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3941"
+NAME="AEN4067"
 ></A
 ><H3
 ><A
@@ -1654,7 +1680,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  An XML buffer.</TD
 ></TR
 ><TR
 ><TD
@@ -1671,7 +1697,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  An entity table</TD
 ></TR
 ></TABLE
 ><P

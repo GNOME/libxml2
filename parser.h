@@ -31,6 +31,7 @@ typedef struct xmlParserInput {
     const CHAR *cur;                  /* Current char being parsed */
     int line;                         /* Current line */
     int col;                          /* Current column */
+    int consumed;                     /* How many CHARs were already consumed */
     xmlParserInputDeallocate free;    /* function to deallocate the base */
 } xmlParserInput;
 typedef xmlParserInput *xmlParserInputPtr;
@@ -184,6 +185,13 @@ extern xmlSAXHandler htmlDefaultSAXHandler;
 
 #include "entities.h"
 #include "xml-error.h"
+
+/*
+ * Input functions
+ */
+
+int xmlParserInputRead(xmlParserInputPtr in, int len);
+int xmlParserInputGrow(xmlParserInputPtr in, int len);
 
 /*
  * CHAR handling

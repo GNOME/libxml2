@@ -2,12 +2,11 @@ SAX.setDocumentLocator()
 SAX.startDocument()
 SAX.startElement(D:owner, xmlns:D='http://www.ietf.org/standards/dav/')
 SAX.characters(
-  <D:href>http://www.ics.uci., 3)
+  , 3)
 SAX.startElement(D:href)
 SAX.characters(http://www.ics.uci.edu/~ejw/co, 40)
 SAX.endElement(D:href)
 SAX.characters(
-</D:owner>
 , 1)
 SAX.endElement(D:owner)
 SAX.endDocument()

@@ -2,54 +2,45 @@ SAX.setDocumentLocator()
 SAX.startDocument()
 SAX.startElement(D:multistatus, xmlns:D='http://www.ietf.org/standards/dav/')
 SAX.characters(
-  <D:response>
-    <D:href>
-	, 3)
+  , 3)
 SAX.startElement(D:response)
 SAX.characters(
-    <D:href>
-	   http://webda, 5)
+    , 5)
 SAX.startElement(D:href)
 SAX.characters(
 	   http://webdav.sb.aol.com/, 66)
 SAX.endElement(D:href)
 SAX.characters(
-    <D:href>
-	   http://webda, 5)
+    , 5)
 SAX.startElement(D:href)
 SAX.characters(
 	   http://webdav.sb.aol.com/, 54)
 SAX.endElement(D:href)
 SAX.characters(
-    <D:status>HTTP/1.1 202 Ac, 5)
+    , 5)
 SAX.startElement(D:status)
-SAX.characters(HTTP/1.1 202 Accepted</D:statu, 21)
+SAX.characters(HTTP/1.1 202 Accepted, 21)
 SAX.endElement(D:status)
 SAX.characters(
-  </D:response>
-  <D:response, 3)
+  , 3)
 SAX.endElement(D:response)
 SAX.characters(
-  <D:response>
-    <D:href>ht, 3)
+  , 3)
 SAX.startElement(D:response)
 SAX.characters(
-    <D:href>http://foo.bar/bl, 5)
+    , 5)
 SAX.startElement(D:href)
-SAX.characters(http://foo.bar/blah</D:href>
- , 19)
+SAX.characters(http://foo.bar/blah, 19)
 SAX.endElement(D:href)
 SAX.characters(
-    <D:status>HTTP/1.1 403 Fo, 5)
+    , 5)
 SAX.startElement(D:status)
-SAX.characters(HTTP/1.1 403 Forbidden</D:stat, 22)
+SAX.characters(HTTP/1.1 403 Forbidden, 22)
 SAX.endElement(D:status)
 SAX.characters(
-  </D:response>
-</D:multistat, 3)
+  , 3)
 SAX.endElement(D:response)
 SAX.characters(
-</D:multistatus>
 , 1)
 SAX.endElement(D:multistatus)
 SAX.endDocument()

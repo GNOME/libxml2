@@ -2,69 +2,50 @@ SAX.setDocumentLocator()
 SAX.startDocument()
 SAX.startElement(D:propertyupdate, xmlns:D='http://www.ietf.org/standards/dav/', xmlns:Z='http://www.w3.com/standards/z39.50/')
 SAX.characters(
-  <D:set>
-    <D:prop>
-      , 3)
+  , 3)
 SAX.startElement(D:set)
 SAX.characters(
-    <D:prop>
-      <Z:authors, 5)
+    , 5)
 SAX.startElement(D:prop)
 SAX.characters(
-      <Z:authors>
-        <Z:, 7)
+      , 7)
 SAX.startElement(Z:authors)
 SAX.characters(
-        <Z:Author>Jim Whitehe, 9)
+        , 9)
 SAX.startElement(Z:Author)
-SAX.characters(Jim Whitehead</Z:Author>
-     , 13)
+SAX.characters(Jim Whitehead, 13)
 SAX.endElement(Z:Author)
 SAX.characters(
-        <Z:Author>Roy Fieldin, 9)
+        , 9)
 SAX.startElement(Z:Author)
-SAX.characters(Roy Fielding</Z:Author>
-      , 12)
+SAX.characters(Roy Fielding, 12)
 SAX.endElement(Z:Author)
 SAX.characters(
-      </Z:authors>
-    </D:pr, 7)
+      , 7)
 SAX.endElement(Z:authors)
 SAX.characters(
-    </D:prop>
-  </D:set>
-  <D, 5)
+    , 5)
 SAX.endElement(D:prop)
 SAX.characters(
-  </D:set>
-  <D:remove>
-    <, 3)
+  , 3)
 SAX.endElement(D:set)
 SAX.characters(
-  <D:remove>
-    <D:prop>
-   , 3)
+  , 3)
 SAX.startElement(D:remove)
 SAX.characters(
-    <D:prop>
-      <Z:Copyrig, 5)
+    , 5)
 SAX.startElement(D:prop)
 SAX.characters(
-      <Z:Copyright-Owner/>
-  , 7)
+      , 7)
 SAX.startElement(Z:Copyright-Owner)
 SAX.endElement(Z:Copyright-Owner)
 SAX.characters(
-    </D:prop>
-  </D:remove>
-<, 5)
+    , 5)
 SAX.endElement(D:prop)
 SAX.characters(
-  </D:remove>
-</D:propertyupd, 3)
+  , 3)
 SAX.endElement(D:remove)
 SAX.characters(
-</D:propertyupdate>
 , 1)
 SAX.endElement(D:propertyupdate)
 SAX.endDocument()

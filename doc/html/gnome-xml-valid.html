@@ -115,7 +115,7 @@ SIZE="3"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN3967"
+NAME="AEN4093"
 ></A
 ><H2
 >Name</H2
@@ -123,7 +123,7 @@ NAME="AEN3967"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN3970"
+NAME="AEN4096"
 ></A
 ><H2
 >Synopsis</H2
@@ -377,7 +377,7 @@ HREF="gnome-xml-valid.html#XMLATTRIBUTETABLEPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN4037"
+NAME="AEN4163"
 ></A
 ><H2
 >Description</H2
@@ -387,14 +387,14 @@ NAME="AEN4037"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN4040"
+NAME="AEN4166"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4042"
+NAME="AEN4168"
 ></A
 ><H3
 ><A
@@ -410,7 +410,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define     XML_MIN_NOTATION_TABLE</PRE
+>#define XML_MIN_NOTATION_TABLE	32</PRE
 ></TD
 ></TR
 ></TABLE
@@ -420,20 +420,33 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4047"
+NAME="AEN4173"
 ></A
 ><H3
 ><A
 NAME="XMLNOTATIONTABLEPTR"
 ></A
 >xmlNotationTablePtr</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef xmlNotationTable *xmlNotationTablePtr;</PRE
+></TD
+></TR
+></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4051"
+NAME="AEN4178"
 ></A
 ><H3
 ><A
@@ -449,7 +462,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define     XML_MIN_ELEMENT_TABLE</PRE
+>#define XML_MIN_ELEMENT_TABLE	32</PRE
 ></TD
 ></TR
 ></TABLE
@@ -459,20 +472,33 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4056"
+NAME="AEN4183"
 ></A
 ><H3
 ><A
 NAME="XMLELEMENTTABLEPTR"
 ></A
 >xmlElementTablePtr</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef xmlElementTable *xmlElementTablePtr;</PRE
+></TD
+></TR
+></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4060"
+NAME="AEN4188"
 ></A
 ><H3
 ><A
@@ -488,7 +514,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define     XML_MIN_ATTRIBUTE_TABLE</PRE
+>#define XML_MIN_ATTRIBUTE_TABLE	32</PRE
 ></TD
 ></TR
 ></TABLE
@@ -498,20 +524,33 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4065"
+NAME="AEN4193"
 ></A
 ><H3
 ><A
 NAME="XMLATTRIBUTETABLEPTR"
 ></A
 >xmlAttributeTablePtr</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef xmlAttributeTable *xmlAttributeTablePtr;</PRE
+></TD
+></TR
+></TABLE
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4069"
+NAME="AEN4198"
 ></A
 ><H3
 ><A
@@ -579,7 +618,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  pointer to the DTD</TD
 ></TR
 ><TR
 ><TD
@@ -596,7 +635,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the entity name</TD
 ></TR
 ><TR
 ><TD
@@ -613,7 +652,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the public identifier or NULL</TD
 ></TR
 ><TR
 ><TD
@@ -630,7 +669,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the system identifier or NULL</TD
 ></TR
 ><TR
 ><TD
@@ -645,7 +684,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>NULL if not, othervise the entity</TD
 ></TR
 ></TABLE
 ><P
@@ -655,7 +694,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4105"
+NAME="AEN4234"
 ></A
 ><H3
 ><A
@@ -711,7 +750,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  A notation table</TD
 ></TR
 ><TR
 ><TD
@@ -726,7 +765,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the new xmlNotationTablePtr or NULL in case of error.</TD
 ></TR
 ></TABLE
 ><P
@@ -736,7 +775,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4126"
+NAME="AEN4255"
 ></A
 ><H3
 ><A
@@ -789,7 +828,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  An notation table</TD
 ></TR
 ></TABLE
 ><P
@@ -799,7 +838,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4142"
+NAME="AEN4271"
 ></A
 ><H3
 ><A
@@ -856,7 +895,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the XML buffer output</TD
 ></TR
 ><TR
 ><TD
@@ -873,7 +912,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  A notation table</TD
 ></TR
 ></TABLE
 ><P
@@ -883,7 +922,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4163"
+NAME="AEN4292"
 ></A
 ><H3
 ><A
@@ -940,7 +979,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the subelement name or NULL</TD
 ></TR
 ><TR
 ><TD
@@ -957,7 +996,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the type of element content decl</TD
 ></TR
 ><TR
 ><TD
@@ -972,7 +1011,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>NULL if not, othervise the new element content structure</TD
 ></TR
 ></TABLE
 ><P
@@ -982,7 +1021,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4188"
+NAME="AEN4317"
 ></A
 ><H3
 ><A
@@ -1038,7 +1077,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  An element content pointer.</TD
 ></TR
 ><TR
 ><TD
@@ -1053,7 +1092,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the new xmlElementContentPtr or NULL in case of error.</TD
 ></TR
 ></TABLE
 ><P
@@ -1063,7 +1102,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4209"
+NAME="AEN4338"
 ></A
 ><H3
 ><A
@@ -1116,7 +1155,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the element content tree to free</TD
 ></TR
 ></TABLE
 ><P
@@ -1126,7 +1165,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4225"
+NAME="AEN4354"
 ></A
 ><H3
 ><A
@@ -1191,7 +1230,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  pointer to the DTD</TD
 ></TR
 ><TR
 ><TD
@@ -1208,7 +1247,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the entity name</TD
 ></TR
 ><TR
 ><TD
@@ -1225,7 +1264,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the element type</TD
 ></TR
 ><TR
 ><TD
@@ -1242,7 +1281,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the element content tree or NULL</TD
 ></TR
 ><TR
 ><TD
@@ -1257,7 +1296,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>NULL if not, othervise the entity</TD
 ></TR
 ></TABLE
 ><P
@@ -1267,7 +1306,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4260"
+NAME="AEN4389"
 ></A
 ><H3
 ><A
@@ -1323,7 +1362,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  An element table</TD
 ></TR
 ><TR
 ><TD
@@ -1338,7 +1377,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the new xmlElementTablePtr or NULL in case of error.</TD
 ></TR
 ></TABLE
 ><P
@@ -1348,7 +1387,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4281"
+NAME="AEN4410"
 ></A
 ><H3
 ><A
@@ -1401,7 +1440,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  An element table</TD
 ></TR
 ></TABLE
 ><P
@@ -1411,7 +1450,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4297"
+NAME="AEN4426"
 ></A
 ><H3
 ><A
@@ -1468,7 +1507,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the XML buffer output</TD
 ></TR
 ><TR
 ><TD
@@ -1485,7 +1524,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  An element table</TD
 ></TR
 ></TABLE
 ><P
@@ -1495,7 +1534,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4318"
+NAME="AEN4447"
 ></A
 ><H3
 ><A
@@ -1551,7 +1590,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the enumeration name or NULL</TD
 ></TR
 ><TR
 ><TD
@@ -1566,7 +1605,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the xmlEnumerationPtr just created or NULL in case
+of error.</TD
 ></TR
 ></TABLE
 ><P
@@ -1576,7 +1616,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4339"
+NAME="AEN4468"
 ></A
 ><H3
 ><A
@@ -1629,7 +1669,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the tree to free.</TD
 ></TR
 ></TABLE
 ><P
@@ -1639,7 +1679,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4355"
+NAME="AEN4484"
 ></A
 ><H3
 ><A
@@ -1695,7 +1735,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the tree to copy.</TD
 ></TR
 ><TR
 ><TD
@@ -1710,7 +1750,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the xmlEnumerationPtr just created or NULL in case
+of error.</TD
 ></TR
 ></TABLE
 ><P
@@ -1720,7 +1761,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4376"
+NAME="AEN4505"
 ></A
 ><H3
 ><A
@@ -1794,7 +1835,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  pointer to the DTD</TD
 ></TR
 ><TR
 ><TD
@@ -1811,7 +1852,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the element name</TD
 ></TR
 ><TR
 ><TD
@@ -1828,7 +1869,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the attribute name</TD
 ></TR
 ><TR
 ><TD
@@ -1845,7 +1886,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the attribute type</TD
 ></TR
 ><TR
 ><TD
@@ -1862,7 +1903,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the attribute default type</TD
 ></TR
 ><TR
 ><TD
@@ -1879,7 +1920,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the attribute default value</TD
 ></TR
 ><TR
 ><TD
@@ -1896,7 +1937,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  if it's an enumeration, the associated list</TD
 ></TR
 ><TR
 ><TD
@@ -1911,7 +1952,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>NULL if not, othervise the entity</TD
 ></TR
 ></TABLE
 ><P
@@ -1921,7 +1962,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4425"
+NAME="AEN4554"
 ></A
 ><H3
 ><A
@@ -1977,7 +2018,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  An attribute table</TD
 ></TR
 ><TR
 ><TD
@@ -1992,7 +2033,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the new xmlAttributeTablePtr or NULL in case of error.</TD
 ></TR
 ></TABLE
 ><P
@@ -2002,7 +2043,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4446"
+NAME="AEN4575"
 ></A
 ><H3
 ><A
@@ -2055,7 +2096,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  An attribute table</TD
 ></TR
 ></TABLE
 ><P
@@ -2065,7 +2106,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4462"
+NAME="AEN4591"
 ></A
 ><H3
 ><A
@@ -2122,7 +2163,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  the XML buffer output</TD
 ></TR
 ><TR
 ><TD
@@ -2139,7 +2180,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>  An attribute table</TD
 ></TR
 ></TABLE
 ><P

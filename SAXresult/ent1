@@ -6,16 +6,13 @@ SAX.entityDecl(xml, 1, (null), (null), Extensible Markup Language)
 SAX.getEntity(xml)
 SAX.startElement(EXAMPLE)
 SAX.characters(
-    &xml;
-</EXAMPLE>
-, 5)
+    , 5)
 SAX.getEntity(xml)
 SAX.isStandalone()
 SAX.hasInternalSubset()
 SAX.hasExternalSubset()
 SAX.error: Entity 'xml' not defined
 SAX.characters(
-</EXAMPLE>
 , 1)
 SAX.endElement(EXAMPLE)
 SAX.endDocument()

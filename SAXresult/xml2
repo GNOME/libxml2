@@ -9,13 +9,12 @@ SAX.getEntity(zz)
 SAX.getEntity(xx)
 SAX.warning: xmlParsePEReference: %xx; not found
 SAX.startElement(test)
-SAX.characters(This sample shows a &tricky; m, 20)
+SAX.characters(This sample shows a , 20)
 SAX.getEntity(tricky)
 SAX.isStandalone()
 SAX.hasInternalSubset()
 SAX.hasExternalSubset()
 SAX.error: Entity 'tricky' not defined
-SAX.characters( method.</test>
-, 8)
+SAX.characters( method., 8)
 SAX.endElement(test)
 SAX.endDocument()

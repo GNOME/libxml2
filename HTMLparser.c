@@ -33,6 +33,10 @@
 #include "encoding.h"
 #include "valid.h"
 #include "parserInternals.h"
+#include "xmlIO.h"
+
+#define HTML_MAX_NAMELEN 1000
+#define INPUT_CHUNK     50
 
 /* #define DEBUG */
 
@@ -101,7 +105,6 @@ PUSH_AND_POP(xmlNodePtr, node)
  *           UTF-8 if we are using this mode. It returns an int.
  *   NEXT    Skip to the next character, this does the proper decoding
  *           in UTF-8 mode. It also pop-up unfinished entities on the fly.
- *           It returns the pointer to the current CHAR.
  *   COPY(to) copy one char to *to, increment CUR_PTR and to accordingly
  */
 
@@ -111,19 +114,44 @@ PUSH_AND_POP(xmlNodePtr, node)
 #define NXT(val) ctxt->input->cur[(val)]
 #define UPP(val) (toupper(ctxt->input->cur[(val)]))
 #define CUR_PTR ctxt->input->cur
+#define SHRINK  xmlParserInputShrink(ctxt->input)
+#define GROW  xmlParserInputGrow(ctxt->input, INPUT_CHUNK)
 
 #define SKIP_BLANKS 							\
     while (IS_BLANK(*(ctxt->input->cur))) NEXT
 
 #ifndef USE_UTF_8
 #define CURRENT (*ctxt->input->cur)
+#define NEXT {								\
+    if ((*ctxt->input->cur == 0) &&					\
+        (xmlParserInputGrow(ctxt->input, INPUT_CHUNK) <= 0)) {		\
+	    xmlPopInput(ctxt);						\
+    } else {								\
+        if (*(ctxt->input->cur) == '\n') {				\
+	    ctxt->input->line++; ctxt->input->col = 1;			\
+	} else ctxt->input->col++;					\
+	ctxt->input->cur++;						\
+        if (*ctxt->input->cur == 0)					\
+	    xmlParserInputGrow(ctxt->input, INPUT_CHUNK);		\
+    }}
+
+/****************************************
 #define NEXT ((*ctxt->input->cur) ?					\
                 (((*(ctxt->input->cur) == '\n') ?			\
 		    (ctxt->input->line++, ctxt->input->col = 1) :	\
-		    (ctxt->input->col++)), ctxt->input->cur++) :	\
-		(ctxt->input->cur))
+		    (ctxt->input->col++)),				\
+		 (ctxt->input->cur++), 					\
+		 ((*ctxt->input->cur) ? 				\
+		  (xmlParserInputGrow(ctxt->input, 100),		\
+		   ctxt->input->cur):					\
+		  (ctxt->input->cur))) :		\
+		((xmlParserInputGrow(ctxt->input, 100) > 0) ?		\
+		 ctxt->input->cur:					\
+	         (xmlPopInput(ctxt), ctxt->input->cur)))
+ ****************************************/
 #else
 #endif
+
 
 
 /************************************************************************
@@ -803,7 +831,7 @@ htmlDecodeEntities(htmlParserCtxtPtr ctxt, int len,
 
     CHAR *cur = NULL;
     htmlEntityDescPtr ent;
-    const CHAR *start = CUR_PTR;
+    int nbchars = 0;
     unsigned int max = (unsigned int) len;
 
     /*
@@ -820,7 +848,7 @@ htmlDecodeEntities(htmlParserCtxtPtr ctxt, int len,
     /*
      * Ok loop until we reach one of the ending char or a size limit.
      */
-    while ((CUR_PTR - start < max) && (CUR != end) &&
+    while ((nbchars < max) && (CUR != end) &&
            (CUR != end2) && (CUR != end3)) {
 
         if (CUR == '&') {
@@ -828,6 +856,7 @@ htmlDecodeEntities(htmlParserCtxtPtr ctxt, int len,
 		int val = htmlParseCharRef(ctxt);
 		/* TODO: invalid for UTF-8 variable encoding !!! */
 		*out++ = val;
+		nbchars += 3; /* !!!! */
 	    } else {
 		ent = htmlParseEntityRef(ctxt, &name);
 		if (name != NULL) {
@@ -855,12 +884,14 @@ htmlDecodeEntities(htmlParserCtxtPtr ctxt, int len,
 			    out = &buffer[index];
 			}
 		    }
+		    nbchars += 2 + xmlStrlen(name);
 		    free(name);
 		}
 	    }
 	} else {
 	    /*  TODO: invalid for UTF-8 , use COPY(out); */
 	    *out++ = CUR;
+	    nbchars++;
 	    if (out - buffer > buffer_size - 100) {
 	      int index = out - buffer;
 	      
@@ -1170,49 +1201,67 @@ htmlParseHTMLName(htmlParserCtxtPtr ctxt) {
 
 CHAR *
 htmlParseName(htmlParserCtxtPtr ctxt) {
-    const CHAR *q;
-    CHAR *ret = NULL;
+    CHAR buf[HTML_MAX_NAMELEN];
+    int len = 0;
 
-    if (!IS_LETTER(CUR) && (CUR != '_') &&
-        (CUR != ':')) return(NULL);
-    q = NEXT;
+    GROW;
+    if (!IS_LETTER(CUR) && (CUR != '_')) {
+	return(NULL);
+    }
 
     while ((IS_LETTER(CUR)) || (IS_DIGIT(CUR)) ||
            (CUR == '.') || (CUR == '-') ||
 	   (CUR == '_') || (CUR == ':') || 
 	   (IS_COMBINING(CUR)) ||
-	   (IS_EXTENDER(CUR)))
+	   (IS_EXTENDER(CUR))) {
+	buf[len++] = CUR;
 	NEXT;
-    
-    ret = xmlStrndup(q, CUR_PTR - q);
-
-    return(ret);
+	if (len >= HTML_MAX_NAMELEN) {
+	    fprintf(stderr, 
+	       "htmlParseName: reached HTML_MAX_NAMELEN limit\n");
+	    while ((IS_LETTER(CUR)) || (IS_DIGIT(CUR)) ||
+		   (CUR == '.') || (CUR == '-') ||
+		   (CUR == '_') || (CUR == ':') || 
+		   (IS_COMBINING(CUR)) ||
+		   (IS_EXTENDER(CUR)))
+		 NEXT;
+	    break;
+	}
+    }
+    return(xmlStrndup(buf, len));
 }
 
 /**
  * htmlParseHTMLAttribute:
  * @ctxt:  an HTML parser context
  * 
- * parse an HTML Nmtoken.
+ * parse an HTML attribute value (without quotes).
  *
  * Returns the Nmtoken parsed or NULL
  */
 
 CHAR *
 htmlParseHTMLAttribute(htmlParserCtxtPtr ctxt) {
-    const CHAR *q;
-    CHAR *ret = NULL;
+    CHAR buf[HTML_MAX_NAMELEN];
+    int len = 0;
 
-    q = NEXT;
-
+    GROW;
     while ((!IS_BLANK(CUR)) && (CUR != '<') &&
            (CUR != '&') && (CUR != '>') &&
-           (CUR != '\'') && (CUR != '"'))
+           (CUR != '\'') && (CUR != '"')) {
+	buf[len++] = CUR;
 	NEXT;
-    
-    ret = xmlStrndup(q, CUR_PTR - q);
-
-    return(ret);
+	if (len >= HTML_MAX_NAMELEN) {
+	    fprintf(stderr, 
+	       "htmlParseHTMLAttribute: reached HTML_MAX_NAMELEN limit\n");
+	    while ((!IS_BLANK(CUR)) && (CUR != '<') &&
+		   (CUR != '&') && (CUR != '>') &&
+		   (CUR != '\'') && (CUR != '"'))
+		 NEXT;
+	    break;
+	}
+    }
+    return(xmlStrndup(buf, len));
 }
 
 /**
@@ -1226,21 +1275,30 @@ htmlParseHTMLAttribute(htmlParserCtxtPtr ctxt) {
 
 CHAR *
 htmlParseNmtoken(htmlParserCtxtPtr ctxt) {
-    const CHAR *q;
-    CHAR *ret = NULL;
+    CHAR buf[HTML_MAX_NAMELEN];
+    int len = 0;
 
-    q = NEXT;
-
+    GROW;
     while ((IS_LETTER(CUR)) || (IS_DIGIT(CUR)) ||
            (CUR == '.') || (CUR == '-') ||
 	   (CUR == '_') || (CUR == ':') || 
 	   (IS_COMBINING(CUR)) ||
-	   (IS_EXTENDER(CUR)))
+	   (IS_EXTENDER(CUR))) {
+	buf[len++] = CUR;
 	NEXT;
-    
-    ret = xmlStrndup(q, CUR_PTR - q);
-
-    return(ret);
+	if (len >= HTML_MAX_NAMELEN) {
+	    fprintf(stderr, 
+	       "htmlParseNmtoken: reached HTML_MAX_NAMELEN limit\n");
+	    while ((IS_LETTER(CUR)) || (IS_DIGIT(CUR)) ||
+		   (CUR == '.') || (CUR == '-') ||
+		   (CUR == '_') || (CUR == ':') || 
+		   (IS_COMBINING(CUR)) ||
+		   (IS_EXTENDER(CUR)))
+		 NEXT;
+	    break;
+	}
+    }
+    return(xmlStrndup(buf, len));
 }
 
 /**
@@ -1269,6 +1327,7 @@ htmlParseEntityRef(htmlParserCtxtPtr ctxt, CHAR **str) {
 	        ctxt->sax->error(ctxt->userData, "htmlParseEntityRef: no name\n");
 	    ctxt->wellFormed = 0;
 	} else {
+	    GROW;
 	    if (CUR == ';') {
 	        NEXT;
 		*str = name;
@@ -1565,36 +1624,10 @@ htmlParseExternalID(htmlParserCtxtPtr ctxt, CHAR **publicID, int strict) {
 	          "htmlParseExternalID: PUBLIC, no Public Identifier\n");
 	    ctxt->wellFormed = 0;
 	}
-	if (strict) {
-	    /*
-	     * We don't handle [83] so "S SystemLiteral" is required.
-	     */
-	    if (!IS_BLANK(CUR)) {
-		if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-		    ctxt->sax->error(ctxt->userData,
-			"Space required after the Public Identifier\n");
-		ctxt->wellFormed = 0;
-	    }
-	} else {
-	    /*
-	     * We handle [83] so we return immediately, if 
-	     * "S SystemLiteral" is not detected. From a purely parsing
-	     * point of view that's a nice mess.
-	     */
-	    const CHAR *ptr = CUR_PTR;
-	    if (!IS_BLANK(*ptr)) return(NULL);
-	    
-	    while (IS_BLANK(*ptr)) ptr++;
-	    if ((*ptr != '\'') || (*ptr != '"')) return(NULL);
-	}
         SKIP_BLANKS;
-	URI = htmlParseSystemLiteral(ctxt);
-	if (URI == NULL) {
-	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
-	        ctxt->sax->error(ctxt->userData, 
-	           "htmlParseExternalID: PUBLIC, no URI\n");
-	    ctxt->wellFormed = 0;
-        }
+        if ((CUR == '"') || (CUR == '\'')) {
+	    URI = htmlParseSystemLiteral(ctxt);
+	}
     }
     return(URI);
 }
@@ -1766,7 +1799,7 @@ htmlParseDocTypeDecl(htmlParserCtxtPtr ctxt) {
     /*
      * Check for SystemID and ExternalID
      */
-    URI = htmlParseExternalID(ctxt, &ExternalID, 1);
+    URI = htmlParseExternalID(ctxt, &ExternalID, 0);
     SKIP_BLANKS;
 
     /*
@@ -2027,6 +2060,7 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt, const CHAR *tagname) {
 	    ctxt->sax->error(ctxt->userData, 
 	                     "htmlParseEndTag: unexpected close for tag %s\n",
 			     tagname);
+	free(name);
 	ctxt->wellFormed = 0;
 	return;
     }
@@ -2168,6 +2202,7 @@ htmlParseContent(htmlParserCtxtPtr ctxt, const CHAR *name) {
 	    ctxt->wellFormed = 0;
             break;
 	}
+        GROW;
     }
 
     /*
@@ -2232,8 +2267,9 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
 	return;
     }
 
-    if (CUR == '>') NEXT;
-    else {
+    if (CUR == '>') {
+        NEXT;
+    } else {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt->userData, "Couldn't find end of Start Tag\n%.30s\n",
 	                     openTag);
@@ -2305,6 +2341,7 @@ htmlParseDocument(htmlParserCtxtPtr ctxt) {
     htmlDefaultSAXHandlerInit();
     ctxt->html = 1;
 
+    GROW;
     /*
      * SAX: beginning of the document processing TODO: update for HTML.
      */
@@ -2490,6 +2527,7 @@ htmlCreateDocParserCtxt(CHAR *cur, const char *encoding) {
     input->base = cur;
     input->cur = cur;
     input->free = NULL;
+    input->buf = NULL;
 
     inputPush(ctxt, input);
     return(ctxt);
@@ -2572,114 +2610,12 @@ htmlParserCtxtPtr
 htmlCreateFileParserCtxt(const char *filename, const char *encoding)
 {
     htmlParserCtxtPtr ctxt;
-#ifdef HAVE_ZLIB_H
-    gzFile input;
-#else
-    int input;
-#endif
-    int res;
-    int len;
-    int cnt;
-    struct stat buf;
-    char *buffer, *nbuf;
     htmlParserInputPtr inputStream;
+    xmlParserInputBufferPtr buf;
     /* htmlCharEncoding enc; */
 
-#define MINLEN 40000
-
-    if (strcmp(filename,"-") == 0) {
-#ifdef HAVE_ZLIB_H
-        input = gzdopen (fileno(stdin), "r");
-        if (input == NULL) {
-            fprintf (stderr, "Cannot read from stdin\n");
-            perror ("gzdopen failed");
-            return(NULL);
-	}
-#else
-#ifdef WIN32
-        input = -1;
-#else
-        input = fileno(stdin);
-#endif
-	if (input < 0) {
-	    fprintf (stderr, "Cannot read from stdin\n");
-	    perror ("open failed");
-	    return(NULL);
-	}
-#endif
-	len = MINLEN;
-    } else {
-#ifdef HAVE_ZLIB_H
-	input = gzopen (filename, "r");
-	if (input == NULL) {
-	    fprintf (stderr, "Cannot read file %s :\n", filename);
-	    perror ("gzopen failed");
-	    return(NULL);
-	}
-#else
-#ifdef WIN32
-	input = _open (filename, O_RDONLY | _O_BINARY);
-#else
-	input = open (filename, O_RDONLY);
-#endif
-	if (input < 0) {
-	    fprintf (stderr, "Cannot read file %s :\n", filename);
-	    perror ("open failed");
-	    return(NULL);
-	}
-#endif
-	res = stat(filename, &buf);
-	if (res < 0)
-		return(NULL);
-	len = buf.st_size;
-	if (len < MINLEN)
-		len = MINLEN;
-    }
-    buffer = (char *)malloc((len+1)*sizeof(char));
-    if (buffer == NULL) {
-	    fprintf (stderr, "Cannot malloc\n");
-	    perror ("malloc failed");
-	    return(NULL);
-    }
-
-    cnt = 0;
-    while(1) {
-	if (cnt == len) {
-	    len *= 2;
-	    nbuf =  (char *)realloc(buffer,(len+1)*sizeof(char));
-	    if (nbuf == NULL) {
-		fprintf(stderr,"Cannot realloc\n");
-		free(buffer);
-		perror ("realloc failed");
-		return(NULL);
-	    }
-	    buffer = nbuf;
-	}
-#ifdef HAVE_ZLIB_H
-    	res = gzread(input, &buffer[cnt], len-cnt);
-#else
-	res = read(input, &buffer[cnt], len-cnt);
-#endif
-	if (res < 0) {
-	    fprintf (stderr, "Cannot read file %s :\n", filename);
-#ifdef HAVE_ZLIB_H
-	    perror ("gzread failed");
-#else
-	    perror ("read failed");
-#endif
-	    return(NULL);
-	}
-	if (res == 0)
-	    break;
-	cnt +=res;
-    }
-    buffer[cnt] = '\0';
-
-#ifdef HAVE_ZLIB_H
-    gzclose(input);
-#else
-    close(input);
-#endif
+    buf = xmlParserInputBufferCreateFilename(filename, XML_CHAR_ENCODING_NONE);
+    if (buf == NULL) return(NULL);
 
     ctxt = (htmlParserCtxtPtr) malloc(sizeof(htmlParserCtxt));
     if (ctxt == NULL) {
@@ -2697,18 +2633,11 @@ htmlCreateFileParserCtxt(const char *filename, const char *encoding)
     inputStream->filename = strdup(filename);
     inputStream->line = 1;
     inputStream->col = 1;
+    inputStream->buf = buf;
 
-    /*
-     * plug some encoding conversion routines here. !!!
-    if (encoding != NULL) {
-	enc = htmlDetectCharEncoding(buffer);
-	htmlSwitchEncoding(ctxt, enc);
-    }
-     */
-
-    inputStream->base = buffer;
-    inputStream->cur = buffer;
-    inputStream->free = (xmlParserInputDeallocate) free;
+    inputStream->base = inputStream->buf->buffer->content;
+    inputStream->cur = inputStream->buf->buffer->content;
+    inputStream->free = NULL;
 
     inputPush(ctxt, inputStream);
     return(ctxt);

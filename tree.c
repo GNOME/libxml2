@@ -417,7 +417,7 @@ xmlFreeDoc(xmlDocPtr cur) {
 #endif
 	return;
     }
-    free((char *) cur->version);
+    if (cur->version != NULL) free((char *) cur->version);
     if (cur->name != NULL) free((char *) cur->name);
     if (cur->encoding != NULL) free((char *) cur->encoding);
     if (cur->root != NULL) xmlFreeNode(cur->root);
@@ -2166,6 +2166,39 @@ xmlBufferFree(xmlBufferPtr buf) {
 }
 
 /**
+ * xmlBufferEmpty:
+ * @buf:  the buffer
+ *
+ * empty a buffer.
+ */
+void
+xmlBufferEmpty(xmlBufferPtr buf) {
+    buf->use = 0;
+    memset(buf->content, -1, buf->size);/* just for debug */
+}
+
+/**
+ * xmlBufferShrink:
+ * @buf:  the buffer to dump
+ * @len:  the number of CHAR to remove
+ *
+ * Remove the beginning of an XML buffer.
+ *
+ * Returns the number of CHAR removed, or -1 in case of failure.
+ */
+int
+xmlBufferShrink(xmlBufferPtr buf, int len) {
+    if (len == 0) return(0);
+    if (len > buf->use) return(-1);
+
+    buf->use -= len;
+    memmove(buf->content, &buf->content[len], buf->use * sizeof(CHAR));
+
+    buf->content[buf->use] = 0;
+    return(len);
+}
+
+/**
  * xmlBufferDump:
  * @file:  the file output
  * @buf:  the buffer to dump
@@ -2200,26 +2233,32 @@ xmlBufferDump(FILE *file, xmlBufferPtr buf) {
  */
 void
 xmlBufferAdd(xmlBufferPtr buf, const CHAR *str, int len) {
-    const CHAR *cur;
+    int l;
 
     if (str == NULL) {
         fprintf(stderr, "xmlBufferAdd: str == NULL\n");
 	return;
     }
-    for (cur = str;(len > 0) && (*cur != 0);cur++, len--) {
-        if (buf->use  + 10 >= buf->size) {
-	    CHAR *rebuf;
+    l = xmlStrlen(str);
+    if (l < len) len = l;
+    if (len <= 0) return;
 
-	    buf->size *= 2;
-	    rebuf = (CHAR *) realloc(buf->content, buf->size * sizeof(CHAR));
-	    if (rebuf == NULL) {
-	        fprintf(stderr, "xmlBufferAdd : out of memory!\n");
-		return;
-	    }
-	    buf->content = rebuf;
+    if (buf->use + len + 10 >= buf->size) {
+	CHAR *rebuf;
+
+        buf->size *= 2;
+	if (buf->use + len + 10 > buf->size)
+	    buf->size = buf->use + len + 10;
+	rebuf = (CHAR *) realloc(buf->content, buf->size * sizeof(CHAR));
+	if (rebuf == NULL) {
+	    fprintf(stderr, "xmlBufferAdd : out of memory!\n");
+	    return;
 	}
-        buf->content[buf->use++] = *cur;
+	buf->content = rebuf;
     }
+    memmove(&buf->content[buf->use], str, len);
+    buf->use += len;
+    buf->content[buf->use] = 0;
 }
 
 /**

@@ -269,6 +269,8 @@ int xmlBufferDump(FILE *file, xmlBufferPtr buf);
 void xmlBufferAdd(xmlBufferPtr buf, const CHAR *str, int len);
 void xmlBufferCat(xmlBufferPtr buf, const CHAR *str);
 void xmlBufferCCat(xmlBufferPtr buf, const char *str);
+int xmlBufferShrink(xmlBufferPtr buf, int len);
+void xmlBufferEmpty(xmlBufferPtr buf);
 
 /*
  * Creating/freeing new structures

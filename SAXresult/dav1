@@ -2,99 +2,80 @@ SAX.setDocumentLocator()
 SAX.startDocument()
 SAX.startElement(D:multistatus, xmlns:D='http://www.ietf.org/standards/dav/', xmlns:R='http://www.foo.bar/boxschema')
 SAX.characters(
-  <D:response>
-    <D:prop>
- , 3)
+  , 3)
 SAX.startElement(D:response)
 SAX.characters(
-    <D:prop>
-      <R:bigbox>, 5)
+    , 5)
 SAX.startElement(D:prop)
 SAX.characters(
-      <R:bigbox>
-        <R:B, 7)
+      , 7)
 SAX.startElement(R:bigbox)
 SAX.characters(
-        <R:BoxType>Box type A, 9)
+        , 9)
 SAX.startElement(R:BoxType)
-SAX.characters(Box type A</R:BoxType>
-      <, 10)
+SAX.characters(Box type A, 10)
 SAX.endElement(R:BoxType)
 SAX.characters(
-      </R:bigbox>
-      <R:au, 7)
+      , 7)
 SAX.endElement(R:bigbox)
 SAX.characters(
-      <R:author>
-        <R:N, 7)
+      , 7)
 SAX.startElement(R:author)
 SAX.characters(
-        <R:Name>J.J. Dinglehe, 9)
+        , 9)
 SAX.startElement(R:Name)
-SAX.characters(J.J. Dingleheimerschmidt</R:Na, 24)
+SAX.characters(J.J. Dingleheimerschmidt, 24)
 SAX.endElement(R:Name)
 SAX.characters(
-      </R:author>
-    </D:pro, 7)
+      , 7)
 SAX.endElement(R:author)
 SAX.characters(
-    </D:prop>
-    <D:status>H, 5)
+    , 5)
 SAX.endElement(D:prop)
 SAX.characters(
-    <D:status>HTTP/1.1 200 OK, 5)
+    , 5)
 SAX.startElement(D:status)
-SAX.characters(HTTP/1.1 200 OK</D:status>
-  <, 15)
+SAX.characters(HTTP/1.1 200 OK, 15)
 SAX.endElement(D:status)
 SAX.characters(
-  </D:response>
-  <D:response, 3)
+  , 3)
 SAX.endElement(D:response)
 SAX.characters(
-  <D:response>
-    <D:prop>
- , 3)
+  , 3)
 SAX.startElement(D:response)
 SAX.characters(
-    <D:prop>
-      <R:DingALi, 5)
+    , 5)
 SAX.startElement(D:prop)
 SAX.characters(
-      <R:DingALing/>
-      <R, 7)
+      , 7)
 SAX.startElement(R:DingALing)
 SAX.endElement(R:DingALing)
 SAX.characters(
-      <R:Random/>
-    </D:pro, 7)
+      , 7)
 SAX.startElement(R:Random)
 SAX.endElement(R:Random)
 SAX.characters(
-    </D:prop>
-    <D:status>H, 5)
+    , 5)
 SAX.endElement(D:prop)
 SAX.characters(
-    <D:status>HTTP/1.1 403 Fo, 5)
+    , 5)
 SAX.startElement(D:status)
-SAX.characters(HTTP/1.1 403 Forbidden</D:stat, 22)
+SAX.characters(HTTP/1.1 403 Forbidden, 22)
 SAX.endElement(D:status)
 SAX.characters(
-    <D:responsedescription> T, 5)
+    , 5)
 SAX.startElement(D:responsedescription)
 SAX.characters( The user does not have access, 64)
 SAX.endElement(D:responsedescription)
 SAX.characters(
-  </D:response>
-  <D:response, 3)
+  , 3)
 SAX.endElement(D:response)
 SAX.characters(
-  <D:responsedescription> The, 3)
+  , 3)
 SAX.startElement(D:responsedescription)
 SAX.characters( There has been an access viol, 44)
 SAX.endElement(D:responsedescription)
 SAX.characters(
-</D:multistatus>
 , 1)
 SAX.endElement(D:multistatus)
 SAX.endDocument()

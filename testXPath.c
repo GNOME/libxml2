@@ -125,6 +125,7 @@ void testXPath(const char *str) {
 	res = xmlXPathEval(str, ctxt);
     xmlXPAthDebugDumpObject(stdout, res);
     xmlXPathFreeObject(res);
+    xmlXPathFreeContext(ctxt);
 }
 
 void testXPathFile(const char *filename) {

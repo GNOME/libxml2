@@ -2,76 +2,62 @@ SAX.setDocumentLocator()
 SAX.startDocument()
 SAX.startElement(D:multistatus, xmlns:D='http://www.ietf.org/standards/dav/', xmlns:R='http://www.foo.bar/boxschema/')
 SAX.characters(
-  <D:response>
-    <D:href>ht, 3)
+  , 3)
 SAX.startElement(D:response)
 SAX.characters(
-    <D:href>http://www.foo.ba, 5)
+    , 5)
 SAX.startElement(D:href)
-SAX.characters(http://www.foo.bar/container/<, 29)
+SAX.characters(http://www.foo.bar/container/, 29)
 SAX.endElement(D:href)
 SAX.characters(
-    <D:prop>
-      <R:bigbox/, 5)
+    , 5)
 SAX.startElement(D:prop)
 SAX.characters(
-      <R:bigbox/>
-      <R:au, 7)
+      , 7)
 SAX.startElement(R:bigbox)
 SAX.endElement(R:bigbox)
 SAX.characters(
-      <R:author/>
-    </D:pro, 7)
+      , 7)
 SAX.startElement(R:author)
 SAX.endElement(R:author)
 SAX.characters(
-    </D:prop>
-    <D:status>H, 5)
+    , 5)
 SAX.endElement(D:prop)
 SAX.characters(
-    <D:status>HTTP 1.1 200 OK, 5)
+    , 5)
 SAX.startElement(D:status)
-SAX.characters(HTTP 1.1 200 OK</D:status>
-  <, 15)
+SAX.characters(HTTP 1.1 200 OK, 15)
 SAX.endElement(D:status)
 SAX.characters(
-  </D:response>
-  <D:response, 3)
+  , 3)
 SAX.endElement(D:response)
 SAX.characters(
-  <D:response>
-    <D:href>ht, 3)
+  , 3)
 SAX.startElement(D:response)
 SAX.characters(
-    <D:href>http://www.foo.ba, 5)
+    , 5)
 SAX.startElement(D:href)
 SAX.characters(http://www.foo.bar/container/i, 39)
 SAX.endElement(D:href)
 SAX.characters(
-    <D:prop>
-      <R:bigbox/, 5)
+    , 5)
 SAX.startElement(D:prop)
 SAX.characters(
-      <R:bigbox/>
-    </D:pro, 7)
+      , 7)
 SAX.startElement(R:bigbox)
 SAX.endElement(R:bigbox)
 SAX.characters(
-    </D:prop>
-    <D:status>H, 5)
+    , 5)
 SAX.endElement(D:prop)
 SAX.characters(
-    <D:status>HTTP 1.1 200 OK, 5)
+    , 5)
 SAX.startElement(D:status)
-SAX.characters(HTTP 1.1 200 OK</D:status>
-  <, 15)
+SAX.characters(HTTP 1.1 200 OK, 15)
 SAX.endElement(D:status)
 SAX.characters(
-  </D:response>
-</D:multistat, 3)
+  , 3)
 SAX.endElement(D:response)
 SAX.characters(
-</D:multistatus>
 , 1)
 SAX.endElement(D:multistatus)
 SAX.endDocument()

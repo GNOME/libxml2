@@ -4,7 +4,6 @@ SAX.internalSubset(MEMO, -//SGMLSOURCE//DTD MEMO//EN, http://www.sgmlsource.com/
 SAX.resolveEntity(-//SGMLSOURCE//DTD MEMO//EN, http://www.sgmlsource.com/dtds/memo.dtd)
 SAX.startElement(MEMO)
 SAX.characters(
-</MEMO>
 , 1)
 SAX.endElement(MEMO)
 SAX.endDocument()

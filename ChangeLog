@@ -1,3 +1,15 @@
+Tue Jul 27 21:43:00 CEST 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+        * xpath.[ch] : improvements and debug of the XPath implementation
+        * parser.c, HTMLparser.c : modified the parsers to be progressive
+	* tree.[ch] : extended the Buffer promitives
+	* xmlIO.[ch] : added basic I/O routines providing progressive
+	  parsing and ready for I18N conversion plugins
+	* SAXresult/* : the SAX callback sequence maybe slightly different
+	  now
+	* test*.c : improved/updated the tests programs
+	* doc/* : recompiled the docs.
+
 1999-07-26  Michael Meeks  <michael@edenproject.org>
 
 	* tree.h: Add const to 'content' in xmlNewDocNode, xmlNewChild

@@ -445,6 +445,7 @@ xmlRegisterCharEncodingHandler(xmlCharEncodingHandlerPtr handler) {
 xmlCharEncodingHandlerPtr
 xmlGetCharEncodingHandler(xmlCharEncoding enc) {
     if (handlers == NULL) xmlInitCharEncodingHandlers();
+    /* TODO !!!!!!! */
     return(NULL);
 }
 

@@ -25,6 +25,7 @@ libxml_la_SOURCES = \
 		debugXML.c \
 		tree.c \
 		xpath.c \
+		xmlIO.c \
 		valid.c
 
 xmlincdir = $(includedir)/gnome-xml

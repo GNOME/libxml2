@@ -2,92 +2,75 @@ SAX.setDocumentLocator()
 SAX.startDocument()
 SAX.startElement(D:prop, xmlns:D='http://www.ietf.org/standards/dav/', xmlns:F='http://www.foocorp.com/Project/')
 SAX.characters(
-  <D:Source>
-    <D:link>
-   , 3)
+  , 3)
 SAX.startElement(D:Source)
 SAX.characters(
-    <D:link>
-      <F:projfil, 5)
+    , 5)
 SAX.startElement(D:link)
 SAX.characters(
-      <F:projfiles>Source</F:, 7)
+      , 7)
 SAX.startElement(F:projfiles)
-SAX.characters(Source</F:projfiles>
-      <D:, 6)
+SAX.characters(Source, 6)
 SAX.endElement(F:projfiles)
 SAX.characters(
-      <D:src>http://foo.bar/p, 7)
+      , 7)
 SAX.startElement(D:src)
-SAX.characters(http://foo.bar/program</D:src>, 22)
+SAX.characters(http://foo.bar/program, 22)
 SAX.endElement(D:src)
 SAX.characters(
-      <D:dst>http://foo.bar/s, 7)
+      , 7)
 SAX.startElement(D:dst)
-SAX.characters(http://foo.bar/src/main.c</D:d, 25)
+SAX.characters(http://foo.bar/src/main.c, 25)
 SAX.endElement(D:dst)
 SAX.characters(
-    </D:link>
-    <D:link>
-  , 5)
+    , 5)
 SAX.endElement(D:link)
 SAX.characters(
-    <D:link>
-      <F:projfil, 5)
+    , 5)
 SAX.startElement(D:link)
 SAX.characters(
-      <F:projfiles>Library</F, 7)
+      , 7)
 SAX.startElement(F:projfiles)
-SAX.characters(Library</F:projfiles>
-      <D, 7)
+SAX.characters(Library, 7)
 SAX.endElement(F:projfiles)
 SAX.characters(
-      <D:src>http://foo.bar/p, 7)
+      , 7)
 SAX.startElement(D:src)
-SAX.characters(http://foo.bar/program</D:src>, 22)
+SAX.characters(http://foo.bar/program, 22)
 SAX.endElement(D:src)
 SAX.characters(
-      <D:dst>http://foo.bar/s, 7)
+      , 7)
 SAX.startElement(D:dst)
-SAX.characters(http://foo.bar/src/main.lib</D, 27)
+SAX.characters(http://foo.bar/src/main.lib, 27)
 SAX.endElement(D:dst)
 SAX.characters(
-    </D:link>
-    <D:link>
-  , 5)
+    , 5)
 SAX.endElement(D:link)
 SAX.characters(
-    <D:link>
-      <F:projfil, 5)
+    , 5)
 SAX.startElement(D:link)
 SAX.characters(
-      <F:projfiles>Makefile</, 7)
+      , 7)
 SAX.startElement(F:projfiles)
-SAX.characters(Makefile</F:projfiles>
-      <, 8)
+SAX.characters(Makefile, 8)
 SAX.endElement(F:projfiles)
 SAX.characters(
-      <D:src>http://foo.bar/p, 7)
+      , 7)
 SAX.startElement(D:src)
-SAX.characters(http://foo.bar/program</D:src>, 22)
+SAX.characters(http://foo.bar/program, 22)
 SAX.endElement(D:src)
 SAX.characters(
-      <D:dst>http://foo.bar/s, 7)
+      , 7)
 SAX.startElement(D:dst)
-SAX.characters(http://foo.bar/src/makefile</D, 27)
+SAX.characters(http://foo.bar/src/makefile, 27)
 SAX.endElement(D:dst)
 SAX.characters(
-    </D:link>
-  </D:Source>
-<, 5)
+    , 5)
 SAX.endElement(D:link)
 SAX.characters(
-  </D:Source>
-</D:prop>
-, 3)
+  , 3)
 SAX.endElement(D:Source)
 SAX.characters(
-</D:prop>
 , 1)
 SAX.endElement(D:prop)
 SAX.endDocument()

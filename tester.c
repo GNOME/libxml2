@@ -34,6 +34,7 @@ static int debug = 0;
 static int copy = 0;
 static int recovery = 0;
 static int noent = 0;
+static int noout = 0;
 
 /*
  * Note: there is a couple of errors introduced on purpose.
@@ -96,7 +97,8 @@ int treeTest(void) {
     /*
      * print it.
      */
-    xmlDocDump(stdout, doc);
+    if (noout == 0)
+	xmlDocDump(stdout, doc);
 
     /*
      * free it.
@@ -128,10 +130,12 @@ void parseAndPrintFile(char *filename) {
     /*
      * print it.
      */
-    if (!debug)
-	xmlDocDump(stdout, doc);
-    else
-        xmlDebugDumpDocument(stdout, doc);
+    if (noout == 0) {
+	if (!debug)
+	    xmlDocDump(stdout, doc);
+	else
+	    xmlDebugDumpDocument(stdout, doc);
+    }
 
     /*
      * free it.
@@ -188,6 +192,9 @@ int main(int argc, char **argv) {
 	else if ((!strcmp(argv[i], "-noent")) ||
 	         (!strcmp(argv[i], "--noent")))
 	    noent++;
+	else if ((!strcmp(argv[i], "-noout")) ||
+	         (!strcmp(argv[i], "--noout")))
+	    noout++;
     }
     if (noent != 0) xmlSubstituteEntitiesDefault(1);
     for (i = 1; i < argc ; i++) {
@@ -197,13 +204,14 @@ int main(int argc, char **argv) {
 	}
     }
     if (files == 0) {
-	printf("Usage : %s [--debug] [--copy] [--recover] [--noent] XMLfiles ...\n",
+	printf("Usage : %s [--debug] [--copy] [--recover] [--noent] [--noout] XMLfiles ...\n",
 	       argv[0]);
 	printf("\tParse the XML files and output the result of the parsing\n");
 	printf("\t--debug : dump a debug tree of the in-memory document\n");
 	printf("\t--copy : used to test the internal copy implementation\n");
 	printf("\t--recover : output what is parsable on broken XmL documents\n");
 	printf("\t--noent : substitute entity references by their value\n");
+	printf("\t--noout : don't output the result\n");
     }
 
     return(0);

@@ -388,7 +388,12 @@ endElementDebug(xmlParserCtxtPtr ctxt, const CHAR *name)
 void
 charactersDebug(xmlParserCtxtPtr ctxt, const CHAR *ch, int len)
 {
-    fprintf(stdout, "SAX.characters(%.30s, %d)\n", (char *) ch, len);
+    int i;
+
+    fprintf(stdout, "SAX.characters(");
+    for (i = 0;(i < len) && (i < 30);i++)
+	fprintf(stdout, "%c", ch[i]);
+    fprintf(stdout, ", %d)\n", len);
 }
 
 /**

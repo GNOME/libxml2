@@ -11,7 +11,7 @@
 #include "parser.h"
 
 #ifdef __cplusplus
-#define extern "C" {
+extern "C" {
 #endif
 
 /*
@@ -52,19 +52,31 @@ typedef struct htmlEntityDesc {
 /*
  * There is only few public functions.
  */
-htmlElemDescPtr htmlTagLookup(const xmlChar *tag);
-htmlEntityDescPtr htmlEntityLookup(const xmlChar *name);
+htmlElemDescPtr		htmlTagLookup	(const xmlChar *tag);
+htmlEntityDescPtr	htmlEntityLookup(const xmlChar *name);
 
-htmlEntityDescPtr htmlParseEntityRef(htmlParserCtxtPtr ctxt, xmlChar **str);
-int htmlParseCharRef(htmlParserCtxtPtr ctxt);
-void htmlParseElement(htmlParserCtxtPtr ctxt);
+int			htmlIsAutoClosed(htmlDocPtr doc,
+					 htmlNodePtr elem);
+int			htmlAutoCloseTag(htmlDocPtr doc,
+					 const xmlChar *name,
+					 htmlNodePtr elem);
+htmlEntityDescPtr	htmlParseEntityRef(htmlParserCtxtPtr ctxt,
+					 xmlChar **str);
+int			htmlParseCharRef(htmlParserCtxtPtr ctxt);
+void			htmlParseElement(htmlParserCtxtPtr ctxt);
 
-htmlDocPtr htmlSAXParseDoc(xmlChar *cur, const char *encoding,
-                           htmlSAXHandlerPtr sax, void *userData);
-htmlDocPtr htmlParseDoc(xmlChar *cur, const char *encoding);
-htmlDocPtr htmlSAXParseFile(const char *filename, const char *encoding,
-                            htmlSAXHandlerPtr sax, void *userData);
-htmlDocPtr htmlParseFile(const char *filename, const char *encoding);
+htmlDocPtr		htmlSAXParseDoc	(xmlChar *cur,
+					 const char *encoding,
+					 htmlSAXHandlerPtr sax,
+					 void *userData);
+htmlDocPtr		htmlParseDoc	(xmlChar *cur,
+					 const char *encoding);
+htmlDocPtr		htmlSAXParseFile(const char *filename,
+					 const char *encoding,
+					 htmlSAXHandlerPtr sax,
+					 void *userData);
+htmlDocPtr		htmlParseFile	(const char *filename,
+					 const char *encoding);
 
 #ifdef __cplusplus
 }

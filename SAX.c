@@ -548,7 +548,12 @@ attribute(void *ctx, const xmlChar *fullname, const xmlChar *value)
 	return;
     }
 
-    namespace = xmlSearchNs(ctxt->myDoc, ctxt->node, ns);
+    if (ns != NULL)
+	namespace = xmlSearchNs(ctxt->myDoc, ctxt->node, ns);
+    else {
+	namespace = NULL;
+    }
+
     /* !!!!!! <a toto:arg="" xmlns:toto="http://toto.com"> */
     ret = xmlNewNsProp(ctxt->node, namespace, name, NULL);
 

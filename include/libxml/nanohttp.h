@@ -9,7 +9,7 @@
 #ifndef __NANO_HTTP_H__
 #define __NANO_HTTP_H__
 #ifdef __cplusplus
-#define extern "C" {
+extern "C" {
 #endif
 int	xmlNanoHTTPFetch	(const char *URL,
 				 const char *filename,

@@ -10,7 +10,7 @@
 #include "tree.h"
 
 #ifdef __cplusplus
-#define extern "C" {
+extern "C" {
 #endif
 extern void xmlDebugDumpString(FILE *output, const xmlChar *str);
 extern void xmlDebugDumpAttr(FILE *output, xmlAttrPtr attr, int depth);

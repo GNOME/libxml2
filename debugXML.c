@@ -35,7 +35,11 @@ void xmlDebugDumpNamespace(FILE *output, xmlNsPtr ns, int depth) {
     fprintf(output, shift);
     if (ns->type == XML_GLOBAL_NAMESPACE)
         fprintf(output, "old ");
-    fprintf(output, "namespace %s href=", ns->prefix);
+    if (ns->prefix != NULL)
+	fprintf(output, "namespace %s href=", ns->prefix);
+    else
+	fprintf(output, "default namespace href=", ns->prefix);
+
     xmlDebugDumpString(output, ns->href);
     fprintf(output, "\n");
 }

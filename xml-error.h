@@ -3,7 +3,7 @@
 
 #include "parser.h"
 #ifdef __cplusplus
-#define extern "C" {
+extern "C" {
 #endif
 
 typedef enum {

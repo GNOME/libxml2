@@ -1,3 +1,19 @@
+Tue Dec 21 14:29:34 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* configure.in, doc/xml.html : bug fix release 1.8.2
+	* debugXML.h nanohttp.h xml-error.h xmlmemory.h xpath.h : 
+	  Hopefully the end of that silly C++ include problem
+	* tree.[ch]: Added a few functions: xmlReplaceNode, xmlAddPrevSibling,
+	      xmlAddNextSibling, xmlNodeSetName and xmlDocSetRootElement
+	* HTMLparser.c HTMLparser.h HTMLtree.c: When saving HTML try to avoid 
+	      troubles with autoclosed elements when the stree shape doesn't
+	      follow the DtD specs. Added htmlIsAutoClosed() and
+	      htmlAutoCloseTag()
+	* result/HTML/*.htm*: Updated the HTML examples regression tests output
+	* SAX.c tree.c: fixed bug on defaulting namespaces on attributes
+	* debugXML.c: fixed a bug on printing default namespaces.
+	* HTMLtree.c: fixed a problem when outputing XML parsed docs as HTML
+
 Mon Dec 20 16:20:55 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* result/HTML/*.htm[l] : updated the HTML regression tests according

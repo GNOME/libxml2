@@ -40,6 +40,9 @@
 
 #define MEM_LIST /* keep a list of all the allocated memory blocks */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 int	xmlInitMemory	(void);
 void *	xmlMalloc	(int size);
 void *	xmlRealloc	(void *ptr,
@@ -59,6 +62,9 @@ int	xmlInitMemory	(void);
 extern void *	xmlMallocLoc(int size, const char *file, int line);
 extern void *	xmlReallocLoc(void *ptr,int size, const char *file, int line);
 extern char *	xmlMemStrdupLoc(const char *str, const char *file, int line);
+#ifdef __cplusplus
+}
+#endif
 #endif /* DEBUG_MEMORY_LOCATION */
 #endif /* ! NO_DEBUG_MEMORY */
 

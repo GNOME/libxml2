@@ -467,6 +467,58 @@ htmlAutoClose(htmlParserCtxtPtr ctxt, const xmlChar *new) {
 }
 
 /**
+ * htmlAutoCloseTag:
+ * @doc:  the HTML document
+ * @name:  The tag name
+ * @elem:  the HTML element
+ *
+ * The HTmL DtD allows a tag to implicitely close other tags.
+ * The list is kept in htmlStartClose array. This function checks
+ * if the element or one of it's children would autoclose the
+ * given tag.
+ *
+ * Returns 1 if autoclose, 0 otherwise
+ */
+int
+htmlAutoCloseTag(htmlDocPtr doc, const xmlChar *name, htmlNodePtr elem) {
+    htmlNodePtr child;
+
+    if (elem == NULL) return(1);
+    if (!xmlStrcmp(name, elem->name)) return(0);
+    if (htmlCheckAutoClose(elem->name, name)) return(1);
+    child = elem->childs;
+    while (child != NULL) {
+        if (htmlAutoCloseTag(doc, name, child)) return(1);
+	child = child->next;
+    }
+    return(0);
+}
+
+/**
+ * htmlIsAutoClosed:
+ * @doc:  the HTML document
+ * @elem:  the HTML element
+ *
+ * The HTmL DtD allows a tag to implicitely close other tags.
+ * The list is kept in htmlStartClose array. This function checks
+ * if a tag is autoclosed by one of it's child
+ *
+ * Returns 1 if autoclosed, 0 otherwise
+ */
+int
+htmlIsAutoClosed(htmlDocPtr doc, htmlNodePtr elem) {
+    htmlNodePtr child;
+
+    if (elem == NULL) return(1);
+    child = elem->childs;
+    while (child != NULL) {
+	if (htmlAutoCloseTag(doc, elem->name, child)) return(1);
+	child = child->next;
+    }
+    return(0);
+}
+
+/**
  * htmlAutoCloseOnClose:
  * @ctxt:  an HTML parser context
  * @new:  The new tag name
@@ -528,7 +580,6 @@ htmlEntityDesc  html40EntitiesTable[] = {
  */
 { 34,	"quot",	"quotation mark = APL quote, U+0022 ISOnum" },
 { 38,	"amp",	"ampersand, U+0026 ISOnum" },
-{ 39,	"apos",	"single quote" },
 { 60,	"lt",	"less-than sign, U+003C ISOnum" },
 { 62,	"gt",	"greater-than sign, U+003E ISOnum" },
 
@@ -536,6 +587,7 @@ htmlEntityDesc  html40EntitiesTable[] = {
  * A bunch still in the 128-255 range
  * Replacing them depend really on the charset used.
  */
+{ 39,	"apos",	"single quote" },
 { 160,	"nbsp",	"no-break space = non-breaking space, U+00A0 ISOnum" },
 { 161,	"iexcl","inverted exclamation mark, U+00A1 ISOnum" },
 { 162,	"cent",	"cent sign, U+00A2 ISOnum" },
@@ -1166,7 +1218,13 @@ htmlNewDoc(const xmlChar *URI, const xmlChar *ExternalID) {
     cur->type = XML_HTML_DOCUMENT_NODE;
     cur->version = NULL;
     cur->intSubset = NULL;
-    xmlCreateIntSubset(cur, BAD_CAST "HTML", ExternalID, URI);
+    if ((ExternalID == NULL) &&
+	(URI == NULL))
+	xmlCreateIntSubset(cur, BAD_CAST "HTML",
+		    BAD_CAST "-//W3C//DTD HTML 4.0 Transitional//EN",
+		    BAD_CAST "http://www.w3.org/TR/REC-html40/loose.dtd");
+    else
+	xmlCreateIntSubset(cur, BAD_CAST "HTML", ExternalID, URI);
     cur->name = NULL;
     cur->root = NULL; 
     cur->extSubset = NULL;

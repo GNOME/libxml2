@@ -427,9 +427,19 @@ int		xmlNodeIsText		(xmlNodePtr node);
 /*
  * Changing the structure
  */
+xmlNodePtr	xmlDocSetRootElement	(xmlDocPtr doc,
+					 xmlNodePtr root);
+void		xmlNodeSetName		(xmlNodePtr cur,
+					 const xmlChar *name);
 xmlNodePtr	xmlAddChild		(xmlNodePtr parent,
 					 xmlNodePtr cur);
+xmlNodePtr	xmlReplaceNode		(xmlNodePtr old,
+					 xmlNodePtr cur);
 xmlNodePtr	xmlAddSibling		(xmlNodePtr cur,
+					 xmlNodePtr elem);
+xmlNodePtr	xmlAddPrevSibling	(xmlNodePtr cur,
+					 xmlNodePtr elem);
+xmlNodePtr	xmlAddNextSibling	(xmlNodePtr cur,
 					 xmlNodePtr elem);
 void		xmlUnlinkNode		(xmlNodePtr cur);
 xmlNodePtr	xmlTextMerge		(xmlNodePtr first,

@@ -128,8 +128,17 @@ for really accurate description</h3>
 <ul>
   <li>working on HTML and XML links recognition layers, get in touch with me
     if you want to test those.</li>
+</ul>
+
+<h3>1.8.2: Dec 21 1999</h3>
+<ul>
   <li>I got another problem with includes and C++, I hope this issue is fixed
     for good this time</li>
+  <li>Added a few tree modification functions: xmlReplaceNode,
+    xmlAddPrevSibling, xmlAddNextSibling, xmlNodeSetName and
+    xmlDocSetRootElement</li>
+  <li>Tried to improve the HTML output with help from <a
+    href="mailto:clahey@umich.edu">Chris Lahey</a></li>
 </ul>
 
 <h3>1.8.1: Dec 18 1999</h3>
@@ -420,7 +429,7 @@ beginning of the second attribute of the root element "EXAMPLE".</p>
 <p><strong>NOTE</strong>: XML allows <em>PI</em>s and <em>comments</em> to be
 present before the document root, so doc->root may point to an element which
 is not the document Root Element, a function
-<code>xmlDocGetRootElement()</code> was added for this purpose. </p>
+<code>xmlDocGetRootElement()</code> was added for this purpose.</p>
 
 <h3><a name="Modifying">Modifying the tree</a></h3>
 
@@ -892,6 +901,6 @@ base under gnome-xml/example</p>
 
 <p><a href="mailto:Daniel.Veillard@w3.org">Daniel Veillard</a></p>
 
-<p>$Id: xml.html,v 1.15 1999/12/18 15:32:46 veillard Exp $</p>
+<p>$Id: xml.html,v 1.16 1997/01/04 02:49:42 veillard Exp $</p>
 </body>
 </html>

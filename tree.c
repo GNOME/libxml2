@@ -1578,12 +1578,85 @@ xmlNewChild(xmlNodePtr parent, xmlNsPtr ns,
 }
 
 /**
+ * xmlAddNextSibling:
+ * @cur:  the child node
+ * @elem:  the new node
+ *
+ * Add a new element @elem as the next siblings of @cur
+ * If the new element was already inserted in a document it is
+ * first unlinked from its existing context.
+ *
+ * Returns the new element or NULL in case of error.
+ */
+xmlNodePtr
+xmlAddNextSibling(xmlNodePtr cur, xmlNodePtr elem) {
+    if (cur == NULL) {
+        fprintf(stderr, "xmlAddNextSibling : cur == NULL\n");
+	return(NULL);
+    }
+    if (elem == NULL) {
+        fprintf(stderr, "xmlAddNextSibling : elem == NULL\n");
+	return(NULL);
+    }
+
+    xmlUnlinkNode(elem);
+    elem->doc = cur->doc;
+    elem->parent = cur->parent;
+    elem->next = cur;
+    elem->prev = cur->prev;
+    cur->prev = elem;
+    if (elem->prev != NULL)
+	elem->prev->next = elem;
+    if ((elem->parent != NULL) && (elem->parent->childs == cur))
+	elem->parent->childs = elem;
+    return(elem);
+}
+
+/**
+ * xmlAddPrevSibling:
+ * @cur:  the child node
+ * @elem:  the new node
+ *
+ * Add a new element @elem as the previous siblings of @cur
+ * If the new element was already inserted in a document it is
+ * first unlinked from its existing context.
+ *
+ * Returns the new element or NULL in case of error.
+ */
+xmlNodePtr
+xmlAddPrevSibling(xmlNodePtr cur, xmlNodePtr elem) {
+    if (cur == NULL) {
+        fprintf(stderr, "xmlAddPrevSibling : cur == NULL\n");
+	return(NULL);
+    }
+    if (elem == NULL) {
+        fprintf(stderr, "xmlAddPrevSibling : elem == NULL\n");
+	return(NULL);
+    }
+
+    xmlUnlinkNode(elem);
+    elem->doc = cur->doc;
+    elem->parent = cur->parent;
+    elem->prev = cur;
+    elem->next = cur->next;
+    cur->next = elem;
+    if (elem->next != NULL)
+	elem->next->prev = elem;
+    if ((elem->parent != NULL) && (elem->parent->last == cur))
+	elem->parent->last = elem;
+    return(elem);
+}
+
+/**
  * xmlAddSibling:
  * @cur:  the child node
  * @elem:  the new node
  *
- * Add a new element to the list of siblings of @cur
- * Returns the element or NULL in case of error.
+ * Add a new element @elem to the list of siblings of @cur
+ * If the new element was already inserted in a document it is
+ * first unlinked from its existing context.
+ *
+ * Returns the new element or NULL in case of error.
  */
 xmlNodePtr
 xmlAddSibling(xmlNodePtr cur, xmlNodePtr elem) {
@@ -1599,14 +1672,20 @@ xmlAddSibling(xmlNodePtr cur, xmlNodePtr elem) {
 	return(NULL);
     }
 
-    if ((cur->doc != NULL) && (elem->doc != NULL) &&
-        (cur->doc != elem->doc)) {
-	fprintf(stderr, 
-	        "xmlAddSibling: Elements moved to a different document\n");
+    /*
+     * Constant time is we can rely on the ->parent->last to find
+     * the last sibling.
+     */
+    if ((cur->parent != NULL) && 
+	(cur->parent->childs != NULL) &&
+	(cur->parent->last != NULL) &&
+	(cur->parent->last->next == NULL)) {
+	cur = cur->parent->last;
+    } else {
+	while (cur->next != NULL) cur = cur->next;
     }
 
-    while (cur->next != NULL) cur = cur->next;
-
+    xmlUnlinkNode(elem);
     if (elem->doc == NULL)
 	elem->doc = cur->doc; /* the parent may not be linked to a doc ! */
 
@@ -1782,6 +1861,47 @@ xmlUnlinkNode(xmlNodePtr cur) {
         cur->prev->next = cur->next;
     cur->next = cur->prev = NULL;
     cur->parent = NULL;
+}
+
+/**
+ * xmlReplaceNode:
+ * @old:  the old node
+ * @cur:  the node
+ *
+ * Unlink the old node from it's current context, prune the new one
+ * at the same place. If cur was already inserted in a document it is
+ * first unlinked from its existing context.
+ *
+ * Returns the old node
+ */
+xmlNodePtr
+xmlReplaceNode(xmlNodePtr old, xmlNodePtr cur) {
+    if (old == NULL) {
+        fprintf(stderr, "xmlReplaceNode : old == NULL\n");
+	return(NULL);
+    }
+    if (cur == NULL) {
+	xmlUnlinkNode(old);
+	return(old);
+    }
+    xmlUnlinkNode(cur);
+    cur->doc = old->doc;
+    cur->parent = old->parent;
+    cur->next = old->next;
+    if (cur->next != NULL)
+	cur->next->prev = cur;
+    cur->prev = old->prev;
+    if (cur->prev != NULL)
+	cur->prev->next = cur;
+    if (cur->parent != NULL) {
+	if (cur->parent->childs == old)
+	    cur->parent->childs = cur;
+	if (cur->parent->last == old)
+	    cur->parent->last = cur;
+    }
+    old->next = old->prev = NULL;
+    old->parent = NULL;
+    return(old);
 }
 
 /************************************************************************
@@ -2180,16 +2300,66 @@ xmlDocGetRootElement(xmlDocPtr doc) {
 }
  
 /**
+ * xmlDocSetRootElement:
+ * @doc:  the document
+ * @root:  the new document root element
+ *
+ * Set the root element of the document (doc->root is a list
+ * containing possibly comments, PIs, etc ...).
+ *
+ * Returns the old root element if any was found
+ */
+xmlNodePtr
+xmlDocSetRootElement(xmlDocPtr doc, xmlNodePtr root) {
+    xmlNodePtr old = NULL;
+
+    if (doc == NULL) return(NULL);
+    old = doc->root;
+    while (old != NULL) {
+	if (old->type == XML_ELEMENT_NODE)
+	    break;
+        old = old->next;
+    }
+    if (old == NULL) {
+	if (doc->root == NULL) {
+	    doc->root = root;
+	} else {
+	    xmlAddSibling(doc->root, root);
+	}
+    } else {
+	xmlReplaceNode(old, root);
+    }
+    return(old);
+}
+ 
+/**
  * xmlNodeSetLang:
  * @cur:  the node being changed
  * @lang:  the langage description
  *
- * Searches the language of a node, i.e. the values of the xml:lang
- * attribute or the one carried by the nearest ancestor.
+ * Set the language of a node, i.e. the values of the xml:lang
+ * attribute.
  */
 void
 xmlNodeSetLang(xmlNodePtr cur, const xmlChar *lang) {
-    /* TODO xmlNodeSetLang check against the production [33] LanguageID */
+    if (cur == NULL) return;
+    switch(cur->type) {
+        case XML_TEXT_NODE:
+        case XML_CDATA_SECTION_NODE:
+        case XML_COMMENT_NODE:
+        case XML_DOCUMENT_NODE:
+        case XML_DOCUMENT_TYPE_NODE:
+        case XML_DOCUMENT_FRAG_NODE:
+        case XML_NOTATION_NODE:
+        case XML_HTML_DOCUMENT_NODE:
+	    return;
+        case XML_ELEMENT_NODE:
+        case XML_ATTRIBUTE_NODE:
+        case XML_PI_NODE:
+        case XML_ENTITY_REF_NODE:
+        case XML_ENTITY_NODE:
+	    break;
+    }
     xmlSetProp(cur, BAD_CAST "xml:lang", lang);
 }
  
@@ -2214,6 +2384,39 @@ xmlNodeGetLang(xmlNodePtr cur) {
 	cur = cur->parent;
     }
     return(NULL);
+}
+ 
+/**
+ * xmlNodeSetName:
+ * @cur:  the node being changed
+ * @name:  the new tag name
+ *
+ * Searches the language of a node, i.e. the values of the xml:lang
+ * attribute or the one carried by the nearest ancestor.
+ */
+void
+xmlNodeSetName(xmlNodePtr cur, const xmlChar *name) {
+    if (cur == NULL) return;
+    if (name == NULL) return;
+    switch(cur->type) {
+        case XML_TEXT_NODE:
+        case XML_CDATA_SECTION_NODE:
+        case XML_COMMENT_NODE:
+        case XML_DOCUMENT_NODE:
+        case XML_DOCUMENT_TYPE_NODE:
+        case XML_DOCUMENT_FRAG_NODE:
+        case XML_NOTATION_NODE:
+        case XML_HTML_DOCUMENT_NODE:
+	    return;
+        case XML_ELEMENT_NODE:
+        case XML_ATTRIBUTE_NODE:
+        case XML_PI_NODE:
+        case XML_ENTITY_REF_NODE:
+        case XML_ENTITY_NODE:
+	    break;
+    }
+    if (cur->name != NULL) xmlFree((xmlChar *) cur->name);
+    cur->name = xmlStrdup(name);
 }
  
 /**
@@ -2787,8 +2990,17 @@ xmlGetNsProp(xmlNodePtr node, const xmlChar *name, const xmlChar *namespace) {
     if (namespace == NULL)
 	return(xmlGetProp(node, name));
     while (prop != NULL) {
+	/*
+	 * One need to have
+	 *   - same attribute names
+	 *   - and the attribute carrying that namespace
+	 *         or
+	 *         no namespace on the attribute and the element carrying it
+	 */
         if ((!xmlStrcmp(prop->name, name)) &&
-	    (prop->ns != NULL) && (!xmlStrcmp(prop->ns->href, namespace)))  {
+	    (((prop->ns == NULL) && (node->ns != NULL) &&
+	      (!xmlStrcmp(node->ns->href, namespace))) ||
+	     (prop->ns != NULL) && (!xmlStrcmp(prop->ns->href, namespace))))  {
 	    xmlChar *ret;
 
 	    ret = xmlNodeListGetString(node->doc, prop->val, 1);

@@ -18,6 +18,15 @@ extern "C" {
 #endif
 
 /*
+ * use those to be sure nothing nasty will happen if
+ * your library and includes mismatch
+ */
+extern void xmlCheckVersion(int version);
+#define LIBXML_VERSION_NUMBER 10808
+#define LIBXML_TEST_VERSION xmlCheckVersion(LIBXML_VERSION_NUMBER);
+
+
+/*
  * The different element types carried by an XML tree
  *
  * NOTE: This is synchronized with DOM Level1 values

@@ -269,3 +269,9 @@ xmlConf.sh: xmlConf.sh.in Makefile
 	    -e 's?\@VERSION\@?$(VERSION)?g' \
 	      < $(srcdir)/xmlConf.sh.in > xmlConf.tmp \
 	  && mv xmlConf.tmp xmlConf.sh
+
+$(srcdir)/libxml:
+	-$(RM) $(srcdir)/libxml
+	ln -s $(srcdir)/. $(srcdir)/libxml
+
+$(libxml_la_SOURCES): $(srcdir)/libxml

@@ -1,3 +1,12 @@
+Thu Jun 29 01:27:19 MEST 2000 
+
+	* configure.in: 1.8.8 prerelease
+	* example/Makefile.am example/gjobread.c tree.h: work on
+	  libxml1 libxml2 convergence.
+	* Makefile.in tree.[ch] : added xmlCheckVersion()
+	  and the LIBXML_TEST_VERSION macro
+	* libxml.spec.in: fixed a spec problem, xml-config goes in devel
+
 Mon Mar  6 09:34:52 CET 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* doc/xml.html, doc/update.html: updated docs, 1.8.7

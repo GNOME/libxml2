@@ -208,6 +208,7 @@ int main(int argc, char **argv) {
     int i, count;
     int files = 0;
 
+    LIBXML_TEST_VERSION
     for (i = 1; i < argc ; i++) {
 	if ((!strcmp(argv[i], "-debug")) || (!strcmp(argv[i], "--debug")))
 	    debug++;

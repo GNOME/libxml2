@@ -23,6 +23,7 @@
 #include <libxml/uri.h>
 #include <libxml/valid.h>
 #include <libxml/HTMLtree.h>
+#include <libxml/globals.h>
 
 /* #define DEBUG_SAX */
 /* #define DEBUG_SAX_TREE */
@@ -1713,7 +1714,7 @@ initxmlDefaultSAXHandler(xmlSAXHandler *hdlr, int warning)
 void
 xmlDefaultSAXHandlerInit(void)
 {
-	initxmlDefaultSAXHandler(&xmlDefaultSAXHandler, xmlGetWarningsDefaultValue);
+    initxmlDefaultSAXHandler(&xmlDefaultSAXHandler, xmlGetWarningsDefaultValue);
 }
 
 #ifdef LIBXML_HTML_ENABLED
@@ -1820,7 +1821,7 @@ initdocbDefaultSAXHandler(xmlSAXHandler *hdlr)
 void
 docbDefaultSAXHandlerInit(void)
 {
-	initdocbDefaultSAXHandler(&docbDefaultSAXHandler);
+    initdocbDefaultSAXHandler(&docbDefaultSAXHandler);
 }
 
 #endif /* LIBXML_DOCB_ENABLED */

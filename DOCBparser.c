@@ -45,6 +45,7 @@
 #include <libxml/valid.h>
 #include <libxml/xmlIO.h>
 #include <libxml/uri.h>
+#include <libxml/globals.h>
 
 /*
  * Internal description of an SGML entity

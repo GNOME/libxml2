@@ -59,6 +59,7 @@
 #include <libxml/parser.h>
 #include <libxml/xmlerror.h>
 #include <libxml/nanoftp.h>
+#include <libxml/globals.h>
 
 /* #define DEBUG_FTP 1  */
 #ifdef STANDALONE

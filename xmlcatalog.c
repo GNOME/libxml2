@@ -27,6 +27,7 @@
 #include <libxml/uri.h>
 #include <libxml/catalog.h>
 #include <libxml/parser.h>
+#include <libxml/globals.h>
 
 static int shell = 0;
 static int sgml = 0;

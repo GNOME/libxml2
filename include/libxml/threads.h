@@ -43,6 +43,8 @@ void			xmlFreeRMutex	(xmlRMutexPtr tok);
 void			xmlInitThreads	(void);
 void			xmlLockLibrary	(void);
 void			xmlUnlockLibrary(void);
+int			xmlGetThreadId	(void);
+int			xmlIsMainThread	(void);
 void			xmlCleanupThreads(void);
 xmlGlobalStatePtr	xmlGetGlobalState(void);
 

@@ -24,6 +24,7 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 #include <libxml/xmlerror.h>
+#include <libxml/globals.h>
 
 #define MAX_HASH_LEN 8
 

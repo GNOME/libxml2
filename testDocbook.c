@@ -35,6 +35,7 @@
 #include <libxml/DOCBparser.h>
 #include <libxml/tree.h>
 #include <libxml/debugXML.h>
+#include <libxml/globals.h>
 
 #ifdef LIBXML_DEBUG_ENABLED
 static int debug = 0;

@@ -1,3 +1,9 @@
+Wed Oct 17 11:56:25 EDT 2001 Daniel Veillard <daniel@veillard.com>
+
+	* include/libxml/globals.h include/libxml/threads.h threads.c
+	  testThreads.c: far more testing, cleaning up bugs
+	* *.c : make sure globals.h is always included.
+
 Wed Oct 17 17:41:41 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLparser.c: try to get rid of parser loops for good.

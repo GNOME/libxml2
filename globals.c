@@ -18,19 +18,17 @@
 #endif
 #include <string.h>
 
+#include <libxml/xmlversion.h>
+#include <libxml/globals.h>
 #include <libxml/xmlmemory.h>
+
+/* #define DEBUG_GLOBALS */
 
 /*
  * Helpful Macro
  */
-#ifdef WITH_PTHREAD_H
-#if defined(SOLARIS)
-#define THR_MAIN(tid) (-1 == thr_main() || tid == thr_main())
-#else
-#define THR_MAIN(tid) (tid == 0 || tid == 1024)
-#endif
-
-#define IS_MAIN_THREAD (THR_MAIN(pthread_self()))
+#ifdef LIBXML_THREAD_ENABLED
+#define IS_MAIN_THREAD (xmlIsMainThread())
 #else
 #define IS_MAIN_THREAD 1
 #endif
@@ -40,8 +38,6 @@
  *	All the user accessible global variables of the library		*
  * 									*
  ************************************************************************/
-
-const char *xmlParserVersion = LIBXML_VERSION_STRING;
 
 /*
  * Memory allocation routines
@@ -92,6 +88,8 @@ xmlStrdupFunc xmlMemStrdup = (xmlStrdupFunc) strdup;
 #undef	xmlMalloc
 #undef	xmlMemStrdup
 #undef	xmlRealloc
+
+const char *xmlParserVersion = LIBXML_VERSION_STRING;
 
 /*
  * Buffers stuff
@@ -252,11 +250,19 @@ xmlSAXHandler docbDefaultSAXHandler = {
 void
 xmlInitializeGlobalState(xmlGlobalStatePtr gs)
 {
+#ifdef DEBUG_GLOBALS
+    fprintf(stderr, "Initializing globals at %lu for thread %d\n",
+	    (unsigned long) gs, xmlGetThreadId());
+#endif
+
     /*
      * Perform initialisation as required by libxml
      */
+    initxmlDefaultSAXHandler(&gs->xmlDefaultSAXHandler, 1);
     initdocbDefaultSAXHandler(&gs->docbDefaultSAXHandler);
     inithtmlDefaultSAXHandler(&gs->htmlDefaultSAXHandler);
+    initGenericErrorDefaultFunc(&gs->xmlGenericError);
+
     gs->oldXMLWDcompatibility = 0;
     gs->xmlBufferAllocScheme = XML_BUFFER_ALLOC_EXACT;
     gs->xmlDefaultBufferSize = BASE_BUFFER_SIZE;
@@ -277,7 +283,6 @@ xmlInitializeGlobalState(xmlGlobalStatePtr gs)
     gs->xmlRealloc = (xmlReallocFunc) realloc;
     gs->xmlMemStrdup = (xmlStrdupFunc) strdup;
 #endif
-    initGenericErrorDefaultFunc(&gs->xmlGenericError);
     gs->xmlGenericErrorContext = NULL;
     gs->xmlGetWarningsDefaultValue = 1;
     gs->xmlIndentTreeOutput = 0;

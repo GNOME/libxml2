@@ -57,6 +57,11 @@ struct _xmlGlobalState
 {
 	const char *xmlParserVersion;
 
+	xmlSAXLocator xmlDefaultSAXLocator;
+	xmlSAXHandler xmlDefaultSAXHandler;
+	xmlSAXHandler docbDefaultSAXHandler;
+	xmlSAXHandler htmlDefaultSAXHandler;
+
 	xmlFreeFunc xmlFree;
 	xmlMallocFunc xmlMalloc;
 	xmlStrdupFunc xmlMemStrdup;
@@ -64,11 +69,6 @@ struct _xmlGlobalState
 
 	xmlGenericErrorFunc xmlGenericError;
 	void *xmlGenericErrorContext;
-
-	xmlSAXLocator xmlDefaultSAXLocator;
-	xmlSAXHandler xmlDefaultSAXHandler;
-	xmlSAXHandler docbDefaultSAXHandler;
-	xmlSAXHandler htmlDefaultSAXHandler;
 
 	int oldXMLWDcompatibility;
 

@@ -50,6 +50,7 @@
 #ifdef LIBXML_CATALOG_ENABLED
 #include <libxml/catalog.h>
 #endif
+#include <libxml/globals.h>
 
 void xmlUpgradeOldNs(xmlDocPtr doc);
 
@@ -2234,7 +2235,7 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
     ctxt->space = &ctxt->spaceTab[0];
 
     ctxt->sax = sax;
-    memcpy(sax, &xmlDefaultSAXHandler, sizeof(xmlSAXHandler));
+    initxmlDefaultSAXHandler(sax, xmlGetWarningsDefaultValue);
 
     ctxt->userData = ctxt;
     ctxt->myDoc = NULL;

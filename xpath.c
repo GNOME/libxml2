@@ -52,6 +52,7 @@
 #endif
 #include <libxml/xmlerror.h>
 #include <libxml/threads.h>
+#include <libxml/globals.h>
 
 /* #define DEBUG */
 /* #define DEBUG_STEP */

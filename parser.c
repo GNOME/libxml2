@@ -10186,7 +10186,8 @@ static int xmlParserInitialized = 0;
 
 void
 xmlInitParser(void) {
-    if (xmlParserInitialized) return;
+    if (xmlParserInitialized != 0)
+	return;
 
     initGenericErrorDefaultFunc(NULL);
     xmlInitThreads();

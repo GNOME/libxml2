@@ -35,6 +35,7 @@
 #include <libxml/HTMLtree.h>
 #include <libxml/debugXML.h>
 #include <libxml/xmlerror.h>
+#include <libxml/globals.h>
 
 #ifdef LIBXML_DEBUG_ENABLED
 static int debug = 0;

@@ -22,6 +22,7 @@
 #include <libxml/parserInternals.h>
 #include <libxml/xmlerror.h>
 #include <libxml/list.h>
+#include <libxml/globals.h>
 
 /* #define DEBUG_VALID_ALGO */
 

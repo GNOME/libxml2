@@ -35,6 +35,7 @@
 #include <libxml/parser.h>
 #include <libxml/valid.h>
 #include <libxml/xlink.h>
+#include <libxml/globals.h>
 
 #define XLINK_NAMESPACE (BAD_CAST "http://www.w3.org/1999/xlink/namespace/")
 #define XHTML_NAMESPACE (BAD_CAST "http://www.w3.org/1999/xhtml/")

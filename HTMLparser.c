@@ -40,6 +40,7 @@
 #include <libxml/encoding.h>
 #include <libxml/valid.h>
 #include <libxml/xmlIO.h>
+#include <libxml/globals.h>
 
 #define HTML_MAX_NAMELEN 1000
 #define HTML_PARSER_BIG_BUFFER_SIZE 1000

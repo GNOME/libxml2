@@ -24,6 +24,7 @@
 #include <libxml/valid.h>
 #include <libxml/xmlerror.h>
 #include <libxml/parserInternals.h>
+#include <libxml/globals.h>
 
 /************************************************************************
  *									*

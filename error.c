@@ -12,6 +12,7 @@
 #include <libxml/parser.h>
 #include <libxml/xmlerror.h>
 #include <libxml/xmlmemory.h>
+#include <libxml/globals.h>
 
 #define XML_GET_VAR_STR(msg, str) {				\
     int       size;						\

@@ -38,6 +38,7 @@
 #include <libxml/catalog.h>
 #include <libxml/xmlerror.h>
 #include <libxml/threads.h>
+#include <libxml/globals.h>
 
 #define MAX_DELEGATE	50
 
@@ -1217,7 +1218,7 @@ xmlParseXMLCatalogFile(xmlCatalogPrefer prefer, const xmlChar *filename) {
 
     if (xmlDebugCatalogs)
 	xmlGenericError(xmlGenericErrorContext,
-		"Parsing catalog %s\n", filename);
+		"%d Parsing catalog %s\n", xmlGetThreadId(), filename);
 
     cur = xmlDocGetRootElement(doc);
     if ((cur != NULL) && (xmlStrEqual(cur->name, BAD_CAST "catalog")) &&

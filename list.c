@@ -21,6 +21,7 @@
 #include <string.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/list.h>
+#include <libxml/globals.h>
 
 /*
  * Type definition are kept internal

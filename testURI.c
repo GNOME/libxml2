@@ -14,6 +14,7 @@
 
 #include <libxml/xmlmemory.h>
 #include <libxml/uri.h>
+#include <libxml/globals.h>
 
 int main(int argc, char **argv) {
     int i, ret, arg = 1;

@@ -24,6 +24,7 @@
 #include <libxml/xpointer.h>
 #include <libxml/parserInternals.h>
 #include <libxml/xmlerror.h>
+#include <libxml/globals.h>
 
 #ifdef LIBXML_XINCLUDE_ENABLED
 #include <libxml/xinclude.h>

@@ -68,6 +68,7 @@
 #ifdef LIBXML_CATALOG_ENABLED
 #include <libxml/catalog.h>
 #endif
+#include <libxml/globals.h>
 
 #ifdef LIBXML_DEBUG_ENABLED
 static int debug = 0;

@@ -332,6 +332,23 @@ xmlGetGlobalState(void)
  ************************************************************************/
 
 /**
+ * xmlGetThreadId:
+ *
+ * xmlGetThreadId() find the current thread ID number
+ *
+ * Returns the current thread ID number
+ */
+int
+xmlGetThreadId(void)
+{
+#ifdef HAVE_PTHREAD_H
+    return((int) pthread_self());
+#else
+    return((int) 0);
+#endif
+}
+
+/**
  * xmlIsMainThread:
  *
  * xmlIsMainThread() check wether the current thread is the main thread.

@@ -36,6 +36,7 @@
 #include <libxml/parserInternals.h>
 #include <libxml/xpathInternals.h>
 #include <libxml/xmlerror.h>
+#include <libxml/globals.h>
 #if defined(LIBXML_XPTR_ENABLED)
 #include <libxml/xpointer.h>
 static int xptr = 0;

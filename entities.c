@@ -17,6 +17,7 @@
 #include <libxml/entities.h>
 #include <libxml/parser.h>
 #include <libxml/xmlerror.h>
+#include <libxml/globals.h>
 
 /*
  * The XML predefined entities.

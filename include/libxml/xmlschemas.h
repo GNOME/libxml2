@@ -77,6 +77,8 @@ XMLPUBFUN xmlSchemaParserCtxtPtr XMLCALL
 XMLPUBFUN xmlSchemaParserCtxtPtr XMLCALL 
 	    xmlSchemaNewMemParserCtxt	(const char *buffer,
 					 int size);
+XMLPUBFUN xmlSchemaParserCtxtPtr XMLCALL
+	    xmlSchemaNewDocParserCtxt	(xmlDocPtr doc);
 XMLPUBFUN void XMLCALL		
 	    xmlSchemaFreeParserCtxt	(xmlSchemaParserCtxtPtr ctxt);
 XMLPUBFUN void XMLCALL		

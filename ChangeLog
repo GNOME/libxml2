@@ -1,3 +1,8 @@
+Wed Oct 29 14:20:14 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemas.c include/libxml/xmlschemas.h: applied patch
+	  from Steve Ball to make a schema parser from a preparsed document.
+
 Wed Oct 29 13:52:25 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* tree.c: applied a couple of patches from Mark Lilback about text

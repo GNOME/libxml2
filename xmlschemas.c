@@ -3184,6 +3184,35 @@ xmlSchemaNewMemParserCtxt(const char *buffer, int size)
 }
 
 /**
+ * xmlSchemaNewDocParserCtxt:
+ * @doc:  a preparsed document tree
+ *
+ * Create an XML Schemas parse context for that document.
+ * NB. The document may be modified during the parsing process.
+ *
+ * Returns the parser context or NULL in case of error
+ */
+xmlSchemaParserCtxtPtr
+xmlSchemaNewDocParserCtxt(xmlDocPtr doc)
+{
+    xmlSchemaParserCtxtPtr ret;
+
+    if (doc == NULL)
+      return (NULL);
+
+    ret = (xmlSchemaParserCtxtPtr) xmlMalloc(sizeof(xmlSchemaParserCtxt));
+    if (ret == NULL) {
+      xmlSchemaPErrMemory(NULL, "allocating schema parser context",
+			  NULL);
+      return (NULL);
+    }
+    memset(ret, 0, sizeof(xmlSchemaParserCtxt));
+    ret->doc = doc;
+
+    return (ret);
+}
+
+/**
  * xmlSchemaFreeParserCtxt:
  * @ctxt:  the schema parser context
  *
@@ -4224,6 +4253,8 @@ xmlSchemaParse(xmlSchemaParserCtxtPtr ctxt)
         }
         doc->URL = xmlStrdup(BAD_CAST "in_memory_buffer");
         ctxt->URL = xmlStrdup(BAD_CAST "in_memory_buffer");
+    } else if (ctxt->doc != NULL) {
+        doc = ctxt->doc;
     } else {
 	xmlSchemaPErr(ctxt, NULL,
 		      XML_SCHEMAP_NOTHING_TO_PARSE,

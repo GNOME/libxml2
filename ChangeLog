@@ -1,3 +1,11 @@
+Fri Nov  5 11:02:28 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* gentest.py testapi.c: fixed the way the generator works,
+	  extended the testing, especially with more real trees and nodes.
+	* HTMLtree.c tree.c valid.c xinclude.c xmlIO.c xmlsave.c: a bunch
+	  of real problems found and fixed.
+	* entities.c: fix error reporting to go through the new handlers
+
 Thu Nov  4 18:44:56 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: dohh ... stupid change killing xmlParseDoc()

@@ -745,7 +745,7 @@ htmlNodeDumpFormatOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
 
     xmlInitParser();
 
-    if (cur == NULL) {
+    if ((cur == NULL) || (buf == NULL)) {
 	return;
     }
     /*
@@ -753,7 +753,8 @@ htmlNodeDumpFormatOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
      */
     if (cur->type == XML_DTD_NODE)
 	return;
-    if (cur->type == XML_HTML_DOCUMENT_NODE) {
+    if ((cur->type == XML_HTML_DOCUMENT_NODE) ||
+        (cur->type == XML_DOCUMENT_NODE)){
 	htmlDocContentDumpOutput(buf, (xmlDocPtr) cur, encoding);
 	return;
     }

@@ -3526,6 +3526,7 @@ xmlUnlinkNode(xmlNodePtr cur) {
  */
 xmlNodePtr
 xmlReplaceNode(xmlNodePtr old, xmlNodePtr cur) {
+    if (old == cur) return(NULL);
     if ((old == NULL) || (old->parent == NULL)) {
 #ifdef DEBUG_TREE
         xmlGenericError(xmlGenericErrorContext,
@@ -4677,6 +4678,9 @@ xmlNodeGetSpacePreserve(xmlNodePtr cur) {
  */
 void
 xmlNodeSetName(xmlNodePtr cur, const xmlChar *name) {
+    xmlDocPtr doc;
+    xmlDictPtr dict;
+
     if (cur == NULL) return;
     if (name == NULL) return;
     switch(cur->type) {
@@ -4706,8 +4710,19 @@ xmlNodeSetName(xmlNodePtr cur, const xmlChar *name) {
         case XML_ENTITY_DECL:
 	    break;
     }
-    if (cur->name != NULL) xmlFree((xmlChar *) cur->name);
-    cur->name = xmlStrdup(name);
+    doc = cur->doc;
+    if (doc != NULL)
+	dict = doc->dict;
+    else
+        dict = NULL;
+    if (dict != NULL) {
+        if ((cur->name != NULL) && (!xmlDictOwns(dict, cur->name)))
+	    xmlFree((xmlChar *) cur->name);
+	cur->name = xmlDictLookup(dict, name, -1);
+    } else {
+	if (cur->name != NULL) xmlFree((xmlChar *) cur->name);
+	cur->name = xmlStrdup(name);
+    }
 }
 #endif
  
@@ -5690,7 +5705,7 @@ xmlNewReconciliedNs(xmlDocPtr doc, xmlNodePtr tree, xmlNsPtr ns) {
 #endif
 	return(NULL);
     }
-    if (ns == NULL) {
+    if ((ns == NULL) || (ns->type != XML_NAMESPACE_DECL)) {
 #ifdef DEBUG_TREE
         xmlGenericError(xmlGenericErrorContext,
 		"xmlNewReconciliedNs : ns == NULL\n");
@@ -5758,6 +5773,9 @@ xmlReconciliateNs(xmlDocPtr doc, xmlNodePtr tree) {
     xmlAttrPtr attr;
     int ret = 0, i;
 
+    if ((node == NULL) || (node->type != XML_ELEMENT_NODE)) return(-1);
+    if ((doc == NULL) || (doc->type != XML_DOCUMENT_NODE)) return(-1);
+    if (node->doc != doc) return(-1);
     while (node != NULL) {
         /*
 	 * Reconciliate the node namespace

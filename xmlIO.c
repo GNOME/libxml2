@@ -3048,7 +3048,9 @@ xmlOutputBufferWriteEscape(xmlOutputBufferPtr out, const xmlChar *str,
     int len;         /* number of bytes in str */
     int cons;        /* byte from str consumed */
 
-    if ((out == NULL) || (out->error) || (str == NULL)) return(-1);
+    if ((out == NULL) || (out->error) || (str == NULL) ||
+        (out->buffer == NULL) ||
+	(out->buffer->alloc == XML_BUFFER_ALLOC_IMMUTABLE)) return(-1);
     len = strlen((const char *)str);
     if (len < 0) return(0);
     if (out->error) return(-1);

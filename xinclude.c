@@ -398,6 +398,9 @@ xmlXIncludeFreeContext(xmlXIncludeCtxtPtr ctxt) {
 	xmlFree(ctxt->txtTab);
     if (ctxt->txturlTab != NULL)
 	xmlFree(ctxt->txturlTab);
+    if (ctxt->base != NULL) {
+        xmlFree(ctxt->base);
+    }
     xmlFree(ctxt);
 }
 
@@ -681,7 +684,7 @@ xmlXIncludeRecurseDoc(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc,
 	/*
 	 * Inherit the existing base
 	 */
-	newctxt->base = ctxt->base;
+	newctxt->base = xmlStrdup(ctxt->base);
 
 	/*
 	 * Inherit the documents already in use by other includes
@@ -1863,7 +1866,7 @@ xmlXIncludeLoadFallback(xmlXIncludeCtxtPtr ctxt, xmlNodePtr fallback, int nr) {
 	newctxt = xmlXIncludeNewContext(ctxt->doc);
 	if (newctxt == NULL)
 	    return (-1);
-	newctxt->base = ctxt->base;	/* Inherit the base from the existing context */
+	newctxt->base = xmlStrdup(ctxt->base);	/* Inherit the base from the existing context */
 	xmlXIncludeSetFlags(newctxt, ctxt->parseFlags);
 	ret = xmlXIncludeDoProcess(newctxt, ctxt->doc, fallback->children);
 	if (ctxt->nbErrors > 0)
@@ -2372,7 +2375,7 @@ xmlXIncludeProcessFlags(xmlDocPtr doc, int flags) {
     ctxt = xmlXIncludeNewContext(doc);
     if (ctxt == NULL)
 	return(-1);
-    ctxt->base = (xmlChar *)doc->URL;
+    ctxt->base = xmlStrdup((xmlChar *)doc->URL);
     xmlXIncludeSetFlags(ctxt, flags);
     ret = xmlXIncludeDoProcess(ctxt, doc, tree);
     if ((ret >= 0) && (ctxt->nbErrors > 0))

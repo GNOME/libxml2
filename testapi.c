@@ -9,10 +9,12 @@
  */
 
 #include <stdio.h>
+#include <string.h>
 #include <libxml/xmlerror.h>
 #include <libxml/relaxng.h>
 
 static int testlibxml2(void);
+static int test_module(const char *module);
 
 static int generic_errors = 0;
 static int call_tests = 0;
@@ -20,7 +22,13 @@ static int function_tests = 0;
 
 static xmlChar chartab[1024] = "  chartab\n";
 static int inttab[1024];
+#if 0
 static unsigned long longtab[1024];
+#endif
+
+static xmlDocPtr api_doc = NULL;
+static xmlNodePtr api_root = NULL;
+static xmlAttrPtr api_attr = NULL;
 
 static void
 structured_errors(void *userData ATTRIBUTE_UNUSED,
@@ -28,7 +36,55 @@ structured_errors(void *userData ATTRIBUTE_UNUSED,
     generic_errors++;
 }
 
-int main(void) {
+static void
+free_api_doc(void) {
+    xmlFreeDoc(api_doc);
+    api_doc = NULL;
+    api_root = NULL;
+    api_attr = NULL;
+}
+
+static xmlDocPtr
+get_api_doc(void) {
+    if (api_doc == NULL) {
+        api_doc = xmlReadMemory("<root xmlns:h='http://example.com/' h:foo='bar'/>", 49, "root_test", NULL, 0);
+	api_root = NULL;
+	api_attr = NULL;
+    }
+    return(api_doc);
+}
+
+static xmlNodePtr
+get_api_root(void) {
+    if ((api_root == NULL) || (api_root->type != XML_ELEMENT_NODE)) {
+        get_api_doc();
+	if ((api_doc != NULL) && (api_doc->children != NULL) &&
+	    (api_doc->children->type == XML_ELEMENT_NODE))
+	    api_root = api_doc->children;
+    }
+    return(api_root);
+}
+
+static xmlAttrPtr
+get_api_attr(void) {
+    static int nr = 0;
+    xmlChar name[20];
+
+    if ((api_root == NULL) || (api_root->type != XML_ELEMENT_NODE)) {
+        get_api_root();
+    }
+    if (api_root == NULL) 
+        return(NULL);
+    if (api_root->properties != NULL) {
+        api_attr = api_root->properties;
+        return(api_root->properties);
+    }
+    snprintf((char *) name, 20, "foo%d", nr++);
+    api_attr = xmlSetProp(api_root, name, (const xmlChar *) "bar");
+    return(api_attr);
+}
+
+int main(int argc, char **argv) {
     int ret;
     int blocks, mem;
 
@@ -41,7 +97,10 @@ int main(void) {
 
     xmlSetStructuredErrorFunc(NULL, structured_errors);
 
-    ret = testlibxml2();
+    if (argc == 2)
+        ret = test_module(argv[1]);
+    else
+	ret = testlibxml2();
 
     xmlCleanupParser();
     blocks = xmlMemBlocks();
@@ -92,6 +151,7 @@ static void *gen_void_ptr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
 static void des_void_ptr(int no ATTRIBUTE_UNUSED, void *val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
 }
 
+#if 0
 #define gen_nb_const_void_ptr 2
 
 static const void *gen_const_void_ptr(int no, int nr ATTRIBUTE_UNUSED) {
@@ -100,6 +160,7 @@ static const void *gen_const_void_ptr(int no, int nr ATTRIBUTE_UNUSED) {
 }
 static void des_const_void_ptr(int no ATTRIBUTE_UNUSED, const void *val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
 }
+#endif
 
 #define gen_nb_userdata 3
 
@@ -125,6 +186,7 @@ static int gen_int(int no, int nr ATTRIBUTE_UNUSED) {
 static void des_int(int no ATTRIBUTE_UNUSED, int val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
 }
 
+#if 0
 #define gen_nb_long 4
 
 static long gen_long(int no, int nr ATTRIBUTE_UNUSED) {
@@ -137,6 +199,7 @@ static long gen_long(int no, int nr ATTRIBUTE_UNUSED) {
 
 static void des_long(int no ATTRIBUTE_UNUSED, long val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
 }
+#endif
 
 #define gen_nb_unsigned_int 3
 
@@ -150,6 +213,7 @@ static unsigned int gen_unsigned_int(int no, int nr ATTRIBUTE_UNUSED) {
 static void des_unsigned_int(int no ATTRIBUTE_UNUSED, unsigned int val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
 }
 
+#if 0
 #define gen_nb_unsigned_long 3
 
 static unsigned long gen_unsigned_long(int no, int nr ATTRIBUTE_UNUSED) {
@@ -171,6 +235,7 @@ static unsigned long *gen_unsigned_long_ptr(int no, int nr) {
 
 static void des_unsigned_long_ptr(int no ATTRIBUTE_UNUSED, unsigned long *val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
 }
+#endif
 
 #define gen_nb_int_ptr 2
 
@@ -303,8 +368,17 @@ static xmlDocPtr gen_xmlDocPtr(int no, int nr ATTRIBUTE_UNUSED) {
     return(NULL);
 }
 static void des_xmlDocPtr(int no ATTRIBUTE_UNUSED, xmlDocPtr val, int nr ATTRIBUTE_UNUSED) {
-    if (val != NULL)
+    if ((val != NULL) && (val != api_doc) && (val->doc != api_doc))
         xmlFreeDoc(val);
+}
+
+#define gen_nb_xmlAttrPtr 2
+static xmlAttrPtr gen_xmlAttrPtr(int no, int nr ATTRIBUTE_UNUSED) {
+    if (no == 0) return(get_api_attr());
+    return(NULL);
+}
+static void des_xmlAttrPtr(int no, xmlAttrPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+    if (no == 0) free_api_doc();
 }
 
 #define gen_nb_xmlDictPtr 2
@@ -317,13 +391,16 @@ static void des_xmlDictPtr(int no ATTRIBUTE_UNUSED, xmlDictPtr val, int nr ATTRI
         xmlDictFree(val);
 }
 
-#define gen_nb_xmlNodePtr 2
+#define gen_nb_xmlNodePtr 3
 static xmlNodePtr gen_xmlNodePtr(int no, int nr ATTRIBUTE_UNUSED) {
     if (no == 0) return(xmlNewPI(BAD_CAST "test", NULL));
+    if (no == 1) return(get_api_root());
     return(NULL);
+/*     if (no == 2) return((xmlNodePtr) get_api_doc()); */
 }
 static void des_xmlNodePtr(int no ATTRIBUTE_UNUSED, xmlNodePtr val, int nr ATTRIBUTE_UNUSED) {
-    if (val != NULL) {
+    if (no == 1) free_api_doc();
+    else if (val != NULL) {
         xmlUnlinkNode(val);
         xmlFreeNode(val);
     }
@@ -361,7 +438,7 @@ static void des_xmlTextReaderPtr(int no ATTRIBUTE_UNUSED, xmlTextReaderPtr val, 
 #define gen_nb_xmlBufferPtr 3
 static xmlBufferPtr gen_xmlBufferPtr(int no, int nr ATTRIBUTE_UNUSED) {
     if (no == 0) return(xmlBufferCreate());
-    if (no == 1) return(xmlBufferCreateStatic((void *)"static buffer", 13));
+    if (no == 1) return(xmlBufferCreateStatic((void *)"a static buffer", 13));
     return(NULL);
 }
 static void des_xmlBufferPtr(int no ATTRIBUTE_UNUSED, xmlBufferPtr val, int nr ATTRIBUTE_UNUSED) {
@@ -438,8 +515,10 @@ static void desret_double(double val ATTRIBUTE_UNUSED) {
 }
 static void desret_xmlCharEncoding(xmlCharEncoding val ATTRIBUTE_UNUSED) {
 }
+#if 0
 static void desret_const_void_ptr(void *val ATTRIBUTE_UNUSED) {
 }
+#endif
 static void desret_void_ptr(void *val ATTRIBUTE_UNUSED) {
 }
 static void desret_const_char_ptr(const char *val ATTRIBUTE_UNUSED) {
@@ -451,7 +530,8 @@ static void desret_xmlChar_ptr(xmlChar *val) {
 	xmlFree(val);
 }
 static void desret_xmlDocPtr(xmlDocPtr val) {
-    xmlFreeDoc(val);
+    if (val != api_doc)
+	xmlFreeDoc(val);
 }
 static void desret_xmlDictPtr(xmlDictPtr val) {
     xmlDictFree(val);
@@ -460,8 +540,10 @@ static void desret_xmlTextReaderPtr(xmlTextReaderPtr val) {
     xmlFreeTextReader(val);
 }
 static void desret_xmlNodePtr(xmlNodePtr val) {
-    xmlUnlinkNode(val);
-    xmlFreeNode(val);
+    if ((val != NULL) && (val != api_root) && (val != (xmlNodePtr) api_doc)) {
+	xmlUnlinkNode(val);
+	xmlFreeNode(val);
+    }
 }
 static void desret_xmlDtdPtr(xmlDtdPtr val) {
     desret_xmlNodePtr((xmlNodePtr)val);
@@ -8116,7 +8198,7 @@ test_xmlSAXUserParseFile(void) {
         sax = gen_xmlSAXHandlerPtr(n_sax, 0);
         user_data = gen_userdata(n_user_data, 1);
         filename = gen_filepath(n_filename, 2);
-        if (sax == &xmlDefaultSAXHandler) user_data = NULL;
+        if (sax == (xmlSAXHandlerPtr)&xmlDefaultSAXHandler) user_data = NULL;
 
         ret_val = xmlSAXUserParseFile(sax, user_data, filename);
         desret_int(ret_val);
@@ -8167,7 +8249,7 @@ test_xmlSAXUserParseMemory(void) {
         user_data = gen_userdata(n_user_data, 1);
         buffer = gen_const_char_ptr(n_buffer, 2);
         size = gen_int(n_size, 3);
-        if (sax == &xmlDefaultSAXHandler) user_data = NULL;
+        if (sax == (xmlSAXHandlerPtr)&xmlDefaultSAXHandler) user_data = NULL;
 
         ret_val = xmlSAXUserParseMemory(sax, user_data, buffer, size);
         desret_int(ret_val);
@@ -8905,8 +8987,49 @@ static int
 test_xmlAttrSerializeTxtContent(void) {
     int ret = 0;
 
+    int mem_base;
+    xmlBufferPtr buf; /* the XML buffer output */
+    int n_buf;
+    xmlDocPtr doc; /* the document */
+    int n_doc;
+    xmlAttrPtr attr; /* the attribute node */
+    int n_attr;
+    const xmlChar * string; /* the text content */
+    int n_string;
 
-    /* missing type support */
+    for (n_buf = 0;n_buf < gen_nb_xmlBufferPtr;n_buf++) {
+    for (n_doc = 0;n_doc < gen_nb_xmlDocPtr;n_doc++) {
+    for (n_attr = 0;n_attr < gen_nb_xmlAttrPtr;n_attr++) {
+    for (n_string = 0;n_string < gen_nb_const_xmlChar_ptr;n_string++) {
+        mem_base = xmlMemBlocks();
+        buf = gen_xmlBufferPtr(n_buf, 0);
+        doc = gen_xmlDocPtr(n_doc, 1);
+        attr = gen_xmlAttrPtr(n_attr, 2);
+        string = gen_const_xmlChar_ptr(n_string, 3);
+
+        xmlAttrSerializeTxtContent(buf, doc, attr, string);
+        call_tests++;
+        des_xmlBufferPtr(n_buf, buf, 0);
+        des_xmlDocPtr(n_doc, doc, 1);
+        des_xmlAttrPtr(n_attr, attr, 2);
+        des_const_xmlChar_ptr(n_string, string, 3);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlAttrSerializeTxtContent",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_buf);
+            printf(" %d", n_doc);
+            printf(" %d", n_attr);
+            printf(" %d", n_string);
+            printf("\n");
+        }
+    }
+    }
+    }
+    }
+
+    function_tests++;
     return(ret);
 }
 
@@ -9117,45 +9240,6 @@ test_xmlBufferCreateStatic(void) {
 
 
     /* missing type support */
-    return(ret);
-}
-
-
-static int
-test_xmlBufferDump(void) {
-    int ret = 0;
-
-    int mem_base;
-    int ret_val;
-    FILE * file; /* the file output */
-    int n_file;
-    xmlBufferPtr buf; /* the buffer to dump */
-    int n_buf;
-
-    for (n_file = 0;n_file < gen_nb_FILE_ptr;n_file++) {
-    for (n_buf = 0;n_buf < gen_nb_xmlBufferPtr;n_buf++) {
-        mem_base = xmlMemBlocks();
-        file = gen_FILE_ptr(n_file, 0);
-        buf = gen_xmlBufferPtr(n_buf, 1);
-
-        ret_val = xmlBufferDump(file, buf);
-        desret_int(ret_val);
-        call_tests++;
-        des_FILE_ptr(n_file, file, 0);
-        des_xmlBufferPtr(n_buf, buf, 1);
-        xmlResetLastError();
-        if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlBufferDump",
-	           xmlMemBlocks() - mem_base);
-	    ret++;
-            printf(" %d", n_file);
-            printf(" %d", n_buf);
-            printf("\n");
-        }
-    }
-    }
-
-    function_tests++;
     return(ret);
 }
 
@@ -11827,8 +11911,33 @@ static int
 test_xmlRemoveProp(void) {
     int ret = 0;
 
+#ifdef LIBXML_TREE_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlAttrPtr cur; /* an attribute */
+    int n_cur;
 
-    /* missing type support */
+    for (n_cur = 0;n_cur < gen_nb_xmlAttrPtr;n_cur++) {
+        mem_base = xmlMemBlocks();
+        cur = gen_xmlAttrPtr(n_cur, 0);
+
+        ret_val = xmlRemoveProp(cur);
+        cur = NULL;
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlAttrPtr(n_cur, cur, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlRemoveProp",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_cur);
+            printf("\n");
+        }
+    }
+#endif
+
+    function_tests++;
     return(ret);
 }
 
@@ -11852,8 +11961,13 @@ test_xmlReplaceNode(void) {
         cur = gen_xmlNodePtr_in(n_cur, 1);
 
         ret_val = xmlReplaceNode(old, cur);
-        if ((old == NULL) || (old->parent == NULL)) {
+        if (cur != NULL) {
+              xmlUnlinkNode(cur);
               xmlFreeNode(cur) ; cur = NULL ; }
+          if (old != NULL) {
+              xmlUnlinkNode(old);
+              xmlFreeNode(old) ; old = NULL ; }
+	  ret_val = NULL;
         desret_xmlNodePtr(ret_val);
         call_tests++;
         des_xmlNodePtr(n_old, old, 0);
@@ -12271,43 +12385,6 @@ test_xmlSetDocCompressMode(void) {
 
 
 static int
-test_xmlSetListDoc(void) {
-    int ret = 0;
-
-    int mem_base;
-    xmlNodePtr list; /* the first element */
-    int n_list;
-    xmlDocPtr doc; /* the document */
-    int n_doc;
-
-    for (n_list = 0;n_list < gen_nb_xmlNodePtr;n_list++) {
-    for (n_doc = 0;n_doc < gen_nb_xmlDocPtr;n_doc++) {
-        mem_base = xmlMemBlocks();
-        list = gen_xmlNodePtr(n_list, 0);
-        doc = gen_xmlDocPtr(n_doc, 1);
-
-        xmlSetListDoc(list, doc);
-        call_tests++;
-        des_xmlNodePtr(n_list, list, 0);
-        des_xmlDocPtr(n_doc, doc, 1);
-        xmlResetLastError();
-        if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlSetListDoc",
-	           xmlMemBlocks() - mem_base);
-	    ret++;
-            printf(" %d", n_list);
-            printf(" %d", n_doc);
-            printf("\n");
-        }
-    }
-    }
-
-    function_tests++;
-    return(ret);
-}
-
-
-static int
 test_xmlSetNs(void) {
     int ret = 0;
 
@@ -12333,43 +12410,6 @@ test_xmlSetProp(void) {
 
 
     /* missing type support */
-    return(ret);
-}
-
-
-static int
-test_xmlSetTreeDoc(void) {
-    int ret = 0;
-
-    int mem_base;
-    xmlNodePtr tree; /* the top element */
-    int n_tree;
-    xmlDocPtr doc; /* the document */
-    int n_doc;
-
-    for (n_tree = 0;n_tree < gen_nb_xmlNodePtr;n_tree++) {
-    for (n_doc = 0;n_doc < gen_nb_xmlDocPtr;n_doc++) {
-        mem_base = xmlMemBlocks();
-        tree = gen_xmlNodePtr(n_tree, 0);
-        doc = gen_xmlDocPtr(n_doc, 1);
-
-        xmlSetTreeDoc(tree, doc);
-        call_tests++;
-        des_xmlNodePtr(n_tree, tree, 0);
-        des_xmlDocPtr(n_doc, doc, 1);
-        xmlResetLastError();
-        if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlSetTreeDoc",
-	           xmlMemBlocks() - mem_base);
-	    ret++;
-            printf(" %d", n_tree);
-            printf(" %d", n_doc);
-            printf("\n");
-        }
-    }
-    }
-
-    function_tests++;
     return(ret);
 }
 
@@ -12573,6 +12613,7 @@ test_xmlTextMerge(void) {
 
         ret_val = xmlTextMerge(first, second);
         if ((first != NULL) && (first->type != XML_TEXT_NODE)) {
+              xmlUnlinkNode(second);
               xmlFreeNode(second) ; second = NULL ; }
         desret_xmlNodePtr(ret_val);
         call_tests++;
@@ -12588,36 +12629,6 @@ test_xmlTextMerge(void) {
             printf("\n");
         }
     }
-    }
-
-    function_tests++;
-    return(ret);
-}
-
-
-static int
-test_xmlUnlinkNode(void) {
-    int ret = 0;
-
-    int mem_base;
-    xmlNodePtr cur; /* the node */
-    int n_cur;
-
-    for (n_cur = 0;n_cur < gen_nb_xmlNodePtr;n_cur++) {
-        mem_base = xmlMemBlocks();
-        cur = gen_xmlNodePtr(n_cur, 0);
-
-        xmlUnlinkNode(cur);
-        call_tests++;
-        des_xmlNodePtr(n_cur, cur, 0);
-        xmlResetLastError();
-        if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlUnlinkNode",
-	           xmlMemBlocks() - mem_base);
-	    ret++;
-            printf(" %d", n_cur);
-            printf("\n");
-        }
     }
 
     function_tests++;
@@ -12835,7 +12846,7 @@ static int
 test_tree(void) {
     int ret = 0;
 
-    printf("Testing tree : 91 of 146 functions ...\n");
+    printf("Testing tree : 89 of 146 functions ...\n");
     ret += test_xmlAddChild();
     ret += test_xmlAddChildList();
     ret += test_xmlAddNextSibling();
@@ -12850,7 +12861,6 @@ test_tree(void) {
     ret += test_xmlBufferCreate();
     ret += test_xmlBufferCreateSize();
     ret += test_xmlBufferCreateStatic();
-    ret += test_xmlBufferDump();
     ret += test_xmlBufferEmpty();
     ret += test_xmlBufferGrow();
     ret += test_xmlBufferLength();
@@ -12955,18 +12965,15 @@ test_tree(void) {
     ret += test_xmlSetBufferAllocationScheme();
     ret += test_xmlSetCompressMode();
     ret += test_xmlSetDocCompressMode();
-    ret += test_xmlSetListDoc();
     ret += test_xmlSetNs();
     ret += test_xmlSetNsProp();
     ret += test_xmlSetProp();
-    ret += test_xmlSetTreeDoc();
     ret += test_xmlSplitQName2();
     ret += test_xmlSplitQName3();
     ret += test_xmlStringGetNodeList();
     ret += test_xmlStringLenGetNodeList();
     ret += test_xmlTextConcat();
     ret += test_xmlTextMerge();
-    ret += test_xmlUnlinkNode();
     ret += test_xmlUnsetNsProp();
     ret += test_xmlUnsetProp();
     ret += test_xmlValidateNCName();
@@ -13496,8 +13503,44 @@ static int
 test_xmlIsID(void) {
     int ret = 0;
 
+    int mem_base;
+    int ret_val;
+    xmlDocPtr doc; /* the document */
+    int n_doc;
+    xmlNodePtr elem; /* the element carrying the attribute */
+    int n_elem;
+    xmlAttrPtr attr; /* the attribute */
+    int n_attr;
 
-    /* missing type support */
+    for (n_doc = 0;n_doc < gen_nb_xmlDocPtr;n_doc++) {
+    for (n_elem = 0;n_elem < gen_nb_xmlNodePtr;n_elem++) {
+    for (n_attr = 0;n_attr < gen_nb_xmlAttrPtr;n_attr++) {
+        mem_base = xmlMemBlocks();
+        doc = gen_xmlDocPtr(n_doc, 0);
+        elem = gen_xmlNodePtr(n_elem, 1);
+        attr = gen_xmlAttrPtr(n_attr, 2);
+
+        ret_val = xmlIsID(doc, elem, attr);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlDocPtr(n_doc, doc, 0);
+        des_xmlNodePtr(n_elem, elem, 1);
+        des_xmlAttrPtr(n_attr, attr, 2);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlIsID",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_doc);
+            printf(" %d", n_elem);
+            printf(" %d", n_attr);
+            printf("\n");
+        }
+    }
+    }
+    }
+
+    function_tests++;
     return(ret);
 }
 
@@ -13545,8 +13588,44 @@ static int
 test_xmlIsRef(void) {
     int ret = 0;
 
+    int mem_base;
+    int ret_val;
+    xmlDocPtr doc; /* the document */
+    int n_doc;
+    xmlNodePtr elem; /* the element carrying the attribute */
+    int n_elem;
+    xmlAttrPtr attr; /* the attribute */
+    int n_attr;
 
-    /* missing type support */
+    for (n_doc = 0;n_doc < gen_nb_xmlDocPtr;n_doc++) {
+    for (n_elem = 0;n_elem < gen_nb_xmlNodePtr;n_elem++) {
+    for (n_attr = 0;n_attr < gen_nb_xmlAttrPtr;n_attr++) {
+        mem_base = xmlMemBlocks();
+        doc = gen_xmlDocPtr(n_doc, 0);
+        elem = gen_xmlNodePtr(n_elem, 1);
+        attr = gen_xmlAttrPtr(n_attr, 2);
+
+        ret_val = xmlIsRef(doc, elem, attr);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlDocPtr(n_doc, doc, 0);
+        des_xmlNodePtr(n_elem, elem, 1);
+        des_xmlAttrPtr(n_attr, attr, 2);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlIsRef",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_doc);
+            printf(" %d", n_elem);
+            printf(" %d", n_attr);
+            printf("\n");
+        }
+    }
+    }
+    }
+
+    function_tests++;
     return(ret);
 }
 
@@ -13575,8 +13654,37 @@ static int
 test_xmlRemoveID(void) {
     int ret = 0;
 
+    int mem_base;
+    int ret_val;
+    xmlDocPtr doc; /* the document */
+    int n_doc;
+    xmlAttrPtr attr; /* the attribute */
+    int n_attr;
 
-    /* missing type support */
+    for (n_doc = 0;n_doc < gen_nb_xmlDocPtr;n_doc++) {
+    for (n_attr = 0;n_attr < gen_nb_xmlAttrPtr;n_attr++) {
+        mem_base = xmlMemBlocks();
+        doc = gen_xmlDocPtr(n_doc, 0);
+        attr = gen_xmlAttrPtr(n_attr, 1);
+
+        ret_val = xmlRemoveID(doc, attr);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlDocPtr(n_doc, doc, 0);
+        des_xmlAttrPtr(n_attr, attr, 1);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlRemoveID",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_doc);
+            printf(" %d", n_attr);
+            printf("\n");
+        }
+    }
+    }
+
+    function_tests++;
     return(ret);
 }
 
@@ -13585,8 +13693,37 @@ static int
 test_xmlRemoveRef(void) {
     int ret = 0;
 
+    int mem_base;
+    int ret_val;
+    xmlDocPtr doc; /* the document */
+    int n_doc;
+    xmlAttrPtr attr; /* the attribute */
+    int n_attr;
 
-    /* missing type support */
+    for (n_doc = 0;n_doc < gen_nb_xmlDocPtr;n_doc++) {
+    for (n_attr = 0;n_attr < gen_nb_xmlAttrPtr;n_attr++) {
+        mem_base = xmlMemBlocks();
+        doc = gen_xmlDocPtr(n_doc, 0);
+        attr = gen_xmlAttrPtr(n_attr, 1);
+
+        ret_val = xmlRemoveRef(doc, attr);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlDocPtr(n_doc, doc, 0);
+        des_xmlAttrPtr(n_attr, attr, 1);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlRemoveRef",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_doc);
+            printf(" %d", n_attr);
+            printf("\n");
+        }
+    }
+    }
+
+    function_tests++;
     return(ret);
 }
 
@@ -14167,8 +14304,60 @@ static int
 test_xmlValidateOneAttribute(void) {
     int ret = 0;
 
+#ifdef LIBXML_VALID_ENABLED
+    int mem_base;
+    int ret_val;
+    xmlValidCtxtPtr ctxt; /* the validation context */
+    int n_ctxt;
+    xmlDocPtr doc; /* a document instance */
+    int n_doc;
+    xmlNodePtr elem; /* an element instance */
+    int n_elem;
+    xmlAttrPtr attr; /* an attribute instance */
+    int n_attr;
+    const xmlChar * value; /* the attribute value (without entities processing) */
+    int n_value;
 
-    /* missing type support */
+    for (n_ctxt = 0;n_ctxt < gen_nb_xmlValidCtxtPtr;n_ctxt++) {
+    for (n_doc = 0;n_doc < gen_nb_xmlDocPtr;n_doc++) {
+    for (n_elem = 0;n_elem < gen_nb_xmlNodePtr;n_elem++) {
+    for (n_attr = 0;n_attr < gen_nb_xmlAttrPtr;n_attr++) {
+    for (n_value = 0;n_value < gen_nb_const_xmlChar_ptr;n_value++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_xmlValidCtxtPtr(n_ctxt, 0);
+        doc = gen_xmlDocPtr(n_doc, 1);
+        elem = gen_xmlNodePtr(n_elem, 2);
+        attr = gen_xmlAttrPtr(n_attr, 3);
+        value = gen_const_xmlChar_ptr(n_value, 4);
+
+        ret_val = xmlValidateOneAttribute(ctxt, doc, elem, attr, value);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlValidCtxtPtr(n_ctxt, ctxt, 0);
+        des_xmlDocPtr(n_doc, doc, 1);
+        des_xmlNodePtr(n_elem, elem, 2);
+        des_xmlAttrPtr(n_attr, attr, 3);
+        des_const_xmlChar_ptr(n_value, value, 4);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlValidateOneAttribute",
+	           xmlMemBlocks() - mem_base);
+	    ret++;
+            printf(" %d", n_ctxt);
+            printf(" %d", n_doc);
+            printf(" %d", n_elem);
+            printf(" %d", n_attr);
+            printf(" %d", n_value);
+            printf("\n");
+        }
+    }
+    }
+    }
+    }
+    }
+#endif
+
+    function_tests++;
     return(ret);
 }
 
@@ -14433,7 +14622,7 @@ static int
 test_valid(void) {
     int ret = 0;
 
-    printf("Testing valid : 17 of 67 functions ...\n");
+    printf("Testing valid : 22 of 67 functions ...\n");
     ret += test_xmlAddAttributeDecl();
     ret += test_xmlAddElementDecl();
     ret += test_xmlAddID();
@@ -23727,4 +23916,37 @@ test_xpointer(void) {
     if (ret != 0)
 	printf("Module xpointer: %d errors\n", ret);
     return(ret);
+}
+static int
+test_module(const char *module) {
+    if (!strcmp(module, "HTMLparser")) return(test_HTMLparser());
+    if (!strcmp(module, "HTMLtree")) return(test_HTMLtree());
+    if (!strcmp(module, "catalog")) return(test_catalog());
+    if (!strcmp(module, "chvalid")) return(test_chvalid());
+    if (!strcmp(module, "dict")) return(test_dict());
+    if (!strcmp(module, "encoding")) return(test_encoding());
+    if (!strcmp(module, "entities")) return(test_entities());
+    if (!strcmp(module, "hash")) return(test_hash());
+    if (!strcmp(module, "list")) return(test_list());
+    if (!strcmp(module, "nanoftp")) return(test_nanoftp());
+    if (!strcmp(module, "nanohttp")) return(test_nanohttp());
+    if (!strcmp(module, "parser")) return(test_parser());
+    if (!strcmp(module, "pattern")) return(test_pattern());
+    if (!strcmp(module, "relaxng")) return(test_relaxng());
+    if (!strcmp(module, "schemasInternals")) return(test_schemasInternals());
+    if (!strcmp(module, "tree")) return(test_tree());
+    if (!strcmp(module, "uri")) return(test_uri());
+    if (!strcmp(module, "valid")) return(test_valid());
+    if (!strcmp(module, "xinclude")) return(test_xinclude());
+    if (!strcmp(module, "xmlIO")) return(test_xmlIO());
+    if (!strcmp(module, "xmlerror")) return(test_xmlerror());
+    if (!strcmp(module, "xmlreader")) return(test_xmlreader());
+    if (!strcmp(module, "xmlsave")) return(test_xmlsave());
+    if (!strcmp(module, "xmlschemas")) return(test_xmlschemas());
+    if (!strcmp(module, "xmlschemastypes")) return(test_xmlschemastypes());
+    if (!strcmp(module, "xmlstring")) return(test_xmlstring());
+    if (!strcmp(module, "xmlwriter")) return(test_xmlwriter());
+    if (!strcmp(module, "xpath")) return(test_xpath());
+    if (!strcmp(module, "xpointer")) return(test_xpointer());
+    return(0);
 }

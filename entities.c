@@ -61,6 +61,33 @@ static xmlEntity xmlEntityApos = {
     NULL, NULL, NULL, NULL, 0
 };
 
+/**
+ * xmlEntitiesErrMemory:
+ * @extra:  extra informations
+ *
+ * Handle an out of memory condition
+ */
+static void
+xmlEntitiesErrMemory(const char *extra)
+{
+    __xmlSimpleError(XML_FROM_TREE, XML_ERR_NO_MEMORY, NULL, NULL, extra);
+}
+
+/**
+ * xmlEntitiesErr:
+ * @code:  the error code
+ * @msg:  the message
+ *
+ * Handle an out of memory condition
+ */
+static void
+xmlEntitiesErr(xmlParserErrors code, const char *msg)
+{
+    const char *msg = NULL;
+
+    __xmlSimpleError(XML_FROM_TREE, code, NULL, msg, NULL);
+}
+
 /*
  * xmlFreeEntity : clean-up an entity record.
  */
@@ -118,8 +145,7 @@ xmlAddEntity(xmlDtdPtr dtd, const xmlChar *name, int type,
 	return(NULL);
     ret = (xmlEntityPtr) xmlMalloc(sizeof(xmlEntity));
     if (ret == NULL) {
-	xmlGenericError(xmlGenericErrorContext,
-		"xmlAddEntity: out of memory\n");
+        xmlEntitiesErrMemory("xmlAddEntity:: malloc failed");
 	return(NULL);
     }
     memset(ret, 0, sizeof(xmlEntity));
@@ -213,13 +239,13 @@ xmlAddDtdEntity(xmlDocPtr doc, const xmlChar *name, int type,
     xmlDtdPtr dtd;
 
     if (doc == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-	        "xmlAddDtdEntity: doc == NULL !\n");
+	xmlEntitiesErr(XML_DTD_NO_DOC,
+	        "xmlAddDtdEntity: document is NULL");
 	return(NULL);
     }
     if (doc->extSubset == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-	        "xmlAddDtdEntity: document without external subset !\n");
+	xmlEntitiesErr(XML_DTD_NO_DTD,
+	        "xmlAddDtdEntity: document without external subset");
 	return(NULL);
     }
     dtd = doc->extSubset;
@@ -262,13 +288,13 @@ xmlAddDocEntity(xmlDocPtr doc, const xmlChar *name, int type,
     xmlDtdPtr dtd;
 
     if (doc == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-	        "xmlAddDocEntity: document is NULL !\n");
+	xmlEntitiesErr(XML_DTD_NO_DOC,
+	        "xmlAddDocEntity: document is NULL");
 	return(NULL);
     }
     if (doc->intSubset == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-	        "xmlAddDocEntity: document without internal subset !\n");
+	xmlEntitiesErr(XML_DTD_NO_DTD,
+	        "xmlAddDocEntity: document without internal subset");
 	return(NULL);
     }
     dtd = doc->intSubset;
@@ -404,7 +430,7 @@ xmlGetDocEntity(xmlDocPtr doc, const xmlChar *name) {
     buffer = (xmlChar *)						\
     		xmlRealloc(buffer, buffer_size * sizeof(xmlChar));	\
     if (buffer == NULL) {						\
-	xmlGenericError(xmlGenericErrorContext, "realloc failed\n");	\
+        xmlEntitiesErrMemory("xmlEncodeEntitiesReentrant: realloc failed");\
 	return(NULL);							\
     }									\
 }
@@ -440,7 +466,7 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
     buffer_size = 1000;
     buffer = (xmlChar *) xmlMalloc(buffer_size * sizeof(xmlChar));
     if (buffer == NULL) {
-	xmlGenericError(xmlGenericErrorContext, "malloc failed\n");
+        xmlEntitiesErrMemory("xmlEncodeEntitiesReentrant: malloc failed");
 	return(NULL);
     }
     out = buffer;
@@ -498,8 +524,8 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
 		int val = 0, l = 1;
 
 		if (*cur < 0xC0) {
-		    xmlGenericError(xmlGenericErrorContext,
-			    "xmlEncodeEntitiesReentrant : input not UTF-8\n");
+		    xmlEntitiesErr(XML_CHECK_NOT_UTF8,
+			    "xmlEncodeEntitiesReentrant : input not UTF-8");
 		    if (doc != NULL)
 			doc->encoding = xmlStrdup(BAD_CAST "ISO-8859-1");
 		    snprintf(buf, sizeof(buf), "&#%d;", *cur);
@@ -531,7 +557,7 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
 		    l = 4;
 		}
 		if ((l == 1) || (!IS_CHAR(val))) {
-		    xmlGenericError(xmlGenericErrorContext,
+		    xmlEntitiesErr(XML_ERR_INVALID_CHAR,
 			"xmlEncodeEntitiesReentrant : char out of range\n");
 		    if (doc != NULL)
 			doc->encoding = xmlStrdup(BAD_CAST "ISO-8859-1");
@@ -593,7 +619,7 @@ xmlEncodeSpecialChars(xmlDocPtr doc ATTRIBUTE_UNUSED, const xmlChar *input) {
     buffer_size = 1000;
     buffer = (xmlChar *) xmlMalloc(buffer_size * sizeof(xmlChar));
     if (buffer == NULL) {
-	xmlGenericError(xmlGenericErrorContext, "malloc failed\n");
+        xmlEntitiesErrMemory("xmlEncodeSpecialChars: malloc failed");
 	return(NULL);
     }
     out = buffer;
@@ -703,8 +729,7 @@ xmlCopyEntity(xmlEntityPtr ent) {
 
     cur = (xmlEntityPtr) xmlMalloc(sizeof(xmlEntity));
     if (cur == NULL) {
-	xmlGenericError(xmlGenericErrorContext,
-		"xmlCopyEntity: out of memory !\n");
+        xmlEntitiesErrMemory("xmlCopyEntity:: malloc failed");
 	return(NULL);
     }
     memset(cur, 0, sizeof(xmlEntity));
@@ -863,9 +888,8 @@ xmlDumpEntityDecl(xmlBufferPtr buf, xmlEntityPtr ent) {
 	    xmlBufferWriteChar(buf, ">\n");
 	    break;
 	default:
-	    xmlGenericError(xmlGenericErrorContext,
-		"xmlDumpEntitiesDecl: internal: unknown type %d\n",
-		    ent->etype);
+	    xmlEntitiesErr(XML_DTD_UNKNOWN_ENTITY,
+		"xmlDumpEntitiesDecl: internal: unknown type entity type");
     }
 }
 

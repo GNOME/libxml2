@@ -33,10 +33,11 @@ skipped_functions = [
 "xmlReaderNewFd", "xmlReaderForFd",
 "xmlIORead", "xmlReadIO", "xmlCtxtReadIO",
 "htmlIORead", "htmlReadIO", "htmlCtxtReadIO",
-"xmlReaderNewIO", 
+"xmlReaderNewIO", "xmlBufferDump",
 # library state cleanup, generate false leak informations and other
 # troubles, heavillyb tested otherwise.
-"xmlCleanupParser", "xmlRelaxNGCleanupTypes",
+"xmlCleanupParser", "xmlRelaxNGCleanupTypes", "xmlSetListDoc",
+"xmlSetTreeDoc", "xmlUnlinkNode",
 # hard to avoid leaks in the tests
 "xmlStrcat", "xmlStrncat", "xmlCatalogAddLocal",
 # unimplemented
@@ -67,9 +68,9 @@ skipped_memcheck = [ "xmlLoadCatalog", "xmlAddEncodingAlias",
 #
 extra_pre_call = {
    "xmlSAXUserParseFile":
-       "if (sax == &xmlDefaultSAXHandler) user_data = NULL;",
+       "if (sax == (xmlSAXHandlerPtr)&xmlDefaultSAXHandler) user_data = NULL;",
    "xmlSAXUserParseMemory":
-       "if (sax == &xmlDefaultSAXHandler) user_data = NULL;",
+       "if (sax == (xmlSAXHandlerPtr)&xmlDefaultSAXHandler) user_data = NULL;",
 }
 extra_post_call = {
    "xmlAddChild": 
@@ -85,10 +86,16 @@ extra_post_call = {
    "xmlDocSetRootElement": 
        "if (doc == NULL) { xmlFreeNode(root) ; root = NULL ; }",
    "xmlReplaceNode": 
-       """if ((old == NULL) || (old->parent == NULL)) {
-              xmlFreeNode(cur) ; cur = NULL ; }""",
+       """if (cur != NULL) {
+              xmlUnlinkNode(cur);
+              xmlFreeNode(cur) ; cur = NULL ; }
+          if (old != NULL) {
+              xmlUnlinkNode(old);
+              xmlFreeNode(old) ; old = NULL ; }
+	  ret_val = NULL;""",
    "xmlTextMerge": 
        """if ((first != NULL) && (first->type != XML_TEXT_NODE)) {
+              xmlUnlinkNode(second);
               xmlFreeNode(second) ; second = NULL ; }""",
    "xmlBuildQName": 
        """if ((ret_val != NULL) && (ret_val != ncname) &&
@@ -103,6 +110,7 @@ extra_post_call = {
    "xmlSaveFileTo": """buf = NULL;""",
    "xmlSaveFormatFileTo": """buf = NULL;""",
    "xmlIOParseDTD": "input = NULL;",
+   "xmlRemoveProp": "cur = NULL;",
 }
 
 modules = []
@@ -564,6 +572,19 @@ test_%s(void) {
     return(ret);
 }
 """ % (module))
+
+#
+# Generate direct module caller
+#
+test.write("""static int
+test_module(const char *module) {
+""");
+for module in modules:
+    test.write("""    if (!strcmp(module, "%s")) return(test_%s());\n""" % (
+        module, module))
+test.write("""    return(0);
+}
+""");
 
 print "Generated test for %d modules and %d functions" %(len(modules), nb_tests)
 

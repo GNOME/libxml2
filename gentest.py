@@ -14,8 +14,8 @@ except:
 #
 # Modules we don't want skip in API test
 #
-skipped_modules = [ "SAX", "SAX2", "xlink", "threads", "globals",
-  "xpathInternals", "parserInternals", "xmlmemory",
+skipped_modules = [ "SAX", "xlink", "threads", "globals",
+  "xpathInternals", "xmlmemory",
   "xmlversion", "debugXML", "xmlexports", "DOCBparser",
 
   # temporary
@@ -53,11 +53,32 @@ skipped_functions = [
 "xmlListDelete", "xmlOutputBufferClose", "xmlNanoFTPClose",
 # deprecated
 "xmlCatalogGetPublic", "xmlCatalogGetSystem", "xmlEncodeEntities",
-"xmlNewGlobalNs",
+"xmlNewGlobalNs", "xmlHandleEntity", "xmlNamespaceParseNCName",
+"xmlNamespaceParseNSDef", "xmlNamespaceParseQName",
+"xmlParseNamespace", "xmlParseQuotedString", "xmlParserHandleReference",
+"xmlScanName",
 # allocators
 "xmlMemFree",
 # verbosity
 "xmlCatalogSetDebug",
+# Internal functions, no user space should really call them
+"xmlParseAttribute", "xmlParseAttributeListDecl", "xmlParseName",
+"xmlParseNmtoken", "xmlParseEntityValue", "xmlParseAttValue",
+"xmlParseSystemLiteral", "xmlParsePubidLiteral", "xmlParseCharData",
+"xmlParseExternalID", "xmlParseComment", "xmlParsePITarget", "xmlParsePI",
+"xmlParseNotationDecl", "xmlParseEntityDecl", "xmlParseDefaultDecl",
+"xmlParseNotationType", "xmlParseEnumerationType", "xmlParseEnumeratedType",
+"xmlParseAttributeType", "xmlParseAttributeListDecl",
+"xmlParseElementMixedContentDecl", "xmlParseElementChildrenContentDecl",
+"xmlParseElementContentDecl", "xmlParseElementDecl", "xmlParseMarkupDecl",
+"xmlParseCharRef", "xmlParseEntityRef", "xmlParseReference",
+"xmlParsePEReference", "xmlParseDocTypeDecl", "xmlParseAttribute",
+"xmlParseStartTag", "xmlParseEndTag", "xmlParseCDSect", "xmlParseContent",
+"xmlParseElement", "xmlParseVersionNum", "xmlParseVersionInfo",
+"xmlParseEncName", "xmlParseEncodingDecl", "xmlParseSDDecl",
+"xmlParseXMLDecl", "xmlParseTextDecl", "xmlParseMisc",
+"xmlParseExternalSubset", "xmlParserHandlePEReference",
+"xmlSkipBlankChars",
 ]
 
 #

@@ -1004,6 +1004,7 @@ inputPop(xmlParserCtxtPtr ctxt)
 int
 nodePush(xmlParserCtxtPtr ctxt, xmlNodePtr value)
 {
+    if (ctxt == NULL) return(0);
     if (ctxt->nodeNr >= ctxt->nodeMax) {
         ctxt->nodeMax *= 2;
         ctxt->nodeTab =
@@ -1039,8 +1040,9 @@ nodePop(xmlParserCtxtPtr ctxt)
 {
     xmlNodePtr ret;
 
+    if (ctxt == NULL) return(NULL);
     if (ctxt->nodeNr <= 0)
-        return (0);
+        return (NULL);
     ctxt->nodeNr--;
     if (ctxt->nodeNr > 0)
         ctxt->node = ctxt->nodeTab[ctxt->nodeNr - 1];
@@ -1136,6 +1138,8 @@ nameNsPop(xmlParserCtxtPtr ctxt)
 int
 namePush(xmlParserCtxtPtr ctxt, const xmlChar * value)
 {
+    if (ctxt == NULL) return (-1);
+
     if (ctxt->nameNr >= ctxt->nameMax) {
         const xmlChar * *tmp;
         ctxt->nameMax *= 2;
@@ -1168,8 +1172,8 @@ namePop(xmlParserCtxtPtr ctxt)
 {
     const xmlChar *ret;
 
-    if (ctxt->nameNr <= 0)
-        return (0);
+    if ((ctxt == NULL) || (ctxt->nameNr <= 0))
+        return (NULL);
     ctxt->nameNr--;
     if (ctxt->nameNr > 0)
         ctxt->name = ctxt->nameTab[ctxt->nameNr - 1];
@@ -2184,6 +2188,7 @@ xmlSplitQName(xmlParserCtxtPtr ctxt, const xmlChar *name, xmlChar **prefix) {
     const xmlChar *cur = name;
     int c;
 
+    if (prefix == NULL) return(NULL);
     *prefix = NULL;
 
     if (cur == NULL) return(NULL);
@@ -2996,6 +3001,7 @@ mem_error:
 
 xmlChar *
 xmlParseAttValue(xmlParserCtxtPtr ctxt) {
+    if ((ctxt == NULL) || (ctxt->input == NULL)) return(NULL);
     return(xmlParseAttValueInternal(ctxt, NULL, NULL, 0));
 }
 

@@ -186,6 +186,7 @@ int
 xmlSAX2HasInternalSubset(void *ctx)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
+    if ((ctxt == NULL) || (ctxt->myDoc == NULL)) return(0);
     return(ctxt->myDoc->intSubset != NULL);
 }
 
@@ -201,6 +202,7 @@ int
 xmlSAX2HasExternalSubset(void *ctx)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
+    if ((ctxt == NULL) || (ctxt->myDoc == NULL)) return(0);
     return(ctxt->myDoc->extSubset != NULL);
 }
 
@@ -1411,7 +1413,7 @@ xmlSAX2StartElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlNodePtr ret;
-    xmlNodePtr parent = ctxt->node;
+    xmlNodePtr parent;
     xmlNsPtr ns;
     xmlChar *name;
     xmlChar *prefix;
@@ -1419,11 +1421,12 @@ xmlSAX2StartElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
     const xmlChar *value;
     int i;
 
+    if ((ctx == NULL) || (fullname == NULL)) return;
+    parent = ctxt->node;
 #ifdef DEBUG_SAX
     xmlGenericError(xmlGenericErrorContext,
 	    "SAX.xmlSAX2StartElement(%s)\n", fullname);
 #endif
-    if ((ctx == NULL) || (fullname == NULL)) return;
 
     /*
      * First check on validity:
@@ -1617,9 +1620,10 @@ xmlSAX2EndElement(void *ctx, const xmlChar *name ATTRIBUTE_UNUSED)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlParserNodeInfo node_info;
-    xmlNodePtr cur = ctxt->node;
+    xmlNodePtr cur;
 
     if (ctx == NULL) return;
+    cur = ctxt->node;
 #ifdef DEBUG_SAX
     if (name == NULL)
         xmlGenericError(xmlGenericErrorContext, "SAX.xmlSAX2EndElement(NULL)\n");
@@ -2009,12 +2013,13 @@ xmlSAX2StartElementNs(void *ctx,
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlNodePtr ret;
-    xmlNodePtr parent = ctxt->node;
+    xmlNodePtr parent;
     xmlNsPtr last = NULL, ns;
     const xmlChar *uri, *pref;
     int i, j;
 
     if (ctx == NULL) return;
+    parent = ctxt->node;
     /*
      * First check on validity:
      */
@@ -2191,9 +2196,10 @@ xmlSAX2EndElementNs(void *ctx,
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlParserNodeInfo node_info;
-    xmlNodePtr cur = ctxt->node;
+    xmlNodePtr cur;
 
     if (ctx == NULL) return;
+    cur = ctxt->node;
     /* Capture end position and add node */
     if ((ctxt->record_info) && (cur != NULL)) {
         node_info.end_pos = ctxt->input->cur - ctxt->input->base;
@@ -2644,7 +2650,7 @@ xmlDefaultSAXHandlerInit(void)
 void
 xmlSAX2InitHtmlDefaultSAXHandler(xmlSAXHandler *hdlr)
 {
-    if(hdlr->initialized != 0)
+    if ((hdlr == NULL) || (hdlr->initialized != 0))
 	return;
 
     hdlr->internalSubset = xmlSAX2InternalSubset;
@@ -2702,7 +2708,7 @@ htmlDefaultSAXHandlerInit(void)
 void
 xmlSAX2InitDocbDefaultSAXHandler(xmlSAXHandler *hdlr)
 {
-    if(hdlr->initialized != 0)
+    if ((hdlr == NULL) || (hdlr->initialized != 0))
 	return;
 
     hdlr->internalSubset = xmlSAX2InternalSubset;

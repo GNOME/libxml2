@@ -390,6 +390,7 @@ xmlParserInputShrink(xmlParserInputPtr in) {
 #ifdef DEBUG_INPUT
     xmlGenericError(xmlGenericErrorContext, "Shrink\n");
 #endif
+    if (in == NULL) return;
     if (in->buf == NULL) return;
     if (in->base == NULL) return;
     if (in->cur == NULL) return;
@@ -446,7 +447,8 @@ xmlParserInputShrink(xmlParserInputPtr in) {
 void
 xmlNextChar(xmlParserCtxtPtr ctxt)
 {
-    if (ctxt->instate == XML_PARSER_EOF)
+    if ((ctxt == NULL) || (ctxt->instate == XML_PARSER_EOF) ||
+        (ctxt->input == NULL))
         return;
 
     if (ctxt->charset == XML_CHAR_ENCODING_UTF8) {
@@ -606,6 +608,7 @@ encoding_error:
 
 int
 xmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
+    if ((ctxt == NULL) || (len == NULL) || (ctxt->input == NULL)) return(0);
     if (ctxt->instate == XML_PARSER_EOF)
 	return(0);
 
@@ -746,6 +749,7 @@ encoding_error:
 int
 xmlStringCurrentChar(xmlParserCtxtPtr ctxt, const xmlChar * cur, int *len)
 {
+    if ((len == NULL) || (cur == NULL)) return(0);
     if ((ctxt == NULL) || (ctxt->charset == XML_CHAR_ENCODING_UTF8)) {
         /*
          * We are supposed to handle UTF8, check it's valid
@@ -842,6 +846,7 @@ encoding_error:
  */
 int
 xmlCopyCharMultiByte(xmlChar *out, int val) {
+    if (out == NULL) return(0);
     /*
      * We are supposed to handle UTF8, check it's valid
      * From rfc2044: encoding of the Unicode values on UTF-8:
@@ -884,6 +889,7 @@ xmlCopyCharMultiByte(xmlChar *out, int val) {
 
 int
 xmlCopyChar(int len ATTRIBUTE_UNUSED, xmlChar *out, int val) {
+    if (out == NULL) return(0);
     /* the len parameter is ignored */
     if  (val >= 0x80) {
 	return(xmlCopyCharMultiByte (out, val));

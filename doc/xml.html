@@ -575,7 +575,7 @@ to test those</p>
 <ul>
   <li>a number of bug fixes: configure scripts, base handling, parser, memory
     usage, HTML parser, XPath, documentation (Christian Cornelssen),
-    indentation, URI parsing </li>
+    indentation, URI parsing</li>
   <li>Optimizations for XMLSec, fixing and making public some of the network
     protocol handlers (Aleksey)</li>
   <li>performance patch from Gary Pennington</li>
@@ -1414,9 +1414,12 @@ or libxslt wrappers or bindings:</p>
     href="http://axkit.org/download/">XML::LibXSLT</a>, a Perl wrapper for
     libxml2/libxslt as part of the <a href="http://axkit.com/">AxKit XML
     application server</a></li>
-  <li><a href="mailto:dkuhlman@cutter.rexx.com">Dave Kuhlman</a> provides and
+  <li><a href="mailto:dkuhlman@cutter.rexx.com">Dave Kuhlman</a> provides an
     earlier version of the libxml/libxslt <a
     href="http://www.rexx.com/~dkuhlman">wrappers for Python</a></li>
+  <li>Gopal.V and Peter Minten develop <a
+    href="http://savannah.gnu.org/projects/libxmlsharp">libxml#</a>, a set of
+    C# libxml2 bindings</li>
   <li>Petr Kozelka provides <a
     href="http://sourceforge.net/projects/libxml2-pas">Pascal units to glue
     libxml2</a> with Kylix, Delphi and other Pascal compilers</li>
@@ -2612,6 +2615,7 @@ xmlOutputBufferCreateOwn(FILE *file, xmlCharEncodingHandlerPtr encoder) {
         ret-&gt;closecallback = NULL;  /* No close callback */
     }
     return(ret); <br>
+
 
 
 

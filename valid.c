@@ -657,8 +657,13 @@ xmlValidBuildContentModel(xmlValidCtxtPtr ctxt, xmlElementPtr elem) {
     if (elem->etype != XML_ELEMENT_TYPE_ELEMENT)
 	return(1);
     /* TODO: should we rebuild in this case ? */
-    if (elem->contModel != NULL)
+    if (elem->contModel != NULL) {
+	if (!xmlRegexpIsDeterminist(elem->contModel)) {
+	    ctxt->valid = 0;
+	    return(0);
+	}
 	return(1);
+    }
 
     ctxt->am = xmlNewAutomata();
     if (ctxt->am == NULL) {
@@ -680,6 +685,10 @@ xmlValidBuildContentModel(xmlValidCtxtPtr ctxt, xmlElementPtr elem) {
         xmlRegexpPrint(stderr, elem->contModel);
 #endif
         ctxt->valid = 0;
+	ctxt->state = NULL;
+	xmlFreeAutomata(ctxt->am);
+	ctxt->am = NULL;
+	return(0);
     }
     ctxt->state = NULL;
     xmlFreeAutomata(ctxt->am);
@@ -4717,6 +4726,9 @@ xmlValidateElementContent(xmlValidCtxtPtr ctxt, xmlNodePtr child,
     } else {
 	xmlRegExecCtxtPtr exec;
 
+	if (!xmlRegexpIsDeterminist(elemDecl->contModel)) {
+	    return(-1);
+	}
 	ctxt->nodeMax = 0;
 	ctxt->nodeNr = 0;
 	ctxt->nodeTab = NULL;

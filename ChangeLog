@@ -1,3 +1,8 @@
+Wed Feb  5 12:00:36 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* valid.c: do not run content model validation if the
+	  content is not determinist
+
 Wed Feb  5 11:43:58 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* SAX.c: added the redefinition of namespaced attribute

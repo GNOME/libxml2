@@ -8,6 +8,9 @@ SAX.startElement(head)
 SAX.startElement(title)
 SAX.characters(BP6.com #1 online resource for, 47)
 SAX.endElement(title)
+SAX.endElement(head)
+SAX.startElement(body)
+SAX.startElement(p)
 SAX.characters(
 , 2)
 SAX.startElement(script, language='javascript')
@@ -17,8 +20,8 @@ SAX.endElement(script)
 SAX.characters(
 , 2)
 SAX.comment( END Naviscope Javascript )
-SAX.error: htmlParseStartTag: invalid element name
-SAX.characters(!DOCTYPE HTML PUBLIC "-//W3C//, 48)
+SAX.error: Misplaced DOCTYPE declaration
+SAX.internalSubset(HTML, -//W3C//DTD HTML 3.2//EN, )
 SAX.comment(last modified on Tuesday, February 22, 2000 11:47 PM )
 SAX.characters(
 , 2)
@@ -69,12 +72,15 @@ SAX.characters(
 , 4)
 SAX.startElement(meta, content='MSHTML 5.00.3103.1000', name='GENERATOR')
 SAX.endElement(meta)
-SAX.endElement(head)
+SAX.error: Unexpected end tag : head
 SAX.characters(
 , 2)
+SAX.endElement(p)
 SAX.startElement(body, aLink='red', bgColor='black', link='red', text='white', vLink='red')
+SAX.startElement(p)
 SAX.characters(
 , 2)
+SAX.endElement(p)
 SAX.startElement(p)
 SAX.characters(
 , 2)
@@ -2913,6 +2919,7 @@ SAX.comment(	<TR>		<TD WIDTH="780">			<P ALIGN="CENTER"><FONT SIZE="1" COLOR="#9
 SAX.endElement(tbody)
 SAX.endElement(table)
 SAX.endElement(div)
+SAX.startElement(p)
 SAX.characters(
 , 2)
 SAX.startElement(script)
@@ -2920,6 +2927,8 @@ SAX.characters( window.open=NS_ActualOpen; , 28)
 SAX.endElement(script)
 SAX.characters(
 , 2)
+SAX.endElement(p)
+SAX.endElement(body)
 SAX.endElement(body)
 SAX.endElement(html)
 SAX.ignorableWhitespace(

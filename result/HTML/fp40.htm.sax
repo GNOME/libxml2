@@ -2,30 +2,39 @@ SAX.setDocumentLocator()
 SAX.startDocument()
 SAX.internalSubset(html, -//IETF//DTD HTML//EN, )
 SAX.startElement(html)
+SAX.startElement(body)
+SAX.startElement(p)
 SAX.characters(
 
 , 2)
+SAX.endElement(p)
 SAX.startElement(head)
+SAX.endElement(head)
+SAX.startElement(p)
 SAX.characters(
 , 1)
 SAX.startElement(meta, name='GENERATOR', content='Microsoft FrontPage 4.0')
 SAX.endElement(meta)
 SAX.characters(
 , 1)
+SAX.endElement(p)
 SAX.startElement(title)
 SAX.characters(README - Microsoft FrontPage 2, 51)
 SAX.endElement(title)
+SAX.startElement(p)
 SAX.characters(
 , 1)
 SAX.startElement(meta, name='Microsoft Theme', content='none')
 SAX.endElement(meta)
 SAX.characters(
 , 1)
-SAX.endElement(head)
+SAX.error: Unexpected end tag : head
 SAX.characters(
 
 , 2)
+SAX.endElement(p)
 SAX.startElement(body)
+SAX.startElement(p)
 SAX.characters(
 , 1)
 SAX.startElement(font, face='Verdana')
@@ -169,6 +178,7 @@ SAX.characters(
 SAX.endElement(font)
 SAX.characters(
 , 1)
+SAX.endElement(p)
 SAX.startElement(blockquote)
 SAX.characters(
   , 3)
@@ -184,6 +194,7 @@ SAX.endElement(font)
 SAX.characters(
 , 1)
 SAX.endElement(blockquote)
+SAX.startElement(p)
 SAX.characters(
 , 1)
 SAX.startElement(font, face='Verdana')
@@ -454,9 +465,13 @@ SAX.characters(
 SAX.endElement(font)
 SAX.characters(
 , 1)
+SAX.endElement(p)
 SAX.endElement(body)
+SAX.startElement(p)
 SAX.characters(
 , 1)
+SAX.endElement(p)
+SAX.endElement(body)
 SAX.endElement(html)
 SAX.ignorableWhitespace(
 , 1)

@@ -426,10 +426,17 @@ xmlCreateIntSubset(xmlDocPtr doc, const xmlChar *name,
 	} else {
 	    xmlNodePtr prev;
 
-	    prev = doc->last;
-	    prev->next = (xmlNodePtr) cur;
-	    cur->prev = prev;
-	    doc->last = (xmlNodePtr) cur;
+	    if (doc->type == XML_HTML_DOCUMENT_NODE) {
+		prev = doc->children;
+		prev->prev = (xmlNodePtr) cur;
+		cur->next = prev;
+		doc->children = (xmlNodePtr) cur;
+	    } else {
+		prev = doc->last;
+		prev->next = (xmlNodePtr) cur;
+		cur->prev = prev;
+		doc->last = (xmlNodePtr) cur;
+	    }
 	}
     }
     return(cur);

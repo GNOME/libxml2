@@ -2,21 +2,31 @@ SAX.setDocumentLocator()
 SAX.startDocument()
 SAX.internalSubset(HTML, -//W3C//DTD HTML 4.0 Transitional//EN, http://www.w3.org/TR/REC-html40/loose.dtd)
 SAX.startElement(html)
+SAX.startElement(body)
+SAX.startElement(p)
 SAX.characters(
 , 1)
+SAX.endElement(p)
 SAX.startElement(head)
+SAX.endElement(head)
+SAX.startElement(p)
 SAX.characters(
   , 3)
+SAX.endElement(p)
 SAX.startElement(title)
 SAX.endElement(title)
+SAX.startElement(p)
 SAX.characters(
 , 1)
-SAX.endElement(head)
+SAX.error: Unexpected end tag : head
 SAX.characters(
 , 1)
+SAX.endElement(p)
 SAX.startElement(body)
+SAX.startElement(p)
 SAX.characters(
 , 1)
+SAX.endElement(p)
 SAX.startElement(ul)
 SAX.characters(
 , 1)
@@ -28,9 +38,12 @@ SAX.startElement(li)
 SAX.characters(Second item, closes the first , 34)
 SAX.endElement(li)
 SAX.endElement(ul)
+SAX.startElement(p)
 SAX.characters(
 
 , 2)
+SAX.endElement(p)
+SAX.endElement(body)
 SAX.endElement(body)
 SAX.endElement(html)
 SAX.ignorableWhitespace(

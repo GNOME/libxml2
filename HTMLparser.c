@@ -552,6 +552,20 @@ char *htmlStartClose[] = {
 NULL
 };
 
+/*
+ * The list of HTML elements which are supposed not to have
+ * CDATA content and where a p element will be implied
+ *
+ * TODO: extend that list by reading the HTML SGML DtD on
+ *       implied paragraph
+ */
+static char *htmlNoContentElements[] = {
+    "html",
+    "head",
+    "body",
+    NULL
+};
+
 
 static char** htmlStartCloseIndex[100];
 static int htmlStartCloseIndexinitialized = 0;
@@ -843,6 +857,49 @@ htmlCheckImplied(htmlParserCtxtPtr ctxt, const xmlChar *newtag) {
 		ctxt->sax->startElement(ctxt->userData, BAD_CAST"body", NULL);
 	}
     }
+}
+
+/**
+ * htmlCheckParagraph
+ * @ctxt:  an HTML parser context
+ *
+ * Check whether a p element need to be implied before inserting
+ * characters in the current element.
+ *
+ * Returns 1 if a paragraph has been inserted, 0 if not and -1
+ *         in case of error.
+ */
+
+int
+htmlCheckParagraph(htmlParserCtxtPtr ctxt) {
+    const xmlChar *tag;
+    int i;
+
+    if (ctxt == NULL)
+	return(-1);
+    tag = ctxt->name;
+    if (tag == NULL) {
+	htmlAutoClose(ctxt, BAD_CAST"p");
+	htmlCheckImplied(ctxt, BAD_CAST"p");
+	htmlnamePush(ctxt, xmlStrdup(BAD_CAST"p"));
+	if ((ctxt->sax != NULL) && (ctxt->sax->startElement != NULL))
+	    ctxt->sax->startElement(ctxt->userData, BAD_CAST"p", NULL);
+	return(1);
+    }
+    for (i = 0; htmlNoContentElements[i] != NULL; i++) {
+	if (!xmlStrcmp(tag, BAD_CAST htmlNoContentElements[i])) {
+#ifdef DEBUG
+	    fprintf(stderr,"Implied element paragraph\n");
+#endif    
+	    htmlAutoClose(ctxt, BAD_CAST"p");
+	    htmlCheckImplied(ctxt, BAD_CAST"p");
+	    htmlnamePush(ctxt, xmlStrdup(BAD_CAST"p"));
+	    if ((ctxt->sax != NULL) && (ctxt->sax->startElement != NULL))
+		ctxt->sax->startElement(ctxt->userData, BAD_CAST"p", NULL);
+	    return(1);
+	}
+    }
+    return(0);
 }
 
 /************************************************************************
@@ -1253,7 +1310,8 @@ UTF8ToHtml(unsigned char* out, int *outlen,
 			    sizeof(html40EntitiesTable[0]));i++) {
 		if (html40EntitiesTable[i].value == c) {
 #ifdef DEBUG
-		    fprintf(stderr,"Found entity %s\n", name);
+		    fprintf(stderr,"Found entity %s\n", 
+			    html40EntitiesTable[i].name);
 #endif
 		    goto found_ent;
 		}
@@ -1496,20 +1554,21 @@ htmlHandleEntity(htmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
     /*
      * Just handle the content as a set of chars.
      */
+    htmlCheckParagraph(ctxt);
     if ((ctxt->sax != NULL) && (ctxt->sax->characters != NULL))
 	ctxt->sax->characters(ctxt->userData, entity->content, len);
 
 }
 
 /**
- * htmlNewDoc:
+ * htmlNewDocNoDtD:
  * @URI:  URI for the dtd, or NULL
  * @ExternalID:  the external ID of the DTD, or NULL
  *
- * Returns a new document
+ * Returns a new document, do not intialize the DTD if not provided
  */
 htmlDocPtr
-htmlNewDoc(const xmlChar *URI, const xmlChar *ExternalID) {
+htmlNewDocNoDtD(const xmlChar *URI, const xmlChar *ExternalID) {
     xmlDocPtr cur;
 
     /*
@@ -1525,12 +1584,8 @@ htmlNewDoc(const xmlChar *URI, const xmlChar *ExternalID) {
     cur->type = XML_HTML_DOCUMENT_NODE;
     cur->version = NULL;
     cur->intSubset = NULL;
-    if ((ExternalID == NULL) &&
-	(URI == NULL))
-	xmlCreateIntSubset(cur, BAD_CAST "HTML",
-		    BAD_CAST "-//W3C//DTD HTML 4.0 Transitional//EN",
-		    BAD_CAST "http://www.w3.org/TR/REC-html40/loose.dtd");
-    else
+    if ((ExternalID != NULL) ||
+	(URI != NULL))
 	xmlCreateIntSubset(cur, BAD_CAST "HTML", ExternalID, URI);
     cur->doc = cur;
     cur->name = NULL;
@@ -1546,6 +1601,23 @@ htmlNewDoc(const xmlChar *URI, const xmlChar *ExternalID) {
     cur->_private = NULL;
 #endif
     return(cur);
+}
+
+/**
+ * htmlNewDoc:
+ * @URI:  URI for the dtd, or NULL
+ * @ExternalID:  the external ID of the DTD, or NULL
+ *
+ * Returns a new document
+ */
+htmlDocPtr
+htmlNewDoc(const xmlChar *URI, const xmlChar *ExternalID) {
+    if ((URI == NULL) && (ExternalID == NULL))
+	return(htmlNewDocNoDtD(
+		    BAD_CAST "-//W3C//DTD HTML 4.0 Transitional//EN",
+		    BAD_CAST "http://www.w3.org/TR/REC-html40/loose.dtd"));
+
+    return(htmlNewDocNoDtD(URI, ExternalID));
 }
 
 
@@ -2062,6 +2134,7 @@ htmlParseCharData(htmlParserCtxtPtr ctxt, int cdata) {
 			ctxt->sax->ignorableWhitespace(ctxt->userData,
 			                               buf, nbchar);
 		} else {
+		    htmlCheckParagraph(ctxt);
 		    if (ctxt->sax->characters != NULL)
 			ctxt->sax->characters(ctxt->userData, buf, nbchar);
 		}
@@ -2080,6 +2153,7 @@ htmlParseCharData(htmlParserCtxtPtr ctxt, int cdata) {
 		if (ctxt->sax->ignorableWhitespace != NULL)
 		    ctxt->sax->ignorableWhitespace(ctxt->userData, buf, nbchar);
 	    } else {
+		htmlCheckParagraph(ctxt);
 		if (ctxt->sax->characters != NULL)
 		    ctxt->sax->characters(ctxt->userData, buf, nbchar);
 	    }
@@ -2861,16 +2935,19 @@ htmlParseReference(htmlParserCtxtPtr ctxt) {
         }
 	out[i] = 0;
 
+	htmlCheckParagraph(ctxt);
 	if ((ctxt->sax != NULL) && (ctxt->sax->characters != NULL))
 	    ctxt->sax->characters(ctxt->userData, out, i);
     } else {
 	ent = htmlParseEntityRef(ctxt, &name);
 	if (name == NULL) {
+	    htmlCheckParagraph(ctxt);
 	    if ((ctxt->sax != NULL) && (ctxt->sax->characters != NULL))
 	        ctxt->sax->characters(ctxt->userData, BAD_CAST "&", 1);
 	    return;
 	}
 	if ((ent == NULL) || (ent->value <= 0)) {
+	    htmlCheckParagraph(ctxt);
 	    if ((ctxt->sax != NULL) && (ctxt->sax->characters != NULL)) {
 		ctxt->sax->characters(ctxt->userData, BAD_CAST "&", 1);
 		ctxt->sax->characters(ctxt->userData, name, xmlStrlen(name));
@@ -2895,6 +2972,7 @@ htmlParseReference(htmlParserCtxtPtr ctxt) {
 	    }
 	    out[i] = 0;
 
+	    htmlCheckParagraph(ctxt);
 	    if ((ctxt->sax != NULL) && (ctxt->sax->characters != NULL))
 		ctxt->sax->characters(ctxt->userData, out, i);
 	}
@@ -2939,6 +3017,21 @@ htmlParseContent(htmlParserCtxtPtr ctxt) {
 	    (depth >= ctxt->nameNr)) {
 	    if (currentNode != NULL) xmlFree(currentNode);
 	    return;
+	}
+
+	/*
+	 * Sometimes DOCTYPE arrives in the middle of the document
+	 */
+	if ((CUR == '<') && (NXT(1) == '!') &&
+	    (UPP(2) == 'D') && (UPP(3) == 'O') &&
+	    (UPP(4) == 'C') && (UPP(5) == 'T') &&
+	    (UPP(6) == 'Y') && (UPP(7) == 'P') &&
+	    (UPP(8) == 'E')) {
+	    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+		ctxt->sax->error(ctxt->userData,
+		     "Misplaced DOCTYPE declaration\n");
+	    ctxt->wellFormed = 0;
+	    htmlParseDocTypeDecl(ctxt);
 	}
 
 	/*
@@ -3185,6 +3278,8 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
 
 int
 htmlParseDocument(htmlParserCtxtPtr ctxt) {
+    xmlDtdPtr dtd;
+
     htmlDefaultSAXHandlerInit();
     ctxt->html = 1;
 
@@ -3258,6 +3353,15 @@ htmlParseDocument(htmlParserCtxtPtr ctxt) {
      */
     if ((ctxt->sax) && (ctxt->sax->endDocument != NULL))
         ctxt->sax->endDocument(ctxt->userData);
+
+    if (ctxt->myDoc != NULL) {
+	dtd = xmlGetIntSubset(ctxt->myDoc);
+	if (dtd == NULL)
+	    ctxt->myDoc->intSubset = 
+		xmlCreateIntSubset(ctxt->myDoc, BAD_CAST "HTML", 
+		    BAD_CAST "-//W3C//DTD HTML 4.0 Transitional//EN",
+		    BAD_CAST "http://www.w3.org/TR/REC-html40/loose.dtd");
+    }
     if (! ctxt->wellFormed) return(-1);
     return(0);
 }
@@ -3848,6 +3952,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    xmlChar chr[2] = { 0 , 0 } ;
 
 		    chr[0] = (xmlChar) ctxt->token;
+		    htmlCheckParagraph(ctxt);
 		    if ((ctxt->sax != NULL) && (ctxt->sax->characters != NULL))
 			ctxt->sax->characters(ctxt->userData, chr, 1);
 		    ctxt->token = 0;
@@ -3862,6 +3967,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 				    ctxt->sax->ignorableWhitespace(
 					    ctxt->userData, &cur, 1);
 			    } else {
+				htmlCheckParagraph(ctxt);
 				if (ctxt->sax->characters != NULL)
 				    ctxt->sax->characters(
 					    ctxt->userData, &cur, 1);
@@ -3878,7 +3984,23 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		cur = in->cur[0];
 		next = in->cur[1];
 		cons = ctxt->nbChars;
-	        if ((cur == '<') && (next == '!') &&
+		/*
+		 * Sometimes DOCTYPE arrives in the middle of the document
+		 */
+		if ((cur == '<') && (next == '!') &&
+		    (UPP(2) == 'D') && (UPP(3) == 'O') &&
+		    (UPP(4) == 'C') && (UPP(5) == 'T') &&
+		    (UPP(6) == 'Y') && (UPP(7) == 'P') &&
+		    (UPP(8) == 'E')) {
+		    if ((!terminate) &&
+		        (htmlParseLookupSequence(ctxt, '>', 0, 0) < 0))
+			goto done;
+		    if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+			ctxt->sax->error(ctxt->userData,
+			     "Misplaced DOCTYPE declaration\n");
+		    ctxt->wellFormed = 0;
+		    htmlParseDocTypeDecl(ctxt);
+		} else if ((cur == '<') && (next == '!') &&
 		    (in->cur[2] == '-') && (in->cur[3] == '-')) {
 		    if ((!terminate) &&
 		        (htmlParseLookupSequence(ctxt, '-', '-', '>') < 0))
@@ -4039,6 +4161,17 @@ done:
 	    if ((ctxt->sax) && (ctxt->sax->endDocument != NULL))
 		ctxt->sax->endDocument(ctxt->userData);
 	}
+    }
+    if ((ctxt->myDoc != NULL) &&
+	((terminate) || (ctxt->instate == XML_PARSER_EOF) ||
+	 (ctxt->instate == XML_PARSER_EPILOG))) {
+	xmlDtdPtr dtd;
+	dtd = xmlGetIntSubset(ctxt->myDoc);
+	if (dtd == NULL)
+	    ctxt->myDoc->intSubset = 
+		xmlCreateIntSubset(ctxt->myDoc, BAD_CAST "HTML", 
+		    BAD_CAST "-//W3C//DTD HTML 4.0 Transitional//EN",
+		    BAD_CAST "http://www.w3.org/TR/REC-html40/loose.dtd");
     }
 #ifdef DEBUG_PUSH
     fprintf(stderr, "HPP: done %d\n", ret);

@@ -8,9 +8,11 @@ SAX.characters(Top Stories News from Wired Ne, 32)
 SAX.endElement(title)
 SAX.endElement(head)
 SAX.startElement(body, bgcolor='#FFFFFF', text='#000000', link='#333399', vlink='#660066', alink='#666699')
+SAX.startElement(p)
 SAX.characters(
 
 , 2)
+SAX.endElement(p)
 SAX.startElement(table, border='0', width='600', cellspacing='0', cellpadding='0')
 SAX.characters(
   , 3)
@@ -315,6 +317,7 @@ SAX.endElement(tr)
 SAX.characters(
 , 1)
 SAX.endElement(table)
+SAX.startElement(p)
 SAX.characters(
 
 , 2)
@@ -329,6 +332,7 @@ SAX.startElement(a, name='#')
 SAX.endElement(a)
 SAX.characters(
 , 1)
+SAX.endElement(p)
 SAX.startElement(table, border='0', width='600', cellspacing='0', cellpadding='0')
 SAX.characters(
 
@@ -574,6 +578,7 @@ SAX.comment(
 SAX.characters(
 , 1)
 SAX.endElement(table)
+SAX.startElement(p)
 SAX.characters(
 , 1)
 SAX.comment( end WIRED NEWS header )
@@ -584,6 +589,7 @@ SAX.comment( begin upper left side Navigation )
 SAX.characters(
 
 , 2)
+SAX.endElement(p)
 SAX.startElement(table, border='0', cellpadding='3', cellspacing='0', align='LEFT', bgcolor='#FFFFFF')
 SAX.characters(
   , 3)
@@ -1465,6 +1471,7 @@ SAX.characters(
 
 , 2)
 SAX.endElement(table)
+SAX.startElement(p)
 SAX.characters(
 
 , 2)
@@ -1475,6 +1482,7 @@ SAX.comment( CONTENT TABLE )
 SAX.characters(
 
 , 2)
+SAX.endElement(p)
 SAX.startElement(table, border='0', width='447', cellspacing='0', cellpadding='0', bordercolor='#66FF00')
 SAX.characters(
  , 2)
@@ -2832,6 +2840,7 @@ SAX.endElement(tr)
 SAX.characters(
 , 1)
 SAX.endElement(table)
+SAX.startElement(p)
 SAX.characters(
 
 
@@ -2840,9 +2849,14 @@ SAX.startElement(br)
 SAX.endElement(br)
 SAX.characters(
 , 1)
+SAX.endElement(p)
 SAX.endElement(body)
+SAX.startElement(body)
+SAX.startElement(p)
 SAX.characters(
 , 1)
+SAX.endElement(p)
+SAX.endElement(body)
 SAX.endElement(html)
 SAX.ignorableWhitespace(
 

@@ -1,19 +1,23 @@
 SAX.setDocumentLocator()
 SAX.startDocument()
 SAX.startElement(html)
+SAX.startElement(body)
+SAX.startElement(p)
 SAX.characters(
 , 2)
+SAX.endElement(p)
 SAX.startElement(head)
+SAX.endElement(head)
+SAX.startElement(p)
 SAX.characters(
 , 2)
 SAX.startElement(base, target='contents')
 SAX.endElement(base)
 SAX.characters(
 , 2)
-SAX.endElement(head)
+SAX.error: Unexpected end tag : head
 SAX.characters(
 , 2)
-SAX.startElement(body)
 SAX.startElement(a, name='ProblemDomain.Package')
 SAX.startElement(h2)
 SAX.characters(Component Package diagram Prob, 39)
@@ -21,13 +25,16 @@ SAX.endElement(h2)
 SAX.characters(
 , 2)
 SAX.endElement(a)
+SAX.endElement(p)
 SAX.startElement(p)
 SAX.endElement(p)
 SAX.startElement(hr)
 SAX.endElement(hr)
 SAX.error: Unexpected end tag : p
+SAX.startElement(p)
 SAX.characters(
 , 2)
+SAX.endElement(p)
 SAX.startElement(dl)
 SAX.characters(
 , 2)
@@ -59,15 +66,19 @@ SAX.characters(Interface, thats stores and ma, 58)
 SAX.endElement(dd)
 SAX.endElement(dd)
 SAX.endElement(dl)
+SAX.startElement(p)
 SAX.characters(
 , 2)
+SAX.endElement(p)
 SAX.startElement(p)
 SAX.endElement(p)
 SAX.startElement(hr)
 SAX.endElement(hr)
 SAX.error: Unexpected end tag : p
+SAX.startElement(p)
 SAX.characters(
 , 2)
+SAX.endElement(p)
 SAX.startElement(dl)
 SAX.characters(
 
@@ -163,9 +174,11 @@ SAX.endElement(dt)
 SAX.characters(
 , 2)
 SAX.endElement(dl)
+SAX.startElement(p)
 SAX.characters(
 
 , 4)
+SAX.endElement(p)
 SAX.startElement(h4)
 SAX.startElement(b)
 SAX.characters(Links, 5)
@@ -173,8 +186,10 @@ SAX.error: Opening and ending tag mismatch: h4 and b
 SAX.endElement(b)
 SAX.endElement(h4)
 SAX.error: Unexpected end tag : b
+SAX.startElement(p)
 SAX.characters(
 , 2)
+SAX.endElement(p)
 SAX.startElement(ul)
 SAX.startElement(li)
 SAX.startElement(b)
@@ -185,12 +200,16 @@ SAX.characters(HumanInterface, 14)
 SAX.endElement(a)
 SAX.endElement(li)
 SAX.endElement(ul)
+SAX.startElement(p)
 SAX.characters(
 , 2)
+SAX.endElement(p)
 SAX.startElement(dir)
 SAX.endElement(dir)
+SAX.startElement(p)
 SAX.characters(
 , 2)
+SAX.endElement(p)
 SAX.startElement(ul)
 SAX.startElement(li)
 SAX.startElement(b)
@@ -201,12 +220,16 @@ SAX.characters(DataManagement.FlatFile, 23)
 SAX.endElement(a)
 SAX.endElement(li)
 SAX.endElement(ul)
+SAX.startElement(p)
 SAX.characters(
 , 2)
+SAX.endElement(p)
 SAX.startElement(dir)
 SAX.endElement(dir)
+SAX.startElement(p)
 SAX.characters(
 , 2)
+SAX.endElement(p)
 SAX.startElement(ul)
 SAX.startElement(li)
 SAX.startElement(b)
@@ -217,12 +240,16 @@ SAX.characters(DataManagement, 14)
 SAX.endElement(a)
 SAX.endElement(li)
 SAX.endElement(ul)
+SAX.startElement(p)
 SAX.characters(
 , 2)
+SAX.endElement(p)
 SAX.startElement(dir)
 SAX.endElement(dir)
+SAX.startElement(p)
 SAX.characters(
 , 2)
+SAX.endElement(p)
 SAX.endElement(body)
 SAX.endElement(html)
 SAX.ignorableWhitespace(

@@ -1,6 +1,6 @@
-./test/HTML/doc3.htm:10: error: htmlParseStartTag: invalid element name
+./test/HTML/doc3.htm:10: error: Misplaced DOCTYPE declaration
 <!-- END Naviscope Javascript --><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//E
-                                  ^
+                                 ^
 ./test/HTML/doc3.htm:52: error: htmlParseEntityRef: expecting ';'
  href="http://ads.gamesquad.net/addclick.exe/adclick.cgi?REGION=game|tech|ent&i
                                                                                 ^

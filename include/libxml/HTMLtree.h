@@ -25,6 +25,8 @@ extern "C" {
 
 htmlDocPtr	htmlNewDoc		(const xmlChar *URI,
 					 const xmlChar *ExternalID);
+htmlDocPtr	htmlNewDocNoDtD		(const xmlChar *URI,
+					 const xmlChar *ExternalID);
 const xmlChar *	htmlGetMetaEncoding	(htmlDocPtr doc);
 int		htmlSetMetaEncoding	(htmlDocPtr doc,
 					 const xmlChar *encoding);

@@ -169,6 +169,8 @@ internalSubset(void *ctx, const xmlChar *name,
 	return;
     dtd = xmlGetIntSubset(ctxt->myDoc);
     if (dtd != NULL) {
+	if (ctxt->html)
+	    return;
 	xmlUnlinkNode((xmlNodePtr) dtd);
 	xmlFreeDtd(dtd);
 	ctxt->myDoc->intSubset = NULL;
@@ -605,7 +607,7 @@ startDocument(void *ctx)
     if (ctxt->html) {
 	if (ctxt->myDoc == NULL)
 #ifdef LIBXML_HTML_ENABLED
-	    ctxt->myDoc = htmlNewDoc(NULL, NULL);
+	    ctxt->myDoc = htmlNewDocNoDtD(NULL, NULL);
 #else
         fprintf(stderr, "libxml2 built without HTML support\n");
 #endif

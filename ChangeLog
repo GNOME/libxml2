@@ -1,3 +1,8 @@
+Sat Aug 19 21:02:08 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* HTMLparser.c SAX.c tree.c HTMLtree.h result/HTML/*: work
+	  done on auto-opening of <p> tags and cleanup of SAX output
+
 Sat Aug 19 18:45:40 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* libxml.4  xmllint.1 Makefile.am libxml.spec.in: added man pages

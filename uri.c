@@ -828,7 +828,7 @@ xmlURIUnescapeString(const char *str, int len, char *target) {
     in = str;
     out = ret;
     while(len > 0) {
-	if ((*in == '%') && (is_hex(in[1])) && (is_hex(in[2]))) {
+	if ((len > 2) && (*in == '%') && (is_hex(in[1])) && (is_hex(in[2]))) {
 	    in++;
 	    if ((*in >= '0') && (*in <= '9')) 
 	        *out = (*in - '0');

@@ -369,6 +369,8 @@ xmlRMutexUnlock(xmlRMutexPtr tok ATTRIBUTE_UNUSED)
 static void
 xmlFreeGlobalState(void *state)
 {
+	/* free any memory allocated in the thread's xmlLastError */
+	xmlResetLastError();
     free(state);
 }
 

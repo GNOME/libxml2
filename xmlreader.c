@@ -1369,6 +1369,7 @@ xmlTextReaderNodeType(xmlTextReaderPtr reader) {
 		(reader->state == XML_TEXTREADER_BACKTRACK))
 		return(15);
 	    return(1);
+        case XML_NAMESPACE_DECL:
         case XML_ATTRIBUTE_NODE:
 	    return(2);
         case XML_TEXT_NODE:
@@ -1400,7 +1401,6 @@ xmlTextReaderNodeType(xmlTextReaderPtr reader) {
         case XML_ELEMENT_DECL:
         case XML_ATTRIBUTE_DECL:
         case XML_ENTITY_DECL:
-        case XML_NAMESPACE_DECL:
         case XML_XINCLUDE_START:
         case XML_XINCLUDE_END:
 	    return(0);
@@ -1586,10 +1586,8 @@ xmlTextReaderNamespaceUri(xmlTextReaderPtr reader) {
 	node = reader->curnode;
     else
 	node = reader->node;
-    if (node->type == XML_NAMESPACE_DECL) {
-	xmlNsPtr ns = (xmlNsPtr) node;
-	return(xmlStrdup(ns->href));
-    }
+    if (node->type == XML_NAMESPACE_DECL)
+	return(xmlStrdup(BAD_CAST "http://www.w3.org/2000/xmlns/"));
     if ((node->type != XML_ELEMENT_NODE) &&
 	(node->type != XML_ATTRIBUTE_NODE))
 	return(NULL);

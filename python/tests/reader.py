@@ -264,6 +264,42 @@ if res != expect:
     print res
     sys.exit(1)
     
+#
+# a couple of tests for namespace nodes
+#
+f = StringIO.StringIO("""<a xmlns="http://example.com/foo">""")
+input = libxml2.inputBuffer(f)
+reader = input.newTextReader("test6")
+ret = reader.Read()
+if ret != 1:
+    print "test6: failed to Read()"
+    sys.exit(1)
+ret = reader.MoveToFirstAttribute()
+if ret != 1:
+    print "test6: failed to MoveToFirstAttribute()"
+    sys.exit(1)
+if reader.NamespaceUri() != "http://www.w3.org/2000/xmlns/" or \
+   reader.LocalName() != "xmlns" or reader.Name() != "xmlns" or \
+   reader.Value() != "http://example.com/foo" or reader.NodeType() != 2:
+    print "test6: failed to read the namespace node"
+    sys.exit(1)
+
+f = StringIO.StringIO("""<a xmlns:prefix="http://example.com/foo">""")
+input = libxml2.inputBuffer(f)
+reader = input.newTextReader("test7")
+ret = reader.Read()
+if ret != 1:
+    print "test7: failed to Read()"
+    sys.exit(1)
+ret = reader.MoveToFirstAttribute()
+if ret != 1:
+    print "test7: failed to MoveToFirstAttribute()"
+    sys.exit(1)
+if reader.NamespaceUri() != "http://www.w3.org/2000/xmlns/" or \
+   reader.LocalName() != "prefix" or reader.Name() != "xmlns:prefix" or \
+   reader.Value() != "http://example.com/foo" or reader.NodeType() != 2:
+    print "test7: failed to read the namespace node"
+    sys.exit(1)
 
 del f
 del input

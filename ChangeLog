@@ -1,3 +1,9 @@
+Mon Dec 30 11:53:44 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* SAX.c: warn on xmlns:prefix="foo"
+	* xmlreader.c python/tests/reader.py: fixed a couple of problem
+	  for namespace attributes handling.
+
 Mon Dec 30 00:59:07 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* entities.c parser.c tree.c include/libxml/entities.h: Fixed

@@ -868,7 +868,7 @@ my_attribute(void *ctx, const xmlChar *fullname, const xmlChar *value,
 		if (uri->scheme == NULL) {
 		    if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
 			ctxt->sax->warning(ctxt->userData, 
-			     "nmlns: URI %s is not absolute\n", value);
+			     "xmlns: URI %s is not absolute\n", value);
 		}
 		xmlFreeURI(uri);
 	    }
@@ -901,6 +901,24 @@ my_attribute(void *ctx, const xmlChar *fullname, const xmlChar *value,
 		ctxt->sax->error(ctxt->userData, 
 		     "Empty namespace name for prefix %s\n", name);
 	}
+	if (value[0] != 0) {
+	    xmlURIPtr uri;
+
+	    uri = xmlParseURI((const char *)value);
+	    if (uri == NULL) {
+		if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
+		    ctxt->sax->warning(ctxt->userData, 
+			 "xmlns:%s: %s not a valid URI\n", name, value);
+	    } else {
+		if (uri->scheme == NULL) {
+		    if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
+			ctxt->sax->warning(ctxt->userData, 
+			   "xmlns:%s: URI %s is not absolute\n", name, value);
+		}
+		xmlFreeURI(uri);
+	    }
+	}
+
 	/* a standard namespace definition */
 	nsret = xmlNewNs(ctxt->node, value, name);
 	xmlFree(ns);

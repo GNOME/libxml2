@@ -1,3 +1,7 @@
+Sun Apr 22 10:49:23 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xpath.c: fixed xmlXPathCompile to detected unproperly ended expr
+
 Sat Apr 21 18:27:51 CEST 2001 Bjorn Reese <breese@users.sourceforge.net>
 
 	* libxml.h: new header used only for the compilation of libxml

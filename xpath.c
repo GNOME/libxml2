@@ -7433,8 +7433,13 @@ xmlXPathCompile(const xmlChar *str) {
     ctxt = xmlXPathNewParserContext(str, NULL);
     xmlXPathCompileExpr(ctxt);
 
-    comp = ctxt->comp;
-    ctxt->comp = NULL;
+    if (*ctxt->cur != 0) {
+	xmlXPatherror(ctxt, __FILE__, __LINE__, XPATH_EXPR_ERROR);
+	comp = NULL;
+    } else {
+	comp = ctxt->comp;
+	ctxt->comp = NULL;
+    }
     xmlXPathFreeParserContext(ctxt);
     return(comp);
 }

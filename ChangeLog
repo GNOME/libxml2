@@ -1,3 +1,7 @@
+Mon May 14 12:35:30 CEST 2001 <Daniel.Veillard@imag.fr>
+
+	* configure.in: releasing 1.8.13 fixing the two previous bugs
+
 Sat May  5 18:32:22 CEST 2001 <Daniel.Veillard@imag.fr>
 
 	* entities.c: fixed a possible NULL pointer deref introduced on

@@ -1,3 +1,10 @@
+Thu Sep 18 00:31:02 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am: add a Timingtests target to check bad behaviour
+	  from the streaming engine
+	* dbgen.pl dbgenattr.pl: perl script to generate big instances
+	* xmlreader.c: fix a bad behaviour on large buffer inputs
+
 Wed Sep 17 23:25:47 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* dict.c xmlreader.c: two small improvements

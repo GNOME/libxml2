@@ -120,7 +120,7 @@ check-local: tests
 
 testall : tests SVGtests SAXtests
 
-tests: XMLtests XMLenttests NStests Readertests SAXtests HTMLtests Validtests URItests XPathtests XPtrtests XIncludetests C14Ntests Scripttests Catatests @TEST_REGEXPS@ @TEST_SCHEMAS@ @TEST_THREADS@
+tests: XMLtests XMLenttests NStests Readertests SAXtests HTMLtests Validtests URItests XPathtests XPtrtests XIncludetests C14Ntests Scripttests Catatests @TEST_REGEXPS@ @TEST_SCHEMAS@ @TEST_THREADS@ Timingtests
 	@(if [ "@PYTHON_SUBDIR@" != "" ] ; then cd python ; $(MAKE) tests ; fi)
 
 valgrind:
@@ -699,6 +699,24 @@ Automatatests: testAutomata$(EXEEXT)
 	      rm result.$$name ; \
 	  fi ; fi ; done)
 
+$(srcdir)/dba100000.xml: dbgenattr.pl
+	@echo "## generating dba100000.xml"
+	@(dbgenattr.pl 100000 > $(srcdir)/dba100000.xml)
+
+Timingtests: $(srcdir)/dba100000.xml
+	@echo "##"
+	@echo "## Timing tests to try to detect performance"
+	@echo "## as well a memory usage breakage when streaming"
+	@echo "## first when using the file interface"
+	@echo "## then when using the memory interface"
+	@echo "##"
+	-@(xmllint --stream --timing $(srcdir)/dba100000.xml; \
+	   grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
+	   exit 0)
+	-@(xmllint --stream --timing --memory $(srcdir)/dba100000.xml; \
+	   grep "MORY ALLO" .memdump  | grep -v "MEMORY ALLOCATED : 0";\
+	   exit 0)
+
 C14Ntests : testC14N$(EXEEXT)
 	@echo "##"
 	@echo "## C14N and XPath regression tests"
@@ -869,7 +887,9 @@ EXTRA_DIST = xml2-config.in xml2Conf.sh.in libxml.spec.in libxml2.spec \
 	     $(man_MANS) libxml-2.0.pc.in \
 	     trionan.c trionan.h triostr.c triostr.h trio.c trio.h \
 	     triop.h triodef.h libxml.h \
-	     testThreadsWin32.c genUnicode.py TODO_SCHEMAS
+	     testThreadsWin32.c genUnicode.py TODO_SCHEMAS \
+	     dbgen.pl dbgenattr.pl
+
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libxml-2.0.pc

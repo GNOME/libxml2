@@ -803,7 +803,8 @@ xmlTextReaderPushData(xmlTextReaderPtr reader) {
      * Discard the consumed input when needed and possible
      */
     if (reader->mode == XML_TEXTREADER_MODE_INTERACTIVE) {
-	if (reader->cur >= 4096) {
+	if ((reader->cur >= 4096) &&
+	    (inbuf->use - reader->cur <= CHUNK_SIZE)) {
 	    val = xmlBufferShrink(inbuf, reader->cur);
 	    if (val >= 0) {
 		reader->cur -= val;

@@ -1,3 +1,10 @@
+Wed Jan 29 22:06:04 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c: more work on Relax-NG, implementing externalRef
+	* test/relaxng/* result/relaxng/*: augmented/updated the 
+	  regression tests
+	* Makefile.am: cleanup to Relaxtests target
+
 Wed Jan 29 00:08:38 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* relaxng.c: more work on Relax-NG, implementing interleave

@@ -1,0 +1,5 @@
+xmlRelaxNGComputeInterleaves(interleave0)
+  2 child
+  2 groups
+xmlRelaxNGValidateDefinition(): validated p : 0
+xmlRelaxNGValidateDefinition(): validated content : 0

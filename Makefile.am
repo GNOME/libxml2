@@ -710,7 +710,7 @@ Relaxtests: testRelax$(EXEEXT)
 	          diff $(srcdir)/result/relaxng/"$$name"_"$$xno" \
 		       res.$$name;\
 	          diff $(srcdir)/result/relaxng/"$$name"_"$$xno".err \
-		       err.$$name;\
+		       err.$$name | grep -v "error detected at";\
 		  grep Unimplemented err.$$name; \
 	          rm res.$$name err.$$name ; \
 	       fi ; fi ; \

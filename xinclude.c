@@ -81,6 +81,7 @@ struct _xmlXIncludeCtxt {
     int              nbErrors; /* the number of errors detected */
     int                legacy; /* using XINCLUDE_OLD_NS */
     int            parseFlags; /* the flags used for parsing XML documents */
+    xmlChar *		 base; /* the current xml:base */
 };
 
 static int
@@ -676,6 +677,11 @@ xmlXIncludeRecurseDoc(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc,
 	newctxt->urlMax = ctxt->urlMax;
 	newctxt->urlNr = ctxt->urlNr;
 	newctxt->urlTab = ctxt->urlTab;
+
+	/*
+	 * Inherit the existing base
+	 */
+	newctxt->base = ctxt->base;
 
 	/*
 	 * Inherit the documents already in use by other includes
@@ -1631,12 +1637,26 @@ loaded:
      */
     if ((doc != NULL) && (URL != NULL) && (xmlStrchr(URL, (xmlChar) '/'))) {
 	xmlNodePtr node;
+	xmlChar *relURI;
 
-	node = ctxt->incTab[nr]->inc;
-	while (node != NULL) {
-	    if (node->type == XML_ELEMENT_NODE)
-		xmlNodeSetBase(node, URL);
-	    node = node->next;
+	/*
+	 * The base is only adjusted if necessary for the existing base
+	 */
+	relURI = xmlBuildRelativeURI(URL, ctxt->base);
+	if (relURI == NULL) {	/* Error return */
+	    xmlXIncludeErr(ctxt, ctxt->incTab[nr]->ref, 
+	               XML_XINCLUDE_HREF_URI,
+		       "trying to build relative URI from %s\n", URL);
+	} else {
+	    if (xmlStrchr(relURI, (xmlChar) '/')) {
+		node = ctxt->incTab[nr]->inc;
+		while (node != NULL) {
+	            if (node->type == XML_ELEMENT_NODE)
+			xmlNodeSetBase(node, relURI);
+	            node = node->next;
+		}
+	    }
+	    xmlFree(relURI);
 	}
     }
     if ((nr < ctxt->incNr) && (ctxt->incTab[nr]->doc != NULL) &&
@@ -1814,6 +1834,7 @@ xmlXIncludeLoadFallback(xmlXIncludeCtxtPtr ctxt, xmlNodePtr fallback, int nr) {
 	newctxt = xmlXIncludeNewContext(ctxt->doc);
 	if (newctxt == NULL)
 	    return (-1);
+	newctxt->base = ctxt->base;	/* Inherit the base from the existing context */
 	xmlXIncludeSetFlags(newctxt, ctxt->parseFlags);
 	ret = xmlXIncludeDoProcess(newctxt, ctxt->doc, fallback->children);
 	if (ctxt->nbErrors > 0)
@@ -1867,6 +1888,7 @@ xmlXIncludeLoadNode(xmlXIncludeCtxtPtr ctxt, int nr) {
     xmlChar *href;
     xmlChar *parse;
     xmlChar *base;
+    xmlChar *oldBase;
     xmlChar *URI;
     int xml = 1; /* default Issue 64 */
     int ret;
@@ -1947,14 +1969,23 @@ xmlXIncludeLoadNode(xmlXIncludeCtxtPtr ctxt, int nr) {
 #endif
 
     /*
-     * Cleanup
+     * Save the base for this include (saving the current one)
      */
+    oldBase = ctxt->base;
+    ctxt->base = base;
+
     if (xml) {
 	ret = xmlXIncludeLoadDoc(ctxt, URI, nr);
 	/* xmlXIncludeGetFragment(ctxt, cur, URI); */
     } else {
 	ret = xmlXIncludeLoadTxt(ctxt, URI, nr);
     }
+
+    /*
+     * Restore the original base before checking for fallback
+     */
+    ctxt->base = oldBase;
+    
     if (ret < 0) {
 	xmlNodePtr children;
 
@@ -2296,6 +2327,7 @@ xmlXIncludeProcessFlags(xmlDocPtr doc, int flags) {
     ctxt = xmlXIncludeNewContext(doc);
     if (ctxt == NULL)
 	return(-1);
+    ctxt->base = (xmlChar *)doc->URL;
     xmlXIncludeSetFlags(ctxt, flags);
     ret = xmlXIncludeDoProcess(ctxt, doc, tree);
     if ((ret >= 0) && (ctxt->nbErrors > 0))
@@ -2339,6 +2371,7 @@ xmlXIncludeProcessTreeFlags(xmlNodePtr tree, int flags) {
     ctxt = xmlXIncludeNewContext(tree->doc);
     if (ctxt == NULL)
 	return(-1);
+    ctxt->base = xmlNodeGetBase(tree->doc, tree);
     xmlXIncludeSetFlags(ctxt, flags);
     ret = xmlXIncludeDoProcess(ctxt, tree->doc, tree);
     if ((ret >= 0) && (ctxt->nbErrors > 0))

@@ -1972,6 +1972,181 @@ done:
 }
 
 /**
+ * xmlBuildRelativeURI:
+ * @URI:  the URI reference under consideration
+ * @base:  the base value
+ *
+ * Expresses the URI of the reference in terms relative to the
+ * base.  Some examples of this operation include:
+ *     base = "http://site1.com/docs/book1.html"
+ *        URI input                        URI returned
+ *     docs/pic1.gif                    pic1.gif
+ *     docs/img/pic1.gif                img/pic1.gif
+ *     img/pic1.gif                     ../img/pic1.gif
+ *     http://site1.com/docs/pic1.gif   pic1.gif
+ *     http://site2.com/docs/pic1.gif   http://site2.com/docs/pic1.gif
+ *
+ *     base = "docs/book1.html"
+ *        URI input                        URI returned
+ *     docs/pic1.gif                    pic1.gif
+ *     docs/img/pic1.gif                img/pic1.gif
+ *     img/pic1.gif                     ../img/pic1.gif
+ *     http://site1.com/docs/pic1.gif   http://site1.com/docs/pic1.gif
+ *
+ *
+ * Note: if the URI reference is really wierd or complicated, it may be
+ *       worthwhile to first convert it into a "nice" one by calling
+ *       xmlBuildURI (using 'base') before calling this routine,
+ *       since this routine (for reasonable efficiency) assumes URI has
+ *       already been through some validation.
+ *
+ * Returns a new URI string (to be freed by the caller) or NULL in case
+ * error.
+ */
+xmlChar *
+xmlBuildRelativeURI (const xmlChar * URI, const xmlChar * base)
+{
+    xmlChar *val = NULL;
+    int ret;
+    int ix;
+    int pos = 0;
+    int nbslash = 0;
+    xmlURIPtr ref = NULL;
+    xmlURIPtr bas = NULL;
+    xmlChar *bptr, *uptr, *vptr;
+
+    if ((URI == NULL) || (*URI == 0))
+	return NULL;
+    /*
+     * Special case - if URI starts with '.', we assume it's already
+     * in relative form, so nothing to do.
+     */
+    if (*URI == '.') {
+	val = xmlStrdup (URI);
+	goto done;
+    }
+
+    /*
+     * First parse URI into a standard form
+     */
+    ref = xmlCreateURI ();
+    if (ref == NULL)
+	return NULL;
+    ret = xmlParseURIReference (ref, (const char *) URI);
+    if (ret != 0)
+	goto done;		/* Error in URI, return NULL */
+
+    /*
+     * Next parse base into the same standard form
+     */
+    if ((base == NULL) || (*base == 0)) {
+	val = xmlStrdup (URI);
+	goto done;
+    }
+    bas = xmlCreateURI ();
+    if (bas == NULL)
+	goto done;
+    ret = xmlParseURIReference (bas, (const char *) base);
+    if (ret != 0)
+	goto done;		/* Error in base, return NULL */
+
+    /*
+     * If the scheme / server on the URI differs from the base,
+     * just return the URI
+     */
+    if ((ref->scheme != NULL) &&
+	  ((bas->scheme == NULL) ||
+	   xmlStrcmp ((xmlChar *)bas->scheme, (xmlChar *)ref->scheme) ||
+	   xmlStrcmp ((xmlChar *)bas->server, (xmlChar *)ref->server))) {
+	val = xmlStrdup (URI);
+	goto done;
+    }
+
+    /*
+     * At this point (at last!) we can compare the two paths
+     *
+     * First we compare the two strings and find where they first differ
+     */
+    bptr = (xmlChar *)bas->path;
+    if ((*bptr == '/') && (ref->path[0] != '/'))
+	bptr++;
+    while ((bptr[pos] == ref->path[pos]) && (bptr[pos] != 0))
+	pos++;
+
+    if (bptr[pos] == ref->path[pos]) {
+	val = NULL;		/* if no differences, return NULL */
+	goto done;		/* (I can't imagine why anyone would do this) */
+    }
+
+    /*
+     * In URI, "back up" to the last '/' encountered.  This will be the
+     * beginning of the "unique" suffix of URI
+     */
+    ix = pos;
+    if ((ref->path[ix] == '/') && (ix > 0))
+	ix--;
+    for (; ix > 0; ix--) {
+	if (ref->path[ix] == '/')
+	    break;
+    }
+    if (ix == 0)
+	uptr = (xmlChar *)ref->path;
+    else
+	uptr = (xmlChar *)&ref->path[ix + 1];
+
+    /*
+     * In base, count the number of '/' from the differing point
+     */
+    if (bptr[pos] != ref->path[pos]) {	/* check for trivial URI == base */
+	for (; bptr[ix] != 0; ix++) {
+	    if (bptr[ix] == '/')
+		nbslash++;
+	}
+    }
+
+    if (nbslash == 0) {
+	val = xmlStrdup (uptr);
+	goto done;
+    }
+    nbslash--;
+
+    /*
+     * Allocate just enough space for the returned string -
+     * length of the remainder of the URI, plus enough space
+     * for the "../" groups, plus one for the terminator
+     */
+    ix = xmlStrlen (uptr) + 1;
+    val = (xmlChar *) xmlMalloc (ix + 3 * nbslash);
+    if (val == NULL) {
+	goto done;
+    }
+    vptr = val;
+    /*
+     * Put in as many "../" as needed
+     */
+    for (; nbslash>0; nbslash--) {
+	*vptr++ = '.';
+	*vptr++ = '.';
+	*vptr++ = '/';
+    }
+    /*
+     * Finish up with the end of the URI
+     */
+    memcpy (vptr, uptr, ix);
+
+  done:
+    /*
+     * Free the working variables
+     */
+    if (ref != NULL)
+	xmlFreeURI (ref);
+    if (bas != NULL)
+	xmlFreeURI (bas);
+
+    return val;
+}
+
+/**
  * xmlCanonicPath:
  * @path:  the resource locator in a filesystem notation
  *

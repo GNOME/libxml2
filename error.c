@@ -137,8 +137,13 @@ xmlParserPrintFileContext(xmlParserInputPtr input) {
 	*ctnt++ = ' ';
 	cur--;
     }
-    *(--ctnt) = '^';
-    *(++ctnt) = 0;
+    if (ctnt > content) {
+	*(--ctnt) = '^';
+	*(++ctnt) = 0;
+    } else {
+	*ctnt = '^';
+	*(++ctnt) = 0;
+    }
     xmlGenericError(xmlGenericErrorContext,"%s\n", content);
 }
 

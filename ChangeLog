@@ -1,3 +1,8 @@
+Thu Apr 26 11:14:56 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* error.c: Jean François Lecomte provided a complete description
+	  and a fix to bug #53537
+
 Thu Apr 26 09:42:58 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* libxml.m4: added AM_PATH_XML2 provided by Toshio Kuratomi

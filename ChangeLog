@@ -1,3 +1,7 @@
+Mon Dec 22 00:34:09 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xinclude.c: fixed a serious problem in XInclude #129021
+
 Sun Dec 21 13:59:54 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: fixed bug #129489, propagation of parsing flags 

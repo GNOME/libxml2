@@ -1,3 +1,11 @@
+Sat Dec 18 16:07:03 CET 1999
+
+	* configure.in, doc/xml.html : bug fix release 1.8.1
+	* parser.c: fixed bug #4344
+	* xpath.h xml-error.h xlink.h nanohttp.h debugXML.h SAX.h HTMLparser.h
+	  added the glue to avoid C++ problems
+	* doc/* : regenerated the documentation
+
 Thu Dec 16 16:19:29 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* tree.c: fixed a bug introduced in 1.8.0 and breaking default

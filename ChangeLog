@@ -1,3 +1,13 @@
+Fri Oct 10 16:08:02 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c c14n.c catalog.c error.c globals.c parser.c
+	  parserInternals.c relaxng.c valid.c xinclude.c xmlIO.c xmlregexp.c
+	  xmlschemas.c xpath.c xpointer.c include/libxml/globals.h
+	  include/libxml/parser.h include/libxml/valid.h 
+	  include/libxml/xmlerror.h: Setting up the framework for structured
+	  error reporting, touches a lot of modules, but little code now
+	  the error handling trail has been cleaned up.
+
 Fri Oct 10 14:29:42 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* c14n.c include/libxml/xmlerror.h: converted the C14N module too

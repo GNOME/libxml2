@@ -112,7 +112,7 @@ xmlXIncludeErrMemory(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node,
 {
     if (ctxt != NULL)
 	ctxt->nbErrors++;
-    __xmlRaiseError(NULL, NULL, ctxt, node, XML_FROM_XINCLUDE,
+    __xmlRaiseError(NULL, NULL, NULL, ctxt, node, XML_FROM_XINCLUDE,
                     XML_ERR_NO_MEMORY, XML_ERR_ERROR, NULL, 0,
 		    extra, NULL, NULL, 0, 0,
 		    "Memory allocation failed : %s\n", extra);
@@ -133,7 +133,7 @@ xmlXIncludeErr(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node, int error,
 {
     if (ctxt != NULL)
 	ctxt->nbErrors++;
-    __xmlRaiseError(NULL, NULL, ctxt, node, XML_FROM_XINCLUDE,
+    __xmlRaiseError(NULL, NULL, NULL, ctxt, node, XML_FROM_XINCLUDE,
                     error, XML_ERR_ERROR, NULL, 0,
 		    (const char *) extra, NULL, NULL, 0, 0,
 		    msg, (const char *) extra);

@@ -112,6 +112,23 @@ xmlSetGenericErrorFunc(void *ctx, xmlGenericErrorFunc handler) {
 	xmlGenericError = xmlGenericErrorDefaultFunc;
 }
 
+/**
+ * xmlSetStructuredErrorFunc:
+ * @ctx:  the new error handling context
+ * @handler:  the new handler function
+ *
+ * Function to reset the handler and the error context for out of
+ * context structured error messages.
+ * This simply means that @handler will be called for subsequent
+ * error messages while not parsing nor validating. And @ctx will
+ * be passed as first argument to @handler
+ */
+void
+xmlSetStructuredErrorFunc(void *ctx, xmlStructuredErrorFunc handler) {
+    xmlGenericErrorContext = ctx;
+    xmlStructuredError = handler;
+}
+
 /************************************************************************
  * 									*
  * 			Handling of parsing errors			*
@@ -392,7 +409,8 @@ xmlReportError(xmlErrorPtr err, xmlParserCtxtPtr ctxt, const char *str,
 
 /**
  * __xmlRaiseError:
- * @channel: the callback channel
+ * @channel: the structured callback channel
+ * @channel: the old callback channel
  * @data: the callback data
  * @ctx: the parser context or NULL
  * @ctx: the parser context or NULL
@@ -414,7 +432,8 @@ xmlReportError(xmlErrorPtr err, xmlParserCtxtPtr ctxt, const char *str,
  * error callback handler
  */
 void
-__xmlRaiseError(xmlGenericErrorFunc channel, void *data, void *ctx,
+__xmlRaiseError(xmlStructuredErrorFunc schannel,
+              xmlGenericErrorFunc channel, void *data, void *ctx,
               void *nod, int domain, int code, xmlErrorLevel level,
               const char *file, int line, const char *str1,
               const char *str2, const char *str3, int int1, int int2,
@@ -431,6 +450,9 @@ __xmlRaiseError(xmlGenericErrorFunc channel, void *data, void *ctx,
         (domain == XML_FROM_DTD) || (domain == XML_FROM_NAMESPACE) ||
 	(domain == XML_FROM_IO)) {
 	ctxt = (xmlParserCtxtPtr) ctx;
+	if ((schannel == NULL) && (ctxt != NULL) && (ctxt->sax != NULL) &&
+	    (ctxt->sax->initialized == XML_SAX2_MAGIC))
+	    schannel = ctxt->sax->serror;
     }
     if (code == XML_ERR_OK)
         return;
@@ -512,8 +534,15 @@ __xmlRaiseError(xmlGenericErrorFunc channel, void *data, void *ctx,
 	    channel = ctxt->sax->error;
 	data = ctxt->userData;
     } else if (channel == NULL) {
-	channel = xmlGenericError;
+        if (xmlStructuredError != NULL)
+	    schannel = xmlStructuredError;
+	else
+	    channel = xmlGenericError;
 	data = xmlGenericErrorContext;
+    }
+    if (schannel != NULL) {
+        schannel(data, to);
+	return;
     }
     if (channel == NULL)
         return;
@@ -546,16 +575,16 @@ __xmlSimpleError(int domain, int code, xmlNodePtr node,
 
     if (code == XML_ERR_NO_MEMORY) {
 	if (extra)
-	    __xmlRaiseError(NULL, NULL, NULL, node, domain,
+	    __xmlRaiseError(NULL, NULL, NULL, NULL, node, domain,
 			    XML_ERR_NO_MEMORY, XML_ERR_FATAL, NULL, 0, extra,
 			    NULL, NULL, 0, 0,
 			    "Memory allocation failed : %s\n", extra);
 	else
-	    __xmlRaiseError(NULL, NULL, NULL, node, domain,
+	    __xmlRaiseError(NULL, NULL, NULL, NULL, node, domain,
 			    XML_ERR_NO_MEMORY, XML_ERR_FATAL, NULL, 0, NULL,
 			    NULL, NULL, 0, 0, "Memory allocation failed\n");
     } else {
-	__xmlRaiseError(NULL, NULL, NULL, node, domain,
+	__xmlRaiseError(NULL, NULL, NULL, NULL, node, domain,
 			code, XML_ERR_ERROR, NULL, 0, extra,
 			NULL, NULL, 0, 0, msg, extra);
     }

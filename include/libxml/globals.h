@@ -42,6 +42,7 @@ XMLPUBFUN void XMLCALL xmlCleanupGlobals(void);
 #undef	xmlDoValidityCheckingDefaultValue
 #undef	xmlFree
 #undef	xmlGenericError
+#undef	xmlStructuredError
 #undef	xmlGenericErrorContext
 #undef	xmlGetWarningsDefaultValue
 #undef	xmlIndentTreeOutput
@@ -82,6 +83,7 @@ struct _xmlGlobalState
 	xmlReallocFunc xmlRealloc;
 
 	xmlGenericErrorFunc xmlGenericError;
+	xmlStructuredErrorFunc xmlStructuredError;
 	void *xmlGenericErrorContext;
 
 	int oldXMLWDcompatibility;
@@ -120,6 +122,8 @@ extern "C" {
 XMLPUBFUN void XMLCALL	xmlInitializeGlobalState(xmlGlobalStatePtr gs);
 
 XMLPUBFUN void XMLCALL xmlThrDefSetGenericErrorFunc(void *ctx, xmlGenericErrorFunc handler);
+
+XMLPUBFUN void XMLCALL xmlThrDefSetStructuredErrorFunc(void *ctx, xmlStructuredErrorFunc handler);
 
 XMLPUBFUN xmlRegisterNodeFunc XMLCALL xmlRegisterNodeDefault(xmlRegisterNodeFunc func);
 XMLPUBFUN xmlRegisterNodeFunc XMLCALL xmlThrDefRegisterNodeDefault(xmlRegisterNodeFunc func);
@@ -277,6 +281,14 @@ XMLPUBFUN xmlGenericErrorFunc * XMLCALL __xmlGenericError(void);
 (*(__xmlGenericError()))
 #else
 XMLPUBVAR xmlGenericErrorFunc xmlGenericError;
+#endif
+
+XMLPUBFUN xmlStructuredErrorFunc * XMLCALL __xmlStructuredError(void);
+#ifdef LIBXML_THREAD_ENABLED
+#define xmlStructuredError \
+(*(__xmlStructuredError()))
+#else
+XMLPUBVAR xmlStructuredErrorFunc xmlStructuredError;
 #endif
 
 XMLPUBFUN void * * XMLCALL __xmlGenericErrorContext(void);

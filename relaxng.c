@@ -202,6 +202,7 @@ struct _xmlRelaxNGParserCtxt {
     void *userData;             /* user specific data block */
     xmlRelaxNGValidityErrorFunc error;  /* the callback in case of errors */
     xmlRelaxNGValidityWarningFunc warning;      /* the callback in case of warning */
+    xmlStructuredErrorFunc serror;
     xmlRelaxNGValidErr err;
 
     xmlRelaxNGPtr schema;       /* The schema in use */
@@ -342,6 +343,7 @@ struct _xmlRelaxNGValidCtxt {
     void *userData;             /* user specific data block */
     xmlRelaxNGValidityErrorFunc error;  /* the callback in case of errors */
     xmlRelaxNGValidityWarningFunc warning;      /* the callback in case of warning */
+    xmlStructuredErrorFunc serror;
     int nbErrors;               /* number of errors in validation */
 
     xmlRelaxNGPtr schema;       /* The schema in use */
@@ -425,6 +427,7 @@ struct _xmlRelaxNGDocument {
 static void
 xmlRngPErrMemory(xmlRelaxNGParserCtxtPtr ctxt, const char *extra)
 {
+    xmlStructuredErrorFunc schannel = NULL;
     xmlGenericErrorFunc channel = NULL;
     void *data = NULL;
 
@@ -432,15 +435,16 @@ xmlRngPErrMemory(xmlRelaxNGParserCtxtPtr ctxt, const char *extra)
         channel = ctxt->error;
         data = ctxt->userData;
         ctxt->nbErrors++;
+        schannel = ctxt->serror;
     }
     if (extra)
-        __xmlRaiseError(channel, data,
+        __xmlRaiseError(schannel, channel, data,
                         NULL, NULL, XML_FROM_RELAXNGP,
                         XML_ERR_NO_MEMORY, XML_ERR_FATAL, NULL, 0, extra,
                         NULL, NULL, 0, 0,
                         "Memory allocation failed : %s\n", extra);
     else
-        __xmlRaiseError(channel, data,
+        __xmlRaiseError(schannel, channel, data,
                         NULL, NULL, XML_FROM_RELAXNGP,
                         XML_ERR_NO_MEMORY, XML_ERR_FATAL, NULL, 0, NULL,
                         NULL, NULL, 0, 0, "Memory allocation failed\n");
@@ -456,6 +460,7 @@ xmlRngPErrMemory(xmlRelaxNGParserCtxtPtr ctxt, const char *extra)
 static void
 xmlRngVErrMemory(xmlRelaxNGValidCtxtPtr ctxt, const char *extra)
 {
+    xmlStructuredErrorFunc schannel = NULL;
     xmlGenericErrorFunc channel = NULL;
     void *data = NULL;
 
@@ -463,15 +468,16 @@ xmlRngVErrMemory(xmlRelaxNGValidCtxtPtr ctxt, const char *extra)
         channel = ctxt->error;
         data = ctxt->userData;
         ctxt->nbErrors++;
+        schannel = ctxt->serror;
     }
     if (extra)
-        __xmlRaiseError(channel, data,
+        __xmlRaiseError(schannel, channel, data,
                         NULL, NULL, XML_FROM_RELAXNGV,
                         XML_ERR_NO_MEMORY, XML_ERR_FATAL, NULL, 0, extra,
                         NULL, NULL, 0, 0,
                         "Memory allocation failed : %s\n", extra);
     else
-        __xmlRaiseError(channel, data,
+        __xmlRaiseError(schannel, channel, data,
                         NULL, NULL, XML_FROM_RELAXNGV,
                         XML_ERR_NO_MEMORY, XML_ERR_FATAL, NULL, 0, NULL,
                         NULL, NULL, 0, 0, "Memory allocation failed\n");
@@ -492,6 +498,7 @@ static void
 xmlRngPErr(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node, int error,
            const char *msg, const xmlChar * str1, const xmlChar * str2)
 {
+    xmlStructuredErrorFunc schannel = NULL;
     xmlGenericErrorFunc channel = NULL;
     void *data = NULL;
 
@@ -499,8 +506,9 @@ xmlRngPErr(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node, int error,
         channel = ctxt->error;
         data = ctxt->userData;
         ctxt->nbErrors++;
+        schannel = ctxt->serror;
     }
-    __xmlRaiseError(channel, data,
+    __xmlRaiseError(schannel, channel, data,
                     NULL, node, XML_FROM_RELAXNGP,
                     error, XML_ERR_ERROR, NULL, 0,
                     (const char *) str1, (const char *) str2, NULL, 0, 0,
@@ -522,6 +530,7 @@ static void
 xmlRngVErr(xmlRelaxNGValidCtxtPtr ctxt, xmlNodePtr node, int error,
            const char *msg, const xmlChar * str1, const xmlChar * str2)
 {
+    xmlStructuredErrorFunc schannel = NULL;
     xmlGenericErrorFunc channel = NULL;
     void *data = NULL;
 
@@ -529,8 +538,9 @@ xmlRngVErr(xmlRelaxNGValidCtxtPtr ctxt, xmlNodePtr node, int error,
         channel = ctxt->error;
         data = ctxt->userData;
         ctxt->nbErrors++;
+        schannel = ctxt->serror;
     }
-    __xmlRaiseError(channel, data,
+    __xmlRaiseError(schannel, channel, data,
                     NULL, node, XML_FROM_RELAXNGV,
                     error, XML_ERR_ERROR, NULL, 0,
                     (const char *) str1, (const char *) str2, NULL, 0, 0,

@@ -72,7 +72,7 @@
 static void
 xmlXPtrErrMemory(const char *extra)
 {
-    __xmlRaiseError(NULL, NULL, NULL, NULL, XML_FROM_XPOINTER,
+    __xmlRaiseError(NULL, NULL, NULL, NULL, NULL, XML_FROM_XPOINTER,
 		    XML_ERR_NO_MEMORY, XML_ERR_ERROR, NULL, 0, extra,
 		    NULL, NULL, 0, 0,
 		    "Memory allocation failed : %s\n", extra);
@@ -92,7 +92,7 @@ xmlXPtrErr(xmlXPathParserContextPtr ctxt, int error,
     if (ctxt != NULL)
         ctxt->error = error;
     if ((ctxt == NULL) || (ctxt->context == NULL)) {
-	__xmlRaiseError(NULL, NULL,
+	__xmlRaiseError(NULL, NULL, NULL,
 			NULL, NULL, XML_FROM_XPOINTER, error,
 			XML_ERR_ERROR, NULL, 0,
 			(const char *) extra, NULL, NULL, 0, 0,
@@ -109,7 +109,7 @@ xmlXPtrErr(xmlXPathParserContextPtr ctxt, int error,
 	ctxt->context->error(ctxt->context->userData,
 	                     &ctxt->context->lastError);
     } else {
-	__xmlRaiseError(NULL, NULL,
+	__xmlRaiseError(NULL, NULL, NULL,
 			NULL, ctxt->context->debugNode, XML_FROM_XPOINTER,
 			error, XML_ERR_ERROR, NULL, 0,
 			(const char *) extra, (const char *) ctxt->base, NULL,

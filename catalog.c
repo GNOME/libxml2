@@ -197,7 +197,7 @@ static int xmlCatalogInitialized = 0;
 static void
 xmlCatalogErrMemory(const char *extra)
 {
-    __xmlRaiseError(NULL, NULL, NULL, NULL, XML_FROM_CATALOG,
+    __xmlRaiseError(NULL, NULL, NULL, NULL, NULL, XML_FROM_CATALOG,
                     XML_ERR_NO_MEMORY, XML_ERR_ERROR, NULL, 0,
 		    extra, NULL, NULL, 0, 0,
 		    "Memory allocation failed : %s\n", extra);
@@ -217,7 +217,7 @@ xmlCatalogErr(xmlCatalogEntryPtr catal, xmlNodePtr node, int error,
                const char *msg, const xmlChar *str1, const xmlChar *str2,
 	       const xmlChar *str3)
 {
-    __xmlRaiseError(NULL, NULL, catal, node, XML_FROM_CATALOG,
+    __xmlRaiseError(NULL, NULL, NULL, catal, node, XML_FROM_CATALOG,
                     error, XML_ERR_ERROR, NULL, 0,
 		    (const char *) str1, (const char *) str2,
 		    (const char *) str3, 0, 0,

@@ -580,6 +580,9 @@ XMLPUBFUN void XMLCALL
 XMLPUBFUN void XMLCALL	
     initGenericErrorDefaultFunc	(xmlGenericErrorFunc *handler);
 
+XMLPUBFUN void XMLCALL	
+    xmlSetStructuredErrorFunc	(void *ctx,
+				 xmlStructuredErrorFunc handler);
 /*
  * Default message routines used by SAX and Valid context for error
  * and warning reporting.
@@ -627,7 +630,8 @@ XMLPUBFUN int XMLCALL
  * Internal callback reporting routine
  */
 XMLPUBFUN void XMLCALL 
-    __xmlRaiseError		(xmlGenericErrorFunc channel,
+    __xmlRaiseError		(xmlStructuredErrorFunc schannel,
+    				 xmlGenericErrorFunc channel,
     				 void *data,
                                  void *ctx,
     				 void *node,

@@ -11,6 +11,7 @@
 #define __XML_VALID_H__
 
 #include <libxml/xmlversion.h>
+#include <libxml/xmlerror.h>
 #include <libxml/tree.h>
 #include <libxml/list.h>
 #include <libxml/xmlautomata.h>
@@ -86,6 +87,8 @@ struct _xmlValidCtxt {
     void                     *am;
     void                  *state;
 #endif
+
+    xmlStructuredErrorFunc serror;   /* structured error reporting capability */
 };
 
 /*

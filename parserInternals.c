@@ -110,12 +110,12 @@ xmlErrMemory(xmlParserCtxtPtr ctxt, const char *extra)
         ctxt->disableSAX = 1;
     }
     if (extra)
-        __xmlRaiseError(NULL, NULL, ctxt, NULL, XML_FROM_PARSER,
+        __xmlRaiseError(NULL, NULL, NULL, ctxt, NULL, XML_FROM_PARSER,
                         XML_ERR_NO_MEMORY, XML_ERR_FATAL, NULL, 0, extra,
                         NULL, NULL, 0, 0,
                         "Memory allocation failed : %s\n", extra);
     else
-        __xmlRaiseError(NULL, NULL, ctxt, NULL, XML_FROM_PARSER,
+        __xmlRaiseError(NULL, NULL, NULL, ctxt, NULL, XML_FROM_PARSER,
                         XML_ERR_NO_MEMORY, XML_ERR_FATAL, NULL, 0, NULL,
                         NULL, NULL, 0, 0, "Memory allocation failed\n");
 }
@@ -136,7 +136,7 @@ xmlErrEncoding(xmlParserCtxtPtr ctxt, xmlParserErrors error,
 {
     if (ctxt != NULL)
         ctxt->errNo = error;
-    __xmlRaiseError(NULL, NULL,
+    __xmlRaiseError(NULL, NULL, NULL,
                     ctxt, NULL, XML_FROM_PARSER, error, XML_ERR_FATAL,
                     NULL, 0, (const char *) str1, (const char *) str2,
                     NULL, 0, 0, msg, str1, str2);
@@ -160,7 +160,7 @@ xmlErrInternal(xmlParserCtxtPtr ctxt, const char *msg, const xmlChar * str)
 {
     if (ctxt != NULL)
         ctxt->errNo = XML_ERR_INTERNAL_ERROR;
-    __xmlRaiseError(NULL, NULL,
+    __xmlRaiseError(NULL, NULL, NULL,
                     ctxt, NULL, XML_FROM_PARSER, XML_ERR_INTERNAL_ERROR,
                     XML_ERR_FATAL, NULL, 0, (const char *) str, NULL, NULL,
                     0, 0, msg, str);
@@ -186,7 +186,7 @@ xmlErrEncodingInt(xmlParserCtxtPtr ctxt, xmlParserErrors error,
 {
     if (ctxt != NULL)
         ctxt->errNo = error;
-    __xmlRaiseError(NULL, NULL,
+    __xmlRaiseError(NULL, NULL, NULL,
                     ctxt, NULL, XML_FROM_PARSER, error, XML_ERR_FATAL,
                     NULL, 0, NULL, NULL, NULL, val, 0, msg, val);
     if (ctxt != NULL) {

@@ -132,7 +132,7 @@ static xmlChar *xmlC11NNormalizeString(const xmlChar * input,
 static void
 xmlC14NErrMemory(const char *extra)
 {
-    __xmlRaiseError(NULL, NULL, NULL, NULL, XML_FROM_C14N,
+    __xmlRaiseError(NULL, NULL, NULL, NULL, NULL, XML_FROM_C14N,
 		    XML_ERR_NO_MEMORY, XML_ERR_ERROR, NULL, 0, extra,
 		    NULL, NULL, 0, 0,
 		    "Memory allocation failed : %s\n", extra);
@@ -154,7 +154,7 @@ xmlC14NErr(xmlC14NCtxPtr ctxt, xmlNodePtr node, int error,
 {
     if (ctxt != NULL)
         ctxt->error = error;
-    __xmlRaiseError(NULL, NULL,
+    __xmlRaiseError(NULL, NULL, NULL,
 		    ctxt, node, XML_FROM_C14N, error,
 		    XML_ERR_ERROR, NULL, 0,
 		    NULL, NULL, NULL, 0, 0, msg);
@@ -1490,7 +1490,7 @@ xmlC14NNewCtx(xmlDocPtr doc,
               int exclusive, xmlChar ** inclusive_ns_prefixes,
               int with_comments, xmlOutputBufferPtr buf)
 {
-    xmlC14NCtxPtr ctx;
+    xmlC14NCtxPtr ctx = NULL;
 
     if ((doc == NULL) || (buf == NULL)) {
 #ifdef DEBUG_C14N

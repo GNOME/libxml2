@@ -136,6 +136,7 @@ xmlStrdupFunc xmlMemStrdup = (xmlStrdupFunc) xmlStrdup;
 #undef	xmlDefaultSAXLocator
 #undef	xmlDoValidityCheckingDefaultValue
 #undef	xmlGenericError
+#undef	xmlStructuredError
 #undef	xmlGenericErrorContext
 #undef	xmlGetWarningsDefaultValue
 #undef	xmlIndentTreeOutput
@@ -287,6 +288,13 @@ void xmlGenericErrorDefaultFunc	(void *ctx ATTRIBUTE_UNUSED,
  */
 xmlGenericErrorFunc xmlGenericError = xmlGenericErrorDefaultFunc;
 static xmlGenericErrorFunc xmlGenericErrorThrDef = xmlGenericErrorDefaultFunc;
+/**
+ * xmlStructuredError:
+ *
+ * Global setting: function used for structured error callbacks
+ */
+xmlStructuredErrorFunc xmlStructuredError = NULL;
+static xmlStructuredErrorFunc xmlStructuredErrorThrDef = NULL;
 /**
  * xmlGenericErrorContext:
  *
@@ -523,6 +531,7 @@ xmlInitializeGlobalState(xmlGlobalStatePtr gs)
         xmlSubstituteEntitiesDefaultValueThrDef;
 
     gs->xmlGenericError = xmlGenericErrorThrDef;
+    gs->xmlStructuredError = xmlStructuredErrorThrDef;
     gs->xmlGenericErrorContext = xmlGenericErrorContextThrDef;
     gs->xmlRegisterNodeDefaultValue = xmlRegisterNodeDefaultValueThrDef;
     gs->xmlDeregisterNodeDefaultValue = xmlDeregisterNodeDefaultValueThrDef;
@@ -539,6 +548,14 @@ xmlThrDefSetGenericErrorFunc(void *ctx, xmlGenericErrorFunc handler) {
 	xmlGenericErrorThrDef = handler;
     else
 	xmlGenericErrorThrDef = xmlGenericErrorDefaultFunc;
+    xmlMutexUnlock(xmlThrDefMutex);
+}
+
+void
+xmlThrDefSetStructuredErrorFunc(void *ctx, xmlStructuredErrorFunc handler) {
+    xmlMutexLock(xmlThrDefMutex);
+    xmlGenericErrorContextThrDef = ctx;
+    xmlStructuredErrorThrDef = handler;
     xmlMutexUnlock(xmlThrDefMutex);
 }
 
@@ -734,6 +751,15 @@ __xmlGenericError(void) {
 	return (&xmlGenericError);
     else
 	return (&xmlGetGlobalState()->xmlGenericError);
+}
+
+#undef	xmlStructuredError
+xmlStructuredErrorFunc *
+__xmlStructuredError(void) {
+    if (IS_MAIN_THREAD)
+	return (&xmlStructuredError);
+    else
+	return (&xmlGetGlobalState()->xmlStructuredError);
 }
 
 #undef	xmlGenericErrorContext

@@ -79,12 +79,12 @@ htmlErrMemory(xmlParserCtxtPtr ctxt, const char *extra)
         ctxt->disableSAX = 1;
     }
     if (extra)
-        __xmlRaiseError(NULL, NULL, ctxt, NULL, XML_FROM_PARSER,
+        __xmlRaiseError(NULL, NULL, NULL, ctxt, NULL, XML_FROM_PARSER,
                         XML_ERR_NO_MEMORY, XML_ERR_FATAL, NULL, 0, extra,
                         NULL, NULL, 0, 0,
                         "Memory allocation failed : %s\n", extra);
     else
-        __xmlRaiseError(NULL, NULL, ctxt, NULL, XML_FROM_PARSER,
+        __xmlRaiseError(NULL, NULL, NULL, ctxt, NULL, XML_FROM_PARSER,
                         XML_ERR_NO_MEMORY, XML_ERR_FATAL, NULL, 0, NULL,
                         NULL, NULL, 0, 0, "Memory allocation failed\n");
 }
@@ -104,7 +104,7 @@ htmlParseErr(xmlParserCtxtPtr ctxt, xmlParserErrors error,
              const char *msg, const xmlChar *str1, const xmlChar *str2)
 {
     ctxt->errNo = error;
-    __xmlRaiseError(NULL, NULL, ctxt, NULL, XML_FROM_HTML, error,
+    __xmlRaiseError(NULL, NULL, NULL, ctxt, NULL, XML_FROM_HTML, error,
                     XML_ERR_ERROR, NULL, 0,
 		    (const char *) str1, (const char *) str2,
 		    NULL, 0, 0,
@@ -126,7 +126,7 @@ htmlParseErrInt(xmlParserCtxtPtr ctxt, xmlParserErrors error,
              const char *msg, int val)
 {
     ctxt->errNo = error;
-    __xmlRaiseError(NULL, NULL, ctxt, NULL, XML_FROM_HTML, error,
+    __xmlRaiseError(NULL, NULL, NULL, ctxt, NULL, XML_FROM_HTML, error,
                     XML_ERR_ERROR, NULL, 0, NULL, NULL,
 		    NULL, val, 0, msg, val);
     ctxt->wellFormed = 0;

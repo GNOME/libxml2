@@ -65,6 +65,7 @@ struct _xmlSchemaParserCtxt {
     xmlSchemaValidityWarningFunc warning;       /* the callback in case of warning */
     xmlSchemaValidError err;
     int nberrors;
+    xmlStructuredErrorFunc serror;
 
     xmlSchemaPtr schema;        /* The schema in use */
     xmlChar *container;         /* the current element, group, ... */
@@ -106,6 +107,7 @@ struct _xmlSchemaValidCtxt {
     void *userData;             /* user specific data block */
     xmlSchemaValidityErrorFunc error;   /* the callback in case of errors */
     xmlSchemaValidityWarningFunc warning;       /* the callback in case of warning */
+    xmlStructuredErrorFunc serror;
 
     xmlSchemaPtr schema;        /* The schema in use */
     xmlDocPtr doc;
@@ -180,14 +182,16 @@ xmlSchemaPErr(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node, int error,
               const char *msg, const xmlChar * str1, const xmlChar * str2)
 {
     xmlGenericErrorFunc channel = NULL;
+    xmlStructuredErrorFunc schannel = NULL;
     void *data = NULL;
 
     if (ctxt != NULL) {
         ctxt->nberrors++;
         channel = ctxt->error;
         data = ctxt->userData;
+	schannel = ctxt->serror;
     }
-    __xmlRaiseError(channel, data, ctxt, node, XML_FROM_SCHEMASP,
+    __xmlRaiseError(schannel, channel, data, ctxt, node, XML_FROM_SCHEMASP,
                     error, XML_ERR_ERROR, NULL, 0,
                     (const char *) str1, (const char *) str2, NULL, 0, 0,
                     msg, str1, str2);
@@ -252,6 +256,7 @@ xmlSchemaVErr3(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr node, int error,
                const char *msg, const xmlChar *str1, const xmlChar *str2,
 	       const xmlChar *str3)
 {
+    xmlStructuredErrorFunc schannel = NULL;
     xmlGenericErrorFunc channel = NULL;
     void *data = NULL;
 
@@ -259,11 +264,12 @@ xmlSchemaVErr3(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr node, int error,
         ctxt->nberrors++;
 	ctxt->err = error;
         channel = ctxt->error;
+        schannel = ctxt->serror;
         data = ctxt->userData;
     }
     /* reajust to global error numbers */
     error += XML_SCHEMAV_NOROOT - XML_SCHEMAS_ERR_NOROOT;
-    __xmlRaiseError(channel, data, ctxt, node, XML_FROM_SCHEMASV,
+    __xmlRaiseError(schannel, channel, data, ctxt, node, XML_FROM_SCHEMASV,
                     error, XML_ERR_ERROR, NULL, 0,
                     (const char *) str1, (const char *) str2,
 		    (const char *) str3, 0, 0,
@@ -284,6 +290,7 @@ static void
 xmlSchemaVErr(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr node, int error,
               const char *msg, const xmlChar * str1, const xmlChar * str2)
 {
+    xmlStructuredErrorFunc schannel = NULL;
     xmlGenericErrorFunc channel = NULL;
     void *data = NULL;
 
@@ -292,10 +299,11 @@ xmlSchemaVErr(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr node, int error,
 	ctxt->err = error;
         channel = ctxt->error;
         data = ctxt->userData;
+        schannel = ctxt->serror;
     }
     /* reajust to global error numbers */
     error += XML_SCHEMAV_NOROOT - XML_SCHEMAS_ERR_NOROOT;
-    __xmlRaiseError(channel, data, ctxt, node, XML_FROM_SCHEMASV,
+    __xmlRaiseError(schannel, channel, data, ctxt, node, XML_FROM_SCHEMASV,
                     error, XML_ERR_ERROR, NULL, 0,
                     (const char *) str1, (const char *) str2, NULL, 0, 0,
                     msg, str1, str2);

@@ -350,6 +350,7 @@ xmlIOErr(int code, const char *extra)
 static void
 xmlLoaderErr(xmlParserCtxtPtr ctxt, const char *msg, const char *filename)
 {
+    xmlStructuredErrorFunc schannel = NULL;
     xmlGenericErrorFunc channel = NULL;
     void *data = NULL;
     xmlErrorLevel level = XML_ERR_ERROR;
@@ -362,9 +363,10 @@ xmlLoaderErr(xmlParserCtxtPtr ctxt, const char *msg, const char *filename)
 	    channel = ctxt->sax->warning;
 	    level = XML_ERR_WARNING;
 	}
+	schannel = ctxt->sax->serror;
 	data = ctxt->userData;
     }
-    __xmlRaiseError(channel, data, ctxt, NULL, XML_FROM_IO,
+    __xmlRaiseError(schannel, channel, data, ctxt, NULL, XML_FROM_IO,
                     XML_IO_LOAD_ERROR, level, NULL, 0,
 		    filename, NULL, NULL, 0, 0,
 		    msg, filename);

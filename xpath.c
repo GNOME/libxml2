@@ -230,13 +230,13 @@ xmlXPathErrMemory(xmlXPathContextPtr ctxt, const char *extra)
 	    ctxt->error(ctxt->userData, &ctxt->lastError);
     } else {
         if (extra)
-            __xmlRaiseError(NULL, NULL,
+            __xmlRaiseError(NULL, NULL, NULL,
                             NULL, NULL, XML_FROM_XPATH,
                             XML_ERR_NO_MEMORY, XML_ERR_FATAL, NULL, 0,
                             extra, NULL, NULL, 0, 0,
                             "Memory allocation failed : %s\n", extra);
         else
-            __xmlRaiseError(NULL, NULL,
+            __xmlRaiseError(NULL, NULL, NULL,
                             NULL, NULL, XML_FROM_XPATH,
                             XML_ERR_NO_MEMORY, XML_ERR_FATAL, NULL, 0,
                             NULL, NULL, NULL, 0, 0,
@@ -278,7 +278,7 @@ xmlXPathErr(xmlXPathParserContextPtr ctxt, int error)
     if (ctxt != NULL)
         ctxt->error = error;
     if ((ctxt == NULL) || (ctxt->context == NULL)) {
-	__xmlRaiseError(NULL, NULL,
+	__xmlRaiseError(NULL, NULL, NULL,
 			NULL, NULL, XML_FROM_XPATH,
 			error + XML_XPATH_EXPRESSION_OK - XPATH_EXPRESSION_OK,
 			XML_ERR_ERROR, NULL, 0,
@@ -297,7 +297,7 @@ xmlXPathErr(xmlXPathParserContextPtr ctxt, int error)
 	ctxt->context->error(ctxt->context->userData,
 	                     &ctxt->context->lastError);
     } else {
-	__xmlRaiseError(NULL, NULL,
+	__xmlRaiseError(NULL, NULL, NULL,
 			NULL, ctxt->context->debugNode, XML_FROM_XPATH,
 			error + XML_XPATH_EXPRESSION_OK - XPATH_EXPRESSION_OK,
 			XML_ERR_ERROR, NULL, 0,

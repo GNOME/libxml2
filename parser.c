@@ -142,12 +142,12 @@ xmlErrAttributeDup(xmlParserCtxtPtr ctxt, const xmlChar * prefix,
 {
     ctxt->errNo = XML_ERR_ATTRIBUTE_REDEFINED;
     if (prefix == NULL)
-        __xmlRaiseError(NULL, NULL, ctxt, NULL, XML_FROM_PARSER,
+        __xmlRaiseError(NULL, NULL, NULL, ctxt, NULL, XML_FROM_PARSER,
                         ctxt->errNo, XML_ERR_FATAL, NULL, 0,
                         (const char *) localname, NULL, NULL, 0, 0,
                         "Attribute %s redefined\n", localname);
     else
-        __xmlRaiseError(NULL, NULL, ctxt, NULL, XML_FROM_PARSER,
+        __xmlRaiseError(NULL, NULL, NULL, ctxt, NULL, XML_FROM_PARSER,
                         ctxt->errNo, XML_ERR_FATAL, NULL, 0,
                         (const char *) prefix, (const char *) localname,
                         NULL, 0, 0, "Attribute %s:%s redefined\n", prefix,
@@ -350,7 +350,7 @@ xmlFatalErr(xmlParserCtxtPtr ctxt, xmlParserErrors error, const char *info)
             errmsg = "Unregistered error message\n";
     }
     ctxt->errNo = error;
-    __xmlRaiseError(NULL, NULL, ctxt, NULL, XML_FROM_PARSER, error,
+    __xmlRaiseError(NULL, NULL, NULL, ctxt, NULL, XML_FROM_PARSER, error,
                     XML_ERR_FATAL, NULL, 0, info, NULL, NULL, 0, 0, errmsg,
                     info);
     ctxt->wellFormed = 0;
@@ -371,7 +371,7 @@ xmlFatalErrMsg(xmlParserCtxtPtr ctxt, xmlParserErrors error,
                const char *msg)
 {
     ctxt->errNo = error;
-    __xmlRaiseError(NULL, NULL, ctxt, NULL, XML_FROM_PARSER, error,
+    __xmlRaiseError(NULL, NULL, NULL, ctxt, NULL, XML_FROM_PARSER, error,
                     XML_ERR_FATAL, NULL, 0, NULL, NULL, NULL, 0, 0, msg);
     ctxt->wellFormed = 0;
     if (ctxt->recovery == 0)
@@ -393,7 +393,9 @@ xmlWarningMsg(xmlParserCtxtPtr ctxt, xmlParserErrors error,
               const char *msg, const xmlChar *str1, const xmlChar *str2)
 {
     ctxt->errNo = error;
-    __xmlRaiseError((ctxt->sax) ? ctxt->sax->warning : NULL, ctxt->userData,
+    __xmlRaiseError((ctxt->sax) ? ctxt->sax->serror : NULL,
+                    (ctxt->sax) ? ctxt->sax->warning : NULL,
+                    ctxt->userData,
                     ctxt, NULL, XML_FROM_PARSER, error,
                     XML_ERR_WARNING, NULL, 0,
 		    (const char *) str1, (const char *) str2, NULL, 0, 0,
@@ -414,7 +416,8 @@ xmlValidityError(xmlParserCtxtPtr ctxt, xmlParserErrors error,
               const char *msg, const xmlChar *str1)
 {
     ctxt->errNo = error;
-    __xmlRaiseError(ctxt->vctxt.error, ctxt->vctxt.userData,
+    __xmlRaiseError(ctxt->vctxt.serror,
+                    ctxt->vctxt.error, ctxt->vctxt.userData,
                     ctxt, NULL, XML_FROM_DTD, error,
                     XML_ERR_ERROR, NULL, 0, (const char *) str1,
 		    NULL, NULL, 0, 0,
@@ -436,7 +439,7 @@ xmlFatalErrMsgInt(xmlParserCtxtPtr ctxt, xmlParserErrors error,
                   const char *msg, int val)
 {
     ctxt->errNo = error;
-    __xmlRaiseError(NULL, NULL,
+    __xmlRaiseError(NULL, NULL, NULL,
                     ctxt, NULL, XML_FROM_PARSER, error, XML_ERR_FATAL,
                     NULL, 0, NULL, NULL, NULL, val, 0, msg, val);
     ctxt->wellFormed = 0;
@@ -461,7 +464,7 @@ xmlFatalErrMsgStrIntStr(xmlParserCtxtPtr ctxt, xmlParserErrors error,
 		  const xmlChar *str2)
 {
     ctxt->errNo = error;
-    __xmlRaiseError(NULL, NULL,
+    __xmlRaiseError(NULL, NULL, NULL,
                     ctxt, NULL, XML_FROM_PARSER, error, XML_ERR_FATAL,
                     NULL, 0, (const char *) str1, (const char *) str2,
 		    NULL, val, 0, msg, str1, val, str2);
@@ -484,7 +487,7 @@ xmlFatalErrMsgStr(xmlParserCtxtPtr ctxt, xmlParserErrors error,
                   const char *msg, const xmlChar * val)
 {
     ctxt->errNo = error;
-    __xmlRaiseError(NULL, NULL, ctxt, NULL,
+    __xmlRaiseError(NULL, NULL, NULL, ctxt, NULL,
                     XML_FROM_PARSER, error, XML_ERR_FATAL,
                     NULL, 0, (const char *) val, NULL, NULL, 0, 0, msg,
                     val);
@@ -507,7 +510,7 @@ xmlErrMsgStr(xmlParserCtxtPtr ctxt, xmlParserErrors error,
                   const char *msg, const xmlChar * val)
 {
     ctxt->errNo = error;
-    __xmlRaiseError(NULL, NULL, ctxt, NULL,
+    __xmlRaiseError(NULL, NULL, NULL, ctxt, NULL,
                     XML_FROM_PARSER, error, XML_ERR_ERROR,
                     NULL, 0, (const char *) val, NULL, NULL, 0, 0, msg,
                     val);
@@ -530,7 +533,7 @@ xmlNsErr(xmlParserCtxtPtr ctxt, xmlParserErrors error,
          const xmlChar * info3)
 {
     ctxt->errNo = error;
-    __xmlRaiseError(NULL, NULL, ctxt, NULL, XML_FROM_NAMESPACE, error,
+    __xmlRaiseError(NULL, NULL, NULL, ctxt, NULL, XML_FROM_NAMESPACE, error,
                     XML_ERR_ERROR, NULL, 0, (const char *) info1,
                     (const char *) info2, (const char *) info3, 0, 0, msg,
                     info1, info2, info3);

@@ -331,7 +331,7 @@ xmlRegexpErrMemory(xmlRegParserCtxtPtr ctxt, const char *extra)
         regexp = (const char *) ctxt->string;
 	ctxt->error = XML_ERR_NO_MEMORY;
     }
-    __xmlRaiseError(NULL, NULL, NULL, NULL, XML_FROM_REGEXP,
+    __xmlRaiseError(NULL, NULL, NULL, NULL, NULL, XML_FROM_REGEXP,
 		    XML_ERR_NO_MEMORY, XML_ERR_FATAL, NULL, 0, extra,
 		    regexp, NULL, 0, 0,
 		    "Memory allocation failed : %s\n", extra);
@@ -354,7 +354,7 @@ xmlRegexpErrCompile(xmlRegParserCtxtPtr ctxt, const char *extra)
 	idx = ctxt->cur - ctxt->string;
 	ctxt->error = XML_REGEXP_COMPILE_ERROR;
     }
-    __xmlRaiseError(NULL, NULL, NULL, NULL, XML_FROM_REGEXP,
+    __xmlRaiseError(NULL, NULL, NULL, NULL, NULL, XML_FROM_REGEXP,
 		    XML_REGEXP_COMPILE_ERROR, XML_ERR_FATAL, NULL, 0, extra,
 		    regexp, NULL, idx, 0,
 		    "failed to compile: %s\n", extra);

@@ -53,6 +53,7 @@ static xmlElementPtr xmlGetDtdElementDesc2(xmlDtdPtr dtd, const xmlChar *name,
 static void
 xmlVErrMemory(xmlValidCtxtPtr ctxt, const char *extra)
 {
+    xmlStructuredErrorFunc schannel = NULL;
     xmlGenericErrorFunc channel = NULL;
     xmlParserCtxtPtr pctxt = NULL;
     void *data = NULL;
@@ -61,14 +62,15 @@ xmlVErrMemory(xmlValidCtxtPtr ctxt, const char *extra)
         channel = ctxt->error;
         data = ctxt->userData;
 	pctxt = ctxt->userData;
+        schannel = ctxt->serror;
     }
     if (extra)
-        __xmlRaiseError(channel, data,
+        __xmlRaiseError(schannel, channel, data,
                         pctxt, NULL, XML_FROM_DTD, XML_ERR_NO_MEMORY,
                         XML_ERR_FATAL, NULL, 0, extra, NULL, NULL, 0, 0,
                         "Memory allocation failed : %s\n", extra);
     else
-        __xmlRaiseError(channel, data,
+        __xmlRaiseError(schannel, channel, data,
                         pctxt, NULL, XML_FROM_DTD, XML_ERR_NO_MEMORY,
                         XML_ERR_FATAL, NULL, 0, NULL, NULL, NULL, 0, 0,
                         "Memory allocation failed\n");
@@ -86,22 +88,24 @@ static void
 xmlErrValid(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED, xmlParserErrors error,
             const char *msg, const char *extra)
 {
+    xmlStructuredErrorFunc schannel = NULL;
     xmlGenericErrorFunc channel = NULL;
     xmlParserCtxtPtr pctxt = NULL;
     void *data = NULL;
 
     if (ctxt != NULL) {
         channel = ctxt->error;
+        schannel = ctxt->serror;
         data = ctxt->userData;
 	pctxt = ctxt->userData;
     }
     if (extra)
-        __xmlRaiseError(channel, data,
+        __xmlRaiseError(schannel, channel, data,
                         pctxt, NULL, XML_FROM_DTD, error,
                         XML_ERR_ERROR, NULL, 0, extra, NULL, NULL, 0, 0,
                         msg, extra);
     else
-        __xmlRaiseError(channel, data,
+        __xmlRaiseError(schannel, channel, data,
                         pctxt, NULL, XML_FROM_DTD, error,
                         XML_ERR_ERROR, NULL, 0, NULL, NULL, NULL, 0, 0,
                         msg);
@@ -124,6 +128,7 @@ xmlErrValidNodeNr(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
                 const char *msg, const xmlChar * str1,
                 int int2, const xmlChar * str3)
 {
+    xmlStructuredErrorFunc schannel = NULL;
     xmlGenericErrorFunc channel = NULL;
     xmlParserCtxtPtr pctxt = NULL;
     void *data = NULL;
@@ -132,8 +137,9 @@ xmlErrValidNodeNr(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
         channel = ctxt->error;
         data = ctxt->userData;
 	pctxt = ctxt->userData;
+	pctxt = ctxt->userData;
     }
-    __xmlRaiseError(channel, data, pctxt, node, XML_FROM_DTD, error,
+    __xmlRaiseError(schannel, channel, data, pctxt, node, XML_FROM_DTD, error,
                     XML_ERR_ERROR, NULL, 0,
                     (const char *) str1,
                     (const char *) str3,
@@ -156,6 +162,7 @@ xmlErrValidNode(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
                 const char *msg, const xmlChar * str1,
                 const xmlChar * str2, const xmlChar * str3)
 {
+    xmlStructuredErrorFunc schannel = NULL;
     xmlGenericErrorFunc channel = NULL;
     xmlParserCtxtPtr pctxt = NULL;
     void *data = NULL;
@@ -164,8 +171,9 @@ xmlErrValidNode(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
         channel = ctxt->error;
         data = ctxt->userData;
 	pctxt = ctxt->userData;
+	pctxt = ctxt->userData;
     }
-    __xmlRaiseError(channel, data, pctxt, node, XML_FROM_DTD, error,
+    __xmlRaiseError(schannel, channel, data, pctxt, node, XML_FROM_DTD, error,
                     XML_ERR_ERROR, NULL, 0,
                     (const char *) str1,
                     (const char *) str1,
@@ -188,6 +196,7 @@ xmlErrValidWarning(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
                 const char *msg, const xmlChar * str1,
                 const xmlChar * str2, const xmlChar * str3)
 {
+    xmlStructuredErrorFunc schannel = NULL;
     xmlGenericErrorFunc channel = NULL;
     xmlParserCtxtPtr pctxt = NULL;
     void *data = NULL;
@@ -196,8 +205,9 @@ xmlErrValidWarning(xmlValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
         channel = ctxt->error;
         data = ctxt->userData;
 	pctxt = ctxt->userData;
+	pctxt = ctxt->userData;
     }
-    __xmlRaiseError(channel, data, pctxt, node, XML_FROM_DTD, error,
+    __xmlRaiseError(schannel, channel, data, pctxt, node, XML_FROM_DTD, error,
                     XML_ERR_WARNING, NULL, 0,
                     (const char *) str1,
                     (const char *) str1,

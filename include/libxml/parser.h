@@ -716,6 +716,7 @@ struct _xmlSAXHandler {
     void *_private;
     startElementNsSAX2Func startElementNs;
     endElementNsSAX2Func endElementNs;
+    xmlStructuredErrorFunc serror;
 };
 
 /*

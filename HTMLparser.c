@@ -4388,7 +4388,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 			}
 			ctxt->token = 0;
 			ctxt->checkIndex = 0;
-			NEXT;
+			in->cur++;
 			break;
 		    }
 		}

@@ -1,3 +1,8 @@
+Mon Nov 18 16:05:51 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* HTMLparser.c: fixed bug #98879 a corner case when 0 is
+	  included in HTML documents and using the push parser.
+
 Mon Nov 18 00:11:24 CET 2002 ERDI Gergo <cactus@cactus.rulez.org>
 
 	* configure.in (PYTHON_SITE_PACKAGES): If --with-python is

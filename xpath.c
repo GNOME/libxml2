@@ -5055,6 +5055,8 @@ static void xmlXPathCompRelLocationPath(xmlXPathParserContextPtr ctxt);
 #else 
 static void xmlXPathCompRelativeLocationPath(xmlXPathParserContextPtr ctxt);
 #endif
+static xmlChar * xmlXPathParseNameComplex(xmlXPathParserContextPtr ctxt,
+	                                  int qualified);
 
 /**
  * xmlXPathCurrentChar:
@@ -5158,23 +5160,37 @@ encoding_error:
 
 xmlChar *
 xmlXPathParseNCName(xmlXPathParserContextPtr ctxt) {
-    const xmlChar *q;
-    xmlChar *ret = NULL;
+    const xmlChar *in;
+    xmlChar *ret;
+    int count = 0;
 
-    if (!IS_LETTER(CUR) && (CUR != '_')) return(NULL);
-    q = NEXT;
-
-    while ((IS_LETTER(CUR)) || (IS_DIGIT(CUR)) ||
-           (CUR == '.') || (CUR == '-') ||
-	   (CUR == '_') ||
-	   (IS_COMBINING(CUR)) ||
-	   (IS_EXTENDER(CUR)))
-	NEXT;
-    
-    ret = xmlStrndup(q, CUR_PTR - q);
-
-    return(ret);
+    /*
+     * Accelerator for simple ASCII names
+     */
+    in = ctxt->cur;
+    if (((*in >= 0x61) && (*in <= 0x7A)) ||
+	((*in >= 0x41) && (*in <= 0x5A)) ||
+	(*in == '_')) {
+	in++;
+	while (((*in >= 0x61) && (*in <= 0x7A)) ||
+	       ((*in >= 0x41) && (*in <= 0x5A)) ||
+	       ((*in >= 0x30) && (*in <= 0x39)) ||
+	       (*in == '_'))
+	    in++;
+	if ((*in == ' ') || (*in == '>') || (*in == '/') ||
+            (*in == '[') || (*in == ']') || (*in == ':') ||
+            (*in == '@') || (*in == '*')) {
+	    count = in - ctxt->cur;
+	    if (count == 0)
+		return(NULL);
+	    ret = xmlStrndup(ctxt->cur, count);
+	    ctxt->cur = in;
+	    return(ret);
+	}
+    }
+    return(xmlXPathParseNameComplex(ctxt, 0));
 }
+
 
 /**
  * xmlXPathParseQName:
@@ -5207,7 +5223,6 @@ xmlXPathParseQName(xmlXPathParserContextPtr ctxt, xmlChar **prefix) {
     return(ret);
 }
 
-static xmlChar * xmlXPathParseNameComplex(xmlXPathParserContextPtr ctxt);
 /**
  * xmlXPathParseName:
  * @ctxt:  the XPath Parser context
@@ -5248,11 +5263,11 @@ xmlXPathParseName(xmlXPathParserContextPtr ctxt) {
 	    return(ret);
 	}
     }
-    return(xmlXPathParseNameComplex(ctxt));
+    return(xmlXPathParseNameComplex(ctxt, 1));
 }
 
 static xmlChar *
-xmlXPathParseNameComplex(xmlXPathParserContextPtr ctxt) {
+xmlXPathParseNameComplex(xmlXPathParserContextPtr ctxt, int qualified) {
     xmlChar buf[XML_MAX_NAMELEN + 5];
     int len = 0, l;
     int c;
@@ -5262,15 +5277,17 @@ xmlXPathParseNameComplex(xmlXPathParserContextPtr ctxt) {
      */
     c = CUR_CHAR(l);
     if ((c == ' ') || (c == '>') || (c == '/') || /* accelerators */
+        (c == '[') || (c == ']') || (c == '@') || /* accelerators */
+        (c == '*') || /* accelerators */
 	(!IS_LETTER(c) && (c != '_') &&
-         (c != ':'))) {
+         ((qualified) && (c != ':')))) {
 	return(NULL);
     }
 
     while ((c != ' ') && (c != '>') && (c != '/') && /* test bigname.xml */
 	   ((IS_LETTER(c)) || (IS_DIGIT(c)) ||
             (c == '.') || (c == '-') ||
-	    (c == '_') || (c == ':') || 
+	    (c == '_') || ((qualified) && (c == ':')) || 
 	    (IS_COMBINING(c)) ||
 	    (IS_EXTENDER(c)))) {
 	COPY_BUF(l,buf,len,c);
@@ -5291,7 +5308,7 @@ xmlXPathParseNameComplex(xmlXPathParserContextPtr ctxt) {
 	    memcpy(buffer, buf, len);
 	    while ((IS_LETTER(c)) || (IS_DIGIT(c)) || /* test bigname.xml */
 		   (c == '.') || (c == '-') ||
-		   (c == '_') || (c == ':') || 
+		   (c == '_') || ((qualified) && (c == ':')) || 
 		   (IS_COMBINING(c)) ||
 		   (IS_EXTENDER(c))) {
 		if (len + 10 > max) {
@@ -5311,6 +5328,8 @@ xmlXPathParseNameComplex(xmlXPathParserContextPtr ctxt) {
 	    return(buffer);
 	}
     }
+    if (len == 0)
+	return(NULL);
     return(xmlStrndup(buf, len));
 }
 /**
@@ -6527,28 +6546,32 @@ xmlXPathCompStep(xmlXPathParserContextPtr ctxt) {
 	    }
 	}
 #endif
-	if (name == NULL)
-	    name = xmlXPathParseNCName(ctxt);
-	if (name != NULL) {
-	    axis = xmlXPathIsAxisName(name);
-	    if (axis != 0) {
-		SKIP_BLANKS;
-		if ((CUR == ':') && (NXT(1) == ':')) {
-		    SKIP(2);
-		    xmlFree(name);
-		    name = NULL;
+	if (CUR == '*') {
+	    axis = AXIS_CHILD;
+	} else {
+	    if (name == NULL)
+		name = xmlXPathParseNCName(ctxt);
+	    if (name != NULL) {
+		axis = xmlXPathIsAxisName(name);
+		if (axis != 0) {
+		    SKIP_BLANKS;
+		    if ((CUR == ':') && (NXT(1) == ':')) {
+			SKIP(2);
+			xmlFree(name);
+			name = NULL;
+		    } else {
+			/* an element name can conflict with an axis one :-\ */
+			axis = AXIS_CHILD;
+		    }
 		} else {
-		    /* an element name can conflict with an axis one :-\ */
 		    axis = AXIS_CHILD;
 		}
+	    } else if (CUR == '@') {
+		NEXT;
+		axis = AXIS_ATTRIBUTE;
 	    } else {
-	        axis = AXIS_CHILD;
+		axis = AXIS_CHILD;
 	    }
-	} else if (CUR == '@') {
-	    NEXT;
-	    axis = AXIS_ATTRIBUTE;
-	} else {
-	    axis = AXIS_CHILD;
 	}
 
 	CHECK_ERROR;

@@ -1,3 +1,27 @@
+Thu Jul 24 15:46:02 MDT 2003 John Fleck <jfleck@inkstain.net>
+
+	* doc/tutorial/apa.html
+	* doc/tutorial/apb.html
+	* doc/tutorial/apc.html
+	* doc/tutorial/apd.html
+	* doc/tutorial/ape.html
+	* doc/tutorial/apf.html
+	* doc/tutorial/apg.html
+	* doc/tutorial/aph.html
+	* doc/tutorial/ar01s02.html
+	* doc/tutorial/ar01s03.html
+	* doc/tutorial/ar01s04.html
+	* doc/tutorial/ar01s05.html
+	* doc/tutorial/ar01s06.html
+	* doc/tutorial/ar01s07.html
+	* doc/tutorial/ar01s08.html
+	* doc/tutorial/index.html
+	* doc/tutorial/ix01.html
+	* doc/tutorial/xmltutorial.pdf
+	* doc/tutorial/xmltutorial.xml
+	update tutorial with XPath example
+
+
 Thu Jul 24 17:07:06 IST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* SAX.c parser.c: fixing a bug about a special case of namespace

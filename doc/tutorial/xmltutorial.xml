@@ -2,6 +2,7 @@
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
     "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd" [
 <!ENTITY KEYWORD SYSTEM "includekeyword.c">
+<!ENTITY XPATH SYSTEM "includexpath.c">
 <!ENTITY STORY SYSTEM "includestory.xml">
 <!ENTITY ADDKEYWORD SYSTEM "includeaddkeyword.c">
 <!ENTITY ADDATTRIBUTE SYSTEM "includeaddattribute.c">
@@ -55,6 +56,11 @@
 	<revnumber>7</revnumber>
 	<date>April 25, 2003</date>
 	<revremark>add compilation appendix</revremark>
+      </revision>
+      <revision>
+	<revnumber>8</revnumber>
+	<date>July 24, 2003</date>
+	<revremark>add XPath example</revremark>
       </revision>
     </revhistory>
   </articleinfo>
@@ -321,20 +327,106 @@ parseStory (xmlDocPtr doc, xmlNodePtr cur) {
     </para>
 
   </sect1>
+  <sect1 id="xmltutorialxpath">
+    <title>Using XPath to Retrieve Element Content</title>
+    <para>In addition to walking the document tree to find an element,
+    <application>Libxml2</application> includes support for
+      use of <application>XPath</application> expressions to retrieve sets of
+      nodes that match a specified criteria. Full documentation of the
+      <application>XPath</application> <acronym>API</acronym> is <ulink
+	url="http://xmlsoft.org/html/libxml-xpath.html">here</ulink>.
+    </para>
+    <para><application>XPath</application> allows searching through a document
+    for nodes that match specified criteria. In the example below we search
+      through a document for the contents of all <varname>keyword</varname>
+    elements.
+      <note>
+	<para>A full discussion of <application>XPath</application> is beyond
+	  the scope of this document. For details on its use, see the <ulink
+	    url="http://www.w3.org/TR/xpath">XPath specification</ulink>.</para>
+      </note>
+      Full code for this example is at <xref linkend="xpathappendix" />.
+    </para>
+    <para>Using <application>XPath</application> requires setting up an
+      xmlXPathContext and then supplying the <application>XPath</application>
+      expression and the context to the
+      <function>xmlXPathEvalExpression</function> function. The function returns
+      an xmlXPathObjectPtr, which includes the set of nodes satisfying the
+      <application>XPath</application> expression.</para>
+    <para>
+      <programlisting>
+	xmlXPathObjectPtr
+	getnodeset (xmlDocPtr doc, xmlChar *xpath){
+	
+	<co id="cocontext" />xmlXPathContextPtr context;
+	xmlXPathObjectPtr result;
 
+	<co id="cocreatecontext" />context = xmlXPathNewContext(doc);
+	<co id="corunxpath" />result = xmlXPathEvalExpression(xpath, context);
+	<co id="cocheckxpathresult" />if(xmlXPathNodeSetIsEmpty(result->nodesetval)){
+                printf("No result\n");
+                return NULL;
+	}
+	xmlXPathFreeContext(context);
+	return result;
+      </programlisting>
+      <calloutlist>
+	<callout arearefs="cocontext">
+	  <para>First we declare our variables.</para>
+	</callout>
+	<callout arearefs="cocreatecontext">
+	  <para>Initialize the <varname>context</varname> variable.</para>
+	</callout>
+	<callout arearefs="corunxpath">
+	  <para>Apply the <application>XPath</application> expression.</para>
+	</callout>
+	<callout arearefs="cocheckxpathresult">
+	  <para>Check the result.</para>
+	</callout>
+      </calloutlist>
+    </para>
+    <para>The xmlPathObjectPtr returned by the function contains a set of nodes
+    and other information needed to iterate through the set and act on the
+      results. For this example, our functions returns the
+    <varname>xmlXPathObjectPtr</varname>. We use it to print the contents of
+      <varname>keyword</varname> nodes in our document. The node set object
+      includes the number of elements in the set (<varname>nodeNr</varname>) and
+      an array of nodes (<varname>nodeTab</varname>):
+      <programlisting>
+	<co id="conodesetcounter" />for (i=0; i &lt; nodeset->nodeNr; i++) {
+	<co id="coprintkeywords" />keyword = xmlNodeListGetString(doc, nodeset->nodeTab[i]->xmlChildrenNode, 1);
+		printf("keyword: %s\n", keyword);
+	}
+      </programlisting>
+      <calloutlist>
+	<callout arearefs="conodesetcounter">
+	  <para>The value of <varname>nodeset->Nr</varname> holds the number of
+	  elements in the node set. Here we use it to iterate through the array.</para>
+	</callout>
+	<callout arearefs="coprintkeywords">
+	  <para>Here we print the contents of each of the nodes returned.
+	    <note>
+	      <para>Note that we are printing the child node of the node that is
+		returned, because the contents of the <varname>keyword</varname>
+		element are a child text node.</para>
+	    </note>
+	  </para>
+	</callout>
+      </calloutlist>
+    </para>
+  </sect1>
 <sect1 id="xmltutorialwritingcontent">
     <title>Writing element content</title>
     <para><indexterm>
 	<primary>element</primary>
 	<secondary>writing content</secondary>
       </indexterm>
-Writing element content uses many of the same steps we used above
-    &mdash; parsing the document and walking the tree. We parse the document,
-    then traverse the tree to find the place we want to insert our element. For
-    this example, we want to again find the &quot;storyinfo&quot; element and
+      Writing element content uses many of the same steps we used above
+      &mdash; parsing the document and walking the tree. We parse the document,
+      then traverse the tree to find the place we want to insert our element. For
+      this example, we want to again find the &quot;storyinfo&quot; element and
       this time insert a keyword. Then we'll write the file to disk. Full code:
-    <xref linkend="addkeywordappendix" /></para>
-
+      <xref linkend="addkeywordappendix" /></para>
     <para>
       The main difference in this example is in
       <function>parseStory</function>:
@@ -597,6 +689,12 @@ Data encoding compatibility problems are one of the most common
       <programlisting>&KEYWORD;</programlisting>
     </para>
   </appendix>
+  <appendix id="xpathappendix">
+    <title>Code for XPath Example</title>
+    <para>
+      <programlisting>&XPATH;</programlisting>
+    </para>
+  </appendix>
 <appendix id="addkeywordappendix">
     <title>Code for Add Keyword Example</title>
     <para>
@@ -631,6 +729,7 @@ Data encoding compatibility problems are one of the most common
 	<member>Christopher R. Harris</member>
 	<member>Igor Zlatkovic</member>
 	<member>Niraj Tolia</member>
+	<member>David Turover</member>
       </simplelist>
     </para>
   </appendix>

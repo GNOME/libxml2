@@ -1,3 +1,9 @@
+Fri Feb  1 00:40:48 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* python/Makefile.am python/libxml.c configure.in Makefile.am:
+	  inserted the python wrappers build, I hope this won't be too
+	  unportable
+
 Thu Jan 31 21:27:37 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* xpath.c: minor optimization

@@ -1,7 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 #AUTOMAKE_OPTIONS=no-dependencies
 
-SUBDIRS = include . doc example
+SUBDIRS = include . doc example python
 
 INCLUDES = -I@srcdir@/include -I$(top_builddir)/include @THREAD_CFLAGS@ @Z_CFLAGS@ 
 

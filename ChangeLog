@@ -1,3 +1,8 @@
+Thu Aug 23 12:22:26 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* catalog.c: fixed bugi #59406 in SGML catalog parsing reported by
+	  Jun Kuriyama
+	  
 Thu Aug 23 02:51:29 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* doc/catalog.html: finished the catalog documentation

@@ -1512,8 +1512,10 @@ xmlParseSGMLCatalog(const xmlChar *value, const char *file) {
         return(-1);
     base = xmlStrdup((const xmlChar *) file);
 
-    while ((cur != NULL) && (cur[0] != '0')) {
+    while ((cur != NULL) && (cur[0] != 0)) {
 	SKIP_BLANKS;
+	if (cur[0] == 0)
+	    break;
 	if ((cur[0] == '-') && (cur[1] == '-')) {
 	    cur = xmlParseSGMLCatalogComment(cur);
 	    if (cur == NULL) {

@@ -12,8 +12,6 @@
 
 /*
  * TODOs:
- *   - provide an API to preserve part of the tree
- *   - Streaming XInclude support
  *   - XML Schemas validation
  *   - setting(s) for NoBlanks
  *   - performances and tuning ...

@@ -1,3 +1,9 @@
+Sun Feb 15 12:01:30 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* benchmark.png index.html xml.html: updating the benchmark
+	  graph and using a PNG instead of a GIF
+	* xmlreader.c: updated the TODO
+
 Sat Feb 14 18:55:40 MST 2004 John Fleck <jfleck@inkstain.net>
 
 	* doc/tutorial/xmltutorial.xml

@@ -1,3 +1,12 @@
+Fri Apr 11 10:59:24 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* xmlreader.c include/libxml/xmlreader.h: Added the Expand()
+	  and Next() operation to work on subtrees within the reader
+	  framework.
+	* doc/libxml2-api.xml python/libxml2class.txt: resulting updates
+	* python/tests/reader5.py: added an example for those new
+	  functions of the reader.
+
 Thu Apr 10 23:38:13 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* HTMLtree.c: patch from Vasily Tchekalkin to fix #109865

@@ -6,6 +6,7 @@
 
 
 # functions from module HTMLparser
+htmlCreateMemoryParserCtxt()
 htmlHandleOmittedElem()
 htmlIsScriptAttribute()
 htmlParseDoc()
@@ -132,6 +133,7 @@ relaxNGNewMemParserCtxt()
 relaxNGNewParserCtxt()
 
 # functions from module tree
+buildQName()
 compressMode()
 isXHTML()
 newComment()
@@ -594,6 +596,7 @@ Class xmlTextReader(xmlTextReaderCore)
     CurrentDoc()
     CurrentNode()
     Depth()
+    Expand()
     GetAttribute()
     GetAttributeNo()
     GetAttributeNs()
@@ -613,6 +616,7 @@ Class xmlTextReader(xmlTextReaderCore)
     MoveToNextAttribute()
     Name()
     NamespaceUri()
+    Next()
     NodeType()
     Normalization()
     Prefix()

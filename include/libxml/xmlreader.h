@@ -106,6 +106,8 @@ int		xmlTextReaderGetParserProp	(xmlTextReaderPtr reader,
 						 int prop);
 xmlNodePtr	xmlTextReaderCurrentNode	(xmlTextReaderPtr reader);
 xmlDocPtr	xmlTextReaderCurrentDoc		(xmlTextReaderPtr reader);
+xmlNodePtr	xmlTextReaderExpand		(xmlTextReaderPtr reader);
+int		xmlTextReaderNext		(xmlTextReaderPtr reader);
 
 /*
  * Error handling extensions

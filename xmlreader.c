@@ -555,6 +555,56 @@ xmlTextReaderValidateEntity(xmlTextReaderPtr reader) {
 
 
 /**
+ * xmlTextReaderGetSuccessor:
+ * @cur:  the current node
+ *
+ * Get the successor of a node if available.
+ *
+ * Returns the successor node or NULL
+ */
+static xmlNodePtr
+xmlTextReaderGetSuccessor(xmlNodePtr cur) {
+    if (cur == NULL) return(NULL) ; /* ERROR */
+    if (cur->next != NULL) return(cur->next) ;
+    do {
+        cur = cur->parent;
+        if (cur == NULL) return(NULL);
+        if (cur->next != NULL) return(cur->next);
+    } while (cur != NULL);
+    return(cur);
+}
+
+/**
+ * xmlTextReaderDoExpand:
+ * @reader:  the xmlTextReaderPtr used
+ *
+ * Makes sure that the current node is fully read as well as all its
+ * descendant. It means the full DOM subtree must be available at the
+ * end of the call.
+ *
+ * Returns 1 if the node was expanded successfully, 0 if there is no more
+ *          nodes to read, or -1 in case of error
+ */
+static int
+xmlTextReaderDoExpand(xmlTextReaderPtr reader) {
+    int val;
+
+    if ((reader == NULL) || (reader->node == NULL) || (reader->ctxt == NULL))
+        return(-1);
+
+    do {
+        if (xmlTextReaderGetSuccessor(reader->node) != NULL)
+	    return(1);
+	if (reader->mode == XML_TEXTREADER_MODE_EOF)
+	    return(1);
+	val = xmlTextReaderPushData(reader);
+	if (val < 0)
+	    return(-1);
+    } while(reader->mode != XML_TEXTREADER_MODE_EOF);
+    return(1);
+}
+
+/**
  * xmlTextReaderRead:
  * @reader:  the xmlTextReaderPtr used
  *
@@ -804,6 +854,7 @@ node_found:
 #endif /* LIBXML_REGEXP_ENABLED */
     return(1);
 node_end:
+    reader->mode = XML_TEXTREADER_DONE;
     return(0);
 }
 
@@ -820,6 +871,57 @@ xmlTextReaderReadState(xmlTextReaderPtr reader) {
     if (reader == NULL)
 	return(-1);
     return(reader->mode);
+}
+
+/**
+ * xmlTextReaderExpand:
+ * @reader:  the xmlTextReaderPtr used
+ *
+ * Reads the contents of the current node and the full subtree. It then makes
+ * the subtree availsble until the next xmlTextReaderRead() call
+ *
+ * Returns a node pointer valid until the next xmlTextReaderRead() call
+ *         or NULL in case of error.
+ */
+xmlNodePtr
+xmlTextReaderExpand(xmlTextReaderPtr reader) {
+    if ((reader == NULL) || (reader->node == NULL) || (reader->ctxt == NULL))
+        return(NULL);
+    if (xmlTextReaderDoExpand(reader) < 0)
+        return(NULL);
+    return(reader->node);
+}
+
+/**
+ * xmlTextReaderNext:
+ * @reader:  the xmlTextReaderPtr used
+ *
+ * Skip to the node following the current one in document order while
+ * avoiding the subtree if any.
+ *
+ * Returns 1 if the node was read successfully, 0 if there is no more
+ *          nodes to read, or -1 in case of error
+ */
+int
+xmlTextReaderNext(xmlTextReaderPtr reader) {
+    int ret;
+    xmlNodePtr cur;
+
+    if (reader == NULL)
+	return(-1);
+    cur = reader->node;
+    if ((cur == NULL) || (cur->type != XML_ELEMENT_NODE))
+        return(xmlTextReaderRead(reader));
+    if (reader->state == XML_TEXTREADER_END)
+        return(xmlTextReaderRead(reader));
+    if (cur->_private == (void *)xmlTextReaderIsEmpty)
+        return(xmlTextReaderRead(reader));
+    do {
+        ret = xmlTextReaderRead(reader);
+	if (ret != 1)
+	    return(ret);
+    } while (reader->node != cur);
+    return(xmlTextReaderRead(reader));
 }
 
 /**

@@ -883,7 +883,6 @@
      <exports symbol='xmlRemoveID'/>
      <exports symbol='xmlRemoveRef'/>
      <exports symbol='xmlSnprintfElementContent'/>
-     <exports symbol='xmlSplitQName2'/>
      <exports symbol='xmlSprintfElementContent'/>
      <exports symbol='xmlValidBuildContentModel'/>
      <exports symbol='xmlValidCtxt'/>
@@ -929,6 +928,7 @@
      <exports symbol='_htmlEntityDesc'/>
      <exports symbol='htmlAttrAllowed'/>
      <exports symbol='htmlAutoCloseTag'/>
+     <exports symbol='htmlCreateMemoryParserCtxt'/>
      <exports symbol='htmlCreatePushParserCtxt'/>
      <exports symbol='htmlDefaultSubelement'/>
      <exports symbol='htmlDocPtr'/>
@@ -1127,6 +1127,7 @@
      <exports symbol='xmlTextReaderCurrentNode'/>
      <exports symbol='xmlTextReaderDepth'/>
      <exports symbol='xmlTextReaderErrorFunc'/>
+     <exports symbol='xmlTextReaderExpand'/>
      <exports symbol='xmlTextReaderGetAttribute'/>
      <exports symbol='xmlTextReaderGetAttributeNo'/>
      <exports symbol='xmlTextReaderGetAttributeNs'/>
@@ -1150,6 +1151,7 @@
      <exports symbol='xmlTextReaderMoveToNextAttribute'/>
      <exports symbol='xmlTextReaderName'/>
      <exports symbol='xmlTextReaderNamespaceUri'/>
+     <exports symbol='xmlTextReaderNext'/>
      <exports symbol='xmlTextReaderNodeType'/>
      <exports symbol='xmlTextReaderNormalization'/>
      <exports symbol='xmlTextReaderPrefix'/>
@@ -1552,6 +1554,7 @@
      <exports symbol='xmlBufferWriteCHAR'/>
      <exports symbol='xmlBufferWriteChar'/>
      <exports symbol='xmlBufferWriteQuotedString'/>
+     <exports symbol='xmlBuildQName'/>
      <exports symbol='xmlChar'/>
      <exports symbol='xmlChildrenNode'/>
      <exports symbol='xmlCopyDoc'/>
@@ -1701,6 +1704,7 @@
      <exports symbol='xmlSetNsProp'/>
      <exports symbol='xmlSetProp'/>
      <exports symbol='xmlSetTreeDoc'/>
+     <exports symbol='xmlSplitQName2'/>
      <exports symbol='xmlStringGetNodeList'/>
      <exports symbol='xmlStringLenGetNodeList'/>
      <exports symbol='xmlTextConcat'/>
@@ -3633,6 +3637,12 @@ actually an xmlCharEncoding'/>
       <arg name='filename' type='const char *' info='the filename'/>
       <arg name='encoding' type='const char *' info='a free form C string describing the HTML document encoding, or NULL'/>
     </function>
+    <function name='htmlCreateMemoryParserCtxt' file='HTMLparser'>
+      <info>Create a parser context for an HTML in-memory document.</info>
+      <return type='htmlParserCtxtPtr' info='the new parser context or NULL'/>
+      <arg name='buffer' type='const char *' info='a pointer to a char array'/>
+      <arg name='size' type='int' info='the size of the array'/>
+    </function>
     <function name='htmlCreatePushParserCtxt' file='HTMLparser'>
       <info>Create a parser context for using the HTML parser in push mode The value of @filename is used for fetching external entities and error/warning reports.</info>
       <return type='htmlParserCtxtPtr' info='the new parser context or NULL'/>
@@ -4559,6 +4569,14 @@ actually an xmlCharEncoding'/>
       <return type='void'/>
       <arg name='buf' type='xmlBufferPtr' info='the XML buffer output'/>
       <arg name='string' type='const xmlChar *' info='the string to add'/>
+    </function>
+    <function name='xmlBuildQName' file='tree'>
+      <info>Builds the QName @prefix:@ncname in @memory if there is enough space and prefix is not NULL nor empty, otherwise allocate a new string. If prefix is NULL or empty it returns ncname.</info>
+      <return type='xmlChar *' info='the new string which must be freed by the caller if different from @memory and @ncname or NULL in case of error'/>
+      <arg name='ncname' type='const xmlChar *' info='the Name'/>
+      <arg name='prefix' type='const xmlChar *' info='the prefix'/>
+      <arg name='memory' type='xmlChar *' info='preallocated memory'/>
+      <arg name='len' type='int' info='preallocated memory length'/>
     </function>
     <function name='xmlBuildURI' file='uri'>
       <info>Computes he final URI of the reference done by checking that the given URI is valid, and building the final URI using the base URI. This is processed according to section 5.2 of the RFC 2396  5.2. Resolving Relative References to Absolute Form</info>
@@ -8076,10 +8094,10 @@ actually an xmlCharEncoding'/>
       <arg name='name' type='const xmlChar *' info='an XML parser context'/>
       <arg name='prefix' type='xmlChar **' info='a xmlChar **'/>
     </function>
-    <function name='xmlSplitQName2' file='valid'>
+    <function name='xmlSplitQName2' file='tree'>
       <info>parse an XML qualified name string  [NS 5] QName ::= (Prefix &apos;:&apos;)? LocalPart  [NS 6] Prefix ::= NCName  [NS 7] LocalPart ::= NCName</info>
       <return type='xmlChar *' info='NULL if not a QName, otherwise the local part, and prefix is updated to get the Prefix if any.'/>
-      <arg name='name' type='const xmlChar *' info='an XML parser context'/>
+      <arg name='name' type='const xmlChar *' info='the full QName'/>
       <arg name='prefix' type='xmlChar **' info='a xmlChar **'/>
     </function>
     <function name='xmlSprintfElementContent' file='valid'>
@@ -8283,6 +8301,11 @@ actually an xmlCharEncoding'/>
       <arg name='severity' type='xmlParserSeverities' info=''/>
       <arg name='locator' type='xmlTextReaderLocatorPtr' info=''/>
     </functype>
+    <function name='xmlTextReaderExpand' file='xmlreader'>
+      <info>Reads the contents of the current node and the full subtree. It then makes the subtree availsble until the next xmlTextReaderRead() call</info>
+      <return type='xmlNodePtr' info='a node pointer valid until the next xmlTextReaderRead() call or NULL in case of error.'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
+    </function>
     <function name='xmlTextReaderGetAttribute' file='xmlreader'>
       <info>Provides the value of the attribute with the specified qualified name.</info>
       <return type='xmlChar *' info='a string containing the value of the specified attribute, or NULL in case of error. The string must be deallocated by the caller.'/>
@@ -8403,6 +8426,11 @@ actually an xmlCharEncoding'/>
     <function name='xmlTextReaderNamespaceUri' file='xmlreader'>
       <info>The URI defining the namespace associated with the node.</info>
       <return type='xmlChar *' info='the namespace URI or NULL if not available'/>
+      <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
+    </function>
+    <function name='xmlTextReaderNext' file='xmlreader'>
+      <info>Skip to the node following the current one in document order while avoiding the subtree if any.</info>
+      <return type='int' info='1 if the node was read successfully, 0 if there is no more nodes to read, or -1 in case of error'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
     </function>
     <function name='xmlTextReaderNodeType' file='xmlreader'>

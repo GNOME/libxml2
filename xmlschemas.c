@@ -4198,7 +4198,7 @@ xmlSchemaPValAttrID(xmlSchemaParserCtxtPtr ctxt,
 		    XML_SCHEMAP_S4S_ATTR_INVALID_VALUE, 
 		    ownerDes, ownerItem, (xmlNodePtr) attr, 
 		    xmlSchemaGetBuiltInType(XML_SCHEMAS_ID), 
-		    NULL, NULL, "The ID '%s' already defined",
+		    NULL, NULL, "The ID '%s' is already defined",
 		    BAD_CAST value, NULL);
 	    } else
 		attr->atype = XML_ATTRIBUTE_ID;
@@ -5224,6 +5224,15 @@ xmlSchemaParseNotation(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
         return (NULL);
     }
     ret->targetNamespace = schema->targetNamespace;
+
+    xmlSchemaPValAttrID(ctxt, NULL, (xmlSchemaTypePtr) ret,
+	node, BAD_CAST "id");
+
+     if (IS_SCHEMA(child, "annotation")) {
+        ret->annot = xmlSchemaParseAnnotation(ctxt, schema, child);
+        child = child->next;
+    }
+
     child = node->children;
     if (IS_SCHEMA(child, "annotation")) {
         ret->annot = xmlSchemaParseAnnotation(ctxt, schema, child);
@@ -6102,6 +6111,7 @@ xmlSchemaParseIDCSelectorAndField(xmlSchemaParserCtxtPtr ctxt,
 	}
 
     }    
+    xmlSchemaPValAttrID(ctxt, NULL, NULL, node, BAD_CAST "id");
     /*
     * And now for the children...
     */
@@ -6220,7 +6230,8 @@ xmlSchemaParseIDC(xmlSchemaParserCtxtPtr ctxt,
     * The target namespace of the parent element declaration.
     */
     item->targetNamespace = targetNamespace;   
-    /* TODO: Handle attribute "id". */
+    xmlSchemaPValAttrID(ctxt, NULL, (xmlSchemaTypePtr) item,
+	node, BAD_CAST "id");
     if (idcCategory == XML_SCHEMA_TYPE_IDC_KEYREF) {
 	/*
 	* Attribute "refer" (mandatory).
@@ -6256,6 +6267,13 @@ xmlSchemaParseIDC(xmlSchemaParserCtxtPtr ctxt,
     if (IS_SCHEMA(child, "annotation")) {
 	item->annot = xmlSchemaParseAnnotation(ctxt, schema, child);
 	child = child->next;
+    }
+    if (child == NULL) {
+	xmlSchemaPContentErr(ctxt,
+		XML_SCHEMAP_S4S_ELEM_MISSING,
+		NULL, NULL, node, child, 
+		"A child element is missing",
+		"(annotation?, (selector, field+))");
     }
     /*
     * Child element <selector>.
@@ -8009,6 +8027,8 @@ xmlSchemaParseInclude(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     /*
     * Extract and validate attributes.
     */
+    xmlSchemaPValAttrID(ctxt, NULL, NULL,
+	node, BAD_CAST "id");
     /*
      * Preliminary step, extract the URI-Reference for the include and
      * make an URI from the base.
@@ -9843,51 +9863,56 @@ xmlSchemaBuildAContentModel(xmlSchemaTypePtr type,
             }
         case XML_SCHEMA_TYPE_ALL:{
                 xmlAutomataStatePtr start;
-                xmlSchemaTypePtr subtypes;
-
-		xmlSchemaElementPtr elem;
+		xmlSchemaElementPtr elemDecl, particle;
                 int lax;
 
-                subtypes = type->subtypes;
-                if (subtypes == NULL)
+                particle = (xmlSchemaElementPtr) type->subtypes;
+                if (particle == NULL)
                     break;
                 start = ctxt->state;
-                while (subtypes != NULL) {
+                while (particle != NULL) {
                     ctxt->state = start;
 		    /*
-		     * the following 'if' was needed to fix bug 139897
-		     * not quite sure why it only needs to be done for
-		     * elements with a 'ref', but it seems to work ok.
+		     * Changed to put the element declaration and
+		     * never the element decl. reference into the
+		     * automaton. This fixes bug 139897 and bug 167754.
 		     */
-		    if (subtypes->ref != NULL)
-		        xmlSchemaBuildAContentModel(subtypes, ctxt, name);
-                    elem = (xmlSchemaElementPtr) subtypes;		  
+		    if (particle->ref != NULL) {
+			if (particle->refDecl == NULL) {
+			    /*
+			    * TODO: Note that we break on missing
+			    * sub-components.
+			    */
+			    break;
+			} else
+			    elemDecl = particle->refDecl;
+		    } else
+			elemDecl = particle;                    		  
 		    /*
 		    * NOTE: The {max occurs} of all the particles in the 
-		    * {particles} of the group must be 0 or 1.
+		    * {particles} of the group must be 0 or 1; this is
+		    * already ensured during the parse of the content of
+		    * <all>.
 		    */                    
-                    if ((elem->minOccurs == 1) && (elem->maxOccurs == 1)) {
+                    if ((particle->minOccurs == 1) &&
+			(particle->maxOccurs == 1)) {
                         xmlAutomataNewOnceTrans2(ctxt->am, ctxt->state,
                                                 ctxt->state, 
-						elem->name, 
-						elem->targetNamespace,
-						1, 1, subtypes);
-                    } else if ((elem->minOccurs == 0) &&
-			(elem->maxOccurs == 1)) {
+						elemDecl->name, 
+						elemDecl->targetNamespace,
+						1, 1, elemDecl);
+                    } else if ((particle->minOccurs == 0) &&
+			(particle->maxOccurs == 1)) {
 			
                         xmlAutomataNewCountTrans2(ctxt->am, ctxt->state,
                                                  ctxt->state, 
-						 elem->name,
-						 elem->targetNamespace,
+						 elemDecl->name,
+						 elemDecl->targetNamespace,
                                                  0,
                                                  1,
-                                                 subtypes);
+                                                 elemDecl);
                     }
-		    /*
-		    * NOTE: if maxOccurs == 0 then no transition will be
-		    * created.
-		    */
-                    subtypes = subtypes->next;
+                    particle = (xmlSchemaElementPtr) particle->next;
                 }
                 lax = type->minOccurs == 0;
                 ctxt->state =
@@ -19824,62 +19849,116 @@ xmlSchemaValidateAttributes(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr elem, xmlSche
     /*
     * Add missing default/fixed attributes.
     */
-    if (ctxt->options & XML_SCHEMA_VAL_VC_I_CREATE) {
+    if (defAttrStates != NULL) {    
 	curState = defAttrStates;
+	
 	while (curState != NULL) { 
 	    attrDecl = curState->decl;
 	    if (attrDecl->ref != NULL)
 		attrDecl = attrDecl->refDecl;
-	    /*
-	    * PSVI: Add a new attribute node to the current element.
-	    */
-	    if (attrDecl->targetNamespace == NULL) {
-		xmlNewProp(elem, attrDecl->name, curState->value);
-	    } else {
-		xmlNsPtr ns;
-		
-		ns = xmlSearchNsByHref(elem->doc, elem, 
-		    attrDecl->targetNamespace);
-		if (ns == NULL) {
-		    xmlChar prefix[12];
-		    int counter = 1;
 
-		    attr = curState->attr;
-		    /*
-		    * Create a namespace declaration on the validation 
-		    * root node if no namespace declaration is in scope.
-		    */		    
-		    snprintf((char *) prefix, sizeof(prefix), "p");
-		    /*
-		    * This is somehow not performant, since the ancestor 
-		    * axis beyond @elem will be searched as well.
-		    */
-		    ns = xmlSearchNs(elem->doc, elem, BAD_CAST prefix);
-		    while (ns != NULL) {
-			if (counter > 1000) {
-			    xmlSchemaVErr(ctxt, (xmlNodePtr) attr, 
-				XML_SCHEMAV_INTERNAL,
-				"Internal error: xmlSchemaValidateAttributes, "
-				"could not compute a ns prefix for "
-				"default/fixed attribute '%s'.\n",
-				attrDecl->name, NULL);
-			    
-			    break;
-			}
-			snprintf((char *) prefix, 
-			    sizeof(prefix), "p%d", counter++);
-			ns = xmlSearchNs(elem->doc, elem, 
-			    BAD_CAST prefix);
+#ifdef IDC_ENABLED 
+	    /*
+	    * Evaluate IDCs on default attributes.
+	    */
+	    if (ctxt->xpathStates != NULL) {
+		/*
+		* Create an attribute info if needed.
+		*/
+		if (ctxt->attrInfo == NULL) {
+		    ctxt->attrInfo = (xmlSchemaElemInfoPtr) 
+			xmlMalloc(sizeof(xmlSchemaElemInfo));
+		    if (ctxt->attrInfo == NULL) {
+			xmlSchemaVErrMemory(ctxt, 
+			    "allocating an attribute info", NULL);
+			goto fatal_exit;
 		    }
+		}
+		/*
+		* Init the attribute info.
+		*/
+		ctxt->attrInfo->flags = 0;		
+		ctxt->attrInfo->decl = (xmlSchemaTypePtr) attrDecl;
+		ctxt->attrInfo->node = NULL;				
+		ctxt->attrInfo->typeDef = attrDecl->subtypes;
+		ctxt->attrInfo->namespaceName = attrDecl->targetNamespace;
+		ctxt->attrInfo->localName = attrDecl->name;
+
+		ctxt->nodeInfo = ctxt->attrInfo;
+									    
+		ret = xmlSchemaXPathEvaluate(ctxt,
+		    XML_ATTRIBUTE_NODE);
+		if (ret == -1)
+		    goto fatal_exit;
+		if (ctxt->attrInfo->value != NULL) {
+		    xmlSchemaFreeValue(ctxt->attrInfo->value);
+		    ctxt->attrInfo->value = NULL;
+		}
+		if (ret > 0) {
+		    ctxt->attrInfo->value = xmlSchemaCopyValue(attrDecl->defVal);
+		    /* TODO: error on NULL return. */
+		}
+		/*
+		* TODO URGENT: This will consume the precomputed default value,
+		* so we need to clone it somehow.
+		*/
+		if (xmlSchemaXPathProcessHistory(ctxt, ctxt->depth +1) == -1)
+		    goto fatal_exit;
+	    }
+#endif
+
+	    if (ctxt->options & XML_SCHEMA_VAL_VC_I_CREATE) {
+		/*
+		* PSVI: Add a new attribute node to the current element.
+		*/
+		if (attrDecl->targetNamespace == NULL) {
+		    xmlNewProp(elem, attrDecl->name, curState->value);
+		} else {
+		    xmlNsPtr ns;
+		    
+		    ns = xmlSearchNsByHref(elem->doc, elem, 
+			attrDecl->targetNamespace);
 		    if (ns == NULL) {
-			ns = xmlNewNs(ctxt->validationRoot, 
-			    attrDecl->targetNamespace, BAD_CAST prefix);
+			xmlChar prefix[12];
+			int counter = 1;
+			
+			attr = curState->attr;
+			/*
+			* Create a namespace declaration on the validation 
+			* root node if no namespace declaration is in scope.
+			*/		    
+			snprintf((char *) prefix, sizeof(prefix), "p");
+			/*
+			* This is somehow not performant, since the ancestor 
+			* axis beyond @elem will be searched as well.
+			*/
+			ns = xmlSearchNs(elem->doc, elem, BAD_CAST prefix);
+			while (ns != NULL) {
+			    if (counter > 1000) {
+				xmlSchemaVErr(ctxt, (xmlNodePtr) attr, 
+				    XML_SCHEMAV_INTERNAL,
+				    "Internal error: xmlSchemaValidateAttributes, "
+				    "could not compute a ns prefix for "
+				    "default/fixed attribute '%s'.\n",
+				    attrDecl->name, NULL);
+				
+				break;
+			    }
+			    snprintf((char *) prefix, 
+				sizeof(prefix), "p%d", counter++);
+			    ns = xmlSearchNs(elem->doc, elem, 
+				BAD_CAST prefix);
+			}
+			if (ns == NULL) {
+			    ns = xmlNewNs(ctxt->validationRoot, 
+				attrDecl->targetNamespace, BAD_CAST prefix);
+			    xmlNewNsProp(elem, ns, attrDecl->name, 
+				curState->value);
+			}
+		    } else {
 			xmlNewNsProp(elem, ns, attrDecl->name, 
 			    curState->value);
 		    }
-		} else {
-		    xmlNewNsProp(elem, ns, attrDecl->name, 
-			curState->value);
 		}
 	    }
 	    curState = curState->next;

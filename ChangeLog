@@ -1,3 +1,11 @@
+Fri Feb 18 12:31:49 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemas.c: Started support for IDC resolution to default
+	  attributes. If building the content model for <all>: ensured
+	  to put element declarations and not the particles into the
+	  content model automaton (this was bug #167754, reported by
+	  Frans Englich).
+
 Thu Feb 17 22:31:58 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
 
 	* pattern.c pattern.h: Some experimental addition for parsing

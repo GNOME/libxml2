@@ -1,3 +1,8 @@
+Sat Mar 22 16:15:50 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* SAX.c: fix bug #107208 avoid false duplicates when ID/REFs are
+	  defined in entities content
+
 Sat Mar 22 15:53:27 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* SAX.c: Fixed validation bug #108858 on namespace names using

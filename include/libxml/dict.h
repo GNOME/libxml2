@@ -56,6 +56,13 @@ XMLPUBFUN int XMLCALL
 					 const xmlChar *str);
 XMLPUBFUN int XMLCALL			
 			xmlDictSize	(xmlDictPtr dict);
+
+/*
+ * Cleanup function
+ */
+XMLPUBFUN void XMLCALL
+                        xmlDictCleanup  (void);
+
 #ifdef __cplusplus
 }
 #endif

@@ -71,6 +71,50 @@ struct _xmlDict {
 };
 
 /*
+ * A mutex for modifying the reference counter for shared
+ * dictionaries.
+ */
+static xmlRMutexPtr xmlDictMutex = NULL;
+
+/*
+ * Whether the dictionary mutex was initialized.
+ */
+static int xmlDictInitialized = 0;
+
+/**
+ * xmlInitializeCatalog:
+ *
+ * Do the dictionary mutex initialization.
+ * this function is not thread safe, initialization should
+ * preferably be done once at startup
+ */
+static int xmlInitializeDict() {
+    if (xmlDictInitialized)
+        return(1);
+
+    if ((xmlDictMutex = xmlNewRMutex()) == NULL)
+        return(0);
+
+    xmlDictInitialized = 1;
+    return(1);
+}
+
+/**
+ * xmlCatalogCleanup:
+ *
+ * Free the dictionary mutex.
+ */
+void
+xmlDictCleanup(void) {
+    if (!xmlDictInitialized)
+        return;
+
+    xmlFreeRMutex(xmlDictMutex);
+
+    xmlDictInitialized = 0;
+}
+
+/*
  * xmlDictAddString:
  * @dict: the dictionnary
  * @name: the name of the userdata
@@ -278,7 +322,11 @@ xmlDictComputeQKey(const xmlChar *prefix, const xmlChar *name, int len)
 xmlDictPtr
 xmlDictCreate(void) {
     xmlDictPtr dict;
-  
+
+    if (!xmlDictInitialized)
+        if (!xmlInitializeDict())
+            return(NULL);
+ 
     dict = xmlMalloc(sizeof(xmlDict));
     if (dict) {
         dict->ref_counter = 1;
@@ -332,10 +380,14 @@ xmlDictCreateSub(xmlDictPtr sub) {
  */
 int
 xmlDictReference(xmlDictPtr dict) {
+    if (!xmlDictInitialized)
+        if (!xmlInitializeDict())
+            return(-1);
+
     if (dict == NULL) return -1;
-    xmlRMutexLock(dict->mutex);
+    xmlRMutexLock(xmlDictMutex);
     dict->ref_counter++;
-    xmlRMutexUnlock(dict->mutex);
+    xmlRMutexUnlock(xmlDictMutex);
     return(0);
 }
 
@@ -451,15 +503,19 @@ xmlDictFree(xmlDictPtr dict) {
     if (dict == NULL)
 	return;
 
+    if (!xmlDictInitialized)
+        if (!xmlInitializeDict())
+            return;
+
     /* decrement the counter, it may be shared by a parser and docs */
-    xmlRMutexLock(dict->mutex);
+    xmlRMutexLock(xmlDictMutex);
     dict->ref_counter--;
     if (dict->ref_counter > 0) {
-        xmlRMutexUnlock(dict->mutex);
+        xmlRMutexUnlock(xmlDictMutex);
         return;
     }
 
-    xmlRMutexUnlock(dict->mutex);
+    xmlRMutexUnlock(xmlDictMutex);
 
     if (dict->subdict != NULL) {
         xmlDictFree(dict->subdict);

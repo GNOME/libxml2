@@ -9035,7 +9035,7 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
     xmlParseGetLasts(ctxt, &lastlt, &lastgt);
 
     while (1) {
-	if ((ctxt->wellFormed != 1) && (ctxt->disableSAX == 1))
+	if ((ctxt->errNo != XML_ERR_OK) && (ctxt->disableSAX == 1))
 	    return(0);
 
         
@@ -9837,7 +9837,7 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
               int terminate) {
     if (ctxt == NULL)
         return(XML_ERR_INTERNAL_ERROR);
-    if ((ctxt->wellFormed != 1) && (ctxt->disableSAX == 1))
+    if ((ctxt->errNo != XML_ERR_OK) && (ctxt->disableSAX == 1))
         return(ctxt->errNo);
     if (ctxt->instate == XML_PARSER_START)
         xmlDetectSAX2(ctxt);
@@ -9879,7 +9879,7 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
 	}
     }
     xmlParseTryOrFinish(ctxt, terminate);
-    if ((ctxt->wellFormed != 1) && (ctxt->disableSAX == 1))
+    if ((ctxt->errNo != XML_ERR_OK) && (ctxt->disableSAX == 1))
         return(ctxt->errNo);
     if (terminate) {
 	/*
@@ -9909,7 +9909,6 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
 	}
 	ctxt->instate = XML_PARSER_EOF;
     }
-    if (ctxt->wellFormed) return(0);
     return((xmlParserErrors) ctxt->errNo);	      
 }
 
@@ -12159,6 +12158,7 @@ xmlCleanupParser(void) {
 #ifdef LIBXML_CATALOG_ENABLED
     xmlCatalogCleanup();
 #endif
+    xmlDictCleanup();
     xmlCleanupInputCallbacks();
 #ifdef LIBXML_OUTPUT_ENABLED
     xmlCleanupOutputCallbacks();

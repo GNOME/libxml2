@@ -1,3 +1,9 @@
+Sat Jan 22 00:40:31 CET 2005 Daniel Veillard <daniel@veillard.com>
+
+	* dict.c parser.c include/libxml/dict.h: a single lock version
+	  mostly avoid the cost penalty of the lock in case of low 
+	  parallelism, so applying that version instead.
+
 Fri Jan 21 17:54:06 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* dict.c: patch from Gary Coady to fix a race in dict reference

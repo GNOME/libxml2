@@ -1,3 +1,21 @@
+Fri Apr  1 15:29:27 CEST 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+
+	* xmlschemastypes.c: Corrected 'length' facet validation for
+	  QNames and notations. Corrected xmlSchemaGetCanonValue: some
+	  data types did not return a value if already in normalized
+	  form.
+	* xmlschemas.c include/libxml/schemasInternals.h:
+	  Eliminated creation of structs for <restriction>, <extension>,
+	  <simpleContent>, <complexContent>, <list> and <union>: the
+	  information is now set directly on the corresponding simple/
+	  complex type. Added some more complex type constraints.
+	  Added facet derivation constraints. Introduced "particle"
+	  components, which seem to be really needed if applying
+	  constraints. Corrected/change some of the parsing functions.
+	  This is all a bit scary, since a significant change to the code.
+	* result/schemas/src-element2-*.err result/schemas/element-*.err:
+	  Adapted regression test results.
+
 Fri Apr  1 16:07:59 CEST 2005 Daniel Veillard <daniel@veillard.com>
 
 	* doc/apibuild.py doc/elfgcchack.xsl: revamped the elfgcchack.h 

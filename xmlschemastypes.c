@@ -4820,6 +4820,14 @@ xmlSchemaValidateFacetInternal(xmlSchemaFacetPtr facet,
 	    }
 	    return(XML_SCHEMAV_CVC_ENUMERATION_VALID);
 	case XML_SCHEMA_FACET_LENGTH:
+	    /*
+	    * SPEC (1.3) "if {primitive type definition} is QName or NOTATION,
+	    * then any {value} is facet-valid."
+	    */
+	    if ((valType == XML_SCHEMAS_QNAME) ||
+		(valType == XML_SCHEMAS_NOTATION))
+		return (0);
+	    /* No break on purpose. */
 	case XML_SCHEMA_FACET_MAXLENGTH:
 	case XML_SCHEMA_FACET_MINLENGTH: {
 	    unsigned int len = 0;
@@ -4870,9 +4878,6 @@ xmlSchemaValidateFacetInternal(xmlSchemaFacetPtr facet,
 		    case XML_SCHEMAS_NAME:
 		    case XML_SCHEMAS_NCNAME:
 		    case XML_SCHEMAS_ID:
-		    /*
-		    * FIXME: What exactly to do with anyURI?
-		    */
 		    case XML_SCHEMAS_ANYURI:
 			if (value != NULL)
 		    	    len = xmlSchemaNormLen(value);
@@ -5048,7 +5053,11 @@ xmlSchemaGetCanonValue(xmlSchemaValPtr val, const xmlChar **retValue)
 	case XML_SCHEMAS_ANYURI:	
 	    if (val->value.str == NULL)
 		return (-1);
-	    *retValue = BAD_CAST xmlSchemaCollapseString(BAD_CAST val->value.str);
+	    *retValue = 
+		BAD_CAST xmlSchemaCollapseString(BAD_CAST val->value.str);
+	    if (*retValue == NULL)
+		*retValue = 
+		    BAD_CAST xmlStrdup((const xmlChar *) val->value.str);
 	    break;
 	case XML_SCHEMAS_QNAME:
 	    /*

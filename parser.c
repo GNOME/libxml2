@@ -105,6 +105,9 @@ static void
 xmlAddEntityReference(xmlEntityPtr ent, xmlNodePtr firstNode,
                       xmlNodePtr lastNode);
 
+static int
+xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
+		      const xmlChar *string, void *user_data, xmlNodePtr *lst);
 /************************************************************************
  *									*
  * 		Parser stacks related functions and macros		*
@@ -5412,9 +5415,8 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 
 		    if (ent->etype == XML_INTERNAL_GENERAL_ENTITY) {
 			ctxt->depth++;
-			ret = xmlParseBalancedChunkMemory(ctxt->myDoc,
-				           ctxt->sax, user_data, ctxt->depth,
-					   value, &list);
+			ret = xmlParseBalancedChunkMemoryInternal(ctxt,
+					   value, user_data, &list);
 			ctxt->depth--;
 		    } else if (ent->etype ==
 			       XML_EXTERNAL_GENERAL_PARSED_ENTITY) {
@@ -9738,6 +9740,159 @@ xmlParseBalancedChunkMemory(xmlDocPtr doc, xmlSAXHandlerPtr sax,
      void *user_data, int depth, const xmlChar *string, xmlNodePtr *lst) {
     return xmlParseBalancedChunkMemoryRecover( doc, sax, user_data,
                                                 depth, string, lst, 0 );
+}
+
+/**
+ * xmlParseBalancedChunkMemoryInternal:
+ * @oldctxt:  the existing parsing context
+ * @string:  the input string in UTF8 or ISO-Latin (zero terminated)
+ * @user_data:  the user data field for the parser context
+ * @lst:  the return value for the set of parsed nodes
+ *
+ *
+ * Parse a well-balanced chunk of an XML document
+ * called by the parser
+ * The allowed sequence for the Well Balanced Chunk is the one defined by
+ * the content production in the XML grammar:
+ *
+ * [43] content ::= (element | CharData | Reference | CDSect | PI | Comment)*
+ *
+ * Returns 0 if the chunk is well balanced, -1 in case of args problem and
+ *    the parser error code otherwise
+ *    
+ * In case recover is set to 1, the nodelist will not be empty even if
+ * the parsed chunk is not well balanced. 
+ */
+static int
+xmlParseBalancedChunkMemoryInternal(xmlParserCtxtPtr oldctxt,
+	const xmlChar *string, void *user_data, xmlNodePtr *lst) {
+    xmlParserCtxtPtr ctxt;
+    xmlDocPtr newDoc;
+    xmlSAXHandlerPtr oldsax = NULL;
+    xmlNodePtr content;
+    int size;
+    int ret = 0;
+
+    if (oldctxt->depth > 40) {
+	return(XML_ERR_ENTITY_LOOP);
+    }
+
+
+    if (lst != NULL)
+        *lst = NULL;
+    if (string == NULL)
+        return(-1);
+
+    size = xmlStrlen(string);
+
+    ctxt = xmlCreateMemoryParserCtxt((char *) string, size);
+    if (ctxt == NULL) return(-1);
+    if (user_data != NULL)
+	ctxt->userData = user_data;
+    else
+	ctxt->userData = ctxt;
+
+    oldsax = ctxt->sax;
+    ctxt->sax = oldctxt->sax;
+    newDoc = xmlNewDoc(BAD_CAST "1.0");
+    if (newDoc == NULL) {
+	ctxt->sax = oldsax;
+	xmlFreeParserCtxt(ctxt);
+	return(-1);
+    }
+    if (oldctxt->myDoc != NULL) {
+	newDoc->intSubset = oldctxt->myDoc->intSubset;
+	newDoc->extSubset = oldctxt->myDoc->extSubset;
+    }
+    newDoc->children = xmlNewDocNode(newDoc, NULL, BAD_CAST "pseudoroot", NULL);
+    if (newDoc->children == NULL) {
+	ctxt->sax = oldsax;
+	xmlFreeParserCtxt(ctxt);
+	newDoc->intSubset = NULL;
+	newDoc->extSubset = NULL;
+        xmlFreeDoc(newDoc);
+	return(-1);
+    }
+    nodePush(ctxt, newDoc->children);
+    if (oldctxt->myDoc == NULL) {
+	ctxt->myDoc = oldctxt->myDoc;
+    } else {
+	ctxt->myDoc = newDoc;
+	newDoc->children->doc = newDoc;
+    }
+    ctxt->instate = XML_PARSER_CONTENT;
+    ctxt->depth = oldctxt->depth + 1;
+
+    /*
+     * Doing validity checking on chunk doesn't make sense
+     */
+    ctxt->validate = 0;
+    ctxt->loadsubset = oldctxt->loadsubset;
+
+    if (ctxt->myDoc != NULL) {
+        content = ctxt->myDoc->children;
+        ctxt->myDoc->children = NULL;
+        xmlParseContent(ctxt);
+        ctxt->myDoc->children = content;
+    } else {
+        xmlParseContent(ctxt);
+    }
+    if ((RAW == '<') && (NXT(1) == '/')) {
+	ctxt->errNo = XML_ERR_NOT_WELL_BALANCED;
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt->userData,
+		"chunk is not well balanced\n");
+	ctxt->wellFormed = 0;
+	ctxt->disableSAX = 1;
+    } else if (RAW != 0) {
+	ctxt->errNo = XML_ERR_EXTRA_CONTENT;
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt->userData,
+		"extra content at the end of well balanced chunk\n");
+	ctxt->wellFormed = 0;
+	ctxt->disableSAX = 1;
+    }
+    if (ctxt->node != newDoc->children) {
+	ctxt->errNo = XML_ERR_NOT_WELL_BALANCED;
+	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+	    ctxt->sax->error(ctxt->userData,
+		"chunk is not well balanced\n");
+	ctxt->wellFormed = 0;
+	ctxt->disableSAX = 1;
+    }
+
+    if (!ctxt->wellFormed) {
+        if (ctxt->errNo == 0)
+	    ret = 1;
+	else
+	    ret = ctxt->errNo;
+    } else {
+      ret = 0;
+    }
+    
+    if ((lst != NULL) && (ret == 0)) {
+	xmlNodePtr cur;
+
+	/*
+	 * Return the newly created nodeset after unlinking it from
+	 * they pseudo parent.
+	 */
+	cur = newDoc->children->children;
+	*lst = cur;
+	while (cur != NULL) {
+	    cur->parent = NULL;
+	    cur = cur->next;
+	}
+	newDoc->children->children = NULL;
+    }
+	
+    ctxt->sax = oldsax;
+    xmlFreeParserCtxt(ctxt);
+    newDoc->intSubset = NULL;
+    newDoc->extSubset = NULL;
+    xmlFreeDoc(newDoc);
+    
+    return(ret);
 }
 
 /**

@@ -1,3 +1,8 @@
+Fri Nov 15 16:22:54 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: fixed #96594, which was totally dependant on the 
+	  processing of internal parsed entities, which had to be changed.
+
 Fri Nov 15 12:16:07 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am python/Makefile.am python/tests/Makefile.am:

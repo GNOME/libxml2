@@ -69,16 +69,6 @@ typedef enum {
 
 typedef unsigned char xmlChar;
 
-/*
- * Removed in 2.3.9 ... nobody should still use this
- *
-#ifndef WIN32
-#ifndef CHAR
-#define CHAR xmlChar
-#endif
-#endif
- */
-
 /**
  * BAD_CAST:
  *

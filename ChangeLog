@@ -1,3 +1,9 @@
+Mon Jun 11 10:07:29 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xmlversion.h.in libxml.h: Cygwin patches
+	* tree.c: xmlFreeNodeList patch similar to xmlFreeNode one
+	* tree.h: cleanup
+
 Sat Jun  9 19:16:00 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* tree.c: patched xmlFreeNode() to avoid freeing() a static

@@ -1369,7 +1369,9 @@ xmlNanoFTPCloseConnection(void *ctx) {
 	return(-1);
     }
     if (res == 0) {
+#ifdef DEBUG_FTP
 	fprintf(stderr, "xmlNanoFTPCloseConnection: timeout\n");
+#endif
 	close(ctxt->controlFd); ctxt->controlFd = -1;
     } else {
 	res = xmlNanoFTPGetResponse(ctxt);

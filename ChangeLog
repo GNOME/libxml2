@@ -1,3 +1,7 @@
+Tue Oct  8 10:25:07 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c: patch from Mark Vakoc to fix xmlNodeGetPath()
+
 Mon Oct  7 13:12:03 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* doc/index.py: improved HTML indexing

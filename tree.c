@@ -3438,7 +3438,7 @@ xmlGetNodePath(xmlNodePtr node)
     xmlChar *buffer = NULL, *temp;
     size_t buf_len;
     xmlChar *buf;
-    char sep;
+    char *sep;
     const char *name;
     char nametemp[100];
     int occur = 0;
@@ -3460,16 +3460,16 @@ xmlGetNodePath(xmlNodePtr node)
     cur = node;
     do {
         name = "";
-        sep = '?';
+        sep = "?";
         occur = 0;
         if ((cur->type == XML_DOCUMENT_NODE) ||
             (cur->type == XML_HTML_DOCUMENT_NODE)) {
             if (buffer[0] == '/')
                 break;
-            sep = '/';
+            sep = "/";
             next = NULL;
         } else if (cur->type == XML_ELEMENT_NODE) {
-            sep = '/';
+            sep = "/";
             name = (const char *) cur->name;
             if (cur->ns) {
                 snprintf(nametemp, sizeof(nametemp) - 1,
@@ -3501,7 +3501,7 @@ xmlGetNodePath(xmlNodePtr node)
             } else
                 occur++;
         } else if (cur->type == XML_ATTRIBUTE_NODE) {
-            sep = '@';
+            sep = "/@";
             name = (const char *) (((xmlAttrPtr) cur)->name);
             next = ((xmlAttrPtr) cur)->parent;
         } else {
@@ -3530,10 +3530,10 @@ xmlGetNodePath(xmlNodePtr node)
             buf = temp;
         }
         if (occur == 0)
-            snprintf((char *) buf, buf_len, "%c%s%s",
+            snprintf((char *) buf, buf_len, "%s%s%s",
                      sep, name, (char *) buffer);
         else
-            snprintf((char *) buf, buf_len, "%c%s[%d]%s",
+            snprintf((char *) buf, buf_len, "%s%s[%d]%s",
                      sep, name, occur, (char *) buffer);
         snprintf((char *) buffer, buf_len, "%s", buf);
         cur = next;

@@ -2169,8 +2169,9 @@ xmlFreeIDTable(xmlIDTablePtr table) {
  * @attr:  the attribute
  *
  * Determine whether an attribute is of type ID. In case we have DTD(s)
- * then this is simple, otherwise we use an heuristic: name ID (upper
- * or lowercase).
+ * then this is done if DTD loading has been requested. In the case
+ * of HTML documents parsed with the HTML parser, then ID detection is
+ * done systematically.
  *
  * Returns 0 or 1 depending on the lookup result
  */

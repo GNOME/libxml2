@@ -2270,7 +2270,7 @@ xmlNewDocNode(xmlDocPtr doc, xmlNsPtr ns,
               const xmlChar *name, const xmlChar *content) {
     xmlNodePtr cur;
 
-    if (doc->dict != NULL)
+    if ((doc != NULL) && (doc->dict != NULL))
         cur = xmlNewNodeEatName(ns, (xmlChar *)
 	                        xmlDictLookup(doc->dict, name, -1));
     else
@@ -2336,7 +2336,7 @@ xmlNewDocRawNode(xmlDocPtr doc, xmlNsPtr ns,
                  const xmlChar *name, const xmlChar *content) {
     xmlNodePtr cur;
 
-    cur = xmlNewNode(ns, name);
+    cur = xmlNewDocNode(doc, ns, name, NULL);
     if (cur != NULL) {
         cur->doc = doc;
 	if (content != NULL) {

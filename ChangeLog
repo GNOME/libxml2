@@ -1,3 +1,8 @@
+Tue Oct 26 23:57:02 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* nanoftp.c: applied fixes for a couple of potential security problems
+	* tree.c valid.c xmllint.c: more fixes on the string interning checks
+
 Tue Oct 26 18:09:59 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* debugXML.c include/libxml/xmlerror.h: added checking for names

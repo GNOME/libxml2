@@ -1005,7 +1005,7 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 	    xmlNodePtr n;
 
 	    doc = xmlNewDoc(BAD_CAST "1.0");
-	    n = xmlNewNode(NULL, BAD_CAST "info");
+	    n = xmlNewDocNode(doc, NULL, BAD_CAST "info", NULL);
 	    xmlNodeSetContent(n, BAD_CAST "abc");
 	    xmlDocSetRootElement(doc, n);
 	}

@@ -6697,8 +6697,7 @@ xmlValidGetValidElements(xmlNode *prev, xmlNode *next, const xmlChar **names,
     /*
      * Creates a dummy node and insert it into the tree
      */    
-    test_node = xmlNewNode (NULL, BAD_CAST "<!dummy?>");
-    test_node->doc = ref_node->doc;
+    test_node = xmlNewDocNode (ref_node->doc, NULL, BAD_CAST "<!dummy?>", NULL);
     test_node->parent = parent;
     test_node->prev = prev;
     test_node->next = next;

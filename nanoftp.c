@@ -355,8 +355,13 @@ xmlNanoFTPScanURL(void *ctx, const char *URL) {
 
 	if (cur[0] == '[') {
 	    cur++;
-	    while (cur[0] != ']')
+	    while ((cur[0] != ']') && (indx < XML_NANO_MAX_URLBUF-1))
 		buf[indx++] = *cur++;
+	    if (indx >= XML_NANO_MAX_URLBUF-1) {
+		xmlGenericError(xmlGenericErrorContext,
+		                "\nxmlNanoFTPScanURL: %s", "Syntax Error\n");
+		return;
+	    }
 
 	    if (!strchr (buf, ':')) {
 		xmlGenericError (xmlGenericErrorContext, "\nxmlNanoFTPScanURL: %s",
@@ -604,8 +609,14 @@ xmlNanoFTPScanProxy(const char *URL) {
 
 	if (cur[0] == '[') {
 	    cur++;
-	    while (cur[0] != ']')
+	    while ((cur[0] != ']') && (indx < XML_NANO_MAX_URLBUF-1))
 		buf[indx++] = *cur++;
+            if (indx >= XML_NANO_MAX_URLBUF-1) {
+		xmlGenericError (xmlGenericErrorContext,
+			  "\nxmlNanoFTPScanProxy: %s", "Syntax error\n");
+		return;
+	    }
+
 	    if (!strchr (buf, ':')) {
 		xmlGenericError (xmlGenericErrorContext, "\nxmlNanoFTPScanProxy: %s",
 			"Use [IPv6]/IPv4 format\n");

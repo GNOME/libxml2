@@ -75,6 +75,17 @@ extern "C" {
         XP_ERROR(XPATH_INVALID_TYPE)
 
 /**
+ * CHECK_TYPE0:
+ * @typeval:  the XPath type
+ *
+ * Macro to check that the value on top of the XPath stack is of a given
+ * type. return(0) in case of failure
+ */
+#define CHECK_TYPE0(typeval)						\
+    if ((ctxt->value == NULL) || (ctxt->value->type != typeval))	\
+        XP_ERROR0(XPATH_INVALID_TYPE)
+
+/**
  * CHECK_ARITY:
  * @x:  the number of expected args
  *

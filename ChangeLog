@@ -1,3 +1,10 @@
+Tue Jul  3 10:12:03 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xpath.c include/libxml/xpath.h include/libxml/xpathInternals.h:
+	  lot of optimization work, results in significant improvements
+	  when handling really complex XPath queries. Add a small optimizer
+	  for unions, improve [n] and [last()], avoid some costly ops.
+
 Fri Jun 29 23:26:54 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* include/libxml/parser.h parser.c: xmlStrstr args are both const

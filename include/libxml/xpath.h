@@ -255,6 +255,7 @@ struct _xmlXPathParserContext {
 
     xmlXPathCompExprPtr comp;		/* the precompiled expression */
     int xptr;				/* it this an XPointer expression */
+    xmlNodePtr         ancestor;	/* used for walking preceding axis */
 };
 
 /**

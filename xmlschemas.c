@@ -172,15 +172,13 @@ xmlSchemaNewSchema(xmlSchemaParserCtxtPtr ctxt)
  *
  * Returns the newly allocated structure or NULL in case or error
  */
-static xmlSchemaFacetPtr
-xmlSchemaNewFacet(xmlSchemaParserCtxtPtr ctxt)
+xmlSchemaFacetPtr
+xmlSchemaNewFacet(void)
 {
     xmlSchemaFacetPtr ret;
 
     ret = (xmlSchemaFacetPtr) xmlMalloc(sizeof(xmlSchemaFacet));
     if (ret == NULL) {
-        if ((ctxt != NULL) && (ctxt->error != NULL))
-            ctxt->error(ctxt->userData, "Out of memory\n");
         return (NULL);
     }
     memset(ret, 0, sizeof(xmlSchemaFacet));
@@ -317,7 +315,7 @@ xmlSchemaFreeElement(xmlSchemaElementPtr elem)
  *
  * Deallocate a Schema Facet structure.
  */
-static void
+void
 xmlSchemaFreeFacet(xmlSchemaFacetPtr facet)
 {
     if (facet == NULL)
@@ -1338,7 +1336,7 @@ xmlSchemaParseFacet(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
     if ((ctxt == NULL) || (schema == NULL) || (node == NULL))
         return (NULL);
 
-    facet = xmlSchemaNewFacet(ctxt);
+    facet = xmlSchemaNewFacet();
     if (facet == NULL)
 	return (NULL);
     facet->node = node;
@@ -3708,6 +3706,149 @@ xmlSchemaTypeFixup(xmlSchemaTypePtr typeDecl,
 }
 
 /**
+ * xmlSchemaCheckFacet:
+ * @facet:  the facet
+ * @typeDecl:  the schema type definition
+ * @ctxt:  the schema parser context or NULL
+ * @name: name of the type
+ *
+ * Checks the default values types, especially for facets 
+ *
+ * Returns 0 if okay or -1 in cae of error
+ */
+int
+xmlSchemaCheckFacet(xmlSchemaFacetPtr facet,
+	            xmlSchemaTypePtr typeDecl,
+		    xmlSchemaParserCtxtPtr ctxt,
+		    const xmlChar *name)
+{
+    static xmlSchemaTypePtr nonNegativeIntegerType = NULL;
+    int ret = 0;
+
+    if (nonNegativeIntegerType == NULL) {
+	nonNegativeIntegerType = xmlSchemaGetPredefinedType(
+		BAD_CAST "nonNegativeInteger", xmlSchemaNs);
+    }
+    switch (facet->type) {
+	case XML_SCHEMA_FACET_MININCLUSIVE:
+	case XML_SCHEMA_FACET_MINEXCLUSIVE:
+	case XML_SCHEMA_FACET_MAXINCLUSIVE:
+	case XML_SCHEMA_FACET_MAXEXCLUSIVE: {
+	    /*
+	     * Okay we need to validate the value
+	     * at that point.
+	     */
+	    xmlSchemaValidCtxtPtr vctxt;
+
+	    vctxt = xmlSchemaNewValidCtxt(NULL);
+	    if (vctxt == NULL)
+		break;
+	    xmlSchemaValidateSimpleValue(vctxt, typeDecl,
+					 facet->value);
+	    facet->val = vctxt->value;
+	    vctxt->value = NULL;
+	    if (facet->val == NULL) {
+		/* error code */
+		if (ctxt != NULL) {
+		    xmlSchemaErrorContext(ctxt, NULL,
+			    facet->node, NULL);
+		    ctxt->error(ctxt->userData,
+		    "Schemas: type %s facet value %s invalid\n",
+				name, facet->value);
+		}
+		ret = -1;
+	    }
+	    xmlSchemaFreeValidCtxt(vctxt);
+	    break;
+	}
+	case XML_SCHEMA_FACET_ENUMERATION: {
+	    /*
+	     * Okay we need to validate the value
+	     * at that point.
+	     */
+	    xmlSchemaValidCtxtPtr vctxt;
+	    int tmp;
+
+	    vctxt = xmlSchemaNewValidCtxt(NULL);
+	    if (vctxt == NULL)
+		break;
+	    tmp = xmlSchemaValidateSimpleValue(vctxt, typeDecl,
+					 facet->value);
+	    if (tmp != 0) {
+		if (ctxt != NULL) {
+		    xmlSchemaErrorContext(ctxt, NULL,
+			    facet->node, NULL);
+		    ctxt->error(ctxt->userData,
+		    "Schemas: type %s enumeration value %s invalid\n",
+				name, facet->value);
+		}
+		ret = -1;
+	    }
+	    xmlSchemaFreeValidCtxt(vctxt);
+	    break;
+	}
+	case XML_SCHEMA_FACET_PATTERN:
+	    facet->regexp = xmlRegexpCompile(facet->value);
+	    if (facet->regexp == NULL) {
+		/* error code */
+		if (ctxt != NULL) {
+		    ctxt->error(ctxt->userData,
+		"Schemas: type %s facet regexp %s invalid\n",
+				name, facet->value);
+		}
+		ret = -1;
+	    }
+	    break;
+	case XML_SCHEMA_FACET_TOTALDIGITS:
+	case XML_SCHEMA_FACET_FRACTIONDIGITS:
+	case XML_SCHEMA_FACET_LENGTH:
+	case XML_SCHEMA_FACET_MAXLENGTH:
+	case XML_SCHEMA_FACET_MINLENGTH: {
+	    int tmp;
+
+	    tmp = xmlSchemaValidatePredefinedType(
+			 nonNegativeIntegerType, facet->value,
+			 &facet->val);
+	    if (tmp != 0) {
+		/* error code */
+		if (ctxt != NULL) {
+		    xmlSchemaErrorContext(ctxt, NULL,
+			    facet->node, NULL);
+		    ctxt->error(ctxt->userData,
+		    "Schemas: type %s facet value %s invalid\n",
+				name, facet->value);
+		}
+		ret = -1;
+	    }
+	    break;
+	}
+	case XML_SCHEMA_FACET_WHITESPACE: {
+	    if (xmlStrEqual(facet->value, BAD_CAST"preserve")) {
+		facet->whitespace = XML_SCHEMAS_FACET_PRESERVE;
+	    } else if (xmlStrEqual(facet->value,
+			BAD_CAST"replace")) {
+		facet->whitespace = XML_SCHEMAS_FACET_REPLACE;
+	    } else if (xmlStrEqual(facet->value,
+			BAD_CAST"collapse")) {
+		facet->whitespace = XML_SCHEMAS_FACET_COLLAPSE;
+	    } else {
+		if (ctxt != NULL) {
+		    xmlSchemaErrorContext(ctxt, NULL,
+			    facet->node, NULL);
+		    ctxt->error(ctxt->userData,
+		    "Schemas: type %s whiteSpace value %s invalid\n",
+				name, facet->value);
+		}
+		ret = -1;
+	    }
+	}
+	default:
+	    break;
+    }
+    return(ret);
+}
+
+/**
  * xmlSchemaCheckDefaults:
  * @typeDecl:  the schema type definition
  * @ctxt:  the schema parser context
@@ -3719,118 +3860,13 @@ xmlSchemaCheckDefaults(xmlSchemaTypePtr typeDecl,
 		   xmlSchemaParserCtxtPtr ctxt,
 		   const xmlChar *name)
 {
-    static xmlSchemaTypePtr nonNegativeIntegerType = NULL;
     if (name == NULL)
 	name = typeDecl->name;
-    if (nonNegativeIntegerType == NULL) {
-	nonNegativeIntegerType = xmlSchemaGetPredefinedType(
-		BAD_CAST "nonNegativeInteger", xmlSchemaNs);
-    }
     if (typeDecl->type == XML_SCHEMA_TYPE_RESTRICTION) {
 	if (typeDecl->facets != NULL) {
 	    xmlSchemaFacetPtr facet = typeDecl->facets;
 	    while (facet != NULL) {
-		switch (facet->type) {
-		    case XML_SCHEMA_FACET_MININCLUSIVE:
-		    case XML_SCHEMA_FACET_MINEXCLUSIVE:
-		    case XML_SCHEMA_FACET_MAXINCLUSIVE:
-		    case XML_SCHEMA_FACET_MAXEXCLUSIVE: {
-			/*
-			 * Okay we need to validate the value
-			 * at that point.
-			 */
-			xmlSchemaValidCtxtPtr vctxt;
-
-			vctxt = xmlSchemaNewValidCtxt(NULL);
-			if (vctxt == NULL)
-			    break;
-			xmlSchemaValidateSimpleValue(vctxt, typeDecl,
-						     facet->value);
-			facet->val = vctxt->value;
-			vctxt->value = NULL;
-			if (facet->val == NULL) {
-			    /* error code */
-			    xmlSchemaErrorContext(ctxt, NULL,
-				    facet->node, NULL);
-			    ctxt->error(ctxt->userData,
-			    "Schemas: type %s facet value %s invalid\n",
-					name, facet->value);
-			}
-			xmlSchemaFreeValidCtxt(vctxt);
-			break;
-		    }
-		    case XML_SCHEMA_FACET_ENUMERATION: {
-			/*
-			 * Okay we need to validate the value
-			 * at that point.
-			 */
-			xmlSchemaValidCtxtPtr vctxt;
-			int ret;
-
-			vctxt = xmlSchemaNewValidCtxt(NULL);
-			if (vctxt == NULL)
-			    break;
-			ret = xmlSchemaValidateSimpleValue(vctxt, typeDecl,
-						     facet->value);
-			if (ret != 0) {
-			    xmlSchemaErrorContext(ctxt, NULL,
-				    facet->node, NULL);
-			    ctxt->error(ctxt->userData,
-			    "Schemas: type %s enumeration value %s invalid\n",
-					name, facet->value);
-			}
-			xmlSchemaFreeValidCtxt(vctxt);
-			break;
-		    }
-		    case XML_SCHEMA_FACET_PATTERN:
-			facet->regexp = xmlRegexpCompile(facet->value);
-			if (facet->regexp == NULL) {
-			    /* error code */
-			    ctxt->error(ctxt->userData,
-			"Schemas: type %s facet regexp %s invalid\n",
-					name, facet->value);
-			}
-			break;
-		    case XML_SCHEMA_FACET_TOTALDIGITS:
-		    case XML_SCHEMA_FACET_FRACTIONDIGITS:
-		    case XML_SCHEMA_FACET_LENGTH:
-		    case XML_SCHEMA_FACET_MAXLENGTH:
-		    case XML_SCHEMA_FACET_MINLENGTH: {
-			int ret;
-
-			ret = xmlSchemaValidatePredefinedType(
-				     nonNegativeIntegerType, facet->value,
-				     &facet->val);
-			if (ret != 0) {
-			    /* error code */
-			    xmlSchemaErrorContext(ctxt, NULL,
-				    facet->node, NULL);
-			    ctxt->error(ctxt->userData,
-			    "Schemas: type %s facet value %s invalid\n",
-					name, facet->value);
-			}
-			break;
-		    }
-		    case XML_SCHEMA_FACET_WHITESPACE: {
-			if (xmlStrEqual(facet->value, BAD_CAST"preserve")) {
-			    facet->whitespace = XML_SCHEMAS_FACET_PRESERVE;
-			} else if (xmlStrEqual(facet->value,
-				    BAD_CAST"replace")) {
-			    facet->whitespace = XML_SCHEMAS_FACET_REPLACE;
-			} else if (xmlStrEqual(facet->value,
-				    BAD_CAST"collapse")) {
-			    facet->whitespace = XML_SCHEMAS_FACET_COLLAPSE;
-			} else {
-			    xmlSchemaErrorContext(ctxt, NULL,
-				    facet->node, NULL);
-			    ctxt->error(ctxt->userData,
-			    "Schemas: type %s whiteSpace value %s invalid\n",
-					name, facet->value);
-			}
-		    }
-		    default:
-			break;
-		}
+		xmlSchemaCheckFacet(facet, typeDecl, ctxt, name);
 		facet = facet->next;
 	    }
 	}

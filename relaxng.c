@@ -332,13 +332,40 @@ typedef int (*xmlRelaxNGTypeHave) (void *data, const xmlChar *type);
  * @data:  data needed for the library
  * @type:  the type name
  * @value:  the value to check
+ * @result:  place to store the result if needed
  *
  * Function provided by a type library to check if a value match a type
  *
  * Returns 1 if yes, 0 if no and -1 in case of error.
  */
 typedef int (*xmlRelaxNGTypeCheck) (void *data, const xmlChar *type,
-	                            const xmlChar *value);
+	                            const xmlChar *value, void **result);
+
+/**
+ * xmlRelaxNGFacetCheck:
+ * @data:  data needed for the library
+ * @type:  the type name
+ * @facet:  the facet name
+ * @val:  the facet value
+ * @strval:  the string value
+ * @value:  the value to check
+ *
+ * Function provided by a type library to check a value facet
+ *
+ * Returns 1 if yes, 0 if no and -1 in case of error.
+ */
+typedef int (*xmlRelaxNGFacetCheck) (void *data, const xmlChar *type,
+	                             const xmlChar *facet, const xmlChar *val,
+				     const xmlChar *strval, void *value);
+
+/**
+ * xmlRelaxNGTypeFree:
+ * @data:  data needed for the library
+ * @result:  the value to free
+ *
+ * Function provided by a type library to free a returned result
+ */
+typedef void (*xmlRelaxNGTypeFree) (void *data, void *result);
 
 /**
  * xmlRelaxNGTypeCompare:
@@ -363,6 +390,8 @@ struct _xmlRelaxNGTypeLibrary {
     xmlRelaxNGTypeHave      have;	/* the export function */
     xmlRelaxNGTypeCheck    check;	/* the checking function */
     xmlRelaxNGTypeCompare   comp;	/* the compare function */
+    xmlRelaxNGFacetCheck   facet;	/* the facet check function */
+    xmlRelaxNGTypeFree     freef;	/* the freeing function */
 };
 
 /************************************************************************
@@ -1440,7 +1469,8 @@ xmlRelaxNGSchemaTypeHave(void *data ATTRIBUTE_UNUSED,
 static int
 xmlRelaxNGSchemaTypeCheck(void *data ATTRIBUTE_UNUSED,
 	                  const xmlChar *type,
-			  const xmlChar *value) {
+			  const xmlChar *value,
+			  void **result) {
     xmlSchemaTypePtr typ;
     int ret;
 
@@ -1456,12 +1486,86 @@ xmlRelaxNGSchemaTypeCheck(void *data ATTRIBUTE_UNUSED,
 	       BAD_CAST "http://www.w3.org/2001/XMLSchema");
     if (typ == NULL)
 	return(-1);
-    ret = xmlSchemaValidatePredefinedType(typ, value, NULL);
+    ret = xmlSchemaValidatePredefinedType(typ, value,
+	                                  (xmlSchemaValPtr *) result);
     if (ret == 0)
 	return(1);
     if (ret > 0)
 	return(0);
     return(-1);
+}
+
+/**
+ * xmlRelaxNGSchemaFacetCheck:
+ * @data:  data needed for the library
+ * @type:  the type name
+ * @facet:  the facet name
+ * @val:  the facet value
+ * @strval:  the string value
+ * @value:  the value to check
+ *
+ * Function provided by a type library to check a value facet
+ *
+ * Returns 1 if yes, 0 if no and -1 in case of error.
+ */
+static int
+xmlRelaxNGSchemaFacetCheck (void *data, const xmlChar *type,
+	                    const xmlChar *facetname, const xmlChar *val,
+			    const xmlChar *strval, void *value) {
+    xmlSchemaFacetPtr facet;
+    xmlSchemaTypePtr typ;
+    int ret;
+
+    if ((type == NULL) || (strval == NULL))
+	return(-1);
+    typ = xmlSchemaGetPredefinedType(type, 
+	       BAD_CAST "http://www.w3.org/2001/XMLSchema");
+    if (typ == NULL)
+	return(-1);
+
+    facet = xmlSchemaNewFacet();
+    if (facet == NULL)
+	return(-1);
+
+    if (xmlStrEqual(facetname, BAD_CAST "minInclusive"))  {
+        facet->type = XML_SCHEMA_FACET_MININCLUSIVE;
+    } else if (xmlStrEqual(facetname, BAD_CAST "minExclusive"))  {
+        facet->type = XML_SCHEMA_FACET_MINEXCLUSIVE;
+    } else if (xmlStrEqual(facetname, BAD_CAST "maxInclusive"))  {
+        facet->type = XML_SCHEMA_FACET_MAXINCLUSIVE;
+    } else if (xmlStrEqual(facetname, BAD_CAST "maxExclusive"))  {
+        facet->type = XML_SCHEMA_FACET_MAXEXCLUSIVE;
+    } else if (xmlStrEqual(facetname, BAD_CAST "totalDigits"))  {
+        facet->type = XML_SCHEMA_FACET_TOTALDIGITS;
+    } else if (xmlStrEqual(facetname, BAD_CAST "fractionDigits"))  {
+        facet->type = XML_SCHEMA_FACET_FRACTIONDIGITS;
+    } else if (xmlStrEqual(facetname, BAD_CAST "pattern"))  {
+        facet->type = XML_SCHEMA_FACET_PATTERN;
+    } else if (xmlStrEqual(facetname, BAD_CAST "enumeration"))  {
+        facet->type = XML_SCHEMA_FACET_ENUMERATION;
+    } else if (xmlStrEqual(facetname, BAD_CAST "whiteSpace"))  {
+        facet->type = XML_SCHEMA_FACET_WHITESPACE;
+    } else if (xmlStrEqual(facetname, BAD_CAST "length"))  {
+        facet->type = XML_SCHEMA_FACET_LENGTH;
+    } else if (xmlStrEqual(facetname, BAD_CAST "maxLength"))  {
+        facet->type = XML_SCHEMA_FACET_MAXLENGTH;
+    } else if (xmlStrEqual(facetname, BAD_CAST "minLength")) {
+        facet->type = XML_SCHEMA_FACET_MINLENGTH;
+    } else {
+	xmlSchemaFreeFacet(facet);
+	return(-1);
+    }
+    facet->value = xmlStrdup(val);
+    ret = xmlSchemaCheckFacet(facet, typ, NULL, type);
+    if (ret != 0) {
+	xmlSchemaFreeFacet(facet);
+	return(-1);
+    }
+    ret = xmlSchemaValidateFacet(typ, facet, strval, value);
+    xmlSchemaFreeFacet(facet);
+    if (ret != 0)
+	return(-1);
+    return(0);
 }
 
 /**
@@ -1520,21 +1624,13 @@ xmlRelaxNGDefaultTypeHave(void *data ATTRIBUTE_UNUSED, const xmlChar *type) {
 static int
 xmlRelaxNGDefaultTypeCheck(void *data ATTRIBUTE_UNUSED,
 	                   const xmlChar *type ATTRIBUTE_UNUSED,
-			  const xmlChar *value ATTRIBUTE_UNUSED) {
+			   const xmlChar *value ATTRIBUTE_UNUSED,
+			   void **result ATTRIBUTE_UNUSED) {
     if (value == NULL)
 	return(-1);
     if (xmlStrEqual(type, BAD_CAST "string"))
 	return(1);
     if (xmlStrEqual(type, BAD_CAST "token")) {
-#if 0
-	const xmlChar *cur = value;
-
-	while (*cur != 0) {
-	    if (!IS_BLANK(*cur))
-		return(1);
-	    cur++;
-	}
-#endif
 	return(1);
     }
 
@@ -1624,7 +1720,8 @@ xmlRelaxNGFreeTypeLibrary(xmlRelaxNGTypeLibraryPtr lib,
 static int
 xmlRelaxNGRegisterTypeLibrary(const xmlChar *namespace, void *data,
     xmlRelaxNGTypeHave have, xmlRelaxNGTypeCheck check,
-    xmlRelaxNGTypeCompare comp) {
+    xmlRelaxNGTypeCompare comp, xmlRelaxNGFacetCheck facet,
+    xmlRelaxNGTypeFree freef) {
     xmlRelaxNGTypeLibraryPtr lib;
     int ret;
 
@@ -1650,6 +1747,8 @@ xmlRelaxNGRegisterTypeLibrary(const xmlChar *namespace, void *data,
     lib->have = have;
     lib->comp = comp;
     lib->check = check;
+    lib->facet = facet;
+    lib->freef = freef;
     ret = xmlHashAddEntry(xmlRelaxNGRegisteredTypes, namespace, lib);
     if (ret < 0) {
 	xmlGenericError(xmlGenericErrorContext,
@@ -1683,13 +1782,17 @@ xmlRelaxNGInitTypes(void) {
 	    NULL,
 	    xmlRelaxNGSchemaTypeHave,
 	    xmlRelaxNGSchemaTypeCheck,
-	    xmlRelaxNGSchemaTypeCompare);
+	    xmlRelaxNGSchemaTypeCompare,
+	    xmlRelaxNGSchemaFacetCheck,
+	    (xmlRelaxNGTypeFree) xmlSchemaFreeValue);
     xmlRelaxNGRegisterTypeLibrary(
 	    xmlRelaxNGNs,
 	    NULL,
 	    xmlRelaxNGDefaultTypeHave,
 	    xmlRelaxNGDefaultTypeCheck,
-	    xmlRelaxNGDefaultTypeCompare);
+	    xmlRelaxNGDefaultTypeCompare,
+	    NULL,
+	    NULL);
     xmlRelaxNGTypeInitialized = 1;
     return(0);
 }
@@ -2008,6 +2111,8 @@ xmlRelaxNGParseData(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
 		} else {
 		    lastparam->next = param;
 		    lastparam = param;
+		}
+		if (lib != NULL) {
 		}
 	    }
 	    content = content->next;
@@ -2960,11 +3065,6 @@ xmlRelaxNGParsePattern(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node) {
 	}
     } else if (IS_RELAXNG(node, "data")) {
 	def = xmlRelaxNGParseData(ctxt, node);
-#if 0
-    } else if (IS_RELAXNG(node, "define")) {
-	xmlRelaxNGParseDefine(ctxt, node);
-	def = NULL;
-#endif
     } else if (IS_RELAXNG(node, "value")) {
 	def = xmlRelaxNGParseValue(ctxt, node);
     } else if (IS_RELAXNG(node, "list")) {
@@ -5835,28 +5935,46 @@ xmlRelaxNGNormalize(xmlRelaxNGValidCtxtPtr ctxt, const xmlChar *str) {
 static int
 xmlRelaxNGValidateDatatype(xmlRelaxNGValidCtxtPtr ctxt, const xmlChar *value,
 	                   xmlRelaxNGDefinePtr define) {
-    int ret;
+    int ret, tmp;
     xmlRelaxNGTypeLibraryPtr lib;
+    void *result = NULL;
+    xmlRelaxNGDefinePtr cur;
 
     if ((define == NULL) || (define->data == NULL)) {
 	return(-1);
     }
     lib = (xmlRelaxNGTypeLibraryPtr) define->data;
-    if (lib->check != NULL)
-	ret = lib->check(lib->data, define->name, value);
-    else 
+    if (lib->check != NULL) {
+	if ((define->attrs != NULL) &&
+	    (define->attrs->type == XML_RELAXNG_PARAM)) {
+	    ret = lib->check(lib->data, define->name, value, &result);
+	} else {
+	    ret = lib->check(lib->data, define->name, value, NULL);
+	}
+    } else 
 	ret = -1;
     if (ret < 0) {
 	VALID_CTXT();
-	VALID_ERROR2("Internal: failed to validate type %s\n", define->name);
+	VALID_ERROR2("failed to validate type %s\n", define->name);
+	if ((result != NULL) && (lib != NULL) && (lib->freef != NULL))
+	    lib->freef(lib->data, result);
 	return(-1);
     } else if (ret == 1) {
 	ret = 0;
     } else {
 	VALID_CTXT();
 	VALID_ERROR3("Type %s doesn't allow value %s\n", define->name, value);
-	return(-1);
 	ret = -1;
+    }
+    cur = define->attrs;
+    while ((ret == 0) && (cur != NULL) && (cur->type == XML_RELAXNG_PARAM)) {
+	if (lib->facet != NULL) {
+	    tmp = lib->facet(lib->data, define->name, cur->name,
+		             cur->value, value, result);
+            if (tmp != 0)
+	        ret = -1;
+	}
+	cur = cur->next;
     }
     if ((ret == 0) && (define->content != NULL)) {
 	const xmlChar *oldvalue, *oldendvalue;
@@ -5869,6 +5987,8 @@ xmlRelaxNGValidateDatatype(xmlRelaxNGValidCtxtPtr ctxt, const xmlChar *value,
 	ctxt->state->value = (xmlChar *) oldvalue;
 	ctxt->state->endvalue = (xmlChar *) oldendvalue;
     }
+    if ((result != NULL) && (lib != NULL) && (lib->freef != NULL))
+	lib->freef(lib->data, result);
     return(ret);
 }
 
@@ -6998,7 +7118,7 @@ xmlRelaxNGValidateDefinition(xmlRelaxNGValidCtxtPtr ctxt,
 	    ret = xmlRelaxNGValidateDatatype(ctxt, content, define);
 	    if (ret == -1) {
 		VALID_CTXT();
-		VALID_ERROR2("internal error validating %s\n", define->name);
+		VALID_ERROR2("Error validating %s\n", define->name);
 	    } else if (ret == 0) {
 		ctxt->state->seq = NULL;
 	    }

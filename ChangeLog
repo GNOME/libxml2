@@ -1,3 +1,11 @@
+Thu Feb 27 18:40:04 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* relaxng.c xmlschemas.c xmlschemastypes.c
+	  include/libxml/xmlschemastypes.h: added param support for relaxng
+	  type checking, started to increment the pool of simple types
+	  registered, still much work to be done on simple types and
+	  facets checkings.
+
 Wed Feb 26 16:45:39 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* entities.c: fixes again one of the problem raised by

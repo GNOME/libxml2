@@ -6038,6 +6038,7 @@ int
 xmlValidateElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr elem) {
     xmlNodePtr child;
     xmlAttrPtr attr;
+    xmlNsPtr ns;
     xmlChar *value;
     int ret = 1;
 
@@ -6062,12 +6063,19 @@ xmlValidateElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr elem) {
 
     ret &= xmlValidateOneElement(ctxt, doc, elem);
     attr = elem->properties;
-    while(attr != NULL) {
+    while (attr != NULL) {
         value = xmlNodeListGetString(doc, attr->children, 0);
 	ret &= xmlValidateOneAttribute(ctxt, doc, elem, attr, value);
 	if (value != NULL)
 	    xmlFree(value);
 	attr= attr->next;
+    }
+    ns = elem->nsDef;
+    while (ns != NULL) {
+        value = ns->href;
+	ret &= xmlValidateOneNamespace(ctxt, doc, elem, ns->prefix,
+	                               ns, ns->href);
+        ns = ns->next;
     }
     child = elem->children;
     while (child != NULL) {

@@ -1,3 +1,8 @@
+Thu Oct 30 11:14:31 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* valid.c: the a-posteriori DTD validation code was not validating
+	  the namespace declarations, this fixes #124110
+
 Wed Oct 29 14:13:03 PDT 2003 William Brack <wbrack@mmm.com.hk>
 
 	* xmlIO.c: enhanced to bypass compression detection code

@@ -21,10 +21,23 @@
  * platform might need different definitions.
  */
 
-/* Defaults. These will be used on platforms which 
-   do not appear below. */
+/**
+ * XMLPUBFUN:
+ *
+ * Macros which declare an exportable function
+ */
 #define XMLPUBFUN
+/**
+ * XMLPUBVAR:
+ *
+ * Macros which declare an exportable variable
+ */
 #define XMLPUBVAR extern
+/**
+ * XMLCALL:
+ *
+ * Macros which declare the called convention for exported functions
+ */
 #define XMLCALL
 
 /* Windows platform with MS compiler */

@@ -1675,7 +1675,7 @@ xmlParserHandlePEReference(xmlParserCtxtPtr ctxt) {
 }
 
 /**
- * xmlStringDecodeEntities:
+ * xmlStringLenDecodeEntities:
  * @ctxt:  the parser context
  * @str:  the input string
  * @len: the string length

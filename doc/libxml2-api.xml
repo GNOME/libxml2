@@ -1057,6 +1057,7 @@
      <exports symbol='XML_PARSE_DTDLOAD'/>
      <exports symbol='XML_PARSE_DTDVALID'/>
      <exports symbol='XML_PARSE_NOBLANKS'/>
+     <exports symbol='XML_PARSE_NODICT'/>
      <exports symbol='XML_PARSE_NOENT'/>
      <exports symbol='XML_PARSE_NOERROR'/>
      <exports symbol='XML_PARSE_NONET'/>
@@ -1500,6 +1501,7 @@
      <exports symbol='xmlDictOwns'/>
      <exports symbol='xmlDictPtr'/>
      <exports symbol='xmlDictQLookup'/>
+     <exports symbol='xmlDictReference'/>
      <exports symbol='xmlDictSize'/>
     </file>
     <file name='xmlexports'>
@@ -2906,9 +2908,10 @@
     <enum name='XML_PARSE_DTDLOAD' file='parser' value='4' type='xmlParserOption' info='load the external subset'/>
     <enum name='XML_PARSE_DTDVALID' file='parser' value='16' type='xmlParserOption' info='validate with the DTD'/>
     <enum name='XML_PARSE_NOBLANKS' file='parser' value='256' type='xmlParserOption' info='remove blank nodes'/>
+    <enum name='XML_PARSE_NODICT' file='parser' value='4096' type='xmlParserOption' info=' Do not reuse the context dictionnary'/>
     <enum name='XML_PARSE_NOENT' file='parser' value='2' type='xmlParserOption' info='substitute entities'/>
     <enum name='XML_PARSE_NOERROR' file='parser' value='32' type='xmlParserOption' info='suppress error reports'/>
-    <enum name='XML_PARSE_NONET' file='parser' value='2048' type='xmlParserOption' info=' Forbid network access'/>
+    <enum name='XML_PARSE_NONET' file='parser' value='2048' type='xmlParserOption' info='Forbid network access'/>
     <enum name='XML_PARSE_NOWARNING' file='parser' value='64' type='xmlParserOption' info='suppress warning reports'/>
     <enum name='XML_PARSE_PEDANTIC' file='parser' value='128' type='xmlParserOption' info='pedantic error reporting'/>
     <enum name='XML_PARSE_RECOVER' file='parser' value='1' type='xmlParserOption' info='recover on errors'/>
@@ -5890,6 +5893,11 @@ actually an xmlCharEncoding'/>
       <arg name='dict' type='xmlDictPtr' info='the dictionnary'/>
       <arg name='prefix' type='const xmlChar *' info='the prefix'/>
       <arg name='name' type='const xmlChar *' info='the name'/>
+    </function>
+    <function name='xmlDictReference' file='dict'>
+      <info>Increment the reference counter of a dictionary</info>
+      <return type='int' info='0 in case of success and -1 in case of error'/>
+      <arg name='dict' type='xmlDictPtr' info='the dictionnary'/>
     </function>
     <function name='xmlDictSize' file='dict'>
       <info>Query the number of elements installed in the hash @dict.</info>

@@ -2968,7 +2968,7 @@ xmlTextReaderXmlLang(xmlTextReaderPtr reader) {
 }
 
 /**
- * xmlTextReaderXmlLang:
+ * xmlTextReaderConstXmlLang:
  * @reader:  the xmlTextReaderPtr used
  *
  * The xml:lang scope within which the node resides.

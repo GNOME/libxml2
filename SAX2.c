@@ -1877,7 +1877,7 @@ xmlSAX2AttributeNs(xmlParserCtxtPtr ctxt,
  * @nb_namespaces:  number of namespace definitions on that node
  * @namespaces:  pointer to the array of prefix/URI pairs namespace definitions
  * @nb_attributes:  the number of attributes on that node
- * nb_defaulted:  the number of defaulted attributes.
+ * @nb_defaulted:  the number of defaulted attributes.
  * @attributes:  pointer to the array of (localname/prefix/URI/value/end)
  *               attribute values.
  *

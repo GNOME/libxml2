@@ -423,7 +423,7 @@ xmlHashQLookup(xmlHashTablePtr table, const xmlChar *prefix,
 }
 
 /**
- * xmlHashLookup2:
+ * xmlHashQLookup2:
  * @table: the hash table
  * @prefix: the prefix of the userdata
  * @name: the name of the userdata

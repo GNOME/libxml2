@@ -157,8 +157,9 @@ int main(int argc, char **argv) {
 #if defined(LIBXML_XPTR_ENABLED)
 	if ((!strcmp(argv[i], "-xptr")) || (!strcmp(argv[i], "--xptr")))
 	    xptr++;
+	else 
 #endif
-	else if ((!strcmp(argv[i], "-debug")) || (!strcmp(argv[i], "--debug")))
+	if ((!strcmp(argv[i], "-debug")) || (!strcmp(argv[i], "--debug")))
 	    debug++;
 	else if ((!strcmp(argv[i], "-valid")) || (!strcmp(argv[i], "--valid")))
 	    valid++;

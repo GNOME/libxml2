@@ -1,3 +1,7 @@
+Thu Aug 16 18:26:40 CEST 2001 Daniel Veillard <daniel@veillard.com>
+
+	* testXPath.c: another small cleanup closing bug #59110
+
 Thu Aug 16 17:59:18 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* win32/dsp/libxml2.def.src: small cleanup closing bug

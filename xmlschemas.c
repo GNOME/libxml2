@@ -4897,7 +4897,7 @@ xmlSchemaParse(xmlSchemaParserCtxtPtr ctxt)
             return (NULL);
         }
         doc->URL = xmlStrdup(BAD_CAST "in_memory_buffer");
-        ctxt->URL = xmlStrdup(BAD_CAST "in_memory_buffer");
+        ctxt->URL = xmlDictLookup(ctxt->dict, BAD_CAST "in_memory_buffer", -1);
     } else if (ctxt->doc != NULL) {
         doc = ctxt->doc;
     } else {

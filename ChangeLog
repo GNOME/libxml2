@@ -1,3 +1,8 @@
+Thu Jan  8 17:57:50 CET 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xmlschemas.c: removed a memory leak remaining from the switch
+	  to a dictionnary for string allocations c.f. #130891
+
 Thu Jan  8 17:48:46 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xmlreader.c: fixing some problem if configured --without-xinclude

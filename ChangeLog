@@ -1,3 +1,9 @@
+Wed Jan  3 18:56:00 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* HTMLparser.c: htmlCheckParagraph to check htmlOmittedDefaultValue,
+	  reported by Jonas Borgström
+	* nanohttp.c: Applied Bjorn Reese' IPV6 first patch
+
 Wed Jan  3 16:19:39 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* testXPath.c xpath.c: fixing the XPath union expressions problem

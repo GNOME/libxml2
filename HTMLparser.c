@@ -925,6 +925,8 @@ htmlCheckParagraph(htmlParserCtxtPtr ctxt) {
 	    ctxt->sax->startElement(ctxt->userData, BAD_CAST"p", NULL);
 	return(1);
     }
+    if (!htmlOmittedDefaultValue)
+	return;
     for (i = 0; htmlNoContentElements[i] != NULL; i++) {
 	if (xmlStrEqual(tag, BAD_CAST htmlNoContentElements[i])) {
 #ifdef DEBUG

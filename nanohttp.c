@@ -60,6 +60,9 @@
 #ifdef HAVE_STRINGS_H
 #include <strings.h>
 #endif
+#ifdef SUPPORT_IP6
+#include <resolv.h>
+#endif
 
 #ifdef VMS
 #include <stropts>
@@ -643,10 +646,9 @@ xmlNanoHTTPScanAnswer(xmlNanoHTTPCtxtPtr ctxt, const char *line) {
  */
 
 static int
-xmlNanoHTTPConnectAttempt(struct in_addr ia, int port)
+xmlNanoHTTPConnectAttempt(struct sockaddr *addr, int port)
 {
     SOCKET s = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
-    struct sockaddr_in sin;
     fd_set wfd;
     struct timeval tv;
     int status;
@@ -692,11 +694,7 @@ xmlNanoHTTPConnectAttempt(struct in_addr ia, int port)
 #endif /* !_WINSOCKAPI_ */
 
 
-    sin.sin_family = AF_INET;	
-    sin.sin_addr   = ia;
-    sin.sin_port   = htons(port);
-    
-    if ((connect(s, (struct sockaddr *)&sin, sizeof(sin))==-1)) {
+    if ((connect(s, addr, sizeof(*addr))==-1)) {
 	switch (socket_errno()) {
 	    case EINPROGRESS:
 	    case EWOULDBLOCK:
@@ -764,9 +762,21 @@ static int
 xmlNanoHTTPConnectHost(const char *host, int port)
 {
     struct hostent *h;
+    struct sockaddr *addr;
+    struct in_addr ia;
+    struct sockaddr_in sin;
+#ifdef SUPPORT_IP6
+    struct in6_addr ia6;
+    struct sockaddr_in6 sin6;
+#endif
     int i;
     int s;
     
+#if defined(SUPPORT_IP6) && defined(RES_USE_INET6)
+    if (!(_res.options & RES_INIT))
+	res_init();
+    _res.options |= RES_USE_INET6;
+#endif
     h=gethostbyname(host);
     if (h==NULL)
     {
@@ -778,9 +788,26 @@ xmlNanoHTTPConnectHost(const char *host, int port)
     
     for(i=0; h->h_addr_list[i]; i++)
     {
-	struct in_addr ia;
-	memcpy(&ia, h->h_addr_list[i],4);
-	s = xmlNanoHTTPConnectAttempt(ia, port);
+	if (h->h_addrtype == AF_INET) {
+	    /* A records (IPv4) */
+	    memcpy(&ia, h->h_addr_list[i], h->h_length);
+	    sin.sin_family = h->h_addrtype;
+	    sin.sin_addr   = ia;
+	    sin.sin_port   = htons(port);
+	    addr = (struct sockaddr *)&sin;
+#ifdef SUPPORT_IP6
+	} else if (h->h_addrtype == AF_INET6) {
+	    /* AAAA records (IPv6) */
+	    memcpy(&ia6, h->h_addr_list[i], h->h_length);
+	    sin6.sin_family = h->h_addrtype;
+	    sin6.sin_addr   = ia6;
+	    sin6.sin_port   = htons(port);
+	    addr = (struct sockaddr *)&sin6;
+#endif
+	} else
+	    break; /* for */
+	
+	s = xmlNanoHTTPConnectAttempt(addr, port);
 	if (s != -1)
 	    return(s);
     }

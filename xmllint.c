@@ -160,6 +160,7 @@ static int stream = 0;
 static int walker = 0;
 #endif /* LIBXML_READER_ENABLED */
 static int chkregister = 0;
+static int nbregister = 0;
 #ifdef LIBXML_SAX1_ENABLED
 static int sax1 = 0;
 #endif /* LIBXML_SAX1_ENABLED */
@@ -1517,6 +1518,7 @@ static void registerNode(xmlNodePtr node)
 {
     node->_private = malloc(sizeof(long));
     *(long*)node->_private = (long) 0x81726354;
+    nbregister++;
 }
 
 static void deregisterNode(xmlNodePtr node)
@@ -1524,6 +1526,7 @@ static void deregisterNode(xmlNodePtr node)
     assert(node->_private != NULL);
     assert(*(long*)node->_private == (long) 0x81726354);
     free(node->_private);
+    nbregister--;
 }
 
 int
@@ -1975,12 +1978,19 @@ main(int argc, char **argv) {
 		if (ctxt != NULL)
 		    xmlFreeParserCtxt(ctxt);
 	    } else {
+		nbregister = 0;
+
 #ifdef LIBXML_READER_ENABLED
 		if (stream != 0)
 		    streamFile(argv[i]);
 		else
 #endif /* LIBXML_READER_ENABLED */
 		    parseAndPrintFile(argv[i], NULL);
+
+                if ((chkregister) && (nbregister != 0)) {
+		    fprintf(stderr, "Registration count off: %d\n", nbregister);
+		    progresult = 8;
+		}
 	    }
 	    files ++;
 	    if ((timing) && (repeat)) {

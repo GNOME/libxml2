@@ -1,3 +1,9 @@
+Fri Apr 30 18:12:31 CEST 2004 Daniel Veillard <daniel@veillard.com>
+
+	* xmllint.c xmlreader.c: fixing bug #141384 where the reader didn't
+	  call the deregistering functions. Also added the check to
+	  xmllint --stream --chkregister .
+
 Fri Apr 30 08:57:47 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* win32/Makefile.msvc: applied a second patch from Mark Vakoc for

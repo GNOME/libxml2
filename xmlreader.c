@@ -255,6 +255,9 @@ xmlTextReaderFreeProp(xmlTextReaderPtr reader, xmlAttrPtr cur) {
     dict = reader->ctxt->dict;
     if (cur == NULL) return;
 
+    if ((__xmlRegisterCallbacks) && (xmlDeregisterNodeDefaultValue))
+	xmlDeregisterNodeDefaultValue((xmlNodePtr) cur);
+
     /* Check for ID removal -> leading to invalid references ! */
     if ((cur->parent != NULL) && (cur->parent->doc != NULL) &&
 	((cur->parent->doc->intSubset != NULL) ||
@@ -329,6 +332,10 @@ xmlTextReaderFreeNodeList(xmlTextReaderPtr reader, xmlNodePtr cur) {
 		    xmlTextReaderFreeNodeList(reader, cur->children);
 		cur->children = NULL;
 	    }
+
+	    if ((__xmlRegisterCallbacks) && (xmlDeregisterNodeDefaultValue))
+		xmlDeregisterNodeDefaultValue(cur);
+
 	    if (((cur->type == XML_ELEMENT_NODE) ||
 		 (cur->type == XML_XINCLUDE_START) ||
 		 (cur->type == XML_XINCLUDE_END)) &&
@@ -399,6 +406,10 @@ xmlTextReaderFreeNode(xmlTextReaderPtr reader, xmlNodePtr cur) {
 	    xmlTextReaderFreeNodeList(reader, cur->children);
 	cur->children = NULL;
     }
+
+    if ((__xmlRegisterCallbacks) && (xmlDeregisterNodeDefaultValue))
+	xmlDeregisterNodeDefaultValue(cur);
+
     if (((cur->type == XML_ELEMENT_NODE) ||
 	 (cur->type == XML_XINCLUDE_START) ||
 	 (cur->type == XML_XINCLUDE_END)) &&
@@ -422,6 +433,7 @@ xmlTextReaderFreeNode(xmlTextReaderPtr reader, xmlNodePtr cur) {
     if ((cur->type != XML_TEXT_NODE) &&
         (cur->type != XML_COMMENT_NODE))
 	DICT_FREE(cur->name);
+
     if (((cur->type == XML_ELEMENT_NODE) ||
 	 (cur->type == XML_TEXT_NODE)) &&
 	(reader != NULL) && (reader->ctxt != NULL) &&
@@ -458,6 +470,9 @@ xmlTextReaderFreeDoc(xmlTextReaderPtr reader, xmlDocPtr cur) {
 
     if (cur == NULL) return;
 
+    if ((__xmlRegisterCallbacks) && (xmlDeregisterNodeDefaultValue))
+	xmlDeregisterNodeDefaultValue((xmlNodePtr) cur);
+
     /*
      * Do this before freeing the children list to avoid ID lookups
      */
@@ -488,6 +503,7 @@ xmlTextReaderFreeDoc(xmlTextReaderPtr reader, xmlDocPtr cur) {
     if (cur->oldNs != NULL) xmlFreeNsList(cur->oldNs);
     if (cur->URL != NULL) xmlFree((char *) cur->URL);
     if (cur->dict != NULL) xmlDictFree(cur->dict);
+
     xmlFree(cur);
 }
 

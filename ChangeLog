@@ -1,3 +1,7 @@
+Mon Feb 11 19:41:29 CET 2002 Daniel Veillard <daniel@veillard.com>
+
+	* python/*.py: removed tabs and used spaces.
+
 Mon Feb 11 19:25:44 CET 2002 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in include/libxml/xmlwin32version.h: preparing 2.4.15

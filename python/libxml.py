@@ -9,108 +9,108 @@ import libxml2mod
 class xmlCore:
     def __init__(self, _obj=None):
         if _obj != None: 
-	    self._o = _obj;
-	    return
-	self._o = None
+            self._o = _obj;
+            return
+        self._o = None
 
     def __getattr__(self, attr):
         if attr == "parent":
-	    ret = libxml2mod.parent(self._o)
-	    if ret == None:
-	        return None
-	    return xmlNode(_obj=ret)
+            ret = libxml2mod.parent(self._o)
+            if ret == None:
+                return None
+            return xmlNode(_obj=ret)
         elif attr == "properties":
-	    ret = libxml2mod.properties(self._o)
-	    if ret == None:
-	        return None
-	    return xmlAttr(_obj=ret)
-	elif attr == "children":
-	    ret = libxml2mod.children(self._o)
-	    if ret == None:
-		return None
-	    return xmlNode(_obj=ret)
-	elif attr == "last":
-	    ret = libxml2mod.last(self._o)
-	    if ret == None:
-		return None
-	    return xmlNode(_obj=ret)
-	elif attr == "next":
-	    ret = libxml2mod.next(self._o)
-	    if ret == None:
-		return None
-	    return xmlNode(_obj=ret)
-	elif attr == "prev":
-	    ret = libxml2mod.prev(self._o)
-	    if ret == None:
-		return None
-	    return xmlNode(_obj=ret)
-	elif attr == "content":
-	    return libxml2mod.xmlNodeGetContent(self._o)
-	elif attr == "name":
-	    return libxml2mod.name(self._o)
-	elif attr == "type":
-	    return libxml2mod.type(self._o)
-	elif attr == "doc":
-	    ret = libxml2mod.doc(self._o)
-	    if ret == None:
-		return None
-	    return xmlDoc(_doc=ret)
-	raise AttributeError,attr
+            ret = libxml2mod.properties(self._o)
+            if ret == None:
+                return None
+            return xmlAttr(_obj=ret)
+        elif attr == "children":
+            ret = libxml2mod.children(self._o)
+            if ret == None:
+                return None
+            return xmlNode(_obj=ret)
+        elif attr == "last":
+            ret = libxml2mod.last(self._o)
+            if ret == None:
+                return None
+            return xmlNode(_obj=ret)
+        elif attr == "next":
+            ret = libxml2mod.next(self._o)
+            if ret == None:
+                return None
+            return xmlNode(_obj=ret)
+        elif attr == "prev":
+            ret = libxml2mod.prev(self._o)
+            if ret == None:
+                return None
+            return xmlNode(_obj=ret)
+        elif attr == "content":
+            return libxml2mod.xmlNodeGetContent(self._o)
+        elif attr == "name":
+            return libxml2mod.name(self._o)
+        elif attr == "type":
+            return libxml2mod.type(self._o)
+        elif attr == "doc":
+            ret = libxml2mod.doc(self._o)
+            if ret == None:
+                return None
+            return xmlDoc(_doc=ret)
+        raise AttributeError,attr
 
-	#
-	# Those are common attributes to nearly all type of nodes
-	#
+        #
+        # Those are common attributes to nearly all type of nodes
+        #
     def get_parent(self):
-	ret = libxml2mod.parent(self._o)
-	if ret == None:
-	    return None
-	return xmlNode(_obj=ret)
+        ret = libxml2mod.parent(self._o)
+        if ret == None:
+            return None
+        return xmlNode(_obj=ret)
     def get_children(self):
-	ret = libxml2mod.children(self._o)
-	if ret == None:
-	    return None
-	return xmlNode(_obj=ret)
+        ret = libxml2mod.children(self._o)
+        if ret == None:
+            return None
+        return xmlNode(_obj=ret)
     def get_last(self):
-	ret = libxml2mod.last(self._o)
-	if ret == None:
-	    return None
-	return xmlNode(_obj=ret)
+        ret = libxml2mod.last(self._o)
+        if ret == None:
+            return None
+        return xmlNode(_obj=ret)
     def get_next(self):
-	ret = libxml2mod.next(self._o)
-	if ret == None:
-	    return None
-	return xmlNode(_obj=ret)
+        ret = libxml2mod.next(self._o)
+        if ret == None:
+            return None
+        return xmlNode(_obj=ret)
     def get_properties(self):
-	ret = libxml2mod.properties(self._o)
-	if ret == None:
-	    return None
-	return xmlAttr(_obj=ret)
+        ret = libxml2mod.properties(self._o)
+        if ret == None:
+            return None
+        return xmlAttr(_obj=ret)
     def get_doc(self):
-	ret = libxml2mod.doc(self._o)
-	if ret == None:
-	    return None
-	return xmlDoc(_obj=ret)
+        ret = libxml2mod.doc(self._o)
+        if ret == None:
+            return None
+        return xmlDoc(_obj=ret)
     def get_prev(self):
-	ret = libxml2mod.prev(self._o)
-	if ret == None:
-	    return None
-	return xmlNode(_obj=ret)
+        ret = libxml2mod.prev(self._o)
+        if ret == None:
+            return None
+        return xmlNode(_obj=ret)
     def get_content(self):
-	return libxml2mod.xmlNodeGetContent(self._o)
+        return libxml2mod.xmlNodeGetContent(self._o)
     def getContent(self):
-	return libxml2mod.xmlNodeGetContent(self._o)
+        return libxml2mod.xmlNodeGetContent(self._o)
     def get_name(self):
-	return libxml2mod.name(self._o)
+        return libxml2mod.name(self._o)
     def get_type(self):
-	return libxml2mod.type(self._o)
+        return libxml2mod.type(self._o)
     def get_doc(self):
-	ret = libxml2mod.doc(self._o)
-	if ret == None:
-	    return None
-	return xmlDoc(_doc=ret)
+        ret = libxml2mod.doc(self._o)
+        if ret == None:
+            return None
+        return xmlDoc(_doc=ret)
     def free(self):
         libxml2mod.freeDoc(self._o)
-	    
+            
 #
 # converters to present a nicer view of the XPath returns
 #
@@ -138,7 +138,7 @@ def nodeWrap(o):
 def xpathObjectRet(o):
     if type(o) == type([]) or type(o) == type(()):
         ret = map(lambda x: nodeWrap(x), o)
-	return ret
+        return ret
     return o
 
 #

@@ -3658,7 +3658,7 @@ xmlGetNsList(xmlDocPtr doc, xmlNodePtr node) {
  * xmlSearchNs:
  * @doc:  the document
  * @node:  the current node
- * @nameSpace:  the namespace string
+ * @nameSpace:  the namespace prefix
  *
  * Search a Ns registered under a given name space for a document.
  * recurse on the parents until it finds the defined namespace

@@ -999,6 +999,7 @@ xmlXPathNewNodeSet(xmlNodePtr val) {
     }
     memset(ret, 0 , (size_t) sizeof(xmlXPathObject));
     ret->type = XPATH_NODESET;
+    ret->boolval = 0;
     ret->nodesetval = xmlXPathNodeSetCreate(val);
     return(ret);
 }
@@ -1586,8 +1587,14 @@ void
 xmlXPathFreeObject(xmlXPathObjectPtr obj) {
     if (obj == NULL) return;
     if (obj->type == XPATH_NODESET) {
-	if (obj->nodesetval != NULL)
-	    xmlXPathFreeNodeSet(obj->nodesetval);
+	if (obj->boolval) {
+	    obj->type = XPATH_XSLT_TREE;
+	    if (obj->nodesetval != NULL)
+		xmlXPathFreeValueTree(obj->nodesetval);
+	} else {
+	    if (obj->nodesetval != NULL)
+		xmlXPathFreeNodeSet(obj->nodesetval);
+	}
 #ifdef LIBXML_XPTR_ENABLED
     } else if (obj->type == XPATH_LOCATIONSET) {
 	if (obj->user != NULL)

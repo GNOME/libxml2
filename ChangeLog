@@ -1,3 +1,9 @@
+Wed Feb 28 00:43:58 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* tree.c: minor doc fix
+	* xpath.c: deallocation issues when a result tree has been
+	  converted to a node-set
+
 Mon Feb 26 22:09:45 CET 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
 
 	* doc/xml.html: oops corrected dates s/2000/2001

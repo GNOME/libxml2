@@ -31,6 +31,15 @@
 #endif
 #endif /* _WIN32 */
 
+#ifdef __MINGW32__
+#define _WINSOCKAPI_
+#include <wsockcompat.h>
+#include <winsock2.h>
+#undef SOCKLEN_T
+#define SOCKLEN_T unsigned int
+#endif
+
+
 #ifdef HAVE_SYS_TIMEB_H
 #include <sys/timeb.h>
 #endif

@@ -714,6 +714,22 @@ else
 fi
 AC_SUBST(WITH_MEM_DEBUG)
 
+
+WIN32_EXTRA_LIBADD=
+WIN32_EXTRA_LDFLAGS=
+case "$host" in
+ *-*-mingw*)
+ WIN32_EXTRA_LIBADD="-lwsock32"
+ WIN32_EXTRA_LDFLAGS="-no-undefined"
+ AC_DEFINE([_WINSOCKAPI_],1,[Using the Win32 Socket implementation])
+ AC_DEFINE([snprintf],[_snprintf],[Win32 Std C name mangling work-around])
+ AC_DEFINE([vsnprintf],[_vsnprintf],[Win32 Std C name mangling work-around])
+ ;;
+esac
+AC_SUBST(WIN32_EXTRA_LIBADD)
+AC_SUBST(WIN32_EXTRA_LDFLAGS)
+
+
 AC_SUBST(CFLAGS)
 AC_SUBST(XML_CFLAGS)
 

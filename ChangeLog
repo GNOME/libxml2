@@ -1,3 +1,9 @@
+Thu Aug 14 03:19:08 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* Makefile.am configure.in example/Makefile.am libxml.h nanoftp.c
+	  nanohttp.c xmllint.c: Applied patch from Mikhail Grushinskiy for
+	  mingw compiler on Windows.
+
 Thu Aug 14 02:28:36 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* parser.c: fixed the serious CPU usage problem reported by

@@ -73,6 +73,16 @@
 #define SOCKET int
 #endif
 
+
+#ifdef __MINGW32__
+#define _WINSOCKAPI_
+#include <wsockcompat.h>
+#include <winsock2.h>
+#undef SOCKLEN_T
+#define SOCKLEN_T unsigned int
+#endif
+
+
 #include <libxml/globals.h>
 #include <libxml/xmlerror.h>
 #include <libxml/xmlmemory.h>

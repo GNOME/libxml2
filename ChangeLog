@@ -1,3 +1,10 @@
+Mon Dec  1 20:40:51 MST 2003 John Fleck <jfleck@inkstain.net>
+
+	* doc/xml.html
+	* doc/docs.html
+	add reference to the Code Examples page to docs.html list
+	of resources
+
 Mon Dec  1 12:30:28 CET 2003 Igor Zlatkovic <igor@zlatkovic.com>
 
 	* win32/Makefile.bcb win32/configure.js: Applied the BCB patch

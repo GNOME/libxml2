@@ -11500,8 +11500,7 @@ xmlCreateURLParserCtxt(const char *filename, int options)
 	return(NULL);
     }
 
-    if (options != 0)
-        xmlCtxtUseOptions(ctxt, options);
+    xmlCtxtUseOptions(ctxt, options);
     
     inputStream = xmlLoadExternalEntity(filename, NULL, ctxt);
     if (inputStream == NULL) {

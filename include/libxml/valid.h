@@ -120,7 +120,7 @@ void		     xmlFreeElementContent(xmlElementContentPtr cur);
 xmlElementPtr	   xmlAddElementDecl	(xmlValidCtxtPtr ctxt,
 					 xmlDtdPtr dtd,
 					 const xmlChar *name,
-					 xmlElementContentType type,
+					 xmlElementTypeVal type,
 					 xmlElementContentPtr content);
 xmlElementTablePtr xmlCopyElementTable	(xmlElementTablePtr table);
 void		   xmlFreeElementTable	(xmlElementTablePtr table);

@@ -379,7 +379,7 @@ xmlPushInput(xmlParserCtxtPtr ctxt, xmlParserInputPtr input) {
 
 /**
  * xmlFreeInputStream:
- * @input:  an xmlP arserInputPtr
+ * @input:  an xmlParserInputPtr
  *
  * Free up an input stream.
  */
@@ -887,7 +887,7 @@ fprintf(stderr, "xmlParserHandleReference : ctxt->token != 0\n");
 	    case XML_PARSER_ENTITY_VALUE:
 	        /*
 		 * NOTE: in the case of entity values, we don't do the
-		 *       substitution here since we need the litteral
+		 *       substitution here since we need the literal
 		 *       entity value to be able to save the internal
 		 *       subset of the document.
 		 *       This will be handled by xmlDecodeEntities
@@ -928,7 +928,7 @@ fprintf(stderr, "xmlParserHandleReference : ctxt->token != 0\n");
 	case XML_PARSER_ENTITY_VALUE:
 	    /*
 	     * NOTE: in the case of entity values, we don't do the
-	     *       substitution here since we need the litteral
+	     *       substitution here since we need the literal
 	     *       entity value to be able to save the internal
 	     *       subset of the document.
 	     *       This will be handled by xmlDecodeEntities
@@ -1103,7 +1103,7 @@ fprintf(stderr, "xmlParserHandlePEReference : ctxt->token != 0\n");
 	case XML_PARSER_ENTITY_VALUE:
 	    /*
 	     * NOTE: in the case of entity values, we don't do the
-	     *       substitution here since we need the litteral
+	     *       substitution here since we need the literal
 	     *       entity value to be able to save the internal
 	     *       subset of the document.
 	     *       This will be handled by xmlDecodeEntities
@@ -1690,7 +1690,7 @@ xmlStrsub(const xmlChar *str, int start, int len) {
  * xmlStrlen:
  * @str:  the xmlChar * array
  *
- * lenght of a xmlChar's string
+ * length of a xmlChar's string
  *
  * Returns the number of xmlChar contained in the ARRAY.
  */
@@ -1921,7 +1921,7 @@ xmlNamespaceParseNCName(xmlParserCtxtPtr ctxt) {
  *
  * [NS 7] LocalPart ::= NCName
  *
- * Returns the function returns the local part, and prefix is updated
+ * Returns the local part, and prefix is updated
  *   to get the Prefix if any.
  */
 
@@ -1953,7 +1953,7 @@ xmlNamespaceParseQName(xmlParserCtxtPtr ctxt, xmlChar **prefix) {
  *
  * [NS 7] LocalPart ::= NCName
  *
- * Returns the function returns the local part, and prefix is updated
+ * Returns the local part, and prefix is updated
  *   to get the Prefix if any.
  */
 
@@ -2082,7 +2082,7 @@ xmlParseQuotedString(xmlParserCtxtPtr ctxt) {
  *
  * This is what the older xml-name Working Draft specified, a bunch of
  * other stuff may still rely on it, so support is still here as
- * if ot was declared on the root of the Tree:-(
+ * if it was declared on the root of the Tree:-(
  *
  * To be removed at next drop of binary compatibility
  */
@@ -5033,7 +5033,7 @@ xmlParseStartTag(xmlParserCtxtPtr ctxt) {
 			    maxatts * (long)sizeof(xmlChar *));
 		    return(NULL);
 		}
-	    } else if (nbatts + 2 < maxatts) {
+	    } else if (nbatts + 4 > maxatts) {
 	        maxatts *= 2;
 	        atts = (const xmlChar **) xmlRealloc(atts,
 		                                  maxatts * sizeof(xmlChar *));
@@ -6332,7 +6332,7 @@ xmlRecoverFile(const char *filename) {
 /**
  * xmlCreateMemoryParserCtxt :
  * @buffer:  an pointer to a char array
- * @size:  the siwe of the array
+ * @size:  the size of the array
  *
  * Create a parser context for an XML in-memory document.
  *
@@ -6381,8 +6381,8 @@ xmlCreateMemoryParserCtxt(char *buffer, int size) {
  * xmlSAXParseMemory :
  * @sax:  the SAX handler block
  * @buffer:  an pointer to a char array
- * @size:  the siwe of the array
- * @recovery:  work in recovery mode, i.e. tries to read no Well Formed
+ * @size:  the size of the array
+ * @recovery:  work in recovery mode, i.e. tries to read not Well Formed
  *             documents
  *
  * parse an XML in-memory block and use the given SAX function block
@@ -6522,7 +6522,7 @@ int xmlSAXUserParseFile(xmlSAXHandlerPtr sax, void *user_data,
  * @sax:  a SAX handler
  * @user_data:  The user data returned on SAX callbacks
  * @buffer:  an in-memory XML document input
- * @size:  the lenght of the XML document in bytes
+ * @size:  the length of the XML document in bytes
  *
  * A better SAX parsing routine.
  * parse an XML in-memory buffer and call the given SAX handler routines.
@@ -6559,7 +6559,7 @@ int xmlSAXUserParseMemory(xmlSAXHandlerPtr sax, void *user_data,
 
 /************************************************************************
  *									*
- * 				Miscelaneous				*
+ * 				Miscellaneous				*
  *									*
  ************************************************************************/
 

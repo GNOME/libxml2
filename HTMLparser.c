@@ -1993,7 +1993,7 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
 		    if (name != NULL) xmlFree(name);
 		    return;
 		}
-	    } else if (nbatts + 2 < maxatts) {
+	    } else if (nbatts + 4 > maxatts) {
 	        maxatts *= 2;
 	        atts = (const xmlChar **) xmlRealloc(atts, maxatts * sizeof(xmlChar *));
 		if (atts == NULL) {

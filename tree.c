@@ -753,8 +753,12 @@ xmlNewProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
     cur->node = node; 
     cur->ns = NULL;
     cur->name = xmlStrdup(name);
-    if (value != NULL)
-	cur->val = xmlStringGetNodeList(node->doc, value);
+    if (value != NULL) {
+	xmlChar *buffer;
+	buffer = xmlEncodeEntitiesReentrant(node->doc, value);
+	cur->val = xmlStringGetNodeList(node->doc, buffer);
+	xmlFree(buffer);
+    }	
     else 
 	cur->val = NULL;
 #ifndef XML_WITHOUT_CORBA
@@ -2406,8 +2410,12 @@ xmlSetProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
 	    if (prop->val != NULL) 
 	        xmlFreeNodeList(prop->val);
 	    prop->val = NULL;
-	    if (value != NULL)
-		prop->val = xmlStringGetNodeList(node->doc, value);
+	    if (value != NULL) {
+	        xmlChar *buffer;
+		buffer = xmlEncodeEntitiesReentrant(node->doc, value);
+		prop->val = xmlStringGetNodeList(node->doc, buffer);
+		xmlFree(buffer);
+	    }	
 	    return(prop);
 	}
 	prop = prop->next;

@@ -309,7 +309,7 @@ xmlCreateElementTable(void) {
  */
 xmlElementPtr
 xmlAddElementDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *name,
-                  xmlElementContentType type, xmlElementContentPtr content) {
+                  xmlElementTypeVal type, xmlElementContentPtr content) {
     xmlElementPtr ret, cur;
     xmlElementTablePtr table;
     int i;
@@ -2058,7 +2058,6 @@ xmlValidateNmtokenValue(const xmlChar *value) {
 
     if (*cur != 0) return(0);
 
-    return(1);
     return(1);
 }
 

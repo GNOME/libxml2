@@ -1,3 +1,9 @@
+Tue Apr 29 07:32:02 MDT 2003 John Fleck <jfleck@inkstain.ent>
+
+	* doc/tutorial/aph.html, ix01.html
+	forgot to cvs add the new files. Thanks to Roland van Laar
+	for pointing this out
+
 Tue Apr 29 14:36:49 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* xmlschemas.c doc/libxml2-api.xml: fixing a function comment

@@ -13105,6 +13105,7 @@
         <word name='Clear'>
           <ref name='xmlClearNodeInfoSeq'/>
           <ref name='xmlClearParserCtxt'/>
+          <ref name='xmlPopInputCallbacks'/>
         </word>
         <word name='Clears'>
           <ref name='xmlSetupParserForBuffer'/>
@@ -13379,9 +13380,6 @@
         </word>
         <word name='Datatype'>
           <ref name='xmlRegexpCompile'/>
-        </word>
-        <word name='Datatypes'>
-          <ref name='xmlSchemaGetBuiltInListSimpleTypeItemType'/>
         </word>
         <word name='Deallocate'>
           <ref name='xmlFreeAttributeTable'/>
@@ -13773,6 +13771,9 @@
           <ref name='xmlXPathEvaluatePredicateResult'/>
           <ref name='xmlXPtrEval'/>
           <ref name='xmlXPtrEvalRangePredicate'/>
+        </word>
+        <word name='Evaluates'>
+          <ref name='xmlSchemaIsBuiltInTypeFacet'/>
         </word>
         <word name='Everything'>
           <ref name='_xmlParserCtxt'/>
@@ -14498,6 +14499,7 @@
           <ref name='htmlEntityValueLookup'/>
           <ref name='htmlTagLookup'/>
           <ref name='xmlGetEncodingAlias'/>
+          <ref name='xmlSchemaGetBuiltInListSimpleTypeItemType'/>
           <ref name='xmlSchemaGetPredefinedType'/>
         </word>
         <word name='Loose'>
@@ -16878,6 +16880,7 @@
           <ref name='xmlGcMemSetup'/>
         </word>
         <word name='allow'>
+          <ref name='XML_SCHEMAS_ATTR_GLOBAL'/>
           <ref name='XML_SCHEMAS_ATTR_NSDEFAULT'/>
           <ref name='XML_SCHEMAS_ELEM_NSDEFAULT'/>
           <ref name='docbCreatePushParserCtxt'/>
@@ -17576,45 +17579,16 @@
           <ref name='xmlTextReaderNextSibling'/>
         </word>
         <word name='built-in'>
+          <ref name='XML_SCHEMAS_TYPE_BUILTIN_PRIMITIVE'/>
           <ref name='xmlSchemaGetBuiltInListSimpleTypeItemType'/>
           <ref name='xmlSchemaGetBuiltInType'/>
+          <ref name='xmlSchemaIsBuiltInTypeFacet'/>
         </word>
         <word name='builtin'>
           <ref name='initGenericErrorDefaultFunc'/>
         </word>
         <word name='bunch'>
           <ref name='xmlParseNamespace'/>
-        </word>
-        <word name='but'>
-          <ref name='IS_DIGIT_CH'/>
-          <ref name='IS_EXTENDER_CH'/>
-          <ref name='IS_LETTER_CH'/>
-          <ref name='IS_PUBIDCHAR_CH'/>
-          <ref name='XML_MAX_NAMELEN'/>
-          <ref name='_xmlParserCtxt'/>
-          <ref name='xlinkIsLink'/>
-          <ref name='xmlACatalogAdd'/>
-          <ref name='xmlByteConsumed'/>
-          <ref name='xmlCatalogAdd'/>
-          <ref name='xmlCharEncFirstLine'/>
-          <ref name='xmlCheckUTF8'/>
-          <ref name='xmlCleanupParser'/>
-          <ref name='xmlNewDocNode'/>
-          <ref name='xmlNewDocNodeEatName'/>
-          <ref name='xmlParsePEReference'/>
-          <ref name='xmlParserHandlePEReference'/>
-          <ref name='xmlParserInputBufferCreateStatic'/>
-          <ref name='xmlSaveDoc'/>
-          <ref name='xmlSaveToFilename'/>
-          <ref name='xmlSaveTree'/>
-          <ref name='xmlScanName'/>
-          <ref name='xmlSetupParserForBuffer'/>
-          <ref name='xmlStrncatNew'/>
-          <ref name='xmlURIEscape'/>
-          <ref name='xmlURIUnescapeString'/>
-          <ref name='xmlXPathFreeNodeSetList'/>
-          <ref name='xmlXPathStringFunction'/>
-          <ref name='xmlXPtrEvalRangePredicate'/>
         </word>
         <word name='bypass'>
           <ref name='xmlParseCatalogFile'/>
@@ -17834,6 +17808,8 @@
           <ref name='xmlNodeSetName'/>
           <ref name='xmlNodeSetSpacePreserve'/>
           <ref name='xmlTextReaderSetParserProp'/>
+          <ref name='xmlValidityErrorFunc'/>
+          <ref name='xmlValidityWarningFunc'/>
         </word>
         <word name='changes'>
           <ref name='xmlRegisterHTTPPostCallbacks'/>
@@ -18069,6 +18045,10 @@
         <word name='coment'>
           <ref name='xmlTextWriterEndComment'/>
         </word>
+        <word name='comes'>
+          <ref name='xmlValidityErrorFunc'/>
+          <ref name='xmlValidityWarningFunc'/>
+        </word>
         <word name='coming'>
           <ref name='xmlXIncludeProcessNode'/>
         </word>
@@ -18214,6 +18194,7 @@
         <word name='compiled-in'>
           <ref name='xmlCleanupInputCallbacks'/>
           <ref name='xmlCleanupOutputCallbacks'/>
+          <ref name='xmlPopInputCallbacks'/>
           <ref name='xmlRegisterDefaultInputCallbacks'/>
           <ref name='xmlRegisterDefaultOutputCallbacks'/>
         </word>
@@ -18363,6 +18344,9 @@
           <ref name='xmlValidateName'/>
           <ref name='xmlValidateQName'/>
         </word>
+        <word name='conjunction'>
+          <ref name='xmlSchemaIsBuiltInTypeFacet'/>
+        </word>
         <word name='connection'>
           <ref name='xmlNanoFTPClose'/>
           <ref name='xmlNanoFTPCloseConnection'/>
@@ -18476,6 +18460,8 @@
           <ref name='xmlParsePEReference'/>
           <ref name='xmlParserHandlePEReference'/>
           <ref name='xmlTextReaderMoveToElement'/>
+          <ref name='xmlValidityErrorFunc'/>
+          <ref name='xmlValidityWarningFunc'/>
           <ref name='xmlXPathContainsFunction'/>
           <ref name='xmlXPathNextAncestor'/>
           <ref name='xmlXPathNextAncestorOrSelf'/>
@@ -18720,6 +18706,8 @@
           <ref name='xmlFreeParserCtxt'/>
           <ref name='xmlPopInput'/>
           <ref name='xmlValidCtxtNormalizeAttributeValue'/>
+          <ref name='xmlValidityErrorFunc'/>
+          <ref name='xmlValidityWarningFunc'/>
         </word>
         <word name='cur'>
           <ref name='xmlXPathAxisFunc'/>
@@ -18741,7 +18729,7 @@
         <word name='dangerous'>
           <ref name='xmlTextReaderCurrentNode'/>
         </word>
-        <word name='datatype'>
+        <word name='database'>
           <ref name='xmlSchemaGetBuiltInListSimpleTypeItemType'/>
         </word>
         <word name='day'>
@@ -18913,7 +18901,6 @@
           <ref name='xmlParseBalancedChunkMemory'/>
           <ref name='xmlParseBalancedChunkMemoryRecover'/>
           <ref name='xmlParseElementContentDecl'/>
-          <ref name='xmlSchemaGetBuiltInListSimpleTypeItemType'/>
           <ref name='xmlSearchNs'/>
           <ref name='xmlSearchNsByHref'/>
           <ref name='xmlTextReaderIsDefault'/>
@@ -19536,6 +19523,7 @@
         <word name='elements'>
           <ref name='XML_CATALOGS_NAMESPACE'/>
           <ref name='XML_COMPLETE_ATTRS'/>
+          <ref name='XML_SCHEMAS_ATTR_GLOBAL'/>
           <ref name='XML_SCHEMAS_ATTR_NSDEFAULT'/>
           <ref name='XML_SCHEMAS_ELEM_NSDEFAULT'/>
           <ref name='XML_SCHEMAS_QUALIF_ELEM'/>
@@ -20022,6 +20010,7 @@
           <ref name='_xmlSchemaFacetLink'/>
           <ref name='xmlSchemaCheckFacet'/>
           <ref name='xmlSchemaFreeFacet'/>
+          <ref name='xmlSchemaIsBuiltInTypeFacet'/>
           <ref name='xmlSchemaValidateFacet'/>
           <ref name='xmlSchemaValidateListSimpleTypeFacet'/>
         </word>
@@ -20186,6 +20175,7 @@
           <ref name='xmlParseEncodingDecl'/>
         </word>
         <word name='final'>
+          <ref name='XML_SCHEMAS_TYPE_FINAL_DEFAULT'/>
           <ref name='XML_SCHEMAS_TYPE_FINAL_EXTENSION'/>
           <ref name='XML_SCHEMAS_TYPE_FINAL_LIST'/>
           <ref name='XML_SCHEMAS_TYPE_FINAL_RESTRICTION'/>
@@ -21114,6 +21104,7 @@
           <ref name='_xmlSchema'/>
           <ref name='xmlCleanupInputCallbacks'/>
           <ref name='xmlCleanupOutputCallbacks'/>
+          <ref name='xmlPopInputCallbacks'/>
           <ref name='xmlXIncludeProcessFlags'/>
           <ref name='xmlXIncludeProcessTreeFlags'/>
           <ref name='xmlXIncludeSetFlags'/>
@@ -21609,7 +21600,6 @@
           <ref name='xmlHashUpdateEntry2'/>
           <ref name='xmlHashUpdateEntry3'/>
           <ref name='xmlNanoFTPDele'/>
-          <ref name='xmlSchemaGetBuiltInListSimpleTypeItemType'/>
           <ref name='xmlXPathNodeSetItem'/>
         </word>
         <word name='items'>
@@ -22817,6 +22807,8 @@
         </word>
         <word name='normally'>
           <ref name='c'/>
+          <ref name='xmlValidityErrorFunc'/>
+          <ref name='xmlValidityWarningFunc'/>
         </word>
         <word name='notations'>
           <ref name='_xmlDtd'/>
@@ -23717,6 +23709,7 @@
           <ref name='xmlXPathAxisFunc'/>
         </word>
         <word name='primitive'>
+          <ref name='XML_SCHEMAS_TYPE_BUILTIN_PRIMITIVE'/>
           <ref name='xmlXPathConvertFunc'/>
         </word>
         <word name='print'>
@@ -24369,6 +24362,7 @@
           <ref name='xmlFindCharEncodingHandler'/>
           <ref name='xmlGetCharEncodingHandler'/>
           <ref name='xmlGetLastError'/>
+          <ref name='xmlPopInputCallbacks'/>
           <ref name='xmlRegisterInputCallbacks'/>
           <ref name='xmlRegisterOutputCallbacks'/>
           <ref name='xmlResetLastError'/>
@@ -25232,6 +25226,8 @@
           <ref name='xmlSchemaValidateListSimpleTypeFacet'/>
         </word>
         <word name='simpleType'>
+          <ref name='XML_SCHEMAS_TYPE_BUILTIN_PRIMITIVE'/>
+          <ref name='XML_SCHEMAS_TYPE_FINAL_DEFAULT'/>
           <ref name='XML_SCHEMAS_TYPE_FINAL_LIST'/>
           <ref name='XML_SCHEMAS_TYPE_FINAL_RESTRICTION'/>
           <ref name='XML_SCHEMAS_TYPE_FINAL_UNION'/>
@@ -25448,6 +25444,7 @@
           <ref name='_xmlXPathContext'/>
           <ref name='xmlNoNetExternalEntityLoader'/>
           <ref name='xmlParseNamespace'/>
+          <ref name='xmlSchemaIsBuiltInTypeFacet'/>
         </word>
         <word name='specification'>
           <ref name='XML_XML_NAMESPACE'/>
@@ -25938,6 +25935,8 @@
         <word name='such'>
           <ref name='xmlNewTextChild'/>
           <ref name='xmlParseEntityRef'/>
+          <ref name='xmlValidityErrorFunc'/>
+          <ref name='xmlValidityWarningFunc'/>
           <ref name='xmlXPathLangFunction'/>
           <ref name='xmlXPathNodeSetFreeNs'/>
           <ref name='xmlXPathRoundFunction'/>
@@ -26296,6 +26295,7 @@
           <ref name='xmlNamespaceParseNCName'/>
           <ref name='xmlNamespaceParseNSDef'/>
           <ref name='xmlNamespaceParseQName'/>
+          <ref name='xmlPopInputCallbacks'/>
           <ref name='xmlPushInput'/>
           <ref name='xmlReconciliateNs'/>
           <ref name='xmlSetTreeDoc'/>
@@ -26735,6 +26735,10 @@
           <ref name='setDocumentLocatorSAXFunc'/>
           <ref name='xmlSAX2SetDocumentLocator'/>
         </word>
+        <word name='userData'>
+          <ref name='xmlValidityErrorFunc'/>
+          <ref name='xmlValidityWarningFunc'/>
+        </word>
         <word name='users'>
           <ref name='_xmlSchema'/>
         </word>
@@ -26747,6 +26751,8 @@
           <ref name='xmlSchemaGetPredefinedType'/>
           <ref name='xmlTextReaderGetParserProp'/>
           <ref name='xmlTextReaderSetParserProp'/>
+          <ref name='xmlValidityErrorFunc'/>
+          <ref name='xmlValidityWarningFunc'/>
         </word>
         <word name='utf8'>
           <ref name='xmlCharEncFirstLine'/>

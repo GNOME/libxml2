@@ -476,7 +476,7 @@ xmlCleanupInputCallbacks(void)
 }
 
 /**
- * xmlPopInputCallback:
+ * xmlPopInputCallbacks:
  *
  * Clear the top input callback from the input stack. this includes the
  * compiled-in I/O. 

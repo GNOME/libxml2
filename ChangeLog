@@ -1,3 +1,12 @@
+Tue Aug  3 15:08:22 PDT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* include/libxml/valid.h: elaborated on description of
+	  xmlValidityWarningFunc and xmlValidityErrorFunc (bug
+	  144760)
+	* xmlIO.c, xmlschemastypes.c, include/libxml/schemasinternals.h:
+	  minor fixes to comments for doc rebuilding errors.
+	* doc/*.html: rebuilt the docs
+
 Tue Aug  3 23:59:23 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* doc/ChangeLog.xsl doc/downloads.html doc/xml.html doc/*:

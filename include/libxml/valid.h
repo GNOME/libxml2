@@ -30,7 +30,9 @@ typedef xmlValidState *xmlValidStatePtr;
 
 /**
  * xmlValidityErrorFunc:
- * @ctx:  an xmlValidCtxtPtr validity error context
+ * @ctx:  usually an xmlValidCtxtPtr to a validity error context,
+ *        but comes from ctxt->userData (which normally contains such
+ *        a pointer); ctxt->userData can be changed by the user.
  * @msg:  the string to format *printf like vararg
  * @...:  remaining arguments to the format
  *
@@ -43,7 +45,9 @@ typedef void (*xmlValidityErrorFunc) (void *ctx,
 
 /**
  * xmlValidityWarningFunc:
- * @ctx:  an xmlValidCtxtPtr validity error context
+ * @ctx:  usually an xmlValidCtxtPtr to a validity error context,
+ *        but comes from ctxt->userData (which normally contains such
+ *        a pointer); ctxt->userData can be changed by the user.
  * @msg:  the string to format *printf like vararg
  * @...:  remaining arguments to the format
  *

@@ -456,7 +456,7 @@ xmlSchemaCleanupTypes(void) {
 }
 
 /**
- * xmlSchemaGetBuiltInType:
+ * xmlSchemaIsBuiltInTypeFacet:
  * @type: the built-in type
  * @facetType:  the facet type
  *
@@ -738,8 +738,10 @@ xmlSchemaGetPredefinedType(const xmlChar *name, const xmlChar *ns) {
  * xmlSchemaGetBuiltInListSimpleTypeItemType:
  * @type: the built-in simple type.
  *
- * Returns the item type of @type as defined by the built-in datatype
- * hierarchy of XML Schema Part 2: Datatypes, or NULL in case of an error.
+ * Lookup a type in the built-in type database hierarchy of XML Schema
+ * Part 2:Datatypes.
+ *
+ * Returns the type if found, NULL otherwise.
  */
 xmlSchemaTypePtr
 xmlSchemaGetBuiltInListSimpleTypeItemType(xmlSchemaTypePtr type)

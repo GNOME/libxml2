@@ -204,7 +204,7 @@ struct _xmlSchemaAnnot {
  */
 #define XML_SCHEMAS_ATTR_USE_OPTIONAL 2
 /**
- * XML_SCHEMAS_ATTR_GLOABAL:
+ * XML_SCHEMAS_ATTR_GLOBAL:
  *
  * allow elements in no namespace
  */
@@ -432,15 +432,15 @@ struct _xmlSchemaFacetLink {
  */
 #define XML_SCHEMAS_TYPE_FINAL_UNION    1 << 12
 /**
- * XML_SCHEMAS_TYPE_FINAL_UNION:
+ * XML_SCHEMAS_TYPE_FINAL_DEFAULT:
  *
- * the simpleType has a final of "union".
+ * the simpleType has a final of "default".
  */
 #define XML_SCHEMAS_TYPE_FINAL_DEFAULT    1 << 13
 /**
- * XML_SCHEMAS_TYPE_FINAL_UNION:
+ * XML_SCHEMAS_TYPE_BUILTIN_PRIMITIVE:
  *
- * the simpleType has a final of "union".
+ * the simpleType is a built-in primitive.
  */
 #define XML_SCHEMAS_TYPE_BUILTIN_PRIMITIVE    1 << 14
 

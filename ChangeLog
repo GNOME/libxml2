@@ -1,3 +1,14 @@
+Thu Jan 27 13:39:04 CET 2005 Kasimier Buchcik <libxml2-cvs@cazic.net>
+	* xmlschemas.c include/libxml/schemasInternals.h:
+	  Added an initial skeleton for indentity-constraints. This is all
+	  defined out, since not complete, plus it needs support from other
+	  modules.
+	  Added machanism to store element information for the
+	  ancestor-or-self axis; this is needed for identity-constraints
+	  and should be helpfull for a future streamable validation.
+	* include/libxml/xmlerror.h: Added an error code for
+	  identity-constraints.
+
 Wed Jan 26 01:03:37 CET 2005 Daniel Veillard <daniel@veillard.com>
 
 	* gentest.py testapi.c: had to fix generation and rebuild.

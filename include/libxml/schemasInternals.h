@@ -99,6 +99,9 @@ typedef enum {
     XML_SCHEMA_TYPE_LIST,
     XML_SCHEMA_TYPE_UNION,
     XML_SCHEMA_TYPE_ANY_ATTRIBUTE,
+    XML_SCHEMA_TYPE_IDC_UNIQUE,
+    XML_SCHEMA_TYPE_IDC_KEY,
+    XML_SCHEMA_TYPE_IDC_KEYREF,
     XML_SCHEMA_FACET_MININCLUSIVE = 1000,
     XML_SCHEMA_FACET_MINEXCLUSIVE,
     XML_SCHEMA_FACET_MAXINCLUSIVE,
@@ -498,6 +501,12 @@ struct _xmlSchemaFacetLink {
  * the simple/complexType is abstract.
  */
 #define XML_SCHEMAS_TYPE_ABSTRACT    1 << 20
+/**
+ * XML_SCHEMAS_TYPE_FACETSNEEDVALUE:
+ *
+ * indicates if the facets need a computed value
+ */
+#define XML_SCHEMAS_TYPE_FACETSNEEDVALUE    1 << 21
 
 /**
  * _xmlSchemaType:
@@ -680,6 +689,7 @@ struct _xmlSchemaElement {
     xmlSchemaContentType contentType;
     const xmlChar *refPrefix;
     xmlSchemaValPtr defVal;
+    void *idcs;
 };
 
 /*
@@ -824,6 +834,7 @@ struct _xmlSchema {
     void *includes;     /* the includes, this is opaque for now */
     int preserve;        /* whether to free the document */
     int counter; /* used to give ononymous components unique names */
+    xmlHashTablePtr idcDef;
 };
 
 XMLPUBFUN void XMLCALL         xmlSchemaFreeType        (xmlSchemaTypePtr type);

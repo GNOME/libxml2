@@ -29,6 +29,7 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/parserInternals.h>
 #include <libxml/xpath.h>
+#include <libxml/xpathInternals.h>
 #ifdef LIBXML_DEBUG_ENABLED
 #include <libxml/debugXML.h>
 #endif

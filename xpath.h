@@ -235,84 +235,9 @@ typedef void (*xmlXPathFunction) (xmlXPathParserContextPtr ctxt, int nargs);
 
 /************************************************************************
  *									*
- *			Helpers						*
- *									*
- ************************************************************************/
-
-#define CHECK_ERROR							\
-    if (ctxt->error != XPATH_EXPRESSION_OK) return
-
-#define CHECK_ERROR0							\
-    if (ctxt->error != XPATH_EXPRESSION_OK) return(0)
-
-#define XP_ERROR(X)							\
-    { xmlXPatherror(ctxt, __FILE__, __LINE__, X);			\
-      ctxt->error = (X); return; }
-
-#define XP_ERROR0(X)							\
-    { xmlXPatherror(ctxt, __FILE__, __LINE__, X);			\
-      ctxt->error = (X); return(0); }
-
-#define CHECK_TYPE(typeval)						\
-    if ((ctxt->value == NULL) || (ctxt->value->type != typeval))	\
-        XP_ERROR(XPATH_INVALID_TYPE)					\
-
-#define CHECK_ARITY(x)							\
-    if (nargs != (x)) {							\
-        XP_ERROR(XPATH_INVALID_ARITY);					\
-    }									\
-
-void		xmlXPatherror	(xmlXPathParserContextPtr ctxt,
-				 const char *file,
-				 int line,
-				 int no);
-
-void		xmlXPathDebugDumpObject	(FILE *output,
-					 xmlXPathObjectPtr cur,
-					 int depth);
-
-/**
- * Utilities to extend XPath (XPointer)
- */
-xmlXPathParserContextPtr
-		  xmlXPathNewParserContext	(const xmlChar *str,
-			  			 xmlXPathContextPtr ctxt);
-void		  xmlXPathFreeParserContext	(xmlXPathParserContextPtr ctxt);
-
-xmlXPathObjectPtr valuePop			(xmlXPathParserContextPtr ctxt);
-int		  valuePush			(xmlXPathParserContextPtr ctxt,
-					 	xmlXPathObjectPtr value);
-
-xmlXPathObjectPtr xmlXPathNewString		(const xmlChar *val);
-xmlXPathObjectPtr xmlXPathNewCString		(const char *val);
-xmlXPathObjectPtr xmlXPathNewFloat		(double val);
-xmlXPathObjectPtr xmlXPathNewBoolean		(int val);
-xmlXPathObjectPtr xmlXPathNewNodeSet		(xmlNodePtr val);
-void		  xmlXPathNodeSetAdd		(xmlNodeSetPtr cur,
-						 xmlNodePtr val);
-
-
-void		  xmlXPathIdFunction		(xmlXPathParserContextPtr ctxt,
-					 	int nargs);
-void		  xmlXPathRoot			(xmlXPathParserContextPtr ctxt);
-void		  xmlXPathEvalExpr		(xmlXPathParserContextPtr ctxt);
-xmlChar *	  xmlXPathParseName		(xmlXPathParserContextPtr ctxt);
-
-/************************************************************************
- *									*
  *			Public API					*
  *									*
  ************************************************************************/
-
-/**
- * Extending a context
- */
-int		   xmlXPathRegisterFunc		(xmlXPathContextPtr ctxt,
-						 const xmlChar *name,
-						 xmlXPathFunction f);
-int		   xmlXPathRegisterVariable	(xmlXPathContextPtr ctxt,
-						 const xmlChar *name,
-						 xmlXPathObjectPtr value);
 
 /**
  * Evaluation functions.

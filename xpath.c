@@ -48,6 +48,7 @@
 #include <libxml/tree.h>
 #include <libxml/valid.h>
 #include <libxml/xpath.h>
+#include <libxml/xpathInternals.h>
 #include <libxml/parserInternals.h>
 #include <libxml/hash.h>
 #ifdef LIBXML_XPTR_ENABLED

@@ -11,6 +11,7 @@
 <!entity tree SYSTEM "sgml/tree.sgml">
 <!entity uri SYSTEM "sgml/uri.sgml">
 <!entity xpath SYSTEM "sgml/xpath.sgml">
+<!entity xpathInternals SYSTEM "sgml/xpathInternals.sgml">
 <!entity xpointer SYSTEM "sgml/xpointer.sgml">
 <!entity xmlIO SYSTEM "sgml/xmlIO.sgml">
 <!entity xmlmemory SYSTEM "sgml/xmlmemory.sgml">
@@ -85,6 +86,7 @@
     &HTMLparser;
     &HTMLtree;
     &xpath;
+    &xpathInternals;
     &xpointer;
     &nanohttp;
     &nanoftp;

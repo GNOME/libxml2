@@ -115,7 +115,7 @@ SIZE="3"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN7408"
+NAME="AEN7421"
 ></A
 ><H2
 >Name</H2
@@ -123,7 +123,7 @@ NAME="AEN7408"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN7411"
+NAME="AEN7424"
 ></A
 ><H2
 >Synopsis</H2
@@ -158,61 +158,21 @@ typedef     <A
 HREF="gnome-xml-valid.html#XMLVALIDCTXTPTR"
 >xmlValidCtxtPtr</A
 >;
-#define     <A
-HREF="gnome-xml-valid.html#XML-MIN-NOTATION-TABLE"
->XML_MIN_NOTATION_TABLE</A
->
-struct      <A
-HREF="gnome-xml-valid.html#XMLNOTATIONTABLE"
->xmlNotationTable</A
->;
 typedef     <A
 HREF="gnome-xml-valid.html#XMLNOTATIONTABLEPTR"
 >xmlNotationTablePtr</A
->;
-#define     <A
-HREF="gnome-xml-valid.html#XML-MIN-ELEMENT-TABLE"
->XML_MIN_ELEMENT_TABLE</A
->
-struct      <A
-HREF="gnome-xml-valid.html#XMLELEMENTTABLE"
->xmlElementTable</A
 >;
 typedef     <A
 HREF="gnome-xml-valid.html#XMLELEMENTTABLEPTR"
 >xmlElementTablePtr</A
 >;
-#define     <A
-HREF="gnome-xml-valid.html#XML-MIN-ATTRIBUTE-TABLE"
->XML_MIN_ATTRIBUTE_TABLE</A
->
-struct      <A
-HREF="gnome-xml-valid.html#XMLATTRIBUTETABLE"
->xmlAttributeTable</A
->;
 typedef     <A
 HREF="gnome-xml-valid.html#XMLATTRIBUTETABLEPTR"
 >xmlAttributeTablePtr</A
 >;
-#define     <A
-HREF="gnome-xml-valid.html#XML-MIN-ID-TABLE"
->XML_MIN_ID_TABLE</A
->
-struct      <A
-HREF="gnome-xml-valid.html#XMLIDTABLE"
->xmlIDTable</A
->;
 typedef     <A
 HREF="gnome-xml-valid.html#XMLIDTABLEPTR"
 >xmlIDTablePtr</A
->;
-#define     <A
-HREF="gnome-xml-valid.html#XML-MIN-REF-TABLE"
->XML_MIN_REF_TABLE</A
->
-struct      <A
-HREF="gnome-xml-valid.html#XMLREFTABLE"
->xmlRefTable</A
 >;
 typedef     <A
 HREF="gnome-xml-valid.html#XMLREFTABLEPTR"
@@ -938,7 +898,7 @@ HREF="gnome-xml-tree.html#XMLCHAR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN7628"
+NAME="AEN7631"
 ></A
 ><H2
 >Description</H2
@@ -948,14 +908,14 @@ NAME="AEN7628"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN7631"
+NAME="AEN7634"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7633"
+NAME="AEN7636"
 ></A
 ><H3
 ><A
@@ -1049,7 +1009,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7655"
+NAME="AEN7658"
 ></A
 ><H3
 ><A
@@ -1143,7 +1103,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7677"
+NAME="AEN7680"
 ></A
 ><H3
 ><A
@@ -1171,6 +1131,8 @@ CLASS="PROGRAMLISTING"
     xmlNodePtr        *nodeTab;       /* array of nodes */
 
     int              finishDtd;       /* finished validating the Dtd ? */
+    xmlDocPtr              doc;       /* the document */
+    int                  valid;       /* temporary validity check result */
 };</PRE
 ></TD
 ></TR
@@ -1181,7 +1143,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7682"
+NAME="AEN7685"
 ></A
 ><H3
 ><A
@@ -1207,63 +1169,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7687"
-></A
-><H3
-><A
-NAME="XML-MIN-NOTATION-TABLE"
-></A
->XML_MIN_NOTATION_TABLE</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define XML_MIN_NOTATION_TABLE	32</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN7692"
-></A
-><H3
-><A
-NAME="XMLNOTATIONTABLE"
-></A
->struct xmlNotationTable</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->struct xmlNotationTable {
-    int nb_notations;		/* number of notations stored */
-    int max_notations;		/* maximum number of notations */
-    xmlNotationPtr *table;	/* the table of attributes */
-};</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN7697"
+NAME="AEN7690"
 ></A
 ><H3
 ><A
@@ -1289,64 +1195,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7702"
-></A
-><H3
-><A
-NAME="XML-MIN-ELEMENT-TABLE"
-></A
->XML_MIN_ELEMENT_TABLE</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define XML_MIN_ELEMENT_TABLE	32</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN7707"
-></A
-><H3
-><A
-NAME="XMLELEMENTTABLE"
-></A
->struct xmlElementTable</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->struct xmlElementTable {
-    int nb_elements;		/* number of elements stored */
-    int max_elements;		/* maximum number of elements */
-    xmlElementPtr *table;	/* the table of elements */
-    int last;			/* last element accessed */
-};</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN7712"
+NAME="AEN7695"
 ></A
 ><H3
 ><A
@@ -1372,63 +1221,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7717"
-></A
-><H3
-><A
-NAME="XML-MIN-ATTRIBUTE-TABLE"
-></A
->XML_MIN_ATTRIBUTE_TABLE</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define XML_MIN_ATTRIBUTE_TABLE	32</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN7722"
-></A
-><H3
-><A
-NAME="XMLATTRIBUTETABLE"
-></A
->struct xmlAttributeTable</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->struct xmlAttributeTable {
-    int nb_attributes;		/* number of attributes stored */
-    int max_attributes;		/* maximum number of attributes */
-    xmlAttributePtr *table;	/* the table of attributes */
-};</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN7727"
+NAME="AEN7700"
 ></A
 ><H3
 ><A
@@ -1454,63 +1247,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7732"
-></A
-><H3
-><A
-NAME="XML-MIN-ID-TABLE"
-></A
->XML_MIN_ID_TABLE</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define XML_MIN_ID_TABLE	32</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN7737"
-></A
-><H3
-><A
-NAME="XMLIDTABLE"
-></A
->struct xmlIDTable</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->struct xmlIDTable {
-    int nb_ids;			/* number of ids stored */
-    int max_ids;		/* maximum number of ids */
-    xmlIDPtr *table;		/* the table of ids */
-};</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN7742"
+NAME="AEN7705"
 ></A
 ><H3
 ><A
@@ -1536,63 +1273,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7747"
-></A
-><H3
-><A
-NAME="XML-MIN-REF-TABLE"
-></A
->XML_MIN_REF_TABLE</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define XML_MIN_REF_TABLE	32</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN7752"
-></A
-><H3
-><A
-NAME="XMLREFTABLE"
-></A
->struct xmlRefTable</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->struct xmlRefTable {
-    int nb_refs;			/* number of refs stored */
-    int max_refs;		/* maximum number of refs */
-    xmlRefPtr *table;		/* the table of refs */
-};</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN7757"
+NAME="AEN7710"
 ></A
 ><H3
 ><A
@@ -1618,7 +1299,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7762"
+NAME="AEN7715"
 ></A
 ><H3
 ><A
@@ -1783,7 +1464,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7803"
+NAME="AEN7756"
 ></A
 ><H3
 ><A
@@ -1864,7 +1545,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7824"
+NAME="AEN7777"
 ></A
 ><H3
 ><A
@@ -1927,7 +1608,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7840"
+NAME="AEN7793"
 ></A
 ><H3
 ><A
@@ -2011,7 +1692,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7861"
+NAME="AEN7814"
 ></A
 ><H3
 ><A
@@ -2095,7 +1776,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7882"
+NAME="AEN7835"
 ></A
 ><H3
 ><A
@@ -2197,7 +1878,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7908"
+NAME="AEN7861"
 ></A
 ><H3
 ><A
@@ -2278,7 +1959,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7929"
+NAME="AEN7882"
 ></A
 ><H3
 ><A
@@ -2341,7 +2022,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7945"
+NAME="AEN7898"
 ></A
 ><H3
 ><A
@@ -2441,7 +2122,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7969"
+NAME="AEN7922"
 ></A
 ><H3
 ><A
@@ -2606,7 +2287,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8010"
+NAME="AEN7963"
 ></A
 ><H3
 ><A
@@ -2687,7 +2368,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8031"
+NAME="AEN7984"
 ></A
 ><H3
 ><A
@@ -2750,7 +2431,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8047"
+NAME="AEN8000"
 ></A
 ><H3
 ><A
@@ -2834,7 +2515,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8068"
+NAME="AEN8021"
 ></A
 ><H3
 ><A
@@ -2919,7 +2600,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8089"
+NAME="AEN8042"
 ></A
 ><H3
 ><A
@@ -3001,7 +2682,7 @@ of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8110"
+NAME="AEN8063"
 ></A
 ><H3
 ><A
@@ -3064,7 +2745,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8126"
+NAME="AEN8079"
 ></A
 ><H3
 ><A
@@ -3146,7 +2827,7 @@ of error.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8147"
+NAME="AEN8100"
 ></A
 ><H3
 ><A
@@ -3401,7 +3082,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8209"
+NAME="AEN8162"
 ></A
 ><H3
 ><A
@@ -3482,7 +3163,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8230"
+NAME="AEN8183"
 ></A
 ><H3
 ><A
@@ -3545,7 +3226,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8246"
+NAME="AEN8199"
 ></A
 ><H3
 ><A
@@ -3629,7 +3310,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8267"
+NAME="AEN8220"
 ></A
 ><H3
 ><A
@@ -3714,7 +3395,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8288"
+NAME="AEN8241"
 ></A
 ><H3
 ><A
@@ -3858,7 +3539,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8324"
+NAME="AEN8277"
 ></A
 ><H3
 ><A
@@ -3937,7 +3618,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8344"
+NAME="AEN8297"
 ></A
 ><H3
 ><A
@@ -4000,7 +3681,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8360"
+NAME="AEN8313"
 ></A
 ><H3
 ><A
@@ -4102,7 +3783,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8386"
+NAME="AEN8339"
 ></A
 ><H3
 ><A
@@ -4224,7 +3905,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8416"
+NAME="AEN8369"
 ></A
 ><H3
 ><A
@@ -4323,7 +4004,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8441"
+NAME="AEN8394"
 ></A
 ><H3
 ><A
@@ -4467,7 +4148,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8477"
+NAME="AEN8430"
 ></A
 ><H3
 ><A
@@ -4546,7 +4227,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8497"
+NAME="AEN8450"
 ></A
 ><H3
 ><A
@@ -4609,7 +4290,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8513"
+NAME="AEN8466"
 ></A
 ><H3
 ><A
@@ -4731,7 +4412,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8543"
+NAME="AEN8496"
 ></A
 ><H3
 ><A
@@ -4830,7 +4511,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8568"
+NAME="AEN8521"
 ></A
 ><H3
 ><A
@@ -4933,7 +4614,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8593"
+NAME="AEN8546"
 ></A
 ><H3
 ><A
@@ -5058,7 +4739,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8623"
+NAME="AEN8576"
 ></A
 ><H3
 ><A
@@ -5218,7 +4899,7 @@ the caller must free the returned value.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8663"
+NAME="AEN8616"
 ></A
 ><H3
 ><A
@@ -5345,7 +5026,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8694"
+NAME="AEN8647"
 ></A
 ><H3
 ><A
@@ -5459,7 +5140,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8723"
+NAME="AEN8676"
 ></A
 ><H3
 ><A
@@ -5583,7 +5264,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8753"
+NAME="AEN8706"
 ></A
 ><H3
 ><A
@@ -5705,7 +5386,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8784"
+NAME="AEN8737"
 ></A
 ><H3
 ><A
@@ -5811,7 +5492,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8810"
+NAME="AEN8763"
 ></A
 ><H3
 ><A
@@ -5914,7 +5595,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8836"
+NAME="AEN8789"
 ></A
 ><H3
 ><A
@@ -6034,7 +5715,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8866"
+NAME="AEN8819"
 ></A
 ><H3
 ><A
@@ -6164,7 +5845,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8898"
+NAME="AEN8851"
 ></A
 ><H3
 ><A
@@ -6338,7 +6019,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8939"
+NAME="AEN8892"
 ></A
 ><H3
 ><A
@@ -6440,7 +6121,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8965"
+NAME="AEN8918"
 ></A
 ><H3
 ><A
@@ -6561,7 +6242,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8995"
+NAME="AEN8948"
 ></A
 ><H3
 ><A
@@ -6661,7 +6342,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9020"
+NAME="AEN8973"
 ></A
 ><H3
 ><A
@@ -6785,7 +6466,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9051"
+NAME="AEN9004"
 ></A
 ><H3
 ><A
@@ -6887,7 +6568,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9077"
+NAME="AEN9030"
 ></A
 ><H3
 ><A
@@ -6989,7 +6670,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9103"
+NAME="AEN9056"
 ></A
 ><H3
 ><A
@@ -7155,7 +6836,7 @@ receiving array and retry.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN9141"
+NAME="AEN9094"
 ></A
 ><H3
 ><A

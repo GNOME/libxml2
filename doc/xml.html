@@ -3,7 +3,7 @@
 <html>
 <head>
   <title>The XML C library for Gnome</title>
-  <meta name="GENERATOR" content="amaya V3.2">
+  <meta name="GENERATOR" content="amaya V3.2.1">
   <meta http-equiv="Content-Type" content="text/html">
 </head>
 
@@ -237,6 +237,18 @@ you want to test those</p>
 <ul>
   <li>working on HTML and XML links recognition layers</li>
   <li>parsing/import of Docbook SGML docs</li>
+</ul>
+
+<h3>2.2.6: Oct 25 2000:</h3>
+<ul>
+  <li>Added an hash table module, migrated a number of internal structure to
+    those</li>
+  <li>Fixed a posteriori validation problems</li>
+  <li>HTTP module cleanups</li>
+  <li>HTML parser improvements (tag errors, script/style handling, attribute
+    normalization)</li>
+  <li>coalescing of adjacent text nodes</li>
+  <li>couple of XPath bug fixes, exported the internal API</li>
 </ul>
 
 <h3>2.2.5: Oct 15 2000:</h3>
@@ -1342,6 +1354,6 @@ Gnome CVS base under gnome-xml/example</p>
 
 <p><a href="mailto:Daniel.Veillard@w3.org">Daniel Veillard</a></p>
 
-<p>$Id: xml.html,v 1.55 2000/10/15 21:06:19 veillard Exp $</p>
+<p>$Id: xml.html,v 1.56 2000/10/21 09:25:52 veillard Exp $</p>
 </body>
 </html>

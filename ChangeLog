@@ -1,3 +1,10 @@
+Wed Oct 25 15:27:19 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* configure.in: release 2.2.6
+	* xpath.[ch] xpointer.c xpathInternals.h: added xpathInternals.h
+	  exporting the inner functions of xpath for extension modules
+	* doc/*: updated and rebuilt the doc
+
 Wed Oct 25 12:48:55 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* nanohttp.c : applied Wayne HTTP cleanup patch

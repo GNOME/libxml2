@@ -1,1 +1,1 @@
-./test/relaxng/tutor11_2_3.xml:3: element card: Relax-NG validaty error : Invalid attribute b for element card
+./test/relaxng/tutor11_2_3.xml:3: element card: Relax-NG validity error : Invalid attribute b for element card

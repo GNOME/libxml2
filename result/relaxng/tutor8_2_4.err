@@ -1,2 +1,2 @@
-Entity: line 0: Relax-NG validaty error : Extra element title in interleave
-./test/relaxng/tutor8_2_4.xml:5: element title: Relax-NG validaty error : Element head failed to validate content
+Relax-NG validity error : Extra element title in interleave
+./test/relaxng/tutor8_2_4.xml:5: element title: Relax-NG validity error : Element head failed to validate content

@@ -2472,6 +2472,7 @@ xmlSAXVersion(xmlSAXHandler *hdlr, int version)
 	hdlr->endElement = NULL;
 	hdlr->startElementNs = xmlSAX2StartElementNs;
 	hdlr->endElementNs = xmlSAX2EndElementNs;
+	hdlr->serror = NULL;
 	hdlr->initialized = XML_SAX2_MAGIC;
 #ifdef LIBXML_SAX1_ENABLED
     } else if (version == 1) {
@@ -2643,7 +2644,7 @@ xmlSAX2InitDocbDefaultSAXHandler(xmlSAXHandler *hdlr)
     hdlr->error = xmlParserError;
     hdlr->fatalError = xmlParserError;
 
-    hdlr->initialized = XML_SAX2_MAGIC;
+    hdlr->initialized = 1;
 }
 
 /**

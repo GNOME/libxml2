@@ -1,3 +1,9 @@
+Fri Oct 10 16:45:20 CEST 2003 Daniel Veillard <daniel@veillard.com>
+
+	* SAX2.c: fixed uninitialized new field.
+	* result/VC/OneID2 result/relaxng/*.err: fixed a typo updating
+	  all messages
+
 Fri Oct 10 16:19:17 CEST 2003 Daniel Veillard <daniel@veillard.com>
 
 	* include/libxml/tree.h: make room in Doc, Element, Attributes

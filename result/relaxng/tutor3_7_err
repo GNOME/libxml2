@@ -1,3 +1,3 @@
-./test/relaxng/tutor3_7.rng:1: element element: Relax-NG validaty error : Expecting an element , got nothing
-./test/relaxng/tutor3_7.rng:1: element element: Relax-NG validaty error : Invalid sequence in interleave
-./test/relaxng/tutor3_7.rng:1: element element: Relax-NG validaty error : Element element failed to validate content
+./test/relaxng/tutor3_7.rng:1: element element: Relax-NG validity error : Expecting an element , got nothing
+./test/relaxng/tutor3_7.rng:1: element element: Relax-NG validity error : Invalid sequence in interleave
+./test/relaxng/tutor3_7.rng:1: element element: Relax-NG validity error : Element element failed to validate content

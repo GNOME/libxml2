@@ -1,3 +1,7 @@
+Sun Jul 26 17:29:52 EDT 1998  Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* xml_tree: changed the memory allocation scheme for name in xmlNewNode
+
 Sun Jul 26 00:17:51 EDT 1998  Daniel Veillard <Daniel.Veillard@w3.org>
 
         * configure.in: added test for CPP

@@ -194,7 +194,7 @@ void xmlFreeProp(xmlPropPtr cur) {
 
 /*
  * Creation of a new node element in a given DTD.
- * We assume that the "name" has already being strdup'd !
+ * We don't assume that the "name" has already being strdup'd anymore !
  */
 xmlNodePtr xmlNewNode(xmlDtdPtr dtd, const CHAR *name, CHAR *content) {
     xmlNodePtr cur;
@@ -218,7 +218,7 @@ xmlNodePtr xmlNewNode(xmlDtdPtr dtd, const CHAR *name, CHAR *content) {
     cur->childs = NULL; 
     cur->properties = NULL; 
     cur->type = 0;
-    cur->name = name;
+    cur->name = xmlStrdup(name);
     cur->dtd = dtd;
     if (content != NULL)
 	cur->content = xmlStrdup(content);

@@ -1,3 +1,9 @@
+Sat Jul  6 21:11:20 CEST 2002 Daniel Veillard <daniel@veillard.com>
+
+	* parser.c: fixing bug #84169 by fixing the
+	  comment of xmlCreatePushParserCtxt to describe the 
+	  encoding detection parameters better.
+
 Sat Jul  6 19:44:56 CEST 2002 Daniel Veillard <daniel@veillard.com>
 
 	* valid.c: fixing bug #79331 in one path the lookup for

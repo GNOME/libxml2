@@ -8939,13 +8939,17 @@ xmlStopParser(xmlParserCtxtPtr ctxt) {
  * @size:  number of chars in the array
  * @filename:  an optional file name or URI
  *
- * Create a parser context for using the XML parser in push mode
+ * Create a parser context for using the XML parser in push mode.
+ * If @buffer and @size are non-NULL, the data is used to detect
+ * the encoding.  The remaining characters will be parsed so they
+ * don't need to be fed in again through xmlParseChunk.
  * To allow content encoding detection, @size should be >= 4
  * The value of @filename is used for fetching external entities
  * and error/warning reports.
  *
  * Returns the new parser context or NULL
  */
+
 xmlParserCtxtPtr
 xmlCreatePushParserCtxt(xmlSAXHandlerPtr sax, void *user_data, 
                         const char *chunk, int size, const char *filename) {

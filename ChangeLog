@@ -1,3 +1,8 @@
+Tue Aug 24 21:10:59 CEST 2004 Igor Zlatkovic <igor@zlatkovic.com>
+
+	* parser.c: fixed path problem in DTD loading reported by 
+	  Sameer Abhinkar
+
 Tue Aug 24 16:40:51 CEST 2004 Igor Zlatkovic <igor@zlatkovic.com>
 
 	* win32/configure.js: added support for version extra

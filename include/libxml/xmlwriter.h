@@ -405,6 +405,13 @@ XMLPUBFUN int XMLCALL
 					 const xmlChar * name,
 					 const xmlChar * pubid,
 					 const xmlChar * sysid);
+/*
+ * Indentation
+ */
+XMLPUBFUN int XMLCALL
+        xmlTextWriterSetIndent (xmlTextWriterPtr writer, int indent);
+XMLPUBFUN int XMLCALL
+        xmlTextWriterSetIndentString (xmlTextWriterPtr writer, xmlChar *str);
 
 /*
  * misc

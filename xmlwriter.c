@@ -61,8 +61,9 @@ struct _xmlTextWriter {
     xmlListPtr nodes;       /* element name stack */
     xmlListPtr nsstack;     /* name spaces stack */
     int level;
-    char indent;            /* indent amount */
-    char ichar;             /* indent character */
+    int indent;             /* enable indent */
+    int doindent;	    /* internal indent flag */
+    xmlChar *ichar;            /* indent character */
     char qchar;             /* character used for quoting attribute values */
 };
 
@@ -83,6 +84,7 @@ static xmlChar *xmlTextWriterVSprintf(const char *format, va_list argptr);
 static int xmlOutputBufferWriteBase64(xmlOutputBufferPtr out, int len,
                                       const unsigned char *data);
 static void xmlTextWriterStartDocumentCallback(void *ctx);
+static int xmlTextWriterWriteIndent (xmlTextWriterPtr writer);
 
 /**
  * xmlNewTextWriter:
@@ -129,9 +131,11 @@ xmlNewTextWriter(xmlOutputBufferPtr out)
     }
 
     ret->out = out;
-    ret->ichar = ' ';
+    ret->ichar = xmlStrdup (BAD_CAST " ");
     ret->qchar = '"';
 
+    if (!ret->ichar) return NULL;
+  
     return ret;
 }
 
@@ -165,6 +169,8 @@ xmlNewTextWriterFilename(const char *uri, int compression)
         return NULL;
     }
 
+    ret->indent = 0;
+    ret->doindent = 0;
     return ret;
 }
 
@@ -542,11 +548,12 @@ xmlTextWriterEndDocument(xmlTextWriterPtr writer)
         }
     }
 
+    if (!writer->indent) {
     count = xmlOutputBufferWriteString(writer->out, "\n");
     if(count < 0)
         return -1;
     sum += count;
-
+    }
     return sum;
 }
 
@@ -653,6 +660,11 @@ xmlTextWriterWriteComment(xmlTextWriterPtr writer, const xmlChar * content)
         }
     }
 
+    if (writer->indent) {
+      count = xmlOutputBufferWriteString (writer->out, "\n");
+      sum += count;
+    }
+    
     count = xmlOutputBufferWriteString(writer->out, "<!--");
     if (count < 0)
         return -1;
@@ -666,6 +678,11 @@ xmlTextWriterWriteComment(xmlTextWriterPtr writer, const xmlChar * content)
     if (count < 0)
         return -1;
     sum += count;
+
+    if (writer->indent) {
+      count = xmlOutputBufferWriteString (writer->out, "\n");
+      sum += count;
+    }
 
     return sum;
 }
@@ -706,6 +723,8 @@ xmlTextWriterStartElement(xmlTextWriterPtr writer, const xmlChar * name)
                     if (count < 0)
                         return -1;
                     sum += count;
+		    if (writer->indent)
+		      count = xmlOutputBufferWriteString (writer->out, "\n");
                     p->state = XML_TEXTWRITER_TEXT;
                     break;
 		default:
@@ -732,6 +751,11 @@ xmlTextWriterStartElement(xmlTextWriterPtr writer, const xmlChar * name)
     p->state = XML_TEXTWRITER_NAME;
 
     xmlListPushFront(writer->nodes, p);
+
+    if (writer->indent) { 
+      count = xmlTextWriterWriteIndent (writer);
+      sum += count;
+    }
 
     count = xmlOutputBufferWriteString(writer->out, "<");
     if (count < 0)
@@ -842,6 +866,11 @@ xmlTextWriterEndElement(xmlTextWriterPtr writer)
             sum += count;
             break;
         case XML_TEXTWRITER_TEXT:
+	    if ((writer->indent) && (writer->doindent)) {
+	      count = xmlTextWriterWriteIndent (writer);
+	      sum += count;
+	      writer->doindent = 1;
+	    } else writer->doindent = 1;
             count = xmlOutputBufferWriteString(writer->out, "</");
             if (count < 0)
                 return -1;
@@ -858,6 +887,11 @@ xmlTextWriterEndElement(xmlTextWriterPtr writer)
             break;
         default:
             return -1;
+    }
+
+    if (writer->indent) {
+      count = xmlOutputBufferWriteString (writer->out, "\n");
+      sum += count;
     }
 
     xmlListPopFront(writer->nodes);
@@ -1946,6 +1980,7 @@ xmlTextWriterWriteElement(xmlTextWriterPtr writer, const xmlChar * name,
     if (count == -1)
         return -1;
     sum += count;
+    writer->doindent = 0;
     count = xmlTextWriterEndElement(writer);
     if (count == -1)
         return -1;
@@ -3953,6 +3988,76 @@ xmlTextWriterStartDocumentCallback(void *ctx)
             ctxt->myDoc->URL =
                 xmlStrdup((const xmlChar *) ctxt->input->filename);
     }
+}
+
+/**
+ * xmlTextWriterSetIndent:
+ * @writer:  the xmlTextWriterPtr
+ * @indent:  do indentation?
+ *
+ * Set indentation output. indent = 0 do not indentation. indent > 0 do indentation.
+ *
+ * Returns -1 on error or 0 otherwise.
+ */
+int
+xmlTextWriterSetIndent (xmlTextWriterPtr writer, int indent)
+{
+  if (indent < 0) 
+    return -1;
+
+  writer->indent = indent;
+  writer->doindent = 1;
+
+  return 0;
+}
+
+/**
+ * xmlTextWriterSetIndentString:
+ * @writer:  the xmlTextWriterPtr
+ * @str:  the xmlChar string
+ *
+ * Set string indentation.
+ *
+ * Returns -1 on error or 0 otherwise.
+ */
+int
+xmlTextWriterSetIndentString (xmlTextWriterPtr writer, xmlChar *str)
+{
+
+  if (!str)
+    return -1;
+
+  writer->ichar = xmlStrdup (str);
+  
+  if (!writer->ichar)
+    return -1;
+  else
+    return 0;
+}
+
+/**
+ * xmlTextWriterWriteIndent:
+ * @writer:  the xmlTextWriterPtr
+ *
+ * Write indent string.
+ *
+ * Returns -1 on error or the number of strings written.
+ */  
+static int
+xmlTextWriterWriteIndent (xmlTextWriterPtr writer)
+{
+  int lksize;
+  int i;
+  int ret;
+  
+  lksize = xmlListSize (writer->nodes);
+  for (i = 0; i < (lksize-1); i++) {
+    ret = xmlOutputBufferWriteString (writer->out, writer->ichar);
+    if (ret == -1)
+      break;
+  }
+
+  return (ret == -1)?ret:i;
 }
 
 #endif

@@ -10735,6 +10735,8 @@ xmlSAXParseMemoryWithData(xmlSAXHandlerPtr sax, const char *buffer,
 	ctxt->_private=data;
     }
 
+    ctxt->recovery = recovery;
+
     xmlParseDocument(ctxt);
 
     if ((ctxt->wellFormed) || recovery) ret = ctxt->myDoc;

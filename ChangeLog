@@ -1,3 +1,9 @@
+Sat Oct 27 14:04:45 MDT 2001 John Fleck <jfleck@inkstain.net>
+
+	*doc/xmllint.xml, doc/xmllint.1
+	New and improved man page for xmllint - .xml is the original, .1
+	is the generated man page
+
 Wed Oct 24 14:34:25 CEST 2001 Daniel Veillard <daniel@veillard.com>
 
 	* doc/site.xsl doc/*.html doc/Makefile.am: now autogenerate

@@ -6502,8 +6502,23 @@ xmlValidateDocument(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
     }
     if ((doc->intSubset != NULL) && ((doc->intSubset->SystemID != NULL) ||
 	(doc->intSubset->ExternalID != NULL)) && (doc->extSubset == NULL)) {
-        doc->extSubset = xmlParseDTD(doc->intSubset->ExternalID,
-		                     doc->intSubset->SystemID);
+	xmlChar *extID, *sysID;
+	if (doc->intSubset->ExternalID != NULL)
+	    extID = xmlBuildURI(doc->intSubset->ExternalID,
+	    		doc->URL);
+	else
+	    extID = NULL;
+	if (doc->intSubset->SystemID != NULL)
+	    sysID = xmlBuildURI(doc->intSubset->SystemID,
+	    		doc->URL);
+	else
+	    sysID = NULL;
+        doc->extSubset = xmlParseDTD((const xmlChar *)extID,
+			(const xmlChar *)sysID);
+	if (extID != NULL)
+	    xmlFree(extID);
+	if (sysID != NULL)
+	    xmlFree(sysID);
         if (doc->extSubset == NULL) {
 	    if (doc->intSubset->SystemID != NULL) {
 		xmlErrValid(ctxt, XML_DTD_LOAD_ERROR,

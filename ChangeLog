@@ -1,3 +1,8 @@
+Wed Aug  4 23:40:21 PDT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* valid.c: changed the parsing of a document's DTD to use
+	  the proper base path (bug 144366)
+
 Wed Aug  4 16:58:08 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am config.h.in configure.in python/Makefile.am:

@@ -10,6 +10,9 @@
     <copyright>
       <year>2001</year>
     </copyright>
+    <copyright>
+      <year>2004</year>
+    </copyright>
     <author>
       <firstname>John</firstname>
       <surname>Fleck</surname>
@@ -26,7 +29,7 @@
     </author>
     <address><email>hwr@pilhuhn.de</email></address>
     
-    <releaseinfo>This is release 0.2 of the xmllint Manual.</releaseinfo>
+    <releaseinfo>This is release 0.3 of the xmllint Manual.</releaseinfo>
   </refentryinfo>
 
   <refmeta>
@@ -622,6 +625,14 @@
       </varlistentry>
      
     </variablelist>
+  </refsect1>
+<refsect1>
+   <title>Catalogs</title>
+     <para>Catalog behavior can be changed by redirecting
+     queries to the user's own set of catalogs. This can be done by setting the
+     <varname>XML_CATALOG_FILES</varname> environment variable to a list of
+     catalogs. An empty one should deactivate loading the default
+      <filename>/etc/xml/catalog</filename> default catalog.</para>
   </refsect1>
   <refsect1>
     <title>Debugging Catalogs</title>

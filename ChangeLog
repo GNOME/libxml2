@@ -1,3 +1,14 @@
+Thu Feb 26 20:19:40 MST 2004 John Fleck <jfleck@inkstain.net>
+
+	* doc/xmllint.xml
+	* doc/xmllint.1
+	* doc/xmllint.html
+	* doc/xmlcatalog_man.xml
+	* doc/xmlcatalog.1
+	* doc/xmlcatalog_man.html
+	applying patch from Mike Hommey to clarify XML_CATALOG_FILES
+	use
+
 Thu Feb 26 23:47:43 CET 2004 Daniel Veillard <daniel@veillard.com>
 
 	* Makefile.am: patch for cross-compilation to Windows from

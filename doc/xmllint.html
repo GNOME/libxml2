@@ -1,4 +1,4 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>xmllint</title><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en"><a name="id2589902"></a><div class="titlepage"><div></div><div></div></div><div class="refnamediv"><h2>Name</h2><p>xmllint &#8212; command line <span class="acronym">XML</span> tool</p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><div class="cmdsynopsis"><p><tt class="command">xmllint</tt>  [[--version] |  [--debug] |  [--shell] |  [--debugent] |  [--copy] |  [--recover] |  [--noent] |  [--noout] |  [--htmlout] |  [--nowrap] |  [--valid] |  [--postvalid] |  [--dtdvalid <i class="replaceable"><tt>URL</tt></i>] |  [--timing] |  [--repeat] |  [--insert] |  [--compress] |  [--html] |  [--push] |  [--memory] |  [--nowarning] |  [--noblanks] |  [--format] |  [--testIO] |  [--encode <i class="replaceable"><tt>encoding</tt></i>] |  [--catalogs] |  [--nocatalogs] |  [--auto] |  [--xinclude] |  [--loaddtd] |  [--dtdattr] |  [--dropdtd] |  [--stream] |  [--chkregister] |  [--relaxng] |  [--schema] |  [--nonet]] [<tt class="option"><i class="replaceable"><tt>xmlfile</tt></i></tt>]</p></div></div><div class="refsect1" lang="en"><a name="introduction"></a><h2>Introduction</h2><p>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>xmllint</title><meta name="generator" content="DocBook XSL Stylesheets V1.61.2"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en"><a name="id2431614"></a><div class="titlepage"><div></div><div></div></div><div class="refnamediv"><h2>Name</h2><p>xmllint &#8212; command line <span class="acronym">XML</span> tool</p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><div class="cmdsynopsis"><p><tt class="command">xmllint</tt>  [[--version] |  [--debug] |  [--shell] |  [--debugent] |  [--copy] |  [--recover] |  [--noent] |  [--nocdata] |  [--nsclean] |  [--noout] |  [--htmlout] |  [--nowrap] |  [--valid] |  [--postvalid] |  [--dtdvalid <i class="replaceable"><tt>URL</tt></i>] |  [--dtdvalidfpi <i class="replaceable"><tt>FPI</tt></i>] |  [--timing] |  [--repeat] |  [--insert] |  [--compress] |  [--html] |  [--push] |  [--memory] |  [--nowarning] |  [--noblanks] |  [--format] |  [--testIO] |  [--encode <i class="replaceable"><tt>encoding</tt></i>] |  [--catalogs] |  [--nocatalogs] |  [--auto] |  [--xinclude] |  [--loaddtd] |  [--dtdattr] |  [--dropdtd] |  [--stream] |  [--chkregister] |  [--relaxng] |  [--schema] |  [--nonet]] [<tt class="option"><i class="replaceable"><tt>xmlfile</tt></i></tt>]</p></div></div><div class="refsect1" lang="en"><a name="introduction"></a><h2>Introduction</h2><p>
       The xmllint program parses one or more XML files, specified on the
       command line as <i class="replaceable"><tt>xmlfile</tt></i>. It prints various
       types of output, depending upon the options selected. It is useful for
@@ -26,6 +26,10 @@
 	    Substitute entity values for entity
 	    references. By default, <span class="application">xmllint</span> leaves entity
 	    references in place.
+	  </dd><dt><span class="term"><tt class="option">--nocdata</tt></span></dt><dd>
+	    Substitute CDATA section by equivalent text nodes.
+	  </dd><dt><span class="term"><tt class="option">--nsclean</tt></span></dt><dd>
+	    Remove redundant namespace declarations.
 	  </dd><dt><span class="term"><tt class="option">--noout</tt></span></dt><dd>
 	    Suppress output. By default,
 	    <span class="application">xmllint</span> outputs the result tree.
@@ -49,6 +53,11 @@
 	    Use the
       <span class="acronym">DTD</span> specified by <i class="replaceable"><tt>URL</tt></i> for
       validation.
+	  </dd><dt><span class="term"> <tt class="option">--dtdvalidfpi</tt> <i class="replaceable"><tt>FPI</tt></i></span></dt><dd>
+	    Use the
+      <span class="acronym">DTD</span> specified by the Public Identifier
+      <i class="replaceable"><tt>FPI</tt></i> for validation, note that this
+      will require a Catalog exporting that Public Identifier to work.
 	  </dd><dt><span class="term"><tt class="option">--timing</tt></span></dt><dd>
 	    Output information about the time it takes
 	    <span class="application">xmllint</span> to perform the various steps.
@@ -135,6 +144,10 @@
 	    Check the document for error.
 	  </dd><dt><span class="term"><tt class="option">write <i class="replaceable"><tt>name</tt></i></tt></span></dt><dd>
 	    Write the current node to the given filename.
-	  </dd></dl></div></div><div class="refsect1" lang="en"><h2>Debugging Catalogs</h2><p>Setting the environment variable <tt class="varname">XML_DEBUG_CATALOG</tt>
+	  </dd></dl></div></div><div class="refsect1" lang="en"><h2>Catalogs</h2><p>Catalog behavior can be changed by redirecting
+     queries to the user's own set of catalogs. This can be done by setting the
+     <tt class="varname">XML_CATALOG_FILES</tt> environment variable to a list of
+     catalogs. An empty one should deactivate loading the default
+      <tt class="filename">/etc/xml/catalog</tt> default catalog.</p></div><div class="refsect1" lang="en"><h2>Debugging Catalogs</h2><p>Setting the environment variable <tt class="varname">XML_DEBUG_CATALOG</tt>
     using the command <b class="command">"export XML_DEBUG_CATALOG="</b>
     outputs debugging information related to catalog operations.</p></div></div></body></html>

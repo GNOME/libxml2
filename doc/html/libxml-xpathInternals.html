@@ -1015,7 +1015,7 @@ Is the name given a NodeType one.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>1 if true 0 otherwise
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathNextSelf"></a>xmlXPathNextSelf ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a>  xmlXPathNextSelf                (<a href="libxml-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> cur);</pre><p>
-Traversal function for the &quot;self&quot; direction
+Traversal function for the "self" direction
 The self axis contains just the context node itself</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the XPath Parser context
@@ -1023,7 +1023,7 @@ The self axis contains just the context node itself</p><p>
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the next element following that axis
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathNextChild"></a>xmlXPathNextChild ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a>  xmlXPathNextChild               (<a href="libxml-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> cur);</pre><p>
-Traversal function for the &quot;child&quot; direction
+Traversal function for the "child" direction
 The child axis contains the children of the context node in document order.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the XPath Parser context
@@ -1031,7 +1031,7 @@ The child axis contains the children of the context node in document order.</p><
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the next element following that axis
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathNextDescendant"></a>xmlXPathNextDescendant ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a>  xmlXPathNextDescendant          (<a href="libxml-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> cur);</pre><p>
-Traversal function for the &quot;descendant&quot; direction
+Traversal function for the "descendant" direction
 the descendant axis contains the descendants of the context node in document
 order; a descendant is a child or a child of a child and so on.</p><p>
 
@@ -1040,7 +1040,7 @@ order; a descendant is a child or a child of a child and so on.</p><p>
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the next element following that axis
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathNextDescendantOrSelf"></a>xmlXPathNextDescendantOrSelf ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a>  xmlXPathNextDescendantOrSelf    (<a href="libxml-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> cur);</pre><p>
-Traversal function for the &quot;descendant-or-self&quot; direction
+Traversal function for the "descendant-or-self" direction
 the descendant-or-self axis contains the context node and the descendants
 of the context node in document order; thus the context node is the first
 node on the axis, and the first child of the context node is the second node
@@ -1051,7 +1051,7 @@ on the axis</p><p>
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the next element following that axis
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathNextParent"></a>xmlXPathNextParent ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a>  xmlXPathNextParent              (<a href="libxml-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> cur);</pre><p>
-Traversal function for the &quot;parent&quot; direction
+Traversal function for the "parent" direction
 The parent axis contains the parent of the context node, if there is one.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the XPath Parser context
@@ -1059,7 +1059,7 @@ The parent axis contains the parent of the context node, if there is one.</p><p>
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the next element following that axis
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathNextAncestorOrSelf"></a>xmlXPathNextAncestorOrSelf ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a>  xmlXPathNextAncestorOrSelf      (<a href="libxml-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> cur);</pre><p>
-Traversal function for the &quot;ancestor-or-self&quot; direction
+Traversal function for the "ancestor-or-self" direction
 he ancestor-or-self axis contains the context node and ancestors of
 the context node in reverse document order; thus the context node is
 the first node on the axis, and the context node's parent the second;
@@ -1070,7 +1070,7 @@ parent here is defined the same as with the parent axis.</p><p>
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the next element following that axis
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathNextFollowingSibling"></a>xmlXPathNextFollowingSibling ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a>  xmlXPathNextFollowingSibling    (<a href="libxml-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> cur);</pre><p>
-Traversal function for the &quot;following-sibling&quot; direction
+Traversal function for the "following-sibling" direction
 The following-sibling axis contains the following siblings of the context
 node in document order.</p><p>
 
@@ -1079,7 +1079,7 @@ node in document order.</p><p>
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the next element following that axis
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathNextFollowing"></a>xmlXPathNextFollowing ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a>  xmlXPathNextFollowing           (<a href="libxml-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> cur);</pre><p>
-Traversal function for the &quot;following&quot; direction
+Traversal function for the "following" direction
 The following axis contains all nodes in the same document as the context
 node that are after the context node in document order, excluding any
 descendants and excluding attribute nodes and namespace nodes; the nodes
@@ -1090,7 +1090,7 @@ are ordered in document order</p><p>
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the next element following that axis
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathNextNamespace"></a>xmlXPathNextNamespace ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a>  xmlXPathNextNamespace           (<a href="libxml-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> cur);</pre><p>
-Traversal function for the &quot;namespace&quot; direction
+Traversal function for the "namespace" direction
 the namespace axis contains the namespace nodes of the context node;
 the order of nodes on this axis is implementation-defined; the axis will
 be empty unless the context node is an element
@@ -1102,7 +1102,7 @@ We keep the XML namespace node at the end of the list.</p><p>
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the next element following that axis
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathNextAttribute"></a>xmlXPathNextAttribute ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a>  xmlXPathNextAttribute           (<a href="libxml-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> cur);</pre><p>
-Traversal function for the &quot;attribute&quot; direction
+Traversal function for the "attribute" direction
 TODO: support DTD inherited default attributes</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the XPath Parser context
@@ -1110,7 +1110,7 @@ TODO: support DTD inherited default attributes</p><p>
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the next element following that axis
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathNextPreceding"></a>xmlXPathNextPreceding ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a>  xmlXPathNextPreceding           (<a href="libxml-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> cur);</pre><p>
-Traversal function for the &quot;preceding&quot; direction
+Traversal function for the "preceding" direction
 the preceding axis contains all nodes in the same document as the context
 node that are before the context node in document order, excluding any
 ancestors and excluding attribute nodes and namespace nodes; the nodes are
@@ -1121,7 +1121,7 @@ ordered in reverse document order</p><p>
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the next element following that axis
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathNextAncestor"></a>xmlXPathNextAncestor ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a>  xmlXPathNextAncestor            (<a href="libxml-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> cur);</pre><p>
-Traversal function for the &quot;ancestor&quot; direction
+Traversal function for the "ancestor" direction
 the ancestor axis contains the ancestors of the context node; the ancestors
 of the context node consist of the parent of context node and the parent's
 parent and so on; the nodes are ordered in reverse document order; thus the
@@ -1133,7 +1133,7 @@ node on the axis</p><p>
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the next element following that axis
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlXPathNextPrecedingSibling"></a>xmlXPathNextPrecedingSibling ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a>  xmlXPathNextPrecedingSibling    (<a href="libxml-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> cur);</pre><p>
-Traversal function for the &quot;preceding-sibling&quot; direction
+Traversal function for the "preceding-sibling" direction
 The preceding-sibling axis contains the preceding siblings of the context
 node in reverse document order; the first preceding sibling is first on the
 axis; the sibling preceding that node is the second on the axis and so on.</p><p>
@@ -1287,10 +1287,10 @@ Implement the <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF=
 The substring function returns the substring of the first argument
 starting at the position specified in the second argument with
 length specified in the third argument. For example,
-substring(&quot;12345&quot;,2,3) returns &quot;234&quot;. If the third argument is not
+substring("12345",2,3) returns "234". If the third argument is not
 specified, it returns the substring starting at the position specified
 in the second argument and continuing to the end of the string. For
-example, substring(&quot;12345&quot;,2) returns &quot;2345&quot;.  More precisely, each
+example, substring("12345",2) returns "2345".  More precisely, each
 character in the string (see [3.6 Strings]) is considered to have a
 numeric position: the position of the first character is 1, the position
 of the second character is 2 and so on. The returned substring contains
@@ -1298,12 +1298,12 @@ those characters for which the position of the character is greater than
 or equal to the second argument and, if the third argument is specified,
 less than the sum of the second and third arguments; the comparisons
 and addition used for the above follow the standard IEEE 754 rules. Thus:
- - substring(&quot;12345&quot;, 1.5, 2.6) returns &quot;234&quot; 
- - substring(&quot;12345&quot;, 0, 3) returns &quot;12&quot; 
- - substring(&quot;12345&quot;, 0 div 0, 3) returns &quot;&quot; 
- - substring(&quot;12345&quot;, 1, 0 div 0) returns &quot;&quot; 
- - substring(&quot;12345&quot;, -42, 1 div 0) returns &quot;12345&quot; 
- - substring(&quot;12345&quot;, -1 div 0, 1 div 0) returns &quot;&quot;</p><p>
+ - substring("12345", 1.5, 2.6) returns "234" 
+ - substring("12345", 0, 3) returns "12" 
+ - substring("12345", 0 div 0, 3) returns "" 
+ - substring("12345", 1, 0 div 0) returns "" 
+ - substring("12345", -42, 1 div 0) returns "12345" 
+ - substring("12345", -1 div 0, 1 div 0) returns ""</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the XPath Parser context
 </td></tr><tr><td><span class="term"><i><tt>nargs</tt></i> :</span></td><td>  the number of arguments
@@ -1315,7 +1315,7 @@ The substring-before function returns the substring of the first
 argument string that precedes the first occurrence of the second
 argument string in the first argument string, or the empty string
 if the first argument string does not contain the second argument
-string. For example, substring-before(&quot;1999/04/01&quot;,&quot;/&quot;) returns 1999.</p><p>
+string. For example, substring-before("1999/04/01","/") returns 1999.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the XPath Parser context
 </td></tr><tr><td><span class="term"><i><tt>nargs</tt></i> :</span></td><td>  the number of arguments
@@ -1327,8 +1327,8 @@ The substring-after function returns the substring of the first
 argument string that follows the first occurrence of the second
 argument string in the first argument string, or the empty stringi
 if the first argument string does not contain the second argument
-string. For example, substring-after(&quot;1999/04/01&quot;,&quot;/&quot;) returns 04/01,
-and substring-after(&quot;1999/04/01&quot;,&quot;19&quot;) returns 99/04/01.</p><p>
+string. For example, substring-after("1999/04/01","/") returns 04/01,
+and substring-after("1999/04/01","19") returns 99/04/01.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the XPath Parser context
 </td></tr><tr><td><span class="term"><i><tt>nargs</tt></i> :</span></td><td>  the number of arguments
@@ -1352,12 +1352,12 @@ Implement the <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF=
 The translate function returns the first argument string with
 occurrences of characters in the second argument string replaced
 by the character at the corresponding position in the third argument
-string. For example, translate(&quot;bar&quot;,&quot;abc&quot;,&quot;ABC&quot;) returns the string
+string. For example, translate("bar","abc","ABC") returns the string
 BAr. If there is a character in the second argument string with no
 character at a corresponding position in the third argument string
 (because the second argument string is longer than the third argument
 string), then occurrences of that character in the first argument
-string are removed. For example, translate(&quot;--aaa--&quot;,&quot;abc-&quot;,&quot;ABC&quot;)</p><p>
+string are removed. For example, translate("--aaa--","abc-","ABC")</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the XPath Parser context
 </td></tr><tr><td><span class="term"><i><tt>nargs</tt></i> :</span></td><td>  the number of arguments

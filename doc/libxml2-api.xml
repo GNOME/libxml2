@@ -7667,7 +7667,7 @@ actually an xmlCharEncoding'/>
     </function>
     <function name='xmlParseEncodingDecl' file='parserInternals'>
       <info>parse the XML encoding declaration  [80] EncodingDecl ::= S &apos;encoding&apos; Eq (&apos;&quot;&apos; EncName &apos;&quot;&apos; |  &quot;&apos;&quot; EncName &quot;&apos;&quot;)  this setups the conversion filters.</info>
-      <return type='xmlChar *' info='the encoding value or NULL'/>
+      <return type='const xmlChar *' info='the encoding value or NULL'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlParseEndTag' file='parserInternals'>

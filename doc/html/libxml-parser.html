@@ -297,7 +297,7 @@ void        <a href="libxml-parser.html#xmlSetExternalEntityLoader">xmlSetExtern
                                              <a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
 </pre></div><div class="refsect1" lang="en"><h2>Description</h2><p>
 
-</p></div><div class="refsect1" lang="en"><h2>Details</h2><div class="refsect2" lang="en"><h3><a name="XML-DEFAULT-VERSION-CAPS"></a>XML_DEFAULT_VERSION</h3><pre class="programlisting">#define XML_DEFAULT_VERSION	&quot;1.0&quot;
+</p></div><div class="refsect1" lang="en"><h2>Details</h2><div class="refsect2" lang="en"><h3><a name="XML-DEFAULT-VERSION-CAPS"></a>XML_DEFAULT_VERSION</h3><pre class="programlisting">#define XML_DEFAULT_VERSION	"1.0"
 </pre><p>
 The default version of XML used: 1.0</p><p>
 
@@ -972,7 +972,7 @@ mixed content.
 This function is provided as a way to force the standard behavior 
 on 1.X libs and to switch back to the old mode for compatibility when
 running 1.X client code on 2.X . Upgrade of 1.X code should be done
-by using <a href="libxml-tree.html#xmlIsBlankNode">xmlIsBlankNode</a>() commodity function to detect the &quot;empty&quot;
+by using <a href="libxml-tree.html#xmlIsBlankNode">xmlIsBlankNode</a>() commodity function to detect the "empty"
 nodes generated.
 This value also affect autogeneration of indentation when saving code
 if blanks sections are kept, indentation is not generated.</p><p>
@@ -1142,7 +1142,7 @@ If sax is NULL, fallback to the default DOM tree building routines.
 </p><p>
 [78] extParsedEnt ::= TextDecl? content
 </p><p>
-This correspond to a &quot;Well Balanced&quot; chunk</p><p>
+This correspond to a "Well Balanced" chunk</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>sax</tt></i> :</span></td><td>  the SAX handler block
 </td></tr><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>  the filename
@@ -1152,7 +1152,7 @@ parse an XML external entity out of context and build a tree.
 </p><p>
 [78] extParsedEnt ::= TextDecl? content
 </p><p>
-This correspond to a &quot;Well Balanced&quot; chunk</p><p>
+This correspond to a "Well Balanced" chunk</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>  the filename
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the resulting document tree

@@ -1253,7 +1253,7 @@ Free up all the structures associated to the chained namespaces.</p><p>
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlNewDoc"></a>xmlNewDoc ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a>   xmlNewDoc                       (const <a href="libxml-tree.html#xmlChar">xmlChar</a> *version);</pre><p>
 Creates a new XML document</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>version</tt></i> :</span></td><td>  xmlChar string giving the version of XML &quot;1.0&quot;
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>version</tt></i> :</span></td><td>  xmlChar string giving the version of XML "1.0"
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>a new document
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlFreeDoc"></a>xmlFreeDoc ()</h3><pre class="programlisting">void        xmlFreeDoc                      (<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> cur);</pre><p>
 Free up all the structures used by a document, tree included.</p><p>
@@ -1484,7 +1484,7 @@ Creation of a new node containing a CDATA block.</p><p>
 Creation of a new character reference node.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>doc</tt></i> :</span></td><td> the document
-</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>  the char ref string, starting with # or &quot;&amp;# ... ;&quot;
+</td></tr><tr><td><span class="term"><i><tt>name</tt></i> :</span></td><td>  the char ref string, starting with # or "&amp;# ... ;"
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>a pointer to the new node object.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlNewReference"></a>xmlNewReference ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a>  xmlNewReference                 (<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
                                              const <a href="libxml-tree.html#xmlChar">xmlChar</a> *name);</pre><p>
@@ -1902,14 +1902,14 @@ of the xml:space attribute or the one carried by the nearest
 ancestor.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>cur</tt></i> :</span></td><td>  the node being checked
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>-1 if xml:space is not inherited, 0 if &quot;default&quot;, 1 if &quot;preserve&quot;
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>-1 if xml:space is not inherited, 0 if "default", 1 if "preserve"
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlNodeSetSpacePreserve"></a>xmlNodeSetSpacePreserve ()</h3><pre class="programlisting">void        xmlNodeSetSpacePreserve         (<a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> cur,
                                              int val);</pre><p>
 Set (or reset) the space preserving behaviour of a node, i.e. the
 value of the xml:space attribute.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>cur</tt></i> :</span></td><td>  the node being changed
-</td></tr><tr><td><span class="term"><i><tt>val</tt></i> :</span></td><td>  the xml:space value (&quot;0&quot;: default, 1: &quot;preserve&quot;)
+</td></tr><tr><td><span class="term"><i><tt>val</tt></i> :</span></td><td>  the xml:space value ("0": default, 1: "preserve")
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlNodeGetBase"></a>xmlNodeGetBase ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlNodeGetBase                  (<a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> doc,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> cur);</pre><p>
 Searches for the BASE URL. The code should work on both XML
@@ -2068,7 +2068,7 @@ Dump an XML/HTML node, recursive behaviour, children are printed too.</p><p>
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlSaveFile"></a>xmlSaveFile ()</h3><pre class="programlisting">int         xmlSaveFile                     (const char *filename,
                                              <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> cur);</pre><p>
 Dump an XML document to a file. Will use compression if
-compiled in and enabled. If <i><tt>filename</tt></i> is &quot;-&quot; the stdout file is
+compiled in and enabled. If <i><tt>filename</tt></i> is "-" the stdout file is
 used.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>filename</tt></i> :</span></td><td>  the filename (or URL)
@@ -2078,7 +2078,7 @@ used.</p><p>
                                              <a href="libxml-tree.html#xmlDocPtr">xmlDocPtr</a> cur,
                                              int format);</pre><p>
 Dump an XML document to a file. Will use compression if
-compiled in and enabled. If <i><tt>filename</tt></i> is &quot;-&quot; the stdout file is
+compiled in and enabled. If <i><tt>filename</tt></i> is "-" the stdout file is
 used. If <i><tt>format</tt></i> is set then the document will be indented on output.
 Note that <i><tt>format</tt></i> = 1 provide node indenting only if xmlIndentTreeOutput = 1
 or xmlKeepBlanksDefault(0) was called</p><p>

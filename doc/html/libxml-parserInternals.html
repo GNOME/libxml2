@@ -141,7 +141,7 @@ void        <a href="libxml-parserInternals.html#xmlParseElement">xmlParseElemen
 <a href="libxml-tree.html#xmlChar">xmlChar</a>*    <a href="libxml-parserInternals.html#xmlParseVersionNum">xmlParseVersionNum</a>              (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
 <a href="libxml-tree.html#xmlChar">xmlChar</a>*    <a href="libxml-parserInternals.html#xmlParseVersionInfo">xmlParseVersionInfo</a>             (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
 <a href="libxml-tree.html#xmlChar">xmlChar</a>*    <a href="libxml-parserInternals.html#xmlParseEncName">xmlParseEncName</a>                 (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
-<a href="libxml-tree.html#xmlChar">xmlChar</a>*    <a href="libxml-parserInternals.html#xmlParseEncodingDecl">xmlParseEncodingDecl</a>            (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+const <a href="libxml-tree.html#xmlChar">xmlChar</a>* <a href="libxml-parserInternals.html#xmlParseEncodingDecl">xmlParseEncodingDecl</a>         (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
 int         <a href="libxml-parserInternals.html#xmlParseSDDecl">xmlParseSDDecl</a>                  (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
 void        <a href="libxml-parserInternals.html#xmlParseXMLDecl">xmlParseXMLDecl</a>                 (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
 void        <a href="libxml-parserInternals.html#xmlParseTextDecl">xmlParseTextDecl</a>                (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
@@ -566,8 +566,8 @@ parse an XML Nmtoken.
                                              <a href="libxml-tree.html#xmlChar">xmlChar</a> **orig);</pre><p>
 parse a value for ENTITY declarations
 </p><p>
-[9] EntityValue ::= '&quot;' ([^%&amp;&quot;] | PEReference | Reference)* '&quot;' |
-               &quot;'&quot; ([^%&amp;'] | PEReference | Reference)* &quot;'&quot;</p><p>
+[9] EntityValue ::= '"' ([^%&amp;"] | PEReference | Reference)* '"' |
+               "'" ([^%&amp;'] | PEReference | Reference)* "'"</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
 </td></tr><tr><td><span class="term"><i><tt>orig</tt></i> :</span></td><td>  if non-NULL store a copy of the original entity value
@@ -577,8 +577,8 @@ parse a value for an attribute
 Note: the parser won't do substitution of entities here, this
 will be handled later in xmlStringGetNodeList
 </p><p>
-[10] AttValue ::= '&quot;' ([^&lt;&amp;&quot;] | Reference)* '&quot;' |
-                  &quot;'&quot; ([^&lt;&amp;'] | Reference)* &quot;'&quot;
+[10] AttValue ::= '"' ([^&lt;&amp;"] | Reference)* '"' |
+                  "'" ([^&lt;&amp;'] | Reference)* "'"
 </p><p>
 3.3.3 Attribute-Value Normalization:
 Before the value of an attribute is passed to the application or
@@ -589,7 +589,7 @@ checked for validity, the XML processor must normalize it as follows:
   replacement text of the entity 
 - a whitespace character (<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x20">x20</GTKDOCLINK>, <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xD">xD</GTKDOCLINK>, <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xA">xA</GTKDOCLINK>, <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x9">x9</GTKDOCLINK>) is processed by
   appending <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x20">x20</GTKDOCLINK> to the normalized value, except that only a single
-  <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x20">x20</GTKDOCLINK> is appended for a &quot;<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xD">xD</GTKDOCLINK><GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xA">xA</GTKDOCLINK>&quot; sequence that is part of an external
+  <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="x20">x20</GTKDOCLINK> is appended for a "<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xD">xD</GTKDOCLINK><GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xA">xA</GTKDOCLINK>" sequence that is part of an external
   parsed entity or the literal entity value of an internal parsed entity 
 - other characters are processed by appending them to the normalized value 
 If the declared value is not CDATA, then the XML processor must further
@@ -604,14 +604,14 @@ by a non-validating parser as if declared CDATA.</p><p>
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseSystemLiteral"></a>xmlParseSystemLiteral ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlParseSystemLiteral           (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
 parse an XML Literal
 </p><p>
-[11] SystemLiteral ::= ('&quot;' [^&quot;]* '&quot;') | (&quot;'&quot; [^']* &quot;'&quot;)</p><p>
+[11] SystemLiteral ::= ('"' [^"]* '"') | ("'" [^']* "'")</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the SystemLiteral parsed or NULL
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParsePubidLiteral"></a>xmlParsePubidLiteral ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlParsePubidLiteral            (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
 parse an XML public literal
 </p><p>
-[12] PubidLiteral ::= '&quot;' PubidChar* '&quot;' | &quot;'&quot; (PubidChar - &quot;'&quot;)* &quot;'&quot;</p><p>
+[12] PubidLiteral ::= '"' PubidChar* '"' | "'" (PubidChar - "'")* "'"</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the PubidLiteral parsed or NULL.
@@ -620,9 +620,9 @@ parse an XML public literal
 parse a CharData section.
 if we are within a CDATA section ']]&gt;' marks an end of section.
 </p><p>
-The right angle bracket (&gt;) may be represented using the string &quot;&amp;gt;&quot;,
-and must, for compatibility, be escaped using &quot;&amp;gt;&quot; or a character
-reference when it appears in the string &quot;]]&gt;&quot; in content, when that
+The right angle bracket (&gt;) may be represented using the string "&amp;gt;",
+and must, for compatibility, be escaped using "&amp;gt;" or a character
+reference when it appears in the string "]]&gt;" in content, when that
 string is not marking the end of a CDATA section. 
 </p><p>
 [14] CharData ::= [^&lt;&amp;]* - ([^&lt;&amp;]* ']]&gt;' [^&lt;&amp;]*)</p><p>
@@ -651,8 +651,8 @@ NOTE: Productions [75] and [83] interact badly since [75] can generate
                it is possible to return NULL and have publicID set.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseComment"></a>xmlParseComment ()</h3><pre class="programlisting">void        xmlParseComment                 (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
 Skip an XML (SGML) comment &lt;!-- .... --&gt;
- The spec says that &quot;For compatibility, the string &quot;--&quot; (double-hyphen)
- must not occur within comments. &quot;
+ The spec says that "For compatibility, the string "--" (double-hyphen)
+ must not occur within comments. "
 </p><p>
 [15] Comment ::= '&lt;!--' ((Char - '-') | ('-' (Char - '-')))* '--&gt;'</p><p>
 
@@ -925,7 +925,7 @@ parse ENTITY references declarations
 [ WFC: Entity Declared ]
 In a document without any DTD, a document with only an internal DTD
 subset which contains no parameter entity references, or a document
-with &quot;standalone='yes'&quot;, the Name given in the entity reference
+with "standalone='yes'", the Name given in the entity reference
 must match that in an entity declaration, except that well-formed
 documents need not declare any of the following entities: amp, lt,
 gt, apos, quot.  The declaration of a parameter entity must precede
@@ -965,12 +965,12 @@ reference to itself, either directly or indirectly.
 [ WFC: Entity Declared ]
 In a document without any DTD, a document with only an internal DTD
 subset which contains no parameter entity references, or a document
-with &quot;standalone='yes'&quot;, ...  ... The declaration of a parameter
+with "standalone='yes'", ...  ... The declaration of a parameter
 entity must precede any reference to it...
 </p><p>
 [ VC: Entity Declared ]
 In a document with an external subset or external parameter entities
-with &quot;standalone='no'&quot;, ...  ... The declaration of a parameter entity
+with "standalone='no'", ...  ... The declaration of a parameter entity
 must precede any reference to it...
 </p><p>
 [ WFC: In DTD ]
@@ -1001,7 +1001,7 @@ to external entities.
 </p><p>
 [ WFC: No &lt; in Attribute Values ]
 The replacement text of any entity referred to directly or indirectly in
-an attribute value (other than &quot;&amp;lt;&quot;) must not contain a &lt;. 
+an attribute value (other than "&amp;lt;") must not contain a &lt;. 
 </p><p>
 [ VC: Attribute Value Type ]
 The attribute must have been declared; the value must be of the type
@@ -1104,12 +1104,12 @@ parse the XML version value.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseVersionInfo"></a>xmlParseVersionInfo ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlParseVersionInfo             (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
 parse the XML version.
 </p><p>
-[24] VersionInfo ::= S 'version' Eq (' VersionNum ' | &quot; VersionNum &quot;)
+[24] VersionInfo ::= S 'version' Eq (' VersionNum ' | " VersionNum ")
 </p><p>
 [25] Eq ::= S? '=' S?</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the version string, e.g. &quot;1.0&quot;
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the version string, e.g. "1.0"
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseEncName"></a>xmlParseEncName ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlParseEncName                 (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
 parse the XML encoding name
 </p><p>
@@ -1117,10 +1117,10 @@ parse the XML encoding name
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  an XML parser context
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td>the encoding name value or NULL
-</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseEncodingDecl"></a>xmlParseEncodingDecl ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlChar">xmlChar</a>*    xmlParseEncodingDecl            (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
+</td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlParseEncodingDecl"></a>xmlParseEncodingDecl ()</h3><pre class="programlisting">const <a href="libxml-tree.html#xmlChar">xmlChar</a>* xmlParseEncodingDecl         (<a href="libxml-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);</pre><p>
 parse the XML encoding declaration
 </p><p>
-[80] EncodingDecl ::= S 'encoding' Eq ('&quot;' EncName '&quot;' |  &quot;'&quot; EncName &quot;'&quot;)
+[80] EncodingDecl ::= S 'encoding' Eq ('"' EncName '"' |  "'" EncName "'")
 </p><p>
 this setups the conversion filters.</p><p>
 
@@ -1130,10 +1130,10 @@ this setups the conversion filters.</p><p>
 parse the XML standalone declaration
 </p><p>
 [32] SDDecl ::= S 'standalone' Eq
-                ((&quot;'&quot; ('yes' | 'no') &quot;'&quot;) | ('&quot;' ('yes' | 'no')'&quot;')) 
+                (("'" ('yes' | 'no') "'") | ('"' ('yes' | 'no')'"')) 
 </p><p>
 [ VC: Standalone Document Declaration ]
-TODO The standalone document declaration must have the value &quot;no&quot;
+TODO The standalone document declaration must have the value "no"
 if any external markup declarations contain declarations of:
  - attributes with default values, if elements to which these
    attributes apply appear in the document without specifications
@@ -1301,12 +1301,12 @@ reference to itself, either directly or indirectly.
 [ WFC: Entity Declared ]
 In a document without any DTD, a document with only an internal DTD
 subset which contains no parameter entity references, or a document
-with &quot;standalone='yes'&quot;, ...  ... The declaration of a parameter
+with "standalone='yes'", ...  ... The declaration of a parameter
 entity must precede any reference to it...
 </p><p>
 [ VC: Entity Declared ]
 In a document with an external subset or external parameter entities
-with &quot;standalone='no'&quot;, ...  ... The declaration of a parameter entity
+with "standalone='no'", ...  ... The declaration of a parameter entity
 must precede any reference to it...
 </p><p>
 [ WFC: In DTD ]
@@ -1368,7 +1368,7 @@ bytes in the input buffer. Implement the end of line normalization:
 2.11 End-of-Line Handling
 Wherever an external parsed entity or the literal entity value
 of an internal parsed entity contains either the literal two-character
-sequence &quot;<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xD">xD</GTKDOCLINK><GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xA">xA</GTKDOCLINK>&quot; or a standalone literal <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xD">xD</GTKDOCLINK>, an XML processor
+sequence "<GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xD">xD</GTKDOCLINK><GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xA">xA</GTKDOCLINK>" or a standalone literal <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xD">xD</GTKDOCLINK>, an XML processor
 must pass to the application the single character <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xA">xA</GTKDOCLINK>.
 This behavior can conveniently be produced by normalizing all
 line breaks to <GTKDOCLINK xmlns="http://www.w3.org/TR/xhtml1/transitional" HREF="xA">xA</GTKDOCLINK> on input, before parsing.)</p><p>

@@ -112,6 +112,7 @@
 <ANCHOR id="xmlLoadExternalEntity" href="libxml/libxml-parser.html#xmlLoadExternalEntity">
 <ANCHOR id="xmlParserProperties" href="libxml/libxml-xmlreader.html#xmlParserProperties">
 <ANCHOR id="xmlParserSeverities" href="libxml/libxml-xmlreader.html#xmlParserSeverities">
+<ANCHOR id="xmlReaderTypes" href="libxml/libxml-xmlreader.html#xmlReaderTypes">
 <ANCHOR id="xmlTextReader" href="libxml/libxml-xmlreader.html#xmlTextReader">
 <ANCHOR id="xmlTextReaderPtr" href="libxml/libxml-xmlreader.html#xmlTextReaderPtr">
 <ANCHOR id="xmlNewTextReader" href="libxml/libxml-xmlreader.html#xmlNewTextReader">
@@ -1294,13 +1295,14 @@
 <ANCHOR id="xmlMemRealloc" href="libxml/libxml-xmlmemory.html#xmlMemRealloc">
 <ANCHOR id="xmlMemFree" href="libxml/libxml-xmlmemory.html#xmlMemFree">
 <ANCHOR id="xmlMemoryStrdup" href="libxml/libxml-xmlmemory.html#xmlMemoryStrdup">
+<ANCHOR id="xmlMallocLoc" href="libxml/libxml-xmlmemory.html#xmlMallocLoc">
+<ANCHOR id="xmlReallocLoc" href="libxml/libxml-xmlmemory.html#xmlReallocLoc">
+<ANCHOR id="xmlMallocAtomicLoc" href="libxml/libxml-xmlmemory.html#xmlMallocAtomicLoc">
+<ANCHOR id="xmlMemStrdupLoc" href="libxml/libxml-xmlmemory.html#xmlMemStrdupLoc">
 <ANCHOR id="xmlMalloc" href="libxml/libxml-xmlmemory.html#xmlMalloc">
 <ANCHOR id="xmlMallocAtomic" href="libxml/libxml-xmlmemory.html#xmlMallocAtomic">
 <ANCHOR id="xmlRealloc" href="libxml/libxml-xmlmemory.html#xmlRealloc">
 <ANCHOR id="xmlMemStrdup" href="libxml/libxml-xmlmemory.html#xmlMemStrdup">
-<ANCHOR id="xmlMallocLoc" href="libxml/libxml-xmlmemory.html#xmlMallocLoc">
-<ANCHOR id="xmlReallocLoc" href="libxml/libxml-xmlmemory.html#xmlReallocLoc">
-<ANCHOR id="xmlMemStrdupLoc" href="libxml/libxml-xmlmemory.html#xmlMemStrdupLoc">
 <ANCHOR id="xmlRegexp" href="libxml/libxml-xmlregexp.html#xmlRegexp">
 <ANCHOR id="xmlRegexpPtr" href="libxml/libxml-xmlregexp.html#xmlRegexpPtr">
 <ANCHOR id="xmlRegExecCtxt" href="libxml/libxml-xmlregexp.html#xmlRegExecCtxt">

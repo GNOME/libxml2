@@ -234,7 +234,7 @@ Create a buffered parser input for progressive parsing</p><p>
                                             (const char *URI,
                                              <a href="libxml-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc);</pre><p>
 Create a buffered parser input for the progressive parsing of a file
-If filename is &quot;-' then we use stdin as the input.
+If filename is "-' then we use stdin as the input.
 Automatic support for ZLIB/Compress compressed document is provided
 by default if found at compile-time.
 Do an encoding check if enc == XML_CHAR_ENCODING_NONE</p><p>
@@ -353,7 +353,7 @@ Create a buffered parser output</p><p>
                                              <a href="libxml-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a> encoder,
                                              int compression);</pre><p>
 Create a buffered  output for the progressive saving of a file
-If filename is &quot;-' then we use stdout as the output.
+If filename is "-' then we use stdout as the output.
 Automatic support for ZLIB/Compress compressed document is provided
 by default if found at compile-time.
 TODO: currently if compression is set, the library only support
@@ -446,8 +446,8 @@ request.  Non-static as is called from the output buffer creation routine.</p><p
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>post_uri</tt></i> :</span></td><td>  The destination URI for the document
 </td></tr><tr><td><span class="term"><i><tt>compression</tt></i> :</span></td><td>  The compression desired for the document.
 </td></tr></tbody></table></div></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlRegisterHTTPPostCallbacks"></a>xmlRegisterHTTPPostCallbacks ()</h3><pre class="programlisting">void        xmlRegisterHTTPPostCallbacks    (void);</pre><p>
-By default, libxml submits HTTP output requests using the &quot;PUT&quot; method.
-Calling this method changes the HTTP output method to use the &quot;POST&quot;
+By default, libxml submits HTTP output requests using the "PUT" method.
+Calling this method changes the HTTP output method to use the "POST"
 method instead.</p><p>
 
 </p></div><hr xmlns="http://www.w3.org/TR/xhtml1/transitional"></hr><div class="refsect2" lang="en"><h3><a name="xmlNoNetExternalEntityLoader"></a>xmlNoNetExternalEntityLoader ()</h3><pre class="programlisting"><a href="libxml-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> xmlNoNetExternalEntityLoader

@@ -15,6 +15,18 @@ to test those   - More testing on RelaxNG
   Schemas
 
 
+2.5.10: Aug 15 2003:
+A bugfixes only release   - Windows Makefiles (William Brack)
+   - UTF-16 support fixes (Mark Itzcovitz)
+   - Makefile and portability (William Brack) automake, Linux alpha, Mingw
+    on Windows (Mikhail Grushinskiy) 
+   - HTML parser (Oliver Stoeneberg)
+   - XInclude performance problem reported by Kevin Ruscoe
+   - XML parser performance problem reported by Grant Goodale
+   - xmlSAXParseDTD() bug fix from Malcolm Tredinnick
+   - and a couple other cleanup 
+
+
 2.5.9: Aug 9 2003:
    - bugfixes: IPv6 portability, xmlHasNsProp (Markus Keim), Windows build
     (Wiliam Brake, Jesse Pelton, Igor), Schemas (Peter Sobisch), threading

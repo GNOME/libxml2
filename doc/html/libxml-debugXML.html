@@ -248,7 +248,7 @@ Prints result to the output FILE</p><p>
                                              char *arg,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node2);</pre><p>
-Implements the XML shell function &quot;ls&quot;
+Implements the XML shell function "ls"
 Does an Unix like listing of the given node (like a directory)</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the shell context
@@ -260,7 +260,7 @@ Does an Unix like listing of the given node (like a directory)</p><p>
                                              char *arg,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node2);</pre><p>
-Implements the XML shell function &quot;base&quot;
+Implements the XML shell function "base"
 dumps the current XML base of the node</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the shell context
@@ -272,7 +272,7 @@ dumps the current XML base of the node</p><p>
                                              char *arg,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node2);</pre><p>
-Implements the XML shell function &quot;dir&quot;
+Implements the XML shell function "dir"
 dumps informations about the node (namespace, attributes, content).</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the shell context
@@ -284,7 +284,7 @@ dumps informations about the node (namespace, attributes, content).</p><p>
                                              char *arg,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node2);</pre><p>
-Implements the XML shell function &quot;cat&quot;
+Implements the XML shell function "cat"
 dumps the serialization node content (XML or HTML).</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the shell context
@@ -296,7 +296,7 @@ dumps the serialization node content (XML or HTML).</p><p>
                                              char *filename,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node2);</pre><p>
-Implements the XML shell function &quot;load&quot;
+Implements the XML shell function "load"
 loads a new document specified by the filename</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the shell context
@@ -308,7 +308,7 @@ loads a new document specified by the filename</p><p>
                                              char *filename,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node2);</pre><p>
-Implements the XML shell function &quot;write&quot;
+Implements the XML shell function "write"
 Write the current node to the filename, it saves the serialization
 of the subtree under the <i><tt>node</tt></i> specified</p><p>
 
@@ -321,7 +321,7 @@ of the subtree under the <i><tt>node</tt></i> specified</p><p>
                                              char *filename,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node2);</pre><p>
-Implements the XML shell function &quot;save&quot;
+Implements the XML shell function "save"
 Write the current document to the filename, or it's original name</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i><tt>ctxt</tt></i> :</span></td><td>  the shell context
@@ -333,7 +333,7 @@ Write the current document to the filename, or it's original name</p><p>
                                              char *dtd,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node2);</pre><p>
-Implements the XML shell function &quot;validate&quot;
+Implements the XML shell function "validate"
 Validate the document, if a DTD path is provided, then the validation
 is done against the given DTD.</p><p>
 
@@ -346,7 +346,7 @@ is done against the given DTD.</p><p>
                                              char *arg,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> tree,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node2);</pre><p>
-Implements the XML shell function &quot;du&quot;
+Implements the XML shell function "du"
 show the structure of the subtree under node <i><tt>tree</tt></i>
 If <i><tt>tree</tt></i> is null, the command works on the current node.</p><p>
 
@@ -359,7 +359,7 @@ If <i><tt>tree</tt></i> is null, the command works on the current node.</p><p>
                                              char *buffer,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node,
                                              <a href="libxml-tree.html#xmlNodePtr">xmlNodePtr</a> node2);</pre><p>
-Implements the XML shell function &quot;pwd&quot;
+Implements the XML shell function "pwd"
 Show the full path from the root to the node, if needed building
 thumblers when similar elements exists at a given ancestor level.
 The output is compatible with XPath commands.</p><p>

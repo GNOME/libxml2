@@ -143,7 +143,7 @@ USERDEP__LIBXM="../../include/libxml/xmlversion.h"
 InputPath=.\libxml2.def.src
 
 "libxml2.def" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	cl /nologo /EP $(InputPath) > libxml2.def
+	cl /I"..\.." /I"..\..\include" /nologo /EP $(InputPath) > libxml2.def
 
 # End Custom Build
 
@@ -155,7 +155,7 @@ USERDEP__LIBXM="../../include/libxml/xmlversion.h"
 InputPath=.\libxml2.def.src
 
 "libxml2.def" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	cl /nologo /EP $(InputPath) > libxml2.def
+	cl /I"..\.." /I"..\..\include" /nologo /EP $(InputPath) > libxml2.def
 
 # End Custom Build
 

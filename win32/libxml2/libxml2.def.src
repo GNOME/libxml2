@@ -23,6 +23,18 @@
 LIBRARY libxml2
 EXPORTS
 
+/*
+ * catalog.h
+ */
+#ifdef LIBXML_CATALOG_ENABLED
+	xmlLoadCatalog
+	xmlLoadCatalogs
+	xmlCatalogCleanup
+	xmlCatalogDump
+	xmlCatalogGetSystem
+	xmlCatalogGetPublic
+#endif
+
 /* 
  * debugXML.h 
  */
@@ -292,6 +304,7 @@ EXPORTS
 	xmlSetExternalEntityLoader
 	xmlGetExternalEntityLoader
 	xmlLoadExternalEntity
+	xmlParserVersion
 
 /* 
  * parserinternals.h 
@@ -585,6 +598,10 @@ EXPORTS
 	xmlSetDocCompressMode
 	xmlGetCompressMode
 	xmlSetCompressMode
+	xmlLoadExtDtdDefaultValue
+	xmlStringText
+	xmlStringTextNoenc
+	xmlStringComment
 
 /* 
  * uri.h 

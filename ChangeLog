@@ -1,3 +1,13 @@
+Fri Jun 22 17:02:16 CEST 2001 Daniel Veillard <Daniel.Veillard@imag.fr>
+
+	* xmlversion.h: okay this is a generated file, but Windows
+	  users need it and they can't generate it, and I want CVS
+	  Windows users ...
+	* win32/libxml2/libxml2_so.dsp: Windows project file for 
+	  the shared lib version of libxml2
+	* win32/libxml2/libxml2.def.src: bug #56527 set of exported
+	  resources needed for libxslt/xsltproc by Yon Derek
+
 Fri Jun 22 16:39:36 CEST 2001 Bjorn Reese <breese@users.sourceforge.net>
 
 	* trio.c: MSVC fix (provided by Igor Zlatkovic)

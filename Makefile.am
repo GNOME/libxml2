@@ -1,5 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
+SUBDIRS = doc
+
 INCLUDES = -I@srcdir@ @CORBA_CFLAGS@
 
 noinst_PROGRAMS=tester

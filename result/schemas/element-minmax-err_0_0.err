@@ -1,0 +1,1 @@
+./test/schemas/element-minmax-err_0.xsd:6: element element: Schemas parser error : Element decl. 'bar', attribute 'maxOccurs': The value must be greater than or equal to 1.

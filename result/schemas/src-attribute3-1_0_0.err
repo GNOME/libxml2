@@ -1,1 +1,1 @@
-./test/schemas/src-attribute3-1_0.xsd:9: element attribute: Schemas parser error : Attribute declaration "bar" has both, "name" and "ref"
+./test/schemas/src-attribute3-1_0.xsd:9: element attribute: Schemas parser error : Attribute ref. 'foo:bar': The attributes 'ref' and 'name' are mutually exclusive.

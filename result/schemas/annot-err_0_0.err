@@ -1,0 +1,7 @@
+./test/schemas/annot-err_0.xsd:7: element annotation: Schemas parser error : Element 'annotation': The attribute 'death' is not allowed.
+./test/schemas/annot-err_0.xsd:7: element annotation: Schemas parser error : Element 'annotation': The content is not valid. Expected is (appinfo | documentation)*.
+./test/schemas/annot-err_0.xsd:10: element appinfo: Schemas parser error : Element 'appinfo': The attribute 'id' is not allowed.
+./test/schemas/annot-err_0.xsd:10: element appinfo: Schemas parser error : Element 'appinfo': The attribute 'fun' is not allowed.
+./test/schemas/annot-err_0.xsd:14: element documentation: Schemas parser error : Element 'documentation': The attribute 'id' is not allowed.
+./test/schemas/annot-err_0.xsd:14: element documentation: Schemas parser error : Element 'documentation': The attribute 'mothers' is not allowed.
+./test/schemas/annot-err_0.xsd:14: element documentation: Schemas parser error : Element 'documentation', attribute 'xml:lang' ['language']: The value '*' is not valid.

@@ -7,7 +7,10 @@
   <xsd:element name="foo">
   	  <xsd:complexType>
   	  	<xsd:sequence>  
-  			<xsd:element name="em" type="emType" maxOccurs="unbounded"/>	  	
+  			<xsd:element name="em" 
+				type="emType" 
+				maxOccurs="unbounded"
+				form="qualified"/>	  	
   		</xsd:sequence>
   	  </xsd:complexType>    
   </xsd:element>

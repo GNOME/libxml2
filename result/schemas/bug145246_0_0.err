@@ -1,0 +1,3 @@
+I/O warning : failed to load external entity "test/schemas/bug145246.xsd.imp"
+Schemas parser error : xmlSchemaParse: could not load 'test/schemas/bug145246.xsd.imp'.
+Schemas parser error : Failed to import schema from location "test/schemas/bug145246.xsd.imp".

@@ -35,8 +35,8 @@
 #define INT_MAX 123456789 /* easy to flag and big enough for our needs */
 #endif
 
-/* #define DEBUG_REGEXP_GRAPH  */
-/* #define DEBUG_REGEXP_EXEC */
+/* #define DEBUG_REGEXP_GRAPH */
+/* #define DEBUG_REGEXP_EXEC */ 
 /* #define DEBUG_PUSH */
 /* #define DEBUG_COMPACTION */
 
@@ -49,6 +49,7 @@
 
 #define CUR_SCHAR(s, l) xmlStringCurrentChar(NULL, s, &l)
 #define NEXTL(l) ctxt->cur += l;
+#define XML_REG_STRING_SEPARATOR '|'
 
 /**
  * TODO:
@@ -2577,6 +2578,47 @@ xmlFARegExecSaveInputString(xmlRegExecCtxtPtr exec, const xmlChar *value,
     exec->inputStack[exec->inputStackNr].data = NULL;
 }
 
+/**
+ * xmlRegStrEqualWildcard:
+ * @expStr:  the string to be evaluated 
+ * @valStr:  the validation string
+ *
+ * Checks if both strings are equal or have the same content. "*"
+ * can be used as a wildcard in @valStr; "|" is used as a seperator of 
+ * substrings in both @expStr and @valStr.
+ *
+ * Returns 1 if the comparison is satisfied and the number of substrings
+ * is equal, 0 otherwise.
+ */
+
+static int
+xmlRegStrEqualWildcard(const xmlChar *expStr, const xmlChar *valStr) {
+    if (expStr == valStr) return(1);
+    if (expStr == NULL) return(0);
+    if (valStr == NULL) return(0);
+    do {
+	/*
+	* Eval if we have a wildcard for the current item.
+	*/
+        if (*expStr != *valStr) {
+	    if ((*valStr != 0) && (*expStr != 0) && (*expStr++ == '*')) {
+		do {
+		    if (*valStr == XML_REG_STRING_SEPARATOR)
+			break;
+		    *valStr++;
+		} while (*valStr != 0);
+		continue;
+	    } else
+		return(0);
+	}
+	*expStr++;
+	*valStr++;
+    } while (*valStr != 0);
+    if (*expStr != 0)
+	return (0);
+    else
+	return (1);
+}
 
 /**
  * xmlRegCompactPushString:
@@ -2621,9 +2663,9 @@ xmlRegCompactPushString(xmlRegExecCtxtPtr exec,
     for (i = 0;i < comp->nbstrings;i++) {
 	target = comp->compact[state * (comp->nbstrings + 1) + i + 1];
 	if ((target > 0) && (target <= comp->nbstates)) {
-	    target--; /* to avoid 0 */
-	    if (xmlStrEqual(comp->stringMap[i], value)) {
-		exec->index = target;
+	    target--; /* to avoid 0 */    
+	    if (xmlRegStrEqualWildcard(comp->stringMap[i], value)) {
+		exec->index = target;		
 		if ((exec->callback != NULL) && (comp->transdata != NULL)) {
 		    exec->callback(exec->data, value,
 			  comp->transdata[state * comp->nbstrings + i], data);
@@ -2802,7 +2844,7 @@ xmlRegExecPushString(xmlRegExecCtxtPtr exec, const xmlChar *value,
 		exec->status = -2;
 		break;
 	    } else if (value != NULL) {
-		ret = xmlStrEqual(value, atom->valuep);
+		ret = xmlRegStrEqualWildcard(atom->valuep, value);
 		if ((ret == 1) && (trans->counter >= 0)) {
 		    xmlRegCounterPtr counter;
 		    int count;
@@ -2999,7 +3041,7 @@ xmlRegExecPushString2(xmlRegExecCtxtPtr exec, const xmlChar *value,
 	str = buf;
     }
     memcpy(&str[0], value, lenp);
-    str[lenp] = '|';
+    str[lenp] = XML_REG_STRING_SEPARATOR;
     memcpy(&str[lenp + 1], value2, lenn);
     str[lenn + lenp + 1] = 0;
 

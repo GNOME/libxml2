@@ -1,3 +1,13 @@
+Tue Aug 10 07:19:31 PDT 2004 Daniel Veillard <daniel@veillard.com>
+
+	* configure.in xmlregexp.c xmlschemas.c xmlschemastypes.c
+	  include/libxml/schemasInternals.h include/libxml/xmlerror.h
+	  include/libxml/xmlschemastypes.h: applied Schemas patches
+	  from Kasimier Buchcik
+	* test/ result/ bug141333* annot-err* any[1-4]* bug145246*
+	  element-err* element-minmax-err* include1* restrict-CT-attr-ref*:
+	  lot of new tests for things fixed by the patch
+
 Fri Aug  6 09:22:34 PDT 2004 William Brack <wbrack@mmm.com.hk>
 
 	* valid.c: fixed my mis-handling of External ID on last

@@ -9,7 +9,12 @@ to help those   - More testing on RelaxNG
    - Finishing up XML
   Schemas
 
-There is the list of public releases:
+The change log at 
+ChangeLog.html
+ describes the recents commits
+to the CVS at 
+http://cvs.gnome.org/viewcvs/libxml2/
+ code base.There is the list of public releases:
 2.6.11: July 5 2004:
    - Schemas: a lot of changes and improvements by Kasimier Buchcik for
     attributes, namespaces and simple types.

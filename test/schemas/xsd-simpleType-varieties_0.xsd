@@ -2,7 +2,9 @@
 
 <!-- This test checks the implementation of the varieties of the xsd:simpleType element. -->
     
-<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://FOO" xmlns:foo="http://FOO"> 
+<schema xmlns="http://www.w3.org/2001/XMLSchema" 
+	targetNamespace="http://FOO" xmlns:foo="http://FOO" 
+	elementFormDefault="qualified"> 
 
 	<element name="foo">
 		<complexType>

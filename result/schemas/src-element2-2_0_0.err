@@ -1,8 +1,9 @@
-./test/schemas/src-element2-2_0.xsd:23: element complexType: Schemas parser error : Element declaration anonelem 6: only annotation is allowed as content in addition to ref
-./test/schemas/src-element2-2_0.xsd:29: element simpleType: Schemas parser error : Element declaration anonelem 7: only annotation is allowed as content in addition to ref
-./test/schemas/src-element2-2_0.xsd:36: element element: Schemas parser error : Element declaration anonelem 8: only minOccurs, maxOccurs and id are allowed in addition to ref
-./test/schemas/src-element2-2_0.xsd:37: element element: Schemas parser error : Element declaration anonelem 9: only minOccurs, maxOccurs and id are allowed in addition to ref
-./test/schemas/src-element2-2_0.xsd:38: element element: Schemas parser error : Element declaration anonelem 10: only minOccurs, maxOccurs and id are allowed in addition to ref
-./test/schemas/src-element2-2_0.xsd:39: element element: Schemas parser error : Element declaration anonelem 11: only minOccurs, maxOccurs and id are allowed in addition to ref
-./test/schemas/src-element2-2_0.xsd:40: element element: Schemas parser error : Element declaration anonelem 12: only minOccurs, maxOccurs and id are allowed in addition to ref
-./test/schemas/src-element2-2_0.xsd:41: element element: Schemas parser error : Element declaration anonelem 13: only minOccurs, maxOccurs and id are allowed in addition to ref
+./test/schemas/src-element2-2_0.xsd:18: element element: Schemas parser error : Element ref. 'foo:bar', attribute 'maxOccurs': The value must be greater than or equal to 1.
+./test/schemas/src-element2-2_0.xsd:23: element complexType: Schemas parser error : Element ref. 'foo:bar': The content is not valid. Expected is (annotation?).
+./test/schemas/src-element2-2_0.xsd:29: element simpleType: Schemas parser error : Element ref. 'foo:bar': The content is not valid. Expected is (annotation?).
+./test/schemas/src-element2-2_0.xsd:36: element element: Schemas parser error : Element ref. 'foo:bar', attribute 'type': Only the attributes 'minOccurs', 'maxOccurs' and 'id' are allowed in addition to 'ref'.
+./test/schemas/src-element2-2_0.xsd:37: element element: Schemas parser error : Element ref. 'foo:bar', attribute 'nillable': Only the attributes 'minOccurs', 'maxOccurs' and 'id' are allowed in addition to 'ref'.
+./test/schemas/src-element2-2_0.xsd:38: element element: Schemas parser error : Element ref. 'foo:bar', attribute 'default': Only the attributes 'minOccurs', 'maxOccurs' and 'id' are allowed in addition to 'ref'.
+./test/schemas/src-element2-2_0.xsd:39: element element: Schemas parser error : Element ref. 'foo:bar', attribute 'fixed': Only the attributes 'minOccurs', 'maxOccurs' and 'id' are allowed in addition to 'ref'.
+./test/schemas/src-element2-2_0.xsd:40: element element: Schemas parser error : Element ref. 'foo:bar', attribute 'form': Only the attributes 'minOccurs', 'maxOccurs' and 'id' are allowed in addition to 'ref'.
+./test/schemas/src-element2-2_0.xsd:41: element element: Schemas parser error : Element ref. 'foo:bar', attribute 'block': Only the attributes 'minOccurs', 'maxOccurs' and 'id' are allowed in addition to 'ref'.

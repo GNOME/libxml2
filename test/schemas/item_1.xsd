@@ -7,7 +7,7 @@
       <xsd:pattern value="\d{3}-[A-Z]{2}"/>
     </xsd:restriction>
   </xsd:simpleType>
-  <xsd:element name="Item" minOccurs="0" maxOccurs="unbounded">
+  <xsd:element name="Item">
     <xsd:complexType>
       <xsd:sequence>
         <xsd:element name="productName" type="xsd:string"/>

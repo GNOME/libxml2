@@ -1,1 +1,1 @@
-./test/schemas/src-attribute3-2-form_0.xsd:10: element attribute: Schemas parser error : Attribute declaration anonattr 2 has "ref", thus "form" must be absent
+./test/schemas/src-attribute3-2-form_0.xsd:10: element attribute: Schemas parser error : Attribute ref. 'foo:bar': The attribute 'form' is not allowed.

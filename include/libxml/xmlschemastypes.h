@@ -70,8 +70,19 @@ xmlSchemaGetBuiltInType(xmlSchemaValType type);
 XMLPUBFUN int XMLCALL
 xmlSchemaIsBuiltInTypeFacet(xmlSchemaTypePtr type, 
 			    int facetType);
-XMLPUBFUN xmlChar *  XMLCALL
+XMLPUBFUN xmlChar * XMLCALL
 xmlSchemaCollapseString(const xmlChar *value);
+XMLPUBFUN unsigned long  XMLCALL
+xmlSchemaGetFacetValueAsULong(xmlSchemaFacetPtr facet);
+XMLPUBFUN int XMLCALL
+xmlSchemaValidateLengthFacet(xmlSchemaTypePtr type, 
+			     xmlSchemaFacetPtr facet,
+			     const xmlChar *value,
+			     xmlSchemaValPtr val,
+			     unsigned long *length) ;
+XMLPUBFUN int XMLCALL
+xmlSchemaValPredefTypeNodeNoNorm(xmlSchemaTypePtr type, const xmlChar *value,
+				 xmlSchemaValPtr *val, xmlNodePtr node);
 
 #ifdef __cplusplus
 }

@@ -456,7 +456,7 @@ xmlSchemaCleanupTypes(void) {
 }
 
 /**
- * xmlSchemaIsBuiltInTypeFacet:
+ * xmlSchemaGetBuiltInType:
  * @type: the built-in type
  * @facetType:  the facet type
  *
@@ -738,10 +738,8 @@ xmlSchemaGetPredefinedType(const xmlChar *name, const xmlChar *ns) {
  * xmlSchemaGetBuiltInListSimpleTypeItemType:
  * @type: the built-in simple type.
  *
- * Lookup a type in the built-in type database hierarchy of XML Schema
- * Part 2:Datatypes.
- *
- * Returns the type if found, NULL otherwise.
+ * Returns the item type of @type as defined by the built-in datatype
+ * hierarchy of XML Schema Part 2: Datatypes, or NULL in case of an error.
  */
 xmlSchemaTypePtr
 xmlSchemaGetBuiltInListSimpleTypeItemType(xmlSchemaTypePtr type)
@@ -1747,7 +1745,8 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
 
     switch (type->builtInType) {
         case XML_SCHEMAS_UNKNOWN:
-            if (type == xmlSchemaTypeAnySimpleTypeDef)
+            if ((type == xmlSchemaTypeAnySimpleTypeDef) ||
+		(type == xmlSchemaTypeAnyTypeDef))
                 goto return0;
             goto error;
         case XML_SCHEMAS_STRING:
@@ -2696,6 +2695,26 @@ int
 xmlSchemaValPredefTypeNode(xmlSchemaTypePtr type, const xmlChar *value,
 	                   xmlSchemaValPtr *val, xmlNodePtr node) {
     return(xmlSchemaValAtomicType(type, value, val, node, 0));
+}
+
+/**
+ * xmlSchemaValPredefTypeNodeNoNorm:
+ * @type: the predefined type
+ * @value: the value to check
+ * @val:  the return computed value
+ * @node:  the node containing the value
+ *
+ * Check that a value conforms to the lexical space of the predefined type.
+ * if true a value is computed and returned in @val.
+ * This one does apply any normalization to the value.
+ *
+ * Returns 0 if this validates, a positive error code number otherwise
+ *         and -1 in case of internal or API error.
+ */
+int
+xmlSchemaValPredefTypeNodeNoNorm(xmlSchemaTypePtr type, const xmlChar *value,
+				 xmlSchemaValPtr *val, xmlNodePtr node) {
+    return(xmlSchemaValAtomicType(type, value, val, node, 1));
 }
 
 /**
@@ -3722,6 +3741,15 @@ xmlSchemaNormLen(const xmlChar *value) {
     return(ret);
 }
 
+unsigned long
+xmlSchemaGetFacetValueAsULong(xmlSchemaFacetPtr facet)
+{
+    /*
+    * TODO: Check if this is a decimal.
+    */
+    return ((unsigned long) facet->val->value.decimal.lo);
+}
+
 /**
  * xmlSchemaValidateListSimpleTypeFacet:
  * @facet:  the facet to check
@@ -3746,17 +3774,20 @@ xmlSchemaValidateListSimpleTypeFacet(xmlSchemaFacetPtr facet,
     */
     if (facet->type == XML_SCHEMA_FACET_LENGTH) {
 	if (actualLen != facet->val->value.decimal.lo) {
-	    *expectedLen = facet->val->value.decimal.lo;
+	    if (expectedLen != 0)
+		*expectedLen = facet->val->value.decimal.lo;
 	    return (XML_SCHEMAV_CVC_LENGTH_VALID);
 	}	
     } else if (facet->type == XML_SCHEMA_FACET_MINLENGTH) {
 	if (actualLen < facet->val->value.decimal.lo) {
-	     *expectedLen = facet->val->value.decimal.lo;
+	    if (expectedLen != 0)
+		*expectedLen = facet->val->value.decimal.lo;
 	    return (XML_SCHEMAV_CVC_MINLENGTH_VALID);
 	}
     } else if (facet->type == XML_SCHEMA_FACET_MAXLENGTH) {
 	if (actualLen > facet->val->value.decimal.lo) {
-	     *expectedLen = facet->val->value.decimal.lo;
+	    if (expectedLen != 0)
+		*expectedLen = facet->val->value.decimal.lo;
 	    return (XML_SCHEMAV_CVC_MAXLENGTH_VALID);
 	}
     } else
@@ -3766,6 +3797,84 @@ xmlSchemaValidateListSimpleTypeFacet(xmlSchemaFacetPtr facet,
 	* are: XML_SCHEMA_FACET_PATTERN, XML_SCHEMA_FACET_ENUMERATION. 
 	*/
 	return(xmlSchemaValidateFacet(NULL, facet, value, NULL));   
+    return (0);
+}
+
+/**
+ * xmlSchemaValidateFacet:
+ * @type:  the built-in type
+ * @facet:  the facet to check
+ * @value:  the lexical repr. of the value to be validated
+ * @val:  the precomputed value
+ * @length: the actual length of the value
+ *
+ * Checka a value against a "length", "minLength" and "maxLength" 
+ * facet; sets @length to the computed length of @value.
+ *
+ * Returns 0 if the value is valid, a positive error code
+ * otherwise and -1 in case of an internal or API error.
+ */
+int
+xmlSchemaValidateLengthFacet(xmlSchemaTypePtr type, 
+			     xmlSchemaFacetPtr facet,
+			     const xmlChar *value,
+			     xmlSchemaValPtr val,
+			     unsigned long *length)  
+{
+    unsigned int len = 0;
+
+    *length = 0;
+    if ((facet->type != XML_SCHEMA_FACET_LENGTH) &&
+	(facet->type != XML_SCHEMA_FACET_MAXLENGTH) &&
+	(facet->type != XML_SCHEMA_FACET_MINLENGTH))
+	return (-1);
+	
+    if ((facet->val == NULL) ||
+	((facet->val->type != XML_SCHEMAS_DECIMAL) &&
+	 (facet->val->type != XML_SCHEMAS_NNINTEGER)) ||
+	(facet->val->value.decimal.frac != 0)) {
+	return(-1);
+    }
+    if ((val != NULL) && (val->type == XML_SCHEMAS_HEXBINARY))
+	len = val->value.hex.total;
+    else if ((val != NULL) && (val->type == XML_SCHEMAS_BASE64BINARY))
+	len = val->value.base64.total;
+    else {
+	switch (type->builtInType) {
+	    case XML_SCHEMAS_IDREF:
+	    case XML_SCHEMAS_NORMSTRING:
+	    case XML_SCHEMAS_TOKEN:
+	    case XML_SCHEMAS_LANGUAGE:
+	    case XML_SCHEMAS_NMTOKEN:
+	    case XML_SCHEMAS_NAME:
+	    case XML_SCHEMAS_NCNAME:
+	    case XML_SCHEMAS_ID:
+		len = xmlSchemaNormLen(value);
+		break;
+	    case XML_SCHEMAS_STRING:
+	    /*
+	    * FIXME: What exactly to do with anyURI?
+	    */
+	    case XML_SCHEMAS_ANYURI:
+		if (value != NULL)
+		    len = xmlUTF8Strlen(value);
+		break;
+	    default:
+		TODO
+	}
+    }
+    *length = (unsigned long) len;
+    if (facet->type == XML_SCHEMA_FACET_LENGTH) {
+	if (len != facet->val->value.decimal.lo)
+	    return(XML_SCHEMAV_CVC_LENGTH_VALID);
+    } else if (facet->type == XML_SCHEMA_FACET_MINLENGTH) {
+	if (len < facet->val->value.decimal.lo)
+	    return(XML_SCHEMAV_CVC_MINLENGTH_VALID);
+    } else {
+	if (len > facet->val->value.decimal.lo)
+	    return(XML_SCHEMAV_CVC_MAXLENGTH_VALID);
+    }
+    
     return (0);
 }
 

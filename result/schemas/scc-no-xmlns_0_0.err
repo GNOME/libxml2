@@ -1,1 +1,1 @@
-./test/schemas/scc-no-xmlns_0.xsd:7: element attribute: Schemas parser error : The name of an attribute declaration must not match "xmlns".
+./test/schemas/scc-no-xmlns_0.xsd:7: element attribute: Schemas parser error : Element 'attribute', attribute 'name' ['NCName']: The value must not match 'xmlns'.

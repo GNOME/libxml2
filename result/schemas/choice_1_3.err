@@ -1,1 +1,1 @@
-./test/schemas/choice_3.xml:1: element doc: Schemas validity error : Element doc content check failed
+./test/schemas/choice_3.xml:1: element doc: Schemas parser error : Element 'doc': The element content is not valid.

@@ -1,2 +1,2 @@
-./test/schemas/src-element3_0.xsd:8: element complexType: Schemas parser error : Element declaration foo has both "type" and a local complex type
-./test/schemas/src-element3_0.xsd:16: element simpleType: Schemas parser error : Element declaration bar has both "type" and a local simple type
+./test/schemas/src-element3_0.xsd:8: element complexType: Schemas parser error : Element decl. 'foo': The attribute 'type' and the <complexType> child are mutually exclusive.
+./test/schemas/src-element3_0.xsd:16: element simpleType: Schemas parser error : Element decl. 'bar': The attribute 'type' and the <simpleType> child are mutually exclusive.

@@ -1,1 +1,1 @@
-./test/schemas/src-attribute1_0.xsd:9: element attribute: Schemas parser error : Attribute declaration has both, "default" and "fixed"
+./test/schemas/src-attribute1_0.xsd:9: element attribute: Schemas parser error : Attribute decl. 'bar': The attributes 'default' and 'fixed' are mutually exclusive.

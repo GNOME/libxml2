@@ -1,3 +1,8 @@
+Mon Nov 15 18:50:56 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* configure.in: closing bug #3163 by adding extra flags for the
+	                cc compiler on HP-UX
+
 Fri Nov 12 17:41:20 CET 1999 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* valid.[ch] : removed a typo and an enumerated type bug in the

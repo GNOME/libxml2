@@ -103,6 +103,19 @@ XML_LIBDIR='-L${libdir}'
 XML_INCLUDEDIR='-I${includedir}/gnome-xml'
 XML_LIBS="-lxml $Z_LIBS $M_LIBS $LIBS"
 
+dnl
+dnl Workaround wor HP native compiler
+dnl http://bugs.gnome.org/db/31/3163.html
+dnl
+if test "${CC}" != "gcc" ; then
+    case "${host}" in
+          *-*-hpux* )
+	       CFLAGS="${CFLAGS} -Wp,-H16800 -Ae"
+	       ;;
+    esac
+fi
+AC_SUBST(CFLAGS)
+
 AC_SUBST(XML_LIBDIR)
 AC_SUBST(XML_LIBS)
 AC_SUBST(XML_INCLUDEDIR)

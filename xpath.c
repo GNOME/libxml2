@@ -3134,21 +3134,24 @@ xmlXPathObjectCopy(xmlXPathObjectPtr val) {
 	case XPATH_XSLT_TREE:
 	    if ((val->nodesetval != NULL) &&
 		(val->nodesetval->nodeTab != NULL)) {
-		xmlNodePtr cur, top, tmp;
+		xmlNodePtr cur, tmp;
+		xmlDocPtr top;
 
 		ret->boolval = 1;
-		top =  xmlCopyNode(val->nodesetval->nodeTab[0], 0);
+		top =  xmlNewDoc(NULL);
+		top->name = (char *)
+		    xmlStrdup(val->nodesetval->nodeTab[0]->name);
 		ret->user = top;
 		if (top != NULL) {
-		    top->doc = (xmlDocPtr) top;
+		    top->doc = top;
 		    cur = val->nodesetval->nodeTab[0]->children;
 		    while (cur != NULL) {
-			tmp = xmlDocCopyNode(cur, (xmlDocPtr) top, 1);
-			xmlAddChild(top, tmp);
+			tmp = xmlDocCopyNode(cur, top, 1);
+			xmlAddChild((xmlNodePtr) top, tmp);
 			cur = cur->next;
 		    }
 		}
-		ret->nodesetval = xmlXPathNodeSetCreate(top);
+		ret->nodesetval = xmlXPathNodeSetCreate((xmlNodePtr) top);
 	    } else
 		ret->nodesetval = xmlXPathNodeSetCreate(NULL);
 	    /* Deallocate the copied tree value */
@@ -3279,8 +3282,6 @@ xmlXPathCastNumberToString (double val) {
  */
 xmlChar *
 xmlXPathCastNodeToString (xmlNodePtr node) {
-    if ((node != NULL) && (node->type == XML_DOCUMENT_NODE))
-	node = xmlDocGetRootElement((xmlDocPtr) node);
     return(xmlNodeGetContent(node));
 }
 
@@ -3859,6 +3860,16 @@ xmlXPathNodeValHash(xmlNodePtr node) {
     if (node == NULL)
 	return(0);
 
+    if (node->type == XML_DOCUMENT_NODE) {
+	tmp = xmlDocGetRootElement((xmlDocPtr) node);
+	if (tmp == NULL)
+	    node = node->children;
+	else
+	    node = tmp;
+
+	if (node == NULL)
+	    return(0);
+    }
 
     switch (node->type) {
 	case XML_COMMENT_NODE:
@@ -4267,6 +4278,10 @@ xmlXPathEqualNodeSetString(xmlXPathObjectPtr arg, const xmlChar * str, int neq)
             str2 = xmlNodeGetContent(ns->nodeTab[i]);
             if ((str2 != NULL) && (xmlStrEqual(str, str2))) {
                 xmlFree(str2);
+		if (neq)
+		    continue;
+                return (1);
+	    } else if ((str2 == NULL) && (xmlStrEqual(str, BAD_CAST ""))) {
 		if (neq)
 		    continue;
                 return (1);

@@ -2967,6 +2967,14 @@ xmlFreeNodeList(xmlNodePtr cur) {
 	xmlFreeNsList((xmlNsPtr) cur);
 	return;
     }
+    if ((cur->type == XML_DOCUMENT_NODE) ||
+#ifdef LIBXML_DOCB_ENABLED
+	(cur->type == XML_DOCB_DOCUMENT_NODE) ||
+	(cur->type == XML_HTML_DOCUMENT_NODE)) {
+#endif
+	xmlFreeDoc((xmlDocPtr) cur);
+	return;
+    }
     while (cur != NULL) {
         next = cur->next;
 	/* unroll to speed up freeing the document */
@@ -4592,17 +4600,39 @@ xmlNodeGetContent(xmlNodePtr cur)
                 return (ret);
             }
         case XML_ENTITY_NODE:
-        case XML_DOCUMENT_NODE:
-        case XML_HTML_DOCUMENT_NODE:
         case XML_DOCUMENT_TYPE_NODE:
         case XML_NOTATION_NODE:
         case XML_DTD_NODE:
         case XML_XINCLUDE_START:
         case XML_XINCLUDE_END:
+            return (NULL);
+        case XML_DOCUMENT_NODE:
 #ifdef LIBXML_DOCB_ENABLED
         case XML_DOCB_DOCUMENT_NODE:
 #endif
-            return (NULL);
+        case XML_HTML_DOCUMENT_NODE: {
+            xmlChar *tmp;
+	    xmlChar *res = NULL;
+
+	    cur = cur->children;
+	    while (cur!= NULL) {
+		if ((cur->type == XML_ELEMENT_NODE) ||
+		    (cur->type == XML_TEXT_NODE) ||
+		    (cur->type == XML_CDATA_SECTION_NODE)) {
+		    tmp = xmlNodeGetContent(cur);
+		    if (tmp != NULL) {
+			if (res == NULL)
+			    res = tmp;
+			else {
+			    res = xmlStrcat(res, tmp);
+			    xmlFree(tmp);
+			}
+		    }
+		}
+		cur = cur->next;
+	    }
+	    return(res);
+	}
         case XML_NAMESPACE_DECL: {
 	    xmlChar *tmp;
 

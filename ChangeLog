@@ -1,3 +1,8 @@
+Mon Mar 24 19:38:05 CET 2003 Daniel Veillard <daniel@veillard.com>
+
+	* tree.c xpath.c: some changes related to the new way of 
+	  handling Result Value Tree, before 2.5.5
+
 Mon Mar 24 16:36:23 CET 2003 Daniel Veillard <daniel@veillard.com>
 
 	* configure.in NEWS: preparing release 2.5.5

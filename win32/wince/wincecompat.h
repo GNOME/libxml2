@@ -35,6 +35,12 @@ int close(int handle);
 char *getenv( const char *varname );
 char *strerror(int errnum);
 
+/*
+	Macro'ed inexistant funtion names
+
+*/
+#define snprintf _snprintf
+#define vsnprintf(b,c,f,a) _vsnprintf(b,c,f,a)
 #define perror(_t) MessageBox(NULL, _T("_t"), _T("Error/Warning"), MB_OK)
 
 #endif

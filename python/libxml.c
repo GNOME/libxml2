@@ -52,6 +52,22 @@ void initlibxml2mod(void);
     xmlGenericError(xmlGenericErrorContext,				\
 	    "Unimplemented block at %s:%d\n",				\
             __FILE__, __LINE__);
+/*
+ * the following vars are used for XPath extensions, but
+ * are also referenced within the parser cleanup routine.
+ */
+static int libxml_xpathCallbacksInitialized = 0;
+
+typedef struct libxml_xpathCallback {
+    xmlXPathContextPtr ctx;
+    xmlChar *name;
+    xmlChar *ns_uri;
+    PyObject *function;
+} libxml_xpathCallback, *libxml_xpathCallbackPtr;
+typedef libxml_xpathCallback libxml_xpathCallbackArray[];
+static int libxml_xpathCallbacksAllocd = 10;
+static libxml_xpathCallbackArray *libxml_xpathCallbacks = NULL;
+static int libxml_xpathCallbacksNb = 0;
 
 /************************************************************************
  *									*
@@ -159,13 +175,30 @@ PyObject *
 libxml_xmlPythonCleanupParser(PyObject *self ATTRIBUTE_UNUSED,
                               PyObject *args ATTRIBUTE_UNUSED) {
 
-    long freed;
+    int ix;
+    long freed = -1;
 
     if (libxmlMemoryDebug) {
         freed = xmlMemUsed();
     }
 
     xmlCleanupParser();
+    /*
+     * Need to confirm whether we really want to do this (required for
+     * memcheck) in all cases...
+     */
+   
+    if (libxml_xpathCallbacks != NULL) {	/* if ext funcs declared */
+	for (ix=0; ix<libxml_xpathCallbacksNb; ix++) {
+	    if ((*libxml_xpathCallbacks)[ix].name != NULL)
+	        xmlFree((*libxml_xpathCallbacks)[ix].name);
+	    if ((*libxml_xpathCallbacks)[ix].ns_uri != NULL)
+	        xmlFree((*libxml_xpathCallbacks)[ix].ns_uri);
+	}
+	libxml_xpathCallbacksNb = 0;
+        xmlFree(libxml_xpathCallbacks);
+	libxml_xpathCallbacks = NULL;
+    }
 
     if (libxmlMemoryDebug) {
         freed -= xmlMemUsed();
@@ -1432,7 +1465,7 @@ libxml_xmlRegisterErrorHandler(ATTRIBUTE_UNUSED PyObject * self,
         return (NULL);
 
 #ifdef DEBUG_ERROR
-    printf("libxml_registerXPathFunction(%p, %p) called\n", pyobj_ctx,
+    printf("libxml_xmlRegisterErrorHandler(%p, %p) called\n", pyobj_ctx,
            pyobj_f);
 #endif
 
@@ -1822,18 +1855,6 @@ libxml_xmlFreeTextReader(ATTRIBUTE_UNUSED PyObject *self, PyObject *args) {
  *									*
  ************************************************************************/
 
-static int libxml_xpathCallbacksInitialized = 0;
-
-typedef struct libxml_xpathCallback {
-    xmlXPathContextPtr ctx;
-    xmlChar *name;
-    xmlChar *ns_uri;
-    PyObject *function;
-} libxml_xpathCallback, *libxml_xpathCallbackPtr;
-static libxml_xpathCallback libxml_xpathCallbacks[10];
-static int libxml_xpathCallbacksNb = 0;
-static int libxml_xpathCallbacksMax = 10;
-
 static void
 libxml_xmlXPathFuncCallback(xmlXPathParserContextPtr ctxt, int nargs)
 {
@@ -1862,9 +1883,9 @@ libxml_xmlXPathFuncCallback(xmlXPathParserContextPtr ctxt, int nargs)
      */
     for (i = 0; i < libxml_xpathCallbacksNb; i++) {
         if (                    /* TODO (ctxt == libxml_xpathCallbacks[i].ctx) && */
-               (xmlStrEqual(name, libxml_xpathCallbacks[i].name)) &&
-               (xmlStrEqual(ns_uri, libxml_xpathCallbacks[i].ns_uri))) {
-            current_function = libxml_xpathCallbacks[i].function;
+						(xmlStrEqual(name, (*libxml_xpathCallbacks)[i].name)) &&
+               (xmlStrEqual(ns_uri, (*libxml_xpathCallbacks)[i].ns_uri))) {
+					current_function = (*libxml_xpathCallbacks)[i].function;
         }
     }
     if (current_function == NULL) {
@@ -1905,9 +1926,9 @@ libxml_xmlXPathFuncLookupFunc(void *ctxt, const xmlChar * name,
      * and functionURI fields.
      */
     for (i = 0; i < libxml_xpathCallbacksNb; i++) {
-        if ((ctxt == libxml_xpathCallbacks[i].ctx) &&
-            (xmlStrEqual(name, libxml_xpathCallbacks[i].name)) &&
-            (xmlStrEqual(ns_uri, libxml_xpathCallbacks[i].ns_uri))) {
+			if ((ctxt == (*libxml_xpathCallbacks)[i].ctx) &&
+					(xmlStrEqual(name, (*libxml_xpathCallbacks)[i].name)) &&
+					(xmlStrEqual(ns_uri, (*libxml_xpathCallbacks)[i].ns_uri))) {
             return (libxml_xmlXPathFuncCallback);
         }
     }
@@ -1925,12 +1946,14 @@ libxml_xpathCallbacksInitialize(void)
 #ifdef DEBUG_XPATH
     printf("libxml_xpathCallbacksInitialized called\n");
 #endif
+    libxml_xpathCallbacks = (libxml_xpathCallbackArray*)xmlMalloc(
+    		libxml_xpathCallbacksAllocd*sizeof(libxml_xpathCallback));
 
-    for (i = 0; i < libxml_xpathCallbacksMax; i++) {
-        libxml_xpathCallbacks[i].ctx = NULL;
-        libxml_xpathCallbacks[i].name = NULL;
-        libxml_xpathCallbacks[i].ns_uri = NULL;
-        libxml_xpathCallbacks[i].function = NULL;
+    for (i = 0; i < libxml_xpathCallbacksAllocd; i++) {
+			(*libxml_xpathCallbacks)[i].ctx = NULL;
+			(*libxml_xpathCallbacks)[i].name = NULL;
+			(*libxml_xpathCallbacks)[i].ns_uri = NULL;
+			(*libxml_xpathCallbacks)[i].function = NULL;
     }
     libxml_xpathCallbacksInitialized = 1;
 }
@@ -1967,27 +1990,30 @@ libxml_xmlRegisterXPathFunction(ATTRIBUTE_UNUSED PyObject * self,
            ctx, name, ns_uri);
 #endif
     for (i = 0; i < libxml_xpathCallbacksNb; i++) {
-        if ((ctx == libxml_xpathCallbacks[i].ctx) &&
-            (xmlStrEqual(name, libxml_xpathCallbacks[i].name)) &&
-            (xmlStrEqual(ns_uri, libxml_xpathCallbacks[i].ns_uri))) {
+	if ((ctx == (*libxml_xpathCallbacks)[i].ctx) &&
+            (xmlStrEqual(name, (*libxml_xpathCallbacks)[i].name)) &&
+            (xmlStrEqual(ns_uri, (*libxml_xpathCallbacks)[i].ns_uri))) {
             Py_XINCREF(pyobj_f);
-            Py_XDECREF(libxml_xpathCallbacks[i].function);
-            libxml_xpathCallbacks[i].function = pyobj_f;
+            Py_XDECREF((*libxml_xpathCallbacks)[i].function);
+            (*libxml_xpathCallbacks)[i].function = pyobj_f;
             c_retval = 1;
             goto done;
         }
     }
-    if (libxml_xpathCallbacksNb >= libxml_xpathCallbacksMax) {
-        printf("libxml_registerXPathFunction() table full\n");
-    } else {
-        i = libxml_xpathCallbacksNb++;
-        Py_XINCREF(pyobj_f);
-        libxml_xpathCallbacks[i].ctx = ctx;
-        libxml_xpathCallbacks[i].name = xmlStrdup(name);
-        libxml_xpathCallbacks[i].ns_uri = xmlStrdup(ns_uri);
-        libxml_xpathCallbacks[i].function = pyobj_f;
+    if (libxml_xpathCallbacksNb >= libxml_xpathCallbacksAllocd) {
+			libxml_xpathCallbacksAllocd+=10;
+	libxml_xpathCallbacks = (libxml_xpathCallbackArray*)xmlRealloc(
+		libxml_xpathCallbacks,
+		libxml_xpathCallbacksAllocd*sizeof(libxml_xpathCallback));
+    } 
+    i = libxml_xpathCallbacksNb++;
+    Py_XINCREF(pyobj_f);
+    (*libxml_xpathCallbacks)[i].ctx = ctx;
+    (*libxml_xpathCallbacks)[i].name = xmlStrdup(name);
+    (*libxml_xpathCallbacks)[i].ns_uri = xmlStrdup(ns_uri);
+    (*libxml_xpathCallbacks)[i].function = pyobj_f;
         c_retval = 1;
-    }
+    
   done:
     py_retval = libxml_intWrap((int) c_retval);
     return (py_retval);
@@ -3277,7 +3303,7 @@ initlibxml2mod(void)
 
     if (initialized != 0)
         return;
-    
+
     /* intialize the python extension module */
     Py_InitModule((char *) "libxml2mod", libxmlMethods);
 

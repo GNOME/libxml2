@@ -1,3 +1,10 @@
+Sat Jul  3 11:31:02 HKT 2004 William Brack <wbrack@mmm.com.hk>
+
+	* python/libxml.c: Changed the number of XPath extension functions
+	  allowed to be variable-length (patch supplied by Marc-Antoine
+	  Parent, bug 143805).  Added code to "unregister" the functions
+	  when the parser cleanup takes place.
+
 Fri Jul  2 14:22:14 CEST 2004 Daniel Veillard <daniel@veillard.com>
 
 	* xmlmemory.c python/libxml.c python/libxml2-python-api.xml:

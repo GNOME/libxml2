@@ -1024,14 +1024,15 @@ xmlParseURIPathSegments(xmlURIPtr uri, const char **str, int slash) {
 	    *str = cur;
 	    return(-1);
 	}
-	path[len] = '\0';
 	if (uri->path != NULL)
 	    memcpy(path, uri->path, len2);
 	if (slash) {
 	    path[len2] = '/';
 	    len2++;
 	}
-	xmlURIUnescapeString(*str, cur - *str, &path[len2]);
+	path[len2] = 0;
+	if (cur - *str > 0)
+	    xmlURIUnescapeString(*str, cur - *str, &path[len2]);
 	if (uri->path != NULL)
 	    xmlFree(uri->path);
 	uri->path = path;

@@ -395,19 +395,28 @@ void
 entityDecl(void *ctx, const xmlChar *name, int type,
           const xmlChar *publicId, const xmlChar *systemId, xmlChar *content)
 {
+    xmlEntityPtr ent;
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
 
 #ifdef DEBUG_SAX
     fprintf(stderr, "SAX.entityDecl(%s, %d, %s, %s, %s)\n",
             name, type, publicId, systemId, content);
 #endif
-    if (ctxt->inSubset == 1)
-	xmlAddDocEntity(ctxt->myDoc, name, type, publicId,
+    if (ctxt->inSubset == 1) {
+	ent = xmlAddDocEntity(ctxt->myDoc, name, type, publicId,
 		              systemId, content);
-    else if (ctxt->inSubset == 2)
-	xmlAddDtdEntity(ctxt->myDoc, name, type, publicId,
+	if ((ent == NULL) && (ctxt->pedantic) &&
+	    (ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
+	    ctxt->sax->warning(ctxt, 
+	     "Entity(%s) already defined in the internal subset\n", name);
+    } else if (ctxt->inSubset == 2) {
+	ent = xmlAddDtdEntity(ctxt->myDoc, name, type, publicId,
 		              systemId, content);
-    else {
+	if ((ent == NULL) && (ctxt->pedantic) &&
+	    (ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
+	    ctxt->sax->warning(ctxt, 
+	     "Entity(%s) already defined in the external subset\n", name);
+    } else {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt, 
 	     "SAX.entityDecl(%s) called while not in subset\n", name);

@@ -564,7 +564,7 @@ void parseAndPrintFile(char *filename) {
 
 #ifdef LIBXML_DEBUG_ENABLED
     if ((debugent) && (!html))
-	xmlDebugDumpEntities(stdout, doc);
+	xmlDebugDumpEntities(stderr, doc);
 #endif
 
     /*
@@ -582,8 +582,6 @@ int main(int argc, char **argv) {
 #ifdef LIBXML_DEBUG_ENABLED
 	if ((!strcmp(argv[i], "-debug")) || (!strcmp(argv[i], "--debug")))
 	    debug++;
-	else if ((!strcmp(argv[i], "-debugent")) || (!strcmp(argv[i], "--debugent")))
-	    debugent++;
 	else if ((!strcmp(argv[i], "-shell")) ||
 	         (!strcmp(argv[i], "--shell"))) {
 	    shell++;
@@ -644,11 +642,26 @@ int main(int argc, char **argv) {
 	else if ((!strcmp(argv[i], "-nowarning")) ||
 	         (!strcmp(argv[i], "--nowarning"))) {
 	    xmlGetWarningsDefaultValue = 0;
+	    xmlPedanticParserDefault(0);
         }
+	else if ((!strcmp(argv[i], "-pedantic")) ||
+	         (!strcmp(argv[i], "--pedantic"))) {
+	    xmlGetWarningsDefaultValue = 1;
+	    xmlPedanticParserDefault(1);
+        }
+	else if ((!strcmp(argv[i], "-debugent")) ||
+		 (!strcmp(argv[i], "--debugent"))) {
+	    debugent++;
+	    xmlParserDebugEntities = 1;
+	} 
 	else if ((!strcmp(argv[i], "-encode")) ||
 	         (!strcmp(argv[i], "--encode"))) {
 	    i++;
 	    encoding = argv[i];
+	    /*
+	     * OK it's for testing purposes
+	     */
+	    xmlAddEncodingAlias("UTF-8", "DVEnc");
         }
 	else if ((!strcmp(argv[i], "-noblanks")) ||
 	         (!strcmp(argv[i], "--noblanks"))) {

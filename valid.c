@@ -463,6 +463,7 @@ xmlCreateElementTable(void) {
     }
     ret->max_elements = XML_MIN_ELEMENT_TABLE;
     ret->nb_elements = 0;
+    ret->last = 0;
     ret->table = (xmlElementPtr *) 
          xmlMalloc(ret->max_elements * sizeof(xmlElementPtr));
     if (ret->table == NULL) {
@@ -978,6 +979,7 @@ xmlScanIDAttributeDecl(xmlValidCtxtPtr ctxt, xmlElementPtr elem) {
  * @tree:  if it's an enumeration, the associated list
  *
  * Register a new attribute declaration
+ * Note that @tree becomes the ownership of the DTD
  *
  * Returns NULL if not new, othervise the attribute decl
  */
@@ -993,14 +995,17 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *elem,
 
     if (dtd == NULL) {
         fprintf(stderr, "xmlAddAttributeDecl: dtd == NULL\n");
+	xmlFreeEnumeration(tree);
 	return(NULL);
     }
     if (name == NULL) {
         fprintf(stderr, "xmlAddAttributeDecl: name == NULL\n");
+	xmlFreeEnumeration(tree);
 	return(NULL);
     }
     if (elem == NULL) {
         fprintf(stderr, "xmlAddAttributeDecl: elem == NULL\n");
+	xmlFreeEnumeration(tree);
 	return(NULL);
     }
     /*
@@ -1029,6 +1034,7 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *elem,
 	    break;
 	default:
 	    fprintf(stderr, "xmlAddAttributeDecl: unknown type %d\n", type);
+	    xmlFreeEnumeration(tree);
 	    return(NULL);
     }
     if ((defaultValue != NULL) && 
@@ -1054,19 +1060,59 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *elem,
     /*
      * Validity Check:
      * Search the DTD for previous declarations of the ATTLIST
+     * The initial code used to walk the attribute table comparing
+     * all pairs of element/attribute names, and was far too slow
+     * for large DtDs, we now walk the attribute list associated to
+     * the element declaration instead if this declaration is found.
      */
-    for (i = 0;i < table->nb_attributes;i++) {
-        cur = table->table[i];
-	if ((ns != NULL) && (cur->prefix == NULL)) continue;
-	if ((ns == NULL) && (cur->prefix != NULL)) continue;
-	if ((!xmlStrcmp(cur->name, name)) && (!xmlStrcmp(cur->elem, elem)) &&
-	    ((ns == NULL) || (!xmlStrcmp(cur->prefix, ns)))) {
-	    /*
-	     * The attribute is already defined in this Dtd.
-	     */
-	    VWARNING(ctxt->userData, "Attribute %s on %s: already defined\n",
-		   elem, name);
-	    return(NULL);
+    elemDef = xmlGetDtdElementDesc(dtd, elem);
+    if (elemDef != NULL) {
+	/*
+	 * follow the attribute list.
+	 */
+	cur = elemDef->attributes;
+	while (cur != NULL) {
+	    if ((ns != NULL) && (cur->prefix == NULL)) {
+		cur = cur->nexth;
+		continue;
+	    }
+	    if ((ns == NULL) && (cur->prefix != NULL)) {
+		cur = cur->nexth;
+		continue;
+	    }
+	    if ((!xmlStrcmp(cur->name, name)) &&
+		((ns == NULL) || (!xmlStrcmp(cur->prefix, ns)))) {
+		/*
+		 * The attribute is already defined in this Dtd.
+		 */
+		VWARNING(ctxt->userData,
+			 "Attribute %s on %s: already defined\n",
+		         name, elem);
+		xmlFreeEnumeration(tree);
+		return(NULL);
+	    }
+	    cur = cur->nexth;
+	}
+    } else {
+	/*
+	 * Walk down the attribute table.
+	 */
+	for (i = 0;i < table->nb_attributes;i++) {
+	    cur = table->table[i];
+	    if ((ns != NULL) && (cur->prefix == NULL)) continue;
+	    if ((ns == NULL) && (cur->prefix != NULL)) continue;
+	    if ((!xmlStrcmp(cur->name, name)) &&
+		(!xmlStrcmp(cur->elem, elem)) &&
+		((ns == NULL) || (!xmlStrcmp(cur->prefix, ns)))) {
+		/*
+		 * The attribute is already defined in this Dtd.
+		 */
+		VWARNING(ctxt->userData,
+			 "Attribute %s on %s: already defined\n",
+		         elem, name);
+		xmlFreeEnumeration(tree);
+		return(NULL);
+	    }
 	}
     }
 
@@ -1106,7 +1152,6 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *elem,
     ret->tree = tree;
     if (defaultValue != NULL)
 	ret->defaultValue = xmlStrdup(defaultValue);
-    elemDef = xmlGetDtdElementDesc(dtd, elem);
     if (elemDef != NULL) {
         if ((type == XML_ATTRIBUTE_ID) &&
 	    (xmlScanIDAttributeDecl(NULL, elemDef) != 0))
@@ -2166,10 +2211,17 @@ xmlGetDtdElementDesc(xmlDtdPtr dtd, const xmlChar *name) {
     if (dtd->elements == NULL) return(NULL);
     table = (xmlElementTablePtr) dtd->elements;
 
-    for (i = 0;i < table->nb_elements;i++) {
-        cur = table->table[i];
+    if ((table->last >= 0) && (table->last < table->nb_elements)) {
+	cur = table->table[table->last];
 	if (!xmlStrcmp(cur->name, name))
 	    return(cur);
+    }
+    for (i = 0;i < table->nb_elements;i++) {
+        cur = table->table[i];
+	if (!xmlStrcmp(cur->name, name)) {
+	    table->last = i;
+	    return(cur);
+	}
     }
 
     /*

@@ -48,6 +48,8 @@
 #define XML_PARSER_BUFFER_SIZE 100
 
 int xmlGetWarningsDefaultValue = 1;
+int xmlParserDebugEntities = 0;
+
 
 /*
  * List of XML prefixed PI allowed by W3C specs
@@ -583,6 +585,7 @@ xmlParserInputShrink(xmlParserInputPtr in) {
 
 int xmlSubstituteEntitiesDefaultValue = 0;
 int xmlDoValidityCheckingDefaultValue = 0;
+int xmlPedanticParserDefaultValue = 0;
 int xmlKeepBlanksDefaultValue = 1;
 xmlEntityPtr xmlParseStringEntityRef(xmlParserCtxtPtr ctxt,
                                      const xmlChar ** str);
@@ -1209,6 +1212,8 @@ xmlSkipBlankChars(xmlParserCtxtPtr ctxt) {
 xmlChar
 xmlPopInput(xmlParserCtxtPtr ctxt) {
     if (ctxt->inputNr == 1) return(0); /* End of main Input */
+    if (xmlParserDebugEntities)
+	fprintf(stderr, "Popping input %d\n", ctxt->inputNr);
     xmlFreeInputStream(inputPop(ctxt));
     if ((*ctxt->input->cur == 0) &&
         (xmlParserInputGrow(ctxt->input, INPUT_CHUNK) <= 0))
@@ -1227,6 +1232,13 @@ xmlPopInput(xmlParserCtxtPtr ctxt) {
 void
 xmlPushInput(xmlParserCtxtPtr ctxt, xmlParserInputPtr input) {
     if (input == NULL) return;
+
+    if (xmlParserDebugEntities) {
+	if ((ctxt->input != NULL) && (ctxt->input->filename))
+	    fprintf(stderr, "%s(%d): ", ctxt->input->filename,
+		    ctxt->input->line);
+	fprintf(stderr, "Pushing input %d : %.30s\n", ctxt->inputNr+1, input->cur);
+    }
     inputPush(ctxt, input);
     GROW;
 }
@@ -1298,6 +1310,8 @@ xmlNewIOInputStream(xmlParserCtxtPtr ctxt, xmlParserInputBufferPtr input,
 	            xmlCharEncoding enc) {
     xmlParserInputPtr inputStream;
 
+    if (xmlParserDebugEntities)
+	fprintf(stderr, "new input from I/O\n");
     inputStream = xmlNewInputStream(ctxt);
     if (inputStream == NULL) {
 	return(NULL);
@@ -1334,6 +1348,8 @@ xmlNewEntityInputStream(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
 	ctxt->errNo = XML_ERR_INTERNAL_ERROR;
 	return(NULL);
     }
+    if (xmlParserDebugEntities)
+	fprintf(stderr, "new input from entity: %s\n", entity->name);
     if (entity->content == NULL) {
 	switch (entity->etype) {
             case XML_EXTERNAL_GENERAL_UNPARSED_ENTITY:
@@ -1396,6 +1412,8 @@ xmlNewStringInputStream(xmlParserCtxtPtr ctxt, const xmlChar *buffer) {
 	      "internal: xmlNewStringInputStream string = NULL\n");
 	return(NULL);
     }
+    if (xmlParserDebugEntities)
+	fprintf(stderr, "new fixed input: %.30s\n", buffer);
     input = xmlNewInputStream(ctxt);
     if (input == NULL) {
 	return(NULL);
@@ -1421,6 +1439,8 @@ xmlNewInputFromFile(xmlParserCtxtPtr ctxt, const char *filename) {
     xmlParserInputPtr inputStream;
     char *directory = NULL;
 
+    if (xmlParserDebugEntities)
+	fprintf(stderr, "new input from file: %s\n", filename);
     if (ctxt == NULL) return(NULL);
     buf = xmlParserInputBufferCreateFilename(filename, XML_CHAR_ENCODING_NONE);
     if (buf == NULL) {
@@ -1544,6 +1564,7 @@ xmlInitParserCtxt(xmlParserCtxtPtr ctxt)
     ctxt->wellFormed = 1;
     ctxt->valid = 1;
     ctxt->validate = xmlDoValidityCheckingDefaultValue;
+    ctxt->pedantic = xmlPedanticParserDefaultValue;
     ctxt->keepBlanks = xmlKeepBlanksDefaultValue;
     ctxt->vctxt.userData = ctxt;
     if (ctxt->validate) {
@@ -2210,6 +2231,8 @@ xmlParserHandlePEReference(xmlParserCtxtPtr ctxt) {
 
     NEXT;
     name = xmlParseName(ctxt);
+    if (xmlParserDebugEntities)
+	fprintf(stderr, "PE Reference: %s\n", name);
     if (name == NULL) {
         ctxt->errNo = XML_ERR_PEREF_NO_NAME;
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
@@ -2247,11 +2270,12 @@ xmlParserHandlePEReference(xmlParserCtxtPtr ctxt) {
 		     * ... The declaration of a parameter entity must precede
 		     * any reference to it...
 		     */
-		    if ((ctxt->validate) && (ctxt->vctxt.error != NULL)) {
+		    if ((!ctxt->disableSAX) &&
+			(ctxt->validate) && (ctxt->vctxt.error != NULL)) {
 			ctxt->vctxt.error(ctxt->vctxt.userData,
 			     "PEReference: %%%s; not found\n", name);
-		    } else
-		    if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
+		    } else if ((!ctxt->disableSAX) &&
+			(ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
 			ctxt->sax->warning(ctxt->userData,
 			 "PEReference: %%%s; not found\n", name);
 		    ctxt->valid = 0;
@@ -2369,6 +2393,8 @@ xmlDecodeEntities(xmlParserCtxtPtr ctxt, int len, int what,
 	    NEXTL(l);
 	} else if ((c == '&') && (ctxt->token != '&') &&
 		   (what & XML_SUBSTITUTE_REF)) {
+	    if (xmlParserDebugEntities)
+		fprintf(stderr, "decoding Entity Reference\n");
 	    ent = xmlParseEntityRef(ctxt);
 	    if ((ent != NULL) && 
 		(ctxt->replaceEntities != 0)) {
@@ -2397,6 +2423,8 @@ xmlDecodeEntities(xmlParserCtxtPtr ctxt, int len, int what,
 	     * we break here to flush the current set of chars
 	     * parsed if any. We will be called back later.
 	     */
+	    if (xmlParserDebugEntities)
+		fprintf(stderr, "decoding PE Reference\n");
 	    if (nbchars != 0) break;
 
 	    xmlParsePEReference(ctxt);
@@ -2484,6 +2512,9 @@ xmlStringDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int what,
 		COPY_BUF(0,buffer,nbchars,val);
 	    }
 	} else if ((c == '&') && (what & XML_SUBSTITUTE_REF)) {
+	    if (xmlParserDebugEntities)
+		fprintf(stderr, "String decoding Entity Reference: %.30s\n",
+			str);
 	    ent = xmlParseStringEntityRef(ctxt, &str);
 	    if ((ent != NULL) && (ent->etype == XML_INTERNAL_PREDEFINED_ENTITY)) {
 		if (ent->content != NULL) {
@@ -2524,6 +2555,8 @@ xmlStringDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str, int what,
 		buffer[nbchars++] = ';';
 	    }
 	} else if (c == '%' && (what & XML_SUBSTITUTE_PEREF)) {
+	    if (xmlParserDebugEntities)
+		fprintf(stderr, "String decoding PE Reference: %.30s\n", str);
 	    ent = xmlParseStringPEReference(ctxt, &str);
 	    if (ent != NULL) {
 		xmlChar *rep;
@@ -4003,6 +4036,7 @@ xmlParseEntityValue(xmlParserCtxtPtr ctxt, xmlChar **orig) {
 	while ((RAW == 0) && (ctxt->inputNr > 1))
 	    xmlPopInput(ctxt);
 
+	GROW;
 	c = CUR_CHAR(l);
 	if (c == 0) {
 	    GROW;
@@ -5642,12 +5676,14 @@ xmlParseAttributeListDecl(xmlParserCtxtPtr ctxt) {
 	    return;
 	}
 	SKIP_BLANKS;
+	GROW;
 	while (RAW != '>') {
 	    const xmlChar *check = CUR_PTR;
 	    int type;
 	    int def;
 	    xmlChar *defaultValue = NULL;
 
+	    GROW;
             tree = NULL;
 	    attrName = xmlParseName(ctxt);
 	    if (attrName == NULL) {
@@ -6462,8 +6498,6 @@ xmlParseTextDecl(xmlParserCtxtPtr ctxt) {
  * xmlParseConditionalSections
  * @ctxt:  an XML parser context
  *
- * TODO : Conditionnal section are not yet supported !
- *
  * [61] conditionalSect ::= includeSect | ignoreSect 
  * [62] includeSect ::= '<![' S? 'INCLUDE' S? '[' extSubsetDecl ']]>' 
  * [63] ignoreSect ::= '<![' S? 'IGNORE' S? '[' ignoreSectContents* ']]>'
@@ -6490,6 +6524,13 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
 	} else {
 	    NEXT;
 	}
+	if (xmlParserDebugEntities) {
+	    if ((ctxt->input != NULL) && (ctxt->input->filename))
+		fprintf(stderr, "%s(%d): ", ctxt->input->filename,
+			ctxt->input->line);
+	    fprintf(stderr, "Entering INCLUDE Conditional Section\n");
+	}
+
 	while ((RAW != 0) && ((RAW != ']') || (NXT(1) != ']') ||
 	       (NXT(2) != '>'))) {
 	    const xmlChar *check = CUR_PTR;
@@ -6522,6 +6563,13 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
 		break;
 	    }
 	}
+	if (xmlParserDebugEntities) {
+	    if ((ctxt->input != NULL) && (ctxt->input->filename))
+		fprintf(stderr, "%s(%d): ", ctxt->input->filename,
+			ctxt->input->line);
+	    fprintf(stderr, "Leaving INCLUDE Conditional Section\n");
+	}
+
     } else if ((RAW == 'I') && (NXT(1) == 'G') && (NXT(2) == 'N') &&
             (NXT(3) == 'O') && (NXT(4) == 'R') && (NXT(5) == 'E')) {
 	int state;
@@ -6538,12 +6586,19 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
 	} else {
 	    NEXT;
 	}
+	if (xmlParserDebugEntities) {
+	    if ((ctxt->input != NULL) && (ctxt->input->filename))
+		fprintf(stderr, "%s(%d): ", ctxt->input->filename,
+			ctxt->input->line);
+	    fprintf(stderr, "Entering IGNORE Conditional Section\n");
+	}
 
 	/*
 	 * Parse up to the end of the conditionnal section
 	 * But disable SAX event generating DTD building in the meantime
 	 */
 	state = ctxt->disableSAX;
+	ctxt->disableSAX = 1;
 	while ((RAW != 0) && ((RAW != ']') || (NXT(1) != ']') ||
 	       (NXT(2) != '>'))) {
 	    const xmlChar *check = CUR_PTR;
@@ -6577,6 +6632,13 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
 	    }
 	}
 	ctxt->disableSAX = state;
+	if (xmlParserDebugEntities) {
+	    if ((ctxt->input != NULL) && (ctxt->input->filename))
+		fprintf(stderr, "%s(%d): ", ctxt->input->filename,
+			ctxt->input->line);
+	    fprintf(stderr, "Leaving IGNORE Conditional Section\n");
+	}
+
     } else {
 	if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 	    ctxt->sax->error(ctxt->userData,
@@ -6644,6 +6706,7 @@ xmlParseExternalSubset(xmlParserCtxtPtr ctxt, const xmlChar *ExternalID,
 	int cons = ctxt->input->consumed;
 	int tok = ctxt->token;
 
+	GROW;
         if ((RAW == '<') && (NXT(1) == '!') && (NXT(2) == '[')) {
 	    xmlParseConditionalSections(ctxt);
 	} else if (IS_BLANK(CUR)) {
@@ -7349,7 +7412,8 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt) {
 		    if ((ctxt->standalone == 1) ||
 			((ctxt->hasExternalSubset == 0) &&
 			 (ctxt->hasPErefs == 0))) {
-			if ((ctxt->sax != NULL) && (ctxt->sax->error != NULL))
+			if ((!ctxt->disableSAX) &&
+			    (ctxt->sax != NULL) && (ctxt->sax->error != NULL))
 			    ctxt->sax->error(ctxt->userData,
 			     "PEReference: %%%s; not found\n", name);
 			ctxt->errNo = XML_ERR_UNDECLARED_ENTITY;
@@ -7363,7 +7427,8 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt) {
 			 * ... The declaration of a parameter entity must precede
 			 * any reference to it...
 			 */
-			if ((ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
+			if ((!ctxt->disableSAX) &&
+			    (ctxt->sax != NULL) && (ctxt->sax->warning != NULL))
 			    ctxt->sax->warning(ctxt->userData,
 			     "PEReference: %%%s; not found\n", name);
 			ctxt->valid = 0;
@@ -11470,6 +11535,23 @@ xmlParserAddNodeInfo(xmlParserCtxtPtr ctxt,
   }   
 }
 
+
+/**
+ * xmlPedanticParserDefault:
+ * @val:  int 0 or 1 
+ *
+ * Set and return the previous value for enabling pedantic warnings.
+ *
+ * Returns the last value for 0 for no substitution, 1 for substitution.
+ */
+
+int
+xmlPedanticParserDefault(int val) {
+    int old = xmlPedanticParserDefaultValue;
+
+    xmlPedanticParserDefaultValue = val;
+    return(old);
+}
 
 /**
  * xmlSubstituteEntitiesDefault:

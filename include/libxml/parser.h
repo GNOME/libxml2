@@ -182,6 +182,7 @@ struct _xmlParserCtxt {
 				         actually an xmlCharEncoding */
     int                nodelen;       /* Those two fields are there to */
     int                nodemem;       /* Speed up large node parsing */
+    int                pedantic;      /* signal pedantic warnings */
 };
 
 /**
@@ -354,6 +355,7 @@ xmlDocPtr	xmlParseFile		(const char *filename);
 int		xmlSubstituteEntitiesDefault(int val);
 int		xmlKeepBlanksDefault	(int val);
 void		xmlStopParser		(xmlParserCtxtPtr ctxt);
+int		xmlPedanticParserDefault(int val);
 
 /**
  * Recovery mode 

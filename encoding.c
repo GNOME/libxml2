@@ -50,6 +50,17 @@
 xmlCharEncodingHandlerPtr xmlUTF16LEHandler = NULL;
 xmlCharEncodingHandlerPtr xmlUTF16BEHandler = NULL;
 
+typedef struct _xmlCharEncodingAlias xmlCharEncodingAlias;
+typedef xmlCharEncodingAlias *xmlCharEncodingAliasPtr;
+struct _xmlCharEncodingAlias {
+    const char *name;
+    const char *alias;
+};
+
+static xmlCharEncodingAliasPtr xmlCharEncodingAliases = NULL;
+static int xmlCharEncodingAliasesNb = 0;
+static int xmlCharEncodingAliasesMax = 0;
+
 #ifdef LIBXML_ICONV_ENABLED
 #if 0
 #define DEBUG_ENCODING  /* Define this to get encoding traces */
@@ -906,6 +917,157 @@ xmlDetectCharEncoding(const unsigned char* in, int len)
 }
 
 /**
+ * xmlCleanupEncodingAliases:
+ *
+ * Unregisters all aliases
+ */
+void
+xmlCleanupEncodingAliases(void) {
+    int i;
+
+    if (xmlCharEncodingAliases == NULL)
+	return;
+
+    for (i = 0;i < xmlCharEncodingAliasesNb;i++) {
+	if (xmlCharEncodingAliases[i].name != NULL)
+	    xmlFree((char *) xmlCharEncodingAliases[i].name);
+	if (xmlCharEncodingAliases[i].alias != NULL)
+	    xmlFree((char *) xmlCharEncodingAliases[i].alias);
+    }
+    xmlCharEncodingAliasesNb = 0;
+    xmlCharEncodingAliasesMax = 0;
+    xmlFree(xmlCharEncodingAliases);
+}
+
+/**
+ * xmlGetEncodingAlias:
+ * @alias:  the alias name as parsed, in UTF-8 format (ASCII actually)
+ *
+ * Lookup an encoding name for the given alias.
+ * 
+ * Returns NULL if not found the original name otherwise
+ */
+const char *
+xmlGetEncodingAlias(const char *alias) {
+    int i;
+    char upper[100];
+
+    if (alias == NULL)
+	return(NULL);
+
+    if (xmlCharEncodingAliases == NULL)
+	return(NULL);
+
+    for (i = 0;i < 99;i++) {
+        upper[i] = toupper(alias[i]);
+	if (upper[i] == 0) break;
+    }
+    upper[i] = 0;
+
+    /*
+     * Walk down the list looking for a definition of the alias
+     */
+    for (i = 0;i < xmlCharEncodingAliasesNb;i++) {
+	if (!strcmp(xmlCharEncodingAliases[i].alias, upper)) {
+	    return(xmlCharEncodingAliases[i].name);
+	}
+    }
+    return(NULL);
+}
+
+/**
+ * xmlAddEncodingAlias:
+ * @name:  the encoding name as parsed, in UTF-8 format (ASCII actually)
+ * @alias:  the alias name as parsed, in UTF-8 format (ASCII actually)
+ *
+ * Registers and alias @alias for an encoding named @name. Existing alias
+ * will be overwritten.
+ * 
+ * Returns 0 in case of success, -1 in case of error
+ */
+int
+xmlAddEncodingAlias(const char *name, const char *alias) {
+    int i;
+    char upper[100];
+
+    if ((name == NULL) || (alias == NULL))
+	return(-1);
+
+    for (i = 0;i < 99;i++) {
+        upper[i] = toupper(alias[i]);
+	if (upper[i] == 0) break;
+    }
+    upper[i] = 0;
+
+    if (xmlCharEncodingAliases == NULL) {
+	xmlCharEncodingAliasesNb = 0;
+	xmlCharEncodingAliasesMax = 20;
+	xmlCharEncodingAliases = (xmlCharEncodingAliasPtr) 
+	      xmlMalloc(xmlCharEncodingAliasesMax * sizeof(xmlCharEncodingAlias));
+	if (xmlCharEncodingAliases == NULL)
+	    return(-1);
+    } else if (xmlCharEncodingAliasesNb >= xmlCharEncodingAliasesMax) {
+	xmlCharEncodingAliasesMax *= 2;
+	xmlCharEncodingAliases = (xmlCharEncodingAliasPtr) 
+	      xmlRealloc(xmlCharEncodingAliases,
+		         xmlCharEncodingAliasesMax * sizeof(xmlCharEncodingAlias));
+    }
+    /*
+     * Walk down the list looking for a definition of the alias
+     */
+    for (i = 0;i < xmlCharEncodingAliasesNb;i++) {
+	if (!strcmp(xmlCharEncodingAliases[i].alias, upper)) {
+	    /*
+	     * Replace the definition.
+	     */
+	    xmlFree((char *) xmlCharEncodingAliases[i].name);
+	    xmlCharEncodingAliases[i].name = xmlMemStrdup(name);
+	    return(0);
+	}
+    }
+    /*
+     * Add the definition
+     */
+    xmlCharEncodingAliases[xmlCharEncodingAliasesNb].name = xmlMemStrdup(name);
+    xmlCharEncodingAliases[xmlCharEncodingAliasesNb].alias = xmlMemStrdup(upper);
+    xmlCharEncodingAliasesNb++;
+    return(0);
+}
+
+/**
+ * xmlDelEncodingAlias:
+ * @alias:  the alias name as parsed, in UTF-8 format (ASCII actually)
+ *
+ * Unregisters an encoding alias @alias
+ * 
+ * Returns 0 in case of success, -1 in case of error
+ */
+int
+xmlDelEncodingAlias(const char *alias) {
+    int i;
+
+    if (alias == NULL)
+	return(-1);
+
+    if (xmlCharEncodingAliases == NULL)
+	return(-1);
+    /*
+     * Walk down the list looking for a definition of the alias
+     */
+    for (i = 0;i < xmlCharEncodingAliasesNb;i++) {
+	if (!strcmp(xmlCharEncodingAliases[i].alias, alias)) {
+	    xmlFree((char *) xmlCharEncodingAliases[i].name);
+	    xmlFree((char *) xmlCharEncodingAliases[i].alias);
+	    xmlCharEncodingAliasesNb--;
+	    memmove(&xmlCharEncodingAliases[i], &xmlCharEncodingAliases[i + 1],
+		    sizeof(xmlCharEncodingAlias) * (xmlCharEncodingAliasesNb - i));
+	    return(0);
+	}
+    }
+    return(-1);
+}
+
+/**
  * xmlParseCharEncoding:
  * @name:  the encoding name as parsed, in UTF-8 format (ASCII actually)
  *
@@ -919,8 +1081,19 @@ xmlDetectCharEncoding(const unsigned char* in, int len)
 xmlCharEncoding
 xmlParseCharEncoding(const char* name)
 {
+    const char *alias;
     char upper[500];
     int i;
+
+    if (name == NULL)
+	return(XML_CHAR_ENCODING_NONE);
+
+    /*
+     * Do the alias resolution
+     */
+    alias = xmlGetEncodingAlias(name);
+    if (alias != NULL)
+	name = alias;
 
     for (i = 0;i < 499;i++) {
         upper[i] = toupper(name[i]);
@@ -1076,9 +1249,17 @@ xmlNewCharEncodingHandler(const char *name,
                           xmlCharEncodingInputFunc input,
                           xmlCharEncodingOutputFunc output) {
     xmlCharEncodingHandlerPtr handler;
+    const char *alias;
     char upper[500];
     int i;
     char *up = 0;
+
+    /*
+     * Do the alias resolution
+     */
+    alias = xmlGetEncodingAlias(name);
+    if (alias != NULL)
+	name = alias;
 
     /*
      * Keep only the uppercase version of the encoding.
@@ -1168,10 +1349,12 @@ xmlInitCharEncodingHandlers(void) {
  * xmlCleanupCharEncodingHandlers:
  *
  * Cleanup the memory allocated for the char encoding support, it
- * unregisters all the encoding handlers.
+ * unregisters all the encoding handlers and the aliases.
  */
 void
 xmlCleanupCharEncodingHandlers(void) {
+    xmlCleanupEncodingAliases();
+
     if (handlers == NULL) return;
 
     for (;nbCharEncodingHandler > 0;) {
@@ -1350,6 +1533,8 @@ xmlGetCharEncodingHandler(xmlCharEncoding enc) {
  */
 xmlCharEncodingHandlerPtr
 xmlFindCharEncodingHandler(const char *name) {
+    const char *nalias;
+    const char *norig;
     xmlCharEncoding alias;
 #ifdef LIBXML_ICONV_ENABLED
     xmlCharEncodingHandlerPtr enc;
@@ -1361,6 +1546,14 @@ xmlFindCharEncodingHandler(const char *name) {
     if (handlers == NULL) xmlInitCharEncodingHandlers();
     if (name == NULL) return(xmlDefaultCharEncodingHandler);
     if (name[0] == 0) return(xmlDefaultCharEncodingHandler);
+
+    /*
+     * Do the alias resolution
+     */
+    norig = name;
+    nalias = xmlGetEncodingAlias(name);
+    if (nalias != NULL)
+	name = nalias;
 
     /*
      * Check first for directly registered encoding names
@@ -1412,7 +1605,7 @@ xmlFindCharEncodingHandler(const char *name) {
     /*
      * Fallback using the canonical names
      */
-    alias = xmlParseCharEncoding(name);
+    alias = xmlParseCharEncoding(norig);
     if (alias != XML_CHAR_ENCODING_ERROR) {
         const char* canon;
         canon = xmlGetCharEncodingName(alias);

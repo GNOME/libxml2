@@ -25,6 +25,11 @@ TODO:
   issue a warning
 - fix --disable-corba configure switch handling, and use XML_WITHOUT_CORBA
   not WITHOUT_CORBA flag
+- reported by Michael, update of doc node when pasting on a new document
+  There can be far more than simply the doc pointer which refers to
+  the old document, for example namespace declarations or entities
+  references can also be a nasty problem, far more than updating the
+  doc values.
 
 TODO:
 =====

@@ -572,7 +572,8 @@ xmlSAXHandlerPtr debugSAXHandler = &debugSAXHandlerStruct;
  ************************************************************************/
 
 void parseSAXFile(char *filename) {
-    htmlDocPtr doc;
+    htmlDocPtr doc = NULL;
+
     /*
      * Empty callbacks for checking
      */

@@ -760,38 +760,41 @@ void xmlDebugDumpEntities(FILE *output, xmlDocPtr doc) {
         xmlEntitiesTablePtr table = (xmlEntitiesTablePtr) 
 	                            doc->intSubset->entities;
 	fprintf(output, "Entities in internal subset\n");
-	for (i = 0;i < table->nb_entities;i++) {
+	for (i = 0;i < table->max_entities;i++) {
 	    cur = table->table[i];
-	    fprintf(output, "%d : %s : ", i, cur->name);
-	    switch (cur->etype) {
-		case XML_INTERNAL_GENERAL_ENTITY:
-		    fprintf(output, "INTERNAL GENERAL, ");
-		    break;
-		case XML_EXTERNAL_GENERAL_PARSED_ENTITY:
-		    fprintf(output, "EXTERNAL PARSED, ");
-		    break;
-		case XML_EXTERNAL_GENERAL_UNPARSED_ENTITY:
-		    fprintf(output, "EXTERNAL UNPARSED, ");
-		    break;
-		case XML_INTERNAL_PARAMETER_ENTITY:
-		    fprintf(output, "INTERNAL PARAMETER, ");
-		    break;
-		case XML_EXTERNAL_PARAMETER_ENTITY:
-		    fprintf(output, "EXTERNAL PARAMETER, ");
-		    break;
-		default:
-		    fprintf(output, "UNKNOWN TYPE %d",
-			    cur->etype);
+	    while (cur != NULL) {
+		fprintf(output, "%d : %s : ", i, cur->name);
+		switch (cur->etype) {
+		    case XML_INTERNAL_GENERAL_ENTITY:
+			fprintf(output, "INTERNAL GENERAL, ");
+			break;
+		    case XML_EXTERNAL_GENERAL_PARSED_ENTITY:
+			fprintf(output, "EXTERNAL PARSED, ");
+			break;
+		    case XML_EXTERNAL_GENERAL_UNPARSED_ENTITY:
+			fprintf(output, "EXTERNAL UNPARSED, ");
+			break;
+		    case XML_INTERNAL_PARAMETER_ENTITY:
+			fprintf(output, "INTERNAL PARAMETER, ");
+			break;
+		    case XML_EXTERNAL_PARAMETER_ENTITY:
+			fprintf(output, "EXTERNAL PARAMETER, ");
+			break;
+		    default:
+			fprintf(output, "UNKNOWN TYPE %d",
+				cur->etype);
+		}
+		if (cur->ExternalID != NULL) 
+		    fprintf(output, "ID \"%s\"", cur->ExternalID);
+		if (cur->SystemID != NULL)
+		    fprintf(output, "SYSTEM \"%s\"", cur->SystemID);
+		if (cur->orig != NULL)
+		    fprintf(output, "\n orig \"%s\"", cur->orig);
+		if (cur->content != NULL)
+		    fprintf(output, "\n content \"%s\"", cur->content);
+		fprintf(output, "\n");	
+		cur = cur->nexte;
 	    }
-	    if (cur->ExternalID != NULL) 
-	        fprintf(output, "ID \"%s\"", cur->ExternalID);
-	    if (cur->SystemID != NULL)
-	        fprintf(output, "SYSTEM \"%s\"", cur->SystemID);
-	    if (cur->orig != NULL)
-	        fprintf(output, "\n orig \"%s\"", cur->orig);
-	    if (cur->content != NULL)
-	        fprintf(output, "\n content \"%s\"", cur->content);
-	    fprintf(output, "\n");	
 	}
     } else
 	fprintf(output, "No entities in internal subset\n");
@@ -799,38 +802,41 @@ void xmlDebugDumpEntities(FILE *output, xmlDocPtr doc) {
         xmlEntitiesTablePtr table = (xmlEntitiesTablePtr) 
 	                            doc->extSubset->entities;
 	fprintf(output, "Entities in external subset\n");
-	for (i = 0;i < table->nb_entities;i++) {
+	for (i = 0;i < table->max_entities;i++) {
 	    cur = table->table[i];
-	    fprintf(output, "%d : %s : ", i, cur->name);
-	    switch (cur->etype) {
-		case XML_INTERNAL_GENERAL_ENTITY:
-		    fprintf(output, "INTERNAL GENERAL, ");
-		    break;
-		case XML_EXTERNAL_GENERAL_PARSED_ENTITY:
-		    fprintf(output, "EXTERNAL PARSED, ");
-		    break;
-		case XML_EXTERNAL_GENERAL_UNPARSED_ENTITY:
-		    fprintf(output, "EXTERNAL UNPARSED, ");
-		    break;
-		case XML_INTERNAL_PARAMETER_ENTITY:
-		    fprintf(output, "INTERNAL PARAMETER, ");
-		    break;
-		case XML_EXTERNAL_PARAMETER_ENTITY:
-		    fprintf(output, "EXTERNAL PARAMETER, ");
-		    break;
-		default:
-		    fprintf(output, "UNKNOWN TYPE %d",
-			    cur->etype);
+	    while (cur != NULL) {
+		fprintf(output, "%d : %s : ", i, cur->name);
+		switch (cur->etype) {
+		    case XML_INTERNAL_GENERAL_ENTITY:
+			fprintf(output, "INTERNAL GENERAL, ");
+			break;
+		    case XML_EXTERNAL_GENERAL_PARSED_ENTITY:
+			fprintf(output, "EXTERNAL PARSED, ");
+			break;
+		    case XML_EXTERNAL_GENERAL_UNPARSED_ENTITY:
+			fprintf(output, "EXTERNAL UNPARSED, ");
+			break;
+		    case XML_INTERNAL_PARAMETER_ENTITY:
+			fprintf(output, "INTERNAL PARAMETER, ");
+			break;
+		    case XML_EXTERNAL_PARAMETER_ENTITY:
+			fprintf(output, "EXTERNAL PARAMETER, ");
+			break;
+		    default:
+			fprintf(output, "UNKNOWN TYPE %d",
+				cur->etype);
+		}
+		if (cur->ExternalID != NULL) 
+		    fprintf(output, "ID \"%s\"", cur->ExternalID);
+		if (cur->SystemID != NULL)
+		    fprintf(output, "SYSTEM \"%s\"", cur->SystemID);
+		if (cur->orig != NULL)
+		    fprintf(output, "\n orig \"%s\"", cur->orig);
+		if (cur->content != NULL)
+		    fprintf(output, "\n content \"%s\"", cur->content);
+		fprintf(output, "\n");	
+		cur = cur->nexte;
 	    }
-	    if (cur->ExternalID != NULL) 
-	        fprintf(output, "ID \"%s\"", cur->ExternalID);
-	    if (cur->SystemID != NULL)
-	        fprintf(output, "SYSTEM \"%s\"", cur->SystemID);
-	    if (cur->orig != NULL)
-	        fprintf(output, "\n orig \"%s\"", cur->orig);
-	    if (cur->content != NULL)
-	        fprintf(output, "\n content \"%s\"", cur->content);
-	    fprintf(output, "\n");	
 	}
     } else
 	fprintf(output, "No entities in external subset\n");

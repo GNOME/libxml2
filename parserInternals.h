@@ -432,6 +432,12 @@ extern "C" {
     while ((*p) && (*(p) != '<')) (p)++
 
 /**
+ * Not for the faint of heart
+ */
+
+extern int xmlParserDebugEntities;
+
+/**
  * Parser context
  */
 xmlParserCtxtPtr	xmlCreateDocParserCtxt	(xmlChar *cur);

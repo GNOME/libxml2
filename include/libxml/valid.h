@@ -67,6 +67,7 @@ struct _xmlElementTable {
     int nb_elements;		/* number of elements stored */
     int max_elements;		/* maximum number of elements */
     xmlElementPtr *table;	/* the table of elements */
+    int last;			/* last element accessed */
 };
 
 /*

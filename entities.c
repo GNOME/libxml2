@@ -22,6 +22,23 @@
 #include <libxml/parser.h>
 
 #define DEBUG_ENT_REF /* debugging of cross entities dependancies */
+#define ENTITY_HASH_SIZE 256 /* modify xmlEntityComputeHash accordingly */
+
+/*
+ * xmlEntityComputeHash:
+ *
+ * Computes the hash value for this given entity
+ */
+int
+xmlEntityComputeHash(const xmlChar *name) {
+    register const unsigned char *cur = (const unsigned char *) name;
+    register unsigned char val = 0;
+
+    if (name == NULL)
+	return(val);
+    while (*cur) val += *cur++;
+    return(val);
+}
 
 /*
  * The XML predefined entities.
@@ -39,6 +56,10 @@ struct xmlPredefinedEntityValue xmlPredefinedEntityValues[] = {
     { "amp", "&" }
 };
 
+/*
+ * TODO: !!!!!!! This is GROSS, allocation of a 256 entry hash for
+ *               a fixed number of 4 elements !
+ */
 xmlEntitiesTablePtr xmlPredefinedEntities = NULL;
 
 /*
@@ -77,10 +98,41 @@ void xmlFreeEntity(xmlEntityPtr entity) {
  */
 static xmlEntityPtr
 xmlAddEntity(xmlEntitiesTablePtr table, const xmlChar *name, int type,
-	  const xmlChar *ExternalID, const xmlChar *SystemID, const xmlChar *content) {
+	  const xmlChar *ExternalID, const xmlChar *SystemID,
+	  const xmlChar *content) {
+#ifndef ENTITY_HASH_SIZE
     int i;
+#endif
+    int hash;
     xmlEntityPtr ret;
 
+    if (name == NULL)
+	return(NULL);
+#ifdef ENTITY_HASH_SIZE
+    hash = xmlEntityComputeHash(name);
+    ret = table->table[hash];
+    while (ret != NULL) {
+	if (!xmlStrcmp(ret->name, name)) {
+	    /*
+	     * The entity is already defined in this Dtd, the spec says to NOT
+	     * override it ... Is it worth a Warning ??? !!!
+	     * Not having a cprinting context this seems hard ...
+	     */
+	    if (((type == XML_INTERNAL_PARAMETER_ENTITY) ||
+	         (type == XML_EXTERNAL_PARAMETER_ENTITY)) &&
+	        ((ret->etype == XML_INTERNAL_PARAMETER_ENTITY) ||
+	         (ret->etype == XML_EXTERNAL_PARAMETER_ENTITY)))
+		return(NULL);
+	    else
+	    if (((type != XML_INTERNAL_PARAMETER_ENTITY) &&
+	         (type != XML_EXTERNAL_PARAMETER_ENTITY)) &&
+	        ((ret->etype != XML_INTERNAL_PARAMETER_ENTITY) &&
+	         (ret->etype != XML_EXTERNAL_PARAMETER_ENTITY)))
+		return(NULL);
+	}
+	ret = ret->nexte;
+    }
+#else
     for (i = 0;i < table->nb_entities;i++) {
         ret = table->table[i];
 	if (!xmlStrcmp(ret->name, name)) {
@@ -115,6 +167,7 @@ xmlAddEntity(xmlEntitiesTablePtr table, const xmlChar *name, int type,
 	    return(NULL);
 	}
     }
+#endif
     ret = (xmlEntityPtr) xmlMalloc(sizeof(xmlEntity));
     if (ret == NULL) {
 	fprintf(stderr, "xmlAddEntity: out of memory\n");
@@ -122,7 +175,12 @@ xmlAddEntity(xmlEntitiesTablePtr table, const xmlChar *name, int type,
     }
     memset(ret, 0, sizeof(xmlEntity));
     ret->type = XML_ENTITY_DECL;
+#ifdef ENTITY_HASH_SIZE
+    ret->nexte = table->table[hash];
+    table->table[hash] = ret;
+#else
     table->table[table->nb_entities] = ret;
+#endif
 
     /*
      * fill the structure.
@@ -202,10 +260,20 @@ xmlGetPredefinedEntity(const xmlChar *name) {
 
     if (xmlPredefinedEntities == NULL)
         xmlInitializePredefinedEntities();
+#ifdef ENTITY_HASH_SIZE
+    i = xmlEntityComputeHash(name);
+    cur = xmlPredefinedEntities->table[i];
+    while (cur != NULL) {
+	if (!xmlStrcmp(cur->name, name))
+	    return(cur);
+	cur = cur->nexte;
+    }
+#else
     for (i = 0;i < xmlPredefinedEntities->nb_entities;i++) {
 	cur = xmlPredefinedEntities->table[i];
 	if (!xmlStrcmp(cur->name, name)) return(cur);
     }
+#endif
     return(NULL);
 }
 
@@ -455,6 +523,58 @@ xmlEntityAddReference(xmlEntityPtr ent, const xmlChar *to) {
 }
 #endif
 
+
+/**
+ * xmlGetEntityFromTable:
+ * @table:  an entity table
+ * @name:  the entity name
+ * @parameter:  look for parameter entities
+ *
+ * Do an entity lookup in the table.
+ * returns the corresponding parameter entity, if found.
+ * 
+ * Returns A pointer to the entity structure or NULL if not found.
+ */
+xmlEntityPtr
+xmlGetEntityFromTable(xmlEntitiesTablePtr table, const xmlChar *name,
+	              int parameter) {
+    xmlEntityPtr cur;
+#ifdef ENTITY_HASH_SIZE
+    int hash;
+
+    hash = xmlEntityComputeHash(name);
+    cur = table->table[hash];
+    while (cur != NULL) {
+	switch (cur->etype) {
+	    case XML_INTERNAL_PARAMETER_ENTITY:
+	    case XML_EXTERNAL_PARAMETER_ENTITY:
+		if ((parameter) && (!xmlStrcmp(cur->name, name)))
+		    return(cur);
+	    default:
+		if ((!parameter) && (!xmlStrcmp(cur->name, name)))
+		    return(cur);
+	}
+	cur = cur->nexte;
+    }
+#else
+    int i;
+
+    for (i = 0;i < table->nb_entities;i++) {
+	cur = table->table[i];
+	switch (cur->etype) {
+	    case XML_INTERNAL_PARAMETER_ENTITY:
+	    case XML_EXTERNAL_PARAMETER_ENTITY:
+		if ((parameter) && (!xmlStrcmp(cur->name, name)))
+		    return(cur);
+	    default:
+		if ((!parameter) && (!xmlStrcmp(cur->name, name)))
+		    return(cur);
+	}
+    }
+#endif
+    return(NULL);
+}
+
 /**
  * xmlGetParameterEntity:
  * @doc:  the document referencing the entity
@@ -467,36 +587,18 @@ xmlEntityAddReference(xmlEntityPtr ent, const xmlChar *to) {
  */
 xmlEntityPtr
 xmlGetParameterEntity(xmlDocPtr doc, const xmlChar *name) {
-    int i;
-    xmlEntityPtr cur;
     xmlEntitiesTablePtr table;
+    xmlEntityPtr ret;
 
     if ((doc->intSubset != NULL) && (doc->intSubset->entities != NULL)) {
 	table = (xmlEntitiesTablePtr) doc->intSubset->entities;
-	for (i = 0;i < table->nb_entities;i++) {
-	    cur = table->table[i];
-	    if (((cur->etype ==  XML_INTERNAL_PARAMETER_ENTITY) ||
-	         (cur->etype ==  XML_EXTERNAL_PARAMETER_ENTITY)) &&
-		(!xmlStrcmp(cur->name, name))) return(cur);
-	}
+	ret = xmlGetEntityFromTable(table, name, 1);
+	if (ret != NULL)
+	    return(ret);
     }
     if ((doc->extSubset != NULL) && (doc->extSubset->entities != NULL)) {
 	table = (xmlEntitiesTablePtr) doc->extSubset->entities;
-	for (i = 0;i < table->nb_entities;i++) {
-	    cur = table->table[i];
-	    if (((cur->etype ==  XML_INTERNAL_PARAMETER_ENTITY) ||
-	         (cur->etype ==  XML_EXTERNAL_PARAMETER_ENTITY)) &&
-		(!xmlStrcmp(cur->name, name))) return(cur);
-	}
-    }
-    if ((doc->extSubset != NULL) && (doc->extSubset->entities != NULL)) {
-	table = (xmlEntitiesTablePtr) doc->extSubset->entities;
-	for (i = 0;i < table->nb_entities;i++) {
-	    cur = table->table[i];
-	    if (((cur->etype ==  XML_INTERNAL_PARAMETER_ENTITY) ||
-	         (cur->etype ==  XML_EXTERNAL_PARAMETER_ENTITY)) &&
-		(!xmlStrcmp(cur->name, name))) return(cur);
-	}
+	return(xmlGetEntityFromTable(table, name, 1));
     }
     return(NULL);
 }
@@ -513,18 +615,11 @@ xmlGetParameterEntity(xmlDocPtr doc, const xmlChar *name) {
  */
 xmlEntityPtr
 xmlGetDtdEntity(xmlDocPtr doc, const xmlChar *name) {
-    int i;
-    xmlEntityPtr cur;
     xmlEntitiesTablePtr table;
 
     if ((doc->extSubset != NULL) && (doc->extSubset->entities != NULL)) {
 	table = (xmlEntitiesTablePtr) doc->extSubset->entities;
-	for (i = 0;i < table->nb_entities;i++) {
-	    cur = table->table[i];
-	    if ((cur->etype !=  XML_INTERNAL_PARAMETER_ENTITY) &&
-	        (cur->etype !=  XML_EXTERNAL_PARAMETER_ENTITY) &&
-	        (!xmlStrcmp(cur->name, name))) return(cur);
-	}
+	return(xmlGetEntityFromTable(table, name, 0));
     }
     return(NULL);
 }
@@ -542,39 +637,25 @@ xmlGetDtdEntity(xmlDocPtr doc, const xmlChar *name) {
  */
 xmlEntityPtr
 xmlGetDocEntity(xmlDocPtr doc, const xmlChar *name) {
-    int i;
     xmlEntityPtr cur;
     xmlEntitiesTablePtr table;
 
     if ((doc->intSubset != NULL) && (doc->intSubset->entities != NULL)) {
 	table = (xmlEntitiesTablePtr) doc->intSubset->entities;
-	for (i = 0;i < table->nb_entities;i++) {
-	    cur = table->table[i];
-	    if ((cur->etype !=  XML_INTERNAL_PARAMETER_ENTITY) &&
-	        (cur->etype !=  XML_EXTERNAL_PARAMETER_ENTITY) &&
-	        (!xmlStrcmp(cur->name, name))) return(cur);
-	}
+	cur = xmlGetEntityFromTable(table, name, 0);
+	if (cur != NULL)
+	    return(cur);
     }
     if ((doc->extSubset != NULL) && (doc->extSubset->entities != NULL)) {
 	table = (xmlEntitiesTablePtr) doc->extSubset->entities;
-	for (i = 0;i < table->nb_entities;i++) {
-	    cur = table->table[i];
-	    if ((cur->etype !=  XML_INTERNAL_PARAMETER_ENTITY) &&
-	        (cur->etype !=  XML_EXTERNAL_PARAMETER_ENTITY) &&
-	        (!xmlStrcmp(cur->name, name))) return(cur);
-	}
+	cur = xmlGetEntityFromTable(table, name, 0);
+	if (cur != NULL)
+	    return(cur);
     }
     if (xmlPredefinedEntities == NULL)
         xmlInitializePredefinedEntities();
     table = xmlPredefinedEntities;
-    for (i = 0;i < table->nb_entities;i++) {
-	cur = table->table[i];
-	if ((cur->etype !=  XML_INTERNAL_PARAMETER_ENTITY) &&
-	    (cur->etype !=  XML_EXTERNAL_PARAMETER_ENTITY) &&
-	    (!xmlStrcmp(cur->name, name))) return(cur);
-    }
-
-    return(NULL);
+    return(xmlGetEntityFromTable(table, name, 0));
 }
 
 /*
@@ -1029,8 +1110,9 @@ xmlCreateEntitiesTable(void) {
 	        (long)sizeof(xmlEntitiesTable));
         return(NULL);
     }
-    ret->max_entities = XML_MIN_ENTITIES_TABLE;
     ret->nb_entities = 0;
+#ifdef ENTITY_HASH_SIZE
+    ret->max_entities = ENTITY_HASH_SIZE;
     ret->table = (xmlEntityPtr *) 
          xmlMalloc(ret->max_entities * sizeof(xmlEntityPtr));
     if (ret == NULL) {
@@ -1039,6 +1121,18 @@ xmlCreateEntitiesTable(void) {
 	xmlFree(ret);
         return(NULL);
     }
+    memset(ret->table, 0, ret->max_entities * sizeof(xmlEntityPtr));
+#else
+    ret->max_entities = XML_MIN_ENTITIES_TABLE;
+    ret->table = (xmlEntityPtr *) 
+         xmlMalloc(ret->max_entities * sizeof(xmlEntityPtr));
+    if (ret == NULL) {
+        fprintf(stderr, "xmlCreateEntitiesTable : xmlMalloc(%ld) failed\n",
+	        ret->max_entities * (long)sizeof(xmlEntityPtr));
+	xmlFree(ret);
+        return(NULL);
+    }
+#endif
     return(ret);
 }
 
@@ -1051,14 +1145,62 @@ xmlCreateEntitiesTable(void) {
 void
 xmlFreeEntitiesTable(xmlEntitiesTablePtr table) {
     int i;
+#ifdef ENTITY_HASH_SIZE
+    xmlEntityPtr cur, next;
+#endif
 
     if (table == NULL) return;
 
+#ifdef ENTITY_HASH_SIZE
+    for (i = 0;i < ENTITY_HASH_SIZE;i++) {
+	cur = table->table[i];
+	while (cur != NULL) {
+	    next = cur->nexte;
+	    xmlFreeEntity(cur);
+	    cur = next;
+	}
+    }
+#else
     for (i = 0;i < table->nb_entities;i++) {
         xmlFreeEntity(table->table[i]);
     }
+#endif
     xmlFree(table->table);
     xmlFree(table);
+}
+
+/**
+ * xmlCopyEntity:
+ * @ent:  An entity
+ *
+ * Build a copy of an entity
+ * 
+ * Returns the new xmlEntitiesPtr or NULL in case of error.
+ */
+xmlEntityPtr
+xmlCopyEntity(xmlEntityPtr ent) {
+    xmlEntityPtr cur;
+
+    cur = (xmlEntityPtr) xmlMalloc(sizeof(xmlEntity));
+    if (cur == NULL) {
+	fprintf(stderr, "xmlCopyEntity: out of memory !\n");
+	return(NULL);
+    }
+    memset(cur, 0, sizeof(xmlEntity));
+    cur->type = XML_ELEMENT_DECL;
+
+    cur->etype = ent->etype;
+    if (ent->name != NULL)
+	cur->name = xmlStrdup(ent->name);
+    if (ent->ExternalID != NULL)
+	cur->ExternalID = xmlStrdup(ent->ExternalID);
+    if (ent->SystemID != NULL)
+	cur->SystemID = xmlStrdup(ent->SystemID);
+    if (ent->content != NULL)
+	cur->content = xmlStrdup(ent->content);
+    if (ent->orig != NULL)
+	cur->orig = xmlStrdup(ent->orig);
+    return(cur);
 }
 
 /**
@@ -1080,6 +1222,15 @@ xmlCopyEntitiesTable(xmlEntitiesTablePtr table) {
         fprintf(stderr, "xmlCopyEntitiesTable: out of memory !\n");
 	return(NULL);
     }
+#ifdef ENTITY_HASH_SIZE
+    ret->table = (xmlEntityPtr *) xmlMalloc(ENTITY_HASH_SIZE *
+                                            sizeof(xmlEntityPtr));
+    if (ret->table == NULL) {
+        fprintf(stderr, "xmlCopyEntitiesTable: out of memory !\n");
+	xmlFree(ret);
+	return(NULL);
+    }
+#else
     ret->table = (xmlEntityPtr *) xmlMalloc(table->max_entities *
                                             sizeof(xmlEntityPtr));
     if (ret->table == NULL) {
@@ -1087,32 +1238,23 @@ xmlCopyEntitiesTable(xmlEntitiesTablePtr table) {
 	xmlFree(ret);
 	return(NULL);
     }
+#endif
     ret->max_entities = table->max_entities;
     ret->nb_entities = table->nb_entities;
     for (i = 0;i < ret->nb_entities;i++) {
-	cur = (xmlEntityPtr) xmlMalloc(sizeof(xmlEntity));
-	if (cur == NULL) {
-	    fprintf(stderr, "xmlCopyEntityTable: out of memory !\n");
-	    xmlFree(ret);
-	    xmlFree(ret->table);
-	    return(NULL);
-	}
-	memset(cur, 0, sizeof(xmlEntity));
-	cur->type = XML_ELEMENT_DECL;
-	ret->table[i] = cur;
 	ent = table->table[i];
-
-	cur->etype = ent->etype;
-	if (ent->name != NULL)
-	    cur->name = xmlStrdup(ent->name);
-	if (ent->ExternalID != NULL)
-	    cur->ExternalID = xmlStrdup(ent->ExternalID);
-	if (ent->SystemID != NULL)
-	    cur->SystemID = xmlStrdup(ent->SystemID);
-	if (ent->content != NULL)
-	    cur->content = xmlStrdup(ent->content);
-	if (ent->orig != NULL)
-	    cur->orig = xmlStrdup(ent->orig);
+	if (ent == NULL)
+	    cur = NULL;
+	else
+	    cur = xmlCopyEntity(ent);
+	ret->table[i] = cur;
+#ifdef ENTITY_HASH_SIZE
+	ent = ent->nexte;
+	while ((ent != NULL) && (cur != NULL)) {
+            cur->nexte = xmlCopyEntity(ent);
+	    cur = cur->nexte;
+	}
+#endif
     }
     return(ret);
 }
@@ -1217,8 +1359,18 @@ xmlDumpEntitiesTable(xmlBufferPtr buf, xmlEntitiesTablePtr table) {
 
     if (table == NULL) return;
 
+#ifdef ENTITY_HASH_SIZE
+    for (i = 0;i < ENTITY_HASH_SIZE;i++) {
+        cur = table->table[i];
+	while (cur != NULL) {
+	    xmlDumpEntityDecl(buf, cur);
+	    cur = cur->nexte;
+	}
+    }
+#else
     for (i = 0;i < table->nb_entities;i++) {
         cur = table->table[i];
 	xmlDumpEntityDecl(buf, cur);
     }
+#endif
 }

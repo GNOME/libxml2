@@ -1,3 +1,17 @@
+Sat Aug 26 23:31:04 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
+
+	* doc/encoding.html: added encoding aliases doc
+	* doc/xml.html: updates
+	* encoding.[ch]: added EncodingAliases functions
+	* entities.[ch] valid.[ch] debugXML.c: removed two serious
+	  bottleneck affecting large DTDs like Docbook
+	* parser.[ch] xmllint.c: added a pedantic option, will be
+	  useful
+	* SAX.c: redefinition of entities is reported in pedantic mode
+	* testHTML.c: uninitialized warning from gcc
+	* uri.c: fixed a couple of bugs
+	* TODO: added issue raised by Michael
+
 Wed Aug 23 01:50:51 CEST 2000 Daniel Veillard <Daniel.Veillard@w3.org>
 
 	* doc/encoding.html: propagated Martin Duerst suggestions

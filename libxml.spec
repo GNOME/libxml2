@@ -1,6 +1,6 @@
 # Note that this is NOT a relocatable package
-%define ver      0.30
-%define rel      1
+%define ver      0.99.3
+%define rel      SNAP
 %define prefix   /usr
 
 Summary: libXML library
@@ -30,7 +30,7 @@ Libraries, include files, etc you can use to develop libxml applications.
 
 %changelog
 
-* Sun Oct  4 10:49:04 EDT 1998 Daniel Veillard <Daniel.Veillard@w3.org>
+* Sun Oct  4 1998 Daniel Veillard <Daniel.Veillard@w3.org>
 
 - Added xml-config to the package
 

@@ -16439,6 +16439,7 @@ xmlSchemaIDCFreeKey(xmlSchemaPSVIIDCKeyPtr key)
  * Frees an IDC binding. Note that the node table-items
  * are not freed.
  */
+static void 
 xmlSchemaIDCFreeBinding(xmlSchemaPSVIIDCBindingPtr bind)
 {
     if (bind->nodeTable != NULL) {

@@ -951,12 +951,18 @@
      <summary>pattern expression handling</summary>
      <description>allows to compile and test pattern expressions for nodes either in a tree or based on a parser state. </description>
      <author>Daniel Veillard </author>
+     <exports symbol='xmlStreamCtxt' type='typedef'/>
+     <exports symbol='xmlStreamCtxtPtr' type='typedef'/>
      <exports symbol='xmlPattern' type='typedef'/>
      <exports symbol='xmlPatternPtr' type='typedef'/>
-     <exports symbol='xmlPatterncompile' type='function'/>
-     <exports symbol='xmlFreePattern' type='function'/>
-     <exports symbol='xmlPatternMatch' type='function'/>
+     <exports symbol='xmlPatternGetStreamCtxt' type='function'/>
+     <exports symbol='xmlFreeStreamCtxt' type='function'/>
      <exports symbol='xmlFreePatternList' type='function'/>
+     <exports symbol='xmlPatternMatch' type='function'/>
+     <exports symbol='xmlFreePattern' type='function'/>
+     <exports symbol='xmlStreamPush' type='function'/>
+     <exports symbol='xmlStreamPop' type='function'/>
+     <exports symbol='xmlPatterncompile' type='function'/>
     </file>
     <file name='relaxng'>
      <summary>implementation of the Relax-NG validation</summary>
@@ -1102,6 +1108,7 @@
      <exports symbol='XML_SCHEMAS_BLOCK_DEFAULT_EXTENSION' type='macro'/>
      <exports symbol='XML_SCHEMAS_TYPE_FINAL_UNION' type='macro'/>
      <exports symbol='XML_SCHEMAS_TYPE_FINAL_DEFAULT' type='macro'/>
+     <exports symbol='XML_SCHEMAS_TYPE_FACETSNEEDVALUE' type='macro'/>
      <exports symbol='XML_SCHEMAS_FINAL_DEFAULT_UNION' type='macro'/>
      <exports symbol='XML_SCHEMAS_ELEM_BLOCK_RESTRICTION' type='macro'/>
      <exports symbol='XML_SCHEMAS_FACET_REPLACE' type='macro'/>
@@ -1133,14 +1140,14 @@
      <exports symbol='XML_SCHEMAS_NINTEGER' type='enum'/>
      <exports symbol='XML_SCHEMAS_NORMSTRING' type='enum'/>
      <exports symbol='XML_SCHEMA_CONTENT_MIXED_OR_ELEMENTS' type='enum'/>
-     <exports symbol='XML_SCHEMAS_GYEARMONTH' type='enum'/>
+     <exports symbol='XML_SCHEMA_TYPE_SIMPLE' type='enum'/>
      <exports symbol='XML_SCHEMAS_NCNAME' type='enum'/>
      <exports symbol='XML_SCHEMAS_LONG' type='enum'/>
      <exports symbol='XML_SCHEMA_FACET_FRACTIONDIGITS' type='enum'/>
      <exports symbol='XML_SCHEMAS_BOOLEAN' type='enum'/>
      <exports symbol='XML_SCHEMAS_ENTITY' type='enum'/>
      <exports symbol='XML_SCHEMA_TYPE_GROUP' type='enum'/>
-     <exports symbol='XML_SCHEMA_TYPE_SIMPLE' type='enum'/>
+     <exports symbol='XML_SCHEMAS_GYEARMONTH' type='enum'/>
      <exports symbol='XML_SCHEMAS_BASE64BINARY' type='enum'/>
      <exports symbol='XML_SCHEMA_TYPE_ANY_ATTRIBUTE' type='enum'/>
      <exports symbol='XML_SCHEMA_FACET_WHITESPACE' type='enum'/>
@@ -1159,6 +1166,7 @@
      <exports symbol='XML_SCHEMAS_GYEAR' type='enum'/>
      <exports symbol='XML_SCHEMAS_BYTE' type='enum'/>
      <exports symbol='XML_SCHEMA_TYPE_ALL' type='enum'/>
+     <exports symbol='XML_SCHEMA_TYPE_IDC_KEYREF' type='enum'/>
      <exports symbol='XML_SCHEMAS_NOTATION' type='enum'/>
      <exports symbol='XML_SCHEMA_FACET_MAXINCLUSIVE' type='enum'/>
      <exports symbol='XML_SCHEMAS_NAME' type='enum'/>
@@ -1170,6 +1178,7 @@
      <exports symbol='XML_SCHEMA_TYPE_ATTRIBUTEGROUP' type='enum'/>
      <exports symbol='XML_SCHEMA_TYPE_BASIC' type='enum'/>
      <exports symbol='XML_SCHEMAS_IDREFS' type='enum'/>
+     <exports symbol='XML_SCHEMA_TYPE_IDC_UNIQUE' type='enum'/>
      <exports symbol='XML_SCHEMA_FACET_LENGTH' type='enum'/>
      <exports symbol='XML_SCHEMA_CONTENT_SIMPLE' type='enum'/>
      <exports symbol='XML_SCHEMA_FACET_PATTERN' type='enum'/>
@@ -1185,6 +1194,7 @@
      <exports symbol='XML_SCHEMAS_INTEGER' type='enum'/>
      <exports symbol='XML_SCHEMA_TYPE_COMPLEX_CONTENT' type='enum'/>
      <exports symbol='XML_SCHEMA_FACET_MINEXCLUSIVE' type='enum'/>
+     <exports symbol='XML_SCHEMA_TYPE_IDC_KEY' type='enum'/>
      <exports symbol='XML_SCHEMA_TYPE_SIMPLE_CONTENT' type='enum'/>
      <exports symbol='XML_SCHEMAS_FLOAT' type='enum'/>
      <exports symbol='XML_SCHEMAS_ENTITIES' type='enum'/>
@@ -2006,6 +2016,7 @@
      <exports symbol='XML_ERR_UNSUPPORTED_ENCODING' type='enum'/>
      <exports symbol='XML_RNGP_PAT_NSNAME_EXCEPT_ANYNAME' type='enum'/>
      <exports symbol='XML_ERR_ENTITYREF_IN_PROLOG' type='enum'/>
+     <exports symbol='XML_SCHEMAV_CVC_IDC' type='enum'/>
      <exports symbol='XML_IO_ENOTTY' type='enum'/>
      <exports symbol='XML_DTD_UNKNOWN_NOTATION' type='enum'/>
      <exports symbol='XML_FROM_DATATYPE' type='enum'/>
@@ -3993,6 +4004,9 @@
     <macro name='XML_SCHEMAS_TYPE_DERIVATION_METHOD_RESTRICTION' file='schemasInternals'>
       <info>the simple or complex type has a derivation method of &quot;restriction&quot;.</info>
     </macro>
+    <macro name='XML_SCHEMAS_TYPE_FACETSNEEDVALUE' file='schemasInternals'>
+      <info>indicates if the facets need a computed value</info>
+    </macro>
     <macro name='XML_SCHEMAS_TYPE_FINAL_DEFAULT' file='schemasInternals'>
       <info>the simpleType has a final of &quot;default&quot;.</info>
     </macro>
@@ -5171,6 +5185,7 @@
     <enum name='XML_SCHEMAV_CVC_ENUMERATION_VALID' file='xmlerror' value='1840' type='xmlParserErrors' info='1840'/>
     <enum name='XML_SCHEMAV_CVC_FACET_VALID' file='xmlerror' value='1829' type='xmlParserErrors' info='1829'/>
     <enum name='XML_SCHEMAV_CVC_FRACTIONDIGITS_VALID' file='xmlerror' value='1838' type='xmlParserErrors' info='1838'/>
+    <enum name='XML_SCHEMAV_CVC_IDC' file='xmlerror' value='1877' type='xmlParserErrors' info='1877'/>
     <enum name='XML_SCHEMAV_CVC_LENGTH_VALID' file='xmlerror' value='1830' type='xmlParserErrors' info='1830'/>
     <enum name='XML_SCHEMAV_CVC_MAXEXCLUSIVE_VALID' file='xmlerror' value='1836' type='xmlParserErrors' info='1836'/>
     <enum name='XML_SCHEMAV_CVC_MAXINCLUSIVE_VALID' file='xmlerror' value='1834' type='xmlParserErrors' info='1834'/>
@@ -5239,6 +5254,9 @@
     <enum name='XML_SCHEMA_TYPE_EXTENSION' file='schemasInternals' value='13' type='xmlSchemaTypeType'/>
     <enum name='XML_SCHEMA_TYPE_FACET' file='schemasInternals' value='3' type='xmlSchemaTypeType'/>
     <enum name='XML_SCHEMA_TYPE_GROUP' file='schemasInternals' value='17' type='xmlSchemaTypeType'/>
+    <enum name='XML_SCHEMA_TYPE_IDC_KEY' file='schemasInternals' value='23' type='xmlSchemaTypeType'/>
+    <enum name='XML_SCHEMA_TYPE_IDC_KEYREF' file='schemasInternals' value='24' type='xmlSchemaTypeType'/>
+    <enum name='XML_SCHEMA_TYPE_IDC_UNIQUE' file='schemasInternals' value='22' type='xmlSchemaTypeType'/>
     <enum name='XML_SCHEMA_TYPE_LIST' file='schemasInternals' value='19' type='xmlSchemaTypeType'/>
     <enum name='XML_SCHEMA_TYPE_NOTATION' file='schemasInternals' value='18' type='xmlSchemaTypeType'/>
     <enum name='XML_SCHEMA_TYPE_RESTRICTION' file='schemasInternals' value='12' type='xmlSchemaTypeType'/>
@@ -5999,6 +6017,7 @@ actually an xmlCharEncoding'/>
       <field name='includes' type='void *' info=' the includes, this is opaque for now'/>
       <field name='preserve' type='int' info=' whether to free the document'/>
       <field name='counter' type='int' info=' used to give ononymous components unique names'/>
+      <field name='idcDef' type='xmlHashTablePtr' info=''/>
     </struct>
     <struct name='xmlSchemaAnnot' file='schemasInternals' type='struct _xmlSchemaAnnot'>
       <field name='next' type='struct _xmlSchemaAnnot *' info=''/>
@@ -6076,6 +6095,7 @@ actually an xmlCharEncoding'/>
       <field name='contentType' type='xmlSchemaContentType' info=''/>
       <field name='refPrefix' type='const xmlChar *' info=''/>
       <field name='defVal' type='xmlSchemaValPtr' info=''/>
+      <field name='idcs' type='void *' info=''/>
     </struct>
     <typedef name='xmlSchemaElementPtr' file='schemasInternals' type='xmlSchemaElement *'/>
     <struct name='xmlSchemaFacet' file='schemasInternals' type='struct _xmlSchemaFacet'>
@@ -6181,6 +6201,8 @@ actually an xmlCharEncoding'/>
       <field name='input' type='xmlShellReadlineFunc' info=''/>
     </struct>
     <typedef name='xmlShellCtxtPtr' file='debugXML' type='xmlShellCtxt *'/>
+    <struct name='xmlStreamCtxt' file='pattern' type='struct _xmlStreamCtxt'/>
+    <typedef name='xmlStreamCtxtPtr' file='pattern' type='xmlStreamCtxt *'/>
     <struct name='xmlTextReader' file='xmlreader' type='struct _xmlTextReader'/>
     <typedef name='xmlTextReaderLocatorPtr' file='xmlreader' type='void *'/>
     <typedef name='xmlTextReaderMode' file='xmlreader' type='enum'/>
@@ -9115,6 +9137,12 @@ actually an xmlCharEncoding'/>
       <return type='void'/>
       <arg name='table' type='xmlRefTablePtr' info='An ref table'/>
     </function>
+    <function name='xmlFreeStreamCtxt' file='pattern'>
+      <cond>defined(LIBXML_PATTERN_ENABLED)</cond>
+      <info>Free the stream context</info>
+      <return type='void'/>
+      <arg name='stream' type='xmlStreamCtxtPtr' info='the stream context'/>
+    </function>
     <function name='xmlFreeTextReader' file='xmlreader'>
       <cond>defined(LIBXML_READER_ENABLED)</cond>
       <info>Deallocate all the resources associated to the reader</info>
@@ -11527,6 +11555,12 @@ actually an xmlCharEncoding'/>
       <arg name='msg' type='const char *' info='the message to display/transmit'/>
       <arg name='...' type='...' info='extra parameters for the message display'/>
     </function>
+    <function name='xmlPatternGetStreamCtxt' file='pattern'>
+      <cond>defined(LIBXML_PATTERN_ENABLED)</cond>
+      <info>Get a streaming context for that pattern Use xmlFreeStreamCtxt to free the context.</info>
+      <return type='xmlStreamCtxtPtr' info='a pointer to the context or NULL in case of failure'/>
+      <arg name='comp' type='xmlPatternPtr' info='the precompiled pattern'/>
+    </function>
     <function name='xmlPatternMatch' file='pattern'>
       <cond>defined(LIBXML_PATTERN_ENABLED)</cond>
       <info>Test wether the node matches the pattern</info>
@@ -13207,6 +13241,20 @@ actually an xmlCharEncoding'/>
       <return type='char *' info='the copy of the string or NULL in case of error.'/>
       <arg name='str' type='const char *' info='a zero terminated string'/>
     </functype>
+    <function name='xmlStreamPop' file='pattern'>
+      <cond>defined(LIBXML_PATTERN_ENABLED)</cond>
+      <info>push one level from the stream.</info>
+      <return type='int' info='-1 in case of error, 0 otherwise.'/>
+      <arg name='stream' type='xmlStreamCtxtPtr' info='the stream context'/>
+    </function>
+    <function name='xmlStreamPush' file='pattern'>
+      <cond>defined(LIBXML_PATTERN_ENABLED)</cond>
+      <info>push new data onto the stream. NOTE: if the call xmlPatterncompile() indicated a dictionnary, then strings for name and ns will be expected to come from the dictionary. Both @name and @ns being NULL means the / i.e. the root of the document. This can also act as a reset.</info>
+      <return type='int' info='-1 in case of error, 1 if the current state in the stream is a match and 0 otherwise.'/>
+      <arg name='stream' type='xmlStreamCtxtPtr' info='the stream context'/>
+      <arg name='name' type='const xmlChar *' info='the current name'/>
+      <arg name='ns' type='const xmlChar *' info='the namespace name'/>
+    </function>
     <function name='xmlStringCurrentChar' file='parserInternals'>
       <info>The current char value, if using UTF-8 this may actually span multiple bytes in the input buffer.</info>
       <return type='int' info='the current char value and its length'/>

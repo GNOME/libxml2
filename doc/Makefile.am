@@ -75,6 +75,11 @@ $(srcdir)/html/index.html: libxml2-api.xml $(srcdir)/newapi.xsl
 	  echo "Validating the resulting XHTML pages" ; \
 	  $(XMLLINT) --nonet --valid --noout html/*.html ; fi );
 
+wiki: libxml2-api.xml $(srcdir)/wiki.xsl
+	-@(if [ -x $(XSLTPROC) ] ; then \
+		echo "Rebuilding the wiki HTML pages from the XML API" ; \
+		$(XSLTPROC) --nonet $(srcdir)/wiki.xsl libxml2-api.xml; fi )
+
 $(WIN32_DIR)/libxml2.def.src: libxml2-api.xml
 	-@(if [ -x $(XSLTPROC) ] ; then \
 	  $(XSLTPROC) -o $(WIN32_DIR)/libxml2.def.src \

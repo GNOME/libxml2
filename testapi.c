@@ -16692,6 +16692,16 @@ test_parserInternals(void) {
 }
 
 static int
+test_xmlPatternGetStreamCtxt(void) {
+    int test_ret = 0;
+
+
+    /* missing type support */
+    return(test_ret);
+}
+
+
+static int
 test_xmlPatternMatch(void) {
     int test_ret = 0;
 
@@ -16741,13 +16751,105 @@ test_xmlPatterncompile(void) {
     return(test_ret);
 }
 
+
+#define gen_nb_xmlStreamCtxtPtr 1
+static xmlStreamCtxtPtr gen_xmlStreamCtxtPtr(int no ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+    return(NULL);
+}
+static void des_xmlStreamCtxtPtr(int no ATTRIBUTE_UNUSED, xmlStreamCtxtPtr val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+}
+
+static int
+test_xmlStreamPop(void) {
+    int test_ret = 0;
+
+#if defined(LIBXML_PATTERN_ENABLED)
+    int mem_base;
+    int ret_val;
+    xmlStreamCtxtPtr stream; /* the stream context */
+    int n_stream;
+
+    for (n_stream = 0;n_stream < gen_nb_xmlStreamCtxtPtr;n_stream++) {
+        mem_base = xmlMemBlocks();
+        stream = gen_xmlStreamCtxtPtr(n_stream, 0);
+
+        ret_val = xmlStreamPop(stream);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlStreamCtxtPtr(n_stream, stream, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlStreamPop",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_stream);
+            printf("\n");
+        }
+    }
+    function_tests++;
+#endif
+
+    return(test_ret);
+}
+
+
+static int
+test_xmlStreamPush(void) {
+    int test_ret = 0;
+
+#if defined(LIBXML_PATTERN_ENABLED)
+    int mem_base;
+    int ret_val;
+    xmlStreamCtxtPtr stream; /* the stream context */
+    int n_stream;
+    xmlChar * name; /* the current name */
+    int n_name;
+    xmlChar * ns; /* the namespace name */
+    int n_ns;
+
+    for (n_stream = 0;n_stream < gen_nb_xmlStreamCtxtPtr;n_stream++) {
+    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
+    for (n_ns = 0;n_ns < gen_nb_const_xmlChar_ptr;n_ns++) {
+        mem_base = xmlMemBlocks();
+        stream = gen_xmlStreamCtxtPtr(n_stream, 0);
+        name = gen_const_xmlChar_ptr(n_name, 1);
+        ns = gen_const_xmlChar_ptr(n_ns, 2);
+
+        ret_val = xmlStreamPush(stream, (const xmlChar *)name, (const xmlChar *)ns);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlStreamCtxtPtr(n_stream, stream, 0);
+        des_const_xmlChar_ptr(n_name, (const xmlChar *)name, 1);
+        des_const_xmlChar_ptr(n_ns, (const xmlChar *)ns, 2);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlStreamPush",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_stream);
+            printf(" %d", n_name);
+            printf(" %d", n_ns);
+            printf("\n");
+        }
+    }
+    }
+    }
+    function_tests++;
+#endif
+
+    return(test_ret);
+}
+
 static int
 test_pattern(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing pattern : 1 of 4 functions ...\n");
+    if (quiet == 0) printf("Testing pattern : 3 of 8 functions ...\n");
+    test_ret += test_xmlPatternGetStreamCtxt();
     test_ret += test_xmlPatternMatch();
     test_ret += test_xmlPatterncompile();
+    test_ret += test_xmlStreamPop();
+    test_ret += test_xmlStreamPush();
 
     if (test_ret != 0)
 	printf("Module pattern: %d errors\n", test_ret);
